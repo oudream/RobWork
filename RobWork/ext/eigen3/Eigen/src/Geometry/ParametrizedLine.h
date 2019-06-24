@@ -13,7 +13,7 @@
 
 namespace Eigen { 
 
-/** \geometry_module \ingroup Geometry_Module
+/** geometry_module \ingroup Geometry_Module
   *
   * \class ParametrizedLine
   *
