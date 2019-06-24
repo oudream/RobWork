@@ -47,12 +47,14 @@ namespace proximity {
 	     * the x-y plane extending in either x or y direction (horizontal or vertical). the second segment
 	     * is described in 3d with a start point \b p1, a direction \b d1 and a length \b d1_l.
 	     *
+         * @cond
 	     * @param q1_x
 	     * @param q1_y
 	     * @param q1_l
 	     * @param p1
 	     * @param d1
 	     * @param d1_l
+         * @endcond
 	     * @return
 	     */
 	    void distanceSegments(
