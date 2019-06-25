@@ -110,7 +110,8 @@ struct ImportSettings
      *  Default value is true. */
     bool readWeights;
 
-    /** preserve transformation pivots and offsets. Since these can
+    /** @cond
+     *  preserve transformation pivots and offsets. Since these can
      *  not directly be represented in assimp, additional dummy
      *  nodes will be generated. Note that settings this to false
      *  can make animation import a lot slower. The default value
@@ -129,6 +130,7 @@ struct ImportSettings
      *    Translation
      *    Scaling
      *    Rotation
+     *  @endcond
      **/
     bool preservePivots;
 
