@@ -39,8 +39,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ---------------------------------------------------------------------------
 */
 
-/** @file 
- * aiFileIO -> IOSystem wrapper*/
+/** @file aiFileIO -> IOSystem wrapper*/
 
 #ifndef AI_CIOSYSTEM_H_INCLUDED
 #define AI_CIOSYSTEM_H_INCLUDED
