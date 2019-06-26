@@ -182,7 +182,7 @@ namespace rw { namespace trajectory {
         }
 
         /**
-         * @copydoc Interpolator::dx()
+         * @copydoc Interpolator::dx() 
          */
         T dx(double t) const
         {
