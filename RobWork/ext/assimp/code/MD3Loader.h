@@ -38,7 +38,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ----------------------------------------------------------------------
 */
 
-/** @file  MD3Loader.h
+/** @file  Md3Loader.h
  *  @brief Declaration of the .MD3 importer class.
  */
 #ifndef AI_MD3LOADER_H_INCLUDED

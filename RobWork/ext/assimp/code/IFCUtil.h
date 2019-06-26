@@ -38,7 +38,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ----------------------------------------------------------------------
 */
 
-/** @file 
+/** @file  IFC.cpp
  *  @brief Implementation of the Industry Foundation Classes loader.
  */
 
