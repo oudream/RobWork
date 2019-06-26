@@ -182,19 +182,13 @@ namespace io
 		//! No xml node. This is usually the node if you did not read anything yet.
 		EXN_NONE,
 
-		//! @cond
 		//! A xml element, like <foo>
-		//! @endcond
 		EXN_ELEMENT,
 
-		//! @cond
 		//! End of an xml element, like </foo>
-		//! @endcond
 		EXN_ELEMENT_END,
 
-		//! @cond
 		//! Text within a xml element: <foo> this is the text. </foo>
-		//! @endcond
 		EXN_TEXT,
 
 		//! An xml comment like &lt;!-- I am a comment --&gt; or a DTD definition.
@@ -352,9 +346,7 @@ namespace io
 		data and it is of type EXN_TEXT or EXN_UNKNOWN. */
 		virtual const char_type* getNodeData() const = 0;
 
-		//! @cond
 		//! Returns if an element is an empty element, like <foo />
-		//! @endcond
 		virtual bool isEmptyElement() const = 0;
 
 		//! Returns format of the source xml file. 
@@ -520,7 +512,7 @@ namespace io
 	IrrXMLReaderUTF32* createIrrXMLReaderUTF32(IFileReadCallBack* callback);
 	
 
-	/*! \file irrXML.h
+	/*! \file irrxml.h
     \brief Header file of the irrXML, the Irrlicht XML parser.
     
     This file includes everything needed for using irrXML, 
