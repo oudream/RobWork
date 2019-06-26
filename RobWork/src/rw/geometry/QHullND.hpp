@@ -40,6 +40,10 @@ namespace geometry {
          * @param dim [in] nr of dimensions in each vertice
          * @param coords [in] array of vertices
          * @param nrCoords [in] the number of vertices
+		 * @param vertIdxs
+		 * @param faceIdxs
+		 * @param faceNormals
+		 * @param faceOffsets
          * @return
          */
         void build(size_t dim,
@@ -201,7 +205,7 @@ namespace geometry {
             return minDist;
         }
 
-        //! @copydoc ConvexHullND::getAvgDistOutside
+        //! @copydoc ConvexHullND::getAvgDistInside
         virtual double getAvgDistInside(const rw::math::VectorND<N>& vertex) {
 			using namespace rw::math;
 
