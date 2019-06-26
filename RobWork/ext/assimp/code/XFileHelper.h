@@ -39,8 +39,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 
-/** @file 
- * Defines the helper data structures for importing XFiles */
+/** @file Defines the helper data structures for importing XFiles */
 #ifndef AI_XFILEHELPER_H_INC
 #define AI_XFILEHELPER_H_INC
 
