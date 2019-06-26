@@ -38,8 +38,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ----------------------------------------------------------------------
 */
 
-/** @file 
- *  Defines a post processing step to sort meshes by the types
+/** @file Defines a post processing step to sort meshes by the types
     of primitives they contain */
 #ifndef AI_SORTBYPTYPEPROCESS_H_INC
 #define AI_SORTBYPTYPEPROCESS_H_INC

@@ -38,8 +38,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ----------------------------------------------------------------------
 */
 
-/** @file 
- * Stuff to deal with aiScene::mPrivate
+/** @file Stuff to deal with aiScene::mPrivate
  */
 #ifndef AI_SCENEPRIVATE_H_INCLUDED
 #define AI_SCENEPRIVATE_H_INCLUDED
