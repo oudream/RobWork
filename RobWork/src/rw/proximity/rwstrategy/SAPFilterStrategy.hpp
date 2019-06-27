@@ -105,7 +105,7 @@ public:
 	virtual ProximityFilter::Ptr update(const rw::kinematics::State& state, ProximityCache::Ptr data);
 
 	/**
-	 * @copydoc BroadPhaseStrategy::getProximitySetup
+	 * @copydoc ProximityFilterStrategy::getProximitySetup
 	 */
 	ProximitySetup& getProximitySetup();
 
