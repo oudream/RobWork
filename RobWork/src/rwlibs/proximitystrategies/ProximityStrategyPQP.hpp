@@ -166,7 +166,7 @@ namespace rwlibs { namespace proximitystrategies {
         void setFirstContact(bool b);
 
         /**
-         * @copydoc rw::proximity::CollisionStrategy::inCollision
+         * @copydoc rw::proximity::CollisionStrategy::doInCollision
          */
         bool doInCollision(
 			rw::proximity::ProximityModel::Ptr a,
@@ -204,7 +204,17 @@ namespace rwlibs { namespace proximitystrategies {
             rw::proximity::ProximityStrategyData &data);
 
         /**
-         * @copydoc rw::proximity::DistanceThresholdStrategy::doDistanceThreshold
+         * @brief Calculates the distance between two given frames @f$ \mathcal{F}_a @f$ and
+         * @f$ \mathcal{F}_b @f$ if the distance are within threshold. If the distance
+         * between the frames are larger than the threshold, the result will be inaccurate.
+         * @param aModel [in] @f$ \mathcal{F}_a @f$
+         * @param wTa [in] @f$ \robabx{w}{a}{\mathbf{T}} @f$
+         * @param bModel [in] @f$ \mathcal{F}_b @f$
+         * @param wTb [in] @f$ \robabx{w}{b}{\mathbf{T}} @f$
+         * @param threshold [in] threshold for distance calculations
+         * @param data
+         * @return shortest distance if @f$ \mathcal{F}_a @f$ and @f$ \mathcal{F}_b @f$ are
+         * separated and not in collision.
          */
         rw::proximity::DistanceStrategy::Result& doDistanceThreshold(
             rw::proximity::ProximityModel::Ptr aModel,

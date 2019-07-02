@@ -49,13 +49,13 @@ public:
     //! @brief Destructor.
     virtual ~GTaskVisPlugin();
 
-    //! @copydoc RobWorkStudioPlugin::open
+    //! @copydoc rws::RobWorkStudioPlugin::open
     virtual void open(rw::models::WorkCell* workcell);
 
-    //! @copydoc RobWorkStudioPlugin::close
+    //! @copydoc rws::RobWorkStudioPlugin::close
     virtual void close();
 
-    //! @copydoc RobWorkStudioPlugin::initialize
+    //! @copydoc rws::RobWorkStudioPlugin::initialize
     virtual void initialize();
 
     /**

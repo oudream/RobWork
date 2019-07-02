@@ -238,15 +238,15 @@ protected:
     //! Overridden from QGLWidget
     void wheelEvent(QWheelEvent* event);
 
-    //! @copydoc SceneViewer::setWorkCellScene
+    //! @copydoc rw::graphics::SceneViewer::setWorkCellScene
     void setWorkCellScene(rw::common::Ptr<rw::graphics::WorkCellScene> wcscene){
         _wcscene = wcscene;
     }
 
-    //! @copydoc SceneViewer::zoom
+    //! @copydoc rw::graphics::SceneViewer::zoom
     void zoom(double amount);
 
-    //! @copydoc SceneViewer::autoZoom
+    //! @copydoc rw::graphics::SceneViewer::autoZoom
     void autoZoom();
 
 private:

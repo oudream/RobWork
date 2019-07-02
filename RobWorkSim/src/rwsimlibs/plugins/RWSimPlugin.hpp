@@ -62,17 +62,17 @@ class RWSimPlugin : public rws::RobWorkStudioPlugin, private Ui::RWSimPlugin
         virtual ~RWSimPlugin();
 
         /**
-         * @copydoc RobWorkStudioPlugin::open
+         * @copydoc rws::RobWorkStudioPlugin::open
          */
         void open(rw::models::WorkCell* workcell);
 
         /**
-         * @copydoc RobWorkStudioPlugin::close
+         * @copydoc rws::RobWorkStudioPlugin::close
          */
         void close();
 
         /**
-         * @copydoc RobWorkStudioPlugin::initialize
+         * @copydoc rws::RobWorkStudioPlugin::initialize
          */
         void initialize();
 
