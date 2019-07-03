@@ -102,7 +102,7 @@ namespace geometry {
 
 		/**
 		 * @brief Add all triangles in the mesh \b triangles to this
-		 * @param [in] Triangle mesh for which to add triangles
+		 * @param [in] triangles Triangle mesh for which to add triangles
 		 */
 		void add(typename PlainTriMesh<TRI>::Ptr triangles) {
 			_triangles.insert(_triangles.end(), triangles->_triangles.begin(), triangles->_triangles.end());

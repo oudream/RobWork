@@ -211,7 +211,7 @@ namespace geometry {
 				return 0.5*ang*_angToDistWeight + 0.5*a.distance(b);
 			}
 
-			//! @copydoc Metric::doSize
+			//! @copydoc rw::math::Metric::doSize
 			int doSize() const { return -1; }
 
 			//! @brief The weighting of the angle to the distance.

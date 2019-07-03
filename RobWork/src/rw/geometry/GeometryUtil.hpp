@@ -186,7 +186,8 @@ public:
       * @brief calculates the max distance to any triangle in the geoms, from some point \b center
       * @param geoms [in] the geometries containing the triangles
       * @param center [in] the point to calculate the distance from
-      * @param frame [in] the reference frame.
+      * @param ref [in] the reference frame.
+      * @param state
       * @return the maximum distance to any triangle in the geometries
       */
     static double calcMaxDist(const std::vector<rw::common::Ptr<Geometry> > &geoms,
