@@ -204,7 +204,7 @@ namespace rw { namespace kinematics {
             return _contents(index);
         }
 
-        //! @copydoc operator()
+        //! @copydoc operator()(size_t)
         const double& operator()(size_t index) const {
             RW_ASSERT(index<size());
             return _contents(index);
