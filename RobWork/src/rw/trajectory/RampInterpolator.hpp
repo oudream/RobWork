@@ -535,7 +535,13 @@ namespace rw { namespace trajectory {
          *
          * @param start [in] Start of interpolator
          * @param end [in] End of interpolator
+         * @cond
          * @param duration [in] Time it takes to from one end to the other.
+         * @endcond
+         * @param linVelLimit documentation missing !
+         * @param linAccLimit documentation missing !
+         * @param angVelLimit documentation missing !
+         * @param angAccLimit  documentation missing !
          */
         RampInterpolator(const rw::math::Transform3D<T>& start,
                            const rw::math::Transform3D<T>& end,
