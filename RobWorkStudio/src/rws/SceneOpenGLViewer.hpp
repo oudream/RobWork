@@ -131,7 +131,7 @@ public:
     virtual std::vector<View::Ptr> getViews(){ return _views; }
 
     //! @copydoc rw::graphics::SceneViewer::renderView
-    void renderView(View::Ptr);
+    void renderView(View::Ptr view);
 
     //! @copydoc rw::graphics::SceneViewer::updateState
     void updateState(const rw::kinematics::State& state);
