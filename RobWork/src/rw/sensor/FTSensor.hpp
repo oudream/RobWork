@@ -35,8 +35,8 @@ public:
 	typedef rw::common::Ptr<FTSensor> Ptr;
 
     /**
-     * @param name
-     * @param frame
+     * @param name documentation missing !
+     * @param desc documentation missing !
      * @return
      */
     FTSensor(const std::string& name, const std::string& desc=""):
@@ -53,7 +53,6 @@ public:
 
     /**
      * @brief acquires force data from the tactile cells
-     * @param state
      */
     virtual void acquire() = 0;
 
