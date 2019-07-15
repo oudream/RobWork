@@ -98,14 +98,34 @@ namespace sensor {
         //! @copydoc SimulatedTactileSensor::reset
         void reset(const rw::kinematics::State& state);
 
-        //! @copydoc SimulatedTactileSensor::addForceW
+		/**
+		 * @brief add a force to a point on the sensor geometry. The force is described
+		 * relative to the world frame.
+		 * @param point [in] the point where the force is acting.
+		 * @param force [in] the direction in which the force is acting
+		 * @param snormal [in] the contact normal where the origin is on the
+		 * contacting body and the direction is toward the sensor
+		 * @param state [in/out] the state is updated with new sensor information.
+		 * @param body [in] the body that caused the contact force. If no body
+		 * caused the force on the sensor (could be user input) then the body is NULL
+		 */
         void addForceW(const rw::math::Vector3D<>& point,
                        const rw::math::Vector3D<>& force,
                        const rw::math::Vector3D<>& snormal,
                        rw::kinematics::State& state,
 					   rw::common::Ptr<rwsim::dynamics::Body> body = NULL);
 
-        //! @copydoc SimulatedTactileSensor::addForce
+		/**
+		 * @brief add a force to a point on the sensor geometry. The force is described
+		 * relative to the sensor frame.
+		 * @param point [in] the point where the force is acting.
+		 * @param force [in] the direction in which the force is acting
+		 * @param snormal [in] the contact normal where the origin is on the
+		 * contacting body and the direction is toward the sensor
+		 * @param state [in/out] the state is updated with new sensor information.
+		 * @param body [in] the body that caused the contact force. If no body
+		 * caused the force on the sensor (could be user input) then the body is NULL
+		 */
         void addForce(const rw::math::Vector3D<>& point,
                       const rw::math::Vector3D<>& force,
                       const rw::math::Vector3D<>& snormal,
@@ -228,13 +248,31 @@ namespace sensor {
 	           */
 	         void reset(const rw::kinematics::State& state);
 
-	        //! @copydoc SimulatedTactileSensor::addForceW
+		/**
+		 * @brief add a force to a point on the sensor geometry. The force is described
+		 * relative to the world frame.
+		 * @param point [in] the point where the force is acting.
+		 * @param force [in] the direction in which the force is acting
+		 * @param snormal [in] the contact normal where the origin is on the
+		 * contacting body and the direction is toward the sensor
+		 * @param body [in] the body that caused the contact force. If no body
+		 * caused the force on the sensor (could be user input) then the body is NULL
+		 */			
 	         void addForceW(const rw::math::Vector3D<>& point,
 	                       const rw::math::Vector3D<>& force,
 	                       const rw::math::Vector3D<>& snormal,
 						   rw::common::Ptr<rwsim::dynamics::Body> body = NULL);
 
-	        //! @copydoc SimulatedTactileSensor::addForce
+		/**
+		 * @brief add a force to a point on the sensor geometry. The force is described
+		 * relative to the sensor frame.
+		 * @param point [in] the point where the force is acting.
+		 * @param force [in] the direction in which the force is acting
+		 * @param snormal [in] the contact normal where the origin is on the
+		 * contacting body and the direction is toward the sensor
+		 * @param body [in] the body that caused the contact force. If no body
+		 * caused the force on the sensor (could be user input) then the body is NULL
+		 */			
 	         void addForce(const rw::math::Vector3D<>& point,
 	                      const rw::math::Vector3D<>& force,
 	                      const rw::math::Vector3D<>& snormal,
