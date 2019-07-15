@@ -60,7 +60,7 @@ namespace rw { namespace proximity {
          *
          * The Proximity model is the one specified in the frames property
          *
-         * @param frame [in] the frame on which the Proximity model is to be
+         * @param object [in] the frame on which the Proximity model is to be
          * created.
          *
          * @return true if a Proximity model was succesfully created and linked
