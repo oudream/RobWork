@@ -85,6 +85,8 @@ namespace rw { namespace models {
          * @brief Constructor
          *
          * @param name [in] device name
+         * @param base documentation missing !
+         * @param mframe documentation missing !
          */
         SE3Device(const std::string& name, rw::kinematics::Frame* base, rw::kinematics::MovableFrame* mframe);
 
