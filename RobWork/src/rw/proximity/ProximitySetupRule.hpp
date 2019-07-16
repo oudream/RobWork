@@ -45,6 +45,7 @@ namespace proximity {
 		 *
 		 * @param patternA [in] Pattern identifying first frame in rule
 		 * @param patternB [in] Pattern identifying second frame in rule
+		 * @param type documentation missing !
 		 */
 		ProximitySetupRule(const std::string& patternA, const std::string& patternB, RuleType type);
 
