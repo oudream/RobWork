@@ -1,0 +1,6 @@
+************
+Contributing
+************
+
+Coding Guidelines
+=================
