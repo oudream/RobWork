@@ -54,8 +54,10 @@ public:
 
     /**
      @brief Constructs ProximitySetup with list of exclusions
-
+	 @param rules documentation missing !
+	 @cond
      @param exclude [in] pairs to be excluded
+	 @endcond
      */
 	explicit ProximitySetup(const std::vector<ProximitySetupRule>& rules);
 
