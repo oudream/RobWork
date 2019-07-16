@@ -4,7 +4,7 @@ Release Notes of RobWork  {#pagereleasenotes}
 [TOC]
 
 
-# Major Changes 0.6 # {#sec_release_notes_05}
+# Major Changes 0.6 # {#sec_release_notes_06}
 
 - rwlibs::drawable refactored into rwlibs::graphics and rwlibs::opengl
 - swig is now used for generating script interfaces, lua and python are supported
