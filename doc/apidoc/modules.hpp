@@ -368,12 +368,18 @@ namespace rwslibs {
 /**
 @defgroup rws RobWorkStudio
 @{
-    @copydoc rws
+    * @brief RobWorkStudio extension libraries.
+    *
+    * A collection of extensions to RobWorkStudio which enables the use of RobWork functionality
+    * through a GUI.
 @}
 
 @defgroup rwslibs RobWorkStudio Extension Libraries
 @{
-    @copydoc rwslibs
+    * @brief RobWorkStudio extension libraries.
+    *
+    * A collection of extensions to RobWorkStudio which enables the use of RobWork functionality
+    * through a GUI
 @}
 */
 
