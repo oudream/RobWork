@@ -68,8 +68,18 @@
 /RobWork/example/.csettings
 /RobWork/example/CPackConfig.cmake
 /RobWork/example/CPackSourceConfig.cmake
-/RobWork/example/.cproject
-/RobWork/example/.project
+
+# /RobWork/example/cpp/
+/RobWork/example/cpp/.cproject
+/RobWork/example/cpp/.project
+/RobWork/example/cpp/.settings/
+/RobWork/example/cpp/build
+
+# /RobWork/example/java/
+/RobWork/example/java/.classpath
+/RobWork/example/java/.project
+/RobWork/example/java/.settings/
+/RobWork/example/java/bin
 
 # /RobWork/example/ModelData/
 /RobWork/example/ModelData/cmake_install.cmake
