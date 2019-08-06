@@ -38,8 +38,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ----------------------------------------------------------------------
 */
 
-/** @file  
- *  MakeLeftHandedProcess.h
+/** @file  MakeLeftHandedProcess.h
  *  @brief Defines a bunch of post-processing steps to handle
  *    coordinate system conversions.
  *

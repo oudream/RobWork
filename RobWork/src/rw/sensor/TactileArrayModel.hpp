@@ -158,7 +158,7 @@ protected:
 		{
 		};
 
-		//! @copydoc
+		
 		size_t size() const{
 			size_t stmp = 0;
 			if(_data!=NULL)

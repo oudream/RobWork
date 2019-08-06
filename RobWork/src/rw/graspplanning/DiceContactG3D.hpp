@@ -70,6 +70,7 @@ public:
      * @brief initializes the contact generator on some object.
      * @param obj [in] the object as a indexed triangle mesh
      * @param nrOfContacts [in] the nr of contacts that are allowed in a grasp
+     * @param mu documentation missing !
      */
     void initialize(const rw::geometry::TriMesh& obj, int nrOfContacts, double mu);
 

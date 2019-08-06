@@ -197,7 +197,7 @@ namespace rw { namespace kinematics {
 
         /**
          * @brief destructs all frames and statedata that is not used any more.
-         * @param id [in] used to include a specific StateData ID for destruction, defualt -1 to ignore this option.
+         * @param ID [in] used to include a specific StateData ID for destruction, defualt -1 to ignore this option.
          */
         void cleanup(int ID = -1);
 

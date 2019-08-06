@@ -105,22 +105,30 @@ public:
 	virtual ProximityFilter::Ptr update(const rw::kinematics::State& state, ProximityCache::Ptr data);
 
 	/**
-	 * @copydoc BroadPhaseStrategy::getProximitySetup
+	 * @copydoc ProximityFilterStrategy::getProximitySetup
 	 */
 	ProximitySetup& getProximitySetup();
 
-	/**
-	 * @copydoc ProximityFilterStrategy::addGeometry
+	/** 
+	 * @brief Adds geometry associated to frame
+	 * @param frame [in] Frame which has the geometry associated
 	 */
 	virtual void addGeometry(rw::kinematics::Frame* frame, const rw::geometry::Geometry::Ptr);
 
-	/**
-	 * @copydoc ProximityFilterStrategy::removeGeometry(rw::kinematics::Frame*, const rw::geometry::Geometry::Ptr)
+	/** 
+	 * @brief Removes the geometric model with name \b rw::geometry::Geometry::Ptr and which is associated with
+	 * \b frame.
+	 *
+	 * @param frame [in] Frame which has the geometry associated
 	 */
 	virtual void removeGeometry(rw::kinematics::Frame* frame, const rw::geometry::Geometry::Ptr);
 
-	/**
-	 * @copydoc ProximityFilterStrategy::removeGeometry(rw::kinematics::Frame*, const std::string&)
+	/** 
+	 * @brief Removes the geometric model with name \b geometryId and which is associated with
+	 * \b frame.
+	 *
+	 * @param frame [in] Frame which has the geometry associated
+	 * @param geometryId [in] Name of geometry
 	 */
 	virtual void removeGeometry(rw::kinematics::Frame* frame, const std::string& geometryId);
 

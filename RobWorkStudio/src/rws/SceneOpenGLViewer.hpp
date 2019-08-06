@@ -131,7 +131,7 @@ public:
     virtual std::vector<View::Ptr> getViews(){ return _views; }
 
     //! @copydoc rw::graphics::SceneViewer::renderView
-    void renderView(View::Ptr);
+    void renderView(View::Ptr view);
 
     //! @copydoc rw::graphics::SceneViewer::updateState
     void updateState(const rw::kinematics::State& state);
@@ -238,15 +238,15 @@ protected:
     //! Overridden from QGLWidget
     void wheelEvent(QWheelEvent* event);
 
-    //! @copydoc SceneViewer::setWorkCellScene
+    //! @copydoc rw::graphics::SceneViewer::setWorkCellScene
     void setWorkCellScene(rw::common::Ptr<rw::graphics::WorkCellScene> wcscene){
         _wcscene = wcscene;
     }
 
-    //! @copydoc SceneViewer::zoom
+    //! @copydoc rw::graphics::SceneViewer::zoom
     void zoom(double amount);
 
-    //! @copydoc SceneViewer::autoZoom
+    //! @copydoc rw::graphics::SceneViewer::autoZoom
     void autoZoom();
 
 private:

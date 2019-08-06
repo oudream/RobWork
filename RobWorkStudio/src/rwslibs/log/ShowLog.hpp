@@ -67,12 +67,12 @@ public:
     void close();
 
 	/**
-	 * @copydoc RobWorkStudioPlugin::frameSelectedListener
+	 * @brief not implemented yet!
 	 */
     void frameSelectedListener(rw::kinematics::Frame* frame);
 
 	/**
-	 * @copydoc RobWorkStudioPlugin::listener
+	 * @brief not implemented yet!
 	 */
     void initialize();
 

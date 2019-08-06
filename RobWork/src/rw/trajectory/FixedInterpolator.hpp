@@ -68,6 +68,7 @@ public:
      * returning \b zeroValue for velocity and acceleration.
      *
      * @param value [in] Value to return for x(double t).
+     * @param zeroValue documentation missing !
      * @param duration [in] Duration of the interpolator.
      */
     FixedInterpolator(const T& value, const T& zeroValue, double duration):

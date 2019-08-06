@@ -223,28 +223,36 @@ public:
 
 
     /**
+     * @cond
      * @copydoc Blend::x
+     * @endcond
      */
     rw::math::Rotation3D<T> x(double t) const {
         return rw::math::Rotation3D<>::identity();
     }
 
     /**
+     * @cond
      * @copydoc Blend::dx
+     * @endcond
      */
     rw::math::Rotation3D<T> dx(double t) const {
         return rw::math::Rotation3D<>::identity();
     }
 
     /**
+     * @cond
      * @copydoc Blend::ddx
+     * @endcond
      */
     rw::math::Rotation3D<T> ddx(double t) const {
         return rw::math::Rotation3D<>::identity();
     }
 
     /**
+     * @cond
      * @copydoc Blend::tau1()
+     * @endcond
      *
      * @note For ParabolicBlend getTau1()==getTau2()
      */
@@ -253,7 +261,9 @@ public:
     }
 
     /**
+     * @cond
      * @copydoc Blend::tau2()
+     * @endcond
      *
      * @note For ParabolicBlend getTau1()==getTau2()
      */
@@ -310,28 +320,36 @@ public:
 
 
     /**
+     * @cond
      * @copydoc Blend::x
+     * @endcond
      */
     rw::math::Transform3D<T> x(double t) const {
         return InterpolatorUtil::vecToTrans<V,T>(_blend.x(t));
     }
 
     /**
+     * @cond
      * @copydoc Blend::dx
+     * @endcond
      */
     rw::math::Transform3D<T> dx(double t) const {
         return InterpolatorUtil::vecToTrans<V,T>(_blend.dx(t));
     }
 
     /**
+     * @cond
      * @copydoc Blend::ddx
+     * @endcond
      */
     rw::math::Transform3D<T> ddx(double t) const {
         return InterpolatorUtil::vecToTrans<V,T>(_blend.ddx(t));
     }
 
     /**
+     * @cond
      * @copydoc Blend::tau1()
+     * @endcond
      *
      * @note For ParabolicBlend getTau1()==getTau2()
      */
@@ -340,7 +358,9 @@ public:
     }
 
     /**
+     * @cond
      * @copydoc Blend::tau2()
+     * @endcond
      *
      * @note For ParabolicBlend getTau1()==getTau2()
      */

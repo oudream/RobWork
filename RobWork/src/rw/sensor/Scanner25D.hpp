@@ -46,8 +46,13 @@ protected:
 
     /**
      * @brief constructor
+     * 
+     * @cond
      * @param frame [in] the frame that the scanner is attached to
+     * @endcond
+     * 
      * @param name [in] name of scanner sensor
+     * @param desc
      */
     Scanner25D(const std::string& name, const std::string& desc = "") :
         Scanner(name, desc)

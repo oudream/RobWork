@@ -280,7 +280,9 @@ public:
 	protected:
 		/**
 		 * @brief Helper function for extracting a list of arguments when given as a variable number of arguments.
+		 * @cond
 		 * @param [in] the list of arguments.
+		 * @endcond
 		 * @note Only available for C++11
 		 */
 		template <typename Type>

@@ -74,7 +74,7 @@ namespace rw { namespace kinematics {
          */
         const math::Transform3D<>& get(const Frame& frame) const;
 
-        //! @copydoc get(const Frame&)
+        //! @copydoc get(const Frame&) const
         inline const math::Transform3D<>& get(const Frame* frame) const{ return get(*frame); }
 
         /**

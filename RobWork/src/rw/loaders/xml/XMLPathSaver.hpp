@@ -244,7 +244,7 @@ public:
      * If an error occurs while saving a rw::common::Exception is thrown
      *
      * @param path [in] Path to save
-     * @param filename [in] Stream to write to
+     * @param outstream [in] Stream to write to
      */
     static void write(const rw::trajectory::TimedStatePath& path, std::ostream& outstream);
 

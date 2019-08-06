@@ -143,7 +143,7 @@ namespace rwlibs { namespace proximitystrategies {
             void clear();
 
             //// Interface of CollisionStrategy
-            //! @copydoc rw::proximity::CollisionStrategy::inCollision
+            //! @copydoc rw::proximity::CollisionStrategy::doInCollision
             bool doInCollision(
                 rw::proximity::ProximityModel::Ptr a,
                 const rw::math::Transform3D<>& wTa,

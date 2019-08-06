@@ -42,15 +42,16 @@ class DOMWorkCellSaver {
 public:
     /**
 	 * @brief Saves \b workcell to the file \b fileName
-	 * @param workcellCalibration [in] workcellCalibration to store
+     * @param workcell documentation missing !
+     * @param state documentation missing !
 	 * @param fileName [in] Name of the file to which to write.
 	 */
-
     static void save(rw::common::Ptr<const rw::models::WorkCell> workcell, const rw::kinematics::State& state, std::string fileName);
 
     /**
      * @brief Writes \b workcellCalibration to stream.
-     * @param workcellCalibration [in] workcellCalibration to write
+     * @param workcell documentation missing !
+     * @param state documentation missing !
      * @param ostream [in] Stream to write to
      */
     static void save(rw::common::Ptr<const rw::models::WorkCell> workcell, const rw::kinematics::State& state, std::ostream& ostream);

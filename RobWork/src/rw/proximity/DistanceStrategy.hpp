@@ -121,7 +121,9 @@ namespace rw { namespace proximity {
         /**
          * @brief Calculates the distance between two given frames @f$ \mathcal{F}_a @f$ and
          * @f$ \mathcal{F}_b @f$
+         * @cond
          * @param result [out] DistanceResult to copy result into
+         * @endcond
          * @param a [in] @f$ \mathcal{F}_a @f$
          * @param wTa [in] @f$ \robabx{w}{a}{\mathbf{T}} @f$
          * @param b [in] @f$ \mathcal{F}_b @f$
@@ -137,11 +139,14 @@ namespace rw { namespace proximity {
         /**
          * @brief Calculates the distance between two given frames @f$ \mathcal{F}_a @f$ and
          * @f$ \mathcal{F}_b @f$
+         * @cond
          * @param result [out] DistanceResult to copy result into
+         * @endcond
          * @param a [in] @f$ \mathcal{F}_a @f$
          * @param wTa [in] @f$ \robabx{w}{a}{\mathbf{T}} @f$
          * @param b [in] @f$ \mathcal{F}_b @f$
          * @param wTb [in] @f$ \robabx{w}{b}{\mathbf{T}} @f$
+         * @param data
          * @return shortest distance if @f$ \mathcal{F}_a @f$ and @f$ \mathcal{F}_b @f$ are
          * separated and not in collision.
          */
@@ -155,11 +160,14 @@ namespace rw { namespace proximity {
         /**
          * @brief Calculates the distance between two proximity models @f$ \mathcal{a} @f$ and
          * @f$ \mathcal{b} @f$
+         * @cond
          * @param result [out] DistanceResult to copy result into
+         * @endcond
          * @param a [in] @f$ \mathcal{F}_a @f$
          * @param wTa [in] @f$ \robabx{w}{a}{\mathbf{T}} @f$
          * @param b [in] @f$ \mathcal{F}_b @f$
          * @param wTb [in] @f$ \robabx{w}{b}{\mathbf{T}} @f$
+         * @param data
          * @return shortest distance if @f$ \mathcal{F}_a @f$ and @f$ \mathcal{F}_b @f$ are
          * separated and not in collision.
          */
@@ -175,14 +183,14 @@ namespace rw { namespace proximity {
          * @brief Calculates the distance between two given frames @f$ \mathcal{F}_a @f$ and
          * @f$ \mathcal{F}_b @f$ if the distance are within threshold. If the distance
          * between the frames are larger than the threshold, the result will be inaccurate.
+         * @cond
          * @param result [out] DistanceResult to copy result into
+         * @endcond
          * @param a [in] @f$ \mathcal{F}_a @f$
          * @param wTa [in] @f$ \robabx{w}{a}{\mathbf{T}} @f$
          * @param b [in] @f$ \mathcal{F}_b @f$
          * @param wTb [in] @f$ \robabx{w}{b}{\mathbf{T}} @f$
          * @param threshold [in] threshold for distance calculations
-         * @param rel_err [in] relative acceptable error
-         * @param abs_err [in] absolute acceptable error
          * @return shortest distance if @f$ \mathcal{F}_a @f$ and @f$ \mathcal{F}_b @f$ are
          * separated and not in collision.
          */
@@ -196,14 +204,12 @@ namespace rw { namespace proximity {
          * @brief Calculates the distance between two given frames @f$ \mathcal{F}_a @f$ and
          * @f$ \mathcal{F}_b @f$ if the distance are within threshold. If the distance
          * between the frames are larger than the threshold, the result will be inaccurate.
-         * @param result [out] DistanceResult to copy result into
          * @param a [in] @f$ \mathcal{F}_a @f$
          * @param wTa [in] @f$ \robabx{w}{a}{\mathbf{T}} @f$
          * @param b [in] @f$ \mathcal{F}_b @f$
          * @param wTb [in] @f$ \robabx{w}{b}{\mathbf{T}} @f$
          * @param threshold [in] threshold for distance calculations
-         * @param rel_err [in] relative acceptable error
-         * @param abs_err [in] absolute acceptable error
+         * @param data
          * @return shortest distance if @f$ \mathcal{F}_a @f$ and @f$ \mathcal{F}_b @f$ are
          * separated and not in collision.
          */
@@ -218,14 +224,15 @@ namespace rw { namespace proximity {
          * @brief Calculates the distance between two given frames @f$ \mathcal{F}_a @f$ and
          * @f$ \mathcal{F}_b @f$ if the distance are within threshold. If the distance
          * between the frames are larger than the threshold, the result will be inaccurate.
+         * @cond
          * @param result [out] DistanceResult to copy result into
+         * @endcond
          * @param a [in] @f$ \mathcal{F}_a @f$
          * @param wTa [in] @f$ \robabx{w}{a}{\mathbf{T}} @f$
          * @param b [in] @f$ \mathcal{F}_b @f$
          * @param wTb [in] @f$ \robabx{w}{b}{\mathbf{T}} @f$
          * @param threshold [in] threshold for distance calculations
-         * @param rel_err [in] relative acceptable error
-         * @param abs_err [in] absolute acceptable error
+         * @param data
          * @return shortest distance if @f$ \mathcal{F}_a @f$ and @f$ \mathcal{F}_b @f$ are
          * separated and not in collision.
          */
@@ -287,11 +294,14 @@ namespace rw { namespace proximity {
         /**
          * @brief Calculates the distance between two proximity models @f$ \mathcal{a} @f$ and
          * @f$ \mathcal{b} @f$
+         * @cond
          * @param result [out] DistanceResult to copy result into
+         * @endcond
          * @param a [in] @f$ \mathcal{F}_a @f$
          * @param wTa [in] @f$ \robabx{w}{a}{\mathbf{T}} @f$
          * @param b [in] @f$ \mathcal{F}_b @f$
          * @param wTb [in] @f$ \robabx{w}{b}{\mathbf{T}} @f$
+         * @param data
          * @return shortest distance if @f$ \mathcal{F}_a @f$ and @f$ \mathcal{F}_b @f$ are
          * separated and not in collision.
          */
@@ -307,14 +317,12 @@ namespace rw { namespace proximity {
          * @brief Calculates the distance between two given frames @f$ \mathcal{F}_a @f$ and
          * @f$ \mathcal{F}_b @f$ if the distance are within threshold. If the distance
          * between the frames are larger than the threshold, the result will be inaccurate.
-         * @param result [out] DistanceResult to copy result into
          * @param a [in] @f$ \mathcal{F}_a @f$
          * @param wTa [in] @f$ \robabx{w}{a}{\mathbf{T}} @f$
          * @param b [in] @f$ \mathcal{F}_b @f$
          * @param wTb [in] @f$ \robabx{w}{b}{\mathbf{T}} @f$
          * @param threshold [in] threshold for distance calculations
-         * @param rel_err [in] relative acceptable error
-         * @param abs_err [in] absolute acceptable error
+         * @param data
          * @return shortest distance if @f$ \mathcal{F}_a @f$ and @f$ \mathcal{F}_b @f$ are
          * separated and not in collision.
          */

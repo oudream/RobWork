@@ -61,7 +61,7 @@ public:
     virtual ~JointDeviceJacobianCalculator();
 
     /**
-     * @copydoc JacobianCalculator::get(const rw::kinematics::FKTable& fk) const
+     * @copydoc JacobianCalculator::get(const rw::kinematics::State& state) const
      */
     //virtual math::Jacobian get(const rw::kinematics::FKTable& fk) const;
     virtual rw::math::Jacobian get(const rw::kinematics::State& state) const;

@@ -173,10 +173,22 @@ namespace rw { namespace math {
             return _screw[index];
         }
 
-        //! @copydoc operator()
+        /**
+         * @brief Returns const reference to velocity screw element
+         *
+         * @param i [in] index in the screw, index must be @f$ < 6 @f$.
+         *
+         * @return const reference to velocity screw element
+         */
         const T& operator[](size_t i) const { return (*this)(i); }
 
-        //! @copydoc operator()
+        /**
+         * @brief Returns const reference to velocity screw element
+         *
+         * @param i [in] index in the screw, index must be @f$ < 6 @f$.
+         *
+         * @return const reference to velocity screw element
+         */
         T& operator[](size_t i) { return (*this)(i); }
 
 
@@ -360,7 +372,7 @@ namespace rw { namespace math {
          * @param aPqTop [in] the translation from point q to point p seen in
          * frame @f$ \mathcal{F}_a @f$
          *
-         * @param aV [in] velocity screw wrt. frame @f$ \mathcal{F}_a @f$: @f$
+         * @param bV [in] velocity screw wrt. frame @f$ \mathcal{F}_a @f$: @f$
          * \robabx{a}{q}{\mathbf{\nu}} @f$
          *
          * @return the velocity screw wrt. frame @f$ \mathcal{F}_a @f$: @f$

@@ -38,7 +38,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ----------------------------------------------------------------------
 */
 
-/** @file 
+/** @file  IFC.h
  *  @brief Declaration of the Industry Foundation Classes (IFC) loader main class
  */
 #ifndef INCLUDED_AI_IFC_LOADER_H

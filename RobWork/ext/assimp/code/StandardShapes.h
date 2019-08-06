@@ -38,8 +38,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ----------------------------------------------------------------------
 */
 
-/** @file 
- *  Declares a helper class, "StandardShapes" which generates
+/** @file Declares a helper class, "StandardShapes" which generates
  *  vertices for standard shapes, such as cylnders, cones, spheres ..
  */
 #ifndef AI_STANDARD_SHAPES_H_INC

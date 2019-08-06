@@ -12,7 +12,7 @@ public:
     /**
      * @brief constructor
      * @param colRestCoeff [in] the restitution coefficient of collisions
-     * @param colRestCoeff [in] the restitution coefficient of contacts
+     * @param conRestCoeff [in] the restitution coefficient of contacts
      */
 	GuendelContactModel(double colRestCoeff, double conRestCoeff):
 	    _colRestCoeff(colRestCoeff), 

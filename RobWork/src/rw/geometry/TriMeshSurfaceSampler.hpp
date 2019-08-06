@@ -63,7 +63,9 @@ public:
 
     /**
      * @brief sample point on surface of object
+     * @cond
      * @param point_dst [out] point on surface
+     * @endcond
      */
     rw::math::Vector3D<> samplePoint();
 

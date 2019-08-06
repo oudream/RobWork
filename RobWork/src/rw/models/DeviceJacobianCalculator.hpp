@@ -42,7 +42,7 @@ public:
      *
      * The dimension of the jacobian wil be (tcps.size() * 6, device.getDOF()).
      *
-     * @param device [in] The device to calculate for
+     * @param devices [in] The device to calculate for
      * @param base [in] Reference base of the Jacobian. Does not have to be the same as the base of the device
      * @param tcps [in] List of tool end-effectors for which to calculate the Jacobian.
      * @param state [in] State giving how frame are connected
@@ -58,7 +58,7 @@ public:
     virtual ~DeviceJacobianCalculator();
 
     /**
-     * @copydoc JacobianCalculator::get(const rw::kinematics::FKTable& fk) const
+     * @copydoc JacobianCalculator::get(const rw::kinematics::State&) const
      */
     //virtual math::Jacobian get(const rw::kinematics::FKTable& fk) const;
     virtual rw::math::Jacobian get(const rw::kinematics::State& state) const;

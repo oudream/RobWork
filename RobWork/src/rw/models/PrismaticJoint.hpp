@@ -114,7 +114,7 @@ namespace rw { namespace models {
         math::Transform3D<> getJointTransform(const rw::kinematics::State& state) const;
 
         /**
-         * @copydoc Joint::getJacobian();
+         * @copydoc Joint::getJacobian()
          */
         void getJacobian(size_t row,
                          size_t col,

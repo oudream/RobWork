@@ -38,7 +38,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ----------------------------------------------------------------------
 */
 
-/** @file MD3FileData.h
+/** @file Md3FileData.h
  *
  *  @brief Defines helper data structures for importing MD3 files.
  *  http://linux.ucla.edu/~phaethon/q3/formats/md3format.html

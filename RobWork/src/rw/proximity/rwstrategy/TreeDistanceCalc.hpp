@@ -36,11 +36,10 @@ public:
     /**
      *
      * @param fTA [in] transform from reference frame \b f to tree \b treeA root.
-     * @param treeA [in]
+     * @param A [in]
      * @param fTB [in] transform from reference frame \b f to tree \b treeB root.
-     * @param treeB [in]
+     * @param B [in]
      */
-
     virtual double distance(
         const rw::math::Transform3D<>& fTA, const BVTREE& A,
         const rw::math::Transform3D<>& fTB, const BVTREE& B) = 0;

@@ -140,6 +140,7 @@ namespace rw { namespace models {
          * @param col [in] Column where values should be stored
          * @param joint [in] Transform of the joint
          * @param tcp [in] Transformation of the point to control
+         * @param state
          * @param jacobian [in] Jacobian to which to add the results.
          */
         virtual void getJacobian(size_t row,

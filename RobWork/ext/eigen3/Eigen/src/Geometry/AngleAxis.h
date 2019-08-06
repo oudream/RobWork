@@ -12,7 +12,7 @@
 
 namespace Eigen { 
 
-/** \geometry_module \ingroup Geometry_Module
+/** geometry_module \ingroup Geometry_Module
   *
   * \class AngleAxis
   *
@@ -28,9 +28,11 @@ namespace Eigen {
   *
   * Combined with MatrixBase::Unit{X,Y,Z}, AngleAxis can be used to easily
   * mimic Euler-angles. Here is an example:
+  * @cond
   * \include AngleAxis_mimic_euler.cpp
   * Output: \verbinclude AngleAxis_mimic_euler.out
-  *
+  * @endcond
+  * 
   * \note This class is not aimed to be used to store a rotation transformation,
   * but rather to make easier the creation of other rotation (Quaternion, rotation Matrix)
   * and transformation objects.

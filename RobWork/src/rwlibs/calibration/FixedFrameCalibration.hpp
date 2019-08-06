@@ -46,7 +46,7 @@ public:
 	/**
 	 * @brief Construct FixedFrameCalibration for \b frame, with \b correctedTransform as the calibrated transform
 	 * @param frame [in] Frame to correct with the FixedFrameCalibration
-	 * @param correctionTransform [in] Initial correction.
+	 * @param correctedTransform [in] Initial correction.
 	 */
 	FixedFrameCalibration(rw::kinematics::FixedFrame::Ptr frame, const rw::math::Transform3D<>& correctedTransform);
 

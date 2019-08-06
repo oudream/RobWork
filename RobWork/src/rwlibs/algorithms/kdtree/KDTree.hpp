@@ -79,7 +79,10 @@ namespace rwlibs { namespace algorithms {
 
         /**
         * @brief Constructor
+        * @cond
         * @param dim [in] the dimension of the keys in the KDTree
+        * @endcond
+        * @param metric documentation missing !
         */
         KDTree(rw::common::Ptr< rw::math::Metric<KEY> > metric):
         _nrOfNodes(0),
@@ -106,6 +109,7 @@ namespace rwlibs { namespace algorithms {
         * @brief Builds a KDTree from a list of key values and nodes. This method is more efficient
         * than creating an empty KDTree and then inserting nodes
         * @param nodes [in] a list of KDNode's
+        * @param metric documentation missing !
         * @return if build succesfull then a pointer to a KD-tree is returned else NULL
         */
         static KDTree<KEY,DIM>* buildTree(std::vector<KDNode>& nodes, rw::common::Ptr< rw::math::Metric<KEY> > metric){
@@ -132,6 +136,7 @@ namespace rwlibs { namespace algorithms {
         * @brief Builds a KDTree from a list of key values and nodes. This method is more efficient
         * than creating an empty KDTree and then inserting nodes
         * @param nodes [in] a list of KDNode's
+        * @param metric documentation missing !
         * @return if build succesfull then a pointer to a KD-tree is returned else NULL
         */
         static KDTree<KEY,DIM>* buildTree(const std::vector<KDNode*>& nodes, rw::common::Ptr< rw::math::Metric<KEY> > metric){

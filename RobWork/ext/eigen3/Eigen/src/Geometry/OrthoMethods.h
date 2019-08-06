@@ -13,7 +13,7 @@
 
 namespace Eigen { 
 
-/** \geometry_module \ingroup Geometry_Module
+/** geometry_module \ingroup Geometry_Module
   *
   * \returns the cross product of \c *this and \a other
   *
@@ -67,7 +67,7 @@ struct cross3_impl {
 
 }
 
-/** \geometry_module \ingroup Geometry_Module
+/** geometry_module \ingroup Geometry_Module
   *
   * \returns the cross product of \c *this and \a other using only the x, y, and z coefficients
   *
@@ -94,7 +94,7 @@ MatrixBase<Derived>::cross3(const MatrixBase<OtherDerived>& other) const
                         typename internal::remove_all<OtherDerivedNested>::type>::run(lhs,rhs);
 }
 
-/** \geometry_module \ingroup Geometry_Module
+/** geometry_module \ingroup Geometry_Module
   *
   * \returns a matrix expression of the cross product of each column or row
   * of the referenced expression with the \a other vector.
@@ -212,7 +212,7 @@ struct unitOrthogonal_selector<Derived,2>
 
 } // end namespace internal
 
-/** \geometry_module \ingroup Geometry_Module
+/** geometry_module \ingroup Geometry_Module
   *
   * \returns a unit vector which is orthogonal to \c *this
   *

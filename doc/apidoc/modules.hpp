@@ -84,9 +84,9 @@ namespace rw {
 }
 
 /**
-  @brief Extension libraries for RobWork.
-
-  Classes in this group can have specific dependencies on external libraries.
+ * @brief Extension libraries for RobWork.
+ *
+ * Classes in this group can have specific dependencies on external libraries.
  */
 namespace rwlibs {
 	/**
@@ -368,12 +368,18 @@ namespace rwslibs {
 /**
 @defgroup rws RobWorkStudio
 @{
-    @copydoc rws
+    * @brief RobWorkStudio extension libraries.
+    *
+    * A collection of extensions to RobWorkStudio which enables the use of RobWork functionality
+    * through a GUI.
 @}
 
 @defgroup rwslibs RobWorkStudio Extension Libraries
 @{
-    @copydoc rwslibs
+    * @brief RobWorkStudio extension libraries.
+    *
+    * A collection of extensions to RobWorkStudio which enables the use of RobWork functionality
+    * through a GUI
 @}
 */
 
@@ -385,24 +391,24 @@ namespace rwslibs {
 
 
 /**
-   @brief RobWorkSim is the dynamic simulation framework of RobWork.
-
-   It adds no extra dependencies
-   beside RobWork and RobWorkStudio. However, for dynamic simulation, it is strongly recommended to use the ode extension
-   from rwsiml, which depend on the Open Dynamics Engine (ODE).
-*/
+ *  @brief RobWorkSim is the dynamic simulation framework of RobWork.
+ *
+ *  It adds no extra dependencies
+ *  beside RobWork and RobWorkStudio. However, for dynamic simulation, it is strongly recommended to use the ode extension
+ *  from rwsiml, which depend on the Open Dynamics Engine (ODE).
+ */
 namespace rwsim {
 
 /**
-   @brief Contact Detection
+ *  @brief Contact Detection
  */
 namespace contacts {}
 
-//! @brief Logging system for dynamic simulation
+//!  @brief Logging system for dynamic simulation
 namespace log {}
 
 /**
-   @brief Dynamic simulation
+ * @brief Dynamic simulation
  */
 namespace simulator {}
 

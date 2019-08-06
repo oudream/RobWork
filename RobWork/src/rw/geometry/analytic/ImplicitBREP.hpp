@@ -64,7 +64,7 @@ namespace geometry {
             //! @copydoc BREP::getCurve
             virtual const ParametricCurve& getCurve(std::size_t curveIndex) const;
 
-            //! @copydoc BREP::getCurve
+            //! @copydoc BREP::scale
             virtual void scale(double factor);
 
             //! @copydoc BREP::clone

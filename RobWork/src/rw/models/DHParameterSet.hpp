@@ -75,6 +75,7 @@ public:
      * @param a [in] \f$a_{i-1}\f$
      * @param d [in] \f$d_{i}\f$
      * @param theta [in] \f$\theta_{i-1}\f$
+     * @param type documentation missing !
      *
      */
     DHParameterSet(double alpha, double a, double d, double theta, const std::string& type) :

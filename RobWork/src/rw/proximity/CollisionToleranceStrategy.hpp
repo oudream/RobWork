@@ -80,8 +80,8 @@ namespace rw { namespace proximity {
          * @param wTa [in] @f$ \robabx{w}{a}{\mathbf{T}} @f$
          * @param b [in] @f$ \mathcal{F}_b @f$
          * @param wTb [in] @f$ \robabx{w}{b}{\mathbf{T}} @f$
-         * @param tolerance [in] frames with a distance in between them
-         * that is less than tolerance are in collision
+         * @param data
+         * @param distance
          *
          * @return true if @f$ \mathcal{F}_a @f$ and @f$ \mathcal{F}_b @f$ are
          * colliding, false otherwise.
@@ -103,6 +103,7 @@ namespace rw { namespace proximity {
          * @param wTb [in] @f$ \robabx{w}{b}{\mathbf{T}} @f$
          * @param tolerance [in] frames with a distance in between them
          * that is less than tolerance are in collision
+         * @param data
          *
          * @return true if @f$ \mathcal{F}_a @f$ and @f$ \mathcal{F}_b @f$ are
          * colliding, false otherwise.
@@ -170,6 +171,7 @@ namespace rw { namespace proximity {
          * @param wTb [in] @f$ \robabx{w}{b}{\mathbf{T}} @f$
          * @param tolerance [in] frames with a distance in between them
          * that is less than tolerance are in collision
+         * @param data
          *
          * @return true if @f$ \mathcal{F}_a @f$ and @f$ \mathcal{F}_b @f$ are
          * colliding, false otherwise.

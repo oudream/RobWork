@@ -104,7 +104,12 @@ namespace proximity {
 		         */
 		        ShellAccessor(rw::geometry::Shell::CPtr object):_object(object) {}
 
-		        //! @copydoc PrimArrayAccessor::getPrimitive
+				 /**
+             	* @brief Get primitive.
+             	* @param faceIdx [in] id of primitive.
+             	* @param face [out] the primitive.
+				* Look in rw/proximity/rwstrategy/BVTree.hpp
+             	*/
 		        void getPrimitive(size_t faceIdx, rw::geometry::GenericFace& face) const {
 		            _object->getFace(faceIdx, face);
 		        }
@@ -439,9 +444,10 @@ namespace proximity {
 	     * value. The score is then the total number of triangles being completely on either left or right
 	     * side. Which means that a score=mesh.size() is the best score where the split value completely splits
 	     * the triangles into two volumes. score=0 is the worst where all triangles has vertices on both sides on the split value.
-	     * @param mesh
-	     * @param splitValue
-	     * @param t3d
+	     * @param mesh documentation missing !
+		 * @param splitAxis documentation missing !
+	     * @param splitValue documentation missing !
+	     * @param t3d documentation missing !
 	     * @return
 	     */
 	    template<class T>
@@ -564,11 +570,13 @@ namespace proximity {
          * axes. The first axis that causes 87.5\% of the faces to lie
          * completely to the left or right of the split axis is used directly.
          * If this is not the case for any axis, the best axis is chosen.
+		 * 
+		 * @param shell documentation missing !
+		 * @param obb documentation missing !
          */
 	    template<class BV>
 	    struct OBVShellMedianSplitter: public BVTreeFactory::BVShellSplitterStrategy<BV> {
 	        public:
-	            //! @copydoc BVShellSplitterStrategy::partitionShell
 	            size_t partitionShell(rw::geometry::IndexedFaceArray& shell, const BV& obb) const
 	            {
 	                using rw::geometry::IndexedFaceArray;

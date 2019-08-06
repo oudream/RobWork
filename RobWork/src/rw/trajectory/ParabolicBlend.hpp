@@ -76,7 +76,9 @@ public:
 	}
 
 	/**
+     * @cond
 	 * @copydoc Blend::x
+     * @endcond
 	 */
     virtual T x(double t) const
     {
@@ -85,7 +87,9 @@ public:
     }
 
     /**
+     * @cond
      * @copydoc Blend::dx
+     * @endcond
      */
     virtual T dx(double t) const
     {
@@ -94,7 +98,9 @@ public:
     }
 
     /**
+     * @cond
      * @copydoc Blend::ddx
+     * @endcond
      */
     virtual T ddx(double t) const
     {
@@ -102,7 +108,9 @@ public:
     }
 
     /**
+     * @cond
      * @copydoc Blend::tau1()
+     * @endcond
      *
      * @note For ParabolicBlend tau1()==tau2()
      */
@@ -112,7 +120,9 @@ public:
     }
 
     /**
+     * @cond
      * @copydoc Blend::tau2()
+     * @endcond
      *
      * @note For ParabolicBlend tau1()==tau2()
      */
@@ -178,7 +188,9 @@ public:
 
 
     /**
+     * @cond
      * @copydoc Blend::x
+     * @endcond
      */
     rw::math::Rotation3D<T> x(double t) const {
         rw::math::Vector3D<T> v = _blend.x(t);
@@ -187,7 +199,9 @@ public:
     }
 
     /**
+     * @cond
      * @copydoc Blend::dx
+     * @endcond
      */
     rw::math::Rotation3D<> dx(double t) const {
         rw::math::Vector3D<T> v = _blend.x(t);
@@ -196,7 +210,9 @@ public:
     }
 
     /**
+     * @cond
      * @copydoc Blend::ddx
+     * @endcond
      */
     rw::math::Rotation3D<> ddx(double t) const {
         rw::math::Vector3D<T> v = _blend.x(t);
@@ -205,7 +221,9 @@ public:
     }
 
     /**
+     * @cond
      * @copydoc Blend::tau1()
+     * @endcond
      *
      * @note For ParabolicBlend tau1()==tau2()
      */
@@ -214,7 +232,9 @@ public:
     }
 
     /**
+     * @cond
      * @copydoc Blend::tau1()
+     * @endcond
      *
      * @note For ParabolicBlend tau1()==tau2()
      */
@@ -263,7 +283,9 @@ public:
     }
 
     /**
+     * @cond
      * @copydoc Blend::x
+     * @endcond
      */
     rw::math::Transform3D<T> x(double t) const {
         rw::math::Vector3D<T> pos = _posBlend.x(t);
@@ -274,7 +296,9 @@ public:
     }
 
     /**
+     * @cond
      * @copydoc Blend::dx
+     * @endcond
      */
     rw::math::Transform3D<> dx(double t) const {
         rw::math::Vector3D<T> pos = _posBlend.dx(t);
@@ -285,7 +309,9 @@ public:
     }
 
     /**
+     * @cond
      * @copydoc Blend::ddx
+     * @endcond
      */
     rw::math::Transform3D<> ddx(double t) const {
         rw::math::Vector3D<T> pos = _posBlend.ddx(t);
@@ -298,7 +324,9 @@ public:
     }
 
     /**
+     * @cond
      * @copydoc Blend::tau1()
+     * @endcond
      *
      * @note For ParabolicBlend tau1()==tau2()
      */
@@ -307,8 +335,9 @@ public:
     }
 
     /**
+     * @cond
      * @copydoc Blend::tau1()
-     *
+     * @endcond
      * @note For ParabolicBlend tau1()==tau2()
      */
     double tau2() const {

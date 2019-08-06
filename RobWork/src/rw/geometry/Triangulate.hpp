@@ -56,7 +56,7 @@ namespace geometry {
 		 * 
 		 * The polygon need to be simple (no edges crossing and no holes). Both convex and concave polygons are supported
 		 *
-         * @param points [in] Points of the polygon. These needs to be in the right order, as no sorting is done in the function.
+         * @param contour [in] Points of the polygon. These needs to be in the right order, as no sorting is done in the function.
          * @param result [out] Indices of the vertices defining the triangles. The corners of the n'th triangle is the points with indices result[3*n], result[3*n+1] and result[3*n+2]
 		 * @param colinearCriteria [in] Criteria for when two edges are considered to be colinear
 		 * @param precision [in] Criteria for when two points are considered to be coinciding

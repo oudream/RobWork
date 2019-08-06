@@ -182,7 +182,7 @@ namespace rw { namespace trajectory {
         }
 
         /**
-         * @copydoc Interpolator::dx()
+         * @copydoc Interpolator::dx() 
          */
         T dx(double t) const
         {
@@ -370,7 +370,9 @@ namespace rw { namespace trajectory {
         }
 
         /**
+         * @cond
          * @copydoc Interpolator::x()
+         * @endcond
          */
         rw::math::Rotation3D<T> x(double t) const
         {
@@ -381,7 +383,9 @@ namespace rw { namespace trajectory {
         }
 
         /**
+         * @cond
          * @copydoc Interpolator::dx()
+         * @endcond
          */
         rw::math::Rotation3D<T> dx(double t) const
         {
@@ -391,7 +395,9 @@ namespace rw { namespace trajectory {
         }
 
         /**
+         * @cond
          * @copydoc Interpolator::ddx()
+         * @endcond
          */
         rw::math::Rotation3D<T> ddx(double t) const
         {
@@ -413,7 +419,9 @@ namespace rw { namespace trajectory {
         rw::math::Rotation3D<T> getEnd() const { return _end.toRotation3D(); }
 
         /**
+         * @cond
          * @copydoc Interpolator::duration()
+         * @endcond
          */
         double duration() const { return _ramp.duration(); }
 
@@ -462,7 +470,9 @@ namespace rw { namespace trajectory {
         }
 
         /**
+         * @cond
          * @copydoc Interpolator::x()
+         * @endcond
          */
         rw::math::Vector3D<T> x(double t) const
         {
@@ -470,7 +480,9 @@ namespace rw { namespace trajectory {
         }
 
         /**
+         * @cond
          * @copydoc Interpolator::dx()
+         * @endcond
          */
         rw::math::Vector3D<T> dx(double t) const
         {
@@ -478,7 +490,9 @@ namespace rw { namespace trajectory {
         }
 
         /**
+         * @cond
          * @copydoc Interpolator::ddx()
+         * @endcond
          */
         rw::math::Vector3D<T> ddx(double t) const
         {
@@ -498,7 +512,9 @@ namespace rw { namespace trajectory {
         rw::math::Vector3D<T> getEnd() const { return _end; }
 
         /**
+         * @cond
          * @copydoc Interpolator::duration()
+         * @endcond
          */
         double duration() const { return _ramp.duration(); }
 
@@ -535,7 +551,13 @@ namespace rw { namespace trajectory {
          *
          * @param start [in] Start of interpolator
          * @param end [in] End of interpolator
+         * @cond
          * @param duration [in] Time it takes to from one end to the other.
+         * @endcond
+         * @param linVelLimit documentation missing !
+         * @param linAccLimit documentation missing !
+         * @param angVelLimit documentation missing !
+         * @param angAccLimit  documentation missing !
          */
         RampInterpolator(const rw::math::Transform3D<T>& start,
                            const rw::math::Transform3D<T>& end,
@@ -552,7 +574,9 @@ namespace rw { namespace trajectory {
         }
 
         /**
+         * @cond
          * @copydoc Interpolator::x()
+         * @endcond
          */
         rw::math::Transform3D<T> x(double t) const
         {
@@ -562,7 +586,9 @@ namespace rw { namespace trajectory {
         }
 
         /**
+         * @cond
          * @copydoc Interpolator::dx()
+         * @endcond
          */
         rw::math::Transform3D<T> dx(double t) const
         {
@@ -571,7 +597,9 @@ namespace rw { namespace trajectory {
         }
 
         /**
+         * @cond
          * @copydoc Interpolator::ddx()
+         * @endcond
          */
         rw::math::Transform3D<T> ddx(double t) const
         {
@@ -592,7 +620,9 @@ namespace rw { namespace trajectory {
         rw::math::Transform3D<T> getEnd() const { return _end; }
 
         /**
+         * @cond
          * @copydoc Interpolator::duration()
+         * @endcond
          */
         double duration() const { return _duration; }
 

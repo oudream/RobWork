@@ -61,7 +61,9 @@ public:
      *
      * @param tqpath [in] a list of points with associated timestaps. The spline will intersect
      * the points at the time specified in \b tqpath
+	 * @cond
      * @param offset [in]
+	 * @endcond
 	 * @return a trajectory of CubicSplineInterpolators
      */
 	static InterpolatorTrajectory<rw::math::Q>::Ptr makeNaturalSpline(TimedQPath::Ptr tqpath);
@@ -83,6 +85,7 @@ public:
 	 * @param qpath [in] the path over which the spline should be generated.
 	 * @param dqStart [in] the velocity in the first point
 	 * @param dqEnd [in] the velocity in the last point.
+	 * @param timeStep documentation missing !
 	 * @return a trajectory of CubicSplineInterpolators
 	 */
 	static InterpolatorTrajectory<rw::math::Q>::Ptr makeClampedSpline(QPath::Ptr qpath,
@@ -94,7 +97,7 @@ public:
 	 * @brief creates a clamped spline trajectory where the timed label is used
 	 * to determine the time between samples. A clamped spline controls
 	 * the velocity in the end points. The acceleration is 0 in the end points.
-	 * @param qpath [in] the path over which the spline should be generated.
+	 * @param tqpath [in] the path over which the spline should be generated.
 	 * @param dqStart [in] the velocity in the first point
 	 * @param dqEnd [in] the velocity in the last point.
 	 * @return a trajectory of CubicSplineInterpolators

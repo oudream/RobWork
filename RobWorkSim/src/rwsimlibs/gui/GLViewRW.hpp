@@ -57,7 +57,6 @@ class GLViewRW: public QGLWidget {
 public:
     /**
      * @brief Constructs an OpenGL based QT Widget
-     * @param rwStudio [in] robworkstudio
      * @param parent [in] Parent widget
      */
     GLViewRW(QWidget* parent = 0);

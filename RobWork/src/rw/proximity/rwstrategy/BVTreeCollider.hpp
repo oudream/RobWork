@@ -50,9 +50,10 @@ namespace proximity {
 		/**
 		 * @brief tests if two BV trees are colliding.
 		 * @param fTA [in] transform from reference frame \b f to tree \b treeA root.
-		 * @param treeA [in]
+		 * @param treeA [in] documentation missing !
 		 * @param fTB [in] transform from reference frame \b f to tree \b treeB root.
-		 * @param treeB [in]
+		 * @param treeB [in] documentation missing !
+		 * @param collidingPrimitives documentation missing !
 		 */
 		virtual bool collides(
 			const rw::math::Transform3D<typename BVTREE::value_type>& fTA, const BVTREE& treeA,

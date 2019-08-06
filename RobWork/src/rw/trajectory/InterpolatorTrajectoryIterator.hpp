@@ -70,7 +70,7 @@ namespace rw { namespace trajectory {
         }
 
         /**
-         * @copydoc TrajectoryIterator::operator +=()
+         * @copydoc TrajectoryIterator::operator+=()
          */
         void operator +=(double dt)
         {

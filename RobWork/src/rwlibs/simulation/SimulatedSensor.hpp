@@ -81,7 +81,7 @@ namespace simulation {
         rw::sensor::SensorModel::Ptr getSensorModel() { return _model; }
 
         /**
-         * get a handle to controlling an instance of the simulated sensor in a specific simulator
+         * @brief get a handle to controlling an instance of the simulated sensor in a specific simulator
          * @param sim [in] the simulator in which the handle is active
          */
         rw::sensor::Sensor::Ptr getSensorHandle(rwlibs::simulation::Simulator::Ptr sim);

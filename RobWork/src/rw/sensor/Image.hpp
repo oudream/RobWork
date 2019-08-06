@@ -330,9 +330,11 @@ public:
      * a pixel.
      * @param x [in]
      * @param y [in]
+     * @param channel documentation missing !
      * @return
      */
     float getPixelValue(size_t x, size_t y, size_t channel) const{ return getPixelValuef(x,y,channel); };
+
     float getPixelValuef(size_t x, size_t y, size_t channel) const;
 
     int getPixelValuei(size_t x, size_t y, size_t channel) const;

@@ -94,6 +94,10 @@ namespace geometry {
 		 * @param objArr [in] the triangle mesh on which to create a proxy
 		 * @param idxArr [in] the index mapping
 		 * @param first [in] the first index
+		 * @param centerArr
+		 * @param valArr
+		 * @param valCenterArr
+		 * @param last
 		 */
 		IndexedTriArray(TriMesh::Ptr objArr,
 						rw::common::Ptr< std::vector<T> > idxArr,
@@ -269,7 +273,7 @@ namespace geometry {
 		inline size_t getGlobalIndex(int idx) const { return boost::tuples::get<0>( (*_valCenterArr)[_first+idx] ); }
 
 		// **** inherited from trimesh
-		//! @copydoc TriMesh::operator[]
+		//
 		inline rw::geometry::Triangle<> operator[](size_t i) const {
 			return _objArr->getTriangle( getGlobalIndex((int)i) );
 		}

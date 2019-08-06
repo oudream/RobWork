@@ -72,7 +72,9 @@ public:
     static void flipY(Image& img);
 
     /**
+     * @cond
      * @param img
+     * @endcond
      */
     //static void flipY(const Image& srcimg, Image& dstimg);
 

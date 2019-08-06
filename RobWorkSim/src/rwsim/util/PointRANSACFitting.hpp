@@ -34,6 +34,7 @@ namespace util {
 
 		/**
 		 * @brief fits a number of models to the set of data points
+		 * @param data documentation missing !
 		 * @param k [in] the maximum number of iterations allowed in the algorithm
 		 * @param d [in] the number of close data values required to assert that a model fits well to data
 		 * @param t [in] a threshold value for determining when a datum fits a model

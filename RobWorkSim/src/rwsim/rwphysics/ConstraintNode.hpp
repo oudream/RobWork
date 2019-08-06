@@ -90,7 +90,7 @@ namespace simulator {
         }
 
         /**
-         * @removes a constraint (Edge) from this node
+         * @brief removes a constraint (Edge) from this node
          */
         inline void removeEdge(ConstraintEdge *edge){
             _edges.remove(edge);

@@ -60,8 +60,10 @@ namespace Assimp    {
 // ---------------------------------------------------------------------------
 /** Represents an element in a LWS file.
  *
+ *  @cond
  *  This can either be a single data line - <name> <value> or a data
  *  group - { name <data_line0> ... n }
+ *  @endcond
  */
 class Element
 {
