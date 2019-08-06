@@ -122,15 +122,39 @@ add_custom_command(OUTPUT doc_html
                    COMMAND ${SPHINX_EXECUTABLE}
                            -c ${CMAKE_CURRENT_BINARY_DIR}
                            -d ${CMAKE_CURRENT_BINARY_DIR}/doctrees
-                           -b html
+                           -b dirhtml
                            ${CMAKE_CURRENT_SOURCE_DIR}
                            ${CMAKE_CURRENT_BINARY_DIR}/html
                            > ${CMAKE_CURRENT_BINARY_DIR}/html_output.log
                    COMMENT "sphinx-build html: see html_output.log"
                    VERBATIM)
+add_custom_command(OUTPUT doc_latex
+                   COMMAND ${SPHINX_EXECUTABLE}
+                           -c ${CMAKE_CURRENT_BINARY_DIR}
+                           -d ${CMAKE_CURRENT_BINARY_DIR}/doctrees
+                           -b latex
+                           ${CMAKE_CURRENT_SOURCE_DIR}
+                           ${CMAKE_CURRENT_BINARY_DIR}/latex
+                           > ${CMAKE_CURRENT_BINARY_DIR}/latex_output.log
+                   COMMENT "sphinx-build latex: see latex_output.log"
+                   VERBATIM)
+add_custom_command(OUTPUT doc_qt
+                   COMMAND ${SPHINX_EXECUTABLE}
+                           -c ${CMAKE_CURRENT_BINARY_DIR}
+                           -d ${CMAKE_CURRENT_BINARY_DIR}/doctrees
+                           -b qthelp
+                           ${CMAKE_CURRENT_SOURCE_DIR}
+                           ${CMAKE_CURRENT_BINARY_DIR}/qthelp
+                           > ${CMAKE_CURRENT_BINARY_DIR}/qthelp_output.log
+                   COMMENT "sphinx-build qthelp: see qthelp_output.log"
+                   VERBATIM)
 
 add_custom_target(sphinx SOURCES doc_html)
 add_dependencies(sphinx javasphinx)
+add_custom_target(sphinx_latex SOURCES doc_latex)
+add_dependencies(sphinx_latex javasphinx)
+add_custom_target(sphinx_qthelp SOURCES doc_qt)
+add_dependencies(sphinx_qthelp javasphinx)
 
 add_custom_command(OUTPUT sphinxapidoc_cmd
 	COMMAND ${CMAKE_COMMAND} -E echo "${CMAKE_CURRENT_SOURCE_DIR}/../../apidocs/html html/apidoc/cpp/doxygen"
