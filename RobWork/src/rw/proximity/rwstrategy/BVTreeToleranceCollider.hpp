@@ -58,6 +58,8 @@ namespace proximity {
 		 * @param treeA [in]
 		 * @param fTB [in] transform from reference frame \b f to tree \b treeB root.
 		 * @param treeB [in]
+         * @param tolerance documentation missing !
+         * @param collidingPrimitives documentation missing !
 		 */
 		virtual bool collides(
 			const rw::math::Transform3D<typename BVTREE::value_type>& fTA, const BVTREE& treeA,

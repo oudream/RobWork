@@ -84,7 +84,6 @@ namespace graphics {
                                       const int fillR, const int fillG, const int fillB) = 0;
 
         //// ---------------- View functions
-        //! @copydoc A view.
         struct View {
         	//! @brief Smart pointer for a View.
             typedef rw::common::Ptr<View> Ptr;
@@ -129,7 +128,14 @@ namespace graphics {
          */
         virtual rw::math::Vector3D<> getViewCenter() = 0;
 
-        //! @copydoc rw::graphics::SceneGraph::pickDrawable(SceneGraph::RenderInfo&,int,int)
+        /**
+         * @brief picks the drawable in the scene that intersects with the ray (x,y,-1) in
+         * camera coordinates.
+         *
+         * @param x [in] first camera coordinate.
+         * @param y [in] second camera coordinate.
+         * @return the picked drawable.
+         */
         virtual DrawableNode::Ptr pickDrawable(int x, int y) = 0;
         
         //! @copydoc rw::graphics::SceneGraph::pickDrawable(SceneGraph::RenderInfo&,int,int)

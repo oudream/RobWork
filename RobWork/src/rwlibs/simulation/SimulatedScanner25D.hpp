@@ -106,7 +106,10 @@ namespace rwlibs { namespace simulation {
     	//! @copydoc SimulatedSensor::reset
     	void reset(const rw::kinematics::State& state);
 
-    	//! @copydoc rwlibs::simulation::SimulatedSensor::getSensorHandle
+        /**
+    	 * @brief get a handle to controlling an instance of the simulated sensor in a specific simulator
+         * @param instance [in] the simulator in which the handle is active
+         */
         rw::sensor::Sensor::Ptr getSensorHandle(rwlibs::simulation::Simulator::Ptr instance);
 
     	//! get instance of scanner

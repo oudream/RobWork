@@ -602,7 +602,7 @@ public:
 
 	/** 
 	 * @brief Writes \b str to \b elem.
-	 * @param val [in] Value to write
+	 * @param str [in] Value to write
 	 * @param elem [in] Element to which to write
 	 * @param addHeader [in] Whether or not to set the header of \b elem
 	 * @return newly created DOMElem

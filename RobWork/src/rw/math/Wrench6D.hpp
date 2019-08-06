@@ -186,10 +186,22 @@ namespace rw { namespace math {
             return _wrench[index];
         }
 
-        //! @copydoc operator()
+        /**
+         * @brief Returns const reference to velocity screw element
+         *
+         * @param i [in] index in the screw, index must be @f$ < 6 @f$.
+         *
+         * @return const reference to velocity screw element
+         */
         const T& operator[](size_t i) const { return (*this)(i); }
 
-        //! @copydoc operator()
+        /**
+         * @brief Returns const reference to velocity screw element
+         *
+         * @param i [in] index in the screw, index must be @f$ < 6 @f$.
+         *
+         * @return const reference to velocity screw element
+         */
         T& operator[](size_t i) { return (*this)(i); }
 
 

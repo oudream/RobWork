@@ -79,6 +79,7 @@ namespace graphics {
 
         /**
          * @brief draws the scene, using the specified render information
+         * @param info documentation missing !
          */
         virtual void draw(RenderInfo& info) = 0;
 

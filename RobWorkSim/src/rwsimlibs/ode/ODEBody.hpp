@@ -193,7 +193,7 @@ namespace simulator {
 		/**
 		 * @brief Construct a kinematic body.
 		 * @param kbody [in] the RobWork body.
-		 * @param spaceId [in] the ODE space to construct body in.
+		 * @param spaceid [in] the ODE space to construct body in.
 		 * @param sim [in] the ODE simulator.
 		 * @return a new ODEBody.
 		 */
@@ -202,7 +202,7 @@ namespace simulator {
 		/**
 		 * @brief Construct a fixed body.
 		 * @param kbody [in] the RobWork body.
-		 * @param spaceId [in] the ODE space to construct body in.
+		 * @param spaceid [in] the ODE space to construct body in.
 		 * @param sim [in] the ODE simulator.
 		 * @return a new ODEBody.
 		 */

@@ -79,7 +79,7 @@ public:
     virtual void close();
 
 	/**
-	 * @copydoc RobWorkStudioPlugin::frameSelectedListener
+	 * @brief not implemented yet
 	 */
     void frameSelectedListener(rw::kinematics::Frame* frame);
     

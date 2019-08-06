@@ -39,8 +39,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 
-/** @file 
- * Defines a post processing step to fix infacing normals */
+/** @file Defines a post processing step to fix infacing normals */
 #ifndef AI_FIXNORMALSPROCESS_H_INC
 #define AI_FIXNORMALSPROCESS_H_INC
 

@@ -62,7 +62,7 @@ namespace Assimp    {
 /** @brief Importer class to load meshes from Nendo.
  *
  *  Basing on
- *  <blender>/blender/release/scripts/nendo_import.py by Anthony D'Agostino.
+ *  \<blender\>/blender/release/scripts/nendo_import.py by Anthony D'Agostino.
 */
 class NDOImporter : public BaseImporter
 {

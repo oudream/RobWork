@@ -50,16 +50,16 @@ public:
 	
 	virtual ~SimpleFinger();
 	
-	//! @copydoc Primitive::getParameters
+	//! @copydoc rw::geometry::Primitive::getParameters
 	virtual rw::geometry::TriMesh::Ptr createMesh(int resolution=0) const;
 
-	//! @copydoc Primitive::getParameters
+	//! @copydoc rw::geometry::Primitive::getParameters
 	virtual rw::math::Q getParameters() const;
 	
-	//! @copydoc Primitive::setParameters
+	//! @copydoc rw::geometry::Primitive::setParameters
 	virtual void setParameters(const rw::math::Q& q);
 
-	//! @copydoc GeometryData::getType
+	//! @copydoc rw::geometry::GeometryData::getType
 	GeometryType getType() const { return UserType; }
 	
 	double getLength() const { return _length; }

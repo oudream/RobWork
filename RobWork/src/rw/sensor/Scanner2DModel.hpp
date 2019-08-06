@@ -55,8 +55,8 @@ public:
      * @param name [in] name of scanner sensor
      * @param angularRangeInRad [in] angular range in rad, with middle scan
      * point pointin along z-axis
-     * @brief maxDataPoints [in] the number of scan points
-     * @brief frame [in] the sensor frame
+     * @param maxDataPoints [in] the number of scan points
+     * @param frame [in] the sensor frame
      */
     Scanner2DModel(const std::string& name, double angularRangeInRad, int maxDataPoints, rw::kinematics::Frame* frame );
 
@@ -107,7 +107,8 @@ public:
 
     /**
      * @brief set distance range
-     * @param range
+     * @param min documentation missing !
+     * @param max documentation missing !
      */
     void setDistanceRange(double min, double max ) { _distRange = std::make_pair(min,max);}
 

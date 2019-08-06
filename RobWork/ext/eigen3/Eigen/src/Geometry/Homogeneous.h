@@ -12,7 +12,7 @@
 
 namespace Eigen { 
 
-/** \geometry_module \ingroup Geometry_Module
+/** geometry_module \ingroup Geometry_Module
   *
   * \class Homogeneous
   *
@@ -112,17 +112,19 @@ template<typename MatrixType,int _Direction> class Homogeneous
     typename MatrixType::Nested m_matrix;
 };
 
-/** \geometry_module \ingroup Geometry_Module
+/** geometry_module \ingroup Geometry_Module
   *
   * \returns a vector expression that is one longer than the vector argument, with the value 1 symbolically appended as the last coefficient.
   *
   * This can be used to convert affine coordinates to homogeneous coordinates.
   *
-  * \only_for_vectors
+  * only_for_vectors
   *
+  * @cond
   * Example: \include MatrixBase_homogeneous.cpp
   * Output: \verbinclude MatrixBase_homogeneous.out
-  *
+  * @endcond
+  * 
   * \sa VectorwiseOp::homogeneous(), class Homogeneous
   */
 template<typename Derived>
@@ -133,14 +135,16 @@ MatrixBase<Derived>::homogeneous() const
   return HomogeneousReturnType(derived());
 }
 
-/** \geometry_module \ingroup Geometry_Module
+/** geometry_module \ingroup Geometry_Module
   *
   * \returns an expression where the value 1 is symbolically appended as the final coefficient to each column (or row) of the matrix.
   *
   * This can be used to convert affine coordinates to homogeneous coordinates.
   *
+  * @cond
   * Example: \include VectorwiseOp_homogeneous.cpp
   * Output: \verbinclude VectorwiseOp_homogeneous.out
+  * @endcond
   *
   * \sa MatrixBase::homogeneous(), class Homogeneous */
 template<typename ExpressionType, int Direction>
@@ -150,7 +154,7 @@ VectorwiseOp<ExpressionType,Direction>::homogeneous() const
   return HomogeneousReturnType(_expression());
 }
 
-/** \geometry_module \ingroup Geometry_Module
+/** geometry_module \ingroup Geometry_Module
   *
   * \brief homogeneous normalization
   *
@@ -160,11 +164,12 @@ VectorwiseOp<ExpressionType,Direction>::homogeneous() const
   *
   * It is essentially a shortcut for:
   * \code
-    this->head(this->size()-1)/this->coeff(this->size()-1);
-    \endcode
+  *  this->head(this->size()-1)/this->coeff(this->size()-1);
+  * 
   *
   * Example: \include MatrixBase_hnormalized.cpp
   * Output: \verbinclude MatrixBase_hnormalized.out
+  * \endcode
   *
   * \sa VectorwiseOp::hnormalized() */
 template<typename Derived>
@@ -177,7 +182,7 @@ MatrixBase<Derived>::hnormalized() const
     ColsAtCompileTime==1?1:size()-1) / coeff(size()-1);
 }
 
-/** \geometry_module \ingroup Geometry_Module
+/** geometry_module \ingroup Geometry_Module
   *
   * \brief column or row-wise homogeneous normalization
   *
@@ -187,9 +192,11 @@ MatrixBase<Derived>::hnormalized() const
   *
   * It is conceptually equivalent to calling MatrixBase::hnormalized() to each column (or row) of \c *this.
   *
+  * @cond
   * Example: \include DirectionWise_hnormalized.cpp
   * Output: \verbinclude DirectionWise_hnormalized.out
-  *
+  * @endcond
+  * 
   * \sa MatrixBase::hnormalized() */
 template<typename ExpressionType, int Direction>
 EIGEN_DEVICE_FUNC inline const typename VectorwiseOp<ExpressionType,Direction>::HNormalizedReturnType

@@ -127,21 +127,137 @@ namespace rw { namespace math {
             va_end(ap);
           }*/
         Q(size_t n, double a0, double a1);
-        //! @copydoc Q(size_t,double,double)
+        
+         /**
+         * @brief Creates a Q of length \b n and initialize all values in Q to the values specified after \b n
+         *
+         * The number of arguments after \b n must match the number n.
+         *
+         * @param n [in] Length of q.
+         * @param a0 [in] Value to initialize q(0)
+         * @param a1 [in] Value to initialize q(1)
+         * @param a2 [in] Values to initialize q(2)
+         *
+         */
         Q(size_t n, double a0, double a1, double a2);
-        //! @copydoc Q(size_t,double,double)
+
+         /**
+         * @brief Creates a Q of length \b n and initialize all values in Q to the values specified after \b n
+         *
+         * The number of arguments after \b n must match the number n.
+         *
+         * @param n [in] Length of q.
+         * @param a0 [in] Value to initialize q(0)
+         * @param a1 [in] Value to initialize q(1)
+         * @param a2 [in] Values to initialize q(2)
+         * @param a3 [in] Values to initialize q(3)
+         *
+         */
         Q(size_t n, double a0, double a1, double a2, double a3);
-        //! @copydoc Q(size_t,double,double)
+
+        /**
+         * @brief Creates a Q of length \b n and initialize all values in Q to the values specified after \b n
+         *
+         * The number of arguments after \b n must match the number n.
+         *
+         * @param n [in] Length of q.
+         * @param a0 [in] Value to initialize q(0)
+         * @param a1 [in] Value to initialize q(1)
+         * @param a2 [in] Values to initialize q(2)
+         * @param a3 [in] Values to initialize q(3)
+         * @param a4 [in] Values to initialize q(4)
+         * 
+         */
         Q(size_t n, double a0, double a1, double a2, double a3, double a4);
-        //! @copydoc Q(size_t,double,double)
+
+         /**
+         * @brief Creates a Q of length \b n and initialize all values in Q to the values specified after \b n
+         *
+         * The number of arguments after \b n must match the number n.
+         *
+         * @param n [in] Length of q.
+         * @param a0 [in] Value to initialize q(0)
+         * @param a1 [in] Value to initialize q(1)
+         * @param a2 [in] Values to initialize q(2)
+         * @param a3 [in] Values to initialize q(3)
+         * @param a4 [in] Values to initialize q(4)
+         * @param a5 [in] Values to initialize q(5)
+         * 
+         */
         Q(size_t n, double a0, double a1, double a2, double a3, double a4, double a5);
-        //! @copydoc Q(size_t,double,double)
+
+        /**
+         * @brief Creates a Q of length \b n and initialize all values in Q to the values specified after \b n
+         *
+         * The number of arguments after \b n must match the number n.
+         *
+         * @param n [in] Length of q.
+         * @param a0 [in] Value to initialize q(0)
+         * @param a1 [in] Value to initialize q(1)
+         * @param a2 [in] Values to initialize q(2)
+         * @param a3 [in] Values to initialize q(3)
+         * @param a4 [in] Values to initialize q(4)
+         * @param a5 [in] Values to initialize q(5)
+         * @param a6 [in] Values to initialize q(6)
+         * 
+         */
         Q(size_t n, double a0, double a1, double a2, double a3, double a4, double a5, double a6);
-        //! @copydoc Q(size_t,double,double)
+
+        /**
+         * @brief Creates a Q of length \b n and initialize all values in Q to the values specified after \b n
+         *
+         * The number of arguments after \b n must match the number n.
+         *
+         * @param n [in] Length of q.
+         * @param a0 [in] Value to initialize q(0)
+         * @param a1 [in] Value to initialize q(1)
+         * @param a2 [in] Values to initialize q(2)
+         * @param a3 [in] Values to initialize q(3)
+         * @param a4 [in] Values to initialize q(4)
+         * @param a5 [in] Values to initialize q(5)
+         * @param a6 [in] Values to initialize q(6)
+         * @param a7 [in] Values to initialize q(7)
+         * 
+         */
         Q(size_t n, double a0, double a1, double a2, double a3, double a4, double a5, double a6, double a7);
-        //! @copydoc Q(size_t,double,double)
+
+        /**
+         * @brief Creates a Q of length \b n and initialize all values in Q to the values specified after \b n
+         *
+         * The number of arguments after \b n must match the number n.
+         *
+         * @param n [in] Length of q.
+         * @param a0 [in] Value to initialize q(0)
+         * @param a1 [in] Value to initialize q(1)
+         * @param a2 [in] Values to initialize q(2)
+         * @param a3 [in] Values to initialize q(3)
+         * @param a4 [in] Values to initialize q(4)
+         * @param a5 [in] Values to initialize q(5)
+         * @param a6 [in] Values to initialize q(6)
+         * @param a7 [in] Values to initialize q(7)
+         * @param a8 [in] Values to initialize q(8)
+         * 
+         */
         Q(size_t n, double a0, double a1, double a2, double a3, double a4, double a5, double a6, double a7, double a8);
-        //! @copydoc Q(size_t,double,double)
+
+        /**
+         * @brief Creates a Q of length \b n and initialize all values in Q to the values specified after \b n
+         *
+         * The number of arguments after \b n must match the number n.
+         *
+         * @param n [in] Length of q.
+         * @param a0 [in] Value to initialize q(0)
+         * @param a1 [in] Value to initialize q(1)
+         * @param a2 [in] Values to initialize q(2)
+         * @param a3 [in] Values to initialize q(3)
+         * @param a4 [in] Values to initialize q(4)
+         * @param a5 [in] Values to initialize q(5)
+         * @param a6 [in] Values to initialize q(6)
+         * @param a7 [in] Values to initialize q(7)
+         * @param a8 [in] Values to initialize q(8)
+         * @param a9 [in] Values to initialize q(9)
+         * 
+         */
         Q(size_t n, double a0, double a1, double a2, double a3, double a4, double a5, double a6, double a7, double a8, double a9);
 
         /**

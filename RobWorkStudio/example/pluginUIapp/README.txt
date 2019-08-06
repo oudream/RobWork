@@ -13,7 +13,7 @@
  
 	SamplePlugin\DockArea=2
 	SamplePlugin\Filename=libSamplePlugin
-	SamplePlugin\Path=c:/workspace/RobWorkSudio/example/pluginUIapp/libs/release
+	SamplePlugin\Path=c:/workspace/RobWorkStudio/example/pluginUIapp/libs/release
 	SamplePlugin\Visible=true
  
 how to build the example:

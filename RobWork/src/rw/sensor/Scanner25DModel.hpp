@@ -42,6 +42,8 @@ public:
      * @brief constructor
      * @param frame [in] the frame that the scanner is attached to
      * @param name [in] name of scanner sensor
+     * @param width
+     * @param height
      */
     Scanner25DModel(const std::string& name, int width, int height, rw::kinematics::Frame* frame );
 

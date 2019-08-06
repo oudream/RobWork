@@ -35,10 +35,10 @@ public:
 	
 	~SimpleFingerPlugin();
 	
-	//! @copydoc Plugin::getExtensionDescriptors
+	//! @copydoc rw::common::Plugin::getExtensionDescriptors
 	std::vector<rw::common::Extension::Descriptor> getExtensionDescriptors();
 	
-	//! @copydoc Plugin::makeExtension
+	//! @copydoc rw::common::Plugin::makeExtension
 	rw::common::Ptr<rw::common::Extension> makeExtension(const std::string& str);
 };
 

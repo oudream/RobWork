@@ -57,7 +57,7 @@ namespace geometry {
         /**
          * @brief Ouputs BSphere to stream
          * @param os [in/out] stream to use
-         * @param obb [in] oriented bounding box
+         * @param sphere
          * @return the resulting stream
          */
         friend std::ostream& operator<<(std::ostream& os, const BSphere<T>& sphere){

@@ -27,7 +27,7 @@ class QualityMeasure2D {
 public:
 
     /**
-     * @compute the quality of a 2d grasp
+     * @brief  compute the quality of a 2d grasp
      */
     virtual double computeQuality(const Grasp2D& grasp) const = 0;
 

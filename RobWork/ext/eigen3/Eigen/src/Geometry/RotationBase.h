@@ -131,7 +131,7 @@ struct rotation_base_generic_product_selector<RotationDerived,OtherVectorType,tr
 
 } // end namespace internal
 
-/** \geometry_module
+/** geometry_module
   *
   * \brief Constructs a Dim x Dim rotation matrix from the rotation \a r
   */
@@ -144,7 +144,7 @@ EIGEN_DEVICE_FUNC Matrix<_Scalar, _Rows, _Cols, _Storage, _MaxRows, _MaxCols>
   *this = r.toRotationMatrix();
 }
 
-/** \geometry_module
+/** geometry_module
   *
   * \brief Set a Dim x Dim rotation matrix from the rotation \a r
   */

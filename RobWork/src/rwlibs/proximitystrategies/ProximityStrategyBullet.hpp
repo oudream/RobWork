@@ -133,7 +133,7 @@ namespace rwlibs { namespace proximitystrategies {
         std::vector<std::string> getGeometryIDs(rw::proximity::ProximityModel* model);
 
         /**
-         * @copydoc rw::proximity::CollisionStrategy::collision
+         * @copydoc rw::proximity::CollisionStrategy::doInCollision
          */
         bool doInCollision(
 			rw::proximity::ProximityModel::Ptr a,
@@ -143,7 +143,7 @@ namespace rwlibs { namespace proximitystrategies {
             rw::proximity::ProximityStrategyData &data);
 
         /**
-         * @copydoc rw::proximity::CollisionToleranceStrategy::inCollision
+         * 
          */
         bool doInCollisionTolerance(
 			rw::proximity::ProximityModel::Ptr a,
@@ -154,7 +154,7 @@ namespace rwlibs { namespace proximitystrategies {
             rw::proximity::ProximityStrategyData &data);
 
         /**
-         * @copydoc rw::proximity::DistanceStrategy::distance
+         * @copydoc rw::proximity::DistanceStrategy::doDistance
          */
         rw::proximity::DistanceStrategy::Result& doDistance(
 			rw::proximity::ProximityModel::Ptr a,
@@ -164,7 +164,9 @@ namespace rwlibs { namespace proximitystrategies {
             rw::proximity::ProximityStrategyData &data);
 
         /**
-         * @copydoc rw::proximity::DistanceThresholdStrategy::distance
+         * @cond
+         * @copydoc rw::proximity::DistanceStrategy::doDistanceThreshold
+         * @endcond
          */
         rw::proximity::DistanceStrategy::Result& doDistanceThreshold(
             rw::proximity::ProximityModel::Ptr aModel,

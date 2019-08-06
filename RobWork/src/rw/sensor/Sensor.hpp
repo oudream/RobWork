@@ -97,7 +97,7 @@ namespace rw { namespace sensor {
         /**
          * @brief Sets the frame to which the sensor should be attached
          *
-         * @param frame The frame, which can be NULL
+         * @param smodel
          */
         virtual void setSensorModel(SensorModel::Ptr smodel) { _sensormodel = smodel; }
 

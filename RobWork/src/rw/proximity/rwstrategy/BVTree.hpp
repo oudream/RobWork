@@ -185,8 +185,11 @@ namespace proximity {
          * @brief get triangle nr \b triNr that the BVNode \b leafnode is bounding. The result is
          * set in triangle \b tridst and the index of the triangle is returned
          * @param leafnode [int] the leaf containing triangles
+         * @cond
          * @param tridst [out] the container for the triangle
+         * @endcond
          * @param triNr [in] the triangle nr
+         * @param dst documentation missing !
          * @return global index of triangle
          */
         inline int getPrimitive(const NodeIterator& leafnode, PRIMType& dst, size_t triNr) const {

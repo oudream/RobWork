@@ -171,8 +171,10 @@ namespace Assimp
          */
         void ReadDataArray();
 
-        /** Reads an accessor and stores it in the global library under the given ID -
+        /** @cond
+         * Reads an accessor and stores it in the global library under the given ID -
          * accessors use the ID of the parent <source> element
+         * @endcond
          */
         void ReadAccessor( const std::string& pID);
 

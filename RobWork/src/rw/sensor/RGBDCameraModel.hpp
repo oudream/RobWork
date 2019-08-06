@@ -44,6 +44,7 @@ namespace rw { namespace sensor {
          /**
           * @brief constructor
           * @param name [in] name of sensor
+          * @param frame documentation missing !
           * @param modelInfo [in] info string
           */
          RGBDCameraModel(const std::string& name, rw::kinematics::Frame* frame, const std::string& modelInfo);

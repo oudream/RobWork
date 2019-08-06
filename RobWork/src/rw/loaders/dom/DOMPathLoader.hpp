@@ -61,6 +61,7 @@ public:
      * If reading in the path fails an exception is thrown
      *
      * @param filename [in] The file to load
+     * @param workcell documentation missing !
      * @param schemaFileName [in] Name of the schema to use. If empty it will use the schema specified in the XML-file if available.
      */
 	DOMPathLoader(const std::string& filename, rw::common::Ptr<rw::models::WorkCell> workcell = NULL, const std::string& schemaFileName = "");
@@ -75,6 +76,7 @@ public:
      * Throw rw::common::Exception if reading the path fails
      *
      * @param instream [in] The input stream to read from
+     * @param workcell documentation missing !
      * @param schemaFileName [in] Name of the schema to use. If empty it will use the schema specified in the XML-file if available.
      */
 	DOMPathLoader(std::istream& instream, rw::common::Ptr<rw::models::WorkCell> workcell = NULL, const std::string& schemaFileName = "");

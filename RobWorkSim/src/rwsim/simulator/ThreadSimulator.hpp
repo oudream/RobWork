@@ -52,8 +52,10 @@ namespace simulator {
 		virtual ~ThreadSimulator();
 
 		/**
+		 * @cond
 		 * @brief Sets the time between
 		 * @param period
+		 * @endcond
 		 */
 		//void setPeriodMs(long period);
 

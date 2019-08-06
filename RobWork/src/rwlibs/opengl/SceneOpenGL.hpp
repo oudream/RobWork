@@ -56,8 +56,9 @@ namespace rwlibs { namespace opengl {
         // here comes utility functions for adding drawables to the scene INHERITED BY SceneGraph
         //! @copydoc rw::graphics::SceneGraph::draw
         void draw(rw::graphics::SceneGraph::RenderInfo& info);
+
         /**
-         * @copydoc rw::graphics::SceneGraph::draw(rw::graphics::SceneGraph::RenderInfo&, rw::common::Ptr<rw::graphics::SceneNode>)
+         * @copydoc rw::graphics::SceneGraph::draw()
          * @param node [in] draw only this subtree.
          */
         void draw(rw::graphics::SceneGraph::RenderInfo& info, rw::graphics::SceneNode::Ptr node);

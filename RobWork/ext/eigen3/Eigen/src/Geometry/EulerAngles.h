@@ -12,7 +12,7 @@
 
 namespace Eigen { 
 
-/** \geometry_module \ingroup Geometry_Module
+/** geometry_module \ingroup Geometry_Module
   *
   *
   * \returns the Euler-angles of the rotation matrix \c *this using the convention defined by the triplet (\a a0,\a a1,\a a2)

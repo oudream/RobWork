@@ -445,7 +445,7 @@ namespace rw { namespace math {
 		 * The metric is defined as a weighted sum of the positional distance and the 
 		 * angle of the rw::math::EAA of the rotation.
 		 *
-		 * @param posWeight [in] Positional weight.
+		 * @param linWeight [in] Positional weight.
 		 * @param angWeight [in] Angular weight.
 		 */
 		template <class T >

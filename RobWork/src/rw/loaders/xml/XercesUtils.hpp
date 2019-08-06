@@ -314,7 +314,7 @@ public:
      * for information about how to create a XMLFormatTarget
      *
      * @param parser [in] Parse to use for reading in
-     * @param source[in] The input source
+     * @param source [in] The input source
      * @param schemaFileName [in] Optional schema which can be used when parsing
      * @return The DOMDocument created
      */

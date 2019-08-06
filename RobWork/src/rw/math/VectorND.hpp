@@ -72,7 +72,7 @@ namespace rw { namespace math {
         /**
          * @brief Creates a 3D VectorND from VectorND_expression
          *
-         * @param r [in] an ublas VectorND_expression
+         * @param v [in] an ublas VectorND_expression
          */
         /*template <class R>
 		VectorND(const Eigen::Matrix<R, N, 1>& v)
@@ -315,12 +315,12 @@ namespace rw { namespace math {
             return true;
         }
 
-        //! @copydoc Serializable::write
+        //! @copydoc rw::common::Serializable::write
         void write(rw::common::OutputArchive& oarchive, const std::string& id) const {
         	oarchive.write(Math::toStdVector(*this, N), id, "VectorND");
         }
 
-        //! @copydoc Serializable::read
+        //! @copydoc rw::common::Serializable::read
         void read(rw::common::InputArchive& iarchive, const std::string& id){
         	std::vector<T> result(N,0);
         	iarchive.read(result, id, "VectorND");

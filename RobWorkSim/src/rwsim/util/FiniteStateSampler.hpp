@@ -45,6 +45,7 @@ namespace util {
 		 * @param state [in] the state to sample
 		 * @param n [in] number of allowed samples, if n<0 then a infinite
 		 * number of samples is allowed
+		 * @param type documentation missing !
 		 */
 		FiniteStateSampler(const rw::kinematics::State& state, int n=1, SamplerType type = ORDERED_SAMPLING);
 
@@ -53,6 +54,7 @@ namespace util {
 		 * @param states [in] states that are to be sampled
 		 * @param n [in] number of allowed samples, if n<0 then a infinite
 		 * number of samples is allowed
+		 * @param type documentation missing !
 		 */
 		FiniteStateSampler(const std::vector<rw::kinematics::State>& states, int n=1, SamplerType type = ORDERED_SAMPLING);
 
