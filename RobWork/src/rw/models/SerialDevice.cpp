@@ -15,17 +15,20 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #include "SerialDevice.hpp"
-#include "Joint.hpp"
-#include "DependentJoint.hpp"
 
+#include "DependentJoint.hpp"
+#include "Joint.hpp"
+
+#include <rw/kinematics/Frame.hpp>
 #include <rw/kinematics/Kinematics.hpp>
 
-using namespace rw::models;
+#include <vector>
+
+using namespace rw::common;
 using namespace rw::kinematics;
 using namespace rw::math;
-using namespace rw::common;
+using namespace rw::models;
 
 namespace
 {
@@ -38,7 +41,8 @@ namespace
         for (I p = frames.begin(); p != frames.end(); ++p) {
             Frame* frame = *p;
             Joint *joint = dynamic_cast<Joint*>(frame);
-            if ( (joint!=NULL && joint->isActive()) || dynamic_cast<DependentJoint*>(frame)!=NULL )
+            if ( (joint!=NULL && joint->isActive()) ||
+                    dynamic_cast<DependentJoint*>(frame)!=NULL )
                 active.push_back(joint);
         }
         return active;
@@ -47,7 +51,8 @@ namespace
     // From the root 'first' to the child 'last' inclusive.
     std::vector<Frame*> getChain(Frame* first, Frame* last, const State& state)
     {
-        std::vector<Frame*> init = Kinematics::parentToChildChain(first, last, state);
+        std::vector<Frame*> init = Kinematics::parentToChildChain(first, last,
+                state);
 
         init.push_back(last);
         return init;
@@ -58,7 +63,8 @@ SerialDevice::SerialDevice(Frame* first,
                            Frame* last,
                            const std::string& name,
                            const State& state):
-    JointDevice(name, first, last,getJointsFromFrames(getChain(first, last, state)), state),
+    JointDevice(name, first,
+            last,getJointsFromFrames(getChain(first, last, state)),state),
     _kinematicChain(getChain(first, last, state))
 {
 }
@@ -72,7 +78,6 @@ SerialDevice::SerialDevice(const std::vector<Frame*>& serialChain,
                            const std::string& name, const State& state) :
     JointDevice(name, serialChain.front(), serialChain.back(),
                 getJointsFromFrames(serialChain), state),
-
     _kinematicChain(serialChain)
 {
 }
