@@ -165,6 +165,11 @@ stages:
     - "[ -d Build ] || mkdir Build"
     - "[ -d Build/RW ] || mkdir Build/RW"
     - "[ -d Build/sphinx ] || mkdir Build/sphinx"
+  only:
+    refs:
+      - master@sdurobotics/RobWork
+      - schedules
+      - web
   script:
     - cd Build
     # Build libraries needed for Sphinx apidoc
