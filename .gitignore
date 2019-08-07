@@ -4555,3 +4555,4 @@
 /doc/installstuff/RW_package-source/CPackSourceConfig.cmake
 /doc/installstuff/RW_package-source/.cproject
 /doc/installstuff/RW_package-source/.project
+.vscode/settings.json
