@@ -561,6 +561,13 @@ namespace rws {
          */
         void loadSettingsSetupPlugins(const std::string& file);
 
+		/**
+         * @brief Load Workcell into RobWork Studio based on settings file
+         * @param file [in] the filename.
+		 * @return workcell file path
+         */
+        std::string loadSettingsWorkcell(const std::string& file);
+
         /**
          * @brief Get the current RobWorkStudio settings.
          * @return a reference to the settings.

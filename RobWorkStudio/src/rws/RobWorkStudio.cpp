@@ -655,6 +655,8 @@ void RobWorkStudio::loadSettingsSetupPlugins(const std::string& file)
     // TODO: make error reply if necesarry
     //return settings.status();
 }
+
+
 /*
 void RobWorkStudio::locatePlugins(QSettings& settings){
     rw::plugin::PluginRepository &prep = RobWork::getInstance()->getPluginRepository();
@@ -728,15 +730,13 @@ void RobWorkStudio::setupPlugin(const QString& pathname, const QString& filename
 
 void RobWorkStudio::setupPlugins(QSettings& settings)
 {
-
     QStringList groups = settings.childGroups();
-
+    
     settings.beginGroup("Plugins");
     QStringList plugins = settings.childGroups();
     for (int i = 0; i<plugins.size(); i++) {
+        
         const QString& pluginname = plugins.at(i);
-
-
         Log::debugLog()  << "Plugin = " << pluginname.toStdString() << "\n";
 
         settings.beginGroup(pluginname);
@@ -805,6 +805,39 @@ void RobWorkStudio::setupPlugins(QSettings& settings)
     }
     settings.endGroup(); //End the Plugins Group
 	
+}
+
+std::string RobWorkStudio::loadSettingsWorkcell(const std::string& file)
+{
+    QSettings settings(file.c_str(), QSettings::IniFormat);
+    std::string workcellPath = "";
+    switch (settings.status()) {
+
+    case QSettings::NoError:{
+        QStringList groups = settings.childGroups();
+        settings.beginGroup("Settings");
+        QStringList theSettings = settings.childGroups();
+
+        for(int i = 0; i < theSettings.size(); i++){
+            const QString& settingName = theSettings.at(i);
+            Log::debugLog() << "SettingFound: " << settingName.toStdString() << "\n";
+            
+            if(settingName.toStdString() == "Workcell"){
+                settings.beginGroup("Workcell");
+                workcellPath = settings.value("Path").toString().toStdString();
+                break;
+            }
+        }
+
+        break;
+    }
+    case QSettings::FormatError: 
+    case QSettings::AccessError:
+        // Nothing to report here.
+        break;
+    }
+    Log::debugLog() << "workcellFound: " << workcellPath << "\n";
+    return workcellPath;
 }
 
 void RobWorkStudio::newWorkCell()

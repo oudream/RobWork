@@ -75,7 +75,6 @@ public:
     }
 };
 
-
 int main(int argc, char** argv)
 {
     Q_INIT_RESOURCE(rwstudio_resources);
@@ -143,6 +142,13 @@ int main(int argc, char** argv)
 
                 rwstudio.loadSettingsSetupPlugins( inifile );
 
+                if(inputfile.empty()){
+                    std::string workcellFile = rwstudio.loadSettingsWorkcell(inifile);
+                    if(showSplash)
+                        splash->showMessage("Opening workcell...");
+                    rwstudio.openFile(workcellFile);
+
+                }
                 if(!inputfile.empty()){
                     if(showSplash)
                         splash->showMessage("Opening workcell...");
