@@ -836,7 +836,7 @@ std::string RobWorkStudio::loadSettingsWorkcell(const std::string& file)
         // Nothing to report here.
         break;
     }
-    Log::debugLog() << "workcellFound: " << WorkcellPath << "\n";
+    Log::debugLog() << "workcellFound: " << workcellPath << "\n";
     return workcellPath;
 }
 
