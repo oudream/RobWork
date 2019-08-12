@@ -1,8 +1,8 @@
 ********
 Examples
 ********
-This section contains examples of how to use the :ref:`RTDE Control Interface <rtde-control-api>` and the
-:ref:`RTDE Receive Interface <rtde-receive-api>`.
+This section contains examples of how to use the :ref:`RTDE Control Interface <rtde-control-api>` the
+:ref:`RTDE Receive Interface <rtde-receive-api>` and the :ref:`RTDE IO Interface <rtde-io-api>`.
 
 .. warning::
    It is your own responsibility to verify that the movements performed by these examples are collision-free and safe
@@ -63,9 +63,28 @@ Python:
    rtde_r = rtde_receive.RTDEReceiveInterface("127.0.0.1")
    actual_q = rtde_r.getActualQ()
 
+Simple example using the RTDE IO Interface to set a standard digital output.
+
+C++:
+
+.. code-block:: c++
+
+   // The constructor simply takes the IP address of the Robot
+   RTDEIOInterface rtde_io("127.0.0.1");
+   rtde_io.setStandardDigitalOut(7, true);
+
+Python:
+
+.. code-block:: python
+
+   import rtde_io
+   rtde_io = rtde_io.RTDEIOInterface("127.0.0.1")
+   rtde_io.setStandardDigitalOut(7, True)
+
 .. note::
    When using an e-Series robot data will be received at the maximum available frequency (500Hz), for a CB3
    robot the frequency will be (125Hz).
+
 
 Forcemode Example
 =================
