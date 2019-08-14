@@ -17,6 +17,7 @@
 /.project
 /Build
 /.settings
+/.vscode
 
 # /RobWork/
 /RobWork/cmake_install.cmake
@@ -3391,6 +3392,9 @@
 # /RobWorkSim/example/FalconTeleoperatePlugin/
 /RobWorkSim/example/FalconTeleoperatePlugin/libs
 
+# /RobWorkSim/example/scripts/java
+/RobWorkSim/example/scripts/java/Simulation.class
+
 # /RobWorkSim/example/SimTaskPlugin/
 /RobWorkSim/example/SimTaskPlugin/cmake_install.cmake
 /RobWorkSim/example/SimTaskPlugin/CMakeCache.txt
@@ -4555,4 +4559,4 @@
 /doc/installstuff/RW_package-source/CPackSourceConfig.cmake
 /doc/installstuff/RW_package-source/.cproject
 /doc/installstuff/RW_package-source/.project
-.vscode/settings.json
+

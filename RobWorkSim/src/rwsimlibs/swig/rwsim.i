@@ -1065,6 +1065,7 @@ public:
     static rw::common::Ptr<PhysicsEngine> makePhysicsEngine(rw::common::Ptr<DynamicWorkCell> dwc);
 };
 
+%feature("notabstract") DynamicSimulator;
 class DynamicSimulator: public Simulator
 {
 public:
