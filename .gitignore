@@ -17,6 +17,7 @@
 /.project
 /Build
 /.settings
+/*.vscode
 
 # /RobWork/
 /RobWork/cmake_install.cmake

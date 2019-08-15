@@ -165,7 +165,7 @@ namespace rws {
 		 * @return Reference to TimedStatePath
 		 */		
 		const rw::trajectory::TimedStatePath& getTimedStatePath() {			
-			return _timedStatePath;			
+			return *_timedStatePath;			
 		}
 		
 
@@ -178,6 +178,16 @@ namespace rws {
 		 * @param path [in] The new TimedStatePath
 		 */		
 		void setTimedStatePath(const rw::trajectory::TimedStatePath& path);
+
+		/**
+		 * @brief Sets the common TimedStatePath
+		 *
+		 * Use the common TimedStatePath to set at trajectory, which plugins, e.g. PlayBack
+		 * should have access to.
+		 *
+		 * @param path [in] The new TimedStatePath
+		 */		
+		void setTimedStatePath(const rw::trajectory::TimedStatePathPtr path);
 
 		/**
 		 * @copydoc setTimedStatePath
@@ -457,6 +467,26 @@ namespace rws {
 			return _stateTrajectoryChangedEvent;
 		}
 		
+		/**
+		 * @brief Defines a StateTrajectory changed event
+		 * Listeners are called when someone fires a stateTrajectoryChanged event.
+		 * StateTrajectoryListener defines the signature of a callback method.
+		 * Example usage in a plugin: See RobWorkStudio::StateChangedListener
+		 */
+		typedef boost::function<void(const rw::trajectory::TimedStatePathPtr)> StateTrajectoryPtrChangedListener;
+
+		/**
+		 * @brief Defines event for key pressed events
+		 */
+		typedef rw::common::Event<StateTrajectoryPtrChangedListener, const rw::trajectory::TimedStatePathPtr>  StateTrajectoryPtrChangedEvent;
+
+		/**
+		 * @brief Returns stateTrajectoryChangedEvent needed for subscription and firing of event
+		 * @return Reference to the stateTrajectoryChangedEvent
+		 */		
+		StateTrajectoryPtrChangedEvent& stateTrajectoryPtrChangedEvent() {
+			return _stateTrajectoryPtrChangedEvent;
+		}
 
 
 		/**
@@ -583,6 +613,7 @@ namespace rws {
 		KeyEvent _keyEvent;
 		MousePressedEvent _mousePressedEvent;
 		StateTrajectoryChangedEvent _stateTrajectoryChangedEvent;
+		StateTrajectoryPtrChangedEvent _stateTrajectoryPtrChangedEvent;
 		PositionSelectedEvent _positionSelectedEvent;
 
 	public slots:
@@ -653,7 +684,7 @@ namespace rws {
 		
 		bool _inStateUpdate;
 
-		rw::trajectory::TimedStatePath _timedStatePath;
+		rw::trajectory::TimedStatePathPtr _timedStatePath;
 
 		rw::common::PropertyMap _propMap;
 		rw::common::PropertyMap *_settingsMap;

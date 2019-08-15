@@ -38,7 +38,7 @@ Player::Player(
     RobWorkStudio* rwstudio)
     :
     _trajectory( TrajectoryFactory::makeLinearTrajectory(path) ),
-    _path(path),
+    _path(ownedPtr(new rw::trajectory::TimedStatePath(path))),
     _drawer(drawer),
     _tickInterval(tickInterval),
     _rwstudio(rwstudio),
@@ -59,12 +59,43 @@ Player::Player(
     connect(&_timer, SIGNAL(timeout()), this, SLOT(tick()));
 }
 
+Player::Player(
+    TimedStatePathPtr path,
+    StateDrawPtr drawer,
+    double tickInterval,
+    RobWorkStudio* rwstudio)
+    :
+    _trajectory( TrajectoryFactory::makeLinearTrajectory(*path) ),
+    _path(path),
+    _drawer(drawer),
+    _tickInterval(tickInterval),
+    _rwstudio(rwstudio),
+    _record(false),
+    _recNo(0),
+    _now(0),
+    _direction(1),
+    _velocityScale(1),
+    _timer(this),
+    _loop(false),
+    _interpolate(true),
+    _recordingOnly(false)
+{
+    RW_ASSERT(_tickInterval > 0);
+    RW_ASSERT(drawer);
+    RW_ASSERT(path.isShared());
+    RW_ASSERT(!path.isNull());
+
+    // Connect the timer:
+    connect(&_timer, SIGNAL(timeout()), this, SLOT(tick()));
+}
+
 
 Player::Player(
     double tickInterval,
     RobWorkStudio* rwstudio)
     :
     _trajectory( TrajectoryFactory::makeLinearTrajectory(TimedStatePath()) ),
+    _path(NULL),
     _tickInterval(tickInterval),
     _rwstudio(rwstudio),
     _record(false),
@@ -222,22 +253,22 @@ void Player::toEnd()
 void Player::step(bool forward) {
     stopTimer();
 
-    if (_path.size() == 0)
+    if (_path->size() == 0)
     	return;
 
 	// Find the first index of the current segment
-    const std::size_t N = _path.size()-1;
+    const std::size_t N = _path->size()-1;
 	std::size_t curId = 0;
 	bool interpolated = false;
     for(std::size_t i = 0; i < N; i++){
-        if(_path[i].getTime() <= _now && _now < _path[i+1].getTime()){
+        if( (*_path)[i].getTime() <= _now && _now < (*_path)[i+1].getTime()){
     		curId = i;
-        	if( _path[i].getTime() != _now)
+        	if( (*_path)[i].getTime() != _now)
         		interpolated = true;
         	break;
         }
     }
-    if( _now >= _path.back().getTime() ){
+    if( _now >= _path->back().getTime() ){
     	curId = N;
     }
 
@@ -253,8 +284,8 @@ void Player::step(bool forward) {
     	nextId = N;
 
     // Move to new id
-	_now = _path[nextId].getTime();
-	_drawer->draw(_path[nextId].getValue());
+	_now = (*_path)[nextId].getTime();
+	_drawer->draw((*_path)[nextId].getValue());
     relativePositionChanged(_now / getEndTime());
 }
 
@@ -322,9 +353,9 @@ void Player::draw()
         }
     } else {
         if (0 <= _now && _now <= getEndTime()) {
-            for(unsigned int i=0;i<_path.size()-1;i++){
-                if( _path[i].getTime()<= _now && _now<=_path[i+1].getTime() ){
-                    _drawer->draw(_path[i].getValue());
+            for(unsigned int i=0;i<_path->size()-1;i++){
+                if( (*_path)[i].getTime()<= _now && _now<=(*_path)[i+1].getTime() ){
+                    _drawer->draw((*_path)[i].getValue());
                     break;
                 }
             }
@@ -367,3 +398,11 @@ Player::Ptr Player::makePlayer(const TimedStatePath& path,
 {
     return ownedPtr(new Player(path, drawer, tickInterval, rwstudio));
 }
+Player::Ptr Player::makePlayer(const TimedStatePathPtr path,
+                     StateDrawPtr drawer,
+                     double tickInterval,
+                     RobWorkStudio* rwstudio)
+{
+    return ownedPtr(new Player(path, drawer, tickInterval, rwstudio));
+}
+

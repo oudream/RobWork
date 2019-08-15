@@ -1135,8 +1135,9 @@ void RobWorkStudio::fireStateTrajectoryChangedEvent(const rw::trajectory::TimedS
 }
 */
 void RobWorkStudio::setTStatePath(rw::trajectory::TimedStatePath path){
-    _timedStatePath = path;
-    stateTrajectoryChangedEvent().fire(_timedStatePath);
+    _timedStatePath = ownedPtr(new rw::trajectory::TimedStatePath(path));
+    stateTrajectoryChangedEvent().fire(*_timedStatePath);
+    stateTrajectoryPtrChangedEvent().fire(_timedStatePath);
 }
 
 namespace {
@@ -1221,8 +1222,16 @@ namespace {
 
 void RobWorkStudio::setTimedStatePath(const rw::trajectory::TimedStatePath& path)
 {
+    _timedStatePath = ownedPtr(new rw::trajectory::TimedStatePath(path));
+    stateTrajectoryChangedEvent().fire(*_timedStatePath);
+    stateTrajectoryPtrChangedEvent().fire(_timedStatePath);
+}
+
+void RobWorkStudio::setTimedStatePath(const rw::trajectory::TimedStatePathPtr path)
+{
     _timedStatePath = path;
-    stateTrajectoryChangedEvent().fire(_timedStatePath);
+    stateTrajectoryChangedEvent().fire(*_timedStatePath);
+    stateTrajectoryPtrChangedEvent().fire(_timedStatePath);
 }
 
 void RobWorkStudio::setState(const rw::kinematics::State& state)

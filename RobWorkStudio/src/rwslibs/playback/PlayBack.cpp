@@ -214,7 +214,7 @@ PlayBack::~PlayBack() {}
 
 void PlayBack::initialize()
 {
-    getRobWorkStudio()->stateTrajectoryChangedEvent().add(
+    getRobWorkStudio()->stateTrajectoryPtrChangedEvent().add(
         boost::bind(
             &PlayBack::stateTrajectoryChangedListener, this, _1),
         this);
@@ -276,7 +276,7 @@ namespace
     const double timerInterval = 1.0 / 50;
 }
 void PlayBack::record(bool record) {
-    if (_player.get() == NULL || _player->_path.size()==0){
+    if (_player.get() == NULL || _player->_path->size()==0){
         // create a dummy player
         _player = ownedPtr(new Player(1.0/5.0, getRobWorkStudio()));
     }
@@ -430,10 +430,10 @@ void PlayBack::openPlayFile(const std::string& file)
     }
 }
 
-void PlayBack::stateTrajectoryChangedListener(const TimedStatePath& path)
+void PlayBack::stateTrajectoryChangedListener(const TimedStatePathPtr path)
 {
 
-    if (!path.empty()) {
+    if (!path->empty()) {
         // Reset the player.
         _player = Player::makePlayer(
             path,
