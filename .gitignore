@@ -1,4 +1,3 @@
-
 # /
 /cmake_install.cmake
 /CMakeCache.txt
@@ -18,6 +17,7 @@
 /Build
 /.settings
 /.vscode
+/*.class
 
 # /RobWork/
 /RobWork/cmake_install.cmake
@@ -33,8 +33,6 @@
 /RobWork/.csettings
 /RobWork/CPackConfig.cmake
 /RobWork/CPackSourceConfig.cmake
-/RobWork/.cproject
-/RobWork/.project
 /RobWork/libs
 /RobWork/Testing
 /RobWork/CTestTestfile.cmake
@@ -96,8 +94,6 @@
 /RobWork/example/ModelData/.csettings
 /RobWork/example/ModelData/CPackConfig.cmake
 /RobWork/example/ModelData/CPackSourceConfig.cmake
-/RobWork/example/ModelData/.cproject
-/RobWork/example/ModelData/.project
 
 # /RobWork/example/ModelData/XMLDevices/
 /RobWork/example/ModelData/XMLDevices/cmake_install.cmake
@@ -113,8 +109,6 @@
 /RobWork/example/ModelData/XMLDevices/.csettings
 /RobWork/example/ModelData/XMLDevices/CPackConfig.cmake
 /RobWork/example/ModelData/XMLDevices/CPackSourceConfig.cmake
-/RobWork/example/ModelData/XMLDevices/.cproject
-/RobWork/example/ModelData/XMLDevices/.project
 
 # /RobWork/example/ModelData/XMLDevices/Fanuc-LRM200i/
 /RobWork/example/ModelData/XMLDevices/Fanuc-LRM200i/cmake_install.cmake
@@ -130,8 +124,6 @@
 /RobWork/example/ModelData/XMLDevices/Fanuc-LRM200i/.csettings
 /RobWork/example/ModelData/XMLDevices/Fanuc-LRM200i/CPackConfig.cmake
 /RobWork/example/ModelData/XMLDevices/Fanuc-LRM200i/CPackSourceConfig.cmake
-/RobWork/example/ModelData/XMLDevices/Fanuc-LRM200i/.cproject
-/RobWork/example/ModelData/XMLDevices/Fanuc-LRM200i/.project
 
 # /RobWork/example/ModelData/XMLDevices/Fanuc-LRM200i/Geometry/
 /RobWork/example/ModelData/XMLDevices/Fanuc-LRM200i/Geometry/cmake_install.cmake
@@ -147,8 +139,6 @@
 /RobWork/example/ModelData/XMLDevices/Fanuc-LRM200i/Geometry/.csettings
 /RobWork/example/ModelData/XMLDevices/Fanuc-LRM200i/Geometry/CPackConfig.cmake
 /RobWork/example/ModelData/XMLDevices/Fanuc-LRM200i/Geometry/CPackSourceConfig.cmake
-/RobWork/example/ModelData/XMLDevices/Fanuc-LRM200i/Geometry/.cproject
-/RobWork/example/ModelData/XMLDevices/Fanuc-LRM200i/Geometry/.project
 
 # /RobWork/example/ModelData/XMLDevices/KukaKr30ha/
 /RobWork/example/ModelData/XMLDevices/KukaKr30ha/cmake_install.cmake
@@ -164,8 +154,6 @@
 /RobWork/example/ModelData/XMLDevices/KukaKr30ha/.csettings
 /RobWork/example/ModelData/XMLDevices/KukaKr30ha/CPackConfig.cmake
 /RobWork/example/ModelData/XMLDevices/KukaKr30ha/CPackSourceConfig.cmake
-/RobWork/example/ModelData/XMLDevices/KukaKr30ha/.cproject
-/RobWork/example/ModelData/XMLDevices/KukaKr30ha/.project
 
 # /RobWork/example/ModelData/XMLDevices/KukaKr30ha/Geometry/
 /RobWork/example/ModelData/XMLDevices/KukaKr30ha/Geometry/cmake_install.cmake
@@ -181,8 +169,6 @@
 /RobWork/example/ModelData/XMLDevices/KukaKr30ha/Geometry/.csettings
 /RobWork/example/ModelData/XMLDevices/KukaKr30ha/Geometry/CPackConfig.cmake
 /RobWork/example/ModelData/XMLDevices/KukaKr30ha/Geometry/CPackSourceConfig.cmake
-/RobWork/example/ModelData/XMLDevices/KukaKr30ha/Geometry/.cproject
-/RobWork/example/ModelData/XMLDevices/KukaKr30ha/Geometry/.project
 
 # /RobWork/example/ModelData/XMLDevices/Kuka_kr16/
 /RobWork/example/ModelData/XMLDevices/Kuka_kr16/cmake_install.cmake
@@ -198,8 +184,6 @@
 /RobWork/example/ModelData/XMLDevices/Kuka_kr16/.csettings
 /RobWork/example/ModelData/XMLDevices/Kuka_kr16/CPackConfig.cmake
 /RobWork/example/ModelData/XMLDevices/Kuka_kr16/CPackSourceConfig.cmake
-/RobWork/example/ModelData/XMLDevices/Kuka_kr16/.cproject
-/RobWork/example/ModelData/XMLDevices/Kuka_kr16/.project
 
 # /RobWork/example/ModelData/XMLDevices/Kuka_kr16/Geometry/
 /RobWork/example/ModelData/XMLDevices/Kuka_kr16/Geometry/cmake_install.cmake
@@ -215,8 +199,6 @@
 /RobWork/example/ModelData/XMLDevices/Kuka_kr16/Geometry/.csettings
 /RobWork/example/ModelData/XMLDevices/Kuka_kr16/Geometry/CPackConfig.cmake
 /RobWork/example/ModelData/XMLDevices/Kuka_kr16/Geometry/CPackSourceConfig.cmake
-/RobWork/example/ModelData/XMLDevices/Kuka_kr16/Geometry/.cproject
-/RobWork/example/ModelData/XMLDevices/Kuka_kr16/Geometry/.project
 
 # /RobWork/example/ModelData/XMLDevices/Mitsubishi_PA10/
 /RobWork/example/ModelData/XMLDevices/Mitsubishi_PA10/cmake_install.cmake
@@ -232,8 +214,6 @@
 /RobWork/example/ModelData/XMLDevices/Mitsubishi_PA10/.csettings
 /RobWork/example/ModelData/XMLDevices/Mitsubishi_PA10/CPackConfig.cmake
 /RobWork/example/ModelData/XMLDevices/Mitsubishi_PA10/CPackSourceConfig.cmake
-/RobWork/example/ModelData/XMLDevices/Mitsubishi_PA10/.cproject
-/RobWork/example/ModelData/XMLDevices/Mitsubishi_PA10/.project
 
 # /RobWork/example/ModelData/XMLDevices/Mitsubishi_PA10/Geometry/
 /RobWork/example/ModelData/XMLDevices/Mitsubishi_PA10/Geometry/cmake_install.cmake
@@ -249,8 +229,6 @@
 /RobWork/example/ModelData/XMLDevices/Mitsubishi_PA10/Geometry/.csettings
 /RobWork/example/ModelData/XMLDevices/Mitsubishi_PA10/Geometry/CPackConfig.cmake
 /RobWork/example/ModelData/XMLDevices/Mitsubishi_PA10/Geometry/CPackSourceConfig.cmake
-/RobWork/example/ModelData/XMLDevices/Mitsubishi_PA10/Geometry/.cproject
-/RobWork/example/ModelData/XMLDevices/Mitsubishi_PA10/Geometry/.project
 
 # /RobWork/example/ModelData/XMLDevices/PG70/
 /RobWork/example/ModelData/XMLDevices/PG70/cmake_install.cmake
@@ -266,8 +244,6 @@
 /RobWork/example/ModelData/XMLDevices/PG70/.csettings
 /RobWork/example/ModelData/XMLDevices/PG70/CPackConfig.cmake
 /RobWork/example/ModelData/XMLDevices/PG70/CPackSourceConfig.cmake
-/RobWork/example/ModelData/XMLDevices/PG70/.cproject
-/RobWork/example/ModelData/XMLDevices/PG70/.project
 
 # /RobWork/example/ModelData/XMLDevices/PG70/Geometry/
 /RobWork/example/ModelData/XMLDevices/PG70/Geometry/cmake_install.cmake
@@ -283,8 +259,6 @@
 /RobWork/example/ModelData/XMLDevices/PG70/Geometry/.csettings
 /RobWork/example/ModelData/XMLDevices/PG70/Geometry/CPackConfig.cmake
 /RobWork/example/ModelData/XMLDevices/PG70/Geometry/CPackSourceConfig.cmake
-/RobWork/example/ModelData/XMLDevices/PG70/Geometry/.cproject
-/RobWork/example/ModelData/XMLDevices/PG70/Geometry/.project
 
 # /RobWork/example/ModelData/XMLDevices/SchunkHand/
 /RobWork/example/ModelData/XMLDevices/SchunkHand/cmake_install.cmake
@@ -300,8 +274,6 @@
 /RobWork/example/ModelData/XMLDevices/SchunkHand/.csettings
 /RobWork/example/ModelData/XMLDevices/SchunkHand/CPackConfig.cmake
 /RobWork/example/ModelData/XMLDevices/SchunkHand/CPackSourceConfig.cmake
-/RobWork/example/ModelData/XMLDevices/SchunkHand/.cproject
-/RobWork/example/ModelData/XMLDevices/SchunkHand/.project
 
 # /RobWork/example/ModelData/XMLDevices/SchunkHand/Geometry/
 /RobWork/example/ModelData/XMLDevices/SchunkHand/Geometry/cmake_install.cmake
@@ -317,8 +289,6 @@
 /RobWork/example/ModelData/XMLDevices/SchunkHand/Geometry/.csettings
 /RobWork/example/ModelData/XMLDevices/SchunkHand/Geometry/CPackConfig.cmake
 /RobWork/example/ModelData/XMLDevices/SchunkHand/Geometry/CPackSourceConfig.cmake
-/RobWork/example/ModelData/XMLDevices/SchunkHand/Geometry/.cproject
-/RobWork/example/ModelData/XMLDevices/SchunkHand/Geometry/.project
 
 # /RobWork/example/ModelData/XMLDevices/UR-6-85-5-A/
 /RobWork/example/ModelData/XMLDevices/UR-6-85-5-A/cmake_install.cmake
@@ -334,8 +304,6 @@
 /RobWork/example/ModelData/XMLDevices/UR-6-85-5-A/.csettings
 /RobWork/example/ModelData/XMLDevices/UR-6-85-5-A/CPackConfig.cmake
 /RobWork/example/ModelData/XMLDevices/UR-6-85-5-A/CPackSourceConfig.cmake
-/RobWork/example/ModelData/XMLDevices/UR-6-85-5-A/.cproject
-/RobWork/example/ModelData/XMLDevices/UR-6-85-5-A/.project
 
 # /RobWork/example/ModelData/XMLDevices/UR-6-85-5-A/geometry/
 /RobWork/example/ModelData/XMLDevices/UR-6-85-5-A/geometry/cmake_install.cmake
@@ -351,8 +319,6 @@
 /RobWork/example/ModelData/XMLDevices/UR-6-85-5-A/geometry/.csettings
 /RobWork/example/ModelData/XMLDevices/UR-6-85-5-A/geometry/CPackConfig.cmake
 /RobWork/example/ModelData/XMLDevices/UR-6-85-5-A/geometry/CPackSourceConfig.cmake
-/RobWork/example/ModelData/XMLDevices/UR-6-85-5-A/geometry/.cproject
-/RobWork/example/ModelData/XMLDevices/UR-6-85-5-A/geometry/.project
 
 # /RobWork/example/ModelData/XMLScenes/
 /RobWork/example/ModelData/XMLScenes/cmake_install.cmake
@@ -368,8 +334,6 @@
 /RobWork/example/ModelData/XMLScenes/.csettings
 /RobWork/example/ModelData/XMLScenes/CPackConfig.cmake
 /RobWork/example/ModelData/XMLScenes/CPackSourceConfig.cmake
-/RobWork/example/ModelData/XMLScenes/.cproject
-/RobWork/example/ModelData/XMLScenes/.project
 
 # /RobWork/example/ModelData/XMLScenes/PA10atConveyor/
 /RobWork/example/ModelData/XMLScenes/PA10atConveyor/cmake_install.cmake
@@ -385,8 +349,6 @@
 /RobWork/example/ModelData/XMLScenes/PA10atConveyor/.csettings
 /RobWork/example/ModelData/XMLScenes/PA10atConveyor/CPackConfig.cmake
 /RobWork/example/ModelData/XMLScenes/PA10atConveyor/CPackSourceConfig.cmake
-/RobWork/example/ModelData/XMLScenes/PA10atConveyor/.cproject
-/RobWork/example/ModelData/XMLScenes/PA10atConveyor/.project
 
 # /RobWork/example/ModelData/XMLScenes/PA10atConveyor/Geometry/
 /RobWork/example/ModelData/XMLScenes/PA10atConveyor/Geometry/cmake_install.cmake
@@ -402,8 +364,6 @@
 /RobWork/example/ModelData/XMLScenes/PA10atConveyor/Geometry/.csettings
 /RobWork/example/ModelData/XMLScenes/PA10atConveyor/Geometry/CPackConfig.cmake
 /RobWork/example/ModelData/XMLScenes/PA10atConveyor/Geometry/CPackSourceConfig.cmake
-/RobWork/example/ModelData/XMLScenes/PA10atConveyor/Geometry/.cproject
-/RobWork/example/ModelData/XMLScenes/PA10atConveyor/Geometry/.project
 
 # /RobWork/example/ModelData/XMLScenes/PA10atConveyor/Geometry/scene/
 /RobWork/example/ModelData/XMLScenes/PA10atConveyor/Geometry/scene/cmake_install.cmake
@@ -419,8 +379,6 @@
 /RobWork/example/ModelData/XMLScenes/PA10atConveyor/Geometry/scene/.csettings
 /RobWork/example/ModelData/XMLScenes/PA10atConveyor/Geometry/scene/CPackConfig.cmake
 /RobWork/example/ModelData/XMLScenes/PA10atConveyor/Geometry/scene/CPackSourceConfig.cmake
-/RobWork/example/ModelData/XMLScenes/PA10atConveyor/Geometry/scene/.cproject
-/RobWork/example/ModelData/XMLScenes/PA10atConveyor/Geometry/scene/.project
 
 # /RobWork/example/ModelData/XMLScenes/RobotWithHand/
 /RobWork/example/ModelData/XMLScenes/RobotWithHand/cmake_install.cmake
@@ -436,8 +394,6 @@
 /RobWork/example/ModelData/XMLScenes/RobotWithHand/.csettings
 /RobWork/example/ModelData/XMLScenes/RobotWithHand/CPackConfig.cmake
 /RobWork/example/ModelData/XMLScenes/RobotWithHand/CPackSourceConfig.cmake
-/RobWork/example/ModelData/XMLScenes/RobotWithHand/.cproject
-/RobWork/example/ModelData/XMLScenes/RobotWithHand/.project
 
 # /RobWork/example/ModelData/XMLScenes/SensorTestScene/
 /RobWork/example/ModelData/XMLScenes/SensorTestScene/cmake_install.cmake
@@ -453,8 +409,6 @@
 /RobWork/example/ModelData/XMLScenes/SensorTestScene/.csettings
 /RobWork/example/ModelData/XMLScenes/SensorTestScene/CPackConfig.cmake
 /RobWork/example/ModelData/XMLScenes/SensorTestScene/CPackSourceConfig.cmake
-/RobWork/example/ModelData/XMLScenes/SensorTestScene/.cproject
-/RobWork/example/ModelData/XMLScenes/SensorTestScene/.project
 
 # /RobWork/example/bfgsApp/
 /RobWork/example/bfgsApp/cmake_install.cmake
@@ -470,8 +424,6 @@
 /RobWork/example/bfgsApp/.csettings
 /RobWork/example/bfgsApp/CPackConfig.cmake
 /RobWork/example/bfgsApp/CPackSourceConfig.cmake
-/RobWork/example/bfgsApp/.cproject
-/RobWork/example/bfgsApp/.project
 
 # /RobWork/example/consoleapp/
 /RobWork/example/consoleapp/.cproject
@@ -514,8 +466,6 @@
 /RobWork/example/simplegui/.csettings
 /RobWork/example/simplegui/CPackConfig.cmake
 /RobWork/example/simplegui/CPackSourceConfig.cmake
-/RobWork/example/simplegui/.cproject
-/RobWork/example/simplegui/.project
 /RobWork/example/simplegui/libs
 
 # /RobWork/example/simplegui/src/
@@ -532,8 +482,6 @@
 /RobWork/example/simplegui/src/.csettings
 /RobWork/example/simplegui/src/CPackConfig.cmake
 /RobWork/example/simplegui/src/CPackSourceConfig.cmake
-/RobWork/example/simplegui/src/.cproject
-/RobWork/example/simplegui/src/.project
 
 # /RobWork/example/snippets/
 /RobWork/example/snippets/cmake_install.cmake
@@ -549,8 +497,6 @@
 /RobWork/example/snippets/.csettings
 /RobWork/example/snippets/CPackConfig.cmake
 /RobWork/example/snippets/CPackSourceConfig.cmake
-/RobWork/example/snippets/.cproject
-/RobWork/example/snippets/.project
 /RobWork/example/snippets/libs
 
 # /RobWork/example/tutorial/
@@ -583,8 +529,6 @@
 /RobWork/ext/.csettings
 /RobWork/ext/CPackConfig.cmake
 /RobWork/ext/CPackSourceConfig.cmake
-/RobWork/ext/.cproject
-/RobWork/ext/.project
 
 # /RobWork/ext/boostbindings/boost/
 /RobWork/ext/boostbindings/boost/cmake_install.cmake
@@ -600,8 +544,6 @@
 /RobWork/ext/boostbindings/boost/.csettings
 /RobWork/ext/boostbindings/boost/CPackConfig.cmake
 /RobWork/ext/boostbindings/boost/CPackSourceConfig.cmake
-/RobWork/ext/boostbindings/boost/.cproject
-/RobWork/ext/boostbindings/boost/.project
 
 # /RobWork/ext/boostbindings/boost/numeric/
 /RobWork/ext/boostbindings/boost/numeric/cmake_install.cmake
@@ -617,8 +559,6 @@
 /RobWork/ext/boostbindings/boost/numeric/.csettings
 /RobWork/ext/boostbindings/boost/numeric/CPackConfig.cmake
 /RobWork/ext/boostbindings/boost/numeric/CPackSourceConfig.cmake
-/RobWork/ext/boostbindings/boost/numeric/.cproject
-/RobWork/ext/boostbindings/boost/numeric/.project
 
 # /RobWork/ext/boostbindings/boost/numeric/bindings/
 /RobWork/ext/boostbindings/boost/numeric/bindings/cmake_install.cmake
@@ -634,8 +574,6 @@
 /RobWork/ext/boostbindings/boost/numeric/bindings/.csettings
 /RobWork/ext/boostbindings/boost/numeric/bindings/CPackConfig.cmake
 /RobWork/ext/boostbindings/boost/numeric/bindings/CPackSourceConfig.cmake
-/RobWork/ext/boostbindings/boost/numeric/bindings/.cproject
-/RobWork/ext/boostbindings/boost/numeric/bindings/.project
 
 # /RobWork/ext/boostbindings/boost/numeric/bindings/lapack/
 /RobWork/ext/boostbindings/boost/numeric/bindings/lapack/cmake_install.cmake
@@ -651,8 +589,6 @@
 /RobWork/ext/boostbindings/boost/numeric/bindings/lapack/.csettings
 /RobWork/ext/boostbindings/boost/numeric/bindings/lapack/CPackConfig.cmake
 /RobWork/ext/boostbindings/boost/numeric/bindings/lapack/CPackSourceConfig.cmake
-/RobWork/ext/boostbindings/boost/numeric/bindings/lapack/.cproject
-/RobWork/ext/boostbindings/boost/numeric/bindings/lapack/.project
 
 # /RobWork/ext/boostbindings/boost/numeric/bindings/traits/
 /RobWork/ext/boostbindings/boost/numeric/bindings/traits/cmake_install.cmake
@@ -668,8 +604,6 @@
 /RobWork/ext/boostbindings/boost/numeric/bindings/traits/.csettings
 /RobWork/ext/boostbindings/boost/numeric/bindings/traits/CPackConfig.cmake
 /RobWork/ext/boostbindings/boost/numeric/bindings/traits/CPackSourceConfig.cmake
-/RobWork/ext/boostbindings/boost/numeric/bindings/traits/.cproject
-/RobWork/ext/boostbindings/boost/numeric/bindings/traits/.project
 
 # /RobWork/ext/boostbindings/boost/numeric/bindings/traits/detail/
 /RobWork/ext/boostbindings/boost/numeric/bindings/traits/detail/cmake_install.cmake
@@ -685,8 +619,6 @@
 /RobWork/ext/boostbindings/boost/numeric/bindings/traits/detail/.csettings
 /RobWork/ext/boostbindings/boost/numeric/bindings/traits/detail/CPackConfig.cmake
 /RobWork/ext/boostbindings/boost/numeric/bindings/traits/detail/CPackSourceConfig.cmake
-/RobWork/ext/boostbindings/boost/numeric/bindings/traits/detail/.cproject
-/RobWork/ext/boostbindings/boost/numeric/bindings/traits/detail/.project
 
 # /RobWork/ext/fcl/fcl/include/fcl/
 /RobWork/ext/fcl/fcl/include/fcl/config.h
@@ -711,8 +643,6 @@
 /RobWork/ext/lua/.csettings
 /RobWork/ext/lua/CPackConfig.cmake
 /RobWork/ext/lua/CPackSourceConfig.cmake
-/RobWork/ext/lua/.cproject
-/RobWork/ext/lua/.project
 
 # /RobWork/ext/lua/VisualStudio2005/
 /RobWork/ext/lua/VisualStudio2005/cmake_install.cmake
@@ -728,8 +658,6 @@
 /RobWork/ext/lua/VisualStudio2005/.csettings
 /RobWork/ext/lua/VisualStudio2005/CPackConfig.cmake
 /RobWork/ext/lua/VisualStudio2005/CPackSourceConfig.cmake
-/RobWork/ext/lua/VisualStudio2005/.cproject
-/RobWork/ext/lua/VisualStudio2005/.project
 
 # /RobWork/ext/lua/VisualStudio2008/
 /RobWork/ext/lua/VisualStudio2008/cmake_install.cmake
@@ -745,8 +673,6 @@
 /RobWork/ext/lua/VisualStudio2008/.csettings
 /RobWork/ext/lua/VisualStudio2008/CPackConfig.cmake
 /RobWork/ext/lua/VisualStudio2008/CPackSourceConfig.cmake
-/RobWork/ext/lua/VisualStudio2008/.cproject
-/RobWork/ext/lua/VisualStudio2008/.project
 
 # /RobWork/ext/lua/VisualStudio2010/
 /RobWork/ext/lua/VisualStudio2010/cmake_install.cmake
@@ -762,8 +688,6 @@
 /RobWork/ext/lua/VisualStudio2010/.csettings
 /RobWork/ext/lua/VisualStudio2010/CPackConfig.cmake
 /RobWork/ext/lua/VisualStudio2010/CPackSourceConfig.cmake
-/RobWork/ext/lua/VisualStudio2010/.cproject
-/RobWork/ext/lua/VisualStudio2010/.project
 
 # /RobWork/ext/lua/doc/
 /RobWork/ext/lua/doc/cmake_install.cmake
@@ -779,8 +703,6 @@
 /RobWork/ext/lua/doc/.csettings
 /RobWork/ext/lua/doc/CPackConfig.cmake
 /RobWork/ext/lua/doc/CPackSourceConfig.cmake
-/RobWork/ext/lua/doc/.cproject
-/RobWork/ext/lua/doc/.project
 
 # /RobWork/ext/lua/etc/
 /RobWork/ext/lua/etc/cmake_install.cmake
@@ -796,8 +718,6 @@
 /RobWork/ext/lua/etc/.csettings
 /RobWork/ext/lua/etc/CPackConfig.cmake
 /RobWork/ext/lua/etc/CPackSourceConfig.cmake
-/RobWork/ext/lua/etc/.cproject
-/RobWork/ext/lua/etc/.project
 
 # /RobWork/ext/lua/src/
 /RobWork/ext/lua/src/cmake_install.cmake
@@ -813,8 +733,6 @@
 /RobWork/ext/lua/src/.csettings
 /RobWork/ext/lua/src/CPackConfig.cmake
 /RobWork/ext/lua/src/CPackSourceConfig.cmake
-/RobWork/ext/lua/src/.cproject
-/RobWork/ext/lua/src/.project
 
 # /RobWork/ext/lua/test/
 /RobWork/ext/lua/test/cmake_install.cmake
@@ -830,8 +748,6 @@
 /RobWork/ext/lua/test/.csettings
 /RobWork/ext/lua/test/CPackConfig.cmake
 /RobWork/ext/lua/test/CPackSourceConfig.cmake
-/RobWork/ext/lua/test/.cproject
-/RobWork/ext/lua/test/.project
 
 # /RobWork/ext/qhull/
 /RobWork/ext/qhull/cmake_install.cmake
@@ -847,8 +763,6 @@
 /RobWork/ext/qhull/.csettings
 /RobWork/ext/qhull/CPackConfig.cmake
 /RobWork/ext/qhull/CPackSourceConfig.cmake
-/RobWork/ext/qhull/.cproject
-/RobWork/ext/qhull/.project
 
 # /RobWork/ext/qhull/src/
 /RobWork/ext/qhull/src/cmake_install.cmake
@@ -864,8 +778,6 @@
 /RobWork/ext/qhull/src/.csettings
 /RobWork/ext/qhull/src/CPackConfig.cmake
 /RobWork/ext/qhull/src/CPackSourceConfig.cmake
-/RobWork/ext/qhull/src/.cproject
-/RobWork/ext/qhull/src/.project
 
 # /RobWork/ext/rwpqp/PQP/
 /RobWork/ext/rwpqp/PQP/cmake_install.cmake
@@ -881,8 +793,6 @@
 /RobWork/ext/rwpqp/PQP/.csettings
 /RobWork/ext/rwpqp/PQP/CPackConfig.cmake
 /RobWork/ext/rwpqp/PQP/CPackSourceConfig.cmake
-/RobWork/ext/rwpqp/PQP/.cproject
-/RobWork/ext/rwpqp/PQP/.project
 
 # /RobWork/ext/rwpqp/PQP/VS2005/
 /RobWork/ext/rwpqp/PQP/VS2005/cmake_install.cmake
@@ -898,8 +808,6 @@
 /RobWork/ext/rwpqp/PQP/VS2005/.csettings
 /RobWork/ext/rwpqp/PQP/VS2005/CPackConfig.cmake
 /RobWork/ext/rwpqp/PQP/VS2005/CPackSourceConfig.cmake
-/RobWork/ext/rwpqp/PQP/VS2005/.cproject
-/RobWork/ext/rwpqp/PQP/VS2005/.project
 
 # /RobWork/ext/rwpqp/PQP/VS2005/pqp/
 /RobWork/ext/rwpqp/PQP/VS2005/pqp/cmake_install.cmake
@@ -915,8 +823,6 @@
 /RobWork/ext/rwpqp/PQP/VS2005/pqp/.csettings
 /RobWork/ext/rwpqp/PQP/VS2005/pqp/CPackConfig.cmake
 /RobWork/ext/rwpqp/PQP/VS2005/pqp/CPackSourceConfig.cmake
-/RobWork/ext/rwpqp/PQP/VS2005/pqp/.cproject
-/RobWork/ext/rwpqp/PQP/VS2005/pqp/.project
 
 # /RobWork/ext/rwpqp/PQP/VS2008/
 /RobWork/ext/rwpqp/PQP/VS2008/cmake_install.cmake
@@ -932,8 +838,6 @@
 /RobWork/ext/rwpqp/PQP/VS2008/.csettings
 /RobWork/ext/rwpqp/PQP/VS2008/CPackConfig.cmake
 /RobWork/ext/rwpqp/PQP/VS2008/CPackSourceConfig.cmake
-/RobWork/ext/rwpqp/PQP/VS2008/.cproject
-/RobWork/ext/rwpqp/PQP/VS2008/.project
 
 # /RobWork/ext/rwpqp/PQP/VS2008/pqp/
 /RobWork/ext/rwpqp/PQP/VS2008/pqp/cmake_install.cmake
@@ -949,8 +853,6 @@
 /RobWork/ext/rwpqp/PQP/VS2008/pqp/.csettings
 /RobWork/ext/rwpqp/PQP/VS2008/pqp/CPackConfig.cmake
 /RobWork/ext/rwpqp/PQP/VS2008/pqp/CPackSourceConfig.cmake
-/RobWork/ext/rwpqp/PQP/VS2008/pqp/.cproject
-/RobWork/ext/rwpqp/PQP/VS2008/pqp/.project
 
 # /RobWork/ext/rwpqp/PQP/VS2010/
 /RobWork/ext/rwpqp/PQP/VS2010/cmake_install.cmake
@@ -966,8 +868,6 @@
 /RobWork/ext/rwpqp/PQP/VS2010/.csettings
 /RobWork/ext/rwpqp/PQP/VS2010/CPackConfig.cmake
 /RobWork/ext/rwpqp/PQP/VS2010/CPackSourceConfig.cmake
-/RobWork/ext/rwpqp/PQP/VS2010/.cproject
-/RobWork/ext/rwpqp/PQP/VS2010/.project
 
 # /RobWork/ext/rwpqp/PQP/VS2010/pqp/
 /RobWork/ext/rwpqp/PQP/VS2010/pqp/cmake_install.cmake
@@ -983,8 +883,6 @@
 /RobWork/ext/rwpqp/PQP/VS2010/pqp/.csettings
 /RobWork/ext/rwpqp/PQP/VS2010/pqp/CPackConfig.cmake
 /RobWork/ext/rwpqp/PQP/VS2010/pqp/CPackSourceConfig.cmake
-/RobWork/ext/rwpqp/PQP/VS2010/pqp/.cproject
-/RobWork/ext/rwpqp/PQP/VS2010/pqp/.project
 
 # /RobWork/ext/rwyaobi/yaobi/
 /RobWork/ext/rwyaobi/yaobi/cmake_install.cmake
@@ -1000,8 +898,6 @@
 /RobWork/ext/rwyaobi/yaobi/.csettings
 /RobWork/ext/rwyaobi/yaobi/CPackConfig.cmake
 /RobWork/ext/rwyaobi/yaobi/CPackSourceConfig.cmake
-/RobWork/ext/rwyaobi/yaobi/.cproject
-/RobWork/ext/rwyaobi/yaobi/.project
 /RobWork/ext/rwyaobi/yaobi/yaobi_config.h
 
 # /RobWork/ext/rwyaobi/yaobi/VS_2003/
@@ -1018,8 +914,6 @@
 /RobWork/ext/rwyaobi/yaobi/VS_2003/.csettings
 /RobWork/ext/rwyaobi/yaobi/VS_2003/CPackConfig.cmake
 /RobWork/ext/rwyaobi/yaobi/VS_2003/CPackSourceConfig.cmake
-/RobWork/ext/rwyaobi/yaobi/VS_2003/.cproject
-/RobWork/ext/rwyaobi/yaobi/VS_2003/.project
 
 # /RobWork/ext/rwyaobi/yaobi/VS_2003/yaobi/
 /RobWork/ext/rwyaobi/yaobi/VS_2003/yaobi/cmake_install.cmake
@@ -1035,8 +929,6 @@
 /RobWork/ext/rwyaobi/yaobi/VS_2003/yaobi/.csettings
 /RobWork/ext/rwyaobi/yaobi/VS_2003/yaobi/CPackConfig.cmake
 /RobWork/ext/rwyaobi/yaobi/VS_2003/yaobi/CPackSourceConfig.cmake
-/RobWork/ext/rwyaobi/yaobi/VS_2003/yaobi/.cproject
-/RobWork/ext/rwyaobi/yaobi/VS_2003/yaobi/.project
 
 # /RobWork/ext/rwyaobi/yaobi/VS_2005/
 /RobWork/ext/rwyaobi/yaobi/VS_2005/cmake_install.cmake
@@ -1052,8 +944,6 @@
 /RobWork/ext/rwyaobi/yaobi/VS_2005/.csettings
 /RobWork/ext/rwyaobi/yaobi/VS_2005/CPackConfig.cmake
 /RobWork/ext/rwyaobi/yaobi/VS_2005/CPackSourceConfig.cmake
-/RobWork/ext/rwyaobi/yaobi/VS_2005/.cproject
-/RobWork/ext/rwyaobi/yaobi/VS_2005/.project
 
 # /RobWork/ext/rwyaobi/yaobi/VS_2005/yaobi/
 /RobWork/ext/rwyaobi/yaobi/VS_2005/yaobi/cmake_install.cmake
@@ -1069,8 +959,6 @@
 /RobWork/ext/rwyaobi/yaobi/VS_2005/yaobi/.csettings
 /RobWork/ext/rwyaobi/yaobi/VS_2005/yaobi/CPackConfig.cmake
 /RobWork/ext/rwyaobi/yaobi/VS_2005/yaobi/CPackSourceConfig.cmake
-/RobWork/ext/rwyaobi/yaobi/VS_2005/yaobi/.cproject
-/RobWork/ext/rwyaobi/yaobi/VS_2005/yaobi/.project
 
 # /RobWork/ext/rwyaobi/yaobi/VS_2008/
 /RobWork/ext/rwyaobi/yaobi/VS_2008/cmake_install.cmake
@@ -1086,8 +974,6 @@
 /RobWork/ext/rwyaobi/yaobi/VS_2008/.csettings
 /RobWork/ext/rwyaobi/yaobi/VS_2008/CPackConfig.cmake
 /RobWork/ext/rwyaobi/yaobi/VS_2008/CPackSourceConfig.cmake
-/RobWork/ext/rwyaobi/yaobi/VS_2008/.cproject
-/RobWork/ext/rwyaobi/yaobi/VS_2008/.project
 
 # /RobWork/ext/rwyaobi/yaobi/VS_2008/yaobi/
 /RobWork/ext/rwyaobi/yaobi/VS_2008/yaobi/cmake_install.cmake
@@ -1103,8 +989,6 @@
 /RobWork/ext/rwyaobi/yaobi/VS_2008/yaobi/.csettings
 /RobWork/ext/rwyaobi/yaobi/VS_2008/yaobi/CPackConfig.cmake
 /RobWork/ext/rwyaobi/yaobi/VS_2008/yaobi/CPackSourceConfig.cmake
-/RobWork/ext/rwyaobi/yaobi/VS_2008/yaobi/.cproject
-/RobWork/ext/rwyaobi/yaobi/VS_2008/yaobi/.project
 
 # /RobWork/ext/rwyaobi/yaobi/VS_2010/
 /RobWork/ext/rwyaobi/yaobi/VS_2010/cmake_install.cmake
@@ -1120,8 +1004,6 @@
 /RobWork/ext/rwyaobi/yaobi/VS_2010/.csettings
 /RobWork/ext/rwyaobi/yaobi/VS_2010/CPackConfig.cmake
 /RobWork/ext/rwyaobi/yaobi/VS_2010/CPackSourceConfig.cmake
-/RobWork/ext/rwyaobi/yaobi/VS_2010/.cproject
-/RobWork/ext/rwyaobi/yaobi/VS_2010/.project
 
 # /RobWork/ext/rwyaobi/yaobi/VS_2010/yaobi/
 /RobWork/ext/rwyaobi/yaobi/VS_2010/yaobi/cmake_install.cmake
@@ -1137,8 +1019,6 @@
 /RobWork/ext/rwyaobi/yaobi/VS_2010/yaobi/.csettings
 /RobWork/ext/rwyaobi/yaobi/VS_2010/yaobi/CPackConfig.cmake
 /RobWork/ext/rwyaobi/yaobi/VS_2010/yaobi/CPackSourceConfig.cmake
-/RobWork/ext/rwyaobi/yaobi/VS_2010/yaobi/.cproject
-/RobWork/ext/rwyaobi/yaobi/VS_2010/yaobi/.project
 
 # /RobWork/src/
 /RobWork/src/cmake_install.cmake
@@ -1154,8 +1034,6 @@
 /RobWork/src/.csettings
 /RobWork/src/CPackConfig.cmake
 /RobWork/src/CPackSourceConfig.cmake
-/RobWork/src/.cproject
-/RobWork/src/.project
 /RobWork/src/RobWorkConfig.hpp
 
 # /RobWork/src/rw/
@@ -1172,8 +1050,6 @@
 /RobWork/src/rw/.csettings
 /RobWork/src/rw/CPackConfig.cmake
 /RobWork/src/rw/CPackSourceConfig.cmake
-/RobWork/src/rw/.cproject
-/RobWork/src/rw/.project
 
 # /RobWork/src/rw/common/
 /RobWork/src/rw/common/cmake_install.cmake
@@ -1189,8 +1065,6 @@
 /RobWork/src/rw/common/.csettings
 /RobWork/src/rw/common/CPackConfig.cmake
 /RobWork/src/rw/common/CPackSourceConfig.cmake
-/RobWork/src/rw/common/.cproject
-/RobWork/src/rw/common/.project
 
 # /RobWork/src/rw/geometry/
 /RobWork/src/rw/geometry/cmake_install.cmake
@@ -1206,8 +1080,6 @@
 /RobWork/src/rw/geometry/.csettings
 /RobWork/src/rw/geometry/CPackConfig.cmake
 /RobWork/src/rw/geometry/CPackSourceConfig.cmake
-/RobWork/src/rw/geometry/.cproject
-/RobWork/src/rw/geometry/.project
 
 # /RobWork/src/rw/graphics/
 /RobWork/src/rw/graphics/cmake_install.cmake
@@ -1223,8 +1095,6 @@
 /RobWork/src/rw/graphics/.csettings
 /RobWork/src/rw/graphics/CPackConfig.cmake
 /RobWork/src/rw/graphics/CPackSourceConfig.cmake
-/RobWork/src/rw/graphics/.cproject
-/RobWork/src/rw/graphics/.project
 
 # /RobWork/src/rw/graspplanning/
 /RobWork/src/rw/graspplanning/cmake_install.cmake
@@ -1240,8 +1110,6 @@
 /RobWork/src/rw/graspplanning/.csettings
 /RobWork/src/rw/graspplanning/CPackConfig.cmake
 /RobWork/src/rw/graspplanning/CPackSourceConfig.cmake
-/RobWork/src/rw/graspplanning/.cproject
-/RobWork/src/rw/graspplanning/.project
 
 # /RobWork/src/rw/invkin/
 /RobWork/src/rw/invkin/cmake_install.cmake
@@ -1257,8 +1125,6 @@
 /RobWork/src/rw/invkin/.csettings
 /RobWork/src/rw/invkin/CPackConfig.cmake
 /RobWork/src/rw/invkin/CPackSourceConfig.cmake
-/RobWork/src/rw/invkin/.cproject
-/RobWork/src/rw/invkin/.project
 
 # /RobWork/src/rw/kinematics/
 /RobWork/src/rw/kinematics/cmake_install.cmake
@@ -1274,8 +1140,6 @@
 /RobWork/src/rw/kinematics/.csettings
 /RobWork/src/rw/kinematics/CPackConfig.cmake
 /RobWork/src/rw/kinematics/CPackSourceConfig.cmake
-/RobWork/src/rw/kinematics/.cproject
-/RobWork/src/rw/kinematics/.project
 
 # /RobWork/src/rw/loaders/
 /RobWork/src/rw/loaders/cmake_install.cmake
@@ -1291,8 +1155,6 @@
 /RobWork/src/rw/loaders/.csettings
 /RobWork/src/rw/loaders/CPackConfig.cmake
 /RobWork/src/rw/loaders/CPackSourceConfig.cmake
-/RobWork/src/rw/loaders/.cproject
-/RobWork/src/rw/loaders/.project
 
 # /RobWork/src/rw/loaders/colsetup/
 /RobWork/src/rw/loaders/colsetup/cmake_install.cmake
@@ -1308,8 +1170,6 @@
 /RobWork/src/rw/loaders/colsetup/.csettings
 /RobWork/src/rw/loaders/colsetup/CPackConfig.cmake
 /RobWork/src/rw/loaders/colsetup/CPackSourceConfig.cmake
-/RobWork/src/rw/loaders/colsetup/.cproject
-/RobWork/src/rw/loaders/colsetup/.project
 
 # /RobWork/src/rw/loaders/image/
 /RobWork/src/rw/loaders/image/cmake_install.cmake
@@ -1325,8 +1185,6 @@
 /RobWork/src/rw/loaders/image/.csettings
 /RobWork/src/rw/loaders/image/CPackConfig.cmake
 /RobWork/src/rw/loaders/image/CPackSourceConfig.cmake
-/RobWork/src/rw/loaders/image/.cproject
-/RobWork/src/rw/loaders/image/.project
 
 # /RobWork/src/rw/loaders/path/
 /RobWork/src/rw/loaders/path/cmake_install.cmake
@@ -1342,8 +1200,6 @@
 /RobWork/src/rw/loaders/path/.csettings
 /RobWork/src/rw/loaders/path/CPackConfig.cmake
 /RobWork/src/rw/loaders/path/CPackSourceConfig.cmake
-/RobWork/src/rw/loaders/path/.cproject
-/RobWork/src/rw/loaders/path/.project
 
 # /RobWork/src/rw/loaders/rwxml/
 /RobWork/src/rw/loaders/rwxml/cmake_install.cmake
@@ -1359,8 +1215,6 @@
 /RobWork/src/rw/loaders/rwxml/.csettings
 /RobWork/src/rw/loaders/rwxml/CPackConfig.cmake
 /RobWork/src/rw/loaders/rwxml/CPackSourceConfig.cmake
-/RobWork/src/rw/loaders/rwxml/.cproject
-/RobWork/src/rw/loaders/rwxml/.project
 
 # /RobWork/src/rw/loaders/tul/
 /RobWork/src/rw/loaders/tul/cmake_install.cmake
@@ -1376,8 +1230,6 @@
 /RobWork/src/rw/loaders/tul/.csettings
 /RobWork/src/rw/loaders/tul/CPackConfig.cmake
 /RobWork/src/rw/loaders/tul/CPackSourceConfig.cmake
-/RobWork/src/rw/loaders/tul/.cproject
-/RobWork/src/rw/loaders/tul/.project
 
 # /RobWork/src/rw/loaders/xml/
 /RobWork/src/rw/loaders/xml/cmake_install.cmake
@@ -1393,8 +1245,6 @@
 /RobWork/src/rw/loaders/xml/.csettings
 /RobWork/src/rw/loaders/xml/CPackConfig.cmake
 /RobWork/src/rw/loaders/xml/CPackSourceConfig.cmake
-/RobWork/src/rw/loaders/xml/.cproject
-/RobWork/src/rw/loaders/xml/.project
 
 # /RobWork/src/rw/math/
 /RobWork/src/rw/math/cmake_install.cmake
@@ -1410,8 +1260,6 @@
 /RobWork/src/rw/math/.csettings
 /RobWork/src/rw/math/CPackConfig.cmake
 /RobWork/src/rw/math/CPackSourceConfig.cmake
-/RobWork/src/rw/math/.cproject
-/RobWork/src/rw/math/.project
 
 # /RobWork/src/rw/models/
 /RobWork/src/rw/models/cmake_install.cmake
@@ -1427,8 +1275,6 @@
 /RobWork/src/rw/models/.csettings
 /RobWork/src/rw/models/CPackConfig.cmake
 /RobWork/src/rw/models/CPackSourceConfig.cmake
-/RobWork/src/rw/models/.cproject
-/RobWork/src/rw/models/.project
 
 # /RobWork/src/rw/pathplanning/
 /RobWork/src/rw/pathplanning/cmake_install.cmake
@@ -1444,8 +1290,6 @@
 /RobWork/src/rw/pathplanning/.csettings
 /RobWork/src/rw/pathplanning/CPackConfig.cmake
 /RobWork/src/rw/pathplanning/CPackSourceConfig.cmake
-/RobWork/src/rw/pathplanning/.cproject
-/RobWork/src/rw/pathplanning/.project
 
 # /RobWork/src/rw/plugin/
 /RobWork/src/rw/plugin/cmake_install.cmake
@@ -1461,8 +1305,6 @@
 /RobWork/src/rw/plugin/.csettings
 /RobWork/src/rw/plugin/CPackConfig.cmake
 /RobWork/src/rw/plugin/CPackSourceConfig.cmake
-/RobWork/src/rw/plugin/.cproject
-/RobWork/src/rw/plugin/.project
 
 # /RobWork/src/rw/proximity/
 /RobWork/src/rw/proximity/cmake_install.cmake
@@ -1478,8 +1320,6 @@
 /RobWork/src/rw/proximity/.csettings
 /RobWork/src/rw/proximity/CPackConfig.cmake
 /RobWork/src/rw/proximity/CPackSourceConfig.cmake
-/RobWork/src/rw/proximity/.cproject
-/RobWork/src/rw/proximity/.project
 
 # /RobWork/src/rw/sensor/
 /RobWork/src/rw/sensor/cmake_install.cmake
@@ -1495,8 +1335,6 @@
 /RobWork/src/rw/sensor/.csettings
 /RobWork/src/rw/sensor/CPackConfig.cmake
 /RobWork/src/rw/sensor/CPackSourceConfig.cmake
-/RobWork/src/rw/sensor/.cproject
-/RobWork/src/rw/sensor/.project
 
 # /RobWork/src/rw/trajectory/
 /RobWork/src/rw/trajectory/cmake_install.cmake
@@ -1512,8 +1350,6 @@
 /RobWork/src/rw/trajectory/.csettings
 /RobWork/src/rw/trajectory/CPackConfig.cmake
 /RobWork/src/rw/trajectory/CPackSourceConfig.cmake
-/RobWork/src/rw/trajectory/.cproject
-/RobWork/src/rw/trajectory/.project
 
 # /RobWork/src/rwlibs/
 /RobWork/src/rwlibs/cmake_install.cmake
@@ -1529,8 +1365,6 @@
 /RobWork/src/rwlibs/.csettings
 /RobWork/src/rwlibs/CPackConfig.cmake
 /RobWork/src/rwlibs/CPackSourceConfig.cmake
-/RobWork/src/rwlibs/.cproject
-/RobWork/src/rwlibs/.project
 
 # /RobWork/src/rwlibs/algorithms/
 /RobWork/src/rwlibs/algorithms/cmake_install.cmake
@@ -1546,8 +1380,6 @@
 /RobWork/src/rwlibs/algorithms/.csettings
 /RobWork/src/rwlibs/algorithms/CPackConfig.cmake
 /RobWork/src/rwlibs/algorithms/CPackSourceConfig.cmake
-/RobWork/src/rwlibs/algorithms/.cproject
-/RobWork/src/rwlibs/algorithms/.project
 
 # /RobWork/src/rwlibs/algorithms/gpm/
 /RobWork/src/rwlibs/algorithms/gpm/cmake_install.cmake
@@ -1563,8 +1395,6 @@
 /RobWork/src/rwlibs/algorithms/gpm/.csettings
 /RobWork/src/rwlibs/algorithms/gpm/CPackConfig.cmake
 /RobWork/src/rwlibs/algorithms/gpm/CPackSourceConfig.cmake
-/RobWork/src/rwlibs/algorithms/gpm/.cproject
-/RobWork/src/rwlibs/algorithms/gpm/.project
 
 # /RobWork/src/rwlibs/algorithms/kdtree/
 /RobWork/src/rwlibs/algorithms/kdtree/cmake_install.cmake
@@ -1580,8 +1410,6 @@
 /RobWork/src/rwlibs/algorithms/kdtree/.csettings
 /RobWork/src/rwlibs/algorithms/kdtree/CPackConfig.cmake
 /RobWork/src/rwlibs/algorithms/kdtree/CPackSourceConfig.cmake
-/RobWork/src/rwlibs/algorithms/kdtree/.cproject
-/RobWork/src/rwlibs/algorithms/kdtree/.project
 
 # /RobWork/src/rwlibs/algorithms/qpcontroller/
 /RobWork/src/rwlibs/algorithms/qpcontroller/cmake_install.cmake
@@ -1597,8 +1425,6 @@
 /RobWork/src/rwlibs/algorithms/qpcontroller/.csettings
 /RobWork/src/rwlibs/algorithms/qpcontroller/CPackConfig.cmake
 /RobWork/src/rwlibs/algorithms/qpcontroller/CPackSourceConfig.cmake
-/RobWork/src/rwlibs/algorithms/qpcontroller/.cproject
-/RobWork/src/rwlibs/algorithms/qpcontroller/.project
 
 # /RobWork/src/rwlibs/algorithms/xqpcontroller/
 /RobWork/src/rwlibs/algorithms/xqpcontroller/cmake_install.cmake
@@ -1614,8 +1440,6 @@
 /RobWork/src/rwlibs/algorithms/xqpcontroller/.csettings
 /RobWork/src/rwlibs/algorithms/xqpcontroller/CPackConfig.cmake
 /RobWork/src/rwlibs/algorithms/xqpcontroller/CPackSourceConfig.cmake
-/RobWork/src/rwlibs/algorithms/xqpcontroller/.cproject
-/RobWork/src/rwlibs/algorithms/xqpcontroller/.project
 
 # /RobWork/src/rwlibs/control/
 /RobWork/src/rwlibs/control/cmake_install.cmake
@@ -1631,8 +1455,6 @@
 /RobWork/src/rwlibs/control/.csettings
 /RobWork/src/rwlibs/control/CPackConfig.cmake
 /RobWork/src/rwlibs/control/CPackSourceConfig.cmake
-/RobWork/src/rwlibs/control/.cproject
-/RobWork/src/rwlibs/control/.project
 
 # /RobWork/src/rwlibs/opengl/
 /RobWork/src/rwlibs/opengl/cmake_install.cmake
@@ -1648,8 +1470,6 @@
 /RobWork/src/rwlibs/opengl/.csettings
 /RobWork/src/rwlibs/opengl/CPackConfig.cmake
 /RobWork/src/rwlibs/opengl/CPackSourceConfig.cmake
-/RobWork/src/rwlibs/opengl/.cproject
-/RobWork/src/rwlibs/opengl/.project
 
 # /RobWork/src/rwlibs/os/
 /RobWork/src/rwlibs/os/cmake_install.cmake
@@ -1665,8 +1485,6 @@
 /RobWork/src/rwlibs/os/.csettings
 /RobWork/src/rwlibs/os/CPackConfig.cmake
 /RobWork/src/rwlibs/os/CPackSourceConfig.cmake
-/RobWork/src/rwlibs/os/.cproject
-/RobWork/src/rwlibs/os/.project
 
 # /RobWork/src/rwlibs/pathoptimization/
 /RobWork/src/rwlibs/pathoptimization/cmake_install.cmake
@@ -1682,8 +1500,6 @@
 /RobWork/src/rwlibs/pathoptimization/.csettings
 /RobWork/src/rwlibs/pathoptimization/CPackConfig.cmake
 /RobWork/src/rwlibs/pathoptimization/CPackSourceConfig.cmake
-/RobWork/src/rwlibs/pathoptimization/.cproject
-/RobWork/src/rwlibs/pathoptimization/.project
 
 # /RobWork/src/rwlibs/pathoptimization/clearance/
 /RobWork/src/rwlibs/pathoptimization/clearance/cmake_install.cmake
@@ -1699,8 +1515,6 @@
 /RobWork/src/rwlibs/pathoptimization/clearance/.csettings
 /RobWork/src/rwlibs/pathoptimization/clearance/CPackConfig.cmake
 /RobWork/src/rwlibs/pathoptimization/clearance/CPackSourceConfig.cmake
-/RobWork/src/rwlibs/pathoptimization/clearance/.cproject
-/RobWork/src/rwlibs/pathoptimization/clearance/.project
 
 # /RobWork/src/rwlibs/pathoptimization/pathlength/
 /RobWork/src/rwlibs/pathoptimization/pathlength/cmake_install.cmake
@@ -1716,8 +1530,6 @@
 /RobWork/src/rwlibs/pathoptimization/pathlength/.csettings
 /RobWork/src/rwlibs/pathoptimization/pathlength/CPackConfig.cmake
 /RobWork/src/rwlibs/pathoptimization/pathlength/CPackSourceConfig.cmake
-/RobWork/src/rwlibs/pathoptimization/pathlength/.cproject
-/RobWork/src/rwlibs/pathoptimization/pathlength/.project
 
 # /RobWork/src/rwlibs/pathplanners/
 /RobWork/src/rwlibs/pathplanners/cmake_install.cmake
@@ -1733,8 +1545,6 @@
 /RobWork/src/rwlibs/pathplanners/.csettings
 /RobWork/src/rwlibs/pathplanners/CPackConfig.cmake
 /RobWork/src/rwlibs/pathplanners/CPackSourceConfig.cmake
-/RobWork/src/rwlibs/pathplanners/.cproject
-/RobWork/src/rwlibs/pathplanners/.project
 
 # /RobWork/src/rwlibs/pathplanners/arw/
 /RobWork/src/rwlibs/pathplanners/arw/cmake_install.cmake
@@ -1750,8 +1560,6 @@
 /RobWork/src/rwlibs/pathplanners/arw/.csettings
 /RobWork/src/rwlibs/pathplanners/arw/CPackConfig.cmake
 /RobWork/src/rwlibs/pathplanners/arw/CPackSourceConfig.cmake
-/RobWork/src/rwlibs/pathplanners/arw/.cproject
-/RobWork/src/rwlibs/pathplanners/arw/.project
 
 # /RobWork/src/rwlibs/pathplanners/prm/
 /RobWork/src/rwlibs/pathplanners/prm/cmake_install.cmake
@@ -1767,8 +1575,6 @@
 /RobWork/src/rwlibs/pathplanners/prm/.csettings
 /RobWork/src/rwlibs/pathplanners/prm/CPackConfig.cmake
 /RobWork/src/rwlibs/pathplanners/prm/CPackSourceConfig.cmake
-/RobWork/src/rwlibs/pathplanners/prm/.cproject
-/RobWork/src/rwlibs/pathplanners/prm/.project
 
 # /RobWork/src/rwlibs/pathplanners/rrt/
 /RobWork/src/rwlibs/pathplanners/rrt/cmake_install.cmake
@@ -1784,8 +1590,6 @@
 /RobWork/src/rwlibs/pathplanners/rrt/.csettings
 /RobWork/src/rwlibs/pathplanners/rrt/CPackConfig.cmake
 /RobWork/src/rwlibs/pathplanners/rrt/CPackSourceConfig.cmake
-/RobWork/src/rwlibs/pathplanners/rrt/.cproject
-/RobWork/src/rwlibs/pathplanners/rrt/.project
 
 # /RobWork/src/rwlibs/pathplanners/sbl/
 /RobWork/src/rwlibs/pathplanners/sbl/cmake_install.cmake
@@ -1801,8 +1605,6 @@
 /RobWork/src/rwlibs/pathplanners/sbl/.csettings
 /RobWork/src/rwlibs/pathplanners/sbl/CPackConfig.cmake
 /RobWork/src/rwlibs/pathplanners/sbl/CPackSourceConfig.cmake
-/RobWork/src/rwlibs/pathplanners/sbl/.cproject
-/RobWork/src/rwlibs/pathplanners/sbl/.project
 
 # /RobWork/src/rwlibs/pathplanners/z3/
 /RobWork/src/rwlibs/pathplanners/z3/cmake_install.cmake
@@ -1818,8 +1620,6 @@
 /RobWork/src/rwlibs/pathplanners/z3/.csettings
 /RobWork/src/rwlibs/pathplanners/z3/CPackConfig.cmake
 /RobWork/src/rwlibs/pathplanners/z3/CPackSourceConfig.cmake
-/RobWork/src/rwlibs/pathplanners/z3/.cproject
-/RobWork/src/rwlibs/pathplanners/z3/.project
 
 # /RobWork/src/rwlibs/proximitystrategies/
 /RobWork/src/rwlibs/proximitystrategies/cmake_install.cmake
@@ -1835,8 +1635,6 @@
 /RobWork/src/rwlibs/proximitystrategies/.csettings
 /RobWork/src/rwlibs/proximitystrategies/CPackConfig.cmake
 /RobWork/src/rwlibs/proximitystrategies/CPackSourceConfig.cmake
-/RobWork/src/rwlibs/proximitystrategies/.cproject
-/RobWork/src/rwlibs/proximitystrategies/.project
 
 # /RobWork/src/rwlibs/simulation/
 /RobWork/src/rwlibs/simulation/cmake_install.cmake
@@ -1852,8 +1650,6 @@
 /RobWork/src/rwlibs/simulation/.csettings
 /RobWork/src/rwlibs/simulation/CPackConfig.cmake
 /RobWork/src/rwlibs/simulation/CPackSourceConfig.cmake
-/RobWork/src/rwlibs/simulation/.cproject
-/RobWork/src/rwlibs/simulation/.project
 
 # /RobWork/src/rwlibs/swig/
 /RobWork/src/rwlibs/swig/CMakeFiles
@@ -1877,8 +1673,6 @@
 /RobWork/src/rwlibs/task/.csettings
 /RobWork/src/rwlibs/task/CPackConfig.cmake
 /RobWork/src/rwlibs/task/CPackSourceConfig.cmake
-/RobWork/src/rwlibs/task/.cproject
-/RobWork/src/rwlibs/task/.project
 
 # /RobWork/src/rwlibs/task/loader/
 /RobWork/src/rwlibs/task/loader/cmake_install.cmake
@@ -1894,8 +1688,6 @@
 /RobWork/src/rwlibs/task/loader/.csettings
 /RobWork/src/rwlibs/task/loader/CPackConfig.cmake
 /RobWork/src/rwlibs/task/loader/CPackSourceConfig.cmake
-/RobWork/src/rwlibs/task/loader/.cproject
-/RobWork/src/rwlibs/task/loader/.project
 
 # /RobWork/src/sandbox/
 /RobWork/src/sandbox/cmake_install.cmake
@@ -1911,8 +1703,6 @@
 /RobWork/src/sandbox/.csettings
 /RobWork/src/sandbox/CPackConfig.cmake
 /RobWork/src/sandbox/CPackSourceConfig.cmake
-/RobWork/src/sandbox/.cproject
-/RobWork/src/sandbox/.project
 
 # /RobWork/src/sandbox/calibration/
 /RobWork/src/sandbox/calibration/cmake_install.cmake
@@ -1928,8 +1718,6 @@
 /RobWork/src/sandbox/calibration/.csettings
 /RobWork/src/sandbox/calibration/CPackConfig.cmake
 /RobWork/src/sandbox/calibration/CPackSourceConfig.cmake
-/RobWork/src/sandbox/calibration/.cproject
-/RobWork/src/sandbox/calibration/.project
 
 # /RobWork/src/sandbox/geometry/
 /RobWork/src/sandbox/geometry/cmake_install.cmake
@@ -1945,8 +1733,6 @@
 /RobWork/src/sandbox/geometry/.csettings
 /RobWork/src/sandbox/geometry/CPackConfig.cmake
 /RobWork/src/sandbox/geometry/CPackSourceConfig.cmake
-/RobWork/src/sandbox/geometry/.cproject
-/RobWork/src/sandbox/geometry/.project
 
 # /RobWork/src/sandbox/graspplanning/
 /RobWork/src/sandbox/graspplanning/cmake_install.cmake
@@ -1962,8 +1748,6 @@
 /RobWork/src/sandbox/graspplanning/.csettings
 /RobWork/src/sandbox/graspplanning/CPackConfig.cmake
 /RobWork/src/sandbox/graspplanning/CPackSourceConfig.cmake
-/RobWork/src/sandbox/graspplanning/.cproject
-/RobWork/src/sandbox/graspplanning/.project
 
 # /RobWork/src/sandbox/interiorpoint/
 /RobWork/src/sandbox/interiorpoint/cmake_install.cmake
@@ -1979,8 +1763,6 @@
 /RobWork/src/sandbox/interiorpoint/.csettings
 /RobWork/src/sandbox/interiorpoint/CPackConfig.cmake
 /RobWork/src/sandbox/interiorpoint/CPackSourceConfig.cmake
-/RobWork/src/sandbox/interiorpoint/.cproject
-/RobWork/src/sandbox/interiorpoint/.project
 
 # /RobWork/src/sandbox/invkin/
 /RobWork/src/sandbox/invkin/cmake_install.cmake
@@ -1996,8 +1778,6 @@
 /RobWork/src/sandbox/invkin/.csettings
 /RobWork/src/sandbox/invkin/CPackConfig.cmake
 /RobWork/src/sandbox/invkin/CPackSourceConfig.cmake
-/RobWork/src/sandbox/invkin/.cproject
-/RobWork/src/sandbox/invkin/.project
 
 # /RobWork/src/sandbox/loaders/
 /RobWork/src/sandbox/loaders/cmake_install.cmake
@@ -2013,8 +1793,6 @@
 /RobWork/src/sandbox/loaders/.csettings
 /RobWork/src/sandbox/loaders/CPackConfig.cmake
 /RobWork/src/sandbox/loaders/CPackSourceConfig.cmake
-/RobWork/src/sandbox/loaders/.cproject
-/RobWork/src/sandbox/loaders/.project
 
 # /RobWork/src/sandbox/models/
 /RobWork/src/sandbox/models/cmake_install.cmake
@@ -2030,8 +1808,6 @@
 /RobWork/src/sandbox/models/.csettings
 /RobWork/src/sandbox/models/CPackConfig.cmake
 /RobWork/src/sandbox/models/CPackSourceConfig.cmake
-/RobWork/src/sandbox/models/.cproject
-/RobWork/src/sandbox/models/.project
 
 # /RobWork/src/sandbox/osg/
 /RobWork/src/sandbox/osg/cmake_install.cmake
@@ -2047,8 +1823,6 @@
 /RobWork/src/sandbox/osg/.csettings
 /RobWork/src/sandbox/osg/CPackConfig.cmake
 /RobWork/src/sandbox/osg/CPackSourceConfig.cmake
-/RobWork/src/sandbox/osg/.cproject
-/RobWork/src/sandbox/osg/.project
 
 # /RobWork/src/sandbox/plugin/
 /RobWork/src/sandbox/plugin/cmake_install.cmake
@@ -2064,8 +1838,6 @@
 /RobWork/src/sandbox/plugin/.csettings
 /RobWork/src/sandbox/plugin/CPackConfig.cmake
 /RobWork/src/sandbox/plugin/CPackSourceConfig.cmake
-/RobWork/src/sandbox/plugin/.cproject
-/RobWork/src/sandbox/plugin/.project
 
 # /RobWork/src/sandbox/proximity/
 /RobWork/src/sandbox/proximity/cmake_install.cmake
@@ -2081,8 +1853,6 @@
 /RobWork/src/sandbox/proximity/.csettings
 /RobWork/src/sandbox/proximity/CPackConfig.cmake
 /RobWork/src/sandbox/proximity/CPackSourceConfig.cmake
-/RobWork/src/sandbox/proximity/.cproject
-/RobWork/src/sandbox/proximity/.project
 
 # /RobWork/test/
 /RobWork/test/cmake_install.cmake
@@ -2098,8 +1868,6 @@
 /RobWork/test/.csettings
 /RobWork/test/CPackConfig.cmake
 /RobWork/test/CPackSourceConfig.cmake
-/RobWork/test/.cproject
-/RobWork/test/.project
 /RobWork/test/TestSuiteConfig.hpp
 /RobWork/test/CTestTestfile.cmake
 /RobWork/test/TestSuiteConfig.xml.install
@@ -2118,8 +1886,6 @@
 /RobWork/test/collision/.csettings
 /RobWork/test/collision/CPackConfig.cmake
 /RobWork/test/collision/CPackSourceConfig.cmake
-/RobWork/test/collision/.cproject
-/RobWork/test/collision/.project
 
 # /RobWork/test/common/
 /RobWork/test/common/cmake_install.cmake
@@ -2135,8 +1901,6 @@
 /RobWork/test/common/.csettings
 /RobWork/test/common/CPackConfig.cmake
 /RobWork/test/common/CPackSourceConfig.cmake
-/RobWork/test/common/.cproject
-/RobWork/test/common/.project
 
 # /RobWork/test/deprecated/
 /RobWork/test/deprecated/cmake_install.cmake
@@ -2152,8 +1916,6 @@
 /RobWork/test/deprecated/.csettings
 /RobWork/test/deprecated/CPackConfig.cmake
 /RobWork/test/deprecated/CPackSourceConfig.cmake
-/RobWork/test/deprecated/.cproject
-/RobWork/test/deprecated/.project
 
 # /RobWork/test/deprecated/interpolator/
 /RobWork/test/deprecated/interpolator/cmake_install.cmake
@@ -2169,8 +1931,6 @@
 /RobWork/test/deprecated/interpolator/.csettings
 /RobWork/test/deprecated/interpolator/CPackConfig.cmake
 /RobWork/test/deprecated/interpolator/CPackSourceConfig.cmake
-/RobWork/test/deprecated/interpolator/.cproject
-/RobWork/test/deprecated/interpolator/.project
 
 # /RobWork/test/drawable/
 /RobWork/test/drawable/cmake_install.cmake
@@ -2186,8 +1946,6 @@
 /RobWork/test/drawable/.csettings
 /RobWork/test/drawable/CPackConfig.cmake
 /RobWork/test/drawable/CPackSourceConfig.cmake
-/RobWork/test/drawable/.cproject
-/RobWork/test/drawable/.project
 
 # /RobWork/test/frame/
 /RobWork/test/frame/cmake_install.cmake
@@ -2203,8 +1961,6 @@
 /RobWork/test/frame/.csettings
 /RobWork/test/frame/CPackConfig.cmake
 /RobWork/test/frame/CPackSourceConfig.cmake
-/RobWork/test/frame/.cproject
-/RobWork/test/frame/.project
 
 # /RobWork/test/geometry/
 /RobWork/test/geometry/cmake_install.cmake
@@ -2220,8 +1976,6 @@
 /RobWork/test/geometry/.csettings
 /RobWork/test/geometry/CPackConfig.cmake
 /RobWork/test/geometry/CPackSourceConfig.cmake
-/RobWork/test/geometry/.cproject
-/RobWork/test/geometry/.project
 
 # /RobWork/test/invkin/
 /RobWork/test/invkin/cmake_install.cmake
@@ -2237,8 +1991,6 @@
 /RobWork/test/invkin/.csettings
 /RobWork/test/invkin/CPackConfig.cmake
 /RobWork/test/invkin/CPackSourceConfig.cmake
-/RobWork/test/invkin/.cproject
-/RobWork/test/invkin/.project
 
 # /RobWork/test/kinematics/
 /RobWork/test/kinematics/cmake_install.cmake
@@ -2254,8 +2006,6 @@
 /RobWork/test/kinematics/.csettings
 /RobWork/test/kinematics/CPackConfig.cmake
 /RobWork/test/kinematics/CPackSourceConfig.cmake
-/RobWork/test/kinematics/.cproject
-/RobWork/test/kinematics/.project
 
 # /RobWork/test/loaders/
 /RobWork/test/loaders/cmake_install.cmake
@@ -2271,8 +2021,6 @@
 /RobWork/test/loaders/.csettings
 /RobWork/test/loaders/CPackConfig.cmake
 /RobWork/test/loaders/CPackSourceConfig.cmake
-/RobWork/test/loaders/.cproject
-/RobWork/test/loaders/.project
 
 # /RobWork/test/math/
 /RobWork/test/math/cmake_install.cmake
@@ -2288,8 +2036,6 @@
 /RobWork/test/math/.csettings
 /RobWork/test/math/CPackConfig.cmake
 /RobWork/test/math/CPackSourceConfig.cmake
-/RobWork/test/math/.cproject
-/RobWork/test/math/.project
 
 # /RobWork/test/models/
 /RobWork/test/models/cmake_install.cmake
@@ -2305,8 +2051,6 @@
 /RobWork/test/models/.csettings
 /RobWork/test/models/CPackConfig.cmake
 /RobWork/test/models/CPackSourceConfig.cmake
-/RobWork/test/models/.cproject
-/RobWork/test/models/.project
 
 # /RobWork/test/pathplanning/
 /RobWork/test/pathplanning/cmake_install.cmake
@@ -2322,8 +2066,6 @@
 /RobWork/test/pathplanning/.csettings
 /RobWork/test/pathplanning/CPackConfig.cmake
 /RobWork/test/pathplanning/CPackSourceConfig.cmake
-/RobWork/test/pathplanning/.cproject
-/RobWork/test/pathplanning/.project
 
 # /RobWork/test/performance/
 /RobWork/test/performance/cmake_install.cmake
@@ -2339,8 +2081,6 @@
 /RobWork/test/performance/.csettings
 /RobWork/test/performance/CPackConfig.cmake
 /RobWork/test/performance/CPackSourceConfig.cmake
-/RobWork/test/performance/.cproject
-/RobWork/test/performance/.project
 
 # /RobWork/test/sandbox/
 /RobWork/test/sandbox/cmake_install.cmake
@@ -2356,8 +2096,6 @@
 /RobWork/test/sandbox/.csettings
 /RobWork/test/sandbox/CPackConfig.cmake
 /RobWork/test/sandbox/CPackSourceConfig.cmake
-/RobWork/test/sandbox/.cproject
-/RobWork/test/sandbox/.project
 
 # /RobWork/test/testfiles/
 /RobWork/test/testfiles/cmake_install.cmake
@@ -2373,8 +2111,6 @@
 /RobWork/test/testfiles/.csettings
 /RobWork/test/testfiles/CPackConfig.cmake
 /RobWork/test/testfiles/CPackSourceConfig.cmake
-/RobWork/test/testfiles/.cproject
-/RobWork/test/testfiles/.project
 
 # /RobWork/test/testfiles/MultiRobotDemo/
 /RobWork/test/testfiles/MultiRobotDemo/cmake_install.cmake
@@ -2390,8 +2126,6 @@
 /RobWork/test/testfiles/MultiRobotDemo/.csettings
 /RobWork/test/testfiles/MultiRobotDemo/CPackConfig.cmake
 /RobWork/test/testfiles/MultiRobotDemo/CPackSourceConfig.cmake
-/RobWork/test/testfiles/MultiRobotDemo/.cproject
-/RobWork/test/testfiles/MultiRobotDemo/.project
 
 # /RobWork/test/testfiles/MultiRobotDemo/Geometry/
 /RobWork/test/testfiles/MultiRobotDemo/Geometry/cmake_install.cmake
@@ -2407,8 +2141,6 @@
 /RobWork/test/testfiles/MultiRobotDemo/Geometry/.csettings
 /RobWork/test/testfiles/MultiRobotDemo/Geometry/CPackConfig.cmake
 /RobWork/test/testfiles/MultiRobotDemo/Geometry/CPackSourceConfig.cmake
-/RobWork/test/testfiles/MultiRobotDemo/Geometry/.cproject
-/RobWork/test/testfiles/MultiRobotDemo/Geometry/.project
 
 # /RobWork/test/testfiles/PA10/
 /RobWork/test/testfiles/PA10/cmake_install.cmake
@@ -2424,8 +2156,6 @@
 /RobWork/test/testfiles/PA10/.csettings
 /RobWork/test/testfiles/PA10/CPackConfig.cmake
 /RobWork/test/testfiles/PA10/CPackSourceConfig.cmake
-/RobWork/test/testfiles/PA10/.cproject
-/RobWork/test/testfiles/PA10/.project
 
 # /RobWork/test/testfiles/PA10/Geometry/
 /RobWork/test/testfiles/PA10/Geometry/cmake_install.cmake
@@ -2441,8 +2171,6 @@
 /RobWork/test/testfiles/PA10/Geometry/.csettings
 /RobWork/test/testfiles/PA10/Geometry/CPackConfig.cmake
 /RobWork/test/testfiles/PA10/Geometry/CPackSourceConfig.cmake
-/RobWork/test/testfiles/PA10/Geometry/.cproject
-/RobWork/test/testfiles/PA10/Geometry/.project
 
 # /RobWork/test/testfiles/SchunkHand/
 /RobWork/test/testfiles/SchunkHand/cmake_install.cmake
@@ -2458,8 +2186,6 @@
 /RobWork/test/testfiles/SchunkHand/.csettings
 /RobWork/test/testfiles/SchunkHand/CPackConfig.cmake
 /RobWork/test/testfiles/SchunkHand/CPackSourceConfig.cmake
-/RobWork/test/testfiles/SchunkHand/.cproject
-/RobWork/test/testfiles/SchunkHand/.project
 
 # /RobWork/test/testfiles/SchunkHand/Geometry/
 /RobWork/test/testfiles/SchunkHand/Geometry/cmake_install.cmake
@@ -2475,8 +2201,6 @@
 /RobWork/test/testfiles/SchunkHand/Geometry/.csettings
 /RobWork/test/testfiles/SchunkHand/Geometry/CPackConfig.cmake
 /RobWork/test/testfiles/SchunkHand/Geometry/CPackSourceConfig.cmake
-/RobWork/test/testfiles/SchunkHand/Geometry/.cproject
-/RobWork/test/testfiles/SchunkHand/Geometry/.project
 
 # /RobWork/test/testfiles/geoms/
 /RobWork/test/testfiles/geoms/cmake_install.cmake
@@ -2492,8 +2216,6 @@
 /RobWork/test/testfiles/geoms/.csettings
 /RobWork/test/testfiles/geoms/CPackConfig.cmake
 /RobWork/test/testfiles/geoms/CPackSourceConfig.cmake
-/RobWork/test/testfiles/geoms/.cproject
-/RobWork/test/testfiles/geoms/.project
 
 # /RobWork/test/testfiles/geoms/performance/
 /RobWork/test/testfiles/geoms/performance/cmake_install.cmake
@@ -2509,8 +2231,6 @@
 /RobWork/test/testfiles/geoms/performance/.csettings
 /RobWork/test/testfiles/geoms/performance/CPackConfig.cmake
 /RobWork/test/testfiles/geoms/performance/CPackSourceConfig.cmake
-/RobWork/test/testfiles/geoms/performance/.cproject
-/RobWork/test/testfiles/geoms/performance/.project
 
 # /RobWork/test/testfiles/simple/
 /RobWork/test/testfiles/simple/cmake_install.cmake
@@ -2526,8 +2246,6 @@
 /RobWork/test/testfiles/simple/.csettings
 /RobWork/test/testfiles/simple/CPackConfig.cmake
 /RobWork/test/testfiles/simple/CPackSourceConfig.cmake
-/RobWork/test/testfiles/simple/.cproject
-/RobWork/test/testfiles/simple/.project
 
 # /RobWork/test/trajectory/
 /RobWork/test/trajectory/cmake_install.cmake
@@ -2543,8 +2261,6 @@
 /RobWork/test/trajectory/.csettings
 /RobWork/test/trajectory/CPackConfig.cmake
 /RobWork/test/trajectory/CPackSourceConfig.cmake
-/RobWork/test/trajectory/.cproject
-/RobWork/test/trajectory/.project
 
 # /RobWork/xml-schemas/
 /RobWork/xml-schemas/cmake_install.cmake
@@ -2560,8 +2276,6 @@
 /RobWork/xml-schemas/.csettings
 /RobWork/xml-schemas/CPackConfig.cmake
 /RobWork/xml-schemas/CPackSourceConfig.cmake
-/RobWork/xml-schemas/.cproject
-/RobWork/xml-schemas/.project
 
 # /RobWorkHardware/
 /RobWorkHardware/cmake_install.cmake
@@ -2578,8 +2292,6 @@
 /RobWorkHardware/.csettings
 /RobWorkHardware/CPackConfig.cmake
 /RobWorkHardware/CPackSourceConfig.cmake
-/RobWorkHardware/.cproject
-/RobWorkHardware/.project
 /RobWorkHardware/config.cmake
 
 # /RobWorkHardware/build/
@@ -2596,8 +2308,6 @@
 /RobWorkHardware/build/.csettings
 /RobWorkHardware/build/CPackConfig.cmake
 /RobWorkHardware/build/CPackSourceConfig.cmake
-/RobWorkHardware/build/.cproject
-/RobWorkHardware/build/.project
 /RobWorkHardware/build/Release
 /RobWorkHardware/build/RobWorkHardwareBuildConfigRelease.cmake
 
@@ -2623,8 +2333,6 @@
 /RobWorkHardware/example/.csettings
 /RobWorkHardware/example/CPackConfig.cmake
 /RobWorkHardware/example/CPackSourceConfig.cmake
-/RobWorkHardware/example/.cproject
-/RobWorkHardware/example/.project
 
 # /RobWorkHardware/example/camera/
 /RobWorkHardware/example/camera/cmake_install.cmake
@@ -2640,8 +2348,6 @@
 /RobWorkHardware/example/camera/.csettings
 /RobWorkHardware/example/camera/CPackConfig.cmake
 /RobWorkHardware/example/camera/CPackSourceConfig.cmake
-/RobWorkHardware/example/camera/.cproject
-/RobWorkHardware/example/camera/.project
 
 # /RobWorkHardware/example/pcube/
 /RobWorkHardware/example/pcube/cmake_install.cmake
@@ -2657,8 +2363,6 @@
 /RobWorkHardware/example/pcube/.csettings
 /RobWorkHardware/example/pcube/CPackConfig.cmake
 /RobWorkHardware/example/pcube/CPackSourceConfig.cmake
-/RobWorkHardware/example/pcube/.cproject
-/RobWorkHardware/example/pcube/.project
 
 # /RobWorkHardware/example/sdh/
 /RobWorkHardware/example/sdh/cmake_install.cmake
@@ -2674,8 +2378,6 @@
 /RobWorkHardware/example/sdh/.csettings
 /RobWorkHardware/example/sdh/CPackConfig.cmake
 /RobWorkHardware/example/sdh/CPackSourceConfig.cmake
-/RobWorkHardware/example/sdh/.cproject
-/RobWorkHardware/example/sdh/.project
 
 # /RobWorkHardware/ext/
 /RobWorkHardware/ext/cmake_install.cmake
@@ -2691,8 +2393,6 @@
 /RobWorkHardware/ext/.csettings
 /RobWorkHardware/ext/CPackConfig.cmake
 /RobWorkHardware/ext/CPackSourceConfig.cmake
-/RobWorkHardware/ext/.cproject
-/RobWorkHardware/ext/.project
 
 # /RobWorkHardware/ext/dcam/
 /RobWorkHardware/ext/dcam/cmake_install.cmake
@@ -2708,8 +2408,6 @@
 /RobWorkHardware/ext/dcam/.csettings
 /RobWorkHardware/ext/dcam/CPackConfig.cmake
 /RobWorkHardware/ext/dcam/CPackSourceConfig.cmake
-/RobWorkHardware/ext/dcam/.cproject
-/RobWorkHardware/ext/dcam/.project
 
 # /RobWorkHardware/ext/dcam/win/
 /RobWorkHardware/ext/dcam/win/cmake_install.cmake
@@ -2725,8 +2423,6 @@
 /RobWorkHardware/ext/dcam/win/.csettings
 /RobWorkHardware/ext/dcam/win/CPackConfig.cmake
 /RobWorkHardware/ext/dcam/win/CPackSourceConfig.cmake
-/RobWorkHardware/ext/dcam/win/.cproject
-/RobWorkHardware/ext/dcam/win/.project
 
 # /RobWorkHardware/ext/dcam/win/cmu1394/
 /RobWorkHardware/ext/dcam/win/cmu1394/cmake_install.cmake
@@ -2742,8 +2438,6 @@
 /RobWorkHardware/ext/dcam/win/cmu1394/.csettings
 /RobWorkHardware/ext/dcam/win/cmu1394/CPackConfig.cmake
 /RobWorkHardware/ext/dcam/win/cmu1394/CPackSourceConfig.cmake
-/RobWorkHardware/ext/dcam/win/cmu1394/.cproject
-/RobWorkHardware/ext/dcam/win/cmu1394/.project
 
 # /RobWorkHardware/ext/dcam/win/cmu1394/lib/
 /RobWorkHardware/ext/dcam/win/cmu1394/lib/cmake_install.cmake
@@ -2759,8 +2453,6 @@
 /RobWorkHardware/ext/dcam/win/cmu1394/lib/.csettings
 /RobWorkHardware/ext/dcam/win/cmu1394/lib/CPackConfig.cmake
 /RobWorkHardware/ext/dcam/win/cmu1394/lib/CPackSourceConfig.cmake
-/RobWorkHardware/ext/dcam/win/cmu1394/lib/.cproject
-/RobWorkHardware/ext/dcam/win/cmu1394/lib/.project
 
 # /RobWorkHardware/ext/dcam_c/
 /RobWorkHardware/ext/dcam_c/cmake_install.cmake
@@ -2776,8 +2468,6 @@
 /RobWorkHardware/ext/dcam_c/.csettings
 /RobWorkHardware/ext/dcam_c/CPackConfig.cmake
 /RobWorkHardware/ext/dcam_c/CPackSourceConfig.cmake
-/RobWorkHardware/ext/dcam_c/.cproject
-/RobWorkHardware/ext/dcam_c/.project
 
 # /RobWorkHardware/ext/dcam_c/project/
 /RobWorkHardware/ext/dcam_c/project/cmake_install.cmake
@@ -2793,8 +2483,6 @@
 /RobWorkHardware/ext/dcam_c/project/.csettings
 /RobWorkHardware/ext/dcam_c/project/CPackConfig.cmake
 /RobWorkHardware/ext/dcam_c/project/CPackSourceConfig.cmake
-/RobWorkHardware/ext/dcam_c/project/.cproject
-/RobWorkHardware/ext/dcam_c/project/.project
 
 # /RobWorkHardware/ext/dcam_c/project/1394Camera_c/
 /RobWorkHardware/ext/dcam_c/project/1394Camera_c/cmake_install.cmake
@@ -2810,8 +2498,6 @@
 /RobWorkHardware/ext/dcam_c/project/1394Camera_c/.csettings
 /RobWorkHardware/ext/dcam_c/project/1394Camera_c/CPackConfig.cmake
 /RobWorkHardware/ext/dcam_c/project/1394Camera_c/CPackSourceConfig.cmake
-/RobWorkHardware/ext/dcam_c/project/1394Camera_c/.cproject
-/RobWorkHardware/ext/dcam_c/project/1394Camera_c/.project
 
 # /RobWorkHardware/ext/dcam_c/project/1394Camera_c/1394Camera_c/
 /RobWorkHardware/ext/dcam_c/project/1394Camera_c/1394Camera_c/cmake_install.cmake
@@ -2827,8 +2513,6 @@
 /RobWorkHardware/ext/dcam_c/project/1394Camera_c/1394Camera_c/.csettings
 /RobWorkHardware/ext/dcam_c/project/1394Camera_c/1394Camera_c/CPackConfig.cmake
 /RobWorkHardware/ext/dcam_c/project/1394Camera_c/1394Camera_c/CPackSourceConfig.cmake
-/RobWorkHardware/ext/dcam_c/project/1394Camera_c/1394Camera_c/.cproject
-/RobWorkHardware/ext/dcam_c/project/1394Camera_c/1394Camera_c/.project
 
 # /RobWorkHardware/ext/swissranger/
 /RobWorkHardware/ext/swissranger/cmake_install.cmake
@@ -2844,8 +2528,6 @@
 /RobWorkHardware/ext/swissranger/.csettings
 /RobWorkHardware/ext/swissranger/CPackConfig.cmake
 /RobWorkHardware/ext/swissranger/CPackSourceConfig.cmake
-/RobWorkHardware/ext/swissranger/.cproject
-/RobWorkHardware/ext/swissranger/.project
 
 # /RobWorkHardware/ext/swissranger/linux/
 /RobWorkHardware/ext/swissranger/linux/cmake_install.cmake
@@ -2861,8 +2543,6 @@
 /RobWorkHardware/ext/swissranger/linux/.csettings
 /RobWorkHardware/ext/swissranger/linux/CPackConfig.cmake
 /RobWorkHardware/ext/swissranger/linux/CPackSourceConfig.cmake
-/RobWorkHardware/ext/swissranger/linux/.cproject
-/RobWorkHardware/ext/swissranger/linux/.project
 
 # /RobWorkHardware/ext/ur_rtde/
 /RobWorkHardware/ext/ur_rtde/.clang-format
@@ -2885,8 +2565,6 @@
 /RobWorkHardware/src/.csettings
 /RobWorkHardware/src/CPackConfig.cmake
 /RobWorkHardware/src/CPackSourceConfig.cmake
-/RobWorkHardware/src/.cproject
-/RobWorkHardware/src/.project
 
 # /RobWorkHardware/src/rwhw/
 /RobWorkHardware/src/rwhw/cmake_install.cmake
@@ -2902,8 +2580,6 @@
 /RobWorkHardware/src/rwhw/.csettings
 /RobWorkHardware/src/rwhw/CPackConfig.cmake
 /RobWorkHardware/src/rwhw/CPackSourceConfig.cmake
-/RobWorkHardware/src/rwhw/.cproject
-/RobWorkHardware/src/rwhw/.project
 /RobWorkHardware/src/rwhw/RobWorkHardwareConfig.hpp
 
 # /RobWorkHardware/src/rwhw/Fanuc/
@@ -2920,8 +2596,6 @@
 /RobWorkHardware/src/rwhw/Fanuc/.csettings
 /RobWorkHardware/src/rwhw/Fanuc/CPackConfig.cmake
 /RobWorkHardware/src/rwhw/Fanuc/CPackSourceConfig.cmake
-/RobWorkHardware/src/rwhw/Fanuc/.cproject
-/RobWorkHardware/src/rwhw/Fanuc/.project
 
 # /RobWorkHardware/src/rwhw/MotomanIA20/
 /RobWorkHardware/src/rwhw/MotomanIA20/cmake_install.cmake
@@ -2937,8 +2611,6 @@
 /RobWorkHardware/src/rwhw/MotomanIA20/.csettings
 /RobWorkHardware/src/rwhw/MotomanIA20/CPackConfig.cmake
 /RobWorkHardware/src/rwhw/MotomanIA20/CPackSourceConfig.cmake
-/RobWorkHardware/src/rwhw/MotomanIA20/.cproject
-/RobWorkHardware/src/rwhw/MotomanIA20/.project
 
 # /RobWorkHardware/src/rwhw/PowerCube/
 /RobWorkHardware/src/rwhw/PowerCube/cmake_install.cmake
@@ -2954,8 +2626,6 @@
 /RobWorkHardware/src/rwhw/PowerCube/.csettings
 /RobWorkHardware/src/rwhw/PowerCube/CPackConfig.cmake
 /RobWorkHardware/src/rwhw/PowerCube/CPackSourceConfig.cmake
-/RobWorkHardware/src/rwhw/PowerCube/.cproject
-/RobWorkHardware/src/rwhw/PowerCube/.project
 
 # /RobWorkHardware/src/rwhw/camera/
 /RobWorkHardware/src/rwhw/camera/cmake_install.cmake
@@ -2971,8 +2641,6 @@
 /RobWorkHardware/src/rwhw/camera/.csettings
 /RobWorkHardware/src/rwhw/camera/CPackConfig.cmake
 /RobWorkHardware/src/rwhw/camera/CPackSourceConfig.cmake
-/RobWorkHardware/src/rwhw/camera/.cproject
-/RobWorkHardware/src/rwhw/camera/.project
 
 # /RobWorkHardware/src/rwhw/can/
 /RobWorkHardware/src/rwhw/can/cmake_install.cmake
@@ -2988,8 +2656,6 @@
 /RobWorkHardware/src/rwhw/can/.csettings
 /RobWorkHardware/src/rwhw/can/CPackConfig.cmake
 /RobWorkHardware/src/rwhw/can/CPackSourceConfig.cmake
-/RobWorkHardware/src/rwhw/can/.cproject
-/RobWorkHardware/src/rwhw/can/.project
 
 # /RobWorkHardware/src/rwhw/can/ESDCAN/
 /RobWorkHardware/src/rwhw/can/ESDCAN/cmake_install.cmake
@@ -3005,8 +2671,6 @@
 /RobWorkHardware/src/rwhw/can/ESDCAN/.csettings
 /RobWorkHardware/src/rwhw/can/ESDCAN/CPackConfig.cmake
 /RobWorkHardware/src/rwhw/can/ESDCAN/CPackSourceConfig.cmake
-/RobWorkHardware/src/rwhw/can/ESDCAN/.cproject
-/RobWorkHardware/src/rwhw/can/ESDCAN/.project
 
 # /RobWorkHardware/src/rwhw/can/IEICAN02/
 /RobWorkHardware/src/rwhw/can/IEICAN02/cmake_install.cmake
@@ -3022,8 +2686,6 @@
 /RobWorkHardware/src/rwhw/can/IEICAN02/.csettings
 /RobWorkHardware/src/rwhw/can/IEICAN02/CPackConfig.cmake
 /RobWorkHardware/src/rwhw/can/IEICAN02/CPackSourceConfig.cmake
-/RobWorkHardware/src/rwhw/can/IEICAN02/.cproject
-/RobWorkHardware/src/rwhw/can/IEICAN02/.project
 
 # /RobWorkHardware/src/rwhw/crsA465/
 /RobWorkHardware/src/rwhw/crsA465/cmake_install.cmake
@@ -3039,8 +2701,6 @@
 /RobWorkHardware/src/rwhw/crsA465/.csettings
 /RobWorkHardware/src/rwhw/crsA465/CPackConfig.cmake
 /RobWorkHardware/src/rwhw/crsA465/CPackSourceConfig.cmake
-/RobWorkHardware/src/rwhw/crsA465/.cproject
-/RobWorkHardware/src/rwhw/crsA465/.project
 
 # /RobWorkHardware/src/rwhw/dockwelder/
 /RobWorkHardware/src/rwhw/dockwelder/cmake_install.cmake
@@ -3056,8 +2716,6 @@
 /RobWorkHardware/src/rwhw/dockwelder/.csettings
 /RobWorkHardware/src/rwhw/dockwelder/CPackConfig.cmake
 /RobWorkHardware/src/rwhw/dockwelder/CPackSourceConfig.cmake
-/RobWorkHardware/src/rwhw/dockwelder/.cproject
-/RobWorkHardware/src/rwhw/dockwelder/.project
 
 # /RobWorkHardware/src/rwhw/katana/
 /RobWorkHardware/src/rwhw/katana/cmake_install.cmake
@@ -3073,8 +2731,6 @@
 /RobWorkHardware/src/rwhw/katana/.csettings
 /RobWorkHardware/src/rwhw/katana/CPackConfig.cmake
 /RobWorkHardware/src/rwhw/katana/CPackSourceConfig.cmake
-/RobWorkHardware/src/rwhw/katana/.cproject
-/RobWorkHardware/src/rwhw/katana/.project
 
 # /RobWorkHardware/src/rwhw/netft/
 /RobWorkHardware/src/rwhw/netft/cmake_install.cmake
@@ -3090,8 +2746,6 @@
 /RobWorkHardware/src/rwhw/netft/.csettings
 /RobWorkHardware/src/rwhw/netft/CPackConfig.cmake
 /RobWorkHardware/src/rwhw/netft/CPackSourceConfig.cmake
-/RobWorkHardware/src/rwhw/netft/.cproject
-/RobWorkHardware/src/rwhw/netft/.project
 
 # /RobWorkHardware/src/rwhw/os/
 /RobWorkHardware/src/rwhw/os/cmake_install.cmake
@@ -3107,8 +2761,6 @@
 /RobWorkHardware/src/rwhw/os/.csettings
 /RobWorkHardware/src/rwhw/os/CPackConfig.cmake
 /RobWorkHardware/src/rwhw/os/CPackSourceConfig.cmake
-/RobWorkHardware/src/rwhw/os/.cproject
-/RobWorkHardware/src/rwhw/os/.project
 
 # /RobWorkHardware/src/rwhw/pa10/
 /RobWorkHardware/src/rwhw/pa10/cmake_install.cmake
@@ -3124,8 +2776,6 @@
 /RobWorkHardware/src/rwhw/pa10/.csettings
 /RobWorkHardware/src/rwhw/pa10/CPackConfig.cmake
 /RobWorkHardware/src/rwhw/pa10/CPackSourceConfig.cmake
-/RobWorkHardware/src/rwhw/pa10/.cproject
-/RobWorkHardware/src/rwhw/pa10/.project
 
 # /RobWorkHardware/src/rwhw/schunkpg70/
 /RobWorkHardware/src/rwhw/schunkpg70/cmake_install.cmake
@@ -3141,8 +2791,6 @@
 /RobWorkHardware/src/rwhw/schunkpg70/.csettings
 /RobWorkHardware/src/rwhw/schunkpg70/CPackConfig.cmake
 /RobWorkHardware/src/rwhw/schunkpg70/CPackSourceConfig.cmake
-/RobWorkHardware/src/rwhw/schunkpg70/.cproject
-/RobWorkHardware/src/rwhw/schunkpg70/.project
 
 # /RobWorkHardware/src/rwhw/sdh/
 /RobWorkHardware/src/rwhw/sdh/cmake_install.cmake
@@ -3158,8 +2806,6 @@
 /RobWorkHardware/src/rwhw/sdh/.csettings
 /RobWorkHardware/src/rwhw/sdh/CPackConfig.cmake
 /RobWorkHardware/src/rwhw/sdh/CPackSourceConfig.cmake
-/RobWorkHardware/src/rwhw/sdh/.cproject
-/RobWorkHardware/src/rwhw/sdh/.project
 /RobWorkHardware/src/rwhw/sdh/SDHDriverLuaStub.cpp
 /RobWorkHardware/src/rwhw/sdh/SDHDriverLuaStub.hpp
 
@@ -3177,8 +2823,6 @@
 /RobWorkHardware/src/rwhw/serialport/.csettings
 /RobWorkHardware/src/rwhw/serialport/CPackConfig.cmake
 /RobWorkHardware/src/rwhw/serialport/CPackSourceConfig.cmake
-/RobWorkHardware/src/rwhw/serialport/.cproject
-/RobWorkHardware/src/rwhw/serialport/.project
 
 # /RobWorkHardware/src/rwhw/sick/
 /RobWorkHardware/src/rwhw/sick/cmake_install.cmake
@@ -3194,8 +2838,6 @@
 /RobWorkHardware/src/rwhw/sick/.csettings
 /RobWorkHardware/src/rwhw/sick/CPackConfig.cmake
 /RobWorkHardware/src/rwhw/sick/CPackSourceConfig.cmake
-/RobWorkHardware/src/rwhw/sick/.cproject
-/RobWorkHardware/src/rwhw/sick/.project
 
 # /RobWorkHardware/src/rwhw/swissranger/
 /RobWorkHardware/src/rwhw/swissranger/cmake_install.cmake
@@ -4560,3 +4202,4 @@
 /doc/installstuff/RW_package-source/.cproject
 /doc/installstuff/RW_package-source/.project
 
+RobWorkSim/example/scripts/java/Simulation$Callback.class

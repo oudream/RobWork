@@ -1065,7 +1065,6 @@ public:
     static rw::common::Ptr<PhysicsEngine> makePhysicsEngine(rw::common::Ptr<DynamicWorkCell> dwc);
 };
 
-%feature("notabstract") DynamicSimulator;
 class DynamicSimulator: public Simulator
 {
 public:
@@ -1080,6 +1079,7 @@ public:
     }
     void exitPhysics();
 	double getTime();
+	State& getState();
 	void setEnabled(rw::common::Ptr<Body> body, bool enabled);
 
 	//drawable::SimulatorDebugRender::Ptr createDebugRender();
