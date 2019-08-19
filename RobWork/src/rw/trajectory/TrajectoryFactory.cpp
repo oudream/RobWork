@@ -38,28 +38,22 @@ namespace
     template <class X>
     Ptr<Trajectory<X> > makeLinearXTrajectory(const std::vector<Timed<X> >& path)
     {
-        RW_ASSERT(path.empty() || path.size() >= 1);
+        if(path.size())
+            rw::common::Log::infoLog() << "MakeTrajectory Path Size: " << path.size() << "\n"; 
 
         Ptr<InterpolatorTrajectory<X> > trajectory = ownedPtr(new InterpolatorTrajectory<X>);
-
-        if (path.size() == 1) {            
+        if (path.size() == 1 ) {            
             return TrajectoryFactory::makeFixedTrajectory(path.front().getValue(), 0);
         }
-
         if (!path.empty()) {
-            typedef typename std::vector<Timed<X> >::const_iterator I;
-            I p = path.begin();
-            I q = path.begin();
-            for (++q; q != path.end(); ++p, ++q) {
-                double dt = q->getTime() - p->getTime();
-                //RW_ASSERT(dt >= 0);
+            double dt=0;
+            for(uint i = 1; i < path.size(); i++ ){
+                dt = path[i].getTime() - path[i-1].getTime();
                 if(!(dt >= 0)){
                     RW_WARN("dt is wrong in trajectory. dt=" << dt << ". dt is force to 0.");
                     dt = 0;
                 }
-                const X& a = p->getValue();
-                const X& b = q->getValue();
-                trajectory->add(new LinearInterpolator<X>(a, b, dt));
+                trajectory->add(ownedPtr(new LinearInterpolator<X>(path[i-1].getValue(), path[i].getValue(), dt)));
             }
         }
         return trajectory;
