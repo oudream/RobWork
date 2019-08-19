@@ -359,7 +359,6 @@ void PlayBack::openPath()
 
     if (!filename.isEmpty()) {
         _previousOpenSaveDirectory = StringUtil::getDirectoryName(filename.toStdString());
-
         openPlayFile(filename.toStdString());
     }
 }
@@ -430,7 +429,7 @@ void PlayBack::openPlayFile(const std::string& file)
     }
 }
 
-void PlayBack::stateTrajectoryChangedListener(const TimedStatePathPtr path)
+void PlayBack::stateTrajectoryChangedListener(const TimedStatePath::Ptr path)
 {
 
     if (!path->empty()) {

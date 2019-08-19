@@ -60,7 +60,7 @@ public:
     void initialize();
 
 private:
-	void stateTrajectoryChangedListener(const rw::trajectory::TimedStatePathPtr trajectory);
+	void stateTrajectoryChangedListener(const rw::trajectory::TimedStatePath::Ptr trajectory);
 private slots:
     void openPath();
     void savePath();

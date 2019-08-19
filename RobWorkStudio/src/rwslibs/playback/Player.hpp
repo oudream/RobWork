@@ -158,7 +158,7 @@ public:
                          double tickInterval,
                          rws::RobWorkStudio* rwstudio);
     //! @copydoc Player
-    static Player::Ptr makePlayer(const rw::trajectory::TimedStatePathPtr statePath,
+    static Player::Ptr makePlayer(const rw::trajectory::TimedStatePath::Ptr statePath,
     					rw::common::Ptr<StateDraw> drawer,
                          double tickInterval,
                          rws::RobWorkStudio* rwstudio);

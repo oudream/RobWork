@@ -187,7 +187,7 @@ namespace rws {
 		 *
 		 * @param path [in] The new TimedStatePath
 		 */		
-		void setTimedStatePath(const rw::trajectory::TimedStatePathPtr path);
+		void setTimedStatePath(const rw::trajectory::TimedStatePath::Ptr path);
 
 		/**
 		 * @copydoc setTimedStatePath
@@ -473,12 +473,12 @@ namespace rws {
 		 * StateTrajectoryListener defines the signature of a callback method.
 		 * Example usage in a plugin: See RobWorkStudio::StateChangedListener
 		 */
-		typedef boost::function<void(const rw::trajectory::TimedStatePathPtr)> StateTrajectoryPtrChangedListener;
+		typedef boost::function<void(const rw::trajectory::TimedStatePath::Ptr)> StateTrajectoryPtrChangedListener;
 
 		/**
 		 * @brief Defines event for key pressed events
 		 */
-		typedef rw::common::Event<StateTrajectoryPtrChangedListener, const rw::trajectory::TimedStatePathPtr>  StateTrajectoryPtrChangedEvent;
+		typedef rw::common::Event<StateTrajectoryPtrChangedListener, const rw::trajectory::TimedStatePath::Ptr>  StateTrajectoryPtrChangedEvent;
 
 		/**
 		 * @brief Returns stateTrajectoryChangedEvent needed for subscription and firing of event
@@ -684,7 +684,7 @@ namespace rws {
 		
 		bool _inStateUpdate;
 
-		rw::trajectory::TimedStatePathPtr _timedStatePath;
+		rw::trajectory::TimedStatePath::Ptr _timedStatePath;
 
 		rw::common::PropertyMap _propMap;
 		rw::common::PropertyMap *_settingsMap;

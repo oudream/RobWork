@@ -60,7 +60,7 @@ Player::Player(
 }
 
 Player::Player(
-    TimedStatePathPtr path,
+    TimedStatePath::Ptr path,
     StateDrawPtr drawer,
     double tickInterval,
     RobWorkStudio* rwstudio)
@@ -84,7 +84,6 @@ Player::Player(
     RW_ASSERT(drawer);
     RW_ASSERT(path.isShared());
     RW_ASSERT(!path.isNull());
-
     // Connect the timer:
     connect(&_timer, SIGNAL(timeout()), this, SLOT(tick()));
 }
@@ -142,7 +141,8 @@ void Player::stopRecording() {
 
 void Player::tick()
 {
-
+    rw::common::Log::infoLog() << "Tick Happened\n";
+    
     if(!_recordingOnly){
 
     const double end = getEndTime();
@@ -398,7 +398,7 @@ Player::Ptr Player::makePlayer(const TimedStatePath& path,
 {
     return ownedPtr(new Player(path, drawer, tickInterval, rwstudio));
 }
-Player::Ptr Player::makePlayer(const TimedStatePathPtr path,
+Player::Ptr Player::makePlayer(const TimedStatePath::Ptr path,
                      StateDrawPtr drawer,
                      double tickInterval,
                      RobWorkStudio* rwstudio)
