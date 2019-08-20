@@ -51,6 +51,18 @@ public:
            rws::RobWorkStudio* rwstudio);
 
     /**
+	 * @brief Construct a new player.
+	 * @param statePath [in] the path of timed states.
+	 * @param drawer [in] the drawer to invoke for displaying a new state in the path.
+	 * @param tickInterval [in] the rendering rate.
+	 * @param rwstudio [in] the RobWorkStudio instance (used for saving to file during recordings).
+	 */
+    Player(rw::trajectory::TimedStatePath::Ptr statePath,
+           rw::common::Ptr<StateDraw> drawer,
+           double tickInterval,
+           rws::RobWorkStudio* rwstudio);
+
+    /**
      * @brief Construct a new player that can be used only for recording.
      *
      * Notice that the state in RobWorkStudio must be updated through other means, for instance by the user.
@@ -145,6 +157,11 @@ public:
     					rw::common::Ptr<StateDraw> drawer,
                          double tickInterval,
                          rws::RobWorkStudio* rwstudio);
+    //! @copydoc Player
+    static Player::Ptr makePlayer(const rw::trajectory::TimedStatePath::Ptr statePath,
+    					rw::common::Ptr<StateDraw> drawer,
+                         double tickInterval,
+                         rws::RobWorkStudio* rwstudio);
 
 private slots:
     // Increment the current time by tickInterval.
@@ -170,7 +187,7 @@ public:
     //! @brief The interpolated trajectory.
 	rw::trajectory::StateTrajectory::Ptr _trajectory;
     //! @brief The original trajectory.
-	rw::trajectory::TimedStatePath _path;
+	rw::trajectory::TimedStatePath::Ptr _path;
 private:
     // How to do the drawing.
 	rw::common::Ptr<StateDraw> _drawer;

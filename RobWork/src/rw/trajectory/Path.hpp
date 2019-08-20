@@ -148,6 +148,12 @@ typedef Path<TimedQ> TimedQPath;
 */
 typedef Path<TimedState> TimedStatePath;
 
+/**
+   @brief A pointer to a Path of rw::kinematics::State with associated times
+*/
+typedef rw::common::Ptr<Path<TimedState> > TimedStatePathPtr;
+
+
 }} // end namespaces
 
 #endif // end include guard
