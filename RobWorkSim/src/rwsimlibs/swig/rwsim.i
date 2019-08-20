@@ -1079,6 +1079,7 @@ public:
     }
     void exitPhysics();
 	double getTime();
+	State& getState();
 	void setEnabled(rw::common::Ptr<Body> body, bool enabled);
 
 	//drawable::SimulatorDebugRender::Ptr createDebugRender();
