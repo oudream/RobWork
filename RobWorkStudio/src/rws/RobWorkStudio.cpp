@@ -428,7 +428,7 @@ void RobWorkStudio::printCollisions()
 void RobWorkStudio::setCheckAction()
 {
     QObject *obj = sender();
-
+    
     // check if any of the open last file actions where choosen
     for(size_t i=0;i<_lastFilesActions.size();i++){
         if(obj == _lastFilesActions[i].first){
@@ -907,7 +907,11 @@ void RobWorkStudio::openFile(const std::string& file)
                 openWorkCellFile(filename);
                 _settingsMap->set<std::vector<std::string> >("LastOpennedFiles", lastfiles);
                 updateLastFiles();
-            } else {
+            } else if(filename.endsWith(".rwplay", Qt::CaseInsensitive) |
+                      filename.endsWith(".csv", Qt::CaseInsensitive)){
+                //Log::infoLog() << "The RobWorkStudio::OpenFile() function can't load playback files\n";
+                RW_THROW("The RobWorkStudio::OpenFile() function can't load playback files");
+            }else{
                 // we try openning a workcell
                 openWorkCellFile(filename);
             }
@@ -1153,8 +1157,16 @@ namespace {
 
 void RobWorkStudio::setTimedStatePath(const rw::trajectory::TimedStatePath& path)
 {
+    _timedStatePath = ownedPtr(new rw::trajectory::TimedStatePath(path));
+    stateTrajectoryChangedEvent().fire(*_timedStatePath);
+    stateTrajectoryPtrChangedEvent().fire(_timedStatePath);
+}
+
+void RobWorkStudio::setTimedStatePath(const rw::trajectory::TimedStatePath::Ptr path)
+{
     _timedStatePath = path;
-    stateTrajectoryChangedEvent().fire(_timedStatePath);
+    stateTrajectoryChangedEvent().fire(*_timedStatePath);
+    stateTrajectoryPtrChangedEvent().fire(_timedStatePath);
 }
 
 void RobWorkStudio::setState(const rw::kinematics::State& state)
