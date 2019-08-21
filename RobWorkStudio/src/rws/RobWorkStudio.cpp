@@ -214,12 +214,14 @@ RobWorkStudio::~RobWorkStudio()
 	*/
 }
 
-void RobWorkStudio::propertyChangedListener(PropertyBase* base){
+void RobWorkStudio::propertyChangedListener(PropertyBase* base)
+{
     std::string id = base->getIdentifier();
     //std::cout << "Property Changed Listerner RWSTUDIO: " << id << std::endl;
 }
 
-void RobWorkStudio::closeEvent( QCloseEvent * e ){
+void RobWorkStudio::closeEvent( QCloseEvent * e )
+{
     // save main window settings
     //settings.setValue("pos", pos());
     //settings.setValue("size", size());
@@ -257,7 +259,7 @@ void RobWorkStudio::closeEvent( QCloseEvent * e ){
     }
     */
 
-    if( !_propMap.get<PropertyMap>("cmdline").has("NoSave") ){
+    if( !_propMap.get<PropertyMap>("cmdline").has("NoSave") ) {
         _propMap.set("cmdline", PropertyMap());
         _propMap.erase("LuaState");
         try {
@@ -287,61 +289,61 @@ void RobWorkStudio::closeEvent( QCloseEvent * e ){
 }
 
 
-rw::common::Log& RobWorkStudio::log(){
+rw::common::Log& RobWorkStudio::log()
+{
     return _robwork->getLog();  	
 }
 
-rw::common::Log::Ptr RobWorkStudio::logPtr(){
+rw::common::Log::Ptr RobWorkStudio::logPtr()
+{
     return _robwork->getLogPtr();
 }
 
 void RobWorkStudio::updateLastFiles()
 {
-        QMenu* filemenu = _fileMenu;
-        std::vector<std::pair<QAction*,std::string> >& fileactions = _lastFilesActions;
-        std::vector<std::string> nfiles = _settingsMap->get<std::vector<std::string> >("LastOpennedFiles", std::vector<std::string>());
-        // remove old actions
-        for(size_t i=0;i<fileactions.size();i++){
-            filemenu->removeAction(fileactions[i].first);
-        }
-        fileactions.clear();
+    QMenu* filemenu = _fileMenu;
+    std::vector<std::pair<QAction*,std::string> >& fileactions = _lastFilesActions;
+    std::vector<std::string> nfiles = _settingsMap->get<std::vector<std::string> >("LastOpennedFiles", std::vector<std::string>());
+    // remove old actions
+    for(size_t i=0;i<fileactions.size();i++){
+        filemenu->removeAction(fileactions[i].first);
+    }
+    fileactions.clear();
 
-        // sort nfiles such that multiples are left out
-        std::vector<std::string> tmp;
-        for(size_t i=0; i<nfiles.size();i++){
-            int idx = (int)(nfiles.size()-1-i);
-            bool skip = false;
-            for(std::string &str : tmp) {
-                if(str == nfiles[idx]){
-                    skip=true;
-                    break;
-                }
-            }
-            if(!skip)
-                tmp.push_back(nfiles[idx]);
-            if(tmp.size()>10)
+    // sort nfiles such that multiples are left out
+    std::vector<std::string> tmp;
+    for(size_t i=0; i<nfiles.size();i++){
+        int idx = (int)(nfiles.size()-1-i);
+        bool skip = false;
+        for(std::string &str : tmp) {
+            if(str == nfiles[idx]){
+                skip=true;
                 break;
+            }
         }
-        nfiles.resize(tmp.size());
+        if(!skip)
+            tmp.push_back(nfiles[idx]);
+        if(tmp.size()>10)
+            break;
+    }
+    nfiles.resize(tmp.size());
 
-        // now add the new ones
-        for(size_t i=0;i<tmp.size();i++){
-            nfiles[tmp.size()-1-i] = tmp[i];
-            boost::filesystem::path p(tmp[i]);
-            std::stringstream sstr;
-            sstr << i << ": " << p.filename();
-            QAction* nAction = filemenu->addAction( sstr.str().c_str() );
+    // now add the new ones
+    for(size_t i=0;i<tmp.size();i++){
+        nfiles[tmp.size()-1-i] = tmp[i];
+        boost::filesystem::path p(tmp[i]);
+        std::stringstream sstr;
+        sstr << i << ": " << p.filename();
+        QAction* nAction = filemenu->addAction( sstr.str().c_str() );
 
-            connect(nAction, SIGNAL(triggered()), this, SLOT(setCheckAction()));
-            filemenu->addAction( nAction );
-            fileactions.push_back( std::make_pair(nAction, tmp[i]) );
-        }
-
-        _settingsMap->set<std::vector<std::string> >("LastOpennedFiles", nfiles);
-
+        connect(nAction, SIGNAL(triggered()), this, SLOT(setCheckAction()));
+        filemenu->addAction( nAction );
+        fileactions.push_back( std::make_pair(nAction, tmp[i]) );
     }
 
+    _settingsMap->set<std::vector<std::string> >("LastOpennedFiles", nfiles);
 
+}
 
 void RobWorkStudio::setupFileActions()
 {
@@ -361,6 +363,11 @@ void RobWorkStudio::setupFileActions()
         new QAction(QIcon(":/images/save.png"), tr("&Save"), this); // owned
     connect(saveAction, SIGNAL(triggered()), this, SLOT(saveWorkCell()));
 
+    QAction* reloadAction = 
+        new QAction(QIcon(":/images/reload.png"), tr("&Reload"), this); // owned
+    reloadAction->setShortcut(Qt::Key_F5);
+    connect(reloadAction, SIGNAL(triggered()), this, SLOT(reloadWorkCell()));
+
 	QAction* exitAction =
         new QAction(QIcon(), tr("&Exit"), this); // owned
     connect(exitAction, SIGNAL(triggered()), this, SLOT(close()));
@@ -371,12 +378,14 @@ void RobWorkStudio::setupFileActions()
     fileToolBar->addAction(openAction);
     fileToolBar->addAction(closeAction);
     fileToolBar->addAction(saveAction);
+    fileToolBar->addAction(reloadAction);
     ////
     _fileMenu = menuBar()->addMenu(tr("&File"));
     _fileMenu->addAction(newAction);
     _fileMenu->addAction(openAction);
     _fileMenu->addAction(closeAction);
     _fileMenu->addAction(saveAction);
+    _fileMenu->addAction(reloadAction);
     _fileMenu->addSeparator();
 
     QAction* propertyAction =
@@ -393,8 +402,8 @@ void RobWorkStudio::setupFileActions()
     updateLastFiles();
 }
 
-
-void RobWorkStudio::setupToolActions() {
+void RobWorkStudio::setupToolActions()
+{
     QAction* printCollisionsAction =
         new QAction(QIcon(""), tr("Print Colliding Frames"), this); // owned
     connect(printCollisionsAction, SIGNAL(triggered()), this, SLOT(printCollisions()));
@@ -403,9 +412,8 @@ void RobWorkStudio::setupToolActions() {
     _toolMenu->addAction(printCollisionsAction);
 }
 
-
-
-void RobWorkStudio::printCollisions() {
+void RobWorkStudio::printCollisions()
+{
 	CollisionDetector::Ptr cd = getCollisionDetector();
 	CollisionDetector::QueryResult res;
 	cd->inCollision(getState(), &res);
@@ -417,7 +425,8 @@ void RobWorkStudio::printCollisions() {
 	}
 }
 
-void RobWorkStudio::setCheckAction(){
+void RobWorkStudio::setCheckAction()
+{
     QObject *obj = sender();
 
     // check if any of the open last file actions where choosen
@@ -429,14 +438,13 @@ void RobWorkStudio::setCheckAction(){
     }
 }
 
-void RobWorkStudio::showPropertyEditor(){
+void RobWorkStudio::showPropertyEditor()
+{
     // start property editor
    _propEditor->update();
    _propEditor->show();
    _propEditor->resize(400,600);
 }
-
-
 
 void RobWorkStudio::setupPluginsMenu()
 {
@@ -456,8 +464,6 @@ void RobWorkStudio::setupPluginsMenu()
     _toolMenu = menuBar()->addMenu(tr("&Tools"));
     _toolMenu->addAction(printCollisionsAction);*/
 }
-
-
 
 void RobWorkStudio::loadPlugin()
 {
@@ -483,9 +489,8 @@ void RobWorkStudio::loadPlugin()
 	}
 }
 
-
-
-void RobWorkStudio::setupHelpMenu() {
+void RobWorkStudio::setupHelpMenu() 
+{
 
     QAction *assistantAct = new QAction(tr("Help Contents"), this);
     assistantAct->setShortcut(QKeySequence::HelpContents);
@@ -499,12 +504,15 @@ void RobWorkStudio::setupHelpMenu() {
     pHelpMenu->addAction(showAboutBox);
 
 }
+
 void RobWorkStudio::keyPressEvent(QKeyEvent *e)
 {
     keyEvent().fire(e->key(), e->modifiers());
     QWidget::keyPressEvent(e);
 }
-void RobWorkStudio::showAboutBox(){
+
+void RobWorkStudio::showAboutBox()
+{
     _aboutBox->exec();
 }
 
@@ -517,14 +525,12 @@ void RobWorkStudio::showDocumentation()
     _assistant->showDocumentation(filepaths);
 }
 
-
 void RobWorkStudio::setupViewGL()
 {	
     _view = new RWStudioView3D(this, this);
     setCentralWidget( _view ); // own view
     _view->setupGUI( this );
 }
-
 
 void RobWorkStudio::openAllPlugins()
 {
@@ -535,14 +541,12 @@ void RobWorkStudio::openAllPlugins()
     }
 }
 
-
 void RobWorkStudio::closeAllPlugins()
 {
     typedef std::vector<RobWorkStudioPlugin*>::iterator PI;
     for (PI p = _plugins.begin(); p != _plugins.end(); ++p)
         closePlugin(**p);
 }
-
 
 void RobWorkStudio::openPlugin(RobWorkStudioPlugin& plugin)
 {
@@ -567,7 +571,6 @@ void RobWorkStudio::openPlugin(RobWorkStudioPlugin& plugin)
 	
 }
 
-
 void RobWorkStudio::closePlugin(RobWorkStudioPlugin& plugin)
 {
     try {
@@ -585,7 +588,6 @@ void RobWorkStudio::closePlugin(RobWorkStudioPlugin& plugin)
             QMessageBox::Ok);
     }
 }
-
 
 void RobWorkStudio::addPlugin(RobWorkStudioPlugin* plugin,
                               bool visible,
@@ -628,7 +630,6 @@ void RobWorkStudio::addPlugin(RobWorkStudioPlugin* plugin,
 
 }
 
-
 void RobWorkStudio::loadSettingsSetupPlugins(const std::string& file)
 {
     QSettings settings(file.c_str(), QSettings::IniFormat);
@@ -656,17 +657,6 @@ void RobWorkStudio::loadSettingsSetupPlugins(const std::string& file)
     //return settings.status();
 }
 
-
-/*
-void RobWorkStudio::locatePlugins(QSettings& settings){
-    rw::plugin::PluginRepository &prep = RobWork::getInstance()->getPluginRepository();
-    prep.getPlugins<rws::MenuExtension>();
-    prep.getPlugins<rws::RobWorkStudioPlugin>();
-
-}
-*/
-
-
 void RobWorkStudio::setupPlugin(const QString& pathname, const QString& filename, bool visible, int dock)
 {
 	Qt::DockWidgetArea dockarea = (Qt::DockWidgetArea)dock;
@@ -691,12 +681,12 @@ void RobWorkStudio::setupPlugin(const QString& pathname, const QString& filename
 	}
 
 	QPluginLoader loader(pfilename);
-#if QT_VERSION >= 0x040400
-	// Needed to make dynamicly loaded libraries use dynamic
-	// cast on each others objects. ONLY on linux though.
-	loader.setLoadHints(QLibrary::ResolveAllSymbolsHint |
-						QLibrary::ExportExternalSymbolsHint);
-#endif
+    #if QT_VERSION >= 0x040400
+        // Needed to make dynamicly loaded libraries use dynamic
+        // cast on each others objects. ONLY on linux though.
+        loader.setLoadHints(QLibrary::ResolveAllSymbolsHint |
+                            QLibrary::ExportExternalSymbolsHint);
+    #endif
 
 	QObject* pluginObject = loader.instance();
 	if (pluginObject != NULL) {
@@ -749,62 +739,9 @@ void RobWorkStudio::setupPlugins(QSettings& settings)
         int dock = settings.value("DockArea").toInt();
         
         setupPlugin(pathname, filename, visible, dock);
-/*
-        QString pfilename = pathname+ "/" + filename + "." + OS::getDLLExtension().c_str();
-        bool e1 = boost::filesystem::exists( filename.toStdString() );
-        if(!e1){
-            pfilename = pathname+ "/" + filename + ".so";
-            e1 = boost::filesystem::exists( pfilename.toStdString() );
-        }
-        if(!e1){
-            pfilename = pathname+ "/" + filename + ".dll";
-            e1 = boost::filesystem::exists( pfilename.toStdString() );
-        }
-        if(!e1){
-            pfilename = pathname+ "/" + filename + ".dylib";
-            e1 = boost::filesystem::exists( pfilename.toStdString() );
-        }
-
-
-
-
-        QPluginLoader loader(pfilename);
-#if QT_VERSION >= 0x040400
-		// Needed to make dynamicly loaded libraries use dynamic
-		// cast on each others objects. ONLY on linux though.
-		loader.setLoadHints(QLibrary::ResolveAllSymbolsHint |
-							QLibrary::ExportExternalSymbolsHint);
-#endif
-
-
-        QObject* pluginObject = loader.instance();
-        if (pluginObject != NULL) {
-        	RobWorkStudioPlugin* testP = dynamic_cast<RobWorkStudioPlugin*>(pluginObject);
-            if (testP == NULL)
-                RW_THROW("Loaded plugin is NULL, tried loading \"" << pfilename.toStdString() << "\"" );
-            RobWorkStudioPlugin* plugin = qobject_cast<RobWorkStudioPlugin*>(pluginObject);
-
-            if (plugin) {
-                addPlugin(plugin, visible, dockarea);
-            }
-            else
-                QMessageBox::information(
-                    this,
-                    "Unable to load Plugin",
-                    pfilename + " was not of type RobWorkStudioPlugin",
-                    QMessageBox::Ok);
-        } else {
-            QMessageBox::information(
-                this,
-                "Unable to load Plugin",
-                pfilename + " was not loaded: \"" + loader.errorString() + "\"",
-                QMessageBox::Ok);
-        }*/
-
         settings.endGroup(); //End Specific Plugin Group
     }
     settings.endGroup(); //End the Plugins Group
-	
 }
 
 std::string RobWorkStudio::loadSettingsWorkcell(const std::string& file)
@@ -874,6 +811,23 @@ void RobWorkStudio::saveWorkCell()
   }
 }
 
+void RobWorkStudio::reloadWorkCell()
+{
+    try {
+        if (_workcell->getFilename().size() > 1) {
+            Log::infoLog() << "reloading: " << _workcell->getFilename() << "\n";
+            openWorkCellFile(QString(_workcell->getFilename().c_str()));
+        }
+    }
+    catch (const rw::common::Exception& exp) {
+        QMessageBox::information(
+            NULL,
+            "Exception",
+            exp.getMessage().getText().c_str(),
+            QMessageBox::Ok);
+    }
+}
+
 void RobWorkStudio::dragMoveEvent(QDragMoveEvent *event)
 {
     event->accept();
@@ -912,7 +866,6 @@ void RobWorkStudio::dropEvent(QDropEvent* event)
     }
 }
 
-
 void RobWorkStudio::openFile(const std::string& file)
 {	
     // We change directory irrespective of whether we can load open the file or
@@ -932,9 +885,9 @@ void RobWorkStudio::openFile(const std::string& file)
             if (filename.endsWith(".STL", Qt::CaseInsensitive) ||
                 filename.endsWith(".STLA", Qt::CaseInsensitive) ||
                 filename.endsWith(".STLB", Qt::CaseInsensitive) ||
-#if RW_HAVE_ASSIMP
-                filename.endsWith(".DAE", Qt::CaseInsensitive) ||
-#endif
+                #if RW_HAVE_ASSIMP
+                    filename.endsWith(".DAE", Qt::CaseInsensitive) ||
+                #endif
                 filename.endsWith(".3DS", Qt::CaseInsensitive) ||
                 filename.endsWith(".AC", Qt::CaseInsensitive) ||
                 filename.endsWith(".AC3D", Qt::CaseInsensitive) ||
@@ -956,22 +909,11 @@ void RobWorkStudio::openFile(const std::string& file)
                 updateLastFiles();
             } else {
                 // we try openning a workcell
-
                 openWorkCellFile(filename);
-                /*
-                Log::infoLog() << "Failed loading file: " << filename.toStdString() << "\n";
-                QMessageBox::information(
-                    NULL,
-                    "Unknown extension",
-                    "The file specified has an unknown extension type!",
-                    QMessageBox::Ok);
-                    */
             }
         }
     }
-
     catch (const rw::common::Exception& exp) {
-
         QMessageBox::information(
             NULL,
             "Exception",
@@ -992,9 +934,9 @@ void RobWorkStudio::open()
     const QString dir(previousOpenDirectory.c_str());
 	
 	QString assimpExtensions = "";
-#if RW_HAVE_ASSIMP
-	assimpExtensions = " * .dae";
-#endif
+    #if RW_HAVE_ASSIMP
+        assimpExtensions = " * .dae";
+    #endif
 
     QString filename = QFileDialog::getOpenFileName(
         this,
@@ -1081,7 +1023,8 @@ void RobWorkStudio::setWorkcell(rw::models::WorkCell::Ptr workcell)
     }	
 }
 
-rw::models::WorkCell::Ptr RobWorkStudio::getWorkcell(){
+rw::models::WorkCell::Ptr RobWorkStudio::getWorkcell()
+{
     return _workcell;
 }
 
@@ -1122,19 +1065,8 @@ void RobWorkStudio::updateHandler()
     _view->update();
 }
 
-/*
-void RobWorkStudio::fireStateTrajectoryChangedEvent(const rw::trajectory::TimedStatePath& trajectory)
+void RobWorkStudio::setTStatePath(rw::trajectory::TimedStatePath path)
 {
-
-    _timedStatePath = trajectory;
-    for(
-        const StateTrajectoryChangedEvent::Listener& listener :
-        stateTrajectoryChangedEvent().getListeners()) {
-        listener.callback(trajectory);
-    }
-}
-*/
-void RobWorkStudio::setTStatePath(rw::trajectory::TimedStatePath path){
     _timedStatePath = path;
     stateTrajectoryChangedEvent().fire(_timedStatePath);
 }
