@@ -181,7 +181,8 @@ namespace
 
 }
 
-void SceneOpenGLViewer::init(){
+void SceneOpenGLViewer::init()
+{
     // extract the propertymap from
     //_pmap = _rwStudio->getPropertyMap().add<PropertyMap>("SceneViewer","",PropertyMap());
 
@@ -253,7 +254,7 @@ void SceneOpenGLViewer::init(){
     _mainCam = _scene->makeCamera("MainCam");
     _mainCam->setDrawMask( dmask );
     _mainCam->setEnabled(false);
-    _mainCam->setPerspective(45, 640, 480, 0.1, 30);
+    _mainCam->setPerspective(45, 640, 480, 0.01, 30);
     _mainCam->setClearBufferEnabled(false);
     _mainCam->setClearBufferMask( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
     _mainCam->setDepthTestEnabled( true );
@@ -268,17 +269,11 @@ void SceneOpenGLViewer::init(){
     //_scene->addChild(_pivotDrawable, _scene->getRoot());
     //_pivotDrawable->setColor( Vector3D<>(1.0f, 0.0f, 0.0f) );
 
-/*
-    _currCam = ownedPtr( new SceneCamera() );
-    _currCam->setPerspective(45, 640, 480, 0.1, 30);
-    _currCam->setClearBufferEnabled(true);
-    _currCam->setClearBufferMask(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-    _cameraViews.push_back( _currCam );
-*/
     this->setFocusPolicy(Qt::StrongFocus);
 }
 
-SceneViewer::View::Ptr SceneOpenGLViewer::createView(const std::string& name, bool enableBackground){
+SceneViewer::View::Ptr SceneOpenGLViewer::createView(const std::string& name, bool enableBackground)
+{
     SceneViewer::View::Ptr nview = ownedPtr( new SceneViewer::View(name) );
     nview->_viewCamera = _scene->makeCamera("ViewCamera");
     nview->_camGroup = _scene->makeCameraGroup("ViewCamera");
@@ -286,7 +281,7 @@ SceneViewer::View::Ptr SceneOpenGLViewer::createView(const std::string& name, bo
     if(enableBackground){
         SceneCamera::Ptr backCam = _scene->makeCamera("BackgroundCam");
         backCam->setEnabled(true);
-//        std::cout << "CREATING BACKGROUND CAMERA AGAIN" << std::endl;
+    //        std::cout << "CREATING BACKGROUND CAMERA AGAIN" << std::endl;
         backCam->setRefNode(_backgroundnode);
         backCam->setProjectionMatrix( ProjectionMatrix::makeOrtho(0,640,0,480, -1, 1) );
         backCam->setClearBufferEnabled(true);
@@ -318,7 +313,6 @@ SceneViewer::View::Ptr SceneOpenGLViewer::createView(const std::string& name, bo
 
 
 SceneOpenGLViewer::SceneOpenGLViewer(QWidget* parent):
-            //QGLWidget( QGLFormat(QGL::DepthBuffer), parent),
             QGLWidget( makeQGLFormat(NULL), parent),
             _scene( ownedPtr(new SceneOpenGL()) ),
             _viewLogo("RobWork"),
@@ -560,24 +554,8 @@ void SceneOpenGLViewer::paintGL()
     if( _cameraCtrl ){
         // for now we scale the pivot such that its not unrealistically large/small
         getViewCamera()->setTransform(_cameraCtrl->getTransform());
-
-        //double dist = -(inverse(_cameraCtrl->getTransform())*_pivotDrawable->getTransform().P())[2];
-        //_pivotDrawable->setScale( Math::clamp(dist/5.0,0.00001,1) ); // 5/5
     }
 
-    // update the position of the light
-/*    Transform3D<> camTw = inverse(getViewCamera()->getTransform());
-    Transform3D<> wTlight = Transform3D<>(Vector3D<>(0,0,20));
-    Vector3D<> lightPos = (camTw*wTlight).P();// Vector3D<>(0,0,1);
-    //Vector3D<> lightPos = (camTw.R() * Vector3D<>(0,0,1) );
-
-    GLfloat lpos[] = {0.0f, 0.0f, 1.0f, 1.0f};
-    lpos[0] = lightPos[0];
-    lpos[1] = lightPos[1];
-    lpos[2] = lightPos[2];
-    glLightfv(GL_LIGHT0, GL_POSITION, lpos);
-*/
-    //std::cout << _currentView->_name << std::endl;
     _renderInfo._drawType = _currentView->_drawType;
     _renderInfo._mask = _currentView->_drawMask;
     _renderInfo.cams = _currentView->_camGroup;
@@ -594,7 +572,7 @@ void SceneOpenGLViewer::resizeGL(int width, int height)
 {
     _width = width;
     _height = height;
-
+    rw::common::Log::infoLog() << "window resize()\n";
     BOOST_FOREACH(SceneCamera::Ptr cam, _currentView->_camGroup->getCameras()){
         cam->setViewport(0,0,_width,_height);
     }
@@ -603,14 +581,16 @@ void SceneOpenGLViewer::resizeGL(int width, int height)
     _cameraCtrl->setBounds(width, height);
 }
 
-void SceneOpenGLViewer::selectView(View::Ptr view){
+void SceneOpenGLViewer::selectView(View::Ptr view)
+{
     _currentView = view;
     BOOST_FOREACH(SceneCamera::Ptr cam, _currentView->_camGroup->getCameras()){
         cam->setViewport(0,0,_width,_height);
     }
 }
 
-void SceneOpenGLViewer::destroyView(View::Ptr view){
+void SceneOpenGLViewer::destroyView(View::Ptr view)
+{
     //TODO: remove camera from scene
     if( _mainView==view ){
         RW_THROW("The View \"" << view->_name << "\" is the MainView, which cannot be removed!");
@@ -630,115 +610,21 @@ void SceneOpenGLViewer::destroyView(View::Ptr view){
     _scene->removeCameraGroup( view->_camGroup );
 }
 
-void SceneOpenGLViewer::updateState(const State& state) {
+void SceneOpenGLViewer::updateState(const State& state) 
+{
 	if(_state==NULL)
 		_state = rw::common::ownedPtr(new State());
 	*_state = state;
 	_renderInfo._state = _state.get();
 }
 
-/*
-
-#define GL_SELECT_BUFSIZE 512
-GLuint _selectBuf[GL_SELECT_BUFSIZE];
-
-rw::kinematics::Frame* SceneOpenGLViewer::pickFrame(int cursorX, int cursorY){
-
-    // Start picking
-    GLint viewport[4];
-
-    glSelectBuffer(GL_SELECT_BUFSIZE, _selectBuf);
-    glRenderMode(GL_SELECT);
-
-    glMatrixMode(GL_PROJECTION);
-    glPushMatrix();
-    glLoadIdentity();
-
-    glGetIntegerv(GL_VIEWPORT, viewport);
-
-    gluPickMatrix(cursorX,cursorY,3,3,viewport);
-    const GLCameraView& v = _cameraViews[0];
-
-    //gluPerspective(45, ratio, 0.1, 1000);
-    //setupCameraView(_cameraNr,false);
-    GLdouble aspect = (GLdouble)v.width / v.height;
-    //gluPerspective(fieldOfView, aspectRatio, near, far);
-    gluPerspective((GLdouble)v.fovy, aspect, (GLdouble)v.vnear, (GLdouble)v.vfar);
-    //gluOrtho2D(0, v.width, 0, v.height);
-
-    // draw pickable objects
-    // Setup projection to draw background
-    glMatrixMode(GL_MODELVIEW);
-    glInitNames();
-    // Setup the correct camera projection
-    glLoadIdentity();
-
-    if( _cameraNr==0 ){
-        drawGLStuff(false);
-    } else {
-        glScalef(_zoomScale,_zoomScale,_zoomScale);
-    }
-
-    if (_cell) {
-        // draw the workcell.
-        _workcellGLDrawer->drawAndSelect(*_cell.state, _cell.workcell);
-    }
-
-    // stop picking
-
-    // restoring the original projection matrix
-    glMatrixMode(GL_PROJECTION);
-    glPopMatrix();
-    glMatrixMode(GL_MODELVIEW);
-    glFlush();
-
-    // returning to normal rendering mode
-    int hits = glRenderMode(GL_RENDER);
-
-    // if there are hits process them
-    if (hits == 0)
-        return NULL;
-
-    // process the hits
-    GLuint names, *ptrNames=NULL, numberOfNames=0;
-    GLuint *ptr = (GLuint *) _selectBuf;
-    GLuint minZ = 0xffffffff;
-    for (int i = 0; i < hits; i++) {
-       names = *ptr;
-       ptr++;
-       GLuint depthZ = *ptr;
-       GLuint *ptrN = ptr+2;
-
-       //std::cout << "Z depth: " << depthZ << " names: " << names << std::endl;
-       //const Frame *frame = _cell.state->getFrame(*ptrN);
-       //if( frame!=NULL )
-       //    std::cout << " " << frame->getName() << std::endl;
-
-       if (depthZ < minZ) {
-           numberOfNames = names;
-           minZ = depthZ;
-           ptrNames = ptrN;
-       }
-
-       ptr += names+2;
-     }
-   //std::cout << "The closest hit names are "  << numberOfNames << std::endl;
-   ptr = ptrNames;
-
-   Frame *frame = _cell.state->getFrame(*ptr);
-   //if( frame!=NULL )
-   //    std::cout << "-- " << frame->getName() << std::endl;
-
-   return frame;
-    return NULL;
-}
-*/
-
-DrawableNode::Ptr SceneOpenGLViewer::pickDrawable(int x, int y){
+DrawableNode::Ptr SceneOpenGLViewer::pickDrawable(int x, int y)
+{
     return _scene->pickDrawable(_renderInfo, x, y);
 }
 
-DrawableNode::Ptr SceneOpenGLViewer::pickDrawable(rw::graphics::SceneGraph::RenderInfo& info, int x, int y){
+DrawableNode::Ptr SceneOpenGLViewer::pickDrawable(rw::graphics::SceneGraph::RenderInfo& info, int x, int y)
+{
     return _scene->pickDrawable(info, x, y);
 }
 
@@ -792,35 +678,24 @@ void SceneOpenGLViewer::mouseDoubleClickEvent(QMouseEvent* event)
 
 void SceneOpenGLViewer::mousePressEvent(QMouseEvent* event)
 {
-	// 6/5/2010
     _cameraCtrl->handleEvent( event );
 
-    /*
-    if (event->buttons() == Qt::RightButton &&
-        event->modifiers() == Qt::ControlModifier)
-    {
-        //saveBufferToFileQuery();
-    }
-    */
-    //_rwStudio->mousePressedEvent().fire(event);
-
-    //event->ignore();
     QGLWidget::mousePressEvent(event);
 }
 
 void SceneOpenGLViewer::mouseMoveEvent(QMouseEvent* event)
 {
     _cameraCtrl->handleEvent(event);
-
-    //std::cout<<"Event Time"<<eventTimer.getTime()<<std::endl;
     update();
-
-    //event->ignore();
     QGLWidget::mouseMoveEvent(event);
 }
 
 void SceneOpenGLViewer::wheelEvent(QWheelEvent* event)
 {
+    int winx = event->pos().x();
+    int winy = height()-event->pos().y();
+    Vector3D<> pos = _scene->unproject(_mainCam, winx, winy);
+    _cameraCtrl->setZoomTarget( pos );
     _cameraCtrl->handleEvent( event );
     update();
     QGLWidget::wheelEvent(event);
@@ -869,7 +744,8 @@ void SceneOpenGLViewer::saveBufferToFile(const std::string& stdfilename,
 
 
 
-void SceneOpenGLViewer::propertyChangedListener(PropertyBase* base){
+void SceneOpenGLViewer::propertyChangedListener(PropertyBase* base)
+{
     std::string id = base->getIdentifier();
     //std::cout << "Property Changed Listerner SceneOpenGLViewer: " << id << std::endl;
     if(id=="ShowCollisionModels"){
@@ -949,9 +825,9 @@ void SceneOpenGLViewer::zoom(double amount)
     _cameraCtrl->zoom(amount);
 }
 
-void SceneOpenGLViewer::autoZoom() {
-    if (!(_wcscene->getWorkCell()))
-    {
+void SceneOpenGLViewer::autoZoom() 
+{
+    if (!(_wcscene->getWorkCell())) {
         RW_WARN("Can't autozoom when no workcell is loaded");
         return;
     }
