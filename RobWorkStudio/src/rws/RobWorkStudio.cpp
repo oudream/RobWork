@@ -1071,8 +1071,9 @@ void RobWorkStudio::updateHandler()
 
 void RobWorkStudio::setTStatePath(rw::trajectory::TimedStatePath path)
 {
-    _timedStatePath = path;
-    stateTrajectoryChangedEvent().fire(_timedStatePath);
+    _timedStatePath = ownedPtr(new rw::trajectory::TimedStatePath(path));
+    stateTrajectoryChangedEvent().fire(*_timedStatePath);
+    stateTrajectoryPtrChangedEvent().fire(_timedStatePath);
 }
 
 namespace {
