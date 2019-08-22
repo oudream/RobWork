@@ -138,7 +138,7 @@ public:
 
     //! @copydoc rw::graphics::SceneViewer::updateView
     void updateView(){
-        update();
+        QWidget::update();
     }
 
     //! @copydoc rw::graphics::SceneViewer::getViewCenter

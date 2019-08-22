@@ -194,7 +194,7 @@ QtProperty* PropertyViewEditor::update(PropertyMap::Ptr map, std::string propnam
 }
 
 void PropertyViewEditor::update()
-{
+{ 
     this->clear();
     _variantManager->clear();
 	_qtPropToRwProp.clear();

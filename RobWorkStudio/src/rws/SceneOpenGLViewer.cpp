@@ -564,19 +564,6 @@ void SceneOpenGLViewer::paintGL()
         //double dist = -(inverse(_cameraCtrl->getTransform())*_pivotDrawable->getTransform().P())[2];
         //_pivotDrawable->setScale( Math::clamp(dist/5.0,0.00001,1) ); // 5/5
     }
-
-    // update the position of the light
-/*    Transform3D<> camTw = inverse(getViewCamera()->getTransform());
-    Transform3D<> wTlight = Transform3D<>(Vector3D<>(0,0,20));
-    Vector3D<> lightPos = (camTw*wTlight).P();// Vector3D<>(0,0,1);
-    //Vector3D<> lightPos = (camTw.R() * Vector3D<>(0,0,1) );
-
-    GLfloat lpos[] = {0.0f, 0.0f, 1.0f, 1.0f};
-    lpos[0] = lightPos[0];
-    lpos[1] = lightPos[1];
-    lpos[2] = lightPos[2];
-    glLightfv(GL_LIGHT0, GL_POSITION, lpos);
-*/
     //std::cout << _currentView->_name << std::endl;
     _renderInfo._drawType = _currentView->_drawType;
     _renderInfo._mask = _currentView->_drawMask;
@@ -779,7 +766,7 @@ void SceneOpenGLViewer::mouseDoubleClickEvent(QMouseEvent* event)
 			} else {
                 _cameraCtrl->setCenter(pos, Vector2D<>(event->x(), event->y()));
                 _pivotDrawable->setTransform( Transform3D<>(pos, Rotation3D<>::identity()) );
-                update();
+                QWidget::update();
             }
         }
 
@@ -813,7 +800,7 @@ void SceneOpenGLViewer::mouseMoveEvent(QMouseEvent* event)
     _cameraCtrl->handleEvent(event);
 
     //std::cout<<"Event Time"<<eventTimer.getTime()<<std::endl;
-    update();
+    QWidget::update();
 
     //event->ignore();
     QGLWidget::mouseMoveEvent(event);
@@ -822,7 +809,7 @@ void SceneOpenGLViewer::mouseMoveEvent(QMouseEvent* event)
 void SceneOpenGLViewer::wheelEvent(QWheelEvent* event)
 {
     _cameraCtrl->handleEvent( event );
-    update();
+    QWidget::update();
     QGLWidget::wheelEvent(event);
 }
 
