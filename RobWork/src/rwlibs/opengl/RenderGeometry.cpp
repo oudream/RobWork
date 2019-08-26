@@ -83,13 +83,23 @@ void RenderGeometry::draw(const DrawableNode::RenderInfo& info, DrawableNode::Dr
     	render();
 		break;
     case DrawableNode::OUTLINE: // Draw nice frame
-    	glPolygonMode(GL_FRONT, GL_FILL);
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+        glEnable( GL_POLYGON_OFFSET_FILL);
+        glPolygonOffset(1,1);
     	render();
+        glDisable(GL_POLYGON_OFFSET_FILL);
+		
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        glColor3f(0.0f,0.0f,0.0f);
+    	render();
+
+        break;
     case DrawableNode::WIRE: // Draw nice frame
     	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     	render();
     	break;
 	}
+    //rw::common::Log::infoLog() << "Drawing geometry\n"; 
 	glPopMatrix();
 }
 

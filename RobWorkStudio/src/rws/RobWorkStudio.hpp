@@ -625,6 +625,7 @@ namespace rws {
 
 	private slots:
 		void newWorkCell();
+		void reloadWorkCell();
 		void open();
         void setCheckAction();
 		void closeWorkCell();

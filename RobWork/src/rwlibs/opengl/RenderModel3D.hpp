@@ -84,7 +84,7 @@ namespace rwlibs { namespace opengl {
          * @param type [in] the drawtype which is being used
          * @param alpha [in] the alpha value to render with
          */
-        void drawUsingSimple(const rw::graphics::DrawableNode::RenderInfo& info, DrawType type, double alpha) const;
+        void drawUsingSimple(const rw::graphics::DrawableNode::RenderInfo& info, DrawType type, double alpha, bool disableMaterials = false) const;
 
         //void drawUsingList(DrawType type, double alpha) const;
 
@@ -93,7 +93,8 @@ namespace rwlibs { namespace opengl {
         void drawUsingSimpleFct(const rw::graphics::DrawableNode::RenderInfo& info,
                              const rw::graphics::Model3D::Object3D<T> &obj,
                              rw::graphics::DrawableNode::DrawType type,
-                             double alpha) const;
+                             double alpha,
+                             bool disableMaterials = false) const;
 
         template <class T>
         void drawUsingArraysFct(const rw::graphics::DrawableNode::RenderInfo& info,

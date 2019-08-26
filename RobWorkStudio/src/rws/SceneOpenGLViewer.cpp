@@ -665,7 +665,7 @@ void SceneOpenGLViewer::mouseDoubleClickEvent(QMouseEvent* event)
 			} else {
                 _cameraCtrl->setCenter(pos, Vector2D<>(event->x(), event->y()));
                 _pivotDrawable->setTransform( Transform3D<>(pos, Rotation3D<>::identity()) );
-                update();
+                QWidget::update();
             }
         }
 
@@ -686,7 +686,11 @@ void SceneOpenGLViewer::mousePressEvent(QMouseEvent* event)
 void SceneOpenGLViewer::mouseMoveEvent(QMouseEvent* event)
 {
     _cameraCtrl->handleEvent(event);
-    update();
+
+    //std::cout<<"Event Time"<<eventTimer.getTime()<<std::endl;
+    QWidget::update();
+
+    //event->ignore();
     QGLWidget::mouseMoveEvent(event);
 }
 
@@ -697,7 +701,7 @@ void SceneOpenGLViewer::wheelEvent(QWheelEvent* event)
     Vector3D<> pos = _scene->unproject(_mainCam, winx, winy);
     _cameraCtrl->setZoomTarget( pos );
     _cameraCtrl->handleEvent( event );
-    update();
+    QWidget::update();
     QGLWidget::wheelEvent(event);
 }
 
