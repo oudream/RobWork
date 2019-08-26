@@ -100,23 +100,30 @@ PlayBack::PlayBack()
         connect(act, SIGNAL(triggered()), this, SLOT(toStartPlay()));
     }
 
-    {
-        QAction* act = playToolbar->addAction(
-            QIcon(":/backward.png"), "Backward play");
-        connect(act, SIGNAL(triggered()), this, SLOT(backwardPlay()));
+    
+    _backward = playToolbar->addAction(
+        QIcon(":/backward.png"), "Backward play");
+    connect(_backward, SIGNAL(triggered()), this, SLOT(backwardPlay()));
+    
+
+    _pauseAndResume = playToolbar->addAction(
+        QIcon(":/forwardPause.png"), "Pause play");
+    _pauseAndResume->setShortcut(Qt::Key_Space);
+    connect(_pauseAndResume, SIGNAL(triggered()), this, SLOT(pauseOrResumePlay()));
+
+    _forward = playToolbar->addAction(
+        QIcon(":/forward.png"), "Forward play");
+    connect(_forward, SIGNAL(triggered()), this, SLOT(forwardPlay()));
+
+    if (_player->getPlayDirection()<0) {
+        _backward->setVisible(false);
+        //_pauseAndResume->setIcon(QIcon(":/backward_pause.png"));
+    }
+    else if (_player->getPlayDirection()>0) {
+        _forward->setVisible(false);
+        //_pauseAndResume->setIcon(QIcon(":/forward_pause.png"));
     }
 
-    {
-        QAction* act = playToolbar->addAction(
-            QIcon(":/pause.png"), "Pause play");
-        connect(act, SIGNAL(triggered()), this, SLOT(pauseOrResumePlay()));
-    }
-
-    {
-        QAction* act = playToolbar->addAction(
-            QIcon(":/forward.png"), "Forward play");
-        connect(act, SIGNAL(triggered()), this, SLOT(forwardPlay()));
-    }
 
     {
         QAction* act = playToolbar->addAction(

@@ -380,6 +380,10 @@ std::string Player::getInfoLabel() const
     }
 }
 
+int Player::getPlayDirection(){
+    return _direction;
+}
+
 // Constructors.
 
 Player::Ptr Player::makeEmptyPlayer()
