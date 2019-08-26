@@ -107,7 +107,7 @@ PlayBack::PlayBack()
     
 
     _pauseAndResume = playToolbar->addAction(
-        QIcon(":/forwardPause.png"), "Pause play");
+        QIcon(":/pause.png"), "Pause play");
     _pauseAndResume->setShortcut(Qt::Key_Space);
     connect(_pauseAndResume, SIGNAL(triggered()), this, SLOT(pauseOrResumePlay()));
 
@@ -117,11 +117,11 @@ PlayBack::PlayBack()
 
     if (_player->getPlayDirection()<0) {
         _backward->setVisible(false);
-        //_pauseAndResume->setIcon(QIcon(":/backward_pause.png"));
+        _pauseAndResume->setIcon(QIcon(":/backward_pause.png"));
     }
     else if (_player->getPlayDirection()>0) {
         _forward->setVisible(false);
-        //_pauseAndResume->setIcon(QIcon(":/forward_pause.png"));
+        _pauseAndResume->setIcon(QIcon(":/forward_pause.png"));
     }
 
 
@@ -506,11 +506,21 @@ void PlayBack::csvOpenPlayFile(const std::string& file)
 
 void PlayBack::forwardPlay()
 {
+    if(_player->getPlayDirection() < 0 ){
+        _backward->setVisible(true);
+        _forward->setVisible(false);
+        _pauseAndResume->setIcon(QIcon(":/forward_pause.png"));
+    }
     _player->forward();
 }
 
 void PlayBack::backwardPlay()
 {
+    if(_player->getPlayDirection() > 0 ){
+        _backward->setVisible(false);
+        _forward->setVisible(true);
+        _pauseAndResume->setIcon(QIcon(":/backward_pause.png"));
+    }
     _player->backward();
 }
 
