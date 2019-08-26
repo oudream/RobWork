@@ -1022,7 +1022,6 @@ void RobWorkStudio::setWorkcell(rw::models::WorkCell::Ptr workcell)
         _detector = detector;
         _view->setWorkCell(_workcell);
         _view->setState(_state);
-
         openAllPlugins();
     }	
 }
