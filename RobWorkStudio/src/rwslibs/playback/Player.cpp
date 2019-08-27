@@ -86,6 +86,8 @@ Player::Player(
     RW_ASSERT(!path.isNull());
     // Connect the timer:
     connect(&_timer, SIGNAL(timeout()), this, SLOT(tick()));
+
+
 }
 
 
@@ -112,7 +114,8 @@ Player::Player(
     // Connect the timer:
     connect(&_timer, SIGNAL(timeout()), this, SLOT(tick()));
 }
-void Player::setTickInterval(double interval) {
+void Player::setTickInterval(double interval) 
+{
     _tickInterval = interval;
     if (_timer.isActive()) {
         stopTimer();
@@ -121,19 +124,21 @@ void Player::setTickInterval(double interval) {
 }
 
 
-void Player::setupRecording(const QString filename, const QString& type) {
+void Player::setupRecording(const QString filename, const QString& type) 
+{
     _recordFilename = filename;
     _recordType = type;
 }
 
-void Player::startRecording() {
-    //std::cout << "start rec"<< std::endl;
+void Player::startRecording() 
+{
     _record = true;
     _recNo = 0;
     startTimer();
 }
 
-void Player::stopRecording() {
+void Player::stopRecording() 
+{
     //std::cout << "end rec"<< std::endl;
     stopTimer();
     _record = false;
@@ -239,7 +244,8 @@ void Player::toEnd()
     draw();
 }
 
-void Player::step(bool forward) {
+void Player::step(bool forward) 
+{
     stopTimer();
 
     if (_path->size() == 0)
@@ -307,10 +313,7 @@ void Player::setLoopPlayback(bool loop)
     _loop = loop;
 }
 
-
-
 // Timer accessors.
-
 void Player::runTimer()
 {
     if (!timerIsRunning())
@@ -341,14 +344,28 @@ void Player::draw()
             _drawer->draw(_trajectory->x(_now));
         }
     } else {
-        if (0 <= _now && _now <= getEndTime()) {
+        if (0 <= _now && _now <= getEndTime() && _path->size() > 0) {
             rw::trajectory::TimedStatePath &path = *_path;
 
             //Find State Closest to now
-            for(unsigned int i=0;i<path.size()-1;i++){
-                if( path[i].getTime()<= _now && _now<=path[i+1].getTime() ){
-                    rw::common::Log::infoLog() << "Draw: Time: " << path[i].getTime() << ", it: " << i << "\n";
-                    _drawer->draw((*_path)[i].getValue());
+            double time = path[0].getTime();
+            double dt = 0;
+            
+            for (unsigned int i=0;i<path.size()-1;i++) {
+                if ( i > 0 ) {
+                    dt = path[i].getTime() - path[i-1].getTime();
+                    if ( dt < 0 ) {
+                        dt = 0;
+                    } 
+                }
+                time+=dt;   
+                double dtNext = path[i+1].getTime() - path[i].getTime();
+                if (dtNext < 0 ){
+                    dtNext = 0;
+                }
+
+                if ( time<= _now && _now<=time+dtNext ) {
+                    _drawer->draw(path[i].getValue());
                     break;
                 }
             }
@@ -374,7 +391,6 @@ std::string Player::getInfoLabel() const
 }
 
 // Constructors.
-
 Player::Ptr Player::makeEmptyPlayer()
 {
     return ownedPtr(new Player(
