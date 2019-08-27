@@ -6,6 +6,8 @@
 <file>pause.png</file>
 <file>forward.png</file>
 <file>backward.png</file>
+<file>forward_pause.png</file>
+<file>backward_pause.png</file>
 <file>start.png</file>
 <file>end.png</file>
 <file>reload.png</file>

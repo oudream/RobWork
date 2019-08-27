@@ -47,6 +47,8 @@
         <file alias="fileopen.png" >../rwslibs/playback/fileopen.png</file>
         <file alias="filesave.png" >../rwslibs/playback/filesave.png</file>
         <file alias="forward.png" >../rwslibs/playback/forward.png</file>
+        <file alias="forward_pause.png" >../rwslibs/playback/forward_pause.png</file>
+        <file alias="backward_pause.png" >../rwslibs/playback/backward_pause.png</file>
         <file alias="pause.png" >../rwslibs/playback/pause.png</file>
         <file alias="playback.png" >../rwslibs/playback/playback.png</file>
         <file alias="record_images.png" >../rwslibs/playback/record_images.png</file>

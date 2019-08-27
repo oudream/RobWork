@@ -147,6 +147,12 @@ public:
     }
 
     /**
+     * @brief get the current play direction
+     * @return the play direction 1 = forward, -1 = backward.
+     */
+    int getPlayDirection();
+
+    /**
      * @brief Construct an empty player.
      * @return empty player.
      */

@@ -111,6 +111,10 @@ private:
     std::string _file; // The currently opened file.
 
     PlayBackSettings _settings;
+
+    QAction* _forward;
+    QAction* _pauseAndResume;
+    QAction* _backward;
 };
 
 }
