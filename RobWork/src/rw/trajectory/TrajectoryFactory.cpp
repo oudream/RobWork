@@ -38,8 +38,6 @@ namespace
     template <class X>
     Ptr<Trajectory<X> > makeLinearXTrajectory(const std::vector<Timed<X> >& path)
     {
-        if(path.size())
-
         Ptr<InterpolatorTrajectory<X> > trajectory = ownedPtr(new InterpolatorTrajectory<X>);
         if (path.size() == 1 ) {            
             return TrajectoryFactory::makeFixedTrajectory(path.front().getValue(), 0);
