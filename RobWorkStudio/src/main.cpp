@@ -137,26 +137,27 @@ int main(int argc, char** argv)
                         //Plugins which are avaible in the sandbox
                     #endif
                 #endif
-                if(showSplash)
+                if (showSplash) {
                     splash->showMessage("Loading static plugins");
-
+                }
                 rwstudio.loadSettingsSetupPlugins( inifile );
+                if (inputfile.empty()) {
 
-                if(inputfile.empty()){
                     std::string workcellFile = rwstudio.loadSettingsWorkcell(inifile);
-                    if(showSplash)
+                    if (showSplash) {
                         splash->showMessage("Opening workcell...");
+                    }
                     rwstudio.openFile(workcellFile);
 
                 }
-                if(!inputfile.empty()){
+                if (!inputfile.empty()) {
                     if(showSplash)
                         splash->showMessage("Opening workcell...");
                     rwstudio.openFile(inputfile);
                 }
 
                 // load configuration into RobWorkStudio
-                if(showSplash){
+                if (showSplash) {
                     splash->showMessage("Loading settings");
                     splash->finish(&rwstudio);
                 }

@@ -81,7 +81,7 @@ namespace rws {
 		 * @brief get the current pivot point in world coordinates
 		 * @return current pivot point
 		 */
-		virtual rw::math::Vector3D<> getCenter()=0;
+		virtual rw::math::Vector3D<> getCenter() = 0;
 
 		/**
 		 * @brief draw the camera control.
@@ -108,6 +108,12 @@ namespace rws {
 		 */
 		virtual void autoZoom(rw::common::Ptr<rw::models::WorkCell> workcell, rw::common::Ptr<const rw::kinematics::State> state, double fovy, double aspectRatio) = 0;
 
+		/**
+         * @brief set the 3D coordinate that should be zoomed towards.
+         * @param target [in] the target position to zoom towards.
+         * @param enable [in] enable or disable zoom with zoomtarget.
+         */
+		virtual void setZoomTarget(rw::math::Vector3D<double> target, bool enable=true) {};
 	};
 
 }

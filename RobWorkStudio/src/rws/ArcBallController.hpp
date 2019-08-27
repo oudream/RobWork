@@ -106,10 +106,13 @@ namespace rws{
         //! @copydoc CameraController::autoZoom
         void autoZoom(rw::common::Ptr<rw::models::WorkCell> workcell, rw::common::Ptr<const rw::kinematics::State> state, double fovy, double aspectRatio);
 
+		//! @copydoc CameraController::setZoomTarget
+		void setZoomTarget(rw::math::Vector3D<double> target, bool enable=true);
+
 	private:
-		rw::math::Vector2D<> _centerPt; // Center of the ball
-		rw::math::Vector3D<> _stVec;          // Saved click vector
-		rw::math::Vector3D<> _enVec;          // Saved drag vector
+		rw::math::Vector2D<> _centerPt; 	// Center of the ball
+		rw::math::Vector3D<> _stVec;        // Saved click vector
+		rw::math::Vector3D<> _enVec;        // Saved drag vector
 		double _adjustWidth;    // Mouse bounds width
 		double _adjustHeight;   // Mouse bounds height
 		double _height, _width;
@@ -118,6 +121,8 @@ namespace rws{
 		rw::math::Vector3D<> _lastPos,_pivotPoint;
 		rw::math::Transform3D<> _camTransform;
 
+		bool _advancedZoomEnabled;
+		rw::math::Vector3D<double> _zoomTarget;
 	};
 
 }
