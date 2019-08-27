@@ -39,7 +39,6 @@ namespace
     Ptr<Trajectory<X> > makeLinearXTrajectory(const std::vector<Timed<X> >& path)
     {
         if(path.size())
-            rw::common::Log::infoLog() << "MakeTrajectory Path Size: " << path.size() << "\n"; 
 
         Ptr<InterpolatorTrajectory<X> > trajectory = ownedPtr(new InterpolatorTrajectory<X>);
         if (path.size() == 1 ) {            

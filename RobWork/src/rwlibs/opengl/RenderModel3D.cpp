@@ -129,7 +129,6 @@ void RenderModel3D::drawUsingSimpleFct(const DrawableNode::RenderInfo& info, con
 
 			if (obj.hasTexture()) {
 				glEnable(GL_TEXTURE_2D);
-				rw::common::Log::infoLog() << "Not A Triangle" << "\n";
 				if(obj._mappedToFaces){
 					glBegin(GL_TRIANGLES);
 					for(std::size_t i = data.startIdx; i < data.startIdx+data.size; i++) {
@@ -174,7 +173,6 @@ void RenderModel3D::drawUsingSimpleFct(const DrawableNode::RenderInfo& info, con
 				glDisable(GL_TEXTURE_2D);
 			} 
 			else {
-				rw::common::Log::infoLog() << "A Triangle" << "\n";
 				glBegin(GL_TRIANGLES);
 				for(std::size_t i = data.startIdx; i < data.startIdx+data.size; i++) {
 					// draw faces

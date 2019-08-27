@@ -141,8 +141,6 @@ void Player::stopRecording() {
 
 void Player::tick()
 {
-    rw::common::Log::infoLog() << "Tick Happened\n";
-    
     if(!_recordingOnly){
 
     const double end = getEndTime();
@@ -165,14 +163,7 @@ void Player::tick()
     if (_record && _rwstudio != NULL) {
         //Create Filename
         QString number = QString::number(_recNo++);
-        //while (number.length() < RECORD_NUM_OF_DIGITS)
-        //    number.prepend("0");
         QString filename = _recordFilename + number + "." + _recordType;
-
-        // if we want the entire robworkstudio frame...
-        //QPixmap originalPixmap = QPixmap::grabWindow(QApplication::desktop()->winId());
-        //originalPixmap.save(filename);
-
         _rwstudio->saveViewGL(filename);
     }
 
@@ -204,8 +195,6 @@ void Player::tick()
 
             //Create Filename
             QString number = QString::number(_recNo++);
-            //while (number.length() < RECORD_NUM_OF_DIGITS)
-            //    number.prepend("0");
             QString filename = _recordFilename + number + "." + _recordType;
             _rwstudio->saveViewGL(filename);
         }
@@ -353,8 +342,12 @@ void Player::draw()
         }
     } else {
         if (0 <= _now && _now <= getEndTime()) {
-            for(unsigned int i=0;i<_path->size()-1;i++){
-                if( (*_path)[i].getTime()<= _now && _now<=(*_path)[i+1].getTime() ){
+            rw::trajectory::TimedStatePath &path = *_path;
+
+            //Find State Closest to now
+            for(unsigned int i=0;i<path.size()-1;i++){
+                if( path[i].getTime()<= _now && _now<=path[i+1].getTime() ){
+                    rw::common::Log::infoLog() << "Draw: Time: " << path[i].getTime() << ", it: " << i << "\n";
                     _drawer->draw((*_path)[i].getValue());
                     break;
                 }
