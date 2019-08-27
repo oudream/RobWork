@@ -106,9 +106,9 @@ namespace rwlibs { namespace opengl {
             //We set up GL_LIGHT7 for highlighting
             GLfloat light7_ambient[] =  {1.0f, 0.0f, 0.0f, 1.0f};
             GLfloat light7_diffuse[] =  {.6f, .3f, 0.3f, 1.0f};
-            GLfloat light7_specular[] = { 0.5f, 0.2f, 0.2f, 1.0f};
+            GLfloat light7_specular[] = { 1.0f, 0.2f, 0.2f, 1.0f};
             // directional assumes that we are looking from above
-            GLfloat light7_position[] = {0.0f, 0.0f, -1.0f, 0.0f};
+            GLfloat light7_position[] = {1.0f, 1.0f, 1.0f, 0.0f};
 
             glLightfv(GL_LIGHT7, GL_AMBIENT, light7_ambient);
             glLightfv(GL_LIGHT7, GL_DIFFUSE, light7_diffuse);

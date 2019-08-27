@@ -580,9 +580,9 @@ void RWStudioView3D::setState(const rw::kinematics::State& state){
         }
 
         _qryResult.collidingFrames.clear();
-        //std::cout << "incollision?" << std::endl;
+        
         if( _rws->getCollisionDetector()->inCollision(state, &_qryResult) ){
-            //std::cout << "\t true" << std::endl;
+            
             BOOST_FOREACH(const FramePair& pair, _qryResult.collidingFrames) {
                 _wcscene->setHighlighted(true, pair.first);
                 _wcscene->setHighlighted(true, pair.second);
