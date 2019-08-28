@@ -212,7 +212,8 @@ public:
 }}
 %template (Vector3d) rw::math::Vector3D<double>;
 %template (Vector3f) rw::math::Vector3D<float>;
-%template (Vector3Vector) std::vector< rw::math::Vector3D<double> >;
+%template (Vector3dVector) std::vector< rw::math::Vector3D<double> >;
+%template (Vector3fVector) std::vector< rw::math::Vector3D<float> >;
 
 namespace rw { namespace math {
 /**
@@ -243,10 +244,6 @@ public:
     bool operator==(const Rotation3D<T> &rhs) const;
     
     %extend {
-    	rw::math::EAA<T> toEAA(){ return rw::math::EAA<T>(*$self); }
-    	rw::math::RPY<T> toRPY(){ return rw::math::RPY<T>(*$self); }
-    	rw::math::Quaternion<T> toQuaternion(){ return rw::math::Quaternion<T>(*$self); }
-    	
     	const rw::math::EAA<T> operator*(const rw::math::EAA<T>& bTKc){
     		return *((rw::math::Rotation3D<T>*)$self) * bTKc;
     	}
@@ -604,6 +601,133 @@ public:
 };
 
 }}
+
+/**
+ * @brief projection matrix
+ */
+class ProjectionMatrix {
+public:
+    //! @brief constructor
+    ProjectionMatrix();
+
+    //! @brief Destructor
+    ~ProjectionMatrix();
+
+    //! @brief test if this is a perspective projection
+    bool isPerspectiveProjection();
+
+    //! @brief test if this is a ortographic projection
+    bool isOrtographicProjection();
+
+    /**
+     * @brief set the projection matrix to an ortographic projection by defining
+     * the box with length to all sides (left, right, bottom, top, near and far)
+     * @param left [in] length in m to left edge of image
+     * @param right [in] length in m to right edge of image
+     * @param bottom [in] length in m to bottom edge of image
+     * @param top [in] length in m to top edge of image
+     * @param zNear [in] length in m to near clipping plane
+     * @param zFar [in] length in m to far clipping plane
+     */
+    void setOrtho(double left, double right,
+                    double bottom, double top,
+                    double zNear, double zFar);
+
+    //! get ortographic projection. Onli valid if isOrtographicProjection is true
+    bool getOrtho(double left, double right,
+                    double bottom, double top,
+                    double zNear, double zFar) const;
+
+    /**
+     * @brief set the projection matrix to the viewing frustum
+     * @param left [in] distance in m near cutting plane from center to left edge
+     * @param right [in] distance in m near cutting plane from center to right edge
+     * @param bottom [in] distance in m near cutting plane from center to bottom edge
+     * @param top [in] distance in m near cutting plane from center to top edge
+     * @param zNear [in] distance in m along z-axis to near cutting plane
+     * @param zFar [in] distance in m along z-axis to far cutting plane
+     */
+    void setFrustum(double left, double right,
+                      double bottom, double top,
+                      double zNear, double zFar);
+
+    /**
+     * @brief get the projection matrix to the viewing frustum
+     * @param left [out] distance in m near cutting plane from center to left edge
+     * @param right [out] distance in m near cutting plane from center to right edge
+     * @param bottom [out] distance in m near cutting plane from center to bottom edge
+     * @param top [out] distance in m near cutting plane from center to top edge
+     * @param zNear [out] distance in m along z-axis to near cutting plane
+     * @param zFar [out] distance in m along z-axis to far cutting plane
+     */
+    bool getFrustum(double left, double right,
+                       double bottom, double top,
+                       double zNear, double zFar) const;
+
+    /**
+     * @brief set the projection matrix to perspective projection
+     * @param fovy [in] vertical field of view [degrees]
+     * @param aspectRatio [in] aspect ratio between width and height of image
+     * @param zNear [in] distance to near cutting plane
+     * @param zFar [in] distance to far cutting plane
+     */
+    void setPerspective(double fovy, double aspectRatio, double zNear, double zFar);
+
+    /**
+     * @brief set the projection matrix to perspective projection
+     * @param fovy [in] vertical field of view [degrees]
+     * @param width [in] width of image
+     * @param height [in] height of image
+     * @param zNear [in] distance to near cutting plane
+     * @param zFar [in] distance to far cutting plane
+     */
+    void setPerspective(double fovy, double width, double height, double zNear, double zFar);
+
+    /**
+     * @brief set the projection matrix to perspective projection
+     * @param fovy [in] vertical field of view [degrees]
+     * @param aspectRatio [in] aspect ratio between width and height of image
+     * @param zNear [in] distance to near cutting plane
+     * @param zFar [in] distance to far cutting plane
+     */
+    bool getPerspective(double fovy, double aspectRatio, double zNear, double zFar) const;
+
+    /**
+     * @brief creates a projection matrix with a perspective projection
+     * @param fovy [in]
+     * @param aspectRatio [in]
+     * @param zNear [in]
+     * @param zFar [in]
+     * @return new ProjectionMatrix.
+     */
+    static ProjectionMatrix makePerspective(double fovy, double aspectRatio, double zNear, double zFar);
+
+    /**
+     * @brief creates a projection matrix with a perspective projection
+     * @param fovy [in]
+     * @param width [in] of image
+     * @param height [in] of image
+     * @param zNear [in]
+     * @param zFar [in]
+     * @return new ProjectionMatrix.
+     */
+    static ProjectionMatrix makePerspective(double fovy, double width, double height, double zNear, double zFar);
+
+
+    /**
+     * @brief creates a projection matrix with a orthographic projection
+     * @param left [in]
+     * @param right [in]
+     * @param bottom [in]
+     * @param top [in]
+     * @param zNear [in]
+     * @param zFar [in]
+     * @return new ProjectionMatrix.
+     */
+    static ProjectionMatrix makeOrtho(double left, double right,
+                                      double bottom, double top,
+                                      double zNear, double zFar);
+};
 
 %template (Pose6d) rw::math::Pose6D<double>;
 %template (Pose6f) rw::math::Pose6D<float>;

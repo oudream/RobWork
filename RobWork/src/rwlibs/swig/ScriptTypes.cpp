@@ -17,14 +17,22 @@
 
 #include "ScriptTypes.hpp"
 
+using rw::common::ownedPtr;
+
+namespace {
+    ::rw::common::LogWriter::Ptr _writer;
+}
 
 void rwlibs::swig::writelog(const std::string& msg){
 	::rw::common::Log::log().setEnable( ::rw::common::Log::User8Mask );
+	if (_writer.isNull())
+	    rwlibs::swig::setlog( &Log::infoLog() );
     ::rw::common::Log::log().write(::rw::common::Log::User8, msg);
 
 }
 
 void rwlibs::swig::setlog(::rw::common::LogWriter::Ptr writer){
+    _writer = writer;
     ::rw::common::Log::log().setWriter(::rw::common::Log::User8, writer);
 }
 

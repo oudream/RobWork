@@ -51,7 +51,7 @@ rw::common::Ptr<rw::common::Extension> LuaPlugin::makeExtension(const std::strin
 
         // todo: add posible properties to the extension descriptor
         //exts.back().getProperties().set<std::string>(propid, value);
-        extension->getProperties().set<std::string>("ID", "rwsim");
+        extension->getProperties().set<std::string>("ID", "rws");
         return extension;
     }
     return NULL;

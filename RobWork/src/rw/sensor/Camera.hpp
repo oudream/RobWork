@@ -207,7 +207,6 @@ namespace rw { namespace sensor {
          * Note: If shutter is not available then a dummy implementation
          * will throw an error message.
          * @param Value New shutter value.
-         * @return New nearest shutter value.
          */
         virtual void setShutter(double Value){
             RW_THROW("Shutter not available!");

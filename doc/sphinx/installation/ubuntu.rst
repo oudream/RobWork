@@ -101,7 +101,7 @@ consider using liblua5.3-dev instead):
 
 ::
 
-    sudo apt-get install swig liblua5.2-dev python-dev default-jdk
+    sudo apt-get install swig liblua5.2-dev python3-dev default-jdk
 
 Google Test (optional) is used for unit tests in RobWork. If you are a
 developer and wants to develop code for the RobWork trunk, writing a
