@@ -40,6 +40,7 @@
 /RobWork/CTestConfig.cmake
 /RobWork/include_dirs
 /RobWork/source_files
+/RobWork/.vscode
 
 # /RobWork/cmake/
 /RobWork/cmake/RobWorkBuildConfigDebug.cmake
@@ -4203,3 +4204,4 @@
 /doc/installstuff/RW_package-source/.project
 
 RobWorkSim/example/scripts/java/Simulation$Callback.class
+RobWork/.vscode/ipch/187e1e653501139b/mmap_address.bin
