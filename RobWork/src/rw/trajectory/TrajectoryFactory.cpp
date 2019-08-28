@@ -44,7 +44,7 @@ namespace
         }
         if (!path.empty()) {
             double dt=0;
-            for (uint i = 1; i < path.size(); i++ ) {
+            for (size_t i = 1; i < path.size(); i++ ) {
                 dt = path[i].getTime() - path[i-1].getTime();
                 if (!(dt >= 0)) {
                     RW_WARN("dt is wrong in trajectory. dt=" << dt << ". dt is force to 0.");
