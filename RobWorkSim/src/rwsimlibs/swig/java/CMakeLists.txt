@@ -65,9 +65,9 @@ IF( build )
         ADD_DEPENDENCIES(rwsim_jni CleanDepRWSIM)
     ENDIF()
     if (WIN32)
-        set(CLASSPATH -classpath "${RW_LIBS}/rw_java.jar\;${RW_LIBS}/rw_task_java.jar\;${RW_LIBS}/rw_assembly_java.jar")
+        set(CLASSPATH -classpath "${RW_LIBS}/rw_java.jar\;${RW_LIBS}/rw_task_java.jar\;${RW_LIBS}/rw_assembly_java.jar\;${RW_LIBS}/rw_control_java.jar")
     else()
-        set(CLASSPATH -classpath ${RW_LIBS}/rw_java.jar:${RW_LIBS}/rw_task_java.jar:${RW_LIBS}/rw_assembly_java.jar)
+        set(CLASSPATH -classpath ${RW_LIBS}/rw_java.jar:${RW_LIBS}/rw_task_java.jar:${RW_LIBS}/rw_assembly_java.jar:${RW_LIBS}/rw_control_java.jar)
     endif()
     # Compile java code and create JAR and Javadoc
     ADD_CUSTOM_COMMAND(TARGET rwsim_jni
@@ -83,9 +83,11 @@ IF( build )
         COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_CURRENT_SOURCE_DIR}/ThreadSimulatorStepEventDispatcher.java java_src/org/robwork/rwsim/ThreadSimulatorStepEventDispatcher.java
     	COMMAND ${CMAKE_COMMAND} -E echo "Compiling Java files..."
         COMMAND ${CMAKE_COMMAND} -E make_directory java_build/org/robwork/rwsim
-        COMMAND ${Java_JAVAC_EXECUTABLE} ${CLASSPATH} -d ${CMAKE_CURRENT_BINARY_DIR}/java_build java_src/org/robwork/*.java
+        COMMAND ${Java_JAVAC_EXECUTABLE} ${CLASSPATH}  -d ${CMAKE_CURRENT_BINARY_DIR}/java_build java_src/org/robwork/*.java java_src/org/robwork/rwsim/*.java
         COMMAND ${CMAKE_COMMAND} -E echo "Creating jar file..."
         COMMAND ${Java_JAR_EXECUTABLE} cvf ${RWSIM_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/rwsim_java.jar  -C java_build .
+        COMMAND ${CMAKE_COMMAND} -E echo "Creating jar file of source..."
+        COMMAND ${Java_JAR_EXECUTABLE} cvf ${RWSIM_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/rwsim_java-source.jar  -C java_src .
     	COMMAND ${CMAKE_COMMAND} -E echo "Creating Javadoc..."
     	COMMAND ${CMAKE_COMMAND} -E make_directory ${RWSIM_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/javadoc
     	COMMAND ${Java_JAVADOC_EXECUTABLE}

@@ -17,6 +17,7 @@
 
 #include "URRTDE.hpp"
 #include <ur_rtde/rtde_control_interface.h>
+#include <ur_rtde/rtde_io_interface.h>
 #include <ur_rtde/rtde_receive_interface.h>
 
 using namespace rwhw;
@@ -26,11 +27,28 @@ URRTDE::URRTDE(std::string robot_ip, std::vector<std::string> variables)
 {
     // Initialize interface
     rtde_control_ = std::make_shared<RTDEControlInterface>(robot_ip);
+    rtde_io_ = std::make_shared<RTDEIOInterface>(robot_ip);
     rtde_receive_ = std::make_shared<RTDEReceiveInterface>(robot_ip, variables);
 }
 
 URRTDE::~URRTDE()
 {
+}
+
+bool URRTDE::reconnect() {
+  return rtde_control_->reconnect();
+}
+
+bool URRTDE::isConnected() {
+  return rtde_control_->isConnected();
+}
+
+bool URRTDE::sendCustomScriptFunction(const std::string &function_name, const std::string &script) {
+  return rtde_control_->sendCustomScriptFunction(function_name, script);
+}
+
+bool URRTDE::sendCustomScriptFile(const std::string &file_path) {
+  return rtde_control_->sendCustomScriptFile(file_path);
 }
 
 bool URRTDE::reuploadScript() {
@@ -135,11 +153,11 @@ bool URRTDE::zeroFtSensor() {
 }
 
 bool URRTDE::setStandardDigitalOut(std::uint8_t output_id, bool signal_level) {
-    return rtde_control_->setStandardDigitalOut(output_id, signal_level);
+    return rtde_io_->setStandardDigitalOut(output_id, signal_level);
 }
 
 bool URRTDE::setToolDigitalOut(std::uint8_t output_id, bool signal_level) {
-    return rtde_control_->setToolDigitalOut(output_id, signal_level);
+    return rtde_io_->setToolDigitalOut(output_id, signal_level);
 }
 
 bool URRTDE::setPayload(double mass, const std::vector<double> &cog)
@@ -169,17 +187,17 @@ bool URRTDE::forceModeSetGainScaling(double scaling)
 
 bool URRTDE::setSpeedSlider(double speed)
 {
-    return rtde_control_->setSpeedSlider(speed);
+    return rtde_io_->setSpeedSlider(speed);
 }
 
 bool URRTDE::setAnalogOutputVoltage(std::uint8_t output_id, double voltage_ratio)
 {
-    return rtde_control_->setAnalogOutputVoltage(output_id, voltage_ratio);
+    return rtde_io_->setAnalogOutputVoltage(output_id, voltage_ratio);
 }
 
 bool URRTDE::setAnalogOutputCurrent(std::uint8_t output_id, double current_ratio)
 {
-    return rtde_control_->setAnalogOutputCurrent(output_id, current_ratio);
+    return rtde_io_->setAnalogOutputCurrent(output_id, current_ratio);
 }
 
 bool URRTDE::isProgramRunning()

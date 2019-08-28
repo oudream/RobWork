@@ -348,7 +348,6 @@ public:
 	/**
 	 * @brief Indices for different logs. The loglevel will be Info as default. Everything below the
 	 * loglevel is enabled.
-	 *
 	 */
 	enum LogIndex {
 		Fatal=0, Critical=1,
@@ -362,6 +361,7 @@ public:
 
 	/**
 	 * @brief Convert a LogIndex to a mask.
+	 *
 	 * @param idx [in] the LogIndex.
 	 * @return the mask enabling the given log level.
 	 */
@@ -380,6 +380,7 @@ public:
 	/**
 	 * @brief convenience function for getting the LogWriter
 	 * that is associated with the info loglevel
+	 *
 	 * @return info LogWriter
 	 */
     static LogWriter& infoLog();
@@ -387,6 +388,7 @@ public:
 	/**
 	 * @brief convenience function for getting the LogWriter
 	 * that is associated with the warning loglevel
+	 *
 	 * @return warning LogWriter
 	 */
     static LogWriter& warningLog();
@@ -395,6 +397,7 @@ public:
 	/**
 	 * @brief convenience function for getting the LogWriter
 	 * that is associated with the error loglevel
+	 *
 	 * @return error LogWriter
 	 */
     static LogWriter& errorLog();
@@ -402,6 +405,7 @@ public:
 	/**
 	 * @brief convenience function for getting the LogWriter
 	 * that is associated with the debug loglevel
+	 *
 	 * @return debug LogWriter
 	 */
     static LogWriter& debugLog();
@@ -409,18 +413,21 @@ public:
 	/**
 	 * @brief returns the global log instance. Global in the sence
 	 * of whatever is linked staticly together.
+	 *
 	 * @return a Log
 	 */
     static rw::common::Ptr<Log> getInstance();
 
     /**
      * @brief convenience function of getInstance
+     *
      * @return a Log
      */
     static Log& log();
 
     /**
      * @brief sets the instance of the log class
+     *
      * @param log [in] the log that will be used through the static log methods.
      */
     static void setLog(rw::common::Ptr<Log> log);
@@ -441,6 +448,7 @@ public:
      * @brief set the loglevel. Any log with LogIndex equal to or less than
      * loglevel will be enabled. Any log above will be disabled unless an
      * enabled mask is specified for that log
+     *
      * @param loglevel [in] the level
      */
     void setLevel(LogIndex loglevel);
@@ -448,6 +456,7 @@ public:
 
     /**
      * @brief gets the log writer associated to logindex \b id
+     *
      * @param id [in] logindex
      * @return log writer
      */
@@ -571,6 +580,7 @@ public:
 	/**
 	 * @brief convenience function for getting the LogWriter
 	 * that is associated with the info loglevel
+	 *
 	 * @return info LogWriter
 	 */
     LogWriter& info();
@@ -578,6 +588,7 @@ public:
 	/**
 	 * @brief convenience function for getting the LogWriter
 	 * that is associated with the warning loglevel
+	 *
 	 * @return info LogWriter
 	 */
     LogWriter& warning();
@@ -585,6 +596,7 @@ public:
 	/**
 	 * @brief convenience function for getting the LogWriter
 	 * that is associated with the error loglevel
+	 *
 	 * @return info LogWriter
 	 */
     LogWriter& error();
@@ -592,12 +604,14 @@ public:
 	/**
 	 * @brief convenience function for getting the LogWriter
 	 * that is associated with the debug loglevel
+	 *
 	 * @return info LogWriter
 	 */
     LogWriter& debug();
 
 	/**
 	 * @brief Enable log(s) given by log mask.
+	 *
 	 * @param mask [in] the mask for the logs to enable.
 	 */
 	void setEnable(int mask);
@@ -605,12 +619,14 @@ public:
    /**
      * @brief Checks if the given LogIndex is enabled. This can be used to
      * determine if a certain log level will be displayed or not.
+     *
      * @param idx [in] the level
      */
     bool isEnabled(LogIndex idx);
 
 	/**
 	 * @brief Disable log(s) given by log mask.
+	 *
 	 * @param mask [in] the mask for the logs to disable.
 	 */
 	void setDisable(int mask);
@@ -1319,118 +1335,8 @@ class WorkCellScene {
 /********************************************
  * INVKIN
  ********************************************/
-
-class InvKinSolver
-{
-public:
-    virtual std::vector<rw::math::Q> solve(const rw::math::Transform3D<double> & baseTend, const State& state) const = 0;
-    virtual void setCheckJointLimits(bool check) = 0;
-};
-
-%template (InvKinSolverPtr) rw::common::Ptr<InvKinSolver>;
-
-class IterativeIK: public InvKinSolver
-{
-public:
-    virtual void setMaxError(double maxError);
-
-    virtual double getMaxError() const;
-
-    virtual void setMaxIterations(int maxIterations);
-
-    virtual int getMaxIterations() const;
-
-    virtual PropertyMap& getProperties();
-#if !defined(SWIGJAVA)
-    virtual const PropertyMap& getProperties() const;
-#endif
-    static rw::common::Ptr<IterativeIK> makeDefault(rw::common::Ptr<Device> device, const State& state);
-};
-
-%template (IterativeIKPtr) rw::common::Ptr<IterativeIK>;
-OWNEDPTR(IterativeIK);
-
-class JacobianIKSolver : public IterativeIK
-{
-public:
-    typedef enum{Transpose, SVD, DLS, SDLS} JacobianSolverType;
-
-    JacobianIKSolver(rw::common::Ptr<Device> device, const State& state);
-
-    JacobianIKSolver(rw::common::Ptr<Device> device, Frame *foi, const State& state);
-
-    std::vector<rw::math::Q> solve(const rw::math::Transform3D<double> & baseTend, const State& state) const;
-
-    void setInterpolatorStep(double interpolatorStep);
-
-     void setEnableInterpolation(bool enableInterpolation);
-
-     bool solveLocal(const rw::math::Transform3D<double>  &bTed,
-                     double maxError,
-                     State &state,
-                     int maxIter) const;
-
-     void setClampToBounds(bool enableClamping);
-
-     void setSolverType(JacobianSolverType type);
-
-     void setCheckJointLimits(bool check);
-
-};
-
-%template (JacobianIKSolverPtr) rw::common::Ptr<JacobianIKSolver>;
-OWNEDPTR(JacobianIKSolver);
-
-class IKMetaSolver: public IterativeIK
-{
-public:
-    IKMetaSolver(rw::common::Ptr<IterativeIK> iksolver,
-        const rw::common::Ptr<Device> device,
-        rw::common::Ptr<CollisionDetector> collisionDetector = NULL);
-
-    //IKMetaSolver(rw::common::Ptr<IterativeIK> iksolver,
-    //    const rw::common::Ptr<Device> device,
-    //    rw::common::Ptr<QConstraint> constraint);
-
-    std::vector<rw::math::Q> solve(const rw::math::Transform3D<double> & baseTend, const State& state) const;
-
-    void setMaxAttempts(size_t maxAttempts);
-
-    void setStopAtFirst(bool stopAtFirst);
-
-    void setProximityLimit(double limit);
-
-    void setCheckJointLimits(bool check);
-
-    std::vector<rw::math::Q> solve(const rw::math::Transform3D<double> & baseTend, const State& state, size_t cnt, bool stopatfirst) const;
-
-};
-
-%template (IKMetaSolverPtr) rw::common::Ptr<IKMetaSolver>;
-OWNEDPTR(IKMetaSolver);
-
-class ClosedFormIK: public InvKinSolver
-{
-public:
-    static rw::common::Ptr<ClosedFormIK> make(const Device& device, const State& state);
-};
-
-
-class PieperSolver: public ClosedFormIK {
-public:
-    PieperSolver(const std::vector<DHParameterSet>& dhparams,
-                 const rw::math::Transform3D<double> & joint6Tend,
-                 const rw::math::Transform3D<double> & baseTdhRef = rw::math::Transform3D<double> ::identity());
-
-    PieperSolver(SerialDevice& dev, const rw::math::Transform3D<double> & joint6Tend, const State& state);
-
-    virtual std::vector<rw::math::Q> solve(const rw::math::Transform3D<double> & baseTend, const State& state) const;
-
-    virtual void setCheckJointLimits(bool check);
-
-};
-
-%template (ClosedFormIKPtr) rw::common::Ptr<ClosedFormIK>;
+ 
+ %include <rwlibs/swig/rwinvkin.i>
 
 /********************************************
  * KINEMATICS
@@ -1445,18 +1351,58 @@ public:
 };
 %template (StateVector) std::vector<State>;
 
+/**
+ * @brief the basic building block for the stateless design using
+ * the StateStructure class. A StateData represents a size,
+ * a unique id, and a unique name, when inserted into the StateStructure.
+ * The size will allocate "size"-doubles in State objects originating from the
+ * StateStructure.
+ */
 class StateData {
 protected:
     StateData(int size, const std::string& name);
 public:
-    const std::string& getName();
+    /**
+     * @brief The name of the state data.
+     *
+     * @return The name of the state data.
+     */
+    const std::string& getName() const;
+
+    /**
+     * @brief The number of doubles allocated by this StateData in
+     * each State object.
+     *
+     * @return The number of doubles allocated by the StateData
+     */
     int size() const;
+
 #if !defined(SWIGJAVA)
+    /**
+     * @brief An array of length size() containing the values for
+     * the state data.
+     *
+     * It is OK to call this method also for a StateData with zero size.
+     *
+     * @param state [in] The state containing the StateData values.
+     *
+     * @return The values for the frame.
+     */
     double* getData(State& state);
 #endif
 #if defined(SWIGJAVA)
 %apply double[] {double *};
 #endif
+    /**
+     * @brief Assign for \b state data the size() of values of the array \b
+     * vals.
+     *
+     * The array \b vals must be of length at least size().
+     *
+     * @param state [inout] The state to which \b vals are written.
+     *
+     * @param vals [in] The joint values to assign.
+     */
     void setData(State& state, const double* vals) const;
 };
 
@@ -1471,49 +1417,193 @@ public:
 %template (StateStructurePtr) rw::common::Ptr<StateStructure>;
 OWNEDPTR(StateStructure);
 
+/**
+ * @brief The type of node of forward kinematic trees.
+ *
+ * Types of joints are implemented as subclasses of Frame. The
+ * responsibility of a joint is to implement the getTransform() method that
+ * returns the transform of the frame relative to whatever parent it is
+ * attached to.
+ *
+ * The getTransform() method takes as parameter the set of joint values
+ * State for the tree. Joint values for a particular frame can be accessed
+ * via State::getQ(). A frame may contain pointers to other frames so that
+ * the transform of a frame may depend on the joint values for other frames
+ * also.
+ */
 class Frame : public StateData
 {
 public:
 
-    rw::math::Transform3D<double>  getTransform(const State& state) const;
-    PropertyMap& getPropertyMap();
-    int getDOF() const ;
-    Frame* getParent() ;
-    Frame* getParent(const State& state);
-    Frame* getDafParent(const State& state);
+    /**
+     * @brief Post-multiply the transform of the frame to the parent transform.
+     *
+     * The transform is calculated for the joint values of \b state.
+     *
+     * The exact implementation of getTransform() depends on the type of
+     * frame. See for example RevoluteJoint and PrismaticJoint.
+     *
+     * @param parent [in] The world transform of the parent frame.
+     * @param state [in] Joint values for the forward kinematics tree.
+     * @param result [in] The transform of the frame in the world frame.
+     */
+    void multiplyTransform(const rw::math::Transform3D<double>& parent,
+                           const State& state,
+                           rw::math::Transform3D<double>& result) const;
+
+    /**
+     * @brief The transform of the frame relative to its parent.
+     *
+     * The transform is calculated for the joint values of \b state.
+     *
+     * The exact implementation of getTransform() depends on the type of
+     * frame. See for example RevoluteJoint and PrismaticJoint.
+     *
+     * @param state [in] Joint values for the forward kinematics tree.
+     *
+     * @return The transform of the frame relative to its parent.
+     */
+    rw::math::Transform3D<double> getTransform(const State& state) const;
 
 #if !defined(SWIGJAVA) 
-    const PropertyMap& getPropertyMap() const ; 
-    const Frame* getParent() const ;
+    /**
+     * @brief Miscellaneous properties of the frame.
+     *
+     * The property map of the frame is provided to let the user store
+     * various settings for the frame. The settings are typically loaded
+     * from setup files.
+     *
+     * The low-level manipulations of the property map can be cumbersome. To
+     * ease these manipulations, the PropertyAccessor utility class has been
+     * provided. Instances of this class are provided for a number of common
+     * settings, however it is undecided if these properties are a public
+     * part of RobWork.
+     *
+     * @return The property map of the frame.
+     */
+    const PropertyMap& getPropertyMap() const;
+#endif
+
+    /**
+     * @brief Miscellaneous properties of the frame.
+     *
+     * The property map of the frame is provided to let the user store
+     * various settings for the frame. The settings are typically loaded
+     * from setup files.
+     *
+     * The low-level manipulations of the property map can be cumbersome. To
+     * ease these manipulations, the PropertyAccessor utility class has been
+     * provided. Instances of this class are provided for a number of common
+     * settings, however it is undecided if these properties are a public
+     * part of RobWork.
+     *
+     * @return The property map of the frame.
+     */
+    PropertyMap& getPropertyMap();
+
+
+    /**
+     * @brief The number of degrees of freedom (dof) of the frame.
+     *
+     * The dof is the number of joint values that are used for controlling
+     * the frame.
+     *
+     * Given a set joint values of type State, the getDof() number of joint
+     * values for the frame can be read and written with State::getQ() and
+     * State::setQ().
+     *
+     * @return The number of degrees of freedom of the frame.
+     */
+    int getDOF() const;
+
+
+    // The parents
+
+#if !defined(SWIGJAVA)
+    //! @brief The parent of the frame or NULL if the frame is a DAF.
+    const Frame* getParent() const;
+#endif
+
+    //! @brief The parent of the frame or NULL if the frame is a DAF.
+    Frame* getParent();
+
+    /**
+     * @brief Returns the parent of the frame
+     *
+     * If no static parent exists it look for at DAF parent. If such
+     * does not exists either it returns NULL.
+     *
+     * @param state [in] the state to consider
+     * @return the parent
+     */
+    Frame* getParent(const State& state);
+
+#if !defined(SWIGJAVA)
+    /**
+     * @brief Returns the parent of the frame
+     *
+     * If no static parent exists it look for at DAF parent. If such
+     * does not exists either it returns NULL.
+     *
+     * @param state [in] the state to consider
+     * @return the parent
+     */
     const Frame* getParent(const State& state) const;
+
+    /**
+     * @brief The dynamically attached parent or NULL if the frame is not a
+     * DAF.
+     */
     const Frame* getDafParent(const State& state) const;
 #endif
-/*
-    typedef rw::common::ConcatVectorIterator<Frame> iterator;
-    typedef rw::common::ConstConcatVectorIterator<Frame> const_iterator;
 
-    typedef std::pair<iterator, iterator> iterator_pair;
-    typedef std::pair<const_iterator, const_iterator> const_iterator_pair;
+    /**
+     * @brief The dynamically attached parent or NULL if the frame is not a
+     * DAF.
+     */
+    Frame* getDafParent(const State& state);
 
-    const_iterator_pair getChildren() const;
-    iterator_pair getChildren();
-    const_iterator_pair getChildren(const State& state) const;
-    iterator_pair getChildren(const State& state);
-    const_iterator_pair getDafChildren(const State& state) const;
-    iterator_pair getDafChildren(const State& state);
-*/
-    %extend {
-        rw::math::Transform3D<double>  wTt(const State& state) const{
-            return ::rw::kinematics::Kinematics::worldTframe($self, state);
-        }
+    // Iterator stuff left out of script interface for now!
 
-        rw::math::Transform3D<double>  fTf(const Frame* frame, const State& state) const{
-            return ::rw::kinematics::Kinematics::frameTframe($self, frame, state);
-        }
-    }
+    // Dynamic frame attachments.
 
+    /**
+     * @brief Move a frame within the tree.
+     *
+     * The frame \b frame is detached from its parent and reattached to \b
+     * parent. The frames \b frame and \b parent must both belong to the
+     * same kinematics tree.
+     *
+     * Only frames with no static parent (see getParent()) can be moved.
+     *
+     * @param parent [in] The frame to attach \b frame to.
+     * @param state [inout] The state to which the attachment is written.
+     */
     void attachTo(Frame* parent, State& state);
+
+    /**
+     * @brief Test if this frame is a Dynamically Attachable Frame
+     *
+     * @return true if this frame is a DAF, false otherwise
+     */
     bool isDAF();
+
+    /**
+     * @brief Get the transform relative to world.
+     *
+     * @param state [in] the state.
+     * @return transform relative to world.
+     */
+    rw::math::Transform3D<double> wTf(const State& state) const;
+
+    /**
+     * @brief Get the transform of other frame relative to this frame.
+     *
+     * @param to [in] the other frame
+     * @param state [in] the state.
+     * @return transform of frame \b to relative to this frame.
+     */
+    rw::math::Transform3D<double> fTf(const Frame* to, const State& state) const;
 
 private:
     // Frames should not be copied.
@@ -1521,6 +1611,8 @@ private:
     Frame& operator=(const Frame&);
 };
 
+%template (FramePtr) rw::common::Ptr<Frame>;
+%template (FrameCPtr) rw::common::Ptr<const Frame>;
 %template (FrameVector) std::vector<Frame*>;
 
 class MovableFrame: public Frame{
@@ -1809,6 +1901,7 @@ public:
     %extend {
 		/**
 		 * @brief Returns the Jacobian associated to \b state
+		 *
 		 * @param state [in] State for which to calculate the Jacobian
 		 * @return Jacobian for \b state
 		 */
@@ -2064,7 +2157,12 @@ class SerialDevice: public JointDevice
 {
 };
 %template (SerialDevicePtr) rw::common::Ptr<SerialDevice>;
+%template (SerialDeviceCPtr) rw::common::Ptr<const SerialDevice>;
 OWNEDPTR(SerialDevice)
+
+%extend rw::common::Ptr<SerialDevice> {
+    rw::common::Ptr<const SerialDevice> asSerialDeviceCPtr() { return *$self; }
+}
 
 class ParallelDevice: public JointDevice
 {
@@ -2082,6 +2180,7 @@ public:
 		const State& state);
 };
 %template (TreeDevicePtr) rw::common::Ptr<TreeDevice>;
+%template (TreeDeviceCPtr) rw::common::Ptr<const TreeDevice>;
 OWNEDPTR(TreeDevice)
 
 %nodefaultctor DHParameterSet;
@@ -2095,158 +2194,7 @@ class DHParameterSet
  * PATHPLANNING
  ********************************************/
 
-//! @brief Interface for the sampling a configuration.
-class QSampler
-{
-public:
-    /**
-       @brief Sample a configuration.
-
-       If sampling fails, the sampler may return the empty configuration. If
-       empty() is true then the sampler has no more configurations.
-       Otherwise sample() may (or may not) succeed if called a second time.
-    */
-    rw::math::Q sample();
-
-    /**
-       @brief True if the sampler is known to contain no more
-       configurations.
-    */
-    bool empty() const;
-
-    /**
-       @brief Destructor
-    */
-    virtual ~QSampler();
-
-    /**
-       @brief Empty sampler.
-    */
-	static rw::common::Ptr<QSampler> makeEmpty();
-
-    /**
-       @brief Sampler that always returns the same configuration.
-
-       The sampler is considered never empty (empty() always returns false).
-    */
-	static rw::common::Ptr<QSampler> makeFixed(const rw::math::Q& q);
-
-    /**
-       @brief Sampler that always returns a single configuration.
-
-       The sample() returns \b q the first time the method is called and the
-       empty configuration otherwise. empty() returns true after the first
-       call of sample().
-    */
-	static rw::common::Ptr<QSampler> makeSingle(const rw::math::Q& q);
-
-    /**
-       @brief Sampler for the values of a finite sequence.
-
-       sample() returns each of the values of \b qs in order. When all of
-       these samples have been returned, empty() returns true and sample()
-       returns the empty configuration.
-    */
-	static rw::common::Ptr<QSampler> makeFinite(const std::vector<rw::math::Q>& qs);
-
-    /**
-       @brief A sampler to that returns only the first \b cnt samples from
-       another sampler.
-
-       The sampler is considered empty as soon as \b sampler is empty or the
-       sampler has been called \b cnt times or more.
-    */
-	static rw::common::Ptr<QSampler> makeFinite(rw::common::Ptr<QSampler> sampler, int cnt);
-
-    /**
-       @brief Uniform random sampling for a box of the configuration space.
-    */
-	//static rw::common::Ptr<QSampler> makeUniform(const Device::QBox& bounds);
-
-    /**
-       @brief Uniform random sampling for a device.
-    */
-	static rw::common::Ptr<QSampler> makeUniform(
-        const Device& device);
-
-    /**
-       @brief Uniform random sampling for a device.
-    */
-	static rw::common::Ptr<QSampler> makeUniform(rw::common::Ptr<const Device> device);
-
-    /**
-       @brief Map a sampler of standard configurations into a sampler of
-       normalized configurations.
-    */
-	//static rw::common::Ptr<QSampler> makeNormalized(rw::common::Ptr<QSampler> sampler, const QNormalizer& normalizer);
-
-    /**
-       @brief A sampler of IK solutions for a specific target.
-
-       @param sampler [in] Sampler of IK solutions for \b target.
-       @param target [in] Target for IK solver.
-    */
-	//static rw::common::Ptr<QSampler> make(rw::common::Ptr<QIKSampler> sampler, const rw::math::Transform3D<>& target);
-
-    /**
-       @brief A sampler filtered by a constraint.
-
-       For each call of sample() up to \b maxAttempts configurations are
-       extracted from \b sampler and checked by \b constraint. The first
-       sample that satisfies the constraint is returned; if no such were
-       found the empty configuration is returned.
-
-       If \b maxAttempts is negative (this is the default), then \b sampler
-       is sampled forever until either the \b sampler is empty or a
-       configuration satisfying \b constraint is found.
-    */
-	//static rw::common::Ptr<QSampler> makeConstrained(
-	//	rw::common::Ptr<QSampler> sampler,
-	//	rw::common::Ptr<const QConstraint> constraint,
-    //    int maxAttempts = -1);
-
-    /**
-       @brief Sampler of direction vectors for a box shaped configuration
-       space.
-
-       Each random direction vector is found by sampling a configuration
-       uniformly at random from \b bounds, and returning the vector from the
-       center of the box to the configuration. The returned direction vector
-       can therefore be of length zero.
-    */
-    //static
-	//	rw::common::Ptr<QSampler> makeBoxDirectionSampler(
-    //    const Device::QBox& bounds);
-
-protected:
-    /**
-       @brief Constructor
-    */
-    QSampler();
-
-    /**
-       @brief Subclass implementation of the sample() method.
-    */
-    virtual rw::math::Q doSample() = 0;
-
-    /**
-       @brief Subclass implementation of the empty() method.
-
-       By default the sampler is assumed to be sampling an infinite set of
-       configurations. IOW. the function returns false by default.
-    */
-    virtual bool doEmpty() const;
-
-private:
-    QSampler(const QSampler&);
-    QSampler& operator=(const QSampler&);
-};
-//! @brief smart pointer type to this class
-%template (QSamplerPtr) rw::common::Ptr<QSampler>;
-//! @brief smart pointer type to this const class
-%template (QSamplerCPtr) rw::common::Ptr<const QSampler>;
-
-OWNEDPTR(QSampler)
+%include <rwlibs/swig/rwplanning.i>
 
 /********************************************
  * PLUGIN
@@ -2300,11 +2248,12 @@ public:
 	CollisionDetector(rw::common::Ptr<WorkCell> workcell, rw::common::Ptr<CollisionStrategy> strategy);
 
     /**
-     @brief Check the workcell for collisions.
-     @param state [in] The state for which to check for collisions.
-     @param data [in/out] Defines parameters for the collision check, the results and also
-     enables caching inbetween calls to incollision
-     @return true if a collision is detected; false otherwise.
+     * @brief Check the workcell for collisions.
+     *
+     * @param state [in] The state for which to check for collisions.
+     * @param data [in/out] Defines parameters for the collision check, the results and also
+     * enables caching inbetween calls to incollision
+     * @return true if a collision is detected; false otherwise.
      */
     bool inCollision(const State& state, class ProximityData &data) const;
 
@@ -2762,87 +2711,7 @@ public:
 };
 
 */
-
-/********************************************
- * RWLIBS ALGORITHMS
- ********************************************/
-
-/********************************************
- * RWLIBS ASSEMBLY
- ********************************************/
-
-/********************************************
- * RWLIBS CALIBRATION
- ********************************************/
  
-/********************************************
- * RWLIBS CONTROL
- ********************************************/
- 
-%nodefaultctor Controller;
-class Controller {
-public:
-	const std::string& getName() const;
-	void setName(const std::string& name);
-};
-
-%nodefaultctor JointController;
-class JointController {
-public:
-	typedef enum {
-        POSITION = 1, CNT_POSITION = 2, VELOCITY = 4, FORCE = 8, CURRENT = 16
-    } ControlMode;
-    
-    virtual ~JointController();
-    virtual unsigned int getControlModes() = 0;
-    virtual void setControlMode(ControlMode mode) = 0;
-    virtual void setTargetPos(const rw::math::Q& vals) = 0;
-    virtual void setTargetVel(const rw::math::Q& vals) = 0;
-    virtual void setTargetAcc(const rw::math::Q& vals) = 0;
-    virtual Device& getModel();
-    virtual rw::math::QgetQ() = 0;
-    virtual rw::math::QgetQd() = 0;
-};
-
-%template (JointControllerPtr) rw::common::Ptr<JointController>;
- 
-/********************************************
- * RWLIBS OPENGL
- ********************************************/
- 
-/********************************************
- * RWLIBS OS
- ********************************************/
-
-/********************************************
- * RWLIBS PATHOPTIMIZATION
- ********************************************/
-
-/********************************************
- * RWLIBS PATHPLANNERS
- ********************************************/
-%include <rwlibs/swig/rwplanning.i>
-
-/********************************************
- * RWLIBS PROXIMITYSTRATEGIES
- ********************************************/
-
-/********************************************
- * RWLIBS SOFTBODY
- ********************************************/
-
-/********************************************
- * RWLIBS SWIG
- ********************************************/
-
-/********************************************
- * RWLIBS TASK
- ********************************************/
-
-/********************************************
- * RWLIBS TOOLS
- ********************************************/
-
 /********************************************
  * LUA functions
  ********************************************/

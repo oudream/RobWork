@@ -254,9 +254,9 @@ TEST_F(SimulatedSensors_test, SimulatedCamera_test)
     EXPECT_EQ(lastImage->getPixelValuei(2,57,2),255);
 
     // red pixel(collision)
-    EXPECT_EQ(lastImage->getPixelValuei(1,57,0),184);
-    EXPECT_EQ(lastImage->getPixelValuei(1,57,1),31);
-    EXPECT_EQ(lastImage->getPixelValuei(1,57,2),31);
+    EXPECT_EQ(lastImage->getPixelValuei(1,57,0),237);
+    EXPECT_EQ(lastImage->getPixelValuei(1,57,1),57);
+    EXPECT_EQ(lastImage->getPixelValuei(1,57,2),57);
 
     // gray pixel (box with no texture)
     EXPECT_EQ(lastImage->getPixelValuei(124,58,0),46);
