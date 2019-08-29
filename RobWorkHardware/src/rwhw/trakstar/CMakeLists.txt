@@ -22,7 +22,6 @@ IF( ${BUILD_trakstar} )
 ENDIF()
 
 RW_SUBSYS_OPTION( build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} ${REASON})
-RW_SUBSYS_DEPEND( build ${SUBSYS_NAME} DEPS ${SUBSYS_DEPS} )
 RW_ADD_DOC( ${SUBSYS_NAME} )
 
 IF( build )
@@ -36,6 +35,14 @@ IF( build )
     INCLUDE_DIRECTORIES(${TRAKSTAR_INCLUDE_DIR})
     RW_ADD_LIBRARY(rwhw_trakstar trakstar ${SRC_CPP} ${SRC_HPP})
     TARGET_LINK_LIBRARIES(rwhw_trakstar PUBLIC ${ROBWORK_LIBRARIES} ${TRAKSTAR_LIBRARIES})
+
+    # Make sure dependencies are build before system
+    FOREACH(DEP IN LISTS ROBWORK_LIBRARIES TRAKSTAR_LIBRARIES)
+        IF(TARGET ${DEP})
+            ADD_DEPENDENCIES(rwhw_trakstar ${DEP})
+        ENDIF()
+    ENDFOREACH()
+
     RW_ADD_INCLUDES(trakstar "rwhw/trakstar" ${SRC_HPP})
     set(ROBWORKHARDWARE_LIBRARIES ${ROBWORKHARDWARE_LIBRARIES} rwhw_trakstar PARENT_SCOPE)
 ENDIF()

@@ -20,7 +20,6 @@ else()
 endif()
 
 RW_SUBSYS_OPTION( build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} ${REASON})
-RW_SUBSYS_DEPEND( build ${SUBSYS_NAME} DEPS ${SUBSYS_DEPS} )
 RW_ADD_DOC( ${SUBSYS_NAME} )
 
 IF( build )
@@ -36,7 +35,14 @@ IF( build )
     
     RW_ADD_LIBRARY(rwhw_universalrobots_rtde universalrobots_rtde ${SRC_CPP} ${SRC_HPP})
     TARGET_LINK_LIBRARIES(rwhw_universalrobots_rtde PRIVATE ur_rtde::rtde ${ROBWORK_LIBRARIES})
-    RW_ADD_INCLUDES(universalrobots_rtde "rwhw/universalrobots_rtde" ${SRC_HPP})
+	RW_ADD_INCLUDES(universalrobots_rtde "rwhw/universalrobots_rtde" ${SRC_HPP})
+
+	# Make sure dependencies are build before system
+    FOREACH(DEP IN LISTS ROBWORK_LIBRARIES ur_rtde::rtde)
+        IF(TARGET ${DEP})
+            ADD_DEPENDENCIES(rwhw_universalrobots_rtde ${DEP})
+        ENDIF()
+    ENDFOREACH()
 
     set(ROBWORKHARDWARE_LIBRARIES ${ROBWORKHARDWARE_LIBRARIES} rwhw_universalrobots_rtde PARENT_SCOPE)
 ELSE()
