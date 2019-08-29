@@ -658,6 +658,7 @@ public:
 
     /**
      * @brief Writes \b str to the log
+     *
      * @param str [in] message to write
      */
     void write(const std::string& str);
@@ -1115,6 +1116,7 @@ public:
 
     /**
      * @brief constructor
+     *
      * @param w [in]
      * @param h [in]
      */
@@ -1137,6 +1139,7 @@ public:
 
     /**
      * @brief returns a char pointer to the image data
+     *
      * @return const char pointer to the image data
      */
     const std::vector<rw::math::Vector3D<float> >& getData() const;
@@ -1144,6 +1147,7 @@ public:
     /**
      * @brief width of the point cloud data. If the data is unordered then this
      * will be equal to the number of points.
+     *
      * @return width of data points
      */
     int getWidth() const;
@@ -1155,6 +1159,7 @@ public:
      *
      * If the current data array cannot contain the elements then it will be resized to
      * be able to it.
+     *
      * @param w [in] new width
      * @param h [in] new height
      */
@@ -1167,6 +1172,7 @@ public:
 
 	/**
 	 * @brief load point cloud from PCD file
+	 *
 	 * @param filename [in] name of PCD file
 	 * @return a point cloud
 	 */
@@ -1174,6 +1180,7 @@ public:
 
 	/**
 	 * @brief save point cloud in PCD file format (PCL library format)
+	 *
 	 * @param cloud [in] the point cloud to save
 	 * @param filename [in] the name of the file to save to
 	 * @param t3d [in] the transformation of the point cloud
@@ -2310,12 +2317,14 @@ public:
 
     /**
      * @brief returns the name of this sensor
+     *
      * @return name of sensor
      */
     const std::string& getName() const;
 
     /**
      * @brief returns a description of this sensor
+     *
      * @return reference to this sensors description
      */
     const std::string& getDescription() const;
@@ -2353,6 +2362,7 @@ class SensorModel
 public:
 	/**
      * @brief constructor
+     *
      * @param name [in] the name of this sensor
      * @param frame [in] the frame that the sensor is referenced to
      */
@@ -2360,6 +2370,7 @@ public:
 
     /**
      * @brief constructor
+     *
      * @param name [in] the name of this sensor
      * @param frame [in] the frame that the sensor is referenced to
      * @param description [in] description of the sensor
@@ -2371,24 +2382,28 @@ public:
 
     /**
      * @brief sets the name of this sensor
+     *
      * @param name [in] name of this sensor
      */
     void setName(const std::string& name);
 
     /**
      * @brief sets the description of this sensor
+     *
      * @param description [in] description of this sensor
      */
     void setDescription(const std::string& description);
 
     /**
      * @brief returns the name of this sensor
+     *
      * @return name of sensor
      */
     const std::string& getName() const;
 
     /**
      * @brief returns a description of this sensor
+     *
      * @return reference to this sensors description
      */
     const std::string& getDescription() const;
@@ -2440,6 +2455,7 @@ public:
 
     /**
      * @brief returns the camera model information (version, type, size, etc.)
+     *
      * @return camera model information
      */
     virtual std::string getModelInfo() const;
@@ -2447,12 +2463,14 @@ public:
     /**
      * @brief initializes the camera to the current settings
      * (CaptureMode,ColorMode,etc.)
+     *
      * @return true if initialization is succesfully, false otherwise.
      */
     virtual bool initialize() = 0;
 
     /**
      * @brief returns whether this camera is initialized or not.
+     *
      * @return true if intialized, false otherwise
      */
     bool isInitialized() const;
@@ -2468,6 +2486,7 @@ public:
 
     /**
      * @brief returns whether this camera is started or not.
+     *
      * @return true if started, false otherwise
      */
     bool isStarted() const;
@@ -2486,6 +2505,7 @@ public:
 
     /**
      * @brief tests whether a image has been acquired
+     *
      * @return true if an image has been acquired, false otherwise.
      */
     virtual bool isImageReady() = 0;
@@ -2495,12 +2515,14 @@ public:
      * is not blocking, if no image has been acquired yet an empty image
      * is returned. The image returned can for some specific drivers be read
      * only.
+     *
      * @return last image captured from camera.
      */
     virtual const Image* getImage() = 0;
 
     /**
      * @brief returns the framerate that this camera is setup with
+     *
      * @return the framerate in frames per second
      */
     virtual double getFrameRate() = 0;
@@ -2508,6 +2530,7 @@ public:
     /**
      * @brief sets the framerate of this camera. If the framerate is not
      * supported the closest supported framerate is choosen.
+     *
      * @param framerate [in] the framerate
      */
     virtual void setFrameRate(double framerate) = 0;
@@ -2516,12 +2539,14 @@ public:
 
     /**
      * @brief get width of the captured images
+     *
      * @return width
      */
     virtual unsigned int getWidth() = 0;
 
     /**
      * @brief get width of the captured images
+     *
      * @return width
      */
     virtual unsigned int getHeight() = 0;
@@ -2531,6 +2556,7 @@ public:
 
     /**
      *  Check if shutter is available.
+     *
      *  @return True if shutter is available
      */
     virtual bool isShutterAvailable() const;
@@ -2539,6 +2565,7 @@ public:
      * Get actual shutter value.
      * Note: If shutter is not available then a dummy implementation
      * will throw an error message.
+     *
      * @return shutter value in micro-seconds.
      */
     virtual double getShutter() const;
@@ -2548,12 +2575,14 @@ public:
      * value are choosen.
      * Note: If shutter is not available then a dummy implementation
      * will throw an error message.
+     *
      * @param Value New shutter value.
      */
     virtual void setShutter(double Value);
 
     /**
      * Check if gain is available.
+     *
      * @return True if zoom is available
      */
     virtual bool isGainAvailable() const;
@@ -2562,6 +2591,7 @@ public:
      * Get actual gain value.
      * Note: If gain is not available then a dummy implementation
      * returning -1 is used and an error message is produced.
+     *
      * @return Gain value.
      */
     virtual double getGain() const;
@@ -2570,6 +2600,7 @@ public:
      *  value are choosen.
      *  Note: If gain is not available then a dummy implementation
      *  returning -1 is used and an error message is produced.
+     *
      *  @param Value New gain value.
      *  @return New nearest gain value.
      */
@@ -2589,6 +2620,7 @@ public:
 
 	/**
 	 * constructor
+	 *
 	 * @param projection [in] pinhole projection model
 	 * @param name [in] name of camera
 	 * @param frame [in] frame that camera is attached/referenced to
@@ -2608,12 +2640,14 @@ public:
     /**
      * @brief returns the image if it has been saved in the State. Else null is
      * returned.
+     *
      * @return last image captured from camera.
      */
     rw::common::Ptr<Image> getImage(const State& state);
 
     /**
      * @brief set the image in the state
+     *
      * @param img [in] image to set in state
      * @param state [in/out] the state in which to set the image.
      */
@@ -2717,6 +2751,7 @@ public:
 
     /**
      * @brief resizes the current image.
+     *
      * @param width [in] width in pixels
      * @param height [in] height in pixels
      */
@@ -2724,6 +2759,7 @@ public:
 
     /**
      * @brief returns a char pointer to the image data
+     *
      * @return const char pointer to the image data
      */
     const char* getImageData() const;
@@ -2736,24 +2772,28 @@ public:
 
     /**
      * @brief returns the size of the char data array
+     *
      * @return size of char data array
      */
     size_t getDataSize() const;
 
     /**
      * @brief returns the width of this image
+     *
      * @return image width
      */
     unsigned int getWidth() const;
 
     /**
      * @brief returns the height of this image
+     *
      * @return image height
      */
     unsigned int getHeight() const;
 
     /**
      * @brief returns color encoding/type of this image
+     *
      * @return ColorCode of this image
      */
     ColorCode getColorEncoding() const;
@@ -2761,12 +2801,14 @@ public:
     /**
      * @brief returns the number of bits per pixel. This is the number
      * of bits used per pixel per channel.
+     *
      * @return number of bits per pixel
      */
     unsigned int getBitsPerPixel() const;
 
     /**
      * @brief saves this image to a file in the PGM (grayscale) format
+     *
      * @param fileName [in] the name of the file that is to be created
      *
      * @return true if save was succesfull, false otherwise
@@ -2775,6 +2817,7 @@ public:
 
     /**
      * @brief saves this image to a file in the ascii PGM (grayscale) format
+     *
      * @param fileName [in] the name of the file that is to be created
      * @return true if save was succesfull, false otherwise
      */
@@ -2782,6 +2825,7 @@ public:
 
     /**
      * @brief saves this image to a file in the PPM (color) format
+     *
      * @param fileName [in] the name of the file that is to be created
      * @return true if save was succesfull, false otherwise
      */
@@ -2791,18 +2835,21 @@ public:
      * @brief the size of an aligned image row in bytes. This may not be
      * the same as the width if extra bytes are padded to each row for
      * alignment purposes.
+     *
      * @return size of aligned image row
      */
     unsigned int getWidthStep() const;
 
     /**
      * @brief bits per pixel encoded as a PixelDepth type.
+     *
      * @return the pixel depth
      */
     inline PixelDepth getPixelDepth() const;
 
     /**
      * @brief The number of channels that this image has.
+     *
      * @return nr of channels
      */
     inline unsigned int getNrOfChannels() const;
@@ -2812,6 +2859,7 @@ public:
     /**
      * @brief generic but inefficient access to a specific channel of
      * a pixel.
+     *
      * @param x [in]
      * @param y [in]
      * @param channel documentation missing !
@@ -2825,6 +2873,7 @@ public:
 
     /**
      * @brief copies this image and flips it around horizontal or vertical axis or both.
+     *
      * @return new image.
      */
     rw::common::Ptr<Image> copyFlip(bool horizontal, bool vertical) const;
@@ -2861,12 +2910,14 @@ public:
 
     /**
      * @brief tests whether an image has been acquired
+     *
      * @return true if an image has been acquired, false otherwise.
      */
     virtual bool isScanReady() = 0;
 
     /**
      * @brief returns the framerate that this camera is setup with
+     *
      * @return the framerate in frames per second
      */
     virtual double getFrameRate() = 0;
@@ -2877,7 +2928,7 @@ public:
  * 2 dimensional range scanning device such as SICK or Hokyuo laser
  * range scanners.
  *
- *  The interface supports any range scanner that measures distance in
+ * The interface supports any range scanner that measures distance in
  * an arc around the origin of the sensor.
  */
 class Scanner2D: public Scanner
@@ -2915,7 +2966,7 @@ public:
  * 2 dimensional range scanning device such as SICK or Hokyuo laser
  * range scanners.
  *
- *  The model supports any range scanner that measures distance in
+ * The model supports any range scanner that measures distance in
  * an arc around the origin of the sensor. The scanner scans in the z-x plane
  * with z-axis being the 0 angle measurement.
  *
@@ -2928,6 +2979,7 @@ class Scanner2DModel: public SensorModel
 public:
     /**
      * @brief constructor
+     *
      * @param name [in] name of scanner sensor
      * @param angularRangeInRad [in] angular range in rad, with middle scan
      * point pointin along z-axis
@@ -2943,12 +2995,14 @@ public:
 
     /**
      * @brief get handle to point cloud data in state.
+     *
      * @param state [in] the state with point cloud data
      */
     PointCloud& getScan(const State& state);
 
     /**
      * @brief set point cloud data in state
+     *
      * @param data [in] point cloud data to set
      * @param state [in] state in which to set the point cloud
      */
@@ -2961,6 +3015,7 @@ public:
 
     /**
      * @brief set distance range
+     *
      * @param min documentation missing !
      * @param max documentation missing !
      */
@@ -2986,6 +3041,7 @@ public:
 
     /**
      * @brief gets the last acquired image
+     *
      * @return the image that was last acquired.
      */
     virtual const PointCloud& getScan() = 0;
@@ -3003,6 +3059,7 @@ class Scanner25DModel: public SensorModel
 public:
     /**
      * @brief constructor
+     *
      * @param name [in] name of scanner sensor
      * @param width [in]
      * @param height [in]
@@ -3017,12 +3074,14 @@ public:
 
     /**
      * @brief get handle to point cloud data in state.
+     *
      * @param state [in] the state with point cloud data
      */
     PointCloud& getScan(const State& state);
 
     /**
      * @brief set point cloud data in state
+     *
      * @param data [in] point cloud data to set
      * @param state [in] state in which to set the point cloud
      */

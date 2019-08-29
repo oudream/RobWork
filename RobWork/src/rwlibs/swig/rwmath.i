@@ -622,6 +622,7 @@ public:
     /**
      * @brief set the projection matrix to an ortographic projection by defining
      * the box with length to all sides (left, right, bottom, top, near and far)
+     *
      * @param left [in] length in m to left edge of image
      * @param right [in] length in m to right edge of image
      * @param bottom [in] length in m to bottom edge of image
@@ -640,6 +641,7 @@ public:
 
     /**
      * @brief set the projection matrix to the viewing frustum
+     *
      * @param left [in] distance in m near cutting plane from center to left edge
      * @param right [in] distance in m near cutting plane from center to right edge
      * @param bottom [in] distance in m near cutting plane from center to bottom edge
@@ -653,6 +655,7 @@ public:
 
     /**
      * @brief get the projection matrix to the viewing frustum
+     *
      * @param left [out] distance in m near cutting plane from center to left edge
      * @param right [out] distance in m near cutting plane from center to right edge
      * @param bottom [out] distance in m near cutting plane from center to bottom edge
@@ -666,6 +669,7 @@ public:
 
     /**
      * @brief set the projection matrix to perspective projection
+     *
      * @param fovy [in] vertical field of view [degrees]
      * @param aspectRatio [in] aspect ratio between width and height of image
      * @param zNear [in] distance to near cutting plane
@@ -675,6 +679,7 @@ public:
 
     /**
      * @brief set the projection matrix to perspective projection
+     *
      * @param fovy [in] vertical field of view [degrees]
      * @param width [in] width of image
      * @param height [in] height of image
@@ -685,6 +690,7 @@ public:
 
     /**
      * @brief set the projection matrix to perspective projection
+     *
      * @param fovy [in] vertical field of view [degrees]
      * @param aspectRatio [in] aspect ratio between width and height of image
      * @param zNear [in] distance to near cutting plane
@@ -694,6 +700,7 @@ public:
 
     /**
      * @brief creates a projection matrix with a perspective projection
+     *
      * @param fovy [in]
      * @param aspectRatio [in]
      * @param zNear [in]
@@ -704,6 +711,7 @@ public:
 
     /**
      * @brief creates a projection matrix with a perspective projection
+     *
      * @param fovy [in]
      * @param width [in] of image
      * @param height [in] of image
@@ -716,6 +724,7 @@ public:
 
     /**
      * @brief creates a projection matrix with a orthographic projection
+     *
      * @param left [in]
      * @param right [in]
      * @param bottom [in]

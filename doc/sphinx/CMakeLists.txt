@@ -39,7 +39,7 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/../Doxyfile.in ${CMAKE_CURRENT_SOURCE
 set(java_sources)
 set(java_packages org.robwork)
 
-foreach(RW_MODULE rw rw_assembly rw_control rw_pathoptimization rw_pathplanners rw_proximitystrategies rw_task)
+foreach(RW_MODULE rw rw_assembly rw_control rw_pathoptimization rw_pathplanners rw_proximitystrategies rw_task rw_simulation)
     add_custom_command(OUTPUT java_src_${RW_MODULE}_cmd
                        COMMAND ${CMAKE_COMMAND} -E echo "Unpacking jar file..."
                        COMMAND ${CMAKE_COMMAND} -E make_directory java_src
