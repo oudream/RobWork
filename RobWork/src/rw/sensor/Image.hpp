@@ -331,7 +331,7 @@ public:
      * @param x [in]
      * @param y [in]
      * @param channel documentation missing !
-     * @return
+     * @return the pixel value.
      */
     float getPixelValue(size_t x, size_t y, size_t channel) const{ return getPixelValuef(x,y,channel); };
 
@@ -574,7 +574,7 @@ public:
 
     /**
      * @brief copies this image and flips it around horizontal or vertical axis or both.
-     * @return
+     * @return new image.
      */
     Image::Ptr copyFlip(bool horizontal, bool vertical) const ;
 

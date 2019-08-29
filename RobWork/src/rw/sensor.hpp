@@ -26,6 +26,7 @@
 #include "./sensor/Sensor.hpp"
 
 #include "./sensor/Camera.hpp"
+#include "./sensor/CameraModel.hpp"
 #include "./sensor/StereoCameraModel.hpp"
 #include "./sensor/CameraFirewire.hpp"
 #include "./sensor/CameraListener.hpp"
@@ -34,7 +35,9 @@
 #include "./sensor/Scanner.hpp"
 #include "./sensor/Scanner1D.hpp"
 #include "./sensor/Scanner2D.hpp"
+#include "./sensor/Scanner2DModel.hpp"
 #include "./sensor/Scanner25D.hpp"
+#include "./sensor/Scanner25DModel.hpp"
 
 #include "./sensor/TactileArray.hpp"
 

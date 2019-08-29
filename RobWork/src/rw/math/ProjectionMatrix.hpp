@@ -138,7 +138,7 @@ namespace math {
          * @param aspectRatio
          * @param zNear
          * @param zFar
-         * @return
+         * @return new ProjectionMatrix.
          */
         static ProjectionMatrix makePerspective(double fovy, double aspectRatio, double zNear, double zFar);
 
@@ -149,7 +149,7 @@ namespace math {
          * @param height [in] of image
          * @param zNear [in]
          * @param zFar [in]
-         * @return
+         * @return new ProjectionMatrix.
          */
         static ProjectionMatrix makePerspective(double fovy, double width, double height, double zNear, double zFar);
 
@@ -162,7 +162,7 @@ namespace math {
          * @param top
          * @param zNear
          * @param zFar
-         * @return
+         * @return new ProjectionMatrix.
          */
         static ProjectionMatrix makeOrtho(double left, double right,
                                           double bottom, double top,

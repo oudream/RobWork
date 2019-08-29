@@ -40,6 +40,8 @@ public:
 	void setName(const std::string& name);
 };
 
+%template (ControllerPtr) rw::common::Ptr<Controller>;
+
 %nodefaultctor JointController;
 /**
  * @brief the joint controller interface describe how to input to a joint controller.
