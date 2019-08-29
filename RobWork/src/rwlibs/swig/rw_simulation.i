@@ -43,6 +43,7 @@ public:
 
     /**
      * @brief get frame that this sensor is attached to.
+     *
      * @return frame
      */
     Frame* getFrame() const;
@@ -58,6 +59,7 @@ public:
 
     /**
      * @brief Resets the state of the SimulatedSensor to that of \b state
+     *
      * @param state [in] the state that the sensor is reset too.
      */
     virtual void reset(const State& state) = 0;
@@ -69,6 +71,7 @@ public:
 
     /**
      * @brief get a handle to controlling an instance of the simulated sensor in a specific simulator
+     *
      * @param sim [in] the simulator in which the handle is active
      */
     rw::common::Ptr<Sensor> getSensorHandle(rw::common::Ptr<Simulator> sim);
@@ -85,6 +88,7 @@ class SimulatedController {
 public:
     /**
      *  @brief get the name of this controller
+     *
      *  @return name of this controller
      */
     virtual std::string getControllerName() = 0;
@@ -92,6 +96,7 @@ public:
     /**
      * @brief updates/steps the controller with time step \b dt. It will update
      * the state \b state accordingly
+     *
      * @param info [in] update information related to the time step.
      * @param state [in/out] the current state
      */
@@ -99,24 +104,28 @@ public:
 
     /**
      * @brief reset the controller to the applied state
+     *
      * @param state [in] the state to reset to
      */
     virtual void reset(const State& state) = 0;
 
     /**
      * @brief get the controller handle eg. statefull handle, associated with this simulated controller
+     *
      * @return controller handle
      */
     virtual rw::common::Ptr<Controller> getControllerHandle(rw::common::Ptr<Simulator> sim) = 0;
 
     /**
      * @brief disable or enable this controller
+     *
      * @param enabled
      */
     virtual void setEnabled(bool enabled) = 0;
 
     /**
      * @brief true if this controller is enabled
+     *
      * @return true if this controller is enabled
      */
     virtual bool isEnabled() const = 0;
@@ -160,6 +169,7 @@ class FrameGrabber
 public:
     /**
      * @brief constructor
+     *
      * @param width [in] width of the image that this FrameGrabber uses.
      * @param height [in] height of the image that this FrameGrabber uses.
      * @param encoding [in] color encoding of the image that this FrameGrabber uses.
@@ -173,12 +183,14 @@ public:
 
     /**
      * @brief returns the width of the image
+     *
      * @return the width of the image
      */
     int getWidth();
 
     /**
      * @brief returns the height of the image
+     *
      * @return the height of the image
      */
     int getHeight();
@@ -186,6 +198,7 @@ public:
     /**
      * @brief resizes the image that this frameGrabber use. The colorcode will
      * default to the one that FrameGrabber was initialized with.
+     *
      * @param width [in] width of image
      * @param height [in] height of image
      */
@@ -193,6 +206,7 @@ public:
 
     /**
      * @brief resizes the image that this frameGrabber use.
+     *
      * @param width [in] width of image.
      * @param height [in] height of image.
      * @param colorCode [in] Color encoding of the image.
@@ -201,6 +215,7 @@ public:
 
     /**
      * @brief returns the image
+     *
      * @return the image
      */
     virtual Image& getImage();
@@ -223,6 +238,7 @@ class FrameGrabber25D
 public:
     /**
      * @brief constructor
+     *
      * @param width [in] width of the image that this FrameGrabber25D uses.
      * @param height [in] height of the image that this FrameGrabber25D uses.
      */
@@ -235,12 +251,14 @@ public:
 
     /**
      * @brief returns the width of the image
+     *
      * @return the height of the image
      */
     size_t getWidth() const;
 
     /**
      * @brief returns the height of the image
+     *
      * @return the height of the image
      */
     size_t getHeight() const;
@@ -248,6 +266,7 @@ public:
 
     /**
      * @brief Returns the field of view measured around the y-axis.
+     *
      * @return Field of view measured around y-axis in radians
      */
     virtual double getFieldOfViewY() = 0;
@@ -255,6 +274,7 @@ public:
     /**
      * @brief resizes the image that this frameGrabber use. The colorcode will
      * default to the one that FrameGrabber25D was initialized with.
+     *
      * @param width [in] width of image
      * @param height [in] height of image
      */
@@ -262,6 +282,7 @@ public:
 
     /**
      * @brief returns the image
+     *
      * @return the image
      */
     virtual PointCloud& getImage();
@@ -270,12 +291,14 @@ public:
 
     /**
      * @brief maximum depth that this framegrabber can handle
+     *
      * @return maximum depth in meter
      */
     virtual double getMaxDepth() = 0;
 
     /**
      * @brief minimum depth that this framegrabber can handle
+     *
      * @return minimum depth in meter
      */
     virtual double getMinDepth() = 0;
@@ -302,6 +325,7 @@ class GLFrameGrabber : public FrameGrabber
 public:
     /**
      * @brief constructor
+     *
      * @param width [in] width of image
      * @param height [in] height of image
      * @param fov [in] the vertical field of view angle in degree
@@ -324,6 +348,7 @@ public:
     /**
      * @brief initialize the grabber with a scene viewer. This registers the grabber
      * as a camera in the scene and enables rendering.
+     *
      * @param drawer [in] the scene viewer
      * @return true if initialization succeeded, false otherwise (depends on the capabilities of the SceneViewer).
      */
@@ -359,6 +384,7 @@ class GLFrameGrabber25D : public FrameGrabber25D
 public:
     /**
      * @brief constructor
+     *
      * @param width [in] width of image
      * @param height [in] height of image
      * @param fov [in] the vertical field of view angle in degree
@@ -375,6 +401,7 @@ public:
     /**
      * @brief initialize the grabber with a scene viewer. This registers the grabber
      * as a camera in the scene and enables rendering.
+     *
      * @param drawer [in] the scene viewer
      * @return true if initialization succeeded, false otherwise (depends on the capabilities of the SceneViewer).
      */
@@ -384,6 +411,7 @@ public:
      * @brief set the maximum depth that is percieved by this frame grabber.
      * If min and max depth are too far apart the resolution of the depth
      * perception will become bad. Hence keep the range realistic.
+     *
      * @param depth [in] max depth
      */
     void setMaxDepth(double depth);
@@ -392,6 +420,7 @@ public:
      * @brief set the minimum depth that is percieved by this frame grabber.
      * If min and max depth are too far apart the resolution of the depth
      * perception will become bad. Hence keep the range realistic.
+     *
      * @param depth [in] min depth
      */
     void setMinDepth(double depth);
@@ -430,7 +459,8 @@ class SimulatedCamera : public SimulatedSensor
 {
 public:
     /**
-     * @brief creates a simulated pinhole camera,
+     * @brief creates a simulated pinhole camera.
+     *
      * @param name [in] name of sensor
      * @param fov [in] field of view for the camera.
      * @param frame [in] frame to which the camera is attached
@@ -440,6 +470,7 @@ public:
 
     /**
      * @brief constructor
+     *
      * @param model [in] the model and info of the camera
      * @param frameGrabber [in] the frameGrabber from which this Camera should grab
      * images.
@@ -515,6 +546,7 @@ public:
 
     /**
      * @brief Get the camera sensor.
+     *
      * @return the sensor.
      */
     rw::common::Ptr<Camera> getCameraSensor();
@@ -531,6 +563,7 @@ class SimulatedScanner2D : public SimulatedSensor
 public:
     /**
      * @brief constructor
+     *
      * @param name [in] name of this simulated scanner
      * @param frame [in] the sensor frame.
      * @param framegrabber [in] the framegrabber used for grabbing 2.5D images
@@ -540,6 +573,7 @@ public:
 
     /**
      * @brief constructor
+     *
      * @param name [in] name of this simulated scanner
      * @param desc [in] description of this scanner
      * @param frame [in] the sensor frame.
@@ -557,6 +591,7 @@ public:
 
     /**
      * @brief set the framerate in frames per sec.
+     *
      * @param rate [in] frames per sec
      */
     void setFrameRate(double rate);
@@ -593,6 +628,7 @@ public:
     /**
      * @brief returns a handle to what represents a statefull interface.
      * The handle will be locked to the simulator
+     *
      * @return Scnner2D handle.
      */
     rw::common::Ptr<Scanner2D> getScanner2DSensor(Simulator* instance);
@@ -615,6 +651,7 @@ class SimulatedScanner25D : public SimulatedSensor
 public:
     /**
      * @brief constructor
+     *
      * @param name [in] name of this simulated scanner
      * @param frame [in] the frame the scanner is attached to.
      * @param framegrabber [in] the framegrabber used for grabbing 2.5D images
@@ -625,6 +662,7 @@ public:
 
     /**
      * @brief constructor
+     *
      * @param name [in] name of this simulated scanner
      * @param desc [in] description of this scanner
      * @param frame [in] the frame the scanner is attached to.
@@ -642,6 +680,7 @@ public:
 
 	/**
 	 * @brief set the framerate in frames per sec.
+	 *
 	 * @param rate [in] frames per sec
 	 */
 	void setFrameRate(double rate);
@@ -677,6 +716,7 @@ public:
 
     /**
 	 * @brief get a handle to controlling an instance of the simulated sensor in a specific simulator
+	 *
      * @param instance [in] the simulator in which the handle is active
      */
     rw::common::Ptr<Sensor> getSensorHandle(rw::common::Ptr<Simulator> instance);

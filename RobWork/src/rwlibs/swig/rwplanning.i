@@ -313,6 +313,7 @@ public:
 
 	/**
 	 * @brief Set the log to be used for writing debug info
+	 *
 	 * @param log [in] Log to which debug information is to be written
 	 */
 	virtual void setLog(rw::common::Ptr<Log> log);
