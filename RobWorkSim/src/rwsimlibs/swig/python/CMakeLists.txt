@@ -38,7 +38,6 @@ else()
 endif()
  
 RW_SUBSYS_OPTION( build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} ${REASON})
-RW_SUBSYS_DEPEND( build ${SUBSYS_NAME} DEPS ${SUBSYS_DEPS} )
 RW_ADD_DOC( ${SUBSYS_NAME} )
 
 IF( build )
@@ -75,6 +74,13 @@ INCLUDE(UseSWIG)
     IF((CMAKE_COMPILER_IS_GNUCC) OR (CMAKE_C_COMPILER_ID STREQUAL "Clang"))
       SET_TARGET_PROPERTIES(${TARGET_NAME} PROPERTIES LINK_FLAGS -Wl,--no-undefined)
     ENDIF()
+
+    # Make sure dependencies are build before system
+    FOREACH(DEP IN LISTS SUBSYS_DEPS)
+        IF(TARGET ${DEP})
+            ADD_DEPENDENCIES(${TARGET_NAME} ${DEP})
+        ENDIF()
+    ENDFOREACH()
 
     if (NOT ${SWIG_VERSION} VERSION_LESS 4.0.0)
         find_program(pydoc pydoc3)

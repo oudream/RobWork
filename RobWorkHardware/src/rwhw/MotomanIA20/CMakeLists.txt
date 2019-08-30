@@ -1,8 +1,6 @@
 SET(SUBSYS_NAME motomanIA20 )
 SET(SUBSYS_DESC "Library for controlling the motomanIA20 robot" )
-SET(SUBSYS_DEPS rw )
-
-
+SET(SUBSYS_DEPS )
 
 set(DEFAULT TRUE)
 set(REASON )
@@ -14,7 +12,6 @@ endif()
 SET(build TRUE)
  
 RW_SUBSYS_OPTION( build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} ${REASON})
-RW_SUBSYS_DEPEND( build ${SUBSYS_NAME} DEPS ${SUBSYS_DEPS} )
 RW_ADD_DOC( ${SUBSYS_NAME} )
 
 IF( build )

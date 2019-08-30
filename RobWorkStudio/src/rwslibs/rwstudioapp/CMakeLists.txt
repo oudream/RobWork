@@ -11,7 +11,6 @@ ENDIF()
 
 SET(build TRUE)
 RW_SUBSYS_OPTION(build ${SUBSYS_NAME} ${SUBSYS_DESC} ON)
-RW_SUBSYS_DEPEND(build ${SUBSYS_NAME} DEPS ${SUBSYS_DEPS})
 RW_ADD_DOC(${SUBSYS_NAME})
 
 IF(build)    
@@ -22,6 +21,13 @@ IF(build)
     RWS_ADD_COMPONENT(${SUBSYS_NAME} plugins ${SrcFiles})
     RW_ADD_INCLUDES(plugins "rwslibs/rwstudioapp" ${SRC_FILES_HPP}) 
     TARGET_LINK_LIBRARIES(${SUBSYS_NAME} ${SUBSYS_DEPS})
+    # Make sure dependencies are build before system
+    FOREACH(DEP IN LISTS SUBSYS_DEPS)
+        IF(TARGET ${DEP})
+            ADD_DEPENDENCIES(${SUBSYS_NAME} ${DEP})
+        ENDIF()
+    ENDFOREACH()
+
     
     set(RWS_COMPONENT_LIBRARIES ${RWS_COMPONENT_LIBRARIES} ${SUBSYS_NAME} PARENT_SCOPE)
 

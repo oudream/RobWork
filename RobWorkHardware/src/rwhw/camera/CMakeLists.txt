@@ -6,7 +6,6 @@ SET(build TRUE)
 set(DEFAULT TRUE)
 set(REASON) 
 RW_SUBSYS_OPTION( build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} ${REASON})
-RW_SUBSYS_DEPEND( build ${SUBSYS_NAME} DEPS ${SUBSYS_DEPS} )
 RW_ADD_DOC( ${SUBSYS_NAME} )
 
 IF( build )
@@ -63,5 +62,12 @@ IF( build )
     ENDIF()
     RW_ADD_INCLUDES(camera "rwhw/camera" ${SRC_HPP})
     set(ROBWORKHARDWARE_LIBRARIES ${ROBWORKHARDWARE_LIBRARIES} rwhw_camera PARENT_SCOPE)
+
+    # Make sure dependencies are build before system
+    FOREACH(DEP IN LISTS ROBWORK_LIBRARIES)
+        IF(TARGET ${DEP})
+            ADD_DEPENDENCIES(rwhw_camera ${DEP})
+        ENDIF()
+    ENDFOREACH()
     
 ENDIF()
