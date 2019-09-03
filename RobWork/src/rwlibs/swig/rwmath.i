@@ -222,32 +222,136 @@ namespace rw { namespace math {
 template<class T> class Rotation3D
 {
 public:
-    // Lua methods:
+    /**
+     * @brief A rotation matrix with uninitialized storage.
+     */
     Rotation3D();
-    %feature("autodoc","1");
+
+    /**
+     * @brief Constructs an initialized 3x3 rotation matrix
+     */
     Rotation3D(T v0,T v1,T v2,
     			T v3,T v4,T v5,
     			T v6,T v7,T v8);
+
+    /**
+     * @brief Constructs an initialized 3x3 rotation matrix
+     */
+    Rotation3D(
+        const rw::math::Vector3D<T>& i,
+        const rw::math::Vector3D<T>& j,
+        const rw::math::Vector3D<T>& k);
     			
     explicit Rotation3D(const Rotation3D<T>& R);
 
-    Rotation3D<T> operator*(const Rotation3D<T>& other) const;
-    rw::math::Vector3D<T> operator*(const rw::math::Vector3D<T>& vec) const;
-
+    /**
+     * @brief Constructs a 3x3 rotation matrix set to identity
+     *
+     * @return a 3x3 identity rotation matrix
+     */
     static const Rotation3D<T>& identity();
-    static Rotation3D<T> skew(const rw::math::Vector3D<T>& v);
     
+    /**
+     * @brief Normalizes the rotation matrix to satisfy SO(3).
+     *
+     * Makes a normalization of the rotation matrix such that the columns
+     * are normalized and othogonal s.t. it belongs to SO(3).
+     */
     void normalize();
-    
+        
+    /**
+	 * @brief Returns the i'th row of the rotation matrix
+	 *
+	 * @param i [in] Index of the row to return. Only valid indices are 0, 1 and 2.
+	 */
+    rw::math::Vector3D<T> getRow(size_t i) const;
+
+	/**
+	 * @brief Returns the i'th column of the rotation matrix
+	 * @param i [in] Index of the column to return. Only valid indices are 0, 1 and 2.
+	 */
+    rw::math::Vector3D<T> getCol(size_t i) const;
+
+    /**
+     * @brief Comparison operator.
+     *
+     * The comparison operator makes a element wise comparison.
+     * Returns true only if all elements are equal.
+     *
+     * @param rhs [in] Rotation to compare with
+     * @return True if equal.
+     */
+    bool operator==(const Rotation3D<T> &rhs) const;
+
+    /**
+     * @brief Compares rotations with a given precision
+     *
+     * Performs an element wise comparison. Two elements are considered equal if the difference
+     * are less than precision.
+     *
+     * @param rot [in] Rotation to compare with
+     * @param precision [in] The precision to use for testing
+     *
+     * @return True if all elements are less than precision apart.
+     */
     bool equal(const Rotation3D<T>& rot, T precision) const;
 
-    bool operator==(const Rotation3D<T> &rhs) const;
-    
+    /**
+     * @brief Verify that this rotation is a proper rotation
+     *
+     * @return True if this rotation is considered a proper rotation
+     */
+    bool isProperRotation() const;
+
+    /**
+     * @brief Verify that this rotation is a proper rotation
+     *
+     * @return True if this rotation is considered a proper rotation
+     */
+    bool isProperRotation(T precision) const;
+
+    /**
+     * @brief Calculates this rotation multiplied by other rotation.
+     *
+     * @param other [in] rotation to multiply with
+     *
+     * @return the result of multiplication.
+     */
+    Rotation3D<T> operator*(const Rotation3D<T>& other) const;
+
+    /**
+     * @brief Calculates this rotation multiplied by a vector.
+     *
+     * @param vec [in] vector to multiply with.
+     *
+     * @return the result of multiplication.
+     */
+    rw::math::Vector3D<T> operator*(const rw::math::Vector3D<T>& vec) const;
+
+    /**
+     * @brief Creates a skew symmetric matrix from a Vector3D. Also
+     * known as the cross product matrix of v.
+     *
+     * @relates Rotation3D
+     *
+     * @param v [in] vector to create Skew matrix from
+     */
+    static Rotation3D<T> skew(const rw::math::Vector3D<T>& v);
+
+    /**
+     * @brief Calculate the inverse.
+     *
+     * @note This function changes the object that it is invoked on, but this is about x5 faster than rot = inverse( rot )
+     *
+     * @return the inverse rotation.
+     */
+    Rotation3D<T>& inverse();
+
     %extend {
     	const rw::math::EAA<T> operator*(const rw::math::EAA<T>& bTKc){
     		return *((rw::math::Rotation3D<T>*)$self) * bTKc;
     	}
-		Rotation3D<T> inverse(){ return inverse(*$self); }       
+
 #if (defined(SWIGLUA) || defined(SWIGPYTHON))
         char *__str__() { return printCString<Rotation3D<T> >(*$self); }
         T __getitem__(int x,int y)const {return (*$self)(x,y); }
@@ -275,8 +379,51 @@ public:
 %template (Rotation3Vector) std::vector< rw::math::Rotation3D<double> >;
 
 namespace rw { namespace math {
+/**
+ * @brief Calculates the inverse of a rotation matrix
+ *
+ * @relates Rotation3D
+ *
+ * @param aRb [in] the rotation matrix.
+ *
+ * @return the matrix inverse.
+ */
+template <class T>
+const Rotation3D<T> inverse(const Rotation3D<T>& aRb);
+}}
+
+%template (inverse) rw::math::inverse<double>;
+%template (inverse) rw::math::inverse<float>;
+
+namespace rw { namespace math {
+/**
+ * @brief An abstract base class for Rotation3D parameterisations
+ *
+ * Classes that represents a parametrisation of a 3D rotation may inherit
+ * from this class
+ */
+template<class T>
+class Rotation3DVector {
+public:
+    /**
+     * @brief Virtual destructor
+     */
+    virtual ~Rotation3DVector();
+
+    /**
+     * @brief Returns the corresponding 3x3 Rotation matrix
+     * @return The rotation matrix
+     */
+    virtual const Rotation3D<T> toRotation3D() const = 0;
+};
+}}
+
+%template (Rotation3DVectord) rw::math::Rotation3DVector<double>;
+%template (Rotation3DVectorf) rw::math::Rotation3DVector<float>;
+
+namespace rw { namespace math {
 //! @copydoc rw::math::EAA
-template<class T> class EAA
+template<class T> class EAA: public Rotation3DVector<T>
 {
 public:
     // Lua methods:
@@ -327,7 +474,7 @@ public:
 
 namespace rw { namespace math {
 //! @copydoc rw::math::RPY
-template<class T> class RPY
+template<class T> class RPY: public Rotation3DVector<T>
 {
 public:
     // Lua methods:
@@ -360,7 +507,7 @@ public:
 
 //! @copydoc rw::math::Quaternion
 namespace rw { namespace math {
-template<class T> class Quaternion
+template<class T> class Quaternion: public Rotation3DVector<T>
 {
 public:
     // Lua methods:
@@ -399,27 +546,105 @@ public:
 %template (QuaterniondVector) std::vector< rw::math::Quaternion<double> >;
 
 namespace rw { namespace math {
+/**
+ * @brief A 4x4 homogeneous transform matrix.
+ */
 template<class T> class Transform3D {
 public:
+    /**
+     * @brief Default Constructor.
+     *
+     * Initializes with 0 translation and Identity matrix as rotation
+     */
 	Transform3D();
     Transform3D(const Transform3D<T>& t3d);
+
+    /**
+     * @brief Constructs a homogeneous transform
+     *
+     * @param d [in] A 3x1 translation vector
+     * @param R [in] A 3x3 rotation matrix
+     */
     Transform3D(const rw::math::Vector3D<T>& position,const rw::math::Rotation3D<T>& rotation);
+
+    /**
+     * @brief Constructs a homogeneous transform
+     *
+     * Calling this constructor is equivalent to the transform
+     * Transform3D(d, r.toRotation3D()).
+     *
+     * @param d [in] A 3x1 translation vector
+     * @param r [in] A 3x1 rotation vector
+     */
+    Transform3D(const Vector3D<T>& d, const Rotation3DVector<T>& r);
 
     Transform3D operator*(const Transform3D<T>& other) const;
     rw::math::Vector3D<T> operator*(const rw::math::Vector3D<T>& other) const;
 
+    /**
+     * @brief Constructs a homogeneous transform using the original
+     * Denavit-Hartenberg notation
+     *
+     * @param alpha [in]
+     * @param a [in]
+     * @param d [in]
+     * @param theta [in]
+     *
+     * @return transformation matrix.
+     */
     static Transform3D<T> DH(T alpha, T a, T d, T theta);
+
+    /**
+     * @brief Constructs a homogeneous transform using the Craig (modified)
+     * Denavit-Hartenberg notation
+     *
+     * @param alpha [in]
+     * @param a [in]
+     * @param d [in]
+     * @param theta [in]
+     *
+     * @return the transformation matrix.
+     *
+     * @note The Craig (modified) Denavit-Hartenberg notation differs from
+     * the original Denavit-Hartenberg notation.
+     */
     static Transform3D<T> craigDH(T alpha, T a, T d, T theta);
     
+    /**
+     * @brief Constructs the identity transform
+     *
+     * @return the identity transform.
+     */
+    static const Transform3D& identity();
+
+    /**
+     * @brief creates a transformation that is positioned in eye and looking toward
+     * center along -z where up indicates the upward direction along which the y-axis
+     * is placed. Same convention as for gluLookAt
+     * and is handy for placing a cameraview.
+     *
+     * @param eye [in] position of view
+     * @param center [in] point to look toward
+     * @param up [in] the upward direction (the
+     *
+     * @return Transformation
+     */
     static Transform3D<T> makeLookAt(const Vector3D<T>& eye, const Vector3D<T>& center, const Vector3D<T>& up);
-	
+
+    /**
+     * @brief Gets the position part P from T
+     *
+     * @return the translation.
+     */
     rw::math::Vector3D<T>& P();
+
+    /**
+     * @brief Gets the rotation part R from T.
+     *
+     * @return the rotation.
+     */
     rw::math::Rotation3D<T>& R();
 
-    %extend {
-       Transform3D<T> inverse(){ return inverse(*$self); }
-       //Transform3D<T> inverse(const Transform3D<T>& val);
-    };
     %extend {
 #if (defined(SWIGLUA) || defined(SWIGPYTHON))
         char *__str__() { return printCString<Transform3D<T> >(*$self); }
@@ -436,6 +661,21 @@ public:
 %template (Transform3d) rw::math::Transform3D<double>;
 %template (Transform3f) rw::math::Transform3D<float>;
 %template (Transform3dVector) std::vector<rw::math::Transform3D<double> >;
+
+namespace rw { namespace math {
+/**
+ * @brief Calculates the inverse of the transformation matrix.
+ *
+ * @param aTb [in] the transform matrix.
+ *
+ * @return the inverse matrix.
+ */
+template <class T>
+const Transform3D<T> inverse(const Transform3D<T>& aTb);
+}}
+
+%template (inverse) rw::math::inverse<double>;
+%template (inverse) rw::math::inverse<float>;
 
 namespace rw { namespace math {
 

@@ -135,12 +135,6 @@ namespace rwlibs { namespace simulation {
 
     };
 
-    /**
-     * @brief Old smart pointer type.
-     * @deprecated Please use FrameGrabber25D::Ptr instead.
-     */
-    typedef rw::common::Ptr<FrameGrabber25D> FrameGrabber25DPtr;
-
     /* @} */
 }} // end namespaces
 

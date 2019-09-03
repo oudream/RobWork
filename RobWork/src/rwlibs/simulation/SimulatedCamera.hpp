@@ -40,13 +40,13 @@ namespace rwlibs { namespace simulation {
     /* @{ */
 
     /**
-       @brief The SimulatedCamera class makes it posible to use virtual camera
-       sensors by using different framegrapper implementations.
-
-       The SimulatedCamera implements the camera interface though the setting of
-       framerate has no meaning to the virtual camera since no timing is done in
-       this implementation.
-    */
+     * @brief The SimulatedCamera class makes it posible to use virtual camera
+     * sensors by using different framegrapper implementations.
+     *
+     * The SimulatedCamera implements the camera interface though the setting of
+     * framerate has no meaning to the virtual camera since no timing is done in
+     * this implementation.
+     */
     class SimulatedCamera : public SimulatedSensor
     {
     public:
@@ -135,13 +135,13 @@ namespace rwlibs { namespace simulation {
          */
         void reset(const rw::kinematics::State& state){}
 
-        rw::sensor::Sensor::Ptr getSensor(){ return _csensor; };
+        rw::sensor::Sensor::Ptr getSensor(){ return _csensor; }
 
         /**
          * @brief Get the camera sensor.
          * @return the sensor.
          */
-        rw::sensor::Camera::Ptr getCameraSensor(){ return _csensor; };
+        rw::sensor::Camera::Ptr getCameraSensor(){ return _csensor; }
 
     private:
         void acquire(char *imgData);
@@ -156,12 +156,6 @@ namespace rwlibs { namespace simulation {
 
         rw::sensor::Camera::Ptr _csensor;
     };
-
-    /**
-     * @brief Smart pointer to simulated camera
-     */
-    typedef rw::common::Ptr<SimulatedCamera> SimulatedCameraPtr;
-
 
     /* @} */
 }} // end namespaces
