@@ -1,4 +1,4 @@
-.. index:: Developers
+.. _developers:
 
 Developers
 ===================================

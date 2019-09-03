@@ -853,10 +853,18 @@ public:
     //! @brief Destructor
     ~ProjectionMatrix();
 
-    //! @brief test if this is a perspective projection
+    /** 
+     * @brief test if this is a perspective projection
+     * 
+     * @return true if perspective projection, false otherwise.
+     */
     bool isPerspectiveProjection();
 
-    //! @brief test if this is a ortographic projection
+    /** 
+     * @brief test if this is a ortographic projection
+     * 
+     * @return true if ortographic projection, false otherwise.
+     */
     bool isOrtographicProjection();
 
     /**

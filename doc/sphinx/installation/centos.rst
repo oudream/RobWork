@@ -97,7 +97,7 @@ All of these interfaces can be generated if you install the following packages:
 
 .. code-block::
 
-   sudo yum install lua-devel python-devel java-1.8.0-openjdk-devel
+   sudo yum install lua-devel python3-devel java-1.8.0-openjdk-devel
 
 
 Google Test (optional) is used for unit tests in RobWork. If you are a developer and wants to develop code for the RobWork trunk, writing a GTest will be a requirement:

@@ -2,7 +2,13 @@
 
 using namespace rw::common;
 
-class T {};
-typedef Ptr<T> TPtr;
+class T {
+    public:
+        typedef rw::common::Ptr<T> Ptr;
+        typedef rw::common::Ptr<const T> CPtr;
 
-TPtr makeT() { return ownedPtr(new T); }
+        Ptr make()
+        {
+            return ownedPtr(new T);
+        }
+};

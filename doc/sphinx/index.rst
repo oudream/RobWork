@@ -9,7 +9,7 @@ Introduction to RobWork
 .. note::
    We are currently working a new documentation for RobWork based on Sphinx (this page).
    The old doxygen based documentation can still be found `here <apidoc/cpp/doxygen/index.html>`_ .
-   Doxygen will continue to be used as a reference for the C++ API.
+   Doxygen will continue to be used as a reference for the C++ API, while overall documentation and tutorials will be migrated.
 
 *RobWork* is a collection of C++ libraries for simulation and control
 of robot systems. RobWork is used for research and education as well
@@ -35,8 +35,8 @@ Target audience of RobWork is:
 - Implementers of robot applications
 
 RobWork is developed by `SDU Robotics <http://www.sdu.dk/en/Om_SDU/Institutter_centre/SDURobotics>`_ at the `University of Southern Denmark <http://www.sdu.dk>`_ .
-The focus is on cognitive and applied robotics.
-
+The focus is on is on cognitive and applied robotics.
+This includes fields such as industrial robots, robot control, mathematical modelling and simulation, welfare robotics, and surgical robotics.
 
 Introduction to the documentation
 =====================================
@@ -44,11 +44,15 @@ Introduction to the documentation
 This documentation page includes tutorials on how to compile, install and use RobWork:
 
 - :ref:`installation` guides you through setting up RobWork on Ubuntu, CentOS and Windows.
-- :ref:`basics` provides tutorials on basic usage of RobWork and RobWorkStudio. New users should start with these tutorials.
+- :ref:`manual` provides tutorials on basic usage of RobWork and RobWorkStudio. New users should start with these tutorials.
 - :ref:`tutorials` provides tutorials on more advanced topics.
+- :ref:`file_formats` is a reference for the XML format used to describe scenes in RobWork.
+- :ref:`interfaces` gives details about developing in different languages, such as C++, Python, Java & Lua.
 - :ref:`hardware` has an overview of the hardware that RobWork provides drivers for.
+- :ref:`contributing` gives information about coding standards and the procedure for contributing code to the RobWork project.
 - :ref:`scene_collection` shows the device and scene models available in RobWorkData.
-- :ref:`apidoc` provides a reference for the four supported languages: C++, Python, SWIG & Java.
+- :ref:`apidoc` provides a reference for the four supported languages: C++, Python, Java & Lua.
+- :ref:`developers` is an overview of the main developers of RobWork.
 - :ref:`publications` gives an overview on publications that are based on RobWork.
 - :ref:`license` gives an overview of licenses used by RobWork and all of RobWorks dependencies.
 
@@ -58,8 +62,10 @@ This documentation page includes tutorials on how to compile, install and use Ro
    :caption: Contents:
 
    installation
-   basics
+   manual
    tutorials
+   file_formats
+   interfaces
    hardware
    contributing
    scene_collection

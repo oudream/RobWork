@@ -618,6 +618,8 @@ public:
      * determine if a certain log level will be displayed or not.
      *
      * @param idx [in] the level
+     *
+     * @return true if enabled, false otherwise.
      */
     bool isEnabled(LogIndex idx);
 
@@ -917,8 +919,33 @@ public:
                   TrianglePrim, CylinderPrim, PlanePrim, RayPrim,
                   UserType} GeometryType;
 
+	/**
+	 * @brief the type of this primitive
+	 *
+	 * @return the type of primitive.
+	 */
     virtual GeometryType getType() const = 0;
+
+	/**
+	 * @brief gets a trimesh representation of this geometry data.
+	 *
+	 * The trimesh that is returned is by default a copy, which means
+	 * ownership is transfered to the caller. Specifying forceCopy to false
+	 * will enable copy by reference and ownership is not necesarilly transfered.
+	 * This is more efficient, though pointer is only alive as long as this
+	 * GeometryData is alive.
+	 *
+	 * @return TriMesh representation of this GeometryData
+	 */
     virtual rw::common::Ptr<TriMesh> getTriMesh(bool forceCopy=true) = 0;
+
+	/**
+	 * @brief format GeometryType to string
+	 *
+	 * @param type [in] the type of geometry to convert to string.
+	 *
+	 * @return a string.
+	 */
     static std::string toString(GeometryType type);
 };
 
@@ -1132,6 +1159,8 @@ public:
 
 	/**
 	 * @brief gets the number of points in the point cloud.
+	 *
+	 * @return the number of points.
 	 */
 	virtual size_t size() const;
 
@@ -1845,9 +1874,7 @@ public:
      * @param gripper [in] the grasping frame.
      * @param state [in/out] the state.
      *
-     * @exception An exception is thrown if item is not a DAF.
-     *
-     * @see #gripFrame(MovableFrame*, Frame*, State&).
+     * An exception is thrown if item is not a DAF.
      */
 	static void gripFrame(Frame* item, Frame* gripper, State& state);
 
@@ -1860,9 +1887,7 @@ public:
      * @param gripper [in] the grasping frame.
      * @param state [in/out] the state.
      *
-     * @exception An exception is thrown if item is not a DAF.
-     *
-     * @see #gripFrame(Frame*, Frame*, State&).
+     * An exception is thrown if item is not a DAF.
      */
     static void gripFrame(MovableFrame* item, Frame* gripper, State& state);
 };
