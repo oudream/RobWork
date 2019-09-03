@@ -62,6 +62,8 @@ Copyright: 2011-2017 by
 
 `csgjs-cpp License (MIT) <https://github.com/dabroz/csgjs-cpp/blob/master/csgjs.cpp>`_
 
+.. _license_eigen:
+
 Eigen 3
 -------
 

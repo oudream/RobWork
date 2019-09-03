@@ -1,2 +1,0 @@
-Dynamic WorkCell Format
-=======================

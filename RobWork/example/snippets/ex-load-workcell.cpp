@@ -1,7 +1,7 @@
 #include <rw/loaders/WorkCellLoader.hpp>
 #include <rw/models/WorkCell.hpp>
 
-using rw::loaders::WorkCellFactory;
+using rw::loaders::WorkCellLoader;
 using rw::models::WorkCell;
 
 int main(int argc, char** argv)
@@ -12,7 +12,7 @@ int main(int argc, char** argv)
     }
 
     const std::string file = argv[1];
-    WorkCell::Ptr workcell = WorkCellFactory::load(file);
+    WorkCell::Ptr workcell = WorkCellLoader::Factory::load(file);
 
     std::cout << "Workcell " << *workcell << " successfully loaded.\n";
     return 0;

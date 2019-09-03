@@ -3,6 +3,20 @@
 Hardware
 =========
 
+RobWorkHardware is a sub package of RobWork. Its main function is to provide an interface/driver
+layer for real hardware.
+
+The package is structured into several modules which each can be enabled or disabled.
+This structure has been chosen because of the multiple external dependencies and because one
+typically only use few of the modules at a time.
+
+The various external dependencies also mean that the license of some modules differ from the
+general RobWork license. In such a case this will be explicitly noted in the module headers as well as
+in the module documentation.
+
+Currently driver wrappers/interfaces exist for cameras, CAN devices, serial port,
+weiss tactile sensors, swissranger and various robots such as the SDH, PA10 and PowerCube.
+
 .. toctree::
    :maxdepth: 2
    :caption: Robots:
