@@ -1634,6 +1634,21 @@ public:
      * @return transform of frame \b to relative to this frame.
      */
     rw::math::Transform3D<double> fTf(const Frame* to, const State& state) const;
+    
+    %extend {
+        /**
+         * @brief Iterator pair for all children of the frame.
+         */
+        std::vector<Frame*> getChildren(const State& state)
+        {
+            std::vector<Frame*> frames;
+        	Frame::iterator_pair pair = $self->getChildren(state);
+        	for (Frame::iterator it = pair.first; it != pair.second; it++) {
+        	    frames.push_back(&(*it));
+        	}
+        	return frames;
+        }
+    }
 
 private:
     // Frames should not be copied.
@@ -1692,6 +1707,268 @@ class Joint: public Frame
 
 %template (JointVector) std::vector<Joint*>;
 
+%nodefaultctor Kinematics;
+/**
+ * @brief Utility functions for the rw::kinematics module.
+ */
+class Kinematics {
+public:
+    /**
+     * @brief The transform of frame in relative to the world frame.
+     *
+     * If to=NULL the method returns a 4x4 identify matrix
+     *
+     * @param to [in] The transform for which to find the world frame.
+     *
+     * @param state [in] The state of the kinematics tree.
+     *
+     * @return The transform of the frame relative to the world frame.
+     */
+    static rw::math::Transform3D<double> worldTframe(const Frame* to, const State& state);
+
+
+    /**
+     * @brief The transform of frame to relative to frame from.
+     *
+     * FrameTframe() is related to WorldTframe() as follows:
+     *
+     * frameTframe(from, to, state) == inverse(worldTframe(from, state)) * worldTframe(to, state);
+     *
+     * @param from [in] The start frame.
+     *
+     * @param to [in] The end frame.
+     *
+     * @param state [in] The state of the kinematics tree.
+     *
+     * @return The transform from the start frame to the end frame.
+     */
+    static rw::math::Transform3D<double> frameTframe(
+        const Frame* from, const Frame* to, const State& state);
+
+
+    /** 
+     * @brief All frames reachable from root for a tree structure of
+     * state.
+     *
+     * This is a tremendously useful utility. An alternative would be to have an
+     * iterator interface for trees represented by work cell states.
+     *
+     * We give no guarantee on the ordering of the frames.
+     *
+     * @param root [in] The root node from where the frame search is started.
+     *
+     * @param state [in] The structure of the tree.
+     *
+     * @return All reachable frames.
+     */
+    static std::vector<Frame*> findAllFrames(Frame* root, const State& state);
+
+    /** 
+     * @brief All frames reachable from root for a tree structure.
+     *
+     * This is a tremendously useful utility. An alternative would be to have an
+     * iterator interface for trees represented by work cell states.
+     *
+     * We give no guarantee on the ordering of the frames.
+     *
+     * DAF are not included.
+     *
+     * @param root [in] The root node from where the frame search is started.
+     *
+     * @return All reachable frames.
+     */
+    static std::vector<Frame*> findAllFrames(Frame* root);
+
+    /**
+     * @brief Find the world frame of the workcell by traversing the path
+     * from frame to the root of the tree.
+     *
+     * The state state is needed to retrieve the parent frames, but the
+     * world frame returned is the same for any (valid) state.
+     */
+    static Frame* worldFrame(Frame* frame, const State& state);
+
+    /**
+     * @brief The chain of frames connecting child to parent.
+     *
+     * child is included in the chain, but parent is not included. If
+     * parent is NULL then the entire path from child to the world
+     * frame is returned. If child as well as parent is NULL then the
+     * empty chain is gracefully returned.
+     *
+     * The state gives the connectedness of the tree.
+     *
+     * If parent is not on the chain from child towards the root, then
+     * an exception is thrown.
+     */
+    static std::vector<Frame*> childToParentChain(Frame* child,
+                                                  Frame* parent,
+                                                  const State& state);
+
+    /**
+     * @brief Like ChildToParentChain() except that the frames are returned
+     * in the reverse order.
+     */
+    static std::vector<Frame*> reverseChildToParentChain(Frame* child,
+                                                         Frame* parent,
+                                                         const State& state);
+
+    /**
+     * @brief The chain of frames connecting parent to child.
+     *
+     * parent is included in the list, but child is excluded. If
+     * parent as well as child is NULL then the empty chain is returned.
+     * Otherwise parent is included even if parent is NULL.
+     */
+    static std::vector<Frame*> parentToChildChain(Frame* parent,
+                                                  Frame* child,
+                                                  const State& state);
+
+    /**
+       @brief True if frame is a DAF and false otherwise.
+    */
+    static bool isDAF(const Frame* frame);
+
+    /**
+     * @brief Check if frame is fixed.
+     * @param frame [in] the frame.
+     * @return true if fixed, false otherwise.
+     */
+    static bool isFixedFrame(const Frame* frame);
+
+    /**
+     * @brief Grip item with gripper thereby modifying state.
+     *
+     * item must be a DAF.
+     *
+     * @param item [in] the frame to grip.
+     * @param gripper [in] the grasping frame.
+     * @param state [in/out] the state.
+     *
+     * @exception An exception is thrown if item is not a DAF.
+     *
+     * @see #gripFrame(MovableFrame*, Frame*, State&).
+     */
+	static void gripFrame(Frame* item, Frame* gripper, State& state);
+
+    /**
+     * @brief Grip item with gripper thereby modifying state.
+     *
+     * item must be a DAF.
+     *
+     * @param item [in] the frame to grip.
+     * @param gripper [in] the grasping frame.
+     * @param state [in/out] the state.
+     *
+     * @exception An exception is thrown if item is not a DAF.
+     *
+     * @see #gripFrame(Frame*, Frame*, State&).
+     */
+    static void gripFrame(MovableFrame* item, Frame* gripper, State& state);
+};
+
+/**
+ * @brief Forward kinematics between a pair of frames.
+ *
+ * FKRange finds the relative transform between a pair of frames. FKRange
+ * finds the path connecting the pair of frames and computes the total
+ * transform of this path. Following initialization, FKRange assumes that
+ * the path does not change structure because of uses of the attachFrame()
+ * feature. If the structure of the path has changed, the FKRange will
+ * produce wrong results.
+ *
+ * FKRange is guaranteed to select the shortest path connecting the
+ * frames, i.e. the path doesn't go all the way down to the root if it can
+ * be helped.
+ */
+class FKRange
+{
+public:
+    /**
+     * @brief Forward kinematics for the path leading from from to to.
+     *
+     * If a frame of NULL is passed as argument, it is interpreted to mean
+     * the WORLD frame.
+     *
+     * @param from [in] The start frame.
+     *
+     * @param to [in] The end frame.
+     *
+     * @param state [in] The path structure.
+     */
+    FKRange(const Frame* from, const Frame* to, const State& state);
+
+    /**
+     * @brief Default constructor
+     *
+     * Will always return an identity matrix as the transform
+     */
+    FKRange();
+
+    /**
+     * @brief The relative transform between the frames.
+     *
+     * @param state [in] Configuration values for the frames of the tree.
+     */
+    rw::math::Transform3D<double> get(const State& state) const;
+
+    /**
+     * @brief Returns the last frame in the range.
+     *
+     * @return The end frame (to).
+     */
+    rw::common::Ptr< const Frame > getEnd() const;
+
+    /**
+     * @brief Returns the first frame in the range.
+     *
+     * @return The base frame (from).
+     */
+    rw::common::Ptr< const Frame > getBase() const;
+};
+
+/**
+ * @brief Forward kinematics for a set of frames.
+ *
+ * FKTable finds transforms for frames for a given fixed work cell state.
+ * The frame transforms are calculated relative to the world frame.
+ */
+class FKTable
+{
+public:
+    /**
+     * @brief Forward kinematics for the work cell state state.
+     *
+     * @param state [in] The work state for which world transforms are to be
+     * calculated.
+     */
+    FKTable(const State& state);
+
+    /**
+     * @brief The world transform for the frame frame.
+     *
+     * @param frame [in] The frame for which to find the world transform.
+     *
+     * @return The transform of the frame relative to the world.
+     */
+    const rw::math::Transform3D<double>& get(const Frame& frame) const;
+
+    /**
+     * @brief Returns State associated with the FKTable
+     *
+     * The State returned is the State used to calculate the forward kinematics.
+     *
+     * @return State used to calculate the forward kinematics
+     */
+    const State& getState() const;
+
+    /**
+     * @brief resets the FKTable to state
+     *
+     * @param state
+     */
+    void reset(const State& state);
+};
 
 /********************************************
  * LOADERS
@@ -1854,6 +2131,27 @@ namespace rw { namespace math {
     public:
         Math() = delete;
         ~Math() = delete;
+
+        /**
+         * @brief Quaternion to equivalent angle axis conversion.
+         *
+         * @param quat [in] the Quaternion object that is to be converted.
+         *
+         * @return a EAA object that represents the converted quaternion
+         */
+        template <class A>
+        static rw::math::EAA<A> quaternionToEAA(const rw::math::Quaternion<A> &quat);
+
+        /**
+         * @brief Equivalent angle axis to quaternion conversion.
+         *
+         * @param eaa [in] the EAA object that is to be converted
+         *
+         * @return a Quaternion object that represents the converted EAA
+         */
+        template <class A>
+        static rw::math::Quaternion<A> eaaToQuaternion(const rw::math::EAA<A> &eaa);
+
         static inline double clamp(double val, double min, double max);
 
         static rw::math::Q clampQ(const rw::math::Q& q,
@@ -1910,6 +2208,11 @@ namespace rw { namespace math {
         static bool isNaN(double d);
     };
 }} // end namespaces
+
+%template (quaternionToEAA) rw::math::Math::quaternionToEAA<double>;
+%template (quaternionToEAA) rw::math::Math::quaternionToEAA<float>;
+%template (eaaToQuaternion) rw::math::Math::eaaToQuaternion<double>;
+%template (eaaToQuaternion) rw::math::Math::eaaToQuaternion<float>;
 
 /********************************************
  * MODELS

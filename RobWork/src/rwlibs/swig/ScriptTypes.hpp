@@ -225,6 +225,10 @@ namespace swig {
 	///@{
 	//! @copydoc rw::kinematics::StateData
 	typedef rw::kinematics::StateData StateData;
+    //! @copydoc rw::kinematics::FKRange
+    typedef rw::kinematics::FKRange FKRange;
+    //! @copydoc rw::kinematics::FKTable
+    typedef rw::kinematics::FKTable FKTable;
 	//! @copydoc rw::kinematics::Frame
 	typedef rw::kinematics::Frame Frame;
 	//! @copydoc rw::kinematics::MovableFrame
@@ -235,6 +239,8 @@ namespace swig {
 	typedef rw::kinematics::State State;
 	//! @copydoc rw::kinematics::StateStructure
 	typedef rw::kinematics::StateStructure StateStructure;
+    //! @copydoc rw::kinematics::Kinematics
+    typedef rw::kinematics::Kinematics Kinematics;
 	///@}
 
 	/**
@@ -275,8 +281,12 @@ namespace swig {
 	typedef rw::math::Vector3D<float> Vector3f;
 	//! @copydoc rw::math::Rotation3D
 	typedef rw::math::Rotation3D<double> Rotation3d;
-	//! @copydoc rw::math::Rotation3D
-	typedef rw::math::Rotation3D<float> Rotation3f;
+    //! @copydoc rw::math::Rotation3D
+    typedef rw::math::Rotation3D<float> Rotation3f;
+    //! @copydoc rw::math::Rotation3DVector
+    typedef rw::math::Rotation3DVector<double> Rotation3DVectord;
+    //! @copydoc rw::math::Rotation3DVector
+    typedef rw::math::Rotation3DVector<float> Rotation3DVectorf;
 	//! @copydoc rw::math::EAA
 	typedef rw::math::EAA<double> EAAd;
 	//! @copydoc rw::math::EAA
