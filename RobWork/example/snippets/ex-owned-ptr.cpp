@@ -7,7 +7,7 @@ class T {
         typedef rw::common::Ptr<T> Ptr;
         typedef rw::common::Ptr<const T> CPtr;
 
-        Ptr make()
+        static Ptr make()
         {
             return ownedPtr(new T);
         }
