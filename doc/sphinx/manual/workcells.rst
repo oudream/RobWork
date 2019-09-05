@@ -87,17 +87,17 @@ See :ref:`interfaces_java` for more information about compilation and execution.
 
 See :ref:`interfaces_lua` for more information about execution of the script.
 
-Traversing the devices of a workcell
+Traversing the devices of a WorkCell
 ====================================
 
-A workcell contains a number of devices. You can
-for example traverse the devices stored in a workcell and print their
-names like this:
-
-A device of a specific name can be retrieved from a workcell with
+A WorkCell contains a number of devices.
+A device of a specific name can be retrieved from a WorkCell with
 rw::models::WorkCell::findDevice(). You can add a device type to the search 
 such that only a device of name **name** and type **type** will be found:
 rw::models::WorkCell::findDevice<type>(name)
+
+You can for example traverse the devices stored in a WorkCell and print their
+names like this:
 
 **C++**
 
@@ -105,15 +105,11 @@ rw::models::WorkCell::findDevice<type>(name)
    :language: c++
    :linenos:
 
-See :ref:`interfaces_cpp` for more information about compilation and execution.
-
 **Python**
 
 .. literalinclude:: ../../../RobWork/example/python/ex_print_devices.py
    :language: python
    :linenos:
-
-See :ref:`interfaces_python` for more information about execution.
 
 **Java**
 
@@ -121,15 +117,50 @@ See :ref:`interfaces_python` for more information about execution.
    :language: java
    :linenos:
 
-See :ref:`interfaces_java` for more information about compilation and execution.
-
 **LUA**
 
 .. literalinclude:: ../../../RobWork/example/lua/ex-print-devices.lua
    :language: lua
    :linenos:
 
-See :ref:`interfaces_lua` for more information about execution of the script.
+Devices, Frames and States
+==========================
+
+The default State of a WorkCell contains the initial configuration of devices and placement of movable frames.
+Getting a default State from the WorkCell is a commonly used operation, as well as getting Frames and Devices from the WorkCell.
+An example is shown below of how this can be done:
+
+
+**C++**
+
+.. literalinclude:: ../../../RobWork/example/cpp/ex-find-from-workcell.cpp
+   :language: c++
+   :linenos:
+
+**Python**
+
+.. literalinclude:: ../../../RobWork/example/python/ex_find_from_workcell.py
+   :language: python
+   :linenos:
+
+**Java**
+
+.. literalinclude:: ../../../RobWork/example/java/src/ExFindFromWorkCell.java
+   :language: java
+   :linenos:
+
+**LUA**
+
+.. literalinclude:: ../../../RobWork/example/lua/ex-find-from-workcell.lua
+   :language: lua
+   :linenos:
+
+Notice that the templated versions of findFrame and findDevice makes it possible to get a specific type of Frame of Device directly.
+Always remember to use the isNull() function on the smart pointer to make sure that the Frame or Device is actually found in the WorkCell.
+You might encounter segmentation fault errors if you try to use a null pointer.
+
+In Python, Java and Lua the templated functions can not be used.
+The system for doing this is clear from the examples.
 
 Stateless models
 ================

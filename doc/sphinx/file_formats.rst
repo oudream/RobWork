@@ -3,9 +3,10 @@
 File Formats
 ============
 
+RobWork uses various file formats. The following pages documents some of the most important ones:
+
 .. toctree::
-   :maxdepth: 2
-   :caption: File Formats:
+   :maxdepth: 1
 
    file_formats/workcell
    file_formats/dynamic_workcell

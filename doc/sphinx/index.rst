@@ -34,7 +34,8 @@ Target audience of RobWork is:
 - Students who wants to experiment with concepts of robotics
 - Implementers of robot applications
 
-RobWork is developed by `SDU Robotics <http://www.sdu.dk/en/Om_SDU/Institutter_centre/SDURobotics>`_ at the `University of Southern Denmark <http://www.sdu.dk>`_ .
+RobWork is developed by `SDU Robotics <http://www.sdu.dk/en/Om_SDU/Institutter_centre/SDURobotics>`_ at the `University of Southern Denmark <http://www.sdu.dk/en>`_ .
+The project was started in 2006 by Ph.D. and master students students at the `Maersk Mc-Kinney Moeller Institute <https://www.sdu.dk/en/om_sdu/institutter_centre/mmmi_maersk_mckinney_moeller>`_.
 The focus is on is on cognitive and applied robotics.
 This includes fields such as industrial robots, robot control, mathematical modelling and simulation, welfare robotics, and surgical robotics.
 

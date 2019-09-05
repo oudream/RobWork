@@ -26,8 +26,8 @@ RobWork depends on third-party software that must be installed prior to compilat
 In Linux it is quite easy to set up the dependencies as these are available as packages in the systems package manager.
 Unfortunately, in CentOS it is also necessary to compile some optional dependencies from scratch.
 
-¤ Build Tools
--------------------------------------------------
+Build Tools
+-----------
 
 To be able to checkout code it is necessary to install some source code management (SCM) tools, such as Subversion, Git and Mercurial.
 To be able to checkout the code from our own Git repository, a Git client is needed.
@@ -46,8 +46,8 @@ CMake must be used to prepare RobWork for compilation. The minimum CMake version
    sudo yum install make gcc gcc-c++ cmake
 
 
-¤ Extra Packages for Enterprise Linux (EPEL)
--------------------------------------------------------------------------------
+Extra Packages for Enterprise Linux (EPEL)
+------------------------------------------
 
 Some packages are only available when the "Extra Packages for Enterprise Linux" (EPEL) is used.
 Add the packages with:
@@ -59,8 +59,8 @@ Add the packages with:
 
 This is for instance needed for Assimp, GTest and Bullet and libdc1394.
 
-¤ RobWork Required Dependencies
-----------------------------------------------------------------
+RobWork Required Dependencies
+-----------------------------
 
 Start by installing the dependencies. This is done using the package manager by running the following commands in a terminal.
 First, install OpenGL libraries:
@@ -86,8 +86,8 @@ Finally, install Xerces:
 
 Xerces is used some places in RobWork for opening XML files. It is still a requirement, but it is the intention that this dependency will one day become optional.
 
-¤ RobWork Optional Dependencies
--------------------------------------------------------------------------
+RobWork Optional Dependencies
+-----------------------------
 
 SWIG (optional) is a tool that makes it possible to generate a LUA script interface for RobWork.
 Unfortunately, CentOS comes with a SWIG package that is too old.
@@ -107,8 +107,8 @@ Google Test (optional) is used for unit tests in RobWork. If you are a developer
    sudo yum install gtest-devel
 
 
-¤ RobWorkStudio Dependencies
----------------------------------------------------------------
+RobWorkStudio Dependencies
+--------------------------
 
 RobWorkStudio requires Qt to be installed. Both Qt4 and Qt5 is supported, but on a fresh Qt install it is encouraged to choose the Qt5 version:
 
@@ -117,8 +117,8 @@ RobWorkStudio requires Qt to be installed. Both Qt4 and Qt5 is supported, but on
    sudo yum install qt5-qtbase-devel
 
 
-¤ RobWorkSim Dependencies
---------------------------------------------------------------
+RobWorkSim Dependencies
+-----------------------
 
 If you need to do dynamic simulations, you will probably need the RobWorkSim package. If you are in doubt and just need RobWorkStudio, you can likely skip this.
 
@@ -167,8 +167,8 @@ Modify the options to suit your needs. The shown options will make sure that Bul
 
 RobWork Physics Engine (RWPE) requires access to code that is not yet public. Request more information about this if you need it.
 
-¤ RobWorkHardware Dependencies
-------------------------------------------------------------------
+RobWorkHardware Dependencies
+----------------------------
 
 RobWorkHardware compilation depends heavily on which hardware you need to use. Install the following package: 
 
@@ -194,8 +194,6 @@ Make a new directory where you want to install RobWork (in this guide, we will i
    mkdir RobWork
    cd RobWork
 
-
-
 When the dependencies are installed, go ahead and download the newest version of RobWork from the Git repository at: 
 
 https://gitlab.com/sdurobotics/RobWork
@@ -206,6 +204,9 @@ In the terminal, this is done as follows: (be sure that you are located in the d
 
    git clone https://gitlab.com/sdurobotics/RobWork.git .
 
+.. note::
+
+   In order to access the repository, you will need to have an account at GitLab.com and follow the procedure here to gain access: http://robwork.dk/getaccess
 
 Setup CMake Options & Environment
 -------------------------------------------------------------------------
