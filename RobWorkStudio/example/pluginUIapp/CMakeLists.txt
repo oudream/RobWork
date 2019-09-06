@@ -58,4 +58,9 @@ add_library(SamplePlugin MODULE ${SrcFiles})
 target_link_libraries(SamplePlugin PUBLIC ${ROBWORKSTUDIO_LIBRARIES} ${ROBWORK_LIBRARIES})
 target_include_directories(SamplePlugin PUBLIC ${ROBWORKSTUDIO_INCLUDE_DIRS} ${ROBWORK_INCLUDE_DIRS} )
 
+if(CMAKE_VERSION VERSION_LESS 3.9)
+    # Required in CMake < 3.9 to find generated ui_SamplePlugin.h file 
+    target_include_directories(SamplePlugin PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
+endif()
+
 message("-- " ${PROJECT_NAME} " done!")

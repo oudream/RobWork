@@ -220,56 +220,119 @@ Following is an example of how to add a new frame to the workcell from your own 
    // now this is VERY important, remember to update the RobWorkStudio state
    getRobWorkStudio()->setState(oldState);
 
-.. TODO: must be updated!
 
-   Adding drawables from a plugin
-   ---------------------------------------
+Adding Drawable from a plugin
+-----------------------------
 
-   This example describe how one can add his own drawable to the robwork scene graph, from
-   his own RobWorkStudio plugin.
-   First we need to create the drawable, next we need to find the frame we want to
-   connect it too, and lastly add it to the WorkCellGLDrawer of RWStudio. The following
-   code snippet show the creation of a user specified render which is used to construct
-   a drawable. One could also use the DrawableFactory to create a drawable from either
-   file or a primitive string (Cube,Box,Cylinder etc.). Next a frame called "myFrame" is
-   searched for in the workcell. If the frame is found then a mapping from myFrame to
-   the user drawable is created in the WorkCellGLDrawer (SceneGraph).
+Before considering the example, a bit of background is needed about the RobWork and RobWorkStudio scene model.
 
-   .. code-block:: c++
+The most abstract model of a scene in RobWork is defined in rw::graphics. It is based on the SceneGraph model.
+SceneGraph defines elements in a scene for visualisation.
+It is independent from the usual RobWork structure of frames. As such it is a more generic model of a scene.
+A SceneGraph contains:
 
-      MyRender *renderObj = new MyRender( .. );
-      Drawable *drawableObj = new Drawable(boost::shared_ptr<Render>(renderObj));
-      Frame *myFrame = getRobWorkStudio()->getWorkCell()->findFrame("myFrame");
-      if(drawableFrame != NULL)
-          getRobWorkStudio()->getView()->getWorkCellScene()->addDrawable(myFrame, drawableObj);
+- CameraGroups: A group of cameras can be used, for instance, to render background, render scene elements and render foreground.
+  Each camera in the group is a SceneCamera (see below).
+- Tree of SceneNodes with a root GroupNode.
 
-   Adding collision models from a plugin
-   ---------------------------------------
+  - GroupNode: Groups other SceneNodes (it is a non-leaf node)
+  - DrawableNode: A node with something that can be drawn in the scene.
+    It has a draw mask to distinguish between different groups to be shown in the scene.
 
-   .. code-block:: c++
+    - DrawableGeometryNode: A DrawableNode that draws a rw::geometry::Geometry.
+    - DrawableNodeClone: A node that reuses another DrawableNodes data, but has its own visualisation settings.
 
-      double scale = 1.0; // set a scale, actually not used in RobWork yet
-      Transform3D<> transform = makeMyTransform();
-      CollisionModelInfo info("myname", transform, scale);
+  - SceneCamera: A node representing a camera in the scene.
+  - Other user defined node types
 
-      Accessor::collisionModelInfo().get(*myFrame).push_back(info);
+WorkCellScene is a wrapper for the more generic SceneGraph.
+It uses the Frame structure from a WorkCell and State, to maintain a corresponding underlying SceneGraph.
+In the WorkCellScene, DrawableNodes can be added and retrieved for each Frame in the WorkCell.
+It has convenience functions, for instance, for adding Renders or Drawables and Geometries from files.
+WorkCellScene keeps track of the visualisation of frames and visibility of frames in the WorkCell.
 
-   Getting drawables from a frame
-   ---------------------------------------
+SceneViewer is an interface for the actual visualisation of a SceneGraph. Implementations should allow for:
 
-   This code snippet will copy all drawables associated with the frame **frameWithDrawables**
-   into the vector **drawables**.
+  - A main view: The SceneCamera that is mainly used to visualise the scene.
+  - A current view: The currently selected view.
+  - Function for updating view(s).
+  - Zoom functions.
+  - WorkCellScene (optional): if the SceneGraph is wrapped by a WorkCellScene.
 
-   .. code-block:: c++
+The code for adding a Drawable from a plugin could look like the following (here we make a DrawableNode for a Render):
 
-      std::vector<Drawable*> drawables;
-      Frame *frameWithDrawables; // specify the frame where your drawables are placed
-      getWorkCellGLDrawer()->getAllDrawables(state, frameWithDrawables, drawables);
+.. code-block:: c++
 
-   The next code snippet will copy all drawables associated to any frame in the workcell
-   into the vector **drawables**.
+   using namespace rw::graphics;
+   using rw::kinematics::Frame;
+   using rws::RWStudioView3D;
 
-   .. code-block:: c++
+   const RWStudioView3D::Ptr rwsview = getRobWorkStudio()->getView();
+   const SceneViewer::Ptr viewer = rwsview->getSceneViewer();
+   const SceneGraph::Ptr graph = viewer->getScene();
+   const WorkCellScene::Ptr wcscene = rwsview->getWorkCellScene();
 
-      std::vector<Drawable*> drawables;
-      getWorkCellGLDrawer()->getAllDrawables(state, getWorkCell(), drawables);
+   const Render::Ptr render = ownedPtr(new MyRender());
+   Frame* const myFrame = getRobWorkStudio()->getWorkCell()->findFrame("myFrame");
+   
+   // Method 1
+   const DrawableNode::Ptr drawableNode = graph->makeDrawable("Render", render, DrawableNode::Physical);
+   wcscene->addDrawable(drawableNode, myFrame);
+   
+   // Method 2 (use convenience method on WorkCellScene)
+   wcscene->addRender("Render", render, myFrame, DrawableNode::Physical);
+
+The RWStudioView3D is the main visualisation area in RobWorkStudio.
+This visualisation uses the SceneViewer model (with the underlying SceneGraph).
+The SceneGraph model is wrapped in a WorkCellScene that can also be retrieved from RWStudioView3D.
+The WorkCellScene takes care of maintaining the underlying SceneGraph.
+In RobWorkStudio, getWorkCellScene actually returns a SceneOpenGLViewer.
+SceneOpenGLViewer is a specialisation that uses Qt and OpenGL.
+It adds background to the scene, the pivot point and the default RobWorkStudio view.
+It also controls which DrawableNode types to draw (Physical, Virtual etc) based on the chosen settings in RobWorkStudio.
+First step is to retrieve these entities from the RWStudioView3D.
+
+Next, we create a render. Render is an interface that defines a draw function.
+It is up to the user to implement the Render class.
+In rwlibs::opengl, many Render types are implemented for drawing in OpenGL (as we currently use in RobWorkStudio).
+This is types for rendering images, geometries, point-clouds, lines, vectors, and much more.
+
+A DrawableNode is then created in the SceneGraph for the Render.
+This node is not yet connected to any child or parent nodes.
+By calling addDrawable on the WorkCellScene,
+we let the WorkCellScene take care of attaching the DrawableNode correctly to the tree,
+based on the Frame given to addDrawable. 
+
+Notice that the code is completely independent from OpenGL (except if we create the Render from types in rwlibs::opengl).
+The framework would allow RobWorkStudio to change to something else than OpenGL, and our plugin would still work.
+
+Getting Drawables from a Frame
+------------------------------
+
+This code snippet will copy all Drawables associated with the Frame **frameWithDrawables**
+into the vector **drawables**:
+
+.. code-block:: c++
+
+   using namespace rw::graphics;
+   using rw::kinematics::Frame;
+   using rws::RWStudioView3D;
+
+   const RWStudioView3D::Ptr rwsview = getRobWorkStudio()->getView();
+   const WorkCellScene::Ptr wcscene = rwsview->getWorkCellScene();
+
+   Frame *frameWithDrawables; // specify the frame where your drawables are placed
+   std::vector<DrawableNode::Ptr> drawables = wcscene->getDrawables(frameWithDrawables);
+
+The next code snippet will copy all drawables associated to any frame in the WorkCell
+into the vector **drawables**.
+
+.. code-block:: c++
+
+   using namespace rw::graphics;
+   using rws::RWStudioView3D;
+
+   const RWStudioView3D::Ptr rwsview = getRobWorkStudio()->getView();
+   const WorkCellScene::Ptr wcscene = rwsview->getWorkCellScene();
+
+   std::vector<DrawableNode::Ptr> drawables = wcscene->getDrawables();
