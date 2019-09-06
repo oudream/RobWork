@@ -12,7 +12,7 @@ class SamplePlugin: public rws::RobWorkStudioPlugin
 Q_OBJECT
 Q_INTERFACES( rws::RobWorkStudioPlugin )
 #if RWS_USE_QT5
-Q_PLUGIN_METADATA(IID "dk.sdu.mip.Robwork.RobWorkStudioPlugin/0.1" FILE "plugin.json")
+Q_PLUGIN_METADATA(IID "dk.sdu.mip.Robwork.RobWorkStudioPlugin/0.1" FILE "SamplePlugin.json")
 #endif
 public:
     SamplePlugin();
@@ -32,4 +32,4 @@ private:
     QPushButton* _btn0,*_btn1;
 };
 
-#endif /*RINGONHOOKPLUGIN_HPP_*/
+#endif /*SAMPLEPLUGIN_HPP*/

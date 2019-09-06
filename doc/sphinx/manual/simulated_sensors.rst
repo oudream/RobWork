@@ -82,6 +82,13 @@ The numbers should always be written in the order shown.
        ...
    </WorkCell>
 
+**Important!**
+
+- Multiple cameras are supported but only one camera property per frame!
+- The width and height has no real dimension its the proportion between them that matters
+- The camera looks in the negative Z-axis direction of the frame
+- Field of view is in degree and is defined in the Y-axis
+
 RobWorkStudio & The Sensor Plugin
 =================================
 
@@ -91,6 +98,8 @@ This is for instance shown in the following scene:
 .. figure:: ../graphics/scene_collection/SensorTestScene.png
 
     SensorTestScene scene from the :ref:`scene_collection` (RobWorkData). 
+
+You can change views between cameras using Ctrl + the key [1-9], were 1 is the default view.
 
 To see the camera output, open the Sensors |sensors| plugin in RobWorkStudio.
 

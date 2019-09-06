@@ -3,14 +3,22 @@
 Compilation & Installation
 ===================================
 
+Please choose the platform you would like to install RobWork on:
+
 .. toctree::
    :glob:
-   :maxdepth: 2
-   :caption: Contents:
+   :maxdepth: 1
 
    installation/ubuntu
    installation/centos
    installation/windows
+
+Please see the CMake page for details about installation options:
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+
    installation/cmake
 
 Source Code

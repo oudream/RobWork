@@ -8,7 +8,7 @@ Introduction
 
 This guide shows the steps for building the RobWork packages on a
 Windows platform. The guide is written based on a setup with Windows 10
-and Visual Studio 2017 and the guide is last revised in April 2019. If
+and Visual Studio 2017 and the guide is last revised in September 2019. If
 you have any suggestions or additions to the guide, please post them on
 the issue tracker at https://gitlab.com/sdurobotics/RobWork/issues .
 
@@ -48,58 +48,58 @@ important documentation and installation notes under each dependency
 before installing, as some of the installations might be a little
 tricky.
 
-`¤ Build Tools`_
+`Build Tools`_
 
-- Tortoise SVN
+.. - Tortoise SVN
+
 - Git
 - TortoiseHg Mercurial
 - Microsoft Visual Studio
 - CMake
 
-`¤ RobWork Required Dependencies`_
+`RobWork Required Dependencies`_
 
 - Boost
 
-`¤ RobWork Optional Dependencies`_
+`RobWork Optional Dependencies`_
 
 - Xerces
 - SWIG
 - Google Test
 
-`¤ RobWorkStudio Dependencies`_
+`RobWorkStudio Dependencies`_
 
 - Qt
 
-`¤ RobWorkSim Dependencies`_
+`RobWorkSim Dependencies`_
 
 - Open Dynamics Engine (ODE) - Bullet Physics
 
-¤ Build Tools
--------------
+Build Tools
+-----------
 
 To be able to checkout code it is necessary to install some source code
-management (SCM) tools, such as Subversion, Git and Mercurial. To be
+management (SCM) tools, such as Git and Mercurial. To be
 able to checkout the code from our own Git repository, a Git client is
-needed. SVN and Mercurial clients are not strictly required, but
-depending on your needs it might be worthwhile to install them.
+needed. A Mercurial client is needed if you want to compile ODE for RobWorkSim.
 
-The three SCM tools can be installed in only 20 minutes, and can be
-expected to use around 360 MB in total.
+.. The three SCM tools can be installed in only 20 minutes, and can be
+   expected to use around 360 MB in total.
 
-**Tortoise SVN client:**
+   **Tortoise SVN client:**
 
-Download from https://tortoisesvn.net
+   Download from https://tortoisesvn.net
 
-Installation of the Tortoise SVN client is straightforward. Expect to
-use 45 MB on the installation. During installation we recommend that you
-also install the "command line client tools" as shown below:
+   Installation of the Tortoise SVN client is straightforward. Expect to
+   use 45 MB on the installation. During installation we recommend that you
+   also install the "command line client tools" as shown below:
 
-.. figure:: ../../gfx/installation/TortoiseSVN_addCLI.png
+   .. figure:: ../../gfx/installation/TortoiseSVN_addCLI.png
 
-    The TortoiseSVN installation options with CLI tools selected.
+       The TortoiseSVN installation options with CLI tools selected.
 
-Tortoise SVN comes with a GUI that is easy to use and is nicely
-integrated with Explorer.
+   Tortoise SVN comes with a GUI that is easy to use and is nicely
+   integrated with Explorer.
 
 **Git client:**
 
@@ -193,40 +193,30 @@ Visual Studio uses a somewhat confusing versioning scheme between the
 Visual Studio IDE and the corresponding compiler versions. The following
 table gives an overview of the version numbers for future reference:
 
-+----------------+------------------+----------------------+-----------------------+
-| Visual Studio  | Visual Studio    | Visual C++ Compiler  | Visual C/C++ Compiler |
-| Name           | Version          | Toolset              | Version               |
-+================+==================+======================+=======================+
-| Visual Studio  | 16.0             | 14.2                 | 19.20                 |
-| 2019           |                  |                      |                       |
-+----------------+------------------+----------------------+-----------------------+
-| Visual Studio  | 15.9             | 14.16                | 19.16                 |
-| 2017           |                  |                      |                       |
-+----------------+------------------+----------------------+-----------------------+
-| Visual Studio  | 15.8             | 14.15                | 19.15                 |
-| 2017           |                  |                      |                       |
-+----------------+------------------+----------------------+-----------------------+
-| Visual Studio  | 15.7             | 14.14                | 19.14                 |
-| 2017           |                  |                      |                       |
-+----------------+------------------+----------------------+-----------------------+
-| Visual Studio  | 15.6             | 14.13                | 19.13                 |
-| 2017           |                  |                      |                       |
-+----------------+------------------+----------------------+-----------------------+
-| Visual Studio  | 15.5             | 14.12                | 19.12                 |
-| 2017           |                  |                      |                       |
-+----------------+------------------+----------------------+-----------------------+
-| Visual Studio  | 15.3 & 15.4      | 14.11                | 19.11                 |
-| 2017           |                  |                      |                       |
-+----------------+------------------+----------------------+-----------------------+
-| Visual Studio  | 15.0, 15.1 &     | 14.1                 | 19.10                 |
-| 2017           | 15.2             |                      |                       |
-+----------------+------------------+----------------------+-----------------------+
-| Visual Studio  | 14.0             | 14.0                 | 19.00                 |
-| 2015           |                  |                      |                       |
-+----------------+------------------+----------------------+-----------------------+
-| Visual Studio  | 12.0             | 12.0                 | 18.00                 |
-| 2013           |                  |                      |                       |
-+----------------+------------------+----------------------+-----------------------+
++--------------------+-------------------+--------------------+--------------------+
+| Visual Studio      | Visual Studio     | | Visual C++       | | Visual C/C++     |
+| Name               | Version           | | Compiler Toolset | | Compiler Version |
++====================+===================+====================+====================+
+| Visual Studio 2019 | 16.0              | 14.20              | 19.20              |
++--------------------+-------------------+--------------------+--------------------+
+| Visual Studio 2017 | 15.9              | 14.16              | 19.16              |
++--------------------+-------------------+--------------------+--------------------+
+| Visual Studio 2017 | 15.8              | 14.15              | 19.15              |
++--------------------+-------------------+--------------------+--------------------+
+| Visual Studio 2017 | 15.7              | 14.14              | 19.14              |
++--------------------+-------------------+--------------------+--------------------+
+| Visual Studio 2017 | 15.6              | 14.13              | 19.13              |
++--------------------+-------------------+--------------------+--------------------+
+| Visual Studio 2017 | 15.5              | 14.12              | 19.12              |
++--------------------+-------------------+--------------------+--------------------+
+| Visual Studio 2017 | 15.3 & 15.4       | 14.11              | 19.11              |
++--------------------+-------------------+--------------------+--------------------+
+| Visual Studio 2017 | 15.0, 15.1 & 15.2 | 14.1               | 19.10              |
++--------------------+-------------------+--------------------+--------------------+
+| Visual Studio 2015 | 14.0              | 14.0               | 19.00              |
++--------------------+-------------------+--------------------+--------------------+
+| Visual Studio 2013 | 12.0              | 12.0               | 18.00              |
++--------------------+-------------------+--------------------+--------------------+
 
 Notice that a given version of the Visual Studio IDE can in principle be
 used to compile with different toolset/compiler versions. One can think
@@ -236,48 +226,37 @@ is just one of the tools in the toolset.
 
 **CMake** must be used to generate projects for Visual Studio. A Windows
 installer can be downloaded from the CMake homepage at https://cmake.org
-, and installation takes up 70 MB . The minimum CMake version for
-RobWork on Windows is currently 3.1. If you want to compile shared
-libraries, CMake version 3.4 or newer is needed. Choosing the latest
+, and installation takes up 70 MB . The minimum CMake version is currently 3.5.
+Choosing the latest
 version is always recommended (except the release candidates). Choosing
 older versions will mean that newer Visual Studio and Boost versions
 will not be supported. If you already have an older version of CMake
 installed, please check that it is recent enough to support your setup:
 
-+--------------+----------------------------------+----------------------------+
-| CMake        | Maximum Visual Studio Version    | Maximum Boost Version      |
-| Version      | Supported                        | Supported                  |
-+==============+==================================+============================+
-| 3.14.0-3.14. | Visual Studio 16 2019            | 1.70.0                     |
-| 1\*          |                                  |                            |
-+--------------+----------------------------------+----------------------------+
-| 3.13.0-3.13. | Visual Studio 15 2017            | 1.69.0                     |
-| 4            |                                  |                            |
-+--------------+----------------------------------+----------------------------+
-| 3.12.0-3.12. | Visual Studio 15 2017            | 1.68.0                     |
-| 4            |                                  |                            |
-+--------------+----------------------------------+----------------------------+
-| 3.11.0-3.11. | Visual Studio 15 2017            | 1.67.0                     |
-| 4            |                                  |                            |
-+--------------+----------------------------------+----------------------------+
-| 3.9.3-3.10.3 | Visual Studio 15 2017            | 1.65.1                     |
-+--------------+----------------------------------+----------------------------+
-| 3.8.0-3.9.2  | Visual Studio 15 2017            | 1.64.0                     |
-+--------------+----------------------------------+----------------------------+
-| 3.7.2        | Visual Studio 15 2017            | 1.63.0                     |
-+--------------+----------------------------------+----------------------------+
-| 3.7.0-3.7.1  | Visual Studio 15 2017            | 1.62.0                     |
-+--------------+----------------------------------+----------------------------+
-| 3.5.0-3.6.3  | Visual Studio 14 2015            | 1.61.0                     |
-+--------------+----------------------------------+----------------------------+
-| 3.4.0-3.4.3  | Visual Studio 14 2015            | 1.59.0                     |
-+--------------+----------------------------------+----------------------------+
-| 3.1.1-3.3.2  | Visual Studio 14 2015            | 1.58.0                     |
-+--------------+----------------------------------+----------------------------+
-| 3.1.0        | Visual Studio 14 2015            | 1.56.0                     |
-+--------------+----------------------------------+----------------------------+
++-----------------+-------------------------+---------------------+
+| CMake           | | Maximum Visual Studio | | Maximum Boost     |
+| Version         | | Version Supported     | | Version Supported |
++=================+=========================+=====================+
+| 3.14.0-3.15.2\* | Visual Studio 16 2019   | 1.70.0              |
++-----------------+-------------------------+---------------------+
+| 3.13.0-3.13.4   | Visual Studio 15 2017   | 1.69.0              |
++-----------------+-------------------------+---------------------+
+| 3.12.0-3.12.4   | Visual Studio 15 2017   | 1.68.0              |
++-----------------+-------------------------+---------------------+
+| 3.11.0-3.11.4   | Visual Studio 15 2017   | 1.67.0              |
++-----------------+-------------------------+---------------------+
+| 3.9.3-3.10.3    | Visual Studio 15 2017   | 1.65.1              |
++-----------------+-------------------------+---------------------+
+| 3.8.0-3.9.2     | Visual Studio 15 2017   | 1.64.0              |
++-----------------+-------------------------+---------------------+
+| 3.7.2           | Visual Studio 15 2017   | 1.63.0              |
++-----------------+-------------------------+---------------------+
+| 3.7.0-3.7.1     | Visual Studio 15 2017   | 1.62.0              |
++-----------------+-------------------------+---------------------+
+| 3.5.0-3.6.3     | Visual Studio 14 2015   | 1.61.0              |
++-----------------+-------------------------+---------------------+
 
--  Newest at time of writing.
+\* Newest at time of writing.
 
 Installation is straightforward, and we recommend that you install CMake
 to the system PATH. By installing to the system PATH, it will be
@@ -288,8 +267,8 @@ entire path to the CMake executable:
 
     CMake install, with addition to system-wide PATH environment.
 
-¤ RobWork Required Dependencies
--------------------------------
+RobWork Required Dependencies
+-----------------------------
 
 **Boost** is the most important dependency in RobWork, and it is
 recommended to always use the latest possible version of Boost. RobWork
@@ -305,34 +284,34 @@ Choose the newest Boost version that fits your CMake version, according
 to the table above. Choose the newest precompiled library version, based
 on your Visual C++ toolset version below:
 
-+---------------+-----------------------------+---------------------------------+
-| Boost Version | Maximum Visual C++ Toolset  | Maximum Visual C++ Toolset      |
-|               | (Source)                    | (Precompiled)                   |
-+===============+=============================+=================================+
-| 1.69.0        | 14.12 (VS 15.5)             | 14.1x                           |
-+---------------+-----------------------------+---------------------------------+
-| 1.68.0        | 14.12 (VS 15.5)             | 14.1x                           |
-+---------------+-----------------------------+---------------------------------+
-| 1.67.0        | 14.11 (VS 15.4)             | 14.1x                           |
-+---------------+-----------------------------+---------------------------------+
-| 1.66.0        | 14.11 (VS 15.4)             | 14.1x                           |
-+---------------+-----------------------------+---------------------------------+
-| 1.65.1        | 14.11 (VS 15.3)             | 14.1x                           |
-+---------------+-----------------------------+---------------------------------+
-| 1.64.0 -      | 14.10                       | 14.1x                           |
-| 1.65.0        |                             |                                 |
-+---------------+-----------------------------+---------------------------------+
-| 1.63.0        | 14.10                       | 14.0                            |
-+---------------+-----------------------------+---------------------------------+
-| 1.59.0 -      | 14.00                       | 14.0                            |
-| 1.62.0        |                             |                                 |
-+---------------+-----------------------------+---------------------------------+
-| 1.57.0 -      | 14.00                       | 12.0                            |
-| 1.58.0        |                             |                                 |
-+---------------+-----------------------------+---------------------------------+
-| 1.55.0 -      | 12.00                       | 12.0                            |
-| 1.56.0        |                             |                                 |
-+---------------+-----------------------------+---------------------------------+
++-----------------+----------------------+-------------------------+
+| | Boost Version | | Maximum Visual C++ | | Maximum Visual C++    |
+| |               | | Toolset (Source)   | | Toolset (Precompiled) |
++=================+======================+=========================+
+| 1.71.0          | 14.20 (VS 16.0)      | 14.2x                   |
++-----------------+----------------------+-------------------------+
+| 1.70.0          | 14.12 (VS 15.5)      | 14.1x                   |
++-----------------+----------------------+-------------------------+
+| 1.69.0          | 14.12 (VS 15.5)      | 14.1x                   |
++-----------------+----------------------+-------------------------+
+| 1.68.0          | 14.12 (VS 15.5)      | 14.1x                   |
++-----------------+----------------------+-------------------------+
+| 1.67.0          | 14.11 (VS 15.4)      | 14.1x                   |
++-----------------+----------------------+-------------------------+
+| 1.66.0          | 14.11 (VS 15.4)      | 14.1x                   |
++-----------------+----------------------+-------------------------+
+| 1.65.1          | 14.11 (VS 15.3)      | 14.1x                   |
++-----------------+----------------------+-------------------------+
+| 1.64.0 - 1.65.0 | 14.10                | 14.1x                   |
++-----------------+----------------------+-------------------------+
+| 1.63.0          | 14.10                | 14.0                    |
++-----------------+----------------------+-------------------------+
+| 1.59.0 - 1.62.0 | 14.00                | 14.0                    |
++-----------------+----------------------+-------------------------+
+| 1.57.0 - 1.58.0 | 14.00                | 12.0                    |
++-----------------+----------------------+-------------------------+
+| 1.55.0 - 1.56.0 | 12.00                | 12.0                    |
++-----------------+----------------------+-------------------------+
 
 In this table, the "Maximum Visual C++ Toolset (Source)" version is the
 maximum supported version in the Boost source. The newest Visual Studio
@@ -383,8 +362,8 @@ Here -j gives the number of threads to use for compilation. Run with
 -help, -help-options or --show-libraries to get more information about
 the various options.
 
-¤ RobWork Optional Dependencies
--------------------------------
+RobWork Optional Dependencies
+-----------------------------
 
 **Xerces** (optional) can be used some places in RobWork for opening XML
 files. It is no longer a strict requirement, as RobWork is now able to
@@ -488,8 +467,8 @@ The Google Test code should not be compiled. It will be compiled as a
 part of the RobWork compilation when the source code is present. The
 Google test repository uses up to 95 MB.
 
-¤ RobWorkStudio Dependencies
-----------------------------
+RobWorkStudio Dependencies
+--------------------------
 
 RobWorkStudio requires **Qt** to be installed. Both Qt4 and Qt5 is
 supported, but on a fresh Qt install it is encouraged to choose the
@@ -524,8 +503,8 @@ After installation you should have a folder with the following layout:
 Note down the path to the Qt folder shown above, we will need that when
 setting up the RobWorkStudio project.
 
-¤ RobWorkSim Dependencies
--------------------------
+RobWorkSim Dependencies
+-----------------------
 
 If you need to do dynamic simulations, you will probably need the
 RobWorkSim package. If you are in doubt and just need RobWorkStudio, you
@@ -606,8 +585,8 @@ A third engine exists, but requires access to code that has not yet been
 released to the public. Request more information about this if you need
 it.
 
-¤ RobWorkHardware Dependencies
-------------------------------
+RobWorkHardware Dependencies
+----------------------------
 
 RobWorkHardware compilation depends heavily on which hardware you need
 to use. It is not currently possible to give any general instructions
@@ -628,6 +607,10 @@ When all the dependencies have been installed, go ahead and download the
 newest version of RobWork from the Git repository at:
 
 https://gitlab.com/sdurobotics/RobWork
+
+.. note::
+
+   In order to access the repository, you will need to have an account at GitLab.com and follow the procedure here to gain access: http://robwork.dk/getaccess
 
 Right-click on your desktop or somewhere in explorer. Choose "Git GUI
 Here", then "Clone Existing Repository". Insert the resporitory URL as

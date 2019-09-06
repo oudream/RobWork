@@ -45,6 +45,18 @@ Copyright: 2006-2015 by the Assimp team.
    Assimp is itself dependent on other projects that might be subject to other license conditions.
    Be careful with projects under RobWork/ext/assimp/contrib .
 
+Boost
+------
+
+.. image:: graphics/logos/Boost.png
+  :width: 100
+  :target: https://www.boost.org
+  :alt: Boost
+
+`Boost <https://www.boost.org>`_ is the most important library used by RobWork.
+
+`Boost Software License <https://www.boost.org/users/license.html>`_
+
 csgjs-cpp
 ---------
 

@@ -2,6 +2,80 @@
 Kinematics
 **********
 
+The basic building blocks of a WorkCell are Frames. These are ordered in a tree-structure where the root
+node always is the **WORLD** frame. All frames has a parent which their position and orientation is relative to.
+Descending in this tree accumulating frame transformations is basically forward kinematics. The *Kinematics*
+class is a utility class for calculating forward kinematics.
+
+Forward Kinematics
+==================
+
+The examples below show how to calculate the transformation between two frames in the WorkCell.
+The final lines shows how a DAF frame can be attached to another frame. In this case the mframe is attached to the end frame of a serial device.
+
+**C++**
+
+.. literalinclude:: ../../../RobWork/example/cpp/ex-fwd-kinematics.cpp
+   :language: c++
+   :linenos:
+
+See :ref:`interfaces_cpp` for more information about compilation and execution.
+
+**Python**
+
+.. literalinclude:: ../../../RobWork/example/python/ex_fwd_kinematics.py
+   :language: python
+   :linenos:
+
+See :ref:`interfaces_python` for more information about execution.
+
+**Java**
+
+.. literalinclude:: ../../../RobWork/example/java/src/ExFwdKinematics.java
+   :language: java
+   :linenos:
+
+See :ref:`interfaces_java` for more information about compilation and execution.
+
+**LUA**
+
+.. literalinclude:: ../../../RobWork/example/lua/ex-fwd-kinematics.lua
+   :language: lua
+   :linenos:
+
+See :ref:`interfaces_lua` for more information about execution of the script.
+
+Device Kinematics
+=================
+
+The device class also define utility functions for calculating forward kinematics, at least those that relate to
+the device. Additionally the Device has functionality to compute the Device Jacobian, setting and getting
+the joint configurations and getting the joint limits.
+
+**C++**
+
+.. literalinclude:: ../../../RobWork/example/cpp/ex-fwd-kinematics-device.cpp
+   :language: c++
+   :linenos:
+
+**Python**
+
+.. literalinclude:: ../../../RobWork/example/python/ex_fwd_kinematics_device.py
+   :language: python
+   :linenos:
+
+**Java**
+
+.. literalinclude:: ../../../RobWork/example/java/src/ExFwdKinematicsDevice.java
+   :language: java
+   :linenos:
+
+**LUA**
+
+.. literalinclude:: ../../../RobWork/example/lua/ex-fwd-kinematics-device.lua
+   :language: lua
+   :linenos:
+
 Kinematics trees and states
 ===========================
 
@@ -49,15 +123,11 @@ print also the position of the frame in space:
    :language: c++
    :linenos:
 
-See :ref:`interfaces_cpp` for more information about compilation and execution.
-
 **Python**
 
 .. literalinclude:: ../../../RobWork/example/python/ex_print_kinematic_tree.py
    :language: python
    :linenos:
-
-See :ref:`interfaces_python` for more information about execution.
 
 **Java**
 
@@ -65,15 +135,11 @@ See :ref:`interfaces_python` for more information about execution.
    :language: java
    :linenos:
 
-See :ref:`interfaces_java` for more information about compilation and execution.
-
 **LUA**
 
 .. literalinclude:: ../../../RobWork/example/lua/ex-print-kinematic-tree.lua
    :language: lua
    :linenos:
-
-See :ref:`interfaces_lua` for more information about execution of the script.
 
 We see from this example that given a state, it is straight-forward to
 compute the transform of every single frame in the workcell. RobWork
