@@ -87,7 +87,7 @@ int main(int argc, char* argv[])
   rtde_control.speedStop();*/
 
   // Test servoJ
-  /*double time = 0.3;
+  double time = 0.3;
   double lookahead_time = 0.1;
   double gain = 300;
 
@@ -100,7 +100,7 @@ int main(int argc, char* argv[])
     std::this_thread::sleep_for(std::chrono::milliseconds(280));
   }
 
-  rtde_control.servoStop();*/
+  rtde_control.servoStop();
 
   // rtde_control.teachMode();
   // rtde_control.endTeachMode();
@@ -123,8 +123,6 @@ int main(int argc, char* argv[])
   // Test standard and tool digital out
   // rtde_control.setStandardDigitalOut(2, true);
   // rtde_control.setToolDigitalOut(1, true);
-
-  rtde_control.sendCustomScriptFunction("hello", "popup(\"Hello\")");
 
   rtde_control.stopRobot();
 
