@@ -172,6 +172,7 @@ public:
 private slots:
     // Increment the current time by tickInterval.
     void tick();
+    void recordImage();
 
 signals:
 	/**
@@ -181,10 +182,14 @@ signals:
     void relativePositionChanged(double val);
 
 private:
+    
+    void takeImage();
+    void initialize();
     void stopTimer();
     void startTimer();
     bool timerIsRunning();
     void runTimer();
+    void stateChangedListener(const rw::kinematics::State& newState );
 
     double getEndTime() const { return _trajectory->duration(); }
     void draw();
@@ -205,6 +210,7 @@ private:
 
     bool _record;
     int _recNo;
+    QTimer _recTimer;
     QString _recordFilename;
     QString _recordType;
 

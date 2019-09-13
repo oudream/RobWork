@@ -1173,8 +1173,8 @@ void RobWorkStudio::setState(const rw::kinematics::State& state)
 {
     _state = state;
     _view->setState(state);
-    stateChangedEvent().fire(_state);
     updateHandler();
+    stateChangedEvent().fire(_state);
 }
 
 void RobWorkStudio::postTimedStatePath(const rw::trajectory::TimedStatePath& path){

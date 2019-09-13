@@ -24,6 +24,11 @@
 #include <rw/common/macros.hpp>
 #include <rws/RobWorkStudio.hpp>
 
+#include <boost/bind.hpp>
+
+#include <thread>
+#include <chrono>
+
 using namespace rw::math;
 using namespace rw::kinematics;
 using namespace rw::models;
@@ -52,11 +57,8 @@ Player::Player(
     _interpolate(true),
     _recordingOnly(false)
 {
-    RW_ASSERT(_tickInterval > 0);
     RW_ASSERT(drawer);
-
-    // Connect the timer:
-    connect(&_timer, SIGNAL(timeout()), this, SLOT(tick()));
+    initialize();
 }
 
 Player::Player(
@@ -80,12 +82,11 @@ Player::Player(
     _interpolate(true),
     _recordingOnly(false)
 {
-    RW_ASSERT(_tickInterval > 0);
+
     RW_ASSERT(drawer);
     RW_ASSERT(path.isShared());
     RW_ASSERT(!path.isNull());
-    // Connect the timer:
-    connect(&_timer, SIGNAL(timeout()), this, SLOT(tick()));
+    initialize();
 
 
 }
@@ -109,11 +110,22 @@ Player::Player(
     _interpolate(true),
     _recordingOnly(true)
 {
-    RW_ASSERT(_tickInterval > 0);
     std::cout << "SETTING RECORDING ONLY " << std::endl;
-    // Connect the timer:
-    connect(&_timer, SIGNAL(timeout()), this, SLOT(tick()));
+    initialize();
 }
+
+
+
+
+
+void Player::initialize() 
+{
+    RW_ASSERT(_tickInterval > 0);
+    connect(&_timer, SIGNAL(timeout()), this, SLOT(tick()));
+    connect(&_recTimer, SIGNAL(timeout()), this, SLOT(recordImage()));
+    
+}
+
 void Player::setTickInterval(double interval) 
 {
     _tickInterval = interval;
@@ -122,7 +134,6 @@ void Player::setTickInterval(double interval)
         startTimer();
     }
 }
-
 
 void Player::setupRecording(const QString filename, const QString& type) 
 {
@@ -139,70 +150,71 @@ void Player::startRecording()
 
 void Player::stopRecording() 
 {
-    //std::cout << "end rec"<< std::endl;
     stopTimer();
     _record = false;
 }
 
-void Player::tick()
+void Player::takeImage()
 {
-    if(!_recordingOnly){
+    const int ms = (int)(_tickInterval * 1000 /2);
+    _recTimer.start(ms);
+}
 
-    const double end = getEndTime();
-
-    // Make sure that we do show the robot at the position at the start or end
-    // of the path.
-    bool outside = false;
-    if (_now < 0) {
-        _now = 0;
-        outside = true;
-    }
-    else if (end < _now) {
-        _now = end;
-        outside = true;
-    }
-
-    // Draw the work cell.
-    draw();
-
+void Player::recordImage() 
+{
     if (_record && _rwstudio != NULL) {
         //Create Filename
         QString number = QString::number(_recNo++);
         QString filename = _recordFilename + number + "." + _recordType;
         _rwstudio->saveViewGL(filename);
     }
+    _recTimer.stop();
+}
 
-    // If we reached the end and we are looping, then move the cursor to the
-    // start or end.
-    if (outside && _loop) {
-        if (_direction < 0)
-            _now = end;
-        else
+void Player::tick()
+{
+    if(!_recordingOnly) {
+
+        const double end = getEndTime();
+
+        // Make sure that we do show the robot at the position at the start or end
+        // of the path.
+        bool outside = false;
+        if (_now < 0) {
             _now = 0;
-    }
-
-    // If the range is empty or if we outside of the range and not looping:
-    if (end <= 0 || (outside && !_loop)) {
-        // then stop the player.
-        stopTimer();
-    }
-
-    // Otherwise,
-    else {
-        // increment the time.
-        _now +=
-            _direction *
-            _velocityScale *
-            _tickInterval;
-    }
-    } else {
-        if (_record && _rwstudio != NULL) {
-
-            //Create Filename
-            QString number = QString::number(_recNo++);
-            QString filename = _recordFilename + number + "." + _recordType;
-            _rwstudio->saveViewGL(filename);
+            outside = true;
         }
+        else if (end < _now) {
+            _now = end;
+            outside = true;
+        }
+
+        // Draw the work cell.
+        draw();    
+        takeImage();
+
+        // If we reached the end and we are looping, then move the cursor to the
+        // start or end.
+        if (outside && _loop) {
+            if (_direction < 0)
+                _now = end;
+            else
+                _now = 0;
+        }
+
+        // If the range is empty or if we outside of the range and not looping:
+        if (end <= 0 || (outside && !_loop)) {
+            // then stop the player.
+            stopTimer();
+        } else { // Otherwise,
+            // increment the time.
+            _now +=
+                _direction *
+                _velocityScale *
+                _tickInterval;
+        }
+    } else {
+        recordImage();
     }
 }
 
@@ -372,7 +384,6 @@ void Player::draw()
         }
     }
     relativePositionChanged(_now / getEndTime());
-
 }
 
 std::string Player::getInfoLabel() const
@@ -390,7 +401,8 @@ std::string Player::getInfoLabel() const
     }
 }
 
-int Player::getPlayDirection(){
+int Player::getPlayDirection()
+{
     return _direction;
 }
 
