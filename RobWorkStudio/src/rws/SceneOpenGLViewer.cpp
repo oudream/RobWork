@@ -585,7 +585,6 @@ void SceneOpenGLViewer::resizeGL(int width, int height)
 {
     _width = width;
     _height = height;
-    rw::common::Log::infoLog() << "window resize()\n";
     for(SceneCamera::Ptr cam : _currentView->_camGroup->getCameras()) {
         cam->setViewport(0,0,_width,_height);
     }
