@@ -465,6 +465,12 @@ void RobWorkStudio::setupPluginsMenu()
     _toolMenu->addAction(printCollisionsAction);*/
 }
 
+void RobWorkStudio::loadPlugin(std::string pluginFile, bool visible, int dock)
+{
+    if (boost::filesystem::exists(pluginFile)) {
+        setupPlugin(pluginFile.c_str(),visible,dock);
+    }
+}
 void RobWorkStudio::loadPlugin()
 {
 	QString selectedFilter;
@@ -476,7 +482,7 @@ void RobWorkStudio::loadPlugin()
         this,
         "Open plugin file", // Title
         dir, // Directory
-        "Plugin libraries ( *.so *.dll *.dylib )"
+        "Plugin libraries ( *.so *.dll *.dylib *.so.*)"
         "\n All ( *.* )",
         &selectedFilter);
         
@@ -485,7 +491,7 @@ void RobWorkStudio::loadPlugin()
 		QString pathname = pluginInfo.absolutePath();
 		QString filename = pluginInfo.baseName();
 
-		setupPlugin(pathname, filename, 0, 1);
+		setupPlugin(pluginfilename, 0, 1);
 	}
 }
 
@@ -659,7 +665,6 @@ void RobWorkStudio::loadSettingsSetupPlugins(const std::string& file)
 
 void RobWorkStudio::setupPlugin(const QString& pathname, const QString& filename, bool visible, int dock)
 {
-	Qt::DockWidgetArea dockarea = (Qt::DockWidgetArea)dock;
 
 	QString pfilename = pathname+ "/" + filename + "." + OS::getDLLExtension().c_str();
 	bool e1 = boost::filesystem::exists( pfilename.toStdString() );
@@ -679,8 +684,12 @@ void RobWorkStudio::setupPlugin(const QString& pathname, const QString& filename
 		pfilename = pathname+ "/" + filename + ".dylib";
 		e1 = boost::filesystem::exists( pfilename.toStdString() );
 	}
+    setupPlugin(pfilename, visible, dock);
+}
+void RobWorkStudio::setupPlugin(const QString& fullname, bool visible, int dock) {
+    Qt::DockWidgetArea dockarea = (Qt::DockWidgetArea)dock;
+	QPluginLoader loader(fullname);
 
-	QPluginLoader loader(pfilename);
     #if QT_VERSION >= 0x040400
         // Needed to make dynamicly loaded libraries use dynamic
         // cast on each others objects. ONLY on linux though.
@@ -692,7 +701,7 @@ void RobWorkStudio::setupPlugin(const QString& pathname, const QString& filename
 	if (pluginObject != NULL) {
 		RobWorkStudioPlugin* testP = dynamic_cast<RobWorkStudioPlugin*>(pluginObject);
 		if (testP == NULL) {
-			RW_THROW("Loaded plugin is NULL, tried loading \"" << pfilename.toStdString() << "\"" );
+			RW_THROW("Loaded plugin is NULL, tried loading \"" << fullname.toStdString() << "\"" );
 		}
 
 		RobWorkStudioPlugin* plugin = qobject_cast<RobWorkStudioPlugin*>(pluginObject);
@@ -700,19 +709,19 @@ void RobWorkStudio::setupPlugin(const QString& pathname, const QString& filename
 		if (plugin) {
 			addPlugin(plugin, visible, dockarea);
 		} else {
-			RW_WARN("Unable to load Plugin"<<pfilename.toStdString() <<" was not of type RobWorkStudioPlugin");
+			RW_WARN("Unable to load Plugin"<<fullname.toStdString() <<" was not of type RobWorkStudioPlugin");
 			QMessageBox::information(
 				this,
 				"Unable to load Plugin",
-				pfilename + " was not of type RobWorkStudioPlugin",
+				fullname + " was not of type RobWorkStudioPlugin",
 				QMessageBox::Ok);
 		}
 	} else {
-		RW_WARN("Unable to load Plugin"<< pfilename.toStdString() << " was not loaded: \"" << loader.errorString().toStdString() + "\"");
+		RW_WARN("Unable to load Plugin"<< fullname.toStdString() << " was not loaded: \"" << loader.errorString().toStdString() + "\"");
 		QMessageBox::information(
 			this,
 			"Unable to load Plugin",
-			pfilename + " was not loaded: \"" + loader.errorString() + "\"",
+			fullname + " was not loaded: \"" + loader.errorString() + "\"",
 			QMessageBox::Ok);
 	}
 }
