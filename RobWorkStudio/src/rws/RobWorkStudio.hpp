@@ -592,6 +592,14 @@ namespace rws {
         void loadSettingsSetupPlugins(const std::string& file);
 
 		/**
+		 *  @breif Load a plugin file
+		 *  @param pluginFile [in] The absolute path to the shared library file contaning the object
+		 * 	@param visible [in] Sets wether the plugin is UI is opened upon load
+		 *  @patam dock [in] The area where the uis will be placed
+		 */
+		void loadPlugin(std::string pluginFile, bool visible=false, int dock=1);
+
+		/**
          * @brief Load Workcell into RobWork Studio based on settings file
          * @param file [in] the filename.
 		 * @return workcell file path
@@ -662,6 +670,7 @@ namespace rws {
 		void createPlugins();
 
 		void setupPlugin(const QString& pathname, const QString& filename, bool visible, int dock);
+		void setupPlugin(const QString& fullname, bool visible, int dock);
 		void setupPlugins(QSettings& settings);
 
 		void openDrawable(const QString& filename);
