@@ -476,7 +476,7 @@ void RobWorkStudio::loadPlugin()
         this,
         "Open plugin file", // Title
         dir, // Directory
-        "Plugin libraries ( *.so *.dll *.dylib )"
+        "Plugin libraries ( *.so *.dll *.dylib *.so.*)"
         "\n All ( *.* )",
         &selectedFilter);
         
