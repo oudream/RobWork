@@ -193,6 +193,7 @@ private:
 
     double getEndTime() const { return _trajectory->duration(); }
     void draw();
+    unsigned int calcLeadingZeros();
 
 public:
     //! @brief The interpolated trajectory.
@@ -213,7 +214,7 @@ private:
     QTimer _recTimer;
     QString _recordFilename;
     QString _recordType;
-    int _rec_number_of_digits;
+    unsigned int _rec_number_of_digits;
 
     double _now; // The current time.
     int _direction; // The sign of direction of traversal. +1 or -1.

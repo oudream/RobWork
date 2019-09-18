@@ -135,6 +135,13 @@ void Player::setTickInterval(double interval)
     }
 }
 
+unsigned int Player::calcLeadingZeros()
+{
+    double number_of_frames = getEndTime()/_tickInterval;
+    number_of_frames /= _velocityScale;
+    return static_cast<unsigned int>(std::ceil(std::log10(number_of_frames)));
+}
+
 void Player::setupRecording(const QString filename, const QString& type) 
 {
     _recordFilename = filename;
@@ -143,6 +150,7 @@ void Player::setupRecording(const QString filename, const QString& type)
 
 void Player::startRecording() 
 {
+    _rec_number_of_digits = calcLeadingZeros();
     _record = true;
     _recNo = 0;
     startTimer();
@@ -157,7 +165,6 @@ void Player::stopRecording()
 void Player::takeImage()
 {
     const int ms = (int)(_tickInterval * 1000 /2);
-
     _recTimer.start(ms);
 }
 
@@ -176,16 +183,7 @@ void Player::recordImage()
 
 void Player::tick()
 {
-
     const double end = getEndTime();
-
-    // This block could probably be moved somewhere else, it doesn't really need to run at each tick?
-    double number_of_frames = end/_tickInterval;
-    // scale number of frames by playback speed (playing back at 10% should yield 10x frames
-    number_of_frames /= _velocityScale;
-    // calculate how many digits should be used in output img filenames for current path
-    // should return 1 for number_of_frames <= 10, 2 for number_of_frames <= 100 etc.
-    _rec_number_of_digits = static_cast<int>(std::ceil(std::log10(number_of_frames)));
 
     if(!_recordingOnly) {
 
@@ -417,6 +415,8 @@ int Player::getPlayDirection()
 {
     return _direction;
 }
+
+
 
 // Constructors.
 Player::Ptr Player::makeEmptyPlayer()
