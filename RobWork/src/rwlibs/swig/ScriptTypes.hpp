@@ -64,8 +64,15 @@
 #include <rwlibs/pathoptimization/pathlength/PathLengthOptimizer.hpp>
 #include <rwlibs/pathoptimization/clearance/ClearanceOptimizer.hpp>
 #include <rwlibs/proximitystrategies/ProximityStrategyFactory.hpp>
+#include <rwlibs/simulation/FrameGrabber.hpp>
+#include <rwlibs/simulation/FrameGrabber25D.hpp>
+#include <rwlibs/simulation/GLFrameGrabber.hpp>
+#include <rwlibs/simulation/GLFrameGrabber25D.hpp>
+#include <rwlibs/simulation/SimulatedCamera.hpp>
 #include <rwlibs/simulation/SimulatedController.hpp>
 #include <rwlibs/simulation/SimulatedSensor.hpp>
+#include <rwlibs/simulation/SimulatedScanner2D.hpp>
+#include <rwlibs/simulation/SimulatedScanner25D.hpp>
 #include <rwlibs/task/Task.hpp>
 #include <rwlibs/task/GraspTask.hpp>
 #include <rwlibs/task/GraspTarget.hpp>
@@ -218,6 +225,10 @@ namespace swig {
 	///@{
 	//! @copydoc rw::kinematics::StateData
 	typedef rw::kinematics::StateData StateData;
+    //! @copydoc rw::kinematics::FKRange
+    typedef rw::kinematics::FKRange FKRange;
+    //! @copydoc rw::kinematics::FKTable
+    typedef rw::kinematics::FKTable FKTable;
 	//! @copydoc rw::kinematics::Frame
 	typedef rw::kinematics::Frame Frame;
 	//! @copydoc rw::kinematics::MovableFrame
@@ -228,6 +239,8 @@ namespace swig {
 	typedef rw::kinematics::State State;
 	//! @copydoc rw::kinematics::StateStructure
 	typedef rw::kinematics::StateStructure StateStructure;
+    //! @copydoc rw::kinematics::Kinematics
+    typedef rw::kinematics::Kinematics Kinematics;
 	///@}
 
 	/**
@@ -268,8 +281,12 @@ namespace swig {
 	typedef rw::math::Vector3D<float> Vector3f;
 	//! @copydoc rw::math::Rotation3D
 	typedef rw::math::Rotation3D<double> Rotation3d;
-	//! @copydoc rw::math::Rotation3D
-	typedef rw::math::Rotation3D<float> Rotation3f;
+    //! @copydoc rw::math::Rotation3D
+    typedef rw::math::Rotation3D<float> Rotation3f;
+    //! @copydoc rw::math::Rotation3DVector
+    typedef rw::math::Rotation3DVector<double> Rotation3DVectord;
+    //! @copydoc rw::math::Rotation3DVector
+    typedef rw::math::Rotation3DVector<float> Rotation3DVectorf;
 	//! @copydoc rw::math::EAA
 	typedef rw::math::EAA<double> EAAd;
 	//! @copydoc rw::math::EAA
@@ -300,8 +317,10 @@ namespace swig {
 	typedef rw::math::Wrench6D<float> Wrench6f;
 	//! @copydoc rw::math::InertiaMatrix
 	typedef rw::math::InertiaMatrix<double> InertiaMatrixd;
-	//! @copydoc rw::math::InertiaMatrix
-	typedef rw::math::InertiaMatrix<float> InertiaMatrixf;
+    //! @copydoc rw::math::InertiaMatrix
+    typedef rw::math::InertiaMatrix<float> InertiaMatrixf;
+    //! @copydoc rw::math::ProjectionMatrix
+    typedef rw::math::ProjectionMatrix ProjectionMatrix;
 	//! @copydoc rw::math::Q
 	typedef rw::math::Q Q;
 	//! @copydoc rw::math::Jacobian
@@ -412,10 +431,26 @@ namespace swig {
 	 * Wrapped classes in sensor.
 	 */
 	///@{
+    //! @copydoc rw::sensor::Camera
+    typedef rw::sensor::Camera Camera;
+    //! @copydoc rw::sensor::CameraModel
+    typedef rw::sensor::CameraModel CameraModel;
 	//! @copydoc rw::sensor::Image
 	typedef rw::sensor::Image Image;
-	//! @copydoc rw::sensor::Sensor
+    //! @copydoc rw::sensor::Sensor
     typedef rw::sensor::Sensor Sensor;
+    //! @copydoc rw::sensor::SensorModel
+    typedef rw::sensor::SensorModel SensorModel;
+    //! @copydoc rw::sensor::Scanner
+    typedef rw::sensor::Scanner Scanner;
+    //! @copydoc rw::sensor::Scanner2D
+    typedef rw::sensor::Scanner2D Scanner2D;
+    //! @copydoc rw::sensor::Scanner2DModel
+    typedef rw::sensor::Scanner2DModel Scanner2DModel;
+    //! @copydoc rw::sensor::Scanner25D
+    typedef rw::sensor::Scanner25D Scanner25D;
+    //! @copydoc rw::sensor::Scanner25DModel
+    typedef rw::sensor::Scanner25DModel Scanner25DModel;
 	///@}
 
 	/**
@@ -581,10 +616,24 @@ namespace swig {
 	 * Wrapped classes in simulation.
 	 */
 	///@{
+    //! @copydoc rwlibs::simulation::FrameGrabber
+    typedef rwlibs::simulation::FrameGrabber FrameGrabber;
+    //! @copydoc rwlibs::simulation::FrameGrabber25D
+    typedef rwlibs::simulation::FrameGrabber25D FrameGrabber25D;
+    //! @copydoc rwlibs::simulation::GLFrameGrabber
+    typedef rwlibs::simulation::GLFrameGrabber GLFrameGrabber;
+    //! @copydoc rwlibs::simulation::GLFrameGrabber25D
+    typedef rwlibs::simulation::GLFrameGrabber25D GLFrameGrabber25D;
+    //! @copydoc rwlibs::simulation::SimulatedCamera
+    typedef rwlibs::simulation::SimulatedCamera SimulatedCamera;
 	//! @copydoc rwlibs::simulation::SimulatedController
 	typedef rwlibs::simulation::SimulatedController SimulatedController;
 	//! @copydoc rwlibs::simulation::SimulatedSensor
 	typedef rwlibs::simulation::SimulatedSensor SimulatedSensor;
+    //! @copydoc rwlibs::simulation::SimulatedScanner2D
+    typedef rwlibs::simulation::SimulatedScanner2D SimulatedScanner2D;
+    //! @copydoc rwlibs::simulation::SimulatedScanner25D
+    typedef rwlibs::simulation::SimulatedScanner25D SimulatedScanner25D;
 	//! @copydoc rwlibs::simulation::Simulator
 	typedef rwlibs::simulation::Simulator Simulator;
 	//! @copydoc rwlibs::simulation::Simulator::UpdateInfo

@@ -19,7 +19,6 @@ SET(SrcFiles WorkcellEditorWindow.cpp
         InputFormDialog.cpp
         SetColorButton.cpp
         FileDialogButton.cpp
-        GeometryComboBox.cpp
         )
 SET(SRC_FILES_HPP WorkcellEditorWindow.hpp
         WorkcellHighlighter.hpp
@@ -28,7 +27,6 @@ SET(SRC_FILES_HPP WorkcellEditorWindow.hpp
         InputFormDialog.hpp
         SetColorButton.hpp
         FileDialogButton.hpp
-        GeometryComboBox.hpp
         )
 
 set_source_files_properties(${SrcFiles} PROPERTIES OBJECT_DEPENDS "${UIS_OUT_H}")

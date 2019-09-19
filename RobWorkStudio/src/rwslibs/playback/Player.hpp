@@ -172,6 +172,7 @@ public:
 private slots:
     // Increment the current time by tickInterval.
     void tick();
+    void recordImage();
 
 signals:
 	/**
@@ -181,13 +182,18 @@ signals:
     void relativePositionChanged(double val);
 
 private:
+    
+    void takeImage();
+    void initialize();
     void stopTimer();
     void startTimer();
     bool timerIsRunning();
     void runTimer();
+    void stateChangedListener(const rw::kinematics::State& newState );
 
     double getEndTime() const { return _trajectory->duration(); }
     void draw();
+    unsigned int calcLeadingZeros();
 
 public:
     //! @brief The interpolated trajectory.
@@ -205,8 +211,10 @@ private:
 
     bool _record;
     int _recNo;
+    QTimer _recTimer;
     QString _recordFilename;
     QString _recordType;
+    unsigned int _rec_number_of_digits;
 
     double _now; // The current time.
     int _direction; // The sign of direction of traversal. +1 or -1.
@@ -218,6 +226,8 @@ private:
     bool _loop;
 
     bool _interpolate;
+
+
 public:
     //! @brief Indicates whether a trajectory is loaded, or the Player is in recording-only mode.
     bool _recordingOnly;

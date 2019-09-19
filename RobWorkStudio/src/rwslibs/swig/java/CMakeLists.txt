@@ -21,7 +21,6 @@ else()
 endif()
  
 RW_SUBSYS_OPTION( build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} ${REASON})
-RW_SUBSYS_DEPEND( build ${SUBSYS_NAME} DEPS ${SUBSYS_DEPS} )
 RW_ADD_DOC( ${SUBSYS_NAME} )
 
 IF( build )
@@ -68,6 +67,14 @@ IF( build )
     ELSE()
         ADD_DEPENDENCIES(rws_jni CleanDepRWS)
     ENDIF()
+
+    # Make sure dependencies are build before system
+    FOREACH(DEP IN LISTS SUBSYS_DEPS)
+        IF(TARGET ${DEP})
+            ADD_DEPENDENCIES(rws_jni ${DEP})
+        ENDIF()
+    ENDFOREACH()
+
     # Compile java code and create JAR and Javadoc
 	ADD_CUSTOM_COMMAND(TARGET rws_jni
 		POST_BUILD

@@ -1,3 +1,5 @@
+.. _api_python:
+
 ********************
 Python API Reference
 ********************
@@ -11,6 +13,7 @@ Python API Reference
    rw_pathoptimization.rst
    rw_pathplanners.rst
    rw_proximitystrategies.rst
+   rw_simulation.rst
    rw_task.rst
    rws.rst
    rwsim.rst

@@ -1660,6 +1660,9 @@
 /RobWork/src/rwlibs/swig/Makefile
 /RobWork/src/rwlibs/swig/rw.py
 
+# /RobWork/src/rwlibs/swig/
+/RobWork/src/rwlibs/swig/lua/Lua_*.hpp
+
 # /RobWork/src/rwlibs/task/
 /RobWork/src/rwlibs/task/cmake_install.cmake
 /RobWork/src/rwlibs/task/CMakeCache.txt

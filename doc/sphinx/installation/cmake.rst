@@ -6,4 +6,6 @@ RobWork has many dependencies, of which many are optional. It is important to en
 Here we will give an introduction to the CMake system and the most relevant options.
 We will also provide some information about how to control where CMake searches for the dependencies.
 
-*THIS PAGE IS STILL BEING WRITTEN*
+.. warning::
+
+   This page is still being written.

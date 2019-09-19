@@ -30,4 +30,4 @@ private slots:
     void stateChangedListener(const rw::kinematics::State& state);
 };
 
-#endif /*RINGONHOOKPLUGIN_HPP_*/
+#endif /*SAMPLEPLUGIN_HPP*/

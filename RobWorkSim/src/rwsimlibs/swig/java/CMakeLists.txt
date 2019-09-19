@@ -21,7 +21,6 @@ else()
 endif()
  
 RW_SUBSYS_OPTION( build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} ${REASON})
-RW_SUBSYS_DEPEND( build ${SUBSYS_NAME} DEPS ${SUBSYS_DEPS} )
 RW_ADD_DOC( ${SUBSYS_NAME} )
 
 IF( build )
@@ -64,10 +63,18 @@ IF( build )
     ELSE()
         ADD_DEPENDENCIES(rwsim_jni CleanDepRWSIM)
     ENDIF()
+
+    # Make sure dependencies are build before system
+    FOREACH(DEP IN LISTS SUBSYS_DEPS)
+        IF(TARGET ${DEP})
+            ADD_DEPENDENCIES(rwsim_jni ${DEP})
+        ENDIF()
+    ENDFOREACH()
+
     if (WIN32)
-        set(CLASSPATH -classpath "${RW_LIBS}/rw_java.jar\;${RW_LIBS}/rw_task_java.jar\;${RW_LIBS}/rw_assembly_java.jar\;${RW_LIBS}/rw_control_java.jar")
+        set(CLASSPATH -classpath "${RW_LIBS}/rw_java.jar\;${RW_LIBS}/rw_task_java.jar\;${RW_LIBS}/rw_assembly_java.jar\;${RW_LIBS}/rw_control_java.jar\;${RW_LIBS}/rw_simulation_java.jar")
     else()
-        set(CLASSPATH -classpath ${RW_LIBS}/rw_java.jar:${RW_LIBS}/rw_task_java.jar:${RW_LIBS}/rw_assembly_java.jar:${RW_LIBS}/rw_control_java.jar)
+        set(CLASSPATH -classpath ${RW_LIBS}/rw_java.jar:${RW_LIBS}/rw_task_java.jar:${RW_LIBS}/rw_assembly_java.jar:${RW_LIBS}/rw_control_java.jar:${RW_LIBS}/rw_simulation_java.jar)
     endif()
     # Compile java code and create JAR and Javadoc
     ADD_CUSTOM_COMMAND(TARGET rwsim_jni

@@ -29,7 +29,12 @@ ENDIF()
 # The shared library to build:
 ADD_LIBRARY(RWSimulatorPlugin MODULE ${SrcFiles} ${MocSrcFiles}  ${RccSrcFiles})
 TARGET_LINK_LIBRARIES(RWSimulatorPlugin ${ROBWORKSIM_LIBRARIES} ${ROBWORKSTUDIO_LIBRARIES})
-
+# Make sure dependencies are build before system
+FOREACH(DEP IN LISTS ROBWORKSIM_LIBRARIES ROBWORKSTUDIO_LIBRARIES)
+IF(TARGET ${DEP})
+	ADD_DEPENDENCIES(RWSimulatorPlugin ${DEP})
+ENDIF()
+ENDFOREACH()
 
 
 ################################################################

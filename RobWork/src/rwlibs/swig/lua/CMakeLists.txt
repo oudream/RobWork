@@ -15,7 +15,6 @@ else()
 endif()
  
 RW_SUBSYS_OPTION( build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} ${REASON})
-RW_SUBSYS_DEPEND( build ${SUBSYS_NAME} DEPS ${SUBSYS_DEPS} )
 RW_ADD_DOC( ${SUBSYS_NAME} )
 
 IF( build )
@@ -27,14 +26,19 @@ IF( build )
 
     add_custom_target(${SUBSYS_NAME}_all)
 
-    foreach(RW_MODULE rw rw_assembly rw_control rw_pathoptimization rw_pathplanners rw_proximitystrategies rw_task)
+    foreach(RW_MODULE rw rw_assembly rw_control rw_pathoptimization rw_pathplanners rw_proximitystrategies rw_simulation rw_task)
+		configure_file(Lua.hpp.in ${CMAKE_CURRENT_SOURCE_DIR}/Lua_${RW_MODULE}.hpp @ONLY)
+		configure_file(Lua.cpp.in Lua_${RW_MODULE}.cpp @ONLY)
+		configure_file(LuaPlugin.cpp.in LuaPlugin_${RW_MODULE}.cpp @ONLY)
+
 		SET_SOURCE_FILES_PROPERTIES(../${RW_MODULE}.i PROPERTIES CPLUSPLUS ON)
 		SET_SOURCE_FILES_PROPERTIES(../${RW_MODULE}.i PROPERTIES SWIG_FLAGS "-includeall")
 		
 	    set(SOURCE)
 	    if ("${RW_MODULE}" STREQUAL "rw")
-	        set(SOURCE ../ScriptTypes.cpp Lua.cpp LuaState.cpp)
+	        set(SOURCE ../ScriptTypes.cpp LuaState.cpp)
 	    endif()
+	    set(SOURCE ${SOURCE} Lua_${RW_MODULE}.cpp)
 
 		# lua interface generation
 		IF ((CMAKE_VERSION VERSION_GREATER 3.8) OR (CMAKE_VERSION VERSION_EQUAL 3.8))
@@ -42,6 +46,7 @@ IF( build )
 		ELSE()
 			SWIG_ADD_MODULE(${RW_MODULE}_lua lua ../${RW_MODULE}.i ${SOURCE})
 		ENDIF()
+        target_include_directories(${RW_MODULE}_lua PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
         add_dependencies(${SUBSYS_NAME}_all ${RW_MODULE}_lua)
 
 	    IF((CMAKE_COMPILER_IS_GNUCC) OR (CMAKE_C_COMPILER_ID STREQUAL "Clang"))
@@ -51,9 +56,10 @@ IF( build )
 	    IF ((CMAKE_VERSION VERSION_GREATER 3.12.0) OR (CMAKE_VERSION VERSION_EQUAL 3.12.0))
 	        SWIG_ADD_LIBRARY(${RW_MODULE}_lua_s TYPE STATIC LANGUAGE lua SOURCES ../${RW_MODULE}.i ${SOURCE})
 	    ELSE()
-	        ADD_LIBRARY(${RW_MODULE}_lua_s STATIC Lua.cpp LuaState.cpp ${swig_generated_sources} ${swig_other_sources})
+	        ADD_LIBRARY(${RW_MODULE}_lua_s STATIC ${SOURCE} ${swig_generated_sources} ${swig_other_sources})
 	        ADD_DEPENDENCIES(${RW_MODULE}_lua_s rw_lua) # avoid using the source files before they have been generated
 	    ENDIF()
+        target_include_directories(${RW_MODULE}_lua_s PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
         add_dependencies(${SUBSYS_NAME}_all ${RW_MODULE}_lua_s)
 
 		# this is used to indicate static linking to Visual Studio or mingw
@@ -62,7 +68,18 @@ IF( build )
 		ELSE()
 		    SET_TARGET_PROPERTIES(${RW_MODULE}_lua_s PROPERTIES COMPILE_FLAGS "-DSTATIC_LINKED")
 		ENDIF()
-	
+
+        # Add rwplugin
+        if (NOT "${RW_MODULE}" STREQUAL "rw")
+	        add_library(${RW_MODULE}_lua_plugin.rwplugin MODULE LuaPlugin_${RW_MODULE}.cpp)
+	        target_link_libraries(${RW_MODULE}_lua_plugin.rwplugin ${RW_MODULE}_lua_s)
+	        target_include_directories(${RW_MODULE}_lua_plugin.rwplugin PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+	        if((CMAKE_COMPILER_IS_GNUCC) OR (CMAKE_C_COMPILER_ID STREQUAL "Clang"))
+	            set_target_properties(${RW_MODULE}_lua_plugin.rwplugin PROPERTIES LINK_FLAGS -Wl,--no-undefined)
+	        endif()
+	        add_dependencies(${SUBSYS_NAME}_all ${RW_MODULE}_lua_plugin.rwplugin)
+        endif()
+
 	    install(TARGETS ${RW_MODULE}_lua ${RW_MODULE}_lua_s 
 	        RUNTIME DESTINATION ${BIN_INSTALL_DIR} COMPONENT swig
 	        LIBRARY DESTINATION ${LIB_INSTALL_DIR} COMPONENT swig
@@ -75,12 +92,16 @@ IF( build )
     SWIG_LINK_LIBRARIES(rw_pathoptimization_lua rw_pathoptimization rw ${LUA_LIBRARIES})
     SWIG_LINK_LIBRARIES(rw_pathplanners_lua rw_pathplanners rw ${LUA_LIBRARIES})
     SWIG_LINK_LIBRARIES(rw_proximitystrategies_lua rw_proximitystrategies rw ${LUA_LIBRARIES})
+    SWIG_LINK_LIBRARIES(rw_simulation_lua rw_simulation rw ${LUA_LIBRARIES})
     SWIG_LINK_LIBRARIES(rw_task_lua rw_task rw ${LUA_LIBRARIES})
-    TARGET_LINK_LIBRARIES(rw_lua_s rw)
+    target_include_directories(rw_lua PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
+    TARGET_LINK_LIBRARIES(rw_lua_s rw ${LUA_LIBRARIES})
     TARGET_LINK_LIBRARIES(rw_assembly_lua_s rw_assembly rw_lua_s)
     TARGET_LINK_LIBRARIES(rw_control_lua_s rw_control rw_lua_s)
     TARGET_LINK_LIBRARIES(rw_pathoptimization_lua_s rw_pathoptimization rw_lua_s)
     TARGET_LINK_LIBRARIES(rw_pathplanners_lua_s rw_pathplanners rw_lua_s)
     TARGET_LINK_LIBRARIES(rw_proximitystrategies_lua_s rw_proximitystrategies rw_lua_s)
+    TARGET_LINK_LIBRARIES(rw_simulation_lua_s rw_simulation rw_lua_s)
     TARGET_LINK_LIBRARIES(rw_task_lua_s rw_task rw_lua_s)
+    target_include_directories(rw_lua_s PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
 ENDIF()

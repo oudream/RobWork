@@ -52,6 +52,8 @@
 #endif
 #endif
 
+#include <boost/filesystem.hpp>
+
 using namespace rw;
 using namespace rw::common;
 using namespace rws;
@@ -141,6 +143,43 @@ int main(int argc, char** argv)
                     splash->showMessage("Loading static plugins");
                 }
                 rwstudio.loadSettingsSetupPlugins( inifile );
+                
+                if (boost::filesystem::exists("/usr/lib/")) {
+                    boost::filesystem::path p("/usr/lib");
+                    std::string rwspluginFolder = "";
+
+                    //Find the architecture dependendt folder containing the rwsplugins folder
+                    for (boost::filesystem::directory_iterator i(p); i != boost::filesystem::directory_iterator(); i++) {
+                        if (boost::filesystem::is_directory(i->path())){
+                            for ( boost::filesystem::directory_iterator k(i->path()); k !=  boost::filesystem::directory_iterator(); k++) {
+                                if (boost::filesystem::is_directory(k->path()) && k->path().filename().string() == "RobWork") {
+                                    rwspluginFolder="/usr/lib/";
+                                    rwspluginFolder+=i->path().filename().string();
+                                    rwspluginFolder+="/RobWork/rwsplugins";
+                                    if ( ! boost::filesystem::exists(rwspluginFolder) ) {
+                                        rwspluginFolder="";
+                                    }
+                                }
+                                if ( rwspluginFolder != "" ) {
+                                    break;
+                                }
+                            }
+                            if ( rwspluginFolder != "" ) {
+                                break;
+                            }
+                        }
+                    }
+
+                    // Load all plugins from the rwsplugins folder
+                    if ( boost::filesystem::exists(rwspluginFolder) ) {
+                        boost::filesystem::path p2(rwspluginFolder);
+                        for (boost::filesystem::directory_iterator i(p2); i != boost::filesystem::directory_iterator(); i++) {
+                            std::string plPath = rwspluginFolder + "/" + i->path().filename().string();
+                            rwstudio.loadPlugin(plPath.c_str(),0,1);
+                        }
+                    }
+                }
+                
                 if (inputfile.empty()) {
 
                     std::string workcellFile = rwstudio.loadSettingsWorkcell(inifile);

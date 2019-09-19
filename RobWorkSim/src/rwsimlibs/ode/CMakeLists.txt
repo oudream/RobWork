@@ -58,7 +58,14 @@ IF (RWSIM_HAVE_ODE)
     ADD_LIBRARY(ode_plugin.rwplugin MODULE ODEPlugin.cpp ODEPlugin.hpp)
     TARGET_LINK_LIBRARIES(ode_plugin.rwplugin rwsim_ode ${ROBWORKSIM_LIBRARIES})
     #INSTALL(TARGETS rwsim_ode DESTINATION ${RWSIM_LIB_INSTALL_DIR})
-    #INSTALL(FILES ${SRC_FILES_HPP} DESTINATION include/rwlibs/simulation)
+	#INSTALL(FILES ${SRC_FILES_HPP} DESTINATION include/rwlibs/simulation)
+	
+	# Make sure dependencies are build before system
+    FOREACH(DEP IN LISTS ROBWORKSIM_LIBRARIES)
+        IF(TARGET ${DEP})
+            ADD_DEPENDENCIES(ode_plugin.rwplugin ${DEP})
+        ENDIF()
+    ENDFOREACH()
 
 	IF(NOT ODE_WITH_THREADING_IMPL) # version below 0.13
 		IF( ${ODE_BUILD_WITH} STREQUAL "DOUBLE" )

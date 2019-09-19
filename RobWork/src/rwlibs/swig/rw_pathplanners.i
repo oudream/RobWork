@@ -336,6 +336,7 @@ public:
      * @brief Sets up the collision checking strategy
      *
      * Note: Do not call this after the buildRoadmap as it may result in paths with collisions
+     *
      * @param collisionCheckingStrategy [in] The collision checking strategy
      */
     void setCollisionCheckingStrategy(CollisionCheckingStrategy collisionCheckingStrategy);

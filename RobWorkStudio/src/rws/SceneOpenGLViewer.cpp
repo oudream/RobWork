@@ -29,9 +29,10 @@
 #include "ArcBallController.hpp"
 
 #include <QMouseEvent>
+#include <QThread>
+#include <QCoreApplication>
 
 #include <boost/bind.hpp>
-#include <boost/foreach.hpp>
 
 using namespace rw::kinematics;
 using namespace rw::graphics;
@@ -387,7 +388,20 @@ void SceneOpenGLViewer::clear()
     // reset everything
 }
 
-void SceneOpenGLViewer::renderView(View::Ptr view){
+void SceneOpenGLViewer::renderView(View::Ptr view)
+{
+    const bool isGuiThread =
+            QThread::currentThread() == QCoreApplication::instance()->thread();
+    if (isGuiThread) {
+        renderViewThreadSafe(view);
+    } else {
+        qRegisterMetaType<View::Ptr>("View::Ptr");
+        QMetaObject::invokeMethod(this,"renderViewThreadSafe",Qt::BlockingQueuedConnection,Q_ARG(View::Ptr, view));
+    }
+}
+
+void SceneOpenGLViewer::renderViewThreadSafe(View::Ptr view)
+{
     //boost::mutex::scoped_lock lock(_renderMutex);
     makeCurrent();
 
@@ -402,7 +416,6 @@ void SceneOpenGLViewer::renderView(View::Ptr view){
     	if (!error.empty())
     		RW_WARN("OpenGL error detected:" << error);
     }
-
 }
 
 void SceneOpenGLViewer::glDraw(){
@@ -572,8 +585,7 @@ void SceneOpenGLViewer::resizeGL(int width, int height)
 {
     _width = width;
     _height = height;
-    rw::common::Log::infoLog() << "window resize()\n";
-    BOOST_FOREACH(SceneCamera::Ptr cam, _currentView->_camGroup->getCameras()){
+    for(SceneCamera::Ptr cam : _currentView->_camGroup->getCameras()) {
         cam->setViewport(0,0,_width,_height);
     }
 
@@ -584,7 +596,7 @@ void SceneOpenGLViewer::resizeGL(int width, int height)
 void SceneOpenGLViewer::selectView(View::Ptr view)
 {
     _currentView = view;
-    BOOST_FOREACH(SceneCamera::Ptr cam, _currentView->_camGroup->getCameras()){
+    for(SceneCamera::Ptr cam : _currentView->_camGroup->getCameras()) {
         cam->setViewport(0,0,_width,_height);
     }
 }
@@ -601,7 +613,7 @@ void SceneOpenGLViewer::destroyView(View::Ptr view)
     }
 
     std::vector<View::Ptr> nviews;
-    BOOST_FOREACH(View::Ptr v, _views){
+    for(View::Ptr v : _views) {
         if(v!=view)
             nviews.push_back(v);
     }

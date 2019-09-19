@@ -15,7 +15,6 @@ else()
 endif()
  
 RW_SUBSYS_OPTION( build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} ${REASON})
-RW_SUBSYS_DEPEND( build ${SUBSYS_NAME} DEPS ${SUBSYS_DEPS} )
 RW_ADD_DOC( ${SUBSYS_NAME} )
 
 IF( build )
@@ -46,6 +45,13 @@ IF( build )
         ADD_DEPENDENCIES(rwsim_lua_s rwsim_lua) # avoid using the source files before they have been generated
     ENDIF()
 	TARGET_LINK_LIBRARIES(rwsim_lua_s ${RWSIM_ODE_LIBRARY} rwsim ${ROBWORK_LIBRARIES})
+	# Make sure dependencies are build before system
+    FOREACH(DEP IN LISTS SUBSYS_DEPS)
+        IF(TARGET ${DEP})
+            ADD_DEPENDENCIES(rwsim_lua_s ${DEP})
+        ENDIF()
+    ENDFOREACH()
+
 	# this is used to indicate static linking to Visual Studio or mingw
 	IF (DEFINED MSVC) 
 	    SET_TARGET_PROPERTIES(rwsim_lua_s PROPERTIES COMPILE_FLAGS "/DSTATIC_LINKED")
@@ -54,7 +60,15 @@ IF( build )
 	ENDIF()
 	
 	ADD_LIBRARY(rwsimlua_plugin.rwplugin MODULE LuaPlugin.cpp LuaPlugin.hpp)
-    TARGET_LINK_LIBRARIES(rwsimlua_plugin.rwplugin rwsim_lua_s ${ROBWORK_LIBRARIES})
+	TARGET_LINK_LIBRARIES(rwsimlua_plugin.rwplugin rwsim_lua_s ${ROBWORK_LIBRARIES})
+	
+	# Make sure dependencies are build before system
+    FOREACH(DEP IN LISTS rwsim_lua_s ROBWORK_LIBRARIES)
+        IF(TARGET ${DEP})
+            ADD_DEPENDENCIES(rwsimlua_plugin.rwplugin ${DEP})
+        ENDIF()
+	ENDFOREACH()
+	
     IF((CMAKE_COMPILER_IS_GNUCC) OR (CMAKE_C_COMPILER_ID STREQUAL "Clang"))
       SET_TARGET_PROPERTIES(rwsimlua_plugin.rwplugin PROPERTIES LINK_FLAGS -Wl,--no-undefined)
     ENDIF()

@@ -79,7 +79,7 @@ int main(int argc, char** argv) {
 	metricExample();
 
 	std::cout << "ex-owned-ptr" << std::endl;
-	makeT();
+	T::make();
 
 	std::cout << "ex-path-planning" << std::endl;
 	plannerExample(*wc);

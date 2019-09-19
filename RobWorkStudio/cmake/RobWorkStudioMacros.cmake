@@ -55,8 +55,8 @@ MACRO(RWS_ADD_PLUGIN _name _component _lib_type)
 
     install(TARGETS ${_name}
         RUNTIME DESTINATION ${BIN_INSTALL_DIR} COMPONENT ${_component}
-        LIBRARY DESTINATION ${LIB_INSTALL_DIR} COMPONENT ${_component}
-        ARCHIVE DESTINATION ${LIB_INSTALL_DIR} COMPONENT ${_component})
+        LIBRARY DESTINATION "${LIB_INSTALL_DIR}/RobWork/rwsplugins" COMPONENT ${_component}
+        ARCHIVE DESTINATION "${LIB_INSTALL_DIR}/RobWork/rwsplugins" COMPONENT ${_component})
 
 endmacro()
 

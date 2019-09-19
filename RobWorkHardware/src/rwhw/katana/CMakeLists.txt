@@ -1,6 +1,6 @@
 SET(SUBSYS_NAME katana )
 SET(SUBSYS_DESC "Library for controlling the katana robot" )
-SET(SUBSYS_DEPS rw )
+SET(SUBSYS_DEPS )
 
 FIND_PACKAGE(KATANA QUIET)
 set(DEFAULT TRUE)
@@ -13,7 +13,6 @@ endif()
 SET(build TRUE)
  
 RW_SUBSYS_OPTION( build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} ${REASON})
-RW_SUBSYS_DEPEND( build ${SUBSYS_NAME} DEPS ${SUBSYS_DEPS} )
 RW_ADD_DOC( ${SUBSYS_NAME} )
 
 IF( build )
