@@ -49,6 +49,7 @@ Player::Player(
     _rwstudio(rwstudio),
     _record(false),
     _recNo(0),
+    _rec_number_of_digits(2),
     _now(0),
     _direction(1),
     _velocityScale(1),
@@ -74,6 +75,7 @@ Player::Player(
     _rwstudio(rwstudio),
     _record(false),
     _recNo(0),
+    _rec_number_of_digits(2),
     _now(0),
     _direction(1),
     _velocityScale(1),
@@ -102,6 +104,7 @@ Player::Player(
     _rwstudio(rwstudio),
     _record(false),
     _recNo(0),
+    _rec_number_of_digits(2),
     _now(0),
     _direction(1),
     _velocityScale(1),
@@ -150,7 +153,9 @@ void Player::setupRecording(const QString filename, const QString& type)
 
 void Player::startRecording() 
 {
-    _rec_number_of_digits = calcLeadingZeros();
+    if (!_recordingOnly) {
+        _rec_number_of_digits = calcLeadingZeros();
+    }
     _record = true;
     _recNo = 0;
     startTimer();
