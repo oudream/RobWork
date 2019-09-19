@@ -120,7 +120,17 @@ ENDIF()
 # DEPENDENCIES - OPTIONAL
 # these dependencies are optional, which is the user can switch off
 # modules
-  
+
+set(RWS_HAVE_GLUT False)
+find_package(GLUT QUIET)
+if( OPENGL_FOUND AND GLUT_FOUND) 
+  set(RWS_HAVE_GLUT True)
+  message(STATUS "RobWorkStudio: GLUT ENABLED! FOUND!")
+else ()
+  message(STATUS "RobWork: GLUT NOT FOUND! code disabled!")
+endif ()
+
+
 # optional compilation of sandbox
 IF (RWS_BUILD_SANDBOX)
     MESSAGE(STATUS "RobWorkStudio: Sandbox ENABLED!")
