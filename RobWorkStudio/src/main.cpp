@@ -44,12 +44,18 @@
     #include <rwslibs/propertyview/PropertyView.hpp>
     #include <rwslibs/sensors/Sensors.hpp>
     #include <rwslibs/workcelleditorplugin/WorkcellEditorPlugin.hpp>
-#ifdef RW_HAVE_EIGEN
-    //#include <rwlibs/calibration/Calibration.hpp>
+
+    #ifdef RW_HAVE_EIGEN
+        //#include <rwlibs/calibration/Calibration.hpp>
+    #endif
+    #if RWS_HAVE_LUA
+        #include <rwslibs/lua/Lua.hpp>
+    #endif
 #endif
-#if RWS_HAVE_LUA
-    #include <rwslibs/lua/Lua.hpp>
-#endif
+
+#ifdef RWS_HAVE_GLUT
+    #include <GL/glut.h>
+    #include <rwlibs/opengl/RenderText.hpp>
 #endif
 
 using namespace rw;
@@ -96,6 +102,9 @@ int main(int argc, char** argv)
     std::string inputfile = map.get<std::string>("input-file", "");
     {
         MyQApplication app(argc, argv);
+        #ifdef RWS_HAVE_GLUT
+            glutInit(&argc,argv);
+        #endif
         try {
             QSplashScreen *splash;
             if(showSplash){
@@ -162,10 +171,18 @@ int main(int argc, char** argv)
                     splash->finish(&rwstudio);
                 }
 
+                if (rwstudio.getWorkCell()->findFrame("UR5_Left_RefFrame") == NULL) {
+                    std::cout << "NULL FRAME";
+                } else {
+                    rwstudio.getWorkCellScene()->addText("text","This is a vary long test text",rwstudio.getWorkCellScene()->getWorkCell()->findFrame("UR5_Left_RefFrame"));
+                }
+
                 rwstudio.show();
 
                 app.exec();
             }
+
+            
         } catch (const Exception& e) {
             std::cout << e.what() << std::endl;
             QMessageBox::critical(NULL, "RW Exception", e.what());
