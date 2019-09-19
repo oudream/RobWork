@@ -40,6 +40,7 @@ IF(build)
       RenderSmoothSkin.cpp
       RenderForceTorque.cpp
       RenderVelocity.cpp
+      RenderText.cpp
     )
     
     SET(SRC_FILES_HPP
@@ -64,11 +65,12 @@ IF(build)
       RenderSmoothSkin.hpp
       RenderForceTorque.hpp
       RenderVelocity.hpp
+      RenderText.hpp
     )
     
     RW_ADD_LIBRARY(${SUBSYS_NAME} opengl ${SRC_FILES} ${SRC_FILES_HPP})
     RW_ADD_INCLUDES(opengl "rwlibs/opengl" ${SRC_FILES_HPP}) 
-    TARGET_LINK_LIBRARIES(${SUBSYS_NAME} PUBLIC ${SUBSYS_DEPS} ${OPENGL_LIBRARIES})
+    TARGET_LINK_LIBRARIES(${SUBSYS_NAME} PUBLIC ${SUBSYS_DEPS} ${OPENGL_LIBRARIES} ${GLUT_LIBRARIES})
     ADD_DEPENDENCIES(${SUBSYS_NAME} ${SUBSYS_DEPS})
 
 	IF(CMAKE_VERSION VERSION_GREATER 3.3)
