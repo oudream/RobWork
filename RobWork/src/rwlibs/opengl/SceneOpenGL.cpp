@@ -29,6 +29,7 @@
 #include <rwlibs/opengl/RenderModel3D.hpp>
 #include <rwlibs/opengl/RenderScan.hpp>
 #include <rwlibs/opengl/RenderImage.hpp>
+#include <rwlibs/opengl/RenderText.hpp>
 #include <rwlibs/opengl/RWGLFrameBuffer.hpp>
 
 #include <rw/graphics/SceneCamera.hpp>
@@ -67,7 +68,8 @@ void SceneOpenGL::clearCache()
 }
 
 
-rw::math::Vector3D<> SceneOpenGL::unproject(SceneCamera::Ptr camera, int x, int y){
+rw::math::Vector3D<> SceneOpenGL::unproject(SceneCamera::Ptr camera, int x, int y)
+{
     GLfloat depth;
     glReadPixels(x, y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
     GLdouble modelMatrix[16];
@@ -79,6 +81,20 @@ rw::math::Vector3D<> SceneOpenGL::unproject(SceneCamera::Ptr camera, int x, int 
     GLdouble objx, objy, objz;
     gluUnProject(x, y, depth, modelMatrix, projMatrix, viewport, &objx, &objy, &objz);
     return Vector3D<>(objx,objy,objz);
+}
+
+rw::math::Vector3D<> SceneOpenGL::project(SceneCamera::Ptr camera, double x, double y, double z) 
+{
+    GLdouble modelMatrix[16];
+    GLdouble projMatrix[16];
+    GLint viewport[4];
+    glGetDoublev(GL_MODELVIEW_MATRIX, modelMatrix);
+    glGetDoublev(GL_PROJECTION_MATRIX, projMatrix);
+    glGetIntegerv(GL_VIEWPORT, viewport);
+
+    GLdouble winx, winy, winz;
+    gluProject(x,y,z,modelMatrix,projMatrix,viewport, &winx, &winy ,&winz);
+    return Vector3D<>(winx,winy,winz);
 }
 
 namespace {
@@ -551,6 +567,7 @@ namespace {
         }
 
         BOOST_FOREACH(SceneCamera::Ptr cam, camGroup->getCameras() ){
+            info._cam=cam;
             if(!cam->isEnabled())
                 continue;
             SceneNode::Ptr subRootNode = cam->getRefNode();
@@ -748,7 +765,8 @@ void SceneOpenGL::draw(SceneGraph::RenderInfo& info){
     draw(info, _root);
 }
 
-void SceneOpenGL::draw(SceneGraph::RenderInfo& info, SceneNode::Ptr node){
+void SceneOpenGL::draw(SceneGraph::RenderInfo& info, SceneNode::Ptr node)
+{
     std::stack<rw::math::Transform3D<> > stack;
     stack.push( Transform3D<>::identity() );
     RenderPreVisitor preVisitor(info,stack,false);
@@ -758,7 +776,8 @@ void SceneOpenGL::draw(SceneGraph::RenderInfo& info, SceneNode::Ptr node){
     drawScene(this, info.cams, info, node, preVisitor, postVisitor, false, 0,0);
 }
 #include <stdio.h>
-DrawableNode::Ptr SceneOpenGL::pickDrawable(SceneGraph::RenderInfo& info, int x, int y){
+DrawableNode::Ptr SceneOpenGL::pickDrawable(SceneGraph::RenderInfo& info, int x, int y)
+{
     #define GL_SELECT_BUFSIZE 512
     GLuint _selectBuf[GL_SELECT_BUFSIZE];
 
@@ -831,80 +850,29 @@ DrawableNode::Ptr SceneOpenGL::pickDrawable(SceneGraph::RenderInfo& info, int x,
    return NULL;
 }
 
-void SceneOpenGL::clear(){
+void SceneOpenGL::clear()
+{
     //_root = ownedPtr(new GroupNode("Root"));
 }
 
-void SceneOpenGL::update(){
+void SceneOpenGL::update()
+{
     // calculate the transforms to the cameras
 }
 
-/*
-rw::graphics::DrawableNode::Ptr SceneOpenGL::makeDrawable(const rw::models::DrawableModelInfo& info){
-    // forst check if the drawable is allready in the currentDrawables list
-    rwlibs::opengl::Drawable::Ptr drawable = NULL;
-	try {
-         drawable = DrawableFactory::getDrawable(info.getId(), info.getName());
-	} catch (const rw::common::Exception& exp){
-		RW_WARN(exp.getMessage());
-    }
-
-    if (drawable) {
-        // Set various properties for the drawable:
-        drawable->setTransform(info.getTransform());
-        drawable->setScale((float)info.getGeoScale());
-        drawable->setMask( Drawable::DrawableObject | Drawable::Physical );
-
-        if (info.isHighlighted())
-            drawable->setHighlighted(true);
-
-        if (info.isWireMode())
-            drawable->setDrawType(DrawableNode::WIRE);
-
-        return drawable;
-    } 
-    RW_THROW(
-             "NULL drawable returned by loadDrawableFile() for GeoID "
-             << info.getId());
-    return NULL;
-}
-
-DrawableNode::Ptr SceneOpenGL::makeDrawable(const rw::models::CollisionModelInfo& info){
-
-    // forst check if the drawable is allready in the currentDrawables list
-     rwlibs::opengl::Drawable::Ptr drawable = NULL;
-     try {
-         drawable = DrawableFactory::constructFromGeometry(info.getGeoString(), info.getName());
-     } catch (const rw::common::Exception& exp){
-         RW_WARN(exp.getMessage());
-     }
-
-     if (drawable) {
-         // Set various properties for the drawable:
-         drawable->setTransform(info.getTransform());
-         drawable->setScale((float)info.getGeoScale());
-         drawable->setMask( Drawable::CollisionObject );
-         return drawable;
-     } else {
-         RW_WARN(
-             "NULL drawable returned by loadDrawableFile() for GeoString "
-             << info.getGeoString());
-     }
-     return NULL;
-}
-*/
-
-
-SceneCamera::Ptr SceneOpenGL::makeCamera(const std::string& name){
+SceneCamera::Ptr SceneOpenGL::makeCamera(const std::string& name)
+{
 
     return ownedPtr(new SceneCamera(name, getRoot() ));
 }
 
-rw::common::Ptr<CameraGroup> SceneOpenGL::makeCameraGroup(const std::string& name){
+rw::common::Ptr<CameraGroup> SceneOpenGL::makeCameraGroup(const std::string& name)
+{
     return ownedPtr( new SimpleCameraGroup(name) );
 }
 
-DrawableNode::Ptr SceneOpenGL::makeDrawable(const std::string& filename, int dmask){
+DrawableNode::Ptr SceneOpenGL::makeDrawable(const std::string& filename, int dmask)
+{
     rwlibs::opengl::Drawable::Ptr drawable = NULL;
      //try {
          drawable = DrawableFactory::getDrawable(filename, filename);
@@ -915,52 +883,64 @@ DrawableNode::Ptr SceneOpenGL::makeDrawable(const std::string& filename, int dma
      return drawable;
 }
 
-
-DrawableGeometryNode::Ptr SceneOpenGL::makeDrawableFrameAxis(const std::string& name, double size, int dmask){
+DrawableGeometryNode::Ptr SceneOpenGL::makeDrawableFrameAxis(const std::string& name, double size, int dmask)
+{
     DrawableGeometry::Ptr drawable = ownedPtr( new DrawableGeometry(name, dmask) );
     drawable->addFrameAxis(size);
     return drawable;
 }
 
-DrawableGeometryNode::Ptr SceneOpenGL::makeDrawable(const std::string& name, rw::common::Ptr<rw::geometry::Geometry> geom, int dmask){
+DrawableGeometryNode::Ptr SceneOpenGL::makeDrawable(const std::string& name, rw::common::Ptr<rw::geometry::Geometry> geom, int dmask)
+{
     DrawableGeometry::Ptr drawable = ownedPtr( new DrawableGeometry(name, dmask) );
     drawable->addGeometry(geom);
     return drawable;
 }
 
-DrawableGeometryNode::Ptr SceneOpenGL::makeDrawable(const std::string& name,const std::vector<rw::geometry::Line >& lines, int dmask){
+DrawableGeometryNode::Ptr SceneOpenGL::makeDrawable(const std::string& name,const std::vector<rw::geometry::Line >& lines, int dmask)
+{
     DrawableGeometry::Ptr drawable = ownedPtr( new DrawableGeometry(name, dmask) );
     drawable->addLines(lines);
     return drawable;
 }
 
-
-
-DrawableNode::Ptr SceneOpenGL::makeDrawable(const std::string& name, rw::common::Ptr<Model3D> model, int dmask){
+DrawableNode::Ptr SceneOpenGL::makeDrawable(const std::string& name, rw::common::Ptr<Model3D> model, int dmask)
+{
     RenderModel3D::Ptr render = ownedPtr(new RenderModel3D(model));
     Drawable::Ptr drawable = ownedPtr( new Drawable(render, name, dmask) );
     return drawable;
 }
 
-DrawableNode::Ptr SceneOpenGL::makeDrawable(const std::string& name,const rw::sensor::Image& img, int dmask){
+DrawableNode::Ptr SceneOpenGL::makeDrawable(const std::string& name,const rw::sensor::Image& img, int dmask)
+{
     RenderImage::Ptr render = ownedPtr(new RenderImage(img));
     Drawable::Ptr drawable = ownedPtr( new Drawable(render, name, dmask) );
     return drawable;
 }
 
-DrawableNode::Ptr SceneOpenGL::makeDrawable(const std::string& name,const rw::geometry::PointCloud& scan, int dmask){
+DrawableNode::Ptr SceneOpenGL::makeDrawable(const std::string& name,const rw::geometry::PointCloud& scan, int dmask)
+{
     RenderScan::Ptr render = ownedPtr(new RenderScan(scan));
     Drawable::Ptr drawable = ownedPtr( new Drawable(render, name, dmask) );
     return drawable;
 }
 
-
-DrawableNode::Ptr SceneOpenGL::makeDrawable(const std::string& name, rw::common::Ptr<Render> render, int dmask) {
+rw::graphics::DrawableNode::Ptr SceneOpenGL::makeDrawable(const std::string& name, const std::string &text, int dmask)
+{
+    RenderText::Ptr render = ownedPtr(new RenderText(text));
     Drawable::Ptr drawable = ownedPtr( new Drawable(render, name, dmask) );
     return drawable;
 }
 
-std::string SceneOpenGL::detectGLerror() {
+
+DrawableNode::Ptr SceneOpenGL::makeDrawable(const std::string& name, rw::common::Ptr<Render> render, int dmask) 
+{
+    Drawable::Ptr drawable = ownedPtr( new Drawable(render, name, dmask) );
+    return drawable;
+}
+
+std::string SceneOpenGL::detectGLerror() 
+{
 	const GLenum error = glGetError();
 	switch(error) {
 	case GL_NO_ERROR:

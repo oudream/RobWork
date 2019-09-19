@@ -68,6 +68,9 @@ namespace rwlibs { namespace opengl {
 
         //! @copydoc rw::graphics::SceneGraph::unproject
         rw::math::Vector3D<> unproject(rw::graphics::SceneCamera::Ptr camera, int x, int y);
+        
+        //! @copydoc rw::graphics::SceneGraph::project
+        rw::math::Vector3D<> project(rw::graphics::SceneCamera::Ptr camera, double x, double y, double z);
 
         //! @copydoc rw::graphics::SceneGraph::update
         void update();
@@ -86,7 +89,8 @@ namespace rwlibs { namespace opengl {
         rw::graphics::DrawableNode::Ptr makeDrawable(const std::string& name, const class rw::sensor::Image& img, int dmask);
         //! @copydoc rw::graphics::SceneGraph::makeDrawable(const std::string&,const rw::geometry::PointCloud&,int)
         rw::graphics::DrawableNode::Ptr makeDrawable(const std::string& name, const rw::geometry::PointCloud& scan, int dmask);
-        //rw::graphics::DrawableNode::Ptr makeDrawable(const std::string& name, const std::string& text);
+        //! @copydoc rw::graphics::SceneGraph::makeDrawable(const std::string& const std::string& int)
+        rw::graphics::DrawableNode::Ptr makeDrawable(const std::string& name, const std::string &text, int dmask);
         //! @copydoc rw::graphics::SceneGraph::makeDrawable(const std::string&,rw::common::Ptr<rw::graphics::Render>,int)
         rw::graphics::DrawableNode::Ptr makeDrawable(const std::string& name, rw::common::Ptr<rw::graphics::Render> render, int dmask);
         //! @copydoc rw::graphics::SceneGraph::makeDrawable(const std::string&,int)
