@@ -91,6 +91,7 @@ public:
 	void draw(RenderInfo& info) {}
 	DrawableNode::Ptr pickDrawable(RenderInfo& info, int x, int y) { return NULL; }
 	Vector3D<> unproject(SceneCamera::Ptr camera, int x, int y) { return Vector3D<>::zero(); }
+	Vector3D<> project(SceneCamera::Ptr camera, double x, double y, double z) { return Vector3D<>::zero(); }
 	void update() {}
 	void clear() {}
 	DrawableGeometryNode::Ptr makeDrawableFrameAxis(const std::string& name, double size, int dmask=DrawableNode::Physical) {
@@ -103,6 +104,7 @@ public:
 	DrawableNode::Ptr makeDrawable(const std::string& name, const class rw::sensor::Image& img, int dmask=DrawableNode::Virtual) { return NULL; }
 	DrawableNode::Ptr makeDrawable(const std::string& name, const rw::geometry::PointCloud& scan, int dmask=DrawableNode::Virtual) { return NULL; }
 	DrawableNode::Ptr makeDrawable(const std::string& name, rw::common::Ptr<class Model3D> model, int dmask=DrawableNode::Physical) { return NULL; }
+	DrawableNode::Ptr makeDrawable(const std::string&, const std::string&, int ) {return NULL; }
 	DrawableNode::Ptr makeDrawable(const std::string& name, rw::common::Ptr<class Render> render, int dmask=DrawableNode::Physical) {
 		return ownedPtr(new DummyDrawable(name));
 	}

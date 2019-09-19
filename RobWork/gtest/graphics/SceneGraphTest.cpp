@@ -85,6 +85,7 @@ public:
     void draw(RenderInfo&) {}
     DrawableNode::Ptr pickDrawable(RenderInfo&, int, int) { return NULL; }
     Vector3D<> unproject(SceneCamera::Ptr, int, int) { return Vector3D<>::zero(); }
+    Vector3D<> project(SceneCamera::Ptr camera, double x, double y, double z) { return Vector3D<>::zero(); }
     void update() {}
     void clear() {}
     DrawableGeometryNode::Ptr makeDrawableFrameAxis(const std::string&, double, int) { return NULL; }
@@ -93,6 +94,7 @@ public:
     DrawableNode::Ptr makeDrawable(const std::string&, const class rw::sensor::Image&, int) { return NULL; }
     DrawableNode::Ptr makeDrawable(const std::string&, const rw::geometry::PointCloud&, int) { return NULL; }
     DrawableNode::Ptr makeDrawable(const std::string&, rw::common::Ptr<class Model3D>, int) { return NULL; }
+    DrawableNode::Ptr makeDrawable(const std::string&, const std::string&, int ) {return NULL; }
     DrawableNode::Ptr makeDrawable(const std::string&, rw::common::Ptr<class Render>, int) { return NULL; }
     DrawableNode::Ptr makeDrawable(const std::string&, int) { return NULL; }
     SceneCamera::Ptr makeCamera(const std::string&) { return NULL; }
@@ -175,16 +177,16 @@ TEST(SceneGraph, Test) {
     //This should showcase addChild(rw::common::Ptr<SceneNode> child, GroupNode::Ptr parent);
 
     ASSERT_FALSE(root.isNull());    //Assert if root exists
-    EXPECT_EQ(5,root->nrOfChildren()); //root has 5 children
-    EXPECT_EQ(2,group1->nrOfChildren()); //check if nodes has right amount of children
-    EXPECT_EQ(2,group2->nrOfChildren());
-    EXPECT_EQ(4,group3->nrOfChildren());
-    EXPECT_EQ(3,group4->nrOfChildren());
-    EXPECT_EQ(3,group5->nrOfChildren());
-    EXPECT_EQ(1,group6->nrOfChildren());
-    EXPECT_EQ(2,group7->nrOfChildren());
-    EXPECT_EQ(2,group8->nrOfChildren());
-    EXPECT_EQ(2,group9->nrOfChildren());
+    EXPECT_EQ(5u,root->nrOfChildren()); //root has 5 children
+    EXPECT_EQ(2u,group1->nrOfChildren()); //check if nodes has right amount of children
+    EXPECT_EQ(2u,group2->nrOfChildren());
+    EXPECT_EQ(4u,group3->nrOfChildren());
+    EXPECT_EQ(3u,group4->nrOfChildren());
+    EXPECT_EQ(3u,group5->nrOfChildren());
+    EXPECT_EQ(1u,group6->nrOfChildren());
+    EXPECT_EQ(2u,group7->nrOfChildren());
+    EXPECT_EQ(2u,group8->nrOfChildren());
+    EXPECT_EQ(2u,group9->nrOfChildren());
 
     EXPECT_TRUE(group1->hasChild("Leaf1")); // check if leafs match
     EXPECT_TRUE(group1->hasChild(leaf1));
@@ -262,7 +264,7 @@ TEST(SceneGraph, Test) {
     // TESTING virtual std::vector<DrawableNode::Ptr> getDrawables();
     // test for uniqueness ?
     std::vector<DrawableNode::Ptr> drawables = scene->getDrawables();
-    EXPECT_EQ(11, drawables.size()); //There should be 11 leafs/drawables
+    EXPECT_EQ(11u, drawables.size()); //There should be 11 leafs/drawables
 
 
     // TESTING virtual std::vector<DrawableNode::Ptr> getDrawables(rw::common::Ptr<SceneNode> node);
@@ -277,16 +279,16 @@ TEST(SceneGraph, Test) {
     std::vector<DrawableNode::Ptr> drawables7 = scene->getDrawables(group7);
     std::vector<DrawableNode::Ptr> drawables8 = scene->getDrawables(group8);
     std::vector<DrawableNode::Ptr> drawables9 = scene->getDrawables(group9);
-    EXPECT_EQ(2, drawables0.size()); //There should be 2 leafs/drawables
-    EXPECT_EQ(1, drawables1.size()); //There should be 1 leafs/drawables
-    EXPECT_EQ(0, drawables2.size()); //There should be 0 leafs/drawables
-    EXPECT_EQ(4, drawables3.size()); //There should be 4 leafs/drawables
-    EXPECT_EQ(3, drawables4.size()); //There should be 3 leafs/drawables
-    EXPECT_EQ(0, drawables5.size()); //There should be 0 leafs/drawables
-    EXPECT_EQ(1, drawables6.size()); //There should be 1 leafs/drawables
-    EXPECT_EQ(2, drawables7.size()); //There should be 2 leafs/drawables
-    EXPECT_EQ(2, drawables8.size()); //There should be 2 leafs/drawables
-    EXPECT_EQ(2, drawables9.size()); //There should be 2 leafs/drawables
+    EXPECT_EQ(2u, drawables0.size()); //There should be 2 leafs/drawables
+    EXPECT_EQ(1u, drawables1.size()); //There should be 1 leafs/drawables
+    EXPECT_EQ(0u, drawables2.size()); //There should be 0 leafs/drawables
+    EXPECT_EQ(4u, drawables3.size()); //There should be 4 leafs/drawables
+    EXPECT_EQ(3u, drawables4.size()); //There should be 3 leafs/drawables
+    EXPECT_EQ(0u, drawables5.size()); //There should be 0 leafs/drawables
+    EXPECT_EQ(1u, drawables6.size()); //There should be 1 leafs/drawables
+    EXPECT_EQ(2u, drawables7.size()); //There should be 2 leafs/drawables
+    EXPECT_EQ(2u, drawables8.size()); //There should be 2 leafs/drawables
+    EXPECT_EQ(2u, drawables9.size()); //There should be 2 leafs/drawables
 
 
     // TESTING virtual DrawableNode::Ptr findDrawable(const std::string& name);
@@ -357,32 +359,32 @@ TEST(SceneGraph, Test) {
     drawables8 = scene->findDrawables("Leaf10");
     drawables9 = scene->findDrawables("Leaf11");
 
-    EXPECT_EQ(2, drawables.size());
+    EXPECT_EQ(2u, drawables.size());
     EXPECT_EQ(drawables[0]->getName(),"Leaf1");
     EXPECT_EQ(drawables[1]->getName(),"Leaf1");
-    EXPECT_EQ(2, drawables0.size());
+    EXPECT_EQ(2u, drawables0.size());
     EXPECT_EQ(drawables0[0]->getName(),"Leaf2");
     EXPECT_EQ(drawables0[1]->getName(),"Leaf2");
-    EXPECT_EQ(1, drawables1.size());
+    EXPECT_EQ(1u, drawables1.size());
     EXPECT_EQ(drawables1[0]->getName(),"Leaf3");
-    EXPECT_EQ(1, drawables2.size());
+    EXPECT_EQ(1u, drawables2.size());
     EXPECT_EQ(drawables2[0]->getName(),"Leaf4");
-    EXPECT_EQ(2, drawables3.size());
+    EXPECT_EQ(2u, drawables3.size());
     EXPECT_EQ(drawables3[0]->getName(),"Leaf5");
     EXPECT_EQ(drawables3[1]->getName(),"Leaf5");
-    EXPECT_EQ(2, drawables4.size());
+    EXPECT_EQ(2u, drawables4.size());
     EXPECT_EQ(drawables4[0]->getName(),"Leaf6");
     EXPECT_EQ(drawables4[1]->getName(),"Leaf6");
-    EXPECT_EQ(1, drawables5.size());
+    EXPECT_EQ(1u, drawables5.size());
     EXPECT_EQ(drawables5[0]->getName(),"Leaf7");
-    EXPECT_EQ(2, drawables6.size());
+    EXPECT_EQ(2u, drawables6.size());
     EXPECT_EQ(drawables6[0]->getName(),"Leaf8");
     EXPECT_EQ(drawables6[1]->getName(),"Leaf8");
-    EXPECT_EQ(1, drawables7.size());
+    EXPECT_EQ(1u, drawables7.size());
     EXPECT_EQ(drawables7[0]->getName(),"Leaf9");
-    EXPECT_EQ(1, drawables8.size());
+    EXPECT_EQ(1u, drawables8.size());
     EXPECT_EQ(drawables8[0]->getName(),"Leaf10");
-    EXPECT_EQ(2, drawables9.size());
+    EXPECT_EQ(2u, drawables9.size());
     EXPECT_EQ(drawables9[0]->getName(),"Leaf11");
     EXPECT_EQ(drawables9[1]->getName(),"Leaf11");
 
