@@ -49,6 +49,7 @@ Player::Player(
     _rwstudio(rwstudio),
     _record(false),
     _recNo(0),
+    _rec_number_of_digits(2),
     _now(0),
     _direction(1),
     _velocityScale(1),
@@ -74,6 +75,7 @@ Player::Player(
     _rwstudio(rwstudio),
     _record(false),
     _recNo(0),
+    _rec_number_of_digits(2),
     _now(0),
     _direction(1),
     _velocityScale(1),
@@ -102,6 +104,7 @@ Player::Player(
     _rwstudio(rwstudio),
     _record(false),
     _recNo(0),
+    _rec_number_of_digits(2),
     _now(0),
     _direction(1),
     _velocityScale(1),
@@ -135,6 +138,13 @@ void Player::setTickInterval(double interval)
     }
 }
 
+unsigned int Player::calcLeadingZeros()
+{
+    double number_of_frames = getEndTime()/_tickInterval;
+    number_of_frames /= _velocityScale;
+    return static_cast<unsigned int>(std::ceil(std::log10(number_of_frames)));
+}
+
 void Player::setupRecording(const QString filename, const QString& type) 
 {
     _recordFilename = filename;
@@ -143,6 +153,9 @@ void Player::setupRecording(const QString filename, const QString& type)
 
 void Player::startRecording() 
 {
+    if (!_recordingOnly) {
+        _rec_number_of_digits = calcLeadingZeros();
+    }
     _record = true;
     _recNo = 0;
     startTimer();
@@ -165,6 +178,8 @@ void Player::recordImage()
     if (_record && _rwstudio != NULL) {
         //Create Filename
         QString number = QString::number(_recNo++);
+        while (number.length() < _rec_number_of_digits)
+            number.prepend("0");
         QString filename = _recordFilename + number + "." + _recordType;
         _rwstudio->saveViewGL(filename);
     }
@@ -173,9 +188,9 @@ void Player::recordImage()
 
 void Player::tick()
 {
-    if(!_recordingOnly) {
+    const double end = getEndTime();
 
-        const double end = getEndTime();
+    if(!_recordingOnly) {
 
         // Make sure that we do show the robot at the position at the start or end
         // of the path.
@@ -405,6 +420,8 @@ int Player::getPlayDirection()
 {
     return _direction;
 }
+
+
 
 // Constructors.
 Player::Ptr Player::makeEmptyPlayer()
