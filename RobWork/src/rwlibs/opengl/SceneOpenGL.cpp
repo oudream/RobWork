@@ -678,11 +678,6 @@ namespace {
                      scam->_scan25->getWidth(), scam->_scan25->getHeight(),
                      GL_DEPTH_COMPONENT, GL_FLOAT, &scam->_depthData[0]);
 
-                //glReadPixels(
-                //     0, 0,
-                //     scam->_scan25->getWidth(), scam->_scan25->getHeight(),
-                //     GL_DEPTH_COMPONENT, GL_UNSIGNED_INT, &scam->_depthData[0]);
-
                 {
                 	const std::string error = SceneOpenGL::detectGLerror();
                 	if (!error.empty())
@@ -925,9 +920,9 @@ DrawableNode::Ptr SceneOpenGL::makeDrawable(const std::string& name,const rw::ge
     return drawable;
 }
 
-rw::graphics::DrawableNode::Ptr SceneOpenGL::makeDrawable(const std::string& name, const std::string &text, int dmask)
+rw::graphics::DrawableNode::Ptr SceneOpenGL::makeDrawable(const std::string& name, const std::string &text, rw::common::Ptr<rw::kinematics::Frame> labelFrame,  int dmask)
 {
-    RenderText::Ptr render = ownedPtr(new RenderText(text));
+    RenderText::Ptr render = ownedPtr(new RenderText(text,labelFrame));
     Drawable::Ptr drawable = ownedPtr( new Drawable(render, name, dmask) );
     return drawable;
 }

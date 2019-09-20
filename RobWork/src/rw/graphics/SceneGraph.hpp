@@ -21,6 +21,8 @@
 #include <rw/graphics/DrawableNode.hpp>
 #include <rw/graphics/DrawableGeometryNode.hpp>
 
+#include <rw/kinematics/Frame.hpp>
+
 #include "SceneCamera.hpp"
 #include "GroupNode.hpp"
 
@@ -192,10 +194,11 @@ namespace graphics {
          * @brief Create a drawable node for a text label.
          * @param name [in] name of the drawable.
          * @param text [in] the text to draw.
+         * @param labelFrame [in] the frame the label belongs to.
          * @param dmask [in] (optional) the type of drawable. Default is DrawableNode::Virtual.
          * @return a drawable node.
          */
-        virtual DrawableNode::Ptr makeDrawable(const std::string& name, const std::string &text, int dmask=DrawableNode::Virtual) = 0;
+        virtual DrawableNode::Ptr makeDrawable(const std::string& name, const std::string &text, rw::common::Ptr<rw::kinematics::Frame> labelFrame, int dmask=DrawableNode::Virtual) = 0;
 
         /**
          * @brief Create a drawable node for a render.

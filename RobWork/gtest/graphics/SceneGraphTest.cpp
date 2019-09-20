@@ -94,7 +94,7 @@ public:
     DrawableNode::Ptr makeDrawable(const std::string&, const class rw::sensor::Image&, int) { return NULL; }
     DrawableNode::Ptr makeDrawable(const std::string&, const rw::geometry::PointCloud&, int) { return NULL; }
     DrawableNode::Ptr makeDrawable(const std::string&, rw::common::Ptr<class Model3D>, int) { return NULL; }
-    DrawableNode::Ptr makeDrawable(const std::string&, const std::string&, int ) {return NULL; }
+    DrawableNode::Ptr makeDrawable(const std::string&, const std::string&, rw::common::Ptr<rw::kinematics::Frame>, int ) {return NULL; }
     DrawableNode::Ptr makeDrawable(const std::string&, rw::common::Ptr<class Render>, int) { return NULL; }
     DrawableNode::Ptr makeDrawable(const std::string&, int) { return NULL; }
     SceneCamera::Ptr makeCamera(const std::string&) { return NULL; }

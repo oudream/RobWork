@@ -90,7 +90,7 @@ namespace rwlibs { namespace opengl {
         //! @copydoc rw::graphics::SceneGraph::makeDrawable(const std::string&,const rw::geometry::PointCloud&,int)
         rw::graphics::DrawableNode::Ptr makeDrawable(const std::string& name, const rw::geometry::PointCloud& scan, int dmask);
         //! @copydoc rw::graphics::SceneGraph::makeDrawable(const std::string& const std::string& int)
-        rw::graphics::DrawableNode::Ptr makeDrawable(const std::string& name, const std::string &text, int dmask);
+        rw::graphics::DrawableNode::Ptr makeDrawable(const std::string& name, const std::string &text, const rw::common::Ptr<rw::kinematics::Frame> labelFrame, int dmask);
         //! @copydoc rw::graphics::SceneGraph::makeDrawable(const std::string&,rw::common::Ptr<rw::graphics::Render>,int)
         rw::graphics::DrawableNode::Ptr makeDrawable(const std::string& name, rw::common::Ptr<rw::graphics::Render> render, int dmask);
         //! @copydoc rw::graphics::SceneGraph::makeDrawable(const std::string&,int)

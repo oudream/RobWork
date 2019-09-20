@@ -687,7 +687,7 @@ DrawableGeometryNode::Ptr WorkCellScene::addLines(const std::string& name,const 
 
 DrawableNode::Ptr WorkCellScene::addText(const std::string& name, const std::string& text, Frame::Ptr frame, int dmask) 
 {
-    DrawableNode::Ptr drawable = _scene->makeDrawable(name, text);
+    DrawableNode::Ptr drawable = _scene->makeDrawable(name, text,frame);
     drawable->setMask(dmask);
     addDrawable(drawable, frame.get());
     return drawable;

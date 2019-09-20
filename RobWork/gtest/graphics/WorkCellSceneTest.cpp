@@ -104,7 +104,7 @@ public:
 	DrawableNode::Ptr makeDrawable(const std::string& name, const class rw::sensor::Image& img, int dmask=DrawableNode::Virtual) { return NULL; }
 	DrawableNode::Ptr makeDrawable(const std::string& name, const rw::geometry::PointCloud& scan, int dmask=DrawableNode::Virtual) { return NULL; }
 	DrawableNode::Ptr makeDrawable(const std::string& name, rw::common::Ptr<class Model3D> model, int dmask=DrawableNode::Physical) { return NULL; }
-	DrawableNode::Ptr makeDrawable(const std::string&, const std::string&, int ) {return NULL; }
+	DrawableNode::Ptr makeDrawable(const std::string&, const std::string&, rw::common::Ptr<rw::kinematics::Frame>,int ) {return NULL; }
 	DrawableNode::Ptr makeDrawable(const std::string& name, rw::common::Ptr<class Render> render, int dmask=DrawableNode::Physical) {
 		return ownedPtr(new DummyDrawable(name));
 	}
