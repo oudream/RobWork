@@ -171,12 +171,6 @@ int main(int argc, char** argv)
                     splash->finish(&rwstudio);
                 }
 
-                if (rwstudio.getWorkCell()->findFrame("UR5_Left_RefFrame") == NULL) {
-                    std::cout << "NULL FRAME";
-                } else {
-                    rwstudio.getWorkCellScene()->addText("text","This is a vary long test text",rwstudio.getWorkCellScene()->getWorkCell()->findFrame("UR5_Left_RefFrame"));
-                }
-
                 rwstudio.show();
 
                 app.exec();
