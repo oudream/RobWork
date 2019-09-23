@@ -57,10 +57,10 @@ public:
 
 TEST_F(PathLoaderCSVTest, loadPath) {
     QPath path = PathLoaderCSV::loadPath(NoTimestampFile);
-    EXPECT_EQ(path.size(), 8); // Test length of loaded path.
+    EXPECT_EQ(path.size(), 8u); // Test length of loaded path.
 
     vector<double> first_element = path.front().toStdVector();
-    EXPECT_EQ(first_element.size(),6); // Test size of Qs
+    EXPECT_EQ(first_element.size(),6u); // Test size of Qs
 
     vector<double> last_element = path.back().toStdVector();
 
@@ -79,8 +79,8 @@ TEST_F(PathLoaderCSVTest,loadStatePath) {
     vector<double> last_element = robot->getQ(path.back()).toStdVector();
 
     // Test size of Qs
-    EXPECT_EQ(first_element.size(),6);
-    EXPECT_EQ(last_element.size(),6);
+    EXPECT_EQ(first_element.size(),6u);
+    EXPECT_EQ(last_element.size(),6u);
 
     // Test elements
     EXPECT_EQ(first_element,expected_first);
@@ -91,7 +91,7 @@ TEST_F(PathLoaderCSVTest,loadTimedStatePath) {
     ASSERT_FALSE(wc1.isNull());
     TimedStatePath path = PathLoaderCSV::loadTimedStatePath(*wc1, timestampedFile);
 
-    EXPECT_EQ(path.size(),8); // test path length
+    EXPECT_EQ(path.size(),8u); // test path length
 
     EXPECT_EQ(path.front().getTime(),0.5); // test time stamp at front and back
     EXPECT_EQ(path.back().getTime(),4.5);
@@ -101,8 +101,8 @@ TEST_F(PathLoaderCSVTest,loadTimedStatePath) {
     vector<double> last_element = robot->getQ(path.back().getValue()).toStdVector();
 
     // Test size of Qs
-    EXPECT_EQ(first_element.size(),6);
-    EXPECT_EQ(last_element.size(),6);
+    EXPECT_EQ(first_element.size(),6u);
+    EXPECT_EQ(last_element.size(),6u);
 
     // Test elements
     EXPECT_EQ(first_element,expected_first);

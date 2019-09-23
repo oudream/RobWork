@@ -127,7 +127,7 @@ TEST(WorkCellScene, Test) {
 
 	// Checks that world frame exsist with no children
 	ASSERT_FALSE(world.isNull());
-	EXPECT_EQ(0,world->nrOfChildren());
+	EXPECT_EQ(0u,world->nrOfChildren());
 	EXPECT_FALSE(world->hasChild("Frame1"));
 	EXPECT_TRUE(frame1_GN.isNull());
 

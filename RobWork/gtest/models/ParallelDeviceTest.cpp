@@ -198,9 +198,9 @@ TEST(ParallelDevice, Junctions) {
     EXPECT_EQ(A, device->getActiveJoints()[0]);
     EXPECT_EQ(Fb, device->getActiveJoints()[1]);
     EXPECT_EQ(11u, device->getAllJoints().size());
-    EXPECT_EQ(11, device->getFullDOF());
-    EXPECT_EQ(11, device->getAllBounds().first.size());
-    EXPECT_EQ(11, device->getAllBounds().second.size());
+    EXPECT_EQ(11u, device->getFullDOF());
+    EXPECT_EQ(11u, device->getAllBounds().first.size());
+    EXPECT_EQ(11u, device->getAllBounds().second.size());
 
     // Set full Q
     EXPECT_EQ(11, device->getFullQ(state).size());
