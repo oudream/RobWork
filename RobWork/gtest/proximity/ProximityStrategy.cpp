@@ -44,7 +44,7 @@ std::vector<std::string> strategies = ProximityStrategy::Factory::getStrategies(
 }
 
 TEST(Factory, ProximityStrategy) {
-	EXPECT_GT(strategies.size(),0);
+	EXPECT_GT(strategies.size(),0u);
 	for (std::size_t i = 0; i < strategies.size(); i++) {
 		EXPECT_TRUE(ProximityStrategy::Factory::hasStrategy(strategies[i]));
 		EXPECT_FALSE(ProximityStrategy::Factory::makeStrategy(strategies[i]).isNull());
@@ -116,8 +116,8 @@ TEST_P(ProximityStrategyTest, Interface) {
 	//EXPECT_EQ(frames[0],model1->getFrame());
 	//EXPECT_EQ(frames[2],model3->getFrame());
 	ASSERT_NO_THROW(model1->getGeometryIDs());
-	ASSERT_EQ(2,model1->getGeometryIDs().size());
-	ASSERT_EQ(1,model3->getGeometryIDs().size());
+	ASSERT_EQ(2u,model1->getGeometryIDs().size());
+	ASSERT_EQ(1u,model3->getGeometryIDs().size());
 	EXPECT_EQ("Geo1B",model1->getGeometryIDs()[0]);
 	EXPECT_EQ("Geo1C",model1->getGeometryIDs()[1]);
 	EXPECT_EQ("Geo3B",model3->getGeometryIDs()[0]);
@@ -139,13 +139,13 @@ TEST_P(ProximityStrategyTest, Interface) {
 	modelA->setFrame(frames[0]);
 
 	EXPECT_EQ(frames[0],modelA->getFrame());
-	ASSERT_EQ(2,modelA->getGeometryIDs().size());
+	ASSERT_EQ(2u,modelA->getGeometryIDs().size());
 	EXPECT_EQ("Geo1A",modelA->getGeometryIDs()[0]);
 	EXPECT_EQ("Geo1C",modelA->getGeometryIDs()[1]);
 	EXPECT_EQ(strategy.get(),modelA->owner);
 	EXPECT_FALSE(modelA->removeGeometry("asdasd"));
 	EXPECT_TRUE(modelA->removeGeometry("Geo1A"));
-	ASSERT_EQ(1,modelA->getGeometryIDs().size());
+	ASSERT_EQ(1u,modelA->getGeometryIDs().size());
 	EXPECT_EQ("Geo1C",modelA->getGeometryIDs()[0]);
 
 	// Proxy methods on strategy
@@ -153,13 +153,13 @@ TEST_P(ProximityStrategyTest, Interface) {
 	strategy->addGeometry(modelB.get(),*geom3B);
 	EXPECT_FALSE(strategy->hasModel(frames[0]));
 	EXPECT_EQ(NULL,modelB->getFrame());
-	ASSERT_EQ(2,strategy->getGeometryIDs(modelB.get()).size());
+	ASSERT_EQ(2u,strategy->getGeometryIDs(modelB.get()).size());
 	EXPECT_EQ("Geo3A",strategy->getGeometryIDs(modelB.get())[0]);
 	EXPECT_EQ("Geo3B",strategy->getGeometryIDs(modelB.get())[1]);
 	EXPECT_EQ(strategy.get(),modelB->owner);
 	EXPECT_FALSE(strategy->removeGeometry(modelB.get(),"asdasd"));
 	EXPECT_TRUE(strategy->removeGeometry(modelB.get(),"Geo3A"));
-	ASSERT_EQ(1,strategy->getGeometryIDs(modelB.get()).size());
+	ASSERT_EQ(1u,strategy->getGeometryIDs(modelB.get()).size());
 	EXPECT_EQ("Geo3B",strategy->getGeometryIDs(modelB.get())[0]);
 	strategy->destroyModel(modelB.get());
 	strategy->clear();

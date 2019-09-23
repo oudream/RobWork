@@ -68,7 +68,7 @@ TEST(Kinematics, getStaticFrameGroups) {
 
 	Frame* const root = world.getWorldFrame();
 	std::vector<FrameList> staticGroups = Kinematics::getStaticFrameGroups(root,world.getDefaultState());
-	EXPECT_EQ(10,staticGroups.size());
+	EXPECT_EQ(10u,staticGroups.size());
 	BOOST_FOREACH(FrameList& list, staticGroups) {
 		BOOST_FOREACH(const Frame* frame, list) {
 			if (frame->getName() == "WORLD") {
@@ -94,7 +94,7 @@ TEST(Kinematics, getStaticFrameGroupsConst) {
 
 	const Frame* const root = world.getWorldFrame();
 	std::vector<ConstFrameList> staticGroups = Kinematics::getStaticFrameGroups(root,world.getDefaultState());
-	EXPECT_EQ(10,staticGroups.size());
+	EXPECT_EQ(10u,staticGroups.size());
 	BOOST_FOREACH(ConstFrameList& list, staticGroups) {
 		BOOST_FOREACH(const Frame* frame, list) {
 			if (frame->getName() == "WORLD") {

@@ -76,7 +76,7 @@ std::vector<std::string> strategies = CollisionStrategy::Factory::getStrategies(
 }
 
 TEST(Factory, CollisionStrategy) {
-	EXPECT_GT(strategies.size(),0);
+	EXPECT_GT(strategies.size(),0u);
 	for (std::size_t i = 0; i < strategies.size(); i++) {
 		EXPECT_TRUE(CollisionStrategy::Factory::hasStrategy(strategies[i]));
 		EXPECT_FALSE(CollisionStrategy::Factory::makeStrategy(strategies[i]).isNull());
@@ -116,11 +116,11 @@ TEST_P(CollisionStrategyTest, Plane_Cuboid) {
 	EXPECT_EQ(0,res._aTb.P()[1]);
 	EXPECT_FLOAT_EQ(static_cast<float>(s/2-offset-eps),static_cast<float>(res._aTb.P()[2]));
 	EXPECT_TRUE(res._aTb.R().equal(Rotation3D<>::identity()));
-	ASSERT_EQ(1,res._collisionPairs.size());
+	ASSERT_EQ(1u,res._collisionPairs.size());
 	EXPECT_EQ(0,res._collisionPairs[0].geoIdxA);
 	EXPECT_EQ(0,res._collisionPairs[0].geoIdxB);
 	EXPECT_EQ(0,res._collisionPairs[0].startIdx);
-	EXPECT_EQ(res._geomPrimIds.size(),res._collisionPairs[0].size);
+	EXPECT_EQ(res._geomPrimIds.size(),size_t(res._collisionPairs[0].size));
 	//EXPECT_GT(res._geomPrimIds.size(),0);
 	for (std::size_t i = 0; i < res._geomPrimIds.size(); i++) {
 		EXPECT_GE(res._geomPrimIds[i].first,0);
@@ -164,11 +164,11 @@ TEST_P(CollisionStrategyTest, Cuboid_Cuboid) {
 	EXPECT_EQ(0,res._aTb.P()[1]);
 	EXPECT_FLOAT_EQ(static_cast<float>(s-offset-eps),static_cast<float>(res._aTb.P()[2]));
 	EXPECT_TRUE(res._aTb.R().equal(Rotation3D<>::identity()));
-	ASSERT_EQ(1,res._collisionPairs.size());
+	ASSERT_EQ(1u,res._collisionPairs.size());
 	EXPECT_EQ(0,res._collisionPairs[0].geoIdxA);
 	EXPECT_EQ(0,res._collisionPairs[0].geoIdxB);
 	EXPECT_EQ(0,res._collisionPairs[0].startIdx);
-	EXPECT_EQ(res._geomPrimIds.size(),res._collisionPairs[0].size);
+	EXPECT_EQ(res._geomPrimIds.size(),(size_t)res._collisionPairs[0].size);
 	//EXPECT_GT(res._geomPrimIds.size(),0);
 	for (std::size_t i = 0; i < res._geomPrimIds.size(); i++) {
 		EXPECT_GE(res._geomPrimIds[i].first,0);
@@ -213,11 +213,11 @@ TEST_P(CollisionStrategyTest, Cylinder_Cylinder) {
 	EXPECT_EQ(0,res._aTb.P()[1]);
 	EXPECT_EQ(0,res._aTb.P()[2]);
 	EXPECT_TRUE(res._aTb.R().equal(Rotation3D<>::identity()));
-	ASSERT_EQ(1,res._collisionPairs.size());
+	ASSERT_EQ(1u,res._collisionPairs.size());
 	EXPECT_EQ(0,res._collisionPairs[0].geoIdxA);
 	EXPECT_EQ(0,res._collisionPairs[0].geoIdxB);
 	EXPECT_EQ(0,res._collisionPairs[0].startIdx);
-	EXPECT_EQ(res._geomPrimIds.size(),res._collisionPairs[0].size);
+	EXPECT_EQ(res._geomPrimIds.size(),size_t(res._collisionPairs[0].size));
 	//EXPECT_GT(res._geomPrimIds.size(),0);
 	for (std::size_t i = 0; i < res._geomPrimIds.size(); i++) {
 		EXPECT_GE(res._geomPrimIds[i].first,0);

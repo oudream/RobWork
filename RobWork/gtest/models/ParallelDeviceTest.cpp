@@ -203,7 +203,7 @@ TEST(ParallelDevice, Junctions) {
     EXPECT_EQ(11u, device->getAllBounds().second.size());
 
     // Set full Q
-    EXPECT_EQ(11, device->getFullQ(state).size());
+    EXPECT_EQ(11u, device->getFullQ(state).size());
     double vals[11] = {0,1,2,3,4,5,6,7,8,9,10};
     device->setFullQ(Q(11,vals),state);
     for (std::size_t i = 0; i <= 10; i++)
@@ -211,7 +211,7 @@ TEST(ParallelDevice, Junctions) {
     device->setFullQ(Q(11,0.),state);
 
     // Set Q
-    EXPECT_EQ(2, device->getQ(state).size());
+    EXPECT_EQ(2u, device->getQ(state).size());
     device->setQ(Q(2,0.,0.015),state);
     const Q qTest = device->getFullQ(state); // save for later comparison
     {
@@ -447,8 +447,8 @@ TEST(ParallelDevice, SerialChains) {
 	EXPECT_EQ(95.6865, q[5]);
 
 	const Q qFull = hexapod.getFullQ(state);
-	EXPECT_EQ(36, qFull.size());
-	ASSERT_GE(36, qFull.size());
+	EXPECT_EQ(36u, qFull.size());
+	ASSERT_GE(36u, qFull.size());
 	EXPECT_EQ(93.6865, qFull[2]);
 	EXPECT_EQ(96.6865, qFull[8]);
 	EXPECT_EQ(94.6865, qFull[14]);
@@ -479,46 +479,46 @@ TEST(ParallelDevice, Robotiq) {
     EXPECT_EQ("RobotiqDistanceControl.LeftMotorEnd", robotiqDist->getEnd()->getName());
     EXPECT_EQ("RobotiqFingerControl.Base", robotiqFinger->getBase()->getName());
     EXPECT_EQ("RobotiqFingerControl.LeftMotorEnd", robotiqFinger->getEnd()->getName());
-    EXPECT_EQ(3, robotiqDist->getJoints().size());
-    EXPECT_EQ(3, robotiqDist->getDOF());
-    EXPECT_EQ(3, robotiqDist->getBounds().first.size());
-    EXPECT_EQ(3, robotiqDist->getBounds().second.size());
-    EXPECT_EQ(3, robotiqDist->getVelocityLimits().size());
-    EXPECT_EQ(3, robotiqDist->getAccelerationLimits().size());
-    EXPECT_EQ(4, robotiqFinger->getJoints().size()); // two motor joints maps to one DOF (dependent joints)
-    EXPECT_EQ(3, robotiqFinger->getDOF());
-    EXPECT_EQ(3, robotiqFinger->getBounds().first.size());
-    EXPECT_EQ(3, robotiqFinger->getBounds().second.size());
-    EXPECT_EQ(3, robotiqFinger->getVelocityLimits().size());
-    EXPECT_EQ(3, robotiqFinger->getAccelerationLimits().size());
+    EXPECT_EQ(3u, robotiqDist->getJoints().size());
+    EXPECT_EQ(3u, robotiqDist->getDOF());
+    EXPECT_EQ(3u, robotiqDist->getBounds().first.size());
+    EXPECT_EQ(3u, robotiqDist->getBounds().second.size());
+    EXPECT_EQ(3u, robotiqDist->getVelocityLimits().size());
+    EXPECT_EQ(3u, robotiqDist->getAccelerationLimits().size());
+    EXPECT_EQ(4u, robotiqFinger->getJoints().size()); // two motor joints maps to one DOF (dependent joints)
+    EXPECT_EQ(3u, robotiqFinger->getDOF());
+    EXPECT_EQ(3u, robotiqFinger->getBounds().first.size());
+    EXPECT_EQ(3u, robotiqFinger->getBounds().second.size());
+    EXPECT_EQ(3u, robotiqFinger->getVelocityLimits().size());
+    EXPECT_EQ(3u, robotiqFinger->getAccelerationLimits().size());
 
     // ParallelDevice functions
-    EXPECT_EQ(0, robotiqDist->getLegs().size()); // There should be no legs when using the junction concept.
-    EXPECT_EQ(3, robotiqDist->getJunctions().size());
+    EXPECT_EQ(0u, robotiqDist->getLegs().size()); // There should be no legs when using the junction concept.
+    EXPECT_EQ(3u, robotiqDist->getJunctions().size());
     ASSERT_GE(robotiqDist->getJunctions().size(), 3u);
-    ASSERT_EQ(2, robotiqDist->getJunctions()[0].size());
-    ASSERT_EQ(2, robotiqDist->getJunctions()[1].size());
-    ASSERT_EQ(2, robotiqDist->getJunctions()[2].size());
-    EXPECT_EQ(3, robotiqDist->getActiveJoints().size());
-    EXPECT_EQ(13, robotiqDist->getAllJoints().size());
-    EXPECT_EQ(12, robotiqDist->getFullDOF());
-    EXPECT_EQ(12, robotiqDist->getAllBounds().first.size());
-    EXPECT_EQ(12, robotiqDist->getAllBounds().second.size());
-    EXPECT_EQ(0, robotiqFinger->getLegs().size()); // There should be no legs when using the junction concept.
-    EXPECT_EQ(2, robotiqFinger->getJunctions().size());
-    ASSERT_GE(robotiqFinger->getJunctions().size(), 2);
-    ASSERT_EQ(2, robotiqFinger->getJunctions()[0].size());
-    ASSERT_EQ(2, robotiqFinger->getJunctions()[1].size());
-    EXPECT_EQ(4, robotiqFinger->getActiveJoints().size());
-    EXPECT_EQ(10, robotiqFinger->getAllJoints().size());
-    EXPECT_EQ(9, robotiqFinger->getFullDOF());
-    EXPECT_EQ(9, robotiqFinger->getAllBounds().first.size());
-    EXPECT_EQ(9, robotiqFinger->getAllBounds().second.size());
+    ASSERT_EQ(2u, robotiqDist->getJunctions()[0].size());
+    ASSERT_EQ(2u, robotiqDist->getJunctions()[1].size());
+    ASSERT_EQ(2u, robotiqDist->getJunctions()[2].size());
+    EXPECT_EQ(3u, robotiqDist->getActiveJoints().size());
+    EXPECT_EQ(13u, robotiqDist->getAllJoints().size());
+    EXPECT_EQ(12u, robotiqDist->getFullDOF());
+    EXPECT_EQ(12u, robotiqDist->getAllBounds().first.size());
+    EXPECT_EQ(12u, robotiqDist->getAllBounds().second.size());
+    EXPECT_EQ(0u, robotiqFinger->getLegs().size()); // There should be no legs when using the junction concept.
+    EXPECT_EQ(2u, robotiqFinger->getJunctions().size());
+    ASSERT_GE(robotiqFinger->getJunctions().size(), 2u);
+    ASSERT_EQ(2u, robotiqFinger->getJunctions()[0].size());
+    ASSERT_EQ(2u, robotiqFinger->getJunctions()[1].size());
+    EXPECT_EQ(4u, robotiqFinger->getActiveJoints().size());
+    EXPECT_EQ(10u, robotiqFinger->getAllJoints().size());
+    EXPECT_EQ(9u, robotiqFinger->getFullDOF());
+    EXPECT_EQ(9u, robotiqFinger->getAllBounds().first.size());
+    EXPECT_EQ(9u, robotiqFinger->getAllBounds().second.size());
 
-    ASSERT_EQ(3, robotiqDist->getQ(state).size());
-    ASSERT_EQ(12, robotiqDist->getFullQ(state).size());
-    ASSERT_EQ(3, robotiqFinger->getQ(state).size());
-    ASSERT_EQ(9, robotiqFinger->getFullQ(state).size());
+    ASSERT_EQ(3u, robotiqDist->getQ(state).size());
+    ASSERT_EQ(12u, robotiqDist->getFullQ(state).size());
+    ASSERT_EQ(3u, robotiqFinger->getQ(state).size());
+    ASSERT_EQ(9u, robotiqFinger->getFullQ(state).size());
 
     // Set Q
     robotiqDist->setQ(Q(3,0.,0.04,0.),state);

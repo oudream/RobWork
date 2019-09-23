@@ -67,22 +67,22 @@ TEST(ParallelLeg, Common) {
 	State state = sstruct.getDefaultState();
 
 	ParallelLeg leg(frames);
-	EXPECT_EQ(8,leg.getKinematicChain().size());
+	EXPECT_EQ(8u,leg.getKinematicChain().size());
 	EXPECT_EQ(base,leg.getBase());
 	EXPECT_EQ(Fend,leg.getEnd());
-	EXPECT_EQ(1,leg.nrOfActiveJoints());
-	EXPECT_EQ(3,leg.nrOfPassiveJoints());
-	EXPECT_EQ(4,leg.nrOfJoints());
-	EXPECT_EQ(1,leg.getActuatedJoints().size());
-	EXPECT_EQ(3,leg.getUnactuatedJoints().size());
-	EXPECT_EQ(4,leg.getJointDOFs());
-	EXPECT_EQ(4,leg.getQ(state).size());
+	EXPECT_EQ(1u,leg.nrOfActiveJoints());
+	EXPECT_EQ(3u,leg.nrOfPassiveJoints());
+	EXPECT_EQ(4u,leg.nrOfJoints());
+	EXPECT_EQ(1u,leg.getActuatedJoints().size());
+	EXPECT_EQ(3u,leg.getUnactuatedJoints().size());
+	EXPECT_EQ(4u,leg.getJointDOFs());
+	EXPECT_EQ(4u,leg.getQ(state).size());
 	EXPECT_TRUE(leg.baseTend(state).equal(Transform3D<>(Vector3D<>(lAB,0,0),RPY<>(angleFb,0,0))));
-	EXPECT_EQ(6,leg.baseJend(state).size1());
-	EXPECT_EQ(4,leg.baseJend(state).size2());
+	EXPECT_EQ(6u,leg.baseJend(state).size1());
+	EXPECT_EQ(4u,leg.baseJend(state).size2());
 
-	ASSERT_EQ(6,leg.baseJend(state).size1());
-	ASSERT_EQ(4,leg.baseJend(state).size2());
+	ASSERT_EQ(6u,leg.baseJend(state).size1());
+	ASSERT_EQ(4u,leg.baseJend(state).size2());
 	Eigen::Matrix<double, 6, 4> jacRef;
 	jacRef << 0,  -lAB, -lAB, std::cos(angleFb),
 			0,     lGaGb, lFaD, std::sin(angleFb),
@@ -93,7 +93,7 @@ TEST(ParallelLeg, Common) {
 	EXPECT_TRUE((leg.baseJend(state).e()-jacRef).isZero(std::numeric_limits<double>::epsilon()));
 
 	leg.setQ(Q(4,0.1,0.2,0.3,0.4),state);
-	ASSERT_GE(4,leg.getQ(state).size());
+	ASSERT_GE(4u,leg.getQ(state).size());
 	EXPECT_EQ(0.1,leg.getQ(state)[0]);
 	EXPECT_EQ(0.2,leg.getQ(state)[1]);
 	EXPECT_EQ(0.3,leg.getQ(state)[2]);
@@ -103,9 +103,9 @@ TEST(ParallelLeg, Common) {
 	EXPECT_EQ(0.3,A->getData(state)[2]);
 	EXPECT_EQ(0.4,A->getData(state)[3]);
 
-	ASSERT_GE(1,leg.getActuatedJoints().size());
+	ASSERT_GE(1u,leg.getActuatedJoints().size());
 	EXPECT_EQ(Fa,leg.getActuatedJoints()[0]);
-	ASSERT_GE(3,leg.getUnactuatedJoints().size());
+	ASSERT_GE(3u,leg.getUnactuatedJoints().size());
 	EXPECT_EQ(A,leg.getUnactuatedJoints()[0]);
 	EXPECT_EQ(B,leg.getUnactuatedJoints()[1]);
 	EXPECT_EQ(Fb,leg.getUnactuatedJoints()[2]);

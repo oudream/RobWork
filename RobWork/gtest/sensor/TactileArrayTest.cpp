@@ -31,10 +31,12 @@ TEST(TactileArray, TactileArrayModel) {
 	EXPECT_EQ("Model", model.getName());
 	EXPECT_EQ(height-1, model.getHeight());
 	EXPECT_EQ(width-1, model.getWidth());
-	EXPECT_EQ(height-1, model.getCenters().shape()[1]);
-	EXPECT_EQ(width-1, model.getCenters().shape()[0]);
-	EXPECT_EQ(height-1, model.getNormals().shape()[1]);
-	EXPECT_EQ(width-1, model.getNormals().shape()[0]);
-	EXPECT_EQ(height, model.getVertexGrid().shape()[1]);
-	EXPECT_EQ(width, model.getVertexGrid().shape()[0]);
+	EXPECT_GE(height,0);
+	EXPECT_GE(width,0);
+	EXPECT_EQ(size_t(height-1u), model.getCenters().shape()[1]);
+	EXPECT_EQ(size_t(width-1u), model.getCenters().shape()[0]);
+	EXPECT_EQ(size_t(height-1u), model.getNormals().shape()[1]);
+	EXPECT_EQ(size_t(width-1u), model.getNormals().shape()[0]);
+	EXPECT_EQ(size_t(height), model.getVertexGrid().shape()[1]);
+	EXPECT_EQ(size_t(width), model.getVertexGrid().shape()[0]);
 }

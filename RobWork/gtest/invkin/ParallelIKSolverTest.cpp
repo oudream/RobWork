@@ -61,12 +61,12 @@ TEST(ParallelDevice, Robotiq) {
 	{
 		std::vector<ParallelIKSolver::Target> targets(1);
 		targets[0] = ParallelIKSolver::Target(fingerLeft,Transform3D<>(Vector3D<>::x()*(-0.015),EAA<>(0,0,-0.5)),enabled);
-		EXPECT_EQ(2,targets[0].dof());
+		EXPECT_EQ(2u,targets[0].dof());
 
 		State state = wc->getDefaultState();
 		const std::vector<Q> solutions = solver.solve(targets,state);
-		EXPECT_EQ(1,solutions.size());
-		ASSERT_GE(solutions.size(),1);
+		EXPECT_EQ(1u,solutions.size());
+		ASSERT_GE(solutions.size(),1u);
 
 		EXPECT_NEAR(0.61176270099,solutions[0][0],1e-11);
 		EXPECT_NEAR(0.31731028813,solutions[0][1],1e-11);
@@ -91,12 +91,12 @@ TEST(ParallelDevice, Robotiq) {
 	{
 		std::vector<ParallelIKSolver::Target> targets(1);
 		targets[0] = ParallelIKSolver::Target(fingerRight,Transform3D<>(Vector3D<>::x()*(0.015),EAA<>(0,0,0.5)),enabled);
-		EXPECT_EQ(2,targets[0].dof());
+		EXPECT_EQ(2u,targets[0].dof());
 
 		State state = wc->getDefaultState();
 		const std::vector<Q> solutions = solver.solve(targets,state);
-		EXPECT_EQ(1,solutions.size());
-		ASSERT_GE(solutions.size(),1);
+		EXPECT_EQ(1u,solutions.size());
+		ASSERT_GE(solutions.size(),1u);
 
 		EXPECT_NEAR(0.61176270099,solutions[0][0],1e-11);
 		EXPECT_NEAR(0.40223246809,solutions[0][1],1e-11);
@@ -125,8 +125,8 @@ TEST(ParallelDevice, Robotiq) {
 
 		State state = wc->getDefaultState();
 		const std::vector<Q> solutions = solver.solve(targets,state);
-		EXPECT_EQ(1,solutions.size());
-		ASSERT_GE(solutions.size(),1);
+		EXPECT_EQ(1u,solutions.size());
+		ASSERT_GE(solutions.size(),1u);
 
 		EXPECT_NEAR(0.61176270099,solutions[0][0],1e-11);
 		EXPECT_NEAR(0.31731028813,solutions[0][1],1e-11);

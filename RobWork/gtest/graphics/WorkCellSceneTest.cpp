@@ -136,11 +136,11 @@ TEST(WorkCellScene, Test) {
 
 	// Checks that world frame has frame 1 as child
 	EXPECT_EQ("Frame1",frame1_GN->getName());
-	EXPECT_EQ(1,world->nrOfChildren());
+	EXPECT_EQ(1u,world->nrOfChildren());
 	EXPECT_TRUE(world->hasChild("Frame1"));
 	EXPECT_TRUE(world->hasChild(frame1_GN));
 	EXPECT_TRUE(frame1_GN->hasParent(world));
-	EXPECT_EQ(0,frame1_GN->nrOfChildren());
+	EXPECT_EQ(0u,frame1_GN->nrOfChildren());
 
 	MovableFrame* frame2 = new MovableFrame("Frame2");
 	GroupNode::Ptr frame2_GN = WSscene->getNode(frame2);
@@ -152,17 +152,17 @@ TEST(WorkCellScene, Test) {
 
 	// Check that frame2 has been added as a child of frame one and not WORLD
 	EXPECT_EQ("Frame2",frame2_GN->getName());
-	EXPECT_EQ(1,frame1_GN->nrOfChildren());
+	EXPECT_EQ(1u,frame1_GN->nrOfChildren());
 	EXPECT_TRUE(frame1_GN->hasChild(frame2_GN));
 	EXPECT_TRUE(frame1_GN->hasChild("Frame2"));
-	EXPECT_EQ(0,frame2_GN->nrOfChildren());
-	EXPECT_EQ(1,world->nrOfChildren());
+	EXPECT_EQ(0u,frame2_GN->nrOfChildren());
+	EXPECT_EQ(1u,world->nrOfChildren());
 	EXPECT_TRUE(frame2_GN->hasParent(frame1_GN));
 	ws->remove(frame2);
 
 	// Check that frame2 has been removed from the WorkCellScene
 	EXPECT_TRUE(ws->findFrame("Frame2") == NULL);
-	EXPECT_EQ(0,frame1_GN->nrOfChildren());
+	EXPECT_EQ(0u,frame1_GN->nrOfChildren());
 	EXPECT_FALSE(frame1_GN->hasChild("Frame2"));
 	EXPECT_FALSE(frame1_GN->hasChild(frame2_GN));
 
@@ -180,12 +180,12 @@ TEST(WorkCellScene, Test) {
 	EXPECT_TRUE(WSscene->removeDrawables(frame1));
 	MovableFrame* frame3 = new MovableFrame("Frame3");
 	ws->addFrame(frame3,frame1);
-	EXPECT_EQ(0,WSscene->getDrawables().size());
+	EXPECT_EQ(0u,WSscene->getDrawables().size());
 	const DummyDrawable::Ptr draw1 = ownedPtr(new DummyDrawable("draw1"));
 	WSscene->addDrawable(draw1,frame3);
-	EXPECT_EQ(1,WSscene->getDrawables().size());
+	EXPECT_EQ(1u,WSscene->getDrawables().size());
 	EXPECT_TRUE(WSscene->removeDrawables(frame3));
-	EXPECT_EQ(0,WSscene->getDrawables().size());
+	EXPECT_EQ(0u,WSscene->getDrawables().size());
 
 	WSscene->setWorkCell(NULL);
 }

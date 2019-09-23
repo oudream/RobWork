@@ -112,7 +112,7 @@ TEST_F(TriangulateTest, processPoints) {
     vector<int> result;
     // Triangulate the square:
     ASSERT_TRUE(tr.processPoints(contour_square,result));
-    EXPECT_EQ(result.size(),6);
+    EXPECT_EQ(result.size(),6u);
 
 
     // Triangle 1
@@ -132,7 +132,7 @@ TEST_F(TriangulateTest, processPoints) {
 
     // Triangulate the octagon:
     ASSERT_TRUE(tr.processPoints(contour_octagon,result));
-    EXPECT_EQ(result.size(),18); // six triangles expected
+    EXPECT_EQ(result.size(),18u); // six triangles expected
 
     // Triangle 1
     EXPECT_EQ(result[0],7);
@@ -169,7 +169,7 @@ TEST_F(TriangulateTest, processPoints3D) {
     vector<int> result;
     // Triangulate the square:
     ASSERT_TRUE(tr.processPoints(contour_square3D,result));
-    EXPECT_EQ(result.size(),6);
+    EXPECT_EQ(result.size(),6u);
 
     // Triangle 1
     EXPECT_EQ(result[0],3);
