@@ -34,7 +34,7 @@ TEST(HyperSphereTest, 1D) {
 TEST(HyperSphereTest, 2D) {
 	static const double delta = 0.1; // radians
 	const HyperSphere sphere(2);
-	EXPECT_EQ(2,sphere.getDimensions());
+	EXPECT_EQ(2u,sphere.getDimensions());
 	const std::vector<Eigen::VectorXd> spherical = sphere.uniformDistributionSpherical(delta);
 	const std::vector<Eigen::VectorXd> cartesian = sphere.uniformDistributionCartesian(delta);
 	EXPECT_EQ(spherical.size(), cartesian.size());
@@ -56,11 +56,11 @@ TEST(HyperSphereTest, 2D) {
 TEST(HyperSphereTest, 3D) {
 	static const double delta = 0.1; // radians
 	const HyperSphere sphere(3);
-	EXPECT_EQ(3,sphere.getDimensions());
+	EXPECT_EQ(3u,sphere.getDimensions());
 	const std::vector<Eigen::VectorXd> spherical = sphere.uniformDistributionSpherical(delta);
 	const std::vector<Eigen::VectorXd> cartesian = sphere.uniformDistributionCartesian(delta);
 	EXPECT_EQ(spherical.size(), cartesian.size());
-	EXPECT_EQ(1258,spherical.size());
+	EXPECT_EQ(1258u,spherical.size());
 	for (std::size_t i = 0; i < std::min(spherical.size(),cartesian.size()); i++) {
 		EXPECT_EQ(2u,spherical[i].size());
 		EXPECT_EQ(3u,cartesian[i].size());
@@ -77,11 +77,11 @@ TEST(HyperSphereTest, 3D) {
 TEST(HyperSphereTest, 4D) {
 	static const double delta = 0.1; // radians
 	const HyperSphere sphere(4);
-	EXPECT_EQ(4,sphere.getDimensions());
+	EXPECT_EQ(4u,sphere.getDimensions());
 	const std::vector<Eigen::VectorXd> spherical = sphere.uniformDistributionSpherical(delta);
 	const std::vector<Eigen::VectorXd> cartesian = sphere.uniformDistributionCartesian(delta);
 	EXPECT_EQ(spherical.size(), cartesian.size());
-	EXPECT_EQ(19739,spherical.size());
+	EXPECT_EQ(19739u,spherical.size());
 	for (std::size_t i = 0; i < std::min(spherical.size(),cartesian.size()); i++) {
 		EXPECT_EQ(3,spherical[i].size());
 		EXPECT_EQ(4,cartesian[i].size());
@@ -100,11 +100,11 @@ TEST(HyperSphereTest, 4D) {
 TEST(HyperSphereTest, 5D) {
 	static const double delta = 0.12; // radians
 	const HyperSphere sphere(5);
-	EXPECT_EQ(5,sphere.getDimensions());
+	EXPECT_EQ(5u,sphere.getDimensions());
 	const std::vector<Eigen::VectorXd> spherical = sphere.uniformDistributionSpherical(delta);
 	const std::vector<Eigen::VectorXd> cartesian = sphere.uniformDistributionCartesian(delta);
 	EXPECT_EQ(spherical.size(), cartesian.size());
-	EXPECT_EQ(126813,spherical.size());
+	EXPECT_EQ(126813u,spherical.size());
 	for (std::size_t i = 0; i < std::min(spherical.size(),cartesian.size()); i++) {
 		EXPECT_EQ(4u,spherical[i].size());
 		EXPECT_EQ(5u,cartesian[i].size());
@@ -127,7 +127,7 @@ TEST(HyperSphereTest, 6D) {
 	const std::vector<Eigen::VectorXd> spherical = sphere.uniformDistributionSpherical(delta);
 	const std::vector<Eigen::VectorXd> cartesian = sphere.uniformDistributionCartesian(delta);
 	EXPECT_EQ(spherical.size(), cartesian.size());
-	EXPECT_EQ(295749,spherical.size());
+	EXPECT_EQ(295749u,spherical.size());
 	for (std::size_t i = 0; i < std::min(spherical.size(),cartesian.size()); i++) {
 		EXPECT_EQ(5u,spherical[i].size());
 		EXPECT_EQ(6u,cartesian[i].size());

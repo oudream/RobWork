@@ -39,15 +39,15 @@ TEST(PluginTest, loadDirectPlugin) {
 
 	const std::vector<std::string> ids = plugin->getExtensionPointIDs();
 	EXPECT_EQ(3u, ids.size());
-	if (ids.size() >= 3) {
+	if (ids.size() >= 3u) {
 		EXPECT_EQ("ExtensionId1", ids[0]);
 		EXPECT_EQ("ExtensionId2", ids[1]);
 		EXPECT_EQ("ExtensionId3", ids[2]);
 	}
 
 	const std::vector<Extension::Descriptor> extDesc = plugin->getExtensionDescriptors();
-	EXPECT_EQ(3, extDesc.size());
-	if (ids.size() >= 3) {
+	EXPECT_EQ(3u, extDesc.size());
+	if (ids.size() >= 3u) {
 		EXPECT_EQ("ExtensionId1", extDesc[0].id);
 		EXPECT_EQ("ExtensionId2", extDesc[1].id);
 		EXPECT_EQ("ExtensionId3", extDesc[2].id);
@@ -85,16 +85,16 @@ TEST(PluginTest, loadLazyPlugin) {
 	EXPECT_EQ("1.0", plugin->getVersion());
 
 	const std::vector<std::string> ids = plugin->getExtensionPointIDs();
-	EXPECT_EQ(3, ids.size());
-	if (ids.size() >= 3) {
+	EXPECT_EQ(3u, ids.size());
+	if (ids.size() >= 3u) {
 		EXPECT_EQ("ExtensionId1", ids[0]);
 		EXPECT_EQ("ExtensionId2", ids[1]);
 		EXPECT_EQ("ExtensionId3", ids[2]);
 	}
 
 	const std::vector<Extension::Descriptor> extDesc = plugin->getExtensionDescriptors();
-	EXPECT_EQ(3, extDesc.size());
-	if (ids.size() >= 3) {
+	EXPECT_EQ(3u, extDesc.size());
+	if (ids.size() >= 3u) {
 		EXPECT_EQ("ExtensionId1", extDesc[0].id);
 		EXPECT_EQ("ExtensionId2", extDesc[1].id);
 		EXPECT_EQ("ExtensionId3", extDesc[2].id);

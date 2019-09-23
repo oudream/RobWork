@@ -95,7 +95,7 @@ std::vector<std::string> strategies = DistanceMultiStrategy::Factory::getStrateg
 }
 
 TEST(Factory, DistanceMultiStrategy) {
-	EXPECT_GT(strategies.size(),0);
+	EXPECT_GT(strategies.size(),0u);
 	for (std::size_t i = 0; i < strategies.size(); i++) {
 		EXPECT_TRUE(DistanceMultiStrategy::Factory::hasStrategy(strategies[i]));
 		EXPECT_FALSE(DistanceMultiStrategy::Factory::makeStrategy(strategies[i]).isNull());
