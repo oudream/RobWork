@@ -167,7 +167,7 @@ namespace {
     #define HELVETICA_18 NULL
     #define HELVETICA_12 NULL
     #define HELVETICA_10 NULL
-    namespace {void drawText(Vector3D<> pos) {}}
+    namespace {void drawText(Vector3D<> pos,std::string text,void* font) {}}
     void RenderText::findTextDimensions() {
         _haveGlut=false;
     }
