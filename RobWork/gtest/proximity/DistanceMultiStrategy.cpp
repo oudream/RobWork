@@ -135,11 +135,11 @@ TEST_P(DistanceMultiStrategyTest, Plane_Triangle) {
 	EXPECT_EQ(modelA,res.a);
 	EXPECT_EQ(modelB,res.b);
 	// todo: change the following from 2 to 1 when redundant pairs can be avoided in PQP
-	ASSERT_EQ(2,res.p1s.size());
-	ASSERT_EQ(2,res.p2s.size());
-	ASSERT_EQ(2,res.p1prims.size());
-	ASSERT_EQ(2,res.p2prims.size());
-	ASSERT_EQ(2,res.distances.size());
+	ASSERT_EQ(2u,res.p1s.size());
+	ASSERT_EQ(2u,res.p2s.size());
+	ASSERT_EQ(2u,res.p1prims.size());
+	ASSERT_EQ(2u,res.p2prims.size());
+	ASSERT_EQ(2u,res.distances.size());
 	EXPECT_EQ(res.p1,res.p1s[0]);
 	EXPECT_EQ(res.p2,res.p2s[0]);
 	EXPECT_EQ(res.p1[0],res.p2[0]);
@@ -184,11 +184,11 @@ TEST_P(DistanceMultiStrategyTest, Plane_Cuboid) {
 	EXPECT_EQ(modelA,res.a);
 	EXPECT_EQ(modelB,res.b);
 	// todo: change the following from 12 to 11 when redundant pairs can be avoided in PQP
-	ASSERT_EQ(12,res.p1s.size());
-	ASSERT_EQ(12,res.p2s.size());
-	ASSERT_EQ(12,res.p1prims.size());
-	ASSERT_EQ(12,res.p2prims.size());
-	ASSERT_EQ(12,res.distances.size());
+	ASSERT_EQ(12u,res.p1s.size());
+	ASSERT_EQ(12u,res.p2s.size());
+	ASSERT_EQ(12u,res.p1prims.size());
+	ASSERT_EQ(12u,res.p2prims.size());
+	ASSERT_EQ(12u,res.distances.size());
 	EXPECT_EQ(res.p1,res.p1s[0]);
 	EXPECT_EQ(res.p2,res.p2s[0]);
 	EXPECT_EQ(res.p1[0],res.p2[0]);

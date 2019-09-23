@@ -35,9 +35,9 @@ TEST(ImageLoaderPGM, loadImage) {
 	EXPECT_FALSE(raw.isNull());
 	//EXPECT_FALSE(ascii.isNull());
 
-	EXPECT_EQ(31,  raw->getWidth());
-	EXPECT_EQ(5,   raw->getHeight());
-	EXPECT_EQ(1,   raw->getNrOfChannels());
+	EXPECT_EQ(31u,  raw->getWidth());
+	EXPECT_EQ(5u,   raw->getHeight());
+	EXPECT_EQ(1u,   raw->getNrOfChannels());
 	EXPECT_EQ(207, raw->getPixelValuei(15,2,0));
 	EXPECT_EQ(207, raw->getPixelValuei(15,2,1));
 	EXPECT_EQ(207, raw->getPixelValuei(15,2,2));

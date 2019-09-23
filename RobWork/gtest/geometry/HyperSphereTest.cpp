@@ -25,7 +25,7 @@ using rw::geometry::HyperSphere;
 
 TEST(HyperSphereTest, 1D) {
 	const HyperSphere sphere(1);
-	EXPECT_EQ(1,sphere.getDimensions());
+	EXPECT_EQ(1u,sphere.getDimensions());
 	EXPECT_DOUBLE_EQ(2,sphere.area()); // two end-points
 	EXPECT_DOUBLE_EQ(2,sphere.volume()); // length between end-points
 }
@@ -38,12 +38,12 @@ TEST(HyperSphereTest, 2D) {
 	const std::vector<Eigen::VectorXd> spherical = sphere.uniformDistributionSpherical(delta);
 	const std::vector<Eigen::VectorXd> cartesian = sphere.uniformDistributionCartesian(delta);
 	EXPECT_EQ(spherical.size(), cartesian.size());
-	EXPECT_EQ(63,spherical.size());
+	EXPECT_EQ(63u,spherical.size());
 	for (std::size_t i = 0; i < std::min(spherical.size(),cartesian.size()); i++) {
-		EXPECT_EQ(1,spherical[i].size());
-		EXPECT_EQ(2,cartesian[i].size());
-		ASSERT_GE(spherical[i].size(),1);
-		ASSERT_GE(cartesian[i].size(),2);
+		EXPECT_EQ(1u,spherical[i].size());
+		EXPECT_EQ(2u,cartesian[i].size());
+		ASSERT_GE(spherical[i].size(),1u);
+		ASSERT_GE(cartesian[i].size(),2u);
 		EXPECT_NEAR(delta*(0.5+i),spherical[i][0],1e-14);
 		EXPECT_NEAR(std::cos(delta*(0.5+i)),cartesian[i][0],1e-14);
 		EXPECT_NEAR(std::sin(delta*(0.5+i)),cartesian[i][1],1e-14);
@@ -62,10 +62,10 @@ TEST(HyperSphereTest, 3D) {
 	EXPECT_EQ(spherical.size(), cartesian.size());
 	EXPECT_EQ(1258,spherical.size());
 	for (std::size_t i = 0; i < std::min(spherical.size(),cartesian.size()); i++) {
-		EXPECT_EQ(2,spherical[i].size());
-		EXPECT_EQ(3,cartesian[i].size());
-		ASSERT_GE(spherical[i].size(),2);
-		ASSERT_GE(cartesian[i].size(),3);
+		EXPECT_EQ(2u,spherical[i].size());
+		EXPECT_EQ(3u,cartesian[i].size());
+		ASSERT_GE(spherical[i].size(),2u);
+		ASSERT_GE(cartesian[i].size(),3u);
 		EXPECT_GE(spherical[i][0],delta/2);
 		EXPECT_LE(spherical[i][0],Pi);
 	}
@@ -85,8 +85,8 @@ TEST(HyperSphereTest, 4D) {
 	for (std::size_t i = 0; i < std::min(spherical.size(),cartesian.size()); i++) {
 		EXPECT_EQ(3,spherical[i].size());
 		EXPECT_EQ(4,cartesian[i].size());
-		ASSERT_GE(spherical[i].size(),3);
-		ASSERT_GE(cartesian[i].size(),4);
+		ASSERT_GE(spherical[i].size(),3u);
+		ASSERT_GE(cartesian[i].size(),4u);
 		EXPECT_GE(spherical[i][0],delta/2);
 		for (unsigned int j = 0; j <= 1; j++) {
 			EXPECT_GE(spherical[i][j],0);
@@ -106,10 +106,10 @@ TEST(HyperSphereTest, 5D) {
 	EXPECT_EQ(spherical.size(), cartesian.size());
 	EXPECT_EQ(126813,spherical.size());
 	for (std::size_t i = 0; i < std::min(spherical.size(),cartesian.size()); i++) {
-		EXPECT_EQ(4,spherical[i].size());
-		EXPECT_EQ(5,cartesian[i].size());
-		ASSERT_GE(spherical[i].size(),4);
-		ASSERT_GE(cartesian[i].size(),5);
+		EXPECT_EQ(4u,spherical[i].size());
+		EXPECT_EQ(5u,cartesian[i].size());
+		ASSERT_GE(spherical[i].size(),4u);
+		ASSERT_GE(cartesian[i].size(),5u);
 		EXPECT_GE(spherical[i][0],delta/2);
 		for (unsigned int j = 0; j <= 2; j++) {
 			EXPECT_GE(spherical[i][j],0);
@@ -123,16 +123,16 @@ TEST(HyperSphereTest, 5D) {
 TEST(HyperSphereTest, 6D) {
 	static const double delta = 0.16; // radians
 	const HyperSphere sphere(6);
-	EXPECT_EQ(6,sphere.getDimensions());
+	EXPECT_EQ(6u,sphere.getDimensions());
 	const std::vector<Eigen::VectorXd> spherical = sphere.uniformDistributionSpherical(delta);
 	const std::vector<Eigen::VectorXd> cartesian = sphere.uniformDistributionCartesian(delta);
 	EXPECT_EQ(spherical.size(), cartesian.size());
 	EXPECT_EQ(295749,spherical.size());
 	for (std::size_t i = 0; i < std::min(spherical.size(),cartesian.size()); i++) {
-		EXPECT_EQ(5,spherical[i].size());
-		EXPECT_EQ(6,cartesian[i].size());
-		ASSERT_GE(spherical[i].size(),5);
-		ASSERT_GE(cartesian[i].size(),6);
+		EXPECT_EQ(5u,spherical[i].size());
+		EXPECT_EQ(6u,cartesian[i].size());
+		ASSERT_GE(spherical[i].size(),5u);
+		ASSERT_GE(cartesian[i].size(),6u);
 		EXPECT_GE(spherical[i][0],delta/2);
 		for (unsigned int j = 0; j <= 3; j++) {
 			EXPECT_GE(spherical[i][j],0);
@@ -145,7 +145,7 @@ TEST(HyperSphereTest, 6D) {
 
 TEST(HyperSphereTest, 7D) {
 	const HyperSphere sphere(7);
-	EXPECT_EQ(7,sphere.getDimensions());
+	EXPECT_EQ(7u,sphere.getDimensions());
 	EXPECT_DOUBLE_EQ(Pi*Pi*Pi*16/15,sphere.area());
 	EXPECT_DOUBLE_EQ(Pi*Pi*Pi*16/105,sphere.volume());
 }

@@ -38,7 +38,7 @@ TEST(PluginTest, loadDirectPlugin) {
 	EXPECT_EQ("1.2.3", plugin->getVersion());
 
 	const std::vector<std::string> ids = plugin->getExtensionPointIDs();
-	EXPECT_EQ(3, ids.size());
+	EXPECT_EQ(3u, ids.size());
 	if (ids.size() >= 3) {
 		EXPECT_EQ("ExtensionId1", ids[0]);
 		EXPECT_EQ("ExtensionId2", ids[1]);
