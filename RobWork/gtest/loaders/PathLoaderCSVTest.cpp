@@ -73,7 +73,7 @@ TEST_F(PathLoaderCSVTest,loadStatePath) {
     ASSERT_FALSE(wc1.isNull());
     StatePath path = PathLoaderCSV::loadStatePath(*wc1, NoTimestampFile);
 
-    EXPECT_EQ(path.size(),8); // test path length
+    EXPECT_EQ(path.size(),8u); // test path length
 
     vector<double> first_element = robot->getQ(path.front()).toStdVector();
     vector<double> last_element = robot->getQ(path.back()).toStdVector();
