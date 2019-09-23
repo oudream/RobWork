@@ -48,7 +48,7 @@ namespace rwlibs { namespace opengl {
         
 
         void findTextDimensions();
-        std::vector<rw::math::Vector3D<> > getLabelCorners(rw::math::Transform3D<> fTc, double scale_x, double scale_y, int move_x , int move_y) const;
+        std::vector<rw::math::Vector3D<> > getLabelCorners(rw::math::Transform3D<> fTc, rw::math::Vector3D<> pos, double scale_x, double scale_y, int move_x , int move_y) const;
 
         
 

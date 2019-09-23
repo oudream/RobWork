@@ -82,10 +82,10 @@ namespace {
         glEnable( GL_POLYGON_OFFSET_FILL);
         glPolygonOffset(1,1);
         glBegin(GL_QUADS);
-        glVertex3f(pos1[0], pos1[1], pos1[2] );  // vertex 1
-        glVertex3f(pos2[0], pos2[1],pos2[2]); // vertex 2
-        glVertex3f(pos3[0], pos3[1],pos3[2]); // vertex 3
-        glVertex3f(pos4[0], pos4[1],pos4[2]); // vertex 4
+            glVertex3f(pos1[0], pos1[1], pos1[2] );  // vertex 1
+            glVertex3f(pos2[0], pos2[1],pos2[2]); // vertex 2
+            glVertex3f(pos3[0], pos3[1],pos3[2]); // vertex 3
+            glVertex3f(pos4[0], pos4[1],pos4[2]); // vertex 4
         glEnd();
         glDisable(GL_POLYGON_OFFSET_FILL);
 
@@ -100,10 +100,10 @@ namespace {
         }
 
         glBegin(GL_QUADS);
-        glVertex3f(pos1[0], pos1[1], pos1[2] );  // vertex 1
-        glVertex3f(pos2[0], pos2[1],pos2[2]); // vertex 2
-        glVertex3f(pos3[0], pos3[1],pos3[2]); // vertex 3
-        glVertex3f(pos4[0], pos4[1],pos4[2]); // vertex 4
+            glVertex3f(pos1[0], pos1[1], pos1[2] );  // vertex 1
+            glVertex3f(pos2[0], pos2[1],pos2[2]); // vertex 2
+            glVertex3f(pos3[0], pos3[1],pos3[2]); // vertex 3
+            glVertex3f(pos4[0], pos4[1],pos4[2]); // vertex 4
         glEnd();
         glDisable(GL_BLEND);
         glPopAttrib();
@@ -121,24 +121,27 @@ namespace {
 
         return std::abs(p2D_1[0]-p2D_2[0]);
     }
-    void moveCloserToCam(Transform3D<> fTc, Vector3D<> &pos, double distance)
+    void moveCloserToCam(Transform3D<> fTc, Vector3D<> &pos, double distance, SceneCamera::Ptr cam)
     {
-
-        std::cout << "Cam Pos: " << fTc.P() << std::endl;
-        std::cout << "Pos    : " << pos << std::endl;
-        //Transform3D<double> wTc = cam->getTransform();
-        //Transform3D<double> cTw = inverse(wTc);
-        //pos=cTw*pos;
-
         Vector3D<> diff = fTc.P()-pos;
-
-        std::cout << "Dif     : " << diff << std::endl;
         double movePercent = distance/diff.norm2();
+
+        // makes sure the label isn't removed due to being to close to the camera
+        double zNear = 1.02*cam->getProjectionMatrix().getClipPlanes().first;
+        double max_movePercent = (diff.norm2()-zNear)/diff.norm2();
+
+        if (movePercent > max_movePercent) {
+            movePercent = 0.90 * max_movePercent;
+        }
+
+        //make sure the label isn't to close in general
         if (movePercent > 0.90) {
             movePercent = 0.9;
         }
+
+        std::cout << "movePercent: " << movePercent << std::endl;
         pos+=diff*movePercent;
-        //pos=wTc*pos;
+
     }
 }
 
@@ -177,8 +180,6 @@ RenderText::RenderText(std::string text, Frame::Ptr frame):_frame(frame),_font(H
     findTextDimensions();
 }
 
-
-
 void RenderText::draw(const DrawableNode::RenderInfo& info, DrawableNode::DrawType type, double alpha) const
 {   
     if (_haveGlut && !info._cam.isNull()) {
@@ -187,31 +188,36 @@ void RenderText::draw(const DrawableNode::RenderInfo& info, DrawableNode::DrawTy
         Transform3D<> wTc = cam->getTransform();
         Transform3D<> fTc = inverse(wTf)*wTc;
         
-        //Drawing text
-        Vector3D<> pos(0,0,0);
-        moveCloserToCam(fTc,pos,0.5); 
-        drawText(pos,_text,_font);
+        Vector3D<> pos(0,0,0);              //Initialize label position in frame
+        moveCloserToCam(fTc,pos,0.5,cam);       //Move the label closer to the camera to avoid, the 3D model to obscure the label
+        drawText(pos,_text,_font);          //Draw the text
 
-        getLabelCorners(fTc,1,1,0,0);
-        Vector3D<> posCam;
-        double ppm = pixelPerMeter(fTc,pos,posCam);
-        double width = _textWidth/ppm;
-        double height = _textHight/ppm;
-        double posX = 0/ppm;
-        double posY = -5/ppm;
+        //Get the corners for the label box
+        std::vector<rw::math::Vector3D<> > corners = getLabelCorners(fTc,pos,1,1,0,0);
 
-        Vector3D<> pos1 = fTc*(posCam+Vector3D<>(posX       ,posY         ,0));
-        Vector3D<> pos2 = fTc*(posCam+Vector3D<>(width+posX ,posY         ,0));
-        Vector3D<> pos3 = fTc*(posCam+Vector3D<>(width+posX ,height+posY ,0));
-        Vector3D<> pos4 = fTc*(posCam+Vector3D<>(posX       ,height+posY ,0));
-
-        renderSquare(pos1,pos2,pos3,pos4, {255,255,255,float(alpha)}, {0.5,0.5,0.5,float(alpha)});
+        //Render the label bounding box
+        renderSquare(corners[0],corners[1],corners[2],corners[3], {255,255,255,float(alpha)}, {0.5,0.5,0.5,float(alpha)});
     }
 }
 
-std::vector<rw::math::Vector3D<> > RenderText::getLabelCorners(Transform3D<> fTc, double scale_x, double scale_y, int move_x , int move_y) const
+std::vector<rw::math::Vector3D<> > RenderText::getLabelCorners(Transform3D<> fTc, Vector3D<> pos, double scale_x, double scale_y, int move_x , int move_y) const
 {
-    return std::vector<rw::math::Vector3D<> >();
+    Vector3D<> posCam;
+    double ppm = pixelPerMeter(fTc,pos,posCam);
+    double width = scale_x*_textWidth/ppm;
+    double height = scale_y*_textHight/ppm;
+    double posX = move_x/ppm;
+    double posY = (move_y-5*scale_y)/ppm;
+
+    double offset=-0.00001;
+    if (Vector3D<> (fTc.P() - pos).norm2() < 0.01 ) {
+        offset=0;
+    }
+    Vector3D<> pos1 = fTc*(posCam+Vector3D<>(posX       ,posY           , offset));
+    Vector3D<> pos2 = fTc*(posCam+Vector3D<>(width+posX ,posY           , offset));
+    Vector3D<> pos3 = fTc*(posCam+Vector3D<>(width+posX ,height+posY    , offset));
+    Vector3D<> pos4 = fTc*(posCam+Vector3D<>(posX       ,height+posY    , offset));
+    return {pos1,pos2,pos3,pos4};
 }
 
 
