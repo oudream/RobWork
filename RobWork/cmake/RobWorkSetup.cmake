@@ -160,6 +160,20 @@ ENDIF()
 #
 FIND_PACKAGE(OpenGL)
 INCLUDE(CMakeDependentOption)
+
+#
+# for some libs we need the glut package, this is an optional dependency
+#
+set(RW_HAVE_GLUT False)
+find_package(GLUT QUIET)
+if( OPENGL_FOUND AND GLUT_FOUND) 
+  set(RW_HAVE_GLUT True)
+  message(STATUS "RobWork: OpenGL and GLUT ENABLED! FOUND!")
+else ()
+  message(STATUS "RobWork: OpenGL and GLUT NOT FOUND! code disabled!")
+endif ()
+
+
 #
 # For some of the xml parsing we need xerces, though it is OPTIONAL
 #

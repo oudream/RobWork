@@ -25,3 +25,4 @@
 #cmakedefine RW_HAVE_MATHEMATICA 1
 #cmakedefine RW_HAVE_XERCES 1
 #cmakedefine RW_HAVE_OMP 1
+#cmakedefine RW_HAVE_GLUT 1

@@ -240,7 +240,17 @@ namespace graphics {
          * @return the drawable node
          */
         DrawableNode::Ptr addScan(const std::string& name, const rw::geometry::PointCloud& scan, rw::kinematics::Frame* frame, int dmask=DrawableNode::Virtual);
-
+        
+        /**
+         * @brief create and add a drawable node of a textlabel
+         * @param name [in] name of drawable node
+         * @param text [in] the label text
+         * @param frame [in] the frame where the drawable is to be placed
+         * @param dmask [in] the drawable mask
+         * @return the drawable node
+         */
+        DrawableNode::Ptr addText(const std::string& name, const std::string& text, rw::common::Ptr<rw::kinematics::Frame> frame, int dmask=DrawableNode::Virtual);
+        
         /**
          * @brief create and add a drawable node of a render, to the scene
          * @param name [in] name of drawable node

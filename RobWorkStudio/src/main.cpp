@@ -44,12 +44,18 @@
     #include <rwslibs/propertyview/PropertyView.hpp>
     #include <rwslibs/sensors/Sensors.hpp>
     #include <rwslibs/workcelleditorplugin/WorkcellEditorPlugin.hpp>
-#ifdef RW_HAVE_EIGEN
-    //#include <rwlibs/calibration/Calibration.hpp>
+
+    #ifdef RW_HAVE_EIGEN
+        //#include <rwlibs/calibration/Calibration.hpp>
+    #endif
+    #if RWS_HAVE_LUA
+        #include <rwslibs/lua/Lua.hpp>
+    #endif
 #endif
-#if RWS_HAVE_LUA
-    #include <rwslibs/lua/Lua.hpp>
-#endif
+
+#ifdef RWS_HAVE_GLUT
+    #include <GL/glut.h>
+    #include <rwlibs/opengl/RenderText.hpp>
 #endif
 
 #include <boost/filesystem.hpp>
@@ -98,6 +104,9 @@ int main(int argc, char** argv)
     std::string inputfile = map.get<std::string>("input-file", "");
     {
         MyQApplication app(argc, argv);
+        #ifdef RWS_HAVE_GLUT
+            glutInit(&argc,argv);
+        #endif
         try {
             QSplashScreen *splash;
             if(showSplash){
@@ -205,6 +214,8 @@ int main(int argc, char** argv)
 
                 app.exec();
             }
+
+            
         } catch (const Exception& e) {
             std::cout << e.what() << std::endl;
             QMessageBox::critical(NULL, "RW Exception", e.what());

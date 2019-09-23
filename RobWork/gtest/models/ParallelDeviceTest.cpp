@@ -181,26 +181,26 @@ TEST(ParallelDevice, Junctions) {
     // Generic JointDevice functions
     EXPECT_EQ(base, jdevice->getBase());
     EXPECT_EQ(E, jdevice->getEnd());
-    EXPECT_EQ(2, jdevice->getJoints().size());
-    ASSERT_GE(2, jdevice->getJoints().size());
+    EXPECT_EQ(2u, jdevice->getJoints().size());
+    ASSERT_GE(2u, jdevice->getJoints().size());
     EXPECT_EQ(A, jdevice->getJoints()[0]);
     EXPECT_EQ(Fb, jdevice->getJoints()[1]);
-    EXPECT_EQ(2, jdevice->getDOF());
-    EXPECT_EQ(2, jdevice->getBounds().first.size());
-    EXPECT_EQ(2, jdevice->getBounds().second.size());
-    EXPECT_EQ(2, jdevice->getVelocityLimits().size());
-    EXPECT_EQ(2, jdevice->getAccelerationLimits().size());
+    EXPECT_EQ(2u, jdevice->getDOF());
+    EXPECT_EQ(2u, jdevice->getBounds().first.size());
+    EXPECT_EQ(2u, jdevice->getBounds().second.size());
+    EXPECT_EQ(2u, jdevice->getVelocityLimits().size());
+    EXPECT_EQ(2u, jdevice->getAccelerationLimits().size());
 
     // ParallelDevice functions
-    EXPECT_EQ(0, device->getLegs().size()); // There should be no legs when using the junction concept.
-    EXPECT_EQ(2, device->getActiveJoints().size());
-    ASSERT_GE(2, device->getActiveJoints().size());
+    EXPECT_EQ(0u, device->getLegs().size()); // There should be no legs when using the junction concept.
+    EXPECT_EQ(2u, device->getActiveJoints().size());
+    ASSERT_GE(2u, device->getActiveJoints().size());
     EXPECT_EQ(A, device->getActiveJoints()[0]);
     EXPECT_EQ(Fb, device->getActiveJoints()[1]);
-    EXPECT_EQ(11, device->getAllJoints().size());
-    EXPECT_EQ(11, device->getFullDOF());
-    EXPECT_EQ(11, device->getAllBounds().first.size());
-    EXPECT_EQ(11, device->getAllBounds().second.size());
+    EXPECT_EQ(11u, device->getAllJoints().size());
+    EXPECT_EQ(11u, device->getFullDOF());
+    EXPECT_EQ(11u, device->getAllBounds().first.size());
+    EXPECT_EQ(11u, device->getAllBounds().second.size());
 
     // Set full Q
     EXPECT_EQ(11, device->getFullQ(state).size());
@@ -437,8 +437,8 @@ TEST(ParallelDevice, SerialChains) {
 		EXPECT_NEAR(0,(legs[i]->baseTend(state).P()-hexapod.baseTend(state).P()).normInf(),1e-9);
 	}
 
-	EXPECT_EQ(6, q.size());
-	ASSERT_GE(6, q.size());
+	EXPECT_EQ(6u, q.size());
+	ASSERT_GE(6u, q.size());
 	EXPECT_EQ(93.6865, q[0]);
 	EXPECT_EQ(96.6865, q[1]);
 	EXPECT_EQ(94.6865, q[2]);
@@ -495,7 +495,7 @@ TEST(ParallelDevice, Robotiq) {
     // ParallelDevice functions
     EXPECT_EQ(0, robotiqDist->getLegs().size()); // There should be no legs when using the junction concept.
     EXPECT_EQ(3, robotiqDist->getJunctions().size());
-    ASSERT_GE(robotiqDist->getJunctions().size(), 3);
+    ASSERT_GE(robotiqDist->getJunctions().size(), 3u);
     ASSERT_EQ(2, robotiqDist->getJunctions()[0].size());
     ASSERT_EQ(2, robotiqDist->getJunctions()[1].size());
     ASSERT_EQ(2, robotiqDist->getJunctions()[2].size());

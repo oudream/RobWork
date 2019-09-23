@@ -21,6 +21,8 @@
 #include <rw/graphics/DrawableNode.hpp>
 #include <rw/graphics/DrawableGeometryNode.hpp>
 
+#include <rw/kinematics/Frame.hpp>
+
 #include "SceneCamera.hpp"
 #include "GroupNode.hpp"
 
@@ -111,6 +113,20 @@ namespace graphics {
         virtual rw::math::Vector3D<> unproject(SceneCamera::Ptr camera, int x, int y) = 0;
 
         /**
+         * @brief this method projects a 3D coordinate to 2D screen coordinates from the last draw'n scene.
+         *
+         * @note this method relies on a previously drawn scene, eg. call to draw(). Any thing drawn in the scene
+         * can be "picked" by this method.
+         *
+         * (0,0) is located in the upper left corner, with x-axis increasing to the right and y-axis
+         * increasing to the bottom. The negative z-axis points into the scene-
+         * @param x [in] x coordinate [0;viewport.width]
+         * @param y [in] y coordinate [0;viewport.height]
+         * @return the 2D point,
+         */
+        virtual rw::math::Vector3D<> project(SceneCamera::Ptr camera, double x, double y, double z) = 0;
+
+        /**
          * @brief should be called after the structure of the scene
          * has been changed
          */
@@ -175,13 +191,23 @@ namespace graphics {
         virtual DrawableNode::Ptr makeDrawable(const std::string& name, rw::common::Ptr<class Model3D> model, int dmask=DrawableNode::Physical) = 0;
 
         /**
+         * @brief Create a drawable node for a text label.
+         * @param name [in] name of the drawable.
+         * @param text [in] the text to draw.
+         * @param labelFrame [in] the frame the label belongs to.
+         * @param dmask [in] (optional) the type of drawable. Default is DrawableNode::Virtual.
+         * @return a drawable node.
+         */
+        virtual DrawableNode::Ptr makeDrawable(const std::string& name, const std::string &text, rw::common::Ptr<rw::kinematics::Frame> labelFrame, int dmask=DrawableNode::Virtual) = 0;
+
+        /**
          * @brief Create a drawable node for a render.
          * @param name [in] name of the drawable.
          * @param render [in] the render to draw.
          * @param dmask [in] (optional) the type of drawable. Default is DrawableNode::Physical.
          * @return a drawable node.
          */
-        virtual DrawableNode::Ptr makeDrawable(const std::string& name, rw::common::Ptr<class Render> render, int dmask=DrawableNode::Physical)= 0;
+        virtual DrawableNode::Ptr makeDrawable(const std::string& name, rw::common::Ptr<class Render> render, int dmask=DrawableNode::Physical) = 0;
 
         //virtual DrawableNode::Ptr makeDrawable(const rw::models::DrawableModelInfo& info) = 0;
         //virtual DrawableNode::Ptr makeDrawable(const rw::models::CollisionModelInfo& info) = 0;
