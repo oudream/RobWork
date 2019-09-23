@@ -145,6 +145,20 @@ namespace graphics {
         bool isFrameAxisVisible(const rw::kinematics::Frame* f) const;
 
         /**
+         * @brief enables the drawing of the frame label of a frame.
+         * @param visible [in] true if frame label should be drawn, false otherwise
+         * @param f [in] the frame
+         */
+        void setFrameLabelVisible(bool visible, rw::kinematics::Frame::Ptr f);
+
+        /**
+         * @brief test if frame-label is visible
+         * @param f [in] the frame
+         * @return true if frame label of frame is set to be drawn, false otherwise
+         */
+        bool isFrameLabelVisible(const rw::kinematics::Frame::Ptr f) const;
+
+        /**
          * @brief set how drawables of a specific frame should be rendered
          * @param type [in] the drawtype
          * @param f [in] the Frame

@@ -112,7 +112,8 @@ struct WorkCellScene::FrameVisualState {
 		alpha(false,1.0),
 		frameAxisVisible(false,false),
 		dtype(false,DrawableNode::SOLID),
-		dmask(false,0)
+		dmask(false,0),
+        frameLabelVisible(false,false)
 	{
 	}
 	std::pair<bool,bool> visible;
@@ -121,6 +122,7 @@ struct WorkCellScene::FrameVisualState {
 	std::pair<bool,bool> frameAxisVisible;
 	std::pair<bool,DrawableNode::DrawType> dtype;
 	std::pair<bool,unsigned int> dmask;
+    std::pair<bool,bool> frameLabelVisible;
 };
 
 WorkCellScene::WorkCellScene(SceneGraph::Ptr scene):
@@ -224,6 +226,8 @@ void WorkCellScene::setWorkCell(rw::models::WorkCell::Ptr wc)
             		setDrawMask( data.second.dmask.second, frame );
             	if (data.second.dtype.first)
             		setDrawType( data.second.dtype.second, frame );
+                if (data.second.frameLabelVisible.first)
+                    setFrameLabelVisible(data.second.frameLabelVisible.second, frame);
             }
         }
     }
@@ -528,6 +532,53 @@ bool WorkCellScene::isFrameAxisVisible(const Frame* f) const
     	return it->second.frameAxisVisible.second;
     else
     	return false;
+}
+
+void WorkCellScene::setFrameLabelVisible(bool visible, Frame::Ptr f)
+{
+    if(_frameNodeMap.find(f.get())==_frameNodeMap.end()){
+        return;
+    }
+    _frameStateMap[f.get()].frameLabelVisible.first = true;
+    _frameStateMap[f.get()].frameLabelVisible.second = visible;
+    GroupNode::Ptr node = _frameNodeMap[f.get()];
+    if( visible ){
+        if( node->hasChild( "FrameLabel" ) ){
+            // remove current frameaxis
+            removeDrawable("FrameLabel",f.get());
+        }
+
+        // Add a frame axis of specified size
+        DrawableNode::Ptr frameLabelNode = _scene->makeDrawable("FrameLabel",f->getName(),f);
+        if (!frameLabelNode.isNull()) {
+        	frameLabelNode->setName("FrameLabel");
+        	addDrawable(frameLabelNode, f.get());
+        }
+        //_frameDrawableMap[f].push_back(dnode);
+        //node->addChild( dnode );
+        _scene->update();
+    } else if( !visible && node->hasChild( "FrameAxis" ) ){
+        // remove leaf
+        //node->removeChild( "FrameAxis" );
+        removeDrawable("FrameLabel", f.get());
+        _scene->update();
+
+    }
+
+}
+
+bool WorkCellScene::isFrameLabelVisible(const Frame::Ptr f) const
+{
+    if(_frameNodeMap.find(f.get())==_frameNodeMap.end()) {
+        RW_THROW("Frame is not in the scene!");
+    }
+    const std::map<const Frame*, FrameVisualState>::const_iterator it = _frameStateMap.find(f.get());
+    if (it != _frameStateMap.end()) {
+    	return it->second.frameLabelVisible.second;
+    }
+
+    return false;
+    
 }
 
 void WorkCellScene::setDrawType(DrawableNode::DrawType type, const Frame* f) 
