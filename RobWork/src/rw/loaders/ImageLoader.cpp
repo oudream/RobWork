@@ -71,12 +71,15 @@ rw::common::Ptr<ImageLoader> ImageLoader::Factory::getImageLoader(const std::str
 
 bool ImageLoader::Factory::hasImageLoader(const std::string& format){
     const std::string ext = StringUtil::toUpper(format);
-    if (ext == "PGM")
+    if (ext == "PGM") {
     	return true;
-    else if (ext == "PPM")
+	} 
+	else if (ext == "PPM") {
     	return true;
-    else if (ext == "RGB")
+	}
+    else if (ext == "RGB") {
     	return true;
+	}
 	ImageLoader::Factory ep;
 	std::vector<Extension::Descriptor> exts = ep.getExtensionDescriptors();
 	BOOST_FOREACH(Extension::Descriptor& ext, exts){

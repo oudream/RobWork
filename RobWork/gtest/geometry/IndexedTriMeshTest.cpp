@@ -108,15 +108,15 @@ TYPED_TEST(IndexedTriMeshTest, GetIndexedTriangleTest) {
 	// Check that the triangles can be retrieved
 	IndexedTriangle<uint32_t> tri;
 	tri = mesh.getIndexedTriangle(0);
-	EXPECT_EQ(tri[0],0);
-	EXPECT_EQ(tri[1],1);
-	EXPECT_EQ(tri[2],2);
+	EXPECT_EQ(tri[0],0u);
+	EXPECT_EQ(tri[1],1u);
+	EXPECT_EQ(tri[2],2u);
 	tri = mesh.getIndexedTriangle(1);
-	EXPECT_EQ(tri[0],2);
-	EXPECT_EQ(tri[1],3);
-	EXPECT_EQ(tri[2],1);
+	EXPECT_EQ(tri[0],2u);
+	EXPECT_EQ(tri[1],3u);
+	EXPECT_EQ(tri[2],1u);
 	tri = mesh.getIndexedTriangle(2);
-	EXPECT_EQ(tri[0],3);
-	EXPECT_EQ(tri[1],2);
-	EXPECT_EQ(tri[2],1);
+	EXPECT_EQ(tri[0],3u);
+	EXPECT_EQ(tri[1],2u);
+	EXPECT_EQ(tri[2],1u);
 }
