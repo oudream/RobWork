@@ -90,6 +90,8 @@ private slots:
     void customContextMenuRequestSlot(const QPoint& pos);
     void toggleFrameSlot();
     void toggleFramesSlot();
+    void toggleFrameLabelSlot();
+    void toggleFrameLabelsSlot();
     void increaseFrameAxisSlot();
     void decreaseFrameAxisSlot();
     void selectFrameSlot();
@@ -118,6 +120,9 @@ private slots:
 private:
     void toggleFrameView(QTreeWidgetItem* item);
     void toggleFramesView(QTreeWidgetItem* item);
+    void toggleFrameLabel(QTreeWidgetItem* item);
+    void toggleFrameLabels(QTreeWidgetItem* item);
+
     void collapseAll(QTreeWidgetItem* item);
     void expandAll(QTreeWidgetItem* item);
 
@@ -148,6 +153,8 @@ private:
     QAction* _poseAction;
     QAction* _toggleAction;
     QAction* _addFrameAction;
+    QAction* _toggleFrameLabelAction;
+    QAction* _toggleFrameLabelsAction;
     QAction* _scaleAction;
 
     QTreeWidget* _treewidget;
@@ -167,10 +174,6 @@ private:
     DrawableMap _drawableMap;
 
     double _frameAxisSize;
-
-    //typedef std::map<rw::graphics::DrawableNode::Ptr, QTreeWidgetItem*> DrawableToItemMap;
-    // maintains all drawables that are added by this map
-    //DrawableToItemMap _drawableToItemMap;
 
 };
 }
