@@ -139,7 +139,6 @@ namespace {
             movePercent = 0.9;
         }
 
-        std::cout << "movePercent: " << movePercent << std::endl;
         pos+=diff*movePercent;
 
     }
