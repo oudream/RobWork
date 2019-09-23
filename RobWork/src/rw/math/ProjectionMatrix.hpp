@@ -112,11 +112,12 @@ namespace math {
         }
 
         /**
-         * @brief set the projection matrix to perspective projection
+         * @brief get the projection matrix to perspective projection
          * @param fovy [in] vertical field of view [degrees]
          * @param aspectRatio [in] aspect ratio between width and height of image
          * @param zNear [in] distance to near cutting plane
          * @param zFar [in] distance to far cutting plane
+         * @return is it succesfull
          */
         bool getPerspective(double& fovy, double& aspectRatio, double& zNear, double& zFar) const;
 
