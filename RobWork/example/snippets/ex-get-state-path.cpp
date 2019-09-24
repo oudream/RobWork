@@ -1,13 +1,12 @@
-#include <rw/models/Device.hpp>
-#include <rw/math/Q.hpp>
 #include <rw/kinematics/State.hpp>
+#include <rw/math/Q.hpp>
+#include <rw/models/Device.hpp>
 
-#include <boost/foreach.hpp>
 #include <vector>
 
-using namespace rw::math;
-using namespace rw::models;
-using namespace rw::kinematics;
+using rw::math::Q;
+using rw::models::Device;
+using rw::kinematics::State;
 
 std::vector<State> getStatePath(
     const Device& device,
@@ -17,7 +16,7 @@ std::vector<State> getStatePath(
     State state = common_state;
 
     std::vector<State> result;
-    BOOST_FOREACH(const Q& q, path) {
+    for(const Q& q : path) {
         device.setQ(q, state);
         result.push_back(state);
     }

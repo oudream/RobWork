@@ -24,6 +24,11 @@
 #include <rw/common/macros.hpp>
 #include <rws/RobWorkStudio.hpp>
 
+#include <boost/bind.hpp>
+
+#include <thread>
+#include <chrono>
+
 using namespace rw::math;
 using namespace rw::kinematics;
 using namespace rw::models;
@@ -38,12 +43,13 @@ Player::Player(
     RobWorkStudio* rwstudio)
     :
     _trajectory( TrajectoryFactory::makeLinearTrajectory(path) ),
-    _path(path),
+    _path(ownedPtr(new rw::trajectory::TimedStatePath(path))),
     _drawer(drawer),
     _tickInterval(tickInterval),
     _rwstudio(rwstudio),
     _record(false),
     _recNo(0),
+    _rec_number_of_digits(2),
     _now(0),
     _direction(1),
     _velocityScale(1),
@@ -52,11 +58,39 @@ Player::Player(
     _interpolate(true),
     _recordingOnly(false)
 {
-    RW_ASSERT(_tickInterval > 0);
     RW_ASSERT(drawer);
+    initialize();
+}
 
-    // Connect the timer:
-    connect(&_timer, SIGNAL(timeout()), this, SLOT(tick()));
+Player::Player(
+    TimedStatePath::Ptr path,
+    StateDrawPtr drawer,
+    double tickInterval,
+    RobWorkStudio* rwstudio)
+    :
+    _trajectory( TrajectoryFactory::makeLinearTrajectory(*path) ),
+    _path(path),
+    _drawer(drawer),
+    _tickInterval(tickInterval),
+    _rwstudio(rwstudio),
+    _record(false),
+    _recNo(0),
+    _rec_number_of_digits(2),
+    _now(0),
+    _direction(1),
+    _velocityScale(1),
+    _timer(this),
+    _loop(false),
+    _interpolate(true),
+    _recordingOnly(false)
+{
+
+    RW_ASSERT(drawer);
+    RW_ASSERT(path.isShared());
+    RW_ASSERT(!path.isNull());
+    initialize();
+
+
 }
 
 
@@ -65,10 +99,12 @@ Player::Player(
     RobWorkStudio* rwstudio)
     :
     _trajectory( TrajectoryFactory::makeLinearTrajectory(TimedStatePath()) ),
+    _path(NULL),
     _tickInterval(tickInterval),
     _rwstudio(rwstudio),
     _record(false),
     _recNo(0),
+    _rec_number_of_digits(2),
     _now(0),
     _direction(1),
     _velocityScale(1),
@@ -77,12 +113,24 @@ Player::Player(
     _interpolate(true),
     _recordingOnly(true)
 {
-    RW_ASSERT(_tickInterval > 0);
     std::cout << "SETTING RECORDING ONLY " << std::endl;
-    // Connect the timer:
-    connect(&_timer, SIGNAL(timeout()), this, SLOT(tick()));
+    initialize();
 }
-void Player::setTickInterval(double interval) {
+
+
+
+
+
+void Player::initialize() 
+{
+    RW_ASSERT(_tickInterval > 0);
+    connect(&_timer, SIGNAL(timeout()), this, SLOT(tick()));
+    connect(&_recTimer, SIGNAL(timeout()), this, SLOT(recordImage()));
+    
+}
+
+void Player::setTickInterval(double interval) 
+{
     _tickInterval = interval;
     if (_timer.isActive()) {
         stopTimer();
@@ -90,94 +138,98 @@ void Player::setTickInterval(double interval) {
     }
 }
 
+unsigned int Player::calcLeadingZeros()
+{
+    double number_of_frames = getEndTime()/_tickInterval;
+    number_of_frames /= _velocityScale;
+    return static_cast<unsigned int>(std::ceil(std::log10(number_of_frames)));
+}
 
-void Player::setupRecording(const QString filename, const QString& type) {
+void Player::setupRecording(const QString filename, const QString& type) 
+{
     _recordFilename = filename;
     _recordType = type;
 }
 
-void Player::startRecording() {
-    //std::cout << "start rec"<< std::endl;
+void Player::startRecording() 
+{
+    if (!_recordingOnly) {
+        _rec_number_of_digits = calcLeadingZeros();
+    }
     _record = true;
     _recNo = 0;
     startTimer();
 }
 
-void Player::stopRecording() {
-    //std::cout << "end rec"<< std::endl;
+void Player::stopRecording() 
+{
     stopTimer();
     _record = false;
 }
 
-void Player::tick()
+void Player::takeImage()
 {
+    const int ms = (int)(_tickInterval * 1000 /2);
+    _recTimer.start(ms);
+}
 
-    if(!_recordingOnly){
-
-    const double end = getEndTime();
-
-    // Make sure that we do show the robot at the position at the start or end
-    // of the path.
-    bool outside = false;
-    if (_now < 0) {
-        _now = 0;
-        outside = true;
-    }
-    else if (end < _now) {
-        _now = end;
-        outside = true;
-    }
-
-    // Draw the work cell.
-    draw();
-
+void Player::recordImage() 
+{
     if (_record && _rwstudio != NULL) {
         //Create Filename
         QString number = QString::number(_recNo++);
-        //while (number.length() < RECORD_NUM_OF_DIGITS)
-        //    number.prepend("0");
+        while (number.length() < _rec_number_of_digits)
+            number.prepend("0");
         QString filename = _recordFilename + number + "." + _recordType;
-
-        // if we want the entire robworkstudio frame...
-        //QPixmap originalPixmap = QPixmap::grabWindow(QApplication::desktop()->winId());
-        //originalPixmap.save(filename);
-
         _rwstudio->saveViewGL(filename);
     }
+    _recTimer.stop();
+}
 
-    // If we reached the end and we are looping, then move the cursor to the
-    // start or end.
-    if (outside && _loop) {
-        if (_direction < 0)
-            _now = end;
-        else
+void Player::tick()
+{
+    const double end = getEndTime();
+
+    if(!_recordingOnly) {
+
+        // Make sure that we do show the robot at the position at the start or end
+        // of the path.
+        bool outside = false;
+        if (_now < 0) {
             _now = 0;
-    }
-
-    // If the range is empty or if we outside of the range and not looping:
-    if (end <= 0 || (outside && !_loop)) {
-        // then stop the player.
-        stopTimer();
-    }
-
-    // Otherwise,
-    else {
-        // increment the time.
-        _now +=
-            _direction *
-            _velocityScale *
-            _tickInterval;
-    }
-    } else {
-        if (_record && _rwstudio != NULL) {
-
-            //Create Filename
-            QString number = QString::number(_recNo++);
-            //while (number.length() < RECORD_NUM_OF_DIGITS)
-            //    number.prepend("0");
-            QString filename = _recordFilename + number + "." + _recordType;
-            _rwstudio->saveViewGL(filename);
+            outside = true;
         }
+        else if (end < _now) {
+            _now = end;
+            outside = true;
+        }
+
+        // Draw the work cell.
+        draw();    
+        takeImage();
+
+        // If we reached the end and we are looping, then move the cursor to the
+        // start or end.
+        if (outside && _loop) {
+            if (_direction < 0)
+                _now = end;
+            else
+                _now = 0;
+        }
+
+        // If the range is empty or if we outside of the range and not looping:
+        if (end <= 0 || (outside && !_loop)) {
+            // then stop the player.
+            stopTimer();
+        } else { // Otherwise,
+            // increment the time.
+            _now +=
+                _direction *
+                _velocityScale *
+                _tickInterval;
+        }
+    } else {
+        recordImage();
     }
 }
 
@@ -219,25 +271,26 @@ void Player::toEnd()
     draw();
 }
 
-void Player::step(bool forward) {
+void Player::step(bool forward) 
+{
     stopTimer();
 
-    if (_path.size() == 0)
+    if (_path->size() == 0)
     	return;
 
 	// Find the first index of the current segment
-    const std::size_t N = _path.size()-1;
+    const std::size_t N = _path->size()-1;
 	std::size_t curId = 0;
 	bool interpolated = false;
     for(std::size_t i = 0; i < N; i++){
-        if(_path[i].getTime() <= _now && _now < _path[i+1].getTime()){
+        if( (*_path)[i].getTime() <= _now && _now < (*_path)[i+1].getTime()){
     		curId = i;
-        	if( _path[i].getTime() != _now)
+        	if( (*_path)[i].getTime() != _now)
         		interpolated = true;
         	break;
         }
     }
-    if( _now >= _path.back().getTime() ){
+    if( _now >= _path->back().getTime() ){
     	curId = N;
     }
 
@@ -253,8 +306,8 @@ void Player::step(bool forward) {
     	nextId = N;
 
     // Move to new id
-	_now = _path[nextId].getTime();
-	_drawer->draw(_path[nextId].getValue());
+	_now = (*_path)[nextId].getTime();
+	_drawer->draw((*_path)[nextId].getValue());
     relativePositionChanged(_now / getEndTime());
 }
 
@@ -287,10 +340,7 @@ void Player::setLoopPlayback(bool loop)
     _loop = loop;
 }
 
-
-
 // Timer accessors.
-
 void Player::runTimer()
 {
     if (!timerIsRunning())
@@ -321,17 +371,34 @@ void Player::draw()
             _drawer->draw(_trajectory->x(_now));
         }
     } else {
-        if (0 <= _now && _now <= getEndTime()) {
-            for(unsigned int i=0;i<_path.size()-1;i++){
-                if( _path[i].getTime()<= _now && _now<=_path[i+1].getTime() ){
-                    _drawer->draw(_path[i].getValue());
+        if (0 <= _now && _now <= getEndTime() && _path->size() > 0) {
+            rw::trajectory::TimedStatePath &path = *_path;
+
+            //Find State Closest to now
+            double time = path[0].getTime();
+            double dt = 0;
+            
+            for (unsigned int i=0;i<path.size()-1;i++) {
+                if ( i > 0 ) {
+                    dt = path[i].getTime() - path[i-1].getTime();
+                    if ( dt < 0 ) {
+                        dt = 0;
+                    } 
+                }
+                time+=dt;   
+                double dtNext = path[i+1].getTime() - path[i].getTime();
+                if (dtNext < 0 ){
+                    dtNext = 0;
+                }
+
+                if ( time<= _now && _now<=time+dtNext ) {
+                    _drawer->draw(path[i].getValue());
                     break;
                 }
             }
         }
     }
     relativePositionChanged(_now / getEndTime());
-
 }
 
 std::string Player::getInfoLabel() const
@@ -349,8 +416,14 @@ std::string Player::getInfoLabel() const
     }
 }
 
-// Constructors.
+int Player::getPlayDirection()
+{
+    return _direction;
+}
 
+
+
+// Constructors.
 Player::Ptr Player::makeEmptyPlayer()
 {
     return ownedPtr(new Player(
@@ -367,3 +440,11 @@ Player::Ptr Player::makePlayer(const TimedStatePath& path,
 {
     return ownedPtr(new Player(path, drawer, tickInterval, rwstudio));
 }
+Player::Ptr Player::makePlayer(const TimedStatePath::Ptr path,
+                     StateDrawPtr drawer,
+                     double tickInterval,
+                     RobWorkStudio* rwstudio)
+{
+    return ownedPtr(new Player(path, drawer, tickInterval, rwstudio));
+}
+

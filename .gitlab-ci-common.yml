@@ -1,5 +1,6 @@
 stages:
   - build
+  - deploy
 
 .linux-common:
   stage: build
@@ -156,6 +157,38 @@ stages:
     - mv ./Testing/**/Test.xml ../../RWSim-CTest.xml
     - cd ..
 
+.linux-doc:
+  stage: build
+  tags:
+    - linux
+  before_script:
+    - "[ -d Build ] || mkdir Build"
+    - "[ -d Build/RW ] || mkdir Build/RW"
+    - "[ -d Build/sphinx ] || mkdir Build/sphinx"
+  only:
+    refs:
+      - master@sdurobotics/RobWork
+      - schedules
+      - web
+  script:
+    - cd Build
+    # Build libraries needed for Sphinx apidoc
+    - cd RW
+    - cmake -DCMAKE_BUILD_TYPE=Release -DRW_USE_YAOBI=OFF -DRW_USE_FCL=OFF -DRW_USE_ASSIMP=OFF -DBUILD_rws_lua=OFF -DRWS_USE_STATIC_LINK_PLUGINS=OFF -DRWSIM_DISABLE_LUA=ON -DBUILD_rwsim_luai=OFF ../..
+    - make rw_java rws_jni rwsim_jni rw_python _rws _rwsim -j6
+    - cd ..
+    # Build Sphinx
+    - cd sphinx
+    - cmake -DCMAKE_BUILD_TYPE=Release -DRobWork_DIR:PATH=../../RobWork/cmake -DRobWorkStudio_DIR:PATH=../../RobWorkStudio/cmake -DRobWorkSim_DIR:PATH=../../RobWorkSim/cmake ../../doc/sphinx
+    - make sphinxapidoc -j6
+    # Publish
+    - cd ../..
+    - mv Build/sphinx/html public
+  artifacts:
+    paths:
+      - public
+    expire_in: 1 day
+
 .windows-common:
   stage: build
   tags:
@@ -198,7 +231,7 @@ stages:
     - cd Build
     # Build RobWork
     - cd RW
-    - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 15 2017 Win64" ../../RobWork
+    - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 15 2017 Win64" -DSWIG_EXECUTABLE=%SWIG_ROOT%\swig.exe ../../RobWork
     - msbuild RobWork.sln /property:Configuration=Release /maxcpucount:6
     - cd ..
     # Build RobWorkHardware
@@ -208,12 +241,12 @@ stages:
     - cd ..
     # Build RobWorkStudio
     - cd RWS
-    - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 15 2017 Win64" ../../RobWorkStudio
+    - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 15 2017 Win64" -DSWIG_EXECUTABLE=%SWIG_ROOT%\swig.exe ../../RobWorkStudio
     - msbuild RobWorkStudio.sln /property:Configuration=Release /maxcpucount:6
     - cd ..
     # Build RobWorkSim
     - cd RWSim
-    - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 15 2017 Win64" ../../RobWorkSim
+    - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 15 2017 Win64" -DSWIG_EXECUTABLE=%SWIG_ROOT%\swig.exe ../../RobWorkSim
     - msbuild RobWorkSim.sln /property:Configuration=Release /maxcpucount:6
     - cd ..
     # Build RobWork Examples
@@ -297,3 +330,27 @@ build:centos-7:
 
 build:windows10-vs15:
   extends: .windows-full
+
+build:doc:
+  extends: .linux-doc
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804-doc
+
+pages:
+  stage: deploy
+  tags:
+    - linux
+  only:
+    refs:
+      - master@sdurobotics/RobWork
+      - schedules
+      - web
+  variables:
+    GIT_STRATEGY: none
+  script:
+    - echo "Deploying documentation."
+  dependencies:
+    - build:doc
+  artifacts:
+    paths:
+    - public
+    expire_in: 1 week

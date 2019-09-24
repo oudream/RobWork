@@ -82,12 +82,16 @@ void java_ThreadSimulatorStepCallback(ThreadSimulator* sim, State &state, void *
 
 %import <rwlibs/swig/rw.i>
 %import <rwlibs/swig/rw_assembly.i>
+%import <rwlibs/swig/rw_control.i>
+%import <rwlibs/swig/rw_simulation.i>
 
 %pragma(java) jniclassclassmodifiers="class"
 
 %typemap(javaimports) SWIGTYPE %{
 import org.robwork.rw.*;
 import org.robwork.rw_assembly.*;
+import org.robwork.rw_control.*;
+import org.robwork.rw_simulation.*;
 import org.robwork.rw_task.*;
 %}
 %pragma(java) moduleimports=%{
@@ -96,6 +100,7 @@ import org.robwork.rw.*;
 %pragma(java) jniclassimports=%{
 import org.robwork.rw.*;
 import org.robwork.rw_assembly.*;
+import org.robwork.rw_simulation.*;
 import org.robwork.rw_task.*;
 %}
 
@@ -316,14 +321,6 @@ public:
 /********************************************
  * CONTROL
  ********************************************/
-
-%nodefaultctor SimulatedController;
-class SimulatedController
-{
-};
-
-%template (SimulatedControllerPtr) rw::common::Ptr<SimulatedController>;
-%template (SimulatedControllerPtrVector) std::vector<rw::common::Ptr<SimulatedController> >;
  
 %nodefaultctor PoseController;
 class PoseController //: public SimulatedController
@@ -952,14 +949,6 @@ public:
  * SENSOR
  ********************************************/
 
-%nodefaultctor SimulatedSensor;
-class SimulatedSensor
-{
-};
-
-%template (SimulatedSensorPtr) rw::common::Ptr<SimulatedSensor>;
-%template (SimulatedSensorPtrVector) std::vector<rw::common::Ptr<SimulatedSensor> >;
-
 class SimulatedFTSensor //: public SimulatedTactileSensor 
 {
 public:
@@ -1077,6 +1066,7 @@ public:
     }
     void exitPhysics();
 	double getTime();
+	State& getState();
 	void setEnabled(rw::common::Ptr<Body> body, bool enabled);
 
 	//drawable::SimulatorDebugRender::Ptr createDebugRender();
@@ -1109,7 +1099,6 @@ public:
 	 void attach(rw::common::Ptr<Body> b1, rw::common::Ptr<Body> b2);
 
 	 void detach(rw::common::Ptr<Body> b1, rw::common::Ptr<Body> b2);
-
 };
 
 %template (DynamicSimulatorPtr) rw::common::Ptr<DynamicSimulator>;

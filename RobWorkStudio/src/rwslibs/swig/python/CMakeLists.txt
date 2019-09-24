@@ -13,8 +13,23 @@ IF( NOT SWIG_FOUND)
     set(REASON "SWIG not found!")
 else()
 
-    FIND_PACKAGE(PythonInterp QUIET)
-    FIND_PACKAGE(PythonLibs QUIET)
+	# Prefer Python 3
+	find_package(PythonInterp 3 QUIET)
+	find_package(PythonLibs 3 QUIET)
+	
+	if (NOT PYTHONINTERP_FOUND)
+	    find_package(PythonInterp QUIET)
+	endif()
+	if (NOT PythonLibs)
+	    find_package(PythonLibs QUIET)
+	endif()
+	
+	if(PYTHONINTERP_FOUND)
+	    message(STATUS "Found Python interpreter ${PYTHON_VERSION_STRING}")
+	endif()
+	if(PYTHONLIBS_FOUND)
+	    message(STATUS "Found Python libraries ${PYTHONLIBS_VERSION_STRING}")
+	endif()
 
     if( NOT (PYTHONLIBS_FOUND AND PYTHONINTERP_FOUND) )
         set(DEFAULT false)
@@ -23,7 +38,6 @@ else()
 endif()
  
 RW_SUBSYS_OPTION( build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} ${REASON})
-RW_SUBSYS_DEPEND( build ${SUBSYS_NAME} DEPS ${SUBSYS_DEPS} )
 RW_ADD_DOC( ${SUBSYS_NAME} )
 
 IF( build )
@@ -62,8 +76,18 @@ INCLUDE(UseSWIG)
       SET_TARGET_PROPERTIES(${TARGET_NAME} PROPERTIES LINK_FLAGS -Wl,--no-undefined)
     ENDIF()
 
+    # Make sure dependencies are build before system
+    FOREACH(DEP IN LISTS SUBSYS_DEPS)
+        IF(TARGET ${DEP})
+            ADD_DEPENDENCIES(${TARGET_NAME} ${DEP})
+        ENDIF()
+    ENDFOREACH()
+
     if (NOT ${SWIG_VERSION} VERSION_LESS 4.0.0)
-        find_program(pydoc pydoc)
+        find_program(pydoc pydoc3)
+        if (NOT pydoc)
+            find_program(pydoc pydoc)
+        endif()
         if (pydoc)
             add_custom_command(TARGET ${TARGET_NAME}
                 POST_BUILD

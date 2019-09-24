@@ -1,4 +1,7 @@
-import dk.robwork.*;
+import org.robwork.rwsim.*;
+import org.robwork.rws.*;
+import org.robwork.rw.*;
+import org.robwork.*;
 import java.util.Date;
 
 public class Simulation {
@@ -12,7 +15,7 @@ public class Simulation {
 		}
 		
 		@Override
-		public void callback(ThreadSimulator simulator, dk.robwork.State state) {
+		public void callback(ThreadSimulator simulator, State state) {
 			Date now = new Date();
 			if ((now.getTime()-time) > 1000) {
 				time = now.getTime();
@@ -28,7 +31,7 @@ public class Simulation {
 		// System.out.println(System.getProperty("java.library.path"));
 		
 		// Load
-		LoaderRW.load();
+		LoaderRW.load("rw");
 		LoaderRWS.load();
 		LoaderRWSim.load();
 		
@@ -36,7 +39,7 @@ public class Simulation {
 		rwstudio = rws.getRobWorkStudioInstance();
 		DynamicWorkCellPtr dwc = DynamicWorkCellLoader.load("/home/thomas/Eclipse/LearnBiP/marvin/MarvinCalibratedScene.dwc.xml");
 		WorkCellPtr wc = dwc.getWorkcell();
-		dk.robwork.State state = wc.getDefaultState();
+		State state = wc.getDefaultState();
 		rwstudio.postWorkCell(wc);
 		
 		// Create Simulator

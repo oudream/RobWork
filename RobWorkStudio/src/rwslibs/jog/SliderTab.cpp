@@ -337,21 +337,25 @@ MovableFrameTab::MovableFrameTab(const std::pair<rw::math::Q, rw::math::Q>& boun
 
 }
 
-void MovableFrameTab::setUnits(const std::vector<double> &converters, const std::vector<std::string> &descriptions) {
+void MovableFrameTab::setUnits(const std::vector<double> &converters, const std::vector<std::string> &descriptions) 
+{
     _transformSliderWidget->setUnits(converters, descriptions);
 }
 
-void MovableFrameTab::refFrameChanged(int index) {
+void MovableFrameTab::refFrameChanged(int index) 
+{
     _refframe = _frames[index];
     doUpdateValues();
 }
 
-void MovableFrameTab::updateValues(const State& state) {
+void MovableFrameTab::updateValues(const State& state) 
+{
     _state = state;
     doUpdateValues();
 }
 
-void MovableFrameTab::doUpdateValues() {
+void MovableFrameTab::doUpdateValues() 
+{
 	if (_updating)
 		return;
     Transform3D<> transform = Kinematics::frameTframe(_refframe, _frame, _state);
@@ -359,7 +363,8 @@ void MovableFrameTab::doUpdateValues() {
 }
 
 
-void MovableFrameTab::transformChanged(const Transform3D<>& transform) {
+void MovableFrameTab::transformChanged(const Transform3D<>& transform) 
+{
     Transform3D<> parent2ref = Kinematics::frameTframe(_frame->getParent(_state), _refframe, _state);
     Transform3D<> result = parent2ref*transform;
     _frame->setTransform(result, _state);
@@ -451,9 +456,9 @@ void JointSliderWidget::paste() {
 				QMessageBox::critical(this, tr("RobWorkStudio Jog"), tr("Number of elements does not match device!"));
 				continue;
 			}
-      
-      for(unsigned int i = 0; i < _sliders.size(); ++i)
-        q[i] /= _sliders[i]->getUnitConverter();
+        
+            //for(unsigned int i = 0; i < _sliders.size(); ++i)
+                //q[i] /= _sliders[i]->getUnitConverter();
         
 			updateValues(q);
 			return;

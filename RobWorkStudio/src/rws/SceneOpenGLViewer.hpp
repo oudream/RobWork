@@ -130,15 +130,12 @@ public:
     //! @copydoc rw::graphics::SceneViewer::getViews
     virtual std::vector<View::Ptr> getViews(){ return _views; }
 
-    //! @copydoc rw::graphics::SceneViewer::renderView
-    void renderView(View::Ptr view);
-
     //! @copydoc rw::graphics::SceneViewer::updateState
     void updateState(const rw::kinematics::State& state);
 
     //! @copydoc rw::graphics::SceneViewer::updateView
     void updateView(){
-        update();
+        QWidget::update();
     }
 
     //! @copydoc rw::graphics::SceneViewer::getViewCenter
@@ -212,6 +209,13 @@ public:
      * @return the frame that was selected, Null if no frames where selected.
      */
     rw::kinematics::Frame* pickFrame(int x, int y);
+
+    //! @copydoc rw::graphics::SceneViewer::renderView
+    void renderView(View::Ptr view);
+
+private slots:
+    //! @copydoc rw::graphics::SceneViewer::renderView
+    void renderViewThreadSafe(View::Ptr view);
 
 protected:
     //! Overridden from QGLWidget

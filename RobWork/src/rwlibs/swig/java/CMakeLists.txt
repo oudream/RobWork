@@ -25,7 +25,6 @@ else()
 endif()
  
 RW_SUBSYS_OPTION( build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} ${REASON})
-RW_SUBSYS_DEPEND( build ${SUBSYS_NAME} DEPS ${SUBSYS_DEPS} )
 RW_ADD_DOC( ${SUBSYS_NAME} )
 
 IF( build )
@@ -37,7 +36,7 @@ IF( build )
 
     add_custom_target(${SUBSYS_NAME})
 
-    foreach(RW_MODULE rw rw_assembly rw_pathoptimization rw_pathplanners rw_proximitystrategies rw_task)
+    foreach(RW_MODULE rw rw_assembly rw_control rw_pathoptimization rw_pathplanners rw_proximitystrategies rw_simulation rw_task)
 	    SET_SOURCE_FILES_PROPERTIES(../${RW_MODULE}.i PROPERTIES CPLUSPLUS ON)
 		SET_SOURCE_FILES_PROPERTIES(../${RW_MODULE}.i PROPERTIES SWIG_FLAGS "-includeall")
 	    if (NOT ${SWIG_VERSION} VERSION_LESS 4.0.0)
@@ -83,7 +82,21 @@ IF( build )
 	                set(CLASSPATH -classpath ${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/rw_java.jar:${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/rw_task_java.jar)
 	            endif()
 	            set(LINK_JAVADOC ${LINK_JAVADOC} -link ../rw_task)
+	        elseif ("${RW_MODULE}" STREQUAL "rw_simulation")
+	            if (WIN32)
+	                set(CLASSPATH -classpath "${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/rw_java.jar\;${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/rw_control_java.jar")
+	            else()
+	                set(CLASSPATH -classpath ${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/rw_java.jar:${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/rw_control_java.jar)
+	            endif()
+	            set(LINK_JAVADOC ${LINK_JAVADOC} -link ../rw_control)
 	        endif()
+	        set(LOADERRW_FILE)
+	        set(LOADERRW_PKG)
+	        set(LOADERRW_CP_CMD echo " - Nothing to copy")
+	    else()
+	    	set(LOADERRW_FILE java_src_rw/org/robwork/LoaderRW.java)
+	        set(LOADERRW_PKG org.robwork)
+	        set(LOADERRW_CP_CMD copy_if_different ${CMAKE_CURRENT_SOURCE_DIR}/LoaderRW.java java_src_${RW_MODULE}/org/robwork/LoaderRW.java)
 	    endif()
 	    # Compile java code and create JAR and Javadoc
 		ADD_CUSTOM_COMMAND(TARGET ${RW_MODULE}_jni
@@ -92,12 +105,14 @@ IF( build )
 	        COMMAND ${CMAKE_COMMAND} -E remove_directory "${CMAKE_CURRENT_BINARY_DIR}/java_build_${RW_MODULE}"
 	    	COMMAND ${CMAKE_COMMAND} -E remove_directory "${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/javadoc/${RW_MODULE}"
 			COMMAND ${CMAKE_COMMAND} -E echo "Copying Java source..."
-	        COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_CURRENT_SOURCE_DIR}/LoaderRW.java java_src_${RW_MODULE}/org/robwork/LoaderRW.java
+	        COMMAND ${CMAKE_COMMAND} -E ${LOADERRW_CP_CMD}
 			COMMAND ${CMAKE_COMMAND} -E echo "Compiling Java files..."
 	        COMMAND ${CMAKE_COMMAND} -E make_directory java_build_${RW_MODULE}/org/robwork/${RW_MODULE}
-	        COMMAND ${Java_JAVAC_EXECUTABLE} ${CLASSPATH} -d ${CMAKE_CURRENT_BINARY_DIR}/java_build_${RW_MODULE} java_src_${RW_MODULE}/org/robwork/${RW_MODULE}/*.java
+	        COMMAND ${Java_JAVAC_EXECUTABLE} ${CLASSPATH} -d ${CMAKE_CURRENT_BINARY_DIR}/java_build_${RW_MODULE} ${LOADERRW_FILE} java_src_${RW_MODULE}/org/robwork/${RW_MODULE}/*.java
 	        COMMAND ${CMAKE_COMMAND} -E echo "Creating jar file..."
 	        COMMAND ${Java_JAR_EXECUTABLE} cvf ${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RW_MODULE}_java.jar  -C java_build_${RW_MODULE} .
+	        COMMAND ${CMAKE_COMMAND} -E echo "Creating jar file of source..."
+	        COMMAND ${Java_JAR_EXECUTABLE} cvf ${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RW_MODULE}_java-source.jar  -C java_src_${RW_MODULE} .
 			COMMAND ${CMAKE_COMMAND} -E echo "Creating Javadoc..."
 	    	COMMAND ${CMAKE_COMMAND} -E make_directory ${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/javadoc/${RW_MODULE}
 	    	COMMAND ${Java_JAVADOC_EXECUTABLE}
@@ -105,7 +120,7 @@ IF( build )
     					-d ${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/javadoc/${RW_MODULE}
     					-windowtitle "RobWork Java API Documentation"
     					-public
-    					-sourcepath java_src_${RW_MODULE} org.robwork org.robwork.${RW_MODULE}
+    					-sourcepath java_src_${RW_MODULE} ${LOADERRW_PKG} org.robwork.${RW_MODULE}
     					${LINK_JAVADOC}
 	        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
 	    )
@@ -113,14 +128,18 @@ IF( build )
 
     SWIG_LINK_LIBRARIES(rw_jni rw)
     SWIG_LINK_LIBRARIES(rw_assembly_jni rw_assembly rw)
+    SWIG_LINK_LIBRARIES(rw_control_jni rw_control rw)
     SWIG_LINK_LIBRARIES(rw_pathoptimization_jni rw_pathoptimization rw)
     SWIG_LINK_LIBRARIES(rw_pathplanners_jni rw_pathplanners rw)
     SWIG_LINK_LIBRARIES(rw_proximitystrategies_jni rw_proximitystrategies rw)
     SWIG_LINK_LIBRARIES(rw_task_jni rw_task rw)
+    SWIG_LINK_LIBRARIES(rw_simulation_jni rw_simulation rw)
 
     add_dependencies(rw_assembly_jni rw_task_jni rw_jni)
+    add_dependencies(rw_control_jni rw_jni)
     add_dependencies(rw_pathoptimization_jni rw_jni)
     add_dependencies(rw_pathplanners_jni rw_jni)
     add_dependencies(rw_proximitystrategies_jni rw_jni)
+    add_dependencies(rw_simulation_jni rw_control_jni rw)
     add_dependencies(rw_task_jni rw_jni)
 ENDIF()

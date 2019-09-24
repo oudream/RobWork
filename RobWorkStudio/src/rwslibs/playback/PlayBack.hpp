@@ -60,7 +60,7 @@ public:
     void initialize();
 
 private:
-	void stateTrajectoryChangedListener(const rw::trajectory::TimedStatePath& trajectory);
+	void stateTrajectoryChangedListener(const rw::trajectory::TimedStatePath::Ptr trajectory);
 private slots:
     void openPath();
     void savePath();
@@ -111,6 +111,10 @@ private:
     std::string _file; // The currently opened file.
 
     PlayBackSettings _settings;
+
+    QAction* _forward;
+    QAction* _pauseAndResume;
+    QAction* _backward;
 };
 
 }

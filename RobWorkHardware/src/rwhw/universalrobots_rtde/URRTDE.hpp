@@ -28,6 +28,7 @@
 
 namespace ur_rtde {
     class RTDEControlInterface;
+    class RTDEIOInterface;
     class RTDEReceiveInterface;
 }
 
@@ -53,11 +54,23 @@ namespace rwhw {
 
             // Control interface functions
 
+            //! @copydoc ur_rtde::RTDEControlInterface::reconnect
+            bool reconnect();
+
+            //! @copydoc ur_rtde::RTDEControlInterface::isConnected
+            bool isConnected();
+
             //! @copydoc ur_rtde::RTDEControlInterface::stopRobot
             void stopRobot();
 
             //! @copydoc ur_rtde::RTDEControlInterface::reuploadScript
             bool reuploadScript();
+
+            //! @copydoc ur_rtde::RTDEControlInterface::sendCustomScriptFunction
+            bool sendCustomScriptFunction(const std::string &function_name, const std::string &script);
+
+            //! @copydoc ur_rtde::RTDEControlInterface::sendCustomScriptFile
+            bool sendCustomScriptFile(const std::string &file_path);
 
             /**
              * @brief Move to joint configuration (linear in joint-space)
@@ -317,6 +330,7 @@ namespace rwhw {
 
         private:
             std::shared_ptr<ur_rtde::RTDEControlInterface> rtde_control_;
+            std::shared_ptr<ur_rtde::RTDEIOInterface> rtde_io_;
             std::shared_ptr<ur_rtde::RTDEReceiveInterface> rtde_receive_;
     };
 //! @}

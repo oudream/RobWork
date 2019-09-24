@@ -7,7 +7,6 @@ set(DEFAULT true)
 set(REASON )
  
 RW_SUBSYS_OPTION( build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} ${REASON})
-RW_SUBSYS_DEPEND( build ${SUBSYS_NAME} DEPS ${SUBSYS_DEPS} )
 RW_ADD_DOC( ${SUBSYS_NAME} )
 
 IF( build )
@@ -19,5 +18,13 @@ IF( build )
     RW_ADD_LIBRARY(rwhw_pcube pcube ${SRC_CPP} ${SRC_HPP})
     TARGET_LINK_LIBRARIES(rwhw_pcube PUBLIC ${ROBWORK_LIBRARIES})
     RW_ADD_INCLUDES(pcube "rwhw/PowerCube" ${SRC_HPP})
+
+    # Make sure dependencies are build before system
+    FOREACH(DEP IN LISTS ROBWORK_LIBRARIES)
+        IF(TARGET ${DEP})
+            ADD_DEPENDENCIES(rwhw_pcube ${DEP})
+        ENDIF()
+    ENDFOREACH()
+
     set(ROBWORKHARDWARE_LIBRARIES ${ROBWORKHARDWARE_LIBRARIES} rwhw_pcube PARENT_SCOPE)
 ENDIF()

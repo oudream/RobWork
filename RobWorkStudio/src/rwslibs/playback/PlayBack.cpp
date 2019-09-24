@@ -100,23 +100,30 @@ PlayBack::PlayBack()
         connect(act, SIGNAL(triggered()), this, SLOT(toStartPlay()));
     }
 
-    {
-        QAction* act = playToolbar->addAction(
-            QIcon(":/backward.png"), "Backward play");
-        connect(act, SIGNAL(triggered()), this, SLOT(backwardPlay()));
+    
+    _backward = playToolbar->addAction(
+        QIcon(":/backward.png"), "Backward play");
+    connect(_backward, SIGNAL(triggered()), this, SLOT(backwardPlay()));
+    
+
+    _pauseAndResume = playToolbar->addAction(
+        QIcon(":/pause.png"), "Pause play");
+    _pauseAndResume->setShortcut(Qt::Key_Space);
+    connect(_pauseAndResume, SIGNAL(triggered()), this, SLOT(pauseOrResumePlay()));
+
+    _forward = playToolbar->addAction(
+        QIcon(":/forward.png"), "Forward play");
+    connect(_forward, SIGNAL(triggered()), this, SLOT(forwardPlay()));
+
+    if (_player->getPlayDirection()<0) {
+        _backward->setVisible(false);
+        _pauseAndResume->setIcon(QIcon(":/backward_pause.png"));
+    }
+    else if (_player->getPlayDirection()>0) {
+        _forward->setVisible(false);
+        _pauseAndResume->setIcon(QIcon(":/forward_pause.png"));
     }
 
-    {
-        QAction* act = playToolbar->addAction(
-            QIcon(":/pause.png"), "Pause play");
-        connect(act, SIGNAL(triggered()), this, SLOT(pauseOrResumePlay()));
-    }
-
-    {
-        QAction* act = playToolbar->addAction(
-            QIcon(":/forward.png"), "Forward play");
-        connect(act, SIGNAL(triggered()), this, SLOT(forwardPlay()));
-    }
 
     {
         QAction* act = playToolbar->addAction(
@@ -214,11 +221,12 @@ PlayBack::~PlayBack() {}
 
 void PlayBack::initialize()
 {
-    getRobWorkStudio()->stateTrajectoryChangedEvent().add(
+    getRobWorkStudio()->stateTrajectoryPtrChangedEvent().add(
         boost::bind(
             &PlayBack::stateTrajectoryChangedListener, this, _1),
         this);
 }
+
 
 void PlayBack::open(WorkCell* workcell)
 {
@@ -276,7 +284,8 @@ namespace
     const double timerInterval = 1.0 / 50;
 }
 void PlayBack::record(bool record) {
-    if (_player.get() == NULL || _player->_path.size()==0){
+
+    if (_player.get() == NULL || _player->_path.get() == NULL || _player->_path->size() == 0 ){
         // create a dummy player
         _player = ownedPtr(new Player(1.0/5.0, getRobWorkStudio()));
     }
@@ -359,7 +368,6 @@ void PlayBack::openPath()
 
     if (!filename.isEmpty()) {
         _previousOpenSaveDirectory = StringUtil::getDirectoryName(filename.toStdString());
-
         openPlayFile(filename.toStdString());
     }
 }
@@ -430,10 +438,10 @@ void PlayBack::openPlayFile(const std::string& file)
     }
 }
 
-void PlayBack::stateTrajectoryChangedListener(const TimedStatePath& path)
+void PlayBack::stateTrajectoryChangedListener(const TimedStatePath::Ptr path)
 {
 
-    if (!path.empty()) {
+    if (!path->empty()) {
         // Reset the player.
         _player = Player::makePlayer(
             path,
@@ -500,11 +508,21 @@ void PlayBack::csvOpenPlayFile(const std::string& file)
 
 void PlayBack::forwardPlay()
 {
+    if(_player->getPlayDirection() < 0 ){
+        _backward->setVisible(true);
+        _forward->setVisible(false);
+        _pauseAndResume->setIcon(QIcon(":/forward_pause.png"));
+    }
     _player->forward();
 }
 
 void PlayBack::backwardPlay()
 {
+    if(_player->getPlayDirection() > 0 ){
+        _backward->setVisible(false);
+        _forward->setVisible(true);
+        _pauseAndResume->setIcon(QIcon(":/backward_pause.png"));
+    }
     _player->backward();
 }
 

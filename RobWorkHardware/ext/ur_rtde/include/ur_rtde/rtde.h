@@ -1,5 +1,5 @@
-#ifndef RTDE_LIBRARY_H
-#define RTDE_LIBRARY_H
+#ifndef RTDE_H
+#define RTDE_H
 
 #include <rtde_export.h>
 #include <ur_rtde/robot_state.h>
@@ -47,6 +47,7 @@ class RTDE
       FORCE_MODE_SET_GAIN_SCALING = 22,
       SET_SPEED_SLIDER = 23,
       SET_STD_ANALOG_OUT = 24,
+      SERVOL = 25,
       STOP = 255
     };
 
@@ -60,11 +61,7 @@ class RTDE
       RECIPE_6 = 6,
       RECIPE_7 = 7,
       RECIPE_8 = 8,
-      RECIPE_9 = 9,
-      RECIPE_10 = 10,
-      RECIPE_11 = 11,
-      RECIPE_12 = 12,
-      RECIPE_13 = 13
+      RECIPE_9 = 9
     };
 
     RTDE_EXPORT RobotCommand() : type_(NO_CMD), recipe_id_(1)
@@ -138,4 +135,4 @@ class RTDE
 
 }  // namespace ur_rtde
 
-#endif
+#endif  // RTDE_H

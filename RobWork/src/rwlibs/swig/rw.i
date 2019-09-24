@@ -7,9 +7,6 @@
 #include <rw/loaders/path/PathLoader.hpp>
 #include <rw/loaders/dom/DOMPropertyMapLoader.hpp>
 #include <rw/loaders/dom/DOMPropertyMapSaver.hpp>
-#if defined (SWIGLUA)
-#include <rwlibs/swig/lua/Lua.hpp>
-#endif
 
 using namespace rwlibs::swig;
 using rw::math::Metric;
@@ -93,17 +90,17 @@ void writelog(const std::string& msg);
     long long timeMs(){
         return ::rw::common::TimerUtil::currentTimeMs( );
     }
-    void info(const std::string& msg){
-        ::rw::common::Log::infoLog() << msg;
+    void infoLog(const std::string& msg){
+        ::rw::common::Log::infoLog() << msg << std::endl;
     }
-    void debug(const std::string& msg){
-        ::rw::common::Log::debugLog() << msg;
+    void debugLog(const std::string& msg){
+        ::rw::common::Log::debugLog() << msg << std::endl;
     }
-    void warn(const std::string& msg){
-        ::rw::common::Log::warningLog() << msg;
+    void warnLog(const std::string& msg){
+        ::rw::common::Log::warningLog() << msg << std::endl;
     }
-    void error(const std::string& msg){
-        ::rw::common::Log::errorLog() << msg;
+    void errorLog(const std::string& msg){
+        ::rw::common::Log::errorLog() << msg << std::endl;
     }
 %}
 
@@ -248,7 +245,7 @@ public:
 		void setBool(const std::string& id, bool val){  $self->set<bool>(id,val); }
 		void set(const std::string& id, bool val){  $self->set<bool>(id,val); }
 
-		std::string& getString(const std::string& id){ return $self->get<std::string>(id); }
+		std::string getString(const std::string& id){ return $self->get<std::string>(id); }
 		void setString(const std::string& id, std::string val){  $self->set<std::string>(id,val); }
 		void set(const std::string& id, std::string val){  $self->set<std::string>(id,val); }
 		
@@ -348,7 +345,6 @@ public:
 	/**
 	 * @brief Indices for different logs. The loglevel will be Info as default. Everything below the
 	 * loglevel is enabled.
-	 *
 	 */
 	enum LogIndex {
 		Fatal=0, Critical=1,
@@ -362,6 +358,7 @@ public:
 
 	/**
 	 * @brief Convert a LogIndex to a mask.
+	 *
 	 * @param idx [in] the LogIndex.
 	 * @return the mask enabling the given log level.
 	 */
@@ -380,6 +377,7 @@ public:
 	/**
 	 * @brief convenience function for getting the LogWriter
 	 * that is associated with the info loglevel
+	 *
 	 * @return info LogWriter
 	 */
     static LogWriter& infoLog();
@@ -387,6 +385,7 @@ public:
 	/**
 	 * @brief convenience function for getting the LogWriter
 	 * that is associated with the warning loglevel
+	 *
 	 * @return warning LogWriter
 	 */
     static LogWriter& warningLog();
@@ -395,6 +394,7 @@ public:
 	/**
 	 * @brief convenience function for getting the LogWriter
 	 * that is associated with the error loglevel
+	 *
 	 * @return error LogWriter
 	 */
     static LogWriter& errorLog();
@@ -402,6 +402,7 @@ public:
 	/**
 	 * @brief convenience function for getting the LogWriter
 	 * that is associated with the debug loglevel
+	 *
 	 * @return debug LogWriter
 	 */
     static LogWriter& debugLog();
@@ -409,18 +410,21 @@ public:
 	/**
 	 * @brief returns the global log instance. Global in the sence
 	 * of whatever is linked staticly together.
+	 *
 	 * @return a Log
 	 */
     static rw::common::Ptr<Log> getInstance();
 
     /**
      * @brief convenience function of getInstance
+     *
      * @return a Log
      */
     static Log& log();
 
     /**
      * @brief sets the instance of the log class
+     *
      * @param log [in] the log that will be used through the static log methods.
      */
     static void setLog(rw::common::Ptr<Log> log);
@@ -441,6 +445,7 @@ public:
      * @brief set the loglevel. Any log with LogIndex equal to or less than
      * loglevel will be enabled. Any log above will be disabled unless an
      * enabled mask is specified for that log
+     *
      * @param loglevel [in] the level
      */
     void setLevel(LogIndex loglevel);
@@ -448,6 +453,7 @@ public:
 
     /**
      * @brief gets the log writer associated to logindex \b id
+     *
      * @param id [in] logindex
      * @return log writer
      */
@@ -571,6 +577,7 @@ public:
 	/**
 	 * @brief convenience function for getting the LogWriter
 	 * that is associated with the info loglevel
+	 *
 	 * @return info LogWriter
 	 */
     LogWriter& info();
@@ -578,6 +585,7 @@ public:
 	/**
 	 * @brief convenience function for getting the LogWriter
 	 * that is associated with the warning loglevel
+	 *
 	 * @return info LogWriter
 	 */
     LogWriter& warning();
@@ -585,6 +593,7 @@ public:
 	/**
 	 * @brief convenience function for getting the LogWriter
 	 * that is associated with the error loglevel
+	 *
 	 * @return info LogWriter
 	 */
     LogWriter& error();
@@ -592,12 +601,14 @@ public:
 	/**
 	 * @brief convenience function for getting the LogWriter
 	 * that is associated with the debug loglevel
+	 *
 	 * @return info LogWriter
 	 */
     LogWriter& debug();
 
 	/**
 	 * @brief Enable log(s) given by log mask.
+	 *
 	 * @param mask [in] the mask for the logs to enable.
 	 */
 	void setEnable(int mask);
@@ -605,12 +616,16 @@ public:
    /**
      * @brief Checks if the given LogIndex is enabled. This can be used to
      * determine if a certain log level will be displayed or not.
+     *
      * @param idx [in] the level
+     *
+     * @return true if enabled, false otherwise.
      */
     bool isEnabled(LogIndex idx);
 
 	/**
 	 * @brief Disable log(s) given by log mask.
+	 *
 	 * @param mask [in] the mask for the logs to disable.
 	 */
 	void setDisable(int mask);
@@ -645,6 +660,7 @@ public:
 
     /**
      * @brief Writes \b str to the log
+     *
      * @param str [in] message to write
      */
     void write(const std::string& str);
@@ -875,39 +891,6 @@ public:
 
 %template (ExtensionRegistryPtr) rw::common::Ptr<ExtensionRegistry>;
 
-
-
-/********************************************
- * RWLIBS SIMULATION
- ********************************************/
-
-%nodefaultctor Simulator;
-class Simulator {
-public:
-   struct UpdateInfo {
-	   UpdateInfo();
-	   UpdateInfo(double dt_step);
-
-	   double dt;
-	   double dt_prev;
-	   double time;
-	   bool rollback;
-   };
-   
-   virtual ~Simulator();
-   virtual void step(double dt) = 0;
-   virtual void reset(State& state) = 0;
-   virtual void init(State& state) = 0;
-   virtual double getTime() = 0;
-   virtual void setEnabled(Frame* frame, bool enabled) = 0;
-   virtual State& getState() = 0;
-   virtual PropertyMap& getPropertyMap() = 0;
-
-};
-
-%template (SimulatorPtr) rw::common::Ptr<Simulator>;
-
-
 /********************************************
  * ROBWORK CLASS
  ********************************************/ 
@@ -936,8 +919,33 @@ public:
                   TrianglePrim, CylinderPrim, PlanePrim, RayPrim,
                   UserType} GeometryType;
 
+	/**
+	 * @brief the type of this primitive
+	 *
+	 * @return the type of primitive.
+	 */
     virtual GeometryType getType() const = 0;
+
+	/**
+	 * @brief gets a trimesh representation of this geometry data.
+	 *
+	 * The trimesh that is returned is by default a copy, which means
+	 * ownership is transfered to the caller. Specifying forceCopy to false
+	 * will enable copy by reference and ownership is not necesarilly transfered.
+	 * This is more efficient, though pointer is only alive as long as this
+	 * GeometryData is alive.
+	 *
+	 * @return TriMesh representation of this GeometryData
+	 */
     virtual rw::common::Ptr<TriMesh> getTriMesh(bool forceCopy=true) = 0;
+
+	/**
+	 * @brief format GeometryType to string
+	 *
+	 * @param type [in] the type of geometry to convert to string.
+	 *
+	 * @return a string.
+	 */
     static std::string toString(GeometryType type);
 };
 
@@ -1121,31 +1129,98 @@ class Trianglef
 };
 
 
+/**
+ * @brief A simple point cloud data structure. Points may be ordered or not. An ordered set is
+ * kept as a single array in row major order and with a width and a height. An unordered array
+ * must have height==1 and width equal to the number of points.
+ */
 class PointCloud: public GeometryData {
-	public:
-        PointCloud();
-        PointCloud(int w, int h);
+public:
+    /**
+     * @brief constructor
+     */
+    PointCloud();
 
-/*
-		GeometryType getType() const;
-		size_t size() const;
-		bool isOrdered();
-	    std::vector<rw::math::Vector3D<float> >& getData();
-	    const std::vector<rw::math::Vector3D<float> >& getData() const;
-        const rw::math::Vector3D<float>& operator()(int x, int y) const;
-	    rw::math::Vector3D<float>& operator()(int x, int y);
-	    int getWidth() const;
-        int getHeight() const;
-	    void resize(int w, int h);
+    /**
+     * @brief constructor
+     *
+     * @param w [in]
+     * @param h [in]
+     */
+    PointCloud(int w, int h);
 
-		static rw::common::Ptr<PointCloud> loadPCD( const std::string& filename );
+	/**
+	 * @brief destructor
+	 */
+	virtual ~PointCloud();
 
-        static void savePCD( const PointCloud& cloud,
-                                                    const std::string& filename ,
-                                                    const rw::math::Transform3D<float>& t3d =
-	                                                            rw::math::Transform3D<float>::identity());
-*/
-	};
+	//! @copydoc GeometryData::getType
+	 GeometryType getType() const;
+
+	/**
+	 * @brief gets the number of points in the point cloud.
+	 *
+	 * @return the number of points.
+	 */
+	virtual size_t size() const;
+
+	bool isOrdered();
+
+    /**
+     * @brief returns a char pointer to the image data
+     *
+     * @return const char pointer to the image data
+     */
+    const std::vector<rw::math::Vector3D<float> >& getData() const;
+
+    /**
+     * @brief width of the point cloud data. If the data is unordered then this
+     * will be equal to the number of points.
+     *
+     * @return width of data points
+     */
+    int getWidth() const;
+
+    int getHeight() const;
+
+    /**
+     * @brief set width of point cloud. Data elements are accessed as [x+y*width].
+     *
+     * If the current data array cannot contain the elements then it will be resized to
+     * be able to it.
+     *
+     * @param w [in] new width
+     * @param h [in] new height
+     */
+    void resize(int w, int h);
+
+	//! @copydoc getTriMesh
+	rw::common::Ptr<TriMesh> getTriMesh(bool forceCopy=true);
+
+	const rw::math::Transform3D<float>& getDataTransform() const;
+
+	/**
+	 * @brief load point cloud from PCD file
+	 *
+	 * @param filename [in] name of PCD file
+	 * @return a point cloud
+	 */
+	static rw::common::Ptr<PointCloud> loadPCD( const std::string& filename );
+
+	/**
+	 * @brief save point cloud in PCD file format (PCL library format)
+	 *
+	 * @param cloud [in] the point cloud to save
+	 * @param filename [in] the name of the file to save to
+	 * @param t3d [in] the transformation of the point cloud
+	 */
+    static void savePCD(const PointCloud& cloud,
+                        const std::string& filename ,
+                        const rw::math::Transform3D<float>& t3d =
+                        rw::math::Transform3D<float>::identity());
+};
+
+%template (PointCloudPtr) rw::common::Ptr<PointCloud>;
 
 
 /********************************************
@@ -1304,13 +1379,13 @@ class WorkCellScene {
 
      //rw::graphics::GroupNode::Ptr getNode(Frame* frame);
  };
+
+%nodefaultctor SceneViewer;
+class SceneViewer
+{
+};
  
- %nodefaultctor SceneViewer;
- class SceneViewer
- {
- };
- 
- %template (SceneViewerPtr) rw::common::Ptr<SceneViewer>;
+%template (SceneViewerPtr) rw::common::Ptr<SceneViewer>;
 
 /********************************************
  * GRASPPLANNING
@@ -1319,118 +1394,8 @@ class WorkCellScene {
 /********************************************
  * INVKIN
  ********************************************/
-
-class InvKinSolver
-{
-public:
-    virtual std::vector<rw::math::Q> solve(const rw::math::Transform3D<double> & baseTend, const State& state) const = 0;
-    virtual void setCheckJointLimits(bool check) = 0;
-};
-
-%template (InvKinSolverPtr) rw::common::Ptr<InvKinSolver>;
-
-class IterativeIK: public InvKinSolver
-{
-public:
-    virtual void setMaxError(double maxError);
-
-    virtual double getMaxError() const;
-
-    virtual void setMaxIterations(int maxIterations);
-
-    virtual int getMaxIterations() const;
-
-    virtual PropertyMap& getProperties();
-#if !defined(SWIGJAVA)
-    virtual const PropertyMap& getProperties() const;
-#endif
-    static rw::common::Ptr<IterativeIK> makeDefault(rw::common::Ptr<Device> device, const State& state);
-};
-
-%template (IterativeIKPtr) rw::common::Ptr<IterativeIK>;
-OWNEDPTR(IterativeIK);
-
-class JacobianIKSolver : public IterativeIK
-{
-public:
-    typedef enum{Transpose, SVD, DLS, SDLS} JacobianSolverType;
-
-    JacobianIKSolver(rw::common::Ptr<Device> device, const State& state);
-
-    JacobianIKSolver(rw::common::Ptr<Device> device, Frame *foi, const State& state);
-
-    std::vector<rw::math::Q> solve(const rw::math::Transform3D<double> & baseTend, const State& state) const;
-
-    void setInterpolatorStep(double interpolatorStep);
-
-     void setEnableInterpolation(bool enableInterpolation);
-
-     bool solveLocal(const rw::math::Transform3D<double>  &bTed,
-                     double maxError,
-                     State &state,
-                     int maxIter) const;
-
-     void setClampToBounds(bool enableClamping);
-
-     void setSolverType(JacobianSolverType type);
-
-     void setCheckJointLimits(bool check);
-
-};
-
-%template (JacobianIKSolverPtr) rw::common::Ptr<JacobianIKSolver>;
-OWNEDPTR(JacobianIKSolver);
-
-class IKMetaSolver: public IterativeIK
-{
-public:
-    IKMetaSolver(rw::common::Ptr<IterativeIK> iksolver,
-        const rw::common::Ptr<Device> device,
-        rw::common::Ptr<CollisionDetector> collisionDetector = NULL);
-
-    //IKMetaSolver(rw::common::Ptr<IterativeIK> iksolver,
-    //    const rw::common::Ptr<Device> device,
-    //    rw::common::Ptr<QConstraint> constraint);
-
-    std::vector<rw::math::Q> solve(const rw::math::Transform3D<double> & baseTend, const State& state) const;
-
-    void setMaxAttempts(size_t maxAttempts);
-
-    void setStopAtFirst(bool stopAtFirst);
-
-    void setProximityLimit(double limit);
-
-    void setCheckJointLimits(bool check);
-
-    std::vector<rw::math::Q> solve(const rw::math::Transform3D<double> & baseTend, const State& state, size_t cnt, bool stopatfirst) const;
-
-};
-
-%template (IKMetaSolverPtr) rw::common::Ptr<IKMetaSolver>;
-OWNEDPTR(IKMetaSolver);
-
-class ClosedFormIK: public InvKinSolver
-{
-public:
-    static rw::common::Ptr<ClosedFormIK> make(const Device& device, const State& state);
-};
-
-
-class PieperSolver: public ClosedFormIK {
-public:
-    PieperSolver(const std::vector<DHParameterSet>& dhparams,
-                 const rw::math::Transform3D<double> & joint6Tend,
-                 const rw::math::Transform3D<double> & baseTdhRef = rw::math::Transform3D<double> ::identity());
-
-    PieperSolver(SerialDevice& dev, const rw::math::Transform3D<double> & joint6Tend, const State& state);
-
-    virtual std::vector<rw::math::Q> solve(const rw::math::Transform3D<double> & baseTend, const State& state) const;
-
-    virtual void setCheckJointLimits(bool check);
-
-};
-
-%template (ClosedFormIKPtr) rw::common::Ptr<ClosedFormIK>;
+ 
+ %include <rwlibs/swig/rwinvkin.i>
 
 /********************************************
  * KINEMATICS
@@ -1445,18 +1410,58 @@ public:
 };
 %template (StateVector) std::vector<State>;
 
+/**
+ * @brief the basic building block for the stateless design using
+ * the StateStructure class. A StateData represents a size,
+ * a unique id, and a unique name, when inserted into the StateStructure.
+ * The size will allocate "size"-doubles in State objects originating from the
+ * StateStructure.
+ */
 class StateData {
 protected:
     StateData(int size, const std::string& name);
 public:
-    const std::string& getName();
+    /**
+     * @brief The name of the state data.
+     *
+     * @return The name of the state data.
+     */
+    const std::string& getName() const;
+
+    /**
+     * @brief The number of doubles allocated by this StateData in
+     * each State object.
+     *
+     * @return The number of doubles allocated by the StateData
+     */
     int size() const;
+
 #if !defined(SWIGJAVA)
+    /**
+     * @brief An array of length size() containing the values for
+     * the state data.
+     *
+     * It is OK to call this method also for a StateData with zero size.
+     *
+     * @param state [in] The state containing the StateData values.
+     *
+     * @return The values for the frame.
+     */
     double* getData(State& state);
 #endif
 #if defined(SWIGJAVA)
 %apply double[] {double *};
 #endif
+    /**
+     * @brief Assign for \b state data the size() of values of the array \b
+     * vals.
+     *
+     * The array \b vals must be of length at least size().
+     *
+     * @param state [inout] The state to which \b vals are written.
+     *
+     * @param vals [in] The joint values to assign.
+     */
     void setData(State& state, const double* vals) const;
 };
 
@@ -1471,49 +1476,208 @@ public:
 %template (StateStructurePtr) rw::common::Ptr<StateStructure>;
 OWNEDPTR(StateStructure);
 
+/**
+ * @brief The type of node of forward kinematic trees.
+ *
+ * Types of joints are implemented as subclasses of Frame. The
+ * responsibility of a joint is to implement the getTransform() method that
+ * returns the transform of the frame relative to whatever parent it is
+ * attached to.
+ *
+ * The getTransform() method takes as parameter the set of joint values
+ * State for the tree. Joint values for a particular frame can be accessed
+ * via State::getQ(). A frame may contain pointers to other frames so that
+ * the transform of a frame may depend on the joint values for other frames
+ * also.
+ */
 class Frame : public StateData
 {
 public:
 
-    rw::math::Transform3D<double>  getTransform(const State& state) const;
-    PropertyMap& getPropertyMap();
-    int getDOF() const ;
-    Frame* getParent() ;
-    Frame* getParent(const State& state);
-    Frame* getDafParent(const State& state);
+    /**
+     * @brief Post-multiply the transform of the frame to the parent transform.
+     *
+     * The transform is calculated for the joint values of \b state.
+     *
+     * The exact implementation of getTransform() depends on the type of
+     * frame. See for example RevoluteJoint and PrismaticJoint.
+     *
+     * @param parent [in] The world transform of the parent frame.
+     * @param state [in] Joint values for the forward kinematics tree.
+     * @param result [in] The transform of the frame in the world frame.
+     */
+    void multiplyTransform(const rw::math::Transform3D<double>& parent,
+                           const State& state,
+                           rw::math::Transform3D<double>& result) const;
+
+    /**
+     * @brief The transform of the frame relative to its parent.
+     *
+     * The transform is calculated for the joint values of \b state.
+     *
+     * The exact implementation of getTransform() depends on the type of
+     * frame. See for example RevoluteJoint and PrismaticJoint.
+     *
+     * @param state [in] Joint values for the forward kinematics tree.
+     *
+     * @return The transform of the frame relative to its parent.
+     */
+    rw::math::Transform3D<double> getTransform(const State& state) const;
 
 #if !defined(SWIGJAVA) 
-    const PropertyMap& getPropertyMap() const ; 
-    const Frame* getParent() const ;
+    /**
+     * @brief Miscellaneous properties of the frame.
+     *
+     * The property map of the frame is provided to let the user store
+     * various settings for the frame. The settings are typically loaded
+     * from setup files.
+     *
+     * The low-level manipulations of the property map can be cumbersome. To
+     * ease these manipulations, the PropertyAccessor utility class has been
+     * provided. Instances of this class are provided for a number of common
+     * settings, however it is undecided if these properties are a public
+     * part of RobWork.
+     *
+     * @return The property map of the frame.
+     */
+    const PropertyMap& getPropertyMap() const;
+#endif
+
+    /**
+     * @brief Miscellaneous properties of the frame.
+     *
+     * The property map of the frame is provided to let the user store
+     * various settings for the frame. The settings are typically loaded
+     * from setup files.
+     *
+     * The low-level manipulations of the property map can be cumbersome. To
+     * ease these manipulations, the PropertyAccessor utility class has been
+     * provided. Instances of this class are provided for a number of common
+     * settings, however it is undecided if these properties are a public
+     * part of RobWork.
+     *
+     * @return The property map of the frame.
+     */
+    PropertyMap& getPropertyMap();
+
+
+    /**
+     * @brief The number of degrees of freedom (dof) of the frame.
+     *
+     * The dof is the number of joint values that are used for controlling
+     * the frame.
+     *
+     * Given a set joint values of type State, the getDof() number of joint
+     * values for the frame can be read and written with State::getQ() and
+     * State::setQ().
+     *
+     * @return The number of degrees of freedom of the frame.
+     */
+    int getDOF() const;
+
+
+    // The parents
+
+#if !defined(SWIGJAVA)
+    //! @brief The parent of the frame or NULL if the frame is a DAF.
+    const Frame* getParent() const;
+#endif
+
+    //! @brief The parent of the frame or NULL if the frame is a DAF.
+    Frame* getParent();
+
+    /**
+     * @brief Returns the parent of the frame
+     *
+     * If no static parent exists it look for at DAF parent. If such
+     * does not exists either it returns NULL.
+     *
+     * @param state [in] the state to consider
+     * @return the parent
+     */
+    Frame* getParent(const State& state);
+
+#if !defined(SWIGJAVA)
+    /**
+     * @brief Returns the parent of the frame
+     *
+     * If no static parent exists it look for at DAF parent. If such
+     * does not exists either it returns NULL.
+     *
+     * @param state [in] the state to consider
+     * @return the parent
+     */
     const Frame* getParent(const State& state) const;
+
+    /**
+     * @brief The dynamically attached parent or NULL if the frame is not a
+     * DAF.
+     */
     const Frame* getDafParent(const State& state) const;
 #endif
-/*
-    typedef rw::common::ConcatVectorIterator<Frame> iterator;
-    typedef rw::common::ConstConcatVectorIterator<Frame> const_iterator;
 
-    typedef std::pair<iterator, iterator> iterator_pair;
-    typedef std::pair<const_iterator, const_iterator> const_iterator_pair;
+    /**
+     * @brief The dynamically attached parent or NULL if the frame is not a
+     * DAF.
+     */
+    Frame* getDafParent(const State& state);
 
-    const_iterator_pair getChildren() const;
-    iterator_pair getChildren();
-    const_iterator_pair getChildren(const State& state) const;
-    iterator_pair getChildren(const State& state);
-    const_iterator_pair getDafChildren(const State& state) const;
-    iterator_pair getDafChildren(const State& state);
-*/
+    // Iterator stuff left out of script interface for now!
+
+    // Dynamic frame attachments.
+
+    /**
+     * @brief Move a frame within the tree.
+     *
+     * The frame \b frame is detached from its parent and reattached to \b
+     * parent. The frames \b frame and \b parent must both belong to the
+     * same kinematics tree.
+     *
+     * Only frames with no static parent (see getParent()) can be moved.
+     *
+     * @param parent [in] The frame to attach \b frame to.
+     * @param state [inout] The state to which the attachment is written.
+     */
+    void attachTo(Frame* parent, State& state);
+
+    /**
+     * @brief Test if this frame is a Dynamically Attachable Frame
+     *
+     * @return true if this frame is a DAF, false otherwise
+     */
+    bool isDAF();
+
+    /**
+     * @brief Get the transform relative to world.
+     *
+     * @param state [in] the state.
+     * @return transform relative to world.
+     */
+    rw::math::Transform3D<double> wTf(const State& state) const;
+
+    /**
+     * @brief Get the transform of other frame relative to this frame.
+     *
+     * @param to [in] the other frame
+     * @param state [in] the state.
+     * @return transform of frame \b to relative to this frame.
+     */
+    rw::math::Transform3D<double> fTf(const Frame* to, const State& state) const;
+    
     %extend {
-        rw::math::Transform3D<double>  wTt(const State& state) const{
-            return ::rw::kinematics::Kinematics::worldTframe($self, state);
-        }
-
-        rw::math::Transform3D<double>  fTf(const Frame* frame, const State& state) const{
-            return ::rw::kinematics::Kinematics::frameTframe($self, frame, state);
+        /**
+         * @brief Iterator pair for all children of the frame.
+         */
+        std::vector<Frame*> getChildren(const State& state)
+        {
+            std::vector<Frame*> frames;
+        	Frame::iterator_pair pair = $self->getChildren(state);
+        	for (Frame::iterator it = pair.first; it != pair.second; it++) {
+        	    frames.push_back(&(*it));
+        	}
+        	return frames;
         }
     }
-
-    void attachTo(Frame* parent, State& state);
-    bool isDAF();
 
 private:
     // Frames should not be copied.
@@ -1521,6 +1685,8 @@ private:
     Frame& operator=(const Frame&);
 };
 
+%template (FramePtr) rw::common::Ptr<Frame>;
+%template (FrameCPtr) rw::common::Ptr<const Frame>;
 %template (FrameVector) std::vector<Frame*>;
 
 class MovableFrame: public Frame{
@@ -1570,6 +1736,264 @@ class Joint: public Frame
 
 %template (JointVector) std::vector<Joint*>;
 
+%nodefaultctor Kinematics;
+/**
+ * @brief Utility functions for the rw::kinematics module.
+ */
+class Kinematics {
+public:
+    /**
+     * @brief The transform of frame in relative to the world frame.
+     *
+     * If to=NULL the method returns a 4x4 identify matrix
+     *
+     * @param to [in] The transform for which to find the world frame.
+     *
+     * @param state [in] The state of the kinematics tree.
+     *
+     * @return The transform of the frame relative to the world frame.
+     */
+    static rw::math::Transform3D<double> worldTframe(const Frame* to, const State& state);
+
+
+    /**
+     * @brief The transform of frame to relative to frame from.
+     *
+     * FrameTframe() is related to WorldTframe() as follows:
+     *
+     * frameTframe(from, to, state) == inverse(worldTframe(from, state)) * worldTframe(to, state);
+     *
+     * @param from [in] The start frame.
+     *
+     * @param to [in] The end frame.
+     *
+     * @param state [in] The state of the kinematics tree.
+     *
+     * @return The transform from the start frame to the end frame.
+     */
+    static rw::math::Transform3D<double> frameTframe(
+        const Frame* from, const Frame* to, const State& state);
+
+
+    /** 
+     * @brief All frames reachable from root for a tree structure of
+     * state.
+     *
+     * This is a tremendously useful utility. An alternative would be to have an
+     * iterator interface for trees represented by work cell states.
+     *
+     * We give no guarantee on the ordering of the frames.
+     *
+     * @param root [in] The root node from where the frame search is started.
+     *
+     * @param state [in] The structure of the tree.
+     *
+     * @return All reachable frames.
+     */
+    static std::vector<Frame*> findAllFrames(Frame* root, const State& state);
+
+    /** 
+     * @brief All frames reachable from root for a tree structure.
+     *
+     * This is a tremendously useful utility. An alternative would be to have an
+     * iterator interface for trees represented by work cell states.
+     *
+     * We give no guarantee on the ordering of the frames.
+     *
+     * DAF are not included.
+     *
+     * @param root [in] The root node from where the frame search is started.
+     *
+     * @return All reachable frames.
+     */
+    static std::vector<Frame*> findAllFrames(Frame* root);
+
+    /**
+     * @brief Find the world frame of the workcell by traversing the path
+     * from frame to the root of the tree.
+     *
+     * The state state is needed to retrieve the parent frames, but the
+     * world frame returned is the same for any (valid) state.
+     */
+    static Frame* worldFrame(Frame* frame, const State& state);
+
+    /**
+     * @brief The chain of frames connecting child to parent.
+     *
+     * child is included in the chain, but parent is not included. If
+     * parent is NULL then the entire path from child to the world
+     * frame is returned. If child as well as parent is NULL then the
+     * empty chain is gracefully returned.
+     *
+     * The state gives the connectedness of the tree.
+     *
+     * If parent is not on the chain from child towards the root, then
+     * an exception is thrown.
+     */
+    static std::vector<Frame*> childToParentChain(Frame* child,
+                                                  Frame* parent,
+                                                  const State& state);
+
+    /**
+     * @brief Like ChildToParentChain() except that the frames are returned
+     * in the reverse order.
+     */
+    static std::vector<Frame*> reverseChildToParentChain(Frame* child,
+                                                         Frame* parent,
+                                                         const State& state);
+
+    /**
+     * @brief The chain of frames connecting parent to child.
+     *
+     * parent is included in the list, but child is excluded. If
+     * parent as well as child is NULL then the empty chain is returned.
+     * Otherwise parent is included even if parent is NULL.
+     */
+    static std::vector<Frame*> parentToChildChain(Frame* parent,
+                                                  Frame* child,
+                                                  const State& state);
+
+    /**
+       @brief True if frame is a DAF and false otherwise.
+    */
+    static bool isDAF(const Frame* frame);
+
+    /**
+     * @brief Check if frame is fixed.
+     * @param frame [in] the frame.
+     * @return true if fixed, false otherwise.
+     */
+    static bool isFixedFrame(const Frame* frame);
+
+    /**
+     * @brief Grip item with gripper thereby modifying state.
+     *
+     * item must be a DAF.
+     *
+     * @param item [in] the frame to grip.
+     * @param gripper [in] the grasping frame.
+     * @param state [in/out] the state.
+     *
+     * An exception is thrown if item is not a DAF.
+     */
+	static void gripFrame(Frame* item, Frame* gripper, State& state);
+
+    /**
+     * @brief Grip item with gripper thereby modifying state.
+     *
+     * item must be a DAF.
+     *
+     * @param item [in] the frame to grip.
+     * @param gripper [in] the grasping frame.
+     * @param state [in/out] the state.
+     *
+     * An exception is thrown if item is not a DAF.
+     */
+    static void gripFrame(MovableFrame* item, Frame* gripper, State& state);
+};
+
+/**
+ * @brief Forward kinematics between a pair of frames.
+ *
+ * FKRange finds the relative transform between a pair of frames. FKRange
+ * finds the path connecting the pair of frames and computes the total
+ * transform of this path. Following initialization, FKRange assumes that
+ * the path does not change structure because of uses of the attachFrame()
+ * feature. If the structure of the path has changed, the FKRange will
+ * produce wrong results.
+ *
+ * FKRange is guaranteed to select the shortest path connecting the
+ * frames, i.e. the path doesn't go all the way down to the root if it can
+ * be helped.
+ */
+class FKRange
+{
+public:
+    /**
+     * @brief Forward kinematics for the path leading from from to to.
+     *
+     * If a frame of NULL is passed as argument, it is interpreted to mean
+     * the WORLD frame.
+     *
+     * @param from [in] The start frame.
+     *
+     * @param to [in] The end frame.
+     *
+     * @param state [in] The path structure.
+     */
+    FKRange(const Frame* from, const Frame* to, const State& state);
+
+    /**
+     * @brief Default constructor
+     *
+     * Will always return an identity matrix as the transform
+     */
+    FKRange();
+
+    /**
+     * @brief The relative transform between the frames.
+     *
+     * @param state [in] Configuration values for the frames of the tree.
+     */
+    rw::math::Transform3D<double> get(const State& state) const;
+
+    /**
+     * @brief Returns the last frame in the range.
+     *
+     * @return The end frame (to).
+     */
+    rw::common::Ptr< const Frame > getEnd() const;
+
+    /**
+     * @brief Returns the first frame in the range.
+     *
+     * @return The base frame (from).
+     */
+    rw::common::Ptr< const Frame > getBase() const;
+};
+
+/**
+ * @brief Forward kinematics for a set of frames.
+ *
+ * FKTable finds transforms for frames for a given fixed work cell state.
+ * The frame transforms are calculated relative to the world frame.
+ */
+class FKTable
+{
+public:
+    /**
+     * @brief Forward kinematics for the work cell state state.
+     *
+     * @param state [in] The work state for which world transforms are to be
+     * calculated.
+     */
+    FKTable(const State& state);
+
+    /**
+     * @brief The world transform for the frame frame.
+     *
+     * @param frame [in] The frame for which to find the world transform.
+     *
+     * @return The transform of the frame relative to the world.
+     */
+    const rw::math::Transform3D<double>& get(const Frame& frame) const;
+
+    /**
+     * @brief Returns State associated with the FKTable
+     *
+     * The State returned is the State used to calculate the forward kinematics.
+     *
+     * @return State used to calculate the forward kinematics
+     */
+    const State& getState() const;
+
+    /**
+     * @brief resets the FKTable to state
+     *
+     * @param state
+     */
+    void reset(const State& state);
+};
 
 /********************************************
  * LOADERS
@@ -1684,11 +2108,6 @@ public:
 	static std::vector<std::string> getSupportedFormats();
 };
 
-class Image {
-};
-
-%template (ImagePtr) rw::common::Ptr<Image>;
-
 #if defined(RW_HAVE_XERCES)
 
 class XMLTrajectoryLoader
@@ -1737,6 +2156,27 @@ namespace rw { namespace math {
     public:
         Math() = delete;
         ~Math() = delete;
+
+        /**
+         * @brief Quaternion to equivalent angle axis conversion.
+         *
+         * @param quat [in] the Quaternion object that is to be converted.
+         *
+         * @return a EAA object that represents the converted quaternion
+         */
+        template <class A>
+        static rw::math::EAA<A> quaternionToEAA(const rw::math::Quaternion<A> &quat);
+
+        /**
+         * @brief Equivalent angle axis to quaternion conversion.
+         *
+         * @param eaa [in] the EAA object that is to be converted
+         *
+         * @return a Quaternion object that represents the converted EAA
+         */
+        template <class A>
+        static rw::math::Quaternion<A> eaaToQuaternion(const rw::math::EAA<A> &eaa);
+
         static inline double clamp(double val, double min, double max);
 
         static rw::math::Q clampQ(const rw::math::Q& q,
@@ -1794,6 +2234,11 @@ namespace rw { namespace math {
     };
 }} // end namespaces
 
+%template (quaternionToEAA) rw::math::Math::quaternionToEAA<double>;
+%template (quaternionToEAA) rw::math::Math::quaternionToEAA<float>;
+%template (eaaToQuaternion) rw::math::Math::eaaToQuaternion<double>;
+%template (eaaToQuaternion) rw::math::Math::eaaToQuaternion<float>;
+
 /********************************************
  * MODELS
  ********************************************/
@@ -1809,6 +2254,7 @@ public:
     %extend {
 		/**
 		 * @brief Returns the Jacobian associated to \b state
+		 *
 		 * @param state [in] State for which to calculate the Jacobian
 		 * @return Jacobian for \b state
 		 */
@@ -2064,7 +2510,12 @@ class SerialDevice: public JointDevice
 {
 };
 %template (SerialDevicePtr) rw::common::Ptr<SerialDevice>;
+%template (SerialDeviceCPtr) rw::common::Ptr<const SerialDevice>;
 OWNEDPTR(SerialDevice)
+
+%extend rw::common::Ptr<SerialDevice> {
+    rw::common::Ptr<const SerialDevice> asSerialDeviceCPtr() { return *$self; }
+}
 
 class ParallelDevice: public JointDevice
 {
@@ -2082,6 +2533,7 @@ public:
 		const State& state);
 };
 %template (TreeDevicePtr) rw::common::Ptr<TreeDevice>;
+%template (TreeDeviceCPtr) rw::common::Ptr<const TreeDevice>;
 OWNEDPTR(TreeDevice)
 
 %nodefaultctor DHParameterSet;
@@ -2095,158 +2547,7 @@ class DHParameterSet
  * PATHPLANNING
  ********************************************/
 
-//! @brief Interface for the sampling a configuration.
-class QSampler
-{
-public:
-    /**
-       @brief Sample a configuration.
-
-       If sampling fails, the sampler may return the empty configuration. If
-       empty() is true then the sampler has no more configurations.
-       Otherwise sample() may (or may not) succeed if called a second time.
-    */
-    rw::math::Q sample();
-
-    /**
-       @brief True if the sampler is known to contain no more
-       configurations.
-    */
-    bool empty() const;
-
-    /**
-       @brief Destructor
-    */
-    virtual ~QSampler();
-
-    /**
-       @brief Empty sampler.
-    */
-	static rw::common::Ptr<QSampler> makeEmpty();
-
-    /**
-       @brief Sampler that always returns the same configuration.
-
-       The sampler is considered never empty (empty() always returns false).
-    */
-	static rw::common::Ptr<QSampler> makeFixed(const rw::math::Q& q);
-
-    /**
-       @brief Sampler that always returns a single configuration.
-
-       The sample() returns \b q the first time the method is called and the
-       empty configuration otherwise. empty() returns true after the first
-       call of sample().
-    */
-	static rw::common::Ptr<QSampler> makeSingle(const rw::math::Q& q);
-
-    /**
-       @brief Sampler for the values of a finite sequence.
-
-       sample() returns each of the values of \b qs in order. When all of
-       these samples have been returned, empty() returns true and sample()
-       returns the empty configuration.
-    */
-	static rw::common::Ptr<QSampler> makeFinite(const std::vector<rw::math::Q>& qs);
-
-    /**
-       @brief A sampler to that returns only the first \b cnt samples from
-       another sampler.
-
-       The sampler is considered empty as soon as \b sampler is empty or the
-       sampler has been called \b cnt times or more.
-    */
-	static rw::common::Ptr<QSampler> makeFinite(rw::common::Ptr<QSampler> sampler, int cnt);
-
-    /**
-       @brief Uniform random sampling for a box of the configuration space.
-    */
-	//static rw::common::Ptr<QSampler> makeUniform(const Device::QBox& bounds);
-
-    /**
-       @brief Uniform random sampling for a device.
-    */
-	static rw::common::Ptr<QSampler> makeUniform(
-        const Device& device);
-
-    /**
-       @brief Uniform random sampling for a device.
-    */
-	static rw::common::Ptr<QSampler> makeUniform(rw::common::Ptr<const Device> device);
-
-    /**
-       @brief Map a sampler of standard configurations into a sampler of
-       normalized configurations.
-    */
-	//static rw::common::Ptr<QSampler> makeNormalized(rw::common::Ptr<QSampler> sampler, const QNormalizer& normalizer);
-
-    /**
-       @brief A sampler of IK solutions for a specific target.
-
-       @param sampler [in] Sampler of IK solutions for \b target.
-       @param target [in] Target for IK solver.
-    */
-	//static rw::common::Ptr<QSampler> make(rw::common::Ptr<QIKSampler> sampler, const rw::math::Transform3D<>& target);
-
-    /**
-       @brief A sampler filtered by a constraint.
-
-       For each call of sample() up to \b maxAttempts configurations are
-       extracted from \b sampler and checked by \b constraint. The first
-       sample that satisfies the constraint is returned; if no such were
-       found the empty configuration is returned.
-
-       If \b maxAttempts is negative (this is the default), then \b sampler
-       is sampled forever until either the \b sampler is empty or a
-       configuration satisfying \b constraint is found.
-    */
-	//static rw::common::Ptr<QSampler> makeConstrained(
-	//	rw::common::Ptr<QSampler> sampler,
-	//	rw::common::Ptr<const QConstraint> constraint,
-    //    int maxAttempts = -1);
-
-    /**
-       @brief Sampler of direction vectors for a box shaped configuration
-       space.
-
-       Each random direction vector is found by sampling a configuration
-       uniformly at random from \b bounds, and returning the vector from the
-       center of the box to the configuration. The returned direction vector
-       can therefore be of length zero.
-    */
-    //static
-	//	rw::common::Ptr<QSampler> makeBoxDirectionSampler(
-    //    const Device::QBox& bounds);
-
-protected:
-    /**
-       @brief Constructor
-    */
-    QSampler();
-
-    /**
-       @brief Subclass implementation of the sample() method.
-    */
-    virtual rw::math::Q doSample() = 0;
-
-    /**
-       @brief Subclass implementation of the empty() method.
-
-       By default the sampler is assumed to be sampling an infinite set of
-       configurations. IOW. the function returns false by default.
-    */
-    virtual bool doEmpty() const;
-
-private:
-    QSampler(const QSampler&);
-    QSampler& operator=(const QSampler&);
-};
-//! @brief smart pointer type to this class
-%template (QSamplerPtr) rw::common::Ptr<QSampler>;
-//! @brief smart pointer type to this const class
-%template (QSamplerCPtr) rw::common::Ptr<const QSampler>;
-
-OWNEDPTR(QSampler)
+%include <rwlibs/swig/rwplanning.i>
 
 /********************************************
  * PLUGIN
@@ -2300,11 +2601,12 @@ public:
 	CollisionDetector(rw::common::Ptr<WorkCell> workcell, rw::common::Ptr<CollisionStrategy> strategy);
 
     /**
-     @brief Check the workcell for collisions.
-     @param state [in] The state for which to check for collisions.
-     @param data [in/out] Defines parameters for the collision check, the results and also
-     enables caching inbetween calls to incollision
-     @return true if a collision is detected; false otherwise.
+     * @brief Check the workcell for collisions.
+     *
+     * @param state [in] The state for which to check for collisions.
+     * @param data [in/out] Defines parameters for the collision check, the results and also
+     * enables caching inbetween calls to incollision
+     * @return true if a collision is detected; false otherwise.
      */
     bool inCollision(const State& state, class ProximityData &data) const;
 
@@ -2327,6 +2629,803 @@ OWNEDPTR(CollisionDetector)
 /********************************************
  * SENSOR
  ********************************************/
+
+%nodefaultctor Sensor;
+/**
+ * @brief a generel hardware sensor interface. The sensor should interface
+ * to a statefull instance of either a real world sensor or a simulated
+ * sensor. The sensor interface acts as a realistic handle to controlling
+ * some specific instance of a sensor.
+ */
+class Sensor
+{
+public:
+    //! destructor
+    virtual ~Sensor();
+
+    /**
+     * @brief returns the name of this sensor
+     *
+     * @return name of sensor
+     */
+    const std::string& getName() const;
+
+    /**
+     * @brief returns a description of this sensor
+     *
+     * @return reference to this sensors description
+     */
+    const std::string& getDescription() const;
+
+    /**
+     * @brief The frame to which the sensor is attached.
+     *
+     * The frame can be NULL.
+     */
+    rw::common::Ptr<SensorModel> getSensorModel() const;
+
+    /**
+     * @brief Sets the frame to which the sensor should be attached
+     *
+     * @param smodel
+     */
+    virtual void setSensorModel(rw::common::Ptr<SensorModel> smodel);
+
+    /**
+     * @brief gets the propertymap of this sensor
+     */
+    PropertyMap& getPropertyMap();
+};
+
+%template (SensorPtr) rw::common::Ptr<Sensor>;
+
+/**
+ * @brief a general sensormodel interface. The sensormodel describe the model of a sensor
+ * and define the data that are part of the State. Much like Device, which describe
+ * the kinematic model of a robot. A sensormodel should have a name id and be associated,
+ * referenced to some frame in the workcell.
+ */
+class SensorModel
+{
+public:
+	/**
+     * @brief constructor
+     *
+     * @param name [in] the name of this sensor
+     * @param frame [in] the frame that the sensor is referenced to
+     */
+	SensorModel(const std::string& name, Frame* frame);
+
+    /**
+     * @brief constructor
+     *
+     * @param name [in] the name of this sensor
+     * @param frame [in] the frame that the sensor is referenced to
+     * @param description [in] description of the sensor
+     */
+    SensorModel(const std::string& name, Frame* frame, const std::string& description);
+
+    //! destructor
+    virtual ~SensorModel();
+
+    /**
+     * @brief sets the name of this sensor
+     *
+     * @param name [in] name of this sensor
+     */
+    void setName(const std::string& name);
+
+    /**
+     * @brief sets the description of this sensor
+     *
+     * @param description [in] description of this sensor
+     */
+    void setDescription(const std::string& description);
+
+    /**
+     * @brief returns the name of this sensor
+     *
+     * @return name of sensor
+     */
+    const std::string& getName() const;
+
+    /**
+     * @brief returns a description of this sensor
+     *
+     * @return reference to this sensors description
+     */
+    const std::string& getDescription() const;
+
+    /**
+     * @brief The frame to which the sensor is attached.
+     *
+     * The frame can be NULL.
+     */
+    Frame* getFrame() const;
+
+    /**
+     * @brief Sets the frame to which the sensor should be attached
+     *
+     * @param frame The frame, which can be NULL
+     */
+    virtual void attachTo(Frame* frame);
+
+    /**
+     * @brief gets the propertymap of this sensor
+     */
+    PropertyMap& getPropertyMap();
+};
+
+%template (SensorModelPtr) rw::common::Ptr<SensorModel>;
+OWNEDPTR(SensorModel)
+
+/**
+ * @brief The Camera class defines a generel interface to a camera.
+ * A great deal of the interface resembles the DCAM standard since
+ * DCAM allready defines a very wide interface.
+ *
+ * typical usage:
+ * Camera c;
+ * // setup camera features modes and so on
+ * c.initialize();
+ * c.start();
+ * // acquire images
+ * c.stop();
+ *
+ */
+class Camera : public Sensor
+{
+public:
+    /**
+     * @brief destructor
+     */
+    virtual ~Camera();
+
+    /**
+     * @brief returns the camera model information (version, type, size, etc.)
+     *
+     * @return camera model information
+     */
+    virtual std::string getModelInfo() const;
+
+    /**
+     * @brief initializes the camera to the current settings
+     * (CaptureMode,ColorMode,etc.)
+     *
+     * @return true if initialization is succesfully, false otherwise.
+     */
+    virtual bool initialize() = 0;
+
+    /**
+     * @brief returns whether this camera is initialized or not.
+     *
+     * @return true if intialized, false otherwise
+     */
+    bool isInitialized() const;
+
+    /**
+     * @brief starts this camera, if the camera has not been
+     * initialized the initialize function will be called.
+     *
+     * @return true if camera was successfully started, false
+     * otherwise
+     */
+    virtual bool start() = 0;
+
+    /**
+     * @brief returns whether this camera is started or not.
+     *
+     * @return true if started, false otherwise
+     */
+    bool isStarted() const;
+
+    /**
+     * @brief stops this camera. When the camera is stopped it can be
+     * reinitialized using initialize()
+     */
+    virtual void stop() = 0;
+
+    /**
+     * @brief aquires an image from the camera. This method is not blocking.
+     * Use  isImageReady to poll for completion of acquire.
+     */
+    virtual void acquire() = 0;
+
+    /**
+     * @brief tests whether a image has been acquired
+     *
+     * @return true if an image has been acquired, false otherwise.
+     */
+    virtual bool isImageReady() = 0;
+
+    /**
+     * @brief returns the last image acquired from the camera. This method
+     * is not blocking, if no image has been acquired yet an empty image
+     * is returned. The image returned can for some specific drivers be read
+     * only.
+     *
+     * @return last image captured from camera.
+     */
+    virtual const Image* getImage() = 0;
+
+    /**
+     * @brief returns the framerate that this camera is setup with
+     *
+     * @return the framerate in frames per second
+     */
+    virtual double getFrameRate() = 0;
+
+    /**
+     * @brief sets the framerate of this camera. If the framerate is not
+     * supported the closest supported framerate is choosen.
+     *
+     * @param framerate [in] the framerate
+     */
+    virtual void setFrameRate(double framerate) = 0;
+
+
+
+    /**
+     * @brief get width of the captured images
+     *
+     * @return width
+     */
+    virtual unsigned int getWidth() = 0;
+
+    /**
+     * @brief get width of the captured images
+     *
+     * @return width
+     */
+    virtual unsigned int getHeight() = 0;
+
+
+    ///// a list of features that most of the time is available
+
+    /**
+     *  Check if shutter is available.
+     *
+     *  @return True if shutter is available
+     */
+    virtual bool isShutterAvailable() const;
+
+    /**
+     * Get actual shutter value.
+     * Note: If shutter is not available then a dummy implementation
+     * will throw an error message.
+     *
+     * @return shutter value in micro-seconds.
+     */
+    virtual double getShutter() const;
+
+    /**
+     * Set shutter value. If the given value is not possible the nearest
+     * value are choosen.
+     * Note: If shutter is not available then a dummy implementation
+     * will throw an error message.
+     *
+     * @param Value New shutter value.
+     */
+    virtual void setShutter(double Value);
+
+    /**
+     * Check if gain is available.
+     *
+     * @return True if zoom is available
+     */
+    virtual bool isGainAvailable() const;
+
+    /**
+     * Get actual gain value.
+     * Note: If gain is not available then a dummy implementation
+     * returning -1 is used and an error message is produced.
+     *
+     * @return Gain value.
+     */
+    virtual double getGain() const;
+
+    /** Set gain value. If the given value is not possible the nearest
+     *  value are choosen.
+     *  Note: If gain is not available then a dummy implementation
+     *  returning -1 is used and an error message is produced.
+     *
+     *  @param Value New gain value.
+     *  @return New nearest gain value.
+     */
+    virtual double setGain(double Value);
+};
+
+%template (CameraPtr) rw::common::Ptr<Camera>;
+
+/**
+ * @brief The CameraModel class defines a generel pinhole camera model where
+ * camera parameters and state values are stored.
+ *
+ */
+class CameraModel : public SensorModel
+{
+public:
+
+	/**
+	 * constructor
+	 *
+	 * @param projection [in] pinhole projection model
+	 * @param name [in] name of camera
+	 * @param frame [in] frame that camera is attached/referenced to
+	 * @param modelInfo [in] text description of the camera
+	 */
+	CameraModel(
+    			const rw::math::ProjectionMatrix& projection,
+    			const std::string& name,
+    			Frame* frame,
+    			const std::string& modelInfo = "");
+
+    /**
+     * @brief destructor
+     */
+    virtual ~CameraModel();
+
+    /**
+     * @brief returns the image if it has been saved in the State. Else null is
+     * returned.
+     *
+     * @return last image captured from camera.
+     */
+    rw::common::Ptr<Image> getImage(const State& state);
+
+    /**
+     * @brief set the image in the state
+     *
+     * @param img [in] image to set in state
+     * @param state [in/out] the state in which to set the image.
+     */
+    void setImage(rw::common::Ptr<Image> img, State& state);
+
+    //!@brief get horisontal field of view in degrees.
+    double getFieldOfViewX() const;
+
+    //!@brief get vertical field of view in degrees.
+    double getFieldOfViewY() const;
+
+    ///// a list of features that most of the time is available
+    //! @brief get far clipping plane
+    double getFarClippingPlane() const;
+    //! @brief get near clipping plane
+    double getNearClippingPlane() const;
+};
+
+%template (CameraModelPtr) rw::common::Ptr<CameraModel>;
+%template (CameraModelCPtr) rw::common::Ptr<const CameraModel>;
+
+/**
+ * @brief The image class is a simple wrapper around a char data array.
+ * This Image wrapper contain information of width, height and encoding.
+ *
+ * The image class is somewhat inspired by the IplImage of opencv.
+ *
+ * The coordinate system has its origin located at the top-left position, where from X increases to
+ * the left and Y-increases downwards.
+ *
+ * setting pixel values in an efficient manner has been enabled using some template joggling.
+ * It requires that the user know what type of image he/she is working with.
+ */
+class Image
+{
+public:
+    /**
+     * @brief The color encodings that the image can use. This also defines the number
+     * channels that an image has.
+     */
+    typedef enum
+    {
+        GRAY, //!< Grayscale image 1-channel
+        RGB, //!< 3-channel color image (Standard opengl)
+        RGBA, //!< 4-channel color image with alpha channel
+        BGR, //!< 3-channel color image (Standard OpenCV)
+        BGRA, //!< 4-channel color image with alpha channel
+        BayerBG,
+        Luv,
+        Lab,
+        HLS,
+        User
+    } ColorCode;
+
+    /**
+     * @brief The pixeldepth determines how many bits that are used per pixel per channel
+     */
+    typedef enum
+    {
+        Depth8U, //!< Depth8U
+        Depth8S, //!< Depth8S
+        Depth16U,//!< Depth16U
+        Depth16S,//!< Depth16S
+        Depth32S,//!< Depth32S
+        Depth32F
+    //!< Depth32F
+    } PixelDepth;
+
+public:
+    /**
+     * @brief default constructor
+     */
+    Image();
+
+    /**
+     * @brief constructor
+     *
+     * @param width [in] width of the image
+     * @param height [in] height of the image
+     * @param encoding [in] the colorCode of this Image
+     * @param depth [in] the pixel depth in bits per channel
+     */
+    Image(unsigned int width, unsigned int height, ColorCode encoding, PixelDepth depth);
+
+    /**
+     * @brief constructor
+     *
+     * @param imgData [in] char pointer that points to an array of chars with
+     * length width*height*(bitsPerPixel/8)
+     * @param width [in] width of the image
+     * @param height [in] height of the image
+     * @param encoding [in] the colorCode of this Image
+     * @param depth [in] the pixel depth in bits per channel
+     */
+    Image(char *imgData, unsigned int width, unsigned int height, ColorCode encoding, PixelDepth depth);
+
+    /**
+     * @brief destructor
+     */
+    virtual ~Image();
+
+    /**
+     * @brief resizes the current image.
+     *
+     * @param width [in] width in pixels
+     * @param height [in] height in pixels
+     */
+    void resize(unsigned int width, unsigned int height);
+
+    /**
+     * @brief returns a char pointer to the image data
+     *
+     * @return const char pointer to the image data
+     */
+    const char* getImageData() const;
+
+    /**
+     * @brief sets the data array of this image. Make sure to
+     * change the height and width accordingly.
+     */
+    void setImageData(char* data);
+
+    /**
+     * @brief returns the size of the char data array
+     *
+     * @return size of char data array
+     */
+    size_t getDataSize() const;
+
+    /**
+     * @brief returns the width of this image
+     *
+     * @return image width
+     */
+    unsigned int getWidth() const;
+
+    /**
+     * @brief returns the height of this image
+     *
+     * @return image height
+     */
+    unsigned int getHeight() const;
+
+    /**
+     * @brief returns color encoding/type of this image
+     *
+     * @return ColorCode of this image
+     */
+    ColorCode getColorEncoding() const;
+
+    /**
+     * @brief returns the number of bits per pixel. This is the number
+     * of bits used per pixel per channel.
+     *
+     * @return number of bits per pixel
+     */
+    unsigned int getBitsPerPixel() const;
+
+    /**
+     * @brief saves this image to a file in the PGM (grayscale) format
+     *
+     * @param fileName [in] the name of the file that is to be created
+     *
+     * @return true if save was succesfull, false otherwise
+     */
+    bool saveAsPGM(const std::string& fileName) const;
+
+    /**
+     * @brief saves this image to a file in the ascii PGM (grayscale) format
+     *
+     * @param fileName [in] the name of the file that is to be created
+     * @return true if save was succesfull, false otherwise
+     */
+    bool saveAsPGMAscii(const std::string& fileName) const;
+
+    /**
+     * @brief saves this image to a file in the PPM (color) format
+     *
+     * @param fileName [in] the name of the file that is to be created
+     * @return true if save was succesfull, false otherwise
+     */
+    bool saveAsPPM(const std::string& fileName) const;
+
+    /**
+     * @brief the size of an aligned image row in bytes. This may not be
+     * the same as the width if extra bytes are padded to each row for
+     * alignment purposes.
+     *
+     * @return size of aligned image row
+     */
+    unsigned int getWidthStep() const;
+
+    /**
+     * @brief bits per pixel encoded as a PixelDepth type.
+     *
+     * @return the pixel depth
+     */
+    inline PixelDepth getPixelDepth() const;
+
+    /**
+     * @brief The number of channels that this image has.
+     *
+     * @return nr of channels
+     */
+    inline unsigned int getNrOfChannels() const;
+
+    // Here comes all the getPixel operations
+
+    /**
+     * @brief generic but inefficient access to a specific channel of
+     * a pixel.
+     *
+     * @param x [in]
+     * @param y [in]
+     * @param channel documentation missing !
+     * @return the pixel value.
+     */
+    float getPixelValue(size_t x, size_t y, size_t channel) const;
+
+    float getPixelValuef(size_t x, size_t y, size_t channel) const;
+
+    int getPixelValuei(size_t x, size_t y, size_t channel) const;
+
+    /**
+     * @brief copies this image and flips it around horizontal or vertical axis or both.
+     *
+     * @return new image.
+     */
+    rw::common::Ptr<Image> copyFlip(bool horizontal, bool vertical) const;
+};
+
+%template (ImagePtr) rw::common::Ptr<Image>;
+
+class Scanner: public Sensor
+{
+public:
+    virtual ~Scanner();
+
+    /**
+     * @brief Opens connection to the scanner
+     */
+    virtual void open() = 0;
+
+    /**
+     * @brief Returns whether the scanner has been opened
+     *
+     * @return true if scanner is opened
+     */
+    virtual bool isOpen() = 0;
+
+    /**
+     * @brief Closes the connection to the scanner
+     */
+    virtual void close() = 0;
+
+    /**
+     * @brief Acquires data
+     */
+    virtual void acquire() = 0;
+
+    /**
+     * @brief tests whether an image has been acquired
+     *
+     * @return true if an image has been acquired, false otherwise.
+     */
+    virtual bool isScanReady() = 0;
+
+    /**
+     * @brief returns the framerate that this camera is setup with
+     *
+     * @return the framerate in frames per second
+     */
+    virtual double getFrameRate() = 0;
+};
+
+/**
+ * @brief The Scanner2D sensor encapsulate the basic interface of a
+ * 2 dimensional range scanning device such as SICK or Hokyuo laser
+ * range scanners.
+ *
+ * The interface supports any range scanner that measures distance in
+ * an arc around the origin of the sensor.
+ */
+class Scanner2D: public Scanner
+{
+public:
+    /**
+     * @brief destructor
+     */
+    virtual ~Scanner2D();
+
+    /**
+     * @brief gets the last acquired scan as a depth image
+     * of height 1.
+     */
+    virtual const PointCloud& getScan() const = 0;
+
+    /**
+     * @brief Returns the angular range of the scanner.
+     *
+     * @return Angular range in radians
+     */
+    virtual double getAngularRange() const = 0;
+
+    /**
+     * @brief Returns the number of scan points
+     */
+    virtual size_t getMeasurementCount() const = 0;
+
+};
+
+%template (Scanner2DPtr) rw::common::Ptr<Scanner2D>;
+
+/**
+ * @brief The Scanner2DModel encapsulate the basic model of a
+ * 2 dimensional range scanning device such as SICK or Hokyuo laser
+ * range scanners.
+ *
+ * The model supports any range scanner that measures distance in
+ * an arc around the origin of the sensor. The scanner scans in the z-x plane
+ * with z-axis being the 0 angle measurement.
+ *
+ * TODO: enable the selection of internal format, either pointcloud (large) or
+ * range-array (compact).
+ *
+ */
+class Scanner2DModel: public SensorModel
+{
+public:
+    /**
+     * @brief constructor
+     *
+     * @param name [in] name of scanner sensor
+     * @param angularRangeInRad [in] angular range in rad, with middle scan
+     * point pointin along z-axis
+     * @param maxDataPoints [in] the number of scan points
+     * @param frame [in] the sensor frame
+     */
+    Scanner2DModel(const std::string& name, double angularRangeInRad, int maxDataPoints, Frame* frame );
+
+    /**
+     * @brief Destructor. Closes scanner connection if not already closed.
+     */
+    virtual ~Scanner2DModel();
+
+    /**
+     * @brief get handle to point cloud data in state.
+     *
+     * @param state [in] the state with point cloud data
+     */
+    PointCloud& getScan(const State& state);
+
+    /**
+     * @brief set point cloud data in state
+     *
+     * @param data [in] point cloud data to set
+     * @param state [in] state in which to set the point cloud
+     */
+    void setScan(const PointCloud& data, const State& state);
+
+    /**
+     * @brief Returns the number of scan points
+     */
+    size_t getMeasurementCount() const;
+
+    /**
+     * @brief set distance range
+     *
+     * @param min documentation missing !
+     * @param max documentation missing !
+     */
+    void setDistanceRange(double min, double max );
+};
+
+%template (Scanner2DModelPtr) rw::common::Ptr<Scanner2DModel>;
+
+/**
+ * @brief an interface describing a 3D scanner sensor. The scanner takes
+ * pictures in the oposite direction of the z-axis of the frame that it is
+ * attached to. The x-y plane forms the image plane such that the xy-origin is
+ * located in the bottom left corner of the image.
+ *
+ */
+class Scanner25D: public Scanner
+{
+public:
+    /**
+     * @brief Destructor. Closes scanner connection if not already closed.
+     */
+    virtual ~Scanner25D();
+
+    /**
+     * @brief gets the last acquired image
+     *
+     * @return the image that was last acquired.
+     */
+    virtual const PointCloud& getScan() = 0;
+
+};
+
+%template (Scanner25DPtr) rw::common::Ptr<Scanner25D>;
+
+/**
+ * @brief Model of a 25D (2D with depth information) scanner. The images are
+ * essentially point clouds.
+ */
+class Scanner25DModel: public SensorModel
+{
+public:
+    /**
+     * @brief constructor
+     *
+     * @param name [in] name of scanner sensor
+     * @param width [in]
+     * @param height [in]
+     * @param frame [in] the frame that the scanner is attached to
+     */
+    Scanner25DModel(const std::string& name, int width, int height, Frame* frame );
+
+    /**
+     * @brief Destructor. Closes scanner connection if not already closed.
+     */
+    virtual ~Scanner25DModel();
+
+    /**
+     * @brief get handle to point cloud data in state.
+     *
+     * @param state [in] the state with point cloud data
+     */
+    PointCloud& getScan(const State& state);
+
+    /**
+     * @brief set point cloud data in state
+     *
+     * @param data [in] point cloud data to set
+     * @param state [in] state in which to set the point cloud
+     */
+    void setScan(const PointCloud& data, const State& state);
+
+    //! width of images taken with 25 sensor
+    int getWidth() const;
+
+    //! height of images taken with 25 sensor
+    int getHeight() const;
+
+    //! set the min and maximum depth of this scanner in meters
+    void setRange(double min, double max);
+};
+
+%template (Scanner25DModelPtr) rw::common::Ptr<Scanner25DModel>;
 
 /********************************************
  * TRAJECTORY
@@ -2762,87 +3861,7 @@ public:
 };
 
 */
-
-/********************************************
- * RWLIBS ALGORITHMS
- ********************************************/
-
-/********************************************
- * RWLIBS ASSEMBLY
- ********************************************/
-
-/********************************************
- * RWLIBS CALIBRATION
- ********************************************/
  
-/********************************************
- * RWLIBS CONTROL
- ********************************************/
- 
-%nodefaultctor Controller;
-class Controller {
-public:
-	const std::string& getName() const;
-	void setName(const std::string& name);
-};
-
-%nodefaultctor JointController;
-class JointController {
-public:
-	typedef enum {
-        POSITION = 1, CNT_POSITION = 2, VELOCITY = 4, FORCE = 8, CURRENT = 16
-    } ControlMode;
-    
-    virtual ~JointController();
-    virtual unsigned int getControlModes() = 0;
-    virtual void setControlMode(ControlMode mode) = 0;
-    virtual void setTargetPos(const rw::math::Q& vals) = 0;
-    virtual void setTargetVel(const rw::math::Q& vals) = 0;
-    virtual void setTargetAcc(const rw::math::Q& vals) = 0;
-    virtual Device& getModel();
-    virtual rw::math::QgetQ() = 0;
-    virtual rw::math::QgetQd() = 0;
-};
-
-%template (JointControllerPtr) rw::common::Ptr<JointController>;
- 
-/********************************************
- * RWLIBS OPENGL
- ********************************************/
- 
-/********************************************
- * RWLIBS OS
- ********************************************/
-
-/********************************************
- * RWLIBS PATHOPTIMIZATION
- ********************************************/
-
-/********************************************
- * RWLIBS PATHPLANNERS
- ********************************************/
-%include <rwlibs/swig/rwplanning.i>
-
-/********************************************
- * RWLIBS PROXIMITYSTRATEGIES
- ********************************************/
-
-/********************************************
- * RWLIBS SOFTBODY
- ********************************************/
-
-/********************************************
- * RWLIBS SWIG
- ********************************************/
-
-/********************************************
- * RWLIBS TASK
- ********************************************/
-
-/********************************************
- * RWLIBS TOOLS
- ********************************************/
-
 /********************************************
  * LUA functions
  ********************************************/
@@ -2853,7 +3872,7 @@ public:
 
 -- Group: Lua functions
 -- Var: print_to_log
-local print_to_log = true
+print_to_log = true
 
 -- Var: overrides the global print function
 local global_print = print
@@ -2938,6 +3957,72 @@ function reflect( mytableArg )
 
 function help( mytable )
    reflect( mytable )
+end
+
+local used_ns = {}
+
+function using(ns)
+  local ns_found = false
+  local ns_name;
+  local ns_val;
+  for n,v in pairs(_G) do
+    if n == ns then
+      ns_found = true
+      ns_name = n
+      ns_val = v
+      break
+    end
+  end
+  if not ns_found then
+    error("Unknown table: " .. ns)
+  else
+    if used_ns[ns_name] == nil then
+      used_ns[ns_name] = ns_val
+      for n,v in pairs(ns_val) do
+        if n ~= "string" and n ~= "ownedPtr" then
+          if _G[n] ~= nil then
+            print("name clash: " .. n .. " is already defined")
+          else
+            _G[n] = v
+          end
+        end
+      end
+    end
+  end
+end
+
+function ownedPtr(arg)
+  local found = false
+  for ns_n,ns_v in pairs(used_ns) do
+    for n,v in pairs(ns_v) do
+      if type(v) ~= "function" and type(v) ~= "number" then
+        if string.len(n) >= 4 then
+          if string.sub(n, -3) == "Ptr" then
+            if getmetatable(arg)[".type"] .. "Ptr" == n then
+              return ns_v.ownedPtr(arg)
+            end
+          end
+        end
+      end
+    end
+  end
+end
+
+function ownedCPtr(arg)
+  local found = false
+  for ns_n,ns_v in pairs(used_ns) do
+    for n,v in pairs(ns_v) do
+      if type(v) ~= "function" and type(v) ~= "number" then
+        if string.len(n) >= 5 then
+          if string.sub(n, -4) == "CPtr" then
+            if getmetatable(arg)[".type"] .. "CPtr" == n then
+              return ns_v.ownedCPtr(arg)
+            end
+          end
+        end
+      end
+    end
+  end
 end
 }
 #endif

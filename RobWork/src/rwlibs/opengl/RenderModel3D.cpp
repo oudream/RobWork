@@ -23,33 +23,38 @@ RenderModel3D::~RenderModel3D(){}
 
 void RenderModel3D::draw(const DrawableNode::RenderInfo& info, DrawableNode::DrawType type, double alpha) const{
     glPushAttrib(GL_ALL_ATTRIB_BITS);
+
     switch (type) {
     case DrawableNode::SOLID:
     	glPolygonMode(GL_FRONT, GL_FILL);
-    	//if(_model->_textures.size()>0)
-    	    drawUsingSimple(info, type, alpha);
-    	//else
-        //    drawUsingArrays(info,type, alpha);
+
+    	drawUsingSimple(info, type, alpha);
+
     	break;
     case DrawableNode::OUTLINE: // Draw nice frame
-    	glPolygonMode(GL_FRONT, GL_FILL);
-        //if(_model->_textures.size()>0)
-            drawUsingSimple(info, type, alpha);
-        //else
-            //drawUsingArrays(info, type, alpha);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+        glEnable( GL_POLYGON_OFFSET_FILL);
+        glPolygonOffset(1,1);
+    	drawUsingSimple(info, type, alpha);
+        glDisable(GL_POLYGON_OFFSET_FILL);
+		
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        glColor3f(0.0f,0.0f,0.0f);
+    	drawUsingSimple(info, type, alpha, true);
+        
+		break;
     case DrawableNode::WIRE:
     	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-        //if(_model->_textures.size()>0)
-            drawUsingSimple(info, type, alpha);
-        //else
-        //    drawUsingArrays(info, type, alpha);
+        drawUsingSimple(info, type, alpha);
+
     	break;
     }
     glPopAttrib();
 
+
 }
 
-void RenderModel3D::drawUsingSimple(const DrawableNode::RenderInfo& info, DrawType type, double alpha) const{
+void RenderModel3D::drawUsingSimple(const DrawableNode::RenderInfo& info, DrawType type, double alpha, bool disableMaterials) const{
     glPushMatrix();
     //std::cout << "draw arrays" << std::endl;
     // Move the model
@@ -59,11 +64,11 @@ void RenderModel3D::drawUsingSimple(const DrawableNode::RenderInfo& info, DrawTy
     // Loop through the objects
     BOOST_FOREACH(Model3D::Object3DGeneric::Ptr &objPtr, _model->getObjects()){
 		if (const Model3D::Object3D<uint8_t>::Ptr objPtrT = objPtr.cast<Model3D::Object3D<uint8_t> >()) {
-			drawUsingSimpleFct(info,*objPtrT,type, alpha);
+			drawUsingSimpleFct(info,*objPtrT,type, alpha, disableMaterials);
 		} else if (const Model3D::Object3D<uint16_t>::Ptr objPtrT = objPtr.cast<Model3D::Object3D<uint16_t> >()) {
-			drawUsingSimpleFct(info,*objPtrT,type, alpha);
+			drawUsingSimpleFct(info,*objPtrT,type, alpha, disableMaterials);
 		} else if (const Model3D::Object3D<uint32_t>::Ptr objPtrT = objPtr.cast<Model3D::Object3D<uint32_t> >()) {
-			drawUsingSimpleFct(info,*objPtrT,type, alpha);
+			drawUsingSimpleFct(info,*objPtrT,type, alpha, disableMaterials);
 		} else {
 			RW_THROW("RenderModel3D could not recognize the type of Object3D in the model.");
 		}
@@ -83,11 +88,14 @@ void RenderModel3D::drawUsingArrays(const DrawableNode::RenderInfo& info, DrawTy
 	BOOST_FOREACH(Model3D::Object3DGeneric::Ptr &objPtr, _model->getObjects()){
 		if (const Model3D::Object3D<uint8_t>::Ptr objPtrT = objPtr.cast<Model3D::Object3D<uint8_t> >()) {
 			drawUsingArraysFct(info,*objPtrT,type, alpha);
-		} else if (const Model3D::Object3D<uint16_t>::Ptr objPtrT = objPtr.cast<Model3D::Object3D<uint16_t> >()) {
+		} 
+		else if (const Model3D::Object3D<uint16_t>::Ptr objPtrT = objPtr.cast<Model3D::Object3D<uint16_t> >()) {
 			drawUsingArraysFct(info,*objPtrT,type, alpha);
-		} else if (const Model3D::Object3D<uint32_t>::Ptr objPtrT = objPtr.cast<Model3D::Object3D<uint32_t> >()) {
+		} 
+		else if (const Model3D::Object3D<uint32_t>::Ptr objPtrT = objPtr.cast<Model3D::Object3D<uint32_t> >()) {
 			drawUsingArraysFct(info,*objPtrT,type, alpha);
-		} else {
+		} 
+		else {
 			RW_THROW("RenderModel3D could not recognize the type of Object3D in the model.");
 		}
 	}
@@ -96,7 +104,7 @@ void RenderModel3D::drawUsingArrays(const DrawableNode::RenderInfo& info, DrawTy
 }
 
 template <class T>
-void RenderModel3D::drawUsingSimpleFct(const DrawableNode::RenderInfo& info, const Model3D::Object3D<T> &obj, DrawableNode::DrawType type, double alpha) const {
+void RenderModel3D::drawUsingSimpleFct(const DrawableNode::RenderInfo& info, const Model3D::Object3D<T> &obj, DrawableNode::DrawType type, double alpha, bool disableMaterials) const {
 	// for some reason opengl does not allow drawing to large meshes within glBegin/glEnd
 	// so we split it up in smaller chunks
 	glPushMatrix();
@@ -105,7 +113,7 @@ void RenderModel3D::drawUsingSimpleFct(const DrawableNode::RenderInfo& info, con
 	if(obj._normals.size()!=0 && obj._vertices.size()!=0){
 
 		// Loop through the faces as sorted by material and draw them
-		BOOST_FOREACH(const typename Model3D::Object3DGeneric::MaterialMapData& data, obj._materialMap){
+		BOOST_FOREACH(const typename Model3D::Object3DGeneric::MaterialMapData& data, obj._materialMap) {
 			//const Model3D::MaterialFaces& faces = *facesptr;
 			// Use the material's texture
 			//RW_ASSERT(faces._matIndex<_model->_materials.size());
@@ -114,11 +122,13 @@ void RenderModel3D::drawUsingSimpleFct(const DrawableNode::RenderInfo& info, con
 			//if( (_model->_materials[data.matId].transparency >= 0.98) && !info._renderSolid )
 			//    continue;
 
-			useMaterial( _model->_materials[data.matId], type, alpha);
+			if (!disableMaterials) {
+				useMaterial( _model->_materials[data.matId], type, alpha);
+			}
+			
 
-			if (obj.hasTexture()){
+			if (obj.hasTexture()) {
 				glEnable(GL_TEXTURE_2D);
-
 				if(obj._mappedToFaces){
 					glBegin(GL_TRIANGLES);
 					for(std::size_t i = data.startIdx; i < data.startIdx+data.size; i++) {
@@ -161,7 +171,8 @@ void RenderModel3D::drawUsingSimpleFct(const DrawableNode::RenderInfo& info, con
 
 				}
 				glDisable(GL_TEXTURE_2D);
-			} else {
+			} 
+			else {
 				glBegin(GL_TRIANGLES);
 				for(std::size_t i = data.startIdx; i < data.startIdx+data.size; i++) {
 					// draw faces
@@ -201,11 +212,11 @@ void RenderModel3D::drawUsingSimpleFct(const DrawableNode::RenderInfo& info, con
 	// TODO: create method to switch normal rendering on and off
 	BOOST_FOREACH(const Model3D::Object3DGeneric::Ptr& child, obj._kids){
 		if (const Model3D::Object3D<uint8_t>::Ptr objPtrT = child.cast<Model3D::Object3D<uint8_t> >()) {
-			drawUsingSimpleFct<uint8_t>(info, *objPtrT, type, alpha);
+			drawUsingSimpleFct<uint8_t>(info, *objPtrT, type, alpha, disableMaterials);
 		} else if (const Model3D::Object3D<uint16_t>::Ptr objPtrT = child.cast<Model3D::Object3D<uint16_t> >()) {
-			drawUsingSimpleFct<uint16_t>(info, *objPtrT, type, alpha);
+			drawUsingSimpleFct<uint16_t>(info, *objPtrT, type, alpha, disableMaterials);
 		} else if (const Model3D::Object3D<uint32_t>::Ptr objPtrT = child.cast<Model3D::Object3D<uint32_t> >()) {
-			drawUsingSimpleFct<uint32_t>(info, *objPtrT, type, alpha);
+			drawUsingSimpleFct<uint32_t>(info, *objPtrT, type, alpha, disableMaterials);
 		} else {
 			RW_THROW("RenderModel3D could not recognize the type of Object3D in the model.");
 		}
@@ -341,8 +352,6 @@ void RenderModel3D::useMaterial(const Model3D::Material& mat, DrawType type, dou
         glBindTexture(GL_TEXTURE_2D, tex->getTextureID() );
         //std::cout << " " << _textures[mat.getTextureID()]->getTextureID() << std::endl;
     }
-
-
     //std::cout << mat.name << std::endl;
 	if(mat.simplergb){
 		glColor4f(mat.rgb[0], mat.rgb[1], mat.rgb[2], (float)(mat.rgb[3]*alpha) );

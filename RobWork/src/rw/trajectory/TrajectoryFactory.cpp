@@ -38,78 +38,23 @@ namespace
     template <class X>
     Ptr<Trajectory<X> > makeLinearXTrajectory(const std::vector<Timed<X> >& path)
     {
-        RW_ASSERT(path.empty() || path.size() >= 1);
-
         Ptr<InterpolatorTrajectory<X> > trajectory = ownedPtr(new InterpolatorTrajectory<X>);
-
-        if (path.size() == 1) {            
+        if (path.size() == 1 ) {            
             return TrajectoryFactory::makeFixedTrajectory(path.front().getValue(), 0);
         }
-
         if (!path.empty()) {
-            typedef typename std::vector<Timed<X> >::const_iterator I;
-            I p = path.begin();
-            I q = path.begin();
-            for (++q; q != path.end(); ++p, ++q) {
-                double dt = q->getTime() - p->getTime();
-                //RW_ASSERT(dt >= 0);
-                if(!(dt >= 0)){
+            double dt=0;
+            for (size_t i = 1; i < path.size(); i++ ) {
+                dt = path[i].getTime() - path[i-1].getTime();
+                if (!(dt >= 0)) {
                     RW_WARN("dt is wrong in trajectory. dt=" << dt << ". dt is force to 0.");
                     dt = 0;
                 }
-                const X& a = p->getValue();
-                const X& b = q->getValue();
-                trajectory->add(new LinearInterpolator<X>(a, b, dt));
+                trajectory->add(ownedPtr(new LinearInterpolator<X>(path[i-1].getValue(), path[i].getValue(), dt)));
             }
         }
         return trajectory;
     }
-
-    /*template <class T>
-    class FixedInterpolator: public Interpolator<T> 
-    {
-    public:
-        FixedInterpolator(const T& value, double duration):
-          _value(value),
-          _zeroValue(value),
-          _duration(duration)
-        {
-            for (size_t i = 0; i < _zeroValue.size(); i++)
-                _zeroValue[i] = 0;
-        }
-
-        T x(double t) const { return _value; }
-        T dx(double t) const { return _zeroValue; }
-        T ddx(double t) const { return _zeroValue; }
-        double duration() const { return _duration; }
-
-    private:
-        T _value;
-        double _duration;
-        T _zeroValue;
-
-    };
-*/
-    /*class FixedStateInterpolator : public Interpolator<State>
-    {
-    public:
-        FixedStateInterpolator(const State& state) :
-            _state(state),
-            _zeroState(state)
-        {
-            for (size_t i = 0; i < state.size(); i++)
-                _zeroState[i] = 0;
-        }
-
-        State x(double t) const { return _state; }
-        State dx(double t) const { return _zeroState; }
-        State ddx(double t) const { return _zeroState; }
-        double duration() const { return DBL_MAX; }
-
-    private:
-        State _state;
-        State _zeroState;
-    };*/
 }
 
 StateTrajectory::Ptr TrajectoryFactory::makeFixedTrajectory(const State& state, double duration)

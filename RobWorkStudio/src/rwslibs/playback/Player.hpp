@@ -51,6 +51,18 @@ public:
            rws::RobWorkStudio* rwstudio);
 
     /**
+	 * @brief Construct a new player.
+	 * @param statePath [in] the path of timed states.
+	 * @param drawer [in] the drawer to invoke for displaying a new state in the path.
+	 * @param tickInterval [in] the rendering rate.
+	 * @param rwstudio [in] the RobWorkStudio instance (used for saving to file during recordings).
+	 */
+    Player(rw::trajectory::TimedStatePath::Ptr statePath,
+           rw::common::Ptr<StateDraw> drawer,
+           double tickInterval,
+           rws::RobWorkStudio* rwstudio);
+
+    /**
      * @brief Construct a new player that can be used only for recording.
      *
      * Notice that the state in RobWorkStudio must be updated through other means, for instance by the user.
@@ -135,6 +147,12 @@ public:
     }
 
     /**
+     * @brief get the current play direction
+     * @return the play direction 1 = forward, -1 = backward.
+     */
+    int getPlayDirection();
+
+    /**
      * @brief Construct an empty player.
      * @return empty player.
      */
@@ -145,10 +163,16 @@ public:
     					rw::common::Ptr<StateDraw> drawer,
                          double tickInterval,
                          rws::RobWorkStudio* rwstudio);
+    //! @copydoc Player
+    static Player::Ptr makePlayer(const rw::trajectory::TimedStatePath::Ptr statePath,
+    					rw::common::Ptr<StateDraw> drawer,
+                         double tickInterval,
+                         rws::RobWorkStudio* rwstudio);
 
 private slots:
     // Increment the current time by tickInterval.
     void tick();
+    void recordImage();
 
 signals:
 	/**
@@ -158,19 +182,24 @@ signals:
     void relativePositionChanged(double val);
 
 private:
+    
+    void takeImage();
+    void initialize();
     void stopTimer();
     void startTimer();
     bool timerIsRunning();
     void runTimer();
+    void stateChangedListener(const rw::kinematics::State& newState );
 
     double getEndTime() const { return _trajectory->duration(); }
     void draw();
+    unsigned int calcLeadingZeros();
 
 public:
     //! @brief The interpolated trajectory.
 	rw::trajectory::StateTrajectory::Ptr _trajectory;
     //! @brief The original trajectory.
-	rw::trajectory::TimedStatePath _path;
+	rw::trajectory::TimedStatePath::Ptr _path;
 private:
     // How to do the drawing.
 	rw::common::Ptr<StateDraw> _drawer;
@@ -182,8 +211,10 @@ private:
 
     bool _record;
     int _recNo;
+    QTimer _recTimer;
     QString _recordFilename;
     QString _recordType;
+    unsigned int _rec_number_of_digits;
 
     double _now; // The current time.
     int _direction; // The sign of direction of traversal. +1 or -1.
@@ -195,6 +226,8 @@ private:
     bool _loop;
 
     bool _interpolate;
+
+
 public:
     //! @brief Indicates whether a trajectory is loaded, or the Player is in recording-only mode.
     bool _recordingOnly;
