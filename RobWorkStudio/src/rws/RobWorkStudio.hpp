@@ -584,6 +584,13 @@ namespace rws {
         void addPlugin(RobWorkStudioPlugin* plugin,
                        bool visible,
                        Qt::DockWidgetArea area = Qt::LeftDockWidgetArea);
+		
+                       
+    	/**
+		 * @brief Get the list of currently loaded plugins.
+		 * @return A reference to the vector of plugin pointers.
+		 */
+		const std::vector<RobWorkStudioPlugin* >& getPlugins() const { return _plugins; }
 
         /**
          * @brief Restore the RobWorkStudio settings from a file.

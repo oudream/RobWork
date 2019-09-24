@@ -178,7 +178,7 @@ void Player::recordImage()
     if (_record && _rwstudio != NULL) {
         //Create Filename
         QString number = QString::number(_recNo++);
-        while (number.length() < _rec_number_of_digits)
+        while ((unsigned int)number.length() < _rec_number_of_digits)
             number.prepend("0");
         QString filename = _recordFilename + number + "." + _recordType;
         _rwstudio->saveViewGL(filename);
