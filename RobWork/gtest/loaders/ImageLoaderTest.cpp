@@ -35,9 +35,9 @@ TEST(ImageLoaderPGM, loadImage) {
 	EXPECT_FALSE(raw.isNull());
 	//EXPECT_FALSE(ascii.isNull());
 
-	EXPECT_EQ(31,  raw->getWidth());
-	EXPECT_EQ(5,   raw->getHeight());
-	EXPECT_EQ(1,   raw->getNrOfChannels());
+	EXPECT_EQ(31u,  raw->getWidth());
+	EXPECT_EQ(5u,   raw->getHeight());
+	EXPECT_EQ(1u,   raw->getNrOfChannels());
 	EXPECT_EQ(207, raw->getPixelValuei(15,2,0));
 	EXPECT_EQ(207, raw->getPixelValuei(15,2,1));
 	EXPECT_EQ(207, raw->getPixelValuei(15,2,2));
@@ -63,18 +63,18 @@ TEST(ImageLoaderPPM, loadImage) {
 	EXPECT_FALSE(raw.isNull());
 	EXPECT_FALSE(ascii.isNull());
 
-	EXPECT_EQ(11,  raw->getWidth());
-	EXPECT_EQ(15,  raw->getHeight());
-	EXPECT_EQ(3,   raw->getNrOfChannels());
+	EXPECT_EQ(11u,  raw->getWidth());
+	EXPECT_EQ(15u,  raw->getHeight());
+	EXPECT_EQ(3u,   raw->getNrOfChannels());
 	EXPECT_EQ(173, raw->getPixelValuei(6,14,0));
 	EXPECT_EQ(40,  raw->getPixelValuei(6,14,1));
 	EXPECT_EQ(181, raw->getPixelValuei(6,14,2));
 	EXPECT_EQ(Image::Depth8U, raw->getPixelDepth());
 	EXPECT_EQ(Image::RGB,     raw->getColorEncoding());
 
-	EXPECT_EQ(11,  ascii->getWidth());
-	EXPECT_EQ(15,  ascii->getHeight());
-	EXPECT_EQ(3,   ascii->getNrOfChannels());
+	EXPECT_EQ(11u,  ascii->getWidth());
+	EXPECT_EQ(15u,  ascii->getHeight());
+	EXPECT_EQ(3u,   ascii->getNrOfChannels());
 	EXPECT_EQ(173, ascii->getPixelValuei(6,14,0));
 	EXPECT_EQ(40,  ascii->getPixelValuei(6,14,1));
 	EXPECT_EQ(181, ascii->getPixelValuei(6,14,2));
@@ -91,27 +91,27 @@ TEST(ImageLoaderRGB, loadImage) {
 	EXPECT_FALSE(rle.isNull());
 	EXPECT_FALSE(aggresive_rle.isNull());
 
-	EXPECT_EQ(17,  nocompress->getWidth());
-	EXPECT_EQ(12,  nocompress->getHeight());
-	EXPECT_EQ(3,   nocompress->getNrOfChannels());
+	EXPECT_EQ(17u,  nocompress->getWidth());
+	EXPECT_EQ(12u,  nocompress->getHeight());
+	EXPECT_EQ(3u,   nocompress->getNrOfChannels());
 	EXPECT_EQ(220, nocompress->getPixelValuei(15,6,0));
 	EXPECT_EQ(75,  nocompress->getPixelValuei(15,6,1));
 	EXPECT_EQ(75,  nocompress->getPixelValuei(15,6,2));
 	EXPECT_EQ(Image::Depth8U, nocompress->getPixelDepth());
 	EXPECT_EQ(Image::RGB,     nocompress->getColorEncoding());
 
-	EXPECT_EQ(17,  rle->getWidth());
-	EXPECT_EQ(12,  rle->getHeight());
-	EXPECT_EQ(3,   rle->getNrOfChannels());
+	EXPECT_EQ(17u,  rle->getWidth());
+	EXPECT_EQ(12u,  rle->getHeight());
+	EXPECT_EQ(3u,   rle->getNrOfChannels());
 	EXPECT_EQ(220, rle->getPixelValuei(15,6,0));
 	EXPECT_EQ(75,  rle->getPixelValuei(15,6,1));
 	EXPECT_EQ(75,  rle->getPixelValuei(15,6,2));
 	EXPECT_EQ(Image::Depth8U, rle->getPixelDepth());
 	EXPECT_EQ(Image::RGB,     rle->getColorEncoding());
 
-	EXPECT_EQ(17,  aggresive_rle->getWidth());
-	EXPECT_EQ(12,  aggresive_rle->getHeight());
-	EXPECT_EQ(3,   aggresive_rle->getNrOfChannels());
+	EXPECT_EQ(17u,  aggresive_rle->getWidth());
+	EXPECT_EQ(12u,  aggresive_rle->getHeight());
+	EXPECT_EQ(3u,   aggresive_rle->getNrOfChannels());
 	EXPECT_EQ(220, aggresive_rle->getPixelValuei(15,6,0));
 	EXPECT_EQ(75,  aggresive_rle->getPixelValuei(15,6,1));
 	EXPECT_EQ(75,  aggresive_rle->getPixelValuei(15,6,2));

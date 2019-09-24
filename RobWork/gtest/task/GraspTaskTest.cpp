@@ -127,8 +127,8 @@ void checkTask(GraspTask::Ptr task) {
 	EXPECT_NEAR((stask1.openQ-Qref1).normInf(),0,std::numeric_limits<double>::epsilon());
 	EXPECT_NEAR((stask1.closeQ-Qref2).normInf(),0,std::numeric_limits<double>::epsilon());
 	EXPECT_NEAR((stask1.tauMax-Qref3).normInf(),0,std::numeric_limits<double>::epsilon());
-	EXPECT_EQ(3,stask1.targets.size());
-	if (stask1.targets.size() >= 3) {
+	EXPECT_EQ(3u,stask1.targets.size());
+	if (stask1.targets.size() >= 3u) {
 		EXPECT_TRUE(stask1.targets[0].pose.equal(Tref11,1e-6));
 		EXPECT_TRUE(stask1.targets[1].pose.equal(Tref12,1e-6));
 		EXPECT_TRUE(stask1.targets[2].pose.equal(Tref13,1e-6));
@@ -149,27 +149,27 @@ void checkTask(GraspTask::Ptr task) {
 		//	EXPECT_TRUE(res1.gripperTobjects[0].equal(Tref8,1e-6));
 		//	EXPECT_TRUE(res1.gripperTobjects[1].equal(Tref9,1e-6));
 		//}
-		EXPECT_EQ(4,res1.contactsGrasp.size());
-		EXPECT_EQ(2,res1.contactsLift.size());
+		EXPECT_EQ(4u,res1.contactsGrasp.size());
+		EXPECT_EQ(2u,res1.contactsLift.size());
 		//EXPECT_EQ(1,res1.interferenceTs.size());
 		//if (res1.interferenceTs.size() >= 1) {
 		//	EXPECT_TRUE(res1.interferenceTs[0].equal(Tref10,1e-6));
 		//}
-		EXPECT_EQ(4,res1.interferenceDistances.size());
-		if (res1.interferenceDistances.size() >= 4) {
+		EXPECT_EQ(4u,res1.interferenceDistances.size());
+		if (res1.interferenceDistances.size() >= 4u) {
 			EXPECT_DOUBLE_EQ(0.1,res1.interferenceDistances[0]);
 			EXPECT_DOUBLE_EQ(0.2,res1.interferenceDistances[1]);
 			EXPECT_DOUBLE_EQ(0.3,res1.interferenceDistances[2]);
 			EXPECT_DOUBLE_EQ(0.4,res1.interferenceDistances[3]);
 		}
-		EXPECT_EQ(3,res1.interferenceAngles.size());
-		if (res1.interferenceAngles.size() >= 3) {
+		EXPECT_EQ(3u,res1.interferenceAngles.size());
+		if (res1.interferenceAngles.size() >= 3u) {
 			EXPECT_DOUBLE_EQ(0.4,res1.interferenceAngles[0]);
 			EXPECT_DOUBLE_EQ(0.5,res1.interferenceAngles[1]);
 			EXPECT_DOUBLE_EQ(0.6,res1.interferenceAngles[2]);
 		}
-		EXPECT_EQ(2,res1.interferences.size());
-		if (res1.interferences.size() >= 2) {
+		EXPECT_EQ(2u,res1.interferences.size());
+		if (res1.interferences.size() >= 2u) {
 			EXPECT_DOUBLE_EQ(0.7,res1.interferences[0]);
 			EXPECT_DOUBLE_EQ(0.8,res1.interferences[1]);
 		}

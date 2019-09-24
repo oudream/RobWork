@@ -77,7 +77,7 @@ std::vector<std::string> strategies = CollisionToleranceStrategy::Factory::getSt
 }
 
 TEST(Factory, CollisionToleranceStrategy) {
-	EXPECT_GT(strategies.size(),0);
+	EXPECT_GT(strategies.size(),0u);
 	for (std::size_t i = 0; i < strategies.size(); i++) {
 		EXPECT_TRUE(CollisionToleranceStrategy::Factory::hasStrategy(strategies[i]));
 		EXPECT_FALSE(CollisionToleranceStrategy::Factory::makeStrategy(strategies[i]).isNull());

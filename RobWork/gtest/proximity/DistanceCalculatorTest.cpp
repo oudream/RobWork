@@ -72,7 +72,7 @@ TEST_P (DistanceCalculatorTest, SimpleGeometry)
     vector<DistanceStrategy::Result> * distances = new vector<DistanceStrategy::Result>;
 
     // distances vector should be empty:
-    EXPECT_EQ(distances->size(),0);
+    EXPECT_EQ(distances->size(),0u);
 
     distCalc->distance(initialState, distances);
     // DEBUG: Gives the frame pair names and distance
@@ -84,7 +84,7 @@ TEST_P (DistanceCalculatorTest, SimpleGeometry)
 
 
     // Checking a serial chain of 4 frames, expect 3 distances:
-    EXPECT_EQ(distances->size(),3);
+    EXPECT_EQ(distances->size(),3u);
 
     //Radius of spheres: 0.2, size of boxes: x=y=z=0.2;
 

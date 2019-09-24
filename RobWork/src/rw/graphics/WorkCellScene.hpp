@@ -145,6 +145,20 @@ namespace graphics {
         bool isFrameAxisVisible(const rw::kinematics::Frame* f) const;
 
         /**
+         * @brief enables the drawing of the frame label of a frame.
+         * @param visible [in] true if frame label should be drawn, false otherwise
+         * @param f [in] the frame
+         */
+        void setFrameLabelVisible(bool visible, rw::kinematics::Frame::Ptr f);
+
+        /**
+         * @brief test if frame-label is visible
+         * @param f [in] the frame
+         * @return true if frame label of frame is set to be drawn, false otherwise
+         */
+        bool isFrameLabelVisible(const rw::kinematics::Frame::Ptr f) const;
+
+        /**
          * @brief set how drawables of a specific frame should be rendered
          * @param type [in] the drawtype
          * @param f [in] the Frame
@@ -240,7 +254,17 @@ namespace graphics {
          * @return the drawable node
          */
         DrawableNode::Ptr addScan(const std::string& name, const rw::geometry::PointCloud& scan, rw::kinematics::Frame* frame, int dmask=DrawableNode::Virtual);
-
+        
+        /**
+         * @brief create and add a drawable node of a textlabel
+         * @param name [in] name of drawable node
+         * @param text [in] the label text
+         * @param frame [in] the frame where the drawable is to be placed
+         * @param dmask [in] the drawable mask
+         * @return the drawable node
+         */
+        DrawableNode::Ptr addText(const std::string& name, const std::string& text, rw::common::Ptr<rw::kinematics::Frame> frame, int dmask=DrawableNode::Virtual);
+        
         /**
          * @brief create and add a drawable node of a render, to the scene
          * @param name [in] name of drawable node

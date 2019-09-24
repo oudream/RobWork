@@ -95,7 +95,7 @@ std::vector<std::string> strategies = DistanceStrategy::Factory::getStrategies()
 }
 
 TEST(Factory, DistanceStrategy) {
-	EXPECT_GT(strategies.size(),0);
+	EXPECT_GT(strategies.size(),0u);
 	for (std::size_t i = 0; i < strategies.size(); i++) {
 		EXPECT_TRUE(DistanceStrategy::Factory::hasStrategy(strategies[i]));
 		EXPECT_FALSE(DistanceStrategy::Factory::makeStrategy(strategies[i]).isNull());
@@ -150,7 +150,7 @@ TEST_P(DistanceStrategyTest, Plane_Triangle) {
 	EXPECT_EQ(0,res.geoIdxB); // only one geometry
 	EXPECT_GE(res.idx1,0u); // either first triangle on plane
 	EXPECT_LE(res.idx1,1u); // ... or second
-	EXPECT_EQ(0,res.idx2); // there is only one triangle
+	EXPECT_EQ(0u,res.idx2); // there is only one triangle
 
 	SCOPED_TRACE("Check ProximityStrategyData");
 	checkProximityStrategyData(data,res);

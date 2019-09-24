@@ -227,7 +227,8 @@ namespace rw { namespace common {
         }
 
 		/**
-		 * @brief Returns true is the smart pointer is null
+		 * @brief checks if the pointer is null
+         * @return Returns true if the pointer is null
 		 */
 		bool isNull() const {
 			return get() == NULL;

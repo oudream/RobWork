@@ -29,6 +29,7 @@
 #include "SceneNode.hpp"
 
 namespace rw { namespace kinematics { class State; } }
+namespace rw { namespace graphics { class SceneCamera; }}
 
 namespace rw { namespace graphics {
 
@@ -88,7 +89,7 @@ namespace rw { namespace graphics {
         	 * @param mask [in] (optional) the draw type mask. Default is DrawableObject.
         	 */
     	    RenderInfo(unsigned int mask=DrawableNode::DrawableObject):
-    	        _mask(mask),_drawType(SOLID),_state(NULL),_renderTransparent(false), _renderSolid(false), _disableNormalRender(false){}
+    	        _mask(mask),_drawType(SOLID),_state(NULL),_renderTransparent(false), _renderSolid(false), _disableNormalRender(false),_cam(NULL){}
 
     	    //! @brief The DrawableTypeMask.
     	    unsigned int _mask;
@@ -102,6 +103,8 @@ namespace rw { namespace graphics {
     	    bool _renderSolid;
     	    //! @brief Disabling rendering of normals.
     	    bool _disableNormalRender;
+            //! @brief Rendering camera
+            rw::common::Ptr<SceneCamera> _cam;
     	};
 
     	//! @brief Destructor.

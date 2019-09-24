@@ -77,7 +77,7 @@ TEST_F (DOMProximitySetupSaverTest, LoadWCSerializeProxAndReload)
     cd->inCollision(wcUsingProx->getDefaultState(), &res);
 
     // We expect 0 collisions if the proximity setup has been serialized and loaded properly
-    EXPECT_EQ(res.collidingFrames.size(), 0);
+    EXPECT_EQ(res.collidingFrames.size(), 0u);
 
     // Compare number of rules in the original proximity setup with the serialized one.
     EXPECT_EQ(proxSetup.getProximitySetupRules().size(), serializedProxSetup.getProximitySetupRules().size());

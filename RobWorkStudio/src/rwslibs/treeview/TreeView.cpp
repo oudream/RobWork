@@ -194,6 +194,13 @@ TreeView::TreeView() :
 
     _scaleAction = new QAction(QIcon(":images/solid.png"), "Scale", this); // owned
     connect(_scaleAction, SIGNAL(triggered()), this, SLOT(scaleSlot()));
+
+    _toggleFrameLabelAction = new QAction(tr("Show/Remove Frame label"), this);
+    connect(_toggleFrameLabelAction, SIGNAL(triggered()), this, SLOT(toggleFrameLabelSlot()));
+
+    _toggleFrameLabelsAction = new QAction(tr("Show/Remove all Frame labels"), this);
+    connect(_toggleFrameLabelsAction, SIGNAL(triggered()), this, SLOT(toggleFrameLabelsSlot()));
+
 }
 
 TreeView::~TreeView()
@@ -213,9 +220,10 @@ void TreeView::frameSelectedListener(rw::kinematics::Frame* frame) {
 
 }
 
-void TreeView::stateChangedListener(const rw::kinematics::State& state){
+void TreeView::stateChangedListener(const rw::kinematics::State& state)
+{
     // if the daf state change
-//    std::cout << "CHECK FOR DAF CHANGES" << std::endl;
+    //    std::cout << "CHECK FOR DAF CHANGES" << std::endl;
 
     bool forceUpdate = false;
     for( TreeView::FrameMap::value_type p : _frameMap) {
@@ -512,6 +520,8 @@ void TreeView::customContextMenuRequestSlot(const QPoint& pos)
     if (frameIt != _frameMap.end()) {
         _contextMenu->addAction(_toggleFrameAction);
         _contextMenu->addAction(_toggleFramesAction);
+        _contextMenu->addAction(_toggleFrameLabelAction);
+        _contextMenu->addAction(_toggleFrameLabelsAction);
         _contextMenu->addAction(_selectFrameAction);
         //_contextMenu->addAction(_addFrameAction);
 
@@ -568,6 +578,28 @@ void TreeView::toggleFrameView(QTreeWidgetItem* item)
     }
 }
 
+void TreeView::toggleFrameLabel(QTreeWidgetItem* item) {
+    RW_ASSERT(item);
+    FrameMap::iterator frameIt = _frameMap.find(item);
+    if (frameIt != _frameMap.end()) {
+        try {
+            Frame::Ptr frame = frameIt->second;
+            RW_ASSERT(frame);
+            WorkCellScene::Ptr scene = getRobWorkStudio()->getWorkCellScene();
+            RW_ASSERT(scene);
+            if ( !scene->isFrameLabelVisible(frame) ) {
+                // Add new Drawable
+                scene->setFrameLabelVisible(true, frame);
+
+            } else { // Remove the DrawableFrame
+                scene->setFrameLabelVisible(false, frame);
+            }
+        } catch(...){
+
+        }
+
+    }
+}
 
 
 void TreeView::toggleFramesView(QTreeWidgetItem* item)
@@ -581,6 +613,16 @@ void TreeView::toggleFramesView(QTreeWidgetItem* item)
 	}
 }
 
+void TreeView::toggleFrameLabels(QTreeWidgetItem* item)
+{
+	RW_ASSERT(item);
+
+    toggleFrameLabel(item);
+    
+    for (int i = 0; i < item->childCount(); i++) {
+            toggleFrameLabels(item->child(i));
+	}
+}
 
 
 void TreeView::toggleFrameSlot()
@@ -593,6 +635,19 @@ void TreeView::toggleFrameSlot()
 void TreeView::toggleFramesSlot()
 {
     toggleFramesView(_treewidget->currentItem());
+    getRobWorkStudio()->updateAndRepaint();
+}
+
+void TreeView::toggleFrameLabelSlot()
+{
+    toggleFrameLabel(_treewidget->currentItem());
+    getRobWorkStudio()->updateAndRepaint();
+}
+
+
+void TreeView::toggleFrameLabelsSlot()
+{
+    toggleFrameLabels(_treewidget->currentItem());
     getRobWorkStudio()->updateAndRepaint();
 }
 
