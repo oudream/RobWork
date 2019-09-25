@@ -22,6 +22,7 @@
 #include <rw/math/Vector2D.hpp>
 #include <rw/math/Vector3D.hpp>
 #include <rw/math/Quaternion.hpp>
+#include <rw/graphics/SceneCamera.hpp>
 #include "CameraController.hpp"
 
 namespace rw { namespace models { class WorkCell; } }
@@ -46,6 +47,24 @@ namespace rws{
 		 */
 		rw::math::Vector3D<> mapToSphere(double x, double y) const;
 
+		/**
+		 * @brief project a image position into 3D space using pinhole model
+		 * @param x [in] the x coordinate in the image
+		 * @param y [in] the y coordinate in the image
+		 * @param z [in] the z coordinate of the world
+		 * 
+		 * @return the projected 3D position
+		 */
+		rw::math::Vector3D<> unproject(int x, int y, double z);
+
+		/**
+		 * @brief move the camera in 2D relative to the scene
+		 * 
+		 * @param x [in] current mouse position in x-axis
+		 * @param y [in] current mouse position in y-axis
+		 */
+		void pan(int x, int y);
+
 	public:
 		//! @brief Smart pointer type for ArcBallController
 		typedef rw::common::Ptr<ArcBallController> Ptr;
@@ -54,6 +73,11 @@ namespace rws{
 		 * @brief constructor
 		 */
 		ArcBallController(double NewWidth, double NewHeight);
+
+		/**
+		 * @brief constructor
+		 */
+		ArcBallController(double NewWidth, double NewHeight, rw::graphics::SceneCamera::Ptr cam);
 
 		/**
 		 * @brief destructor
@@ -109,6 +133,12 @@ namespace rws{
 		//! @copydoc CameraController::setZoomTarget
 		void setZoomTarget(rw::math::Vector3D<double> target, bool enable=true);
 
+		//! @copydoc CameraController::setPanTarget
+		void setPanTarget(rw::math::Vector3D<double> target, bool enable=true);
+
+		//! @copydoc CameraController::getPanTarget
+		rw::math::Vector3D<> getPanTarget();
+
 	private:
 		rw::math::Vector2D<> _centerPt; 	// Center of the ball
 		rw::math::Vector3D<> _stVec;        // Saved click vector
@@ -123,6 +153,14 @@ namespace rws{
 
 		bool _advancedZoomEnabled;
 		rw::math::Vector3D<double> _zoomTarget;
+
+		bool _advancedPanEnabled;
+		rw::math::Vector3D<> _initialPanPos;
+		rw::math::Transform3D<> _initial_cTw;
+		double _initialZ;
+		
+
+		rw::graphics::SceneCamera::Ptr _cam;
 	};
 
 }
