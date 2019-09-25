@@ -62,8 +62,13 @@ rw::math::Vector3D<> ArcBallController::mapToSphere(double x, double y) const
     return Vector3D<>(xTmp, yTmp, std::sqrt(1.0f - length));
 }
 
-//Create/Destroy
-ArcBallController::ArcBallController(double NewWidth, double NewHeight):
+ArcBallController::ArcBallController(double NewWidth , double NewHeight):
+    ArcBallController(NewWidth,NewHeight, NULL)
+{
+    
+}
+
+ArcBallController::ArcBallController(double NewWidth, double NewHeight, rw::graphics::SceneCamera::Ptr cam):
 	_centerPt(NewWidth/2.0,NewHeight/2.0),
     _stVec(0.0f,0.0f,0.0f),
     _enVec(0.0f,0.0f,0.0f),
@@ -71,7 +76,8 @@ ArcBallController::ArcBallController(double NewWidth, double NewHeight):
 	_adjustHeight(0),
 	_height(0),
 	_width(0),
-    _advancedZoomEnabled(false)
+    _advancedZoomEnabled(false),
+    _cam(cam)
 {
     _viewTransform = Transform3D<>::makeLookAt(Vector3D<>(5,5,5),Vector3D<>::zero(),Vector3D<>::z());
 
@@ -163,13 +169,13 @@ void ArcBallController::handleEvent(QEvent* e)
         QMouseEvent *event = static_cast<QMouseEvent*>(e);
         if (event->buttons() == Qt::LeftButton) {
             if (event->modifiers() == Qt::ControlModifier) {
-                //_viewPos(2) -= (event->y()-_lastPos(1))/_height*10;
-                //std::cout << ((event->y()-_lastPos(1))/_adjustHeight*10) << std::endl;
-                //std::cout << event->y() << "-" << _lastPos(1) << "/" << _adjustHeight*10 << " " << std::endl;
+                //Zoom
                 Vector3D<> translateVector(0, 0, -(event->y()-_lastPos(1))/_height*10 );
                 _viewTransform.P() -= _viewTransform.R()*translateVector;
 
+
             } else { // The mouse is being dragged
+
                 double rx = (event->x());
                 double ry = (event->y());
 
@@ -189,10 +195,8 @@ void ArcBallController::handleEvent(QEvent* e)
             }
         }
         if (event->buttons() == Qt::RightButton) {
-            Vector3D<> translateVector((event->x()-_lastPos(0))/_width*10, -((event->y()-_lastPos(1))/_height*10), 0 );
-            _viewTransform.P() -= _viewTransform.R()*translateVector;
-            _centerPt[0] += event->x()-_lastPos(0);
-            _centerPt[1] += event->y()-_lastPos(1);
+            //Move Scene
+            pan(event->x(),event->y());
         }
         _lastPos(0) = event->x();
         _lastPos(1) = event->y();
@@ -207,7 +211,6 @@ void ArcBallController::handleEvent(QEvent* e)
 void ArcBallController::setCenter(const rw::math::Vector3D<>& center,
                            const rw::math::Vector2D<>& screenCenter)
 {
-    //_viewTransform.P() -= _viewTransform.R()*_pivotPoint;
     _pivotPoint = center;
     _centerPt = screenCenter;
 }
@@ -294,6 +297,70 @@ void ArcBallController::autoZoom(rw::common::Ptr<rw::models::WorkCell> workcell,
 
 void ArcBallController::setZoomTarget(rw::math::Vector3D<double> target, bool enable)
 {
+    
     _zoomTarget = target;
     _advancedZoomEnabled = enable;
+}
+
+void ArcBallController::setPanTarget(rw::math::Vector3D<double> target, bool enable)
+{
+    _advancedPanEnabled = enable;
+    
+    _initial_cTw=_viewTransform;
+    Vector3D<> t = inverse(_viewTransform) * target;
+    _initialPanPos = unproject(_lastPos(0),_lastPos(1),t[2]); 
+    _initialZ=_initialPanPos(2);
+
+    if( t(2) < -29.9 ){
+        _advancedPanEnabled=false;
+    }
+   
+}
+
+Vector3D<> ArcBallController::getPanTarget()
+{
+
+    return _initialPanPos;
+}
+
+void ArcBallController::pan(int x, int y)
+{
+
+    if ( _advancedPanEnabled ) {
+        Vector3D<> panNow   = unproject(x,y,_initialPanPos(2));
+        Vector3D<> translate= panNow-_initialPanPos;
+        translate(2)=0;
+        _viewTransform.P() = _initial_cTw.P() + _initial_cTw.R()*translate;
+
+    } else {
+        Vector3D<> translateVector((x-_lastPos(0))/_width*10, -((y -_lastPos(1))/_height*10), 0 );
+        _viewTransform.P() -= _viewTransform.R()*translateVector;
+    }
+
+    _centerPt[0] += x-_lastPos(0);
+    _centerPt[1] += y-_lastPos(1);
+
+}
+
+rw::math::Vector3D<> ArcBallController::unproject(int x, int y, double z)
+{
+    if(_cam.isNull()) {
+        return Vector3D<>();
+    }
+    //
+    double fovy,aspectRatio,d,zFar;
+    if (_cam->getProjectionMatrix().getPerspective(fovy,aspectRatio,d,zFar)) {
+
+        double size_y = tan(M_PI*(fovy/2)/180)*d*2;
+        double pix2m = size_y/_height;
+        y = _height - y;
+
+        y = y - int(_height/2.0);
+        x = x - int(_width/2.0);
+
+        double x_3D = x*pix2m * z/d; 
+        double y_3D = y*pix2m * z/d; 
+        return Vector3D<> (x_3D,y_3D,z);
+    }
+    return Vector3D<>();
 }

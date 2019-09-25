@@ -316,8 +316,7 @@ SceneViewer::View::Ptr SceneOpenGLViewer::createView(const std::string& name, bo
 SceneOpenGLViewer::SceneOpenGLViewer(QWidget* parent):
             QGLWidget( makeQGLFormat(NULL), parent),
             _scene( ownedPtr(new SceneOpenGL()) ),
-            _viewLogo("RobWork"),
-            _cameraCtrl( ownedPtr( new ArcBallController(640,480) ) )
+            _viewLogo("RobWork")       
 {
     // start by initializing propertymap
     _pmap = ownedPtr( new Property<PropertyMap>("SceneViewer","",PropertyMap()) );
@@ -325,20 +324,21 @@ SceneOpenGLViewer::SceneOpenGLViewer(QWidget* parent):
     _pmap->getValue().add<bool>("GL_MULTISAMPLE","",false);
     init();
     setAcceptDrops(true);
+    _cameraCtrl = ownedPtr( new ArcBallController(640,480, _mainCam) );
 }
 
 SceneOpenGLViewer::SceneOpenGLViewer(PropertyMap& pmap, QWidget* parent) :
     //QGLWidget( QGLFormat(QGL::DepthBuffer) , parent),
     QGLWidget( makeQGLFormat( pmap.getPtr<PropertyMap>("SceneViewer") ) , parent),
     _scene( ownedPtr(new SceneOpenGL()) ),
-    _viewLogo("RobWork"),
-    _cameraCtrl( ownedPtr( new ArcBallController(640,480) ) )
+    _viewLogo("RobWork")
 {
     // start by initializing propertymap
     _pmap = pmap.add<PropertyMap>("SceneViewer","",PropertyMap());
 
     init();
     setAcceptDrops(true);
+    _cameraCtrl = ownedPtr( new ArcBallController(640,480, _mainCam) );
 }
 
 SceneOpenGLViewer::~SceneOpenGLViewer()
@@ -690,7 +690,17 @@ void SceneOpenGLViewer::mouseDoubleClickEvent(QMouseEvent* event)
 
 void SceneOpenGLViewer::mousePressEvent(QMouseEvent* event)
 {
-    _cameraCtrl->handleEvent( event );
+
+    QMouseEvent *e = static_cast<QMouseEvent*>(event);
+    if (e->buttons() == Qt::RightButton) {
+            Vector3D<> pos = _scene->unproject(_mainCam, e->x(), height()-e->y());
+            _cameraCtrl->handleEvent(event);
+            _cameraCtrl->setPanTarget(pos);
+
+    } else {
+        _cameraCtrl->handleEvent( event );
+    }
+    
 
     QGLWidget::mousePressEvent(event);
 }
