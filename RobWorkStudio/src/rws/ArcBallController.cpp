@@ -351,7 +351,7 @@ rw::math::Vector3D<> ArcBallController::unproject(int x, int y, double z)
     double fovy,aspectRatio,d,zFar;
     if (_cam->getProjectionMatrix().getPerspective(fovy,aspectRatio,d,zFar)) {
 
-        double size_y = tan(M_PI*(fovy/2)/180)*d*2;
+        double size_y = tan(rw::math::Pi*(fovy/2)/180)*d*2;
         double pix2m = size_y/_height;
         y = _height - y;
 
