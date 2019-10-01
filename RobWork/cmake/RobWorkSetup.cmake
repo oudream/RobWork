@@ -769,8 +769,6 @@ ENDIF()
 # The include dirs
 #
 SET(ROBWORK_INCLUDE_DIR
-    # todo: we should actually search for an installation of boostbinding.. instead of allways using the one in RobWork
-    ${RW_ROOT}/ext/boostbindings
     ${EIGEN3_INCLUDE_DIR}
     ${SOFTBODY_INCLUDE_DIRS}
     ${ADDITIONAL_BOOST_BINDINGS}
