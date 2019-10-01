@@ -158,9 +158,6 @@ INSTALL(FILES
         
 INSTALL(FILES "${RW_ROOT}/src/RobWorkConfig.hpp"
 		DESTINATION "${INCLUDE_INSTALL_DIR}")
-INSTALL(DIRECTORY "${RW_ROOT}/ext/boostbindings/"
-		DESTINATION "${INCLUDE_INSTALL_DIR}/ext/boostbindings"
-		PATTERN ".svn" EXCLUDE)
 
 # Install dependencies on Windows
 IF(WIN32)
