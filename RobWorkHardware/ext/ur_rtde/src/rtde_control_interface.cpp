@@ -788,8 +788,10 @@ bool RTDEControlInterface::sendCommand(const RTDE::RobotCommand &cmd)
   {
     std::cout << "RTDEControlInterface: Robot is disconnected, reconnecting..." << std::endl;
     reconnect();
-    sendCommand(cmd);
+    return sendCommand(cmd);
   }
+
+  return false;
 }
 
 void RTDEControlInterface::sendClearCommand()
