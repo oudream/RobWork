@@ -21,7 +21,7 @@ set(
         libqhull_r/random_r.c
 )
 
-file(GLOB qhull_hdr *.h)
+file(GLOB_RECURSE qhull_hdr *.h)
 
 add_library(rw_qhull STATIC ${qhull_src})
 set_property(TARGET rw_qhull PROPERTY OUTPUT_NAME "rw_qhull")
@@ -36,4 +36,4 @@ INSTALL(TARGETS #qhull
 	RUNTIME DESTINATION ${BIN_INSTALL_DIR}
 	LIBRARY DESTINATION ${LIB_INSTALL_DIR}
 	ARCHIVE DESTINATION ${LIB_INSTALL_DIR})
-INSTALL(FILES ${qhull_hdr} DESTINATION ${INCLUDE_INSTALL_DIR}/ext/qhull)
+INSTALL(FILES ${qhull_hdr} DESTINATION ${INCLUDE_INSTALL_DIR}/ext/qhull/src)

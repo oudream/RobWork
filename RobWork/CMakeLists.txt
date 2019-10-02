@@ -138,20 +138,20 @@ CONFIGURE_FILE(
 INSTALL(FILES 
     ${RW_ROOT}/cmake/RobWorkConfigVersion.cmake
     ${RW_ROOT}/cmake/RobWorkConfig.cmake
-    DESTINATION ${RW_INSTALL_DIR} ) 
+    DESTINATION ${RW_INSTALL_DIR}/cmake ) 
 
 # Install stuff
 INSTALL(FILES LICENSE.txt NOTICE.txt ChangeLog.txt DESTINATION "${RW_INSTALL_DIR}/")
-INSTALL(FILES 
-    cmake/Modules/FindBLASLAPACK.cmake
-    cmake/Modules/FindPQP.cmake
-    cmake/Modules/FindRobWork.cmake
-    cmake/Modules/FindTolua++.cmake
-    cmake/Modules/FindXercesC.cmake
-    cmake/Modules/FindYaobi.cmake 
-    DESTINATION ${CONFIG_INSTALL_DIR}/cmake/Modules)
+#INSTALL(FILES 
+#    cmake/Modules/FindBLASLAPACK.cmake
+#    cmake/Modules/FindPQP.cmake
+#    cmake/Modules/FindRobWork.cmake
+#    cmake/Modules/FindTolua++.cmake
+#    cmake/Modules/FindXercesC.cmake
+#    cmake/Modules/FindYaobi.cmake 
+#    DESTINATION ${CONFIG_INSTALL_DIR}/cmake/Modules)
    
-INSTALL(FILES 
+INSTALL(FILES
         "cmake/RobWorkBuildConfig_${RW_BUILD_TYPE}.cmake"
         "cmake/RobWorkMacros.cmake"
         DESTINATION ${RW_INSTALL_DIR}/cmake)

@@ -113,6 +113,24 @@ CONFIGURE_FILE(
 #add_subdirectory(ext)
 add_subdirectory(src)
 
+##################################################################
+# Installation stuff
+#
+
+# install configuration 
+INSTALL(FILES 
+    ${RWSIM_ROOT}/cmake/RobWorkSimConfigVersion.cmake
+    ${RWSIM_ROOT}/cmake/RobWorkSimConfig.cmake
+    DESTINATION ${RWSIM_INSTALL_DIR}/cmake )
+
+INSTALL(FILES 
+  "cmake/RobWorkSimBuildConfig_${RWSIM_BUILD_TYPE}.cmake"
+  DESTINATION ${RWSIM_INSTALL_DIR}/cmake)
+
+# misc
+INSTALL(FILES LICENSE.txt NOTICE.txt ChangeLog.txt 
+    DESTINATION "${RWSIM_INSTALL_DIR}/")
+
 
 #############################################################
 # setup testing

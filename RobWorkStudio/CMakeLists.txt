@@ -160,12 +160,12 @@ CONFIGURE_FILE(
 INSTALL(FILES 
     ${RWS_ROOT}/cmake/RobWorkStudioConfigVersion.cmake
     ${RWS_ROOT}/cmake/RobWorkStudioConfig.cmake
-    DESTINATION ${RWS_INSTALL_DIR} ) 
+    DESTINATION ${RWS_INSTALL_DIR}/cmake ) 
 
 INSTALL(FILES 
         "cmake/RobWorkStudioBuildConfig_${RWS_BUILD_TYPE}.cmake"
         "cmake/RobWorkStudioMacros.cmake"
-        DESTINATION ${RWS_INSTALL_DIR})
+        DESTINATION ${RWS_INSTALL_DIR}/cmake)
 
 # misc
 INSTALL(FILES LICENSE.txt NOTICE.txt ChangeLog.txt 

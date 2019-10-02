@@ -132,10 +132,8 @@ RW_GET_REVISION(${RWHW_ROOT} ROBWORKHARDWARE)
 
 # first configure the header file
 CONFIGURE_FILE(
-  ${RWHW_ROOT}/src/RobWorkStudioConfig.hpp.in
-  "${RWHW_ROOT}/src/rwhw/RobWorkHardwareConfig.hpp"
-  @ONLY
-)
+  ${RWHW_ROOT}/src/RobWorkHardwareConfig.hpp.in
+  ${RWHW_ROOT}/src/RobWorkHardwareConfig.hpp)
 
 # next build information script
 # make a list of all enabled components 
@@ -147,7 +145,7 @@ ENDIF()
 endforeach() 
 # TODO these depend on packages...
 SET(ROBWORKHARDWARE_LIBRARY_DIRS ${RWHW_CMAKE_LIBRARY_OUTPUT_DIRECTORY})
-SET(ROBWORKHARDWARE_INCLUDE_DIR ${RWHW_ROOT}/src)
+SET(ROBWORKHARDWARE_INCLUDE_DIR "${RWHW_ROOT}/src ${RWHW_ROOT}/ext")
 CONFIGURE_FILE(
   ${RWHW_ROOT}/cmake/RobWorkHardwareBuildConfig.cmake.in
   "${RWHW_ROOT}/cmake/RobWorkHardwareBuildConfig_${RW_BUILD_TYPE}.cmake"
@@ -165,3 +163,24 @@ CONFIGURE_FILE(
   "${RWHW_ROOT}/cmake/RobWorkHardwareConfigVersion.cmake"
 )
 
+
+
+##################################################################
+# Installation stuff
+#
+
+# configuration
+INSTALL(FILES 
+      ${RWHW_ROOT}/cmake/RobWorkHardwareConfigVersion.cmake
+      ${RWHW_ROOT}/cmake/RobWorkHardwareConfig.cmake
+      DESTINATION ${RWHW_INSTALL_DIR}/cmake ) 
+
+INSTALL(FILES
+      "cmake/RobWorkHardwareBuildConfig_${RW_BUILD_TYPE}.cmake"
+      "cmake/RobWorkHardwareMacros.cmake"
+      DESTINATION ${RWHW_INSTALL_DIR}/cmake)
+    
+INSTALL(FILES "${RWHW_ROOT}/src/RobWorkHardwareConfig.hpp"
+      DESTINATION "${INCLUDE_INSTALL_DIR}")
+
+message(STATUS "Install dir: ${RWHW_INSTALL_DIR} and ${INCLUDE_INSTALL_DIR}")
