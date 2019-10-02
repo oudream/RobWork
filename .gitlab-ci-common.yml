@@ -47,7 +47,7 @@ stages:
     - cd ..
     # Build RobWorkStudio
     - cd RWS
-    - cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_rws_lua=OFF -DBUILD_rws_java=OFF -DBUILD_rws_python=OFF ../../RobWorkStudio
+    - cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_rws_lua=OFF -DBUILD_rws_java=OFF -DBUILD_rws_python=OFF -DUSE_WERROR=true ../../RobWorkStudio
     - make -j3 RobWorkStudio
     - cd ..
     # Run RobWork tests
