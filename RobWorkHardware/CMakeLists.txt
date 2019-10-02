@@ -60,22 +60,18 @@ ADD_CUSTOM_TARGET(uninstall_rwhw "${CMAKE_COMMAND}" -P
 ###########################################
 # setup stuff for RobWorkHardware
 
-# Load the optional Default.cmake file.
-#INCLUDE(${ROOT}/config.cmake OPTIONAL)
-#IF (NOT EXISTS ${RWHW_ROOT}/config.cmake)
-#  # Setup the default settings in case no RobWork.cmake exist.
-#  INCLUDE(${RWHW_ROOT}/config.cmake.template)
-#  MESSAGE(STATUS " No config.cmake file loaded, using default settings from config.cmake.template")
-#ENDIF ()
-
 # make sure that libraries can reach the cmake modules
 SET(CMAKE_MODULE_PATH ${RWHW_ROOT}/cmake/Modules ${CMAKE_MODULE_PATH})
 
 # Subdirectories will add libraries to this variable
 set(ROBWORKHARDWARE_LIBRARIES)
 
+if( DEFINED USE_WERROR)
+  set(WERROR_FLAG "-Werror")
+endif()
+
 # also make sure flags from robwork is also used in robworkhardware
-SET(RWHW_CXX_FLAGS "${RW_BUILD_WITH_CXX_FLAGS}" 
+SET(RWHW_CXX_FLAGS "${WERROR_FLAG} ${RW_BUILD_WITH_CXX_FLAGS}" 
 	CACHE STRING "Change this to force using your own flags and not those of RobWorkHardware"
 )
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${RWHW_CXX_FLAGS}")

@@ -42,7 +42,7 @@ stages:
     - cd ..
     # Build RobWorkHardware
     - cd RWHW
-    - cmake -DCMAKE_BUILD_TYPE=Release ../../RobWorkHardware
+    - cmake -DCMAKE_BUILD_TYPE=Release -DUSE_WERROR=true ../../RobWorkHardware
     - make -j3
     - cd ..
     # Build RobWorkStudio
