@@ -188,6 +188,8 @@ if(${CODE})
 	endif()
 	if(NOT DEFINED INCLUDE_INSTALL_DIR)
 		set(INCLUDE_INSTALL_DIR "include/ur_rtde")
+	else () 
+		set(INCLUDE_INSTALL_DIR "${INCLUDE_INSTALL_DIR}/ur_rtde" )
 	endif()
 
 	install(TARGETS rtde

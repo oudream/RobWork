@@ -30,20 +30,23 @@ SET(FILES_CPP
     RobWork.cpp
 )
 
-SET(FILES_HPP
-    rw.hpp 
+SET(FILES_HPP 
     common.hpp
     geometry.hpp
+    graphics.hpp 
+    graspplanning.hpp
     invkin.hpp
     kinematics.hpp
     loaders.hpp
+    math_fwd.hpp
     math.hpp
     models.hpp
     pathplanning.hpp
-    sensor.hpp
-    trajectory.hpp
     proximity.hpp
-	RobWork.hpp
+    RobWork.hpp
+    rw.hpp
+    sensor.hpp
+    trajectory.hpp   
 )
 
 FILE(GLOB SRC_FILES_CPP ${FILES_CPP})
@@ -62,7 +65,7 @@ ENDIF()
 TARGET_LINK_LIBRARIES(rw PRIVATE ${QHULL_LIBRARIES} ${CMAKE_DL_LIBS})
 RW_ADD_INCLUDES(rw "rw" ${FILES_HPP} )
 RW_ADD_INCLUDE_DIRS(rw "rw" 
-    common geometry invkin kinematics loaders math models pathplanning 
+    common geometry graspplanning invkin kinematics loaders math models pathplanning 
     proximity sensor trajectory plugin graphics constraints)
 
 IF(CMAKE_VERSION VERSION_GREATER 3.3)

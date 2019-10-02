@@ -12,8 +12,8 @@ RW_ADD_DOC( ${SUBSYS_NAME} )
 
 IF( build )
    
-    SET(SRC_CPP UniversalRobotsData.cpp UniversalRobotsRTLogging.cpp URCommon.cpp URPrimaryInterface.cpp URCallBackInterface.cpp)
-    SET(SRC_HPP UniversalRobotsData.hpp UniversalRobotsRTLogging.hpp URCommon.hpp URPrimaryInterface.hpp URCallBackInterface.hpp)
+    SET(SRC_CPP UniversalRobotsData.cpp UniversalRobotsRTLogging.cpp URCommon.cpp URPrimaryInterface.cpp URCallBackInterface.cpp URMessage.cpp)
+    SET(SRC_HPP UniversalRobotsData.hpp UniversalRobotsRTLogging.hpp URCommon.hpp URPrimaryInterface.hpp URCallBackInterface.hpp URMessage.hpp)
     
 
       file(READ urscript.ur URSCRIPT)

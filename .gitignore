@@ -2568,6 +2568,7 @@
 /RobWorkHardware/src/.csettings
 /RobWorkHardware/src/CPackConfig.cmake
 /RobWorkHardware/src/CPackSourceConfig.cmake
+/RobWorkHardware/src/RobWorkHardwareConfig.hpp
 
 # /RobWorkHardware/src/rwhw/
 /RobWorkHardware/src/rwhw/cmake_install.cmake
@@ -3039,6 +3040,7 @@
 
 # /RobWorkSim/example/scripts/java
 /RobWorkSim/example/scripts/java/Simulation.class
+/RobWorkSim/example/scripts/java/Simulation$Callback.class
 
 # /RobWorkSim/example/SimTaskPlugin/
 /RobWorkSim/example/SimTaskPlugin/cmake_install.cmake
@@ -4205,4 +4207,5 @@
 /doc/installstuff/RW_package-source/.cproject
 /doc/installstuff/RW_package-source/.project
 
-RobWorkSim/example/scripts/java/Simulation$Callback.class
+
+
