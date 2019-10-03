@@ -80,7 +80,7 @@ ENDIF()
 
 # We create a static library named rwstudio that all plugins should link to. Our
 # RobWorkStudio executable links to this library also.
-ADD_LIBRARY(rws
+RW_ADD_LIBRARY(rws rws
             ${UIS_OUT_H}
             ${SRC_FILES_CPP}
             ${MocSrcFiles}
@@ -88,9 +88,9 @@ ADD_LIBRARY(rws
 )
 
 if ( ${RWS_HAVE_GLUT} )
-  TARGET_LINK_LIBRARIES(rws qtpropertybrowser ${QT_LIBRARIES} ${ROBWORK_LIBRARIES} ${GLUT_glut_LIBRARY})
+  TARGET_LINK_LIBRARIES(rws PUBLIC qtpropertybrowser ${QT_LIBRARIES} ${ROBWORK_LIBRARIES} ${GLUT_glut_LIBRARY})
 else () 
-  TARGET_LINK_LIBRARIES(rws qtpropertybrowser ${QT_LIBRARIES} ${ROBWORK_LIBRARIES})
+  TARGET_LINK_LIBRARIES(rws PUBLIC qtpropertybrowser ${QT_LIBRARIES} ${ROBWORK_LIBRARIES})
 endif()
 
 IF(CMAKE_VERSION VERSION_GREATER 3.3)
