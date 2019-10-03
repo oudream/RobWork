@@ -18,6 +18,9 @@ using rw::trajectory::Trajectory;
 using namespace rwlibs::swig;
 using namespace rwsim::swig;
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-but-set-variable"
+
 #if defined(SWIGJAVA)
 
 #include <assert.h>
@@ -1342,3 +1345,4 @@ rw::common::Ptr<ThreadSimulator> getSimulatorInstance();
 void removeSimulatorInstance(const std::string& id);
 std::vector<std::string> getSimulatorInstances();
  
+#pragma GCC diagnostic pop

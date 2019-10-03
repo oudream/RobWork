@@ -91,17 +91,17 @@ stages:
     - cd ..
     # Build RobWorkHardware
     - cd RWHW
-    - cmake -DCMAKE_BUILD_TYPE=Release ../../RobWorkHardware
+    - cmake -DCMAKE_BUILD_TYPE=Release -DUSE_WERROR=true ../../RobWorkHardware
     - make -j6
     - cd ..
     # Build RobWorkStudio
     - cd RWS
-    - cmake -DCMAKE_BUILD_TYPE=Release ../../RobWorkStudio
+    - cmake -DCMAKE_BUILD_TYPE=Release -DUSE_WERROR=true ../../RobWorkStudio
     - make -j6
     - cd ..
     # Build RobWorkSim
     - cd RWSim
-    - cmake -DCMAKE_BUILD_TYPE=Release ../../RobWorkSim
+    - cmake -DCMAKE_BUILD_TYPE=Release -DUSE_WERROR=true ../../RobWorkSim
     - make -j6
     - cd ..
     # Build RobWork Examples

@@ -72,7 +72,7 @@ INCLUDE(UseSWIG)
         ${ROBWORK_LIBRARIES}
         ${PYTHON_LIBRARIES} )
     IF((CMAKE_COMPILER_IS_GNUCC) OR (CMAKE_C_COMPILER_ID STREQUAL "Clang"))
-      SET_TARGET_PROPERTIES(${TARGET_NAME} PROPERTIES LINK_FLAGS -Wl,--no-undefined)
+      SET_TARGET_PROPERTIES(${TARGET_NAME} PROPERTIES LINK_FLAGS -Wl,--no-undefined )
     ENDIF()
 
     # Make sure dependencies are build before system
