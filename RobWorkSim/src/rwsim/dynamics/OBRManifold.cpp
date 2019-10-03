@@ -30,7 +30,7 @@ bool OBRManifold::addPoint(ContactPoint& p){
         double minPenetration = 1000;
         int minPenIdx = -1;
         for(int i=0;i<5;i++){
-            if(_onBorderMap[i])
+            if(i < 4 && _onBorderMap[i])
                 continue;
             if(minPenetration>_points[i].penetration){
                 minPenIdx = i;
