@@ -281,7 +281,11 @@ IF (RW_BUILD_WITH_PQP)
 ENDIF()
 
 RW_ADD_LIBRARY(rwsim rwsim ${FILES_CPP} ${FILES_HPP})
-RW_ADD_INCLUDES(rwsim "rwsim" ${FILES_HPP}) 
+RW_ADD_INCLUDES(rwsim "rwsim" "rwsim.hpp")
+RW_ADD_INCLUDE_DIRS(rwsim "rwsim"
+	contacts control drawable dynamics loaders log 
+	rwphysics sensor simulator util
+) 
 TARGET_LINK_LIBRARIES(rwsim ${ROBWORK_LIBRARIES})
 
 IF(CMAKE_VERSION VERSION_GREATER 3.3)
