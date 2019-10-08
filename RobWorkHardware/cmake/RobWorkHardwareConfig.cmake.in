@@ -148,7 +148,7 @@ get_filename_component(RWHWCFG_ROOT ${CMAKE_CURRENT_LIST_FILE} PATH)
 
 # check if user specified a RobWorkHardware_DIR
 if(DEFINED RobWorkHardware_DIR)
-  if(EXISTS "${RobWorkHardware_DIR}/../src/rwhw/RobWorkHardwareConfig.hpp")
+  if(EXISTS "${RobWorkHardware_DIR}/../src/RobWorkHardwareConfig.hpp")
     # Found RobWorkHardware in a build tree of RobWork
     set(RWHWCFG_ROOT "${RobWorkHardware_DIR}")
     set(is_installed false)
@@ -167,9 +167,8 @@ endif()
 # get the relavant build type
 GET_ROBWORKHARDWARE_BUILD_TYPE(${RWHWCFG_ROOT} RWHW_BUILD_TYPE)
 
-
 # check whether RobWorkConfig.cmake is found into a RobWork installation or in a build tree
-if(EXISTS "${RWHWCFG_ROOT}/../src/rwhw/RobWorkHardwareConfig.hpp")
+if(EXISTS "${RWHWCFG_ROOT}/../src/RobWorkHardwareConfig.hpp")
   # Found RobWorkConfig.cmake in a build tree of RobWork
   SET(succmsg "RobWorkHardware: Found a RobWorkHardware build tree")
   set(RWHW_ROOT "${RWHWCFG_ROOT}/..")
