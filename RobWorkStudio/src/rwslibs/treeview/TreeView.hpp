@@ -86,7 +86,7 @@ protected:
 
     //! @copydoc RobWorkStudioPlugin::initialize
 	void initialize();
-private slots:
+private Q_SLOTS:
     void customContextMenuRequestSlot(const QPoint& pos);
     void toggleFrameSlot();
     void toggleFramesSlot();
@@ -107,7 +107,7 @@ private slots:
 
     void addFromFileSlot();
 
-    // Slots for ToolBar Items
+    // Q_SLOTS for ToolBar Items
     void collapseAll();
     void expandAll();
     void showWorkCellStructure();

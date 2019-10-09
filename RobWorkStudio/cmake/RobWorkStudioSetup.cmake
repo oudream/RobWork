@@ -39,17 +39,9 @@ MESSAGE(STATUS "RobWorkStudio: ROOT dir: ${RWS_ROOT}")
 # Check for all dependencies, this adds LIBRARY_DIRS and include dirs that 
 # the configuration depends on
 #
- 
-#Include default settings for constructing a robwork dependent project
-#SET(ROBWORK_ROOT ${RW_ROOT})
-#SET(CMAKE_MODULE_PATH ${RW_ROOT}/cmake ${CMAKE_MODULE_PATH})
-#SET(RobWork_DIR ${RW_ROOT}/cmake)
-#FIND_PACKAGE(RobWork ${ROBWORKSTUDIO_VERSION_MAJOR}.${ROBWORKSTUDIO_VERSION_MINOR}.${ROBWORKSTUDIO_VERSION_PATCH})
 
-#STRING(COMPARE EQUAL "${ROBWORKSTUDIO_VERSION}" "${ROBWORK_VERSION}" COMPATIBLE_VERSION)
-#IF( NOT COMPATIBLE_VERSION )
-#    MESSAGE(SEND_ERROR "RobWorkStudio: Version of RobWork ${ROBWORK_VERSION} is incompatible with version of RobWorkStudio ${ROBWORKSTUDIO_VERSION}")
-#ENDIF()
+# Find Python
+find_package(PythonLibs REQUIRED)
 
 # Find and setup OpenGL.
 FIND_PACKAGE(OpenGL REQUIRED)

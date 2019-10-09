@@ -53,7 +53,7 @@ namespace rws {
         //! @copydoc RobWorkStudioPlugin::setupMenu
         void setupMenu(QMenu *menu);
 
-    private slots:
+    private Q_SLOTS:
 
         void startEditor();
 

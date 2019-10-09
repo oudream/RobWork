@@ -58,7 +58,7 @@ public:
 
 //protected:
 	//void frameSelectedHandler(rw::kinematics::Frame* frame, RobWorkStudioPlugin* sender);
-private slots:
+private Q_SLOTS:
     //void frameChanged(rw::kinematics::Frame* frame);
 
 	void frameChanged(const QString& item);

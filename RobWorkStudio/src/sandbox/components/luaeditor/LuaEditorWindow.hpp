@@ -40,7 +40,7 @@ public:
 	LuaEditorWindow(lua_State* lua, rw::common::LogPtr output, QWidget *parent);
 	virtual ~LuaEditorWindow();
 
-public slots:
+public Q_SLOTS:
 	void about();
 	void newFile();
 	void openFile(const QString &path = QString());

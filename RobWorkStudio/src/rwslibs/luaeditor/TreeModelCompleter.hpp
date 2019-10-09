@@ -30,7 +30,7 @@
      TreeModelCompleter(QAbstractItemModel *model, QObject *parent = 0);
 
      QString separator() const;
- public slots:
+ public Q_SLOTS:
      void setSeparator(const QString &separator);
 
  protected:

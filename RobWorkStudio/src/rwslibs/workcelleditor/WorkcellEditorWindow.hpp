@@ -60,7 +60,7 @@ namespace rws {
         //! @brief destructor
         virtual ~WorkcellEditorWindow();
 
-    public slots:
+    public Q_SLOTS:
 
         void on_actionNew_triggered(bool);
 

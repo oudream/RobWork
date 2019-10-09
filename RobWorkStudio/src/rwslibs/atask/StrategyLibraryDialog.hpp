@@ -67,7 +67,7 @@ public:
 	 */
 	void setWorkCell(rw::common::Ptr<const rw::models::WorkCell> wc);
 
-private slots:
+private Q_SLOTS:
 	void step();
 	void configure();
 

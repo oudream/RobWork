@@ -40,7 +40,7 @@
      void keyPressEvent(QKeyEvent *e);
      void focusInEvent(QFocusEvent *e);
 
- private slots:
+ private Q_SLOTS:
      void updateLineNumberAreaWidth(int newBlockCount);
      void highlightCurrentLine();
      void updateLineNumberArea(const QRect &, int);

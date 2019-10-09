@@ -22,7 +22,9 @@ SET(SRC_FILES_CPP
   HelpAssistant.cpp
   ImageView.cpp
   propertyview/PropertyViewEditor.cpp
-  propertyview/PropertyViewDialog.cpp)
+  propertyview/PropertyViewDialog.cpp
+  pythonpluginloader/PyPlugin.cpp
+)
 
 SET(SRC_FILES_HPP
   ArcBallController.hpp
@@ -37,7 +39,8 @@ SET(SRC_FILES_HPP
   HelpAssistant.hpp
   ImageView.hpp
   propertyview/PropertyViewEditor.hpp
-  propertyview/PropertyViewDialog.hpp 
+  propertyview/PropertyViewDialog.hpp
+  pythonpluginloader/PyPlugin.hpp 
   )
 
 # Files to moc and compile:
@@ -49,7 +52,9 @@ SET(MocHeaderFiles
   RWStudioView3D.hpp
   ImageView.hpp
   propertyview/PropertyViewEditor.hpp 
-  propertyview/PropertyViewDialog.hpp )
+  propertyview/PropertyViewDialog.hpp 
+  pythonpluginloader/PyPlugin.hpp
+  )
 
 
 set_source_files_properties(${SRC_FILES_CPP} PROPERTIES OBJECT_DEPENDS "${UIS_OUT_H}")
@@ -88,10 +93,11 @@ RW_ADD_LIBRARY(rws rws
 )
 
 if ( ${RWS_HAVE_GLUT} )
-  TARGET_LINK_LIBRARIES(rws PUBLIC qtpropertybrowser ${QT_LIBRARIES} ${ROBWORK_LIBRARIES} ${GLUT_glut_LIBRARY})
+  TARGET_LINK_LIBRARIES(rws PUBLIC qtpropertybrowser ${PYTHON_LIBRARIES} ${QT_LIBRARIES} ${ROBWORK_LIBRARIES} ${GLUT_glut_LIBRARY})
 else () 
-  TARGET_LINK_LIBRARIES(rws PUBLIC qtpropertybrowser ${QT_LIBRARIES} ${ROBWORK_LIBRARIES})
+  TARGET_LINK_LIBRARIES(rws PUBLIC qtpropertybrowser ${PYTHON_LIBRARIES} ${QT_LIBRARIES} ${ROBWORK_LIBRARIES})
 endif()
+include_directories(${PYTHON_INCLUDE_DIRS})
 
 IF(CMAKE_VERSION VERSION_GREATER 3.3)
 	SET_TARGET_PROPERTIES(rws PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)

@@ -1,5 +1,5 @@
 #MESSAGE("ROBWORKSTUDIO LIBS: ${ROBWORKSTUDIO_LIBRARIES}")
-
+add_definitions(-DQT_NO_KEYWORDS)
 # First we compile the robworkstudio library
 ADD_SUBDIRECTORY(rws)
 

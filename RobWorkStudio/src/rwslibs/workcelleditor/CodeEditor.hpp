@@ -63,13 +63,13 @@ protected:
 
     void focusInEvent(QFocusEvent *e);
 
-public slots:
+public Q_SLOTS:
 
     void insertCompletion(const QString &completion);
 
     void insertXMLTextUnderCursor(const QString &text);
 
-private slots:
+private Q_SLOTS:
 
     void updateLineNumberAreaWidth(int newBlockCount);
 
