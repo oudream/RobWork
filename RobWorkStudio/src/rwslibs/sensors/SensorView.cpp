@@ -38,7 +38,7 @@ using namespace rw::graphics;
 
 
 void SensorView::closeEvent(QCloseEvent* event) {
-    emit viewClosed(this);
+    Q_EMIT viewClosed(this);
 }
 
 CameraView::CameraView(Camera::Ptr camera, QWidget* parent):

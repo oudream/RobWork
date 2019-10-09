@@ -105,12 +105,12 @@ public:
         _desc = str;
     }
 
-private slots:
+private Q_SLOTS:
     void boxValueChanged(double val);
     void sliderValueChanged(int val);
     void enableDisable(int val);
 
-signals:
+Q_SIGNALS:
 	//! @brief Emitted whenever the joint value changes.
     void valueChanged();
 
@@ -193,19 +193,19 @@ public:
      */
     std::vector<bool> enabledState() const;
 
-signals:
+Q_SIGNALS:
 	/**
 	 * @brief Emitted when the joint values are changed.
 	 * @param q [in] the new values.
 	 */
     void valueChanged(const rw::math::Q& q);
     
-public slots:
+public Q_SLOTS:
 	//! @brief Opens up input dialog for pasting a new set of values.
     void paste();
     //! @brief Puts the Q into the clipboard.
     void copy();
-private slots:
+private Q_SLOTS:
 	void valueChanged();
 	void angularChanged(int state);
     
@@ -279,21 +279,21 @@ public:
      */
     static AngleType toAngleType(int i);
 
-signals:
+Q_SIGNALS:
 	/**
 	 * @brief Emitted when the transform is changed.
 	 * @param transform [in] the new transform.
 	 */
     void valueChanged(const rw::math::Transform3D<>& transform);
 
-public slots:
+public Q_SLOTS:
     //! @brief updates the sliders to represent the new angle type
     void angleTypeChanged(int index);
 	//! @brief Opens up dialog for easy pasting of a new pose.
     void paste();
     //! @brief Copys the pose into the clipboard.
     void copy();
-private slots:
+private Q_SLOTS:
     void valueChanged(const rw::math::Q& q);
     
 private:
@@ -351,14 +351,14 @@ public:
      */
     void updateValues(const rw::kinematics::State& state);
 
-signals:
+Q_SIGNALS:
 	/**
 	 * @brief Emitted when the transform is changed.
 	 * @param state [in] the new state.
 	 */
     void stateChanged(const rw::kinematics::State& state);
 
-private slots:
+private Q_SLOTS:
     void transformChanged(const rw::math::Transform3D<>& transform);
     void refFrameChanged(int index);
 
@@ -407,14 +407,14 @@ public:
      */
     void updateValues(const rw::kinematics::State& state);
 
-signals:
+Q_SIGNALS:
 	/**
 	 * @brief Emitted when the transform is changed.
 	 * @param state [in] the new state.
 	 */
     void stateChanged(const rw::kinematics::State& state);
 
-private slots:
+private Q_SLOTS:
     void transformChanged(const rw::math::Transform3D<>& transform);
 
     void tcpFrameChanged(int index);

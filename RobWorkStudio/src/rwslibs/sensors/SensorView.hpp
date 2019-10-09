@@ -62,7 +62,7 @@ protected:
      */
     void closeEvent(QCloseEvent* event);
 
-signals:
+Q_SIGNALS:
 	/**
 	 * @brief Signal emitted when view is closed.
 	 * @param widget [in] the view just closed.

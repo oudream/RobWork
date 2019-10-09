@@ -69,7 +69,7 @@ namespace rws {
          */
         void setLuaState(rw::common::Ptr<rwlibs::swig::LuaState> lua){_lua = lua;}
 
-    public slots:
+    public Q_SLOTS:
         void on_actionNew_triggered(bool);
         void on_actionOpen_triggered(bool);
         void on_actionSave_triggered(bool);

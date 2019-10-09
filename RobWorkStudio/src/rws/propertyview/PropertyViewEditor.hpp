@@ -73,16 +73,13 @@ public:
 		_decimals = decimals;
 	};
 
-signals:
+Q_SIGNALS:
     /**
      * @brief if a property is changed then its identifier is signalled.
      */
     void propertyChanged(const std::string& identifier);
 
-private slots:
-    //TODO find the right arguments
-    // void propertyChanged(QTableWidgetItem* item);
-private slots:
+private Q_SLOTS:
     void slotValueChanged(QtProperty *property, const QVariant &value);
     void slotPropertyDestroyed(QtProperty *property);
 

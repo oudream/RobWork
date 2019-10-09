@@ -52,6 +52,7 @@
 #include <rw/loaders/WorkCellLoader.hpp>
 
 #include <rwlibs/proximitystrategies/ProximityStrategyFactory.hpp>
+#include <rws/pythonpluginloader/PyPlugin.hpp>
 
 #include <rws/propertyview/PropertyViewEditor.hpp>
 
@@ -668,6 +669,7 @@ void RobWorkStudio::setupPlugin(const QString& pathname, const QString& filename
 
 	QString pfilename = pathname+ "/" + filename + "." + OS::getDLLExtension().c_str();
 	bool e1 = boost::filesystem::exists( pfilename.toStdString() );
+    bool py=false;
 	if(!e1){
 		pfilename = pathname+ "/" + filename;
 		e1 = boost::filesystem::exists( pfilename.toStdString() );
@@ -684,9 +686,21 @@ void RobWorkStudio::setupPlugin(const QString& pathname, const QString& filename
 		pfilename = pathname+ "/" + filename + ".dylib";
 		e1 = boost::filesystem::exists( pfilename.toStdString() );
 	}
-    setupPlugin(pfilename, visible, dock);
+    if(!e1){
+        pfilename = pathname+ "/" + filename + ".py";
+		e1 = boost::filesystem::exists( pfilename.toStdString() );
+        py = e1;
+    }
+
+    if(py) {
+        setupPyPlugin(pfilename, filename, visible, dock);
+    } 
+    else {
+        setupPlugin(pfilename,visible,dock);
+    }
 }
-void RobWorkStudio::setupPlugin(const QString& fullname, bool visible, int dock) {
+void RobWorkStudio::setupPlugin(const QString& fullname, bool visible, int dock) 
+{
     Qt::DockWidgetArea dockarea = (Qt::DockWidgetArea)dock;
 	QPluginLoader loader(fullname);
 
@@ -726,6 +740,15 @@ void RobWorkStudio::setupPlugin(const QString& fullname, bool visible, int dock)
 	}
 }
 
+void RobWorkStudio::setupPyPlugin(const QString& pathname, const QString& filename, bool visible, int dock) 
+{   
+    std::cout << "Setting up python plugin" << std::endl;
+    Qt::DockWidgetArea dockarea = (Qt::DockWidgetArea)dock;
+    PyPlugin* pyplug = new PyPlugin();
+    addPlugin(pyplug,visible,dockarea);
+    pyplug->initialize(pathname.toLocal8Bit().data(),filename.toLocal8Bit().data());
+
+}
 
 void RobWorkStudio::setupPlugins(QSettings& settings)
 {

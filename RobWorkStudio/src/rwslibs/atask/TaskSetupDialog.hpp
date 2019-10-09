@@ -72,7 +72,7 @@ public:
 	//! @brief Destructor.
 	virtual ~TaskSetupDialog();
 
-private slots:
+private Q_SLOTS:
 	void setFemaleObject(const QString &text);
 	void setMaleObject(const QString &text);
 	void rpyChanged(double value);

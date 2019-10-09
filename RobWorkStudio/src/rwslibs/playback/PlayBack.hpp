@@ -61,7 +61,7 @@ public:
 
 private:
 	void stateTrajectoryChangedListener(const rw::trajectory::TimedStatePath::Ptr trajectory);
-private slots:
+private Q_SLOTS:
     void openPath();
     void savePath();
     void forwardPlay();

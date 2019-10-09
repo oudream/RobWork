@@ -35,7 +35,7 @@ public:
 
     QString separator() const;
 
-public slots:
+public Q_SLOTS:
 
     void setSeparator(const QString &separator);
 

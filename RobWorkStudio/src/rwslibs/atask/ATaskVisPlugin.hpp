@@ -89,7 +89,7 @@ public:
 private:
     void genericAnyEventListener(const std::string& event, boost::any data);
 
-private slots:
+private Q_SLOTS:
     void btnPressed();
 
 private:

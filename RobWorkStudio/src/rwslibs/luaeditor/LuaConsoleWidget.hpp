@@ -63,7 +63,7 @@ namespace rws {
 
         //void focusInEvent(QFocusEvent *e);
 
-    private slots:
+    private Q_SLOTS:
         //Correctly handle the cursor when moved
         void moveCursor(QTextCursor::MoveOperation action, QTextCursor::MoveMode mode = QTextCursor::MoveAnchor);
         void runFinished();

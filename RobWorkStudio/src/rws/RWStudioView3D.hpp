@@ -190,7 +190,7 @@ public:
     //! get current draw mask
     int getDrawMask();
 
-private slots:
+private Q_SLOTS:
     void setDrawTypeSlot();
     void setTransparentSlot();
     void showPivotPointSlot();

@@ -146,7 +146,7 @@ namespace rws {
 		//! set current state of RobWorkStudio
 		void setState(const rw::kinematics::State& state);
 
-	public slots:
+	public Q_SLOTS:
 		//! @brief toggles the visibility of the plugin
 		void showPlugin();
 

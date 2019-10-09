@@ -105,7 +105,7 @@ protected:
      */
     void showEvent ( QShowEvent * event );
 
-private slots:
+private Q_SLOTS:
     void cmbChanged ( int index );
     void cmbUnitChanged(int index);
 

@@ -213,7 +213,7 @@ public:
     //! @copydoc rw::graphics::SceneViewer::renderView
     void renderView(View::Ptr view);
 
-private slots:
+private Q_SLOTS:
     //! @copydoc rw::graphics::SceneViewer::renderView
     void renderViewThreadSafe(View::Ptr view);
 

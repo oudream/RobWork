@@ -45,7 +45,7 @@ private:
     // we don't want ui header files included anywhere else. ui is therefore forward declared...
     class Ui_AboutBoxClass *ui;
 
-private slots:
+private Q_SLOTS:
     void on_btnOk_clicked();
 };
 

@@ -67,7 +67,7 @@ private:
     // This listens for changes to the path of the Lua interpreter.
     void luaPathChangedListener(const rw::trajectory::StatePath& path);
 
-private slots:
+private Q_SLOTS:
     void runChunk();
     void loadFile();
     void startEditor();

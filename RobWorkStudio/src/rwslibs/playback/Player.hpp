@@ -169,12 +169,12 @@ public:
                          double tickInterval,
                          rws::RobWorkStudio* rwstudio);
 
-private slots:
+private Q_SLOTS:
     // Increment the current time by tickInterval.
     void tick();
     void recordImage();
 
-signals:
+Q_SIGNALS:
 	/**
 	 * @brief Emitted during playback.
 	 * @param val [in] the current playback position as a value between 0 and 1.
