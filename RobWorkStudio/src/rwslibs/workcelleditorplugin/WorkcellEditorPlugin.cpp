@@ -79,6 +79,9 @@ void WorkcellEditorPlugin::stateChangedListener(const State &state) {
 
 void WorkcellEditorPlugin::open(WorkCell *workcell) {
     stateChangedListener(getRobWorkStudio()->getState());
+    if ( _editor != NULL ) {
+        _editor->openWorkCell(workcell->getFilename().c_str());
+    }
 }
 
 void WorkcellEditorPlugin::close() {

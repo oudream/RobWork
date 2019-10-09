@@ -660,7 +660,7 @@ void RobWorkStudio::loadSettingsSetupPlugins(const std::string& file)
         break;
     }
 
-    // TODO: make error reply if necesarry
+    // TODO: make error reply if necessary
     //return settings.status();
 }
 
