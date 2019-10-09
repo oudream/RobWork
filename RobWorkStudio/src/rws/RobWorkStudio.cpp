@@ -52,8 +52,9 @@
 #include <rw/loaders/WorkCellLoader.hpp>
 
 #include <rwlibs/proximitystrategies/ProximityStrategyFactory.hpp>
+#ifdef RWS_USE_PYTHON
 #include <rws/pythonpluginloader/PyPlugin.hpp>
-
+#endif //RWS_USE_PYTHON
 #include <rws/propertyview/PropertyViewEditor.hpp>
 
 #include <RobWorkConfig.hpp>
@@ -742,11 +743,15 @@ void RobWorkStudio::setupPlugin(const QString& fullname, bool visible, int dock)
 
 void RobWorkStudio::setupPyPlugin(const QString& pathname, const QString& filename, bool visible, int dock) 
 {   
-    std::cout << "Setting up python plugin" << std::endl;
-    Qt::DockWidgetArea dockarea = (Qt::DockWidgetArea)dock;
-    PyPlugin* pyplug = new PyPlugin();
-    addPlugin(pyplug,visible,dockarea);
-    pyplug->initialize(pathname.toLocal8Bit().data(),filename.toLocal8Bit().data());
+    #ifdef RWS_USE_PYTHON
+        Qt::DockWidgetArea dockarea = (Qt::DockWidgetArea)dock;
+        PyPlugin* pyplug = new PyPlugin();
+        addPlugin(pyplug,visible,dockarea);
+        pyplug->initialize(pathname.toLocal8Bit().data(),filename.toLocal8Bit().data());
+    #endif //RWS_USE_PYTHON
+    #ifndef RWS_USE_PYTHON
+        RW_THROW("You have attempted to load a python plugin, but RobWorkStudio was not compiled using python, please recompile RobWorkStudio")
+    #endif //NOT RWS_USE_PYTHON
 
 }
 

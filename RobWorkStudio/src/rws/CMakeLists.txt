@@ -23,7 +23,7 @@ SET(SRC_FILES_CPP
   ImageView.cpp
   propertyview/PropertyViewEditor.cpp
   propertyview/PropertyViewDialog.cpp
-  pythonpluginloader/PyPlugin.cpp
+  
 )
 
 SET(SRC_FILES_HPP
@@ -40,7 +40,6 @@ SET(SRC_FILES_HPP
   ImageView.hpp
   propertyview/PropertyViewEditor.hpp
   propertyview/PropertyViewDialog.hpp
-  pythonpluginloader/PyPlugin.hpp 
   )
 
 # Files to moc and compile:
@@ -53,9 +52,13 @@ SET(MocHeaderFiles
   ImageView.hpp
   propertyview/PropertyViewEditor.hpp 
   propertyview/PropertyViewDialog.hpp 
-  pythonpluginloader/PyPlugin.hpp
   )
 
+if(RWS_USE_PYTHON)
+ set(SRC_FILES_CPP ${SRC_FILES_CPP} pythonpluginloader/PyPlugin.cpp)
+ set(SRC_FILES_HPP ${SRC_FILES_HPP} pythonpluginloader/PyPlugin.hpp)
+ set(MocHeaderFiles ${MocHeaderFiles} pythonpluginloader/PyPlugin.hpp)
+endif()
 
 set_source_files_properties(${SRC_FILES_CPP} PROPERTIES OBJECT_DEPENDS "${UIS_OUT_H}")
 

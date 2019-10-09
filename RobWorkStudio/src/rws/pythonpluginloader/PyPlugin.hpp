@@ -36,6 +36,7 @@ class PyPlugin : public rws::RobWorkStudioPlugin
   private:
     static size_t _pyPlugins;
     std::string _pythonFilePath;
+    std::string _pluginName;
     QWidget* _base;
 };
 
