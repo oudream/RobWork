@@ -60,6 +60,13 @@ namespace rws {
         //! @brief destructor
         virtual ~WorkcellEditorWindow();
 
+        /**
+         * @brief used to open a workcell file
+         * @param fileName [in] the full file name of the workcell 
+         * @return did loading the workcell succeed
+         */
+        bool openWorkCell(const QString &fileName);
+
     public Q_SLOTS:
 
         void on_actionNew_triggered(bool);
