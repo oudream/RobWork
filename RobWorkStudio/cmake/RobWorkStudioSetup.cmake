@@ -41,7 +41,19 @@ MESSAGE(STATUS "RobWorkStudio: ROOT dir: ${RWS_ROOT}")
 #
 
 # Find Python
-find_package(PythonLibs REQUIRED)
+find_package(PythonLibs 3 QUIET)
+if (PYTHONLIBS_FOUND)
+	set(RWS_USE_PYTHON3 true)
+	set(RWS_USE_PYTHON true)
+else()
+	find_package(PythonLibs 2 QUIET)
+	if (PYTHONLIBS_FOUND)
+		set(RWS_USE_PYTHON2 true)
+		set(RWS_USE_PYTHON true)
+	endif()
+endif()
+
+
 
 # Find and setup OpenGL.
 FIND_PACKAGE(OpenGL REQUIRED)
