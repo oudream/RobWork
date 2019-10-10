@@ -68,12 +68,11 @@ bool PyPlugin::initialize (std::string pythonFilePath, std::string pluginName)
         #endif 
         #ifdef RWS_USE_PYTHON2
             char* argv_[argc];
-            for (size_t i = 0; i < argc; i++) {
-                argv_[i]     = argv[i];
+            for (int i = 0; i < argc; i++) {
+                argv_[i]     = new char[argv.size()];
+                strcpy(argv_[i],argv[i].c_str());
             }
         #endif
-
-        PySys_SetArgv (argc, argv_);
 
         // Get Python
         std::ifstream scriptFile (pythonFilePath.c_str ());
@@ -82,6 +81,9 @@ bool PyPlugin::initialize (std::string pythonFilePath, std::string pluginName)
 
         PyRun_SimpleString (code.c_str ());
 
+        for(int i = 0; i < argc ; i++) {
+            delete argv_[i];
+        }
         delete program;
     }
     return exsist;
