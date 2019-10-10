@@ -4207,5 +4207,9 @@
 /doc/installstuff/RW_package-source/.cproject
 /doc/installstuff/RW_package-source/.project
 
+#/doc/sphinx/apidoc
+/doc/sphinx/apidoc/java/packages.rst
 
+#/doc/sphinx/apidoc/java
+/doc/sphinx/apidoc/java/org
 
