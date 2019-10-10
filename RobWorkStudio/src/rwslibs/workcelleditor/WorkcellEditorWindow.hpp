@@ -119,6 +119,8 @@ namespace rws {
 
         EditorTab::Ptr getCurrentTab();
 
+        QStringList getRefFrameList();
+
     private:
         //! hold
         std::map<QWidget *, EditorTab::Ptr> _editors;

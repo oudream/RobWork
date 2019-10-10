@@ -273,12 +273,22 @@ void WorkcellEditorWindow::on_actionSave_As_triggered (bool)
 
 void WorkcellEditorWindow::on_actionAdd_Frame_triggered (bool)
 {
+    // Load Workcell
+    
+    
     // Define form inputs
     InputFormDialog::FormData data;
     data["Name"]       = "";
-    data["Ref. frame"] = "";
-    data["Type"]       = QStringList () << "Fixed"
-                                  << "Movable";
+    QStringList refFrames = getRefFrameList();
+    if ( refFrames.isEmpty() ) {
+        std::cout << "wc is null" << std::endl;
+        data["Ref. frame"] = "";
+    } 
+    else {
+        data["Ref. frame"] = refFrames;
+    }
+    
+    data["Type"]       = QStringList () << "Fixed" << "Movable";
     data["Show Frame Axis"] = false;
     data["Position"]        = QVector3D (0.0, 0.0, 0.0);
     data["RPY"]             = QVector3D (0.0, 0.0, 0.0);
@@ -340,13 +350,20 @@ void WorkcellEditorWindow::on_actionAdd_Drawable_triggered (bool)
 
     // Define form options
     InputFormDialog::FormOptions options;
-    options.listDisplaysAsRadios = true;
+    options.listDisplaysAsRadios = false;
     options.listReturnsIndex     = false;
 
     // Define form inputs
     InputFormDialog::FormData data;
     data["Name"]            = "";
-    data["Ref. frame"]      = "";
+    QStringList refFrames = getRefFrameList();
+    if ( refFrames.isEmpty() ) {
+        std::cout << "wc is null" << std::endl;
+        data["Ref. frame"] = "";
+    } 
+    else {
+        data["Ref. frame"] = refFrames;
+    }
     data["CollisionModel"]  = true;
     data["Mesh Resolution"] = 20;
     data["Position"]        = QVector3D (0.0, 0.0, 0.0);
@@ -452,13 +469,20 @@ void WorkcellEditorWindow::on_actionAdd_CollisionModel_triggered (bool)
 
     // Define form options
     InputFormDialog::FormOptions options;
-    options.listDisplaysAsRadios = true;
+    options.listDisplaysAsRadios = false;
     options.listReturnsIndex     = false;
 
     // Define form inputs
     InputFormDialog::FormData data;
     data["Name"]            = "";
-    data["Ref. frame"]      = "";
+    QStringList refFrames = getRefFrameList();
+    if ( refFrames.isEmpty() ) {
+        std::cout << "wc is null" << std::endl;
+        data["Ref. frame"] = "";
+    } 
+    else {
+        data["Ref. frame"] = refFrames;
+    }
     data["Mesh Resolution"] = 20;
     data["Position"]        = QVector3D (0.0, 0.0, 0.0);
     data["RPY"]             = QVector3D (0.0, 0.0, 0.0);
@@ -649,6 +673,31 @@ bool WorkcellEditorWindow::openWorkCell (const QString &fileName)
 
     }
     return success;
+}
+
+QStringList WorkcellEditorWindow::getRefFrameList()
+{
+    EditorTab::Ptr tab = getCurrentTab();
+    rw::models::WorkCell::Ptr wc = NULL;
+    QStringList refFrames;
+    if (tab->_filename.size() > 5 /*minimum length*/) {
+        std::string file = tab->_filename + ".temp1234.xml";
+
+        std::ofstream out(file);
+        out << tab->_editor->toPlainText().toStdString();
+        out.close();
+
+        wc = WorkCellLoader::Factory::load(file);
+        remove(file.c_str());
+        
+        if (! wc.isNull() ) {
+            std::vector<rw::kinematics::Frame *> frameList = wc->getFrames();
+            for ( size_t i = 0; i < frameList.size(); i++ ) {
+                refFrames << frameList[i]->getName().c_str();
+            }
+        }
+    }
+    return refFrames;
 }
 
 WorkcellEditorWindow::EditorTab::Ptr WorkcellEditorWindow::getCurrentTab ()
