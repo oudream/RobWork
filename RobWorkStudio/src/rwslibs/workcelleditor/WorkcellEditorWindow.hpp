@@ -33,7 +33,7 @@ namespace Ui {
     class WorkcellEditorWindow;
 }
 
-class TreeModelCompleter;
+class WCECompleter;
 
 class QCompleter;
 
@@ -98,14 +98,14 @@ namespace rws {
         void setCheckAction(QAction *);
 
     private:
-        QAbstractItemModel *modelFromFile(const QString &fileName, TreeModelCompleter *completer);
+        QAbstractItemModel *modelFromFile(const QString &fileName, WCECompleter *completer);
 
         struct EditorTab {
             typedef rw::common::Ptr<EditorTab> Ptr;
             std::string _id;
             WCCodeEditor *_editor;
             WorkcellHighlighter *_highlighter;
-            TreeModelCompleter *_completer;
+            WCECompleter *_completer;
             std::string _filename;
         };
 

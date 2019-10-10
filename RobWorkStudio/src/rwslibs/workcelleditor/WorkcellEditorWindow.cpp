@@ -17,8 +17,8 @@
 
 #include "WorkcellEditorWindow.hpp"
 
-#include "CodeEditor.hpp"
-#include "TreeModelCompleter.hpp"
+#include "WCCodeEditor.hpp"
+#include "WCECompleter.hpp"
 #include "WorkcellHighlighter.hpp"
 
 #include <rw/common/Log.hpp>
@@ -186,15 +186,14 @@ WorkcellEditorWindow::EditorTab::Ptr WorkcellEditorWindow::makeEditor ()
     QFontMetrics metrics (font);
     etab->_editor->setTabStopWidth (tabStop * metrics.width (' '));
 
-    etab->_completer = new TreeModelCompleter (etab->_editor);
-    etab->_completer->setSeparator (QLatin1String ("."));
-    etab->_completer->setModel (
-        modelFromFile (":/word_list.txt", etab->_completer));
+    etab->_completer = new WCECompleter (etab->_editor);
+    //etab->_completer->setSeparator (QLatin1String ("."));
+    etab->_completer->setModel (modelFromFile (":/word_list.txt", etab->_completer));
     etab->_completer->setCompletionMode (QCompleter::PopupCompletion);
-    etab->_completer->setModelSorting (
-        QCompleter::CaseInsensitivelySortedModel);
+    etab->_completer->setModelSorting (QCompleter::CaseInsensitivelySortedModel);
     etab->_completer->setCaseSensitivity (Qt::CaseInsensitive);
     etab->_completer->setWrapAround (false);
+    
     etab->_editor->setCompleter (etab->_completer);
 
     etab->_highlighter = new WorkcellHighlighter (etab->_editor->document ());
@@ -214,9 +213,7 @@ WorkcellEditorWindow::EditorTab::Ptr WorkcellEditorWindow::makeEditor ()
 
 void WorkcellEditorWindow::runFinished ()
 {
-    // std::cout << "FINISHED" << std::endl;
     _tabPane->setEnabled (true);
-    //_editor->setEnabled(true);
 }
 
 void WorkcellEditorWindow::textChanged ()
@@ -665,7 +662,7 @@ void WorkcellEditorWindow::on_actionRun_triggered (bool)
     rw::models::WorkCell::Ptr wc =
         rw::loaders::WorkCellLoader::Factory::load (wcFilename);
     if (wc == nullptr)
-        RW_DEBUG ("_rws was nullptr");
+        RW_DEBUG ("wc was nullptr");
     if (_rws == nullptr)
         RW_DEBUG ("_rws was nullptr");
     _rws->setWorkcell (wc);
@@ -685,9 +682,8 @@ void WorkcellEditorWindow::on_actionReload_triggered (bool)
     file.close ();
 }
 
-QAbstractItemModel*
-WorkcellEditorWindow::modelFromFile (const QString& fileName,
-                                     TreeModelCompleter* completer)
+QAbstractItemModel* WorkcellEditorWindow::modelFromFile (const QString& fileName,
+                                     WCECompleter* completer)
 {
     QFile file (fileName);
     if (!file.open (QFile::ReadOnly))
