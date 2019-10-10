@@ -74,6 +74,8 @@ bool PyPlugin::initialize (std::string pythonFilePath, std::string pluginName)
             }
         #endif
 
+        PySys_SetArgv (argc, argv_);
+
         // Get Python
         std::ifstream scriptFile (pythonFilePath.c_str ());
         std::string code ((std::istreambuf_iterator< char > (scriptFile)),
