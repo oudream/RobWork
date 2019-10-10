@@ -16,11 +16,11 @@ and implement at least some of its functions.
 In this section we present two common project templates for creating a GUI plugin:
 
 - A simple template where Qt gui functionality needs to be added in the hpp/cpp plugin files.
-- An example where Qt designer is used to create an ui file which describe the graphical layout.  
+- An example where Qt designer is used to create an ui file which describe the graphical layout.
 
-Common to both templates is how to load the plugin into RobWorkStudio when they have compiled. 
-The compiled output will be a dynamically linkable file (in Windows it is a .dll file and in Linux it is .so). 
-To use the plugin in your RobWorkStudio installation add the following lines to the 
+Common to both templates is how to load the plugin into RobWorkStudio when they have compiled.
+The compiled output will be a dynamically linkable file (in Windows it is a .dll file and in Linux it is .so).
+To use the plugin in your RobWorkStudio installation add the following lines to the
 RobWorkStudio.ini file in the directory where you start RobWorkStudio from::
  
 	SamplePlugin\DockArea=2
