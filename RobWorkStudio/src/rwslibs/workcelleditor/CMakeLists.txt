@@ -14,16 +14,16 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 SET(SrcFiles WorkcellEditorWindow.cpp
         WorkcellHighlighter.cpp
-        CodeEditor.cpp
-        TreeModelCompleter.cpp
+        WCCodeEditor.cpp
+        WCECompleter.cpp
         InputFormDialog.cpp
         SetColorButton.cpp
         FileDialogButton.cpp
         )
 SET(SRC_FILES_HPP WorkcellEditorWindow.hpp
         WorkcellHighlighter.hpp
-        CodeEditor.hpp
-        TreeModelCompleter.hpp
+        WCCodeEditor.hpp
+        WCECompleter.hpp
         InputFormDialog.hpp
         SetColorButton.hpp
         FileDialogButton.hpp

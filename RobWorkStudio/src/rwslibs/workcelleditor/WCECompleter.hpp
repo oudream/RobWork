@@ -15,12 +15,12 @@
  * limitations under the License.
  ********************************************************************************/
 
-#ifndef TREEMODELCOMPLETER_HPP_
-#define TREEMODELCOMPLETER_HPP_
+#ifndef WCECOMPLETER_HPP_
+#define WCECOMPLETER_HPP_
 
 #include <QCompleter>
 
-class TreeModelCompleter : public QCompleter {
+class WCECompleter : public QCompleter {
 Q_OBJECT
     Q_PROPERTY(QString separator
                        READ
@@ -29,9 +29,11 @@ Q_OBJECT
                        setSeparator)
 
 public:
-    TreeModelCompleter(QObject *parent = 0);
+    WCECompleter(QObject *parent = 0);
 
-    TreeModelCompleter(QAbstractItemModel *model, QObject *parent = 0);
+    WCECompleter(QAbstractItemModel *model, QObject *parent = 0);
+
+    WCECompleter(QStringList list, QObject * paraent = 0);
 
     QString separator() const;
 
@@ -49,4 +51,4 @@ private:
 };
 
 
-#endif /* TREEMODELCOMPLETER_HPP_ */
+#endif /* WCECompleter_HPP_ */
