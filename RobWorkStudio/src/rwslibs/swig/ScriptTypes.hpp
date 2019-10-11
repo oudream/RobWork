@@ -50,6 +50,7 @@ namespace swig {
 
     // for now we add all static functions here
     RobWorkStudio* getRobWorkStudio();
+    RobWorkStudio* getRobWorkStudioFromQt();
 
     /**
      * @brief set current robworkstudio instance

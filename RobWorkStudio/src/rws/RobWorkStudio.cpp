@@ -105,6 +105,7 @@ RobWorkStudio::RobWorkStudio(const PropertyMap& map)
     _inStateUpdate(false),
     _settingsMap(NULL)
 {
+    this->setObjectName("RobWorkStudio_MainWindow");
 	//Always create the about box.
 	_aboutBox = new AboutBox(RW_VERSION, RW_REVISION, this);
 	// should load dynamically

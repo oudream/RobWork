@@ -40,6 +40,7 @@ rw::common::Ptr<RobWorkStudio> getRobWorkStudioInstance();
 rw::common::Ptr<RobWorkStudio> getRobWorkStudioInstance(const std::string& args);
 
 RobWorkStudio* getRobWorkStudio();
+RobWorkStudio* getRobWorkStudioFromQt();
 
 void setRobWorkStudio(RobWorkStudio* rwstudio);
 
