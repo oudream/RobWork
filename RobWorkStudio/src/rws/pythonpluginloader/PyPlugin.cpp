@@ -4,11 +4,31 @@
 #include <rw/kinematics.hpp>
 #include <rws/RobWorkStudio.hpp>
 
-#include <Python.h> 
+
 #include <QGridLayout>
 #include <boost/bind.hpp>
 #include <boost/filesystem.hpp>
 #include <fstream>
+
+#ifdef _GNU_SOURCE
+    #define _POSIX_C_SOURCE_OLD _POSIX_C_SOURCE
+    #undef _POSIX_C_SOURCE
+
+    #define _XOPEN_SOURCE_OLD _XOPEN_SOURCE
+    #undef  _XOPEN_SOURCE
+
+    #include <Python.h>
+
+    #undef _POSIX_C_SOURCE
+    #define _POSIX_C_SOURCE _POSIX_C_SOURCE_OLD
+
+    #undef _XOPEN_SOURCE
+    #define _XOPEN_SOURCE _XOPEN_SOURCE_OLD
+#endif 
+#ifndef _GNU_SOURCE
+    #include <Python.h>
+#endif
+
 
 using rws::RobWorkStudioPlugin;
 using namespace rw::kinematics;
@@ -107,13 +127,15 @@ bool PyPlugin::initialize (std::string pythonFilePath, std::string pluginName)
 
         // Forward argv and argc
         std::vector< std::string > argv = {pluginName, _pluginName};
-        int argc                        = int(argv.size ());
+        const int argc                        = int(argv.size ());
 
         #ifdef RWS_USE_PYTHON3
             wchar_t* argv_[argc];
             for (int i = 0; i < argc; i++) {
                 wchar_t* arg = Py_DecodeLocale (argv[i].c_str (), NULL);
-                argv_[i]     = arg;
+                size_t size= (argv[i].size() + 1u);
+                argv_[i] = new wchar_t[size];
+                memcpy(argv_[i],arg, sizeof(wchar_t) * size);
             }
         #endif 
         #ifdef RWS_USE_PYTHON2
@@ -138,7 +160,7 @@ bool PyPlugin::initialize (std::string pythonFilePath, std::string pluginName)
         PyRun_SimpleString (code.c_str ());
 
         for(int i = 0; i < argc ; i++) {
-            delete argv_[i];
+            delete [] argv_[i];
         }
         #ifdef RWS_USE_PYTHON3
             delete program;
