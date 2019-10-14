@@ -300,10 +300,6 @@ stages:
     - FOR /D %%F IN ("Testing\\*") DO IF EXIST %%F\\Test.xml move %%F\\Test.xml ..\\..\\RWSim-CTest.xml
     - cd ..
 
-build:ubuntu-1404:
-  extends: .linux-full
-  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1404
-
 build:ubuntu-1604:
   extends: .linux-full
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1604
@@ -316,13 +312,13 @@ build-minimal:ubuntu-1804:
   extends: .linux-minimal
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
 
-build:ubuntu-1810:
-  extends: .linux-full
-  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1810
-
 build:ubuntu-1904:
   extends: .linux-full
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1904
+
+build:ubuntu-1910:
+  extends: .linux-full
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1910
 
 build:centos-7:
   extends: .linux-full
