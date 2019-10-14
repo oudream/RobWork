@@ -22,6 +22,7 @@
 #include "WorkcellHighlighter.hpp"
 
 #include <rw/common/Log.hpp>
+#include <rw/loaders/WorkCellLoader.hpp>
 #include <rwlibs/swig/ScriptTypes.hpp>
 #include <rws/RobWorkStudio.hpp>
 
@@ -36,11 +37,12 @@
 #include <QVector2D>
 #include <QVector3D>
 #include <boost/filesystem.hpp>
-//#include <rw/loaders/xml/XercesUtils.hpp>
+
 #include "InputFormDialog.hpp"
 #include "ui_WorkcellEditorWindow.h"
 
-#include <rw/loaders/WorkCellLoader.hpp>
+#include <fstream>
+
 
 // using namespace xercesc;
 using namespace rw::common;
