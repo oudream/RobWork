@@ -357,7 +357,7 @@ std::vector<std::string> mergeTaskFileList(std::string root, std::string preName
                 string graspType = graspTypes[gtype];
                 int graspI = 0;
                 while (true) {
-                    char gIstr[10];
+                    char gIstr[11];
                     sprintf(gIstr, "%03d", graspI);
 
                     string file = root + "/" + objectDirectory + "/" + preName + sIstr + "_" + graspType + "_" + gIstr + postName;

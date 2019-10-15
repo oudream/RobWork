@@ -130,12 +130,10 @@ bool PyPlugin::initialize (std::string pythonFilePath, std::string pluginName)
         const int argc                        = int(argv.size ());
 
         #ifdef RWS_USE_PYTHON3
-            wchar_t* argv_[argc];
+            wchar_t** argv_ = new wchar_t*[argc];
             for (int i = 0; i < argc; i++) {
                 wchar_t* arg = Py_DecodeLocale (argv[i].c_str (), NULL);
-                size_t size= (argv[i].size() + 1u);
-                argv_[i] = new wchar_t[size];
-                memcpy(argv_[i],arg, sizeof(wchar_t) * size);
+                argv_[i] = arg;
             }
         #endif 
         #ifdef RWS_USE_PYTHON2
@@ -160,8 +158,10 @@ bool PyPlugin::initialize (std::string pythonFilePath, std::string pluginName)
         PyRun_SimpleString (code.c_str ());
 
         for(int i = 0; i < argc ; i++) {
-            delete [] argv_[i];
+            delete argv_[i];
         }
+        delete [] argv_;
+        
         #ifdef RWS_USE_PYTHON3
             delete program;
         #endif
