@@ -36,29 +36,24 @@ MESSAGE(STATUS "RobWorkSim: ROOT dir: ${RWSIM_ROOT}")
 # the configuration depends on
 #
  
-#Include default settings for constructing a robwork dependent project
-#SET(ROBWORK_ROOT ${RW_ROOT})
-#SET(CMAKE_MODULE_PATH ${RW_ROOT}/build ${CMAKE_MODULE_PATH})
-#SET(RobWork_DIR ${RW_ROOT}/cmake)
-#FIND_PACKAGE(RobWork REQUIRED)
+# Find Python
+# Prefer Python 3
+find_package(PythonInterp 3 QUIET)
+find_package(PythonLibs 3 QUIET)
 
-#STRING(COMPARE EQUAL "${ROBWORKSIM_VERSION}" "${ROBWORK_VERSION}" COMPATIBLE_VERSION)
-#IF( NOT COMPATIBLE_VERSION )
-#    MESSAGE(SEND_ERROR "RobWorkSim: Version of RobWork ${ROBWORK_VERSION} is incompatible with version of RobWorkSim ${ROBWORKSIM_VERSION}")
-#ENDIF()
+if (NOT PYTHONINTERP_FOUND)
+	find_package(PythonInterp QUIET)
+endif()
+if (NOT PythonLibs)
+	find_package(PythonLibs QUIET)
+endif()
 
-#And for the qtgui stuff
-#SET(ROBWORKSTUDIO_ROOT ${RWS_ROOT})
-#SET(RWSTUDIO_ROOT ${RWS_ROOT})
-
-#SET(CMAKE_MODULE_PATH ${RWS_ROOT}/cmake ${CMAKE_MODULE_PATH})
-#FIND_PACKAGE(RobWorkStudio REQUIRED)
-
-#STRING(COMPARE EQUAL "${ROBWORKSTUDIO_VERSION}" "${ROBWORKSIM_VERSION}" COMPATIBLE_VERSION)
-#IF( NOT COMPATIBLE_VERSION )
-#    MESSAGE(SEND_ERROR "RobWorkSim: Version of RobWorkStudio ${ROBWORKSTUDIO_VERSION} is incompatible with version of RobWorkSim ${ROBWORKSIM_VERSION}")
-#ENDIF()
-
+if(PYTHONINTERP_FOUND)
+	message(STATUS "RobWorkSim: Python interpreter ${PYTHON_VERSION_STRING} Found")
+endif()
+if(PYTHONLIBS_FOUND)
+	message(STATUS "RobWorkSim: Python libraries ${PYTHONLIBS_VERSION_STRING} Found")
+endif()
 
  ####################################################################
 # DEPENDENCIES - OPTIONAL
