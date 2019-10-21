@@ -32,8 +32,8 @@ When running the Lua script, the modules must be loaded using the *require* func
 
 .. code-block:: lua
 
-   require("rw")
-   require("rw_simulation")
+   require("sdurw")
+   require("sdurw_simulation")
 
 
 Building a Lua interpreter

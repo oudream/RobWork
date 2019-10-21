@@ -11,5 +11,5 @@ Tutorials
    tutorials/algorithms
    tutorials/geometry
    tutorials/calibration
-   tutorials/plugins_rw
-   tutorials/plugins_rws
+   tutorials/plugins_sdurw
+   tutorials/plugins_sdurws
