@@ -1,6 +1,6 @@
-SET(SUBSYS_NAME rws_sensors)
+SET(SUBSYS_NAME sdurws_sensors)
 set(SUBSYS_DESC "A sensor view plugin")
-SET(SUBSYS_DEPS rws)
+SET(SUBSYS_DEPS sdurws)
 
 SET(build TRUE)
 RW_SUBSYS_OPTION(build ${SUBSYS_NAME} ${SUBSYS_DESC} ON)

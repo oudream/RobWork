@@ -8,7 +8,7 @@ MACRO(RWS_ADD_PLUGIN _name _component _lib_type)
     # must link explicitly against boost.
     target_link_libraries(${_name} ${Boost_LIBRARIES} )
     IF(NOT RWS_USE_STATIC_LINK_PLUGINS)
-      target_link_libraries(${_name} rws qtpropertybrowser ${ROBWORK_LIBRARIES} ${QT_LIBRARIES})
+      target_link_libraries(${_name} sdurws qtpropertybrowser ${ROBWORK_LIBRARIES} ${QT_LIBRARIES})
     ENDIF()
     
     # Only link if needed
@@ -70,7 +70,7 @@ MACRO(RWS_ADD_COMPONENT _name _component)
     # must link explicitly against boost.
     target_link_libraries(${_name} ${Boost_LIBRARIES})
     IF(NOT RWS_USE_STATIC_LINK_PLUGINS)
-      target_link_libraries(${_name} rws qtpropertybrowser ${ROBWORK_LIBRARIES} ${QT_LIBRARIES})
+      target_link_libraries(${_name} sdurws qtpropertybrowser ${ROBWORK_LIBRARIES} ${QT_LIBRARIES})
     ENDIF()
     
     # Only link if needed

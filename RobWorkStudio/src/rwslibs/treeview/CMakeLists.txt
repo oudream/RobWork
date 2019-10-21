@@ -1,6 +1,6 @@
-SET(SUBSYS_NAME rws_treeview)
+SET(SUBSYS_NAME sdurws_treeview)
 set(SUBSYS_DESC "A treeview plugin")
-SET(SUBSYS_DEPS rws)
+SET(SUBSYS_DEPS sdurws)
 
 SET(build TRUE)
 RW_SUBSYS_OPTION(build ${SUBSYS_NAME} ${SUBSYS_DESC} ON)

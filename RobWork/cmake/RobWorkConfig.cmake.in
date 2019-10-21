@@ -1,7 +1,7 @@
 # ------------------------------------------------------------------------------------
 # Helper to use RobWork from outside project
 #
-# set ROBWORK_DIR to installation path to find root of robwork, 
+# set ROBWORK_DIR to installation path to find root of sdurw, 
 # else automatic finding will be used
 # based on RobWork_DIR 
 #
@@ -200,19 +200,19 @@ IF(EXISTS ${RWCFG_ROOT}/RobWorkBuildConfig_${RW_BUILD_TYPE}.cmake )
     if(RobWork_FIND_COMPONENTS)
         # FIRST check if all required components are installed/build
         foreach(component IN LISTS RobWork_FIND_COMPONENTS)
-            if( NOT( ${component} STREQUAL "rw") )
+            if( NOT( ${component} STREQUAL "sdurw") )
             
-                LIST(FIND RW_BUILD_WITH_LIBRARIES "rw_${component}" COMP_FOUND)
+                LIST(FIND RW_BUILD_WITH_LIBRARIES "sdurw_${component}" COMP_FOUND)
                 
                 if(${COMP_FOUND} GREATER -1)
-                    LIST(APPEND LIBRARIES_TO_INCLUDE "rw_${component}")
+                    LIST(APPEND LIBRARIES_TO_INCLUDE "sdurw_${component}")
                 else()
                     if( RobWork_REQUIRED )
                         SET(ROBWORK_EXPERIENCED_FATAL_PROBLEMS TRUE)
-                        MESSAGE(FATAL_ERROR "The component: rw_${component} has not been built with RobWork. Reconfigure RobWork installation or check component spelling!")
+                        MESSAGE(FATAL_ERROR "The component: sdurw_${component} has not been built with RobWork. Reconfigure RobWork installation or check component spelling!")
                     else ()
                         SET(ROBWORK_EXPERIENCED_FATAL_PROBLEMS TRUE)
-                        MESSAGE(WARNING "The component: rw_${component} has not been built with RobWork. Reconfigure RobWork installation or check component spelling!")
+                        MESSAGE(WARNING "The component: sdurw_${component} has not been built with RobWork. Reconfigure RobWork installation or check component spelling!")
                     endif()
                 endif()
             endif()

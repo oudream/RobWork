@@ -1,4 +1,4 @@
-%module rw_assembly
+%module sdurw_assembly
 
 %{
 #include <rwlibs/swig/ScriptTypes.hpp>
@@ -14,16 +14,16 @@ using rwlibs::task::Task;
 %include <std_string.i>
 %include <std_vector.i>
 
-%import <rwlibs/swig/rw.i>
-%import <rwlibs/swig/rw_task.i>
+%import <rwlibs/swig/sdurw.i>
+%import <rwlibs/swig/sdurw_task.i>
 
 %pragma(java) jniclassimports=%{
-import org.robwork.rw.*;
-import org.robwork.rw_task.*;
+import org.robwork.sdurw.*;
+import org.robwork.sdurw_task.*;
 %}
 %typemap(javaimports) SWIGTYPE %{
-import org.robwork.rw.*;
-import org.robwork.rw_task.*;
+import org.robwork.sdurw.*;
+import org.robwork.sdurw_task.*;
 %}
 
 class AssemblyControlResponse

@@ -1,4 +1,4 @@
-%module rw_proximitystrategies
+%module sdurw_proximitystrategies
 
 %{
 #include <rwlibs/swig/ScriptTypes.hpp>
@@ -7,13 +7,13 @@
 using namespace rwlibs::swig;
 %}
 
-%import <rwlibs/swig/rw.i>
+%import <rwlibs/swig/sdurw.i>
 
 %pragma(java) jniclassimports=%{
-import org.robwork.rw.*;
+import org.robwork.sdurw.*;
 %}
 %typemap(javaimports) SWIGTYPE %{
-import org.robwork.rw.*;
+import org.robwork.sdurw.*;
 %}
 
 class ProximityStrategyFactory

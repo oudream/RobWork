@@ -1,6 +1,6 @@
-SET(SUBSYS_NAME rwsim_java )
+SET(SUBSYS_NAME sdurwsim_java )
 SET(SUBSYS_DESC "Interface for accessing RobWorkSim from java." )
-SET(SUBSYS_DEPS rw )
+SET(SUBSYS_DEPS sdurwsim )
 
 SET(build TRUE)
 
@@ -27,25 +27,25 @@ IF( build )
     INCLUDE(UseJava)
     INCLUDE(UseSWIG)
     
-    SET_SOURCE_FILES_PROPERTIES(../rwsim.i PROPERTIES CPLUSPLUS ON)
-	SET_SOURCE_FILES_PROPERTIES(../rwsim.i PROPERTIES SWIG_FLAGS "-includeall")
+    SET_SOURCE_FILES_PROPERTIES(../sdurwsim.i PROPERTIES CPLUSPLUS ON)
+	SET_SOURCE_FILES_PROPERTIES(../sdurwsim.i PROPERTIES SWIG_FLAGS "-includeall")
     if (NOT ${SWIG_VERSION} VERSION_LESS 4.0.0)
-    	SET_SOURCE_FILES_PROPERTIES(../rw.i PROPERTIES SWIG_FLAGS "-includeall;-doxygen")
+    	SET_SOURCE_FILES_PROPERTIES(../sdurwsim.i PROPERTIES SWIG_FLAGS "-includeall;-doxygen")
     endif()
     
     INCLUDE_DIRECTORIES(${JAVA_INCLUDE_DIRS} ${JNI_INCLUDE_DIRS})
-    set(CMAKE_SWIG_FLAGS "-package" "org.robwork.rwsim")
+    set(CMAKE_SWIG_FLAGS "-package" "org.robwork.sdurwsim")
     # Put java files in different directory suitable for JAR generation later on
-    SET(CMAKE_SWIG_OUTDIR ${CMAKE_CURRENT_BINARY_DIR}/java_src/org/robwork/rwsim)
+    SET(CMAKE_SWIG_OUTDIR ${CMAKE_CURRENT_BINARY_DIR}/java_src/org/robwork/sdurwsim)
     # SWIG
 	IF ((CMAKE_VERSION VERSION_GREATER 3.8) OR (CMAKE_VERSION VERSION_EQUAL 3.8))
-		SWIG_ADD_LIBRARY(rwsim_jni TYPE MODULE LANGUAGE java SOURCES ../rwsim.i ThreadSimulatorStepCallbackEnv.cpp ../ScriptTypes.cpp)
+		SWIG_ADD_LIBRARY(sdurwsim_jni TYPE MODULE LANGUAGE java SOURCES ../sdurwsim.i ThreadSimulatorStepCallbackEnv.cpp ../ScriptTypes.cpp)
 	ELSE()
-		SWIG_ADD_MODULE(rwsim_jni java ../rwsim.i ThreadSimulatorStepCallbackEnv.cpp ../ScriptTypes.cpp)
+		SWIG_ADD_MODULE(sdurwsim_jni java ../sdurwsim.i ThreadSimulatorStepCallbackEnv.cpp ../ScriptTypes.cpp)
 	ENDIF()
-    SWIG_LINK_LIBRARIES(rwsim_jni ${RWSIM_ODE_LIBRARY} rwsim ${ROBWORK_LIBRARIES} )
+    SWIG_LINK_LIBRARIES(sdurwsim_jni ${RWSIM_ODE_LIBRARY} sdurwsim ${ROBWORK_LIBRARIES} )
     IF((CMAKE_COMPILER_IS_GNUCC) OR (CMAKE_C_COMPILER_ID STREQUAL "Clang"))
-      SET_TARGET_PROPERTIES(rwsim_jni PROPERTIES LINK_FLAGS -Wl,--no-undefined)
+      SET_TARGET_PROPERTIES(sdurwsim_jni PROPERTIES LINK_FLAGS -Wl,--no-undefined)
     ENDIF()
     # Force removal of previous Java compilation and source when interface file changes
     # This is required as types may be removed or change name
@@ -53,48 +53,48 @@ IF( build )
     ADD_CUSTOM_COMMAND(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/CleanDep
         COMMAND ${CMAKE_COMMAND} -E remove_directory java_src
         COMMAND ${CMAKE_COMMAND} -E touch ${CMAKE_CURRENT_BINARY_DIR}/CleanDep
-        DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/../rwsim.i"
+        DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/../sdurwsim.i"
         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
         COMMENT "Removing old Java source..."
     )
     ADD_CUSTOM_TARGET(CleanDepRWSIM DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/CleanDep )
     IF((CMAKE_GENERATOR MATCHES "Make") AND (NOT CMAKE_VERSION VERSION_LESS 3.12))
-        ADD_DEPENDENCIES(rwsim_jni_swig_compilation CleanDepRWSIM)
+        ADD_DEPENDENCIES(sdurwsim_jni_swig_compilation CleanDepRWSIM)
     ELSE()
-        ADD_DEPENDENCIES(rwsim_jni CleanDepRWSIM)
+        ADD_DEPENDENCIES(sdurwsim_jni CleanDepRWSIM)
     ENDIF()
 
     # Make sure dependencies are build before system
     FOREACH(DEP IN LISTS SUBSYS_DEPS)
         IF(TARGET ${DEP})
-            ADD_DEPENDENCIES(rwsim_jni ${DEP})
+            ADD_DEPENDENCIES(sdurwsim_jni ${DEP})
         ENDIF()
     ENDFOREACH()
 
     if (WIN32)
-        set(CLASSPATH -classpath "${RW_LIBS}/rw_java.jar\;${RW_LIBS}/rw_task_java.jar\;${RW_LIBS}/rw_assembly_java.jar\;${RW_LIBS}/rw_control_java.jar\;${RW_LIBS}/rw_simulation_java.jar")
+        set(CLASSPATH -classpath "${RW_LIBS}/sdurw_java.jar\;${RW_LIBS}/sdurw_task_java.jar\;${RW_LIBS}/sdurw_assembly_java.jar\;${RW_LIBS}/sdurw_control_java.jar;${RW_LIBS}/sdurw_simulation_java.jar")
     else()
-        set(CLASSPATH -classpath ${RW_LIBS}/rw_java.jar:${RW_LIBS}/rw_task_java.jar:${RW_LIBS}/rw_assembly_java.jar:${RW_LIBS}/rw_control_java.jar:${RW_LIBS}/rw_simulation_java.jar)
+        set(CLASSPATH -classpath ${RW_LIBS}/sdurw_java.jar:${RW_LIBS}/sdurw_task_java.jar:${RW_LIBS}/sdurw_assembly_java.jar:${RW_LIBS}/sdurw_control_java.jar:${RW_LIBS}/sdurw_simulation_java.jar)
     endif()
     # Compile java code and create JAR and Javadoc
-    ADD_CUSTOM_COMMAND(TARGET rwsim_jni
+    ADD_CUSTOM_COMMAND(TARGET sdurwsim_jni
     	POST_BUILD
     	COMMAND ${CMAKE_COMMAND} -E echo "Removing old Java compilation..."
         COMMAND ${CMAKE_COMMAND} -E remove_directory "${CMAKE_CURRENT_BINARY_DIR}/java_build"
     	COMMAND ${CMAKE_COMMAND} -E remove_directory "${RWSIM_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/javadoc"
     	COMMAND ${CMAKE_COMMAND} -E echo "Copying Java source..."
         COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_CURRENT_SOURCE_DIR}/LoaderRWSim.java java_src/org/robwork/LoaderRWSim.java
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_CURRENT_SOURCE_DIR}/ThreadSimulatorStepCallbackHandler.java java_src/org/robwork/rwsim/ThreadSimulatorStepCallbackHandler.java
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_CURRENT_SOURCE_DIR}/ThreadSimulatorStepEvent.java java_src/org/robwork/rwsim/ThreadSimulatorStepEvent.java
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_CURRENT_SOURCE_DIR}/ThreadSimulatorStepEventListener.java java_src/org/robwork/rwsim/ThreadSimulatorStepEventListener.java
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_CURRENT_SOURCE_DIR}/ThreadSimulatorStepEventDispatcher.java java_src/org/robwork/rwsim/ThreadSimulatorStepEventDispatcher.java
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_CURRENT_SOURCE_DIR}/ThreadSimulatorStepCallbackHandler.java java_src/org/robwork/sdurwsim/ThreadSimulatorStepCallbackHandler.java
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_CURRENT_SOURCE_DIR}/ThreadSimulatorStepEvent.java java_src/org/robwork/sdurwsim/ThreadSimulatorStepEvent.java
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_CURRENT_SOURCE_DIR}/ThreadSimulatorStepEventListener.java java_src/org/robwork/sdurwsim/ThreadSimulatorStepEventListener.java
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_CURRENT_SOURCE_DIR}/ThreadSimulatorStepEventDispatcher.java java_src/org/robwork/sdurwsim/ThreadSimulatorStepEventDispatcher.java
     	COMMAND ${CMAKE_COMMAND} -E echo "Compiling Java files..."
-        COMMAND ${CMAKE_COMMAND} -E make_directory java_build/org/robwork/rwsim
-        COMMAND ${Java_JAVAC_EXECUTABLE} ${CLASSPATH}  -d ${CMAKE_CURRENT_BINARY_DIR}/java_build java_src/org/robwork/*.java java_src/org/robwork/rwsim/*.java
+        COMMAND ${CMAKE_COMMAND} -E make_directory java_build/org/robwork/sdurwsim
+        COMMAND ${Java_JAVAC_EXECUTABLE} ${CLASSPATH} -d ${CMAKE_CURRENT_BINARY_DIR}/java_build java_src/org/robwork/*.java java_src/org/robwork/sdurwsim/*.java
         COMMAND ${CMAKE_COMMAND} -E echo "Creating jar file..."
-        COMMAND ${Java_JAR_EXECUTABLE} cvf ${RWSIM_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/rwsim_java.jar  -C java_build .
+        COMMAND ${Java_JAR_EXECUTABLE} cvf ${RWSIM_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/sdurwsim_java.jar  -C java_build .
         COMMAND ${CMAKE_COMMAND} -E echo "Creating jar file of source..."
-        COMMAND ${Java_JAR_EXECUTABLE} cvf ${RWSIM_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/rwsim_java-source.jar  -C java_src .
+        COMMAND ${Java_JAR_EXECUTABLE} cvf ${RWSIM_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/sdurwsim_java-source.jar  -C java_src .
     	COMMAND ${CMAKE_COMMAND} -E echo "Creating Javadoc..."
     	COMMAND ${CMAKE_COMMAND} -E make_directory ${RWSIM_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/javadoc
     	COMMAND ${Java_JAVADOC_EXECUTABLE}
@@ -102,8 +102,8 @@ IF( build )
     					-d ${RWSIM_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/javadoc
     					-windowtitle "RobWorkSim Java API Documentation"
     					-public
-    					-sourcepath java_src org.robwork org.robwork.rwsim
-    					-link ${RW_LIBS}/javadoc/rw
+    					-sourcepath java_src org.robwork org.robwork.sdurwsim
+    					-link ${RW_LIBS}/javadoc/sdurw
         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
     )
     SET(CMAKE_SWIG_OUTDIR ${RWSIM_CMAKE_LIBRARY_OUTPUT_DIRECTORY})

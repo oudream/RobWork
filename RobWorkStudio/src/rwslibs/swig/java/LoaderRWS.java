@@ -26,7 +26,7 @@ public class LoaderRWS {
 	 * @return the name of the native library.
 	 */
 	public static String getShortName(){
-		return "rws_jni";
+		return "sdurws_jni";
 	}
 	
 	/**

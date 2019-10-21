@@ -1,6 +1,6 @@
 SET(SUBSYS_NAME netft )
 SET(SUBSYS_DESC "driver for netft" )
-SET(SUBSYS_DEPS rw )
+SET(SUBSYS_DEPS sdurw )
 
 SET(build TRUE)
 SET(default TRUE)
@@ -28,17 +28,18 @@ IF( build )
     SET(SRC_CPP NetFTLogging.cpp FTCompensation.cpp)
     SET(SRC_HPP NetFTCommon.hpp NetFTLogging.hpp FTCompensation.hpp)
     
-    RW_ADD_LIBRARY(rwhw_netft netft ${SRC_CPP} ${SRC_HPP})
-    TARGET_LINK_LIBRARIES(rwhw_netft PUBLIC ${ROBWORK_LIBRARIES})
+    RW_ADD_LIBRARY(sdurwhw_netft netft ${SRC_CPP} ${SRC_HPP})
+    TARGET_LINK_LIBRARIES(sdurwhw_netft PUBLIC ${ROBWORK_LIBRARIES})
+
     # Make sure dependencies are build before system
     FOREACH(DEP IN LISTS ROBWORK_LIBRARIES)
         IF(TARGET ${DEP})
-            ADD_DEPENDENCIES(rwhw_netft ${DEP})
+            ADD_DEPENDENCIES(sdurwhw_netft ${DEP})
         ENDIF()
     ENDFOREACH()
     RW_ADD_INCLUDES(netft "rwhw/netft" ${SRC_HPP})
 
-    set(ROBWORKHARDWARE_LIBRARIES ${ROBWORKHARDWARE_LIBRARIES} rwhw_netft PARENT_SCOPE)
+    set(ROBWORKHARDWARE_LIBRARIES ${ROBWORKHARDWARE_LIBRARIES} sdurwhw_netft PARENT_SCOPE)
 ENDIF()
 
 

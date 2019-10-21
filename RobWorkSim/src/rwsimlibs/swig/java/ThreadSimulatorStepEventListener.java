@@ -1,4 +1,4 @@
-package org.robwork.rwsim;
+package org.robwork.sdurwsim;
 
 import java.util.EventListener;
 

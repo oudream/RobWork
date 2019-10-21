@@ -1,4 +1,4 @@
-%module rws
+%module sdurws
 
 %{
 #include <rwlibs/swig/ScriptTypes.hpp>
@@ -18,18 +18,18 @@ using rw::pathplanning::PathPlanner;
 
 %}
 
-%import <rwlibs/swig/rw.i> 
+%import <rwlibs/swig/sdurw.i> 
 
 %pragma(java) jniclassclassmodifiers="class"
 
 %pragma(java) jniclassimports=%{
-import org.robwork.rw.*;
+import org.robwork.sdurw.*;
 %}
 %pragma(java) moduleimports=%{
-import org.robwork.rw.*;
+import org.robwork.sdurw.*;
 %}
 %typemap(javaimports) SWIGTYPE %{
-import org.robwork.rw.*;
+import org.robwork.sdurw.*;
 %}
 
 /********************************************

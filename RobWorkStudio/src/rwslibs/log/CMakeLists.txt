@@ -1,6 +1,6 @@
-SET(SUBSYS_NAME rws_log)
+SET(SUBSYS_NAME sdurws_log)
 set(SUBSYS_DESC "A logging plugin")
-SET(SUBSYS_DEPS rws)
+SET(SUBSYS_DEPS sdurws)
 
 SET(build TRUE)
 RW_SUBSYS_OPTION(build ${SUBSYS_NAME} ${SUBSYS_DESC} ON)

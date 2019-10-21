@@ -19,7 +19,7 @@ ENDIF()
 ###########################################
 # The name of the project.
 project(RobWorkHardware)
-SET(ROBWORKHARDWARE_VERSION 0.7.0)
+SET(ROBWORKHARDWARE_VERSION 1.0.0)
 SET(RWHW_ROOT ${CMAKE_CURRENT_SOURCE_DIR})
 MESSAGE(STATUS "RobWorkHardware version ${ROBWORKHARDWARE_VERSION}")
 
@@ -54,7 +54,7 @@ RW_OPTIONS(RWHW)
 # Add an "uninstall" target
 CONFIGURE_FILE("${RWHW_ROOT}/cmake/uninstall_target.cmake.in"
                "${CMAKE_BINARY_DIR}/uninstall_target.cmake" IMMEDIATE @ONLY)
-ADD_CUSTOM_TARGET(uninstall_rwhw "${CMAKE_COMMAND}" -P
+ADD_CUSTOM_TARGET(uninstall_sdurwhw "${CMAKE_COMMAND}" -P
                   "${CMAKE_BINARY_DIR}/uninstall_target.cmake")
 
 ###########################################
@@ -88,14 +88,6 @@ INCLUDE_DIRECTORIES(
   ${ROOT}/ext
   ${ROOT}/src
 )
-
-# setup the install dirs TODO should be cached to allow the use to change it 
-#SET(RWHW_BIN_INSTALL_DIR "bin/${CMAKE_BUILD_TYPE}/")
-#SET(RWHW_LIB_INSTALL_DIR "libs/${CMAKE_BUILD_TYPE}/")
-#SET(RWHW_EXT_INSTALL_DIR "ext/")
-#SET(RWHW_HPP_INSTALL_DIR "src/")
-#SET(RWHW_RUNTIME runtime)
-#SET(RWHW_DEVEL development)
 
 ###########################################
 # now add all source directories to process.

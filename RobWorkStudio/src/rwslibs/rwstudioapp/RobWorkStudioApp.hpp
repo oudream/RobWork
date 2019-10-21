@@ -38,18 +38,18 @@ namespace rws {
         virtual ~RobWorkStudioApp();
 
         /**
-         * @brief start robworkstudio in its own thread
+         * @brief start RobWorkStudio in its own thread
          */
         void start();
 
         /**
-         * @brief start robworkstudio in this thread. Notice this method call will
-         * block until robworkstudio is exited.
+         * @brief start RobWorkStudio in this thread. Notice this method call will
+         * block until RobWorkStudio is exited.
          */
         void run();
 
         /**
-         * @brief check if robworkstudio is running
+         * @brief check if RobwWrkStudio is running
          * @return true if running false otherwise
          */
         bool isRunning(){ return _isRunning; }

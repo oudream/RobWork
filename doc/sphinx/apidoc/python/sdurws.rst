@@ -1,7 +1,7 @@
-rws module
-==========
+sdurws module
+=============
 
-.. automodule:: rws
+.. automodule:: sdurws
     :members:
     :undoc-members:
     :show-inheritance:

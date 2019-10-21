@@ -1,4 +1,4 @@
-%module rw_pathoptimization
+%module sdurw_pathoptimization
 
 %{
 #include <rwlibs/swig/ScriptTypes.hpp>
@@ -9,13 +9,13 @@ using rw::math::Metric;
 using rw::trajectory::Path;
 %}
 
-%import <rwlibs/swig/rw.i>
+%import <rwlibs/swig/sdurw.i>
 
 %pragma(java) jniclassimports=%{
-import org.robwork.rw.*;
+import org.robwork.sdurw.*;
 %}
 %typemap(javaimports) SWIGTYPE %{
-import org.robwork.rw.*;
+import org.robwork.sdurw.*;
 %}
 
 class PathLengthOptimizer

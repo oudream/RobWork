@@ -35,7 +35,6 @@ MESSAGE(STATUS "RobWorkSim: ROOT dir: ${RWSIM_ROOT}")
 # Check for all dependencies, this adds LIBRARY_DIRS and include dirs that 
 # the configuration depends on
 #
- 
 # Find Python
 # Prefer Python 3
 find_package(PythonInterp 3 QUIET)
@@ -63,7 +62,7 @@ endif()
 # optional compilation of sandbox
 IF (RWSIM_BUILD_SANDBOX)
     MESSAGE(STATUS "RobWorkSim: Sandbox ENABLED!")
-    SET(SANDBOX_LIB "rwsim_sandbox")
+    SET(SANDBOX_LIB "sdurwsim_sandbox")
     SET(RWSIM_HAVE_SANDBOX true)
 ELSE ()
     MESSAGE(STATUS "RobWorkSim: Sandbox DISABLED!")    
@@ -115,7 +114,7 @@ IF(NOT RWSIM_DISABLE_BULLET)
     IF(BULLET_FOUND)
     	SET(RWSIM_HAVE_BULLET TRUE)
     	#INCLUDE_DIRECTORIES( ${BULLET_INCLUDE_DIR} ${BULLET_ROOT}/Demos/)
-    	SET(RWSIM_BULLET_LIBRARY rwsim_bullet ${BULLET_LIBRARIES})
+    	SET(RWSIM_BULLET_LIBRARY sdurwsim_bullet ${BULLET_LIBRARIES})
 
         # BULLET_LIBRARIES
         MESSAGE(STATUS "RobWorkSim: Bullet enabled and found.")
@@ -140,7 +139,7 @@ IF(NOT RWSIM_DISABLE_ODE)
     	IF (RW_BUILD_WITH_PQP)
     		SET(RWSIM_HAVE_ODE TRUE)
     		#INCLUDE_DIRECTORIES( ${ODE_INCLUDE_DIR} )
-    		SET(RWSIM_ODE_LIBRARY rwsim_ode ${ODE_LIBRARIES})
+    		SET(RWSIM_ODE_LIBRARY sdurwsim_ode ${ODE_LIBRARIES})
     		# ODE_LIBRARIES
         	MESSAGE(STATUS "RobWorkSim: ODE enabled and found. Using ${ODE_BUILD_WITH}")
         	SET(RW_ODE_INCLUDE_DIR ${ODE_INCLUDE_DIR} )
@@ -160,7 +159,7 @@ SET(RWSIM_HAVE_RWPE False)
 OPTION(RWSIM_DISABLE_RWPE "Set when you want to disable RobWorkPhysicsEngine!" OFF)
 IF(NOT RWSIM_DISABLE_RWPE)
 	SET(RWSIM_HAVE_RWPE TRUE)
-	SET(RWSIM_RWPE_LIBRARY rwsim_rwpe)
+	SET(RWSIM_RWPE_LIBRARY sdurwsim_rwpe)
     MESSAGE(STATUS "RobWorkSim: RobWorkPhysicsEngine enabled.")
 ENDIF()
 
@@ -251,9 +250,9 @@ SET(ROBWORKSIM_LIBRARY_DIRS
 SET(ROBWORKSIM_LIBRARIES
   ${RWS_SANDBOX}
   ${RWSIM_BULLET_LIBRARY}
-  rwsim
+  sdurwsim
   ${RWSIM_ODE_LIBRARY}
-  rwsim
+  sdurwsim
   ${ROBWORK_LIBRARIES}
 )
  

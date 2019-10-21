@@ -1,6 +1,6 @@
 SET(SUBSYS_NAME CAN )
 SET(SUBSYS_DESC "Library of drivers for different CAN devices" )
-SET(SUBSYS_DEPS rw )
+SET(SUBSYS_DEPS sdurw )
 
 SET(build TRUE)
 set(DEFAULT TRUE)
@@ -32,7 +32,7 @@ IF( build )
      LIST(APPEND SRC_HPP_IEICAN02 ./IEICAN02/IEICANPort.hpp)
     ENDIF()
     
-    RW_ADD_LIBRARY(rwhw_can can ${SRC_CPP} ${SRC_HPP} ${SRC_HPP_IEICAN02} ${SRC_HPP_ESDCAN})
+    RW_ADD_LIBRARY(sdurwhw_can can ${SRC_CPP} ${SRC_HPP} ${SRC_HPP_IEICAN02} ${SRC_HPP_ESDCAN})
     RW_ADD_INCLUDES(can "rwhw/can" ${SRC_HPP})
     RW_ADD_INCLUDES(can "rwhw/can/ESDCAN" ${SRC_HPP_ESDCAN})
     RW_ADD_INCLUDES(can "rwhw/can/IEICAN02" ${SRC_HPP_IEICAN02})
@@ -40,9 +40,8 @@ IF( build )
     # Make sure dependencies are build before system
     FOREACH(DEP IN LISTS SUBSYS_DEPS)
         IF(TARGET ${DEP})
-            ADD_DEPENDENCIES(rwhw_can ${DEP})
+            ADD_DEPENDENCIES(sdurwhw_can ${DEP})
         ENDIF()
     ENDFOREACH()
 
-    set(ROBWORKHARDWARE_LIBRARIES ${ROBWORKHARDWARE_LIBRARIES} rwhw_can PARENT_SCOPE)
 ENDIF()

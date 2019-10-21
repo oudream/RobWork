@@ -39,7 +39,7 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/../Doxyfile.in ${CMAKE_CURRENT_SOURCE
 set(java_sources)
 set(java_packages org.robwork)
 
-foreach(RW_MODULE rw rw_assembly rw_control rw_pathoptimization rw_pathplanners rw_proximitystrategies rw_task rw_simulation)
+foreach(RW_MODULE sdurw sdurw_assembly sdurw_control sdurw_pathoptimization sdurw_pathplanners sdurw_proximitystrategies sdurw_task sdurw_simulation)
     add_custom_command(OUTPUT java_src_${RW_MODULE}_cmd
                        COMMAND ${CMAKE_COMMAND} -E echo "Unpacking jar file..."
                        COMMAND ${CMAKE_COMMAND} -E make_directory java_src
@@ -52,27 +52,27 @@ foreach(RW_MODULE rw rw_assembly rw_control rw_pathoptimization rw_pathplanners 
     set(java_packages ${java_packages} org.robwork.${RW_MODULE})
 endforeach()
 
-add_custom_command(OUTPUT java_src_rws_cmd
+add_custom_command(OUTPUT java_src_sdurws_cmd
                    COMMAND ${CMAKE_COMMAND} -E echo "Unpacking jar file..."
                    COMMAND ${CMAKE_COMMAND} -E make_directory java_src
-                   COMMAND ${CMAKE_COMMAND} -E chdir java_src ${Java_JAR_EXECUTABLE} xf ${RWS_LIBS}/rws_java-source.jar
-                   COMMAND ${CMAKE_COMMAND} -E touch java_src_rws_cmd
-                   DEPENDS ${RWS_LIBS}/rws_java-source.jar
-                   COMMENT "Unpack java source for rws module"
+                   COMMAND ${CMAKE_COMMAND} -E chdir java_src ${Java_JAR_EXECUTABLE} xf ${RWS_LIBS}/sdurws_java-source.jar
+                   COMMAND ${CMAKE_COMMAND} -E touch java_src_sdurws_cmd
+                   DEPENDS ${RWS_LIBS}/sdurws_java-source.jar
+                   COMMENT "Unpack java source for robworkstudio module"
                    VERBATIM)
-list(APPEND java_sources java_src_rws_cmd)
-set(java_packages ${java_packages} org.robwork.rws)
+list(APPEND java_sources java_src_sdurws_cmd)
+set(java_packages ${java_packages} org.robwork.sdurws)
 
-add_custom_command(OUTPUT java_src_rwsim_cmd
+add_custom_command(OUTPUT java_src_sdurwsim_cmd
                    COMMAND ${CMAKE_COMMAND} -E echo "Unpacking jar file..."
                    COMMAND ${CMAKE_COMMAND} -E make_directory java_src
-                   COMMAND ${CMAKE_COMMAND} -E chdir java_src ${Java_JAR_EXECUTABLE} xf ${RWSIM_LIBS}/rwsim_java-source.jar
-                   COMMAND ${CMAKE_COMMAND} -E touch java_src_rwsim_cmd
-                   DEPENDS ${RWSIM_LIBS}/rwsim_java-source.jar
-                   COMMENT "Unpack java source for rwsim module"
+                   COMMAND ${CMAKE_COMMAND} -E chdir java_src ${Java_JAR_EXECUTABLE} xf ${RWSIM_LIBS}/sdurwsim_java-source.jar
+                   COMMAND ${CMAKE_COMMAND} -E touch java_src_sdurwsim_cmd
+                   DEPENDS ${RWSIM_LIBS}/sdurwsim_java-source.jar
+                   COMMENT "Unpack java source for robworksim module"
                    VERBATIM)
-list(APPEND java_sources java_src_rwsim_cmd)
-set(java_packages ${java_packages} org.robwork.rwsim)
+list(APPEND java_sources java_src_sdurwsim_cmd)
+set(java_packages ${java_packages} org.robwork.sdurwsim)
 
 add_custom_target(java_src SOURCES ${java_sources})
 

@@ -57,16 +57,6 @@
 #include <rwsimlibs/ode/ODESimulator.hpp>
 #endif
 
-/**
-#ifdef __cplusplus
-extern "C" {
-#endif
-    int luaopen_rwsim(struct lua_State* L); // declare the wrapped module
-#ifdef __cplusplus
-}
-#endif
-*/
-
 namespace rwsim {
 namespace swig {
 

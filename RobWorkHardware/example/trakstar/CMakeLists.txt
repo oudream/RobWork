@@ -37,7 +37,7 @@ IF(COMPONENT_trakstar_ENABLE)
     MESSAGE(${TRAKSTAR_LIBRARY_DIR})
     ADD_EXECUTABLE(TrakstarLogger TrakstarLogger.cpp )
     
-    target_link_libraries(TrakstarLogger rwhw_trakstar ${TRAKSTAR_LIBRARIES} ${ROBWORK_LIBRARIES})
+    target_link_libraries(TrakstarLogger sdurwhw_trakstar ${TRAKSTAR_LIBRARIES} ${ROBWORK_LIBRARIES})
     
     
     MESSAGE( ${TRAKSTAR_LIBRARIES} )

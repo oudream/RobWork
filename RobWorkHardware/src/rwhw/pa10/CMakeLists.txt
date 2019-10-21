@@ -37,9 +37,9 @@ IF( build )
     	./smsclib.c)
     
   	add_library(
-	  	rwhw_pa10
+		sdurwhw_pa10
 	  	${pa10files}
   	)
-  	set(ROBWORKHARDWARE_LIBRARIES ${ROBWORKHARDWARE_LIBRARIES} rwhw_pa10 PARENT_SCOPE)
+  	set(ROBWORKHARDWARE_LIBRARIES ${ROBWORKHARDWARE_LIBRARIES} sdurwhw_pa10 PARENT_SCOPE)
 ENDIF()
 

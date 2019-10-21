@@ -1,6 +1,6 @@
-SET(SUBSYS_NAME rws_workcelleditor)
+SET(SUBSYS_NAME sdurws_workcelleditor)
 set(SUBSYS_DESC "A workcell editor plugin")
-SET(SUBSYS_DEPS rws)
+SET(SUBSYS_DEPS sdurws)
 
 # if we want to use ui files add them here
 SET(UIS_FILES WorkcellEditorWindow.ui)

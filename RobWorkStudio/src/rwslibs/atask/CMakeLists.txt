@@ -1,6 +1,6 @@
-SET(SUBSYS_NAME rws_atask)
+SET(SUBSYS_NAME sdurws_atask)
 set(SUBSYS_DESC "A plugin for visualization of assembly tasks and results.")
-SET(SUBSYS_DEPS rws)
+SET(SUBSYS_DEPS sdurws)
 
 SET(build TRUE)
 RW_SUBSYS_OPTION(build ${SUBSYS_NAME} ${SUBSYS_DESC} ON)

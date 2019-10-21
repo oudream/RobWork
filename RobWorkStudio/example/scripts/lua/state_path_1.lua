@@ -1,25 +1,37 @@
 -- EXAMPLE HEADER STARTS HERE
+require("sdurw")
+require("sdurws")
+
+function openpackage (ns)
+for n,v in pairs(ns) do
+    if _G[n] ~= nil then
+        print("name clash: " .. n .. " is already defined")
+        else
+        _G[n] = v
+        end
+    end
+end
+
+openpackage(sdurw)
+openpackage(sdurws)
 
 -- helper function - adds a configuration to the state path
 function addQ(tpath, time, arr)
- arm:setQ( rw.Q(#arr,arr), state) -- set the device configuration in state
+ arm:setQ( sdurw.Q(#arr,arr), state) -- set the device configuration in state
  tpath:add( time, state)
 end
 
 -- helper function - add a grasp to the state function
 function graspObject(tpath, obj, tool)
- rw.gripFrame(state, obj, tool)
+ sdurw.gripFrame(state, obj, tool)
  time = tpath[tpath:size()-1]:getTime()
  tpath:add(time, state)
 end
 
--- define namespace shortcut
-rw = rwlibs.lua -- robwork namespace
-rws = rws.lua.rwstudio -- robworkstudio namespace
-rwstudio = rws.getRobWorkStudio()
+rwstudio = getRobWorkStudioInstance()
 
 -- load workcell
-wc = rwstudio:getWorkcell()
+wc = rwstudio:getWorkCell()
 state = wc:getDefaultState() -- the state
 
 -- EXAMPLE BODY STARTS HERE
@@ -31,7 +43,7 @@ object = wc:findFrame("Bottle") -- the object which is to be grasped
 table = wc:findFrame("Table") -- the object which is to be grasped
 
 -- we store everything in a timed state path
-tpath = rw.TimedStatePath:new()
+tpath = sdurw.PathTimedState()
 addQ( tpath, 1, {0,0.1,0,0,0,0,0} )
 addQ( tpath, 1, {0,0.1,0,0,0,0,0} )
 addQ( tpath, 2, {0,0.2,0,0,0,0,0} )

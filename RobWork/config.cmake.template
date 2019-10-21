@@ -69,7 +69,7 @@ SET(RW_PYTHON_BINDINGS_ENABLED ON)
 
 
 
-####################### Force specific flags instead of the default robwork cxx flags
+####################### Force specific flags instead of the default RobWork cxx flags
 
 # These flags can be used for coverage testing
 IF(ENABLE_COVERAGE)

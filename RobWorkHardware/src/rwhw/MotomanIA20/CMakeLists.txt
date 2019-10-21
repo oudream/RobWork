@@ -17,10 +17,10 @@ RW_ADD_DOC( ${SUBSYS_NAME} )
 IF( build )
     IF (NOT DEFINED WIN32)
         ADD_LIBRARY(
-          rwhw_motomanIA20
+          sdurwhw_motomanIA20
           MotomanIA20.cpp
         )
-        set(ROBWORKHARDWARE_LIBRARIES ${ROBWORKHARDWARE_LIBRARIES} rwhw_motomanIA20 PARENT_SCOPE)
+        set(ROBWORKHARDWARE_LIBRARIES ${ROBWORKHARDWARE_LIBRARIES} sdurwhw_motomanIA20 PARENT_SCOPE)
         MESSAGE(STATUS "RobWorkHardware: ${SUBSYS_NAME} component ENABLED")
     ELSE()
         MESSAGE(STATUS "RobWorkHardware: ${SUBSYS_NAME} component DISABLED - linux only")

@@ -1,4 +1,4 @@
-from rw import *
+from sdurw import *
 import sys
 
 WC_FILE = "/devices/serialdev/UR10e_2018/UR10e.xml"

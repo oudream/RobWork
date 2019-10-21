@@ -6,8 +6,6 @@
 /bin
 /CMakeFiles
 /apidocs
-/.cproject
-/.project
 /build
 /.csettings
 /CPackConfig.cmake
@@ -17,7 +15,10 @@
 /Build
 /.settings
 /*.vscode
+/*rwsettings.xml
 /*.class
+
+
 
 # /RobWork/
 /RobWork/cmake_install.cmake
@@ -73,12 +74,22 @@
 /RobWork/example/cpp/.project
 /RobWork/example/cpp/.settings/
 /RobWork/example/cpp/build
+/RobWork/example/cpp/CMakeFiles
+/RobWork/example/cpp/CMakeCache.txt
+/RobWork/example/cpp/Makefile
+/RobWork/example/cpp/cmake_install.cmake
+/RobWork/example/cpp/invkin
+
 
 # /RobWork/example/java/
 /RobWork/example/java/.classpath
 /RobWork/example/java/.project
 /RobWork/example/java/.settings/
 /RobWork/example/java/bin
+
+# /RobWork/example/java/src
+/RobWork/example/java/src/InvKin.class
+RobWork/example/java/src/*.log
 
 # /RobWork/example/ModelData/
 /RobWork/example/ModelData/cmake_install.cmake
@@ -3032,8 +3043,6 @@
 /RobWorkSim/example/.csettings
 /RobWorkSim/example/CPackConfig.cmake
 /RobWorkSim/example/CPackSourceConfig.cmake
-/RobWorkSim/example/.cproject
-/RobWorkSim/example/.project
 
 # /RobWorkSim/example/FalconTeleoperatePlugin/
 /RobWorkSim/example/FalconTeleoperatePlugin/libs
@@ -3056,8 +3065,6 @@
 /RobWorkSim/example/SimTaskPlugin/.csettings
 /RobWorkSim/example/SimTaskPlugin/CPackConfig.cmake
 /RobWorkSim/example/SimTaskPlugin/CPackSourceConfig.cmake
-/RobWorkSim/example/SimTaskPlugin/.cproject
-/RobWorkSim/example/SimTaskPlugin/.project
 /RobWorkSim/example/SimTaskPlugin/libs
 
 # /RobWorkSim/example/SimTaskVisPlugin/
@@ -3074,8 +3081,6 @@
 /RobWorkSim/example/SimTaskVisPlugin/.csettings
 /RobWorkSim/example/SimTaskVisPlugin/CPackConfig.cmake
 /RobWorkSim/example/SimTaskVisPlugin/CPackSourceConfig.cmake
-/RobWorkSim/example/SimTaskVisPlugin/.cproject
-/RobWorkSim/example/SimTaskVisPlugin/.project
 /RobWorkSim/example/SimTaskVisPlugin/libs
 
 # /RobWorkSim/example/SimTemplatePlugin/
@@ -3103,8 +3108,6 @@
 /RobWorkSim/src/.csettings
 /RobWorkSim/src/CPackConfig.cmake
 /RobWorkSim/src/CPackSourceConfig.cmake
-/RobWorkSim/src/.cproject
-/RobWorkSim/src/.project
 /RobWorkSim/src/RWSimConfig.hpp
 /RobWorkSim/src/RobWorkSimConfig.hpp
 
@@ -3122,8 +3125,6 @@
 /RobWorkSim/src/gfx/.csettings
 /RobWorkSim/src/gfx/CPackConfig.cmake
 /RobWorkSim/src/gfx/CPackSourceConfig.cmake
-/RobWorkSim/src/gfx/.cproject
-/RobWorkSim/src/gfx/.project
 
 # /RobWorkSim/src/rwsim/
 /RobWorkSim/src/rwsim/cmake_install.cmake
@@ -3139,8 +3140,6 @@
 /RobWorkSim/src/rwsim/.csettings
 /RobWorkSim/src/rwsim/CPackConfig.cmake
 /RobWorkSim/src/rwsim/CPackSourceConfig.cmake
-/RobWorkSim/src/rwsim/.cproject
-/RobWorkSim/src/rwsim/.project
 /RobWorkSim/src/rwsim/tntphysics
 
 # /RobWorkSim/src/rwsim/control/
@@ -3157,8 +3156,6 @@
 /RobWorkSim/src/rwsim/control/.csettings
 /RobWorkSim/src/rwsim/control/CPackConfig.cmake
 /RobWorkSim/src/rwsim/control/CPackSourceConfig.cmake
-/RobWorkSim/src/rwsim/control/.cproject
-/RobWorkSim/src/rwsim/control/.project
 
 # /RobWorkSim/src/rwsim/drawable/
 /RobWorkSim/src/rwsim/drawable/cmake_install.cmake
@@ -3174,8 +3171,6 @@
 /RobWorkSim/src/rwsim/drawable/.csettings
 /RobWorkSim/src/rwsim/drawable/CPackConfig.cmake
 /RobWorkSim/src/rwsim/drawable/CPackSourceConfig.cmake
-/RobWorkSim/src/rwsim/drawable/.cproject
-/RobWorkSim/src/rwsim/drawable/.project
 
 # /RobWorkSim/src/rwsim/dynamics/
 /RobWorkSim/src/rwsim/dynamics/cmake_install.cmake
@@ -3191,8 +3186,6 @@
 /RobWorkSim/src/rwsim/dynamics/.csettings
 /RobWorkSim/src/rwsim/dynamics/CPackConfig.cmake
 /RobWorkSim/src/rwsim/dynamics/CPackSourceConfig.cmake
-/RobWorkSim/src/rwsim/dynamics/.cproject
-/RobWorkSim/src/rwsim/dynamics/.project
 
 # /RobWorkSim/src/rwsim/dynamics/oldstuff/
 /RobWorkSim/src/rwsim/dynamics/oldstuff/cmake_install.cmake
@@ -3208,8 +3201,6 @@
 /RobWorkSim/src/rwsim/dynamics/oldstuff/.csettings
 /RobWorkSim/src/rwsim/dynamics/oldstuff/CPackConfig.cmake
 /RobWorkSim/src/rwsim/dynamics/oldstuff/CPackSourceConfig.cmake
-/RobWorkSim/src/rwsim/dynamics/oldstuff/.cproject
-/RobWorkSim/src/rwsim/dynamics/oldstuff/.project
 
 # /RobWorkSim/src/rwsim/loaders/
 /RobWorkSim/src/rwsim/loaders/cmake_install.cmake
@@ -3225,8 +3216,6 @@
 /RobWorkSim/src/rwsim/loaders/.csettings
 /RobWorkSim/src/rwsim/loaders/CPackConfig.cmake
 /RobWorkSim/src/rwsim/loaders/CPackSourceConfig.cmake
-/RobWorkSim/src/rwsim/loaders/.cproject
-/RobWorkSim/src/rwsim/loaders/.project
 
 # /RobWorkSim/src/rwsim/rwphysics/
 /RobWorkSim/src/rwsim/rwphysics/cmake_install.cmake
@@ -3242,8 +3231,6 @@
 /RobWorkSim/src/rwsim/rwphysics/.csettings
 /RobWorkSim/src/rwsim/rwphysics/CPackConfig.cmake
 /RobWorkSim/src/rwsim/rwphysics/CPackSourceConfig.cmake
-/RobWorkSim/src/rwsim/rwphysics/.cproject
-/RobWorkSim/src/rwsim/rwphysics/.project
 
 # /RobWorkSim/src/rwsim/sensor/
 /RobWorkSim/src/rwsim/sensor/cmake_install.cmake
@@ -3259,8 +3246,6 @@
 /RobWorkSim/src/rwsim/sensor/.csettings
 /RobWorkSim/src/rwsim/sensor/CPackConfig.cmake
 /RobWorkSim/src/rwsim/sensor/CPackSourceConfig.cmake
-/RobWorkSim/src/rwsim/sensor/.cproject
-/RobWorkSim/src/rwsim/sensor/.project
 
 # /RobWorkSim/src/rwsim/simulator/
 /RobWorkSim/src/rwsim/simulator/cmake_install.cmake
@@ -3276,8 +3261,6 @@
 /RobWorkSim/src/rwsim/simulator/.csettings
 /RobWorkSim/src/rwsim/simulator/CPackConfig.cmake
 /RobWorkSim/src/rwsim/simulator/CPackSourceConfig.cmake
-/RobWorkSim/src/rwsim/simulator/.cproject
-/RobWorkSim/src/rwsim/simulator/.project
 
 # /RobWorkSim/src/rwsim/util/
 /RobWorkSim/src/rwsim/util/cmake_install.cmake
@@ -3293,8 +3276,6 @@
 /RobWorkSim/src/rwsim/util/.csettings
 /RobWorkSim/src/rwsim/util/CPackConfig.cmake
 /RobWorkSim/src/rwsim/util/CPackSourceConfig.cmake
-/RobWorkSim/src/rwsim/util/.cproject
-/RobWorkSim/src/rwsim/util/.project
 
 # /RobWorkSim/src/rwsimlibs/
 /RobWorkSim/src/rwsimlibs/cmake_install.cmake
@@ -3310,8 +3291,6 @@
 /RobWorkSim/src/rwsimlibs/.csettings
 /RobWorkSim/src/rwsimlibs/CPackConfig.cmake
 /RobWorkSim/src/rwsimlibs/CPackSourceConfig.cmake
-/RobWorkSim/src/rwsimlibs/.cproject
-/RobWorkSim/src/rwsimlibs/.project
 /RobWorkSim/src/rwsimlibs/rwpe
 
 # /RobWorkSim/src/rwsimlibs/bullet/
@@ -3328,8 +3307,6 @@
 /RobWorkSim/src/rwsimlibs/bullet/.csettings
 /RobWorkSim/src/rwsimlibs/bullet/CPackConfig.cmake
 /RobWorkSim/src/rwsimlibs/bullet/CPackSourceConfig.cmake
-/RobWorkSim/src/rwsimlibs/bullet/.cproject
-/RobWorkSim/src/rwsimlibs/bullet/.project
 
 # /RobWorkSim/src/rwsimlibs/gui/
 /RobWorkSim/src/rwsimlibs/gui/.cproject
@@ -3367,8 +3344,6 @@
 /RobWorkSim/src/rwsimlibs/ode/.csettings
 /RobWorkSim/src/rwsimlibs/ode/CPackConfig.cmake
 /RobWorkSim/src/rwsimlibs/ode/CPackSourceConfig.cmake
-/RobWorkSim/src/rwsimlibs/ode/.cproject
-/RobWorkSim/src/rwsimlibs/ode/.project
 
 # /RobWorkSim/src/rwsimlibs/plugins/
 /RobWorkSim/src/rwsimlibs/plugins/cmake_install.cmake
@@ -3384,8 +3359,6 @@
 /RobWorkSim/src/rwsimlibs/plugins/.csettings
 /RobWorkSim/src/rwsimlibs/plugins/CPackConfig.cmake
 /RobWorkSim/src/rwsimlibs/plugins/CPackSourceConfig.cmake
-/RobWorkSim/src/rwsimlibs/plugins/.cproject
-/RobWorkSim/src/rwsimlibs/plugins/.project
 /RobWorkSim/src/rwsimlibs/plugins/ui_SimTaskVisPlugin.h
 /RobWorkSim/src/rwsimlibs/plugins/ui_SimTaskPlugin.h
 /RobWorkSim/src/rwsimlibs/plugins/ui_RWSimPlugin.h
@@ -3419,8 +3392,6 @@
 /RobWorkSim/src/sandbox/.csettings
 /RobWorkSim/src/sandbox/CPackConfig.cmake
 /RobWorkSim/src/sandbox/CPackSourceConfig.cmake
-/RobWorkSim/src/sandbox/.cproject
-/RobWorkSim/src/sandbox/.project
 
 # /RobWorkSim/test/
 /RobWorkSim/test/cmake_install.cmake
@@ -3436,8 +3407,6 @@
 /RobWorkSim/test/.csettings
 /RobWorkSim/test/CPackConfig.cmake
 /RobWorkSim/test/CPackSourceConfig.cmake
-/RobWorkSim/test/.cproject
-/RobWorkSim/test/.project
 /RobWorkSim/test/TestSuiteConfig.hpp
 /RobWorkSim/test/TestSuiteConfig.xml.install
 
@@ -3455,8 +3424,6 @@
 /RobWorkSim/xml-schemas/.csettings
 /RobWorkSim/xml-schemas/CPackConfig.cmake
 /RobWorkSim/xml-schemas/CPackSourceConfig.cmake
-/RobWorkSim/xml-schemas/.cproject
-/RobWorkSim/xml-schemas/.project
 
 # /RobWorkStudio/
 /RobWorkStudio/cmake_install.cmake
@@ -3471,8 +3438,6 @@
 /RobWorkStudio/.csettings
 /RobWorkStudio/CPackConfig.cmake
 /RobWorkStudio/CPackSourceConfig.cmake
-/RobWorkStudio/.cproject
-/RobWorkStudio/.project
 /RobWorkStudio/libs
 /RobWorkStudio/Testing
 /RobWorkStudio/DartConfiguration.tcl
@@ -3495,8 +3460,6 @@
 /RobWorkStudio/bin/.csettings
 /RobWorkStudio/bin/CPackConfig.cmake
 /RobWorkStudio/bin/CPackSourceConfig.cmake
-/RobWorkStudio/bin/.cproject
-/RobWorkStudio/bin/.project
 /RobWorkStudio/bin/none
 /RobWorkStudio/bin/release
 /RobWorkStudio/bin/Release
@@ -3533,11 +3496,12 @@
 /RobWorkStudio/docs/.csettings
 /RobWorkStudio/docs/CPackConfig.cmake
 /RobWorkStudio/docs/CPackSourceConfig.cmake
-/RobWorkStudio/docs/.cproject
-/RobWorkStudio/docs/.project
 /RobWorkStudio/docs/robwork_help-v*.qhcp
 /RobWorkStudio/docs/robwork_help-v*.qhc
 /RobWorkStudio/docs/robwork-v*.qch
+/RobWorkStudio/docs/sdurw_help-v*.qhcp
+/RobWorkStudio/docs/sdurw_help-v*.qhc
+/RobWorkStudio/docs/sdurw-v*.qhc
 
 # /RobWorkStudio/example/
 /RobWorkStudio/example/cmake_install.cmake
@@ -3553,8 +3517,6 @@
 /RobWorkStudio/example/.csettings
 /RobWorkStudio/example/CPackConfig.cmake
 /RobWorkStudio/example/CPackSourceConfig.cmake
-/RobWorkStudio/example/.cproject
-/RobWorkStudio/example/.project
 
 # /RobWorkStudio/example/UDPKinPlugin/
 /RobWorkStudio/example/UDPKinPlugin/cmake_install.cmake
@@ -3570,8 +3532,6 @@
 /RobWorkStudio/example/UDPKinPlugin/.csettings
 /RobWorkStudio/example/UDPKinPlugin/CPackConfig.cmake
 /RobWorkStudio/example/UDPKinPlugin/CPackSourceConfig.cmake
-/RobWorkStudio/example/UDPKinPlugin/.cproject
-/RobWorkStudio/example/UDPKinPlugin/.project
 /RobWorkStudio/example/UDPKinPlugin/libs
 
 # /RobWorkStudio/example/pluginUIapp/
@@ -3588,8 +3548,6 @@
 /RobWorkStudio/example/pluginUIapp/.csettings
 /RobWorkStudio/example/pluginUIapp/CPackConfig.cmake
 /RobWorkStudio/example/pluginUIapp/CPackSourceConfig.cmake
-/RobWorkStudio/example/pluginUIapp/.cproject
-/RobWorkStudio/example/pluginUIapp/.project
 /RobWorkStudio/example/pluginUIapp/libs
 
 # /RobWorkStudio/example/pluginUIapp/projects/
@@ -3606,8 +3564,6 @@
 /RobWorkStudio/example/pluginUIapp/projects/.csettings
 /RobWorkStudio/example/pluginUIapp/projects/CPackConfig.cmake
 /RobWorkStudio/example/pluginUIapp/projects/CPackSourceConfig.cmake
-/RobWorkStudio/example/pluginUIapp/projects/.cproject
-/RobWorkStudio/example/pluginUIapp/projects/.project
 
 # /RobWorkStudio/example/pluginUIapp/projects/VisualStudio2005/
 /RobWorkStudio/example/pluginUIapp/projects/VisualStudio2005/cmake_install.cmake
@@ -3623,8 +3579,6 @@
 /RobWorkStudio/example/pluginUIapp/projects/VisualStudio2005/.csettings
 /RobWorkStudio/example/pluginUIapp/projects/VisualStudio2005/CPackConfig.cmake
 /RobWorkStudio/example/pluginUIapp/projects/VisualStudio2005/CPackSourceConfig.cmake
-/RobWorkStudio/example/pluginUIapp/projects/VisualStudio2005/.cproject
-/RobWorkStudio/example/pluginUIapp/projects/VisualStudio2005/.project
 
 # /RobWorkStudio/example/pluginUIapp/projects/VisualStudio2008/
 /RobWorkStudio/example/pluginUIapp/projects/VisualStudio2008/cmake_install.cmake
@@ -3640,8 +3594,6 @@
 /RobWorkStudio/example/pluginUIapp/projects/VisualStudio2008/.csettings
 /RobWorkStudio/example/pluginUIapp/projects/VisualStudio2008/CPackConfig.cmake
 /RobWorkStudio/example/pluginUIapp/projects/VisualStudio2008/CPackSourceConfig.cmake
-/RobWorkStudio/example/pluginUIapp/projects/VisualStudio2008/.cproject
-/RobWorkStudio/example/pluginUIapp/projects/VisualStudio2008/.project
 
 # /RobWorkStudio/example/pluginUIapp/projects/VisualStudio2010/
 /RobWorkStudio/example/pluginUIapp/projects/VisualStudio2010/cmake_install.cmake
@@ -3657,8 +3609,6 @@
 /RobWorkStudio/example/pluginUIapp/projects/VisualStudio2010/.csettings
 /RobWorkStudio/example/pluginUIapp/projects/VisualStudio2010/CPackConfig.cmake
 /RobWorkStudio/example/pluginUIapp/projects/VisualStudio2010/CPackSourceConfig.cmake
-/RobWorkStudio/example/pluginUIapp/projects/VisualStudio2010/.cproject
-/RobWorkStudio/example/pluginUIapp/projects/VisualStudio2010/.project
 
 # /RobWorkStudio/example/pluginapp/
 /RobWorkStudio/example/pluginapp/cmake_install.cmake
@@ -3674,8 +3624,6 @@
 /RobWorkStudio/example/pluginapp/.csettings
 /RobWorkStudio/example/pluginapp/CPackConfig.cmake
 /RobWorkStudio/example/pluginapp/CPackSourceConfig.cmake
-/RobWorkStudio/example/pluginapp/.cproject
-/RobWorkStudio/example/pluginapp/.project
 /RobWorkStudio/example/pluginapp/libs
 
 # /RobWorkStudio/example/scripts/
@@ -3692,8 +3640,11 @@
 /RobWorkStudio/example/scripts/.csettings
 /RobWorkStudio/example/scripts/CPackConfig.cmake
 /RobWorkStudio/example/scripts/CPackSourceConfig.cmake
-/RobWorkStudio/example/scripts/.cproject
-/RobWorkStudio/example/scripts/.project
+
+#/RobWorkStudio/example/scripts/java
+/RobWorkStudio/example/scripts/java/*.class
+/RobWorkStudio/example/scripts/java/*.log
+
 
 # /RobWorkStudio/example/tutorial/
 /RobWorkStudio/example/tutorial/cmake_install.cmake
@@ -3709,8 +3660,6 @@
 /RobWorkStudio/example/tutorial/.csettings
 /RobWorkStudio/example/tutorial/CPackConfig.cmake
 /RobWorkStudio/example/tutorial/CPackSourceConfig.cmake
-/RobWorkStudio/example/tutorial/.cproject
-/RobWorkStudio/example/tutorial/.project
 /RobWorkStudio/example/tutorial/libs
 
 # /RobWorkStudio/ext/
@@ -3727,8 +3676,6 @@
 /RobWorkStudio/ext/.csettings
 /RobWorkStudio/ext/CPackConfig.cmake
 /RobWorkStudio/ext/CPackSourceConfig.cmake
-/RobWorkStudio/ext/.cproject
-/RobWorkStudio/ext/.project
 
 # /RobWorkStudio/ext/qtpropertybrowser/
 /RobWorkStudio/ext/qtpropertybrowser/cmake_install.cmake
@@ -3744,8 +3691,6 @@
 /RobWorkStudio/ext/qtpropertybrowser/.csettings
 /RobWorkStudio/ext/qtpropertybrowser/CPackConfig.cmake
 /RobWorkStudio/ext/qtpropertybrowser/CPackSourceConfig.cmake
-/RobWorkStudio/ext/qtpropertybrowser/.cproject
-/RobWorkStudio/ext/qtpropertybrowser/.project
 /RobWorkStudio/ext/qtpropertybrowser/qrc_qtpropertybrowser.cxx
 
 # /RobWorkStudio/ext/qtpropertybrowser/lib/
@@ -3762,8 +3707,6 @@
 /RobWorkStudio/ext/qtpropertybrowser/lib/.csettings
 /RobWorkStudio/ext/qtpropertybrowser/lib/CPackConfig.cmake
 /RobWorkStudio/ext/qtpropertybrowser/lib/CPackSourceConfig.cmake
-/RobWorkStudio/ext/qtpropertybrowser/lib/.cproject
-/RobWorkStudio/ext/qtpropertybrowser/lib/.project
 
 # /RobWorkStudio/ext/qtpropertybrowser/src/
 /RobWorkStudio/ext/qtpropertybrowser/src/cmake_install.cmake
@@ -3779,8 +3722,6 @@
 /RobWorkStudio/ext/qtpropertybrowser/src/.csettings
 /RobWorkStudio/ext/qtpropertybrowser/src/CPackConfig.cmake
 /RobWorkStudio/ext/qtpropertybrowser/src/CPackSourceConfig.cmake
-/RobWorkStudio/ext/qtpropertybrowser/src/.cproject
-/RobWorkStudio/ext/qtpropertybrowser/src/.project
 /RobWorkStudio/ext/qtpropertybrowser/src/*.moc
 /RobWorkStudio/ext/qtpropertybrowser/src/moc_*.cpp
 /RobWorkStudio/ext/qtpropertybrowser/src/qtpropertybrowser.qrc.depends
@@ -3799,8 +3740,6 @@
 /RobWorkStudio/ext/qtpropertybrowser/src/images/.csettings
 /RobWorkStudio/ext/qtpropertybrowser/src/images/CPackConfig.cmake
 /RobWorkStudio/ext/qtpropertybrowser/src/images/CPackSourceConfig.cmake
-/RobWorkStudio/ext/qtpropertybrowser/src/images/.cproject
-/RobWorkStudio/ext/qtpropertybrowser/src/images/.project
 
 # /RobWorkStudio/gtest/
 /RobWorkStudio/gtest/TestSuiteConfig.xml.generated
@@ -3819,8 +3758,6 @@
 /RobWorkStudio/src/.csettings
 /RobWorkStudio/src/CPackConfig.cmake
 /RobWorkStudio/src/CPackSourceConfig.cmake
-/RobWorkStudio/src/.cproject
-/RobWorkStudio/src/.project
 /RobWorkStudio/src/RobWorkStudioConfig.hpp
 /RobWorkStudio/src/moc_*.cxx
 /RobWorkStudio/src/ui_*.h
@@ -3840,8 +3777,6 @@
 /RobWorkStudio/src/images/.csettings
 /RobWorkStudio/src/images/CPackConfig.cmake
 /RobWorkStudio/src/images/CPackSourceConfig.cmake
-/RobWorkStudio/src/images/.cproject
-/RobWorkStudio/src/images/.project
 /RobWorkStudio/src/images/RobWorkStudioConfig.hpp
 /RobWorkStudio/src/images/moc_*.cxx
 /RobWorkStudio/src/images/ui_*.h
@@ -3861,8 +3796,6 @@
 /RobWorkStudio/src/rws/.csettings
 /RobWorkStudio/src/rws/CPackConfig.cmake
 /RobWorkStudio/src/rws/CPackSourceConfig.cmake
-/RobWorkStudio/src/rws/.cproject
-/RobWorkStudio/src/rws/.project
 /RobWorkStudio/src/rws/RobWorkStudioConfig.hpp
 /RobWorkStudio/src/rws/moc_*.cxx
 /RobWorkStudio/src/rws/ui_*.h
@@ -3899,8 +3832,6 @@
 /RobWorkStudio/src/sandbox/.csettings
 /RobWorkStudio/src/sandbox/CPackConfig.cmake
 /RobWorkStudio/src/sandbox/CPackSourceConfig.cmake
-/RobWorkStudio/src/sandbox/.cproject
-/RobWorkStudio/src/sandbox/.project
 /RobWorkStudio/src/sandbox/RobWorkStudioConfig.hpp
 /RobWorkStudio/src/sandbox/moc_*.cxx
 /RobWorkStudio/src/sandbox/ui_*.h
@@ -3920,8 +3851,6 @@
 /RobWorkStudio/src/sandbox/components/.csettings
 /RobWorkStudio/src/sandbox/components/CPackConfig.cmake
 /RobWorkStudio/src/sandbox/components/CPackSourceConfig.cmake
-/RobWorkStudio/src/sandbox/components/.cproject
-/RobWorkStudio/src/sandbox/components/.project
 /RobWorkStudio/src/sandbox/components/RobWorkStudioConfig.hpp
 /RobWorkStudio/src/sandbox/components/moc_*.cxx
 /RobWorkStudio/src/sandbox/components/ui_*.h
@@ -3941,8 +3870,6 @@
 /RobWorkStudio/src/sandbox/components/camera/.csettings
 /RobWorkStudio/src/sandbox/components/camera/CPackConfig.cmake
 /RobWorkStudio/src/sandbox/components/camera/CPackSourceConfig.cmake
-/RobWorkStudio/src/sandbox/components/camera/.cproject
-/RobWorkStudio/src/sandbox/components/camera/.project
 /RobWorkStudio/src/sandbox/components/camera/RobWorkStudioConfig.hpp
 /RobWorkStudio/src/sandbox/components/camera/moc_*.cxx
 /RobWorkStudio/src/sandbox/components/camera/ui_*.h
@@ -3962,8 +3889,6 @@
 /RobWorkStudio/src/sandbox/components/luaeditor/.csettings
 /RobWorkStudio/src/sandbox/components/luaeditor/CPackConfig.cmake
 /RobWorkStudio/src/sandbox/components/luaeditor/CPackSourceConfig.cmake
-/RobWorkStudio/src/sandbox/components/luaeditor/.cproject
-/RobWorkStudio/src/sandbox/components/luaeditor/.project
 /RobWorkStudio/src/sandbox/components/luaeditor/RobWorkStudioConfig.hpp
 /RobWorkStudio/src/sandbox/components/luaeditor/moc_*.cxx
 /RobWorkStudio/src/sandbox/components/luaeditor/ui_*.h
@@ -3983,8 +3908,6 @@
 /RobWorkStudio/src/sandbox/components/picking/.csettings
 /RobWorkStudio/src/sandbox/components/picking/CPackConfig.cmake
 /RobWorkStudio/src/sandbox/components/picking/CPackSourceConfig.cmake
-/RobWorkStudio/src/sandbox/components/picking/.cproject
-/RobWorkStudio/src/sandbox/components/picking/.project
 /RobWorkStudio/src/sandbox/components/picking/RobWorkStudioConfig.hpp
 /RobWorkStudio/src/sandbox/components/picking/moc_*.cxx
 /RobWorkStudio/src/sandbox/components/picking/ui_*.h
@@ -4004,8 +3927,6 @@
 /RobWorkStudio/src/sandbox/plugins/.csettings
 /RobWorkStudio/src/sandbox/plugins/CPackConfig.cmake
 /RobWorkStudio/src/sandbox/plugins/CPackSourceConfig.cmake
-/RobWorkStudio/src/sandbox/plugins/.cproject
-/RobWorkStudio/src/sandbox/plugins/.project
 /RobWorkStudio/src/sandbox/plugins/RobWorkStudioConfig.hpp
 /RobWorkStudio/src/sandbox/plugins/moc_*.cxx
 /RobWorkStudio/src/sandbox/plugins/ui_*.h
@@ -4025,8 +3946,6 @@
 /RobWorkStudio/src/sandbox/plugins/lua/.csettings
 /RobWorkStudio/src/sandbox/plugins/lua/CPackConfig.cmake
 /RobWorkStudio/src/sandbox/plugins/lua/CPackSourceConfig.cmake
-/RobWorkStudio/src/sandbox/plugins/lua/.cproject
-/RobWorkStudio/src/sandbox/plugins/lua/.project
 /RobWorkStudio/src/sandbox/plugins/lua/RobWorkStudioConfig.hpp
 /RobWorkStudio/src/sandbox/plugins/lua/moc_*.cxx
 /RobWorkStudio/src/sandbox/plugins/lua/ui_*.h
@@ -4046,8 +3965,6 @@
 /RobWorkStudio/src/sandbox/rws/.csettings
 /RobWorkStudio/src/sandbox/rws/CPackConfig.cmake
 /RobWorkStudio/src/sandbox/rws/CPackSourceConfig.cmake
-/RobWorkStudio/src/sandbox/rws/.cproject
-/RobWorkStudio/src/sandbox/rws/.project
 /RobWorkStudio/src/sandbox/rws/RobWorkStudioConfig.hpp
 /RobWorkStudio/src/sandbox/rws/moc_*.cxx
 /RobWorkStudio/src/sandbox/rws/ui_*.h
@@ -4067,8 +3984,6 @@
 /RobWorkStudio/test/.csettings
 /RobWorkStudio/test/CPackConfig.cmake
 /RobWorkStudio/test/CPackSourceConfig.cmake
-/RobWorkStudio/test/.cproject
-/RobWorkStudio/test/.project
 
 # /RobWorkStudio/test/common/
 /RobWorkStudio/test/common/cmake_install.cmake
@@ -4084,9 +3999,6 @@
 /RobWorkStudio/test/common/.csettings
 /RobWorkStudio/test/common/CPackConfig.cmake
 /RobWorkStudio/test/common/CPackSourceConfig.cmake
-/RobWorkStudio/test/common/.cproject
-/RobWorkStudio/test/common/.project
-
 # /doc/
 /doc/Doxyfile
 /doc/cmake_install.cmake
@@ -4102,8 +4014,7 @@
 /doc/.csettings
 /doc/CPackConfig.cmake
 /doc/CPackSourceConfig.cmake
-/doc/.cproject
-/doc/.project
+
 
 # /doc/apidoc/
 /doc/apidoc/cmake_install.cmake
@@ -4119,8 +4030,6 @@
 /doc/apidoc/.csettings
 /doc/apidoc/CPackConfig.cmake
 /doc/apidoc/CPackSourceConfig.cmake
-/doc/apidoc/.cproject
-/doc/apidoc/.project
 
 # /doc/gfx/
 /doc/gfx/cmake_install.cmake
@@ -4136,8 +4045,6 @@
 /doc/gfx/.csettings
 /doc/gfx/CPackConfig.cmake
 /doc/gfx/CPackSourceConfig.cmake
-/doc/gfx/.cproject
-/doc/gfx/.project
 
 # /doc/installstuff/
 /doc/installstuff/cmake_install.cmake
@@ -4153,8 +4060,6 @@
 /doc/installstuff/.csettings
 /doc/installstuff/CPackConfig.cmake
 /doc/installstuff/CPackSourceConfig.cmake
-/doc/installstuff/.cproject
-/doc/installstuff/.project
 
 # /doc/installstuff/RW_package-mingw/
 /doc/installstuff/RW_package-mingw/cmake_install.cmake
@@ -4170,8 +4075,6 @@
 /doc/installstuff/RW_package-mingw/.csettings
 /doc/installstuff/RW_package-mingw/CPackConfig.cmake
 /doc/installstuff/RW_package-mingw/CPackSourceConfig.cmake
-/doc/installstuff/RW_package-mingw/.cproject
-/doc/installstuff/RW_package-mingw/.project
 
 # /doc/installstuff/RW_package-msvc2005/
 /doc/installstuff/RW_package-msvc2005/cmake_install.cmake
@@ -4187,8 +4090,6 @@
 /doc/installstuff/RW_package-msvc2005/.csettings
 /doc/installstuff/RW_package-msvc2005/CPackConfig.cmake
 /doc/installstuff/RW_package-msvc2005/CPackSourceConfig.cmake
-/doc/installstuff/RW_package-msvc2005/.cproject
-/doc/installstuff/RW_package-msvc2005/.project
 
 # /doc/installstuff/RW_package-source/
 /doc/installstuff/RW_package-source/cmake_install.cmake
@@ -4204,8 +4105,10 @@
 /doc/installstuff/RW_package-source/.csettings
 /doc/installstuff/RW_package-source/CPackConfig.cmake
 /doc/installstuff/RW_package-source/CPackSourceConfig.cmake
-/doc/installstuff/RW_package-source/.cproject
-/doc/installstuff/RW_package-source/.project
+
+# /doc/sphinx/apidoc/java
+/doc/sphinx/apidoc/java/org
+/doc/sphinx/apidoc/java/packages.rst
 
 #/doc/sphinx/apidoc
 /doc/sphinx/apidoc/java/packages.rst

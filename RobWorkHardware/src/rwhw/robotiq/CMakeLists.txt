@@ -1,6 +1,6 @@
 SET(SUBSYS_NAME robotiq )
 SET(SUBSYS_DESC "driver for robotiq" )
-SET(SUBSYS_DEPS rw )
+SET(SUBSYS_DEPS sdurw )
 
 SET(build TRUE)
 set(DEFAULT TRUE)
@@ -14,15 +14,15 @@ IF( build )
     SET(SRC_CPP Robotiq.cpp Robotiq3.cpp Robotiq2.cpp)
     SET(SRC_HPP Robotiq.hpp Robotiq3.hpp Robotiq2.hpp)
 
-    RW_ADD_LIBRARY(rwhw_robotiq robotiq ${SRC_CPP} ${SRC_HPP})
-    TARGET_LINK_LIBRARIES(rwhw_robotiq PUBLIC ${ROBWORK_LIBRARIES})
+    RW_ADD_LIBRARY(sdurwhw_robotiq robotiq ${SRC_CPP} ${SRC_HPP})
+    TARGET_LINK_LIBRARIES(sdurwhw_robotiq PUBLIC ${ROBWORK_LIBRARIES})
     RW_ADD_INCLUDES(robotiq "rwhw/robotiq" ${SRC_HPP})
-    set(ROBWORKHARDWARE_LIBRARIES ${ROBWORKHARDWARE_LIBRARIES} rwhw_robotiq PARENT_SCOPE)
+    set(ROBWORKHARDWARE_LIBRARIES ${ROBWORKHARDWARE_LIBRARIES} sdurwhw_robotiq PARENT_SCOPE)
 
 	add_executable(robotiq3_test robotiq3SimpleTest.cpp )
-	TARGET_LINK_LIBRARIES(robotiq3_test rwhw_robotiq ${ROBWORK_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+	TARGET_LINK_LIBRARIES(robotiq3_test sdurwhw_robotiq ${ROBWORK_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
 	
 	add_executable(robotiq2_test robotiq2SimpleTest.cpp )
-	TARGET_LINK_LIBRARIES(robotiq2_test rwhw_robotiq ${ROBWORK_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+	TARGET_LINK_LIBRARIES(robotiq2_test sdurwhw_robotiq ${ROBWORK_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
 
 ENDIF()

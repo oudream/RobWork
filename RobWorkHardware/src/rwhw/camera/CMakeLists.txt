@@ -1,6 +1,6 @@
 SET(SUBSYS_NAME camera )
 SET(SUBSYS_DESC "Library of drivers for different cameras" )
-SET(SUBSYS_DEPS rw )
+SET(SUBSYS_DEPS sdurw )
 
 SET(build TRUE)
 set(DEFAULT TRUE)
@@ -55,18 +55,18 @@ IF( build )
         MESSAGE(STATUS "RobWorkHardware: ${SUBSYS_NAME} - OpenCV library NOT found. ") 
     ENDIF()
     
-    RW_ADD_LIBRARY(rwhw_camera camera ${SRC_CPP} ${SRC_HPP} )
-    TARGET_LINK_LIBRARIES(rwhw_camera PUBLIC ${ROBWORK_LIBRARIES})
+    RW_ADD_LIBRARY(sdurwhw_camera camera ${SRC_CPP} ${SRC_HPP} )
+    TARGET_LINK_LIBRARIES(sdurwhw_camera PUBLIC ${ROBWORK_LIBRARIES})
     IF(DC1394_FOUND)
-        TARGET_LINK_LIBRARIES(rwhw_camera PUBLIC ${DC1394_LIBRARY})
+        TARGET_LINK_LIBRARIES(sdurwhw_camera PUBLIC ${DC1394_LIBRARY})
     ENDIF()
     RW_ADD_INCLUDES(camera "rwhw/camera" ${SRC_HPP})
-    set(ROBWORKHARDWARE_LIBRARIES ${ROBWORKHARDWARE_LIBRARIES} rwhw_camera PARENT_SCOPE)
+    set(ROBWORKHARDWARE_LIBRARIES ${ROBWORKHARDWARE_LIBRARIES} sdurwhw_camera PARENT_SCOPE)
 
     # Make sure dependencies are build before system
     FOREACH(DEP IN LISTS ROBWORK_LIBRARIES)
         IF(TARGET ${DEP})
-            ADD_DEPENDENCIES(rwhw_camera ${DEP})
+            ADD_DEPENDENCIES(sdurwhw_camera ${DEP})
         ENDIF()
     ENDFOREACH()
     

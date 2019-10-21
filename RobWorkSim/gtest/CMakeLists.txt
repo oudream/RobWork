@@ -28,8 +28,8 @@ ENDMACRO(ADD_RWSIM_GTEST)
 ########################################################################
 
 SET(SIMULATOR_TEST_LIBRARIES
-  rwsim_test
-  rwsim
+  sdurwsim_test
+  sdurwsim
   ${RW_BUILD_WITH_LIBRARIES_GTEST}
   ${ROBWORK_LIBRARIES}
 )
@@ -38,15 +38,15 @@ SET(SIMULATOR_TEST_SRC
   simulator/PhysicsEngineTest.cpp
 )
 
-ADD_EXECUTABLE(rwsim_simulator-gtest ${SIMULATOR_TEST_SRC})
-TARGET_LINK_LIBRARIES(rwsim_simulator-gtest ${SIMULATOR_TEST_LIBRARIES})
-ADD_RWSIM_GTEST(rwsim_simulator-gtest)
+ADD_EXECUTABLE(sdurwsim_simulator-gtest ${SIMULATOR_TEST_SRC})
+TARGET_LINK_LIBRARIES(sdurwsim_simulator-gtest ${SIMULATOR_TEST_LIBRARIES})
+ADD_RWSIM_GTEST(sdurwsim_simulator-gtest)
 
 ########################################################################
 # Target for generation of all detailed reports
 ########################################################################
 
-ADD_CUSTOM_TARGET(rwsim-gtest_reports
+ADD_CUSTOM_TARGET(sdurwsim-gtest_reports
 	DEPENDS ${REPORT_TARGETS}
 	COMMENT "Running Google Tests to generate detailed reports."
 )
@@ -55,4 +55,4 @@ ADD_CUSTOM_TARGET(rwsim-gtest_reports
 # Do not build these as part of an ordinary build
 ########################################################################
 
-SET_TARGET_PROPERTIES(rwsim-gtest_reports ${REPORT_TARGETS} PROPERTIES EXCLUDE_FROM_ALL 1 EXCLUDE_FROM_DEFAULT_BUILD 1)
+SET_TARGET_PROPERTIES(sdurwsim-gtest_reports ${REPORT_TARGETS} PROPERTIES EXCLUDE_FROM_ALL 1 EXCLUDE_FROM_DEFAULT_BUILD 1)
