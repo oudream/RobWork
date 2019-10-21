@@ -1,14 +1,15 @@
 import java.lang.String;
 import org.robwork.LoaderRW;
-import org.robwork.rw.*;
-import static org.robwork.rw.rw.Pi;
+import org.robwork.sdurw.*;
+import static org.robwork.sdurw.sdurwConstants.Pi;
+
 
 public class ExInvKin {
     public static final String WC_FILE =
             "/devices/serialdev/UR10e_2018/UR10e.xml";
 
     public static void main(String[] args) throws Exception {
-        LoaderRW.load("rw");
+        LoaderRW.load("sdurw");
 
         if (args.length != 1) {
             System.out.print("Usage: java " + ExInvKin.class.getSimpleName());

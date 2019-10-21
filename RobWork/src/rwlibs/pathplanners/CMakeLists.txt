@@ -1,6 +1,6 @@
-SET(SUBSYS_NAME rw_pathplanners)
+SET(SUBSYS_NAME sdurw_pathplanners)
 set(SUBSYS_DESC "A collection of path planners!")
-SET(SUBSYS_DEPS rw)
+SET(SUBSYS_DEPS sdurw)
 
 SET(build TRUE)
 SET(DEFAULT TRUE)

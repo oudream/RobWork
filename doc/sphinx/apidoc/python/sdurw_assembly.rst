@@ -1,7 +1,7 @@
-rw_control module
+sdurw_assembly module
 =====================
 
-.. automodule:: rw_control
+.. automodule:: sdurw_assembly
     :members:
     :undoc-members:
     :show-inheritance:

@@ -1,6 +1,6 @@
-SET(SUBSYS_NAME rw_calibration )
+SET(SUBSYS_NAME sdurw_calibration )
 SET(SUBSYS_DESC "Calibration of devices" )
-SET(SUBSYS_DEPS rw )
+SET(SUBSYS_DEPS sdurw )
 
 SET(build TRUE)
 set(DEFAULT TRUE)

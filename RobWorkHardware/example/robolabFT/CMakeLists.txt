@@ -6,11 +6,11 @@ IF(COMPONENT_robolabFT_ENABLE )
     INCLUDE_DIRECTORIES( ${ROBOLABFT_INCLUDE_DIR} )
 
     set(LibraryList
-      rwhw_robolabFT
+    sdurwhw_robolabFT
       ${ROBWORK_LIBRARIES}
     )
     
     add_executable(robolabFT robolabFT.cpp)
-    target_link_libraries(robolabFT ${LibraryList} rwhw_serialport -lpthread )
+    target_link_libraries(robolabFT ${LibraryList} sdurwhw_serialport -lpthread )
     
 ENDIF(COMPONENT_robolabFT_ENABLE)

@@ -1,6 +1,6 @@
-SET(SUBSYS_NAME rws_java )
+SET(SUBSYS_NAME sdurws_java )
 SET(SUBSYS_DESC "Interface for accessing RobWorkStudio from java." )
-SET(SUBSYS_DEPS rw )
+SET(SUBSYS_DEPS sdurw )
 
 SET(build TRUE)
 
@@ -27,29 +27,29 @@ IF( build )
     INCLUDE(UseJava)
     INCLUDE(UseSWIG)
     
-    SET_SOURCE_FILES_PROPERTIES(../rws.i PROPERTIES CPLUSPLUS ON)
-	SET_SOURCE_FILES_PROPERTIES(../rws.i PROPERTIES SWIG_FLAGS "-includeall")
+    SET_SOURCE_FILES_PROPERTIES(../sdurws.i PROPERTIES CPLUSPLUS ON)
+	SET_SOURCE_FILES_PROPERTIES(../sdurws.i PROPERTIES SWIG_FLAGS "-includeall")
     if (NOT ${SWIG_VERSION} VERSION_LESS 4.0.0)
-    	SET_SOURCE_FILES_PROPERTIES(../rws.i PROPERTIES SWIG_FLAGS "-includeall;-doxygen")
+    	SET_SOURCE_FILES_PROPERTIES(../sdurws.i PROPERTIES SWIG_FLAGS "-includeall;-doxygen")
     endif()
     
     INCLUDE_DIRECTORIES(${JAVA_INCLUDE_DIRS} ${JNI_INCLUDE_DIRS})
-    set(CMAKE_SWIG_FLAGS "-package" "org.robwork.rws")
+    set(CMAKE_SWIG_FLAGS "-package" "org.robwork.sdurws")
     # Put java files in different directory suitable for JAR generation later on
-    SET(CMAKE_SWIG_OUTDIR ${CMAKE_CURRENT_BINARY_DIR}/java_src/org/robwork/rws)
+    SET(CMAKE_SWIG_OUTDIR ${CMAKE_CURRENT_BINARY_DIR}/java_src/org/robwork/sdurws)
     # SWIG
 	IF ((CMAKE_VERSION VERSION_GREATER 3.8) OR (CMAKE_VERSION VERSION_EQUAL 3.8))
-		SWIG_ADD_LIBRARY(rws_jni TYPE MODULE LANGUAGE java SOURCES ../rws.i ../ScriptTypes.cpp)
+		SWIG_ADD_LIBRARY(sdurws_jni TYPE SHARED LANGUAGE java SOURCES ../sdurws.i ../ScriptTypes.cpp)
 	ELSE()
-		SWIG_ADD_MODULE(rws_jni java ../rws.i ../ScriptTypes.cpp)
+		SWIG_ADD_MODULE(sdurws_jni java ../sdurws.i ../ScriptTypes.cpp)
 	ENDIF()
-    SWIG_LINK_LIBRARIES(rws_jni 
+    SWIG_LINK_LIBRARIES(sdurws_jni 
         ${RWS_COMPONENT_LIBRARIES}
         ${RWS_PLUGIN_LIBRARIES}
-        rws
+        sdurws
         ${ROBWORK_LIBRARIES} )
     IF((CMAKE_COMPILER_IS_GNUCC) OR (CMAKE_C_COMPILER_ID STREQUAL "Clang"))
-      SET_TARGET_PROPERTIES(rws_jni PROPERTIES LINK_FLAGS -Wl,--no-undefined)
+      SET_TARGET_PROPERTIES(sdurws_jni PROPERTIES LINK_FLAGS -Wl,--no-undefined)
     ENDIF()
     # Force removal of previous Java compilation and source when interface file changes
     # This is required as types may be removed or change name
@@ -57,26 +57,26 @@ IF( build )
 	ADD_CUSTOM_COMMAND(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/CleanDep
         COMMAND ${CMAKE_COMMAND} -E remove_directory java_src
         COMMAND ${CMAKE_COMMAND} -E touch ${CMAKE_CURRENT_BINARY_DIR}/CleanDep
-        DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/../rws.i"
+        DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/../sdurws.i"
         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
         COMMENT "Removing old Java source..."
     )
     ADD_CUSTOM_TARGET(CleanDepRWS DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/CleanDep )
     IF((CMAKE_GENERATOR MATCHES "Make") AND (NOT CMAKE_VERSION VERSION_LESS 3.12))
-        ADD_DEPENDENCIES(rws_jni_swig_compilation CleanDepRWS)
+        ADD_DEPENDENCIES(sdurws_jni_swig_compilation CleanDepRWS)
     ELSE()
-        ADD_DEPENDENCIES(rws_jni CleanDepRWS)
+        ADD_DEPENDENCIES(sdurws_jni CleanDepRWS)
     ENDIF()
 
     # Make sure dependencies are build before system
     FOREACH(DEP IN LISTS SUBSYS_DEPS)
         IF(TARGET ${DEP})
-            ADD_DEPENDENCIES(rws_jni ${DEP})
+            ADD_DEPENDENCIES(sdurws_jni ${DEP})
         ENDIF()
     ENDFOREACH()
 
     # Compile java code and create JAR and Javadoc
-	ADD_CUSTOM_COMMAND(TARGET rws_jni
+	ADD_CUSTOM_COMMAND(TARGET sdurws_jni
 		POST_BUILD
 		COMMAND ${CMAKE_COMMAND} -E echo "Removing old Java compilation..."
         COMMAND ${CMAKE_COMMAND} -E remove_directory "${CMAKE_CURRENT_BINARY_DIR}/java_build"
@@ -85,20 +85,20 @@ IF( build )
         COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_CURRENT_SOURCE_DIR}/LoaderRWS.java java_src/org/robwork/LoaderRWS.java
 		COMMAND ${CMAKE_COMMAND} -E echo "Compiling Java files..."
         COMMAND ${CMAKE_COMMAND} -E make_directory java_build/org/robwork
-        COMMAND ${Java_JAVAC_EXECUTABLE} -cp ${RW_LIBS}/rw_java.jar -d ${CMAKE_CURRENT_BINARY_DIR}/java_build java_src/org/robwork/*.java java_src/org/robwork/rws/*.java
+        COMMAND ${Java_JAVAC_EXECUTABLE} -cp ${RW_LIBS}/sdurw_java.jar -d ${CMAKE_CURRENT_BINARY_DIR}/java_build java_src/org/robwork/*.java java_src/org/robwork/sdurws/*.java
         COMMAND ${CMAKE_COMMAND} -E echo "Creating jar file..."
-        COMMAND ${Java_JAR_EXECUTABLE} cvf ${RWS_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/rws_java.jar  -C java_build .
+        COMMAND ${Java_JAR_EXECUTABLE} cvf ${RWS_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/sdurws_java.jar  -C java_build .
         COMMAND ${CMAKE_COMMAND} -E echo "Creating jar file of source..."
-        COMMAND ${Java_JAR_EXECUTABLE} cvf ${RWS_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/rws_java-source.jar  -C java_src .
+        COMMAND ${Java_JAR_EXECUTABLE} cvf ${RWS_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/sdurws_java-source.jar  -C java_src .
 		COMMAND ${CMAKE_COMMAND} -E echo "Creating Javadoc..."
     	COMMAND ${CMAKE_COMMAND} -E make_directory ${RWS_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/javadoc
     	COMMAND ${Java_JAVADOC_EXECUTABLE}
-    					-classpath ${RW_LIBS}/rw_java.jar
+    					-classpath ${RW_LIBS}/sdurw_java.jar
     					-d ${RWS_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/javadoc
     					-windowtitle "RobWorkStudio Java API Documentation"
     					-public
-    					-sourcepath java_src org.robwork org.robwork.rws
-    					-link ${RW_LIBS}/javadoc/rw
+    					-sourcepath java_src org.robwork org.robwork.sdurws
+    					-link ${RW_LIBS}/javadoc/sdurw
         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
     )
     SET(CMAKE_SWIG_OUTDIR ${RWS_CMAKE_LIBRARY_OUTPUT_DIRECTORY})

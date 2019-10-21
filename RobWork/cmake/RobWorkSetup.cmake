@@ -9,7 +9,7 @@
 #
 #  Following is a list of variables that is set by this script: 
 # 
-#  ROBWORK_INCLUDE_DIR - Where to find robwork include sub-directory.
+#  ROBWORK_INCLUDE_DIR - Where to find RobWork include sub-directory.
 #  ROBWORK_LIBRARIES   - List of libraries when using RobWork (includes all libraries that RobWork depends on).
 #  ROBWORK_LIBARY_DIRS - List of directories where libraries of RobWork are located. 
 #  
@@ -25,7 +25,7 @@ ENDIF()
 MESSAGE(STATUS "RobWork: ROOT - ${RW_ROOT}")
 
 #
-# Setup the default include and library dirs for robwork
+# Setup the default include and library dirs for RobWork
 #
 #INCLUDE("${RW_ROOT}/build/RobWorkConfig${CMAKE_BUILD_TYPE}.cmake")
 
@@ -282,14 +282,14 @@ ENDIF ()
     MESSAGE(STATUS "RobWork: QHULL installation NOT FOUND! Using RobWork ext QHULL.")
     
     SET(QHULL_INCLUDE_DIRS "${RW_ROOT}/ext/qhull/src")
-    SET(QHULL_LIBRARIES "rw_qhull")
+    SET(QHULL_LIBRARIES "sdurw_qhull")
     SET(QHULL_DEFINITIONS "")
 #ENDIF ()
 
 # CSGJS
 MESSAGE(STATUS "Using CsgJs.")
 SET(CSGJS_INCLUDE_DIRS "${RW_ROOT}/ext/csgjs/src")
-SET(CSGJS_LIBRARIES "rw_csgjs")
+SET(CSGJS_LIBRARIES "sdurw_csgjs")
 SET(CSGJS_DEFINITIONS "")
 
 Find_Package(Bullet)
@@ -350,7 +350,7 @@ IF(RW_USE_LUA)
         MESSAGE(STATUS "RobWork: LUA ENABLED! Both SWIG ${SWIG_VERSION} and Lua FOUND!")
         SET(RW_HAVE_SWIG True)
         SET(RW_HAVE_LUA True)
-        set(RW_LUA_LIBS rw_lua_s rw_assembly_lua_s rw_control_lua_s rw_pathoptimization_lua_s rw_pathplanners_lua_s rw_proximitystrategies_lua_s rw_simulation_lua_s rw_task_lua_s)
+        set(RW_LUA_LIBS sdurw_lua_s sdurw_assembly_lua_s sdurw_control_lua_s sdurw_pathoptimization_lua_s sdurw_pathplanners_lua_s sdurw_proximitystrategies_lua_s sdurw_simulation_lua_s sdurw_task_lua_s)
     ELSE ()
         SET(RW_HAVE_SWIG False)
         SET(RW_HAVE_LUA False)
@@ -368,7 +368,7 @@ ENDIF()
   
 IF (RW_BUILD_SANDBOX)
     MESSAGE(STATUS "RobWork: Sandbox ENABLED!")
-    SET(SANDBOX_LIB "rw_sandbox")
+    SET(SANDBOX_LIB "sdurw_sandbox")
 ELSE ()
     MESSAGE(STATUS "RobWork: Sandbox DISABLED!")    
 ENDIF ()
@@ -386,7 +386,7 @@ IF ( RW_BUILD_SOFTBODY )
     FIND_PACKAGE( MUMPS REQUIRED )
     FIND_PACKAGE( IPOPT REQUIRED )
     SET( SOFTBODY_LIBRARY_DIRS ${IPOPT_LIBRARY_DIRS} ${MUMPS_LIBRARY_DIRS})
-    SET( SOFTBODY_LIB rw_softbody  ${MUMPS_LIBRARIES} ${IPOPT_LIBRARIES})
+    SET( SOFTBODY_LIB sdurw_softbody  ${MUMPS_LIBRARIES} ${IPOPT_LIBRARIES})
     SET( SOFTBODY_INCLUDE_DIRS  ${MUMPS_INCLUDE_DIRS} ${IPOPT_INCLUDE_DIRS})
 ELSE ()
     MESSAGE( STATUS "RobWork: Softbody DISABLED!" )    
@@ -422,7 +422,7 @@ IF(RW_USE_ASSIMP)
 		MESSAGE(STATUS "RobWork: Assimp 3.0 installation NOT FOUND! Using RobWork ext Assimp.")
 
 		SET(ASSIMP_INCLUDE_DIRS "${RW_ROOT}/ext/assimp/include")
-		SET(ASSIMP_LIBRARIES "rw_assimp")
+		SET(ASSIMP_LIBRARIES "sdurw_assimp")
         	SET(ASSIMP_LIBRARY_DIRS ${RW_LIBRARY_OUT_DIR})
 		SET(RW_HAVE_ASSIMP TRUE)
 
@@ -436,7 +436,7 @@ IF(RW_USE_ASSIMP)
 				SET(RW_ENABLE_INTERNAL_ZLIB_TARGET ON)
     				SET(ZLIB_INCLUDE_DIRS "${RW_ROOT}/ext/zlib")
         			SET(ZLIB_LIBRARY_DIRS ${RW_LIBRARY_OUT_DIR})
-	    			SET(ZLIB_LIBRARIES "rw_zlib")
+	    			SET(ZLIB_LIBRARIES "sdurw_zlib")
 			ENDIF()
 			SET(RW_HAVE_ZLIB ON)
 		ENDIF (NOT RW_HAVE_ZLIB)
@@ -451,7 +451,7 @@ IF(RW_USE_ASSIMP)
 				SET(RW_ENABLE_INTERNAL_MINIZIP_TARGET ON)
 	    			SET(MINIZIP_INCLUDE_DIRS "${RW_ROOT}/ext/unzip")
 	        		SET(MINIZIP_LIBRARY_DIRS ${RW_LIBRARY_OUT_DIR})
-		    		SET(MINIZIP_LIBRARIES "rw_unzip")
+		    		SET(MINIZIP_LIBRARIES "sdurw_unzip")
 			ENDIF()
 			SET(RW_HAVE_MINIZIP ON)
 		ENDIF (NOT RW_HAVE_MINIZIP)
@@ -528,7 +528,7 @@ IF(RW_USE_MATHEMATICA)
 		IF (DEFINED UUID_LIB_DIR)
 			SET(Mathematica_WSTP_LIBRARIES ${Mathematica_WSTP_LIBRARIES} ${UUID_LIB_DIR}/libuuid.a)
 		ENDIF()
-		SET(RW_MATHEMATICA_LIB rw_mathematica)
+		SET(RW_MATHEMATICA_LIB sdurw_mathematica)
 		SET(RW_HAVE_MATHEMATICA TRUE)
 	ELSE ()
     	MESSAGE( STATUS "RobWork: Mathematica NOT FOUND!" )
@@ -830,22 +830,22 @@ SET(ROBWORK_LIBRARIES_TMP
   ${SANDBOX_LIB}
   ${RW_LUA_LIBS}
   ${LUA_LIBRARIES}
-  rw_algorithms
-  rw_pathplanners
-  rw_pathoptimization
-  rw_simulation
-  rw_opengl
-  rw_assembly
-  rw_task
-  rw_calibration
-  rw_csg
-  rw_control
+  sdurw_algorithms
+  sdurw_pathplanners
+  sdurw_pathoptimization
+  sdurw_simulation
+  sdurw_opengl
+  sdurw_assembly
+  sdurw_task
+  sdurw_calibration
+  sdurw_csg
+  sdurw_control
   ${RW_MATHEMATICA_LIB}
-  rw_proximitystrategies
+  sdurw_proximitystrategies
   ${YAOBI_LIBRARIES}
   ${PQP_LIBRARIES}
   ${FCL_LIBRARIES}
-  rw
+  sdurw
   ${SOFTBODY_LIB}
   ${OPENGL_LIBRARIES}
   ${XERCESC_LIBRARIES}

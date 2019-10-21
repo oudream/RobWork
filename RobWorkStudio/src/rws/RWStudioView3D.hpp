@@ -67,7 +67,7 @@ public:
 public:
     /**
      * @brief Constructs an OpenGL based QT Widget
-     * @param rwStudio [in] robworkstudio
+     * @param rwStudio [in] RobWorkStudio
      * @param parent [in] Parent widget
      */
     RWStudioView3D(RobWorkStudio* rwStudio, QWidget* parent);

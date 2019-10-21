@@ -138,7 +138,7 @@ endif ()
 # optional compilation of sandbox
 IF (RWS_BUILD_SANDBOX)
     MESSAGE(STATUS "RobWorkStudio: Sandbox ENABLED!")
-    SET(SANDBOX_LIB "rws_sandbox")
+    SET(SANDBOX_LIB "rsdurws_sandbox")
     SET(RWS_HAVE_SANDBOX true)
 ELSE ()
     MESSAGE(STATUS "RobWorkStudio: Sandbox DISABLED!")    
@@ -165,7 +165,7 @@ IF( NOT RWS_DISABLE_LUA )
         SET(RWS_HAVE_LUA False)
     ELSEIF (RW_BUILD_WITH_LUA)
         MESSAGE(STATUS "RobWorkStudio: Lua ENABLED!")
-        SET(RWS_LUA "rws_lua_s;rws_luaeditor")
+        SET(RWS_LUA "sdurws_lua_s;sdurws_luaeditor")
         SET(RWS_HAVE_LUA True)
     ELSE ()
         MESSAGE(STATUS "RobWorkStudio: Lua DISABLED! - RobWork is NOT compiled with Lua support!")
@@ -265,7 +265,7 @@ SET(ROBWORKSTUDIO_LIBRARY_DIRS
 SET(ROBWORKSTUDIO_LIBRARIES
   ${RWS_SANDBOX}
   ${RWS_LUA}
-  rws
+  sdurws
   qtpropertybrowser
   ${ROBWORK_LIBRARIES}
   ${QT_LIBRARIES}

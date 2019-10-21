@@ -1,6 +1,6 @@
-SET(SUBSYS_NAME rws_workcelleditorplugin)
+SET(SUBSYS_NAME sdurws_workcelleditorplugin)
 set(SUBSYS_DESC "Workcell editor plugin")
-SET(SUBSYS_DEPS rws rws_workcelleditor)
+SET(SUBSYS_DEPS sdurws sdurws_workcelleditor)
 
 # Standard cpp files to compile:
 SET(SrcFiles WorkcellEditorPlugin.cpp)

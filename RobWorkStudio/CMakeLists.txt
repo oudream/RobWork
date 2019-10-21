@@ -20,7 +20,7 @@ ENDIF()
 
 # The name of the project.
 PROJECT(RobWorkStudio)
-SET(ROBWORKSTUDIO_VERSION 0.7.0)
+SET(ROBWORKSTUDIO_VERSION 1.0.0)
 SET(RWS_ROOT ${CMAKE_CURRENT_SOURCE_DIR})
 MESSAGE(STATUS "RobWorkStudio version ${ROBWORKSTUDIO_VERSION}")
 
@@ -55,7 +55,7 @@ RW_OPTIONS(RWS)
 # Add an "uninstall" target
 configure_file("${RWS_ROOT}/cmake/uninstall_target.cmake.in"
                "${CMAKE_BINARY_DIR}/uninstall_target.cmake" IMMEDIATE @ONLY)
-add_custom_target(uninstall_rws "${CMAKE_COMMAND}" -P
+add_custom_target(uninstall_sdurws "${CMAKE_COMMAND}" -P
                   "${CMAKE_BINARY_DIR}/uninstall_target.cmake")
 
 ###########################################
@@ -142,7 +142,7 @@ CONFIGURE_FILE(
   @ONLY
 )
 
-# Configure build/RobWorkStudioConfig.cmake.in such that other projects might use robworkstudio
+# Configure build/RobWorkStudioConfig.cmake.in such that other projects might use RobWorkStudio
 CONFIGURE_FILE(
   ${RWS_ROOT}/cmake/RobWorkStudioConfig.cmake.in
   "${RWS_ROOT}/cmake/RobWorkStudioConfig.cmake" @ONLY)
@@ -246,9 +246,9 @@ IF(doc_executable)
   ENDIF()
 
   IF(TARGET qtrwdoc)
-    CONFIGURE_FILE(${RWS_ROOT}/docs/robwork_help.qhcp.in ${RWS_ROOT}/docs/robwork_help-v${ROBWORK_VERSION}.qhcp)
-    ADD_CUSTOM_TARGET(robwork_help qcollectiongenerator ${RWS_ROOT}/docs/robwork_help-v${ROBWORK_VERSION}.qhcp -o ${RWS_ROOT}/docs/robwork_help-v${ROBWORK_VERSION}.qhc )
-    ADD_DEPENDENCIES(robwork_help qtrwdoc) 
+    CONFIGURE_FILE(${RWS_ROOT}/docs/sdurw_help.qhcp.in ${RWS_ROOT}/docs/sdurw_help-v${ROBWORK_VERSION}.qhcp)
+    ADD_CUSTOM_TARGET(sdurw_help qcollectiongenerator ${RWS_ROOT}/docs/sdurw_help-v${ROBWORK_VERSION}.qhcp -o ${RWS_ROOT}/docs/robwork_help-v${ROBWORK_VERSION}.qhc )
+    ADD_DEPENDENCIES(sdurw_help qtrwdoc) 
   ENDIF()
 ENDIF()
 

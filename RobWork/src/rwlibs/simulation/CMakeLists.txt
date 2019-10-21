@@ -1,6 +1,6 @@
-SET(SUBSYS_NAME rw_simulation)
+SET(SUBSYS_NAME sdurw_simulation)
 set(SUBSYS_DESC "Simulated sensors and controllers")
-SET(SUBSYS_DEPS rw rw_control)
+SET(SUBSYS_DEPS sdurw sdurw_control)
 
 SET(build TRUE)
 SET(DEFAULT TRUE)

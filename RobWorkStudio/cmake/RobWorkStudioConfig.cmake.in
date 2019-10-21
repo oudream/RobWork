@@ -36,9 +36,9 @@ if(EXISTS ${CFG_ROOT}/RobWorkStudioBuildConfig_${BTYPE_TMP}.cmake)
   SET(${RWS_BUILD_TYPE} ${BTYPE_TMP})
 else()
   
-  # find best robworkstudio build match
+  # find best RobWorkStudio build match
   if(${BTYPE_TMP} STREQUAL "release")
-    # find release compatible robworkstudio installation
+    # find release compatible RobWorkStudio installation
     if( EXISTS ${CFG_ROOT}/RobWorkStudioBuildConfig_minsizerel.cmake )
       SET(${RWS_BUILD_TYPE} minsizerel)
     elseif(EXISTS ${CFG_ROOT}/RobWorkStudioBuildConfig_relwithdebinfo.cmake)

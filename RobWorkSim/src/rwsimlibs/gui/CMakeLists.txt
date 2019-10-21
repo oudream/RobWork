@@ -119,12 +119,12 @@ ENDIF()
 
 #set_source_files_properties(${SrcFiles} PROPERTIES OBJECT_DEPENDS "${UIS_OUT_H}")
 
-ADD_LIBRARY(rwsim_gui ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles} ${UIS_OUT_H})
-TARGET_LINK_LIBRARIES(rwsim_gui ${ROBWORKSTUDIO_LIBRARIES})
+ADD_LIBRARY(sdurwsim_gui ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles} ${UIS_OUT_H})
+TARGET_LINK_LIBRARIES(sdurwsim_gui ${ROBWORKSTUDIO_LIBRARIES})
 
 # Make sure dependencies are build before system
 FOREACH(DEP IN LISTS ROBWORKSTUDIO_LIBRARIES)
 IF(TARGET ${DEP})
-	ADD_DEPENDENCIES(rwsim_gui ${DEP})
+	ADD_DEPENDENCIES(sdurwsim_gui ${DEP})
 ENDIF()
 ENDFOREACH()

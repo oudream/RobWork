@@ -1,6 +1,6 @@
-SET(SUBSYS_NAME rw_assembly)
+SET(SUBSYS_NAME sdurw_assembly)
 set(SUBSYS_DESC "Assembly task and result formats and strategies.")
-SET(SUBSYS_DEPS rw rw_task)
+SET(SUBSYS_DEPS sdurw sdurw_task)
 
 SET(DEFAULT TRUE)
 SET(REASON)
@@ -44,7 +44,7 @@ IF(build)
       	  
     RW_ADD_LIBRARY(${SUBSYS_NAME} assembly ${SRC_FILES} ${SRC_FILES_HPP} ${LOADER_SRC_FILES_HPP})
     RW_ADD_INCLUDES(assembly "rwlibs/assembly" ${SRC_FILES_HPP})
-    TARGET_LINK_LIBRARIES(${SUBSYS_NAME} PUBLIC rw PRIVATE rw_task)
+    TARGET_LINK_LIBRARIES(${SUBSYS_NAME} PUBLIC sdurw PRIVATE sdurw_task)
     ADD_DEPENDENCIES(${SUBSYS_NAME} ${SUBSYS_DEPS})
 
 	IF(CMAKE_VERSION VERSION_GREATER 3.3)

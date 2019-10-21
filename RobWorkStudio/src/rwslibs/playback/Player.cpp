@@ -421,8 +421,6 @@ int Player::getPlayDirection()
     return _direction;
 }
 
-
-
 // Constructors.
 Player::Ptr Player::makeEmptyPlayer()
 {

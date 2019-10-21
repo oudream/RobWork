@@ -1,7 +1,7 @@
-package org.robwork.rwsim;
+package org.robwork.sdurwsim;
 
-import org.robwork.rw.State;
-import org.robwork.rwsim.ThreadSimulatorStepCallbackEnv;
+import org.robwork.sdurw.State;
+import org.robwork.sdurwsim.ThreadSimulatorStepCallbackEnv;
 
 /**
  * Interface for a callback from {@link ThreadSimulator}.

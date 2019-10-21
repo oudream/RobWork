@@ -18,11 +18,11 @@ IF( build AND DEFINED WIN32)
     #MESSAGE(STATUS "RobWorkHardware: ${component_name} component ENABLED")    
 
     ADD_LIBRARY(
-      rwhw_fanucdevice
+      sdurwhw_fanucdevice
       ./FanucDriver.cpp
       ./FanucVirtual.cpp
       ./VelRampProfile.cpp
     )
-    set(ROBWORKHARDWARE_LIBRARIES ${ROBWORKHARDWARE_LIBRARIES} rwhw_fanucdevice PARENT_SCOPE)
+    set(ROBWORKHARDWARE_LIBRARIES ${ROBWORKHARDWARE_LIBRARIES} sdurwhw_fanucdevice PARENT_SCOPE)
 ENDIF()
 

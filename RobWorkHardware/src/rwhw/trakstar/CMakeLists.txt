@@ -1,6 +1,6 @@
 SET(SUBSYS_NAME trakstar )
 SET(SUBSYS_DESC "Calibration of devices" )
-SET(SUBSYS_DEPS rw )
+SET(SUBSYS_DEPS sdurw )
 
 SET(build TRUE)
 
@@ -33,16 +33,16 @@ IF( build )
     LIST(APPEND SRC_HPP Trakstar.hpp)
     
     INCLUDE_DIRECTORIES(${TRAKSTAR_INCLUDE_DIR})
-    RW_ADD_LIBRARY(rwhw_trakstar trakstar ${SRC_CPP} ${SRC_HPP})
-    TARGET_LINK_LIBRARIES(rwhw_trakstar PUBLIC ${ROBWORK_LIBRARIES} ${TRAKSTAR_LIBRARIES})
+    RW_ADD_LIBRARY(sdurwhw_trakstar trakstar ${SRC_CPP} ${SRC_HPP})
+    TARGET_LINK_LIBRARIES(sdurwhw_trakstar PUBLIC ${ROBWORK_LIBRARIES} ${TRAKSTAR_LIBRARIES})
 
     # Make sure dependencies are build before system
     FOREACH(DEP IN LISTS ROBWORK_LIBRARIES TRAKSTAR_LIBRARIES)
         IF(TARGET ${DEP})
-            ADD_DEPENDENCIES(rwhw_trakstar ${DEP})
+            ADD_DEPENDENCIES(sdurwhw_trakstar ${DEP})
         ENDIF()
     ENDFOREACH()
 
     RW_ADD_INCLUDES(trakstar "rwhw/trakstar" ${SRC_HPP})
-    set(ROBWORKHARDWARE_LIBRARIES ${ROBWORKHARDWARE_LIBRARIES} rwhw_trakstar PARENT_SCOPE)
+    set(ROBWORKHARDWARE_LIBRARIES ${ROBWORKHARDWARE_LIBRARIES} sdurwhw_trakstar PARENT_SCOPE)
 ENDIF()

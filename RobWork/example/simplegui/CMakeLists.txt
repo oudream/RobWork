@@ -11,11 +11,11 @@
 cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
 
 # The name of the project. 
-PROJECT(rw_viewer)
+PROJECT(sdurw_viewer)
 
 SET(ROOT ${CMAKE_CURRENT_SOURCE_DIR})
 
-# optionally: point the find package in the direction of the robwork.
+# optionally: point the find package in the direction of the RobWork.
 SET(RobWork_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../cmake)
 FIND_PACKAGE(RobWork REQUIRED)
 

@@ -1,13 +1,13 @@
 # Find and sets up RobWork
 # 
-#  ROBWORK_INCLUDE_DIR - Where to find robwork include sub-directory.
+#  ROBWORK_INCLUDE_DIR - Where to find RobWork include sub-directory.
 #  ROBWORK_LIBRARIES   - List of libraries when using RobWork (includes all libraries that RobWork depends on).
 #  ROBWORK_LIBRARY_DIRS - List of directories where libraries of RobWork are located. 
 #  ROBWORK_FOUND       - True if RobWork was found. (not impl yet)
 #  ROBWORK_CXX_FLAGS   - 
 #  ROBWORK_ROOT	       - If not set it will be set as the root of RobWork
 
-#  Variables that can be set to configure robwork
+#  Variables that can be set to configure RobWork
 #  RW_USE_XERCES - On if you want to use Xerces for loading xml
 #  RW_USE_YAOBI  - On if you use the Yaobi library for collision detection
 #  RW_USE_PQP    - On if you use the PQP library for collision detection
@@ -55,7 +55,7 @@ IF(NOT RW_IN_MODULE_PATH_FOUND )
     SET(CMAKE_MODULE_PATH ${RW_ROOT}/build ${CMAKE_MODULE_PATH})
 ENDIF()
 
-# Try and find the robwork root path by checking the standard paths
+# Try and find the sdurw root path by checking the standard paths
 FIND_FILE(RW_ROOT_PATH_TEST RobWorkSetup.cmake 
 	"${ROBWORK_ROOT}/cmake/"
 	"${RW_ROOT}/cmake/"
@@ -217,7 +217,7 @@ FIND_PACKAGE(BLASLAPACK REQUIRED)
 
 ####################################################################
 # DEPENDENCIES - OPTIONAL
-# these dependencies are optional, which is robwork is not necesarilly built
+# these dependencies are optional, which is sdurw is not necesarilly built
 # with these modules
 # 
 
@@ -229,12 +229,12 @@ FIND_PACKAGE(BLASLAPACK REQUIRED)
 IF(RW_BUILD_WITH_OPENGL)
     FIND_PACKAGE(OpenGL)
     IF(OPENGL_FOUND)
-        SET(RW_DRAWABLE_LIB "rw_opengl")
+        SET(RW_DRAWABLE_LIB "sdurw_opengl")
     ENDIF()
 ENDIF()
 
 #
-# if robwork was build with xerces then we also need to link with it now
+# if sdurw was build with xerces then we also need to link with it now
 #
 IF(RW_BUILD_WITH_XERCES)
     IF(NOT DEFINED XERCESC_INCLUDE_DIR OR NOT XERCESC_INCLUDE_DIR)
@@ -256,7 +256,7 @@ ENDIF()
 
 
 #
-# If robwork was build with yaobi then we also need to link with it now
+# If sdurw was build with yaobi then we also need to link with it now
 #
 IF(RW_BUILD_WITH_YAOBI)
     IF(NOT DEFINED YAOBI_INCLUDE_DIR OR NOT YAOBI_INCLUDE_DIR)
@@ -283,7 +283,7 @@ ELSE ()
 ENDIF()
 
 #
-# If robwork was build with pqp then we also need to link with it now
+# If sdurw was build with pqp then we also need to link with it now
 #
 
 
@@ -313,11 +313,11 @@ ENDIF()
 
 
 #
-# If robwork was build with Lua then we also need to link with it now or not use rw_lua
+# If sdurw was build with Lua then we also need to link with it now or not use sdurw_lua
 #
 SET(RW_USE_RW_LUA True)
 IF(RW_BUILD_WITH_LUA AND RW_BUILD_WITH_SWIG)
-    # if user does not supply lua include dir then try to use that from robwork
+    # if user does not supply lua include dir then try to use that from sdurw
     IF(NOT DEFINED LUA_INCLUDE_DIR OR NOT LUA_INCLUDE_DIR)
         SET(LUA_INCLUDE_DIR ${RW_BUILD_WITH_LUA_INCLUDE_DIR})
     ENDIF()
@@ -352,7 +352,7 @@ IF(RW_BUILD_WITH_LUA AND RW_BUILD_WITH_SWIG)
         #MESSAGE(STATUS "RobWork: Swig ENABLED! Using Swig.")
     ELSE ()
         SET(RW_USE_RW_LUA False)
-        MESSAGE(STATUS "Swig NOT FOUND! Disabling use of rw_lua.")
+        MESSAGE(STATUS "Swig NOT FOUND! Disabling use of sdurw_lua.")
     ENDIF()
     
     #IF(RW_BUILD_WITH_INTERNAL_TOLUA)
@@ -367,7 +367,7 @@ IF(RW_BUILD_WITH_LUA AND RW_BUILD_WITH_SWIG)
     #        MESSAGE(STATUS "FOUND Tolua!")
     #    ELSE ()
     #        SET(RW_USE_RW_LUA False)
-    #        MESSAGE(STATUS "Tolua NOT FOUND! Disabling use of rw_lua.")
+    #        MESSAGE(STATUS "Tolua NOT FOUND! Disabling use of sdurw_lua.")
     #    ENDIF ()
     #ENDIF()
 ELSE ()
@@ -377,19 +377,19 @@ ELSE ()
 ENDIF()
 
 IF(RW_USE_RW_LUA)
-    SET(RW_LUA_LIBRARY "rw_lua")
+    SET(RW_LUA_LIBRARY "sdurw_lua")
 ENDIF()
 
 
 IF (RW_BUILD_WITH_SANDBOX)
     #MESSAGE(STATUS "RobWork: Sandbox ENABLED!")
-    SET(SANDBOX_LIB "rw_sandbox")
+    SET(SANDBOX_LIB "sdurw_sandbox")
 ELSE ()
     MESSAGE(STATUS "RobWork: Sandbox DISABLED! Not built into RobWork!")    
 ENDIF ()
 
 #
-# If robwork was build with Assimp then we also need to link with it now
+# If sdurw was build with Assimp then we also need to link with it now
 #
 
 IF(RW_BUILD_WITH_ASSIMP)
@@ -399,7 +399,7 @@ IF(RW_BUILD_WITH_ASSIMP)
     
     IF(RW_BUILD_WITH_INTERNAL_ASSIMP)
         SET(ASSIMP_INCLUDE_DIR ${RW_BUILD_WITH_ASSIMP_INCLUDE_DIR})
-        SET(ASSIMP_LIBRARIES rw_assimp)
+        SET(ASSIMP_LIBRARIES sdurw_assimp)
         SET(ASSIMP_LIBRARY_DIRS )
     ELSE ()    
         FIND_PACKAGE(Assimp 3.0 REQUIRED)
@@ -411,7 +411,7 @@ ELSE ()
     SET(ASSIMP_INCLUDE_DIR "")
 ENDIF()
 
-# If robwork was build with ZLIB then we also need to link with it now
+# If sdurw was build with ZLIB then we also need to link with it now
 #
 
 IF(RW_BUILD_WITH_ZLIB)
@@ -421,7 +421,7 @@ IF(RW_BUILD_WITH_ZLIB)
     
     IF(RW_BUILD_WITH_INTERNAL_ZLIB)
         SET(ZLIB_INCLUDE_DIR ${RW_BUILD_WITH_ZLIB_INCLUDE_DIR})
-        SET(ZLIB_LIBRARIES rw_zlib)
+        SET(ZLIB_LIBRARIES sdurw_zlib)
         SET(ZLIB_LIBRARY_DIRS )
     ELSE ()    
         FIND_PACKAGE(ZLIB REQUIRED)
@@ -434,7 +434,7 @@ ELSE ()
 ENDIF()
 
 
-# If robwork was build with Minizip then we also need to link with it now
+# If sdurw was build with Minizip then we also need to link with it now
 #
 
 IF(RW_BUILD_WITH_MINIZIP)
@@ -444,7 +444,7 @@ IF(RW_BUILD_WITH_MINIZIP)
     
     IF(RW_BUILD_WITH_INTERNAL_MINIZIP)
         SET(MINIZIP_INCLUDE_DIR ${RW_BUILD_WITH_MINIZIP_INCLUDE_DIR})
-        SET(MINIZIP_LIBRARIES rw_unzip)
+        SET(MINIZIP_LIBRARIES sdurw_unzip)
         SET(MINIZIP_LIBRARY_DIRS )
     ELSE ()    
         FIND_PACKAGE(MINIZIP REQUIRED)
@@ -555,26 +555,26 @@ SET(ROBWORK_LIBRARY_DIRS
 # 
 SET(ROBWORK_LIBRARIES_TMP
     ${SANDBOX_LIB}
-    rw_control
-    rw_algorithms
-    rw_pathplanners
-    rw_pathoptimization
-    rw_task
-    rw_simulation
+    sdurw_control
+    sdurw_algorithms
+    sdurw_pathplanners
+    sdurw_pathoptimization
+    sdurw_task
+    sdurw_simulation
     ${RW_DRAWABLE_LIB}
     ${RW_LUA_LIBRARY}
     ${TOLUA_LIBRARIES}
     ${LUA_LIBRARIES}
-    rw_proximitystrategies
+    sdurw_proximitystrategies
     ${YAOBI_LIBRARIES}
     ${PQP_LIBRARIES}
-    rw
+    sdurw
     ${LAPACK_LIBRARIES} 
     ${BLAS_LIBRARIES}
     ${XERCESC_LIBRARIES}
     ${ASSIMP_LIBRARIES}
     ${Boost_LIBRARIES}
-    rw_qhull
+    sdurw_qhull
     ${MINIZIP_LIBRARIES}
     ${ZLIB_LIBRARIES}
 )

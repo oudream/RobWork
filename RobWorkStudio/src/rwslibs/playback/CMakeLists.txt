@@ -1,6 +1,6 @@
-SET(SUBSYS_NAME rws_playback)
+SET(SUBSYS_NAME sdurws_playback)
 set(SUBSYS_DESC "A playback plugin")
-SET(SUBSYS_DEPS rws)
+SET(SUBSYS_DEPS sdurws)
 
 SET(build TRUE)
 RW_SUBSYS_OPTION(build ${SUBSYS_NAME} ${SUBSYS_DESC} ON)

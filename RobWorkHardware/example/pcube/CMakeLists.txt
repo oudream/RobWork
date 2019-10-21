@@ -2,11 +2,11 @@
 
 IF(COMPONENT_pcube_ENABLE AND COMPONENT_CAN_ENABLE)
     set(LibraryList
-      rwhw_pcube 
-      rwhw_can 
-      ntcan.lib
-      rwhw_serialport
-      ${ROBWORK_LIBRARIES}
+        sdurwhw_pcube 
+        sdurwhw_can 
+        ntcan.lib
+        sdurwhw_serialport
+        ${ROBWORK_LIBRARIES}
     )
     
     LINK_DIRECTORIES(${ESDCAN_LIB_DIR})

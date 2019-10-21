@@ -1,6 +1,6 @@
-SET(SUBSYS_NAME rws_gtask)
+SET(SUBSYS_NAME sdurws_gtask)
 set(SUBSYS_DESC "A sensor view plugin")
-SET(SUBSYS_DEPS rws)
+SET(SUBSYS_DEPS sdurws)
 
 SET(build TRUE)
 RW_SUBSYS_OPTION(build ${SUBSYS_NAME} ${SUBSYS_DESC} ON)
@@ -35,6 +35,6 @@ IF(build)
 
     RWS_ADD_PLUGIN(${SUBSYS_NAME} plugins MODULE ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles} ${UIS_OUT_H})
     RW_ADD_INCLUDES(plugins "rwslibs/gtask" ${SRC_FILES_HPP})
-    TARGET_LINK_LIBRARIES(${SUBSYS_NAME} ${ROBWORKSTUDIO_LIBRARIES} rw_task rw_proximitystrategies ${ROBWORK_LIBRARIES})
+    TARGET_LINK_LIBRARIES(${SUBSYS_NAME} ${ROBWORKSTUDIO_LIBRARIES} sdurw_task sdurw_proximitystrategies ${ROBWORK_LIBRARIES})
     ADD_DEPENDENCIES(${SUBSYS_NAME} ${SUBSYS_DEPS})
 ENDIF()

@@ -34,7 +34,7 @@ SET(TEST_LIBRARIES
 )
 
 IF(RWSIM_HAVE_ODE)
-	SET(TEST_LIBRARIES rwsim_ode ${ODE_LIBRARY} ${TEST_LIBRARIES})
+	SET(TEST_LIBRARIES sdurwsim_ode ${ODE_LIBRARY} ${TEST_LIBRARIES})
 ENDIF()
 
 SET(COMMON_TEST_SRC
@@ -46,39 +46,39 @@ SET(DYNAMICS_TEST_SRC
 )
 
 # Repeat for each test 
-ADD_EXECUTABLE( rwsim_common-test ${DO_EXCLUDE} test-main.cpp ${COMMON_TEST_SRC})       
-TARGET_LINK_LIBRARIES( rwsim_common-test ${TEST_LIBRARIES} )
-ADD_TEST( rwsim_common-test ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/rwsim_common-test )
+ADD_EXECUTABLE( sdurwsim_common-test ${DO_EXCLUDE} test-main.cpp ${COMMON_TEST_SRC})       
+TARGET_LINK_LIBRARIES( sdurwsim_common-test ${TEST_LIBRARIES} )
+ADD_TEST( sdurwsim_common-test ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/sdurwsim_common-test )
 
-ADD_EXECUTABLE( rwsim_dynamics-test ${DO_EXCLUDE} test-main.cpp ${DYNAMICS_TEST_SRC})       
-TARGET_LINK_LIBRARIES( rwsim_dynamics-test ${TEST_LIBRARIES} )
-ADD_TEST( rwsim_dynamics-test ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/rwsim_dynamics-test )
+ADD_EXECUTABLE( sdurwsim_dynamics-test ${DO_EXCLUDE} test-main.cpp ${DYNAMICS_TEST_SRC})       
+TARGET_LINK_LIBRARIES( sdurwsim_dynamics-test ${TEST_LIBRARIES} )
+ADD_TEST( sdurwsim_dynamics-test ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/sdurwsim_dynamics-test )
 
-ADD_EXECUTABLE( rwsim_tasksimulation-test ${DO_EXCLUDE} test-main.cpp tasksimulation/GraspTaskSimulation.cpp)       
-TARGET_LINK_LIBRARIES( rwsim_tasksimulation-test ${TEST_LIBRARIES} )
-ADD_TEST( rwsim_tasksimulation-test ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/rwsim_tasksimulation-test )
+ADD_EXECUTABLE( sdurwsim_tasksimulation-test ${DO_EXCLUDE} test-main.cpp tasksimulation/GraspTaskSimulation.cpp)       
+TARGET_LINK_LIBRARIES( sdurwsim_tasksimulation-test ${TEST_LIBRARIES} )
+ADD_TEST( sdurwsim_tasksimulation-test ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/sdurwsim_tasksimulation-test )
 
-ADD_EXECUTABLE( rwsim_sensors-test ${DO_EXCLUDE} test-main.cpp sensors/FTSensorTest.cpp sensors/TactileArraySensorTest.cpp)       
-TARGET_LINK_LIBRARIES( rwsim_sensors-test ${TEST_LIBRARIES} )
-ADD_TEST( rwsim_sensors-test ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/rwsim_sensors-test )
+ADD_EXECUTABLE( sdurwsim_sensors-test ${DO_EXCLUDE} test-main.cpp sensors/FTSensorTest.cpp sensors/TactileArraySensorTest.cpp)       
+TARGET_LINK_LIBRARIES( sdurwsim_sensors-test ${TEST_LIBRARIES} )
+ADD_TEST( sdurwsim_sensors-test ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/sdurwsim_sensors-test )
 
 IF(RWSIM_HAVE_ODE)
-	ADD_EXECUTABLE( rwsim_ode-test ${DO_EXCLUDE} test-main.cpp ode/ODEControlTest.cpp ) #  ode/ODESimpleTest.cpp        
-	TARGET_LINK_LIBRARIES( rwsim_ode-test ${TEST_LIBRARIES} )
-	ADD_TEST( rwsim_ode-test ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/rwsim_ode-test )
+	ADD_EXECUTABLE( sdurwsim_ode-test ${DO_EXCLUDE} test-main.cpp ode/ODEControlTest.cpp ) #  ode/ODESimpleTest.cpp        
+	TARGET_LINK_LIBRARIES( sdurwsim_ode-test ${TEST_LIBRARIES} )
+	ADD_TEST( sdurwsim_ode-test ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/sdurwsim_ode-test )
 ENDIF()
 
 ADD_CUSTOM_TARGET(tests ctest -V 
-  DEPENDS rwsim_common-test ${TEST_DEPENDENCIES}
+  DEPENDS sdurwsim_common-test ${TEST_DEPENDENCIES}
     WORKING_DIRECTORY "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
 
 INSTALL(TARGETS 
-            rwsim_common-test 
+            sdurwsim_common-test 
         DESTINATION ${RWSIM_INSTALL_DIR}/test)
 
 IF(RWSIM_HAVE_ODE)
 	INSTALL(TARGETS 
-            rwsim_ode-test
+            sdurwsim_ode-test
         DESTINATION ${RWSIM_INSTALL_DIR}/test)
 ENDIF()
 

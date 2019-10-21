@@ -51,10 +51,10 @@ ENDIF()
 
 
 #add_executable(GraspTest grasptest.cpp)
-#target_link_libraries(GraspTest rwsim ${LibraryList})
+#target_link_libraries(GraspTest sdurwsim ${LibraryList})
 
 #add_executable(ForceClosureTest forceclosuretest.cpp)
-#target_link_libraries(ForceClosureTest rwsim ${LibraryList})
+#target_link_libraries(ForceClosureTest sdurwsim ${LibraryList})
 
 LINK_DIRECTORIES( ${BulletLinkDir} ${OdeLinkDir} )
 INCLUDE_DIRECTORIES( ${BulletIncludes} ${OdeIncludes} )
@@ -65,7 +65,7 @@ add_executable(ModelPropertyTest src/ModelPropertyTest.cpp)
 target_link_libraries(ModelPropertyTest ${ROBWORK_LIBRARIES})
 
 add_executable(RWSimTest src/RWSimTest.cpp)
-target_link_libraries(RWSimTest rwsim ${ROBWORK_LIBRARIES})
+target_link_libraries(RWSimTest sdurwsim ${ROBWORK_LIBRARIES})
 
 add_executable(UniformSelectGrasps src/UniformSelectGrasps.cpp)
 target_link_libraries(UniformSelectGrasps ${ROBWORK_LIBRARIES})
@@ -93,13 +93,13 @@ add_executable(FindRegionSE3 src/FindRegionSE3.cpp)
 target_link_libraries(FindRegionSE3 ${ROBWORK_LIBRARIES})
 
 add_executable(PathFilter src/PathFilter.cpp)
-target_link_libraries(PathFilter rwsim ${ROBWORK_LIBRARIES})
+target_link_libraries(PathFilter sdurwsim ${ROBWORK_LIBRARIES})
 
 add_executable(SimulateTask src/SimulateTask.cpp)
-target_link_libraries(SimulateTask rwsim ${ROBWORK_LIBRARIES} ${ROBWORKSIM_LIBRARIES})
+target_link_libraries(SimulateTask sdurwsim ${ROBWORK_LIBRARIES} ${ROBWORKSIM_LIBRARIES})
 
 add_executable(SimulateTaskLB src/SimulateTaskLB.cpp)
-target_link_libraries(SimulateTaskLB rwsim ${ROBWORK_LIBRARIES} ${ROBWORKSIM_LIBRARIES})
+target_link_libraries(SimulateTaskLB sdurwsim ${ROBWORK_LIBRARIES} ${ROBWORKSIM_LIBRARIES})
 
 add_executable(GTaskStats src/GTaskStats.cpp)
 target_link_libraries(GTaskStats ${ROBWORK_LIBRARIES})
@@ -132,16 +132,16 @@ add_executable(ToComma src/ToComma.cpp)
 target_link_libraries(ToComma ${ROBWORK_LIBRARIES})
 
 #add_executable(ObjFeatureGen src/ObjFeatureGen.cpp)
-#target_link_libraries(ObjFeatureGen rwsim ${ROBWORK_LIBRARIES} ${ROBWORKSIM_LIBRARIES})
+#target_link_libraries(ObjFeatureGen sdurwsim ${ROBWORK_LIBRARIES} ${ROBWORKSIM_LIBRARIES})
 
 add_executable(danniToGtable src/danniToGtable.cpp)
 target_link_libraries(danniToGtable ${ROBWORK_LIBRARIES})
 
 add_executable(cut src/cut.cpp src/CutActionParam.cpp)
-target_link_libraries(cut rwsim ${ROBWORK_LIBRARIES} ${ROBWORKSIM_LIBRARIES})
+target_link_libraries(cut sdurwsim ${ROBWORK_LIBRARIES} ${ROBWORKSIM_LIBRARIES})
 
 add_executable(DBCutFiltering src/DBCutFiltering.cpp src/CutActionParam.cpp)
-target_link_libraries(DBCutFiltering rwsim ${ROBWORK_LIBRARIES} ${ROBWORKSIM_LIBRARIES})
+target_link_libraries(DBCutFiltering sdurwsim ${ROBWORK_LIBRARIES} ${ROBWORKSIM_LIBRARIES})
 
 add_executable(SimulateAssembly src/SimulateAssembly.cpp)
 target_link_libraries(SimulateAssembly ${ROBWORK_LIBRARIES} ${ROBWORKSIM_LIBRARIES})
@@ -150,7 +150,7 @@ add_executable(GenerateCircularPiHTasks src/GenerateCircularPiHTasks.cpp)
 target_link_libraries(GenerateCircularPiHTasks ${ROBWORK_LIBRARIES})
 
 #add_executable(VisGraB VisGraB.cpp VisGraBGraspTask.cpp VisGraBBenchmark.cpp SDHInvKinSolver.cpp IKSoftCSolver.cpp)
-#target_link_libraries(VisGraB rwsim ${ROBWORK_LIBRARIES} ${ROBWORKSIM_LIBRARIES})
+#target_link_libraries(VisGraB sdurwsim ${ROBWORK_LIBRARIES} ${ROBWORKSIM_LIBRARIES})
 #MESSAGE("${ROBWORK_LIBRARIES}")
 
 # add_executable(RemoteRobworkBuilding RemoteRobworkBuilding.cpp)
@@ -158,4 +158,4 @@ target_link_libraries(GenerateCircularPiHTasks ${ROBWORK_LIBRARIES})
 
 
 #add_executable(RestingPoseSimulation RestingPoseSimulation.cpp)
-#target_link_libraries(RestingPoseSimulation rwsim ${ROBWORK_LIBRARIES})
+#target_link_libraries(RestingPoseSimulation sdurwsim ${ROBWORK_LIBRARIES})

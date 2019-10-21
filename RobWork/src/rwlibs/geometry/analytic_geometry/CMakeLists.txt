@@ -1,9 +1,9 @@
-RW_ADD_LIBRARY(rw_analytic_geometry rw_analytic_geometry QuadraticTestObjects.cpp QuadraticTestObjects.hpp)
-TARGET_LINK_LIBRARIES(rw_analytic_geometry PUBLIC rw)
+RW_ADD_LIBRARY(sdurw_analytic_geometry sdurw_analytic_geometry QuadraticTestObjects.cpp QuadraticTestObjects.hpp)
+TARGET_LINK_LIBRARIES(sdurw_analytic_geometry PUBLIC sdurw)
 
-RW_ADD_LIBRARY(rw_analytic_geometry.rwplugin rw_analytic_geometry MODULE AnalyticGeometryPlugin.cpp AnalyticGeometryPlugin.hpp)
-TARGET_LINK_LIBRARIES(rw_analytic_geometry.rwplugin PRIVATE rw_analytic_geometry PUBLIC rw)
+RW_ADD_LIBRARY(sdurw_analytic_geometry.rwplugin sdurw_analytic_geometry MODULE AnalyticGeometryPlugin.cpp AnalyticGeometryPlugin.hpp)
+TARGET_LINK_LIBRARIES(sdurw_analytic_geometry.rwplugin PRIVATE sdurw_analytic_geometry PUBLIC sdurw)
 
 IF(CMAKE_VERSION VERSION_GREATER 3.3)
-	SET_TARGET_PROPERTIES(rw_analytic_geometry PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
+	SET_TARGET_PROPERTIES(sdurw_analytic_geometry PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
 ENDIF()
