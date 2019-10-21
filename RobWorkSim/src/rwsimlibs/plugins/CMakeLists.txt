@@ -87,7 +87,7 @@ endif()
 # The shared library to build:
 add_library(SimUtilityPlugin MODULE ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles})
 target_link_libraries(SimUtilityPlugin
-                      sdurwsim_gui
+                      rwsim_gui
                       ${PYTHON_LIBRARIES}
                       ${ROBWORKSIM_LIBRARIES}
                       ${ROBWORKSTUDIO_LIBRARIES})
@@ -168,17 +168,17 @@ else()
                     ${RWSIM_ROOT}/src/gfx/RWSimPlugin.qrc)
 endif()
 if(RWSIM_HAVE_LUA)
-  set(RWSIM_LUA_LIB sdurwsim_lua_s)
+  set(RWSIM_LUA_LIB rwsim_lua_s)
   set(RWS_LUAPL_LIBRARIES
-      sdurws_luapl
-      sdurws_sensors
-      sdurws_planning
-      sdurws_propertyview
-      sdurws_playback
-      sdurws_treeview
-      sdurws_jog
-      sdurws_log
-      sdurws_robworkstudioapp)
+      rws_luapl
+      rws_sensors
+      rws_planning
+      rws_propertyview
+      rws_playback
+      rws_treeview
+      rws_jog
+      rws_log
+      rws_rwstudioapp)
 endif()
 
 add_library(RWSimPlugin MODULE
@@ -190,13 +190,13 @@ add_library(RWSimPlugin MODULE
 # ${RccSrcFiles_RWSimPlugin})
 target_link_libraries(RWSimPlugin
                       ${RWS_LUAPL_LIBRARIES}
-                      sdurwsim_gui
+                      rwsim_gui
                       ${RWSIM_LUA_LIB}
                       ${PYTHON_LIBRARIES}
                       ${ROBWORKSIM_LIBRARIES}
                       ${ROBWORKSTUDIO_LIBRARIES}
                       ${ROBWORK_LIBRARIES})
-add_dependencies(RWSimPlugin ${RWSIM_LUA_LIB} sdurwsim_gui)
+add_dependencies(RWSimPlugin ${RWSIM_LUA_LIB} rwsim_gui)
 # Message(" LIBS :  ${ROBWORKSIM_LIBRARIES} ")
 
 # ##############################################################################
@@ -245,8 +245,8 @@ add_library(SimTaskPlugin MODULE
 # ADD_LIBRARY(SimTaskPluginStatic STATIC ${SrcFiles} ${MocSrcFiles}
 # ${RccSrcFiles_SimTaskPlugin})
 target_link_libraries(SimTaskPlugin
-                      sdurwsim_gui
-                      sdurw_task
+                      rwsim_gui
+                      rw_task
                       ${PYTHON_LIBRARIES}
                       ${ROBWORKSIM_LIBRARIES}
                       ${ROBWORKSTUDIO_LIBRARIES}
@@ -273,7 +273,7 @@ endif()
 # ADD_LIBRARY(SimTaskVisPlugin MODULE ${SrcFiles} ${MocSrcFiles}  ${RccSrcFiles}
 # ${UIS_OUT_H}) ADD_LIBRARY(SimTaskVisPluginStatic STATIC ${SrcFiles}
 # ${MocSrcFiles}  ${RccSrcFiles}) TARGET_LINK_LIBRARIES(SimTaskVisPlugin
-# sdurwsim_ode ode sdurwsim_gui sdurw_task ${ROBWORKSIM_LIBRARIES}
+# rwsim_ode ode rwsim_gui rw_task ${ROBWORKSIM_LIBRARIES}
 # ${ROBWORKSTUDIO_LIBRARIES} ${ROBWORK_LIBRARIES})
 
 # ##############################################################################
@@ -311,8 +311,8 @@ add_library(EngineTestPlugin MODULE
             ${RccSrcFiles}
             ${UIS_OUT_H})
 target_link_libraries(EngineTestPlugin
-                      sdurwsim_test
-                      sdurwsim_gui
+                      rwsim_test
+                      rwsim_gui
                       ${PYTHON_LIBRARIES}
                       ${ROBWORKSIM_LIBRARIES}
                       ${ROBWORKSTUDIO_LIBRARIES})
