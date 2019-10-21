@@ -810,7 +810,7 @@ Custom
 ^^^^^^
 
 The *Custom* type allows the user to add user-defined geometry to RobWork and use it in the WorkCell definition.
-The user must register an extension to the *rw.loaders.GeometryFactory* extension point, for instance by providing a :ref:`RobWork plugin <plugins_rw>`.
+The user must register an extension to the *rw.loaders.GeometryFactory* extension point, for instance by providing a :ref:`RobWork plugin <plugins_sdurw>`.
 The extension should have a property called *type*.
 It is this property that is used to match the extension with the **type** parameter in the *Custom* tag.
 If no *type* property is found, the name of the extension itself is used instead.
