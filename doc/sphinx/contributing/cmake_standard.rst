@@ -1,123 +1,142 @@
-**********************
+.. role:: raw-html(raw)
+    :format: html
+
 CMake codeing Standard
-**********************
+======================
 
 In order to make RobWork more streamlined, maintainable and avoid errors, follow the standard below
 
 
 1. General Formating Rules
-##########################
+**************************
 
-#### 1.1. Lowercase cmake commands
+**1.1. Lowercase cmake commands** :raw-html:`<br />`
 All native CMake Commands must be in lower case.
-```cmake
-#YES
-find_package(foo REQUIRED)
-#NO
-FIND_PACKAGE(foo REQUIRED)
-```
-#### 1.2. Uppercase macros
-All RobWork Macros must be in all uppercase to make a clear distinction between project commands and CMake commands
 
-#### 1.3 Uppercase variables
+.. code-block:: cmake
+
+   #YES
+   find_package(foo REQUIRED)
+   #NO
+   FIND_PACKAGE(foo REQUIRED)
+
+
+**1.2. Lowercase macros** :raw-html:`<br />`
+
+All RobWork Macros must be in all lowercase.
+
+**1.3 Uppercase variables** :raw-html:`<br />`
 All variables must be in all uppercase
 
-#### 1.4. Indentation
+**1.4. Indentation** :raw-html:`<br />`
 Indent all code correctly, i.e. the body of
 
-    if/else/endif
-    foreach/endforeach
-    while/endwhile
-    macro/endmacro
-    function/endfunction
+* if/else/endif
+* foreach/endforeach
+* while/endwhile
+* macro/endmacro
+* function/endfunction
+
 Use 2 spaces for indenting
 
-#### 1.5. End Commands
+**1.5. End Commands** :raw-html:`<br />`
 To make the code easier to read, use empty commands for endforeach(), endif(), endfunction(), endmacro() and endwhile(). Also, use empty else() commands.
 
 For example, do this:
-```cmake
-if(FOOVAR)
-   some_command(...)
-else()
-   another_command(...)
-endif()
-```
-and not this:
-```cmake
-if(BARVAR)
-   some_other_command(...)
-else(BARVAR)
-    another_command(...)
-endif(BARVAR)
-```
 
-#### 1.6. Keep lists sorted
+.. code-block:: cmake
+
+   if(FOOVAR)
+      some_command(...)
+   else()
+      another_command(...)
+   endif()
+
+and not this:
+
+.. code-block:: cmake
+
+   if(BARVAR)
+      some_other_command(...)
+   else(BARVAR)
+      another_command(...)
+   endif(BARVAR)
+
+
+**1.6. Keep lists sorted** :raw-html:`<br />`
 Whenever using a list of items (i.e. in find_package(COMPONENTS ...), add_library(Target ...) or files which should be build or installed) keep them alphabetically sorted. This improves readability when looking for specific items. (There are exceptions which require a specific custom order like the list of projects inside a stack).
 
-### 2. Conditions and Variables
+2. Conditions and Variables
+***************************
 
-#### 2.1 Always quote variable that represent a string:
-```cmake
-set(myvar "foo")
-if("${myvar}" STREQUAL "bar")
-# ...
-endif()
-```
-#### 2.2 Do not quote variable that are booleans:
-```cmake
-set(mybvar ON)
-set(mybvar OFF)
-if(${myvar})
-# ...
-endif()
-```
+**2.1 Always quote variable that represent a string:** :raw-html:`<br />`
 
-#### 2.3 Use if(DEFINED varname) to check if a variable is set:
-```cmake
-if(DEFINED myvar)
-#  ...
-endif()
-```
+.. code-block:: cmake
 
-#### 2.4 Use if(varname) to check it a variable has a non-empty value:
-```cmake
-if(myvar)
-#  ...
-endif()
-```
+   set(myvar "foo")
+   if("${myvar}" STREQUAL "bar")
+   # ...
+   endif()
 
-#### 2.5 Path Variables
+**2.2 Do not quote variable that are booleans:** :raw-html:`<br />`
+
+.. code-block:: cmake
+
+   set(mybvar ON)
+   set(mybvar OFF)
+   if(${myvar})
+   # ...
+   endif()
+
+**2.3 Use if(DEFINED varname) to check if a variable is set:** :raw-html:`<br />`
+
+.. code-block:: cmake
+
+   if(DEFINED myvar)
+   #  ...
+   endif()
+
+**2.4 Use if(varname) to check it a variable has a non-empty value:** :raw-html:`<br />`
+
+.. code-block:: cmake
+
+   if(myvar)
+   #  ...
+   endif()
+
+**2.5 Path Variables** :raw-html:`<br />`
 When storing paths in variables, do NOT have the cmake variables end up with a slash:
 
-```cmake
-# YES:
-set(_my_path "path/to/foo")
-set(_my_other_path "${_my_path}/${_my_var}")
-# NO:
-set(my_path "path/to/foo/")
-set(_my_other_path "${_my_path}${_my_var}")   # wrong: this is ugly
-```
+.. code-block:: cmake
 
-### 3. Robwork CMake setup
+   # YES:
+   set(_my_path "path/to/foo")
+   set(_my_other_path "${_my_path}/${_my_var}")
+   # NO:
+   set(my_path "path/to/foo/")
+   set(_my_other_path "${_my_path}${_my_var}")   # wrong: this is ugly
 
-#### 3.1 Module naming
-modules are named with prefix sdu, ie. **sdurw**, **sdurws**, **sdurwhw** and **sdurwsim**. sub-modules are named module_"nameOfSubModule".
+3. Robwork CMake setup
+**********************
 
-#### 3.2. File header for targets
+**3.1 Module naming** :raw-html:`<br />`
+Modules are named with prefix sdu, ie. **sdurw**, **sdurws**, **sdurwhw** and **sdurwsim**. sub-modules are named module_"nameOfSubModule".
+
+**3.2. File header for targets** :raw-html:`<br />`
 When a CMake file is compiling a sub-module the CMake file must include the following lines in the beginning of the file
 
-```cmake
-SET(SUBSYS_NAME module_name )
-SET(SUBSYS_DESC "A description of what this module is used for" )
-SET(SUBSYS_DEPS dependency1 dependency2 ... )
-```
+.. code-block:: cmake
 
-#### 3.5. Naming of project Variables and Macros
+   SET(SUBSYS_NAME module_name )
+   SET(SUBSYS_DESC "A description of what this module is used for" )
+   SET(SUBSYS_DEPS dependency1 dependency2 ... )
+
+**3.5. Naming of project Variables and Macros** :raw-html:`<br />`
 The Name of a project wide variable or macro must be named with the acronym of the project as prefix
-```cmake
-#YES
-set(RWS_NAME_OF_VARIABLE ...)
-#NO
-set(NAME_OF_VARIABLE ...)
-```
+
+.. code-block:: cmake
+
+   #YES
+   set(RWS_NAME_OF_VARIABLE ...)
+   #NO
+   set(NAME_OF_VARIABLE ...)
