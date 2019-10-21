@@ -160,9 +160,8 @@ bool PyPlugin::initialize (std::string pythonFilePath, std::string pluginName)
         for(int i = 0; i < argc ; i++) {
             delete argv_[i];
         }
-        delete [] argv_;
-        
         #ifdef RWS_USE_PYTHON3
+            delete [] argv_;
             delete program;
         #endif
     }
