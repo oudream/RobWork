@@ -1,4 +1,4 @@
-.. _plugins_rws:
+.. _plugins_sdurws:
 
 **************************
 GUI Plugins: RobWorkStudio
@@ -8,7 +8,7 @@ The RobWorkStudio GUI is based on Qt, and through the use of Qt plugins,
 it is possible to extend RobWorkStudio with user-defined features and behaviour.
 Notice that this is very different from the RobWork plugins that makes it possible to extend
 the core libraries with new features.
-Please see :ref:`plugins_rw` for more information about that subject.
+Please see :ref:`plugins_sdurw` for more information about that subject.
 
 GUI plugins must inherit the rws::RobWorkStudioPlugin class
 (see `C++ API <../../apidoc/cpp/doxygen/classrws_1_1RobWorkStudioPlugin.html>`__)

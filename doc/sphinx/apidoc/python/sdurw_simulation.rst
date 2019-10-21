@@ -1,7 +1,7 @@
-rw_simulation module
+sdurw_simulation module
 =====================
 
-.. automodule:: rw_simulation
+.. automodule:: sdurw_simulation
     :members:
     :undoc-members:
     :show-inheritance:

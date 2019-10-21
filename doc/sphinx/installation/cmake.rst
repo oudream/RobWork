@@ -41,42 +41,42 @@ Robwork Options
     - RW_BUILD_TESTS=OFF #Seams no to work
 - SWIG_EXECUTABLE=%SWIG_ROOT%\swig.exe
 
-- BUILD_rw=ON
-- BUILD_rw_algorithms=ON
-- BUILD_rw_assembly=ON
-- BUILD_rw_calibration=ON
-- BUILD_rw_control=ON
-- BUILD_rw_opengl=ON
-- BUILD_rw_mathematica  OFF
-- BUILD_rw_proximitystrategies=ON
-- BUILD_rw_pathoptimization=ON
-- BUILD_rw_pathplanners=ON
-- BUILD_rw_task=ON
-- BUILD_rw_simulation=ON
-- BUILD_rw_lua=ON
-- BUILD_rw_python=ON
-- BUILD_rw_java=ON
-- BUILD_rw_softbody=OFF
-- BUILD_rw_csg=ON
+- BUILD_sdurw=ON
+- BUILD_sdurw_algorithms=ON
+- BUILD_sdurw_assembly=ON
+- BUILD_sdurw_calibration=ON
+- BUILD_sdurw_control=ON
+- BUILD_sdurw_opengl=ON
+- BUILD_sdurw_mathematica  OFF
+- BUILD_sdurw_proximitystrategies=ON
+- BUILD_sdurw_pathoptimization=ON
+- BUILD_sdurw_pathplanners=ON
+- BUILD_sdurw_task=ON
+- BUILD_sdurw_simulation=ON
+- BUILD_sdurw_lua=ON
+- BUILD_sdurw_python=ON
+- BUILD_sdurw_java=ON
+- BUILD_sdurw_softbody=OFF
+- BUILD_sdurw_csg=ON
 
 RobWorkStudio Options
 ---------------------
 
-- BUILD_rws_atask=ON
-- BUILD_rws_gtask=ON
-- BUILD_rws_jog=ON
-- BUILD_rws_log=ON
-- BUILD_rws_playback=ON
-- BUILD_rws_propertyview=ON
-- BUILD_rws_treeview=ON
-- BUILD_rws_planning=ON
-- BUILD_rws_sensors=ON
-- BUILD_rws_luaeditor=ON
-- BUILD_rws_luapl=ON
-- BUILD_rws_rwstudioapp=ON
-- BUILD_rws_lua=ON
-- BUILD_rws_java=ON
-- BUILD_rws_python=ON
+- BUILD_sdurws_atask=ON
+- BUILD_sdurws_gtask=ON
+- BUILD_sdurws_jog=ON
+- BUILD_sdurws_log=ON
+- BUILD_sdurws_playback=ON
+- BUILD_sdurws_propertyview=ON
+- BUILD_sdurws_treeview=ON
+- BUILD_sdurws_planning=ON
+- BUILD_sdurws_sensors=ON
+- BUILD_sdurws_luaeditor=ON
+- BUILD_sdurws_luapl=ON
+- BUILD_sdurws_robworkstudioapp=ON
+- BUILD_sdurws_lua=ON
+- BUILD_sdurws_java=ON
+- BUILD_sdurws_python=ON
 - RWS_SHARED_LIBS=ON
 - RWS_USE_STATIC_LINK_COMPONENTS=OFF
 - RWS_USE_STATIC_LINK_PLUGINS=OFF
@@ -88,11 +88,11 @@ RobWorkSim Options
 ------------------
 
 
-- BUILD_rwsim_bullet=ON
+- BUILD_sdurwsim_bullet=ON
 - Bullet will be compiled with single precision.
-- BUILD_rwsim_luai=ON
-- BUILD_rwsim_java=ON
-- BUILD_rwsim_python=ON
+- BUILD_sdurwsim_luai=ON
+- BUILD_sdurwsim_java=ON
+- BUILD_sdurwsim_python=ON
 - RWSIM_SHARED_LIBS=ON
 - USE_WERROR=true
 - SWIG_EXECUTABLE=%SWIG_ROOT%\swig.exe
