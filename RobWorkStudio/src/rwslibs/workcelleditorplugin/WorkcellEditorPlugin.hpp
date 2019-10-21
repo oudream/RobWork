@@ -24,7 +24,7 @@ namespace rws {
     class WorkcellEditorWindow;
 
     /**
-     * @brief this plugin provides access to the workcell editor of robworkstudio
+     * @brief this plugin provides access to the workcell editor of RobWorkStudio
      */
     class WorkcellEditorPlugin : public RobWorkStudioPlugin {
     Q_OBJECT

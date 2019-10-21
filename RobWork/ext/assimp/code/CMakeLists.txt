@@ -747,12 +747,12 @@ INCLUDE_DIRECTORIES(
 )
 
 IF (NOT BUILD_SHARED_LIBS)
-	ADD_LIBRARY( rw_assimp STATIC ${assimp_src} )
+	ADD_LIBRARY( sdurw_assimp STATIC ${assimp_src} )
 ELSE()
-	ADD_LIBRARY( rw_assimp SHARED ${assimp_src} )
+	ADD_LIBRARY( sdurw_assimp SHARED ${assimp_src} )
 ENDIF()
 
-TARGET_LINK_LIBRARIES(rw_assimp ${ZLIB_LIBRARIES} ${MINIZIP_LIBRARIES} ${OPENDDL_PARSER_LIBRARIES} )
+TARGET_LINK_LIBRARIES(sdurw_assimp ${ZLIB_LIBRARIES} ${MINIZIP_LIBRARIES} ${OPENDDL_PARSER_LIBRARIES} )
 
 if( MSVC )
   # in order to prevent DLL hell, each of the DLLs have to be suffixed with the major version and msvc prefix
@@ -774,22 +774,22 @@ if( MSVC )
     set(MSVC_PREFIX "vc150")
   endif()
   set(LIBRARY_SUFFIX "${ASSIMP_LIBRARY_SUFFIX}-${MSVC_PREFIX}-mt" CACHE STRING "the suffix for the assimp windows library")
-  TARGET_COMPILE_OPTIONS(rw_assimp PRIVATE /wd4267) # Disable the Windows warnings for conversion of size_t to a smaller integer type.
-  TARGET_COMPILE_OPTIONS(rw_assimp PRIVATE /wd4244) # Disable the Windows warnings for conversion to integer types with possible loss of data.
-  TARGET_COMPILE_OPTIONS(rw_assimp PRIVATE /wd4477) # Disable the Windows warnings for sprintf argument of type size_t instead of int.
+  TARGET_COMPILE_OPTIONS(sdurw_assimp PRIVATE /wd4267) # Disable the Windows warnings for conversion of size_t to a smaller integer type.
+  TARGET_COMPILE_OPTIONS(sdurw_assimp PRIVATE /wd4244) # Disable the Windows warnings for conversion to integer types with possible loss of data.
+  TARGET_COMPILE_OPTIONS(sdurw_assimp PRIVATE /wd4477) # Disable the Windows warnings for sprintf argument of type size_t instead of int.
 endif()
 
-SET_TARGET_PROPERTIES( rw_assimp PROPERTIES
+SET_TARGET_PROPERTIES( sdurw_assimp PROPERTIES
   VERSION ${ASSIMP_VERSION}
   SOVERSION ${ASSIMP_SOVERSION} # use full version
-  OUTPUT_NAME rw_assimp #${LIBRARY_SUFFIX}
+  OUTPUT_NAME sdurw_assimp #${LIBRARY_SUFFIX}
 )
 
 if (APPLE)
-  SET_TARGET_PROPERTIES( rw_assimp PROPERTIES INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/${LIB_INSTALL_DIR}")
+  SET_TARGET_PROPERTIES( sdurw_assimp PROPERTIES INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/${LIB_INSTALL_DIR}")
 endif()
 
-INSTALL( TARGETS rw_assimp
+INSTALL( TARGETS sdurw_assimp
   LIBRARY DESTINATION ${LIB_INSTALL_DIR}
   ARCHIVE DESTINATION ${LIB_INSTALL_DIR}
   RUNTIME DESTINATION ${BIN_INSTALL_DIR}

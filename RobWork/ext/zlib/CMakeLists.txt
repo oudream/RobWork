@@ -102,10 +102,10 @@ set(ZLIB_SRCS
     zutil.c
 )
 
-add_library(rw_zlib STATIC ${ZLIB_SRCS} ${ZLIB_PUBLIC_HDRS} ${ZLIB_PRIVATE_HDRS})
+add_library(sdurw_zlib STATIC ${ZLIB_SRCS} ${ZLIB_PUBLIC_HDRS} ${ZLIB_PRIVATE_HDRS})
 IF(MSVC)
-	target_compile_options(rw_zlib PRIVATE /wd4267)
+	target_compile_options(sdurw_zlib PRIVATE /wd4267)
 ENDIF()
 
-INSTALL(TARGETS rw_zlib ARCHIVE DESTINATION "${LIB_INSTALL_DIR}" )
+INSTALL(TARGETS sdurw_zlib ARCHIVE DESTINATION "${LIB_INSTALL_DIR}" )
 INSTALL(FILES ${ZLIB_PUBLIC_HDRS} DESTINATION "${INCLUDE_INSTALL_DIR}/ext/zlib/")

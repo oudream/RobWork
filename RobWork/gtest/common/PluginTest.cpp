@@ -54,9 +54,9 @@ TEST(PluginTest, loadDirectPlugin) {
 		EXPECT_EQ("", extDesc[0].name);
 		EXPECT_EQ("", extDesc[1].name);
 		EXPECT_EQ("", extDesc[2].name);
-		EXPECT_EQ("rw_common-gtest.ExtensionPointA", extDesc[0].point);
-		EXPECT_EQ("rw_common-gtest.ExtensionPointA", extDesc[1].point);
-		EXPECT_EQ("rw_common-gtest.ExtensionPointB", extDesc[2].point);
+		EXPECT_EQ("sdurw_common-gtest.ExtensionPointA", extDesc[0].point);
+		EXPECT_EQ("sdurw_common-gtest.ExtensionPointA", extDesc[1].point);
+		EXPECT_EQ("sdurw_common-gtest.ExtensionPointB", extDesc[2].point);
 	}
 
 	Extension::Ptr ext1 = plugin->makeExtension("ExtensionId1");
@@ -72,9 +72,9 @@ TEST(PluginTest, loadDirectPlugin) {
 	EXPECT_EQ("", ext1->getName());
 	EXPECT_EQ("", ext2->getName());
 	EXPECT_EQ("", ext3->getName());
-	EXPECT_EQ("rw_common-gtest.ExtensionPointA", ext1->getPoint());
-	EXPECT_EQ("rw_common-gtest.ExtensionPointA", ext2->getPoint());
-	EXPECT_EQ("rw_common-gtest.ExtensionPointB", ext3->getPoint());
+	EXPECT_EQ("sdurw_common-gtest.ExtensionPointA", ext1->getPoint());
+	EXPECT_EQ("sdurw_common-gtest.ExtensionPointA", ext2->getPoint());
+	EXPECT_EQ("sdurw_common-gtest.ExtensionPointB", ext3->getPoint());
 }
 
 TEST(PluginTest, loadLazyPlugin) {
@@ -101,9 +101,9 @@ TEST(PluginTest, loadLazyPlugin) {
 		EXPECT_EQ("Name of first extension.", extDesc[0].name);
 		EXPECT_EQ("Name of second extension.", extDesc[1].name);
 		EXPECT_EQ("Name of third extension.", extDesc[2].name);
-		EXPECT_EQ("rw_common-gtest.ExtensionPointA", extDesc[0].point);
-		EXPECT_EQ("rw_common-gtest.ExtensionPointA", extDesc[1].point);
-		EXPECT_EQ("rw_common-gtest.ExtensionPointB", extDesc[2].point);
+		EXPECT_EQ("sdurw_common-gtest.ExtensionPointA", extDesc[0].point);
+		EXPECT_EQ("sdurw_common-gtest.ExtensionPointA", extDesc[1].point);
+		EXPECT_EQ("sdurw_common-gtest.ExtensionPointB", extDesc[2].point);
 	}
 
 	Extension::Ptr ext1 = plugin->makeExtension("ExtensionId1");
@@ -119,7 +119,7 @@ TEST(PluginTest, loadLazyPlugin) {
 	EXPECT_EQ("", ext1->getName());
 	EXPECT_EQ("", ext2->getName());
 	EXPECT_EQ("", ext3->getName());
-	EXPECT_EQ("rw_common-gtest.ExtensionPointA", ext1->getPoint());
-	EXPECT_EQ("rw_common-gtest.ExtensionPointA", ext2->getPoint());
-	EXPECT_EQ("rw_common-gtest.ExtensionPointB", ext3->getPoint());
+	EXPECT_EQ("sdurw_common-gtest.ExtensionPointA", ext1->getPoint());
+	EXPECT_EQ("sdurw_common-gtest.ExtensionPointA", ext2->getPoint());
+	EXPECT_EQ("sdurw_common-gtest.ExtensionPointB", ext3->getPoint());
 }

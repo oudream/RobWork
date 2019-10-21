@@ -25,7 +25,7 @@
 
 namespace rwhw {
 
-    /** @addtogroup rwhw */
+    /** @addtogroup RobWorkHardware */
     /* @{ */
 
     /**

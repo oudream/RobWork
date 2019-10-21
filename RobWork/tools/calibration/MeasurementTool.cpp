@@ -250,7 +250,7 @@ int parseArguments(int argumentCount, char** arguments) {
 
 void printHelp() {
 	std::cerr << "Usage:" << std::endl;
-	std::cerr << "  rw_calibration-mtool [work cell file] [measurement file]" << std::endl;
+	std::cerr << "   sdurw_calibration-mtool [work cell file] [measurement file]" << std::endl;
 	std::cerr << std::endl;
 	std::cerr << optionsDescription << std::endl;
 }

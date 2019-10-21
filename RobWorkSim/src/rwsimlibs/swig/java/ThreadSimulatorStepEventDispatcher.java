@@ -1,6 +1,6 @@
-package org.robwork.rwsim;
+package org.robwork.sdurwsim;
 
-import org.robwork.rw.State;
+import org.robwork.sdurw.State;
 
 import java.util.EventListener;
 import java.util.Vector;

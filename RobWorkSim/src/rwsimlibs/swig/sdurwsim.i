@@ -1,4 +1,4 @@
-%module rwsim
+%module sdurwsim
 
 %{
 #include <RobWorkSimConfig.hpp>
@@ -18,9 +18,10 @@ using rw::trajectory::Trajectory;
 using namespace rwlibs::swig;
 using namespace rwsim::swig;
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-but-set-variable"
-
+#ifndef WIN32
+	#pragma GCC diagnostic push
+	#pragma GCC diagnostic ignored "-Wunused-but-set-variable"
+#endif
 #if defined(SWIGJAVA)
 
 #include <assert.h>
@@ -83,28 +84,28 @@ void java_ThreadSimulatorStepCallback(ThreadSimulator* sim, State &state, void *
 %include <std_vector.i>
 %include <shared_ptr.i>
 
-%import <rwlibs/swig/rw.i>
-%import <rwlibs/swig/rw_assembly.i>
-%import <rwlibs/swig/rw_control.i>
-%import <rwlibs/swig/rw_simulation.i>
+%import <rwlibs/swig/sdurw.i>
+%import <rwlibs/swig/sdurw_assembly.i>
+%import <rwlibs/swig/sdurw_control.i>
+%import <rwlibs/swig/sdurw_simulation.i>
 
 %pragma(java) jniclassclassmodifiers="class"
 
 %typemap(javaimports) SWIGTYPE %{
-import org.robwork.rw.*;
-import org.robwork.rw_assembly.*;
-import org.robwork.rw_control.*;
-import org.robwork.rw_simulation.*;
-import org.robwork.rw_task.*;
+import org.robwork.sdurw.*;
+import org.robwork.sdurw_assembly.*;
+import org.robwork.sdurw_control.*;
+import org.robwork.sdurw_simulation.*;
+import org.robwork.sdurw_task.*;
 %}
 %pragma(java) moduleimports=%{
-import org.robwork.rw.*;
+import org.robwork.sdurw.*;
 %}
 %pragma(java) jniclassimports=%{
-import org.robwork.rw.*;
-import org.robwork.rw_assembly.*;
-import org.robwork.rw_simulation.*;
-import org.robwork.rw_task.*;
+import org.robwork.sdurw.*;
+import org.robwork.sdurw_assembly.*;
+import org.robwork.sdurw_simulation.*;
+import org.robwork.sdurw_task.*;
 %}
 
 #if (defined(SWIGPYTHON) || defined(SWIGLUA))
@@ -441,7 +442,7 @@ public:
 
 	//! move robot with a hybrid position/force control
 
-    %extend {
+    /*%extend {
 
     	bool moveLinFC(const rw::math::Transform3D<double>& target,
     							  const rw::math::Wrench6D<double>& wtarget,
@@ -458,7 +459,7 @@ public:
     	}
 
         
-    };
+    }*/
 	
 	//! hard stop the robot,
 	bool stop();
@@ -1344,5 +1345,7 @@ rw::common::Ptr<ThreadSimulator> getSimulatorInstance(const std::string& id);
 rw::common::Ptr<ThreadSimulator> getSimulatorInstance();
 void removeSimulatorInstance(const std::string& id);
 std::vector<std::string> getSimulatorInstances();
- 
-#pragma GCC diagnostic pop
+
+#ifndef WIN32
+	#pragma GCC diagnostic pop
+#endif

@@ -1,7 +1,7 @@
-rwsim module
+sdurw module
 ============
 
-.. automodule:: rwsim
+.. automodule:: sdurw
     :members:
     :undoc-members:
     :show-inheritance:

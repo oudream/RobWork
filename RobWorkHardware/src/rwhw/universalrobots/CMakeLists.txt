@@ -30,18 +30,18 @@ IF( build )
       file(WRITE urscript.hpp "${header}${FILEVAR21}${end}")
       #  MESSAGE("${header}${FILEVAR21}${end}")
 
-    RW_ADD_LIBRARY(rwhw_universalrobots universalrobots ${SRC_CPP} ${SRC_HPP})
-    TARGET_LINK_LIBRARIES(rwhw_universalrobots PUBLIC ${ROBWORK_LIBRARIES})
+    RW_ADD_LIBRARY(sdurwhw_universalrobots universalrobots ${SRC_CPP} ${SRC_HPP})
+    TARGET_LINK_LIBRARIES(sdurwhw_universalrobots PUBLIC ${ROBWORK_LIBRARIES})
     RW_ADD_INCLUDES(universalrobots "rwhw/universalrobots" ${SRC_HPP} urscript.hpp)
 
     # Make sure dependencies are build before system
     FOREACH(DEP IN LISTS ROBWORK_LIBRARIES)
         IF(TARGET ${DEP})
-            ADD_DEPENDENCIES(rwhw_universalrobots ${DEP})
+            ADD_DEPENDENCIES(sdurwhw_universalrobots ${DEP})
         ENDIF()
     ENDFOREACH()
 
-    set(ROBWORKHARDWARE_LIBRARIES ${ROBWORKHARDWARE_LIBRARIES} rwhw_universalrobots PARENT_SCOPE)
+    set(ROBWORKHARDWARE_LIBRARIES ${ROBWORKHARDWARE_LIBRARIES} sdurwhw_universalrobots PARENT_SCOPE)
 ELSE()
     MESSAGE(STATUS "RobWorkHardware: ${component_name} component DISABLED")
 ENDIF()

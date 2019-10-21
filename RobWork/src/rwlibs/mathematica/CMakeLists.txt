@@ -1,6 +1,6 @@
-SET(SUBSYS_NAME rw_mathematica)
+SET(SUBSYS_NAME sdurw_mathematica)
 set(SUBSYS_DESC "Mathematica interface for RobWork")
-SET(SUBSYS_DEPS rw)
+SET(SUBSYS_DEPS sdurw)
 
 SET(build ON)
 RW_SUBSYS_OPTION(build ${SUBSYS_NAME} ${SUBSYS_DESC} ${RW_HAVE_MATHEMATICA})

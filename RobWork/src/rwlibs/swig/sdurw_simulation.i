@@ -1,4 +1,4 @@
-%module rw_simulation
+%module sdurw_simulation
 
 %{
 #include <rwlibs/swig/ScriptTypes.hpp>
@@ -9,18 +9,18 @@ using namespace rwlibs::swig;
 
 %include <std_vector.i>
 
-%import <rwlibs/swig/rw.i>
-%import <rwlibs/swig/rw_control.i>
+%import <rwlibs/swig/sdurw.i>
+%import <rwlibs/swig/sdurw_control.i>
 
 %pragma(java) jniclassimports=%{
-import org.robwork.rw.*;
+import org.robwork.sdurw.*;
 %}
 %pragma(java) moduleimports=%{
-import org.robwork.rw.*;
+import org.robwork.sdurw.*;
 %}
 %typemap(javaimports) SWIGTYPE %{
-import org.robwork.rw.*;
-import org.robwork.rw_control.*;
+import org.robwork.sdurw.*;
+import org.robwork.sdurw_control.*;
 %}
 
 #if (defined(SWIGPYTHON) || defined(SWIGLUA))

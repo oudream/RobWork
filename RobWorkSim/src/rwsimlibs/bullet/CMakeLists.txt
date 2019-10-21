@@ -1,6 +1,6 @@
-SET(SUBSYS_NAME rwsim_bullet)
+SET(SUBSYS_NAME sdurwsim_bullet)
 set(SUBSYS_DESC "Bullet based physics engine plugin for RobWorkSim")
-SET(SUBSYS_DEPS rwsim) # mband: The target 'rw' was not found, so removed it from this dependency list
+SET(SUBSYS_DEPS sdurwsim) 
 
 SET(build FALSE)
 set(DEFAULT ${RWSIM_HAVE_BULLET})
@@ -81,8 +81,8 @@ IF(build)
 		ADD_DEFINITIONS(-DBT_USE_DOUBLE_PRECISION)
 	ENDIF()
 
-    RW_ADD_LIBRARY(${SUBSYS_NAME} rwsim_bullet ${SRC_FILES} ${SRC_FILES_HPP})
-    RW_ADD_INCLUDES(rwsim_bullet "rwsimlibs/bullet" ${SRC_FILES_HPP}) 
+    RW_ADD_LIBRARY(${SUBSYS_NAME} sdurwsim_bullet ${SRC_FILES} ${SRC_FILES_HPP})
+    RW_ADD_INCLUDES(sdurwsim_bullet "rwsimlibs/bullet" ${SRC_FILES_HPP}) 
     TARGET_LINK_LIBRARIES(${SUBSYS_NAME} ${SUBSYS_DEPS} ${BULLET_LIBRARIES})
 	ADD_DEPENDENCIES(${SUBSYS_NAME} ${SUBSYS_DEPS})
 	if(BULLET_FOUND)
@@ -91,9 +91,7 @@ IF(build)
 
     
     ADD_LIBRARY(bt_plugin.rwplugin MODULE BtPlugin.cpp BtPlugin.hpp)
-	TARGET_LINK_LIBRARIES(bt_plugin.rwplugin rwsim_bullet ${ROBWORKSIM_LIBRARIES})
-	
-
+    TARGET_LINK_LIBRARIES(bt_plugin.rwplugin sdurwsim_bullet ${ROBWORKSIM_LIBRARIES})
 
 ENDIF()
 

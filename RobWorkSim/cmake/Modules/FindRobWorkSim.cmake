@@ -80,7 +80,7 @@ ENDIF()
 # optional compilation of sandbox
 IF (RWSIM_BUILD_WITH_SANDBOX)
     MESSAGE(STATUS "RobWorkSim: Sandbox ENABLED!")
-    SET(SANDBOX_LIB "rwsim_sandbox")
+    SET(SANDBOX_LIB "sdurwsim_sandbox")
 ELSE ()
     MESSAGE(STATUS "RobWorkSim: Sandbox DISABLED!")    
     SET(RWSIM_HAVE_SANDBOX false)
@@ -99,7 +99,7 @@ IF(RWSIM_USE_BULLET)
         
         FIND_PACKAGE(Bullet)
         IF(BULLET_FOUND)
-        	SET(RWSIM_BULLET_LIBRARY rwsim_bullet)
+        	SET(RWSIM_BULLET_LIBRARY sdurwsim_bullet)
             # BULLET_LIBRARIES
             MESSAGE(STATUS "RobWorkSim: Bullet enabled and found.")
         ELSE()
@@ -127,7 +127,7 @@ IF(RWSIM_USE_ODE)
         ENDIF()
         FIND_PACKAGE(ODE)
         IF(ODE_FOUND)
-        	SET(RWSIM_ODE_LIBRARY rwsim_ode)
+        	SET(RWSIM_ODE_LIBRARY sdurwsim_ode)
         	# ODE_LIBRARIES
             MESSAGE(STATUS "RobWorkSim: ODE enabled and found. Using ${ODE_BUILD_WITH}")
         ELSE()
@@ -173,11 +173,11 @@ SET(ROBWORKSIM_LIBRARY_DIRS
 # 
 SET(ROBWORKSIM_LIBRARIES_TMP
   ${RWSIM_SANDBOX}
-  rwsim_gui
+  sdurwsim_gui
   ${RWSIM_BULLET_LIBRARY}
   ${RWSIM_ODE_LIBRARY}
   #${RWSIM_LUA}
-  rwsim
+  sdurwsim
   ${BULLET_LIBRARIES}
   ${ODE_LIBRARIES}
  # ${ROBWORKSTUDIO_LIBRARIES}

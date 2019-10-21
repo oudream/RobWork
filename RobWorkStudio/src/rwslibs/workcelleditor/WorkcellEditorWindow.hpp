@@ -43,7 +43,7 @@ namespace rws {
     class RobWorkStudio;
 
     /**
-     * @brief A workcell editor that enables editing of workcells within robworkstudio.
+     * @brief A workcell editor that enables editing of workcells within RobWorkStudio.
      */
     class WorkcellEditorWindow : public QMainWindow {
     Q_OBJECT

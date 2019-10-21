@@ -53,12 +53,12 @@ IF (RWSIM_HAVE_ODE)
     	MESSAGE( STATUS "ODE threading_impl.h NOT detected - assuming version 0.12 and earlier." )
     ENDIF()
     
-    ADD_LIBRARY(rwsim_ode ${SRC_FILES} ${SRC_FILES_HPP})
+    ADD_LIBRARY(sdurwsim_ode ${SRC_FILES} ${SRC_FILES_HPP})
     
     ADD_LIBRARY(ode_plugin.rwplugin MODULE ODEPlugin.cpp ODEPlugin.hpp)
-    TARGET_LINK_LIBRARIES(ode_plugin.rwplugin rwsim_ode ${ROBWORKSIM_LIBRARIES})
-    #INSTALL(TARGETS rwsim_ode DESTINATION ${RWSIM_LIB_INSTALL_DIR})
-	#INSTALL(FILES ${SRC_FILES_HPP} DESTINATION include/rwlibs/simulation)
+    TARGET_LINK_LIBRARIES(ode_plugin.rwplugin sdurwsim_ode ${ROBWORKSIM_LIBRARIES})
+    #INSTALL(TARGETS sdurwsim_ode DESTINATION ${RWSIM_LIB_INSTALL_DIR})
+    #INSTALL(FILES ${SRC_FILES_HPP} DESTINATION include/rwlibs/simulation)
 	
 	# Make sure dependencies are build before system
     FOREACH(DEP IN LISTS ROBWORKSIM_LIBRARIES)
@@ -69,9 +69,9 @@ IF (RWSIM_HAVE_ODE)
 
 	IF(NOT ODE_WITH_THREADING_IMPL) # version below 0.13
 		IF( ${ODE_BUILD_WITH} STREQUAL "DOUBLE" )
-			TARGET_COMPILE_DEFINITIONS(rwsim_ode PUBLIC dDOUBLE)
+			TARGET_COMPILE_DEFINITIONS(sdurwsim_ode PUBLIC dDOUBLE)
 		ELSE()
-			TARGET_COMPILE_DEFINITIONS(rwsim_ode PUBLIC dSINGLE)
+			TARGET_COMPILE_DEFINITIONS(sdurwsim_ode PUBLIC dSINGLE)
 		ENDIF()
 	ENDIF()
 

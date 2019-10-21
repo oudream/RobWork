@@ -22,7 +22,7 @@ ENDIF()
 ###########################################
 # The name of the project.
 PROJECT(RobWorkSim)
-SET(ROBWORKSIM_VERSION 0.7.0)
+SET(ROBWORKSIM_VERSION 1.0.0)
 SET(RWSIM_ROOT ${CMAKE_CURRENT_SOURCE_DIR})
 MESSAGE(STATUS "RobWorkSim version ${ROBWORKSIM_VERSION}")
 

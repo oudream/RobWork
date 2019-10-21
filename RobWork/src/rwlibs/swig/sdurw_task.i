@@ -1,4 +1,4 @@
-%module rw_task
+%module sdurw_task
 
 %{
 #include <rwlibs/swig/ScriptTypes.hpp>
@@ -8,7 +8,7 @@ using namespace rwlibs::swig;
 using rwlibs::task::Task;
 %}
 
-%import <rwlibs/swig/rw.i>
+%import <rwlibs/swig/sdurw.i>
 
 template <class T>
 class Task

@@ -1,7 +1,7 @@
-rw_proximitystrategies module
+sdurw_pathoptimization module
 =============================
 
-.. automodule:: rw_proximitystrategies
+.. automodule:: sdurw_pathoptimization
     :members:
     :undoc-members:
     :show-inheritance:

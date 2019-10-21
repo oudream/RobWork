@@ -53,11 +53,11 @@ namespace swig {
     RobWorkStudio* getRobWorkStudioFromQt();
 
     /**
-     * @brief set current robworkstudio instance
+     * @brief set current RobWorkStudio instance
      */
     void setRobWorkStudio(RobWorkStudio* rwstudio);
 
-    /// These functions all work on the current robworkstudio state
+    /// These functions all work on the current RobWorkStudio state
 
     rw::common::Ptr<RobWorkStudio> getRobWorkStudioInstance();
 

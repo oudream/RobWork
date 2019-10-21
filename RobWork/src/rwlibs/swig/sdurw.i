@@ -1,4 +1,4 @@
-%module rw
+%module sdurw
 
 %{
 #include <RobWorkConfig.hpp>
@@ -725,7 +725,7 @@ protected:
 %template (LogWriterPtr) rw::common::Ptr<LogWriter>;
 
 /**
- * @brief Standard type for user messages of robwork.
+ * @brief Standard type for user messages of RobWork.
  *
  * Messages are used for exception, warnings, and other things that are
  * reported to the user.
@@ -3878,15 +3878,15 @@ print_to_log = true
 local global_print = print
 
 -- Function: print
---  Forwards the global print functions to the rw.print functions
+--  Forwards the global print functions to the sdurw.print functions
 --  whenever print_to_log is defined.
 function print(...)
     if print_to_log then
         for i, v in ipairs{...} do
             if i > 1 then rw.writelog("\t") end
-            rw.writelog(tostring(v))
+            sdurw.writelog(tostring(v))
         end
-        rw.writelog('\n')
+        sdurw.writelog('\n')
     else
         global_print(...)
     end

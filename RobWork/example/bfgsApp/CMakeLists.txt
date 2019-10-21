@@ -13,7 +13,7 @@ PROJECT(bfgsApp)
 
 SET(ROOT ${CMAKE_CURRENT_SOURCE_DIR})
 
-# optionally: point the find package in the direction of the robwork.
+# optionally: point the find package in the direction of the RobWork.
 SET(RobWork_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../cmake)
 FIND_PACKAGE(RobWork REQUIRED)
 

@@ -1,7 +1,20 @@
--- define namespace shortcut
-rw = rwlibs.lua -- robwork namespace
-rws = rws.lua.rwstudio -- robworkstudio namespace
-rwstudio = rws.getRobWorkStudio()
+require("sdurw")
+require("sdurws")
+
+function openpackage (ns)
+for n,v in pairs(ns) do
+    if _G[n] ~= nil then
+        print("name clash: " .. n .. " is already defined")
+        else
+        _G[n] = v
+        end
+    end
+end
+
+openpackage(sdurw)
+openpackage(sdurws)
+
+rwstudio = getRobWorkStudioInstance()
 
 -- load workcell
 wc = rwstudio:getWorkcell()
@@ -24,10 +37,10 @@ function add_to_state_path(path, dev, state, tpath)
 end
 
 -- we store everything in a timed state path
-timedstatepath = rw.TimedStatePath:new()
+timedstatepath = TimedStatePath:new()
 
 -- create a time q path and add samples in it, this could be put in a file and called with: dofile "pathfile.lua"
-path = rw.TimedQPath:new()
+path = TimedQPath:new()
 -- samples are int the form add(time, Q)
 path:add( 1, {0,0.1,0,0,0,0,0} )
 path:add( 2, {0,0.2,0,0,0,0,0} )
@@ -44,7 +57,7 @@ add_to_state_path(path, arm, state, timedstatepath)
 rw.gripFrame(state, object, gripper)
 timedstatepath:add(path[path:size()-1]:getTime(), state)
 
-path = rw.TimedQPath:new()
+path = TimedQPath:new()
 -- samples are int the form add(time, Q)
 path:add( 8, {0,0.7,0,0,0,0,0} )
 path:add( 9, {0,0.6,0,0,0,0,0} )

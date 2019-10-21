@@ -1,6 +1,6 @@
-SET(SUBSYS_NAME rw_softbody)
+SET(SUBSYS_NAME sdurw_softbody)
 set(SUBSYS_DESC "Various simulations of soft bodies")
-SET(SUBSYS_DEPS rw)
+SET(SUBSYS_DEPS sdurw)
 
 SET(build TRUE)
 SET(DEFAULT FALSE)

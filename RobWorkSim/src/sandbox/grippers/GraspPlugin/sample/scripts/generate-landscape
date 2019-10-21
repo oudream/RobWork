@@ -12,7 +12,7 @@ import xml.etree.ElementTree as ET
 
 
 # path to RobWorkSim
-rwsim = "/home/awolniakowski/robwork/trunk/RobWorkSim/"
+sdurwsim = "/home/awolniakowski/robwork/trunk/RobWorkSim/"
 
 
 
@@ -51,7 +51,7 @@ class GripperDescent:
 		
 		jawStr = "".join(str(round(p, 3))+' ' for p in param[0:10])
 		
-		cd = rwsim + "src/sandbox/grippers/GraspPlugin/bin/"
+		cd = sdurwsim + "src/sandbox/grippers/GraspPlugin/bin/"
 		cmd = cd + "create-gripper-xml --name {} -j {} --tcp {} --jawdist {} --opening {} --force {}"\
 			.format(name, jawStr, round(param[10], 3), round(param[11], 3), round(param[12], 3), round(param[13], 3))
 		
@@ -65,7 +65,7 @@ class GripperDescent:
 		# construct a simulation command
 		filename = self.saveGripper(name, parameters)
 		
-		cd = rwsim + "src/sandbox/grippers/GraspPlugin/bin/"
+		cd = sdurwsim + "src/sandbox/grippers/GraspPlugin/bin/"
 		cmd = cd + "evaluate-gripper -n {} --dwc {} --td {} --gripper {} > .{}.out"\
 			.format(self.simulations, self.dwc, self.task, filename, name)
 		
@@ -197,7 +197,7 @@ def main():
 		jawStr = "".join(str(round(p, 3))+' ' for p in parameters[0:10])
 		
 		# save gripper
-		cd = rwsim + "src/sandbox/grippers/GraspPlugin/bin/"
+		cd = sdurwsim + "src/sandbox/grippers/GraspPlugin/bin/"
 		cmd = cd + "create-gripper-xml --name {} -j {} --tcp {} --jawdist {} --opening {} --force {}"\
 			.format(name, jawStr, round(parameters[10], 3), round(parameters[11], 3), round(parameters[12], 3), round(parameters[13], 3))
 			

@@ -1,11 +1,11 @@
-SET(SUBSYS_NAME rws_rwstudioapp)
+SET(SUBSYS_NAME sdurws_robworkstudioapp)
 set(SUBSYS_DESC "A rwstudio application that may be started in a thread.")
-SET(SUBSYS_DEPS rws)
+SET(SUBSYS_DEPS sdurws)
 
 IF( RWS_USE_STATIC_LINK_PLUGINS )
-    LIST(APPEND SUBSYS_DEPS rws_jog rws_log rws_planning rws_playback rws_sensors rws_treeview rws_propertyview)
+    LIST(APPEND SUBSYS_DEPS sdurws_jog sdurws_log sdurws_planning sdurws_playback sdurws_sensors sdurws_treeview sdurws_propertyview)
 	IF ( RWS_HAVE_LUA )
-    	LIST(APPEND SUBSYS_DEPS rws_luaeditor rws_luapl)
+    	LIST(APPEND SUBSYS_DEPS sdurws_luaeditor sdurws_luapl)
     ENDIF() 
 ENDIF()
 

@@ -25,9 +25,11 @@ RelWithDebInfo MinSizeRel.")
 ENDIF()
 
 
+
 # The name of the project.
 PROJECT(RobWork)
-SET(ROBWORK_VERSION 0.7.0)
+string(TIMESTAMP ROBWORK_DATE_VERSION "%y.%m.%d")
+SET(ROBWORK_VERSION ${ROBWORK_DATE_VERSION})
 SET(RW_ROOT ${CMAKE_CURRENT_SOURCE_DIR})
 
 # guard against in-source builds
@@ -47,7 +49,7 @@ RW_OPTIONS(RW)
 # Add an "uninstall" target
 configure_file("${RW_ROOT}/cmake/uninstall_target.cmake.in"
                "${CMAKE_BINARY_DIR}/uninstall_target.cmake" IMMEDIATE @ONLY)
-add_custom_target(uninstall_rw "${CMAKE_COMMAND}" -P
+add_custom_target(uninstall_sdurw "${CMAKE_COMMAND}" -P
                   "${CMAKE_BINARY_DIR}/uninstall_target.cmake")
 
 

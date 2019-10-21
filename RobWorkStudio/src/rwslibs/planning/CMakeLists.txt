@@ -1,6 +1,6 @@
-SET(SUBSYS_NAME rws_planning)
+SET(SUBSYS_NAME sdurws_planning)
 set(SUBSYS_DESC "A planning plugin")
-SET(SUBSYS_DEPS rws)
+SET(SUBSYS_DEPS sdurws)
 
 SET(build TRUE)
 RW_SUBSYS_OPTION(build ${SUBSYS_NAME} ${SUBSYS_DESC} ON)

@@ -1,6 +1,6 @@
-SET(SUBSYS_NAME rw_opengl)
+SET(SUBSYS_NAME sdurw_opengl)
 set(SUBSYS_DESC "Opengl visualization for RobWork")
-SET(SUBSYS_DEPS rw)
+SET(SUBSYS_DEPS sdurw)
 
 if( OPENGL_FOUND AND OPENGL_GLU_FOUND )
     set(DEFAULT TRUE)

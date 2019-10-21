@@ -8,7 +8,7 @@ IF(COMPONENT_sdh_ENABLE AND SDH_FOUND AND PEAKCAN_FOUND)
     INCLUDE_DIRECTORIES( ${SDH_INCLUDE_DIR} )
 
     set(LibraryList
-      rwhw_sdh
+    sdurwhw_sdh
       ${SDH_LIBRARY}
       ${PEAKCAN_LIBRARIES}
       ${ROBWORK_LIBRARIES}

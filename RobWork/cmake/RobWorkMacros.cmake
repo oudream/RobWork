@@ -1,5 +1,5 @@
 #
-# This is a collection of macros used throughout the robwork project
+# This is a collection of macros used throughout the RobWork project
 # 
 
 ######################################################################
@@ -531,7 +531,7 @@ endmacro(RW_SUBSYS_OPTION)
 # Macro to disable subsystem dependies
 # _subsys IN subsystem name
 macro(RW_DISABLE_DEPENDIES _subsys)
-    string(TOUPPER "rw_${_subsys}_dependies" RW_SUBSYS_DEPENDIES)
+    string(TOUPPER "sdurw_${_subsys}_dependies" RW_SUBSYS_DEPENDIES)
     if(NOT ("${${RW_SUBSYS_DEPENDIES}}" STREQUAL ""))
         foreach(dep ${${RW_SUBSYS_DEPENDIES}})
             RW_SET_SUBSYS_HYPERSTATUS(${_subsys} ${dep} AUTO_OFF "Automatically disabled.")
@@ -544,7 +544,7 @@ endmacro(RW_DISABLE_DEPENDIES subsys)
 # Macro to enable subsystem dependies
 # _subsys IN subsystem name
 macro(RW_ENABLE_DEPENDIES _subsys)
-    string(TOUPPER "rw_${_subsys}_dependies" RW_SUBSYS_DEPENDIES)
+    string(TOUPPER "sdurw_${_subsys}_dependies" RW_SUBSYS_DEPENDIES)
     if(NOT ("${${RW_SUBSYS_DEPENDIES}}" STREQUAL ""))
         foreach(dep ${${RW_SUBSYS_DEPENDIES}})
             RW_GET_SUBSYS_HYPERSTATUS(dependee_status ${_subsys} ${dep})
