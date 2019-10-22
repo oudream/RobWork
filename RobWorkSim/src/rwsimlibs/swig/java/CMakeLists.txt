@@ -72,7 +72,7 @@ IF( build )
     ENDFOREACH()
 
     if (WIN32)
-        set(CLASSPATH -classpath "${RW_LIBS}/sdurw_java.jar\;${RW_LIBS}/sdurw_task_java.jar\;${RW_LIBS}/sdurw_assembly_java.jar\;${RW_LIBS}/sdurw_control_java.jar;${RW_LIBS}/sdurw_simulation_java.jar")
+        set(CLASSPATH -classpath "${RW_LIBS}/sdurw_java.jar\;${RW_LIBS}/sdurw_task_java.jar\;${RW_LIBS}/sdurw_assembly_java.jar\;${RW_LIBS}/sdurw_control_java.jar\;${RW_LIBS}/sdurw_simulation_java.jar")
     else()
         set(CLASSPATH -classpath ${RW_LIBS}/sdurw_java.jar:${RW_LIBS}/sdurw_task_java.jar:${RW_LIBS}/sdurw_assembly_java.jar:${RW_LIBS}/sdurw_control_java.jar:${RW_LIBS}/sdurw_simulation_java.jar)
     endif()
