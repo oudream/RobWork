@@ -9,20 +9,15 @@ if(POLICY CMP0078)
   cmake_policy(SET CMP0078 NEW)
 endif()
 
-IF(DEFINED CMAKE_BUILD_TYPE)
-   SET(CMAKE_BUILD_TYPE ${CMAKE_BUILD_TYPE} CACHE STRING "Choose the type of
-build, options are: None(CMAKE_CXX_FLAGS or CMAKE_C_FLAGS used) Debug
-Release RelWithDebInfo MinSizeRel.")
-ELSE()
-   SET(CMAKE_BUILD_TYPE RelWithDebInfo CACHE STRING "Choose the type of build,
-options are: None(CMAKE_CXX_FLAGS or CMAKE_C_FLAGS used) Debug Release
-RelWithDebInfo MinSizeRel.")
-ENDIF()
-
 ###########################################
 # The name of the project.
 PROJECT(RobWorkSim)
-SET(ROBWORKSIM_VERSION 1.0.0)
+if(DEFINED VERSION)
+  set(ROBWORKSIM_VERSION ${VERSION})
+else()
+  string(TIMESTAMP ROBWORK_DATE_VERSION "%y.%m.%d")
+  set(ROBWORKSIM_VERSION ${ROBWORK_DATE_VERSION})
+endif()
 SET(RWSIM_ROOT ${CMAKE_CURRENT_SOURCE_DIR})
 MESSAGE(STATUS "RobWorkSim version ${ROBWORKSIM_VERSION}")
 

@@ -6,20 +6,16 @@ if(POLICY CMP0074)
   cmake_policy(SET CMP0074 NEW)
 endif()
 
-IF(DEFINED CMAKE_BUILD_TYPE)
-   SET(CMAKE_BUILD_TYPE ${CMAKE_BUILD_TYPE} CACHE STRING "Choose the type of
-build, options are: None(CMAKE_CXX_FLAGS or CMAKE_C_FLAGS used) Debug
-Release RelWithDebInfo MinSizeRel.")
-ELSE()
-   SET(CMAKE_BUILD_TYPE RelWithDebInfo CACHE STRING "Choose the type of build,
-options are: None(CMAKE_CXX_FLAGS or CMAKE_C_FLAGS used) Debug Release
-RelWithDebInfo MinSizeRel.")
-ENDIF()
 
 ###########################################
 # The name of the project.
 project(RobWorkHardware)
-SET(ROBWORKHARDWARE_VERSION 1.0.0)
+if(DEFINED VERSION)
+  set(ROBWORKHARDWARE_VERSION ${VERSION})
+else()
+  string(TIMESTAMP ROBWORK_DATE_VERSION "%y.%m.%d")
+  set(ROBWORKHARDWARE_VERSION ${ROBWORK_DATE_VERSION})
+endif()
 SET(RWHW_ROOT ${CMAKE_CURRENT_SOURCE_DIR})
 MESSAGE(STATUS "RobWorkHardware version ${ROBWORKHARDWARE_VERSION}")
 
@@ -169,7 +165,6 @@ INSTALL(FILES
 
 INSTALL(FILES
       "cmake/RobWorkHardwareBuildConfig_${RW_BUILD_TYPE}.cmake"
-      "cmake/RobWorkHardwareMacros.cmake"
       DESTINATION ${RWHW_INSTALL_DIR}/cmake)
     
 INSTALL(FILES "${RWHW_ROOT}/src/RobWorkHardwareConfig.hpp"
