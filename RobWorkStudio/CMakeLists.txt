@@ -8,19 +8,14 @@ if(POLICY CMP0078)
     cmake_policy(SET CMP0078 NEW)
 endif()
 
-IF(DEFINED CMAKE_BUILD_TYPE)
-    SET(CMAKE_BUILD_TYPE ${CMAKE_BUILD_TYPE} CACHE STRING "Choose the type of
-build, options are: None(CMAKE_CXX_FLAGS or CMAKE_C_FLAGS used) Debug
-Release RelWithDebInfo MinSizeRel.")
-ELSE()
-    SET(CMAKE_BUILD_TYPE RelWithDebInfo CACHE STRING "Choose the type of build,
-options are: None(CMAKE_CXX_FLAGS or CMAKE_C_FLAGS used) Debug Release
-RelWithDebInfo MinSizeRel.")
-ENDIF()
-
 # The name of the project.
 PROJECT(RobWorkStudio)
-SET(ROBWORKSTUDIO_VERSION 1.0.0)
+if(DEFINED VERSION)
+  set(ROBWORKSTUDIO_VERSION ${VERSION})
+else()
+  string(TIMESTAMP ROBWORK_DATE_VERSION "%y.%m.%d")
+  set(ROBWORKSTUDIO_VERSION ${ROBWORK_DATE_VERSION})
+endif()
 SET(RWS_ROOT ${CMAKE_CURRENT_SOURCE_DIR})
 MESSAGE(STATUS "RobWorkStudio version ${ROBWORKSTUDIO_VERSION}")
 

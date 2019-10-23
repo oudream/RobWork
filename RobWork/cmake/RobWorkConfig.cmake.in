@@ -156,8 +156,8 @@ if(EXISTS "${RWCFG_ROOT}/../src/RobWorkConfig.hpp")
     set(RW_ROOT "${RWCFG_ROOT}/..")
     
     set(RW_INCLUDE_EXT "${RW_ROOT}/ext")
-    set(RW_INCLUDE_SRC "${RW_ROOT}/src/")
-    set(RW_LIBS "${RW_ROOT}/libs/${RW_BUILD_TYPE}/")
+    set(RW_INCLUDE_SRC "${RW_ROOT}/src")
+    set(RW_LIBS "${RW_ROOT}/libs/${RW_BUILD_TYPE}")
     
 else()
     set(succmsg "RobWork: Found a RobWork installation")
@@ -173,10 +173,10 @@ else()
 
         set(RW_ROOT "${RWCFG_ROOT}")
         set(RW_INSTALL "${RWCFG_ROOT}/../../..")
-        set(RW_LIBS "${RW_INSTALL}/lib/")
+        set(RW_LIBS "${RW_INSTALL}/lib")
         set(RW_INCLUDE_SRC "${RW_INSTALL}/include/robwork-${RobWork_VERSION_MAJOR}.${RobWork_VERSION_MINOR}")
         set(RW_INCLUDE_EXT "${RW_INSTALL}/include/robwork-${RobWork_VERSION_MAJOR}.${RobWork_VERSION_MINOR}/ext")
-    endif(WIN32)
+    endif()
 endif()
 
 #MESSAGE(STATUS "RW_ROOT   : ${RW_ROOT}")
