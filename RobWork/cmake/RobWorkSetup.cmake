@@ -170,6 +170,7 @@ if( OPENGL_FOUND AND GLUT_FOUND)
   set(RW_HAVE_GLUT True)
   message(STATUS "RobWork: OpenGL and GLUT ENABLED! FOUND!")
 else ()
+  set(GLUT_glut_LIBRARY "")
   message(STATUS "RobWork: OpenGL and GLUT NOT FOUND! code disabled!")
 endif ()
 
