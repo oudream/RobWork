@@ -1,5 +1,5 @@
 sdurw_simulation module
-=====================
+=======================
 
 .. automodule:: sdurw_simulation
     :members:
