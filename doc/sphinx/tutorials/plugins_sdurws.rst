@@ -155,6 +155,98 @@ The CMake script is almost identical to the one for the `Without Qt Designer`_ t
 Since we have .ui files, we also enable the CMAKE_AUTOUIC feature.
 This way CMake and Qt automatically generates the ui_SamplePlugin.h file that we include in the SamplePlugin.hpp file.
 
+With Python
+===========
+
+Plugins can also be made, in form of a python script. 
+To Enable this feature Python3-dev must be installed on the system,
+before compiling RobWorkStudio.
+Python plugins are in actuality a c++ plugin with a python interpreter loaded into it.
+To allow modification of the pluginGUI the c++ plugin starts by running a script in the python interpreter,
+before calling the user written python plugin.
+
+.. code-block:: python
+
+    from sdurws import *
+    import sys
+    from PySide2 import QtCore
+
+    class cpp_link(QtCore.QObject): ... #Class used by the cpp plugin to make calls to python plugins
+    rws_cpp_link = cpp_link #           #Object used to facilitate the calls
+
+    class rwsplugin(QtCore.QObject):    #inherit from this class to access RobworkStudio and QtWidget
+        def __init__(self,link): 
+        def getWidget(self):            #Returns a widget to be used by PiSide2
+        def getRobWorkStudio(self):     #Returns a pointer to RobworkStudio
+        def getWorkCell(self):          #Returns a pointer to the currently loaded WorkCell
+        def log(self):                  #Returns a pointer to the current Log
+
+
+
+
+As can be seen from the code it relies on PySide2 as a wrapper to qt. So to make a python plugin
+PySide must be installed.
+
+.. code-block:: shell
+
+    pip3 install PySide2
+
+PySide2 often relies on the newest version of QT. 
+To test if you have the right version open a python interpreter and run: 
+
+.. code-block:: python
+
+    from PiSide2 import QtCore
+
+If somthing is wrong this should give you an error with incompatible QT versions.
+To get the correct Version of QT you need to do a propper install and get the required QT version.
+This can be done by downloading the QT installer from https://www.qt.io/download/ .
+At the Select component phase of the installation, 
+make sure that you are installing the version required by PySide2.
+
+Ones the correct version of QT is installed, if PySide still gives the same error,
+it means that it can't find the correct QT installation. 
+For Linux users the path can be specified by the QT library path to LD_LIBRARY_PATH.
+This can be done by adding the following line to .bashrc or calling the line from the terminal
+
+.. code-block:: shell
+    #example -------------||----------------/Path/To/Qt/<Version_number>/<compiler>/lib
+    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/Qt/5.13.1/gcc_64/lib
+
+With this, the setup is complete and you should be able to run your own or one of the example plugins for python.
+
+
+Designing a python plugin
+--------------------------
+
+Make sure that the Python file used is called something unique,
+as currently the pluginWidget is named the same as the python file,
+and is found by searching for it's name when calling rwsplugin.getWidget().
+
+The simplest plugin, that can be made with full functionality, can be seen in the code below.
+Using the rws_cpp_link, three different methods is called, in the registered plugin(if they exsist).
+Inheriting from the rwsplugin class, gives you the some of the same functionality as a cpp plugin
+
+.. code-block:: python
+
+    class samplePlugin(rwsplugin):
+      def __init__(self,link):
+        super().__init__(link)              #initialize the underlying rwsplugin
+        self.widget = super().getWidget()   #get the widget
+      def open(self,workcell):              #this method is called by rws_cpp_link when a new workcell is opened in RobWorkStudio
+        pass
+      def close(self):                      #this method is called by rws_cpp_link when current workcell is closed
+        pass
+      def stateChangedListener(self,state): #this method is called by rws_cpp_link when the state changes in RobWorkStudio
+      pass
+
+    if __name__ == '__main__':
+      pl = Plugin(rws_cpp_link)
+      rws_cpp_link.register_plugin(pl)
+
+Due to the rwsplugin and rws_cpp_link is automatically imported upon loading a python plugin,
+the above plugin runs without importing any modules
+
 Tips & Examples
 ===============
 

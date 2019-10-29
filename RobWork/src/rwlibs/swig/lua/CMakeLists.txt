@@ -26,7 +26,7 @@ IF( build )
 
     add_custom_target(${SUBSYS_NAME}_all)
 	SET(RW_NAME sdurw)
-	foreach(RW_MODULE ${RW_NAME} ${RW_NAME}_assembly ${RW_NAME}_control ${RW_NAME}_pathoptimization ${RW_NAME}_pathplanners ${RW_NAME}_proximitystrategies ${RW_NAME}_task ${RW_NAME}_simulation)
+	foreach(RW_MODULE ${RW_NAME} ${RW_NAME}_assembly ${RW_NAME}_control ${RW_NAME}_pathoptimization ${RW_NAME}_pathplanners ${RW_NAME}_proximitystrategies ${RW_NAME}_task ${RW_NAME}_simulation ${RW_NAME}_opengl)
 
 		SET(RW_MODULE_FILENAME ../${RW_MODULE}.i)
 
@@ -97,6 +97,8 @@ IF( build )
     SWIG_LINK_LIBRARIES(${RW_NAME}_proximitystrategies_lua sdurw_proximitystrategies sdurw ${LUA_LIBRARIES})
 	SWIG_LINK_LIBRARIES(${RW_NAME}_simulation_lua sdurw_simulation sdurw ${LUA_LIBRARIES})
 	SWIG_LINK_LIBRARIES(${RW_NAME}_task_lua sdurw_task sdurw ${LUA_LIBRARIES})
+	SWIG_LINK_LIBRARIES(${RW_NAME}_opengl_lua sdurw_opengl sdurw ${LUA_LIBRARIES})
+	
 	target_include_directories(${RW_NAME}_lua PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
 
     TARGET_LINK_LIBRARIES(${RW_NAME}_lua_s sdurw ${LUA_LIBRARIES})
@@ -107,6 +109,8 @@ IF( build )
     TARGET_LINK_LIBRARIES(${RW_NAME}_proximitystrategies_lua_s sdurw_proximitystrategies ${RW_NAME}_lua_s ${LUA_LIBRARIES})
 	TARGET_LINK_LIBRARIES(${RW_NAME}_simulation_lua_s sdurw_simulation ${RW_NAME}_lua_s ${LUA_LIBRARIES})
 	TARGET_LINK_LIBRARIES(${RW_NAME}_task_lua_s sdurw_task ${RW_NAME}_lua_s ${LUA_LIBRARIES})
+	TARGET_LINK_LIBRARIES(${RW_NAME}_opengl_lua_s sdurw_opengl ${RW_NAME}_lua_s ${LUA_LIBRARIES})
+
 	target_include_directories(${RW_NAME}_lua_s PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
 
 ENDIF()

@@ -891,6 +891,204 @@ public:
 
 %template (ExtensionRegistryPtr) rw::common::Ptr<ExtensionRegistry>;
 
+/**
+ * @brief The timer class provides an easy to use platform independent timer
+ *
+ * In Windows the expected resolution is approx. 16ms.
+ * In Linux the expected resolution is approx. 1ms
+ */
+class Timer
+{
+public:
+    /**
+     * @brief Constructor
+     *
+     * This implicitly starts the timer.
+     */
+    Timer();
+
+    /**
+     * @brief constructor - initialize the timer to a specified value. This does not start the timer.
+     * @param timems [in] time in ms
+     */
+    Timer(long timems);
+
+    /**
+     * @brief constructor - initialize the timer to a specified value. This does not start the timer.
+     * @param hh [in] hours
+     * @param mm [in] minutes
+     * @param ss [in] seconds
+     * @param ms [in] milli seconds
+     */
+    Timer(int hh, int mm, int ss = 0, int ms = 0);
+
+    /**
+     * @brief Destructor
+     */
+    virtual ~Timer();
+
+    /** 
+     * @brief Returns true if the timer is paused
+     * @return True is paused
+     */
+    bool isPaused();
+
+    /**
+     * @brief Reset the timer
+     *
+     * The timer is set back to zero and starts counting.
+     *
+     * It is OK to call reset() on a timer that has already been started:
+     * The time will just be set back to zero again.
+     */
+    void reset();
+
+
+    /**
+     * @brief Resets and pauses the timer
+     *
+     * The timer is set to zero and paused
+     *
+     * It is OK to call reset() on a timer that has already been started:
+     * The time will just be set back to zero again.
+     */
+    void resetAndPause();
+
+    /**
+     * @brief Resets and stats the timer
+     *
+     * Same as reset()
+     *
+     * The timer is set to zero and starts counting
+     *
+     * It is OK to call reset() on a timer that has already been started:
+     * The time will just be set back to zero again.
+     */
+    void resetAndResume();
+
+    /**
+     * @brief Pause the timer
+     *
+     * The timer stops counting. As long as the timer has not been resumed
+     * (see resume()) or restarted (see reset()) the timer value (see
+     * getTime()) will stay the same.
+     *
+     * Is is OK to call pause() on a timer that has already been paused: The
+     * timer will just stay paused and nothing is changed.
+     */
+    void pause();
+
+    /**
+     * @brief Resume the timer after a pause.
+     *
+     * The timer starts counting again.
+     *
+     * It is OK to call resume() on a timer that is already counting: The
+     * timer keeps counting and nothing is done.
+     */
+    void resume();
+
+    /**
+     * @brief The time the timer has been running.
+     *
+     * The time passed while the timer has been paused are not included in
+     * the running time. The timer is paused when pause() has been
+     * called and counting is resumed when resume() has been called.
+     *
+     * It is perfectly OK and natural to call getTime() on a running timer,
+     * i.e. a timer that has not been paused.
+     *
+     * A call of reset() resets the running time to zero.
+     *
+     * \return Time in seconds
+     */
+    double getTime() const;
+
+    /**
+     * @brief The time the timer has been running in hole seconds.
+     *
+     * see getTime
+     *
+     * \return Time in hole seconds
+     */
+    long getTimeSec() const;
+
+    /**
+     * @brief The time the timer has been running in mili seconds.
+     *
+     * see getTime
+     *
+     * \return Time in mili seconds
+     */
+    long getTimeMs() const;
+
+
+    /**
+     * @brief returns a string describing the time. The format of the time is described using \b format
+     * @param format [in] the format is on the form:
+     *  hh:mm:ss --> 05:06:08
+     *  h:m:s --> 5:6:8
+     * @return a formated time string
+     */
+    std::string toString(const std::string& format="hh:mm:ss");
+
+
+    /**
+     * @brief Returns system clock in hole seconds
+     *
+     * \warning The date/time at which this timer counts from is platform-specific, so
+     * you should \b not use it for getting the calendar time. It's really only meant for
+     * calculating wall time differences.
+     */
+    static long currentTimeSec();
+
+
+    /**
+     * @brief Returns system clock in milli-seconds
+     *
+     * \warning The date/time at which this timer counts from is platform-specific, so
+     * you should \b not use it for getting the calendar time. It's really only meant for
+     * calculating wall time differences.
+     */
+    static long currentTimeMs();
+
+
+    /**
+     * @brief Returns system clock in micro-seconds.
+     *
+     * \warning The date/time at which this timer counts from is platform-specific, so
+     * you should \b not use it for getting the calendar time. It's really only meant for
+     * calculating wall time differences.
+     *
+     * Notice: The timer cannot hold times longer than approx. 2100second.
+     */
+    static long currentTimeUs();
+
+    /**
+     * @brief Returns system clock in seconds
+     *
+     * \warning The date/time at which this timer counts from is platform-specific, so
+     * you should \b not use it for getting the calendar time. It's really only meant for
+     * calculating wall time differences.
+     */
+    static double currentTime();
+
+
+    /**
+     * @brief Sleeps for a period of time
+     *
+     * @param period [in] the time in miliseconds to sleep
+     */
+    static void sleepMs(int period);
+
+    /**
+     * @brief Sleeps for a period of time
+     *
+     * @param period [in] the time in microseconds to sleep
+     */
+    static void sleepUs(int period);
+};
+
 /********************************************
  * ROBWORK CLASS
  ********************************************/ 
@@ -1317,6 +1515,19 @@ public:
 %template (Model3DPtrVector) std::vector<rw::common::Ptr<Model3D> >;
 OWNEDPTR(Model3D);
 
+class Render {
+public:
+    /**
+     * @brief draws the object.
+     * @param info [in] state and rendering specific info
+     * @param type [in] the drawtype which is being used
+     * @param alpha [in] the alpha value to render with
+     */
+    virtual void draw(const DrawableNode::RenderInfo& info, DrawableNode::DrawType type, double alpha) const = 0;
+};
+
+%template (RenderPtr) rw::common::Ptr<Render>;
+
 class WorkCellScene {
  public:
 
@@ -1350,7 +1561,7 @@ class WorkCellScene {
      //rw::common::Ptr<DrawableNode> addImage(const std::string& name, const rw::sensor::Image& img, Frame* frame, int dmask=DrawableNode::Virtual);
      //rw::common::Ptr<DrawableNode> addScan(const std::string& name, const rw::sensor::Scan2D& scan, Frame* frame, int dmask=DrawableNode::Virtual);
      //rw::common::Ptr<DrawableNode> addScan(const std::string& name, const rw::sensor::Image25D& scan, Frame* frame, int dmask=DrawableNode::Virtual);
-     //rw::common::Ptr<DrawableNode> addRender(const std::string& name, rw::graphics::Render::Ptr render, Frame* frame, int dmask=DrawableNode::Physical);
+     rw::common::Ptr<DrawableNode> addRender(const std::string& name, rw::common::Ptr<Render> render, Frame* frame, int dmask=DrawableNode::Physical);
 
      rw::common::Ptr<DrawableNode> addDrawable(const std::string& filename, Frame* frame, int dmask);
      void addDrawable(rw::common::Ptr<DrawableNode> drawable, Frame*);
@@ -1688,6 +1899,7 @@ private:
 %template (FramePtr) rw::common::Ptr<Frame>;
 %template (FrameCPtr) rw::common::Ptr<const Frame>;
 %template (FrameVector) std::vector<Frame*>;
+%template (FramePairVector) std::vector<std::pair<Frame*, Frame* > >;
 
 class MovableFrame: public Frame{
 public:
@@ -2239,6 +2451,7 @@ namespace rw { namespace math {
 %template (eaaToQuaternion) rw::math::Math::eaaToQuaternion<double>;
 %template (eaaToQuaternion) rw::math::Math::eaaToQuaternion<float>;
 
+
 /********************************************
  * MODELS
  ********************************************/
@@ -2307,8 +2520,11 @@ public:
     void add(rw::common::Ptr<Object> object);
     void remove(rw::common::Ptr<Object> object);
 
+    std::string getFilename () const;
+    std::string getFilePath () const;
 
     State getDefaultState() const;
+    
 
     //rw::common::Ptr<StateStructure> getStateStructure();
 
@@ -2610,6 +2826,28 @@ public:
      */
     bool inCollision(const State& state, class ProximityData &data) const;
 
+    %extend {
+        /**
+         * @brief Check the workcell for collisions.
+         * 
+         * @param state [in] The state for which to check for collisions.
+         * @param result [out] Where to store pairs of colliding frames.
+         * @param stopAtFirstContact [in] If \b result is non-NULL and \b
+         * stopAtFirstContact is true, then only the first colliding pair is
+         * inserted in \b result. By default all colliding pairs are inserted.
+         * 
+         * @return true if a collision is detected; false otherwise.
+         */
+        bool inCollision(const State& state, std::vector< std::pair< Frame* , Frame* > > &result, bool stopAtFirstContact = false){
+            CollisionDetector::QueryResult data;
+            bool success;
+            success = $self->rw::proximity::CollisionDetector::inCollision(state, &data,stopAtFirstContact);
+
+            result = std::vector< std::pair< Frame* , Frame* > >(data.collidingFrames.begin(), data.collidingFrames.end());
+
+            return success;
+        }
+    }
     %extend {
     /*
         static rw::common::Ptr<CollisionDetector> make(rw::common::Ptr<WorkCell> workcell){

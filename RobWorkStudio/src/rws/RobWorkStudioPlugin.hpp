@@ -82,7 +82,7 @@ namespace rws {
 
 		/**
 		 * @brief called when a workcell is opened
-		 * @param workcell [in] that has been loadet
+		 * @param workcell [in] that has been loaded
 		 */
 		virtual void open(rw::models::WorkCell* workcell);
 

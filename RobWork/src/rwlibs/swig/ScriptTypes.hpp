@@ -73,6 +73,7 @@
 #include <rwlibs/simulation/SimulatedSensor.hpp>
 #include <rwlibs/simulation/SimulatedScanner2D.hpp>
 #include <rwlibs/simulation/SimulatedScanner25D.hpp>
+#include <rwlibs/opengl/RenderImage.hpp>
 #include <rwlibs/task/Task.hpp>
 #include <rwlibs/task/GraspTask.hpp>
 #include <rwlibs/task/GraspTarget.hpp>
@@ -121,6 +122,8 @@ namespace swig {
 	typedef rw::common::Extension::Descriptor ExtensionDescriptor;
 	//! @copydoc rw::common::ExtensionRegistry
 	typedef rw::common::ExtensionRegistry ExtensionRegistry;
+	//! @copydoc rw::common:Timer
+	typedef rw::common::Timer Timer;
 	///@}
 
 	/**
@@ -179,6 +182,8 @@ namespace swig {
 	typedef rw::graphics::Model3D Model3D;
 	//! @copydoc rw::graphics::Model3D::Material
 	typedef rw::graphics::Model3D::Material Model3DMaterial;
+	//! @copydoc rw::graphics::Render
+	typedef rw::graphics::Render Render;
 	//! @copydoc rw::graphics::WorkCellScene
 	typedef rw::graphics::WorkCellScene WorkCellScene;
 	//! @copydoc rw::graphics::SceneViewer
@@ -560,7 +565,14 @@ namespace swig {
 	typedef rwlibs::control::JointController JointController;
 	///@}
 
-	// rwlibs opengl
+	/**
+	 * @name opengl
+	 * Wrapped classes in opengl.
+	 */
+
+	//! @copydoc rwlibs::opengl::RenderImage
+	typedef rwlibs::opengl::RenderImage RenderImage;
+
 
 	// rwlibs os
 
