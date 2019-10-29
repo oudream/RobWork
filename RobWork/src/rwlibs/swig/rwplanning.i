@@ -107,10 +107,10 @@ public:
      * is sampled forever until either the \b sampler is empty or a
      * configuration satisfying \b constraint is found.
      */
-	//static rw::common::Ptr<QSampler> makeConstrained(
-	//	rw::common::Ptr<QSampler> sampler,
-	//	rw::common::Ptr<const QConstraint> constraint,
-    //    int maxAttempts = -1);
+	static rw::common::Ptr<QSampler> makeConstrained(
+		rw::common::Ptr<QSampler> sampler,
+		rw::common::Ptr<const QConstraint> constraint,
+        int maxAttempts = -1);
 
     /**
      * @brief Sampler of direction vectors for a box shaped configuration
@@ -166,11 +166,11 @@ public:
 
     bool inCollision(const rw::math::Q& q1, const rw::math::Q& q2);
 
-    //QConstraint& getQConstraint() const { return *_constraint; }
+    QConstraint& getQConstraint() const { return *_constraint; }
 
     //QEdgeConstraint& getQEdgeConstraint() const { return *_edge; }
 
-    //const QConstraint::Ptr& getQConstraintPtr() const { return _constraint; }
+    const rw::common::Ptr<QConstraint>& getQConstraintPtr();
 
     //const QEdgeConstraint::Ptr& getQEdgeConstraintPtr() const { return _edge; }
 
@@ -409,6 +409,15 @@ public:
 	static rw::common::Ptr<QConstraint> makeNormalized(
 		const rw::common::Ptr<QConstraint>& constraint,
         const QNormalizer& normalizer);
+
+    %extend {
+        rw::common::Ptr<const QConstraint> asCPtr() { 
+            
+            return $self; 
+            
+        }
+
+    }
 
 protected:
     /**
@@ -871,6 +880,30 @@ protected:
 class QToQPlanner: public PathPlanner<rw::math::Q, const rw::math::Q> {
 public:
 
+    /**
+         @brief Construct a path planner from a region planner.
+
+        The region planner is given as goal region the single \b to
+        configuration passed to the query() method.
+
+        @param planner [in] A planner for a region given by a QSampler.
+    */
+    static QToQPlanner::Ptr make(rw::common::Ptr<QToQSamplerPlanner> planner);
+
+    /**
+         @brief Construct a path planner from an edge constraint.
+
+        The path planners calls the edge constraint to verify if the path
+        going directly from the start to goal configuration can be traversed.
+
+        The configuration constraint is called to verify that neither the
+        start nor end configuration is in collision.
+
+        @param constraint [in] Planner constraint.
+        @return A planner that attempts the directly connecting edge only.
+    */
+    static QToQPlanner::Ptr make(const PlannerConstraint& constraint);
+
     %extend {
 /*
         rw::common::Ptr<Path<rw::math::Q> > query(rw::math::Q from, rw::math::Q to, rw::common::Ptr<StopCriteria> stop){
@@ -894,8 +927,6 @@ public:
         PropertyMap& getProperties(){
             return $self->rw::pathplanning::PathPlanner<rw::math::Q,const rw::math::Q>::getProperties();
         }
-*/
-/*
         static rw::common::Ptr<QToQPlanner> makeRRT(rw::common::Ptr<CollisionDetector> cdect, rw::common::Ptr<Device> dev, const State& state){
             const rw::pathplanning::PlannerConstraint constraint = rw::pathplanning::PlannerConstraint::make(
                 cdect.get(), dev, state);

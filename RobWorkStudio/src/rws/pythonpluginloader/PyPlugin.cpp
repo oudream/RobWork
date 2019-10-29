@@ -5,7 +5,9 @@
 #include <rws/RobWorkStudio.hpp>
 
 
+#include <QFile>
 #include <QGridLayout>
+#include <QTextStream>
 #include <boost/bind.hpp>
 #include <boost/filesystem.hpp>
 #include <fstream>
@@ -33,6 +35,7 @@
 using rws::RobWorkStudioPlugin;
 using namespace rw::kinematics;
 
+//EXAMPLE CODE for adding a c++ function to python
 /*namespace {
     class foo {
       public:
@@ -86,7 +89,8 @@ using namespace rw::kinematics;
 PyPlugin::PyPlugin () :
     RobWorkStudioPlugin (
         std::string ("PyPlugin" + std::to_string (_pyPlugins++)).c_str (),
-        QIcon (":/PythonIcon.png"))
+        QIcon (":/PythonIcon.png")),
+        _isPythonInit(false)
 {
     _base = new QWidget (this);
     _pluginName = "PyPlugin" + std::to_string (_pyPlugins -1);
@@ -145,6 +149,19 @@ bool PyPlugin::initialize (std::string pythonFilePath, std::string pluginName)
         #endif
 
         PySys_SetArgv (argc, argv_);
+
+        // Python_RWS_plugin_init
+        QString fileName(":/PyPlugin.py");
+        QFile file(fileName);
+        if(file.open(QIODevice::ReadOnly)) {
+            QTextStream in(&file);
+            QString text = in.readAll();
+            PyRun_SimpleString(text.toStdString().c_str());
+        }
+        else {
+            RW_THROW("Could not open PyPlugin.py");
+        }
+
         // Get Python
         std::ifstream scriptFile (pythonFilePath.c_str ());
         std::string code ((std::istreambuf_iterator< char > (scriptFile)),
@@ -155,7 +172,7 @@ bool PyPlugin::initialize (std::string pythonFilePath, std::string pluginName)
         PyModule_AddObject(mainModule, "spam", hashlibModule);
         PyObject * module = PyModule_Create(&spammodule);*/
 
-        PyRun_SimpleString (code.c_str ());
+        PyRun_SimpleString(code.c_str ());
 
         for(int i = 0; i < argc ; i++) {
             delete argv_[i];
@@ -164,12 +181,27 @@ bool PyPlugin::initialize (std::string pythonFilePath, std::string pluginName)
             delete [] argv_;
             delete program;
         #endif
+        _isPythonInit=true;
     }
     return exsist;
 }
 
+void PyPlugin::open(rw::models::WorkCell* workcell)
+{
+    if(_isPythonInit) {
+        PyRun_SimpleString("rws_cpp_link.openWorkCell()\n");
+    }
+}
+
+void PyPlugin::close()
+{
+    PyRun_SimpleString("rws_cpp_link.closeWorkCell()\n");
+}
+
 void PyPlugin::stateChangedListener (const State& state)
-{}
+{
+    PyRun_SimpleString("rws_cpp_link.stateChanged()\n");
+}
 
 size_t PyPlugin::_pyPlugins = 0;
 

@@ -137,6 +137,8 @@ public:
 
     const Path<Timed<State> >& getTimedStatePath();
 
+    rw::common::Log& log();
+
     //void updateAndRepaint();
     //void setState(const State& state);
     //void setTimedStatePath(const PathTimedState& path);
