@@ -61,7 +61,7 @@ class RWGLTexture;
         /**
          * @brief Destructor
          */
-        virtual ~RenderImage(){};
+        virtual ~RenderImage();
 
         /**
          * @brief set the image that is to be rendered.

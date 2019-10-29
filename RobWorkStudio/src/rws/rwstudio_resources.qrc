@@ -38,8 +38,8 @@
 	    <file>../images/zoom_auto.png</file>
 	    <file>../images/zoom_in.png</file>
 	    <file>../images/zoom_out.png</file>
-
         
+        <file alias="PyPlugin.py">./pythonpluginloader/PyPlugin.py</file>
         <file alias="jog.png" >../rwslibs/jog/jog.png</file>
         <file alias="log.png" >../rwslibs/log/log.png</file>
         <file alias="backward.png" >../rwslibs/playback/backward.png</file>

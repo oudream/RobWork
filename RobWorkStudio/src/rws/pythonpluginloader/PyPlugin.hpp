@@ -24,6 +24,10 @@ class PyPlugin : public rws::RobWorkStudioPlugin
      */
     bool initialize (std::string pythonFilePath, std::string pluginName);
 
+    void open(rw::models::WorkCell* workcell);
+
+    void close();
+
   protected:
     /**
      * @brief simple destructer
@@ -38,6 +42,7 @@ class PyPlugin : public rws::RobWorkStudioPlugin
     std::string _pythonFilePath;
     std::string _pluginName;
     QWidget* _base;
+    bool _isPythonInit;
 };
 
 #endif /*SAMPLEPLUGIN_HPP*/

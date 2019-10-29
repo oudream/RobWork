@@ -28,16 +28,15 @@ using namespace rw::graphics;
 RenderImage::RenderImage(float scale):
     _w(0),_h(0),_scale(scale)
 {
-
 }
 
 RenderImage::RenderImage(const rw::sensor::Image& img, float scale):
     _w(img.getWidth()),_h(img.getHeight()),_scale(scale),_tex(ownedPtr(new RWGLTexture(img)))
 {
-
 }
 
-void RenderImage::setImage(const rw::sensor::Image& img){
+void RenderImage::setImage(const rw::sensor::Image& img)
+{
 	_w = img.getWidth();
 	_h = img.getHeight();
 	_tex->init(img);
@@ -77,4 +76,8 @@ void RenderImage::draw(const DrawableNode::RenderInfo& info, DrawableNode::DrawT
 
     glDisable(GL_TEXTURE_2D);
 
+}
+
+RenderImage::~RenderImage()
+{
 }

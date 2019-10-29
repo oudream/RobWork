@@ -144,14 +144,16 @@ public:
 #endif
 
     /**
-     @brief Check the workcell for collisions.
-     @param state [in] The state for which to check for collisions.
-     @param result [out] If non-NULL, the pairs of colliding frames are
-     inserted in \b result.
-     @param stopAtFirstContact [in] If \b result is non-NULL and \b
-     stopAtFirstContact is true, then only the first colliding pair is
-     inserted in \b result. By default all colliding pairs are inserted.
-     @return true if a collision is detected; false otherwise.
+     * @brief Check the workcell for collisions.
+     * 
+     * @param state [in] The state for which to check for collisions.
+     * @param result [out] If non-NULL, the pairs of colliding frames are
+     * inserted in \b result.
+     * @param stopAtFirstContact [in] If \b result is non-NULL and \b
+     * stopAtFirstContact is true, then only the first colliding pair is
+     * inserted in \b result. By default all colliding pairs are inserted.
+     * 
+     * @return true if a collision is detected; false otherwise.
      */
     bool inCollision(const kinematics::State& state, QueryResult* result = 0, bool stopAtFirstContact = false) const;
 

@@ -485,7 +485,7 @@ void RobWorkStudio::loadPlugin()
         this,
         "Open plugin file", // Title
         dir, // Directory
-        "Plugin libraries ( *.so *.dll *.dylib *.so.*)"
+        "Plugin libraries ( *.so *.dll *.dylib *.so.* *.py)"
         "\n All ( *.* )",
         &selectedFilter);
         
@@ -494,7 +494,7 @@ void RobWorkStudio::loadPlugin()
 		QString pathname = pluginInfo.absolutePath();
 		QString filename = pluginInfo.baseName();
 
-		setupPlugin(pluginfilename, 0, 1);
+		setupPlugin(pathname,filename, 0, 1);
 	}
 }
 
@@ -703,6 +703,12 @@ void RobWorkStudio::setupPlugin(const QString& pathname, const QString& filename
 }
 void RobWorkStudio::setupPlugin(const QString& fullname, bool visible, int dock) 
 {
+    std::string ext = boost::filesystem::extension(fullname.toStdString());
+    if (ext == "py") {
+        std::string base = boost::filesystem::basename(fullname.toStdString());
+        setupPyPlugin(fullname,base.c_str(),visible,dock);
+        return;
+    }
     Qt::DockWidgetArea dockarea = (Qt::DockWidgetArea)dock;
 	QPluginLoader loader(fullname);
 
