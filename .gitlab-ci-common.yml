@@ -318,22 +318,22 @@ build:windows10-vs15:
 #  extends: .linux-doc
 #  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804-doc
 
-pages:
-  stage: deploy
-  tags:
-    - linux
-  only:
-    refs:
-      - master@sdurobotics/RobWork
-      - schedules
-      - web
-  variables:
-    GIT_STRATEGY: none
-  script:
-    - echo "Deploying documentation."
-  dependencies:
-    - build:doc
-  artifacts:
-    paths:
-    - public
-    expire_in: 1 week
+#pages:
+#  stage: deploy
+#  tags:
+#    - linux
+#  only:
+#    refs:
+#      - master@sdurobotics/RobWork
+#      - schedules
+#      - web
+#  variables:
+#    GIT_STRATEGY: none
+#  script:
+#    - echo "Deploying documentation."
+#  dependencies:
+#    - build:doc
+#  artifacts:
+#    paths:
+#    - public
+#    expire_in: 1 week
