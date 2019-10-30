@@ -398,6 +398,12 @@ tests:ubuntu-1804:
   needs: ["build:ubuntu-1804"]
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
 
+doc:ubuntu-1804:
+  extends: .linux-doc
+  dependencies:
+    - build:ubuntu-1804
+  needs: ["build:ubuntu-1804"]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
 
 #build:ubuntu-1604:
 #  extends: .linux-full
