@@ -224,7 +224,7 @@ stages:
     expire_in: 5 hrs 
     when: on_success
   
-.linus-examples:
+.linux-examples:
   stage: test
   script:
     - ls
