@@ -1,6 +1,7 @@
 stages:
   - build
   - build_second
+  - build_third
   - test
   - deploy
 
@@ -182,6 +183,92 @@ stages:
     paths:
       - public
     expire_in: 1 day
+
+.linux-build-RW:
+  stage: build
+  tags:
+    - linux
+  before_script:
+    - "[ -d Build ] || mkdir Build"
+    - "[ -d Build/RW ] || mkdir Build/RW"
+    - "[ -d Build/RWExamples ] || mkdir Build/RWExamples"
+    - "[ -d Build/RWHW ] || mkdir Build/RWHW"
+    - "[ -d Build/RWS ] || mkdir Build/RWS"
+    - "[ -d Build/RWSExamples ] || mkdir Build/RWSExamples"
+    - "[ -d Build/RWSExamples/pluginapp ] || mkdir Build/RWSExamples/pluginapp"
+    - "[ -d Build/RWSExamples/pluginUIapp ] || mkdir Build/RWSExamples/pluginUIapp"
+    - "[ -d Build/RWSExamples/tutorial ] || mkdir Build/RWSExamples/tutorial"
+    - "[ -d Build/RWSExamples/UDPKinPlugin ] || mkdir Build/RWSExamples/UDPKinPlugin"
+    - "[ -d Build/RWSim ] || mkdir Build/RWSim"
+    - "[ -d Build/RWSimExamples ] || mkdir Build/RWSimExamples"
+    - "[ -d gtest ] || mkdir gtest"
+  script:
+    - cd Build
+    # Build RobWork
+    - cd RW
+    - cmake -DCMAKE_BUILD_TYPE=Release ../../RobWork
+    - make -j$(nproc --all)
+  artifacts:
+    paths: 
+      - ./Build
+      - ./RobWork
+      - ./gtest
+    expire_in: 5 hrs 
+    when: on_success
+
+.linux-build-RWS:
+  stage: build_second
+  tags:
+    - linux
+  script:
+    - cd Build
+    # Build RobWorkStudio
+    - cd RWS
+    - cmake -DCMAKE_BUILD_TYPE=Release -DUSE_WERROR=true ../../RobWorkStudio
+    - make -j$(nproc --all)
+    - cd ..
+  artifacts:
+    paths: 
+      - ./Build/RWS
+      - ./RobWorkStudio
+    expire_in: 5 hrs 
+    when: on_success
+
+.linux-build-RWHW:
+  stage: build_second
+  tags:
+    - linux
+  script:
+    - cd Build
+    # Build RobWorkHardware
+    - cd RWHW
+    - cmake -DCMAKE_BUILD_TYPE=Release -DUSE_WERROR=true ../../RobWorkHardware
+    - make -j$(nproc --all)
+
+  artifacts:
+    paths: 
+      - ./Build/RWHW
+      - ./RobWorkHardware
+    expire_in: 5 hrs 
+    when: on_success
+
+.linux-build-RWSim:
+  stage: build_third
+  tags:
+    - linux
+  script:
+    - cd Build
+    # Build RobWorkSim
+    - cd RWSim
+    - cmake -DCMAKE_BUILD_TYPE=Release -DUSE_WERROR=true ../../RobWorkSim
+    - make -j$(nproc --all)
+    - cd ..
+  artifacts:
+    paths: 
+      - ./Build/RWSim
+      - ./RobWorkSim
+    expire_in: 5 hrs 
+    when: on_success    
 
 .linux-build:
   extends: .linux-common
@@ -380,29 +467,59 @@ stages:
     #- FOR /D %%F IN ("Testing\\*") DO IF EXIST %%F\\Test.xml move %%F\\Test.xml ..\\..\\RWSim-CTest.xml
     #- cd ..
 
-build:ubuntu-1804:
-  extends: .linux-build
+########################## Ubuntu 1804 ################################
+
+build-RW:ubuntu-1804:
+  extends: .linux-build-RW
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
+
+build-RWS:ubuntu-1804:
+  extends: .linux-build-RWS
+  dependencies:
+    - build-RW:ubuntu-1804
+  needs: ["build-RW:ubuntu-1804"]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
+
+build-RWHW:ubuntu-1804:
+  extends: .linux-RWHW
+  dependencies:
+    - build-RW:ubuntu-1804
+  needs: ["build-RW:ubuntu-1804"]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
+
+build-RWSim:ubuntu-1804:
+  extends: .linux-build-RWSim
+  dependencies:
+    - build-RW:ubuntu-1804
+    - build-RWS:ubuntu-1804
+  needs: ["build:ubuntu-1804","build-RWS:ubuntu-1804"]
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
 
 examples:ubuntu-1804:
   extends: .linux-examples
   dependencies:
-    - build:ubuntu-1804
-  needs: ["build:ubuntu-1804"]
+    - build-RW:ubuntu-1804
+    - build-RWS:ubuntu-1804
+    - build-RWHW:ubuntu-1804
+    - build-RWSim:ubuntu-1804
+  needs: ["build:ubuntu-1804","build-RWS:ubuntu-1804","build-RWHW:ubuntu-1804","build-RWSim:ubuntu-1804"]
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
 
 tests:ubuntu-1804:
   extends: .linux-tests
   dependencies:
-    - build:ubuntu-1804
-  needs: ["build:ubuntu-1804"]
+    - build-RW:ubuntu-1804
+    - build-RWS:ubuntu-1804
+    - build-RWHW:ubuntu-1804
+    - build-RWSim:ubuntu-1804
+  needs: ["build:ubuntu-1804","build-RWS:ubuntu-1804","build-RWHW:ubuntu-1804","build-RWSim:ubuntu-1804"]
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
 
 doc:ubuntu-1804:
   extends: .linux-doc
   dependencies:
-    - build:ubuntu-1804
-  needs: ["build:ubuntu-1804"]
+    - build-RW:ubuntu-1804
+  needs: ["build-RW:ubuntu-1804"]
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
 
 #build:ubuntu-1604:

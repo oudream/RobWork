@@ -175,7 +175,6 @@ if ( NOT GLUT_FOUND)
     set(GLUT_glut_LIBRARY ${FreeGLUT_LIBRARY})
     set(GLUT_FOUND ${FreeGLUT_FOUND})
   endif()
-
 endif ()
 
 if( OPENGL_FOUND AND GLUT_FOUND) 
