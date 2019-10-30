@@ -1,6 +1,6 @@
 
 if(POLICY CMP0086) # Introduce cmake 3.14
-    cmake_policy(SET CMP0086 OLD)
+    cmake_policy(SET CMP0086 NEW)
 endif()
 
 

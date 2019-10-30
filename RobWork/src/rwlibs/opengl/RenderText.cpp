@@ -21,6 +21,9 @@
 
 #ifdef RW_HAVE_GLUT
     #include <GL/freeglut.h>
+    #ifdef WIN32
+        #include <freeglut.h>
+    #endif
 #endif
 
 using namespace rwlibs::opengl;
