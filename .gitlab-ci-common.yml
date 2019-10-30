@@ -176,7 +176,7 @@ stages:
     # Build Sphinx
     - cd sphinx
     - cmake -DCMAKE_BUILD_TYPE=Release -DRobWork_DIR:PATH=../../RobWork/cmake -DRobWorkStudio_DIR:PATH=../../RobWorkStudio/cmake -DRobWorkSim_DIR:PATH=../../RobWorkSim/cmake ../../doc/sphinx
-    - make sphinxapidoc -j$(nproc --all)
+    - make sphinxapidoc -j$(nproc --all) || make sphinxapidoc -j$(nproc --all)
     # Publish
     - cd ../..
     - mv Build/sphinx/html public
