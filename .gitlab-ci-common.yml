@@ -492,7 +492,7 @@ build-RWSim:ubuntu-1804:
   dependencies:
     - build-RW:ubuntu-1804
     - build-RWS:ubuntu-1804
-  needs: ["build:ubuntu-1804","build-RWS:ubuntu-1804"]
+  needs: ["build-RW:ubuntu-1804","build-RWS:ubuntu-1804"]
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
 
 examples:ubuntu-1804:
