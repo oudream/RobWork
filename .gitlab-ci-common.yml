@@ -2,6 +2,7 @@ stages:
   - build
   - build_second
   - build_third
+  - build_doc 
   - test
   - deploy
 
@@ -163,7 +164,7 @@ stages:
 ########################## NEW CI ####################################
 
 .linux-doc:
-  stage: build_second
+  stage: build_doc
   tags:
     - linux
   before_script:
@@ -680,7 +681,10 @@ build:doc:
   extends: .linux-doc
   dependencies:
     - build-RW:ubuntu-1804
-  needs: ["build-RW:ubuntu-1804"]
+    - build-RWS:ubuntu-1804
+    - build-RWHW:ubuntu-1804
+    - build-RWSim:ubuntu-1804
+  needs: ["build-RW:ubuntu-1804","build-RWS:ubuntu-1804","build-RWHW:ubuntu-1804","build-RWSim:ubuntu-1804"]
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804-doc
 
 #build-minimal:ubuntu-1804:
