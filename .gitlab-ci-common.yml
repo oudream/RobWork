@@ -363,8 +363,8 @@ examples:ubuntu-1804:
 #  extends: .linux-full
 #  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:centos-7
 
-build:windows10-vs15:
-  extends: .windows-full
+#build:windows10-vs15:
+#  extends: .windows-full
 
 #build:doc:
 #  extends: .linux-doc
