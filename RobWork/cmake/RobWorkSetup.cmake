@@ -158,6 +158,9 @@ ENDIF()
 #
 # For some libs we need the opengl package, though it is OPTIONAL 
 #
+if(POLICY CMP0072) # Introduce cmake 3.11
+    cmake_policy(SET CMP0072 NEW)
+endif()
 FIND_PACKAGE(OpenGL)
 INCLUDE(CMakeDependentOption)
 
