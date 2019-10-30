@@ -1,5 +1,6 @@
 stages:
   - build
+  - build_second
   - test
   - deploy
 
@@ -158,30 +159,22 @@ stages:
     - mv ./Testing/**/Test.xml ../../RWSim-CTest.xml
     - cd ..
 
+########################## NEW CI ####################################
+
 .linux-doc:
-  stage: build
+  stage: build_second
   tags:
     - linux
   before_script:
     - "[ -d Build ] || mkdir Build"
     - "[ -d Build/RW ] || mkdir Build/RW"
     - "[ -d Build/sphinx ] || mkdir Build/sphinx"
-  only:
-    refs:
-      - master@sdurobotics/RobWork
-      - schedules
-      - web
   script:
     - cd Build
-    # Build libraries needed for Sphinx apidoc
-    - cd RW
-    - cmake -DCMAKE_BUILD_TYPE=Release -DRW_USE_YAOBI=OFF -DRW_USE_FCL=OFF -DRW_USE_ASSIMP=OFF -DBUILD_sdurws_lua=OFF -DRWS_USE_STATIC_LINK_PLUGINS=OFF -DRWSIM_DISABLE_LUA=ON -DBUILD_sdurwsim_luai=OFF ../..
-    - make sdurw_java sdurws_jni sdurwsim_jni sdurw_python _sdurws _sdurwsim -j6
-    - cd ..
     # Build Sphinx
     - cd sphinx
     - cmake -DCMAKE_BUILD_TYPE=Release -DRobWork_DIR:PATH=../../RobWork/cmake -DRobWorkStudio_DIR:PATH=../../RobWorkStudio/cmake -DRobWorkSim_DIR:PATH=../../RobWorkSim/cmake ../../doc/sphinx
-    - make sphinxapidoc -j6
+    - make sphinxapidoc -j$(nproc --all)
     # Publish
     - cd ../..
     - mv Build/sphinx/html public
@@ -226,8 +219,68 @@ stages:
   
 .linux-examples:
   stage: test
+  tags:
+    - linux
   script:
-    - ls
+    - cd Build
+    # Build RobWork Examples
+    - cd RWExamples
+    - cmake -DCMAKE_BUILD_TYPE=Release ../../RobWork/example
+    - make -j$(nproc --all)
+    - cd ..
+    # Build RobWorkStudio Examples
+    - cd RWSExamples
+    - cd pluginapp
+    - cmake -DCMAKE_BUILD_TYPE=Release ../../../RobWorkStudio/example/pluginapp
+    - make -j$(nproc --all)
+    - cd ..
+    - cd pluginUIapp
+    - cmake -DCMAKE_BUILD_TYPE=Release ../../../RobWorkStudio/example/pluginUIapp
+    - make -j$(nproc --all)
+    - cd ..
+    - cd tutorial
+    - cmake -DCMAKE_BUILD_TYPE=Release ../../../RobWorkStudio/example/tutorial
+    - make -j$(nproc --all)
+    - cd ..
+    - cd UDPKinPlugin
+    - cmake -DCMAKE_BUILD_TYPE=Release ../../../RobWorkStudio/example/UDPKinPlugin
+    - make -j$(nproc --all)
+    - cd ..
+    - cd ..
+    # Build RobWorkSim Examples
+    - cd RWSimExamples
+    - cmake -DCMAKE_BUILD_TYPE=Release ../../RobWorkSim/example
+    - make -j$(nproc --all)
+
+.linux-tests:
+  stage: test
+  tags:
+    - linux
+  script:
+    # Run RobWork tests
+    - cd RW
+    - make -j 1 -k sdurw-gtest_reports
+    - mv ../../RobWork/bin/**/gtest_reports/* ../../gtest/
+    - ctest --no-compress-output -T Test -j 1
+    - mv ./Testing/**/Test.xml ../../RWS-Test.xml
+    - cd ..
+    # Run RobWorkStudio tests
+    - cd RWS
+    - export DISPLAY=:0
+    - Xvfb $DISPLAY -screen 0 640x480x24 &
+    - make -j 1 -k sdurws-gtest_reports
+    - mv ../../RobWorkStudio/bin/**/gtest_reports/* ../../gtest/
+    - ctest --no-compress-output -T Test -j 1
+    - mv ./Testing/**/Test.xml ../../RWS-CTest.xml
+    - cd ..
+    # Run RobWorkSim tests
+    - cd RWSim
+    - make -j 1 -k sdurwsim-gtest_reports
+    - mv ../../RobWorkSim/bin/**/gtest_reports/* ../../gtest/
+    - ctest --no-compress-output -T Test -j 1
+    - mv ./Testing/**/Test.xml ../../RWSim-CTest.xml
+
+########################### WINDOWS CI ################################
 
 .windows-common:
   stage: build
@@ -327,7 +380,6 @@ stages:
     #- FOR /D %%F IN ("Testing\\*") DO IF EXIST %%F\\Test.xml move %%F\\Test.xml ..\\..\\RWSim-CTest.xml
     #- cd ..
 
-
 build:ubuntu-1804:
   extends: .linux-build
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
@@ -338,6 +390,14 @@ examples:ubuntu-1804:
     - build:ubuntu-1804
   needs: ["build:ubuntu-1804"]
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
+
+tests:ubuntu-1804:
+  extends: .linux-tests
+  dependencies:
+    - build:ubuntu-1804
+  needs: ["build:ubuntu-1804"]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
+
 
 #build:ubuntu-1604:
 #  extends: .linux-full
@@ -363,8 +423,8 @@ examples:ubuntu-1804:
 #  extends: .linux-full
 #  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:centos-7
 
-#build:windows10-vs15:
-#  extends: .windows-full
+build:windows10-vs15:
+  extends: .windows-full
 
 #build:doc:
 #  extends: .linux-doc
