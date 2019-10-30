@@ -169,6 +169,10 @@ INCLUDE(CMakeDependentOption)
 #
 set(RW_HAVE_GLUT False)
 find_package(GLUT QUIET)
+if ( NOT GLUT_FOUND)
+  find_package(FreeGLUT REQUIRED)
+endif ()
+
 if( OPENGL_FOUND AND GLUT_FOUND) 
   set(RW_HAVE_GLUT True)
   message(STATUS "RobWork: OpenGL and GLUT ENABLED! FOUND!")

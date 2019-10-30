@@ -1,5 +1,6 @@
 stages:
   - build
+  - test
   - deploy
 
 .linux-common:
@@ -189,6 +190,45 @@ stages:
       - public
     expire_in: 1 day
 
+.linux-build:
+  extends: .linux-common
+  script:
+    - cd Build
+    # Build RobWork
+    - cd RW
+    - cmake -DCMAKE_BUILD_TYPE=Release ../../RobWork
+    - make -j$(nproc --all)
+    - cd ..
+    # Build RobWorkHardware
+    - cd RWHW
+    - cmake -DCMAKE_BUILD_TYPE=Release -DUSE_WERROR=true ../../RobWorkHardware
+    - make -j$(nproc --all)
+    - cd ..
+    # Build RobWorkStudio
+    - cd RWS
+    - cmake -DCMAKE_BUILD_TYPE=Release -DUSE_WERROR=true ../../RobWorkStudio
+    - make -j$(nproc --all)
+    - cd ..
+    # Build RobWorkSim
+    - cd RWSim
+    - cmake -DCMAKE_BUILD_TYPE=Release -DUSE_WERROR=true ../../RobWorkSim
+    - make -j$(nproc --all)
+    - cd ..
+  artifacts:
+    paths: 
+      - ./Build
+      - ./RobWork
+      - ./RobWorkStudio
+      - ./RobWorkSim
+      - ./RobWorkHardware
+    expire_in: 5 hrs 
+    when: on_success
+  
+.linus-examples:
+  stage: test
+  script:
+    - ls
+
 .windows-common:
   stage: build
   tags:
@@ -286,6 +326,19 @@ stages:
     #- ctest -C Release --no-compress-output -T Test -j 1
     #- FOR /D %%F IN ("Testing\\*") DO IF EXIST %%F\\Test.xml move %%F\\Test.xml ..\\..\\RWSim-CTest.xml
     #- cd ..
+
+
+build:ubuntu-1804:
+  extends: .linux-build
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
+
+examples:ubuntu-1804:
+  extends: .linux-examples
+  dependencies:
+    - build:ubuntu-1804
+  needs: ["build:ubuntu-1804"]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
+
 
 #build:ubuntu-1604:
 #  extends: .linux-full
