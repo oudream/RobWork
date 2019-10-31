@@ -6,29 +6,6 @@ stages:
   - test
   - deploy
 
-.linux-common:
-  stage: build
-  tags:
-    - linux
-  before_script:
-    - "[ -d Build ] || mkdir Build"
-    - "[ -d Build/RW ] || mkdir Build/RW"
-    - "[ -d Build/RWExamples ] || mkdir Build/RWExamples"
-    - "[ -d Build/RWHW ] || mkdir Build/RWHW"
-    - "[ -d Build/RWS ] || mkdir Build/RWS"
-    - "[ -d Build/RWSExamples ] || mkdir Build/RWSExamples"
-    - "[ -d Build/RWSExamples/pluginapp ] || mkdir Build/RWSExamples/pluginapp"
-    - "[ -d Build/RWSExamples/pluginUIapp ] || mkdir Build/RWSExamples/pluginUIapp"
-    - "[ -d Build/RWSExamples/tutorial ] || mkdir Build/RWSExamples/tutorial"
-    - "[ -d Build/RWSExamples/UDPKinPlugin ] || mkdir Build/RWSExamples/UDPKinPlugin"
-    - "[ -d Build/RWSim ] || mkdir Build/RWSim"
-    - "[ -d Build/RWSimExamples ] || mkdir Build/RWSimExamples"
-    - "[ -d gtest ] || mkdir gtest"
-  artifacts:
-    expire_in: 10 weeks
-    reports:
-      junit: [RW*-CTest.xml, gtest/*]
-
 .linux-minimal:
   extends: .linux-common
   only:
@@ -71,9 +48,12 @@ stages:
     - mv ./Testing/**/Test.xml ../../RWS-CTest.xml
     - cd ..
 
-.linux-full:
-  extends: .linux-common
-  only:
+
+
+########################## NEW CI ####################################
+
+.linux-CI-common:
+    only:
     refs:
       - branches@sdurobotics/RobWork
       - tags@sdurobotics/RobWork
@@ -86,84 +66,9 @@ stages:
       - /^wip-.*$/
     variables:
       - $CI_COMMIT_MESSAGE =~ /WIP:.*/i
-  script:
-    - cd Build
-    # Build RobWork
-    - cd RW
-    - cmake -DCMAKE_BUILD_TYPE=Release ../../RobWork
-    - make -j6
-    - cd ..
-    # Build RobWorkHardware
-    - cd RWHW
-    - cmake -DCMAKE_BUILD_TYPE=Release -DUSE_WERROR=true ../../RobWorkHardware
-    - make -j6
-    - cd ..
-    # Build RobWorkStudio
-    - cd RWS
-    - cmake -DCMAKE_BUILD_TYPE=Release -DUSE_WERROR=true ../../RobWorkStudio
-    - make -j6
-    - cd ..
-    # Build RobWorkSim
-    - cd RWSim
-    - cmake -DCMAKE_BUILD_TYPE=Release -DUSE_WERROR=true ../../RobWorkSim
-    - make -j6
-    - cd ..
-    # Build RobWork Examples
-    - cd RWExamples
-    - cmake -DCMAKE_BUILD_TYPE=Release ../../RobWork/example
-    - make -j6
-    - cd ..
-    # Build RobWorkStudio Examples
-    - cd RWSExamples
-    - cd pluginapp
-    - cmake -DCMAKE_BUILD_TYPE=Release ../../../RobWorkStudio/example/pluginapp
-    - make -j6
-    - cd ..
-    - cd pluginUIapp
-    - cmake -DCMAKE_BUILD_TYPE=Release ../../../RobWorkStudio/example/pluginUIapp
-    - make -j6
-    - cd ..
-    - cd tutorial
-    - cmake -DCMAKE_BUILD_TYPE=Release ../../../RobWorkStudio/example/tutorial
-    - make -j6
-    - cd ..
-    - cd UDPKinPlugin
-    - cmake -DCMAKE_BUILD_TYPE=Release ../../../RobWorkStudio/example/UDPKinPlugin
-    - make -j6
-    - cd ..
-    - cd ..
-    # Build RobWorkSim Examples
-    - cd RWSimExamples
-    - cmake -DCMAKE_BUILD_TYPE=Release ../../RobWorkSim/example
-    - make -j6
-    - cd ..
-    # Run RobWork tests
-    - cd RW
-    - make -j 1 -k sdurw-gtest_reports
-    - mv ../../RobWork/bin/**/gtest_reports/* ../../gtest/
-    - ctest --no-compress-output -T Test -j 1
-    - mv ./Testing/**/Test.xml ../../RWS-Test.xml
-    - cd ..
-    # Run RobWorkStudio tests
-    - cd RWS
-    - export DISPLAY=:0
-    - Xvfb $DISPLAY -screen 0 640x480x24 &
-    - make -j 1 -k sdurws-gtest_reports
-    - mv ../../RobWorkStudio/bin/**/gtest_reports/* ../../gtest/
-    - ctest --no-compress-output -T Test -j 1
-    - mv ./Testing/**/Test.xml ../../RWS-CTest.xml
-    - cd ..
-    # Run RobWorkSim tests
-    - cd RWSim
-    - make -j 1 -k sdurwsim-gtest_reports
-    - mv ../../RobWorkSim/bin/**/gtest_reports/* ../../gtest/
-    - ctest --no-compress-output -T Test -j 1
-    - mv ./Testing/**/Test.xml ../../RWSim-CTest.xml
-    - cd ..
-
-########################## NEW CI ####################################
 
 .linux-doc:
+  extends: .linux-CI-common
   stage: build_doc
   tags:
     - linux
@@ -186,6 +91,7 @@ stages:
     expire_in: 1 day
 
 .linux-build-RW:
+  extends: .linux-CI-common
   stage: build
   tags:
     - linux
@@ -218,6 +124,7 @@ stages:
     when: on_success
 
 .linux-build-RWS:
+  extends: .linux-CI-common
   stage: build_second
   tags:
     - linux
@@ -236,6 +143,7 @@ stages:
     when: on_success
 
 .linux-build-RWHW:
+  extends: .linux-CI-common
   stage: build_second
   tags:
     - linux
@@ -254,6 +162,7 @@ stages:
     when: on_success
 
 .linux-build-RWSim:
+  extends: .linux-CI-common
   stage: build_third
   tags:
     - linux
@@ -272,6 +181,7 @@ stages:
     when: on_success    
   
 .linux-examples:
+  extends: .linux-CI-common
   stage: test
   tags:
     - linux
@@ -307,6 +217,7 @@ stages:
     - make -j$(nproc --all)
 
 .linux-tests:
+  extends: .linux-CI-common
   stage: test
   tags:
     - linux
@@ -438,11 +349,13 @@ stages:
 build:windows10-vs15:
   extends: .windows-full
 
-########################## Ubuntu 1804 ################################
+########################## Ubuntu 1804 (MAIN) ################################
 
 build-RW:ubuntu-1804:
   extends: .linux-build-RW
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
+  only: 
+  except: 
 
 build-RWS:ubuntu-1804:
   extends: .linux-build-RWS
@@ -450,6 +363,8 @@ build-RWS:ubuntu-1804:
     - build-RW:ubuntu-1804
   needs: ["build-RW:ubuntu-1804"]
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
+  only: 
+  except: 
 
 build-RWHW:ubuntu-1804:
   extends: .linux-build-RWHW
@@ -457,6 +372,8 @@ build-RWHW:ubuntu-1804:
     - build-RW:ubuntu-1804
   needs: ["build-RW:ubuntu-1804"]
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
+  only: 
+  except:
 
 build-RWSim:ubuntu-1804:
   extends: .linux-build-RWSim
@@ -465,6 +382,8 @@ build-RWSim:ubuntu-1804:
     - build-RWS:ubuntu-1804
   needs: ["build-RW:ubuntu-1804","build-RWS:ubuntu-1804"]
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
+  only: 
+  except:
 
 examples:ubuntu-1804:
   extends: .linux-examples
@@ -475,6 +394,8 @@ examples:ubuntu-1804:
     - build-RWSim:ubuntu-1804
   needs: ["build-RW:ubuntu-1804","build-RWS:ubuntu-1804","build-RWHW:ubuntu-1804","build-RWSim:ubuntu-1804"]
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
+  only: 
+  except:
 
 tests:ubuntu-1804:
   extends: .linux-tests
@@ -485,6 +406,8 @@ tests:ubuntu-1804:
     - build-RWSim:ubuntu-1804
   needs: ["build-RW:ubuntu-1804","build-RWS:ubuntu-1804","build-RWHW:ubuntu-1804","build-RWSim:ubuntu-1804"]
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
+  only: 
+  except:
 
 ########################## Ubuntu 1604 ################################
 
@@ -674,6 +597,55 @@ tests:centos-7:
     - build-RWSim:centos-7
   needs: ["build-RW:centos-7","build-RWS:centos-7","build-RWHW:centos-7","build-RWSim:centos-7"]
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:centos-7
+
+######################## Merge_requests #############################
+
+build-RW:ubuntu-1804:
+  extends: .linux-build-RW
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
+
+build-RWS:ubuntu-1804:
+  extends: .linux-build-RWS
+  dependencies:
+    - build-RW:ubuntu-1804
+  needs: ["build-RW:ubuntu-1804"]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
+
+build-RWHW:ubuntu-1804:
+  extends: .linux-build-RWHW
+  dependencies:
+    - build-RW:ubuntu-1804
+  needs: ["build-RW:ubuntu-1804"]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
+
+build-RWSim:ubuntu-1804:
+  extends: .linux-build-RWSim
+  dependencies:
+    - build-RW:ubuntu-1804
+    - build-RWS:ubuntu-1804
+  needs: ["build-RW:ubuntu-1804","build-RWS:ubuntu-1804"]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
+
+examples:ubuntu-1804:
+  extends: .linux-examples
+  dependencies:
+    - build-RW:ubuntu-1804
+    - build-RWS:ubuntu-1804
+    - build-RWHW:ubuntu-1804
+    - build-RWSim:ubuntu-1804
+  needs: ["build-RW:ubuntu-1804","build-RWS:ubuntu-1804","build-RWHW:ubuntu-1804","build-RWSim:ubuntu-1804"]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
+
+tests:ubuntu-1804:
+  extends: .linux-tests
+  dependencies:
+    - build-RW:ubuntu-1804
+    - build-RWS:ubuntu-1804
+    - build-RWHW:ubuntu-1804
+    - build-RWSim:ubuntu-1804
+  needs: ["build-RW:ubuntu-1804","build-RWS:ubuntu-1804","build-RWHW:ubuntu-1804","build-RWSim:ubuntu-1804"]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
+
 
 ######################## Misc ##########################################
 

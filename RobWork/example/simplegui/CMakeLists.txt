@@ -62,7 +62,7 @@ SET(SRC_FILES
 )
 
 ADD_LIBRARY(rwtools_simpleviewer ${SRC_FILES})
-TARGET_INCLUDE_DIRECTORIES(rwtools_simpleviewer PRIVATE ${GLUT_INCLUDE_DIR})
+#TARGET_INCLUDE_DIRECTORIES(rwtools_simpleviewer PRIVATE ${GLUT_INCLUDE_DIR})
 
 # set the libraries we need 
 SET(LIBRARIES rwtools_simpleviewer ${ROBWORK_LIBRARIES} ${GLUT_glut_LIBRARY} )
