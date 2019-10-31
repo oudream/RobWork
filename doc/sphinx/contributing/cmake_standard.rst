@@ -111,15 +111,14 @@ When storing paths in variables or CACHE, do NOT have the cmake variables end up
 .. code-block:: cmake
 
    # YES:
-   set(_my_path "path/to/foo")
-   set(_my_other_path "${_my_path}/${_my_var}")
+   set(MY_PATH "path/to/foo")
+   set(MY_OTHER_PATH "${_my_path}/${_my_var}")
    # NO:
-   set(my_path "path/to/foo/")
-   set(_my_other_path "${_my_path}${_my_var}")   # wrong: this is ugly
+   set(MY_PATH "path/to/foo/")
+   set(MY_OTHER_PATH "${_my_path}${_my_var}")   # wrong: this is ugly
 
 **2.6 Path Names** :raw-html:`<br />`
-Any Variable / CACHE Variable that stores a path should be named appropriately with either
-ROOT, DIR, PATH or FILEPATH at the end of the variable name.
+Any CACHE Variable that stores a path, should be given the type PATH or FILEPATH
 
 3. Robwork CMake setup
 **********************
