@@ -237,70 +237,70 @@ stages:
     - msbuild RobWork.sln /property:Configuration=Release /maxcpucount:6
     - cd ..
     # Build RobWorkHardware
-    #- cd RWHW
-    #- cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 15 2017 Win64" -DBUILD_SHARED_LIBS=OFF -DRWHW_SHARED_LIBS=OFF ../../RobWorkHardware
-    #- msbuild RobWorkHardware.sln /property:Configuration=Release /maxcpucount:6
-    #- cd ..
+    - cd RWHW
+    - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 15 2017 Win64" -DBUILD_SHARED_LIBS=OFF -DRWHW_SHARED_LIBS=OFF ../../RobWorkHardware
+    - msbuild RobWorkHardware.sln /property:Configuration=Release /maxcpucount:6
+    - cd ..
     # Build RobWorkStudio
-    #- cd RWS
-    #- cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 15 2017 Win64" -DSWIG_EXECUTABLE=%SWIG_ROOT%\swig.exe ../../RobWorkStudio
-    #- msbuild RobWorkStudio.sln /property:Configuration=Release /maxcpucount:6
-    #- cd ..
+    - cd RWS
+    - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 15 2017 Win64" -DSWIG_EXECUTABLE=%SWIG_ROOT%\swig.exe ../../RobWorkStudio
+    - msbuild RobWorkStudio.sln /property:Configuration=Release /maxcpucount:6
+    - cd ..
     # Build RobWorkSim
-    #- cd RWSim
-    #- cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 15 2017 Win64" -DSWIG_EXECUTABLE=%SWIG_ROOT%\swig.exe ../../RobWorkSim
-    #- msbuild RobWorkSim.sln /property:Configuration=Release /maxcpucount:6
-    #- cd ..
+    - cd RWSim
+    - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 15 2017 Win64" -DSWIG_EXECUTABLE=%SWIG_ROOT%\swig.exe ../../RobWorkSim
+    - msbuild RobWorkSim.sln /property:Configuration=Release /maxcpucount:6
+    - cd ..
     # Build RobWork Examples
     - cd RWExamples
     - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 15 2017 Win64" ../../RobWork/example
     - msbuild Project.sln /property:Configuration=Release /maxcpucount:6
     - cd ..
     # Build RobWorkStudio Examples
-    #- cd RWSExamples
-    #- cd pluginapp
-    #- cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 15 2017 Win64" ../../../RobWorkStudio/example/pluginapp
-    #- msbuild PluginApp.sln /property:Configuration=Release /maxcpucount:6
-    #- cd ..
-    #- cd pluginUIapp
-    #- cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 15 2017 Win64" ../../../RobWorkStudio/example/pluginUIapp
-    #- msbuild PluginUIApp.sln /property:Configuration=Release /maxcpucount:6
-    #- cd ..
-    #- cd tutorial
-    #- cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 15 2017 Win64" ../../../RobWorkStudio/example/tutorial
-    #- msbuild SamplePluginApp.sln /property:Configuration=Release /maxcpucount:6
-    #- cd ..
-    #- cd UDPKinPlugin
-    #- cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 15 2017 Win64" ../../../RobWorkStudio/example/UDPKinPlugin
-    #- msbuild PluginUIApp.sln /property:Configuration=Release /maxcpucount:6
-    #- cd ..
-    #- cd ..
+    - cd RWSExamples
+    - cd pluginapp
+    - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 15 2017 Win64" ../../../RobWorkStudio/example/pluginapp
+    - msbuild PluginApp.sln /property:Configuration=Release /maxcpucount:6
+    - cd ..
+    - cd pluginUIapp
+    - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 15 2017 Win64" ../../../RobWorkStudio/example/pluginUIapp
+    - msbuild PluginUIApp.sln /property:Configuration=Release /maxcpucount:6
+    - cd ..
+    - cd tutorial
+    - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 15 2017 Win64" ../../../RobWorkStudio/example/tutorial
+    - msbuild SamplePluginApp.sln /property:Configuration=Release /maxcpucount:6
+    - cd ..
+    - cd UDPKinPlugin
+    - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 15 2017 Win64" ../../../RobWorkStudio/example/UDPKinPlugin
+    - msbuild PluginUIApp.sln /property:Configuration=Release /maxcpucount:6
+    - cd ..
+    - cd ..
     # Build RobWorkSim Examples
-    #- cd RWSimExamples
-    #- cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 15 2017 Win64" ../../RobWorkSim/example
-    #- msbuild RWSimExamples.sln /property:Configuration=Release /maxcpucount:6
-    #- cd ..
+    - cd RWSimExamples
+    - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 15 2017 Win64" ../../RobWorkSim/example
+    - msbuild RWSimExamples.sln /property:Configuration=Release /maxcpucount:6
+    - cd ..
     # Run RobWork tests
-    #- cd RW
-    #- msbuild gtest/sdurw-gtest_reports.vcxproj /p:Configuration=Release
-    #- move ..\\..\\RobWork\\bin\\release\\gtest_reports\\* ..\\..\\gtest\\
-    #- ctest -C Release --no-compress-output -T Test -j 1
-    #- FOR /D %%F IN ("Testing\\*") DO IF EXIST %%F\\Test.xml move %%F\\Test.xml ..\\..\\RW-CTest.xml
-    #- cd ..
-    # Run RobWorkStudio tests
-    #- cd RWS
-    #- msbuild gtest/sdurws-gtest_reports.vcxproj /p:Configuration=Release
-    #- move ..\\..\\RobWorkStudio\\bin\\release\\gtest_reports\\* ..\\..\\gtest\\
-    #- ctest -C Release --no-compress-output -T Test -j 1
-    #- FOR /D %%F IN ("Testing\\*") DO IF EXIST %%F\\Test.xml move %%F\\Test.xml ..\\..\\RWS-CTest.xml
-    #- cd ..
+    - cd RW
+    - msbuild gtest/sdurw-gtest_reports.vcxproj /p:Configuration=Release
+    - move ..\\..\\RobWork\\bin\\release\\gtest_reports\\* ..\\..\\gtest\\
+    - ctest -C Release --no-compress-output -T Test -j 1
+    - FOR /D %%F IN ("Testing\\*") DO IF EXIST %%F\\Test.xml move %%F\\Test.xml ..\\..\\RW-CTest.xml
+    - cd ..
+     Run RobWorkStudio tests
+    - cd RWS
+    - msbuild gtest/sdurws-gtest_reports.vcxproj /p:Configuration=Release
+    - move ..\\..\\RobWorkStudio\\bin\\release\\gtest_reports\\* ..\\..\\gtest\\
+    - ctest -C Release --no-compress-output -T Test -j 1
+    - FOR /D %%F IN ("Testing\\*") DO IF EXIST %%F\\Test.xml move %%F\\Test.xml ..\\..\\RWS-CTest.xml
+    - cd ..
     # Run RobWorkSim tests
-    #- cd RWSim
-    #- msbuild gtest/sdurwsim-gtest_reports.vcxproj /p:Configuration=Release
-    #- move ..\\..\\RobWorkSim\\bin\\Release\\gtest_reports\\* ..\\..\\gtest\\
-    #- ctest -C Release --no-compress-output -T Test -j 1
-    #- FOR /D %%F IN ("Testing\\*") DO IF EXIST %%F\\Test.xml move %%F\\Test.xml ..\\..\\RWSim-CTest.xml
-    #- cd ..
+    - cd RWSim
+    - msbuild gtest/sdurwsim-gtest_reports.vcxproj /p:Configuration=Release
+    - move ..\\..\\RobWorkSim\\bin\\Release\\gtest_reports\\* ..\\..\\gtest\\
+    - ctest -C Release --no-compress-output -T Test -j 1
+    - FOR /D %%F IN ("Testing\\*") DO IF EXIST %%F\\Test.xml move %%F\\Test.xml ..\\..\\RWSim-CTest.xml
+    - cd ..
 
 build:windows10-vs15:
   extends: .windows-full
