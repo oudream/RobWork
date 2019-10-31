@@ -1,4 +1,3 @@
-
 # if we want to use ui files add them here
 SET(UIS_FILES AboutBox.ui propertyview/PropertyViewEditor.ui propertyview/PropertyViewDialog.ui)
 
@@ -22,7 +21,9 @@ SET(SRC_FILES_CPP
   HelpAssistant.cpp
   ImageView.cpp
   propertyview/PropertyViewEditor.cpp
-  propertyview/PropertyViewDialog.cpp)
+  propertyview/PropertyViewDialog.cpp
+  
+)
 
 SET(SRC_FILES_HPP
   ArcBallController.hpp
@@ -37,7 +38,7 @@ SET(SRC_FILES_HPP
   HelpAssistant.hpp
   ImageView.hpp
   propertyview/PropertyViewEditor.hpp
-  propertyview/PropertyViewDialog.hpp 
+  propertyview/PropertyViewDialog.hpp
   )
 
 # Files to moc and compile:
@@ -49,8 +50,14 @@ SET(MocHeaderFiles
   RWStudioView3D.hpp
   ImageView.hpp
   propertyview/PropertyViewEditor.hpp 
-  propertyview/PropertyViewDialog.hpp )
+  propertyview/PropertyViewDialog.hpp 
+  )
 
+if(RWS_USE_PYTHON)
+ set(SRC_FILES_CPP ${SRC_FILES_CPP} pythonpluginloader/PyPlugin.cpp)
+ set(SRC_FILES_HPP ${SRC_FILES_HPP} pythonpluginloader/PyPlugin.hpp)
+ set(MocHeaderFiles ${MocHeaderFiles} pythonpluginloader/PyPlugin.hpp)
+endif()
 
 set_source_files_properties(${SRC_FILES_CPP} PROPERTIES OBJECT_DEPENDS "${UIS_OUT_H}")
 
@@ -80,7 +87,7 @@ ENDIF()
 
 # We create a static library named rwstudio that all plugins should link to. Our
 # RobWorkStudio executable links to this library also.
-ADD_LIBRARY(rws
+RW_ADD_LIBRARY(sdurws sdurws
             ${UIS_OUT_H}
             ${SRC_FILES_CPP}
             ${MocSrcFiles}
@@ -88,13 +95,15 @@ ADD_LIBRARY(rws
 )
 
 if ( ${RWS_HAVE_GLUT} )
-  TARGET_LINK_LIBRARIES(rws qtpropertybrowser ${QT_LIBRARIES} ${ROBWORK_LIBRARIES} ${GLUT_glut_LIBRARY})
+  TARGET_LINK_LIBRARIES(sdurws PUBLIC qtpropertybrowser ${PYTHON_LIBRARIES} ${QT_LIBRARIES} ${ROBWORK_LIBRARIES} ${GLUT_glut_LIBRARY})
 else () 
-  TARGET_LINK_LIBRARIES(rws qtpropertybrowser ${QT_LIBRARIES} ${ROBWORK_LIBRARIES})
+  TARGET_LINK_LIBRARIES(sdurws PUBLIC qtpropertybrowser ${PYTHON_LIBRARIES} ${QT_LIBRARIES} ${ROBWORK_LIBRARIES})
 endif()
+include_directories(${PYTHON_INCLUDE_DIRS})
+
 
 IF(CMAKE_VERSION VERSION_GREATER 3.3)
-	SET_TARGET_PROPERTIES(rws PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
+	SET_TARGET_PROPERTIES(sdurws PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
 ENDIF()
 
 IF(WIN32 AND MSVC AND BUILD_SHARED_LIBS AND CMAKE_VERSION VERSION_LESS 3.4)
@@ -102,8 +111,8 @@ IF(WIN32 AND MSVC AND BUILD_SHARED_LIBS AND CMAKE_VERSION VERSION_LESS 3.4)
 ENDIF()
 
 # Install stuff
-INSTALL(TARGETS rws DESTINATION ${LIB_INSTALL_DIR})
-INSTALL(FILES ${SRC_FILES_HPP} DESTINATION ${INCLUDE_INSTALL_DIR}/rws)
+INSTALL(TARGETS sdurws DESTINATION ${LIB_INSTALL_DIR})
+INSTALL(FILES ${SRC_FILES_HPP} DESTINATION ${INCLUDE_INSTALL_DIR}/sdurws)
 
-ADD_LIBRARY(rws_plugin.rwplugin MODULE RWSImageLoaderPlugin.cpp RWSImageLoaderPlugin.hpp)
-TARGET_LINK_LIBRARIES(rws_plugin.rwplugin rws ${QT_LIBRARIES} ${ROBWORK_LIBRARIES})
+ADD_LIBRARY(sdurws_plugin.rwplugin MODULE RWSImageLoaderPlugin.cpp RWSImageLoaderPlugin.hpp)
+TARGET_LINK_LIBRARIES(sdurws_plugin.rwplugin sdurws ${QT_LIBRARIES} ${ROBWORK_LIBRARIES})

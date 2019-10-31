@@ -1,6 +1,6 @@
-SET(SUBSYS_NAME rws_jog)
+SET(SUBSYS_NAME sdurws_jog)
 set(SUBSYS_DESC "A jog plugin")
-SET(SUBSYS_DEPS rws)
+SET(SUBSYS_DEPS sdurws)
 
 SET(build TRUE)
 RW_SUBSYS_OPTION(build ${SUBSYS_NAME} ${SUBSYS_DESC} ON)

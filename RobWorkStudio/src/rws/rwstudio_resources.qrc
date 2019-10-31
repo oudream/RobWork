@@ -38,8 +38,8 @@
 	    <file>../images/zoom_auto.png</file>
 	    <file>../images/zoom_in.png</file>
 	    <file>../images/zoom_out.png</file>
-
         
+        <file alias="PyPlugin.py">./pythonpluginloader/PyPlugin.py</file>
         <file alias="jog.png" >../rwslibs/jog/jog.png</file>
         <file alias="log.png" >../rwslibs/log/log.png</file>
         <file alias="backward.png" >../rwslibs/playback/backward.png</file>
@@ -64,7 +64,7 @@
         <file alias="sensors.png" >../rwslibs/sensors/sensors.png</file>
 		<file alias="wordlist.txt">../rwslibs/luaeditor/wordlist.txt</file>
         <file alias="word_list.txt">../rwslibs/workcelleditor/word_list.txt</file>
-
+        <file alias="PythonIcon.png">../images/PythonIcon.png</file>
         <file alias="rwxml_workcell.xsd">../../../RobWork/xml-schemas/rwxml_workcell.xsd</file>
 
     </qresource>

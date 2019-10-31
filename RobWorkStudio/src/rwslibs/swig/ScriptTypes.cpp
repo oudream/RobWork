@@ -3,6 +3,7 @@
 #include "ScriptTypes.hpp"
 
 #include <rwslibs/rwstudioapp/RobWorkStudioApp.hpp>
+#include <QApplication>
 
 using namespace rws::swig;
 using namespace rwlibs::swig;
@@ -13,6 +14,18 @@ rws::swig::RobWorkStudio* rws::swig::getRobWorkStudio(){
     //if(rwstudio_internal==NULL)
     //    rwstudio_internal = getRobWorkStudioInstance("");
     return rwstudio_internal.get();
+}
+rws::swig::RobWorkStudio* rws::swig::getRobWorkStudioFromQt(){
+    QWidget * rws_w = NULL;
+    QWidgetList all_w = QApplication::allWidgets();
+    for(QWidget * w : all_w) {
+        if( w->objectName() == "RobWorkStudio_MainWindow") {
+            rws_w = w;
+        }
+    }
+
+    RobWorkStudio* rws_ = static_cast<RobWorkStudio *>(rws_w);
+    return rws_;
 }
 
 void rws::swig::setRobWorkStudio(rws::swig::RobWorkStudio* rwstudio){

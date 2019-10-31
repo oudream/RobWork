@@ -2,17 +2,17 @@
 RobWorkStudio
 *******************
 
-The main goal of RobWorkStudio is to implement functionality for vizualising
+The main goal of RobWorkStudio is to implement functionality for visualizing
 a RobWork workcell and to implement a plugin infrastructure that enables easy
 installation of user functionality.
- 
-*RobWorkStudio* is simple and convinient front-end for visualizing
+
+*RobWorkStudio* is simple and convenient front-end for visualizing
 RobWork Workcells and their operation.
 
 Default Plugins
 ===============
 
-Plugins in RobWorkStudio define the functionallity wether it be native plugins
+Plugins in RobWorkStudio define the functionality wether it be native plugins
 or user defined plugins.
 
 .. |jog| image:: ../../../RobWorkStudio/src/rwslibs/jog/jog.png
@@ -43,6 +43,7 @@ or user defined plugins.
    :height: 20
    :width: 20
 
+
 |jog| Jog: Provides functionality for jogging around the robots in a workcell.
 
 |log| Log: Displays the default log in RobWorkStudio
@@ -59,8 +60,13 @@ or user defined plugins.
 
 |treeview| Treeview: Shows the frame structure of the workcell.
 
-|wceditor| WorkCell editor: Edit the XML definition of the WorkCell.
+|wceditor| :ref:`WorkCell Editor<workcell-editor>`: Edit the XML definition of the WorkCell.
 The editor provides help to the user and makes it easier to set up a new WorkCell.
+
+.. toctree::
+   :hidden:
+
+   robworkstudio_plugins/workcell_editor
 
 Extra Plugins
 =============
@@ -81,3 +87,6 @@ User Plugins
 
 Users can easily develop their own plugins for RobWorkStudio.
 See the :ref:`plugins_rws` page for more details about this subject.
+
+
+

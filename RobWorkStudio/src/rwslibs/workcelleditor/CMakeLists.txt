@@ -1,6 +1,6 @@
-SET(SUBSYS_NAME rws_workcelleditor)
+SET(SUBSYS_NAME sdurws_workcelleditor)
 set(SUBSYS_DESC "A workcell editor plugin")
-SET(SUBSYS_DEPS rws)
+SET(SUBSYS_DEPS sdurws)
 
 # if we want to use ui files add them here
 SET(UIS_FILES WorkcellEditorWindow.ui)
@@ -14,16 +14,16 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 SET(SrcFiles WorkcellEditorWindow.cpp
         WorkcellHighlighter.cpp
-        CodeEditor.cpp
-        TreeModelCompleter.cpp
+        WCCodeEditor.cpp
+        WCECompleter.cpp
         InputFormDialog.cpp
         SetColorButton.cpp
         FileDialogButton.cpp
         )
 SET(SRC_FILES_HPP WorkcellEditorWindow.hpp
         WorkcellHighlighter.hpp
-        CodeEditor.hpp
-        TreeModelCompleter.hpp
+        WCCodeEditor.hpp
+        WCECompleter.hpp
         InputFormDialog.hpp
         SetColorButton.hpp
         FileDialogButton.hpp

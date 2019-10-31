@@ -1,6 +1,6 @@
-SET(SUBSYS_NAME rws_luapl)
+SET(SUBSYS_NAME sdurws_luapl)
 set(SUBSYS_DESC "A lua plugin")
-SET(SUBSYS_DEPS rws rws_luaeditor rws_lua_s)
+SET(SUBSYS_DEPS sdurws sdurws_luaeditor sdurws_lua_s)
 
 SET(build ${RWS_HAVE_LUA})
 RW_SUBSYS_OPTION(build ${SUBSYS_NAME} ${SUBSYS_DESC} ${RWS_HAVE_LUA})

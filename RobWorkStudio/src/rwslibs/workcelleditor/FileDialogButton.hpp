@@ -28,7 +28,7 @@ public:
 
     const QString &getFilename() const;
 
-public slots:
+public Q_SLOTS:
 
     void selectFile();
 

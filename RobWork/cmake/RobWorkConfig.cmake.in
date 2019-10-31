@@ -1,7 +1,7 @@
 # ------------------------------------------------------------------------------------
 # Helper to use RobWork from outside project
 #
-# set ROBWORK_DIR to installation path to find root of robwork, 
+# set ROBWORK_DIR to installation path to find root of sdurw, 
 # else automatic finding will be used
 # based on RobWork_DIR 
 #
@@ -18,88 +18,107 @@
 ### ---[ Find RobWork
 
 if(ROBWORK_FIND_QUIETLY)
-  set(QUIET_ QUIET)
+    set(QUIET_ QUIET)
 else(ROBWORK_FIND_QUIETLY)
-  set(QUIET_)
+    set(QUIET_)
 endif(ROBWORK_FIND_QUIETLY)
 
 ############################################## MACROS ################################################
 
 # macro for determining the best RobWork build type match
 MACRO(GET_ROBWORK_BUILD_TYPE CFG_ROOT RW_BUILD_TYPE)
-# defaults to release 
-SET(BTYPE_TMP release)
-if( CMAKE_BUILD_TYPE )
-  STRING(TOLOWER ${CMAKE_BUILD_TYPE} BTYPE_TMP )
-else()
-  set(BTYPE_TMP "none")
-endif()
+    # defaults to release 
+    SET(BTYPE_TMP release)
+    if( CMAKE_BUILD_TYPE )
+        STRING(TOLOWER ${CMAKE_BUILD_TYPE} BTYPE_TMP )
+    else()
+        set(BTYPE_TMP "none")
+    endif()
 
-# first test if the correct cmake build type is installed
-if( EXISTS ${CFG_ROOT}/RobWorkBuildConfig_${BTYPE_TMP}.cmake )
-  SET(${RW_BUILD_TYPE} ${BTYPE_TMP})
-else()
-  
-  # find best robwork build match
-  if(${BTYPE_TMP} STREQUAL "release")
-    # find release compatible robwork installation
-    if( EXISTS ${CFG_ROOT}/RobWorkBuildConfig_minsizerel.cmake )
-      SET(${RW_BUILD_TYPE} minsizerel)
-    elseif(EXISTS ${CFG_ROOT}/RobWorkBuildConfig_relwithdebinfo.cmake)
-      SET(${RW_BUILD_TYPE} relwithdebinfo)
-    elseif(EXISTS ${CFG_ROOT}/RobWorkBuildConfig_debug.cmake)
-      SET(${RW_BUILD_TYPE} debug)
+    # first test if the correct cmake build type is installed
+    if( EXISTS ${CFG_ROOT}/RobWorkBuildConfig_${BTYPE_TMP}.cmake )
+        SET(${RW_BUILD_TYPE} ${BTYPE_TMP})
     else()
-      MESSAGE(FATAL_ERROR "Could not find any build of RobWork!")
-    endif()
-  elseif(${BTYPE_TMP} STREQUAL "minsizerel")
-    if( EXISTS ${CFG_ROOT}/RobWorkBuildConfig_release.cmake )
-      SET(${RW_BUILD_TYPE} release)
-    elseif(EXISTS ${CFG_ROOT}/RobWorkBuildConfig_relwithdebinfo.cmake)
-      SET(${RW_BUILD_TYPE} relwithdebinfo)
-    elseif(EXISTS ${CFG_ROOT}/RobWorkBuildConfig_debug.cmake)
-      SET(${RW_BUILD_TYPE} debug)
-    else()
-      MESSAGE(FATAL_ERROR "Could not find any build of RobWork!")
       
+        # find best robwork build match
+        if(${BTYPE_TMP} STREQUAL "release")
+            # find release compatible robwork installation
+            if( EXISTS ${CFG_ROOT}/RobWorkBuildConfig_minsizerel.cmake )
+                SET(${RW_BUILD_TYPE} minsizerel)
+            elseif(EXISTS ${CFG_ROOT}/RobWorkBuildConfig_relwithdebinfo.cmake)
+                SET(${RW_BUILD_TYPE} relwithdebinfo)
+            elseif(EXISTS ${CFG_ROOT}/RobWorkBuildConfig_debug.cmake)
+                SET(${RW_BUILD_TYPE} debug)
+            elseif(EXISTS ${CFG_ROOT}/RobWorkBuildConfig_none.cmake)
+                SET(${RW_BUILD_TYPE} none)
+            else()
+                MESSAGE(FATAL_ERROR "Could not find any build of RobWork!")
+            endif()
+        elseif(${BTYPE_TMP} STREQUAL "minsizerel")
+            if( EXISTS ${CFG_ROOT}/RobWorkBuildConfig_release.cmake )
+                SET(${RW_BUILD_TYPE} release)
+            elseif(EXISTS ${CFG_ROOT}/RobWorkBuildConfig_relwithdebinfo.cmake)
+                SET(${RW_BUILD_TYPE} relwithdebinfo)
+            elseif(EXISTS ${CFG_ROOT}/RobWorkBuildConfig_debug.cmake)
+                SET(${RW_BUILD_TYPE} debug)
+            elseif(EXISTS ${CFG_ROOT}/RobWorkBuildConfig_none.cmake)
+                SET(${RW_BUILD_TYPE} none)
+            else()
+                MESSAGE(FATAL_ERROR "Could not find any build of RobWork!")
+            endif()
+        elseif(${BTYPE_TMP} STREQUAL "relwithdebinfo")
+            if(EXISTS ${CFG_ROOT}/RobWorkBuildConfig_release.cmake)
+                SET(${RW_BUILD_TYPE} release)
+            elseif( EXISTS ${CFG_ROOT}/RobWorkBuildConfig_minsizerel.cmake )
+              SET(${RW_BUILD_TYPE} minsizerel)
+            elseif(EXISTS ${CFG_ROOT}/RobWorkBuildConfig_debug.cmake)
+                SET(${RW_BUILD_TYPE} debug)
+            elseif(EXISTS ${CFG_ROOT}/RobWorkBuildConfig_none.cmake)
+                SET(${RW_BUILD_TYPE} none)
+            else()
+                MESSAGE(FATAL_ERROR "Could not find any build of RobWork!")
+            endif()
+        elseif(${BTYPE_TMP} STREQUAL "debug")  
+            if(EXISTS ${CFG_ROOT}/RobWorkBuildConfig_relwithdebinfo.cmake)
+                SET(${RW_BUILD_TYPE} relwithdebinfo)
+            elseif( EXISTS ${CFG_ROOT}/RobWorkBuildConfig_minsizerel.cmake )
+                SET(${RW_BUILD_TYPE} minsizerel)
+            elseif(EXISTS ${CFG_ROOT}/RobWorkBuildConfig_release.cmake)
+                SET(${RW_BUILD_TYPE} release)
+            elseif(EXISTS ${CFG_ROOT}/RobWorkBuildConfig_none.cmake)
+                SET(${RW_BUILD_TYPE} none)
+            else()
+                MESSAGE(FATAL_ERROR "Could not find any build of RobWork!")
+            endif()
+        elseif(${BTYPE_TMP} STREQUAL "none")
+            if(EXISTS ${CFG_ROOT}/RobWorkBuildConfig_relwithdebinfo.cmake)
+                SET(${RW_BUILD_TYPE} relwithdebinfo)
+            elseif( EXISTS ${CFG_ROOT}/RobWorkBuildConfig_minsizerel.cmake )
+                SET(${RW_BUILD_TYPE} minsizerel)
+            elseif(EXISTS ${CFG_ROOT}/RobWorkBuildConfig_debug.cmake)
+                SET(${RW_BUILD_TYPE} debug)
+            elseif(EXISTS ${CFG_ROOT}/RobWorkBuildConfig_release.cmake)
+                SET(${RW_BUILD_TYPE} release)
+            else()
+                MESSAGE(FATAL_ERROR "Could not find any build of RobWork!")
+            endif()
+        else()
+            MESSAGE(STATUS "Does not recognize build type: ${CMAKE_BUILD_TYPE} choosing any existing RobWork installation!")
+            if( EXISTS ${CFG_ROOT}/RobWorkBuildConfig_release.cmake )
+                SET(${RW_BUILD_TYPE} release)
+            elseif( EXISTS ${CFG_ROOT}/RobWorkBuildConfig_minsizerel.cmake )
+                SET(${RW_BUILD_TYPE} minsizerel)
+            elseif(EXISTS ${CFG_ROOT}/RobWorkBuildConfig_relwithdebinfo.cmake)
+                SET(${RW_BUILD_TYPE} relwithdebinfo)
+            elseif(EXISTS ${CFG_ROOT}/RobWorkBuildConfig_debug.cmake)
+                SET(${RW_BUILD_TYPE} debug)
+            else()
+                MESSAGE(FATAL_ERROR "Could not find any build of RobWork!")
+            endif()
+        endif()
+      
+        MESSAGE(STATUS "warning: RobWork was not compiled with type:${BTYPE_TMP} using type:${${RW_BUILD_TYPE}} instead!")
     endif()
-  elseif(${BTYPE_TMP} STREQUAL "relwithdebinfo")
-    if(EXISTS ${CFG_ROOT}/RobWorkBuildConfig_release.cmake)
-      SET(${RW_BUILD_TYPE} release)
-    elseif( EXISTS ${CFG_ROOT}/RobWorkBuildConfig_minsizerel.cmake )
-      SET(${RW_BUILD_TYPE} minsizerel)
-    elseif(EXISTS ${CFG_ROOT}/RobWorkBuildConfig_debug.cmake)
-      SET(${RW_BUILD_TYPE} debug)
-    else()
-      MESSAGE(FATAL_ERROR "Could not find any build of RobWork!")
-    endif()
-  elseif(${BTYPE_TMP} STREQUAL "debug")  
-    if(EXISTS ${CFG_ROOT}/RobWorkBuildConfig_relwithdebinfo.cmake)
-      SET(${RW_BUILD_TYPE} relwithdebinfo)
-    elseif( EXISTS ${CFG_ROOT}/RobWorkBuildConfig_minsizerel.cmake )
-      SET(${RW_BUILD_TYPE} minsizerel)
-    elseif(EXISTS ${CFG_ROOT}/RobWorkBuildConfig_release.cmake)
-      SET(${RW_BUILD_TYPE} release)
-    else()
-      MESSAGE(FATAL_ERROR "Could not find any build of RobWork!")
-    endif()
-  else()
-    MESSAGE(STATUS "Does not recognize build type: ${CMAKE_BUILD_TYPE} choosing any existing RobWork installation!")
-    if( EXISTS ${CFG_ROOT}/RobWorkBuildConfig_release.cmake )
-      SET(${RW_BUILD_TYPE} release)
-    elseif( EXISTS ${CFG_ROOT}/RobWorkBuildConfig_minsizerel.cmake )
-      SET(${RW_BUILD_TYPE} minsizerel)
-    elseif(EXISTS ${CFG_ROOT}/RobWorkBuildConfig_relwithdebinfo.cmake)
-      SET(${RW_BUILD_TYPE} relwithdebinfo)
-    elseif(EXISTS ${CFG_ROOT}/RobWorkBuildConfig_debug.cmake)
-      SET(${RW_BUILD_TYPE} debug)
-    else()
-      MESSAGE(FATAL_ERROR "Could not find any build of RobWork!")
-    endif()
-  endif()
-  
-  MESSAGE(STATUS "warning: RobWork was not compiled with type:${BTYPE_TMP} using type:${${RW_BUILD_TYPE}} instead!")
-endif()
 
 ENDMACRO()
 
@@ -111,20 +130,20 @@ get_filename_component(RWCFG_ROOT ${CMAKE_CURRENT_LIST_FILE} PATH)
 
 # check if user specified a RobWork_DIR
 if(DEFINED ROBWORK_DIR)
-  if(EXISTS "${ROBWORK_DIR}/src/RobWorkConfig.hpp")
-    # Found RobWork in a build tree of RobWork
-    set(RWCFG_ROOT "${ROBWORK_DIR}/cmake")
-    set(is_installed false)
-  elseif(EXISTS "${ROBWORK_DIR}/RobWorkConfig.cmake")
-    # Found a RobWork installation
-    set(RWCFG_ROOT "${ROBWORK_DIR}/cmake")
-    set(is_installed true)
-  elseif(EXISTS "${ROBWORK_DIR}/include/robwork-${RobWork_VERSION_MAJOR}.${RobWork_VERSION_MINOR}/RobWorkConfig.hpp")
-    set(RWCFG_ROOT "${ROBWORK_DIR}/share/robwork-${RobWork_VERSION_MAJOR}.${RobWork_VERSION_MINOR}/")
-    set(is_installed true)    
-  else()
-    # found no RobWork installation ot build tree in RobWork_DIR so we try extracting it from RobWorkConfig.cmake location instead
-  endif()
+    if(EXISTS "${ROBWORK_DIR}/src/RobWorkConfig.hpp")
+        # Found RobWork in a build tree of RobWork
+        set(RWCFG_ROOT "${ROBWORK_DIR}/cmake")
+        set(is_installed false)
+    elseif(EXISTS "${ROBWORK_DIR}/RobWorkConfig.cmake")
+        # Found a RobWork installation
+        set(RWCFG_ROOT "${ROBWORK_DIR}")
+        set(is_installed true)
+    elseif(EXISTS "${ROBWORK_DIR}/include/robwork-${RobWork_VERSION_MAJOR}.${RobWork_VERSION_MINOR}/RobWorkConfig.hpp")
+        set(RWCFG_ROOT "${ROBWORK_DIR}/share/robwork-${RobWork_VERSION_MAJOR}.${RobWork_VERSION_MINOR}/")
+        set(is_installed true)    
+    else()
+        # found no RobWork installation ot build tree in RobWork_DIR so we try extracting it from RobWorkConfig.cmake location instead
+    endif()
 endif()
 
 # get the relavant build type
@@ -132,32 +151,32 @@ GET_ROBWORK_BUILD_TYPE(${RWCFG_ROOT} RW_BUILD_TYPE)
 
 # check whether RobWorkConfig.cmake is found into a RobWork installation or in a build tree
 if(EXISTS "${RWCFG_ROOT}/../src/RobWorkConfig.hpp")
-  # Found RobWorkConfig.cmake in a build tree of RobWork
-  set(succmsg "RobWork: Found a RobWork build tree")
-  set(RW_ROOT "${RWCFG_ROOT}/..")
-  
-  set(RW_INCLUDE_EXT "${RW_ROOT}/ext")
-  set(RW_INCLUDE_SRC "${RW_ROOT}/src/")
-  set(RW_LIBS "${RW_ROOT}/libs/${RW_BUILD_TYPE}/")
-  
-else()
-  set(succmsg "RobWork: Found a RobWork installation")
-  # Found a RobWork installation
-  if(WIN32)
-    # RobWorkConfig.cmake is installed to RW_ROOT/cmake
+    # Found RobWorkConfig.cmake in a build tree of RobWork
+    set(succmsg "RobWork: Found a RobWork build tree")
     set(RW_ROOT "${RWCFG_ROOT}/..")
+    
     set(RW_INCLUDE_EXT "${RW_ROOT}/ext")
-    set(RW_INCLUDE_SRC "${RW_ROOT}/include")
+    set(RW_INCLUDE_SRC "${RW_ROOT}/src")
     set(RW_LIBS "${RW_ROOT}/libs/${RW_BUILD_TYPE}")
-  else(WIN32)
-    # RobWorkConfig.cmake is installed to RW_INTALL/share/robwork-x.y
+    
+else()
+    set(succmsg "RobWork: Found a RobWork installation")
+    # Found a RobWork installation
+    if(WIN32)
+        # RobWorkConfig.cmake is installed to RW_ROOT/cmake
+        set(RW_ROOT "${RWCFG_ROOT}/..")
+        set(RW_INCLUDE_EXT "${RW_ROOT}/ext")
+        set(RW_INCLUDE_SRC "${RW_ROOT}/include")
+        set(RW_LIBS "${RW_ROOT}/libs/${RW_BUILD_TYPE}")
+    else()
+        # RobWorkConfig.cmake is installed to RW_INTALL/share/robwork-x.y/cmake
 
-    set(RW_ROOT "${RWCFG_ROOT}")
-    set(RW_INSTALL "${RWCFG_ROOT}/../../")
-    set(RW_LIBS "${RW_INSTALL}/lib/")
-    SET(RW_INCLUDE_SRC "${RW_INSTALL}/include/robwork-${RobWork_VERSION_MAJOR}.${RobWork_VERSION_MINOR}")
-    set(RW_INCLUDE_EXT "${RW_INSTALL}/share/robwork-${RobWork_VERSION_MAJOR}.${RobWork_VERSION_MINOR}/ext")
-  endif(WIN32)
+        set(RW_ROOT "${RWCFG_ROOT}")
+        set(RW_INSTALL "${RWCFG_ROOT}/../../..")
+        set(RW_LIBS "${RW_INSTALL}/lib")
+        set(RW_INCLUDE_SRC "${RW_INSTALL}/include/robwork-${RobWork_VERSION_MAJOR}.${RobWork_VERSION_MINOR}")
+        set(RW_INCLUDE_EXT "${RW_INSTALL}/include/robwork-${RobWork_VERSION_MAJOR}.${RobWork_VERSION_MINOR}/ext")
+    endif()
 endif()
 
 #MESSAGE(STATUS "RW_ROOT   : ${RW_ROOT}")
@@ -168,108 +187,107 @@ endif()
 # next get the build configuration of the requested built type
 IF(EXISTS ${RWCFG_ROOT}/RobWorkBuildConfig_${RW_BUILD_TYPE}.cmake )
  
-INCLUDE(${RWCFG_ROOT}/RobWorkBuildConfig_${RW_BUILD_TYPE}.cmake)
+    INCLUDE(${RWCFG_ROOT}/RobWorkBuildConfig_${RW_BUILD_TYPE}.cmake)
 
-SET(BOOST_ROOT ${RW_BUILD_WITH_BOOST_ROOT})
-SET(BOOST_INCLUDEDIR ${RW_BUILD_WITH_BOOST_INCLUDE_DIR})
-SET(BOOST_LIBRARYDIR ${RW_BUILD_WITH_BOOST_LIBRARY_DIR})
+    SET(BOOST_ROOT ${RW_BUILD_WITH_BOOST_ROOT})
+    SET(BOOST_INCLUDEDIR ${RW_BUILD_WITH_BOOST_INCLUDE_DIR})
+    SET(BOOST_LIBRARYDIR ${RW_BUILD_WITH_BOOST_LIBRARY_DIR})
 
-# check which components to include
-SET(LIBRARIES_TO_INCLUDE ) # Libraries that must be included
-SET(OPTIONAL_LIBRARIES_TO_INCLUDE ) # libraries that are included if they have been build
-IF(RobWork_FIND_COMPONENTS)
-    # FIRST check if all required components are installed/build
-    FOREACH(component IN LISTS RobWork_FIND_COMPONENTS)
-    	IF( NOT( ${component} STREQUAL "rw") )
-    	 
-        LIST(FIND RW_BUILD_WITH_LIBRARIES "rw_${component}" COMP_FOUND)
-        
-        IF(${COMP_FOUND} GREATER -1)
-            LIST(APPEND LIBRARIES_TO_INCLUDE "rw_${component}")
+    # check which components to include
+    SET(LIBRARIES_TO_INCLUDE ) # Libraries that must be included
+    SET(OPTIONAL_LIBRARIES_TO_INCLUDE ) # libraries that are included if they have been build
+
+    if(RobWork_FIND_COMPONENTS)
+        # FIRST check if all required components are installed/build
+        foreach(component IN LISTS RobWork_FIND_COMPONENTS)
+            if( NOT( ${component} STREQUAL "sdurw") )
+            
+                LIST(FIND RW_BUILD_WITH_LIBRARIES "sdurw_${component}" COMP_FOUND)
+                
+                if(${COMP_FOUND} GREATER -1)
+                    LIST(APPEND LIBRARIES_TO_INCLUDE "sdurw_${component}")
+                else()
+                    if( RobWork_REQUIRED )
+                        SET(ROBWORK_EXPERIENCED_FATAL_PROBLEMS TRUE)
+                        MESSAGE(FATAL_ERROR "The component: sdurw_${component} has not been built with RobWork. Reconfigure RobWork installation or check component spelling!")
+                    else ()
+                        SET(ROBWORK_EXPERIENCED_FATAL_PROBLEMS TRUE)
+                        MESSAGE(WARNING "The component: sdurw_${component} has not been built with RobWork. Reconfigure RobWork installation or check component spelling!")
+                    endif()
+                endif()
+            endif()
+        endforeach()
+        #MESSAGE(" ${LIBRARIES_TO_INCLUDE} ")
+    else()
+        SET(OPTIONAL_LIBRARIES_TO_INCLUDE ${RW_BUILD_WITH_LIBRARIES})
+    endif()
+
+    # Set extra compiler flags. The user should be able to change this
+    SET(RW_C_FLAGS ${RW_BUILD_WITH_C_FLAGS} 
+        CACHE STRING "Change this to force using your own 
+                      flags and not those of RobWork"
+    )
+    SET(RW_CXX_FLAGS ${RW_BUILD_WITH_CXX_FLAGS} 
+        CACHE STRING "Change this to force using your own 
+                      flags and not those of RobWork"
+    )
+    SET(RW_DEFINITIONS ${RW_BUILD_WITH_DEFINITIONS} 
+        CACHE STRING "Change this to force using your own 
+                      definitions and not those of RobWork"
+    )
+    ADD_DEFINITIONS(${RW_DEFINITIONS})
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${RW_CXX_FLAGS}")
+    SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${RW_C_FLAGS}")
+
+    # Set extra linker flags. The user should be able to change this
+    SET(RW_LINKER_FLAGS ${RW_BUILD_WITH_LINKER_FLAGS} 
+        CACHE STRING "Change this to force using your own linker
+                      flags and not those of RobWork"
+    )
+    SET(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${RW_LINKER_FLAGS}" CACHE STRING "" FORCE)
+    SET(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} ${RW_LINKER_FLAGS}" CACHE STRING "" FORCE)
+    if(WIN32)
+        SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${RW_LINKER_FLAGS}" CACHE STRING "" FORCE)
+    endif()
+
+    ################# FIND ROBWORK #######################
+    set(ROBWORK_BUILD_PATH "${RW_BUILD_WITH_RW_ROOT}")  
+    set(ROBWORK_INCLUDE_DIRS_TMP ${RW_BUILD_WITH_INCLUDE_DIRS})
+    set(ROBWORK_LIBRARY_DIRS_TMP "${RW_BUILD_WITH_LIBRARY_DIRS}")
+    set(ROBWORK_LIBRARIES_TMP "${LIBRARIES_TO_INCLUDE};${OPTIONAL_LIBRARIES_TO_INCLUDE}")
+
+
+    # make sure that the library and include paths are pointing to the right locations
+    STRING(REPLACE "${ROBWORK_BUILD_PATH}/ext" "${RW_INCLUDE_EXT}" ROBWORK_INCLUDE_DIRS "${RW_BUILD_WITH_INCLUDE_DIR}")
+    STRING(REPLACE "${ROBWORK_BUILD_PATH}/src" "${RW_INCLUDE_SRC}" ROBWORK_INCLUDE_DIRS "${ROBWORK_INCLUDE_DIRS}")
+    list(REMOVE_DUPLICATES ROBWORK_INCLUDE_DIRS)
+    #MESSAGE("INCLUDES: ${ROBWORK_INCLUDE_DIRS}")
+
+    STRING(REPLACE "${ROBWORK_BUILD_PATH}/libs/${RW_BUILD_TYPE}" "${RW_LIBS}" ROBWORK_LIBRARY_DIRS "${RW_BUILD_WITH_LIBRARY_DIRS}")
+    list(REMOVE_DUPLICATES ROBWORK_LIBRARY_DIRS)
+    #MESSAGE("INCLUDES: ${ROBWORK_LIBRARY_DIRS}")
+
+    STRING(REPLACE "${ROBWORK_BUILD_PATH}/libs/${RW_BUILD_TYPE}" "${RW_LIBS}" ROBWORK_LIBRARIES "${ROBWORK_LIBRARIES_TMP}")
+    #list(REMOVE_DUPLICATES ROBWORK_LIBRARIES)
+    #MESSAGE("INCLUDES: ${ROBWORK_LIBRARIES}")
+
+    # Find and add full path information for the RobWork libraries
+    SET(ROBWORK_LIBRARIES_TMP ${ROBWORK_LIBRARIES})
+    SET(ROBWORK_LIBRARIES)
+    FOREACH(l ${ROBWORK_LIBRARIES_TMP})
+        UNSET(tmp CACHE)
+        FIND_LIBRARY(tmp ${l} PATHS ${ROBWORK_LIBRARY_DIRS} NO_DEFAULT_PATH)
+        IF(tmp)
+            LIST(APPEND ROBWORK_LIBRARIES ${tmp})
         ELSE()
-            IF( RobWorkHardware_REQUIRED )
-	      SET(ROBWORKHARDWARE_EXPERIENCED_FATAL_PROBLEMS TRUE)
-              MESSAGE(FATAL_ERROR "The component: rw_${component} has not been built with RobWorkHardware. Reconfigure RobWorkHardware installation or check component spelling!")
-            ELSE ()
-	      SET(ROBWORKHARDWARE_EXPERIENCED_FATAL_PROBLEMS TRUE)
-              MESSAGE(WARNING "The component: rw_${component} has not been built with RobWorkHardware. Reconfigure RobWorkHardware installation or check component spelling!")
-            ENDIF()
+            LIST(APPEND ROBWORK_LIBRARIES ${l})
         ENDIF()
-        ENDIF()
-    ENDFOREACH()
-    #MESSAGE(" ${LIBRARIES_TO_INCLUDE} ")    
-ENDIF()
+    ENDFOREACH(l)
 
-SET(OPTIONAL_LIBRARIES_TO_INCLUDE ${RW_BUILD_WITH_LIBRARIES})
-
-
-
-
-# Set extra compiler flags. The user should be able to change this
-SET(RW_C_FLAGS ${RW_BUILD_WITH_C_FLAGS} 
-    CACHE STRING "Change this to force using your own 
-                  flags and not those of RobWork"
-)
-SET(RW_CXX_FLAGS ${RW_BUILD_WITH_CXX_FLAGS} 
-    CACHE STRING "Change this to force using your own 
-                  flags and not those of RobWork"
-)
-SET(RW_DEFINITIONS ${RW_BUILD_WITH_DEFINITIONS} 
-    CACHE STRING "Change this to force using your own 
-                  definitions and not those of RobWork"
-)
-ADD_DEFINITIONS(${RW_DEFINITIONS})
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${RW_CXX_FLAGS}")
-SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${RW_C_FLAGS}")
-
-# Set extra linker flags. The user should be able to change this
-SET(RW_LINKER_FLAGS ${RW_BUILD_WITH_LINKER_FLAGS} 
-    CACHE STRING "Change this to force using your own linker
-                  flags and not those of RobWork"
-)
-SET(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${RW_LINKER_FLAGS}" CACHE STRING "" FORCE)
-SET(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} ${RW_LINKER_FLAGS}" CACHE STRING "" FORCE)
-IF(WIN32)
-	SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${RW_LINKER_FLAGS}" CACHE STRING "" FORCE)
-ENDIF()
-
-set(ROBWORK_BUILD_PATH "${RW_BUILD_WITH_RW_ROOT}")
-set(ROBWORK_INCLUDE_DIRS_TMP "${RW_BUILD_WITH_INCLUDE_DIRS}")
-set(ROBWORK_LIBRARY_DIRS_TMP "${RW_BUILD_WITH_LIBRARY_DIRS}")
-set(ROBWORK_LIBRARIES_TMP "${LIBRARIES_TO_INCLUDE};${OPTIONAL_LIBRARIES_TO_INCLUDE}")
-
-
-# make sure that the library and include paths are pointing to the right locations
-STRING(REPLACE "${ROBWORK_BUILD_PATH}/ext" "${RW_INCLUDE_EXT}" ROBWORK_INCLUDE_DIRS "${RW_BUILD_WITH_INCLUDE_DIR}")
-STRING(REPLACE "${ROBWORK_BUILD_PATH}/src" "${RW_INCLUDE_SRC}" ROBWORK_INCLUDE_DIRS "${ROBWORK_INCLUDE_DIRS}")
-list(REMOVE_DUPLICATES ROBWORK_INCLUDE_DIRS)
-#MESSAGE("INCLUDES: ${ROBWORK_INCLUDE_DIRS}")
-
-STRING(REPLACE "${ROBWORK_BUILD_PATH}/libs/${RW_BUILD_TYPE}" "${RW_LIBS}" ROBWORK_LIBRARY_DIRS "${RW_BUILD_WITH_LIBRARY_DIRS}")
-list(REMOVE_DUPLICATES ROBWORK_LIBRARY_DIRS)
-#MESSAGE("INCLUDES: ${ROBWORK_LIBRARY_DIRS}")
-
-STRING(REPLACE "${ROBWORK_BUILD_PATH}/libs/${RW_BUILD_TYPE}" "${RW_LIBS}" ROBWORK_LIBRARIES "${ROBWORK_LIBRARIES_TMP}")
-#list(REMOVE_DUPLICATES ROBWORK_LIBRARIES)
-#MESSAGE("INCLUDES: ${ROBWORK_LIBRARIES}")
-
-# Find and add full path information for the RobWork libraries
-SET(ROBWORK_LIBRARIES_TMP ${ROBWORK_LIBRARIES})
-SET(ROBWORK_LIBRARIES)
-FOREACH(l ${ROBWORK_LIBRARIES_TMP})
-  UNSET(tmp CACHE)
-  FIND_LIBRARY(tmp ${l} PATHS ${ROBWORK_LIBRARY_DIRS} NO_DEFAULT_PATH)
-  IF(tmp)
-    LIST(APPEND ROBWORK_LIBRARIES ${tmp})
-  ELSE()
-    LIST(APPEND ROBWORK_LIBRARIES ${l})
-  ENDIF()
-ENDFOREACH(l)
-
-SET(ROBWORK_INCLUDE_DIR ${ROBWORK_INCLUDE_DIRS})
+    SET(ROBWORK_INCLUDE_DIR ${ROBWORK_INCLUDE_DIRS})
 
 ELSE()
-  MESSAGE(STATUS "This build of RobWork is not compiled in ${RW_BUILD_TYPE} please specify another buildtype!") 
+    MESSAGE(STATUS "This build of RobWork is not compiled in ${RW_BUILD_TYPE} please specify another buildtype!") 
 ENDIF()
 
 INCLUDE(FindPackageHandleStandardArgs)
@@ -277,5 +295,5 @@ FIND_PACKAGE_HANDLE_STANDARD_ARGS(RobWork "Found RobWork-Version ${RobWork_VERSI
 mark_as_advanced(ROBWORK_LIBRARIES ROBWORK_INCLUDE_DIRS ROBWORK_INCLUDE_DIR ROBWORK_LIBRARY_DIRS)
 
 if(ROBWORK_FOUND)
-  set(ROBWORK_VERSION ${RobWork_VERSION} CACHE STRING "RobWork version")
+    set(ROBWORK_VERSION ${RobWork_VERSION} CACHE STRING "RobWork version")
 endif(ROBWORK_FOUND)

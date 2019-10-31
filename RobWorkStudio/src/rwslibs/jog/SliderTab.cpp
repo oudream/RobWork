@@ -210,7 +210,7 @@ void Slider::boxValueChanged(double val)
     }
 
     _sliderChanged = false;
-    emit valueChanged();
+    Q_EMIT valueChanged();
 }
 
 void Slider::sliderValueChanged(int val)

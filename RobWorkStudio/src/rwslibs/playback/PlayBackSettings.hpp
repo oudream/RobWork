@@ -52,7 +52,7 @@ protected:
      */
     void showEvent(QShowEvent* event);
 
-private slots:
+private Q_SLOTS:
     void browse();
     void ok();
     void scale();

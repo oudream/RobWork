@@ -114,6 +114,19 @@ namespace rws {
          * @param enable [in] enable or disable zoom with zoomtarget.
          */
 		virtual void setZoomTarget(rw::math::Vector3D<double> target, bool enable=true) {};
+
+		/**
+         * @brief set the 3D coordinate that should be moved.
+         * @param target [in] the target position to move.
+         * @param enable [in] enable or disable pan with pantarget.
+         */
+		virtual void setPanTarget(rw::math::Vector3D<double> target, bool enable=true) {};
+
+		/**
+         * @brief get the 3D coordinate that should be moved.
+         * @return the target position to move.
+         */
+		virtual rw::math::Vector3D<> getPanTarget() {return rw::math::Vector3D<>(); };
 	};
 
 }

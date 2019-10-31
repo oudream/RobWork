@@ -82,7 +82,7 @@ namespace rws {
 
 		/**
 		 * @brief called when a workcell is opened
-		 * @param workcell [in] that has been loadet
+		 * @param workcell [in] that has been loaded
 		 */
 		virtual void open(rw::models::WorkCell* workcell);
 
@@ -146,7 +146,7 @@ namespace rws {
 		//! set current state of RobWorkStudio
 		void setState(const rw::kinematics::State& state);
 
-	public slots:
+	public Q_SLOTS:
 		//! @brief toggles the visibility of the plugin
 		void showPlugin();
 

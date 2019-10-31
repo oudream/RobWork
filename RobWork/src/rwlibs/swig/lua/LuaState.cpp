@@ -18,7 +18,7 @@
 #include "LuaState.hpp"
 
 #include <rwlibs/swig/ScriptTypes.hpp>
-#include "Lua_rw.hpp"
+#include "Lua_sdurw.hpp"
 
 using namespace rwlibs::swig;
 
@@ -65,7 +65,7 @@ void LuaState::reset(){
 
     luaL_openlibs(_lua);
 
-    rwlibs::swig::openLuaLibRW_rw( _lua );
+    rwlibs::swig::openLuaLibRW_sdurw( _lua );
 
     for(LuaLibrary::Ptr cb : _libraryCBs) {
         cb->initLibrary( *this );

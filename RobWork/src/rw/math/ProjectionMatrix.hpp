@@ -19,6 +19,7 @@
 #define RW_MATH_PROJECTIONMATRIX_HPP_
 
 #include <boost/numeric/ublas/matrix.hpp>
+#include <rw/common/Ptr.hpp>
 
 namespace rw {
 namespace math {
@@ -30,6 +31,7 @@ namespace math {
     private:
         boost::numeric::ublas::bounded_matrix<double, 4, 4> _matrix;
     public:
+        typedef rw::common::Ptr<ProjectionMatrix> Ptr;
 
         //! @brief constructor
         ProjectionMatrix(){};

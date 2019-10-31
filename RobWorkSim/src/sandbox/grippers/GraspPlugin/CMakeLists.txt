@@ -87,10 +87,10 @@ target_link_libraries( GraspPlugin GraspLibrary )
 #target_link_libraries( test ${ROBWORK_LIBRARIES})
 target_link_libraries( create-gripper-xml GraspLibrary)
 target_link_libraries(evaluate-gripper ode_plugin.rwplugin GraspLibrary ${ROBWORKSTUDIO_LIBRARIES} ${ROBWORK_LIBRARIES} ${ROBWORKSIM_LIBRARIES})
-#target_link_libraries(simulate-perturbed-tasks    rwsim_ode GL GLU glut ode GraspLibrary ${ROBWORKSTUDIO_LIBRARIES} ${ROBWORK_LIBRARIES} ${ROBWORKSIM_LIBRARIES})
-#target_link_libraries(evaluate-perturbed-tasks    rwsim_ode GL GLU glut ode GraspLibrary ${ROBWORKSTUDIO_LIBRARIES} ${ROBWORK_LIBRARIES} ${ROBWORKSIM_LIBRARIES})
+#target_link_libraries(simulate-perturbed-tasks    sdurwsim_ode GL GLU glut ode GraspLibrary ${ROBWORKSTUDIO_LIBRARIES} ${ROBWORK_LIBRARIES} ${ROBWORKSIM_LIBRARIES})
+#target_link_libraries(evaluate-perturbed-tasks    sdurwsim_ode GL GLU glut ode GraspLibrary ${ROBWORKSTUDIO_LIBRARIES} ${ROBWORK_LIBRARIES} ${ROBWORKSIM_LIBRARIES})
 target_link_libraries(generate-surface-samples  GraspLibrary ${ROBWORKSTUDIO_LIBRARIES} ${ROBWORK_LIBRARIES} ${ROBWORKSIM_LIBRARIES})
 
-#ftarget_link_libraries( create-gripper-db rwsim_ode GL GLU glut ode GraspLibrary)
+#ftarget_link_libraries( create-gripper-db sdurwsim_ode GL GLU glut ode GraspLibrary)
 
 #MESSAGE(${ROBWORKSTUDIO_LIBRARIES} ${ROBWORK_LIBRARIES} ${ROBWORKSIM_LIBRARIES})

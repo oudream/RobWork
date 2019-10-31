@@ -27,7 +27,8 @@
 
 #include <vector>
 
-#include <QMainWindow>
+
+
 
 #include <rw/models/WorkCell.hpp>
 #include <rw/trajectory/Path.hpp>
@@ -36,6 +37,7 @@
 
 #include "RWStudioView3D.hpp"
 
+#include <QMainWindow>
 #include <boost/function.hpp>
 #include <boost/any.hpp>
 
@@ -631,14 +633,14 @@ namespace rws {
 		StateTrajectoryPtrChangedEvent _stateTrajectoryPtrChangedEvent;
 		PositionSelectedEvent _positionSelectedEvent;
 
-	public slots:
+	public Q_SLOTS:
 		/**
 		 * @brief Slot for changing the common timed state path.
 		 * @param path [in] the path.
 		 */
 	    void setTStatePath(rw::trajectory::TimedStatePath path);
 
-	private slots:
+	private Q_SLOTS:
 		void newWorkCell();
 		void reloadWorkCell();
 		void open();
@@ -679,6 +681,7 @@ namespace rws {
 		void setupPlugin(const QString& pathname, const QString& filename, bool visible, int dock);
 		void setupPlugin(const QString& fullname, bool visible, int dock);
 		void setupPlugins(QSettings& settings);
+		void setupPyPlugin(const QString& pathname, const QString& filename, bool visible, int dock);
 
 		void openDrawable(const QString& filename);
 		void openWorkCellFile(const QString& filename);

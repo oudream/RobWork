@@ -1,6 +1,6 @@
-SET(SUBSYS_NAME rws_python )
+SET(SUBSYS_NAME sdurws_python )
 SET(SUBSYS_DESC "Interface for accessing RobWorkStudio from python." )
-SET(SUBSYS_DEPS rw )
+SET(SUBSYS_DEPS sdurw )
 
 SET(build TRUE)
 
@@ -49,27 +49,27 @@ INCLUDE(UseSWIG)
         set(LIB_PREFIX "")
     endif()
 
-    SET_SOURCE_FILES_PROPERTIES(../rws.i PROPERTIES CPLUSPLUS ON)
-	SET_SOURCE_FILES_PROPERTIES(../rws.i PROPERTIES SWIG_FLAGS "-includeall")
+    SET_SOURCE_FILES_PROPERTIES(../sdurws.i PROPERTIES CPLUSPLUS ON)
+	SET_SOURCE_FILES_PROPERTIES(../sdurws.i PROPERTIES SWIG_FLAGS "-includeall")
     if (NOT ${SWIG_VERSION} VERSION_LESS 4.0.0)
-    	SET_SOURCE_FILES_PROPERTIES(../rw.i PROPERTIES SWIG_FLAGS "-includeall;-doxygen")
+    	SET_SOURCE_FILES_PROPERTIES(../sdurw.i PROPERTIES SWIG_FLAGS "-includeall;-doxygen")
     endif()
 	
 	SET(CMAKE_SWIG_OUTDIR ${RWS_CMAKE_LIBRARY_OUTPUT_DIRECTORY})
 	IF ((CMAKE_VERSION VERSION_GREATER 3.8) OR (CMAKE_VERSION VERSION_EQUAL 3.8))
-		SWIG_ADD_LIBRARY(${LIB_PREFIX}rws TYPE MODULE LANGUAGE python SOURCES ../rws.i ../ScriptTypes.cpp)
+		SWIG_ADD_LIBRARY(${LIB_PREFIX}sdurws TYPE SHARED LANGUAGE python SOURCES ../sdurws.i ../ScriptTypes.cpp)
 	ELSE()
-		SWIG_ADD_MODULE(rws python ../rws.i ../ScriptTypes.cpp)
+		SWIG_ADD_MODULE(sdurws python ../sdurws.i ../ScriptTypes.cpp)
 	ENDIF()
     if(POLICY CMP0078)
-        set(TARGET_NAME ${LIB_PREFIX}rws)
+        set(TARGET_NAME ${LIB_PREFIX}sdurws)
     else()
-        set(TARGET_NAME ${SWIG_MODULE_rws_REAL_NAME})
+        set(TARGET_NAME ${SWIG_MODULE_sdurws_REAL_NAME})
     endif()
-    SWIG_LINK_LIBRARIES(${LIB_PREFIX}rws
+    SWIG_LINK_LIBRARIES(${LIB_PREFIX}sdurws
         ${RWS_COMPONENT_LIBRARIES} 
         ${RWS_PLUGIN_LIBRARIES} 
-        rws
+        sdurws
         ${ROBWORK_LIBRARIES} 
         ${PYTHON_LIBRARIES} )
     IF((CMAKE_COMPILER_IS_GNUCC) OR (CMAKE_C_COMPILER_ID STREQUAL "Clang"))
@@ -91,7 +91,7 @@ INCLUDE(UseSWIG)
         if (pydoc)
             add_custom_command(TARGET ${TARGET_NAME}
                 POST_BUILD
-                COMMAND ${CMAKE_COMMAND} -E env PYTHONPATH=${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/../../../RobWork/libs/${RW_BUILD_TYPE} ${pydoc} -w rws
+                COMMAND ${CMAKE_COMMAND} -E env PYTHONPATH=${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/../../../RobWork/libs/${RW_BUILD_TYPE} ${pydoc} -w sdurws
                 WORKING_DIRECTORY ${RWS_CMAKE_LIBRARY_OUTPUT_DIRECTORY}
                 COMMENT "Creating pydoc..."
             )

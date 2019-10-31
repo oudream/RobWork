@@ -1,3 +1,4 @@
+cmake_minimum_required(VERSION 3.4)
 # check compiler/operating system
 set(Ext ${PROJECT_SOURCE_DIR}/ext)
 # The camera file and include path to use.
@@ -19,7 +20,7 @@ IF(COMPONENT_camera_ENABLE)
     	     
     	     add_executable(CMU1394_CcameraExample CMU1394_CcameraExample.cpp)
     		    target_link_libraries(CMU1394_CcameraExample 
-    		    	rwhw_camera 
+				sdurwhw_camera 
     		    	${ROBWORK_LIBRARIES}
     		    	1394camera_c.lib
     		   )
@@ -66,7 +67,7 @@ IF(COMPONENT_camera_ENABLE)
            
         add_executable(OpenCVCameraExample OpenCVcameraExample.cpp)
         target_link_libraries(OpenCVCameraExample 
-        	rwhw_camera 
+			sdurwhw_camera 
         	${ROBWORK_LIBRARIES}
         	${OPENCV_LIBRARIES}
         )

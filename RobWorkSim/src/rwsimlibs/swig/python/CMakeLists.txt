@@ -1,6 +1,6 @@
-SET(SUBSYS_NAME rwsim_python )
+SET(SUBSYS_NAME sdurwsim_python )
 SET(SUBSYS_DESC "Interface for accessing RobWorkSim from python." )
-SET(SUBSYS_DEPS rw )
+SET(SUBSYS_DEPS sdurw )
 
 SET(build TRUE)
 
@@ -12,25 +12,6 @@ IF( NOT SWIG_FOUND)
     set(DEFAULT false)
     set(REASON "SWIG not found!")
 else()
-
-	# Prefer Python 3
-	find_package(PythonInterp 3 QUIET)
-	find_package(PythonLibs 3 QUIET)
-	
-	if (NOT PYTHONINTERP_FOUND)
-	    find_package(PythonInterp QUIET)
-	endif()
-	if (NOT PythonLibs)
-	    find_package(PythonLibs QUIET)
-	endif()
-	
-	if(PYTHONINTERP_FOUND)
-	    message(STATUS "Found Python interpreter ${PYTHON_VERSION_STRING}")
-	endif()
-	if(PYTHONLIBS_FOUND)
-	    message(STATUS "Found Python libraries ${PYTHONLIBS_VERSION_STRING}")
-	endif()
-
     if( NOT (PYTHONLIBS_FOUND AND PYTHONINTERP_FOUND) )
         set(DEFAULT false)
         set(REASON "PYTHONLIBS AND PYTHONINTERP not found!")
@@ -49,30 +30,31 @@ INCLUDE(UseSWIG)
         set(LIB_PREFIX "")
     endif()
 
-    SET_SOURCE_FILES_PROPERTIES(../rwsim.i PROPERTIES CPLUSPLUS ON)
-	SET_SOURCE_FILES_PROPERTIES(../rwsim.i PROPERTIES SWIG_FLAGS "-includeall")
+    SET_SOURCE_FILES_PROPERTIES(../sdurwsim.i PROPERTIES CPLUSPLUS ON)
+	SET_SOURCE_FILES_PROPERTIES(../sdurwsim.i PROPERTIES SWIG_FLAGS "-includeall")
     if (NOT ${SWIG_VERSION} VERSION_LESS 4.0.0)
-    	SET_SOURCE_FILES_PROPERTIES(../rw.i PROPERTIES SWIG_FLAGS "-includeall;-doxygen")
+    	SET_SOURCE_FILES_PROPERTIES(../sdurw.i PROPERTIES SWIG_FLAGS "-includeall;-doxygen")
     endif()
 	
     SET(CMAKE_SWIG_OUTDIR ${RWSIM_CMAKE_LIBRARY_OUTPUT_DIRECTORY})
 	IF ((CMAKE_VERSION VERSION_GREATER 3.8) OR (CMAKE_VERSION VERSION_EQUAL 3.8))
-		SWIG_ADD_LIBRARY(${LIB_PREFIX}rwsim TYPE MODULE LANGUAGE python SOURCES ../rwsim.i ../ScriptTypes.cpp)
+		SWIG_ADD_LIBRARY(${LIB_PREFIX}sdurwsim TYPE SHARED LANGUAGE python SOURCES ../sdurwsim.i ../ScriptTypes.cpp)
 	ELSE()
-		SWIG_ADD_MODULE(rwsim python ../rwsim.i ../ScriptTypes.cpp)
+		SWIG_ADD_MODULE(${LIB_PREFIX}sdurwsim python ../sdurwsim.i ../ScriptTypes.cpp)
 	ENDIF()
     if(POLICY CMP0078)
-        set(TARGET_NAME ${LIB_PREFIX}rwsim)
+        set(TARGET_NAME ${LIB_PREFIX}sdurwsim)
     else()
-        set(TARGET_NAME ${SWIG_MODULE_rwsim_REAL_NAME})
+        set(TARGET_NAME ${SWIG_MODULE_sdurwsim_REAL_NAME})
     endif()
-    SWIG_LINK_LIBRARIES(${LIB_PREFIX}rwsim
+
+    SWIG_LINK_LIBRARIES(${LIB_PREFIX}sdurwsim
         ${RWSIM_ODE_LIBRARY}
-        rwsim
+        sdurwsim
         ${ROBWORK_LIBRARIES}
         ${PYTHON_LIBRARIES} )
     IF((CMAKE_COMPILER_IS_GNUCC) OR (CMAKE_C_COMPILER_ID STREQUAL "Clang"))
-      SET_TARGET_PROPERTIES(${TARGET_NAME} PROPERTIES LINK_FLAGS -Wl,--no-undefined)
+      SET_TARGET_PROPERTIES(${TARGET_NAME} PROPERTIES LINK_FLAGS -Wl,--no-undefined )
     ENDIF()
 
     # Make sure dependencies are build before system
@@ -90,7 +72,7 @@ INCLUDE(UseSWIG)
         if (pydoc)
             add_custom_command(TARGET ${TARGET_NAME}
                 POST_BUILD
-                COMMAND ${CMAKE_COMMAND} -E env PYTHONPATH=${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/../../../RobWork/libs/${RW_BUILD_TYPE} ${pydoc} -w rwsim
+                COMMAND ${CMAKE_COMMAND} -E env PYTHONPATH=${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/../../../RobWork/libs/${RW_BUILD_TYPE} ${pydoc} -w sdurwsim
                 WORKING_DIRECTORY ${RWSIM_CMAKE_LIBRARY_OUTPUT_DIRECTORY}
                 COMMENT "Creating pydoc..."
             )

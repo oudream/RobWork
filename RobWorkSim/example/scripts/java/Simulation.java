@@ -1,7 +1,7 @@
-import org.robwork.rwsim.*;
-import org.robwork.rws.*;
-import org.robwork.rw.*;
 import org.robwork.*;
+import org.robwork.sdurws.*;
+import org.robwork.sdurwsim.*;
+import org.robwork.sdurw.*;
 import java.util.Date;
 
 public class Simulation {
@@ -31,12 +31,12 @@ public class Simulation {
 		// System.out.println(System.getProperty("java.library.path"));
 		
 		// Load
-		LoaderRW.load("rw");
+		LoaderRW.load("sdurw");
 		LoaderRWS.load();
 		LoaderRWSim.load();
 		
 		// Try to open RobWorkStudio and load the workcell
-		rwstudio = rws.getRobWorkStudioInstance();
+		rwstudio = sdurws.getRobWorkStudioInstance();
 		DynamicWorkCellPtr dwc = DynamicWorkCellLoader.load("/home/thomas/Eclipse/LearnBiP/marvin/MarvinCalibratedScene.dwc.xml");
 		WorkCellPtr wc = dwc.getWorkcell();
 		State state = wc.getDefaultState();
@@ -47,7 +47,7 @@ public class Simulation {
 		cd.setDefaultStrategies();
 		PhysicsEnginePtr simulator = new PhysicsEnginePtr(new ODESimulator(dwc, cd));
 		simulator.initPhysics(state);
-		DynamicSimulatorPtr dsim = new DynamicSimulatorPtr(new DynamicSimulator(dwc, simulator));
+		DynamicSimulatorPtr dsim = new DynamicSimulatorPtr(new DynamicSimulator(dwc,simulator));
 		ThreadSimulatorPtr tsim = new ThreadSimulatorPtr(new ThreadSimulator(dsim, state));
 		tsim.setTimeStep(0.001);
 		tsim.setRealTimeScale(1);

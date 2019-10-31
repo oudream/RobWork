@@ -1,6 +1,6 @@
-SET(SUBSYS_NAME rw_csg)
+SET(SUBSYS_NAME sdurw_csg)
 SET(SUBSYS_DESC "A module for doing constructive solid geometry")
-SET(SUBSYS_DEPS rw rw_csgjs)
+SET(SUBSYS_DEPS sdurw sdurw_csgjs)
 
 set(build TRUE)
 RW_SUBSYS_OPTION(build ${SUBSYS_NAME} ${SUBSYS_DESC} ON)
@@ -27,7 +27,7 @@ IF(build)
     # Make sure dependencies are build before system
     FOREACH(DEP IN LISTS SUBSYS_DEPS)
         IF(TARGET ${DEP})
-            ADD_DEPENDENCIES(rw_csg ${DEP})
+            ADD_DEPENDENCIES(sdurw_csg ${DEP})
         ENDIF()
     ENDFOREACH()
 

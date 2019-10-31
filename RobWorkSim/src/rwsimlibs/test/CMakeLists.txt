@@ -9,4 +9,4 @@ SET(SRC_FILES
 	IntegratorSpringTest.cpp
 )
 
-ADD_LIBRARY(rwsim_test ${SRC_FILES})
+ADD_LIBRARY(sdurwsim_test ${SRC_FILES})

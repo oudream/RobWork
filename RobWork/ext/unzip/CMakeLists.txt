@@ -20,12 +20,12 @@ set(HEADERS
 	unzip.h
 )
 
-add_library(rw_unzip STATIC ${SOURCE} ${HEADERS})
+add_library(sdurw_unzip STATIC ${SOURCE} ${HEADERS})
 
-target_link_libraries(rw_unzip ${ZLIB_LIBRARIES} )
+target_link_libraries(sdurw_unzip ${ZLIB_LIBRARIES} )
 IF(MSVC)
-	target_compile_options(rw_unzip PRIVATE /wd4067)
+	target_compile_options(sdurw_unzip PRIVATE /wd4067)
 ENDIF()
 
-INSTALL(TARGETS rw_unzip DESTINATION "${LIB_INSTALL_DIR}" )
+INSTALL(TARGETS sdurw_unzip DESTINATION "${LIB_INSTALL_DIR}" )
 INSTALL(FILES ${HEADERS} DESTINATION "${INCLUDE_INSTALL_DIR}/ext/unzip/")

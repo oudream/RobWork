@@ -1,6 +1,6 @@
-SET(SUBSYS_NAME rw_algorithms)
+SET(SUBSYS_NAME sdurw_algorithms)
 SET(SUBSYS_DESC "A collection of varius algorithms!")
-SET(SUBSYS_DEPS rw)
+SET(SUBSYS_DEPS sdurw)
 
 set(build TRUE)
 RW_SUBSYS_OPTION(build ${SUBSYS_NAME} ${SUBSYS_DESC} ON)

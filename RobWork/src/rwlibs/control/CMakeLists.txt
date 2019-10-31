@@ -1,6 +1,6 @@
-SET(SUBSYS_NAME rw_control)
+SET(SUBSYS_NAME sdurw_control)
 set(SUBSYS_DESC "A collection of general controllers and interfaces for RobWork")
-SET(SUBSYS_DEPS rw)
+SET(SUBSYS_DEPS sdurw)
 
 set(build TRUE)
 RW_SUBSYS_OPTION(build ${SUBSYS_NAME} ${SUBSYS_DESC} ON)
@@ -18,10 +18,6 @@ IF(build)
         JointController.hpp
         SyncVelocityRamp.hpp
     )
-    
-    #ADD_LIBRARY(rw_control ${SRC_FILES} ${SRC_FILES_HPP})
-    #INSTALL(TARGETS rw_control DESTINATION ${RW_LIB_INSTALL_DIR})
-    #INSTALL(FILES ${SRC_FILES_HPP} DESTINATION include/rwlibs/simulation)
     
     RW_ADD_LIBRARY(${SUBSYS_NAME} control ${SRC_FILES} ${SRC_FILES_HPP})
     RW_ADD_INCLUDES(control "rwlibs/control" ${SRC_FILES_HPP}) 

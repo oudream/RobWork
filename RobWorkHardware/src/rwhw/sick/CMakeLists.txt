@@ -1,6 +1,6 @@
 SET(SUBSYS_NAME sick )
 SET(SUBSYS_DESC "Driver for sick device" )
-SET(SUBSYS_DEPS rw )
+SET(SUBSYS_DEPS sdurw )
 
 SET(build TRUE)
 set(DEFAULT TRUE)
@@ -9,7 +9,7 @@ RW_SUBSYS_OPTION( build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} ${REASON})
 RW_ADD_DOC( ${SUBSYS_NAME} )
 
 IF( build )  
-    RW_ADD_LIBRARY(rwhw_sick sick SickLMS.cpp SickLMS.hpp)
+    RW_ADD_LIBRARY(sdurwhw_sick sick SickLMS.cpp SickLMS.hpp)
     RW_ADD_INCLUDES(sick "rwhw/sick" SickLMS.hpp)
-    set(ROBWORKHARDWARE_LIBRARIES ${ROBWORKHARDWARE_LIBRARIES} rwhw_sick PARENT_SCOPE)
+    set(ROBWORKHARDWARE_LIBRARIES ${ROBWORKHARDWARE_LIBRARIES} sdurwhw_sick PARENT_SCOPE)
 ENDIF()

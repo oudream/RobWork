@@ -2,28 +2,24 @@
 cmake_minimum_required(VERSION 2.8.12 FATAL_ERROR)
 
 if(POLICY CMP0074)
-  cmake_policy(SET CMP0074 NEW)
+    cmake_policy(SET CMP0074 NEW)
 endif()
 if(POLICY CMP0078)
-  cmake_policy(SET CMP0078 NEW)
+    cmake_policy(SET CMP0078 NEW)
 endif()
-
-IF(DEFINED CMAKE_BUILD_TYPE)
-   SET(CMAKE_BUILD_TYPE ${CMAKE_BUILD_TYPE} CACHE STRING "Choose the type of
-build, options are: None(CMAKE_CXX_FLAGS or CMAKE_C_FLAGS used) Debug
-Release RelWithDebInfo MinSizeRel.")
-ELSE()
-   SET(CMAKE_BUILD_TYPE RelWithDebInfo CACHE STRING "Choose the type of build,
-options are: None(CMAKE_CXX_FLAGS or CMAKE_C_FLAGS used) Debug Release
-RelWithDebInfo MinSizeRel.")
-ENDIF()
 
 # The name of the project.
 PROJECT(RobWorkStudio)
-SET(ROBWORKSTUDIO_VERSION 0.7.0)
+if(DEFINED VERSION)
+  set(ROBWORKSTUDIO_VERSION ${VERSION})
+else()
+  string(TIMESTAMP ROBWORK_DATE_VERSION "%y.%m.%d")
+  set(ROBWORKSTUDIO_VERSION ${ROBWORK_DATE_VERSION})
+endif()
 SET(RWS_ROOT ${CMAKE_CURRENT_SOURCE_DIR})
 MESSAGE(STATUS "RobWorkStudio version ${ROBWORKSTUDIO_VERSION}")
 
+###########################################
 # lets start by finding RobWork since this is the primary dependency and because we
 # want to use the macros available in RobWork
 # if RW_ROOT is defined then we use that, else we try finding it the traditional way
@@ -40,6 +36,7 @@ ELSE()
 ENDIF()
 FIND_PACKAGE(RobWork ${ROBWORKSTUDIO_VERSION} REQUIRED)
 
+###########################################
 # include the macros from robwork
 INCLUDE(${RW_ROOT}/cmake/RobWorkMacros.cmake)
 INCLUDE(${RWS_ROOT}/cmake/RobWorkStudioMacros.cmake)
@@ -49,12 +46,30 @@ RW_GET_OS_INFO()
 RW_SET_INSTALL_DIRS(RobWorkStudio RWS)
 RW_OPTIONS(RWS)
 
+###########################################
 # Add an "uninstall" target
 configure_file("${RWS_ROOT}/cmake/uninstall_target.cmake.in"
                "${CMAKE_BINARY_DIR}/uninstall_target.cmake" IMMEDIATE @ONLY)
-add_custom_target(uninstall_rws "${CMAKE_COMMAND}" -P
+add_custom_target(uninstall_sdurws "${CMAKE_COMMAND}" -P
                   "${CMAKE_BINARY_DIR}/uninstall_target.cmake")
 
+###########################################
+# Add compile flags
+
+if( DEFINED USE_WERROR)
+    set(WERROR_FLAG "-Werror")
+endif()
+                
+
+SET(RWS_CXX_FLAGS "${WERROR_FLAG} ${RW_BUILD_WITH_CXX_FLAGS}" 
+    CACHE STRING "Change this to force using your own flags and not those of RobWorkStudio"
+)
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${RWS_CXX_FLAGS}")
+
+
+
+
+###########################################
 # This sets up ROBWORKSTUDIO_INCLUDE_DIR and ROBWORKSTUDIO_LIBRARIES
 # RobWork dependencies are included in these vars
 INCLUDE(${RWS_ROOT}/cmake/RobWorkStudioSetup.cmake)
@@ -93,7 +108,7 @@ IF( RWS_IS_TESTS_ENABLED )
     INCLUDE(CTest)
     #ADD_SUBDIRECTORY(test)
     IF(RW_BUILD_WITH_GTEST)
-    	ADD_SUBDIRECTORY(gtest)
+    	  ADD_SUBDIRECTORY(gtest)
     ENDIF()
 ELSE ()
     MESSAGE(STATUS "RobWorkStudio: tests DISABLED!")
@@ -122,7 +137,7 @@ CONFIGURE_FILE(
   @ONLY
 )
 
-# Configure build/RobWorkStudioConfig.cmake.in such that other projects might use robworkstudio
+# Configure build/RobWorkStudioConfig.cmake.in such that other projects might use RobWorkStudio
 CONFIGURE_FILE(
   ${RWS_ROOT}/cmake/RobWorkStudioConfig.cmake.in
   "${RWS_ROOT}/cmake/RobWorkStudioConfig.cmake" @ONLY)
@@ -140,12 +155,12 @@ CONFIGURE_FILE(
 INSTALL(FILES 
     ${RWS_ROOT}/cmake/RobWorkStudioConfigVersion.cmake
     ${RWS_ROOT}/cmake/RobWorkStudioConfig.cmake
-    DESTINATION ${RWS_INSTALL_DIR} ) 
+    DESTINATION ${RWS_INSTALL_DIR}/cmake ) 
 
 INSTALL(FILES 
         "cmake/RobWorkStudioBuildConfig_${RWS_BUILD_TYPE}.cmake"
         "cmake/RobWorkStudioMacros.cmake"
-        DESTINATION ${RWS_INSTALL_DIR})
+        DESTINATION ${RWS_INSTALL_DIR}/cmake)
 
 # misc
 INSTALL(FILES LICENSE.txt NOTICE.txt ChangeLog.txt 
@@ -226,9 +241,9 @@ IF(doc_executable)
   ENDIF()
 
   IF(TARGET qtrwdoc)
-    CONFIGURE_FILE(${RWS_ROOT}/docs/robwork_help.qhcp.in ${RWS_ROOT}/docs/robwork_help-v${ROBWORK_VERSION}.qhcp)
-    ADD_CUSTOM_TARGET(robwork_help qcollectiongenerator ${RWS_ROOT}/docs/robwork_help-v${ROBWORK_VERSION}.qhcp -o ${RWS_ROOT}/docs/robwork_help-v${ROBWORK_VERSION}.qhc )
-    ADD_DEPENDENCIES(robwork_help qtrwdoc) 
+    CONFIGURE_FILE(${RWS_ROOT}/docs/sdurw_help.qhcp.in ${RWS_ROOT}/docs/sdurw_help-v${ROBWORK_VERSION}.qhcp)
+    ADD_CUSTOM_TARGET(sdurw_help qcollectiongenerator ${RWS_ROOT}/docs/sdurw_help-v${ROBWORK_VERSION}.qhcp -o ${RWS_ROOT}/docs/robwork_help-v${ROBWORK_VERSION}.qhc )
+    ADD_DEPENDENCIES(sdurw_help qtrwdoc) 
   ENDIF()
 ENDIF()
 

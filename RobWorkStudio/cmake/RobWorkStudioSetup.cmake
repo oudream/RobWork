@@ -39,17 +39,21 @@ MESSAGE(STATUS "RobWorkStudio: ROOT dir: ${RWS_ROOT}")
 # Check for all dependencies, this adds LIBRARY_DIRS and include dirs that 
 # the configuration depends on
 #
- 
-#Include default settings for constructing a robwork dependent project
-#SET(ROBWORK_ROOT ${RW_ROOT})
-#SET(CMAKE_MODULE_PATH ${RW_ROOT}/cmake ${CMAKE_MODULE_PATH})
-#SET(RobWork_DIR ${RW_ROOT}/cmake)
-#FIND_PACKAGE(RobWork ${ROBWORKSTUDIO_VERSION_MAJOR}.${ROBWORKSTUDIO_VERSION_MINOR}.${ROBWORKSTUDIO_VERSION_PATCH})
 
-#STRING(COMPARE EQUAL "${ROBWORKSTUDIO_VERSION}" "${ROBWORK_VERSION}" COMPATIBLE_VERSION)
-#IF( NOT COMPATIBLE_VERSION )
-#    MESSAGE(SEND_ERROR "RobWorkStudio: Version of RobWork ${ROBWORK_VERSION} is incompatible with version of RobWorkStudio ${ROBWORKSTUDIO_VERSION}")
-#ENDIF()
+# Find Python
+find_package(PythonLibs 3 QUIET)
+if (PYTHONLIBS_FOUND)
+	set(RWS_USE_PYTHON3 true)
+	set(RWS_USE_PYTHON true)
+else()
+	find_package(PythonLibs 2 QUIET)
+	if (PYTHONLIBS_FOUND)
+		set(RWS_USE_PYTHON2 true)
+		set(RWS_USE_PYTHON true)
+	endif()
+endif()
+
+
 
 # Find and setup OpenGL.
 FIND_PACKAGE(OpenGL REQUIRED)
@@ -134,7 +138,7 @@ endif ()
 # optional compilation of sandbox
 IF (RWS_BUILD_SANDBOX)
     MESSAGE(STATUS "RobWorkStudio: Sandbox ENABLED!")
-    SET(SANDBOX_LIB "rws_sandbox")
+    SET(SANDBOX_LIB "rsdurws_sandbox")
     SET(RWS_HAVE_SANDBOX true)
 ELSE ()
     MESSAGE(STATUS "RobWorkStudio: Sandbox DISABLED!")    
@@ -161,7 +165,7 @@ IF( NOT RWS_DISABLE_LUA )
         SET(RWS_HAVE_LUA False)
     ELSEIF (RW_BUILD_WITH_LUA)
         MESSAGE(STATUS "RobWorkStudio: Lua ENABLED!")
-        SET(RWS_LUA "rws_lua_s;rws_luaeditor")
+        SET(RWS_LUA "sdurws_lua_s;sdurws_luaeditor")
         SET(RWS_HAVE_LUA True)
     ELSE ()
         MESSAGE(STATUS "RobWorkStudio: Lua DISABLED! - RobWork is NOT compiled with Lua support!")
@@ -261,7 +265,7 @@ SET(ROBWORKSTUDIO_LIBRARY_DIRS
 SET(ROBWORKSTUDIO_LIBRARIES
   ${RWS_SANDBOX}
   ${RWS_LUA}
-  rws
+  sdurws
   qtpropertybrowser
   ${ROBWORK_LIBRARIES}
   ${QT_LIBRARIES}

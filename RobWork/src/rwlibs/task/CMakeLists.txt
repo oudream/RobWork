@@ -1,6 +1,6 @@
-SET(SUBSYS_NAME rw_task)
+SET(SUBSYS_NAME sdurw_task)
 set(SUBSYS_DESC "Generic Task description")
-SET(SUBSYS_DEPS rw)
+SET(SUBSYS_DEPS sdurw)
 
 SET(DEFAULT TRUE)
 SET(REASON)

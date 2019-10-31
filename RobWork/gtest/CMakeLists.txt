@@ -29,7 +29,7 @@ ENDMACRO(ADD_RW_GTEST)
 
 SET(RWMAIN_TEST_LIBRARIES
  ${GTEST_BOTH_LIBRARIES}
- rw
+ sdurw
  ${XERCESC_LIBRARIES}
  ${ASSIMP_LIBRARIES}
  ${QHULL_LIBRARIES}
@@ -40,17 +40,17 @@ SET(RWMAIN_TEST_SRC
   TestEnvironment.cpp
   test-main.cpp
 )
-ADD_LIBRARY( rw-gtest-main STATIC ${RWMAIN_TEST_SRC})       
-TARGET_LINK_LIBRARIES( rw-gtest-main ${RWMAIN_TEST_LIBRARIES})
+ADD_LIBRARY( sdurw-gtest-main STATIC ${RWMAIN_TEST_SRC})       
+TARGET_LINK_LIBRARIES( sdurw-gtest-main ${RWMAIN_TEST_LIBRARIES})
 
 ########################################################################
 # Common
 ########################################################################
 
 SET(COMMON_TEST_LIBRARIES
- rw-gtest-main
+ sdurw-gtest-main
  ${GTEST_LIBRARIES}
- rw
+ sdurw
  ${XERCESC_LIBRARIES}
  ${ASSIMP_LIBRARIES}
  ${QHULL_LIBRARIES}
@@ -62,13 +62,13 @@ SET(COMMON_TEST_SRC
   common/PairMapTest.cpp
   common/PluginTest.cpp
 )
-ADD_EXECUTABLE( rw_common-gtest ${COMMON_TEST_SRC})
-TARGET_LINK_LIBRARIES( rw_common-gtest ${COMMON_TEST_LIBRARIES})
-ADD_RW_GTEST(rw_common-gtest)
+ADD_EXECUTABLE( sdurw_common-gtest ${COMMON_TEST_SRC})
+TARGET_LINK_LIBRARIES( sdurw_common-gtest ${COMMON_TEST_LIBRARIES})
+ADD_RW_GTEST(sdurw_common-gtest)
 
 # Create dummy plugins for testing
 ADD_LIBRARY(test_plugin.rwplugin MODULE common/TestPlugin.cpp)
-TARGET_LINK_LIBRARIES(test_plugin.rwplugin rw)
+TARGET_LINK_LIBRARIES(test_plugin.rwplugin sdurw)
 SET_TARGET_PROPERTIES(test_plugin.rwplugin
   PROPERTIES
   LIBRARY_OUTPUT_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
@@ -82,7 +82,7 @@ FILE(GENERATE OUTPUT "$<TARGET_FILE_DIR:test_plugin.rwplugin>/test_plugin.rwplug
 ########################################################################
 SET(GEOMETRY_TEST_LIBRARIES
  ${GTEST_BOTH_LIBRARIES}
- rw
+ sdurw
  ${XERCESC_LIBRARIES}
  ${ASSIMP_LIBRARIES}
  ${QHULL_LIBRARIES}
@@ -101,42 +101,42 @@ SET(GEOMETRY_TEST_SRC
   geometry/QuadraticCurveTest.cpp
   geometry/TriangulateTest.cpp
 )
-ADD_EXECUTABLE( rw_geometry-gtest ${GEOMETRY_TEST_SRC})       
-TARGET_LINK_LIBRARIES( rw_geometry-gtest ${GEOMETRY_TEST_LIBRARIES})
-ADD_RW_GTEST(rw_geometry-gtest)
+ADD_EXECUTABLE( sdurw_geometry-gtest ${GEOMETRY_TEST_SRC})       
+TARGET_LINK_LIBRARIES( sdurw_geometry-gtest ${GEOMETRY_TEST_LIBRARIES})
+ADD_RW_GTEST(sdurw_geometry-gtest)
 
 ########################################################################
 # Graphics
 ########################################################################
 SET(GRAPHICS_TEST_LIBRARIES
  ${GTEST_BOTH_LIBRARIES}
- rw
+ sdurw
 )
 
 SET(GRAPHICS_TEST_SRC
   graphics/SceneGraphTest.cpp
   graphics/WorkCellSceneTest.cpp
 )
-ADD_EXECUTABLE( rw_graphics-gtest ${GRAPHICS_TEST_SRC})       
-TARGET_LINK_LIBRARIES( rw_graphics-gtest ${GRAPHICS_TEST_LIBRARIES})
-ADD_RW_GTEST(rw_graphics-gtest)
+ADD_EXECUTABLE( sdurw_graphics-gtest ${GRAPHICS_TEST_SRC})       
+TARGET_LINK_LIBRARIES( sdurw_graphics-gtest ${GRAPHICS_TEST_LIBRARIES})
+ADD_RW_GTEST(sdurw_graphics-gtest)
 
 ########################################################################
 # Inverse Kinematics
 ########################################################################
 SET(INVKIN_TEST_LIBRARIES
- rw-gtest-main
+ sdurw-gtest-main
  ${GTEST_LIBRARIES}
- rw
+ sdurw
 )
 
 SET(INVKIN_TEST_SRC
   invkin/ClosedFormIKSolverKukaIIWATest.cpp
   invkin/ParallelIKSolverTest.cpp
 )
-ADD_EXECUTABLE( rw_invkin-gtest ${INVKIN_TEST_SRC})       
-TARGET_LINK_LIBRARIES( rw_invkin-gtest ${INVKIN_TEST_LIBRARIES})
-ADD_RW_GTEST(rw_invkin-gtest)
+ADD_EXECUTABLE( sdurw_invkin-gtest ${INVKIN_TEST_SRC})       
+TARGET_LINK_LIBRARIES( sdurw_invkin-gtest ${INVKIN_TEST_LIBRARIES})
+ADD_RW_GTEST(sdurw_invkin-gtest)
 
 ########################################################################
 # Kinematics
@@ -144,25 +144,25 @@ ADD_RW_GTEST(rw_invkin-gtest)
 
 SET(KINEMATICS_TEST_LIBRARIES
   ${GTEST_BOTH_LIBRARIES}
-  rw
+  sdurw
 )
 
 SET(KINEMATICS_TEST_SRC
   kinematics/StaticFrameGroupsTest.cpp
 )
-ADD_EXECUTABLE( rw_kinematics-gtest ${KINEMATICS_TEST_SRC})       
-TARGET_LINK_LIBRARIES( rw_kinematics-gtest ${KINEMATICS_TEST_LIBRARIES})
-ADD_RW_GTEST(rw_kinematics-gtest)
+ADD_EXECUTABLE( sdurw_kinematics-gtest ${KINEMATICS_TEST_SRC})       
+TARGET_LINK_LIBRARIES( sdurw_kinematics-gtest ${KINEMATICS_TEST_LIBRARIES})
+ADD_RW_GTEST(sdurw_kinematics-gtest)
 
 ########################################################################
 # Loaders
 ########################################################################
 
 SET(LOADERS_TEST_LIBRARIES
- rw-gtest-main
+ sdurw-gtest-main
  ${GTEST_LIBRARIES}
- rw
- rw_proximitystrategies
+ sdurw
+ sdurw_proximitystrategies
  ${XERCESC_LIBRARIES}
  ${ASSIMP_LIBRARIES}
  ${QHULL_LIBRARIES}
@@ -175,9 +175,9 @@ SET(LOADERS_TEST_SRC
   loaders/ImageLoaderTest.cpp
   loaders/PathLoaderCSVTest.cpp
 )
-ADD_EXECUTABLE( rw_loaders-gtest ${LOADERS_TEST_SRC})       
-TARGET_LINK_LIBRARIES( rw_loaders-gtest ${LOADERS_TEST_LIBRARIES})
-ADD_RW_GTEST(rw_loaders-gtest)
+ADD_EXECUTABLE( sdurw_loaders-gtest ${LOADERS_TEST_SRC})       
+TARGET_LINK_LIBRARIES( sdurw_loaders-gtest ${LOADERS_TEST_LIBRARIES})
+ADD_RW_GTEST(sdurw_loaders-gtest)
 
 ########################################################################
 # Math
@@ -185,7 +185,7 @@ ADD_RW_GTEST(rw_loaders-gtest)
 
 SET(MATH_TEST_LIBRARIES
  ${GTEST_BOTH_LIBRARIES}
- rw
+ sdurw
  )
 
 SET(MATH_TEST_SRC
@@ -194,18 +194,18 @@ SET(MATH_TEST_SRC
   math/SerializationTest.cpp
   math/StatisticsTest.cpp
 )
-ADD_EXECUTABLE( rw_math-gtest ${MATH_TEST_SRC})       
-TARGET_LINK_LIBRARIES( rw_math-gtest ${MATH_TEST_LIBRARIES})
-ADD_RW_GTEST(rw_math-gtest)
+ADD_EXECUTABLE( sdurw_math-gtest ${MATH_TEST_SRC})       
+TARGET_LINK_LIBRARIES( sdurw_math-gtest ${MATH_TEST_LIBRARIES})
+ADD_RW_GTEST(sdurw_math-gtest)
 
 ########################################################################
 # Models
 ########################################################################
 
 SET(MODELS_TEST_LIBRARIES
- rw-gtest-main
+ sdurw-gtest-main
  ${GTEST_LIBRARIES}
- rw
+ sdurw
  )
 
 SET(MODELS_TEST_SRC
@@ -214,9 +214,9 @@ SET(MODELS_TEST_SRC
   models/ParallelLegTest.cpp
   models/WorkCellTest.cpp
 )
-ADD_EXECUTABLE( rw_models-gtest ${MODELS_TEST_SRC})       
-TARGET_LINK_LIBRARIES( rw_models-gtest ${MODELS_TEST_LIBRARIES})
-ADD_RW_GTEST(rw_models-gtest)
+ADD_EXECUTABLE( sdurw_models-gtest ${MODELS_TEST_SRC})       
+TARGET_LINK_LIBRARIES( sdurw_models-gtest ${MODELS_TEST_LIBRARIES})
+ADD_RW_GTEST(sdurw_models-gtest)
 
 ########################################################################
 # Pathoptimization
@@ -224,26 +224,26 @@ ADD_RW_GTEST(rw_models-gtest)
 
 SET(PATHOPTIMIZATION_TEST_LIBRARIES
  ${GTEST_BOTH_LIBRARIES}
- rw_pathoptimization
- rw
+ sdurw_pathoptimization
+ sdurw
  )
 
 SET(PATHOPTIMIZATION_TEST_SRC
   pathoptimization/ClearanceOptimizerTest.cpp
   pathoptimization/PathLengthOptimizerTest.cpp
 )
-ADD_EXECUTABLE( rw_pathoptimization-gtest ${PATHOPTIMIZATION_TEST_SRC})       
-TARGET_LINK_LIBRARIES( rw_pathoptimization-gtest ${PATHOPTIMIZATION_TEST_LIBRARIES})
-ADD_RW_GTEST(rw_pathoptimization-gtest)
+ADD_EXECUTABLE( sdurw_pathoptimization-gtest ${PATHOPTIMIZATION_TEST_SRC})       
+TARGET_LINK_LIBRARIES( sdurw_pathoptimization-gtest ${PATHOPTIMIZATION_TEST_LIBRARIES})
+ADD_RW_GTEST(sdurw_pathoptimization-gtest)
 
 ########################################################################
 # Proximity
 ########################################################################
 
 SET(PROXIMITY_TEST_LIBRARIES
- rw-gtest-main
+ sdurw-gtest-main
  ${GTEST_LIBRARIES}
- rw
+ sdurw
  )
 
 SET(PROXIMITY_TEST_SRC
@@ -255,9 +255,9 @@ SET(PROXIMITY_TEST_SRC
   proximity/ProximityStrategy.cpp
   proximity/DistanceCalculatorTest.cpp
 )
-ADD_EXECUTABLE( rw_proximity-gtest ${PROXIMITY_TEST_SRC})       
-TARGET_LINK_LIBRARIES( rw_proximity-gtest ${PROXIMITY_TEST_LIBRARIES})
-ADD_RW_GTEST(rw_proximity-gtest)
+ADD_EXECUTABLE( sdurw_proximity-gtest ${PROXIMITY_TEST_SRC})       
+TARGET_LINK_LIBRARIES( sdurw_proximity-gtest ${PROXIMITY_TEST_LIBRARIES})
+ADD_RW_GTEST(sdurw_proximity-gtest)
 
 ########################################################################
 # Sensor
@@ -266,19 +266,19 @@ ADD_RW_GTEST(rw_proximity-gtest)
 SET(SENSOR_TEST_SRC
   sensor/TactileArrayTest.cpp
 )
-ADD_EXECUTABLE( rw_sensor-gtest ${SENSOR_TEST_SRC})       
-TARGET_LINK_LIBRARIES( rw_sensor-gtest ${GTEST_BOTH_LIBRARIES} rw)
-ADD_RW_GTEST(rw_sensor-gtest)
+ADD_EXECUTABLE( sdurw_sensor-gtest ${SENSOR_TEST_SRC})       
+TARGET_LINK_LIBRARIES( sdurw_sensor-gtest ${GTEST_BOTH_LIBRARIES} sdurw)
+ADD_RW_GTEST(sdurw_sensor-gtest)
 
 ########################################################################
 # Task
 ########################################################################
 
 SET(TASK_TEST_LIBRARIES
- rw-gtest-main
+ sdurw-gtest-main
  ${GTEST_LIBRARIES}
- rw_task
- rw
+ sdurw_task
+ sdurw
  ${XERCESC_LIBRARIES}
  ${ASSIMP_LIBRARIES}
  ${QHULL_LIBRARIES}
@@ -288,9 +288,9 @@ SET(TASK_TEST_LIBRARIES
 SET(TASK_TEST_SRC
   task/GraspTaskTest.cpp
 )
-ADD_EXECUTABLE( rw_task-gtest ${TASK_TEST_SRC})       
-TARGET_LINK_LIBRARIES( rw_task-gtest ${TASK_TEST_LIBRARIES})
-ADD_RW_GTEST(rw_task-gtest)
+ADD_EXECUTABLE( sdurw_task-gtest ${TASK_TEST_SRC})       
+TARGET_LINK_LIBRARIES( sdurw_task-gtest ${TASK_TEST_LIBRARIES})
+ADD_RW_GTEST(sdurw_task-gtest)
 
 ########################################################################
 # Trajectory
@@ -298,21 +298,21 @@ ADD_RW_GTEST(rw_task-gtest)
 
 SET(TRAJECTORY_TEST_LIBRARIES
  ${GTEST_BOTH_LIBRARIES}
- rw
+ sdurw
 )
 
 SET(TRAJECTORY_TEST_SRC
   trajectory/PathTest.cpp
 )
-ADD_EXECUTABLE( rw_trajectory-gtest ${TRAJECTORY_TEST_SRC})       
-TARGET_LINK_LIBRARIES( rw_trajectory-gtest ${TRAJECTORY_TEST_LIBRARIES})
-ADD_RW_GTEST(rw_trajectory-gtest)
+ADD_EXECUTABLE( sdurw_trajectory-gtest ${TRAJECTORY_TEST_SRC})       
+TARGET_LINK_LIBRARIES( sdurw_trajectory-gtest ${TRAJECTORY_TEST_LIBRARIES})
+ADD_RW_GTEST(sdurw_trajectory-gtest)
 
 ########################################################################
 # Target for generation of all detailed reports
 ########################################################################
 
-ADD_CUSTOM_TARGET(rw-gtest_reports
+ADD_CUSTOM_TARGET(sdurw-gtest_reports
 	DEPENDS ${REPORT_TARGETS}
 	COMMENT "Running Google Tests to generate detailed reports."
 )
@@ -321,4 +321,4 @@ ADD_CUSTOM_TARGET(rw-gtest_reports
 # Do not build these as part of an ordinary build
 ########################################################################
 
-SET_TARGET_PROPERTIES(rw-gtest_reports ${REPORT_TARGETS} PROPERTIES EXCLUDE_FROM_ALL 1 EXCLUDE_FROM_DEFAULT_BUILD 1)
+SET_TARGET_PROPERTIES(sdurw-gtest_reports ${REPORT_TARGETS} PROPERTIES EXCLUDE_FROM_ALL 1 EXCLUDE_FROM_DEFAULT_BUILD 1)

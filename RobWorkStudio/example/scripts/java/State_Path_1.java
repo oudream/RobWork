@@ -1,4 +1,7 @@
-import dk.robwork.*;
+import org.robwork.LoaderRW;
+import org.robwork.LoaderRWS;
+import org.robwork.sdurw.*;
+import org.robwork.sdurws.*;
 
 public class State_Path_1 {
 	public static void main(String[] args) throws InterruptedException{
@@ -6,12 +9,12 @@ public class State_Path_1 {
 		// System.out.println(System.getProperty("java.library.path"));
 		
 		// Load
-		LoaderRW.load();
+		LoaderRW.load("sdurw");
 		LoaderRWS.load();
 		
 		// Try to open RobWorkStudio and load the workcell
-		RobWorkStudioPtr rwstudio = rws.getRobWorkStudioInstance();
-		WorkCellPtr wc = WorkCellFactory.load("/home/thomas/Hentede filer/rob_scenes/PA10WorkCell/Scene.wc.xml");
+		RobWorkStudioPtr rwstudio = sdurws.getRobWorkStudioInstance();
+		WorkCellPtr wc = WorkCellLoaderFactory.load("/home/thomas/Hentede filer/rob_scenes/PA10WorkCell/Scene.wc.xml");
 		rwstudio.postWorkCell(wc);
 		Thread.sleep(2000);
 		
@@ -77,7 +80,7 @@ public class State_Path_1 {
 	}
 	
 	private static void graspObject(PathTimedStatePtr path, Frame object, Frame tool, State state) {
-	    rw.gripFrame(object, tool, state);
+	    sdurw.gripFrame(object, tool, state);
 	    double time = path.elem(path.size()-1).getTime();
 		TimedState tstate = new TimedState(time, state);
 	    path.add(tstate);

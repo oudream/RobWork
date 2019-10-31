@@ -67,7 +67,7 @@ public:
 public:
     /**
      * @brief Constructs an OpenGL based QT Widget
-     * @param rwStudio [in] robworkstudio
+     * @param rwStudio [in] RobWorkStudio
      * @param parent [in] Parent widget
      */
     RWStudioView3D(RobWorkStudio* rwStudio, QWidget* parent);
@@ -190,7 +190,7 @@ public:
     //! get current draw mask
     int getDrawMask();
 
-private slots:
+private Q_SLOTS:
     void setDrawTypeSlot();
     void setTransparentSlot();
     void showPivotPointSlot();

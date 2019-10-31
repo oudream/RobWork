@@ -34,7 +34,7 @@ CONFIGURE_FILE(
   ${CMAKE_CURRENT_SOURCE_DIR}/TestSuiteConfig.xml.generated
 )
 
-FILE(GENERATE OUTPUT $<TARGET_FILE_DIR:rws_rws-gtest>/TestSuiteConfig.xml INPUT ${CMAKE_CURRENT_SOURCE_DIR}/TestSuiteConfig.xml.generated)
+FILE(GENERATE OUTPUT $<TARGET_FILE_DIR:sdurws_sdurws-gtest>/TestSuiteConfig.xml INPUT ${CMAKE_CURRENT_SOURCE_DIR}/TestSuiteConfig.xml.generated)
 
 ########################################################################
 # RobWorkStudio main function for initialization (link with this if needed).
@@ -49,15 +49,15 @@ SET(RWSMAIN_TEST_SRC
   TestEnvironment.cpp
   test-main.cpp
 )
-ADD_LIBRARY( rws-gtest-main STATIC ${RWSMAIN_TEST_SRC})       
-TARGET_LINK_LIBRARIES( rws-gtest-main ${RWSMAIN_TEST_LIBRARIES})
+ADD_LIBRARY( sdurws-gtest-main STATIC ${RWSMAIN_TEST_SRC})       
+TARGET_LINK_LIBRARIES( sdurws-gtest-main ${RWSMAIN_TEST_LIBRARIES})
 
 ########################################################################
 # RWS
 ########################################################################
 
 SET(RWS_TEST_LIBRARIES
-  rws
+  sdurws
   qtpropertybrowser
   ${QT_LIBRARIES}
   ${RW_BUILD_WITH_LIBRARIES_GTEST}
@@ -68,9 +68,9 @@ SET(RWS_TEST_LIBRARIES
 SET(RWS_TEST_SRC
   rws/RobWorkStudioTest.cpp
 )
-ADD_EXECUTABLE( rws_rws-gtest ${RWS_TEST_SRC})       
-TARGET_LINK_LIBRARIES( rws_rws-gtest ${RWS_TEST_LIBRARIES})
-ADD_RWS_GTEST(rws_rws-gtest)
+ADD_EXECUTABLE( sdurws_sdurws-gtest ${RWS_TEST_SRC})       
+TARGET_LINK_LIBRARIES( sdurws_sdurws-gtest ${RWS_TEST_LIBRARIES})
+ADD_RWS_GTEST(sdurws_sdurws-gtest)
 
 
 ########################################################################
@@ -78,8 +78,8 @@ ADD_RWS_GTEST(rws_rws-gtest)
 ########################################################################
 
 SET(SENSOR_TEST_LIBRARIES
-  rws-gtest-main
-  rws
+sdurws-gtest-main
+  sdurws
   qtpropertybrowser
   ${QT_LIBRARIES}
   ${Boost_LIBRARIES}
@@ -90,15 +90,15 @@ SET(SENSOR_TEST_LIBRARIES
 SET(SENSOR_TEST_SRC
   rws/SimulatedSensorTest.cpp
 )
-ADD_EXECUTABLE( rws_sensor-gtest ${SENSOR_TEST_SRC})       
-TARGET_LINK_LIBRARIES( rws_sensor-gtest ${SENSOR_TEST_LIBRARIES} rw)
-ADD_RWS_GTEST(rws_sensor-gtest)
+ADD_EXECUTABLE( sdurws_sensor-gtest ${SENSOR_TEST_SRC})       
+TARGET_LINK_LIBRARIES( sdurws_sensor-gtest ${SENSOR_TEST_LIBRARIES} sdurw)
+ADD_RWS_GTEST(sdurws_sensor-gtest)
 
 ########################################################################
 # Target for generation of all detailed reports
 ########################################################################
 
-ADD_CUSTOM_TARGET(rws-gtest_reports
+ADD_CUSTOM_TARGET(sdurws-gtest_reports
 	DEPENDS ${REPORT_TARGETS}
 	COMMENT "Running Google Tests to generate detailed reports."
 )
@@ -107,4 +107,4 @@ ADD_CUSTOM_TARGET(rws-gtest_reports
 # Do not build these as part of an ordinary build
 ########################################################################
 
-SET_TARGET_PROPERTIES(rws-gtest_reports ${REPORT_TARGETS} PROPERTIES EXCLUDE_FROM_ALL 1 EXCLUDE_FROM_DEFAULT_BUILD 1)
+SET_TARGET_PROPERTIES(sdurws-gtest_reports ${REPORT_TARGETS} PROPERTIES EXCLUDE_FROM_ALL 1 EXCLUDE_FROM_DEFAULT_BUILD 1)

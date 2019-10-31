@@ -43,9 +43,9 @@ namespace rws {
 
     /**
      * @brief A lua editor and programming pad designed to resemble a teach pendent
-     * for devices in robworkstudio.
+     * for devices in RobWorkStudio.
      *
-     * This editor will enable lua scripting and execution from within robworkstudio.
+     * This editor will enable lua scripting and execution from within RobWorkStudio.
      */
     class LuaEditorWindow: public QMainWindow {
         Q_OBJECT
@@ -69,7 +69,7 @@ namespace rws {
          */
         void setLuaState(rw::common::Ptr<rwlibs::swig::LuaState> lua){_lua = lua;}
 
-    public slots:
+    public Q_SLOTS:
         void on_actionNew_triggered(bool);
         void on_actionOpen_triggered(bool);
         void on_actionSave_triggered(bool);

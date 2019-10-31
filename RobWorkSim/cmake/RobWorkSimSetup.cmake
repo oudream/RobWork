@@ -35,30 +35,24 @@ MESSAGE(STATUS "RobWorkSim: ROOT dir: ${RWSIM_ROOT}")
 # Check for all dependencies, this adds LIBRARY_DIRS and include dirs that 
 # the configuration depends on
 #
- 
-#Include default settings for constructing a robwork dependent project
-#SET(ROBWORK_ROOT ${RW_ROOT})
-#SET(CMAKE_MODULE_PATH ${RW_ROOT}/build ${CMAKE_MODULE_PATH})
-#SET(RobWork_DIR ${RW_ROOT}/cmake)
-#FIND_PACKAGE(RobWork REQUIRED)
+# Find Python
+# Prefer Python 3
+find_package(PythonInterp 3 QUIET)
+find_package(PythonLibs 3 QUIET)
 
-#STRING(COMPARE EQUAL "${ROBWORKSIM_VERSION}" "${ROBWORK_VERSION}" COMPATIBLE_VERSION)
-#IF( NOT COMPATIBLE_VERSION )
-#    MESSAGE(SEND_ERROR "RobWorkSim: Version of RobWork ${ROBWORK_VERSION} is incompatible with version of RobWorkSim ${ROBWORKSIM_VERSION}")
-#ENDIF()
+if (NOT PYTHONINTERP_FOUND)
+	find_package(PythonInterp QUIET)
+endif()
+if (NOT PythonLibs)
+	find_package(PythonLibs QUIET)
+endif()
 
-#And for the qtgui stuff
-#SET(ROBWORKSTUDIO_ROOT ${RWS_ROOT})
-#SET(RWSTUDIO_ROOT ${RWS_ROOT})
-
-#SET(CMAKE_MODULE_PATH ${RWS_ROOT}/cmake ${CMAKE_MODULE_PATH})
-#FIND_PACKAGE(RobWorkStudio REQUIRED)
-
-#STRING(COMPARE EQUAL "${ROBWORKSTUDIO_VERSION}" "${ROBWORKSIM_VERSION}" COMPATIBLE_VERSION)
-#IF( NOT COMPATIBLE_VERSION )
-#    MESSAGE(SEND_ERROR "RobWorkSim: Version of RobWorkStudio ${ROBWORKSTUDIO_VERSION} is incompatible with version of RobWorkSim ${ROBWORKSIM_VERSION}")
-#ENDIF()
-
+if(PYTHONINTERP_FOUND)
+	message(STATUS "RobWorkSim: Python interpreter ${PYTHON_VERSION_STRING} Found")
+endif()
+if(PYTHONLIBS_FOUND)
+	message(STATUS "RobWorkSim: Python libraries ${PYTHONLIBS_VERSION_STRING} Found")
+endif()
 
  ####################################################################
 # DEPENDENCIES - OPTIONAL
@@ -68,7 +62,7 @@ MESSAGE(STATUS "RobWorkSim: ROOT dir: ${RWSIM_ROOT}")
 # optional compilation of sandbox
 IF (RWSIM_BUILD_SANDBOX)
     MESSAGE(STATUS "RobWorkSim: Sandbox ENABLED!")
-    SET(SANDBOX_LIB "rwsim_sandbox")
+    SET(SANDBOX_LIB "sdurwsim_sandbox")
     SET(RWSIM_HAVE_SANDBOX true)
 ELSE ()
     MESSAGE(STATUS "RobWorkSim: Sandbox DISABLED!")    
@@ -120,7 +114,7 @@ IF(NOT RWSIM_DISABLE_BULLET)
     IF(BULLET_FOUND)
     	SET(RWSIM_HAVE_BULLET TRUE)
     	#INCLUDE_DIRECTORIES( ${BULLET_INCLUDE_DIR} ${BULLET_ROOT}/Demos/)
-    	SET(RWSIM_BULLET_LIBRARY rwsim_bullet ${BULLET_LIBRARIES})
+    	SET(RWSIM_BULLET_LIBRARY sdurwsim_bullet ${BULLET_LIBRARIES})
 
         # BULLET_LIBRARIES
         MESSAGE(STATUS "RobWorkSim: Bullet enabled and found.")
@@ -145,7 +139,7 @@ IF(NOT RWSIM_DISABLE_ODE)
     	IF (RW_BUILD_WITH_PQP)
     		SET(RWSIM_HAVE_ODE TRUE)
     		#INCLUDE_DIRECTORIES( ${ODE_INCLUDE_DIR} )
-    		SET(RWSIM_ODE_LIBRARY rwsim_ode ${ODE_LIBRARIES})
+    		SET(RWSIM_ODE_LIBRARY sdurwsim_ode ${ODE_LIBRARIES})
     		# ODE_LIBRARIES
         	MESSAGE(STATUS "RobWorkSim: ODE enabled and found. Using ${ODE_BUILD_WITH}")
         	SET(RW_ODE_INCLUDE_DIR ${ODE_INCLUDE_DIR} )
@@ -165,7 +159,7 @@ SET(RWSIM_HAVE_RWPE False)
 OPTION(RWSIM_DISABLE_RWPE "Set when you want to disable RobWorkPhysicsEngine!" OFF)
 IF(NOT RWSIM_DISABLE_RWPE)
 	SET(RWSIM_HAVE_RWPE TRUE)
-	SET(RWSIM_RWPE_LIBRARY rwsim_rwpe)
+	SET(RWSIM_RWPE_LIBRARY sdurwsim_rwpe)
     MESSAGE(STATUS "RobWorkSim: RobWorkPhysicsEngine enabled.")
 ENDIF()
 
@@ -195,11 +189,17 @@ ENDIF()
 # Set extra compiler flags. The user should be able to change this. 
 # The compiler flags from RobWork are automatically set 
 #
+
+if( DEFINED USE_WERROR)
+  set(WERROR_FLAG "-Werror ")
+endif()
+
 IF(NOT DEFINED RWSIM_CXX_FLAGS)
 	SET(RWSIM_CXX_FLAGS "${RW_BUILD_WITH_CXX_FLAGS} ${RWSIM_CXX_FLAGS_TMP}" 
 		CACHE STRING "Change this to force using your own flags and not those of RobWorkSim"
 	)
 ENDIF()
+set(RWSIM_CXX_FLAGS "${RWSIM_CXX_FLAGS}${WERROR_FLAG}")
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${RWSIM_CXX_FLAGS}")
 MESSAGE(STATUS "RobWorkSim: Adding RWSIM CXX flags: ${RWSIM_CXX_FLAGS}")
 
@@ -250,9 +250,9 @@ SET(ROBWORKSIM_LIBRARY_DIRS
 SET(ROBWORKSIM_LIBRARIES
   ${RWS_SANDBOX}
   ${RWSIM_BULLET_LIBRARY}
-  rwsim
+  sdurwsim
   ${RWSIM_ODE_LIBRARY}
-  rwsim
+  sdurwsim
   ${ROBWORK_LIBRARIES}
 )
  

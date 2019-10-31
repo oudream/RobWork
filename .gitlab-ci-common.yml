@@ -42,17 +42,17 @@ stages:
     - cd ..
     # Build RobWorkHardware
     - cd RWHW
-    - cmake -DCMAKE_BUILD_TYPE=Release ../../RobWorkHardware
+    - cmake -DCMAKE_BUILD_TYPE=Release -DUSE_WERROR=true ../../RobWorkHardware
     - make -j3
     - cd ..
     # Build RobWorkStudio
     - cd RWS
-    - cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_rws_lua=OFF -DBUILD_rws_java=OFF -DBUILD_rws_python=OFF ../../RobWorkStudio
+    - cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_sdurws_lua=OFF -DBUILD_sdurws_java=OFF -DBUILD_sdurws_python=OFF -DUSE_WERROR=true ../../RobWorkStudio
     - make -j3 RobWorkStudio
     - cd ..
     # Run RobWork tests
     - cd RW
-    - make -j 1 -k rw-gtest_reports
+    - make -j 1 -k sdurw-gtest_reports
     - mv ../../RobWork/bin/**/gtest_reports/* ../../gtest/
     - ctest --no-compress-output -T Test -j 1
     - mv ./Testing/**/Test.xml ../../RWS-Test.xml
@@ -61,7 +61,7 @@ stages:
     - cd RWS
     - export DISPLAY=:0
     - Xvfb $DISPLAY -screen 0 640x480x24 &
-    - make -j 1 -k rws-gtest_reports
+    - make -j 1 -k sdurws-gtest_reports
     - mv ../../RobWorkStudio/bin/**/gtest_reports/* ../../gtest/
     - ctest --no-compress-output -T Test -j 1
     - mv ./Testing/**/Test.xml ../../RWS-CTest.xml
@@ -91,17 +91,17 @@ stages:
     - cd ..
     # Build RobWorkHardware
     - cd RWHW
-    - cmake -DCMAKE_BUILD_TYPE=Release ../../RobWorkHardware
+    - cmake -DCMAKE_BUILD_TYPE=Release -DUSE_WERROR=true ../../RobWorkHardware
     - make -j6
     - cd ..
     # Build RobWorkStudio
     - cd RWS
-    - cmake -DCMAKE_BUILD_TYPE=Release ../../RobWorkStudio
+    - cmake -DCMAKE_BUILD_TYPE=Release -DUSE_WERROR=true ../../RobWorkStudio
     - make -j6
     - cd ..
     # Build RobWorkSim
     - cd RWSim
-    - cmake -DCMAKE_BUILD_TYPE=Release ../../RobWorkSim
+    - cmake -DCMAKE_BUILD_TYPE=Release -DUSE_WERROR=true ../../RobWorkSim
     - make -j6
     - cd ..
     # Build RobWork Examples
@@ -135,7 +135,7 @@ stages:
     - cd ..
     # Run RobWork tests
     - cd RW
-    - make -j 1 -k rw-gtest_reports
+    - make -j 1 -k sdurw-gtest_reports
     - mv ../../RobWork/bin/**/gtest_reports/* ../../gtest/
     - ctest --no-compress-output -T Test -j 1
     - mv ./Testing/**/Test.xml ../../RWS-Test.xml
@@ -144,14 +144,14 @@ stages:
     - cd RWS
     - export DISPLAY=:0
     - Xvfb $DISPLAY -screen 0 640x480x24 &
-    - make -j 1 -k rws-gtest_reports
+    - make -j 1 -k sdurws-gtest_reports
     - mv ../../RobWorkStudio/bin/**/gtest_reports/* ../../gtest/
     - ctest --no-compress-output -T Test -j 1
     - mv ./Testing/**/Test.xml ../../RWS-CTest.xml
     - cd ..
     # Run RobWorkSim tests
     - cd RWSim
-    - make -j 1 -k rwsim-gtest_reports
+    - make -j 1 -k sdurwsim-gtest_reports
     - mv ../../RobWorkSim/bin/**/gtest_reports/* ../../gtest/
     - ctest --no-compress-output -T Test -j 1
     - mv ./Testing/**/Test.xml ../../RWSim-CTest.xml
@@ -174,8 +174,8 @@ stages:
     - cd Build
     # Build libraries needed for Sphinx apidoc
     - cd RW
-    - cmake -DCMAKE_BUILD_TYPE=Release -DRW_USE_YAOBI=OFF -DRW_USE_FCL=OFF -DRW_USE_ASSIMP=OFF -DBUILD_rws_lua=OFF -DRWS_USE_STATIC_LINK_PLUGINS=OFF -DRWSIM_DISABLE_LUA=ON -DBUILD_rwsim_luai=OFF ../..
-    - make rw_java rws_jni rwsim_jni rw_python _rws _rwsim -j6
+    - cmake -DCMAKE_BUILD_TYPE=Release -DRW_USE_YAOBI=OFF -DRW_USE_FCL=OFF -DRW_USE_ASSIMP=OFF -DBUILD_sdurws_lua=OFF -DRWS_USE_STATIC_LINK_PLUGINS=OFF -DRWSIM_DISABLE_LUA=ON -DBUILD_sdurwsim_luai=OFF ../..
+    - make sdurw_java sdurws_jni sdurwsim_jni sdurw_python _sdurws _sdurwsim -j6
     - cd ..
     # Build Sphinx
     - cd sphinx
@@ -280,29 +280,25 @@ stages:
     - cd ..
     # Run RobWork tests
     - cd RW
-    - msbuild gtest/rw-gtest_reports.vcxproj /p:Configuration=Release
+    - msbuild gtest/sdurw-gtest_reports.vcxproj /p:Configuration=Release
     - move ..\\..\\RobWork\\bin\\release\\gtest_reports\\* ..\\..\\gtest\\
     - ctest -C Release --no-compress-output -T Test -j 1
     - FOR /D %%F IN ("Testing\\*") DO IF EXIST %%F\\Test.xml move %%F\\Test.xml ..\\..\\RW-CTest.xml
     - cd ..
     # Run RobWorkStudio tests
     - cd RWS
-    - msbuild gtest/rws-gtest_reports.vcxproj /p:Configuration=Release
+    - msbuild gtest/sdurws-gtest_reports.vcxproj /p:Configuration=Release
     - move ..\\..\\RobWorkStudio\\bin\\release\\gtest_reports\\* ..\\..\\gtest\\
     - ctest -C Release --no-compress-output -T Test -j 1
     - FOR /D %%F IN ("Testing\\*") DO IF EXIST %%F\\Test.xml move %%F\\Test.xml ..\\..\\RWS-CTest.xml
     - cd ..
     # Run RobWorkSim tests
     - cd RWSim
-    - msbuild gtest/rwsim-gtest_reports.vcxproj /p:Configuration=Release
+    - msbuild gtest/sdurwsim-gtest_reports.vcxproj /p:Configuration=Release
     - move ..\\..\\RobWorkSim\\bin\\Release\\gtest_reports\\* ..\\..\\gtest\\
     - ctest -C Release --no-compress-output -T Test -j 1
     - FOR /D %%F IN ("Testing\\*") DO IF EXIST %%F\\Test.xml move %%F\\Test.xml ..\\..\\RWSim-CTest.xml
     - cd ..
-
-build:ubuntu-1404:
-  extends: .linux-full
-  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1404
 
 build:ubuntu-1604:
   extends: .linux-full
@@ -316,13 +312,13 @@ build-minimal:ubuntu-1804:
   extends: .linux-minimal
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
 
-build:ubuntu-1810:
-  extends: .linux-full
-  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1810
-
 build:ubuntu-1904:
   extends: .linux-full
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1904
+
+build:ubuntu-1910:
+  extends: .linux-full
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1910
 
 build:centos-7:
   extends: .linux-full

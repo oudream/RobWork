@@ -59,11 +59,11 @@ public:
     void close();
 
     //void setupToolBar(QToolBar* toolbar);
-public slots:
+public Q_SLOTS:
 	//! @brief Update simulated sensors - invoked by timer.
     void updateSim();
 
-private slots:
+private Q_SLOTS:
     void on_btnDisplay_clicked(bool checked);
     void on_spnUpdateTime_valueChanged(int value);
 

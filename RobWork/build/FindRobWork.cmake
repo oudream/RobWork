@@ -1,14 +1,14 @@
 #########################################################################################
 ######################## THIS FILE IS DEPRECATED ########################################
 # 
-#  ROBWORK_INCLUDE_DIR - Where to find robwork include sub-directory.
+#  ROBWORK_INCLUDE_DIR - Where to find RobWork include sub-directory.
 #  ROBWORK_LIBRARIES   - List of libraries when using RobWork (includes all libraries that RobWork depends on).
 #  ROBWORK_LIBRARY_DIRS - List of directories where libraries of RobWork are located. 
 #  ROBWORK_FOUND       - True if RobWork was found. (not impl yet)
 #  ROBWORK_CXX_FLAGS   - 
 #  ROBWORK_ROOT	       - If not set it will be set as the root of RobWork
 
-#  Variables that can be set to configure robwork
+#  Variables that can be set to configure RobWork
 #  RW_USE_XERCES - On if you want to use Xerces for loading xml
 #  RW_USE_YAOBI  - On if you use the Yaobi library for collision detection
 #  RW_USE_PQP    - On if you use the PQP library for collision detection

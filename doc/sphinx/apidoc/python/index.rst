@@ -7,13 +7,13 @@ Python API Reference
 .. toctree::
    :maxdepth: 2
 
-   rw.rst
-   rw_assembly.rst
-   rw_control.rst
-   rw_pathoptimization.rst
-   rw_pathplanners.rst
-   rw_proximitystrategies.rst
-   rw_simulation.rst
-   rw_task.rst
-   rws.rst
-   rwsim.rst
+   sdurw.rst
+   sdurw_assembly.rst
+   sdurw_control.rst
+   sdurw_pathoptimization.rst
+   sdurw_pathplanners.rst
+   sdurw_proximitystrategies.rst
+   sdurw_simulation.rst
+   sdurw_task.rst
+   sdurws.rst
+   sdurwsim.rst

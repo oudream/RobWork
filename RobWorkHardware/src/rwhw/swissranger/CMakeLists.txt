@@ -1,6 +1,6 @@
 SET(SUBSYS_NAME swissranger )
 SET(SUBSYS_DESC "Swiss ranger driver" )
-SET(SUBSYS_DEPS rw )
+SET(SUBSYS_DEPS sdurw )
 
 SET(build TRUE)
 set(DEFAULT FALSE)
@@ -18,9 +18,9 @@ RW_SUBSYS_OPTION( build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} ${REASON})
 RW_ADD_DOC( ${SUBSYS_NAME} )
 
 IF( build )
-    RW_ADD_LIBRARY(rwhw_swissranger swissranger 
+    RW_ADD_LIBRARY(sdurwhw_swissranger swissranger 
          SRCalibrationData.cpp SwissRanger.cpp
          SRCalibrationData.hpp SwissRanger.hpp SRConstants.hpp)
     RW_ADD_INCLUDES(swissranger "rwhw/swissranger" SRCalibrationData.hpp SwissRanger.hpp SRConstants.hpp)
-    set(ROBWORKHARDWARE_LIBRARIES ${ROBWORKHARDWARE_LIBRARIES} rwhw_swissranger PARENT_SCOPE)
+    set(ROBWORKHARDWARE_LIBRARIES ${ROBWORKHARDWARE_LIBRARIES} sdurwhw_swissranger PARENT_SCOPE)
 ENDIF()

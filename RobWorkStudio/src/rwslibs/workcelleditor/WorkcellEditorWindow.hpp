@@ -33,7 +33,7 @@ namespace Ui {
     class WorkcellEditorWindow;
 }
 
-class TreeModelCompleter;
+class WCECompleter;
 
 class QCompleter;
 
@@ -43,7 +43,7 @@ namespace rws {
     class RobWorkStudio;
 
     /**
-     * @brief A workcell editor that enables editing of workcells within robworkstudio.
+     * @brief A workcell editor that enables editing of workcells within RobWorkStudio.
      */
     class WorkcellEditorWindow : public QMainWindow {
     Q_OBJECT
@@ -60,7 +60,14 @@ namespace rws {
         //! @brief destructor
         virtual ~WorkcellEditorWindow();
 
-    public slots:
+        /**
+         * @brief used to open a workcell file
+         * @param fileName [in] the full file name of the workcell 
+         * @return did loading the workcell succeed
+         */
+        bool openWorkCell(const QString &fileName);
+
+    public Q_SLOTS:
 
         void on_actionNew_triggered(bool);
 
@@ -91,14 +98,14 @@ namespace rws {
         void setCheckAction(QAction *);
 
     private:
-        QAbstractItemModel *modelFromFile(const QString &fileName, TreeModelCompleter *completer);
+        QAbstractItemModel *modelFromFile(const QString &fileName, WCECompleter *completer);
 
         struct EditorTab {
             typedef rw::common::Ptr<EditorTab> Ptr;
             std::string _id;
             WCCodeEditor *_editor;
             WorkcellHighlighter *_highlighter;
-            TreeModelCompleter *_completer;
+            WCECompleter *_completer;
             std::string _filename;
         };
 
@@ -111,6 +118,8 @@ namespace rws {
         bool save(const std::string &filename);
 
         EditorTab::Ptr getCurrentTab();
+
+        QStringList getRefFrameList();
 
     private:
         //! hold

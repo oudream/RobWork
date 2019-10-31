@@ -1,4 +1,3 @@
-
 #add_definitions(-DQT_PLUGIN)
 
 if (DEFINED MSVC)
@@ -21,7 +20,7 @@ add_subdirectory(jog)
 #add_subdirectory(pointer)
 add_subdirectory(log)
 add_subdirectory(playback)
-add_subdirectory(propertyview) 
+add_subdirectory(propertyview)
 add_subdirectory(treeview)
 add_subdirectory(planning)
 add_subdirectory(sensors)

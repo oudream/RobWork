@@ -1,6 +1,6 @@
-SET(SUBSYS_NAME rws_propertyview)
+SET(SUBSYS_NAME sdurws_propertyview)
 set(SUBSYS_DESC "A plugin for editing property maps")
-SET(SUBSYS_DEPS rws) # also depends on qtpropertyviewer
+SET(SUBSYS_DEPS sdurws) # also depends on qtpropertyviewer
 
 SET(build TRUE)
 RW_SUBSYS_OPTION(build ${SUBSYS_NAME} ${SUBSYS_DESC} ON)

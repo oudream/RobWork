@@ -59,7 +59,7 @@ public:
 
 	friend std::ostream& operator<<(std::ostream& out, CalibrationOptionParser& parser) {
 		out << "Usage:" << std::endl;
-		out << "  rw_calibration-tool [work cell file] [measurement file] [calibration file]" << std::endl;
+		out << "  sdurw_calibration-tool [work cell file] [measurement file] [calibration file]" << std::endl;
 		out << std::endl;
 		out << parser._optionsDescription;
 		return out;

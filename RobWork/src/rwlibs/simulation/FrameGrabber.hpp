@@ -80,9 +80,7 @@ namespace rwlibs { namespace simulation {
          * @param width [in] width of image
          * @param height [in] height of image
          */
-        virtual void resize(int width, int height) {
-            _img->resize(width,height);
-        };
+        virtual void resize(int width, int height);
 
         /**
          * @brief resizes the image that this frameGrabber use.
@@ -101,10 +99,7 @@ namespace rwlibs { namespace simulation {
          * @brief returns the image
          * @return the image
          */
-        virtual rw::sensor::Image& getImage()
-        {
-            return *_img;
-        }
+        virtual rw::sensor::Image& getImage();
 
         /**
          * @brief this function grabs a image from the specialized source and

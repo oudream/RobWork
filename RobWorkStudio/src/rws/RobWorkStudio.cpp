@@ -52,7 +52,9 @@
 #include <rw/loaders/WorkCellLoader.hpp>
 
 #include <rwlibs/proximitystrategies/ProximityStrategyFactory.hpp>
-
+#ifdef RWS_USE_PYTHON
+#include <rws/pythonpluginloader/PyPlugin.hpp>
+#endif //RWS_USE_PYTHON
 #include <rws/propertyview/PropertyViewEditor.hpp>
 
 #include <RobWorkConfig.hpp>
@@ -103,6 +105,7 @@ RobWorkStudio::RobWorkStudio(const PropertyMap& map)
     _inStateUpdate(false),
     _settingsMap(NULL)
 {
+    this->setObjectName("RobWorkStudio_MainWindow");
 	//Always create the about box.
 	_aboutBox = new AboutBox(RW_VERSION, RW_REVISION, this);
 	// should load dynamically
@@ -482,7 +485,7 @@ void RobWorkStudio::loadPlugin()
         this,
         "Open plugin file", // Title
         dir, // Directory
-        "Plugin libraries ( *.so *.dll *.dylib *.so.*)"
+        "Plugin libraries ( *.so *.dll *.dylib *.so.* *.py)"
         "\n All ( *.* )",
         &selectedFilter);
         
@@ -491,7 +494,7 @@ void RobWorkStudio::loadPlugin()
 		QString pathname = pluginInfo.absolutePath();
 		QString filename = pluginInfo.baseName();
 
-		setupPlugin(pluginfilename, 0, 1);
+		setupPlugin(pathname,filename, 0, 1);
 	}
 }
 
@@ -659,7 +662,7 @@ void RobWorkStudio::loadSettingsSetupPlugins(const std::string& file)
         break;
     }
 
-    // TODO: make error reply if necesarry
+    // TODO: make error reply if necessary
     //return settings.status();
 }
 
@@ -668,6 +671,7 @@ void RobWorkStudio::setupPlugin(const QString& pathname, const QString& filename
 
 	QString pfilename = pathname+ "/" + filename + "." + OS::getDLLExtension().c_str();
 	bool e1 = boost::filesystem::exists( pfilename.toStdString() );
+    bool py=false;
 	if(!e1){
 		pfilename = pathname+ "/" + filename;
 		e1 = boost::filesystem::exists( pfilename.toStdString() );
@@ -684,9 +688,27 @@ void RobWorkStudio::setupPlugin(const QString& pathname, const QString& filename
 		pfilename = pathname+ "/" + filename + ".dylib";
 		e1 = boost::filesystem::exists( pfilename.toStdString() );
 	}
-    setupPlugin(pfilename, visible, dock);
+    if(!e1){
+        pfilename = pathname+ "/" + filename + ".py";
+		e1 = boost::filesystem::exists( pfilename.toStdString() );
+        py = e1;
+    }
+
+    if(py) {
+        setupPyPlugin(pfilename, filename, visible, dock);
+    } 
+    else {
+        setupPlugin(pfilename,visible,dock);
+    }
 }
-void RobWorkStudio::setupPlugin(const QString& fullname, bool visible, int dock) {
+void RobWorkStudio::setupPlugin(const QString& fullname, bool visible, int dock) 
+{
+    std::string ext = boost::filesystem::extension(fullname.toStdString());
+    if (ext == "py") {
+        std::string base = boost::filesystem::basename(fullname.toStdString());
+        setupPyPlugin(fullname,base.c_str(),visible,dock);
+        return;
+    }
     Qt::DockWidgetArea dockarea = (Qt::DockWidgetArea)dock;
 	QPluginLoader loader(fullname);
 
@@ -726,6 +748,19 @@ void RobWorkStudio::setupPlugin(const QString& fullname, bool visible, int dock)
 	}
 }
 
+void RobWorkStudio::setupPyPlugin(const QString& pathname, const QString& filename, bool visible, int dock) 
+{   
+    #ifdef RWS_USE_PYTHON
+        Qt::DockWidgetArea dockarea = (Qt::DockWidgetArea)dock;
+        PyPlugin* pyplug = new PyPlugin();
+        addPlugin(pyplug,visible,dockarea);
+        pyplug->initialize(pathname.toLocal8Bit().data(),filename.toLocal8Bit().data());
+    #endif //RWS_USE_PYTHON
+    #ifndef RWS_USE_PYTHON
+        RW_THROW("You have attempted to load a python plugin, but RobWorkStudio was not compiled using python, please recompile RobWorkStudio")
+    #endif //NOT RWS_USE_PYTHON
+
+}
 
 void RobWorkStudio::setupPlugins(QSettings& settings)
 {

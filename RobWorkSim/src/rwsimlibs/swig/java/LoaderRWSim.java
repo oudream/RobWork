@@ -26,7 +26,7 @@ public class LoaderRWSim {
 	 * @return the name of the native library.
 	 */
 	public static String getShortName(){
-		return "rwsim_jni";
+		return "sdurwsim_jni";
 	}
 	
 	/**

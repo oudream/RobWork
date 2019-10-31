@@ -4,7 +4,7 @@
 extern "C" {
 #endif
 
-    int luaopen_rws(lua_State* L); // declare the wrapped module
+    int luaopen_sdurws(lua_State* L); // declare the wrapped module
 
 #ifdef __cplusplus
 }
@@ -12,5 +12,5 @@ extern "C" {
 
 
 int rwslibs::swig::openLuaLibRWS(lua_State* L){
-    return luaopen_rws(L);
+    return luaopen_sdurws(L);
 }

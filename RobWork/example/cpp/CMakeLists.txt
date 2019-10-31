@@ -5,7 +5,8 @@ project(ExampleSnippets)
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "None")
 endif()
-find_package(RobWork REQUIRED)
+set(RW_ROOT "$ENV{RW_ROOT}")
+find_package(RobWork REQUIRED PATHS "${RW_ROOT}")
 
 link_directories(${ROBWORK_LIBRARY_DIRS})
 

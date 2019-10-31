@@ -1,4 +1,5 @@
-# Test CMake version
+###########################################
+# Test CMake version and CMAKE_BUILD_TYPE
 cmake_minimum_required(VERSION 2.8.12)
 
 if(POLICY CMP0074)
@@ -8,21 +9,20 @@ if(POLICY CMP0078)
   cmake_policy(SET CMP0078 NEW)
 endif()
 
-IF(DEFINED CMAKE_BUILD_TYPE)
-   SET(CMAKE_BUILD_TYPE ${CMAKE_BUILD_TYPE} CACHE STRING "Choose the type of
-build, options are: None(CMAKE_CXX_FLAGS or CMAKE_C_FLAGS used) Debug
-Release RelWithDebInfo MinSizeRel.")
-ELSE()
-   SET(CMAKE_BUILD_TYPE RelWithDebInfo CACHE STRING "Choose the type of build,
-options are: None(CMAKE_CXX_FLAGS or CMAKE_C_FLAGS used) Debug Release
-RelWithDebInfo MinSizeRel.")
-ENDIF()
-
+###########################################
+# The name of the project.
 PROJECT(RobWorkSim)
-SET(ROBWORKSIM_VERSION 0.7.0)
+if(DEFINED VERSION)
+  set(ROBWORKSIM_VERSION ${VERSION})
+else()
+  string(TIMESTAMP ROBWORK_DATE_VERSION "%y.%m.%d")
+  set(ROBWORKSIM_VERSION ${ROBWORK_DATE_VERSION})
+endif()
 SET(RWSIM_ROOT ${CMAKE_CURRENT_SOURCE_DIR})
 MESSAGE(STATUS "RobWorkSim version ${ROBWORKSIM_VERSION}")
 
+
+###########################################
 # lets start by finding RobWork since this is the primary dependency and because we
 # want to use the macros available in RobWork
 # if RW_ROOT is defined then we use that, else we try finding it the traditional way
@@ -38,6 +38,7 @@ ELSE()
 ENDIF()
 FIND_PACKAGE(RobWork ${ROBWORKSIM_VERSION} REQUIRED)
 
+###########################################
 # include the macros from robwork
 INCLUDE(${RW_ROOT}/cmake/RobWorkMacros.cmake)
 
@@ -48,11 +49,16 @@ RW_GET_OS_INFO()
 RW_SET_INSTALL_DIRS(RobWorkSim RWSIM)
 RW_OPTIONS(RWSIM)
 
+
+###########################################
 # Add an "uninstall" target
 #configure_file("${RWSIM_ROOT}/cmake/uninstall_target.cmake.in"
 #               "${CMAKE_BINARY_DIR}/uninstall_target.cmake" IMMEDIATE @ONLY)
 #add_custom_target(uninstall "${CMAKE_COMMAND}" -P
 #                  "${CMAKE_BINARY_DIR}/uninstall_target.cmake")
+
+###########################################
+# setup stuff for RobWorkStudio
 
 # add the RWSIM modules to the module path
 SET(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${RWSIM_ROOT}/cmake/Modules/")
@@ -112,6 +118,24 @@ CONFIGURE_FILE(
 # process sub directories
 #add_subdirectory(ext)
 add_subdirectory(src)
+
+##################################################################
+# Installation stuff
+#
+
+# install configuration 
+INSTALL(FILES 
+    ${RWSIM_ROOT}/cmake/RobWorkSimConfigVersion.cmake
+    ${RWSIM_ROOT}/cmake/RobWorkSimConfig.cmake
+    DESTINATION ${RWSIM_INSTALL_DIR}/cmake )
+
+INSTALL(FILES 
+  "cmake/RobWorkSimBuildConfig_${RWSIM_BUILD_TYPE}.cmake"
+  DESTINATION ${RWSIM_INSTALL_DIR}/cmake)
+
+# misc
+INSTALL(FILES LICENSE.txt NOTICE.txt ChangeLog.txt 
+    DESTINATION "${RWSIM_INSTALL_DIR}/")
 
 
 #############################################################

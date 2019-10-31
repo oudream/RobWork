@@ -1,4 +1,4 @@
-SET(SUBSYS_NAME rw)
+SET(SUBSYS_NAME sdurw)
 set(SUBSYS_DESC "The core RobWork library!")
 SET(SUBSYS_DEPS )
 
@@ -30,20 +30,23 @@ SET(FILES_CPP
     RobWork.cpp
 )
 
-SET(FILES_HPP
-    rw.hpp 
+SET(FILES_HPP 
     common.hpp
     geometry.hpp
+    graphics.hpp 
+    graspplanning.hpp
     invkin.hpp
     kinematics.hpp
     loaders.hpp
+    math_fwd.hpp
     math.hpp
     models.hpp
     pathplanning.hpp
-    sensor.hpp
-    trajectory.hpp
     proximity.hpp
-	RobWork.hpp
+    RobWork.hpp
+    rw.hpp
+    sensor.hpp
+    trajectory.hpp   
 )
 
 FILE(GLOB SRC_FILES_CPP ${FILES_CPP})
@@ -52,21 +55,22 @@ FILE(GLOB SRC_FILES_HPP ${FILES_HPP})
 LIST(APPEND RW_LIB_FILES_CPP ${SRC_FILES_CPP})
 LIST(APPEND RW_LIB_FILES_HPP ${SRC_FILES_HPP})
 
-RW_ADD_LIBRARY(rw rw ${RW_LIB_FILES_CPP} ${RW_LIB_FILES_HPP})
+RW_ADD_LIBRARY(${SUBSYS_NAME} ${SUBSYS_NAME} ${RW_LIB_FILES_CPP} ${RW_LIB_FILES_HPP})
 IF (RW_HAVE_XERCES)
-	TARGET_LINK_LIBRARIES(rw PUBLIC ${XERCESC_LIBRARIES})
+	TARGET_LINK_LIBRARIES(${SUBSYS_NAME} PUBLIC ${XERCESC_LIBRARIES})
 ENDIF()
 IF (RW_HAVE_ASSIMP)
-	TARGET_LINK_LIBRARIES(rw PRIVATE ${ASSIMP_LIBRARIES})
+	TARGET_LINK_LIBRARIES(${SUBSYS_NAME} PRIVATE ${ASSIMP_LIBRARIES})
 ENDIF()
-TARGET_LINK_LIBRARIES(rw PRIVATE ${QHULL_LIBRARIES} ${CMAKE_DL_LIBS})
-RW_ADD_INCLUDES(rw "rw" ${FILES_HPP} )
-RW_ADD_INCLUDE_DIRS(rw "rw" 
-    common geometry invkin kinematics loaders math models pathplanning 
+
+TARGET_LINK_LIBRARIES(${SUBSYS_NAME} PRIVATE ${QHULL_LIBRARIES} ${CMAKE_DL_LIBS})
+RW_ADD_INCLUDES(${SUBSYS_NAME} "rw" ${FILES_HPP} )
+RW_ADD_INCLUDE_DIRS(${SUBSYS_NAME} "rw" 
+    common geometry graspplanning invkin kinematics loaders math models pathplanning 
     proximity sensor trajectory plugin graphics constraints)
 
 IF(CMAKE_VERSION VERSION_GREATER 3.3)
-	SET_TARGET_PROPERTIES(rw PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
+	SET_TARGET_PROPERTIES(${SUBSYS_NAME} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
 ENDIF()
 
 ENDIF()

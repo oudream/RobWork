@@ -17,7 +17,7 @@ public:
 
     const QColor &color() const;
 
-public slots:
+public Q_SLOTS:
 
     void changeColor();
 
