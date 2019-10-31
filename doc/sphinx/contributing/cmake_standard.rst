@@ -23,7 +23,7 @@ All native CMake Commands must be in lower case.
 
 **1.2. Lowercase macros** :raw-html:`<br />`
 
-All RobWork Macros must be in all lowercase.
+All RobWork Macros must be in all lowercase, and named appropriately with rw, rws, rwhw or rwsim infront of the macro.
 
 **1.3 Uppercase variables** :raw-html:`<br />`
 All variables must be in all uppercase
@@ -37,7 +37,7 @@ Indent all code correctly, i.e. the body of
 * macro/endmacro
 * function/endfunction
 
-Use 2 spaces for indenting
+Use 4 spaces for indenting
 
 **1.5. End Commands** :raw-html:`<br />`
 To make the code easier to read, use empty commands for endforeach(), endif(), endfunction(), endmacro() and endwhile(). Also, use empty else() commands.
@@ -64,7 +64,8 @@ and not this:
 
 
 **1.6. Keep lists sorted** :raw-html:`<br />`
-Whenever using a list of items (i.e. in find_package(COMPONENTS ...), add_library(Target ...) or files which should be build or installed) keep them alphabetically sorted. This improves readability when looking for specific items. (There are exceptions which require a specific custom order like the list of projects inside a stack).
+Whenever using a list of items where the order doesn't matter (i.e. in find_package(COMPONENTS ...), or files which should be build or installed) keep them alphabetically sorted. 
+This improves readability when looking for specific items. (There are exceptions which require a specific custom order like the list of projects inside a stack).
 
 2. Conditions and Variables
 ***************************
@@ -105,7 +106,7 @@ Whenever using a list of items (i.e. in find_package(COMPONENTS ...), add_librar
    endif()
 
 **2.5 Path Variables** :raw-html:`<br />`
-When storing paths in variables, do NOT have the cmake variables end up with a slash:
+When storing paths in variables or CACHE, do NOT have the cmake variables end up with a slash:
 
 .. code-block:: cmake
 
@@ -115,6 +116,10 @@ When storing paths in variables, do NOT have the cmake variables end up with a s
    # NO:
    set(my_path "path/to/foo/")
    set(_my_other_path "${_my_path}${_my_var}")   # wrong: this is ugly
+
+**2.6 Path Names** :raw-html:`<br />`
+Any Variable / CACHE Variable that stores a path should be named appropriately with either
+ROOT, DIR, PATH or FILEPATH at the end of the variable name.
 
 3. Robwork CMake setup
 **********************
