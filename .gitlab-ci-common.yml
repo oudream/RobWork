@@ -6,54 +6,10 @@ stages:
   - test
   - deploy
 
-.linux-minimal:
-  extends: .linux-common
-  only:
-    refs:
-      - merge_requests
-  except:
-    refs:
-      - merge_requests@sdurobotics/RobWork
-  script:
-    - cd Build
-    # Build RobWork
-    - cd RW
-    - cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_DISABLE_FIND_PACKAGE_XercesC=True -DCMAKE_DISABLE_FIND_PACKAGE_SWIG=True -DRW_USE_FCL=OFF -DRW_USE_ASSIMP=OFF ../../RobWork
-    - make -j3
-    - cd ..
-    # Build RobWorkHardware
-    - cd RWHW
-    - cmake -DCMAKE_BUILD_TYPE=Release -DUSE_WERROR=true ../../RobWorkHardware
-    - make -j3
-    - cd ..
-    # Build RobWorkStudio
-    - cd RWS
-    - cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_sdurws_lua=OFF -DBUILD_sdurws_java=OFF -DBUILD_sdurws_python=OFF -DUSE_WERROR=true ../../RobWorkStudio
-    - make -j3 RobWorkStudio
-    - cd ..
-    # Run RobWork tests
-    - cd RW
-    - make -j 1 -k sdurw-gtest_reports
-    - mv ../../RobWork/bin/**/gtest_reports/* ../../gtest/
-    - ctest --no-compress-output -T Test -j 1
-    - mv ./Testing/**/Test.xml ../../RWS-Test.xml
-    - cd ..
-    # Run RobWorkStudio tests
-    - cd RWS
-    - export DISPLAY=:0
-    - Xvfb $DISPLAY -screen 0 640x480x24 &
-    - make -j 1 -k sdurws-gtest_reports
-    - mv ../../RobWorkStudio/bin/**/gtest_reports/* ../../gtest/
-    - ctest --no-compress-output -T Test -j 1
-    - mv ./Testing/**/Test.xml ../../RWS-CTest.xml
-    - cd ..
-
-
-
 ########################## NEW CI ####################################
 
 .linux-CI-common:
-    only:
+  only:
     refs:
       - branches@sdurobotics/RobWork
       - tags@sdurobotics/RobWork
@@ -597,55 +553,6 @@ tests:centos-7:
     - build-RWSim:centos-7
   needs: ["build-RW:centos-7","build-RWS:centos-7","build-RWHW:centos-7","build-RWSim:centos-7"]
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:centos-7
-
-######################## Merge_requests #############################
-
-build-RW:ubuntu-1804:
-  extends: .linux-build-RW
-  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
-
-build-RWS:ubuntu-1804:
-  extends: .linux-build-RWS
-  dependencies:
-    - build-RW:ubuntu-1804
-  needs: ["build-RW:ubuntu-1804"]
-  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
-
-build-RWHW:ubuntu-1804:
-  extends: .linux-build-RWHW
-  dependencies:
-    - build-RW:ubuntu-1804
-  needs: ["build-RW:ubuntu-1804"]
-  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
-
-build-RWSim:ubuntu-1804:
-  extends: .linux-build-RWSim
-  dependencies:
-    - build-RW:ubuntu-1804
-    - build-RWS:ubuntu-1804
-  needs: ["build-RW:ubuntu-1804","build-RWS:ubuntu-1804"]
-  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
-
-examples:ubuntu-1804:
-  extends: .linux-examples
-  dependencies:
-    - build-RW:ubuntu-1804
-    - build-RWS:ubuntu-1804
-    - build-RWHW:ubuntu-1804
-    - build-RWSim:ubuntu-1804
-  needs: ["build-RW:ubuntu-1804","build-RWS:ubuntu-1804","build-RWHW:ubuntu-1804","build-RWSim:ubuntu-1804"]
-  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
-
-tests:ubuntu-1804:
-  extends: .linux-tests
-  dependencies:
-    - build-RW:ubuntu-1804
-    - build-RWS:ubuntu-1804
-    - build-RWHW:ubuntu-1804
-    - build-RWSim:ubuntu-1804
-  needs: ["build-RW:ubuntu-1804","build-RWS:ubuntu-1804","build-RWHW:ubuntu-1804","build-RWSim:ubuntu-1804"]
-  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
-
 
 ######################## Misc ##########################################
 
