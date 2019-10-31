@@ -40,7 +40,15 @@ SET(GLUT_Xmu_LIBRARY "")
 if(NOT DEFINED GLUT_ROOT_PATH AND DEFINED ENV{GLUT_ROOT_PATH})
     set(GLUT_ROOT_PATH $ENV{GLUT_ROOT_PATH})
 endif()
-FIND_PACKAGE(GLUT REQUIRED)
+
+find_package(GLUT QUIET)
+if ( NOT GLUT_FOUND)
+  find_package(FreeGLUT REQUIRED)
+  if (FreeGLUT_FOUND)
+    set(GLUT_glut_LIBRARY FreeGLUT::freeglut)
+    set(GLUT_FOUND ${FreeGLUT_FOUND})
+  endif()
+endif ()
 
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/src/)
 
@@ -57,7 +65,7 @@ ADD_LIBRARY(rwtools_simpleviewer ${SRC_FILES})
 TARGET_INCLUDE_DIRECTORIES(rwtools_simpleviewer PRIVATE ${GLUT_INCLUDE_DIR})
 
 # set the libraries we need 
-SET(LIBRARIES rwtools_simpleviewer ${ROBWORK_LIBRARIES} ${GLUT_LIBRARIES} )
+SET(LIBRARIES rwtools_simpleviewer ${ROBWORK_LIBRARIES} ${GLUT_glut_LIBRARY} )
 
 # To create an application use
 ADD_EXECUTABLE(ViewerExample ViewerExample.cpp)
