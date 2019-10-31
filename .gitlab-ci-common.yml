@@ -566,30 +566,22 @@ build:doc:
   needs: ["build-RW:ubuntu-1804","build-RWS:ubuntu-1804","build-RWHW:ubuntu-1804","build-RWSim:ubuntu-1804"]
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804-doc
 
-#build-minimal:ubuntu-1804:
-#  extends: .linux-minimal
-#  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
-
-#build:centos-7:
-#  extends: .linux-full
-#  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:centos-7
-
-#pages:
-#  stage: deploy
-#  tags:
-#    - linux
-#  only:
-#    refs:
-#      - master@sdurobotics/RobWork
-#      - schedules
-#      - web
-#  variables:
-#    GIT_STRATEGY: none
-#  script:
-#    - echo "Deploying documentation."
-#  dependencies:
-#    - build:doc
-#  artifacts:
-#    paths:
-#    - public
-#    expire_in: 1 week
+pages:
+  stage: deploy
+  tags:
+    - linux
+  only:
+    refs:
+      - master@sdurobotics/RobWork
+      - schedules
+      - web
+  variables:
+    GIT_STRATEGY: none
+  script:
+    - echo "Deploying documentation."
+  dependencies:
+    - build:doc
+  artifacts:
+    paths:
+      - public
+    expire_in: 1 week
