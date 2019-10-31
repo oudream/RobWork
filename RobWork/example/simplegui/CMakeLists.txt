@@ -33,14 +33,6 @@ ELSE()
 	SET(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${ROOT}/libs/${CMAKE_BUILD_TYPE}" CACHE PATH "Archive directory" FORCE)
 ENDIF()
 
-# FreeGlut cannot be found if the following is not set
-SET(GLUT_Xi_LIBRARY "")
-SET(GLUT_Xmu_LIBRARY "")
-
-if(NOT DEFINED GLUT_ROOT_PATH AND DEFINED ENV{GLUT_ROOT_PATH})
-    set(GLUT_ROOT_PATH $ENV{GLUT_ROOT_PATH})
-endif()
-
 find_package(GLUT QUIET)
 if ( NOT GLUT_FOUND)
   find_package(FreeGLUT REQUIRED)
