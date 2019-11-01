@@ -56,6 +56,9 @@ endif()
 
 
 # Find and setup OpenGL.
+if(POLICY CMP0072) # Introduce cmake 3.11
+    cmake_policy(SET CMP0072 NEW)
+endif()
 FIND_PACKAGE(OpenGL REQUIRED)
 
 set(Boost_NO_BOOST_CMAKE TRUE) # From Boost 1.70, CMake files are provided by Boost - we are not yet ready to handle it

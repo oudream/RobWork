@@ -37,3 +37,6 @@ ENDIF()
 
 ADD_EXECUTABLE(SimulatorLogViewer ${SrcFiles} ${MocSrcFiles}  ${RccSrcFiles})
 TARGET_LINK_LIBRARIES(SimulatorLogViewer sdurwsim_gui ${ROBWORK_LIBRARIES} ${ROBWORKSIM_LIBRARIES} ${ROBWORKSTUDIO_LIBRARIES})
+message(STATUS "Link_TargetsRW: ${ROBWORK_LIBRARIES}")
+message(STATUS "Link_TargetsRWS: ${ROBWORKSTUDIO_LIBRARIES}")
+message(STATUS "Link_TargetsRWSIM: ${ROBWORKSIM_LIBRARIES}")
