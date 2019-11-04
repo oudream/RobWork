@@ -6,6 +6,10 @@ ADD_SUBDIRECTORY(rws)
 # compile the component libraries (plugins and other static libs) 
 ADD_SUBDIRECTORY(rwslibs)
 
+if(POLICY CMP0077) # Introduce cmake 3.13
+    cmake_policy(SET CMP0077 OLD)
+endif()
+
 # Then sandbox if choosen
 OPTION(RWS_BUILD_SANDBOX "Set when you want to build the sandbox library" ${RWS_BUILD_SANDBOX})
 IF ( RWS_BUILD_SANDBOX )

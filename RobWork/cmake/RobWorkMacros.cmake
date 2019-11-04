@@ -250,11 +250,10 @@ macro(RW_INIT_PROJECT ROOT PROJECT_NAME PREFIX VERSION )
   string(TOUPPER ${PROJECT_NAME} PROJECT_NAME_UP)
   # MESSAGE("uppercase ${PROJECT_NAME_UP}_VERSION")
 
-  string(TIMESTAMP TMP_DATE_VERSION "%y.%m.%d")
-  if(${TMP_DATE_VERSION} STREQUAL ${VERSION} ) 
-    set(PROJECT_USE_SONAME False)
-  else()
+  if( ${${PREFIX}_GOT_VERSION} ) 
     set(PROJECT_USE_SONAME True)
+  else()
+    set(PROJECT_USE_SONAME False)
   endif()
 
   set(${PROJECT_NAME_UP}_VERSION ${VERSION} CACHE STRING "Project Version Nr" FORCE)
@@ -340,6 +339,11 @@ macro(RW_OPTIONS PREFIX)
   if(NOT DEFINED ${PREFIX}_SHARED_LIBS)
     set(${PREFIX}_SHARED_LIBS OFF)
   endif()
+
+  if(POLICY CMP0077) # Introduce cmake 3.13
+    cmake_policy(SET CMP0077 OLD)
+  endif()
+
   option(${PREFIX}_SHARED_LIBS "Build shared libraries." ${${PREFIX}_SHARED_LIBS})
   if(${PREFIX}_SHARED_LIBS)
     if(WIN32 AND MSVC AND CMAKE_VERSION VERSION_LESS 3.4)
