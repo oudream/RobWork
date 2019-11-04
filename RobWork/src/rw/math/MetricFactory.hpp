@@ -452,6 +452,10 @@ namespace rw { namespace math {
 		static typename Metric<Transform3D<T> >::Ptr makeTransform3DMetric(double linWeight, double angWeight) {
 			return rw::common::ownedPtr(new Transform3DAngleMetric<T>(linWeight, angWeight));
 		}
+      private: // The constructers are declared private so that this class can't be instanciated and avoid auto generated constucters
+        MetricFactory();
+        MetricFactory(const MetricFactory&);
+        MetricFactory& operator=(const MetricFactory&);
     };
 
     extern template class rw::math::ManhattanMetric<Q>;

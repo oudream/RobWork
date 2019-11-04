@@ -1058,96 +1058,15 @@ OWNEDPTR(Metric<rw::math::Transform3D<double> > );
 class MetricFactory
 {
   public:
-    /**
-         @brief Euclidean configuration metric.
+  private:
+    MetricFactory();
+    MetricFactory(const MetricFactory&);
+    MetricFactory& operator=(const MetricFactory&);
 
-        See class EuclideanMetric for details.
-    */
-    //template <class VectorType>
-    //inline static typename Metric<VectorType>::Ptr makeEuclidean();
-    %extend {
-        static rw::common::Ptr<Metric<rw::math::Q>> makeEuclideanQ(){
-            return rw::math::MetricFactory::makeEuclidean<Q>();
-        }
-    };
-
-    /**
-         @brief Weighted Euclidean configuration metric.
-
-        See class WeightedEuclideanMetric for details.
-
-        @param weights [in] Weights for the metric.
-        @return Weighted Euclidean metric.
-    */
-    //template <class VectorType>
-    //inline static typename Metric<VectorType>::Ptr makeWeightedEuclidean(const VectorType& weights);
-
-    /**
-         @brief Infinity configuration metric.
-
-        See class InfinityMetric for details.
-    */
-    //template <class VectorType>
-    //inline static typename Metric<VectorType>::Ptr makeInfinity();
-
-    /**
-         @brief Weighted infinity configuration metric.
-
-        See class WeightedInfinity for details.
-
-        @param weights [in] Weights for the metric.
-        @return Weighted infinity metric.
-    */
-    //template <class VectorType>
-    //inline static typename Metric<VectorType>::Ptr makeWeightedInfinity(const VectorType& weights);
-
-    /**
-         @brief Mahalanobis configuration metric.
-
-        See class MahalanobisMetric for details.
-    */
-    //template <class VectorType>
-    //inline static typename Metric<VectorType>::Ptr makeMahalanobis(
-    //    const boost::numeric::ublas::matrix<typename VectorType::value_type>& omega);
-
-
-    /**
-         @brief Manhattan configuration metric.
-
-        See class ManhattanMetric for details.
-    */
-    //template <class VectorType>
-    //inline static typename Metric<VectorType>::Ptr makeManhattan();
-
-
-    /**
-         @brief WeightedManhattan configuration metric.
-
-        See class WeightedManhattanMetric for details.
-    */
-    //template <class VectorType>
-    //inline static typename Metric<VectorType>::Ptr makeWeightedManhattan(const VectorType& weights);
-
-
-
-    /**
-     * @brief Metric computing distance between two rotations.
-     *
-     * The metric is defined as the angle of the rw::math::EAA
-     * of the rotation.
-     */
-    //template <class T >
-    //static typename Metric<Rotation3D<T> >::Ptr makeRotation3DMetric();
-
-    /**
-     * @brief Metric computing distance between two transformations
-     *
-     * The metric is defined as a weighted sum of the positional distance and the 
-     * angle of the rw::math::EAA of the rotation.
-     *
-     * @param linWeight [in] Positional weight.
-     * @param angWeight [in] Angular weight.
-     */
-    //template <class T >
-    //static typename Metric<Transform3D<T> >::Ptr makeTransform3DMetric(double linWeight, double angWeight);
 };
+
+%extend MetricFactory {
+    static rw::common::Ptr<rw::math::Metric<rw::math::Q>> makeEuclideanQ(){
+        return rw::math::MetricFactory::makeEuclidean<rw::math::Q>();
+    }
+}
