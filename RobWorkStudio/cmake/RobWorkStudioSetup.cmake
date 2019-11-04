@@ -40,19 +40,40 @@ MESSAGE(STATUS "RobWorkStudio: ROOT dir: ${RWS_ROOT}")
 # the configuration depends on
 #
 
-# Find Python
+
+
+find_package(PythonInterp 3 QUIET)
 find_package(PythonLibs 3 QUIET)
 if (PYTHONLIBS_FOUND)
 	set(RWS_USE_PYTHON3 true)
 	set(RWS_USE_PYTHON true)
 else()
-	find_package(PythonLibs 2 QUIET)
+	find_package(PythonLibs QUIET)
 	if (PYTHONLIBS_FOUND)
 		set(RWS_USE_PYTHON2 true)
 		set(RWS_USE_PYTHON true)
 	endif()
 endif()
 
+if (NOT PYTHONINTERP_FOUND)
+    find_package(PythonInterp QUIET)
+endif()
+
+if (PYTHONINTERP_FOUND AND PYTHONLIBS_FOUND)
+    if(NOT(PYTHONLIBS_VERSION_STRING STREQUAL PYTHON_VERSION_STRING))
+        string(ASCII 27 Esc)
+        message(WARNING "${Esc}[33mMatching Versions of python intepretor and python library NOT FOUND. \r"
+                        "Found versions are python libs ${PYTHONLIBS_VERSION_STRING} and python intepretor ${PYTHON_VERSION_STRING}. \n"
+                        "This can be because you haven't installed python${PYTHON_VERSION_MAJOR}-dev package\n${Esc}[m")
+    endif()
+endif()
+
+if(PYTHONINTERP_FOUND)
+    message(STATUS "Found Python interpreter ${PYTHON_VERSION_STRING}")
+endif()
+if(PYTHONLIBS_FOUND)
+    message(STATUS "Found Python libraries ${PYTHONLIBS_VERSION_STRING}")
+endif()
 
 
 # Find and setup OpenGL.
@@ -149,8 +170,10 @@ ENDIF ()
 
 # Check if SWIG is available
 IF(RW_BUILD_WITH_SWIG AND NOT DEFINED SWIG_EXECUTABLE)
-    SET(SWIG_EXECUTABLE ${RW_BUILD_WITH_SWIG_CMD})
+	SET(SWIG_EXECUTABLE ${RW_BUILD_WITH_SWIG_CMD})
+	SET(SWIG_VERSION ${RW_BUILD_WITH_SWIG_VERSION})
 ENDIF()
+
 FIND_PACKAGE(SWIG 3.0.0 QUIET) # At least SWIG 3 to support C++11
 IF(SWIG_FOUND)
     MESSAGE(STATUS "RobWorkStudio: SWIG ${SWIG_VERSION} found!")

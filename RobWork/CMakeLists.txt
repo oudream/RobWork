@@ -21,9 +21,10 @@ project(RobWork)
 # Setup RobWork Version
 if(DEFINED VERSION)
   set(ROBWORK_VERSION ${VERSION})
+  set(RW_GOT_VERSION True)
 else()
-  string(TIMESTAMP ROBWORK_DATE_VERSION "%y.%m.%d")
-  set(ROBWORK_VERSION ${ROBWORK_DATE_VERSION})
+  set(ROBWORK_VERSION 6.6.6)
+  set(RW_GOT_VERSION False)
 endif()
 
 #set robwork root
