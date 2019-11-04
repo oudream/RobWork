@@ -200,8 +200,6 @@ endif()
 #MESSAGE(STATUS "RWHW_ROOT   : ${RWHW_ROOT}")
 #MESSAGE(STATUS "RWHWCFG_ROOT: ${RWHWCFG_ROOT}")
 
-INCLUDE(${RWHWCFG_ROOT}/RobWorkHardwareMacros.cmake)
-
 #############################################################
 # now RWHW_ROOT and RWHWCFG_ROOT is set. Lets extract the stuff needed to run a project
 
