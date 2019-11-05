@@ -12,6 +12,9 @@ rw_subsys_option(
 rw_add_doc(${SUBSYS_NAME})
 
 if(build)
+    #INCLUDE_DIRECTORIES( ${ROBWORKSTUDIO_INCLUDE_DIRS} )
+    LINK_DIRECTORIES( ${ROBWORKSTUDIO_LIBRARY_DIRS})
+
     # if we want to use ui files add them here
     set(UIS_FILES SimulatorLogViewer.ui)
     if(RWS_USE_QT5)
@@ -49,6 +52,7 @@ if(build)
         sdurwsim_gui
         ${ROBWORK_LIBRARIES}
         ${ROBWORKSIM_LIBRARIES}
+        ${ROBWORKSTUDIO_LIBRARIES}
     )
 
     foreach(
@@ -57,6 +61,7 @@ if(build)
             sdurwsim_gui
             ROBWORK_LIBRARIES
             ROBWORKSIM_LIBRARIES
+            ROBWORKSTUDIO_LIBRARIES
     )
         if(TARGET ${DEP})
             add_dependencies(sdurwsim_gui ${DEP})
