@@ -243,6 +243,9 @@ IF(EXISTS ${RWSCFG_ROOT}/RobWorkStudioBuildConfig_${RWS_BUILD_TYPE}.cmake)
   ENDIF()
 
   # Find and setup OpenGL.
+  if(POLICY CMP0072) # Introduce cmake 3.11
+      cmake_policy(SET CMP0072 NEW)
+  endif()
   FIND_PACKAGE(OpenGL REQUIRED)
 
   set(ROBWORKSTUDIO_BUILD_PATH "${RWS_BUILD_WITH_RWS_ROOT}")
