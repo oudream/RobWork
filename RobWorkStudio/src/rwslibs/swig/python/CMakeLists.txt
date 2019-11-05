@@ -1,10 +1,8 @@
-SET(SUBSYS_NAME sdurws_python )
+SET(SUBSYS_NAME sdurws_py )
 SET(SUBSYS_DESC "Interface for accessing RobWorkStudio from python." )
 SET(SUBSYS_DEPS sdurw )
 
 SET(build TRUE)
-
-FIND_PACKAGE(SWIG 3.0.0 QUIET)
 
 set(DEFAULT TRUE)
 set(REASON )
@@ -12,25 +10,6 @@ IF( NOT SWIG_FOUND)
     set(DEFAULT false)
     set(REASON "SWIG not found!")
 else()
-
-	# Prefer Python 3
-	find_package(PythonInterp 3 QUIET)
-	find_package(PythonLibs 3 QUIET)
-	
-	if (NOT PYTHONINTERP_FOUND)
-	    find_package(PythonInterp QUIET)
-	endif()
-	if (NOT PythonLibs)
-	    find_package(PythonLibs QUIET)
-	endif()
-	
-	if(PYTHONINTERP_FOUND)
-	    message(STATUS "Found Python interpreter ${PYTHON_VERSION_STRING}")
-	endif()
-	if(PYTHONLIBS_FOUND)
-	    message(STATUS "Found Python libraries ${PYTHONLIBS_VERSION_STRING}")
-	endif()
-
     if( NOT (PYTHONLIBS_FOUND AND PYTHONINTERP_FOUND) )
         set(DEFAULT false)
         set(REASON "PYTHONLIBS AND PYTHONINTERP not found!")
@@ -43,11 +22,6 @@ RW_ADD_DOC( ${SUBSYS_NAME} )
 IF( build )
 INCLUDE(UseSWIG)
     INCLUDE_DIRECTORIES(${PYTHON_INCLUDE_DIRS})
-    if(POLICY CMP0078)
-        set(LIB_PREFIX "_")
-    else()
-        set(LIB_PREFIX "")
-    endif()
 
     SET_SOURCE_FILES_PROPERTIES(../sdurws.i PROPERTIES CPLUSPLUS ON)
 	SET_SOURCE_FILES_PROPERTIES(../sdurws.i PROPERTIES SWIG_FLAGS "-includeall")
@@ -57,16 +31,18 @@ INCLUDE(UseSWIG)
 	
 	SET(CMAKE_SWIG_OUTDIR ${RWS_CMAKE_LIBRARY_OUTPUT_DIRECTORY})
 	IF ((CMAKE_VERSION VERSION_GREATER 3.8) OR (CMAKE_VERSION VERSION_EQUAL 3.8))
-		SWIG_ADD_LIBRARY(${LIB_PREFIX}sdurws TYPE SHARED LANGUAGE python SOURCES ../sdurws.i ../ScriptTypes.cpp)
+		SWIG_ADD_LIBRARY(sdurws_py TYPE SHARED LANGUAGE python SOURCES ../sdurws.i ../ScriptTypes.cpp)
 	ELSE()
-		SWIG_ADD_MODULE(sdurws python ../sdurws.i ../ScriptTypes.cpp)
-	ENDIF()
+		SWIG_ADD_MODULE(sdurws_py python ../sdurws.i ../ScriptTypes.cpp)
+    ENDIF()
+    
     if(POLICY CMP0078)
-        set(TARGET_NAME ${LIB_PREFIX}sdurws)
+        set(TARGET_NAME sdurws_py)
     else()
-        set(TARGET_NAME ${SWIG_MODULE_sdurws_REAL_NAME})
+        set(TARGET_NAME ${SWIG_MODULE_sdurws_py_REAL_NAME})
     endif()
-    SWIG_LINK_LIBRARIES(${LIB_PREFIX}sdurws
+
+    SWIG_LINK_LIBRARIES(sdurws_py
         ${RWS_COMPONENT_LIBRARIES} 
         ${RWS_PLUGIN_LIBRARIES} 
         sdurws

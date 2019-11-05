@@ -12,12 +12,13 @@ endif()
 project(RobWorkHardware)
 if(DEFINED VERSION)
   set(ROBWORKHARDWARE_VERSION ${VERSION})
+  set(RWHW_GOT_VERSION True)
 else()
-  string(TIMESTAMP ROBWORK_DATE_VERSION "%y.%m.%d")
-  set(ROBWORKHARDWARE_VERSION ${ROBWORK_DATE_VERSION})
+  set(ROBWORKHARDWARE_VERSION 6.6.6)
+  set(RWHW_GOT_VERSION False)
 endif()
+
 SET(RWHW_ROOT ${CMAKE_CURRENT_SOURCE_DIR})
-MESSAGE(STATUS "RobWorkHardware version ${ROBWORKHARDWARE_VERSION}")
 
 ###########################################
 # lets start by finding RobWork since this is the primary dependency and because we
