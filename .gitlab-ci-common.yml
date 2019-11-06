@@ -278,7 +278,7 @@ stages:
     - cd Build
     - cd RWSim
     - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 15 2017 Win64" -DSWIG_EXECUTABLE=%SWIG_ROOT%\swig.exe ../../RobWorkSim
-    - msbuild RobWorkSim.sln /property:Configuration=Release /maxcpucount:8 || msbuild RobWorkSim.sln /property:Configuration=Release /maxcpucount:8
+    - msbuild RobWorkSim.sln /property:Configuration=Release /maxcpucount:8
   artifacts:
     paths: 
       - ./Build/RWSim
@@ -357,8 +357,6 @@ build-RWS:windows10-vs15:
     - build-RW:windows10-vs15
   needs: ["build-RW:windows10-vs15"]
 
-
-
 build-RWHW:windows10-vs15:
   extends: .windows-build-RWHW
   dependencies:
@@ -371,7 +369,6 @@ build-RWSim:windows10-vs15:
     - build-RW:windows10-vs15
     - build-RWS:windows10-vs15
   needs: ["build-RW:windows10-vs15","build-RWS:windows10-vs15"]
-
 
 examples:windows10-vs15:
   extends: .windows-examples
@@ -667,6 +664,7 @@ pages:
     - echo "Deploying documentation."
   dependencies:
     - build:doc
+  needs: ["build:doc"]
   artifacts:
     paths:
       - public
