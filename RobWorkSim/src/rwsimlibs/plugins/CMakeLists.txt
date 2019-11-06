@@ -37,25 +37,10 @@ else()
 endif()
 
 # The shared library to build:
-add_library(
-    RWSimulatorPlugin MODULE
-    ${SrcFiles}
-    ${MocSrcFiles}
-    ${RccSrcFiles}
-)
-target_link_libraries(
-    RWSimulatorPlugin
-    ${ROBWORKSIM_LIBRARIES}
-    ${ROBWORKSTUDIO_LIBRARIES}
-)
+add_library(RWSimulatorPlugin MODULE ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles})
+target_link_libraries(RWSimulatorPlugin ${ROBWORKSIM_LIBRARIES} ${ROBWORKSTUDIO_LIBRARIES})
 # Make sure dependencies are build before system
-foreach(
-    DEP
-    IN
-    LISTS
-    ROBWORKSIM_LIBRARIES
-    ROBWORKSTUDIO_LIBRARIES
-)
+foreach(DEP IN LISTS ROBWORKSIM_LIBRARIES ROBWORKSTUDIO_LIBRARIES)
     if(TARGET ${DEP})
         add_dependencies(RWSimulatorPlugin ${DEP})
     endif()
@@ -96,12 +81,7 @@ else()
 endif()
 
 # The shared library to build:
-add_library(
-    SimUtilityPlugin MODULE
-    ${SrcFiles}
-    ${MocSrcFiles}
-    ${RccSrcFiles}
-)
+add_library(SimUtilityPlugin MODULE ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles})
 target_link_libraries(
     SimUtilityPlugin
     sdurwsim_gui
@@ -149,11 +129,7 @@ add_library(
     ${RccSrcFiles}
     ${UIS_OUT_H}
 )
-target_link_libraries(
-    GraspTableGeneratorPlugin
-    ${ROBWORKSIM_LIBRARIES}
-    ${ROBWORKSTUDIO_LIBRARIES}
-)
+target_link_libraries(GraspTableGeneratorPlugin ${ROBWORKSIM_LIBRARIES} ${ROBWORKSTUDIO_LIBRARIES})
 
 # ######################################################################################################################
 # The RW Simulation
@@ -228,11 +204,7 @@ target_link_libraries(
     ${ROBWORKSTUDIO_LIBRARIES}
     ${ROBWORK_LIBRARIES}
 )
-add_dependencies(
-    RWSimPlugin
-    ${RWSIM_LUA_LIB}
-    sdurwsim_gui
-)
+add_dependencies(RWSimPlugin ${RWSIM_LUA_LIB} sdurwsim_gui)
 # Message(" LIBS :  ${ROBWORKSIM_LIBRARIES} ")
 
 # ######################################################################################################################
