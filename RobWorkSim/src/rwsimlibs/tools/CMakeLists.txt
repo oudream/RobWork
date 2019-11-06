@@ -12,7 +12,6 @@ rw_subsys_option(
 rw_add_doc(${SUBSYS_NAME})
 
 if(build)
-    #INCLUDE_DIRECTORIES( ${ROBWORKSTUDIO_INCLUDE_DIRS} )
     LINK_DIRECTORIES( ${ROBWORKSTUDIO_LIBRARY_DIRS})
 
     # if we want to use ui files add them here
@@ -41,7 +40,7 @@ if(build)
         qt5_add_resources(RccSrcFiles resources.qrc)
     else()
         # Header files to moc and compile:
-        QT4_WRAP_CPP(MocSrcFiles ${SrcFiles_HPP} OPTIONS -DBOOST_TT_HAS_PLUS_HPP_INCLUDED -DBOOST_TT_HAS_PLUS_ASSIGN_HPP_INCLUDED -DBOOST_TT_HAS_MINUS_HPP_INCLUDED -DBOOST_TT_HAS_MINUS_ASSIGN_HPP_INCLUDED)
+        QT4_WRAP_CPP(MocSrcFiles ${SRC_FILES_HPP} OPTIONS -DBOOST_TT_HAS_PLUS_HPP_INCLUDED -DBOOST_TT_HAS_PLUS_ASSIGN_HPP_INCLUDED -DBOOST_TT_HAS_MINUS_HPP_INCLUDED -DBOOST_TT_HAS_MINUS_ASSIGN_HPP_INCLUDED)
         # Rcc the files:
         qt4_add_resources(RccSrcFiles resources.qrc)
     endif()

@@ -204,7 +204,7 @@ stages:
 
 ########################### WINDOWS CI ################################
 
-.windows-common:
+.windows-build-RW:
   stage: build
   tags:
     - windows
@@ -222,64 +222,111 @@ stages:
     - "if not exist Build\\RWSim mkdir Build\\RWSim"
     - "if not exist Build\\RWSimExamples mkdir Build\\RWSimExamples"
     - "if not exist gtest mkdir gtest"
-  artifacts:
-    expire_in: 10 weeks
-    reports:
-      junit: [RW*-CTest.xml, gtest/*]
-
-.windows-full:
-  extends: .windows-common
   script:
     - cd Build
     # Build RobWork
     - cd RW
     - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 15 2017 Win64" -DSWIG_EXECUTABLE=%SWIG_ROOT%\swig.exe ../../RobWork
-    - msbuild RobWork.sln /property:Configuration=Release /maxcpucount:6
-    - cd ..
+    - msbuild RobWork.sln /property:Configuration=Release /maxcpucount:8
+  artifacts:
+    paths: 
+      - ./Build
+      - ./RobWork
+      - ./gtest
+    expire_in: 5 hrs 
+    when: on_success
+
+.windows-build-RWHW:
+  stage: build_second
+  tags:
+    - windows
+  script:
+    - cd Build
     # Build RobWorkHardware
     - cd RWHW
     - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 15 2017 Win64" -DBUILD_SHARED_LIBS=OFF -DRWHW_SHARED_LIBS=OFF ../../RobWorkHardware
-    - msbuild RobWorkHardware.sln /property:Configuration=Release /maxcpucount:6
-    - cd ..
+    - msbuild RobWorkHardware.sln /property:Configuration=Release /maxcpucount:8
+  artifacts:
+    paths: 
+      - ./Build/RWHW
+      - ./RobWorkHardware
+    expire_in: 5 hrs 
+    when: on_success
+
+.windows-build-RWS:
+  stage: build_second
+  tags:
+    - windows
+  script:
+    - cd Build
     # Build RobWorkStudio
     - cd RWS
     - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 15 2017 Win64" -DSWIG_EXECUTABLE=%SWIG_ROOT%\swig.exe ../../RobWorkStudio
     - msbuild RobWorkStudio.sln /property:Configuration=Release /maxcpucount:6
-    - cd ..
-    # Build RobWorkSim
+  artifacts:
+    paths: 
+      - ./Build/RWS
+      - ./RobWorkStudio
+    expire_in: 5 hrs 
+    when: on_success
+
+.windows-build-RWSim:
+  stage: build_third
+  tags:
+    - windows
+  script:
+    - cd Build
     - cd RWSim
     - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 15 2017 Win64" -DSWIG_EXECUTABLE=%SWIG_ROOT%\swig.exe ../../RobWorkSim
-    - msbuild RobWorkSim.sln /property:Configuration=Release /maxcpucount:6
-    - cd ..
+    - msbuild RobWorkSim.sln /property:Configuration=Release /maxcpucount:8 || msbuild RobWorkSim.sln /property:Configuration=Release /maxcpucount:8
+  artifacts:
+    paths: 
+      - ./Build/RWSim
+      - ./RobWorkSim
+    expire_in: 5 hrs 
+    when: on_success
+
+.windows-examples:
+  stage: test
+  tags:
+    - windows
+  script:
+    - cd Build
     # Build RobWork Examples
     - cd RWExamples
     - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 15 2017 Win64" ../../RobWork/example
-    - msbuild Project.sln /property:Configuration=Release /maxcpucount:6
+    - msbuild Project.sln /property:Configuration=Release /maxcpucount:8
     - cd ..
     # Build RobWorkStudio Examples
     - cd RWSExamples
     - cd pluginapp
     - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 15 2017 Win64" ../../../RobWorkStudio/example/pluginapp
-    - msbuild PluginApp.sln /property:Configuration=Release /maxcpucount:6
+    - msbuild PluginApp.sln /property:Configuration=Release /maxcpucount:8
     - cd ..
     - cd pluginUIapp
     - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 15 2017 Win64" ../../../RobWorkStudio/example/pluginUIapp
-    - msbuild PluginUIApp.sln /property:Configuration=Release /maxcpucount:6
+    - msbuild PluginUIApp.sln /property:Configuration=Release /maxcpucount:8
     - cd ..
     - cd tutorial
     - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 15 2017 Win64" ../../../RobWorkStudio/example/tutorial
-    - msbuild SamplePluginApp.sln /property:Configuration=Release /maxcpucount:6
+    - msbuild SamplePluginApp.sln /property:Configuration=Release /maxcpucount:8
     - cd ..
     - cd UDPKinPlugin
     - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 15 2017 Win64" ../../../RobWorkStudio/example/UDPKinPlugin
-    - msbuild PluginUIApp.sln /property:Configuration=Release /maxcpucount:6
+    - msbuild PluginUIApp.sln /property:Configuration=Release /maxcpucount:8
     - cd ..
     - cd ..
     # Build RobWorkSim Examples
     - cd RWSimExamples
     - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 15 2017 Win64" ../../RobWorkSim/example
-    - msbuild RWSimExamples.sln /property:Configuration=Release /maxcpucount:6
-    - cd ..
+    - msbuild RWSimExamples.sln /property:Configuration=Release /maxcpucount:8
+
+.windows-tests:
+  stage: test
+  tags:
+    - windows
+  script:
+    - cd Build
     # Run RobWork tests
     - cd RW
     - msbuild gtest/sdurw-gtest_reports.vcxproj /p:Configuration=Release
@@ -300,10 +347,49 @@ stages:
     - move ..\\..\\RobWorkSim\\bin\\Release\\gtest_reports\\* ..\\..\\gtest\\
     - ctest -C Release --no-compress-output -T Test -j 1
     - FOR /D %%F IN ("Testing\\*") DO IF EXIST %%F\\Test.xml move %%F\\Test.xml ..\\..\\RWSim-CTest.xml
-    - cd ..
 
-build:windows10-vs15:
-  extends: .windows-full
+build-RW:windows10-vs15:
+  extends: .windows-build-RW
+
+build-RWS:windows10-vs15:
+  extends: .windows-build-RWS
+  dependencies:
+    - build-RW:windows10-vs15
+  needs: ["build-RW:windows10-vs15"]
+
+
+
+build-RWHW:windows10-vs15:
+  extends: .windows-build-RWHW
+  dependencies:
+    - build-RW:windows10-vs15
+  needs: ["build-RW:windows10-vs15"]
+
+build-RWSim:windows10-vs15:
+  extends: .windows-build-RWSim
+  dependencies:
+    - build-RW:windows10-vs15
+    - build-RWS:windows10-vs15
+  needs: ["build-RW:windows10-vs15","build-RWS:windows10-vs15"]
+
+
+examples:windows10-vs15:
+  extends: .windows-examples
+  dependencies:
+    - build-RW:windows10-vs15
+    - build-RWS:windows10-vs15
+    - build-RWHW:windows10-vs15
+    - build-RWSim:windows10-vs15
+  needs: ["build-RW:windows10-vs15","build-RWS:windows10-vs15","build-RWHW:windows10-vs15","build-RWSim:windows10-vs15"]
+
+tests:windows10-vs15:
+  extends: .windows-tests
+  dependencies:
+    - build-RW:windows10-vs15
+    - build-RWS:windows10-vs15
+    - build-RWHW:windows10-vs15
+    - build-RWSim:windows10-vs15
+  needs: ["build-RW:windows10-vs15","build-RWS:windows10-vs15","build-RWHW:windows10-vs15","build-RWSim:windows10-vs15"]
 
 ########################## Ubuntu 1804 (MAIN) ################################
 
