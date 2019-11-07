@@ -22,11 +22,6 @@ RW_ADD_DOC( ${SUBSYS_NAME} )
 IF( build )
 INCLUDE(UseSWIG)
     INCLUDE_DIRECTORIES(${PYTHON_INCLUDE_DIRS})
-    if(POLICY CMP0078)
-        set(LIB_PREFIX "_")
-    else()
-        set(LIB_PREFIX "")
-    endif()
 
     SET_SOURCE_FILES_PROPERTIES(../sdurwsim.i PROPERTIES CPLUSPLUS ON)
 	SET_SOURCE_FILES_PROPERTIES(../sdurwsim.i PROPERTIES SWIG_FLAGS "-includeall")
@@ -36,21 +31,22 @@ INCLUDE(UseSWIG)
 	
     SET(CMAKE_SWIG_OUTDIR ${RWSIM_CMAKE_LIBRARY_OUTPUT_DIRECTORY})
 	IF ((CMAKE_VERSION VERSION_GREATER 3.8) OR (CMAKE_VERSION VERSION_EQUAL 3.8))
-		SWIG_ADD_LIBRARY(${LIB_PREFIX}sdurwsim TYPE SHARED LANGUAGE python SOURCES ../sdurwsim.i ../ScriptTypes.cpp)
+		SWIG_ADD_LIBRARY(sdurwsim_py TYPE SHARED LANGUAGE python SOURCES ../sdurwsim.i ../ScriptTypes.cpp)
 	ELSE()
-		SWIG_ADD_MODULE(${LIB_PREFIX}sdurwsim python ../sdurwsim.i ../ScriptTypes.cpp)
+		SWIG_ADD_MODULE(sdurwsim_py python ../sdurwsim.i ../ScriptTypes.cpp)
 	ENDIF()
     if(POLICY CMP0078)
-        set(TARGET_NAME ${LIB_PREFIX}sdurwsim)
+        set(TARGET_NAME sdurwsim_py)
     else()
         set(TARGET_NAME ${SWIG_MODULE_sdurwsim_REAL_NAME})
     endif()
 
-    SWIG_LINK_LIBRARIES(${LIB_PREFIX}sdurwsim
+    SWIG_LINK_LIBRARIES(sdurwsim_py
         ${RWSIM_ODE_LIBRARY}
         sdurwsim
         ${ROBWORK_LIBRARIES}
         ${PYTHON_LIBRARIES} )
+
     IF((CMAKE_COMPILER_IS_GNUCC) OR (CMAKE_C_COMPILER_ID STREQUAL "Clang"))
       SET_TARGET_PROPERTIES(${TARGET_NAME} PROPERTIES LINK_FLAGS -Wl,--no-undefined )
     ENDIF()
