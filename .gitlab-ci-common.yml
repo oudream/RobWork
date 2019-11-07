@@ -1,8 +1,53 @@
 stages:
   - build
+  - build_second
+  - build_third
+  - build_doc 
+  - test
   - deploy
 
-.linux-common:
+########################## NEW CI ####################################
+
+.linux-CI-common:
+  only:
+    refs:
+      - branches@sdurobotics/RobWork
+      - tags@sdurobotics/RobWork
+      - schedules
+      - web
+      - merge_requests@sdurobotics/RobWork
+      - /^ci-.*$/
+  except:
+    refs:
+      - /^wip-.*$/
+    variables:
+      - $CI_COMMIT_MESSAGE =~ /WIP:.*/i
+
+.linux-doc:
+  extends: .linux-CI-common
+  stage: build_doc
+  tags:
+    - linux
+  before_script:
+    - "[ -d Build ] || mkdir Build"
+    - "[ -d Build/RW ] || mkdir Build/RW"
+    - "[ -d Build/sphinx ] || mkdir Build/sphinx"
+  script:
+    - cd Build
+    # Build Sphinx
+    - cd sphinx
+    - cmake -DCMAKE_BUILD_TYPE=Release -DRobWork_DIR:PATH=../../RobWork/cmake -DRobWorkStudio_DIR:PATH=../../RobWorkStudio/cmake -DRobWorkSim_DIR:PATH=../../RobWorkSim/cmake ../../doc/sphinx
+    - make sphinxapidoc -j$(nproc --all) || make sphinxapidoc -j$(nproc --all)
+    # Publish
+    - cd ../..
+    - mv Build/sphinx/html public
+  artifacts:
+    paths:
+      - public
+    expire_in: 1 day
+
+.linux-build-RW:
+  extends: .linux-CI-common
   stage: build
   tags:
     - linux
@@ -20,119 +65,120 @@ stages:
     - "[ -d Build/RWSim ] || mkdir Build/RWSim"
     - "[ -d Build/RWSimExamples ] || mkdir Build/RWSimExamples"
     - "[ -d gtest ] || mkdir gtest"
-  artifacts:
-    expire_in: 10 weeks
-    reports:
-      junit: [RW*-CTest.xml, gtest/*]
-
-.linux-minimal:
-  extends: .linux-common
-  only:
-    refs:
-      - merge_requests
-  except:
-    refs:
-      - merge_requests@sdurobotics/RobWork
-  script:
-    - cd Build
-    # Build RobWork
-    - cd RW
-    - cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_DISABLE_FIND_PACKAGE_XercesC=True -DCMAKE_DISABLE_FIND_PACKAGE_SWIG=True -DRW_USE_FCL=OFF -DRW_USE_ASSIMP=OFF ../../RobWork
-    - make -j3
-    - cd ..
-    # Build RobWorkHardware
-    - cd RWHW
-    - cmake -DCMAKE_BUILD_TYPE=Release -DUSE_WERROR=true ../../RobWorkHardware
-    - make -j3
-    - cd ..
-    # Build RobWorkStudio
-    - cd RWS
-    - cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_sdurws_lua=OFF -DBUILD_sdurws_java=OFF -DBUILD_sdurws_python=OFF -DUSE_WERROR=true ../../RobWorkStudio
-    - make -j3 RobWorkStudio
-    - cd ..
-    # Run RobWork tests
-    - cd RW
-    - make -j 1 -k sdurw-gtest_reports
-    - mv ../../RobWork/bin/**/gtest_reports/* ../../gtest/
-    - ctest --no-compress-output -T Test -j 1
-    - mv ./Testing/**/Test.xml ../../RWS-Test.xml
-    - cd ..
-    # Run RobWorkStudio tests
-    - cd RWS
-    - export DISPLAY=:0
-    - Xvfb $DISPLAY -screen 0 640x480x24 &
-    - make -j 1 -k sdurws-gtest_reports
-    - mv ../../RobWorkStudio/bin/**/gtest_reports/* ../../gtest/
-    - ctest --no-compress-output -T Test -j 1
-    - mv ./Testing/**/Test.xml ../../RWS-CTest.xml
-    - cd ..
-
-.linux-full:
-  extends: .linux-common
-  only:
-    refs:
-      - branches@sdurobotics/RobWork
-      - tags@sdurobotics/RobWork
-      - schedules
-      - web
-      - merge_requests@sdurobotics/RobWork
-      - /^ci-.*$/
-  except:
-    refs:
-      - /^wip-.*$/
-    variables:
-      - $CI_COMMIT_MESSAGE =~ /WIP:.*/i
   script:
     - cd Build
     # Build RobWork
     - cd RW
     - cmake -DCMAKE_BUILD_TYPE=Release ../../RobWork
-    - make -j6
-    - cd ..
-    # Build RobWorkHardware
-    - cd RWHW
-    - cmake -DCMAKE_BUILD_TYPE=Release -DUSE_WERROR=true ../../RobWorkHardware
-    - make -j6
-    - cd ..
+    - make -j$(nproc --all)
+  artifacts:
+    paths: 
+      - ./Build
+      - ./RobWork
+      - ./gtest
+    expire_in: 5 hrs 
+    when: on_success
+
+.linux-build-RWS:
+  extends: .linux-CI-common
+  stage: build_second
+  tags:
+    - linux
+  script:
+    - cd Build
     # Build RobWorkStudio
     - cd RWS
     - cmake -DCMAKE_BUILD_TYPE=Release -DUSE_WERROR=true ../../RobWorkStudio
-    - make -j6
+    - make -j$(nproc --all)
     - cd ..
+  artifacts:
+    paths: 
+      - ./Build/RWS
+      - ./RobWorkStudio
+    expire_in: 5 hrs 
+    when: on_success
+
+.linux-build-RWHW:
+  extends: .linux-CI-common
+  stage: build_second
+  tags:
+    - linux
+  script:
+    - cd Build
+    # Build RobWorkHardware
+    - cd RWHW
+    - cmake -DCMAKE_BUILD_TYPE=Release -DUSE_WERROR=true ../../RobWorkHardware
+    - make -j$(nproc --all)
+
+  artifacts:
+    paths: 
+      - ./Build/RWHW
+      - ./RobWorkHardware
+    expire_in: 5 hrs 
+    when: on_success
+
+.linux-build-RWSim:
+  extends: .linux-CI-common
+  stage: build_third
+  tags:
+    - linux
+  script:
+    - cd Build
     # Build RobWorkSim
     - cd RWSim
     - cmake -DCMAKE_BUILD_TYPE=Release -DUSE_WERROR=true ../../RobWorkSim
-    - make -j6
+    - make -j$(nproc --all)
     - cd ..
+  artifacts:
+    paths: 
+      - ./Build/RWSim
+      - ./RobWorkSim
+    expire_in: 5 hrs 
+    when: on_success    
+  
+.linux-examples:
+  extends: .linux-CI-common
+  stage: test
+  tags:
+    - linux
+  script:
+    - cd Build
     # Build RobWork Examples
     - cd RWExamples
     - cmake -DCMAKE_BUILD_TYPE=Release ../../RobWork/example
-    - make -j6
+    - make -j$(nproc --all)
     - cd ..
     # Build RobWorkStudio Examples
     - cd RWSExamples
     - cd pluginapp
     - cmake -DCMAKE_BUILD_TYPE=Release ../../../RobWorkStudio/example/pluginapp
-    - make -j6
+    - make -j$(nproc --all)
     - cd ..
     - cd pluginUIapp
     - cmake -DCMAKE_BUILD_TYPE=Release ../../../RobWorkStudio/example/pluginUIapp
-    - make -j6
+    - make -j$(nproc --all)
     - cd ..
     - cd tutorial
     - cmake -DCMAKE_BUILD_TYPE=Release ../../../RobWorkStudio/example/tutorial
-    - make -j6
+    - make -j$(nproc --all)
     - cd ..
     - cd UDPKinPlugin
     - cmake -DCMAKE_BUILD_TYPE=Release ../../../RobWorkStudio/example/UDPKinPlugin
-    - make -j6
+    - make -j$(nproc --all)
     - cd ..
     - cd ..
     # Build RobWorkSim Examples
     - cd RWSimExamples
     - cmake -DCMAKE_BUILD_TYPE=Release ../../RobWorkSim/example
-    - make -j6
-    - cd ..
+    - make -j$(nproc --all)
+
+.linux-tests:
+  extends: .linux-CI-common
+  stage: test
+  tags:
+    - linux
+  script:
+    - cd Build
     # Run RobWork tests
     - cd RW
     - make -j 1 -k sdurw-gtest_reports
@@ -155,41 +201,10 @@ stages:
     - mv ../../RobWorkSim/bin/**/gtest_reports/* ../../gtest/
     - ctest --no-compress-output -T Test -j 1
     - mv ./Testing/**/Test.xml ../../RWSim-CTest.xml
-    - cd ..
 
-.linux-doc:
-  stage: build
-  tags:
-    - linux
-  before_script:
-    - "[ -d Build ] || mkdir Build"
-    - "[ -d Build/RW ] || mkdir Build/RW"
-    - "[ -d Build/sphinx ] || mkdir Build/sphinx"
-  only:
-    refs:
-      - master@sdurobotics/RobWork
-      - schedules
-      - web
-  script:
-    - cd Build
-    # Build libraries needed for Sphinx apidoc
-    - cd RW
-    - cmake -DCMAKE_BUILD_TYPE=Release -DRW_USE_YAOBI=OFF -DRW_USE_FCL=OFF -DRW_USE_ASSIMP=OFF -DBUILD_sdurws_lua=OFF -DRWS_USE_STATIC_LINK_PLUGINS=OFF -DRWSIM_DISABLE_LUA=ON -DBUILD_sdurwsim_luai=OFF ../..
-    - make sdurw_java sdurws_jni sdurwsim_jni sdurw_python _sdurws _sdurwsim -j6
-    - cd ..
-    # Build Sphinx
-    - cd sphinx
-    - cmake -DCMAKE_BUILD_TYPE=Release -DRobWork_DIR:PATH=../../RobWork/cmake -DRobWorkStudio_DIR:PATH=../../RobWorkStudio/cmake -DRobWorkSim_DIR:PATH=../../RobWorkSim/cmake ../../doc/sphinx
-    - make sphinxapidoc -j6
-    # Publish
-    - cd ../..
-    - mv Build/sphinx/html public
-  artifacts:
-    paths:
-      - public
-    expire_in: 1 day
+########################### WINDOWS CI ################################
 
-.windows-common:
+.windows-build-RW:
   stage: build
   tags:
     - windows
@@ -207,77 +222,111 @@ stages:
     - "if not exist Build\\RWSim mkdir Build\\RWSim"
     - "if not exist Build\\RWSimExamples mkdir Build\\RWSimExamples"
     - "if not exist gtest mkdir gtest"
-  artifacts:
-    expire_in: 10 weeks
-    reports:
-      junit: [RW*-CTest.xml, gtest/*]
-
-.windows-full:
-  extends: .windows-common
-  only:
-    refs:
-      - branches@sdurobotics/RobWork
-      - tags@sdurobotics/RobWork
-      - schedules
-      - web
-      - merge_requests@sdurobotics/RobWork
-      - /^ci-.*$/
-  except:
-    refs:
-      - /^wip-.*$/
-    variables:
-      - $CI_COMMIT_MESSAGE =~ /WIP:.*/i
   script:
     - cd Build
     # Build RobWork
     - cd RW
     - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 15 2017 Win64" -DSWIG_EXECUTABLE=%SWIG_ROOT%\swig.exe ../../RobWork
-    - msbuild RobWork.sln /property:Configuration=Release /maxcpucount:6
-    - cd ..
+    - msbuild RobWork.sln /property:Configuration=Release /maxcpucount:8
+  artifacts:
+    paths: 
+      - ./Build
+      - ./RobWork
+      - ./gtest
+    expire_in: 5 hrs 
+    when: on_success
+
+.windows-build-RWHW:
+  stage: build_second
+  tags:
+    - windows
+  script:
+    - cd Build
     # Build RobWorkHardware
     - cd RWHW
     - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 15 2017 Win64" -DBUILD_SHARED_LIBS=OFF -DRWHW_SHARED_LIBS=OFF ../../RobWorkHardware
-    - msbuild RobWorkHardware.sln /property:Configuration=Release /maxcpucount:6
-    - cd ..
+    - msbuild RobWorkHardware.sln /property:Configuration=Release /maxcpucount:8
+  artifacts:
+    paths: 
+      - ./Build/RWHW
+      - ./RobWorkHardware
+    expire_in: 5 hrs 
+    when: on_success
+
+.windows-build-RWS:
+  stage: build_second
+  tags:
+    - windows
+  script:
+    - cd Build
     # Build RobWorkStudio
     - cd RWS
     - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 15 2017 Win64" -DSWIG_EXECUTABLE=%SWIG_ROOT%\swig.exe ../../RobWorkStudio
     - msbuild RobWorkStudio.sln /property:Configuration=Release /maxcpucount:6
-    - cd ..
-    # Build RobWorkSim
+  artifacts:
+    paths: 
+      - ./Build/RWS
+      - ./RobWorkStudio
+    expire_in: 5 hrs 
+    when: on_success
+
+.windows-build-RWSim:
+  stage: build_third
+  tags:
+    - windows
+  script:
+    - cd Build
     - cd RWSim
     - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 15 2017 Win64" -DSWIG_EXECUTABLE=%SWIG_ROOT%\swig.exe ../../RobWorkSim
-    - msbuild RobWorkSim.sln /property:Configuration=Release /maxcpucount:6
-    - cd ..
+    - msbuild RobWorkSim.sln /property:Configuration=Release /maxcpucount:8
+  artifacts:
+    paths: 
+      - ./Build/RWSim
+      - ./RobWorkSim
+    expire_in: 5 hrs 
+    when: on_success
+
+.windows-examples:
+  stage: test
+  tags:
+    - windows
+  script:
+    - cd Build
     # Build RobWork Examples
     - cd RWExamples
     - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 15 2017 Win64" ../../RobWork/example
-    - msbuild Project.sln /property:Configuration=Release /maxcpucount:6
+    - msbuild Project.sln /property:Configuration=Release /maxcpucount:8
     - cd ..
     # Build RobWorkStudio Examples
     - cd RWSExamples
     - cd pluginapp
     - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 15 2017 Win64" ../../../RobWorkStudio/example/pluginapp
-    - msbuild PluginApp.sln /property:Configuration=Release /maxcpucount:6
+    - msbuild PluginApp.sln /property:Configuration=Release /maxcpucount:8
     - cd ..
     - cd pluginUIapp
     - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 15 2017 Win64" ../../../RobWorkStudio/example/pluginUIapp
-    - msbuild PluginUIApp.sln /property:Configuration=Release /maxcpucount:6
+    - msbuild PluginUIApp.sln /property:Configuration=Release /maxcpucount:8
     - cd ..
     - cd tutorial
     - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 15 2017 Win64" ../../../RobWorkStudio/example/tutorial
-    - msbuild SamplePluginApp.sln /property:Configuration=Release /maxcpucount:6
+    - msbuild SamplePluginApp.sln /property:Configuration=Release /maxcpucount:8
     - cd ..
     - cd UDPKinPlugin
     - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 15 2017 Win64" ../../../RobWorkStudio/example/UDPKinPlugin
-    - msbuild PluginUIApp.sln /property:Configuration=Release /maxcpucount:6
+    - msbuild PluginUIApp.sln /property:Configuration=Release /maxcpucount:8
     - cd ..
     - cd ..
     # Build RobWorkSim Examples
     - cd RWSimExamples
     - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 15 2017 Win64" ../../RobWorkSim/example
-    - msbuild RWSimExamples.sln /property:Configuration=Release /maxcpucount:6
-    - cd ..
+    - msbuild RWSimExamples.sln /property:Configuration=Release /maxcpucount:8
+
+.windows-tests:
+  stage: test
+  tags:
+    - windows
+  script:
+    - cd Build
     # Run RobWork tests
     - cd RW
     - msbuild gtest/sdurw-gtest_reports.vcxproj /p:Configuration=Release
@@ -285,7 +334,7 @@ stages:
     - ctest -C Release --no-compress-output -T Test -j 1
     - FOR /D %%F IN ("Testing\\*") DO IF EXIST %%F\\Test.xml move %%F\\Test.xml ..\\..\\RW-CTest.xml
     - cd ..
-    # Run RobWorkStudio tests
+     Run RobWorkStudio tests
     - cd RWS
     - msbuild gtest/sdurws-gtest_reports.vcxproj /p:Configuration=Release
     - move ..\\..\\RobWorkStudio\\bin\\release\\gtest_reports\\* ..\\..\\gtest\\
@@ -298,37 +347,306 @@ stages:
     - move ..\\..\\RobWorkSim\\bin\\Release\\gtest_reports\\* ..\\..\\gtest\\
     - ctest -C Release --no-compress-output -T Test -j 1
     - FOR /D %%F IN ("Testing\\*") DO IF EXIST %%F\\Test.xml move %%F\\Test.xml ..\\..\\RWSim-CTest.xml
-    - cd ..
 
-build:ubuntu-1604:
-  extends: .linux-full
+build-RW:windows10-vs15:
+  extends: .windows-build-RW
+
+build-RWS:windows10-vs15:
+  extends: .windows-build-RWS
+  dependencies:
+    - build-RW:windows10-vs15
+  needs: ["build-RW:windows10-vs15"]
+
+build-RWHW:windows10-vs15:
+  extends: .windows-build-RWHW
+  dependencies:
+    - build-RW:windows10-vs15
+  needs: ["build-RW:windows10-vs15"]
+
+build-RWSim:windows10-vs15:
+  extends: .windows-build-RWSim
+  dependencies:
+    - build-RW:windows10-vs15
+    - build-RWS:windows10-vs15
+  needs: ["build-RW:windows10-vs15","build-RWS:windows10-vs15"]
+
+examples:windows10-vs15:
+  extends: .windows-examples
+  dependencies:
+    - build-RW:windows10-vs15
+    - build-RWS:windows10-vs15
+    - build-RWHW:windows10-vs15
+    - build-RWSim:windows10-vs15
+  needs: ["build-RW:windows10-vs15","build-RWS:windows10-vs15","build-RWHW:windows10-vs15","build-RWSim:windows10-vs15"]
+
+tests:windows10-vs15:
+  extends: .windows-tests
+  dependencies:
+    - build-RW:windows10-vs15
+    - build-RWS:windows10-vs15
+    - build-RWHW:windows10-vs15
+    - build-RWSim:windows10-vs15
+  needs: ["build-RW:windows10-vs15","build-RWS:windows10-vs15","build-RWHW:windows10-vs15","build-RWSim:windows10-vs15"]
+
+########################## Ubuntu 1804 (MAIN) ################################
+
+build-RW:ubuntu-1804:
+  extends: .linux-build-RW
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
+  only: 
+  except: 
+
+build-RWS:ubuntu-1804:
+  extends: .linux-build-RWS
+  dependencies:
+    - build-RW:ubuntu-1804
+  needs: ["build-RW:ubuntu-1804"]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
+  only: 
+  except: 
+
+build-RWHW:ubuntu-1804:
+  extends: .linux-build-RWHW
+  dependencies:
+    - build-RW:ubuntu-1804
+  needs: ["build-RW:ubuntu-1804"]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
+  only: 
+  except:
+
+build-RWSim:ubuntu-1804:
+  extends: .linux-build-RWSim
+  dependencies:
+    - build-RW:ubuntu-1804
+    - build-RWS:ubuntu-1804
+  needs: ["build-RW:ubuntu-1804","build-RWS:ubuntu-1804"]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
+  only: 
+  except:
+
+examples:ubuntu-1804:
+  extends: .linux-examples
+  dependencies:
+    - build-RW:ubuntu-1804
+    - build-RWS:ubuntu-1804
+    - build-RWHW:ubuntu-1804
+    - build-RWSim:ubuntu-1804
+  needs: ["build-RW:ubuntu-1804","build-RWS:ubuntu-1804","build-RWHW:ubuntu-1804","build-RWSim:ubuntu-1804"]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
+  only: 
+  except:
+
+tests:ubuntu-1804:
+  extends: .linux-tests
+  dependencies:
+    - build-RW:ubuntu-1804
+    - build-RWS:ubuntu-1804
+    - build-RWHW:ubuntu-1804
+    - build-RWSim:ubuntu-1804
+  needs: ["build-RW:ubuntu-1804","build-RWS:ubuntu-1804","build-RWHW:ubuntu-1804","build-RWSim:ubuntu-1804"]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
+  only: 
+  except:
+
+########################## Ubuntu 1604 ################################
+
+build-RW:ubuntu-1604:
+  extends: .linux-build-RW
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1604
 
-build:ubuntu-1804:
-  extends: .linux-full
-  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
+build-RWS:ubuntu-1604:
+  extends: .linux-build-RWS
+  dependencies:
+    - build-RW:ubuntu-1604
+  needs: ["build-RW:ubuntu-1604"]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1604
 
-build-minimal:ubuntu-1804:
-  extends: .linux-minimal
-  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
+build-RWHW:ubuntu-1604:
+  extends: .linux-build-RWHW
+  dependencies:
+    - build-RW:ubuntu-1604
+  needs: ["build-RW:ubuntu-1604"]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1604
 
-build:ubuntu-1904:
-  extends: .linux-full
+build-RWSim:ubuntu-1604:
+  extends: .linux-build-RWSim
+  dependencies:
+    - build-RW:ubuntu-1604
+    - build-RWS:ubuntu-1604
+  needs: ["build-RW:ubuntu-1604","build-RWS:ubuntu-1604"]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1604
+
+examples:ubuntu-1604:
+  extends: .linux-examples
+  dependencies:
+    - build-RW:ubuntu-1604
+    - build-RWS:ubuntu-1604
+    - build-RWHW:ubuntu-1604
+    - build-RWSim:ubuntu-1604
+  needs: ["build-RW:ubuntu-1604","build-RWS:ubuntu-1604","build-RWHW:ubuntu-1604","build-RWSim:ubuntu-1604"]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1604
+
+tests:ubuntu-1604:
+  extends: .linux-tests
+  dependencies:
+    - build-RW:ubuntu-1604
+    - build-RWS:ubuntu-1604
+    - build-RWHW:ubuntu-1604
+    - build-RWSim:ubuntu-1604
+  needs: ["build-RW:ubuntu-1604","build-RWS:ubuntu-1604","build-RWHW:ubuntu-1604","build-RWSim:ubuntu-1604"]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1604
+
+########################## Ubuntu 1904 ################################
+build-RW:ubuntu-1904:
+  extends: .linux-build-RW
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1904
 
-build:ubuntu-1910:
-  extends: .linux-full
+build-RWS:ubuntu-1904:
+  extends: .linux-build-RWS
+  dependencies:
+    - build-RW:ubuntu-1904
+  needs: ["build-RW:ubuntu-1904"]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1904
+
+build-RWHW:ubuntu-1904:
+  extends: .linux-build-RWHW
+  dependencies:
+    - build-RW:ubuntu-1904
+  needs: ["build-RW:ubuntu-1904"]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1904
+
+build-RWSim:ubuntu-1904:
+  extends: .linux-build-RWSim
+  dependencies:
+    - build-RW:ubuntu-1904
+    - build-RWS:ubuntu-1904
+  needs: ["build-RW:ubuntu-1904","build-RWS:ubuntu-1904"]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1904
+
+examples:ubuntu-1904:
+  extends: .linux-examples
+  dependencies:
+    - build-RW:ubuntu-1904
+    - build-RWS:ubuntu-1904
+    - build-RWHW:ubuntu-1904
+    - build-RWSim:ubuntu-1904
+  needs: ["build-RW:ubuntu-1904","build-RWS:ubuntu-1904","build-RWHW:ubuntu-1904","build-RWSim:ubuntu-1904"]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1904
+
+tests:ubuntu-1904:
+  extends: .linux-tests
+  dependencies:
+    - build-RW:ubuntu-1904
+    - build-RWS:ubuntu-1904
+    - build-RWHW:ubuntu-1904
+    - build-RWSim:ubuntu-1904
+  needs: ["build-RW:ubuntu-1904","build-RWS:ubuntu-1904","build-RWHW:ubuntu-1904","build-RWSim:ubuntu-1904"]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1904
+
+########################## Ubuntu 1910 ################################
+build-RW:ubuntu-1910:
+  extends: .linux-build-RW
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1910
 
-build:centos-7:
-  extends: .linux-full
+build-RWS:ubuntu-1910:
+  extends: .linux-build-RWS
+  dependencies:
+    - build-RW:ubuntu-1910
+  needs: ["build-RW:ubuntu-1910"]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1910
+
+build-RWHW:ubuntu-1910:
+  extends: .linux-build-RWHW
+  dependencies:
+    - build-RW:ubuntu-1910
+  needs: ["build-RW:ubuntu-1910"]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1910
+
+build-RWSim:ubuntu-1910:
+  extends: .linux-build-RWSim
+  dependencies:
+    - build-RW:ubuntu-1910
+    - build-RWS:ubuntu-1910
+  needs: ["build-RW:ubuntu-1910","build-RWS:ubuntu-1910"]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1910
+
+examples:ubuntu-1910:
+  extends: .linux-examples
+  dependencies:
+    - build-RW:ubuntu-1910
+    - build-RWS:ubuntu-1910
+    - build-RWHW:ubuntu-1910
+    - build-RWSim:ubuntu-1910
+  needs: ["build-RW:ubuntu-1910","build-RWS:ubuntu-1910","build-RWHW:ubuntu-1910","build-RWSim:ubuntu-1910"]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1910
+
+tests:ubuntu-1910:
+  extends: .linux-tests
+  dependencies:
+    - build-RW:ubuntu-1910
+    - build-RWS:ubuntu-1910
+    - build-RWHW:ubuntu-1910
+    - build-RWSim:ubuntu-1910
+  needs: ["build-RW:ubuntu-1910","build-RWS:ubuntu-1910","build-RWHW:ubuntu-1910","build-RWSim:ubuntu-1910"]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1910
+
+########################## Centos 7 ################################
+build-RW:centos-7:
+  extends: .linux-build-RW
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:centos-7
 
-build:windows10-vs15:
-  extends: .windows-full
+build-RWS:centos-7:
+  extends: .linux-build-RWS
+  dependencies:
+    - build-RW:centos-7
+  needs: ["build-RW:centos-7"]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:centos-7
+
+build-RWHW:centos-7:
+  extends: .linux-build-RWHW
+  dependencies:
+    - build-RW:centos-7
+  needs: ["build-RW:centos-7"]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:centos-7
+
+build-RWSim:centos-7:
+  extends: .linux-build-RWSim
+  dependencies:
+    - build-RW:centos-7
+    - build-RWS:centos-7
+  needs: ["build-RW:centos-7","build-RWS:centos-7"]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:centos-7
+
+examples:centos-7:
+  extends: .linux-examples
+  dependencies:
+    - build-RW:centos-7
+    - build-RWS:centos-7
+    - build-RWHW:centos-7
+    - build-RWSim:centos-7
+  needs: ["build-RW:centos-7","build-RWS:centos-7","build-RWHW:centos-7","build-RWSim:centos-7"]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:centos-7
+
+tests:centos-7:
+  extends: .linux-tests
+  dependencies:
+    - build-RW:centos-7
+    - build-RWS:centos-7
+    - build-RWHW:centos-7
+    - build-RWSim:centos-7
+  needs: ["build-RW:centos-7","build-RWS:centos-7","build-RWHW:centos-7","build-RWSim:centos-7"]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:centos-7
+
+######################## Misc ##########################################
 
 build:doc:
   extends: .linux-doc
+  dependencies:
+    - build-RW:ubuntu-1804
+    - build-RWS:ubuntu-1804
+    - build-RWHW:ubuntu-1804
+    - build-RWSim:ubuntu-1804
+  needs: ["build-RW:ubuntu-1804","build-RWS:ubuntu-1804","build-RWHW:ubuntu-1804","build-RWSim:ubuntu-1804"]
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804-doc
 
 pages:
@@ -346,7 +664,8 @@ pages:
     - echo "Deploying documentation."
   dependencies:
     - build:doc
+  needs: ["build:doc"]
   artifacts:
     paths:
-    - public
+      - public
     expire_in: 1 week
