@@ -1,4 +1,4 @@
-from rw import *
+from sdurw import *
 
 def findFromWorkCell(wc):
     # get the default state

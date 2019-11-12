@@ -1,11 +1,11 @@
 import org.robwork.LoaderRW;
-import org.robwork.rw.*;
-import static org.robwork.rw.rwConstants.*;
+import org.robwork.sdurw.*;
+import static org.robwork.sdurw.sdurwConstants.*;
 import java.lang.Math;
 
 public class ExEAA {
     public static void main(String[] args) throws Exception {
-        LoaderRW.load("rw");
+        LoaderRW.load("sdurw");
 
         EAAd eaa = new EAAd(Math.sqrt(2)/2*Pi,Math.sqrt(2)/2*Pi,0);
         System.out.println("EAA: " + eaa);

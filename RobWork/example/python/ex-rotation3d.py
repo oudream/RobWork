@@ -1,4 +1,4 @@
-from rw import *
+from sdurw import *
 
 if __name__ == '__main__':
     rotd = Rotation3d(1,0,0,0,0,-1,0,1,0);

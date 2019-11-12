@@ -1,4 +1,4 @@
-from rw import *
+from sdurw import *
 
 def printKinematicTree(frame, state, parentTransform, level):
     transform = parentTransform * frame.getTransform(state);

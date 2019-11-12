@@ -1,5 +1,5 @@
-require("rw")
-using("rw")
+require("sdurw")
+using("sdurw")
 
 quat = Quaterniond(math.sqrt(2)/2,math.sqrt(2)/2,0,0);
 print("Quaternion: " .. tostring(quat))

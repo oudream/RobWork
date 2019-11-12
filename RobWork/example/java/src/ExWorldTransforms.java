@@ -1,6 +1,6 @@
 import java.util.Iterator;
 
-import org.robwork.rw.*;
+import org.robwork.sdurw.*;
 
 public class ExWorldTransforms {
     public static Transform3dVector worldTransforms(

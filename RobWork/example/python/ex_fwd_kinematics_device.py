@@ -1,4 +1,4 @@
-from rw import *
+from sdurw import *
 
 def fwdKinematicsDevice(sdevice, mframe, state):
     # get device base frame

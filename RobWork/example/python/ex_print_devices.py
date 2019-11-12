@@ -1,4 +1,4 @@
-from rw import *
+from sdurw import *
 
 def printDeviceNames(workcell):
     print("Workcell " + workcell.getName() + " contains devices:");

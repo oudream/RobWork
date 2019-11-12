@@ -1,4 +1,4 @@
-from rw import *
+from sdurw import *
 
 def worldTransforms(frames, state):
     fk = FKTable(state);

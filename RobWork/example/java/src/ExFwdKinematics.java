@@ -1,5 +1,5 @@
-import org.robwork.rw.*;
-import static org.robwork.rw.rw.inverse;
+import org.robwork.sdurw.*;
+import static org.robwork.sdurw.sdurw.inverse;
 
 public class ExFwdKinematics {
     public static void fwdKinematics(SerialDevicePtr sdevice,
