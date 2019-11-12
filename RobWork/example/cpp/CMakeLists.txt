@@ -11,6 +11,6 @@ find_package(RobWork REQUIRED PATHS "${RW_ROOT}")
 link_directories(${ROBWORK_LIBRARY_DIRS})
 
 # And now we add any targets that we want
-add_executable(invkin invkin.cpp)
-target_link_libraries(invkin ${ROBWORK_LIBRARIES})
-target_include_directories(invkin PRIVATE ${ROBWORK_INCLUDE_DIRS})
+add_executable(ex-load-workcell ex-load-workcell.cpp)
+target_link_libraries(ex-load-workcell ${ROBWORK_LIBRARIES})
+target_include_directories(ex-load-workcell PRIVATE ${ROBWORK_INCLUDE_DIRS})

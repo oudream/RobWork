@@ -14,7 +14,7 @@
 /.project
 /Build
 /.settings
-/*.vscode
+*.vscode
 /*rwsettings.xml
 /*.class
 
@@ -74,6 +74,7 @@
 /RobWork/example/cpp/.project
 /RobWork/example/cpp/.settings/
 /RobWork/example/cpp/build
+/RobWork/example/cpp/Build
 /RobWork/example/cpp/CMakeFiles
 /RobWork/example/cpp/CMakeCache.txt
 /RobWork/example/cpp/Makefile
