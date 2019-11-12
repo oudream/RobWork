@@ -115,7 +115,6 @@ Model3D::Ptr Model3DFactory::loadModel(const std::string &raw_filename, const st
 {
     const std::string& filename = IOUtil::resolveFileName(raw_filename, extensions);
     const std::string& filetype = StringUtil::toUpper(StringUtil::getFileExtension(filename));
-
     // if the file does not exist then throw an exception
     if (filetype.empty()) {
         RW_THROW(
@@ -137,10 +136,7 @@ Model3D::Ptr Model3DFactory::loadModel(const std::string &raw_filename, const st
     // else check if the file has been loaded before
     if (filetype == ".STL" || filetype == ".STLA" || filetype == ".STLB") {
     	// create a geometry
-
         PlainTriMeshN1F::Ptr data = STLFile::load(filename);
-        //STLFile::save(*data,"test_badstl_stuff.stl");
-
         Model3D *model = new Model3D(name);
 
         model->addTriMesh(mat, *data);
@@ -155,16 +151,12 @@ Model3D::Ptr Model3DFactory::loadModel(const std::string &raw_filename, const st
         Model3D::Ptr model = ownedPtr( new Model3D(filename) );
         Model3D::Material mat_gray("gray_pcd",0.7f,0.7f,0.7f);
         model->addGeometry( mat_gray , geom );
-
         getCache().add(filename, model, moddate);
-        //std::cout << "Creating drawable!" << std::endl;
         return getCache().get(filename);
     } else if (filetype == ".3DS") {
-    	//std::cout << "loading 3ds file!" << std::endl;
     	Loader3DS loader;
 		Model3D::Ptr model = loader.load(filename);
         getCache().add(filename, model, moddate);
-        //std::cout << "Creating drawable!" << std::endl;
         return getCache().get(filename);
     } else if (filetype == ".AC" || filetype == ".AC3D") {
     	LoaderAC3D loader;
@@ -178,28 +170,21 @@ Model3D::Ptr Model3DFactory::loadModel(const std::string &raw_filename, const st
         return getCache().get(filename);
     } else if (filetype == ".OBJ") {
         Model3D::Ptr model;
-#if RW_HAVE_ASSIMP
-        LoaderAssimp loader;
         try {
-        	model = loader.load(filename);
-        } catch(const Exception&) {
-        	RW_WARN("Assimp loader for .obj file failed. Trying internal RobWork loader instead.");
-#endif
             LoaderOBJ loader;
-            model = loader.load(filename);
+            model = loader.load(filename);      	
+        } catch(const Exception &e) {
+        	RW_WARN(std::string("Internal loader for .obj file failed With:") + e.what() +". Trying assimp instead.");
+            
 #if RW_HAVE_ASSIMP
+            LoaderAssimp loader;
+            model = loader.load(filename);
+#else
+            RW_THROW("Robwork has not been compiled with assimp")
+#endif    
         }
-#endif
         getCache().add(filename, model, moddate);
         return getCache().get(filename);
-    /*
-    } else if (filetype == ".IVG") {
-    	LoaderIVG loader;
-		Model3D::Ptr model = loader.load(filename);
-        Render *render = new RenderModel3D( model );
-        getCache().add(filename, render, moddate);
-        return ownedPtr( new Drawable( getCache().get(filename), name ) );
-    */
 #if RW_HAVE_ASSIMP
     } else if (filetype == ".DAE") {
     	LoaderAssimp loader;
