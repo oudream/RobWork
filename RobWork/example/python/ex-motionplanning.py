@@ -1,6 +1,6 @@
-from rw import *
-from rw_pathplanners import RRTPlanner
-from rw_proximitystrategies import ProximityStrategyFactory
+from sdurw import *
+from sdurw_pathplanners import RRTPlanner
+from sdurw_proximitystrategies import ProximityStrategyFactory
 import sys
 
 WC_FILE = "/scenes/SinglePA10Demo/SinglePA10DemoGantry.wc.xml"

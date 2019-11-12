@@ -8,7 +8,7 @@ stages:
 
 ########################## NEW CI ####################################
 
-.linux-CI-common:
+.CI-common:
   only:
     refs:
       - branches@sdurobotics/RobWork
@@ -24,7 +24,7 @@ stages:
       - $CI_COMMIT_MESSAGE =~ /WIP:.*/i
 
 .linux-doc:
-  extends: .linux-CI-common
+  extends: .CI-common
   stage: build_doc
   tags:
     - linux
@@ -47,7 +47,7 @@ stages:
     expire_in: 1 day
 
 .linux-build-RW:
-  extends: .linux-CI-common
+  extends: .CI-common
   stage: build
   tags:
     - linux
@@ -80,7 +80,7 @@ stages:
     when: on_success
 
 .linux-build-RWS:
-  extends: .linux-CI-common
+  extends: .CI-common
   stage: build_second
   tags:
     - linux
@@ -99,7 +99,7 @@ stages:
     when: on_success
 
 .linux-build-RWHW:
-  extends: .linux-CI-common
+  extends: .CI-common
   stage: build_second
   tags:
     - linux
@@ -118,7 +118,7 @@ stages:
     when: on_success
 
 .linux-build-RWSim:
-  extends: .linux-CI-common
+  extends: .CI-common
   stage: build_third
   tags:
     - linux
@@ -137,7 +137,7 @@ stages:
     when: on_success    
   
 .linux-examples:
-  extends: .linux-CI-common
+  extends: .CI-common
   stage: test
   tags:
     - linux
@@ -173,7 +173,7 @@ stages:
     - make -j$(nproc --all)
 
 .linux-tests:
-  extends: .linux-CI-common
+  extends: .CI-common
   stage: test
   tags:
     - linux
@@ -205,6 +205,7 @@ stages:
 ########################### WINDOWS CI ################################
 
 .windows-build-RW:
+  extends: .CI-common
   stage: build
   tags:
     - windows
@@ -237,6 +238,7 @@ stages:
     when: on_success
 
 .windows-build-RWHW:
+  extends: .CI-common
   stage: build_second
   tags:
     - windows
@@ -254,6 +256,7 @@ stages:
     when: on_success
 
 .windows-build-RWS:
+  extends: .CI-common
   stage: build_second
   tags:
     - windows
@@ -271,6 +274,7 @@ stages:
     when: on_success
 
 .windows-build-RWSim:
+  extends: .CI-common
   stage: build_third
   tags:
     - windows
@@ -287,6 +291,7 @@ stages:
     when: on_success
 
 .windows-examples:
+  extends: .CI-common
   stage: test
   tags:
     - windows
@@ -322,6 +327,7 @@ stages:
     - msbuild RWSimExamples.sln /property:Configuration=Release /maxcpucount:8
 
 .windows-tests:
+  extends: .CI-common
   stage: test
   tags:
     - windows

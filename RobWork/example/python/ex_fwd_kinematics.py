@@ -1,4 +1,4 @@
-from rw import *
+from sdurw import *
 
 def fwdKinematics(device, frame, mframe, state):
     # calculate the transform from one frame to another

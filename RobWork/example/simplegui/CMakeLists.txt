@@ -22,55 +22,13 @@ link_directories(${ROBWORK_LIBRARY_DIRS})
 
 # Set the output dir for generated libraries and binaries
 if(MSVC)
-    set(
-        CMAKE_RUNTIME_OUTPUT_DIRECTORY
-        "${ROOT}/bin"
-        CACHE
-            PATH
-            "Runtime directory"
-            FORCE
-    )
-    set(
-        CMAKE_LIBRARY_OUTPUT_DIRECTORY
-        "${ROOT}/libs"
-        CACHE
-            PATH
-            "Library directory"
-            FORCE
-    )
-    set(
-        CMAKE_ARCHIVE_OUTPUT_DIRECTORY
-        "${ROOT}/libs"
-        CACHE
-            PATH
-            "Archive directory"
-            FORCE
-    )
+    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${ROOT}/bin" CACHE PATH "Runtime directory" FORCE)
+    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${ROOT}/libs" CACHE PATH "Library directory" FORCE)
+    set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${ROOT}/libs" CACHE PATH "Archive directory" FORCE)
 else()
-    set(
-        CMAKE_RUNTIME_OUTPUT_DIRECTORY
-        "${ROOT}/bin/${CMAKE_BUILD_TYPE}"
-        CACHE
-            PATH
-            "Runtime directory"
-            FORCE
-    )
-    set(
-        CMAKE_LIBRARY_OUTPUT_DIRECTORY
-        "${ROOT}/libs/${CMAKE_BUILD_TYPE}"
-        CACHE
-            PATH
-            "Library directory"
-            FORCE
-    )
-    set(
-        CMAKE_ARCHIVE_OUTPUT_DIRECTORY
-        "${ROOT}/libs/${CMAKE_BUILD_TYPE}"
-        CACHE
-            PATH
-            "Archive directory"
-            FORCE
-    )
+    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${ROOT}/bin/${CMAKE_BUILD_TYPE}" CACHE PATH "Runtime directory" FORCE)
+    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${ROOT}/libs/${CMAKE_BUILD_TYPE}" CACHE PATH "Library directory" FORCE)
+    set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${ROOT}/libs/${CMAKE_BUILD_TYPE}" CACHE PATH "Archive directory" FORCE)
 endif()
 
 find_package(GLUT QUIET)
@@ -98,20 +56,10 @@ add_library(rwtools_simpleviewer ${SRC_FILES})
 target_link_libraries(rwtools_simpleviewer PRIVATE ${GLUT_glut_LIBRARY})
 
 # set the libraries we need
-set(
-    LIBRARIES
-    rwtools_simpleviewer
-    ${ROBWORK_LIBRARIES}
-    ${GLUT_glut_LIBRARY}
-)
+set(LIBRARIES rwtools_simpleviewer ${ROBWORK_LIBRARIES} ${GLUT_glut_LIBRARY})
 
 # To create an application use
 add_executable(ViewerExample ViewerExample.cpp)
 target_link_libraries(ViewerExample ${LIBRARIES})
 
-install(
-    TARGETS
-        ViewerExample
-    DESTINATION
-        bin
-)
+install(TARGETS ViewerExample DESTINATION bin)

@@ -1,5 +1,6 @@
-import org.robwork.rw.*;
-import static org.robwork.rw.rw.inverse;
+import org.robwork.sdurw.*;
+import org.robwork.sdurw.Q;
+import static org.robwork.sdurw.sdurw.inverse;
 
 public class ExFwdKinematicsDevice {
     public static void fwdKinematicsDevice(SerialDevicePtr sdevice, MovableFrame mframe, State state)
@@ -17,6 +18,6 @@ public class ExFwdKinematicsDevice {
         // the degrees of freedom of this device
         long dof = sdevice.getDOF();
         // set the configuration of the device to zero
-        sdevice.setQ( Q((int)dof,0.0) , state );
+        sdevice.setQ( new Q((int)dof,0.0) , state );
     }
 }
