@@ -1,10 +1,10 @@
 import org.robwork.LoaderRW;
-import org.robwork.rw.*;
+import org.robwork.sdurw.*;
 import java.lang.Math;
 
 public class ExQuaternion {
     public static void main(String[] args) throws Exception {
-        LoaderRW.load("rw");
+        LoaderRW.load("sdurw");
 
         Quaterniond quat = new Quaterniond(Math.sqrt(2)/2,Math.sqrt(2)/2,0,0);
         System.out.println("Quaternion: " + quat);

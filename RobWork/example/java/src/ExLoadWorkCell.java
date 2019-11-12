@@ -1,10 +1,10 @@
 import org.robwork.LoaderRW;
-import org.robwork.rw.*;
+import org.robwork.sdurw.*;
 
 public class ExLoadWorkCell {
 
     public static void main(String[] args) throws Exception {
-        LoaderRW.load("rw");
+        LoaderRW.load("sdurw");
 
         if (args.length != 1) {
             System.out.print("Usage: java " + ExLoadWorkCell.class.getSimpleName());
