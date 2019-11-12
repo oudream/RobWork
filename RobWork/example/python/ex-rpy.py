@@ -1,4 +1,4 @@
-from rw import *
+from sdurw import *
 
 if __name__ == '__main__':
     rpy = RPYd(Pi,Pi/2,0);

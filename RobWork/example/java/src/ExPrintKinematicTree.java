@@ -1,4 +1,4 @@
-import org.robwork.rw.*;
+import org.robwork.sdurw.*;
 
 public class ExPrintKinematicTree {
     public static void printKinematicTree(

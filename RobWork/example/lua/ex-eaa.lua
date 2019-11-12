@@ -1,5 +1,5 @@
-require("rw")
-using("rw")
+require("sdurw")
+using("sdurw")
 
 eaa = EAAd(math.sqrt(2)/2*Pi,math.sqrt(2)/2*Pi,0);
 print("EAA: " .. tostring(eaa))

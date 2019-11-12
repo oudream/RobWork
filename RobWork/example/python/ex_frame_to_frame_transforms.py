@@ -1,4 +1,4 @@
-from rw import *
+from sdurw import *
 
 def frameToFrameTransforms(a, b, tree_structure, states):
     fk = FKRange(a, b, tree_structure);

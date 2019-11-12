@@ -88,7 +88,7 @@
 /RobWork/example/java/bin
 
 # /RobWork/example/java/src
-/RobWork/example/java/src/InvKin.class
+RobWork/example/java/src/*.class
 RobWork/example/java/src/*.log
 
 # /RobWork/example/ModelData/
@@ -4115,4 +4115,5 @@ RobWork/example/java/src/*.log
 
 #/doc/sphinx/apidoc/java
 /doc/sphinx/apidoc/java/org
+
 

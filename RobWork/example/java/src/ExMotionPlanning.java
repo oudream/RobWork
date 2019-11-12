@@ -1,18 +1,18 @@
 import java.lang.String;
 import org.robwork.LoaderRW;
-import org.robwork.rw.*;
-import static org.robwork.rw.rw.ownedPtr;
-import org.robwork.rw_pathplanners.RRTPlanner;
-import org.robwork.rw_proximitystrategies.ProximityStrategyFactory;
+import org.robwork.sdurw.*;
+import static org.robwork.sdurw.sdurw.ownedPtr;
+import org.robwork.sdurw_pathplanners.RRTPlanner;
+import org.robwork.sdurw_proximitystrategies.ProximityStrategyFactory;
 
 public class ExMotionPlanning {
     public static final String WC_FILE =
             "/scenes/SinglePA10Demo/SinglePA10DemoGantry.wc.xml";
 
     public static void main(String[] args) throws Exception {
-        LoaderRW.load("rw");
-        LoaderRW.load("rw_pathplanners");
-        LoaderRW.load("rw_proximitystrategies");
+        LoaderRW.load("sdurw");
+        LoaderRW.load("sdurw_pathplanners");
+        LoaderRW.load("sdurw_proximitystrategies");
 
         if (args.length != 1) {
             System.out.print("Usage: java " + ExMotionPlanning.class.getSimpleName());

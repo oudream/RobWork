@@ -1,10 +1,10 @@
 import org.robwork.LoaderRW;
-import org.robwork.rw.*;
-import static org.robwork.rw.rwConstants.*;
+import org.robwork.sdurw.*;
+import static org.robwork.sdurw.sdurwConstants.*;
 
 public class ExRPY {
     public static void main(String[] args) throws Exception {
-        LoaderRW.load("rw");
+        LoaderRW.load("sdurw");
 
         RPYd rpy = new RPYd(Pi,Pi/2,0);
         System.out.println("RPY: " + rpy);
