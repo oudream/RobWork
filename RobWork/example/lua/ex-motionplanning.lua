@@ -1,9 +1,9 @@
-require("rw")
-require("rw_pathplanners")
-require("rw_proximitystrategies")
-using("rw")
-using("rw_pathplanners")
-using("rw_proximitystrategies")
+require("sdurw")
+require("sdurw_pathplanners")
+require("sdurw_proximitystrategies")
+using("sdurw")
+using("sdurw_pathplanners")
+using("sdurw_proximitystrategies")
 
 if #arg ~= 1 then
     print("Usage: lua ex-motionplanning.lua <path/to/RobWorkData>")

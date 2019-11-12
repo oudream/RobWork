@@ -1,5 +1,5 @@
-require("rw")
-using("rw")
+require("sdurw")
+using("sdurw")
 
 rpy = RPYd(Pi,Pi/2,0);
 print("RPY: " .. tostring(rpy));
