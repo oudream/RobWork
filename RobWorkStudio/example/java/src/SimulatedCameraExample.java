@@ -1,16 +1,16 @@
 import java.lang.String;
 
 import org.robwork.*;
-import org.robwork.rw.*;
-import org.robwork.rw_simulation.*;
-import org.robwork.rws.RobWorkStudioPtr;
-import static org.robwork.rw_simulation.rw_simulation.ownedPtr;
-import static org.robwork.rws.rws.getRobWorkStudioInstance;
+import org.robwork.sdurw.*;
+import org.robwork.sdurw_simulation.*;
+import org.robwork.sdurws.RobWorkStudioPtr;
+import static org.robwork.sdurw_simulation.sdurw_simulation.ownedPtr;
+import static org.robwork.sdurws.sdurws.getRobWorkStudioInstance;
 
 public class SimulatedCameraExample {
     public static void main(String[] args) throws Exception {
-        LoaderRW.load("rw");
-        LoaderRW.load("rw_simulation");
+        LoaderRW.load("sdurw");
+        LoaderRW.load("sdurw_simulation");
         LoaderRWS.load();
         
         if (args.length != 1)
