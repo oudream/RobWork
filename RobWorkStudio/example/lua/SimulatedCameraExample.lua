@@ -1,10 +1,10 @@
-require("rw")
-require("rw_simulation")
-require("rws")
+require("sdurw")
+require("sdurw_simulation")
+require("sdurws")
 
-using("rw")
-using("rw_simulation")
-using("rws")
+using("sdurw")
+using("sdurw_simulation")
+using("sdurws")
 
 if #arg ~= 1 then
     error("Provide the path to RobWorkData as first argument.")
