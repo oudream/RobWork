@@ -11,3 +11,6 @@ Install the 4 packages like this::
 
     sudo apt-get install libsdurw-all-dev libsdurws-all-dev libsdurwhw-all-dev libsdurwsim-all-dev
 
+.. note::
+
+   When using the precompiled packages the following interfaces will NOT be available : Java, Lua, Python. Matlab.

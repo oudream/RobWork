@@ -87,10 +87,7 @@ Model3D::Ptr LoaderAssimp::load(const std::string& filename) {
 			for (std::size_t i = 0; i < scene->mNumMaterials; i++) {
 				Model3D::Material &rwmaterial = materials[i];
 				aiMaterial* material = scene->mMaterials[i];
-                //for( int n=0;n<0xb;n++)
-                //    std::cout << "   " << material->GetTextureCount((aiTextureType)n) << std::endl;
-
-                //std::cout  << "DIFFUSE:" << material->GetTextureCount(aiTextureType_DIFFUSE) << std::endl;
+				
 				// Set name
 				aiString name;
 				if (material->Get(AI_MATKEY_NAME,name) == aiReturn_SUCCESS) {

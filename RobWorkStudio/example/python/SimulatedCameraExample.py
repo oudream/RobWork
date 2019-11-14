@@ -1,6 +1,6 @@
-from rw import *
-from rw_simulation import *
-from rws import *
+from sdurw import *
+from sdurw_simulation import *
+from sdurws import *
 import sys
 
 if __name__ == '__main__':
