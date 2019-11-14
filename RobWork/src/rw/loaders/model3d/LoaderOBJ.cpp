@@ -21,12 +21,14 @@
 #include <rw/common/StringUtil.hpp>
 #include <rw/geometry/IndexedPolygon.hpp>
 #include <rw/geometry/Triangulate.hpp>
+#include <rw/loaders/ImageFactory.hpp>
 #include <rw/math/EAA.hpp>
 
 #include <boost/foreach.hpp>
 #include <fstream>
 
 using namespace rw::loaders;
+using namespace rw::graphics;
 using namespace rw::graphics;
 using namespace rw::math;
 using namespace rw::common;
@@ -40,6 +42,49 @@ namespace rw { namespace loaders {
     class OBJReader
     {
       public:
+        struct Face
+        {
+            int v;
+            int vn;
+            int vt;
+        };
+        struct MaterialFaces
+        {
+            // Index to our vertex array of all the faces that use this material
+            std::vector< Face > subFaces;
+            int MatIndex;    // An index to our materials
+        };
+
+        // The file can be made up of several objects
+        struct Object
+        {
+            std::string name;                         // The object name
+            std::vector< MaterialFaces > MatFaces;    // The faces are divided by materials
+        };
+
+      public:
+        OBJReader ();
+        ~OBJReader ();
+
+        void Load (const std::string& fileName);
+        void render (float alpha) const;
+        void scale (float factor);
+        void writeFile (const std::string& filename) const;
+        void calcVertexNormals ();
+
+        std::string _dirName;
+
+        typedef std::pair< Vector2D< float >, float > imgCord;
+        std::vector< Model3D::Material > _materials;    // The array of materials
+        std::vector< TextureData > _textures;           // The array of Textures
+        std::vector< Object > _objects;                 // The array of objects in the model
+        std::vector< Vector3D< float > > _vertexes;     // The array of vertices
+        std::vector< Vector3D< float > > _normals;      // The array of the normals for the vertices
+        std::vector< imgCord > _texCoords;    // The array of texture coordinates for the vertices
+
+      private:
+        size_t _currentMat;
+
         char* rwStrtok (char* _Str, const char* _Delim, char** _Context)
         {
             int numDelim = static_cast< int > (strlen (_Delim));
@@ -80,142 +125,6 @@ namespace rw { namespace loaders {
             return _Str;
         }
 
-        struct Vec3
-        {
-          public:
-            float _v[3];
-
-            Vec3 (float v1, float v2, float v3)
-            {
-                _v[0] = v1;
-                _v[1] = v2;
-                _v[2] = v3;
-            }
-        };
-
-        struct IVec3
-        {
-          public:
-            int _v[3];
-
-            IVec3 (int i1, int i2, int i3)
-            {
-                _v[0] = i1;
-                _v[1] = i2;
-                _v[2] = i3;
-            }
-        };
-
-        struct Vec4
-        {
-          public:
-            float _v[4];
-            Vec4 (float v1, float v2, float v3, float v4)
-            {
-                _v[0] = v1;
-                _v[1] = v2;
-                _v[2] = v3;
-                _v[3] = v4;
-            }
-        };
-
-        struct Mtl
-        {
-          public:
-            std::string _name;
-            Vec4 _Ka;
-            Vec4 _Kd;
-            Vec4 _Ks;
-            float _Ns;
-            Vec4 _Tf;
-            float _d;
-
-            Mtl () :
-                _Ka (0.2f, 0.2f, 0.2f, 1.0f), _Kd (0.8f, 0.8f, 0.8f, 1.0f),
-                _Ks (1.0f, 1.0f, 1.0f, 1.0f), _Ns (0), _Tf (0.0f, 0.0f, 0.0f, 1.0f), _d (1.0f)
-            {}
-
-            void Write (std::ostream& out)
-            {
-                out << "newmtl " << _name << std::endl;
-                out << "Ka " << _Ka._v[0] << " " << _Ka._v[1] << " " << _Ka._v[2] << std::endl;
-                out << "Kd " << _Kd._v[0] << " " << _Kd._v[1] << " " << _Kd._v[2] << std::endl;
-                out << "Ks " << _Ks._v[0] << " " << _Ks._v[1] << " " << _Ks._v[2] << std::endl;
-                out << "Tf " << _Tf._v[0] << " " << _Tf._v[1] << " " << _Tf._v[2] << std::endl;
-                out << "d " << _d << std::endl;
-                out << "Ns " << _Ns << std::endl;
-            }
-        };
-
-        class RenderItem
-        {
-          public:
-            virtual void write (std::ostream& out) = 0;
-        };
-
-        class Face : public RenderItem
-        {
-          public:
-            OBJReader* _objReader;
-
-          public:
-            rw::math::Vector3D< float > _vCommonNorm;
-            std::vector< IVec3 > _element;
-
-            Face (OBJReader* objReader) : _objReader (objReader) {}
-
-            virtual void write (std::ostream& out)
-            {
-                out << "f";
-                std::vector< IVec3 >::iterator it;
-                for (it = _element.begin (); it != _element.end (); it++) {
-                    out << " " << it->_v[0];
-                    if (it->_v[1] != -1) {
-                        out << "/" << it->_v[1] << "/";
-                        if (it->_v[2] != -1)
-                            out << it->_v[2];
-                    }
-                    else if (it->_v[2] != -1) {
-                        out << "//" << it->_v[2];
-                    }
-                }
-                out << std::endl;
-            }
-            void calcCommonNormal ();
-        };
-
-        class UseMaterial : public RenderItem
-        {
-          public:
-            Mtl* _material;
-
-          public:
-            UseMaterial (Mtl* material) : _material (material) {}
-            virtual void write (std::ostream& out)
-            {
-                out << "usemtl " << _material->_name << std::endl;
-            }
-        };
-
-      public:
-        OBJReader ();
-        ~OBJReader ();
-
-        void load (const std::string& fileName);
-        void render (float alpha) const;
-        void scale (float factor);
-        void writeFile (const std::string& filename) const;
-        void calcVertexNormals ();
-
-        std::string _dirName;
-        std::vector< Vec3 > _geoVertices;
-        std::vector< Vec3 > _textVertices;
-        std::vector< Vec3 > _vertexNormals;
-        std::vector< RenderItem* > _renderItems;
-        std::map< std::string, Mtl* > _materials;
-
-        std::map< double, std::vector< Vec3* > > _yMap;
-
       private:
         void parseMtlFile (const std::string& fileName);
         void writeMtlFile (const std::string& filename) const;
@@ -227,7 +136,7 @@ namespace rw { namespace loaders {
         void parse_vt (char** next_token);
         void parse_vn (char** next_token);
         void parse_face (char** next_token);
-        void parse_g (char** next_token) { RW_WARN ("obj type 'g' not implemented"); }
+        void parse_g (char** next_token);
         void parse_usemtl (char** next_token);
         void parse_mtllib (char** next_token);
         void parse_vp (char** next_token) { RW_WARN ("obj type 'vp' not implemented"); }
@@ -264,22 +173,30 @@ namespace rw { namespace loaders {
         void parse_stech (char** next_token) { RW_WARN ("obj type 'stech' not implemented"); }
         void parse_s (char** next_token) { RW_WARN ("obj type 's' not implemented"); }
 
-        typedef void (OBJReader::*MtlFuncPtr) (char** next_token, Mtl** material);
+        typedef void (OBJReader::*MtlFuncPtr) (char** next_token);
         std::map< std::string, MtlFuncPtr > _mtlTypeMap;
 
-        void parse_mtl_newmtl (char** next_token, Mtl** material);
-        void parse_mtl_illum (char** next_token, Mtl** material);
-        void parse_mtl_Kd (char** next_token, Mtl** material);
-        void parse_mtl_Ka (char** next_token, Mtl** material);
-        void parse_mtl_Tf (char** next_token, Mtl** material);
-        void parse_mtl_Ni (char** next_token, Mtl** material);
-        void parse_mtl_Ks (char** next_token, Mtl** material);
-        void parse_mtl_Ns (char** next_token, Mtl** material);
-        void parse_mtl_d (char** next_token, Mtl** material);
+        void parse_mtl_newmtl (char** next_token);
+        void parse_mtl_illum (char** next_token);
+        void parse_mtl_Kd (char** next_token);
+        void parse_mtl_Ka (char** next_token);
+        void parse_mtl_Tf (char** next_token);
+        void parse_mtl_Ni (char** next_token);
+        void parse_mtl_Ks (char** next_token);
+        void parse_mtl_Ns (char** next_token);
+        void parse_mtl_d (char** next_token);
+        void parse_mtl_Tr (char** next_token);
 
-        void parse_mtl_map_Ka (char** next_token, Mtl** material);
-        void parse_mtl_map_Kd (char** next_token, Mtl** material);
-        // void parse_mtl_map_Kd(char **next_token, Mtl **material);
+        void parse_mtl_map_Ka (char** next_token);
+        void parse_mtl_map_Kd (char** next_token);
+        void parse_mtl_bump (char** next_token);
+        void parse_mtl_map_bump (char** next_token);
+        void parse_mtl_map_opacity (char** next_token);
+        void parse_mtl_map_d (char** next_token);
+        void parse_mtl_refl (char** next_token);
+        void parse_mtl_map_kS (char** next_token);
+        void parse_mtl_map_kA (char** next_token);
+        void parse_mtl_map_Ns (char** next_token);
 
         int parseInt (char** next_token);
         float parseFloat (char** next_token);
@@ -288,7 +205,7 @@ namespace rw { namespace loaders {
 
 }}    // namespace rw::loaders
 
-void OBJReader::Face::calcCommonNormal ()
+/*void OBJReader::Face::calcCommonNormal ()
 {
     if (_element.size () >= 3) {
         Vector3D< float > p0 (_objReader->_geoVertices[_element[0]._v[0] - 1]._v[0],
@@ -305,10 +222,16 @@ void OBJReader::Face::calcCommonNormal ()
         _vCommonNorm          = cross (p21, p01);
         _vCommonNorm          = normalize (_vCommonNorm);
     }
-}
+}*/
 
 OBJReader::OBJReader ()
 {
+    _objects.push_back (Object ());
+    _objects.back ().name = "Default";
+
+    _materials.push_back (Model3D::Material ("Default", 0.5, 0.5, 0.5));
+    _currentMat = 0;
+
     _objTypeMap["v"]          = &OBJReader::parse_v;
     _objTypeMap["vt"]         = &OBJReader::parse_vt;
     _objTypeMap["vn"]         = &OBJReader::parse_vn;
@@ -344,43 +267,37 @@ OBJReader::OBJReader ()
     _objTypeMap["stech"]      = &OBJReader::parse_stech;
     _objTypeMap["s"]          = &OBJReader::parse_s;
 
-    _mtlTypeMap["newmtl"] = &OBJReader::parse_mtl_newmtl;
-    _mtlTypeMap["illum"]  = &OBJReader::parse_mtl_illum;
-    _mtlTypeMap["Kd"]     = &OBJReader::parse_mtl_Kd;
-    _mtlTypeMap["Ka"]     = &OBJReader::parse_mtl_Ka;
-    _mtlTypeMap["Tf"]     = &OBJReader::parse_mtl_Tf;
-    _mtlTypeMap["Ni"]     = &OBJReader::parse_mtl_Ni;
-    _mtlTypeMap["Ks"]     = &OBJReader::parse_mtl_Ks;
-    _mtlTypeMap["Ns"]     = &OBJReader::parse_mtl_Ns;
-    _mtlTypeMap["d"]      = &OBJReader::parse_mtl_d;
-    _mtlTypeMap["Tr"]     = &OBJReader::parse_mtl_d;
-    _mtlTypeMap["map_Kd"] = &OBJReader::parse_mtl_Kd;
-    _mtlTypeMap["map_Ka"] = &OBJReader::parse_mtl_Ka;
+    _mtlTypeMap["newmtl"]      = &OBJReader::parse_mtl_newmtl;
+    _mtlTypeMap["illum"]       = &OBJReader::parse_mtl_illum;
+    _mtlTypeMap["Kd"]          = &OBJReader::parse_mtl_Kd;
+    _mtlTypeMap["Ka"]          = &OBJReader::parse_mtl_Ka;
+    _mtlTypeMap["Tf"]          = &OBJReader::parse_mtl_Tf;
+    _mtlTypeMap["Ni"]          = &OBJReader::parse_mtl_Ni;
+    _mtlTypeMap["Ks"]          = &OBJReader::parse_mtl_Ks;
+    _mtlTypeMap["Ns"]          = &OBJReader::parse_mtl_Ns;
+    _mtlTypeMap["d"]           = &OBJReader::parse_mtl_d;
+    _mtlTypeMap["Tr"]          = &OBJReader::parse_mtl_Tr;
+    _mtlTypeMap["map_Kd"]      = &OBJReader::parse_mtl_map_Kd;
+    _mtlTypeMap["map_Ka"]      = &OBJReader::parse_mtl_map_Ka;
+    _mtlTypeMap["map_bump"]    = &OBJReader::parse_mtl_map_bump;
+    _mtlTypeMap["bump"]        = &OBJReader::parse_mtl_map_bump;
+    _mtlTypeMap["map_opacity"] = &OBJReader::parse_mtl_map_opacity;
+    _mtlTypeMap["map_d"]       = &OBJReader::parse_mtl_map_d;
+    _mtlTypeMap["refl"]        = &OBJReader::parse_mtl_refl;
+    _mtlTypeMap["map_kS"]      = &OBJReader::parse_mtl_map_kS;
+    _mtlTypeMap["map_kA"]      = &OBJReader::parse_mtl_map_kA;
+    _mtlTypeMap["map_Ns"]      = &OBJReader::parse_mtl_map_Ns;
 }
 
 OBJReader::~OBJReader ()
-{
-    std::map< std::string, Mtl* >::iterator it;
-    for (it = _materials.begin (); it != _materials.end (); it++)
-        delete it->second;
-}
-
-void OBJReader::parse_mtl_map_Ka (char** next_token, Mtl** material)
-{
-    // TODO: implements map_Ka functionality
-}
-
-void OBJReader::parse_mtl_map_Kd (char** next_token, Mtl** material)
-{
-    // TODO: implements map_Kd functionality
-}
+{}
 
 void OBJReader::parse_v (char** next_token)
 {
     float x = parseFloat (next_token);
     float y = parseFloat (next_token);
     float z = parseFloat (next_token);
-    _geoVertices.push_back (Vec3 (x, y, z));
+    _vertexes.push_back ({x, y, z});
 }
 
 void OBJReader::parse_vt (char** next_token)
@@ -388,7 +305,7 @@ void OBJReader::parse_vt (char** next_token)
     float u = parseFloat (next_token);
     float v = parseOptionalFloat (next_token, 0.0);
     float w = parseOptionalFloat (next_token, 0.0);
-    _textVertices.push_back (Vec3 (u, v, w));
+    _texCoords.push_back (imgCord ({u, v}, w));
 }
 
 void OBJReader::parse_vn (char** next_token)
@@ -396,13 +313,24 @@ void OBJReader::parse_vn (char** next_token)
     float i = parseFloat (next_token);
     float j = parseFloat (next_token);
     float k = parseFloat (next_token);
-    _vertexNormals.push_back (Vec3 (i, j, k));
+    _normals.push_back ({i, j, k});
+}
+
+void OBJReader::parse_g (char** next_token)
+{
+    _objects.push_back (Object ());
+    if (strlen (*next_token) != 0) {
+        _objects.back ().name = *next_token;
+    }
+    else {
+        _objects.back ().name = "Default" + std::to_string (_objects.size ());
+    }
 }
 
 void OBJReader::parse_face (char** next_token)
 {
-    Face* face = new Face (this);
-    _renderItems.push_back (face);
+    MaterialFaces face;
+
     char* token;
     while ((token = rwStrtok (NULL, " \t", next_token)) != NULL) {
         char* p = token;
@@ -435,76 +363,157 @@ void OBJReader::parse_face (char** next_token)
                 token = ++p;
             }
         }
-        face->_element.push_back (IVec3 (v, vt, vn));
+        face.subFaces.push_back ({v - 1, vn - 1, vt - 1});
     }
+    face.MatIndex = _currentMat;
+    _objects.back ().MatFaces.push_back (face);
 }
 
 void OBJReader::parse_usemtl (char** next_token)
 {
-    char* token                                = rwStrtok (NULL, "\r\n", next_token);
-    std::map< std::string, Mtl* >::iterator it = _materials.find (token);
-    if (it == _materials.end ())
+    char* token   = rwStrtok (NULL, "\r\n", next_token);
+    bool foundMat = false;
+    for (size_t i = 0; i < _materials.size (); i++) {
+        if (_materials[i].name == std::string (token)) {
+            foundMat    = true;
+            _currentMat = i;
+        }
+    }
+    if (!foundMat) {
         RW_THROW ("Material '" << token << "' not defined");
-    _renderItems.push_back (new UseMaterial (it->second));
+    }
 }
 
 void OBJReader::parse_mtllib (char** next_token)
 {
     char* token;
-    while ((token = rwStrtok (NULL, " \t", next_token)) != NULL)
+    while ((token = rwStrtok (NULL, " \t", next_token)) != NULL) {
         parseMtlFile (_dirName + token);
+    }
 }
 
-void OBJReader::parse_mtl_newmtl (char** next_token, Mtl** material)
+void OBJReader::parse_mtl_newmtl (char** next_token)
 {
-    char* token        = rwStrtok (NULL, "\r\n", next_token);
-    *material          = new Mtl ();
-    _materials[token]  = *material;
-    (*material)->_name = token;
+    char* token = rwStrtok (NULL, "\r\n", next_token);
+    _materials.push_back (Model3D::Material (token, 0.5, 0.5, 0.5));
 }
 
-void OBJReader::parse_mtl_illum (char** next_token, Mtl** material)
+void OBJReader::parse_mtl_illum (char** next_token)
 {}
 
-void OBJReader::parse_mtl_Kd (char** next_token, Mtl** material)
+void OBJReader::parse_mtl_Kd (char** next_token)
 {
-    (*material)->_Kd._v[0] = parseFloat (next_token);
-    (*material)->_Kd._v[1] = parseFloat (next_token);
-    (*material)->_Kd._v[2] = parseFloat (next_token);
+    _materials.back ().rgb[0] = parseFloat (next_token);
+    _materials.back ().rgb[1] = parseFloat (next_token);
+    _materials.back ().rgb[2] = parseFloat (next_token);
 }
 
-void OBJReader::parse_mtl_Ka (char** next_token, Mtl** material)
+void OBJReader::parse_mtl_Ka (char** next_token)
 {
-    (*material)->_Ka._v[0] = parseFloat (next_token);
-    (*material)->_Ka._v[1] = parseFloat (next_token);
-    (*material)->_Ka._v[2] = parseFloat (next_token);
+    _materials.back ().ambient[0] = parseFloat (next_token);
+    _materials.back ().ambient[1] = parseFloat (next_token);
+    _materials.back ().ambient[2] = parseFloat (next_token);
+    _materials.back ().simplergb  = false;
 }
 
-void OBJReader::parse_mtl_Tf (char** next_token, Mtl** material)
+void OBJReader::parse_mtl_Tf (char** next_token)
 {
-    (*material)->_Tf._v[0] = parseFloat (next_token);
-    (*material)->_Tf._v[1] = parseFloat (next_token);
-    (*material)->_Tf._v[2] = parseFloat (next_token);
+    // TODO this specifies how much color is let trough in RGB "Transmission Filter"
 }
 
-void OBJReader::parse_mtl_Ni (char** next_token, Mtl** material)
+void OBJReader::parse_mtl_Ni (char** next_token)
 {}
 
-void OBJReader::parse_mtl_Ks (char** next_token, Mtl** material)
+void OBJReader::parse_mtl_Ks (char** next_token)
 {
-    (*material)->_Ks._v[0] = parseFloat (next_token);
-    (*material)->_Ks._v[1] = parseFloat (next_token);
-    (*material)->_Ks._v[2] = parseFloat (next_token);
+    _materials.back ().specular[0] = parseFloat (next_token);
+    _materials.back ().specular[1] = parseFloat (next_token);
+    _materials.back ().specular[2] = parseFloat (next_token);
 }
 
-void OBJReader::parse_mtl_Ns (char** next_token, Mtl** material)
+void OBJReader::parse_mtl_Ns (char** next_token)
 {
-    (*material)->_Ns = parseFloat (next_token) / 1000 * 128;
+    _materials.back ().shininess = parseFloat (next_token) / 1000.0 * 128.0;
 }
 
-void OBJReader::parse_mtl_d (char** next_token, Mtl** material)
+void OBJReader::parse_mtl_d (char** next_token)
 {
-    (*material)->_d = parseFloat (next_token);
+    _materials.back ().transparency = parseFloat (next_token);
+}
+
+void OBJReader::parse_mtl_Tr (char** next_token)
+{
+    _materials.back ().transparency = 1.0 - parseFloat (next_token);
+}
+
+void OBJReader::parse_mtl_map_Ka (char** next_token)
+{
+    // TODO: implements map_Ka functionality
+}
+
+void OBJReader::parse_mtl_map_Kd (char** next_token)
+{
+    char* token;
+    while (strlen (*next_token) != 0) {
+        token = rwStrtok (NULL, " \t", next_token);
+        if (token[0] == '-') {
+            // TODO: handle options
+        }
+        else {
+            _textures.push_back (
+                TextureData (token, ImageLoader::Factory::load (_dirName + token)));
+            _materials.back ().texId = _textures.size () - 1;
+        }
+    }
+}
+
+void OBJReader::parse_mtl_map_opacity (char** next_token)
+{
+    if (strlen (*next_token) != 0) {
+        RW_WARN ("mlt type 'map_opacity' not implemented");
+    }
+}
+
+void OBJReader::parse_mtl_map_bump (char** next_token)
+{
+    if (strlen (*next_token) != 0) {
+        RW_WARN ("mlt type 'map_bump' not implemented");
+    }
+}
+
+void OBJReader::parse_mtl_map_d (char** next_token)
+{
+    if (strlen (*next_token) != 0) {
+        RW_WARN ("mlt type 'map_d' not implemented");
+    }
+}
+
+void OBJReader::parse_mtl_refl (char** next_token)
+{
+    if (strlen (*next_token) != 0) {
+        RW_WARN ("mlt type 'refl' not implemented");
+    }
+}
+
+void OBJReader::parse_mtl_map_kS (char** next_token)
+{
+    if (strlen (*next_token) != 0) {
+        RW_WARN ("mlt type 'map_kS' not implemented");
+    }
+}
+
+void OBJReader::parse_mtl_map_kA (char** next_token)
+{
+    if (strlen (*next_token) != 0) {
+        RW_WARN ("mlt type 'map_kA' not implemented");
+    }
+}
+
+void OBJReader::parse_mtl_map_Ns (char** next_token)
+{
+    if (strlen (*next_token) != 0) {
+        RW_WARN ("mlt type 'map_Ns' not implemented");
+    }
 }
 
 int OBJReader::parseInt (char** next_token)
@@ -532,7 +541,7 @@ float OBJReader::parseOptionalFloat (char** next_token, float defaultVal)
         return static_cast< float > (atof (token));
 }
 
-void OBJReader::load (const std::string& fileName)
+void OBJReader::Load (const std::string& fileName)
 {
     int lineNum = 1;
     char* buffer;
@@ -547,13 +556,11 @@ void OBJReader::load (const std::string& fileName)
 
     // Read first line
     line = rwStrtok (buffer, "\r\n", &next_line);
-
     while (line != NULL) {
         if (line[0] != '#') {
             char* token;
             char* next_token;
-            token = rwStrtok (line, " \t", &next_token);
-
+            token                                         = rwStrtok (line, " \t", &next_token);
             std::map< std::string, FuncPtr >::iterator it = _objTypeMap.find (token);
             if (it == _objTypeMap.end ())
                 RW_WARN ("Unknown type: '" << token << "' in line " << lineNum);
@@ -570,7 +577,6 @@ void OBJReader::parseMtlFile (const std::string& fileName)
     char* buffer;
     char* line;
     char* next_line = 0;
-    Mtl* material;
 
     std::vector< char > vecBuf;
     IOUtil::readFile (fileName, vecBuf);
@@ -584,12 +590,11 @@ void OBJReader::parseMtlFile (const std::string& fileName)
         if (line[0] != '#') {
             char* token;
             char* next_token;
-            token = rwStrtok (line, " \t", &next_token);
-
+            token                                            = rwStrtok (line, " \t", &next_token);
             std::map< std::string, MtlFuncPtr >::iterator it = _mtlTypeMap.find (token);
             if (it == _mtlTypeMap.end ())
                 RW_THROW ("Unknown mtl type: '" << token << "' in line " << lineNum);
-            (this->*it->second) (&next_token, &material);
+            (this->*it->second) (&next_token);
         }
         line = rwStrtok (NULL, "\r\n", &next_line);
         lineNum++;
@@ -598,11 +603,8 @@ void OBJReader::parseMtlFile (const std::string& fileName)
 
 void OBJReader::scale (float factor)
 {
-    std::vector< Vec3 >::iterator it;
-    for (it = _geoVertices.begin (); it != _geoVertices.end (); it++) {
-        it->_v[0] *= factor;
-        it->_v[1] *= factor;
-        it->_v[2] *= factor;
+    for (Vector3D< float >& v : this->_vertexes) {
+        v *= factor;
     }
 }
 
@@ -619,7 +621,7 @@ void OBJReader::writeFile (const std::string& filename) const
 
     out << "mtllib " << mtlFilename.substr (mtlFilename.rfind ("\\") + 1) << std::endl;
 
-    std::vector< Vec3 >::const_iterator it;
+    /*std::vector< Vec3 >::const_iterator it;
     out.precision (6);
     out.setf (std::ios_base::fixed);
     for (it = _geoVertices.begin (); it != _geoVertices.end (); it++)
@@ -634,7 +636,7 @@ void OBJReader::writeFile (const std::string& filename) const
     std::vector< RenderItem* >::const_iterator it2;
     for (it2 = _renderItems.begin (); it2 != _renderItems.end (); it2++)
         (*it2)->write (out);
-
+        */
     out.close ();
 }
 
@@ -646,16 +648,16 @@ void OBJReader::writeMtlFile (const std::string& filename) const
     out.precision (6);
     out.setf (std::ios_base::fixed);
 
-    std::map< std::string, Mtl* >::const_iterator it;
+    /*std::map< std::string, Mtl* >::const_iterator it;
     for (it = _materials.begin (); it != _materials.end (); it++)
         it->second->Write (out);
-
+        */
     out.close ();
 }
 
 void OBJReader::calcVertexNormals ()
 {
-    std::map< int, std::vector< Face* > > geoVertexFaceMap;
+    /*std::map< int, std::vector< Face* > > geoVertexFaceMap;
     std::vector< RenderItem* >::iterator rit;
     std::vector< IVec3 >::iterator eit;
     for (rit = _renderItems.begin (); rit != _renderItems.end (); rit++) {
@@ -677,7 +679,7 @@ void OBJReader::calcVertexNormals ()
             tmp += (*vit)->_vCommonNorm;
         tmp /= static_cast< float > (git->second.size ());
         _vertexNormals.push_back (Vec3 (tmp[0], tmp[1], tmp[2]));
-    }
+    }*/
 }
 
 namespace {
@@ -720,7 +722,6 @@ void triangulatePolygon (IndexedPolygonN< T >& poly,
         RW_WARN ("Could not triangulate polygon face. Check face for overlapping points!");
     }
 }
-
 }    // namespace
 
 Model3D::Ptr LoaderOBJ::load (const std::string& name)
@@ -730,137 +731,127 @@ Model3D::Ptr LoaderOBJ::load (const std::string& name)
     // We set the locale to make sure things are parsed correctly in from file
     setlocale (LC_ALL, "C");
     OBJReader reader;
-    reader.load (name);
+    reader.Load (name);
     // Restore the old locale
     setlocale (LC_ALL, locale.c_str ());
 
-    // First count the vertices
-    std::size_t vertexPoints = 0;
-    BOOST_FOREACH (OBJReader::RenderItem* item, reader._renderItems) {
-        if (const OBJReader::Face* const face = dynamic_cast< OBJReader::Face* > (item)) {
-            vertexPoints += face->_element.size ();
-        }
-    }
-
     Model3D::Ptr model (ownedPtr (new Model3D (name)));
+    model->_textures  = reader._textures;
+    model->_materials = reader._materials;
 
     Model3D::Object3DGeneric::Ptr obj;
     Model3D::Object3D< uint8_t >::Ptr obj8;
     Model3D::Object3D< uint16_t >::Ptr obj16;
     Model3D::Object3D< uint32_t >::Ptr obj32;
-    if (vertexPoints < UINT8_MAX)
-        obj = obj8 = ownedPtr (new Model3D::Object3D< uint8_t > ("OBJModel"));
-    else if (vertexPoints < UINT16_MAX)
-        obj = obj16 = ownedPtr (new Model3D::Object3D< uint16_t > ("OBJModel"));
-    else if (vertexPoints < UINT32_MAX)
-        obj = obj32 = ownedPtr (new Model3D::Object3D< uint32_t > ("OBJModel"));
-    else
-        RW_THROW ("LoaderOBJ can not load file " << name << " as it has too many vertices ("
-                                                 << vertexPoints << " with max of " << UINT32_MAX
-                                                 << ")!");
 
-    int currentMatIdx     = model->addMaterial (Model3D::Material ("defcol", 0.5, 0.5, 0.5));
-    std::size_t nb_points = 0;
-    BOOST_FOREACH (OBJReader::RenderItem* item, reader._renderItems) {
-        if (OBJReader::UseMaterial* matobj = dynamic_cast< OBJReader::UseMaterial* > (item)) {
-            float r = matobj->_material->_Kd._v[0];
-            float g = matobj->_material->_Kd._v[1];
-            float b = matobj->_material->_Kd._v[2];
-            Model3D::Material mat (matobj->_material->_name, r, g, b);
-            for (unsigned int i = 0; i < 3; i++) {
-                mat.ambient[i]  = matobj->_material->_Ka._v[i];
-                mat.specular[i] = matobj->_material->_Ks._v[i];
-            }
-            mat.shininess    = matobj->_material->_Ns;
-            mat.transparency = matobj->_material->_d;
-            mat.simplergb    = false;
-            currentMatIdx    = model->addMaterial (mat);
-            obj->setMaterial (currentMatIdx);
+    model->_objects.resize (reader._objects.size ());
+    std::vector< Model3D::Object3DGeneric::Ptr >& objects = model->_objects;
+
+    for (size_t i = 0; i < objects.size (); i++) {
+        OBJReader::Object& obj_src = reader._objects[i];
+
+        // First count the vertices
+        std::size_t vertexPoints = 0;
+        for (OBJReader::MaterialFaces& matFace : obj_src.MatFaces) {
+            vertexPoints += matFace.subFaces.size ();
         }
-        else if (OBJReader::Face* face = dynamic_cast< OBJReader::Face* > (item)) {
-            RW_ASSERT (face->_element.size () >= 2);
-            for (unsigned int i = 0; i < face->_element.size (); i++) {
-                Vector3D< float > n;
-                if (face->_element[i]._v[2] != -1) {
-                    OBJReader::Vec3 nobj = reader._vertexNormals[face->_element[i]._v[2] - 1];
-                    n = rw::math::Vector3D< float > (nobj._v[0], nobj._v[1], nobj._v[2]);
-                }
-                else {
-                    n = face->_vCommonNorm;
-                }
 
-                OBJReader::Vec3 vobj = reader._geoVertices[face->_element[i]._v[0] - 1];
+        if (vertexPoints < UINT8_MAX) {
+            obj = obj8 = ownedPtr (new Model3D::Object3D< uint8_t > (obj_src.name));
+        }
+        else if (vertexPoints < UINT16_MAX) {
+            obj = obj16 = ownedPtr (new Model3D::Object3D< uint16_t > (obj_src.name));
+        }
+        else if (vertexPoints < UINT32_MAX) {
+            obj = obj32 = ownedPtr (new Model3D::Object3D< uint32_t > (obj_src.name));
+        }
+        else {
+            RW_THROW ("LoaderOBJ can not load file " << name << " as it has too many vertices ("
+                                                     << vertexPoints << " with max of "
+                                                     << UINT32_MAX << ")!");
+        }
 
-                Vector3D< float > v (vobj._v[0], vobj._v[1], vobj._v[2]);
+        // copy MatFaces
+        for (size_t j = 0; j < obj_src.MatFaces.size (); j++) {
+            const OBJReader::MaterialFaces& matFace = obj_src.MatFaces[j];
 
-                obj->_vertices.push_back (v);
-                obj->_normals.push_back (n);
-                nb_points++;
+            if (model->_materials[matFace.MatIndex].hasTexture ())
+                obj->_hasTexture = true;
+
+            obj->setMaterial (matFace.MatIndex);
+
+            int index_s = obj->_vertices.size ();
+            for (const OBJReader::Face& subFace : matFace.subFaces) {
+                obj->_vertices.push_back (reader._vertexes[subFace.v]);
+                obj->_normals.push_back (reader._normals[subFace.vn]);
+                obj->_texCoords.push_back (reader._texCoords[subFace.vt].first);
             }
 
-            if (face->_element.size () < 3) {
+            if (matFace.subFaces.size () < 3) {
                 RW_WARN ("An OBJ surface with only 2 vertices detected! It will be ignored!");
             }
-            else if (face->_element.size () == 3) {
+            else if (matFace.subFaces.size () == 3) {
                 // use TriangleUtil toIndexedTriMesh, though remember the normals
-                // obj->_faces.push_back(
-                // rw::geometry::IndexedTriangle<>(nb_points-3,nb_points-2,nb_points-1) );
                 if (vertexPoints < UINT8_MAX) {
                     obj8->addTriangle (rw::geometry::IndexedTriangle< uint8_t > (
-                        static_cast< uint8_t > (nb_points - 3),
-                        static_cast< uint8_t > (nb_points - 2),
-                        static_cast< uint8_t > (nb_points - 1)));
+                        static_cast< uint8_t > (index_s + 0),
+                        static_cast< uint8_t > (index_s + 1),
+                        static_cast< uint8_t > (index_s + 2)));
                 }
                 else if (vertexPoints < UINT16_MAX) {
                     obj16->addTriangle (rw::geometry::IndexedTriangle< uint16_t > (
-                        static_cast< uint16_t > (nb_points - 3),
-                        static_cast< uint16_t > (nb_points - 2),
-                        static_cast< uint16_t > (nb_points - 1)));
+                        static_cast< uint16_t > (index_s + 0),
+                        static_cast< uint16_t > (index_s + 1),
+                        static_cast< uint16_t > (index_s + 2)));
                 }
                 else if (vertexPoints < UINT32_MAX) {
                     obj32->addTriangle (rw::geometry::IndexedTriangle< uint32_t > (
-                        static_cast< uint32_t > (nb_points - 3),
-                        static_cast< uint32_t > (nb_points - 2),
-                        static_cast< uint32_t > (nb_points - 1)));
+                        static_cast< uint32_t > (index_s + 0),
+                        static_cast< uint32_t > (index_s + 1),
+                        static_cast< uint32_t > (index_s + 2)));
                 }
             }
             else {
-                // its a polygon, since we don't support that in Model3D, we make triangles of it
+                // its a polygon, since we don't support that in Model3D, we make triangles of
+                // it
                 if (vertexPoints < UINT8_MAX) {
-                    IndexedPolygonN< uint8_t > poly (face->_element.size ());
-                    for (size_t j = 0; j < face->_element.size (); j++)
-                        poly[j] = (uint8_t) (nb_points - face->_element.size () + j);
+                    IndexedPolygonN< uint8_t > poly (matFace.subFaces.size ());
+
+                    for (size_t k = 0; k < matFace.subFaces.size (); k++) {
+                        poly[k] = (uint8_t) index_s + k;
+                    }
+
                     std::vector< IndexedTriangle< uint8_t > > tris;
                     triangulatePolygon (poly, obj8->_vertices, tris);
                     obj8->addTriangles (tris);
                 }
                 else if (vertexPoints < UINT16_MAX) {
-                    IndexedPolygonN< uint16_t > poly (face->_element.size ());
-                    for (size_t j = 0; j < face->_element.size (); j++)
-                        poly[j] = (uint16_t) (nb_points - face->_element.size () + j);
+                    IndexedPolygonN< uint16_t > poly (matFace.subFaces.size ());
+
+                    for (size_t k = 0; k < matFace.subFaces.size (); k++) {
+                        poly[k] = (uint16_t) index_s + k;
+                    }
+
                     std::vector< IndexedTriangle< uint16_t > > tris;
                     triangulatePolygon (poly, obj16->_vertices, tris);
                     obj16->addTriangles (tris);
                 }
                 else if (vertexPoints < UINT32_MAX) {
-                    IndexedPolygonN< uint32_t > poly (face->_element.size ());
-                    for (size_t j = 0; j < face->_element.size (); j++)
-                        poly[j] = (uint32_t) (nb_points - face->_element.size () + j);
+                    IndexedPolygonN< uint32_t > poly (matFace.subFaces.size ());
+
+                    for (size_t k = 0; k < matFace.subFaces.size (); k++) {
+                        poly[k] = (uint32_t) index_s + k;
+                    }
+
                     std::vector< IndexedTriangle< uint32_t > > tris;
                     triangulatePolygon (poly, obj32->_vertices, tris);
                     obj32->addTriangles (tris);
                 }
-                // BOOST_FOREACH(IndexedTriangle<> &tri, tris){
-                // obj->_faces.push_back( tri );
-                //}
             }
         }
+
+        obj->_mappedToFaces = false;
+        model->_objects[i]  = obj;
     }
-    // std::cout << "nr faces: " << obj->_faces.size() << std::endl;
-
-    // order stuff in matrial faces
-
-    model->addObject (obj);
-    model->optimize (35 * Deg2Rad);
     return model;
 }

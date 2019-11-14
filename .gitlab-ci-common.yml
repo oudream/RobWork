@@ -340,7 +340,7 @@ stages:
     - ctest -C Release --no-compress-output -T Test -j 1
     - FOR /D %%F IN ("Testing\\*") DO IF EXIST %%F\\Test.xml move %%F\\Test.xml ..\\..\\RW-CTest.xml
     - cd ..
-     Run RobWorkStudio tests
+    # Run RobWorkStudio tests
     - cd RWS
     - msbuild gtest/sdurws-gtest_reports.vcxproj /p:Configuration=Release
     - move ..\\..\\RobWorkStudio\\bin\\release\\gtest_reports\\* ..\\..\\gtest\\
