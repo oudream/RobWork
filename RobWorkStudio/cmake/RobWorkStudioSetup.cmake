@@ -289,7 +289,7 @@ SET(ROBWORKSTUDIO_LIBRARY_DIRS
 # which is crucial for some compilers.
 # 
 SET(ROBWORKSTUDIO_LIBRARIES
-  ${PYTHON_LIBRARIES}
+  #${PYTHON_LIBRARIES}
   ${RWS_SANDBOX}
   ${RWS_LUA}
   sdurws
