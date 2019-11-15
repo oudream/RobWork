@@ -107,16 +107,6 @@ class Plugin(rwsplugin):
 
         #Stop the timer
         self.timer.stop()
-        # Remove the texture render
-        textureFrame = self.wc.findFrame("MarkerTexture")
-        if not textureFrame == None:
-            super().getRobWorkStudio().getWorkCellScene().removeDrawable("TextureImage",textureFrame)
-        
-        # Add the background render to this workcell if there is a frame for texture
-        bgFrame = self.wc.findFrame("BackgroundImage")
-        if not bgFrame == None:
-            super().getRobWorkStudio().getWorkCellScene().removeDrawable("BackgroundImage",bgFrame)
-        
         self.framegrapper = None
         self.wc = None
 
