@@ -180,6 +180,7 @@ namespace rw { namespace loaders {
         void parse_mtl_illum (char** next_token);
         void parse_mtl_Kd (char** next_token);
         void parse_mtl_Ka (char** next_token);
+        void parse_mtl_Ke (char** next_token);
         void parse_mtl_Tf (char** next_token);
         void parse_mtl_Ni (char** next_token);
         void parse_mtl_Ks (char** next_token);
@@ -188,6 +189,7 @@ namespace rw { namespace loaders {
         void parse_mtl_Tr (char** next_token);
 
         void parse_mtl_map_Ka (char** next_token);
+        void parse_mtl_map_Ke (char** next_token);
         void parse_mtl_map_Kd (char** next_token);
         void parse_mtl_bump (char** next_token);
         void parse_mtl_map_bump (char** next_token);
@@ -237,6 +239,7 @@ OBJReader::OBJReader ()
     _objTypeMap["vn"]         = &OBJReader::parse_vn;
     _objTypeMap["f"]          = &OBJReader::parse_face;
     _objTypeMap["g"]          = &OBJReader::parse_g;
+    _objTypeMap["o"]          = &OBJReader::parse_g;    // TODO Should o be parsed differently
     _objTypeMap["usemtl"]     = &OBJReader::parse_usemtl;
     _objTypeMap["mtllib"]     = &OBJReader::parse_mtllib;
     _objTypeMap["vp"]         = &OBJReader::parse_vp;
@@ -271,6 +274,7 @@ OBJReader::OBJReader ()
     _mtlTypeMap["illum"]       = &OBJReader::parse_mtl_illum;
     _mtlTypeMap["Kd"]          = &OBJReader::parse_mtl_Kd;
     _mtlTypeMap["Ka"]          = &OBJReader::parse_mtl_Ka;
+    _mtlTypeMap["Ke"]          = &OBJReader::parse_mtl_Ke;
     _mtlTypeMap["Tf"]          = &OBJReader::parse_mtl_Tf;
     _mtlTypeMap["Ni"]          = &OBJReader::parse_mtl_Ni;
     _mtlTypeMap["Ks"]          = &OBJReader::parse_mtl_Ks;
@@ -416,13 +420,24 @@ void OBJReader::parse_mtl_Ka (char** next_token)
     _materials.back ().simplergb  = false;
 }
 
+void OBJReader::parse_mtl_Ke (char** next_token)
+{
+    _materials.back ().emissive[0] = parseFloat (next_token);
+    _materials.back ().emissive[1] = parseFloat (next_token);
+    _materials.back ().emissive[2] = parseFloat (next_token);
+    _materials.back ().simplergb  = false;
+}
+
 void OBJReader::parse_mtl_Tf (char** next_token)
 {
     // TODO this specifies how much color is let trough in RGB "Transmission Filter"
 }
 
 void OBJReader::parse_mtl_Ni (char** next_token)
-{}
+{
+    // TODO
+    RW_WARN ("mlt type 'Ni' not implemented");
+}
 
 void OBJReader::parse_mtl_Ks (char** next_token)
 {
