@@ -332,7 +332,7 @@ macro(RW_IS_RELEASE IS_RELEASE)
   else()
     set(${IS_RELEASE} FALSE)
   endif()
-endmacro(RW_IS_RELEASE)
+endmacro()
 
 macro(RW_OPTIONS PREFIX)
   # Build shared libraries by default.
@@ -419,7 +419,7 @@ macro(RW_ADD_LIBRARY _name _component)
     ARCHIVE DESTINATION ${LIB_INSTALL_DIR} COMPONENT ${_component}
   )
 
-endmacro(RW_ADD_LIBRARY)
+endmacro()
 
 # ######################################################################################################################
 # Set a value in a global, cached map. _map The map name. _key The key name. _value The value.
