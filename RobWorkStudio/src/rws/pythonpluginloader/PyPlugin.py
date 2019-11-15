@@ -1,29 +1,38 @@
 from sdurws import *
 import sys
 from PySide2 import QtCore
+import copy
 
 class cpp_link(QtCore.QObject):
     def __init__(self):
-        self.plugin=None
+        self.latest_widget=sys.argv[0]
+        self.plugin={self.get_widget_name() : None}
     def register_plugin(self,aPlugin):
-        if self.plugin == None:
-            print("Plugin registered as: ", sys.argv[0])
-            self.plugin=aPlugin
+        if self.plugin[self.get_widget_name()] == None:
+            print("Plugin registered as: ", self.get_widget_name())
+            self.plugin[self.get_widget_name()]=aPlugin
         else:
             raise Exception("Only One Plugin can be registered")       
     def stateChanged(self):
-        stateChangedListener = getattr(self.plugin,"stateChangedListener",None)
-        if callable(stateChangedListener):
-            stateChangedListener(getRobWorkStudioFromQt().getState())
+        for key in self.plugin:
+            stateChangedListener = getattr(self.plugin[key],"stateChangedListener",None)
+            if callable(stateChangedListener):
+                stateChangedListener(getRobWorkStudioFromQt().getState())
     def openWorkCell(self):
-        open = getattr(self.plugin,"open",None)
-        if callable(open):
-            open(getRobWorkStudioFromQt().getWorkCell())
-        pass
+        for key in self.plugin:
+            open = getattr(self.plugin[key],"open",None)
+            if callable(open):
+                open(getRobWorkStudioFromQt().getWorkCell())
     def closeWorkCell(self):
-        close = getattr(self.plugin,"close",None)
-        if callable(close):
-            close()
+        for key in self.plugin:
+            close = getattr(self.plugin[key],"close",None)
+            if callable(close):
+                close()
+    def new_widget(self,name):
+        self.latest_widget = name
+        self.plugin[name]=None
+    def get_widget_name(self):
+        return copy.deepcopy(self.latest_widget)
 
 rws_cpp_link = cpp_link()
 
@@ -32,11 +41,12 @@ class rwsplugin(QtCore.QObject):
         print("Initializing RWS python plugin")
         self.rws_cpp_link = link
         self.rwstudio = getRobWorkStudioFromQt()
+        self.widget_name = rws_cpp_link.get_widget_name()
     def getWidget(self):
         all_widgets = QtWidgets.QApplication.allWidgets()
         window = None
         for widget in all_widgets:
-            if str(widget.objectName()) == sys.argv[0]:
+            if str(widget.objectName()) == self.widget_name:
                 window = widget
                 break  
         return window
