@@ -158,9 +158,6 @@ ENDIF()
 #
 # For some libs we need the opengl package, though it is OPTIONAL 
 #
-if(POLICY CMP0072) # Introduce cmake 3.11
-    cmake_policy(SET CMP0072 NEW)
-endif()
 FIND_PACKAGE(OpenGL)
 INCLUDE(CMakeDependentOption)
 
@@ -169,12 +166,20 @@ INCLUDE(CMakeDependentOption)
 #
 set(RW_HAVE_GLUT False)
 find_package(GLUT QUIET)
+if ( NOT GLUT_FOUND) #Check if free glut exsist
+    find_package(FreeGLUT QUIET)
+    if (FreeGLUT_FOUND)
+        set(GLUT_glut_LIBRARY FreeGLUT::freeglut)
+        set(GLUT_FOUND ${FreeGLUT_FOUND})
+    endif()
+endif ()
+
 if( OPENGL_FOUND AND GLUT_FOUND) 
-  set(RW_HAVE_GLUT True)
-  message(STATUS "RobWork: OpenGL and GLUT ENABLED! FOUND!")
+    set(RW_HAVE_GLUT True)
+    message(STATUS "RobWork: OpenGL and GLUT ENABLED! FOUND!")
 else ()
-  set(GLUT_glut_LIBRARY "")
-  message(STATUS "RobWork: OpenGL and GLUT NOT FOUND! code disabled!")
+    set(GLUT_glut_LIBRARY "")
+    message(STATUS "RobWork: OpenGL and GLUT NOT FOUND! code disabled!")
 endif ()
 
 
