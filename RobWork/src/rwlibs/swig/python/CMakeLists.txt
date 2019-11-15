@@ -88,6 +88,7 @@ if(build)
             set_target_properties(${TARGET_NAME} PROPERTIES LINK_FLAGS -Wl,--no-undefined)
         endif()
 
+        #Set build destination
         set_target_properties(
             ${TARGET_NAME}
             PROPERTIES
