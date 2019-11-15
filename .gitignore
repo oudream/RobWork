@@ -3823,6 +3823,9 @@ RobWork/example/java/src/*.log
 # /RobWorkStudio/src/rwslibs/sensors/
 /RobWorkStudio/src/rwslibs/sensors/ui_SensorsPlugin.h
 
+#RobWorkStudio/src/rwslibs/swig/python/
+/RobWorkStudio/src/rwslibs/swig/python/RobWorkStudio-*.egg-info
+
 # /RobWorkStudio/src/sandbox/
 /RobWorkStudio/src/sandbox/cmake_install.cmake
 /RobWorkStudio/src/sandbox/CMakeCache.txt
