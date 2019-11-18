@@ -399,8 +399,16 @@ tests:windows10-vs15:
 build-RW:ubuntu-1804:
   extends: .linux-build-RW
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
-  only: 
-  except: 
+  only:
+    refs:
+      - branches@sdurobotics/RobWork
+      - tags@sdurobotics/RobWork
+      - schedules
+      - web
+      - merge_requests
+      - /^ci-.*$/
+  except:
+
 
 build-RWS:ubuntu-1804:
   extends: .linux-build-RWS
@@ -408,8 +416,16 @@ build-RWS:ubuntu-1804:
     - build-RW:ubuntu-1804
   needs: ["build-RW:ubuntu-1804"]
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
-  only: 
-  except: 
+  only:
+    refs:
+      - branches@sdurobotics/RobWork
+      - tags@sdurobotics/RobWork
+      - schedules
+      - web
+      - merge_requests
+      - /^ci-.*$/
+  except:
+
 
 build-RWHW:ubuntu-1804:
   extends: .linux-build-RWHW
@@ -417,8 +433,16 @@ build-RWHW:ubuntu-1804:
     - build-RW:ubuntu-1804
   needs: ["build-RW:ubuntu-1804"]
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
-  only: 
+  only:
+    refs:
+      - branches@sdurobotics/RobWork
+      - tags@sdurobotics/RobWork
+      - schedules
+      - web
+      - merge_requests
+      - /^ci-.*$/
   except:
+
 
 build-RWSim:ubuntu-1804:
   extends: .linux-build-RWSim
@@ -427,8 +451,16 @@ build-RWSim:ubuntu-1804:
     - build-RWS:ubuntu-1804
   needs: ["build-RW:ubuntu-1804","build-RWS:ubuntu-1804"]
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
-  only: 
+  only:
+    refs:
+      - branches@sdurobotics/RobWork
+      - tags@sdurobotics/RobWork
+      - schedules
+      - web
+      - merge_requests
+      - /^ci-.*$/
   except:
+
 
 examples:ubuntu-1804:
   extends: .linux-examples
@@ -439,8 +471,16 @@ examples:ubuntu-1804:
     - build-RWSim:ubuntu-1804
   needs: ["build-RW:ubuntu-1804","build-RWS:ubuntu-1804","build-RWHW:ubuntu-1804","build-RWSim:ubuntu-1804"]
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
-  only: 
+  only:
+    refs:
+      - branches@sdurobotics/RobWork
+      - tags@sdurobotics/RobWork
+      - schedules
+      - web
+      - merge_requests
+      - /^ci-.*$/
   except:
+
 
 tests:ubuntu-1804:
   extends: .linux-tests
@@ -451,8 +491,16 @@ tests:ubuntu-1804:
     - build-RWSim:ubuntu-1804
   needs: ["build-RW:ubuntu-1804","build-RWS:ubuntu-1804","build-RWHW:ubuntu-1804","build-RWSim:ubuntu-1804"]
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
-  only: 
+  only:
+    refs:
+      - branches@sdurobotics/RobWork
+      - tags@sdurobotics/RobWork
+      - schedules
+      - web
+      - merge_requests
+      - /^ci-.*$/
   except:
+
 
 ########################## Ubuntu 1604 ################################
 
