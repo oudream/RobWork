@@ -123,9 +123,7 @@ if(build)
         endif()
 
         configure_file(__init__.py.in ${CMAKE_SWIG_OUTDIR}/__init__.py)
-
         if(NOT "${PYTHON_SITE_PACKAGES}" STREQUAL "")
-            message(STATUS " - MATCHES")
             install(TARGETS ${TARGET_NAME} DESTINATION "${PYTHON_SITE_PACKAGES}/${RW_MODULE}")
             install(FILES ${CMAKE_SWIG_OUTDIR}/${RW_MODULE}.py DESTINATION "${PYTHON_SITE_PACKAGES}/${RW_MODULE}")
             install(FILES ${CMAKE_SWIG_OUTDIR}/__init__.py DESTINATION "${PYTHON_SITE_PACKAGES}/${RW_MODULE}")
