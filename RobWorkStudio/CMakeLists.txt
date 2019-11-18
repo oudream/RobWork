@@ -1,11 +1,17 @@
 # Test CMake version
 cmake_minimum_required(VERSION 2.8.12 FATAL_ERROR)
 
+if(POLICY CMP0072) # Introduce cmake 3.11
+    cmake_policy(SET CMP0072 NEW)
+endif()
 if(POLICY CMP0074)
     cmake_policy(SET CMP0074 NEW)
 endif()
 if(POLICY CMP0078)
     cmake_policy(SET CMP0078 NEW)
+endif()
+if(POLICY CMP0086) # Introduce cmake 3.14
+    cmake_policy(SET CMP0086 NEW)
 endif()
 
 # The name of the project.

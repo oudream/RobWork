@@ -1,8 +1,8 @@
-SET(SUBSYS_NAME sdurw_opengl)
+set(SUBSYS_NAME sdurw_opengl)
 set(SUBSYS_DESC "Opengl visualization for RobWork")
-SET(SUBSYS_DEPS sdurw)
+set(SUBSYS_DEPS sdurw)
 
-if( OPENGL_FOUND AND OPENGL_GLU_FOUND )
+if(OPENGL_FOUND AND OPENGL_GLU_FOUND)
     set(DEFAULT TRUE)
     set(REASON)
 else()
@@ -10,71 +10,71 @@ else()
     set(REASON "OpenGl or Glu was not found.")
 endif()
 
-SET(build TRUE)
-RW_SUBSYS_OPTION(build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} ${REASON})
-RW_ADD_DOC(${SUBSYS_NAME})
+set(build TRUE)
+rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} ${REASON})
+rw_add_doc(${SUBSYS_NAME})
 
-IF(build)
-
-    SET(SRC_FILES
-      ${RW_DRAWABLE_USER_FILES}
-      Drawable.cpp
-      RenderArrow.cpp
-      RWGLFrameBuffer.cpp
-      DrawableFactory.cpp
-      DrawableUtil.cpp
-      RenderFrame.cpp
-      RenderGeometry.cpp
-      RenderLines.cpp
-      RenderMatrix.cpp
-      SceneOpenGL.cpp
-      TactileArrayRender.cpp
-      RWGLTexture.cpp
-      RenderImage.cpp
-      RenderModel3D.cpp
-      RenderUtil.cpp
-      RenderScan.cpp
-      RenderPointCloud.cpp
-      RenderCameraFrustum.cpp
-      DrawableGeometry.cpp
-      RenderSmoothSkin.cpp
-      RenderForceTorque.cpp
-      RenderVelocity.cpp
-      RenderText.cpp
+if(build)
+    set(
+        SRC_FILES
+        ${RW_DRAWABLE_USER_FILES}
+        Drawable.cpp
+        RenderArrow.cpp
+        RWGLFrameBuffer.cpp
+        DrawableFactory.cpp
+        DrawableUtil.cpp
+        RenderFrame.cpp
+        RenderGeometry.cpp
+        RenderLines.cpp
+        RenderMatrix.cpp
+        SceneOpenGL.cpp
+        TactileArrayRender.cpp
+        RWGLTexture.cpp
+        RenderImage.cpp
+        RenderModel3D.cpp
+        RenderUtil.cpp
+        RenderScan.cpp
+        RenderPointCloud.cpp
+        RenderCameraFrustum.cpp
+        DrawableGeometry.cpp
+        RenderSmoothSkin.cpp
+        RenderForceTorque.cpp
+        RenderVelocity.cpp
+        RenderText.cpp
     )
-    
-    SET(SRC_FILES_HPP
-      Drawable.hpp
-      RWGLFrameBuffer.hpp
-      DrawableFactory.hpp
-      DrawableUtil.hpp
-      RenderFrame.hpp
-      RenderGeometry.hpp
-      RenderLines.hpp
-      RenderMatrix.hpp
-      SceneOpenGL.hpp
-      TactileArrayRender.hpp
-      RWGLTexture.hpp
-      RenderImage.hpp
-      RenderModel3D.hpp
-      RenderUtil.hpp
-      RenderScan.hpp
-      RenderPointCloud.hpp
-      RenderCameraFrustum.hpp
-      DrawableGeometry.hpp
-      RenderSmoothSkin.hpp
-      RenderForceTorque.hpp
-      RenderVelocity.hpp
-      RenderText.hpp
-    )
-    
-    RW_ADD_LIBRARY(${SUBSYS_NAME} opengl ${SRC_FILES} ${SRC_FILES_HPP})
-    RW_ADD_INCLUDES(opengl "rwlibs/opengl" ${SRC_FILES_HPP}) 
-    
-    TARGET_LINK_LIBRARIES(${SUBSYS_NAME} PUBLIC ${SUBSYS_DEPS} ${OPENGL_LIBRARIES} ${GLUT_glut_LIBRARY})
-    ADD_DEPENDENCIES(${SUBSYS_NAME} ${SUBSYS_DEPS})
 
-	IF(CMAKE_VERSION VERSION_GREATER 3.3)
-		SET_TARGET_PROPERTIES(${SUBSYS_NAME} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
-	ENDIF()
+    set(
+        SRC_FILES_HPP
+        Drawable.hpp
+        RWGLFrameBuffer.hpp
+        DrawableFactory.hpp
+        DrawableUtil.hpp
+        RenderFrame.hpp
+        RenderGeometry.hpp
+        RenderLines.hpp
+        RenderMatrix.hpp
+        SceneOpenGL.hpp
+        TactileArrayRender.hpp
+        RWGLTexture.hpp
+        RenderImage.hpp
+        RenderModel3D.hpp
+        RenderUtil.hpp
+        RenderScan.hpp
+        RenderPointCloud.hpp
+        RenderCameraFrustum.hpp
+        DrawableGeometry.hpp
+        RenderSmoothSkin.hpp
+        RenderForceTorque.hpp
+        RenderVelocity.hpp
+        RenderText.hpp
+    )
+
+    rw_add_library(${SUBSYS_NAME} opengl ${SRC_FILES} ${SRC_FILES_HPP})
+    rw_add_includes(opengl "rwlibs/opengl" ${SRC_FILES_HPP})
+
+    target_link_libraries(${SUBSYS_NAME} PUBLIC ${SUBSYS_DEPS} ${OPENGL_LIBRARIES} ${GLUT_glut_LIBRARY})
+
+    if(CMAKE_VERSION VERSION_GREATER 3.3)
+        set_target_properties(${SUBSYS_NAME} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
+    endif()
 endif()

@@ -1671,8 +1671,12 @@ RobWork/example/java/src/*.log
 /RobWork/src/rwlibs/swig/Makefile
 /RobWork/src/rwlibs/swig/rw.py
 
-# /RobWork/src/rwlibs/swig/
+# /RobWork/src/rwlibs/swig/lua
 /RobWork/src/rwlibs/swig/lua/Lua_*.hpp
+
+# /RobWork/src/rwlibs/swig/python
+/RobWork/src/rwlibs/swig/python/setup.py
+/RobWork/src/rwlibs/swig/python/RobWork-*.egg-info
 
 # /RobWork/src/rwlibs/task/
 /RobWork/src/rwlibs/task/cmake_install.cmake
@@ -3819,6 +3823,9 @@ RobWork/example/java/src/*.log
 # /RobWorkStudio/src/rwslibs/sensors/
 /RobWorkStudio/src/rwslibs/sensors/ui_SensorsPlugin.h
 
+#RobWorkStudio/src/rwslibs/swig/python/
+/RobWorkStudio/src/rwslibs/swig/python/RobWorkStudio-*.egg-info
+
 # /RobWorkStudio/src/sandbox/
 /RobWorkStudio/src/sandbox/cmake_install.cmake
 /RobWorkStudio/src/sandbox/CMakeCache.txt
@@ -4116,5 +4123,4 @@ RobWork/example/java/src/*.log
 
 #/doc/sphinx/apidoc/java
 /doc/sphinx/apidoc/java/org
-
 
