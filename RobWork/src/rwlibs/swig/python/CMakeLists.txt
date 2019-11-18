@@ -40,7 +40,13 @@ if(build)
 
     configure_file(setup.py.in ${CMAKE_CURRENT_SOURCE_DIR}/setup.py)
     configure_file(RobWork.egg-info.in ${CMAKE_CURRENT_SOURCE_DIR}/RobWork-${ROBWORK_VERSION}.egg-info)
-    install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/RobWork-${ROBWORK_VERSION}.egg-info DESTINATION ${PYTHON_SITE_PACKAGES})
+
+    if(NOT "${PYTHON_SITE_PACKAGES}" STREQUAL "")
+        install(
+            FILES ${CMAKE_CURRENT_SOURCE_DIR}/RobWork-${ROBWORK_VERSION}.egg-info
+            DESTINATION ${PYTHON_SITE_PACKAGES}
+        )
+    endif()
 
     if(POLICY CMP0078)
         set(LIB_SUFIX _py)
@@ -117,7 +123,7 @@ if(build)
         endif()
 
         configure_file(__init__.py.in ${CMAKE_SWIG_OUTDIR}/__init__.py)
-        if(PYTHON_SITE_PACKAGES MATCHES "^.?usr")
+        if(NOT "${PYTHON_SITE_PACKAGES}" STREQUAL "")
             install(TARGETS ${TARGET_NAME} DESTINATION "${PYTHON_SITE_PACKAGES}/${RW_MODULE}")
             install(FILES ${CMAKE_SWIG_OUTDIR}/${RW_MODULE}.py DESTINATION "${PYTHON_SITE_PACKAGES}/${RW_MODULE}")
             install(FILES ${CMAKE_SWIG_OUTDIR}/__init__.py DESTINATION "${PYTHON_SITE_PACKAGES}/${RW_MODULE}")
