@@ -40,8 +40,8 @@ if(build)
 
     configure_file(setup.py.in ${CMAKE_CURRENT_SOURCE_DIR}/setup.py)
     configure_file(RobWork.egg-info.in ${CMAKE_CURRENT_SOURCE_DIR}/RobWork-${ROBWORK_VERSION}.egg-info)
-    
-    if(not "${PYTHON_SITE_PACKAGES}" STREQUAL "")
+
+    if(NOT "${PYTHON_SITE_PACKAGES}" STREQUAL "")
         install(
             FILES ${CMAKE_CURRENT_SOURCE_DIR}/RobWork-${ROBWORK_VERSION}.egg-info
             DESTINATION ${PYTHON_SITE_PACKAGES}
@@ -124,7 +124,7 @@ if(build)
 
         configure_file(__init__.py.in ${CMAKE_SWIG_OUTDIR}/__init__.py)
 
-        if(not "${PYTHON_SITE_PACKAGES}" STREQUAL "")
+        if(NOT "${PYTHON_SITE_PACKAGES}" STREQUAL "")
             message(STATUS " - MATCHES")
             install(TARGETS ${TARGET_NAME} DESTINATION "${PYTHON_SITE_PACKAGES}/${RW_MODULE}")
             install(FILES ${CMAKE_SWIG_OUTDIR}/${RW_MODULE}.py DESTINATION "${PYTHON_SITE_PACKAGES}/${RW_MODULE}")
