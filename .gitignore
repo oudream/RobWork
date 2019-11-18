@@ -3383,6 +3383,9 @@ RobWork/example/java/src/*.log
 /RobWorkSim/src/rwsimlibs/swig/cmake_install.cmake
 /RobWorkSim/src/rwsimlibs/swig/Makefile
 
+#/RobWorkSim/src/rwsimlibs/swig/python/
+RobWorkSim/src/rwsimlibs/swig/python/RobWorkSim-*.egg-info
+
 # /RobWorkSim/src/sandbox/
 /RobWorkSim/src/sandbox/cmake_install.cmake
 /RobWorkSim/src/sandbox/CMakeCache.txt
