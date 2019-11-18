@@ -88,7 +88,7 @@ if(build)
             set_target_properties(${TARGET_NAME} PROPERTIES LINK_FLAGS -Wl,--no-undefined)
         endif()
 
-        #Set build destination
+        # Set build destination
         set_target_properties(
             ${TARGET_NAME}
             PROPERTIES
@@ -117,7 +117,7 @@ if(build)
         endif()
 
         configure_file(__init__.py.in ${CMAKE_SWIG_OUTDIR}/__init__.py)
-        if(NOT "${PYTHON_SITE_PACKAGES}" STREQUAL "")
+        if(PYTHON_SITE_PACKAGES MATCHES "^.?usr")
             install(TARGETS ${TARGET_NAME} DESTINATION "${PYTHON_SITE_PACKAGES}/${RW_MODULE}")
             install(FILES ${CMAKE_SWIG_OUTDIR}/${RW_MODULE}.py DESTINATION "${PYTHON_SITE_PACKAGES}/${RW_MODULE}")
             install(FILES ${CMAKE_SWIG_OUTDIR}/__init__.py DESTINATION "${PYTHON_SITE_PACKAGES}/${RW_MODULE}")
