@@ -38,10 +38,13 @@ if(build)
     set(RWS_MODULE sdurws)
     configure_file(RobWorkStudio.egg-info.in
                    ${CMAKE_CURRENT_SOURCE_DIR}/RobWorkStudio-${ROBWORKSTUDIO_VERSION}.egg-info)
-    install(
-        FILES ${CMAKE_CURRENT_SOURCE_DIR}/RobWorkStudio-${ROBWORKSTUDIO_VERSION}.egg-info
-        DESTINATION ${PYTHON_SITE_PACKAGES}
-    )
+
+    if(NOT "${PYTHON_SITE_PACKAGES}" STREQUAL "")
+        install(
+            FILES ${CMAKE_CURRENT_SOURCE_DIR}/RobWorkStudio-${ROBWORKSTUDIO_VERSION}.egg-info
+            DESTINATION ${PYTHON_SITE_PACKAGES}
+        )
+    endif()
 
     if(POLICY CMP0078)
         set(LIB_SUFIX _py)
@@ -105,7 +108,8 @@ if(build)
 
     # ################# Install files ################
     configure_file(__init__.py.in ${CMAKE_SWIG_OUTDIR}/__init__.py)
-    if(PYTHON_SITE_PACKAGES MATCHES "^.?usr")
+    
+    if(NOT "${PYTHON_SITE_PACKAGES}" STREQUAL "")
         install(TARGETS ${TARGET_NAME} DESTINATION "${PYTHON_SITE_PACKAGES}/${RWS_MODULE}")
         install(FILES ${CMAKE_SWIG_OUTDIR}/${RWS_MODULE}.py DESTINATION "${PYTHON_SITE_PACKAGES}/${RWS_MODULE}")
         install(FILES ${CMAKE_SWIG_OUTDIR}/__init__.py DESTINATION "${PYTHON_SITE_PACKAGES}/${RWS_MODULE}")

@@ -37,11 +37,14 @@ if(build)
 
     set(RWSIM_MODULE sdurwsim)
     configure_file(RobWorkSim.egg-info.in ${CMAKE_CURRENT_SOURCE_DIR}/RobWorkSim-${ROBWORKSIM_VERSION}.egg-info)
-    install(
-        FILES ${CMAKE_CURRENT_SOURCE_DIR}/RobWorkSim-${ROBWORKSIM_VERSION}.egg-info
-        DESTINATION ${PYTHON_SITE_PACKAGES}
-    )
 
+    if(NOT "${PYTHON_SITE_PACKAGES}" STREQUAL "")
+        install(
+            FILES ${CMAKE_CURRENT_SOURCE_DIR}/RobWorkSim-${ROBWORKSIM_VERSION}.egg-info
+            DESTINATION ${PYTHON_SITE_PACKAGES}
+        )
+    endif()
+    
     if(POLICY CMP0078)
         set(LIB_SUFIX _py)
     else()
