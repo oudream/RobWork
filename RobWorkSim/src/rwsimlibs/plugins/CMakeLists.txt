@@ -82,12 +82,7 @@ endif()
 
 # The shared library to build:
 add_library(SimUtilityPlugin MODULE ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles})
-target_link_libraries(
-    SimUtilityPlugin
-    sdurwsim_gui
-    ${ROBWORKSIM_LIBRARIES}
-    ${ROBWORKSTUDIO_LIBRARIES}
-)
+target_link_libraries(SimUtilityPlugin sdurwsim_gui ${ROBWORKSIM_LIBRARIES} ${ROBWORKSTUDIO_LIBRARIES})
 
 # ######################################################################################################################
 # next compile GraspTableGeneratorPlugin
@@ -99,12 +94,7 @@ else()
     qt4_wrap_ui(UIS_OUT_H GraspTableGeneratorPlugin.ui)
 endif()
 set(SrcFiles GraspTableGeneratorPlugin.cpp)
-set_source_files_properties(
-    ${SrcFiles}
-    PROPERTIES
-    OBJECT_DEPENDS
-    "${UIS_OUT_H}"
-)
+set_source_files_properties(${SrcFiles} PROPERTIES OBJECT_DEPENDS "${UIS_OUT_H}")
 # Call the create_plugin macro for creating the plugin
 set(MocSrcFiles)
 if(RWS_USE_QT5)
@@ -122,13 +112,7 @@ else()
 endif()
 
 # The shared library to build:
-add_library(
-    GraspTableGeneratorPlugin MODULE
-    ${SrcFiles}
-    ${MocSrcFiles}
-    ${RccSrcFiles}
-    ${UIS_OUT_H}
-)
+add_library(GraspTableGeneratorPlugin MODULE ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles} ${UIS_OUT_H})
 target_link_libraries(GraspTableGeneratorPlugin ${ROBWORKSIM_LIBRARIES} ${ROBWORKSTUDIO_LIBRARIES})
 
 # ######################################################################################################################
@@ -141,12 +125,7 @@ else()
     qt4_wrap_ui(UIS_OUT_H RWSimPlugin.ui)
 endif()
 set(SrcFiles RWSimPlugin.cpp)
-set_source_files_properties(
-    ${SrcFiles}
-    PROPERTIES
-    OBJECT_DEPENDS
-    "${UIS_OUT_H}"
-)
+set_source_files_properties(${SrcFiles} PROPERTIES OBJECT_DEPENDS "${UIS_OUT_H}")
 
 # Call the create_plugin macro for creating the plugin
 set(MocSrcFiles)
@@ -187,13 +166,7 @@ if(RWSIM_HAVE_LUA)
     )
 endif()
 
-add_library(
-    RWSimPlugin MODULE
-    ${SrcFiles}
-    ${MocSrcFiles}
-    ${RccSrcFiles_RWSimPlugin}
-    ${UIS_OUT_H}
-)
+add_library(RWSimPlugin MODULE ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles_RWSimPlugin} ${UIS_OUT_H})
 # ADD_LIBRARY(RWSimPluginStatic STATIC ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles_RWSimPlugin})
 target_link_libraries(
     RWSimPlugin
@@ -217,12 +190,7 @@ else()
     qt4_wrap_ui(UIS_OUT_H SimTaskPlugin.ui)
 endif()
 set(SrcFiles SimTaskPlugin.cpp)
-set_source_files_properties(
-    ${SrcFiles}
-    PROPERTIES
-    OBJECT_DEPENDS
-    "${UIS_OUT_H}"
-)
+set_source_files_properties(${SrcFiles} PROPERTIES OBJECT_DEPENDS "${UIS_OUT_H}")
 
 # Call the create_plugin macro for creating the plugin
 set(MocSrcFiles)
@@ -247,13 +215,7 @@ else()
     qt4_add_resources(RccSrcFiles_SimTaskPlugin ${RWSIM_ROOT}/src/gfx/SimTaskPlugin.qrc)
 endif()
 
-add_library(
-    SimTaskPlugin MODULE
-    ${SrcFiles}
-    ${MocSrcFiles}
-    ${RccSrcFiles_SimTaskPlugin}
-    ${UIS_OUT_H}
-)
+add_library(SimTaskPlugin MODULE ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles_SimTaskPlugin} ${UIS_OUT_H})
 # ADD_LIBRARY(SimTaskPluginStatic STATIC ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles_SimTaskPlugin})
 target_link_libraries(
     SimTaskPlugin
@@ -315,17 +277,5 @@ else()
 endif()
 
 # The shared library to build:
-add_library(
-    EngineTestPlugin MODULE
-    ${SrcFiles}
-    ${MocSrcFiles}
-    ${RccSrcFiles}
-    ${UIS_OUT_H}
-)
-target_link_libraries(
-    EngineTestPlugin
-    sdurwsim_test
-    sdurwsim_gui
-    ${ROBWORKSIM_LIBRARIES}
-    ${ROBWORKSTUDIO_LIBRARIES}
-)
+add_library(EngineTestPlugin MODULE ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles} ${UIS_OUT_H})
+target_link_libraries(EngineTestPlugin sdurwsim_test sdurwsim_gui ${ROBWORKSIM_LIBRARIES} ${ROBWORKSTUDIO_LIBRARIES})
