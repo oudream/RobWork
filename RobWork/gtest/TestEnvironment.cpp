@@ -49,8 +49,10 @@ std::string TestEnvironment::executableDir() {
 	static std::string executableDir;
 	if (executableDir.empty()) {
 	    boost::filesystem::path path(get()->_argv[0]);
+		std::cout << "Path: " << get()->_argv[0] << std::endl;
 		boost::filesystem::path full_path = boost::filesystem::canonical(path);
 	    executableDir = full_path.parent_path().string()+"/";
+		std::cout << "exe DIR: " << executableDir << std::endl;
 	}
 	return executableDir;
 }

@@ -229,6 +229,7 @@ stages:
     - cd RW
     - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 15 2017 Win64" -DSWIG_EXECUTABLE=%SWIG_ROOT%\swig.exe ../../RobWork
     - msbuild RobWork.sln /property:Configuration=Release /maxcpucount:8
+    - msbuild gtest/sdurw-gtest_reports.vcxproj /p:Configuration=Release
   artifacts:
     paths: 
       - ./Build
