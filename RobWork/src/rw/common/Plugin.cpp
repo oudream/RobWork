@@ -7,11 +7,11 @@
 #include <rw/common/StringUtil.hpp>
 
 #include <boost/filesystem.hpp>
-
 #include <iostream>
 
 #ifdef RW_WIN32
 #include <windows.h>
+// Must winbase.h be below windows.h
 #include <winbase.h>
 #else
 #include <dlfcn.h>
