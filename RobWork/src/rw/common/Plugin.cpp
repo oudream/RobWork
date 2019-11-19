@@ -11,8 +11,8 @@
 #include <iostream>
 
 #ifdef RW_WIN32
-#include <winbase.h>
 #include <windows.h>
+#include <winbase.h>
 #else
 #include <dlfcn.h>
 #endif
