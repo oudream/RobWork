@@ -88,7 +88,7 @@ if(build)
         
 		# Add rwplugin
 		if("${RW_MODULE}" STREQUAL "sdurw_opengl" )
-		
+			# TODO this build is currently failling to load on windows
         elseif(NOT "${RW_MODULE}" STREQUAL "sdurw" )
             add_library(${RW_MODULE}_lua_plugin.rwplugin MODULE LuaPlugin_${RW_MODULE}.cpp)
             target_link_libraries(${RW_MODULE}_lua_plugin.rwplugin ${RW_MODULE}_lua_s)
