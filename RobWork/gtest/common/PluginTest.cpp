@@ -81,7 +81,6 @@ TEST(PluginTest, loadDirectPlugin) {
 TEST(PluginTest, loadLazyPlugin) {
 	const rw::common::Ptr<Plugin> plugin = Plugin::load(TestEnvironment::executableDir() + "test_plugin.rwplugin.xml");
 
-	std::cout << "THE LIB PATH: " << libpath << std::endl << std::flush;
 	EXPECT_EQ("TestLazyPlugin", plugin->getId());
 	EXPECT_EQ("Name of plugin for test.", plugin->getName());
 	EXPECT_EQ("1.0", plugin->getVersion());
