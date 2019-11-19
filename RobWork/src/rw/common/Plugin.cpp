@@ -8,6 +8,8 @@
 
 #include <boost/filesystem.hpp>
 
+#include <iostream>
+
 #ifdef RW_WIN32
 #include <winbase.h>
 #include <windows.h>
@@ -99,7 +101,7 @@ const Plugin::OSHandle* Plugin::getHandle ()
     return _handle;
 }
 
-namespace {
+/*namespace {
 void findAndReplace (std::string& str, const std::string& oldStr, const std::string& newStr)
 {
     std::string::size_type pos = 0u;
@@ -108,7 +110,7 @@ void findAndReplace (std::string& str, const std::string& oldStr, const std::str
         pos += newStr.length ();
     }
 }
-}    // namespace
+}    */// namespace
 
 #ifdef RW_WIN32
 
