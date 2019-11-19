@@ -13,6 +13,12 @@
 
 #define RW_BUILD_DIR "${RW_ROOT}"
 
+#ifdef _WIN32
+    #define SLASH '\\'
+#else
+    #define SLASH '/'
+#endif
+
 #cmakedefine RW_HAVE_PQP 1
 #cmakedefine RW_HAVE_YAOBI 1
 #cmakedefine RW_HAVE_FCL 1

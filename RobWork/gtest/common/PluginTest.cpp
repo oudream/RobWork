@@ -30,6 +30,7 @@ TEST(PluginTest, loadDirectPlugin) {
 	const DOMParser::Ptr parser = DOMParser::make();
 	parser->load(TestEnvironment::executableDir() + "test_plugin.rwplugin.xml");
 	const std::string libpath = parser->getRootElement()->getChild("plugin")->getChild("runtime")->getAttributeValue("library");
+	std::cout << "THE LIB PATH: " << libpath << std::endl << std::flush;
 
 	const rw::common::Ptr<Plugin> plugin = Plugin::load(libpath);
 
@@ -80,6 +81,7 @@ TEST(PluginTest, loadDirectPlugin) {
 TEST(PluginTest, loadLazyPlugin) {
 	const rw::common::Ptr<Plugin> plugin = Plugin::load(TestEnvironment::executableDir() + "test_plugin.rwplugin.xml");
 
+	std::cout << "THE LIB PATH: " << libpath << std::endl << std::flush;
 	EXPECT_EQ("TestLazyPlugin", plugin->getId());
 	EXPECT_EQ("Name of plugin for test.", plugin->getName());
 	EXPECT_EQ("1.0", plugin->getVersion());
