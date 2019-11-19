@@ -79,15 +79,16 @@ rw::common::Ptr< Plugin > Plugin::load (const std::string& filename)
     std::cout << "###############################################" << std::endl;
     std::cout << "Incomming file: " << filename << std::endl;
     std::cout << "###############################################" << std::endl;
-    if (!exists (file))
+    if (!exists (file)) {
         RW_THROW ("The file does not exist: " << filename);
-        // std::cout << rw::common::StringUtil::toUpper(file.extension().string()) << std::endl;
+    }
+
 #if (BOOST_FILESYSTEM_VERSION == 2)
     if (rw::common::StringUtil::toUpper (file.extension ()) == ".XML") {
 #else
     if (rw::common::StringUtil::toUpper (file.extension ().string ()) == ".XML") {
 #endif
-
+        // IF file is an xml file
         return loadLazy (filename);
     }
     return loadDirect (filename);
