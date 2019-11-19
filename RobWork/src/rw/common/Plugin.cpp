@@ -78,9 +78,6 @@ std::vector< std::string > Plugin::getExtensionPointIDs ()
 rw::common::Ptr< Plugin > Plugin::load (const std::string& filename)
 {
     boost::filesystem::path file (filename);
-    std::cout << "###############################################" << std::endl;
-    std::cout << "Incomming file: " << filename << std::endl;
-    std::cout << "###############################################" << std::endl;
     if (!exists (file)) {
         RW_THROW ("The file does not exist: " << filename);
     }
@@ -139,9 +136,6 @@ void Plugin::close (const OSHandle* handle)
 
 rw::common::Ptr< Plugin > Plugin::loadDirect (const std::string& filename)
 {
-    std::cout << "###############################################" << std::endl;
-    std::cout << "Directory: " << filename << std::endl;
-    std::cout << "###############################################" << std::endl;
     HINSTANCE h = LoadLibraryA ((filename).c_str ());
     if (h == NULL) {
         LPTSTR buffer = NULL;
@@ -288,10 +282,6 @@ class LazyPlugin : public Plugin
 
 rw::common::Ptr< Plugin > Plugin::loadLazy (const std::string& filename)
 {
-    std::cout << "###############################################" << std::endl;
-    std::cout << "File: " << filename << std::endl;
-    std::cout << "###############################################" << std::endl;
-
     // parse xml file
     const DOMParser::Ptr parser = DOMParser::Factory::getDOMParser ("XML");
     parser->load (filename);
@@ -303,11 +293,7 @@ rw::common::Ptr< Plugin > Plugin::loadLazy (const std::string& filename)
 
     const std::string runtimelib = plugin->getChild ("runtime")->getAttributeValue ("library");
     boost::filesystem::path libfile (runtimelib);
-
-    std::cout << "###############################################" << std::endl;
-    std::cout << "File - PATH: " << libfile.string () << std::endl;
-    std::cout << "###############################################" << std::endl;
-
+    
 #if (BOOST_FILESYSTEM_VERSION == 2)
     if (!libfile.has_root_path ()) {
         std::string fname =
