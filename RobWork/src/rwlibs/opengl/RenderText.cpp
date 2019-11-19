@@ -20,7 +20,6 @@
 #include <rw/kinematics/Frame.hpp>
 
 #ifdef RW_HAVE_GLUT
-    #include <GL/glut.h>
     #include <GL/freeglut.h>
 #endif
 
