@@ -229,7 +229,6 @@ stages:
     - cd RW
     - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 15 2017 Win64" -DSWIG_EXECUTABLE=%SWIG_ROOT%\swig.exe ../../RobWork
     - msbuild RobWork.sln /property:Configuration=Release /maxcpucount:8
-    - msbuild gtest/sdurw-gtest_reports.vcxproj /p:Configuration=Release
   artifacts:
     paths: 
       - ./Build
@@ -410,7 +409,6 @@ build-RW:ubuntu-1804:
       - /^ci-.*$/
   except:
 
-
 build-RWS:ubuntu-1804:
   extends: .linux-build-RWS
   dependencies:
@@ -426,7 +424,6 @@ build-RWS:ubuntu-1804:
       - merge_requests
       - /^ci-.*$/
   except:
-
 
 build-RWHW:ubuntu-1804:
   extends: .linux-build-RWHW
@@ -444,7 +441,6 @@ build-RWHW:ubuntu-1804:
       - /^ci-.*$/
   except:
 
-
 build-RWSim:ubuntu-1804:
   extends: .linux-build-RWSim
   dependencies:
@@ -461,7 +457,6 @@ build-RWSim:ubuntu-1804:
       - merge_requests
       - /^ci-.*$/
   except:
-
 
 examples:ubuntu-1804:
   extends: .linux-examples
@@ -482,7 +477,6 @@ examples:ubuntu-1804:
       - /^ci-.*$/
   except:
 
-
 tests:ubuntu-1804:
   extends: .linux-tests
   dependencies:
@@ -501,7 +495,6 @@ tests:ubuntu-1804:
       - merge_requests
       - /^ci-.*$/
   except:
-
 
 ########################## Ubuntu 1604 ################################
 

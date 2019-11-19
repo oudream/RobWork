@@ -1,4 +1,4 @@
 include:
   - project: 'sdurobotics/RobWork'
-    ref: kalor
+    ref: master
     file: .gitlab-ci-common.yml
