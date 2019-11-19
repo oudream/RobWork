@@ -7,11 +7,11 @@
 #
 macro(RW_TO_PYTHON_STR_LIST ITEMS OUTPUT)
 
-  set(RESULT_STR "'")
-  foreach(item ${ITEMS})
-    set(RESULT_STR "${RESULT_STR}${item}','")
-  endforeach()
-  set(${OUTPUT} "${RESULT_STR}'")
+    set(RESULT_STR "'")
+    foreach(item ${ITEMS})
+        set(RESULT_STR "${RESULT_STR}${item}','")
+    endforeach()
+    set(${OUTPUT} "${RESULT_STR}'")
 
 endmacro()
 
@@ -19,135 +19,138 @@ endmacro()
 # Converts a standard VERSION 0.1.2 to three version numbers
 #
 macro(RW_SPLIT_VERSION VERSION MAJOR MINOR PATCH)
-  string(REGEX MATCHALL "[0-9]+" VERSIONS ${VERSION})
-  list(GET VERSIONS 0 ${MAJOR})
-  list(GET VERSIONS 1 ${MINOR})
-  list(GET VERSIONS 2 ${PATCH})
+    string(REGEX MATCHALL "[0-9]+" VERSIONS ${VERSION})
+    list(GET VERSIONS 0 ${MAJOR})
+    list(GET VERSIONS 1 ${MINOR})
+    list(GET VERSIONS 2 ${PATCH})
 endmacro()
 
 # ######################################################################################################################
 # Get a string describing the current system, e.g. windows-mingw-x64, mac-x64 or ubuntu-11.04-x64
 #
 macro(RW_SYS_INFO INFO)
-  if(CMAKE_SIZEOF_VOID_P EQUAL 4)
-    set(ARCH "x86")
-  else()
-    set(ARCH "amd64")
-  endif()
-
-  # rehat: /etc/redhat-release Slackware: /etc/slackware-version Slamd64:   /etc/slamd64-version Fedora:    /etc/fedora-
-
-  if(UNIX)
-    if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-      set(SUFFIX "mac-${ARCH}_${RW_BUILD_TYPE}")
+    if(CMAKE_SIZEOF_VOID_P EQUAL 4)
+        set(ARCH "x86")
     else()
-      if(EXISTS "/etc/lsb-release")
-        execute_process(COMMAND cat /etc/lsb-release OUTPUT_VARIABLE SUFFIX)
-        string(REGEX MATCHALL "\".+\"" SUFFIX ${SUFFIX})
-        # this will add kernel version eg Linux_3.0....
-        set(SUFFIX "${SUFFIX}_${ARCH}_${RW_BUILD_TYPE}")
-        string(REPLACE "\"" "" SUFFIX ${SUFFIX})
-        string(REPLACE " " "_" SUFFIX ${SUFFIX})
-
-      elseif(EXISTS "/etc/os-release")
-        execute_process(COMMAND cat /etc/os-release OUTPUT_VARIABLE SUFFIX)
-        string(REGEX MATCHALL "[^_]ID=\"[^\"]+\"" SUFFIX1 ${SUFFIX})
-        string(LENGTH ${SUFFIX1} SUFFIX1_LEN)
-        math(EXPR SUFFIX1_LEN "${SUFFIX1_LEN}-6")
-        string(SUBSTRING ${SUFFIX1} 5 ${SUFFIX1_LEN} SUFFIX1)
-        string(REGEX MATCHALL "VERSION_ID=\"[^\"]+\"" SUFFIX2 ${SUFFIX})
-        string(LENGTH ${SUFFIX2} SUFFIX2_LEN)
-        math(EXPR SUFFIX2_LEN "${SUFFIX2_LEN}-13")
-        string(SUBSTRING ${SUFFIX2} 12 ${SUFFIX2_LEN} SUFFIX2)
-        # this will add kernel version eg Linux_3.0....
-        set(SUFFIX "${SUFFIX1}-${SUFFIX2}-${ARCH}_${RW_BUILD_TYPE}")
-        string(REPLACE "\"" "" SUFFIX ${SUFFIX})
-        string(REPLACE " " "_" SUFFIX ${SUFFIX})
-      elseif(EXISTS "/etc/redhat-release")
-        set(SUFFIX "redhat-${ARCH}_${RW_BUILD_TYPE}")
-      elseif(EXISTS "/etc/slackware-version")
-        set(SUFFIX "slackware-${ARCH}_${RW_BUILD_TYPE}")
-      elseif(EXISTS "/etc/fedora-release")
-        set(SUFFIX "fedora-${ARCH}_${RW_BUILD_TYPE}")
-      else()
-        # this will make it lowercase
-        set(SUFFIX "linux-${ARCH}")
-      endif()
+        set(ARCH "amd64")
     endif()
-  elseif(MINGW)
-    set(SUFFIX "windows-mingw-${ARCH}")
-  elseif(MSVC)
-    if(MSVC80)
-      set(SUFFIX "windows-msvc2005-${ARCH}")
-    elseif(MSVC90)
-      set(SUFFIX "windows-msvc2008-${ARCH}")
-    elseif(MSVC10)
-      set(SUFFIX "windows-msvc2010-${ARCH}")
-    endif()
-  else()
-    # Trouble
 
-  endif()
-  set(${INFO} ${SUFFIX})
+    # rehat: /etc/redhat-release Slackware: /etc/slackware-version Slamd64:   /etc/slamd64-version Fedora: /etc/fedora-
+
+    if(UNIX)
+        if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+            set(SUFFIX "mac-${ARCH}_${RW_BUILD_TYPE}")
+        else()
+            if(EXISTS "/etc/lsb-release")
+                execute_process(COMMAND cat /etc/lsb-release OUTPUT_VARIABLE SUFFIX)
+                string(REGEX MATCHALL "\".+\"" SUFFIX ${SUFFIX})
+                # this will add kernel version eg Linux_3.0....
+                set(SUFFIX "${SUFFIX}_${ARCH}_${RW_BUILD_TYPE}")
+                string(REPLACE "\"" "" SUFFIX ${SUFFIX})
+                string(REPLACE " " "_" SUFFIX ${SUFFIX})
+
+            elseif(EXISTS "/etc/os-release")
+                execute_process(COMMAND cat /etc/os-release OUTPUT_VARIABLE SUFFIX)
+                string(REGEX MATCHALL "[^_]ID=\"[^\"]+\"" SUFFIX1 ${SUFFIX})
+                string(LENGTH ${SUFFIX1} SUFFIX1_LEN)
+                math(EXPR SUFFIX1_LEN "${SUFFIX1_LEN}-6")
+                string(SUBSTRING ${SUFFIX1} 5 ${SUFFIX1_LEN} SUFFIX1)
+                string(REGEX MATCHALL "VERSION_ID=\"[^\"]+\"" SUFFIX2 ${SUFFIX})
+                string(LENGTH ${SUFFIX2} SUFFIX2_LEN)
+                math(EXPR SUFFIX2_LEN "${SUFFIX2_LEN}-13")
+                string(SUBSTRING ${SUFFIX2} 12 ${SUFFIX2_LEN} SUFFIX2)
+                # this will add kernel version eg Linux_3.0....
+                set(SUFFIX "${SUFFIX1}-${SUFFIX2}-${ARCH}_${RW_BUILD_TYPE}")
+                string(REPLACE "\"" "" SUFFIX ${SUFFIX})
+                string(REPLACE " " "_" SUFFIX ${SUFFIX})
+            elseif(EXISTS "/etc/redhat-release")
+                set(SUFFIX "redhat-${ARCH}_${RW_BUILD_TYPE}")
+            elseif(EXISTS "/etc/slackware-version")
+                set(SUFFIX "slackware-${ARCH}_${RW_BUILD_TYPE}")
+            elseif(EXISTS "/etc/fedora-release")
+                set(SUFFIX "fedora-${ARCH}_${RW_BUILD_TYPE}")
+            else()
+                # this will make it lowercase
+                set(SUFFIX "linux-${ARCH}")
+            endif()
+        endif()
+    elseif(MINGW)
+        set(SUFFIX "windows-mingw-${ARCH}")
+    elseif(MSVC)
+        if(MSVC80)
+            set(SUFFIX "windows-msvc2005-${ARCH}")
+        elseif(MSVC90)
+            set(SUFFIX "windows-msvc2008-${ARCH}")
+        elseif(MSVC10)
+            set(SUFFIX "windows-msvc2010-${ARCH}")
+        endif()
+    else()
+        # Trouble
+
+    endif()
+    set(${INFO} ${SUFFIX})
 endmacro()
 
 # ######################################################################################################################
 # Try to find the revision, first from Git, then from SVN
 #
 macro(RW_GET_REVISION DIR PREFIX)
-  find_package(Git QUIET)
-  if(Git_FOUND)
-    execute_process(
-      COMMAND ${GIT_EXECUTABLE} describe --dirty --always
-      WORKING_DIRECTORY ${DIR}
-      OUTPUT_VARIABLE ${PREFIX}_WC_INFO
-      RESULT_VARIABLE Git_info_result
-      OUTPUT_STRIP_TRAILING_WHITESPACE
-    )
-    if(NOT ${Git_info_result} EQUAL 0)
-      message(
-        STATUS
-          "Does not appear to be from Git repository. Command \"${GIT_EXECUTABLE} -C ${DIR} describe --dirty --always\" failed."
-      )
-
-      # Try to find Subversion revision
-      find_package(Subversion QUIET)
-      if(Subversion_FOUND)
-        # Subversion_WC_INFO(${DIR} RobWork)
-
-        set(_Subversion_SAVED_LC_ALL "$ENV{LC_ALL}")
-        set(ENV{LC_ALL} C)
-
+    find_package(Git QUIET)
+    if(Git_FOUND)
         execute_process(
-          COMMAND ${Subversion_SVN_EXECUTABLE} info ${DIR}
-          OUTPUT_VARIABLE ${PREFIX}_WC_INFO
-          ERROR_VARIABLE Subversion_svn_info_error
-          RESULT_VARIABLE Subversion_svn_info_result
-          OUTPUT_STRIP_TRAILING_WHITESPACE
+            COMMAND ${GIT_EXECUTABLE} describe --dirty --always
+            WORKING_DIRECTORY ${DIR}
+            OUTPUT_VARIABLE ${PREFIX}_WC_INFO
+            RESULT_VARIABLE Git_info_result
+            OUTPUT_STRIP_TRAILING_WHITESPACE
         )
+        if(NOT ${Git_info_result} EQUAL 0)
+            message(
+                STATUS
+                    "Does not appear to be from Git repository. Command \"${GIT_EXECUTABLE} -C ${DIR} describe --dirty --always\" failed."
+            )
 
-        if(NOT ${Subversion_svn_info_result} EQUAL 0)
-          message(
-            STATUS
-              "Does not appear to be from SVN repository. Command \"${Subversion_SVN_EXECUTABLE} info ${DIR}\" failed."
-          )
-          # with output:\n${Subversion_svn_info_error}
+            # Try to find Subversion revision
+            find_package(Subversion QUIET)
+            if(Subversion_FOUND)
+                # Subversion_WC_INFO(${DIR} RobWork)
+
+                set(_Subversion_SAVED_LC_ALL "$ENV{LC_ALL}")
+                set(ENV{LC_ALL} C)
+
+                execute_process(
+                    COMMAND ${Subversion_SVN_EXECUTABLE} info ${DIR}
+                    OUTPUT_VARIABLE ${PREFIX}_WC_INFO
+                    ERROR_VARIABLE Subversion_svn_info_error
+                    RESULT_VARIABLE Subversion_svn_info_result
+                    OUTPUT_STRIP_TRAILING_WHITESPACE
+                )
+
+                if(NOT ${Subversion_svn_info_result} EQUAL 0)
+                    message(
+                        STATUS
+                            "Does not appear to be from SVN repository. Command \"${Subversion_SVN_EXECUTABLE} info ${DIR}\" failed."
+                    )
+                    # with output:\n${Subversion_svn_info_error}
+                else()
+                    string(
+                        REGEX
+                        REPLACE "^(.*\n)?Revision: ([^\n]+).*" "\\2" ${PREFIX}_WC_REVISION "${${PREFIX}_WC_INFO}"
+                    )
+                endif()
+
+                # restore the previous LC_ALL
+                set(ENV{LC_ALL} ${_Subversion_SAVED_LC_ALL})
+
+                message(STATUS "Current revision is ${${PREFIX}_WC_REVISION}")
+                set(${PREFIX}_REVISION ${${PREFIX}_WC_REVISION})
+            endif(Subversion_FOUND)
         else()
-          string(REGEX REPLACE "^(.*\n)?Revision: ([^\n]+).*" "\\2" ${PREFIX}_WC_REVISION "${${PREFIX}_WC_INFO}")
+            set(${PREFIX}_WC_REVISION ${${PREFIX}_WC_INFO})
+            set(${PREFIX}_REVISION ${${PREFIX}_WC_REVISION})
+            message(STATUS "Current Git revision is ${${PREFIX}_REVISION}")
         endif()
-
-        # restore the previous LC_ALL
-        set(ENV{LC_ALL} ${_Subversion_SAVED_LC_ALL})
-
-        message(STATUS "Current revision is ${${PREFIX}_WC_REVISION}")
-        set(${PREFIX}_REVISION ${${PREFIX}_WC_REVISION})
-      endif(Subversion_FOUND)
-    else()
-      set(${PREFIX}_WC_REVISION ${${PREFIX}_WC_INFO})
-      set(${PREFIX}_REVISION ${${PREFIX}_WC_REVISION})
-      message(STATUS "Current Git revision is ${${PREFIX}_REVISION}")
     endif()
-  endif()
 endmacro()
 
 # ######################################################################################################################
@@ -159,124 +162,135 @@ endmacro()
 #
 # defines : ${PREFIX}_CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PREFIX}_CMAKE_ARCHIVE_OUTPUT_DIRECTORY
 # ${PREFIX}_CMAKE_LIBRARY_OUTPUT_DIRECTORY and sets up cmake variables
-macro(RW_INIT_PROJECT ROOT PROJECT_NAME PREFIX VERSION )
-  # MESSAGE("ROOOT, ${ROOT} ${PROJECT_NAME} ${PREFIX}") Allow the syntax else (), endif (), etc.
-  set(CMAKE_ALLOW_LOOSE_LOOP_CONSTRUCTS 1)
+macro(RW_INIT_PROJECT ROOT PROJECT_NAME PREFIX VERSION)
+    # MESSAGE("ROOOT, ${ROOT} ${PROJECT_NAME} ${PREFIX}") Allow the syntax else (), endif (), etc.
+    set(CMAKE_ALLOW_LOOSE_LOOP_CONSTRUCTS 1)
 
-  # Enable new linker path policy.
-  if(COMMAND cmake_policy)
-    cmake_policy(SET CMP0003 NEW)
-  endif()
+    # Enable new linker path policy.
+    if(COMMAND cmake_policy)
+        cmake_policy(SET CMP0003 NEW)
+    endif()
 
-  # OPTION(RW_VERBOSE "Set to true if cmake build information should be printet!" False)
+    # OPTION(RW_VERBOSE "Set to true if cmake build information should be printet!" False)
 
-  # Specify wether to default compile in Release, Debug, MinSizeRel, RelWithDebInfo mode
-  if(NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE None CACHE STRING "Choose the type of build,
+    # Specify wether to default compile in Release, Debug, MinSizeRel, RelWithDebInfo mode
+    if(NOT CMAKE_BUILD_TYPE)
+        set(CMAKE_BUILD_TYPE None CACHE STRING "Choose the type of build,
       options are: None(CMAKE_CXX_FLAGS or CMAKE_C_FLAGS used) Debug Release
-      RelWithDebInfo MinSizeRel."
-    )
-    set(${PREFIX}_BUILD_TYPE "None" CACHE STRING "Build type: Release, Debug, RelWithDebInfo, MinSizeRel." FORCE)
-  else()
-    # we need to force the right configuration
-    string(TOLOWER ${CMAKE_BUILD_TYPE} TMP_BUILD_TYPE)
-    if(${TMP_BUILD_TYPE} STREQUAL "release")
-      set(${PREFIX}_BUILD_TYPE "Release" CACHE STRING "Build type: Release, Debug, RelWithDebInfo, MinSizeRel." FORCE)
-    elseif(${TMP_BUILD_TYPE} STREQUAL "debug")
-      set(${PREFIX}_BUILD_TYPE "Debug" CACHE STRING "Build type: Release, Debug, RelWithDebInfo, MinSizeRel." FORCE)
-    elseif(${TMP_BUILD_TYPE} STREQUAL "relwithdebinfo")
-      set(
-        ${PREFIX}_BUILD_TYPE
-        "RelWithDebInfo"
-        CACHE STRING "Build type: Release, Debug, RelWithDebInfo, MinSizeRel." FORCE
-      )
-    elseif(${TMP_BUILD_TYPE} STREQUAL "minsizerel")
-      set(
-        ${PREFIX}_BUILD_TYPE
-        "MinSizeRel"
-        CACHE STRING "Build type: Release, Debug, RelWithDebInfo, MinSizeRel." FORCE
-      )
-    elseif(${TMP_BUILD_TYPE} STREQUAL "none")
-      set(${PREFIX}_BUILD_TYPE "None" CACHE STRING "Build type: Release, Debug, RelWithDebInfo, MinSizeRel." FORCE)
+      RelWithDebInfo MinSizeRel.")
+        set(${PREFIX}_BUILD_TYPE "None" CACHE STRING "Build type: Release, Debug, RelWithDebInfo, MinSizeRel." FORCE)
     else()
-      message(
-        FATAL_ERROR
-          "Build type: ${CMAKE_BUILD_TYPE} not supported! please select one of: Release, Debug, RelWithDebInfo, MinSizeRel"
-      )
+        # we need to force the right configuration
+        string(TOLOWER ${CMAKE_BUILD_TYPE} TMP_BUILD_TYPE)
+        if(${TMP_BUILD_TYPE} STREQUAL "release")
+            set(
+                ${PREFIX}_BUILD_TYPE
+                "Release"
+                CACHE STRING "Build type: Release, Debug, RelWithDebInfo, MinSizeRel." FORCE
+            )
+        elseif(${TMP_BUILD_TYPE} STREQUAL "debug")
+            set(
+                ${PREFIX}_BUILD_TYPE
+                "Debug"
+                CACHE STRING "Build type: Release, Debug, RelWithDebInfo, MinSizeRel." FORCE
+            )
+        elseif(${TMP_BUILD_TYPE} STREQUAL "relwithdebinfo")
+            set(
+                ${PREFIX}_BUILD_TYPE
+                "RelWithDebInfo"
+                CACHE STRING "Build type: Release, Debug, RelWithDebInfo, MinSizeRel." FORCE
+            )
+        elseif(${TMP_BUILD_TYPE} STREQUAL "minsizerel")
+            set(
+                ${PREFIX}_BUILD_TYPE
+                "MinSizeRel"
+                CACHE STRING "Build type: Release, Debug, RelWithDebInfo, MinSizeRel." FORCE
+            )
+        elseif(${TMP_BUILD_TYPE} STREQUAL "none")
+            set(
+                ${PREFIX}_BUILD_TYPE
+                "None"
+                CACHE STRING "Build type: Release, Debug, RelWithDebInfo, MinSizeRel." FORCE
+            )
+        else()
+            message(
+                FATAL_ERROR
+                    "Build type: ${CMAKE_BUILD_TYPE} not supported! please select one of: Release, Debug, RelWithDebInfo, MinSizeRel"
+            )
+        endif()
+
     endif()
 
-  endif()
+    string(TOLOWER ${${PREFIX}_BUILD_TYPE} ${PREFIX}_BUILD_TYPE)
+    message(STATUS "${PROJECT_NAME}: Build configuration: ${${PREFIX}_BUILD_TYPE}")
 
-  string(TOLOWER ${${PREFIX}_BUILD_TYPE} ${PREFIX}_BUILD_TYPE)
-  message(STATUS "${PROJECT_NAME}: Build configuration: ${${PREFIX}_BUILD_TYPE}")
-
-  # Load the optional Default.cmake file.
-  include(${ROOT}/config.cmake OPTIONAL)
-  if(NOT EXISTS ${ROOT}/config.cmake)
-    if(EXISTS ${ROOT}/config.cmake.template)
-      # Setup the default settings in case no RobWork.cmake exist.
-      include(${ROOT}/config.cmake.template)
-      # MESSAGE(STATUS "Using default settings from config.cmake.template")
+    # Load the optional Default.cmake file.
+    include(${ROOT}/config.cmake OPTIONAL)
+    if(NOT EXISTS ${ROOT}/config.cmake)
+        if(EXISTS ${ROOT}/config.cmake.template)
+            # Setup the default settings in case no RobWork.cmake exist.
+            include(${ROOT}/config.cmake.template)
+            # MESSAGE(STATUS "Using default settings from config.cmake.template")
+        endif()
     endif()
-  endif()
 
-  set(
-    ${PREFIX}_CMAKE_RUNTIME_OUTPUT_DIRECTORY
-    "${ROOT}/bin/${${PREFIX}_BUILD_TYPE}"
-    CACHE PATH "Runtime directory" FORCE
-  )
-  set(
-    ${PREFIX}_CMAKE_LIBRARY_OUTPUT_DIRECTORY
-    "${ROOT}/libs/${${PREFIX}_BUILD_TYPE}"
-    CACHE PATH "Library directory" FORCE
-  )
-  set(
-    ${PREFIX}_CMAKE_ARCHIVE_OUTPUT_DIRECTORY
-    "${ROOT}/libs/${${PREFIX}_BUILD_TYPE}"
-    CACHE PATH "Archive directory" FORCE
-  )
+    set(
+        ${PREFIX}_CMAKE_RUNTIME_OUTPUT_DIRECTORY
+        "${ROOT}/bin/${${PREFIX}_BUILD_TYPE}"
+        CACHE PATH "Runtime directory" FORCE
+    )
+    set(
+        ${PREFIX}_CMAKE_LIBRARY_OUTPUT_DIRECTORY
+        "${ROOT}/libs/${${PREFIX}_BUILD_TYPE}"
+        CACHE PATH "Library directory" FORCE
+    )
+    set(
+        ${PREFIX}_CMAKE_ARCHIVE_OUTPUT_DIRECTORY
+        "${ROOT}/libs/${${PREFIX}_BUILD_TYPE}"
+        CACHE PATH "Archive directory" FORCE
+    )
 
-  # Output goes to bin/<CONFIG> and libs/<CONFIG> unless specified otherwise by the user.
-  if(DEFINED MSVC)
-    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${ROOT}/bin" CACHE PATH "Runtime directory" FORCE)
-    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${ROOT}/libs" CACHE PATH "Library directory" FORCE)
-    set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${ROOT}/libs" CACHE PATH "Archive directory" FORCE)
-  else()
-    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${ROOT}/bin/${${PREFIX}_BUILD_TYPE}" CACHE PATH "Runtime directory" FORCE)
-    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${ROOT}/libs/${${PREFIX}_BUILD_TYPE}" CACHE PATH "Library directory" FORCE)
-    set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${ROOT}/libs/${${PREFIX}_BUILD_TYPE}" CACHE PATH "Archive directory" FORCE)
-  endif()
+    # Output goes to bin/<CONFIG> and libs/<CONFIG> unless specified otherwise by the user.
+    if(DEFINED MSVC)
+        set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${ROOT}/bin" CACHE PATH "Runtime directory" FORCE)
+        set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${ROOT}/libs" CACHE PATH "Library directory" FORCE)
+        set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${ROOT}/libs" CACHE PATH "Archive directory" FORCE)
+    else()
+        set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${ROOT}/bin/${${PREFIX}_BUILD_TYPE}" CACHE PATH "Runtime directory" FORCE)
+        set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${ROOT}/libs/${${PREFIX}_BUILD_TYPE}" CACHE PATH "Library directory" FORCE)
+        set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${ROOT}/libs/${${PREFIX}_BUILD_TYPE}" CACHE PATH "Archive directory" FORCE)
+    endif()
 
-  string(TOUPPER ${PROJECT_NAME} PROJECT_NAME_UP)
-  # MESSAGE("uppercase ${PROJECT_NAME_UP}_VERSION")
+    string(TOUPPER ${PROJECT_NAME} PROJECT_NAME_UP)
+    # MESSAGE("uppercase ${PROJECT_NAME_UP}_VERSION")
 
-  if( ${${PREFIX}_GOT_VERSION} ) 
-    set(PROJECT_USE_SONAME True)
-  else()
-    set(PROJECT_USE_SONAME False)
-  endif()
+    if(${${PREFIX}_GOT_VERSION})
+        set(PROJECT_USE_SONAME True)
+    else()
+        set(PROJECT_USE_SONAME False)
+    endif()
 
-  set(${PROJECT_NAME_UP}_VERSION ${VERSION} CACHE STRING "Project Version Nr" FORCE)
-  string(REGEX MATCHALL "[0-9]+" ${PROJECT_NAME_UP}_VERSIONS ${VERSION})
-  list(GET ${PROJECT_NAME_UP}_VERSIONS 0 ${PROJECT_NAME_UP}_VERSION_MAJOR)
-  list(GET ${PROJECT_NAME_UP}_VERSIONS 1 ${PROJECT_NAME_UP}_VERSION_MINOR)
-  list(GET ${PROJECT_NAME_UP}_VERSIONS 2 ${PROJECT_NAME_UP}_VERSION_PATCH)
-  set(PROJECT_VERSION ${${PROJECT_NAME_UP}_VERSION})
-  set(PROJECT_VERSION_MAJOR ${${PROJECT_NAME_UP}_VERSION_MAJOR})
-  set(PROJECT_VERSION_MINOR ${${PROJECT_NAME_UP}_VERSION_MINOR})
-  set(PROJECT_VERSION_PATCH ${${PROJECT_NAME_UP}_VERSION_PATCH})
-  message(STATUS "${PROJECT_NAME}: Version ${${PROJECT_NAME_UP}_VERSION}")
-  set(RW_SUBSYSTEMS "" CACHE INTERNAL "Internal list of subsystems" FORCE)
-  # setup install directories
+    set(${PROJECT_NAME_UP}_VERSION ${VERSION} CACHE STRING "Project Version Nr" FORCE)
+    string(REGEX MATCHALL "[0-9]+" ${PROJECT_NAME_UP}_VERSIONS ${VERSION})
+    list(GET ${PROJECT_NAME_UP}_VERSIONS 0 ${PROJECT_NAME_UP}_VERSION_MAJOR)
+    list(GET ${PROJECT_NAME_UP}_VERSIONS 1 ${PROJECT_NAME_UP}_VERSION_MINOR)
+    list(GET ${PROJECT_NAME_UP}_VERSIONS 2 ${PROJECT_NAME_UP}_VERSION_PATCH)
+    set(PROJECT_VERSION ${${PROJECT_NAME_UP}_VERSION})
+    set(PROJECT_VERSION_MAJOR ${${PROJECT_NAME_UP}_VERSION_MAJOR})
+    set(PROJECT_VERSION_MINOR ${${PROJECT_NAME_UP}_VERSION_MINOR})
+    set(PROJECT_VERSION_PATCH ${${PROJECT_NAME_UP}_VERSION_PATCH})
+    message(STATUS "${PROJECT_NAME}: Version ${${PROJECT_NAME_UP}_VERSION}")
+    set(RW_SUBSYSTEMS "" CACHE INTERNAL "Internal list of subsystems" FORCE)
+    # setup install directories
 endmacro()
 
 macro(RW_GET_OS_INFO)
-  # Get the compiler architecture
-  if(CMAKE_SIZEOF_VOID_P EQUAL 8)
-    set(AMD64 TRUE)
-  else()
-    set(AMD64 FALSE)
-  endif()
+    # Get the compiler architecture
+    if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+        set(AMD64 TRUE)
+    else()
+        set(AMD64 FALSE)
+    endif()
 endmacro()
 
 # ######################################################################################################################
@@ -284,153 +298,161 @@ endmacro()
 # libraries here. Sets BIN_INSTALL_DIR. Install binaries here. Sets INCLUDE_INSTALL_DIR. Install include files here,
 # preferably in a
 macro(RW_SET_INSTALL_DIRS PROJECT_NAME PREFIX)
-  string(TOLOWER ${PREFIX} PREFIX_LOWER)
-  string(TOLOWER ${PROJECT_NAME} PROJECT_NAME_LOWER)
-  string(TOUPPER ${PROJECT_NAME} PROJECT_NAME_UPPER)
-  if(NOT DEFINED LIB_INSTALL_DIR)
-    set(LIB_INSTALL_DIR "lib")
-  endif()
-  set(
-    INCLUDE_INSTALL_ROOT
-    "include/${PROJECT_NAME_LOWER}-${${PROJECT_NAME_UPPER}_VERSION_MAJOR}.${${PROJECT_NAME_UPPER}_VERSION_MINOR}"
-  )
-  set(INCLUDE_INSTALL_DIR "${INCLUDE_INSTALL_ROOT}")
-  set(EXT_INSTALL_DIR ${INCLUDE_INSTALL_DIR}/ext/)
-  if(NOT DEFINED BIN_INSTALL_DIR)
-    set(BIN_INSTALL_DIR "bin")
-  endif()
-  set(PKGCFG_INSTALL_DIR "${LIB_INSTALL_DIR}/pkgconfig")
+    string(TOLOWER ${PREFIX} PREFIX_LOWER)
+    string(TOLOWER ${PROJECT_NAME} PROJECT_NAME_LOWER)
+    string(TOUPPER ${PROJECT_NAME} PROJECT_NAME_UPPER)
+    if(NOT DEFINED LIB_INSTALL_DIR)
+        set(LIB_INSTALL_DIR "lib")
+    endif()
+    set(
+        INCLUDE_INSTALL_ROOT
+        "include/${PROJECT_NAME_LOWER}-${${PROJECT_NAME_UPPER}_VERSION_MAJOR}.${${PROJECT_NAME_UPPER}_VERSION_MINOR}"
+    )
+    set(INCLUDE_INSTALL_DIR "${INCLUDE_INSTALL_ROOT}")
+    set(EXT_INSTALL_DIR ${INCLUDE_INSTALL_DIR}/ext/)
+    if(NOT DEFINED BIN_INSTALL_DIR)
+        set(BIN_INSTALL_DIR "bin")
+    endif()
+    set(PKGCFG_INSTALL_DIR "${LIB_INSTALL_DIR}/pkgconfig")
 
-  if(WIN32)
-    set(
-      ${PREFIX}_INSTALL_DIR
-      "${PROJECT_NAME_LOWER}-${${PROJECT_NAME_UPPER}_VERSION_MAJOR}.${${PROJECT_NAME_UPPER}_VERSION_MINOR}"
-    )
-    set(
-      CONFIG_INSTALL_DIR
-      "${PROJECT_NAME_LOWER}-${${PROJECT_NAME_UPPER}_VERSION_MAJOR}.${${PROJECT_NAME_UPPER}_VERSION_MINOR}/cmake"
-    )
-  else()
-    set(
-      ${PREFIX}_INSTALL_DIR
-      "share/${PROJECT_NAME_LOWER}-${${PROJECT_NAME_UPPER}_VERSION_MAJOR}.${${PROJECT_NAME_UPPER}_VERSION_MINOR}"
-    )
-    set(
-      CONFIG_INSTALL_DIR
-      "share/${PROJECT_NAME_LOWER}-${${PROJECT_NAME_UPPER}_VERSION_MAJOR}.${${PROJECT_NAME_UPPER}_VERSION_MINOR}"
-    )
-  endif()
+    if(NOT DEFINED LUA_INSTALL_DIR AND LUA_FOUND)
+        set(LUA_INSTALL_DIR "${LIB_INSTALL_DIR}/lua/${LUA_VERSION_MAJOR}.${LUA_VERSION_MINOR}")
+
+    elseif(NOT DEFINED LUA_INSTALL_DIR AND RW_BUILD_WITH_LUA)
+        set(LUA_INSTALL_DIR "${LIB_INSTALL_DIR}/lua/${RW_BUILD_WITH_LUA_VERSION}")
+
+    endif()
+    message(STATUS "LUA_INSTALL_DIR - ${LUA_INSTALL_DIR}")
+
+    if(WIN32)
+        set(
+            ${PREFIX}_INSTALL_DIR
+            "${PROJECT_NAME_LOWER}-${${PROJECT_NAME_UPPER}_VERSION_MAJOR}.${${PROJECT_NAME_UPPER}_VERSION_MINOR}"
+        )
+        set(
+            CONFIG_INSTALL_DIR
+            "${PROJECT_NAME_LOWER}-${${PROJECT_NAME_UPPER}_VERSION_MAJOR}.${${PROJECT_NAME_UPPER}_VERSION_MINOR}/cmake"
+        )
+    else()
+        set(
+            ${PREFIX}_INSTALL_DIR
+            "share/${PROJECT_NAME_LOWER}-${${PROJECT_NAME_UPPER}_VERSION_MAJOR}.${${PROJECT_NAME_UPPER}_VERSION_MINOR}"
+        )
+        set(
+            CONFIG_INSTALL_DIR
+            "share/${PROJECT_NAME_LOWER}-${${PROJECT_NAME_UPPER}_VERSION_MAJOR}.${${PROJECT_NAME_UPPER}_VERSION_MINOR}"
+        )
+    endif()
 endmacro()
 
 macro(RW_IS_RELEASE IS_RELEASE)
-  if(
-    ${RW_BUILD_TYPE} STREQUAL "release"
-    OR ${RW_BUILD_TYPE} STREQUAL "relwithdebinfo"
-    OR ${RW_BUILD_TYPE} STREQUAL "minsizerel"
-  )
-    set(${IS_RELEASE} TRUE)
-  else()
-    set(${IS_RELEASE} FALSE)
-  endif()
+    if(
+        ${RW_BUILD_TYPE} STREQUAL "release"
+        OR ${RW_BUILD_TYPE} STREQUAL "relwithdebinfo"
+        OR ${RW_BUILD_TYPE} STREQUAL "minsizerel"
+    )
+        set(${IS_RELEASE} TRUE)
+    else()
+        set(${IS_RELEASE} FALSE)
+    endif()
 endmacro()
 
 macro(RW_OPTIONS PREFIX)
-  # Build shared libraries by default.
-  if(NOT DEFINED ${PREFIX}_SHARED_LIBS)
-    set(${PREFIX}_SHARED_LIBS OFF)
-  endif()
-
-  if(POLICY CMP0077) # Introduce cmake 3.13
-    cmake_policy(SET CMP0077 OLD)
-  endif()
-
-  option(${PREFIX}_SHARED_LIBS "Build shared libraries." ${${PREFIX}_SHARED_LIBS})
-  if(${PREFIX}_SHARED_LIBS)
-    if(WIN32 AND MSVC AND CMAKE_VERSION VERSION_LESS 3.4)
-      message(
-        FATAL_ERROR
-          "It is not currently possible to compile shared libraries for Windows with CMake versions below 3.4."
-      )
+    # Build shared libraries by default.
+    if(NOT DEFINED ${PREFIX}_SHARED_LIBS)
+        set(${PREFIX}_SHARED_LIBS OFF)
     endif()
-    set(PROJECT_LIB_PREFIX ${CMAKE_SHARED_LIBRARY_PREFIX})
-    set(PROJECT_LIB_SUFFIX ${CMAKE_SHARED_LIBRARY_SUFFIX})
-    set(PROJECT_LIB_TYPE "SHARED")
-  else()
-    set(PROJECT_LIB_PREFIX ${CMAKE_STATIC_LIBRARY_PREFIX})
-    set(PROJECT_LIB_SUFFIX ${CMAKE_STATIC_LIBRARY_SUFFIX})
-    set(PROJECT_LIB_TYPE "STATIC")
-  endif()
-  mark_as_advanced(${PREFIX}_SHARED_LIBS)
+
+    if(POLICY CMP0077) # Introduce cmake 3.13
+        cmake_policy(SET CMP0077 OLD)
+    endif()
+
+    option(${PREFIX}_SHARED_LIBS "Build shared libraries." ${${PREFIX}_SHARED_LIBS})
+    if(${PREFIX}_SHARED_LIBS)
+        if(WIN32 AND MSVC AND CMAKE_VERSION VERSION_LESS 3.4)
+            message(
+                FATAL_ERROR
+                    "It is not currently possible to compile shared libraries for Windows with CMake versions below 3.4."
+            )
+        endif()
+        set(PROJECT_LIB_PREFIX ${CMAKE_SHARED_LIBRARY_PREFIX})
+        set(PROJECT_LIB_SUFFIX ${CMAKE_SHARED_LIBRARY_SUFFIX})
+        set(PROJECT_LIB_TYPE "SHARED")
+    else()
+        set(PROJECT_LIB_PREFIX ${CMAKE_STATIC_LIBRARY_PREFIX})
+        set(PROJECT_LIB_SUFFIX ${CMAKE_STATIC_LIBRARY_SUFFIX})
+        set(PROJECT_LIB_TYPE "STATIC")
+    endif()
+    mark_as_advanced(${PREFIX}_SHARED_LIBS)
 endmacro()
 
 # ######################################################################################################################
 # Add a set of include files to install. _component The part of RW that the install files belong to. _subdir The sub-
 # directory for these include files. ARGN The include files.
 macro(RW_ADD_INCLUDES _component _subdir)
-  install(FILES ${ARGN} DESTINATION ${INCLUDE_INSTALL_DIR}/${_subdir} COMPONENT ${_component})
+    install(FILES ${ARGN} DESTINATION ${INCLUDE_INSTALL_DIR}/${_subdir} COMPONENT ${_component})
 endmacro()
 
 # ######################################################################################################################
 # Add a set of include files to install. _component The part of RW that the install files belong to. _subdir The sub-
 # directory for these include files. ARGN The include files.
 macro(RW_ADD_INCLUDE_DIRS _component _subdir)
-  install(
-    DIRECTORY ${ARGN}
-    DESTINATION ${INCLUDE_INSTALL_DIR}/${_subdir}
-    COMPONENT ${_component}
-    FILES_MATCHING
-    PATTERN "*.h"
-    PATTERN "*.hpp"
-    PATTERN ".svn" EXCLUDE
-  )
+    install(
+        DIRECTORY ${ARGN}
+        DESTINATION ${INCLUDE_INSTALL_DIR}/${_subdir}
+        COMPONENT ${_component}
+        FILES_MATCHING
+        PATTERN "*.h"
+        PATTERN "*.hpp"
+        PATTERN ".svn" EXCLUDE
+    )
 endmacro()
 
 # ######################################################################################################################
 # Add a library target. _name The library name. _component The part of RW that this library belongs to. ARGN The source
 # files for the library.
 macro(RW_ADD_LIBRARY _name _component)
-  add_library(${_name} ${PROJECT_LIB_TYPE} ${ARGN})
-  # must link explicitly against boost.
-  target_link_libraries(${_name} PUBLIC ${Boost_LIBRARIES})
+    add_library(${_name} ${PROJECT_LIB_TYPE} ${ARGN})
+    # must link explicitly against boost.
+    target_link_libraries(${_name} PUBLIC ${Boost_LIBRARIES})
 
-  # Only link if needed
-  if(WIN32 AND MSVC)
-    set_target_properties(${_name} PROPERTIES LINK_FLAGS_RELEASE /OPT:REF)
-  elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-    set_target_properties(${_name} PROPERTIES LINK_FLAGS -Wl)
-  elseif(__COMPILER_PATHSCALE)
-    set_target_properties(${_name} PROPERTIES LINK_FLAGS -mp)
-  else()
-    set_target_properties(${_name} PROPERTIES LINK_FLAGS -Wl,--as-needed,--no-undefined)
-  endif()
-  #
-  if(${PROJECT_USE_SONAME})
-    set_target_properties(
-      ${_name} PROPERTIES
-      VERSION ${PROJECT_VERSION} 
-      SOVERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
+    # Only link if needed
+    if(WIN32 AND MSVC)
+        set_target_properties(${_name} PROPERTIES LINK_FLAGS_RELEASE /OPT:REF)
+    elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+        set_target_properties(${_name} PROPERTIES LINK_FLAGS -Wl)
+    elseif(__COMPILER_PATHSCALE)
+        set_target_properties(${_name} PROPERTIES LINK_FLAGS -mp)
+    else()
+        set_target_properties(${_name} PROPERTIES LINK_FLAGS -Wl,--as-needed,--no-undefined)
+    endif()
+    #
+    if(${PROJECT_USE_SONAME})
+        set_target_properties(
+            ${_name}
+            PROPERTIES VERSION ${PROJECT_VERSION} SOVERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
+        )
+    endif()
+
+    install(
+        TARGETS ${_name}
+        RUNTIME DESTINATION ${BIN_INSTALL_DIR} COMPONENT ${_component}
+        LIBRARY DESTINATION ${LIB_INSTALL_DIR} COMPONENT ${_component}
+        ARCHIVE DESTINATION ${LIB_INSTALL_DIR} COMPONENT ${_component}
     )
-  endif()
-
-  install(
-    TARGETS ${_name}
-    RUNTIME DESTINATION ${BIN_INSTALL_DIR} COMPONENT ${_component}
-    LIBRARY DESTINATION ${LIB_INSTALL_DIR} COMPONENT ${_component}
-    ARCHIVE DESTINATION ${LIB_INSTALL_DIR} COMPONENT ${_component}
-  )
 
 endmacro()
 
 # ######################################################################################################################
 # Set a value in a global, cached map. _map The map name. _key The key name. _value The value.
 macro(SET_IN_GLOBAL_MAP _map _key _value)
-  set("${_map}_${_key}" "${_value}" CACHE INTERNAL "Map value" FORCE)
+    set("${_map}_${_key}" "${_value}" CACHE INTERNAL "Map value" FORCE)
 endmacro(SET_IN_GLOBAL_MAP)
 
 # ######################################################################################################################
 # Get a value from a map. _dest The name of the variable to store the value in. _map The map name. _key The key name.
 macro(GET_IN_MAP _dest _map _key)
-  set(${_dest} ${${_map}_${_key}})
+    set(${_dest} ${${_map}_${_key}})
 endmacro(GET_IN_MAP)
 
 # ######################################################################################################################
@@ -438,37 +460,37 @@ endmacro(GET_IN_MAP)
 # cumulative build variable. This will be set to FALSE if the dependencies are not met. _name The name of the subsystem.
 # ARGN The subsystems and external libraries to depend on.
 macro(RW_SUBSYS_DEPEND _var _name)
-  # at some point we might start using this.... for now we are readying the infrastructure
-  set(options)
-  set(oneValueArgs)
-  set(multiValueArgs DEPS EXT_DEPS OPT_DEPS)
-  message(STATUS "Use of macro RW_SUBSYS_DEPEND is considered deprecated ")
+    # at some point we might start using this.... for now we are readying the infrastructure
+    set(options)
+    set(oneValueArgs)
+    set(multiValueArgs DEPS EXT_DEPS OPT_DEPS)
+    message(STATUS "Use of macro RW_SUBSYS_DEPEND is considered deprecated ")
 endmacro(RW_SUBSYS_DEPEND)
 
 # ######################################################################################################################
 # Set the include directory name of a subsystem. _name Subsystem name. _includedir Name of subdirectory for includes
 # ARGN[0] Reason for not building.
 macro(RW_SET_SUBSYS_INCLUDE_DIR _name _includedir)
-  set_in_global_map(RW_SUBSYS_INCLUDE ${_name} ${_includedir})
+    set_in_global_map(RW_SUBSYS_INCLUDE ${_name} ${_includedir})
 endmacro(RW_SET_SUBSYS_INCLUDE_DIR)
 
 # ######################################################################################################################
 # Get the include directory name of a subsystem - return _name if not set _var Destination variable. _name Name of the
 # subsystem.
 macro(RW_GET_SUBSYS_INCLUDE_DIR _var _name)
-  get_in_map(${_var} RW_SUBSYS_INCLUDE ${_name})
-  if(NOT ${_var})
-    set(${_var} ${_name})
-  endif(NOT ${_var})
+    get_in_map(${_var} RW_SUBSYS_INCLUDE ${_name})
+    if(NOT ${_var})
+        set(${_var} ${_name})
+    endif(NOT ${_var})
 endmacro(RW_GET_SUBSYS_INCLUDE_DIR)
 
 # ######################################################################################################################
 # Register a subsystem. _name Subsystem name. _desc Description of the subsystem
 macro(RW_ADD_SUBSYSTEM _name _desc)
-  set(_temp ${RW_SUBSYSTEMS})
-  list(APPEND _temp ${_name})
-  set(RW_SUBSYSTEMS ${_temp} CACHE INTERNAL "Internal list of subsystems" FORCE)
-  set_in_global_map(RW_SUBSYS_DESC ${_name} ${_desc})
+    set(_temp ${RW_SUBSYSTEMS})
+    list(APPEND _temp ${_name})
+    set(RW_SUBSYSTEMS ${_temp} CACHE INTERNAL "Internal list of subsystems" FORCE)
+    set_in_global_map(RW_SUBSYS_DESC ${_name} ${_desc})
 endmacro(RW_ADD_SUBSYSTEM)
 
 # ######################################################################################################################
@@ -476,43 +498,43 @@ endmacro(RW_ADD_SUBSYSTEM)
 # option's target subsystem. _desc The description of the subsystem. _default The default value (TRUE or FALSE) ARGV5
 # The reason for disabling if the default is FALSE.
 macro(RW_SUBSYS_OPTION _var _name _desc _default)
-  set(_opt_name "BUILD_${_name}")
-  rw_get_subsys_hyperstatus(subsys_status ${_name})
-  if(NOT ("${subsys_status}" STREQUAL "AUTO_OFF"))
-    option(${_opt_name} ${_desc} ${_default})
-    if(NOT ${_default} AND NOT ${_opt_name})
-      set(${_var} FALSE)
-      if(${ARGC} GREATER 4)
-        set(_reason ${ARGV4})
-      else(${ARGC} GREATER 4)
-        set(_reason "Disabled by default.")
-      endif(${ARGC} GREATER 4)
-      rw_set_subsys_status(${_name} FALSE ${_reason})
-      message(STATUS "${_opt_name}  ${BUILD_${_name}} : ${_reason}")
-      rw_disable_dependies(${_name})
-    elseif(NOT ${_opt_name})
-      set(${_var} FALSE)
-      rw_set_subsys_status(${_name} FALSE "Disabled manually.")
-      message(STATUS "${_opt_name}  ${BUILD_${_name}} : Disabled manually.")
-      rw_disable_dependies(${_name})
-    else(NOT ${_default} AND NOT ${_opt_name})
-      set(${_var} TRUE)
-      if(${ARGC} GREATER 4)
-        set(_reason ${ARGV4})
-        if("${ARGV4}" STREQUAL "")
-          set(_reason "Enabled by default.")
-        endif()
-      else()
-        set(_reason "Enabled by default.")
-      endif(${ARGC} GREATER 4)
+    set(_opt_name "BUILD_${_name}")
+    rw_get_subsys_hyperstatus(subsys_status ${_name})
+    if(NOT ("${subsys_status}" STREQUAL "AUTO_OFF"))
+        option(${_opt_name} ${_desc} ${_default})
+        if(NOT ${_default} AND NOT ${_opt_name})
+            set(${_var} FALSE)
+            if(${ARGC} GREATER 4)
+                set(_reason ${ARGV4})
+            else(${ARGC} GREATER 4)
+                set(_reason "Disabled by default.")
+            endif(${ARGC} GREATER 4)
+            rw_set_subsys_status(${_name} FALSE ${_reason})
+            message(STATUS "${_opt_name}  ${BUILD_${_name}} : ${_reason}")
+            rw_disable_dependies(${_name})
+        elseif(NOT ${_opt_name})
+            set(${_var} FALSE)
+            rw_set_subsys_status(${_name} FALSE "Disabled manually.")
+            message(STATUS "${_opt_name}  ${BUILD_${_name}} : Disabled manually.")
+            rw_disable_dependies(${_name})
+        else(NOT ${_default} AND NOT ${_opt_name})
+            set(${_var} TRUE)
+            if(${ARGC} GREATER 4)
+                set(_reason ${ARGV4})
+                if("${ARGV4}" STREQUAL "")
+                    set(_reason "Enabled by default.")
+                endif()
+            else()
+                set(_reason "Enabled by default.")
+            endif(${ARGC} GREATER 4)
 
-      rw_set_subsys_status(${_name} TRUE ${_reason})
-      message(STATUS "${_opt_name}  ${BUILD_${_name}} : ${_reason}")
-      rw_enable_dependies(${_name})
-    endif(NOT ${_default} AND NOT ${_opt_name})
-  endif(NOT ("${subsys_status}" STREQUAL "AUTO_OFF"))
+            rw_set_subsys_status(${_name} TRUE ${_reason})
+            message(STATUS "${_opt_name}  ${BUILD_${_name}} : ${_reason}")
+            rw_enable_dependies(${_name})
+        endif(NOT ${_default} AND NOT ${_opt_name})
+    endif(NOT ("${subsys_status}" STREQUAL "AUTO_OFF"))
 
-  rw_add_subsystem(${_name} ${_desc})
+    rw_add_subsystem(${_name} ${_desc})
 endmacro(RW_SUBSYS_OPTION)
 
 # ######################################################################################################################
@@ -521,7 +543,7 @@ macro(RW_DISABLE_DEPENDIES _subsys)
     string(TOUPPER "sdurw_${_subsys}_dependies" RW_SUBSYS_DEPENDIES)
     if(NOT ("${${RW_SUBSYS_DEPENDIES}}" STREQUAL ""))
         foreach(dep ${${RW_SUBSYS_DEPENDIES}})
-            RW_SET_SUBSYS_HYPERSTATUS(${_subsys} ${dep} AUTO_OFF "Automatically disabled.")
+            rw_set_subsys_hyperstatus(${_subsys} ${dep} AUTO_OFF "Automatically disabled.")
             set(BUILD_${dep} OFF CACHE BOOL "Automatically disabled ${dep}" FORCE)
         endforeach(dep)
     endif(NOT ("${${RW_SUBSYS_DEPENDIES}}" STREQUAL ""))
@@ -533,10 +555,10 @@ macro(RW_ENABLE_DEPENDIES _subsys)
     string(TOUPPER "sdurw_${_subsys}_dependies" RW_SUBSYS_DEPENDIES)
     if(NOT ("${${RW_SUBSYS_DEPENDIES}}" STREQUAL ""))
         foreach(dep ${${RW_SUBSYS_DEPENDIES}})
-            RW_GET_SUBSYS_HYPERSTATUS(dependee_status ${_subsys} ${dep})
+            rw_get_subsys_hyperstatus(dependee_status ${_subsys} ${dep})
             if("${dependee_status}" STREQUAL "AUTO_OFF")
-                RW_SET_SUBSYS_HYPERSTATUS(${_subsys} ${dep} AUTO_ON)
-                GET_IN_MAP(desc RW_SUBSYS_DESC ${dep})
+                rw_set_subsys_hyperstatus(${_subsys} ${dep} AUTO_ON)
+                get_in_map(desc RW_SUBSYS_DESC ${dep})
                 set(BUILD_${dep} ON CACHE BOOL "${desc}" FORCE)
             endif("${dependee_status}" STREQUAL "AUTO_OFF")
         endforeach(dep)
@@ -546,82 +568,83 @@ endmacro(RW_ENABLE_DEPENDIES subsys)
 # ######################################################################################################################
 # Get the status of a subsystem _var Destination variable. _name Name of the subsystem.
 macro(RW_GET_SUBSYS_STATUS _var _name)
-  get_in_map(${_var} RW_SUBSYS_STATUS ${_name})
+    get_in_map(${_var} RW_SUBSYS_STATUS ${_name})
 endmacro(RW_GET_SUBSYS_STATUS)
 
 # ######################################################################################################################
 # Set the status of a subsystem. _name Subsystem name. _status TRUE if being built, FALSE otherwise. ARGN[0] Reason for
 # not building.
 macro(RW_SET_SUBSYS_STATUS _name _status)
-  if(${ARGC} EQUAL 3)
-    set(_reason ${ARGV2})
-  else(${ARGC} EQUAL 3)
-    set(_reason "No reason")
-  endif(${ARGC} EQUAL 3)
-  set_in_global_map(RW_SUBSYS_STATUS ${_name} ${_status})
-  set_in_global_map(RW_SUBSYS_REASONS ${_name} ${_reason})
+    if(${ARGC} EQUAL 3)
+        set(_reason ${ARGV2})
+    else(${ARGC} EQUAL 3)
+        set(_reason "No reason")
+    endif(${ARGC} EQUAL 3)
+    set_in_global_map(RW_SUBSYS_STATUS ${_name} ${_status})
+    set_in_global_map(RW_SUBSYS_REASONS ${_name} ${_reason})
 endmacro(RW_SET_SUBSYS_STATUS)
 
 # ######################################################################################################################
 # Set the hyperstatus of a subsystem and its dependee _name Subsystem name. _dependee Dependant subsystem. _status
 # AUTO_OFF to disable AUTO_ON to enable ARGN[0] Reason for not building.
 macro(RW_SET_SUBSYS_HYPERSTATUS _name _dependee _status)
-  set_in_global_map(RW_SUBSYS_HYPERSTATUS ${_name}_${_dependee} ${_status})
-  if(${ARGC} EQUAL 4)
-    set_in_global_map(RW_SUBSYS_REASONS ${_dependee} ${ARGV3})
-  endif()
+    set_in_global_map(RW_SUBSYS_HYPERSTATUS ${_name}_${_dependee} ${_status})
+    if(${ARGC} EQUAL 4)
+        set_in_global_map(RW_SUBSYS_REASONS ${_dependee} ${ARGV3})
+    endif()
 endmacro()
 
 # ######################################################################################################################
 # Get the hyperstatus of a subsystem and its dependee _name IN subsystem name. _dependee IN dependant subsystem. _var
 # OUT hyperstatus ARGN[0] Reason for not building.
 macro(RW_GET_SUBSYS_HYPERSTATUS _var _name)
-  set(${_var} "AUTO_ON")
-  if(${ARGC} EQUAL 3)
-    get_in_map(${_var} RW_SUBSYS_HYPERSTATUS ${_name}_${ARGV2})
-  else()
-    foreach(subsys ${RW_SUBSYS_DEPS_${_name}})
-      if("${RW_SUBSYS_HYPERSTATUS_${subsys}_${_name}}" STREQUAL "AUTO_OFF")
-        set(${_var} "AUTO_OFF")
-        break()
-      endif("${RW_SUBSYS_HYPERSTATUS_${subsys}_${_name}}" STREQUAL "AUTO_OFF")
-    endforeach(subsys)
-  endif()
+    set(${_var} "AUTO_ON")
+    if(${ARGC} EQUAL 3)
+        get_in_map(${_var} RW_SUBSYS_HYPERSTATUS ${_name}_${ARGV2})
+    else()
+        foreach(subsys ${RW_SUBSYS_DEPS_${_name}})
+            if("${RW_SUBSYS_HYPERSTATUS_${subsys}_${_name}}" STREQUAL "AUTO_OFF")
+                set(${_var} "AUTO_OFF")
+                break()
+            endif("${RW_SUBSYS_HYPERSTATUS_${subsys}_${_name}}" STREQUAL "AUTO_OFF")
+        endforeach(subsys)
+    endif()
 endmacro()
 
 # ######################################################################################################################
 # Macro to build subsystem centric documentation _subsys IN the name of the subsystem to generate documentation for
 macro(RW_ADD_DOC _subsys)
-  string(TOUPPER "${_subsys}" SUBSYS)
-  set(doc_subsys "doc_${_subsys}")
-  get_in_map(dependencies RW_SUBSYS_DEPS ${_subsys})
-  if(DOXYGEN_FOUND)
-    if(HTML_HELP_COMPILER)
-      set(DOCUMENTATION_HTML_HELP YES)
-    else(HTML_HELP_COMPILER)
-      set(DOCUMENTATION_HTML_HELP NO)
-    endif(HTML_HELP_COMPILER)
-    if(DOXYGEN_DOT_EXECUTABLE)
-      set(HAVE_DOT YES)
-    else(DOXYGEN_DOT_EXECUTABLE)
-      set(HAVE_DOT NO)
-    endif(DOXYGEN_DOT_EXECUTABLE)
-    if(NOT "${dependencies}" STREQUAL "")
-      set(STRIPPED_HEADERS "${RW_SOURCE_DIR}/${dependencies}/include")
-      string(
-        REPLACE ";" "/include \\\n\t\t\t\t\t\t\t\t\t\t\t\t ${RW_SOURCE_DIR}/" STRIPPED_HEADERS "${STRIPPED_HEADERS}"
-      )
-    endif(NOT "${dependencies}" STREQUAL "")
-    set(DOC_SOURCE_DIR "\"${CMAKE_CURRENT_SOURCE_DIR}\"\\")
-    foreach(dep ${dependencies})
-      set(DOC_SOURCE_DIR "${DOC_SOURCE_DIR}\n\t\t\t\t\t\t\t\t\t\t\t\t \"${RW_SOURCE_DIR}/${dep}\"\\")
-    endforeach(dep)
-    file(MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/html")
-    set(doxyfile "${CMAKE_CURRENT_BINARY_DIR}/doxyfile")
-    configure_file("${RW_SOURCE_DIR}/doc/doxygen/doxyfile.in" ${doxyfile})
-    add_custom_target(${doc_subsys} ${DOXYGEN_EXECUTABLE} ${doxyfile})
-    if(USE_PROJECT_FOLDERS)
-      set_target_properties(${doc_subsys} PROPERTIES FOLDER "Documentation")
-    endif(USE_PROJECT_FOLDERS)
-  endif()
+    string(TOUPPER "${_subsys}" SUBSYS)
+    set(doc_subsys "doc_${_subsys}")
+    get_in_map(dependencies RW_SUBSYS_DEPS ${_subsys})
+    if(DOXYGEN_FOUND)
+        if(HTML_HELP_COMPILER)
+            set(DOCUMENTATION_HTML_HELP YES)
+        else(HTML_HELP_COMPILER)
+            set(DOCUMENTATION_HTML_HELP NO)
+        endif(HTML_HELP_COMPILER)
+        if(DOXYGEN_DOT_EXECUTABLE)
+            set(HAVE_DOT YES)
+        else(DOXYGEN_DOT_EXECUTABLE)
+            set(HAVE_DOT NO)
+        endif(DOXYGEN_DOT_EXECUTABLE)
+        if(NOT "${dependencies}" STREQUAL "")
+            set(STRIPPED_HEADERS "${RW_SOURCE_DIR}/${dependencies}/include")
+            string(
+                REPLACE
+                    ";" "/include \\\n\t\t\t\t\t\t\t\t\t\t\t\t ${RW_SOURCE_DIR}/" STRIPPED_HEADERS "${STRIPPED_HEADERS}"
+            )
+        endif(NOT "${dependencies}" STREQUAL "")
+        set(DOC_SOURCE_DIR "\"${CMAKE_CURRENT_SOURCE_DIR}\"\\")
+        foreach(dep ${dependencies})
+            set(DOC_SOURCE_DIR "${DOC_SOURCE_DIR}\n\t\t\t\t\t\t\t\t\t\t\t\t \"${RW_SOURCE_DIR}/${dep}\"\\")
+        endforeach(dep)
+        file(MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/html")
+        set(doxyfile "${CMAKE_CURRENT_BINARY_DIR}/doxyfile")
+        configure_file("${RW_SOURCE_DIR}/doc/doxygen/doxyfile.in" ${doxyfile})
+        add_custom_target(${doc_subsys} ${DOXYGEN_EXECUTABLE} ${doxyfile})
+        if(USE_PROJECT_FOLDERS)
+            set_target_properties(${doc_subsys} PROPERTIES FOLDER "Documentation")
+        endif(USE_PROJECT_FOLDERS)
+    endif()
 endmacro()
