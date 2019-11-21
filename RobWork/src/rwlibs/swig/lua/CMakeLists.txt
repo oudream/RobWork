@@ -86,8 +86,8 @@ if(build)
             set_target_properties(${TARGET_NAME}_s PROPERTIES COMPILE_FLAGS "-DSTATIC_LINKED")
         endif()
         
-        # Add rwplugin
-        if(NOT "${RW_MODULE}" STREQUAL "sdurw")
+		# Add rwplugin
+		if(NOT "${RW_MODULE}" STREQUAL "sdurw" )
             add_library(${RW_MODULE}_lua_plugin.rwplugin MODULE LuaPlugin_${RW_MODULE}.cpp)
             target_link_libraries(${RW_MODULE}_lua_plugin.rwplugin ${RW_MODULE}_lua_s)
             target_include_directories(${RW_MODULE}_lua_plugin.rwplugin PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
