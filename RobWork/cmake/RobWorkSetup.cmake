@@ -189,26 +189,21 @@ include(CMakeDependentOption)
 #
 set(RW_HAVE_GLUT False)
 
-if(NOT DEFINED WIN32)
-    find_package(GLUT QUIET)
-    if(NOT GLUT_FOUND) # Check if free glut exsist
-        find_package(FreeGLUT QUIET)
-        if(FreeGLUT_FOUND)
-            set(GLUT_glut_LIBRARY FreeGLUT::freeglut)
-            set(GLUT_FOUND ${FreeGLUT_FOUND})
-        endif()
+find_package(GLUT QUIET)
+if(NOT GLUT_FOUND) # Check if free glut exsist
+    find_package(FreeGLUT QUIET)
+    if(FreeGLUT_FOUND)
+        set(GLUT_glut_LIBRARY FreeGLUT::freeglut)
+        set(GLUT_FOUND ${FreeGLUT_FOUND})
     endif()
+endif()
 
-    if(OPENGL_FOUND AND GLUT_FOUND)
-        set(RW_HAVE_GLUT True)
-        message(STATUS "RobWork: OpenGL and GLUT ENABLED! FOUND!")
-    else()
-        set(GLUT_glut_LIBRARY "")
-        message(STATUS "RobWork: OpenGL and GLUT NOT FOUND! code disabled!")
-    endif()
+if(OPENGL_FOUND AND GLUT_FOUND)
+    set(RW_HAVE_GLUT True)
+    message(STATUS "RobWork: OpenGL and GLUT ENABLED! FOUND!")
 else()
     set(GLUT_glut_LIBRARY "")
-    message(STATUS "RobWork: GLUT implementation doesn't work properly on windows and is disabled")
+    message(STATUS "RobWork: OpenGL and GLUT NOT FOUND! code disabled!")
 endif()
 
 #
