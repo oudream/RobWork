@@ -57,7 +57,7 @@
 #endif
 
 #ifdef RWS_HAVE_GLUT
-    #include <GL/glut.h>
+    #include <GL/freeglut.h>
 #endif
 
 #include <boost/filesystem.hpp>

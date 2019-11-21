@@ -1,118 +1,126 @@
 # if we want to use ui files add them here
-SET(UIS_FILES AboutBox.ui propertyview/PropertyViewEditor.ui propertyview/PropertyViewDialog.ui)
+set(UIS_FILES AboutBox.ui propertyview/PropertyViewEditor.ui propertyview/PropertyViewDialog.ui)
 
-IF(RWS_USE_QT5)
-	QT5_WRAP_UI(UIS_OUT_H ${UIS_FILES})
-ELSE()
-	QT4_WRAP_UI(UIS_OUT_H ${UIS_FILES})
-ENDIF()
+if(RWS_USE_QT5)
+    qt5_wrap_ui(UIS_OUT_H ${UIS_FILES})
+else()
+    qt4_wrap_ui(UIS_OUT_H ${UIS_FILES})
+endif()
 
 # Standard files to compile:
-SET(SRC_FILES_CPP
-  ArcBallController.cpp
-  #FixedAxisController.cpp
-  RWSImageLoaderPlugin.cpp
-  ImageUtil.cpp
-  RobWorkStudio.cpp
-  RWStudioView3D.cpp
-  SceneOpenGLViewer.cpp
-  RobWorkStudioPlugin.cpp
-  AboutBox.cpp
-  HelpAssistant.cpp
-  ImageView.cpp
-  propertyview/PropertyViewEditor.cpp
-  propertyview/PropertyViewDialog.cpp
-  
+set(
+    SRC_FILES_CPP
+    ArcBallController.cpp
+    # FixedAxisController.cpp
+    RWSImageLoaderPlugin.cpp
+    ImageUtil.cpp
+    RobWorkStudio.cpp
+    RWStudioView3D.cpp
+    SceneOpenGLViewer.cpp
+    RobWorkStudioPlugin.cpp
+    AboutBox.cpp
+    HelpAssistant.cpp
+    ImageView.cpp
+    propertyview/PropertyViewEditor.cpp
+    propertyview/PropertyViewDialog.cpp
 )
 
-SET(SRC_FILES_HPP
-  ArcBallController.hpp
-  RWSImageLoaderPlugin.hpp
-  ImageUtil.hpp
-  #FixedAxisController.hpp
-  RobWorkStudio.hpp
-  SceneOpenGLViewer.hpp
-  RobWorkStudioPlugin.hpp
-  RWStudioView3D.hpp
-  AboutBox.hpp
-  HelpAssistant.hpp
-  ImageView.hpp
-  propertyview/PropertyViewEditor.hpp
-  propertyview/PropertyViewDialog.hpp
-  )
+set(
+    SRC_FILES_HPP
+    ArcBallController.hpp RWSImageLoaderPlugin.hpp ImageUtil.hpp
+    # FixedAxisController.hpp
+    RobWorkStudio.hpp
+    SceneOpenGLViewer.hpp
+    RobWorkStudioPlugin.hpp
+    RWStudioView3D.hpp
+    AboutBox.hpp
+    HelpAssistant.hpp
+    ImageView.hpp
+    propertyview/PropertyViewEditor.hpp
+    propertyview/PropertyViewDialog.hpp
+)
 
 # Files to moc and compile:
-SET(MocHeaderFiles
-  RobWorkStudioPlugin.hpp
-  RobWorkStudio.hpp
-  SceneOpenGLViewer.hpp
-  AboutBox.hpp
-  RWStudioView3D.hpp
-  ImageView.hpp
-  propertyview/PropertyViewEditor.hpp 
-  propertyview/PropertyViewDialog.hpp 
-  )
+set(
+    MocHeaderFiles
+    RobWorkStudioPlugin.hpp
+    RobWorkStudio.hpp
+    SceneOpenGLViewer.hpp
+    AboutBox.hpp
+    RWStudioView3D.hpp
+    ImageView.hpp
+    propertyview/PropertyViewEditor.hpp
+    propertyview/PropertyViewDialog.hpp
+)
 
 if(RWS_USE_PYTHON)
- set(SRC_FILES_CPP ${SRC_FILES_CPP} pythonpluginloader/PyPlugin.cpp)
- set(SRC_FILES_HPP ${SRC_FILES_HPP} pythonpluginloader/PyPlugin.hpp)
- set(MocHeaderFiles ${MocHeaderFiles} pythonpluginloader/PyPlugin.hpp)
+    set(SRC_FILES_CPP ${SRC_FILES_CPP} pythonpluginloader/PyPlugin.cpp)
+    set(SRC_FILES_HPP ${SRC_FILES_HPP} pythonpluginloader/PyPlugin.hpp)
+    set(MocHeaderFiles ${MocHeaderFiles} pythonpluginloader/PyPlugin.hpp)
 endif()
 
 set_source_files_properties(${SRC_FILES_CPP} PROPERTIES OBJECT_DEPENDS "${UIS_OUT_H}")
 
-#Add the cmake binary dir because this is where the ui files are placed
-#MESSAGE(STATUS "CMAKE_CURRENT_BINARY_DIR:  ${CMAKE_CURRENT_BINARY_DIR}")
-include_directories(${CMAKE_CURRENT_BINARY_DIR}) 
+# Add the cmake binary dir because this is where the ui files are placed MESSAGE(STATUS "CMAKE_CURRENT_BINARY_DIR:
+# ${CMAKE_CURRENT_BINARY_DIR}")
+include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
-
-SET(MocSrcFiles)
-IF(RWS_USE_QT5)
-	QT5_WRAP_CPP(MocSrcFiles ${MocHeaderFiles})
-ELSE()
-	QT4_WRAP_CPP(MocSrcFiles ${MocHeaderFiles} OPTIONS -DBOOST_TT_HAS_PLUS_HPP_INCLUDED -DBOOST_TT_HAS_PLUS_ASSIGN_HPP_INCLUDED -DBOOST_TT_HAS_MINUS_HPP_INCLUDED -DBOOST_TT_HAS_MINUS_ASSIGN_HPP_INCLUDED)
-ENDIF()
+set(MocSrcFiles)
+if(RWS_USE_QT5)
+    qt5_wrap_cpp(MocSrcFiles ${MocHeaderFiles})
+else()
+    qt4_wrap_cpp(
+        MocSrcFiles
+        ${MocHeaderFiles}
+        OPTIONS
+        -DBOOST_TT_HAS_PLUS_HPP_INCLUDED
+        -DBOOST_TT_HAS_PLUS_ASSIGN_HPP_INCLUDED
+        -DBOOST_TT_HAS_MINUS_HPP_INCLUDED
+        -DBOOST_TT_HAS_MINUS_ASSIGN_HPP_INCLUDED
+    )
+endif()
 set_source_files_properties(${MocSrcFiles} PROPERTIES OBJECT_DEPENDS "${UIS_OUT_H}")
 
 # Resource files to rcc and compile:
-IF(RWS_BUILD_SANDBOX)
-    #SET(SandboxResourceFiles rwstudio_sandbox_resources.qrc)
-ENDIF ()
+if(RWS_BUILD_SANDBOX)
+    # SET(SandboxResourceFiles rwstudio_sandbox_resources.qrc)
+endif()
 # Rcc the files:
-IF(RWS_USE_QT5)
-	QT5_ADD_RESOURCES(ResourceFiles rwstudio_resources.qrc)
-ELSE()
-	QT4_ADD_RESOURCES(ResourceFiles rwstudio_resources.qrc)
-ENDIF()
+if(RWS_USE_QT5)
+    qt5_add_resources(ResourceFiles rwstudio_resources.qrc)
+else()
+    qt4_add_resources(ResourceFiles rwstudio_resources.qrc)
+endif()
 
-# We create a static library named rwstudio that all plugins should link to. Our
-# RobWorkStudio executable links to this library also.
-RW_ADD_LIBRARY(sdurws sdurws
-            ${UIS_OUT_H}
-            ${SRC_FILES_CPP}
-            ${MocSrcFiles}
-            ${ResourceFiles}
+# We create a static library named rwstudio that all plugins should link to. Our RobWorkStudio executable links to this
+# library also.
+rw_add_library(
+    sdurws
+    sdurws
+    ${UIS_OUT_H}
+    ${SRC_FILES_CPP}
+    ${MocSrcFiles}
+    ${ResourceFiles}
 )
 
-if ( ${RWS_HAVE_GLUT} )
-  TARGET_LINK_LIBRARIES(sdurws PUBLIC qtpropertybrowser ${PYTHON_LIBRARIES} ${QT_LIBRARIES} ${ROBWORK_LIBRARIES} ${GLUT_glut_LIBRARY})
-else () 
-  TARGET_LINK_LIBRARIES(sdurws PUBLIC qtpropertybrowser ${PYTHON_LIBRARIES} ${QT_LIBRARIES} ${ROBWORK_LIBRARIES})
-endif()
+target_link_libraries(
+    sdurws
+    PUBLIC qtpropertybrowser ${PYTHON_LIBRARIES} ${QT_LIBRARIES} ${ROBWORK_LIBRARIES} ${GLUT_glut_LIBRARY}
+)
+
 include_directories(${PYTHON_INCLUDE_DIRS})
 
+if(CMAKE_VERSION VERSION_GREATER 3.3)
+    set_target_properties(sdurws PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
+endif()
 
-IF(CMAKE_VERSION VERSION_GREATER 3.3)
-	SET_TARGET_PROPERTIES(sdurws PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
-ENDIF()
-
-IF(WIN32 AND MSVC AND BUILD_SHARED_LIBS AND CMAKE_VERSION VERSION_LESS 3.4)
-	MESSAGE(FATAL_ERROR "Building shared libraries on Windows requires CMake 3.4 or newer.")
-ENDIF()
+if(WIN32 AND MSVC AND BUILD_SHARED_LIBS AND CMAKE_VERSION VERSION_LESS 3.4)
+    message(FATAL_ERROR "Building shared libraries on Windows requires CMake 3.4 or newer.")
+endif()
 
 # Install stuff
-INSTALL(TARGETS sdurws DESTINATION ${LIB_INSTALL_DIR})
-INSTALL(FILES ${SRC_FILES_HPP} DESTINATION ${INCLUDE_INSTALL_DIR}/sdurws)
+install(TARGETS sdurws DESTINATION ${LIB_INSTALL_DIR})
+install(FILES ${SRC_FILES_HPP} DESTINATION ${INCLUDE_INSTALL_DIR}/sdurws)
 
-ADD_LIBRARY(sdurws_plugin.rwplugin MODULE RWSImageLoaderPlugin.cpp RWSImageLoaderPlugin.hpp)
-TARGET_LINK_LIBRARIES(sdurws_plugin.rwplugin sdurws ${QT_LIBRARIES} ${ROBWORK_LIBRARIES})
+add_library(sdurws_plugin.rwplugin MODULE RWSImageLoaderPlugin.cpp RWSImageLoaderPlugin.hpp)
+target_link_libraries(sdurws_plugin.rwplugin sdurws ${QT_LIBRARIES} ${ROBWORK_LIBRARIES})
