@@ -154,7 +154,6 @@ if(NOT GLUT_FOUND) # Check if free glut exsist
         set(GLUT_FOUND ${FreeGLUT_FOUND})
     endif()
 endif()
-
 if(OPENGL_FOUND AND GLUT_FOUND)
     set(RWS_HAVE_GLUT True)
     message(STATUS "RobWork: OpenGL and GLUT ENABLED! FOUND!")
