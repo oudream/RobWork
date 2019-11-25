@@ -152,25 +152,12 @@ else()
 endif()
 if(RWSIM_HAVE_LUA)
     set(RWSIM_LUA_LIB sdurwsim_lua_s)
-    set(
-        RWS_LUAPL_LIBRARIES
-        sdurws_luapl
-        sdurws_sensors
-        sdurws_planning
-        sdurws_propertyview
-        sdurws_playback
-        sdurws_treeview
-        sdurws_jog
-        sdurws_log
-        sdurws_robworkstudioapp
-    )
 endif()
 
 add_library(RWSimPlugin MODULE ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles_RWSimPlugin} ${UIS_OUT_H})
 # ADD_LIBRARY(RWSimPluginStatic STATIC ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles_RWSimPlugin})
 target_link_libraries(
     RWSimPlugin
-    ${RWS_LUAPL_LIBRARIES}
     sdurwsim_gui
     ${RWSIM_LUA_LIB}
     ${ROBWORKSIM_LIBRARIES}
