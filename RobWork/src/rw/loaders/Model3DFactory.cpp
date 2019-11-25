@@ -180,7 +180,7 @@ Model3D::Ptr Model3DFactory::loadModel(const std::string &raw_filename, const st
             LoaderAssimp loader;
             model = loader.load(filename);
 #else
-            RW_THROW("Robwork has not been compiled with assimp")
+            RW_THROW("Robwork has not been compiled with assimp");
 #endif    
         }
         getCache().add(filename, model, moddate);
