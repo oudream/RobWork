@@ -17,6 +17,7 @@
 
 #include "TestEnvironment.hpp"
 
+#include <RobWorkConfig.hpp>
 #include <rw/RobWork.hpp>
 #include <rw/common/DOMElem.hpp>
 #include <rw/common/DOMParser.hpp>
@@ -27,53 +28,57 @@ using rw::RobWork;
 using rw::common::DOMElem;
 using rw::common::DOMParser;
 
-TestEnvironment::TestEnvironment():
-	_argc(0), _argv(NULL)
+TestEnvironment::TestEnvironment () : _argc (0), _argv (NULL)
+{}
+
+TestEnvironment::~TestEnvironment ()
+{}
+
+void TestEnvironment::SetUp ()
 {
+    RobWork::init (_argc, (const char**) _argv);
+    testfilesDir ();
 }
 
-TestEnvironment::~TestEnvironment() {
+void TestEnvironment::init (int argc, char** argv)
+{
+    _argc = argc;
+    _argv = argv;
 }
 
-void TestEnvironment::SetUp() {
-    RobWork::init(_argc,(const char**)_argv);
-    testfilesDir();
+std::string TestEnvironment::executableDir ()
+{
+    static std::string executableDir;
+    if (executableDir.empty ()) {
+        boost::filesystem::path path (get ()->_argv[0]);
+        boost::filesystem::path full_path = boost::filesystem::canonical (path);
+        executableDir = full_path.parent_path ().string () + SLASH;
+    }
+    return executableDir;
 }
 
-void TestEnvironment::init(int argc, char** argv) {
-	_argc = argc;
-	_argv = argv;
+std::string TestEnvironment::testfilesDir ()
+{
+    static std::string testfilesDir;
+    if (testfilesDir.empty ()) {
+        const DOMParser::Ptr parser = DOMParser::make ();
+        parser->load (executableDir () + SLASH + "TestSuiteConfig.xml");
+        const DOMElem::Ptr testElem = parser->getRootElement ()->getChild ("RobWorkTest", false);
+        const DOMElem::Ptr dirElem  = testElem->getChild ("TestfilesDIR", false);
+        testfilesDir                = dirElem->getValue () + SLASH;
+    }
+    return testfilesDir;
 }
 
-std::string TestEnvironment::executableDir() {
-	static std::string executableDir;
-	if (executableDir.empty()) {
-	    boost::filesystem::path path(get()->_argv[0]);
-		boost::filesystem::path full_path = boost::filesystem::canonical(path);
-	    executableDir = full_path.parent_path().string()+"/";
-	}
-	return executableDir;
+TestEnvironment* TestEnvironment::get ()
+{
+    static TestEnvironment* env = new TestEnvironment ();
+    return env;
 }
 
-std::string TestEnvironment::testfilesDir() {
-	static std::string testfilesDir;
-	if (testfilesDir.empty()) {
-	    const DOMParser::Ptr parser = DOMParser::make();
-	    parser->load(executableDir() + "/TestSuiteConfig.xml");
-	    const DOMElem::Ptr testElem = parser->getRootElement()->getChild("RobWorkTest",false);
-	    const DOMElem::Ptr dirElem = testElem->getChild("TestfilesDIR",false);
-	    testfilesDir = dirElem->getValue()+"/";
-	}
-	return testfilesDir;
-}
-
-TestEnvironment* TestEnvironment::get() {
-	static TestEnvironment* env = new TestEnvironment();
-	return env;
-}
-
-TestEnvironment* TestEnvironment::make(int argc, char** argv) {
-	TestEnvironment* const env = get();
-	env->init(argc,argv);
-	return env;
+TestEnvironment* TestEnvironment::make (int argc, char** argv)
+{
+    TestEnvironment* const env = get ();
+    env->init (argc, argv);
+    return env;
 }

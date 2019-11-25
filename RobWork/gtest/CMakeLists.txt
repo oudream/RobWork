@@ -1,324 +1,269 @@
-INCLUDE_DIRECTORIES(${GTEST_INCLUDE_DIRS})
+include_directories(${GTEST_INCLUDE_DIRS})
 
-########################################################################
+# ######################################################################################################################
 # Standard Macro
-########################################################################
+# ######################################################################################################################
 
-MACRO(ADD_RW_GTEST target)
-	ADD_TEST(NAME ${target} COMMAND $<TARGET_FILE:${target}>)
-	ADD_CUSTOM_TARGET(${target}_report-makedir
-		COMMAND ${CMAKE_COMMAND} -E make_directory $<TARGET_FILE_DIR:${target}>/gtest_reports
-		COMMENT "Creating directory gtest_reports if it does not exist."
-	)
-	ADD_CUSTOM_TARGET(${target}_report
-		COMMAND $<TARGET_FILE:${target}> --gtest_output=xml:$<TARGET_FILE_DIR:${target}>/gtest_reports/${target}.xml
-		DEPENDS ${target} ${target}_report-makedir
-	)
-	SET(REPORT_TARGETS ${REPORT_TARGETS} ${target}_report)
-	IF(GTEST_SHARED_LIBS)
-	  TARGET_COMPILE_DEFINITIONS(${target} PRIVATE GTEST_LINKED_AS_SHARED_LIBRARY=1)
-	  IF(MSVC)
-		TARGET_COMPILE_OPTIONS(${target} PRIVATE /wd4251 /wd4275)
-	  ENDIF()
-	ENDIF()
-ENDMACRO(ADD_RW_GTEST)
+macro(ADD_RW_GTEST target)
+    add_test(NAME ${target} COMMAND $<TARGET_FILE:${target}>)
+    add_custom_target(
+        ${target}_report-makedir
+        COMMAND ${CMAKE_COMMAND} -E make_directory $<TARGET_FILE_DIR:${target}>/gtest_reports
+        COMMENT "Creating directory gtest_reports if it does not exist."
+    )
+    add_custom_target(
+        ${target}_report
+        COMMAND $<TARGET_FILE:${target}> --gtest_output=xml:$<TARGET_FILE_DIR:${target}>/gtest_reports/${target}.xml
+        DEPENDS ${target} ${target}_report-makedir
+    )
+    set(REPORT_TARGETS ${REPORT_TARGETS} ${target}_report)
+    if(GTEST_SHARED_LIBS)
+        target_compile_definitions(${target} PRIVATE GTEST_LINKED_AS_SHARED_LIBRARY=1)
+        if(MSVC)
+            target_compile_options(${target} PRIVATE /wd4251 /wd4275)
+        endif()
+    endif()
+endmacro(ADD_RW_GTEST)
 
-########################################################################
+# ######################################################################################################################
 # RobWork main function for initialization (link with this if needed).
-########################################################################
+# ######################################################################################################################
 
-SET(RWMAIN_TEST_LIBRARIES
- ${GTEST_BOTH_LIBRARIES}
- sdurw
- ${XERCESC_LIBRARIES}
- ${ASSIMP_LIBRARIES}
- ${QHULL_LIBRARIES}
- ${CMAKE_DL_LIBS}
- )
-
-SET(RWMAIN_TEST_SRC
-  TestEnvironment.cpp
-  test-main.cpp
+set(
+    RWMAIN_TEST_LIBRARIES
+    ${GTEST_BOTH_LIBRARIES}
+    sdurw
+    ${XERCESC_LIBRARIES}
+    ${ASSIMP_LIBRARIES}
+    ${QHULL_LIBRARIES}
+    ${CMAKE_DL_LIBS}
 )
-ADD_LIBRARY( sdurw-gtest-main STATIC ${RWMAIN_TEST_SRC})       
-TARGET_LINK_LIBRARIES( sdurw-gtest-main ${RWMAIN_TEST_LIBRARIES})
 
-########################################################################
+set(RWMAIN_TEST_SRC TestEnvironment.cpp test-main.cpp)
+add_library(sdurw-gtest-main STATIC ${RWMAIN_TEST_SRC})
+target_link_libraries(sdurw-gtest-main ${RWMAIN_TEST_LIBRARIES})
+
+# ######################################################################################################################
 # Common
-########################################################################
+# ######################################################################################################################
 
-SET(COMMON_TEST_LIBRARIES
- sdurw-gtest-main
- ${GTEST_LIBRARIES}
- sdurw
- ${XERCESC_LIBRARIES}
- ${ASSIMP_LIBRARIES}
- ${QHULL_LIBRARIES}
+set(
+    COMMON_TEST_LIBRARIES
+    sdurw-gtest-main
+    ${GTEST_LIBRARIES}
+    sdurw
+    ${XERCESC_LIBRARIES}
+    ${ASSIMP_LIBRARIES}
+    ${QHULL_LIBRARIES}
 )
 
-SET(COMMON_TEST_SRC
-  common/CommonTest.cpp
-  common/IteratorTest.cpp
-  common/PairMapTest.cpp
-  common/PluginTest.cpp
-)
-ADD_EXECUTABLE( sdurw_common-gtest ${COMMON_TEST_SRC})
-TARGET_LINK_LIBRARIES( sdurw_common-gtest ${COMMON_TEST_LIBRARIES})
-ADD_RW_GTEST(sdurw_common-gtest)
+set(COMMON_TEST_SRC common/CommonTest.cpp common/IteratorTest.cpp common/PairMapTest.cpp common/PluginTest.cpp)
+add_executable(sdurw_common-gtest ${COMMON_TEST_SRC})
+target_link_libraries(sdurw_common-gtest ${COMMON_TEST_LIBRARIES})
+add_rw_gtest(sdurw_common-gtest)
 
 # Create dummy plugins for testing
-ADD_LIBRARY(test_plugin.rwplugin MODULE common/TestPlugin.cpp)
-TARGET_LINK_LIBRARIES(test_plugin.rwplugin sdurw)
-SET_TARGET_PROPERTIES(test_plugin.rwplugin
-  PROPERTIES
-  LIBRARY_OUTPUT_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
-)
+add_library(test_plugin.rwplugin MODULE common/TestPlugin.cpp)
+target_link_libraries(test_plugin.rwplugin sdurw)
+set_target_properties(test_plugin.rwplugin PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 
 # Create XML file for lazy-loading of Test plugin
-FILE(GENERATE OUTPUT "$<TARGET_FILE_DIR:test_plugin.rwplugin>/test_plugin.rwplugin.xml" INPUT ${CMAKE_CURRENT_SOURCE_DIR}/common/test_plugin.rwplugin.xml.in)
+file(
+    GENERATE
+    OUTPUT "$<TARGET_FILE_DIR:test_plugin.rwplugin>/test_plugin.rwplugin.xml"
+    INPUT ${CMAKE_CURRENT_SOURCE_DIR}/common/test_plugin.rwplugin.xml.in
+)
 
-########################################################################
+# ######################################################################################################################
 # Geometry
-########################################################################
-SET(GEOMETRY_TEST_LIBRARIES
- ${GTEST_BOTH_LIBRARIES}
- sdurw
- ${XERCESC_LIBRARIES}
- ${ASSIMP_LIBRARIES}
- ${QHULL_LIBRARIES}
- ${CMAKE_DL_LIBS}
+# ######################################################################################################################
+set(
+    GEOMETRY_TEST_LIBRARIES
+    ${GTEST_BOTH_LIBRARIES}
+    sdurw
+    ${XERCESC_LIBRARIES}
+    ${ASSIMP_LIBRARIES}
+    ${QHULL_LIBRARIES}
+    ${CMAKE_DL_LIBS}
 )
 
-SET(GEOMETRY_TEST_SRC
-  geometry/DelaunayTest.cpp
-  geometry/HyperSphereTest.cpp
-  geometry/ImplicitTorusTest.cpp
-  geometry/IndexedTriMeshTest.cpp
-  geometry/IntersectUtilTest.cpp
-  geometry/PlaneTest.cpp
-  geometry/PolygonTest.cpp
-  geometry/QHullTest.cpp
-  geometry/QuadraticCurveTest.cpp
-  geometry/TriangulateTest.cpp
+set(
+    GEOMETRY_TEST_SRC
+    geometry/DelaunayTest.cpp
+    geometry/HyperSphereTest.cpp
+    geometry/ImplicitTorusTest.cpp
+    geometry/IndexedTriMeshTest.cpp
+    geometry/IntersectUtilTest.cpp
+    geometry/PlaneTest.cpp
+    geometry/PolygonTest.cpp
+    geometry/QHullTest.cpp
+    geometry/QuadraticCurveTest.cpp
+    geometry/TriangulateTest.cpp
 )
-ADD_EXECUTABLE( sdurw_geometry-gtest ${GEOMETRY_TEST_SRC})       
-TARGET_LINK_LIBRARIES( sdurw_geometry-gtest ${GEOMETRY_TEST_LIBRARIES})
-ADD_RW_GTEST(sdurw_geometry-gtest)
+add_executable(sdurw_geometry-gtest ${GEOMETRY_TEST_SRC})
+target_link_libraries(sdurw_geometry-gtest ${GEOMETRY_TEST_LIBRARIES})
+add_rw_gtest(sdurw_geometry-gtest)
 
-########################################################################
+# ######################################################################################################################
 # Graphics
-########################################################################
-SET(GRAPHICS_TEST_LIBRARIES
- ${GTEST_BOTH_LIBRARIES}
- sdurw
-)
+# ######################################################################################################################
+set(GRAPHICS_TEST_LIBRARIES ${GTEST_BOTH_LIBRARIES} sdurw)
 
-SET(GRAPHICS_TEST_SRC
-  graphics/SceneGraphTest.cpp
-  graphics/WorkCellSceneTest.cpp
-)
-ADD_EXECUTABLE( sdurw_graphics-gtest ${GRAPHICS_TEST_SRC})       
-TARGET_LINK_LIBRARIES( sdurw_graphics-gtest ${GRAPHICS_TEST_LIBRARIES})
-ADD_RW_GTEST(sdurw_graphics-gtest)
+set(GRAPHICS_TEST_SRC graphics/SceneGraphTest.cpp graphics/WorkCellSceneTest.cpp)
+add_executable(sdurw_graphics-gtest ${GRAPHICS_TEST_SRC})
+target_link_libraries(sdurw_graphics-gtest ${GRAPHICS_TEST_LIBRARIES})
+add_rw_gtest(sdurw_graphics-gtest)
 
-########################################################################
+# ######################################################################################################################
 # Inverse Kinematics
-########################################################################
-SET(INVKIN_TEST_LIBRARIES
- sdurw-gtest-main
- ${GTEST_LIBRARIES}
- sdurw
-)
+# ######################################################################################################################
+set(INVKIN_TEST_LIBRARIES sdurw-gtest-main ${GTEST_LIBRARIES} sdurw)
 
-SET(INVKIN_TEST_SRC
-  invkin/ClosedFormIKSolverKukaIIWATest.cpp
-  invkin/ParallelIKSolverTest.cpp
-)
-ADD_EXECUTABLE( sdurw_invkin-gtest ${INVKIN_TEST_SRC})       
-TARGET_LINK_LIBRARIES( sdurw_invkin-gtest ${INVKIN_TEST_LIBRARIES})
-ADD_RW_GTEST(sdurw_invkin-gtest)
+set(INVKIN_TEST_SRC invkin/ClosedFormIKSolverKukaIIWATest.cpp invkin/ParallelIKSolverTest.cpp)
+add_executable(sdurw_invkin-gtest ${INVKIN_TEST_SRC})
+target_link_libraries(sdurw_invkin-gtest ${INVKIN_TEST_LIBRARIES})
+add_rw_gtest(sdurw_invkin-gtest)
 
-########################################################################
+# ######################################################################################################################
 # Kinematics
-########################################################################
+# ######################################################################################################################
 
-SET(KINEMATICS_TEST_LIBRARIES
-  ${GTEST_BOTH_LIBRARIES}
-  sdurw
-)
+set(KINEMATICS_TEST_LIBRARIES ${GTEST_BOTH_LIBRARIES} sdurw)
 
-SET(KINEMATICS_TEST_SRC
-  kinematics/StaticFrameGroupsTest.cpp
-)
-ADD_EXECUTABLE( sdurw_kinematics-gtest ${KINEMATICS_TEST_SRC})       
-TARGET_LINK_LIBRARIES( sdurw_kinematics-gtest ${KINEMATICS_TEST_LIBRARIES})
-ADD_RW_GTEST(sdurw_kinematics-gtest)
+set(KINEMATICS_TEST_SRC kinematics/StaticFrameGroupsTest.cpp)
+add_executable(sdurw_kinematics-gtest ${KINEMATICS_TEST_SRC})
+target_link_libraries(sdurw_kinematics-gtest ${KINEMATICS_TEST_LIBRARIES})
+add_rw_gtest(sdurw_kinematics-gtest)
 
-########################################################################
+# ######################################################################################################################
 # Loaders
-########################################################################
+# ######################################################################################################################
 
-SET(LOADERS_TEST_LIBRARIES
- sdurw-gtest-main
- ${GTEST_LIBRARIES}
- sdurw
- sdurw_proximitystrategies
- ${XERCESC_LIBRARIES}
- ${ASSIMP_LIBRARIES}
- ${QHULL_LIBRARIES}
- ${CMAKE_DL_LIBS}
- )
-
-SET(LOADERS_TEST_SRC
-  loaders/DOMProximitySetupSaver.cpp
-  loaders/DOMPropertyMap.cpp
-  loaders/ImageLoaderTest.cpp
-  loaders/PathLoaderCSVTest.cpp
+set(
+    LOADERS_TEST_LIBRARIES
+    sdurw-gtest-main
+    ${GTEST_LIBRARIES}
+    sdurw
+    sdurw_proximitystrategies
+    ${XERCESC_LIBRARIES}
+    ${ASSIMP_LIBRARIES}
+    ${QHULL_LIBRARIES}
+    ${CMAKE_DL_LIBS}
 )
-ADD_EXECUTABLE( sdurw_loaders-gtest ${LOADERS_TEST_SRC})       
-TARGET_LINK_LIBRARIES( sdurw_loaders-gtest ${LOADERS_TEST_LIBRARIES})
-ADD_RW_GTEST(sdurw_loaders-gtest)
 
-########################################################################
+set(LOADERS_TEST_SRC loaders/DOMProximitySetupSaver.cpp loaders/DOMPropertyMap.cpp loaders/ImageLoaderTest.cpp
+                     loaders/PathLoaderCSVTest.cpp)
+add_executable(sdurw_loaders-gtest ${LOADERS_TEST_SRC})
+target_link_libraries(sdurw_loaders-gtest ${LOADERS_TEST_LIBRARIES})
+add_rw_gtest(sdurw_loaders-gtest)
+
+# ######################################################################################################################
 # Math
-########################################################################
+# ######################################################################################################################
 
-SET(MATH_TEST_LIBRARIES
- ${GTEST_BOTH_LIBRARIES}
- sdurw
- )
+set(MATH_TEST_LIBRARIES ${GTEST_BOTH_LIBRARIES} sdurw)
 
-SET(MATH_TEST_SRC
-  math/MetricFactoryTest.cpp
-  math/PolynomialTest.cpp
-  math/SerializationTest.cpp
-  math/StatisticsTest.cpp
-)
-ADD_EXECUTABLE( sdurw_math-gtest ${MATH_TEST_SRC})       
-TARGET_LINK_LIBRARIES( sdurw_math-gtest ${MATH_TEST_LIBRARIES})
-ADD_RW_GTEST(sdurw_math-gtest)
+set(MATH_TEST_SRC math/MetricFactoryTest.cpp math/PolynomialTest.cpp math/SerializationTest.cpp math/StatisticsTest.cpp)
+add_executable(sdurw_math-gtest ${MATH_TEST_SRC})
+target_link_libraries(sdurw_math-gtest ${MATH_TEST_LIBRARIES})
+add_rw_gtest(sdurw_math-gtest)
 
-########################################################################
+# ######################################################################################################################
 # Models
-########################################################################
+# ######################################################################################################################
 
-SET(MODELS_TEST_LIBRARIES
- sdurw-gtest-main
- ${GTEST_LIBRARIES}
- sdurw
- )
+set(MODELS_TEST_LIBRARIES sdurw-gtest-main ${GTEST_LIBRARIES} sdurw)
 
-SET(MODELS_TEST_SRC
-  models/JointTest.cpp
-  models/ParallelDeviceTest.cpp
-  models/ParallelLegTest.cpp
-  models/WorkCellTest.cpp
-)
-ADD_EXECUTABLE( sdurw_models-gtest ${MODELS_TEST_SRC})       
-TARGET_LINK_LIBRARIES( sdurw_models-gtest ${MODELS_TEST_LIBRARIES})
-ADD_RW_GTEST(sdurw_models-gtest)
+set(MODELS_TEST_SRC models/JointTest.cpp models/ParallelDeviceTest.cpp models/ParallelLegTest.cpp
+                    models/WorkCellTest.cpp)
+add_executable(sdurw_models-gtest ${MODELS_TEST_SRC})
+target_link_libraries(sdurw_models-gtest ${MODELS_TEST_LIBRARIES})
+add_rw_gtest(sdurw_models-gtest)
 
-########################################################################
+# ######################################################################################################################
 # Pathoptimization
-########################################################################
+# ######################################################################################################################
 
-SET(PATHOPTIMIZATION_TEST_LIBRARIES
- ${GTEST_BOTH_LIBRARIES}
- sdurw_pathoptimization
- sdurw
- )
+set(PATHOPTIMIZATION_TEST_LIBRARIES ${GTEST_BOTH_LIBRARIES} sdurw_pathoptimization sdurw)
 
-SET(PATHOPTIMIZATION_TEST_SRC
-  pathoptimization/ClearanceOptimizerTest.cpp
-  pathoptimization/PathLengthOptimizerTest.cpp
-)
-ADD_EXECUTABLE( sdurw_pathoptimization-gtest ${PATHOPTIMIZATION_TEST_SRC})       
-TARGET_LINK_LIBRARIES( sdurw_pathoptimization-gtest ${PATHOPTIMIZATION_TEST_LIBRARIES})
-ADD_RW_GTEST(sdurw_pathoptimization-gtest)
+set(PATHOPTIMIZATION_TEST_SRC pathoptimization/ClearanceOptimizerTest.cpp pathoptimization/PathLengthOptimizerTest.cpp)
+add_executable(sdurw_pathoptimization-gtest ${PATHOPTIMIZATION_TEST_SRC})
+target_link_libraries(sdurw_pathoptimization-gtest ${PATHOPTIMIZATION_TEST_LIBRARIES})
+add_rw_gtest(sdurw_pathoptimization-gtest)
 
-########################################################################
+# ######################################################################################################################
 # Proximity
-########################################################################
+# ######################################################################################################################
 
-SET(PROXIMITY_TEST_LIBRARIES
- sdurw-gtest-main
- ${GTEST_LIBRARIES}
- sdurw
- )
+set(PROXIMITY_TEST_LIBRARIES sdurw-gtest-main ${GTEST_LIBRARIES} sdurw)
 
-SET(PROXIMITY_TEST_SRC
-  proximity/BVTreeTest.cpp
-  proximity/CollisionStrategy.cpp
-  proximity/CollisionToleranceStrategy.cpp
-  proximity/DistanceMultiStrategy.cpp
-  proximity/DistanceStrategy.cpp
-  proximity/ProximityStrategy.cpp
-  proximity/DistanceCalculatorTest.cpp
+set(
+    PROXIMITY_TEST_SRC
+    proximity/BVTreeTest.cpp
+    proximity/CollisionStrategy.cpp
+    proximity/CollisionToleranceStrategy.cpp
+    proximity/DistanceMultiStrategy.cpp
+    proximity/DistanceStrategy.cpp
+    proximity/ProximityStrategy.cpp
+    proximity/DistanceCalculatorTest.cpp
 )
-ADD_EXECUTABLE( sdurw_proximity-gtest ${PROXIMITY_TEST_SRC})       
-TARGET_LINK_LIBRARIES( sdurw_proximity-gtest ${PROXIMITY_TEST_LIBRARIES})
-ADD_RW_GTEST(sdurw_proximity-gtest)
+add_executable(sdurw_proximity-gtest ${PROXIMITY_TEST_SRC})
+target_link_libraries(sdurw_proximity-gtest ${PROXIMITY_TEST_LIBRARIES})
+add_rw_gtest(sdurw_proximity-gtest)
 
-########################################################################
+# ######################################################################################################################
 # Sensor
-########################################################################
+# ######################################################################################################################
 
-SET(SENSOR_TEST_SRC
-  sensor/TactileArrayTest.cpp
-)
-ADD_EXECUTABLE( sdurw_sensor-gtest ${SENSOR_TEST_SRC})       
-TARGET_LINK_LIBRARIES( sdurw_sensor-gtest ${GTEST_BOTH_LIBRARIES} sdurw)
-ADD_RW_GTEST(sdurw_sensor-gtest)
+set(SENSOR_TEST_SRC sensor/TactileArrayTest.cpp)
+add_executable(sdurw_sensor-gtest ${SENSOR_TEST_SRC})
+target_link_libraries(sdurw_sensor-gtest ${GTEST_BOTH_LIBRARIES} sdurw)
+add_rw_gtest(sdurw_sensor-gtest)
 
-########################################################################
+# ######################################################################################################################
 # Task
-########################################################################
+# ######################################################################################################################
 
-SET(TASK_TEST_LIBRARIES
- sdurw-gtest-main
- ${GTEST_LIBRARIES}
- sdurw_task
- sdurw
- ${XERCESC_LIBRARIES}
- ${ASSIMP_LIBRARIES}
- ${QHULL_LIBRARIES}
- ${CMAKE_DL_LIBS}
- )
-
-SET(TASK_TEST_SRC
-  task/GraspTaskTest.cpp
+set(
+    TASK_TEST_LIBRARIES
+    sdurw-gtest-main
+    ${GTEST_LIBRARIES}
+    sdurw_task
+    sdurw
+    ${XERCESC_LIBRARIES}
+    ${ASSIMP_LIBRARIES}
+    ${QHULL_LIBRARIES}
+    ${CMAKE_DL_LIBS}
 )
-ADD_EXECUTABLE( sdurw_task-gtest ${TASK_TEST_SRC})       
-TARGET_LINK_LIBRARIES( sdurw_task-gtest ${TASK_TEST_LIBRARIES})
-ADD_RW_GTEST(sdurw_task-gtest)
 
-########################################################################
+set(TASK_TEST_SRC task/GraspTaskTest.cpp)
+add_executable(sdurw_task-gtest ${TASK_TEST_SRC})
+target_link_libraries(sdurw_task-gtest ${TASK_TEST_LIBRARIES})
+add_rw_gtest(sdurw_task-gtest)
+
+# ######################################################################################################################
 # Trajectory
-########################################################################
+# ######################################################################################################################
 
-SET(TRAJECTORY_TEST_LIBRARIES
- ${GTEST_BOTH_LIBRARIES}
- sdurw
-)
+set(TRAJECTORY_TEST_LIBRARIES ${GTEST_BOTH_LIBRARIES} sdurw)
 
-SET(TRAJECTORY_TEST_SRC
-  trajectory/PathTest.cpp
-)
-ADD_EXECUTABLE( sdurw_trajectory-gtest ${TRAJECTORY_TEST_SRC})       
-TARGET_LINK_LIBRARIES( sdurw_trajectory-gtest ${TRAJECTORY_TEST_LIBRARIES})
-ADD_RW_GTEST(sdurw_trajectory-gtest)
+set(TRAJECTORY_TEST_SRC trajectory/PathTest.cpp)
+add_executable(sdurw_trajectory-gtest ${TRAJECTORY_TEST_SRC})
+target_link_libraries(sdurw_trajectory-gtest ${TRAJECTORY_TEST_LIBRARIES})
+add_rw_gtest(sdurw_trajectory-gtest)
 
-########################################################################
+# ######################################################################################################################
 # Target for generation of all detailed reports
-########################################################################
+# ######################################################################################################################
 
-ADD_CUSTOM_TARGET(sdurw-gtest_reports
-	DEPENDS ${REPORT_TARGETS}
-	COMMENT "Running Google Tests to generate detailed reports."
+add_custom_target(
+    sdurw-gtest_reports
+    DEPENDS ${REPORT_TARGETS}
+    COMMENT "Running Google Tests to generate detailed reports."
 )
 
-########################################################################
+# ######################################################################################################################
 # Do not build these as part of an ordinary build
-########################################################################
+# ######################################################################################################################
 
-SET_TARGET_PROPERTIES(sdurw-gtest_reports ${REPORT_TARGETS} PROPERTIES EXCLUDE_FROM_ALL 1 EXCLUDE_FROM_DEFAULT_BUILD 1)
+set_target_properties(sdurw-gtest_reports ${REPORT_TARGETS} PROPERTIES EXCLUDE_FROM_ALL 1 EXCLUDE_FROM_DEFAULT_BUILD 1)

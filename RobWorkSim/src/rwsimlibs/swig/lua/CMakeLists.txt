@@ -1,76 +1,81 @@
-SET(SUBSYS_NAME sdurwsim_lua )
-SET(SUBSYS_DESC "Interface for accessing RobWorkSim from lua." )
-SET(SUBSYS_DEPS sdurw )
+set(SUBSYS_NAME sdurwsim_lua)
+set(SUBSYS_DESC "Interface for accessing RobWorkSim from lua.")
+set(SUBSYS_DEPS sdurw)
 
-SET(build TRUE)
+set(build TRUE)
 
 set(DEFAULT TRUE)
-set(REASON )
-IF( NOT SWIG_FOUND)
+set(REASON)
+if(NOT SWIG_FOUND)
     set(DEFAULT false)
     set(REASON "SWIG not found!")
 else()
 
 endif()
- 
-RW_SUBSYS_OPTION( build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} ${REASON})
-RW_ADD_DOC( ${SUBSYS_NAME} )
 
-IF( build )
-   SET(RWSIM_HAVE_LUA TRUE CACHE INTERNAL "")
-	#MESSAGE(STATUS "SWIG found adding swig modules!")
-	INCLUDE(UseSWIG)
-	
-	SET(CMAKE_SWIG_FLAGS "")
+rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} ${REASON})
+rw_add_doc(${SUBSYS_NAME})
 
-	SET_SOURCE_FILES_PROPERTIES(../sdurwsim.i PROPERTIES CPLUSPLUS ON)
-	SET_SOURCE_FILES_PROPERTIES(../sdurwsim.i PROPERTIES SWIG_FLAGS "-includeall")
-	
-	# lua interface generation
-	IF ((CMAKE_VERSION VERSION_GREATER 3.8) OR (CMAKE_VERSION VERSION_EQUAL 3.8))
-		SWIG_ADD_LIBRARY(sdurwsim_lua TYPE MODULE LANGUAGE lua SOURCES ../sdurwsim.i ../ScriptTypes.cpp Lua.cpp)
-	ELSE()
-		SWIG_ADD_MODULE(sdurwsim_lua lua ../sdurwsim.i ../ScriptTypes.cpp Lua.cpp)
-	ENDIF()
-	SWIG_LINK_LIBRARIES(sdurwsim_lua ${RWSIM_ODE_LIBRARY} sdurwsim ${ROBWORK_LIBRARIES})
-    IF((CMAKE_COMPILER_IS_GNUCC) OR (CMAKE_C_COMPILER_ID STREQUAL "Clang"))
-      SET_TARGET_PROPERTIES(sdurwsim_lua PROPERTIES LINK_FLAGS -Wl,--no-undefined)
-    ENDIF()
+if(build)
+    set(RWSIM_HAVE_LUA TRUE CACHE INTERNAL "")
+    # MESSAGE(STATUS "SWIG found adding swig modules!")
+    include(UseSWIG)
 
-    IF ((CMAKE_VERSION VERSION_GREATER 3.12.0) OR (CMAKE_VERSION VERSION_EQUAL 3.12.0))
-        SWIG_ADD_LIBRARY(sdurwsim_lua_s TYPE STATIC LANGUAGE lua SOURCES ../sdurwsim.i ../ScriptTypes.cpp Lua.cpp)
-    ELSE()
-        ADD_LIBRARY(sdurwsim_lua_s STATIC Lua.cpp ${swig_generated_sources} ${swig_other_sources})
-        ADD_DEPENDENCIES(sdurwsim_lua_s sdurwsim_lua) # avoid using the source files before they have been generated
-    ENDIF()
-	TARGET_LINK_LIBRARIES(sdurwsim_lua_s ${RWSIM_ODE_LIBRARY} sdurwsim ${ROBWORK_LIBRARIES})
-	# Make sure dependencies are build before system
-    FOREACH(DEP IN LISTS SUBSYS_DEPS)
-        IF(TARGET ${DEP})
-            ADD_DEPENDENCIES(sdurwsim_lua_s ${DEP})
-        ENDIF()
-    ENDFOREACH()
+    set(CMAKE_SWIG_FLAGS "")
 
-	# this is used to indicate static linking to Visual Studio or mingw
-	IF (DEFINED MSVC) 
-	    SET_TARGET_PROPERTIES(sdurwsim_lua_s PROPERTIES COMPILE_FLAGS "/DSTATIC_LINKED")
-	ELSE()
-	    SET_TARGET_PROPERTIES(sdurwsim_lua_s PROPERTIES COMPILE_FLAGS "-DSTATIC_LINKED")
-	ENDIF()
-	
-	ADD_LIBRARY(sdurwsimlua_plugin.rwplugin MODULE LuaPlugin.cpp LuaPlugin.hpp)
-    TARGET_LINK_LIBRARIES(sdurwsimlua_plugin.rwplugin sdurwsim_lua_s ${ROBWORK_LIBRARIES})
-	
-	# Make sure dependencies are build before system
-    FOREACH(DEP IN LISTS sdurwsim_lua_s ROBWORK_LIBRARIES)
-        IF(TARGET ${DEP})
-            ADD_DEPENDENCIES(sdurwsimlua_plugin.rwplugin ${DEP})
-        ENDIF()
-	ENDFOREACH()
-	
-    IF((CMAKE_COMPILER_IS_GNUCC) OR (CMAKE_C_COMPILER_ID STREQUAL "Clang"))
-      SET_TARGET_PROPERTIES(sdurwsimlua_plugin.rwplugin PROPERTIES LINK_FLAGS -Wl,--no-undefined)
-    ENDIF()
-	
-	
-ENDIF()
+    set_source_files_properties(../sdurwsim.i PROPERTIES CPLUSPLUS ON)
+    set_source_files_properties(../sdurwsim.i PROPERTIES SWIG_FLAGS "-includeall")
+
+    set(RWSIM_MODULE sdurwsim)
+    set(TARGET_NAME ${RWSIM_MODULE}_lua)
+
+    # ############ lua interface generation ##############
+    if((CMAKE_VERSION VERSION_GREATER 3.8) OR (CMAKE_VERSION VERSION_EQUAL 3.8))
+        swig_add_library(${TARGET_NAME} TYPE SHARED LANGUAGE lua SOURCES ../sdurwsim.i ../ScriptTypes.cpp Lua.cpp)
+    else()
+        swig_add_module(${TARGET_NAME} lua ../sdurwsim.i ../ScriptTypes.cpp Lua.cpp)
+    endif()
+    swig_link_libraries(${TARGET_NAME} ${RWSIM_ODE_LIBRARY} ${RWSIM_MODULE} ${ROBWORK_LIBRARIES})
+    if((CMAKE_COMPILER_IS_GNUCC) OR (CMAKE_C_COMPILER_ID STREQUAL "Clang"))
+        set_target_properties(${TARGET_NAME} PROPERTIES LINK_FLAGS -Wl,--no-undefined)
+    endif()
+
+    # ############ lua static interface generation ##############
+    if((CMAKE_VERSION VERSION_GREATER 3.12.0) OR (CMAKE_VERSION VERSION_EQUAL 3.12.0))
+        swig_add_library(${TARGET_NAME}_s TYPE STATIC LANGUAGE lua SOURCES ../sdurwsim.i ../ScriptTypes.cpp Lua.cpp)
+    else()
+        add_library(${TARGET_NAME}_s STATIC Lua.cpp ${swig_generated_sources} ${swig_other_sources})
+        add_dependencies(${TARGET_NAME}_s ${TARGET_NAME}) # avoid using the source files before they have been generated
+    endif()
+    target_link_libraries(${TARGET_NAME}_s ${RWSIM_ODE_LIBRARY} ${RWSIM_MODULE} ${ROBWORK_LIBRARIES})
+
+    # Make sure dependencies are build before system
+    foreach(DEP IN LISTS SUBSYS_DEPS)
+        if(TARGET ${DEP})
+            add_dependencies(${TARGET_NAME}_s ${DEP})
+        endif()
+    endforeach()
+
+    # this is used to indicate static linking to Visual Studio or mingw
+    if(DEFINED MSVC)
+        set_target_properties(${TARGET_NAME}_s PROPERTIES COMPILE_FLAGS "/DSTATIC_LINKED")
+    else()
+        set_target_properties(${TARGET_NAME}_s PROPERTIES COMPILE_FLAGS "-DSTATIC_LINKED")
+    endif()
+
+    add_library(sdurwsimlua_plugin.rwplugin MODULE LuaPlugin.cpp LuaPlugin.hpp)
+    target_link_libraries(sdurwsimlua_plugin.rwplugin ${TARGET_NAME}_s ${ROBWORK_LIBRARIES})
+    
+
+    if((CMAKE_COMPILER_IS_GNUCC) OR (CMAKE_C_COMPILER_ID STREQUAL "Clang"))
+        set_target_properties(sdurwsimlua_plugin.rwplugin PROPERTIES LINK_FLAGS -Wl,--no-undefined)
+    endif()
+
+    # ############ INSTALL LUA LIBRARY #############################
+    install(
+        FILES ${RWSIM_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/lib${TARGET_NAME}.so
+        DESTINATION ${LUA_INSTALL_DIR}
+        RENAME ${RWSIM_MODULE}.so
+    )
+
+endif()
