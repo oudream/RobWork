@@ -23,6 +23,7 @@ if(build)
     include(UseSWIG)
 
     set(CMAKE_SWIG_FLAGS "")
+    set(CMAKE_SWIG_OUTDIR ${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua)
 
     add_custom_target(${SUBSYS_NAME}_all)
     set(RW_NAME sdurw)
@@ -62,6 +63,15 @@ if(build)
             swig_add_module(${TARGET_NAME} lua ${RW_MODULE_FILENAME} ${SOURCE})
         endif()
 
+        set_target_properties(
+            ${TARGET_NAME}
+            PROPERTIES
+                PREFIX ""
+                OUTPUT_NAME ${RW_MODULE}
+                ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_SWIG_OUTDIR}"
+                LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SWIG_OUTDIR}"
+                LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SWIG_OUTDIR}"
+        )
         target_include_directories(${TARGET_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
         add_dependencies(${SUBSYS_NAME}_all ${TARGET_NAME})
 
@@ -85,9 +95,9 @@ if(build)
         else()
             set_target_properties(${TARGET_NAME}_s PROPERTIES COMPILE_FLAGS "-DSTATIC_LINKED")
         endif()
-        
-		# Add rwplugin
-		if(NOT "${RW_MODULE}" STREQUAL "sdurw" )
+
+        # Add rwplugin
+        if(NOT "${RW_MODULE}" STREQUAL "sdurw")
             add_library(${RW_MODULE}_lua_plugin.rwplugin MODULE LuaPlugin_${RW_MODULE}.cpp)
             target_link_libraries(${RW_MODULE}_lua_plugin.rwplugin ${RW_MODULE}_lua_s)
             target_include_directories(${RW_MODULE}_lua_plugin.rwplugin PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
@@ -104,11 +114,7 @@ if(build)
             ARCHIVE DESTINATION ${LIB_INSTALL_DIR} COMPONENT swig
         )
 
-        install(
-            FILES ${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/lib${TARGET_NAME}.so
-            DESTINATION ${LUA_INSTALL_DIR}
-            RENAME ${RW_MODULE}.so
-        )
+        install(TARGETS ${TARGET_NAME} DESTINATION ${LUA_INSTALL_DIR})
 
     endforeach()
 
