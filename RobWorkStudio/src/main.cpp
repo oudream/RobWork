@@ -182,29 +182,15 @@ int main (int argc, char** argv)
                          i != boost::filesystem::directory_iterator ();
                          i++) {
                         if (boost::filesystem::is_directory (i->path ())) {
-                            for (boost::filesystem::directory_iterator k (
-                                     i->path ());
-                                 k != boost::filesystem::directory_iterator ();
-                                 k++) {
-                                if (boost::filesystem::is_directory (
-                                        k->path ()) &&
-                                    k->path ().filename ().string () ==
-                                        "RobWork") {
-                                    rwspluginFolder = "/usr/lib/";
-                                    rwspluginFolder +=
-                                        i->path ().filename ().string ();
-                                    rwspluginFolder += "/RobWork/rwsplugins";
-                                    if (!boost::filesystem::exists (
-                                            rwspluginFolder)) {
-                                        rwspluginFolder = "";
-                                    }
-                                }
-                                if (rwspluginFolder != "") {
-                                    break;
-                                }
-                            }
-                            if (rwspluginFolder != "") {
+                           
+                            rwspluginFolder = "/usr/lib/";
+                            rwspluginFolder += i->path ().filename ().string ();
+                            rwspluginFolder += "/RobWork/rwsplugins";
+                            if (boost::filesystem::exists (rwspluginFolder)) {
                                 break;
+                            }
+                            else{
+                                rwspluginFolder = "";
                             }
                         }
                     }
