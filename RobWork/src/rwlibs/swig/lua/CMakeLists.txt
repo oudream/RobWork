@@ -62,17 +62,15 @@ if(build)
             swig_add_module(${TARGET_NAME} lua ${RW_MODULE_FILENAME} ${SOURCE})
         endif()
 
-        if(NOT DEFINED MSVC)
-            set_target_properties(
-                ${TARGET_NAME}
-                PROPERTIES
-                    PREFIX ""
-                    OUTPUT_NAME ${RW_MODULE}
-                    ARCHIVE_OUTPUT_DIRECTORY "${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua"
-                    LIBRARY_OUTPUT_DIRECTORY "${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua"
-                    LIBRARY_OUTPUT_DIRECTORY "${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua"
-            )
-        endif()
+        set_target_properties(
+            ${TARGET_NAME}
+            PROPERTIES
+                PREFIX ""
+                OUTPUT_NAME ${RW_MODULE}
+                ARCHIVE_OUTPUT_DIRECTORY "${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua"
+                LIBRARY_OUTPUT_DIRECTORY "${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua"
+                LIBRARY_OUTPUT_DIRECTORY "${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua"
+        )
 
         target_include_directories(${TARGET_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
         add_dependencies(${SUBSYS_NAME}_all ${TARGET_NAME})

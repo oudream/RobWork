@@ -22,7 +22,6 @@ if(build)
     include(UseSWIG)
 
     set(CMAKE_SWIG_FLAGS "")
-    set(CMAKE_SWIG_OUTDIR ${RWS_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua)
 
     set_source_files_properties(../sdurws.i PROPERTIES CPLUSPLUS ON)
     set_source_files_properties(../sdurws.i PROPERTIES SWIG_FLAGS "-includeall")
@@ -36,14 +35,15 @@ if(build)
     else()
         swig_add_module(${TARGET_NAME} lua ../sdurws.i Lua.cpp ../ScriptTypes.cpp)
     endif()
+    
     set_target_properties(
         ${TARGET_NAME}
         PROPERTIES
             PREFIX ""
             OUTPUT_NAME ${RWS_MODULE}
-            ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_SWIG_OUTDIR}"
-            LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SWIG_OUTDIR}"
-            LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SWIG_OUTDIR}"
+            ARCHIVE_OUTPUT_DIRECTORY "${RWS_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua"
+            LIBRARY_OUTPUT_DIRECTORY "${RWS_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua"
+            LIBRARY_OUTPUT_DIRECTORY "${RWS_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua"
     )
     swig_link_libraries(${TARGET_NAME} ${RWS_COMPONENT_LIBRARIES} ${RWS_PLUGIN_LIBRARIES} ${RWS_MODULE}
                         ${ROBWORK_LIBRARIES})
