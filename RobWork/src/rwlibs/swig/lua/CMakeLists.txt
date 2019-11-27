@@ -23,7 +23,6 @@ if(build)
     include(UseSWIG)
 
     set(CMAKE_SWIG_FLAGS "")
-    set(CMAKE_SWIG_OUTDIR ${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua)
 
     add_custom_target(${SUBSYS_NAME}_all)
     set(RW_NAME sdurw)
@@ -68,9 +67,9 @@ if(build)
             PROPERTIES
                 PREFIX ""
                 OUTPUT_NAME ${RW_MODULE}
-                ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_SWIG_OUTDIR}"
-                LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SWIG_OUTDIR}"
-                LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SWIG_OUTDIR}"
+                ARCHIVE_OUTPUT_DIRECTORY "${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua"
+                LIBRARY_OUTPUT_DIRECTORY "${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua"
+                LIBRARY_OUTPUT_DIRECTORY "${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua"
         )
         target_include_directories(${TARGET_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
         add_dependencies(${SUBSYS_NAME}_all ${TARGET_NAME})
