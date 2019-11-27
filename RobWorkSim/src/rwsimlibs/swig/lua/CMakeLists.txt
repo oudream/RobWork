@@ -22,6 +22,7 @@ if(build)
     include(UseSWIG)
 
     set(CMAKE_SWIG_FLAGS "")
+    set(CMAKE_SWIG_OUTDIR ${RWSIM_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua)
 
     set_source_files_properties(../sdurwsim.i PROPERTIES CPLUSPLUS ON)
     set_source_files_properties(../sdurwsim.i PROPERTIES SWIG_FLAGS "-includeall")
@@ -35,6 +36,15 @@ if(build)
     else()
         swig_add_module(${TARGET_NAME} lua ../sdurwsim.i ../ScriptTypes.cpp Lua.cpp)
     endif()
+    set_target_properties(
+        ${TARGET_NAME}
+        PROPERTIES
+            PREFIX ""
+            OUTPUT_NAME ${RWSIM_MODULE}
+            ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_SWIG_OUTDIR}"
+            LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SWIG_OUTDIR}"
+            LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SWIG_OUTDIR}"
+    )
     swig_link_libraries(${TARGET_NAME} ${RWSIM_ODE_LIBRARY} ${RWSIM_MODULE} ${ROBWORK_LIBRARIES})
     if((CMAKE_COMPILER_IS_GNUCC) OR (CMAKE_C_COMPILER_ID STREQUAL "Clang"))
         set_target_properties(${TARGET_NAME} PROPERTIES LINK_FLAGS -Wl,--no-undefined)
@@ -65,17 +75,12 @@ if(build)
 
     add_library(sdurwsimlua_plugin.rwplugin MODULE LuaPlugin.cpp LuaPlugin.hpp)
     target_link_libraries(sdurwsimlua_plugin.rwplugin ${TARGET_NAME}_s ${ROBWORK_LIBRARIES})
-    
 
     if((CMAKE_COMPILER_IS_GNUCC) OR (CMAKE_C_COMPILER_ID STREQUAL "Clang"))
         set_target_properties(sdurwsimlua_plugin.rwplugin PROPERTIES LINK_FLAGS -Wl,--no-undefined)
     endif()
 
     # ############ INSTALL LUA LIBRARY #############################
-    install(
-        FILES ${RWSIM_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/lib${TARGET_NAME}.so
-        DESTINATION ${LUA_INSTALL_DIR}
-        RENAME ${RWSIM_MODULE}.so
-    )
+    install(TARGETS ${TARGET_NAME} DESTINATION ${LUA_INSTALL_DIR})
 
 endif()

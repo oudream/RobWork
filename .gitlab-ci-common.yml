@@ -6,7 +6,7 @@ stages:
   - test
   - deploy
 
-########################## NEW CI ####################################
+##################### Common CI settings ##############################
 
 .CI-common:
   only:
@@ -19,9 +19,15 @@ stages:
       - /^ci-.*$/
   except:
     refs:
+      - debian-pkg@sdurobotics/RobWork
       - /^wip-.*$/
     variables:
-      - $CI_COMMIT_MESSAGE =~ /WIP:.*/i
+      - $CI_COMMIT_MESSAGE =~ /^WIP:/
+
+########################## Linux CI ####################################
+
+.is_shared_runner: &is_shared_runner
+  - "[[ $CI_RUNNER_DESCRIPTION =~ 'shared-runners-manager' ]] && SHARED_RUNNER='true' || SHARED_RUNNER=''"
 
 .linux-doc:
   extends: .CI-common
@@ -69,7 +75,9 @@ stages:
     - cd Build
     # Build RobWork
     - cd RW
-    - cmake -DCMAKE_BUILD_TYPE=Release ../../RobWork
+    - *is_shared_runner
+    - "[[ $SHARED_RUNNER ]] || cmake -DCMAKE_BUILD_TYPE=Release ../../RobWork"
+    - "[[ $SHARED_RUNNER ]] && cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_DISABLE_FIND_PACKAGE_XercesC=True -DCMAKE_DISABLE_FIND_PACKAGE_SWIG=True -DRW_USE_FCL=OFF -DRW_USE_ASSIMP=OFF ../../RobWork"
     - make -j$(nproc --all)
   artifacts:
     paths: 
@@ -88,7 +96,9 @@ stages:
     - cd Build
     # Build RobWorkStudio
     - cd RWS
-    - cmake -DCMAKE_BUILD_TYPE=Release -DUSE_WERROR=true ../../RobWorkStudio
+    - *is_shared_runner
+    - "[[ $SHARED_RUNNER ]] || cmake -DCMAKE_BUILD_TYPE=Release -DUSE_WERROR=true ../../RobWorkStudio"
+    - "[[ $SHARED_RUNNER ]] && cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_DISABLE_FIND_PACKAGE_SWIG=True ../../RobWorkStudio"
     - make -j$(nproc --all)
     - cd ..
   artifacts:
@@ -126,7 +136,9 @@ stages:
     - cd Build
     # Build RobWorkSim
     - cd RWSim
-    - cmake -DCMAKE_BUILD_TYPE=Release -DUSE_WERROR=true ../../RobWorkSim
+    - *is_shared_runner
+    - "[[ $SHARED_RUNNER ]] || cmake -DCMAKE_BUILD_TYPE=Release -DUSE_WERROR=true ../../RobWorkSim"
+    - "[[ $SHARED_RUNNER ]] && cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_DISABLE_FIND_PACKAGE_SWIG=True ../../RobWorkSim"
     - make -j$(nproc --all)
     - cd ..
   artifacts:
@@ -199,7 +211,7 @@ stages:
     - cd RWSim
     - make -j 1 -k sdurwsim-gtest_reports
     - mv ../../RobWorkSim/bin/**/gtest_reports/* ../../gtest/
-    - ctest --no-compress-output -T Test -j 1
+    - ctest --no-compress-output -T Test -j 1 || ctest --no-compress-output -T Test
     - mv ./Testing/**/Test.xml ../../RWSim-CTest.xml
 
 ########################### WINDOWS CI ################################

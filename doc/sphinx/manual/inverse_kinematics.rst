@@ -182,7 +182,7 @@ The result is printed in lines 26 to 34, along with some relevant information.
    
    In Linux this could for instance look like this (imports all rw modules):
 
-   export LUA_CPATH="/path/to/RobWork/libs/relwithdebinfo/lib?_lua.so"
+   export LUA_CPATH="/path/to/RobWork/libs/release/Lua/?.so"
 
 Output
 ------------------
