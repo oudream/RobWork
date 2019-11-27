@@ -62,7 +62,7 @@ if(build)
             swig_add_module(${TARGET_NAME} lua ${RW_MODULE_FILENAME} ${SOURCE})
         endif()
 
-        if(Not DEFINED MSVC)
+        if(NOT DEFINED MSVC)
             set_target_properties(
                 ${TARGET_NAME}
                 PROPERTIES
