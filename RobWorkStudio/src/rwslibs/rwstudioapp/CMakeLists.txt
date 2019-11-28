@@ -1,43 +1,45 @@
-SET(SUBSYS_NAME sdurws_robworkstudioapp)
+set(SUBSYS_NAME sdurws_robworkstudioapp)
 set(SUBSYS_DESC "A rwstudio application that may be started in a thread.")
-SET(SUBSYS_DEPS sdurws)
+set(SUBSYS_DEPS sdurws)
 
-IF( RWS_USE_STATIC_LINK_PLUGINS )
-    LIST(APPEND SUBSYS_DEPS sdurws_jog sdurws_log sdurws_planning sdurws_playback sdurws_sensors sdurws_treeview sdurws_propertyview)
-	IF ( RWS_HAVE_LUA )
-    	LIST(APPEND SUBSYS_DEPS sdurws_luaeditor sdurws_luapl)
-    ENDIF() 
-ENDIF()
+if(RWS_USE_STATIC_LINK_PLUGINS)
+    list(
+        APPEND
+            SUBSYS_DEPS
+            sdurws_jog
+            sdurws_log
+            sdurws_planning
+            sdurws_playback
+            sdurws_sensors
+            sdurws_treeview
+            sdurws_propertyview
+    )
+    if(RWS_HAVE_LUA)
+        list(APPEND SUBSYS_DEPS sdurws_luaeditor sdurws_luapl)
+    endif()
+endif()
 
-SET(build TRUE)
-RW_SUBSYS_OPTION(build ${SUBSYS_NAME} ${SUBSYS_DESC} ON)
-RW_ADD_DOC(${SUBSYS_NAME})
+set(build TRUE)
+rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ON)
+rw_add_doc(${SUBSYS_NAME})
 
-IF(build)    
+if(build)
     # Standard cpp files to compile:
-    SET(SrcFiles RobWorkStudioApp.cpp)
-    SET(SRC_FILES_HPP RobWorkStudioApp.hpp)
-    
-    RWS_ADD_COMPONENT(${SUBSYS_NAME} plugins ${SrcFiles})
-    RW_ADD_INCLUDES(plugins "rwslibs/rwstudioapp" ${SRC_FILES_HPP}) 
-    TARGET_LINK_LIBRARIES(${SUBSYS_NAME} ${SUBSYS_DEPS})
-    # Make sure dependencies are build before system
-    FOREACH(DEP IN LISTS SUBSYS_DEPS)
-        IF(TARGET ${DEP})
-            ADD_DEPENDENCIES(${SUBSYS_NAME} ${DEP})
-        ENDIF()
-    ENDFOREACH()
+    set(SrcFiles RobWorkStudioApp.cpp)
+    set(SRC_FILES_HPP RobWorkStudioApp.hpp)
 
-    
+    rws_add_component(${SUBSYS_NAME} plugins ${SrcFiles})
+    rw_add_includes(plugins "rwslibs/rwstudioapp" ${SRC_FILES_HPP})
+    target_link_libraries(${SUBSYS_NAME} ${SUBSYS_DEPS})
+    # Make sure dependencies are build before system
+    foreach(DEP IN LISTS SUBSYS_DEPS)
+        if(TARGET ${DEP})
+            add_dependencies(${SUBSYS_NAME} ${DEP})
+        endif()
+    endforeach()
+
     set(RWS_COMPONENT_LIBRARIES ${RWS_COMPONENT_LIBRARIES} ${SUBSYS_NAME} PARENT_SCOPE)
 
-	IF(CMAKE_VERSION VERSION_GREATER 3.3)
-		SET_TARGET_PROPERTIES(${SUBSYS_NAME} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
-	ENDIF()
+    set_target_properties(${SUBSYS_NAME} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
 
-	IF(WIN32 AND MSVC AND PROJECT_LIB_TYPE AND CMAKE_VERSION VERSION_LESS 3.4)
-		MESSAGE(FATAL_ERROR "Building shared libraries on Windows requires CMake 3.4 or newer.")
-	ENDIF()
-ENDIF()
-
-
+endif()

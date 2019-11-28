@@ -105,6 +105,7 @@ if(build)
                 set_target_properties(${RW_MODULE}_lua_plugin.rwplugin PROPERTIES LINK_FLAGS -Wl,--no-undefined)
             endif()
             add_dependencies(${SUBSYS_NAME}_all ${RW_MODULE}_lua_plugin.rwplugin)
+            install(TARGETS ${RW_MODULE}_lua_plugin.rwplugin LIBRARY DESTINATION ${RW_PLUGIN_INSTALL_DIR})
         endif()
 
         install(

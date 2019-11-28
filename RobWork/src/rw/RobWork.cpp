@@ -167,9 +167,49 @@ void RobWork::initialize (const std::vector< std::string >& plugins)
                      "Default plugin location for RobWorkHardware",
                      buildDir + SLASH + ".." + SLASH + "RobWorkHardware" + SLASH + "libs" + SLASH +
                          RW_BUILD_TYPE + SLASH);
-
         _settings.add ("plugins", "List of plugins or plugin locations", plugins);
     }
+
+    if (boost::filesystem::exists ("/usr/lib/")) {    // Add default plugin location
+
+        boost::filesystem::path p ("/usr/lib");
+        std::string rwpluginFolder = "";
+
+        // Find the architecture dependendt folder containing the rwplugins folder
+        // Search all files and folders
+        for (boost::filesystem::directory_iterator i (p);
+             i != boost::filesystem::directory_iterator ();
+             i++) {
+            // If is directory
+            if (boost::filesystem::is_directory (i->path ())) {
+                rwpluginFolder = "/usr/lib/";
+                rwpluginFolder += i->path ().filename ().string ();
+                rwpluginFolder += "/RobWork/rwplugins";
+                if (boost::filesystem::exists (rwpluginFolder)) {
+                    break;
+                }else {
+                    rwpluginFolder = "";
+                }
+            }
+        }
+        if (rwpluginFolder != "") {
+            if (_settings.has ("plugins")) {
+                PropertyMap::Ptr plugins;
+                plugins = _settings.getPtr<PropertyMap> ("plugins");
+                plugins->add ("Location-linux-default",
+                              "Default plugin location for deb installed plugins",
+                              rwpluginFolder);
+            }
+            else {
+                PropertyMap plugins;
+                plugins.add ("Location-linux-default",
+                             "Default plugin location for deb installed plugins",
+                             rwpluginFolder);
+                _settings.add ("plugins", "List of plugins or plugin locations", plugins);
+            }
+        }
+    }
+
     _settingsFile = rwsettingsPath;
 
     // get all plugin directories and files

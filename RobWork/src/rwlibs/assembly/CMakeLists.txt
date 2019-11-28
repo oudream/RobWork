@@ -1,53 +1,54 @@
-SET(SUBSYS_NAME sdurw_assembly)
+set(SUBSYS_NAME sdurw_assembly)
 set(SUBSYS_DESC "Assembly task and result formats and strategies.")
-SET(SUBSYS_DEPS sdurw sdurw_task)
+set(SUBSYS_DEPS sdurw sdurw_task)
 
-SET(DEFAULT TRUE)
-SET(REASON)
+set(DEFAULT TRUE)
+set(REASON)
 
-SET(build TRUE)
-RW_SUBSYS_OPTION(build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} ${REASON})
-RW_ADD_DOC(${SUBSYS_NAME})
+set(build TRUE)
+rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} ${REASON})
+rw_add_doc(${SUBSYS_NAME})
 
-IF(build)
-    SET(SRC_FILES
-      ./AssemblyControlResponse.cpp
-      ./AssemblyControlStrategy.cpp
-      ./AssemblyParameterization.cpp
-      ./AssemblyRegistry.cpp
-      ./AssemblyResult.cpp
-      ./AssemblyState.cpp
-      ./AssemblyTask.cpp
-      ./CircularPiHControlStrategy.cpp
-      ./CircularPiHParameterization.cpp
-      ./PiHParameterization.cpp
-      ./PiHStrategy.cpp
-      ./SpiralParameterization.cpp
-      ./SpiralStrategy.cpp
+if(build)
+    set(
+        SRC_FILES
+        ./AssemblyControlResponse.cpp
+        ./AssemblyControlStrategy.cpp
+        ./AssemblyParameterization.cpp
+        ./AssemblyRegistry.cpp
+        ./AssemblyResult.cpp
+        ./AssemblyState.cpp
+        ./AssemblyTask.cpp
+        ./CircularPiHControlStrategy.cpp
+        ./CircularPiHParameterization.cpp
+        ./PiHParameterization.cpp
+        ./PiHStrategy.cpp
+        ./SpiralParameterization.cpp
+        ./SpiralStrategy.cpp
     )
-    
-    SET(SRC_FILES_HPP
-      ./AssemblyControlResponse.hpp
-      ./AssemblyControlStrategy.hpp
-      ./AssemblyParameterization.hpp
-      ./AssemblyRegistry.hpp
-      ./AssemblyResult.hpp
-      ./AssemblyState.hpp
-      ./AssemblyTask.hpp
-      ./CircularPiHControlStrategy.hpp
-      ./CircularPiHParameterization.hpp
-      ./PiHParameterization.hpp
-      ./PiHStrategy.hpp
-      ./SpiralParameterization.hpp
-      ./SpiralStrategy.hpp
-    )
-      	  
-    RW_ADD_LIBRARY(${SUBSYS_NAME} assembly ${SRC_FILES} ${SRC_FILES_HPP} ${LOADER_SRC_FILES_HPP})
-    RW_ADD_INCLUDES(assembly "rwlibs/assembly" ${SRC_FILES_HPP})
-    TARGET_LINK_LIBRARIES(${SUBSYS_NAME} PUBLIC sdurw PRIVATE sdurw_task)
-    ADD_DEPENDENCIES(${SUBSYS_NAME} ${SUBSYS_DEPS})
 
-	IF(CMAKE_VERSION VERSION_GREATER 3.3)
-		SET_TARGET_PROPERTIES(${SUBSYS_NAME} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
-	ENDIF()
-ENDIF()
+    set(
+        SRC_FILES_HPP
+        ./AssemblyControlResponse.hpp
+        ./AssemblyControlStrategy.hpp
+        ./AssemblyParameterization.hpp
+        ./AssemblyRegistry.hpp
+        ./AssemblyResult.hpp
+        ./AssemblyState.hpp
+        ./AssemblyTask.hpp
+        ./CircularPiHControlStrategy.hpp
+        ./CircularPiHParameterization.hpp
+        ./PiHParameterization.hpp
+        ./PiHStrategy.hpp
+        ./SpiralParameterization.hpp
+        ./SpiralStrategy.hpp
+    )
+
+    rw_add_library(${SUBSYS_NAME} assembly ${SRC_FILES} ${SRC_FILES_HPP} ${LOADER_SRC_FILES_HPP})
+    rw_add_includes(assembly "rwlibs/assembly" ${SRC_FILES_HPP})
+    target_link_libraries(${SUBSYS_NAME} PUBLIC sdurw PRIVATE sdurw_task)
+    add_dependencies(${SUBSYS_NAME} ${SUBSYS_DEPS})
+
+    set_target_properties(${SUBSYS_NAME} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
+
+endif()
