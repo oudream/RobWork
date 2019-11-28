@@ -1,67 +1,71 @@
-SET(SUBSYS_NAME sdurw_algorithms)
-SET(SUBSYS_DESC "A collection of varius algorithms!")
-SET(SUBSYS_DEPS sdurw)
+set(SUBSYS_NAME sdurw_algorithms)
+set(SUBSYS_DESC "A collection of varius algorithms!")
+set(SUBSYS_DEPS sdurw)
 
 set(build TRUE)
-RW_SUBSYS_OPTION(build ${SUBSYS_NAME} ${SUBSYS_DESC} ON)
-RW_ADD_DOC(${SUBSYS_NAME})
+rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ON)
+rw_add_doc(${SUBSYS_NAME})
 
-IF(build)
-    SET(SRC_FILES
-      ${RW_ALGORITHMS_USER_FILES}
-      ./kdtree/KDTree.cpp
-      ./kdtree/KDTreeQ.cpp
-      ./qpcontroller/IKQPSolver.cpp
-      ./qpcontroller/QPController.cpp
-      ./qpcontroller/QPSolver.cpp
-      ./xqpcontroller/XQPController.cpp
-      ./xqpcontroller/NullSpaceProjection.cpp
-      ./gpm/BasicGPM.cpp
-      BFGS.cpp
-       
-      MovingAverage.cpp
-      #StablePlanePose.cpp
-      RANSACModel.cpp
-      PointModel.cpp
-      LineModel.cpp
-      StructuredLineModel.cpp
-      PlaneModel.cpp
-      StablePose1DModel.cpp
-      StablePose0DModel.cpp
-	  PointPairsRegistration.cpp
+if(build)
+    set(
+        SRC_FILES
+        ${RW_ALGORITHMS_USER_FILES}
+        ./kdtree/KDTree.cpp
+        ./kdtree/KDTreeQ.cpp
+        ./qpcontroller/IKQPSolver.cpp
+        ./qpcontroller/QPController.cpp
+        ./qpcontroller/QPSolver.cpp
+        ./xqpcontroller/XQPController.cpp
+        ./xqpcontroller/NullSpaceProjection.cpp
+        ./gpm/BasicGPM.cpp
+        BFGS.cpp
+        MovingAverage.cpp
+        # StablePlanePose.cpp
+        RANSACModel.cpp
+        PointModel.cpp
+        LineModel.cpp
+        StructuredLineModel.cpp
+        PlaneModel.cpp
+        StablePose1DModel.cpp
+        StablePose0DModel.cpp
+        PointPairsRegistration.cpp
     )
-    
-    SET(SRC_FILES_HPP
-      ./kdtree/KDTree.hpp
-      ./kdtree/KDTreeQ.hpp
-      ./qpcontroller/IKQPSolver.hpp
-      ./qpcontroller/QPController.hpp
-      ./qpcontroller/QPSolver.hpp
-      ./xqpcontroller/XQPController.hpp
-      ./xqpcontroller/NullSpaceProjection.hpp
-      ./gpm/BasicGPM.hpp
-	
-	  BFGS.hpp
-      MovingAverage.hpp
-      #StablePlanePose.hpp
-      
-      RANSACModel.hpp
-      PointModel.hpp
-      LineModel.hpp
-      StructuredLineModel.hpp
-      PlaneModel.hpp
-      StablePose1DModel.hpp
-      StablePose0DModel.hpp
-	  PointPairsRegistration.hpp
-    )
-    
-    RW_ADD_LIBRARY(${SUBSYS_NAME} algorithms ${SRC_FILES} ${SRC_FILES_HPP})
-    RW_ADD_INCLUDES(algorithms "rwlibs/algorithms" MovingAverage.hpp StablePlanePose.hpp)
-    RW_ADD_INCLUDE_DIRS(algorithms "rwlibs/algorithms" kdtree qpcontroller xqpcontroller gpm) 
-    TARGET_LINK_LIBRARIES(${SUBSYS_NAME} PUBLIC ${SUBSYS_DEPS})
-    ADD_DEPENDENCIES(${SUBSYS_NAME} ${SUBSYS_DEPS})
 
-	IF(CMAKE_VERSION VERSION_GREATER 3.3)
-		SET_TARGET_PROPERTIES(${SUBSYS_NAME} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
-	ENDIF()
-ENDIF()
+    set(
+        SRC_FILES_HPP
+        ./kdtree/KDTree.hpp
+        ./kdtree/KDTreeQ.hpp
+        ./qpcontroller/IKQPSolver.hpp
+        ./qpcontroller/QPController.hpp
+        ./qpcontroller/QPSolver.hpp
+        ./xqpcontroller/XQPController.hpp
+        ./xqpcontroller/NullSpaceProjection.hpp
+        ./gpm/BasicGPM.hpp
+        BFGS.hpp
+        MovingAverage.hpp
+        # StablePlanePose.hpp
+        RANSACModel.hpp
+        PointModel.hpp
+        LineModel.hpp
+        StructuredLineModel.hpp
+        PlaneModel.hpp
+        StablePose1DModel.hpp
+        StablePose0DModel.hpp
+        PointPairsRegistration.hpp
+    )
+
+    rw_add_library(${SUBSYS_NAME} algorithms ${SRC_FILES} ${SRC_FILES_HPP})
+    rw_add_includes(algorithms "rwlibs/algorithms" MovingAverage.hpp StablePlanePose.hpp)
+    rw_add_include_dirs(
+        algorithms
+        "rwlibs/algorithms"
+        kdtree
+        qpcontroller
+        xqpcontroller
+        gpm
+    )
+    target_link_libraries(${SUBSYS_NAME} PUBLIC ${SUBSYS_DEPS})
+    add_dependencies(${SUBSYS_NAME} ${SUBSYS_DEPS})
+
+    set_target_properties(${SUBSYS_NAME} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
+endif()
