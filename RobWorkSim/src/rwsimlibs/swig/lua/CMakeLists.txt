@@ -35,15 +35,19 @@ if(build)
     else()
         swig_add_module(${TARGET_NAME} lua ../sdurwsim.i ../ScriptTypes.cpp Lua.cpp)
     endif()
-    set_target_properties(
-        ${TARGET_NAME}
-        PROPERTIES
-            PREFIX ""
-            OUTPUT_NAME ${RWSIM_MODULE}
-            ARCHIVE_OUTPUT_DIRECTORY "${RWSIM_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua"
-            LIBRARY_OUTPUT_DIRECTORY "${RWSIM_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua"
-            LIBRARY_OUTPUT_DIRECTORY "${RWSIM_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua"
-    )
+
+    if(NOT DEFINED MSVC) #This code is to make it easier to make debian packages
+        set_target_properties(
+            ${TARGET_NAME}
+            PROPERTIES
+                PREFIX ""
+                OUTPUT_NAME ${RWSIM_MODULE}
+                ARCHIVE_OUTPUT_DIRECTORY "${RWSIM_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua"
+                LIBRARY_OUTPUT_DIRECTORY "${RWSIM_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua"
+                LIBRARY_OUTPUT_DIRECTORY "${RWSIM_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua"
+        )
+    endif()
+
     swig_link_libraries(${TARGET_NAME} ${RWSIM_ODE_LIBRARY} ${RWSIM_MODULE} ${ROBWORK_LIBRARIES})
     if((CMAKE_COMPILER_IS_GNUCC) OR (CMAKE_C_COMPILER_ID STREQUAL "Clang"))
         set_target_properties(${TARGET_NAME} PROPERTIES LINK_FLAGS -Wl,--no-undefined)

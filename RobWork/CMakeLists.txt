@@ -201,7 +201,58 @@ if(doc_executable)
 endif()
 
 # Packaging
-include(cmake/packing.cmake)
+#include(cmake/packing.cmake)
 
 string(REPLACE ";" "\n" TOFILE_DST "${ROBWORK_INCLUDE_DIR}")
 file(WRITE "include_dirs" "${TOFILE_DST}")
+
+# ######################################################################################################################
+# Package robwork
+#
+
+set (CPACK_PACKAGE_NAME "RobWork")
+set (CPACK_PACKAGE_VENDOR "CMake.org")
+set (CPACK_PACKAGE_DESCRIPTION_SUMMARY "RobWork - CPack Component Installation Example")
+set (CPACK_PACKAGE_VERSION "1.0.8")
+set (CPACK_PACKAGE_VERSION_MAJOR "1")
+set (CPACK_PACKAGE_VERSION_MINOR "0")
+set (CPACK_PACKAGE_VERSION_PATCH "8")
+set (CPACK_PACKAGE_INSTALL_DIRECTORY "CPack Component Example")
+
+# Define components and their display names
+set (CPACK_COMPONENTS_ALL Unspecified) #install components
+set (CPACK_COMPONENT_APPLICATIONS_DISPLAY_NAME "MyLib Applications")
+set (CPACK_COMPONENT_LIBRARIES_DISPLAY_NAME "Libraries")
+set (CPACK_COMPONENT_HEADERS_DISPLAY_NAME "C++ Headers")
+set (CPACK_COMPONENT_UNSPECIFIED_DISPLAY_NAME "Everything")
+
+# Human readable component descriptions
+set (CPACK_COMPONENT_APPLICATIONS_DESCRIPTION
+  "An extremely useful application that makes use of MyLib")
+set (CPACK_COMPONENT_LIBRARIES_DESCRIPTION
+  "Static libraries used to build programs with MyLib")
+set (CPACK_COMPONENT_HEADERS_DESCRIPTION
+  "C/C++ header files for use with MyLib")
+set (CPACK_COMPONENT_UNSPECIFIED_DESCRIPTION
+  "Everything else")
+
+# Define dependencies between components
+set (CPACK_COMPONENT_HEADERS_DEPENDS libraries)
+
+# Define groups
+set(CPACK_COMPONENT_APPLICATIONS_GROUP "Runtime")
+set(CPACK_COMPONENT_LIBRARIES_GROUP "Development")
+set(CPACK_COMPONENT_HEADERS_GROUP "Development")
+set(CPACK_COMPONENT_UNSPECIFIED_GROUP "Development")
+
+set(CPACK_COMPONENT_GROUP_DEVELOPMENT_DESCRIPTION
+   "All of the tools you'll ever need to develop software")
+
+# Define NSIS installation types
+set(CPACK_ALL_INSTALL_TYPES Full Developer)
+set(CPACK_COMPONENT_LIBRARIES_INSTALL_TYPES Developer Full)
+set(CPACK_COMPONENT_HEADERS_INSTALL_TYPES Developer Full)
+set(CPACK_COMPONENT_APPLICATIONS_INSTALL_TYPES Full)
+ 
+# Must be after the last CPACK macros
+include(CPack)
