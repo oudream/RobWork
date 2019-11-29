@@ -22,7 +22,6 @@ if(build)
     include(UseSWIG)
 
     set(CMAKE_SWIG_FLAGS "")
-    set(CMAKE_SWIG_OUTDIR ${RWS_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua)
 
     set_source_files_properties(../sdurws.i PROPERTIES CPLUSPLUS ON)
     set_source_files_properties(../sdurws.i PROPERTIES SWIG_FLAGS "-includeall")
@@ -36,15 +35,18 @@ if(build)
     else()
         swig_add_module(${TARGET_NAME} lua ../sdurws.i Lua.cpp ../ScriptTypes.cpp)
     endif()
-    set_target_properties(
-        ${TARGET_NAME}
-        PROPERTIES
-            PREFIX ""
-            OUTPUT_NAME ${RWS_MODULE}
-            ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_SWIG_OUTDIR}"
-            LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SWIG_OUTDIR}"
-            LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SWIG_OUTDIR}"
-    )
+
+    if(NOT DEFINED MSVC) # This code is to make it easier to make debian packages
+        set_target_properties(
+            ${TARGET_NAME}
+            PROPERTIES
+                PREFIX ""
+                OUTPUT_NAME ${RWS_MODULE}
+                ARCHIVE_OUTPUT_DIRECTORY "${RWS_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua"
+                LIBRARY_OUTPUT_DIRECTORY "${RWS_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua"
+                LIBRARY_OUTPUT_DIRECTORY "${RWS_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua"
+        )
+    endif()
     swig_link_libraries(${TARGET_NAME} ${RWS_COMPONENT_LIBRARIES} ${RWS_PLUGIN_LIBRARIES} ${RWS_MODULE}
                         ${ROBWORK_LIBRARIES})
     if((CMAKE_COMPILER_IS_GNUCC) OR (CMAKE_C_COMPILER_ID STREQUAL "Clang"))
@@ -78,10 +80,7 @@ if(build)
     endif()
 
     # ############ INSTALL LUA LIBRARY #############################
-    install(
-        TARGETS ${TARGET_NAME}
-        DESTINATION ${LUA_INSTALL_DIR}
-    )
+    install(TARGETS ${TARGET_NAME} DESTINATION ${LUA_INSTALL_DIR})
 
     # ################# Make sure dependencies are build before system #############
     foreach(DEP IN LISTS SUBSYS_DEPS)

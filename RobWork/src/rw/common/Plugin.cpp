@@ -136,7 +136,7 @@ void Plugin::close (const OSHandle* handle)
 
 rw::common::Ptr< Plugin > Plugin::loadDirect (const std::string& filename)
 {
-    HINSTANCE h = LoadLibraryA ((filename).c_str ());
+    HINSTANCE h = LoadLibraryA (filename.c_str ());
     if (h == NULL) {
         LPTSTR buffer = NULL;
         std::cout << "Ready to generate error message " << GetLastError () << std::endl;
