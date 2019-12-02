@@ -1,30 +1,34 @@
-SET(SUBSYS_NAME robolabFT )
-SET(SUBSYS_DESC "Driver for robolab force torque device" )
-SET(SUBSYS_DEPS sdurwhw_serialport sdurw )
+set(SUBSYS_NAME sdurwhw_robolabFT)
+set(SUBSYS_DESC "Driver for robolab force torque device")
+set(SUBSYS_DEPS sdurwhw_serialport sdurw)
 
-SET(build TRUE)
+set(build TRUE)
 set(DEFAULT TRUE)
-set(REASON) 
-RW_SUBSYS_OPTION( build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} ${REASON})
-RW_ADD_DOC( ${SUBSYS_NAME} )
+set(REASON)
+rw_subsys_option(
+    build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT}
+    REASON ${REASON}
+    DEPENDS ${SUBSYS_DEPS}
+    ADD_DOC
+)
 
-IF( build )
-   # INCLUDE_DIRECTORIES( ${robolabFT_INCLUDE_DIR} )
-    
-    SET(SRC_FILES RobolabFTDriver.cpp)
-    SET(SRC_FILES_HPP RobolabFTDriver.hpp)
-    
-    RW_ADD_LIBRARY(sdurwhw_robolabFT robolabFT ${SRC_FILES} ${SRC_FILES_HPP})
-    TARGET_LINK_LIBRARIES(sdurwhw_robolabFT PUBLIC sdurwhw_serialport ${ROBWORK_LIBRARIES})
-    RW_ADD_INCLUDES(robolabFT "rwhw/robolabFT" ${SRC_FILES_HPP})
+if(build)
+    # INCLUDE_DIRECTORIES( ${robolabFT_INCLUDE_DIR} )
+
+    set(SRC_FILES RobolabFTDriver.cpp)
+    set(SRC_FILES_HPP RobolabFTDriver.hpp)
+
+    rw_add_library(${SUBSYS_NAME} ${SRC_FILES} ${SRC_FILES_HPP})
+    target_link_libraries(${SUBSYS_NAME} PUBLIC sdurwhw_serialport ${ROBWORK_LIBRARIES})
+    rw_add_includes(${SUBSYS_NAME} "rwhw/robolabFT" ${SRC_FILES_HPP})
 
     # Make sure dependencies are build before system
-    FOREACH(DEP IN LISTS sdurwhw_serialport ROBWORK_LIBRARIES)
-        IF(TARGET ${DEP})
-            ADD_DEPENDENCIES(sdurwhw_robolabFT ${DEP})
-        ENDIF()
-    ENDFOREACH()
+    foreach(DEP IN LISTS sdurwhw_serialport ROBWORK_LIBRARIES)
+        if(TARGET ${DEP})
+            add_dependencies(${SUBSYS_NAME} ${DEP})
+        endif()
+    endforeach()
 
-    set(ROBWORKHARDWARE_LIBRARIES ${ROBWORKHARDWARE_LIBRARIES} sdurwhw_robolabFT PARENT_SCOPE)
-    MESSAGE(STATUS "robolabFT include dir:" ${robolabFT_INCLUDE_DIR})
-ENDIF()
+    set(ROBWORKHARDWARE_LIBRARIES ${ROBWORKHARDWARE_LIBRARIES} ${SUBSYS_NAME} PARENT_SCOPE)
+    message(STATUS "robolabFT include dir:" ${robolabFT_INCLUDE_DIR})
+endif()

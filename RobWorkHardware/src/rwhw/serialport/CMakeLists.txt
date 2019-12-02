@@ -1,24 +1,27 @@
-SET(component_name serialport)
-SET(SUBSYS_NAME serialport )
-SET(SUBSYS_DESC "Serial port abstractions!" )
-SET(SUBSYS_DEPS sdurw )
+set(SUBSYS_NAME sdurwhw_serialport)
+set(SUBSYS_DESC "Serial port abstractions!")
+set(SUBSYS_DEPS sdurw)
 
-SET(build )
+set(build)
 set(DEFAULT TRUE)
 set(REASON "")
-RW_SUBSYS_OPTION( build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} ${REASON})
-RW_ADD_DOC( ${SUBSYS_NAME} )
+rw_subsys_option(
+    build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT}
+    REASON ${REASON}
+    DEPENDS ${SUBSYS_DEPS}
+    ADD_DOC
+)
 
-IF( build )
-    RW_ADD_LIBRARY(sdurwhw_serialport serialport SerialPort.cpp)
-    TARGET_LINK_LIBRARIES(sdurwhw_serialport PUBLIC ${ROBWORK_LIBRARIES})
-    RW_ADD_INCLUDES(serialport "rwhw/serialport" SerialPort.hpp)
+if(build)
+    rw_add_library(${SUBSYS_NAME} SerialPort.cpp)
+    target_link_libraries(${SUBSYS_NAME} PUBLIC ${ROBWORK_LIBRARIES})
+    rw_add_includes(${SUBSYS_NAME} "rwhw/serialport" SerialPort.hpp)
     # Make sure dependencies are build before system
-    FOREACH(DEP IN LISTS ROBWORK_LIBRARIES)
-        IF(TARGET ${DEP})
-            ADD_DEPENDENCIES(sdurwhw_serialport ${DEP})
-        ENDIF()
-    ENDFOREACH()
+    foreach(DEP IN LISTS ROBWORK_LIBRARIES)
+        if(TARGET ${DEP})
+            add_dependencies(${SUBSYS_NAME} ${DEP})
+        endif()
+    endforeach()
 
-    set(ROBWORKHARDWARE_LIBRARIES ${ROBWORKHARDWARE_LIBRARIES} sdurwhw_serialport PARENT_SCOPE)
-ENDIF()
+    set(ROBWORKHARDWARE_LIBRARIES ${ROBWORKHARDWARE_LIBRARIES} ${SUBSYS_NAME} PARENT_SCOPE)
+endif()

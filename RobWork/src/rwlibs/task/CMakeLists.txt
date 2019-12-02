@@ -1,75 +1,79 @@
-SET(SUBSYS_NAME sdurw_task)
+set(SUBSYS_NAME sdurw_task)
 set(SUBSYS_DESC "Generic Task description")
-SET(SUBSYS_DEPS sdurw)
+set(SUBSYS_DEPS sdurw)
 
-SET(DEFAULT TRUE)
-SET(REASON)
+set(DEFAULT TRUE)
+set(REASON)
 
-SET(build TRUE)
-RW_SUBSYS_OPTION(build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} ${REASON})
-RW_ADD_DOC(${SUBSYS_NAME})
+set(build TRUE)
+rw_subsys_option(
+    build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT}
+    REASON ${REASON}
+    DEPENDS ${SUBSYS_DEPS}
+    ADD_DOC
+)
 
-IF(build)
+if(build)
     # The camera file and include path to use.
-    SET(SRC_FILES
-      ./Action.cpp
-      ./Entity.cpp
-      ./Motion.cpp
-      ./Target.cpp
-      ./Task.cpp
-      ./TaskUtils.cpp
-      ./TypeRepository.cpp
-      ./GraspTask.cpp
-      ./GraspTarget.cpp
-      ./GraspResult.cpp
-      ./GraspSubTask.cpp
-      ./loader/DOMTaskFormat.cpp
-      ./loader/DOMTaskLoader.cpp
-      ./loader/DOMTaskSaver.cpp
-      ./loader/TaskLoader.cpp
-      ./loader/TaskSaver.cpp
+    set(
+        SRC_FILES
+        ./Action.cpp
+        ./Entity.cpp
+        ./Motion.cpp
+        ./Target.cpp
+        ./Task.cpp
+        ./TaskUtils.cpp
+        ./TypeRepository.cpp
+        ./GraspTask.cpp
+        ./GraspTarget.cpp
+        ./GraspResult.cpp
+        ./GraspSubTask.cpp
+        ./loader/DOMTaskFormat.cpp
+        ./loader/DOMTaskLoader.cpp
+        ./loader/DOMTaskSaver.cpp
+        ./loader/TaskLoader.cpp
+        ./loader/TaskSaver.cpp
     )
-    
-    
-    SET(SRC_FILES_HPP
-      ./Action.hpp
-      ./Entity.hpp
-      ./Motion.hpp
-      ./Target.hpp
-      ./Task.hpp
-      ./TaskUtils.hpp
-      ./TypeRepository.hpp
-      ./GraspTask.hpp
-      ./GraspTarget.hpp
-      ./GraspResult.hpp
-      ./GraspSubTask.hpp
-      ./loader/DOMTaskFormat.hpp
-      ./loader/DOMTaskLoader.hpp
-      ./loader/DOMTaskSaver.hpp
-      ./loader/TaskLoader.hpp
-      ./loader/TaskSaver.hpp
-    )
-    
-    IF(RW_HAVE_XERCES)
-	set(SRC_FILES ${SRC_FILES}
-	  ./loader/XMLTaskFormat.cpp
-  	  ./loader/XMLTaskLoader.cpp
-  	  ./loader/XMLTaskSaver.cpp
-	)
-	set(LOADER_SRC_FILES_HPP 
-	  ./loader/XMLTaskFormat.hpp
-  	  ./loader/XMLTaskLoader.hpp
-  	  ./loader/XMLTaskSaver.hpp
-   )
-   ENDIF()
-      	  
-    RW_ADD_LIBRARY(${SUBSYS_NAME} task ${SRC_FILES} ${SRC_FILES_HPP} ${LOADER_SRC_FILES_HPP})
-    RW_ADD_INCLUDES(task "rwlibs/task" ${SRC_FILES_HPP})     
-    RW_ADD_INCLUDE_DIRS(task "rwlibs/task" loader)
-    TARGET_LINK_LIBRARIES(${SUBSYS_NAME} PUBLIC ${SUBSYS_DEPS})
-    ADD_DEPENDENCIES(${SUBSYS_NAME} ${SUBSYS_DEPS})
 
-	IF(CMAKE_VERSION VERSION_GREATER 3.3)
-		SET_TARGET_PROPERTIES(${SUBSYS_NAME} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
-	ENDIF()
-ENDIF()
+    set(
+        SRC_FILES_HPP
+        ./Action.hpp
+        ./Entity.hpp
+        ./Motion.hpp
+        ./Target.hpp
+        ./Task.hpp
+        ./TaskUtils.hpp
+        ./TypeRepository.hpp
+        ./GraspTask.hpp
+        ./GraspTarget.hpp
+        ./GraspResult.hpp
+        ./GraspSubTask.hpp
+        ./loader/DOMTaskFormat.hpp
+        ./loader/DOMTaskLoader.hpp
+        ./loader/DOMTaskSaver.hpp
+        ./loader/TaskLoader.hpp
+        ./loader/TaskSaver.hpp
+    )
+
+    if(RW_HAVE_XERCES)
+        set(SRC_FILES ${SRC_FILES} ./loader/XMLTaskFormat.cpp ./loader/XMLTaskLoader.cpp
+                      ./loader/XMLTaskSaver.cpp)
+        set(LOADER_SRC_FILES_HPP ./loader/XMLTaskFormat.hpp ./loader/XMLTaskLoader.hpp
+                                 ./loader/XMLTaskSaver.hpp)
+    endif()
+
+    rw_add_library(
+        ${SUBSYS_NAME}
+        ${SRC_FILES}
+        ${SRC_FILES_HPP}
+        ${LOADER_SRC_FILES_HPP}
+    )
+    rw_add_includes(${SUBSYS_NAME} "rwlibs/task" ${SRC_FILES_HPP})
+    rw_add_include_dirs(${SUBSYS_NAME} "rwlibs/task" loader)
+    target_link_libraries(${SUBSYS_NAME} PUBLIC ${SUBSYS_DEPS})
+    add_dependencies(${SUBSYS_NAME} ${SUBSYS_DEPS})
+
+    if(CMAKE_VERSION VERSION_GREATER 3.3)
+        set_target_properties(${SUBSYS_NAME} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
+    endif()
+endif()

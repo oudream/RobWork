@@ -1,28 +1,32 @@
-SET(SUBSYS_NAME robotiq )
-SET(SUBSYS_DESC "driver for robotiq" )
-SET(SUBSYS_DEPS sdurw )
+set(SUBSYS_NAME sdurwhw_robotiq)
+set(SUBSYS_DESC "driver for robotiq")
+set(SUBSYS_DEPS sdurw)
 
-SET(build TRUE)
+set(build TRUE)
 set(DEFAULT TRUE)
-set(REASON) 
-RW_SUBSYS_OPTION( build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} ${REASON})
-RW_ADD_DOC( ${SUBSYS_NAME} )
+set(REASON)
+rw_subsys_option(
+    build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT}
+    REASON ${REASON}
+    DEPENDS ${SUBSYS_DEPS}
+    ADD_DOC
+)
 
-IF( build )
-    MESSAGE(STATUS "RobWorkHardware: ${SUBSYS_NAME} component ENABLED")    
+if(build)
+    message(STATUS "RobWorkHardware: ${SUBSYS_NAME} component ENABLED")
 
-    SET(SRC_CPP Robotiq.cpp Robotiq3.cpp Robotiq2.cpp)
-    SET(SRC_HPP Robotiq.hpp Robotiq3.hpp Robotiq2.hpp)
+    set(SRC_CPP Robotiq.cpp Robotiq3.cpp Robotiq2.cpp)
+    set(SRC_HPP Robotiq.hpp Robotiq3.hpp Robotiq2.hpp)
 
-    RW_ADD_LIBRARY(sdurwhw_robotiq robotiq ${SRC_CPP} ${SRC_HPP})
-    TARGET_LINK_LIBRARIES(sdurwhw_robotiq PUBLIC ${ROBWORK_LIBRARIES})
-    RW_ADD_INCLUDES(robotiq "rwhw/robotiq" ${SRC_HPP})
-    set(ROBWORKHARDWARE_LIBRARIES ${ROBWORKHARDWARE_LIBRARIES} sdurwhw_robotiq PARENT_SCOPE)
+    rw_add_library(${SUBSYS_NAME} ${SRC_CPP} ${SRC_HPP})
+    target_link_libraries(${SUBSYS_NAME} PUBLIC ${ROBWORK_LIBRARIES})
+    rw_add_includes(${SUBSYS_NAME} "rwhw/robotiq" ${SRC_HPP})
+    set(ROBWORKHARDWARE_LIBRARIES ${ROBWORKHARDWARE_LIBRARIES} ${SUBSYS_NAME} PARENT_SCOPE)
 
-	add_executable(robotiq3_test robotiq3SimpleTest.cpp )
-	TARGET_LINK_LIBRARIES(robotiq3_test sdurwhw_robotiq ${ROBWORK_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
-	
-	add_executable(robotiq2_test robotiq2SimpleTest.cpp )
-	TARGET_LINK_LIBRARIES(robotiq2_test sdurwhw_robotiq ${ROBWORK_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+    add_executable(robotiq3_test robotiq3SimpleTest.cpp)
+    target_link_libraries(robotiq3_test ${SUBSYS_NAME} ${ROBWORK_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
 
-ENDIF()
+    add_executable(robotiq2_test robotiq2SimpleTest.cpp)
+    target_link_libraries(robotiq2_test ${SUBSYS_NAME} ${ROBWORK_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+
+endif()

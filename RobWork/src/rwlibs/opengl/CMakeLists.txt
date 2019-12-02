@@ -11,8 +11,7 @@ else()
 endif()
 
 set(build TRUE)
-rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} ${REASON})
-rw_add_doc(${SUBSYS_NAME})
+rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} ${REASON} DEPENDS ${SUBSYS_DEPS} ADD_DOC)
 
 if(build)
     set(
@@ -69,8 +68,8 @@ if(build)
         RenderText.hpp
     )
 
-    rw_add_library(${SUBSYS_NAME} opengl ${SRC_FILES} ${SRC_FILES_HPP})
-    rw_add_includes(opengl "rwlibs/opengl" ${SRC_FILES_HPP})
+    rw_add_library(${SUBSYS_NAME} ${SRC_FILES} ${SRC_FILES_HPP})
+    rw_add_includes(${SUBSYS_NAME} "rwlibs/opengl" ${SRC_FILES_HPP})
 
     target_link_libraries(${SUBSYS_NAME} PUBLIC ${SUBSYS_DEPS} ${OPENGL_LIBRARIES} ${GLUT_glut_LIBRARY})
 

@@ -1,6 +1,17 @@
 set(SUBSYS_NAME sdurw_python)
 set(SUBSYS_DESC "Interface for accessing RobWork from python.")
-set(SUBSYS_DEPS sdurw sdurw_algorithms)
+set(
+    SUBSYS_DEPS
+    sdurw
+    sdurw_assembly
+    sdurw_control
+    sdurw_pathoptimization
+    sdurw_pathplanners
+    sdurw_proximitystrategies
+    sdurw_task
+    sdurw_simulation
+    sdurw_opengl
+)
 
 set(build TRUE)
 
@@ -18,8 +29,12 @@ else()
     endif()
 endif()
 
-rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} ${REASON})
-rw_add_doc(${SUBSYS_NAME})
+rw_subsys_option(
+    build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT}
+    REASON ${REASON}
+    DEPENDS ${SUBSYS_DEPS}
+    ADD_DOC
+)
 
 if(build)
     include(UseSWIG)
@@ -98,12 +113,9 @@ if(build)
         set_target_properties(
             ${TARGET_NAME}
             PROPERTIES
-                ARCHIVE_OUTPUT_DIRECTORY
-                "${CMAKE_SWIG_OUTDIR}"
+                ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_SWIG_OUTDIR}"
                 LIBRARY_OUTPUT_DIRECTORY
-                "${CMAKE_SWIG_OUTDIR}"
-                RUNTIME_OUTPUT_DIRECTORY
-                "${CMAKE_SWIG_OUTDIR}"
+                    "${CMAKE_SWIG_OUTDIR}" RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SWIG_OUTDIR}"
         )
         add_dependencies(${SUBSYS_NAME} ${TARGET_NAME})
 
@@ -125,7 +137,10 @@ if(build)
         configure_file(__init__.py.in ${CMAKE_SWIG_OUTDIR}/__init__.py)
         if(NOT "${PYTHON_SITE_PACKAGES}" STREQUAL "")
             install(TARGETS ${TARGET_NAME} DESTINATION "${PYTHON_SITE_PACKAGES}/${RW_MODULE}")
-            install(FILES ${CMAKE_SWIG_OUTDIR}/${RW_MODULE}.py DESTINATION "${PYTHON_SITE_PACKAGES}/${RW_MODULE}")
+            install(
+                FILES ${CMAKE_SWIG_OUTDIR}/${RW_MODULE}.py
+                DESTINATION "${PYTHON_SITE_PACKAGES}/${RW_MODULE}"
+            )
             install(FILES ${CMAKE_SWIG_OUTDIR}/__init__.py DESTINATION "${PYTHON_SITE_PACKAGES}/${RW_MODULE}")
         endif()
     endforeach()
@@ -135,7 +150,8 @@ if(build)
     swig_link_libraries(sdurw_control${LIB_SUFIX} sdurw_control sdurw ${PYTHON_LIBRARIES})
     swig_link_libraries(sdurw_pathoptimization${LIB_SUFIX} sdurw_pathoptimization sdurw ${PYTHON_LIBRARIES})
     swig_link_libraries(sdurw_pathplanners${LIB_SUFIX} sdurw_pathplanners sdurw ${PYTHON_LIBRARIES})
-    swig_link_libraries(sdurw_proximitystrategies${LIB_SUFIX} sdurw_proximitystrategies sdurw ${PYTHON_LIBRARIES})
+    swig_link_libraries(sdurw_proximitystrategies${LIB_SUFIX} sdurw_proximitystrategies sdurw
+                        ${PYTHON_LIBRARIES})
     swig_link_libraries(sdurw_simulation${LIB_SUFIX} sdurw_simulation sdurw ${PYTHON_LIBRARIES})
     swig_link_libraries(sdurw_task${LIB_SUFIX} sdurw_task sdurw ${PYTHON_LIBRARIES})
     swig_link_libraries(sdurw_opengl${LIB_SUFIX} sdurw_opengl sdurw ${PYTHON_LIBRARIES})

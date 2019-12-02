@@ -1,64 +1,59 @@
-SET(SUBSYS_NAME sdurw_proximitystrategies)
+set(SUBSYS_NAME sdurw_proximitystrategies)
 set(SUBSYS_DESC "Collection of proximity strategies!")
-SET(SUBSYS_DEPS sdurw)
+set(SUBSYS_DEPS sdurw)
 
-SET(build TRUE)
-SET(DEFAULT TRUE)
-RW_SUBSYS_OPTION(build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT})
-RW_ADD_DOC(${SUBSYS_NAME})
+set(build TRUE)
+set(DEFAULT TRUE)
+rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} DEPENDS ${SUBSYS_DEPS} ADD_DOC)
 
+if(build)
+    set(OptionalFiles)
+    if(RW_HAVE_PQP)
+        list(APPEND OptionalFiles "./ProximityStrategyPQP.cpp")
+        list(APPEND OptionalFiles_hpp "./ProximityStrategyPQP.hpp")
+    else()
+        message(STATUS "sdurw_proximitystrategies: Not building PQP interface since PQP is disabled!")
+    endif()
 
-IF(build)
-    SET(OptionalFiles)
-    IF (RW_HAVE_PQP)
-      LIST(APPEND OptionalFiles "./ProximityStrategyPQP.cpp")
-      LIST(APPEND OptionalFiles_hpp "./ProximityStrategyPQP.hpp")
-    ELSE ()
-      MESSAGE(STATUS "sdurw_proximitystrategies: Not building PQP interface since PQP is disabled!")
-    ENDIF ()
-    
-    IF (RW_HAVE_YAOBI)
-      LIST(APPEND OptionalFiles "./ProximityStrategyYaobi.cpp")
-      LIST(APPEND OptionalFiles_hpp "./ProximityStrategyYaobi.hpp")
-    ELSE ()
-      MESSAGE(STATUS "sdurw_proximitystrategies: Not building Yaobi interface since Yaobi is disabled!")
-    ENDIF ()
+    if(RW_HAVE_YAOBI)
+        list(APPEND OptionalFiles "./ProximityStrategyYaobi.cpp")
+        list(APPEND OptionalFiles_hpp "./ProximityStrategyYaobi.hpp")
+    else()
+        message(STATUS "sdurw_proximitystrategies: Not building Yaobi interface since Yaobi is disabled!")
+    endif()
 
-    IF (RW_HAVE_BULLET)
-      LIST(APPEND OptionalFiles "./ProximityStrategyBullet.cpp")
-      LIST(APPEND OptionalFiles_hpp "./ProximityStrategyBullet.hpp")
-    ELSE ()
-      MESSAGE(STATUS "sdurw_proximitystrategies: Not building Bullet interface since Bullet is disabled!")
-    ENDIF ()
+    if(RW_HAVE_BULLET)
+        list(APPEND OptionalFiles "./ProximityStrategyBullet.cpp")
+        list(APPEND OptionalFiles_hpp "./ProximityStrategyBullet.hpp")
+    else()
+        message(STATUS "sdurw_proximitystrategies: Not building Bullet interface since Bullet is disabled!")
+    endif()
 
-    IF (RW_HAVE_FCL)
-      LIST(APPEND OptionalFiles "./ProximityStrategyFCL.cpp")
-      LIST(APPEND OptionalFiles_hpp "./ProximityStrategyFCL.hpp")
-    ELSE ()
-      MESSAGE(STATUS "sdurw_proximitystrategies: Not building FCL interface since FCL is disabled!")
-    ENDIF ()
-    
-    SET(SRC_FILES
-      ${RW_PROXIMITYSTRATEGIES_USER_FILES}
-      ${OptionalFiles}
-      ProximityStrategyFactory.cpp
+    if(RW_HAVE_FCL)
+        list(APPEND OptionalFiles "./ProximityStrategyFCL.cpp")
+        list(APPEND OptionalFiles_hpp "./ProximityStrategyFCL.hpp")
+    else()
+        message(STATUS "sdurw_proximitystrategies: Not building FCL interface since FCL is disabled!")
+    endif()
+
+    set(SRC_FILES ${RW_PROXIMITYSTRATEGIES_USER_FILES} ${OptionalFiles} ProximityStrategyFactory.cpp)
+
+    set(SRC_FILES_HPP ${OptionalFiles_hpp} ProximityStrategyFactory.hpp)
+
+    rw_add_library(${SUBSYS_NAME} ${SRC_FILES} ${SRC_FILES_HPP})
+    rw_add_includes(${SUBSYS_NAME} "rwlibs/proximitystrategies" ${SRC_FILES_HPP})
+    target_link_libraries(
+        ${SUBSYS_NAME}
+        PUBLIC ${SUBSYS_DEPS} ${PQP_LIBRARIES} ${BULLET_LIBRARIES}
+        PRIVATE ${YAOBI_LIBRARIES} ${FCL_LIBRARIES}
     )
-    
-    SET(SRC_FILES_HPP
-      ${OptionalFiles_hpp}
-      ProximityStrategyFactory.hpp
-    )
-    
-    RW_ADD_LIBRARY(${SUBSYS_NAME} proximitystrategies ${SRC_FILES} ${SRC_FILES_HPP})
-    RW_ADD_INCLUDES(proximitystrategies "rwlibs/proximitystrategies" ${SRC_FILES_HPP})
-    TARGET_LINK_LIBRARIES(${SUBSYS_NAME} PUBLIC ${SUBSYS_DEPS} ${PQP_LIBRARIES} ${BULLET_LIBRARIES} PRIVATE ${YAOBI_LIBRARIES} ${FCL_LIBRARIES})
-    TARGET_INCLUDE_DIRECTORIES(${SUBSYS_NAME} PRIVATE ${FCL_INCLUDE_DIRS})
-    ADD_DEPENDENCIES(${SUBSYS_NAME} ${SUBSYS_DEPS})
+    target_include_directories(${SUBSYS_NAME} PRIVATE ${FCL_INCLUDE_DIRS})
+    add_dependencies(${SUBSYS_NAME} ${SUBSYS_DEPS})
 
-	IF(CMAKE_VERSION VERSION_GREATER 3.3)
-		SET_TARGET_PROPERTIES(${SUBSYS_NAME} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
-	ENDIF()
+    if(CMAKE_VERSION VERSION_GREATER 3.3)
+        set_target_properties(${SUBSYS_NAME} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
+    endif()
 
-    ADD_LIBRARY(${SUBSYS_NAME}.rwplugin MODULE ProximityStrategyPlugin.cpp)
-    TARGET_LINK_LIBRARIES(${SUBSYS_NAME}.rwplugin ${SUBSYS_NAME})
-ENDIF()
+    add_library(${SUBSYS_NAME}.rwplugin MODULE ProximityStrategyPlugin.cpp)
+    target_link_libraries(${SUBSYS_NAME}.rwplugin ${SUBSYS_NAME})
+endif()

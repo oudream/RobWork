@@ -13,7 +13,12 @@ else()
 
 endif()
 
-rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} ${REASON})
+rw_subsys_option(
+    build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT}
+    REASON ${REASON}
+    DEPENDS ${SUBSYS_DEPS}
+    ADD_DOC
+)
 rw_add_doc(${SUBSYS_NAME})
 
 if(build)
@@ -31,12 +36,23 @@ if(build)
 
     # ############ lua interface generation ##############
     if((CMAKE_VERSION VERSION_GREATER 3.8) OR (CMAKE_VERSION VERSION_EQUAL 3.8))
-        swig_add_library(${TARGET_NAME} TYPE SHARED LANGUAGE lua SOURCES ../sdurwsim.i ../ScriptTypes.cpp Lua.cpp)
+        swig_add_library(
+            ${TARGET_NAME}
+            TYPE SHARED
+            LANGUAGE lua
+            SOURCES ../sdurwsim.i ../ScriptTypes.cpp Lua.cpp
+        )
     else()
-        swig_add_module(${TARGET_NAME} lua ../sdurwsim.i ../ScriptTypes.cpp Lua.cpp)
+        swig_add_module(
+            ${TARGET_NAME}
+            lua
+            ../sdurwsim.i
+            ../ScriptTypes.cpp
+            Lua.cpp
+        )
     endif()
 
-    if(NOT DEFINED MSVC) #This code is to make it easier to make debian packages
+    if(NOT DEFINED MSVC) # This code is to make it easier to make debian packages
         set_target_properties(
             ${TARGET_NAME}
             PROPERTIES
@@ -55,10 +71,16 @@ if(build)
 
     # ############ lua static interface generation ##############
     if((CMAKE_VERSION VERSION_GREATER 3.12.0) OR (CMAKE_VERSION VERSION_EQUAL 3.12.0))
-        swig_add_library(${TARGET_NAME}_s TYPE STATIC LANGUAGE lua SOURCES ../sdurwsim.i ../ScriptTypes.cpp Lua.cpp)
+        swig_add_library(
+            ${TARGET_NAME}_s
+            TYPE STATIC
+            LANGUAGE lua
+            SOURCES ../sdurwsim.i ../ScriptTypes.cpp Lua.cpp
+        )
     else()
         add_library(${TARGET_NAME}_s STATIC Lua.cpp ${swig_generated_sources} ${swig_other_sources})
-        add_dependencies(${TARGET_NAME}_s ${TARGET_NAME}) # avoid using the source files before they have been generated
+        add_dependencies(${TARGET_NAME}_s ${TARGET_NAME}) # avoid using the source files before they have been
+                                                          # generated
     endif()
     target_link_libraries(${TARGET_NAME}_s ${RWSIM_ODE_LIBRARY} ${RWSIM_MODULE} ${ROBWORK_LIBRARIES})
 

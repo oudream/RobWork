@@ -1,15 +1,18 @@
-SET(SUBSYS_NAME CRSA465 )
-SET(SUBSYS_DESC "Library of drivers for the CRSA465 robot" )
-SET(SUBSYS_DEPS sdurw )
+set(SUBSYS_NAME CRSA465)
+set(SUBSYS_DESC "Library of drivers for the CRSA465 robot")
+set(SUBSYS_DEPS sdurw)
 
-SET(build TRUE)
+set(build TRUE)
 set(DEFAULT FALSE)
-set(REASON) 
-RW_SUBSYS_OPTION( build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} ${REASON})
-RW_ADD_DOC( ${SUBSYS_NAME} )
-
-IF( build )   
-    ADD_LIBRARY(sdurwhw_crsa465 ./CRSA465.cpp ./crs_aci.cpp)
-    INSTALL(TARGETS sdurwhw_crsa465 DESTINATION ${RWHW_LIB_INSTALL_DIR})
+set(REASON)
+rw_subsys_option(
+    build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT}
+    REASON ${REASON}
+    DEPENDS ${SUBSYS_DEPS}
+    ADD_DOC
+)
+if(build)
+    add_library(sdurwhw_crsa465 ./CRSA465.cpp ./crs_aci.cpp)
+    install(TARGETS sdurwhw_crsa465 DESTINATION ${RWHW_LIB_INSTALL_DIR})
     set(ROBWORKHARDWARE_LIBRARIES ${ROBWORKHARDWARE_LIBRARIES} sdurwhw_crsa465 PARENT_SCOPE)
-ENDIF()
+endif()

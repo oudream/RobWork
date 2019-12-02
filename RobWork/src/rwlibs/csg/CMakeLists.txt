@@ -1,37 +1,26 @@
-SET(SUBSYS_NAME sdurw_csg)
-SET(SUBSYS_DESC "A module for doing constructive solid geometry")
-SET(SUBSYS_DEPS sdurw sdurw_csgjs)
+set(SUBSYS_NAME sdurw_csg)
+set(SUBSYS_DESC "A module for doing constructive solid geometry")
+set(SUBSYS_DEPS sdurw sdurw_csgjs)
 
 set(build TRUE)
-RW_SUBSYS_OPTION(build ${SUBSYS_NAME} ${SUBSYS_DESC} ON)
-RW_ADD_DOC(${SUBSYS_NAME})
+rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ON DEPENDS ${SUBSYS_DEPS} ADD_DOC)
 
-IF(build)
-    SET(SRC_FILES
-      CSGModel.cpp
-      CSGModelFactory.cpp
-      CSGConvert.cpp
-      CSGUtil.cpp
-    )
-    
-    SET(SRC_FILES_HPP
-      CSGModel.hpp
-      CSGModelFactory.hpp
-      CSGConvert.hpp
-      CSGUtil.hpp
-    )
-    
-    RW_ADD_LIBRARY(${SUBSYS_NAME} csg ${SRC_FILES} ${SRC_FILES_HPP})
-    RW_ADD_INCLUDES(csg "rwlibs/csg" CSGModel.hpp CSGConvert.hpp)
-    TARGET_LINK_LIBRARIES(${SUBSYS_NAME} PUBLIC ${SUBSYS_DEPS})
+if(build)
+    set(SRC_FILES CSGModel.cpp CSGModelFactory.cpp CSGConvert.cpp CSGUtil.cpp)
+
+    set(SRC_FILES_HPP CSGModel.hpp CSGModelFactory.hpp CSGConvert.hpp CSGUtil.hpp)
+
+    rw_add_library(${SUBSYS_NAME} ${SRC_FILES} ${SRC_FILES_HPP})
+    rw_add_includes(${SUBSYS_NAME} "rwlibs/csg" CSGModel.hpp CSGConvert.hpp)
+    target_link_libraries(${SUBSYS_NAME} PUBLIC ${SUBSYS_DEPS})
     # Make sure dependencies are build before system
-    FOREACH(DEP IN LISTS SUBSYS_DEPS)
-        IF(TARGET ${DEP})
-            ADD_DEPENDENCIES(sdurw_csg ${DEP})
-        ENDIF()
-    ENDFOREACH()
+    foreach(DEP IN LISTS SUBSYS_DEPS)
+        if(TARGET ${DEP})
+            add_dependencies(sdurw_csg ${DEP})
+        endif()
+    endforeach()
 
-	IF(CMAKE_VERSION VERSION_GREATER 3.3)
-		SET_TARGET_PROPERTIES(${SUBSYS_NAME} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
-	ENDIF()
-ENDIF()
+    if(CMAKE_VERSION VERSION_GREATER 3.3)
+        set_target_properties(${SUBSYS_NAME} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
+    endif()
+endif()

@@ -13,8 +13,12 @@ else()
 
 endif()
 
-rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} ${REASON})
-rw_add_doc(${SUBSYS_NAME})
+rw_subsys_option(
+    build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT}
+    REASON ${REASON}
+    DEPENDS ${SUBSYS_DEPS}
+    ADD_DOC
+)
 
 if(build)
     set(RWSIM_HAVE_LUA TRUE CACHE INTERNAL "")
@@ -31,9 +35,20 @@ if(build)
 
     # ############ lua interface generation ##############
     if((CMAKE_VERSION VERSION_GREATER 3.8) OR (CMAKE_VERSION VERSION_EQUAL 3.8))
-        swig_add_library(${TARGET_NAME} TYPE SHARED LANGUAGE lua SOURCES ../sdurws.i Lua.cpp ../ScriptTypes.cpp)
+        swig_add_library(
+            ${TARGET_NAME}
+            TYPE SHARED
+            LANGUAGE lua
+            SOURCES ../sdurws.i Lua.cpp ../ScriptTypes.cpp
+        )
     else()
-        swig_add_module(${TARGET_NAME} lua ../sdurws.i Lua.cpp ../ScriptTypes.cpp)
+        swig_add_module(
+            ${TARGET_NAME}
+            lua
+            ../sdurws.i
+            Lua.cpp
+            ../ScriptTypes.cpp
+        )
     endif()
 
     if(NOT DEFINED MSVC) # This code is to make it easier to make debian packages
@@ -47,20 +62,35 @@ if(build)
                 LIBRARY_OUTPUT_DIRECTORY "${RWS_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua"
         )
     endif()
-    swig_link_libraries(${TARGET_NAME} ${RWS_COMPONENT_LIBRARIES} ${RWS_PLUGIN_LIBRARIES} ${RWS_MODULE}
-                        ${ROBWORK_LIBRARIES})
+    swig_link_libraries(
+        ${TARGET_NAME}
+        ${RWS_COMPONENT_LIBRARIES}
+        ${RWS_PLUGIN_LIBRARIES}
+        ${RWS_MODULE}
+        ${ROBWORK_LIBRARIES}
+    )
     if((CMAKE_COMPILER_IS_GNUCC) OR (CMAKE_C_COMPILER_ID STREQUAL "Clang"))
         set_target_properties(${TARGET_NAME} PROPERTIES LINK_FLAGS -Wl,--no-undefined)
     endif()
 
     # ############ lua static interface generation ##############
     if((CMAKE_VERSION VERSION_GREATER 3.12.0) OR (CMAKE_VERSION VERSION_EQUAL 3.12.0))
-        swig_add_library(${TARGET_NAME}_s TYPE STATIC LANGUAGE lua SOURCES ../sdurws.i Lua.cpp ../ScriptTypes.cpp)
+        swig_add_library(
+            ${TARGET_NAME}_s
+            TYPE STATIC
+            LANGUAGE lua
+            SOURCES ../sdurws.i Lua.cpp ../ScriptTypes.cpp
+        )
     else()
         add_library(${TARGET_NAME}_s STATIC ${swig_generated_sources} ${swig_other_sources})
     endif()
-    target_link_libraries(${TARGET_NAME}_s ${RWS_COMPONENT_LIBRARIES} ${RWS_PLUGIN_LIBRARIES} ${RWS_MODULE}
-                          ${ROBWORK_LIBRARIES})
+    target_link_libraries(
+        ${TARGET_NAME}_s
+        ${RWS_COMPONENT_LIBRARIES}
+        ${RWS_PLUGIN_LIBRARIES}
+        ${RWS_MODULE}
+        ${ROBWORK_LIBRARIES}
+    )
 
     set(RWS_COMPONENT_LIBRARIES ${RWS_COMPONENT_LIBRARIES} ${TARGET_NAME}_s PARENT_SCOPE)
 
