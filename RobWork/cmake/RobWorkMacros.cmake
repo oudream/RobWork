@@ -532,10 +532,12 @@ endmacro()
 # _name The name of the option's target subsystem. _desc The description of the subsystem. _default
 # The default value (TRUE or FALSE) ARGV5 The reason for disabling if the default is FALSE.
 macro(RW_SUBSYS_OPTION _var _name _desc _default)
+
     set(options ADD_DOC) # Used to marke flags
     set(oneValueArgs REASON) # used to marke values with a single value
     set(multiValueArgs DEPENDS DEPENDS_EXT)
     cmake_parse_arguments(SUBSYS "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
+
     set(_opt_name "BUILD_${_name}")
     rw_get_subsys_hyperstatus(subsys_status ${_name})
     if(NOT ("${subsys_status}" STREQUAL "AUTO_OFF"))
@@ -574,7 +576,7 @@ macro(RW_SUBSYS_OPTION _var _name _desc _default)
     if(${SUBSYS_ADD_DOC})
         rw_add_doc(${_name})
     endif()
-
+    set_in_global_map(RW_SUBSYS_BUILD ${_name} ${${_var}})
     rw_subsys_depend(${_name} ${SUBSYS_DEPENDS})
     rw_add_subsystem(${_name} ${_desc})
 endmacro()

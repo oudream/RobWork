@@ -26,7 +26,7 @@ endif()
 
 # Packaging INCLUDE(build/packing.cmake)
 
-# ######################################################################################################################
+# ##################################################################################################
 # Windows INSTALLER Packaging
 #
 
@@ -63,27 +63,35 @@ list(GET VERSIONS_TMP 2 CPACK_PACKAGE_VERSION_PATCH)
 set(CPACK_PACKAGE_FILE_NAME ${CPACK_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}-${CPACK_SYSTEM_NAME})
 
 # Define components and their display names
-set(
-    CPACK_COMPONENTS_ALL
-    unspecified ${RW_SUBSYSTEMS} ${RWS_SUBSYSTEMS} ${RWHW_SUBSYSTEMS} ${RWSIM_SUBSYSTEMS}
-) # install components
+set(CPACK_COMPONENTS_ALL "") # install components
 
-foreach(_comp ${CPACK_COMPONENTS_ALL})
-    string(TOUPPER "${_comp}" _COMP)
-    if(NOT "${_comp}" STREQUAL "unspecified")
-        set(CPACK_COMPONENT_${_COMP}_DISPLAY_NAME "${_comp}")
-        set(CPACK_COMPONENT_${_COMP}_DESCRIPTION ${RW_SUBSYS_DESC_${_comp}})
-        string(TOLOWER "${RW_SUBSYS_PREFIX_${_comp}}" tmp)
-        set(CPACK_COMPONENT_${_COMP}_GROUP sdu${tmp})
+set(RW_SUBSYS_BUILD_unspecified TRUE)
+foreach(_comp unspecified ${RW_SUBSYSTEMS} ${RWS_SUBSYSTEMS} ${RWHW_SUBSYSTEMS} ${RWSIM_SUBSYSTEMS})
+    if(${RW_SUBSYS_BUILD_${_comp}})
+
+        string(TOUPPER "${_comp}" _COMP)
+
+        if(NOT "${_comp}" STREQUAL "unspecified")
+            set(CPACK_COMPONENT_${_COMP}_DISPLAY_NAME "${_comp}")
+            set(CPACK_COMPONENT_${_COMP}_DESCRIPTION ${RW_SUBSYS_DESC_${_comp}})
+            string(TOLOWER "${RW_SUBSYS_PREFIX_${_comp}}" tmp)
+            set(CPACK_COMPONENT_${_COMP}_GROUP sdu${tmp})
+
+        else()
+            set(CPACK_COMPONENT_${_COMP}_DISPLAY_NAME "miscellaneous")
+            set(CPACK_COMPONENT_${_COMP}_DESCRIPTION "Other Components")
+            set(CPACK_COMPONENT_${_COMP}_GROUP "Other")
+        endif()
+        set(CPACK_COMPONENT_${_COMP}_INSTALL_TYPES Full Developer)
+        set(CPACK_COMPONENTS_ALL ${CPACK_COMPONENTS_ALL} ${_comp})
+        message(STATUS "component: ${CPACK_COMPONENT_${_COMP}_DISPLAY_NAME} - group: ${CPACK_COMPONENT_${_COMP}_GROUP}")
     else()
-        set(CPACK_COMPONENT_${_COMP}_DISPLAY_NAME "miscellaneous")
-        set(CPACK_COMPONENT_${_COMP}_DESCRIPTION "Other Components")
-        set(CPACK_COMPONENT_${_COMP}_GROUP "Other")
+        message(STATUS "Not build component ${_comp}")
     endif()
-    set(CPACK_COMPONENT_${_COMP}_INSTALL_TYPES Full Developer)
 endforeach()
 
-# Define dependencies between components. example headers dpend on lib set(CPACK_COMPONENT_HEADERS_DEPENDS libraries)
+# Define dependencies between components. example headers dpend on lib
+# set(CPACK_COMPONENT_HEADERS_DEPENDS libraries)
 
 set(CPACK_COMPONENT_GROUP_SDURW_DESCRIPTION "Tools for controlling robots")
 set(CPACK_COMPONENT_GROUP_SDURWS_DESCRIPTION "Tools for Visulizing robot control")
