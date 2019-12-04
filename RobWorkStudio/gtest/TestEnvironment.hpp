@@ -25,6 +25,7 @@
  */
 
 #include <gtest/gtest.h>
+#include <string>
 
 /**
  * @brief Utility class for setting up the test environment.

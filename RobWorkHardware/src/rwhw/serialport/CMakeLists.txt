@@ -17,7 +17,7 @@ if(build)
     target_link_libraries(${SUBSYS_NAME} PUBLIC ${ROBWORK_LIBRARIES})
     rw_add_includes(${SUBSYS_NAME} "rwhw/serialport" SerialPort.hpp)
     # Make sure dependencies are build before system
-    foreach(DEP IN LISTS ROBWORK_LIBRARIES)
+    foreach(DEP IN LISTS SUBSYS_DEPS ROBWORK_LIBRARIES)
         if(TARGET ${DEP})
             add_dependencies(${SUBSYS_NAME} ${DEP})
         endif()

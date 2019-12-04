@@ -23,7 +23,7 @@ if(build)
     rw_add_includes(${SUBSYS_NAME} "rwhw/robolabFT" ${SRC_FILES_HPP})
 
     # Make sure dependencies are build before system
-    foreach(DEP IN LISTS sdurwhw_serialport ROBWORK_LIBRARIES)
+    foreach(DEP IN LISTS SUBSYS_DEPS ROBWORK_LIBRARIES)
         if(TARGET ${DEP})
             add_dependencies(${SUBSYS_NAME} ${DEP})
         endif()

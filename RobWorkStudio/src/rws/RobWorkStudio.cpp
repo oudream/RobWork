@@ -757,7 +757,7 @@ void RobWorkStudio::setupPyPlugin(const QString& pathname, const QString& filena
         pyplug->initialize(pathname.toLocal8Bit().data(),filename.toLocal8Bit().data());
     #endif //RWS_USE_PYTHON
     #ifndef RWS_USE_PYTHON
-        RW_THROW("You have attempted to load a python plugin, but RobWorkStudio was not compiled using python, please recompile RobWorkStudio")
+		RW_THROW("You have attempted to load a python plugin, but RobWorkStudio was not compiled using python, please recompile RobWorkStudio");
     #endif //NOT RWS_USE_PYTHON
 
 }
