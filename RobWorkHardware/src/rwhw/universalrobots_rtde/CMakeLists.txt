@@ -44,7 +44,7 @@ IF( build )
 
 	if( NOT UR_RTDE_INTERNAL )
 		#message(STATUS "ur_rtde: ${ur_rtde_FOUND}  - lib: ${ur_rtde_LIBRARIES} - incl: ${ur_rtde_INCLUDE_DIRS}")
-		target_include_directories(rwhw_universalrobots_rtde PRIVATE ${ur_rtde_INCLUDE_DIRS})
+		target_include_directories(sdurwhw_universalrobots_rtde PRIVATE ${ur_rtde_INCLUDE_DIRS})
 	endif()
 
 	# Make sure dependencies are build before system
