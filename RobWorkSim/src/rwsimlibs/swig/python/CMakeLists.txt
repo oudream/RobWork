@@ -109,7 +109,7 @@ if(build)
     configure_file(__init__.py.in ${CMAKE_SWIG_OUTDIR}/__init__.py)
     if(PYTHON_SITE_PACKAGES MATCHES "^.?usr")
         install(TARGETS ${TARGET_NAME} DESTINATION "${PYTHON_SITE_PACKAGES}/${RWSIM_MODULE}")
-        install(FILES ${CMAKE_SWIG_OUTDIR}/${RWS_MODULE}.py DESTINATION "${PYTHON_SITE_PACKAGES}/${RWSIM_MODULE}")
+        install(FILES ${CMAKE_SWIG_OUTDIR}/${RWSIM_MODULE}.py DESTINATION "${PYTHON_SITE_PACKAGES}/${RWSIM_MODULE}")
         install(FILES ${CMAKE_SWIG_OUTDIR}/__init__.py DESTINATION "${PYTHON_SITE_PACKAGES}/${RWSIM_MODULE}")
     endif()
     # ###### Final linking and dependency checks ######

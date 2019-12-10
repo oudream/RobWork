@@ -1,76 +1,89 @@
-SET(SUBSYS_NAME sdurw)
+set(SUBSYS_NAME sdurw)
 set(SUBSYS_DESC "The core RobWork library!")
-SET(SUBSYS_DEPS )
+set(SUBSYS_DEPS)
 
-SET(build TRUE)
-RW_SUBSYS_OPTION(build ${SUBSYS_NAME} ${SUBSYS_DESC} ON)
+set(build TRUE)
+rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ON)
 
-IF(build)
+if(build)
 
-set(RW_LIB_FILES_CPP ${RW_USER_FILES})
-set(RW_LIB_FILES_HPP ${RW_USER_FILES_HPP})
- 
-ADD_SUBDIRECTORY(common)
-ADD_SUBDIRECTORY(geometry)
-ADD_SUBDIRECTORY(invkin)
-ADD_SUBDIRECTORY(kinematics)
-ADD_SUBDIRECTORY(loaders)
-ADD_SUBDIRECTORY(math)
-ADD_SUBDIRECTORY(models)
-ADD_SUBDIRECTORY(pathplanning)
-ADD_SUBDIRECTORY(graspplanning)
-ADD_SUBDIRECTORY(proximity)
-ADD_SUBDIRECTORY(sensor)
-ADD_SUBDIRECTORY(trajectory)
-ADD_SUBDIRECTORY(plugin)
-ADD_SUBDIRECTORY(graphics)
+    set(RW_LIB_FILES_CPP ${RW_USER_FILES})
+    set(RW_LIB_FILES_HPP ${RW_USER_FILES_HPP})
 
-#Add the RobWork files
-SET(FILES_CPP
-    RobWork.cpp
-)
+    add_subdirectory(common)
+    add_subdirectory(geometry)
+    add_subdirectory(invkin)
+    add_subdirectory(kinematics)
+    add_subdirectory(loaders)
+    add_subdirectory(math)
+    add_subdirectory(models)
+    add_subdirectory(pathplanning)
+    add_subdirectory(graspplanning)
+    add_subdirectory(proximity)
+    add_subdirectory(sensor)
+    add_subdirectory(trajectory)
+    add_subdirectory(plugin)
+    add_subdirectory(graphics)
 
-SET(FILES_HPP 
-    common.hpp
-    geometry.hpp
-    graphics.hpp 
-    graspplanning.hpp
-    invkin.hpp
-    kinematics.hpp
-    loaders.hpp
-    math_fwd.hpp
-    math.hpp
-    models.hpp
-    pathplanning.hpp
-    proximity.hpp
-    RobWork.hpp
-    rw.hpp
-    sensor.hpp
-    trajectory.hpp   
-)
+    # Add the RobWork files
+    set(FILES_CPP RobWork.cpp)
 
-FILE(GLOB SRC_FILES_CPP ${FILES_CPP})
-FILE(GLOB SRC_FILES_HPP ${FILES_HPP})
+    set(
+        FILES_HPP
+        common.hpp
+        geometry.hpp
+        graphics.hpp
+        graspplanning.hpp
+        invkin.hpp
+        kinematics.hpp
+        loaders.hpp
+        math_fwd.hpp
+        math.hpp
+        models.hpp
+        pathplanning.hpp
+        proximity.hpp
+        RobWork.hpp
+        rw.hpp
+        sensor.hpp
+        trajectory.hpp
+    )
 
-LIST(APPEND RW_LIB_FILES_CPP ${SRC_FILES_CPP})
-LIST(APPEND RW_LIB_FILES_HPP ${SRC_FILES_HPP})
+    file(GLOB SRC_FILES_CPP ${FILES_CPP})
+    file(GLOB SRC_FILES_HPP ${FILES_HPP})
 
-RW_ADD_LIBRARY(${SUBSYS_NAME} ${SUBSYS_NAME} ${RW_LIB_FILES_CPP} ${RW_LIB_FILES_HPP})
-IF (RW_HAVE_XERCES)
-	TARGET_LINK_LIBRARIES(${SUBSYS_NAME} PUBLIC ${XERCESC_LIBRARIES})
-ENDIF()
-IF (RW_HAVE_ASSIMP)
-	TARGET_LINK_LIBRARIES(${SUBSYS_NAME} PRIVATE ${ASSIMP_LIBRARIES})
-ENDIF()
+    list(APPEND RW_LIB_FILES_CPP ${SRC_FILES_CPP})
+    list(APPEND RW_LIB_FILES_HPP ${SRC_FILES_HPP})
 
-TARGET_LINK_LIBRARIES(${SUBSYS_NAME} PRIVATE ${QHULL_LIBRARIES} ${CMAKE_DL_LIBS})
-RW_ADD_INCLUDES(${SUBSYS_NAME} "rw" ${FILES_HPP} )
-RW_ADD_INCLUDE_DIRS(${SUBSYS_NAME} "rw" 
-    common geometry graspplanning invkin kinematics loaders math models pathplanning 
-    proximity sensor trajectory plugin graphics constraints)
+    rw_add_library(${SUBSYS_NAME} ${SUBSYS_NAME} ${RW_LIB_FILES_CPP} ${RW_LIB_FILES_HPP})
+    if(RW_HAVE_XERCES)
+        target_link_libraries(${SUBSYS_NAME} PUBLIC ${XERCESC_LIBRARIES})
+    endif()
+    if(RW_HAVE_ASSIMP)
+        target_link_libraries(${SUBSYS_NAME} PRIVATE ${ASSIMP_LIBRARIES})
+    endif()
 
-IF(CMAKE_VERSION VERSION_GREATER 3.3)
-	SET_TARGET_PROPERTIES(${SUBSYS_NAME} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
-ENDIF()
+    target_link_libraries(${SUBSYS_NAME} PRIVATE ${QHULL_LIBRARIES} ${CMAKE_DL_LIBS})
+    rw_add_includes(${SUBSYS_NAME} "rw" ${FILES_HPP})
+    rw_add_include_dirs(
+        ${SUBSYS_NAME}
+        "rw"
+        common
+        geometry
+        graspplanning
+        invkin
+        kinematics
+        loaders
+        math
+        models
+        pathplanning
+        proximity
+        sensor
+        trajectory
+        plugin
+        graphics
+        constraints
+    )
 
-ENDIF()
+    set_target_properties(${SUBSYS_NAME} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
+
+endif()

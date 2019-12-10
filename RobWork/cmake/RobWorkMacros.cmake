@@ -371,12 +371,6 @@ macro(RW_OPTIONS PREFIX)
 
     option(${PREFIX}_SHARED_LIBS "Build shared libraries." ${${PREFIX}_SHARED_LIBS})
     if(${PREFIX}_SHARED_LIBS)
-        if(WIN32 AND MSVC AND CMAKE_VERSION VERSION_LESS 3.4)
-            message(
-                FATAL_ERROR
-                    "It is not currently possible to compile shared libraries for Windows with CMake versions below 3.4."
-            )
-        endif()
         set(PROJECT_LIB_PREFIX ${CMAKE_SHARED_LIBRARY_PREFIX})
         set(PROJECT_LIB_SUFFIX ${CMAKE_SHARED_LIBRARY_SUFFIX})
         set(PROJECT_LIB_TYPE "SHARED")

@@ -62,6 +62,18 @@ if(build)
             swig_add_module(${TARGET_NAME} lua ${RW_MODULE_FILENAME} ${SOURCE})
         endif()
 
+        if(NOT DEFINED MSVC) # This code is to make it easier to make debian packages
+            set_target_properties(
+                ${TARGET_NAME}
+                PROPERTIES
+                    PREFIX ""
+                    OUTPUT_NAME ${RW_MODULE}
+                    ARCHIVE_OUTPUT_DIRECTORY "${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua"
+                    LIBRARY_OUTPUT_DIRECTORY "${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua"
+                    LIBRARY_OUTPUT_DIRECTORY "${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua"
+            )
+        endif()
+
         target_include_directories(${TARGET_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
         add_dependencies(${SUBSYS_NAME}_all ${TARGET_NAME})
 
@@ -105,11 +117,7 @@ if(build)
             ARCHIVE DESTINATION ${LIB_INSTALL_DIR} COMPONENT swig
         )
 
-        install(
-            FILES ${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/lib${TARGET_NAME}.so
-            DESTINATION ${LUA_INSTALL_DIR}
-            RENAME ${RW_MODULE}.so
-        )
+        install(TARGETS ${TARGET_NAME} DESTINATION ${LUA_INSTALL_DIR})
 
     endforeach()
 

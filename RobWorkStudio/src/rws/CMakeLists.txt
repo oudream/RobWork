@@ -110,13 +110,7 @@ target_link_libraries(
 
 include_directories(${PYTHON_INCLUDE_DIRS})
 
-if(CMAKE_VERSION VERSION_GREATER 3.3)
-    set_target_properties(sdurws PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
-endif()
-
-if(WIN32 AND MSVC AND BUILD_SHARED_LIBS AND CMAKE_VERSION VERSION_LESS 3.4)
-    message(FATAL_ERROR "Building shared libraries on Windows requires CMake 3.4 or newer.")
-endif()
+set_target_properties(sdurws PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
 
 # Install stuff
 install(TARGETS sdurws DESTINATION ${LIB_INSTALL_DIR})

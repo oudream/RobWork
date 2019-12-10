@@ -24,7 +24,7 @@ know where to find the RobWork Lua modules.
 
 In Linux, this could for instance be set with the following command::
 
-   export LUA_CPATH="/path/to/RobWork/libs/BUILD_CONFIGURATION/lib?_lua.so;/path/to/RobWorkStudio/libs/BUILD_CONFIGURATION/?_lua.so;/path/to/RobWorkSim/libs/BUILD_CONFIGURATION/?_lua.so"
+   export LUA_CPATH="/path/to/RobWork/libs/BUILD_CONFIGURATION/Lua/?.so;/path/to/RobWorkStudio/libs/BUILD_CONFIGURATION/Lua/?.so;/path/to/RobWorkSim/libs/BUILD_CONFIGURATION/Lua/?.so"
 
 Adjust the paths to actual path names on the system.
 

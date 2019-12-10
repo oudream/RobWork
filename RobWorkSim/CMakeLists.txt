@@ -50,7 +50,6 @@ include(${RW_ROOT}/cmake/RobWorkMacros.cmake)
 set(ROOT RWSIM_ROOT)
 rw_init_project(${RWSIM_ROOT} RobWorkSim RWSIM ${ROBWORKSIM_VERSION})
 rw_get_os_info()
-rw_set_install_dirs(RobWorkSim RWSIM)
 rw_options(RWSIM)
 
 # ######################################################################################################################
