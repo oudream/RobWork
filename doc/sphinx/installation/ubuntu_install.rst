@@ -4,14 +4,14 @@ Ubuntu installation by PPA
 Precompiled Debian packages exist for Ubuntu 16.04 and 18.04.
 They can be installed by adding sdurobotics/robwork to 'apt' ppa repositories.
 
-.. codeblock:: bash
+.. code-block:: bash
 
     sudo add-apt-repository ppa:sdurobotics/robwork
     sudo apt-get update
 
 The Simplest install to get all our packages can then be done with:
 
-.. codeblock:: bash
+.. code-block:: bash
 
     sudo apt-get install libsdurw-all-dev \
                          libsdurws-all-dev \
@@ -34,13 +34,13 @@ Individual packages
 The RobWork ppa contains many different packages to allow, custom installations of only the needed components.
 The first array of packages are the individual RobWork packages. Which can be downloaded in versioned mode with:
 
-.. codeblock:: bash
+.. code-block:: bash
 
     sudo apt-get install lib<package><version>
 
 For the development packages including the newest version of robwork and the include files the command is:
 
-.. codeblock:: bash
+.. code-block:: bash
 
     sudo apt-get install lib<package>-dev
 
