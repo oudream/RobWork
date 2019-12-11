@@ -53,6 +53,7 @@ if(build)
     endif()
 
     # ############ SWIG COMPILE #################
+    set(SWIG_OUT_ORIG ${CMAKE_SWIG_OUTDIR})
     set(CMAKE_SWIG_OUTDIR ${RWS_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RWS_MODULE})
 
     if((CMAKE_VERSION VERSION_GREATER 3.8) OR (CMAKE_VERSION VERSION_EQUAL 3.8))
@@ -99,8 +100,8 @@ if(build)
                     PYTHONPATH=${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/../../../RobWork/libs/${RW_BUILD_TYPE}
                     ${pydoc}
                     -w
-                    sdurws
-                WORKING_DIRECTORY ${CMAKE_SWIG_OUTDIR}
+                    ${CMAKE_SWIG_OUTDIR}/${RWS_MODULE}.py
+                WORKING_DIRECTORY ${SWIG_OUT_ORIG}
                 COMMENT "Creating pydoc..."
             )
         endif()

@@ -752,7 +752,7 @@ void RobWorkStudio::setupPyPlugin(const QString& pathname, const QString& filena
 {   
     #ifdef RWS_USE_PYTHON
         Qt::DockWidgetArea dockarea = (Qt::DockWidgetArea)dock;
-        PyPlugin* pyplug = new PyPlugin();
+        PyPlugin* pyplug = new PyPlugin(filename,QIcon (":/PythonIcon.png"));
         addPlugin(pyplug,visible,dockarea);
         pyplug->initialize(pathname.toLocal8Bit().data(),filename.toLocal8Bit().data());
     #endif //RWS_USE_PYTHON
