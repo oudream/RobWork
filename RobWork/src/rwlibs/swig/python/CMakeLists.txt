@@ -54,6 +54,8 @@ if(build)
         set(LIB_SUFIX)
     endif()
 
+
+    set(SWIG_OUT_ORIG ${CMAKE_SWIG_OUTDIR})
     add_custom_target(${SUBSYS_NAME})
     foreach(
         RW_MODULE
@@ -115,8 +117,8 @@ if(build)
             if(pydoc)
                 add_custom_command(
                     TARGET ${TARGET_NAME} POST_BUILD
-                    COMMAND ${pydoc} -w ${RW_MODULE}
-                    WORKING_DIRECTORY ${CMAKE_SWIG_OUTDIR}
+                    COMMAND ${pydoc} -w ${CMAKE_SWIG_OUTDIR}/${RW_MODULE}.py
+                    WORKING_DIRECTORY ${SWIG_OUT_ORIG}
                     COMMENT "Creating pydoc..."
                 )
             endif()
