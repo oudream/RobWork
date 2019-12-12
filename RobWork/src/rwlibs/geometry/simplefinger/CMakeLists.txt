@@ -7,14 +7,12 @@ rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ON DEPENDS ${SUBSYS_DEPS} A
 
 if(build)
 
-    rw_add_library(SimpleFinger SimpleFinger.cpp SimpleFinger.hpp)
-    target_link_libraries(SimpleFinger PRIVATE sdurw_csg PUBLIC sdurw)
+    rw_add_library(${SUBSYS_NAME} SimpleFinger.cpp SimpleFinger.hpp)
+    target_link_libraries(${SUBSYS_NAME} PRIVATE sdurw_csg PUBLIC sdurw)
 	
-    rw_add_library(simplefinger.rwplugin COMPONENT ${SUBSYS_NAME} MODULE SimpleFingerPlugin.cpp SimpleFingerPlugin.hpp)
-    target_link_libraries(simplefinger.rwplugin PRIVATE SimpleFinger PUBLIC sdurw)
+    rw_add_library(${SUBSYS_NAME}.rwplugin COMPONENT ${SUBSYS_NAME} MODULE SimpleFingerPlugin.cpp SimpleFingerPlugin.hpp)
+    target_link_libraries(${SUBSYS_NAME}.rwplugin PRIVATE SimpleFinger PUBLIC sdurw)
 
-    if(CMAKE_VERSION VERSION_GREATER 3.3)
-        set_target_properties(SimpleFinger PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
-    endif()
+    set_target_properties(${SUBSYS_NAME} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
 
 endif()

@@ -126,7 +126,7 @@ Any CACHE Variable that stores a path, should be given the type PATH or FILEPATH
 **3.1 Module naming** :raw-html:`<br />`
 Modules are named with prefix sdu, ie. **sdurw**, **sdurws**, **sdurwhw** and **sdurwsim**. sub-modules are named module_"nameOfSubModule".
 
-**3.2. File header for targets** :raw-html:`<br />`
+**3.2 File header for targets** :raw-html:`<br />`
 When a CMake file is compiling a sub-module the CMake file must include the following lines in the beginning of the file
 
 .. code-block:: cmake
@@ -135,7 +135,7 @@ When a CMake file is compiling a sub-module the CMake file must include the foll
    SET(SUBSYS_DESC "A description of what this module is used for" )
    SET(SUBSYS_DEPS dependency1 dependency2 ... )
 
-**3.5. Naming of project Variables and Macros** :raw-html:`<br />`
+**3.5 Naming of project Variables and Macros** :raw-html:`<br />`
 The Name of a project wide variable or macro must be named with the acronym of the project as prefix
 
 .. code-block:: cmake

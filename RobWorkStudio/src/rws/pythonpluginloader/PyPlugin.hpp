@@ -12,7 +12,7 @@ class PyPlugin : public rws::RobWorkStudioPlugin
     Q_INTERFACES (rws::RobWorkStudioPlugin)
   public:
     //! @copydoc rws::RobWorkStudioPlugin::RobWorkStudioPlugin
-    PyPlugin ();
+    PyPlugin (const QString& name, const QIcon& icon);
 
     /**
      * @brief Initialize the Python plugin
