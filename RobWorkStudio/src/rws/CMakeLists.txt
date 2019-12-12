@@ -138,5 +138,6 @@ if(build)
 
     add_library(sdurws_plugin.rwplugin MODULE RWSImageLoaderPlugin.cpp RWSImageLoaderPlugin.hpp)
     target_link_libraries(sdurws_plugin.rwplugin sdurws ${QT_LIBRARIES} ${ROBWORK_LIBRARIES})
+    install(TARGETS sdurws_plugin.rwplugin DESTINATION ${RW_PLUGIN_INSTALL_DIR})
 
 endif()

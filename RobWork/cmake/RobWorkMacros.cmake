@@ -345,6 +345,9 @@ macro(RW_SET_INSTALL_DIRS PROJECT_NAME PREFIX)
         set(LUA_INSTALL_DIR "${LIB_INSTALL_DIR}/lua/${PREFIX}")
     endif()
 
+    set(RW_PLUGIN_INSTALL_DIR "${LIB_INSTALL_DIR}/RobWork/rwplugins")
+    set(RWS_PLUGIN_INSTALL_DIR "${LIB_INSTALL_DIR}/RobWork/rwsplugins")
+
     if(WIN32)
         set(
             ${PREFIX}_INSTALL_DIR
@@ -475,7 +478,38 @@ macro(RW_ADD_LIBRARY _name)
 
 endmacro()
 
-# ##################################################################################################
+
+# ######################################################################################################################
+# Add a library target. _name The library name. _component The part of RW that this plugin belongs to. ARGN The source
+# files for the library.
+macro(RW_ADD_PLUGIN _name _lib_type )
+    add_library(${_name} ${PROJECT_LIB_TYPE} ${ARGN})
+    # must link explicitly against boost.
+    target_link_libraries(${_name} PUBLIC ${Boost_LIBRARIES})
+
+    # Only link if needed
+    if(WIN32 AND MSVC)
+        set_target_properties(${_name} PROPERTIES LINK_FLAGS_RELEASE /OPT:REF)
+    elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+        set_target_properties(${_name} PROPERTIES LINK_FLAGS -Wl)
+    elseif(__COMPILER_PATHSCALE)
+        set_target_properties(${_name} PROPERTIES LINK_FLAGS -mp)
+    else()
+        set_target_properties(${_name} PROPERTIES LINK_FLAGS -Wl,--as-needed,--no-undefined)
+    endif()
+    #
+    if(${PROJECT_USE_SONAME})
+        set_target_properties(
+            ${_name}
+            PROPERTIES VERSION ${PROJECT_VERSION} SOVERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
+        )
+    endif()
+
+    install(TARGETS ${_name} DESTINATION ${RW_PLUGIN_INSTALL_DIR})
+
+endmacro()
+
+# ######################################################################################################################
 # Set a value in a global, cached map. _map The map name. _key The key name. _value The value.
 macro(SET_IN_GLOBAL_MAP _map _key _value)
     set("${_map}_${_key}" "${_value}" CACHE INTERNAL "Map value" FORCE)

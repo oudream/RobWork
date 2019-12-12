@@ -120,5 +120,6 @@ if(build)
 
     add_library(bt_plugin.rwplugin MODULE BtPlugin.cpp BtPlugin.hpp)
     target_link_libraries(bt_plugin.rwplugin sdurwsim_bullet ${ROBWORKSIM_LIBRARIES})
+    install(TARGETS bt_plugin.rwplugin LIBRARY DESTINATION ${RW_PLUGIN_INSTALL_DIR})
 
 endif()

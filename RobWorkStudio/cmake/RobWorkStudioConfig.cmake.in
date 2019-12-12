@@ -242,15 +242,18 @@ if(EXISTS ${RWSCFG_ROOT}/RobWorkStudioBuildConfig_${RWS_BUILD_TYPE}.cmake)
         include_directories(${QT_INCLUDES})
     endif()
 
+
     # Find and setup OpenGL.
     if(POLICY CMP0072) # Introduce cmake 3.11
         cmake_policy(SET CMP0072 NEW)
     endif()
     find_package(OpenGL REQUIRED)
-
-    if(${RWS_BUILD_WITH_PYTHON})
-        find_package(PythonLibs ${RWS_BUILD_WITH_PYTHONLIBS_MAJOR_VERSION} REQUIRED)
-        find_package(PythonInterp ${RWS_BUILD_WITH_PYTHON_MAJOR_VERSION} REQUIRED)
+    
+    if(DEFINED MSVC)
+        if(${RWS_BUILD_WITH_PYTHON})
+            find_package(PythonLibs ${RWS_BUILD_WITH_PYTHONLIBS_MAJOR_VERSION} REQUIRED)
+            find_package(PythonInterp ${RWS_BUILD_WITH_PYTHON_MAJOR_VERSION} REQUIRED)
+        endif()
     endif()
 
     set(ROBWORKSTUDIO_BUILD_PATH "${RWS_BUILD_WITH_RWS_ROOT}")
