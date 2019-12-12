@@ -33,13 +33,13 @@
 using rws::RobWorkStudioPlugin;
 using namespace rw::kinematics;
 
-PyPlugin::PyPlugin () :
-    RobWorkStudioPlugin (std::string ("PyPlugin" + std::to_string (_pyPlugins++)).c_str (),
-                         QIcon (":/PythonIcon.png")),
+PyPlugin::PyPlugin (const QString& name, const QIcon& icon) :
+    RobWorkStudioPlugin (std::string (name.toStdString () + std::to_string (_pyPlugins++)).c_str (),
+                         icon),
     _isPythonInit (false)
 {
     _base                = new QWidget (this);
-    _pluginName          = "PyPlugin" + std::to_string (_pyPlugins - 1);
+    _pluginName          = name.toStdString () + std::to_string (_pyPlugins - 1);
     QGridLayout* pLayout = new QGridLayout (_base);
     _base->setLayout (pLayout);
     this->setWidget (_base);
@@ -59,18 +59,18 @@ bool PyPlugin::initialize (std::string pythonFilePath, std::string pluginName)
 
         // Initialize Python
         if (!Py_IsInitialized ()) {
-            #ifdef RWS_USE_PYTHON3
-                wchar_t* program = Py_DecodeLocale (pluginName.c_str (), NULL);
-                if (program == NULL) {
-                    return false;
-                }
-            #endif
-            #ifdef RWS_USE_PYTHON2
-                char program[pluginName.size ()];
-                for (size_t i = 0; i < pluginName.size (); i++) {
-                    program[i] = pluginName[i];
-                }
-            #endif
+#ifdef RWS_USE_PYTHON3
+            wchar_t* program = Py_DecodeLocale (pluginName.c_str (), NULL);
+            if (program == NULL) {
+                return false;
+            }
+#endif
+#ifdef RWS_USE_PYTHON2
+            char program[pluginName.size ()];
+            for (size_t i = 0; i < pluginName.size (); i++) {
+                program[i] = pluginName[i];
+            }
+#endif
 
             Py_SetProgramName (program);
             Py_Initialize ();
@@ -79,20 +79,20 @@ bool PyPlugin::initialize (std::string pythonFilePath, std::string pluginName)
             std::vector< std::string > argv = {pluginName, _pluginName};
             const int argc                  = int(argv.size ());
 
-            #ifdef RWS_USE_PYTHON3
-                wchar_t** argv_ = new wchar_t*[argc];
-                for (int i = 0; i < argc; i++) {
-                    wchar_t* arg = Py_DecodeLocale (argv[i].c_str (), NULL);
-                    argv_[i]     = arg;
-                }
-            #endif
-            #ifdef RWS_USE_PYTHON2
-                char* argv_[argc];
-                for (int i = 0; i < argc; i++) {
-                    argv_[i] = new char[argv.size ()];
-                    strcpy (argv_[i], argv[i].c_str ());
-                }
-            #endif
+#ifdef RWS_USE_PYTHON3
+            wchar_t** argv_ = new wchar_t*[argc];
+            for (int i = 0; i < argc; i++) {
+                wchar_t* arg = Py_DecodeLocale (argv[i].c_str (), NULL);
+                argv_[i]     = arg;
+            }
+#endif
+#ifdef RWS_USE_PYTHON2
+            char* argv_[argc];
+            for (int i = 0; i < argc; i++) {
+                argv_[i] = new char[argv.size ()];
+                strcpy (argv_[i], argv[i].c_str ());
+            }
+#endif
 
             PySys_SetArgv (argc, argv_);
 
@@ -108,23 +108,23 @@ bool PyPlugin::initialize (std::string pythonFilePath, std::string pluginName)
                 RW_THROW ("Could not open PyPlugin.py");
             }
 
-
             for (int i = 0; i < argc; i++) {
                 delete argv_[i];
             }
-            #ifdef RWS_USE_PYTHON3
-                delete[] argv_;
-                delete program;
-            #endif
+#ifdef RWS_USE_PYTHON3
+            delete[] argv_;
+            delete program;
+#endif
             _isPythonInit = true;
-        }else {
-            std::string command = "rws_cpp_link.new_widget('"+pluginName+"')\n";
-            PyRun_SimpleString (command.c_str());
+        }
+        else {
+            std::string command = "rws_cpp_link.new_widget('" + pluginName + "')\n";
+            PyRun_SimpleString (command.c_str ());
         }
         // Get Python
         std::ifstream scriptFile (pythonFilePath.c_str ());
         std::string code ((std::istreambuf_iterator< char > (scriptFile)),
-                            std::istreambuf_iterator< char > ());
+                          std::istreambuf_iterator< char > ());
 
         PyRun_SimpleString (code.c_str ());
     }

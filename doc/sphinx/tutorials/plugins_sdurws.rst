@@ -209,7 +209,8 @@ it means that it can't find the correct QT installation.
 For Linux users the path can be specified by the QT library path to LD_LIBRARY_PATH.
 This can be done by adding the following line to .bashrc or calling the line from the terminal
 
-.. code-block:: shell
+.. code-block:: bash
+
     #example -------------||----------------/Path/To/Qt/<Version_number>/<compiler>/lib
     export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/Qt/5.13.1/gcc_64/lib
 

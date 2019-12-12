@@ -271,12 +271,5 @@ if(build)
         util
     )
     target_link_libraries(${SUBSYS_NAME} ${ROBWORK_LIBRARIES})
-
-    if(CMAKE_VERSION VERSION_GREATER 3.3)
-        set_target_properties(${SUBSYS_NAME} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
-    endif()
-
-    if(WIN32 AND MSVC AND RWSIM_SHARED_LIBS AND CMAKE_VERSION VERSION_LESS 3.4)
-        message(FATAL_ERROR "Building shared libraries on Windows requires CMake 3.4 or newer.")
-    endif()
+    set_target_properties(${SUBSYS_NAME} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
 endif()

@@ -72,8 +72,6 @@ if(build)
     rw_add_includes(${SUBSYS_NAME} "rwlibs/opengl" ${SRC_FILES_HPP})
 
     target_link_libraries(${SUBSYS_NAME} PUBLIC ${SUBSYS_DEPS} ${OPENGL_LIBRARIES} ${GLUT_glut_LIBRARY})
+    set_target_properties(${SUBSYS_NAME} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
 
-    if(CMAKE_VERSION VERSION_GREATER 3.3)
-        set_target_properties(${SUBSYS_NAME} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
-    endif()
 endif()

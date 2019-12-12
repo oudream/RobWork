@@ -84,8 +84,6 @@ if(build)
         constraints
     )
 
-    if(CMAKE_VERSION VERSION_GREATER 3.3)
-        set_target_properties(${SUBSYS_NAME} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
-    endif()
+    set_target_properties(${SUBSYS_NAME} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
 
 endif()

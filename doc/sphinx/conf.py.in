@@ -12,9 +12,12 @@
 #
 import os
 import sys
-sys.path.insert(0, '@RW_LIBS@')
-sys.path.insert(0, '@RWS_LIBS@')
-sys.path.insert(0, '@RWSIM_LIBS@')
+
+rw_modules = ["sdurw","sdurw_assembly","sdurw_control","sdurw_pathoptimization","sdurw_pathplanners","sdurw_proximitystrategies","sdurw_task","sdurw_simulation","sdurw_opengl"]
+for s in rw_modules:
+    sys.path.insert(0, '@RW_LIBS@/'+s)
+sys.path.insert(0, '@RWS_LIBS@/sdurws')
+sys.path.insert(0, '@RWSIM_LIBS@/sdurwsim')
 
 
 # -- Project information -----------------------------------------------------

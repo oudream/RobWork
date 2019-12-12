@@ -62,18 +62,11 @@ if(build)
                                  ./loader/XMLTaskSaver.hpp)
     endif()
 
-    rw_add_library(
-        ${SUBSYS_NAME}
-        ${SRC_FILES}
-        ${SRC_FILES_HPP}
-        ${LOADER_SRC_FILES_HPP}
-    )
+    rw_add_library(${SUBSYS_NAME} ${SRC_FILES} ${SRC_FILES_HPP} ${LOADER_SRC_FILES_HPP})
     rw_add_includes(${SUBSYS_NAME} "rwlibs/task" ${SRC_FILES_HPP})
     rw_add_include_dirs(${SUBSYS_NAME} "rwlibs/task" loader)
     target_link_libraries(${SUBSYS_NAME} PUBLIC ${SUBSYS_DEPS})
     add_dependencies(${SUBSYS_NAME} ${SUBSYS_DEPS})
+    set_target_properties(${SUBSYS_NAME} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
 
-    if(CMAKE_VERSION VERSION_GREATER 3.3)
-        set_target_properties(${SUBSYS_NAME} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
-    endif()
 endif()

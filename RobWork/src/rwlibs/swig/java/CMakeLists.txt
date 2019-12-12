@@ -1,7 +1,3 @@
-if(POLICY CMP0046)
-    cmake_policy(SET CMP0046 NEW)
-endif()
-
 set(SUBSYS_NAME sdurw_java)
 set(SUBSYS_DESC "Interface for accessing RobWork from java.")
 set(

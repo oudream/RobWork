@@ -103,6 +103,7 @@ if(build)
 
     add_library(sdurwslua_plugin.rwplugin MODULE LuaPlugin.cpp LuaPlugin.hpp)
     target_link_libraries(sdurwslua_plugin.rwplugin ${TARGET_NAME}_s ${ROBWORK_LIBRARIES})
+    install(TARGETS ${RWS_MODULE}lua_plugin.rwplugin DESTINATION ${RW_PLUGIN_INSTALL_DIR})
 
     if((CMAKE_COMPILER_IS_GNUCC) OR (CMAKE_C_COMPILER_ID STREQUAL "Clang"))
         set_target_properties(sdurwslua_plugin.rwplugin PROPERTIES LINK_FLAGS -Wl,--no-undefined)
