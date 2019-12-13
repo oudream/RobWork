@@ -4,8 +4,7 @@ set(SUBSYS_DEPS sdurw)
 
 set(build TRUE)
 set(DEFAULT FALSE)
-rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT})
-rw_add_doc(${SUBSYS_NAME})
+rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} DEPENDS ${SUBSYS_DEPS} ADD_DOC)
 
 if(build)
     set(
@@ -39,7 +38,7 @@ if(build)
     )
 
     rw_add_library(${SUBSYS_NAME} ${SRC_FILES} ${SRC_FILES_HPP})
-    rw_add_includes(softbody "rwlibs/softbody" ${SRC_FILES_HPP})
+    rw_add_includes(${SUBSYS_NAME} "rwlibs/softbody" ${SRC_FILES_HPP})
     target_link_libraries(${SUBSYS_NAME} PUBLIC ${SUBSYS_DEPS})
     add_dependencies(${SUBSYS_NAME} ${SUBSYS_DEPS})
 

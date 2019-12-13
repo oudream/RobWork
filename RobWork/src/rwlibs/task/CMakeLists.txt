@@ -6,8 +6,12 @@ set(DEFAULT TRUE)
 set(REASON)
 
 set(build TRUE)
-rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} ${REASON})
-rw_add_doc(${SUBSYS_NAME})
+rw_subsys_option(
+    build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT}
+    REASON ${REASON}
+    DEPENDS ${SUBSYS_DEPS}
+    ADD_DOC
+)
 
 if(build)
     # The camera file and include path to use.
@@ -52,16 +56,17 @@ if(build)
     )
 
     if(RW_HAVE_XERCES)
-        set(SRC_FILES ${SRC_FILES} ./loader/XMLTaskFormat.cpp ./loader/XMLTaskLoader.cpp ./loader/XMLTaskSaver.cpp)
-        set(LOADER_SRC_FILES_HPP ./loader/XMLTaskFormat.hpp ./loader/XMLTaskLoader.hpp ./loader/XMLTaskSaver.hpp)
+        set(SRC_FILES ${SRC_FILES} ./loader/XMLTaskFormat.cpp ./loader/XMLTaskLoader.cpp
+                      ./loader/XMLTaskSaver.cpp)
+        set(LOADER_SRC_FILES_HPP ./loader/XMLTaskFormat.hpp ./loader/XMLTaskLoader.hpp
+                                 ./loader/XMLTaskSaver.hpp)
     endif()
 
-    rw_add_library(${SUBSYS_NAME} task ${SRC_FILES} ${SRC_FILES_HPP} ${LOADER_SRC_FILES_HPP})
-    rw_add_includes(task "rwlibs/task" ${SRC_FILES_HPP})
-    rw_add_include_dirs(task "rwlibs/task" loader)
+    rw_add_library(${SUBSYS_NAME} ${SRC_FILES} ${SRC_FILES_HPP} ${LOADER_SRC_FILES_HPP})
+    rw_add_includes(${SUBSYS_NAME} "rwlibs/task" ${SRC_FILES_HPP})
+    rw_add_include_dirs(${SUBSYS_NAME} "rwlibs/task" loader)
     target_link_libraries(${SUBSYS_NAME} PUBLIC ${SUBSYS_DEPS})
     add_dependencies(${SUBSYS_NAME} ${SUBSYS_DEPS})
-
     set_target_properties(${SUBSYS_NAME} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
 
 endif()

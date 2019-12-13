@@ -4,8 +4,7 @@ set(SUBSYS_DEPS sdurw)
 
 set(build TRUE)
 set(DEFAULT TRUE)
-rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT})
-rw_add_doc(${SUBSYS_NAME})
+rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} DEPENDS ${SUBSYS_DEPS} ADD_DOC)
 
 if(build)
 
@@ -36,16 +35,15 @@ if(build)
     set(SRC_FILES_HPP ${SRC_FILES_HPP_Z3} ${SRC_FILES_HPP_PRM} ${SRC_FILES_HPP_RRT} ${SRC_FILES_HPP_ARW}
                       ${SRC_FILES_HPP_SBL})
 
-    rw_add_library(${SUBSYS_NAME} pathplanners ${SRC_FILES} ${SRC_FILES_HPP})
-    rw_add_includes(pathplanners "rwlibs/pathplanners/z3" ${SRC_FILES_HPP_z3})
-    rw_add_includes(pathplanners "rwlibs/pathplanners/prm" ${SRC_FILES_HPP_PRM})
-    rw_add_includes(pathplanners "rwlibs/pathplanners/rrt" ${SRC_FILES_HPP_RRT})
-    rw_add_includes(pathplanners "rwlibs/pathplanners/arw" ${SRC_FILES_HPP_ARW})
-    rw_add_includes(pathplanners "rwlibs/pathplanners/sbl" ${SRC_FILES_HPP_SBL})
+    rw_add_library(${SUBSYS_NAME} ${SRC_FILES} ${SRC_FILES_HPP})
+    rw_add_includes(${SUBSYS_NAME} "rwlibs/pathplanners/z3" ${SRC_FILES_HPP_z3})
+    rw_add_includes(${SUBSYS_NAME} "rwlibs/pathplanners/prm" ${SRC_FILES_HPP_PRM})
+    rw_add_includes(${SUBSYS_NAME} "rwlibs/pathplanners/rrt" ${SRC_FILES_HPP_RRT})
+    rw_add_includes(${SUBSYS_NAME} "rwlibs/pathplanners/arw" ${SRC_FILES_HPP_ARW})
+    rw_add_includes(${SUBSYS_NAME} "rwlibs/pathplanners/sbl" ${SRC_FILES_HPP_SBL})
 
     target_link_libraries(${SUBSYS_NAME} PUBLIC ${SUBSYS_DEPS})
     add_dependencies(${SUBSYS_NAME} ${SUBSYS_DEPS})
-
     set_target_properties(${SUBSYS_NAME} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
 
 endif()

@@ -18,9 +18,10 @@
 #ifndef RWSIM_DYNAMICS_SCAPEPOSEFORMAT_HPP_
 #define RWSIM_DYNAMICS_SCAPEPOSEFORMAT_HPP_
 
-#include <vector>
-
 #include <rw/common/Ptr.hpp>
+
+#include <vector>
+#include <string>
 
 namespace rw { namespace kinematics { class State; } }
 namespace rwsim { namespace dynamics { class RigidBody; } }

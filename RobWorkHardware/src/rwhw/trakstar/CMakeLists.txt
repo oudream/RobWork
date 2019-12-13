@@ -1,48 +1,51 @@
-SET(SUBSYS_NAME trakstar )
-SET(SUBSYS_DESC "Calibration of devices" )
-SET(SUBSYS_DEPS sdurw )
+set(SUBSYS_NAME trakstar)
+set(SUBSYS_DESC "Calibration of devices")
+set(SUBSYS_DEPS sdurw)
 
-SET(build TRUE)
+set(build TRUE)
 
-FIND_PACKAGE(TrakStar QUIET)
-SET(DEFAULT TRUE)
-SET(REASON)
-IF( NOT TRAKSTAR_FOUND )
-    SET(DEFAULT FALSE)
-    SET(REASON "Trakstar library not found!")
-ENDIF()
+find_package(TrakStar QUIET)
+set(DEFAULT TRUE)
+set(REASON)
+if(NOT TRAKSTAR_FOUND)
+    set(DEFAULT FALSE)
+    set(REASON "Trakstar library not found!")
+endif()
 
-
-IF( ${BUILD_trakstar} )
-    FIND_PACKAGE(TrakStar REQUIRED)
-    IF( NOT ${TRAKSTAR_FOUND} )
-        SET(BUILD_trakstar FALSE)
+if(${BUILD_trakstar})
+    find_package(TrakStar REQUIRED)
+    if(NOT ${TRAKSTAR_FOUND})
+        set(BUILD_trakstar FALSE)
         set(REASON "Could not find Trakstar libraries!")
-    ENDIF()
-ENDIF()
+    endif()
+endif()
 
-RW_SUBSYS_OPTION( build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} ${REASON})
-RW_ADD_DOC( ${SUBSYS_NAME} )
+rw_subsys_option(
+    build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT}
+    REASON ${REASON}
+    DEPENDS ${SUBSYS_DEPS}
+    ADD_DOC
+)
 
-IF( build )
-    FIND_PACKAGE(TrakStar)
-    SET(SRC_CPP )
-    SET(SRC_HPP )
-    
-    LIST(APPEND SRC_CPP Trakstar.cpp)
-    LIST(APPEND SRC_HPP Trakstar.hpp)
-    
-    INCLUDE_DIRECTORIES(${TRAKSTAR_INCLUDE_DIR})
-    RW_ADD_LIBRARY(sdurwhw_trakstar trakstar ${SRC_CPP} ${SRC_HPP})
-    TARGET_LINK_LIBRARIES(sdurwhw_trakstar PUBLIC ${ROBWORK_LIBRARIES} ${TRAKSTAR_LIBRARIES})
+if(build)
+    find_package(TrakStar)
+    set(SRC_CPP)
+    set(SRC_HPP)
+
+    list(APPEND SRC_CPP Trakstar.cpp)
+    list(APPEND SRC_HPP Trakstar.hpp)
+
+    include_directories(${TRAKSTAR_INCLUDE_DIR})
+    rw_add_library(${SUBSYS_NAME} ${SRC_CPP} ${SRC_HPP})
+    target_link_libraries(${SUBSYS_NAME} PUBLIC ${ROBWORK_LIBRARIES} ${TRAKSTAR_LIBRARIES})
 
     # Make sure dependencies are build before system
-    FOREACH(DEP IN LISTS ROBWORK_LIBRARIES TRAKSTAR_LIBRARIES)
-        IF(TARGET ${DEP})
-            ADD_DEPENDENCIES(sdurwhw_trakstar ${DEP})
-        ENDIF()
-    ENDFOREACH()
+    foreach(DEP IN LISTS ROBWORK_LIBRARIES TRAKSTAR_LIBRARIES)
+        if(TARGET ${DEP})
+            add_dependencies(${SUBSYS_NAME} ${DEP})
+        endif()
+    endforeach()
 
-    RW_ADD_INCLUDES(trakstar "rwhw/trakstar" ${SRC_HPP})
+    rw_add_includes(${SUBSYS_NAME} "rwhw/trakstar" ${SRC_HPP})
     set(ROBWORKHARDWARE_LIBRARIES ${ROBWORKHARDWARE_LIBRARIES} sdurwhw_trakstar PARENT_SCOPE)
-ENDIF()
+endif()

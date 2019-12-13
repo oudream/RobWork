@@ -20,16 +20,15 @@ if(RWS_USE_STATIC_LINK_PLUGINS)
 endif()
 
 set(build TRUE)
-rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ON)
-rw_add_doc(${SUBSYS_NAME})
+rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ON DEPENDS ${SUBSYS_DEPS} ADD_DOC)
 
 if(build)
     # Standard cpp files to compile:
     set(SrcFiles RobWorkStudioApp.cpp)
     set(SRC_FILES_HPP RobWorkStudioApp.hpp)
 
-    rws_add_component(${SUBSYS_NAME} plugins ${SrcFiles})
-    rw_add_includes(plugins "rwslibs/rwstudioapp" ${SRC_FILES_HPP})
+    rws_add_component(${SUBSYS_NAME} ${SrcFiles})
+    rw_add_includes(${SUBSYS_NAME} "rwslibs/rwstudioapp" ${SRC_FILES_HPP})
     target_link_libraries(${SUBSYS_NAME} ${SUBSYS_DEPS})
     # Make sure dependencies are build before system
     foreach(DEP IN LISTS SUBSYS_DEPS)

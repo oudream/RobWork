@@ -1,284 +1,311 @@
 # ------------------------------------------------------------------------------------
 # Helper to use RobWork from outside project
 #
-# ROBWORKSTUDIO_LIBRARIES is filled with all available RobWork libraries
-# ROBWORKSTUDIO_INCLUDE_DIRS is filled with RobWorkStudio and available 3rdparty headers
-# ROBWORKSTUDIO_LIBRARY_DIRS is filled with RobWorkStudio components libraries install directory and
-# 3rdparty libraries paths
-# 
-#                                   www.robwork.dk
-#------------------------------------------------------------------------------------
+# ROBWORKSTUDIO_LIBRARIES is filled with all available RobWork libraries ROBWORKSTUDIO_INCLUDE_DIRS is filled with
+# RobWorkStudio and available 3rdparty headers ROBWORKSTUDIO_LIBRARY_DIRS is filled with RobWorkStudio components
+# libraries install directory and 3rdparty libraries paths
+#
+# www.robwork.dk
+# ------------------------------------------------------------------------------------
 
-
-
-### ---[ Find RobWorkStudio
+# ---[ Find RobWorkStudio
 
 if(ROBWORKSTUDIO_FIND_QUIETLY)
-  set(QUIET_ QUIET)
+    set(QUIET_ QUIET)
 else(ROBWORKSTUDIO_FIND_QUIETLY)
-  set(QUIET_)
+    set(QUIET_)
 endif(ROBWORKSTUDIO_FIND_QUIETLY)
 
-############################################## MACROS ################################################
+# ############################################# MACROS ################################################
 
 # macro for determining the best RobWork build type match
-MACRO(GET_ROBWORKSTUDIO_BUILD_TYPE CFG_ROOT RWS_BUILD_TYPE)
-# defaults to release 
-SET(BTYPE_TMP release)
-if( CMAKE_BUILD_TYPE )
-  STRING(TOLOWER ${CMAKE_BUILD_TYPE} BTYPE_TMP )
-else()
-  set(BTYPE_TMP "none")
-endif()
+macro(GET_ROBWORKSTUDIO_BUILD_TYPE CFG_ROOT RWS_BUILD_TYPE)
+    # defaults to release
+    set(BTYPE_TMP release)
+    if(CMAKE_BUILD_TYPE)
+        string(TOLOWER ${CMAKE_BUILD_TYPE} BTYPE_TMP)
+    else()
+        set(BTYPE_TMP "none")
+    endif()
 
-# first test if the correct cmake build type is installed
-if(EXISTS ${CFG_ROOT}/RobWorkStudioBuildConfig_${BTYPE_TMP}.cmake)
-  SET(${RWS_BUILD_TYPE} ${BTYPE_TMP})
-else()
-  
-  # find best RobWorkStudio build match
-  if(${BTYPE_TMP} STREQUAL "release")
-    # find release compatible RobWorkStudio installation
-    if( EXISTS ${CFG_ROOT}/RobWorkStudioBuildConfig_minsizerel.cmake )
-      SET(${RWS_BUILD_TYPE} minsizerel)
-    elseif(EXISTS ${CFG_ROOT}/RobWorkStudioBuildConfig_relwithdebinfo.cmake)
-      SET(${RWS_BUILD_TYPE} relwithdebinfo)
-    elseif(EXISTS ${CFG_ROOT}/RobWorkStudioBuildConfig_debug.cmake)
-      SET(${RWS_BUILD_TYPE} debug)
-    elseif(EXISTS ${CFG_ROOT}/RobWorkStudioBuildConfig_none.cmake)
-      SET(${RWS_BUILD_TYPE} none)
+    # first test if the correct cmake build type is installed
+    if(EXISTS ${CFG_ROOT}/RobWorkStudioBuildConfig_${BTYPE_TMP}.cmake)
+        set(${RWS_BUILD_TYPE} ${BTYPE_TMP})
     else()
-      MESSAGE(FATAL_ERROR "Could not find any build of RobWorkStudio!")      
-    endif()
-  elseif(${BTYPE_TMP} STREQUAL "minsizerel")
-    if( EXISTS ${CFG_ROOT}/RobWorkStudioBuildConfig_release.cmake )
-      SET(${RWS_BUILD_TYPE} release)
-    elseif(EXISTS ${CFG_ROOT}/RobWorkStudioBuildConfig_relwithdebinfo.cmake)
-      SET(${RWS_BUILD_TYPE} relwithdebinfo)
-    elseif(EXISTS ${CFG_ROOT}/RobWorkStudioBuildConfig_debug.cmake)
-      SET(${RWS_BUILD_TYPE} debug)
-    elseif(EXISTS ${CFG_ROOT}/RobWorkStudioBuildConfig_none.cmake)
-      SET(${RWS_BUILD_TYPE} none)
-    else()
-      MESSAGE(FATAL_ERROR "Could not find any build of RobWorkStudio!")      
-    endif()
-  elseif(${BTYPE_TMP} STREQUAL "relwithdebinfo")
-    if(EXISTS ${CFG_ROOT}/RobWorkStudioBuildConfig_release.cmake)
-      SET(${RWS_BUILD_TYPE} release)
-    elseif( EXISTS ${CFG_ROOT}/RobWorkStudioBuildConfig_minsizerel.cmake )
-      SET(${RWS_BUILD_TYPE} minsizerel)
-    elseif(EXISTS ${CFG_ROOT}/RobWorkStudioBuildConfig_debug.cmake)
-      SET(${RWS_BUILD_TYPE} debug)
-    elseif(EXISTS ${CFG_ROOT}/RobWorkStudioBuildConfig_none.cmake)
-      SET(${RWS_BUILD_TYPE} none)
-    else()
-      MESSAGE(FATAL_ERROR "Could not find any build of RobWorkStudio!")
-    endif()
-  elseif(${BTYPE_TMP} STREQUAL "debug")  
-    if(EXISTS ${CFG_ROOT}/RobWorkStudioBuildConfig_relwithdebinfo.cmake)
-      SET(${RWS_BUILD_TYPE} relwithdebinfo)
-    elseif( EXISTS ${CFG_ROOT}/RobWorkStudioBuildConfig_minsizerel.cmake )
-      SET(${RWS_BUILD_TYPE} minsizerel)
-    elseif(EXISTS ${CFG_ROOT}/RobWorkStudioBuildConfig_release.cmake)
-      SET(${RWS_BUILD_TYPE} release)
-    elseif(EXISTS ${CFG_ROOT}/RobWorkStudioBuildConfig_none.cmake)
-      SET(${RWS_BUILD_TYPE} none)
-    else()
-      MESSAGE(FATAL_ERROR "Could not find any build of RobWorkStudio!")      
-    endif()
-  elseif(${BTYPE_TMP} STREQUAL "none")  
-    if(EXISTS ${CFG_ROOT}/RobWorkStudioBuildConfig_relwithdebinfo.cmake)
-      SET(${RWS_BUILD_TYPE} relwithdebinfo)
-    elseif( EXISTS ${CFG_ROOT}/RobWorkStudioBuildConfig_minsizerel.cmake )
-      SET(${RWS_BUILD_TYPE} minsizerel)
-    elseif(EXISTS ${CFG_ROOT}/RobWorkStudioBuildConfig_release.cmake)
-      SET(${RWS_BUILD_TYPE} release)
-    elseif(EXISTS ${CFG_ROOT}/RobWorkStudioBuildConfig_debug.cmake)
-      SET(${RWS_BUILD_TYPE} debug)
-    else()
-      MESSAGE(FATAL_ERROR "Could not find any build of RobWorkStudio!")      
-    endif()
-  else()
-    MESSAGE(STATUS "Does not recognize build type: ${CMAKE_BUILD_TYPE} choosing any existing RobWorkStudio installation!")
-    if( EXISTS ${CFG_ROOT}/RobWorkStudioBuildConfig_release.cmake )
-      SET(${RWS_BUILD_TYPE} release)
-    elseif( EXISTS ${CFG_ROOT}/RobWorkStudioBuildConfig_minsizerel.cmake )
-      SET(${RWS_BUILD_TYPE} minsizerel)
-    elseif(EXISTS ${CFG_ROOT}/RobWorkStudioBuildConfig_relwithdebinfo.cmake)
-      SET(${RWS_BUILD_TYPE} relwithdebinfo)
-    elseif(EXISTS ${CFG_ROOT}/RobWorkStudioBuildConfig_debug.cmake)
-      SET(${RWS_BUILD_TYPE} debug)
-    elseif(EXISTS ${CFG_ROOT}/RobWorkStudioBuildConfig_none.cmake)
-      SET(${RWS_BUILD_TYPE} none)
-    else()
-      MESSAGE(FATAL_ERROR "Could not find any build of RobWorkStudio!")
-    endif()
-    
-  endif()
-  MESSAGE(STATUS "warning: RobWorkStudio was not compiled with type:${BTYPE_TMP} using type:${${RWS_BUILD_TYPE}} instead!")
-endif()
 
-ENDMACRO()
+        # find best RobWorkStudio build match
+        if(${BTYPE_TMP} STREQUAL "release")
+            # find release compatible RobWorkStudio installation
+            if(EXISTS ${CFG_ROOT}/RobWorkStudioBuildConfig_minsizerel.cmake)
+                set(${RWS_BUILD_TYPE} minsizerel)
+            elseif(EXISTS ${CFG_ROOT}/RobWorkStudioBuildConfig_relwithdebinfo.cmake)
+                set(${RWS_BUILD_TYPE} relwithdebinfo)
+            elseif(EXISTS ${CFG_ROOT}/RobWorkStudioBuildConfig_debug.cmake)
+                set(${RWS_BUILD_TYPE} debug)
+            elseif(EXISTS ${CFG_ROOT}/RobWorkStudioBuildConfig_none.cmake)
+                set(${RWS_BUILD_TYPE} none)
+            else()
+                message(FATAL_ERROR "Could not find any build of RobWorkStudio!")
+            endif()
+        elseif(${BTYPE_TMP} STREQUAL "minsizerel")
+            if(EXISTS ${CFG_ROOT}/RobWorkStudioBuildConfig_release.cmake)
+                set(${RWS_BUILD_TYPE} release)
+            elseif(EXISTS ${CFG_ROOT}/RobWorkStudioBuildConfig_relwithdebinfo.cmake)
+                set(${RWS_BUILD_TYPE} relwithdebinfo)
+            elseif(EXISTS ${CFG_ROOT}/RobWorkStudioBuildConfig_debug.cmake)
+                set(${RWS_BUILD_TYPE} debug)
+            elseif(EXISTS ${CFG_ROOT}/RobWorkStudioBuildConfig_none.cmake)
+                set(${RWS_BUILD_TYPE} none)
+            else()
+                message(FATAL_ERROR "Could not find any build of RobWorkStudio!")
+            endif()
+        elseif(${BTYPE_TMP} STREQUAL "relwithdebinfo")
+            if(EXISTS ${CFG_ROOT}/RobWorkStudioBuildConfig_release.cmake)
+                set(${RWS_BUILD_TYPE} release)
+            elseif(EXISTS ${CFG_ROOT}/RobWorkStudioBuildConfig_minsizerel.cmake)
+                set(${RWS_BUILD_TYPE} minsizerel)
+            elseif(EXISTS ${CFG_ROOT}/RobWorkStudioBuildConfig_debug.cmake)
+                set(${RWS_BUILD_TYPE} debug)
+            elseif(EXISTS ${CFG_ROOT}/RobWorkStudioBuildConfig_none.cmake)
+                set(${RWS_BUILD_TYPE} none)
+            else()
+                message(FATAL_ERROR "Could not find any build of RobWorkStudio!")
+            endif()
+        elseif(${BTYPE_TMP} STREQUAL "debug")
+            if(EXISTS ${CFG_ROOT}/RobWorkStudioBuildConfig_relwithdebinfo.cmake)
+                set(${RWS_BUILD_TYPE} relwithdebinfo)
+            elseif(EXISTS ${CFG_ROOT}/RobWorkStudioBuildConfig_minsizerel.cmake)
+                set(${RWS_BUILD_TYPE} minsizerel)
+            elseif(EXISTS ${CFG_ROOT}/RobWorkStudioBuildConfig_release.cmake)
+                set(${RWS_BUILD_TYPE} release)
+            elseif(EXISTS ${CFG_ROOT}/RobWorkStudioBuildConfig_none.cmake)
+                set(${RWS_BUILD_TYPE} none)
+            else()
+                message(FATAL_ERROR "Could not find any build of RobWorkStudio!")
+            endif()
+        elseif(${BTYPE_TMP} STREQUAL "none")
+            if(EXISTS ${CFG_ROOT}/RobWorkStudioBuildConfig_relwithdebinfo.cmake)
+                set(${RWS_BUILD_TYPE} relwithdebinfo)
+            elseif(EXISTS ${CFG_ROOT}/RobWorkStudioBuildConfig_minsizerel.cmake)
+                set(${RWS_BUILD_TYPE} minsizerel)
+            elseif(EXISTS ${CFG_ROOT}/RobWorkStudioBuildConfig_release.cmake)
+                set(${RWS_BUILD_TYPE} release)
+            elseif(EXISTS ${CFG_ROOT}/RobWorkStudioBuildConfig_debug.cmake)
+                set(${RWS_BUILD_TYPE} debug)
+            else()
+                message(FATAL_ERROR "Could not find any build of RobWorkStudio!")
+            endif()
+        else()
+            message(
+                STATUS
+                    "Does not recognize build type: ${CMAKE_BUILD_TYPE} choosing any existing RobWorkStudio installation!"
+            )
+            if(EXISTS ${CFG_ROOT}/RobWorkStudioBuildConfig_release.cmake)
+                set(${RWS_BUILD_TYPE} release)
+            elseif(EXISTS ${CFG_ROOT}/RobWorkStudioBuildConfig_minsizerel.cmake)
+                set(${RWS_BUILD_TYPE} minsizerel)
+            elseif(EXISTS ${CFG_ROOT}/RobWorkStudioBuildConfig_relwithdebinfo.cmake)
+                set(${RWS_BUILD_TYPE} relwithdebinfo)
+            elseif(EXISTS ${CFG_ROOT}/RobWorkStudioBuildConfig_debug.cmake)
+                set(${RWS_BUILD_TYPE} debug)
+            elseif(EXISTS ${CFG_ROOT}/RobWorkStudioBuildConfig_none.cmake)
+                set(${RWS_BUILD_TYPE} none)
+            else()
+                message(FATAL_ERROR "Could not find any build of RobWorkStudio!")
+            endif()
 
+        endif()
+        message(
+            STATUS
+                "warning: RobWorkStudio was not compiled with type:${BTYPE_TMP} using type:${${RWS_BUILD_TYPE}} instead!"
+        )
+    endif()
+
+endmacro()
 
 get_filename_component(RWSCFG_ROOT ${CMAKE_CURRENT_LIST_FILE} PATH)
 
 # check if user specified a RobWorkStudio_DIR
 if(DEFINED RobWorkStudio_DIR)
-  if(EXISTS "${RobWorkStudio_DIR}/../src/RobWorkStudioConfig.hpp")
-    # Found RobWorkStudio in a build tree of RobWork
-    set(RWSCFG_ROOT "${RobWorkStudio_DIR}")
-    set(is_installed false)
-  elseif(EXISTS "${RobWorkStudio_DIR}/RobWorkStudioConfig.cmake")
-    # Found a RobWorkStudio installation
-    set(RWSCFG_ROOT "${RobWorkStudio_DIR}")
-    set(is_installed true)
-  elseif(EXISTS "${RobWorkStudio_DIR}/include/robworkstudio-${RobWorkStudio_VERSION_MAJOR}.${RobWorkStudio_VERSION_MINOR}/RobWorkStudioConfig.hpp")
-    set(RWSCFG_ROOT "${RobWorkStudio_DIR}/share/robworkstudio-${RobWorkStudio_VERSION_MAJOR}.${RobWorkStudio_VERSION_MINOR}/")
-    set(is_installed true)    
-  else()
-    # found no RobWorkStudio installation ot build tree in RobWorkStudio_DIR so we try extracting it from RobWorkStudioConfig.cmake location instead
-  endif()
+    if(EXISTS "${RobWorkStudio_DIR}/../src/RobWorkStudioConfig.hpp")
+        # Found RobWorkStudio in a build tree of RobWork
+        set(RWSCFG_ROOT "${RobWorkStudio_DIR}")
+        set(is_installed false)
+    elseif(EXISTS "${RobWorkStudio_DIR}/RobWorkStudioConfig.cmake")
+        # Found a RobWorkStudio installation
+        set(RWSCFG_ROOT "${RobWorkStudio_DIR}")
+        set(is_installed true)
+    elseif(
+        EXISTS
+        "${RobWorkStudio_DIR}/include/robworkstudio-${RobWorkStudio_VERSION_MAJOR}.${RobWorkStudio_VERSION_MINOR}/RobWorkStudioConfig.hpp"
+    )
+        set(
+            RWSCFG_ROOT
+            "${RobWorkStudio_DIR}/share/robworkstudio-${RobWorkStudio_VERSION_MAJOR}.${RobWorkStudio_VERSION_MINOR}/"
+        )
+        set(is_installed true)
+    else()
+        # found no RobWorkStudio installation ot build tree in RobWorkStudio_DIR so we try extracting it from
+        # RobWorkStudioConfig.cmake location instead
+    endif()
 endif()
 
 # get the relavant build type
-GET_ROBWORKSTUDIO_BUILD_TYPE(${RWSCFG_ROOT} RWS_BUILD_TYPE)
-
+get_robworkstudio_build_type(${RWSCFG_ROOT} RWS_BUILD_TYPE)
 
 # check whether RobWorkConfig.cmake is found into a RobWork installation or in a build tree
 if(EXISTS "${RWSCFG_ROOT}/../src/RobWorkStudioConfig.hpp")
-  # Found RobWorkConfig.cmake in a build tree of RobWork
-  SET(succmsg "RobWorkStudio: Found a RobWorkStudio build tree")
-  set(RWS_ROOT "${RWSCFG_ROOT}/..")
-  
-  set(RWS_INCLUDE_EXT "${RWS_ROOT}/ext")
-  set(RWS_INCLUDE_SRC "${RWS_ROOT}/src/")
-  set(RWS_LIBS "${RWS_ROOT}/libs/${RWS_BUILD_TYPE}/")
+    # Found RobWorkConfig.cmake in a build tree of RobWork
+    set(succmsg "RobWorkStudio: Found a RobWorkStudio build tree")
+    set(RWS_ROOT "${RWSCFG_ROOT}/..")
+
+    set(RWS_INCLUDE_EXT "${RWS_ROOT}/ext")
+    set(RWS_INCLUDE_SRC "${RWS_ROOT}/src/")
+    set(RWS_LIBS "${RWS_ROOT}/libs/${RWS_BUILD_TYPE}/")
 
 else()
-  set(succmsg "RobWorkStudio: Found a RobWorkStudio installation")
-  # Found a RobWork installation
-  if(WIN32)
-    # RobWorkConfig.cmake is installed to RWS_ROOT/cmake
-    set(RWS_ROOT "${RWSCFG_ROOT}/..")
-    set(RWS_INCLUDE_EXT "${RWS_ROOT}/ext")
-    set(RWS_INCLUDE_SRC "${RWS_ROOT}/include")
-    set(RWS_LIBS "${RWS_ROOT}/libs/${RWS_BUILD_TYPE}")
-  else(WIN32)
-    # RobWorkConfig.cmake is installed to RWS_INTALL/share/robworkstudio-x.y
+    set(succmsg "RobWorkStudio: Found a RobWorkStudio installation")
+    # Found a RobWork installation
+    if(WIN32)
+        # RobWorkConfig.cmake is installed to RWS_ROOT/cmake
+        set(RWS_ROOT "${RWSCFG_ROOT}/..")
+        set(RWS_INCLUDE_EXT "${RWS_ROOT}/ext")
+        set(RWS_INCLUDE_SRC "${RWS_ROOT}/include")
+        set(RWS_LIBS "${RWS_ROOT}/libs/${RWS_BUILD_TYPE}")
+    else(WIN32)
+        # RobWorkConfig.cmake is installed to RWS_INTALL/share/robworkstudio-x.y
 
-    set(RWS_ROOT "${RWSCFG_ROOT}")
-    set(RWS_INSTALL "${RWSCFG_ROOT}/../../")
-    set(RWS_LIBS "${RWS_INSTALL}/lib/")
-    SET(RWS_INCLUDE_SRC "${RWS_INSTALL}/include/robworkstudio-${RobWork_VERSION_MAJOR}.${RobWork_VERSION_MINOR}")
-    set(RWS_INCLUDE_EXT "${RWS_INSTALL}/share/robworkstudio-${RobWork_VERSION_MAJOR}.${RobWork_VERSION_MINOR}/ext")
-  endif(WIN32)
+        set(RWS_ROOT "${RWSCFG_ROOT}")
+        set(RWS_INSTALL "${RWSCFG_ROOT}/../../")
+        set(RWS_LIBS "${RWS_INSTALL}/lib/")
+        set(RWS_INCLUDE_SRC "${RWS_INSTALL}/include/robworkstudio-${RobWork_VERSION_MAJOR}.${RobWork_VERSION_MINOR}")
+        set(RWS_INCLUDE_EXT "${RWS_INSTALL}/share/robworkstudio-${RobWork_VERSION_MAJOR}.${RobWork_VERSION_MINOR}/ext")
+    endif(WIN32)
 endif()
 
-#MESSAGE(STATUS "RWS_ROOT   : ${RWS_ROOT}")
-#MESSAGE(STATUS "RWSCFG_ROOT: ${RWSCFG_ROOT}")
+# MESSAGE(STATUS "RWS_ROOT   : ${RWS_ROOT}") MESSAGE(STATUS "RWSCFG_ROOT: ${RWSCFG_ROOT}")
 
-INCLUDE(${RWSCFG_ROOT}/RobWorkStudioMacros.cmake)
+include(${RWSCFG_ROOT}/RobWorkStudioMacros.cmake)
 
-#############################################################
+# ######################################################################################################################
 # now RWS_ROOT and RWSCFG_ROOT is set. Lets extract the stuff needed to run a project
 
 # next get the build configuration of the requested built type
-IF(EXISTS ${RWSCFG_ROOT}/RobWorkStudioBuildConfig_${RWS_BUILD_TYPE}.cmake)
-  INCLUDE(${RWSCFG_ROOT}/RobWorkStudioBuildConfig_${RWS_BUILD_TYPE}.cmake)
+if(EXISTS ${RWSCFG_ROOT}/RobWorkStudioBuildConfig_${RWS_BUILD_TYPE}.cmake)
+    include(${RWSCFG_ROOT}/RobWorkStudioBuildConfig_${RWS_BUILD_TYPE}.cmake)
 
+    set(BOOST_ROOT ${RWS_BUILD_WITH_BOOST_ROOT})
+    set(BOOST_INCLUDEDIR ${RWS_BUILD_WITH_BOOST_INCLUDE_DIR})
+    set(BOOST_LIBRARYDIR ${RWS_BUILD_WITH_BOOST_LIBRARY_DIR})
 
-  SET(BOOST_ROOT ${RWS_BUILD_WITH_BOOST_ROOT})
-  SET(BOOST_INCLUDEDIR ${RWS_BUILD_WITH_BOOST_INCLUDE_DIR})
-  SET(BOOST_LIBRARYDIR ${RWS_BUILD_WITH_BOOST_LIBRARY_DIR})
-
-
-  # Set extra compiler flags. The user should be able to change this
-  SET(RWS_CXX_FLAGS ${RWS_BUILD_WITH_CXX_FLAGS} 
-      CACHE STRING "Change this to force using your own 
+    # Set extra compiler flags. The user should be able to change this
+    set(RWS_CXX_FLAGS ${RWS_BUILD_WITH_CXX_FLAGS} CACHE STRING "Change this to force using your own
                     flags and not those of RobWorkStudio")
-  SET(RWS_DEFINITIONS ${RWS_BUILD_WITH_DEFINITIONS} 
-      CACHE STRING "Change this to force using your own 
-                    definitions and not those of RobWork"
-  )
-  ADD_DEFINITIONS(${RWS_DEFINITIONS})
-  SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${RWS_CXX_FLAGS}")
+    set(RWS_DEFINITIONS ${RWS_BUILD_WITH_DEFINITIONS} CACHE STRING "Change this to force using your own
+                    definitions and not those of RobWork")
+    add_definitions(${RWS_DEFINITIONS})
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${RWS_CXX_FLAGS}")
 
-  # Set extra linker flags. The user should be able to change this
-  SET(RWS_LINKER_FLAGS ${RWS_BUILD_WITH_LINKER_FLAGS} 
-      CACHE STRING "Change this to force using your own linker
-                    flags and not those of RobWork"
-  )
-  SET(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${RWS_LINKER_FLAGS}" CACHE STRING "" FORCE)
-  SET(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} ${RWS_LINKER_FLAGS}" CACHE STRING "" FORCE)
-  IF(WIN32)
-    SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${RWS_LINKER_FLAGS}" CACHE STRING "" FORCE)
-  ENDIF()
+    # Set extra linker flags. The user should be able to change this
+    set(RWS_LINKER_FLAGS ${RWS_BUILD_WITH_LINKER_FLAGS} CACHE STRING "Change this to force using your own linker
+                    flags and not those of RobWork")
+    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${RWS_LINKER_FLAGS}" CACHE STRING "" FORCE)
+    set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} ${RWS_LINKER_FLAGS}" CACHE STRING "" FORCE)
+    if(WIN32)
+        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${RWS_LINKER_FLAGS}" CACHE STRING "" FORCE)
+    endif()
+
+    set(QTDIR "${RWS_BUILD_WITH_QTDIR}")
+    set(QT_HEADERS_DIR "${RWS_BUILD_WITH_QT_HEADERS_DIR}")
+    set(QT_INCLUDE_DIR "${RWS_BUILD_WITH_QT_INCLUDE_DIR}")
+    set(QT_LIBRARY_DIR "${RWS_BUILD_WITH_QT_LIBRARY_DIR}")
+    set(QT_BINARY_DIR "${RWS_BUILD_WITH_QT_BINARY_DIR}")
+    set(RWS_USE_QT5 "${RWS_BUILD_WITH_QT5}")
+
+    # Find and setup Qt.
+    if(NOT RWS_USE_QT5)
+        find_package(Qt4 REQUIRED)
+        set(QT_USE_QTOPENGL 1)
+        set(QT_USE_QTDESIGNER 1)
+        set(QT_USE_QTUITOOLS 1)
+        include(${QT_USE_FILE})
+    else()
+        cmake_minimum_required(VERSION 2.8.3)
+        find_package(Qt5Core REQUIRED)
+        find_package(Qt5Gui REQUIRED)
+        find_package(Qt5Widgets REQUIRED)
+        find_package(Qt5OpenGL REQUIRED)
+        get_target_property(QT_UIC_EXECUTABLE Qt5::uic LOCATION)
+        set(QT_LIBRARIES ${Qt5Core_LIBRARIES} ${Qt5Gui_LIBRARIES} ${Qt5Widgets_LIBRARIES} ${Qt5OpenGL_LIBRARIES})
+        set(QT_INCLUDES ${Qt5Core_INCLUDE_DIRS} ${Qt5Gui_INCLUDE_DIRS} ${Qt5Widgets_INCLUDE_DIRS}
+                        ${Qt5OpenGL_INCLUDE_DIRS})
+        include_directories(${QT_INCLUDES})
+    endif()
 
 
-  SET(QTDIR "${RWS_BUILD_WITH_QTDIR}")
-  SET(QT_HEADERS_DIR "${RWS_BUILD_WITH_QT_HEADERS_DIR}")
-  SET(QT_INCLUDE_DIR "${RWS_BUILD_WITH_QT_INCLUDE_DIR}")
-  SET(QT_LIBRARY_DIR "${RWS_BUILD_WITH_QT_LIBRARY_DIR}")
-  SET(QT_BINARY_DIR "${RWS_BUILD_WITH_QT_BINARY_DIR}")
-  SET(RWS_USE_QT5 "${RWS_BUILD_WITH_QT5}")
+    # Find and setup OpenGL.
+    if(POLICY CMP0072) # Introduce cmake 3.11
+        cmake_policy(SET CMP0072 NEW)
+    endif()
+    find_package(OpenGL REQUIRED)
+    
+    if(DEFINED MSVC)
+        if(${RWS_BUILD_WITH_PYTHON})
+            find_package(PythonLibs ${RWS_BUILD_WITH_PYTHONLIBS_MAJOR_VERSION} REQUIRED)
+            find_package(PythonInterp ${RWS_BUILD_WITH_PYTHON_MAJOR_VERSION} REQUIRED)
+        endif()
+    endif()
 
-  # Find and setup Qt.
-  IF(NOT RWS_USE_QT5)
-    FIND_PACKAGE(Qt4 REQUIRED)
-    SET(QT_USE_QTOPENGL 1)
-    SET(QT_USE_QTDESIGNER 1)
-    SET(QT_USE_QTUITOOLS 1)
-    INCLUDE(${QT_USE_FILE})
-  ELSE()
-    cmake_minimum_required(VERSION 2.8.3)
-    FIND_PACKAGE(Qt5Core REQUIRED)
-    FIND_PACKAGE(Qt5Gui REQUIRED)
-    FIND_PACKAGE(Qt5Widgets REQUIRED)
-    FIND_PACKAGE(Qt5OpenGL REQUIRED)
-    get_target_property(QT_UIC_EXECUTABLE Qt5::uic LOCATION)
-    SET(QT_LIBRARIES ${Qt5Core_LIBRARIES} ${Qt5Gui_LIBRARIES} ${Qt5Widgets_LIBRARIES} ${Qt5OpenGL_LIBRARIES})
-    SET(QT_INCLUDES ${Qt5Core_INCLUDE_DIRS} ${Qt5Gui_INCLUDE_DIRS} ${Qt5Widgets_INCLUDE_DIRS} ${Qt5OpenGL_INCLUDE_DIRS})
-    INCLUDE_DIRECTORIES(${QT_INCLUDES})
-  ENDIF()
+    set(ROBWORKSTUDIO_BUILD_PATH "${RWS_BUILD_WITH_RWS_ROOT}")
+    set(ROBWORKSTUDIO_INCLUDE_DIRS_TMP "${RWS_BUILD_WITH_INCLUDE_DIRS}")
+    set(ROBWORKSTUDIO_LIBRARY_DIRS_TMP "${RWS_BUILD_WITH_LIBRARY_DIRS}")
+    set(ROBWORKSTUDIO_LIBRARIES_TMP "${PYTHON_LIBRARIES}" "${RWS_BUILD_WITH_LIBRARIES}"
+                                    "${RWS_BUILD_WITH_PLUGIN_LIBRARIES}")
 
-  # Find and setup OpenGL.
-  FIND_PACKAGE(OpenGL REQUIRED)
+    # make sure that the library and include paths are pointing to the right locations
+    string(
+        REPLACE
+            "${ROBWORKSTUDIO_BUILD_PATH}/ext" "${RWS_INCLUDE_EXT}" ROBWORKSTUDIO_INCLUDE_DIRS
+            "${RWS_BUILD_WITH_INCLUDE_DIR}"
+    )
+    string(
+        REPLACE
+            "${ROBWORKSTUDIO_BUILD_PATH}/src" "${RWS_INCLUDE_SRC}" ROBWORKSTUDIO_INCLUDE_DIRS
+            "${ROBWORKSTUDIO_INCLUDE_DIRS}"
+    )
+    list(REMOVE_DUPLICATES ROBWORKSTUDIO_INCLUDE_DIRS)
+    # MESSAGE("INCLUDES: ${ROBWORKSTUDIO_INCLUDE_DIRS}")
 
-  if(${RWS_BUILD_WITH_PYTHON})
-    find_package(PythonLibs ${RWS_BUILD_WITH_PYTHONLIBS_MAJOR_VERSION} REQUIRED)
-    find_package(PythonInterp ${RWS_BUILD_WITH_PYTHON_MAJOR_VERSION} REQUIRED)
-  endif()
+    string(
+        REPLACE
+            "${ROBWORKSTUDIO_BUILD_PATH}/libs/${RWS_BUILD_TYPE}" "${RWS_LIBS}" ROBWORKSTUDIO_LIBRARY_DIRS
+            "${RWS_BUILD_WITH_LIBRARY_DIRS}"
+    )
+    list(REMOVE_DUPLICATES ROBWORKSTUDIO_LIBRARY_DIRS)
+    # MESSAGE("INCLUDES: ${ROBWORKSTUDIO_LIBRARY_DIRS}")
 
-  set(ROBWORKSTUDIO_BUILD_PATH "${RWS_BUILD_WITH_RWS_ROOT}")
-  set(ROBWORKSTUDIO_INCLUDE_DIRS_TMP "${RWS_BUILD_WITH_INCLUDE_DIRS}")
-  set(ROBWORKSTUDIO_LIBRARY_DIRS_TMP "${RWS_BUILD_WITH_LIBRARY_DIRS}")
-  set(ROBWORKSTUDIO_LIBRARIES_TMP "${PYTHON_LIBRARIES}" "${RWS_BUILD_WITH_LIBRARIES}" "${RWS_BUILD_WITH_PLUGIN_LIBRARIES}")
+    string(
+        REPLACE
+            "${ROBWORKSTUDIO_BUILD_PATH}/libs/${RWS_BUILD_TYPE}" "${RWS_LIBS}" ROBWORKSTUDIO_LIBRARIES
+            "${ROBWORKSTUDIO_LIBRARIES_TMP}"
+    )
+    # list(REMOVE_DUPLICATES ROBWORKSTUDIO_LIBRARIES) MESSAGE("INCLUDES: ${ROBWORKSTUDIO_LIBRARIES}")
 
-  # make sure that the library and include paths are pointing to the right locations
-  STRING(REPLACE "${ROBWORKSTUDIO_BUILD_PATH}/ext" "${RWS_INCLUDE_EXT}" ROBWORKSTUDIO_INCLUDE_DIRS "${RWS_BUILD_WITH_INCLUDE_DIR}")
-  STRING(REPLACE "${ROBWORKSTUDIO_BUILD_PATH}/src" "${RWS_INCLUDE_SRC}" ROBWORKSTUDIO_INCLUDE_DIRS "${ROBWORKSTUDIO_INCLUDE_DIRS}")
-  list(REMOVE_DUPLICATES ROBWORKSTUDIO_INCLUDE_DIRS)
-  #MESSAGE("INCLUDES: ${ROBWORKSTUDIO_INCLUDE_DIRS}")
-
-  STRING(REPLACE "${ROBWORKSTUDIO_BUILD_PATH}/libs/${RWS_BUILD_TYPE}" "${RWS_LIBS}" ROBWORKSTUDIO_LIBRARY_DIRS "${RWS_BUILD_WITH_LIBRARY_DIRS}")
-  list(REMOVE_DUPLICATES ROBWORKSTUDIO_LIBRARY_DIRS)
-  #MESSAGE("INCLUDES: ${ROBWORKSTUDIO_LIBRARY_DIRS}")
-
-  STRING(REPLACE "${ROBWORKSTUDIO_BUILD_PATH}/libs/${RWS_BUILD_TYPE}" "${RWS_LIBS}" ROBWORKSTUDIO_LIBRARIES "${ROBWORKSTUDIO_LIBRARIES_TMP}")
-  #list(REMOVE_DUPLICATES ROBWORKSTUDIO_LIBRARIES)
-  #MESSAGE("INCLUDES: ${ROBWORKSTUDIO_LIBRARIES}")
-
-ELSE()
-  MESSAGE(STATUS "RobWorkStudio: Could not find a suitable RobWorkStudio installation!") 
-ENDIF()
+else()
+    message(STATUS "RobWorkStudio: Could not find a suitable RobWorkStudio installation!")
+endif()
 
 include(FindPackageHandleStandardArgs)
-find_package_handle_standard_args(RobWorkStudio "Found RobWorkStudio-Version ${RobWorkStudio_VERSION}" RWS_ROOT ROBWORKSTUDIO_LIBRARIES ROBWORKSTUDIO_INCLUDE_DIRS ROBWORKSTUDIO_LIBRARY_DIRS)
+find_package_handle_standard_args(
+    RobWorkStudio
+    "Found RobWorkStudio-Version ${RobWorkStudio_VERSION}"
+    RWS_ROOT
+    ROBWORKSTUDIO_LIBRARIES
+    ROBWORKSTUDIO_INCLUDE_DIRS
+    ROBWORKSTUDIO_LIBRARY_DIRS
+)
 mark_as_advanced(ROBWORKSTUDIO_LIBRARIES ROBWORKSTUDIO_INCLUDE_DIRS ROBWORKSTUDIO_LIBRARY_DIRS)
 
 if(ROBWORKSTUDIO_FOUND)
-  set(ROBWORKSTUDIO_VERSION ${RobWorkStudio_VERSION} CACHE STRING "RobWorkStudio version")
+    set(ROBWORKSTUDIO_VERSION ${RobWorkStudio_VERSION} CACHE STRING "RobWorkStudio version")
 endif(ROBWORKSTUDIO_FOUND)
-
-

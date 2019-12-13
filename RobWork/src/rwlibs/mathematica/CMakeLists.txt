@@ -3,8 +3,7 @@ set(SUBSYS_DESC "Mathematica interface for RobWork")
 set(SUBSYS_DEPS sdurw)
 
 set(build ON)
-rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ${RW_HAVE_MATHEMATICA})
-rw_add_doc(${SUBSYS_NAME})
+rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ${RW_HAVE_MATHEMATICA} DEPENDS ${SUBSYS_DEPS} ADD_DOC)
 
 if(build)
     set(
@@ -55,8 +54,8 @@ if(build)
         ToExpression.hpp
     )
 
-    rw_add_library(${SUBSYS_NAME} mathematica ${SRC_FILES} ${SRC_FILES_HPP})
-    rw_add_includes(mathematica "rwlibs/mathematica" ${SRC_FILES_HPP})
+    rw_add_library(${SUBSYS_NAME} ${SRC_FILES} ${SRC_FILES_HPP})
+    rw_add_includes(${SUBSYS_NAME} "rwlibs/mathematica" ${SRC_FILES_HPP})
     target_link_libraries(${SUBSYS_NAME} PUBLIC ${SUBSYS_DEPS} PRIVATE ${Mathematica_WSTP_LIBRARIES})
     add_dependencies(${SUBSYS_NAME} ${SUBSYS_DEPS})
 

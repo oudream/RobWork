@@ -2,58 +2,70 @@ set(SUBSYS_NAME sdurws_workcelleditor)
 set(SUBSYS_DESC "A workcell editor plugin")
 set(SUBSYS_DEPS sdurws)
 
-# if we want to use ui files add them here
-set(UIS_FILES WorkcellEditorWindow.ui)
-if(RWS_USE_QT5)
-    qt5_wrap_ui(UIS_OUT_H ${UIS_FILES})
-else()
-    qt4_wrap_ui(UIS_OUT_H ${UIS_FILES})
-endif()
-# Need to add the current binary dir to the include directory because the generated source files are placed here
-include_directories(${CMAKE_CURRENT_BINARY_DIR})
+set(build TRUE)
+rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ON DEPENDS ${SUBSYS_DEPS} ADD_DOC)
 
-set(
-    SrcFiles
-    WorkcellEditorWindow.cpp
-    WorkcellHighlighter.cpp
-    WCCodeEditor.cpp
-    WCECompleter.cpp
-    InputFormDialog.cpp
-    SetColorButton.cpp
-    FileDialogButton.cpp
-)
-set(
-    SRC_FILES_HPP
-    WorkcellEditorWindow.hpp
-    WorkcellHighlighter.hpp
-    WCCodeEditor.hpp
-    WCECompleter.hpp
-    InputFormDialog.hpp
-    SetColorButton.hpp
-    FileDialogButton.hpp
-)
+if(build)
 
-set_source_files_properties(${SrcFiles} PROPERTIES OBJECT_DEPENDS "${UIS_OUT_H}")
+    # if we want to use ui files add them here
+    set(UIS_FILES WorkcellEditorWindow.ui)
+    if(RWS_USE_QT5)
+        qt5_wrap_ui(UIS_OUT_H ${UIS_FILES})
+    else()
+        qt4_wrap_ui(UIS_OUT_H ${UIS_FILES})
+    endif()
+    # Need to add the current binary dir to the include directory because the generated source files are
+    # placed here
+    include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
-if(RWS_USE_QT5)
-    qt5_wrap_cpp(MocSrcFiles ${SRC_FILES_HPP})
-else()
-    # Header files to moc and compile:
-    qt4_wrap_cpp(
-        MocSrcFiles
-        ${SRC_FILES_HPP}
-        OPTIONS
-        -DBOOST_TT_HAS_PLUS_HPP_INCLUDED
-        -DBOOST_TT_HAS_PLUS_ASSIGN_HPP_INCLUDED
-        -DBOOST_TT_HAS_MINUS_HPP_INCLUDED
-        -DBOOST_TT_HAS_MINUS_ASSIGN_HPP_INCLUDED
+    set(
+        SrcFiles
+        WorkcellEditorWindow.cpp
+        WorkcellHighlighter.cpp
+        WCCodeEditor.cpp
+        WCECompleter.cpp
+        InputFormDialog.cpp
+        SetColorButton.cpp
+        FileDialogButton.cpp
     )
+    set(
+        SRC_FILES_HPP
+        WorkcellEditorWindow.hpp
+        WorkcellHighlighter.hpp
+        WCCodeEditor.hpp
+        WCECompleter.hpp
+        InputFormDialog.hpp
+        SetColorButton.hpp
+        FileDialogButton.hpp
+    )
+
+    set_source_files_properties(${SrcFiles} PROPERTIES OBJECT_DEPENDS "${UIS_OUT_H}")
+
+    if(RWS_USE_QT5)
+        qt5_wrap_cpp(MocSrcFiles ${SRC_FILES_HPP})
+    else()
+        # Header files to moc and compile:
+        qt4_wrap_cpp(
+            MocSrcFiles
+            ${SRC_FILES_HPP}
+            OPTIONS
+            -DBOOST_TT_HAS_PLUS_HPP_INCLUDED
+            -DBOOST_TT_HAS_PLUS_ASSIGN_HPP_INCLUDED
+            -DBOOST_TT_HAS_MINUS_HPP_INCLUDED
+            -DBOOST_TT_HAS_MINUS_ASSIGN_HPP_INCLUDED
+        )
+    endif()
+
+    rws_add_component(
+        ${SUBSYS_NAME}
+        ${SrcFiles}
+        ${MocSrcFiles}
+        ${UIS_OUT_H}
+    )
+    rw_add_includes(${SUBSYS_NAME} "rwslibs/workcelleditor" ${SRC_FILES_HPP})
+    target_link_libraries(${SUBSYS_NAME} ${SUBSYS_DEPS})
+
+    set(RWS_COMPONENT_LIBRARIES ${RWS_COMPONENT_LIBRARIES} ${SUBSYS_NAME} PARENT_SCOPE)
+
+    set_target_properties(${SUBSYS_NAME} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
 endif()
-
-rws_add_component(${SUBSYS_NAME} components ${SrcFiles} ${MocSrcFiles} ${UIS_OUT_H})
-rw_add_includes(components "rwslibs/workcelleditor" ${SRC_FILES_HPP})
-target_link_libraries(${SUBSYS_NAME} ${SUBSYS_DEPS})
-
-set(RWS_COMPONENT_LIBRARIES ${RWS_COMPONENT_LIBRARIES} ${SUBSYS_NAME} PARENT_SCOPE)
-
-set_target_properties(${SUBSYS_NAME} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
