@@ -54,6 +54,11 @@ if(PYTHONLIBS_FOUND)
 	message(STATUS "RobWorkSim: Python libraries ${PYTHONLIBS_VERSION_STRING} Found")
 endif()
 
+if(NOT PYTHON_LIBRARIES)
+	set(PYTHON_LIBRARIES "")
+endif()
+
+
  ####################################################################
 # DEPENDENCIES - OPTIONAL
 # these dependencies are optional, which is the user can switch off

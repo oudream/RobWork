@@ -195,7 +195,7 @@ if(doc_executable)
 endif()
 
 # Packaging
-include(cmake/packing.cmake)
+#include(cmake/packing.cmake)
 
 string(REPLACE ";" "\n" TOFILE_DST "${ROBWORK_INCLUDE_DIR}")
 file(WRITE "include_dirs" "${TOFILE_DST}")

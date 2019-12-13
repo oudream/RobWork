@@ -61,7 +61,7 @@ namespace {
 
     rw::math::Vector3D<> unproject(Vector3D<> pos2D) 
     {
-        return unproject(pos2D[0],pos2D[1]);
+        return unproject(int(pos2D[0]),int(pos2D[1]));
     }
 
     void renderSquare(Vector3D<> pos1,Vector3D<> pos2, Vector3D<> pos3, Vector3D<> pos4, std::vector<GLfloat> boxColor, std::vector<GLfloat> borderColor) 
@@ -81,10 +81,10 @@ namespace {
         glEnable( GL_POLYGON_OFFSET_FILL);
         glPolygonOffset(1,1);
         glBegin(GL_QUADS);
-            glVertex3f(pos1[0], pos1[1], pos1[2] );  // vertex 1
-            glVertex3f(pos2[0], pos2[1],pos2[2]); // vertex 2
-            glVertex3f(pos3[0], pos3[1],pos3[2]); // vertex 3
-            glVertex3f(pos4[0], pos4[1],pos4[2]); // vertex 4
+            glVertex3f(GLfloat(pos1[0]), GLfloat(pos1[1]), GLfloat(pos1[2]) );  // vertex 1
+            glVertex3f(GLfloat(pos2[0]), GLfloat(pos2[1]), GLfloat(pos2[2]) ); // vertex 2
+            glVertex3f(GLfloat(pos3[0]), GLfloat(pos3[1]), GLfloat(pos3[2]) ); // vertex 3
+            glVertex3f(GLfloat(pos4[0]), GLfloat(pos4[1]), GLfloat(pos4[2]) ); // vertex 4
         glEnd();
         glDisable(GL_POLYGON_OFFSET_FILL);
 
@@ -99,10 +99,10 @@ namespace {
         }
 
         glBegin(GL_QUADS);
-            glVertex3f(pos1[0], pos1[1], pos1[2] );  // vertex 1
-            glVertex3f(pos2[0], pos2[1],pos2[2]); // vertex 2
-            glVertex3f(pos3[0], pos3[1],pos3[2]); // vertex 3
-            glVertex3f(pos4[0], pos4[1],pos4[2]); // vertex 4
+			glVertex3f(GLfloat(pos1[0]), GLfloat(pos1[1]), GLfloat(pos1[2]) );  // vertex 1
+			glVertex3f(GLfloat(pos2[0]), GLfloat(pos2[1]), GLfloat(pos2[2]) ); // vertex 2
+			glVertex3f(GLfloat(pos3[0]), GLfloat(pos3[1]), GLfloat(pos3[2]) ); // vertex 3
+			glVertex3f(GLfloat(pos4[0]), GLfloat(pos4[1]), GLfloat(pos4[2]) ); // vertex 4
         glEnd();
         glDisable(GL_BLEND);
         glPopAttrib();

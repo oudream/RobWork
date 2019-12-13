@@ -54,7 +54,7 @@ if(build)
     list(APPEND RW_LIB_FILES_CPP ${SRC_FILES_CPP})
     list(APPEND RW_LIB_FILES_HPP ${SRC_FILES_HPP})
 
-    rw_add_library(${SUBSYS_NAME} ${SUBSYS_NAME} ${RW_LIB_FILES_CPP} ${RW_LIB_FILES_HPP})
+    rw_add_library(${SUBSYS_NAME} ${RW_LIB_FILES_CPP} ${RW_LIB_FILES_HPP})
     if(RW_HAVE_XERCES)
         target_link_libraries(${SUBSYS_NAME} PUBLIC ${XERCESC_LIBRARIES})
     endif()

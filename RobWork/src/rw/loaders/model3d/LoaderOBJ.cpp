@@ -369,7 +369,7 @@ void OBJReader::parse_face (char** next_token)
         }
         face.subFaces.push_back ({v - 1, vn - 1, vt - 1});
     }
-    face.MatIndex = _currentMat;
+    face.MatIndex = int(_currentMat);
     _objects.back ().MatFaces.push_back (face);
 }
 
@@ -448,7 +448,7 @@ void OBJReader::parse_mtl_Ks (char** next_token)
 
 void OBJReader::parse_mtl_Ns (char** next_token)
 {
-    _materials.back ().shininess = parseFloat (next_token) / 1000.0 * 128.0;
+    _materials.back ().shininess = parseFloat (next_token) / 1000.0f * 128.0f;
 }
 
 void OBJReader::parse_mtl_d (char** next_token)
@@ -458,7 +458,7 @@ void OBJReader::parse_mtl_d (char** next_token)
 
 void OBJReader::parse_mtl_Tr (char** next_token)
 {
-    _materials.back ().transparency = 1.0 - parseFloat (next_token);
+    _materials.back ().transparency = 1.0f - parseFloat (next_token);
 }
 
 void OBJReader::parse_mtl_map_Ka (char** next_token)
@@ -477,7 +477,7 @@ void OBJReader::parse_mtl_map_Kd (char** next_token)
         else {
             _textures.push_back (
                 TextureData (token, ImageLoader::Factory::load (_dirName + token)));
-            _materials.back ().texId = _textures.size () - 1;
+            _materials.back ().texId = short(_textures.size () - 1);
         }
     }
 }
@@ -795,7 +795,7 @@ Model3D::Ptr LoaderOBJ::load (const std::string& name)
 
             obj->setMaterial (matFace.MatIndex);
 
-            int index_s = obj->_vertices.size ();
+            int index_s = int(obj->_vertices.size ());
             for (const OBJReader::Face& subFace : matFace.subFaces) {
                 obj->_vertices.push_back (reader._vertexes[subFace.v]);
                 obj->_normals.push_back (reader._normals[subFace.vn]);
@@ -833,7 +833,7 @@ Model3D::Ptr LoaderOBJ::load (const std::string& name)
                     IndexedPolygonN< uint8_t > poly (matFace.subFaces.size ());
 
                     for (size_t k = 0; k < matFace.subFaces.size (); k++) {
-                        poly[k] = (uint8_t) index_s + k;
+                        poly[k] = (uint8_t) index_s + uint8_t(k);
                     }
 
                     std::vector< IndexedTriangle< uint8_t > > tris;
@@ -844,7 +844,7 @@ Model3D::Ptr LoaderOBJ::load (const std::string& name)
                     IndexedPolygonN< uint16_t > poly (matFace.subFaces.size ());
 
                     for (size_t k = 0; k < matFace.subFaces.size (); k++) {
-                        poly[k] = (uint16_t) index_s + k;
+                        poly[k] = (uint16_t) index_s + uint16_t(k);
                     }
 
                     std::vector< IndexedTriangle< uint16_t > > tris;
@@ -855,7 +855,7 @@ Model3D::Ptr LoaderOBJ::load (const std::string& name)
                     IndexedPolygonN< uint32_t > poly (matFace.subFaces.size ());
 
                     for (size_t k = 0; k < matFace.subFaces.size (); k++) {
-                        poly[k] = (uint32_t) index_s + k;
+                        poly[k] = (uint32_t) index_s + uint32_t(k);
                     }
 
                     std::vector< IndexedTriangle< uint32_t > > tris;

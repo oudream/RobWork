@@ -261,7 +261,7 @@ void RenderModel3D::drawUsingArraysFct (const DrawableNode::RenderInfo& info,
 
             // Draw the faces using an index to the vertex array
             glDrawElements (
-                GL_TRIANGLES, data.size * 3, GL_UNSIGNED_SHORT, &(obj._faces.at (data.startIdx)));
+                GL_TRIANGLES, GLsizei(data.size * 3), GL_UNSIGNED_SHORT, &(obj._faces.at (data.startIdx)));
         }
 
         if (obj.hasTexture ()) {

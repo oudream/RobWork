@@ -140,7 +140,6 @@ function(_gtest_find_library _name)
 endfunction()
 
 #
-
 if(NOT DEFINED GTEST_MSVC_SEARCH)
     set(GTEST_MSVC_SEARCH MD)
 endif()
@@ -212,6 +211,22 @@ else()
     option(BUILD_GMOCK "Builds the googlemock subproject" OFF)
     option(INSTALL_GTEST "Enable installation of googletest. (Projects embedding googletest may want to turn this OFF.)" OFF)
     add_subdirectory(${GTEST_SOURCE} ${CMAKE_BINARY_DIR}/imported-gtest EXCLUDE_FROM_ALL)
+    if(DEFINED MSVC )
+        set_target_properties(gtest
+            PROPERTIES
+                RUNTIME_OUTPUT_DIRECTORY "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}"
+                LIBRARY_OUTPUT_DIRECTORY "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}"
+                ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}"
+                PDB_OUTPUT_DIRECTORY "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}"
+        )
+        set_target_properties(gtest_main
+            PROPERTIES
+                RUNTIME_OUTPUT_DIRECTORY "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}"
+                LIBRARY_OUTPUT_DIRECTORY "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}"
+                ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}"
+                PDB_OUTPUT_DIRECTORY "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}"
+        )
+    endif()
     set(GTEST_LIBRARY gtest CACHE INTERNAL "GTest library")
     set(GTEST_MAIN_LIBRARY gtest_main CACHE INTERNAL "GTest library for main()")
     mark_as_advanced(GTEST_LIBRARY)

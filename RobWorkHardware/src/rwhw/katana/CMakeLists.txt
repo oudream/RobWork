@@ -1,29 +1,33 @@
-SET(SUBSYS_NAME katana )
-SET(SUBSYS_DESC "Library for controlling the katana robot" )
-SET(SUBSYS_DEPS )
+set(SUBSYS_NAME sdurwhw_katana)
+set(SUBSYS_DESC "Library for controlling the katana robot")
+set(SUBSYS_DEPS)
 
-FIND_PACKAGE(KATANA QUIET)
+find_package(KATANA QUIET)
 set(DEFAULT TRUE)
 set(REASON "katana library found!")
-IF( NOT KATANA_FOUND)
+if(NOT KATANA_FOUND)
     set(DEFAULT false)
     set(REASON "katana library not found!")
 endif()
- 
-SET(build TRUE)
- 
-RW_SUBSYS_OPTION( build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} ${REASON})
-RW_ADD_DOC( ${SUBSYS_NAME} )
 
-IF( build )
-    FIND_PACKAGE(KATANA)
-    IF(KATANA_FOUND)
-     MESSAGE(STATUS "Katana sdk found. Katana driver will be build!")
-     INCLUDE_DIRECTORIES(${KATANA_INCLUDE_DIR})
-     ADD_LIBRARY(sdurwhw_katana Katana.cpp Katana.hpp)
-     INSTALL(TARGETS sdurwhw_katana DESTINATION ${RWHW_LIB_INSTALL_DIR}) 
-     set(ROBWORKHARDWARE_LIBRARIES ${ROBWORKHARDWARE_LIBRARIES} sdurwhw_katana PARENT_SCOPE)
-    ELSE()
-     MESSAGE(STATUS "RobWorkHardware: Katana sdk NOT found. Katana driver will NOT be build!")
-    ENDIF()
-ENDIF()
+set(build TRUE)
+
+rw_subsys_option(
+    build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT}
+    REASON ${REASON}
+    DEPENDS ${SUBSYS_DEPS}
+    ADD_DOC
+)
+
+if(build)
+    find_package(KATANA)
+    if(KATANA_FOUND)
+        message(STATUS "Katana sdk found. Katana driver will be build!")
+        include_directories(${KATANA_INCLUDE_DIR})
+        add_library(${SUBSYS_NAME} Katana.cpp Katana.hpp)
+        install(TARGETS ${SUBSYS_NAME} DESTINATION ${RWHW_LIB_INSTALL_DIR})
+        set(ROBWORKHARDWARE_LIBRARIES ${ROBWORKHARDWARE_LIBRARIES} ${SUBSYS_NAME} PARENT_SCOPE)
+    else()
+        message(STATUS "RobWorkHardware: Katana sdk NOT found. Katana driver will NOT be build!")
+    endif()
+endif()

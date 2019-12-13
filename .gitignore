@@ -10,6 +10,7 @@
 /.csettings
 /CPackConfig.cmake
 /CPackSourceConfig.cmake
+/CMakeSettings.json
 /.cproject
 /.project
 /Build
@@ -17,6 +18,8 @@
 *.vscode
 /*rwsettings.xml
 /*.class
+/.vs/*
+/out/*
 /debian
 /obj-x86_64-linux-gnu
 
@@ -42,6 +45,7 @@
 /RobWork/CTestConfig.cmake
 /RobWork/include_dirs
 /RobWork/source_files
+/RobWork/imported-gtest/*
 
 # /RobWork/cmake/
 /RobWork/cmake/RobWorkBuildConfigDebug.cmake
@@ -3475,6 +3479,10 @@ RobWorkSim/src/rwsimlibs/swig/python/RobWorkSim-*.egg-info
 /RobWorkStudio/bin/debug
 /RobWorkStudio/bin/Debug
 /RobWorkStudio/bin/relwithdebinfo
+/RobWorkStuido/bin/MinSizeRel
+
+# /RobWorkStudio/bin/MinSizeRel
+/RobWorkStudio/bin/MinSizeRel/TestSuiteConfig.xml
 
 # /RobWorkStudio/cmake/
 /RobWorkStudio/cmake/RobWorkStudioConfigDebug.cmake
@@ -4127,4 +4135,5 @@ RobWorkSim/src/rwsimlibs/swig/python/RobWorkSim-*.egg-info
 
 #/doc/sphinx/apidoc/java
 /doc/sphinx/apidoc/java/org
+
 

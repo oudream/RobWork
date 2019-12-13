@@ -1,46 +1,64 @@
-SET(SUBSYS_NAME sdurws_atask)
+set(SUBSYS_NAME sdurws_atask)
 set(SUBSYS_DESC "A plugin for visualization of assembly tasks and results.")
-SET(SUBSYS_DEPS sdurws)
+set(SUBSYS_DEPS sdurws)
 
-SET(build TRUE)
-RW_SUBSYS_OPTION(build ${SUBSYS_NAME} ${SUBSYS_DESC} ON)
-RW_ADD_DOC(${SUBSYS_NAME})
+set(build TRUE)
+rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ON DEPENDS ${SUBSYS_DEPS} ADD_DOC)
 
-IF(build)    
+if(build)
     # if we want to use ui files add them here
-    IF(RWS_USE_QT5)
-      QT5_WRAP_UI(UIS_OUT_H_ATaskVisPlugin ATaskVisPlugin.ui)
-      QT5_WRAP_UI(UIS_OUT_H_StrategyLibraryDialog StrategyLibraryDialog.ui)
-      QT5_WRAP_UI(UIS_OUT_H_TaskSetupDialog TaskSetupDialog.ui)
-    ELSE()
-      QT4_WRAP_UI(UIS_OUT_H_ATaskVisPlugin ATaskVisPlugin.ui)
-      QT4_WRAP_UI(UIS_OUT_H_StrategyLibraryDialog StrategyLibraryDialog.ui)
-      QT4_WRAP_UI(UIS_OUT_H_TaskSetupDialog TaskSetupDialog.ui)
-    ENDIF()
-    SET(UIS_OUT_H ${UIS_OUT_H_ATaskVisPlugin} ${UIS_OUT_H_StrategyLibraryDialog} ${UIS_OUT_H_TaskSetupDialog})
-	#Need to add the current binary dir to the include directory because the generated source files are placed here
+    if(RWS_USE_QT5)
+        qt5_wrap_ui(UIS_OUT_H_ATaskVisPlugin ATaskVisPlugin.ui)
+        qt5_wrap_ui(UIS_OUT_H_StrategyLibraryDialog StrategyLibraryDialog.ui)
+        qt5_wrap_ui(UIS_OUT_H_TaskSetupDialog TaskSetupDialog.ui)
+    else()
+        qt4_wrap_ui(UIS_OUT_H_ATaskVisPlugin ATaskVisPlugin.ui)
+        qt4_wrap_ui(UIS_OUT_H_StrategyLibraryDialog StrategyLibraryDialog.ui)
+        qt4_wrap_ui(UIS_OUT_H_TaskSetupDialog TaskSetupDialog.ui)
+    endif()
+    set(UIS_OUT_H ${UIS_OUT_H_ATaskVisPlugin} ${UIS_OUT_H_StrategyLibraryDialog} ${UIS_OUT_H_TaskSetupDialog})
+    # Need to add the current binary dir to the include directory because the generated source files are
+    # placed here
     include_directories(${CMAKE_CURRENT_BINARY_DIR})
     # Standard cpp files to compile:
-    SET(SrcFiles ATaskVisPlugin.cpp StrategyLibraryDialog.cpp TaskSetupDialog.cpp)
-    SET(SRC_FILES_HPP ATaskVisPlugin.hpp StrategyLibraryDialog.hpp TaskSetupDialog.hpp)
-    
+    set(SrcFiles ATaskVisPlugin.cpp StrategyLibraryDialog.cpp TaskSetupDialog.cpp)
+    set(SRC_FILES_HPP ATaskVisPlugin.hpp StrategyLibraryDialog.hpp TaskSetupDialog.hpp)
+
     set_source_files_properties(ATaskVisPlugin.cpp PROPERTIES OBJECT_DEPENDS "${UIS_OUT_H_ATaskVisPlugin}")
-    set_source_files_properties(StrategyLibraryDialog.cpp PROPERTIES OBJECT_DEPENDS "${UIS_OUT_H_StrategyLibraryDialog}")
+    set_source_files_properties(
+        StrategyLibraryDialog.cpp
+        PROPERTIES OBJECT_DEPENDS "${UIS_OUT_H_StrategyLibraryDialog}"
+    )
     set_source_files_properties(TaskSetupDialog.cpp PROPERTIES OBJECT_DEPENDS "${UIS_OUT_H_TaskSetupDialog}")
-    
-    IF(RWS_USE_QT5)
-    	QT5_WRAP_CPP(MocSrcFiles ${SRC_FILES_HPP})
-    	# Rcc the files:
-    	QT5_ADD_RESOURCES(RccSrcFiles atask_resources.qrc)
-    ELSE()
-    # Header files to moc and compile:
-    	QT4_WRAP_CPP(MocSrcFiles ${SRC_FILES_HPP} OPTIONS -DBOOST_TT_HAS_PLUS_HPP_INCLUDED -DBOOST_TT_HAS_PLUS_ASSIGN_HPP_INCLUDED -DBOOST_TT_HAS_MINUS_HPP_INCLUDED -DBOOST_TT_HAS_MINUS_ASSIGN_HPP_INCLUDED)
-    	# Rcc the files:
-    	QT4_ADD_RESOURCES(RccSrcFiles atask_resources.qrc)
-    ENDIF()
-    
-    RWS_ADD_PLUGIN(${SUBSYS_NAME} plugins MODULE ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles} ${UIS_OUT_H})
-    RW_ADD_INCLUDES(plugins "rwslibs/atask" ${SRC_FILES_HPP})
-    TARGET_LINK_LIBRARIES(${SUBSYS_NAME} ${ROBWORKSTUDIO_LIBRARIES} ${ROBWORK_LIBRARIES})
-    ADD_DEPENDENCIES(${SUBSYS_NAME} ${SUBSYS_DEPS})
-ENDIF()
+
+    if(RWS_USE_QT5)
+        qt5_wrap_cpp(MocSrcFiles ${SRC_FILES_HPP})
+        # Rcc the files:
+        qt5_add_resources(RccSrcFiles atask_resources.qrc)
+    else()
+        # Header files to moc and compile:
+        qt4_wrap_cpp(
+            MocSrcFiles
+            ${SRC_FILES_HPP}
+            OPTIONS
+            -DBOOST_TT_HAS_PLUS_HPP_INCLUDED
+            -DBOOST_TT_HAS_PLUS_ASSIGN_HPP_INCLUDED
+            -DBOOST_TT_HAS_MINUS_HPP_INCLUDED
+            -DBOOST_TT_HAS_MINUS_ASSIGN_HPP_INCLUDED
+        )
+        # Rcc the files:
+        qt4_add_resources(RccSrcFiles atask_resources.qrc)
+    endif()
+
+    rws_add_plugin(
+        ${SUBSYS_NAME}
+        MODULE
+        ${SrcFiles}
+        ${MocSrcFiles}
+        ${RccSrcFiles}
+        ${UIS_OUT_H}
+    )
+    rw_add_includes(${SUBSYS_NAME} "rwslibs/atask" ${SRC_FILES_HPP})
+    target_link_libraries(${SUBSYS_NAME} ${ROBWORKSTUDIO_LIBRARIES} ${ROBWORK_LIBRARIES})
+    add_dependencies(${SUBSYS_NAME} ${SUBSYS_DEPS})
+endif()
