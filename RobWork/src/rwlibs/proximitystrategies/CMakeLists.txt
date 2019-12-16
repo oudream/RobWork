@@ -4,8 +4,7 @@ set(SUBSYS_DEPS sdurw)
 
 set(build TRUE)
 set(DEFAULT TRUE)
-rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT})
-rw_add_doc(${SUBSYS_NAME})
+rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} DEPENDS ${SUBSYS_DEPS} ADD_DOC)
 
 if(build)
     set(OptionalFiles)
@@ -41,8 +40,8 @@ if(build)
 
     set(SRC_FILES_HPP ${OptionalFiles_hpp} ProximityStrategyFactory.hpp)
 
-    rw_add_library(${SUBSYS_NAME} proximitystrategies ${SRC_FILES} ${SRC_FILES_HPP})
-    rw_add_includes(proximitystrategies "rwlibs/proximitystrategies" ${SRC_FILES_HPP})
+    rw_add_library(${SUBSYS_NAME} ${SRC_FILES} ${SRC_FILES_HPP})
+    rw_add_includes(${SUBSYS_NAME} "rwlibs/proximitystrategies" ${SRC_FILES_HPP})
     target_link_libraries(
         ${SUBSYS_NAME}
         PUBLIC ${SUBSYS_DEPS} ${PQP_LIBRARIES} ${BULLET_LIBRARIES}

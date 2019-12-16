@@ -33,7 +33,7 @@ To be able to checkout code it is necessary to install some source code manageme
 To be able to checkout the code from our own Git repository, a Git client is needed.
 SVN and Mercurial clients are not strictly required, but depending on your needs it might be worthwhile to install them.
 
-.. code-block::
+.. code-block:: bash
 
    sudo yum install subversion git mercurial
 
@@ -41,7 +41,7 @@ SVN and Mercurial clients are not strictly required, but depending on your needs
 To compile the C++ code, the GCC compiler should be used on Ubuntu.
 CMake must be used to prepare RobWork for compilation. The minimum CMake version for RobWork is currently 2.8.12, which is also available in CentOS 7.
 
-.. code-block::
+.. code-block:: bash
 
    sudo yum install make gcc gcc-c++ cmake
 
@@ -52,7 +52,7 @@ Extra Packages for Enterprise Linux (EPEL)
 Some packages are only available when the "Extra Packages for Enterprise Linux" (EPEL) is used.
 Add the packages with:
 
-.. code-block::
+.. code-block:: bash
 
    sudo yum install epel-release
 
@@ -65,26 +65,17 @@ RobWork Required Dependencies
 Start by installing the dependencies. This is done using the package manager by running the following commands in a terminal.
 First, install OpenGL libraries:
 
-.. code-block::
+.. code-block:: bash
 
    sudo yum install mesa-libGL-devel mesa-libGLU-devel
 
 
 Then install Boost:
 
-.. code-block::
+.. code-block:: bash
 
    sudo yum install boost-devel 
 
-
-Finally, install Xerces:
-
-.. code-block::
-
-   sudo yum install xerces-c xerces-c-devel
-
-
-Xerces is used some places in RobWork for opening XML files. It is still a requirement, but it is the intention that this dependency will one day become optional.
 
 RobWork Optional Dependencies
 -----------------------------
@@ -95,16 +86,23 @@ SWIG 3 and newer is needed, and must be downloaded and built separately.
 Python and Java interfaces are also possible, but require that Python or Java SDK is installed as well.
 All of these interfaces can be generated if you install the following packages:
 
-.. code-block::
+.. code-block:: bash
 
    sudo yum install lua-devel python3-devel java-1.8.0-openjdk-devel
 
 
 Google Test (optional) is used for unit tests in RobWork. If you are a developer and wants to develop code for the RobWork trunk, writing a GTest will be a requirement:
 
-.. code-block::
+.. code-block:: bash
 
    sudo yum install gtest-devel
+
+Xerces can be used some places in RobWork for opening XML files.
+
+
+.. code-block:: bash
+
+   sudo yum install xerces-c xerces-c-devel
 
 
 RobWorkStudio Dependencies
@@ -112,7 +110,7 @@ RobWorkStudio Dependencies
 
 RobWorkStudio requires Qt to be installed. Both Qt4 and Qt5 is supported, but on a fresh Qt install it is encouraged to choose the Qt5 version:
 
-.. code-block::
+.. code-block:: bash
 
    sudo yum install qt5-qtbase-devel
 
@@ -125,14 +123,14 @@ If you need to do dynamic simulations, you will probably need the RobWorkSim pac
 Open Dynamics Engine (ODE) is not available in the package manager. Instead, ODE must be compiled from source.
 Use Mercurial to download the source from bitbucket:
 
-.. code-block::
+.. code-block:: bash
 
    hg clone https://bitbucket.org/odedevs/ode
 
 
 Open a terminal and run:
 
-.. code-block::
+.. code-block:: bash
 
    ./bootstrap
    ./configure --enable-double-precision --enable-shared --enable-ou --enable-builtin-threading-impl --disable-demos --disable-asserts
@@ -143,22 +141,22 @@ This will make sure that ODE is built with 4 threads with double precision as a 
 
 Bullet Physics can be installed through the package manager:
 
-.. code-block::
+.. code-block:: bash
 
    sudo yum install bullet-devel
 
 
 It is also possible to compile Bullet Physics from source, if a specific version is needed. Clone the source code with git:
 
-.. code-block::
+.. code-block:: bash
 
    git clone https://github.com/bulletphysics/bullet3
 
 
 Make a Build folder and run CMake to configure the build. From within the Build folder, run in a terminal:
 
-.. code-block::
-
+.. code-block:: bash
+ 
    cmake -DCMAKE_BUILD_TYPE=Release -DUSE_DOUBLE_PRECISION=ON -DBUILD_BULLET3=OFF -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX:PATH=$WORKSPACE/Release -DCMAKE_CXX_FLAGS="-fPIC" -DCMAKE_C_FLAGS="-fPIC" -DBUILD_EXTRAS=OFF -DBUILD_BULLET2_DEMOS=OFF -DBUILD_UNIT_TESTS=OFF -BUILD_CPU_DEMOS=OFF ..
    make -j4
 
@@ -170,9 +168,9 @@ RobWork Physics Engine (RWPE) requires access to code that is not yet public. Re
 RobWorkHardware Dependencies
 ----------------------------
 
-RobWorkHardware compilation depends heavily on which hardware you need to use. Install the following package: 
+RobWorkHardware compilation depends heavily on which hardware you need to use. Install the following package:
 
-.. code-block::
+.. code-block:: bash
 
    sudo yum install libdc1394-22-dev
 
@@ -187,20 +185,20 @@ When the dependencies have been installed, RobWork is ready to be built. First, 
 Getting source files from Git
 --------------------------------------------------------
 
-Make a new directory where you want to install RobWork (in this guide, we will install in ~/RobWork): 
+Make a new directory where you want to install RobWork (in this guide, we will install in ~/RobWork):
 
-.. code-block::
+.. code-block:: bash
 
    mkdir RobWork
    cd RobWork
 
-When the dependencies are installed, go ahead and download the newest version of RobWork from the Git repository at: 
+When the dependencies are installed, go ahead and download the newest version of RobWork from the Git repository at:
 
 https://gitlab.com/sdurobotics/RobWork
 
 In the terminal, this is done as follows: (be sure that you are located in the directory where you want to install RobWork)
 
-.. code-block::
+.. code-block:: bash
 
    git clone https://gitlab.com/sdurobotics/RobWork.git .
 
@@ -230,7 +228,7 @@ Compiling RobWork
 
 Add build directories for the projects you want to build:
 
-.. code-block::
+.. code-block:: bash
 
    mkdir Build
    mkdir Build/RW
@@ -239,7 +237,7 @@ Add build directories for the projects you want to build:
 
 Now we are ready to build RobWork. Run CMake:
 
-.. code-block::
+.. code-block:: bash
 
    cd Build/RW
    cmake -DCMAKE_BUILD_TYPE=Release ../../RobWork
@@ -248,7 +246,7 @@ Now we are ready to build RobWork. Run CMake:
 Look carefully through the CMake output and check that there is no errors, and that the required dependencies are correctly found.
 Now that the CMake files has been built, we are ready to compile the project. Using 4 cores/threads, this is done by: 
 
-.. code-block::
+.. code-block:: bash
 
    make -j4
 
@@ -259,7 +257,7 @@ For RobWorkStudio, the same procedure is repeated in the RWS build folder, and s
 
 Finally, we need to add the following paths to ~/.bashrc:
 
-.. code-block:: shell
+.. code-block:: bash
 
    #ROBWORK#
    export RW_ROOT=~/RobWork/trunk/RobWork/

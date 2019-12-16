@@ -11,8 +11,12 @@ if(NOT BULLET_FOUND)
     set(REASON "Bullet not found!")
 endif()
 
-rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} ${REASON})
-rw_add_doc(${SUBSYS_NAME})
+rw_subsys_option(
+    build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT}
+    REASON ${REASON}
+    DEPENDS ${SUBSYS_DEPS}
+    ADD_DOC
+)
 
 if(build)
 
@@ -51,8 +55,16 @@ if(build)
     )
 
     # Detect if Bullet is compiled in single or double precision by doing a test compilation
-    set(BULLET_USE_SINGLE_PRECISION FALSE CACHE BOOL "Select to force compiling without -DBT_USE_DOUBLE_PRECISION.")
-    set(BULLET_USE_DOUBLE_PRECISION FALSE CACHE BOOL "Select to force compiling with -DBT_USE_DOUBLE_PRECISION.")
+    set(
+        BULLET_USE_SINGLE_PRECISION
+        FALSE
+        CACHE BOOL "Select to force compiling without -DBT_USE_DOUBLE_PRECISION."
+    )
+    set(
+        BULLET_USE_DOUBLE_PRECISION
+        FALSE
+        CACHE BOOL "Select to force compiling with -DBT_USE_DOUBLE_PRECISION."
+    )
     if(BULLET_USE_SINGLE_PRECISION)
         message(STATUS "Bullet will be compiled with single precision.")
     elseif(BULLET_USE_DOUBLE_PRECISION)
@@ -63,7 +75,8 @@ if(build)
         try_compile(
             COMPILE_SUCCESS ${CMAKE_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/BtPrecisionTest.cpp
             CMAKE_FLAGS
-                "-DINCLUDE_DIRECTORIES:string=${BULLET_INCLUDE_DIRS}" "-DLINK_LIBRARIES:string=${BULLET_LIBRARIES}"
+                "-DINCLUDE_DIRECTORIES:string=${BULLET_INCLUDE_DIRS}"
+                "-DLINK_LIBRARIES:string=${BULLET_LIBRARIES}"
             COMPILE_DEFINITIONS "-DBT_USE_DOUBLE_PRECISION"
             OUTPUT_VARIABLE OUT
         )
@@ -97,8 +110,8 @@ if(build)
         add_definitions(-DBT_USE_DOUBLE_PRECISION)
     endif()
 
-    rw_add_library(${SUBSYS_NAME} sdurwsim_bullet ${SRC_FILES} ${SRC_FILES_HPP})
-    rw_add_includes(sdurwsim_bullet "rwsimlibs/bullet" ${SRC_FILES_HPP})
+    rw_add_library(${SUBSYS_NAME} ${SRC_FILES} ${SRC_FILES_HPP})
+    rw_add_includes(${SUBSYS_NAME} "rwsimlibs/bullet" ${SRC_FILES_HPP})
     target_link_libraries(${SUBSYS_NAME} ${SUBSYS_DEPS} ${BULLET_LIBRARIES})
     add_dependencies(${SUBSYS_NAME} ${SUBSYS_DEPS})
     if(BULLET_FOUND)

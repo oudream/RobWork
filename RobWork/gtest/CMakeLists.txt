@@ -23,7 +23,7 @@ macro(ADD_RW_GTEST target)
             target_compile_options(${target} PRIVATE /wd4251 /wd4275)
         endif()
     endif()
-endmacro(ADD_RW_GTEST)
+endmacro()
 
 # ######################################################################################################################
 # RobWork main function for initialization (link with this if needed).

@@ -522,6 +522,9 @@ endif()
 if(PYTHONLIBS_FOUND)
     message(STATUS "Found Python libraries ${PYTHONLIBS_VERSION_STRING}")
 endif()
+if(PYTHON_LIBRARY STREQUAL "NOTFOUND")
+	set(PYTHON_LIBRARY "")
+endif()
 
 #
 # If the user wants to use the Google Test package then search for it. Set RW_DISABLE_GTEST to ON to disable Google Test

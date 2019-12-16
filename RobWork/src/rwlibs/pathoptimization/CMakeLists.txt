@@ -4,8 +4,7 @@ set(SUBSYS_DEPS sdurw_proximitystrategies sdurw)
 
 set(build TRUE)
 set(DEFAULT TRUE)
-rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT})
-rw_add_doc(${SUBSYS_NAME})
+rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} DEPENDS ${SUBSYS_DEPS} ADD_DOC)
 
 if(build)
     set(SRC_FILES ./clearance/ClearanceOptimizer.cpp ./clearance/ClearanceCalculator.cpp
@@ -14,8 +13,8 @@ if(build)
     set(SRC_FILES_HPP ./clearance/ClearanceOptimizer.hpp ./clearance/ClearanceCalculator.hpp
                       ./clearance/MinimumClearanceCalculator.hpp ./pathlength/PathLengthOptimizer.hpp)
 
-    rw_add_library(${SUBSYS_NAME} pathoptimization ${SRC_FILES} ${SRC_FILES_HPP})
-    rw_add_includes(pathoptimization "rwlibs/pathoptimization" ${SRC_FILES_HPP})
+    rw_add_library(${SUBSYS_NAME} ${SRC_FILES} ${SRC_FILES_HPP})
+    rw_add_includes(${SUBSYS_NAME} "rwlibs/pathoptimization" ${SRC_FILES_HPP})
     target_link_libraries(${SUBSYS_NAME} PRIVATE sdurw_proximitystrategies PUBLIC sdurw)
     add_dependencies(${SUBSYS_NAME} ${SUBSYS_DEPS})
 

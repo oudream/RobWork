@@ -1,32 +1,45 @@
-SET(SUBSYS_NAME sdurws_planning)
+set(SUBSYS_NAME sdurws_planning)
 set(SUBSYS_DESC "A planning plugin")
-SET(SUBSYS_DEPS sdurws)
+set(SUBSYS_DEPS sdurws)
 
-SET(build TRUE)
-RW_SUBSYS_OPTION(build ${SUBSYS_NAME} ${SUBSYS_DESC} ON)
-RW_ADD_DOC(${SUBSYS_NAME})
+set(build TRUE)
+rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ON DEPENDS ${SUBSYS_DEPS} ADD_DOC)
 
-IF(build)    
+if(build)
     # Standard cpp files to compile:
-    SET(SrcFiles Planning.cpp)
-    SET(SRC_FILES_HPP Planning.hpp)
-    
-    IF(RWS_USE_QT5)
-    	QT5_WRAP_CPP(MocSrcFiles ${SRC_FILES_HPP})
-    	# Rcc the files:
-    	QT5_ADD_RESOURCES(RccSrcFiles resources.qrc)
-    ELSE()
-    # Header files to moc and compile:
-    	QT4_WRAP_CPP(MocSrcFiles ${SRC_FILES_HPP} OPTIONS -DBOOST_TT_HAS_PLUS_HPP_INCLUDED -DBOOST_TT_HAS_PLUS_ASSIGN_HPP_INCLUDED -DBOOST_TT_HAS_MINUS_HPP_INCLUDED -DBOOST_TT_HAS_MINUS_ASSIGN_HPP_INCLUDED)
-    	# Rcc the files:
-    	QT4_ADD_RESOURCES(RccSrcFiles resources.qrc)
-    ENDIF()
-        
-    RWS_ADD_PLUGIN(${SUBSYS_NAME} plugins ${RWS_DEFAULT_LIB_TYPE} ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles})
-    RW_ADD_INCLUDES(plugins "rwslibs/planning" ${SRC_FILES_HPP}) 
-    ADD_DEPENDENCIES(${SUBSYS_NAME} ${SUBSYS_DEPS})
+    set(SrcFiles Planning.cpp)
+    set(SRC_FILES_HPP Planning.hpp)
 
-    IF( "${RWS_DEFAULT_LIB_TYPE}" STREQUAL "STATIC" )
+    if(RWS_USE_QT5)
+        qt5_wrap_cpp(MocSrcFiles ${SRC_FILES_HPP})
+        # Rcc the files:
+        qt5_add_resources(RccSrcFiles resources.qrc)
+    else()
+        # Header files to moc and compile:
+        qt4_wrap_cpp(
+            MocSrcFiles
+            ${SRC_FILES_HPP}
+            OPTIONS
+            -DBOOST_TT_HAS_PLUS_HPP_INCLUDED
+            -DBOOST_TT_HAS_PLUS_ASSIGN_HPP_INCLUDED
+            -DBOOST_TT_HAS_MINUS_HPP_INCLUDED
+            -DBOOST_TT_HAS_MINUS_ASSIGN_HPP_INCLUDED
+        )
+        # Rcc the files:
+        qt4_add_resources(RccSrcFiles resources.qrc)
+    endif()
+
+    rws_add_plugin(
+        ${SUBSYS_NAME}
+        ${RWS_DEFAULT_LIB_TYPE}
+        ${SrcFiles}
+        ${MocSrcFiles}
+        ${RccSrcFiles}
+    )
+    rw_add_includes(${SUBSYS_NAME} "rwslibs/planning" ${SRC_FILES_HPP})
+    add_dependencies(${SUBSYS_NAME} ${SUBSYS_DEPS})
+
+    if("${RWS_DEFAULT_LIB_TYPE}" STREQUAL "STATIC")
         set(RWS_PLUGIN_LIBRARIES ${RWS_PLUGIN_LIBRARIES} ${SUBSYS_NAME} PARENT_SCOPE)
-    ENDIF()
-ENDIF()
+    endif()
+endif()

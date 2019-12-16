@@ -360,12 +360,12 @@ public:
      * @param value
      */
     inline void setPixel8U(const int x, const int y, uint8_t value){
-        const size_t idx = y*_widthStep + x;
+        const size_t idx = int64_t(y)*_widthStep + int64_t(x);
         _imageData[idx] = value;
     }
 
     inline void setPixel8U(const int x, const int y, uint8_t ch0, uint8_t ch1, uint8_t ch2){
-        const size_t idx = y*_widthStep + x*3;
+        const size_t idx = int64_t(y)*_widthStep + int64_t(x)*3;
         RW_ASSERT_MSG(idx<_arrSize, idx << "<" << _arrSize);
         _imageData[idx] = ch0;
         _imageData[idx+1] = ch1;
@@ -373,7 +373,7 @@ public:
     }
 
     inline void setPixel8U(const int x, const int y, uint8_t ch0, uint8_t ch1, uint8_t ch2, uint8_t ch3){
-        const size_t idx = y*_widthStep + x*4;
+        const size_t idx = int64_t(y)*_widthStep + int64_t(x)*4;
         _imageData[idx] = ch0;
         _imageData[idx+1] = ch1;
         _imageData[idx+2] = ch2;
@@ -381,19 +381,19 @@ public:
     }
 
     inline void setPixel8S(const int x, const int y, int8_t value){
-        const size_t idx = y*_widthStep + x;
+        const size_t idx = int64_t(y)*_widthStep + int64_t(x);
         _imageData[idx] = value;
     }
 
     inline void setPixel8S(const int x, const int y, int8_t ch0, int8_t ch1, int8_t ch2){
-        const size_t idx = y*_widthStep + x*3;
+        const size_t idx = int64_t(y)*_widthStep + int64_t(x)*3;
         _imageData[idx] = ch0;
         _imageData[idx+1] = ch1;
         _imageData[idx+2] = ch2;
     }
 
     inline void setPixel8S(const int x, const int y, int8_t ch0, int8_t ch1, int8_t ch2, int8_t ch3){
-        const size_t idx = y*_widthStep + x*4;
+        const size_t idx = int64_t(y)*_widthStep + int64_t(x)*4;
         _imageData[idx] = ch0;
         _imageData[idx+1] = ch1;
         _imageData[idx+2] = ch2;
@@ -401,13 +401,13 @@ public:
     }
 
     inline void setPixel16U(const int x, const int y, uint16_t value){
-        const size_t idx = y*_widthStep + x;
+        const size_t idx = int64_t(y)*_widthStep + int64_t(x);
         uint16_t *ref = (uint16_t*)&_imageData[idx*2];
         *ref = value;
     }
 
     inline void setPixel16U(const int x, const int y, uint16_t ch0, uint16_t ch1, uint16_t ch2){
-        const size_t idx = y*_widthStep + x*3;
+        const size_t idx = y*_widthStep + int64_t(x)*3;
         uint16_t *ref = (uint16_t*)&_imageData[idx*2];
         ref[0] = ch0;
         ref[1] = ch1;
@@ -415,7 +415,7 @@ public:
     }
 
     inline void setPixel16U(const int x, const int y, uint16_t ch0, uint16_t ch1, uint16_t ch2, uint16_t ch3){
-        const size_t idx = y*_widthStep + x*4;
+        const size_t idx = int64_t(y)*_widthStep + int64_t(x)*4;
         uint16_t *ref = (uint16_t*)&_imageData[idx*2];
         ref[0] = ch0;
         ref[1] = ch1;
@@ -424,13 +424,13 @@ public:
     }
 
     inline void setPixel16S(const int x, const int y, int16_t value){
-        const size_t idx = y*_widthStep + x;
+        const size_t idx = int64_t(y)*_widthStep + int64_t(x);
         int16_t *ref = (int16_t*)&_imageData[idx*2];
         *ref = value;
     }
 
     inline void setPixel16S(const int x, const int y, int16_t ch0, int16_t ch1, int16_t ch2){
-        const size_t idx = y*_widthStep + x*3;
+        const size_t idx = int64_t(y)*_widthStep + int64_t(x)*3;
         int16_t *ref = (int16_t*)&_imageData[idx*2];
         ref[0] = ch0;
         ref[1] = ch1;
@@ -438,7 +438,7 @@ public:
     }
 
     inline void setPixel16S(const int x, const int y, int16_t ch0, int16_t ch1, int16_t ch2, int16_t ch3){
-        const size_t idx = y*_widthStep + x*4;
+        const size_t idx = int64_t(y)*_widthStep + int64_t(x)*int(4);
         int16_t *ref = (int16_t*)&_imageData[idx*2];
         ref[0] = ch0;
         ref[1] = ch1;
@@ -447,13 +447,13 @@ public:
     }
 
     inline void setPixel32S(const int x, const int y, int32_t value){
-        const size_t idx = y*_widthStep + x;
+        const size_t idx = int64_t(y)*_widthStep + int64_t(x);
         int32_t *ref = (int32_t*)&_imageData[idx*4];
         *ref = value;
     }
 
     inline void setPixel32S(const int x, const int y, int32_t ch0, int32_t ch1, int32_t ch2){
-        const size_t idx = y*_widthStep + x*3;
+        const size_t idx = int64_t(y)*_widthStep + int64_t(x)*3;
         int32_t *ref = (int32_t*)&_imageData[idx*4];
         ref[0] = ch0;
         ref[1] = ch1;
@@ -461,7 +461,7 @@ public:
     }
 
     inline void setPixel32S(const int x, const int y, int32_t ch0, int32_t ch1, int32_t ch2, int32_t ch3){
-        const size_t idx = y*_widthStep + x*4;
+        const size_t idx = int64_t(y)*_widthStep + int64_t(x)*4;
         int32_t *ref = (int32_t*)&_imageData[idx*4];
         ref[0] = ch0;
         ref[1] = ch1;
@@ -470,13 +470,13 @@ public:
     }
 
     inline void setPixel32F(const int x, const int y, float value){
-        const size_t idx = y*_widthStep + x;
+        const size_t idx = int64_t(y)*_widthStep + int64_t(x);
         float *ref = (float*)&_imageData[idx*4];
         *ref = value;
     }
 
     inline void setPixel32F(const int x, const int y, float ch0, float ch1, float ch2){
-        const size_t idx = y*_widthStep + x*3;
+        const size_t idx = int64_t(y)*_widthStep + int64_t(x)*3;
         float *ref = (float*)&_imageData[idx*4];
         ref[0] = ch0;
         ref[1] = ch1;
@@ -484,7 +484,7 @@ public:
     }
 
     inline void setPixel32F(const int x, const int y, float ch0, float ch1, float ch2, float ch3){
-        const size_t idx = y*_widthStep + x*4;
+        const size_t idx = int64_t(y)*_widthStep + int64_t(x)*4;
         float *ref = (float*)&_imageData[idx*4];
         ref[0] = ch0;
         ref[1] = ch1;

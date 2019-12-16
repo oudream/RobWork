@@ -3,8 +3,7 @@ set(SUBSYS_DESC "A lua editor plugin")
 set(SUBSYS_DEPS sdurws)
 
 set(build ${RWS_HAVE_LUA})
-rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ${RWS_HAVE_LUA})
-rw_add_doc(${SUBSYS_NAME})
+rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ${RWS_HAVE_LUA} DEPENDS ${SUBSYS_DEPS} ADD_DOC)
 
 if(build)
     # if we want to use ui files add them here
@@ -14,7 +13,8 @@ if(build)
     else()
         qt4_wrap_ui(UIS_OUT_H ${UIS_FILES})
     endif()
-    # Need to add the current binary dir to the include directory because the generated source files are placed here
+    # Need to add the current binary dir to the include directory because the generated source files are
+    # placed here
     include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
     set(
@@ -53,8 +53,13 @@ if(build)
         )
     endif()
 
-    rws_add_component(${SUBSYS_NAME} components ${SrcFiles} ${MocSrcFiles} ${UIS_OUT_H})
-    rw_add_includes(components "rwslibs/luaeditor" ${SRC_FILES_HPP})
+    rws_add_component(
+        ${SUBSYS_NAME}
+        ${SrcFiles}
+        ${MocSrcFiles}
+        ${UIS_OUT_H}
+    )
+    rw_add_includes(${SUBSYS_NAME} "rwslibs/luaeditor" ${SRC_FILES_HPP})
     target_link_libraries(${SUBSYS_NAME} ${SUBSYS_DEPS})
 
     # Make sure dependencies are build before system

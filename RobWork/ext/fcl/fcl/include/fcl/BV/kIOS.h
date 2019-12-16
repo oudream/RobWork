@@ -69,7 +69,7 @@ class kIOS
     }
     else /** spheres partially overlapping or disjoint */
     {
-      float dist = std::sqrt(dist2);
+      float dist = float(std::sqrt(dist2));
       kIOS_Sphere s;
       s.r = dist + s0.r + s1.r;
       if(dist > 0)

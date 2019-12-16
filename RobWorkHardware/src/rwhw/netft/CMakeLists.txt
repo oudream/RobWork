@@ -1,45 +1,47 @@
-SET(SUBSYS_NAME netft )
-SET(SUBSYS_DESC "driver for netft" )
-SET(SUBSYS_DEPS sdurw )
+set(SUBSYS_NAME sdurwhw_netft)
+set(SUBSYS_DESC "driver for netft")
+set(SUBSYS_DEPS sdurw)
 
-SET(build TRUE)
-SET(default TRUE)
+set(build TRUE)
+set(default TRUE)
 
-set(Boost_NO_BOOST_CMAKE TRUE) # From Boost 1.70, CMake files are provided by Boost - we are not yet ready to handle it
+set(Boost_NO_BOOST_CMAKE TRUE) # From Boost 1.70, CMake files are provided by Boost - we are not yet ready to
+                               # handle it
 
-FIND_PACKAGE(Boost REQUIRED COMPONENTS system regex QUIET)
+find_package(Boost REQUIRED COMPONENTS system regex QUIET)
 set(DEFAULT TRUE)
-set(REASON )
-IF( NOT Boost_FOUND)
+set(REASON)
+if(NOT Boost_FOUND)
     set(DEFAULT false)
     set(REASON "Boost system and/or regex not found!")
 endif()
- 
-SET(build TRUE)
- 
-RW_SUBSYS_OPTION( build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} ${REASON})
-RW_ADD_DOC( ${SUBSYS_NAME} )
 
+set(build TRUE)
 
-IF( build )
-    #MESSAGE(STATUS "RobWorkHardware: ${component_name} component ENABLED")    
-    FIND_PACKAGE(Boost REQUIRED COMPONENTS system regex)
-    
-    SET(SRC_CPP NetFTLogging.cpp FTCompensation.cpp)
-    SET(SRC_HPP NetFTCommon.hpp NetFTLogging.hpp FTCompensation.hpp)
-    
-    RW_ADD_LIBRARY(sdurwhw_netft netft ${SRC_CPP} ${SRC_HPP})
-    TARGET_LINK_LIBRARIES(sdurwhw_netft PUBLIC ${ROBWORK_LIBRARIES})
+rw_subsys_option(
+    build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT}
+    REASON ${REASON}
+    DEPENDS ${SUBSYS_DEPS}
+    ADD_DOC
+)
+
+if(build)
+    # MESSAGE(STATUS "RobWorkHardware: ${component_name} component ENABLED")
+    find_package(Boost REQUIRED COMPONENTS system regex)
+
+    set(SRC_CPP NetFTLogging.cpp FTCompensation.cpp)
+    set(SRC_HPP NetFTCommon.hpp NetFTLogging.hpp FTCompensation.hpp)
+
+    rw_add_library(${SUBSYS_NAME} ${SRC_CPP} ${SRC_HPP})
+    target_link_libraries(${SUBSYS_NAME} PUBLIC ${ROBWORK_LIBRARIES})
 
     # Make sure dependencies are build before system
-    FOREACH(DEP IN LISTS ROBWORK_LIBRARIES)
-        IF(TARGET ${DEP})
-            ADD_DEPENDENCIES(sdurwhw_netft ${DEP})
-        ENDIF()
-    ENDFOREACH()
-    RW_ADD_INCLUDES(netft "rwhw/netft" ${SRC_HPP})
+    foreach(DEP IN LISTS ROBWORK_LIBRARIES)
+        if(TARGET ${DEP})
+            add_dependencies(${SUBSYS_NAME} ${DEP})
+        endif()
+    endforeach()
+    rw_add_includes(${SUBSYS_NAME} "rwhw/netft" ${SRC_HPP})
 
-    set(ROBWORKHARDWARE_LIBRARIES ${ROBWORKHARDWARE_LIBRARIES} sdurwhw_netft PARENT_SCOPE)
-ENDIF()
-
-
+    set(ROBWORKHARDWARE_LIBRARIES ${ROBWORKHARDWARE_LIBRARIES} ${SUBSYS_NAME} PARENT_SCOPE)
+endif()

@@ -136,14 +136,14 @@ dependencies of the rw_jni.so library.
 
 Try to execute the following in a terminal:
 
-.. code-block::
+.. code-block:: bash
 
    ldd /home/user/RobWork/libs/debug/librw_jni.so
 
 
 Now try to run in MATLAB:
 
-.. code-block::
+.. code-block:: matlab
 
    !ldd /home/user/RobWork/libs/debug/librw_jni.so
 
@@ -220,25 +220,25 @@ Typical Errors
 It can be difficult to get the MATLAB interface to run. The following is a list of known errors and
 possible solutions.
 
-.. code-block::
+.. code-block:: matlab
 
    >> LoaderRW.load(RW_LIBS)
    Java exception occurred:
    java.lang.UnsatisfiedLinkError: /home/user/RobWork/RobWork/libs/debug/librw_jni.so:
-   /opt/MATLAB/bin/glnxa64/../../sys/os/glnxa64/libstdc++.so.6: version `GLIBCXX_3.4.15' not found (required by /home/user/RobWork/RobWork/libs/debug/librw_jni.so)
+   /opt/MATLAB/bin/glnxa64/../../sys/os/glnxa64/libstdc++.so.6: version "GLIBCXX_3.4.15' not found (required by /home/user/RobWork/RobWork/libs/debug/librw_jni.so)"
 
 
 This error is caused by librw_jni.so as it is dependent on a newer version of the standard C++ library than
 the library provided and used by MATLAB. To solve this issue set the LD_PRELOAD:
 
-.. code-block::
+.. code-block:: bash
 
    export LD_PRELOAD="$LD_PRELOAD /usr/lib/x86_64-linux-gnu/libstdc++.so.6"
 
 
 If classes can not be found:
 
-.. code-block::
+.. code-block:: matlab
 
    >> javaaddpath(strcat(RW_LIBS,'/rw_java.jar'));
    >> import dk.robwork.*;
