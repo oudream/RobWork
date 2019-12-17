@@ -1,38 +1,24 @@
-SET(SUBSYS_NAME sdurw_calibration )
-SET(SUBSYS_DESC "Calibration of devices" )
-SET(SUBSYS_DEPS sdurw )
+set(SUBSYS_NAME sdurw_calibration)
+set(SUBSYS_DESC "Calibration of devices")
+set(SUBSYS_DEPS sdurw)
 
-SET(build TRUE)
+set(build TRUE)
 set(DEFAULT TRUE)
-set(REASON) 
-RW_SUBSYS_OPTION( build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} ${REASON})
-RW_ADD_DOC( ${SUBSYS_NAME} )
+set(REASON)
+rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} ${REASON} DEPENDS ${SUBSYS_DEPS} ADD_DOC)
 
-IF( build )
-MESSAGE("CALIBRATION SET FILES")
-	SET(SRC_FILES
-		xml/XmlCalibrationLoader.cpp
-        xml/XmlCalibrationSaver.cpp        
-		Calibration.cpp
-		FixedFrameCalibration.cpp
-		WorkCellCalibration.cpp
-		
-	)
-    
-	SET(SRC_FILES_HPP
-		xml/XmlCalibrationLoader.hpp
-        xml/XmlCalibrationSaver.hpp
-		Calibration.hpp
-		FixedFrameCalibration.hpp
-		WorkCellCalibration.hpp		
-	)
-    
-	RW_ADD_LIBRARY( ${SUBSYS_NAME} calibration ${SRC_FILES} ${SRC_FILES_HPP} )
-	RW_ADD_INCLUDES( calibration "rwlibs/calibration" ${SRC_FILES_HPP} ) 
-	TARGET_LINK_LIBRARIES( ${SUBSYS_NAME} PUBLIC ${SUBSYS_DEPS} )
-	ADD_DEPENDENCIES( ${SUBSYS_NAME} ${SUBSYS_DEPS} )
+if(build)
+    message("CALIBRATION SET FILES")
+    set(SRC_FILES xml/XmlCalibrationLoader.cpp xml/XmlCalibrationSaver.cpp Calibration.cpp FixedFrameCalibration.cpp
+                  WorkCellCalibration.cpp)
 
-	IF(CMAKE_VERSION VERSION_GREATER 3.3)
-		SET_TARGET_PROPERTIES(${SUBSYS_NAME} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
-	ENDIF()
-ENDIF()
+    set(SRC_FILES_HPP xml/XmlCalibrationLoader.hpp xml/XmlCalibrationSaver.hpp Calibration.hpp FixedFrameCalibration.hpp
+                      WorkCellCalibration.hpp)
+
+    rw_add_library(${SUBSYS_NAME} ${SRC_FILES} ${SRC_FILES_HPP})
+    rw_add_includes(${SUBSYS_NAME} "rwlibs/calibration" ${SRC_FILES_HPP})
+    target_link_libraries(${SUBSYS_NAME} PUBLIC ${SUBSYS_DEPS})
+    add_dependencies(${SUBSYS_NAME} ${SUBSYS_DEPS})
+
+    set_target_properties(${SUBSYS_NAME} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
+endif()

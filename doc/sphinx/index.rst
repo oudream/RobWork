@@ -1,4 +1,4 @@
-.. image:: https://gitlab.com/sdurobotics/RobWork/badges/master/pipeline.svg
+.. image:: https://robwork.dk/getBadge
    :target: https://gitlab.com/sdurobotics/RobWork
 
 --------------

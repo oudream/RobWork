@@ -70,6 +70,10 @@ if(PYTHONLIBS_FOUND)
     message(STATUS "Found Python libraries ${PYTHONLIBS_VERSION_STRING}")
 endif()
 
+if(NOT PYTHON_LIBRARIES)
+	set(PYTHON_LIBRARIES "")
+endif()
+
 # Find and setup OpenGL.
 if(POLICY CMP0072) # Introduce cmake 3.11
     cmake_policy(SET CMP0072 NEW)

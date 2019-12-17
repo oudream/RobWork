@@ -1,39 +1,52 @@
-SET(SUBSYS_NAME sdurws_luapl)
+set(SUBSYS_NAME sdurws_luapl)
 set(SUBSYS_DESC "A lua plugin")
-SET(SUBSYS_DEPS sdurws sdurws_luaeditor sdurws_lua_s)
+set(SUBSYS_DEPS sdurws sdurws_luaeditor sdurws_lua_s)
 
-SET(build ${RWS_HAVE_LUA})
-RW_SUBSYS_OPTION(build ${SUBSYS_NAME} ${SUBSYS_DESC} ${RWS_HAVE_LUA})
-RW_ADD_DOC(${SUBSYS_NAME})
+set(build ${RWS_HAVE_LUA})
+rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ${RWS_HAVE_LUA} DEPENDS ${SUBSYS_DEPS} ADD_DOC)
 
-IF(build)    
+if(build)
     # Standard cpp files to compile:
-    SET(SrcFiles Lua.cpp)
-    SET(SRC_FILES_HPP Lua.hpp)
-    
-    IF(RWS_USE_QT5)
-	QT5_WRAP_CPP(MocSrcFiles ${SRC_FILES_HPP})
-    	# Rcc the files:
-    	QT5_ADD_RESOURCES(RccSrcFiles resources.qrc)
-    ELSE()
-    # Header files to moc and compile:
-    	QT4_WRAP_CPP(MocSrcFiles ${SRC_FILES_HPP} OPTIONS -DBOOST_TT_HAS_PLUS_HPP_INCLUDED -DBOOST_TT_HAS_PLUS_ASSIGN_HPP_INCLUDED -DBOOST_TT_HAS_MINUS_HPP_INCLUDED -DBOOST_TT_HAS_MINUS_ASSIGN_HPP_INCLUDED)
-    	# Rcc the files:
-    	QT4_ADD_RESOURCES(RccSrcFiles resources.qrc)
-    ENDIF()
-        
-    # Set extra linker flags for apple macos computers    
-    RWS_ADD_PLUGIN(${SUBSYS_NAME} plugins ${RWS_DEFAULT_LIB_TYPE} ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles})
-    RW_ADD_INCLUDES(plugins "rwslibs/lua" ${SRC_FILES_HPP}) 
-    TARGET_LINK_LIBRARIES(${SUBSYS_NAME} ${SUBSYS_DEPS})
-    
-    FOREACH(DEP IN LISTS SUBSYS_DEPS)
-        IF(TARGET ${DEP})
-            ADD_DEPENDENCIES(${SUBSYS_NAME} ${DEP})
-        ENDIF()
-    ENDFOREACH()
+    set(SrcFiles Lua.cpp)
+    set(SRC_FILES_HPP Lua.hpp)
 
-    IF( "${RWS_DEFAULT_LIB_TYPE}" STREQUAL "STATIC" )
+    if(RWS_USE_QT5)
+        qt5_wrap_cpp(MocSrcFiles ${SRC_FILES_HPP})
+        # Rcc the files:
+        qt5_add_resources(RccSrcFiles resources.qrc)
+    else()
+        # Header files to moc and compile:
+        qt4_wrap_cpp(
+            MocSrcFiles
+            ${SRC_FILES_HPP}
+            OPTIONS
+            -DBOOST_TT_HAS_PLUS_HPP_INCLUDED
+            -DBOOST_TT_HAS_PLUS_ASSIGN_HPP_INCLUDED
+            -DBOOST_TT_HAS_MINUS_HPP_INCLUDED
+            -DBOOST_TT_HAS_MINUS_ASSIGN_HPP_INCLUDED
+        )
+        # Rcc the files:
+        qt4_add_resources(RccSrcFiles resources.qrc)
+    endif()
+
+    # Set extra linker flags for apple macos computers
+    rws_add_plugin(
+        ${SUBSYS_NAME}
+        ${RWS_DEFAULT_LIB_TYPE}
+        ${SrcFiles}
+        ${MocSrcFiles}
+        ${RccSrcFiles}
+    )
+    rw_add_includes(${SUBSYS_NAME} "rwslibs/lua" ${SRC_FILES_HPP})
+    target_link_libraries(${SUBSYS_NAME} ${SUBSYS_DEPS})
+
+    foreach(DEP IN LISTS SUBSYS_DEPS)
+        if(TARGET ${DEP})
+            add_dependencies(${SUBSYS_NAME} ${DEP})
+        endif()
+    endforeach()
+
+    if("${RWS_DEFAULT_LIB_TYPE}" STREQUAL "STATIC")
         set(RWS_PLUGIN_LIBRARIES ${RWS_PLUGIN_LIBRARIES} ${SUBSYS_NAME} PARENT_SCOPE)
-    ENDIF()
-ENDIF()
+    endif()
+endif()

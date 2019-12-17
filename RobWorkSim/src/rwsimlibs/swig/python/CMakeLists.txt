@@ -16,8 +16,12 @@ else()
     endif()
 endif()
 
-rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} ${REASON})
-rw_add_doc(${SUBSYS_NAME})
+rw_subsys_option(
+    build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT}
+    REASON ${REASON}
+    DEPENDS ${SUBSYS_DEPS}
+    ADD_DOC
+)
 
 if(build)
     include(UseSWIG)
@@ -36,7 +40,8 @@ if(build)
     )
 
     set(RWSIM_MODULE sdurwsim)
-    configure_file(RobWorkSim.egg-info.in ${CMAKE_CURRENT_SOURCE_DIR}/RobWorkSim-${ROBWORKSIM_VERSION}.egg-info)
+    configure_file(RobWorkSim.egg-info.in
+                   ${CMAKE_CURRENT_SOURCE_DIR}/RobWorkSim-${ROBWORKSIM_VERSION}.egg-info)
 
     if(NOT "${PYTHON_SITE_PACKAGES}" STREQUAL "")
         install(
@@ -44,7 +49,7 @@ if(build)
             DESTINATION ${PYTHON_SITE_PACKAGES}
         )
     endif()
-    
+
     if(POLICY CMP0078)
         set(LIB_SUFIX _py)
     else()
@@ -52,10 +57,16 @@ if(build)
     endif()
 
     # ############ SWIG COMPILE #################
+    set(SWIG_OUT_ORIG ${CMAKE_SWIG_OUTDIR})
     set(CMAKE_SWIG_OUTDIR ${RWSIM_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RWSIM_MODULE})
 
     if((CMAKE_VERSION VERSION_GREATER 3.8) OR (CMAKE_VERSION VERSION_EQUAL 3.8))
-        swig_add_library(sdurwsim${LIB_SUFIX} TYPE SHARED LANGUAGE python SOURCES ../sdurwsim.i ../ScriptTypes.cpp)
+        swig_add_library(
+            sdurwsim${LIB_SUFIX}
+            TYPE SHARED
+            LANGUAGE python
+            SOURCES ../sdurwsim.i ../ScriptTypes.cpp
+        )
     else()
         swig_add_module(sdurwsim${LIB_SUFIX} python ../sdurwsim.i ../ScriptTypes.cpp)
     endif()
@@ -74,12 +85,8 @@ if(build)
     set_target_properties(
         ${TARGET_NAME}
         PROPERTIES
-            ARCHIVE_OUTPUT_DIRECTORY
-            "${CMAKE_SWIG_OUTDIR}"
-            LIBRARY_OUTPUT_DIRECTORY
-            "${CMAKE_SWIG_OUTDIR}"
-            RUNTIME_OUTPUT_DIRECTORY
-            "${CMAKE_SWIG_OUTDIR}"
+            ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_SWIG_OUTDIR}"
+            LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SWIG_OUTDIR}" RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SWIG_OUTDIR}"
     )
 
     # ############# Documentation ##############
@@ -98,8 +105,8 @@ if(build)
                     PYTHONPATH=${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/../../../RobWork/libs/${RW_BUILD_TYPE}
                     ${pydoc}
                     -w
-                    sdurwsim
-                WORKING_DIRECTORY ${CMAKE_SWIG_OUTDIR}
+                    ${CMAKE_SWIG_OUTDIR}/${RWSIM_MODULE}.py
+                WORKING_DIRECTORY ${SWIG_OUT_ORIG}
                 COMMENT "Creating pydoc..."
             )
         endif()
@@ -109,12 +116,21 @@ if(build)
     configure_file(__init__.py.in ${CMAKE_SWIG_OUTDIR}/__init__.py)
     if(PYTHON_SITE_PACKAGES MATCHES "^.?usr")
         install(TARGETS ${TARGET_NAME} DESTINATION "${PYTHON_SITE_PACKAGES}/${RWSIM_MODULE}")
-        install(FILES ${CMAKE_SWIG_OUTDIR}/${RWS_MODULE}.py DESTINATION "${PYTHON_SITE_PACKAGES}/${RWSIM_MODULE}")
+        install(
+            FILES ${CMAKE_SWIG_OUTDIR}/${RWSIM_MODULE}.py
+            DESTINATION "${PYTHON_SITE_PACKAGES}/${RWSIM_MODULE}"
+        )
         install(FILES ${CMAKE_SWIG_OUTDIR}/__init__.py DESTINATION "${PYTHON_SITE_PACKAGES}/${RWSIM_MODULE}")
     endif()
     # ###### Final linking and dependency checks ######
 
-    swig_link_libraries(sdurwsim${LIB_SUFIX} ${RWSIM_ODE_LIBRARY} sdurwsim ${ROBWORK_LIBRARIES} ${PYTHON_LIBRARIES})
+    swig_link_libraries(
+        sdurwsim${LIB_SUFIX}
+        ${RWSIM_ODE_LIBRARY}
+        sdurwsim
+        ${ROBWORK_LIBRARIES}
+        ${PYTHON_LIBRARIES}
+    )
 
     # Make sure dependencies are build before system
     foreach(DEP IN LISTS SUBSYS_DEPS)

@@ -4,8 +4,7 @@ set(SUBSYS_DEPS sdurw)
 
 set(build TRUE)
 set(DEFAULT TRUE)
-rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT})
-rw_add_doc(${SUBSYS_NAME})
+rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} DEPENDS ${SUBSYS_DEPS} ADD_DOC)
 
 if(build)
     set(OptionalFiles)
@@ -41,8 +40,8 @@ if(build)
 
     set(SRC_FILES_HPP ${OptionalFiles_hpp} ProximityStrategyFactory.hpp)
 
-    rw_add_library(${SUBSYS_NAME} proximitystrategies ${SRC_FILES} ${SRC_FILES_HPP})
-    rw_add_includes(proximitystrategies "rwlibs/proximitystrategies" ${SRC_FILES_HPP})
+    rw_add_library(${SUBSYS_NAME} ${SRC_FILES} ${SRC_FILES_HPP})
+    rw_add_includes(${SUBSYS_NAME} "rwlibs/proximitystrategies" ${SRC_FILES_HPP})
     target_link_libraries(
         ${SUBSYS_NAME}
         PUBLIC ${SUBSYS_DEPS} ${PQP_LIBRARIES} ${BULLET_LIBRARIES}
@@ -51,9 +50,7 @@ if(build)
     target_include_directories(${SUBSYS_NAME} PRIVATE ${FCL_INCLUDE_DIRS})
     add_dependencies(${SUBSYS_NAME} ${SUBSYS_DEPS})
 
-    if(CMAKE_VERSION VERSION_GREATER 3.3)
-        set_target_properties(${SUBSYS_NAME} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
-    endif()
+    set_target_properties(${SUBSYS_NAME} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
 
     add_library(${SUBSYS_NAME}.rwplugin MODULE ProximityStrategyPlugin.cpp)
     target_link_libraries(${SUBSYS_NAME}.rwplugin ${SUBSYS_NAME})

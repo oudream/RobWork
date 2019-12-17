@@ -16,8 +16,12 @@ else()
     endif()
 endif()
 
-rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} ${REASON})
-rw_add_doc(${SUBSYS_NAME})
+rw_subsys_option(
+    build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT}
+    REASON ${REASON}
+    DEPENDS ${SUBSYS_DEPS}
+    ADD_DOC
+)
 
 if(build)
     include(UseSWIG)
@@ -53,10 +57,16 @@ if(build)
     endif()
 
     # ############ SWIG COMPILE #################
+    set(SWIG_OUT_ORIG ${CMAKE_SWIG_OUTDIR})
     set(CMAKE_SWIG_OUTDIR ${RWS_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RWS_MODULE})
 
     if((CMAKE_VERSION VERSION_GREATER 3.8) OR (CMAKE_VERSION VERSION_EQUAL 3.8))
-        swig_add_library(sdurws${LIB_SUFIX} TYPE SHARED LANGUAGE python SOURCES ../sdurws.i ../ScriptTypes.cpp)
+        swig_add_library(
+            sdurws${LIB_SUFIX}
+            TYPE SHARED
+            LANGUAGE python
+            SOURCES ../sdurws.i ../ScriptTypes.cpp
+        )
     else()
         swig_add_module(sdurws${LIB_SUFIX} python ../sdurws.i ../ScriptTypes.cpp)
     endif()
@@ -75,12 +85,8 @@ if(build)
     set_target_properties(
         ${TARGET_NAME}
         PROPERTIES
-            ARCHIVE_OUTPUT_DIRECTORY
-            "${CMAKE_SWIG_OUTDIR}"
-            LIBRARY_OUTPUT_DIRECTORY
-            "${CMAKE_SWIG_OUTDIR}"
-            RUNTIME_OUTPUT_DIRECTORY
-            "${CMAKE_SWIG_OUTDIR}"
+            ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_SWIG_OUTDIR}"
+            LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SWIG_OUTDIR}" RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SWIG_OUTDIR}"
     )
 
     # ############# Documentation ##############
@@ -99,8 +105,8 @@ if(build)
                     PYTHONPATH=${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/../../../RobWork/libs/${RW_BUILD_TYPE}
                     ${pydoc}
                     -w
-                    sdurws
-                WORKING_DIRECTORY ${CMAKE_SWIG_OUTDIR}
+                    ${CMAKE_SWIG_OUTDIR}/${RWS_MODULE}.py
+                WORKING_DIRECTORY ${SWIG_OUT_ORIG}
                 COMMENT "Creating pydoc..."
             )
         endif()
@@ -108,10 +114,13 @@ if(build)
 
     # ################# Install files ################
     configure_file(__init__.py.in ${CMAKE_SWIG_OUTDIR}/__init__.py)
-    
+
     if(NOT "${PYTHON_SITE_PACKAGES}" STREQUAL "")
         install(TARGETS ${TARGET_NAME} DESTINATION "${PYTHON_SITE_PACKAGES}/${RWS_MODULE}")
-        install(FILES ${CMAKE_SWIG_OUTDIR}/${RWS_MODULE}.py DESTINATION "${PYTHON_SITE_PACKAGES}/${RWS_MODULE}")
+        install(
+            FILES ${CMAKE_SWIG_OUTDIR}/${RWS_MODULE}.py
+            DESTINATION "${PYTHON_SITE_PACKAGES}/${RWS_MODULE}"
+        )
         install(FILES ${CMAKE_SWIG_OUTDIR}/__init__.py DESTINATION "${PYTHON_SITE_PACKAGES}/${RWS_MODULE}")
     endif()
     # ###### Final linking and dependency checks ######

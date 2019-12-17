@@ -1,6 +1,17 @@
 set(SUBSYS_NAME sdurw_lua)
 set(SUBSYS_DESC "Interface for accessing RobWork from lua.")
-set(SUBSYS_DEPS sdurw)
+set(
+    SUBSYS_DEPS
+    sdurw
+    sdurw_assembly
+    sdurw_control
+    sdurw_pathoptimization
+    sdurw_pathplanners
+    sdurw_proximitystrategies
+    sdurw_task
+    sdurw_simulation
+    sdurw_opengl
+)
 
 set(build TRUE)
 
@@ -14,8 +25,12 @@ else()
 
 endif()
 
-rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} ${REASON})
-rw_add_doc(${SUBSYS_NAME})
+rw_subsys_option(
+    build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT}
+    REASON ${REASON}
+    DEPENDS ${SUBSYS_DEPS}
+    ADD_DOC
+)
 
 if(build)
     set(RWSIM_HAVE_LUA TRUE CACHE INTERNAL "")
@@ -25,18 +40,18 @@ if(build)
     set(CMAKE_SWIG_FLAGS "")
 
     add_custom_target(${SUBSYS_NAME}_all)
-    set(RW_NAME sdurw)
+
     foreach(
         RW_MODULE
-        ${RW_NAME}
-        ${RW_NAME}_assembly
-        ${RW_NAME}_control
-        ${RW_NAME}_pathoptimization
-        ${RW_NAME}_pathplanners
-        ${RW_NAME}_proximitystrategies
-        ${RW_NAME}_task
-        ${RW_NAME}_simulation
-        ${RW_NAME}_opengl
+        sdurw
+        sdurw_assembly
+        sdurw_control
+        sdurw_pathoptimization
+        sdurw_pathplanners
+        sdurw_proximitystrategies
+        sdurw_task
+        sdurw_simulation
+        sdurw_opengl
     )
 
         set(RW_MODULE_FILENAME ../${RW_MODULE}.i)
@@ -62,6 +77,18 @@ if(build)
             swig_add_module(${TARGET_NAME} lua ${RW_MODULE_FILENAME} ${SOURCE})
         endif()
 
+        if(NOT DEFINED MSVC) # This code is to make it easier to make debian packages
+            set_target_properties(
+                ${TARGET_NAME}
+                PROPERTIES
+                    PREFIX ""
+                    OUTPUT_NAME ${RW_MODULE}
+                    ARCHIVE_OUTPUT_DIRECTORY "${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua"
+                    LIBRARY_OUTPUT_DIRECTORY "${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua"
+                    LIBRARY_OUTPUT_DIRECTORY "${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua"
+            )
+        endif()
+
         target_include_directories(${TARGET_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
         add_dependencies(${SUBSYS_NAME}_all ${TARGET_NAME})
 
@@ -71,10 +98,16 @@ if(build)
         endif()
 
         if((CMAKE_VERSION VERSION_GREATER 3.12.0) OR (CMAKE_VERSION VERSION_EQUAL 3.12.0))
-            swig_add_library(${TARGET_NAME}_s TYPE STATIC LANGUAGE lua SOURCES ${RW_MODULE_FILENAME} ${SOURCE})
+            swig_add_library(
+                ${TARGET_NAME}_s
+                TYPE STATIC
+                LANGUAGE lua
+                SOURCES ${RW_MODULE_FILENAME} ${SOURCE}
+            )
         else()
             add_library(${TARGET_NAME}_s STATIC ${SOURCE} ${swig_generated_sources} ${swig_other_sources})
-            add_dependencies(${TARGET_NAME}_s sdurw_lua) # avoid using the source files before they have been generated
+            add_dependencies(${TARGET_NAME}_s sdurw_lua) # avoid using the source files before they have been
+                                                         # generated
         endif()
         target_include_directories(${TARGET_NAME}_s PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
         add_dependencies(${SUBSYS_NAME}_all ${TARGET_NAME}_s)
@@ -92,7 +125,10 @@ if(build)
             target_link_libraries(${RW_MODULE}_lua_plugin.rwplugin ${RW_MODULE}_lua_s)
             target_include_directories(${RW_MODULE}_lua_plugin.rwplugin PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
             if((CMAKE_COMPILER_IS_GNUCC) OR (CMAKE_C_COMPILER_ID STREQUAL "Clang"))
-                set_target_properties(${RW_MODULE}_lua_plugin.rwplugin PROPERTIES LINK_FLAGS -Wl,--no-undefined)
+                set_target_properties(
+                    ${RW_MODULE}_lua_plugin.rwplugin
+                    PROPERTIES LINK_FLAGS -Wl,--no-undefined
+                )
             endif()
             add_dependencies(${SUBSYS_NAME}_all ${RW_MODULE}_lua_plugin.rwplugin)
             install(TARGETS ${RW_MODULE}_lua_plugin.rwplugin LIBRARY DESTINATION ${RW_PLUGIN_INSTALL_DIR})
@@ -105,37 +141,33 @@ if(build)
             ARCHIVE DESTINATION ${LIB_INSTALL_DIR} COMPONENT swig
         )
 
-        install(
-            FILES ${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/lib${TARGET_NAME}.so
-            DESTINATION ${LUA_INSTALL_DIR}
-            RENAME ${RW_MODULE}.so
-        )
+        install(TARGETS ${TARGET_NAME} DESTINATION ${LUA_INSTALL_DIR})
 
     endforeach()
 
-    swig_link_libraries(${RW_NAME}_lua sdurw ${LUA_LIBRARIES})
-    swig_link_libraries(${RW_NAME}_assembly_lua sdurw_assembly sdurw ${LUA_LIBRARIES})
-    swig_link_libraries(${RW_NAME}_control_lua sdurw_control sdurw ${LUA_LIBRARIES})
-    swig_link_libraries(${RW_NAME}_pathoptimization_lua sdurw_pathoptimization sdurw ${LUA_LIBRARIES})
-    swig_link_libraries(${RW_NAME}_pathplanners_lua sdurw_pathplanners sdurw ${LUA_LIBRARIES})
-    swig_link_libraries(${RW_NAME}_proximitystrategies_lua sdurw_proximitystrategies sdurw ${LUA_LIBRARIES})
-    swig_link_libraries(${RW_NAME}_simulation_lua sdurw_simulation sdurw ${LUA_LIBRARIES})
-    swig_link_libraries(${RW_NAME}_task_lua sdurw_task sdurw ${LUA_LIBRARIES})
-    swig_link_libraries(${RW_NAME}_opengl_lua sdurw_opengl sdurw ${LUA_LIBRARIES})
+    swig_link_libraries(sdurw_lua sdurw ${LUA_LIBRARIES})
+    swig_link_libraries(sdurw_assembly_lua sdurw_assembly sdurw ${LUA_LIBRARIES})
+    swig_link_libraries(sdurw_control_lua sdurw_control sdurw ${LUA_LIBRARIES})
+    swig_link_libraries(sdurw_pathoptimization_lua sdurw_pathoptimization sdurw ${LUA_LIBRARIES})
+    swig_link_libraries(sdurw_pathplanners_lua sdurw_pathplanners sdurw ${LUA_LIBRARIES})
+    swig_link_libraries(sdurw_proximitystrategies_lua sdurw_proximitystrategies sdurw ${LUA_LIBRARIES})
+    swig_link_libraries(sdurw_simulation_lua sdurw_simulation sdurw ${LUA_LIBRARIES})
+    swig_link_libraries(sdurw_task_lua sdurw_task sdurw ${LUA_LIBRARIES})
+    swig_link_libraries(sdurw_opengl_lua sdurw_opengl sdurw ${LUA_LIBRARIES})
 
-    target_include_directories(${RW_NAME}_lua PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
+    target_include_directories(sdurw_lua PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
 
-    target_link_libraries(${RW_NAME}_lua_s sdurw ${LUA_LIBRARIES})
-    target_link_libraries(${RW_NAME}_assembly_lua_s sdurw_assembly ${RW_NAME}_lua_s ${LUA_LIBRARIES})
-    target_link_libraries(${RW_NAME}_control_lua_s sdurw_control ${RW_NAME}_lua_s)
-    target_link_libraries(${RW_NAME}_pathoptimization_lua_s sdurw_pathoptimization ${RW_NAME}_lua_s ${LUA_LIBRARIES})
-    target_link_libraries(${RW_NAME}_pathplanners_lua_s sdurw_pathplanners ${RW_NAME}_lua_s ${LUA_LIBRARIES})
-    target_link_libraries(${RW_NAME}_proximitystrategies_lua_s sdurw_proximitystrategies ${RW_NAME}_lua_s
+    target_link_libraries(sdurw_lua_s sdurw ${LUA_LIBRARIES})
+    target_link_libraries(sdurw_assembly_lua_s sdurw_assembly sdurw_lua_s ${LUA_LIBRARIES})
+    target_link_libraries(sdurw_control_lua_s sdurw_control sdurw_lua_s)
+    target_link_libraries(sdurw_pathoptimization_lua_s sdurw_pathoptimization sdurw_lua_s ${LUA_LIBRARIES})
+    target_link_libraries(sdurw_pathplanners_lua_s sdurw_pathplanners sdurw_lua_s ${LUA_LIBRARIES})
+    target_link_libraries(sdurw_proximitystrategies_lua_s sdurw_proximitystrategies sdurw_lua_s
                           ${LUA_LIBRARIES})
-    target_link_libraries(${RW_NAME}_simulation_lua_s sdurw_simulation ${RW_NAME}_lua_s ${LUA_LIBRARIES})
-    target_link_libraries(${RW_NAME}_task_lua_s sdurw_task ${RW_NAME}_lua_s ${LUA_LIBRARIES})
-    target_link_libraries(${RW_NAME}_opengl_lua_s sdurw_opengl ${RW_NAME}_lua_s ${LUA_LIBRARIES})
+    target_link_libraries(sdurw_simulation_lua_s sdurw_simulation sdurw_lua_s ${LUA_LIBRARIES})
+    target_link_libraries(sdurw_task_lua_s sdurw_task sdurw_lua_s ${LUA_LIBRARIES})
+    target_link_libraries(sdurw_opengl_lua_s sdurw_opengl sdurw_lua_s ${LUA_LIBRARIES})
 
-    target_include_directories(${RW_NAME}_lua_s PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
+    target_include_directories(sdurw_lua_s PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
 
 endif()

@@ -1,27 +1,30 @@
-SET(SUBSYS_NAME schunkpg70 )
-SET(SUBSYS_DESC "Driver for schunk gripper pg70" )
-SET(SUBSYS_DEPS sdurwhw_pcube sdurwhw_serialport sdurw )
+set(SUBSYS_NAME sdurwhw_schunkpg70)
+set(SUBSYS_DESC "Driver for schunk gripper pg70")
+set(SUBSYS_DEPS sdurwhw_pcube sdurwhw_serialport sdurw)
 
-SET(build TRUE)
+set(build TRUE)
 set(DEFAULT TRUE)
-set(REASON) 
-RW_SUBSYS_OPTION( build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} ${REASON})
-RW_ADD_DOC( ${SUBSYS_NAME} )
+set(REASON)
+rw_subsys_option(
+    build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT}
+    REASON ${REASON}
+    DEPENDS ${SUBSYS_DEPS}
+    ADD_DOC
+)
+if(build)
+    set(SRC_CPP SchunkPG70.cpp)
+    set(SRC_HPP SchunkPG70.hpp)
 
-IF( build )
-    SET(SRC_CPP SchunkPG70.cpp )
-    SET(SRC_HPP SchunkPG70.hpp )
-    
-    RW_ADD_LIBRARY(sdurwhw_schunkpg70 schunkpg70 ${SRC_CPP} ${SRC_HPP})
-    TARGET_LINK_LIBRARIES(sdurwhw_schunkpg70 PUBLIC sdurwhw_pcube sdurwhw_serialport ${ROBWORK_LIBRARIES})
-    RW_ADD_INCLUDES(schunkpg70 "rwhw/schunkpg70" ${SRC_HPP})
+    rw_add_library(${SUBSYS_NAME} ${SRC_CPP} ${SRC_HPP})
+    target_link_libraries(${SUBSYS_NAME} PUBLIC sdurwhw_pcube sdurwhw_serialport ${ROBWORK_LIBRARIES})
+    rw_add_includes(${SUBSYS_NAME} "rwhw/schunkpg70" ${SRC_HPP})
 
     # Make sure dependencies are build before system
-    FOREACH(DEP IN LISTS SUBSYS_DEPS ROBWORK_LIBRARIES)
-        IF(TARGET ${DEP})
-            ADD_DEPENDENCIES(sdurwhw_schunkpg70 ${DEP})
-        ENDIF()
-    ENDFOREACH()
+    foreach(DEP IN LISTS SUBSYS_DEPS ROBWORK_LIBRARIES)
+        if(TARGET ${DEP})
+            add_dependencies(${SUBSYS_NAME} ${DEP})
+        endif()
+    endforeach()
 
-    set(ROBWORKHARDWARE_LIBRARIES ${ROBWORKHARDWARE_LIBRARIES} sdurwhw_schunkpg70 PARENT_SCOPE)
-ENDIF()
+    set(ROBWORKHARDWARE_LIBRARIES ${ROBWORKHARDWARE_LIBRARIES} ${SUBSYS_NAME} PARENT_SCOPE)
+endif()

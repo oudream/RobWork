@@ -1,15 +1,19 @@
-SET(SUBSYS_NAME sick )
-SET(SUBSYS_DESC "Driver for sick device" )
-SET(SUBSYS_DEPS sdurw )
+set(SUBSYS_NAME sdurwhw_sick)
+set(SUBSYS_DESC "Driver for sick device")
+set(SUBSYS_DEPS sdurw)
 
-SET(build TRUE)
+set(build TRUE)
 set(DEFAULT TRUE)
-set(REASON) 
-RW_SUBSYS_OPTION( build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} ${REASON})
-RW_ADD_DOC( ${SUBSYS_NAME} )
+set(REASON)
+rw_subsys_option(
+    build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT}
+    REASON ${REASON}
+    DEPENDS ${SUBSYS_DEPS}
+    ADD_DOC
+)
 
-IF( build )  
-    RW_ADD_LIBRARY(sdurwhw_sick sick SickLMS.cpp SickLMS.hpp)
-    RW_ADD_INCLUDES(sick "rwhw/sick" SickLMS.hpp)
+if(build)
+    rw_add_library(${SUBSYS_NAME} SickLMS.cpp SickLMS.hpp)
+    rw_add_includes(${SUBSYS_NAME} "rwhw/sick" SickLMS.hpp)
     set(ROBWORKHARDWARE_LIBRARIES ${ROBWORKHARDWARE_LIBRARIES} sdurwhw_sick PARENT_SCOPE)
-ENDIF()
+endif()

@@ -1901,11 +1901,52 @@ private:
 %template (FrameVector) std::vector<Frame*>;
 %template (FramePairVector) std::vector<std::pair<Frame*, Frame* > >;
 
+/** @addtogroup kinematics */
+    /* @{ */
+
+    /**
+     * @brief MovableFrame is a frame for which it is possible to freely
+     * change the transform relative to the parent.
+     *
+     * A MovableFrame can for example be used for modelling objects moving in
+     * the scene based on e.g. user input.
+     */
 class MovableFrame: public Frame{
 public:
-   explicit MovableFrame(const std::string& name);
 
-   void setTransform(const rw::math::Transform3D<double> & transform, State& state);
+    /**
+     * @brief Construct a MovableFrame with Identiy as the initial
+     * transform
+     *
+     * @param name [in] name of the frame
+     */
+    explicit MovableFrame(const std::string& name);
+
+   /**
+     * @brief Sets the transform in the state. The transform is relative to the
+     * MovableFrame's parent frame.
+     * @param transform [in] transform to set. the transform is described relative to parent frame
+     * @param state [out] state into which to set the transform
+     */
+    void setTransform(const Transform3D<>& transform, State& state);
+
+    /**
+     * @brief Changes the transform in the state, such that the movable frame is located in the
+     * transform which is described relative to world.
+     * @param transform [in] transform to set. transform is described relative to world frame
+     * @param state [out] state into which to set the transform
+     */
+    void moveTo(const Transform3D<>& transform, State& state);
+
+    /**
+     * @brief Changes the transform in the state, such that the movable frame is located in the
+     * transform which is described relative to refframe
+     * @param transform [in] transform to set. transform is described relative to refframe
+     * @param refframe [in] the reference frame.
+     * @param state [out] state into which to set the transform
+     */
+    void moveTo(const Transform3D<>& transform, Frame* refframe, State& state);
+
 };
 
 class FixedFrame: public Frame {
