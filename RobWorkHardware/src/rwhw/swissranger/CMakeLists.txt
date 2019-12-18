@@ -1,26 +1,41 @@
-SET(SUBSYS_NAME swissranger )
-SET(SUBSYS_DESC "Swiss ranger driver" )
-SET(SUBSYS_DEPS sdurw )
+set(SUBSYS_NAME sdurwhw_swissranger)
+set(SUBSYS_DESC "Swiss ranger driver")
+set(SUBSYS_DEPS sdurw)
 
-SET(build TRUE)
+set(build TRUE)
 set(DEFAULT FALSE)
 set(REASON)
 
-IF( ${BUILD_swissranger} )
-    FIND_PACKAGE(SwissRanger REQUIRED)
-    IF(NOT SwissRanger_FOUND)
+if(${BUILD_swissranger})
+    find_package(SwissRanger REQUIRED)
+    if(NOT SwissRanger_FOUND)
         set(BUILD_swissranger FALSE)
         set(REASON "Could not find swissranger library")
-    ENDIF()
-ENDIF()
- 
-RW_SUBSYS_OPTION( build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} ${REASON})
-RW_ADD_DOC( ${SUBSYS_NAME} )
+    endif()
+endif()
 
-IF( build )
-    RW_ADD_LIBRARY(sdurwhw_swissranger swissranger 
-         SRCalibrationData.cpp SwissRanger.cpp
-         SRCalibrationData.hpp SwissRanger.hpp SRConstants.hpp)
-    RW_ADD_INCLUDES(swissranger "rwhw/swissranger" SRCalibrationData.hpp SwissRanger.hpp SRConstants.hpp)
-    set(ROBWORKHARDWARE_LIBRARIES ${ROBWORKHARDWARE_LIBRARIES} sdurwhw_swissranger PARENT_SCOPE)
-ENDIF()
+rw_subsys_option(
+    build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT}
+    REASON ${REASON}
+    DEPENDS ${SUBSYS_DEPS}
+    ADD_DOC
+)
+
+if(build)
+    rw_add_library(
+        ${SUBSYS_NAME}
+        SRCalibrationData.cpp
+        SwissRanger.cpp
+        SRCalibrationData.hpp
+        SwissRanger.hpp
+        SRConstants.hpp
+    )
+    rw_add_includes(
+        ${SUBSYS_NAME}
+        "rwhw/swissranger"
+        SRCalibrationData.hpp
+        SwissRanger.hpp
+        SRConstants.hpp
+    )
+    set(ROBWORKHARDWARE_LIBRARIES ${ROBWORKHARDWARE_LIBRARIES} ${SUBSYS_NAME} PARENT_SCOPE)
+endif()

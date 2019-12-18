@@ -1,77 +1,80 @@
-#####################################################
-# Template for building RobWork dependent projects
-# - the src should contain code for putting into libraries 
-# - the plugins contain code for multiple RobWorkStudio plugins
-# - the test for testing 
-# - the example dir for illustrativ examples of your project
+# ######################################################################################################################
+# Template for building RobWork dependent projects - the src should contain code for putting into libraries - the
+# plugins contain code for multiple RobWorkStudio plugins - the test for testing - the example dir for illustrativ
+# examples of your project
 #
-# Use config.cmake to change default settings and edit this
-# file for adding additional dependencies to external projects  
-#####################################################
+# Use config.cmake to change default settings and edit this file for adding additional dependencies to external projects
+# ######################################################################################################################
 
 #
 # Test CMake version
 #
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8.11)
+cmake_minimum_required(VERSION 3.5.1)
 
 if(POLICY CMP0074)
-  cmake_policy(SET CMP0074 NEW)
+    cmake_policy(SET CMP0074 NEW)
 endif()
 
 # The name of the project.
-PROJECT(PluginUIApp)
+project(PluginUIApp)
 
 # Used to resolve absolute path names
-SET(ROOT ${CMAKE_CURRENT_SOURCE_DIR})
+set(ROOT ${CMAKE_CURRENT_SOURCE_DIR})
 
 set(CMAKE_VERBOSE_MAKEFILE false)
 
 # Now set the RobWorkSim directories (edit this if necessary)
-SET(RWSIM_ROOT "${ROOT}/../../../RobWorkSim")
-SET(RobWorkSim_DIR "${RWSIM_ROOT}/cmake")
+set(RWSIM_ROOT "${ROOT}/../../../RobWorkSim")
+set(RobWorkSim_DIR "${RWSIM_ROOT}/cmake")
 
 # We use the settings that robwork studio uses
-IF( NOT DEFINED CMAKE_BUILD_TYPE )
-    SET(CMAKE_BUILD_TYPE Release)
-ENDIF()
+if(NOT DEFINED CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Release)
+endif()
 
-#Include RobWorkSim settings
+# Include RobWorkSim settings
 
-MESSAGE(" ${RWSIM_ROOT} --")
-FIND_PACKAGE(RobWorkSim REQUIRED)
-INCLUDE_DIRECTORIES( ${ROBWORKSIM_INCLUDE_DIRS} ${ROBWORKSTUDIO_INCLUDE_DIRS} )
-LINK_DIRECTORIES( ${ROBWORKSIM_LIBRARY_DIRS} ${ROBWORKSTUDIO_LIBRARY_DIRS} )
-
+message(" ${RWSIM_ROOT} --")
+find_package(RobWorkSim REQUIRED)
+include_directories(${ROBWORKSIM_INCLUDE_DIRS} ${ROBWORKSTUDIO_INCLUDE_DIRS})
+link_directories(${ROBWORKSIM_LIBRARY_DIRS} ${ROBWORKSTUDIO_LIBRARY_DIRS})
 
 # Set the output dir for generated libraries and binaries
-IF(MSVC)
-	SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${ROOT}/bin" CACHE PATH "Runtime directory" FORCE)
-	SET(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${ROOT}/libs" CACHE PATH "Library directory" FORCE)
-	SET(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${ROOT}/libs" CACHE PATH "Archive directory" FORCE)
-ELSE()
-	SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${ROOT}/bin/${CMAKE_BUILD_TYPE}" CACHE PATH "Runtime directory" FORCE)
-	SET(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${ROOT}/libs/${CMAKE_BUILD_TYPE}" CACHE PATH "Library directory" FORCE)
-	SET(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${ROOT}/libs/${CMAKE_BUILD_TYPE}" CACHE PATH "Archive directory" FORCE)
-ENDIF()
+if(MSVC)
+    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${ROOT}/bin" CACHE PATH "Runtime directory" FORCE)
+    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${ROOT}/libs" CACHE PATH "Library directory" FORCE)
+    set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${ROOT}/libs" CACHE PATH "Archive directory" FORCE)
+else()
+    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${ROOT}/bin/${CMAKE_BUILD_TYPE}" CACHE PATH "Runtime directory" FORCE)
+    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${ROOT}/libs/${CMAKE_BUILD_TYPE}" CACHE PATH "Library directory" FORCE)
+    set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${ROOT}/libs/${CMAKE_BUILD_TYPE}" CACHE PATH "Archive directory" FORCE)
+endif()
 
 # if we want to use ui files add them here
-SET(UIS_FILES SimTaskVisPlugin.ui )
+set(UIS_FILES SimTaskVisPlugin.ui)
 
 # to be able to include the generated ui header files
-INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR}) 
+include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
-IF(RWS_USE_QT5)
-	QT5_WRAP_UI(UIS_OUT_H ${UIS_FILES})
-	QT5_WRAP_CPP(MocSrcFiles SimTaskVisPlugin.hpp)
-	QT5_ADD_RESOURCES(RccSrcFiles resources.qrc)
-ELSE()
-	QT4_WRAP_UI(UIS_OUT_H ${UIS_FILES})
-	QT4_WRAP_CPP(MocSrcFiles SimTaskVisPlugin.hpp OPTIONS -DBOOST_TT_HAS_PLUS_HPP_INCLUDED -DBOOST_TT_HAS_PLUS_ASSIGN_HPP_INCLUDED -DBOOST_TT_HAS_MINUS_HPP_INCLUDED -DBOOST_TT_HAS_MINUS_ASSIGN_HPP_INCLUDED)
-	QT4_ADD_RESOURCES(RccSrcFiles resources.qrc)
-ENDIF()
-SET(SrcFiles SimTaskVisPlugin.cpp ${UIS_OUT_H})
+if(RWS_USE_QT5)
+    qt5_wrap_ui(UIS_OUT_H ${UIS_FILES})
+    qt5_wrap_cpp(MocSrcFiles SimTaskVisPlugin.hpp)
+    qt5_add_resources(RccSrcFiles resources.qrc)
+else()
+    qt4_wrap_ui(UIS_OUT_H ${UIS_FILES})
+    qt4_wrap_cpp(
+        MocSrcFiles
+        SimTaskVisPlugin.hpp
+        OPTIONS
+        -DBOOST_TT_HAS_PLUS_HPP_INCLUDED
+        -DBOOST_TT_HAS_PLUS_ASSIGN_HPP_INCLUDED
+        -DBOOST_TT_HAS_MINUS_HPP_INCLUDED
+        -DBOOST_TT_HAS_MINUS_ASSIGN_HPP_INCLUDED
+    )
+    qt4_add_resources(RccSrcFiles resources.qrc)
+endif()
+set(SrcFiles SimTaskVisPlugin.cpp ${UIS_OUT_H})
 
 # The shared library to build:
-ADD_LIBRARY(SimTaskVisPlugin MODULE ${SrcFiles} ${MocSrcFiles}  ${RccSrcFiles})
-TARGET_LINK_LIBRARIES(SimTaskVisPlugin ${ROBWORKSIM_LIBRARIES} ${ROBWORKSTUDIO_LIBRARIES})
-
+add_library(SimTaskVisPlugin MODULE ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles})
+target_link_libraries(SimTaskVisPlugin ${ROBWORKSIM_LIBRARIES} ${ROBWORKSTUDIO_LIBRARIES})

@@ -752,12 +752,12 @@ void RobWorkStudio::setupPyPlugin(const QString& pathname, const QString& filena
 {   
     #ifdef RWS_USE_PYTHON
         Qt::DockWidgetArea dockarea = (Qt::DockWidgetArea)dock;
-        PyPlugin* pyplug = new PyPlugin();
+        PyPlugin* pyplug = new PyPlugin(filename,QIcon (":/PythonIcon.png"));
         addPlugin(pyplug,visible,dockarea);
         pyplug->initialize(pathname.toLocal8Bit().data(),filename.toLocal8Bit().data());
     #endif //RWS_USE_PYTHON
     #ifndef RWS_USE_PYTHON
-        RW_THROW("You have attempted to load a python plugin, but RobWorkStudio was not compiled using python, please recompile RobWorkStudio")
+		RW_THROW("You have attempted to load a python plugin, but RobWorkStudio was not compiled using python, please recompile RobWorkStudio");
     #endif //NOT RWS_USE_PYTHON
 
 }
