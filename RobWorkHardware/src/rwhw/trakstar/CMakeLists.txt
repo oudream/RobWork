@@ -1,4 +1,4 @@
-set(SUBSYS_NAME trakstar)
+set(SUBSYS_NAME sdurwhw_trakstar)
 set(SUBSYS_DESC "Calibration of devices")
 set(SUBSYS_DEPS sdurw)
 

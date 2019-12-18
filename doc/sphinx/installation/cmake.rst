@@ -1,3 +1,5 @@
+.. _cmake-options:
+
 CMake Options & Environment
 =================================================================
 
@@ -8,7 +10,9 @@ Here we will give an introduction to the CMake system and the most relevant opti
 We will also provide some information about how to control where CMake searches for the dependencies.
 
 .. warning::
-    This page is still being written. The following sections will therefore include a non compleate list of CMake options
+    This page is still being written. The following sections will therefore include a non compleat list of CMake options
+
+The variables shown can been used when calling CMake by using the suffix "-D"
 
 Common Options
 --------------
@@ -30,9 +34,44 @@ Common Options
         - GLUT, FreeGLUT, XercesC, Yaobi, FCL, EIGEN3, SWIG, LUA51, LUA, ASSIMP, ZLIB, MINIZIP, PythonInterp, PythonLibs,
           GTest, Mathematica, OpenMP
 
-- SWIG_EXECUTABLE=<path\to\swig.exe>
-    - Default : <let CMake find the path>
+- SWIG_EXECUTABLE="Path/to/swig.exe"
+    - Default: let CMake find the path
     - Use this argument to specify which swig executable should be used.
+
+- BOOST_ROOT="Path\to\boost_<version>"
+    - Default: let CMake find the path
+    - Use this to specify where cmake can find boost
+
+- BOOST_LIBRARYDIR="Path/to/boost_<version>/<compiler type>"
+    - Default: let CMake find the path
+    - Use this to clarify which compiler specific binaries of boost should be used
+
+
+- GTEST_ROOT:PATH=""Path/to/GTest/googletest"
+    - Default: let CMake find the path
+    - Use this in combination with GTEST_SOURCE to specify where to find gtest.
+
+- GTEST_SOURCE:PATH="Path/to/GTest/googletest"
+    - Default: let CMake find the path
+    - Use this in combination with GTEST_ROOT to specify where to find gtest.
+
+
+- XERCESC_ROOT:PATH="Path/to/xerces-c-<version>/xerces-install"
+    - Default: let cmake find the path
+    - Use this to specify where to find Xerces.
+
+- BULLET_ROOT:PATH="Path/to/bullet3/install"
+    - Default: let cmake find the path
+    - Use this to specify where to find Bullet.
+
+- CMAKE_PREFIX_PATH="Path/to/Qt/<version>/<compiler>"
+    - Default: None
+    - This variable can be used to specify CMakes search path, read more about this `here <https://cmake.org/cmake/help/latest/variable/CMAKE_PREFIX_PATH.html>`_.
+      For RobWork this variable can be used to find Qt, as seen in the example.
+
+- ODE_DIR:PATH="Path/to/ode/install"
+    - Default: let cmake find the path
+    - Use this to specify the ODE installation
 
 Robwork Options
 ---------------
@@ -180,23 +219,23 @@ Running CMake will show which packages are not being build and why.
 
 **RobworkHardWare**
 
-- BUILD_camera=[ON|OFF]
-- BUILD_CAN=[ON|OFF]
-- BUILD_CRSA465=[ON|OFF]
-- BUILD_dockwelder=[ON|OFF]
-- BUILD_katana=[ON|OFF]
-- BUILD_pa10=[ON|OFF]
-- BUILD_pcube=[ON|OFF]
-- BUILD_serialport=[ON|OFF]
-- BUILD_swissranger=[ON|OFF]
-- BUILD_tactile=[ON|OFF]
-- BUILD_motomanIA20=[ON|OFF]
-- BUILD_sdh=[ON|OFF]
-- BUILD_universalrobots=[ON|OFF]
-- BUILD_universalrobots_rtde=[ON|OFF]
-- BUILD_fanucdriver=[ON|OFF]
-- BUILD_schunkpg70=[ON|OFF]
-- BUILD_netft=[ON|OFF]
-- BUILD_trakstar=[ON|OFF]
-- BUILD_robolabFT=[ON|OFF]
-- BUILD_robotiq=[ON|OFF]
+- BUILD_sdurwhw_camera=[ON|OFF]
+- BUILD_sdurwhw_CAN=[ON|OFF]
+- BUILD_sdurwhw_CRSA465=[ON|OFF]
+- BUILD_sdurwhw_dockwelder=[ON|OFF]
+- BUILD_sdurwhw_katana=[ON|OFF]
+- BUILD_sdurwhw_pa10=[ON|OFF]
+- BUILD_sdurwhw_pcube=[ON|OFF]
+- BUILD_sdurwhw_serialport=[ON|OFF]
+- BUILD_sdurwhw_swissranger=[ON|OFF]
+- BUILD_sdurwhw_tactile=[ON|OFF]
+- BUILD_sdurwhw_motomanIA20=[ON|OFF]
+- BUILD_sdurwhw_sdh=[ON|OFF]
+- BUILD_sdurwhw_universalrobots=[ON|OFF]
+- BUILD_sdurwhw_universalrobots_rtde=[ON|OFF]
+- BUILD_sdurwhw_fanucdriver=[ON|OFF]
+- BUILD_sdurwhw_schunkpg70=[ON|OFF]
+- BUILD_sdurwhw_netft=[ON|OFF]
+- BUILD_sdurwhw_trakstar=[ON|OFF]
+- BUILD_sdurwhw_robolabFT=[ON|OFF]
+- BUILD_sdurwhw_robotiq=[ON|OFF]

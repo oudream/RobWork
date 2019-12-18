@@ -1,4 +1,4 @@
-set(SUBSYS_NAME CRSA465)
+set(SUBSYS_NAME sdurwhw_CRSA465)
 set(SUBSYS_DESC "Library of drivers for the CRSA465 robot")
 set(SUBSYS_DEPS sdurw)
 
