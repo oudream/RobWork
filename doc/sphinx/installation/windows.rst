@@ -832,6 +832,5 @@ dependencies switched to CMake based build systems, which makes the
 overall build procedure a lot easier, as users are able to repeat the
 same procedure using only CMake as build system.
 
-In the future, we plan to use the `CMake Options &
-Environment <@ref%20page_rw_installation_cmake_options>`__ page to give
-an overview of how to customize RobWork through CMake.
+In the future, we plan to use the :ref:`CMake Options & Environment<cmake-options>`:
+page to give an overview of how to customize RobWork through CMake.

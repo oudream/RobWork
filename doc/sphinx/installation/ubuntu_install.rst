@@ -62,6 +62,34 @@ For the development packages including the newest version of robwork and the inc
 |  - libsdurw-task                |  - libsdurws-workcelleditorplugin |                                    |                       |
 +---------------------------------+-----------------------------------+------------------------------------+-----------------------+
 
+Python and Lua packages
+########################
+
+To use RobWork with Lua scripting or Python3, the following packages are available as wrapped c++ code.
+They are downloaded in the same way as c++ libraries
+
+.. code-block:: bash
+
+    sudo apt-get install python3-<package>
+    # or
+    sudo apt-get install lua-<package>
+
++---------------------------------------+-----------------------------------+
+| RobWork                               | Lua Packages                      |
++---------------------------------------+-----------------------------------+
+|  - python3-sdurw                      |  - lua-sdurw                      |
+|  - python3-sdurw-assembly             |  - lua-sdurw-assembly             |
+|  - python3-sdurw-control              |  - lua-sdurw-control              |
+|  - python3-sdurw-opengl               |  - lua-sdurw-opengl               |
+|  - python3-sdurw-pathoptimization     |  - lua-sdurw-pathoptimization     |
+|  - python3-sdurw-pathplanners         |  - lua-sdurw-pathplanners         |
+|  - python3-sdurw-proximitystrategies  |  - lua-sdurw-proximitystrategies  |
+|  - python3-sdurw-simulation           |  - lua-sdurw-simulation           |
+|  - python3-sdurw-task                 |  - lua-sdurw-task                 |
+|  - python3-sdurws                     |  - lua-sdurws                     |
+|  - python3-sdurwsim                   |  - lua-sdurwsim                   |
++---------------------------------------+-----------------------------------+
+
 Bundled packages
 ################
 
@@ -70,6 +98,7 @@ some packages containing all the individual packages exists.
 These packages is made for quick installation.
 In the package name "lib<Library>-all" means all packages belonging to <Library>,
 and "-all-dev" is a development version of the "-all" package.
+The ".robwork-all" includes all packages for all four main robwork code libraries.
 
 - libsdurw-all-dev
 - libsdurw-all
@@ -79,6 +108,8 @@ and "-all-dev" is a development version of the "-all" package.
 - libsdurws-all
 - libsdurwsim-all-dev
 - libsdurwsim-all
+- python3-robwork-all
+- lua-robwork-all
 
 
 cmake packages

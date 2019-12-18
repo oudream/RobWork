@@ -1,7 +1,7 @@
 Ubuntu compilation
 **********************
 
-RobWork can be built by the user. 
+RobWork can be built by the user.
 This guide shows the steps for doing this in Ubuntu 16.04, 18.04, and 19.04.
 The compilation on these platforms are tested continuously.
 Current status of the pipeline for the RobWork master branch is:
@@ -25,7 +25,7 @@ RobWork is basically multiple projects:
 - RobWork :
   is the core part including math, kinematics, planning and so on.
 - RobWorkStudio :
-  is the GUI which enable visualization and more userfriendly interfaces through gui plugins
+  is the GUI which enable visualization and more user friendly interfaces through gui plugins
 - RobWorkSim :
   is an extension to the RobWork core functionality which adds dynamic simulation of bodies,
   devices and several tactile sensors.
@@ -265,7 +265,7 @@ the dependency correctly. A good advice before building RobWork, is to
 actually read the CMake output carefully. Running CMake will be
 discussed later, but the CMake output will typically reveal early in the
 process if a dependency was not found. Building RobWork can take quite
-some time, and it is a pitty building everything, just to discover that
+some time, and it is a petty building everything, just to discover that
 some functionality was disabled due to a unmet dependency (especially a
 problem for the optional dependencies).
 
@@ -279,8 +279,7 @@ control, as it allows multiple versions of dependencies to be installed
 on the system. The version to use is then selected explicitly when
 running CMake.
 
-In `CMake Options &
-Environment <@ref%20page_rw_installation_cmake_options>`__ we try to
+In :ref:`CMake Options & Environment<cmake-options>`: we try to
 give an overview of the correct variables to set for the various
 dependencies.
 
