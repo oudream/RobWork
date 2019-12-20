@@ -8,6 +8,7 @@ set(REASON)
 set(RTDE_VERSION_REQUIRED 1.0.0)
 
 find_package(ur_rtde ${RTDE_VERSION_REQUIRED} QUIET CONFIG)
+
 set(UR_RTDE_INTERNAL OFF)
 if(NOT ur_rtde_FOUND)
     # Try the internal one
@@ -33,6 +34,7 @@ if(build)
                                        # ready to handle it
         set(tmp ${INCLUDE_INSTALL_DIR})
         set(INCLUDE_INSTALL_DIR "${INCLUDE_INSTALL_DIR}/ext")
+        set(PYTHON_BINDINGS OFF)
         add_subdirectory(${RWHW_ROOT}/ext/ur_rtde ur_rtde_ext)
         set(INCLUDE_INSTALL_DIR ${tmp})
     endif()
@@ -48,7 +50,7 @@ if(build)
     if(NOT UR_RTDE_INTERNAL)
         # message(STATUS "ur_rtde: ${ur_rtde_FOUND}  - lib: ${ur_rtde_LIBRARIES} - incl:
         # ${ur_rtde_INCLUDE_DIRS}")
-        target_include_directories(rwhw_universalrobots_rtde PRIVATE ${ur_rtde_INCLUDE_DIRS})
+        target_include_directories(sdurwhw_universalrobots_rtde PRIVATE ${ur_rtde_INCLUDE_DIRS})
     endif()
 
     # Make sure dependencies are build before system

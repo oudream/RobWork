@@ -1,14 +1,16 @@
-#ifndef RTDE_RTDE_CONTROL_INTERFACE_H
-#define RTDE_RTDE_CONTROL_INTERFACE_H
+#ifndef RTDE_CONTROL_INTERFACE_H
+#define RTDE_CONTROL_INTERFACE_H
 
-#include <rtde_export.h>
+#include <ur_rtde/rtde_export.h>
 #include <ur_rtde/rtde.h>
 #include <ur_rtde/dashboard_client.h>
 #include <ur_rtde/script_client.h>
+#include <boost/thread.hpp>
 #include <thread>
 #include <sstream>
 
 #define MAJOR_VERSION 0
+#define MINOR_VERSION 1
 #define CB3_MAJOR_VERSION 3
 #define UR_CONTROLLER_RDY_FOR_CMD 1
 #define UR_CONTROLLER_CMD_RECEIVED 0
@@ -17,13 +19,16 @@
 #define UR_PATH_EXECUTION_TIMEOUT 600
 #define UR_GET_READY_TIMEOUT 3
 #define UR_CMD_RECEIVE_TIMEOUT 3
+#define RTDE_START_SYNCHRONIZATION_TIMEOUT 5
 
-#define UR_VELOCITY_MAX 1.0
-#define UR_VELOCITY_ABSOLUTE_MAX 3.14
-#define UR_VELOCITY_MIN 0
-#define UR_ACCELERATION_MAX 2.0
-#define UR_ACCELERATION_ABSOLUTE_MAX 5.0
-#define UR_ACCELERATION_MIN 0
+#define UR_JOINT_VELOCITY_MAX 3.14 // rad/s
+#define UR_JOINT_VELOCITY_MIN 0 // rad/s
+#define UR_JOINT_ACCELERATION_MAX 40.0 // rad/s^2
+#define UR_JOINT_ACCELERATION_MIN 0 // rad/s^2
+#define UR_TOOL_VELOCITY_MAX 3.0 // m/s
+#define UR_TOOL_VELOCITY_MIN 0 // m/s
+#define UR_TOOL_ACCELERATION_MAX 150.0 // m/s^2
+#define UR_TOOL_ACCELERATION_MIN 0 // m/s^2
 #define UR_SERVO_LOOKAHEAD_TIME_MAX 0.2
 #define UR_SERVO_LOOKAHEAD_TIME_MIN 0.03
 #define UR_SERVO_GAIN_MAX 2000
@@ -90,7 +95,7 @@ class RTDEControlInterface
     * @param speed joint speed of leading axis [rad/s]
     * @param acceleration joint acceleration of leading axis [rad/s^2]
     */
-  RTDE_EXPORT bool moveJ(const std::vector<double> &q, double speed, double acceleration);
+  RTDE_EXPORT bool moveJ(const std::vector<double> &q, double speed=1.05, double acceleration=1.4);
 
   /**
     * @brief Move to each joint position specified in a path
@@ -104,7 +109,7 @@ class RTDEControlInterface
     * @param speed joint speed of leading axis [rad/s]
     * @param acceleration joint acceleration of leading axis [rad/s^2]
     */
-  RTDE_EXPORT bool moveJ_IK(const std::vector<double> &pose, double speed, double acceleration);
+  RTDE_EXPORT bool moveJ_IK(const std::vector<double> &pose, double speed=1.05, double acceleration=1.4);
 
   /**
     * @brief Move to position (linear in tool-space)
@@ -112,7 +117,7 @@ class RTDEControlInterface
     * @param speed tool speed [m/s]
     * @param acceleration tool acceleration [m/s^2]
     */
-  RTDE_EXPORT bool moveL(const std::vector<double> &pose, double speed, double acceleration);
+  RTDE_EXPORT bool moveL(const std::vector<double> &pose, double speed=0.25, double acceleration=1.2);
 
   /**
     * @brief Move to each pose specified in a path
@@ -126,7 +131,7 @@ class RTDEControlInterface
     * @param speed tool speed [m/s]
     * @param acceleration tool acceleration [m/s^2]
     */
-  RTDE_EXPORT bool moveL_FK(const std::vector<double> &q, double speed, double acceleration);
+  RTDE_EXPORT bool moveL_FK(const std::vector<double> &q, double speed=0.25, double acceleration=1.2);
 
   /**
     * @brief Move Circular: Move to position (circular in tool-space)
@@ -137,8 +142,8 @@ class RTDEControlInterface
     * @param mode 0: Unconstrained mode. Interpolate orientation from current pose to target pose (pose_to)
     * 1: Fixed mode. Keep orientation constant relative to the tangent of the circular arc (starting from current pose)
     */
-  RTDE_EXPORT bool moveC(const std::vector<double> &pose_via, const std::vector<double> &pose_to, double speed,
-                         double acceleration, int mode);
+  RTDE_EXPORT bool moveC(const std::vector<double> &pose_via, const std::vector<double> &pose_to, double speed=0.25,
+                         double acceleration=1.2, int mode=0);
 
   /**
     * @brief Joint speed - Accelerate linearly in joint space and continue with constant joint speed
@@ -146,7 +151,7 @@ class RTDEControlInterface
     * @param acceleration joint acceleration [rad/s^2] (of leading axis)
     * @param time time [s] before the function returns (optional)
     */
-  RTDE_EXPORT bool speedJ(const std::vector<double> &qd, double acceleration, double time = 0.0);
+  RTDE_EXPORT bool speedJ(const std::vector<double> &qd, double acceleration=0.5, double time = 0.0);
 
   /**
     * @brief Tool speed - Accelerate linearly in Cartesian space and continue with constant tool speed. The time t is
@@ -155,7 +160,7 @@ class RTDEControlInterface
     * @param acceleration tool position acceleration [m/s^2]
     * @param time time [s] before the function returns (optional)
     */
-  RTDE_EXPORT bool speedL(const std::vector<double> &xd, double acceleration, double time = 0.0);
+  RTDE_EXPORT bool speedL(const std::vector<double> &xd, double acceleration=0.25, double time = 0.0);
 
   /**
     * @brief Servo to position (linear in joint-space)
@@ -198,7 +203,7 @@ class RTDEControlInterface
     * @param acceleration tool acceleration [m/s^2]
     * @param blend blend radius (of target pose) [m]
     */
-  RTDE_EXPORT bool servoC(const std::vector<double> &pose, double speed, double acceleration, double blend);
+  RTDE_EXPORT bool servoC(const std::vector<double> &pose, double speed=0.25, double acceleration=1.2, double blend=0.0);
 
   /**
     * @brief Set robot to be controlled in force mode
@@ -282,6 +287,75 @@ class RTDEControlInterface
   RTDE_EXPORT bool forceModeSetGainScaling(double scaling);
 
   /**
+    * @brief Detects when a contact between the tool and an object happens.
+    * @param direction The first three elements are interpreted as a 3D vector (in the robot base coordinate system)
+    * giving the direction in which contacts should be detected. If all elements of the list are zero, contacts from all
+    * directions are considered.
+    * @returns The returned value is the number of time steps back to just before the contact have started. A value
+    * larger than 0 means that a contact is detected. A value of 0 means no contact.
+    */
+  RTDE_EXPORT int toolContact(const std::vector<double>& direction);
+
+  /**
+    * @brief Returns the duration of the robot time step in seconds.
+    *
+    * In every time step, the robot controller will receive measured joint positions and velocities from the robot, and
+    * send desired joint positions and velocities back to the robot. This happens with a predetermined frequency, in
+    * regular intervals. This interval length is the robot time step.
+    *
+    * @returns Duration of the robot step in seconds
+    */
+  RTDE_EXPORT int getStepTime();
+
+  /**
+    * @brief Detects when a contact between the tool and an object happens.
+    * @param direction The first three elements are interpreted as a 3D vector (in the robot base coordinate system)
+    * giving the direction in which contacts should be detected. If all elements of the list are zero, contacts from all
+    * directions are considered.
+    * @returns The returned value is the number of time steps back to just before the contact have started. A value
+    * larger than 0 means that a contact is detected. A value of 0 means no contact.
+    */
+  RTDE_EXPORT std::vector<double> getActualJointPositionsHistory(int steps=0);
+
+  /**
+    * @brief Returns the target waypoint of the active move
+    *
+    * This is different from the target tcp pose which returns the target pose for each time step.
+    * The get_target_waypoint() returns the same target pose for movel, movej, movep or movec during the motion. It
+    * returns the target tcp pose, if none of the mentioned move functions are running.
+    *
+    * This method is useful for calculating relative movements where the previous move command uses blends.
+    *
+    * @returns The desired waypoint TCP vector [X, Y, Z, Rx, Ry, Rz]
+    */
+  RTDE_EXPORT std::vector<double> getTargetWaypoint();
+
+  /**
+    * @brief Sets the active tcp offset, i.e. the transformation from the output flange coordinate system to the
+    * TCP as a pose.
+    * @param tcp_offset A pose describing the transformation of the tcp offset.
+    */
+  RTDE_EXPORT bool setTcp(const std::vector<double> &tcp_offset);
+
+  /**
+    * @brief Calculate the inverse kinematic transformation (tool space -> jointspace). If qnear is defined, the
+    * solution closest to qnear is returned.Otherwise, the solution closest to the current joint positions is returned.
+    * If no tcp is provided the currently active tcp of the controller will be used.
+    * @param x tool pose
+    * @param qnear list of joint positions (Optional)
+    * @param maxPositionError the maximum allowed positionerror (Optional)
+    * @param maxOrientationError the maximum allowed orientationerror (Optional)
+    * @returns joint positions
+    */
+  RTDE_EXPORT std::vector<double> getInverseKinematics(const std::vector<double> &x, const std::vector<double> &qnear,
+      double max_position_error=1e-10, double max_orientation_error=1e-10);
+
+  /**
+    * @brief Triggers a protective stop on the robot. Can be used for testing and debugging.
+    */
+  RTDE_EXPORT bool triggerProtectiveStop();
+
+  /**
     * @brief Returns true if a program is running on the controller, otherwise it returns false
     */
   RTDE_EXPORT bool isProgramRunning();
@@ -293,14 +367,28 @@ class RTDEControlInterface
 
   int getControlScriptState();
 
+  int getToolContactValue();
+
+  int getStepTimeValue();
+
+  std::vector<double> getTargetWaypointValue();
+
+  std::vector<double> getActualJointPositionsHistoryValue();
+
+  std::vector<double> getInverseKinematicsValue();
+
   void verifyValueIsWithin(const double &value, const double &min, const double &max);
 
   std::string prepareCmdScript(const std::vector<std::vector<double>> &path, const std::string &cmd);
+
+  void receiveCallback();
 
  private:
   std::string hostname_;
   int port_;
   std::shared_ptr<RTDE> rtde_;
+  std::atomic<bool> stop_thread{false};
+  std::shared_ptr<boost::thread> th_;
   std::shared_ptr<DashboardClient> db_client_;
   std::shared_ptr<ScriptClient> script_client_;
   std::shared_ptr<RobotState> robot_state_;
@@ -308,4 +396,4 @@ class RTDEControlInterface
 
 }  // namespace ur_rtde
 
-#endif  // RTDE_RTDE_CONTROL_INTERFACE_H
+#endif  // RTDE_CONTROL_INTERFACE_H
