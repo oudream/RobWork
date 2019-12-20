@@ -1,7 +1,7 @@
 #ifndef RTDE_H
 #define RTDE_H
 
-#include <rtde_export.h>
+#include <ur_rtde/rtde_export.h>
 #include <ur_rtde/robot_state.h>
 #include <cstdint>
 #include <string>
@@ -48,6 +48,13 @@ class RTDE
       SET_SPEED_SLIDER = 23,
       SET_STD_ANALOG_OUT = 24,
       SERVOL = 25,
+      TOOL_CONTACT = 26,
+      GET_STEPTIME = 27,
+      GET_ACTUAL_JOINT_POSITIONS_HISTORY = 28,
+      GET_TARGET_WAYPOINT = 29,
+      SET_TCP = 30,
+      GET_INVERSE_KINEMATICS = 31,
+      PROTECTIVE_STOP = 32,
       STOP = 255
     };
 
@@ -61,7 +68,9 @@ class RTDE
       RECIPE_6 = 6,
       RECIPE_7 = 7,
       RECIPE_8 = 8,
-      RECIPE_9 = 9
+      RECIPE_9 = 9,
+      RECIPE_10 = 10,
+      RECIPE_11 = 11
     };
 
     RTDE_EXPORT RobotCommand() : type_(NO_CMD), recipe_id_(1)
@@ -84,6 +93,7 @@ class RTDE
     double std_analog_output_1_;
     std::int32_t speed_slider_mask_;
     double speed_slider_fraction_;
+    std::uint32_t steps_;
   };
 
   enum RTDECommand
@@ -110,6 +120,7 @@ class RTDE
   RTDE_EXPORT void connect();
   RTDE_EXPORT void disconnect();
   RTDE_EXPORT bool isConnected();
+  RTDE_EXPORT bool isStarted();
 
   RTDE_EXPORT bool negotiateProtocolVersion();
   RTDE_EXPORT std::tuple<std::uint32_t, std::uint32_t, std::uint32_t, std::uint32_t> getControllerVersion();

@@ -2574,6 +2574,7 @@ RobWork/example/java/src/*.log
 /RobWorkHardware/ext/ur_rtde/.gitignore
 /RobWorkHardware/ext/ur_rtde/.gitlab-ci.yml
 /RobWorkHardware/ext/ur_rtde/include/ur_rtde/rtde_control_script.h
+/RobWorkHardware/ext/ur_rtde/include/ur_rtde/rtde_export.h
 
 # /RobWorkHardware/src/
 /RobWorkHardware/src/cmake_install.cmake
@@ -4135,5 +4136,6 @@ RobWorkSim/src/rwsimlibs/swig/python/RobWorkSim-*.egg-info
 
 #/doc/sphinx/apidoc/java
 /doc/sphinx/apidoc/java/org
+
 
 
