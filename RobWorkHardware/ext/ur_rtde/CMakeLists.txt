@@ -21,13 +21,19 @@ if(${CODE})
 	set(CMAKE_CXX_STANDARD 11)
 	set(CMAKE_CXX_STANDARD_REQUIRED ON)
 	set(CMAKE_CXX_EXTENSIONS OFF)
+	if( DEFINED USE_WERROR)
+		set(WALL "-Wall")
+		set(WERROR "-Werror")
+		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${WALL} ${WERROR}")
+		message(STATUS "CompileFlags: ${CMAKE_CXX_FLAGS}")
+	endif()
 	if(DEFINED WIN32)
 		ADD_DEFINITIONS(-D_WIN32_WINNT=0x0A00)
 		ADD_DEFINITIONS(-DBOOST_ALL_NO_LIB)
 	endif()
 endif()
 
-project(ur_rtde VERSION 1.0.0 LANGUAGES ${PROJECT_LANGUAGES})
+project(ur_rtde VERSION 0.0.4 LANGUAGES ${PROJECT_LANGUAGES})
 set(PROJECT_VERSION_SUFFIX "") # alpha/beta/rc, e.g. "-rc0"
 set(PROJECT_VERSION "${PROJECT_VERSION}${PROJECT_VERSION_SUFFIX}")
 set(PROJECT_AUTHOR "Anders Prier Lindvig")
@@ -40,6 +46,7 @@ if(${CODE})
 	find_package(Threads)
 
 	if(${PYTHON_BINDINGS})
+		set(pybind11_DIR "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 		find_package(pybind11 REQUIRED)
 	endif()
 endif()
@@ -48,6 +55,7 @@ set(LIB_SOURCE_FILES
 		src/robot_state.cpp
         src/rtde.cpp
         src/dashboard_client.cpp
+        src/dashboard_enums.cpp
         src/script_client.cpp
         src/rtde_control_interface.cpp
 		src/rtde_receive_interface.cpp
@@ -56,12 +64,16 @@ set(LIB_SOURCE_FILES
 set(LIB_HEADER_FILES
         include/ur_rtde/rtde.h
         include/ur_rtde/rtde_utility.h
+		include/ur_rtde/dashboard_enums.h
         include/ur_rtde/dashboard_client.h
         include/ur_rtde/robot_state.h
         include/ur_rtde/script_client.h
         include/ur_rtde/rtde_control_interface.h
+		include/ur_rtde/rtde_control_interface_doc.h
 		include/ur_rtde/rtde_receive_interface.h
-		include/ur_rtde/rtde_io_interface.h)
+		include/ur_rtde/rtde_receive_interface_doc.h
+		include/ur_rtde/rtde_io_interface.h
+		include/ur_rtde/rtde_io_interface_doc.h)
 
 if(${PYTHON_BINDINGS})
 	find_package(pybind11 REQUIRED)
@@ -104,7 +116,7 @@ if(${CODE})
 				PRIVATE ${pybind11_INCLUDE_DIR}  # from pybind11Config
 				PRIVATE ${PYTHON_INCLUDE_DIRS})
 		target_link_libraries(rtde_control PRIVATE
-				${PYTHON_LIBRARIES}
+				#${PYTHON_LIBRARIES}
 				${Boost_SYSTEM_LIBRARY}
 				${Boost_THREAD_LIBRARY}
 				${CMAKE_THREAD_LIBS_INIT})
@@ -120,7 +132,7 @@ if(${CODE})
 			PRIVATE ${pybind11_INCLUDE_DIR}  # from pybind11Config
 			PRIVATE ${PYTHON_INCLUDE_DIRS})
 		target_link_libraries(rtde_receive PRIVATE
-				${PYTHON_LIBRARIES}
+				#${PYTHON_LIBRARIES}
 				${Boost_SYSTEM_LIBRARY}
 				${Boost_THREAD_LIBRARY})
                 target_compile_definitions(rtde_receive PRIVATE rtde_EXPORTS)
@@ -135,10 +147,42 @@ if(${CODE})
 				PRIVATE ${pybind11_INCLUDE_DIR}  # from pybind11Config
 				PRIVATE ${PYTHON_INCLUDE_DIRS})
 		target_link_libraries(rtde_io PRIVATE
-				${PYTHON_LIBRARIES}
+				#${PYTHON_LIBRARIES}
 				${Boost_SYSTEM_LIBRARY}
 				${Boost_THREAD_LIBRARY})
 		target_compile_definitions(rtde_io PRIVATE rtde_EXPORTS)
+
+		pybind11_add_module(script_client SHARED ${LIB_SOURCE_FILES} ${LIB_HEADER_FILES} src/rtde_python_bindings.cpp)
+		target_include_directories(script_client
+				PUBLIC ${Boost_INCLUDE_DIRS}
+				$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+				$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
+				$<INSTALL_INTERFACE:include>
+				PRIVATE ${PYBIND11_INCLUDE_DIR}  # from project CMakeLists.txt
+				PRIVATE ${pybind11_INCLUDE_DIR}  # from pybind11Config
+				PRIVATE ${PYTHON_INCLUDE_DIRS})
+			target_link_libraries(script_client PRIVATE
+				#${PYTHON_LIBRARIES}
+				${Boost_SYSTEM_LIBRARY}
+				${Boost_THREAD_LIBRARY})
+			target_compile_definitions(script_client PRIVATE rtde_EXPORTS)
+
+
+		pybind11_add_module(dashboard_client SHARED ${LIB_SOURCE_FILES} ${LIB_HEADER_FILES} src/rtde_python_bindings.cpp)
+		target_include_directories(dashboard_client
+			PUBLIC ${Boost_INCLUDE_DIRS}
+			$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+			$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
+			$<INSTALL_INTERFACE:include>
+			PRIVATE ${PYBIND11_INCLUDE_DIR}  # from project CMakeLists.txt
+			PRIVATE ${pybind11_INCLUDE_DIR}  # from pybind11Config
+			PRIVATE ${PYTHON_INCLUDE_DIRS})
+		target_link_libraries(dashboard_client PRIVATE
+			#${PYTHON_LIBRARIES}
+			${Boost_SYSTEM_LIBRARY}
+			${Boost_THREAD_LIBRARY})
+		target_compile_definitions(dashboard_client PRIVATE rtde_EXPORTS)
+
 	endif()
 
 	set(RTDE_RECEIVE_CLIENT_SOURCE_FILES src/rtde_receive_client.cpp)
@@ -168,7 +212,7 @@ if(${CODE})
 			${Boost_SYSTEM_LIBRARY}
 			${Boost_THREAD_LIBRARY})
 
-	generate_export_header(rtde)
+	generate_export_header(rtde EXPORT_FILE_NAME ${CMAKE_CURRENT_SOURCE_DIR}/include/ur_rtde/rtde_export.h)
 
 	add_library(ur_rtde::rtde ALIAS rtde)
 	add_executable(ur_rtde::rtde_receive_client ALIAS rtde_receive_client)
@@ -187,9 +231,9 @@ if(${CODE})
 		set(BIN_INSTALL_DIR "bin")
 	endif()
 	if(NOT DEFINED INCLUDE_INSTALL_DIR)
-		set(INCLUDE_INSTALL_DIR "include/ur_rtde")
-	else () 
-		set(INCLUDE_INSTALL_DIR "${INCLUDE_INSTALL_DIR}/ur_rtde" )
+		set(INCLUDE_INSTALL_DIR "include")
+	else()
+		set(INCLUDE_INSTALL_DIR "${INCLUDE_INSTALL_DIR}")
 	endif()
 
 	install(TARGETS rtde
@@ -200,15 +244,15 @@ if(${CODE})
 			INCLUDES DESTINATION ${INCLUDE_INSTALL_DIR}
 			)
 	if(${PYTHON_BINDINGS})
-		install(TARGETS rtde_control rtde_receive rtde_io
+		install(TARGETS rtde_control rtde_receive rtde_io dashboard_client script_client
 				DESTINATION ${PYTHON_SITE_PACKAGES})
 	endif()
 
 	install(
 			FILES
 			${LIB_HEADER_FILES}
-			"${CMAKE_CURRENT_BINARY_DIR}/rtde_export.h"
-			DESTINATION ${INCLUDE_INSTALL_DIR}
+			"${CMAKE_CURRENT_SOURCE_DIR}/include/ur_rtde/rtde_export.h"
+			DESTINATION ${INCLUDE_INSTALL_DIR}/ur_rtde
 			COMPONENT ur_rtde
 	)
 

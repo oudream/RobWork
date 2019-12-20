@@ -1,7 +1,7 @@
 #ifndef RTDE_RTDE_UTILITY_H
 #define RTDE_RTDE_UTILITY_H
 
-#include <rtde_export.h>
+#include <ur_rtde/rtde_export.h>
 #include <cstdint>
 #include <vector>
 #include <iomanip>
@@ -11,6 +11,17 @@ namespace ur_rtde
 class RTDEUtility
 {
  public:
+
+  static inline std::vector<char> packUInt32(uint32_t uint32)
+  {
+    std::vector<char> result;
+    result.push_back(uint32 >> 24);
+    result.push_back(uint32 >> 16);
+    result.push_back(uint32 >> 8);
+    result.push_back(uint32);
+    return result;
+  }
+
   static inline std::vector<char> packInt32(int32_t int32)
   {
     std::vector<char> result;
