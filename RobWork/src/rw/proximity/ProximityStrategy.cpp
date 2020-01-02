@@ -15,16 +15,14 @@
  * limitations under the License.
  ********************************************************************************/
 
+#include <rw/kinematics/Frame.hpp>
 #include <rw/proximity/rwstrategy/ProximityStrategyRW.hpp>
 
 #include <vector>
-
-#include <rw/kinematics/Frame.hpp>
 //#include <rw/common/macros.hpp>
 //#include <rw/common/Exception.hpp>
 #include <rw/models/Object.hpp>
 #include <rw/models/RigidObject.hpp>
-#include <boost/foreach.hpp>
 
 using namespace rw::proximity;
 using namespace rw::kinematics;
@@ -32,18 +30,16 @@ using namespace rw::geometry;
 using namespace rw::common;
 using namespace rw::models;
 
-ProximityStrategy::ProximityStrategy():
-    _frameToModel(NULL,100)
+ProximityStrategy::ProximityStrategy () : _frameToModel (NULL, 100)
 {}
 
-ProximityStrategy::~ProximityStrategy()
+ProximityStrategy::~ProximityStrategy ()
 {}
 
-ProximityModel::Ptr ProximityStrategy::getModel(const rw::kinematics::Frame* frame)
+ProximityModel::Ptr ProximityStrategy::getModel (const rw::kinematics::Frame* frame)
 {
-
-    ProximityModel::Ptr model =  _frameToModel[*frame];
-    //if(model==NULL){
+    ProximityModel::Ptr model = _frameToModel[*frame];
+    // if(model==NULL){
     //    if( hasModel(frame) ){
     //        if( addModel(frame) )
     //            model = _frameToModel[*frame];
@@ -52,18 +48,18 @@ ProximityModel::Ptr ProximityStrategy::getModel(const rw::kinematics::Frame* fra
     return model;
 }
 
-bool ProximityStrategy::addModel(rw::models::Object::Ptr object)
+bool ProximityStrategy::addModel (rw::models::Object::Ptr object)
 {
-    if(RigidObject::Ptr robj = object.cast<RigidObject>()){
-		std::vector<Geometry::Ptr> geoms = robj->getGeometry();
-		BOOST_FOREACH(Geometry::Ptr geom, geoms){
-			Frame* geoframe = geom->getFrame();
-			if(!hasModel(geoframe))
-				_frameToModel[*geoframe] = createModel();
-			ProximityModel::Ptr model = getModel(geoframe);
-			addGeometry(model.get(), geom);
-		}
-		return true;
+    if (RigidObject::Ptr robj = object.cast< RigidObject > ()) {
+        std::vector< Geometry::Ptr > geoms = robj->getGeometry ();
+        for (Geometry::Ptr geom : geoms) {
+            Frame* geoframe = geom->getFrame ();
+            if (!hasModel (geoframe))
+                _frameToModel[*geoframe] = createModel ();
+            ProximityModel::Ptr model = getModel (geoframe);
+            addGeometry (model.get (), geom);
+        }
+        return true;
     }
     return false;
 }
@@ -76,7 +72,7 @@ bool ProximityStrategy::addModel(const Frame* frame)
         return false;
     }
 
-	ProximityModel::Ptr model = _frameToModel[*frame];
+        ProximityModel::Ptr model = _frameToModel[*frame];
     if( model==NULL && hasModel(frame)){
         model = createModel();
         _frameToModel[*frame] = model;
@@ -86,7 +82,7 @@ bool ProximityStrategy::addModel(const Frame* frame)
 
     BOOST_FOREACH(CollisionModelInfo &info, modelInfos) {
         try {
-			Geometry::Ptr geom = GeometryFactory::getGeometry(info.getGeoString());
+                        Geometry::Ptr geom = GeometryFactory::getGeometry(info.getGeoString());
             if(geom==NULL)
                 continue;
 
@@ -102,102 +98,109 @@ bool ProximityStrategy::addModel(const Frame* frame)
 }
 */
 
-bool ProximityStrategy::addModel(const Frame* frame, const rw::geometry::Geometry& geom)
+bool ProximityStrategy::addModel (const Frame* frame, const rw::geometry::Geometry& geom)
 {
-	ProximityModel::Ptr model = getModel(frame);
-    if(model==NULL){
-        model = createModel();
+    ProximityModel::Ptr model = getModel (frame);
+    if (model == NULL) {
+        model = createModel ();
     }
 
-    bool res = addGeometry(model.get(), geom);
-    if(res){
+    bool res = addGeometry (model.get (), geom);
+    if (res) {
         _frameToModel[*frame] = model;
     }
     return res;
 }
 
-bool ProximityStrategy::addModel(const Frame* frame, rw::geometry::Geometry::Ptr geom, bool forceCopy)
+bool ProximityStrategy::addModel (const Frame* frame, rw::geometry::Geometry::Ptr geom,
+                                  bool forceCopy)
 {
-    ProximityModel::Ptr model = getModel(frame);
-    if(model==NULL){
-        model = createModel();
+    ProximityModel::Ptr model = getModel (frame);
+    if (model == NULL) {
+        model = createModel ();
     }
 
-    bool res = addGeometry(model.get(), geom, forceCopy);
-    if(res){
+    bool res = addGeometry (model.get (), geom, forceCopy);
+    if (res) {
         _frameToModel[*frame] = model;
     }
     return res;
 }
 
-bool ProximityStrategy::hasModel(const rw::kinematics::Frame* frame){
-    if( !_frameToModel.has( *frame ) || _frameToModel[*frame]==NULL){
-        //if (CollisionModelInfo::get(frame).size()>0)
+bool ProximityStrategy::hasModel (const rw::kinematics::Frame* frame)
+{
+    if (!_frameToModel.has (*frame) || _frameToModel[*frame] == NULL) {
+        // if (CollisionModelInfo::get(frame).size()>0)
         //    return true;
         return false;
     }
     return true;
 }
 
-void ProximityStrategy::clearFrame(const rw::kinematics::Frame* frame){
-    if( !_frameToModel.has( *frame ) || _frameToModel[*frame] == NULL )
+void ProximityStrategy::clearFrame (const rw::kinematics::Frame* frame)
+{
+    if (!_frameToModel.has (*frame) || _frameToModel[*frame] == NULL)
         return;
     ProximityModel::Ptr model = _frameToModel[*frame];
-    if( model == NULL )
+    if (model == NULL)
         return;
     _frameToModel[*frame] = NULL;
-    destroyModel(model.get());
+    destroyModel (model.get ());
 }
 
-void ProximityStrategy::clearFrames(){
-    _frameToModel.clear();
-}
-
-ProximityStrategy::Factory::Factory():
-	ExtensionPoint<ProximityStrategy>("rw.proximity.ProximityStrategy", "Extensions to create proximity strategies")
+void ProximityStrategy::clearFrames ()
 {
+    _frameToModel.clear ();
 }
 
-std::vector<std::string> ProximityStrategy::Factory::getStrategies() {
-	std::vector<std::string> ids;
+ProximityStrategy::Factory::Factory () :
+    ExtensionPoint< ProximityStrategy > ("rw.proximity.ProximityStrategy",
+                                         "Extensions to create proximity strategies")
+{}
+
+std::vector< std::string > ProximityStrategy::Factory::getStrategies ()
+{
+    std::vector< std::string > ids;
     ProximityStrategy::Factory ep;
-    std::vector<Extension::Descriptor> exts = ep.getExtensionDescriptors();
-    ids.push_back("RW");
-    BOOST_FOREACH(Extension::Descriptor& ext, exts){
-        ids.push_back( ext.getProperties().get("strategyID",ext.name) );
+    std::vector< Extension::Descriptor > exts = ep.getExtensionDescriptors ();
+    ids.push_back ("RW");
+    for (Extension::Descriptor& ext : exts) {
+        ids.push_back (ext.getProperties ().get ("strategyID", ext.name));
     }
-	return ids;
+    return ids;
 }
 
-bool ProximityStrategy::Factory::hasStrategy(const std::string& strategy) {
-	std::string upper = strategy;
-	std::transform(upper.begin(),upper.end(),upper.begin(),::toupper);
-    if( upper == "RW")
+bool ProximityStrategy::Factory::hasStrategy (const std::string& strategy)
+{
+    std::string upper = strategy;
+    std::transform (upper.begin (), upper.end (), upper.begin (), ::toupper);
+    if (upper == "RW")
         return true;
     ProximityStrategy::Factory ep;
-    std::vector<Extension::Descriptor> exts = ep.getExtensionDescriptors();
-    BOOST_FOREACH(Extension::Descriptor& ext, exts){
-    	std::string id = ext.getProperties().get("strategyID",ext.name);
-    	std::transform(id.begin(),id.end(),id.begin(),::toupper);
-        if(id == upper)
+    std::vector< Extension::Descriptor > exts = ep.getExtensionDescriptors ();
+    for (Extension::Descriptor& ext : exts) {
+        std::string id = ext.getProperties ().get ("strategyID", ext.name);
+        std::transform (id.begin (), id.end (), id.begin (), ::toupper);
+        if (id == upper)
             return true;
     }
-	return false;
+    return false;
 }
 
-ProximityStrategy::Ptr ProximityStrategy::Factory::makeStrategy(const std::string& strategy) {
-	std::string upper = strategy;
-	std::transform(upper.begin(),upper.end(),upper.begin(),::toupper);
-    if( upper == "RW")
-        return ownedPtr(new ProximityStrategyRW());
+ProximityStrategy::Ptr ProximityStrategy::Factory::makeStrategy (const std::string& strategy)
+{
+    std::string upper = strategy;
+    std::transform (upper.begin (), upper.end (), upper.begin (), ::toupper);
+    if (upper == "RW")
+        return ownedPtr (new ProximityStrategyRW ());
     ProximityStrategy::Factory ep;
-	std::vector<Extension::Ptr> exts = ep.getExtensions();
-	BOOST_FOREACH(Extension::Ptr& ext, exts){
-    	std::string id = ext->getProperties().get("strategyID",ext->getName() );
-    	std::transform(id.begin(),id.end(),id.begin(),::toupper);
-		if(id == upper){
-			return ext->getObject().cast<ProximityStrategy>();
-		}
-	}
-	return NULL;
+    std::vector< Extension::Ptr > exts = ep.getExtensions ();
+    for (Extension::Ptr& ext : exts) {
+        std::string id = ext->getProperties ().get ("strategyID", ext->getName ());
+        std::transform (id.begin (), id.end (), id.begin (), ::toupper);
+        if (id == upper) {
+            return ext->getObject ().cast< ProximityStrategy > ();
+        }
+    }
+    return NULL;
 }

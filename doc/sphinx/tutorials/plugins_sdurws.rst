@@ -5,7 +5,7 @@ GUI Plugins: RobWorkStudio
 **************************
 
 The RobWorkStudio GUI is based on Qt, and through the use of Qt plugins,
-it is possible to extend RobWorkStudio with user-defined features and behaviour.
+it is possible to extend RobWorkStudio with user-defined features and behavior.
 Notice that this is very different from the RobWork plugins that makes it possible to extend
 the core libraries with new features.
 Please see :ref:`plugins_sdurw` for more information about that subject.
@@ -60,10 +60,10 @@ This file must look like the following:
    :caption: RobWorkStudio/example/pluginapp/SamplePlugin.json
 
 The implementation of the plugin is shown below.
-In the constructor two pushbuttons is added to the plugin. Each button is connected to the clickEvent function.
+In the constructor two pushbuttons are added to the plugin. Each button is connected to the clickEvent function.
 Qt operates with signals and slots, and in this case the clicked() signal from the pushbutton is connect to the clickEvent() slot defined in the plugin.
 In the initialize function, a *stateChangedListener* is registered in RobWorkStudio.
-This function will be called everytime the state changes.
+This function will be called every time the state changes.
 In the clickEvent() function we can do different computations depending on the which button was pushed. This can be determined based on the Qt sender().
 
 .. literalinclude:: ../../../RobWorkStudio/example/pluginapp/SamplePlugin.cpp
@@ -187,25 +187,25 @@ before calling the user written python plugin.
 As can be seen from the code it relies on PySide2 as a wrapper to qt. So to make a python plugin
 PySide must be installed.
 
-.. code-block:: shell
+.. code-block:: bash
 
     pip3 install PySide2
 
-PySide2 often relies on the newest version of QT. 
-To test if you have the right version open a python interpreter and run: 
+PySide2 often relies on the newest version of QT.
+To test if you have the right version open a python interpreter and run:
 
 .. code-block:: python
 
     from PiSide2 import QtCore
 
-If somthing is wrong this should give you an error with incompatible QT versions.
-To get the correct Version of QT you need to do a propper install and get the required QT version.
+If something is wrong this should give you an error with incompatible QT versions.
+To get the correct Version of QT you need to do a proper install and get the required QT version.
 This can be done by downloading the QT installer from https://www.qt.io/download/ .
-At the Select component phase of the installation, 
+At the Select component phase of the installation,
 make sure that you are installing the version required by PySide2.
 
 Ones the correct version of QT is installed, if PySide still gives the same error,
-it means that it can't find the correct QT installation. 
+it means that it can't find the correct QT installation.
 For Linux users the path can be specified by the QT library path to LD_LIBRARY_PATH.
 This can be done by adding the following line to .bashrc or calling the line from the terminal
 
@@ -225,7 +225,7 @@ as currently the pluginWidget is named the same as the python file,
 and is found by searching for it's name when calling rwsplugin.getWidget().
 
 The simplest plugin, that can be made with full functionality, can be seen in the code below.
-Using the rws_cpp_link, three different methods is called, in the registered plugin(if they exsist).
+Using the rws_cpp_link, three different methods is called, in the registered plugin(if they exist).
 Inheriting from the rwsplugin class, gives you the some of the same functionality as a cpp plugin
 
 .. code-block:: python
@@ -320,7 +320,7 @@ Adding Drawable from a plugin
 Before considering the example, a bit of background is needed about the RobWork and RobWorkStudio scene model.
 
 The most abstract model of a scene in RobWork is defined in rw::graphics. It is based on the SceneGraph model.
-SceneGraph defines elements in a scene for visualisation.
+SceneGraph defines elements in a scene for visualization.
 It is independent from the usual RobWork structure of frames. As such it is a more generic model of a scene.
 A SceneGraph contains:
 
@@ -333,7 +333,7 @@ A SceneGraph contains:
     It has a draw mask to distinguish between different groups to be shown in the scene.
 
     - DrawableGeometryNode: A DrawableNode that draws a rw::geometry::Geometry.
-    - DrawableNodeClone: A node that reuses another DrawableNodes data, but has its own visualisation settings.
+    - DrawableNodeClone: A node that reuses another DrawableNodes data, but has its own visualization settings.
 
   - SceneCamera: A node representing a camera in the scene.
   - Other user defined node types
@@ -342,11 +342,11 @@ WorkCellScene is a wrapper for the more generic SceneGraph.
 It uses the Frame structure from a WorkCell and State, to maintain a corresponding underlying SceneGraph.
 In the WorkCellScene, DrawableNodes can be added and retrieved for each Frame in the WorkCell.
 It has convenience functions, for instance, for adding Renders or Drawables and Geometries from files.
-WorkCellScene keeps track of the visualisation of frames and visibility of frames in the WorkCell.
+WorkCellScene keeps track of the visualization of frames and visibility of frames in the WorkCell.
 
-SceneViewer is an interface for the actual visualisation of a SceneGraph. Implementations should allow for:
+SceneViewer is an interface for the actual visualization of a SceneGraph. Implementations should allow for:
 
-  - A main view: The SceneCamera that is mainly used to visualise the scene.
+  - A main view: The SceneCamera that is mainly used to visualize the scene.
   - A current view: The currently selected view.
   - Function for updating view(s).
   - Zoom functions.
@@ -375,12 +375,12 @@ The code for adding a Drawable from a plugin could look like the following (here
    // Method 2 (use convenience method on WorkCellScene)
    wcscene->addRender("Render", render, myFrame, DrawableNode::Physical);
 
-The RWStudioView3D is the main visualisation area in RobWorkStudio.
-This visualisation uses the SceneViewer model (with the underlying SceneGraph).
+The RWStudioView3D is the main visualization area in RobWorkStudio.
+This visualization uses the SceneViewer model (with the underlying SceneGraph).
 The SceneGraph model is wrapped in a WorkCellScene that can also be retrieved from RWStudioView3D.
 The WorkCellScene takes care of maintaining the underlying SceneGraph.
 In RobWorkStudio, getWorkCellScene actually returns a SceneOpenGLViewer.
-SceneOpenGLViewer is a specialisation that uses Qt and OpenGL.
+SceneOpenGLViewer is a specialization that uses Qt and OpenGL.
 It adds background to the scene, the pivot point and the default RobWorkStudio view.
 It also controls which DrawableNode types to draw (Physical, Virtual etc) based on the chosen settings in RobWorkStudio.
 First step is to retrieve these entities from the RWStudioView3D.
@@ -394,7 +394,7 @@ A DrawableNode is then created in the SceneGraph for the Render.
 This node is not yet connected to any child or parent nodes.
 By calling addDrawable on the WorkCellScene,
 we let the WorkCellScene take care of attaching the DrawableNode correctly to the tree,
-based on the Frame given to addDrawable. 
+based on the Frame given to addDrawable.
 
 Notice that the code is completely independent from OpenGL (except if we create the Render from types in rwlibs::opengl).
 The framework would allow RobWorkStudio to change to something else than OpenGL, and our plugin would still work.
