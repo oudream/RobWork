@@ -18,12 +18,13 @@ if(build)
     set(SRC_FILES RobolabFTDriver.cpp)
     set(SRC_FILES_HPP RobolabFTDriver.hpp)
 
+
     rw_add_library(${SUBSYS_NAME} ${SRC_FILES} ${SRC_FILES_HPP})
     target_link_libraries(${SUBSYS_NAME} PUBLIC sdurwhw_serialport ${ROBWORK_LIBRARIES})
     rw_add_includes(${SUBSYS_NAME} "rwhw/robolabFT" ${SRC_FILES_HPP})
 
     # Make sure dependencies are build before system
-    foreach(DEP IN LISTS SUBSYS_DEPS ROBWORK_LIBRARIES)
+    foreach(DEP IN LISTS SUBSYS_DEPS ${SUBSYS_DEPS} ROBWORK_LIBRARIES)
         if(TARGET ${DEP})
             add_dependencies(${SUBSYS_NAME} ${DEP})
         endif()

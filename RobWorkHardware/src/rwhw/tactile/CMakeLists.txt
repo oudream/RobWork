@@ -1,6 +1,6 @@
 set(SUBSYS_NAME sdurwhw_tactile)
 set(SUBSYS_DESC "Tactile array sensor library")
-set(SUBSYS_DEPS sdurw serialport)
+set(SUBSYS_DEPS sdurw)
 
 set(build TRUE)
 set(DEFAULT TRUE)
@@ -13,20 +13,15 @@ rw_subsys_option(
 )
 
 if(build)
-    set(SRC_CPP)
-    set(SRC_HPP)
-
-    list(
-        APPEND
-            SRC_CPP
+    set(
+        SRC_CPP
             DSACON32.cpp
             TactileMatrix.cpp
             TactileMaskMatrix.cpp
             ConvertUtil.cpp
     )
-    list(
-        APPEND
-            SRC_HPP
+    set(
+        SRC_HPP
             DSACON32.hpp
             TactileMatrix.hpp
             TactileMaskMatrix.hpp

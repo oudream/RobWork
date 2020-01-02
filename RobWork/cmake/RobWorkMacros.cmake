@@ -430,7 +430,7 @@ endmacro()
 # Add a library target. _name The library name. _component The part of RW that this library belongs
 # to. ARGN The source files for the library.
 macro(RW_ADD_LIBRARY _name)
-    set(options) # Used to marke flags
+    set(options STATIC SHARED MODULE) # Used to marke flags
     set(oneValueArgs COMPONENT) # used to marke values with a single value
     set(multiValueArgs)
     cmake_parse_arguments(SUBSYS "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
@@ -438,8 +438,15 @@ macro(RW_ADD_LIBRARY _name)
     if(NOT "${SUBSYS_COMPONENT}" STREQUAL "")
         set(_component ${SUBSYS_COMPONENT})
     endif()
-
-    add_library(${_name} ${PROJECT_LIB_TYPE} ${SUBSYS_UNPARSED_ARGUMENTS})
+    set(LIB_TYPE ${PROJECT_LIB_TYPE})
+    if(SUBSYS_STATIC)
+        set(LIB_TYPE STATIC)
+    elseif(SUBSYS_SHARED)
+        set(LIB_TYPE SHARED)
+    elseif(SUBSYS_MODULE)
+        set(LIB_TYPE MODULE)
+    endif()
+    add_library(${_name} ${LIB_TYPE} ${SUBSYS_UNPARSED_ARGUMENTS})
     # must link explicitly against boost.
     target_link_libraries(${_name} PUBLIC ${Boost_LIBRARIES})
 
