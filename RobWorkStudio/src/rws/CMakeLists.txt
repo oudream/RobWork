@@ -124,12 +124,8 @@ if(build)
     include_directories(${PYTHON_INCLUDE_DIRS})
     set_target_properties(sdurws PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
 
-    # Install stuff
-    install(TARGETS sdurws DESTINATION ${LIB_INSTALL_DIR})
-    install(FILES ${SRC_FILES_HPP} DESTINATION ${INCLUDE_INSTALL_DIR}/sdurws)
-
-    add_library(sdurws_plugin.rwplugin MODULE RWSImageLoaderPlugin.cpp RWSImageLoaderPlugin.hpp)
-    target_link_libraries(sdurws_plugin.rwplugin sdurws ${QT_LIBRARIES} ${ROBWORK_LIBRARIES})
-    install(TARGETS sdurws_plugin.rwplugin DESTINATION ${RW_PLUGIN_INSTALL_DIR})
+    rw_add_includes(sdurws sdurws ${SRC_FILES_HPP})
+    rw_add_plugin(sdurws_plugin.rwplugin MODULE RWSImageLoaderPlugin.cpp RWSImageLoaderPlugin.hpp)
+    target_link_libraries(sdurws_plugin.rwplugin PUBLIC sdurws ${QT_LIBRARIES} ${ROBWORK_LIBRARIES})
 
 endif()

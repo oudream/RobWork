@@ -433,11 +433,13 @@ macro(RW_ADD_LIBRARY _name)
     set(options STATIC SHARED MODULE) # Used to marke flags
     set(oneValueArgs COMPONENT) # used to marke values with a single value
     set(multiValueArgs)
+
     cmake_parse_arguments(SUBSYS "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
     set(_component ${_name})
     if(NOT "${SUBSYS_COMPONENT}" STREQUAL "")
         set(_component ${SUBSYS_COMPONENT})
     endif()
+
     set(LIB_TYPE ${PROJECT_LIB_TYPE})
     if(SUBSYS_STATIC)
         set(LIB_TYPE STATIC)
@@ -446,6 +448,7 @@ macro(RW_ADD_LIBRARY _name)
     elseif(SUBSYS_MODULE)
         set(LIB_TYPE MODULE)
     endif()
+
     add_library(${_name} ${LIB_TYPE} ${SUBSYS_UNPARSED_ARGUMENTS})
     # must link explicitly against boost.
     target_link_libraries(${_name} PUBLIC ${Boost_LIBRARIES})
@@ -469,7 +472,7 @@ macro(RW_ADD_LIBRARY _name)
                 ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
         )
     endif()
-
+    
     install(
         TARGETS ${_name}
         RUNTIME DESTINATION ${BIN_INSTALL_DIR} COMPONENT ${_component}
@@ -506,7 +509,7 @@ macro(RW_ADD_PLUGIN _name _lib_type )
         )
     endif()
 
-    install(TARGETS ${_name} DESTINATION ${RW_PLUGIN_INSTALL_DIR})
+    install(TARGETS ${_name} DESTINATION ${RW_PLUGIN_INSTALL_DIR} COMPONENT rwplugin)
 
 endmacro()
 
@@ -626,7 +629,7 @@ macro(RW_DISABLE_DEPENDIES _subsys)
             set(BUILD_${dep} OFF CACHE BOOL "Automatically disabled ${dep}" FORCE)
         endforeach(dep)
     endif(NOT ("${${RW_SUBSYS_DEPENDIES}}" STREQUAL ""))
-endmacro(RW_DISABLE_DEPENDIES subsys)
+endmacro()
 
 # ##################################################################################################
 # Macro to enable subsystem dependies _subsys IN subsystem name
@@ -642,13 +645,13 @@ macro(RW_ENABLE_DEPENDIES _subsys)
             endif("${dependee_status}" STREQUAL "AUTO_OFF")
         endforeach(dep)
     endif(NOT ("${${RW_SUBSYS_DEPENDIES}}" STREQUAL ""))
-endmacro(RW_ENABLE_DEPENDIES subsys)
+endmacro()
 
 # ##################################################################################################
 # Get the status of a subsystem _var Destination variable. _name Name of the subsystem.
 macro(RW_GET_SUBSYS_STATUS _var _name)
     get_in_map(${_var} RW_SUBSYS_STATUS ${_name})
-endmacro(RW_GET_SUBSYS_STATUS)
+endmacro()
 
 # ##################################################################################################
 # Set the status of a subsystem. _name Subsystem name. _status TRUE if being built, FALSE otherwise.
@@ -661,7 +664,7 @@ macro(RW_SET_SUBSYS_STATUS _name _status)
     endif(${ARGC} EQUAL 3)
     set_in_global_map(RW_SUBSYS_STATUS ${_name} ${_status})
     set_in_global_map(RW_SUBSYS_REASONS ${_name} ${_reason})
-endmacro(RW_SET_SUBSYS_STATUS)
+endmacro()
 
 # ##################################################################################################
 # Set the hyperstatus of a subsystem and its dependee _name Subsystem name. _dependee Dependant
@@ -731,4 +734,85 @@ macro(RW_ADD_DOC _subsys)
             set_target_properties(${doc_subsys} PROPERTIES FOLDER "Documentation")
         endif(USE_PROJECT_FOLDERS)
     endif()
+endmacro()
+
+# ##################################################################################################
+# Use this macro to generate a windows installer
+
+
+macro(RW_CREATE_INSTALLER)
+    set(SLASH "/")
+    if(DEFINED MSVC)
+        set(SLASH "\\\\")
+    endif()
+
+    set(CPACK_PACKAGE_NAME "${PROJECT_NAME}")
+    set(CPACK_PACKAGE_VENDOR "University of Southern Denmark")
+    set(
+        CPACK_PACKAGE_DESCRIPTION_SUMMARY
+        "RobWork is a collection of C++ libraries for simulation and control of robot systems. RobWork is used for research and education as well as for practical robot applications."
+    )
+    set(CPACK_PACKAGE_HOMEPAGE_URL "robwork.dk")
+    set(CPACK_PACKAGE_INSTALL_DIRECTORY "RobWork${SLASH}${PROJECT_PREFIX}")
+    set(CPACK_NSIS_MUI_ICON "${${PROJECT_PREFIX}_ROOT}${SLASH}..${SLASH}RobWork${SLASH}cmake${SLASH}images${SLASH}rw_logo_48x48.ico")
+    set(CPACK_RESOURCE_FILE_LICENSE "${${PROJECT_PREFIX}_ROOT}${SLASH}..${SLASH}LICENSE")
+    set(CPACK_PACKAGE_CONTACT "Kasper Høj Lorenzen (kalor@mmmi.sdu.dk)")
+    set(CPACK_NSIS_MODIFY_PATH ON) #Add the add folder to path option
+    set(CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL ON) #When installing on a previus instalation ask to uninstall first
+    set(CPACK_NSIS_UNINSTALL_NAME "${PROJECT_PREFIX}_uninstall")
+    # set version
+    if(DEFINED VERSION)
+        set(CPACK_PACKAGE_VERSION ${VERSION})
+    else()
+        set(CPACK_PACKAGE_VERSION 6.6.6)
+    endif()
+
+    string(REGEX MATCHALL "[0-9]+" VERSIONS_TMP ${CPACK_PACKAGE_VERSION})
+    list(GET VERSIONS_TMP 0 CPACK_PACKAGE_VERSION_MAJOR)
+    list(GET VERSIONS_TMP 1 CPACK_PACKAGE_VERSION_MINOR)
+    list(GET VERSIONS_TMP 2 CPACK_PACKAGE_VERSION_PATCH)
+
+    set(CPACK_PACKAGE_FILE_NAME ${CPACK_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION})
+
+    # Define components and their display names
+    set(CPACK_COMPONENTS_ALL "") # install components
+    set(SPECIAL_COMPONENTS rwplugin cmake external)
+
+    foreach(_comp ${${PROJECT_PREFIX}_SUBSYSTEMS} ${SPECIAL_COMPONENTS})
+        string(TOUPPER "${_comp}" _COMP)
+
+        if(${RW_SUBSYS_BUILD_${_comp}})
+
+            set(CPACK_COMPONENT_${_COMP}_DISPLAY_NAME "${_comp}")
+            set(CPACK_COMPONENT_${_COMP}_DESCRIPTION ${RW_SUBSYS_DESC_${_comp}})
+            string(TOLOWER "${RW_SUBSYS_PREFIX_${_comp}}" CPACK_COMPONENT_${_COMP}_GROUP)
+
+            set(CPACK_COMPONENT_${_COMP}_INSTALL_TYPES Full Developer)
+            set(CPACK_COMPONENTS_ALL ${CPACK_COMPONENTS_ALL} ${_comp})
+            #message(STATUS "component: ${CPACK_COMPONENT_${_COMP}_DISPLAY_NAME} - group: ${CPACK_COMPONENT_${_COMP}_GROUP}")
+        elseif(${_comp} IN_LIST SPECIAL_COMPONENTS)
+        
+            set(CPACK_COMPONENT_${_COMP}_DISPLAY_NAME "${_comp}")
+            set(CPACK_COMPONENT_${_COMP}_GROUP misc)
+
+            set(CPACK_COMPONENT_${_COMP}_INSTALL_TYPES Full Developer)
+            set(CPACK_COMPONENTS_ALL ${CPACK_COMPONENTS_ALL} ${_comp})
+            message(STATUS "from: ${_COMP} - component: ${CPACK_COMPONENT_${_COMP}_DISPLAY_NAME} - group: ${CPACK_COMPONENT_${_COMP}_GROUP}")
+        else()
+            message(STATUS "Not build component ${_comp}")
+        endif()
+    endforeach()
+
+    # Define dependencies between components. example headers dpend on lib
+    set(CPACK_COMPONENT_GROUP_RW_DESCRIPTION "Tools for controlling robots")
+    set(CPACK_COMPONENT_GROUP_RWS_DESCRIPTION "Tools for Visulizing robot control")
+    set(CPACK_COMPONENT_GROUP_RWHW_DESCRIPTION "Drivers for robot platforms")
+    set(CPACK_COMPONENT_GROUP_RWSIM_DESCRIPTION "Tools for simulating robots")
+    set(CPACK_COMPONENT_GROUP_MISC_DESCRIPTION "Other STUFF")
+
+    # Define NSIS installation types
+    set(CPACK_ALL_INSTALL_TYPES Full Developer)
+
+    # Must be after the last CPACK macros
+    include(CPack)
 endmacro()

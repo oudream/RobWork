@@ -142,4 +142,4 @@ configure_file(${RWSIM_ROOT}/cmake/RobWorkSimBuildConfig.cmake.in
                "${RWSIM_ROOT}/cmake/RobWorkSimBuildConfig_${RWSIM_BUILD_TYPE}.cmake")
 
 # Packaging
-include(cmake/packing.cmake)
+rw_create_installer()

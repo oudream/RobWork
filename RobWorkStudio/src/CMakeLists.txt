@@ -37,11 +37,12 @@ if(RWS_USE_STATIC_LINK_PLUGINS)
 endif()
 
 # Some install stuff
-install(TARGETS RobWorkStudio DESTINATION ${BIN_INSTALL_DIR})
+install(TARGETS RobWorkStudio DESTINATION ${BIN_INSTALL_DIR} COMPONENT sdurws )
 if(RWS_USE_STATIC_LINK_PLUGINS)
     install(
         FILES "${RWS_ROOT}/bin/RobWorkStudio.ini.template.static"
         DESTINATION ${BIN_INSTALL_DIR}
+        COMPONENT sdurws
         RENAME "RobWorkStudio.ini.template"
     )
     configure_file("${RWS_ROOT}/bin/RobWorkStudio.ini.template.static"
@@ -61,6 +62,7 @@ endif()
 install(
     DIRECTORY sdurws
     DESTINATION ${INCLUDE_INSTALL_DIR}
+    COMPONENT sdurws
     FILES_MATCHING
     PATTERN "*.h"
     PATTERN "*.hpp"

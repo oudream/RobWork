@@ -17,21 +17,24 @@ if (DEFINED MINGW)
   configure_file("${Root}/libs_vs/blas_win32.dll" "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/blas_win32.dll" COPYONLY)
   configure_file("${Root}/libs_vs/lapack_win32.dll" "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/lapack_win32.dll" COPYONLY)
 
-  INSTALL(FILES 
+  install(FILES 
       "${Root}/libs_mingw/glut32.lib"
-      DESTINATION "${RW_LIB_INSTALL_DIR}")
+      DESTINATION "${RW_LIB_INSTALL_DIR}"
+      COMPONENT external)
 
-  INSTALL(FILES "${Root}/libs_mingw/glut32.dll" DESTINATION "${RW_BIN_INSTALL_DIR}")
+  install(FILES "${Root}/libs_mingw/glut32.dll" DESTINATION "${RW_BIN_INSTALL_DIR}" COMPONENT external)
 
-  INSTALL(FILES 
+  install(FILES 
       "${Root}/libs_vs/blas_win32.lib" 
       "${Root}/libs_vs/lapack_win32.lib" 
-      DESTINATION "${RW_LIB_INSTALL_DIR}")
+      DESTINATION "${RW_LIB_INSTALL_DIR}"
+      COMPONENT external)
 
-  INSTALL(FILES 
+  install(FILES 
       "${Root}/libs_vs/blas_win32.dll" 
       "${Root}/libs_vs/lapack_win32.dll" 
-      DESTINATION "${RW_BIN_INSTALL_DIR}")
+      DESTINATION "${RW_BIN_INSTALL_DIR}"
+      COMPONENT external)
 
 elseif (DEFINED MSVC)
   configure_file("${Root}/libs_vs/blas_win32.lib" "${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}/blas_win32.lib" COPYONLY)
@@ -39,15 +42,17 @@ elseif (DEFINED MSVC)
   configure_file("${Root}/libs_vs/blas_win32.dll" "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/blas_win32.dll" COPYONLY)
   configure_file("${Root}/libs_vs/lapack_win32.dll" "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/lapack_win32.dll" COPYONLY)
   
-  INSTALL(FILES 
+  install(FILES 
       "${Root}/libs_vs/blas_win32.lib" 
       "${Root}/libs_vs/lapack_win32.lib" 
-      DESTINATION "${RW_LIB_INSTALL_DIR}")
+      DESTINATION "${RW_LIB_INSTALL_DIR}"
+      COMPONENT external)
 
-  INSTALL(FILES 
+  install(FILES 
       "${Root}/libs_vs/blas_win32.dll" 
       "${Root}/libs_vs/lapack_win32.dll" 
-      DESTINATION "${RW_BIN_INSTALL_DIR}")
+      DESTINATION "${RW_BIN_INSTALL_DIR}"
+      COMPONENT external)
             
 endif ()
 

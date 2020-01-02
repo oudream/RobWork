@@ -120,20 +120,19 @@ configure_file(${RW_ROOT}/cmake/RobWorkConfig.cmake.in "${RW_ROOT}/cmake/RobWork
 install(
     FILES ${RW_ROOT}/cmake/RobWorkConfigVersion.cmake ${RW_ROOT}/cmake/RobWorkConfig.cmake
     DESTINATION ${RW_INSTALL_DIR}/cmake
+    COMPONENT cmake
 )
 
 # Install stuff
-install(FILES LICENSE.txt NOTICE.txt ChangeLog.txt DESTINATION "${RW_INSTALL_DIR}/")
-# INSTALL(FILES cmake/Modules/FindBLASLAPACK.cmake cmake/Modules/FindPQP.cmake cmake/Modules/FindRobWork.cmake
-# cmake/Modules/FindTolua++.cmake cmake/Modules/FindXercesC.cmake cmake/Modules/FindYaobi.cmake DESTINATION
-# ${CONFIG_INSTALL_DIR}/cmake/Modules)
+install(FILES LICENSE.txt NOTICE.txt ChangeLog.txt DESTINATION "${RW_INSTALL_DIR}/" COMPONENT cmake )
 
 install(
     FILES "cmake/RobWorkBuildConfig_${RW_BUILD_TYPE}.cmake" "cmake/RobWorkMacros.cmake"
     DESTINATION ${RW_INSTALL_DIR}/cmake
+    COMPONENT cmake
 )
 
-install(FILES "${RW_ROOT}/src/RobWorkConfig.hpp" DESTINATION "${INCLUDE_INSTALL_DIR}")
+install(FILES "${RW_ROOT}/src/RobWorkConfig.hpp" DESTINATION "${INCLUDE_INSTALL_DIR}" COMPONENT sdurw)
 
 # Install dependencies on Windows
 if(WIN32)
@@ -161,10 +160,10 @@ if(WIN32)
     endforeach(s)
 
     # Install external libraries
-    install(FILES ${BOOST_LIBRARIES_INSTALL} DESTINATION ${LIB_INSTALL_DIR})
-    install(DIRECTORY "${Boost_INCLUDE_DIR}/boost/" DESTINATION "${RW_INSTALL_DIR}/ext/boost/")
-    install(FILES ${XERCESC_LIBRARIES} DESTINATION ${LIB_INSTALL_DIR})
-    install(DIRECTORY "${XERCESC_INCLUDE_DIR}/" DESTINATION "${RW_INSTALL_DIR}/ext/xerces/")
+    install(FILES ${BOOST_LIBRARIES_INSTALL} DESTINATION ${LIB_INSTALL_DIR} COMPONENT external)
+    install(DIRECTORY "${Boost_INCLUDE_DIR}/boost/" DESTINATION "${RW_INSTALL_DIR}/ext/boost/" COMPONENT external)
+    install(FILES ${XERCESC_LIBRARIES} DESTINATION ${LIB_INSTALL_DIR} COMPONENT external)
+    install(DIRECTORY "${XERCESC_INCLUDE_DIR}/" DESTINATION "${RW_INSTALL_DIR}/ext/xerces/" COMPONENT external)
 endif()
 
 # And if possible we would also like to install all the dll's and stuff that we use this will configure the dependency
@@ -195,7 +194,7 @@ if(doc_executable)
 endif()
 
 # Packaging
-#include(cmake/packing.cmake)
+rw_create_installer()
 
 string(REPLACE ";" "\n" TOFILE_DST "${ROBWORK_INCLUDE_DIR}")
 file(WRITE "include_dirs" "${TOFILE_DST}")

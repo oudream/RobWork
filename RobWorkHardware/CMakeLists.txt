@@ -175,3 +175,5 @@ INSTALL(FILES "${RWHW_ROOT}/src/RobWorkHardwareConfig.hpp"
       DESTINATION "${INCLUDE_INSTALL_DIR}")
 
 message(STATUS "Install dir: ${RWHW_INSTALL_DIR} and ${INCLUDE_INSTALL_DIR}")
+
+rw_create_installer()
