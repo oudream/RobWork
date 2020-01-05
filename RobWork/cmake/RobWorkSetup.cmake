@@ -923,7 +923,7 @@ set(
 # for some compilers.
 #
 set(
-    ROBWORK_LIBRARIES_TMP
+    ROBWORK_LIBRARIES_EXTERNAL
     ${ROBWORK_LIBRARIES_EXTERNAL}
     ${OPENGL_LIBRARIES}
     ${XERCESC_LIBRARIES}
@@ -953,7 +953,7 @@ set(
 )
 
 set(ROBWORK_LIBRARIES)
-foreach(l ${ROBWORK_LIBRARIES_TMP})
+foreach(l ${ROBWORK_LIBRARIES_EXTERNAL})
     unset(tmp CACHE)
     find_library(tmp ${l} PATHS ${ROBWORK_LIBRARY_DIRS} NO_DEFAULT_PATH)
     if(tmp)
