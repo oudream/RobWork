@@ -157,14 +157,14 @@ if(WIN32)
         else()
             set(copy_lib TRUE)
         endif()
-    endforeach(s)
+    endforeach()
 
     # Install external libraries
     install(FILES ${BOOST_LIBRARIES_INSTALL} DESTINATION ${LIB_INSTALL_DIR} COMPONENT external)
     install(DIRECTORY "${Boost_INCLUDE_DIR}/boost/" DESTINATION "${RW_INSTALL_DIR}/ext/boost/" COMPONENT external)
     install(FILES ${XERCESC_LIBRARIES} DESTINATION ${LIB_INSTALL_DIR} COMPONENT external)
     install(DIRECTORY "${XERCESC_INCLUDE_DIR}/" DESTINATION "${RW_INSTALL_DIR}/ext/xerces/" COMPONENT external)
-    install(DIRECTORY "${RW_ROOT}/ext/eigen3/Eigen/src/" DESTINATION "${RW_INSTALL_DIR}/ext/Eigen/" COMPONENT external)
+    install(DIRECTORY "${RW_ROOT}/ext/eigen3/Eigen/" DESTINATION "${RW_INSTALL_DIR}/ext/Eigen/" COMPONENT external)
 endif()
 
 # And if possible we would also like to install all the dll's and stuff that we use this will configure the dependency
