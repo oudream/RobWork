@@ -164,10 +164,10 @@ else()
     # Found a RobWork installation
     if(WIN32)
         # RobWorkConfig.cmake is installed to RW_ROOT/cmake
-        set(RW_ROOT "${RWCFG_ROOT}/..")
-        set(RW_INCLUDE_EXT "${RW_ROOT}/ext")
-        set(RW_INCLUDE_SRC "${RW_ROOT}/include")
-        set(RW_LIBS "${RW_ROOT}/libs/${RW_BUILD_TYPE}")
+        set(RW_ROOT "${RWCFG_ROOT}/../..")
+        set(RW_INCLUDE_EXT "${RWCFG_ROOT}/../ext")
+        set(RW_INCLUDE_SRC "${RW_ROOT}/include/robwork-${RobWork_VERSION_MAJOR}.${RobWork_VERSION_MINOR}")
+        set(RW_LIBS "${RW_ROOT}/lib")
     else()
         # RobWorkConfig.cmake is installed to RW_INTALL/share/robwork-x.y/cmake
 
@@ -192,6 +192,10 @@ IF(EXISTS ${RWCFG_ROOT}/RobWorkBuildConfig_${RW_BUILD_TYPE}.cmake )
     SET(BOOST_ROOT ${RW_BUILD_WITH_BOOST_ROOT})
     SET(BOOST_INCLUDEDIR ${RW_BUILD_WITH_BOOST_INCLUDE_DIR})
     SET(BOOST_LIBRARYDIR ${RW_BUILD_WITH_BOOST_LIBRARY_DIR})
+
+    if(WIN32)
+	    set(BOOST_INCLUDEDIR ${RW_BUILD_WITH_BOOST_INCLUDE_DIR})
+    endif()
 
     # check which components to include
     SET(LIBRARIES_TO_INCLUDE ) # Libraries that must be included
@@ -252,14 +256,15 @@ IF(EXISTS ${RWCFG_ROOT}/RobWorkBuildConfig_${RW_BUILD_TYPE}.cmake )
 
     ################# FIND ROBWORK #######################
     set(ROBWORK_BUILD_PATH "${RW_BUILD_WITH_RW_ROOT}")  
-    set(ROBWORK_INCLUDE_DIRS_TMP "${RW_BUILD_WITH_INCLUDE_DIRS}")
-    set(ROBWORK_LIBRARY_DIRS_TMP "${RW_BUILD_WITH_LIBRARY_DIRS}")
     set(ROBWORK_LIBRARIES_TMP "${LIBRARIES_TO_INCLUDE};${OPTIONAL_LIBRARIES_TO_INCLUDE}")
 
 
     # make sure that the library and include paths are pointing to the right locations
     STRING(REPLACE "${ROBWORK_BUILD_PATH}/ext" "${RW_INCLUDE_EXT}" ROBWORK_INCLUDE_DIRS "${RW_BUILD_WITH_INCLUDE_DIR}")
     STRING(REPLACE "${ROBWORK_BUILD_PATH}/src" "${RW_INCLUDE_SRC}" ROBWORK_INCLUDE_DIRS "${ROBWORK_INCLUDE_DIRS}")
+    if(WIN32)
+        list(APPEND ROBWORK_INCLUDE_DIRS "${RW_INCLUDE_EXT}")
+    endif()
     list(REMOVE_DUPLICATES ROBWORK_INCLUDE_DIRS)
     #MESSAGE("INCLUDES: ${ROBWORK_INCLUDE_DIRS}")
 

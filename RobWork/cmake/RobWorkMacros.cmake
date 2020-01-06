@@ -738,81 +738,103 @@ endmacro()
 
 # ##################################################################################################
 # Use this macro to generate a windows installer
-
-
 macro(RW_CREATE_INSTALLER)
-    set(SLASH "/")
     if(DEFINED MSVC)
         set(SLASH "\\\\")
-    endif()
 
-    set(CPACK_PACKAGE_NAME "${PROJECT_NAME}")
-    set(CPACK_PACKAGE_VENDOR "University of Southern Denmark")
-    set(
-        CPACK_PACKAGE_DESCRIPTION_SUMMARY
-        "RobWork is a collection of C++ libraries for simulation and control of robot systems. RobWork is used for research and education as well as for practical robot applications."
-    )
-    set(CPACK_PACKAGE_HOMEPAGE_URL "robwork.dk")
-    set(CPACK_PACKAGE_INSTALL_DIRECTORY "RobWork${SLASH}${PROJECT_PREFIX}")
-    set(CPACK_NSIS_MUI_ICON "${${PROJECT_PREFIX}_ROOT}${SLASH}..${SLASH}RobWork${SLASH}cmake${SLASH}images${SLASH}rw_logo_48x48.ico")
-    set(CPACK_RESOURCE_FILE_LICENSE "${${PROJECT_PREFIX}_ROOT}${SLASH}..${SLASH}LICENSE")
-    set(CPACK_PACKAGE_CONTACT "Kasper Høj Lorenzen (kalor@mmmi.sdu.dk)")
-    set(CPACK_NSIS_MODIFY_PATH ON) #Add the add folder to path option
-    set(CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL ON) #When installing on a previus instalation ask to uninstall first
-    set(CPACK_NSIS_UNINSTALL_NAME "${PROJECT_PREFIX}_uninstall")
-    # set version
-    if(DEFINED VERSION)
-        set(CPACK_PACKAGE_VERSION ${VERSION})
-    else()
-        set(CPACK_PACKAGE_VERSION 6.6.6)
-    endif()
+        #### Description and names ########
+        set(CPACK_PACKAGE_NAME "${PROJECT_NAME}")
+        set(CPACK_PACKAGE_VENDOR "University of Southern Denmark")
+        set(
+            CPACK_PACKAGE_DESCRIPTION_SUMMARY
+            "RobWork is a collection of C++ libraries for simulation and control of robot systems. RobWork is used for research and education as well as for practical robot applications."
+        )
+        set(CPACK_PACKAGE_HOMEPAGE_URL "robwork.dk")
+        set(CPACK_PACKAGE_INSTALL_DIRECTORY "RobWork${SLASH}${PROJECT_PREFIX}")
+        set(CPACK_RESOURCE_FILE_LICENSE "${${PROJECT_PREFIX}_ROOT}${SLASH}..${SLASH}LICENSE")
+        set(CPACK_PACKAGE_CONTACT "Kasper Høj Lorenzen (kalor@mmmi.sdu.dk)")
 
-    string(REGEX MATCHALL "[0-9]+" VERSIONS_TMP ${CPACK_PACKAGE_VERSION})
-    list(GET VERSIONS_TMP 0 CPACK_PACKAGE_VERSION_MAJOR)
-    list(GET VERSIONS_TMP 1 CPACK_PACKAGE_VERSION_MINOR)
-    list(GET VERSIONS_TMP 2 CPACK_PACKAGE_VERSION_PATCH)
+        #### NSIS setup ####
 
-    set(CPACK_PACKAGE_FILE_NAME ${CPACK_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION})
+        set(CPACK_NSIS_DISPLAY_NAME "${PROJECT_NAME}")
+        set(CPACK_NSIS_PACKAGE_NAME "${PROJECT_NAME}")
+        set(CPACK_NSIS_HELP_LINK ${CPACK_PACKAGE_HOMEPAGE_URL})
+        set(CPACK_NSIS_URL_INFO_ABOUT ${CPACK_PACKAGE_HOMEPAGE_URL})
+        set(CPACK_NSIS_MUI_ICON "${${PROJECT_PREFIX}_ROOT}${SLASH}..${SLASH}RobWork${SLASH}cmake${SLASH}images${SLASH}rw_logo_48x48.ico")
+        set(CPACK_NSIS_MUI_UNWELCOMEFINISHPAGE_BITMAP "${${PROJECT_PREFIX}_ROOT}${SLASH}..${SLASH}RobWork${SLASH}cmake${SLASH}images${SLASH}rw_logo_128x64.bmp")
+        set(CPACK_NSIS_MUI_WELCOMEFINISHPAGE_BITMAP ${CPACK_NSIS_MUI_UNWELCOMEFINISHPAGE_BITMAP})
+        set(CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL ON) #When installing on a previus instalation ask to uninstall first
+        set(CPACK_NSIS_UNINSTALL_NAME "${PROJECT_PREFIX}_uninstall")
+        set(CPACK_NSIS_CONTACT ${CPACK_PACKAGE_CONTACT})
 
-    # Define components and their display names
-    set(CPACK_COMPONENTS_ALL "") # install components
-    set(SPECIAL_COMPONENTS rwplugin cmake external)
+        #### add to path option #####
+        set(CPACK_NSIS_MODIFY_PATH ON) #Add the binary folder to PATH
+        set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS #let cmake find robwork
+            "WriteRegStr HKCU \\\"Software${SLASH}Kitware${SLASH}CMake${SLASH}Packages${SLASH}${PROJECT_NAME}\\\" \\\"Location\\\" \\\"$INSTDIR\\\""
+            "WriteRegStr HKLM \\\"Software${SLASH}Kitware${SLASH}CMake${SLASH}Packages${SLASH}${PROJECT_NAME}\\\" \\\"Location\\\" \\\"$INSTDIR\\\""
+        )
+        set(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS #clean up when uninstalling robwork
+            "DeleteRegKey HKCU \\\"Software${SLASH}Kitware${SLASH}CMake${SLASH}Packages${SLASH}${PROJECT_NAME}\\\""
+            "DeleteRegKey HKLM \\\"Software${SLASH}Kitware${SLASH}CMake${SLASH}Packages${SLASH}${PROJECT_NAME}\\\""
+        )
+        string (REPLACE ";" "\n" CPACK_NSIS_EXTRA_INSTALL_COMMANDS "${CPACK_NSIS_EXTRA_INSTALL_COMMANDS}")
+        string (REPLACE ";" "\n" CPACK_NSIS_EXTRA_UNSTALL_COMMANDS "${CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS}")
 
-    foreach(_comp ${${PROJECT_PREFIX}_SUBSYSTEMS} ${SPECIAL_COMPONENTS})
-        string(TOUPPER "${_comp}" _COMP)
-
-        if(${RW_SUBSYS_BUILD_${_comp}})
-
-            set(CPACK_COMPONENT_${_COMP}_DISPLAY_NAME "${_comp}")
-            set(CPACK_COMPONENT_${_COMP}_DESCRIPTION ${RW_SUBSYS_DESC_${_comp}})
-            string(TOLOWER "${RW_SUBSYS_PREFIX_${_comp}}" CPACK_COMPONENT_${_COMP}_GROUP)
-
-            set(CPACK_COMPONENT_${_COMP}_INSTALL_TYPES Full Developer)
-            set(CPACK_COMPONENTS_ALL ${CPACK_COMPONENTS_ALL} ${_comp})
-            #message(STATUS "component: ${CPACK_COMPONENT_${_COMP}_DISPLAY_NAME} - group: ${CPACK_COMPONENT_${_COMP}_GROUP}")
-        elseif(${_comp} IN_LIST SPECIAL_COMPONENTS)
-        
-            set(CPACK_COMPONENT_${_COMP}_DISPLAY_NAME "${_comp}")
-            set(CPACK_COMPONENT_${_COMP}_GROUP misc)
-
-            set(CPACK_COMPONENT_${_COMP}_INSTALL_TYPES Full Developer)
-            set(CPACK_COMPONENTS_ALL ${CPACK_COMPONENTS_ALL} ${_comp})
-            message(STATUS "from: ${_COMP} - component: ${CPACK_COMPONENT_${_COMP}_DISPLAY_NAME} - group: ${CPACK_COMPONENT_${_COMP}_GROUP}")
+        #### set version #####
+        if(DEFINED VERSION)
+            set(CPACK_PACKAGE_VERSION ${VERSION})
         else()
-            message(STATUS "Not build component ${_comp}")
+            set(CPACK_PACKAGE_VERSION 6.6.6)
         endif()
-    endforeach()
 
-    # Define dependencies between components. example headers dpend on lib
-    set(CPACK_COMPONENT_GROUP_RW_DESCRIPTION "Tools for controlling robots")
-    set(CPACK_COMPONENT_GROUP_RWS_DESCRIPTION "Tools for Visulizing robot control")
-    set(CPACK_COMPONENT_GROUP_RWHW_DESCRIPTION "Drivers for robot platforms")
-    set(CPACK_COMPONENT_GROUP_RWSIM_DESCRIPTION "Tools for simulating robots")
-    set(CPACK_COMPONENT_GROUP_MISC_DESCRIPTION "Other STUFF")
+        string(REGEX MATCHALL "[0-9]+" VERSIONS_TMP ${CPACK_PACKAGE_VERSION})
+        list(GET VERSIONS_TMP 0 CPACK_PACKAGE_VERSION_MAJOR)
+        list(GET VERSIONS_TMP 1 CPACK_PACKAGE_VERSION_MINOR)
+        list(GET VERSIONS_TMP 2 CPACK_PACKAGE_VERSION_PATCH)
 
-    # Define NSIS installation types
-    set(CPACK_ALL_INSTALL_TYPES Full Developer)
+        set(CPACK_PACKAGE_FILE_NAME ${CPACK_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION})
 
-    # Must be after the last CPACK macros
-    include(CPack)
+        #### What to install #####
+        # Define components and their display names
+        set(CPACK_COMPONENTS_ALL "") # install components
+        set(SPECIAL_COMPONENTS rwplugin cmake external)
+
+        foreach(_comp ${${PROJECT_PREFIX}_SUBSYSTEMS} ${SPECIAL_COMPONENTS})
+            string(TOUPPER "${_comp}" _COMP)
+
+            if(${RW_SUBSYS_BUILD_${_comp}})
+
+                set(CPACK_COMPONENT_${_COMP}_DISPLAY_NAME "${_comp}")
+                set(CPACK_COMPONENT_${_COMP}_DESCRIPTION ${RW_SUBSYS_DESC_${_comp}})
+                string(TOLOWER "${RW_SUBSYS_PREFIX_${_comp}}" CPACK_COMPONENT_${_COMP}_GROUP)
+
+                set(CPACK_COMPONENT_${_COMP}_INSTALL_TYPES Full Developer)
+                set(CPACK_COMPONENTS_ALL ${CPACK_COMPONENTS_ALL} ${_comp})
+                #message(STATUS "component: ${CPACK_COMPONENT_${_COMP}_DISPLAY_NAME} - group: ${CPACK_COMPONENT_${_COMP}_GROUP}")
+            elseif(${_comp} IN_LIST SPECIAL_COMPONENTS)
+            
+                set(CPACK_COMPONENT_${_COMP}_DISPLAY_NAME "${_comp}")
+                set(CPACK_COMPONENT_${_COMP}_GROUP misc)
+
+                set(CPACK_COMPONENT_${_COMP}_INSTALL_TYPES Full Developer)
+                set(CPACK_COMPONENTS_ALL ${CPACK_COMPONENTS_ALL} ${_comp})
+                message(STATUS "from: ${_COMP} - component: ${CPACK_COMPONENT_${_COMP}_DISPLAY_NAME} - group: ${CPACK_COMPONENT_${_COMP}_GROUP}")
+            else()
+                message(STATUS "Not build component ${_comp}")
+            endif()
+        endforeach()
+
+        #### Setup group descriptions ####
+        set(CPACK_COMPONENT_GROUP_RW_DESCRIPTION "Tools for controlling robots")
+        set(CPACK_COMPONENT_GROUP_RWS_DESCRIPTION "Tools for Visulizing robot control")
+        set(CPACK_COMPONENT_GROUP_RWHW_DESCRIPTION "Drivers for robot platforms")
+        set(CPACK_COMPONENT_GROUP_RWSIM_DESCRIPTION "Tools for simulating robots")
+        set(CPACK_COMPONENT_GROUP_MISC_DESCRIPTION "Other STUFF")
+
+        # Define NSIS installation types
+        set(CPACK_ALL_INSTALL_TYPES Full Developer)
+
+        # Must be after the last CPACK macros
+        include(CPack)
+    endif()
 endmacro()
