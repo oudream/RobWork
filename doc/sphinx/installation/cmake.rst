@@ -7,6 +7,14 @@ It is important to ensure that CMake finds the correct optional dependencies to 
 Here we will give an introduction to the CMake system and the most relevant options.
 We will also provide some information about how to control where CMake searches for the dependencies.
 
+To implement the customizing use the CMake system like in this example to disable use for LUA:
+
+.. code-block:: shell
+
+    cd ~/RobWork/Build/RW
+    cmake -D CMAKE_BUILD_TYPE=Release -D RW_USE_LUA=OFF ../../RobWork
+    make -j4
+
 .. warning::
     This page is still being written. The following sections will therefore include a non compleate list of CMake options
 
