@@ -2,7 +2,7 @@ Ubuntu compilation
 **********************
 
 RobWork can be built by the user.
-This guide shows the steps for doing this in Ubuntu 16.04, 18.04, and 19.04.
+This guide shows the steps for doing this in Ubuntu 16.04, 18.04, 19.04 and 19.10.
 The compilation on these platforms are tested continuously.
 Current status of the pipeline for the RobWork master branch is:
 
@@ -11,7 +11,7 @@ Current status of the pipeline for the RobWork master branch is:
 
 If you have any suggestions or additions to the guide, please post it on the issue
 tracker https://gitlab.com/sdurobotics/RobWork/issues . This guide was
-last revised in September 2019.
+last revised in January 2020.
 
 .. note::
 
@@ -180,7 +180,7 @@ precision as a shared library.
 
 Bullet Physics can also be installed through the package manager.
 Ubuntu 16.04 comes with with 2.83.6, and Ubuntu
-18.04/19.04 with 2.87. The bullet packages can be installed with the
+18.04, 19.04 and 19.10 with 2.87. The bullet packages can be installed with the
 following command:
 
 .. code-block:: shell
