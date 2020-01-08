@@ -555,11 +555,3 @@ void PlayBack::keyPressEvent(QKeyEvent* e){
 	else if( e->key() == Qt::Key_B)
 		_player->step(false);
 }
-
-//----------------------------------------------------------------------
-#ifndef RWS_USE_STATIC_LINK_PLUGINS
-#if !RWS_USE_QT5
-#include <QtCore/qplugin.h>
-Q_EXPORT_PLUGIN2(PlayBack, PlayBack)
-#endif
-#endif

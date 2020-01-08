@@ -68,11 +68,9 @@ namespace rwslibs {
  */
 class ATaskVisPlugin: public rws::RobWorkStudioPlugin, private Ui::ATaskVisPlugin
 {
-Q_OBJECT
-Q_INTERFACES( rws::RobWorkStudioPlugin )
-#if RWS_USE_QT5
-Q_PLUGIN_METADATA(IID "dk.sdu.mip.Robwork.RobWorkStudioPlugin/0.1" FILE "plugin.json")
-#endif
+    Q_OBJECT
+    Q_INTERFACES( rws::RobWorkStudioPlugin )
+    Q_PLUGIN_METADATA(IID "dk.sdu.mip.Robwork.RobWorkStudioPlugin/0.1" FILE "plugin.json")
 public:
 	//! @brief Constructor
 	ATaskVisPlugin();

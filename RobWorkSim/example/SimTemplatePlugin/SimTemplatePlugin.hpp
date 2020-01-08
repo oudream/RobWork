@@ -1,8 +1,6 @@
 #ifndef SimTemplatePlugin_HPP
 #define SimTemplatePlugin_HPP
 
-#include <RobWorkStudioConfig.hpp> // For RWS_USE_QT5 definition
-
 #include <rw/common/Timer.hpp>
 #include <rws/RobWorkStudioPlugin.hpp>
 #include "ui_SimTemplatePlugin.h"
@@ -20,11 +18,9 @@ class QTimer;
  */
 class SimTemplatePlugin: public rws::RobWorkStudioPlugin, private Ui::SimTemplatePlugin
 {
-Q_OBJECT
-Q_INTERFACES( rws::RobWorkStudioPlugin )
-#if RWS_USE_QT5
-	Q_PLUGIN_METADATA(IID "dk.sdu.mip.Robwork.RobWorkStudioPlugin/0.1" FILE "SimTemplatePlugin.json")
-#endif
+    Q_OBJECT
+    Q_INTERFACES( rws::RobWorkStudioPlugin )
+    Q_PLUGIN_METADATA(IID "dk.sdu.mip.Robwork.RobWorkStudioPlugin/0.1" FILE "SimTemplatePlugin.json")
 public:
 
     /**

@@ -40,11 +40,9 @@ class QPushButton;
  * and simulation purposes, that are based on some form of dynamic simulation.
  */
 class SimUtilityPlugin: public rws::RobWorkStudioPlugin {
-Q_OBJECT
-Q_INTERFACES( rws::RobWorkStudioPlugin )
-#if RWS_USE_QT5
-Q_PLUGIN_METADATA(IID "dk.sdu.mip.Robwork.RobWorkStudioPlugin/0.1" FILE "SimUtilityPlugin.json")
-#endif
+    Q_OBJECT
+    Q_INTERFACES( rws::RobWorkStudioPlugin )
+    Q_PLUGIN_METADATA(IID "dk.sdu.mip.Robwork.RobWorkStudioPlugin/0.1" FILE "SimUtilityPlugin.json")
 public:
     /**
      * @brief constructor

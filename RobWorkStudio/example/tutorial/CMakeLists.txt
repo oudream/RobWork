@@ -17,9 +17,6 @@ endif()
 set(RobWorkStudio_DIR "${RWS_ROOT}/cmake")
 find_package(RobWorkStudio)
 
-include_directories(${ROBWORK_INCLUDE_DIRS} ${ROBWORKSTUDIO_INCLUDE_DIRS})
-link_directories(${ROBWORK_LIBRARY_DIRS} ${ROBWORKSTUDIO_LIBRARY_DIRS})
-
 # Set the output dir for generated libraries and binaries
 if(MSVC)
     set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${ROOT}/bin" CACHE PATH "Runtime directory" FORCE)
@@ -33,22 +30,10 @@ endif()
 
 # ########################   From here we add the plugins
 
-if(RWS_USE_QT5)
-    qt5_wrap_cpp(MocSrcFiles SamplePlugin.hpp)
-    qt5_add_resources(RccSrcFiles resources.qrc)
-else()
-    qt4_wrap_cpp(
-        MocSrcFiles
-        SamplePlugin.hpp
-        OPTIONS
-        -DBOOST_TT_HAS_PLUS_HPP_INCLUDED
-        -DBOOST_TT_HAS_PLUS_ASSIGN_HPP_INCLUDED
-        -DBOOST_TT_HAS_MINUS_HPP_INCLUDED
-        -DBOOST_TT_HAS_MINUS_ASSIGN_HPP_INCLUDED
-    )
-    qt4_add_resources(RccSrcFiles resources.qrc)
-endif()
+qt5_wrap_cpp(MocSrcFiles SamplePlugin.hpp)
+qt5_add_resources(RccSrcFiles resources.qrc)
 
 # The shared library to build:
 add_library(SamplePlugin MODULE SamplePlugin.cpp ${MocSrcFiles} ${RccSrcFiles})
 target_link_libraries(SamplePlugin ${ROBWORKSTUDIO_LIBRARIES} ${ROBWORK_LIBRARIES})
+target_include_directories(SamplePlugin PUBLIC ${ROBWORK_INCLUDE_DIRS} ${ROBWORKSTUDIO_INCLUDE_DIRS})

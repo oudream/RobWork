@@ -10,11 +10,7 @@ include_directories(${PYTHON_INCLUDE_DIRS})
 # Rcc shared for all plugins
 #
 set(RccSrcFiles)
-if(RWS_USE_QT5)
-    qt5_add_resources(RccSrcFiles resources.qrc)
-else()
-    qt4_add_resources(RccSrcFiles resources.qrc)
-endif()
+qt5_add_resources(RccSrcFiles resources.qrc)
 
 # ######################################################################################################################
 # next compile RWSimulatorPlugin
@@ -22,19 +18,7 @@ endif()
 set(SrcFiles RWSimulatorPlugin.cpp)
 
 # Call the create_plugin macro for creating the plugin
-if(RWS_USE_QT5)
-    qt5_wrap_cpp(MocSrcFiles RWSimulatorPlugin.hpp)
-else()
-    qt4_wrap_cpp(
-        MocSrcFiles
-        RWSimulatorPlugin.hpp
-        OPTIONS
-        -DBOOST_TT_HAS_PLUS_HPP_INCLUDED
-        -DBOOST_TT_HAS_PLUS_ASSIGN_HPP_INCLUDED
-        -DBOOST_TT_HAS_MINUS_HPP_INCLUDED
-        -DBOOST_TT_HAS_MINUS_ASSIGN_HPP_INCLUDED
-    )
-endif()
+qt5_wrap_cpp(MocSrcFiles RWSimulatorPlugin.hpp)
 
 # The shared library to build:
 add_library(RWSimulatorPlugin MODULE ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles})
@@ -66,19 +50,7 @@ set(SrcFiles SimUtilityPlugin.cpp)
 
 # Call the create_plugin macro for creating the plugin
 set(MocSrcFiles)
-if(RWS_USE_QT5)
-    qt5_wrap_cpp(MocSrcFiles SimUtilityPlugin.hpp)
-else()
-    qt4_wrap_cpp(
-        MocSrcFiles
-        SimUtilityPlugin.hpp
-        OPTIONS
-        -DBOOST_TT_HAS_PLUS_HPP_INCLUDED
-        -DBOOST_TT_HAS_PLUS_ASSIGN_HPP_INCLUDED
-        -DBOOST_TT_HAS_MINUS_HPP_INCLUDED
-        -DBOOST_TT_HAS_MINUS_ASSIGN_HPP_INCLUDED
-    )
-endif()
+qt5_wrap_cpp(MocSrcFiles SimUtilityPlugin.hpp)
 
 # The shared library to build:
 add_library(SimUtilityPlugin MODULE ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles})
@@ -88,28 +60,12 @@ target_link_libraries(SimUtilityPlugin sdurwsim_gui ${ROBWORKSIM_LIBRARIES} ${RO
 # next compile GraspTableGeneratorPlugin
 #
 set(UIS_OUT_H)
-if(RWS_USE_QT5)
-    qt5_wrap_ui(UIS_OUT_H GraspTableGeneratorPlugin.ui)
-else()
-    qt4_wrap_ui(UIS_OUT_H GraspTableGeneratorPlugin.ui)
-endif()
+qt5_wrap_ui(UIS_OUT_H GraspTableGeneratorPlugin.ui)
 set(SrcFiles GraspTableGeneratorPlugin.cpp)
 set_source_files_properties(${SrcFiles} PROPERTIES OBJECT_DEPENDS "${UIS_OUT_H}")
 # Call the create_plugin macro for creating the plugin
 set(MocSrcFiles)
-if(RWS_USE_QT5)
-    qt5_wrap_cpp(MocSrcFiles GraspTableGeneratorPlugin.hpp)
-else()
-    qt4_wrap_cpp(
-        MocSrcFiles
-        GraspTableGeneratorPlugin.hpp
-        OPTIONS
-        -DBOOST_TT_HAS_PLUS_HPP_INCLUDED
-        -DBOOST_TT_HAS_PLUS_ASSIGN_HPP_INCLUDED
-        -DBOOST_TT_HAS_MINUS_HPP_INCLUDED
-        -DBOOST_TT_HAS_MINUS_ASSIGN_HPP_INCLUDED
-    )
-endif()
+qt5_wrap_cpp(MocSrcFiles GraspTableGeneratorPlugin.hpp)
 
 # The shared library to build:
 add_library(GraspTableGeneratorPlugin MODULE ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles} ${UIS_OUT_H})
@@ -119,37 +75,17 @@ target_link_libraries(GraspTableGeneratorPlugin ${ROBWORKSIM_LIBRARIES} ${ROBWOR
 # The RW Simulation
 #
 set(UIS_OUT_H)
-if(RWS_USE_QT5)
-    qt5_wrap_ui(UIS_OUT_H RWSimPlugin.ui)
-else()
-    qt4_wrap_ui(UIS_OUT_H RWSimPlugin.ui)
-endif()
+qt5_wrap_ui(UIS_OUT_H RWSimPlugin.ui)
 set(SrcFiles RWSimPlugin.cpp)
 set_source_files_properties(${SrcFiles} PROPERTIES OBJECT_DEPENDS "${UIS_OUT_H}")
 
 # Call the create_plugin macro for creating the plugin
 set(MocSrcFiles)
-if(RWS_USE_QT5)
-    qt5_wrap_cpp(MocSrcFiles RWSimPlugin.hpp)
-else()
-    qt4_wrap_cpp(
-        MocSrcFiles
-        RWSimPlugin.hpp
-        OPTIONS
-        -DBOOST_TT_HAS_PLUS_HPP_INCLUDED
-        -DBOOST_TT_HAS_PLUS_ASSIGN_HPP_INCLUDED
-        -DBOOST_TT_HAS_MINUS_HPP_INCLUDED
-        -DBOOST_TT_HAS_MINUS_ASSIGN_HPP_INCLUDED
-    )
-endif()
+qt5_wrap_cpp(MocSrcFiles RWSimPlugin.hpp)
 
 # Rcc the files:
 set(RccSrcFiles_RWSimPlugin)
-if(RWS_USE_QT5)
-    qt5_add_resources(RccSrcFiles_RWSimPlugin ${RWSIM_ROOT}/src/gfx/RWSimPlugin.qrc)
-else()
-    qt4_add_resources(RccSrcFiles_RWSimPlugin ${RWSIM_ROOT}/src/gfx/RWSimPlugin.qrc)
-endif()
+qt5_add_resources(RccSrcFiles_RWSimPlugin ${RWSIM_ROOT}/src/gfx/RWSimPlugin.qrc)
 if(RWSIM_HAVE_LUA)
     set(RWSIM_LUA_LIB sdurwsim_lua_s)
 endif()
@@ -171,36 +107,16 @@ add_dependencies(RWSimPlugin ${RWSIM_LUA_LIB} sdurwsim_gui)
 # The SimTaskPlugin
 #
 set(UIS_OUT_H)
-if(RWS_USE_QT5)
-    qt5_wrap_ui(UIS_OUT_H SimTaskPlugin.ui)
-else()
-    qt4_wrap_ui(UIS_OUT_H SimTaskPlugin.ui)
-endif()
+qt5_wrap_ui(UIS_OUT_H SimTaskPlugin.ui)
 set(SrcFiles SimTaskPlugin.cpp)
 set_source_files_properties(${SrcFiles} PROPERTIES OBJECT_DEPENDS "${UIS_OUT_H}")
 
 # Call the create_plugin macro for creating the plugin
 set(MocSrcFiles)
-if(RWS_USE_QT5)
-    qt5_wrap_cpp(MocSrcFiles SimTaskPlugin.hpp)
-else()
-    qt4_wrap_cpp(
-        MocSrcFiles
-        SimTaskPlugin.hpp
-        OPTIONS
-        -DBOOST_TT_HAS_PLUS_HPP_INCLUDED
-        -DBOOST_TT_HAS_PLUS_ASSIGN_HPP_INCLUDED
-        -DBOOST_TT_HAS_MINUS_HPP_INCLUDED
-        -DBOOST_TT_HAS_MINUS_ASSIGN_HPP_INCLUDED
-    )
-endif()
+qt5_wrap_cpp(MocSrcFiles SimTaskPlugin.hpp)
 # Rcc the files:
 set(RccSrcFiles_SimTaskPlugin)
-if(RWS_USE_QT5)
-    qt5_add_resources(RccSrcFiles_SimTaskPlugin ${RWSIM_ROOT}/src/gfx/SimTaskPlugin.qrc)
-else()
-    qt4_add_resources(RccSrcFiles_SimTaskPlugin ${RWSIM_ROOT}/src/gfx/SimTaskPlugin.qrc)
-endif()
+qt5_add_resources(RccSrcFiles_SimTaskPlugin ${RWSIM_ROOT}/src/gfx/SimTaskPlugin.qrc)
 
 add_library(SimTaskPlugin MODULE ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles_SimTaskPlugin} ${UIS_OUT_H})
 # ADD_LIBRARY(SimTaskPluginStatic STATIC ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles_SimTaskPlugin})
@@ -217,11 +133,7 @@ target_link_libraries(
 # The SimTaskVisPlugin -- has been moved to RobWorkStudio now named gtaskplugin
 #
 set(UIS_OUT_H)
-if(RWS_USE_QT5)
-    qt5_wrap_ui(UIS_OUT_H SimTaskVisPlugin.ui)
-else()
-    qt4_wrap_ui(UIS_OUT_H SimTaskVisPlugin.ui)
-endif()
+qt5_wrap_ui(UIS_OUT_H SimTaskVisPlugin.ui)
 # SET(SrcFiles SimTaskVisPlugin.cpp) set_source_files_properties(${SrcFiles} PROPERTIES OBJECT_DEPENDS "${UIS_OUT_H}")
 
 # Call the create_plugin macro for creating the plugin SET(MocSrcFiles ) QT4_WRAP_CPP(MocSrcFiles SimTaskVisPlugin.hpp
@@ -237,11 +149,7 @@ endif()
 # next compile EngineTestPlugin
 #
 set(UIS_OUT_H)
-if(RWS_USE_QT5)
-    qt5_wrap_ui(UIS_OUT_H EngineTestPlugin.ui)
-else()
-    qt4_wrap_ui(UIS_OUT_H EngineTestPlugin.ui)
-endif()
+qt5_wrap_ui(UIS_OUT_H EngineTestPlugin.ui)
 
 set(SrcFiles EngineTestPlugin.cpp)
 # set_source_files_properties(${SrcFiles} PROPERTIES OBJECT_DEPENDS
@@ -249,19 +157,7 @@ set(SrcFiles EngineTestPlugin.cpp)
 
 # Call the create_plugin macro for creating the plugin
 set(MocSrcFiles)
-if(RWS_USE_QT5)
-    qt5_wrap_cpp(MocSrcFiles EngineTestPlugin.hpp)
-else()
-    qt4_wrap_cpp(
-        MocSrcFiles
-        EngineTestPlugin.hpp
-        OPTIONS
-        -DBOOST_TT_HAS_PLUS_HPP_INCLUDED
-        -DBOOST_TT_HAS_PLUS_ASSIGN_HPP_INCLUDED
-        -DBOOST_TT_HAS_MINUS_HPP_INCLUDED
-        -DBOOST_TT_HAS_MINUS_ASSIGN_HPP_INCLUDED
-    )
-endif()
+qt5_wrap_cpp(MocSrcFiles EngineTestPlugin.hpp)
 
 # The shared library to build:
 add_library(EngineTestPlugin MODULE ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles} ${UIS_OUT_H})

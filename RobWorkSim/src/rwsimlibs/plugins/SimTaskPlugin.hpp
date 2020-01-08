@@ -37,11 +37,9 @@ class QTimer;
  */
 class SimTaskPlugin: public rws::RobWorkStudioPlugin, private Ui::SimTaskPlugin
 {
-Q_OBJECT
-Q_INTERFACES( rws::RobWorkStudioPlugin )
-#if RWS_USE_QT5
-Q_PLUGIN_METADATA(IID "dk.sdu.mip.Robwork.RobWorkStudioPlugin/0.1" FILE "SimTaskPlugin.json")
-#endif
+    Q_OBJECT
+    Q_INTERFACES( rws::RobWorkStudioPlugin )
+    Q_PLUGIN_METADATA(IID "dk.sdu.mip.Robwork.RobWorkStudioPlugin/0.1" FILE "SimTaskPlugin.json")
 public:
     /**
      * @brief constructor

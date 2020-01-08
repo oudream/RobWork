@@ -102,12 +102,8 @@ find_package(Qt5Gui QUIET)
 find_package(Qt5Widgets QUIET)
 find_package(Qt5OpenGL QUIET)
 if(Qt5Core_FOUND AND Qt5Gui_FOUND AND Qt5Widgets_FOUND AND Qt5OpenGL_FOUND)
-    get_target_property(QT_UIC_EXECUTABLE Qt5::uic LOCATION)
     set(QT_LIBRARIES ${Qt5Core_LIBRARIES} ${Qt5Gui_LIBRARIES} ${Qt5Widgets_LIBRARIES} ${Qt5OpenGL_LIBRARIES})
-    set(QT_INCLUDES ${Qt5Core_INCLUDE_DIRS} ${Qt5Gui_INCLUDE_DIRS} ${Qt5Widgets_INCLUDE_DIRS} ${Qt5OpenGL_INCLUDE_DIRS})
-    include_directories(${QT_INCLUDES})
     message(STATUS "RobWorkStudio: Using Qt5.")
-    set(RWS_USE_QT5 ON)
 else()
     message(STATUS "RobWorkStudio: One or more Qt5 modules not found:")
     if(Qt5Core_FOUND)
@@ -130,19 +126,10 @@ else()
     else()
         message(STATUS "RobWorkStudio: - Qt5OpenGL NOT found. Please set Qt5OpenGL_DIR to find.")
     endif()
-    find_package(Qt4 QUIET)
-    if(Qt4_FOUND)
-        set(QT_USE_QTOPENGL 1)
-        set(QT_USE_QTDESIGNER 1)
-        set(QT_USE_QTUITOOLS 1)
-        include(${QT_USE_FILE})
-        message(STATUS "RobWorkStudio: Using Qt4.")
-    else()
-        message(
-            FATAL_ERROR
-                "RobWorkStudio: Could NOT find Qt4 or Qt5. Please set the Qt5 directories, or alternatively Qt4_DIR for Qt4."
-        )
-    endif()
+    message(
+        FATAL_ERROR
+            "RobWorkStudio: Could NOT find Qt5. Please set the Qt5 directories."
+    )
 endif()
 
 # ######################################################################################################################
@@ -286,6 +273,8 @@ set(ROBWORKSTUDIO_LIBRARY_DIRS ${Boost_LIBRARY_DIRS} ${ROBWORK_LIBRARY_DIRS} ${R
 #
 set(
     ROBWORKSTUDIO_LIBRARIES
+    sdurws_robworkstudioapp
+    sdurws_workcelleditor
     ${RWS_SANDBOX}
     ${RWS_LUA}
     sdurws

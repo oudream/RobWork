@@ -32,6 +32,7 @@ if(build)
     if(NOT ${SWIG_VERSION} VERSION_LESS 4.0.0)
         set_source_files_properties(../sdurw.i PROPERTIES SWIG_FLAGS "-includeall;-doxygen")
     endif()
+    include_directories(${RW_ROOT}/src)
 
     execute_process(
         COMMAND python3 -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())"

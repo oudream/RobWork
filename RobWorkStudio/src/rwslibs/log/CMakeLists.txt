@@ -9,24 +9,9 @@ if(build)
     set(SrcFiles ShowLog.cpp)
     set(SRC_FILES_HPP ShowLog.hpp)
 
-    if(RWS_USE_QT5)
-        qt5_wrap_cpp(MocSrcFiles ${SRC_FILES_HPP})
-        # Rcc the files:
-        qt5_add_resources(RccSrcFiles resources.qrc)
-    else()
-        # Header files to moc and compile:
-        qt4_wrap_cpp(
-            MocSrcFiles
-            ${SRC_FILES_HPP}
-            OPTIONS
-            -DBOOST_TT_HAS_PLUS_HPP_INCLUDED
-            -DBOOST_TT_HAS_PLUS_ASSIGN_HPP_INCLUDED
-            -DBOOST_TT_HAS_MINUS_HPP_INCLUDED
-            -DBOOST_TT_HAS_MINUS_ASSIGN_HPP_INCLUDED
-        )
-        # Rcc the files:
-        qt4_add_resources(RccSrcFiles resources.qrc)
-    endif()
+    qt5_wrap_cpp(MocSrcFiles ${SRC_FILES_HPP} TARGET ${SUBSYS_NAME})
+    # Rcc the files:
+    qt5_add_resources(RccSrcFiles resources.qrc)
 
     # Set extra linker flags for apple macos computers
     rws_add_plugin(
@@ -37,7 +22,7 @@ if(build)
         ${RccSrcFiles}
     )
     rw_add_includes(${SUBSYS_NAME} "rwslibs/log" ${SRC_FILES_HPP})
-    add_dependencies(${SUBSYS_NAME} ${SUBSYS_DEPS})
+    target_link_libraries(${SUBSYS_NAME} PUBLIC ${SUBSYS_DEPS} ${QT_LIBRARIES} PRIVATE ${ROBWORK_LIBRARIES})
 
     if("${RWS_DEFAULT_LIB_TYPE}" STREQUAL "STATIC")
         set(RWS_PLUGIN_LIBRARIES ${RWS_PLUGIN_LIBRARIES} ${SUBSYS_NAME} PARENT_SCOPE)

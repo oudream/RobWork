@@ -35,13 +35,6 @@ endif()
 FIND_PACKAGE(RobWork REQUIRED)
 FIND_PACKAGE(RobWorkStudio REQUIRED)
 
-INCLUDE_DIRECTORIES( ${ROBWORK_INCLUDE_DIRS} )
-LINK_DIRECTORIES( ${ROBWORK_LIBRARY_DIRS} )
-
-#Include default settings for constructing a RobWorkStudio dependent project
-INCLUDE_DIRECTORIES( ${ROBWORKSTUDIO_INCLUDE_DIRS} )
-LINK_DIRECTORIES( ${ROBWORKSTUDIO_LIBRARY_DIRS} )
-
 # Set the output dir for generated libraries and binaries
 IF(MSVC)
 	SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${ROOT}/bin" CACHE PATH "Runtime directory" FORCE)
@@ -64,18 +57,9 @@ ENDIF()
 # if we want to use ui files add them here
 SET(UIS_FILES SamplePlugin.ui )
 
-#Need to add the current binary dir to the include directory because the generated source files are placed here
-include_directories(${CMAKE_CURRENT_BINARY_DIR})
-
-IF(RWS_USE_QT5)
-	QT5_WRAP_UI(UIS_OUT_H ${UIS_FILES})
-	QT5_WRAP_CPP(MocSrcFiles SamplePlugin.hpp)
-	QT5_ADD_RESOURCES(RccSrcFiles resources.qrc)
-ELSE()
-	QT4_WRAP_UI(UIS_OUT_H ${UIS_FILES})
-	QT4_WRAP_CPP(MocSrcFiles SamplePlugin.hpp OPTIONS -DBOOST_TT_HAS_PLUS_HPP_INCLUDED -DBOOST_TT_HAS_PLUS_ASSIGN_HPP_INCLUDED -DBOOST_TT_HAS_MINUS_HPP_INCLUDED -DBOOST_TT_HAS_MINUS_ASSIGN_HPP_INCLUDED)
-	QT4_ADD_RESOURCES(RccSrcFiles resources.qrc)
-ENDIF()
+qt5_wrap_ui(UIS_OUT_H ${UIS_FILES})
+qt5_wrap_cpp(MocSrcFiles SamplePlugin.hpp)
+qt5_add_resources(RccSrcFiles resources.qrc)
 
 SET(SrcFiles SamplePlugin.cpp ${UIS_OUT_H})
 
@@ -83,3 +67,4 @@ SET(SrcFiles SamplePlugin.cpp ${UIS_OUT_H})
 ADD_LIBRARY(SamplePlugin MODULE ${SrcFiles} ${MocSrcFiles}  ${RccSrcFiles})
 TARGET_LINK_LIBRARIES(SamplePlugin ${ROBWORKSTUDIO_LIBRARIES} ${ROBWORK_LIBRARIES} )
 #TARGET_LINK_LIBRARIES(SamplePlugin ${ROBWORKSTUDIO_LIBRARIES} ${ROBWORK_LIBRARIES} ws2_32) # windows
+target_include_directories(SamplePlugin PUBLIC ${CMAKE_CURRENT_BINARY_DIR} ${ROBWORKSTUDIO_INCLUDE_DIRS} ${ROBWORK_INCLUDE_DIRS})
