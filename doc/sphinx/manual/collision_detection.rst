@@ -5,8 +5,8 @@ Collision Detection
 The rw::proximity package provides functionality for collision checking. When using a WorkCell and Frames the primary interface will be the rw::proximity::CollisionDetector. To each frames there can be zero or more geometries associated. When stating the two frames are checked against each other, it is in reality the geometries of these which are tested. Notice, that two geometries associated to the same frame are never tested against each other.
 
 Inside the CollisionDetector the checking is divided into two phases:
-- Broad phase: Provides a filtering which determines which pairs of frames that need to be tested in the narrow phase.
-- Narrow phase: Performs the actual collision checking between geometries.
+* Broad phase: Provides a filtering which determines which pairs of frames that need to be tested in the narrow phase.
+* Narrow phase: Performs the actual collision checking between geometries.
 
 The default broad phase filter is the rw::proximity::BasicFilterStrategy which contains the rules specified in the CollisionSetup associated to a rw::models::WorkCell. The BasicFilterStrategy maintains a list of frame pairs to check, which can be modified at runtime through include and exclude methods. 
 
