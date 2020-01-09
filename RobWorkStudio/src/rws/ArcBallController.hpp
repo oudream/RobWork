@@ -139,6 +139,11 @@ namespace rws{
 		//! @copydoc CameraController::getPanTarget
 		rw::math::Vector3D<> getPanTarget();
 
+		//! @copydoc CameraController::setDrawable
+		void setDrawable(rw::graphics::DrawableNode::Ptr obj) {
+			_pivotObj=obj;
+		}
+
 	private:
 		rw::math::Vector2D<> _centerPt; 	// Center of the ball
 		rw::math::Vector3D<> _stVec;        // Saved click vector
@@ -158,9 +163,13 @@ namespace rws{
 		rw::math::Vector3D<> _initialPanPos;
 		rw::math::Transform3D<> _initial_cTw;
 		double _initialZ;
+
+		rw::graphics::DrawableNode::Ptr _pivotObj;
 		
 
 		rw::graphics::SceneCamera::Ptr _cam;
+
+		void setPivotScale();
 	};
 
 }
