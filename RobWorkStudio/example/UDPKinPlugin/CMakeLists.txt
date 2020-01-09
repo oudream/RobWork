@@ -58,7 +58,7 @@ ENDIF()
 SET(UIS_FILES SamplePlugin.ui )
 
 qt5_wrap_ui(UIS_OUT_H ${UIS_FILES})
-qt5_wrap_cpp(MocSrcFiles SamplePlugin.hpp)
+qt5_wrap_cpp(MocSrcFiles SamplePlugin.hpp TARGET SamplePlugin)
 qt5_add_resources(RccSrcFiles resources.qrc)
 
 SET(SrcFiles SamplePlugin.cpp ${UIS_OUT_H})

@@ -30,7 +30,7 @@ endif()
 
 # ########################   From here we add the plugins
 
-qt5_wrap_cpp(MocSrcFiles SamplePlugin.hpp)
+qt5_wrap_cpp(MocSrcFiles SamplePlugin.hpp TARGET SamplePlugin)
 qt5_add_resources(RccSrcFiles resources.qrc)
 
 # The shared library to build:
