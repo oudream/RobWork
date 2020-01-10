@@ -35,21 +35,12 @@ EquationSystemWidget::EquationSystemWidget(rw::common::Ptr<const LogEquationSyst
 {
 	_ui->setupUi(this);
 
-#if RWS_USE_QT5
 	_ui->_A->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 	_ui->_A->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 	_ui->_b->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 	_ui->_b->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 	_ui->_x->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 	_ui->_x->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-#else
-	_ui->_A->verticalHeader()->setResizeMode(QHeaderView::Stretch);
-	_ui->_A->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
-	_ui->_b->verticalHeader()->setResizeMode(QHeaderView::Stretch);
-	_ui->_b->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
-	_ui->_x->verticalHeader()->setResizeMode(QHeaderView::Stretch);
-	_ui->_x->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
-#endif
 
 	_ui->_A->setContextMenuPolicy(Qt::CustomContextMenu);
 	_ui->_b->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -195,23 +186,15 @@ void EquationSystemWidget::showContextMenu(const QPoint& pos) {
 	RW_ASSERT(widget);
 	const QPoint globalPos = widget->mapToGlobal(pos);
 	QMenu myMenu;
-#if RWS_USE_QT5
 	if (_ui->_A->verticalHeader()->sectionResizeMode(0) == QHeaderView::Stretch)
 		myMenu.addAction("&Expanded Mode");
 	else
 		myMenu.addAction("&Compact Mode");
-#else
-	if (_ui->_A->verticalHeader()->resizeMode(0) == QHeaderView::Stretch)
-		myMenu.addAction("&Expanded Mode");
-	else
-		myMenu.addAction("&Compact Mode");
-#endif
 	myMenu.addAction("Copy as &Mathematica");
 	myMenu.addAction("Copy as MAT&LAB");
 
 	const QAction* const selectedItem = myMenu.exec(globalPos);
 	if (selectedItem == myMenu.actions()[0]) {
-#if RWS_USE_QT5
 		if (_ui->_A->verticalHeader()->sectionResizeMode(0) == QHeaderView::Stretch) {
 			// To expanded mode
 			_ui->_A->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
@@ -229,25 +212,6 @@ void EquationSystemWidget::showContextMenu(const QPoint& pos) {
 			_ui->_x->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 			_ui->_x->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 		}
-#else
-		if (_ui->_A->verticalHeader()->resizeMode(0) == QHeaderView::Stretch) {
-			// To expanded mode
-			_ui->_A->verticalHeader()->setResizeMode(QHeaderView::ResizeToContents);
-			_ui->_A->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
-			_ui->_b->verticalHeader()->setResizeMode(QHeaderView::ResizeToContents);
-			_ui->_b->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
-			_ui->_x->verticalHeader()->setResizeMode(QHeaderView::ResizeToContents);
-			_ui->_x->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
-		} else {
-			// To compact mode
-			_ui->_A->verticalHeader()->setResizeMode(QHeaderView::Stretch);
-			_ui->_A->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
-			_ui->_b->verticalHeader()->setResizeMode(QHeaderView::Stretch);
-			_ui->_b->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
-			_ui->_x->verticalHeader()->setResizeMode(QHeaderView::Stretch);
-			_ui->_x->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
-		}
-#endif
 	} else if (selectedItem == myMenu.actions()[1]) {
 		// Output the equation system in Mathematica format to clipboard
 		const Eigen::MatrixXd& A = _system->A();

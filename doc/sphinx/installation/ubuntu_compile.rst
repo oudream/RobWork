@@ -125,9 +125,7 @@ GTest will be a requirement:
 RobWorkStudio Dependencies
 --------------------------
 
-RobWorkStudio requires Qt to be installed. Both Qt4 and Qt5 is
-supported, but on a fresh Qt install it is encouraged to choose the Qt5
-version:
+RobWorkStudio requires Qt to be installed. Only Qt5 is supported:
 
 .. code-block:: shell
 

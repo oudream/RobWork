@@ -1,8 +1,6 @@
 #ifndef SimTaskVisPlugin_HPP
 #define SimTaskVisPlugin_HPP
 
-#include <RobWorkStudioConfig.hpp> // For RWS_USE_QT5 definition
-
 #include <rwlibs/task/Task.hpp>
 #include <rws/RobWorkStudioPlugin.hpp>
 #include "ui_SimTaskVisPlugin.h"
@@ -35,11 +33,9 @@ namespace rwsim { namespace dynamics { class RigidBody; } }
  */
 class SimTaskVisPlugin: public rws::RobWorkStudioPlugin, private Ui::SimTaskVisPlugin
 {
-Q_OBJECT
-Q_INTERFACES( rws::RobWorkStudioPlugin )
-#if RWS_USE_QT5
-	Q_PLUGIN_METADATA(IID "dk.sdu.mip.Robwork.RobWorkStudioPlugin/0.1" FILE "SimTaskVisPlugin.json")
-#endif
+    Q_OBJECT
+    Q_INTERFACES( rws::RobWorkStudioPlugin )
+    Q_PLUGIN_METADATA(IID "dk.sdu.mip.Robwork.RobWorkStudioPlugin/0.1" FILE "SimTaskVisPlugin.json")
 public:
     SimTaskVisPlugin();
 	virtual ~SimTaskVisPlugin();

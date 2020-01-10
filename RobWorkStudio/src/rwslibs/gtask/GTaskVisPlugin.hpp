@@ -37,11 +37,9 @@ class QTimer;
  */
 class GTaskVisPlugin: public rws::RobWorkStudioPlugin, private Ui::GTaskVisPlugin
 {
-Q_OBJECT
-Q_INTERFACES( rws::RobWorkStudioPlugin )
-#if RWS_USE_QT5
+    Q_OBJECT
+    Q_INTERFACES( rws::RobWorkStudioPlugin )
     Q_PLUGIN_METADATA(IID "dk.sdu.mip.Robwork.RobWorkStudioPlugin/0.1" FILE "plugin.json")
-#endif
 public:
 	//! @brief Constructor.
     GTaskVisPlugin();

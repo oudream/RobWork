@@ -476,9 +476,8 @@ Google test repository uses up to 95 MB.
 RobWorkStudio Dependencies
 --------------------------
 
-RobWorkStudio requires **Qt** to be installed. Both Qt4 and Qt5 is
-supported, but on a fresh Qt install it is encouraged to choose the
-latest Qt5 version (for now, skip 5.8). Download and install Qt from:
+RobWorkStudio requires **Qt** to be installed. Only Qt5 is
+supported. It is encouraged to use at least Qt 5.9. Download and install Qt from:
 
 https://www.qt.io
 

@@ -164,8 +164,3 @@ void SimTemplatePlugin::genericEventListener(const std::string& event){
         _dwc = dwc;
     }
 }
-
-#if !RWS_USE_QT5
-#include <QtCore/qplugin.h>
-Q_EXPORT_PLUGIN(SimTemplatePlugin);
-#endif

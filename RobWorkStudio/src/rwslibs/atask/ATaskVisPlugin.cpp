@@ -400,8 +400,3 @@ PropertyMap& ATaskVisPlugin::settings() {
 	}
 	return rwsMap.get<PropertyMap>("ATaskVisPlugin");
 }
-
-#if !RWS_USE_QT5
-#include <QtCore/qplugin.h>
-Q_EXPORT_PLUGIN(ATaskVisPlugin)
-#endif

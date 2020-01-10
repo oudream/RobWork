@@ -1,8 +1,6 @@
 
 SET(TargetName qtpropertybrowser)
 
-INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_BINARY_DIR}/src ${CMAKE_CURRENT_SOURCE_DIR}/src)
-
 SET(MYROOT ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
 
@@ -44,15 +42,14 @@ SET(SRC_FILES_HPP
 
 
 # Resource files to rcc and compile:
-IF (RWS_USE_QT5)
-	QT5_ADD_RESOURCES(ResourceFiles ${CMAKE_CURRENT_SOURCE_DIR}/src/qtpropertybrowser.qrc)
-ELSE()
-	QT4_ADD_RESOURCES(ResourceFiles ${CMAKE_CURRENT_SOURCE_DIR}/src/qtpropertybrowser.qrc)
-ENDIF()
+QT5_ADD_RESOURCES(ResourceFiles ${CMAKE_CURRENT_SOURCE_DIR}/src/qtpropertybrowser.qrc)
 
 # We create a static library named qtpropertybrowser that all plugins should link to. Our
 # RobWorkStudio executable links to this library also.
 ADD_LIBRARY(${TargetName} ${SRC_FILES_CPP} ${ResourceFiles})
+target_include_directories(${TargetName} INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/src PRIVATE ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_BINARY_DIR}/src)
+target_link_libraries(${TargetName} PUBLIC ${QT_LIBRARIES})
+set_target_properties(${TargetName} PROPERTIES LINK_FLAGS -Wl,--as-needed,--no-undefined)
 
 # Install stuff
 INSTALL(TARGETS ${TargetName} DESTINATION "${LIB_INSTALL_DIR}")

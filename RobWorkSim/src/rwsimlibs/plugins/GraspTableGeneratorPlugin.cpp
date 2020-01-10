@@ -1138,8 +1138,3 @@ void GraspTableGeneratorPlugin::genericEventListener(const std::string& event){
 }
 
 #endif
-
-#if !RWS_USE_QT5
-#include <QtCore/qplugin.h>
-Q_EXPORT_PLUGIN(GraspTableGeneratorPlugin)
-#endif

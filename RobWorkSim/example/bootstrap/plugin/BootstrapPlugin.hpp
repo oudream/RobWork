@@ -1,8 +1,6 @@
 #ifndef BootstrapPlugin_HPP
 #define BootstrapPlugin_HPP
 
-#include <RobWorkStudioConfig.hpp> // For RWS_USE_QT5 definition
-
 #include <rws/RobWorkStudioPlugin.hpp>
 #include "ui_BootstrapPlugin.h"
 
@@ -21,11 +19,9 @@ class QTimer;
  */
 class BootstrapPlugin: public rws::RobWorkStudioPlugin, private Ui::BootstrapPlugin
 {
-Q_OBJECT
-Q_INTERFACES( rws::RobWorkStudioPlugin )
-#if RWS_USE_QT5
-	Q_PLUGIN_METADATA(IID "dk.sdu.mip.Robwork.RobWorkStudioPlugin/0.1" FILE "BootstrapPlugin.json")
-#endif
+    Q_OBJECT
+    Q_INTERFACES( rws::RobWorkStudioPlugin )
+    Q_PLUGIN_METADATA(IID "dk.sdu.mip.Robwork.RobWorkStudioPlugin/0.1" FILE "BootstrapPlugin.json")
 public:
 
     /**

@@ -3,11 +3,6 @@
 # files for the library.
 macro(RWS_ADD_PLUGIN _name _lib_type)
     add_library(${_name} ${_lib_type} ${ARGN})
-    # must link explicitly against boost.
-    target_link_libraries(${_name} ${Boost_LIBRARIES})
-    if(NOT RWS_USE_STATIC_LINK_PLUGINS)
-        target_link_libraries(${_name} sdurws qtpropertybrowser ${ROBWORK_LIBRARIES} ${QT_LIBRARIES})
-    endif()
 
     # Only link if needed
     if(WIN32 AND MSVC)
@@ -48,11 +43,6 @@ endmacro()
 # files for the library.
 macro(RWS_ADD_COMPONENT _name)
     add_library(${_name} ${PROJECT_LIB_TYPE} ${ARGN})
-    # must link explicitly against boost.
-    target_link_libraries(${_name} ${Boost_LIBRARIES})
-    if(NOT RWS_USE_STATIC_LINK_PLUGINS)
-        target_link_libraries(${_name} sdurws qtpropertybrowser ${ROBWORK_LIBRARIES} ${QT_LIBRARIES})
-    endif()
 
     # Only link if needed
     if(WIN32 AND MSVC)
