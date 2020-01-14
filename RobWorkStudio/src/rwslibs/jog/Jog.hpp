@@ -48,9 +48,7 @@ class Jog: public RobWorkStudioPlugin
     Q_OBJECT
 #ifndef RWS_USE_STATIC_LINK_PLUGINS
     Q_INTERFACES(rws::RobWorkStudioPlugin)
-#if RWS_USE_QT5
-Q_PLUGIN_METADATA(IID "dk.sdu.mip.Robwork.RobWorkStudioPlugin/0.1" FILE "plugin.json")
-#endif
+    Q_PLUGIN_METADATA(IID "dk.sdu.mip.Robwork.RobWorkStudioPlugin/0.1" FILE "plugin.json")
 #endif
 public:
 	/**

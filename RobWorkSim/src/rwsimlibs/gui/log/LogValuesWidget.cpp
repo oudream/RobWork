@@ -42,11 +42,7 @@ LogValuesWidget::LogValuesWidget(rw::common::Ptr<const LogValues> entry, QWidget
 	headerLabels.push_back("Value");
 	_ui->_values->setHorizontalHeaderLabels(headerLabels);
 
-#if RWS_USE_QT5
 	_ui->_values->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
-#else
-	_ui->_values->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
-#endif
 }
 
 LogValuesWidget::~LogValuesWidget() {

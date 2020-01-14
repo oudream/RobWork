@@ -105,6 +105,7 @@ void ArcBallController::click(float x, float y)
 
 void ArcBallController::draw()
 {
+    //This code is currently no being used
     glBegin(GL_LINE_LOOP);
     for (float angle = 0; angle <= 2 * 3.142f; angle += 3.142f / 30)
     {
@@ -205,6 +206,7 @@ void ArcBallController::handleEvent(QEvent* e)
         QWheelEvent *event = static_cast<QWheelEvent*>(e);
         zoom(event->angleDelta().y()/240.0);
     }
+    setPivotScale();
 }
 
 
@@ -213,6 +215,8 @@ void ArcBallController::setCenter(const rw::math::Vector3D<>& center,
 {
     _pivotPoint = center;
     _centerPt = screenCenter;
+    setPivotScale();
+
 }
 
 rw::math::Transform3D<> ArcBallController::getTransform() const
@@ -223,6 +227,7 @@ rw::math::Transform3D<> ArcBallController::getTransform() const
 void ArcBallController::setTransform(const rw::math::Transform3D<>& t3d)
 {
     _viewTransform = t3d;
+    setPivotScale();
 }
 
 void ArcBallController::zoom(double amount)
@@ -240,7 +245,7 @@ void ArcBallController::zoom(double amount)
          Vector3D<> translateVector(0, 0, amount );
         _viewTransform.P() -= _viewTransform.R()*translateVector;
     }
-   
+    setPivotScale();
 }
 
 void ArcBallController::autoZoom(rw::common::Ptr<rw::models::WorkCell> workcell, rw::common::Ptr<const State> state, double fovy, double aspectRatio)
@@ -292,7 +297,7 @@ void ArcBallController::autoZoom(rw::common::Ptr<rw::models::WorkCell> workcell,
 
     // Now zoom the camera with z_optimal
     zoom(std::min(z_optimal_x,z_optimal_y)-extraZoom);
-
+    setPivotScale();
 }
 
 void ArcBallController::setZoomTarget(rw::math::Vector3D<double> target, bool enable)
@@ -339,6 +344,7 @@ void ArcBallController::pan(int x, int y)
 
     _centerPt[0] += x-_lastPos(0);
     _centerPt[1] += y-_lastPos(1);
+    setPivotScale();
 
 }
 
@@ -363,4 +369,15 @@ rw::math::Vector3D<> ArcBallController::unproject(int x, int y, double z)
         return Vector3D<> (x_3D,y_3D,z);
     }
     return Vector3D<>();
+}
+
+void ArcBallController::setPivotScale()
+{
+    Vector3D<> dist = _pivotPoint - _viewTransform.P();
+    if(dist.norm2() < 1 ) {//Start downscaling when less then 1m away
+        _pivotObj->setScale(dist.norm2());
+    }
+    else{
+        _pivotObj->setScale(1.0);
+    }
 }

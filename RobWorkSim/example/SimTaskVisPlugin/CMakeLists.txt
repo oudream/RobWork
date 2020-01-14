@@ -56,23 +56,9 @@ set(UIS_FILES SimTaskVisPlugin.ui)
 # to be able to include the generated ui header files
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
-if(RWS_USE_QT5)
-    qt5_wrap_ui(UIS_OUT_H ${UIS_FILES})
-    qt5_wrap_cpp(MocSrcFiles SimTaskVisPlugin.hpp)
-    qt5_add_resources(RccSrcFiles resources.qrc)
-else()
-    qt4_wrap_ui(UIS_OUT_H ${UIS_FILES})
-    qt4_wrap_cpp(
-        MocSrcFiles
-        SimTaskVisPlugin.hpp
-        OPTIONS
-        -DBOOST_TT_HAS_PLUS_HPP_INCLUDED
-        -DBOOST_TT_HAS_PLUS_ASSIGN_HPP_INCLUDED
-        -DBOOST_TT_HAS_MINUS_HPP_INCLUDED
-        -DBOOST_TT_HAS_MINUS_ASSIGN_HPP_INCLUDED
-    )
-    qt4_add_resources(RccSrcFiles resources.qrc)
-endif()
+qt5_wrap_ui(UIS_OUT_H ${UIS_FILES})
+qt5_wrap_cpp(MocSrcFiles SimTaskVisPlugin.hpp)
+qt5_add_resources(RccSrcFiles resources.qrc)
 set(SrcFiles SimTaskVisPlugin.cpp ${UIS_OUT_H})
 
 # The shared library to build:

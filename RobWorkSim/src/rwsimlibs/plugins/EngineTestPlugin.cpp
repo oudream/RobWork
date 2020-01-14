@@ -100,11 +100,7 @@ EngineTestPlugin::EngineTestPlugin():
     header.push_back("Name");
     header.push_back("View");
     _ui->results->setHorizontalHeaderLabels(header);
-#if RWS_USE_QT5
 	_ui->results->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
-#else
-	_ui->results->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
-#endif
 	_ui->results->horizontalHeader()->setStretchLastSection(true);
 
     // Test
@@ -553,8 +549,3 @@ void EngineTestPlugin::genericAnyEventListener(const std::string& event, boost::
         Log::warningLog() << "EngineTestPlugin: Event \"" << event << "\" did not have the correct datatype or an error occured!\n";
     }
 }
-
-#if !RWS_USE_QT5
-#include <QtCore/qplugin.h>
-Q_EXPORT_PLUGIN(EngineTestPlugin)
-#endif

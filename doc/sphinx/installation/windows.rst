@@ -8,7 +8,7 @@ Introduction
 
 This guide shows the steps for building the RobWork packages on a
 Windows platform. The guide is written based on a setup with Windows 10
-and Visual Studio 2017 and the guide is last revised in September 2019. If
+and Visual Studio 2017 and the guide is last revised in January 2020. If
 you have any suggestions or additions to the guide, please post them on
 the issue tracker at https://gitlab.com/sdurobotics/RobWork/issues .
 
@@ -197,6 +197,14 @@ table gives an overview of the version numbers for future reference:
 | Visual Studio      | Visual Studio     | | Visual C++       | | Visual C/C++     |
 | Name               | Version           | | Compiler Toolset | | Compiler Version |
 +====================+===================+====================+====================+
+| Visual Studio 2019 | 16.4              | 14.24              | 19.24              |
++--------------------+-------------------+--------------------+--------------------+
+| Visual Studio 2019 | 16.3              | 14.23              | 19.23              |
++--------------------+-------------------+--------------------+--------------------+
+| Visual Studio 2019 | 16.2              | 14.22              | 19.22              |
++--------------------+-------------------+--------------------+--------------------+
+| Visual Studio 2019 | 16.1              | 14.21              | 19.21              |
++--------------------+-------------------+--------------------+--------------------+
 | Visual Studio 2019 | 16.0              | 14.20              | 19.20              |
 +--------------------+-------------------+--------------------+--------------------+
 | Visual Studio 2017 | 15.9              | 14.16              | 19.16              |
@@ -226,7 +234,7 @@ is just one of the tools in the toolset.
 
 **CMake** must be used to generate projects for Visual Studio. A Windows
 installer can be downloaded from the CMake homepage at https://cmake.org
-, and installation takes up 70 MB . The minimum CMake version is currently 3.5.
+, and installation takes up 70 MB . The minimum CMake version is currently 3.5.1.
 Choosing the latest
 version is always recommended (except the release candidates). Choosing
 older versions will mean that newer Visual Studio and Boost versions
@@ -237,7 +245,11 @@ installed, please check that it is recent enough to support your setup:
 | CMake           | | Maximum Visual Studio | | Maximum Boost     |
 | Version         | | Version Supported     | | Version Supported |
 +=================+=========================+=====================+
-| 3.14.0-3.15.2\* | Visual Studio 16 2019   | 1.70.0              |
+| 3.16.2\*        | Visual Studio 16 2019   | 1.72.0              |
++-----------------+-------------------------+---------------------+
+| 3.15.3-3.16.1   | Visual Studio 16 2019   | 1.71.0              |
++-----------------+-------------------------+---------------------+
+| 3.14.0-3.15.2   | Visual Studio 16 2019   | 1.70.0              |
 +-----------------+-------------------------+---------------------+
 | 3.13.0-3.13.4   | Visual Studio 15 2017   | 1.69.0              |
 +-----------------+-------------------------+---------------------+
@@ -253,7 +265,7 @@ installed, please check that it is recent enough to support your setup:
 +-----------------+-------------------------+---------------------+
 | 3.7.0-3.7.1     | Visual Studio 15 2017   | 1.62.0              |
 +-----------------+-------------------------+---------------------+
-| 3.5.0-3.6.3     | Visual Studio 14 2015   | 1.61.0              |
+| 3.5.1-3.6.3     | Visual Studio 14 2015   | 1.61.0              |
 +-----------------+-------------------------+---------------------+
 
 \* Newest at time of writing.
@@ -288,17 +300,11 @@ on your Visual C++ toolset version below:
 | | Boost Version | | Maximum Visual C++ | | Maximum Visual C++    |
 | |               | | Toolset (Source)   | | Toolset (Precompiled) |
 +=================+======================+=========================+
-| 1.71.0          | 14.20 (VS 16.0)      | 14.2x                   |
+| 1.71.0 - 1.72.0 | 14.20 (VS 16.0)      | 14.2x                   |
 +-----------------+----------------------+-------------------------+
-| 1.70.0          | 14.12 (VS 15.5)      | 14.1x                   |
+| 1.68.0 - 1.70.0 | 14.12 (VS 15.5)      | 14.1x                   |
 +-----------------+----------------------+-------------------------+
-| 1.69.0          | 14.12 (VS 15.5)      | 14.1x                   |
-+-----------------+----------------------+-------------------------+
-| 1.68.0          | 14.12 (VS 15.5)      | 14.1x                   |
-+-----------------+----------------------+-------------------------+
-| 1.67.0          | 14.11 (VS 15.4)      | 14.1x                   |
-+-----------------+----------------------+-------------------------+
-| 1.66.0          | 14.11 (VS 15.4)      | 14.1x                   |
+| 1.66.0 - 1.67.0 | 14.11 (VS 15.4)      | 14.1x                   |
 +-----------------+----------------------+-------------------------+
 | 1.65.1          | 14.11 (VS 15.3)      | 14.1x                   |
 +-----------------+----------------------+-------------------------+
@@ -470,9 +476,8 @@ Google test repository uses up to 95 MB.
 RobWorkStudio Dependencies
 --------------------------
 
-RobWorkStudio requires **Qt** to be installed. Both Qt4 and Qt5 is
-supported, but on a fresh Qt install it is encouraged to choose the
-latest Qt5 version (for now, skip 5.8). Download and install Qt from:
+RobWorkStudio requires **Qt** to be installed. Only Qt5 is
+supported. It is encouraged to use at least Qt 5.9. Download and install Qt from:
 
 https://www.qt.io
 

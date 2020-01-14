@@ -101,13 +101,3 @@ void WorkcellEditorPlugin::setupMenu(QMenu *pluginmenu) {
 
     }
 }
-
-
-
-//----------------------------------------------------------------------
-#ifndef RW_STATIC_LINK_PLUGINS
-#if !RWS_USE_QT5
-#include <QtCore/qplugin.h>
-Q_EXPORT_PLUGIN2(WorkcellEditorPlugin, WorkcellEditorPlugin)
-#endif
-#endif
