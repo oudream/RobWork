@@ -455,7 +455,7 @@ macro(RW_ADD_LIBRARY _name)
 
     # Only link if needed
     if(WIN32 AND MSVC)
-        set_target_properties(${_name} PROPERTIES LINK_FLAGS_RELEASE /OPT:REF)
+        set_target_properties(${_name} PROPERTIES LINK_FLAGS_RELEASE /OPT:REF WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
     elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
         set_target_properties(${_name} PROPERTIES LINK_FLAGS -Wl)
     elseif(__COMPILER_PATHSCALE)
@@ -487,7 +487,7 @@ endmacro()
 # Add a library target. _name The library name. _component The part of RW that this plugin belongs to. ARGN The source
 # files for the library.
 macro(RW_ADD_PLUGIN _name _lib_type )
-    add_library(${_name} ${PROJECT_LIB_TYPE} ${ARGN})
+    add_library(${_name} ${_lib_type} ${ARGN})
     # must link explicitly against boost.
     target_link_libraries(${_name} PUBLIC ${Boost_LIBRARIES})
 
@@ -597,7 +597,7 @@ macro(RW_SUBSYS_OPTION _var _name _desc _default)
             rw_set_subsys_status(${_name} FALSE "Disabled manually.")
             message(STATUS "${_opt_name}  ${BUILD_${_name}} : Disabled manually.")
             rw_disable_dependies(${_name})
-        else(NOT ${_default} AND NOT ${_opt_name})
+        else()
             set(${_var} TRUE)
             if("${SUBSYS_REASON}" STREQUAL "")
                 set(_reason "Enabled by default.")
@@ -608,7 +608,7 @@ macro(RW_SUBSYS_OPTION _var _name _desc _default)
             rw_set_subsys_status(${_name} TRUE ${_reason})
             message(STATUS "${_opt_name}  ${BUILD_${_name}} : ${_reason}")
             rw_enable_dependies(${_name})
-        endif(NOT ${_default} AND NOT ${_opt_name})
+        endif()
     endif(NOT ("${subsys_status}" STREQUAL "AUTO_OFF"))
 
     if(${SUBSYS_ADD_DOC})
@@ -794,47 +794,96 @@ macro(RW_CREATE_INSTALLER)
 
         set(CPACK_PACKAGE_FILE_NAME ${CPACK_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION})
 
-        #### What to install #####
-        # Define components and their display names
-        set(CPACK_COMPONENTS_ALL "") # install components
-        set(SPECIAL_COMPONENTS rwplugin cmake external)
+        get_cmake_property(CPACK_COMPONENTS_ALL COMPONENTS) #Get all components
+        list(REMOVE_ITEM CPACK_COMPONENTS_ALL "pkgconfig" "rwtest") #Remove unnessesary components
+        include(CPack)
+        #### Setup Install Groupes ####
+        cpack_add_component_group(RW
+            DISPLAY_NAME "RobWork"
+            DESCRIPTION "Tools for controlling robots"
+            EXPANDED 
+            BOLD_TITLE
+        )
+        cpack_add_component_group(RWS
+            DISPLAY_NAME "RobWorkStudio"
+            DESCRIPTION "Tools for Visulizing robot control"
+            EXPANDED 
+            BOLD_TITLE
+        )                        
+        cpack_add_component_group(RWHW
+            DISPLAY_NAME "RobWorkHardware"
+            DESCRIPTION "Tools for Visulizing robot control"
+            EXPANDED 
+            BOLD_TITLE
+        )
+        cpack_add_component_group(RWSIM
+            DISPLAY_NAME "RobWorkSim"
+            DESCRIPTION "Tools for simulating robots"
+            EXPANDED 
+            BOLD_TITLE
+        )
+        cpack_add_component_group(MISC
+            DISPLAY_NAME "Miscellaneous"
+            DESCRIPTION "Theses are Other Packages"
+        )
+        cpack_add_component_group(DEP
+            DISPLAY_NAME "Dependencies"
+            DESCRIPTION "Theses are external dependencies for the RobWork packages"
+        )
+        cpack_add_component_group(DEVEL
+            DISPLAY_NAME "Development Files"
+            DESCRIPTION "Theses are packages needed when you want to use robwork for development"
+        )
 
-        foreach(_comp ${${PROJECT_PREFIX}_SUBSYSTEMS} ${SPECIAL_COMPONENTS})
+        #### Setup Install Types ####
+        cpack_add_install_type(Dev DISPLAY_NAME "Devel")
+        cpack_add_install_type(Full DISPLAY_NAME "Full")
+        cpack_add_install_type(RW_i DISPLAY_NAME "RobWork")
+        cpack_add_install_type(RWS_i DISPLAY_NAME "RobWorkStudio")
+        cpack_add_install_type(RWHW_i DISPLAY_NAME "RobWorkHardware")
+        cpack_add_install_type(RWSIM_i DISPLAY_NAME "RobWorkSim")    
+       
+        
+        #### Setup Install Components
+        set(SPECIAL_COMPONENTS rwplugin cmake example swig rwtest)
+        set(EXTERNAL_COMPONENTS yaobi pqp eigen zlib xerces boost lua fcl assimp sdurw_csgjs)
+        set(BLOCKED_COMPONENTS pkgconfig rwtest)
+
+        foreach(_comp ${CPACK_COMPONENTS_ALL})
             string(TOUPPER "${_comp}" _COMP)
 
             if(${RW_SUBSYS_BUILD_${_comp}})
-
-                set(CPACK_COMPONENT_${_COMP}_DISPLAY_NAME "${_comp}")
-                set(CPACK_COMPONENT_${_COMP}_DESCRIPTION ${RW_SUBSYS_DESC_${_comp}})
-                string(TOLOWER "${RW_SUBSYS_PREFIX_${_comp}}" CPACK_COMPONENT_${_COMP}_GROUP)
-
-                set(CPACK_COMPONENT_${_COMP}_INSTALL_TYPES Full Developer)
-                set(CPACK_COMPONENTS_ALL ${CPACK_COMPONENTS_ALL} ${_comp})
+                cpack_add_component(${_comp}
+                    DISPLAY_NAME "${_comp}"
+                    DESCRIPTION "${RW_SUBSYS_DESC_${_comp}}"
+                    GROUP "${RW_SUBSYS_PREFIX_${_comp}}"
+                    DEPENDS "${RW_SUBSYS_DEPEND_${_comp}}"
+                    INSTALL_TYPES ${RW_SUBSYS_PREFIX_${_comp}}_i Full Dev 
+                    #DOWNLOADED
+                    #ARCHIVE_FILE #Name_of_file_to_generate_for_download
+                )
                 #message(STATUS "component: ${CPACK_COMPONENT_${_COMP}_DISPLAY_NAME} - group: ${CPACK_COMPONENT_${_COMP}_GROUP}")
-            elseif(${_comp} IN_LIST SPECIAL_COMPONENTS)
-            
-                set(CPACK_COMPONENT_${_COMP}_DISPLAY_NAME "${_comp}")
-                set(CPACK_COMPONENT_${_COMP}_GROUP misc)
-
-                set(CPACK_COMPONENT_${_COMP}_INSTALL_TYPES Full Developer)
-                set(CPACK_COMPONENTS_ALL ${CPACK_COMPONENTS_ALL} ${_comp})
-                message(STATUS "from: ${_COMP} - component: ${CPACK_COMPONENT_${_COMP}_DISPLAY_NAME} - group: ${CPACK_COMPONENT_${_COMP}_GROUP}")
+            elseif(NOT ${RW_SUBSYS_BUILD_${_comp}})
+                #message(STATUS "Component: ${_comp} not installed")
+            elseif(${_comp} IN_LIST EXTERNAL_COMPONENTS)
+                cpack_add_component(${_comp}
+                    DISPLAY_NAME "${_comp}"
+                    DESCRIPTION "RobWorkDependencie"
+                    GROUP DEP
+                    INSTALL_TYPES Full Dev 
+                    #DOWNLOADED
+                    #ARCHIVE_FILE #Name_of_file_to_generate_for_download
+                )
             else()
-                message(STATUS "Not build component ${_comp}")
+                cpack_add_component(${_comp}
+                    DISPLAY_NAME "${_comp}"
+                    GROUP MISC
+                    INSTALL_TYPES Full Dev
+                    #DOWNLOADED
+                    #ARCHIVE_FILE #Name_of_file_to_generate_for_download
+                )
+                #message(STATUS "from: ${_COMP} - component: ${CPACK_COMPONENT_${_COMP}_DISPLAY_NAME} - group: ${CPACK_COMPONENT_${_COMP}_GROUP}")
             endif()
         endforeach()
-
-        #### Setup group descriptions ####
-        set(CPACK_COMPONENT_GROUP_RW_DESCRIPTION "Tools for controlling robots")
-        set(CPACK_COMPONENT_GROUP_RWS_DESCRIPTION "Tools for Visulizing robot control")
-        set(CPACK_COMPONENT_GROUP_RWHW_DESCRIPTION "Drivers for robot platforms")
-        set(CPACK_COMPONENT_GROUP_RWSIM_DESCRIPTION "Tools for simulating robots")
-        set(CPACK_COMPONENT_GROUP_MISC_DESCRIPTION "Other STUFF")
-
-        # Define NSIS installation types
-        set(CPACK_ALL_INSTALL_TYPES Full Developer)
-
-        # Must be after the last CPACK macros
-        include(CPack)
     endif()
 endmacro()

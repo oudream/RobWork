@@ -166,9 +166,10 @@ if(EXISTS "${RWCFG_ROOT}/../src/RobWorkConfig.hpp")
     set(RW_INCLUDE_EXT "${RW_ROOT}/ext")
     set(RW_INCLUDE_SRC "${RW_ROOT}/src")
     set(RW_LIBS "${RW_ROOT}/libs/${RW_BUILD_TYPE}")
-
+    set(IS_INSTALL FALSE)
 else()
     set(succmsg "RobWork: Found a RobWork installation")
+    set(IS_INSTALL TRUE)
     # Found a RobWork installation
     if(WIN32)
         # RobWorkConfig.cmake is installed to RW_ROOT/cmake
@@ -206,8 +207,10 @@ if(EXISTS ${RWCFG_ROOT}/RobWorkBuildConfig_${RW_BUILD_TYPE}.cmake)
     set(BOOST_INCLUDEDIR ${RW_BUILD_WITH_BOOST_INCLUDE_DIR})
     set(BOOST_LIBRARYDIR ${RW_BUILD_WITH_BOOST_LIBRARY_DIR})
 
-    if(WIN32)
-	    set(BOOST_INCLUDEDIR ${RW_BUILD_WITH_BOOST_INCLUDE_DIR})
+    if(DEFINED WIN32 AND ${IS_INSTALL})
+        
+        set(BOOST_INCLUDEDIR "${RW_INCLUDE_EXT}/boost")
+        set(BOOST_LIBRARYDIR "${RW_LIBS}")
     endif()
 
     # check which components to include
@@ -252,9 +255,13 @@ if(EXISTS ${RWCFG_ROOT}/RobWorkBuildConfig_${RW_BUILD_TYPE}.cmake)
     else()
         foreach( lib IN LISTS RW_BUILD_WITH_LIBRARIES)
             unset(FOUND CACHE)
-            find_library(FOUND ${lib} PATHS ${RW_LIBS} NO_DEFAULT_PATH)
-            if(FOUND)
+            if(${lib} STREQUAL "sdurw")
                 list(APPEND OPTIONAL_LIBRARIES_TO_INCLUDE "${lib}")
+            else()
+                find_library(FOUND ${lib} PATHS ${RW_LIBS} NO_DEFAULT_PATH)
+                if(FOUND)
+                    list(APPEND OPTIONAL_LIBRARIES_TO_INCLUDE "${lib}")
+                endif()
             endif()
         endforeach()
     endif()
@@ -334,20 +341,28 @@ if(EXISTS ${RWCFG_ROOT}/RobWorkBuildConfig_${RW_BUILD_TYPE}.cmake)
             "${ROBWORK_BUILD_PATH}/libs/${RW_BUILD_TYPE}" "${RW_LIBS}" ROBWORK_LIBRARIES
             "${ROBWORK_LIBRARIES_TMP}"
     )
-    # list(REMOVE_DUPLICATES ROBWORK_LIBRARIES) MESSAGE("INCLUDES: ${ROBWORK_LIBRARIES}")
+    if(${IS_INSTALL} AND DEFINED WIN32)
+        string(
+            REPLACE
+                "${RW_BUILD_WITH_BOOST_LIBRARY_DIR}/" "" ROBWORK_LIBRARIES
+                "${ROBWORK_LIBRARIES}"
+        )
+    endif()
+    list(REMOVE_DUPLICATES ROBWORK_LIBRARIES) 
+    #MESSAGE("INCLUDES: ${ROBWORK_LIBRARIES}")
 
     # Find and add full path information for the RobWork libraries
     set(ROBWORK_LIBRARIES_TMP ${ROBWORK_LIBRARIES})
     set(ROBWORK_LIBRARIES)
     foreach(l ${ROBWORK_LIBRARIES_TMP})
         unset(tmp CACHE)
-        find_library(tmp ${l} PATHS ${ROBWORK_LIBRARY_DIRS} NO_DEFAULT_PATH)
+        find_library(tmp ${l} PATHS "${ROBWORK_LIBRARY_DIRS}" NO_DEFAULT_PATH)
         if(tmp)
-            list(APPEND ROBWORK_LIBRARIES ${tmp})
+            list(APPEND ROBWORK_LIBRARIES "${tmp}")
         else()
-            list(APPEND ROBWORK_LIBRARIES ${l})
+            list(APPEND ROBWORK_LIBRARIES "${l}")
         endif()
-    endforeach(l)
+    endforeach()
 
     set(ROBWORK_INCLUDE_DIR "${ROBWORK_INCLUDE_DIRS}")
 

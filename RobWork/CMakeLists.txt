@@ -138,33 +138,24 @@ install(FILES "${RW_ROOT}/src/RobWorkConfig.hpp" DESTINATION "${INCLUDE_INSTALL_
 if(WIN32)
     # Trim the Boost library lists and take only the libraries corresponding to the build type
     set(BOOST_LIBRARIES_INSTALL "")
-    set(copy_lib TRUE)
     foreach(s ${Boost_LIBRARIES})
         if("${s}" STREQUAL "optimized")
-            if("${RW_BUILD_TYPE}" STREQUAL "Release")
-                set(copy_lib TRUE)
-            else()
-                set(copy_lib FALSE)
-            endif()
         elseif("${s}" STREQUAL "debug")
-            if("${RW_BUILD_TYPE}" STREQUAL "Debug")
-                set(copy_lib TRUE)
-            else()
-                set(copy_lib FALSE)
-            endif()
-        elseif(copy_lib)
-            list(APPEND BOOST_LIBRARIES_INSTALL "${s}")
         else()
-            set(copy_lib TRUE)
+            list(APPEND BOOST_LIBRARIES_INSTALL "${s}")
         endif()
     endforeach()
 
     # Install external libraries
-    install(FILES ${BOOST_LIBRARIES_INSTALL} DESTINATION ${LIB_INSTALL_DIR} COMPONENT external)
-    install(DIRECTORY "${Boost_INCLUDE_DIR}/boost/" DESTINATION "${RW_INSTALL_DIR}/ext/boost/" COMPONENT external)
-    install(FILES ${XERCESC_LIBRARIES} DESTINATION ${LIB_INSTALL_DIR} COMPONENT external)
-    install(DIRECTORY "${XERCESC_INCLUDE_DIR}/" DESTINATION "${RW_INSTALL_DIR}/ext/xerces/" COMPONENT external)
-    install(DIRECTORY "${RW_ROOT}/ext/eigen3/Eigen/" DESTINATION "${RW_INSTALL_DIR}/ext/Eigen/" COMPONENT external)
+    install(FILES ${BOOST_LIBRARIES_INSTALL} DESTINATION ${LIB_INSTALL_DIR} COMPONENT boost)
+    install(DIRECTORY "${Boost_INCLUDE_DIR}/boost/" DESTINATION "${RW_INSTALL_DIR}/ext/boost/" COMPONENT boost)
+
+    if(RW_HAVE_XERCES)
+        install(FILES ${XERCESC_LIBRARIES} DESTINATION ${LIB_INSTALL_DIR} COMPONENT external)
+        install(DIRECTORY "${XERCESC_INCLUDE_DIR}/" DESTINATION "${RW_INSTALL_DIR}/ext/xerces/" COMPONENT xerces)
+    endif()
+    
+    install(DIRECTORY "${RW_ROOT}/ext/eigen3/Eigen/" DESTINATION "${RW_INSTALL_DIR}/ext/Eigen/" COMPONENT eigen)
 endif()
 
 # And if possible we would also like to install all the dll's and stuff that we use this will configure the dependency
@@ -180,8 +171,10 @@ configure_file("${RW_ROOT}/cmake/dependencies.cmake.in" "${RW_ROOT}/cmake/depend
 install(
     DIRECTORY "${RW_ROOT}/example/"
     DESTINATION "${RW_INSTALL_DIR}/example/"
+    COMPONENT example
     PATTERN ".svn" EXCLUDE
     PATTERN "example/CMakeLists.txt" EXCLUDE
+    PATTERN "Build" EXCLUDE
 )
 
 # Install the API doc if doxygen has been run IF(IS_DIRECTORY "${RW_ROOT}/apidocs/html") INSTALL(DIRECTORY

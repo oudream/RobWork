@@ -93,6 +93,13 @@ if(DEFINED UNIX)
 elseif(DEFINED WIN32)
     set(Boost_USE_STATIC_LIBS ON)
     set(BOOST_ALL_DYN_LINK OFF)
+    set(Boost_USE_MULTITHREADED      ON)
+
+    if(${RW_BUILD_TYPE} STREQUAL "release")
+        set(Boost_USE_DEBUG_LIBS         OFF) # ignore debug libs and
+        set(Boost_USE_RELEASE_LIBS       ON)  # only find release libs
+    endif()
+
     find_package(
         Boost
         COMPONENTS
@@ -116,13 +123,15 @@ elseif(DEFINED WIN32)
         find_package(
             Boost
             REQUIRED
-            filesystem
-            regex
-            serialization
-            system
-            thread
-            program_options
+            COMPONENTS
+                filesystem
+                regex
+                serialization
+                system
+                thread
+                program_options
         )
+        set(ROBWORK_LIBRARIES_EXTERNAL ${ROBWORK_LIBRARIES_EXTERNAL} ${Boost_LIBRARIES})
         set(Boost_LIBRARIES_TMP ${Boost_LIBRARIES_TMP} ${Boost_LIBRARIES})
         set(BOOST_ALL_DYN_LINK ON)
     endif()
@@ -928,7 +937,6 @@ set(
     ${OPENGL_LIBRARIES}
     ${XERCESC_LIBRARIES}
     ${BULLET_LIBRARIES}
-    ${Boost_LIBRARIES}
     ${LAPACK_LIBRARIES}
     ${BLAS_LIBRARIES}
     ${CMAKE_DL_LIBS}

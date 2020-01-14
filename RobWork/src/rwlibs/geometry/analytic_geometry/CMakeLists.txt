@@ -9,7 +9,7 @@ if(build)
     rw_add_library(${SUBSYS_NAME} QuadraticTestObjects.cpp QuadraticTestObjects.hpp)
     target_link_libraries(${SUBSYS_NAME} PUBLIC ${SUBSYS_DEPS})
 
-    rw_add_library(${SUBSYS_NAME}.rwplugin COMPONENT ${SUBSYS_NAME} MODULE AnalyticGeometryPlugin.cpp
+    rw_add_plugin(${SUBSYS_NAME}.rwplugin MODULE AnalyticGeometryPlugin.cpp
                    AnalyticGeometryPlugin.hpp)
     target_link_libraries(${SUBSYS_NAME}.rwplugin PRIVATE ${SUBSYS_NAME} PUBLIC sdurw)
 

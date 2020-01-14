@@ -53,6 +53,31 @@ using namespace boost::program_options;
 #define RWCFGFILE                                                                    \
     std::string (std::getenv ("APPDATA")) + SLASH + "robwork" + SLASH + "robwork-" + \
         RW_BUILD_TYPE + "-" + RW_VERSION + ".cfg.xml"
+
+namespace {
+#include <windows.h>
+    std::string InstallPluginLocation(std::string pack="RobWork") 
+    {
+        HKEY hKey = 0;
+        char buf[1024] = {0};
+        DWORD dwType = 0;
+        DWORD dwBufSize = sizeof(buf);
+        std::string subkey = "Software\\Kitware\\CMake\\Packages\\"+pack;
+        if( RegOpenKey(HKEY_CURRENT_USER,subkey.c_str(),&hKey) == ERROR_SUCCESS)
+        {
+            dwType = REG_SZ;
+            if( RegQueryValueEx(hKey,"Location",0, &dwType, (BYTE*)buf, &dwBufSize) == ERROR_SUCCESS)
+            {
+                return std::string(buf) + "\\lib\\RobWork\\rwplugins";
+            }
+            else
+                Log::debugLog () << "Regestry: " << subkey << " has no value Location"<< std::endl;
+            RegCloseKey(hKey);
+        }
+
+        return std::string();
+    }
+}
 #elif defined(RW_MACOS)
 #define RWCFGHOMEDIR std::string (std::getenv ("HOME")) + "/Library/Preferences/"
 #define RWCFGFILE                                                                              \
@@ -64,6 +89,29 @@ using namespace boost::program_options;
     std::string (std::getenv ("HOME")) + "/.config/robwork/robwork-" + RW_BUILD_TYPE + "-" + \
         RW_VERSION + ".cfg.xml"
 #endif
+
+namespace {
+    void appendPluginFolder(const std::string &folder,const std::string &name, PropertyMap &settings)
+    {
+        if (exists(folder)) {
+            if (settings.has ("plugins")) {
+                PropertyMap::Ptr plugins;
+                plugins = settings.getPtr<PropertyMap> ("plugins");
+                plugins->add ("Location-linux-default",
+                              "Default plugin location for deb installed plugins",
+                              folder);
+            }
+            else {
+                PropertyMap plugins;
+                plugins.add (name,
+                             "Default plugin location for deb installed plugins",
+                             folder);
+                settings.add ("plugins", "List of plugins or plugin locations", plugins);
+            }
+        }
+    }
+}
+
 
 RobWork::RobWork (void) : _initialized (false)
 {}
@@ -170,7 +218,7 @@ void RobWork::initialize (const std::vector< std::string >& plugins)
         _settings.add ("plugins", "List of plugins or plugin locations", plugins);
     }
 
-    if (boost::filesystem::exists ("/usr/lib/")) {    // Add default plugin location
+    if (exists ("/usr/lib/")) {    // Add default plugin location
 
         boost::filesystem::path p ("/usr/lib");
         std::string rwpluginFolder = "";
@@ -192,23 +240,21 @@ void RobWork::initialize (const std::vector< std::string >& plugins)
                 }
             }
         }
-        if (rwpluginFolder != "") {
-            if (_settings.has ("plugins")) {
-                PropertyMap::Ptr plugins;
-                plugins = _settings.getPtr<PropertyMap> ("plugins");
-                plugins->add ("Location-linux-default",
-                              "Default plugin location for deb installed plugins",
-                              rwpluginFolder);
-            }
-            else {
-                PropertyMap plugins;
-                plugins.add ("Location-linux-default",
-                             "Default plugin location for deb installed plugins",
-                             rwpluginFolder);
-                _settings.add ("plugins", "List of plugins or plugin locations", plugins);
-            }
+        appendPluginFolder(rwpluginFolder,"Location-linux-default",_settings);
+    }
+#if defined(RW_WIN32)
+
+    std::vector<std::string> Packs= {"RobWork","RobWorkStudio","RobWorkSim","RobWorkHardware"};
+    for(const std::string& p: Packs){
+        std::string loc = InstallPluginLocation(p);
+        if(exists(loc)) {
+            std::cout << "Found " << p <<" Installation" << std::endl;
+            std::string name = "Location-win-" + p +"-default";
+            appendPluginFolder(loc,name,_settings);
         }
     }
+#endif
+
 
     _settingsFile = rwsettingsPath;
 
