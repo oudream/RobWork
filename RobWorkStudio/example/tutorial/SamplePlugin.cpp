@@ -54,8 +54,3 @@ void SamplePlugin::clickEvent() {
         log().info() << "Button 1 pressed!\n";
     }
 }
-
-#if !RWS_USE_QT5
-#include <QtCore/qplugin.h>
-Q_EXPORT_PLUGIN(SamplePlugin);
-#endif

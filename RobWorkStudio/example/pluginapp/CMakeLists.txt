@@ -25,14 +25,11 @@ message("-- Build type: " ${CMAKE_BUILD_TYPE})
 # Include default settings for constructing a RobWork dependent project
 set(RobWork_DIR ${RW_ROOT}/cmake) 
 find_package(RobWork REQUIRED)
-link_directories( ${ROBWORK_LIBRARY_DIRS} )
 message("-- RobWork found: " ${RW_ROOT})
 
 # Include default settings for constructing a RobWorkStudio dependent project
 set(RobWorkStudio_DIR ${RWSTUDIO_ROOT}/cmake)
 find_package(RobWorkStudio REQUIRED)
-include_directories( ${ROBWORKSTUDIO_INCLUDE_DIRS} )
-link_directories( ${ROBWORKSTUDIO_LIBRARY_DIRS} )
 message("-- RobWorkStudio found: " ${RWSTUDIO_ROOT})
 
 # Set the output dir for generated libraries and binaries

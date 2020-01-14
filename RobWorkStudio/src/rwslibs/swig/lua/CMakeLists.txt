@@ -29,6 +29,7 @@ if(build)
 
     set_source_files_properties(../sdurws.i PROPERTIES CPLUSPLUS ON)
     set_source_files_properties(../sdurws.i PROPERTIES SWIG_FLAGS "-includeall")
+    include_directories(${RW_ROOT}/src)
 
     set(RWS_MODULE sdurws)
     set(TARGET_NAME ${RWS_MODULE}_lua)

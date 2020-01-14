@@ -49,11 +49,9 @@ namespace plugins {
  * @brief A plugin for interactive testing of physics engines.
  */
 class EngineTestPlugin: public rws::RobWorkStudioPlugin {
-	Q_OBJECT
-	Q_INTERFACES( rws::RobWorkStudioPlugin )
-	#if RWS_USE_QT5
-		Q_PLUGIN_METADATA(IID "dk.sdu.mip.Robwork.RobWorkStudioPlugin/0.1" FILE "EngineTestPlugin.json")
-	#endif
+    Q_OBJECT
+    Q_INTERFACES( rws::RobWorkStudioPlugin )
+    Q_PLUGIN_METADATA(IID "dk.sdu.mip.Robwork.RobWorkStudioPlugin/0.1" FILE "EngineTestPlugin.json")
 public:
 	//! @brief Constructor.
 	EngineTestPlugin();

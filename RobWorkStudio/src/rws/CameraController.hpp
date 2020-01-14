@@ -22,6 +22,7 @@
 #include <rw/math/Vector3D.hpp>
 #include <rw/math/Vector2D.hpp>
 #include <rw/common/Ptr.hpp>
+#include <rw/graphics/DrawableNode.hpp>
 
 #include <QEvent>
 
@@ -127,6 +128,12 @@ namespace rws {
          * @return the target position to move.
          */
 		virtual rw::math::Vector3D<> getPanTarget() {return rw::math::Vector3D<>(); };
+
+		/**
+		 * @brief add a drawable to the camera controller
+		 * @param obj [in] a drawable to be controled by the camera controller
+		 */
+		virtual void setDrawable(rw::graphics::DrawableNode::Ptr obj) {}; 
 	};
 
 }

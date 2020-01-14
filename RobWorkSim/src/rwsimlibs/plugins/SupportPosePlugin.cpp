@@ -580,8 +580,3 @@ void SupportPosePlugin::initialize(){
     getRobWorkStudio()->genericEvent().add(
           boost::bind(&SupportPosePlugin::genericEventListener, this, _1), this);
 }
-
-#if !RWS_USE_QT5
-#include <QtCore/qplugin.h>
-Q_EXPORT_PLUGIN(SupportPosePlugin);
-#endif

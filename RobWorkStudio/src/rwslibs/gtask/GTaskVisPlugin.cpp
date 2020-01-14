@@ -627,12 +627,4 @@ void GTaskVisPlugin::on_btnRecordVideo_clicked() {
 		ss<<"d:\\temp\\Img"<<i<<".png";
 		getRobWorkStudio()->saveViewGL(ss.str().c_str());
 	}
-
-
-
 }
-
-#if !RWS_USE_QT5
-#include <QtCore/qplugin.h>
-Q_EXPORT_PLUGIN(GTaskVisPlugin)
-#endif

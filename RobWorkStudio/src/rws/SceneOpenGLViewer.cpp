@@ -265,10 +265,7 @@ void SceneOpenGLViewer::init()
     // TODO: foreground camera
     _mainView->_viewCamera = _mainCam;
     _mainView->_camGroup = _mainCamGroup;
-    _pivotDrawable = NULL; //= _scene->makeDrawable("Pivot", Geometry::makeBox(1.0,1.0,1.0), DrawableNode::Virtual);
-    //_pivotDrawable = _scene->makeDrawableFrameAxis("Pivot", 1.0, DrawableNode::Virtual );
-    //_scene->addChild(_pivotDrawable, _scene->getRoot());
-    //_pivotDrawable->setColor( Vector3D<>(1.0f, 0.0f, 0.0f) );
+    _pivotDrawable = NULL; 
 
     this->setFocusPolicy(Qt::StrongFocus);
 }
@@ -351,10 +348,12 @@ void SceneOpenGLViewer::setWorldNode(rw::graphics::GroupNode::Ptr wnode){
 
     if(_pivotDrawable==NULL){
         /// TODO: this should be simplified to orthographic camera view. And only drawn in 2D
+        rw::common::Log::infoLog() << "Creating Pivot" << std::endl;
         _pivotDrawable = _scene->makeDrawable("Pivot", Geometry::makeSphere(0.01), DrawableNode::Virtual);
-        //_pivotDrawable = _scene->makeDrawableFrameAxis("Pivot", 1.0, DrawableNode::Virtual );
         _scene->addChild(_pivotDrawable, _scene->getRoot());
         _pivotDrawable->setColor( Vector3D<>(1.0f, 0.0f, 0.0f) );
+        _cameraCtrl->setDrawable(_pivotDrawable);
+        
     }
 
     if(wnode == NULL){
@@ -675,6 +674,7 @@ void SceneOpenGLViewer::mouseDoubleClickEvent(QMouseEvent* event)
 				
 			// plain doubleclick => move pivot point
 			} else {
+
                 _cameraCtrl->setCenter(pos, Vector2D<>(event->x(), event->y()));
                 _pivotDrawable->setTransform( Transform3D<>(pos, Rotation3D<>::identity()) );
                 QWidget::update();

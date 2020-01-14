@@ -30,11 +30,7 @@ SET(FILES_UI
 	log/LogValuesWidget.ui
 	log/SimulatorStatisticsWidget.ui
 )
-IF (RWS_USE_QT5)
-	QT5_WRAP_UI(UIS_OUT_H ${FILES_UI})
-ELSE()
-	QT4_WRAP_UI(UIS_OUT_H ${FILES_UI})
-ENDIF()
+qt5_wrap_ui(UIS_OUT_H ${FILES_UI})
 
 # Moc the files:
 SET(MocSrcFiles )
@@ -68,19 +64,11 @@ SET(SrcFiles_HPP
 	log/SimulatorLogWidget.hpp
 	log/SimulatorStatisticsWidget.hpp
 )
-IF (RWS_USE_QT5)
-	QT5_WRAP_CPP(MocSrcFiles ${SrcFiles_HPP})
-ELSE()
-	QT4_WRAP_CPP(MocSrcFiles ${SrcFiles_HPP} OPTIONS -DBOOST_TT_HAS_PLUS_HPP_INCLUDED -DBOOST_TT_HAS_PLUS_ASSIGN_HPP_INCLUDED -DBOOST_TT_HAS_MINUS_HPP_INCLUDED -DBOOST_TT_HAS_MINUS_ASSIGN_HPP_INCLUDED)
-ENDIF()
+qt5_wrap_cpp(MocSrcFiles ${SrcFiles_HPP})
 
 # Rcc the files:
 SET(RccSrcFiles)
-IF (RWS_USE_QT5)
-	QT5_ADD_RESOURCES(RccSrcFiles resources.qrc)
-ELSE()
-	QT4_ADD_RESOURCES(RccSrcFiles resources.qrc)
-ENDIF()
+qt5_add_resources(RccSrcFiles resources.qrc)
 
 SET(SrcFiles 
     ContactTableWidget.cpp 

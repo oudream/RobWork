@@ -75,9 +75,6 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${RWS_CXX_FLAGS}")
 include(${RWS_ROOT}/cmake/RobWorkStudioSetup.cmake)
 rw_set_install_dirs(RobWorkStudio RWS)
 
-include_directories(${ROBWORKSTUDIO_INCLUDE_DIR})
-link_directories(${ROBWORKSTUDIO_LIBRARY_DIRS} ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY})
-# MESSAGE(" ${ROBWORKSTUDIO_LIBRARY_DIRS} ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY} ") linking options
 set(RW_STATIC_LINK_PLUGINS ${RWS_USE_STATIC_LINK_PLUGINS})
 # linking options
 option(RWS_USE_STATIC_LINK_COMPONENTS "Set to false if dynamic link libraries of components is needed" ON)
