@@ -22,11 +22,7 @@
 #include <string>
 #include <boost/filesystem.hpp>
 
-#ifndef __gnuc__
-    #if __has_include(<windows.h>)
-        #include <windows.h>
-    #endif
-#endif
+
 
 #if defined(__CYGWIN__)
 	#define RW_CYGWIN
@@ -39,9 +35,13 @@
 #endif
 
 #ifdef RW_WIN32
-#define DLL_EXPORT extern "C" __declspec(dllexport)
+    #define DLL_EXPORT extern "C" __declspec(dllexport)
 #else
-#define DLL_EXPORT extern "C"
+    #define DLL_EXPORT extern "C"
+#endif
+
+#ifdef RW_WIN32
+    #include <windows.h>
 #endif
 
 
