@@ -96,6 +96,7 @@ if(build)
             qtpropertybrowser
             ${PYTHON_LIBRARIES}
             ${QT_LIBRARIES}
+            ${RW_BUILD_WITH_LIBRARIES_BOOST}
             ${ROBWORK_LIBRARIES}
             ${GLUT_glut_LIBRARY}
             ${OPENGL_LIBRARIES}

@@ -339,7 +339,7 @@ if(EXISTS ${RWCFG_ROOT}/RobWorkBuildConfig_${RW_BUILD_TYPE}.cmake)
     string(
         REPLACE
             "${ROBWORK_BUILD_PATH}/libs/${RW_BUILD_TYPE}" "${RW_LIBS}" ROBWORK_LIBRARIES
-            "${ROBWORK_LIBRARIES}"
+            "${ROBWORK_LIBRARIES_TMP}"
     )
     if(${IS_INSTALL} AND DEFINED WIN32)
         string(
@@ -356,7 +356,7 @@ if(EXISTS ${RWCFG_ROOT}/RobWorkBuildConfig_${RW_BUILD_TYPE}.cmake)
     set(ROBWORK_LIBRARIES)
     foreach(l ${ROBWORK_LIBRARIES_TMP})
         unset(tmp CACHE)
-        find_library(tmp ${l} PATHS "${ROBWORK_LIBRARY_DIRS}" NO_DEFAULT_PATH)
+        find_library(tmp ${l} PATHS ${ROBWORK_LIBRARY_DIRS} NO_DEFAULT_PATH)
         if(tmp)
             list(APPEND ROBWORK_LIBRARIES "${tmp}")
         else()

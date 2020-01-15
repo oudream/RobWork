@@ -67,6 +67,7 @@ SET(RWS_TEST_SRC
 )
 add_executable( sdurws_sdurws-gtest ${RWS_TEST_SRC})
 target_link_libraries( sdurws_sdurws-gtest PRIVATE ${RWS_TEST_LIBRARIES})
+target_include_directories(sdurws_sdurws-gtest PRIVATE  ${RW_BUILD_WITH_GTEST_INCLUDE_DIRS})
 ADD_RWS_GTEST(sdurws_sdurws-gtest)
 
 
@@ -88,6 +89,8 @@ SET(SENSOR_TEST_SRC
 )
 add_executable( sdurws_sensor-gtest ${SENSOR_TEST_SRC})
 target_link_libraries( sdurws_sensor-gtest PRIVATE ${SENSOR_TEST_LIBRARIES} sdurw)
+target_include_directories(sdurws_sensor-gtest PRIVATE ${RW_BUILD_WITH_GTEST_INCLUDE_DIRS})
+
 ADD_RWS_GTEST(sdurws_sensor-gtest)
 
 ########################################################################

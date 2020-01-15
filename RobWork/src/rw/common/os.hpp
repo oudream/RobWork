@@ -88,7 +88,7 @@ public:
             }
             return std::string();
         #else
-            if (exists ("/usr/lib/")) {    // Add default plugin location
+            if (boost::filesystem::exists ("/usr/lib/")) {    // Add default plugin location
 
                 boost::filesystem::path p ("/usr/lib");
                 std::string rwpluginFolder = "";
