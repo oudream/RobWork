@@ -35,16 +35,14 @@ if(build)
     list(APPEND SRC_CPP Trakstar.cpp)
     list(APPEND SRC_HPP Trakstar.hpp)
 
-    include_directories(${TRAKSTAR_INCLUDE_DIR})
     rw_add_library(${SUBSYS_NAME} ${SRC_CPP} ${SRC_HPP})
-    target_link_libraries(${SUBSYS_NAME} PUBLIC ${ROBWORK_LIBRARIES} ${TRAKSTAR_LIBRARIES})
-
-    # Make sure dependencies are build before system
-    foreach(DEP IN LISTS ROBWORK_LIBRARIES TRAKSTAR_LIBRARIES)
-        if(TARGET ${DEP})
-            add_dependencies(${SUBSYS_NAME} ${DEP})
-        endif()
-    endforeach()
+    target_link_libraries(${SUBSYS_NAME} PUBLIC RW::sdurw ${TRAKSTAR_LIBRARIES})
+    target_include_directories(${SUBSYS_NAME}
+        PUBLIC
+        ${TRAKSTAR_INCLUDE_DIR}
+        INTERFACE
+        $<BUILD_INTERFACE:${RWHW_ROOT}/src> $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
+    )
 
     rw_add_includes(${SUBSYS_NAME} "rwhw/trakstar" ${SRC_HPP})
     set(ROBWORKHARDWARE_LIBRARIES ${ROBWORKHARDWARE_LIBRARIES} sdurwhw_trakstar PARENT_SCOPE)

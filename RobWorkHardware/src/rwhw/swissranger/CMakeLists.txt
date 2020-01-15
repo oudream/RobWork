@@ -30,6 +30,10 @@ if(build)
         SwissRanger.hpp
         SRConstants.hpp
     )
+    target_include_directories(${SUBSYS_NAME}
+        PUBLIC
+        $<BUILD_INTERFACE:${RWHW_ROOT}/src> $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
+    )
     rw_add_includes(
         ${SUBSYS_NAME}
         "rwhw/swissranger"

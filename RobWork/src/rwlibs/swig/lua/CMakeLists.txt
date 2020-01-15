@@ -40,6 +40,7 @@ if(build)
     set(CMAKE_SWIG_FLAGS "")
 
     add_custom_target(${SUBSYS_NAME}_all)
+    include_directories(${RW_ROOT}/src)
 
     foreach(
         RW_MODULE
@@ -90,6 +91,10 @@ if(build)
         endif()
 
         target_include_directories(${TARGET_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+        if(NOT RW_ENABLE_INTERNAL_LUA_TARGET)
+            target_include_directories(${TARGET_NAME} PUBLIC ${LUA_INCLUDE_DIR})
+        endif()
+        add_library(${PROJECT_PREFIX}::${TARGET_NAME} ALIAS ${TARGET_NAME})
         add_dependencies(${SUBSYS_NAME}_all ${TARGET_NAME})
 
         # ############ lua static interface generation ##############
@@ -110,6 +115,10 @@ if(build)
                                                          # generated
         endif()
         target_include_directories(${TARGET_NAME}_s PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+        if(NOT RW_ENABLE_INTERNAL_LUA_TARGET)
+            target_include_directories(${TARGET_NAME}_s PUBLIC ${LUA_INCLUDE_DIR})
+        endif()
+        add_library(${PROJECT_PREFIX}::${TARGET_NAME}_s ALIAS ${TARGET_NAME}_s)
         add_dependencies(${SUBSYS_NAME}_all ${TARGET_NAME}_s)
 
         # this is used to indicate static linking to Visual Studio or mingw
@@ -136,6 +145,7 @@ if(build)
 
         install(
             TARGETS ${TARGET_NAME} ${TARGET_NAME}_s
+            EXPORT ${PROJECT_PREFIX}Targets
             RUNTIME DESTINATION ${BIN_INSTALL_DIR} COMPONENT swig
             LIBRARY DESTINATION ${LIB_INSTALL_DIR} COMPONENT swig
             ARCHIVE DESTINATION ${LIB_INSTALL_DIR} COMPONENT swig

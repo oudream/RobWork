@@ -9,4 +9,9 @@ SET(SRC_FILES
 	IntegratorSpringTest.cpp
 )
 
-ADD_LIBRARY(sdurwsim_test ${SRC_FILES})
+rw_add_library(sdurwsim_test ${SRC_FILES})
+target_link_libraries(sdurwsim_test PUBLIC sdurwsim)
+target_include_directories(sdurwsim_test
+    INTERFACE
+    $<BUILD_INTERFACE:${RWSIM_ROOT}/src> $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
+)

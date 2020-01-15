@@ -440,8 +440,7 @@ macro(RW_ADD_LIBRARY _name)
     endif()
 
     add_library(${_name} ${PROJECT_LIB_TYPE} ${SUBSYS_UNPARSED_ARGUMENTS})
-    # must link explicitly against boost.
-    target_link_libraries(${_name} PUBLIC ${Boost_LIBRARIES})
+    add_library(${PROJECT_PREFIX}::${_name} ALIAS ${_name})
 
     # Only link if needed
     if(WIN32 AND MSVC)
@@ -465,6 +464,7 @@ macro(RW_ADD_LIBRARY _name)
 
     install(
         TARGETS ${_name}
+        EXPORT ${PROJECT_PREFIX}Targets
         RUNTIME DESTINATION ${BIN_INSTALL_DIR} COMPONENT ${_component}
         LIBRARY DESTINATION ${LIB_INSTALL_DIR} COMPONENT ${_component}
         ARCHIVE DESTINATION ${LIB_INSTALL_DIR} COMPONENT ${_component}

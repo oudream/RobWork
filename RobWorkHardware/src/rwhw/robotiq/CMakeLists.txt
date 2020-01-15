@@ -19,14 +19,18 @@ if(build)
     set(SRC_HPP Robotiq.hpp Robotiq3.hpp Robotiq2.hpp)
 
     rw_add_library(${SUBSYS_NAME} ${SRC_CPP} ${SRC_HPP})
-    target_link_libraries(${SUBSYS_NAME} PUBLIC ${ROBWORK_LIBRARIES})
+    target_link_libraries(${SUBSYS_NAME} PUBLIC RW::sdurw)
+    target_include_directories(${SUBSYS_NAME}
+        INTERFACE
+        $<BUILD_INTERFACE:${RWHW_ROOT}/src> $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
+    )
     rw_add_includes(${SUBSYS_NAME} "rwhw/robotiq" ${SRC_HPP})
     set(ROBWORKHARDWARE_LIBRARIES ${ROBWORKHARDWARE_LIBRARIES} ${SUBSYS_NAME} PARENT_SCOPE)
 
     add_executable(robotiq3_test robotiq3SimpleTest.cpp)
-    target_link_libraries(robotiq3_test ${SUBSYS_NAME} ${ROBWORK_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+    target_link_libraries(robotiq3_test ${SUBSYS_NAME} RW::sdurw ${CMAKE_THREAD_LIBS_INIT})
 
     add_executable(robotiq2_test robotiq2SimpleTest.cpp)
-    target_link_libraries(robotiq2_test ${SUBSYS_NAME} ${ROBWORK_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+    target_link_libraries(robotiq2_test ${SUBSYS_NAME} RW::sdurw ${CMAKE_THREAD_LIBS_INIT})
 
 endif()

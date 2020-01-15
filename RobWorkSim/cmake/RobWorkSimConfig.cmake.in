@@ -147,6 +147,9 @@ endif()
 # get the relavant build type
 GET_ROBWORKSIM_BUILD_TYPE(${RWSIMCFG_ROOT} RWSIM_BUILD_TYPE)
 
+if(NOT TARGET sdurwsim)
+    include("${RWSIMCFG_ROOT}/RobWorkSimTargets.cmake")
+endif()
 
 # check whether RobWorkSimConfig.cmake is found into a RobWorkSim installation or in a build tree
 if(EXISTS "${RWSIMCFG_ROOT}/../src/RobWorkSimConfig.hpp")

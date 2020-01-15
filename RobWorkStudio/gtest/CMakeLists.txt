@@ -1,5 +1,3 @@
-link_directories(${ROBWORK_LIBRARY_DIRS})
-
 ########################################################################
 # Standard Macro
 ########################################################################
@@ -45,8 +43,7 @@ SET(RWSMAIN_TEST_SRC
   test-main.cpp
 )
 add_library( sdurws-gtest-main STATIC ${RWSMAIN_TEST_SRC})
-target_link_libraries( sdurws-gtest-main PUBLIC ${RW_BUILD_WITH_LIBRARIES_GTEST} PRIVATE ${ROBWORK_LIBRARIES})
-target_include_directories(sdurws-gtest-main PRIVATE ${ROBWORK_INCLUDE_DIRS})
+target_link_libraries( sdurws-gtest-main PUBLIC ${RW_BUILD_WITH_LIBRARIES_GTEST} PRIVATE RW::sdurw)
 
 ########################################################################
 # RWS
@@ -54,11 +51,9 @@ target_include_directories(sdurws-gtest-main PRIVATE ${ROBWORK_INCLUDE_DIRS})
 
 SET(RWS_TEST_LIBRARIES
   sdurws
-  qtpropertybrowser
   ${QT_LIBRARIES}
   ${RW_BUILD_WITH_LIBRARIES_GTEST}
-  ${Boost_LIBRARIES}
-  ${ROBWORK_LIBRARIES}
+  RW::sdurw
 )
 
 SET(RWS_TEST_SRC
@@ -76,9 +71,8 @@ ADD_RWS_GTEST(sdurws_sdurws-gtest)
 SET(SENSOR_TEST_LIBRARIES
     sdurws-gtest-main
     sdurws
-    qtpropertybrowser
-    ${Boost_LIBRARIES}
-    ${ROBWORK_LIBRARIES}
+    RW::sdurw_simulation
+    RW::sdurw
 )
 
 
@@ -86,7 +80,7 @@ SET(SENSOR_TEST_SRC
   rws/SimulatedSensorTest.cpp
 )
 add_executable( sdurws_sensor-gtest ${SENSOR_TEST_SRC})
-target_link_libraries( sdurws_sensor-gtest PRIVATE ${SENSOR_TEST_LIBRARIES} sdurw)
+target_link_libraries( sdurws_sensor-gtest PRIVATE ${SENSOR_TEST_LIBRARIES})
 ADD_RWS_GTEST(sdurws_sensor-gtest)
 
 ########################################################################
