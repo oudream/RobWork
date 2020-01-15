@@ -16,10 +16,6 @@
  ********************************************************************************/
 #include "RobWork.hpp"
 
-#if defined(RW_WIN32)
-#include <windows.h>
-#endif
-
 #include <RobWorkConfig.hpp>
 #include <rw/common/ExtensionRegistry.hpp>
 #include <rw/common/Plugin.hpp>
@@ -57,31 +53,6 @@ using namespace boost::program_options;
 #define RWCFGFILE                                                                    \
     std::string (std::getenv ("APPDATA")) + SLASH + "robwork" + SLASH + "robwork-" + \
         RW_BUILD_TYPE + "-" + RW_VERSION + ".cfg.xml"
-
-namespace {
-//#include <windows.h>
-    std::string InstallPluginLocation(std::string pack="RobWork") 
-    {
-        HKEY hKey = 0;
-        char buf[1024] = {0};
-        DWORD dwType = 0;
-        DWORD dwBufSize = sizeof(buf);
-        std::string subkey = "Software\\Kitware\\CMake\\Packages\\"+pack;
-        if( RegOpenKey(HKEY_CURRENT_USER,subkey.c_str(),&hKey) == ERROR_SUCCESS)
-        {
-            dwType = REG_SZ;
-            if( RegQueryValueEx(hKey,"Location",0, &dwType, (BYTE*)buf, &dwBufSize) == ERROR_SUCCESS)
-            {
-                return std::string(buf) + "\\lib\\RobWork\\rwplugins";
-            }
-            else
-                Log::debugLog () << "Regestry: " << subkey << " has no value Location"<< std::endl;
-            RegCloseKey(hKey);
-        }
-
-        return std::string();
-    }
-}
 #elif defined(RW_MACOS)
 #define RWCFGHOMEDIR std::string (std::getenv ("HOME")) + "/Library/Preferences/"
 #define RWCFGFILE                                                                              \
@@ -222,42 +193,22 @@ void RobWork::initialize (const std::vector< std::string >& plugins)
         _settings.add ("plugins", "List of plugins or plugin locations", plugins);
     }
 
-    if (exists ("/usr/lib/")) {    // Add default plugin location
 
-        boost::filesystem::path p ("/usr/lib");
-        std::string rwpluginFolder = "";
-
-        // Find the architecture dependendt folder containing the rwplugins folder
-        // Search all files and folders
-        for (boost::filesystem::directory_iterator i (p);
-             i != boost::filesystem::directory_iterator ();
-             i++) {
-            // If is directory
-            if (boost::filesystem::is_directory (i->path ())) {
-                rwpluginFolder = "/usr/lib/";
-                rwpluginFolder += i->path ().filename ().string ();
-                rwpluginFolder += "/RobWork/rwplugins";
-                if (boost::filesystem::exists (rwpluginFolder)) {
-                    break;
-                }else {
-                    rwpluginFolder = "";
-                }
-            }
-        }
-        appendPluginFolder(rwpluginFolder,"Location-linux-default",_settings);
-    }
 #if defined(RW_WIN32)
-
     std::vector<std::string> Packs= {"RobWork","RobWorkStudio","RobWorkSim","RobWorkHardware"};
+#else
+    std::vector<std::string> Packs= {""};
+#endif
+
     for(const std::string& p: Packs){
-        std::string loc = InstallPluginLocation(p);
+        std::string loc = OS::InstallPluginLocation(p);
         if(exists(loc)) {
             std::cout << "Found " << p <<" Installation" << std::endl;
             std::string name = "Location-win-" + p +"-default";
             appendPluginFolder(loc,name,_settings);
         }
     }
-#endif
+
 
 
     _settingsFile = rwsettingsPath;
