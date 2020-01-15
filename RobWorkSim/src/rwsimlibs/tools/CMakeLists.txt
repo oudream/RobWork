@@ -12,13 +12,9 @@ rw_subsys_option(
 rw_add_doc(${SUBSYS_NAME})
 
 if(build)
-    LINK_DIRECTORIES( ${ROBWORKSTUDIO_LIBRARY_DIRS})
-
     # if we want to use ui files add them here
     set(UIS_FILES SimulatorLogViewer.ui)
     qt5_wrap_ui(UIS_OUT_H ${UIS_FILES})
-    # Need to add the current binary dir to the include directory because the generated source files are placed here
-    include_directories(${CMAKE_CURRENT_BINARY_DIR})
     # Standard cpp files to compile:
     set(SrcFiles SimulatorLogViewer.cpp)
     set(SRC_FILES_HPP SimulatorLogViewer.hpp)
@@ -37,23 +33,10 @@ if(build)
     add_executable(SimulatorLogViewer ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles} ${UIS_FILES})
     target_link_libraries(
         SimulatorLogViewer
+        PRIVATE
         sdurwsim_gui
-        ${ROBWORK_LIBRARIES}
-        ${ROBWORKSIM_LIBRARIES}
-        ${ROBWORKSTUDIO_LIBRARIES}
     )
-
-    foreach(
-        DEP IN
-        LISTS
-            sdurwsim_gui
-            ROBWORK_LIBRARIES
-            ROBWORKSIM_LIBRARIES
-            ROBWORKSTUDIO_LIBRARIES
-    )
-        if(TARGET ${DEP})
-            add_dependencies(sdurwsim_gui ${DEP})
-        endif()
-    endforeach()
+    # Need to add the current binary dir to the include directory because the generated source files are placed here
+    target_include_directories(SimulatorLogViewer PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
 
 endif()

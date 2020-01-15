@@ -88,7 +88,10 @@ if(build)
     )
 
     # Add the cmake binary dir because this is where the ui files are placed
-    target_include_directories(sdurws PUBLIC ${RWS_ROOT}/src ${ROBWORK_INCLUDE_DIRS} PRIVATE ${CMAKE_CURRENT_BINARY_DIR} ${PYTHON_INCLUDE_DIRS})
+    target_include_directories(sdurws
+        PUBLIC $<BUILD_INTERFACE:${RWS_ROOT}/src> $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
+        PRIVATE ${CMAKE_CURRENT_BINARY_DIR} ${PYTHON_INCLUDE_DIRS}
+    )
 
     target_link_libraries(
         ${SUBSYS_NAME}
@@ -96,8 +99,9 @@ if(build)
             qtpropertybrowser
             ${PYTHON_LIBRARIES}
             ${QT_LIBRARIES}
-            ${RW_BUILD_WITH_LIBRARIES_BOOST}
-            ${ROBWORK_LIBRARIES}
+            RW::sdurw_proximitystrategies
+            RW::sdurw_opengl
+            RW::sdurw
             ${GLUT_glut_LIBRARY}
             ${OPENGL_LIBRARIES}
         PRIVATE
@@ -108,6 +112,6 @@ if(build)
 
     rw_add_includes(sdurws sdurws ${SRC_FILES_HPP})
     rw_add_plugin(sdurws_plugin.rwplugin MODULE RWSImageLoaderPlugin.cpp RWSImageLoaderPlugin.hpp)
-    target_link_libraries(sdurws_plugin.rwplugin PUBLIC sdurws ${QT_LIBRARIES} ${ROBWORK_LIBRARIES})
+    target_link_libraries(sdurws_plugin.rwplugin sdurws ${QT_LIBRARIES} RW::sdurw)
 
 endif()

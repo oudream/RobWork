@@ -52,7 +52,7 @@ if(build)
         ${RWS_COMPONENT_LIBRARIES}
         ${RWS_PLUGIN_LIBRARIES}
         sdurws
-        ${ROBWORK_LIBRARIES}
+        RW::sdurw
     )
     if((CMAKE_COMPILER_IS_GNUCC) OR (CMAKE_C_COMPILER_ID STREQUAL "Clang"))
         set_target_properties(sdurws_jni PROPERTIES LINK_FLAGS -Wl,--no-undefined)

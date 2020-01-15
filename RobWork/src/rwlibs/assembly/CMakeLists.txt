@@ -46,7 +46,10 @@ if(build)
     rw_add_library(${SUBSYS_NAME} ${SRC_FILES} ${SRC_FILES_HPP} ${LOADER_SRC_FILES_HPP})
     rw_add_includes(${SUBSYS_NAME} "rwlibs/assembly" ${SRC_FILES_HPP})
     target_link_libraries(${SUBSYS_NAME} PUBLIC sdurw PRIVATE sdurw_task)
-    add_dependencies(${SUBSYS_NAME} ${SUBSYS_DEPS})
+    target_include_directories(${SUBSYS_NAME}
+        INTERFACE
+        $<BUILD_INTERFACE:${RW_ROOT}/src> $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
+    )
     set_target_properties(${SUBSYS_NAME} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
 
 endif()

@@ -30,7 +30,7 @@ endif(WIN32 AND IS_RELEASE)
 set(LIBS_TMP ${RWS_PLUGIN_LIBRARIES} sdurws ${RWS_COMPONENT_LIBRARIES} ${sdurws_LIBRARIES})
 # MESSAGE("${LIBS_TMP} sdurws_robworkstudioapp ${ROBWORK_LIBRARIES}")
 
-target_link_libraries(RobWorkStudio ${LIBS_TMP} sdurws_robworkstudioapp ${ROBWORK_LIBRARIES} ${GLUT_glut_LIBRARY})
+target_link_libraries(RobWorkStudio ${LIBS_TMP} sdurws_robworkstudioapp RW::sdurw ${GLUT_glut_LIBRARY})
 
 if(RWS_USE_STATIC_LINK_PLUGINS)
     add_dependencies(RobWorkStudio sdurws ${RWS_COMPONENT_LIBRARIES})

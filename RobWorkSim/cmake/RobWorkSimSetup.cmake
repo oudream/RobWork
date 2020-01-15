@@ -58,6 +58,11 @@ if(NOT PYTHON_LIBRARIES)
 	set(PYTHON_LIBRARIES "")
 endif()
 
+# Find and setup OpenGL.
+if(POLICY CMP0072) # Introduce cmake 3.11
+    cmake_policy(SET CMP0072 NEW)
+endif()
+find_package(OpenGL REQUIRED)
 
  ####################################################################
 # DEPENDENCIES - OPTIONAL
@@ -257,6 +262,7 @@ SET(ROBWORKSIM_LIBRARIES
   ${RWSIM_BULLET_LIBRARY}
   sdurwsim
   ${RWSIM_ODE_LIBRARY}
+  sdurwsim_gui
   sdurwsim
   ${ROBWORK_LIBRARIES}
 )

@@ -30,6 +30,7 @@ if(build)
 
     set_source_files_properties(../sdurwsim.i PROPERTIES CPLUSPLUS ON)
     set_source_files_properties(../sdurwsim.i PROPERTIES SWIG_FLAGS "-includeall")
+    include_directories(${RWSIM_ROOT}/src ${RW_ROOT}/src)
 
     set(RWSIM_MODULE sdurwsim)
     set(TARGET_NAME ${RWSIM_MODULE}_lua)
@@ -64,7 +65,13 @@ if(build)
         )
     endif()
 
-    swig_link_libraries(${TARGET_NAME} ${RWSIM_ODE_LIBRARY} ${RWSIM_MODULE} ${ROBWORK_LIBRARIES})
+    swig_link_libraries(${TARGET_NAME} ${RWSIM_ODE_LIBRARY} ${RWSIM_MODULE})
+    if (RW_BUILD_WITH_INTERNAL_LUA)
+        swig_link_libraries(${TARGET_NAME} RW::lua51)
+    else()
+        swig_link_libraries(${TARGET_NAME} ${RW_BUILD_WITH_LIBRARIES_LUA})
+        target_include_directories(${TARGET_NAME} PUBLIC ${RW_BUILD_WITH_LUA_INCLUDE_DIR})
+    endif()
     if((CMAKE_COMPILER_IS_GNUCC) OR (CMAKE_C_COMPILER_ID STREQUAL "Clang"))
         set_target_properties(${TARGET_NAME} PROPERTIES LINK_FLAGS -Wl,--no-undefined)
     endif()
@@ -82,14 +89,13 @@ if(build)
         add_dependencies(${TARGET_NAME}_s ${TARGET_NAME}) # avoid using the source files before they have been
                                                           # generated
     endif()
-    target_link_libraries(${TARGET_NAME}_s ${RWSIM_ODE_LIBRARY} ${RWSIM_MODULE} ${ROBWORK_LIBRARIES})
-
-    # Make sure dependencies are build before system
-    foreach(DEP IN LISTS SUBSYS_DEPS)
-        if(TARGET ${DEP})
-            add_dependencies(${TARGET_NAME}_s ${DEP})
-        endif()
-    endforeach()
+    target_link_libraries(${TARGET_NAME}_s ${RWSIM_ODE_LIBRARY} ${RWSIM_MODULE})
+    if (RW_BUILD_WITH_INTERNAL_LUA)
+        target_link_libraries(${TARGET_NAME}_s RW::lua51)
+    else()
+        target_link_libraries(${TARGET_NAME}_s ${RW_BUILD_WITH_LIBRARIES_LUA})
+        target_include_directories(${TARGET_NAME}_s PUBLIC ${RW_BUILD_WITH_LUA_INCLUDE_DIR})
+    endif()
 
     # this is used to indicate static linking to Visual Studio or mingw
     if(DEFINED MSVC)
@@ -99,7 +105,7 @@ if(build)
     endif()
 
     add_library(sdurwsimlua_plugin.rwplugin MODULE LuaPlugin.cpp LuaPlugin.hpp)
-    target_link_libraries(sdurwsimlua_plugin.rwplugin ${TARGET_NAME}_s ${ROBWORK_LIBRARIES})
+    target_link_libraries(sdurwsimlua_plugin.rwplugin ${TARGET_NAME}_s)
     install(TARGETS ${RWSIM_MODULE}lua_plugin.rwplugin DESTINATION ${RW_PLUGIN_INSTALL_DIR})
 
     if((CMAKE_COMPILER_IS_GNUCC) OR (CMAKE_C_COMPILER_ID STREQUAL "Clang"))

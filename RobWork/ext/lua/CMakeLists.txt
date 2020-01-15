@@ -59,12 +59,14 @@ add_library(lua51
   src/print.c
   src/lua.c
   src/luac.c)
+add_library(${PROJECT_PREFIX}::lua51 ALIAS lua51)
 
 if(NOT WIN32)
   target_compile_definitions(lua51 PRIVATE LUA_USE_POSIX LUA_USE_DLOPEN)
 elseif(BUILD_SHARED_LIBS)
   target_compile_definitions(lua51 PRIVATE LUA_BUILD_AS_DLL)
 endif()
+target_include_directories(lua51 INTERFACE $<BUILD_INTERFACE:${LUA_INCLUDE_DIR}> $<INSTALL_INTERFACE:"${INCLUDE_INSTALL_DIR}/ext/lua/src">)
 
 add_executable(lua src/lua.cpp)
 target_link_libraries(lua lua51 ${CMAKE_DL_LIBS})
@@ -72,10 +74,11 @@ target_link_libraries(lua lua51 ${CMAKE_DL_LIBS})
 add_executable(luac src/luac.cpp)
 target_link_libraries(luac lua51 ${CMAKE_DL_LIBS})
 
-install(TARGETS lua luac lua51         
+install(TARGETS lua luac lua51
+  EXPORT ${PROJECT_PREFIX}Targets       
   RUNTIME DESTINATION ${BIN_INSTALL_DIR} COMPONENT lua
   LIBRARY DESTINATION ${LIB_INSTALL_DIR} COMPONENT lua
   ARCHIVE DESTINATION ${LIB_INSTALL_DIR} COMPONENT lua
 )
 
-INSTALL(FILES ${LUA_HPP_FILES} DESTINATION "${INCLUDE_INSTALL_DIR}/ext/lua/src" COMPONENT lua)
+install(FILES ${LUA_HPP_FILES} DESTINATION "${INCLUDE_INSTALL_DIR}/ext/lua/src" COMPONENT lua)

@@ -26,7 +26,7 @@
 
 //#include <rwlibs/control/JointController.hpp>
 
-#include <RobWorkStudioPlugin.hpp>
+#include <rws/RobWorkStudioPlugin.hpp>
 
 #include <QObject>
 

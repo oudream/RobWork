@@ -9,6 +9,10 @@ if(build)
 
     rw_add_library(${SUBSYS_NAME} SimpleFinger.cpp SimpleFinger.hpp)
     target_link_libraries(${SUBSYS_NAME} PRIVATE sdurw_csg PUBLIC sdurw)
+    target_include_directories(${SUBSYS_NAME}
+        INTERFACE
+        $<BUILD_INTERFACE:${RW_ROOT}/src> $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
+    )
 	
     rw_add_plugin(${SUBSYS_NAME}.rwplugin MODULE SimpleFingerPlugin.cpp SimpleFingerPlugin.hpp)
     target_link_libraries(${SUBSYS_NAME}.rwplugin PRIVATE ${SUBSYS_NAME} PUBLIC sdurw)

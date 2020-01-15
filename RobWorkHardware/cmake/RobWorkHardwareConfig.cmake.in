@@ -161,6 +161,16 @@ endif()
 # get the relavant build type
 get_robworkhardware_build_type(${RWHWCFG_ROOT} RWHW_BUILD_TYPE)
 
+set(TARGET_EXISTS False)
+foreach(_expectedTarget sdurwhw_camera sdurwhw_can sdurwhw_dockwelder sdurwhw_pcube sdurwhw_serialport sdurwhw_tactile sdurwhw_motomanIA20 sdurwhw_universalrobots sdurwhw_universalrobots_rtde sdurwhw_schunkpg70 sdurwhw_netft sdurwhw_robolabFT sdurwhw_robotiq)
+  if(TARGET ${_expectedTarget})
+    set(TARGET_EXISTS True)
+  endif()
+endforeach()
+if(NOT TARGET_EXISTS)
+    include("${RWHWCFG_ROOT}/RobWorkHardwareTargets.cmake")
+endif()
+
 # check whether RobWorkConfig.cmake is found into a RobWork installation or in a build tree
 if(EXISTS "${RWHWCFG_ROOT}/../src/RobWorkHardwareConfig.hpp")
     # Found RobWorkConfig.cmake in a build tree of RobWork

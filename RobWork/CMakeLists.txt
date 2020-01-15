@@ -46,9 +46,6 @@ add_custom_target(uninstall_sdurw "${CMAKE_COMMAND}" -P "${CMAKE_BINARY_DIR}/uni
 # This sets up ROBWORK_INCLUDE_DIR and ROBWORK_LIBRARIES
 include(${RW_ROOT}/cmake/RobWorkSetup.cmake)
 
-include_directories(${ROBWORK_INCLUDE_DIR})
-link_directories(${ROBWORK_LIBRARY_DIRS} ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY})
-
 # Setup install Directories
 rw_set_install_dirs(RobWork RW) # Must be called after setup
 set(RW_EXT_INSTALL_DIR ${INCLUDE_INSTALL_DIR}/ext/)
@@ -112,6 +109,18 @@ configure_file(${RW_ROOT}/cmake/RobWorkConfigVersion.cmake.in "${RW_ROOT}/cmake/
 
 configure_file(${RW_ROOT}/cmake/RobWorkConfig.cmake.in "${RW_ROOT}/cmake/RobWorkConfig.cmake" @ONLY)
 
+export(EXPORT ${PROJECT_PREFIX}Targets
+    #FILE "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}/${PROJECT_NAME}Targets.cmake"
+    FILE "${RW_ROOT}/cmake/${PROJECT_NAME}Targets.cmake"
+    NAMESPACE ${PROJECT_PREFIX}::
+)
+if(RW_HAVE_GTEST)
+    export(TARGETS ${GTEST_LIBRARIES} ${GTEST_MAIN_LIBRARIES}
+        NAMESPACE ${PROJECT_PREFIX}::
+        APPEND FILE "${RW_ROOT}/cmake/gtestTargets.cmake"
+    )
+endif()
+
 # ######################################################################################################################
 # Installation stuff
 #
@@ -133,6 +142,12 @@ install(
 )
 
 install(FILES "${RW_ROOT}/src/RobWorkConfig.hpp" DESTINATION "${INCLUDE_INSTALL_DIR}" COMPONENT sdurw)
+
+install(EXPORT ${PROJECT_PREFIX}Targets
+    FILE ${PROJECT_NAME}Targets.cmake
+    NAMESPACE ${PROJECT_PREFIX}::
+    DESTINATION ${RW_INSTALL_DIR}/cmake
+)
 
 # Install dependencies on Windows
 if(WIN32)

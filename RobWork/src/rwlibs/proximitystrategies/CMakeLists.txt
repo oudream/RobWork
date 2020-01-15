@@ -48,7 +48,10 @@ if(build)
         PRIVATE ${YAOBI_LIBRARIES} ${FCL_LIBRARIES}
     )
     target_include_directories(${SUBSYS_NAME} PRIVATE ${FCL_INCLUDE_DIRS})
-    add_dependencies(${SUBSYS_NAME} ${SUBSYS_DEPS})
+    target_include_directories(${SUBSYS_NAME}
+        INTERFACE
+        $<BUILD_INTERFACE:${RW_ROOT}/src> $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
+    )
 
     set_target_properties(${SUBSYS_NAME} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
 

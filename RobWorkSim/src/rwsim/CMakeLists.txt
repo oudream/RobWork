@@ -270,6 +270,22 @@ if(build)
         simulator
         util
     )
-    target_link_libraries(${SUBSYS_NAME} ${ROBWORK_LIBRARIES} ${RW_BUILD_WITH_LIBRARIES_BOOST})
+    target_link_libraries(${SUBSYS_NAME}
+        PUBLIC
+        RW::sdurw_algorithms
+        RW::sdurw_assembly
+        RW::sdurw_opengl
+        RW::sdurw_proximitystrategies
+        RW::sdurw_pathplanners
+        RW::sdurw_simulation
+        RW::sdurw_task
+        RW::sdurw
+        ${OPENGL_LIBRARIES}
+    )
+
+    target_include_directories(${SUBSYS_NAME}
+        PUBLIC
+        $<BUILD_INTERFACE:${RWSIM_ROOT}/src> $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
+    )
     set_target_properties(${SUBSYS_NAME} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
 endif()

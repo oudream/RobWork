@@ -44,21 +44,18 @@ if(build)
     set(SRC_HPP URRTDE.hpp)
 
     rw_add_library(${SUBSYS_NAME} ${SRC_CPP} ${SRC_HPP})
-    target_link_libraries(${SUBSYS_NAME} PRIVATE ur_rtde::rtde ${ROBWORK_LIBRARIES})
+    target_link_libraries(${SUBSYS_NAME} PRIVATE ur_rtde::rtde RW::sdurw)
+    target_include_directories(${SUBSYS_NAME}
+        INTERFACE
+        $<BUILD_INTERFACE:${RWHW_ROOT}/src> $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
+    )
     rw_add_includes(${SUBSYS_NAME} "rwhw/universalrobots_rtde" ${SRC_HPP})
 
     if(NOT UR_RTDE_INTERNAL)
         # message(STATUS "ur_rtde: ${ur_rtde_FOUND}  - lib: ${ur_rtde_LIBRARIES} - incl:
         # ${ur_rtde_INCLUDE_DIRS}")
-        target_include_directories(sdurwhw_universalrobots_rtde PRIVATE ${ur_rtde_INCLUDE_DIRS})
+        target_include_directories(${SUBSYS_NAME} PRIVATE ${ur_rtde_INCLUDE_DIRS})
     endif()
-
-    # Make sure dependencies are build before system
-    foreach(DEP IN LISTS ROBWORK_LIBRARIES ur_rtde::rtde)
-        if(TARGET ${DEP})
-            add_dependencies(sdurwhw_universalrobots_rtde ${DEP})
-        endif()
-    endforeach()
 
     set(ROBWORKHARDWARE_LIBRARIES ${ROBWORKHARDWARE_LIBRARIES} sdurwhw_universalrobots_rtde PARENT_SCOPE)
 else()

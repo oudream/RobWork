@@ -64,7 +64,10 @@ if(build)
         gpm
     )
     target_link_libraries(${SUBSYS_NAME} PUBLIC ${SUBSYS_DEPS})
-    add_dependencies(${SUBSYS_NAME} ${SUBSYS_DEPS})
+    target_include_directories(${SUBSYS_NAME}
+        PUBLIC
+        $<BUILD_INTERFACE:${RW_ROOT}/src> $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
+    )
 
     set_target_properties(${SUBSYS_NAME} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
 endif()

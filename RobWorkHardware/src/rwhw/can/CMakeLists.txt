@@ -21,7 +21,6 @@ if(build)
     set(SRC_HPP_ESDCAN)
     find_package(ESDCAN)
     if(ESDCAN_FOUND)
-        include_directories(${ESDCAN_INCLUDE_DIR})
         add_definitions(-DRWHW_HAS_ESDCAN)
         list(APPEND SRC_CPP ./ESDCAN/ESDCANPort.cpp)
         list(APPEND SRC_HPP_ESDCAN ./ESDCAN/ESDCANPort.hpp)
@@ -30,7 +29,6 @@ if(build)
     set(SRC_HPP_IEICAN02)
     find_package(IEICAN)
     if(IEICAN_FOUND)
-        include_directories(${IEICAN_INCLUDE_DIR})
         add_definitions(-DRWHW_HAS_IEICAN)
         list(APPEND SRC_CPP ./IEICAN02/IEICANPort.cpp)
         list(APPEND SRC_HPP_IEICAN02 ./IEICAN02/IEICANPort.hpp)
@@ -43,15 +41,19 @@ if(build)
         ${SRC_HPP_IEICAN02}
         ${SRC_HPP_ESDCAN}
     )
+    target_link_libraries(${SUBSYS_NAME} PUBLIC RW::sdurw)
+    target_include_directories(${SUBSYS_NAME}
+        INTERFACE
+        $<BUILD_INTERFACE:${RWHW_ROOT}/src> $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
+    )
+    if(ESDCAN_FOUND)
+        target_include_directories(${SUBSYS_NAME} PUBLIC ${ESDCAN_INCLUDE_DIR})
+    endif()
+    if(IEICAN_FOUND)
+        target_include_directories(${SUBSYS_NAME} PRIVATE ${IEICAN_INCLUDE_DIR})
+    endif()
     rw_add_includes(${SUBSYS_NAME} "rwhw/can" ${SRC_HPP})
     rw_add_includes(${SUBSYS_NAME} "rwhw/can/ESDCAN" ${SRC_HPP_ESDCAN})
     rw_add_includes(${SUBSYS_NAME} "rwhw/can/IEICAN02" ${SRC_HPP_IEICAN02})
-
-    # Make sure dependencies are build before system
-    foreach(DEP IN LISTS SUBSYS_DEPS)
-        if(TARGET ${DEP})
-            add_dependencies(${SUBSYS_NAME} ${DEP})
-        endif()
-    endforeach()
 
 endif()

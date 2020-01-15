@@ -33,14 +33,12 @@ if(build)
     set(SRC_HPP NetFTCommon.hpp NetFTLogging.hpp FTCompensation.hpp)
 
     rw_add_library(${SUBSYS_NAME} ${SRC_CPP} ${SRC_HPP})
-    target_link_libraries(${SUBSYS_NAME} PUBLIC ${ROBWORK_LIBRARIES} ${RW_BUILD_WITH_LIBRARIES_BOOST})
-
-    # Make sure dependencies are build before system
-    foreach(DEP IN LISTS ROBWORK_LIBRARIES)
-        if(TARGET ${DEP})
-            add_dependencies(${SUBSYS_NAME} ${DEP})
-        endif()
-    endforeach()
+    target_link_libraries(${SUBSYS_NAME} PUBLIC RW::sdurw)
+    target_include_directories(${SUBSYS_NAME}
+        PRIVATE ${Boost_INCLUDE_DIR}
+        INTERFACE
+        $<BUILD_INTERFACE:${RWHW_ROOT}/src> $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
+    )
     rw_add_includes(${SUBSYS_NAME} "rwhw/netft" ${SRC_HPP})
 
     set(ROBWORKHARDWARE_LIBRARIES ${ROBWORKHARDWARE_LIBRARIES} ${SUBSYS_NAME} PARENT_SCOPE)

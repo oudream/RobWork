@@ -133,6 +133,11 @@ configure_file(${RWS_ROOT}/cmake/RobWorkStudioConfig.cmake.in "${RWS_ROOT}/cmake
 configure_file(${RWS_ROOT}/cmake/RobWorkStudioConfigVersion.cmake.in
                "${RWS_ROOT}/cmake/RobWorkStudioConfigVersion.cmake" @ONLY)
 
+export(EXPORT ${PROJECT_PREFIX}Targets
+    FILE "${RWS_ROOT}/cmake/${PROJECT_NAME}Targets.cmake"
+    NAMESPACE ${PROJECT_PREFIX}::
+)
+
 # ######################################################################################################################
 # Installation stuff
 #
@@ -158,6 +163,12 @@ install(
         ${RWS_ROOT}/src/RobWorkStudioPlugin.hpp
     DESTINATION "${INCLUDE_INSTALL_DIR}"
     COMPONENT sdurws
+)
+
+install(EXPORT ${PROJECT_PREFIX}Targets
+    FILE ${PROJECT_NAME}Targets.cmake
+    NAMESPACE ${PROJECT_PREFIX}::
+    DESTINATION ${RWS_INSTALL_DIR}/cmake
 )
 
 # Install dependencies on Windows
