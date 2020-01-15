@@ -22,11 +22,14 @@
 #include <string>
 #include <boost/filesystem.hpp>
 
+#if __has_include(<windows.h>)
+#include <windows.h>
+#endif
+
 #if defined(__CYGWIN__)
 	#define RW_CYGWIN
 #elif defined(_WIN32) || defined(__WIN32__) || defined(WIN32)
     #define RW_WIN32
-    #include <windows.h>
 #elif defined(macintosh) || defined(__APPLE__) || defined(__APPLE_CC__)
     #define RW_MACOS
 #elif defined(linux) || defined(__linux) || defined(__linux__)

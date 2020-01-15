@@ -713,9 +713,9 @@ void WorkcellEditorWindow::on_actionRun_triggered (bool)
     rw::models::WorkCell::Ptr wc =
         rw::loaders::WorkCellLoader::Factory::load (wcFilename);
     if (wc == nullptr)
-        RW_DEBUG ("wc was nullptr");
+        RW_DEBUG ("wc was nullptr")
     if (_rws == nullptr)
-        RW_DEBUG ("_rws was nullptr");
+        RW_DEBUG ("_rws was nullptr")
     _rws->setWorkcell (wc);
 }
 

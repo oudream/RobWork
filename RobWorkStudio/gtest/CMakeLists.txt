@@ -47,6 +47,7 @@ set(RWSMAIN_TEST_SRC
 add_library( sdurws-gtest-main STATIC ${RWSMAIN_TEST_SRC})
 target_link_libraries( sdurws-gtest-main PUBLIC ${RW_BUILD_WITH_LIBRARIES_GTEST} PRIVATE ${ROBWORK_LIBRARIES})
 target_include_directories(sdurws-gtest-main PRIVATE ${ROBWORK_INCLUDE_DIRS} ${RW_BUILD_WITH_GTEST_INCLUDE_DIRS})
+message(STATUS "GTEST: ${RW_BUILD_WITH_GTEST_INCLUDE_DIRS}")
 
 ########################################################################
 # RWS

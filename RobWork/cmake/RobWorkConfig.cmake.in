@@ -339,7 +339,7 @@ if(EXISTS ${RWCFG_ROOT}/RobWorkBuildConfig_${RW_BUILD_TYPE}.cmake)
     string(
         REPLACE
             "${ROBWORK_BUILD_PATH}/libs/${RW_BUILD_TYPE}" "${RW_LIBS}" ROBWORK_LIBRARIES
-            "${ROBWORK_LIBRARIES_TMP}"
+            "${ROBWORK_LIBRARIES}"
     )
     if(${IS_INSTALL} AND DEFINED WIN32)
         string(
