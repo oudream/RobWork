@@ -33,7 +33,7 @@ if(build)
     set(SRC_HPP NetFTCommon.hpp NetFTLogging.hpp FTCompensation.hpp)
 
     rw_add_library(${SUBSYS_NAME} ${SRC_CPP} ${SRC_HPP})
-    target_link_libraries(${SUBSYS_NAME} PUBLIC ${ROBWORK_LIBRARIES})
+    target_link_libraries(${SUBSYS_NAME} PUBLIC ${ROBWORK_LIBRARIES} ${RW_BUILD_WITH_LIBRARIES_BOOST})
 
     # Make sure dependencies are build before system
     foreach(DEP IN LISTS ROBWORK_LIBRARIES)

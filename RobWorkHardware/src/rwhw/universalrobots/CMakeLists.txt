@@ -51,7 +51,7 @@ if(build)
     # MESSAGE("${header}${FILEVAR21}${end}")
 
     rw_add_library(${SUBSYS_NAME} ${SRC_CPP} ${SRC_HPP})
-    target_link_libraries(${SUBSYS_NAME} PUBLIC ${ROBWORK_LIBRARIES})
+    target_link_libraries(${SUBSYS_NAME} PUBLIC ${ROBWORK_LIBRARIES}  ${RW_BUILD_WITH_LIBRARIES_BOOST})
     rw_add_includes(${SUBSYS_NAME} "rwhw/universalrobots" ${SRC_HPP} urscript.hpp)
 
     # Make sure dependencies are build before system

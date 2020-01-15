@@ -19,7 +19,7 @@ if(build)
     set(SRC_HPP Robotiq.hpp Robotiq3.hpp Robotiq2.hpp)
 
     rw_add_library(${SUBSYS_NAME} ${SRC_CPP} ${SRC_HPP})
-    target_link_libraries(${SUBSYS_NAME} PUBLIC ${ROBWORK_LIBRARIES})
+    target_link_libraries(${SUBSYS_NAME} PUBLIC ${ROBWORK_LIBRARIES} ${RW_BUILD_WITH_LIBRARIES_BOOST})
     rw_add_includes(${SUBSYS_NAME} "rwhw/robotiq" ${SRC_HPP})
     set(ROBWORKHARDWARE_LIBRARIES ${ROBWORKHARDWARE_LIBRARIES} ${SUBSYS_NAME} PARENT_SCOPE)
 

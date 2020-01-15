@@ -59,7 +59,7 @@ if(build)
     endif()
 
     rw_add_library(${SUBSYS_NAME} ${SRC_CPP} ${SRC_HPP})
-    target_link_libraries(${SUBSYS_NAME} PUBLIC ${ROBWORK_LIBRARIES})
+    target_link_libraries(${SUBSYS_NAME} PUBLIC ${ROBWORK_LIBRARIES} ${RW_BUILD_WITH_LIBRARIES_BOOST})
     if(DC1394_FOUND)
         target_link_libraries(${SUBSYS_NAME} PUBLIC ${DC1394_LIBRARY})
     endif()

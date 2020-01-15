@@ -15,7 +15,7 @@ rw_subsys_option(
 if(build)
     rw_add_library(${SUBSYS_NAME} SerialPort.cpp)
     
-    target_link_libraries(${SUBSYS_NAME} PUBLIC ${ROBWORK_LIBRARIES})
+    target_link_libraries(${SUBSYS_NAME} PUBLIC ${ROBWORK_LIBRARIES} ${RW_BUILD_WITH_LIBRARIES_BOOST})
     rw_add_includes(${SUBSYS_NAME} "rwhw/serialport" SerialPort.hpp)
     # Make sure dependencies are build before system
     foreach(DEP IN LISTS SUBSYS_DEPS ROBWORK_LIBRARIES)
