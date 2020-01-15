@@ -112,14 +112,17 @@ if(build)
 
     rw_add_library(${SUBSYS_NAME} ${SRC_FILES} ${SRC_FILES_HPP})
     rw_add_includes(${SUBSYS_NAME} "rwsimlibs/bullet" ${SRC_FILES_HPP})
-    target_link_libraries(${SUBSYS_NAME} ${SUBSYS_DEPS} ${BULLET_LIBRARIES})
-    add_dependencies(${SUBSYS_NAME} ${SUBSYS_DEPS})
+    target_link_libraries(${SUBSYS_NAME} PUBLIC ${SUBSYS_DEPS} ${BULLET_LIBRARIES})
     if(BULLET_FOUND)
         target_include_directories(${SUBSYS_NAME} SYSTEM PUBLIC ${BULLET_INCLUDE_DIRS})
     endif()
+    target_include_directories(${SUBSYS_NAME}
+        INTERFACE
+        $<BUILD_INTERFACE:${RWSIM_ROOT}/src> $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
+    )
 
     add_library(bt_plugin.rwplugin MODULE BtPlugin.cpp BtPlugin.hpp)
-    target_link_libraries(bt_plugin.rwplugin sdurwsim_bullet ${ROBWORKSIM_LIBRARIES})
+    target_link_libraries(bt_plugin.rwplugin PRIVATE sdurwsim_bullet)
     install(TARGETS bt_plugin.rwplugin LIBRARY DESTINATION ${RW_PLUGIN_INSTALL_DIR})
 
 endif()

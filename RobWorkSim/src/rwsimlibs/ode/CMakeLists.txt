@@ -63,10 +63,15 @@ if(RWSIM_HAVE_ODE)
         message(STATUS "ODE threading_impl.h NOT detected - assuming version 0.12 and earlier.")
     endif()
 
-    add_library(sdurwsim_ode ${SRC_FILES} ${SRC_FILES_HPP})
+    rw_add_library(sdurwsim_ode ${SRC_FILES} ${SRC_FILES_HPP})
+    target_link_libraries(sdurwsim_ode PUBLIC sdurwsim ${ODE_LIBRARIES} RW::sdurw ${OPENGL_LIBRARIES})
+    target_include_directories(sdurwsim_ode
+        INTERFACE
+        $<BUILD_INTERFACE:${RWSIM_ROOT}/src> $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
+    )
 
     add_library(ode_plugin.rwplugin MODULE ODEPlugin.cpp ODEPlugin.hpp)
-    target_link_libraries(ode_plugin.rwplugin sdurwsim_ode ${ROBWORKSIM_LIBRARIES})
+    target_link_libraries(ode_plugin.rwplugin PRIVATE sdurwsim_ode)
     install(TARGETS ode_plugin.rwplugin LIBRARY DESTINATION ${RW_PLUGIN_INSTALL_DIR})
     # INSTALL(TARGETS sdurwsim_ode DESTINATION ${RWSIM_LIB_INSTALL_DIR}) INSTALL(FILES ${SRC_FILES_HPP} DESTINATION
     # include/rwlibs/simulation)

@@ -58,8 +58,10 @@ target_link_libraries(ccd_static ${MATH})
 set(pkg_conf_file "${CMAKE_CURRENT_SOURCE_DIR}/ccd.pc")
 configure_file("${pkg_conf_file}.in" "${pkg_conf_file}" @ONLY)
 
-install(TARGETS ccd ccd_static ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
+install(TARGETS ccd ccd_static
+    EXPORT ${PROJECT_PREFIX}Targets
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
 install(DIRECTORY src/ccd DESTINATION ${CMAKE_INSTALL_INCLUDEDIR} FILES_MATCHING PATTERN "*.h")
 install(FILES "${pkg_conf_file}" DESTINATION
   ${CMAKE_INSTALL_LIBDIR}/pkgconfig COMPONENT pkgconfig)

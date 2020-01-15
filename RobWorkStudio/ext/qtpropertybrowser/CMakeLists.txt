@@ -47,12 +47,17 @@ QT5_ADD_RESOURCES(ResourceFiles ${CMAKE_CURRENT_SOURCE_DIR}/src/qtpropertybrowse
 # We create a static library named qtpropertybrowser that all plugins should link to. Our
 # RobWorkStudio executable links to this library also.
 ADD_LIBRARY(${TargetName} ${SRC_FILES_CPP} ${ResourceFiles})
-target_include_directories(${TargetName} INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/src PRIVATE ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_BINARY_DIR}/src)
+add_library(${PROJECT_PREFIX}::${TargetName} ALIAS ${TargetName})
+target_include_directories(${TargetName}
+    INTERFACE
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src> $<INSTALL_INTERFACE:${EXT_INSTALL_DIR}/qtpropertybrowser>
+    PRIVATE ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_BINARY_DIR}/src
+)
 target_link_libraries(${TargetName} PUBLIC ${QT_LIBRARIES})
 set_target_properties(${TargetName} PROPERTIES LINK_FLAGS -Wl,--as-needed,--no-undefined)
 
 # Install stuff
-INSTALL(TARGETS ${TargetName} DESTINATION "${LIB_INSTALL_DIR}")
+INSTALL(TARGETS ${TargetName} EXPORT ${PROJECT_PREFIX}Targets DESTINATION "${LIB_INSTALL_DIR}")
 INSTALL(DIRECTORY "${RWS_ROOT}/ext/qtpropertybrowser/"
 		DESTINATION "${EXT_INSTALL_DIR}/qtpropertybrowser/"
 		FILES_MATCHING

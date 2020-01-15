@@ -157,6 +157,10 @@ endif()
 # get the relavant build type
 get_robwork_build_type(${RWCFG_ROOT} RW_BUILD_TYPE)
 
+if(NOT TARGET sdurw)
+    include("${RWCFG_ROOT}/RobWorkTargets.cmake")
+endif()
+
 # check whether RobWorkConfig.cmake is found into a RobWork installation or in a build tree
 if(EXISTS "${RWCFG_ROOT}/../src/RobWorkConfig.hpp")
     # Found RobWorkConfig.cmake in a build tree of RobWork
@@ -350,6 +354,12 @@ else()
         STATUS
             "This build of RobWork is not compiled in ${RW_BUILD_TYPE} please specify another buildtype!"
     )
+endif()
+
+if(RW_BUILD_WITH_GTEST)
+    if(NOT TARGET gtest)
+        include("${RWCFG_ROOT}/gtestTargets.cmake")
+    endif()
 endif()
 
 include(FindPackageHandleStandardArgs)

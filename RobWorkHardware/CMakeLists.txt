@@ -74,19 +74,6 @@ SET(RWHW_CXX_FLAGS "${WERROR_FLAG} ${RW_BUILD_WITH_CXX_FLAGS}"
 )
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${RWHW_CXX_FLAGS}")
 
-# setup general include and link stuff
-INCLUDE_DIRECTORIES( ${ROBWORK_INCLUDE_DIRS} )
-LINK_DIRECTORIES( ${ROBWORK_LIBRARY_DIRS} )
-# if we have any exe files or plugins that depend on the libraries
-INCLUDE_DIRECTORIES( src )
-LINK_DIRECTORIES(${CMAKE_ARCHIVE_OUTPUT_DIRECTORY})
-
-# Include directories.
-INCLUDE_DIRECTORIES(
-  ${ROOT}/ext
-  ${ROOT}/src
-)
-
 ###########################################
 # now add all source directories to process.
 add_subdirectory(ext)
@@ -153,7 +140,11 @@ CONFIGURE_FILE(
   "${RWHW_ROOT}/cmake/RobWorkHardwareConfigVersion.cmake"
 )
 
-
+export(EXPORT ${PROJECT_PREFIX}Targets
+    #FILE "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}/${PROJECT_NAME}Targets.cmake"
+    FILE "${RWHW_ROOT}/cmake/${PROJECT_NAME}Targets.cmake"
+    NAMESPACE ${PROJECT_PREFIX}::
+)
 
 ##################################################################
 # Installation stuff
@@ -171,5 +162,11 @@ INSTALL(FILES
     
 INSTALL(FILES "${RWHW_ROOT}/src/RobWorkHardwareConfig.hpp"
       DESTINATION "${INCLUDE_INSTALL_DIR}")
+
+install(EXPORT ${PROJECT_PREFIX}Targets
+    FILE ${PROJECT_NAME}Targets.cmake
+    NAMESPACE ${PROJECT_PREFIX}::
+    DESTINATION ${RWHW_INSTALL_DIR}/cmake
+)
 
 message(STATUS "Install dir: ${RWHW_INSTALL_DIR} and ${INCLUDE_INSTALL_DIR}")

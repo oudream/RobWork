@@ -35,6 +35,7 @@ if(build)
     if(NOT ${SWIG_VERSION} VERSION_LESS 4.0.0)
         set_source_files_properties(../sdurwsim.i PROPERTIES SWIG_FLAGS "-includeall;-doxygen")
     endif()
+    include_directories(${RWSIM_ROOT}/src ${RW_ROOT}/src)
 
     include_directories(${JAVA_INCLUDE_DIRS} ${JNI_INCLUDE_DIRS})
     set(CMAKE_SWIG_FLAGS "-package" "org.robwork.sdurwsim")
@@ -57,7 +58,7 @@ if(build)
             ../ScriptTypes.cpp
         )
     endif()
-    swig_link_libraries(sdurwsim_jni ${RWSIM_ODE_LIBRARY} sdurwsim ${ROBWORK_LIBRARIES})
+    swig_link_libraries(sdurwsim_jni ${RWSIM_ODE_LIBRARY} sdurwsim)
     if((CMAKE_COMPILER_IS_GNUCC) OR (CMAKE_C_COMPILER_ID STREQUAL "Clang"))
         set_target_properties(sdurwsim_jni PROPERTIES LINK_FLAGS -Wl,--no-undefined)
     endif()
@@ -78,13 +79,6 @@ if(build)
     else()
         add_dependencies(sdurwsim_jni CleanDepRWSIM)
     endif()
-
-    # Make sure dependencies are build before system
-    foreach(DEP IN LISTS SUBSYS_DEPS)
-        if(TARGET ${DEP})
-            add_dependencies(sdurwsim_jni ${DEP})
-        endif()
-    endforeach()
 
     if(WIN32)
         set(
