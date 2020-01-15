@@ -64,13 +64,6 @@
 #include <rw/graphics/SceneDescriptor.hpp>
 #include <stack>
 
-#include <boost/foreach.hpp>
-
-#ifdef RW_BUILD_CALIBRATION
-//#include <rwlibs/calibration/SerialDeviceCalibration.hpp>
-//#include <rwlibs/calibration/xml/XmlCalibrationLoader.hpp>
-#endif
-
 using namespace rw::math;
 using namespace rw::common;
 using namespace rw::kinematics;
@@ -186,7 +179,7 @@ void addPropertyToMap(const DummyProperty &dprop, common::PropertyMap& map){
 // the parent frame must exist in tree already
 void addToStateStructure(Frame *parent, DummySetup &setup) {
 	std::vector<Frame*> children = setup.toChildMap[parent->getName()];
-	BOOST_FOREACH(Frame* child, children) {
+	for(Frame* child: children) {
 		DummyFrame *dframe = setup.dummyFrameMap[child->getName()];
 		RW_DEBUGS("Adding: " << parent->getName() << "<--" << dframe->getName());
 		if (dframe->_isDaf)
@@ -586,15 +579,6 @@ void addFrameProps(DummyFrame &dframe, DummySetup &setup) {
 	}
 }
 
-/*
- void addStateStructure( Frame *frame, Frame *parent, boost::shared_ptr<StateStructure> tree){
- tree->addFrame( frame );
- Frame::iterator iter = frame->getChildren().first;
- for(; iter != frame->getChildren().second ; ++iter) {
- addStateStructure( &(*iter) , tree );
- }
- }
- */
 /**
  * @brief adds all device context defined properties to the frame
  */
@@ -628,13 +612,13 @@ Device::Ptr createDevice(DummyDevice &dev, DummySetup &setup) {
 	if (dev._type == SerialType) {
 		std::vector<Frame*> chain;
 		// add the rest of the chain
-		BOOST_FOREACH(DummyFrame& dframe, dev._frames) {
+		for(DummyFrame& dframe: dev._frames) {
 			chain.push_back(createFrame(dframe, setup));
 		}
 		// next add the device and model properties to the frames
 		addToStateStructure(chain[0]->getName(), setup);
 		// lastly add any props
-		BOOST_FOREACH(DummyFrame& dframe, dev._frames) {
+		for(DummyFrame& dframe: dev._frames) {
 			addFrameProps(dframe, setup);
 			addDevicePropsToFrame(dev, dframe.getName(), setup);
 		}
@@ -642,21 +626,7 @@ Device::Ptr createDevice(DummyDevice &dev, DummySetup &setup) {
 		State state = setup.tree->getDefaultState();
 		model = ownedPtr(new SerialDevice(chain.front(), chain.back(), dev.getName(), state));
 
-#ifdef RW_BUILD_CALIBRATION
-		/*
-		if (dev._calibration.size() > 0) {
-			// get filename
-			DummyCalibration dummyCalibration = dev._calibration.front();
-			std::string filename = StringUtil::getDirectoryName(dummyCalibration._pos.file) + "/" + dummyCalibration._filename;
 
-			// load and apply calibration
-			rwlibs::calibration::SerialDeviceCalibration::Ptr calibration = rwlibs::calibration::XmlCalibrationLoader::load(setup.tree,
-					model.cast<SerialDevice>(), filename);
-			rwlibs::calibration::SerialDeviceCalibration::set(calibration, model.cast<SerialDevice>());
-			calibration->apply();
-		}
-		*/
-#endif
 
 		//std::cout << "serial device created!!" << std::endl;
 	} else if (dev._type == ParallelType) {
@@ -730,7 +700,7 @@ Device::Ptr createDevice(DummyDevice &dev, DummySetup &setup) {
 		chains.push_back(chain);
 		// Add frames to tree
 		addToStateStructure(chains[0][0]->getName(), setup);
-		BOOST_FOREACH(DummyFrame& dframe, dev._frames) {
+		for(DummyFrame& dframe: dev._frames) {
 			// Add properties defined in device context
 			addFrameProps(dframe, setup);
 			addDevicePropsToFrame(dev, dframe.getName(), setup);
@@ -817,7 +787,7 @@ Device::Ptr createDevice(DummyDevice &dev, DummySetup &setup) {
 			endEffectors.push_back(child);
 
 		addToStateStructure(base->getName(), setup);
-		BOOST_FOREACH(DummyFrame& dframe, dev._frames) {
+		for(DummyFrame& dframe: dev._frames) {
 			// Add properties defined in device context
 			RW_DEBUGS("Add props to : " << dframe.getName());
 			addFrameProps(dframe, setup);
@@ -857,7 +827,7 @@ Device::Ptr createDevice(DummyDevice &dev, DummySetup &setup) {
 		addDevicePropsToFrame(dev, right->getName(), setup);
 
 		//std::cout << "Nr of frames in device: " << dev._frames.size() << std::endl;
-		BOOST_FOREACH(DummyFrame& dframe,dev._frames) {
+		for(DummyFrame& dframe: dev._frames) {
 			std::string pname = dframe.getRefFrame();
 
 			std::map<std::string, Frame*>::iterator res = setup.frameMap.find(pname);
@@ -871,7 +841,7 @@ Device::Ptr createDevice(DummyDevice &dev, DummySetup &setup) {
 		addToStateStructure(left, setup);
 		addToStateStructure(right, setup);
 
-		BOOST_FOREACH(DummyFrame& dframe,dev._frames) {
+		for(DummyFrame& dframe: dev._frames) {
 			// Add properties defined in device context
 			addFrameProps(dframe, setup);
 			addDevicePropsToFrame(dev, dframe.getName(), setup);
@@ -903,16 +873,16 @@ Device::Ptr createDevice(DummyDevice &dev, DummySetup &setup) {
 	// add all device properties to device propertymap
 	//std::map<std::string, std::vector<DummyProperty> > proplist = dev._propertyMap;
 	typedef std::pair<std::string, std::vector<DummyProperty> > DPropValType;
-	BOOST_FOREACH( DPropValType val, dev._propertyMap){
+	for( DPropValType val: dev._propertyMap){
 		//std::string name = val.first;
-		BOOST_FOREACH( DummyProperty dprop, val.second ) {
+		for( DummyProperty dprop: val.second ) {
 		    addPropertyToMap(dprop,  model->getPropertyMap());
 			//model->getPropertyMap().add(dprop._name, dprop._desc, dprop._val);
 		}
 	}
 
 	// add all configurations, add home configs to default state
-	BOOST_FOREACH(QConfig& config, dev._qconfig) {
+	for(QConfig& config: dev._qconfig) {
 		if (config.name == "Home") {
 			rw::math::Q q(config.q.size());
 			for (size_t i = 0; i < q.size(); i++)
@@ -990,16 +960,16 @@ rw::models::WorkCell::Ptr XMLRWLoader::loadWorkCell(const std::string& fname) {
 		// do sanity check on the workcell,
 		// 1. check that all parent frames are valid frames
 		std::map<std::string, DummyFrame*> strToFrame;
-		BOOST_FOREACH(DummyFrame &df, setup.dwc->_framelist) {
+		for(DummyFrame &df: setup.dwc->_framelist) {
 			strToFrame[df.getName()] = &df;
 		}
-		BOOST_FOREACH(DummyDevice &dd, setup.dwc->_devlist) {
-			BOOST_FOREACH(DummyFrame &df, dd._frames) {
+		for(DummyDevice &dd: setup.dwc->_devlist) {
+			for(DummyFrame &df: dd._frames) {
 				strToFrame[df.getName()] = &df;
 			}
 		}
 
-		BOOST_FOREACH(DummyFrame &df, setup.dwc->_framelist) {
+		for(DummyFrame &df: setup.dwc->_framelist) {
 			if (strToFrame.find(df.getRefFrame()) == strToFrame.end()) {
 				if (df.getRefFrame() != "WORLD")
 					RW_THROW( "Frame " << df.getName() << " refers to a frame \"" << df.getRefFrame() << "\" which has not been declared!");
@@ -1180,7 +1150,7 @@ rw::models::WorkCell::Ptr XMLRWLoader::loadWorkCell(const std::string& fname) {
 
 		ProximitySetup::set(proximitySetup, wc);
 
-		BOOST_FOREACH( DummyProperty dprop, setup.dwc->_properties ) {
+		for( DummyProperty dprop: setup.dwc->_properties ) {
 			//wc->getPropertyMap().add(dprop._name, dprop._desc, dprop._val);
 			addPropertyToMap( dprop, wc->getPropertyMap() );
 		}

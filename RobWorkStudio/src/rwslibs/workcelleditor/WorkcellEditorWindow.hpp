@@ -18,19 +18,24 @@
 #ifndef WORKCELLEDITORWINDOW_HPP_
 #define WORKCELLEDITORWINDOW_HPP_
 
-#include <QMainWindow>
 #include <rw/common/PropertyMap.hpp>
+
+#include <QMainWindow>
 #include <map>
 
-namespace rw { namespace common { class Log; }}
-namespace rwlibs { namespace swig { class LuaState; }}
+namespace rw { namespace common {
+    class Log;
+}}    // namespace rw::common
+namespace rwlibs { namespace swig {
+    class LuaState;
+}}    // namespace rwlibs::swig
 
 class WCCodeEditor;
 
 class WorkcellHighlighter;
 
 namespace Ui {
-    class WorkcellEditorWindow;
+class WorkcellEditorWindow;
 }
 
 class WCECompleter;
@@ -40,102 +45,108 @@ class QCompleter;
 class QAbstractItemModel;
 
 namespace rws {
-    class RobWorkStudio;
+class RobWorkStudio;
+
+/**
+ * @brief A workcell editor that enables editing of workcells within RobWorkStudio.
+ */
+class WorkcellEditorWindow : public QMainWindow
+{
+    Q_OBJECT
+  public:
+    /**
+     * @brief Constructor
+     * @param output [in] the log on which to stream print functionality and errors
+     * @param rwstudio [in] instance of RobWorkStudio
+     * @param parent [in] the Qt parent widget
+     */
+    WorkcellEditorWindow (rw::common::Ptr< rw::common::Log > output, rws::RobWorkStudio* rwstudio,
+                          QWidget* parent);
+
+    //! @brief destructor
+    virtual ~WorkcellEditorWindow ();
 
     /**
-     * @brief A workcell editor that enables editing of workcells within RobWorkStudio.
+     * @brief used to open a workcell file
+     * @param fileName [in] the full file name of the workcell
+     * @return did loading the workcell succeed
      */
-    class WorkcellEditorWindow : public QMainWindow {
-    Q_OBJECT
-    public:
+    bool openWorkCell (const QString& fileName);
 
-        /**
-         * @brief Constructor
-         * @param output [in] the log on which to stream print functionality and errors
-         * @param rwstudio [in] instance of RobWorkStudio
-         * @param parent [in] the Qt parent widget
-         */
-        WorkcellEditorWindow(rw::common::Ptr<rw::common::Log> output, rws::RobWorkStudio *rwstudio, QWidget *parent);
+  public Q_SLOTS:
 
-        //! @brief destructor
-        virtual ~WorkcellEditorWindow();
+    void on_actionNew_triggered (bool);
 
-        /**
-         * @brief used to open a workcell file
-         * @param fileName [in] the full file name of the workcell 
-         * @return did loading the workcell succeed
-         */
-        bool openWorkCell(const QString &fileName);
+    void on_actionOpen_triggered (bool);
 
-    public Q_SLOTS:
+    void on_actionSave_triggered (bool);
 
-        void on_actionNew_triggered(bool);
+    void on_actionSave_As_triggered (bool);
 
-        void on_actionOpen_triggered(bool);
+    void on_actionRun_triggered (bool);
 
-        void on_actionSave_triggered(bool);
+    void on_actionReload_triggered (bool);
 
-        void on_actionSave_As_triggered(bool);
+    void on_actionClose_triggered (bool);
 
-        void on_actionRun_triggered(bool);
+    void on_actionClose_triggered (int);
 
-        void on_actionReload_triggered(bool);
+    void on_actionAdd_Frame_triggered (bool);
 
-        void on_actionClose_triggered(bool);
+    void on_actionAdd_Drawable_triggered (bool);
 
-        void on_actionAdd_Frame_triggered(bool);
+    void on_actionAdd_CollisionModel_triggered (bool);
 
-        void on_actionAdd_Drawable_triggered(bool);
+    void textChanged ();
 
-        void on_actionAdd_CollisionModel_triggered(bool);
+    void runFinished ();
 
-        void textChanged();
+    void ShowContextMenu (const QPoint& p);
 
-        void runFinished();
+    void setCheckAction (QAction*);
 
-        void ShowContextMenu(const QPoint &p);
+  private:
+    QAbstractItemModel* modelFromFile (const QString& fileName, WCECompleter* completer);
 
-        void setCheckAction(QAction *);
-
-    private:
-        QAbstractItemModel *modelFromFile(const QString &fileName, WCECompleter *completer);
-
-        struct EditorTab {
-            typedef rw::common::Ptr<EditorTab> Ptr;
-            std::string _id;
-            WCCodeEditor *_editor;
-            WorkcellHighlighter *_highlighter;
-            WCECompleter *_completer;
-            std::string _filename;
-        };
-
-        EditorTab::Ptr makeEditor();
-
-        bool save();
-
-        bool saveAs();
-
-        bool save(const std::string &filename);
-
-        EditorTab::Ptr getCurrentTab();
-
-        QStringList getRefFrameList();
-
-    private:
-        //! hold
-        std::map<QWidget *, EditorTab::Ptr> _editors;
-
-        class Ui::WorkcellEditorWindow *_ui;
-
-        rw::common::Ptr<rw::common::Log> _output;
-        rw::common::PropertyMap _pmap;
-
-        bool _isRunning;
-
-        QTabWidget *_tabPane;
-        rws::RobWorkStudio *_rws;
+    struct EditorTab
+    {
+        typedef rw::common::Ptr< EditorTab > Ptr;
+        std::string _id;
+        WCCodeEditor* _editor;
+        WorkcellHighlighter* _highlighter;
+        WCECompleter* _completer;
+        std::string _filename;
     };
 
-}
+    EditorTab::Ptr makeEditor ();
+
+    bool save ();
+
+    bool saveAs ();
+
+    bool save (const std::string& filename);
+
+    EditorTab::Ptr getCurrentTab ();
+
+    QStringList getRefFrameList ();
+
+  private:
+    //! hold
+    std::map< QWidget*, EditorTab::Ptr > _editors;
+
+    class Ui::WorkcellEditorWindow* _ui;
+
+    rw::common::Ptr< rw::common::Log > _output;
+    rw::common::PropertyMap _pmap;
+
+    bool _isRunning;
+
+    QTabWidget* _tabPane;
+    rws::RobWorkStudio* _rws;
+
+    bool ignoreNextWorkcellOpen;
+};
+
+}    // namespace rws
 
 #endif /* WORKCELLEDITORWINDOW_HPP_ */

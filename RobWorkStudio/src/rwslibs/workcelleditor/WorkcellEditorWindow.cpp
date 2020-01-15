@@ -17,9 +17,11 @@
 
 #include "WorkcellEditorWindow.hpp"
 
+#include "InputFormDialog.hpp"
 #include "WCCodeEditor.hpp"
 #include "WCECompleter.hpp"
 #include "WorkcellHighlighter.hpp"
+#include "ui_WorkcellEditorWindow.h"
 
 #include <rw/common/Log.hpp>
 #include <rw/loaders/WorkCellLoader.hpp>
@@ -37,12 +39,7 @@
 #include <QVector2D>
 #include <QVector3D>
 #include <boost/filesystem.hpp>
-
-#include "InputFormDialog.hpp"
-#include "ui_WorkcellEditorWindow.h"
-
 #include <fstream>
-
 
 // using namespace xercesc;
 using namespace rw::common;
@@ -52,21 +49,24 @@ using namespace rws;
 using namespace rwlibs;
 
 WorkcellEditorWindow::WorkcellEditorWindow (rw::common::Log::Ptr output,
-                                            rws::RobWorkStudio* rwstudio,
-                                            QWidget* parent) :
+                                            rws::RobWorkStudio* rwstudio, QWidget* parent) :
     QMainWindow (parent),
-    _output (output), _rws (rwstudio)
+    _output (output), _rws (rwstudio), ignoreNextWorkcellOpen (false)
 {
     _ui = new Ui::WorkcellEditorWindow ();
     _ui->setupUi (this);
     _tabPane = new QTabWidget ();
+    _tabPane->setTabsClosable (true);
+    connect (
+        _tabPane, SIGNAL (tabCloseRequested (int)), this, SLOT (on_actionClose_triggered (int)));
 
     this->setWindowTitle ("Workcell Editor");
     this->setCentralWidget (_tabPane);
     makeEditor ();
 
-    openWorkCell(_rws->getWorkcell()->getFilePath().c_str());
-    rw::common::Log::infoLog() << "Opening: workcell " << _rws->getWorkcell()->getFilePath().c_str() << "\n";
+    openWorkCell (_rws->getWorkcell ()->getFilePath ().c_str ());
+    rw::common::Log::infoLog () << "Opening: workcell "
+                                << _rws->getWorkcell ()->getFilePath ().c_str () << "\n";
 }
 
 WorkcellEditorWindow::~WorkcellEditorWindow ()
@@ -83,9 +83,9 @@ void WorkcellEditorWindow::ShowContextMenu (const QPoint& pos)
 
     QMenu myMenu;
     QMenu deviceMenu("Devices");
-    std::vector<rw::models::Device::Ptr> devs = _rws->getWorkcell()->getDevices(); 
-    for (rw::models::Device::Ptr dev : devs) { 
-        QMenu *devMenu = new QMenu(dev->getName().c_str()); 
+    std::vector<rw::models::Device::Ptr> devs = _rws->getWorkcell()->getDevices();
+    for (rw::models::Device::Ptr dev : devs) {
+        QMenu *devMenu = new QMenu(dev->getName().c_str());
         connect(devMenu, SIGNAL(triggered(QAction * )), this, SLOT(setCheckAction(QAction * )));
         QAction *action = devMenu->addAction("Get Q");
         devMenu->addAction(action);
@@ -97,8 +97,8 @@ void WorkcellEditorWindow::ShowContextMenu (const QPoint& pos)
     }
 
     QMenu objectMenu("Objects");
-    std::vector<rw::models::Object::Ptr> objects = _rws->getWorkcell()->getObjects(); 
-    for (rw::models::Object::Ptr dev : objects) { 
+    std::vector<rw::models::Object::Ptr> objects = _rws->getWorkcell()->getObjects();
+    for (rw::models::Object::Ptr dev : objects) {
         QMenu *devMenu = new QMenu(dev->getName().c_str());
         connect(devMenu, SIGNAL(triggered(QAction * )), this, SLOT(setCheckAction(QAction * )));
 
@@ -117,11 +117,11 @@ void WorkcellEditorWindow::ShowContextMenu (const QPoint& pos)
     }
 
     QMenu *rwsMenu = new QMenu("RWStudio");
-    connect(rwsMenu, SIGNAL(triggered(QAction * )), this, SLOT(setCheckAction(QAction * ))); 
+    connect(rwsMenu, SIGNAL(triggered(QAction * )), this, SLOT(setCheckAction(QAction * )));
     QAction *action;
     action = rwsMenu->addAction("View Transform");
-    rwsMenu->addAction(action); 
-    action = rwsMenu->addAction("View Transform (RPY)"); 
+    rwsMenu->addAction(action);
+    action = rwsMenu->addAction("View Transform (RPY)");
     rwsMenu->addAction(action);
     action = rwsMenu->addAction("View Transform (Quat)");
     rwsMenu->addAction(action);
@@ -189,13 +189,13 @@ WorkcellEditorWindow::EditorTab::Ptr WorkcellEditorWindow::makeEditor ()
     etab->_editor->setTabStopWidth (tabStop * metrics.width (' '));
 
     etab->_completer = new WCECompleter (etab->_editor);
-    //etab->_completer->setSeparator (QLatin1String ("."));
+    // etab->_completer->setSeparator (QLatin1String ("."));
     etab->_completer->setModel (modelFromFile (":/word_list.txt", etab->_completer));
     etab->_completer->setCompletionMode (QCompleter::PopupCompletion);
     etab->_completer->setModelSorting (QCompleter::CaseInsensitivelySortedModel);
     etab->_completer->setCaseSensitivity (Qt::CaseInsensitive);
     etab->_completer->setWrapAround (false);
-    
+
     etab->_editor->setCompleter (etab->_completer);
 
     etab->_highlighter = new WorkcellHighlighter (etab->_editor->document ());
@@ -235,6 +235,18 @@ void WorkcellEditorWindow::on_actionClose_triggered (bool)
     _editors[tab->_editor] = NULL;
 }
 
+void WorkcellEditorWindow::on_actionClose_triggered (int index)
+{
+    // todo: if last tab then don't remove it.
+    if (_tabPane->count () == 1)
+        return;
+    EditorTab::Ptr tab = _editors[_tabPane->widget (index)];
+    if (tab->_editor->document ()->isModified ())
+        save ();
+    _tabPane->removeTab (index);
+    _editors[tab->_editor] = NULL;
+}
+
 void WorkcellEditorWindow::on_actionNew_triggered (bool)
 {
     // create a new tab
@@ -248,19 +260,17 @@ void WorkcellEditorWindow::on_actionNew_triggered (bool)
 void WorkcellEditorWindow::on_actionOpen_triggered (bool)
 {
     // on_actionNew_triggered(true);
-    QString path =
-        _pmap.get< std::string > ("PreviousOpenDirectory", ".").c_str ();
+    QString path = _pmap.get< std::string > ("PreviousOpenDirectory", ".").c_str ();
 
-    QString fileName =
-        QFileDialog::getOpenFileName (this,
-                                      tr ("Open File"),
-                                      path,
-                                      "Supported (*.wc.xml *.xml)"
-                                      "\nWorkcell Files (*.wc.xml)"
-                                      "\nXML Files (*.xml)"
-                                      "\nAll (*.*)");
+    QString fileName = QFileDialog::getOpenFileName (this,
+                                                     tr ("Open File"),
+                                                     path,
+                                                     "Supported (*.wc.xml *.xml)"
+                                                     "\nWorkcell Files (*.wc.xml)"
+                                                     "\nXML Files (*.xml)"
+                                                     "\nAll (*.*)");
 
-    openWorkCell(fileName);
+    openWorkCell (fileName);
 }
 
 void WorkcellEditorWindow::on_actionSave_triggered (bool)
@@ -276,21 +286,21 @@ void WorkcellEditorWindow::on_actionSave_As_triggered (bool)
 void WorkcellEditorWindow::on_actionAdd_Frame_triggered (bool)
 {
     // Load Workcell
-    
-    
+
     // Define form inputs
     InputFormDialog::FormData data;
-    data["Name"]       = "";
-    QStringList refFrames = getRefFrameList();
-    if ( refFrames.isEmpty() ) {
+    data["Name"]          = "";
+    QStringList refFrames = getRefFrameList ();
+    if (refFrames.isEmpty ()) {
         std::cout << "wc is null" << std::endl;
         data["Ref. frame"] = "";
-    } 
+    }
     else {
         data["Ref. frame"] = refFrames;
     }
-    
-    data["Type"]       = QStringList () << "Fixed" << "Movable";
+
+    data["Type"] = QStringList () << "Fixed"
+                                  << "Movable";
     data["Show Frame Axis"] = false;
     data["Position"]        = QVector3D (0.0, 0.0, 0.0);
     data["RPY"]             = QVector3D (0.0, 0.0, 0.0);
@@ -320,24 +330,22 @@ void WorkcellEditorWindow::on_actionAdd_Frame_triggered (bool)
 
         QString show_frame_axis = "";
         if (data.at< bool > ("Show Frame Axis") == true) {
-            show_frame_axis =
-                "\t<Property name=\"ShowFrameAxis\">true</Property>\n";
+            show_frame_axis = "\t<Property name=\"ShowFrameAxis\">true</Property>\n";
         }
 
         QString frame_str;
-        QTextStream (&frame_str)
-            << "<Frame name=\"" << data.at< QString > ("Name") << "\" "
-            << "refframe=\"" << data.at< QString > ("Ref. frame") << "\" "
-            << frame_type << ">"
-            << "\n\t"
-            << "<Pos>" << data.at< QVector3D > ("Position").x () << " "
-            << data.at< QVector3D > ("Position").y () << " "
-            << data.at< QVector3D > ("Position").z () << "</Pos>\n\t"
-            << "<RPY>" << data.at< QVector3D > ("RPY").x () << " "
-            << data.at< QVector3D > ("RPY").y () << " "
-            << data.at< QVector3D > ("RPY").z () << "</RPY>"
-            << "\n"
-            << show_frame_axis << "</Frame>";
+        QTextStream (&frame_str) << "<Frame name=\"" << data.at< QString > ("Name") << "\" "
+                                 << "refframe=\"" << data.at< QString > ("Ref. frame") << "\" "
+                                 << frame_type << ">"
+                                 << "\n\t"
+                                 << "<Pos>" << data.at< QVector3D > ("Position").x () << " "
+                                 << data.at< QVector3D > ("Position").y () << " "
+                                 << data.at< QVector3D > ("Position").z () << "</Pos>\n\t"
+                                 << "<RPY>" << data.at< QVector3D > ("RPY").x () << " "
+                                 << data.at< QVector3D > ("RPY").y () << " "
+                                 << data.at< QVector3D > ("RPY").z () << "</RPY>"
+                                 << "\n"
+                                 << show_frame_axis << "</Frame>";
 
         // Insert frame at cursor position
         getCurrentTab ()->_editor->insertXMLTextUnderCursor (frame_str);
@@ -357,12 +365,12 @@ void WorkcellEditorWindow::on_actionAdd_Drawable_triggered (bool)
 
     // Define form inputs
     InputFormDialog::FormData data;
-    data["Name"]            = "";
-    QStringList refFrames = getRefFrameList();
-    if ( refFrames.isEmpty() ) {
+    data["Name"]          = "";
+    QStringList refFrames = getRefFrameList ();
+    if (refFrames.isEmpty ()) {
         std::cout << "wc is null" << std::endl;
         data["Ref. frame"] = "";
-    } 
+    }
     else {
         data["Ref. frame"] = refFrames;
     }
@@ -390,8 +398,7 @@ void WorkcellEditorWindow::on_actionAdd_Drawable_triggered (bool)
 
         QString ref_frame_str = "";
         if (!data.at< QString > ("Ref. frame").isEmpty ())
-            ref_frame_str =
-                " refframe=\"" + data.at< QString > ("Ref. frame") + "\"";
+            ref_frame_str = " refframe=\"" + data.at< QString > ("Ref. frame") + "\"";
         else
             ref_frame_str = "";
 
@@ -408,52 +415,42 @@ void WorkcellEditorWindow::on_actionAdd_Drawable_triggered (bool)
             // Geometry I presume?
             if (data.at< QString > ("Geometry Type") == "Box") {
                 QTextStream (&model_str)
-                    << "<Box x=\""
-                    << data.at< QVector3D > ("Box (x, y, z)").x () << "\" y=\""
+                    << "<Box x=\"" << data.at< QVector3D > ("Box (x, y, z)").x () << "\" y=\""
                     << data.at< QVector3D > ("Box (x, y, z)").y () << "\" z=\""
                     << data.at< QVector3D > ("Box (x, y, z)").z () << "\"/>";
             }
             else if (data.at< QString > ("Geometry Type") == "Cone") {
                 QTextStream (&model_str)
-                    << "<Cone radius=\""
-                    << data.at< QVector2D > ("Cone (radiusBot, height)").x ()
-                    << "\" z=\""
-                    << data.at< QVector2D > ("Cone (radiusBot, height)").y ()
-                    << "\" level=\"" << data.at< int > ("Mesh Resolution")
-                    << "\"/>";
+                    << "<Cone radius=\"" << data.at< QVector2D > ("Cone (radiusBot, height)").x ()
+                    << "\" z=\"" << data.at< QVector2D > ("Cone (radiusBot, height)").y ()
+                    << "\" level=\"" << data.at< int > ("Mesh Resolution") << "\"/>";
             }
             else if (data.at< QString > ("Geometry Type") == "Cylinder") {
                 QTextStream (&model_str)
                     << "<Cylinder radius=\""
-                    << data.at< QVector2D > ("Cylinder (radius, height)").x ()
-                    << "\" z=\""
-                    << data.at< QVector2D > ("Cylinder (radius, height)").y ()
-                    << "\" level=\"" << data.at< int > ("Mesh Resolution")
-                    << "\"/>";
+                    << data.at< QVector2D > ("Cylinder (radius, height)").x () << "\" z=\""
+                    << data.at< QVector2D > ("Cylinder (radius, height)").y () << "\" level=\""
+                    << data.at< int > ("Mesh Resolution") << "\"/>";
             }
             else if (data.at< QString > ("Geometry Type") == "Sphere") {
                 QTextStream (&model_str)
-                    << "<Sphere radius=\"" << data.at< double > ("Sphere (r)")
-                    << "\" level=\"" << data.at< int > ("Mesh Resolution")
-                    << "\"/>";
+                    << "<Sphere radius=\"" << data.at< double > ("Sphere (r)") << "\" level=\""
+                    << data.at< int > ("Mesh Resolution") << "\"/>";
             }
         }
         else {
             QTextStream (&model_str)
-                << "<Polytope file=\"" << data.at< QString > ("CAD file")
-                << "\"/>";
+                << "<Polytope file=\"" << data.at< QString > ("CAD file") << "\"/>";
         }
 
         QString drawable_str;
         QTextStream (&drawable_str)
-            << indentation << "<Drawable name=\"" << data.at< QString > ("Name")
-            << "\"" << ref_frame_str << " colmodel=\"" << col_model << "\">"
-            << "\n\t" << indentation << "<Pos>"
-            << data.at< QVector3D > ("Position").x () << " "
+            << indentation << "<Drawable name=\"" << data.at< QString > ("Name") << "\""
+            << ref_frame_str << " colmodel=\"" << col_model << "\">"
+            << "\n\t" << indentation << "<Pos>" << data.at< QVector3D > ("Position").x () << " "
             << data.at< QVector3D > ("Position").y () << " "
-            << data.at< QVector3D > ("Position").z () << "</Pos>\n\t"
-            << indentation << "<RPY>" << data.at< QVector3D > ("RPY").x ()
-            << " " << data.at< QVector3D > ("RPY").y () << " "
+            << data.at< QVector3D > ("Position").z () << "</Pos>\n\t" << indentation << "<RPY>"
+            << data.at< QVector3D > ("RPY").x () << " " << data.at< QVector3D > ("RPY").y () << " "
             << data.at< QVector3D > ("RPY").z () << "</RPY>"
             << "\n\t" << indentation << model_str << "\n"
             << indentation << "</Drawable>";
@@ -476,12 +473,12 @@ void WorkcellEditorWindow::on_actionAdd_CollisionModel_triggered (bool)
 
     // Define form inputs
     InputFormDialog::FormData data;
-    data["Name"]            = "";
-    QStringList refFrames = getRefFrameList();
-    if ( refFrames.isEmpty() ) {
+    data["Name"]          = "";
+    QStringList refFrames = getRefFrameList ();
+    if (refFrames.isEmpty ()) {
         std::cout << "wc is null" << std::endl;
         data["Ref. frame"] = "";
-    } 
+    }
     else {
         data["Ref. frame"] = refFrames;
     }
@@ -502,8 +499,7 @@ void WorkcellEditorWindow::on_actionAdd_CollisionModel_triggered (bool)
     if (InputFormDialog::getInput ("Add Collision Model", data, options)) {
         QString ref_frame_str = "";
         if (!data.at< QString > ("Ref. frame").isEmpty ())
-            ref_frame_str =
-                " refframe=\"" + data.at< QString > ("Ref. frame") + "\"";
+            ref_frame_str = " refframe=\"" + data.at< QString > ("Ref. frame") + "\"";
         else
             ref_frame_str = "";
 
@@ -520,52 +516,42 @@ void WorkcellEditorWindow::on_actionAdd_CollisionModel_triggered (bool)
             // Geometry I presume?
             if (data.at< QString > ("Geometry Type") == "Box") {
                 QTextStream (&model_str)
-                    << "<Box x=\""
-                    << data.at< QVector3D > ("Box (x, y, z)").x () << "\" y=\""
+                    << "<Box x=\"" << data.at< QVector3D > ("Box (x, y, z)").x () << "\" y=\""
                     << data.at< QVector3D > ("Box (x, y, z)").y () << "\" z=\""
                     << data.at< QVector3D > ("Box (x, y, z)").z () << "\"/>";
             }
             else if (data.at< QString > ("Geometry Type") == "Cone") {
                 QTextStream (&model_str)
-                    << "<Cone radius=\""
-                    << data.at< QVector2D > ("Cone (radiusBot, height)").x ()
-                    << "\" z=\""
-                    << data.at< QVector2D > ("Cone (radiusBot, height)").y ()
-                    << "\" level=\"" << data.at< int > ("Mesh Resolution")
-                    << "\"/>";
+                    << "<Cone radius=\"" << data.at< QVector2D > ("Cone (radiusBot, height)").x ()
+                    << "\" z=\"" << data.at< QVector2D > ("Cone (radiusBot, height)").y ()
+                    << "\" level=\"" << data.at< int > ("Mesh Resolution") << "\"/>";
             }
             else if (data.at< QString > ("Geometry Type") == "Cylinder") {
                 QTextStream (&model_str)
                     << "<Cylinder radius=\""
-                    << data.at< QVector2D > ("Cylinder (radius, height)").x ()
-                    << "\" z=\""
-                    << data.at< QVector2D > ("Cylinder (radius, height)").y ()
-                    << "\" level=\"" << data.at< int > ("Mesh Resolution")
-                    << "\"/>";
+                    << data.at< QVector2D > ("Cylinder (radius, height)").x () << "\" z=\""
+                    << data.at< QVector2D > ("Cylinder (radius, height)").y () << "\" level=\""
+                    << data.at< int > ("Mesh Resolution") << "\"/>";
             }
             else if (data.at< QString > ("Geometry Type") == "Sphere") {
                 QTextStream (&model_str)
-                    << "<Sphere radius=\"" << data.at< double > ("Sphere (r)")
-                    << "\" level=\"" << data.at< int > ("Mesh Resolution")
-                    << "\"/>";
+                    << "<Sphere radius=\"" << data.at< double > ("Sphere (r)") << "\" level=\""
+                    << data.at< int > ("Mesh Resolution") << "\"/>";
             }
         }
         else {
             QTextStream (&model_str)
-                << "<Polytope file=\"" << data.at< QString > ("CAD file")
-                << "\"/>";
+                << "<Polytope file=\"" << data.at< QString > ("CAD file") << "\"/>";
         }
 
         QString col_model_str;
         QTextStream (&col_model_str)
-            << indentation << "<CollisionModel name=\""
-            << data.at< QString > ("Name") << "\"" << ref_frame_str << ">"
-            << "\n\t" << indentation << "<Pos>"
-            << data.at< QVector3D > ("Position").x () << " "
+            << indentation << "<CollisionModel name=\"" << data.at< QString > ("Name") << "\""
+            << ref_frame_str << ">"
+            << "\n\t" << indentation << "<Pos>" << data.at< QVector3D > ("Position").x () << " "
             << data.at< QVector3D > ("Position").y () << " "
-            << data.at< QVector3D > ("Position").z () << "</Pos>\n\t"
-            << indentation << "<RPY>" << data.at< QVector3D > ("RPY").x ()
-            << " " << data.at< QVector3D > ("RPY").y () << " "
+            << data.at< QVector3D > ("Position").z () << "</Pos>\n\t" << indentation << "<RPY>"
+            << data.at< QVector3D > ("RPY").x () << " " << data.at< QVector3D > ("RPY").y () << " "
             << data.at< QVector3D > ("RPY").z () << "</RPY>"
             << "\n\t" << indentation << model_str << "\n"
             << indentation << "</CollisionModel>";
@@ -601,24 +587,28 @@ bool WorkcellEditorWindow::saveAs ()
 
 bool WorkcellEditorWindow::save (const std::string& filename)
 {
+    bool isTmpFile = false;
+    if (filename.find (".temp.wc.xml") < filename.size ()) {
+        isTmpFile = true;
+    }
     QFile file;
     file.setFileName (filename.c_str ());
     if (file.open (QFile::WriteOnly | QFile::Text)) {
         {
             QTextStream out (&file);
             out << getCurrentTab ()->_editor->toPlainText ();
-            _pmap.set< std::string > ("WorkcellFile", filename);
-            getCurrentTab ()->_editor->document ()->setModified (false);
-            getCurrentTab ()->_filename = filename;
+            if (!isTmpFile) {
+                _pmap.set< std::string > ("WorkcellFile", filename);
+                getCurrentTab ()->_editor->document ()->setModified (false);
+                getCurrentTab ()->_filename = filename;
 
-            _tabPane->setTabText (_tabPane->indexOf (getCurrentTab ()->_editor),
-                                  boost::filesystem::path (filename)
-                                      .filename ()
-                                      .string ()
-                                      .c_str ());
+                _tabPane->setTabText (
+                    _tabPane->indexOf (getCurrentTab ()->_editor),
+                    boost::filesystem::path (filename).filename ().string ().c_str ());
+            }
         }
         file.close ();
-        std::string wcFilename = _pmap.get< std::string > ("WorkcellFile", "");
+        
 
         // Verify workcell xml using schemas
         /*try {
@@ -634,10 +624,22 @@ bool WorkcellEditorWindow::save (const std::string& filename)
          "/home/prier/RobWork/RobWork/xml-schemas/rwxml_workcell.xsd");
         */
 
-        rw::models::WorkCell::Ptr wc =
-            rw::loaders::WorkCellLoader::Factory::load (wcFilename);
-        if (_rws != nullptr)
+        rw::common::Log ().setLevel (rw::common::Log::Debug);
+        rw::models::WorkCell::Ptr wc = nullptr;
+
+        if(!isTmpFile){
+            std::string wcFilename = _pmap.get< std::string > ("WorkcellFile", "");
+            wc = rw::loaders::WorkCellLoader::Factory::load (wcFilename);
+        }else {
+            wc = rw::loaders::WorkCellLoader::Factory::load (filename);
+            file.remove();
+        }
+        rw::common::Log ().setLevel (rw::common::Log::Info);
+
+        if (_rws != nullptr) {
+            ignoreNextWorkcellOpen = true;
             _rws->setWorkcell (wc);
+        }
 
         return true;
     }
@@ -647,55 +649,55 @@ bool WorkcellEditorWindow::save (const std::string& filename)
     }
 }
 
-bool WorkcellEditorWindow::openWorkCell (const QString &fileName)
+bool WorkcellEditorWindow::openWorkCell (const QString& fileName)
 {
     bool success = false;
-    if (!fileName.isEmpty ()) {
-        _pmap.set< std::string > (
-            "PreviousOpenDirectory",
-            StringUtil::getDirectoryName (fileName.toStdString ()));
+    if (!fileName.isEmpty () && !ignoreNextWorkcellOpen) {
+        _pmap.set< std::string > ("PreviousOpenDirectory",
+                                  StringUtil::getDirectoryName (fileName.toStdString ()));
         _pmap.set< std::string > ("WorkcellFile", fileName.toStdString ());
         QFile file;
         file.setFileName (fileName);
         EditorTab::Ptr tab = makeEditor ();
         tab->_filename     = file.fileName ().toStdString ();
-        _tabPane->setTabText (_tabPane->indexOf (tab->_editor),
-                              boost::filesystem::path (fileName.toStdString ())
-                                  .filename ()
-                                  .string ()
-                                  .c_str ());
-        
+        _tabPane->setTabText (
+            _tabPane->indexOf (tab->_editor),
+            boost::filesystem::path (fileName.toStdString ()).filename ().string ().c_str ());
+
         if (file.open (QFile::ReadWrite | QFile::Text)) {
             tab->_editor->setPlainText (file.readAll ());
-            success=true;
+            success = true;
         }
         file.close ();
         tab->_editor->document ()->setModified (false);
         _tabPane->setCurrentIndex (_tabPane->indexOf (tab->_editor));
-
     }
+    else if (ignoreNextWorkcellOpen) {
+        ignoreNextWorkcellOpen = false;
+    }
+
     return success;
 }
 
-QStringList WorkcellEditorWindow::getRefFrameList()
+QStringList WorkcellEditorWindow::getRefFrameList ()
 {
-    EditorTab::Ptr tab = getCurrentTab();
+    EditorTab::Ptr tab           = getCurrentTab ();
     rw::models::WorkCell::Ptr wc = NULL;
     QStringList refFrames;
-    if (tab->_filename.size() > 5 /*minimum length*/) {
+    if (tab->_filename.size () > 5 /*minimum length*/) {
         std::string file = tab->_filename + ".temp1234.xml";
 
-        std::ofstream out(file);
-        out << tab->_editor->toPlainText().toStdString();
-        out.close();
-
-        wc = WorkCellLoader::Factory::load(file);
-        remove(file.c_str());
+        std::ofstream out (file);
+        out << tab->_editor->toPlainText ().toStdString ();
+        out.close ();
         
-        if (! wc.isNull() ) {
-            std::vector<rw::kinematics::Frame *> frameList = wc->getFrames();
-            for ( size_t i = 0; i < frameList.size(); i++ ) {
-                refFrames << frameList[i]->getName().c_str();
+        wc = WorkCellLoader::Factory::load (file);
+        remove (file.c_str ());
+
+        if (!wc.isNull ()) {
+            std::vector< rw::kinematics::Frame* > frameList = wc->getFrames ();
+            for (size_t i = 0; i < frameList.size (); i++) {
+                refFrames << frameList[i]->getName ().c_str ();
             }
         }
     }
@@ -709,32 +711,25 @@ WorkcellEditorWindow::EditorTab::Ptr WorkcellEditorWindow::getCurrentTab ()
 
 void WorkcellEditorWindow::on_actionRun_triggered (bool)
 {
-    std::string wcFilename = _pmap.get< std::string > ("WorkcellFile", "");
-    rw::models::WorkCell::Ptr wc =
-        rw::loaders::WorkCellLoader::Factory::load (wcFilename);
-    if (wc == nullptr)
-        RW_DEBUG ("wc was nullptr");
-    if (_rws == nullptr)
-        RW_DEBUG ("_rws was nullptr");
-    _rws->setWorkcell (wc);
+    //Save as temproary file
+    save (getCurrentTab ()->_filename + ".temp.wc.xml");
 }
 
 void WorkcellEditorWindow::on_actionReload_triggered (bool)
 {
     std::string fileName = getCurrentTab ()->_filename;
-    if (fileName == "")
-        return;
-
-    QFile file;
-    file.setFileName (fileName.c_str ());
-    if (file.open (QFile::ReadWrite | QFile::Text)) {
-        getCurrentTab ()->_editor->setPlainText (file.readAll ());
+    if (fileName != "") {
+        QFile file;
+        file.setFileName (fileName.c_str ());
+        if (file.open (QFile::ReadWrite | QFile::Text)) {
+            getCurrentTab ()->_editor->setPlainText (file.readAll ());
+        }
+        file.close ();
     }
-    file.close ();
 }
 
 QAbstractItemModel* WorkcellEditorWindow::modelFromFile (const QString& fileName,
-                                     WCECompleter* completer)
+                                                         WCECompleter* completer)
 {
     QFile file (fileName);
     if (!file.open (QFile::ReadOnly))
