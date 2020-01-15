@@ -131,7 +131,6 @@ Model3D::Ptr Model3DFactory::loadModel (const std::string& raw_filename, const s
     }
 
     std::string moddate = getLastModifiedStr (filename);
-    std::cout << "File:" << filename << "Changed at:" << moddate << std::endl;
     if (useCache && getCache ().isInCache (filename, moddate)) {
         Model3D::Ptr res = ownedPtr (new Model3D (*getCache ().get (filename)));
         res->setName (name);
