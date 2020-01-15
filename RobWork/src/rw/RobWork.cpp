@@ -16,6 +16,10 @@
  ********************************************************************************/
 #include "RobWork.hpp"
 
+#if defined(RW_WIN32)
+#include <windows.h>
+#endif
+
 #include <RobWorkConfig.hpp>
 #include <rw/common/ExtensionRegistry.hpp>
 #include <rw/common/Plugin.hpp>
@@ -54,8 +58,8 @@ using namespace boost::program_options;
     std::string (std::getenv ("APPDATA")) + SLASH + "robwork" + SLASH + "robwork-" + \
         RW_BUILD_TYPE + "-" + RW_VERSION + ".cfg.xml"
 
-/*namespace {
-#include <windows.h>
+namespace {
+//#include <windows.h>
     std::string InstallPluginLocation(std::string pack="RobWork") 
     {
         HKEY hKey = 0;
@@ -77,7 +81,7 @@ using namespace boost::program_options;
 
         return std::string();
     }
-}*/
+}
 #elif defined(RW_MACOS)
 #define RWCFGHOMEDIR std::string (std::getenv ("HOME")) + "/Library/Preferences/"
 #define RWCFGFILE                                                                              \
@@ -242,7 +246,7 @@ void RobWork::initialize (const std::vector< std::string >& plugins)
         }
         appendPluginFolder(rwpluginFolder,"Location-linux-default",_settings);
     }
-/*#if defined(RW_WIN32)
+#if defined(RW_WIN32)
 
     std::vector<std::string> Packs= {"RobWork","RobWorkStudio","RobWorkSim","RobWorkHardware"};
     for(const std::string& p: Packs){
@@ -253,7 +257,7 @@ void RobWork::initialize (const std::vector< std::string >& plugins)
             appendPluginFolder(loc,name,_settings);
         }
     }
-#endif*/
+#endif
 
 
     _settingsFile = rwsettingsPath;
