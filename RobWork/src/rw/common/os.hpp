@@ -22,8 +22,10 @@
 #include <string>
 #include <boost/filesystem.hpp>
 
-#if __has_include(<windows.h>)
-#include <windows.h>
+#ifndef __gnuc__
+    #if __has_include(<windows.h>)
+        #include <windows.h>
+    #endif
 #endif
 
 #if defined(__CYGWIN__)
@@ -66,7 +68,7 @@ public:
     /**
      * @brief find the location of where installed robwork plugins are placed.
      * @param pack [in] this is used for some systems where RobWork, RobWorkSim, RobWorkHardware and RobWorkStudio
-     * don't install the plugins in the same location. This variable takes one of four stings as argument {RobWork, RobWorkSim, RobWorkHardware and RobWorkStudio}
+     * don't install the plugins in the same location. This variable takes one of four strings as argument {RobWork, RobWorkSim, RobWorkHardware and RobWorkStudio}
      * @return return "" if location not found
      */
     static std::string InstallPluginLocation(std::string pack="RobWork") 

@@ -270,6 +270,6 @@ if(build)
         simulator
         util
     )
-    target_link_libraries(${SUBSYS_NAME} ${ROBWORK_LIBRARIES})
+    target_link_libraries(${SUBSYS_NAME} ${ROBWORK_LIBRARIES} ${RW_BUILD_WITH_LIBRARIES_BOOST})
     set_target_properties(${SUBSYS_NAME} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
 endif()
