@@ -1,8 +1,6 @@
 #include <rw/kinematics/Frame.hpp>
 #include <rw/models/WorkCell.hpp>
 
-#include <boost/foreach.hpp>
-
 #include <string>
 
 using namespace rw::kinematics;
@@ -24,7 +22,7 @@ void printKinematicTree(
         << transform.P()
         << std::endl;
 
-    BOOST_FOREACH(Frame& child, frame.getChildren(state)) {
+    for(Frame& child: frame.getChildren(state)) {
         printKinematicTree(child, state, transform, level + 1);
     }
 }
