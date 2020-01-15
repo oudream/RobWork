@@ -17,7 +17,10 @@
 #endif
 #include <boost/test/unit_test.hpp>
 
+#if __has_include(<boost/test/tools/floating_point_comparison.hpp>)
 #include <boost/test/tools/floating_point_comparison.hpp>
-
+#else 
+#include <boost/test/floating_point_comparison.hpp>
+#endif
 
 std::string testFilePath();
