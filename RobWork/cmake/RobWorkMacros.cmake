@@ -488,8 +488,6 @@ endmacro()
 # files for the library.
 macro(RW_ADD_PLUGIN _name _lib_type )
     add_library(${_name} ${_lib_type} ${ARGN})
-    # must link explicitly against boost.
-    target_link_libraries(${_name} PUBLIC ${Boost_LIBRARIES})
 
     # Only link if needed
     if(WIN32 AND MSVC)
