@@ -103,9 +103,11 @@ set(ZLIB_SRCS
 )
 
 add_library(sdurw_zlib STATIC ${ZLIB_SRCS} ${ZLIB_PUBLIC_HDRS} ${ZLIB_PRIVATE_HDRS})
-IF(MSVC)
+target_include_directories(sdurw_zlib INTERFACE $<BUILD_INTERFACE:${ZLIB_INCLUDE_DIRS}> $<INSTALL_INTERFACE:"${INCLUDE_INSTALL_DIR}/ext/zlib">)
+
+if(MSVC)
 	target_compile_options(sdurw_zlib PRIVATE /wd4267)
-ENDIF()
+endif()
 
 install(TARGETS sdurw_zlib EXPORT ${PROJECT_PREFIX}Targets ARCHIVE DESTINATION "${LIB_INSTALL_DIR}" COMPONENT zlib)
 install(FILES ${ZLIB_PUBLIC_HDRS} DESTINATION "${INCLUDE_INSTALL_DIR}/ext/zlib/" COMPONENT zlib)

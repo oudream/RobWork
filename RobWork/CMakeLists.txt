@@ -101,6 +101,7 @@ rw_get_revision(${RW_ROOT} ROBWORK)
 configure_file(${RW_ROOT}/src/RobWorkConfig.hpp.in ${RW_ROOT}/src/RobWorkConfig.hpp)
 
 # Configure cmake/RobWorkBuildConfig.cmake.in such that other projects might use RobWork
+
 configure_file(${RW_ROOT}/cmake/RobWorkBuildConfig.cmake.in "${RW_ROOT}/cmake/RobWorkBuildConfig_${RW_BUILD_TYPE}.cmake"
                @ONLY)
 

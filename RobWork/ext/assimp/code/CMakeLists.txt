@@ -753,6 +753,7 @@ ELSE()
 ENDIF()
 
 TARGET_LINK_LIBRARIES(sdurw_assimp ${ZLIB_LIBRARIES} ${MINIZIP_LIBRARIES} ${OPENDDL_PARSER_LIBRARIES} )
+target_include_directories(sdurw_assimp INTERFACE $<BUILD_INTERFACE:${ASSIMP_INCLUDE_DIRS}> $<INSTALL_INTERFACE:"${INCLUDE_INSTALL_DIR}/ext/assimp">)
 
 if( MSVC )
   # in order to prevent DLL hell, each of the DLLs have to be suffixed with the major version and msvc prefix
