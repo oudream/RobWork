@@ -22,5 +22,6 @@ if(build AND DEFINED WIN32)
     # MESSAGE(STATUS "RobWorkHardware: ${component_name} component ENABLED")
 
     add_library(${SUBSYS_NAME} ./FanucDriver.cpp ./FanucVirtual.cpp ./VelRampProfile.cpp)
+    target_link_libraries(${SUBSYS_NAME} PUBLIC RW::sdurw)
     set(ROBWORKHARDWARE_LIBRARIES ${ROBWORKHARDWARE_LIBRARIES} ${SUBSYS_NAME} PARENT_SCOPE)
 endif()

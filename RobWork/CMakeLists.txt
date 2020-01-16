@@ -115,10 +115,12 @@ export(EXPORT ${PROJECT_PREFIX}Targets
     NAMESPACE ${PROJECT_PREFIX}::
 )
 if(RW_HAVE_GTEST)
-    export(TARGETS ${GTEST_LIBRARIES} ${GTEST_MAIN_LIBRARIES}
-        NAMESPACE ${PROJECT_PREFIX}::
-        APPEND FILE "${RW_ROOT}/cmake/gtestTargets.cmake"
-    )
+    if (TARGET ${GTEST_LIBRARIES} AND TARGET ${GTEST_MAIN_LIBRARIES})
+        export(TARGETS ${GTEST_LIBRARIES} ${GTEST_MAIN_LIBRARIES}
+            NAMESPACE ${PROJECT_PREFIX}::
+            APPEND FILE "${RW_ROOT}/cmake/gtestTargets.cmake"
+        )
+    endif()
 endif()
 
 # ######################################################################################################################

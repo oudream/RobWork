@@ -357,7 +357,7 @@ else()
 endif()
 
 if(RW_BUILD_WITH_GTEST)
-    if(NOT TARGET gtest)
+    if(NOT TARGET gtest AND RW_BUILD_WITH_INTERNAL_GTEST)
         include("${RWCFG_ROOT}/gtestTargets.cmake")
     endif()
 endif()

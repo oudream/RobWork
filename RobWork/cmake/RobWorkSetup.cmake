@@ -577,6 +577,7 @@ cmake_dependent_option(
     ON "NOT RW_DISABLE_GTEST" OFF
 )
 
+set(RW_ENABLE_INTERNAL_GTEST_TARGET OFF)
 if(RW_USE_GTEST)
     # Now try to find Google Test
     set(gtest_force_shared_crt ON CACHE BOOL "Use /MD on Windows systems.")
@@ -591,7 +592,10 @@ if(RW_USE_GTEST)
         if(TARGET ${GTEST_MAIN_LIBRARY})
             add_library(RW::${GTEST_MAIN_LIBRARY} ALIAS ${GTEST_MAIN_LIBRARY})
         endif()
-        set(GTEST_BOTH_LIBRARIES RW::${GTEST_MAIN_LIBRARY} RW::${GTEST_LIBRARY})
+        if(TARGET ${GTEST_LIBRARY} AND TARGET ${GTEST_MAIN_LIBRARY})
+            set(RW_ENABLE_INTERNAL_GTEST_TARGET ON)
+            set(GTEST_BOTH_LIBRARIES RW::${GTEST_MAIN_LIBRARY} RW::${GTEST_LIBRARY})
+        endif()
     else()
         message(WARNING "RobWork: Google Test installation NOT FOUND!")
     endif()

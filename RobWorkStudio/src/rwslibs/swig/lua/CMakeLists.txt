@@ -68,6 +68,7 @@ if(build)
         ${RWS_COMPONENT_LIBRARIES}
         ${RWS_PLUGIN_LIBRARIES}
         ${RWS_MODULE}
+        RW::sdurw_lua
         RW::sdurw
     )
     if (RW_BUILD_WITH_INTERNAL_LUA)
@@ -96,6 +97,7 @@ if(build)
         ${RWS_COMPONENT_LIBRARIES}
         ${RWS_PLUGIN_LIBRARIES}
         ${RWS_MODULE}
+        RW::sdurw_lua
         RW::sdurw
     )
     if (RW_BUILD_WITH_INTERNAL_LUA)
