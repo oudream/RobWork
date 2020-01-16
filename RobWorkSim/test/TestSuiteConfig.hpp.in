@@ -15,7 +15,7 @@
 #endif
 #include <boost/test/unit_test.hpp>
 
-#if __GNUC__ < 5
+#if defined(__GNUC__) && __GNUC__ < 5
     #include <boost/test/floating_point_comparison.hpp>
 #else
     #if __has_include(<boost/test/tools/floating_point_comparison.hpp>)

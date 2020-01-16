@@ -67,9 +67,12 @@ if(RWSIM_HAVE_ODE)
     target_link_libraries(sdurwsim_ode PUBLIC sdurwsim ${ODE_LIBRARIES} RW::sdurw ${OPENGL_LIBRARIES})
     target_include_directories(sdurwsim_ode
         INTERFACE
-        $<BUILD_INTERFACE:${RWSIM_ROOT}/src> $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
+        $<BUILD_INTERFACE:${RWSIM_ROOT}/src>
+        $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
+        PUBLIC
+        $<BUILD_INTERFACE:${ODE_INCLUDE_DIR}> 
     )
-
+    message(STATUS )
     add_library(ode_plugin.rwplugin MODULE ODEPlugin.cpp ODEPlugin.hpp)
     target_link_libraries(ode_plugin.rwplugin PRIVATE sdurwsim_ode)
     install(TARGETS ode_plugin.rwplugin LIBRARY DESTINATION ${RW_PLUGIN_INSTALL_DIR})
