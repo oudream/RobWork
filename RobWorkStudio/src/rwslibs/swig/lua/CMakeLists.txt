@@ -68,6 +68,7 @@ if(build)
         ${RWS_COMPONENT_LIBRARIES}
         ${RWS_PLUGIN_LIBRARIES}
         ${RWS_MODULE}
+        RW::sdurw_lua
         RW::sdurw
         RW::sdurw_lua
     )
@@ -97,6 +98,7 @@ if(build)
         ${RWS_COMPONENT_LIBRARIES}
         ${RWS_PLUGIN_LIBRARIES}
         ${RWS_MODULE}
+        RW::sdurw_lua
         RW::sdurw
         RW::sdurw_lua_s
     )

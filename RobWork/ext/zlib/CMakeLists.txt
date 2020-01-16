@@ -57,12 +57,12 @@ if(MSVC)
     set(CMAKE_DEBUG_POSTFIX "d")
     add_definitions(-D_CRT_SECURE_NO_DEPRECATE)
     add_definitions(-D_CRT_NONSTDC_NO_DEPRECATE)
-    include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+    #include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 endif()
 
 configure_file(	${CMAKE_CURRENT_SOURCE_DIR}/zconf.h.cmakein
 		${CMAKE_CURRENT_SOURCE_DIR}/zconf.h @ONLY)
-include_directories(${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_SOURCE_DIR})
+#include_directories(${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_SOURCE_DIR})
 
 
 #============================================================================
@@ -103,11 +103,11 @@ set(ZLIB_SRCS
 )
 
 add_library(sdurw_zlib STATIC ${ZLIB_SRCS} ${ZLIB_PUBLIC_HDRS} ${ZLIB_PRIVATE_HDRS})
-target_include_directories(sdurw_zlib INTERFACE $<BUILD_INTERFACE:${ZLIB_INCLUDE_DIRS}> $<INSTALL_INTERFACE:"${INCLUDE_INSTALL_DIR}/ext/zlib">)
-
-if(MSVC)
-	target_compile_options(sdurw_zlib PRIVATE /wd4267)
-endif()
+target_include_directories(sdurw_zlib PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}> $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}> $<INSTALL_INTERFACE:"${INCLUDE_INSTALL_DIR}/ext/zlib">)
+IF(MSVC)
+    target_include_directories(sdurw_zlib PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>)
+    target_compile_options(sdurw_zlib PRIVATE /wd4267)
+ENDIF()
 
 install(TARGETS sdurw_zlib EXPORT ${PROJECT_PREFIX}Targets ARCHIVE DESTINATION "${LIB_INSTALL_DIR}" COMPONENT zlib)
 install(FILES ${ZLIB_PUBLIC_HDRS} DESTINATION "${INCLUDE_INSTALL_DIR}/ext/zlib/" COMPONENT zlib)
