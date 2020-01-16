@@ -69,6 +69,7 @@ if(build)
         ${RWS_PLUGIN_LIBRARIES}
         ${RWS_MODULE}
         RW::sdurw
+        RW::sdurw_lua
     )
     if (RW_BUILD_WITH_INTERNAL_LUA)
         swig_link_libraries(${TARGET_NAME} RW::lua51)
@@ -97,6 +98,7 @@ if(build)
         ${RWS_PLUGIN_LIBRARIES}
         ${RWS_MODULE}
         RW::sdurw
+        RW::sdurw_lua_s
     )
     if (RW_BUILD_WITH_INTERNAL_LUA)
         target_link_libraries(${TARGET_NAME}_s RW::lua51)
@@ -115,7 +117,7 @@ if(build)
     endif()
 
     add_library(sdurwslua_plugin.rwplugin MODULE LuaPlugin.cpp LuaPlugin.hpp)
-    target_link_libraries(sdurwslua_plugin.rwplugin ${TARGET_NAME}_s RW::sdurw)
+    target_link_libraries(sdurwslua_plugin.rwplugin ${TARGET_NAME}_s RW::sdurw RW::sdurw_lua_s)
     install(TARGETS ${RWS_MODULE}lua_plugin.rwplugin DESTINATION ${RW_PLUGIN_INSTALL_DIR})
 
     if((CMAKE_COMPILER_IS_GNUCC) OR (CMAKE_C_COMPILER_ID STREQUAL "Clang"))
