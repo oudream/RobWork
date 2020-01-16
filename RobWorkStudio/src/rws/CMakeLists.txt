@@ -102,9 +102,9 @@ if(build)
             RW::sdurw_proximitystrategies
             RW::sdurw_opengl
             RW::sdurw
-            ${GLUT_glut_LIBRARY}
             ${OPENGL_LIBRARIES}
         PRIVATE
+            ${GLUT_glut_LIBRARY}
             ${PYTHON_LIBRARIES}
     )
 
