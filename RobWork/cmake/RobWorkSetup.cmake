@@ -585,7 +585,7 @@ cmake_dependent_option(
     "Set to ON to include Google Test support. Set GTEST_ROOT or GTEST_SOURCE to specify your own Google Test installation."
     ON "NOT RW_DISABLE_GTEST" OFF
 )
-
+set(RW_HAVE_GTEST FALSE)
 if(RW_USE_GTEST)
     # Now try to find Google Test
     set(gtest_force_shared_crt ON CACHE BOOL "Use /MD on Windows systems.")
