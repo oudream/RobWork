@@ -1,6 +1,6 @@
 ###########################################
 # Test CMake version and CMAKE_BUILD_TYPE
-cmake_minimum_required(VERSION 2.8.12 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.5.1 FATAL_ERROR)
 
 if(POLICY CMP0074)
   cmake_policy(SET CMP0074 NEW)
@@ -45,7 +45,9 @@ INCLUDE(${RW_ROOT}/cmake/RobWorkMacros.cmake)
 RW_INIT_PROJECT(${RWHW_ROOT} RobWorkHardware RWHW ${ROBWORKHARDWARE_VERSION})
 RW_GET_OS_INFO()
 RW_SET_INSTALL_DIRS(RobWorkHardware RWHW)
-set(RWHW_SHARED_LIBS ON)
+if( NOT MSVC )
+    set(RWHW_SHARED_LIBS ON)
+endif()
 RW_OPTIONS(RWHW)
 
 ###########################################
@@ -170,3 +172,5 @@ install(EXPORT ${PROJECT_PREFIX}Targets
 )
 
 message(STATUS "Install dir: ${RWHW_INSTALL_DIR} and ${INCLUDE_INSTALL_DIR}")
+
+rw_create_installer()

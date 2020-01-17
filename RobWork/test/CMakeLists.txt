@@ -146,13 +146,14 @@ INSTALL(TARGETS
             sdurw_trajectory-test sdurw_collision-test 
             sdurw_graphics-test sdurw_planner-test ${CALIBRATION_TEST} #${RANSAC_TEST}
             ${SANDBOX_TEST} ${PERFORMANCE_TEST}
-        DESTINATION ${RW_INSTALL_DIR}/test)
+        DESTINATION ${RW_INSTALL_DIR}/test COMPONENT rwtest)
 
 INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/TestSuiteConfig.xml.install
-        DESTINATION ${RW_INSTALL_DIR}/test/TestSuiteConfig.xml)
+        DESTINATION ${RW_INSTALL_DIR}/test/TestSuiteConfig.xml COMPONENT rwtest)
 INSTALL(DIRECTORY
         testfiles
         DESTINATION ${RW_INSTALL_DIR}/test
+        COMPONENT rwtest
         FILES_MATCHING 
             PATTERN ".svn" EXCLUDE        
         )

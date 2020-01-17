@@ -105,6 +105,7 @@ target_link_libraries(
     RW::sdurw_opengl
     RW::sdurw_simulation
     RW::sdurw_control
+    RW::sdurw_lua_s
     PUBLIC RW::sdurw
 )
 

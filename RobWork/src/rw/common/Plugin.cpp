@@ -136,6 +136,12 @@ void Plugin::close (const OSHandle* handle)
 
 rw::common::Ptr< Plugin > Plugin::loadDirect (const std::string& filename)
 {
+    if(boost::filesystem::exists(filename)) {
+        std::cout << "Found file: " << filename << std::endl;
+    }
+    else{
+        std::cout << "Could not find file: " << filename << std::endl;
+    }
     HINSTANCE h = LoadLibraryA (filename.c_str ());
     if (h == NULL) {
         LPTSTR buffer = NULL;

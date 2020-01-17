@@ -13,7 +13,7 @@ if(build)
         $<BUILD_INTERFACE:${RW_ROOT}/src> $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
     )
 
-    rw_add_library(${SUBSYS_NAME}.rwplugin COMPONENT ${SUBSYS_NAME} MODULE AnalyticGeometryPlugin.cpp
+    rw_add_plugin(${SUBSYS_NAME}.rwplugin MODULE AnalyticGeometryPlugin.cpp
                    AnalyticGeometryPlugin.hpp)
     target_link_libraries(${SUBSYS_NAME}.rwplugin PRIVATE ${SUBSYS_NAME} PUBLIC sdurw)
 
