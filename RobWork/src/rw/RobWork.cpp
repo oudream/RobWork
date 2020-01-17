@@ -65,6 +65,29 @@ using namespace boost::program_options;
         RW_VERSION + ".cfg.xml"
 #endif
 
+namespace {
+    void appendPluginFolder(const std::string &folder,const std::string &name, PropertyMap &settings)
+    {
+        if (exists(folder)) {
+            if (settings.has ("plugins")) {
+                PropertyMap::Ptr plugins;
+                plugins = settings.getPtr<PropertyMap> ("plugins");
+                plugins->add ("Location-linux-default",
+                              "Default plugin location for deb installed plugins",
+                              folder);
+            }
+            else {
+                PropertyMap plugins;
+                plugins.add (name,
+                             "Default plugin location for deb installed plugins",
+                             folder);
+                settings.add ("plugins", "List of plugins or plugin locations", plugins);
+            }
+        }
+    }
+}
+
+
 RobWork::RobWork (void) : _initialized (false)
 {}
 
@@ -170,45 +193,23 @@ void RobWork::initialize (const std::vector< std::string >& plugins)
         _settings.add ("plugins", "List of plugins or plugin locations", plugins);
     }
 
-    if (boost::filesystem::exists ("/usr/lib/")) {    // Add default plugin location
 
-        boost::filesystem::path p ("/usr/lib");
-        std::string rwpluginFolder = "";
+#if defined(RW_WIN32)
+    std::vector<std::string> Packs= {"RobWork","RobWorkStudio","RobWorkSim","RobWorkHardware"};
+#else
+    std::vector<std::string> Packs= {""};
+#endif
 
-        // Find the architecture dependendt folder containing the rwplugins folder
-        // Search all files and folders
-        for (boost::filesystem::directory_iterator i (p);
-             i != boost::filesystem::directory_iterator ();
-             i++) {
-            // If is directory
-            if (boost::filesystem::is_directory (i->path ())) {
-                rwpluginFolder = "/usr/lib/";
-                rwpluginFolder += i->path ().filename ().string ();
-                rwpluginFolder += "/RobWork/rwplugins";
-                if (boost::filesystem::exists (rwpluginFolder)) {
-                    break;
-                }else {
-                    rwpluginFolder = "";
-                }
-            }
-        }
-        if (rwpluginFolder != "") {
-            if (_settings.has ("plugins")) {
-                PropertyMap::Ptr plugins;
-                plugins = _settings.getPtr<PropertyMap> ("plugins");
-                plugins->add ("Location-linux-default",
-                              "Default plugin location for deb installed plugins",
-                              rwpluginFolder);
-            }
-            else {
-                PropertyMap plugins;
-                plugins.add ("Location-linux-default",
-                             "Default plugin location for deb installed plugins",
-                             rwpluginFolder);
-                _settings.add ("plugins", "List of plugins or plugin locations", plugins);
-            }
+    for(const std::string& p: Packs){
+        std::string loc = OS::InstallPluginLocation(p);
+        if(exists(loc)) {
+            std::cout << "Found " << p <<" Installation" << std::endl;
+            std::string name = "Location-win-" + p +"-default";
+            appendPluginFolder(loc,name,_settings);
         }
     }
+
+
 
     _settingsFile = rwsettingsPath;
 

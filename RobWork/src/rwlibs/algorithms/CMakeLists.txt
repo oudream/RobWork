@@ -56,7 +56,7 @@ if(build)
     rw_add_library(${SUBSYS_NAME} ${SRC_FILES} ${SRC_FILES_HPP})
     rw_add_includes(${SUBSYS_NAME} "rwlibs/algorithms" MovingAverage.hpp StablePlanePose.hpp)
     rw_add_include_dirs(
-        algorithms
+        ${SUBSYS_NAME}
         "rwlibs/algorithms"
         kdtree
         qpcontroller

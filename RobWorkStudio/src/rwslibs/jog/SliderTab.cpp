@@ -423,7 +423,7 @@ void JointSliderWidget::setup(const std::vector<std::string>& titles,
         if (enablers) {
         	QCheckBox* enabler = new QCheckBox(this);
         	enabler->setChecked(true);
-        	_layout->addWidget(enabler,i+2,6);
+        	_layout->addWidget(enabler,int(i)+2,6);
         	connect(enabler, SIGNAL(stateChanged(int)), slider, SLOT(enableDisable(int)));
         	if (_enableAngularCombined && i >= 3) {
             	connect(enabler, SIGNAL(stateChanged(int)), slider, SLOT(enableDisable(int)));

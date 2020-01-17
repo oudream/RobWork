@@ -38,7 +38,7 @@ FILE(GENERATE OUTPUT $<TARGET_FILE_DIR:sdurws_sdurws-gtest>/TestSuiteConfig.xml 
 # RobWorkStudio main function for initialization (link with this if needed).
 ########################################################################
 
-SET(RWSMAIN_TEST_SRC
+set(RWSMAIN_TEST_SRC
   TestEnvironment.cpp
   test-main.cpp
 )
@@ -61,6 +61,7 @@ SET(RWS_TEST_SRC
 )
 add_executable( sdurws_sdurws-gtest ${RWS_TEST_SRC})
 target_link_libraries( sdurws_sdurws-gtest PRIVATE ${RWS_TEST_LIBRARIES})
+target_include_directories(sdurws_sdurws-gtest PRIVATE  ${RW_BUILD_WITH_GTEST_INCLUDE_DIRS})
 ADD_RWS_GTEST(sdurws_sdurws-gtest)
 
 

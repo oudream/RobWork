@@ -55,7 +55,6 @@ if(build)
 
     set_target_properties(${SUBSYS_NAME} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
 
-    add_library(${SUBSYS_NAME}.rwplugin MODULE ProximityStrategyPlugin.cpp)
-    target_link_libraries(${SUBSYS_NAME}.rwplugin ${SUBSYS_NAME})
-    install(TARGETS ${SUBSYS_NAME}.rwplugin LIBRARY DESTINATION ${RW_PLUGIN_INSTALL_DIR})
+    rw_add_plugin(${SUBSYS_NAME}.rwplugin MODULE ProximityStrategyPlugin.cpp)
+    target_link_libraries(${SUBSYS_NAME}.rwplugin PRIVATE ${SUBSYS_NAME} PUBLIC sdurw)
 endif()

@@ -258,7 +258,7 @@ if(build)
     rw_add_includes(${SUBSYS_NAME} "rwsim" "rwsim.hpp")
     rw_add_include_dirs(
         sdurwsim
-        "rwsim"
+        rwsim
         contacts
         control
         drawable
