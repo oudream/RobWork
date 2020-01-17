@@ -22,9 +22,13 @@ void printKinematicTree(
         << transform.P()
         << std::endl;
 
-    for(Frame& child: frame.getChildren(state)) {
+    BOOST_FOREACH(Frame& child, frame.getChildren(state)) {
         printKinematicTree(child, state, transform, level + 1);
     }
+
+    /*for(Frame& child: frame.getChildrenList(state)) {
+        printKinematicTree(child, state, transform, level + 1);
+    }*/
 }
 
 void printDefaultWorkCellStructure(const WorkCell& workcell)
