@@ -224,6 +224,13 @@ namespace rw { namespace kinematics {
         iterator_pair getChildren(const State& state);
 
         /**
+         *  @brief get a list of all frame children
+         *  @param state [in] the state of to look for children in.
+         *  @return a vector with the children
+         */
+        std::vector<Frame::Ptr> getChildrenList(const State& state);
+
+        /**
          * @brief Iterator pair for the dynamically attached children of the
          * frame.
          */
