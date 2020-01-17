@@ -21,7 +21,3 @@ add_subdirectory(csg)
 foreach (dir ${RWLIBS_USER_DIRECTORIES})
   add_subdirectory(${dir})
 endforeach ()
-
-# some dirs are too simple to add CMakelists in
-#INSTALL(FILES "os/rwgl.hpp" DESTINATION "include/rwlibs/os")
-#INSTALL(FILES "use_RobWork_namespace.hpp" DESTINATION "${RW_HPP_INSTALL_DIR}/rwlibs")

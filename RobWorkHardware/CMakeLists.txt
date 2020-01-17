@@ -1,6 +1,6 @@
 ###########################################
 # Test CMake version and CMAKE_BUILD_TYPE
-cmake_minimum_required(VERSION 2.8.12 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.5.1 FATAL_ERROR)
 
 if(POLICY CMP0074)
   cmake_policy(SET CMP0074 NEW)
@@ -45,7 +45,9 @@ INCLUDE(${RW_ROOT}/cmake/RobWorkMacros.cmake)
 RW_INIT_PROJECT(${RWHW_ROOT} RobWorkHardware RWHW ${ROBWORKHARDWARE_VERSION})
 RW_GET_OS_INFO()
 RW_SET_INSTALL_DIRS(RobWorkHardware RWHW)
-set(RWHW_SHARED_LIBS ON)
+if( NOT MSVC )
+    set(RWHW_SHARED_LIBS ON)
+endif()
 RW_OPTIONS(RWHW)
 
 ###########################################
@@ -73,19 +75,6 @@ SET(RWHW_CXX_FLAGS "${WERROR_FLAG} ${RW_BUILD_WITH_CXX_FLAGS}"
 	CACHE STRING "Change this to force using your own flags and not those of RobWorkHardware"
 )
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${RWHW_CXX_FLAGS}")
-
-# setup general include and link stuff
-INCLUDE_DIRECTORIES( ${ROBWORK_INCLUDE_DIRS} )
-LINK_DIRECTORIES( ${ROBWORK_LIBRARY_DIRS} )
-# if we have any exe files or plugins that depend on the libraries
-INCLUDE_DIRECTORIES( src )
-LINK_DIRECTORIES(${CMAKE_ARCHIVE_OUTPUT_DIRECTORY})
-
-# Include directories.
-INCLUDE_DIRECTORIES(
-  ${ROOT}/ext
-  ${ROOT}/src
-)
 
 ###########################################
 # now add all source directories to process.
@@ -153,7 +142,11 @@ CONFIGURE_FILE(
   "${RWHW_ROOT}/cmake/RobWorkHardwareConfigVersion.cmake"
 )
 
-
+export(EXPORT ${PROJECT_PREFIX}Targets
+    #FILE "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}/${PROJECT_NAME}Targets.cmake"
+    FILE "${RWHW_ROOT}/cmake/${PROJECT_NAME}Targets.cmake"
+    NAMESPACE ${PROJECT_PREFIX}::
+)
 
 ##################################################################
 # Installation stuff
@@ -172,4 +165,12 @@ INSTALL(FILES
 INSTALL(FILES "${RWHW_ROOT}/src/RobWorkHardwareConfig.hpp"
       DESTINATION "${INCLUDE_INSTALL_DIR}")
 
+install(EXPORT ${PROJECT_PREFIX}Targets
+    FILE ${PROJECT_NAME}Targets.cmake
+    NAMESPACE ${PROJECT_PREFIX}::
+    DESTINATION ${RWHW_INSTALL_DIR}/cmake
+)
+
 message(STATUS "Install dir: ${RWHW_INSTALL_DIR} and ${INCLUDE_INSTALL_DIR}")
+
+rw_create_installer()

@@ -348,7 +348,6 @@ void SceneOpenGLViewer::setWorldNode(rw::graphics::GroupNode::Ptr wnode){
 
     if(_pivotDrawable==NULL){
         /// TODO: this should be simplified to orthographic camera view. And only drawn in 2D
-        rw::common::Log::infoLog() << "Creating Pivot" << std::endl;
         _pivotDrawable = _scene->makeDrawable("Pivot", Geometry::makeSphere(0.01), DrawableNode::Virtual);
         _scene->addChild(_pivotDrawable, _scene->getRoot());
         _pivotDrawable->setColor( Vector3D<>(1.0f, 0.0f, 0.0f) );

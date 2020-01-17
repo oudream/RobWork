@@ -38,6 +38,7 @@ rw_subsys_option(
 
 if(build)
     include(UseSWIG)
+    include_directories(${RW_ROOT}/src)
     include_directories(${PYTHON_INCLUDE_DIRS})
     set(SWIG_FLAGS "-includeall")
     if((PYTHON_VERSION_MAJOR VERSION_GREATER 3) OR (PYTHON_VERSION_MAJOR VERSION_EQUAL 3))

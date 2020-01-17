@@ -25,6 +25,10 @@ if(build)
     )
     rw_add_includes(${SUBSYS_NAME} "rwslibs/workcelleditorplugin" ${SRC_FILES_HPP})
     target_link_libraries(${SUBSYS_NAME} PUBLIC ${SUBSYS_DEPS} PRIVATE ${QT_LIBRARIES})
+    target_include_directories(${SUBSYS_NAME}
+        INTERFACE
+        $<BUILD_INTERFACE:${RWS_ROOT}/src> $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
+    )
 
     if("${RWS_DEFAULT_LIB_TYPE}" STREQUAL "STATIC")
         set(RWS_PLUGIN_LIBRARIES ${RWS_PLUGIN_LIBRARIES} ${SUBSYS_NAME} PARENT_SCOPE)

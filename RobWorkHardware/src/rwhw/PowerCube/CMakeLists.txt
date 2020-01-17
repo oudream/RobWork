@@ -1,6 +1,6 @@
 set(SUBSYS_NAME sdurwhw_pcube)
 set(SUBSYS_DESC "Driver for powercube modules")
-set(SUBSYS_DEPS sdurw)
+set(SUBSYS_DEPS sdurw sdurwhw_serialport)
 
 set(build TRUE)
 set(DEFAULT true)
@@ -20,15 +20,12 @@ if(build)
     set(SRC_HPP CubePort.hpp Cube.hpp PCubeProtocol.hpp)
 
     rw_add_library(${SUBSYS_NAME} ${SRC_CPP} ${SRC_HPP})
-    target_link_libraries(${SUBSYS_NAME} PUBLIC ${ROBWORK_LIBRARIES})
+    target_link_libraries(${SUBSYS_NAME} PUBLIC sdurwhw_serialport RW::sdurw)
+    target_include_directories(${SUBSYS_NAME}
+        INTERFACE
+        $<BUILD_INTERFACE:${RWHW_ROOT}/src> $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
+    )
     rw_add_includes(${SUBSYS_NAME} "rwhw/PowerCube" ${SRC_HPP})
-
-    # Make sure dependencies are build before system
-    foreach(DEP IN LISTS ROBWORK_LIBRARIES)
-        if(TARGET ${DEP})
-            add_dependencies(${SUBSYS_NAME} ${DEP})
-        endif()
-    endforeach()
 
     set(ROBWORKHARDWARE_LIBRARIES ${ROBWORKHARDWARE_LIBRARIES} ${SUBSYS_NAME} PARENT_SCOPE)
 endif()

@@ -1,6 +1,6 @@
 set(SUBSYS_NAME sdurwhw_tactile)
 set(SUBSYS_DESC "Tactile array sensor library")
-set(SUBSYS_DEPS sdurw serialport)
+set(SUBSYS_DEPS sdurw)
 
 set(build TRUE)
 set(DEFAULT TRUE)
@@ -13,20 +13,15 @@ rw_subsys_option(
 )
 
 if(build)
-    set(SRC_CPP)
-    set(SRC_HPP)
-
-    list(
-        APPEND
-            SRC_CPP
+    set(
+        SRC_CPP
             DSACON32.cpp
             TactileMatrix.cpp
             TactileMaskMatrix.cpp
             ConvertUtil.cpp
     )
-    list(
-        APPEND
-            SRC_HPP
+    set(
+        SRC_HPP
             DSACON32.hpp
             TactileMatrix.hpp
             TactileMaskMatrix.hpp
@@ -34,15 +29,12 @@ if(build)
     )
 
     rw_add_library(${SUBSYS_NAME} ${SRC_CPP} ${SRC_HPP})
-    target_link_libraries(${SUBSYS_NAME} PUBLIC ${ROBWORK_LIBRARIES})
+    target_link_libraries(${SUBSYS_NAME} PUBLIC sdurwhw_serialport RW::sdurw)
+    target_include_directories(${SUBSYS_NAME}
+        INTERFACE
+        $<BUILD_INTERFACE:${RWHW_ROOT}/src> $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
+    )
     rw_add_includes(${SUBSYS_NAME} "rwhw/tactile" ${SRC_HPP})
-
-    # Make sure dependencies are build before system
-    foreach(DEP IN LISTS ROBWORK_LIBRARIES)
-        if(TARGET ${DEP})
-            add_dependencies(sdurwhw_tactile ${DEP})
-        endif()
-    endforeach()
 
     set(ROBWORKHARDWARE_LIBRARIES ${ROBWORKHARDWARE_LIBRARIES} sdurwhw_tactile PARENT_SCOPE)
 endif()

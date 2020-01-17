@@ -79,7 +79,7 @@ add_executable(ex-task ex-task.cpp)
 target_link_libraries(ex-task ${ROBWORK_LIBRARIES} ${USER_LIBRARIES})
 
 add_executable(ex-threadpool ex-threadpool.cpp)
-target_link_libraries(ex-threadpool ${ROBWORK_LIBRARIES} ${USER_LIBRARIES})
+target_link_libraries(ex-threadpool ${ROBWORK_LIBRARIES} ${USER_LIBRARIES} ${RW_BUILD_WITH_LIBRARIES_BOOST})
 
 add_executable(ex-threadtask ex-threadtask.cpp)
-target_link_libraries(ex-threadtask ${ROBWORK_LIBRARIES} ${USER_LIBRARIES})
+target_link_libraries(ex-threadtask ${ROBWORK_LIBRARIES} ${USER_LIBRARIES} ${RW_BUILD_WITH_LIBRARIES_BOOST})

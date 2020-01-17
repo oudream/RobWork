@@ -1,5 +1,3 @@
-INCLUDE_DIRECTORIES(${RW_BUILD_WITH_GTEST_INCLUDE_DIRS})
-
 ########################################################################
 # Standard Macro
 ########################################################################
@@ -31,7 +29,7 @@ SET(SIMULATOR_TEST_LIBRARIES
   sdurwsim_test
   sdurwsim
   ${RW_BUILD_WITH_LIBRARIES_GTEST}
-  ${ROBWORK_LIBRARIES}
+  RW::sdurw
 )
 
 SET(SIMULATOR_TEST_SRC

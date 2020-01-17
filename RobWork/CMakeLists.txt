@@ -46,9 +46,6 @@ add_custom_target(uninstall_sdurw "${CMAKE_COMMAND}" -P "${CMAKE_BINARY_DIR}/uni
 # This sets up ROBWORK_INCLUDE_DIR and ROBWORK_LIBRARIES
 include(${RW_ROOT}/cmake/RobWorkSetup.cmake)
 
-include_directories(${ROBWORK_INCLUDE_DIR})
-link_directories(${ROBWORK_LIBRARY_DIRS} ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY})
-
 # Setup install Directories
 rw_set_install_dirs(RobWork RW) # Must be called after setup
 set(RW_EXT_INSTALL_DIR ${INCLUDE_INSTALL_DIR}/ext/)
@@ -104,6 +101,7 @@ rw_get_revision(${RW_ROOT} ROBWORK)
 configure_file(${RW_ROOT}/src/RobWorkConfig.hpp.in ${RW_ROOT}/src/RobWorkConfig.hpp)
 
 # Configure cmake/RobWorkBuildConfig.cmake.in such that other projects might use RobWork
+
 configure_file(${RW_ROOT}/cmake/RobWorkBuildConfig.cmake.in "${RW_ROOT}/cmake/RobWorkBuildConfig_${RW_BUILD_TYPE}.cmake"
                @ONLY)
 
@@ -111,6 +109,20 @@ configure_file(${RW_ROOT}/cmake/RobWorkBuildConfig.cmake.in "${RW_ROOT}/cmake/Ro
 configure_file(${RW_ROOT}/cmake/RobWorkConfigVersion.cmake.in "${RW_ROOT}/cmake/RobWorkConfigVersion.cmake" @ONLY)
 
 configure_file(${RW_ROOT}/cmake/RobWorkConfig.cmake.in "${RW_ROOT}/cmake/RobWorkConfig.cmake" @ONLY)
+
+export(EXPORT ${PROJECT_PREFIX}Targets
+    #FILE "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}/${PROJECT_NAME}Targets.cmake"
+    FILE "${RW_ROOT}/cmake/${PROJECT_NAME}Targets.cmake"
+    NAMESPACE ${PROJECT_PREFIX}::
+)
+if(RW_HAVE_GTEST)
+    if (TARGET ${GTEST_LIBRARIES} AND TARGET ${GTEST_MAIN_LIBRARIES})
+        export(TARGETS ${GTEST_LIBRARIES} ${GTEST_MAIN_LIBRARIES}
+            NAMESPACE ${PROJECT_PREFIX}::
+            APPEND FILE "${RW_ROOT}/cmake/gtestTargets.cmake"
+        )
+    endif()
+endif()
 
 # ######################################################################################################################
 # Installation stuff
@@ -120,51 +132,48 @@ configure_file(${RW_ROOT}/cmake/RobWorkConfig.cmake.in "${RW_ROOT}/cmake/RobWork
 install(
     FILES ${RW_ROOT}/cmake/RobWorkConfigVersion.cmake ${RW_ROOT}/cmake/RobWorkConfig.cmake
     DESTINATION ${RW_INSTALL_DIR}/cmake
+    COMPONENT cmake
 )
 
 # Install stuff
-install(FILES LICENSE.txt NOTICE.txt ChangeLog.txt DESTINATION "${RW_INSTALL_DIR}/")
-# INSTALL(FILES cmake/Modules/FindBLASLAPACK.cmake cmake/Modules/FindPQP.cmake cmake/Modules/FindRobWork.cmake
-# cmake/Modules/FindTolua++.cmake cmake/Modules/FindXercesC.cmake cmake/Modules/FindYaobi.cmake DESTINATION
-# ${CONFIG_INSTALL_DIR}/cmake/Modules)
+install(FILES LICENSE.txt NOTICE.txt ChangeLog.txt DESTINATION "${RW_INSTALL_DIR}/" COMPONENT cmake )
 
 install(
     FILES "cmake/RobWorkBuildConfig_${RW_BUILD_TYPE}.cmake" "cmake/RobWorkMacros.cmake"
     DESTINATION ${RW_INSTALL_DIR}/cmake
+    COMPONENT cmake
 )
 
-install(FILES "${RW_ROOT}/src/RobWorkConfig.hpp" DESTINATION "${INCLUDE_INSTALL_DIR}")
+install(FILES "${RW_ROOT}/src/RobWorkConfig.hpp" DESTINATION "${INCLUDE_INSTALL_DIR}" COMPONENT sdurw)
+
+install(EXPORT ${PROJECT_PREFIX}Targets
+    FILE ${PROJECT_NAME}Targets.cmake
+    NAMESPACE ${PROJECT_PREFIX}::
+    DESTINATION ${RW_INSTALL_DIR}/cmake
+)
 
 # Install dependencies on Windows
 if(WIN32)
     # Trim the Boost library lists and take only the libraries corresponding to the build type
     set(BOOST_LIBRARIES_INSTALL "")
-    set(copy_lib TRUE)
     foreach(s ${Boost_LIBRARIES})
         if("${s}" STREQUAL "optimized")
-            if("${RW_BUILD_TYPE}" STREQUAL "Release")
-                set(copy_lib TRUE)
-            else()
-                set(copy_lib FALSE)
-            endif()
         elseif("${s}" STREQUAL "debug")
-            if("${RW_BUILD_TYPE}" STREQUAL "Debug")
-                set(copy_lib TRUE)
-            else()
-                set(copy_lib FALSE)
-            endif()
-        elseif(copy_lib)
-            list(APPEND BOOST_LIBRARIES_INSTALL "${s}")
         else()
-            set(copy_lib TRUE)
+            list(APPEND BOOST_LIBRARIES_INSTALL "${s}")
         endif()
-    endforeach(s)
+    endforeach()
 
     # Install external libraries
-    install(FILES ${BOOST_LIBRARIES_INSTALL} DESTINATION ${LIB_INSTALL_DIR})
-    install(DIRECTORY "${Boost_INCLUDE_DIR}/boost/" DESTINATION "${RW_INSTALL_DIR}/ext/boost/")
-    install(FILES ${XERCESC_LIBRARIES} DESTINATION ${LIB_INSTALL_DIR})
-    install(DIRECTORY "${XERCESC_INCLUDE_DIR}/" DESTINATION "${RW_INSTALL_DIR}/ext/xerces/")
+    install(FILES ${BOOST_LIBRARIES_INSTALL} DESTINATION ${LIB_INSTALL_DIR} COMPONENT boost)
+    install(DIRECTORY "${Boost_INCLUDE_DIR}/boost/" DESTINATION "${RW_INSTALL_DIR}/ext/boost/" COMPONENT boost)
+
+    if(RW_HAVE_XERCES)
+        install(FILES ${XERCESC_LIBRARIES} DESTINATION ${LIB_INSTALL_DIR} COMPONENT external)
+        install(DIRECTORY "${XERCESC_INCLUDE_DIR}/" DESTINATION "${RW_INSTALL_DIR}/ext/xerces/" COMPONENT xerces)
+    endif()
+    
+    install(DIRECTORY "${RW_ROOT}/ext/eigen3/Eigen/" DESTINATION "${RW_INSTALL_DIR}/ext/Eigen/" COMPONENT eigen)
 endif()
 
 # And if possible we would also like to install all the dll's and stuff that we use this will configure the dependency
@@ -180,8 +189,10 @@ configure_file("${RW_ROOT}/cmake/dependencies.cmake.in" "${RW_ROOT}/cmake/depend
 install(
     DIRECTORY "${RW_ROOT}/example/"
     DESTINATION "${RW_INSTALL_DIR}/example/"
+    COMPONENT example
     PATTERN ".svn" EXCLUDE
     PATTERN "example/CMakeLists.txt" EXCLUDE
+    PATTERN "Build" EXCLUDE
 )
 
 # Install the API doc if doxygen has been run IF(IS_DIRECTORY "${RW_ROOT}/apidocs/html") INSTALL(DIRECTORY
@@ -195,7 +206,7 @@ if(doc_executable)
 endif()
 
 # Packaging
-#include(cmake/packing.cmake)
+rw_create_installer()
 
 string(REPLACE ";" "\n" TOFILE_DST "${ROBWORK_INCLUDE_DIR}")
 file(WRITE "include_dirs" "${TOFILE_DST}")

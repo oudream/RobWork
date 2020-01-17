@@ -1,10 +1,3 @@
-INCLUDE_DIRECTORIES( ${ROBWORKSTUDIO_INCLUDE_DIRS} )
-LINK_DIRECTORIES( ${ROBWORKSTUDIO_LIBRARY_DIRS})
-
-# to be able to include the generated ui header files
-include_directories(${CMAKE_CURRENT_BINARY_DIR}) 
-
-
 ################################################################
 # first compile the general stuff into a static gui lib
 SET(FILES_UI 
@@ -101,18 +94,23 @@ SET(SrcFiles
 	log/SimulatorStatisticsWidget.cpp
 	log/MathematicaPlotWidget.cpp
 )
-IF(RWSIM_HAVE_ODE)
-	SET(SrcFiles ${SrcFiles} ODESimCfgDialog.cpp)
-ENDIF()
+set(ODE_LIB)
+if(RWSIM_HAVE_ODE)
+    set(SrcFiles ${SrcFiles} ODESimCfgDialog.cpp)
+    set(ODE_LIB sdurwsim_ode)
+endif()
 
 #set_source_files_properties(${SrcFiles} PROPERTIES OBJECT_DEPENDS "${UIS_OUT_H}")
 
-ADD_LIBRARY(sdurwsim_gui ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles} ${UIS_OUT_H})
-TARGET_LINK_LIBRARIES(sdurwsim_gui ${ROBWORKSTUDIO_LIBRARIES})
-
-# Make sure dependencies are build before system
-FOREACH(DEP IN LISTS ROBWORKSTUDIO_LIBRARIES)
-IF(TARGET ${DEP})
-	ADD_DEPENDENCIES(sdurwsim_gui ${DEP})
-ENDIF()
-ENDFOREACH()
+rw_add_library(sdurwsim_gui ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles} ${UIS_OUT_H})
+target_link_libraries(sdurwsim_gui PUBLIC sdurwsim RWS::sdurws Qt5::OpenGL Qt5::Widgets Qt5::Gui Qt5::Core PRIVATE ${ODE_LIB})
+if(TARGET RW::sdurw_mathematica)
+    target_link_libraries(sdurwsim_gui PRIVATE RW::sdurw_mathematica)
+endif()
+# to be able to include the generated ui header files
+target_include_directories(sdurwsim_gui
+    PRIVATE
+    ${CMAKE_CURRENT_BINARY_DIR}
+    INTERFACE
+    $<BUILD_INTERFACE:${RWSIM_ROOT}/src> $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
+)

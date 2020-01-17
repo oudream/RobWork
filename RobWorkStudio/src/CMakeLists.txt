@@ -30,18 +30,19 @@ endif(WIN32 AND IS_RELEASE)
 set(LIBS_TMP ${RWS_PLUGIN_LIBRARIES} sdurws ${RWS_COMPONENT_LIBRARIES} ${sdurws_LIBRARIES})
 # MESSAGE("${LIBS_TMP} sdurws_robworkstudioapp ${ROBWORK_LIBRARIES}")
 
-target_link_libraries(RobWorkStudio ${LIBS_TMP} sdurws_robworkstudioapp ${ROBWORK_LIBRARIES} ${GLUT_glut_LIBRARY})
+target_link_libraries(RobWorkStudio ${LIBS_TMP} sdurws_robworkstudioapp RW::sdurw ${GLUT_glut_LIBRARY})
 
 if(RWS_USE_STATIC_LINK_PLUGINS)
     add_dependencies(RobWorkStudio sdurws ${RWS_COMPONENT_LIBRARIES})
 endif()
 
 # Some install stuff
-install(TARGETS RobWorkStudio DESTINATION ${BIN_INSTALL_DIR})
+install(TARGETS RobWorkStudio DESTINATION ${BIN_INSTALL_DIR} COMPONENT sdurws )
 if(RWS_USE_STATIC_LINK_PLUGINS)
     install(
         FILES "${RWS_ROOT}/bin/RobWorkStudio.ini.template.static"
         DESTINATION ${BIN_INSTALL_DIR}
+        COMPONENT sdurws
         RENAME "RobWorkStudio.ini.template"
     )
     configure_file("${RWS_ROOT}/bin/RobWorkStudio.ini.template.static"
@@ -61,6 +62,7 @@ endif()
 install(
     DIRECTORY sdurws
     DESTINATION ${INCLUDE_INSTALL_DIR}
+    COMPONENT sdurws
     FILES_MATCHING
     PATTERN "*.h"
     PATTERN "*.hpp"

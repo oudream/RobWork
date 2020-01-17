@@ -42,6 +42,7 @@ if(build)
     include(UseJava)
     include(UseSWIG)
 
+    include_directories(${RW_ROOT}/src)
     include_directories(${JAVA_INCLUDE_DIRS} ${JNI_INCLUDE_DIRS})
     set(CMAKE_SWIG_OUTDIR ${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY})
 

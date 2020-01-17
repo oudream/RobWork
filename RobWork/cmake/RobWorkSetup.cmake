@@ -93,6 +93,13 @@ if(DEFINED UNIX)
 elseif(DEFINED WIN32)
     set(Boost_USE_STATIC_LIBS ON)
     set(BOOST_ALL_DYN_LINK OFF)
+    set(Boost_USE_MULTITHREADED      ON)
+
+    if(${RW_BUILD_TYPE} STREQUAL "release")
+        set(Boost_USE_DEBUG_LIBS         OFF) # ignore debug libs and
+        set(Boost_USE_RELEASE_LIBS       ON)  # only find release libs
+    endif()
+
     find_package(
         Boost
         COMPONENTS
@@ -116,13 +123,15 @@ elseif(DEFINED WIN32)
         find_package(
             Boost
             REQUIRED
-            filesystem
-            regex
-            serialization
-            system
-            thread
-            program_options
+            COMPONENTS
+                filesystem
+                regex
+                serialization
+                system
+                thread
+                program_options
         )
+        set(ROBWORK_LIBRARIES_EXTERNAL ${ROBWORK_LIBRARIES_EXTERNAL} ${Boost_LIBRARIES})
         set(Boost_LIBRARIES_TMP ${Boost_LIBRARIES_TMP} ${Boost_LIBRARIES})
         set(BOOST_ALL_DYN_LINK ON)
     endif()
@@ -505,7 +514,7 @@ if(RW_USE_ASSIMP)
                 set(RW_ENABLE_INTERNAL_ZLIB_TARGET ON)
                 set(ZLIB_INCLUDE_DIRS "${RW_ROOT}/ext/zlib")
                 set(ZLIB_LIBRARY_DIRS ${RW_LIBRARY_OUT_DIR})
-                set(ZLIB_LIBRARIES "sdurw_zlib")
+                set(ZLIB_LIBRARIES sdurw_zlib)
                 set(ROBWORK_LIBRARIES_INTERNAL ${ROBWORK_LIBRARIES_INTERNAL} ${ZLIB_LIBRARIES})
             endif()
             set(RW_HAVE_ZLIB ON)
@@ -563,7 +572,7 @@ if(PYTHONLIBS_FOUND)
     message(STATUS "Found Python libraries ${PYTHONLIBS_VERSION_STRING}")
 endif()
 if(PYTHON_LIBRARY STREQUAL "NOTFOUND")
-    set(PYTHON_LIBRARY "")
+	set(PYTHON_LIBRARY "")
 endif()
 
 #
@@ -576,7 +585,8 @@ cmake_dependent_option(
     "Set to ON to include Google Test support. Set GTEST_ROOT or GTEST_SOURCE to specify your own Google Test installation."
     ON "NOT RW_DISABLE_GTEST" OFF
 )
-
+set(RW_HAVE_GTEST FALSE)
+set(RW_ENABLE_INTERNAL_GTEST_TARGET OFF)
 if(RW_USE_GTEST)
     # Now try to find Google Test
     set(gtest_force_shared_crt ON CACHE BOOL "Use /MD on Windows systems.")
@@ -585,6 +595,12 @@ if(RW_USE_GTEST)
         set(GTEST_SHARED_LIBS ${BUILD_SHARED_LIBS})
         message(STATUS "RobWork: Google Test installation FOUND!")
         set(RW_HAVE_GTEST TRUE)
+        if(TARGET ${GTEST_LIBRARY} AND TARGET ${GTEST_MAIN_LIBRARY})
+            add_library(RW::${GTEST_LIBRARY} ALIAS ${GTEST_LIBRARY})
+            add_library(RW::${GTEST_MAIN_LIBRARY} ALIAS ${GTEST_MAIN_LIBRARY})
+            set(RW_ENABLE_INTERNAL_GTEST_TARGET ON)
+            set(GTEST_BOTH_LIBRARIES RW::${GTEST_MAIN_LIBRARY} RW::${GTEST_LIBRARY})
+        endif()
     else()
         message(WARNING "RobWork: Google Test installation NOT FOUND!")
     endif()
@@ -928,7 +944,6 @@ set(
     ${OPENGL_LIBRARIES}
     ${XERCESC_LIBRARIES}
     ${BULLET_LIBRARIES}
-    ${Boost_LIBRARIES}
     ${LAPACK_LIBRARIES}
     ${BLAS_LIBRARIES}
     ${CMAKE_DL_LIBS}

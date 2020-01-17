@@ -214,8 +214,8 @@ Archive types
 -------------
 
 There is currently:
-- an rw::common::INIArchive which prints in INI format
-- an rw::common::BINArchive which prints in binary compressed format 
+* an rw::common::INIArchive which prints in INI format
+* an rw::common::BINArchive which prints in binary compressed format 
 
 
 Threading

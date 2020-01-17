@@ -68,8 +68,16 @@ if(build)
         ${RWS_COMPONENT_LIBRARIES}
         ${RWS_PLUGIN_LIBRARIES}
         ${RWS_MODULE}
-        ${ROBWORK_LIBRARIES}
+        RW::sdurw_lua
+        RW::sdurw
+        RW::sdurw_lua
     )
+    if (RW_BUILD_WITH_INTERNAL_LUA)
+        swig_link_libraries(${TARGET_NAME} RW::lua51)
+    else()
+        swig_link_libraries(${TARGET_NAME} ${RW_BUILD_WITH_LIBRARIES_LUA})
+        target_include_directories(${TARGET_NAME} PUBLIC ${RW_BUILD_WITH_LUA_INCLUDE_DIR})
+    endif()
     if((CMAKE_COMPILER_IS_GNUCC) OR (CMAKE_C_COMPILER_ID STREQUAL "Clang"))
         set_target_properties(${TARGET_NAME} PROPERTIES LINK_FLAGS -Wl,--no-undefined)
     endif()
@@ -90,8 +98,16 @@ if(build)
         ${RWS_COMPONENT_LIBRARIES}
         ${RWS_PLUGIN_LIBRARIES}
         ${RWS_MODULE}
-        ${ROBWORK_LIBRARIES}
+        RW::sdurw_lua
+        RW::sdurw
+        RW::sdurw_lua_s
     )
+    if (RW_BUILD_WITH_INTERNAL_LUA)
+        target_link_libraries(${TARGET_NAME}_s RW::lua51)
+    else()
+        target_link_libraries(${TARGET_NAME}_s ${RW_BUILD_WITH_LIBRARIES_LUA})
+        target_include_directories(${TARGET_NAME}_s PUBLIC ${RW_BUILD_WITH_LUA_INCLUDE_DIR})
+    endif()
 
     set(RWS_COMPONENT_LIBRARIES ${RWS_COMPONENT_LIBRARIES} ${TARGET_NAME}_s PARENT_SCOPE)
 
@@ -103,7 +119,7 @@ if(build)
     endif()
 
     add_library(sdurwslua_plugin.rwplugin MODULE LuaPlugin.cpp LuaPlugin.hpp)
-    target_link_libraries(sdurwslua_plugin.rwplugin ${TARGET_NAME}_s ${ROBWORK_LIBRARIES})
+    target_link_libraries(sdurwslua_plugin.rwplugin ${TARGET_NAME}_s RW::sdurw RW::sdurw_lua_s)
     install(TARGETS ${RWS_MODULE}lua_plugin.rwplugin DESTINATION ${RW_PLUGIN_INSTALL_DIR})
 
     if((CMAKE_COMPILER_IS_GNUCC) OR (CMAKE_C_COMPILER_ID STREQUAL "Clang"))
@@ -112,12 +128,4 @@ if(build)
 
     # ############ INSTALL LUA LIBRARY #############################
     install(TARGETS ${TARGET_NAME} DESTINATION ${LUA_INSTALL_DIR})
-
-    # ################# Make sure dependencies are build before system #############
-    foreach(DEP IN LISTS SUBSYS_DEPS)
-        if(TARGET ${DEP})
-            add_dependencies(${TARGET_NAME} ${DEP})
-            add_dependencies(${TARGET_NAME}_s ${DEP})
-        endif()
-    endforeach()
 endif()

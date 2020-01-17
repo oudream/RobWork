@@ -57,7 +57,12 @@ if(build)
     rw_add_library(${SUBSYS_NAME} ${SRC_FILES} ${SRC_FILES_HPP})
     rw_add_includes(${SUBSYS_NAME} "rwlibs/mathematica" ${SRC_FILES_HPP})
     target_link_libraries(${SUBSYS_NAME} PUBLIC ${SUBSYS_DEPS} PRIVATE ${Mathematica_WSTP_LIBRARIES})
-    add_dependencies(${SUBSYS_NAME} ${SUBSYS_DEPS})
+    target_include_directories(${SUBSYS_NAME}
+    	PRIVATE
+    	${Mathematica_WSTP_INCLUDE_DIR}
+        INTERFACE
+        $<BUILD_INTERFACE:${RW_ROOT}/src> $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
+    )
 
     set_target_properties(${SUBSYS_NAME} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
 

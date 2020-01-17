@@ -131,15 +131,8 @@ if(build)
         ${RWS_COMPONENT_LIBRARIES}
         ${RWS_PLUGIN_LIBRARIES}
         sdurws
-        ${ROBWORK_LIBRARIES}
+        RW::sdurw
         ${PYTHON_LIBRARIES}
     )
-
-    # Make sure dependencies are build before system
-    foreach(DEP IN LISTS SUBSYS_DEPS)
-        if(TARGET ${DEP})
-            add_dependencies(${TARGET_NAME} ${DEP})
-        endif()
-    endforeach()
 
 endif()
