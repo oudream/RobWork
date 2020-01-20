@@ -198,9 +198,11 @@ else()
     endif()
 endif()
 
-# MESSAGE(STATUS "RW_ROOT   : ${RW_ROOT}") MESSAGE(STATUS "RWCFG_ROOT: ${RWCFG_ROOT}")
-
 # now RW_ROOT and RWCFG_ROOT is set. Lets extract the stuff needed to run a project
+
+if(${RW_BUILD_WITH_FREEGLUT})
+    find_package(FreeGLUT QUIET)
+endif()
 
 # next get the build configuration of the requested built type
 if(EXISTS ${RWCFG_ROOT}/RobWorkBuildConfig_${RW_BUILD_TYPE}.cmake)
