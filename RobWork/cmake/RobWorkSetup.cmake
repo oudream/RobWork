@@ -948,6 +948,7 @@ set(
     ${BLAS_LIBRARIES}
     ${CMAKE_DL_LIBS}
     ${Mathematica_WSTP_LIBRARIES}
+    ${Boost_LIBRARIES}
 )
 
 set(

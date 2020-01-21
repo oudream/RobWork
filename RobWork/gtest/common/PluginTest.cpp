@@ -22,104 +22,124 @@
 #include <rw/common/DOMParser.hpp>
 #include <rw/common/Plugin.hpp>
 
-using rw::common::DOMParser;
-using rw::common::Extension;
-using rw::common::Plugin;
+using namespace rw::common;
 
-TEST(PluginTest, loadDirectPlugin) {
-	const DOMParser::Ptr parser = DOMParser::make();
-	parser->load(TestEnvironment::executableDir() + "test_plugin.rwplugin.xml");
-	const std::string libpath = parser->getRootElement()->getChild("plugin")->getChild("runtime")->getAttributeValue("library");
+TEST(PluginTest, loadDirectPlugin)
+{
+    const DOMParser::Ptr parser = DOMParser::make();
+    parser->load(TestEnvironment::executableDir() + "test_plugin.rwplugin.xml");
+    const DOMElem::Ptr elem = parser->getRootElement()->getChild("plugin");
+    const DOMElem::Ptr runtime = elem->getChild("runtime");
+    const std::string libpath = runtime->getAttributeValue("library");
 
-	const rw::common::Ptr<Plugin> plugin = Plugin::load(libpath);
+    const rw::common::Ptr<Plugin> plugin = Plugin::load(libpath);
 
-	EXPECT_EQ("TestPlugin", plugin->getId());
-	EXPECT_EQ("Name of test plugin", plugin->getName());
-	EXPECT_EQ("1.2.3", plugin->getVersion());
+    EXPECT_EQ("TestPlugin", plugin->getId());
+    EXPECT_EQ("Name of test plugin", plugin->getName());
+    EXPECT_EQ("1.2.3", plugin->getVersion());
 
-	const std::vector<std::string> ids = plugin->getExtensionPointIDs();
-	EXPECT_EQ(3u, ids.size());
-	if (ids.size() >= 3u) {
-		EXPECT_EQ("ExtensionId1", ids[0]);
-		EXPECT_EQ("ExtensionId2", ids[1]);
-		EXPECT_EQ("ExtensionId3", ids[2]);
-	}
+    const std::vector<std::string> ids = plugin->getExtensionPointIDs();
+    EXPECT_EQ(3u, ids.size());
+    if (ids.size() >= 3u) {
+        EXPECT_EQ("ExtensionId1", ids[0]);
+        EXPECT_EQ("ExtensionId2", ids[1]);
+        EXPECT_EQ("ExtensionId3", ids[2]);
+    }
 
-	const std::vector<Extension::Descriptor> extDesc = plugin->getExtensionDescriptors();
-	EXPECT_EQ(3u, extDesc.size());
-	if (ids.size() >= 3u) {
-		EXPECT_EQ("ExtensionId1", extDesc[0].id);
-		EXPECT_EQ("ExtensionId2", extDesc[1].id);
-		EXPECT_EQ("ExtensionId3", extDesc[2].id);
-		EXPECT_EQ("", extDesc[0].name);
-		EXPECT_EQ("", extDesc[1].name);
-		EXPECT_EQ("", extDesc[2].name);
-		EXPECT_EQ("sdurw_common-gtest.ExtensionPointA", extDesc[0].point);
-		EXPECT_EQ("sdurw_common-gtest.ExtensionPointA", extDesc[1].point);
-		EXPECT_EQ("sdurw_common-gtest.ExtensionPointB", extDesc[2].point);
-	}
+    const std::vector<Extension::Descriptor> extDesc =
+            plugin->getExtensionDescriptors();
+    EXPECT_EQ(3u, extDesc.size());
+    if (ids.size() >= 3u) {
+        EXPECT_EQ("ExtensionId1", extDesc[0].id);
+        EXPECT_EQ("ExtensionId2", extDesc[1].id);
+        EXPECT_EQ("ExtensionId3", extDesc[2].id);
+        EXPECT_EQ("", extDesc[0].name);
+        EXPECT_EQ("", extDesc[1].name);
+        EXPECT_EQ("", extDesc[2].name);
+        EXPECT_EQ("sdurw_common-gtest.ExtensionPointA", extDesc[0].point);
+        EXPECT_EQ("sdurw_common-gtest.ExtensionPointA", extDesc[1].point);
+        EXPECT_EQ("sdurw_common-gtest.ExtensionPointB", extDesc[2].point);
+    }
+    EXPECT_TRUE(extDesc[0].props.has("TestProperty"));
+    EXPECT_EQ("prop",
+            extDesc[0].props.get("TestProperty", std::string("Not found!")));
 
-	Extension::Ptr ext1 = plugin->makeExtension("ExtensionId1");
-	Extension::Ptr ext2 = plugin->makeExtension("ExtensionId2");
-	Extension::Ptr ext3 = plugin->makeExtension("ExtensionId3");
-	EXPECT_FALSE(ext1.isNull());
-	EXPECT_FALSE(ext2.isNull());
-	EXPECT_FALSE(ext3.isNull());
+    Extension::Ptr ext1 = plugin->makeExtension("ExtensionId1");
+    Extension::Ptr ext2 = plugin->makeExtension("ExtensionId2");
+    Extension::Ptr ext3 = plugin->makeExtension("ExtensionId3");
+    EXPECT_FALSE(ext1.isNull());
+    EXPECT_FALSE(ext2.isNull());
+    EXPECT_FALSE(ext3.isNull());
 
-	EXPECT_EQ("ExtensionId1", ext1->getId());
-	EXPECT_EQ("ExtensionId2", ext2->getId());
-	EXPECT_EQ("ExtensionId3", ext3->getId());
-	EXPECT_EQ("", ext1->getName());
-	EXPECT_EQ("", ext2->getName());
-	EXPECT_EQ("", ext3->getName());
-	EXPECT_EQ("sdurw_common-gtest.ExtensionPointA", ext1->getPoint());
-	EXPECT_EQ("sdurw_common-gtest.ExtensionPointA", ext2->getPoint());
-	EXPECT_EQ("sdurw_common-gtest.ExtensionPointB", ext3->getPoint());
+    EXPECT_EQ("ExtensionId1", ext1->getId());
+    EXPECT_EQ("ExtensionId2", ext2->getId());
+    EXPECT_EQ("ExtensionId3", ext3->getId());
+    EXPECT_EQ("", ext1->getName());
+    EXPECT_EQ("", ext2->getName());
+    EXPECT_EQ("", ext3->getName());
+    EXPECT_EQ("sdurw_common-gtest.ExtensionPointA", ext1->getPoint());
+    EXPECT_EQ("sdurw_common-gtest.ExtensionPointA", ext2->getPoint());
+    EXPECT_EQ("sdurw_common-gtest.ExtensionPointB", ext3->getPoint());
+    EXPECT_TRUE(ext1->getProperties().has("TestProperty"));
+    EXPECT_EQ("prop",
+            ext1->getProperties().get("TestProperty",
+                    std::string("Not found!")));
 }
 
-TEST(PluginTest, loadLazyPlugin) {
-	const rw::common::Ptr<Plugin> plugin = Plugin::load(TestEnvironment::executableDir() + "test_plugin.rwplugin.xml");
+TEST(PluginTest, loadLazyPlugin)
+{
+    std::string xmlpath = TestEnvironment::executableDir();
+    xmlpath += "test_plugin.rwplugin.xml";
+    const rw::common::Ptr<Plugin> plugin = Plugin::load(xmlpath);
 
-	EXPECT_EQ("TestLazyPlugin", plugin->getId());
-	EXPECT_EQ("Name of plugin for test.", plugin->getName());
-	EXPECT_EQ("1.0", plugin->getVersion());
+    EXPECT_EQ("TestLazyPlugin", plugin->getId());
+    EXPECT_EQ("Name of plugin for test.", plugin->getName());
+    EXPECT_EQ("1.0", plugin->getVersion());
 
-	const std::vector<std::string> ids = plugin->getExtensionPointIDs();
-	EXPECT_EQ(3u, ids.size());
-	if (ids.size() >= 3u) {
-		EXPECT_EQ("ExtensionId1", ids[0]);
-		EXPECT_EQ("ExtensionId2", ids[1]);
-		EXPECT_EQ("ExtensionId3", ids[2]);
-	}
+    const std::vector<std::string> ids = plugin->getExtensionPointIDs();
+    EXPECT_EQ(3u, ids.size());
+    if (ids.size() >= 3u) {
+        EXPECT_EQ("ExtensionId1", ids[0]);
+        EXPECT_EQ("ExtensionId2", ids[1]);
+        EXPECT_EQ("ExtensionId3", ids[2]);
+    }
 
-	const std::vector<Extension::Descriptor> extDesc = plugin->getExtensionDescriptors();
-	EXPECT_EQ(3u, extDesc.size());
-	if (ids.size() >= 3u) {
-		EXPECT_EQ("ExtensionId1", extDesc[0].id);
-		EXPECT_EQ("ExtensionId2", extDesc[1].id);
-		EXPECT_EQ("ExtensionId3", extDesc[2].id);
-		EXPECT_EQ("Name of first extension.", extDesc[0].name);
-		EXPECT_EQ("Name of second extension.", extDesc[1].name);
-		EXPECT_EQ("Name of third extension.", extDesc[2].name);
-		EXPECT_EQ("sdurw_common-gtest.ExtensionPointA", extDesc[0].point);
-		EXPECT_EQ("sdurw_common-gtest.ExtensionPointA", extDesc[1].point);
-		EXPECT_EQ("sdurw_common-gtest.ExtensionPointB", extDesc[2].point);
-	}
+    const std::vector<Extension::Descriptor> extDesc =
+            plugin->getExtensionDescriptors();
+    EXPECT_EQ(3u, extDesc.size());
+    if (ids.size() >= 3u) {
+        EXPECT_EQ("ExtensionId1", extDesc[0].id);
+        EXPECT_EQ("ExtensionId2", extDesc[1].id);
+        EXPECT_EQ("ExtensionId3", extDesc[2].id);
+        EXPECT_EQ("Name of first extension.", extDesc[0].name);
+        EXPECT_EQ("Name of second extension.", extDesc[1].name);
+        EXPECT_EQ("Name of third extension.", extDesc[2].name);
+        EXPECT_EQ("sdurw_common-gtest.ExtensionPointA", extDesc[0].point);
+        EXPECT_EQ("sdurw_common-gtest.ExtensionPointA", extDesc[1].point);
+        EXPECT_EQ("sdurw_common-gtest.ExtensionPointB", extDesc[2].point);
+    }
+    EXPECT_TRUE(extDesc[0].props.has("TestProperty"));
+    EXPECT_EQ("prop",
+            extDesc[0].props.get("TestProperty", std::string("Not found!")));
 
-	Extension::Ptr ext1 = plugin->makeExtension("ExtensionId1");
-	Extension::Ptr ext2 = plugin->makeExtension("ExtensionId2");
-	Extension::Ptr ext3 = plugin->makeExtension("ExtensionId3");
-	EXPECT_FALSE(ext1.isNull());
-	EXPECT_FALSE(ext2.isNull());
-	EXPECT_FALSE(ext3.isNull());
+    Extension::Ptr ext1 = plugin->makeExtension("ExtensionId1");
+    Extension::Ptr ext2 = plugin->makeExtension("ExtensionId2");
+    Extension::Ptr ext3 = plugin->makeExtension("ExtensionId3");
+    EXPECT_FALSE(ext1.isNull());
+    EXPECT_FALSE(ext2.isNull());
+    EXPECT_FALSE(ext3.isNull());
 
-	EXPECT_EQ("ExtensionId1", ext1->getId());
-	EXPECT_EQ("ExtensionId2", ext2->getId());
-	EXPECT_EQ("ExtensionId3", ext3->getId());
-	EXPECT_EQ("", ext1->getName());
-	EXPECT_EQ("", ext2->getName());
-	EXPECT_EQ("", ext3->getName());
-	EXPECT_EQ("sdurw_common-gtest.ExtensionPointA", ext1->getPoint());
-	EXPECT_EQ("sdurw_common-gtest.ExtensionPointA", ext2->getPoint());
-	EXPECT_EQ("sdurw_common-gtest.ExtensionPointB", ext3->getPoint());
+    EXPECT_EQ("ExtensionId1", ext1->getId());
+    EXPECT_EQ("ExtensionId2", ext2->getId());
+    EXPECT_EQ("ExtensionId3", ext3->getId());
+    EXPECT_EQ("", ext1->getName());
+    EXPECT_EQ("", ext2->getName());
+    EXPECT_EQ("", ext3->getName());
+    EXPECT_EQ("sdurw_common-gtest.ExtensionPointA", ext1->getPoint());
+    EXPECT_EQ("sdurw_common-gtest.ExtensionPointA", ext2->getPoint());
+    EXPECT_EQ("sdurw_common-gtest.ExtensionPointB", ext3->getPoint());
+    EXPECT_TRUE(ext1->getProperties().has("TestProperty"));
+    EXPECT_EQ("prop",
+            ext1->getProperties().get("TestProperty",
+                    std::string("Not found!")));
 }

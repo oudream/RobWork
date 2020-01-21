@@ -22,8 +22,8 @@ void printKinematicTree(
         << transform.P()
         << std::endl;
 
-    BOOST_FOREACH(Frame& child, frame.getChildren(state)) {
-        printKinematicTree(child, state, transform, level + 1);
+    for(Frame::Ptr& child: frame.getChildrenList(state)) {
+        printKinematicTree(*child.get(), state, transform, level + 1);
     }
 
     /*for(Frame& child: frame.getChildrenList(state)) {

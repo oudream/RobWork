@@ -115,7 +115,7 @@ void BINArchive::flush(){
 		_ofs->flush();
 }
 
-void BINArchive::doRead(std::vector<bool>& val, const std::string& id){
+void BINArchive::doRead(std::vector<bool>& val, const std::string&){
     boost::uint32_t s = 0;
     _ifs->read((char*)&s, sizeof(boost::uint32_t) );
     //std::cout << "LEN:" << s << std::endl;
@@ -135,7 +135,7 @@ void BINArchive::doRead(bool& val, const std::string& id){
 		val = true;
  }
 
-void BINArchive::doWrite(const std::string& val, const std::string& id){
+void BINArchive::doWrite(const std::string& val, const std::string&){
     boost::uint32_t s = static_cast<boost::uint32_t>(val.size());
     if (val.size() != static_cast<std::size_t>(s))
     	RW_THROW("BINArchive could not write string, as it is too long!");
@@ -143,7 +143,7 @@ void BINArchive::doWrite(const std::string& val, const std::string& id){
      BOOST_FOREACH(const char& rval, val){ (*_ofs) << rval; }
 }
 
-void BINArchive::doWrite(const std::vector<std::string>& val, const std::string& id){
+void BINArchive::doWrite(const std::vector<std::string>& val, const std::string&){
     boost::uint32_t s = static_cast<boost::uint32_t>(val.size());
     if (val.size() != static_cast<std::size_t>(s))
     	RW_THROW("BINArchive could not write strings, as the vector is too long!");
@@ -157,7 +157,7 @@ void BINArchive::doWrite(const std::vector<std::string>& val, const std::string&
      }
 }
 
- void BINArchive::doRead(std::string& val, const std::string& id){
+ void BINArchive::doRead(std::string& val, const std::string&){
      boost::uint32_t s;
      (*_ifs) >> s;
      val.resize(s);
@@ -166,7 +166,7 @@ void BINArchive::doWrite(const std::vector<std::string>& val, const std::string&
      }
  }
 
- void BINArchive::doRead(std::vector<std::string>& val, const std::string& id){
+ void BINArchive::doRead(std::vector<std::string>& val, const std::string&){
      boost::uint32_t s,ss;
      (*_ifs) >> s;
      val.resize(s);
