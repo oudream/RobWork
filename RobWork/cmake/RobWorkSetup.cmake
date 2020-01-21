@@ -215,7 +215,7 @@ find_package(GLUT QUIET)
 if(NOT GLUT_FOUND) # Check if free glut exsist
     find_package(FreeGLUT QUIET)
     if(FreeGLUT_FOUND)
-        set(GLUT_glut_LIBRARY FreeGLUT::freeglut)
+        set(GLUT_glut_LIBRARY FreeGLUT::freeglut_static)
         set(GLUT_FOUND ${FreeGLUT_FOUND})
     endif()
 endif()
