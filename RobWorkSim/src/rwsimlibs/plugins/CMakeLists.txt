@@ -129,7 +129,7 @@ if(build)
     set(RccSrcFiles_RWSimPlugin)
     qt5_add_resources(RccSrcFiles_RWSimPlugin ${RWSIM_ROOT}/src/gfx/RWSimPlugin.qrc)
     if(RWSIM_HAVE_LUA)
-        set(RWSIM_LUA_LIB sdurwsim_lua_s)
+        set(RWSIM_LUA_LIB RW::sdurw_lua_s sdurwsim_lua_s)
     endif()
 
     add_library(${SUBSYS_NAME} MODULE ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles_RWSimPlugin} ${UIS_OUT_H})
