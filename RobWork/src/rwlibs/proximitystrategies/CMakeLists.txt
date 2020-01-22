@@ -55,6 +55,15 @@ if(build)
 
     set_target_properties(${SUBSYS_NAME} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
 
-    rw_add_plugin(${SUBSYS_NAME}.rwplugin MODULE ProximityStrategyPlugin.cpp)
-    target_link_libraries(${SUBSYS_NAME}.rwplugin PRIVATE ${SUBSYS_NAME} PUBLIC sdurw)
+    set(SUBSYS_NAME_PLUGIN ${SUBSYS_NAME}.rwplugin)
+    set(SUBSYS_DESC_PLUGIN "Plugin providing a collection of proximity strategies!")
+    set(SUBSYS_DEPS_PLUGIN ${SUBSYS_NAME})
+
+    set(build_plugin TRUE)
+    rw_subsys_option(build_plugin ${SUBSYS_NAME_PLUGIN} ${SUBSYS_DESC_PLUGIN} ${DEFAULT} DEPENDS ${SUBSYS_DEPS_PLUGIN} ADD_DOC)
+
+    if(build_plugin)
+        rw_add_plugin(${SUBSYS_NAME}.rwplugin MODULE ProximityStrategyPlugin.cpp)
+        target_link_libraries(${SUBSYS_NAME}.rwplugin PRIVATE ${SUBSYS_NAME} PUBLIC sdurw)
+    endif()
 endif()
