@@ -111,7 +111,17 @@ if(build)
     set_target_properties(sdurws PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
 
     rw_add_includes(sdurws sdurws ${SRC_FILES_HPP})
-    rw_add_plugin(sdurws_plugin.rwplugin MODULE RWSImageLoaderPlugin.cpp RWSImageLoaderPlugin.hpp)
-    target_link_libraries(sdurws_plugin.rwplugin sdurws ${QT_LIBRARIES} RW::sdurw)
+
+    set(SUBSYS_NAME_PLUGIN ${SUBSYS_NAME}_plugin.rwplugin)
+    set(SUBSYS_DESC_PLUGIN "Plugin providing extensions to RobWork from RobWorkStudio!")
+    set(SUBSYS_DEPS_PLUGIN ${SUBSYS_NAME})
+
+    set(build_plugin TRUE)
+    rw_subsys_option(build_plugin ${SUBSYS_NAME_PLUGIN} ${SUBSYS_DESC_PLUGIN} ${DEFAULT} DEPENDS ${SUBSYS_DEPS_PLUGIN} ADD_DOC)
+
+    if(build_plugin)
+        rw_add_plugin(${SUBSYS_NAME_PLUGIN} MODULE RWSImageLoaderPlugin.cpp RWSImageLoaderPlugin.hpp)
+        target_link_libraries(${SUBSYS_NAME_PLUGIN} sdurws ${QT_LIBRARIES} RW::sdurw)
+    endif()
 
 endif()
