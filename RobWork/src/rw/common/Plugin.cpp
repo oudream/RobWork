@@ -5,6 +5,7 @@
 
 #include <RobWorkConfig.hpp>
 #include <rw/common/StringUtil.hpp>
+#include <rw/loaders/dom/DOMPropertyMapLoader.hpp>
 
 #include <boost/filesystem.hpp>
 #include <iostream>
@@ -18,6 +19,7 @@
 #endif
 
 using namespace rw::common;
+using rw::loaders::DOMPropertyMapLoader;
 
 struct Plugin::OSHandle
 {
@@ -311,14 +313,22 @@ rw::common::Ptr< Plugin > Plugin::loadLazy (const std::string& filename)
     if (!exists (libfile))
         RW_THROW ("The plugin file specified in \n" << filename << "\n does not exist.");
 
-    std::vector< Extension::Descriptor > ext_descriptors;
-    for (DOMElem::Iterator p = plugin->begin (); p != plugin->end (); ++p) {
-        if (p->getName () == "extension") {
+    std::vector<Extension::Descriptor> ext_descriptors;
+    for (DOMElem::Iterator p = plugin->begin(); p != plugin->end(); ++p) {
+        if (p->getName() == "extension") {
             Extension::Descriptor extension;
-            extension.id    = p->getAttributeValue ("id");
-            extension.name  = p->getAttributeValue ("name");
-            extension.point = p->getAttributeValue ("point");
-            ext_descriptors.push_back (extension);
+            extension.id = p->getAttributeValue("id");
+            extension.name = p->getAttributeValue("name");
+            extension.point = p->getAttributeValue("point");
+            DOMElem::Iterator child;
+            for (child = p->begin(); child != p->end(); ++child) {
+                if (child->getName() == "PropertyMap") {
+                    extension.props = DOMPropertyMapLoader::readProperties(
+                            *child);
+                    break;
+                }
+            }
+            ext_descriptors.push_back(extension);
         }
     }
 

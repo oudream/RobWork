@@ -536,8 +536,3 @@ void RWSimulatorPlugin::initialize(){
           boost::bind(&RWSimulatorPlugin::genericEventListener, this, _1), this);
 
 }
-
-#if !RWS_USE_QT5
-#include <QtCore/qplugin.h>
-Q_EXPORT_PLUGIN(RWSimulatorPlugin)
-#endif

@@ -1,5 +1,5 @@
 # Test CMake version
-cmake_minimum_required(VERSION 2.8.12 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.5.1 FATAL_ERROR)
 
 if(POLICY CMP0072) # Introduce cmake 3.11
     cmake_policy(SET CMP0072 NEW)
@@ -75,9 +75,6 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${RWS_CXX_FLAGS}")
 include(${RWS_ROOT}/cmake/RobWorkStudioSetup.cmake)
 rw_set_install_dirs(RobWorkStudio RWS)
 
-include_directories(${ROBWORKSTUDIO_INCLUDE_DIR})
-link_directories(${ROBWORKSTUDIO_LIBRARY_DIRS} ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY})
-# MESSAGE(" ${ROBWORKSTUDIO_LIBRARY_DIRS} ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY} ") linking options
 set(RW_STATIC_LINK_PLUGINS ${RWS_USE_STATIC_LINK_PLUGINS})
 # linking options
 option(RWS_USE_STATIC_LINK_COMPONENTS "Set to false if dynamic link libraries of components is needed" ON)
@@ -136,6 +133,11 @@ configure_file(${RWS_ROOT}/cmake/RobWorkStudioConfig.cmake.in "${RWS_ROOT}/cmake
 configure_file(${RWS_ROOT}/cmake/RobWorkStudioConfigVersion.cmake.in
                "${RWS_ROOT}/cmake/RobWorkStudioConfigVersion.cmake" @ONLY)
 
+export(EXPORT ${PROJECT_PREFIX}Targets
+    FILE "${RWS_ROOT}/cmake/${PROJECT_NAME}Targets.cmake"
+    NAMESPACE ${PROJECT_PREFIX}::
+)
+
 # ######################################################################################################################
 # Installation stuff
 #
@@ -143,21 +145,30 @@ configure_file(${RWS_ROOT}/cmake/RobWorkStudioConfigVersion.cmake.in
 # install configuration
 install(
     FILES ${RWS_ROOT}/cmake/RobWorkStudioConfigVersion.cmake ${RWS_ROOT}/cmake/RobWorkStudioConfig.cmake
-    DESTINATION ${RWS_INSTALL_DIR}/cmake
+    DESTINATION "${RWS_INSTALL_DIR}/cmake"
+    COMPONENT cmake
 )
 
 install(
     FILES "cmake/RobWorkStudioBuildConfig_${RWS_BUILD_TYPE}.cmake" "cmake/RobWorkStudioMacros.cmake"
-    DESTINATION ${RWS_INSTALL_DIR}/cmake
+    DESTINATION "${RWS_INSTALL_DIR}/cmake"
+    COMPONENT cmake
 )
 
 # misc
-install(FILES LICENSE.txt NOTICE.txt ChangeLog.txt DESTINATION "${RWS_INSTALL_DIR}/")
+install(FILES LICENSE.txt NOTICE.txt ChangeLog.txt DESTINATION "${RWS_INSTALL_DIR}" COMPONENT cmake)
 install(
     FILES
         ${RWS_ROOT}/src/RobWorkStudioConfig.hpp ${RWS_ROOT}/src/RobWorkStudio.hpp
         ${RWS_ROOT}/src/RobWorkStudioPlugin.hpp
-    DESTINATION ${INCLUDE_INSTALL_DIR}
+    DESTINATION "${INCLUDE_INSTALL_DIR}"
+    COMPONENT sdurws
+)
+
+install(EXPORT ${PROJECT_PREFIX}Targets
+    FILE ${PROJECT_NAME}Targets.cmake
+    NAMESPACE ${PROJECT_PREFIX}::
+    DESTINATION ${RWS_INSTALL_DIR}/cmake
 )
 
 # Install dependencies on Windows
@@ -185,10 +196,6 @@ if(WIN32)
             set(copy_lib TRUE)
         endif()
     endforeach(s)
-
-    # Install external libraries INSTALL(FILES ${QT_LIBRARIES_INSTALL} DESTINATION ${LIB_INSTALL_DIR}) INSTALL(DIRECTORY
-    # "${QT_INCLUDE_DIR_TMP}/" DESTINATION "${EXT_INSTALL_DIR}/qt/include/") INSTALL(DIRECTORY "${QTDIR_TMP}/src/"
-    # DESTINATION "${EXT_INSTALL_DIR}/qt/src/" FILES_MATCHING PATTERN "*.h*")
 endif()
 unset(QTDIR)
 
@@ -197,9 +204,6 @@ unset(QTDIR)
 # expressions instead
 configure_file("${RWS_ROOT}/cmake/dependencies.cmake.in" "${RWS_ROOT}/cmake/dependencies.cmake.gen" @ONLY)
 
-# Disabled generation of the dependencies file (problem with multi-configuration generators like Visual Studio)
-# FILE(GENERATE OUTPUT "${RWS_ROOT}/cmake/dependencies.cmake" INPUT "${RWS_ROOT}/cmake/dependencies.cmake.gen" )
-# INSTALL(SCRIPT "${RWS_ROOT}/cmake/dependencies.cmake")
 
 # Install the example directories
 install(
@@ -232,8 +236,11 @@ if(doc_executable)
 endif()
 
 # Packaging
-include(cmake/packing.cmake)
+#include(cmake/packing.cmake)
 
 # Dashboard IF(DEFINED USE_CDASH AND USE_CDASH)
 configure_file("${RWS_ROOT}/CTestConfig.cmake.in" "${RWS_ROOT}/CTestConfig.cmake")
 # ENDIF()
+
+#Create installer
+rw_create_installer()

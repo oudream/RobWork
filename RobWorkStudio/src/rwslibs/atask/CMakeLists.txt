@@ -7,15 +7,9 @@ rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ON DEPENDS ${SUBSYS_DEPS} A
 
 if(build)
     # if we want to use ui files add them here
-    if(RWS_USE_QT5)
-        qt5_wrap_ui(UIS_OUT_H_ATaskVisPlugin ATaskVisPlugin.ui)
-        qt5_wrap_ui(UIS_OUT_H_StrategyLibraryDialog StrategyLibraryDialog.ui)
-        qt5_wrap_ui(UIS_OUT_H_TaskSetupDialog TaskSetupDialog.ui)
-    else()
-        qt4_wrap_ui(UIS_OUT_H_ATaskVisPlugin ATaskVisPlugin.ui)
-        qt4_wrap_ui(UIS_OUT_H_StrategyLibraryDialog StrategyLibraryDialog.ui)
-        qt4_wrap_ui(UIS_OUT_H_TaskSetupDialog TaskSetupDialog.ui)
-    endif()
+    qt5_wrap_ui(UIS_OUT_H_ATaskVisPlugin ATaskVisPlugin.ui)
+    qt5_wrap_ui(UIS_OUT_H_StrategyLibraryDialog StrategyLibraryDialog.ui)
+    qt5_wrap_ui(UIS_OUT_H_TaskSetupDialog TaskSetupDialog.ui)
     set(UIS_OUT_H ${UIS_OUT_H_ATaskVisPlugin} ${UIS_OUT_H_StrategyLibraryDialog} ${UIS_OUT_H_TaskSetupDialog})
     # Need to add the current binary dir to the include directory because the generated source files are
     # placed here
@@ -31,24 +25,9 @@ if(build)
     )
     set_source_files_properties(TaskSetupDialog.cpp PROPERTIES OBJECT_DEPENDS "${UIS_OUT_H_TaskSetupDialog}")
 
-    if(RWS_USE_QT5)
-        qt5_wrap_cpp(MocSrcFiles ${SRC_FILES_HPP})
-        # Rcc the files:
-        qt5_add_resources(RccSrcFiles atask_resources.qrc)
-    else()
-        # Header files to moc and compile:
-        qt4_wrap_cpp(
-            MocSrcFiles
-            ${SRC_FILES_HPP}
-            OPTIONS
-            -DBOOST_TT_HAS_PLUS_HPP_INCLUDED
-            -DBOOST_TT_HAS_PLUS_ASSIGN_HPP_INCLUDED
-            -DBOOST_TT_HAS_MINUS_HPP_INCLUDED
-            -DBOOST_TT_HAS_MINUS_ASSIGN_HPP_INCLUDED
-        )
-        # Rcc the files:
-        qt4_add_resources(RccSrcFiles atask_resources.qrc)
-    endif()
+    qt5_wrap_cpp(MocSrcFiles ${SRC_FILES_HPP} TARGET ${SUBSYS_NAME})
+    # Rcc the files:
+    qt5_add_resources(RccSrcFiles atask_resources.qrc)
 
     rws_add_plugin(
         ${SUBSYS_NAME}
@@ -59,6 +38,11 @@ if(build)
         ${UIS_OUT_H}
     )
     rw_add_includes(${SUBSYS_NAME} "rwslibs/atask" ${SRC_FILES_HPP})
-    target_link_libraries(${SUBSYS_NAME} ${ROBWORKSTUDIO_LIBRARIES} ${ROBWORK_LIBRARIES})
-    add_dependencies(${SUBSYS_NAME} ${SUBSYS_DEPS})
+    # Need to add the current binary dir to the include directory because the generated source files are placed here
+    target_include_directories(${SUBSYS_NAME} PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
+    target_link_libraries(${SUBSYS_NAME} PUBLIC ${SUBSYS_DEPS} ${QT_LIBRARIES} PRIVATE RW::sdurw_assembly RW::sdurw)
+    target_include_directories(${SUBSYS_NAME}
+        INTERFACE
+        $<BUILD_INTERFACE:${RWS_ROOT}/src> $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
+    )
 endif()

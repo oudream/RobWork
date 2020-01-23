@@ -1,6 +1,13 @@
-set(Ext ${PROJECT_SOURCE_DIR}/ext)
+set(SUBSYS_NAME sdurwsim_ode)
+set(SUBSYS_DESC "Open Dynamics Engine library for RobWorkSim")
+set(SUBSYS_DEPS sdurw)
 
-if(RWSIM_HAVE_ODE)
+set(build TRUE)
+set(DEFAULT ${RWSIM_HAVE_ODE})
+rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} DEPENDS ${SUBSYS_DEPS} ADD_DOC)
+
+if(build)
+    set(Ext ${PROJECT_SOURCE_DIR}/ext)
 
     set(
         SRC_FILES
@@ -63,20 +70,28 @@ if(RWSIM_HAVE_ODE)
         message(STATUS "ODE threading_impl.h NOT detected - assuming version 0.12 and earlier.")
     endif()
 
-    add_library(sdurwsim_ode ${SRC_FILES} ${SRC_FILES_HPP})
+    rw_add_library(${SUBSYS_NAME} ${SRC_FILES} ${SRC_FILES_HPP})
+    target_link_libraries(${SUBSYS_NAME} PUBLIC sdurwsim ${ODE_LIBRARIES} RW::sdurw ${OPENGL_LIBRARIES})
+    target_include_directories(${SUBSYS_NAME}
+        INTERFACE
+        $<BUILD_INTERFACE:${RWSIM_ROOT}/src>
+        $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
+        PUBLIC
+        $<BUILD_INTERFACE:${ODE_INCLUDE_DIR}> 
+    )
 
-    add_library(ode_plugin.rwplugin MODULE ODEPlugin.cpp ODEPlugin.hpp)
-    target_link_libraries(ode_plugin.rwplugin sdurwsim_ode ${ROBWORKSIM_LIBRARIES})
-    install(TARGETS ode_plugin.rwplugin LIBRARY DESTINATION ${RW_PLUGIN_INSTALL_DIR})
-    # INSTALL(TARGETS sdurwsim_ode DESTINATION ${RWSIM_LIB_INSTALL_DIR}) INSTALL(FILES ${SRC_FILES_HPP} DESTINATION
-    # include/rwlibs/simulation)
+    set(SUBSYS_NAME_PLUGIN ode_plugin.rwplugin)
+    set(SUBSYS_DESC_PLUGIN "Plugin providing Open Dynamics Engine.")
+    set(SUBSYS_DEPS_PLUGIN ${SUBSYS_NAME})
 
-    # Make sure dependencies are build before system
-    foreach(DEP IN LISTS ROBWORKSIM_LIBRARIES)
-        if(TARGET ${DEP})
-            add_dependencies(ode_plugin.rwplugin ${DEP})
-        endif()
-    endforeach()
+    set(build_plugin TRUE)
+    rw_subsys_option(build_plugin ${SUBSYS_NAME_PLUGIN} ${SUBSYS_DESC_PLUGIN} ${DEFAULT} DEPENDS ${SUBSYS_DEPS_PLUGIN} ADD_DOC)
+
+    if(build_plugin)
+        add_library(${SUBSYS_NAME_PLUGIN} MODULE ODEPlugin.cpp ODEPlugin.hpp)
+        target_link_libraries(${SUBSYS_NAME_PLUGIN} PRIVATE sdurwsim_ode)
+        install(TARGETS ${SUBSYS_NAME_PLUGIN} LIBRARY DESTINATION ${RW_PLUGIN_INSTALL_DIR})
+    endif()
 
     if(NOT ODE_WITH_THREADING_IMPL) # version below 0.13
         if(${ODE_BUILD_WITH} STREQUAL "DOUBLE")

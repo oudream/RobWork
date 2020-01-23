@@ -75,6 +75,24 @@ Frame::iterator_pair Frame::getChildren(const State& state)
     return makeIteratorPair(_children, dafs);
 }
 
+std::vector<Frame::Ptr> Frame::getChildrenList(const State& state)
+{
+    const std::vector<Frame*>& children = state.getTreeState().getChildren(this);
+
+    std::vector<Frame::Ptr> allChildren;
+
+    for(Frame* &child: _children){
+        allChildren.push_back(Frame::Ptr(child));
+    }
+
+    for( size_t i = 0; i < children.size(); ++i){
+
+        allChildren.push_back(Frame::Ptr(children[i]));
+    }
+
+    return allChildren;
+}
+
 Frame::const_iterator_pair Frame::getDafChildren(const State& state) const
 {
     const std::vector<Frame*>& list = state.getTreeState().getChildren(this);

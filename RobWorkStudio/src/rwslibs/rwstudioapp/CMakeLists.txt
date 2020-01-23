@@ -29,13 +29,11 @@ if(build)
 
     rws_add_component(${SUBSYS_NAME} ${SrcFiles})
     rw_add_includes(${SUBSYS_NAME} "rwslibs/rwstudioapp" ${SRC_FILES_HPP})
-    target_link_libraries(${SUBSYS_NAME} ${SUBSYS_DEPS})
-    # Make sure dependencies are build before system
-    foreach(DEP IN LISTS SUBSYS_DEPS)
-        if(TARGET ${DEP})
-            add_dependencies(${SUBSYS_NAME} ${DEP})
-        endif()
-    endforeach()
+    target_link_libraries(${SUBSYS_NAME} PUBLIC sdurws ${QT_LIBRARIES} PRIVATE ${SUBSYS_DEPS} RW::sdurw)
+    target_include_directories(${SUBSYS_NAME}
+        INTERFACE
+        $<BUILD_INTERFACE:${RWS_ROOT}/src> $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
+    )
 
     set(RWS_COMPONENT_LIBRARIES ${RWS_COMPONENT_LIBRARIES} ${SUBSYS_NAME} PARENT_SCOPE)
 

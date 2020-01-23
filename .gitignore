@@ -58,6 +58,7 @@
 /RobWork/cmake/RobWorkBuildConfig_release.cmake
 /RobWork/cmake/RobWorkBuildConfig_relwithdebinfo.cmake
 /RobWork/cmake/dependencies.cmake.gen
+/RobWork/cmake/*Targets.cmake
 
 # /RobWork/example/
 /RobWork/example/cmake_install.cmake
@@ -2317,6 +2318,7 @@ RobWork/example/java/src/*.log
 /RobWorkHardware/CPackConfig.cmake
 /RobWorkHardware/CPackSourceConfig.cmake
 /RobWorkHardware/config.cmake
+/RobWorkHardware/cmake/*Targets.cmake
 
 # /RobWorkHardware/build/
 /RobWorkHardware/build/cmake_install.cmake
@@ -3039,6 +3041,7 @@ RobWork/example/java/src/*.log
 /RobWorkSim/cmake/RobWorkSimBuildConfig_debug.cmake
 /RobWorkSim/cmake/RobWorkSimBuildConfig_release.cmake
 /RobWorkSim/cmake/RobWorkSimBuildConfig_relwithdebinfo.cmake
+/RobWorkSim/cmake/*Targets.cmake
 
 # /RobWorkSim/example/
 /RobWorkSim/example/cmake_install.cmake
@@ -3499,6 +3502,7 @@ RobWorkSim/src/rwsimlibs/swig/python/RobWorkSim-*.egg-info
 /RobWorkStudio/cmake/RobWorkStudioBuildConfig_release.cmake
 /RobWorkStudio/cmake/RobWorkStudioBuildConfig_relwithdebinfo.cmake
 /RobWorkStudio/cmake/dependencies.cmake.gen
+/RobWorkStudio/cmake/*Targets.cmake
 
 # /RobWorkStudio/docs/
 /RobWorkStudio/docs/cmake_install.cmake
@@ -4136,6 +4140,3 @@ RobWorkSim/src/rwsimlibs/swig/python/RobWorkSim-*.egg-info
 
 #/doc/sphinx/apidoc/java
 /doc/sphinx/apidoc/java/org
-
-
-

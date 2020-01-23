@@ -13,12 +13,9 @@ if(build)
     rw_add_library(${SUBSYS_NAME} ${SRC_FILES} ${SRC_FILES_HPP})
     rw_add_includes(${SUBSYS_NAME} "rwlibs/csg" CSGModel.hpp CSGConvert.hpp)
     target_link_libraries(${SUBSYS_NAME} PUBLIC ${SUBSYS_DEPS})
-    # Make sure dependencies are build before system
-    foreach(DEP IN LISTS SUBSYS_DEPS)
-        if(TARGET ${DEP})
-            add_dependencies(sdurw_csg ${DEP})
-        endif()
-    endforeach()
-
+    target_include_directories(${SUBSYS_NAME}
+        INTERFACE
+        $<BUILD_INTERFACE:${RW_ROOT}/src> $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
+    )
     set_target_properties(${SUBSYS_NAME} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
 endif()

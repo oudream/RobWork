@@ -48,11 +48,22 @@ if(build)
         PRIVATE ${YAOBI_LIBRARIES} ${FCL_LIBRARIES}
     )
     target_include_directories(${SUBSYS_NAME} PRIVATE ${FCL_INCLUDE_DIRS})
-    add_dependencies(${SUBSYS_NAME} ${SUBSYS_DEPS})
+    target_include_directories(${SUBSYS_NAME}
+        INTERFACE
+        $<BUILD_INTERFACE:${RW_ROOT}/src> $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
+    )
 
     set_target_properties(${SUBSYS_NAME} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
 
-    add_library(${SUBSYS_NAME}.rwplugin MODULE ProximityStrategyPlugin.cpp)
-    target_link_libraries(${SUBSYS_NAME}.rwplugin ${SUBSYS_NAME})
-    install(TARGETS ${SUBSYS_NAME}.rwplugin LIBRARY DESTINATION ${RW_PLUGIN_INSTALL_DIR})
+    set(SUBSYS_NAME_PLUGIN ${SUBSYS_NAME}.rwplugin)
+    set(SUBSYS_DESC_PLUGIN "Plugin providing a collection of proximity strategies!")
+    set(SUBSYS_DEPS_PLUGIN ${SUBSYS_NAME})
+
+    set(build_plugin TRUE)
+    rw_subsys_option(build_plugin ${SUBSYS_NAME_PLUGIN} ${SUBSYS_DESC_PLUGIN} ${DEFAULT} DEPENDS ${SUBSYS_DEPS_PLUGIN} ADD_DOC)
+
+    if(build_plugin)
+        rw_add_plugin(${SUBSYS_NAME}.rwplugin MODULE ProximityStrategyPlugin.cpp)
+        target_link_libraries(${SUBSYS_NAME}.rwplugin PRIVATE ${SUBSYS_NAME} PUBLIC sdurw)
+    endif()
 endif()

@@ -11,11 +11,7 @@ if(build)
     # if we want to use ui files add them here
     set(UIS_FILES AboutBox.ui propertyview/PropertyViewEditor.ui propertyview/PropertyViewDialog.ui)
 
-    if(RWS_USE_QT5)
-        qt5_wrap_ui(UIS_OUT_H ${UIS_FILES})
-    else()
-        qt4_wrap_ui(UIS_OUT_H ${UIS_FILES})
-    endif()
+    qt5_wrap_ui(UIS_OUT_H ${UIS_FILES})
 
     # Standard files to compile:
     set(
@@ -71,24 +67,8 @@ if(build)
 
     set_source_files_properties(${SRC_FILES_CPP} PROPERTIES OBJECT_DEPENDS "${UIS_OUT_H}")
 
-    # Add the cmake binary dir because this is where the ui files are placed MESSAGE(STATUS
-    # "CMAKE_CURRENT_BINARY_DIR: ${CMAKE_CURRENT_BINARY_DIR}")
-    include_directories(${CMAKE_CURRENT_BINARY_DIR})
-
     set(MocSrcFiles)
-    if(RWS_USE_QT5)
-        qt5_wrap_cpp(MocSrcFiles ${MocHeaderFiles})
-    else()
-        qt4_wrap_cpp(
-            MocSrcFiles
-            ${MocHeaderFiles}
-            OPTIONS
-            -DBOOST_TT_HAS_PLUS_HPP_INCLUDED
-            -DBOOST_TT_HAS_PLUS_ASSIGN_HPP_INCLUDED
-            -DBOOST_TT_HAS_MINUS_HPP_INCLUDED
-            -DBOOST_TT_HAS_MINUS_ASSIGN_HPP_INCLUDED
-        )
-    endif()
+    qt5_wrap_cpp(MocSrcFiles ${MocHeaderFiles} TARGET ${SUBSYS_NAME})
     set_source_files_properties(${MocSrcFiles} PROPERTIES OBJECT_DEPENDS "${UIS_OUT_H}")
 
     # Resource files to rcc and compile:
@@ -96,11 +76,7 @@ if(build)
         # SET(SandboxResourceFiles rwstudio_sandbox_resources.qrc)
     endif()
     # Rcc the files:
-    if(RWS_USE_QT5)
-        qt5_add_resources(ResourceFiles rwstudio_resources.qrc)
-    else()
-        qt4_add_resources(ResourceFiles rwstudio_resources.qrc)
-    endif()
+    qt5_add_resources(ResourceFiles rwstudio_resources.qrc)
     # We create a static library named rwstudio that all plugins should link to. Our RobWorkStudio executable
     # links to this library also.
     rw_add_library(
@@ -111,25 +87,41 @@ if(build)
         ${ResourceFiles}
     )
 
+    # Add the cmake binary dir because this is where the ui files are placed
+    target_include_directories(sdurws
+        PUBLIC $<BUILD_INTERFACE:${RWS_ROOT}/src> $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
+        PRIVATE ${CMAKE_CURRENT_BINARY_DIR} ${PYTHON_INCLUDE_DIRS}
+    )
+
     target_link_libraries(
         ${SUBSYS_NAME}
         PUBLIC
             qtpropertybrowser
             ${PYTHON_LIBRARIES}
             ${QT_LIBRARIES}
-            ${ROBWORK_LIBRARIES}
+            RW::sdurw_proximitystrategies
+            RW::sdurw_opengl
+            RW::sdurw
+            ${OPENGL_LIBRARIES}
+        PRIVATE
             ${GLUT_glut_LIBRARY}
+            ${PYTHON_LIBRARIES}
     )
 
-    include_directories(${PYTHON_INCLUDE_DIRS})
     set_target_properties(sdurws PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
 
-    # Install stuff
-    install(TARGETS sdurws DESTINATION ${LIB_INSTALL_DIR})
-    install(FILES ${SRC_FILES_HPP} DESTINATION ${INCLUDE_INSTALL_DIR}/sdurws)
+    rw_add_includes(sdurws sdurws ${SRC_FILES_HPP})
 
-    add_library(sdurws_plugin.rwplugin MODULE RWSImageLoaderPlugin.cpp RWSImageLoaderPlugin.hpp)
-    target_link_libraries(sdurws_plugin.rwplugin sdurws ${QT_LIBRARIES} ${ROBWORK_LIBRARIES})
-    install(TARGETS sdurws_plugin.rwplugin DESTINATION ${RW_PLUGIN_INSTALL_DIR})
+    set(SUBSYS_NAME_PLUGIN ${SUBSYS_NAME}_plugin.rwplugin)
+    set(SUBSYS_DESC_PLUGIN "Plugin providing extensions to RobWork from RobWorkStudio!")
+    set(SUBSYS_DEPS_PLUGIN ${SUBSYS_NAME})
+
+    set(build_plugin TRUE)
+    rw_subsys_option(build_plugin ${SUBSYS_NAME_PLUGIN} ${SUBSYS_DESC_PLUGIN} ${DEFAULT} DEPENDS ${SUBSYS_DEPS_PLUGIN} ADD_DOC)
+
+    if(build_plugin)
+        rw_add_plugin(${SUBSYS_NAME_PLUGIN} MODULE RWSImageLoaderPlugin.cpp RWSImageLoaderPlugin.hpp)
+        target_link_libraries(${SUBSYS_NAME_PLUGIN} sdurws ${QT_LIBRARIES} RW::sdurw)
+    endif()
 
 endif()

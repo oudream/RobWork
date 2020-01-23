@@ -153,8 +153,3 @@ void PyPlugin::stateChangedListener (const State& state)
 }
 
 size_t PyPlugin::_pyPlugins = 0;
-
-#if !RWS_USE_QT5
-#include <QtCore/qplugin.h>
-Q_EXPORT_PLUGIN (PyPlugin);
-#endif

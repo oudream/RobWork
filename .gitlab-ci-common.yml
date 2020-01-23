@@ -84,7 +84,7 @@ stages:
       - ./Build
       - ./RobWork
       - ./gtest
-    expire_in: 5 hrs 
+    expire_in: 2 day 
     when: on_success
 
 .linux-build-RWS:
@@ -105,7 +105,7 @@ stages:
     paths: 
       - ./Build/RWS
       - ./RobWorkStudio
-    expire_in: 5 hrs 
+    expire_in: 2 day
     when: on_success
 
 .linux-build-RWHW:
@@ -124,7 +124,7 @@ stages:
     paths: 
       - ./Build/RWHW
       - ./RobWorkHardware
-    expire_in: 5 hrs 
+    expire_in: 2 day 
     when: on_success
 
 .linux-build-RWSim:
@@ -145,7 +145,7 @@ stages:
     paths: 
       - ./Build/RWSim
       - ./RobWorkSim
-    expire_in: 5 hrs 
+    expire_in: 2 day
     when: on_success    
   
 .linux-examples:
@@ -246,7 +246,7 @@ stages:
       - ./Build
       - ./RobWork
       - ./gtest
-    expire_in: 5 hrs 
+    expire_in: 2 day
     when: on_success
 
 .windows-build-RWHW:
@@ -264,7 +264,7 @@ stages:
     paths: 
       - ./Build/RWHW
       - ./RobWorkHardware
-    expire_in: 5 hrs 
+    expire_in: 2 day 
     when: on_success
 
 .windows-build-RWS:
@@ -282,7 +282,7 @@ stages:
     paths: 
       - ./Build/RWS
       - ./RobWorkStudio
-    expire_in: 5 hrs 
+    expire_in: 2 day
     when: on_success
 
 .windows-build-RWSim:
@@ -299,7 +299,7 @@ stages:
     paths: 
       - ./Build/RWSim
       - ./RobWorkSim
-    expire_in: 5 hrs 
+    expire_in: 2 day
     when: on_success
 
 .windows-examples:

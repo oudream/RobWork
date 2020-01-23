@@ -10,24 +10,9 @@ if(build)
     set(SrcFiles PlayBack.cpp Player.cpp StateDraw.cpp PlayBackSettings.cpp)
     set(SRC_FILES_HPP PlayBack.hpp Player.hpp PlayBackSettings.hpp)
 
-    if(RWS_USE_QT5)
-        qt5_wrap_cpp(MocSrcFiles ${SRC_FILES_HPP})
-        # Rcc the files:
-        qt5_add_resources(RccSrcFiles playback_resources.qrc)
-    else()
-        # Header files to moc and compile:
-        qt4_wrap_cpp(
-            MocSrcFiles
-            ${SRC_FILES_HPP}
-            OPTIONS
-            -DBOOST_TT_HAS_PLUS_HPP_INCLUDED
-            -DBOOST_TT_HAS_PLUS_ASSIGN_HPP_INCLUDED
-            -DBOOST_TT_HAS_MINUS_HPP_INCLUDED
-            -DBOOST_TT_HAS_MINUS_ASSIGN_HPP_INCLUDED
-        )
-        # Rcc the files:
-        qt4_add_resources(RccSrcFiles playback_resources.qrc)
-    endif()
+    qt5_wrap_cpp(MocSrcFiles ${SRC_FILES_HPP} TARGET ${SUBSYS_NAME})
+    # Rcc the files:
+    qt5_add_resources(RccSrcFiles playback_resources.qrc)
 
     rws_add_plugin(
         ${SUBSYS_NAME}
@@ -37,7 +22,11 @@ if(build)
         ${RccSrcFiles}
     )
     rw_add_includes(${SUBSYS_NAME} "rwslibs/playback" ${SRC_FILES_HPP})
-    add_dependencies(${SUBSYS_NAME} ${SUBSYS_DEPS})
+    target_link_libraries(${SUBSYS_NAME} PUBLIC ${SUBSYS_DEPS} ${QT_LIBRARIES} RW::sdurw)
+    target_include_directories(${SUBSYS_NAME}
+        INTERFACE
+        $<BUILD_INTERFACE:${RWS_ROOT}/src> $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
+    )
 
     if("${RWS_DEFAULT_LIB_TYPE}" STREQUAL "STATIC")
         set(RWS_PLUGIN_LIBRARIES ${RWS_PLUGIN_LIBRARIES} ${SUBSYS_NAME} PARENT_SCOPE)

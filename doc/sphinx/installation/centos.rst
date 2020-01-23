@@ -108,7 +108,7 @@ Xerces can be used some places in RobWork for opening XML files.
 RobWorkStudio Dependencies
 --------------------------
 
-RobWorkStudio requires Qt to be installed. Both Qt4 and Qt5 is supported, but on a fresh Qt install it is encouraged to choose the Qt5 version:
+RobWorkStudio requires Qt to be installed. Only Qt5 is supported:
 
 .. code-block:: bash
 
@@ -221,7 +221,7 @@ Environment variables can be set up one time for all in the users home folder in
 The later does however give more fine-grained control, as it allows multiple versions of dependencies to be installed on the system.
 The version to use is then selected explicitly when running CMake.
 
-In `CMake Options & Environment <@ref page_rw_installation_cmake_options>`_ we try to give an overview of the correct variables to set for the various dependencies.
+In :ref:`CMake Options & Environment<cmake-options>`: we try to give an overview of the correct variables to set for the various dependencies.
 
 Compiling RobWork
 ------------------------------------------------

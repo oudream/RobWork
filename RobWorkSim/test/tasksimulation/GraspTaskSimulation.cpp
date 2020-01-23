@@ -20,7 +20,16 @@
 #include <RobWorkSimConfig.hpp>
 
 #include <boost/test/unit_test.hpp>
-#include <boost/test/floating_point_comparison.hpp>
+
+#if defined(__GNUC__) && __GNUC__ < 5 // this is to detect CENTOS
+    #include <boost/test/floating_point_comparison.hpp> //Depricated header
+#else
+    #if __has_include(<boost/test/tools/floating_point_comparison.hpp>)
+        #include <boost/test/tools/floating_point_comparison.hpp>
+    #else 
+        #include <boost/test/floating_point_comparison.hpp> // Depricated header
+    #endif
+#endif
 
 #include <rw/loaders/path/PathLoader.hpp>
 #include <rwlibs/task/GraspTask.hpp>

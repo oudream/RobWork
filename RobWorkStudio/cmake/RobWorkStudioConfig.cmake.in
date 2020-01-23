@@ -153,6 +153,10 @@ endif()
 # get the relavant build type
 get_robworkstudio_build_type(${RWSCFG_ROOT} RWS_BUILD_TYPE)
 
+if(NOT TARGET sdurws)
+    include("${RWSCFG_ROOT}/RobWorkStudioTargets.cmake")
+endif()
+
 # check whether RobWorkConfig.cmake is found into a RobWork installation or in a build tree
 if(EXISTS "${RWSCFG_ROOT}/../src/RobWorkStudioConfig.hpp")
     # Found RobWorkConfig.cmake in a build tree of RobWork
@@ -220,27 +224,19 @@ if(EXISTS ${RWSCFG_ROOT}/RobWorkStudioBuildConfig_${RWS_BUILD_TYPE}.cmake)
     set(QT_INCLUDE_DIR "${RWS_BUILD_WITH_QT_INCLUDE_DIR}")
     set(QT_LIBRARY_DIR "${RWS_BUILD_WITH_QT_LIBRARY_DIR}")
     set(QT_BINARY_DIR "${RWS_BUILD_WITH_QT_BINARY_DIR}")
-    set(RWS_USE_QT5 "${RWS_BUILD_WITH_QT5}")
+    set(RWS_USE_QT5 TRUE)
 
     # Find and setup Qt.
-    if(NOT RWS_USE_QT5)
-        find_package(Qt4 REQUIRED)
-        set(QT_USE_QTOPENGL 1)
-        set(QT_USE_QTDESIGNER 1)
-        set(QT_USE_QTUITOOLS 1)
-        include(${QT_USE_FILE})
-    else()
-        cmake_minimum_required(VERSION 2.8.3)
-        find_package(Qt5Core REQUIRED)
-        find_package(Qt5Gui REQUIRED)
-        find_package(Qt5Widgets REQUIRED)
-        find_package(Qt5OpenGL REQUIRED)
-        get_target_property(QT_UIC_EXECUTABLE Qt5::uic LOCATION)
-        set(QT_LIBRARIES ${Qt5Core_LIBRARIES} ${Qt5Gui_LIBRARIES} ${Qt5Widgets_LIBRARIES} ${Qt5OpenGL_LIBRARIES})
-        set(QT_INCLUDES ${Qt5Core_INCLUDE_DIRS} ${Qt5Gui_INCLUDE_DIRS} ${Qt5Widgets_INCLUDE_DIRS}
-                        ${Qt5OpenGL_INCLUDE_DIRS})
-        include_directories(${QT_INCLUDES})
-    endif()
+    cmake_minimum_required(VERSION 2.8.3)
+    find_package(Qt5Core REQUIRED)
+    find_package(Qt5Gui REQUIRED)
+    find_package(Qt5Widgets REQUIRED)
+    find_package(Qt5OpenGL REQUIRED)
+    get_target_property(QT_UIC_EXECUTABLE Qt5::uic LOCATION)
+    set(QT_LIBRARIES ${Qt5Core_LIBRARIES} ${Qt5Gui_LIBRARIES} ${Qt5Widgets_LIBRARIES} ${Qt5OpenGL_LIBRARIES})
+    set(QT_INCLUDES ${Qt5Core_INCLUDE_DIRS} ${Qt5Gui_INCLUDE_DIRS} ${Qt5Widgets_INCLUDE_DIRS}
+                    ${Qt5OpenGL_INCLUDE_DIRS})
+    #include_directories(${QT_INCLUDES})
 
 
     # Find and setup OpenGL.
@@ -290,6 +286,19 @@ if(EXISTS ${RWSCFG_ROOT}/RobWorkStudioBuildConfig_${RWS_BUILD_TYPE}.cmake)
             "${ROBWORKSTUDIO_LIBRARIES_TMP}"
     )
     # list(REMOVE_DUPLICATES ROBWORKSTUDIO_LIBRARIES) MESSAGE("INCLUDES: ${ROBWORKSTUDIO_LIBRARIES}")
+
+    # Find and add full path information for the RobWorkStudio libraries
+    set(ROBWORKSTUDIO_LIBRARIES_TMP ${ROBWORKSTUDIO_LIBRARIES})
+    set(ROBWORKSTUDIO_LIBRARIES)
+    foreach(l ${ROBWORKSTUDIO_LIBRARIES_TMP})
+        unset(tmp CACHE)
+        find_library(tmp ${l} PATHS ${ROBWORKSTUDIO_LIBRARY_DIRS} NO_DEFAULT_PATH)
+        if(tmp)
+            list(APPEND ROBWORKSTUDIO_LIBRARIES ${tmp})
+        else()
+            list(APPEND ROBWORKSTUDIO_LIBRARIES ${l})
+        endif()
+    endforeach(l)
 
 else()
     message(STATUS "RobWorkStudio: Could not find a suitable RobWorkStudio installation!")

@@ -35,7 +35,8 @@ if(build)
     if(NOT ${SWIG_VERSION} VERSION_LESS 4.0.0)
         set_source_files_properties(../sdurws.i PROPERTIES SWIG_FLAGS "-includeall;-doxygen")
     endif()
-
+    include_directories(${RW_ROOT}/src)
+    
     include_directories(${JAVA_INCLUDE_DIRS} ${JNI_INCLUDE_DIRS})
     set(CMAKE_SWIG_FLAGS "-package" "org.robwork.sdurws")
     # Put java files in different directory suitable for JAR generation later on
@@ -51,7 +52,7 @@ if(build)
         ${RWS_COMPONENT_LIBRARIES}
         ${RWS_PLUGIN_LIBRARIES}
         sdurws
-        ${ROBWORK_LIBRARIES}
+        RW::sdurw
     )
     if((CMAKE_COMPILER_IS_GNUCC) OR (CMAKE_C_COMPILER_ID STREQUAL "Clang"))
         set_target_properties(sdurws_jni PROPERTIES LINK_FLAGS -Wl,--no-undefined)

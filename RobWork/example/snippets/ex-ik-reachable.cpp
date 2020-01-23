@@ -5,7 +5,6 @@
 #include <rw/pathplanning/QSampler.hpp>
 #include <rw/proximity/CollisionDetector.hpp>
 #include <rwlibs/proximitystrategies/ProximityStrategyYaobi.hpp>
-#include <boost/foreach.hpp>
 
 using rw::common::ownedPtr;
 using rw::kinematics::State;
@@ -34,7 +33,7 @@ void printReachableTargets(
     QIKSampler& ik)
 {
     int i = 0;
-    BOOST_FOREACH(const Transform3D<>& target, targets) {
+    for(const Transform3D<>& target: targets) {
         const Q q = ik.sample(target);
         std::cout << i << " " << (q.empty() ? "False" : "True") << "\n";
         ++i;

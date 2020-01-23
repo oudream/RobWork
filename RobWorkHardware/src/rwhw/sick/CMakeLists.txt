@@ -14,6 +14,10 @@ rw_subsys_option(
 
 if(build)
     rw_add_library(${SUBSYS_NAME} SickLMS.cpp SickLMS.hpp)
+    target_include_directories(${SUBSYS_NAME}
+        PUBLIC
+        $<BUILD_INTERFACE:${RWHW_ROOT}/src> $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
+    )
     rw_add_includes(${SUBSYS_NAME} "rwhw/sick" SickLMS.hpp)
     set(ROBWORKHARDWARE_LIBRARIES ${ROBWORKHARDWARE_LIBRARIES} sdurwhw_sick PARENT_SCOPE)
 endif()

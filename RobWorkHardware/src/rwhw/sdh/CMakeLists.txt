@@ -22,8 +22,6 @@ rw_subsys_option(
 
 if(build)
     find_package(SDH)
-    include_directories(${SDH_INCLUDE_DIR})
-
     find_package(PEAKCAN)
 
     set(SRC_FILES)
@@ -39,15 +37,13 @@ if(build)
         ${SRC_FILES}
         ${SRC_FILES_HPP}
     )
-    target_link_libraries(${SUBSYS_NAME} PUBLIC ${ROBWORK_LIBRARIES} ${SDH_LIBRARY} ${PEAKCAN_LIBRARIES})
+    target_link_libraries(${SUBSYS_NAME} PUBLIC RW::sdurw ${SDH_LIBRARY} ${PEAKCAN_LIBRARIES})
+    target_include_directories(${SUBSYS_NAME}
+        PUBLIC
+        ${SDH_INCLUDE_DIR}
+        $<BUILD_INTERFACE:${RWHW_ROOT}/src> $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
+    )
     rw_add_includes(${SUBSYS_NAME} "rwhw/sdh" SDHDriver.hpp SDHDriverLua.hpp)
     set(ROBWORKHARDWARE_LIBRARIES ${ROBWORKHARDWARE_LIBRARIES} ${SUBSYS_NAME} PARENT_SCOPE)
-
-    # Make sure dependencies are build before system
-    foreach(DEP IN LISTS ROBWORK_LIBRARIES SDH_LIBRARY PEAKCAN_LIBRARIES)
-        if(TARGET ${DEP})
-            add_dependencies(sdurwhw_sdh ${DEP})
-        endif()
-    endforeach()
 
 endif()

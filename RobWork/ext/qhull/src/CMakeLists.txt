@@ -25,6 +25,7 @@ file(GLOB_RECURSE qhull_hdr *.h)
 
 add_library(sdurw_qhull STATIC ${qhull_src})
 set_property(TARGET sdurw_qhull PROPERTY OUTPUT_NAME "sdurw_qhull")
+target_include_directories(sdurw_qhull INTERFACE $<BUILD_INTERFACE:${QHULL_INCLUDE_DIRS}> $<INSTALL_INTERFACE:"${INCLUDE_INSTALL_DIR}/ext/qhull/src">)
 
 IF(CMAKE_COMPILER_IS_GNUCXX)
     TARGET_COMPILE_OPTIONS(sdurw_qhull PRIVATE -Wno-unused-variable)
@@ -32,6 +33,7 @@ ENDIF()
 
 INSTALL(TARGETS #qhull
     sdurw_qhull
+    EXPORT ${PROJECT_PREFIX}Targets
     #qhullcmd rbox qconvex qdelaunay qvoronoi qhalf
 	RUNTIME DESTINATION ${BIN_INSTALL_DIR}
 	LIBRARY DESTINATION ${LIB_INSTALL_DIR}

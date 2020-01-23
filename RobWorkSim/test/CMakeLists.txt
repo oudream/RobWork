@@ -21,22 +21,6 @@ CONFIGURE_FILE(
   ${CMAKE_CURRENT_SOURCE_DIR}/TestSuiteConfig.xml.install
 )
 
-
-
-SET(TEST_LIBRARIES
-  ${ROBWORKSIM_LIBRARIES}
-  ${ROBWORK_LIBRARIES}
-  #${ROBWORKSTUDIO_LIBRARIES}
-  #${RW_DRAWABLE_LIBRARY_LIST}
-  #${RW_PATHPLANNERS_LIBRARY_LIST}
-  #${RW_PROXIMITYSTRATEGIES_LIBRARY_LIST}
-  #${ROBWORK_LIBRARIES}
-)
-
-IF(RWSIM_HAVE_ODE)
-	SET(TEST_LIBRARIES sdurwsim_ode ${ODE_LIBRARY} ${TEST_LIBRARIES})
-ENDIF()
-
 SET(COMMON_TEST_SRC
   common/CommonTest.cpp
 )
@@ -46,27 +30,33 @@ SET(DYNAMICS_TEST_SRC
 )
 
 # Repeat for each test 
-ADD_EXECUTABLE( sdurwsim_common-test ${DO_EXCLUDE} test-main.cpp ${COMMON_TEST_SRC})       
-TARGET_LINK_LIBRARIES( sdurwsim_common-test ${TEST_LIBRARIES} )
+add_executable(sdurwsim_common-test ${DO_EXCLUDE} test-main.cpp ${COMMON_TEST_SRC})
+target_link_libraries(sdurwsim_common-test PRIVATE sdurwsim )
 ADD_TEST( sdurwsim_common-test ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/sdurwsim_common-test )
 
-ADD_EXECUTABLE( sdurwsim_dynamics-test ${DO_EXCLUDE} test-main.cpp ${DYNAMICS_TEST_SRC})       
-TARGET_LINK_LIBRARIES( sdurwsim_dynamics-test ${TEST_LIBRARIES} )
+add_executable(sdurwsim_dynamics-test ${DO_EXCLUDE} test-main.cpp ${DYNAMICS_TEST_SRC})
+target_link_libraries(sdurwsim_dynamics-test PRIVATE sdurwsim RW::sdurw )
 ADD_TEST( sdurwsim_dynamics-test ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/sdurwsim_dynamics-test )
 
-ADD_EXECUTABLE( sdurwsim_tasksimulation-test ${DO_EXCLUDE} test-main.cpp tasksimulation/GraspTaskSimulation.cpp)       
-TARGET_LINK_LIBRARIES( sdurwsim_tasksimulation-test ${TEST_LIBRARIES} )
+add_executable(sdurwsim_tasksimulation-test ${DO_EXCLUDE} test-main.cpp tasksimulation/GraspTaskSimulation.cpp)
+if(RWSIM_HAVE_ODE)
+	target_link_libraries(sdurwsim_tasksimulation-test PRIVATE sdurwsim_ode)
+endif()
+target_link_libraries(sdurwsim_tasksimulation-test PRIVATE sdurwsim RW::sdurw_task RW::sdurw)
 ADD_TEST( sdurwsim_tasksimulation-test ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/sdurwsim_tasksimulation-test )
 
-ADD_EXECUTABLE( sdurwsim_sensors-test ${DO_EXCLUDE} test-main.cpp sensors/FTSensorTest.cpp sensors/TactileArraySensorTest.cpp)       
-TARGET_LINK_LIBRARIES( sdurwsim_sensors-test ${TEST_LIBRARIES} )
+add_executable(sdurwsim_sensors-test ${DO_EXCLUDE} test-main.cpp sensors/FTSensorTest.cpp sensors/TactileArraySensorTest.cpp)
+if(RWSIM_HAVE_ODE)
+	target_link_libraries(sdurwsim_sensors-test PRIVATE sdurwsim_ode)
+endif()
+target_link_libraries(sdurwsim_sensors-test PRIVATE sdurwsim RW::sdurw)
 ADD_TEST( sdurwsim_sensors-test ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/sdurwsim_sensors-test )
 
-IF(RWSIM_HAVE_ODE)
-	ADD_EXECUTABLE( sdurwsim_ode-test ${DO_EXCLUDE} test-main.cpp ode/ODEControlTest.cpp ) #  ode/ODESimpleTest.cpp        
-	TARGET_LINK_LIBRARIES( sdurwsim_ode-test ${TEST_LIBRARIES} )
+if(RWSIM_HAVE_ODE)
+	add_executable(sdurwsim_ode-test ${DO_EXCLUDE} test-main.cpp ode/ODEControlTest.cpp ) #  ode/ODESimpleTest.cpp
+	target_link_libraries(sdurwsim_ode-test PRIVATE sdurwsim_ode sdurwsim RW::sdurw)
 	ADD_TEST( sdurwsim_ode-test ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/sdurwsim_ode-test )
-ENDIF()
+endif()
 
 ADD_CUSTOM_TARGET(tests ctest -V 
   DEPENDS sdurwsim_common-test ${TEST_DEPENDENCIES}

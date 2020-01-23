@@ -86,11 +86,7 @@ SimulatorLogWidget::SimulatorLogWidget(QWidget* parent):
 
 	// Left Tree Selector
 	_ui->_tree->setModel(_model);
-#if RWS_USE_QT5
 	_ui->_tree->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
-#else
-	_ui->_tree->header()->setResizeMode(QHeaderView::ResizeToContents);
-#endif
 	connect(_ui->_tree->selectionModel(), SIGNAL(selectionChanged (const QItemSelection &, const QItemSelection &)),
 			this, SLOT(selectionChanged(const QItemSelection &, const QItemSelection &)));
 	connect(_ui->_tree->selectionModel(), SIGNAL(currentRowChanged (const QModelIndex &, const QModelIndex &)),

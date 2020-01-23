@@ -1,6 +1,6 @@
 # ######################################################################################################################
 # Test CMake version and CMAKE_BUILD_TYPE
-cmake_minimum_required(VERSION 2.8.12)
+cmake_minimum_required(VERSION 3.5.1)
 
 if(POLICY CMP0072) # Introduce cmake 3.11
     cmake_policy(SET CMP0072 NEW)
@@ -89,9 +89,6 @@ configure_file(${RWSIM_ROOT}/cmake/RobWorkSimConfig.cmake.in "${RWSIM_ROOT}/cmak
 configure_file(${RWSIM_ROOT}/cmake/RobWorkSimConfigVersion.cmake.in "${RWSIM_ROOT}/cmake/RobWorkSimConfigVersion.cmake"
                @ONLY)
 
-include_directories(${ROBWORKSIM_INCLUDE_DIR})
-link_directories(${ROBWORKSIM_LIBRARY_DIRS} ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY})
-
 # Store the test results in a RWSimConfig.hpp file.
 configure_file(${RWSIM_ROOT}/src/RWSimConfig.hpp.in ${RWSIM_ROOT}/src/RobWorkSimConfig.hpp)
 
@@ -99,6 +96,11 @@ configure_file(${RWSIM_ROOT}/src/rwsimlibs/gui/RWSimGuiConfig.hpp.in ${RWSIM_ROO
 
 # process sub directories add_subdirectory(ext)
 add_subdirectory(src)
+
+export(EXPORT ${PROJECT_PREFIX}Targets
+    FILE "${RWSIM_ROOT}/cmake/${PROJECT_NAME}Targets.cmake"
+    NAMESPACE ${PROJECT_PREFIX}::
+)
 
 # ######################################################################################################################
 # Installation stuff
@@ -114,6 +116,12 @@ install(FILES "cmake/RobWorkSimBuildConfig_${RWSIM_BUILD_TYPE}.cmake" DESTINATIO
 
 # misc
 install(FILES LICENSE.txt NOTICE.txt ChangeLog.txt DESTINATION "${RWSIM_INSTALL_DIR}/")
+
+install(EXPORT ${PROJECT_PREFIX}Targets
+    FILE ${PROJECT_NAME}Targets.cmake
+    NAMESPACE ${PROJECT_PREFIX}::
+    DESTINATION ${RWSIM_INSTALL_DIR}/cmake
+)
 
 # ######################################################################################################################
 # setup testing
@@ -142,4 +150,4 @@ configure_file(${RWSIM_ROOT}/cmake/RobWorkSimBuildConfig.cmake.in
                "${RWSIM_ROOT}/cmake/RobWorkSimBuildConfig_${RWSIM_BUILD_TYPE}.cmake")
 
 # Packaging
-include(cmake/packing.cmake)
+rw_create_installer()
