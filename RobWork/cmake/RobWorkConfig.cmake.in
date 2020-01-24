@@ -317,6 +317,8 @@ if(EXISTS ${RWCFG_ROOT}/RobWorkBuildConfig_${RW_BUILD_TYPE}.cmake)
     set(ROBWORK_LIBRARIES_TMP "${LIBRARIES_TO_INCLUDE};${OPTIONAL_LIBRARIES_TO_INCLUDE};${RW_BUILD_WITH_LIB_DEPEND}")
 
     # make sure that the library and include paths are pointing to the right locations
+
+    ########## Include Directories #############
     string(
         REPLACE
             "${ROBWORK_BUILD_PATH}/ext" "${RW_INCLUDE_EXT}" ROBWORK_INCLUDE_DIRS
@@ -332,15 +334,14 @@ if(EXISTS ${RWCFG_ROOT}/RobWorkBuildConfig_${RW_BUILD_TYPE}.cmake)
     endif()
 
     list(REMOVE_DUPLICATES ROBWORK_INCLUDE_DIRS)
-    # MESSAGE("INCLUDES: ${ROBWORK_INCLUDE_DIRS}")
 
+    ########## Library Paths #############
     string(
         REPLACE
             "${ROBWORK_BUILD_PATH}/libs/${RW_BUILD_TYPE}" "${RW_LIBS}" ROBWORK_LIBRARY_DIRS
             "${RW_BUILD_WITH_LIBRARY_DIRS}"
     )
     list(REMOVE_DUPLICATES ROBWORK_LIBRARY_DIRS)
-    # MESSAGE("INCLUDES: ${ROBWORK_LIBRARY_DIRS}")
 
     string(
         REPLACE
@@ -355,7 +356,7 @@ if(EXISTS ${RWCFG_ROOT}/RobWorkBuildConfig_${RW_BUILD_TYPE}.cmake)
         )
     endif()
     list(REMOVE_DUPLICATES ROBWORK_LIBRARIES) 
-    #MESSAGE("INCLUDES: ${ROBWORK_LIBRARIES}")
+
 
     # Find and add full path information for the RobWork libraries
     set(ROBWORK_LIBRARIES_TMP ${ROBWORK_LIBRARIES})
