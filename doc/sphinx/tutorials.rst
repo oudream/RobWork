@@ -7,6 +7,7 @@ Tutorials
    :maxdepth: 2
    :caption: Contents:
 
+   tutorials/basic
    tutorials/analytic_surfaces
    tutorials/algorithms
    tutorials/geometry
