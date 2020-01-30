@@ -1,4 +1,4 @@
-set(SUBSYS_NAME sdurwsim_gtask)
+set(SUBSYS_NAME SimulatorLogViewer)
 set(SUBSYS_DESC "Stand-alone application for visualization of internal data from a Physics Engine.")
 set(SUBSYS_DEPS sdurws sdurw)
 

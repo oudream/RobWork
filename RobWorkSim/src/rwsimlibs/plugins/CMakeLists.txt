@@ -7,22 +7,32 @@ qt5_add_resources(RccSrcFiles resources.qrc)
 # ######################################################################################################################
 # next compile RWSimulatorPlugin
 #
-set(SrcFiles RWSimulatorPlugin.cpp)
+set(SUBSYS_NAME RWSimulatorPlugin)
+set(SUBSYS_DESC "A RobWorkStudioPlugin.")
+set(SUBSYS_DEPS)
 
-# Call the create_plugin macro for creating the plugin
-qt5_wrap_cpp(MocSrcFiles RWSimulatorPlugin.hpp TARGET RWSimulatorPlugin)
+set(build TRUE)
+set(DEFAULT TRUE)
+rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} DEPENDS ${SUBSYS_DEPS} ADD_DOC)
 
-# The shared library to build:
-add_library(RWSimulatorPlugin MODULE ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles})
-target_link_libraries(RWSimulatorPlugin
-    PRIVATE sdurwsim
-    PUBLIC RWS::sdurws
-    PRIVATE RW::sdurw_simulation RW::sdurw_opengl
-    PUBLIC RW::sdurw
-)
+if(build)
+    set(SrcFiles RWSimulatorPlugin.cpp)
 
-# to avoid windows compile bug
-target_include_directories(RWSimulatorPlugin PRIVATE ${PYTHON_INCLUDE_DIRS})
+    # Call the create_plugin macro for creating the plugin
+    qt5_wrap_cpp(MocSrcFiles RWSimulatorPlugin.hpp TARGET ${SUBSYS_NAME})
+
+    # The shared library to build:
+    add_library(${SUBSYS_NAME} MODULE ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles})
+    target_link_libraries(${SUBSYS_NAME}
+        PRIVATE sdurwsim
+        PUBLIC RWS::sdurws
+        PRIVATE RW::sdurw_simulation RW::sdurw_opengl
+        PUBLIC RW::sdurw
+    )
+
+    # to avoid windows compile bug
+    target_include_directories(${SUBSYS_NAME} PRIVATE ${PYTHON_INCLUDE_DIRS})
+endif()
 
 # ######################################################################################################################
 # next compile SDHPlugin
@@ -40,115 +50,154 @@ target_include_directories(RWSimulatorPlugin PRIVATE ${PYTHON_INCLUDE_DIRS})
 # ######################################################################################################################
 # next compile SimUtilityPlugin
 #
-set(SrcFiles SimUtilityPlugin.cpp)
+set(SUBSYS_NAME SimUtilityPlugin)
+set(SUBSYS_DESC "A RobWorkStudioPlugin.")
+set(SUBSYS_DEPS)
 
-# Call the create_plugin macro for creating the plugin
-set(MocSrcFiles)
-qt5_wrap_cpp(MocSrcFiles SimUtilityPlugin.hpp TARGET SimUtilityPlugin)
+set(build TRUE)
+set(DEFAULT TRUE)
+rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} DEPENDS ${SUBSYS_DEPS} ADD_DOC)
 
-# The shared library to build:
-add_library(SimUtilityPlugin MODULE ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles})
-target_link_libraries(SimUtilityPlugin PRIVATE sdurwsim_gui sdurwsim PUBLIC RWS::sdurws RW::sdurw)
+if(build)
+    set(SrcFiles SimUtilityPlugin.cpp)
 
-# to avoid windows compile bug
-target_include_directories(SimUtilityPlugin PRIVATE ${PYTHON_INCLUDE_DIRS})
+    # Call the create_plugin macro for creating the plugin
+    set(MocSrcFiles)
+    qt5_wrap_cpp(MocSrcFiles SimUtilityPlugin.hpp TARGET ${SUBSYS_NAME})
+
+    # The shared library to build:
+    add_library(${SUBSYS_NAME} MODULE ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles})
+    target_link_libraries(${SUBSYS_NAME} PRIVATE sdurwsim_gui sdurwsim PUBLIC RWS::sdurws RW::sdurw)
+
+    # to avoid windows compile bug
+    target_include_directories(${SUBSYS_NAME} PRIVATE ${PYTHON_INCLUDE_DIRS})
+endif()
 
 # ######################################################################################################################
 # next compile GraspTableGeneratorPlugin
 #
-set(UIS_OUT_H)
-qt5_wrap_ui(UIS_OUT_H GraspTableGeneratorPlugin.ui)
-set(SrcFiles GraspTableGeneratorPlugin.cpp)
-set_source_files_properties(${SrcFiles} PROPERTIES OBJECT_DEPENDS "${UIS_OUT_H}")
-# Call the create_plugin macro for creating the plugin
-set(MocSrcFiles)
-qt5_wrap_cpp(MocSrcFiles GraspTableGeneratorPlugin.hpp TARGET GraspTableGeneratorPlugin)
+set(SUBSYS_NAME GraspTableGeneratorPlugin)
+set(SUBSYS_DESC "A RobWorkStudioPlugin.")
+set(SUBSYS_DEPS)
 
-# The shared library to build:
-add_library(GraspTableGeneratorPlugin MODULE ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles} ${UIS_OUT_H})
-target_link_libraries(GraspTableGeneratorPlugin PUBLIC sdurwsim_gui sdurwsim RWS::sdurws RW::sdurw)
+set(build TRUE)
+set(DEFAULT TRUE)
+rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} DEPENDS ${SUBSYS_DEPS} ADD_DOC)
 
-# Need to add the current binary dir to the include directory because the generated source files are placed here
-target_include_directories(GraspTableGeneratorPlugin PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
+if(build)
+    set(UIS_OUT_H)
+    qt5_wrap_ui(UIS_OUT_H GraspTableGeneratorPlugin.ui)
+    set(SrcFiles GraspTableGeneratorPlugin.cpp)
+    set_source_files_properties(${SrcFiles} PROPERTIES OBJECT_DEPENDS "${UIS_OUT_H}")
+    # Call the create_plugin macro for creating the plugin
+    set(MocSrcFiles)
+    qt5_wrap_cpp(MocSrcFiles GraspTableGeneratorPlugin.hpp TARGET ${SUBSYS_NAME})
 
-# to avoid windows compile bug
-target_include_directories(GraspTableGeneratorPlugin PRIVATE ${PYTHON_INCLUDE_DIRS})
+    # The shared library to build:
+    add_library(${SUBSYS_NAME} MODULE ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles} ${UIS_OUT_H})
+    target_link_libraries(${SUBSYS_NAME} PUBLIC sdurwsim_gui sdurwsim RWS::sdurws RW::sdurw)
+
+    # Need to add the current binary dir to the include directory because the generated source files are placed here
+    target_include_directories(${SUBSYS_NAME} PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
+
+    # to avoid windows compile bug
+    target_include_directories(${SUBSYS_NAME} PRIVATE ${PYTHON_INCLUDE_DIRS})
+endif()
 
 # ######################################################################################################################
 # The RW Simulation
 #
-set(UIS_OUT_H)
-qt5_wrap_ui(UIS_OUT_H RWSimPlugin.ui)
-set(SrcFiles RWSimPlugin.cpp)
-set_source_files_properties(${SrcFiles} PROPERTIES OBJECT_DEPENDS "${UIS_OUT_H}")
+set(SUBSYS_NAME RWSimPlugin)
+set(SUBSYS_DESC "A RobWorkStudioPlugin.")
+set(SUBSYS_DEPS)
 
-# Call the create_plugin macro for creating the plugin
-set(MocSrcFiles)
-qt5_wrap_cpp(MocSrcFiles RWSimPlugin.hpp TARGET RWSimPlugin)
+set(build TRUE)
+set(DEFAULT TRUE)
+rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} DEPENDS ${SUBSYS_DEPS} ADD_DOC)
 
-# Rcc the files:
-set(RccSrcFiles_RWSimPlugin)
-qt5_add_resources(RccSrcFiles_RWSimPlugin ${RWSIM_ROOT}/src/gfx/RWSimPlugin.qrc)
-if(RWSIM_HAVE_LUA)
-    set(RWSIM_LUA_LIB sdurwsim_lua_s)
+if(build)
+    set(UIS_OUT_H)
+    qt5_wrap_ui(UIS_OUT_H RWSimPlugin.ui)
+    set(SrcFiles RWSimPlugin.cpp)
+    set_source_files_properties(${SrcFiles} PROPERTIES OBJECT_DEPENDS "${UIS_OUT_H}")
+
+    # Call the create_plugin macro for creating the plugin
+    set(MocSrcFiles)
+    qt5_wrap_cpp(MocSrcFiles RWSimPlugin.hpp TARGET ${SUBSYS_NAME})
+
+    # Rcc the files:
+    set(RccSrcFiles_RWSimPlugin)
+    qt5_add_resources(RccSrcFiles_RWSimPlugin ${RWSIM_ROOT}/src/gfx/RWSimPlugin.qrc)
+    if(RWSIM_HAVE_LUA)
+        set(RWSIM_LUA_LIB RW::sdurw_lua_s sdurwsim_lua_s)
+    endif()
+
+    add_library(${SUBSYS_NAME} MODULE ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles_RWSimPlugin} ${UIS_OUT_H})
+    # ADD_LIBRARY(RWSimPluginStatic STATIC ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles_RWSimPlugin})
+    target_link_libraries(
+        ${SUBSYS_NAME}
+        PRIVATE sdurwsim_gui
+        PUBLIC sdurwsim
+        PRIVATE ${RWSIM_LUA_LIB}
+        PUBLIC RWS::sdurws
+        PRIVATE
+        RW::sdurw_opengl
+        RW::sdurw_simulation
+        RW::sdurw_control
+        PUBLIC RW::sdurw
+    )
+
+    # Need to add the current binary dir to the include directory because the generated source files are placed here
+    target_include_directories(RWSimPlugin PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
+
+    # to avoid windows compile bug
+    target_include_directories(RWSimPlugin PRIVATE ${PYTHON_INCLUDE_DIRS})
 endif()
-
-add_library(RWSimPlugin MODULE ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles_RWSimPlugin} ${UIS_OUT_H})
-# ADD_LIBRARY(RWSimPluginStatic STATIC ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles_RWSimPlugin})
-target_link_libraries(
-    RWSimPlugin
-    PRIVATE sdurwsim_gui
-    PUBLIC sdurwsim
-    PRIVATE ${RWSIM_LUA_LIB}
-    PUBLIC RWS::sdurws
-    PRIVATE
-    RW::sdurw_opengl
-    RW::sdurw_simulation
-    RW::sdurw_control
-    RW::sdurw_lua_s
-    PUBLIC RW::sdurw
-)
-
-# Need to add the current binary dir to the include directory because the generated source files are placed here
-target_include_directories(RWSimPlugin PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
-
-# to avoid windows compile bug
-target_include_directories(RWSimPlugin PRIVATE ${PYTHON_INCLUDE_DIRS})
 
 # ######################################################################################################################
 # The SimTaskPlugin
 #
-set(UIS_OUT_H)
-qt5_wrap_ui(UIS_OUT_H SimTaskPlugin.ui)
-set(SrcFiles SimTaskPlugin.cpp)
-set_source_files_properties(${SrcFiles} PROPERTIES OBJECT_DEPENDS "${UIS_OUT_H}")
+set(SUBSYS_NAME SimTaskPlugin)
+set(SUBSYS_DESC "A RobWorkStudioPlugin.")
+set(SUBSYS_DEPS)
 
-# Call the create_plugin macro for creating the plugin
-set(MocSrcFiles)
-qt5_wrap_cpp(MocSrcFiles SimTaskPlugin.hpp TARGET SimTaskPlugin)
-# Rcc the files:
-set(RccSrcFiles_SimTaskPlugin)
-qt5_add_resources(RccSrcFiles_SimTaskPlugin ${RWSIM_ROOT}/src/gfx/SimTaskPlugin.qrc)
+set(build TRUE)
+set(DEFAULT TRUE)
+rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} DEPENDS ${SUBSYS_DEPS} ADD_DOC)
 
-add_library(SimTaskPlugin MODULE ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles_SimTaskPlugin} ${UIS_OUT_H})
-# ADD_LIBRARY(SimTaskPluginStatic STATIC ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles_SimTaskPlugin})
-target_link_libraries(
-    SimTaskPlugin
-    PRIVATE sdurwsim_gui
-    PUBLIC
-    sdurwsim
-    RWS::sdurws
-    PRIVATE
-    RW::sdurw_task
-    RW::sdurw_opengl
-    PUBLIC RW::sdurw
-)
+if(build)
+    set(UIS_OUT_H)
+    qt5_wrap_ui(UIS_OUT_H SimTaskPlugin.ui)
+    set(SrcFiles SimTaskPlugin.cpp)
+    set_source_files_properties(${SrcFiles} PROPERTIES OBJECT_DEPENDS "${UIS_OUT_H}")
 
-# Need to add the current binary dir to the include directory because the generated source files are placed here
-target_include_directories(SimTaskPlugin PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
+    # Call the create_plugin macro for creating the plugin
+    set(MocSrcFiles)
+    qt5_wrap_cpp(MocSrcFiles SimTaskPlugin.hpp TARGET ${SUBSYS_NAME})
+    # Rcc the files:
+    set(RccSrcFiles_SimTaskPlugin)
+    qt5_add_resources(RccSrcFiles_SimTaskPlugin ${RWSIM_ROOT}/src/gfx/SimTaskPlugin.qrc)
 
-# to avoid windows compile bug
-target_include_directories(SimTaskPlugin PRIVATE ${PYTHON_INCLUDE_DIRS})
+    add_library(${SUBSYS_NAME} MODULE ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles_SimTaskPlugin} ${UIS_OUT_H})
+    # ADD_LIBRARY(SimTaskPluginStatic STATIC ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles_SimTaskPlugin})
+    target_link_libraries(
+        ${SUBSYS_NAME}
+        PRIVATE sdurwsim_gui
+        PUBLIC
+        sdurwsim
+        RWS::sdurws
+        PRIVATE
+        RW::sdurw_task
+        RW::sdurw_opengl
+        PUBLIC RW::sdurw
+    )
+
+    # Need to add the current binary dir to the include directory because the generated source files are placed here
+    target_include_directories(${SUBSYS_NAME} PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
+
+    # to avoid windows compile bug
+    target_include_directories(${SUBSYS_NAME} PRIVATE ${PYTHON_INCLUDE_DIRS})
+endif()
 
 # ######################################################################################################################
 # The SimTaskVisPlugin -- has been moved to RobWorkStudio now named gtaskplugin
@@ -169,23 +218,34 @@ qt5_wrap_ui(UIS_OUT_H SimTaskVisPlugin.ui)
 # ######################################################################################################################
 # next compile EngineTestPlugin
 #
-set(UIS_OUT_H)
-qt5_wrap_ui(UIS_OUT_H EngineTestPlugin.ui)
 
-set(SrcFiles EngineTestPlugin.cpp)
-# set_source_files_properties(${SrcFiles} PROPERTIES OBJECT_DEPENDS
-# "${UIS_OUT_H}")
+set(SUBSYS_NAME EngineTestPlugin)
+set(SUBSYS_DESC "A plugin for executing standard tests for Physics Engines.")
+set(SUBSYS_DEPS sdurwsim_test)
 
-# Call the create_plugin macro for creating the plugin
-set(MocSrcFiles)
-qt5_wrap_cpp(MocSrcFiles EngineTestPlugin.hpp TARGET EngineTestPlugin)
+set(build TRUE)
+set(DEFAULT TRUE)
+rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} DEPENDS ${SUBSYS_DEPS} ADD_DOC)
 
-# The shared library to build:
-add_library(EngineTestPlugin MODULE ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles} ${UIS_OUT_H})
-target_link_libraries(EngineTestPlugin PUBLIC sdurwsim_test PRIVATE sdurwsim_gui PUBLIC RWS::sdurws)
+if(build)
+    set(UIS_OUT_H)
+    qt5_wrap_ui(UIS_OUT_H EngineTestPlugin.ui)
 
-# Need to add the current binary dir to the include directory because the generated source files are placed here
-target_include_directories(EngineTestPlugin PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
+    set(SrcFiles EngineTestPlugin.cpp)
+    # set_source_files_properties(${SrcFiles} PROPERTIES OBJECT_DEPENDS
+    # "${UIS_OUT_H}")
 
-# to avoid windows compile bug
-target_include_directories(EngineTestPlugin PRIVATE ${PYTHON_INCLUDE_DIRS})
+    # Call the create_plugin macro for creating the plugin
+    set(MocSrcFiles)
+    qt5_wrap_cpp(MocSrcFiles EngineTestPlugin.hpp TARGET ${SUBSYS_NAME})
+
+    # The shared library to build:
+    add_library(${SUBSYS_NAME} MODULE ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles} ${UIS_OUT_H})
+    target_link_libraries(${SUBSYS_NAME} PUBLIC sdurwsim_test PRIVATE sdurwsim_gui PUBLIC RWS::sdurws)
+
+    # Need to add the current binary dir to the include directory because the generated source files are placed here
+    target_include_directories(${SUBSYS_NAME} PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
+
+    # to avoid windows compile bug
+    target_include_directories(${SUBSYS_NAME} PRIVATE ${PYTHON_INCLUDE_DIRS})
+endif()
