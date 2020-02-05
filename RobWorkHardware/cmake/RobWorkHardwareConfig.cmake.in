@@ -24,7 +24,7 @@ else(ROBWORKHARDWARE_FIND_QUIETLY)
 endif(ROBWORKHARDWARE_FIND_QUIETLY)
 
 # ############################################# MACROS
-# ################################################
+# ##################################################################################################
 
 # macro for determining the best RobWork build type match
 macro(GET_ROBWORKHARDWARE_BUILD_TYPE CFG_ROOT RWHW_BUILD_TYPE)
@@ -162,10 +162,25 @@ endif()
 get_robworkhardware_build_type(${RWHWCFG_ROOT} RWHW_BUILD_TYPE)
 
 set(TARGET_EXISTS False)
-foreach(_expectedTarget sdurwhw_camera sdurwhw_can sdurwhw_dockwelder sdurwhw_pcube sdurwhw_serialport sdurwhw_tactile sdurwhw_motomanIA20 sdurwhw_universalrobots sdurwhw_universalrobots_rtde sdurwhw_schunkpg70 sdurwhw_netft sdurwhw_robolabFT sdurwhw_robotiq)
-  if(TARGET ${_expectedTarget})
-    set(TARGET_EXISTS True)
-  endif()
+foreach(
+    _expectedTarget
+    sdurwhw_camera
+    sdurwhw_can
+    sdurwhw_dockwelder
+    sdurwhw_pcube
+    sdurwhw_serialport
+    sdurwhw_tactile
+    sdurwhw_motomanIA20
+    sdurwhw_universalrobots
+    sdurwhw_universalrobots_rtde
+    sdurwhw_schunkpg70
+    sdurwhw_netft
+    sdurwhw_robolabFT
+    sdurwhw_robotiq
+)
+    if(TARGET ${_expectedTarget})
+        set(TARGET_EXISTS True)
+    endif()
 endforeach()
 if(NOT TARGET_EXISTS)
     include("${RWHWCFG_ROOT}/RobWorkHardwareTargets.cmake")
@@ -240,14 +255,16 @@ if(EXISTS ${RWHWCFG_ROOT}/RobWorkHardwareBuildConfig_${RWHW_BUILD_TYPE}.cmake)
     if(RobWorkHardware_FIND_COMPONENTS)
         # FIRST check if all required components are installed/build
         foreach(component IN LISTS RobWorkHardware_FIND_COMPONENTS)
-            list(FIND RWHW_BUILD_WITH_LIBRARIES "sdurwhw_${component}" COMP_FOUND)
+            set(FILTER "sdurwhw_${component}")
+            string(REGEX MATCH ${FILTER} RESULT "${RWHW_BUILD_WITH_LIBRARIES}")
 
             unset(FOUND CACHE)
-            if( ${COMP_FOUND} GREATER -1 )
-                find_library(FOUND ${RESULT} PATHS ${RW_LIBS} NO_DEFAULT_PATH)
+            if(RESULT)
+                message(STATUS "Found in list: ${COMP_FOUND}")
+                find_library(FOUND ${RESULT} PATHS ${RWHW_LIBS} NO_DEFAULT_PATH)
             endif()
 
-            if( FOUND )
+            if(FOUND)
                 list(APPEND LIBRARIES_TO_INCLUDE "sdurwhw_${component}")
                 set(RobWorkHardware_${component}_FOUND TRUE)
             else()
