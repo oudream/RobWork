@@ -25,7 +25,7 @@
 
 #include <rw/math/Q.hpp>
 #include <rwsim/dynamics/RigidDevice.hpp>
-#include "ODEDevice.hpp"
+#include <rwsimlibs/ode/ODEDevice.hpp>
 
 namespace rwsim {
 namespace simulator {

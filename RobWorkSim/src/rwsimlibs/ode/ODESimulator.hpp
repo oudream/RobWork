@@ -32,11 +32,11 @@
 #include <boost/tuple/tuple.hpp>
 #include <boost/unordered_map.hpp>
 
-#include "ODEUtil.hpp"
-#include "ODEJoint.hpp"
-#include "ODEDevice.hpp"
-#include "ODEBody.hpp"
-#include "ODETactileSensor.hpp"
+#include <rwsimlibs/ode/ODEUtil.hpp>
+#include <rwsimlibs/ode/ODEJoint.hpp>
+#include <rwsimlibs/ode/ODEDevice.hpp>
+#include <rwsimlibs/ode/ODEBody.hpp>
+#include <rwsimlibs/ode/ODETactileSensor.hpp>
 
 namespace rw { namespace proximity { class BasicFilterStrategy; } }
 namespace rw { namespace proximity { class ProximityModel; } }

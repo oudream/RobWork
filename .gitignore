@@ -3058,8 +3058,15 @@ RobWork/example/java/src/*.log
 /RobWorkSim/example/CPackConfig.cmake
 /RobWorkSim/example/CPackSourceConfig.cmake
 
+# /RobWorkSim/example/cpp
+/RobWorkSim/example/cpp/Build
+/RobWorkSim/example/cpp/build
+
 # /RobWorkSim/example/FalconTeleoperatePlugin/
 /RobWorkSim/example/FalconTeleoperatePlugin/libs
+
+# /RobWorkSim/example/python
+RobWorkSim/example/python/serialdev-out.txt
 
 # /RobWorkSim/example/scripts/java
 /RobWorkSim/example/scripts/java/Simulation.class
@@ -3107,6 +3114,9 @@ RobWork/example/java/src/*.log
 /RobWorkSim/example/tools/bin
 /RobWorkSim/example/tools/debug
 /RobWorkSim/example/tools/libs
+
+# RobWorkSim/example/tutorials/
+/RobWorkSim/example/tutorials/build
 
 # /RobWorkSim/src/
 /RobWorkSim/src/cmake_install.cmake
@@ -3539,6 +3549,9 @@ RobWorkSim/src/rwsimlibs/swig/python/RobWorkSim-*.egg-info
 /RobWorkStudio/example/.csettings
 /RobWorkStudio/example/CPackConfig.cmake
 /RobWorkStudio/example/CPackSourceConfig.cmake
+
+#/ RobWorkStudio/example/cpp/
+/RobWorkStudio/example/cpp/build
 
 # /RobWorkStudio/example/UDPKinPlugin/
 /RobWorkStudio/example/UDPKinPlugin/cmake_install.cmake
@@ -4116,21 +4129,6 @@ RobWorkSim/src/rwsimlibs/swig/python/RobWorkSim-*.egg-info
 /doc/installstuff/RW_package-msvc2005/CPackConfig.cmake
 /doc/installstuff/RW_package-msvc2005/CPackSourceConfig.cmake
 
-# /doc/installstuff/RW_package-source/
-/doc/installstuff/RW_package-source/cmake_install.cmake
-/doc/installstuff/RW_package-source/CMakeCache.txt
-/doc/installstuff/RW_package-source/Makefile
-/doc/installstuff/RW_package-source/RobWork.cmake
-/doc/installstuff/RW_package-source/bin
-/doc/installstuff/RW_package-source/CMakeFiles
-/doc/installstuff/RW_package-source/apidocs
-/doc/installstuff/RW_package-source/.cproject
-/doc/installstuff/RW_package-source/.project
-/doc/installstuff/RW_package-source/build
-/doc/installstuff/RW_package-source/.csettings
-/doc/installstuff/RW_package-source/CPackConfig.cmake
-/doc/installstuff/RW_package-source/CPackSourceConfig.cmake
-
 # /doc/sphinx/apidoc/java
 /doc/sphinx/apidoc/java/org
 /doc/sphinx/apidoc/java/packages.rst
@@ -4140,3 +4138,6 @@ RobWorkSim/src/rwsimlibs/swig/python/RobWorkSim-*.egg-info
 
 #/doc/sphinx/apidoc/java
 /doc/sphinx/apidoc/java/org
+
+
+

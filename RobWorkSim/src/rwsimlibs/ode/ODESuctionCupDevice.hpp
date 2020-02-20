@@ -22,8 +22,8 @@
 #include <rw/proximity/ProximityStrategyData.hpp>
 
 #include <ode/ode.h>
-#include "ODEBody.hpp"
-#include "ODEDevice.hpp"
+#include <rwsimlibs/ode/ODEBody.hpp>
+#include <rwsimlibs/ode/ODEDevice.hpp>
 
 namespace rw { namespace kinematics { class State; } }
 namespace rw { namespace proximity { class ProximityModel; } }
