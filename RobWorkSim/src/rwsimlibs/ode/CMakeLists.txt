@@ -37,6 +37,7 @@ if(build)
         ODEJoint.hpp
         ODEUtil.hpp
         ODEDebugRender.hpp
+        ODEDevice.hpp
         ODETactileSensor.hpp
         ODEMaterialMap.hpp
         ODEConstraint.hpp
@@ -71,6 +72,7 @@ if(build)
     endif()
 
     rw_add_library(${SUBSYS_NAME} ${SRC_FILES} ${SRC_FILES_HPP})
+    rw_add_includes(${SUBSYS_NAME} "rwsimlibs/ode" ${SRC_FILES_HPP})
     target_link_libraries(${SUBSYS_NAME} PUBLIC sdurwsim ${ODE_LIBRARIES} RW::sdurw ${OPENGL_LIBRARIES})
     target_include_directories(${SUBSYS_NAME}
         INTERFACE

@@ -1,9 +1,3 @@
-# SET(RW_BUILD_WITH_XERCES @RW_HAVE_XERCES@) SET(RW_BUILD_WITH_PQP @RW_HAVE_PQP@) SET(RW_BUILD_WITH_YAOBI
-# @RW_HAVE_YAOBI@) SET(RW_BUILD_WITH_RW_ASSERT @RW_ENABLE_ASSERT@)
-
-if(@INSTALLATION@)
-    file(TO_CMAKE_PATH "$ENV{RWS_ROOT}" RWS_ROOT)
-endif()
 
 # ######################################################################################################################
 # Version of RobWork
@@ -38,11 +32,11 @@ set(RWS_BUILD_WITH_LINKER_FLAGS @RWS_LINKER_FLAGS@)
 # ######################################################################################################################
 # and libraries
 set(RWS_BUILD_WITH_LIBRARIES "@ROBWORKSTUDIO_LIBRARIES@")
-
-set(RWS_COMPONENT_LIBRARIES "@RWS_COMPONENT_LIBRARIES@")
+set(RWS_BUILD_WITH_LIB_DEPEND "@ROBWORKSTUDIO_DEPEND@")
 set(RWS_BUILD_WITH_PLUGIN_LIBRARIES "@RWS_PLUGIN_LIBRARIES@")
 
 set(RWS_BUILD_WITH_VERSION @ROBWORKSTUDIO_VERSION@)
 
 set(RWS_BUILD_WITH_LIBRARY_DIRS "@ROBWORKSTUDIO_LIBRARY_DIRS@")
+set(RWS_BUILD_WITH_LIBRARY_SUBDIRS "x86_64-linux-gnu" "x86_64-linux-gnu/RobWork" "x86_64-linux-gnu/RobWork/rwsplugins" "RobWork" "RobWork/rwsplugins")
 set(RWS_BUILD_WITH_INCLUDE_DIR "@ROBWORKSTUDIO_INCLUDE_DIR@")

@@ -1,6 +1,6 @@
 set(SUBSYS_NAME sdurws_lua)
 set(SUBSYS_DESC "Interface for accessing RobWorkStudio from lua.")
-set(SUBSYS_DEPS sdurw)
+set(SUBSYS_DEPS sdurws_robworkstudioapp)
 
 set(build TRUE)
 
@@ -65,7 +65,7 @@ if(build)
     endif()
     swig_link_libraries(
         ${TARGET_NAME}
-        ${RWS_COMPONENT_LIBRARIES}
+        ${SUBSYS_DEPS}
         ${RWS_PLUGIN_LIBRARIES}
         ${RWS_MODULE}
         RW::sdurw_lua
@@ -95,7 +95,7 @@ if(build)
     endif()
     target_link_libraries(
         ${TARGET_NAME}_s
-        ${RWS_COMPONENT_LIBRARIES}
+        ${SUBSYS_DEPS}
         ${RWS_PLUGIN_LIBRARIES}
         ${RWS_MODULE}
         RW::sdurw_lua
@@ -108,8 +108,6 @@ if(build)
         target_link_libraries(${TARGET_NAME}_s ${RW_BUILD_WITH_LIBRARIES_LUA})
         target_include_directories(${TARGET_NAME}_s PUBLIC ${RW_BUILD_WITH_LUA_INCLUDE_DIR})
     endif()
-
-    set(RWS_COMPONENT_LIBRARIES ${RWS_COMPONENT_LIBRARIES} ${TARGET_NAME}_s PARENT_SCOPE)
 
     # Visual Studio or mingw this is used to indicate static linking to Visual Studio or mingw
     if(DEFINED MSVC)
@@ -127,5 +125,6 @@ if(build)
     endif()
 
     # ############ INSTALL LUA LIBRARY #############################
+    install(TARGETS ${TARGET_NAME}_s DESTINATION ${STATIC_LIB_INSTALL_DIR})
     install(TARGETS ${TARGET_NAME} DESTINATION ${LUA_INSTALL_DIR})
 endif()

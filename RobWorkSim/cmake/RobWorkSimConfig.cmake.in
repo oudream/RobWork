@@ -1,151 +1,166 @@
 # ------------------------------------------------------------------------------------
 # Helper to use RobWorkSim from outside project
 #
-# ROBWORKSIM_LIBRARIES is filled with all available RobWork libraries
-# ROBWORKSIM_INCLUDE_DIRS is filled with RobWorkSim and available 3rdparty headers
-# ROBWORKSIM_LIBRARY_DIRS is filled with RobWorkSim components libraries  and
-# 3rdparty libraries paths
-# 
-#                                   www.robwork.dk
-#------------------------------------------------------------------------------------
+# ROBWORKSIM_LIBRARIES is filled with all available RobWork libraries ROBWORKSIM_INCLUDE_DIRS is
+# filled with RobWorkSim and available 3rdparty headers ROBWORKSIM_LIBRARY_DIRS is filled with
+# RobWorkSim components libraries  and 3rdparty libraries paths
+#
+# www.robwork.dk
+# ------------------------------------------------------------------------------------
 
-
-
-### ---[ Find RobWorkSim
+# ---[ Find RobWorkSim
 
 if(ROBWORKSIM_FIND_QUIETLY)
-  set(QUIET_ QUIET)
+    set(QUIET_ QUIET)
 else(ROBWORKSIM_FIND_QUIETLY)
-  set(QUIET_)
+    set(QUIET_)
 endif(ROBWORKSIM_FIND_QUIETLY)
 
-############################################## MACROS ################################################
+# ############################################# MACROS
+# ##################################################################################################
 
 # macro for determining the best RobWork build type match
-MACRO(GET_ROBWORKSIM_BUILD_TYPE CFG_ROOT RW_BUILD_TYPE)
-# defaults to release 
-SET(BTYPE_TMP release)
-if( CMAKE_BUILD_TYPE )
-  STRING(TOLOWER ${CMAKE_BUILD_TYPE} BTYPE_TMP )
-else()
-  set(BTYPE_TMP "none")
-endif()
-
-# first test if the correct cmake build type is installed
-if( EXISTS ${CFG_ROOT}/RobWorkSimBuildConfig_${BTYPE_TMP}.cmake )
-  SET(${RW_BUILD_TYPE} ${BTYPE_TMP})
-else()
-
-  # find best robwork build match
-  if(${BTYPE_TMP} STREQUAL "release")
-    # find release compatible robwork installation
-    if( EXISTS ${CFG_ROOT}/RobWorkSimBuildConfig_minsizerel.cmake )
-      SET(${RW_BUILD_TYPE} minsizerel)
-    elseif(EXISTS ${CFG_ROOT}/RobWorkSimBuildConfig_relwithdebinfo.cmake)
-      SET(${RW_BUILD_TYPE} relwithdebinfo)
-    elseif(EXISTS ${CFG_ROOT}/RobWorkSimBuildConfig_debug.cmake)
-      SET(${RW_BUILD_TYPE} debug)
-    elseif(EXISTS ${CFG_ROOT}/RobWorkSimBuildConfig_none.cmake)
-      SET(${RW_BUILD_TYPE} none)
+macro(GET_ROBWORKSIM_BUILD_TYPE CFG_ROOT RW_BUILD_TYPE)
+    # defaults to release
+    set(BTYPE_TMP release)
+    if(CMAKE_BUILD_TYPE)
+        string(TOLOWER ${CMAKE_BUILD_TYPE} BTYPE_TMP)
     else()
-      MESSAGE(FATAL_ERROR "Could not find any build of RobWorkSim!")      
+        set(BTYPE_TMP "none")
     endif()
-  elseif(${BTYPE_TMP} STREQUAL "minsizerel")
-    if( EXISTS ${CFG_ROOT}/RobWorkSimBuildConfig_release.cmake )
-      SET(${RW_BUILD_TYPE} release)
-    elseif(EXISTS ${CFG_ROOT}/RobWorkSimBuildConfig_relwithdebinfo.cmake)
-      SET(${RW_BUILD_TYPE} relwithdebinfo)
-    elseif(EXISTS ${CFG_ROOT}/RobWorkSimBuildConfig_debug.cmake)
-      SET(${RW_BUILD_TYPE} debug)
-    elseif(EXISTS ${CFG_ROOT}/RobWorkSimBuildConfig_none.cmake)
-      SET(${RW_BUILD_TYPE} none)
-    else()
-      MESSAGE(FATAL_ERROR "Could not find any build of RobWorkSim!")            
-    endif()
-  elseif(${BTYPE_TMP} STREQUAL "relwithdebinfo")
-    if(EXISTS ${CFG_ROOT}/RobWorkSimBuildConfig_release.cmake)
-      SET(${RW_BUILD_TYPE} release)
-    elseif( EXISTS ${CFG_ROOT}/RobWorkSimBuildConfig_minsizerel.cmake )
-      SET(${RW_BUILD_TYPE} minsizerel)
-    elseif(EXISTS ${CFG_ROOT}/RobWorkSimBuildConfig_debug.cmake)
-      SET(${RW_BUILD_TYPE} debug)
-    elseif(EXISTS ${CFG_ROOT}/RobWorkSimBuildConfig_none.cmake)
-      SET(${RW_BUILD_TYPE} none)
-    else()
-      MESSAGE(FATAL_ERROR "Could not find any build of RobWorkSim!")            
-    endif()
-  elseif(${BTYPE_TMP} STREQUAL "debug")  
-    if(EXISTS ${CFG_ROOT}/RobWorkSimBuildConfig_relwithdebinfo.cmake)
-      SET(${RW_BUILD_TYPE} relwithdebinfo)
-    elseif( EXISTS ${CFG_ROOT}/RobWorkSimBuildConfig_minsizerel.cmake )
-      SET(${RW_BUILD_TYPE} minsizerel)
-    elseif(EXISTS ${CFG_ROOT}/RobWorkSimBuildConfig_release.cmake)
-      SET(${RW_BUILD_TYPE} release)
-    elseif(EXISTS ${CFG_ROOT}/RobWorkSimBuildConfig_none.cmake)
-      SET(${RW_BUILD_TYPE} none)
-    else()
-      MESSAGE(FATAL_ERROR "Could not find any build of RobWorkSim!")      
-    endif()
-  elseif(${BTYPE_TMP} STREQUAL "none")  
-    if(EXISTS ${CFG_ROOT}/RobWorkSimBuildConfig_relwithdebinfo.cmake)
-      SET(${RW_BUILD_TYPE} relwithdebinfo)
-    elseif( EXISTS ${CFG_ROOT}/RobWorkSimBuildConfig_minsizerel.cmake )
-      SET(${RW_BUILD_TYPE} minsizerel)
-    elseif(EXISTS ${CFG_ROOT}/RobWorkSimBuildConfig_release.cmake)
-      SET(${RW_BUILD_TYPE} release)
-    elseif(EXISTS ${CFG_ROOT}/RobWorkSimBuildConfig_debuge.cmake)
-      SET(${RW_BUILD_TYPE} debug)
-    else()
-      MESSAGE(FATAL_ERROR "Could not find any build of RobWorkSim!")      
-    endif()
-  else()
-    MESSAGE(STATUS "Does not recognize build type: ${CMAKE_BUILD_TYPE} choosing any existing RobWorkSim installation!")
-    if( EXISTS ${CFG_ROOT}/RobWorkSimBuildConfig_release.cmake )
-      SET(${RW_BUILD_TYPE} release)
-    elseif( EXISTS ${CFG_ROOT}/RobWorkSimBuildConfig_minsizerel.cmake )
-      SET(${RW_BUILD_TYPE} minsizerel)
-    elseif(EXISTS ${CFG_ROOT}/RobWorkSimBuildConfig_relwithdebinfo.cmake)
-      SET(${RW_BUILD_TYPE} relwithdebinfo)
-    elseif(EXISTS ${CFG_ROOT}/RobWorkSimBuildConfig_debug.cmake)
-      SET(${RW_BUILD_TYPE} debug)
-    elseif(EXISTS ${CFG_ROOT}/RobWorkSimBuildConfig_none.cmake)
-      SET(${RW_BUILD_TYPE} none)
-    else()
-      MESSAGE(FATAL_ERROR "Could not find any build of RobWorkSim!")
-    endif()
-    
-  endif()
-  MESSAGE(STATUS "warning: RobWork was not compiled with type:${BTYPE_TMP} using type:${${RW_BUILD_TYPE}} instead!")
-endif()
 
-ENDMACRO()
+    # first test if the correct cmake build type is installed
+    if(EXISTS ${CFG_ROOT}/RobWorkSimBuildConfig_${BTYPE_TMP}.cmake)
+        set(${RW_BUILD_TYPE} ${BTYPE_TMP})
+    else()
 
+        # find best robwork build match
+        if(${BTYPE_TMP} STREQUAL "release")
+            # find release compatible robwork installation
+            if(EXISTS ${CFG_ROOT}/RobWorkSimBuildConfig_minsizerel.cmake)
+                set(${RW_BUILD_TYPE} minsizerel)
+            elseif(EXISTS ${CFG_ROOT}/RobWorkSimBuildConfig_relwithdebinfo.cmake)
+                set(${RW_BUILD_TYPE} relwithdebinfo)
+            elseif(EXISTS ${CFG_ROOT}/RobWorkSimBuildConfig_debug.cmake)
+                set(${RW_BUILD_TYPE} debug)
+            elseif(EXISTS ${CFG_ROOT}/RobWorkSimBuildConfig_none.cmake)
+                set(${RW_BUILD_TYPE} none)
+            else()
+                message(FATAL_ERROR "Could not find any build of RobWorkSim!")
+            endif()
+        elseif(${BTYPE_TMP} STREQUAL "minsizerel")
+            if(EXISTS ${CFG_ROOT}/RobWorkSimBuildConfig_release.cmake)
+                set(${RW_BUILD_TYPE} release)
+            elseif(EXISTS ${CFG_ROOT}/RobWorkSimBuildConfig_relwithdebinfo.cmake)
+                set(${RW_BUILD_TYPE} relwithdebinfo)
+            elseif(EXISTS ${CFG_ROOT}/RobWorkSimBuildConfig_debug.cmake)
+                set(${RW_BUILD_TYPE} debug)
+            elseif(EXISTS ${CFG_ROOT}/RobWorkSimBuildConfig_none.cmake)
+                set(${RW_BUILD_TYPE} none)
+            else()
+                message(FATAL_ERROR "Could not find any build of RobWorkSim!")
+            endif()
+        elseif(${BTYPE_TMP} STREQUAL "relwithdebinfo")
+            if(EXISTS ${CFG_ROOT}/RobWorkSimBuildConfig_release.cmake)
+                set(${RW_BUILD_TYPE} release)
+            elseif(EXISTS ${CFG_ROOT}/RobWorkSimBuildConfig_minsizerel.cmake)
+                set(${RW_BUILD_TYPE} minsizerel)
+            elseif(EXISTS ${CFG_ROOT}/RobWorkSimBuildConfig_debug.cmake)
+                set(${RW_BUILD_TYPE} debug)
+            elseif(EXISTS ${CFG_ROOT}/RobWorkSimBuildConfig_none.cmake)
+                set(${RW_BUILD_TYPE} none)
+            else()
+                message(FATAL_ERROR "Could not find any build of RobWorkSim!")
+            endif()
+        elseif(${BTYPE_TMP} STREQUAL "debug")
+            if(EXISTS ${CFG_ROOT}/RobWorkSimBuildConfig_relwithdebinfo.cmake)
+                set(${RW_BUILD_TYPE} relwithdebinfo)
+            elseif(EXISTS ${CFG_ROOT}/RobWorkSimBuildConfig_minsizerel.cmake)
+                set(${RW_BUILD_TYPE} minsizerel)
+            elseif(EXISTS ${CFG_ROOT}/RobWorkSimBuildConfig_release.cmake)
+                set(${RW_BUILD_TYPE} release)
+            elseif(EXISTS ${CFG_ROOT}/RobWorkSimBuildConfig_none.cmake)
+                set(${RW_BUILD_TYPE} none)
+            else()
+                message(FATAL_ERROR "Could not find any build of RobWorkSim!")
+            endif()
+        elseif(${BTYPE_TMP} STREQUAL "none")
+            if(EXISTS ${CFG_ROOT}/RobWorkSimBuildConfig_relwithdebinfo.cmake)
+                set(${RW_BUILD_TYPE} relwithdebinfo)
+            elseif(EXISTS ${CFG_ROOT}/RobWorkSimBuildConfig_minsizerel.cmake)
+                set(${RW_BUILD_TYPE} minsizerel)
+            elseif(EXISTS ${CFG_ROOT}/RobWorkSimBuildConfig_release.cmake)
+                set(${RW_BUILD_TYPE} release)
+            elseif(EXISTS ${CFG_ROOT}/RobWorkSimBuildConfig_debuge.cmake)
+                set(${RW_BUILD_TYPE} debug)
+            else()
+                message(FATAL_ERROR "Could not find any build of RobWorkSim!")
+            endif()
+        else()
+            message(
+                STATUS
+                    "Does not recognize build type: ${CMAKE_BUILD_TYPE} choosing any existing RobWorkSim installation!"
+            )
+            if(EXISTS ${CFG_ROOT}/RobWorkSimBuildConfig_release.cmake)
+                set(${RW_BUILD_TYPE} release)
+            elseif(EXISTS ${CFG_ROOT}/RobWorkSimBuildConfig_minsizerel.cmake)
+                set(${RW_BUILD_TYPE} minsizerel)
+            elseif(EXISTS ${CFG_ROOT}/RobWorkSimBuildConfig_relwithdebinfo.cmake)
+                set(${RW_BUILD_TYPE} relwithdebinfo)
+            elseif(EXISTS ${CFG_ROOT}/RobWorkSimBuildConfig_debug.cmake)
+                set(${RW_BUILD_TYPE} debug)
+            elseif(EXISTS ${CFG_ROOT}/RobWorkSimBuildConfig_none.cmake)
+                set(${RW_BUILD_TYPE} none)
+            else()
+                message(FATAL_ERROR "Could not find any build of RobWorkSim!")
+            endif()
 
-########################################################################################################
+        endif()
+        message(
+            STATUS
+                "warning: RobWork was not compiled with type:${BTYPE_TMP} using type:${${RW_BUILD_TYPE}} instead!"
+        )
+    endif()
 
+endmacro()
+
+macro(RWSIM_MESSAGE text)
+    if(IS_INSTALL)
+        message(STATUS ${text})
+    endif()
+endmacro()
+
+# ##################################################################################################
 
 get_filename_component(RWSIMCFG_ROOT ${CMAKE_CURRENT_LIST_FILE} PATH)
 
 # check if user specified a RobWorkSim_DIR
 if(DEFINED RobWorkSim_DIR)
-  if(EXISTS "${RobWorkSim_DIR}/src/RobWorkSimConfig.hpp")
-    # Found RobWorkSim in a build tree of RobWork
-    set(RWSIMCFG_ROOT "${RobWorkSim_DIR}/cmake")
-    set(is_installed false)
-  elseif(EXISTS "${RobWorkSim_DIR}/RobWorkConfig.cmake")
-    # Found a RobWorkSim installation
-    set(RWSIMCFG_ROOT "${RobWorkSim_DIR}")
-    set(is_installed true)
-  elseif(EXISTS "${RobWorkSim_DIR}/include/robworksim-${RobWorkSim_VERSION_MAJOR}.${RobWorkSim_VERSION_MINOR}/RobWorkSimConfig.hpp")
-    set(RWSIMCFG_ROOT "${RobWorkSim_DIR}/share/robworksim-${RobWorkSim_VERSION_MAJOR}.${RobWorkSim_VERSION_MINOR}/")
-    set(is_installed true)    
-  else()
-    # found no RobWork installation ot build tree in RobWorkSim_DIR so we try extracting it from RobWorkSimConfig.cmake location instead
-  endif()
+    if(EXISTS "${RobWorkSim_DIR}/src/RobWorkSimConfig.hpp")
+        # Found RobWorkSim in a build tree of RobWork
+        set(RWSIMCFG_ROOT "${RobWorkSim_DIR}/cmake")
+        set(is_installed false)
+    elseif(EXISTS "${RobWorkSim_DIR}/RobWorkConfig.cmake")
+        # Found a RobWorkSim installation
+        set(RWSIMCFG_ROOT "${RobWorkSim_DIR}")
+        set(is_installed true)
+    elseif(
+        EXISTS
+        "${RobWorkSim_DIR}/include/robworksim-${RobWorkSim_VERSION_MAJOR}.${RobWorkSim_VERSION_MINOR}/RobWorkSimConfig.hpp"
+    )
+        set(
+            RWSIMCFG_ROOT
+            "${RobWorkSim_DIR}/share/robworksim-${RobWorkSim_VERSION_MAJOR}.${RobWorkSim_VERSION_MINOR}/"
+        )
+        set(is_installed true)
+    else()
+        # found no RobWork installation ot build tree in RobWorkSim_DIR so we try extracting it from
+        # RobWorkSimConfig.cmake location instead
+    endif()
 endif()
 
 # get the relavant build type
-GET_ROBWORKSIM_BUILD_TYPE(${RWSIMCFG_ROOT} RWSIM_BUILD_TYPE)
+get_robworksim_build_type(${RWSIMCFG_ROOT} RWSIM_BUILD_TYPE)
 
 if(NOT TARGET sdurwsim)
     include("${RWSIMCFG_ROOT}/RobWorkSimTargets.cmake")
@@ -153,163 +168,219 @@ endif()
 
 # check whether RobWorkSimConfig.cmake is found into a RobWorkSim installation or in a build tree
 if(EXISTS "${RWSIMCFG_ROOT}/../src/RobWorkSimConfig.hpp")
-  # Found RobWorkConfig.cmake in a build tree of RobWork
-  SET(succmsg "RobWorkSim: Found a RobWorkSim build tree")
-  set(RWSIM_ROOT "${RWSIMCFG_ROOT}/..")
-  
-  # RobWork and RobWorkStudio roots should then be obvious
-  SET(RW_ROOT ${RWSIM_ROOT}/../RobWork)
-  SET(RWS_ROOT ${RWSIM_ROOT}/../RobWorkStudio)
-  
-  
-  set(RWSIM_INCLUDE_EXT "${RWSIM_ROOT}/ext")
-  set(RWSIM_INCLUDE_SRC "${RWSIM_ROOT}/src/")
-  set(RWSIM_LIBS "${RWSIM_ROOT}/libs/${RWSIM_BUILD_TYPE}/")
+    # Found RobWorkConfig.cmake in a build tree of RobWork
+    set(succmsg "RobWorkSim: Found a RobWorkSim build tree")
+    set(RWSIM_ROOT "${RWSIMCFG_ROOT}/..")
+
+    # RobWork and RobWorkStudio roots should then be obvious
+    set(RW_ROOT ${RWSIM_ROOT}/../RobWork)
+    set(RWS_ROOT ${RWSIM_ROOT}/../RobWorkStudio)
+
+    set(RWSIM_INCLUDE_EXT "${RWSIM_ROOT}/ext")
+    set(RWSIM_INCLUDE_SRC "${RWSIM_ROOT}/src/")
+    set(RWSIM_LIBS "${RWSIM_ROOT}/libs/${RWSIM_BUILD_TYPE}/")
+    set(IS_INSTALL FALSE)
 
 else()
-  set(succmsg "RobWorkSim: Found a RobWorkSim installation")
-  # Found a RobWork installation
-  if(WIN32)
-    # RobWorkConfig.cmake is installed to RWSIM_ROOT/cmake
-    set(RWSIM_ROOT "${RWSIMCFG_ROOT}/..")
-    set(RWSIM_INCLUDE_EXT "${RWSIM_ROOT}/ext")
-    set(RWSIM_INCLUDE_SRC "${RWSIM_ROOT}/include")
-    set(RWSIM_LIBS "${RWSIM_ROOT}/libs/${RWSIM_BUILD_TYPE}")
-  else(WIN32)
-    # RobWorkSimConfig.cmake is installed to RWSIM_INTALL/share/sdurwsim-x.y
-	
-    set(RWSIM_ROOT "${RWSIMCFG_ROOT}")
-    set(RWSIM_INSTALL "${RWSIMCFG_ROOT}/../../")
-    set(RWSIM_LIBS "${RWSIM_INSTALL}/lib/")
-    SET(RWSIM_INCLUDE_SRC "${RWSIM_INSTALL}/include/robworksim-${RobWorkSim_VERSION_MAJOR}.${RobWorkSim_VERSION_MINOR}")
-    set(RWSIM_INCLUDE_EXT "${RWSIM_INSTALL}/share/robworksim-${RobWorkSim_VERSION_MAJOR}.${RobWorkSim_VERSION_MINOR}/ext")
-  endif(WIN32)
+    set(succmsg "RobWorkSim: Found a RobWorkSim installation")
+    set(IS_INSTALL TRUE)
+    # Found a RobWork installation
+    if(WIN32)
+        # RobWorkConfig.cmake is installed to RWSIM_ROOT/cmake
+        set(RWSIM_ROOT "${RWSIMCFG_ROOT}/..")
+        set(RWSIM_INCLUDE_EXT "${RWSIM_ROOT}/ext")
+        set(RWSIM_INCLUDE_SRC "${RWSIM_ROOT}/include")
+        set(RWSIM_LIBS "${RWSIM_ROOT}/libs/${RWSIM_BUILD_TYPE}")
+    else()
+        # RobWorkSimConfig.cmake is installed to RWSIM_INTALL/share/sdurwsim-x.y
+
+        set(RWSIM_ROOT "${RWSIMCFG_ROOT}")
+        set(RWSIM_INSTALL "${RWSIMCFG_ROOT}/../../..")
+        set(RWSIM_LIBS "${RWSIM_INSTALL}/lib")
+        set(
+            RWSIM_INCLUDE_SRC
+            "${RWSIM_INSTALL}/include/robworksim-${RobWorkSim_VERSION_MAJOR}.${RobWorkSim_VERSION_MINOR}"
+        )
+        set(
+            RWSIM_INCLUDE_EXT
+            "${RWSIM_INSTALL}/share/robworksim-${RobWorkSim_VERSION_MAJOR}.${RobWorkSim_VERSION_MINOR}/ext"
+        )
+    endif()
 endif()
 
-#MESSAGE(STATUS "RWSIM_ROOT   : ${RWSIM_ROOT}")
-#MESSAGE(STATUS "RWSIMCFG_ROOT: ${RWSIMCFG_ROOT}")
+# MESSAGE(STATUS "RWSIM_ROOT   : ${RWSIM_ROOT}") MESSAGE(STATUS "RWSIMCFG_ROOT: ${RWSIMCFG_ROOT}")
 
-#############################################################
+# ##################################################################################################
 # now RWSIM_ROOT and RWSIMCFG_ROOT is set. Lets extract the stuff needed to run a project
 
-
-
 # next get the build configuration of the requested built type
-IF(EXISTS ${RWSIM_ROOT}/cmake/RobWorkSimBuildConfig_${RWSIM_BUILD_TYPE}.cmake)
-  INCLUDE(${RWSIM_ROOT}/cmake/RobWorkSimBuildConfig_${RWSIM_BUILD_TYPE}.cmake)
+if(EXISTS ${RWSIMCFG_ROOT}/RobWorkSimBuildConfig_${RWSIM_BUILD_TYPE}.cmake)
+    include(${RWSIMCFG_ROOT}/RobWorkSimBuildConfig_${RWSIM_BUILD_TYPE}.cmake)
 
-  # setup path to custom find scripts
-  SET(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${RWSIMCFG_ROOT}/Modules")
+    # setup path to custom find scripts
+    set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${RWSIMCFG_ROOT}/Modules")
 
-  IF(NOT DEFINED RobWork_DIR)
-    SET(RobWork_DIR ${RW_ROOT}/cmake)
-  ENDIF()
-  IF(NOT DEFINED RobWorkStudio_DIR)
-    SET(RobWorkStudio_DIR ${RWS_ROOT}/cmake)
-  ENDIF()
+    if(NOT DEFINED RobWork_DIR AND NOT ${IS_INSTALL})
+        set(RobWork_DIR ${RW_ROOT}/cmake)
+    endif()
+    if(NOT DEFINED RobWorkStudio_DIR AND NOT ${IS_INSTALL})
+        set(RobWorkStudio_DIR ${RWS_ROOT}/cmake)
+    endif()
 
-  FIND_PACKAGE(RobWork REQUIRED)
-  FIND_PACKAGE(RobWorkStudio REQUIRED)
+    find_package(RobWork REQUIRED)
+    find_package(RobWorkStudio REQUIRED)
 
+    # test if Bullet exists
+    option(RWSIM_USE_BULLET "Set to ON if Bullet should be use. you may need to set BULLET_ROOT"
+           ${RWSIM_BUILD_WITH_BULLET})
+    if(RWSIM_USE_BULLET)
+        if(RWSIM_BUILD_WITH_BULLET)
+            if(NOT BULLET_ROOT)
+                set(BULLET_ROOT ${RWSIM_BUILD_WITH_BULLET_ROOT})
+            endif()
+            if(NOT BULLET_INCLUDE_DIR)
+                set(BULLET_INCLUDE_DIR ${RWSIM_BUILD_WITH_BULLET_INCLUDE_DIR})
+            endif()
 
-  # test if Bullet exists
-  OPTION(RWSIM_USE_BULLET "Set to ON if Bullet should be use. you may need to set BULLET_ROOT" ${RWSIM_BUILD_WITH_BULLET})
-  IF(RWSIM_USE_BULLET)
-      IF(RWSIM_BUILD_WITH_BULLET)
-          IF(NOT BULLET_ROOT) 
-              SET(BULLET_ROOT ${RWSIM_BUILD_WITH_BULLET_ROOT})
-          ENDIF()
-          IF(NOT BULLET_INCLUDE_DIR) 
-              SET(BULLET_INCLUDE_DIR ${RWSIM_BUILD_WITH_BULLET_INCLUDE_DIR})
-          ENDIF()
-          
-          FIND_PACKAGE(Bullet)
-          IF(BULLET_FOUND)
-            SET(RWSIM_BULLET_LIBRARY sdurwsim_bullet)
-              # BULLET_LIBRARIES
-              MESSAGE(STATUS "RobWorkSim: Bullet enabled and found.")
-          ELSE()
-              SET(RWSIM_HAVE_BULLET FALSE)
-              MESSAGE(SEND_ERROR "RobWorkSim: Bullet enabled but not found. Please setup BULLET_ROOT." ${RWSIM_USE_ODE})
-          ENDIF()
-    ELSE()
-        MESSAGE(SEND_ERROR "RobWorkSim: Bullet enabled but RobWorkSim was NOT build with Bullet support! Please recompile RobWorkSim")
-    ENDIF()
-  ELSE()
-      MESSAGE(STATUS "RobWorkSim: Bullet disabled.")
-  ENDIF()
+            find_package(Bullet)
+            if(BULLET_FOUND)
+                set(RWSIM_BULLET_LIBRARY sdurwsim_bullet)
+                # BULLET_LIBRARIES
+                message(STATUS "RobWorkSim: Bullet enabled and found.")
+            else()
+                set(RWSIM_HAVE_BULLET FALSE)
+                message(
+                    SEND_ERROR
+                        "RobWorkSim: Bullet enabled but not found. Please setup BULLET_ROOT."
+                        ${RWSIM_USE_ODE}
+                )
+            endif()
+        else()
+            message(
+                SEND_ERROR
+                    "RobWorkSim: Bullet enabled but RobWorkSim was NOT build with Bullet support! Please recompile RobWorkSim"
+            )
+        endif()
+    else()
+        message(STATUS "RobWorkSim: Bullet disabled.")
+    endif()
 
-  # test if ODE exists
-  OPTION(RWSIM_USE_ODE "Set to ON if ODE should be use. you may need to set ODE_ROOT" ${RWSIM_BUILD_WITH_ODE})
-  IF(RWSIM_USE_ODE)
-      IF(RWSIM_BUILD_WITH_ODE)
-          SET(ODE_USE_DOUBLE ${RWSIM_BUILD_WITH_ODE_USE_DOUBLE})
-          SET(ODE_USE_DEBUG ${RWSIM_BUILD_WITH_ODE_USE_DEBUG})
-          IF(NOT ODE_DIR)
-              SET(ODE_DIR ${RWSIM_BUILD_WITH_ODE_DIR})
-          ENDIF()
-          IF(NOT ODE_INCLUDE_DIR)
-              SET(ODE_INCLUDE_DIR ${RWSIM_BUILD_WITH_ODE_INCLUDE_DIR})
-          ENDIF()
-          FIND_PACKAGE(ODE)
-          IF(ODE_FOUND)
-            SET(RWSIM_ODE_LIBRARY sdurwsim_ode)
-            # ODE_LIBRARIES
-              MESSAGE(STATUS "RobWorkSim: ODE enabled and found. Using ${ODE_BUILD_WITH}")
-          ELSE()
-              MESSAGE(SEND_ERROR "RobWorkSim: ODE enabled but not found. Please setup ODE_ROOT.")
-          ENDIF()
-    ELSE()
-        MESSAGE(SEND_ERROR "RobWorkSim: ODE enabled but RobWorkSim was NOT build with ODE support! Please recompile RobWorkSim")
-    ENDIF()
-  ELSE()
-      MESSAGE(STATUS "RobWorkSim: ODE disabled.")
-  ENDIF()
+    # test if ODE exists
+    option(RWSIM_USE_ODE "Set to ON if ODE should be use. you may need to set ODE_ROOT"
+           ${RWSIM_BUILD_WITH_ODE})
+    if(RWSIM_USE_ODE)
+        if(RWSIM_BUILD_WITH_ODE)
+            set(ODE_USE_DOUBLE ${RWSIM_BUILD_WITH_ODE_USE_DOUBLE})
+            set(ODE_USE_DEBUG ${RWSIM_BUILD_WITH_ODE_USE_DEBUG})
+            if(NOT ODE_DIR)
+                set(ODE_DIR ${RWSIM_BUILD_WITH_ODE_DIR})
+            endif()
+            if(NOT ODE_INCLUDE_DIR)
+                set(ODE_INCLUDE_DIR ${RWSIM_BUILD_WITH_ODE_INCLUDE_DIR})
+            endif()
+            find_package(ODE)
+            if(ODE_FOUND)
+                set(RWSIM_ODE_LIBRARY sdurwsim_ode)
+                # ODE_LIBRARIES
+                message(STATUS "RobWorkSim: ODE enabled and found. Using ${ODE_BUILD_WITH}")
+            else()
+                message(SEND_ERROR "RobWorkSim: ODE enabled but not found. Please setup ODE_ROOT.")
+            endif()
+        else()
+            message(
+                SEND_ERROR
+                    "RobWorkSim: ODE enabled but RobWorkSim was NOT build with ODE support! Please recompile RobWorkSim"
+            )
+        endif()
+    else()
+        message(STATUS "RobWorkSim: ODE disabled.")
+    endif()
 
-  # test if TNTPhysics exists
-  OPTION(RWSIM_USE_TNTPHYSICS "Set to ON if TNTPhysics should be used." ${RWSIM_BUILD_WITH_TNTPHYSICS})
-  IF(RWSIM_USE_TNTPHYSICS)
-      IF(RWSIM_BUILD_WITH_TNTPHYSICS)
-          SET(RWSIM_TNTPHYSICS_LIBRARY sdurwsim_tnt)
-    ELSE()
-        MESSAGE(SEND_ERROR "RobWorkSim: TNTPhysics enabled but RobWorkSim was NOT build with TNTPhysics support! Please recompile RobWorkSim")
-    ENDIF()
-ELSE()
-    MESSAGE(STATUS "RobWorkSim: TNTPhysics disabled.")
-ENDIF()
+    # test if TNTPhysics exists
+    option(RWSIM_USE_TNTPHYSICS "Set to ON if TNTPhysics should be used."
+           ${RWSIM_BUILD_WITH_TNTPHYSICS})
+    if(RWSIM_USE_TNTPHYSICS)
+        if(RWSIM_BUILD_WITH_TNTPHYSICS)
+            set(RWSIM_TNTPHYSICS_LIBRARY sdurwsim_tnt)
+        else()
+            message(
+                SEND_ERROR
+                    "RobWorkSim: TNTPhysics enabled but RobWorkSim was NOT build with TNTPhysics support! Please recompile RobWorkSim"
+            )
+        endif()
+    else()
+        message(STATUS "RobWorkSim: TNTPhysics disabled.")
+    endif()
 
+    set(ROBWORKSIM_BUILD_PATH "${RWSIM_BUILD_WITH_RWSIM_ROOT}")
+    set(ROBWORKSIM_INCLUDE_DIRS_TMP "${RWSIM_BUILD_WITH_INCLUDE_DIRS}" "${ROBWORK_INCLUDE_DIR}")
+    set(ROBWORKSIM_LIBRARY_DIRS_TMP "${RWSIM_BUILD_WITH_LIBRARY_DIRS}")
+    set(ROBWORKSIM_LIBRARIES_TMP "${RWSIM_BUILD_WITH_LIBRARIES}" "${RWSIM_BUILD_WITH_LIB_DEPEND}"
+                                 "${ROBWORK_LIBRARIES}")
 
-set(ROBWORKSIM_BUILD_PATH "${RWSIM_BUILD_WITH_RWSIM_ROOT}")
-set(ROBWORKSIM_INCLUDE_DIRS_TMP "${RWSIM_BUILD_WITH_INCLUDE_DIRS}")
-set(ROBWORKSIM_LIBRARY_DIRS_TMP "${RWSIM_BUILD_WITH_LIBRARY_DIRS}")
-set(ROBWORKSIM_LIBRARIES_TMP "${RWSIM_BUILD_WITH_LIBRARIES}" "${RWSIM_BUILD_WITH_PLUGIN_LIBRARIES}")
+    # make sure that the library and include paths are pointing to the right locations
+    string(
+        REPLACE
+            "${ROBWORKSIM_BUILD_PATH}/ext" "${RWSIM_INCLUDE_EXT}" ROBWORKSIM_INCLUDE_DIRS
+            "${ROBWORKSIM_INCLUDE_DIRS_TMP}"
+    )
+    string(
+        REPLACE
+            "${ROBWORKSIM_BUILD_PATH}/src" "${RWSIM_INCLUDE_SRC}" ROBWORKSIM_INCLUDE_DIRS
+            "${ROBWORKSIM_INCLUDE_DIRS}"
+    )
+    list(REMOVE_DUPLICATES ROBWORKSIM_INCLUDE_DIRS)
 
+    string(
+        REPLACE
+            "${ROBWORKSIM_BUILD_PATH}/libs/${RWSIM_BUILD_TYPE}" "${RWSIM_LIBS}"
+            ROBWORKSIM_LIBRARY_DIRS "${ROBWORKSIM_LIBRARY_DIRS_TMP}"
+    )
+    list(REMOVE_DUPLICATES ROBWORKSIM_LIBRARY_DIRS)
 
+    string(
+        REPLACE
+            "${ROBWORKSIM_BUILD_PATH}/libs/${RWSIM_BUILD_TYPE}" "${RWSIM_LIBS}" ROBWORKSIM_LIBRARIES
+            "${ROBWORKSIM_LIBRARIES_TMP}"
+    )
+    list(REMOVE_DUPLICATES ROBWORKSIM_LIBRARIES)
 
-# make sure that the library and include paths are pointing to the right locations
-STRING(REPLACE "${ROBWORKSIM_BUILD_PATH}/ext" "${RWSIM_INCLUDE_EXT}" ROBWORKSIM_INCLUDE_DIRS "${RWSIM_BUILD_WITH_INCLUDE_DIRS}")
-STRING(REPLACE "${ROBWORKSIM_BUILD_PATH}/src" "${RWSIM_INCLUDE_SRC}" ROBWORKSIM_INCLUDE_DIRS "${ROBWORKSIM_INCLUDE_DIRS}")
-list(REMOVE_DUPLICATES ROBWORKSIM_INCLUDE_DIRS)
-#MESSAGE("INCLUDES: ${ROBWORKSIM_INCLUDE_DIRS}")
+    set(ROBWORKSIM_LIBRARIES_TMP ${ROBWORKSIM_LIBRARIES})
+    set(ROBWORKSIM_LIBRARIES)
+    foreach(l ${ROBWORKSIM_LIBRARIES_TMP})
+        unset(tmp CACHE)
+        find_library(
+            tmp ${l}
+            PATHS ${RWSIM_LIBS}
+            PATH_SUFFIXES ${RWSIM_BUILD_WITH_LIBRARY_SUBDIRS}
+            NO_DEFAULT_PATH
+        )
+        if(tmp)
+            list(APPEND ROBWORKSIM_LIBRARIES ${tmp})
+        else()
+            list(APPEND ROBWORKSIM_LIBRARIES ${l})
+        endif()
+    endforeach()
 
-STRING(REPLACE "${ROBWORKSIM_BUILD_PATH}/libs/${RWSIM_BUILD_TYPE}" "${RWSIM_LIBS}" ROBWORKSIM_LIBRARY_DIRS "${RWSIM_BUILD_WITH_LIBRARY_DIRS}")
-list(REMOVE_DUPLICATES ROBWORKSIM_LIBRARY_DIRS)
-#MESSAGE("INCLUDES: ${ROBWORKSIM_LIBRARY_DIRS}")
+    include(FindPackageHandleStandardArgs)
+    find_package_handle_standard_args(
+        RobWorkSim
+        DEFAULT_MSG
+        RWSIM_ROOT
+        ROBWORKSIM_LIBRARIES
+        ROBWORKSIM_INCLUDE_DIRS
+        ROBWORKSIM_LIBRARY_DIRS
+    )
+    mark_as_advanced(ROBWORKSIM_LIBRARIES ROBWORKSIM_INCLUDE_DIRS ROBWORKSIM_LIBRARY_DIRS)
 
-STRING(REPLACE "${ROBWORKSIM_BUILD_PATH}/libs/${RWSIM_BUILD_TYPE}" "${RWSIM_LIBS}" ROBWORKSIM_LIBRARIES "${RWSIM_BUILD_WITH_LIBRARIES}")
-#list(REMOVE_DUPLICATES ROBWORKSIM_LIBRARIES)
-#MESSAGE("INCLUDES: ${ROBWORKSIM_LIBRARIES}")
-
-include(FindPackageHandleStandardArgs)
-find_package_handle_standard_args(RobWorkSim DEFAULT_MSG RWSIM_ROOT ROBWORKSIM_LIBRARIES ROBWORKSIM_INCLUDE_DIRS ROBWORKSIM_LIBRARY_DIRS)
-mark_as_advanced(ROBWORKSIM_LIBRARIES ROBWORKSIM_INCLUDE_DIRS ROBWORKSIM_LIBRARY_DIRS)
-
-ELSE()
-SET(ROBWORKSIM_FOUND NOTFOUND)
-  MESSAGE(STATUS "This build of RobWorkSim is not compiled in ${RWSIM_BUILD_TYPE} please specify another buildtype!") 
-ENDIF()
-
+else()
+    set(ROBWORKSIM_FOUND NOTFOUND)
+    message(
+        STATUS
+            "This build of RobWorkSim is not compiled in ${RWSIM_BUILD_TYPE} please specify another buildtype!"
+    )
+endif()
 
 if(ROBWORKSIM_FOUND)
-  set(ROBWORKSIM_VERSION ${RobWorkSim_FOUND_VERSION} CACHE STRING "RobWorkSim version")
+    set(ROBWORKSIM_VERSION ${RobWorkSim_FOUND_VERSION} CACHE STRING "RobWorkSim version")
 endif(ROBWORKSIM_FOUND)

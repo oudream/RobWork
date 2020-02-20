@@ -26,9 +26,6 @@
 namespace rw { namespace common {
     class Log;
 }}    // namespace rw::common
-namespace rwlibs { namespace swig {
-    class LuaState;
-}}    // namespace rwlibs::swig
 
 class WCCodeEditor;
 

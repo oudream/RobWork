@@ -110,7 +110,7 @@ if(build)
 
     set_target_properties(sdurws PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
 
-    rw_add_includes(sdurws sdurws ${SRC_FILES_HPP})
+    rw_add_includes(sdurws rws ${SRC_FILES_HPP})
 
     set(SUBSYS_NAME_PLUGIN ${SUBSYS_NAME}_plugin.rwplugin)
     set(SUBSYS_DESC_PLUGIN "Plugin providing extensions to RobWork from RobWorkStudio!")

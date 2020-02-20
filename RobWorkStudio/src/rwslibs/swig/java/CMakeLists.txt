@@ -1,6 +1,6 @@
 set(SUBSYS_NAME sdurws_java)
 set(SUBSYS_DESC "Interface for accessing RobWorkStudio from java.")
-set(SUBSYS_DEPS sdurw)
+set(SUBSYS_DEPS sdurws sdurws_robworkstudioapp)
 
 set(build TRUE)
 
@@ -36,30 +36,30 @@ if(build)
         set_source_files_properties(../sdurws.i PROPERTIES SWIG_FLAGS "-includeall;-doxygen")
     endif()
     include_directories(${RW_ROOT}/src)
-    
+
     include_directories(${JAVA_INCLUDE_DIRS} ${JNI_INCLUDE_DIRS})
     set(CMAKE_SWIG_FLAGS "-package" "org.robwork.sdurws")
     # Put java files in different directory suitable for JAR generation later on
     set(CMAKE_SWIG_OUTDIR ${CMAKE_CURRENT_BINARY_DIR}/java_src/org/robwork/sdurws)
     # SWIG
     if((CMAKE_VERSION VERSION_GREATER 3.8) OR (CMAKE_VERSION VERSION_EQUAL 3.8))
-        swig_add_library(sdurws_jni TYPE SHARED LANGUAGE java SOURCES ../sdurws.i ../ScriptTypes.cpp)
+        swig_add_library(
+            sdurws_jni
+            TYPE SHARED
+            LANGUAGE java
+            SOURCES ../sdurws.i ../ScriptTypes.cpp
+        )
     else()
         swig_add_module(sdurws_jni java ../sdurws.i ../ScriptTypes.cpp)
     endif()
-    swig_link_libraries(
-        sdurws_jni
-        ${RWS_COMPONENT_LIBRARIES}
-        ${RWS_PLUGIN_LIBRARIES}
-        sdurws
-        RW::sdurw
-    )
+    swig_link_libraries(sdurws_jni ${SUBSYS_DEPS} sdurws
+                        RW::sdurw)
     if((CMAKE_COMPILER_IS_GNUCC) OR (CMAKE_C_COMPILER_ID STREQUAL "Clang"))
         set_target_properties(sdurws_jni PROPERTIES LINK_FLAGS -Wl,--no-undefined)
     endif()
-    # Force removal of previous Java compilation and source when interface file changes This is required as
-    # types may be removed or change name (in this case previous java classes would interfere with current
-    # compilation).
+    # Force removal of previous Java compilation and source when interface file changes This is
+    # required as types may be removed or change name (in this case previous java classes would
+    # interfere with current compilation).
     add_custom_command(
         OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/CleanDep
         COMMAND ${CMAKE_COMMAND} -E remove_directory java_src
@@ -87,13 +87,11 @@ if(build)
         TARGET sdurws_jni POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E echo "Removing old Java compilation..."
         COMMAND ${CMAKE_COMMAND} -E remove_directory "${CMAKE_CURRENT_BINARY_DIR}/java_build"
-        COMMAND ${CMAKE_COMMAND} -E remove_directory "${RWS_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/javadoc"
+        COMMAND
+            ${CMAKE_COMMAND} -E remove_directory "${RWS_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/javadoc"
         COMMAND ${CMAKE_COMMAND} -E echo "Copying Java source..."
         COMMAND
-            ${CMAKE_COMMAND}
-            -E
-            copy_if_different
-            ${CMAKE_CURRENT_SOURCE_DIR}/LoaderRWS.java
+            ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_CURRENT_SOURCE_DIR}/LoaderRWS.java
             java_src/org/robwork/LoaderRWS.java
         COMMAND ${CMAKE_COMMAND} -E echo "Compiling Java files..."
         COMMAND ${CMAKE_COMMAND} -E make_directory java_build/org/robwork

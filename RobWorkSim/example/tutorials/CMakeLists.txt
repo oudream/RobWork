@@ -23,7 +23,3 @@ link_directories(${ROBWORKSIM_LIBRARY_DIRS})
 add_executable(SimLoop src/SimLoop.cpp)
 target_link_libraries(SimLoop ${ROBWORKSIM_LIBRARIES})
 
-# add_executable(MathJogling MathJogling.cpp) target_link_libraries(MathJogling ${ROBWORK_LIBRARIES} ${USER_LIBRARIES})
-
-# add_executable(WorkCellAndDevices WorkCellAndDevices.cpp) target_link_libraries(WorkCellAndDevices
-# ${ROBWORK_LIBRARIES} ${USER_LIBRARIES})

@@ -1,10 +1,12 @@
 # Find and sets up RobWorkStudio.
 #
-# ROBWORKSTUDIO_INCLUDE_DIR - Where to find robwork include sub-directory. ROBWORKSTUDIO_LIBRARIES   - List of libraries
-# when using RobWork (includes all libraries that RobWork depends on). ROBWORKSTUDIO_LIBRARY_DIRS - List of directories
-# where libraries of RobWork are located. ROBWORKSTUDIO_FOUND       - True if RobWork was found. (not impl yet)
+# ROBWORKSTUDIO_INCLUDE_DIR - Where to find robwork include sub-directory. ROBWORKSTUDIO_LIBRARIES -
+# List of libraries when using RobWork (includes all libraries that RobWork depends on).
+# ROBWORKSTUDIO_LIBRARY_DIRS - List of directories where libraries of RobWork are located.
+# ROBWORKSTUDIO_FOUND       - True if RobWork was found. (not impl yet)
 #
-# RWS_ROOT             - If set this defines the root of ROBWORKSTUDIO if not set then it if possible be autodetected.
+# RWS_ROOT             - If set this defines the root of ROBWORKSTUDIO if not set then it if
+# possible be autodetected.
 #
 
 # Allow the syntax else (), endif (), etc.
@@ -15,7 +17,8 @@ if(RWSTUDIO_ROOT)
 endif()
 
 # Check if RWstudio_ROOT path are setup correctly
-find_file(ROBWORKSTUDIO_FOUND RobWorkStudioSetup.cmake ${RWSTUDIO_ROOT}/cmake ${RWS_ROOT}/cmake NO_DEFAULT_PATH)
+find_file(ROBWORKSTUDIO_FOUND RobWorkStudioSetup.cmake ${RWSTUDIO_ROOT}/cmake ${RWS_ROOT}/cmake
+          NO_DEFAULT_PATH)
 if(NOT ROBWORKSTUDIO_FOUND)
     message(
         SEND_ERROR
@@ -29,9 +32,9 @@ message(STATUS "RobWorkStudio: ROOT dir: ${RWS_ROOT}")
 #
 # INCLUDE("${RWSTUDIO_ROOT}/cmake/RobWorkStudioBuildConfig${CMAKE_BUILD_TYPE}.cmake")
 
-# ######################################################################################################################
-# DEPENDENCIES - REQUIRED Check for all dependencies, this adds LIBRARY_DIRS and include dirs that the configuration
-# depends on
+# ##################################################################################################
+# DEPENDENCIES - REQUIRED Check for all dependencies, this adds LIBRARY_DIRS and include dirs that
+# the configuration depends on
 #
 
 find_package(PythonInterp 3 QUIET)
@@ -71,7 +74,7 @@ if(PYTHONLIBS_FOUND)
 endif()
 
 if(NOT PYTHON_LIBRARIES)
-	set(PYTHON_LIBRARIES "")
+    set(PYTHON_LIBRARIES "")
 endif()
 
 # Find and setup OpenGL.
@@ -80,8 +83,8 @@ if(POLICY CMP0072) # Introduce cmake 3.11
 endif()
 find_package(OpenGL REQUIRED)
 
-set(Boost_NO_BOOST_CMAKE TRUE) # From Boost 1.70, CMake files are provided by Boost - we are not yet ready to handle it
-                               # And some extra packages for boost
+set(Boost_NO_BOOST_CMAKE TRUE) # From Boost 1.70, CMake files are provided by Boost - we are not yet
+                               # ready to handle it And some extra packages for boost
 unset(Boost_USE_STATIC_LIBS)
 unset(Boost_FIND_QUIETLY)
 if(DEFINED UNIX)
@@ -102,7 +105,8 @@ find_package(Qt5Gui QUIET)
 find_package(Qt5Widgets QUIET)
 find_package(Qt5OpenGL QUIET)
 if(Qt5Core_FOUND AND Qt5Gui_FOUND AND Qt5Widgets_FOUND AND Qt5OpenGL_FOUND)
-    set(QT_LIBRARIES ${Qt5Core_LIBRARIES} ${Qt5Gui_LIBRARIES} ${Qt5Widgets_LIBRARIES} ${Qt5OpenGL_LIBRARIES})
+    set(QT_LIBRARIES ${Qt5Core_LIBRARIES} ${Qt5Gui_LIBRARIES} ${Qt5Widgets_LIBRARIES}
+                     ${Qt5OpenGL_LIBRARIES})
     message(STATUS "RobWorkStudio: Using Qt5.")
 else()
     message(STATUS "RobWorkStudio: One or more Qt5 modules not found:")
@@ -126,13 +130,10 @@ else()
     else()
         message(STATUS "RobWorkStudio: - Qt5OpenGL NOT found. Please set Qt5OpenGL_DIR to find.")
     endif()
-    message(
-        FATAL_ERROR
-            "RobWorkStudio: Could NOT find Qt5. Please set the Qt5 directories."
-    )
+    message(FATAL_ERROR "RobWorkStudio: Could NOT find Qt5. Please set the Qt5 directories.")
 endif()
 
-# ######################################################################################################################
+# ##################################################################################################
 # DEPENDENCIES - OPTIONAL these dependencies are optional, which is the user can switch off modules
 
 set(RWS_HAVE_GLUT False)
@@ -178,7 +179,8 @@ endif()
 # optional compilation of LUA interface
 include(CMakeDependentOption)
 set(RWS_HAVE_LUA False)
-cmake_dependent_option(RWS_DISABLE_LUA "Set when you want to disable lua!" OFF "RW_BUILD_WITH_LUA AND SWIG_FOUND" ON)
+cmake_dependent_option(RWS_DISABLE_LUA "Set when you want to disable lua!" OFF
+                       "RW_BUILD_WITH_LUA AND SWIG_FOUND" ON)
 if(NOT RWS_DISABLE_LUA)
     if(NOT SWIG_FOUND)
         message(STATUS "RobWorkStudio: Lua DISABLED! - SWIG 3+ was not found!")
@@ -195,13 +197,13 @@ else()
     message(STATUS "RobWorkStudio: Lua DISABLED!")
 endif()
 
-# ######################################################################################################################
+# ##################################################################################################
 # COMPILER FLAGS AND MACRO SETUP
 #
 
 #
-# Set extra compiler flags. The user should be able to change this. The compiler flags from RobWork are automatically
-# set
+# Set extra compiler flags. The user should be able to change this. The compiler flags from RobWork
+# are automatically set
 #
 rw_is_release(IS_RELEASE)
 
@@ -223,7 +225,8 @@ if(NOT DEFINED RWS_DEFINITIONS)
     set(
         RWS_DEFINITIONS
         "${RW_BUILD_WITH_DEFINITIONS};${RWS_DEFINITIONS_TMP}"
-        CACHE STRING "Change this to force using your own definitions and not those of RobWorkSutdio"
+        CACHE
+            STRING "Change this to force using your own definitions and not those of RobWorkSutdio"
     )
 endif()
 
@@ -233,12 +236,21 @@ message(STATUS "RobWorkStudio: Adding RWS CXX flags: ${RWS_CXX_FLAGS}")
 message(STATUS "RobWorkStudio: Addubg RWS definitions: ${RWS_DEFINITIONS}")
 
 #
-# Set extra linker flags. The user should be able to change this. The linker flags from RobWork are automatically set.
+# Set extra linker flags. The user should be able to change this. The linker flags from RobWork are
+# automatically set.
 #
 if(DEFINED RWS_LINKER_FLAGS)
-    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${RWS_LINKER_FLAGS}" CACHE STRING "" FORCE)
+    set(
+        CMAKE_SHARED_LINKER_FLAGS
+        "${CMAKE_SHARED_LINKER_FLAGS} ${RWS_LINKER_FLAGS}"
+        CACHE STRING "" FORCE
+    )
     if(WIN32)
-        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${RWS_LINKER_FLAGS}" CACHE STRING "" FORCE)
+        set(
+            CMAKE_EXE_LINKER_FLAGS
+            "${CMAKE_EXE_LINKER_FLAGS} ${RWS_LINKER_FLAGS}"
+            CACHE STRING "" FORCE
+        )
     endif()
 
     message(STATUS "RobWorkStudio: Adding RWS linker flags: ${RWS_LINKER_FLAGS}")
@@ -250,7 +262,7 @@ else()
     message(STATUS "RobWorkStudio: Using dynamic linking of default plugins!")
 endif()
 
-# ######################################################################################################################
+# ##################################################################################################
 # SETTING UP VARS here we setup the output variables
 #
 
@@ -260,27 +272,36 @@ set(ROBWORKSTUDIO_LIBRARY_DIRS ${RWS_LIBS_DIR})
 #
 # The include dirs
 #
-set(ROBWORKSTUDIO_INCLUDE_DIR ${RWS_ROOT}/src ${Boost_INCLUDE_DIR} ${ROBWORK_INCLUDE_DIRS}
+set(ROBWORKSTUDIO_INCLUDE_DIR ${RWS_ROOT}/src ${Boost_INCLUDE_DIR}
                               ${RWS_ROOT}/ext/qtpropertybrowser/src/)
 
 #
 # The library dirs
 #
-set(ROBWORKSTUDIO_LIBRARY_DIRS ${Boost_LIBRARY_DIRS} ${ROBWORK_LIBRARY_DIRS} ${RWS_ROOT}/libs/${RWS_BUILD_TYPE})
+set(ROBWORKSTUDIO_LIBRARY_DIRS ${Boost_LIBRARY_DIRS} ${RWS_ROOT}/libs/${RWS_BUILD_TYPE})
 
 #
-# Setup the Library List here. We need to make sure the correct order is maintained which is crucial for some compilers.
+# Setup the Library List here. We need to make sure the correct order is maintained which is crucial
+# for some compilers.
 #
 set(
     ROBWORKSTUDIO_LIBRARIES
     sdurws_robworkstudioapp
+    sdurws_jog
+    sdurws_log
+    sdurws_playback
+    sdurws_propertyview
+    sdurws_treeview
+    sdurws_planning
+    sdurws_sensors
+    sdurws_workcelleditorplugin
     sdurws_workcelleditor
+    sdurws_luapl
+    sdurws_luaeditor
     ${RWS_SANDBOX}
     ${RWS_LUA}
     sdurws
     qtpropertybrowser
-    ${ROBWORK_LIBRARIES}
-    ${QT_LIBRARIES}
-    ${Boost_LIBRARIES}
-    ${OPENGL_LIBRARIES}
 )
+
+set(ROBWORKSTUDIO_DEPEND ${QT_LIBRARIES} ${Boost_LIBRARIES} ${OPENGL_LIBRARIES})

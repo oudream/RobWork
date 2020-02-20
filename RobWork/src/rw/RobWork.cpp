@@ -203,7 +203,6 @@ void RobWork::initialize (const std::vector< std::string >& plugins)
     for(const std::string& p: Packs){
         std::string loc = OS::InstallPluginLocation(p);
         if(exists(loc)) {
-            std::cout << "Found " << p <<" Installation" << std::endl;
             std::string name = "Location-win-" + p +"-default";
             appendPluginFolder(loc,name,_settings);
         }
