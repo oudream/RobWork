@@ -1,3 +1,13 @@
+# *
+*.vscode
+*build
+*Build
+*rwsettings.xml
+*.class
+*.cproject
+*.project
+*.settings
+
 # /
 /cmake_install.cmake
 /CMakeCache.txt
@@ -13,11 +23,7 @@
 /CMakeSettings.json
 /.cproject
 /.project
-/Build
 /.settings
-*.vscode
-/*rwsettings.xml
-/*.class
 /.vs/*
 /out/*
 /debian
@@ -32,8 +38,6 @@
 /RobWork/bin
 /RobWork/CMakeFiles
 /RobWork/apidocs
-/RobWork/.cproject
-/RobWork/.project
 /RobWork/build
 /RobWork/.csettings
 /RobWork/CPackConfig.cmake
@@ -68,17 +72,12 @@
 /RobWork/example/bin
 /RobWork/example/CMakeFiles
 /RobWork/example/apidocs
-/RobWork/example/.cproject
-/RobWork/example/.project
 /RobWork/example/build
 /RobWork/example/.csettings
 /RobWork/example/CPackConfig.cmake
 /RobWork/example/CPackSourceConfig.cmake
 
 # /RobWork/example/cpp/
-/RobWork/example/cpp/.cproject
-/RobWork/example/cpp/.project
-/RobWork/example/cpp/.settings/
 /RobWork/example/cpp/build
 /RobWork/example/cpp/Build
 /RobWork/example/cpp/CMakeFiles
@@ -89,13 +88,9 @@
 
 
 # /RobWork/example/java/
-/RobWork/example/java/.classpath
-/RobWork/example/java/.project
-/RobWork/example/java/.settings/
 /RobWork/example/java/bin
 
 # /RobWork/example/java/src
-RobWork/example/java/src/*.class
 RobWork/example/java/src/*.log
 
 # /RobWork/example/ModelData/
@@ -106,9 +101,6 @@ RobWork/example/java/src/*.log
 /RobWork/example/ModelData/bin
 /RobWork/example/ModelData/CMakeFiles
 /RobWork/example/ModelData/apidocs
-/RobWork/example/ModelData/.cproject
-/RobWork/example/ModelData/.project
-/RobWork/example/ModelData/build
 /RobWork/example/ModelData/.csettings
 /RobWork/example/ModelData/CPackConfig.cmake
 /RobWork/example/ModelData/CPackSourceConfig.cmake
@@ -121,9 +113,6 @@ RobWork/example/java/src/*.log
 /RobWork/example/ModelData/XMLDevices/bin
 /RobWork/example/ModelData/XMLDevices/CMakeFiles
 /RobWork/example/ModelData/XMLDevices/apidocs
-/RobWork/example/ModelData/XMLDevices/.cproject
-/RobWork/example/ModelData/XMLDevices/.project
-/RobWork/example/ModelData/XMLDevices/build
 /RobWork/example/ModelData/XMLDevices/.csettings
 /RobWork/example/ModelData/XMLDevices/CPackConfig.cmake
 /RobWork/example/ModelData/XMLDevices/CPackSourceConfig.cmake
@@ -136,9 +125,6 @@ RobWork/example/java/src/*.log
 /RobWork/example/ModelData/XMLDevices/Fanuc-LRM200i/bin
 /RobWork/example/ModelData/XMLDevices/Fanuc-LRM200i/CMakeFiles
 /RobWork/example/ModelData/XMLDevices/Fanuc-LRM200i/apidocs
-/RobWork/example/ModelData/XMLDevices/Fanuc-LRM200i/.cproject
-/RobWork/example/ModelData/XMLDevices/Fanuc-LRM200i/.project
-/RobWork/example/ModelData/XMLDevices/Fanuc-LRM200i/build
 /RobWork/example/ModelData/XMLDevices/Fanuc-LRM200i/.csettings
 /RobWork/example/ModelData/XMLDevices/Fanuc-LRM200i/CPackConfig.cmake
 /RobWork/example/ModelData/XMLDevices/Fanuc-LRM200i/CPackSourceConfig.cmake
@@ -151,9 +137,6 @@ RobWork/example/java/src/*.log
 /RobWork/example/ModelData/XMLDevices/Fanuc-LRM200i/Geometry/bin
 /RobWork/example/ModelData/XMLDevices/Fanuc-LRM200i/Geometry/CMakeFiles
 /RobWork/example/ModelData/XMLDevices/Fanuc-LRM200i/Geometry/apidocs
-/RobWork/example/ModelData/XMLDevices/Fanuc-LRM200i/Geometry/.cproject
-/RobWork/example/ModelData/XMLDevices/Fanuc-LRM200i/Geometry/.project
-/RobWork/example/ModelData/XMLDevices/Fanuc-LRM200i/Geometry/build
 /RobWork/example/ModelData/XMLDevices/Fanuc-LRM200i/Geometry/.csettings
 /RobWork/example/ModelData/XMLDevices/Fanuc-LRM200i/Geometry/CPackConfig.cmake
 /RobWork/example/ModelData/XMLDevices/Fanuc-LRM200i/Geometry/CPackSourceConfig.cmake
@@ -166,9 +149,6 @@ RobWork/example/java/src/*.log
 /RobWork/example/ModelData/XMLDevices/KukaKr30ha/bin
 /RobWork/example/ModelData/XMLDevices/KukaKr30ha/CMakeFiles
 /RobWork/example/ModelData/XMLDevices/KukaKr30ha/apidocs
-/RobWork/example/ModelData/XMLDevices/KukaKr30ha/.cproject
-/RobWork/example/ModelData/XMLDevices/KukaKr30ha/.project
-/RobWork/example/ModelData/XMLDevices/KukaKr30ha/build
 /RobWork/example/ModelData/XMLDevices/KukaKr30ha/.csettings
 /RobWork/example/ModelData/XMLDevices/KukaKr30ha/CPackConfig.cmake
 /RobWork/example/ModelData/XMLDevices/KukaKr30ha/CPackSourceConfig.cmake
@@ -181,9 +161,6 @@ RobWork/example/java/src/*.log
 /RobWork/example/ModelData/XMLDevices/KukaKr30ha/Geometry/bin
 /RobWork/example/ModelData/XMLDevices/KukaKr30ha/Geometry/CMakeFiles
 /RobWork/example/ModelData/XMLDevices/KukaKr30ha/Geometry/apidocs
-/RobWork/example/ModelData/XMLDevices/KukaKr30ha/Geometry/.cproject
-/RobWork/example/ModelData/XMLDevices/KukaKr30ha/Geometry/.project
-/RobWork/example/ModelData/XMLDevices/KukaKr30ha/Geometry/build
 /RobWork/example/ModelData/XMLDevices/KukaKr30ha/Geometry/.csettings
 /RobWork/example/ModelData/XMLDevices/KukaKr30ha/Geometry/CPackConfig.cmake
 /RobWork/example/ModelData/XMLDevices/KukaKr30ha/Geometry/CPackSourceConfig.cmake
@@ -196,9 +173,6 @@ RobWork/example/java/src/*.log
 /RobWork/example/ModelData/XMLDevices/Kuka_kr16/bin
 /RobWork/example/ModelData/XMLDevices/Kuka_kr16/CMakeFiles
 /RobWork/example/ModelData/XMLDevices/Kuka_kr16/apidocs
-/RobWork/example/ModelData/XMLDevices/Kuka_kr16/.cproject
-/RobWork/example/ModelData/XMLDevices/Kuka_kr16/.project
-/RobWork/example/ModelData/XMLDevices/Kuka_kr16/build
 /RobWork/example/ModelData/XMLDevices/Kuka_kr16/.csettings
 /RobWork/example/ModelData/XMLDevices/Kuka_kr16/CPackConfig.cmake
 /RobWork/example/ModelData/XMLDevices/Kuka_kr16/CPackSourceConfig.cmake
@@ -211,9 +185,6 @@ RobWork/example/java/src/*.log
 /RobWork/example/ModelData/XMLDevices/Kuka_kr16/Geometry/bin
 /RobWork/example/ModelData/XMLDevices/Kuka_kr16/Geometry/CMakeFiles
 /RobWork/example/ModelData/XMLDevices/Kuka_kr16/Geometry/apidocs
-/RobWork/example/ModelData/XMLDevices/Kuka_kr16/Geometry/.cproject
-/RobWork/example/ModelData/XMLDevices/Kuka_kr16/Geometry/.project
-/RobWork/example/ModelData/XMLDevices/Kuka_kr16/Geometry/build
 /RobWork/example/ModelData/XMLDevices/Kuka_kr16/Geometry/.csettings
 /RobWork/example/ModelData/XMLDevices/Kuka_kr16/Geometry/CPackConfig.cmake
 /RobWork/example/ModelData/XMLDevices/Kuka_kr16/Geometry/CPackSourceConfig.cmake
@@ -226,9 +197,6 @@ RobWork/example/java/src/*.log
 /RobWork/example/ModelData/XMLDevices/Mitsubishi_PA10/bin
 /RobWork/example/ModelData/XMLDevices/Mitsubishi_PA10/CMakeFiles
 /RobWork/example/ModelData/XMLDevices/Mitsubishi_PA10/apidocs
-/RobWork/example/ModelData/XMLDevices/Mitsubishi_PA10/.cproject
-/RobWork/example/ModelData/XMLDevices/Mitsubishi_PA10/.project
-/RobWork/example/ModelData/XMLDevices/Mitsubishi_PA10/build
 /RobWork/example/ModelData/XMLDevices/Mitsubishi_PA10/.csettings
 /RobWork/example/ModelData/XMLDevices/Mitsubishi_PA10/CPackConfig.cmake
 /RobWork/example/ModelData/XMLDevices/Mitsubishi_PA10/CPackSourceConfig.cmake
@@ -241,9 +209,6 @@ RobWork/example/java/src/*.log
 /RobWork/example/ModelData/XMLDevices/Mitsubishi_PA10/Geometry/bin
 /RobWork/example/ModelData/XMLDevices/Mitsubishi_PA10/Geometry/CMakeFiles
 /RobWork/example/ModelData/XMLDevices/Mitsubishi_PA10/Geometry/apidocs
-/RobWork/example/ModelData/XMLDevices/Mitsubishi_PA10/Geometry/.cproject
-/RobWork/example/ModelData/XMLDevices/Mitsubishi_PA10/Geometry/.project
-/RobWork/example/ModelData/XMLDevices/Mitsubishi_PA10/Geometry/build
 /RobWork/example/ModelData/XMLDevices/Mitsubishi_PA10/Geometry/.csettings
 /RobWork/example/ModelData/XMLDevices/Mitsubishi_PA10/Geometry/CPackConfig.cmake
 /RobWork/example/ModelData/XMLDevices/Mitsubishi_PA10/Geometry/CPackSourceConfig.cmake
@@ -256,9 +221,6 @@ RobWork/example/java/src/*.log
 /RobWork/example/ModelData/XMLDevices/PG70/bin
 /RobWork/example/ModelData/XMLDevices/PG70/CMakeFiles
 /RobWork/example/ModelData/XMLDevices/PG70/apidocs
-/RobWork/example/ModelData/XMLDevices/PG70/.cproject
-/RobWork/example/ModelData/XMLDevices/PG70/.project
-/RobWork/example/ModelData/XMLDevices/PG70/build
 /RobWork/example/ModelData/XMLDevices/PG70/.csettings
 /RobWork/example/ModelData/XMLDevices/PG70/CPackConfig.cmake
 /RobWork/example/ModelData/XMLDevices/PG70/CPackSourceConfig.cmake
@@ -271,9 +233,6 @@ RobWork/example/java/src/*.log
 /RobWork/example/ModelData/XMLDevices/PG70/Geometry/bin
 /RobWork/example/ModelData/XMLDevices/PG70/Geometry/CMakeFiles
 /RobWork/example/ModelData/XMLDevices/PG70/Geometry/apidocs
-/RobWork/example/ModelData/XMLDevices/PG70/Geometry/.cproject
-/RobWork/example/ModelData/XMLDevices/PG70/Geometry/.project
-/RobWork/example/ModelData/XMLDevices/PG70/Geometry/build
 /RobWork/example/ModelData/XMLDevices/PG70/Geometry/.csettings
 /RobWork/example/ModelData/XMLDevices/PG70/Geometry/CPackConfig.cmake
 /RobWork/example/ModelData/XMLDevices/PG70/Geometry/CPackSourceConfig.cmake
@@ -286,9 +245,6 @@ RobWork/example/java/src/*.log
 /RobWork/example/ModelData/XMLDevices/SchunkHand/bin
 /RobWork/example/ModelData/XMLDevices/SchunkHand/CMakeFiles
 /RobWork/example/ModelData/XMLDevices/SchunkHand/apidocs
-/RobWork/example/ModelData/XMLDevices/SchunkHand/.cproject
-/RobWork/example/ModelData/XMLDevices/SchunkHand/.project
-/RobWork/example/ModelData/XMLDevices/SchunkHand/build
 /RobWork/example/ModelData/XMLDevices/SchunkHand/.csettings
 /RobWork/example/ModelData/XMLDevices/SchunkHand/CPackConfig.cmake
 /RobWork/example/ModelData/XMLDevices/SchunkHand/CPackSourceConfig.cmake
@@ -301,9 +257,6 @@ RobWork/example/java/src/*.log
 /RobWork/example/ModelData/XMLDevices/SchunkHand/Geometry/bin
 /RobWork/example/ModelData/XMLDevices/SchunkHand/Geometry/CMakeFiles
 /RobWork/example/ModelData/XMLDevices/SchunkHand/Geometry/apidocs
-/RobWork/example/ModelData/XMLDevices/SchunkHand/Geometry/.cproject
-/RobWork/example/ModelData/XMLDevices/SchunkHand/Geometry/.project
-/RobWork/example/ModelData/XMLDevices/SchunkHand/Geometry/build
 /RobWork/example/ModelData/XMLDevices/SchunkHand/Geometry/.csettings
 /RobWork/example/ModelData/XMLDevices/SchunkHand/Geometry/CPackConfig.cmake
 /RobWork/example/ModelData/XMLDevices/SchunkHand/Geometry/CPackSourceConfig.cmake
@@ -316,9 +269,6 @@ RobWork/example/java/src/*.log
 /RobWork/example/ModelData/XMLDevices/UR-6-85-5-A/bin
 /RobWork/example/ModelData/XMLDevices/UR-6-85-5-A/CMakeFiles
 /RobWork/example/ModelData/XMLDevices/UR-6-85-5-A/apidocs
-/RobWork/example/ModelData/XMLDevices/UR-6-85-5-A/.cproject
-/RobWork/example/ModelData/XMLDevices/UR-6-85-5-A/.project
-/RobWork/example/ModelData/XMLDevices/UR-6-85-5-A/build
 /RobWork/example/ModelData/XMLDevices/UR-6-85-5-A/.csettings
 /RobWork/example/ModelData/XMLDevices/UR-6-85-5-A/CPackConfig.cmake
 /RobWork/example/ModelData/XMLDevices/UR-6-85-5-A/CPackSourceConfig.cmake
@@ -331,9 +281,6 @@ RobWork/example/java/src/*.log
 /RobWork/example/ModelData/XMLDevices/UR-6-85-5-A/geometry/bin
 /RobWork/example/ModelData/XMLDevices/UR-6-85-5-A/geometry/CMakeFiles
 /RobWork/example/ModelData/XMLDevices/UR-6-85-5-A/geometry/apidocs
-/RobWork/example/ModelData/XMLDevices/UR-6-85-5-A/geometry/.cproject
-/RobWork/example/ModelData/XMLDevices/UR-6-85-5-A/geometry/.project
-/RobWork/example/ModelData/XMLDevices/UR-6-85-5-A/geometry/build
 /RobWork/example/ModelData/XMLDevices/UR-6-85-5-A/geometry/.csettings
 /RobWork/example/ModelData/XMLDevices/UR-6-85-5-A/geometry/CPackConfig.cmake
 /RobWork/example/ModelData/XMLDevices/UR-6-85-5-A/geometry/CPackSourceConfig.cmake
@@ -346,9 +293,6 @@ RobWork/example/java/src/*.log
 /RobWork/example/ModelData/XMLScenes/bin
 /RobWork/example/ModelData/XMLScenes/CMakeFiles
 /RobWork/example/ModelData/XMLScenes/apidocs
-/RobWork/example/ModelData/XMLScenes/.cproject
-/RobWork/example/ModelData/XMLScenes/.project
-/RobWork/example/ModelData/XMLScenes/build
 /RobWork/example/ModelData/XMLScenes/.csettings
 /RobWork/example/ModelData/XMLScenes/CPackConfig.cmake
 /RobWork/example/ModelData/XMLScenes/CPackSourceConfig.cmake
@@ -361,9 +305,6 @@ RobWork/example/java/src/*.log
 /RobWork/example/ModelData/XMLScenes/PA10atConveyor/bin
 /RobWork/example/ModelData/XMLScenes/PA10atConveyor/CMakeFiles
 /RobWork/example/ModelData/XMLScenes/PA10atConveyor/apidocs
-/RobWork/example/ModelData/XMLScenes/PA10atConveyor/.cproject
-/RobWork/example/ModelData/XMLScenes/PA10atConveyor/.project
-/RobWork/example/ModelData/XMLScenes/PA10atConveyor/build
 /RobWork/example/ModelData/XMLScenes/PA10atConveyor/.csettings
 /RobWork/example/ModelData/XMLScenes/PA10atConveyor/CPackConfig.cmake
 /RobWork/example/ModelData/XMLScenes/PA10atConveyor/CPackSourceConfig.cmake
@@ -376,9 +317,6 @@ RobWork/example/java/src/*.log
 /RobWork/example/ModelData/XMLScenes/PA10atConveyor/Geometry/bin
 /RobWork/example/ModelData/XMLScenes/PA10atConveyor/Geometry/CMakeFiles
 /RobWork/example/ModelData/XMLScenes/PA10atConveyor/Geometry/apidocs
-/RobWork/example/ModelData/XMLScenes/PA10atConveyor/Geometry/.cproject
-/RobWork/example/ModelData/XMLScenes/PA10atConveyor/Geometry/.project
-/RobWork/example/ModelData/XMLScenes/PA10atConveyor/Geometry/build
 /RobWork/example/ModelData/XMLScenes/PA10atConveyor/Geometry/.csettings
 /RobWork/example/ModelData/XMLScenes/PA10atConveyor/Geometry/CPackConfig.cmake
 /RobWork/example/ModelData/XMLScenes/PA10atConveyor/Geometry/CPackSourceConfig.cmake
@@ -391,9 +329,6 @@ RobWork/example/java/src/*.log
 /RobWork/example/ModelData/XMLScenes/PA10atConveyor/Geometry/scene/bin
 /RobWork/example/ModelData/XMLScenes/PA10atConveyor/Geometry/scene/CMakeFiles
 /RobWork/example/ModelData/XMLScenes/PA10atConveyor/Geometry/scene/apidocs
-/RobWork/example/ModelData/XMLScenes/PA10atConveyor/Geometry/scene/.cproject
-/RobWork/example/ModelData/XMLScenes/PA10atConveyor/Geometry/scene/.project
-/RobWork/example/ModelData/XMLScenes/PA10atConveyor/Geometry/scene/build
 /RobWork/example/ModelData/XMLScenes/PA10atConveyor/Geometry/scene/.csettings
 /RobWork/example/ModelData/XMLScenes/PA10atConveyor/Geometry/scene/CPackConfig.cmake
 /RobWork/example/ModelData/XMLScenes/PA10atConveyor/Geometry/scene/CPackSourceConfig.cmake
@@ -406,9 +341,6 @@ RobWork/example/java/src/*.log
 /RobWork/example/ModelData/XMLScenes/RobotWithHand/bin
 /RobWork/example/ModelData/XMLScenes/RobotWithHand/CMakeFiles
 /RobWork/example/ModelData/XMLScenes/RobotWithHand/apidocs
-/RobWork/example/ModelData/XMLScenes/RobotWithHand/.cproject
-/RobWork/example/ModelData/XMLScenes/RobotWithHand/.project
-/RobWork/example/ModelData/XMLScenes/RobotWithHand/build
 /RobWork/example/ModelData/XMLScenes/RobotWithHand/.csettings
 /RobWork/example/ModelData/XMLScenes/RobotWithHand/CPackConfig.cmake
 /RobWork/example/ModelData/XMLScenes/RobotWithHand/CPackSourceConfig.cmake
@@ -421,9 +353,6 @@ RobWork/example/java/src/*.log
 /RobWork/example/ModelData/XMLScenes/SensorTestScene/bin
 /RobWork/example/ModelData/XMLScenes/SensorTestScene/CMakeFiles
 /RobWork/example/ModelData/XMLScenes/SensorTestScene/apidocs
-/RobWork/example/ModelData/XMLScenes/SensorTestScene/.cproject
-/RobWork/example/ModelData/XMLScenes/SensorTestScene/.project
-/RobWork/example/ModelData/XMLScenes/SensorTestScene/build
 /RobWork/example/ModelData/XMLScenes/SensorTestScene/.csettings
 /RobWork/example/ModelData/XMLScenes/SensorTestScene/CPackConfig.cmake
 /RobWork/example/ModelData/XMLScenes/SensorTestScene/CPackSourceConfig.cmake
@@ -436,17 +365,12 @@ RobWork/example/java/src/*.log
 /RobWork/example/bfgsApp/bin
 /RobWork/example/bfgsApp/CMakeFiles
 /RobWork/example/bfgsApp/apidocs
-/RobWork/example/bfgsApp/.cproject
-/RobWork/example/bfgsApp/.project
-/RobWork/example/bfgsApp/build
 /RobWork/example/bfgsApp/.csettings
 /RobWork/example/bfgsApp/CPackConfig.cmake
 /RobWork/example/bfgsApp/CPackSourceConfig.cmake
 
 # /RobWork/example/consoleapp/
-/RobWork/example/consoleapp/.cproject
 /RobWork/example/consoleapp/.csettings
-/RobWork/example/consoleapp/.project
 /RobWork/example/consoleapp/CMakeCache.txt
 /RobWork/example/consoleapp/CMakeFiles
 /RobWork/example/consoleapp/CPackConfig.cmake
@@ -478,9 +402,6 @@ RobWork/example/java/src/*.log
 /RobWork/example/simplegui/bin
 /RobWork/example/simplegui/CMakeFiles
 /RobWork/example/simplegui/apidocs
-/RobWork/example/simplegui/.cproject
-/RobWork/example/simplegui/.project
-/RobWork/example/simplegui/build
 /RobWork/example/simplegui/.csettings
 /RobWork/example/simplegui/CPackConfig.cmake
 /RobWork/example/simplegui/CPackSourceConfig.cmake
@@ -494,9 +415,6 @@ RobWork/example/java/src/*.log
 /RobWork/example/simplegui/src/bin
 /RobWork/example/simplegui/src/CMakeFiles
 /RobWork/example/simplegui/src/apidocs
-/RobWork/example/simplegui/src/.cproject
-/RobWork/example/simplegui/src/.project
-/RobWork/example/simplegui/src/build
 /RobWork/example/simplegui/src/.csettings
 /RobWork/example/simplegui/src/CPackConfig.cmake
 /RobWork/example/simplegui/src/CPackSourceConfig.cmake
@@ -509,18 +427,13 @@ RobWork/example/java/src/*.log
 /RobWork/example/snippets/bin
 /RobWork/example/snippets/CMakeFiles
 /RobWork/example/snippets/apidocs
-/RobWork/example/snippets/.cproject
-/RobWork/example/snippets/.project
-/RobWork/example/snippets/build
 /RobWork/example/snippets/.csettings
 /RobWork/example/snippets/CPackConfig.cmake
 /RobWork/example/snippets/CPackSourceConfig.cmake
 /RobWork/example/snippets/libs
 
 # /RobWork/example/tutorial/
-/RobWork/example/tutorial/.cproject
 /RobWork/example/tutorial/.csettings
-/RobWork/example/tutorial/.project
 /RobWork/example/tutorial/CMakeCache.txt
 /RobWork/example/tutorial/CMakeFiles
 /RobWork/example/tutorial/CPackConfig.cmake
@@ -529,7 +442,6 @@ RobWork/example/java/src/*.log
 /RobWork/example/tutorial/RobWork.cmake
 /RobWork/example/tutorial/apidocs
 /RobWork/example/tutorial/bin
-/RobWork/example/tutorial/build
 /RobWork/example/tutorial/cmake_install.cmake
 /RobWork/example/tutorial/libs
 
@@ -541,9 +453,6 @@ RobWork/example/java/src/*.log
 /RobWork/ext/bin
 /RobWork/ext/CMakeFiles
 /RobWork/ext/apidocs
-/RobWork/ext/.cproject
-/RobWork/ext/.project
-/RobWork/ext/build
 /RobWork/ext/.csettings
 /RobWork/ext/CPackConfig.cmake
 /RobWork/ext/CPackSourceConfig.cmake
