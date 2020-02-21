@@ -72,23 +72,57 @@ QSlider* makeHSlider (int end)
 
     return slider;
 }
-
-QDoubleSpinBox* makeDoubleSpinBox (double low, double high)
-{
-    QDoubleSpinBox* box = new QDoubleSpinBox ();
-    box->setDecimals (3);
-    box->setRange (low, high);
-    box->setKeyboardTracking (false);
-
-    const double step = (high - low) / 400;
-    box->setSingleStep (step);
-
-    return box;
-}
-
 const int sliderEnd = 4000;
 }    // namespace
 
+SliderSpinBox::SliderSpinBox (double low, double high)
+{
+    this->setDecimals (3);
+    this->setRange (low, high);
+    this->setKeyboardTracking (true);
+    const double step = (high - low) / 400;
+    this->setSingleStep (step);
+}
+
+void SliderSpinBox::fixup (QString& input) const
+{
+    QString out;
+    int deci = decimals ();
+    bool dot = false;
+    for (int i = 0; i < input.count (); i++) {
+        if (deci == 0) {
+            break;
+        }
+        if (input[i] >= '0' && input[i] <= '9') {
+            if (dot) {
+                deci--;
+            }
+            out += input[i];
+        }
+        else if (input[i] == '.' && !dot) {
+            out += input[i];
+            dot = true;
+        }
+    }
+    input=out;
+}
+
+QValidator::State SliderSpinBox::validate (QString& text, int& pos) const 
+{
+    bool ok = false;
+    locale ().toDouble (text, &ok);
+    return ok ? QValidator::Acceptable : QValidator::Invalid;
+}
+
+
+double SliderSpinBox::valueFromText(const QString &text) const
+{
+  bool ok = false;
+  QString t = text;
+  fixup(t);
+  double value = locale().toDouble(t, &ok);
+  return ok ? value : QDoubleSpinBox::value();
+}
 //----------------------------------------------------------------------
 // JointLine
 
@@ -122,7 +156,7 @@ Slider::Slider (const std::string& title, double low, double high, QGridLayout* 
     _lowLabel  = makeNumericQLabel (_low);
     _slider    = makeHSlider (sliderEnd);
     _highLabel = makeNumericQLabel (_high);
-    _box       = makeDoubleSpinBox (_low, _high);
+    _box       = new SliderSpinBox (_low, _high);
 
     unsigned int col = 0;
     if (!title.empty ())
@@ -168,7 +202,10 @@ void Slider::unitUpdated ()
 
     const int val = _slider->value ();
     _box->setRange (lowUnit, highUnit);
-    const double step = (highUnit - lowUnit) / 400;
+    double step = (highUnit - lowUnit) / 400;
+    if(step > 1 ) {
+        step = 1;
+    }
     _box->setSingleStep (step);
     setBoxValueFromSlider (val);
 
