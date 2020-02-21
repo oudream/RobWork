@@ -40,7 +40,7 @@ if(build)
     # MESSAGE("${LIBS_TMP} sdurws_robworkstudioapp ${ROBWORK_LIBRARIES}")
 
     target_link_libraries(${SUBSYS_NAME} ${LIBS_TMP})
-    target_link_libraries(${SUBSYS_NAME} RW::sdurw ${GLUT_glut_LIBRARY} sdurws_robworkstudioapp)
+    target_link_libraries(${SUBSYS_NAME} RW::sdurw sdurws_robworkstudioapp)
 
     if(RWS_USE_STATIC_LINK_PLUGINS)
         if(TARGET sdurws_jog)

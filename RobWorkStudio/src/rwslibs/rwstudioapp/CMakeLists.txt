@@ -29,7 +29,7 @@ if(build)
 
     rws_add_component(${SUBSYS_NAME} ${SrcFiles})
     rw_add_includes(${SUBSYS_NAME} "rwslibs/rwstudioapp" ${SRC_FILES_HPP})
-    target_link_libraries(${SUBSYS_NAME} PUBLIC sdurws ${QT_LIBRARIES} PRIVATE ${SUBSYS_DEPS} RW::sdurw)
+    target_link_libraries(${SUBSYS_NAME} PUBLIC sdurws ${QT_LIBRARIES} PRIVATE ${SUBSYS_DEPS} RW::sdurw ${GLUT_glut_LIBRARY})
     target_include_directories(${SUBSYS_NAME}
         INTERFACE
         $<BUILD_INTERFACE:${RWS_ROOT}/src> $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
