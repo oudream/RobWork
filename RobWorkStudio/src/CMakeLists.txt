@@ -23,7 +23,7 @@ set(RWS_COMPONENT_LIBRARIES ${RWS_COMPONENT_LIBRARIES} PARENT_SCOPE)
 # now create the actual RobWorkStudio executable Now the RobWorkStudio executable need to be build:
 set(SUBSYS_NAME RobWorkStudio)
 set(SUBSYS_DESC "The RobWorkStudio GUI.")
-set(SUBSYS_DEPS sdurws)
+set(SUBSYS_DEPS sdurws sdurws_robworkstudioapp)
 
 set(build TRUE)
 set(DEFAULT TRUE)
@@ -40,10 +40,7 @@ if(build)
     # MESSAGE("${LIBS_TMP} sdurws_robworkstudioapp ${ROBWORK_LIBRARIES}")
 
     target_link_libraries(${SUBSYS_NAME} ${LIBS_TMP})
-    if(TARGET sdurws_robworkstudioapp)
-        target_link_libraries(${SUBSYS_NAME} sdurws_robworkstudioapp)
-    endif()
-    target_link_libraries(${SUBSYS_NAME} RW::sdurw ${GLUT_glut_LIBRARY})
+    target_link_libraries(${SUBSYS_NAME} RW::sdurw ${GLUT_glut_LIBRARY} sdurws_robworkstudioapp)
 
     if(RWS_USE_STATIC_LINK_PLUGINS)
         if(TARGET sdurws_jog)
