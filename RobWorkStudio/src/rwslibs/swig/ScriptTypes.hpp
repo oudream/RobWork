@@ -63,6 +63,8 @@ namespace swig {
 
     rw::common::Ptr<RobWorkStudio> getRobWorkStudioInstance(const std::string& args);
 
+    bool isRunning();
+
     const rwlibs::swig::State& getState();
     void setState(rwlibs::swig::State& state);
     rw::common::Ptr<rwlibs::swig::Device> findDevice(const std::string& name);
@@ -71,15 +73,11 @@ namespace swig {
     rw::common::Ptr<rwlibs::swig::TreeDevice> findTreeDevice(const std::string& name);
     rw::common::Ptr<rwlibs::swig::ParallelDevice> findParallelDevice(const std::string& name);
     rwlibs::swig::Frame* findFrame(const std::string& name);
-
     rwlibs::swig::MovableFrame* findMovableFrame(const std::string& name);
-
     rwlibs::swig::FixedFrame* findFixedFrame(const std::string& name);
 
     void moveTo(rwlibs::swig::MovableFrame* mframe, rwlibs::swig::Transform3d wTframe );
-
     void moveTo(rwlibs::swig::Frame* frame, rwlibs::swig::MovableFrame* mframe, rwlibs::swig::Transform3d wTtcp );
-
     void moveTo(const std::string& fname, const std::string& mname, rwlibs::swig::Transform3d wTframe );
 
     // utility functions for
