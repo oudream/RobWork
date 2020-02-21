@@ -13,6 +13,7 @@ if(RWS_USE_STATIC_LINK_PLUGINS)
             sdurws_sensors
             sdurws_treeview
             sdurws_propertyview
+            sdurws_workcelleditorplugin
     )
     if(RWS_HAVE_LUA)
         list(APPEND SUBSYS_DEPS sdurws_luaeditor sdurws_luapl)
@@ -29,11 +30,42 @@ if(build)
 
     rws_add_component(${SUBSYS_NAME} ${SrcFiles})
     rw_add_includes(${SUBSYS_NAME} "rwslibs/rwstudioapp" ${SRC_FILES_HPP})
-    target_link_libraries(${SUBSYS_NAME} PUBLIC sdurws ${QT_LIBRARIES} PRIVATE ${SUBSYS_DEPS} RW::sdurw ${GLUT_glut_LIBRARY})
-    target_include_directories(${SUBSYS_NAME}
-        INTERFACE
-        $<BUILD_INTERFACE:${RWS_ROOT}/src> $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
+    target_link_libraries(
+        ${SUBSYS_NAME}
+        PUBLIC sdurws ${QT_LIBRARIES}
+        PRIVATE ${SUBSYS_DEPS} RW::sdurw ${GLUT_glut_LIBRARY}
     )
+    target_include_directories(
+        ${SUBSYS_NAME}
+        INTERFACE $<BUILD_INTERFACE:${RWS_ROOT}/src> $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
+    )
+    if(RWS_USE_STATIC_LINK_PLUGINS)
+
+        if(TARGET sdurws_jog)
+            target_compile_definitions(${SUBSYS_NAME} PRIVATE RWS_HAVE_PLUGIN_JOG)
+        endif()
+        if(TARGET sdurws_log)
+            target_compile_definitions(${SUBSYS_NAME} PRIVATE RWS_HAVE_PLUGIN_LOG)
+        endif()
+        if(TARGET sdurws_planning)
+            target_compile_definitions(${SUBSYS_NAME} PRIVATE RWS_HAVE_PLUGIN_PLANNING)
+        endif()
+        if(TARGET sdurws_playback)
+            target_compile_definitions(${SUBSYS_NAME} PRIVATE RWS_HAVE_PLUGIN_PLAYBACK)
+        endif()
+        if(TARGET sdurws_propertyview)
+            target_compile_definitions(${SUBSYS_NAME} PRIVATE RWS_HAVE_PLUGIN_PROPERTYVIEW)
+        endif()
+        if(TARGET sdurws_sensors)
+            target_compile_definitions(${SUBSYS_NAME} PRIVATE RWS_HAVE_PLUGIN_SENSORS)
+        endif()
+        if(TARGET sdurws_treeview)
+            target_compile_definitions(${SUBSYS_NAME} PRIVATE RWS_HAVE_PLUGIN_TREEVIEW)
+        endif()
+        if(TARGET sdurws_workcelleditorplugin)
+            target_compile_definitions(${SUBSYS_NAME} PRIVATE RWS_HAVE_PLUGIN_WORKCELLEDITOR)
+        endif()
+    endif()
 
     set_target_properties(${SUBSYS_NAME} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
 
