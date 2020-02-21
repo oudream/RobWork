@@ -5,6 +5,7 @@
 #include <rwslibs/swig/ScriptTypes.hpp>
 #include <rw/common/Ptr.hpp>
 #include <rwslibs/rwstudioapp/RobWorkStudioApp.hpp>
+
 using namespace rwlibs::swig;
 using namespace rws::swig;
 
@@ -36,53 +37,73 @@ import org.robwork.sdurw.*;
  * General utility functions
  ********************************************/
 
+/**
+ * @brief Launch an instance of RobWorkStudio
+ * @return pointer to robworkstudio
+ */ 
 rw::common::Ptr<RobWorkStudio> getRobWorkStudioInstance();
+
+/**
+ * @brief Launch an instance of RobWorkStudio
+ * @param args [in] string literal of input arguments for robworkstudio
+ * @return pointer to robworkstudio
+ */
 rw::common::Ptr<RobWorkStudio> getRobWorkStudioInstance(const std::string& args);
 
+/**
+ * @brief incase RobWorkStudio has been launched by other means then getRobWorkStudioInstance()
+ * use this function to get acces to all the build in functions
+ * @param rwstudio [in] a pointer to a robworkStudio Instance
+ */
+void setRobWorkStudio (RobWorkStudio* rwstudio);
+
+/**
+ * @brief get a pointer to the current associated robworkstudio instance
+ * @return a pointer to the current robworkStudio Instance
+ */
 RobWorkStudio* getRobWorkStudio();
-RobWorkStudio* getRobWorkStudioFromQt();
 
-void setRobWorkStudio(RobWorkStudio* rwstudio);
+/**
+ * @brief Find out if robworkstudio is running. NOTICE only if robworkstudio started with getRobWorkStudioInstance
+ * @return true if running
+ */
+bool isRunning();
 
-const State& getState();
-void setState(State& state);
-rw::common::Ptr<Device> findDevice(const std::string& name);
-rw::common::Ptr<JointDevice> findJointDevice(const std::string& name);
-rw::common::Ptr<SerialDevice> findSerialDevice(const std::string& name);
-rw::common::Ptr<TreeDevice> findTreeDevice(const std::string& name);
-rw::common::Ptr<ParallelDevice> findParallelDevice(const std::string& name);
-Frame* findFrame(const std::string& name);
-
-MovableFrame* findMovableFrame(const std::string& name);
-
- FixedFrame* findFixedFrame(const std::string& name);
-
- void moveTo(MovableFrame* mframe, rw::math::Transform3D<double> wTframe );
-
- void moveTo(Frame* frame, MovableFrame* mframe, rw::math::Transform3D<double> wTtcp );
-
- void moveTo(const std::string& fname, const std::string& mname, rw::math::Transform3D<double> wTframe );
-
- rw::math::Q getQ(rw::common::Ptr<Device> dev);
- void setQ(rw::common::Ptr<Device> dev, rw::math::Q);
-
- void setTransform(Frame* mframe, rw::math::Transform3D<double> wTframe );
-
-rw::math::Transform3D<double> wTf(Frame* frame);
-rw::math::Transform3D<double> fTf(Frame* frame,Frame* frame);
-rw::math::Transform3D<double> wTf(const std::string& frame);
-rw::math::Transform3D<double> fTf(const std::string& frame,const std::string& frame);
+/**
+ * @brief this is used to connect to an already running instance of robworkStudio.
+ * Notice. The main purpose for this function is to allow rws python plugins to find robworkstudio
+ * @return The running robworkstudio instance
+ */
+RobWorkStudio* getRobWorkStudioFromQt ();
 
 
-/*
-State& getState();
-void setState(State& state);
-rw::common::Ptr<Device> findDevice(const std::string& name);
-rw::common::Ptr<JointDevice> findJointDevice(const std::string& name);
-rw::common::Ptr<SerialDevice> findSerialDevice(const std::string& name);
-rw::common::Ptr<TreeDevice> findTreeDevice(const std::string& name);
-rw::common::Ptr<ParallelDevice> findParallelDevice(const std::string& name);
-*/
+
+const State& getState ();
+void setState (State& state);
+rw::common::Ptr< Device > findDevice (const std::string& name);
+rw::common::Ptr< JointDevice > findJointDevice (const std::string& name);
+rw::common::Ptr< SerialDevice > findSerialDevice (const std::string& name);
+rw::common::Ptr< TreeDevice > findTreeDevice (const std::string& name);
+rw::common::Ptr< ParallelDevice > findParallelDevice (const std::string& name);
+Frame* findFrame (const std::string& name);
+MovableFrame* findMovableFrame (const std::string& name);
+FixedFrame* findFixedFrame (const std::string& name);
+
+void moveTo (MovableFrame* mframe, rw::math::Transform3D< double > wTframe);
+void moveTo (Frame* frame, MovableFrame* mframe, rw::math::Transform3D< double > wTtcp);
+void moveTo (const std::string& fname, const std::string& mname,
+             rw::math::Transform3D< double > wTframe);
+
+rw::math::Q getQ (rw::common::Ptr< Device > dev);
+void setQ (rw::common::Ptr< Device > dev, rw::math::Q);
+
+void setTransform (Frame* mframe, rw::math::Transform3D< double > wTframe);
+
+rw::math::Transform3D< double > wTf (Frame* frame);
+rw::math::Transform3D< double > fTf (Frame* frame, Frame* frame);
+rw::math::Transform3D< double > wTf (const std::string& frame);
+rw::math::Transform3D< double > fTf (const std::string& frame, const std::string& frame);
+
 
 /********************************************
  * Qt
@@ -291,16 +312,47 @@ public:
  * RWSLIBS RWSTUDIOAPP
  ********************************************/
 namespace rws{
+
+    /**
+     * @brief a RobWorkStudio main application which may be instantiated in its own thread.
+     */
     class RobWorkStudioApp
      {
      public:
+        /**
+         * constructor
+         * @param args [in] command line arguments for RobWorkStudio
+         */
         RobWorkStudioApp(const std::string& args);
+
+        //! destructor
         ~RobWorkStudioApp();
 
+        /**
+         * @brief start RobWorkStudio in its own thread
+         */
         void start();
-        void run();
+        
+        /**
+         * @brief start RobWorkStudio in this thread. Notice this method call will
+         * block until RobWorkStudio is exited.
+         * @return zero if exited normally.
+         */
+        int run();
 
+        /**
+         * @brief check if RobwWrkStudio is running
+         * @return true if running false otherwise
+         */
         bool isRunning();
+
+        /**
+         * @brief get handle to the running RobWorkStudio instance.
+         * @note do not directly change Qt visualization objects, this will
+         * produce segfaults. Instead use Qt events and the post* handles on
+         * RobWorkStudio interface.
+         * @return handle to RobWorkStudio
+         */
 		RobWorkStudio * getRobWorkStudio();
 	
      };
