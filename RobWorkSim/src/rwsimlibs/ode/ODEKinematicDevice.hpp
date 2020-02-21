@@ -25,8 +25,8 @@
 
 #include <rw/math/Q.hpp>
 
-#include "ODEBody.hpp"
-#include "ODEDevice.hpp"
+#include <rwsimlibs/ode/ODEBody.hpp>
+#include <rwsimlibs/ode/ODEDevice.hpp>
 
 namespace rwsim { namespace dynamics { class KinematicDevice; } }
 

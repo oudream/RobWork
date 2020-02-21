@@ -24,14 +24,14 @@ if(build)
         SimulatedScanner25D.cpp
         SimulatedScanner2D.cpp
     )
-
-    set(CAM_SRC_FILES_HPP FrameGrabber.hpp GLFrameGrabber.hpp SimulatedCamera.hpp)
-
     set(
         SRC_FILES_HPP
+        FrameGrabber.hpp
         FrameGrabber25D.hpp
+        GLFrameGrabber.hpp
         GLFrameGrabber25D.hpp
         KinematicSimulator.hpp
+        SimulatedCamera.hpp
         SimulatedController.hpp
         SimulatedSensor.hpp
         Simulator.hpp
@@ -40,7 +40,7 @@ if(build)
         SimulatedKinect.hpp
     )
 
-    rw_add_library(${SUBSYS_NAME} ${SRC_FILES} ${CAM_SRC_FILES_HPP} ${SRC_FILES_HPP})
+    rw_add_library(${SUBSYS_NAME} ${SRC_FILES} ${SRC_FILES_HPP})
     rw_add_includes(${SUBSYS_NAME} "rwlibs/simulation" ${SRC_FILES_HPP})
     rw_add_include_dirs(${SUBSYS_NAME} "rwlibs/simulation" camera)
 

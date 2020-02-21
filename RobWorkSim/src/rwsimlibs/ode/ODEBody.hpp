@@ -22,7 +22,7 @@
 #include <rwsim/dynamics/Body.hpp>
 #include <rwlibs/simulation/Simulator.hpp>
 #include <rw/math/Vector3D.hpp>
-#include "ODEUtil.hpp"
+#include <rwsimlibs/ode/ODEUtil.hpp>
 
 namespace rw { namespace kinematics { class MovableFrame; } }
 namespace rw { namespace kinematics { class State; } }
