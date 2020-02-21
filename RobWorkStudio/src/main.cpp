@@ -19,6 +19,10 @@
 
 #include <rwslibs/rwstudioapp/RobWorkStudioApp.hpp>
 
+#ifdef _WIN32
+#include <windows.h>
+#endif    //#ifdef _WIN32
+
 int main (int argc, char** argv)
 {
     std::string arg;
