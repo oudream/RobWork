@@ -425,7 +425,7 @@ void OBJReader::parse_mtl_Ke (char** next_token)
     _materials.back ().emissive[0] = parseFloat (next_token);
     _materials.back ().emissive[1] = parseFloat (next_token);
     _materials.back ().emissive[2] = parseFloat (next_token);
-    _materials.back ().simplergb  = false;
+    _materials.back ().simplergb   = false;
 }
 
 void OBJReader::parse_mtl_Tf (char** next_token)
@@ -798,8 +798,12 @@ Model3D::Ptr LoaderOBJ::load (const std::string& name)
             int index_s = int(obj->_vertices.size ());
             for (const OBJReader::Face& subFace : matFace.subFaces) {
                 obj->_vertices.push_back (reader._vertexes[subFace.v]);
-                obj->_normals.push_back (reader._normals[subFace.vn]);
-                obj->_texCoords.push_back (reader._texCoords[subFace.vt].first);
+                if (0 <= subFace.vn) {
+                    obj->_normals.push_back (reader._normals[subFace.vn]);
+                }
+                if (0 <= subFace.vt) {
+                    obj->_texCoords.push_back (reader._texCoords[subFace.vt].first);
+                }
             }
 
             if (matFace.subFaces.size () < 3) {
@@ -833,7 +837,7 @@ Model3D::Ptr LoaderOBJ::load (const std::string& name)
                     IndexedPolygonN< uint8_t > poly (matFace.subFaces.size ());
 
                     for (size_t k = 0; k < matFace.subFaces.size (); k++) {
-                        poly[k] = (uint8_t) index_s + uint8_t(k);
+                        poly[k] = (uint8_t) index_s + uint8_t (k);
                     }
 
                     std::vector< IndexedTriangle< uint8_t > > tris;
@@ -844,7 +848,7 @@ Model3D::Ptr LoaderOBJ::load (const std::string& name)
                     IndexedPolygonN< uint16_t > poly (matFace.subFaces.size ());
 
                     for (size_t k = 0; k < matFace.subFaces.size (); k++) {
-                        poly[k] = (uint16_t) index_s + uint16_t(k);
+                        poly[k] = (uint16_t) index_s + uint16_t (k);
                     }
 
                     std::vector< IndexedTriangle< uint16_t > > tris;
@@ -855,7 +859,7 @@ Model3D::Ptr LoaderOBJ::load (const std::string& name)
                     IndexedPolygonN< uint32_t > poly (matFace.subFaces.size ());
 
                     for (size_t k = 0; k < matFace.subFaces.size (); k++) {
-                        poly[k] = (uint32_t) index_s + uint32_t(k);
+                        poly[k] = (uint32_t) index_s + uint32_t (k);
                     }
 
                     std::vector< IndexedTriangle< uint32_t > > tris;
