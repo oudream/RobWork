@@ -1,6 +1,6 @@
 set(SUBSYS_NAME sdurws_py)
 set(SUBSYS_DESC "Interface for accessing RobWorkStudio from python.")
-set(SUBSYS_DEPS sdurw)
+set(SUBSYS_DEPS sdurws sdurws_robworkstudioapp)
 
 set(build TRUE)
 
@@ -128,9 +128,7 @@ if(build)
 
     swig_link_libraries(
         sdurws${LIB_SUFIX}
-        ${RWS_COMPONENT_LIBRARIES}
-        ${RWS_PLUGIN_LIBRARIES}
-        sdurws
+        ${SUBSYS_DEPS}
         RW::sdurw
         ${PYTHON_LIBRARIES}
     )

@@ -6,7 +6,6 @@ set(build TRUE)
 rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ON DEPENDS ${SUBSYS_DEPS} ADD_DOC)
 
 if(build)
-
     # if we want to use ui files add them here
     set(UIS_FILES WorkcellEditorWindow.ui)
     qt5_wrap_ui(UIS_OUT_H ${UIS_FILES})
@@ -50,8 +49,6 @@ if(build)
         INTERFACE
         $<BUILD_INTERFACE:${RWS_ROOT}/src> $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
     )
-
-    set(RWS_COMPONENT_LIBRARIES ${RWS_COMPONENT_LIBRARIES} ${SUBSYS_NAME} PARENT_SCOPE)
 
     set_target_properties(${SUBSYS_NAME} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
 endif()

@@ -114,9 +114,6 @@ import org.robwork.sdurw_task.*;
 
 %include <stl.i>
 
-%template (DynamicWorkCellPtr) rw::common::Ptr<DynamicWorkCell>;
-
-
 /********************************************
  * Boost
  ********************************************/
@@ -197,6 +194,7 @@ public:
 };
 
 %template (ContactDetectorPtr) rw::common::Ptr<ContactDetector>;
+OWNEDPTR(ContactDetector);
 
 class ContactDetectorData {
 public:
@@ -209,6 +207,7 @@ public:
 };
 
 %template (ContactDetectorDataPtr) rw::common::Ptr<ContactDetectorData>;
+OWNEDPTR(ContactDetectorData);
 
 class ContactDetectorTracking {
 public:
@@ -239,6 +238,7 @@ public:
 };
 
 %template (ContactDetectorTrackingPtr) rw::common::Ptr<ContactDetectorTracking>;
+OWNEDPTR(ContactDetectorTracking);
 
 class ContactStrategy //: public rw::proximity::ProximityStrategy
 {
@@ -292,6 +292,7 @@ public:
 };
 
 %template (ContactStrategyPtr) rw::common::Ptr<ContactStrategy>;
+OWNEDPTR(ContactStrategy);
 
 class Contact {
 public:
@@ -321,6 +322,7 @@ public:
 };
 
 %template (ContactVector) std::vector<Contact>;
+
 
 /********************************************
  * CONTROL
@@ -410,6 +412,7 @@ public:
 };
 
 %template (PDControllerPtr) rw::common::Ptr<PDController>;
+OWNEDPTR(PDController);
 
 %nodefaultctor SerialDeviceController;
 class SerialDeviceController //: public rwlibs::simulation::SimulatedController 
@@ -493,6 +496,7 @@ public:
 };
 
 %template (SerialDeviceControllerPtr) rw::common::Ptr<SerialDeviceController>;
+OWNEDPTR(SerialDeviceController);
 
 %nodefaultctor BodyController;
 class BodyController
@@ -605,6 +609,8 @@ public:
 
 %template (BodyPtr) rw::common::Ptr<Body>;
 %template (BodyPtrVector) std::vector<rw::common::Ptr<Body> >;
+OWNEDPTR(Body);
+
 
 class FixedBody: public Body
 {
@@ -612,6 +618,7 @@ class FixedBody: public Body
 
 %template (FixedBodyPtr) rw::common::Ptr<FixedBody>;
 %template (FixedBodyPtrVector) std::vector<rw::common::Ptr<FixedBody> >;
+OWNEDPTR(FixedBody);
 
 class KinematicBody: public Body
 {
@@ -619,6 +626,7 @@ class KinematicBody: public Body
 
 %template (KinematicBodyPtr) rw::common::Ptr<KinematicBody>;
 %template (KinematicBodyPtrVector) std::vector<rw::common::Ptr<KinematicBody> >;
+OWNEDPTR(KinematicBody);
 
 class RigidBody : public Body
 {
@@ -670,6 +678,7 @@ public:
 
 %template (RigidBodyPtr) rw::common::Ptr<RigidBody>;
 %template (RigidBodyPtrVector) std::vector<rw::common::Ptr<RigidBody> >;
+OWNEDPTR(RigidBody);
 
 %nodefaultctor Constraint;
 class Constraint {
@@ -711,10 +720,10 @@ public:
 
 %template (ConstraintPtr) rw::common::Ptr<Constraint>;
 %template (ConstraintPtrVector) std::vector<rw::common::Ptr<Constraint> >;
+OWNEDPTR(Constraint);
 
 %nodefaultctor DynamicDevice;
 class DynamicDevice {
-
 public:
     virtual rw::math::Q getQ(const State& state);
 
@@ -736,6 +745,7 @@ public:
 
 %template (DynamicDevicePtr) rw::common::Ptr<DynamicDevice>;
 %template (DynamicDevicePtrVector) std::vector<rw::common::Ptr<DynamicDevice> >;
+OWNEDPTR(DynamicDevice);
 
 %nodefaultctor RigidDevice;
 class RigidDevice : public DynamicDevice {
@@ -778,6 +788,7 @@ class RigidDevice : public DynamicDevice {
 
 %template (RigidDevicePtr) rw::common::Ptr<RigidDevice>;
 %template (RigidDevicePtrVector) std::vector<rw::common::Ptr<RigidDevice> >;
+OWNEDPTR(RigidDevice);
 
 %nodefaultctor SuctionCup;
 class SuctionCup : public DynamicDevice {
@@ -819,6 +830,7 @@ public:
 };
 
 %template (SuctionCupPtr) rw::common::Ptr<SuctionCup>;
+OWNEDPTR(SuctionCup);
 
 class DynamicWorkCell
 {
@@ -933,6 +945,8 @@ public:
     };
 
 };
+%template (DynamicWorkCellPtr) rw::common::Ptr<DynamicWorkCell>;
+OWNEDPTR(DynamicWorkCell);
 
 
 /********************************************
@@ -1011,6 +1025,7 @@ public:
 };
 
 %template (SimulatedFTSensorPtr) rw::common::Ptr<SimulatedFTSensor>;
+OWNEDPTR(SimulatedFTSensor);
 
 /********************************************
  * SIMULATOR
@@ -1045,6 +1060,7 @@ public:
 };
 
 %template (PhysicsEnginePtr) rw::common::Ptr<PhysicsEngine>;
+OWNEDPTR(PhysicsEngine);
 
 %nodefaultctor PhysicsEngineFactory;
 class PhysicsEngineFactory
@@ -1162,6 +1178,7 @@ class ThreadSimulator {
 
 %template (ThreadSimulatorPtr) rw::common::Ptr<ThreadSimulator>;
 %template (ThreadSimulatorPtrVector) std::vector<rw::common::Ptr<ThreadSimulator> >;
+OWNEDPTR(ThreadSimulator);
 
 %nodefaultctor GraspTaskSimulator;
 class GraspTaskSimulator
@@ -1193,7 +1210,7 @@ public:
 };
 
 %template (GraspTaskSimulatorPtr) rw::common::Ptr<GraspTaskSimulator>;
-
+OWNEDPTR(GraspTaskSimulator);
 %nodefaultctor AssemblySimulator;
 class AssemblySimulator
 {
@@ -1213,6 +1230,7 @@ public:
 };
 
 %template (AssemblySimulatorPtr) rw::common::Ptr<AssemblySimulator>;
+OWNEDPTR(AssemblySimulator);
 
 /********************************************
  * UTIL
@@ -1238,7 +1256,8 @@ public:
 		typedef enum{WorldStep, WorldQuickStep, WorldFast1} StepMethod;
 		//typedef enum{Simple, HashTable, QuadTree} SpaceType;
 		
-		ODESimulator(rw::common::Ptr<DynamicWorkCell> dwc, rw::common::Ptr<ContactDetector> detector = NULL);
+		ODESimulator(rw::common::Ptr<DynamicWorkCell> dwc, rw::common::Ptr<ContactDetector> detector = rw::common::Ptr<ContactDetector>());
+
 		virtual ~ODESimulator();
 		
 		// PhysicsEngine interface
@@ -1316,6 +1335,7 @@ public:
 };
 
 %template (ODESimulatorPtr) rw::common::Ptr<ODESimulator>;
+OWNEDPTR(ODESimulator);
 #endif
 
 /********************************************

@@ -22,7 +22,7 @@
 //#include <rwsim/dynamics/RigidJoint.hpp>
 #include <rw/math/Vector3D.hpp>
 #include <rw/models/Joint.hpp>
-#include "ODEBody.hpp"
+#include <rwsimlibs/ode/ODEBody.hpp>
 
 namespace rw { namespace kinematics { class State; } }
 

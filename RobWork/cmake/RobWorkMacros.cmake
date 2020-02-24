@@ -347,6 +347,7 @@ macro(RW_SET_INSTALL_DIRS PROJECT_NAME PREFIX)
 
     set(RW_PLUGIN_INSTALL_DIR "${LIB_INSTALL_DIR}/RobWork/rwplugins")
     set(RWS_PLUGIN_INSTALL_DIR "${LIB_INSTALL_DIR}/RobWork/rwsplugins")
+    set(STATIC_LIB_INSTALL_DIR "${LIB_INSTALL_DIR}/RobWork")
 
     if(WIN32)
         set(

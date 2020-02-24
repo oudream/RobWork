@@ -248,7 +248,6 @@ if(EXISTS ${RWHWCFG_ROOT}/RobWorkHardwareBuildConfig_${RWHW_BUILD_TYPE}.cmake)
     set(BOOST_LIBRARYDIR ${RWHW_BUILD_WITH_BOOST_LIBRARY_DIR})
 
     # TODO for each component that is enabled we might need to include additional stuff
-    # MESSAGE("components ${RobWorkHardware_FIND_COMPONENTS}")
 
     set(LIBRARIES_TO_INCLUDE) # Libraries that must be included
     set(OPTIONAL_LIBRARIES_TO_INCLUDE) # libraries that are included if they have been build
@@ -260,7 +259,7 @@ if(EXISTS ${RWHWCFG_ROOT}/RobWorkHardwareBuildConfig_${RWHW_BUILD_TYPE}.cmake)
 
             unset(FOUND CACHE)
             if(RESULT)
-                message(STATUS "Found in list: ${COMP_FOUND}")
+                message(STATUS "Found in list: ${RESULT}")
                 find_library(FOUND ${RESULT} PATHS ${RWHW_LIBS} NO_DEFAULT_PATH)
             endif()
 
@@ -272,7 +271,6 @@ if(EXISTS ${RWHWCFG_ROOT}/RobWorkHardwareBuildConfig_${RWHW_BUILD_TYPE}.cmake)
                 set(RobWorkHardware_${component}_FOUND FALSE)
             endif()
         endforeach()
-        # MESSAGE(" ${LIBRARIES_TO_INCLUDE} ")
     else()
         set(OPTIONAL_LIBRARIES_TO_INCLUDE ${RWHW_BUILD_WITH_LIBRARIES})
     endif()
@@ -390,9 +388,6 @@ if(EXISTS ${RWHWCFG_ROOT}/RobWorkHardwareBuildConfig_${RWHW_BUILD_TYPE}.cmake)
         endif()
     endif()
 
-    # IF(DEFINED MSVC) SET(ROBWORKHARDWARE_LIBS_DIR "${ROBWORKHARDWARE_ROOT}/libs/") ELSE()
-    # SET(ROBWORKHARDWARE_LIBS_DIR "${ROBWORKHARDWARE_ROOT}/libs/${CMAKE_BUILD_TYPE}/") ENDIF()
-
     # Set extra compiler flags. The user should be able to change this
     set(
         RWHW_CXX_FLAGS
@@ -429,22 +424,13 @@ if(EXISTS ${RWHWCFG_ROOT}/RobWorkHardwareBuildConfig_${RWHW_BUILD_TYPE}.cmake)
     endif()
 
     set(ROBWORKHARDWARE_BUILD_PATH "${RWHW_BUILD_WITH_RWHW_ROOT}")
-    list(
-        APPEND
-            ROBWORKHARDWARE_INCLUDE_DIRS_TMP
-            "${RWHW_BUILD_WITH_INCLUDE_DIR};${ROBWORK_INCLUDE_DIRS}"
-    )
-    list(
-        APPEND
-            ROBWORKHARDWARE_LIBRARY_DIRS_TMP
-            "${RWHW_BUILD_WITH_LIBRARY_DIRS};${ROBWORK_LIBRARY_DIRS}"
-    )
-    set(
-        ROBWORKHARDWARE_LIBRARIES_TMP
-        "${LIBRARIES_TO_INCLUDE};${OPTIONAL_LIBRARIES_TO_INCLUDE};${ROBWORK_LIBRARIES}"
-    )
-
-    # MESSAGE("ROBWORKHARDWARE_INCLUDE_DIRS_TMP ${ROBWORKHARDWARE_INCLUDE_DIRS_TMP} ")
+    set(ROBWORKHARDWARE_INCLUDE_DIRS_TMP "${ROBWORKHARDWARE_INCLUDE_DIRS_TMP}"
+                                         "${RWHW_BUILD_WITH_INCLUDE_DIR}" "${ROBWORK_INCLUDE_DIRS}")
+    set(ROBWORKHARDWARE_LIBRARY_DIRS_TMP "${ROBWORKHARDWARE_LIBRARY_DIRS_TMP}"
+                                         "${RWHW_BUILD_WITH_LIBRARY_DIRS}"
+                                         "${ROBWORK_LIBRARY_DIRS}")
+    set(ROBWORKHARDWARE_LIBRARIES_TMP "${LIBRARIES_TO_INCLUDE}" "${OPTIONAL_LIBRARIES_TO_INCLUDE}"
+                                      "${ROBWORK_LIBRARIES}")
 
     # make sure that the library and include paths are pointing to the right locations
     string(
@@ -457,26 +443,21 @@ if(EXISTS ${RWHWCFG_ROOT}/RobWorkHardwareBuildConfig_${RWHW_BUILD_TYPE}.cmake)
             "${ROBWORKHARDWARE_BUILD_PATH}/src" "${RWHW_INCLUDE_SRC}" ROBWORKHARDWARE_INCLUDE_DIRS
             "${ROBWORKHARDWARE_INCLUDE_DIRS}"
     )
-
-    # MESSAGE("REPLACE ${ROBWORKHARDWARE_BUILD_PATH}/ext ${RWHW_INCLUDE_EXT}") MESSAGE("INCLUDES:
-    # ${ROBWORKHARDWARE_INCLUDE_DIRS}")
     list(REMOVE_DUPLICATES ROBWORKHARDWARE_INCLUDE_DIRS)
 
     string(
         REPLACE
             "${ROBWORKHARDWARE_BUILD_PATH}/libs/${RWHW_BUILD_TYPE}" "${RWHW_LIBS}"
-            ROBWORKHARDWARE_LIBRARY_DIRS "${RWHW_BUILD_WITH_LIBRARY_DIRS}"
+            ROBWORKHARDWARE_LIBRARY_DIRS "${ROBWORKHARDWARE_LIBRARY_DIRS_TMP}"
     )
     list(REMOVE_DUPLICATES ROBWORKHARDWARE_LIBRARY_DIRS)
-    # MESSAGE("LIBRARY_DIRS: ${ROBWORKHARDWARE_LIBRARY_DIRS}")
 
     string(
         REPLACE
             "${ROBWORKHARDWARE_BUILD_PATH}/libs/${RWHW_BUILD_TYPE}" "${RWHW_LIBS}"
             ROBWORKHARDWARE_LIBRARIES "${ROBWORKHARDWARE_LIBRARIES_TMP}"
     )
-    # list(REMOVE_DUPLICATES ROBWORKHARDWARE_LIBRARIES) MESSAGE("INCLUDES:
-    # ${ROBWORKHARDWARE_LIBRARIES}")
+    list(REMOVE_DUPLICATES ROBWORKHARDWARE_LIBRARIES)
 
 else()
     message(STATUS "RobWorkHardware: Could not find a suitable RobWorkHardware installation!")
