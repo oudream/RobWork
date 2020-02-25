@@ -307,6 +307,10 @@ if(EXISTS ${RWSCFG_ROOT}/RobWorkStudioBuildConfig_${RWS_BUILD_TYPE}.cmake)
         find_package(PythonInterp ${RWS_BUILD_WITH_PYTHON_MAJOR_VERSION} REQUIRED)
     endif()
 
+    if(${RWS_BUILD_WITH_FREEGLUT})
+        find_package(FreeGLUT REQUIRED)
+    endif()
+
     # Find RobWork
     if(NOT DEFINED RobWork_FOUND OR NOT ${RobWork_FOUND})
         if(${IS_INSTALL})
