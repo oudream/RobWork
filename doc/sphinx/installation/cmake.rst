@@ -24,6 +24,18 @@ The variables shown can been used when calling CMake by using the suffix "-D"
 
 Common Options
 --------------
+- WITH_RWHW=[True|False]
+    - Default: True
+    - Use this option to control if RobWorkHardware should be used (only when building all projects together).
+
+- WITH_RWS=[True|False]
+    - Default: True
+    - Use this option to control if RobWorkStudio should be used (only when building all projects together).
+
+- WITH_RWSIM=[True|False]
+    - Default: True
+    - Use this option to control if RobWorkSim should be used (only when building all projects together).
+
 - LIB_INSTALL_DIR=<Install_DIR>
     - Default: "lib"
     - Use this argument to specify where the libraries should be installed.
@@ -97,6 +109,10 @@ Robwork Options
 - RW_USE_ASSIMP=[ON|OFF]
     - Default: NOT RW_DISABLE_ASSIMP
     - Use this or the disable argument (see default) to prevent RobWork from using Assimp.
+
+- RW_USE_CSGJS=[ON|OFF]
+    - Default: ON
+    - Use this to prevent RobWork from using CsgJs (always compiled from RobWork/ext folder).
 
 - RW_USE_FCL=[ON|OFF]
     - Default: NOT RW_DISABLE_FCL
@@ -190,6 +206,7 @@ Running CMake will show which packages are not being build and why.
 - BUILD_sdurw_opengl=[ON|OFF]
 - BUILD_sdurw_mathematica=[ON|OFF]
 - BUILD_sdurw_proximitystrategies=[ON|OFF]
+- BUILD_sdurw_proximitystrategies.rwplugin=[ON|OFF]
 - BUILD_sdurw_pathoptimization=[ON|OFF]
 - BUILD_sdurw_pathplanners=[ON|OFF]
 - BUILD_sdurw_task=[ON|OFF]
@@ -217,13 +234,25 @@ Running CMake will show which packages are not being build and why.
 - BUILD_sdurws_lua=[ON|OFF]
 - BUILD_sdurws_java=[ON|OFF]
 - BUILD_sdurws_python=[ON|OFF]
+- BUILD_sdurws_plugin.rwplugin=[ON|OFF]
+- BUILD_RobWorkStudio=[ON|OFF]
 
 **RobWorkSim**
 
 - BUILD_sdurwsim_bullet=[ON|OFF]
+- BUILD_sdurwsim_ode=[ON|OFF]
+- BUILD_sdurwsim_test=[ON|OFF]
 - BUILD_sdurwsim_luai=[ON|OFF]
 - BUILD_sdurwsim_java=[ON|OFF]
 - BUILD_sdurwsim_python=[ON|OFF]
+- BUILD_ode_plugin.rwplugin=[ON|OFF]
+- BUILD_EngineTestPlugin=[ON|OFF]
+- BUILD_GraspTableGeneratorPlugin=[ON|OFF]
+- BUILD_RWSimPlugin=[ON|OFF]
+- BUILD_RWSimulatorPlugin=[ON|OFF]
+- BUILD_SimTaskPlugin=[ON|OFF]
+- BUILD_SimUtilityPlugin=[ON|OFF]
+- BUILD_SimulatorLogViewer=[ON|OFF]
 
 **RobworkHardWare**
 

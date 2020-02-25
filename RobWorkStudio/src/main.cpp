@@ -38,15 +38,30 @@
 #endif
 
 #ifdef RWS_USE_STATIC_LINK_PLUGINS
+#ifdef RWS_HAVE_PLUGIN_JOG
     #include <rwslibs/jog/Jog.hpp>
+#endif
+#ifdef RWS_HAVE_PLUGIN_LOG
     #include <rwslibs/log/ShowLog.hpp>
-    //#include <rwslibs/pointer/PointerPlugin.hpp>
+#endif
+#ifdef RWS_HAVE_PLUGIN_PLANNING
     #include <rwslibs/planning/Planning.hpp>
+#endif
+#ifdef RWS_HAVE_PLUGIN_PLAYBACK
     #include <rwslibs/playback/PlayBack.hpp>
+#endif
+#ifdef RWS_HAVE_PLUGIN_PROPERTYVIEW
     #include <rwslibs/propertyview/PropertyView.hpp>
+#endif
+#ifdef RWS_HAVE_PLUGIN_SENSORS
     #include <rwslibs/sensors/Sensors.hpp>
+#endif
+#ifdef RWS_HAVE_PLUGIN_TREEVIEW
     #include <rwslibs/treeview/TreeView.hpp>
+#endif
+#ifdef RWS_HAVE_PLUGIN_WORKCELLEDITOR
     #include <rwslibs/workcelleditorplugin/WorkcellEditorPlugin.hpp>
+#endif
 
     #ifdef RW_HAVE_EIGEN
         //#include <rwlibs/calibration/Calibration.hpp>
@@ -134,25 +149,39 @@ int main (int argc, char** argv)
                 Timer t;
                 rws::RobWorkStudio rwstudio (map);
                 #ifdef RWS_USE_STATIC_LINK_PLUGINS
+                    #ifdef RWS_HAVE_PLUGIN_LOG
                     rwstudio.addPlugin (
                         new rws::ShowLog (), false, Qt::BottomDockWidgetArea);
+                    #endif
+                    #ifdef RWS_HAVE_PLUGIN_JOG
                     rwstudio.addPlugin (
                         new rws::Jog (), false, Qt::LeftDockWidgetArea);
-                    // rwstudio.addPlugin(new rws::PointerPlugin(), false,
-                    // Qt::LeftDockWidgetArea);
+                    #endif
+                    #ifdef RWS_HAVE_PLUGIN_TREEVIEW
                     rwstudio.addPlugin (
                         new rws::TreeView (), false, Qt::LeftDockWidgetArea);
+                    #endif
+                    #ifdef RWS_HAVE_PLUGIN_PLAYBACK
                     rwstudio.addPlugin (
                         new rws::PlayBack (), false, Qt::BottomDockWidgetArea);
+                    #endif
+                    #ifdef RWS_HAVE_PLUGIN_PROPERTYVIEW
                     rwstudio.addPlugin (
                         new rws::PropertyView (), false, Qt::LeftDockWidgetArea);
+                    #endif
+                    #ifdef RWS_HAVE_PLUGIN_PLANNING
                     rwstudio.addPlugin (
                         new rws::Planning (), false, Qt::LeftDockWidgetArea);
+                    #endif
+                    #ifdef RWS_HAVE_PLUGIN_SENSORS
                     rwstudio.addPlugin (
                         new rws::Sensors (), false, Qt::RightDockWidgetArea);
+                    #endif
+                    #ifdef RWS_HAVE_PLUGIN_WORKCELLEDITOR
                     rwstudio.addPlugin (new rws::WorkcellEditorPlugin (),
                                         false,
                                         Qt::LeftDockWidgetArea);
+                    #endif
                     #ifdef RW_HAVE_EIGEN
                         rwstudio.addPlugin (
                             new rws::Calibration (), false, Qt::RightDockWidgetArea);

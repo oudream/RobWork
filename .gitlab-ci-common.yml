@@ -556,53 +556,6 @@ tests:ubuntu-1604:
   needs: ["build-RW:ubuntu-1604","build-RWS:ubuntu-1604","build-RWHW:ubuntu-1604","build-RWSim:ubuntu-1604"]
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1604
 
-########################## Ubuntu 1904 ################################
-build-RW:ubuntu-1904:
-  extends: .linux-build-RW
-  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1904
-
-build-RWS:ubuntu-1904:
-  extends: .linux-build-RWS
-  dependencies:
-    - build-RW:ubuntu-1904
-  needs: ["build-RW:ubuntu-1904"]
-  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1904
-
-build-RWHW:ubuntu-1904:
-  extends: .linux-build-RWHW
-  dependencies:
-    - build-RW:ubuntu-1904
-  needs: ["build-RW:ubuntu-1904"]
-  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1904
-
-build-RWSim:ubuntu-1904:
-  extends: .linux-build-RWSim
-  dependencies:
-    - build-RW:ubuntu-1904
-    - build-RWS:ubuntu-1904
-  needs: ["build-RW:ubuntu-1904","build-RWS:ubuntu-1904"]
-  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1904
-
-examples:ubuntu-1904:
-  extends: .linux-examples
-  dependencies:
-    - build-RW:ubuntu-1904
-    - build-RWS:ubuntu-1904
-    - build-RWHW:ubuntu-1904
-    - build-RWSim:ubuntu-1904
-  needs: ["build-RW:ubuntu-1904","build-RWS:ubuntu-1904","build-RWHW:ubuntu-1904","build-RWSim:ubuntu-1904"]
-  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1904
-
-tests:ubuntu-1904:
-  extends: .linux-tests
-  dependencies:
-    - build-RW:ubuntu-1904
-    - build-RWS:ubuntu-1904
-    - build-RWHW:ubuntu-1904
-    - build-RWSim:ubuntu-1904
-  needs: ["build-RW:ubuntu-1904","build-RWS:ubuntu-1904","build-RWHW:ubuntu-1904","build-RWSim:ubuntu-1904"]
-  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1904
-
 ########################## Ubuntu 1910 ################################
 build-RW:ubuntu-1910:
   extends: .linux-build-RW
@@ -649,6 +602,53 @@ tests:ubuntu-1910:
     - build-RWSim:ubuntu-1910
   needs: ["build-RW:ubuntu-1910","build-RWS:ubuntu-1910","build-RWHW:ubuntu-1910","build-RWSim:ubuntu-1910"]
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1910
+
+########################## Ubuntu 2004 ################################
+build-RW:ubuntu-2004:
+  extends: .linux-build-RW
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-2004
+
+build-RWS:ubuntu-2004:
+  extends: .linux-build-RWS
+  dependencies:
+    - build-RW:ubuntu-2004
+  needs: ["build-RW:ubuntu-2004"]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-2004
+
+build-RWHW:ubuntu-2004:
+  extends: .linux-build-RWHW
+  dependencies:
+    - build-RW:ubuntu-2004
+  needs: ["build-RW:ubuntu-2004"]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-2004
+
+build-RWSim:ubuntu-2004:
+  extends: .linux-build-RWSim
+  dependencies:
+    - build-RW:ubuntu-2004
+    - build-RWS:ubuntu-2004
+  needs: ["build-RW:ubuntu-2004","build-RWS:ubuntu-2004"]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-2004
+
+examples:ubuntu-2004:
+  extends: .linux-examples
+  dependencies:
+    - build-RW:ubuntu-2004
+    - build-RWS:ubuntu-2004
+    - build-RWHW:ubuntu-2004
+    - build-RWSim:ubuntu-2004
+  needs: ["build-RW:ubuntu-2004","build-RWS:ubuntu-2004","build-RWHW:ubuntu-2004","build-RWSim:ubuntu-2004"]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-2004
+
+tests:ubuntu-2004:
+  extends: .linux-tests
+  dependencies:
+    - build-RW:ubuntu-2004
+    - build-RWS:ubuntu-2004
+    - build-RWHW:ubuntu-2004
+    - build-RWSim:ubuntu-2004
+  needs: ["build-RW:ubuntu-2004","build-RWS:ubuntu-2004","build-RWHW:ubuntu-2004","build-RWSim:ubuntu-2004"]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-2004
 
 ########################## Centos 7 ################################
 build-RW:centos-7:
@@ -708,6 +708,16 @@ build:doc:
     - build-RWSim:ubuntu-1804
   needs: ["build-RW:ubuntu-1804","build-RWS:ubuntu-1804","build-RWHW:ubuntu-1804","build-RWSim:ubuntu-1804"]
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804-doc
+
+build:doc-2004:
+  extends: .linux-doc
+  dependencies:
+    - build-RW:ubuntu-2004
+    - build-RWS:ubuntu-2004
+    - build-RWHW:ubuntu-2004
+    - build-RWSim:ubuntu-2004
+  needs: ["build-RW:ubuntu-2004","build-RWS:ubuntu-2004","build-RWHW:ubuntu-2004","build-RWSim:ubuntu-2004"]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-2004-doc
 
 pages:
   stage: deploy

@@ -119,7 +119,9 @@ ENDIF()
 #          DESTINATION "${LIB_INSTALL_DIR}")
 #ENDIF()
 
-add_subdirectory(csgjs)
+if(RW_USE_CSGJS)
+    add_subdirectory(csgjs)
+endif()
 
 IF(RW_ENABLE_INTERNAL_FCL_TARGET)
 	add_subdirectory(fcl)

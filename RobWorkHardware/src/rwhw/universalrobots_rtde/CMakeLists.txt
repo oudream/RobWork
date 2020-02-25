@@ -38,7 +38,6 @@ if(build)
         add_subdirectory(${RWHW_ROOT}/ext/ur_rtde ur_rtde_ext)
         set(INCLUDE_INSTALL_DIR ${tmp})
     endif()
-    # find_package(ur_rtde ${RTDE_VERSION_REQUIRED} REQUIRED CONFIG)
 
     set(SRC_CPP URRTDE.cpp)
     set(SRC_HPP URRTDE.hpp)
@@ -52,8 +51,6 @@ if(build)
     rw_add_includes(${SUBSYS_NAME} "rwhw/universalrobots_rtde" ${SRC_HPP})
 
     if(NOT UR_RTDE_INTERNAL)
-        # message(STATUS "ur_rtde: ${ur_rtde_FOUND}  - lib: ${ur_rtde_LIBRARIES} - incl:
-        # ${ur_rtde_INCLUDE_DIRS}")
         target_include_directories(${SUBSYS_NAME} PRIVATE ${ur_rtde_INCLUDE_DIRS})
     endif()
 

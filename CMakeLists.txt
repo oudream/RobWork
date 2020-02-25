@@ -11,10 +11,20 @@ set(RWS_ROOT ${ROOT}/RobWorkStudio/)
 set(RWSIM_ROOT ${ROOT}/RobWorkSim/)
 set(RWHW_ROOT ${ROOT}/RobWorkHardware/)
 
+option(WITH_RWHW "Set true to enable compilation of RobWorkHardware!" TRUE)
+option(WITH_RWS "Set true to enable compilation of RobWorkStudio!" TRUE)
+option(WITH_RWSIM "Set true to enable compilation of RobWorkSim!" TRUE)
+
 add_subdirectory(RobWork)
-add_subdirectory(RobWorkHardware)
-add_subdirectory(RobWorkStudio)
-add_subdirectory(RobWorkSim)
+if(WITH_RWHW)
+    add_subdirectory(RobWorkHardware)
+endif()
+if(WITH_RWS)
+    add_subdirectory(RobWorkStudio)
+endif()
+if(WITH_RWSIM)
+    add_subdirectory(RobWorkSim)
+endif()
 
 # #######################################################33 now configure documentation
 configure_file(${ROOT}/doc/Doxyfile.in ${ROOT}/doc/Doxyfile)
