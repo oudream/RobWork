@@ -517,69 +517,7 @@ namespace rw { namespace math {
 				}
 			}
 
-//          #define USE_OLD_CONVERSION
-//			#ifdef USE_OLD_CONVERSION
-			//const T tr = std::max(static_cast<T>(0.0), static_cast<T>(rot(0, 0) + rot(1, 1) + rot(2, 2) + 1));
 
-   //         if (tr > 1e-12) {
-
-			//	this->d = sqrt( std::max( static_cast<R>(0.0), 1 + rot(0,0) + rot(1,1) + rot(2,2) ) ) / 2;
-			//	this->a = sqrt( std::max( static_cast<R>(0.0), 1 + rot(0,0) - rot(1,1) - rot(2,2) ) ) / 2;
-			//	this->b = sqrt( std::max( static_cast<R>(0.0), 1 - rot(0,0) + rot(1,1) - rot(2,2) ) ) / 2;
-			//	this->c = sqrt( std::max( static_cast<R>(0.0), 1 - rot(0,0) - rot(1,1) + rot(2,2) ) ) / 2;
-
-			//
-			//	this->a = boost::math::copysign( this->a, rot(2,1) - rot(1,2) );
-			//	this->b = boost::math::copysign( this->b, rot(0,2) - rot(2,0) );
-			//	this->c = boost::math::copysign( this->c, rot(1,0) - rot(0,1) );
-
-   //             /*const T s = static_cast<T>(0.5) / static_cast<T>(sqrt(tr));
-   //             this->d = static_cast<T>(0.25) / s;
-   //             this->a = static_cast<T>(rot(2, 1) - rot(1, 2)) * s;
-   //             this->b = static_cast<T>(rot(0, 2) - rot(2, 0)) * s;
-   //             this->c = static_cast<T>(rot(1, 0) - rot(0, 1)) * s;
-			//	*/
-   //         } else {
-   //             if (rot(0, 0) > rot(1, 1) && rot(0, 0) > rot(2, 2)) {
-   //                 const T sa = static_cast<T>(sqrt(rot(0, 0) - rot(1, 1) - rot(2, 2) + 1.0));
-   //                 this->a = static_cast<T>(0.5)  *  sa;
-
-   //                 // s == 1 / (2.0  *  sa) == 0.25 / (0.5  *  sa)
-   //                 const T s = static_cast<T>(0.25) / this->a;
-   //                 this->b = static_cast<T>(rot(0, 1) + rot(1, 0)) * s;
-   //                 this->c = static_cast<T>(rot(0, 2) + rot(2, 0)) * s;
-   //                 this->d = static_cast<T>(rot(1, 2) - rot(2, 1)) * s;
-   //             } else if (rot(1, 1) > rot(2, 2)) {
-   //                 const T sb = static_cast<T>(sqrt(rot(1, 1) - rot(2, 2) - rot(0, 0)  + 1));
-   //                 this->b = static_cast<T>(0.5) * sb;
-
-   //                 const T s = static_cast<T>(0.25) / this->b;
-   //                 this->a = static_cast<T>(rot(0, 1) + rot(1, 0)) * s;
-   //                 this->c = static_cast<T>(rot(1, 2) + rot(2, 1)) * s;
-   //                 this->d = static_cast<T>(rot(0, 2) - rot(2, 0)) * s;
-   //             } else {
-   //                 const T sc = static_cast<T>(sqrt(rot(2, 2) - rot(0, 0) - rot(1, 1)  + 1));
-   //                 this->c = static_cast<T>(0.5) * sc;
-
-   //                 const T s = static_cast<T>(0.25) / this->c;
-   //                 this->a = static_cast<T>(rot(0, 2) + rot(2, 0)) * s;
-   //                 this->b = static_cast<T>(rot(1, 2) + rot(2, 1)) * s;
-   //                 this->d = static_cast<T>(rot(0, 1) - rot(1, 0)) * s;
-   //             }
-   //         }
-//#else
-
-/*        this->d = sqrt( std::max( static_cast<R>(0.0), 1 + rot(0,0) + rot(1,1) + rot(2,2) ) ) / 2;
-        this->a = sqrt( std::max( static_cast<R>(0.0), 1 + rot(0,0) - rot(1,1) - rot(2,2) ) ) / 2;
-        this->b = sqrt( std::max( static_cast<R>(0.0), 1 - rot(0,0) + rot(1,1) - rot(2,2) ) ) / 2;
-        this->c = sqrt( std::max( static_cast<R>(0.0), 1 - rot(0,0) - rot(1,1) + rot(2,2) ) ) / 2;
-
-	
-        this->a = boost::math::copysign( this->a, rot(2,1) - rot(1,2) );
-        this->b = boost::math::copysign( this->b, rot(0,2) - rot(2,0) );
-        this->c = boost::math::copysign( this->c, rot(1,0) - rot(0,1) );
-*/
-//#endif
 
         }
 
