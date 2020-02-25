@@ -83,6 +83,9 @@ private:
 
     bool hasExecuted(int lineNr);
 
+    void indentSelection();
+    void unIndentSelection();
+
 private:
     QWidget *lineNumberArea;
     QCompleter *_c;

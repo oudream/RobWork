@@ -39,9 +39,10 @@ rw_get_os_info()
 rw_options(RW)
 
 # Add an "uninstall" target
-configure_file("${RW_ROOT}/cmake/uninstall_target.cmake.in" "${CMAKE_BINARY_DIR}/uninstall_target.cmake" IMMEDIATE
-               @ONLY)
-add_custom_target(uninstall_sdurw "${CMAKE_COMMAND}" -P "${CMAKE_BINARY_DIR}/uninstall_target.cmake")
+configure_file("${RW_ROOT}/cmake/uninstall_target.cmake.in"
+               "${CMAKE_BINARY_DIR}/uninstall_target.cmake" IMMEDIATE @ONLY)
+add_custom_target(uninstall_sdurw "${CMAKE_COMMAND}" -P
+                  "${CMAKE_BINARY_DIR}/uninstall_target.cmake")
 
 # This sets up ROBWORK_INCLUDE_DIR and ROBWORK_LIBRARIES
 include(${RW_ROOT}/cmake/RobWorkSetup.cmake)
@@ -60,7 +61,7 @@ message(STATUS "RobWork: system id=${INFO} ")
 # Compile the RobWork tools folder
 add_subdirectory(tools)
 
-# ######################################################################################################################
+# ##################################################################################################
 # setup testing
 #
 configure_file("${RW_ROOT}/cmake/CTestCustom.cmake.in" "CTestCustom.cmake")
@@ -68,7 +69,8 @@ configure_file("${RW_ROOT}/cmake/CTestCustom.cmake.in" "CTestCustom.cmake")
 configure_file("${RW_ROOT}/CTestConfig.cmake.in" "${RW_ROOT}/CTestConfig.cmake")
 
 include(CMakeDependentOption)
-cmake_dependent_option(RW_IS_TESTS_ENABLED "Set when you want to build the tests" ON "${RW_BUILD_TESTS}" OFF)
+cmake_dependent_option(RW_IS_TESTS_ENABLED "Set when you want to build the tests" ON
+                       "${RW_BUILD_TESTS}" OFF)
 if(RW_IS_TESTS_ENABLED)
     message(STATUS "RobWork tests ENABLED!")
     # TODO Specify SET(SITE "myname") to configure the site name to use when uploading
@@ -83,10 +85,11 @@ else()
     message(STATUS "RobWork tests DISABLED!")
 endif()
 
-# ######################################################################################################################
+# ##################################################################################################
 # Test if we should compile the EXAMPLES
 #
-cmake_dependent_option(RW_IS_EXAMPLES_ENABLED "Set when you want to build the examples" ON "${RW_BUILD_EXAMPLES}" OFF)
+cmake_dependent_option(RW_IS_EXAMPLES_ENABLED "Set when you want to build the examples" ON
+                       "${RW_BUILD_EXAMPLES}" OFF)
 if(RW_IS_EXAMPLES_ENABLED)
     message(STATUS "RobWork examples ENABLED!")
     add_subdirectory(example)
@@ -102,29 +105,32 @@ configure_file(${RW_ROOT}/src/RobWorkConfig.hpp.in ${RW_ROOT}/src/RobWorkConfig.
 
 # Configure cmake/RobWorkBuildConfig.cmake.in such that other projects might use RobWork
 
-configure_file(${RW_ROOT}/cmake/RobWorkBuildConfig.cmake.in "${RW_ROOT}/cmake/RobWorkBuildConfig_${RW_BUILD_TYPE}.cmake"
-               @ONLY)
+configure_file(${RW_ROOT}/cmake/RobWorkBuildConfig.cmake.in
+               "${RW_ROOT}/cmake/RobWorkBuildConfig_${RW_BUILD_TYPE}.cmake" @ONLY)
 
 # configure version information
-configure_file(${RW_ROOT}/cmake/RobWorkConfigVersion.cmake.in "${RW_ROOT}/cmake/RobWorkConfigVersion.cmake" @ONLY)
+configure_file(${RW_ROOT}/cmake/RobWorkConfigVersion.cmake.in
+               "${RW_ROOT}/cmake/RobWorkConfigVersion.cmake" @ONLY)
 
 configure_file(${RW_ROOT}/cmake/RobWorkConfig.cmake.in "${RW_ROOT}/cmake/RobWorkConfig.cmake" @ONLY)
 
-export(EXPORT ${PROJECT_PREFIX}Targets
-    #FILE "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}/${PROJECT_NAME}Targets.cmake"
+export(
+    EXPORT ${PROJECT_PREFIX}Targets
     FILE "${RW_ROOT}/cmake/${PROJECT_NAME}Targets.cmake"
     NAMESPACE ${PROJECT_PREFIX}::
 )
 if(RW_HAVE_GTEST)
-    if (TARGET ${GTEST_LIBRARIES} AND TARGET ${GTEST_MAIN_LIBRARIES})
-        export(TARGETS ${GTEST_LIBRARIES} ${GTEST_MAIN_LIBRARIES}
+    if(TARGET ${GTEST_LIBRARIES} AND TARGET ${GTEST_MAIN_LIBRARIES})
+        export(
+            TARGETS ${GTEST_LIBRARIES} ${GTEST_MAIN_LIBRARIES}
             NAMESPACE ${PROJECT_PREFIX}::
-            APPEND FILE "${RW_ROOT}/cmake/gtestTargets.cmake"
+            APPEND
+            FILE "${RW_ROOT}/cmake/gtestTargets.cmake"
         )
     endif()
 endif()
 
-# ######################################################################################################################
+# ##################################################################################################
 # Installation stuff
 #
 
@@ -136,7 +142,7 @@ install(
 )
 
 # Install stuff
-install(FILES LICENSE.txt NOTICE.txt ChangeLog.txt DESTINATION "${RW_INSTALL_DIR}/" COMPONENT cmake )
+install(FILES LICENSE.txt NOTICE.txt ChangeLog.txt DESTINATION "${RW_INSTALL_DIR}/" COMPONENT cmake)
 
 install(
     FILES "cmake/RobWorkBuildConfig_${RW_BUILD_TYPE}.cmake" "cmake/RobWorkMacros.cmake"
@@ -144,9 +150,14 @@ install(
     COMPONENT cmake
 )
 
-install(FILES "${RW_ROOT}/src/RobWorkConfig.hpp" DESTINATION "${INCLUDE_INSTALL_DIR}" COMPONENT sdurw)
+install(
+    FILES "${RW_ROOT}/src/RobWorkConfig.hpp"
+    DESTINATION "${INCLUDE_INSTALL_DIR}"
+    COMPONENT sdurw
+)
 
-install(EXPORT ${PROJECT_PREFIX}Targets
+install(
+    EXPORT ${PROJECT_PREFIX}Targets
     FILE ${PROJECT_NAME}Targets.cmake
     NAMESPACE ${PROJECT_PREFIX}::
     DESTINATION ${RW_INSTALL_DIR}/cmake
@@ -158,7 +169,9 @@ if(WIN32)
     set(BOOST_LIBRARIES_INSTALL "")
     foreach(s ${Boost_LIBRARIES})
         if("${s}" STREQUAL "optimized")
+
         elseif("${s}" STREQUAL "debug")
+
         else()
             list(APPEND BOOST_LIBRARIES_INSTALL "${s}")
         endif()
@@ -166,24 +179,38 @@ if(WIN32)
 
     # Install external libraries
     install(FILES ${BOOST_LIBRARIES_INSTALL} DESTINATION ${LIB_INSTALL_DIR} COMPONENT boost)
-    install(DIRECTORY "${Boost_INCLUDE_DIR}/boost/" DESTINATION "${RW_INSTALL_DIR}/ext/boost/" COMPONENT boost)
+    install(
+        DIRECTORY "${Boost_INCLUDE_DIR}/boost/"
+        DESTINATION "${RW_INSTALL_DIR}/ext/boost/"
+        COMPONENT boost
+    )
 
     if(RW_HAVE_XERCES)
         install(FILES ${XERCESC_LIBRARIES} DESTINATION ${LIB_INSTALL_DIR} COMPONENT external)
-        install(DIRECTORY "${XERCESC_INCLUDE_DIR}/" DESTINATION "${RW_INSTALL_DIR}/ext/xerces/" COMPONENT xerces)
+        install(
+            DIRECTORY "${XERCESC_INCLUDE_DIR}/"
+            DESTINATION "${RW_INSTALL_DIR}/ext/xerces/"
+            COMPONENT xerces
+        )
     endif()
-    
-    install(DIRECTORY "${RW_ROOT}/ext/eigen3/Eigen/" DESTINATION "${RW_INSTALL_DIR}/ext/Eigen/" COMPONENT eigen)
+
+    install(
+        DIRECTORY "${RW_ROOT}/ext/eigen3/Eigen/"
+        DESTINATION "${RW_INSTALL_DIR}/ext/Eigen/"
+        COMPONENT eigen
+    )
 endif()
 
-# And if possible we would also like to install all the dll's and stuff that we use this will configure the dependency
-# file that will be used if install is invoked GET_TARGET_PROPERTY(rw_executable_name loader-test LOCATION) # not
-# allowed anymore - must use generator expressions instead
-configure_file("${RW_ROOT}/cmake/dependencies.cmake.in" "${RW_ROOT}/cmake/dependencies.cmake.gen" @ONLY)
+# And if possible we would also like to install all the dll's and stuff that we use this will
+# configure the dependency file that will be used if install is invoked
+# GET_TARGET_PROPERTY(rw_executable_name loader-test LOCATION) # not allowed anymore - must use
+# generator expressions instead
+configure_file("${RW_ROOT}/cmake/dependencies.cmake.in" "${RW_ROOT}/cmake/dependencies.cmake.gen"
+               @ONLY)
 
-# Disabled generation of the dependencies file (problem with multi-configuration generators like Visual Studio)
-# FILE(GENERATE OUTPUT "${RW_ROOT}/cmake/dependencies.cmake" INPUT "${RW_ROOT}/cmake/dependencies.cmake.gen" )
-# INSTALL(SCRIPT "${RW_ROOT}/cmake/dependencies.cmake")
+# Disabled generation of the dependencies file (problem with multi-configuration generators like
+# Visual Studio) FILE(GENERATE OUTPUT "${RW_ROOT}/cmake/dependencies.cmake" INPUT
+# "${RW_ROOT}/cmake/dependencies.cmake.gen" ) INSTALL(SCRIPT "${RW_ROOT}/cmake/dependencies.cmake")
 
 # Install the example directories
 install(
@@ -195,9 +222,9 @@ install(
     PATTERN "Build" EXCLUDE
 )
 
-# Install the API doc if doxygen has been run IF(IS_DIRECTORY "${RW_ROOT}/apidocs/html") INSTALL(DIRECTORY
-# "${RW_ROOT}/apidocs/html" DESTINATION "${RW_INSTALL_DIR}/apidocs" PATTERN ".svn" EXCLUDc ) ENDIF(IS_DIRECTORY
-# "${RW_ROOT}/apidocs/html")
+# Install the API doc if doxygen has been run IF(IS_DIRECTORY "${RW_ROOT}/apidocs/html")
+# INSTALL(DIRECTORY "${RW_ROOT}/apidocs/html" DESTINATION "${RW_INSTALL_DIR}/apidocs" PATTERN ".svn"
+# EXCLUDc ) ENDIF(IS_DIRECTORY "${RW_ROOT}/apidocs/html")
 
 # Documentation build target
 find_program(doc_executable doxygen)

@@ -22,6 +22,7 @@
 #include <rw/math/Transform3D.hpp>
 #include <rw/math/EAA.hpp>
 #include <rw/math/Wrench6D.hpp>
+#include <rw/common/Ptr.hpp>
 #include <rw/trajectory/Path.hpp>
 #include <string>
 #include <vector>
@@ -49,6 +50,8 @@ namespace rwhw {
     class URRTDE
     {
         public:
+            typedef rw::common::Ptr<URRTDE> Ptr;
+
             explicit URRTDE(std::string robot_ip, std::vector<std::string> variables = {});
             virtual ~URRTDE();
 

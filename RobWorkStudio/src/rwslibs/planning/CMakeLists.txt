@@ -22,7 +22,7 @@ if(build)
         ${RccSrcFiles}
     )
     rw_add_includes(${SUBSYS_NAME} "rwslibs/planning" ${SRC_FILES_HPP})
-    target_link_libraries(${SUBSYS_NAME} PUBLIC ${SUBSYS_DEPS} ${QT_LIBRARIES} RW::sdurw_pathplanners RW::sdurw_pathoptimization RW::sdurw)
+    target_link_libraries(${SUBSYS_NAME} PUBLIC ${SUBSYS_DEPS} ${QT_LIBRARIES} RW::sdurw PRIVATE RW::sdurw_pathplanners RW::sdurw_pathoptimization )
     target_include_directories(${SUBSYS_NAME}
         INTERFACE
         $<BUILD_INTERFACE:${RWS_ROOT}/src> $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>

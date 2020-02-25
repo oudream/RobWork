@@ -115,7 +115,7 @@ if(build)
 
     # ################# Install files ################
     configure_file(__init__.py.in ${CMAKE_SWIG_OUTDIR}/__init__.py)
-    if(PYTHON_SITE_PACKAGES MATCHES "^.?usr")
+    if(NOT "${PYTHON_SITE_PACKAGES}" STREQUAL "")
         install(TARGETS ${TARGET_NAME} DESTINATION "${PYTHON_SITE_PACKAGES}/${RWSIM_MODULE}")
         install(
             FILES ${CMAKE_SWIG_OUTDIR}/${RWSIM_MODULE}.py
@@ -129,7 +129,6 @@ if(build)
         sdurwsim${LIB_SUFIX}
         ${RWSIM_ODE_LIBRARY}
         sdurwsim
-        #${ROBWORK_LIBRARIES}
         ${PYTHON_LIBRARIES}
     )
 

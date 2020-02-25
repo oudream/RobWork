@@ -45,8 +45,9 @@ namespace rws {
         /**
          * @brief start RobWorkStudio in this thread. Notice this method call will
          * block until RobWorkStudio is exited.
+         * @return zero if exited normally.
          */
-        void run();
+        int run();
 
         /**
          * @brief check if RobwWrkStudio is running
