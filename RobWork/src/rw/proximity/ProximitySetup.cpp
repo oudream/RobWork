@@ -42,6 +42,12 @@ ProximitySetup::ProximitySetup(const CollisionSetup& csetup):
 	_useExcludeStaticPairs = csetup.excludeStaticPairs();
 }
 
+ProximitySetup::ProximitySetup(const std::vector<ProximitySetupRule>& rules){
+	for (const ProximitySetupRule &rule : rules){
+		addProximitySetupRule(rule);
+	}
+};
+
 
 void ProximitySetup::addProximitySetupRule(const ProximitySetupRule& rule) {
 	_rules.push_back(rule);

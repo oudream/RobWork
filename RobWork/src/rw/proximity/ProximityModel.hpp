@@ -85,14 +85,15 @@ namespace proximity {
          *
          **/
         rw::kinematics::Frame* getFrame(){ return _frame;};
-                
-        void setFrame(rw::kinematics::Frame* frame){ _frame = frame; }
+
         /**
          * @brief sets the associated frame
          *
          * @param frame frame to set
          **/     
-        
+               
+        void setFrame(rw::kinematics::Frame* frame){ _frame = frame; }
+      
 		ProximityStrategy* owner;
     private:
 		rw::kinematics::Frame* _frame;
