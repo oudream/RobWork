@@ -31,7 +31,14 @@
 #include "./proximity/DistanceCalculator.hpp"
 #include "./proximity/DistanceStrategy.hpp"
 #include "./proximity/DistanceMultiStrategy.hpp"
+#include "./proximity/ProximityCache.hpp"
 #include "./proximity/ProximityData.hpp"
+#include "./proximity/ProximityFilter.hpp"
+#include "./proximity/ProximityFilterStrategy.hpp"
+#include "./proximity/ProximityModel.hpp"
+#include "./proximity/ProximitySetup.hpp"
+#include "./proximity/ProximitySetupRule.hpp"
 #include "./proximity/ProximityStrategy.hpp"
+#include "./proximity/ProximityStrategyData.hpp"
 
 #endif /* PROXIMITY_HPP_ */

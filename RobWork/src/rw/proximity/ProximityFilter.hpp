@@ -51,6 +51,8 @@ namespace proximity {
 		 */
 		virtual bool isEmpty() = 0;
 
+		virtual ~ProximityFilter() {};
+
 	};
 
 }
