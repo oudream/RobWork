@@ -2871,7 +2871,7 @@ class DHParameterSet
  * PROXIMITY
  ********************************************/
 
-%include <rwlibs/swig/rw_i/proximity.i>
+//%include <rwlibs/swig/rw_i/proximity.i>
 
 /********************************************
  * SENSOR
