@@ -93,11 +93,11 @@ if(DEFINED UNIX)
 elseif(DEFINED WIN32)
     set(Boost_USE_STATIC_LIBS ON)
     set(BOOST_ALL_DYN_LINK OFF)
-    set(Boost_USE_MULTITHREADED      ON)
+    set(Boost_USE_MULTITHREADED ON)
 
     if(${RW_BUILD_TYPE} STREQUAL "release")
-        set(Boost_USE_DEBUG_LIBS         OFF) # ignore debug libs and
-        set(Boost_USE_RELEASE_LIBS       ON)  # only find release libs
+        set(Boost_USE_DEBUG_LIBS OFF) # ignore debug libs and
+        set(Boost_USE_RELEASE_LIBS ON) # only find release libs
     endif()
 
     find_package(
@@ -121,8 +121,7 @@ elseif(DEFINED WIN32)
     )
         set(Boost_USE_STATIC_LIBS OFF)
         find_package(
-            Boost
-            REQUIRED
+            Boost REQUIRED
             COMPONENTS
                 filesystem
                 regex
@@ -501,45 +500,51 @@ if(RW_USE_ASSIMP)
         message(STATUS "RobWork: Assimp 3.0 installation NOT FOUND! Using RobWork ext Assimp.")
 
         set(ASSIMP_INCLUDE_DIRS "${RW_ROOT}/ext/assimp/include")
-        set(ASSIMP_LIBRARIES "sdurw_assimp")
-        set(ASSIMP_LIBRARY_DIRS ${RW_LIBRARY_OUT_DIR})
-        set(RW_HAVE_ASSIMP TRUE)
-        set(ROBWORK_LIBRARIES_INTERNAL ${ROBWORK_LIBRARIES_INTERNAL} ${ASSIMP_LIBRARIES})
+        if(EXISTS ${ASSIMP_INCLUDE_DIRS})
+            set(ASSIMP_LIBRARIES "sdurw_assimp")
+            set(ASSIMP_LIBRARY_DIRS ${RW_LIBRARY_OUT_DIR})
+            set(RW_HAVE_ASSIMP TRUE)
+            set(ROBWORK_LIBRARIES_INTERNAL ${ROBWORK_LIBRARIES_INTERNAL} ${ASSIMP_LIBRARIES})
 
-        # Find Zlib
-        if(NOT RW_HAVE_ZLIB)
-            find_package(ZLIB QUIET)
-            if(ZLIB_FOUND)
-                message(STATUS "RobWork: Native ZLIB FOUND")
-                set(ROBWORK_LIBRARIES_EXTERNAL ${ROBWORK_LIBRARIES_EXTERNAL} ${ZLIB_LIBRARIES})
-            else()
-                message(STATUS "RobWork: No ZLIB FOUND - using internal")
-                set(RW_ENABLE_INTERNAL_ZLIB_TARGET ON)
-                set(ZLIB_INCLUDE_DIRS "${RW_ROOT}/ext/zlib")
-                set(ZLIB_LIBRARY_DIRS ${RW_LIBRARY_OUT_DIR})
-                set(ZLIB_LIBRARIES sdurw_zlib)
-                set(ROBWORK_LIBRARIES_INTERNAL ${ROBWORK_LIBRARIES_INTERNAL} ${ZLIB_LIBRARIES})
-            endif()
-            set(RW_HAVE_ZLIB ON)
-        endif(NOT RW_HAVE_ZLIB)
+            # Find Zlib
+            if(NOT RW_HAVE_ZLIB)
+                find_package(ZLIB QUIET)
+                if(ZLIB_FOUND)
+                    message(STATUS "RobWork: Native ZLIB FOUND")
+                    set(ROBWORK_LIBRARIES_EXTERNAL ${ROBWORK_LIBRARIES_EXTERNAL} ${ZLIB_LIBRARIES})
+                else()
+                    message(STATUS "RobWork: No ZLIB FOUND - using internal")
+                    set(RW_ENABLE_INTERNAL_ZLIB_TARGET ON)
+                    set(ZLIB_INCLUDE_DIRS "${RW_ROOT}/ext/zlib")
+                    set(ZLIB_LIBRARY_DIRS ${RW_LIBRARY_OUT_DIR})
+                    set(ZLIB_LIBRARIES sdurw_zlib)
+                    set(ROBWORK_LIBRARIES_INTERNAL ${ROBWORK_LIBRARIES_INTERNAL} ${ZLIB_LIBRARIES})
+                endif()
+                set(RW_HAVE_ZLIB ON)
+            endif(NOT RW_HAVE_ZLIB)
 
-        # Find Minizip/Unzip
-        if(NOT RW_HAVE_MINIZIP)
-            find_package(MINIZIP QUIET)
-            if(MINIZIP_FOUND)
-                message(STATUS "RobWork: Native MINIZIP FOUND")
-                set(ROBWORK_LIBRARIES_EXTERNAL ${ROBWORK_LIBRARIES_EXTERNAL} ${MINIZIP_LIBRARIES})
-            else()
-                message(STATUS "RobWork: No MINIZIP FOUND - using internal")
-                set(RW_ENABLE_INTERNAL_MINIZIP_TARGET ON)
-                set(MINIZIP_INCLUDE_DIRS "${RW_ROOT}/ext/unzip")
-                set(MINIZIP_LIBRARY_DIRS ${RW_LIBRARY_OUT_DIR})
-                set(MINIZIP_LIBRARIES "sdurw_unzip")
-                set(ROBWORK_LIBRARIES_INTERNAL ${ROBWORK_LIBRARIES_INTERNAL} ${MINIZIP_LIBRARIES})
-            endif()
-            set(RW_HAVE_MINIZIP ON)
-        endif(NOT RW_HAVE_MINIZIP)
-
+            # Find Minizip/Unzip
+            if(NOT RW_HAVE_MINIZIP)
+                find_package(MINIZIP QUIET)
+                if(MINIZIP_FOUND)
+                    message(STATUS "RobWork: Native MINIZIP FOUND")
+                    set(ROBWORK_LIBRARIES_EXTERNAL ${ROBWORK_LIBRARIES_EXTERNAL}
+                                                   ${MINIZIP_LIBRARIES})
+                else()
+                    message(STATUS "RobWork: No MINIZIP FOUND - using internal")
+                    set(RW_ENABLE_INTERNAL_MINIZIP_TARGET ON)
+                    set(MINIZIP_INCLUDE_DIRS "${RW_ROOT}/ext/unzip")
+                    set(MINIZIP_LIBRARY_DIRS ${RW_LIBRARY_OUT_DIR})
+                    set(MINIZIP_LIBRARIES "sdurw_unzip")
+                    set(ROBWORK_LIBRARIES_INTERNAL ${ROBWORK_LIBRARIES_INTERNAL}
+                                                   ${MINIZIP_LIBRARIES})
+                endif()
+                set(RW_HAVE_MINIZIP ON)
+            endif(NOT RW_HAVE_MINIZIP)
+        else()
+        message(STATUS "RobWork: RobWork ext Assimp, NOT FOUND, disabeling assimp functions")
+            set(ASSIMP_INCLUDE_DIRS "")
+        endif()
     endif()
 else()
     message(STATUS "RobWork: Assimp DISABLED!")
@@ -575,7 +580,7 @@ if(PYTHONLIBS_FOUND)
     message(STATUS "Found Python libraries ${PYTHONLIBS_VERSION_STRING}")
 endif()
 if(PYTHON_LIBRARY STREQUAL "NOTFOUND")
-	set(PYTHON_LIBRARY "")
+    set(PYTHON_LIBRARY "")
 endif()
 
 #
@@ -982,4 +987,4 @@ foreach(l ${ROBWORK_LIBRARIES_EXTERNAL})
     endif()
 endforeach(l)
 
-set(ROBWORK_LIBRARIES ${ROBWORK_LIBRARIES_INTERNAL} ${ROBWORK_LIBRARIES} )
+set(ROBWORK_LIBRARIES ${ROBWORK_LIBRARIES_INTERNAL} ${ROBWORK_LIBRARIES})
