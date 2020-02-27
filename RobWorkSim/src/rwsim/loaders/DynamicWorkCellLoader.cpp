@@ -24,7 +24,6 @@
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
 #include <boost/optional.hpp>
-#include <boost/foreach.hpp>
 #include <boost/lexical_cast.hpp>
 #include <rw/math/Rotation3D.hpp>
 #include <rw/math/Q.hpp>
@@ -172,65 +171,6 @@ namespace
     string quote(const string& str) { return StringUtil::quote(str); }
 
 
-/*
-    std::vector<Geometry::Ptr> loadGeometrySingle(Frame &f, const State& rwstate){
-        std::vector<Geometry::Ptr> geoms;
-        Frame *frame = &f;
-        // std::vector<Face<float> > faces;
-        Log::debugLog()<< "- for all nodes: " << std::endl;
-        if( frame==NULL )
-            return geoms;
-        // check if frame has collision descriptor
-        if( CollisionModelInfo::get(frame).size()==0 )
-            return geoms;
-        // get the geo descriptor
-        std::string geofile = CollisionModelInfo::get(frame)[0].getGeoString();
-        std::string geoname = CollisionModelInfo::get(frame)[0].getName();
-        Transform3D<> fTgeo = CollisionModelInfo::get(frame)[0].getTransform();
-
-        Geometry::Ptr geo = GeometryFactory::getGeometry(geofile);
-        geo->setTransform(fTgeo);
-        geo->setName( geoname );
-        geoms.push_back(geo);
-        return geoms;
-    }
-*/
-    /*
-    std::vector<Geometry::Ptr> loadGeometry(Frame *bodyFrame, std::vector<Frame*> frames, const State& rwstate){
-        std::vector<Geometry::Ptr> geoms;
-        BOOST_FOREACH(const Frame *frame, frames){
-            if( frame==NULL )
-                continue;
-            // check if frame has collision descriptor
-            if( CollisionModelInfo::get(frame).size()==0 )
-                continue;
-            Transform3D<> pTf = Kinematics::frameTframe(bodyFrame, frame, rwstate);
-            // get the geo descriptor
-            std::string geofile = CollisionModelInfo::get(frame)[0].getGeoString();
-            std::string geoname = CollisionModelInfo::get(frame)[0].getName();
-            Transform3D<> geomt3d = CollisionModelInfo::get(frame)[0].getTransform();
-            Transform3D<> fTgeo = pTf * CollisionModelInfo::get(frame)[0].getTransform();
-            Geometry::Ptr geo = GeometryFactory::getGeometry(geofile);
-            geo->setTransform(fTgeo);
-            geo->setName( geoname );
-            geoms.push_back(geo);
-        }
-        return geoms;
-    }
-*/
-//    std::vector<Geometry*> loadGeometry(Frame &parent, const State& rwstate){
-//        std::vector<Frame*> frames = DynamicUtil::getAnchoredFrames( parent, rwstate);
-//        return loadGeometry(&parent, frames,rwstate);
-//        //std::vector<Face<float> > faces;
-//    }
-
-//    std::vector<Geometry*> loadGeometryChildren(Frame &parent, const State& rwstate){
-//        std::vector<Frame*> frames = DynamicUtil::getAnchoredChildFrames( &parent, rwstate);
-//        std::cout << "Frames : " << frames.size() << std::endl;
-//        return loadGeometry(&parent, frames, rwstate);
-        //std::vector<Face<float> > faces;
-//    }
-
     DynamicDevice::Ptr findDynamicDevice(ParserState& state, Device* dev){
     	return state.dwc->findDevice(dev->getName());
         /*
@@ -256,24 +196,7 @@ namespace
         if (buf) return nothing;
         else return make_pair(true, x);
     }
-/*
-    template<class ARR>
-    ARR readFixedArray(const PTree& tree, ARR &values, int size){
-        istringstream buf(tree.get_own<string>());
 
-        std::string str;
-        for(int i=0; i<size; i++){
-            if( buf >> str ){
-                const pair<bool, double> okNum = toDouble(str);
-                if (!okNum.first)
-                    RW_THROW("Number expected. Got " << quote(str));
-                values[i] = okNum.second;
-            } else {
-                return ARR;
-            }
-        }
-    }
-*/
     std::vector<double> readArray(const PTree& tree){
         RW_DEBUGS( "ReadArray: " << tree.get_value<string>() );
         istringstream buf(tree.get_value<string>());
@@ -483,12 +406,7 @@ namespace
         return frame;
 
     }
-/*
-    CompositeRigidBody* readCompositeRigidBody(const PTree& tree, const std::string& prefix, ParserState &state){
 
-
-    }
-  */
     RigidBody::Ptr readRigidBody(const PTree& tree, const std::string& prefix, ParserState &state){
         Log::debugLog()<< "ReadRigidBody" << std::endl;
 
@@ -529,8 +447,8 @@ namespace
         }
 
         std::vector<Geometry::Ptr> geoms;
-        BOOST_FOREACH(Object::Ptr assobj, info.objects){
-            BOOST_FOREACH(Geometry::Ptr g, assobj->getGeometry(state.rwstate)){
+        for(Object::Ptr assobj: info.objects){
+            for(Geometry::Ptr g: assobj->getGeometry(state.rwstate)){
                 geoms.push_back(g);
             }
         }
@@ -669,10 +587,6 @@ namespace
         BodyInfo info;
         info.material = tree.get<string>("MaterialID",state.defaultMaterial);
         info.objectType = tree.get<string>("ObjectID", state.defaultObjectType );
-
-        //info.frames = DynamicUtil::getAnchoredChildFrames( refframe, state.rwstate, state.deviceBases);
-        //std::vector<Geometry::Ptr> geoms = loadGeometry(refframe, info.frames, state.rwstate);
-        TimerUtil::sleepMs(500);
         RW_DEBUGS("Creating kinematic body!");
 
         KinematicBody::Ptr body = ownedPtr( new KinematicBody(info, obj) );
@@ -781,8 +695,8 @@ namespace
         }
 
         std::vector<Geometry::Ptr> geoms;
-        BOOST_FOREACH(Object::Ptr assobj, info.objects){
-            BOOST_FOREACH(Geometry::Ptr g, assobj->getGeometry(state.rwstate)){
+        for(Object::Ptr assobj: info.objects){
+            for(Geometry::Ptr g: assobj->getGeometry(state.rwstate)){
                 geoms.push_back(g);
             }
         }
@@ -955,7 +869,7 @@ namespace
         }
         KinematicDevice::Ptr kdev = ownedPtr(new KinematicDevice(base, bodies, device));
         std::vector<Body::Ptr> links = kdev->getLinks();
-        BOOST_FOREACH(Body::Ptr l, links){
+        for(Body::Ptr l: links){
         	state.dwc->addBody( l );
         }
         state.dwc->addDevice( kdev );
@@ -977,7 +891,7 @@ namespace
         }
         // we put them in an array so that they are sorted correctly
         std::vector<double> maxForce;
-        BOOST_FOREACH(Joint* joint, device->getJoints()){
+        for(Joint* joint: device->getJoints()){
             if( maxForceMap.find( joint->getName() ) == maxForceMap.end() ){
                 RW_THROW("A force limit for the joint \"" << joint->getName()
                          << "\" in device \"" << device->getName() << "\" has not been defined!" );
@@ -1025,7 +939,7 @@ namespace
         RigidDevice::Ptr rigiddev = ownedPtr(new RigidDevice(base, bodies, device));
         rigiddev->setMotorForceLimits( Q(maxForce) );
         std::vector<Body::Ptr> links = rigiddev->getLinks();
-        BOOST_FOREACH(Body::Ptr l, links){
+        for(Body::Ptr l: links){
             RW_DEBUGS("Adding body to dwc: " << l->getName());
         	state.dwc->addBody( l );
         }
@@ -1369,8 +1283,6 @@ namespace
         }
     }
 
-
-
     void readInclude(const PTree& tree, PTree &parent, PTree::iterator &iter, const ParserState& state){
     	CI lastIter = iter;
     	--lastIter;
@@ -1434,7 +1346,6 @@ namespace
 
     }
 
-
     void getWorkCellOptionally(const PTree& tree, ParserState& state)
     {
         if (state.wc){
@@ -1452,23 +1363,19 @@ namespace
         }
     }
 
-
     DynamicWorkCell::Ptr readDynamicWC(PTree& tree, ParserState& state)
     {
         getWorkCellOptionally(tree, state);
         state.rwstate = state.wc->getDefaultState();
-        BOOST_FOREACH(Device::Ptr dev, state.wc->getDevices()){
+        for(Device::Ptr dev: state.wc->getDevices()){
             state.deviceBases.push_back(dev->getBase());
         }
-
         // create the DynamicWorkCell so that the following can add stuff to it
         state.dwc = ownedPtr( new DynamicWorkCell(state.wc) );
-
 
         for (PTree::iterator p = tree.begin(); p != tree.end(); ++p) {
         	Log::debugLog()<< p->first << std::endl;
         	if (p->first == "PhysicsEngine") {
-
                 readPhysicsEngine(p->second, state);
             } else if (p->first == "DefaultRestitutionModel") {
                 Log::debugLog()<< p->first << std::endl;
@@ -1535,24 +1442,23 @@ namespace
                     << quote(p->first) );
             }
         }
-        
         // add all friction data too the materialdatamap
-        BOOST_FOREACH(FrictionDataTmp &fdata, state.fdatas){
+        for(FrictionDataTmp &fdata: state.fdatas){
             try{
                 state.materialData.addFrictionData(fdata.matA, fdata.matB, fdata.data);
             } catch (...){
 
             }
         }
-        
-        BOOST_FOREACH(ContactDataTmp &cdata, state.cdatas){
+        for(ContactDataTmp &cdata: state.cdatas){
             state.contactData.addNewtonData(cdata.objA, cdata.objB, cdata.data);
         }
         
         // TODO: now check if all bodies has a correct material and objectId. If they has not then
         // we use the default
 
-        BOOST_FOREACH(Body::Ptr body, state.dwc->getBodies() ){
+        
+        for(Body::Ptr body: state.dwc->getBodies() ){
             if( body->getInfo().material == ""){
                 if(state.defaultMaterial=="")
                     RW_THROW("No default material defined! Either define one "
@@ -1568,13 +1474,6 @@ namespace
             }
         }
         
-        //std::cout << "------------ nr controllers:  " <<  state.controllers.size() << std::endl;
-        //  create the dynamic workcell
-        //DynamicWorkCell *dynWorkcell =
-            //new DynamicWorkCell(state.wc, state.bodies, state.devices, state.controllers);
-		//	new DynamicWorkCell(state.wc, state.bodies, state.allbodies, state.devices, state.controllers);
-
-        
         state.dwc->setGravity(state.gravity);
         state.dwc->getMaterialData() = state.materialData;
         state.dwc->getContactData() = state.contactData;
@@ -1586,6 +1485,7 @@ namespace
 
 rw::common::Ptr<DynamicWorkCell> DynamicWorkCellLoader::load(const string& filename)
 {
+
 	std::string file = IOUtil::getAbsoluteFileName(filename);
 
     DynamicWorkCell::Ptr dwc;
