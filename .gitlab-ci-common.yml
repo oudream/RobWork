@@ -30,10 +30,10 @@ stages:
     - "[[ $CI_RUNNER_DESCRIPTION =~ 'shared-runners-manager' ]] && SHARED_RUNNER='true' || SHARED_RUNNER=''"
   - &remove-rw-install
     - shopt -s extglob
-    - rm -r -v /usr/local/bin/* || echo 
+    - rm -r -v /usr/local/bin/!(ccmake|cmake|cpack|ctest|ode-config) || echo 
     - rm -r -v "/usr/local/lib/!(python2.7|python3.6)" || echo 
-    - rm -r -v /usr/local/include/* || echo 
-    - rm -r -v /usr/local/share/!(ca-certificates|fonts|man) || echo 
+    - rm -r -v /usr/local/include/!(ode) || echo 
+    - rm -r -v /usr/local/share/!(ca-certificates|fonts|man|applications|info) || echo 
   - &uninstall-rw-deb
     - apt remove *sdurw* || echo "no pkg to remove"
     - apt remove robworkstudio* || echo "no pkg to remove"

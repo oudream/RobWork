@@ -137,6 +137,7 @@ endif()
 # DEPENDENCIES - OPTIONAL these dependencies are optional, which is the user can switch off modules
 
 set(RWS_HAVE_GLUT False)
+set(RWS_HAVE_FREEGLUT FALSE)
 
 find_package(GLUT QUIET)
 if(NOT GLUT_FOUND) # Check if free glut exsist
@@ -144,6 +145,7 @@ if(NOT GLUT_FOUND) # Check if free glut exsist
     if(FreeGLUT_FOUND)
         set(GLUT_glut_LIBRARY FreeGLUT::freeglut)
         set(GLUT_FOUND ${FreeGLUT_FOUND})
+        set(RWS_HAVE_FREEGLUT TRUE)
     endif()
 endif()
 if(OPENGL_FOUND AND GLUT_FOUND)
@@ -304,4 +306,4 @@ set(
     qtpropertybrowser
 )
 
-set(ROBWORKSTUDIO_DEPEND ${QT_LIBRARIES} ${Boost_LIBRARIES} ${OPENGL_LIBRARIES})
+set(ROBWORKSTUDIO_DEPEND ${QT_LIBRARIES} ${Boost_LIBRARIES} ${OPENGL_LIBRARIES} ${GLUT_glut_LIBRARY})

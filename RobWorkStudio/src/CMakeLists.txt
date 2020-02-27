@@ -40,7 +40,7 @@ if(build)
     # MESSAGE("${LIBS_TMP} sdurws_robworkstudioapp ${ROBWORK_LIBRARIES}")
 
     target_link_libraries(${SUBSYS_NAME} ${LIBS_TMP})
-    target_link_libraries(${SUBSYS_NAME} RW::sdurw sdurws_robworkstudioapp)
+    target_link_libraries(${SUBSYS_NAME} RW::sdurw sdurws_robworkstudioapp ${GLUT_glut_LIBRARY})
 
     # Some install stuff
     install(TARGETS ${SUBSYS_NAME} DESTINATION ${BIN_INSTALL_DIR} COMPONENT sdurws )
