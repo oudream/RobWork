@@ -324,7 +324,7 @@ stages:
     - linux
   before_script:
     - *uninstall-rw-deb
-    - apt --force-yes install ./DEBPKG/*.deb
+    - apt -y install ./DEBPKG/*.deb
 
 ########################### WINDOWS CI ################################
 
