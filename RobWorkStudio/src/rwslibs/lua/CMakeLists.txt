@@ -31,5 +31,7 @@ if(build)
 
     if("${RWS_DEFAULT_LIB_TYPE}" STREQUAL "STATIC")
         set(RWS_PLUGIN_LIBRARIES ${RWS_PLUGIN_LIBRARIES} ${SUBSYS_NAME} PARENT_SCOPE)
+    else()
+        set_target_properties(${SUBSYS_NAME} INSTALL_RPATH "${LUA_INSTALL_DIR}")
     endif()
 endif()
