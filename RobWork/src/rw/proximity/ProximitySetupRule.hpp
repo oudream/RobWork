@@ -40,6 +40,9 @@ namespace proximity {
 		/** @brief Include and Exclude identifiers */
 		enum RuleType {INCLUDE_RULE = 1, EXCLUDE_RULE}; 
 
+		//! @brief Constuct empty rule
+        ProximitySetupRule(){};
+
 		/** 
 		 * @brief Constructs rule with patternA and patternB and type
 		 *

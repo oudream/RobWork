@@ -419,16 +419,42 @@ namespace swig {
 	///@{
 	//! @copydoc rw::proximity::CollisionDetector
 	typedef rw::proximity::CollisionDetector CollisionDetector;
+	typedef rw::proximity::CollisionDetector::QueryResult CollisionDetectorQueryResult;
+	//! @copydoc rw::proximity::CollisionStrategy
+	typedef rw::proximity::CollisionSetup CollisionSetup;
 	//! @copydoc rw::proximity::CollisionStrategy
 	typedef rw::proximity::CollisionStrategy CollisionStrategy;
+	typedef rw::proximity::CollisionStrategy::Result CollisionStrategyResult;
+	typedef rw::proximity::CollisionStrategy::Result::CollisionPair CollisionStrategyCollisionPair;
+	//! @copydoc rw::proximity::CollisionStrategy
+	typedef rw::proximity::CollisionToleranceStrategy CollisionToleranceStrategy;
 	//! @copydoc rw::proximity::DistanceCalculator
 	typedef rw::proximity::DistanceCalculator DistanceCalculator;
     //! @copydoc rw::proximity::DistanceStrategy
     typedef rw::proximity::DistanceStrategy DistanceStrategy;
+	typedef rw::proximity::DistanceStrategy::Result DistanceStrategyResult;
+	//! @copydoc rw::proximity::DistanceMultiStrategy
+    typedef rw::proximity::DistanceMultiStrategy DistanceMultiStrategy;
+	typedef rw::proximity::DistanceMultiStrategy::Result DistanceMultiStrategyResult;
+	//! @copydoc rw::proximity::ProximityCache
+	typedef rw::proximity::ProximityCache ProximityCache;
+	//! @copydoc rw::proximity::ProximityModel
+	typedef rw::proximity::ProximityModel ProximityModel;
     //! @copydoc rw::proximity::ProximityStrategy
     typedef rw::proximity::ProximityData ProximityData;
     //! @copydoc rw::proximity::ProximityStrategy
     typedef rw::proximity::ProximityStrategy ProximityStrategy;
+	//! @copydoc rw::proximity::ProximityStrategyData
+    typedef rw::proximity::ProximityStrategyData ProximityStrategyData;
+	//! @copydoc rw::proximity::ProximityFilterStrategy
+    typedef rw::proximity::ProximityFilterStrategy ProximityFilterStrategy;
+	//! @copydoc rw::proximity::ProximityFilter
+    typedef rw::proximity::ProximityFilter ProximityFilter;
+	//! @copydoc rw::proximity::ProximitySetupRule
+    typedef rw::proximity::ProximitySetupRule ProximitySetupRule;
+	//! @copydoc rw::proximity::ProximitySetup
+    typedef rw::proximity::ProximitySetup ProximitySetup;
+
 	///@}
 
 	/**

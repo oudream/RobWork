@@ -39,6 +39,9 @@ SWIG_JAVABODY_TYPEWRAPPER(public, public, public, SWIGTYPE)
 
 %include <std_string.i>
 %include <std_vector.i>
+%include <std_map.i>
+%include <typemaps.i>
+
 //%include <shared_ptr.i>
 
 #if !defined(SWIGJAVA)
@@ -1606,7 +1609,7 @@ class SceneViewer
  * INVKIN
  ********************************************/
  
- %include <rwlibs/swig/rwinvkin.i>
+ %include <rwlibs/swig/rw_i/invkin.i>
 
 /********************************************
  * KINEMATICS
@@ -1899,18 +1902,16 @@ private:
 %template (FramePtr) rw::common::Ptr<Frame>;
 %template (FrameCPtr) rw::common::Ptr<const Frame>;
 %template (FrameVector) std::vector<Frame*>;
-%template (FramePairVector) std::vector<std::pair<Frame*, Frame* > >;
+%template (FramePair) std::pair< Frame *, Frame * >;
+%template (FramePairVector) std::vector< std::pair< Frame *, Frame * > >;
 
-/** @addtogroup kinematics */
-    /* @{ */
-
-    /**
-     * @brief MovableFrame is a frame for which it is possible to freely
-     * change the transform relative to the parent.
-     *
-     * A MovableFrame can for example be used for modelling objects moving in
-     * the scene based on e.g. user input.
-     */
+/**
+ * @brief MovableFrame is a frame for which it is possible to freely
+ * change the transform relative to the parent.
+ *
+ * A MovableFrame can for example be used for modelling objects moving in
+ * the scene based on e.g. user input.
+ */
 class MovableFrame: public Frame{
 public:
 
@@ -1928,7 +1929,7 @@ public:
      * @param transform [in] transform to set. the transform is described relative to parent frame
      * @param state [out] state into which to set the transform
      */
-    void setTransform(const Transform3D<>& transform, State& state);
+    void setTransform(const rw::math::Transform3D<double>& transform, State& state);
 
     /**
      * @brief Changes the transform in the state, such that the movable frame is located in the
@@ -1936,7 +1937,7 @@ public:
      * @param transform [in] transform to set. transform is described relative to world frame
      * @param state [out] state into which to set the transform
      */
-    void moveTo(const Transform3D<>& transform, State& state);
+    void moveTo(const rw::math::Transform3D<double>& transform, State& state);
 
     /**
      * @brief Changes the transform in the state, such that the movable frame is located in the
@@ -1945,7 +1946,7 @@ public:
      * @param refframe [in] the reference frame.
      * @param state [out] state into which to set the transform
      */
-    void moveTo(const Transform3D<>& transform, Frame* refframe, State& state);
+    void moveTo(const rw::math::Transform3D<double>& transform, Frame* refframe, State& state);
 
 };
 
@@ -1982,6 +1983,62 @@ public:
         return ::rw::kinematics::Kinematics::isDAF( frame );
     }
 %}
+
+namespace rw { namespace kinematics {
+
+
+    template <class T>
+    class FrameMap {
+    public:
+        /**
+         * @brief creates a framemap
+         * @param s [in] the default value of new instances of T
+         */
+        FrameMap(int s = 20);
+
+        /**
+         * @brief creates a framemap with an initial size of s
+         * @param s [in] nr of elements of the types T with default value "defaultVal"
+         * @param defaultVal [in] the default value of new instances of T
+         */
+        FrameMap(const T& defaultVal, int s = 20);
+
+        /**
+         * @brief inserts a value into the frame map
+         * @param frame [in] the frame for which the value is to be associated
+         * @param value [in] the value that is to be associated to the frame
+         */
+        void insert(const Frame& frame, const T& value);
+
+        /**
+           @brief True iff a value for \b frame has been inserted in the map (or
+           accessed using non-const operator[]).
+        */
+        bool has(const Frame& frame);
+
+        %extend{
+        #if (defined(SWIGLUA) || defined(SWIGPYTHON))
+            T __getitem__(const Frame& i)const {return (*$self)[i]; }
+            void __setitem__(const Frame& i,T d){ (*$self)[i] = d; }
+        #elif defined(SWIGJAVA)
+            T get(const Frame& i) const { return (*$self)[i]; }
+            void set(const Frame& i,T d){ (*$self)[i] = d; }
+        #endif
+        }
+
+        /**
+         * @brief Erase an element from the map
+         */
+        void erase( const rw::kinematics::Frame& frame );
+
+        /**
+           @brief Clear the frame map.
+        */
+        void clear();
+    };
+}}
+
+%template(FrameMap) rw::kinematics::FrameMap< double >;
 
 class Joint: public Frame
 {
@@ -2397,7 +2454,7 @@ private:
 /********************************************
  * MATH
  ********************************************/
-%include <rwlibs/swig/rwmath.i>
+%include <rwlibs/swig/rw_i/math.i>
 
 // Utility function within rw::Math
 rw::math::Rotation3D<double> getRandomRotation3D();
@@ -2535,26 +2592,26 @@ public:
 
     %extend {
         MovableFrame* findMovableFrame(const std::string& name)
-        { return $self->rw::models::WorkCell::findFrame<MovableFrame>(name); }
+        { return $self->WorkCell::findFrame<MovableFrame>(name); }
         FixedFrame* findFixedFrame(const std::string& name)
-        { return $self->rw::models::WorkCell::findFrame<FixedFrame>(name); }
+        { return $self->WorkCell::findFrame<FixedFrame>(name); }
         void addObject(rw::common::Ptr<Object> object)
-        { $self->rw::models::WorkCell::add(object); }
+        { $self->WorkCell::add(object); }
     };
 
     std::vector<Frame*> getFrames() const;
     rw::common::Ptr<Device> findDevice(const std::string& name) const;
     %extend {
         rw::common::Ptr<JointDevice> findJointDevice(const std::string& name)
-                { return $self->rw::models::WorkCell::findDevice<JointDevice>(name); }
+                { return $self->WorkCell::findDevice<JointDevice>(name); }
         rw::common::Ptr<SerialDevice> findSerialDevice(const std::string& name)
-                { return $self->rw::models::WorkCell::findDevice<SerialDevice>(name); }
+                { return $self->WorkCell::findDevice<SerialDevice>(name); }
         rw::common::Ptr<TreeDevice> findTreeDevice(const std::string& name)
-                { return $self->rw::models::WorkCell::findDevice<TreeDevice>(name); }
+                { return $self->WorkCell::findDevice<TreeDevice>(name); }
         rw::common::Ptr<ParallelDevice> findParallelDevice(const std::string& name)
-                { return $self->rw::models::WorkCell::findDevice<ParallelDevice>(name); }
+                { return $self->WorkCell::findDevice<ParallelDevice>(name); }
         std::vector<rw::common::Ptr<Device> > getDevices() const
-                { return $self->rw::models::WorkCell::getDevices(); }
+                { return $self->WorkCell::getDevices(); }
     };
     
     rw::common::Ptr<Object> findObject(const std::string& name) const;
@@ -2688,8 +2745,8 @@ public:
     virtual rw::math::Jacobian baseJframe(const Frame* frame,const State& state) const;
     virtual rw::math::Jacobian baseJframes(const std::vector<Frame*>& frames,const State& state) const;
     //virtual rw::common::Ptr<JacobianCalculator> baseJCend(const State& state) const;
-    //virtual JacobianCalculatorPtr baseJCframe(const kinematics::Frame* frame, const State& state) const;
-    //virtual JacobianCalculatorPtr baseJCframes(const std::vector<kinematics::Frame*>& frames, const State& state) const = 0;
+    //virtual JacobianCalculatorPtr baseJCframe(const Frame* frame, const State& state) const;
+    //virtual JacobianCalculatorPtr baseJCframes(const std::vector<Frame*>& frames, const State& state) const = 0;
 private:
     Device(const Device&);
     Device& operator=(const Device&);
@@ -2804,7 +2861,7 @@ class DHParameterSet
  * PATHPLANNING
  ********************************************/
 
-%include <rwlibs/swig/rwplanning.i>
+%include <rwlibs/swig/rw_i/planning.i>
 
 /********************************************
  * PLUGIN
@@ -2814,96 +2871,7 @@ class DHParameterSet
  * PROXIMITY
  ********************************************/
 
-class ProximityData {
-};
-
-%nodefaultctor ProximityStrategy;
-/**
- * @brief The ProximityStrategy interface is a clean interface
- * for defining methods that are common for different proximity
- * strategy classes. Specifically adding of geometric models and
- * relating them to frames.
- */
-class ProximityStrategy {
-};
-
-%template (ProximityStrategyPtr) rw::common::Ptr<ProximityStrategy>;
-
-%nodefaultctor CollisionStrategy;
-/**
- * @brief An interface that defines methods to test collision between
- * two objects.
- */
-class CollisionStrategy : public virtual ProximityStrategy {
-};
-
-%template (CollisionStrategyPtr) rw::common::Ptr<CollisionStrategy>;
-
-%nodefaultctor DistanceStrategy;
-/**
- * @brief This is an interface that defines methods for computing the minimum distance
- * between geometric objects. If geometry objects has been related to frames (see ProximityStrategy)
- * then distance functions computing the distance between the geometry attached to frames can also be used.
- */
-class DistanceStrategy : public virtual ProximityStrategy {
-};
-
-%template (DistanceStrategyPtr) rw::common::Ptr<DistanceStrategy>;
-
-%nodefaultctor CollisionDetector;
-class CollisionDetector
-{
-public:
-	CollisionDetector(rw::common::Ptr<WorkCell> workcell);
-	CollisionDetector(rw::common::Ptr<WorkCell> workcell, rw::common::Ptr<CollisionStrategy> strategy);
-
-    /**
-     * @brief Check the workcell for collisions.
-     *
-     * @param state [in] The state for which to check for collisions.
-     * @param data [in/out] Defines parameters for the collision check, the results and also
-     * enables caching inbetween calls to incollision
-     * @return true if a collision is detected; false otherwise.
-     */
-    bool inCollision(const State& state, class ProximityData &data) const;
-
-    %extend {
-        /**
-         * @brief Check the workcell for collisions.
-         * 
-         * @param state [in] The state for which to check for collisions.
-         * @param result [out] Where to store pairs of colliding frames.
-         * @param stopAtFirstContact [in] If \b result is non-NULL and \b
-         * stopAtFirstContact is true, then only the first colliding pair is
-         * inserted in \b result. By default all colliding pairs are inserted.
-         * 
-         * @return true if a collision is detected; false otherwise.
-         */
-        bool inCollision(const State& state, std::vector< std::pair< Frame* , Frame* > > &result, bool stopAtFirstContact = false){
-            CollisionDetector::QueryResult data;
-            bool success;
-            success = $self->rw::proximity::CollisionDetector::inCollision(state, &data,stopAtFirstContact);
-
-            result = std::vector< std::pair< Frame* , Frame* > >(data.collidingFrames.begin(), data.collidingFrames.end());
-
-            return success;
-        }
-    }
-    %extend {
-    /*
-        static rw::common::Ptr<CollisionDetector> make(rw::common::Ptr<WorkCell> workcell){
-            return rw::common::ownedPtr( new CollisionDetector(workcell, rwlibs::proximitystrategies::ProximityStrategyFactory::makeDefaultCollisionStrategy()) );
-        }
-    */
-
-        static rw::common::Ptr<CollisionDetector> make(rw::common::Ptr<WorkCell> workcell, rw::common::Ptr<CollisionStrategy> strategy){
-            return rw::common::ownedPtr( new CollisionDetector(workcell, strategy) );
-        }
-    }
-};
-
-%template (CollisionDetectorPtr) rw::common::Ptr<CollisionDetector>;
-OWNEDPTR(CollisionDetector)
+%include <rwlibs/swig/rw_i/proximity.i>
 
 /********************************************
  * SENSOR
