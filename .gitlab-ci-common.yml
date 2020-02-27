@@ -35,9 +35,9 @@ stages:
     - rm -r -v /usr/local/include/!(ode) || echo 
     - rm -r -v /usr/local/share/!(ca-certificates|fonts|man|applications|info) || echo 
   - &uninstall-rw-deb
-    - apt --force-yes remove *sdurw* || echo "no pkg to remove"
-    - apt --force-yes remove robworkstudio* || echo "no pkg to remove"
-    - apt --force-yes autoremove || echo "no pkg to remove"
+    - apt -y remove *sdurw* || echo "no pkg to remove"
+    - apt -y remove robworkstudio* || echo "no pkg to remove"
+    - apt -y autoremove || echo "no pkg to remove"
 
 .CI-common-linux:
   extends: .CI-common
