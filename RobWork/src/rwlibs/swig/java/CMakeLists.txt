@@ -147,6 +147,7 @@ if(build)
                                 java_src_${RW_MODULE}/org/robwork/LoaderRW.java)
         endif()
         # Compile java code and create JAR and Javadoc
+
         add_custom_command(
             TARGET ${RW_MODULE}_jni POST_BUILD
             COMMAND ${CMAKE_COMMAND} -E echo "Removing old Java compilation..."
