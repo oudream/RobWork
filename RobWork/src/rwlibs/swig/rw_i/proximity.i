@@ -1100,7 +1100,7 @@
 
         /**
          * @brief Closest point on f2 to f1, IMPORTANT! NOTICE! described in
-         * >>>> \b f1 <<<<< reference frame
+         * \b f1 reference frame
          */
         std::vector< rw::math::Vector3D<double> > p2s;
         
@@ -1251,7 +1251,7 @@
                 $self->setCollisionQueryType(rw::proximity::CollisionDetector::QueryType(int(qtype)));
             }
 
-                /**
+            /**
              * @brief Get the collision query type.
              * @return the query type.
              * @see CollisionDetector::QueryType
@@ -1264,7 +1264,7 @@
         /**
          * @brief Detailed information about the collision.
          * @note This data is only available for some collision query types.
-         * @see CollisionDetector::QueryResult
+         * @see CollisionDetectorQueryResult
          */
         CollisionDetectorQueryResult _collisionData;
 
@@ -1289,8 +1289,7 @@
 	class ProximityFilter {
 	public:
 		/**
-		 * @brief returns the next possibly colliding framepair.
-		 * @return a frame pair
+		 * @brief pop the current front.
 		 */
 		virtual void pop() = 0;
 

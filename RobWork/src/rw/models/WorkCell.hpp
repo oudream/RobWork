@@ -130,6 +130,7 @@ namespace rw { namespace models {
             /**
              * @brief The name of the workcell or the empty string if no name
              * was provided.
+             * @return the name of the workcell
              */
             std::string getName() const { return _name; }
 
@@ -451,8 +452,8 @@ namespace rw { namespace models {
             }
 
             /**
-             * @brief Returns all frames in workcell
-             * @return List of all frames
+             * @brief Returns all controllers in workcell
+             * @return List of all controllers
              */
             std::vector<rw::common::Ptr<ControllerModel> > getControllers() const {
                 std::vector<rw::common::Ptr<ControllerModel> > sensors;
