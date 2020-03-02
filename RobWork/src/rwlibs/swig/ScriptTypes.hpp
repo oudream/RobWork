@@ -376,6 +376,9 @@ namespace swig {
 	typedef rw::models::ParallelDevice ParallelDevice;
 	//! @copydoc rw::models::DHParameterSet
 	typedef rw::models::DHParameterSet DHParameterSet;
+
+	//! @copydoc rw::models::ControllerModel
+	typedef rw::models::ControllerModel ControllerModel;
 	///@}
 
 	/**

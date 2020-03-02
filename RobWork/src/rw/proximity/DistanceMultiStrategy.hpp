@@ -71,7 +71,7 @@ namespace rw { namespace proximity {
 
             /**
              * @brief Closest point on f2 to f1, IMPORTANT! NOTICE! described in
-             * >>>> \b f1 <<<<< reference frame
+             * \b f1  reference frame
              */
             std::vector< math::Vector3D<> > p2s;
             

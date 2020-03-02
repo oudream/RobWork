@@ -74,6 +74,7 @@ namespace rw { namespace sensor {
         /**
          * @brief returns the image if it has been saved in the State. Else null is
          * returned.
+         * @param state [in] the state in which the image is taken.
          * @return last image captured from camera.
          */
         Image::Ptr getImage(const  rw::kinematics::State& state);
@@ -88,16 +89,28 @@ namespace rw { namespace sensor {
         //! get the camera projection matrix
         rw::math::ProjectionMatrix getProjectionMatrix() const;
 
-        //!@brief get horisontal field of view in degrees.
+        /**
+         * @brief get horisontal field of view.
+         * @return  field of view in degrees
+         */
         double getFieldOfViewX() const;
 
-        //!@brief get vertical field of view in degrees.
+        /**
+         * @brief get Vertical field of view.
+         * @return  field of view in degrees
+         */
         double getFieldOfViewY() const;
 
         ///// a list of features that most of the time is available
-        //! @brief get far clipping plane
+        /**
+         * @brief get far clipping plane
+         * @return distance to far clipping plane in meters.
+         */
         double getFarClippingPlane() const;
-        //! @brief get near clipping plane
+        /**
+         * @brief get near clipping plane
+         * @return distance to near clipping plane in meters.
+         */
         double getNearClippingPlane() const;
 
 
