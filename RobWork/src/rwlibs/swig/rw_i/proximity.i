@@ -117,6 +117,7 @@
 
         /**
          * @brief removes a geometry from a specific proximity model
+         * @return true if succesfull
          */
         virtual bool removeGeometry(ProximityModel* model, const std::string& geomId) = 0;
 
@@ -683,8 +684,8 @@
          * @param wTa [in] @f$ \robabx{w}{a}{\mathbf{T}} @f$
          * @param b [in] @f$ \mathcal{F}_b @f$
          * @param wTb [in] @f$ \robabx{w}{b}{\mathbf{T}} @f$
-         * @param data
          * @param distance
+         * @param data
          *
          * @return true if @f$ \mathcal{F}_a @f$ and @f$ \mathcal{F}_b @f$ are
          * colliding, false otherwise.
@@ -902,6 +903,7 @@
         
         /**
          * @brief pointer to the ProximityModel containing the geometries for the first frame
+         * @param a Pointer to ProximityModel
          **/
         rw::common::Ptr<ProximityModel> a;
         
@@ -910,10 +912,10 @@
          **/
         rw::common::Ptr<ProximityModel> b;
 
-        //! Closest point on f1 to f2, described in f1 reference frame
+        //! Closest point on f1 to f2, described in \b f1 reference frame
         rw::math::Vector3D<double> p1;
 
-        //! Closest point on f2 to f1, described in >>>> \b f1 <<<<< reference frame
+        //! Closest point on f2 to f1, described in \b f1 reference frame
         rw::math::Vector3D<double> p2;
 
         //! @brief distance between frame f1 and frame f1
@@ -1245,7 +1247,6 @@
              * possible to detect all collisions if required.
              *
              * @param qtype [in] the query type.
-             * @see CollisionDetector::QueryType
              */
             void setCollisionQueryType(CollisionDetectorQueryType qtype){
                 $self->setCollisionQueryType(rw::proximity::CollisionDetector::QueryType(int(qtype)));
@@ -1254,7 +1255,6 @@
             /**
              * @brief Get the collision query type.
              * @return the query type.
-             * @see CollisionDetector::QueryType
              */
             CollisionDetectorQueryType getCollisionQueryType() const{
                 return CollisionDetectorQueryType(int($self->getCollisionQueryType()));
@@ -1264,7 +1264,6 @@
         /**
          * @brief Detailed information about the collision.
          * @note This data is only available for some collision query types.
-         * @see CollisionDetectorQueryResult
          */
         CollisionDetectorQueryResult _collisionData;
 

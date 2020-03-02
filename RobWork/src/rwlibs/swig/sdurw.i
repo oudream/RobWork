@@ -3023,7 +3023,13 @@ OWNEDPTR(RigidObject);
 class DeformableObject: public Object
 {
 public:
-     //! constructor
+
+    /**
+     * @brief constructor - constructs a deformable mesh with a specific number of control nodes
+     * and without any faces. Both geometry and model are created based on nodes.
+     * @param baseframe [in] base frame of object
+     * @param nr_of_nodes [in] the number of controlling nodes in the deformable object
+     */
     DeformableObject(Frame* baseframe, int nr_of_nodes);
 
     //DeformableObject(Frame* baseframe, rw::common::Ptr<Model3D> model);
@@ -3033,19 +3039,89 @@ public:
     //! destructor
     virtual ~DeformableObject();
 
+
+    /**
+     * @brief get a specific node from the state
+     * @param id [in] id of the node to fetch
+     * @param state [in] current state
+     * @return handle to manipulate a node in the given state.
+     */
     rw::math::Vector3D<float>& getNode(int id, State& state) const;
+
+    /**
+     * @brief set the value of a specific node in the state.
+     * @param id [in] id of the node
+     * @param v [in] value to set.
+     * @param state [in] state in which to set the value.
+     */
     void setNode(int id, const rw::math::Vector3D<float>& v, State& state);
+
+    /**
+     * @brief get the number of controlling nodes of this deformable object.
+     * @param state [in]
+     * @return
+     */
+    size_t getNrNodes(const rw::kinematics::State& state) const ;
     
+    /*
+     * @brief get all faces of this soft body
+     * @return list of indexed triangles - indeces point to vertices/nodes
+     */
     //const std::vector<rw::geometry::IndexedTriangle<> >& getFaces() const;
+
+    /**
+     * @brief add a face to three existing nodes
+     * @param node1 [in] idx of node 1
+     * @param node2 [in] idx of node 2
+     * @param node3 [in] idx of node 3
+     */
     void addFace(unsigned int node1, unsigned int node2, unsigned int node3);
+
+    /*
+     * @brief return a triangle mesh representing the softbody in the current state
+     * \b cstate
+     * @param cstate
+     */
     //rw::geometry::IndexedTriMesh<float>::Ptr getMesh(State& cstate);
+
+    //! @copydoc rw::models::Object::getGeometry
     const std::vector<rw::common::Ptr<Geometry> >& getGeometry(const State& state) const;
+
+    //! @copydoc rw::models::Object::getModels
     const std::vector<rw::common::Ptr<Model3D> >& getModels() const;
+
+
+    //! @copydoc rw::models::Object::getModels
     const std::vector<rw::common::Ptr<Model3D> >& getModels(const State& state) const;
     
+    /**
+     * @brief get mass in Kg of this object
+     * @param state [in] the state
+     * @return mass in kilo grams
+     */
     double getMass(State& state) const;
+
+    /**
+     * @brief get center of mass of this object
+     * @param state [in] the state in which to get center of mass
+     * @return Position of COM
+     */    
     rw::math::Vector3D<double> getCOM(State& state) const;
+
+
+    /**
+     * @brief returns the inertia matrix of this body calculated around COM with the orientation
+     * of the base frame.
+     * @param state [in] the state to get the inertia in
+     * @return matrix with inertia 
+     */
     rw::math::InertiaMatrix<double> getInertia(State& state) const;
+
+    /**
+     * @brief updates the model with the current state of the deformable model
+     * @param model [in/out] model to be updated
+     * @param state
+     */
     void update(rw::common::Ptr<Model3D> model, const State& state);
 };
 
