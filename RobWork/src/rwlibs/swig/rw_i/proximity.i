@@ -903,7 +903,6 @@
         
         /**
          * @brief pointer to the ProximityModel containing the geometries for the first frame
-         * @param a Pointer to ProximityModel
          **/
         rw::common::Ptr<ProximityModel> a;
         
