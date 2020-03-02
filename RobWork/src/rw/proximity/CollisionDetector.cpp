@@ -125,6 +125,10 @@ bool CollisionDetector::inCollision (const kinematics::State& state, ProximityDa
         bool res               = _npstrategy.isNull ();
         if (!res)
             res = _npstrategy->inCollision (a, aT, b, bT, data);
+            if(res) {
+                proxdata._collisionData._fullInfo.push_back(data);
+                proxdata._collisionData.collidingFrames.insert (pair);
+            }
         if (res) {
             proxdata._collisionData.collidingFrames.insert (pair);
             if (stopAtFirstContact)
@@ -165,6 +169,10 @@ bool CollisionDetector::inCollision (const State& state, QueryResult* result,
         bool res               = _npstrategy.isNull ();
         if (!res)
             res = _npstrategy->inCollision (a, aT, b, bT, data);
+            if(res) {
+                result->_fullInfo.push_back(data);
+                result->collidingFrames.insert (pair);
+            }
         if (res) {
             if (result) {
                 result->collidingFrames.insert (pair);
