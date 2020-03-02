@@ -5,7 +5,7 @@
 
 <Frame name="BaseMov" type="Movable">
 	<Transform>
-    		1 0 0 0
+		1 0 0 0
 		0 1 0 0
 		0 0 1 0
 	</Transform>
