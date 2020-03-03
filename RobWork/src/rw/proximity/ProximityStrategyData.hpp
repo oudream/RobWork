@@ -59,7 +59,11 @@ namespace proximity {
             abs_err(0),
             _colQueryType(CollisionStrategy::FirstContact),
             _collides(false)
-        {}
+        {
+            _collisionData.clear();
+            _distanceData.clear();
+            _multiDistanceData.clear();
+        }
 
         ProximityCache::Ptr& getCache(){ return _cache; }
 
