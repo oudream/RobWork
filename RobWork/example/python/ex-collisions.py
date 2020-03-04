@@ -1,16 +1,16 @@
 from sdurw import *
 from sdurw_proximitystrategies import*
-from sdurws import *
 
 import time
 
 CDQueryType = ["AllContactsFullInfo","AllContanctsNoInfo","FirstContactFullInfo","FirstContactNoInfo"]
 CSQueryType = ["AllContacts","FirstContact"]
 
-def printPSD(data: "ProximityStrategyData"):
+def printPSD(data):
     print("    ProximityStrategyData")
     print("        Abs error  : ",data.abs_err)
     print("        Rel error  : ",data.rel_err)
+
     try:
         print("        QueryType  : ",CSQueryType[data.getCollisionQueryType()])
     except IndexError:
@@ -19,12 +19,12 @@ def printPSD(data: "ProximityStrategyData"):
     print("        inCollision: ",data.inCollision())
     CSResult = data.getCollisionData()
     try:
-        print("\n        First Model Geometries: ")
-        #for geo in CSResult.a.getGeometryIDs():
-        #    print("            Geometry: ",geo)
+        print("\n        First Model Geometries: ",CSResult.a.getOwner())
+        for geo in CSResult.a.getGeometryIDs():
+            print("            Geometry: ",geo)
         print("\n        Second Model Geometries: ")
-        #for geo in CSResult.b.getGeometryIDs():
-        #    print("            Geometry: ",geo)
+        for geo in CSResult.b.getGeometryIDs():
+            print("            Geometry: ",geo)
     except:
         pass
 
@@ -103,14 +103,15 @@ def printColInfo(name,detector:"CollisionDetector",wc:"WorkCellPtr",state:"State
     print("QueryType(QueryResult)       : ","Not Available")
     print("QueryType(FramePairVector)   : ","Not Available")
 
-    res1 = res1._collisionData
-    res2 = res2._collisionData
+    res1CD = res1._collisionData
+    res2CD = res2._collisionData
 
     print("\nColliding Frames (ProximityData std)")
-    for frameP in res1.getFramePairVector():
+    for frameP in res1CD.getFramePairVector():
+        print(frameP)
         print("    ", frameP[0].getName(), " and ", frameP[1].getName())
     print("\nColliding Frames (ProximityData full)")
-    for frameP in res2.getFramePairVector():
+    for frameP in res2CD.getFramePairVector():
         print("    ", frameP[0].getName(), " and ", frameP[1].getName())
     print("\nColliding Frames (QueryResult)")
     for frameP in res3.getFramePairVector():
@@ -119,15 +120,19 @@ def printColInfo(name,detector:"CollisionDetector",wc:"WorkCellPtr",state:"State
     for frameP in res4:
         print("    ", frameP[0].getName(), " and ", frameP[1].getName())
 
+
     print("\nNo more data in (FramePairVector)")
+    l =[]
+    for i in range(10000):
+        l.append(Vector3d(2,2,2))
 
     print("\nProximityStrategyData (ProximityData std)")
-    for i in range(res1._fullInfo.size()): #loop with indexes else you might get segfault
-        printPSD(res1._fullInfo[i])
+    for i in range(res1CD._fullInfo.size()): #loop with indexes else you might get segfault
+        printPSD(res1CD._fullInfo[i])
     
-    print("\nProximityStrategyData (ProximityDataFULL)",res2._fullInfo.size())
-    for i in range(res2._fullInfo.size()): #loop with indexes else you might get segfault
-        printPSD(res2._fullInfo[i])
+    print("\nProximityStrategyData (ProximityDataFULL)")
+    for i in range(res2CD._fullInfo.size()): #loop with indexes else you might get segfault
+        printPSD(res2CD._fullInfo[i])
     
     print("\nProximityStrategyData (QueryType)")
     for i in range(res3._fullInfo.size()): #loop with indexes else you might get segfault

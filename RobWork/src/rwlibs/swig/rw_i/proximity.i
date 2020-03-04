@@ -153,7 +153,18 @@
             std::vector< std::pair< Frame* , Frame* > > getFramePairVector() {
                 return std::vector< std::pair< Frame* , Frame* > >($self->collidingFrames.begin(), $self->collidingFrames.end());
             }
+
+            /**
+             * @brief get a copy of the items presented in \b _fullInfo as a pointer
+             * @param index the index in the vector
+             * @return a pointer to a copy of the ProximityStrategyData
+             */
+            rw::common::Ptr<ProximityStrategyData> getFullInfo(unsigned int i){
+                return ownedPtr(new ProximityStrategyData($self->_fullInfo[i]));
+            }
+
         }
+        //! @brief a vector containing the full collision data. One for each collision verifyed by a CollisionStrategy
         std::vector< ProximityStrategyData > _fullInfo;
     };
     %inline %{
@@ -695,7 +706,7 @@
             const Frame *b,
             const rw::math::Transform3D<double>& wTb,
             double distance,
-            class ProximityStrategyData& data);
+            ProximityStrategyData& data);
 
         /**
          * @brief Checks to see if two proximity models @f$ \mathcal{F}_a @f$ and
@@ -741,7 +752,7 @@
                     rw::common::Ptr<ProximityModel> b,
                     const math::Transform3D<>& wTb,
                     double tolerance,
-                    class ProximityStrategyData& data) = 0;
+                    ProximityStrategyData& data) = 0;
 
     protected:
         /**
@@ -982,7 +993,7 @@
                                 const rw::math::Transform3D<double>& wTa,
                                 const Frame* b,
                                 const rw::math::Transform3D<double>& wTb,
-                                class ProximityStrategyData& data);
+                                ProximityStrategyData& data);
 
         /**
          * @brief Calculates the distance between two proximity models @f$ \mathcal{a} @f$ and
@@ -1003,7 +1014,7 @@
             const rw::math::Transform3D<double>& wTa,
             rw::common::Ptr<ProximityModel> b,
             const rw::math::Transform3D<double>& wTb,
-            class ProximityStrategyData& data);
+            ProximityStrategyData& data);
 
 
         /**
@@ -1647,21 +1658,57 @@
     %nodefaultctor ProximityStrategyData;
     class ProximityStrategyData {
     public:
+
+        /**
+         * @brief Create Empty ProximityData
+         */
         ProximityStrategyData();
+
+        /**
+         * @brief Copy Constructor
+         */
+        ProximityStrategyData(const ProximityStrategyData& data);
+
+        /**
+         * @brief get the result from the collision check
+         * @return Result of Collision strategy if available
+         */
         CollisionStrategyResult& getCollisionData();
+
+        /**
+         * @brief was collision check in collision
+         * @return true if in collision
+         */
         bool inCollision();
 
         %extend{
+            /**
+             * @brief set the Collision Query type
+             * @param qtype [in] the used Query type
+             */
             void setCollisionQueryType(CollisionStrategyQueryType qtype){
                 $self->setCollisionQueryType(rw::proximity::CollisionStrategy::QueryType(int(qtype)));
             }
             
+            /**
+             * @brief Get the used Collision Query type
+             * @return Querytype
+             */
             CollisionStrategyQueryType getCollisionQueryType() const{
                 return CollisionStrategyQueryType(int($self->getCollisionQueryType()));
             }
         }
         
+        /**
+         * @brief get The result of a distance query
+         * @return result of a distance query
+         */
         DistanceStrategyResult& getDistanceData();
+
+        /**
+         * @brief get The result of a multi distance query
+         * @return result of a distance query
+         */
         DistanceMultiStrategyResult& getMultiDistanceData();
 
         //! @brief relative acceptable error
@@ -1671,6 +1718,7 @@
     };
     OWNEDPTR(ProximityStrategyData);
     %template (ProximityStrategyDataVector) std::vector<ProximityStrategyData>;
+    %template (ProximityStrategyDataPtrVector) std::vector<rw::common::Ptr<ProximityStrategyData> >;
     %template (ProximityStrategyDataPtr) rw::common::Ptr<ProximityStrategyData>;
 
 //
