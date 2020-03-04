@@ -108,7 +108,7 @@ namespace rw { namespace models {
         void setNode(int id, const rw::math::Vector3D<float>& v, rw::kinematics::State& state);
 
         /**
-         * get the number of controlling nodes of this deformable object.
+         * @brief get the number of controlling nodes of this deformable object.
          * @param state [in]
          * @return
          */
@@ -139,6 +139,7 @@ namespace rw { namespace models {
 
  	    /**
  	     * @brief get mass in Kg of this object
+         * @param state [in] the state
  	     * @return mass in kilo grams
  	     */
  	    double getMass(rw::kinematics::State& state) const;
@@ -146,13 +147,15 @@ namespace rw { namespace models {
  	    /**
  	     * @brief get center of mass of this object
  	     * @param state [in] the state in which to get center of mass
- 	     * @return
+ 	     * @return Position of COM
  	     */
  	    rw::math::Vector3D<> getCOM(rw::kinematics::State& state) const;
 
  	    /**
  	     * @brief returns the inertia matrix of this body calculated around COM with the orientation
  	     * of the base frame.
+         * @param state [in] the state to get the inertia in
+         * @return matrix with inertia 
  	     */
  	    rw::math::InertiaMatrix<> getInertia(rw::kinematics::State& state) const;
 

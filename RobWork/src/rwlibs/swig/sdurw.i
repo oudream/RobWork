@@ -1130,11 +1130,11 @@ public:
 	 * @brief gets a trimesh representation of this geometry data.
 	 *
 	 * The trimesh that is returned is by default a copy, which means
-	 * ownership is transfered to the caller. Specifying forceCopy to false
-	 * will enable copy by reference and ownership is not necesarilly transfered.
+	 * ownership is transfered to the caller. 
+	 * @param forceCopy Specifying forceCopy to false will enable copy by reference and 
+     * ownership is not necesarilly transfered.
 	 * This is more efficient, though pointer is only alive as long as this
 	 * GeometryData is alive.
-	 *
 	 * @return TriMesh representation of this GeometryData
 	 */
     virtual rw::common::Ptr<TriMesh> getTriMesh(bool forceCopy=true) = 0;
@@ -1989,11 +1989,6 @@ namespace rw { namespace kinematics {
     template <class T>
     class FrameMap {
     public:
-        /**
-         * @brief creates a framemap
-         * @param s [in] the default value of new instances of T
-         */
-        FrameMap(int s = 20);
 
         /**
          * @brief creates a framemap with an initial size of s
@@ -2001,6 +1996,12 @@ namespace rw { namespace kinematics {
          * @param defaultVal [in] the default value of new instances of T
          */
         FrameMap(const T& defaultVal, int s = 20);
+
+        /**
+         * @brief creates a framemap
+         * @param s [in]  nr of elements of the types T
+         */
+        FrameMap(int s = 20);
 
         /**
          * @brief inserts a value into the frame map
@@ -2028,7 +2029,7 @@ namespace rw { namespace kinematics {
         /**
          * @brief Erase an element from the map
          */
-        void erase( const rw::kinematics::Frame& frame );
+        void erase( const Frame& frame );
 
         /**
            @brief Clear the frame map.
@@ -2578,53 +2579,387 @@ public:
 
 class WorkCell {
 public:
+    /**
+     * @brief Constructs an empty WorkCell
+     *
+     * @param name [in] The name of the workcell. A good name for the
+     * workcell would be the (eventual) file that the workcell was
+     * loaded from.
+     */
     WorkCell(const std::string& name);
+
+    /**
+     * @brief The name of the workcell or the empty string if no name
+     * was provided.
+     * @return the name of the workcell
+     */
     std::string getName() const;
+
+    /**
+     * @brief Returns pointer to the world frame
+     *
+     * @return Pointer to the world frame
+     */
     Frame* getWorldFrame() const;
 
+    /**
+     * @brief Adds \b frame with \b parent as parent.
+     *
+     * If parent == NULL, then \b world is used as parent
+     *
+     * @param frame [in] Frame to add
+     * @param parent [in] Parent frame - uses World is parent == NULL
+     * @deprecated Since January 2018.
+     * Please use the addFrame method using smart pointers instead.
+     */
     void addFrame(Frame* frame, Frame* parent=NULL);
-    void addDAF(Frame* frame, Frame* parent=NULL);
+
+    /**
+     * @brief Adds \b frame with \b parent as parent.
+     *
+     * If parent == NULL, then \b world is used as parent
+     *
+     * @param frame [in] Frame to add
+     * @param parent [in] Parent frame - uses World is parent == NULL
+     */
+    void addFrame(rw::common::Ptr<Frame> frame,
+            rw::common::Ptr<Frame> parent = NULL);
+
+
+    /**
+     * @brief Adds dynamically attachable frame (DAF) \b frame with
+     * \b parent as parent.
+     *
+     * If parent == NULL, then \b world is used as parent
+     *
+     * @param frame [in] Frame to add
+     * @param parent [in] Parent frame - uses World is parent == NULL
+     * @deprecated Since January 2018.
+     * Please use the addDAF method using smart pointers instead.
+     */
+    void addDAF(Frame* frame, Frame* parent = NULL);
+
+    /**
+     * @brief Adds dynamically attachable frame (DAF) \b frame with
+     * \b parent as parent.
+     *
+     * If parent == NULL, then \b world is used as parent
+     *
+     * @param frame [in] Frame to add
+     * @param parent [in] Parent frame - uses World is parent == NULL
+     */
+    void addDAF(rw::common::Ptr<Frame> frame,
+            rw::common::Ptr<Frame> parent = NULL);
+
+    /**
+     * @brief Removes \b frame from work cell
+     *
+     * @param frame [in] Frame to remove
+     * @deprecated Since January 2018.
+     * Please use remove(rw::common::Ptr<rw::kinematics::Frame>)
+     * instead.
+     */
     void remove(Frame* frame);
+
+    /**
+     * @brief Removes \b frame from work cell
+     *
+     * @param frame [in] Frame to remove
+     */
+    void remove(rw::common::Ptr<Frame> frame);
+
+    /**
+     * @brief Adds a Device to the WorkCell.
+     *
+     * Ownership of \b device is taken.
+     *
+     * @param device [in] pointer to device.
+     */
     void addDevice(rw::common::Ptr<Device> device);
-    
+
+    /**
+     * @brief Returns a reference to a vector with pointers to the
+     * Device(s) in the WorkCell
+     *
+     * @return const vector with pointers to Device(s).
+     */
+    const std::vector<rw::common::Ptr<Device> >& getDevices() const;
+
+    /**
+     * @brief Returns frame with the specified name.
+     *
+     * If multiple frames has the same name, the first frame encountered
+     * will be returned. If no frame is found, the method returns NULL.
+     *
+     * @param name [in] name of Frame.
+     *
+     * @return The frame with name \b name or NULL if no such frame.
+     */
     Frame* findFrame(const std::string& name) const;
 
     %extend {
+        /**
+         * @brief Returns MovableFrame with the specified name.
+         *
+         * If multiple frames has the same name, the first frame encountered
+         * will be returned. If no frame is found, the method returns NULL.
+         *
+         * @param name [in] name of Frame.
+         *
+         * @return The MovableFrame with name \b name or NULL if no such frame.
+         */
         MovableFrame* findMovableFrame(const std::string& name)
-        { return $self->WorkCell::findFrame<MovableFrame>(name); }
+        { 
+            return $self->WorkCell::findFrame<MovableFrame>(name); 
+        }
+
+        /**
+         * @brief Returns FixedFrame with the specified name.
+         *
+         * If multiple frames has the same name, the first frame encountered
+         * will be returned. If no frame is found, the method returns NULL.
+         *
+         * @param name [in] name of Frame.
+         *
+         * @return The FixedFrame with name \b name or NULL if no such frame.
+         */
         FixedFrame* findFixedFrame(const std::string& name)
-        { return $self->WorkCell::findFrame<FixedFrame>(name); }
-        void addObject(rw::common::Ptr<Object> object)
-        { $self->WorkCell::add(object); }
+        { 
+            return $self->WorkCell::findFrame<FixedFrame>(name); 
+        }
+
+        /**
+         * @brief Returns all \b MovableFrames.
+         * @return all frames of type \b MovableFrames in the workcell
+         */
+        std::vector<MovableFrame*> findMovableFrames() const
+        { 
+            return $self->WorkCell::findFrames<MovableFrame>(); 
+        }
+
+        /**
+         * @brief Returns all \b FixedFrame.
+         * @return all frames of type \b FixedFrame in the workcell
+         */
+        std::vector<FixedFrame*> findFixedFrames() const
+        { 
+            return $self->WorkCell::findFrames<FixedFrame>(); 
+        }
+
     };
 
+    /**
+     * @brief Returns all frames in workcell
+     * @return List of all frames
+     */
     std::vector<Frame*> getFrames() const;
+
+    /**
+     * @brief The device named \b name of the workcell.
+     *
+     * NULL is returned if there is no such device.
+     *
+     * @param name [in] The device name
+     *
+     * @return The device named \b name or NULL if no such device.
+     */
     rw::common::Ptr<Device> findDevice(const std::string& name) const;
+
     %extend {
+        /**
+         * @brief The device named \b name of the workcell.
+         *
+         * NULL is returned if there is no such device.
+         *
+         * @param name [in] The device name
+         *
+         * @return The device named \b name or NULL if no such device.
+         */
         rw::common::Ptr<JointDevice> findJointDevice(const std::string& name)
-                { return $self->WorkCell::findDevice<JointDevice>(name); }
+        { 
+            return $self->WorkCell::findDevice<JointDevice>(name); 
+        }
+
+        /**
+         * @brief The device named \b name of the workcell.
+         *
+         * NULL is returned if there is no such device.
+         *
+         * @param name [in] The device name
+         *
+         * @return The device named \b name or NULL if no such device.
+         */
         rw::common::Ptr<SerialDevice> findSerialDevice(const std::string& name)
-                { return $self->WorkCell::findDevice<SerialDevice>(name); }
+        { 
+            return $self->WorkCell::findDevice<SerialDevice>(name); 
+        }
+
+        /**
+         * @brief The device named \b name of the workcell.
+         *
+         * NULL is returned if there is no such device.
+         *
+         * @param name [in] The device name
+         *
+         * @return The device named \b name or NULL if no such device.
+         */
         rw::common::Ptr<TreeDevice> findTreeDevice(const std::string& name)
-                { return $self->WorkCell::findDevice<TreeDevice>(name); }
+        { 
+            return $self->WorkCell::findDevice<TreeDevice>(name); 
+        }
+
+        /**
+         * @brief The device named \b name of the workcell.
+         *
+         * NULL is returned if there is no such device.
+         *
+         * @param name [in] The device name
+         *
+         * @return The device named \b name or NULL if no such device.
+         */
         rw::common::Ptr<ParallelDevice> findParallelDevice(const std::string& name)
-                { return $self->WorkCell::findDevice<ParallelDevice>(name); }
-        std::vector<rw::common::Ptr<Device> > getDevices() const
-                { return $self->WorkCell::getDevices(); }
+        { 
+            return $self->WorkCell::findDevice<ParallelDevice>(name); 
+        }
+
+        /**
+         * @brief Returns a vector with pointers to the Device(s) with a
+         * specific type \b JointDevice in the WorkCell
+         *
+         * @return vector with pointers to Device(s) of type T.
+         */
+        std::vector < rw::common::Ptr<JointDevice> > findJointDevices()
+        { 
+            return $self->WorkCell::findDevices<JointDevice>(); 
+        }
+
+        /**
+         * @brief Returns a vector with pointers to the Device(s) with a
+         * specific type \b SerialDevice in the WorkCell
+         *
+         * @return vector with pointers to Device(s) of type T.
+         */
+        std::vector < rw::common::Ptr<SerialDevice> > findSerialDevices()
+        { 
+            return $self->WorkCell::findDevices<SerialDevice>(); 
+        }
+
+        /**
+         * @brief Returns a vector with pointers to the Device(s) with a
+         * specific type \b TreeDevice in the WorkCell
+         *
+         * @return vector with pointers to Device(s) of type T.
+         */
+        std::vector < rw::common::Ptr<TreeDevice> > findTreeDevices()
+        { 
+            return $self->WorkCell::findDevices<TreeDevice>(); 
+        }
+
+        /**
+         * @brief Returns a vector with pointers to the Device(s) with a
+         * specific type \b ParallelDevice in the WorkCell
+         *
+         * @return vector with pointers to Device(s) of type T.
+         */
+        std::vector < rw::common::Ptr<ParallelDevice> > findParallelDevices()
+        { 
+            return $self->WorkCell::findDevices<ParallelDevice>(); 
+        }
     };
+
+    /**
+     * @brief Returns a default State
+     *
+     * @return default State
+     */
+    State getDefaultState() const;
+
+    /**
+     * @brief Returns sensor with the specified name.
+     *
+     * If multiple sensors has the same name, the first sensor
+     * encountered will be returned. If no sensor is found, the method
+     * returns NULL.
+     *
+     * @param name [in] name of sensor.
+     *
+     * @return The sensor with name \b name or NULL if no such sensor.
+     */
+    rw::common::Ptr<SensorModel> findSensor(const std::string& name) const;
+
+    //TODO(kalor) findSensor<T>(name);
+    //TODO(kalor) findSensors<T>();
+
+    /**
+     * @brief Returns all frames in workcell
+     * @return List of all frames
+     */
+    std::vector<rw::common::Ptr<SensorModel> > getSensors() const;
+
+
+    //TODO(kalor) findController<T>(name);
+    //TODO(kalor) findControllers<T>();
+
+    /**
+     * @brief Returns controller with the specified name.
+     *
+     * If multiple controlelrs has the same name, the first controller
+     * encountered will be returned. If no controller is found, the
+     * method returns NULL.
+     *
+     * @param name [in] name of controller.
+     *
+     * @return The controller with name \b name or NULL if no such
+     * controller.
+     */
+    rw::common::Ptr<rw::models::ControllerModel> findController(const std::string& name) const;
     
+    /**
+     * @brief Returns all controllers in workcell
+     * @return List of all controllers
+     */
+    std::vector<rw::common::Ptr<ControllerModel> > getControllers() const;
+
+    /**
+     * @brief Returns all object in the work cell
+     *
+     * @return All object in work cell
+     */
+    std::vector<rw::common::Ptr<Object> > getObjects() const;
+
+    /**
+     * @brief The object named \b name of the workcell.
+     *
+     * NULL is returned if there is no such object.
+     *
+     * @param name [in] The object name
+     *
+     * @return The object named \b name or NULL if no such object.
+     */
     rw::common::Ptr<Object> findObject(const std::string& name) const;
+
+    //! @brief Add device to workcell
+    void add(rw::common::Ptr<Device> device);
+    //! @brief Add object to workcell
     void add(rw::common::Ptr<Object> object);
+    //! @brief Add sensormodel to workcell
+    void add(rw::common::Ptr<SensorModel> sensor);
+    //! @brief Add controllermodel to workcell
+    void add(rw::common::Ptr<ControllerModel> controller);
+
+    //! @brief Remove object from workcell
     void remove(rw::common::Ptr<Object> object);
+    //! @brief Remove device from workcell
+    void remove(rw::common::Ptr<Device> device);
+    //! @brief Remove sensormodel from workcell
+    void remove(rw::common::Ptr<SensorModel> sensor);
+    //! @brief Remove controllermodel from workcell
+    void remove(rw::common::Ptr<ControllerModel> controller);
 
     std::string getFilename () const;
     std::string getFilePath () const;
 
-    State getDefaultState() const;
     
-
-    //rw::common::Ptr<StateStructure> getStateStructure();
-
     PropertyMap& getPropertyMap();
 private:
     WorkCell(const WorkCell&);
@@ -2687,7 +3022,13 @@ OWNEDPTR(RigidObject);
 class DeformableObject: public Object
 {
 public:
-     //! constructor
+
+    /**
+     * @brief constructor - constructs a deformable mesh with a specific number of control nodes
+     * and without any faces. Both geometry and model are created based on nodes.
+     * @param baseframe [in] base frame of object
+     * @param nr_of_nodes [in] the number of controlling nodes in the deformable object
+     */
     DeformableObject(Frame* baseframe, int nr_of_nodes);
 
     //DeformableObject(Frame* baseframe, rw::common::Ptr<Model3D> model);
@@ -2697,19 +3038,89 @@ public:
     //! destructor
     virtual ~DeformableObject();
 
+
+    /**
+     * @brief get a specific node from the state
+     * @param id [in] id of the node to fetch
+     * @param state [in] current state
+     * @return handle to manipulate a node in the given state.
+     */
     rw::math::Vector3D<float>& getNode(int id, State& state) const;
+
+    /**
+     * @brief set the value of a specific node in the state.
+     * @param id [in] id of the node
+     * @param v [in] value to set.
+     * @param state [in] state in which to set the value.
+     */
     void setNode(int id, const rw::math::Vector3D<float>& v, State& state);
+
+    /**
+     * @brief get the number of controlling nodes of this deformable object.
+     * @param state [in]
+     * @return
+     */
+    size_t getNrNodes(const rw::kinematics::State& state) const ;
     
+    /*
+     * @brief get all faces of this soft body
+     * @return list of indexed triangles - indeces point to vertices/nodes
+     */
     //const std::vector<rw::geometry::IndexedTriangle<> >& getFaces() const;
+
+    /**
+     * @brief add a face to three existing nodes
+     * @param node1 [in] idx of node 1
+     * @param node2 [in] idx of node 2
+     * @param node3 [in] idx of node 3
+     */
     void addFace(unsigned int node1, unsigned int node2, unsigned int node3);
+
+    /*
+     * @brief return a triangle mesh representing the softbody in the current state
+     * \b cstate
+     * @param cstate
+     */
     //rw::geometry::IndexedTriMesh<float>::Ptr getMesh(State& cstate);
+
+    //! @copydoc rw::models::Object::getGeometry
     const std::vector<rw::common::Ptr<Geometry> >& getGeometry(const State& state) const;
+
+    //! @copydoc rw::models::Object::getModels
     const std::vector<rw::common::Ptr<Model3D> >& getModels() const;
+
+
+    //! @copydoc rw::models::Object::getModels
     const std::vector<rw::common::Ptr<Model3D> >& getModels(const State& state) const;
     
+    /**
+     * @brief get mass in Kg of this object
+     * @param state [in] the state
+     * @return mass in kilo grams
+     */
     double getMass(State& state) const;
+
+    /**
+     * @brief get center of mass of this object
+     * @param state [in] the state in which to get center of mass
+     * @return Position of COM
+     */    
     rw::math::Vector3D<double> getCOM(State& state) const;
+
+
+    /**
+     * @brief returns the inertia matrix of this body calculated around COM with the orientation
+     * of the base frame.
+     * @param state [in] the state to get the inertia in
+     * @return matrix with inertia 
+     */
     rw::math::InertiaMatrix<double> getInertia(State& state) const;
+
+    /**
+     * @brief updates the model with the current state of the deformable model
+     * @param model [in/out] model to be updated
+     * @param state
+     */
     void update(rw::common::Ptr<Model3D> model, const State& state);
 };
 
@@ -2775,7 +3186,7 @@ public:
     void setAccelerationLimits(const rw::math::Q& acclimits);
     rw::math::Jacobian baseJend(const State& state) const;
 
-    //JacobianCalculatorPtr baseJCframes(const std::vector<kinematics::Frame*>& frames,
+    //JacobianCalculatorPtr baseJCframes(const std::vector<Frame*>& frames,
     //                                   const State& state) const;
 
     Frame* getBase();
@@ -2907,13 +3318,14 @@ public:
      * @brief The frame to which the sensor is attached.
      *
      * The frame can be NULL.
+     * @return pointer to sensor model
      */
     rw::common::Ptr<SensorModel> getSensorModel() const;
 
     /**
      * @brief Sets the frame to which the sensor should be attached
      *
-     * @param smodel
+     * @param smodel set the sensor model
      */
     virtual void setSensorModel(rw::common::Ptr<SensorModel> smodel);
 
@@ -2998,6 +3410,7 @@ public:
 
     /**
      * @brief gets the propertymap of this sensor
+     * @return reference to PropertyMap
      */
     PropertyMap& getPropertyMap();
 };
@@ -3186,7 +3599,6 @@ public:
 /**
  * @brief The CameraModel class defines a generel pinhole camera model where
  * camera parameters and state values are stored.
- *
  */
 class CameraModel : public SensorModel
 {
@@ -3214,7 +3626,7 @@ public:
     /**
      * @brief returns the image if it has been saved in the State. Else null is
      * returned.
-     *
+     * @param state [in] which state the image is taken from.
      * @return last image captured from camera.
      */
     rw::common::Ptr<Image> getImage(const State& state);
@@ -3227,16 +3639,28 @@ public:
      */
     void setImage(rw::common::Ptr<Image> img, State& state);
 
-    //!@brief get horisontal field of view in degrees.
+    /**
+     * @brief get horisontal field of view.
+     * @return  field of view in degrees
+     */
     double getFieldOfViewX() const;
 
-    //!@brief get vertical field of view in degrees.
+    /**
+     * @brief get Vertical field of view.
+     * @return  field of view in degrees
+     */
     double getFieldOfViewY() const;
 
     ///// a list of features that most of the time is available
-    //! @brief get far clipping plane
+    /**
+     * @brief get far clipping plane
+     * @return distance to far clipping plane in meters.
+     */
     double getFarClippingPlane() const;
-    //! @brief get near clipping plane
+    /**
+     * @brief get near clipping plane
+     * @return distance to near clipping plane in meters.
+     */
     double getNearClippingPlane() const;
 };
 

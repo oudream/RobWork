@@ -27,8 +27,7 @@ namespace proximity {
 		typedef rw::common::Ptr<ProximityFilter> Ptr;
 
 		/**
-		 * @brief returns the next possibly colliding framepair.
-		 * @return a frame pair
+		 * @brief pop the current front.
 		 */
 		virtual void pop() = 0;
 
