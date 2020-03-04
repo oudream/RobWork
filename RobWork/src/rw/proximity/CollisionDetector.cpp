@@ -123,12 +123,17 @@ bool CollisionDetector::inCollision (const kinematics::State& state, ProximityDa
         const Transform3D<> aT = fk.get (*pair.first);
         const Transform3D<> bT = fk.get (*pair.second);
         bool res               = _npstrategy.isNull ();
-        if (!res)
+        if (!res) {
             res = _npstrategy->inCollision (a, aT, b, bT, data);
+            if (res) {
+                proxdata._collisionData._fullInfo.push_back (data);
+            }
+        }
         if (res) {
             proxdata._collisionData.collidingFrames.insert (pair);
-            if (stopAtFirstContact)
+            if (stopAtFirstContact) {
                 return true;
+            }
         }
     }
 
@@ -163,16 +168,22 @@ bool CollisionDetector::inCollision (const State& state, QueryResult* result,
         const Transform3D<> aT = fk.get (*pair.first);
         const Transform3D<> bT = fk.get (*pair.second);
         bool res               = _npstrategy.isNull ();
-        if (!res)
+        if (!res) {
             res = _npstrategy->inCollision (a, aT, b, bT, data);
+            if (res && result) {
+                result->_fullInfo.push_back (data);
+            }
+        }
         if (res) {
             if (result) {
                 result->collidingFrames.insert (pair);
-                if (stopAtFirstContact)
+                if (stopAtFirstContact) {
                     return true;
+                }
             }
-            else
+            else {
                 return true;
+            }
         }
     }
 

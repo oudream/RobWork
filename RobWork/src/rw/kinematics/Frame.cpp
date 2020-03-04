@@ -112,7 +112,8 @@ void Frame::attachTo(Frame* parent, State& state)
     state.getTreeState().attachFrame(this, parent);
 }
 
-bool Frame::isDAF(){
+bool Frame::isDAF()
+{
     return Kinematics::isDAF(this);
 }
 
@@ -130,40 +131,3 @@ rw::math::Transform3D<> Frame::fTf(const Frame* to, const rw::kinematics::State&
 {
     return Kinematics::frameTframe( this, to, state );
 }
-
-
-
-// Frame transforms.
-/*
-void Frame::multiplyTransform(const Transform3D<>& parent,
-                         const State& state,
-                         Transform3D<>& result) const
-{
-    doMultiplyTransform(parent, state, result);
-}
-
-Transform3D<> Frame::getTransform(const State& state) const
-{
-    Transform3D<> parent = Transform3D<>::identity();
-    Transform3D<> result;
-    doGetTransform(state);
-    return result;
-}
-*/
-
-/*
-void Frame::doMultiplyTransform(const Transform3D<>& parent,
-                                const State& state,
-                                Transform3D<>& result) const
- {
-     Transform3D<>::multiply(parent, getTransform(state), result);
- }
-
-Transform3D<> Frame::doGetTransform(const Transform3D<>& parent,
-                                    const State& state,
-                                    Transform3D<>& result) const
-{
-    Transform3D<>::multiply(parent, getTransform(state), result);
-}
-*/
-
