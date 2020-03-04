@@ -161,7 +161,7 @@
              * @return a pointer to a copy of the ProximityStrategyData
              */
             rw::common::Ptr<ProximityStrategyData> getFullInfo(unsigned int i){
-                return ownedPtr(new ProximityStrategyData($self->_fullInfo[i]));
+                return rw::common::ownedPtr(new ProximityStrategyData($self->_fullInfo[i]));
             }
 
         }

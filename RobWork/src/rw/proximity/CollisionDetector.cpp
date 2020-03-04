@@ -170,7 +170,7 @@ bool CollisionDetector::inCollision (const State& state, QueryResult* result,
         bool res               = _npstrategy.isNull ();
         if (!res) {
             res = _npstrategy->inCollision (a, aT, b, bT, data);
-            if (res) {
+            if (res && result) {
                 result->_fullInfo.push_back (data);
             }
         }

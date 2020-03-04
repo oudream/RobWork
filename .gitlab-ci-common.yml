@@ -255,19 +255,15 @@ stages:
     - mkdir Build && cd Build
     - cmake ..
     - make -j$(nproc)
-    - ls /usr/local/lib | grep pqp || echo "no pqp"
-    - ls /usr/lib/x86_64-linux-gnu | grep pqp || echo "no pqp"
-    - "for file in ./*; do if [ -f $file ] && [ -x $file ] && [[ ! $file =~ ex-load-workcell ]] ; then  echo -e '\n EXECUTING: '$file && $file /home/robworkdata && EXE=$EXE' '$file || exit 1 ; fi; done"
+    - "for file in ./ex-*; do if [ -f $file ] && [[ ! $file =~ ex-load-workcell ]] ; then  echo -e '\n EXECUTING: '$file && $file /home/robworkdata && EXERW=$EXERW' '$file || exit 1 ; fi; done"
     - ./ex-load-workcell ../../ModelData/XMLScenes/RobotWithHand/Workcell.xml
     # TEST RW PYTHON FILES
     - cd $DIR/RobWork/example/python
-    - ls /usr/lib/python3/dist-packages/sdurw
-    - ls /usr/lib/x86_64-linux-gnu
-    - "for file in $EXE ; do echo -e '\n EXECUTING: '$file && python3 ${file}.py /home/robworkdata || exit 1 ; done"
+    - "for file in $EXERW ; do echo -e '\n EXECUTING: '$file && python3 ${file}.py /home/robworkdata || exit 1 ; done"
     - python3 ./ex-load-workcell.py ../ModelData/XMLScenes/RobotWithHand/Workcell.xml
     # TEST RW LUA FILES
     - cd $DIR/RobWork/example/lua
-    - "for file in $EXE ; do echo -e '\n EXECUTING: '$file && /usr/bin/lua[0-9]* ${file}.lua /home/robworkdata || exit 1 ; done"
+    - "for file in $EXERW ; do echo -e '\n EXECUTING: '$file && /usr/bin/lua[0-9]* ${file}.lua /home/robworkdata || exit 1 ; done"
     - /usr/bin/lua[0-9]* ./ex-load-workcell.lua ../ModelData/XMLScenes/RobotWithHand/Workcell.xml
     # Test RWS CPP FILES
     - cd $DIR/RobWorkStudio/example/cpp
@@ -276,19 +272,33 @@ stages:
     - export DISPLAY=:0
     - Xvfb $DISPLAY -screen 0 640x480x24 &
     - make -j$(nproc)
+    - "for file in ./ex-*; do if [ -f $file ] ; then  echo -e '\n EXECUTING: '$file && $file /home/robworkdata && EXERWS=$EXERWS' '$file || exit 1 ; fi; done"
     - ./SimulatedCameraExample /home/robworkdata
     # Test RWS PYTHON FILES
     - cd $DIR/RobWorkStudio/example/python
-    - python3 SimulatedCameraExample.py /home/robworkdata
+    - "for file in $EXERWS ; do echo -e '\n EXECUTING: '$file && python3 ${file}.py /home/robworkdata || exit 1 ; done"
     # Test RWS LUA FILES
     - cd $DIR/RobWorkStudio/example/lua
-    - /usr/bin/lua[0-9]* SimulatedCameraExample.lua /home/robworkdata
+    - "for file in $EXERWS ; do echo -e '\n EXECUTING: '$file && /usr/bin/lua[0-9]* ${file}.lua /home/robworkdata || exit 1 ; done"
     # Test RWSIM CPP files
     - cd $DIR/RobWorkSim/example/cpp
     - mkdir build && cd build
     - cmake ..
     - make -j$(nproc)
-    - ./ex-ode-simloop
+    - "for file in ./ex-*; do if [ -f $file ] ; then  echo -e '\n EXECUTING: '$file && $file /home/robworkdata && EXERWSIM=$EXERWSIM' '$file || exit 1 ; fi; done"
+    # Test RWSSIM PYTHON FILES
+    - cd $DIR/RobWorkStudio/example/python
+    - "for file in $EXERWSIM ; do echo -e '\n EXECUTING: '$file && python3 ${file}.py /home/robworkdata || exit 1 ; done"
+    # Test RWSIM LUA FILES
+    - cd $DIR/RobWorkStudio/example/lua
+    - "for file in $EXERWSIM ; do echo -e '\n EXECUTING: '$file && /usr/bin/lua[0-9]* ${file}.lua /home/robworkdata || exit 1 ; done"
+    # Test RWHW CPP files
+    - cd $DIR/RobWorkHardware/example/cpp
+    - mkdir build && cd build
+    - cmake ..
+    - make -j$(nproc)
+    - "for file in ./ex-*; do if [ -f $file ] ; then  echo -e '\n EXECUTING: '$file && $file && EXERWHW=$EXERWHW' '$file || exit 1 ; fi; done"
+
 
 .linux-build-debian:
   extends: .CI-common-linux
