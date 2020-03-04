@@ -39,12 +39,6 @@ ProximityStrategy::~ProximityStrategy ()
 ProximityModel::Ptr ProximityStrategy::getModel (const rw::kinematics::Frame* frame)
 {
     ProximityModel::Ptr model = _frameToModel[*frame];
-    // if(model==NULL){
-    //    if( hasModel(frame) ){
-    //        if( addModel(frame) )
-    //            model = _frameToModel[*frame];
-    //    }
-    //}
     return model;
 }
 
@@ -63,40 +57,6 @@ bool ProximityStrategy::addModel (rw::models::Object::Ptr object)
     }
     return false;
 }
-
-/*
-bool ProximityStrategy::addModel(const Frame* frame)
-{
-    std::vector<CollisionModelInfo> modelInfos = CollisionModelInfo::get(frame);
-    if( modelInfos.size()==0 ){
-        return false;
-    }
-
-        ProximityModel::Ptr model = _frameToModel[*frame];
-    if( model==NULL && hasModel(frame)){
-        model = createModel();
-        _frameToModel[*frame] = model;
-    } else {
-        return false;
-    }
-
-    BOOST_FOREACH(CollisionModelInfo &info, modelInfos) {
-        try {
-                        Geometry::Ptr geom = GeometryFactory::getGeometry(info.getGeoString());
-            if(geom==NULL)
-                continue;
-
-            geom->setTransform( info.getTransform() );
-            geom->setScale( info.getGeoScale() );
-            std::cout << model->getGeometryIDs().size() << std::endl;
-            addGeometry(model.get(), *geom);
-        } catch (const rw::common::Exception& exp) {
-            RW_WARN("Unable to load geometry "<<info.getGeoString()<<" with message "<<exp);
-        }
-    }
-    return true;
-}
-*/
 
 bool ProximityStrategy::addModel (const Frame* frame, const rw::geometry::Geometry& geom)
 {

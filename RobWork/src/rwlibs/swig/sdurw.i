@@ -40,7 +40,6 @@ SWIG_JAVABODY_TYPEWRAPPER(public, public, public, SWIGTYPE)
 %include <std_string.i>
 %include <std_vector.i>
 %include <std_map.i>
-%include <typemaps.i>
 
 //%include <shared_ptr.i>
 
