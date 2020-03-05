@@ -44,19 +44,19 @@ std::string makeName (GeometryData::GeometryType gtype)
 Geometry::Geometry (GeometryData::Ptr data, double scale) :
     _refFrame (NULL), _data (data), _transform (rw::math::Transform3D<>::identity ()),
     _scale (scale), _name (makeName (data->getType ())), _filePath (""),
-    _mask (Geometry::CollisionGroup), _colorRGB{0.8f, 0, 0.8f}
+    _mask (Geometry::CollisionGroup), _colorRGB{0.8f, 0.8f, 0.8f}
 {}
 
 Geometry::Geometry (GeometryData::Ptr data, const std::string& name, double scale) :
     _refFrame (NULL), _data (data), _transform (rw::math::Transform3D<>::identity ()),
     _scale (scale), _name (name), _filePath (""),
-    _mask (Geometry::CollisionGroup), _colorRGB{0.8f, 0, 0.8f}
+    _mask (Geometry::CollisionGroup), _colorRGB{0.8f, 0.8f, 0.8f}
 {}
 
 Geometry::Geometry (GeometryData::Ptr data, const rw::math::Transform3D<>& t3d, double scale) :
     _refFrame (NULL), _data (data), _transform (t3d), _scale (scale),
     _name (makeName (data->getType ())), _filePath (""),
-    _mask (Geometry::CollisionGroup), _colorRGB{0.8f, 0, 0.8f}
+    _mask (Geometry::CollisionGroup), _colorRGB{0.8f, 0.8f, 0.8f}
 {}
 
 Geometry::~Geometry ()
