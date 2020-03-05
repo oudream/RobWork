@@ -83,7 +83,7 @@ void java_ThreadSimulatorStepCallback(ThreadSimulator* sim, State &state, void *
 %include <std_string.i>
 %include <std_vector.i>
 %include <shared_ptr.i>
-%include <exceptions.i>
+%include <exception.i>
 
 %import <rwlibs/swig/sdurw.i>
 %import <rwlibs/swig/sdurw_assembly.i>
