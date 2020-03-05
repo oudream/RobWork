@@ -273,7 +273,6 @@ stages:
     - Xvfb $DISPLAY -screen 0 640x480x24 &
     - make -j$(nproc)
     - "for file in ./ex-*; do if [ -f $file ] ; then  echo -e '\n EXECUTING: '$file && $file /home/robworkdata && EXERWS=$EXERWS' '$file || exit 1 ; fi; done"
-    - ./SimulatedCameraExample /home/robworkdata
     # Test RWS PYTHON FILES
     - cd $DIR/RobWorkStudio/example/python
     - "for file in $EXERWS ; do echo -e '\n EXECUTING: '$file && python3 ${file}.py /home/robworkdata || exit 1 ; done"

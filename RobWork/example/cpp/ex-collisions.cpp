@@ -20,7 +20,7 @@ using namespace std;
 
 string CDQueryType[4] = {
     "AllContactsFullInfo", "AllContanctsNoInfo", "FirstContactFullInfo", "FirstContactNoInfo"};
-string CSQueryType[2] = {"AllContacts", "FirstContact"};
+string CSQueryType[2] = {"FirstContact","AllContacts"};
 
 void printPSD (ProximityStrategyData data)
 {

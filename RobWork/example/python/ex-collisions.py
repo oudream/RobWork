@@ -4,9 +4,9 @@ from sdurw_proximitystrategies import*
 import time
 
 CDQueryType = ["AllContactsFullInfo","AllContanctsNoInfo","FirstContactFullInfo","FirstContactNoInfo"]
-CSQueryType = ["AllContacts","FirstContact"]
+CSQueryType = ["FirstContact","AllContacts"]
 
-def printPSD(data):
+def printPSD(data:"ProximityStrategyData"):
     print("    ProximityStrategyData")
     print("        Abs error  : ",data.abs_err)
     print("        Rel error  : ",data.rel_err)
@@ -19,7 +19,7 @@ def printPSD(data):
     print("        inCollision: ",data.inCollision())
     CSResult = data.getCollisionData()
     try:
-        print("\n        First Model Geometries: ",CSResult.a.getOwner())
+        print("\n        First Model Geometries: ")
         for geo in CSResult.a.getGeometryIDs():
             print("            Geometry: ",geo)
         print("\n        Second Model Geometries: ")
@@ -40,9 +40,6 @@ def printPSD(data):
         print("            ColSize: ",ids.size)
         print("            StartID: ",ids.startIdx)
         print("            ColPair: ",ids.geoIdxA, " and ", ids.geoIdxB, " colliding")
-
-
-
 
 def printColInfo(name,detector:"CollisionDetector",wc:"WorkCellPtr",state:"State"):
     
@@ -120,11 +117,7 @@ def printColInfo(name,detector:"CollisionDetector",wc:"WorkCellPtr",state:"State
     for frameP in res4:
         print("    ", frameP[0].getName(), " and ", frameP[1].getName())
 
-
     print("\nNo more data in (FramePairVector)")
-    l =[]
-    for i in range(10000):
-        l.append(Vector3d(2,2,2))
 
     print("\nProximityStrategyData (ProximityData std)")
     for i in range(res1CD._fullInfo.size()): #loop with indexes else you might get segfault
@@ -137,9 +130,6 @@ def printColInfo(name,detector:"CollisionDetector",wc:"WorkCellPtr",state:"State
     print("\nProximityStrategyData (QueryType)")
     for i in range(res3._fullInfo.size()): #loop with indexes else you might get segfault
         printPSD(res3._fullInfo[i])
-
-    
-
 
 if __name__ == '__main__':
     wc = WorkCellLoaderFactory.load("../ModelData/XMLScenes/RobotOnTable/Scene.xml")
