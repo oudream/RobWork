@@ -64,23 +64,29 @@ SWIG_JAVABODY_TYPEWRAPPER(public, public, public, SWIGTYPE)
 #endif
 
 %include <stl.i>
+%include <exception.i>
 
-/*
-%define COVARIANT(DERIVED, BASE)
-%types(rw::common::Ptr<DERIVED> = rw::common::Ptr<BASE>) %{
-        *newmemory = SWIG_CAST_NEW_MEMORY;
-        return (void*) new rw::common::Ptr<BASE>(*(rw::common::Ptr<DERIVED>*)$from);
-%}
-%enddef
 
-%COVARIANT(Apple, Fruit)
-*/
 
 void writelog(const std::string& msg);
 
 /********************************************
  * General utility functions
  ********************************************/
+
+/* This is called for all functions to handle exceptions disable with %exception; 
+ *  
+ */
+%exception {
+    try {
+        //printf("Entering function : $name\n"); // uncomment to get a print out of all function calls
+        $action
+    }catch(rw::common::Exception& e ){
+        SWIG_exception(SWIG_RuntimeError,e.what());
+    }catch(...){
+        SWIG_exception(SWIG_RuntimeError,"unknown error");
+    }
+}
 
 %inline %{
     void sleep(double t){
@@ -105,6 +111,7 @@ void writelog(const std::string& msg);
         ::rw::common::Log::errorLog() << msg << std::endl;
     }
 %}
+
 
 
 

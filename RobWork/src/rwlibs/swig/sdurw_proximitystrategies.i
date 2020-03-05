@@ -7,6 +7,8 @@
 using namespace rwlibs::swig;
 %}
 
+%include <exception.i>
+
 %import <rwlibs/swig/sdurw.i>
 
 %pragma(java) jniclassimports=%{
@@ -15,6 +17,9 @@ import org.robwork.sdurw.*;
 %typemap(javaimports) SWIGTYPE %{
 import org.robwork.sdurw.*;
 %}
+
+
+
 
 class ProximityStrategyFactory
 {
