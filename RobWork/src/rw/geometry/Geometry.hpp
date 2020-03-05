@@ -135,6 +135,25 @@ namespace rw { namespace geometry {
 		void setId(const std::string& id) { setName(id); }
 
 		/**
+		 * @brief set the color of the geometry
+		 * @param red [in] the amount of red color 0-255
+		 * @param green [in] the amount of green color 0-255
+		 * @param blue [in] the amount of red color 0-255
+		 */
+		void setColor(unsigned char red, unsigned char green, unsigned char blue){
+			_colorRGB[0]=red/255.0;
+			_colorRGB[1]=green/255.0;
+			_colorRGB[2]=blue/255.0;
+		}
+
+		/**
+		 * @brief set the color of the geometry
+		 * @param red [in] the amount of red color 0-1
+		 * @param green [in] the amount of green color 0-1
+		 * @param blue [in] the amount of red color 0-1
+		 */
+		void setColor(float red, float green, float blue);	
+		/**
 		 * @brief Set the reference frame.
 		 * @param frame [in] new reference frame.
 		 */
@@ -144,10 +163,10 @@ namespace rw { namespace geometry {
 		 * @brief Get the reference frame.
 		 * @return the reference frame.
 		 */
-		kinematics::Frame* getFrame(){ return _refFrame; }
+		rw::kinematics::Frame* getFrame(){ return _refFrame; }
 
 		//! @copydoc getFrame()
-		const kinematics::Frame* getFrame() const { return _refFrame; }
+		const rw::kinematics::Frame* getFrame() const { return _refFrame; }
 
 		/**
 		 * @brief Set the draw mask.
@@ -184,8 +203,15 @@ namespace rw { namespace geometry {
 		                                  const rw::math::Vector3D<>& xdir = rw::math::Vector3D<>::x(),
 		                                  const rw::math::Vector3D<>& ydir = rw::math::Vector3D<>::y());
 
-		//GeometryData* getBV(){return _bv;};
-		//void setBV(GeometryData* bv){_bv = bv;};
+		/**
+		 * @brief get the color stored for the object
+		 * @param color [out] the array to store the color in
+		 */
+		void getColor(float color[3]){
+			color[0] = _colorRGB[0];
+			color[1] = _colorRGB[1];
+			color[2] = _colorRGB[2];
+		}
 
 	private:
 		rw::kinematics::Frame *_refFrame;
@@ -196,6 +222,7 @@ namespace rw { namespace geometry {
 		std::string _name;
         std::string _filePath;
 		int _mask;
+		float _colorRGB[3];
 
 	};
 	//! @}
