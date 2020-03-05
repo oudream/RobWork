@@ -18,6 +18,7 @@ def printPSD(data:"ProximityStrategyData"):
 
     print("        inCollision: ",data.inCollision())
     CSResult = data.getCollisionData()
+
     try:
         print("\n        First Model Geometries: ")
         for geo in CSResult.a.getGeometryIDs():
@@ -25,8 +26,9 @@ def printPSD(data:"ProximityStrategyData"):
         print("\n        Second Model Geometries: ")
         for geo in CSResult.b.getGeometryIDs():
             print("            Geometry: ",geo)
-    except:
-        pass
+    except RuntimeError as e:
+        print("        ",e)
+        
 
     print("\n        Transform(aTb): ",CSResult._aTb)
     print("        PrimTests      : ",CSResult.getNrPrimTests())
