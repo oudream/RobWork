@@ -383,76 +383,94 @@ void WorkcellEditorWindow::on_actionAdd_Drawable_triggered (bool)
                                            << "Cone"
                                            << "Cylinder"
                                            << "Sphere";
+    data["Color (r,g,b)"]             = QVector3D (0.6, 0.6, 0.6);
     data["Box (x, y, z)"]             = QVector3D (0.0, 0.0, 0.0);
     data["Cone (radiusBot, height)"]  = QVector2D (0.0, 0.0);
     data["Cylinder (radius, height)"] = QVector2D (0.0, 0.0);
     data["Sphere (r)"]                = 0.0;
 
     // Ask user for input and retrieve data
+
     if (InputFormDialog::getInput ("Add Drawable", data, options)) {
         QString col_model = "Enabled";
-        if (data.at< bool > ("CollisionModel"))
+        if (data.at< bool > ("CollisionModel")) {
             col_model = "Enabled";
-        else
+        }
+        else {
             col_model = "Disabled";
-
+        }
         QString ref_frame_str = "";
-        if (!data.at< QString > ("Ref. frame").isEmpty ())
+        if (!data.at< QString > ("Ref. frame").isEmpty ()) {
             ref_frame_str = " refframe=\"" + data.at< QString > ("Ref. frame") + "\"";
-        else
+        }
+        else {
             ref_frame_str = "";
+        }
 
         // If the drawable is defined inside a frame, we indent with an
         // additional tab
         QString indentation = "";
         if (ref_frame_str.isEmpty ())
-            indentation = "\t";
+            indentation = "    ";
         else
-            indentation = "";
+            indentation = "  ";
 
         QString model_str = "";
+
         if (data.at< QString > ("CAD file").isEmpty ()) {
             // Geometry I presume?
             if (data.at< QString > ("Geometry Type") == "Box") {
                 QTextStream (&model_str)
-                    << "<Box x=\"" << data.at< QVector3D > ("Box (x, y, z)").x () << "\" y=\""
-                    << data.at< QVector3D > ("Box (x, y, z)").y () << "\" z=\""
+                    << indentation << "  <Box x=\"" << data.at< QVector3D > ("Box (x, y, z)").x ()
+                    << "\" y=\"" << data.at< QVector3D > ("Box (x, y, z)").y () << "\" z=\""
                     << data.at< QVector3D > ("Box (x, y, z)").z () << "\"/>";
             }
             else if (data.at< QString > ("Geometry Type") == "Cone") {
                 QTextStream (&model_str)
-                    << "<Cone radius=\"" << data.at< QVector2D > ("Cone (radiusBot, height)").x ()
-                    << "\" z=\"" << data.at< QVector2D > ("Cone (radiusBot, height)").y ()
-                    << "\" level=\"" << data.at< int > ("Mesh Resolution") << "\"/>";
+                    << indentation << "  <Cone radius=\""
+                    << data.at< QVector2D > ("Cone (radiusBot, height)").x () << "\" z=\""
+                    << data.at< QVector2D > ("Cone (radiusBot, height)").y () << "\" level=\""
+                    << data.at< int > ("Mesh Resolution") << "\"/>";
             }
             else if (data.at< QString > ("Geometry Type") == "Cylinder") {
                 QTextStream (&model_str)
-                    << "<Cylinder radius=\""
+                    << indentation << "  <Cylinder radius=\""
                     << data.at< QVector2D > ("Cylinder (radius, height)").x () << "\" z=\""
                     << data.at< QVector2D > ("Cylinder (radius, height)").y () << "\" level=\""
                     << data.at< int > ("Mesh Resolution") << "\"/>";
             }
             else if (data.at< QString > ("Geometry Type") == "Sphere") {
                 QTextStream (&model_str)
-                    << "<Sphere radius=\"" << data.at< double > ("Sphere (r)") << "\" level=\""
-                    << data.at< int > ("Mesh Resolution") << "\"/>";
+                    << indentation << "  <Sphere radius=\"" << data.at< double > ("Sphere (r)")
+                    << "\" level=\"" << data.at< int > ("Mesh Resolution") << "\"/>";
             }
         }
         else {
-            QTextStream (&model_str)
-                << "<Polytope file=\"" << data.at< QString > ("CAD file") << "\"/>";
+            QTextStream (&model_str) << indentation << "  <Polytope file=\""
+                                     << data.at< QString > ("CAD file") << "\"/>";
         }
 
         QString drawable_str;
         QTextStream (&drawable_str)
-            << indentation << "<Drawable name=\"" << data.at< QString > ("Name") << "\""
+            << "<Drawable name=\"" << data.at< QString > ("Name") << "\""
             << ref_frame_str << " colmodel=\"" << col_model << "\">"
-            << "\n\t" << indentation << "<Pos>" << data.at< QVector3D > ("Position").x () << " "
+            << "\n" <<
+            // POS
+            indentation << "  <Pos>" << data.at< QVector3D > ("Position").x () << " "
             << data.at< QVector3D > ("Position").y () << " "
-            << data.at< QVector3D > ("Position").z () << "</Pos>\n\t" << indentation << "<RPY>"
-            << data.at< QVector3D > ("RPY").x () << " " << data.at< QVector3D > ("RPY").y () << " "
-            << data.at< QVector3D > ("RPY").z () << "</RPY>"
-            << "\n\t" << indentation << model_str << "\n"
+            << data.at< QVector3D > ("Position").z ()
+            << "</Pos>\n"
+            // RPY
+            << indentation << "  <RPY>" << data.at< QVector3D > ("RPY").x () << " "
+            << data.at< QVector3D > ("RPY").y () << " " << data.at< QVector3D > ("RPY").z ()
+            << "</RPY>\n"
+            // RGB
+            << indentation << "  <RGB>" << data.at< QVector3D > ("Color (r,g,b)").x () << " "
+            << data.at< QVector3D > ("Color (r,g,b)").y () << " "
+            << data.at< QVector3D > ("Color (r,g,b)").z ()
+            << " </RGB>\n"
+            // MODEL
+            << model_str << "\n"
             << indentation << "</Drawable>";
 
         // Insert frame at cursor position
@@ -507,9 +525,9 @@ void WorkcellEditorWindow::on_actionAdd_CollisionModel_triggered (bool)
         // additional tab
         QString indentation = "";
         if (ref_frame_str.isEmpty ())
-            indentation = "\t";
+            indentation = "    ";
         else
-            indentation = "";
+            indentation = "  ";
 
         QString model_str = "";
         if (data.at< QString > ("CAD file").isEmpty ()) {
@@ -546,14 +564,20 @@ void WorkcellEditorWindow::on_actionAdd_CollisionModel_triggered (bool)
 
         QString col_model_str;
         QTextStream (&col_model_str)
-            << indentation << "<CollisionModel name=\"" << data.at< QString > ("Name") << "\""
+            << "<CollisionModel name=\"" << data.at< QString > ("Name") << "\""
             << ref_frame_str << ">"
-            << "\n\t" << indentation << "<Pos>" << data.at< QVector3D > ("Position").x () << " "
+            << "\n" 
+            //POS
+            << indentation << "  <Pos>" << data.at< QVector3D > ("Position").x () << " "
             << data.at< QVector3D > ("Position").y () << " "
-            << data.at< QVector3D > ("Position").z () << "</Pos>\n\t" << indentation << "<RPY>"
+            << data.at< QVector3D > ("Position").z () << "</Pos>\n" 
+            //RPY
+            << indentation << "  <RPY>"
             << data.at< QVector3D > ("RPY").x () << " " << data.at< QVector3D > ("RPY").y () << " "
             << data.at< QVector3D > ("RPY").z () << "</RPY>"
-            << "\n\t" << indentation << model_str << "\n"
+            << "\n" 
+            //Model
+            << indentation << "  " << model_str << "\n"
             << indentation << "</CollisionModel>";
 
         // Insert frame at cursor position
@@ -608,7 +632,6 @@ bool WorkcellEditorWindow::save (const std::string& filename)
             }
         }
         file.close ();
-        
 
         // Verify workcell xml using schemas
         /*try {
@@ -627,12 +650,13 @@ bool WorkcellEditorWindow::save (const std::string& filename)
         rw::common::Log ().setLevel (rw::common::Log::Debug);
         rw::models::WorkCell::Ptr wc = nullptr;
 
-        if(!isTmpFile){
+        if (!isTmpFile) {
             std::string wcFilename = _pmap.get< std::string > ("WorkcellFile", "");
-            wc = rw::loaders::WorkCellLoader::Factory::load (wcFilename);
-        }else {
+            wc                     = rw::loaders::WorkCellLoader::Factory::load (wcFilename);
+        }
+        else {
             wc = rw::loaders::WorkCellLoader::Factory::load (filename);
-            file.remove();
+            file.remove ();
         }
         rw::common::Log ().setLevel (rw::common::Log::Info);
 
@@ -684,13 +708,14 @@ QStringList WorkcellEditorWindow::getRefFrameList ()
     EditorTab::Ptr tab           = getCurrentTab ();
     rw::models::WorkCell::Ptr wc = NULL;
     QStringList refFrames;
+    refFrames << "";
     if (tab->_filename.size () > 5 /*minimum length*/) {
         std::string file = tab->_filename + ".temp1234.xml";
 
         std::ofstream out (file);
         out << tab->_editor->toPlainText ().toStdString ();
         out.close ();
-        
+
         wc = WorkCellLoader::Factory::load (file);
         remove (file.c_str ());
 
@@ -711,7 +736,7 @@ WorkcellEditorWindow::EditorTab::Ptr WorkcellEditorWindow::getCurrentTab ()
 
 void WorkcellEditorWindow::on_actionRun_triggered (bool)
 {
-    //Save as temproary file
+    // Save as temproary file
     save (getCurrentTab ()->_filename + ".temp.wc.xml");
 }
 
