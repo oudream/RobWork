@@ -25,7 +25,7 @@ macro(rw_build_lib _name)
     target_include_directories(${_name} PUBLIC  ${ROBWORKSTUDIO_INCLUDE_DIRS})
 endmacro()
 
-rw_build(SimulatedCameraExample)
+rw_build(ex-simulated-camera)
 
 foreach(obj ${ROBWORKSTUDIO_INCLUDE_DIRS})
     message(STATUS "INCL_DIR: ${obj}")

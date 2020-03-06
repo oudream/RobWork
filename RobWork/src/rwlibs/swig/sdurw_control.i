@@ -6,6 +6,7 @@
 
 using namespace rwlibs::swig;
 %}
+%include <exception.i>
 
 %import <rwlibs/swig/sdurw.i>
 
