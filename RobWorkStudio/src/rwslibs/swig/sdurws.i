@@ -19,6 +19,7 @@ using rw::pathplanning::PathPlanner;
 
 %}
 
+%include <exception.i>
 %import <rwlibs/swig/sdurw.i> 
 
 %pragma(java) jniclassclassmodifiers="class"

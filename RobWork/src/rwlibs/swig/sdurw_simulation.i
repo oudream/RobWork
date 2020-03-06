@@ -8,6 +8,7 @@ using namespace rwlibs::swig;
 %}
 
 %include <std_vector.i>
+%include <exception.i>
 
 %import <rwlibs/swig/sdurw.i>
 %import <rwlibs/swig/sdurw_control.i>
