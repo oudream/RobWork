@@ -213,11 +213,11 @@ else()
         set(RWHW_LIBS "${RWHW_INSTALL}/lib/")
         set(
             RWHW_INCLUDE_SRC
-            "${RWHW_INSTALL}/include/robworkhardware-${RobWork_VERSION_MAJOR}.${RobWork_VERSION_MINOR}"
+            "${RWHW_INSTALL}/include/robworkhardware-${RobWorkHardware_VERSION_MAJOR}.${RobWorkHardware_VERSION_MINOR}"
         )
         set(
             RWHW_INCLUDE_EXT
-            "${RWHW_INSTALL}/include/robworkhardware-${RobWork_VERSION_MAJOR}.${RobWork_VERSION_MINOR}/ext"
+            "${RWHW_INSTALL}/include/robworkhardware-${RobWorkHardware_VERSION_MAJOR}.${RobWorkHardware_VERSION_MINOR}/ext"
         )
     endif(WIN32)
 endif()
