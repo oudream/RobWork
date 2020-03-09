@@ -201,66 +201,27 @@ RobWorkStudio::~RobWorkStudio()
 {
     delete _assistant;
     delete _propEditor;
-
-    /*
-    _propMap = PropertyMap();
-    _lastFilesActions.clear();
-    _state = State();
-    _workcell = NULL;
-
-    typedef std::vector<RobWorkStudioPlugin*>::iterator I;
-    for(int i=_plugins.size()-1;i>=0;i--){
-    //for (I it = _plugins.begin(); it != _plugins.end(); ++it) {
-        std::cout << _plugins[i]->name().toStdString() << std::endl;
-        delete _plugins[i];
-    }
-	*/
 }
 
 void RobWorkStudio::propertyChangedListener(PropertyBase* base)
 {
     std::string id = base->getIdentifier();
-    //std::cout << "Property Changed Listerner RWSTUDIO: " << id << std::endl;
 }
 
 void RobWorkStudio::closeEvent( QCloseEvent * e )
 {
-    // save main window settings
-    //settings.setValue("pos", pos());
-    //settings.setValue("size", size());
-    //settings.setValue("state", saveState());
+
     QByteArray mainAppState = saveState();
-    //std::cout << mainAppState.data() << std::endl;
     std::vector<int> state_vector( mainAppState.size() );
     for(int i=0;i<mainAppState.size();i++){
         state_vector[i] = mainAppState[i];
     }
-
-
-    //QString myStringState;
-    //QTextStream out(&myStringState);
-    //out << mainAppState;
-    //std::cout << myStringState.toStdString()<< std::endl;
 
     _settingsMap->set<std::vector<int> >("QtMainWindowState", state_vector);
     _settingsMap->set<int>("WindowPosX", this->pos().x());
     _settingsMap->set<int>("WindowPosY", this->pos().y());
     _settingsMap->set<int>("WindowWidth", this->width());
     _settingsMap->set<int>("WindowHeight", this->height());
-
-    // save the settings of each plugin
-    /*
-    for(RobWorkStudioPlugin* plugin : _plugins){
-        bool visible = plugin->isVisible();
-
-        bool floating = plugin->isFloating();
-        int intarea = (int) dockWidgetArea(plugin);
-        std::string pname = plugin->name().toStdString();
-        _settingsMap->set<bool>( std::string("PluginVisible_")+ pname , visible);
-        _settingsMap->set<bool>( std::string("PluginFloating_")+pname , floating);
-        _settingsMap->set<int>( std::string("PluginArea_")+ pname , intarea);
-    }
-    */
 
     if( !_propMap.get<PropertyMap>("cmdline").has("NoSave") ) {
         _propMap.set("cmdline", PropertyMap());
@@ -283,14 +244,12 @@ void RobWorkStudio::closeEvent( QCloseEvent * e )
 	// close all plugins
     typedef std::vector<RobWorkStudioPlugin*>::iterator I;
     for (I it = _plugins.begin(); it != _plugins.end(); ++it) {
-        //std::cout << "closing PLUGIN: " << (*it)->name().toStdString() << std::endl;
         (*it)->QWidget::close();
     }
 
 	// now call accept
 	e->accept();
 }
-
 
 rw::common::Log& RobWorkStudio::log()
 {
@@ -460,12 +419,6 @@ void RobWorkStudio::setupPluginsMenu()
     _pluginsToolBar = addToolBar(tr("Plugins"));
     _pluginsToolBar->setObjectName("PluginsBar");
     
-    /*QAction* printCollisionsAction =
-        new QAction(QIcon(""), tr("Print Colliding Frames"), this); // owned
-    connect(printCollisionsAction, SIGNAL(triggered()), this, SLOT(printCollisions()));
-
-    _toolMenu = menuBar()->addMenu(tr("&Tools"));
-    _toolMenu->addAction(printCollisionsAction);*/
 }
 
 void RobWorkStudio::loadPlugin(std::string pluginFile, bool visible, int dock)
@@ -560,9 +513,7 @@ void RobWorkStudio::closeAllPlugins()
 void RobWorkStudio::openPlugin(RobWorkStudioPlugin& plugin)
 {
     RW_ASSERT(_workcell);
-    //std::cout<<"Number of devices in workcell in RobWorkStudio::openPlugin: "<<plugin.name().toStdString()<<" = "<< _workcell->getDevices().size()<<std::endl;
     try {
-        //std::cout << "1" << plugin.name().toStdString() << std::endl;
         plugin.open(_workcell.get());
     } catch (const Exception& exc) {
         std::stringstream buf;
@@ -701,6 +652,7 @@ void RobWorkStudio::setupPlugin(const QString& pathname, const QString& filename
         setupPlugin(pfilename,visible,dock);
     }
 }
+
 void RobWorkStudio::setupPlugin(const QString& fullname, bool visible, int dock) 
 {
     std::string ext = boost::filesystem::extension(fullname.toStdString());
@@ -1283,12 +1235,6 @@ void RobWorkStudio::postGenericAnyEvent(const std::string& id, boost::any data){
 
 bool RobWorkStudio::event(QEvent *event)
 {
-	//RobWorkStudioEvent *rwse_test = dynamic_cast<RobWorkStudioEvent *>(event);
-    //if(rwse_test !=NULL)
-	//	std::cout << "EVENT: " << event->type() << std::endl;
-    //   rwse->done();
-
-
 	// WARNING: only use this pointer if you know its the right type
     RobWorkStudioEvent *rwse = static_cast<RobWorkStudioEvent *>(event);
 	if (event->type() == RobWorkStudioEvent::SetStateEvent ) {
@@ -1357,11 +1303,9 @@ bool RobWorkStudio::event(QEvent *event)
     return QMainWindow::event(event);
 }
 
-
 void RobWorkStudio::saveViewGL(const QString& filename) {
     _view->saveBufferToFile(filename);
 }
-
 namespace {
     class AnyEventListener {
     public:

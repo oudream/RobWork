@@ -60,18 +60,8 @@ namespace
          * @copydoc Render::draw
          */
         void draw(const DrawableNode::RenderInfo& info, DrawType type, double alpha) const {
-
-            //glDisable(GL_TEXTURE_2D);
-
             glPushMatrix();
             glLoadIdentity();
-
-            //GLenum matRendering = GL_FRONT;
-            //GLfloat specularReflection[]={1.0f,1.0f,1.0f,1.0f};
-            //GLfloat matEmission[]={0.0f,0.0f,0.0f,1.0f};
-            //glMaterialfv(matRendering, GL_SPECULAR, specularReflection);
-            //glMaterialfv(matRendering, GL_EMISSION, matEmission);
-            //glMateriali(matRendering, GL_SHININESS, 128);
 
             glPolygonMode(GL_FRONT, GL_FILL);
             glBegin(GL_QUADS);
@@ -84,7 +74,6 @@ namespace
             glEnd();
 
             glPopMatrix();
-            //glEnable(GL_TEXTURE_2D);
         }
 
         void setTopColor(const Vector3D<>& color){
@@ -184,9 +173,6 @@ namespace
 
 void SceneOpenGLViewer::init()
 {
-    // extract the propertymap from
-    //_pmap = _rwStudio->getPropertyMap().add<PropertyMap>("SceneViewer","",PropertyMap());
-
     _pmap->getValue().add<bool>("ReInitializeGL","Reinitializes the opengl configuration.",false)->changedEvent().add(
             boost::bind(&SceneOpenGLViewer::propertyChangedListener,this,_1), this );
 
@@ -279,7 +265,6 @@ SceneViewer::View::Ptr SceneOpenGLViewer::createView(const std::string& name, bo
     if(enableBackground){
         SceneCamera::Ptr backCam = _scene->makeCamera("BackgroundCam");
         backCam->setEnabled(true);
-    //        std::cout << "CREATING BACKGROUND CAMERA AGAIN" << std::endl;
         backCam->setRefNode(_backgroundnode);
         backCam->setProjectionMatrix( ProjectionMatrix::makeOrtho(0,640,0,480, -1, 1) );
         backCam->setClearBufferEnabled(true);
@@ -325,7 +310,6 @@ SceneOpenGLViewer::SceneOpenGLViewer(QWidget* parent):
 }
 
 SceneOpenGLViewer::SceneOpenGLViewer(PropertyMap& pmap, QWidget* parent) :
-    //QGLWidget( QGLFormat(QGL::DepthBuffer) , parent),
     QGLWidget( makeQGLFormat( pmap.getPtr<PropertyMap>("SceneViewer") ) , parent),
     _scene( ownedPtr(new SceneOpenGL()) ),
     _viewLogo("RobWork")
@@ -419,7 +403,6 @@ void SceneOpenGLViewer::renderViewThreadSafe(View::Ptr view)
 void SceneOpenGLViewer::glDraw(){
     // we need to make this thread safe, since sensor cameras and
     // stuff might want to draw stuff too
-    //boost::mutex::scoped_lock lock(_renderMutex);
     QGLWidget::glDraw();
 }
 
@@ -641,12 +624,14 @@ DrawableNode::Ptr SceneOpenGLViewer::pickDrawable(rw::graphics::SceneGraph::Rend
 rw::kinematics::Frame* SceneOpenGLViewer::pickFrame(int x, int y)
 {
 	DrawableNode::Ptr d = pickDrawable(x, y);
-	
     if (d == NULL) {
         return NULL;
 	}
     Frame *res = (_wcscene) ? _wcscene->getFrame(d) : NULL;
-    
+    if(res == NULL){
+        return NULL;
+    }
+    std::cout << "Frame: " << res->getName() << std::endl;
     return res;
 }
 
@@ -679,8 +664,8 @@ void SceneOpenGLViewer::mouseDoubleClickEvent(QMouseEvent* event)
                 QWidget::update();
             }
         }
-
-    } else {
+    }
+    else {
         event->ignore();
     }
     //std::cout << "forward double click" << std::endl;
