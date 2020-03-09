@@ -8,7 +8,10 @@ using namespace rwlibs::swig;
 using rwlibs::task::Task;
 %}
 
+%include <exception.i>
+
 %import <rwlibs/swig/sdurw.i>
+
 
 template <class T>
 class Task

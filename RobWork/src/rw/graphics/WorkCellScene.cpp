@@ -928,12 +928,12 @@ bool WorkCellScene::removeDrawable(const std::string& name, const Frame* f) {
 
 Frame* WorkCellScene::getFrame(DrawableNode::Ptr d) const 
 {
-    //std::cout << d->_parentNodes.size() << std::endl;
     GroupNode::Ptr gn = d->_parentNodes.front().cast<GroupNode>();
     if(gn==NULL) {
 		RW_WARN("Group Node is NULL");
         return NULL;
 	}
+    //std::cout << "GroupeNode: " << gn->getName() << std::endl;
 	const NodeFrameMap::const_iterator it = _nodeFrameMap.find(gn);
     if(it != _nodeFrameMap.end())
     	return it->second;

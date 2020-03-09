@@ -138,14 +138,14 @@ Try to execute the following in a terminal:
 
 .. code-block:: bash
 
-   ldd /home/user/RobWork/libs/debug/librw_jni.so
+   ldd /home/user/RobWork/libs/debug/libsdurw_jni.so
 
 
 Now try to run in MATLAB:
 
 .. code-block:: matlab
 
-   !ldd /home/user/RobWork/libs/debug/librw_jni.so
+   !ldd /home/user/RobWork/libs/debug/libsdurw_jni.so
 
 
 Notice the difference between how the library dependencies are resolved. MATLAB comes with its own version of the
@@ -167,9 +167,9 @@ system environment.
 
    export WORK_DIR=$RW_ROOT/RobWorkSim/example/scripts/matlab
    cd $WORK_DIR
-   echo "$RW_LIBS/rw_java.jar" > javaclasspath.txt
-   echo "$RWStudio_LIBS/rws_java.jar" >> javaclasspath.txt
-   echo "$RWSim_LIBS/rwsim_java.jar" >> javaclasspath.txt
+   echo "$RW_LIBS/sdurw_java.jar" > javaclasspath.txt
+   echo "$RWStudio_LIBS/sdurws_java.jar" >> javaclasspath.txt
+   echo "$RWSim_LIBS/sdurwsim_java.jar" >> javaclasspath.txt
 
    export MATLAB_JAVA=$JAVA_HOME/jre
    export LD_PRELOAD="$LD_PRELOAD /usr/lib/x86_64-linux-gnu/libstdc++.so.6"
@@ -204,9 +204,9 @@ The following MATLAB code should run without errors before the RobWork API can b
    RWStudio_LIBS=getenv('RWStudio_LIBS');
 
    % Import the java API
-   javaaddpath(strcat(RW_LIBS,'/rw_java.jar'));
-   javaaddpath(strcat(RWSim_LIBS,'/rwsim_java.jar'));
-   javaaddpath(strcat(RWStudio_LIBS,'/rws_java.jar'));
+   javaaddpath(strcat(RW_LIBS,'/sdurw_java.jar'));
+   javaaddpath(strcat(RWSim_LIBS,'/sdurwsim_java.jar'));
+   javaaddpath(strcat(RWStudio_LIBS,'/sdurws_java.jar'));
    import dk.robwork.*;
 
    % Load the native libraries
@@ -240,7 +240,7 @@ If classes can not be found:
 
 .. code-block:: matlab
 
-   >> javaaddpath(strcat(RW_LIBS,'/rw_java.jar'));
+   >> javaaddpath(strcat(RW_LIBS,'/sdurw_java.jar'));
    >> import dk.robwork.*;
    >> LoaderRW.load(RW_LIBS)
    Undefined variable "LoaderRW" or class "LoaderRW.load".

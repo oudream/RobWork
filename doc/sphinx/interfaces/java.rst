@@ -12,17 +12,17 @@ The interface is generated for both RobWork, RobWorkStudio and RobWorkSim, and r
 
 Linux example (for a Debug build)::
    
-   RobWork/libs/debug/rw_jni.so 
-   RobWork/libs/debug/rw_java.jar 
-   RobWorkStudio/libs/debug/rws_jni.so 
-   RobWorkStudio/libs/debug/rws_java.jar 
-   RobWorkSim/libs/debug/rwsim_jni.so 
-   RobWorkSim/libs/debug/rwsim_java.jar 
+   RobWork/libs/debug/sdurw_jni.so 
+   RobWork/libs/debug/sdurw_java.jar 
+   RobWorkStudio/libs/debug/sdurws_jni.so 
+   RobWorkStudio/libs/debug/sdurws_java.jar 
+   RobWorkSim/libs/debug/sdurwsim_jni.so 
+   RobWorkSim/libs/debug/sdurwsim_java.jar 
 
 
 Furthermore Javadoc is generated and can be launched from::
 
-   RobWork/libs/debug/javadoc/rw/index.html 
+   RobWork/libs/debug/javadoc/sdurw/index.html 
    RobWorkStudio/libs/debug/javadoc/index.html 
    RobWorkSim/libs/debug/javadoc/index.html 
 
@@ -42,7 +42,7 @@ Main.java
    import org.robwork.*;
    public class Main {
        public static void main(String[] args){
-           LoaderRW.load("rw");
+           LoaderRW.load("sdurw");
            LoaderRWS.load();
            LoaderRWSim.load();
        }
@@ -54,7 +54,7 @@ The compile command should be similar to:
 .. code-block:: bash
 
    javac
-       -classpath .:/path/to/RobWork/libs/debug/rw_java.jar:/path/to/RobWorkStudio/libs/debug/rws_java.jar:/path/to/RobWorkSim/libs/debug/rwsim_java.jar
+       -classpath .:/path/to/RobWork/libs/debug/sdurw_java.jar:/path/to/RobWorkStudio/libs/debug/sdurws_java.jar:/path/to/RobWorkSim/libs/debug/sdurwsim_java.jar
        Main.java
 
 
@@ -71,7 +71,7 @@ Now to actually run the program use the same classpath as before, and set the ja
 .. code-block:: bash
 
    java
-       -classpath .:/path/to/RobWork/libs/debug/rw_java.jar:/path/to/RobWorkStudio/libs/debug/rws_java.jar:/path/to/RobWorkSim/libs/debug/rwsim_java.jar
+       -classpath .:/path/to/RobWork/libs/debug/sdurw_java.jar:/path/to/RobWorkStudio/libs/debug/sdurws_java.jar:/path/to/RobWorkSim/libs/debug/sdurwsim_java.jar
        -Djava.library.path=/path/to/RobWork/libs/debug:/path/to/RobWorkStudio/libs/debug:/path/to/RobWorkSim/libs/debug
        Main
 
@@ -85,7 +85,7 @@ This is done by explicitly defining the path where the .so or .dll files are loc
 
 .. code-block:: java
 
-       LoaderRW.load("/path/to/RobWork/libs/debug", "rw");
+       LoaderRW.load("/path/to/RobWork/libs/debug", "sdurw");
        LoaderRWS.load("/path/to/RobWorkStudio/libs/debug");
        LoaderRWSim.load("/path/to/RobWorkSim/libs/debug");
 
