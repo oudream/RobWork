@@ -181,7 +181,9 @@ foreach(
     if(TARGET ${_expectedTarget})
         set(TARGET_EXISTS True)
     endif()
+
 endforeach()
+
 if(NOT TARGET_EXISTS)
     include("${RWHWCFG_ROOT}/RobWorkHardwareTargets.cmake")
 endif()
@@ -241,7 +243,7 @@ if(EXISTS ${RWHWCFG_ROOT}/RobWorkHardwareBuildConfig_${RWHW_BUILD_TYPE}.cmake)
         else()
             set(RobWork_FOUND FALSE)
         endif()
-        
+
         if(NOT ${RobWork_FOUND})
             find_package(RobWork REQUIRED HINTS ${RWHW_BUILD_WITH_RW_ROOT}/cmake)
         endif()
@@ -266,7 +268,12 @@ if(EXISTS ${RWHWCFG_ROOT}/RobWorkHardwareBuildConfig_${RWHW_BUILD_TYPE}.cmake)
             unset(FOUND CACHE)
             if(RESULT)
                 message(STATUS "Found in list: ${RESULT}")
-                find_library(FOUND ${RESULT} PATHS ${RWHW_LIBS} NO_DEFAULT_PATH)
+                find_library(
+                    FOUND ${RESULT}
+                    PATHS ${RWHW_LIBS}
+                    PATH_SUFFIXES ${RWHW_BUILD_WITH_LIBRARY_SUBDIRS}
+                    NO_DEFAULT_PATH
+                )
             endif()
 
             if(FOUND)
