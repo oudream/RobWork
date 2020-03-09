@@ -286,10 +286,10 @@ stages:
     - make -j$(nproc)
     - "for file in ./ex-*; do if [ -f $file ] ; then  echo -e '\n EXECUTING: '$file && $file /home/robworkdata && EXERWSIM=$EXERWSIM' '$file || exit 1 ; fi; done"
     # Test RWSSIM PYTHON FILES
-    - cd $DIR/RobWorkStudio/example/python
+    - cd $DIR/RobWorkSim/example/python
     - "for file in $EXERWSIM ; do echo -e '\n EXECUTING: '$file && python3 ${file}.py /home/robworkdata || exit 1 ; done"
     # Test RWSIM LUA FILES
-    - cd $DIR/RobWorkStudio/example/lua
+    - cd $DIR/RobWorkSim/example/lua
     - "for file in $EXERWSIM ; do echo -e '\n EXECUTING: '$file && /usr/bin/lua[0-9]* ${file}.lua /home/robworkdata || exit 1 ; done"
     # Test RWHW CPP files
     - cd $DIR/RobWorkHardware/example/cpp
