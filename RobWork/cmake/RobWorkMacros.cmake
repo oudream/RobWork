@@ -52,7 +52,7 @@ macro(RW_SYS_INFO INFO)
 
             elseif(EXISTS "/etc/os-release")
                 execute_process(COMMAND cat /etc/os-release OUTPUT_VARIABLE SUFFIX)
-                string(REGEX MATCHALL "[^_]ID=\"[^\"]+\"" SUFFIX1 ${SUFFIX})
+                string(REGEX MATCHALL "[^_]ID=\"?[^\"]+\"?" SUFFIX1 ${SUFFIX})
                 string(LENGTH ${SUFFIX1} SUFFIX1_LEN)
                 math(EXPR SUFFIX1_LEN "${SUFFIX1_LEN}-6")
                 string(SUBSTRING ${SUFFIX1} 5 ${SUFFIX1_LEN} SUFFIX1)
