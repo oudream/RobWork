@@ -41,7 +41,7 @@ rw::math::Rotation3D<> rwlibs::swig::getRandomRotation3D()
   return ::rw::math::Math::ranRotation3D<double>();
 }
 
-rw::math::Transform3D<> rwlibs::swig::getRandomTransform3D(const double translationLength)
+rw::math::Transform3D<double> rwlibs::swig::getRandomTransform3D(const double translationLength)
 {
   return ::rw::math::Math::ranTransform3D<double>(translationLength);
 }
