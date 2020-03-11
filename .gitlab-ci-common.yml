@@ -272,13 +272,13 @@ stages:
     - export DISPLAY=:0
     - Xvfb $DISPLAY -screen 0 640x480x24 &
     - make -j$(nproc)
-    - "for file in ./ex-*; do if [ -f $file ] ; then  echo -e '\n EXECUTING: '$file && $file /home/robworkdata && EXERWS=$EXERWS' '$file || exit 1 ; fi; done"
+    - "for file in ./ex-*; do if [ -f $file ] ; then  echo -e '\n EXECUTING: '$file && $file /home/robworkdata -t && EXERWS=$EXERWS' '$file || exit 1 ; fi; done"
     # Test RWS PYTHON FILES
     - cd $DIR/RobWorkStudio/example/python
-    - "for file in $EXERWS ; do echo -e '\n EXECUTING: '$file && python3 ${file}.py /home/robworkdata || exit 1 ; done"
+    - "for file in $EXERWS ; do echo -e '\n EXECUTING: '$file && python3 ${file}.py /home/robworkdata -t || exit 1 ; done"
     # Test RWS LUA FILES
     - cd $DIR/RobWorkStudio/example/lua
-    - "for file in $EXERWS ; do echo -e '\n EXECUTING: '$file && /usr/bin/lua[0-9]* ${file}.lua /home/robworkdata || exit 1 ; done"
+    - "for file in $EXERWS ; do echo -e '\n EXECUTING: '$file && /usr/bin/lua[0-9]* ${file}.lua /home/robworkdata -t || exit 1 ; done"
     # Test RWSIM CPP files
     - cd $DIR/RobWorkSim/example/cpp
     - mkdir build && cd build
