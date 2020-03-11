@@ -181,7 +181,9 @@ foreach(
     if(TARGET ${_expectedTarget})
         set(TARGET_EXISTS True)
     endif()
+
 endforeach()
+
 if(NOT TARGET_EXISTS)
     include("${RWHWCFG_ROOT}/RobWorkHardwareTargets.cmake")
 endif()
@@ -195,9 +197,10 @@ if(EXISTS "${RWHWCFG_ROOT}/../src/RobWorkHardwareConfig.hpp")
     set(RWHW_INCLUDE_EXT "${RWHW_ROOT}/ext")
     set(RWHW_INCLUDE_SRC "${RWHW_ROOT}/src/")
     set(RWHW_LIBS "${RWHW_ROOT}/libs/${RWHW_BUILD_TYPE}/")
-
+    set(IS_INSTALL FALSE)
 else()
     set(succmsg "RobWorkHardware: Found a RobWorkHardware installation")
+    set(IS_INSTALL TRUE)
     # Found a RobWork installation
     if(WIN32)
         # RobWorkConfig.cmake is installed to RWHW_ROOT/cmake
@@ -233,15 +236,20 @@ if(EXISTS ${RWHWCFG_ROOT}/RobWorkHardwareBuildConfig_${RWHW_BUILD_TYPE}.cmake)
 
     list(APPEND CMAKE_MODULE_PATH ${RWHWCFG_ROOT}/Modules)
 
-    # now find robwork
-    find_package(
-        RobWork
-        REQUIRED
-        HINTS
-        ${RWHW_BUILD_WITH_RW_ROOT}
-        ${RWHW_ROOT}/../RobWork
-        ${RWHWCFG_ROOT}/../../RobWork
-    )
+    # Find RobWork
+    if(NOT DEFINED RobWork_FOUND OR NOT ${RobWork_FOUND})
+        if(${IS_INSTALL})
+            find_package(RobWork QUIET)
+        else()
+            set(RobWork_FOUND FALSE)
+        endif()
+
+        if(NOT ${RobWork_FOUND})
+            find_package(RobWork REQUIRED HINTS ${RWHW_BUILD_WITH_RW_ROOT}/cmake)
+        endif()
+    else()
+        message(STATUS "RobWork Already Found")
+    endif()
 
     set(BOOST_ROOT ${RWHW_BUILD_WITH_BOOST_ROOT})
     set(BOOST_INCLUDEDIR ${RWHW_BUILD_WITH_BOOST_INCLUDE_DIR})
@@ -260,7 +268,12 @@ if(EXISTS ${RWHWCFG_ROOT}/RobWorkHardwareBuildConfig_${RWHW_BUILD_TYPE}.cmake)
             unset(FOUND CACHE)
             if(RESULT)
                 message(STATUS "Found in list: ${RESULT}")
-                find_library(FOUND ${RESULT} PATHS ${RWHW_LIBS} NO_DEFAULT_PATH)
+                find_library(
+                    FOUND ${RESULT}
+                    PATHS ${RWHW_LIBS}
+                    PATH_SUFFIXES ${RWHW_BUILD_WITH_LIBRARY_SUBDIRS}
+                    NO_DEFAULT_PATH
+                )
             endif()
 
             if(FOUND)

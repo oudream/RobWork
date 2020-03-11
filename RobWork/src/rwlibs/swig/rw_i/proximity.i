@@ -749,9 +749,9 @@
          */
         virtual bool doIsWithinDistance(
                     rw::common::Ptr<ProximityModel> a,
-                    const math::Transform3D<>& wTa,
+                    const rw::math::Transform3D<double>& wTa,
                     rw::common::Ptr<ProximityModel> b,
-                    const math::Transform3D<>& wTb,
+                    const rw::math::Transform3D<double>& wTb,
                     double tolerance,
                     ProximityStrategyData& data) = 0;
 

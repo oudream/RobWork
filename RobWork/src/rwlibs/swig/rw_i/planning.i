@@ -93,7 +93,7 @@ public:
      * @param sampler [in] Sampler of IK solutions for \b target.
      * @param target [in] Target for IK solver.
      */
-	//static rw::common::Ptr<QSampler> make(rw::common::Ptr<QIKSampler> sampler, const rw::math::Transform3D<>& target);
+	//static rw::common::Ptr<QSampler> make(rw::common::Ptr<QIKSampler> sampler, const rw::math::Transform3D<double>& target);
 
     /**
      * @brief A sampler filtered by a constraint.
