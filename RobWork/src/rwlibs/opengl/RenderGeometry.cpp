@@ -40,12 +40,22 @@ namespace
 RenderGeometry::RenderGeometry(Geometry::Ptr geometry):
 		_geometry(geometry), _r(0.8f),_g(0.8f),_b(0.8f)
 {
+    float color[3];
+    _geometry->getColor(color);
+    _r=color[0];
+    _g=color[1];
+    _b=color[2];
     setGeometry(_geometry);
 }
 
 RenderGeometry::RenderGeometry(rw::geometry::TriMesh::Ptr mesh):
         _geometry(rw::common::ownedPtr( new Geometry(mesh) ) ), _r(0.8f),_g(0.8f),_b(0.8f)
 {
+    float color[3];
+    _geometry->getColor(color);
+    _r=color[0];
+    _g=color[1];
+    _b=color[2];
     setGeometry(_geometry);
 }
 
