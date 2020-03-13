@@ -2,7 +2,7 @@
 
 #include <rwhw/tactile/TactileMaskMatrix.hpp>
 
-#include <boost/foreach.hpp>
+
 #include <QtGui>
 
 using namespace rwhw;

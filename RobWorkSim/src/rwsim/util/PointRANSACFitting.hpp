@@ -23,7 +23,7 @@
 #include <rw/math/Vector3D.hpp>
 #include <rw/math/Random.hpp>
 
-//#include <boost/foreach.hpp>
+//
 
 namespace rwsim {
 namespace util {
@@ -141,17 +141,17 @@ namespace util {
 			std::cout << "filtered to       : " << newModels.size() << std::endl;
 		/*
 			PlaneModel defPlane;
-			BOOST_FOREACH(Vector3D<> &p, data){
+			for(Vector3D<> &p: data){
 				std::cout << " " << defPlane.fitError(p) << std::endl;
 			}
 			*/
-			/*BOOST_FOREACH(MODEL_T &m, newModels){
+			/*for(MODEL_T &m: newModels){
 				m.print();
 			}*/
 			/*
 			std::cout << "Best Model \n\r-";
 			bestModel.print();
-			BOOST_FOREACH(Vector3D<> &p, bestConsensusSet){
+			for(Vector3D<> &p: bestConsensusSet){
 				//std::cout << " " << bestModel.fitError(p) << std::endl;
 			}
 			*/

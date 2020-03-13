@@ -19,6 +19,7 @@
 #define RW_COMMON_DOMELEM_HPP
 
 #include <rw/common/Ptr.hpp>
+#include <rw/common/PairIterator.hpp>
 #include <string>
 #include <vector>
 
@@ -48,7 +49,7 @@ namespace common {
 		class Iterator;
 
 		//! DOMElem Iterator Pair type
-		typedef std::pair<class Iterator, class Iterator> IteratorPair;
+		typedef rw::common::iter_pair<class Iterator> IteratorPair;
 
 		//struct IteratorPair;
 

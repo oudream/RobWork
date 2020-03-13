@@ -20,7 +20,7 @@
 #include <rwlibs/os/rwgl.hpp>
 #include <rwsim/util/PlaneModel.hpp>
 
-#include <boost/foreach.hpp>
+
 
 using namespace rw::graphics;
 using namespace rw::math;
@@ -63,7 +63,7 @@ void RenderPlanes::draw(const DrawableNode::RenderInfo& info,DrawType type, doub
 
 	glColor3fv(_color);
 	glBegin(GL_TRIANGLES);
-	BOOST_FOREACH(const PlaneModel &p, _planes){
+	for(const PlaneModel &p: _planes){
 		double d = -p.getD();
 		Vector3D<> n = p.getNormal();
 		Vector3D<> nd( n(2),n(0),n(1) );

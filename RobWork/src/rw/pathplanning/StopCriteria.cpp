@@ -20,7 +20,7 @@
 
 #include <rw/common/Timer.hpp>
 #include <rw/common/macros.hpp>
-#include <boost/foreach.hpp>
+
 
 using namespace rw::pathplanning;
 using namespace rw::common;
@@ -144,7 +144,7 @@ namespace
     private:
         bool doStop() const
         {
-			BOOST_FOREACH(const StopCriteria::Ptr& stop, _criteria) {
+			for(const StopCriteria::Ptr& stop: _criteria) {
                 if (stop->stop())
                     return true;
             }
@@ -154,7 +154,7 @@ namespace
 		StopCriteria::Ptr doInstance() const
         {
 			std::vector<StopCriteria::Ptr> criteria;
-			BOOST_FOREACH(const StopCriteria::Ptr& stop, _criteria) {
+			for(const StopCriteria::Ptr& stop: _criteria) {
                 criteria.push_back(stop->instance());
             }
             return ownedPtr(new StopEither(criteria));

@@ -89,17 +89,17 @@ void SuctionCup::addToWorkCell(DynamicWorkCell::Ptr dwc){
 
     //sstruct->addFrame(getBodyFrame(), parent);
     //sstruct->addData(_baseBody);
-    BOOST_FOREACH(Frame *frame, _frames){
+    for(Frame *frame: _frames){
         sstruct->addFrame(frame, getBodyFrame());
     }
 
-    BOOST_FOREACH(Body *body, _bodies){
+    for(Body *body: _bodies){
         sstruct->addData(body);
         dwc->addBody( body );
     }
 
     // now add contact sensing to the bodies
-    BOOST_FOREACH(BodyContactSensor::Ptr sensor, _sensors){
+    for(BodyContactSensor::Ptr sensor: _sensors){
         dwc->addSensor( sensor );
     }
 

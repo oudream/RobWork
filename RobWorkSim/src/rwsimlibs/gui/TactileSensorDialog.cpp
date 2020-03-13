@@ -11,7 +11,7 @@
 #include <QFileDialog>
 #include <QWheelEvent>
 
-#include <boost/foreach.hpp>
+
 
 #include <rw/common/TimerUtil.hpp>
 #include <rw/math/LinearAlgebra.hpp>
@@ -110,7 +110,7 @@ TactileSensorDialog::TactileSensorDialog(
 	_ui = new Ui::TactileSensorDialog();
 	_ui->setupUi(this);
     std::vector<SimulatedSensor::Ptr> sensors = _dwc->getSensors();
-    BOOST_FOREACH(SimulatedSensor::Ptr& sensor, sensors){
+    for(SimulatedSensor::Ptr& sensor: sensors){
     	if( TactileArraySensor *tsensor = dynamic_cast<TactileArraySensor*>(sensor.get())){
     	    _tsensors.push_back(tsensor);
     	}
@@ -313,7 +313,7 @@ void TactileSensorDialog::btnPressed(){
     QObject *obj = sender();
     if( obj == _ui->_updateBtn){
         //_values.clear();
-        //BOOST_FOREACH(TactileArraySensor *sensor, _tsensors){
+        //for(TactileArraySensor *sensor: _tsensors){
         //    _values.push_back(sensor->getTexelData());
         //}
         drawTactileInput();
@@ -386,7 +386,7 @@ void TactileSensorDialog::changedEvent(){
 
 void TactileSensorDialog::setState(const rw::kinematics::State& state){
 	_values.clear();
-    BOOST_FOREACH(TactileArraySensor *sensor, _tsensors){
+    for(TactileArraySensor *sensor: _tsensors){
         _values.push_back(sensor->getTexelData(state));
     }
     // now detect features in the tactile images enabled
@@ -427,7 +427,7 @@ void TactileSensorDialog::findMoments(){
 
 	_moments.clear();
 	const int low_thres = _ui->_lowBoundSpin->value();
-	BOOST_FOREACH(Eigen::MatrixXf& mat, _values){
+	for(Eigen::MatrixXf& mat: _values){
 		Moment mom = calcMoments2D(mat, low_thres);
 		_moments.push_back(mom);
 		//std::cout << mom.center << mom.first << mom.second << std::endl;
@@ -440,7 +440,7 @@ void TactileSensorDialog::detectCenterMass(){
 	_centers.clear();
 	const int low_thres = _ui->_lowBoundSpin->value();
 	const int upp_thres = _ui->_uppBoundSpin->value();
-	BOOST_FOREACH(Eigen::MatrixXf& mat, _values){
+	for(Eigen::MatrixXf& mat: _values){
 		Eigen::DenseIndex w = mat.rows();
         Eigen::DenseIndex h = mat.cols();
 

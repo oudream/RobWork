@@ -2,7 +2,7 @@
 
 #include <QMessageBox>
 
-#include <boost/foreach.hpp>
+
 
 #include <rwsim/simulator/PhysicsEngine.hpp>
 
@@ -23,7 +23,7 @@ CreateEngineDialog::CreateEngineDialog(Ptr<DynamicWorkCell> dwc, QWidget *parent
 
 	std::vector<std::string> engineIDs =
 		PhysicsEngine::Factory::getEngineIDs();
-	BOOST_FOREACH(const std::string& engineID, engineIDs){
+	for(const std::string& engineID: engineIDs){
 	    _ui->_spaceMethodBox->addItem(engineID.c_str());
 	}
 

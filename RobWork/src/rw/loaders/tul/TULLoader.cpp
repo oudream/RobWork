@@ -53,7 +53,7 @@
 #include <rw/common/Property.hpp>
 
 #include <boost/shared_ptr.hpp>
-#include <boost/foreach.hpp>
+
 
 #include <string>
 #include <map>
@@ -1139,7 +1139,7 @@ namespace
         }
 
         std::vector<DrawableModelInfo> infos = DrawableModelInfo::get(&frame);
-        BOOST_FOREACH(const std::string& id, ids) {
+        for(const std::string& id: ids) {
             infos.push_back(
                 DrawableModelInfo(
                     id,
@@ -1167,7 +1167,7 @@ namespace
         }
 
         std::vector<CollisionModelInfo> infos = CollisionModelInfo::get(&frame);
-        BOOST_FOREACH(const std::string& id, ids) {
+        for(const std::string& id, ids) {
             infos.push_back(
                 CollisionModelInfo(
                     id,
@@ -1224,7 +1224,7 @@ namespace
     // Assign all special properties.
     void initProperties(Frame* world, const State& state)
     {
-        BOOST_FOREACH(Frame* frame, Kinematics::findAllFrames(world, state)) {
+        for(Frame* frame: Kinematics::findAllFrames(world, state)) {
             addFrameTypeProperty(*frame);
             addDrawableModelInfo(*frame);
             addCollisionModelInfo(*frame);
@@ -1753,7 +1753,7 @@ namespace
         const std::string& name,
 		const vector<Device::Ptr>& devices)
     {
-		BOOST_FOREACH(Device::Ptr device, devices)
+		for(Device::Ptr device: devices)
             if (device->getName() == name)
                 return device;
         return NULL;

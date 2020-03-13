@@ -28,7 +28,7 @@
 #include <rw/models.hpp>
 #include <rw/kinematics.hpp>
 
-#include <boost/foreach.hpp>
+
 
 using namespace rw::kinematics;
 using namespace rw::models;
@@ -66,11 +66,11 @@ namespace {
 			//std::vector<>Kinematics::findAllFrames(world, state);
 			devices = wc->getDevices();
 			frames = Kinematics::findAllFrames(world, state);
-			BOOST_FOREACH(Device::Ptr devp, devices){
+			for(Device::Ptr devp: devices){
 			    Device *dev = devp.get();
 				std::vector<Frame*> dframes = Kinematics::findAllFrames( dev->getBase() );
 				std::string dname = dev->getName();
-				BOOST_FOREACH(Frame* dframe, dframes){
+				for(Frame* dframe: dframes){
 					std::string fname = dframe->getName();
 
 					if(fname.length() > dname.length()){
@@ -81,7 +81,7 @@ namespace {
 				}
 
 				if(TreeDevice *tdev = dynamic_cast<TreeDevice*>(dev)){
-					BOOST_FOREACH(Frame* endf, tdev->getEnds())
+					for(Frame* endf: tdev->getEnds())
 							isEndEffector[endf] = true;
 				} else {
 					isEndEffector[dev->getEnd()] = true;
@@ -343,38 +343,13 @@ namespace {
 	        frames.pop();
 	        flist.push_back(frame);
 	        writeFrame(wc, *frame, ostr);
-	        BOOST_FOREACH(Frame &child, frame->getChildren(wc.state) ){
+	        for(Frame &child: frame->getChildren(wc.state) ){
 	            if( !wc.isFrameInDevice(&child, &dev) )
 	                continue;
 	            frames.push(&child);
 	        }
 	    }
 	    ostr << "\n";
-	    // write all drawables and collision models
-	    /*
-	    ostr << "<!-- drawables -->\n";
-	    BOOST_FOREACH(Frame* frame, flist){
-	        // first we insert the drawables
-	        std::vector<DrawableModelInfo> infos = DrawableModelInfo::get(frame);
-            BOOST_FOREACH(DrawableModelInfo info, infos){
-                writeDrawableInfo(wc, info, frame, ostr);
-            }
-	    }
-
-	    ostr << "\n";
-       // write all drawables and collision models
-        ostr << "<!-- Collision models -->\n";
-        BOOST_FOREACH(Frame* frame, flist){
-            // first we insert the drawables
-
-            std::vector<CollisionModelInfo> infos = CollisionModelInfo::get(frame);
-            BOOST_FOREACH(CollisionModelInfo info, infos){
-                writeCollisionInfo(wc, info, frame, ostr);
-            }
-        }
-		clvl--;
-		ostr << wlvl() << "</" << devType << ">\n";
-		*/
 	}
 
 	void writeWorkcell(DummyWorkcell& dwc, std::ostream &ostr){
@@ -382,7 +357,7 @@ namespace {
 		clvl++;
 	    // write all frames that does not belong to a device
 		ostr << "<!-- First we list all workcell frames -->\n";
-		BOOST_FOREACH(Frame* frame, dwc.frames){
+		for(Frame* frame: dwc.frames){
 			if( dwc.isFrameInDevice(frame) )
 				continue;
 			if( dwc.isFrameParentToDevice(frame))
@@ -392,7 +367,7 @@ namespace {
 
 		ostr << "<!-- Next we list all devices in the workcell -->\n";
 		// now write the devices
-		BOOST_FOREACH(Device::Ptr dev, dwc.devices){
+		for(Device::Ptr dev: dwc.devices){
 			Frame *parent = dev->getBase()->getParent();
 			writeFrame(dwc, *parent, ostr);
 			writeDevice(dwc, *dev, ostr);

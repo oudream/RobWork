@@ -4,7 +4,7 @@
 #include <string>
 
 #include <boost/bind.hpp>
-#include <boost/foreach.hpp>
+
 
 #include <rw/loaders/dom/DOMPropertyMapLoader.hpp>
 #include <rw/loaders/dom/DOMPropertyMapSaver.hpp>
@@ -97,13 +97,13 @@ GraspTableGeneratorPlugin::GraspTableGeneratorPlugin():
     Math::seed( TimerUtil::currentTimeMs() );
 
     std::vector<std::string> policies = GraspPolicyFactory::getAvailablePolicies();
-    BOOST_FOREACH(const std::string& id, policies){
+    for(const std::string& id: policies){
         _ui->_gPolicyBox->addItem(id.c_str());
     }
 
 
     std::vector<std::string> strategies = GraspStrategyFactory::getAvailableStrategies();
-    BOOST_FOREACH(const std::string& id, strategies){
+    for(const std::string& id: strategies){
         _ui->_gStrategyBox->addItem(id.c_str());
     }
 
@@ -165,7 +165,7 @@ void GraspTableGeneratorPlugin::open(rw::models::WorkCell* workcell){
 
 	RW_DEBUGS("- Setting devices ");
 	std::vector<DynamicDevice::Ptr> devices = _dwc->getDynamicDevices();
-	BOOST_FOREACH(DynamicDevice::Ptr device, devices){
+	for(DynamicDevice::Ptr device: devices){
 		if(dynamic_cast<RigidDevice*>(device.get())){
 			rw::models::Device *dev = &device->getModel();
 			RW_ASSERT(dev);
@@ -175,7 +175,7 @@ void GraspTableGeneratorPlugin::open(rw::models::WorkCell* workcell){
 	}
 
 	RW_DEBUGS("- Setting objects ");
-	BOOST_FOREACH(Body::Ptr body, _dwc->getBodies() ){
+	for(Body::Ptr body: _dwc->getBodies() ){
 		Frame *obj = body->getBodyFrame();
 		if(obj==NULL)
 			continue;
@@ -473,7 +473,7 @@ namespace {
 
 	std::vector<matrix<float> > getTactileData(const std::vector<SimulatedSensorPtr>& sensors){
 		std::vector<matrix<float> > datas;
-		BOOST_FOREACH(const SimulatedSensorPtr& sensor, sensors){
+		for(const SimulatedSensorPtr& sensor: sensors){
         	if( TactileArraySensor *tsensor = dynamic_cast<TactileArraySensor*>( sensor.get() ) ) {
                 datas.push_back( tsensor->getTexelData() );
             }
@@ -516,7 +516,7 @@ void GraspTableGeneratorPlugin::stepCallBack(int i, const rw::kinematics::State&
     // save tactile data
     std::vector<SimulatedSensorPtr> sensors = sim->getSensors();
     std::vector<std::vector<Contact3D> > tactileContacts;
-    BOOST_FOREACH(SimulatedSensorPtr& sensor, sensors){
+    for(SimulatedSensorPtr& sensor: sensors){
         if( TactileArraySensor *tsensor = dynamic_cast<TactileArraySensor*>( sensor.get() ) ) {
             datas.push_back( tsensor->getTexelData() );
 
@@ -611,7 +611,7 @@ void GraspTableGeneratorPlugin::stepCallBack(int i, const rw::kinematics::State&
             GraspTable::GraspData data;
 
             // all contacts are in world coordinates. Transform them...
-            BOOST_FOREACH(std::vector<Contact3D>& convec, tactileContacts){
+            for(std::vector<Contact3D>& convec: tactileContacts){
             	for(int i=0;i<convec.size();i++){
             		Contact3D &con = convec[i];
             		//_wTf*point,_wTf.R()*snormal,_wTf.R()*force
@@ -826,7 +826,7 @@ void GraspTableGeneratorPlugin::btnPressed(){
         _stopBtn->setDisabled(true);
         _resetBtn->setDisabled(false);
         _timer->stop();
-        BOOST_FOREACH(Ptr<ThreadSimulator> sim,  _simulators){
+        for(Ptr<ThreadSimulator> sim:  _simulators){
             if(sim->isRunning())
                 sim->stop();
         }
@@ -905,7 +905,7 @@ bool GraspTableGeneratorPlugin::saveRestingState(int simidx, SimulatorPtr sim , 
     int fingersWithData = 0;
     std::vector<SimulatedSensorPtr> sensors = sim->getSensors();
     std::vector<matrix<float> > datas;
-    BOOST_FOREACH(SimulatedSensorPtr& sensor, sensors){
+    for(SimulatedSensorPtr& sensor: sensors){
         if( TactileArraySensor *tsensor = dynamic_cast<TactileArraySensor*>( sensor.get() ) ) {
             datas.push_back( tsensor->getTexelData() );
 
@@ -934,7 +934,7 @@ bool GraspTableGeneratorPlugin::saveRestingState(int simidx, SimulatorPtr sim , 
         return false;
     }
     Transform3D<> wTf = Kinematics::worldTframe(_handBase, state);
-    BOOST_FOREACH(Contact3D &c, g3d.contacts){
+    for(Contact3D &c: g3d.contacts){
         sstr << c.p << "  " << c.n << " ";
     }
 
@@ -1101,7 +1101,7 @@ void GraspTableGeneratorPlugin::calcColFreeRandomCfg(rw::kinematics::State& stat
     std::vector<RigidBody*> bodies;
     while( _colDect->inCollision(state, &result, false) ){
         nrOfTries++;
-        BOOST_FOREACH(rw::kinematics::FramePair pair, result){
+        for(rw::kinematics::FramePair pair: result){
             // generate new collision free configuration between
             RigidBody *body1 = _frameToBody[*pair.first];
             RigidBody *body2 = _frameToBody[*pair.second];

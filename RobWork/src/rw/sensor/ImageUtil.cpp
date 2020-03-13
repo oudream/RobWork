@@ -21,7 +21,7 @@
 
 #include <rw/geometry/PointCloud.hpp>
 
-#include <boost/foreach.hpp>
+
 
 using namespace rw::sensor;
 using namespace rw::geometry;
@@ -351,7 +351,7 @@ Image::Ptr ImageUtil::makeDepthImage(const rw::geometry::PointCloud& cloud)  {
     float min = 10000000;
     float max = -100000000;
     typedef rw::math::Vector3D<float> Point;
-    BOOST_FOREACH(const Point& p, cloud.getData()){
+    for(const Point& p: cloud.getData()){
         min = std::min(min, -p(2));
         max = std::max(max, -p(2));
     }

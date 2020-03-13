@@ -21,7 +21,7 @@
 #include <rw/common/PropertyBase.hpp>
 #include <rw/common/PropertyMap.hpp>
 
-#include <boost/foreach.hpp>
+
 
 using namespace boost;
 using namespace rw::common;
@@ -57,7 +57,7 @@ BOOST_AUTO_TEST_CASE( PropertyTest )
 
     BOOST_CHECK(bag.size() == 2);
 
-    BOOST_FOREACH(PropertyBase::Ptr prop, bag.getProperties()) {
+    for(PropertyBase::Ptr prop: bag.getProperties()) {
         std::string str = prop->getIdentifier();
         BOOST_CHECK(str!="");
     }

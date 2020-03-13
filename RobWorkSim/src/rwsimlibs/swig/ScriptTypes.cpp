@@ -1,7 +1,7 @@
 
 #include "ScriptTypes.hpp"
 
-#include <boost/foreach.hpp>
+
 #include <map>
 
 using namespace rwsim::swig;
@@ -38,7 +38,7 @@ std::vector<std::string> rwsim::swig::getSimulatorInstances()
 {
 	typedef std::map<std::string, rw::common::Ptr<ThreadSimulator> >::value_type PairVals;
 	std::vector<std::string> result;
-	BOOST_FOREACH(PairVals pair, sim_instances_internal){
+	for(PairVals pair: sim_instances_internal){
 		if(pair.second!=NULL)
 			result.push_back( pair.first );
 	}
@@ -47,7 +47,7 @@ std::vector<std::string> rwsim::swig::getSimulatorInstances()
 
 rw::common::Ptr<ThreadSimulator> rwsim::swig::getSimulatorInstance(){
 	typedef std::map<std::string, rw::common::Ptr<ThreadSimulator> >::value_type PairVals;
-	BOOST_FOREACH(PairVals pair, sim_instances_internal){
+	for(PairVals pair: sim_instances_internal){
 		if(pair.second!=NULL)
 			return  pair.second;
 	}

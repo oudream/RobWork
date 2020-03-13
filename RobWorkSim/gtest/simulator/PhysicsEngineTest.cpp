@@ -20,7 +20,7 @@
 #include <rwsim/simulator/PhysicsEngine.hpp>
 #include <rwsimlibs/test/EngineTest.hpp>
 
-#include <boost/foreach.hpp>
+
 
 using namespace rw::common;
 using namespace rwsim::simulator;
@@ -30,7 +30,7 @@ TEST(PhysicsEngineTest, EnginesInFactory) {
 	const std::vector<std::string> engines = PhysicsEngine::Factory::getEngineIDs();
 	bool foundODE = false;
 	bool foundBullet = false;
-	BOOST_FOREACH(const std::string& name, engines) {
+	for(const std::string& name: engines) {
 		if (name == "ODE")
 			foundODE = true;
 		else if (name == "Bullet")
@@ -81,8 +81,8 @@ TEST_P(PhysicsEngineTest, TestEngineParameterTest) {
 	ASSERT_TRUE(!GetParam()->test.isNull());
 	GetParam()->test->run(handle, GetParam()->engine, *GetParam()->parameters);
 	EXPECT_EQ(handle->getError(),"");
-	BOOST_FOREACH(const EngineTest::Result& result, handle->getResults()) {
-		BOOST_FOREACH(const EngineTest::Failure& failure, result.failures) {
+	for(const EngineTest::Result& result: handle->getResults()) {
+		for(const EngineTest::Failure& failure: result.failures) {
 			ADD_FAILURE() << result.name << " (" << result.description << ") at time " << failure.time << ": " << failure.description;
 		}
 	}
@@ -93,9 +93,9 @@ int main(int argc, char **argv) {
 
 	// Construct list of engine-test pairs to test
 	const std::vector<std::string> engines = PhysicsEngine::Factory::getEngineIDs();
-	BOOST_FOREACH(const std::string& testName, EngineTest::Factory::getTests()) {
+	for(const std::string& testName: EngineTest::Factory::getTests()) {
 		const EngineTest::Ptr etest = EngineTest::Factory::getTest(testName);
-		BOOST_FOREACH(const std::string& engineName, engines) {
+		for(const std::string& engineName: engines) {
 			if (etest->isEngineSupported(engineName)) {
 				const PropertyMap::Ptr def = etest->getDefaultParameters();
 				ownedParams.push_back(new TestParam(etest,testName,engineName,-1,def));

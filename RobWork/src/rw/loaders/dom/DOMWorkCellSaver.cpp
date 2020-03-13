@@ -51,8 +51,6 @@
 #include <rw/geometry/Cylinder.hpp>
 #include <rw/geometry/Tube.hpp>
 
-#include <boost/foreach.hpp>
-
 using namespace rw::common;
 using namespace rw::loaders;
 using namespace rw::math;
@@ -772,7 +770,7 @@ namespace {
         rw::models::Object::Ptr object = workcell->findObject(frame->getName());
         writeDrawablesAndColModels(object, element);
 
-        BOOST_FOREACH(const PropertyBase::Ptr prop, frame->getPropertyMap().getProperties())
+        for(const PropertyBase::Ptr prop: frame->getPropertyMap().getProperties())
                     {
                         const Property<std::string>* property = toProperty<std::string>(prop);
                         if (property != nullptr) {
@@ -813,7 +811,7 @@ namespace {
         rw::models::Object::Ptr object = workcell->findObject(frame->getName());
         writeDrawablesAndColModels(object, element);
 
-        BOOST_FOREACH(const PropertyBase::Ptr prop, frame->getPropertyMap().getProperties())
+        for(const PropertyBase::Ptr prop: frame->getPropertyMap().getProperties())
                     {
                         const Property<std::string>* property = toProperty<std::string>(prop);
                         if (property != nullptr) {
@@ -875,7 +873,7 @@ namespace {
         // Add the position
         DOMBasisTypes::createPos(frame->getFixedTransform().P(), element);
 
-        BOOST_FOREACH(const PropertyBase::Ptr prop, frame->getPropertyMap().getProperties())
+        for(const PropertyBase::Ptr prop: frame->getPropertyMap().getProperties())
         {
             const Property<std::string>* property = toProperty<std::string>(prop);
             if (property != nullptr) {
@@ -1028,10 +1026,10 @@ namespace {
 
                 writeDeviceFrame(frame, creator, workcell, state, dev, dev_element);
 
-                BOOST_FOREACH(Frame &child, frame->getChildren(state)) {
-                    if (!isFrameInDevice(&child, dev.get()))
+                for(Frame::Ptr child: frame->getChildrenList(state)) {
+                    if (!isFrameInDevice( child.get(), dev.get()))
                         continue;
-                    frames.push(&child);
+                    frames.push(child.get());
                 }
             }
             DOMElem::Ptr q_element = dev_element->addChild(DOMBasisTypes::idQ());

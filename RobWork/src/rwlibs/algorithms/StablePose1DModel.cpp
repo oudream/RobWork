@@ -20,7 +20,7 @@
 #include <rw/geometry/Plane.hpp>
 #include <rw/math/Math.hpp>
 
-#include <boost/foreach.hpp>
+
 
 using namespace std;
 using namespace rw::math;
@@ -68,7 +68,7 @@ double StablePose1DModel::refit(const std::vector<rw::math::Rotation3D<> >& samp
 
 	// find x, y, z versor positions on the sphere
 	vector<Vector3D<> > x_points, y_points, z_points;
-	BOOST_FOREACH (rw::math::Rotation3D<>& sample, _data) {
+	for (rw::math::Rotation3D<>& sample: _data) {
 		// taking a row of the rotation matrix is the quickest way of finding a versor position on the unit sphere
 		// allegedly, this should be columns, but that doesn't work
 		x_points.push_back(sample.getRow(0));
@@ -113,7 +113,7 @@ double StablePose1DModel::refit(const std::vector<rw::math::Rotation3D<> >& samp
 	// calculate distances
 	if (best_plane != &x_plane) {
 		Vector3D<> c;
-		BOOST_FOREACH (const Vector3D<>& p, x_points) {
+		for (const Vector3D<>& p: x_points) {
 			c += p;
 		}
 		c /= static_cast<double>(x_points.size());
@@ -125,7 +125,7 @@ double StablePose1DModel::refit(const std::vector<rw::math::Rotation3D<> >& samp
 	
 	if (best_plane != &y_plane) {
 		Vector3D<> c;
-		BOOST_FOREACH (const Vector3D<>& p, y_points) {
+		for (const Vector3D<>& p: y_points) {
 			c += p;
 		}
 		c /= static_cast<double>(y_points.size());
@@ -137,7 +137,7 @@ double StablePose1DModel::refit(const std::vector<rw::math::Rotation3D<> >& samp
 	
 	if (best_plane != &z_plane) {
 		Vector3D<> c;
-		BOOST_FOREACH (const Vector3D<>& p, z_points) {
+		for (const Vector3D<>& p: z_points) {
 			c += p;
 		}
 		c /= static_cast<double>(z_points.size());

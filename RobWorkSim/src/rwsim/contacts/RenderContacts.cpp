@@ -20,7 +20,7 @@
 
 #include <rwlibs/os/rwgl.hpp>
 
-#include <boost/foreach.hpp>
+
 
 using namespace rw::math;
 using namespace rw::graphics;
@@ -66,7 +66,7 @@ std::vector<Contact> RenderContacts::getContacts() const {
 }
 
 void RenderContacts::draw(const DrawableNode::RenderInfo& info, DrawableNode::DrawType type, double alpha) const {
-	BOOST_FOREACH(const Contact& con, _contacts){
+	for(const Contact& con: _contacts){
 		Vector3D<> posA = con.getPointA();
 		Vector3D<> posB = con.getPointB();
 		Vector3D<> n = normalize(con.getNormal())*_normalLength;

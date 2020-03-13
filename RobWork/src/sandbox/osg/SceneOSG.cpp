@@ -30,7 +30,7 @@
 #include <rw/common/Property.hpp>
 #include <rw/common/macros.hpp>
 
-#include <boost/foreach.hpp>
+
 #include <rw/geometry/GeometryFactory.hpp>
 #include <vector>
 

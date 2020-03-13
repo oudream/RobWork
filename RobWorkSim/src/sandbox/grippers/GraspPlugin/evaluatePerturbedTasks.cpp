@@ -120,7 +120,7 @@ int main(int argc, char** argv)
     }*/
 
 	if(perturbe){
-	    //BOOST_FOREACH(std::string file, infiles){
+	    //for(std::string file: infiles){
 	        //std::stringstream sstr;
 	        GraspTask::Ptr gtask = GraspTask::load(ip.string());
 	        std::cout << "Processing...\n" << endl; // << path(file).filename().string() << std::endl;
@@ -142,7 +142,7 @@ int main(int argc, char** argv)
     Q diff(7, 0.01, 0.01, 0.01, 0.1, 0.1, 0.1, 15*Deg2Rad);
     std::list<const GTaskNNSearch::KDNode*> result;
     size_t nodeNr=0;
-    BOOST_FOREACH(GTaskNNSearch::KDNode& node, nodes){
+    for(GTaskNNSearch::KDNode& node: nodes){
         result.clear();
         Q key  = node.key;
         nntree->nnSearchRect(key-diff,key+diff, result);
@@ -247,7 +247,7 @@ Transform3D<> sampleParSurface(double minDist, double maxDist, TriMesh::Ptr mesh
         // now we want to find
         cstrategy->inCollision(object,Transform3D<>::identity(), ray, rayTrans, data);
         typedef std::pair<int,int> PrimID;
-        BOOST_FOREACH(PrimID pid, data.getCollisionData()._geomPrimIds){
+        for(PrimID pid: data.getCollisionData()._geomPrimIds){
             // search for a triangle that has a normal
             Triangle<> tri = mesh->getTriangle( pid.first );
             Vector3D<> normal = tri.calcFaceNormal();

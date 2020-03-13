@@ -41,7 +41,7 @@ int main(int argc, char** argv)
 
         std::vector<Trakstar::PoseData> data = bird.getSensorValues();
         sstr << data.size() << " ";
-        BOOST_FOREACH(Trakstar::PoseData& d, data){
+        for(Trakstar::PoseData& d: data){
             sstr << d.pos[0] << " ";
             sstr << d.pos[1] << " ";
             sstr << d.pos[2] << " ";
@@ -59,7 +59,7 @@ int main(int argc, char** argv)
 
     // write all to file
     std::ofstream ofile("trakstar_log.txt");
-    BOOST_FOREACH(std::string& str, output){
+    for(std::string& str: output){
         ofile << str << "\n";
     }
     ofile.close();

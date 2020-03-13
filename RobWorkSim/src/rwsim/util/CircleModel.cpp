@@ -21,7 +21,7 @@
 #include <rw/math/Vector2D.hpp>
 #include <rw/math/Vector3D.hpp>
 #include <rw/math/Line2D.hpp>
-#include <boost/foreach.hpp>
+
 #include <rw/math/Rotation3D.hpp>
 #include <rw/math/LinearAlgebra.hpp>
 #include <rw/math/Math.hpp>
@@ -99,7 +99,7 @@ void CircleModel::refit(const std::vector<Vector3D<> >& data){
 
     Eigen::MatrixXd covar( Eigen::MatrixXd::Zero(3, 3) );
     Vector3D<> centroid(0,0,0);
-    BOOST_FOREACH(const Vector3D<> &v, data){
+    for(const Vector3D<> &v: data){
         centroid += v;
         for(size_t j=0;j<3;j++)
             for(size_t k=0;k<3;k++)

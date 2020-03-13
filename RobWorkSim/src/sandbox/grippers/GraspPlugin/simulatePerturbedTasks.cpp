@@ -40,12 +40,12 @@ void addPertubations(GraspTask::Ptr grasptask, double sigma_p, double sigma_a, i
 std::vector<GraspTask::Ptr> splitTask(GraspTask::Ptr grasptask, int split){
     int count = 0;
     std::vector<GraspTask::Ptr> gtasks = std::vector<GraspTask::Ptr>(1, grasptask->clone() );
-    BOOST_FOREACH(GraspSubTask &stask, grasptask->getSubTasks()){
+    for(GraspSubTask &stask: grasptask->getSubTasks()){
         // also remove results
         GraspSubTask nstask = stask.clone();
         gtasks.back()->addSubTask( nstask );
 
-        BOOST_FOREACH(GraspTarget &target, stask.getTargets() ){
+        for(GraspTarget &target: stask.getTargets() ){
             gtasks.back()->getSubTasks().back().addTarget( target );
             count++;
             if(count>=split){
@@ -113,7 +113,7 @@ int main(int argc, char** argv)
     std::map<int,bool> includeMap;
     if(vm.count("include")){
         const std::vector<std::string> &includes = vm["include"].as<vector<string> >();
-        BOOST_FOREACH(std::string include, includes){
+        for(std::string include: includes){
             if(include=="Success"){ includeMap[GraspTask::Success] = true; }
             else if(include=="ObjectSlipped"){ includeMap[GraspTask::ObjectSlipped] = true; }
             else { RW_THROW("Unsupported include tag!"); }
@@ -127,7 +127,7 @@ int main(int argc, char** argv)
     // extract all task files that should be simulated
     std::vector<std::string> infiles;
     const std::vector<std::string> &inputs = vm["input"].as<vector<string> >();
-    BOOST_FOREACH(std::string input, inputs){
+    for(std::string input: inputs){
         path ip(input);
         if( is_directory(ip) ){
             infiles = IOUtil::getFilesInFolder( ip.string(), false, true);
@@ -183,7 +183,7 @@ int main(int argc, char** argv)
     int totaltargets = 0;
     std::vector<int> testStat(GraspTask::SizeOfStatusArray,0);
     bool perturbe = vm["perturbe"].as<bool>();
-    BOOST_FOREACH(std::string ifile, infiles){
+    for(std::string ifile: infiles){
         std::cout << "loading: " << path(ifile).filename() << " ";
 
         std::stringstream sstr;
@@ -202,9 +202,9 @@ int main(int argc, char** argv)
         std::cout << "Starting simulation:" << std::endl;
 
         // temporarilly change refframe to Object change
-        BOOST_FOREACH(GraspSubTask &stask, grasptask->getSubTasks()){
+        for(GraspSubTask &stask: grasptask->getSubTasks()){
             // also remove results
-            BOOST_FOREACH(GraspTarget &target, stask.getTargets() ){
+            for(GraspTarget &target: stask.getTargets() ){
                 if(target.result!=NULL){
                     if(useAlignedGrasp){
                         if( target.result->testStatus==GraspTask::Success || target.result->testStatus==GraspTask::ObjectSlipped){
@@ -253,7 +253,7 @@ int main(int argc, char** argv)
                 TimerUtil::sleepMs(500);
                 std::vector<int> stat = graspSim->getStat();
                 std::cout << "\r";
-                BOOST_FOREACH(int i, stat){ std::cout << i << "\t"; }
+                for(int i: stat){ std::cout << i << "\t"; }
                 std::cout << std::flush;
             } while(graspSim->isRunning());
 
@@ -281,11 +281,11 @@ void addPertubations(GraspTask::Ptr grasptask, double sigma_p, double sigma_a, i
     //int pertubationsPerTarget = 100;
     //Unused: int count = 0;
     // temporarilly change refframe to Object change
-    BOOST_FOREACH(GraspSubTask &stask, grasptask->getSubTasks()){
+    for(GraspSubTask &stask: grasptask->getSubTasks()){
         std::vector<GraspTarget> ntargets;
         // also remove results
 
-        BOOST_FOREACH(GraspTarget &target, stask.getTargets() ){
+        for(GraspTarget &target: stask.getTargets() ){
             ntargets.push_back(target.pose);
             for(int i=0;i<pertubationsPerTarget;i++){
                 Vector3D<> pos(Math::ranNormalDist(0,sigma_p), Math::ranNormalDist(0,sigma_p), Math::ranNormalDist(0,sigma_p));

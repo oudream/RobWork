@@ -20,7 +20,6 @@
 #include <rw/common/macros.hpp>
 #include <rw/pathplanning/PlannerUtil.hpp>
 #include <rw/models/Models.hpp>
-#include <boost/foreach.hpp>
 #include <rw/trajectory/Path.hpp>
 #include <rw/math/Math.hpp>
 
@@ -66,7 +65,7 @@ namespace
         Q sum_squares = Q::zero(path.front().size());
         Q sum_elements = sum_squares;
         int cnt = 0;
-        BOOST_FOREACH(const Q& q, std::make_pair(path.rbegin(), path.rend())) {
+        for(const Q& q: rw::common::make_iterPair(path.rbegin(), path.rend())) {
             if (cnt < historySize) {
 
                 sum_squares += Math::sqr(q);

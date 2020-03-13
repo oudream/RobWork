@@ -30,7 +30,7 @@
 //#include <rw/geometry/TriMesh.hpp>
 //#include <rw/geometry/PlainTriMesh.hpp>
 
-#include <boost/foreach.hpp>
+
 
 #include "DynamicWorkCell.hpp"
 #include "RigidBody.hpp"
@@ -140,7 +140,7 @@ DynamicUtil::estimateInertia(
 	std::vector<Frame*> frames = getAnchoredFrames(refframe, state);
 	// first calculate center
 	Vector3D<> center(0,0,0);
-	BOOST_FOREACH(const Frame *frame, frames){
+	for(const Frame *frame: frames){
 	    if( frame==NULL )
 	        continue;
 	    // check if frame has collision descriptor
@@ -188,7 +188,7 @@ DynamicUtil::estimateCOG(
     // first find center mass
     double totalArea(0);
     Vector3D<> center(0.f,0.f,0.f);
-    BOOST_FOREACH(Geometry *geom, geoms){
+    for(Geometry *geom: geoms){
         GeometryDataPtr gdata = geom->getGeometryData();
         // check if type of geom is really a trimesh
         if( !dynamic_cast<TriMesh*>(gdata.get()) ){
@@ -240,7 +240,7 @@ DynamicUtil::estimateInertia(
     double Ixx = 0, Iyy=0, Izz = 0; // the diagonal elements
     double Ixy = 0, Ixz=0, Iyz = 0; // the off diagonal elements
     int triCnt = 0;
-    BOOST_FOREACH(Geometry *geom, geoms){
+    for(Geometry *geom: geoms){
         GeometryDataPtr gdata = geom->getGeometryData();
         // check if type of geom is really a trimesh
         if( !dynamic_cast<TriMesh*>(gdata.get()) ){
@@ -363,7 +363,7 @@ bool DynamicUtil::isResting(DynamicDevice::Ptr dev, const rw::kinematics::State&
 bool DynamicUtil::isResting(DynamicWorkCell::Ptr dwc, const rw::kinematics::State& state, double max_lin, double max_ang, double max_jointvel){
     // first check all rigid bodies
     std::vector<RigidBody::Ptr> bodies = dwc->findBodies<RigidBody>();
-    BOOST_FOREACH(RigidBody::Ptr rbody, bodies){
+    for(RigidBody::Ptr rbody: bodies){
         Vector3D<> avel = rbody->getAngVel(state);
         if(MetricUtil::norm2(avel)>max_ang)
             return false;
@@ -373,7 +373,7 @@ bool DynamicUtil::isResting(DynamicWorkCell::Ptr dwc, const rw::kinematics::Stat
     }
 
     std::vector<DynamicDevice::Ptr> devices = dwc->getDynamicDevices();
-    BOOST_FOREACH(DynamicDevice::Ptr dev, devices){
+    for(DynamicDevice::Ptr dev: devices){
         if(!DynamicUtil::isResting(dev, state, max_lin, max_jointvel) )
             return false;
     }

@@ -6,7 +6,7 @@
 
 #include <sstream>
 
-#include <boost/foreach.hpp>
+
 
 #include <RobWorkStudio.hpp>
 
@@ -447,7 +447,7 @@ namespace {
 
 	std::vector<Eigen::MatrixXf> getTactileData(const std::vector<SimulatedSensor::Ptr>& sensors, const State& state){
 		std::vector<Eigen::MatrixXf> datas;
-		BOOST_FOREACH(const SimulatedSensor::Ptr& sensor, sensors){
+		for(const SimulatedSensor::Ptr& sensor: sensors){
         	if( TactileArraySensor *tsensor = dynamic_cast<TactileArraySensor*>( sensor.get() ) ) {
                 datas.push_back( tsensor->getTexelData(state) );
             }
@@ -554,7 +554,7 @@ void RWSimPlugin::open(rw::models::WorkCell* workcell){
 	_state = getRobWorkStudio()->getState();
 
 	// add sensor drawables to the workcell drawer
-    BOOST_FOREACH(SimulatedSensor::Ptr sensor,  _dwc->getSensors()){
+    for(SimulatedSensor::Ptr sensor:  _dwc->getSensors()){
         if( TactileArraySensor::Ptr tsensor = sensor.cast<TactileArraySensor>() ){
             //std::cout << "ADDING TACTILE SENSOR DRAWER..." << std::endl;
         	log().debug() << "Adding tactile sensor render to \"" << sensor->getSensorModel()->getName() << "\"!" << std::endl;
@@ -565,7 +565,7 @@ void RWSimPlugin::open(rw::models::WorkCell* workcell){
     }
 
     _deviceControlBox->clear();
-    BOOST_FOREACH(DynamicDevice::Ptr device, _dwc->getDynamicDevices()){
+    for(DynamicDevice::Ptr device: _dwc->getDynamicDevices()){
         rw::models::Device *dev = &device->getModel();
         if( dynamic_cast<JointDevice*>(dev) == NULL )
             continue;
@@ -575,7 +575,7 @@ void RWSimPlugin::open(rw::models::WorkCell* workcell){
         _deviceControlBox->addItem(dev->getName().c_str());
     }
 
-    BOOST_FOREACH(SimulatedController::Ptr ctrl, _dwc->getControllers()){
+    for(SimulatedController::Ptr ctrl: _dwc->getControllers()){
         RW_ASSERT(ctrl!=NULL);
         _deviceControlBox->addItem(ctrl->getControllerName().c_str());
     }

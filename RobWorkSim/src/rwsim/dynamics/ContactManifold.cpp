@@ -81,7 +81,7 @@ void ContactManifold::generateContactManifolds(
 
     // 1. cluster points together using their normal
     std::vector<Bucket> buckets(64);
-    BOOST_FOREACH(ContactPoint *point, points){
+    for(ContactPoint *point: points){
         int index = getHashValue64( point->n );
         if( buckets[index].size()==0 ) {
             validBuckets[++nrOfValidBuckets] = index;
@@ -89,14 +89,14 @@ void ContactManifold::generateContactManifolds(
         buckets[index].addPoint( point, point->n);
     }
     // and now use the position to split the buckets
-    //BOOST_FOREACH(Bucket &bucket, buckets){
+    //for(Bucket &bucket: buckets){
     //}
 
     // 2. for each cluster identify if any manifold is close
     for(int i=0; i<nrOfValidBuckets; i++){
 
     }
-    BOOST_FOREACH(ContactManifold *manifold, manifolds){
+    for(ContactManifold *manifold: manifolds){
         int index = getHashValue64( manifold->getNormal() );
 
         if( buckets[index].size()>0 ){

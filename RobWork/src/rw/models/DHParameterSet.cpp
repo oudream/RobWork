@@ -18,12 +18,12 @@
 #include "DHParameterSet.hpp"
 #include <rw/models/Joint.hpp>
 #include <rw/models/SerialDevice.hpp>
-#include <boost/foreach.hpp>
+
 using namespace rw::models;
 
 std::vector<DHParameterSet> DHParameterSet::getDHParameters(SerialDevice::Ptr device) {
 	std::vector<DHParameterSet> dhset;
-	BOOST_FOREACH(Joint *joint, device->getJoints()){
+	for(Joint *joint: device->getJoints()){
         if( get( joint )!=NULL ){
             dhset.push_back( *get( joint ) );
         }

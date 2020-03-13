@@ -325,7 +325,7 @@ std::vector<CalibrationMeasurement::Ptr> generateMeasurements(rw::models::Serial
 
 	std::vector<CalibrationMeasurement::Ptr> measurements;
 
-	BOOST_FOREACH(Frame* sensorFrame, sensorFrames) {
+	for(Frame* sensorFrame: sensorFrames) {
 		for (unsigned int measurementIndex = 0; measurementIndex < measurementCount/sensorFrames.size(); measurementIndex++) {
 			rw::math::Q q = rw::math::Math::ranQ(serialDevice->getBounds());
 			serialDevice->setQ(q, state);

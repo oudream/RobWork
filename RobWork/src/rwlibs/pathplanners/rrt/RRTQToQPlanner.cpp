@@ -24,7 +24,7 @@
 
 #include <cfloat>
 #include <algorithm>
-#include <boost/foreach.hpp>
+
 
 using namespace rw;
 using namespace rw::math;
@@ -91,7 +91,7 @@ namespace
         double minLength = DBL_MAX;
         Node* minNode = NULL;
 
-        BOOST_FOREACH(Node* node, tree.getNodes()) {
+        for(Node* node: tree.getNodes()) {
             const double length = metric.distance(q, getQ(node));
             if (length < minLength) {
                 minLength = length;

@@ -24,7 +24,7 @@
 #include <rw/loaders/ImageFactory.hpp>
 #include <rw/math/EAA.hpp>
 
-#include <boost/foreach.hpp>
+
 #include <fstream>
 
 using namespace rw::loaders;

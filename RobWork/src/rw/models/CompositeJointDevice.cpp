@@ -22,7 +22,7 @@
 #include <rw/common/macros.hpp>
 #include <rw/math/Jacobian.hpp>
 #include <rw/kinematics/FKTable.hpp>
-#include <boost/foreach.hpp>
+
 
 namespace rw { namespace kinematics { class Frame; } }
 namespace rw { namespace kinematics { class State; } }
@@ -37,7 +37,7 @@ namespace
 	std::vector<Joint*> concatDevices(const std::vector<Device::Ptr>& devices)
     {
         std::vector<Joint*> joints;
-		BOOST_FOREACH(const Device::Ptr& ptr, devices) {
+		for(const Device::Ptr& ptr: devices) {
             RW_ASSERT(ptr);
 
             JointDevice* device = dynamic_cast<JointDevice*>(ptr.get());
@@ -62,7 +62,7 @@ namespace
 	std::vector<Frame*> endFrames(const std::vector<Device::Ptr>& devices)
     {
         std::vector<Frame*> result;
-		BOOST_FOREACH(const Device::Ptr& device, devices) {
+		for(const Device::Ptr& device: devices) {
             RW_ASSERT(device);
             result.push_back(device->getEnd());
         }

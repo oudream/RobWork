@@ -22,7 +22,7 @@
 #include <rw/math/Quaternion.hpp>
 
 #include <cmath>
-#include <boost/foreach.hpp>
+
 
 
 
@@ -68,7 +68,7 @@ double StablePose0DModel::refit(const std::vector<rw::math::Rotation3D<> >& samp
 	// average is calculated using slerp
 	double weight = 1.0;
 	int i = 0;
-	BOOST_FOREACH (const Rotation3D<>& s, samples) {
+	for (const Rotation3D<>& s: samples) {
 		++i;
 		model = model.slerp(Quaternion<>(s), weight / i);
 	}

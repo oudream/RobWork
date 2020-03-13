@@ -36,7 +36,7 @@ using rwlibs::proximitystrategies::ProximityStrategyPQP;
 
 //#include <rw/proximity/rwstrategy/ProximityStrategyRW.hpp>
 
-#include <boost/foreach.hpp>
+
 #include <string>
 
 using rw::common::ownedPtr;
@@ -117,7 +117,7 @@ BOOST_AUTO_TEST_CASE( mainDistanceTest )
 
 	int idx = 0;
 
-    BOOST_FOREACH(const DistanceStrategy::Ptr& strategy, strategies) {
+    for(const DistanceStrategy::Ptr& strategy: strategies) {
 
         testStrategy0(strategy);
 
