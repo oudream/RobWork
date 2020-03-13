@@ -20,7 +20,7 @@
 #include <rwsim/dynamics/ContactDataMap.hpp>
 #include <rwsim/dynamics/MaterialDataMap.hpp>
 
-#include <boost/foreach.hpp>
+
 
 using namespace rwsim::dynamics;
 using namespace rwsimlibs::bullet;
@@ -60,10 +60,10 @@ double BtMaterial::getFriction(const BtMaterial* a, const BtMaterial* b) {
 	if (a->getFrictionMap() != b->getFrictionMap())
 		RW_THROW("Two BtMaterials did not point to the same FrictionMap!");
 	const std::vector<FrictionData> datas = a->getFrictionMap()->getFrictionDatas(a->getMaterial(),b->getMaterial());
-	BOOST_FOREACH(const FrictionData& data, datas) {
+	for(const FrictionData& data: datas) {
 		if (data.type == Coulomb) {
 			const std::vector<FrictionParam> pars = data.parameters;
-			BOOST_FOREACH(const FrictionParam& par, pars) {
+			for(const FrictionParam& par: pars) {
 				if (par.first == "Mu" || par.first == "MU" || par.first == "mu")
 					return par.second[0];
 			}

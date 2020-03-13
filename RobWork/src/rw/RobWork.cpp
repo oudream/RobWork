@@ -26,7 +26,7 @@
 #include <rw/loaders/dom/DOMPropertyMapSaver.hpp>
 
 #include <boost/filesystem.hpp>
-#include <boost/foreach.hpp>
+
 #include <boost/program_options/option.hpp>
 #include <boost/program_options/options_description.hpp>
 #include <boost/program_options/parsers.hpp>
@@ -220,7 +220,7 @@ void RobWork::initialize (const std::vector< std::string >& plugins)
     }
 
     Log::debugLog () << "Looking for RobWork plugins in following directories:\n";
-    BOOST_FOREACH (PropertyBase::Ptr prop, pluginsMap.getProperties ()) {
+    for (PropertyBase::Ptr prop : pluginsMap.getProperties ()) {
         // check if its a
         Property< std::string >::Ptr propstr = prop.cast< Property< std::string > > ();
         if (propstr == NULL)

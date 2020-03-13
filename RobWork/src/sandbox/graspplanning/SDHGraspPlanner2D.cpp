@@ -5,7 +5,7 @@
 #include <rw/invkin/ResolvedRateSolver.hpp>
 #include <rw/invkin/SimpleMultiSolver.hpp>
 
-#include <boost/foreach.hpp>
+
 
 #include "CG3IKSolver2D.hpp"
 #include <rw/geometry/Contour2DUtil.hpp>
@@ -114,7 +114,7 @@ std::vector<SDHGraspPlanner2D::GraspResult>
     int nrAppIk(0), nrAppIkRobot(0);
     int nrIk(0), nrIkRobot(0),nrBadGrasps(0);
 
-    BOOST_FOREACH(const Grasp2D& grasp, _grasps){
+    for(const Grasp2D& grasp: _grasps){
         // first create the approach grasp and its inverse kinematics solution
         // make sure that the approach grasp is collision free, so test a few clerances before discarding an approach grasp
         CG3IKSolver2D::IKResult ikHandRes;

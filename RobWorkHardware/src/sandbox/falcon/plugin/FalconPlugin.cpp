@@ -441,7 +441,7 @@ void FalconPlugin::step(rwsim::simulator::ThreadSimulator* sim, const rw::kinema
 	
 	if (cbodies.size() > 0) {
 		cout << "Contact points: ";
-		BOOST_FOREACH (CMap::value_type& c, cbodies) {
+		for(CMap::value_type& c : cbodies) {
 			cnames.push_back(std::make_pair(c.first.first, c.first.second));
 			cout << c.first.first << "-" << c.first.second << " ";
 		}
@@ -459,7 +459,7 @@ void FalconPlugin::step(rwsim::simulator::ThreadSimulator* sim, const rw::kinema
 		//FKTable fk(state);
 		vector<SimulationTrajectory::SimulationStep::ObjectPose> objPoses;
 		
-		BOOST_FOREACH (Body::Ptr body, _bodies) {
+		for(Body::Ptr body : _bodies) {
 			objPoses.push_back(make_pair(body->getName(), fk.get(body->getBodyFrame())));
 		}
 		
@@ -516,7 +516,7 @@ void FalconPlugin::setupGui()
 	
 	_robotCombo->clear();
 	_gripperCombo->clear();
-	BOOST_FOREACH (SimulatedController::Ptr ctrlr, _controllers) {
+	for(SimulatedController::Ptr ctrlr : _controllers) {
 		_robotCombo->addItem(QString::fromStdString(ctrlr->getControllerName()));
 		_gripperCombo->addItem(QString::fromStdString(ctrlr->getControllerName()));
 	}

@@ -1,6 +1,6 @@
 #include "FiniteStateSampler.hpp"
 
-#include <boost/foreach.hpp>
+
 
 #include <rw/kinematics/State.hpp>
 #include <rw/math/Random.hpp>
@@ -73,7 +73,7 @@ void FiniteStateSampler::addState(const rw::kinematics::State& state){
 }
 
 void FiniteStateSampler::addStates(const std::vector<rw::kinematics::State>& states){
-	BOOST_FOREACH(const State& state, states){
+	for(const State& state: states){
 		_states.push_back(state);
 	}
 }

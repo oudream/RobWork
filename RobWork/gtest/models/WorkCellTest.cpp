@@ -24,7 +24,7 @@
 #include <rw/kinematics/StateStructure.hpp>
 #include <rw/models/WorkCell.hpp>
 
-#include <boost/foreach.hpp>
+
 #include <vector>
 
 using namespace std;

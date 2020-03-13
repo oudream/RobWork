@@ -17,7 +17,7 @@
 
 #include <rw/common/TimerUtil.hpp>
 
-#include <boost/foreach.hpp>
+
 
 #include "EulerIntegrator.hpp"
 
@@ -59,7 +59,7 @@ namespace {
         //std::cout << "Updating body states" << std::endl;
         // simple euler update
         //std::cout << "Nr of bodies: " << _bodies.size() << std::endl;
-        BOOST_FOREACH(RWBody *body, bodies){
+        for(RWBody *body: bodies){
             body->saveState(dt, state);
         }
     }
@@ -99,7 +99,7 @@ void RWSimulator::initPhysics(State& state){
     // create ContactGraph from the dwc
     RW_DEBUG("- Creating constraint nodes for free bodies");
     std::vector<ConstraintNode*> node;
-    BOOST_FOREACH(Body::Ptr b, _dwc->getBodies() ){
+    for(Body::Ptr b: _dwc->getBodies() ){
         Body *body = b.get();
         if( dynamic_cast<RigidBody*>(body) ){
             ConstraintNode *node = _pool->createCNode( ConstraintNode::Rigid );
@@ -138,7 +138,7 @@ void RWSimulator::initPhysics(State& state){
 
     RW_DEBUG("- Creating constraint nodes and edges from devices!");
     // construct nodes from
-    BOOST_FOREACH(DynamicDevice::Ptr dev, _dwc->getDynamicDevices()){
+    for(DynamicDevice::Ptr dev: _dwc->getDynamicDevices()){
         if( dynamic_cast<RigidDevice*>(dev.get()) ){
             std::cout << "NO SUPPORT FOR RIGID DEVICES!" << std::endl;
         } else if( dynamic_cast<KinematicDevice*>(dev.get()) ){
@@ -176,7 +176,7 @@ drawable::SimulatorDebugRender::Ptr RWSimulator::createDebugRender() {
 void RWSimulator::step(double dt, State& state){
     double totalEnergyBefore=0,totalEnergyAfter=0;
     // calculate energy before
-    BOOST_FOREACH(RWBody *body, _bodies){
+    for(RWBody *body: _bodies){
         totalEnergyBefore += body->calcEnergy(_dwc->getGravity());
     }
 
@@ -185,7 +185,7 @@ void RWSimulator::step(double dt, State& state){
     info.dt = dt;
     info.rollback = false;
     RW_DEBUG("* Update all controllers!");
-    BOOST_FOREACH(SimulatedController::Ptr controller, _controllers ){
+    for(SimulatedController::Ptr controller: _controllers ){
         controller->update(info, state);
     }
 
@@ -198,7 +198,7 @@ void RWSimulator::step(double dt, State& state){
 
     // And energy after
     RW_DEBUG("* Energy calculation: ");
-    BOOST_FOREACH(RWBody *body, _bodies){
+    for(RWBody *body: _bodies){
         totalEnergyAfter += body->calcEnergy(_dwc->getGravity());
     }
 
@@ -214,14 +214,14 @@ double RWSimulator::internalStep(double dt, rw::kinematics::State& state){
     // ------------------ FORCE RESET --------------------------------
     // first reset all force contributions to zero
     RW_DEBUG("* Reset forces");
-    BOOST_FOREACH(RWBody *body, _bodies){
+    for(RWBody *body: _bodies){
         RW_ASSERT(body);
         body->reset();
         body->calcAuxVarialbles(state);
     }
 
     RW_DEBUG("* Add external forces ");
-    BOOST_FOREACH(BodyController* manipulator, _manipulators) {
+    for(BodyController* manipulator: _manipulators) {
         manipulator->addForces( state , _time );
     }
 
@@ -244,7 +244,7 @@ double RWSimulator::internalStep(double dt, rw::kinematics::State& state){
     do {
         // now update velocities
         RW_DEBUG("** update velocities ");
-        BOOST_FOREACH(BodyIntegrator *integrator, _integrators){
+        for(BodyIntegrator *integrator: _integrators){
             integrator->updateVelocity(timeStep, state);
         }
 
@@ -258,7 +258,7 @@ double RWSimulator::internalStep(double dt, rw::kinematics::State& state){
         // *****************************************************************
         // update position state
         RW_DEBUG("** update position ");
-        BOOST_FOREACH(BodyIntegrator *integrator, _integrators){
+        for(BodyIntegrator *integrator: _integrators){
             integrator->updatePosition(timeStep, state);
         }
 
@@ -281,7 +281,7 @@ double RWSimulator::internalStep(double dt, rw::kinematics::State& state){
         }
     } while(penetrating);
 
-    BOOST_FOREACH(RWBody *body, _bodies){
+    for(RWBody *body: _bodies){
         std::cout << "VELOCITY OF BODY: " << body->getBodyFrame()->getName() << std::endl;
         std::cout << "LinVel: " <<body->getLinVel() << std::endl;
         std::cout << "AngVel: " <<body->getAngVel() << std::endl;
@@ -297,7 +297,7 @@ void RWSimulator::rollBack(State &state){
 
     _cgraph->rollBack(state);
     // roll back bodies
-    BOOST_FOREACH(RWBody *body, _bodies){
+    for(RWBody *body: _bodies){
         body->rollBack(state);
     }
 }

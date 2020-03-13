@@ -639,9 +639,9 @@ void GraspPlugin::showTasks()
 	//if (tasks == NULL) { return; }
 	
 	if (tasks != NULL && (_showTasks || _showSamples)) {
-		//BOOST_FOREACH (GraspTarget& target, tasks->getSubTasks()[0].getTargets()) {
+		//for(GraspTarget& target : tasks->getSubTasks()[0].getTargets()) {
 		typedef std::pair<class GraspSubTask*, class GraspTarget*> TaskTarget;
-		BOOST_FOREACH (TaskTarget p, tasks->getAllTargets()) {
+		for(TaskTarget p : tasks->getAllTargets()) {
 			RenderTargets::Target rt;
 			rt.ctask = p.first; //&tasks->getSubTasks()[0];
 			rt.ctarget = *p.second; //target;
@@ -740,7 +740,7 @@ void GraspPlugin::test()
 	//log().info() << RPY<>(frame->getTransform(getRobWorkStudio()->getState()).R()) << endl;*/
 	
 	// sequence gripper pictures
-	BOOST_FOREACH (Gripper::Ptr g, _gripperList) {
+	for(Gripper::Ptr g : _gripperList) {
 		// load gripper
 		_gripper = g;
 		updateGripper();

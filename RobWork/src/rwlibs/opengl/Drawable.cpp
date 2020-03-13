@@ -21,7 +21,7 @@
 
 #include <rw/graphics/Render.hpp>
 
-#include <boost/foreach.hpp>
+
 
 using namespace rwlibs::opengl;
 using namespace rw::graphics;
@@ -86,7 +86,7 @@ void RWDrawable::draw(const DrawableNode::RenderInfo& info) const
     if(dtype==SOLID)
         dtype = info._drawType;
 
-    BOOST_FOREACH(const Render::Ptr& render, _renders) {
+    for(const Render::Ptr& render: _renders) {
         render->draw(info, dtype, _alpha);
     }
     if (highlight) {

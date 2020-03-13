@@ -18,7 +18,7 @@
 #include "MaterialDataMap.hpp"
 
 #include <rw/common/macros.hpp>
-#include <boost/foreach.hpp>
+
 
 using namespace rwsim::dynamics;
 
@@ -75,7 +75,7 @@ bool MaterialDataMap::hasFrictionData(int matAID, int matBID, int dataType) cons
     FrictionMap::const_iterator res = _frictionMap.find(pair);
     if( res == _frictionMap.end() )
     	return false;
-    BOOST_FOREACH(const FrictionData& data, (*res).second){
+    for(const FrictionData& data: (*res).second){
         if(data.type==dataType)
         	return true;
     }
@@ -95,7 +95,7 @@ const FrictionData& MaterialDataMap::getFrictionData(int materialA, int material
                 << getMaterialName(materialA) << ";" << getMaterialName(materialB) << ")");
         return getDefaultFriction(type);
     }
-    BOOST_FOREACH(const FrictionData& data, (*res).second){
+    for(const FrictionData& data: (*res).second){
         if(data.type==type){
             return data;
         }

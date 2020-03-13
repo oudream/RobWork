@@ -23,7 +23,7 @@
 #include <rw/models/DependentJoint.hpp>
 #include <rw/kinematics/FKTable.hpp>
 
-#include <boost/foreach.hpp>
+
 
 using namespace rw::models;
 using namespace rw::kinematics;
@@ -36,7 +36,7 @@ namespace {
     std::map<Joint*, size_t> labelJoints(const std::vector<Joint*>& joints) {
         std::map<Joint*, size_t> labels;
         size_t col = 0;
-        BOOST_FOREACH(Joint* joint, joints) {
+        for(Joint* joint: joints) {
             labels[joint] = col;
             col += joint->getDOF();
         }
@@ -110,7 +110,7 @@ JointDeviceJacobianCalculator::JointDeviceJacobianCalculator(/*const std::vector
     _joints = device->getJoints();
     _dof = device->getDOF();
     std::map<Joint*, size_t> labeledJoints = labelJoints(_joints);
-    BOOST_FOREACH(const Frame* tcp, _tcps) {
+    for(const Frame* tcp: _tcps) {
         _jacobianSetups.push_back(getJacobianSetups(labeledJoints, tcp, state));
     }
 }

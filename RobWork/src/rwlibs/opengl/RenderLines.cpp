@@ -22,7 +22,7 @@
 #include <rw/geometry/Line.hpp>
 #include <rwlibs/os/rwgl.hpp>
 
-#include <boost/foreach.hpp>
+
 
 using namespace rw::math;
 using namespace rwlibs::opengl;
@@ -42,7 +42,7 @@ namespace
     {
 	    glBegin(GL_LINES);
 	    // Draw all faces.
-        BOOST_FOREACH(const Line& line, lines) {
+        for(const Line& line: lines) {
 	    	// TODO: better to use glVertex3fv
             drawVector3D(line.p1());
             drawVector3D(line.p2());

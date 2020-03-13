@@ -18,8 +18,6 @@
 #include <rw/math/LinearAlgebra.hpp>
 #include <rw/math/Quaternion.hpp>
 
-#include <boost/foreach.hpp>
-
 using namespace rwlibs::algorithms; 
 using namespace rw::math;
 
@@ -30,7 +28,7 @@ rw::math::Transform3D<> PointPairsRegistration::pointPairRegistrationQuaternion(
     Vector3D<> my_a(0,0,0);
     Vector3D<> my_b(0,0,0);
 
-    BOOST_FOREACH(const PointPair& pp, pointPairs) {
+    for(const PointPair& pp: pointPairs) {
         my_a += pp.first;
         my_b += pp.second;
     }
@@ -41,7 +39,7 @@ rw::math::Transform3D<> PointPairsRegistration::pointPairRegistrationQuaternion(
 
     // Compute 𝐻=∑_(𝑖=1)^𝑁▒〖 (𝑃_𝑖^𝑏𝑎𝑠𝑒−〖𝜇" " 〗_𝑏𝑎𝑠𝑒)(〖𝑃_𝑖^𝑐𝑎𝑚−〖𝜇" " 〗_𝑐𝑎𝑚)〗^𝑇 〗
     Eigen::MatrixXd H = Eigen::MatrixXd::Zero(3,3);
-    BOOST_FOREACH(const PointPair& pp, pointPairs) {
+    for(const PointPair& pp: pointPairs) {
         Vector3D<> a = pp.first - my_a;
         Vector3D<> b = pp.second - my_b;
 
@@ -97,7 +95,7 @@ rw::math::Transform3D<> PointPairsRegistration::pointPairRegistrationSVD(const s
     Vector3D<> my_a(0,0,0);
     Vector3D<> my_b(0,0,0);
 
-    BOOST_FOREACH(const PointPair& pp, pointPairs) {
+    for(const PointPair& pp: pointPairs) {
         my_a += pp.first;
         my_b += pp.second;
     }
@@ -107,7 +105,7 @@ rw::math::Transform3D<> PointPairsRegistration::pointPairRegistrationSVD(const s
 
     //Compute 𝐻=∑_(𝑖=1)^𝑁▒〖 (𝑃_𝑖^𝑏𝑎𝑠𝑒−〖𝜇" " 〗_𝑏𝑎𝑠𝑒)(〖𝑃_𝑖^𝑐𝑎𝑚−〖𝜇" " 〗_𝑐𝑎𝑚)〗^𝑇 〗 
     Eigen::MatrixXd H = Eigen::MatrixXd::Zero(3,3);
-    BOOST_FOREACH(const PointPair& pp, pointPairs) {
+    for(const PointPair& pp: pointPairs) {
         Vector3D<> a = pp.first - my_a;
         Vector3D<> b = pp.second - my_b;
 

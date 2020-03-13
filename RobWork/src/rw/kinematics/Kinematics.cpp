@@ -24,7 +24,6 @@
 #include "FKRange.hpp"
 
 #include <rw/common/StringUtil.hpp>
-#include <boost/foreach.hpp>
 
 using namespace rw::math;
 using namespace rw::kinematics;
@@ -66,7 +65,7 @@ namespace {
                              std::vector<Frame*>& result)
     {
         result.push_back(&frame);
-        BOOST_FOREACH(Frame& f, frame.getChildren(state)) {
+        for(Frame& f: frame.getChildren(state)) {
             findAllFramesHelper(f, state, result);
         }
     }
@@ -74,7 +73,7 @@ namespace {
     void findAllFramesHelper(Frame& frame, std::vector<Frame*>& result)
     {
         result.push_back(&frame);
-        BOOST_FOREACH(Frame& f, frame.getChildren()) {
+        for(Frame& f: frame.getChildren()) {
             findAllFramesHelper(f, result);
         }
     }
@@ -152,7 +151,7 @@ std::vector<Frame*> Kinematics::parentToChildChain(Frame* parent, Frame* child,
 std::map<std::string, Frame*> Kinematics::buildFrameMap(Frame* root, const State& state)
 {
     std::map<std::string, Frame*> result;
-    BOOST_FOREACH(Frame* frame, Kinematics::findAllFrames(root, state))
+    for(Frame* frame: Kinematics::findAllFrames(root, state))
     {
         result.insert(std::make_pair(frame->getName(), frame));
     }
@@ -244,7 +243,7 @@ namespace {
 
 	void createStaticFrameGroups(Frame& root, FrameList& group, std::vector<FrameList>& staticGroups, const State& state) {
 		group.push_back(&root);
-		BOOST_FOREACH(Frame& frame, root.getChildren(state)) {
+		for(Frame& frame: root.getChildren(state)) {
 			if (isNonDafAndFixed(frame)) {
 				createStaticFrameGroups(frame, group, staticGroups, state);
 			} else {
@@ -257,7 +256,7 @@ namespace {
 
 	void createStaticFrameGroups(const Frame& root, ConstFrameList& group, std::vector<ConstFrameList>& staticGroups, const State& state) {
 		group.push_back(&root);
-		BOOST_FOREACH(const Frame& frame, root.getChildren(state)) {
+		for(const Frame& frame: root.getChildren(state)) {
 			if (isNonDafAndFixed(frame)) {
 				createStaticFrameGroups(frame, group, staticGroups, state);
 			} else {

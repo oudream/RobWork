@@ -1,6 +1,6 @@
 #include "ODESimCfgDialog.hpp"
 
-#include <boost/foreach.hpp>
+
 
 #include <rwsimlibs/ode/ODESimulator.hpp>
 
@@ -67,7 +67,7 @@ void ODESimCfgDialog::changedEvent(){
 
     	int matId = body->getMaterialID();
     	_ui->_materialBox->clear();
-    	BOOST_FOREACH(const std::string& name, sim->getDynamicWorkCell()->getMaterialData().getMaterials() ){
+    	for(const std::string& name: sim->getDynamicWorkCell()->getMaterialData().getMaterials() ){
     	    _ui->_materialBox->addItem(name.c_str());
     	}
     	_ui->_materialBox->setCurrentIndex(matId);
@@ -135,7 +135,7 @@ void ODESimCfgDialog::updateValues(){
 
 	std::vector<ODEBody*>& bodies = sim->getODEBodies();
 	_ui->_objListWidget->clear();
-	BOOST_FOREACH(ODEBody* body, bodies){
+	for(ODEBody* body: bodies){
 	    _ui->_objListWidget->addItem( QString( body->getFrame()->getName().c_str() ) );
 	}
 

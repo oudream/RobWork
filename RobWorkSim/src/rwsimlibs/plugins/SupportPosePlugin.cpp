@@ -32,7 +32,7 @@
 #include <QShortcut>
 #include <QKeySequence>
 
-#include <boost/foreach.hpp>
+
 
 #include <RobWorkStudio.hpp>
 
@@ -67,7 +67,7 @@
 #include <iostream>
 #include <fstream>
 
-#include <boost/foreach.hpp>
+
 
 using namespace rw::models;
 using namespace rw::math;
@@ -182,7 +182,7 @@ SupportPosePlugin::SupportPosePlugin():
             std::vector<std::string> engineIDs =
                 PhysicsEngineFactory::getEngineIDs();
             _engineBox = new QComboBox();
-            BOOST_FOREACH(std::string engineID, engineIDs){
+            for(std::string engineID: engineIDs){
                 _engineBox->addItem(engineID.c_str());
             }
             lay->addWidget(_engineBox);
@@ -354,7 +354,7 @@ void SupportPosePlugin::createSimulator(){
 
     // update the bodies that are to be thrown randomly
     _bodies.clear();
-    BOOST_FOREACH(Body *body, _dwc->getBodies()){
+    for(Body *body: _dwc->getBodies()){
         if( RigidBody *rbody=dynamic_cast<RigidBody*>(body) ){
             _bodies.push_back(rbody);
         }
@@ -519,7 +519,7 @@ void SupportPosePlugin::saveState(){
     // check the velocity of all the bodies
     double lVelThres = 0.0001, aVelThres = 0.00001;
     bool allBelowThres = true;
-    BOOST_FOREACH(RigidBody *rbody, _bodies){
+    for(RigidBody *rbody: _bodies){
         // get velocity of rbody
         // if above threshold then break and continue
         Vector3D<> avel = rbody->getAngVel();

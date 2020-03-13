@@ -55,7 +55,7 @@ void BodyContactSensor::update(const rwlibs::simulation::Simulator::UpdateInfo& 
 	cstate->_bodies = cstate->_bodiesTmp;
 	cstate->_bodiesTmp.clear();
 	 //std::cout << "Sensor Forces: ";
-     //BOOST_FOREACH(Contact3D& c, _contacts){
+     //for(Contact3D& c: _contacts){
      //    std::cout << "--" <<  c.normalForce << "\n";
      //}
 

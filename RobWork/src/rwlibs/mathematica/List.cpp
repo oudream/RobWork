@@ -17,7 +17,7 @@
 
 #include "List.hpp"
 
-#include <boost/foreach.hpp>
+
 
 using namespace rw::common;
 using namespace rwlibs::mathematica;
@@ -30,7 +30,7 @@ List::List():
 List::List(const std::vector<Expression::Ptr>& args):
 	FunctionBase("List")
 {
-	BOOST_FOREACH(const Expression::Ptr arg, args) {
+	for(const Expression::Ptr arg: args) {
 		const rw::common::Ptr<const FunctionBase> fct = arg.cast<const FunctionBase>();
 		if (!fct.isNull()) {
 			if (fct->getName() == "List")
@@ -46,7 +46,7 @@ List::List(const std::vector<Expression::Ptr>& args):
 List::List(const std::list<rw::common::Ptr<const Expression> >& args):
 	FunctionBase("List")
 {
-	BOOST_FOREACH(const rw::common::Ptr<const Expression> arg, args) {
+	for(const rw::common::Ptr<const Expression> arg: args) {
 		const rw::common::Ptr<const FunctionBase> fct = arg.cast<const FunctionBase>();
 		if (!fct.isNull()) {
 			if (fct->getName() == "List")
@@ -64,7 +64,7 @@ List::~List() {
 
 std::list<rw::common::Ptr<const Mathematica::Expression> > List::getArguments() const {
 	std::list<rw::common::Ptr<const Mathematica::Expression> > res;
-	BOOST_FOREACH(const Expression::Ptr e, _data) {
+	for(const Expression::Ptr e: _data) {
 		res.push_back(e);
 	}
 	return res;

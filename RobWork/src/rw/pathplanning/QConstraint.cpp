@@ -25,7 +25,7 @@
 #include <rw/common/macros.hpp>
 #include <rw/kinematics/State.hpp>
 #include <rw/proximity/CollisionDetector.hpp>
-#include <boost/foreach.hpp>
+
 
 using namespace rw::math;
 using namespace rw::kinematics;
@@ -84,7 +84,7 @@ namespace
     private:
         bool doInCollision(const Q& q) const
         {
-			BOOST_FOREACH(const QConstraint::Ptr& sc, _constraints) {
+			for(const QConstraint::Ptr& sc: _constraints) {
                 if (sc->inCollision(q))
                     return true;
             }
@@ -92,13 +92,13 @@ namespace
         }
 
 		void doUpdate(const rw::kinematics::State& state) {
-			BOOST_FOREACH(const QConstraint::Ptr& sc, _constraints) {
+			for(const QConstraint::Ptr& sc: _constraints) {
 				sc->update(state);
 			}
 		}
 
 		void doSetLog(Log::Ptr log) {
-			BOOST_FOREACH(const QConstraint::Ptr& sc, _constraints) {
+			for(const QConstraint::Ptr& sc: _constraints) {
 				sc->setLog(log);
 			}
 		}
