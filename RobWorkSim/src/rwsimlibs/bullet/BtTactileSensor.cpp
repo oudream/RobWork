@@ -27,7 +27,7 @@
 #include <BulletCollision/NarrowPhaseCollision/btPersistentManifold.h>
 #include <BulletDynamics/ConstraintSolver/btTypedConstraint.h>
 
-#include <boost/foreach.hpp>
+
 
 using namespace rw::kinematics;
 using namespace rw::math;

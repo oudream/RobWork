@@ -1,6 +1,6 @@
 #include "SimCfgDialog.hpp"
 
-//#include <boost/foreach.hpp>
+//
 
 #include <RobWorkSimConfig.hpp>
 
@@ -31,7 +31,7 @@ SimCfgDialog::SimCfgDialog(rw::common::Ptr<DynamicSimulator> sim, QWidget *paren
 	ODESimCfgDialog *dialog = new ODESimCfgDialog(sim, this);
 	_ui->_tabPane->addTab(dialog, "ODE");
 #endif
-	//BOOST_FOREACH(const std::string& engineID, engineIDs){
+	//for(const std::string& engineID: engineIDs){
 		//_tabPane->addTab(this, engineID.c_str() );
 		//_spaceMethodBox->addItem(engineID.c_str());
 	//}

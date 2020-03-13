@@ -3,7 +3,7 @@
 #include <rw/common/IOUtil.hpp>
 #include <rwlibs/dll/DynamicLibraryLoader.hpp>
 
-#include <boost/foreach.hpp>
+
 
 using namespace rw::common;
 using namespace rw::plugin;
@@ -42,7 +42,7 @@ void PluginRepository::addFilesInFolder(const std::string& path) {
     
     std::vector<std::string> files = IOUtil::getFilesInFolder(path, true, "*.dll");
 
-    BOOST_FOREACH(std::string str, files) {
+    for(std::string str: files) {
         std::cout<<"DLL File = "<<str<<std::endl;
         add(str);        
     }

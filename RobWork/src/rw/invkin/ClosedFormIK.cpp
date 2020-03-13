@@ -24,7 +24,7 @@
 #include <rw/models/DHParameterSet.hpp>
 #include <rw/kinematics/Kinematics.hpp>
 
-#include <boost/foreach.hpp>
+
 
 using namespace rw::invkin;
 using namespace rw::models;
@@ -51,9 +51,7 @@ ClosedFormIK::Ptr ClosedFormIK::make(const Device& device,
     // Extract the DH parameters.
     std::vector<DHParameterSet> dhs;
     Joint *lastJoint = NULL;
-    BOOST_FOREACH(Joint *joint, jd->getJoints() ){
-    //for (size_t i = 0; i < jd->getDOF(); i++) {
-    //    Joint* joint = jd->getActiveJoint(i);
+    for(Joint *joint: jd->getJoints() ){
         lastJoint = joint;
         RevoluteJoint* rj = dynamic_cast<RevoluteJoint*>(joint);
         if (!rj)

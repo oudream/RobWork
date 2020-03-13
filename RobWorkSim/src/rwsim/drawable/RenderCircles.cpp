@@ -21,7 +21,7 @@
 #include <rwlibs/os/rwgl.hpp>
 #include <rwsim/util/CircleModel.hpp>
 
-#include <boost/foreach.hpp>
+
 
 using namespace rw::graphics;
 using namespace rw::math;
@@ -60,7 +60,7 @@ void RenderCircles::draw(const DrawableNode::RenderInfo& info, DrawType type, do
 	glColor3fv(_color);
 
 
-	BOOST_FOREACH(const CircleModel &circle, _circles){
+	for(const CircleModel &circle: _circles){
 		Vector3D<> n = normalize(circle._n);
 		//std::cout << "N: " << n << std::endl;
 		Vector3D<> c = circle._center;

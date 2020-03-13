@@ -17,7 +17,7 @@
 
 #include "PlaneModel.hpp"
 
-#include <boost/foreach.hpp>
+
 #include <rw/math/LinearAlgebra.hpp>
 #include <rw/common/macros.hpp>
 
@@ -48,7 +48,7 @@ double PlaneModel::refit( std::vector<rw::math::Vector3D<> >& data ){
 
         Eigen::MatrixXd covar( Eigen::MatrixXd::Zero(3, 3) );
         Vector3D<> centroid(0,0,0);
-        BOOST_FOREACH(Vector3D<> &v, data){
+        for(Vector3D<> &v: data){
             centroid += v;
             for(size_t j=0;j<3;j++)
                 for(size_t k=0;k<3;k++)
@@ -100,7 +100,7 @@ double PlaneModel::refit( std::vector<rw::math::Vector3D<> >& data ){
 
     // calculate the fit error as the squared mean over the distance of a point from the plane
     double sum = 0;
-    BOOST_FOREACH(Vector3D<> &p, data){
+    for(Vector3D<> &p: data){
         const double fitE = fitError(p);
         sum = fitE*fitE;
     }

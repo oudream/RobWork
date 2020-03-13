@@ -22,7 +22,7 @@
 #include <rw/common/PropertyMap.hpp>
 #include <rw/sensor/Image.hpp>
 
-#include <boost/foreach.hpp>
+
 
 using namespace rw::common;
 using namespace rwlibs::mathematica;
@@ -90,7 +90,7 @@ std::list<rw::common::Ptr<const Mathematica::Expression> > Image::getArguments()
 	res.push_back(_data);
 	if (!_type.isNull())
 		res.push_back(_type);
-	BOOST_FOREACH(const Rule::Ptr rule, _rules) {
+	for(const Rule::Ptr rule: _rules) {
 		res.push_back(rule);
 	}
 	return res;
@@ -100,7 +100,7 @@ Mathematica::Expression::Ptr Image::clone() const {
 	const Image::Ptr img = ownedPtr(new Image(*_data));
 	if (!_type.isNull())
 		img->_type = _type->clone().cast<Mathematica::String>();
-	BOOST_FOREACH(const Rule::Ptr rule, _rules) {
+	for(const Rule::Ptr rule: _rules) {
 		img->_rules.push_back(rule->clone().cast<Rule>());
 	}
 	return img;
@@ -111,7 +111,7 @@ void Image::setImageSize(std::size_t width, std::size_t height) {
 	imageSize.add(ownedPtr(new Mathematica::Integer(400)));
 	imageSize.add(ownedPtr(new Mathematica::Integer(250)));
 	Rule::Ptr search = NULL;
-	BOOST_FOREACH(const Rule::Ptr rule, _rules) {
+	for(const Rule::Ptr rule: _rules) {
 		if (rule->getId() == "ImageSize") {
 			search = rule;
 		}

@@ -16,120 +16,45 @@
  ********************************************************************************/
 
 #include "WorkcellHighlighter.hpp"
+#include <QTextCharFormat>
+#include <QRegularExpression>
+
+WorkcellHighlighter::HighlightingRule WorkcellHighlighter::makeRule(QString pattern, QColor color, int fontweight ){
+    HighlightingRule rule;
+    QTextCharFormat format;
+    format.setForeground (color);
+    format.setFontWeight (fontweight);
+    rule.pattern = QRegularExpression (pattern);
+    rule.format  = format;
+    return rule;
+}
+
+
 
 WorkcellHighlighter::WorkcellHighlighter (QTextDocument* parent) :
     QSyntaxHighlighter (parent)
 {
     HighlightingRule rule;
 
-    /*keywordFormat.setForeground(Qt::darkBlue);
-    keywordFormat.setFontWeight(QFont::Bold);
-    QStringList keywordPatterns;
+    highlightingRules.append (makeRule("\\bWorkCell\\b",QColor (0, 94, 136),QFont::Bold));
 
-    keywordPatterns << "\\bWorkCell\\b" << "\\bFrame\\b" << "\\brefframe\\b"
-                   << "\\bRPY\\b" << "\\bPos\\b" << "\\bSerialDevice\\b"
-                   << "\\bInclude\\b";
+    highlightingRules.append (makeRule("\\bFrame\\b",QColor (217, 0, 93),QFont::Bold));
 
-    foreach (const QString &pattern, keywordPatterns) {
-       rule.pattern = QRegularExpression(pattern);
-       rule.format = keywordFormat;
-       highlightingRules.append(rule);
-    }*/
+    highlightingRules.append (makeRule("\\bDrawable\\b",QColor (0, 175, 95),QFont::Bold));
 
-    QString workcell_pattern = "\\bWorkCell\\b";
-    QTextCharFormat workcell_format;
-    QBrush workcell_brush;
-    workcell_format.setForeground (QColor (0, 94, 136));
-    workcell_format.setFontWeight (QFont::Bold);
-    rule.pattern = QRegularExpression (workcell_pattern);
-    rule.format  = workcell_format;
-    highlightingRules.append (rule);
+    highlightingRules.append (makeRule("\\bCollisionModel\\b",QColor (255, 87, 79),QFont::Bold));
 
-    QString frame_pattern = "\\bFrame\\b";
-    QTextCharFormat frame_format;
-    QBrush frame_brush;
-    frame_format.setForeground (QColor (217, 0, 93));
-    frame_format.setFontWeight (QFont::Bold);
-    rule.pattern = QRegularExpression (frame_pattern);
-    rule.format  = frame_format;
-    highlightingRules.append (rule);
+    highlightingRules.append (makeRule("\\bProperty\\b",Qt::darkGreen,QFont::Bold));
 
-    QString drawable_pattern = "\\bDrawable\\b";
-    QTextCharFormat drawable_format;
-    QBrush drawable_brush;
-    drawable_format.setForeground (QColor (0, 175, 95));
-    drawable_format.setFontWeight (QFont::Bold);
-    rule.pattern = QRegularExpression (drawable_pattern);
-    rule.format  = drawable_format;
-    highlightingRules.append (rule);
+    highlightingRules.append (makeRule("\\bSerialDevice\\b",QColor (1, 135, 134),QFont::Bold));
 
-    QString col_model_pattern = "\\bCollisionModel\\b";
-    QTextCharFormat col_model_format;
-    QBrush col_model_brush;
-    col_model_format.setForeground (QColor (255, 87, 79));
-    col_model_format.setFontWeight (QFont::Bold);
-    rule.pattern = QRegularExpression (col_model_pattern);
-    rule.format  = col_model_format;
-    highlightingRules.append (rule);
-
-    QString property_pattern = "\\bProperty\\b";
-    QTextCharFormat property_format;
-    QBrush property_brush;
-    property_format.setForeground (Qt::darkGreen);
-    property_format.setFontWeight (QFont::Bold);
-    rule.pattern = QRegularExpression (property_pattern);
-    rule.format  = property_format;
-    highlightingRules.append (rule);
-
-    QString serial_device_pattern = "\\bSerialDevice\\b";
-    QTextCharFormat serial_device_format;
-    QBrush serial_device_brush;
-    serial_device_format.setForeground (QColor (1, 135, 134));
-    serial_device_format.setFontWeight (QFont::Bold);
-    rule.pattern = QRegularExpression (serial_device_pattern);
-    rule.format  = serial_device_format;
-    highlightingRules.append (rule);
-
-    QString include_pattern = "\\bInclude\\b";
-    QTextCharFormat include_format;
-    QBrush include_brush;
-    include_format.setForeground (QColor (46, 125, 50));
-    include_format.setFontWeight (QFont::Bold);
-    rule.pattern = QRegularExpression (include_pattern);
-    rule.format  = include_format;
-    highlightingRules.append (rule);
-
-    QString rpy_pattern = "\\bRPY\\b";
-    QTextCharFormat rpy_format;
-    rpy_format.setForeground (QColor (142, 93, 171));
-    rpy_format.setFontWeight (QFont::Bold);
-    rule.pattern = QRegularExpression (rpy_pattern);
-    rule.format  = rpy_format;
-    highlightingRules.append (rule);
-
-    QString pos_pattern = "\\bPos\\b";
-    QTextCharFormat pos_format;
-    pos_format.setForeground (QColor (142, 93, 171));
-    pos_format.setFontWeight (QFont::Bold);
-    rule.pattern = QRegularExpression (pos_pattern);
-    rule.format  = pos_format;
-    highlightingRules.append (rule);
-
-    QString polytope_pattern = "\\bPolytope\\b";
-    QTextCharFormat polytope_format;
-    polytope_format.setForeground (QColor (142, 93, 171));
-    polytope_format.setFontWeight (QFont::Bold);
-    rule.pattern = QRegularExpression (polytope_pattern);
-    rule.format  = polytope_format;
-    highlightingRules.append (rule);
-
-    QString rgb_pattern = "\\bRGB\\b";
-    QTextCharFormat rgb_format;
-    rgb_format.setForeground (QColor (142, 93, 171));
-    rgb_format.setFontWeight (QFont::Bold);
-    rule.pattern = QRegularExpression (rgb_pattern);
-    rule.format  = rgb_format;
-    highlightingRules.append (rule);
+    highlightingRules.append (makeRule("\\bInclude\\b",QColor (46, 125, 50),QFont::Bold));
+    
+    highlightingRules.append (makeRule("\\bRPY\\b",QColor (142, 93, 171),QFont::Bold));
+    highlightingRules.append (makeRule("\\bPos\\b",QColor (142, 93, 171),QFont::Bold));
+    highlightingRules.append (makeRule("\\bPolytope\\b",QColor (142, 93, 171),QFont::Bold));
+    highlightingRules.append (makeRule("\\bBox\\b",QColor (142, 93, 171),QFont::Bold));
+    highlightingRules.append (makeRule("\\bRGB\\b",QColor (142, 93, 171),QFont::Bold));
 
     classFormat.setFontWeight (QFont::Bold);
     classFormat.setForeground (Qt::darkMagenta);

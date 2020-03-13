@@ -11,7 +11,7 @@
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
 #include <boost/optional.hpp>
-#include <boost/foreach.hpp>
+
 #include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string.hpp>
 #include "XMLHelpers.hpp"
@@ -70,7 +70,7 @@ void SurfaceSample::saveToXML(const std::string& filename, const std::vector<Sur
 	PTree tree;
 	
 	// save all the samples!
-	BOOST_FOREACH (const SurfaceSample& sample, samples) {
+	for(const SurfaceSample& sample : samples) {
 		PTree node;
 		
 		node.put("Pos", XMLHelpers::QToString(Q(3, sample.transform.P()[0], sample.transform.P()[1],sample.transform.P()[2])));

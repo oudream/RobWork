@@ -7,7 +7,7 @@
 
 #include <iostream>
 #include <algorithm>
-#include <boost/foreach.hpp>
+
 #include "DownhillOptimizer.hpp"
 
 using namespace std;
@@ -43,7 +43,7 @@ void DownhillOptimizer::newOptimization(const VectorType& initialGuess,
 	}
 
 	// perform initial evaluation of vertices
-	BOOST_FOREACH(Vertex & v, _vertices) {
+	for(Vertex & v: _vertices) {
 		v.second = getFunction()->f(v.first);
 	}
 	std::sort(_vertices.begin(), _vertices.end(), vertexComp);
@@ -114,7 +114,7 @@ void DownhillOptimizer::step(VectorType& currentGuess, ResultType& currentValue,
 	/*
 	 * 5. Evaluate function values at the vertices & sort them best to worst.
 	 */
-	BOOST_FOREACH(Vertex & v, _vertices) {
+	for(Vertex & v: _vertices) {
 		v.second = f->f(v.first);
 	}
 	std::sort(_vertices.begin(), _vertices.end(), vertexComp);
@@ -136,7 +136,7 @@ VectorType DownhillOptimizer::getCentroid(const Vertex& ve) const {
 
 	VectorType centroid(n, 0.0);
 
-	BOOST_FOREACH (const Vertex& v, _vertices) {
+	for (const Vertex& v: _vertices) {
 		if (&v != &ve) {
 			centroid += v.first;
 		}

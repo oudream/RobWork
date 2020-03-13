@@ -17,7 +17,7 @@ using namespace rwlibs::task;
 rwlibs::task::CartesianTask::Ptr Experiments::toCartesianTask(){
     rwlibs::task::CartesianTask::Ptr root= ownedPtr( new rwlibs::task::CartesianTask() );
 
-    BOOST_FOREACH(Experiment &exp, _experiments ){
+    for(Experiment &exp: _experiments ){
         rwlibs::task::CartesianTask::Ptr experiment = ownedPtr( new rwlibs::task::CartesianTask() );
         root->addTask( experiment );
 

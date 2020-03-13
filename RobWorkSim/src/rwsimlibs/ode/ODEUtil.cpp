@@ -159,7 +159,7 @@ ODEUtil::TriMeshData::Ptr ODEUtil::buildTriMesh(GeometryData::Ptr gdata, bool in
         vertIdx+=3;
     }
     int indiIdx = 0;
-    //BOOST_FOREACH(, imesh->getTriangles()){
+    //for(: imesh->getTriangles()){
     for(size_t i=0;i<imesh->getSize();i++){
         const IndexedTriangle<uint32_t> tri = imesh->getIndexedTriangle(i);
         if(invert){

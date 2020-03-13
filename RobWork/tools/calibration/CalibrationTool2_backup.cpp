@@ -217,7 +217,7 @@ int main(int argumentCount, char** argumentArray) {
 	std::cout << "Loading measurements [ " << measurementFilePath << " ].. ";
 	std::cout.flush(); 
 	std::vector<CalibrationMeasurement::Ptr> measurements = XMLCalibrationMeasurementFile<XMLDetectionInfoBaseSerializer>::load(measurementFilePath);
-	BOOST_FOREACH(CalibrationMeasurement::Ptr measurement, measurements) {
+	for(CalibrationMeasurement::Ptr measurement: measurements) {
 		//measurement->setDeviceName(deviceName);
 		//measurement->setMarkerFrameName(measurementFrameName); 
 		//measurement->setSensorFrameName(referenceFrameName);
@@ -328,7 +328,7 @@ int main(int argumentCount, char** argumentArray) {
 	{
 		std::ofstream outfile(measurementFilePath+".txt");
 		outfile<<std::setprecision(16);		
-		BOOST_FOREACH(CalibrationMeasurement::Ptr measurement, measurements) {
+		for(CalibrationMeasurement::Ptr measurement: measurements) {
 		
 			const Q& q = measurement->getQ();
 			for (size_t i = 0; i<q.size(); i++) {

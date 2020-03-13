@@ -187,14 +187,14 @@ void TaskDialog::updateGUI()
 {
 	// fill the target box
 	ui.targetCombo->clear();
-	BOOST_FOREACH (Object::Ptr obj, _td->getWorkCell()->getObjects()) {
+	for(Object::Ptr obj : _td->getWorkCell()->getObjects()) {
 		ui.targetCombo->addItem(QString::fromStdString(obj->getName()));
 	}
 	ui.targetCombo->setCurrentIndex(ui.targetCombo->findText(QString::fromStdString(_td->getTargetObject()->getName())));
 	
 	// fill the gripper box
 	ui.gripperCombo->clear();
-	BOOST_FOREACH (Device::Ptr dev, _td->getWorkCell()->getDevices()) {
+	for(Device::Ptr dev : _td->getWorkCell()->getDevices()) {
 		ui.gripperCombo->addItem(QString::fromStdString(dev->getName()));
 	}
 	ui.gripperCombo->setCurrentIndex(ui.gripperCombo->findText(QString::fromStdString(_td->getGripperDevice()->getName())));

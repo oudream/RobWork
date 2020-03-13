@@ -19,7 +19,7 @@
 #include <rw/common/macros.hpp>
 #include <rw/math/Constants.hpp>
 #include <rw/use_robwork_namespace.hpp>
-#include <boost/foreach.hpp>
+
 #include <cmath>
 using namespace robwork;
 
@@ -39,7 +39,7 @@ namespace
     {
         int cnt = 0;
         P2D sum(0, 0);
-        BOOST_FOREACH(const P2D& pnt, pnts) {
+        for(const P2D& pnt: pnts) {
             sum += pnt;
             ++cnt;
         }
@@ -52,7 +52,7 @@ namespace
     {
         int cnt = 0;
         P2D sum(0, 0);
-        BOOST_FOREACH(const P2D& pnt, pnts) {
+        for(const P2D& pnt: pnts) {
             sum += sqr(pnt - avg);
         }
         return sum;
@@ -61,7 +61,7 @@ namespace
     double sumXY(R pnts, const P2D& avg)
     {
         double sum = 0;
-        BOOST_FOREACH(const P2D& pnt, pnts) {
+        for(const P2D& pnt: pnts) {
             const P2D diff = pnt - avg;
             sum += diff[0] * diff[1];
         }

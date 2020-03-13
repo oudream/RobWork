@@ -3,7 +3,7 @@
 #include "CNodePool.hpp"
 
 #include <stack>
-#include <boost/foreach.hpp>
+
 
 #include "ConstraintEdge.hpp"
 
@@ -47,14 +47,14 @@ ContactGraph::ContactGraph(CNodePool* pool,
 	_frameToNode(NULL, 100)
 
 {
-    BOOST_FOREACH(ConstraintEdge* edge, pool->getEdges() ){
+    for(ConstraintEdge* edge: pool->getEdges() ){
         if(edge==NULL)
             continue;
         std::cout << "Edge : " << std::endl;
         _pairToEdge[ edge->getNodes() ] = edge;
     }
 
-    BOOST_FOREACH(ConstraintNode *node, pool->getNodes()){
+    for(ConstraintNode *node: pool->getNodes()){
         if(node==NULL)
             continue;
 
@@ -121,7 +121,7 @@ void ContactGraph::broadPhase(rw::kinematics::State &state,
 
 	std::vector<ConstraintEdge*> deleteList;
 	// for all edges not belonging to _oFrames
-	BOOST_FOREACH(ConstraintEdge *ePtr, _pool->getEdges() ){
+	for(ConstraintEdge *ePtr: _pool->getEdges() ){
 	    // ConstraintEdges can be NULL so handle this
 	    if(ePtr==NULL)
 	        continue;
@@ -149,7 +149,7 @@ void ContactGraph::broadPhase(rw::kinematics::State &state,
 		}
 	}
 
-	BOOST_FOREACH(ConstraintEdge *ePtr, deleteList ){
+	for(ConstraintEdge *ePtr: deleteList ){
 	    removeEdgeFromNodes( *ePtr );
 	    _pool->deleteCEdge( ePtr );
 	}
@@ -157,7 +157,7 @@ void ContactGraph::broadPhase(rw::kinematics::State &state,
 	////////////********** applyLogicalCoherenceTest
 //	std::cout << "Apply logical and stuff" << std::endl;
 	_fEdges.clear();
-	BOOST_FOREACH(ConstraintEdge *ePtr, _pool->getEdges() ){
+	for(ConstraintEdge *ePtr: _pool->getEdges() ){
 	    // edge must not be NULL
 	    RW_ASSERT(ePtr);
 
@@ -462,12 +462,12 @@ void ContactGraph::writeToFile(std::string filename){
     std::ofstream f( filename.c_str() );
 
     f << "graph \"ContactGraph\" { " << std::endl;
-    BOOST_FOREACH(ConstraintNode* node, _pool->getNodes()){
+    for(ConstraintNode* node: _pool->getNodes()){
         printNode(f, *node);
         f << std::endl;
     }
 
-    BOOST_FOREACH(ConstraintEdge *edge, _pool->getEdges()){
+    for(ConstraintEdge *edge: _pool->getEdges()){
         printEdge( f, *edge );
     }
 

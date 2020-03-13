@@ -17,7 +17,7 @@
 
 #include "RenderGhost.hpp"
 
-#include <boost/foreach.hpp>
+
 
 #include <rw/graphics/DrawableNode.hpp>
 #include <rw/graphics/WorkCellScene.hpp>
@@ -76,11 +76,11 @@ void RenderGhost::setMaxBufferSize(size_t size){
 
 void RenderGhost::draw(const DrawableNode::RenderInfo& info, DrawType type, double alpha) const {
 
-    BOOST_FOREACH(Frame *frame, _frames){
+    for(Frame *frame: _frames){
 		const std::vector<DrawableNode::Ptr>& toDraw = _drawer->getDrawables( frame );
 		double alphaStep = 1.0/(double)_states.size();
 		double alpha = 0;
-		BOOST_FOREACH(DrawableNode::Ptr drawable, toDraw){
+		for(DrawableNode::Ptr drawable: toDraw){
 			alpha += alphaStep;
 			drawable->setTransparency((float)alpha);
 			//drawable->setDrawType(Drawable::WIRE);

@@ -26,6 +26,7 @@
 #include <rw/math/Transform3D.hpp>
 #include <rw/common/PropertyMap.hpp>
 #include <rw/common/ConcatVectorIterator.hpp>
+#include <rw/common/PairIterator.hpp>
 #include <vector>
 #include <set>
 #include "StateData.hpp"
@@ -194,12 +195,12 @@ namespace rw { namespace kinematics {
         /**
          * @brief Pair of iterators
          */
-        typedef std::pair<iterator, iterator> iterator_pair;
+        typedef rw::common::iter_pair<iterator> iterator_pair;
 
         /**
          * @brief Pair of const iterators
          */
-        typedef std::pair<const_iterator, const_iterator> const_iterator_pair;
+        typedef  rw::common::iter_pair<const_iterator> const_iterator_pair;
 
         /**
          * @brief Iterator pair for the fixed children of the frame.
@@ -333,11 +334,6 @@ namespace rw { namespace kinematics {
         ChildList _children;
 
         void addChild(Frame* const child) {
-        	/*BOOST_FOREACH(Frame* cchild, _children){
-        		if(cchild==child)
-        			RW_THROW("The frame: \"" << child->getName() << "\" is allready child of \"" << this->getName() << "\"");
-        	}
-			*/
             _children.push_back(child);
         }
 

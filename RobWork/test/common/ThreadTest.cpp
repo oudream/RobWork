@@ -24,7 +24,7 @@
 #include <rw/common/ThreadTask.hpp>
 #include <rw/math/Random.hpp>
 
-#include <boost/foreach.hpp>
+
 #include <boost/function.hpp>
 #include <boost/test/unit_test_monitor.hpp>
 
@@ -327,7 +327,7 @@ int runTask() {
 		eventList = events;
 	}
 	// Print list
-	/*BOOST_FOREACH(const Event &event, eventList) {
+	/*for(const Event &event: eventList) {
 		if (event.type == Event::MainTask)
 			std::cout << "MainTask ";
 		else if (event.type == Event::Task)
@@ -373,7 +373,7 @@ int runTask() {
 		}
 	}
 	boost::mutex::scoped_lock lock(testMutex);
-	BOOST_FOREACH(const Event &event, eventList) {
+	for(const Event &event: eventList) {
 		if (!mainRun) {
 			if (event.type == Event::MainTask && event.function == Event::Run)
 				mainRun = true;

@@ -164,7 +164,7 @@ DynamicDevice::Ptr findDynamicDevice (ParserState& state, Device* dev)
 {
     return state.dwc->findDevice (dev->getName ());
     /*
-    BOOST_FOREACH(DynamicDevice::Ptr ddev, state.devices){
+    for(DynamicDevice::Ptr ddev: state.devices){
         if(ddev->getKinematicModel() == dev){
             return ddev;
         }

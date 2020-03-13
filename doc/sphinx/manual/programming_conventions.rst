@@ -139,7 +139,7 @@ The **root** class can now be used for parsing the xml data. Lets assume we have
    bool boolprop = gelem->getAttributeValueAsBool("someboolproperty", true); // defaults to true
    int intprop = element->getAttributeValueAsInt("someintproperty", 2); // defaults to 2
    // iterate over all elements in group
-   BOOST_FOREACH(DOMElem::Ptr child, gelem->getChildren()) {
+   for(DOMElem::Ptr child : gelem->getChildren()) {
        if(child->isName("elem-string")) {
            std::string str-value = child->getValue();
        } else if (child->isName("elem-int")) {

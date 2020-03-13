@@ -43,7 +43,7 @@ class RenderTargets: public rw::graphics::Render
 			glDisable(GL_LIGHTING);
 			glEnable (GL_BLEND);
 			glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-			BOOST_FOREACH(Target target, _targets){
+			for(Target target: _targets){
 				//if(!target.enabled)
 				//    continue;
 				const Vector3D<> &zoffset = _zoffset*( target.trans.R()*Vector3D<>::z() );

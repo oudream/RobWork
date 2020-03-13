@@ -34,7 +34,7 @@
 #include <rw/kinematics/MovableFrame.hpp>
 #include <rw/loaders/WorkCellLoader.hpp>
 #include <rw/pathplanning/PlannerConstraint.hpp>
-#include <boost/foreach.hpp>
+
 #include <boost/bind.hpp>
 
 #if RW_HAVE_PQP == 1
@@ -77,7 +77,7 @@ std::vector<PlannerConstraint> getConstraints(
     const State& state)
 {
     std::vector<PlannerConstraint> result;
-    BOOST_FOREACH(const CollisionStrategy::Ptr& strategy, strategies) {
+    for(const CollisionStrategy::Ptr& strategy: strategies) {
         strategy->clear(); // Sigh.
         result.push_back(
             PlannerConstraint::make(
@@ -251,7 +251,7 @@ BOOST_AUTO_TEST_CASE( mainCollisionTest )
 
 	int idx = 0;
 
-    BOOST_FOREACH(const CollisionStrategy::Ptr& strategy, strategies) {
+    for(const CollisionStrategy::Ptr& strategy: strategies) {
 
         testStrategy0(strategy);
 

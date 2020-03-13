@@ -21,7 +21,7 @@
 
 #include <rw/math/Math.hpp>
 #include <rw/math/Metric.hpp>
-#include <boost/foreach.hpp>
+
 
 
 
@@ -74,7 +74,7 @@ double StructuredLineModel::testInterval(const std::vector<rw::math::Vector3D<> 
 		
 		// find all samples that are closer to this spot than to neighbours
 		vector<Vector3D<> > neighbours;
-		BOOST_FOREACH (const Vector3D<>& s, samples) {
+		for (const Vector3D<>& s: samples) {
 			Vector3D<> closestPoint = _line.closestPoint(s);
 			if ((closestPoint - spot).norm2() < interval/2.0) {
 				neighbours.push_back(s);
@@ -85,7 +85,7 @@ double StructuredLineModel::testInterval(const std::vector<rw::math::Vector3D<> 
 		if (neighbours.size() == 0) {
 			Vector3D<> nearest = samples[0];
 			double ndist = (nearest - spot).norm2();
-			BOOST_FOREACH (const Vector3D<>& s, samples) {
+			for (const Vector3D<>& s: samples) {
 				double d = (s - spot).norm2();
 				if (d < ndist) {
 					nearest = s;
@@ -99,10 +99,10 @@ double StructuredLineModel::testInterval(const std::vector<rw::math::Vector3D<> 
 	}
 	
 	// for each of the spots calculate the error
-	BOOST_FOREACH (const Spot& s, spots) {
+	for (const Spot& s: spots) {
 		//cout << "neighbours= " << s.second.size() << endl;
 		double spot_error = 0.0;
-		BOOST_FOREACH (const Vector3D<>& p, s.second) {
+		for (const Vector3D<>& p: s.second) {
 			double dist = (p - s.first).norm2();
 			spot_error += dist * dist;
 		}
@@ -133,7 +133,7 @@ double StructuredLineModel::refit(const std::vector<rw::math::Vector3D<> >& samp
 	Vector3D<> start = _data[0];
 	double xyz = start[0] + start[1] + start[2];
 	//cout << "start xyz=" << xyz << endl;
-	BOOST_FOREACH (const Vector3D<>& p, _data) {
+	for (const Vector3D<>& p: _data) {
 		double dist = p[0] + p[1] + p[2];
 		//cout << "pt xyz=" << p << ": " << dist << endl;
 		if (dist < xyz) {
@@ -146,7 +146,7 @@ double StructuredLineModel::refit(const std::vector<rw::math::Vector3D<> >& samp
 	// find point furthest away from the beginning
 	Vector3D<> end = samples[0];
 	double dist = 0.0;
-	BOOST_FOREACH (const Vector3D<>& p, _data) {
+	for (const Vector3D<>& p: _data) {
 		double d = (p - _start).norm2();
 		if (d > dist) {
 			end = p;
@@ -168,7 +168,7 @@ double StructuredLineModel::refit(const std::vector<rw::math::Vector3D<> >& samp
 	
 	// find interval with best quality
 	IntervalQuality bestInterval = intervals[0];
-	BOOST_FOREACH (const IntervalQuality& iq, intervals) {
+	for (const IntervalQuality& iq: intervals) {
 		if (iq.second < bestInterval.second) {
 			bestInterval = iq;
 		}

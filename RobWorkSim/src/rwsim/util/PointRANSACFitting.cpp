@@ -127,18 +127,18 @@ std::vector<PlaneModel>
     std::cout << "Nr of models found: " << models.size() << std::endl;
     std::cout << "filtered to       : " << newModels.size() << std::endl;
     PlaneModel defPlane;
-	BOOST_FOREACH(Vector3D<> &p, data){
+	for(Vector3D<> &p: data){
 		std::cout << " " << defPlane.fitError(p) << std::endl;
 	}
 	*/
 	/*std::cout << "Models " << std::endl;
-	BOOST_FOREACH(PlaneModel &m, newModels){
+	for(PlaneModel &m: newModels){
 		m.print();
 	}*/
 	/*
 	std::cout << "Best Model \n\r-";
 	bestModel.print();
-	BOOST_FOREACH(Vector3D<> &p, bestConsensusSet){
+	for(Vector3D<> &p: bestConsensusSet){
 		//std::cout << " " << bestModel.fitError(p) << std::endl;
 	}
 	*/

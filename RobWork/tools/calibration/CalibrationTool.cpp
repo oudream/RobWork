@@ -178,7 +178,7 @@ int main(int argumentCount, char** argumentArray) {
 	typedef std::pair<std::string, std::string> StringPair;
 	std::set<StringPair > deviceAndFrameNames;
 	std::set<std::string> sensorFrameNames;
-	BOOST_FOREACH(CalibrationMeasurement::Ptr measurement, measurements) {
+	for(CalibrationMeasurement::Ptr measurement: measurements) {
 		if (workCell->findDevice(measurement->getDeviceName()) == NULL) {
 			std::cout<<"Unable to find device named: "<<measurement->getDeviceName()<<std::endl;
 			return -1;
@@ -308,7 +308,7 @@ int main(int argumentCount, char** argumentArray) {
 	if (optionParser.getMathematicaOutputFileName() != "") {
 		std::ofstream outfile(optionParser.getMathematicaOutputFileName().c_str());
 		outfile<<std::setprecision(16);
-		BOOST_FOREACH(CalibrationMeasurement::Ptr measurement, measurements) {
+		for(CalibrationMeasurement::Ptr measurement: measurements) {
 
 			const Q& q = measurement->getQ();
 			for (size_t i = 0; i<q.size(); i++) {

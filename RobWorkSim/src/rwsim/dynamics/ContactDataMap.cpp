@@ -18,7 +18,7 @@
 #include "ContactDataMap.hpp"
 
 #include <rw/common/macros.hpp>
-#include <boost/foreach.hpp>
+
 using namespace rwsim::dynamics;
 
 ContactDataMap::ContactDataMap():
@@ -74,7 +74,7 @@ const ContactDataMap::NewtonData& ContactDataMap::getNewtonData(int idA, int idB
     NewtonMap::const_iterator res = _newtonDataMap.find( std::make_pair(idA,idB) );
     if( res == _newtonDataMap.end() ){
         typedef std::map<std::string, int>::value_type BVal;
-        BOOST_FOREACH(BVal val, _nameToID){
+        for(BVal val: _nameToID){
             std::cout << val.first << " --> " << val.second << std::endl;
         }
         RW_THROW("NewtonData not available! idA:"<< idA << ", idB:" << idB);

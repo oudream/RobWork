@@ -7,7 +7,7 @@
 
 #include "PowellOptimizer.hpp"
 
-#include <boost/foreach.hpp>
+
 
 namespace rwlibs {
 namespace optimization {
@@ -91,7 +91,7 @@ void PowellOptimizer::step(VectorType& currentGuess, ResultType& currentValue,
 		// create new direction
 		Direction newDir(VectorType(currentGuess.size(), 0.0), 0.0);
 		//double totalQuality = 0.0;
-		BOOST_FOREACH(Direction & dir, directionSet) {
+		for(Direction & dir: directionSet) {
 			//totalQuality += dir.second;
 			newDir.first += dir.second * dir.first;
 		}

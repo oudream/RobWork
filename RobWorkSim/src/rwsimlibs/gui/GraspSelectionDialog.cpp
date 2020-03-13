@@ -5,7 +5,7 @@
 #include <QFileDialog>
 #include <QTimer>
 
-#include <boost/foreach.hpp>
+
 
 #include <rw/math/RPY.hpp>
 #include <rw/math/Random.hpp>
@@ -121,7 +121,7 @@ void GraspSelectionDialog::initializeStart(){
     RW_DEBUGS("threads: " << threads);
 
     _bodies = _dwc->findBodies<RigidBody>();
-    BOOST_FOREACH(RigidBody::Ptr rbody, _bodies){
+    for(RigidBody::Ptr rbody: _bodies){
         _frameToBody[*rbody->getMovableFrame()] = rbody;
     }
 
@@ -327,7 +327,7 @@ void GraspSelectionDialog::updateStatus(){
         // check the velocity of all the bodies
         bool allBelowThres = true;
         Vector3D<> avgLVel, avgAVel;
-        BOOST_FOREACH(RigidBody::Ptr rbody, _bodies){
+        for(RigidBody::Ptr rbody: _bodies){
             //RW_DEBUGS("rbody: " << rbody->getMovableFrame().getName() );
             // get velocity of rbody
             // if above threshold then break and continue
@@ -461,7 +461,7 @@ void GraspSelectionDialog::calcColFreeRandomCfg(rw::kinematics::State& state){
     std::vector<RigidBody::Ptr> bodies;
     while( _colDect->inCollision(state, &result, false) ){
         nrOfTries++;
-        BOOST_FOREACH(rw::kinematics::FramePair pair, result.collidingFrames){
+        for(rw::kinematics::FramePair pair: result.collidingFrames){
             // generate new collision free configuration between
             RigidBody::Ptr body1 = _frameToBody[*pair.first];
             RigidBody::Ptr body2 = _frameToBody[*pair.second];
@@ -486,7 +486,7 @@ void GraspSelectionDialog::calcRandomCfg(std::vector<RigidBody::Ptr> &bodies, rw
     const double highY = Deg2Rad * ( _ui->_highYawSpin->value() );
 
 
-    BOOST_FOREACH(RigidBody::Ptr rbody, bodies){
+    for(RigidBody::Ptr rbody: bodies){
         double roll = Random::ran(lowR, highR);
         double pitch = Random::ran(lowP, highP);
         double yaw = Random::ran(lowY, highY);

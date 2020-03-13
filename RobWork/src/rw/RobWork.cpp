@@ -26,7 +26,7 @@
 #include <rw/loaders/dom/DOMPropertyMapSaver.hpp>
 
 #include <boost/filesystem.hpp>
-#include <boost/foreach.hpp>
+
 #include <boost/program_options/option.hpp>
 #include <boost/program_options/options_description.hpp>
 #include <boost/program_options/parsers.hpp>
@@ -66,27 +66,24 @@ using namespace boost::program_options;
 #endif
 
 namespace {
-    void appendPluginFolder(const std::string &folder,const std::string &name, PropertyMap &settings)
-    {
-        if (exists(folder)) {
-            if (settings.has ("plugins")) {
-                PropertyMap::Ptr plugins;
-                plugins = settings.getPtr<PropertyMap> ("plugins");
-                plugins->add ("Location-linux-default",
-                              "Default plugin location for deb installed plugins",
-                              folder);
-            }
-            else {
-                PropertyMap plugins;
-                plugins.add (name,
-                             "Default plugin location for deb installed plugins",
-                             folder);
-                settings.add ("plugins", "List of plugins or plugin locations", plugins);
-            }
+void appendPluginFolder (const std::string& folder, const std::string& name, PropertyMap& settings)
+{
+    if (exists (folder)) {
+        if (settings.has ("plugins")) {
+            PropertyMap::Ptr plugins;
+            plugins = settings.getPtr< PropertyMap > ("plugins");
+            plugins->add ("Location-linux-default",
+                          "Default plugin location for deb installed plugins",
+                          folder);
+        }
+        else {
+            PropertyMap plugins;
+            plugins.add (name, "Default plugin location for deb installed plugins", folder);
+            settings.add ("plugins", "List of plugins or plugin locations", plugins);
         }
     }
 }
-
+}    // namespace
 
 RobWork::RobWork (void) : _initialized (false)
 {}
@@ -193,22 +190,20 @@ void RobWork::initialize (const std::vector< std::string >& plugins)
         _settings.add ("plugins", "List of plugins or plugin locations", plugins);
     }
 
-
 #if defined(RW_WIN32)
-    std::vector<std::string> Packs= {"RobWork","RobWorkStudio","RobWorkSim","RobWorkHardware"};
+    std::vector< std::string > Packs = {
+        "RobWork", "RobWorkStudio", "RobWorkSim", "RobWorkHardware"};
 #else
-    std::vector<std::string> Packs= {""};
+    std::vector< std::string > Packs = {""};
 #endif
 
-    for(const std::string& p: Packs){
-        std::string loc = OS::InstallPluginLocation(p);
-        if(exists(loc)) {
-            std::string name = "Location-win-" + p +"-default";
-            appendPluginFolder(loc,name,_settings);
+    for (const std::string& p : Packs) {
+        std::string loc = OS::InstallPluginLocation (p);
+        if (exists (loc)) {
+            std::string name = "Location-win-" + p + "-default";
+            appendPluginFolder (loc, name, _settings);
         }
     }
-
-
 
     _settingsFile = rwsettingsPath;
 
@@ -225,7 +220,7 @@ void RobWork::initialize (const std::vector< std::string >& plugins)
     }
 
     Log::debugLog () << "Looking for RobWork plugins in following directories:\n";
-    BOOST_FOREACH (PropertyBase::Ptr prop, pluginsMap.getProperties ()) {
+    for (PropertyBase::Ptr prop : pluginsMap.getProperties ()) {
         // check if its a
         Property< std::string >::Ptr propstr = prop.cast< Property< std::string > > ();
         if (propstr == NULL)

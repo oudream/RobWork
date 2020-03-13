@@ -38,7 +38,7 @@
 #include <QToolBar>
 #include <QVBoxLayout>
 
-#include <boost/foreach.hpp>
+
 
 
 const double ROTATE_VIEW_STEP_DEG = 5.0;
@@ -313,7 +313,7 @@ void RWStudioView3D::setWorkCell(rw::models::WorkCell::Ptr wc){
     if(_wc==NULL){
         RW_THROW("Workcell is null!");
     }
-    BOOST_FOREACH(const FramePair& pair, _qryResult.collidingFrames) {
+    for(const FramePair& pair: _qryResult.collidingFrames) {
         _wcscene->setHighlighted(false, pair.first);
         _wcscene->setHighlighted(false, pair.second);
     }
@@ -337,7 +337,7 @@ void RWStudioView3D::setWorkCell(rw::models::WorkCell::Ptr wc){
     // look for all cameras in the scene
 
     std::vector<Frame*> frames = Kinematics::findAllFrames(_wc->getWorldFrame(), _wc->getDefaultState());
-    BOOST_FOREACH(Frame* frame, frames) {
+    for(Frame* frame: frames) {
         if (frame->getPropertyMap().has("Camera")) {
             double fovy;
             int width,height;
@@ -574,7 +574,7 @@ void RWStudioView3D::keyPressEvent(QKeyEvent *e)
 void RWStudioView3D::setState(const rw::kinematics::State& state){
     // if collision detection is enabled then run it now, and highlight any frames that are overlapping
     if(_checkForCollision->isChecked()){
-        BOOST_FOREACH(const FramePair& pair, _qryResult.collidingFrames) {
+        for(const FramePair& pair: _qryResult.collidingFrames) {
             _wcscene->setHighlighted(false, pair.first);
             _wcscene->setHighlighted(false, pair.second);
         }
@@ -583,13 +583,13 @@ void RWStudioView3D::setState(const rw::kinematics::State& state){
         
         if( _rws->getCollisionDetector()->inCollision(state, &_qryResult) ){
             
-            BOOST_FOREACH(const FramePair& pair, _qryResult.collidingFrames) {
+            for(const FramePair& pair: _qryResult.collidingFrames) {
                 _wcscene->setHighlighted(true, pair.first);
                 _wcscene->setHighlighted(true, pair.second);
             }
         }
     } else if(_qryResult.collidingFrames.size()>0){
-        BOOST_FOREACH(const FramePair& pair, _qryResult.collidingFrames) {
+        for(const FramePair& pair: _qryResult.collidingFrames) {
             _wcscene->setHighlighted(false, pair.first);
             _wcscene->setHighlighted(false, pair.second);
         }
@@ -700,7 +700,7 @@ void RWStudioView3D::setupToolBarAndMenu(QMainWindow* mwindow)
 void RWStudioView3D::resetCameraViewMenu() {
 	//We need to delete all the old camera views.
 	QList<QAction*> actions = _cameraViewMenu->actions();
-	BOOST_FOREACH(QAction* action, actions) {
+	for(QAction* action: actions) {
 		_cameraViewMenu->removeAction(action);
 	}
 
@@ -830,7 +830,7 @@ void RWStudioView3D::setCheckAction(){
 
             std::vector<Frame*> allFrames = _wc->findFrames<Frame>();
             std::vector<std::string> strlist;
-            BOOST_FOREACH(Frame* f, allFrames){ strlist.push_back(f->getName()); }
+            for(Frame* f: allFrames){ strlist.push_back(f->getName()); }
             //map.add("Frame", "Frame name", strlist);
             map.add<std::string>("Frame", "Frame name", "WORLD");
 
@@ -956,7 +956,7 @@ void RWStudioView3D::setTransparentSlot()
         alpha = 1.0;
 
     // set alpha for all Drawable in the view
-    BOOST_FOREACH(DrawableNode::Ptr da, _wcscene->getDrawables()) {
+    for(DrawableNode::Ptr da: _wcscene->getDrawables()) {
 		da->setTransparency(alpha);
 	}
 
