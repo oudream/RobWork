@@ -28,6 +28,7 @@
 #include <rw/common/PropertyMap.hpp>
 
 #include <QApplication>
+#include <QCloseEvent>
 #include <QMessageBox>
 #include <QSplashScreen>
 #ifdef RWS_USE_STATIC_LINK_PLUGINS
@@ -60,13 +61,12 @@
 #endif
 #endif
 
-
 #ifdef RWS_HAVE_GLUT
 #include <GL/freeglut.h>
 #endif
 
-#include <boost/program_options/parsers.hpp>
 #include <boost/filesystem.hpp>
+#include <boost/program_options/parsers.hpp>
 
 USE_ROBWORK_NAMESPACE
 using namespace robwork;
@@ -101,12 +101,38 @@ RobWorkStudioApp::RobWorkStudioApp (const std::string& args) :
 {}
 
 RobWorkStudioApp::~RobWorkStudioApp ()
-{}
+{
+    if (_isRunning) {
+        QCloseEvent e = QCloseEvent ();
+        _rwstudio->event (&e);
+    }
+}
 
 void RobWorkStudioApp::start ()
 {
-    _isRunning = true;
-    _thread    = new boost::thread (boost::bind (&RobWorkStudioApp::run, this));
+    _thread = new boost::thread (boost::bind (&RobWorkStudioApp::run, this));
+    while (!this->isRunning ()) {
+        rw::common::TimerUtil::sleepMs (1);
+    }
+}
+
+void RobWorkStudioApp::close ()
+{
+    if (isRunning ()) {
+        _rwstudio->postExit ();
+        while (isRunning ()) {
+            rw::common::TimerUtil::sleepMs (1);
+        }
+
+        // Make Sure All Widgets are closed to avoid segfault
+        QWidgetList all_w = QApplication::allWidgets ();
+        long ctime        = rw::common::TimerUtil::currentTimeMs ();
+        while (all_w.count () > 0 && rw::common::TimerUtil::currentTimeMs () - ctime < 300) {
+            rw::common::TimerUtil::sleepMs (1);
+            all_w = QApplication::allWidgets ();
+        }
+        rw::common::TimerUtil::sleepMs (100);    // Final timing to let the res of QT close down
+    }
 }
 
 void initReasource ()
@@ -114,10 +140,11 @@ void initReasource ()
     Q_INIT_RESOURCE (rwstudio_resources);
 }
 
-int RobWorkStudioApp::run() {
+int RobWorkStudioApp::run ()
+{
     {
         initReasource ();
-        
+
         char* argv[30];
         std::vector< std::string > args = boost::program_options::split_unix (_args);
         for (size_t i = 0; i < args.size (); i++) {
@@ -266,20 +293,28 @@ int RobWorkStudioApp::run() {
                     }
                     _rwstudio = &rwstudio;
                     rwstudio.show ();
+
+                    _isRunning = true;
                     app.exec ();
+                    _isRunning = false;
+                    _rwstudio  = NULL;
                 }
             }
             catch (const Exception& e) {
                 std::cout << e.what () << std::endl;
                 QMessageBox::critical (NULL, "RW Exception", e.what ());
+                _isRunning = false;
                 return -1;
             }
             catch (std::exception& e) {
                 std::cout << e.what () << std::endl;
                 QMessageBox::critical (NULL, "Exception", e.what ());
+                _isRunning = false;
                 return -1;
             }
         }
+        _isRunning = false;
+        std::cout << "IsRunning False" << std::endl << std::flush;
         return 0;
     }
 }

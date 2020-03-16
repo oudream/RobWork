@@ -17,59 +17,66 @@
 
 #ifndef RWS_ROBWORKSTUDIOAPP_HPP_
 #define RWS_ROBWORKSTUDIOAPP_HPP_
-#include <boost/thread.hpp>
 #include "RobWorkStudio.hpp"
+
+#include <boost/thread.hpp>
 
 namespace rws {
 
+/**
+ * @brief a RobWorkStudio main application which may be instantiated in its own thread.
+ */
+class RobWorkStudioApp
+{
+  public:
     /**
-     * @brief a RobWorkStudio main application which may be instantiated in its own thread.
+     * constructor
+     * @param args [in] command line arguments for RobWorkStudio
      */
-    class RobWorkStudioApp
-     {
-     public:
-    	/**
-    	 * constructor
-    	 * @param args [in] command line arguments for RobWorkStudio
-    	 */
-        RobWorkStudioApp(const std::string& args);
+    RobWorkStudioApp (const std::string& args);
 
-        //! destructor
-        virtual ~RobWorkStudioApp();
+    //! destructor
+    virtual ~RobWorkStudioApp ();
 
-        /**
-         * @brief start RobWorkStudio in its own thread
-         */
-        void start();
+    /**
+     * @brief start RobWorkStudio in its own thread, the function is blocking until rws is up and
+     * running
+     */
+    void start ();
 
-        /**
-         * @brief start RobWorkStudio in this thread. Notice this method call will
-         * block until RobWorkStudio is exited.
-         * @return zero if exited normally.
-         */
-        int run();
+    /**
+     * @brief start RobWorkStudio in this thread. Notice this method call will
+     * block until RobWorkStudio is exited.
+     * @return zero if exited normally.
+     */
+    int run ();
 
-        /**
-         * @brief check if RobwWrkStudio is running
-         * @return true if running false otherwise
-         */
-        bool isRunning(){ return _isRunning; }
+    /**
+     * @brief check if RobwWrkStudio is running
+     * @return true if running false otherwise
+     */
+    bool isRunning () { return _isRunning; }
 
-        /**
-         * @brief get handle to the running RobWorkStudio instance.
-         * @note do not directly change Qt visualization objects, this will
-         * produce segfaults. Instead use Qt events and the post* handles on
-         * RobWorkStudio interface.
-         * @return handle to RobWorkStudio
-         */
-        RobWorkStudio * getRobWorkStudio(){return _rwstudio;};
+    /**
+     * @brief Close RobWorkStudio. Blocking until rws is closed. This might take awaile.
+     */
+    void close ();
 
-     private:
-        RobWorkStudio *_rwstudio;
-        std::string _args;
-        boost::thread *_thread;
-        bool _isRunning;
-     };
-}
+    /**
+     * @brief get handle to the running RobWorkStudio instance.
+     * @note do not directly change Qt visualization objects, this will
+     * produce segfaults. Instead use Qt events and the post* handles on
+     * RobWorkStudio interface.
+     * @return handle to RobWorkStudio
+     */
+    RobWorkStudio* getRobWorkStudio () { return _rwstudio; };
+
+  private:
+    RobWorkStudio* _rwstudio;
+    std::string _args;
+    boost::thread* _thread;
+    bool _isRunning;
+};
+}    // namespace rws
 
 #endif /* ROBWORKSTUDIOAPP_HPP_ */
