@@ -92,7 +92,7 @@ configure_file("${RWHW_ROOT}/cmake/CTestCustom.cmake.in" "CTestCustom.cmake")
 include(CMakeDependentOption)
 cmake_dependent_option(RWHW_IS_TESTS_ENABLED "Set when you want to build the tests" ON
                        "${RWHW_BUILD_TESTS}" OFF)
-if(RWS_IS_TESTS_ENABLED)
+if(RWHW_IS_TESTS_ENABLED)
     message(STATUS "RobWorkHardware: tests ENABLED!")
     include(CTest)
     add_subdirectory(test)

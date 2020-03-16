@@ -1,6 +1,6 @@
 set(SUBSYS_NAME sdurwhw_CRSA465)
 set(SUBSYS_DESC "Library of drivers for the CRSA465 robot")
-set(SUBSYS_DEPS sdurw)
+set(SUBSYS_DEPS RW::sdurw)
 
 set(build TRUE)
 set(DEFAULT FALSE)

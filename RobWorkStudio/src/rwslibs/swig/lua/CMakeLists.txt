@@ -1,6 +1,6 @@
 set(SUBSYS_NAME sdurws_lua)
 set(SUBSYS_DESC "Interface for accessing RobWorkStudio from lua.")
-set(SUBSYS_DEPS sdurws_robworkstudioapp)
+set(SUBSYS_DEPS sdurws_robworkstudioapp RW::sdurw_lua)
 
 set(build TRUE)
 
@@ -70,7 +70,6 @@ if(build)
         ${RWS_MODULE}
         RW::sdurw_lua
         RW::sdurw
-        RW::sdurw_lua
     )
     if (RW_BUILD_WITH_INTERNAL_LUA)
         swig_link_libraries(${TARGET_NAME} RW::lua51)
@@ -93,6 +92,7 @@ if(build)
     else()
         add_library(${TARGET_NAME}_s STATIC ${swig_generated_sources} ${swig_other_sources})
     endif()
+
     target_link_libraries(
         ${TARGET_NAME}_s
         ${SUBSYS_DEPS}
@@ -125,6 +125,15 @@ if(build)
     endif()
 
     # ############ INSTALL LUA LIBRARY #############################
-    install(TARGETS ${TARGET_NAME}_s DESTINATION ${STATIC_LIB_INSTALL_DIR})
-    install(TARGETS ${TARGET_NAME} DESTINATION ${LUA_INSTALL_DIR})
+    install(
+        TARGETS ${TARGET_NAME}_s
+        EXPORT ${PROJECT_PREFIX}Targets
+        DESTINATION ${STATIC_LIB_INSTALL_DIR} COMPONENT swig
+    )
+
+    install(
+        TARGETS ${TARGET_NAME} 
+        EXPORT ${PROJECT_PREFIX}Targets 
+        DESTINATION ${LUA_INSTALL_DIR} COMPONENT swig
+    )
 endif()

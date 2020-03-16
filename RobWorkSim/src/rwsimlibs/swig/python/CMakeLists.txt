@@ -1,6 +1,6 @@
 set(SUBSYS_NAME sdurwsim_python)
 set(SUBSYS_DESC "Interface for accessing RobWorkSim from python.")
-set(SUBSYS_DEPS sdurw)
+set(SUBSYS_DEPS RW::sdurw_python RWS::sdurws_python)
 
 set(build TRUE)
 

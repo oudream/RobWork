@@ -1,6 +1,6 @@
 set(SUBSYS_NAME sdurwsim_test)
 set(SUBSYS_DESC "A library with standard tests for Physics Engines.")
-set(SUBSYS_DEPS sdurw)
+set(SUBSYS_DEPS RW::sdurw)
 
 set(build TRUE)
 set(DEFAULT TRUE)

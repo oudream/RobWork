@@ -1,6 +1,6 @@
 set(SUBSYS_NAME sdurwhw_camera)
 set(SUBSYS_DESC "Library of drivers for different cameras")
-set(SUBSYS_DEPS sdurw)
+set(SUBSYS_DEPS RW::sdurw)
 
 set(build TRUE)
 set(DEFAULT TRUE)

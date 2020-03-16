@@ -6,7 +6,7 @@ using("sdurw")
 using("sdurw_simulation")
 using("sdurws")
 
-if #arg ~= 1 then
+if #arg < 1 then
     error("Provide the path to RobWorkData as first argument.")
 end
 

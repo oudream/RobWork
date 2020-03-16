@@ -55,7 +55,7 @@
 #ifdef RWS_HAVE_PLUGIN_WORKCELLEDITOR
 #include <rwslibs/workcelleditorplugin/WorkcellEditorPlugin.hpp>
 #endif
-#ifdef RWS_HAVE_LUA
+#ifdef RWS_HAVE_PLUGIN_LUAPL
 #include <rwslibs/lua/Lua.hpp>
 #endif
 #endif
