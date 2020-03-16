@@ -13,8 +13,6 @@ rw::common::Ptr< rws::swig::RobWorkStudio > rwstudio_internal;
 
 rws::swig::RobWorkStudio* rws::swig::getRobWorkStudio ()
 {
-    // if(rwstudio_internal==NULL)
-    //    rwstudio_internal = getRobWorkStudioInstance("");
     return rwstudio_internal.get ();
 }
 rws::swig::RobWorkStudio* rws::swig::getRobWorkStudioFromQt ()
@@ -120,7 +118,6 @@ rw::common::Ptr< RobWorkStudio > rws::swig::getRobWorkStudioInstance (const std:
                 return NULL;
             rw::common::TimerUtil::sleepMs (100);
         }
-        // if(rwstudio_internal==NULL)
         rwstudio_internal = robApp->getRobWorkStudio ();
     }
     return robApp->getRobWorkStudio ();

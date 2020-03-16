@@ -123,8 +123,6 @@ RobWorkStudio::RobWorkStudio(const PropertyMap& map)
     PropertyMap settings;
     if( exists(settingsPath) ){
         try {
-            //settings = XMLPropertyLoader::load("rwsettings.xml");
-            //_propMap.set<std::string>("SettingsFileName", "rwsettings.xml");
             _propMap = DOMPropertyMapLoader::load("rwsettings.xml");
         } catch(rw::common::Exception &e){
             RW_WARN("Could not load settings from 'rwsettings.xml': " << e.getMessage().getText() << "\n Using default settings!");
@@ -138,9 +136,7 @@ RobWorkStudio::RobWorkStudio(const PropertyMap& map)
     if(currentSettings==NULL){
         _propMap.add("RobWorkStudioSettings", "Settings for RobWorkStudio", settings);
         currentSettings = _propMap.getPtr<PropertyMap>("RobWorkStudioSettings");
-    } /*else {
-        *currentSettings = settings;
-    }*/
+    }
 
     _assistant = new HelpAssistant();
     _settingsMap = _propMap.getPtr<PropertyMap>("RobWorkStudioSettings");
@@ -167,21 +163,6 @@ RobWorkStudio::RobWorkStudio(const PropertyMap& map)
     }
     resize(width, height);
     this->move(x,y);
-
-    //Initialize plugins
-    //loadSettingsSetupPlugins(inifile);
-    //for(const PluginSetup& plugin : plugins) {
-    //    addPlugin(plugin.plugin, plugin.visible, plugin.area);
-    //}
-
-    // search for plugins in user specified locations
-    //StringList slist;
-    //slist.push_back("../../../RobWorkSim/libs/Debug/");
-    //std::vector<PluginSetup> userPlugins = searchPlugins(slist);
-    //for(const PluginSetup& plugin : plugins) {
-    //    addPlugin(plugin.plugin, plugin.visible, plugin.area);
-    //}
-
 
     _workcell = emptyWorkCell();
     _state = _workcell->getDefaultState();
@@ -1293,12 +1274,13 @@ bool RobWorkStudio::event(QEvent *event)
         closeWorkCell();
         rwse->done();
         close();
-        //QCoreApplication::exit(1);
-        //abort();
         return true;
-    } else {
+    } else if(event->type() == QEvent::Close){
+        QApplication::closeAllWindows();
+    }else {
         //event->ignore();
     }
+
 
     return QMainWindow::event(event);
 }

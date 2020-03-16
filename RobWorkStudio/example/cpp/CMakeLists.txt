@@ -26,6 +26,7 @@ macro(rw_build_lib _name)
 endmacro()
 
 rw_build(ex-simulated-camera)
+rw_build(ex-load-workcell)
 
 foreach(obj ${ROBWORKSTUDIO_INCLUDE_DIRS})
     message(STATUS "INCL_DIR: ${obj}")
