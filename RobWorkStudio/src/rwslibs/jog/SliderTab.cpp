@@ -88,40 +88,47 @@ void SliderSpinBox::fixup (QString& input) const
 {
     QString out;
     int deci = decimals ();
+    bool gotNum=false;
     bool dot = false;
     for (int i = 0; i < input.count (); i++) {
         if (deci == 0) {
             break;
         }
-        if (input[i] >= '0' && input[i] <= '9') {
+        if (input[i] == '-' && !gotNum) {
+            out += input[i];
+            gotNum=true;
+        }
+        else if (input[i] >= '0' && input[i] <= '9') {
             if (dot) {
                 deci--;
             }
             out += input[i];
+            gotNum=true;
         }
-        else if (input[i] == '.' && !dot) {
+        else if ((input[i] == '.' || input[i] == ',') && !dot) {
             out += input[i];
             dot = true;
         }
     }
-    input=out;
+    std::cout << "Input: " << input.toStdString() << std::endl;
+    input = out;
+    std::cout << "Output: " << out.toStdString() << std::endl;
 }
 
-QValidator::State SliderSpinBox::validate (QString& text, int& pos) const 
+QValidator::State SliderSpinBox::validate (QString& text, int& pos) const
 {
     bool ok = false;
     locale ().toDouble (text, &ok);
     return ok ? QValidator::Acceptable : QValidator::Invalid;
 }
 
-
-double SliderSpinBox::valueFromText(const QString &text) const
+double SliderSpinBox::valueFromText (const QString& text) const
 {
-  bool ok = false;
-  QString t = text;
-  fixup(t);
-  double value = locale().toDouble(t, &ok);
-  return ok ? value : QDoubleSpinBox::value();
+    bool ok   = false;
+    QString t = text;
+    fixup (t);
+    double value = locale ().toDouble (t, &ok);
+    return ok ? value : QDoubleSpinBox::value ();
 }
 //----------------------------------------------------------------------
 // JointLine
@@ -203,7 +210,8 @@ void Slider::unitUpdated ()
     const int val = _slider->value ();
     _box->setRange (lowUnit, highUnit);
     double step = (highUnit - lowUnit) / 400;
-    if(step > 1 ) {
+
+    if (step > 1) {
         step = 1;
     }
     _box->setSingleStep (step);
@@ -262,13 +270,11 @@ void Slider::enableDisable (int val)
 
 void Slider::setSliderValueFromBox (double val)
 {
-    //    _slider->setValue((int)((val - _low) / (_high - _low) * sliderEnd));
     _slider->setValue ((int) ((val / _toUnit - _low) / (_high - _low) * sliderEnd));
 }
 
 void Slider::setBoxValueFromSlider (int val)
 {
-    //    _box->setValue(((double)val / sliderEnd) * (_high - _low) + _low);
     _box->setValue ((((double) val / sliderEnd) * (_high - _low) + _low) * _toUnit);
 }
 
@@ -422,7 +428,7 @@ void JointSliderWidget::setup (const std::vector< std::string >& titles,
         if (enablers) {
             QCheckBox* enabler = new QCheckBox (this);
             enabler->setChecked (true);
-            _layout->addWidget (enabler, int(i) + 2, 6);
+            _layout->addWidget (enabler, int (i) + 2, 6);
             connect (enabler, SIGNAL (stateChanged (int)), slider, SLOT (enableDisable (int)));
             if (_enableAngularCombined && i >= 3) {
                 connect (enabler, SIGNAL (stateChanged (int)), slider, SLOT (enableDisable (int)));
