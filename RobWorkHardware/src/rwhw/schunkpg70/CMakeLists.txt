@@ -1,6 +1,6 @@
 set(SUBSYS_NAME sdurwhw_schunkpg70)
 set(SUBSYS_DESC "Driver for schunk gripper pg70")
-set(SUBSYS_DEPS sdurwhw_pcube sdurwhw_serialport sdurw)
+set(SUBSYS_DEPS sdurwhw_pcube sdurwhw_serialport RW::sdurw)
 
 set(build TRUE)
 set(DEFAULT TRUE)

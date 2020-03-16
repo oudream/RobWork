@@ -1,6 +1,6 @@
 set(SUBSYS_NAME sdurwhw_pcube)
 set(SUBSYS_DESC "Driver for powercube modules")
-set(SUBSYS_DEPS sdurw sdurwhw_serialport)
+set(SUBSYS_DEPS RW::sdurw sdurwhw_serialport)
 
 set(build TRUE)
 set(DEFAULT true)

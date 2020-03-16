@@ -1,6 +1,6 @@
 set(SUBSYS_NAME sdurws_java)
 set(SUBSYS_DESC "Interface for accessing RobWorkStudio from java.")
-set(SUBSYS_DEPS sdurws sdurws_robworkstudioapp)
+set(SUBSYS_DEPS sdurws sdurws_robworkstudioapp RW::sdurw_java)
 
 set(build TRUE)
 
@@ -30,14 +30,18 @@ if(build)
     include(UseJava)
     include(UseSWIG)
 
+    add_library(${SUBSYS_NAME} INTERFACE)
+
     set_source_files_properties(../sdurws.i PROPERTIES CPLUSPLUS ON)
     set_source_files_properties(../sdurws.i PROPERTIES SWIG_FLAGS "-includeall")
+
     if(NOT ${SWIG_VERSION} VERSION_LESS 4.0.0)
         set_source_files_properties(../sdurws.i PROPERTIES SWIG_FLAGS "-includeall;-doxygen")
     endif()
-    include_directories(${RW_ROOT}/src)
 
+    include_directories(${RW_ROOT}/src)
     include_directories(${JAVA_INCLUDE_DIRS} ${JNI_INCLUDE_DIRS})
+
     set(CMAKE_SWIG_FLAGS "-package" "org.robwork.sdurws")
     # Put java files in different directory suitable for JAR generation later on
     set(CMAKE_SWIG_OUTDIR ${CMAKE_CURRENT_BINARY_DIR}/java_src/org/robwork/sdurws)
@@ -52,8 +56,7 @@ if(build)
     else()
         swig_add_module(sdurws_jni java ../sdurws.i ../ScriptTypes.cpp)
     endif()
-    swig_link_libraries(sdurws_jni ${SUBSYS_DEPS} sdurws
-                        RW::sdurw)
+    swig_link_libraries(sdurws_jni ${SUBSYS_DEPS} sdurws RW::sdurw)
     if((CMAKE_COMPILER_IS_GNUCC) OR (CMAKE_C_COMPILER_ID STREQUAL "Clang"))
         set_target_properties(sdurws_jni PROPERTIES LINK_FLAGS -Wl,--no-undefined)
     endif()
@@ -74,13 +77,6 @@ if(build)
     else()
         add_dependencies(sdurws_jni CleanDepRWS)
     endif()
-
-    # Make sure dependencies are build before system
-    foreach(DEP IN LISTS SUBSYS_DEPS)
-        if(TARGET ${DEP})
-            add_dependencies(sdurws_jni ${DEP})
-        endif()
-    endforeach()
 
     # Compile java code and create JAR and Javadoc
     add_custom_command(
@@ -140,4 +136,12 @@ if(build)
     )
     set(CMAKE_SWIG_OUTDIR ${RWS_CMAKE_LIBRARY_OUTPUT_DIRECTORY})
 
+    target_link_libraries(${SUBSYS_NAME} INTERFACE sdurws_jni)
+    install(
+        TARGETS sdurws_jni 
+        EXPORT ${PROJECT_PREFIX}Targets 
+        DESTINATION ${JAVA_INSTALL_DIR} COMPONENT swig)
+
+    install(TARGETS ${SUBSYS_NAME} EXPORT ${PROJECT_PREFIX}Targets)
+    add_library(${PROJECT_PREFIX}::${SUBSYS_NAME} ALIAS ${SUBSYS_NAME})
 endif()

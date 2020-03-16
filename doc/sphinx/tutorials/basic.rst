@@ -63,7 +63,7 @@ the src directory (~/workspace/first_project/src). Insert the following cmake sc
     # Now set the RW/RWS root (edit this if necessary)
     #
     # Set the RobWork root (edit in .bashrc if necessary)
-    SET(RW_ROOT $ENV{RW_ROOT})                      # Use the environment variable  $RW_ROOT from .bashrc file
+    SET(RW_ROOT $ENV{RW_ROOT})                      # Use the environment variable  $RW_ROOT from .bashrc file (NOT necessary in PPA install)
 
     # set some robwork settings (EDIT THESE TO FIT YOUR ENVIRONMENT)
 
@@ -72,7 +72,7 @@ the src directory (~/workspace/first_project/src). Insert the following cmake sc
     MESSAGE("-- Build type: " ${CMAKE_BUILD_TYPE})
 
     # Include default settings for constructing a robwork dependent project
-    SET(RobWork_DIR ${RW_ROOT}/cmake) 
+    SET(RobWork_DIR ${RW_ROOT}/cmake)                # (NOT necessary in PPA install)
     FIND_PACKAGE(RobWork REQUIRED)
     LINK_DIRECTORIES( ${ROBWORK_LIBRARY_DIRS} )
 
@@ -93,8 +93,8 @@ Now edit you “HelloWorld.cpp” file and type in a small main application.
    using namespace rw::common;
 
    int main(int argc, char** argv) {
-   Log::infoLog() << "Hey, we are printing to the RobWork log!\n";
-   std::cout << "Which should just be standard out for now!" << std::endl;
+      Log::infoLog() << "Hey, we are printing to the RobWork log!\n";
+      std::cout << "Which should just be standard out for now!" << std::endl;
    }
 
 This is very basic but the reader should notice two important aspects. Firstly, the header file
@@ -139,19 +139,19 @@ Do this to compile and run the project:
    If making many changes, then it can be beneficial to delete the content of build directory before compiling again.
 
 
-Math jogling
+Math joggling
 ============
 
 This tutorial will demonstrate some of the basic math functionality available in RobWork. This is mostly
-related to homogenous transformations, rotations, convertions and so on.
-First add a new file “MathJogling.cpp” to your cmake project from tutorial 1. Make sure that the file is
+related to homogenous transformations, rotations, conversions and so on.
+First add a new file “MathJoggling.cpp” to your cmake project from tutorial 1. Make sure that the file is
 added as an executable in the end of the CMakeList.txt file.::
 
    # add another executable
-   add_executable(MathJogling src/MathJogling.cpp)
-   target_link_libraries(MathJogling ${ROBWORK_LIBRARIES})
+   add_executable(MathJoggling src/MathJoggling.cpp)
+   target_link_libraries(MathJoggling ${ROBWORK_LIBRARIES})
 
-Add the standard static main code body in the “MathJogling.cpp” and we are ready to play.
+Add the standard static main code body in the “MathJoggling.cpp” and we are ready to play.
 
 .. code-block:: c++
 
@@ -190,7 +190,7 @@ as shown above. Now lets look at some of the most used functions in the math pac
    // transform a vector
    Transform3D<> t1( Vector3D<>(0,0,1), rot);
    Log::infoLog() << t1*Vector3D<>(0,1,0) << std::endl;
-   // calcualte the inverse rotation
+   // calculate the inverse rotation
    Log::infoLog() << inverse( rot ) << std::endl;
    // calculate the inverse transform
    Log::infoLog() << inverse( t1 ) << std::endl;

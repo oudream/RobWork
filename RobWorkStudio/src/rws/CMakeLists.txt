@@ -1,6 +1,6 @@
 set(SUBSYS_NAME sdurws)
 set(SUBSYS_DESC "Visulization tool")
-set(SUBSYS_DEPS sdurw)
+set(SUBSYS_DEPS RW::sdurw)
 
 set(build TRUE)
 set(DEFAULT TRUE)

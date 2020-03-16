@@ -42,11 +42,12 @@ if(build)
     include(UseJava)
     include(UseSWIG)
 
+    add_library(${SUBSYS_NAME} INTERFACE)
+
     include_directories(${RW_ROOT}/src)
     include_directories(${JAVA_INCLUDE_DIRS} ${JNI_INCLUDE_DIRS})
     set(CMAKE_SWIG_OUTDIR ${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY})
 
-    add_custom_target(${SUBSYS_NAME})
     set(RW_NAME sdurw)
     foreach(
         RW_MODULE
@@ -201,6 +202,12 @@ if(build)
                 ${LINK_JAVADOC}
             WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
         )
+        target_link_libraries(${SUBSYS_NAME} INTERFACE ${RW_MODULE}_jni)
+        install(
+            TARGETS ${RW_MODULE}_jni
+            EXPORT ${PROJECT_PREFIX}Targets
+            DESTINATION ${JAVA_INSTALL_DIR} COMPONENT swig
+        )
     endforeach()
 
     swig_link_libraries(${RW_NAME}_jni sdurw)
@@ -221,4 +228,10 @@ if(build)
     add_dependencies(${RW_NAME}_simulation_jni ${RW_NAME}_control_jni ${RW_NAME}_jni)
     add_dependencies(${RW_NAME}_task_jni ${RW_NAME}_jni)
     add_dependencies(${RW_NAME}_opengl_jni ${RW_NAME}_jni)
+
+    install(
+            TARGETS ${SUBSYS_NAME}
+            EXPORT ${PROJECT_PREFIX}Targets
+    )
+    add_library(${PROJECT_PREFIX}::${SUBSYS_NAME} ALIAS ${SUBSYS_NAME})
 endif()

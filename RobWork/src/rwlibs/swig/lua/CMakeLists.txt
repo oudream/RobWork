@@ -73,7 +73,12 @@ if(build)
 
         # ############ lua interface generation ##############
         if((CMAKE_VERSION VERSION_GREATER 3.8) OR (CMAKE_VERSION VERSION_EQUAL 3.8))
-            swig_add_library(${TARGET_NAME} TYPE SHARED LANGUAGE lua SOURCES ${RW_MODULE_FILENAME} ${SOURCE})
+            swig_add_library(
+                ${TARGET_NAME}
+                TYPE SHARED
+                LANGUAGE lua
+                SOURCES ${RW_MODULE_FILENAME} ${SOURCE}
+            )
         else()
             swig_add_module(${TARGET_NAME} lua ${RW_MODULE_FILENAME} ${SOURCE})
         endif()
@@ -110,9 +115,10 @@ if(build)
                 SOURCES ${RW_MODULE_FILENAME} ${SOURCE}
             )
         else()
-            add_library(${TARGET_NAME}_s STATIC ${SOURCE} ${swig_generated_sources} ${swig_other_sources})
-            add_dependencies(${TARGET_NAME}_s sdurw_lua) # avoid using the source files before they have been
-                                                         # generated
+            add_library(${TARGET_NAME}_s STATIC ${SOURCE} ${swig_generated_sources}
+                                                ${swig_other_sources})
+            add_dependencies(${TARGET_NAME}_s sdurw_lua) # avoid using the source files before they
+                                                         # have been generated
         endif()
         target_include_directories(${TARGET_NAME}_s PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
         if(NOT RW_ENABLE_INTERNAL_LUA_TARGET)
@@ -132,7 +138,10 @@ if(build)
         if(NOT "${RW_MODULE}" STREQUAL "sdurw")
             add_library(${RW_MODULE}_lua_plugin.rwplugin MODULE LuaPlugin_${RW_MODULE}.cpp)
             target_link_libraries(${RW_MODULE}_lua_plugin.rwplugin ${RW_MODULE}_lua_s)
-            target_include_directories(${RW_MODULE}_lua_plugin.rwplugin PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+            target_include_directories(
+                ${RW_MODULE}_lua_plugin.rwplugin
+                PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}
+            )
             if((CMAKE_COMPILER_IS_GNUCC) OR (CMAKE_C_COMPILER_ID STREQUAL "Clang"))
                 set_target_properties(
                     ${RW_MODULE}_lua_plugin.rwplugin
@@ -140,18 +149,23 @@ if(build)
                 )
             endif()
             add_dependencies(${SUBSYS_NAME}_all ${RW_MODULE}_lua_plugin.rwplugin)
-            install(TARGETS ${RW_MODULE}_lua_plugin.rwplugin LIBRARY DESTINATION ${RW_PLUGIN_INSTALL_DIR})
+            install(
+                TARGETS ${RW_MODULE}_lua_plugin.rwplugin
+                LIBRARY DESTINATION ${RW_PLUGIN_INSTALL_DIR}
+            )
         endif()
 
         install(
-            TARGETS ${TARGET_NAME} ${TARGET_NAME}_s
+            TARGETS ${TARGET_NAME}_s
             EXPORT ${PROJECT_PREFIX}Targets
-            RUNTIME DESTINATION ${BIN_INSTALL_DIR} COMPONENT swig
-            LIBRARY DESTINATION ${LIB_INSTALL_DIR} COMPONENT swig
-            ARCHIVE DESTINATION ${LIB_INSTALL_DIR} COMPONENT swig
+            DESTINATION ${STATIC_LIB_INSTALL_DIR} COMPONENT swig
         )
 
-        install(TARGETS ${TARGET_NAME} DESTINATION ${LUA_INSTALL_DIR})
+        install(
+            TARGETS ${TARGET_NAME} 
+            EXPORT ${PROJECT_PREFIX}Targets 
+            DESTINATION ${LUA_INSTALL_DIR} COMPONENT swig
+        )
 
     endforeach()
 
@@ -172,8 +186,7 @@ if(build)
     target_link_libraries(sdurw_control_lua_s sdurw_control sdurw_lua_s)
     target_link_libraries(sdurw_pathoptimization_lua_s sdurw_pathoptimization sdurw_lua_s ${LUA_LIBRARIES})
     target_link_libraries(sdurw_pathplanners_lua_s sdurw_pathplanners sdurw_lua_s ${LUA_LIBRARIES})
-    target_link_libraries(sdurw_proximitystrategies_lua_s sdurw_proximitystrategies sdurw_lua_s
-                          ${LUA_LIBRARIES})
+    target_link_libraries(sdurw_proximitystrategies_lua_s sdurw_proximitystrategies sdurw_lua_s ${LUA_LIBRARIES})
     target_link_libraries(sdurw_simulation_lua_s sdurw_simulation sdurw_lua_s ${LUA_LIBRARIES})
     target_link_libraries(sdurw_task_lua_s sdurw_task sdurw_lua_s ${LUA_LIBRARIES})
     target_link_libraries(sdurw_opengl_lua_s sdurw_opengl sdurw_lua_s ${LUA_LIBRARIES})

@@ -31,6 +31,7 @@ macro(RWS_ADD_PLUGIN _name _lib_type)
 
     install(
         TARGETS ${_name}
+        EXPORT ${PROJECT_PREFIX}Targets
         RUNTIME DESTINATION ${BIN_INSTALL_DIR} COMPONENT ${_component}
         LIBRARY DESTINATION "${LIB_INSTALL_DIR}/RobWork/rwsplugins" COMPONENT ${_component}
         ARCHIVE DESTINATION "${LIB_INSTALL_DIR}/RobWork/rwsplugins" COMPONENT ${_component}
@@ -70,6 +71,7 @@ macro(RWS_ADD_COMPONENT _name)
 
     install(
         TARGETS ${_name}
+        EXPORT ${PROJECT_PREFIX}Targets
         RUNTIME DESTINATION ${BIN_INSTALL_DIR} COMPONENT ${_name}
         LIBRARY DESTINATION ${LIB_INSTALL_DIR} COMPONENT ${_name}
         ARCHIVE DESTINATION ${LIB_INSTALL_DIR} COMPONENT ${_name}

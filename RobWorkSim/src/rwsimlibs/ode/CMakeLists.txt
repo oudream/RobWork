@@ -1,6 +1,6 @@
 set(SUBSYS_NAME sdurwsim_ode)
 set(SUBSYS_DESC "Open Dynamics Engine library for RobWorkSim")
-set(SUBSYS_DEPS sdurw)
+set(SUBSYS_DEPS RW::sdurw)
 
 set(build TRUE)
 set(DEFAULT ${RWSIM_HAVE_ODE})

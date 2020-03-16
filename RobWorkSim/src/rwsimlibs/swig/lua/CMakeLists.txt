@@ -1,6 +1,6 @@
 set(SUBSYS_NAME sdurwsim_lua)
 set(SUBSYS_DESC "Interface for accessing RobWorkSim from lua.")
-set(SUBSYS_DEPS sdurw)
+set(SUBSYS_DEPS RW::sdurw_lua RWS::sdurws_lua sdurwsim)
 
 set(build TRUE)
 

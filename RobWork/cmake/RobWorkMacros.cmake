@@ -346,6 +346,16 @@ macro(RW_SET_INSTALL_DIRS PROJECT_NAME PREFIX)
     set(RW_PLUGIN_INSTALL_DIR "${LIB_INSTALL_DIR}/RobWork/rwplugins")
     set(RWS_PLUGIN_INSTALL_DIR "${LIB_INSTALL_DIR}/RobWork/rwsplugins")
     set(STATIC_LIB_INSTALL_DIR "${LIB_INSTALL_DIR}/RobWork")
+    set(JAVA_INSTALL_DIR "${LIB_INSTALL_DIR}/RobWork/Java")
+
+    execute_process(
+        COMMAND python3 -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())"
+        OUTPUT_VARIABLE PYTHON_INSTALL_DIR
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
+    if("${PYTHON_INSTALL_DIR}" STREQUAL "")
+        set(PYTHON_INSTALL_DIR "${LIB_INSTALL_DIR}/RobWork/Python")
+    endif()
 
     if(WIN32)
         set(
@@ -576,6 +586,9 @@ macro(RW_SUBSYS_OPTION _var _name _desc _default)
     set(_opt_name "BUILD_${_name}")
     rw_get_subsys_hyperstatus(subsys_status ${_name})
     if(NOT ("${subsys_status}" STREQUAL "AUTO_OFF"))
+
+        RW_IS_TARGETS(_status_depend TARGETS ${SUBSYS_DEPENDS} NOT_TARGETS_OUT _un_med_depend)
+
         option(${_opt_name} ${_desc} ${_default})
         if(NOT ${_default} AND NOT ${_opt_name})
             set(${_var} FALSE)
@@ -594,6 +607,12 @@ macro(RW_SUBSYS_OPTION _var _name _desc _default)
             rw_set_subsys_status(${_name} FALSE "Disabled manually.")
             message(STATUS "${_opt_name}  ${BUILD_${_name}} : Disabled manually.")
             rw_disable_dependies(${_name})
+        elseif(NOT ${_status_depend})
+            set(${_var} FALSE)
+            rw_set_subsys_status(${_name} FALSE "Unmet Dependencies: ${_un_med_depend}")
+            set(BUILD_${_name} OFF)
+            message(STATUS "${_opt_name}  ${BUILD_${_name}} : Unmet Dependencies: ${_un_med_depend}")
+            rw_disable_dependies(${_name})
         else()
             set(${_var} TRUE)
             if("${SUBSYS_REASON}" STREQUAL "")
@@ -608,6 +627,8 @@ macro(RW_SUBSYS_OPTION _var _name _desc _default)
         endif()
     endif(NOT ("${subsys_status}" STREQUAL "AUTO_OFF"))
 
+    
+
     if(${SUBSYS_ADD_DOC})
         rw_add_doc(${_name})
     endif()
@@ -615,6 +636,29 @@ macro(RW_SUBSYS_OPTION _var _name _desc _default)
     rw_subsys_depend(${_name} ${SUBSYS_DEPENDS})
     rw_add_subsystem(${_name} ${_desc})
 endmacro()
+
+# ##################################################################################################
+# Check if a list of targets are acually targets
+
+macro(RW_IS_TARGETS _status)
+    set(options) # Used to marke flags
+    set(oneValueArgs TARGETS_OUT NOT_TARGETS_OUT) # used to marke values with a single value
+    set(multiValueArgs TARGETS )
+    cmake_parse_arguments(IS "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
+    set(${_status} TRUE)
+
+    foreach(rw_target ${IS_TARGETS})
+        if(TARGET ${rw_target})
+            list(APPEND ${IS_TARGETS_OUT} ${rw_target})
+        else()
+            list(APPEND ${IS_NOT_TARGETS_OUT} ${rw_target})
+            set(${_status} FALSE)
+        endif()
+        
+    endforeach()
+    
+endmacro()
+
 
 # ##################################################################################################
 # Macro to disable subsystem dependies _subsys IN subsystem name

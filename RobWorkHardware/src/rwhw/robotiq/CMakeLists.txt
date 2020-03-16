@@ -1,6 +1,6 @@
 set(SUBSYS_NAME sdurwhw_robotiq)
 set(SUBSYS_DESC "driver for robotiq")
-set(SUBSYS_DEPS sdurw)
+set(SUBSYS_DEPS RW::sdurw)
 
 set(build TRUE)
 set(DEFAULT TRUE)

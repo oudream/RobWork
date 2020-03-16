@@ -1,6 +1,6 @@
 set(SUBSYS_NAME sdurwhw_netft)
 set(SUBSYS_DESC "driver for netft")
-set(SUBSYS_DEPS sdurw)
+set(SUBSYS_DEPS RW::sdurw)
 
 set(build TRUE)
 set(default TRUE)

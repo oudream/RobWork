@@ -1,6 +1,6 @@
 set(SUBSYS_NAME sdurwhw_serialport)
 set(SUBSYS_DESC "Serial port abstractions!")
-set(SUBSYS_DEPS sdurw)
+set(SUBSYS_DEPS RW::sdurw)
 
 set(build)
 set(DEFAULT TRUE)
