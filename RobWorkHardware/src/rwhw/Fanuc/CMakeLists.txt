@@ -1,6 +1,6 @@
 set(SUBSYS_NAME sdurwhw_fanucdriver)
 set(SUBSYS_DESC "Library of drivers for controlling fanuc robot")
-set(SUBSYS_DEPS)
+set(SUBSYS_DEPS RW::sdurw)
 
 set(build TRUE)
 set(DEFAULT TRUE)

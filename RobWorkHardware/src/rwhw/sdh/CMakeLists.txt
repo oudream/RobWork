@@ -1,6 +1,6 @@
 set(SUBSYS_NAME sdurwhw_sdh)
 set(SUBSYS_DESC "Driver for robolab sdh ")
-set(SUBSYS_DEPS sdurw)
+set(SUBSYS_DEPS RW::sdurw)
 
 # make sure that SDH can be found
 set(build TRUE)

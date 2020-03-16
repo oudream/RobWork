@@ -3,21 +3,21 @@ set(SUBSYS_DESC "A rwstudio application that may be started in a thread.")
 set(SUBSYS_DEPS sdurws)
 
 if(RWS_USE_STATIC_LINK_PLUGINS)
-    list(
-        APPEND
-            SUBSYS_DEPS
-            sdurws_jog
-            sdurws_log
-            sdurws_planning
-            sdurws_playback
-            sdurws_sensors
-            sdurws_treeview
-            sdurws_propertyview
-            sdurws_workcelleditorplugin
+    set(
+        SUBSYS_DEPS_TEST
+        sdurws_jog
+        sdurws_log
+        sdurws_planning
+        sdurws_playback
+        sdurws_sensors
+        sdurws_treeview
+        sdurws_propertyview
+        sdurws_workcelleditorplugin
+        sdurws_luaeditor
+        sdurws_luapl
     )
-    if(RWS_HAVE_LUA)
-        list(APPEND SUBSYS_DEPS sdurws_luaeditor sdurws_luapl)
-    endif()
+    rw_is_targets(test TARGETS ${SUBSYS_DEPS_TEST} TARGETS_OUT static_plugins)
+    list(APPEND SUBSYS_DEPS ${static_plugins})
 endif()
 
 set(build TRUE)
@@ -64,6 +64,9 @@ if(build)
         endif()
         if(TARGET sdurws_workcelleditorplugin)
             target_compile_definitions(${SUBSYS_NAME} PRIVATE RWS_HAVE_PLUGIN_WORKCELLEDITOR)
+        endif()
+        if(TARGET sdurws_luapl)
+            target_compile_definitions(${SUBSYS_NAME} PRIVATE RWS_HAVE_PLUGIN_LUAPL)
         endif()
     endif()
 

@@ -11,9 +11,7 @@ if(build)
     qt5_wrap_ui(UIS_OUT_H_StrategyLibraryDialog StrategyLibraryDialog.ui)
     qt5_wrap_ui(UIS_OUT_H_TaskSetupDialog TaskSetupDialog.ui)
     set(UIS_OUT_H ${UIS_OUT_H_ATaskVisPlugin} ${UIS_OUT_H_StrategyLibraryDialog} ${UIS_OUT_H_TaskSetupDialog})
-    # Need to add the current binary dir to the include directory because the generated source files are
-    # placed here
-    include_directories(${CMAKE_CURRENT_BINARY_DIR})
+
     # Standard cpp files to compile:
     set(SrcFiles ATaskVisPlugin.cpp StrategyLibraryDialog.cpp TaskSetupDialog.cpp)
     set(SRC_FILES_HPP ATaskVisPlugin.hpp StrategyLibraryDialog.hpp TaskSetupDialog.hpp)
@@ -37,9 +35,12 @@ if(build)
         ${RccSrcFiles}
         ${UIS_OUT_H}
     )
-    rw_add_includes(${SUBSYS_NAME} "rwslibs/atask" ${SRC_FILES_HPP})
+    rw_add_includes(${SUBSYS_NAME} "rwslibs/atask" ${SRC_FILES_HPP} ${UIS_OUT_H})
     # Need to add the current binary dir to the include directory because the generated source files are placed here
-    target_include_directories(${SUBSYS_NAME} PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
+    target_include_directories(
+        ${SUBSYS_NAME}
+        PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}> 
+    )
     target_link_libraries(${SUBSYS_NAME} PUBLIC ${SUBSYS_DEPS} ${QT_LIBRARIES} PRIVATE RW::sdurw_assembly RW::sdurw)
     target_include_directories(${SUBSYS_NAME}
         INTERFACE

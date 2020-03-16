@@ -83,7 +83,7 @@ For some purposes it might be useful to start an instance of RobWorkStudio:
 
    rwstudio = sdurws.getRobWorkStudioInstance()
    // now load a workcell
-   rwstudio.postOpenWorkCell('some/workcell.wc.xml')
+   rwstudio.setWorkCell(sdurw.WorkCellFactory.load('some/workcell.wc.xml'))
    // lets get the workcell
    wc = rwstudio.getWorkCell()
    print(wc.getName())

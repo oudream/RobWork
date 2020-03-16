@@ -1,6 +1,6 @@
 set(SUBSYS_NAME sdurwsim)
 set(SUBSYS_DESC "Simulation libraries")
-set(SUBSYS_DEPS sdurws)
+set(SUBSYS_DEPS RWS::sdurws)
 
 set(build TRUE)
 set(DEFAULT TRUE)

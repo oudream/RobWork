@@ -1,6 +1,6 @@
 set(SUBSYS_NAME sdurwhw_trakstar)
 set(SUBSYS_DESC "Calibration of devices")
-set(SUBSYS_DEPS sdurw)
+set(SUBSYS_DEPS RW::sdurw)
 
 set(build TRUE)
 

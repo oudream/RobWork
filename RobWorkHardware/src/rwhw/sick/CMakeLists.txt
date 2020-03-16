@@ -1,6 +1,6 @@
 set(SUBSYS_NAME sdurwhw_sick)
 set(SUBSYS_DESC "Driver for sick device")
-set(SUBSYS_DEPS sdurw)
+set(SUBSYS_DEPS RW::sdurw)
 
 set(build TRUE)
 set(DEFAULT TRUE)

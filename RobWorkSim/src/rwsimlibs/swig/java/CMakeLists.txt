@@ -1,7 +1,6 @@
 set(SUBSYS_NAME sdurwsim_java)
 set(SUBSYS_DESC "Interface for accessing RobWorkSim from java.")
-set(SUBSYS_DEPS sdurwsim)
-
+set(SUBSYS_DEPS RW::sdurw_java RWS::sdurws_java sdurwsim)
 set(build TRUE)
 
 set(DEFAULT TRUE)

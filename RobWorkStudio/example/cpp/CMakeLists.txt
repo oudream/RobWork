@@ -36,7 +36,3 @@ endforeach()
 foreach(obj ${ROBWORKSTUDIO_LIBRARIES})
     message(STATUS "LIB: ${obj}")
 endforeach()
-
-message(STATUS "${RWS_BUILD_WITH_LIBRARY_SUBDIRS}")
-message(STATUS "${RWS_ROOT}")
-message(STATUS "${RW_ROOT}")

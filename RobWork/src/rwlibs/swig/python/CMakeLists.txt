@@ -38,8 +38,12 @@ rw_subsys_option(
 
 if(build)
     include(UseSWIG)
+
+    add_library(${SUBSYS_NAME} INTERFACE)
+
     include_directories(${RW_ROOT}/src)
     include_directories(${PYTHON_INCLUDE_DIRS})
+
     set(SWIG_FLAGS "-includeall")
     if((PYTHON_VERSION_MAJOR VERSION_GREATER 3) OR (PYTHON_VERSION_MAJOR VERSION_EQUAL 3))
         set(SWIG_FLAGS "${SWIG_FLAGS};-py3")
@@ -48,21 +52,14 @@ if(build)
         set(SWIG_FLAGS "${SWIG_FLAGS};-doxygen")
     endif()
 
-    execute_process(
-        COMMAND python3 -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())"
-        OUTPUT_VARIABLE PYTHON_SITE_PACKAGES
-        OUTPUT_STRIP_TRAILING_WHITESPACE
-    )
-
     configure_file(setup.py.in ${CMAKE_CURRENT_SOURCE_DIR}/setup.py)
-    configure_file(RobWork.egg-info.in ${CMAKE_CURRENT_SOURCE_DIR}/RobWork-${ROBWORK_VERSION}.egg-info)
+    configure_file(RobWork.egg-info.in
+                   ${CMAKE_CURRENT_SOURCE_DIR}/RobWork-${ROBWORK_VERSION}.egg-info)
 
-    if(NOT "${PYTHON_SITE_PACKAGES}" STREQUAL "")
-        install(
-            FILES ${CMAKE_CURRENT_SOURCE_DIR}/RobWork-${ROBWORK_VERSION}.egg-info
-            DESTINATION ${PYTHON_SITE_PACKAGES}
-        )
-    endif()
+    install(
+        FILES ${CMAKE_CURRENT_SOURCE_DIR}/RobWork-${ROBWORK_VERSION}.egg-info
+        DESTINATION ${PYTHON_INSTALL_DIR}
+    )
 
     if(POLICY CMP0078)
         set(LIB_SUFIX _py)
@@ -70,9 +67,8 @@ if(build)
         set(LIB_SUFIX)
     endif()
 
-
     set(SWIG_OUT_ORIG ${CMAKE_SWIG_OUTDIR})
-    add_custom_target(${SUBSYS_NAME})
+
     foreach(
         RW_MODULE
         sdurw
@@ -99,7 +95,8 @@ if(build)
                 SOURCES ${RW_MODULE_FILENAME} ../ScriptTypes.cpp
             )
         else()
-            swig_add_module(${RW_MODULE}${LIB_SUFIX} python ${RW_MODULE_FILENAME} ../ScriptTypes.cpp)
+            swig_add_module(${RW_MODULE}${LIB_SUFIX} python ${RW_MODULE_FILENAME}
+                            ../ScriptTypes.cpp)
         endif()
 
         if(POLICY CMP0078)
@@ -138,14 +135,24 @@ if(build)
         endif()
 
         configure_file(__init__.py.in ${CMAKE_SWIG_OUTDIR}/__init__.py)
-        if(NOT "${PYTHON_SITE_PACKAGES}" STREQUAL "")
-            install(TARGETS ${TARGET_NAME} DESTINATION "${PYTHON_SITE_PACKAGES}/${RW_MODULE}")
-            install(
-                FILES ${CMAKE_SWIG_OUTDIR}/${RW_MODULE}.py
-                DESTINATION "${PYTHON_SITE_PACKAGES}/${RW_MODULE}"
-            )
-            install(FILES ${CMAKE_SWIG_OUTDIR}/__init__.py DESTINATION "${PYTHON_SITE_PACKAGES}/${RW_MODULE}")
-        endif()
+
+        target_link_libraries(${SUBSYS_NAME} INTERFACE ${TARGET_NAME})
+
+        install(
+            TARGETS ${TARGET_NAME} 
+            EXPORT ${PROJECT_PREFIX}Targets 
+            DESTINATION "${PYTHON_INSTALL_DIR}/${RW_MODULE}" COMPONENT swig
+        )
+
+        install(
+            FILES ${CMAKE_SWIG_OUTDIR}/${RW_MODULE}.py
+            DESTINATION "${PYTHON_INSTALL_DIR}/${RW_MODULE}"
+        )
+        install(
+            FILES ${CMAKE_SWIG_OUTDIR}/__init__.py
+            DESTINATION "${PYTHON_INSTALL_DIR}/${RW_MODULE}"
+        )
+
     endforeach()
 
     swig_link_libraries(sdurw${LIB_SUFIX} sdurw ${PYTHON_LIBRARIES})
@@ -153,8 +160,7 @@ if(build)
     swig_link_libraries(sdurw_control${LIB_SUFIX} sdurw_control sdurw ${PYTHON_LIBRARIES})
     swig_link_libraries(sdurw_pathoptimization${LIB_SUFIX} sdurw_pathoptimization sdurw ${PYTHON_LIBRARIES})
     swig_link_libraries(sdurw_pathplanners${LIB_SUFIX} sdurw_pathplanners sdurw ${PYTHON_LIBRARIES})
-    swig_link_libraries(sdurw_proximitystrategies${LIB_SUFIX} sdurw_proximitystrategies sdurw
-                        ${PYTHON_LIBRARIES})
+    swig_link_libraries(sdurw_proximitystrategies${LIB_SUFIX} sdurw_proximitystrategies sdurw ${PYTHON_LIBRARIES})
     swig_link_libraries(sdurw_simulation${LIB_SUFIX} sdurw_simulation sdurw ${PYTHON_LIBRARIES})
     swig_link_libraries(sdurw_task${LIB_SUFIX} sdurw_task sdurw ${PYTHON_LIBRARIES})
     swig_link_libraries(sdurw_opengl${LIB_SUFIX} sdurw_opengl sdurw ${PYTHON_LIBRARIES})
@@ -165,8 +171,7 @@ if(build)
         set(LIB_PREFIX "_")
     endif()
 
-    add_dependencies(${LIB_PREFIX}sdurw_assembly${LIB_SUFIX} ${LIB_PREFIX}sdurw_task${LIB_SUFIX}
-                     ${LIB_PREFIX}sdurw${LIB_SUFIX})
+    add_dependencies(${LIB_PREFIX}sdurw_assembly${LIB_SUFIX} ${LIB_PREFIX}sdurw_task${LIB_SUFIX} ${LIB_PREFIX}sdurw${LIB_SUFIX})
     add_dependencies(${LIB_PREFIX}sdurw_control${LIB_SUFIX} ${LIB_PREFIX}sdurw${LIB_SUFIX})
     add_dependencies(${LIB_PREFIX}sdurw_pathoptimization${LIB_SUFIX} ${LIB_PREFIX}sdurw${LIB_SUFIX})
     add_dependencies(${LIB_PREFIX}sdurw_pathplanners${LIB_SUFIX} ${LIB_PREFIX}sdurw${LIB_SUFIX})
@@ -174,4 +179,9 @@ if(build)
     add_dependencies(${LIB_PREFIX}sdurw_simulation${LIB_SUFIX} ${LIB_PREFIX}sdurw${LIB_SUFIX})
     add_dependencies(${LIB_PREFIX}sdurw_task${LIB_SUFIX} ${LIB_PREFIX}sdurw${LIB_SUFIX})
     add_dependencies(${LIB_PREFIX}sdurw_opengl${LIB_SUFIX} ${LIB_PREFIX}sdurw${LIB_SUFIX})
+
+    install(
+        TARGETS ${SUBSYS_NAME}
+        EXPORT ${PROJECT_PREFIX}Targets
+    )
 endif()

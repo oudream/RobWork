@@ -1,6 +1,6 @@
 set(SUBSYS_NAME sdurwhw_motomanIA20)
 set(SUBSYS_DESC "Library for controlling the motomanIA20 robot")
-set(SUBSYS_DEPS sdurwhw_serialport sdurw)
+set(SUBSYS_DEPS sdurwhw_serialport RW::sdurw)
 
 set(DEFAULT TRUE)
 set(REASON)

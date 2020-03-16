@@ -14,7 +14,7 @@ using namespace rwlibs::simulation;
 using namespace rws;
 
 int main(int argc, char** argv) {
-    if (argc != 2)
+    if (argc < 2)
         RW_THROW("Provide the path to RobWorkData as first argument.");
     static const std::string WC_FILE = std::string(argv[1]) + "/scenes/SensorTestScene/SimpleWorkcell.xml";
     const WorkCell::Ptr wc = WorkCellLoader::Factory::load(WC_FILE);

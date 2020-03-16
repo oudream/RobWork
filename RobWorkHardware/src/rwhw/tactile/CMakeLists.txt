@@ -1,6 +1,6 @@
 set(SUBSYS_NAME sdurwhw_tactile)
 set(SUBSYS_DESC "Tactile array sensor library")
-set(SUBSYS_DEPS sdurw)
+set(SUBSYS_DEPS RW::sdurw)
 
 set(build TRUE)
 set(DEFAULT TRUE)
