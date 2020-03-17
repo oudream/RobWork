@@ -141,9 +141,9 @@ namespace rw { namespace geometry {
 		 * @param blue [in] the amount of red color 0-255
 		 */
 		void setColor(unsigned char red, unsigned char green, unsigned char blue){
-			_colorRGB[0]=red/255.0;
-			_colorRGB[1]=green/255.0;
-			_colorRGB[2]=blue/255.0;
+			_colorRGB[0]=red/255.0f;
+			_colorRGB[1]=green/255.0f;
+			_colorRGB[2]=blue/255.0f;
 		}
 
 		/**

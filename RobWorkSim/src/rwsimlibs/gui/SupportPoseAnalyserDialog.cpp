@@ -632,8 +632,6 @@ void SupportPoseAnalyserDialog::changedEvent(){
 
 
     	std::vector<Vector3D<> > &xaxis = _xaxisS[body];
-    	//std::vector<Vector3D<> > &yaxis = _yaxisS[body];
-    	//std::vector<Vector3D<> > &zaxis = _zaxisS[body];
     	std::cout << "xaxis.size()==_xaxis.size() " << xaxis.size() << "==" << _xaxis[bodyIdx].size()<< std::endl;
     	if(xaxis.size()==_xaxis[bodyIdx].size()){
 			for(int idx: poseIdxList){
@@ -645,14 +643,12 @@ void SupportPoseAnalyserDialog::changedEvent(){
                     EAA<> eaa(_startTransforms[bodyIdx][idx].R() );
                     _selPosePntRenderZ->addPoint( Vector3D<>(eaa[0]/4,eaa[1]/4,eaa[2]/4 ) );
 			    }
-			    //_selPosePntRenderX->addPoint( xaxis[idx] );
-				//_selPosePntRenderY->addPoint( yaxis[idx] );
-				//_selPosePntRenderZ->addPoint( zaxis[idx] );
 			}
 
 			// now add everything else
 			std::size_t pidx = 0;
-			for(std::size_t i = 0; i < (_startTransforms.size() > 0)? _startTransforms[bodyIdx].size() : 0; i++){
+			size_t length = (_startTransforms.size() > 0)? _startTransforms[bodyIdx].size() : 0;
+			for(std::size_t i = 0; i < length ; i++){
 			    if( pidx<poseIdxList.size() && (int)i==poseIdxList[pidx] ){
 			        pidx++;
 			        continue;
