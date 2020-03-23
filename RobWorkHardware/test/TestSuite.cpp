@@ -1,5 +1,6 @@
-#include <boost/test/unit_test.hpp>
+
 #include <boost/test/included/unit_test_framework.hpp>
+#include <boost/test/unit_test.hpp>
 
 using boost::unit_test::test_suite;
 

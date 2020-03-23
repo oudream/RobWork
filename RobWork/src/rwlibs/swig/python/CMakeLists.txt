@@ -40,6 +40,7 @@ if(build)
     include(UseSWIG)
 
     add_library(${SUBSYS_NAME} INTERFACE)
+    add_library(${PROJECT_PREFIX}::${SUBSYS_NAME} ALIAS ${SUBSYS_NAME} )
 
     include_directories(${RW_ROOT}/src)
     include_directories(${PYTHON_INCLUDE_DIRS})

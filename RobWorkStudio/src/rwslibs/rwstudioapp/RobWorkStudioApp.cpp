@@ -131,7 +131,7 @@ void RobWorkStudioApp::close ()
             rw::common::TimerUtil::sleepMs (1);
             all_w = QApplication::allWidgets ();
         }
-        rw::common::TimerUtil::sleepMs (100);    // Final timing to let the res of QT close down
+        rw::common::TimerUtil::sleepMs (1000);    // Final timing to let the rest of QT close down
     }
 }
 
@@ -222,7 +222,7 @@ int RobWorkStudioApp::run ()
                     rwstudio.addPlugin (new rws::Calibration (), false, Qt::RightDockWidgetArea);
 #endif
 
-#if RWS_HAVE_LUA
+#if RWS_HAVE_PLUGIN_LUAPL
                     rwstudio.addPlugin (new rws::Lua (), false, Qt::LeftDockWidgetArea);
 #endif
 

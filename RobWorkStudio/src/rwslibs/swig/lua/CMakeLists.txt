@@ -77,11 +77,13 @@ if(build)
         swig_link_libraries(${TARGET_NAME} ${RW_BUILD_WITH_LIBRARIES_LUA})
         target_include_directories(${TARGET_NAME} PUBLIC ${RW_BUILD_WITH_LUA_INCLUDE_DIR})
     endif()
+    add_library(${PROJECT_PREFIX}::${TARGET_NAME} ALIAS ${TARGET_NAME})
+
+    # ############ lua static interface generation ##############
     if((CMAKE_COMPILER_IS_GNUCC) OR (CMAKE_C_COMPILER_ID STREQUAL "Clang"))
         set_target_properties(${TARGET_NAME} PROPERTIES LINK_FLAGS -Wl,--no-undefined)
     endif()
 
-    # ############ lua static interface generation ##############
     if((CMAKE_VERSION VERSION_GREATER 3.12.0) OR (CMAKE_VERSION VERSION_EQUAL 3.12.0))
         swig_add_library(
             ${TARGET_NAME}_s
@@ -108,6 +110,7 @@ if(build)
         target_link_libraries(${TARGET_NAME}_s ${RW_BUILD_WITH_LIBRARIES_LUA})
         target_include_directories(${TARGET_NAME}_s PUBLIC ${RW_BUILD_WITH_LUA_INCLUDE_DIR})
     endif()
+    add_library(${PROJECT_PREFIX}::${TARGET_NAME}_s ALIAS ${TARGET_NAME}_s)
 
     # Visual Studio or mingw this is used to indicate static linking to Visual Studio or mingw
     if(DEFINED MSVC)

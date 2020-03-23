@@ -63,6 +63,8 @@ namespace swig {
 
     rw::common::Ptr<RobWorkStudio> getRobWorkStudioInstance(const std::string& args);
 
+    void closeRobWorkStudio();
+
     bool isRunning();
 
     const rwlibs::swig::State& getState();
