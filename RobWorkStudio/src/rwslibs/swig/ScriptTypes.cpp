@@ -123,6 +123,10 @@ rw::common::Ptr< RobWorkStudio > rws::swig::getRobWorkStudioInstance (const std:
     return robApp->getRobWorkStudio ();
 }
 
+void rws::swig::closeRobWorkStudio(){
+    robApp->close();
+}
+
 bool rws::swig::isRunning ()
 {
     if (robApp == NULL) {

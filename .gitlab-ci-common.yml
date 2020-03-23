@@ -307,13 +307,14 @@ stages:
   before_script:
     - *uninstall-rw-deb
     - cd ..
-    - rm -r tmp || echo "nothing to remove" && mkdir tmp
+    - rm -r ./tmp || echo "nothing to remove" && mkdir tmp
     - cp -r ./RobWork ./tmp
     - cd tmp/RobWork
-    - git checkout debian-pkg
+    - git checkout origin/debian-pkg
     - cd ../..
     - cp -r ./tmp/RobWork/debian ./RobWork
     - cd RobWork
+    - rm -r ../*.deb || echo "Nothing to remove"
   script:
     - version=$(./debian/scripts/getVersion.sh ./debian/scripts -n)
     - tar --exclude='./debian' --exclude='./.git' -zcvf ../robwork_$version.orig.tar.gz .
@@ -991,7 +992,7 @@ pages:
   tags:
     - linux
   before_script:
-    - echo done
+   - rm -r ../*.deb
   only:
     refs:
       - debian-pkg@sdurobotics/RobWork

@@ -19,6 +19,8 @@ rwstudio:setWorkCell(wc)
 
 while(isRunning()) do
     if #arg == 2 and arg[2] == "-t" then
+        closeRobWorkStudio();
+        sleep(1);
         return 0
     end
 end

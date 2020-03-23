@@ -78,6 +78,12 @@ bool isRunning();
 RobWorkStudio* getRobWorkStudioFromQt ();
 
 
+/**
+ * @brief Close a running RobWorkStudio Instance. Blocking until rws is closed. This might take awaile.
+ */
+void closeRobWorkStudio ();
+
+
 
 const State& getState ();
 void setState (State& state);
@@ -346,6 +352,11 @@ namespace rws{
          * @return true if running false otherwise
          */
         bool isRunning();
+
+        /**
+         * @brief Close RobWorkStudio. Blocking until rws is closed. This might take awaile.
+         */
+        void close ();
 
         /**
          * @brief get handle to the running RobWorkStudio instance.
