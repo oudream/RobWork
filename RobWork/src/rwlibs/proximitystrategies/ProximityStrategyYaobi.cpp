@@ -22,7 +22,6 @@
 #include <rw/geometry/TriMesh.hpp>
 #include <rw/proximity/ProximityStrategyData.hpp>
 
-
 #include <vector>
 #include <yaobi/yaobi.h>
 #include <yaobi/yaobi_mesh_interface.h>
@@ -120,38 +119,66 @@ void ProximityStrategyYaobi::destroyModel (rw::proximity::ProximityModel* model)
 bool ProximityStrategyYaobi::addGeometry (rw::proximity::ProximityModel* model,
                                           const rw::geometry::Geometry& geom)
 {
+    return addGeometry (model, ownedPtr (new Geometry (geom)), true);
+}
+
+bool ProximityStrategyYaobi::addGeometry (rw::proximity::ProximityModel* model,
+                                          rw::geometry::Geometry::Ptr geom, bool forceCopy)
+{
     RW_ASSERT (model != NULL);
     YaobiProximityModel* pmodel = (YaobiProximityModel*) model;
+
+    for (RWYaobiModel& m : pmodel->models) {
+        if (m.geo->getId () == geom->getId ()) {
+            RW_THROW ("The specified geometry \"" + geom->getId() + "\" (geometry identifiers are supposed to be unique) has "
+                      "already been added to the proximity strategy model!");
+            return false;
+        }
+    }
+
     YaobiModelPtr yaobimodel;
-    GeometryData::Ptr gdata = geom.getGeometryData ();
+    GeometryData::Ptr gdata = geom->getGeometryData ();
     // first check if model is in cache
-    if (_modelCache.has (geom.getId ())) {
-        yaobimodel = _modelCache.get (geom.getId ());
+    if (_modelCache.has (geom->getId ())) {
+        yaobimodel = _modelCache.get (geom->getId ());
     }
     else {
         TriMesh::Ptr mesh = gdata->getTriMesh (false);
         if (mesh->getSize () == 0)
             return false;
 
-        yaobimodel = makeModelFromSoup (mesh, geom.getScale ());
+        yaobimodel = makeModelFromSoup (mesh, geom->getScale ());
     }
-    pmodel->models.push_back (RWYaobiModel (geom.getTransform (), yaobimodel));
+    pmodel->models.push_back (RWYaobiModel (geom, geom->getTransform (), yaobimodel));
 
     _allmodels.push_back (pmodel->models.back ());
-    _geoIdToModelIdx[geom.getId ()].push_back ((int) _allmodels.size () - 1);
+    _geoIdToModelIdx[geom->getId ()].push_back ((int) _allmodels.size () - 1);
     return true;
-}
-
-bool ProximityStrategyYaobi::addGeometry (rw::proximity::ProximityModel* model,
-                                          rw::geometry::Geometry::Ptr geom, bool forceCopy)
-{
-    // we allways copy the data here
-    return addGeometry (model, *geom);
 }
 
 bool ProximityStrategyYaobi::removeGeometry (rw::proximity::ProximityModel* model,
                                              const std::string& geomId)
 {
+    YaobiProximityModel* pmodel = (YaobiProximityModel*) model;
+    int idx                     = -1;
+    for (size_t i = 0; i < pmodel->models.size (); i++)
+        if (pmodel->models[i].geo->getId () == geomId) {
+            idx = (int) i;
+            break;
+        }
+    if (idx < 0) {
+        // RW_THROW("No geometry with id: \""<< geomId << "\" exist in proximity model!");
+        return false;
+    }
+
+    _modelCache.remove (geomId);
+    RWYaobiModelList::iterator iter = pmodel->models.begin ();
+    for (; iter != pmodel->models.end (); ++iter) {
+        if ((*iter).geo->getId () == geomId) {
+            pmodel->models.erase (iter);
+            return true;
+        }
+    }
     return false;
 }
 
@@ -180,7 +207,7 @@ bool ProximityStrategyYaobi::doInCollision (ProximityModel::Ptr aModel, const Tr
     for (const RWYaobiModel& ma : a->models) {
         for (const RWYaobiModel& mb : b->models) {
             //! Search for all contacting triangles
-            collide (*ma.second, wTa * ma.first, *mb.second, wTb * mb.first, result, qtype);
+            collide (*ma.yaobimodel, wTa * ma.t3d, *mb.yaobimodel, wTb * mb.t3d, result, qtype);
 
             cres._nrBVTests += result.num_bv_tests;
             cres._nrPrimTests += result.num_tri_tests;
@@ -237,8 +264,22 @@ void ProximityStrategyYaobi::getCollisionContacts (
 std::vector< std::string >
 ProximityStrategyYaobi::getGeometryIDs (rw::proximity::ProximityModel* model)
 {
-    RW_THROW ("ProximityStrategyYaobi::getGeometryIDs(rw::proximity::ProximityModel* model): Not "
-              "Implemented");
+    std::vector< std::string > res;
+    YaobiProximityModel* pmodel = (YaobiProximityModel*) model;
+    for (RWYaobiModel& m : pmodel->models) {
+        res.push_back (m.geo->getId ());
+    }
+    return res;
+}
+std::vector< rw::common::Ptr< rw::geometry::Geometry > >
+ProximityStrategyYaobi::getGeometrys (rw::proximity::ProximityModel* model)
+{
+    std::vector< rw::common::Ptr< rw::geometry::Geometry > > res;
+    YaobiProximityModel* pmodel = (YaobiProximityModel*) model;
+    for (RWYaobiModel& m : pmodel->models) {
+        res.push_back (m.geo);
+    }
+    return res;
 }
 
 CollisionStrategy::Ptr ProximityStrategyYaobi::make ()

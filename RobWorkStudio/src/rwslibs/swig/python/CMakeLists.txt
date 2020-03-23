@@ -28,6 +28,7 @@ if(build)
     include_directories(${PYTHON_INCLUDE_DIRS})
 
     add_library(${SUBSYS_NAME} INTERFACE)
+    add_library(${PROJECT_PREFIX}::${SUBSYS_NAME} ALIAS ${SUBSYS_NAME} )
 
     set_source_files_properties(../sdurws.i PROPERTIES CPLUSPLUS ON)
     set_source_files_properties(../sdurws.i PROPERTIES SWIG_FLAGS "-includeall")

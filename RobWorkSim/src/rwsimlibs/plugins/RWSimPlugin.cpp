@@ -73,7 +73,7 @@ RWSimPlugin::RWSimPlugin():
 {
     setupUi(this);
 
-#ifdef RWSIM_HAVE_LUA
+#ifdef RWSIM_PLUGIN_HAVE_LUA
     _luastate = 0;
 #endif
 
@@ -230,7 +230,7 @@ void RWSimPlugin::btnPressed(){
     	sim->init(state);
     	_sim = ownedPtr(new ThreadSimulator(sim, getRobWorkStudio()->getState()));
 
-#ifdef RWSIM_HAVE_LUA
+#ifdef RWSIM_PLUGIN_HAVE_LUA
     	rwsim::swig::addSimulatorInstance(_sim, "rwsimplugin");
 #endif
 
@@ -525,7 +525,7 @@ void RWSimPlugin::updateStatus(){
 
 void RWSimPlugin::open(rw::models::WorkCell* workcell){
 
-#ifdef RWSIM_HAVE_LUA
+#ifdef RWSIM_PLUGIN_HAVE_LUA
 	struct RWSimLuaLibrary: public rwlibs::swig::LuaState::LuaLibrary {
 		const std::string getId(){ return "RWSimLuaLibrary"; }
 		bool initLibrary(rwlibs::swig::LuaState& lstate){

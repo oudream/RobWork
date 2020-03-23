@@ -15,4 +15,5 @@ if __name__ == '__main__':
 
     while isRunning():
         if len(sys.argv) == 3 and sys.argv[2] == "-t":
+            closeRobWorkStudio()
             exit(0)

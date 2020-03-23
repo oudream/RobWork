@@ -8,3 +8,4 @@ add_executable(${TargetName}
 
 # Libraries to link with the target:
 target_link_libraries(${TargetName} ${ROBWORK_LIBRARIES})
+target_include_directories(${TargetName} PUBLIC ${ROBWORK_INCLUDE_DIRS})

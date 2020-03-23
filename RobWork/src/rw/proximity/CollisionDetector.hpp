@@ -255,6 +255,14 @@ public:
 	 */
 	bool hasGeometry(rw::kinematics::Frame* frame, const std::string& geometryId);
 
+
+	/**
+	 * @brief Get the geometry from its ID
+	 * @param ID [in] the ID of the geometry
+	 * @return Pointer to the geometry
+	 */
+	rw::common::Ptr<rw::geometry::Geometry> getGeometry(rw::kinematics::Frame* frame, const std::string& geometryId);
+
 private:
 	/**
 	 * @brief Initialize the narrow phase strategy for the given workcell.
