@@ -206,6 +206,7 @@ set(
     proximity/DistanceStrategy.cpp
     proximity/ProximityStrategy.cpp
     proximity/DistanceCalculatorTest.cpp
+    proximity/ProximityModel.cpp
 )
 add_executable(sdurw_proximity-gtest ${PROXIMITY_TEST_SRC})
 target_link_libraries(sdurw_proximity-gtest ${PROXIMITY_TEST_LIBRARIES})

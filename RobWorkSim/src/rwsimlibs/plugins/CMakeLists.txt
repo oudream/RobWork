@@ -146,7 +146,11 @@ if(build)
 
     add_library(${SUBSYS_NAME} MODULE ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles_RWSimPlugin}
                                       ${UIS_OUT_H})
-    # ADD_LIBRARY(RWSimPluginStatic STATIC ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles_RWSimPlugin})
+
+    if(${test})
+        target_compile_definitions(${SUBSYS_NAME} PRIVATE RWSIM_PLUGIN_HAVE_LUA)
+    endif()
+    
     target_link_libraries(
         ${SUBSYS_NAME}
         PRIVATE sdurwsim_gui

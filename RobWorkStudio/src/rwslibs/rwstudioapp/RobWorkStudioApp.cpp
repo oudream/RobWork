@@ -222,7 +222,7 @@ int RobWorkStudioApp::run ()
                     rwstudio.addPlugin (new rws::Calibration (), false, Qt::RightDockWidgetArea);
 #endif
 
-#if RWS_HAVE_LUA
+#if RWS_HAVE_PLUGIN_LUAPL
                     rwstudio.addPlugin (new rws::Lua (), false, Qt::LeftDockWidgetArea);
 #endif
 

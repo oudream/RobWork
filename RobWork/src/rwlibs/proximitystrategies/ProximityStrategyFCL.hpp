@@ -26,228 +26,247 @@
 #include <rw/proximity/DistanceStrategy.hpp>
 
 #include <string>
-#include <vector>
 #include <utility>
+#include <vector>
 
-namespace fcl { class CollisionGeometry; }
-namespace fcl { class CollisionRequest; }
-namespace fcl { class CollisionResult; }
-namespace fcl { class DistanceRequest; }
-namespace fcl { class DistanceResult; }
+namespace fcl {
+class CollisionGeometry;
+}
+namespace fcl {
+class CollisionRequest;
+}
+namespace fcl {
+class CollisionResult;
+}
+namespace fcl {
+class DistanceRequest;
+}
+namespace fcl {
+class DistanceResult;
+}
 
 namespace rwlibs { namespace proximitystrategies {
-        /** @addtogroup proximitystrategies */
-        /*@{*/
+    /** @addtogroup proximitystrategies */
+    /*@{*/
+
+    /**
+     * @brief This is a strategy wrapper for the Flexible Collision Library (FCL)
+     *
+     * For further information check out https://github.com/flexible-collision-library/fcl
+     */
+    class ProximityStrategyFCL : public rw::proximity::CollisionStrategy,
+                                 public rw::proximity::DistanceStrategy
+    {
+      public:
+        //! @brief Smart pointer type for FCL Proximity strategy.
+        typedef rw::common::Ptr< ProximityStrategyFCL > Ptr;
+
+        //! @brief Type of internal collision geometry.
+        typedef rw::common::Ptr< fcl::CollisionGeometry > FCLBVHModelPtr;
+
+        //! @brief Datatype to hold the FCL bounding volume and related geometrical data.
+        struct FCLModel
+        {
+            /**
+             * @brief Create new holder for internal collision geometry information.
+             * @param geoId [in] id of the geometry.
+             * @param transform [in] transform of the geometry.
+             * @param model [in] the internal model of the collision geometry.
+             */
+            FCLModel (rw::common::Ptr< rw::geometry::Geometry > geo,
+                      const rw::math::Transform3D<>& transform, FCLBVHModelPtr model) :
+                geo (geo),
+                t3d (transform), model (model)
+            { /* Empty */
+            }
+            //! @brief Identifier for the geometry.
+            rw::common::Ptr< rw::geometry::Geometry > geo;
+            //! @brief Location of the geometry.
+            rw::math::Transform3D<> t3d;
+            //! @brief Using fcl::CollisionGeometry as the type of the model, to allow holding all
+            //! the different fcl::BVHModel{bv type} types.
+            FCLBVHModelPtr model;
+        };
+
+        //! @brief Type for list of proximity models.
+        typedef std::vector< FCLModel > FCLModelList;
+
+        //! @brief Datatype to hold the proximity models
+        struct FCLProximityModel : public rw::proximity::ProximityModel
+        {
+            /**
+             * @brief Constructor.
+             * @param owner [in] the strategy owning this model.
+             */
+            FCLProximityModel (ProximityStrategy* owner) : ProximityModel (owner)
+            {
+                /* Nothing specific */
+            }
+            //! @brief Models holding the internal collision geometry.
+            FCLModelList models;
+        };
+
+        //! @brief Supported bounding volumes
+        enum class BV {
+            AABB,      //!< Axis-Aligned Bounding Boxes
+            OBB,       //!< Oriented Bounding Boxes
+            RSS,       //!< Rectangle Swept Spheres
+            OBBRSS,    //!< Mix of OBB and RSS
+            kIOS,      //!< Bounding volume as the intersection of a set of spheres
+            KDOP16,    //!< Discrete Oriented Polytope
+            KDOP18,    //!< Discrete Oriented Polytope
+            KDOP24     //!< Discrete Oriented Polytope
+        };
 
         /**
-         * @brief This is a strategy wrapper for the Flexible Collision Library (FCL)
-         *
-         * For further information check out https://github.com/flexible-collision-library/fcl
+         * @brief Constructor
+         * @param bv [in] the bounding volume type to use.
          */
-        class ProximityStrategyFCL :
-            public rw::proximity::CollisionStrategy,
-            public rw::proximity::DistanceStrategy
-        {
-        public:
-        	//! @brief Smart pointer type for FCL Proximity strategy.
-            typedef rw::common::Ptr<ProximityStrategyFCL> Ptr;
+        ProximityStrategyFCL (BV bv = BV::AABB);
 
-            //! @brief Type of internal collision geometry.
-        	typedef rw::common::Ptr<fcl::CollisionGeometry> FCLBVHModelPtr;
+        /**
+         * @brief Destructor
+         */
+        virtual ~ProximityStrategyFCL ();
 
-			//! @brief Datatype to hold the FCL bounding volume and related geometrical data.
-            struct FCLModel {
-        		/**
-        		 * @brief Create new holder for internal collision geometry information.
-        		 * @param geoId [in] id of the geometry.
-        		 * @param transform [in] transform of the geometry.
-        		 * @param model [in] the internal model of the collision geometry.
-        		 */
-                FCLModel(const std::string& geoId, const rw::math::Transform3D<>& transform, FCLBVHModelPtr model): geoId(geoId), t3d(transform), model(model) { /* Empty */ }
-                //! @brief Identifier for the geometry.
-                std::string geoId;
-                //! @brief Location of the geometry.
-                rw::math::Transform3D<> t3d;
-                //! @brief Using fcl::CollisionGeometry as the type of the model, to allow holding all the different fcl::BVHModel{bv type} types.
-                FCLBVHModelPtr model;
-            };
+        //// interface of ProximityStrategy
+        //! @copydoc rw::proximity::ProximityStrategy::createModel
+        virtual rw::proximity::ProximityModel::Ptr createModel ();
 
-            //! @brief Type for list of proximity models.
-            typedef std::vector<FCLModel> FCLModelList;
+        //! @copydoc rw::proximity::ProximityStrategy::destroyModel
+        void destroyModel (rw::proximity::ProximityModel* model);
 
-            //! @brief Datatype to hold the proximity models
-            struct FCLProximityModel : public rw::proximity::ProximityModel {
-            	/**
-            	 * @brief Constructor.
-            	 * @param owner [in] the strategy owning this model.
-            	 */
-                FCLProximityModel(ProximityStrategy *owner) : ProximityModel(owner) {
-                    /* Nothing specific */
-                }
-                //! @brief Models holding the internal collision geometry.
-                FCLModelList models;
-            };
+        /**
+         * @copydoc rw::proximity::ProximityStrategy::addGeometry(rw::proximity::ProximityModel*
+         * model, const rw::geometry::Geometry& geom)
+         *
+         * @throws Exception when a bounding volume type has been chosen that is not supported.
+         */
+        bool addGeometry (rw::proximity::ProximityModel* model, const rw::geometry::Geometry& geom);
 
-            //! @brief Supported bounding volumes
-            enum class BV {
-            	AABB,   //!< Axis-Aligned Bounding Boxes
-				OBB,    //!< Oriented Bounding Boxes
-				RSS,    //!< Rectangle Swept Spheres
-				OBBRSS, //!< Mix of OBB and RSS
-				kIOS,   //!< Bounding volume as the intersection of a set of spheres
-				KDOP16, //!< Discrete Oriented Polytope
-				KDOP18, //!< Discrete Oriented Polytope
-				KDOP24  //!< Discrete Oriented Polytope
-            };
+        /**
+         * @copydoc rw::proximity::ProximityStrategy::addGeometry(ProximityModel* model,
+         * rw::common::Ptr<rw::geometry::Geometry> geom, bool forceCopy=false)
+         *
+         * @throws Exception when a bounding volume type has been chosen that is not supported.
+         */
+        bool addGeometry (rw::proximity::ProximityModel* model,
+                          rw::common::Ptr< rw::geometry::Geometry > geom, bool forceCopy = false);
 
-            /**
-             * @brief Constructor
-             * @param bv [in] the bounding volume type to use.
-             */
-            ProximityStrategyFCL(BV bv = BV::AABB);
+        //! @copydoc rw::proximity::ProximityStrategy::removeGeometry
+        bool removeGeometry (rw::proximity::ProximityModel* model, const std::string& geomId);
 
-            /**
-             * @brief Destructor
-             */
-            virtual ~ProximityStrategyFCL();
+        //! @copydoc rw::proximity::ProximityStrategy::getGeometryIDs
+        std::vector< std::string > getGeometryIDs (rw::proximity::ProximityModel* model);
 
-            //// interface of ProximityStrategy
-            //! @copydoc rw::proximity::ProximityStrategy::createModel
-            virtual rw::proximity::ProximityModel::Ptr createModel();
+        /**
+         * @copydoc rw::proximity::ProximityStrategy::getGeometrys
+         */
+        std::vector< rw::common::Ptr< rw::geometry::Geometry > >
+        getGeometrys (rw::proximity::ProximityModel* model);
 
-            //! @copydoc rw::proximity::ProximityStrategy::destroyModel
-            void destroyModel(rw::proximity::ProximityModel* model);
+        //! @copydoc rw::proximity::ProximityStrategy::clear
+        void clear ();
 
-            /**
-             * @copydoc rw::proximity::ProximityStrategy::addGeometry(rw::proximity::ProximityModel* model, const rw::geometry::Geometry& geom)
-             *
-             * @throws Exception when a bounding volume type has been chosen that is not supported.
-             */
-            bool addGeometry(rw::proximity::ProximityModel* model, const rw::geometry::Geometry& geom);
+        //// Interface of CollisionStrategy
+        //! @copydoc rw::proximity::CollisionStrategy::doInCollision
+        bool doInCollision (rw::proximity::ProximityModel::Ptr a,
+                            const rw::math::Transform3D<>& wTa,
+                            rw::proximity::ProximityModel::Ptr b,
+                            const rw::math::Transform3D<>& wTb,
+                            rw::proximity::ProximityStrategyData& data);
 
+        /**
+         * @copydoc rw::proximity::CollisionStrategy::getCollisionContacts
+         *
+         * @note Not implemented as nothing appears to be using this functionality
+         */
+        void getCollisionContacts (std::vector< CollisionStrategy::Contact >& contacts,
+                                   rw::proximity::ProximityStrategyData& data);
 
-            /**
-             * @copydoc rw::proximity::ProximityStrategy::addGeometry(ProximityModel* model, rw::common::Ptr<rw::geometry::Geometry> geom, bool forceCopy=false)
-             *
-             * @throws Exception when a bounding volume type has been chosen that is not supported.
-             */
-            bool addGeometry(rw::proximity::ProximityModel* model, rw::common::Ptr<rw::geometry::Geometry> geom, bool forceCopy=false);
+        //// Interface of DistanceStrategy
+        //! @copydoc rw::proximity::DistanceStrategy::doDistance
+        rw::proximity::DistanceStrategy::Result&
+        doDistance (rw::proximity::ProximityModel::Ptr a, const rw::math::Transform3D<>& wTa,
+                    rw::proximity::ProximityModel::Ptr b, const rw::math::Transform3D<>& wTb,
+                    class rw::proximity::ProximityStrategyData& data);
 
-            //! @copydoc rw::proximity::ProximityStrategy::removeGeometry
-            bool removeGeometry(rw::proximity::ProximityModel* model, const std::string& geomId);
+        //// End of interfaces
 
-            //! @copydoc rw::proximity::ProximityStrategy::getGeometryIDs
-            std::vector<std::string> getGeometryIDs(rw::proximity::ProximityModel* model);
+        /**
+         * @brief Set the bounding volume
+         * @param bv [in] new bounding volume type.
+         */
+        void setBV (const BV& bv) { _bv = bv; }
 
-            //! @copydoc rw::proximity::ProximityStrategy::clear
-            void clear();
+        /**
+         * @brief Get the bounding volume
+         * @return the type of bounding volume used.
+         */
+        BV getBV () { return _bv; }
 
-            //// Interface of CollisionStrategy
-            //! @copydoc rw::proximity::CollisionStrategy::doInCollision
-            bool doInCollision(
-                rw::proximity::ProximityModel::Ptr a,
-                const rw::math::Transform3D<>& wTa,
-                rw::proximity::ProximityModel::Ptr b,
-                const rw::math::Transform3D<>& wTb,
-                rw::proximity::ProximityStrategyData& data);
+        /**
+         * @brief Get access to the CollisionRequest that is used with FCL collision query
+         *
+         * See the fcl/collision_data.h for the data structure, and look through their documentation
+         * for specifics on what solvers that can be chosen.
+         */
+        fcl::CollisionRequest& getCollisionRequest ();
 
-            /**
-             * @copydoc rw::proximity::CollisionStrategy::getCollisionContacts
-             *
-             * @note Not implemented as nothing appears to be using this functionality
-             */
-            void getCollisionContacts(
-                std::vector<CollisionStrategy::Contact>& contacts,
-                rw::proximity::ProximityStrategyData& data);
+        /**
+         * @brief Get access to the DistanceRequest that is used with FCL distance query
+         *
+         * See the fcl/collision_data.h for the data structure, and look through their documentation
+         * for specifics on what solvers that can be chosen.
+         *
+         * @note The rel_err and abs_err fields will be overwritten with the values that are
+         * supplied in the rw::proximity::ProximityStrategyData
+         */
+        fcl::DistanceRequest& getDistanceRequest ();
 
-            //// Interface of DistanceStrategy
-            //! @copydoc rw::proximity::DistanceStrategy::doDistance
-            rw::proximity::DistanceStrategy::Result& doDistance(
-                rw::proximity::ProximityModel::Ptr a,
-                const rw::math::Transform3D<>& wTa,
-                rw::proximity::ProximityModel::Ptr b,
-                const rw::math::Transform3D<>& wTb,
-                class rw::proximity::ProximityStrategyData& data);
+        /**
+         * @brief Specify if FCL results should be collected
+         */
+        void setCollectFCLResults (bool enable) { _collectFCLResults = enable; }
 
-            //// End of interfaces
+        /**
+         * @brief Get whether FCL results should be collected or not
+         */
+        bool getCollectFCLResults () { return _collectFCLResults; }
 
-            /**
-             * @brief Set the bounding volume
-             * @param bv [in] new bounding volume type.
-             */
-            void setBV(const BV& bv) {
-                _bv = bv;
-            }
+        /**
+         * @brief Get access to the collected FCL collision results
+         */
+        std::vector< fcl::CollisionResult >& getCollisionResults () { return _fclCollisionResults; }
 
-            /**
-             * @brief Get the bounding volume
-             * @return the type of bounding volume used.
-             */
-            BV getBV() {
-                return _bv;
-            }
+        /**
+         * @brief Get access to the collected FCL collision result
+         *
+         * @throws std::out_of_range exception if index is not within the bounds.
+         */
+        fcl::CollisionResult& getCollisionResult (std::size_t index);
 
-            /**
-             * @brief Get access to the CollisionRequest that is used with FCL collision query
-             *
-             * See the fcl/collision_data.h for the data structure, and look through their documentation for specifics on what solvers that can be chosen.
-             */
-            fcl::CollisionRequest& getCollisionRequest();
+        /**
+         * @brief Get access to the collected FCL distance result
+         */
+        fcl::DistanceResult& getDistanceResult ();
 
-            /**
-             * @brief Get access to the DistanceRequest that is used with FCL distance query
-             *
-             * See the fcl/collision_data.h for the data structure, and look through their documentation for specifics on what solvers that can be chosen.
-             *
-             * @note The rel_err and abs_err fields will be overwritten with the values that are supplied in the rw::proximity::ProximityStrategyData
-             */
-            fcl::DistanceRequest& getDistanceRequest();
+      private:
+        template< typename BV >
+        bool addGeometry (rw::proximity::ProximityModel* model, const rw::geometry::Geometry& geom);
+        template< typename BV >
+        bool addGeometry (rw::proximity::ProximityModel* model,
+                          rw::common::Ptr< rw::geometry::Geometry > geom, bool forceCopy);
 
-            /**
-             * @brief Specify if FCL results should be collected
-             */
-            void setCollectFCLResults(bool enable) {
-                _collectFCLResults = enable;
-            }
+      private:
+        BV _bv;
+        fcl::CollisionRequest* const _fclCollisionRequest;
+        fcl::DistanceRequest* const _fclDistanceRequest;
 
-            /**
-             * @brief Get whether FCL results should be collected or not
-             */
-            bool getCollectFCLResults() {
-                return _collectFCLResults;
-            }
+        bool _collectFCLResults;
+        std::vector< fcl::CollisionResult > _fclCollisionResults;
+        fcl::DistanceResult* _fclDistanceResult;
+    };
+}}    // namespace rwlibs::proximitystrategies
 
-            /**
-             * @brief Get access to the collected FCL collision results
-             */
-            std::vector<fcl::CollisionResult>& getCollisionResults() {
-                return _fclCollisionResults;
-            }
-
-            /**
-             * @brief Get access to the collected FCL collision result
-             *
-             * @throws std::out_of_range exception if index is not within the bounds.
-             */
-            fcl::CollisionResult& getCollisionResult(std::size_t index);
-
-            /**
-             * @brief Get access to the collected FCL distance result
-             */
-            fcl::DistanceResult& getDistanceResult();
-            
-        private:
-            template<typename BV> bool addGeometry(rw::proximity::ProximityModel* model, const rw::geometry::Geometry& geom);
-
-        private:
-            BV _bv;
-            fcl::CollisionRequest* const _fclCollisionRequest;
-            fcl::DistanceRequest* const _fclDistanceRequest;
-
-            bool _collectFCLResults;
-            std::vector<fcl::CollisionResult> _fclCollisionResults;
-            fcl::DistanceResult* _fclDistanceResult;
-        };
-    }} // end namespaces
-
-#endif // include guard
+#endif    // include guard
