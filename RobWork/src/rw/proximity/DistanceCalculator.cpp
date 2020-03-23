@@ -124,7 +124,7 @@ void DistanceCalculator::initializeGeometry(rw::common::Ptr<const WorkCell> wc)
     State state = wc->getDefaultState();
     for(Object::Ptr object : objects) {
         for(geometry::Geometry::Ptr geom : object->getGeometry( state ) ) {
-            const Frame* frame = geom->getFrame(); // this is not const - should it be?
+            Frame* frame = geom->getFrame(); // this is not const - should it be?
             RW_ASSERT(frame);
             _strategy->addModel(frame, geom);
             //_frameToModels[*frame] = _npstrategy->getModel(frame);

@@ -123,7 +123,7 @@
   	<RPY> 0 90 180</RPY> <Pos> 0 0 0.003</Pos>
   	<Polytope file="geometry/robotFlange" />
  </Drawable>
-<Drawable name="flangeGeo" refframe="Base">
+<Drawable name="baseGeo" refframe="Base">
   	<RPY> 0 90 180</RPY> <Pos> 0 0 0.0030</Pos>
   	<Polytope file="geometry/base" />
  </Drawable>
