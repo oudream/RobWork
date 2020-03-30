@@ -105,6 +105,8 @@ namespace rw { namespace graphics {
     	    bool _disableNormalRender;
             //! @brief Rendering camera
             rw::common::Ptr<SceneCamera> _cam;
+            //! @brief Transform  World to model
+            rw::math::Transform3D<> _wTm;
     	};
 
     	//! @brief Destructor.

@@ -33,7 +33,9 @@
 #include <rwlibs/os/rwgl.hpp>
 
 #include <stack>
+#include <utility>
 #include <vector>
+#include <algorithm>
 
 using namespace rw::common;
 using namespace rw::graphics;
@@ -377,9 +379,13 @@ class SimpleCameraGroup : public CameraGroup
     std::vector< GLfloat > _depthData;
 };
 
-}    // namespace
-
-namespace {
+struct TransparentVisitor
+{
+    double distToCamera;
+    Transform3D<> drawFrame;
+    DrawableNode* node;
+    bool operator< (TransparentVisitor& other) { return other.distToCamera > distToCamera; }
+};
 
 struct RenderPreVisitor
 {
@@ -399,9 +405,10 @@ struct RenderPreVisitor
             _stack.push (_stack.top () * gnode->getTransform ());
         }
         else if (DrawableNode* dnode = child->asDrawableNode ()) {
-            if (dnode->isTransparent () == _drawAlpha) {
+            if (!dnode->isTransparent () && !_drawAlpha) {
                 glPushMatrix ();
                 DrawableUtil::multGLTransform (_stack.top ());
+                _info._wTm=_stack.top ();
                 if (_pushNames) {
                     GLuint uid = *((GLuint*) &dnode);
                     glLoadName (uid);
@@ -412,6 +419,10 @@ struct RenderPreVisitor
                 }
                 glPopMatrix ();
             }
+            if (dnode->isTransparent () && !_drawAlpha) {
+                _TPRenderList.push_back (
+                    {Vector3D<> ( Transform3D<>(inverse(_camPos)*_stack.top ()).P())[2], _stack.top (), dnode});
+            }
         }
         return false;
     }
@@ -419,6 +430,8 @@ struct RenderPreVisitor
     std::stack< Transform3D<> >& _stack;
     bool _drawAlpha;
     bool _pushNames;
+    std::vector< TransparentVisitor > _TPRenderList;
+    Transform3D<> _camPos;
 };
 
 struct RenderPostVisitor
@@ -449,50 +462,46 @@ struct StaticFilter
     bool _retvalue;
 };
 
-namespace {
-
-    typedef union
+typedef union
+{
+    struct
     {
-        struct
-        {
-            int x, y, w, h;
-        };
-        int viewport[4];
-    } ViewPort;
+        int x, y, w, h;
+    };
+    int viewport[4];
+} ViewPort;
 
-    ViewPort getViewPort (SceneCamera::Ptr cam)
-    {
-        ViewPort vp;
-        cam->getViewport (vp.x, vp.y, vp.w, vp.h);
-        switch (cam->getAspectRatioControl ()) {
-            case (SceneCamera::Auto): {
-                break;
-            }
-            case (SceneCamera::ScaleX):
-            case (SceneCamera::ScaleY):
-            case (SceneCamera::Scale): {
-                // choose scale axis
-                if (vp.w / (double) vp.h < cam->getAspectRatio ()) {
-                    double h = vp.w / cam->getAspectRatio ();
-                    vp.y     = (int) (vp.y + (vp.h - h) / 2.0);
-                    vp.h     = (int) h;
-                }
-                else {
-                    double w = vp.h * cam->getAspectRatio ();
-                    vp.x     = (int) (vp.x + (vp.w - w) / 2.0);
-                    vp.w     = (int) w;
-                }
-                break;
-            }
-            case (SceneCamera::Fixed): {
-                break;
-            }
-            default: break;
+ViewPort getViewPort (SceneCamera::Ptr cam)
+{
+    ViewPort vp;
+    cam->getViewport (vp.x, vp.y, vp.w, vp.h);
+    switch (cam->getAspectRatioControl ()) {
+        case (SceneCamera::Auto): {
+            break;
         }
-        return vp;
+        case (SceneCamera::ScaleX):
+        case (SceneCamera::ScaleY):
+        case (SceneCamera::Scale): {
+            // choose scale axis
+            if (vp.w / (double) vp.h < cam->getAspectRatio ()) {
+                double h = vp.w / cam->getAspectRatio ();
+                vp.y     = (int) (vp.y + (vp.h - h) / 2.0);
+                vp.h     = (int) h;
+            }
+            else {
+                double w = vp.h * cam->getAspectRatio ();
+                vp.x     = (int) (vp.x + (vp.w - w) / 2.0);
+                vp.w     = (int) w;
+            }
+            break;
+        }
+        case (SceneCamera::Fixed): {
+            break;
+        }
+        default: break;
     }
-
-}    // namespace
+    return vp;
+}
 
 void drawScene (SceneGraph* graph, CameraGroup::Ptr camGroup, SceneGraph::RenderInfo& info,
                 SceneNode::Ptr node, RenderPreVisitor& previsitor, RenderPostVisitor& postvisitor,
@@ -570,133 +579,161 @@ void drawScene (SceneGraph* graph, CameraGroup::Ptr camGroup, SceneGraph::Render
             glLoadMatrixf (matrix);
         }
 
-        // setup model view
-        glMatrixMode (GL_MODELVIEW);
-        if (usePickMatrix) {
-            glPushName (0);
-        }
+        for (SceneCamera::Ptr cam : camGroup->getCameras ()) {
+            info._cam = cam;
+            if (!cam->isEnabled ())
+                continue;
+            SceneNode::Ptr subRootNode = cam->getRefNode ();
+            if (subRootNode == NULL)
+                continue;
 
-        Transform3D<> camtransform = cam->getTransform ();
-        if (cam->getAttachedNode ().get () != NULL) {
-            // calculate kinematics from attached node to
-            SceneNode::Ptr parent = cam->getAttachedNode ();
-            do {
-                if (parent->asGroupNode () != NULL)
-                    camtransform = parent->asGroupNode ()->getTransform () * camtransform;
-                parent = parent->_parentNodes.front ();
-            } while (parent != cam->getRefNode ());
-        }
+            ViewPort vp = getViewPort (cam);
+            glViewport (vp.x, vp.y, vp.w, vp.h);
 
-        Transform3D<> viewMatrix = inverse (camtransform);
-        DrawableUtil::transform3DToGLTransform (viewMatrix, matrix);
-        glLoadMatrixf (matrix);
-
-        // iterate scenegraph from node specified by camera.
-        previsitor._drawAlpha               = false;
-        previsitor._info._mask              = cam->getDrawMask ();
-        previsitor._info._renderTransparent = false;
-        previsitor._info._renderSolid       = true;
-        graph->traverse (
-            subRootNode, previsitor.functor, postvisitor.functor, StaticFilter (false).functor);
-        // now render transparent stuff
-        previsitor._drawAlpha               = true;
-        previsitor._info._renderTransparent = true;
-        previsitor._info._renderSolid       = false;
-        graph->traverse (
-            subRootNode, previsitor.functor, postvisitor.functor, StaticFilter (false).functor);
-
-        if (usePickMatrix) {
-            if (!cam->isDepthTestEnabled ())
-                glPopName ();
-            // glLoadName(0);
-            // glPopName();
-        }
-    }
-    if (scam != NULL) {
-        if ((scam->_renderToImage) && scam->_img != NULL) {
-            // copy rendered scene to image
-            scam->copyToImage ();
-        }
-        if ((scam->_renderToDepth) && scam->_scan25 != NULL) {
-            scam->bind ();
-
-            {
-                const std::string error = SceneOpenGL::detectGLerror ();
-                if (!error.empty ())
-                    RW_WARN ("OpenGL error detected:" << error);
+            // setup model view
+            glMatrixMode (GL_MODELVIEW);
+            if (usePickMatrix) {
+                glPushName (0);
             }
 
-            // std::cout << "render to depth" << std::endl;
-            if (scam->_depthData.size () !=
-                (unsigned int) (scam->_scan25->getWidth () * scam->_scan25->getHeight ()))
-                scam->_depthData.resize (scam->_scan25->getWidth () * scam->_scan25->getHeight ());
-
-            SceneCamera::Ptr maincam = scam->getMainCamera ();
-
-            // copy rendered depth scene to image
-
-            glReadPixels (0,
-                          0,
-                          scam->_scan25->getWidth (),
-                          scam->_scan25->getHeight (),
-                          GL_DEPTH_COMPONENT,
-                          GL_FLOAT,
-                          &scam->_depthData[0]);
-
-            {
-                const std::string error = SceneOpenGL::detectGLerror ();
-                if (!error.empty ())
-                    RW_WARN ("OpenGL error detected:" << error);
-            }
-
-            GLdouble modelview[16];
-            GLdouble projection[16];
-            // GLint viewport[4];
-
-            ProjectionMatrix projectionMatrix = maincam->getProjectionMatrix ();
-            projectionMatrix.toOpenGLMatrix (projection);
-
-            Transform3D<> camtransform = maincam->getTransform ();
-            if (maincam->getAttachedNode ().get () != NULL) {
+            Transform3D<> camtransform = cam->getTransform ();
+            if (cam->getAttachedNode ().get () != NULL) {
                 // calculate kinematics from attached node to
-                SceneNode::Ptr parent = maincam->getAttachedNode ();
-                // std::cout << parent->getName() << std::endl;
+                SceneNode::Ptr parent = cam->getAttachedNode ();
                 do {
                     if (parent->asGroupNode () != NULL)
                         camtransform = parent->asGroupNode ()->getTransform () * camtransform;
                     parent = parent->_parentNodes.front ();
-                } while (parent != maincam->getRefNode ());
+                } while (parent != cam->getRefNode ());
             }
 
-            // Transform3D<> viewMatrix = inverse( camtransform );
-            Transform3D<> viewMatrix = Transform3D<>::identity ();    // inverse( camtransform );
-            DrawableUtil::transform3DToGLTransform (viewMatrix, modelview);
+            Transform3D<> viewMatrix = inverse (camtransform);
+            DrawableUtil::transform3DToGLTransform (viewMatrix, matrix);
+            glLoadMatrixf (matrix);
 
-            ViewPort vp = getViewPort (maincam);
+            // iterate scenegraph from node specified by camera.
+            previsitor._drawAlpha               = false;
+            previsitor._info._mask              = cam->getDrawMask ();
+            previsitor._info._renderTransparent = false;
+            previsitor._info._renderSolid       = true;
+            previsitor._camPos                  = cam->getTransform ();
+            graph->traverse (
+                subRootNode, previsitor.functor, postvisitor.functor, StaticFilter (false).functor);
 
-            std::vector< rw::math::Vector3D< float > >* result = &scam->_scan25->getData ();
-            // now unproject all pixel values
-            if (result != NULL && result->size () != (unsigned int) (scam->_scan25->getWidth () *
-                                                                     scam->_scan25->getHeight ()))
-                result->resize (scam->_scan25->getWidth () * scam->_scan25->getHeight ());
+            // now render transparent stuff
+            previsitor._drawAlpha               = true;
+            previsitor._info._renderTransparent = true;
+            previsitor._info._renderSolid       = false;
 
-            for (size_t y = 0; y < (unsigned int) scam->_scan25->getHeight (); y++) {
-                for (size_t x = 0; x < (unsigned int) scam->_scan25->getWidth (); x++) {
-                    GLfloat depth24_8 = scam->_depthData[x + y * scam->_scan25->getWidth ()];
-                    double winZ       = depth24_8;    //(depth24_8>>8)&0x00FFFFFF;
-                    // double winZ= scam->_depthData[x+y*scam->_scan25->getWidth()];
+            std::vector<TransparentVisitor> &tp = previsitor._TPRenderList;
+            std::sort(tp.begin(), tp.end());
+            for (auto& s : tp) {
+                glPushMatrix ();
+                DrawableUtil::multGLTransform (s.drawFrame);
+                previsitor._info._wTm=s.drawFrame;
+                s.node->draw (previsitor._info);
+                glPopMatrix ();
+            }
 
-                    double winX = (double) x, winY = (double) y;    //
+            if (usePickMatrix) {
+                if (!cam->isDepthTestEnabled ()) {
+                    glPopName ();
+                }
+            }
+        }
+        if (scam != NULL) {
+            if ((scam->_renderToImage) && scam->_img != NULL) {
+                // copy rendered scene to image
+                scam->copyToImage ();
+            }
+            if ((scam->_renderToDepth) && scam->_scan25 != NULL) {
+                scam->bind ();
 
-                    double posX, posY, posZ;
-                    gluUnProject (
-                        winX, winY, winZ, modelview, projection, vp.viewport, &posX, &posY, &posZ);
-                    if (result != NULL) {
-                        Vector3D< float >& q = (*result)[x + y * scam->_scan25->getWidth ()];
-                        q (0)                = (float) posX;
-                        q (1)                = (float) posY;
-                        q (2)                = (float) posZ;
-                        // std::cout << q << " " << winZ << "\n";
+                {
+                    const std::string error = SceneOpenGL::detectGLerror ();
+                    if (!error.empty ())
+                        RW_WARN ("OpenGL error detected:" << error);
+                }
+
+                if (scam->_depthData.size () !=
+                    (unsigned int) (scam->_scan25->getWidth () * scam->_scan25->getHeight ()))
+                    scam->_depthData.resize (scam->_scan25->getWidth () *
+                                             scam->_scan25->getHeight ());
+
+                SceneCamera::Ptr maincam = scam->getMainCamera ();
+
+                // copy rendered depth scene to image
+
+                glReadPixels (0,
+                              0,
+                              scam->_scan25->getWidth (),
+                              scam->_scan25->getHeight (),
+                              GL_DEPTH_COMPONENT,
+                              GL_FLOAT,
+                              &scam->_depthData[0]);
+
+                {
+                    const std::string error = SceneOpenGL::detectGLerror ();
+                    if (!error.empty ())
+                        RW_WARN ("OpenGL error detected:" << error);
+                }
+
+                GLdouble modelview[16];
+                GLdouble projection[16];
+                // GLint viewport[4];
+
+                ProjectionMatrix projectionMatrix = maincam->getProjectionMatrix ();
+                projectionMatrix.toOpenGLMatrix (projection);
+
+                Transform3D<> camtransform = maincam->getTransform ();
+                if (maincam->getAttachedNode ().get () != NULL) {
+                    // calculate kinematics from attached node to
+                    SceneNode::Ptr parent = maincam->getAttachedNode ();
+                    do {
+                        if (parent->asGroupNode () != NULL)
+                            camtransform = parent->asGroupNode ()->getTransform () * camtransform;
+                        parent = parent->_parentNodes.front ();
+                    } while (parent != maincam->getRefNode ());
+                }
+
+                // Transform3D<> viewMatrix = inverse( camtransform );
+                Transform3D<> viewMatrix =
+                    Transform3D<>::identity ();    // inverse( camtransform );
+                DrawableUtil::transform3DToGLTransform (viewMatrix, modelview);
+
+                ViewPort vp = getViewPort (maincam);
+
+                std::vector< rw::math::Vector3D< float > >* result = &scam->_scan25->getData ();
+                // now unproject all pixel values
+                if (result != NULL &&
+                    result->size () !=
+                        (unsigned int) (scam->_scan25->getWidth () * scam->_scan25->getHeight ()))
+                    result->resize (scam->_scan25->getWidth () * scam->_scan25->getHeight ());
+
+                for (size_t y = 0; y < (unsigned int) scam->_scan25->getHeight (); y++) {
+                    for (size_t x = 0; x < (unsigned int) scam->_scan25->getWidth (); x++) {
+                        GLfloat depth24_8 = scam->_depthData[x + y * scam->_scan25->getWidth ()];
+                        double winZ       = depth24_8;    //(depth24_8>>8)&0x00FFFFFF;
+                        // double winZ= scam->_depthData[x+y*scam->_scan25->getWidth()];
+
+                        double winX = (double) x, winY = (double) y;    //
+
+                        double posX, posY, posZ;
+                        gluUnProject (winX,
+                                      winY,
+                                      winZ,
+                                      modelview,
+                                      projection,
+                                      vp.viewport,
+                                      &posX,
+                                      &posY,
+                                      &posZ);
+                        if (result != NULL) {
+                            Vector3D< float >& q = (*result)[x + y * scam->_scan25->getWidth ()];
+                            q (0)                = (float) posX;
+                            q (1)                = (float) posY;
+                            q (2)                = (float) posZ;
+                        }
                     }
                 }
             }
@@ -725,8 +762,6 @@ void SceneOpenGL::draw (SceneGraph::RenderInfo& info, SceneNode::Ptr node)
     RenderPreVisitor preVisitor (info, stack, false);
     RenderPostVisitor postVisitor (stack);
 
-    // drawScene(this, getCameraGroup(info.cameraGroup), info, node, preVisitor, postVisitor, false,
-    // 0,0);
     drawScene (this, info.cams, info, node, preVisitor, postVisitor, false, 0, 0);
 }
 #include <stdio.h>
