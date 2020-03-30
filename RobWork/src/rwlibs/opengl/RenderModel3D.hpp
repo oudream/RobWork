@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RWLIBS_OPENGL_RENDERMODEL3D_HPP
 #define RWLIBS_OPENGL_RENDERMODEL3D_HPP
 
@@ -25,46 +24,45 @@
 #include <rw/graphics/Render.hpp>
 
 namespace rwlibs { namespace opengl {
-	class RWGLTexture;
+    class RWGLTexture;
+    class TPFace;
 
-//! @addtogroup opengl
-// @{
-
+    //! @addtogroup opengl
+    // @{
 
     /**
      * @brief render for the Model3D class.
      */
-    class RenderModel3D : public rw::graphics::Render {
-    private:
+    class RenderModel3D : public rw::graphics::Render
+    {
+      private:
         rw::graphics::Model3D::Ptr _model;
 
-    public:
+      public:
         //! @brief smart pointer type to this class
-        typedef rw::common::Ptr<RenderModel3D> Ptr;
+        typedef rw::common::Ptr< RenderModel3D > Ptr;
 
         /**
          * @brief constructor.
          * @param model [in] the model that is to be rendered
          */
-        RenderModel3D(rw::graphics::Model3D::Ptr model);
+        RenderModel3D (rw::graphics::Model3D::Ptr model);
 
         /**
          * @brief Destructor
          */
-    	virtual ~RenderModel3D();
+        virtual ~RenderModel3D ();
 
-    	/**
-    	 * @brief get the model that is being rendered
-    	 */
-    	rw::graphics::Model3D::Ptr getModel(){return _model;};
+        /**
+         * @brief get the model that is being rendered
+         */
+        rw::graphics::Model3D::Ptr getModel () { return _model; };
 
-
-
-    	// Functions inherited from Render
-        //! @copydoc rw::graphics::Render::draw(const DrawableNode::RenderInfo& info, DrawableNode::DrawType type, double alpha) const
-    	void draw(const rw::graphics::DrawableNode::RenderInfo& info,
-                  rw::graphics::DrawableNode::DrawType type,
-                  double alpha) const;
+        // Functions inherited from Render
+        //! @copydoc rw::graphics::Render::draw(const DrawableNode::RenderInfo& info,
+        //! DrawableNode::DrawType type, double alpha) const
+        void draw (const rw::graphics::DrawableNode::RenderInfo& info,
+                   rw::graphics::DrawableNode::DrawType type, double alpha) const;
 
         /**
          * @brief Fast drawing of model using drawelements array. This draw method require that
@@ -74,7 +72,8 @@ namespace rwlibs { namespace opengl {
          * @param type [in] the drawtype which is being used
          * @param alpha [in] the alpha value to render with
          */
-        void drawUsingArrays(const rw::graphics::DrawableNode::RenderInfo& info, DrawType type, double alpha) const;
+        void drawUsingArrays (const rw::graphics::DrawableNode::RenderInfo& info, DrawType type,
+                              double alpha) const;
 
         /**
          * @brief Slower drawing of model using simple opengl draw calls. This draw
@@ -84,32 +83,41 @@ namespace rwlibs { namespace opengl {
          * @param type [in] the drawtype which is being used
          * @param alpha [in] the alpha value to render with
          */
-        void drawUsingSimple(const rw::graphics::DrawableNode::RenderInfo& info, DrawType type, double alpha, bool disableMaterials = false) const;
+        void drawUsingSimple (const rw::graphics::DrawableNode::RenderInfo& info, DrawType type,
+                              double alpha, bool disableMaterials = false) const;
 
-        //void drawUsingList(DrawType type, double alpha) const;
+        // void drawUsingList(DrawType type, double alpha) const;
 
-    private:
-        template <class T>
-        void drawUsingSimpleFct(const rw::graphics::DrawableNode::RenderInfo& info,
-                             const rw::graphics::Model3D::Object3D<T> &obj,
-                             rw::graphics::DrawableNode::DrawType type,
-                             double alpha,
-                             bool disableMaterials = false) const;
+      private:
+        template< class T >
+        void drawUsingSimpleFct (const rw::graphics::DrawableNode::RenderInfo& info,
+                                 const rw::graphics::Model3D::Object3D< T >& obj,
+                                 rw::graphics::DrawableNode::DrawType type, double alpha,
+                                 bool disableMaterials = false) const;
 
-        template <class T>
-        void drawUsingArraysFct(const rw::graphics::DrawableNode::RenderInfo& info,
-                             const rw::graphics::Model3D::Object3D<T> &obj,
-                             rw::graphics::DrawableNode::DrawType type,
-                             double alpha) const;
+        template< class T >
+        void drawUsingArraysFct (const rw::graphics::DrawableNode::RenderInfo& info,
+                                 const rw::graphics::Model3D::Object3D< T >& obj,
+                                 rw::graphics::DrawableNode::DrawType type, double alpha) const;
 
-        void useMaterial(const rw::graphics::Model3D::Material& mat, rw::graphics::DrawableNode::DrawType type, double alpha) const;
+        void useMaterial (const rw::graphics::Model3D::Material& mat,
+                          rw::graphics::DrawableNode::DrawType type, double alpha) const;
 
-    private:
-        std::vector<rw::common::Ptr<rwlibs::opengl::RWGLTexture> > _textures;
-        //bool _shownormals;
+        template< class T >
+        void makeVertexList (const rw::graphics::Model3D::Object3D< T >& obj,
+                        std::vector< TPFace >& list,
+                        rw::math::Transform3D< float > initial = rw::math::Transform3D< float > ()) const;
+
+        void drawTPFaceList (const std::vector< TPFace >& list,
+                             const rw::graphics::DrawableNode::RenderInfo& info,
+                             rw::graphics::DrawableNode::DrawType type, double alpha,
+                             bool disableMaterials) const;
+
+        std::vector< rw::common::Ptr< rwlibs::opengl::RWGLTexture > > _textures;
+        // bool _shownormals;
     };
 
     /*@}*/
-}} // end namespaces
+}}    // namespace rwlibs::opengl
 
-#endif // end include guard
+#endif    // end include guard
