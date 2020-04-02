@@ -26,7 +26,6 @@
 #include <rw/models/TreeDevice.hpp>
 #include <rw/models/JointDevice.hpp>
 
-//#include <boost/numeric/ublas/matrix.hpp>
 
 using namespace rw::math;
 using namespace rw::models;

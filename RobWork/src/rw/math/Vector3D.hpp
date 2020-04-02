@@ -23,9 +23,6 @@
  * @file Vector3D.hpp
  */
 #include <rw/common/Serializable.hpp>
-#include <boost/numeric/ublas/vector.hpp>
-#include <boost/numeric/ublas/vector_expression.hpp>
-#include <boost/numeric/ublas/io.hpp>
 
 #include <Eigen/Eigen>
 
@@ -60,12 +57,9 @@ namespace rw { namespace math {
     class Vector3D
     {
     public:
-        //! Boost type equivalent to Vector3D.
-        typedef boost::numeric::ublas::bounded_vector<T, 3> BoostBoundedVector;
 
 		//! Eigen type equivalent to Vector3D
 		typedef Eigen::Matrix<T, 3, 1> EigenVector3D;
-		
 
         //! Value type.
         typedef T value_type;
@@ -93,24 +87,10 @@ namespace rw { namespace math {
             _vec[2] = z;
         }
 
-        /**
-         * @brief Creates a 3D vector from vector_expression
-         *
-         * @param r [in] an ublas vector_expression
-         */
-        template <class R>
-        explicit Vector3D(const boost::numeric::ublas::vector_expression<R>& r)             
-        {
-			BoostBoundedVector v(r);
-			_vec[0] = v[0];
-			_vec[1] = v[1];
-			_vec[2] = v[2];
-		}
-
 		/**
          * @brief Creates a 3D vector from vector_expression
          *
-         * @param r [in] an ublas vector_expression
+         * @param r [in] an Eigen Vector
          */
         template <class R>
 		explicit Vector3D(const Eigen::MatrixBase<R>& r)             
@@ -118,18 +98,6 @@ namespace rw { namespace math {
 			_vec[0] = r.row(0)(0);
 			_vec[1] = r.row(1)(0);
 			_vec[2] = r.row(2)(0);
-		}
-
-        /**
-           @brief Returns Boost vector with the values of *this
-         */
-        const BoostBoundedVector m() const { 
-			BoostBoundedVector v;
-			v[0] = _vec[0];
-			v[1] = _vec[1];
-			v[2] = _vec[2];
-
-			return v;
 		}
 
 		/** 
@@ -181,8 +149,6 @@ namespace rw { namespace math {
          * @return reference to element
          */
         T& operator[](size_t i) { return _vec[i]; }
-
-
 
         /**
            @brief Scalar division.
@@ -320,8 +286,6 @@ namespace rw { namespace math {
 			if (f2 > res)
 				res = f2;
 			return res;
-			//return Math::max(fabs(_vec[0]), Math::max(fabs(_vec[1]), fabs(_vec[2])));
-            //return norm_inf(_vec);
         }
 
         /**

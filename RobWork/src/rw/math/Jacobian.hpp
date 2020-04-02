@@ -26,10 +26,11 @@
 #include <rw/math/VelocityScrew6D.hpp>
 #include <rw/math/Rotation3D.hpp>
 #include <rw/math/Transform3D.hpp>
+#include <rw/math/Q.hpp>
 
 #include <rw/common/Serializable.hpp>
-
-#include <boost/numeric/ublas/matrix.hpp>
+#include <Eigen/Eigen>
+#include <Eigen/Core>
 
 namespace rw { namespace math {
 
@@ -52,17 +53,9 @@ namespace rw { namespace math {
     class Jacobian
     {
     public:
-        //! @brief The type of legacy Boost matrix implementation.
-        typedef boost::numeric::ublas::matrix<double> BoostBase;
 
         //! @brief The type of the internal Eigen matrix implementation.
 		typedef Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> Base;
-
-        //! @brief The Boost matrix expression for initialization to zero.
-        typedef boost::numeric::ublas::zero_matrix<double> BoostZeroBase;
-
-        //! @brief The Boost matrix expression for initialization to the identity matrix.
-        typedef boost::numeric::ublas::zero_matrix<double> BoostIdentityBase;
 
         /**
          * @brief Creates an empty @f$ m\times n @f$ (uninitialized) Jacobian matrix
@@ -95,22 +88,6 @@ namespace rw { namespace math {
         explicit Jacobian(size_t n) : _jac(6, n) {}
 
         /**
-         * @brief Creates a Jacobian from a matrix_expression
-         *
-         * @param r [in] an ublas matrix_expression
-         */
-        template <class R>
-        explicit
-        Jacobian(const boost::numeric::ublas::matrix_expression<R>& r)
-        {
-			BoostBase m(r);
-			_jac.resize(m.size1(), m.size2());
-			for (size_t i = 0; i<size1(); i++)
-				for (size_t j = 0; j<size2(); j++)
-					_jac(i,j) = m(i,j);	
-		}
-
-        /**
          * @brief Creates a Jacobian from a Eigen::MatrixBase
          *
          * @param r [in] an Eigen Matrix
@@ -129,17 +106,6 @@ namespace rw { namespace math {
          */
 		static Jacobian zero(size_t size1, size_t size2) {
 			return Jacobian(Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic>::Zero(size1, size2));
-		}
-
-        /**
-           @brief Returns Boost matrix.
-         */
-        BoostBase m() const { 
-			BoostBase m(size1(), size2());
-			for (size_t i = 0; i<size1(); i++)
-				for (size_t j = 0; j<size2(); j++)
-					m(i,j) = _jac(i,j);
-			return m; 
 		}
 
         /**

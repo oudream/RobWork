@@ -102,7 +102,7 @@ bool IKGPMMSolver::solveLocal(
     std::cout << bTed.size() << "==" << _fkranges.size() << std::endl;
     RW_ASSERT(bTed.size()==_fkranges.size());
     //std::cout << "Create vector " << std::endl;
-    boost::numeric::ublas::vector<double> b_eXed_vec(_fkranges.size()*6);
+    Eigen::VectorXd b_eXed_vec(_fkranges.size()*6);
     std::vector<VelocityScrew6D<> > diff(_fkranges.size());
     double lastError = 0;
     Q q = _device->getQ(state);

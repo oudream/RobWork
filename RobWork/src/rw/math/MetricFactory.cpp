@@ -22,7 +22,6 @@
 #include "Vector3D.hpp"
 
 #include <vector>
-#include <boost/numeric/ublas/vector.hpp>
 
 using namespace rw::math;
 using namespace rw::common;
@@ -83,25 +82,25 @@ template class rw::math::InfinityMetric<Vector3D<float> >;
 template class rw::math::WeightedInfinityMetric<Vector3D<float> >;
 
 // --
-#include <boost/numeric/ublas/vector.hpp>
+#include <Eigen/Eigen>
 
-template class rw::math::ManhattanMetric<boost::numeric::ublas::vector<double> >;
-template class rw::math::WeightedManhattanMetric<boost::numeric::ublas::vector<double> >;
+template class rw::math::ManhattanMetric<Eigen::VectorXd >;
+template class rw::math::WeightedManhattanMetric<Eigen::VectorXd >;
 
-template class rw::math::EuclideanMetric<boost::numeric::ublas::vector<double> >;
-template class rw::math::WeightedEuclideanMetric<boost::numeric::ublas::vector<double> >;
+template class rw::math::EuclideanMetric<Eigen::VectorXd >;
+template class rw::math::WeightedEuclideanMetric<Eigen::VectorXd >;
 
-template class rw::math::InfinityMetric<boost::numeric::ublas::vector<double> >;
-template class rw::math::WeightedInfinityMetric<boost::numeric::ublas::vector<double> >;
+template class rw::math::InfinityMetric<Eigen::VectorXd >;
+template class rw::math::WeightedInfinityMetric<Eigen::VectorXd >;
 
-template class rw::math::ManhattanMetric<boost::numeric::ublas::vector<float> >;
-template class rw::math::WeightedManhattanMetric<boost::numeric::ublas::vector<float> >;
+template class rw::math::ManhattanMetric<Eigen::VectorXf>;
+template class rw::math::WeightedManhattanMetric<Eigen::VectorXf>;
 
-template class rw::math::EuclideanMetric<boost::numeric::ublas::vector<float> >;
-template class rw::math::WeightedEuclideanMetric<boost::numeric::ublas::vector<float> >;
+template class rw::math::EuclideanMetric<Eigen::VectorXf>;
+template class rw::math::WeightedEuclideanMetric<Eigen::VectorXf>;
 
-template class rw::math::InfinityMetric<boost::numeric::ublas::vector<float> >;
-template class rw::math::WeightedInfinityMetric<boost::numeric::ublas::vector<float> >;
+template class rw::math::InfinityMetric<Eigen::VectorXf>;
+template class rw::math::WeightedInfinityMetric<Eigen::VectorXf>;
 
 // --
 

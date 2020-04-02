@@ -25,10 +25,6 @@
 
 #include <rw/common/Serializable.hpp>
 
-#include <boost/numeric/ublas/vector.hpp>
-#include <boost/numeric/ublas/matrix.hpp>
-#include <boost/numeric/ublas/matrix_expression.hpp>
-
 #include <Eigen/Eigen>
 #include <Eigen/Core>
 
@@ -543,29 +539,6 @@ namespace rw { namespace math {
         }
 
         /**
-           @brief Construct a velocity screw from a Boost vector expression.
-        */
-        template <class R>
-        explicit VelocityScrew6D(const boost::numeric::ublas::vector_expression<R>& r)            
-        {
-			boost::numeric::ublas::bounded_vector<T, 6> v(r);
-			for (size_t i = 0; i<6; i++) {
-				_screw[i] = v(i);
-			}
-		}
-
-
-        /**
-           @brief Converter to Boost bounded_vector
-         */
-        boost::numeric::ublas::bounded_vector<T, 6> m() const { 
-			boost::numeric::ublas::bounded_vector<T, 6> m;
-			for (size_t i = 0; i<6; i++)
-				m(i) = _screw[i];
-			return m; 
-		}
-
-        /**
            @brief Converter to Eigen vector
          */
 		Eigen::Matrix<T, 6, 1> e() const {
@@ -574,10 +547,6 @@ namespace rw { namespace math {
 				res(i) = _screw[i];
 			return res;
 		}
-
-
-	private:
-
 
     };
 

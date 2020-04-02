@@ -18,7 +18,7 @@
 #ifndef RW_GEOMETRY_GIFTWRAPHULL3D_HPP_
 #define RW_GEOMETRY_GIFTWRAPHULL3D_HPP_
 
-#include <boost/numeric/ublas/vector.hpp>
+#include <Eigen/Eigen>
 #include <boost/function.hpp>
 #include <stack>
 #include <set>
@@ -62,7 +62,7 @@ namespace geometry {
     template <std::size_t N>
 	class ClarkHullND: public ConvexHullND<N> {
 	public:
-	    typedef boost::numeric::ublas::bounded_vector<double,2> VectorND;
+	    typedef Eigen::Vector2d VectorND;
 
 		/**
 		 * @brief constructor

@@ -43,7 +43,6 @@ double PlaneModel::refit( std::vector<rw::math::Vector3D<> >& data ){
         _d = -_n(0)*p(0) -_n(1)*p(1) -_n(2)*p(2);
     } else {
 
-        using namespace boost::numeric;
         using namespace rw::math;
 
         Eigen::MatrixXd covar( Eigen::MatrixXd::Zero(3, 3) );

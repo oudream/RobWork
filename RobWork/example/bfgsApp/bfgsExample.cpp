@@ -1,9 +1,9 @@
 #include <rwlibs/algorithms/BFGS.hpp>
-
+#include <iostream>
 using namespace rwlibs::algorithms;
 
 //The rosenbrock function
-static double rosenbrock(const boost::numeric::ublas::vector<double> * x, void * params)
+static double rosenbrock(const Eigen::VectorXd * x, void * params)
 {
 	double temp = 1-(*x)(0);
 	double temp2 = (*x)(1)-(*x)(0)*(*x)(0);
@@ -11,7 +11,7 @@ static double rosenbrock(const boost::numeric::ublas::vector<double> * x, void *
 }
 
 //Differential equation of the rosenbrock function
-static void drosenbrock(const boost::numeric::ublas::vector<double> * x, void * params, boost::numeric::ublas::vector<double> * g)
+static void drosenbrock(const Eigen::VectorXd * x, void * params, Eigen::VectorXd * g)
 {
 	(*g)(0) = -2*(1-(*x)(0))-400*(*x)(0)*(-(*x)(0)*(*x)(0)+(*x)(1));
 	(*g)(1) = 200*(-(*x)(0)*(*x)(0)+(*x)(1));

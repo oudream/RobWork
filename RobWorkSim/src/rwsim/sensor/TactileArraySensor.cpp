@@ -979,9 +979,9 @@ void TactileArraySensor::update(double dt, rw::kinematics::State& state){
         cnormal = normalize(cnormal);
         //std::cout << "Generate contacts: " << cnormal << std::endl;
         RW_ASSERT(MetricUtil::norm2(cnormal)>0.1);
-        std::vector<DistPoint> res = generateContacts(body, -cnormal, state);
+        Eigen::Matrix<DistPoint,-1,1> res = generateContacts(body, -cnormal, state);
 
-        boost::numeric::ublas::matrix<DistPoint> contacts(_accForces.size1(),_accForces.size2());
+        Eigen::Matrix<DistPoint,-1,-1> contacts(_accForces.size1(),_accForces.size2());
         double weightedArea = 0;
         // now filter away the distances that are double in cells
         for(DistPoint& dp: res){
@@ -1110,8 +1110,8 @@ void TactileArraySensor::update(double dt, rw::kinematics::State& state){
 
             // copy and convert accumulated forces into pressure values
             double texelArea = _texelSize(0)*_texelSize(1);
-            for(size_t x=0; x<_accForces.size1(); x++){
-                for(size_t y=0; y<_accForces.size2(); y++){
+            for(size_t x=0; x<_accForces.rows(); x++){
+                for(size_t y=0; y<_accForces.cols(); y++){
                     // clamp to max pressure
                     //if( _accForces(x,y)/texelArea>1.0 )
                     //    std::cout << "Pressure: ("<<x<<","<<y<<") " << _accForces(x,y)/texelArea << " N/m^2 " << std::endl;
@@ -1121,7 +1121,7 @@ void TactileArraySensor::update(double dt, rw::kinematics::State& state){
             //std::cout << "_pressure" << std::endl;
             //std::cout << _pressure << std::endl;
 
-            _accForces = ublas::zero_matrix<double>(_accForces.size1(),_accForces.size2());
+            _accForces = Eigen::MatrixXd::Zero(_accForces.rows(),_accForces.cols());
             _allForces = _allAccForces;
             _allAccForces.clear();
         }
@@ -1226,8 +1226,8 @@ void TactileArraySensor::update(double dt, rw::kinematics::State& state){
 
     // copy and convert accumulated forces into pressure values
     double texelArea = _texelSize(0)*_texelSize(1);
-    for(size_t x=0; x<_accForces.size1(); x++){
-        for(size_t y=0; y<_accForces.size2(); y++){
+    for(size_t x=0; x<_accForces.rows(); x++){
+        for(size_t y=0; y<_accForces.cols(); y++){
             // clamp to max pressure
             //if( _accForces(x,y)/texelArea>1.0 )
             //    std::cout << "Pressure: ("<<x<<","<<y<<") " << _accForces(x,y)/texelArea << " N/m^2 " << std::endl;
@@ -1235,7 +1235,7 @@ void TactileArraySensor::update(double dt, rw::kinematics::State& state){
         }
     }
     //std::cout << _pressure << std::endl;
-    _accForces = ublas::zero_matrix<double>(_accForces.size1(),_accForces.size2());
+    _accForces = Eigen::MatrixXd::Zero(_accForces.rows(),_accForces.cols());
 
     _allForces = _allAccForces;
     _allAccForces.clear();

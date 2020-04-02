@@ -240,7 +240,9 @@ namespace rw { namespace math {
     private:
         typedef typename Metric<T>::value_type value_type;
         typedef typename Metric<T>::scalar_type scalar_type;
-        boost::numeric::ublas::matrix<scalar_type> _omega;
+        typedef Eigen::Matrix<value_type, Eigen::Dynamic, Eigen::Dynamic> BaseM;
+        typedef Eigen::Matrix<value_type, Eigen::Dynamic, 1> BaseV;
+        BaseM _omega;
 
     public:
         /**
@@ -249,19 +251,19 @@ namespace rw { namespace math {
 
            @param omega [in] the weights \f$\mathbf{\Omega}\f$
         */
-        MahalanobisMetric(const boost::numeric::ublas::matrix<scalar_type>& omega):
+        MahalanobisMetric(const BaseM& omega):
             _omega(omega)
         {}
 
     private:
-		scalar_type norm(const boost::numeric::ublas::vector<scalar_type>& vec) const
+		scalar_type norm(const BaseV& vec) const
         {
-            return sqrt(inner_prod(vec, prod(_omega, vec)));
+            return sqrt(vec.dot(_omega * vec));
         }
 
         scalar_type doDistance(const value_type& q) const
         {
-			boost::numeric::ublas::vector<scalar_type> vec(q.size());
+			BaseV vec(q.size());
             for (size_t i = 0; i < q.size(); i++) vec[i] = q[i];
 
             return norm(vec);
@@ -269,7 +271,7 @@ namespace rw { namespace math {
 
         typename Metric<T>::scalar_type doDistance(const value_type& a, const value_type& b) const
         {
-			boost::numeric::ublas::vector<scalar_type> vec(a.size());
+			BaseV vec(a.size());
             for (size_t i = 0; i < a.size(); i++) vec[i] = a[i] - b[i];
 
             return norm(vec);
@@ -338,7 +340,7 @@ namespace rw { namespace math {
        - Vector2D<double>
        - Vector3D<double>
        - std::vector<double>
-       - boost::numeric::ublas::vector<double>
+       - Eigen::VectorXd
     */
     class MetricFactory
     {
@@ -400,7 +402,7 @@ namespace rw { namespace math {
         */
         template <class VectorType>
 		inline static typename Metric<VectorType>::Ptr makeMahalanobis(
-            const boost::numeric::ublas::matrix<typename VectorType::value_type>& omega)
+            const Eigen::Matrix<typename VectorType::value_type,Eigen::Dynamic,1>& omega)
         {
             return rw::common::ownedPtr(new MahalanobisMetric<VectorType>(omega));
         }
@@ -503,23 +505,23 @@ namespace rw { namespace math {
     extern template class rw::math::InfinityMetric<Vector3D<float> >;
     extern template class rw::math::WeightedInfinityMetric<Vector3D<float> >;
 
-    extern template class rw::math::ManhattanMetric<boost::numeric::ublas::vector<double> >;
-    extern template class rw::math::WeightedManhattanMetric<boost::numeric::ublas::vector<double> >;
+    extern template class rw::math::ManhattanMetric<Eigen::VectorXd >;
+    extern template class rw::math::WeightedManhattanMetric<Eigen::VectorXd>;
 
-    extern template class rw::math::EuclideanMetric<boost::numeric::ublas::vector<double> >;
-    extern template class rw::math::WeightedEuclideanMetric<boost::numeric::ublas::vector<double> >;
+    extern template class rw::math::EuclideanMetric<Eigen::VectorXd >;
+    extern template class rw::math::WeightedEuclideanMetric<Eigen::VectorXd >;
 
-    extern template class rw::math::InfinityMetric<boost::numeric::ublas::vector<double> >;
-    extern template class rw::math::WeightedInfinityMetric<boost::numeric::ublas::vector<double> >;
+    extern template class rw::math::InfinityMetric<Eigen::VectorXd>;
+    extern template class rw::math::WeightedInfinityMetric<Eigen::VectorXd>;
 
-    extern template class rw::math::ManhattanMetric<boost::numeric::ublas::vector<float> >;
-    extern template class rw::math::WeightedManhattanMetric<boost::numeric::ublas::vector<float> >;
+    extern template class rw::math::ManhattanMetric<Eigen::VectorXf>;
+    extern template class rw::math::WeightedManhattanMetric<Eigen::VectorXf>;
 
-    extern template class rw::math::EuclideanMetric<boost::numeric::ublas::vector<float> >;
-    extern template class rw::math::WeightedEuclideanMetric<boost::numeric::ublas::vector<float> >;
+    extern template class rw::math::EuclideanMetric<Eigen::VectorXf>;
+    extern template class rw::math::WeightedEuclideanMetric<Eigen::VectorXf>;
 
-    extern template class rw::math::InfinityMetric<boost::numeric::ublas::vector<float> >;
-    extern template class rw::math::WeightedInfinityMetric<boost::numeric::ublas::vector<float> >;
+    extern template class rw::math::InfinityMetric<Eigen::VectorXf>;
+    extern template class rw::math::WeightedInfinityMetric<Eigen::VectorXf>;
 
     extern template class rw::math::ManhattanMetric<std::vector<double> >;
     extern template class rw::math::WeightedManhattanMetric<std::vector<double> >;

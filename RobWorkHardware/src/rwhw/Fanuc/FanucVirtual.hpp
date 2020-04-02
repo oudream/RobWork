@@ -29,6 +29,7 @@
 #include <rw/math/Pose6D.hpp>
 #include <rw/models/SerialDevice.hpp>
 #include <rw/kinematics/State.hpp>
+#include <Eigen/Eigen>
 
 #include <string>
 
@@ -183,7 +184,7 @@ namespace rwhw {
 
         fanuc::VelRampProfile *_velProfile;
         unsigned int _progNrToCall;
-        boost::numeric::ublas::bounded_vector<float, 3> _callArg;
+        Eigen::Vector3f _callArg;
     };
 
     /**@}*/

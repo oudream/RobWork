@@ -24,12 +24,12 @@ namespace
 {
     double norm_inf(const Vector3D<>& v)
     {
-        return norm_inf(v.m());
+        return v.normInf();
     }
 
     double norm_2(const Vector3D<>& v)
     {
-        return norm_2(v.m());
+        return v.norm2();
     }
 }
 

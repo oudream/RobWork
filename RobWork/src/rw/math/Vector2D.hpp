@@ -23,9 +23,6 @@
  * @file Vector2D.hpp
  */
 
-#include <boost/numeric/ublas/vector.hpp>
-#include <boost/numeric/ublas/vector_expression.hpp>
-#include <boost/numeric/ublas/io.hpp>
 #include <rw/common/Serializable.hpp>
 #include <Eigen/Eigen>
 
@@ -61,13 +58,9 @@ namespace rw { namespace math {
     class Vector2D
     {
 
-	public:
-		//! Boost based Vector2D
-        typedef boost::numeric::ublas::bounded_vector<T, 2> BoostVector2D;
-	
+	public:	
 		//! Eigen based Vector2D
 		typedef Eigen::Matrix<T, 2, 1> EigenVector2D;
-
     
         //! Value type.
         typedef T value_type;
@@ -95,25 +88,15 @@ namespace rw { namespace math {
         }
 
         /**
-         * @brief Creates a 2D vector from vector_expression
-         * @param r [in] an ublas vector_expression
+         * @brief Creates a 2D vector from Eigen Vector
+         * @param r [in] an Eigen Vector
          */
         template <class R>
-        Vector2D(const boost::numeric::ublas::vector_expression<R>& r)
+        Vector2D(const Eigen::MatrixBase<R>& r)
         {
-			BoostVector2D v(r);
+			EigenVector2D v(r);
 			_vec[0] = v(0);
 			_vec[1] = v(1);
-		}
-
-        /**
-           @brief Returns Boost vector equivalent to *this.
-         */
-        BoostVector2D m() const { 
-			BoostVector2D v;
-			v(0) = _vec[0];
-			v(1) = _vec[1];
-			return v; 
 		}
 
         /**

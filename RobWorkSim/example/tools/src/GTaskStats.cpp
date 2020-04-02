@@ -13,7 +13,7 @@
 #include <boost/program_options/parsers.hpp>
 #define BOOST_FILESYSTEM_VERSION 3
 #include <boost/filesystem.hpp>
-#include <boost/numeric/ublas/matrix.hpp>
+#include <Eigen/Eigen>
 
 using namespace std;
 using namespace rw::common;
@@ -22,7 +22,7 @@ using namespace rwlibs::task;
 using namespace boost::program_options;
 
 std::vector<std::pair<GraspSubTask*,GraspTarget*> > getTargets(GraspTask::Ptr gtask);
-void printConfMatrix(boost::numeric::ublas::bounded_matrix<int, 7, 7>& mat);
+void printConfMatrix(Eigen::Matrix<int, 7, 7>& mat);
 
 int main(int argc, char** argv)
 {
@@ -152,9 +152,8 @@ int main(int argc, char** argv)
         }
         std::cout << "NR of matches: " << matches.size() << " from (" << baselinefiles.size() << ";" << infiles.size()<< ")" << std::endl;
 
-        using namespace boost::numeric::ublas;
 
-        bounded_matrix<int, 7, 7> confMatTotal = zero_matrix<int>(7,7);
+        Eigen::Matrix<int, 7, 7> confMatTotal;
 
         // foreach match we write the test status of each grasp
         typedef std::pair<std::string,std::string> StrPair;
@@ -166,7 +165,7 @@ int main(int argc, char** argv)
             GraspTask::Ptr baselinetask = GraspTask::load( data.first );
             GraspTask::Ptr inputtask = GraspTask::load( data.second );
 
-            bounded_matrix<int, 7, 7> confMat = zero_matrix<int>(7,7);
+            Eigen::Matrix<int, 7, 7> confMat;
 
             // load results into two large vectors and compare them, if they are not of the same size then something went wrong
             std::vector<std::pair<GraspSubTask*,GraspTarget*> > baselinetargets = getTargets(baselinetask);
@@ -254,7 +253,7 @@ int main(int argc, char** argv)
 std::string groups[] = {"succ","Fmis","Fdrop","Cenv","SimFail","Cobj","other"};
 
 
-void printConfMatrix(boost::numeric::ublas::bounded_matrix<int, 7, 7>& mat){
+void printConfMatrix(Eigen::Matrix<int, 7, 7>& mat){
     std::cout << "\n";
     std::cout << "\tsucc\tFmis\tFdrop\tCenv\tSimFail\tCobj\tother\n";
     for(int y=0;y<7;y++){

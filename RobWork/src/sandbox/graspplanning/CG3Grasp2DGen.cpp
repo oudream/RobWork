@@ -22,7 +22,6 @@
 #include <rw/math/Constants.hpp>
 #include <rw/math/Rotation2D.hpp>
 #include "Contour2DInfoMap.hpp"
-#include <boost/numeric/ublas/matrix.hpp>
 #include <rw/common/macros.hpp>
 #include <rw/kinematics/Kinematics.hpp>
 #include <rw/kinematics/Frame.hpp>
@@ -35,7 +34,6 @@
 using namespace rw::geometry;
 using namespace rw::kinematics;
 using namespace rw::models;
-using namespace boost::numeric;
 using namespace rw::math;
 using namespace rw::sensor;
 using namespace rw::graspplanning;

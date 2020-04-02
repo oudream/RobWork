@@ -21,8 +21,7 @@
 
 #include <rw/math/Q.hpp>
 #include <rw/kinematics/State.hpp>
-
-#include <boost/numeric/ublas/matrix.hpp>
+#include <Eigen/Eigen>
 
 namespace rw { namespace kinematics { class Frame; } }
 namespace rw { namespace models { class Device; } }
@@ -99,7 +98,7 @@ public:
      * Usage: Setup for system ignoring tool roll
      * \code
      * XQPController* xqp = new XQPController(device, device->getEnd(), state, dt)
-     * boost::numeric::ublas::matrix<double> P = boost::numeric::ublas::zero_matrix<double>(5,6);
+     * Eigen::Matrix<double,5,6 P;
      * for (int i = 0; i<5; i++)
      *     P(i,i) = 1;
      * xqp->setProjection(P, XQPController::ControlFrame);
@@ -108,7 +107,7 @@ public:
      * @param P [in] The projection matrix
      * @param space [in] The space in which to apply the projection
      */
-    void setProjection(const boost::numeric::ublas::matrix<double>& P, ProjectionFrame space);
+    void setProjection(const Eigen::MatrixXd& P, ProjectionFrame space);
 
 
     /**
@@ -159,7 +158,7 @@ private:
     rw::math::Q _ddqlimit;
     rw::math::Q _thresholdLower;
     rw::math::Q _thresholdUpper;
-    boost::numeric::ublas::matrix<double> _P;
+    Eigen::MatrixXd _P;
     ProjectionFrame _space;
 
 	double _weightJointLimits;

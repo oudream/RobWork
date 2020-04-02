@@ -16,7 +16,7 @@ int BFGS::optimizer(
 		)
 {
 	int STATUS = SUCCESS;
-	const vector::size_type dim = startguess.size();
+	const vector::Index dim = startguess.size();
 
 	//Allocate array for inverse hessian approximation
 	matrix Hk(dim,dim);
@@ -25,9 +25,9 @@ int BFGS::optimizer(
 	matrix tempRight(dim,dim);
 
 	//Initialize H with identity matrix
-	for(vector::size_type i=0;i<dim;i++)
+	for(vector::Index i=0;i<dim;i++)
 	{
-		for(vector::size_type j=0;j<dim;j++)
+		for(vector::Index j=0;j<dim;j++)
 		{
 			Hk(i,j) = 0;
 		}
@@ -36,22 +36,22 @@ int BFGS::optimizer(
 
 	//Allocate memory for gradient
 	vector gfk(dim);
-	for(vector::size_type i=0;i<dim;i++)
+	for(vector::Index i=0;i<dim;i++)
 		gfk(i) = 0;
 
 	//Allocate memory for next gradient
 	vector gfk1(dim);
-	for(vector::size_type i=0;i<dim;i++)
+	for(vector::Index i=0;i<dim;i++)
 		gfk1(i) = 0;
 
 	//Allocate memory for gradient differences
 	vector yk(dim);
-	for(vector::size_type i=0;i<dim;i++)
+	for(vector::Index i=0;i<dim;i++)
 		yk(i) = 0;
 
 	//Allocate memory for search direction
 	vector pk(dim);
-	for(vector::size_type i=0;i<dim;i++)
+	for(vector::Index i=0;i<dim;i++)
 		pk(i) = 0;
 
 	//Allocate memory for step
@@ -60,7 +60,7 @@ int BFGS::optimizer(
 
 	//Allocate memory for next step
 	vector xk1(dim);
-	for(vector::size_type i=0;i<dim;i++)
+	for(vector::Index i=0;i<dim;i++)
 		xk1(i) = 0;
 
 	//Allocate memory for step differences
@@ -74,10 +74,10 @@ int BFGS::optimizer(
 
 	//Start iterations
 	unsigned int k=0;
-	while( (norm_2(gfk)>tolerance) && (k<iterationLimit) )
+	while( (gfk.norm()>tolerance) && (k<iterationLimit) )
 	{
 		//Compute search direction
-		pk = prod(-Hk,gfk);
+		pk = -Hk * gfk;
 
 		//Compute step size
 
@@ -100,10 +100,10 @@ int BFGS::optimizer(
  * From Chapter 6 pdfpage 5-6 */
 
 		//Calculate rhok = 1/(yk.sk)
-		double ykdotsk = prec_inner_prod(yk,sk);
+		double ykdotsk = yk.dot(sk);
 		if(std::abs(ykdotsk)<1e-12)
 		{
-			rw::common::Log::debugLog() <<"norm2(y(k)): "<<norm_2(yk)<<" norm2(s(k)): "<<norm_2(sk)<<" yk dot sk: "<<std::abs(ykdotsk)<< "\n";
+			rw::common::Log::debugLog() <<"norm2(y(k)): " << yk.norm() << " norm2(s(k)): "<< sk.norm() <<" yk dot sk: "<<std::abs(ykdotsk)<< "\n";
 			STATUS = GRADIENTWARNING;
 			break;
 		}
@@ -120,8 +120,8 @@ int BFGS::optimizer(
 		colDotRow(yk, skrhok, tempRight);
 
 		//Calculate I - tempLeft and I - tempRight
-		for(vector::size_type i=0;i<dim;i++)
-			for(vector::size_type j=0;j<dim;j++)
+		for(vector::Index i=0;i<dim;i++)
+			for(vector::Index j=0;j<dim;j++)
 			{
 				if(i==j)
 				{
@@ -136,10 +136,11 @@ int BFGS::optimizer(
 			}
 
 		//Calculate tempLeft.Hk to tempLeft
-		axpy_prod(tempLeft, Hk, Hk1, true);
+		Hk1 = tempLeft * Hk;
+
 
 		//Calculate Hk1.tempRight to Hk
-		axpy_prod (Hk1, tempRight, Hk, true);
+		Hk = Hk1 * tempRight;
 
 		//Calculate rhok*sk.sk^T to tempLeft
 		colDotRow(skrhok,sk,tempLeft);
@@ -152,7 +153,7 @@ int BFGS::optimizer(
 		xk = xk1;
 		gfk = gfk1;
 	}
-	rw::common::Log::debugLog() << "Iterations: "<<k<<" gradientnorm: "<<norm_2(gfk) << "\n";
+	rw::common::Log::debugLog() << "Iterations: "<<k<<" gradientnorm: "<< gfk.norm() << "\n";
 	rw::common::Log::debugLog() << "Solution x: "<< "\n";
 	for(unsigned int i=0;i<xk.size();i++)
 		rw::common::Log::debugLog() <<"	"<<xk(i)<< "\n";
@@ -166,10 +167,10 @@ void BFGS::colDotRow(
 		matrix &result)
 {
 	//Calculate colvec.rowvec
-	const vector::size_type dimRow = result.size1();
-	const vector::size_type dimCol = result.size1();
-	for(vector::size_type i=0;i<dimRow;i++)
-		for(vector::size_type j=0;j<dimCol;j++)
+	const vector::Index dimRow = result.rows();
+	const vector::Index dimCol = result.rows();
+	for(vector::Index i=0;i<dimRow;i++)
+		for(vector::Index j=0;j<dimCol;j++)
 			result(i,j) = colvec(i) * rowvec(j);
 
 

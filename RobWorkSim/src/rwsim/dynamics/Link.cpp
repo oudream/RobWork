@@ -21,12 +21,8 @@
 #include <rw/kinematics/Kinematics.hpp>
 #include <rw/math/Q.hpp>
 
-#include <boost/numeric/ublas/matrix.hpp>
-#include <boost/numeric/ublas/matrix_proxy.hpp>
-
 #include "DynamicDevice.hpp"
 
-using namespace boost::numeric;
 using namespace rw::math;
 using namespace rw::models;
 using namespace rw::kinematics;

@@ -386,10 +386,6 @@ Rotation3D<> XMLBasisTypes::readRotation3D(DOMElement* element, bool doCheckHead
 
     rot = Rotation3D<>(res);
 
-    using namespace boost::numeric::ublas;
-    /*
-    */
-
 	while(fabs(rot.e().determinant()-1.0)>0.00001  ){
         std::cout.precision(16);
         std::cout << rot << std::endl;
@@ -400,18 +396,6 @@ Rotation3D<> XMLBasisTypes::readRotation3D(DOMElement* element, bool doCheckHead
         rot = Rotation3D<>(res);
 
     }
-/*
-    int cnt =0;
-    while(fabs(LinearAlgebra::det(rot.m())-1.0)>0.00001  ){
-        if(cnt>3){
-            std::cout << rot << std::endl;
-            RW_THROW("Parse of Rotation3D failed. A rotation 3d must be an "
-                     "orthogonal matrix with determinant of 1! det=" << LinearAlgebra::det(rot.m()));
-        }
-        cnt++;
-        rot.normalize();
-    }
-    */
     return rot;
 }
 

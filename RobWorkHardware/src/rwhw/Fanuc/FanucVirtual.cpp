@@ -32,7 +32,6 @@ using namespace rw::common;
 using namespace rw::models;
 using namespace rw::math;
 using namespace rw::kinematics;
-using namespace boost::numeric;
 
 namespace
 {

@@ -20,12 +20,6 @@
 
 #include <rw/math/Math.hpp>
 
-#include <boost/numeric/ublas/matrix.hpp>
-#include <boost/numeric/ublas/matrix_proxy.hpp>
-#include <boost/numeric/ublas/vector.hpp>
-#include <boost/numeric/ublas/vector_proxy.hpp>
-#include <boost/numeric/ublas/io.hpp>
-
 #include <iostream>
 #include <boost/function.hpp>
 #include <boost/bind.hpp>
@@ -38,18 +32,18 @@ class InteriorPointOptimizer
 {
 public:
 
-    typedef boost::function<void(const boost::numeric::ublas::vector<double>& x,
+    typedef boost::function<void(const Eigen::VectorXd& x,
                                  double& f,
-                                 boost::numeric::ublas::vector<double>& df,
-                                 boost::numeric::ublas::matrix<double>& ddf) > ObjectFunction;
+                                 Eigen::VectorXd& df,
+                                 Eigen::MatrixXd& ddf) > ObjectFunction;
 
     typedef void*(Q& q) ObjectFunction;
 
-    typedef boost::function<void(const boost::numeric::ublas::vector<double>& x,
+    typedef boost::function<void(const Eigen::VectorXd& x,
                                  size_t no,
-                                 boost::numeric::ublas::vector<double>& g,
-                                 boost::numeric::ublas::matrix<double>& dg,
-                                 boost::numeric::ublas::matrix<double>& ddq) > ConstraintFunction;
+                                 Eigen::VectorXd& g,
+                                 Eigen::MatrixXd& dg,
+                                 Eigen::MatrixXd& ddq) > ConstraintFunction;
 
     InteriorPointOptimizer(size_t n,
                            size_t m,
@@ -59,7 +53,7 @@ public:
     virtual ~InteriorPointOptimizer();
 
 
-    int solve(const boost::numeric::ublas::vector<double>& x_init);
+    int solve(const Eigen::VectorXd& x_init);
 
     void setAccuracy(double accuracy);
     double getAccuracy();
@@ -72,16 +66,16 @@ protected:
 
     void initialize();
 
-    virtual void objectFunction(const boost::numeric::ublas::vector<double>& x,
+    virtual void objectFunction(const Eigen::VectorXd& x,
                                 double &f,
-                                boost::numeric::ublas::vector<double> &df,
-                                boost::numeric::ublas::matrix<double> &ddf);
+                                Eigen::VectorXd &df,
+                                Eigen::MatrixXd &ddf);
 
-    virtual void constraintFunction(const boost::numeric::ublas::vector<double>& x,
+    virtual void constraintFunction(const Eigen::VectorXd& x,
                                     int i,
-                                    boost::numeric::ublas::vector<double> &a,
-                                    boost::numeric::ublas::matrix<double> &da,
-                                    boost::numeric::ublas::matrix<double> &dda);
+                                    Eigen::VectorXd &a,
+                                    Eigen::MatrixXd &da,
+                                    Eigen::MatrixXd &dda);
 
 private:
     ObjectFunction compute_f_info_EXT;
@@ -90,51 +84,51 @@ private:
 
     void choleskySolve(int n_e,
                        int bw,
-                       boost::numeric::ublas::matrix<double> &A,
-                       boost::numeric::ublas::vector<double> &b,
-                       boost::numeric::ublas::vector<double> &x);
+                       Eigen::MatrixXd &A,
+                       Eigen::VectorXd &b,
+                       Eigen::VectorXd &x);
 
 
-    void compute_f_info(boost::numeric::ublas::matrix<double> &A,
-                        boost::numeric::ublas::vector<double> &RHS);
+    void compute_f_info(Eigen::MatrixXd &A,
+                        Eigen::VectorXd &RHS);
 
-    void compute_con_info(boost::numeric::ublas::matrix<double> &A,
-                          boost::numeric::ublas::vector<double> &RHS);
+    void compute_con_info(Eigen::MatrixXd &A,
+                          Eigen::VectorXd &RHS);
 
-    void merit_info(boost::numeric::ublas::vector<double> &x,
-                    boost::numeric::ublas::vector<double> &s,
+    void merit_info(Eigen::VectorXd &x,
+                    Eigen::VectorXd &s,
                     double &phi,
                     double &eta);
 
-    void Dmerit_info(boost::numeric::ublas::vector<double> &x,
-                     boost::numeric::ublas::vector<double> &s,
-                     boost::numeric::ublas::vector<double> &dx,
-                     boost::numeric::ublas::vector<double> &ds,
+    void Dmerit_info(Eigen::VectorXd &x,
+                     Eigen::VectorXd &s,
+                     Eigen::VectorXd &dx,
+                     Eigen::VectorXd &ds,
                      double &Dphi,
                      double &eta);
 
-    void update(boost::numeric::ublas::vector<double> &x,
-                boost::numeric::ublas::vector<double> &dx,
-                boost::numeric::ublas::vector<double> &s,
-                boost::numeric::ublas::vector<double> &z);
+    void update(Eigen::VectorXd &x,
+                Eigen::VectorXd &dx,
+                Eigen::VectorXd &s,
+                Eigen::VectorXd &z);
 
     const size_t N;
     const size_t M;
     double _accuracy;
-    boost::numeric::ublas::vector<double> _x;
-    boost::numeric::ublas::vector<double> _s;
-    boost::numeric::ublas::vector<double> _z;
+    Eigen::VectorXd _x;
+    Eigen::VectorXd _s;
+    Eigen::VectorXd _z;
     double _mu, _eta;
 
     // objective and derivatives
     double _f;
-    boost::numeric::ublas::vector<double> _df;
-    boost::numeric::ublas::matrix<double> _ddf;
+    Eigen::VectorXd _df;
+    Eigen::MatrixXd _ddf;
 
     // constraints and derivatives (second derivative only stored for one constraint at a time)
-    boost::numeric::ublas::vector<double> _a;
-    boost::numeric::ublas::matrix<double> _da;
-    boost::numeric::ublas::matrix<double> _dda;
+    Eigen::VectorXd _a;
+    Eigen::MatrixXd _da;
+    Eigen::MatrixXd _dda;
 
 
 };

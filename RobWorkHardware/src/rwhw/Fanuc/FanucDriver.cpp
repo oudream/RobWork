@@ -37,7 +37,6 @@ const int MIN_ACC_OVERRIDE = 0;
 const int MAX_ACC_OVERRIDE = 500;
 const int ERROR_UPDATE_RATE = 20;
 
-using namespace boost::numeric;
 using namespace rw::math;
 using namespace rwhw;
 
@@ -337,7 +336,7 @@ Q FanucDriver::getPos()
     TJoints joint;
     ReadJoints(_iHandle,&joint);
     joint.q[2] += joint.q[1]; // hack to remove the dependant joints
-    ublas::bounded_vector<double,6> result;
+    Eigen::Matrix<double,6,1> result;
     for(int i = 0; i<6; i++)
         result(i)=joint.q[i]*Deg2Rad;
     return Q(result);

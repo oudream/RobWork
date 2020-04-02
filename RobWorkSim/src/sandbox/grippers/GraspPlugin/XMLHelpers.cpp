@@ -9,7 +9,6 @@ USE_ROBWORK_NAMESPACE;
 using namespace robwork;
 using namespace rwsim;
 using namespace rwlibs::xml;
-using namespace boost::numeric;
 using namespace boost::property_tree;
 
 

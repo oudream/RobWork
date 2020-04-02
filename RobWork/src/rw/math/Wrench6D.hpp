@@ -25,10 +25,6 @@
 
 #include <rw/common/Serializable.hpp>
 
-#include <boost/numeric/ublas/vector.hpp>
-#include <boost/numeric/ublas/matrix.hpp>
-#include <boost/numeric/ublas/matrix_expression.hpp>
-
 #include <Eigen/Eigen>
 #include <Eigen/Core>
 
@@ -108,19 +104,6 @@ namespace rw { namespace math {
          * @param torque [in] angular torque
          */
         Wrench6D(const Vector3D<T>& force, const Vector3D<T>& torque);
-
-
-        /**
-           @brief Construct a wrench from a Boost vector expression.
-        */
-        template <class R>
-        explicit Wrench6D(const boost::numeric::ublas::vector_expression<R>& r)
-        {
-			boost::numeric::ublas::bounded_vector<T, 6> v(r);
-			for (size_t i = 0; i<6; i++) {
-				_wrench[i] = v(i);
-			}
-		}
 
         /**
          * @brief Sets the force component
@@ -492,16 +475,6 @@ namespace rw { namespace math {
         T normInf() const {
 			return std::max(fabs(_wrench[0]), std::max(fabs(_wrench[1]), std::max(fabs(_wrench[2]), std::max(fabs(_wrench[3]), std::max(fabs(_wrench[4]),fabs(_wrench[5]))))));
         }
-
-        /**
-           @brief Converter to Boost type.
-         */
-        boost::numeric::ublas::bounded_vector<T, 6> m() const { 
-			boost::numeric::ublas::bounded_vector<T, 6> m;
-			for (size_t i = 0; i<6; i++)
-				m(i) = _wrench[i];
-			return m; 
-		}
 
         /**
            @brief Converter to Eigen data type

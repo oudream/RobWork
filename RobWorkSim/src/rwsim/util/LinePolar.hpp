@@ -20,7 +20,7 @@
 
 #include "Pose2D.hpp"
 #include "P2D.hpp"
-#include <boost/numeric/ublas/vector.hpp>
+#include <Eigen/Eigen>
 
 
 namespace rwsim {
@@ -61,9 +61,11 @@ namespace util {
 		static
 		void print(const LinePolar& line);
 
-		// An ublas vector of (rho, theta).
-		static
-		boost::numeric::ublas::vector<double> toUblas(const LinePolar& line);
+		/**
+		 * @brief get the line olar as a Eigen Vector
+		 * @return Eigen Vector
+		 */
+		Eigen::Vector2d e();
 
 		// 'line' given relative to the coordinate frame of 'pose'.
 		static

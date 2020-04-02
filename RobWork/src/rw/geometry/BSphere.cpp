@@ -9,7 +9,6 @@ using namespace rw::geometry;
 
 template <class T>
 BSphere<T> BSphere<T>::fitEigen(const rw::geometry::TriMesh& tris) {
-    using namespace boost::numeric;
     using namespace rw::math;
     using namespace rw::geometry;
     // 1. Compute convex hull
@@ -18,7 +17,6 @@ BSphere<T> BSphere<T>::fitEigen(const rw::geometry::TriMesh& tris) {
 
     // 2. Compute centroid for convex hull
     // 2.1 centroid is computed using the triangles of the convex hull
-    //ublas::bounded_matrix<T,3,3> covar;
     Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> covar( Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>(3, 3) );
     Vector3D<T> centroid(0,0,0);
 

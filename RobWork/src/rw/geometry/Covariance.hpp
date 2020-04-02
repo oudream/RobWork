@@ -82,7 +82,6 @@ namespace geometry {
          * @param points [in] the points.
          */
 		void initialize(const std::vector<rw::math::Vector3D<T> >& points){
-			//_covar = boost::numeric::ublas::zero_matrix<T>(3, 3);
 			doInitialize<typename std::vector<rw::math::Vector3D<T> >::const_iterator, 3>( points.begin(), points.end() );
 		}
 

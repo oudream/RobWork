@@ -156,7 +156,6 @@ namespace geometry {
     class IndexedPolygonNN : public IndexedPolygon<T> {
     private:
     	IndexedPolygonN<T> _polyN;
-    	//boost::numeric::ublas::vector<T> _normals;
 		std::vector<T> _normals;
     public:
 		//! @brief Smart pointer to IndexedPolygonNN
