@@ -26,7 +26,6 @@ using namespace rw::math;
 using namespace rw::sensor;
 using namespace rw::graphics;
 using namespace rwlibs::opengl;
-using namespace boost::numeric;
 
 void TactileArrayRender::draw(const DrawableNode::RenderInfo& info, Render::DrawType type, double alpha) const{
     //if( _force.norm2()<0.001 )

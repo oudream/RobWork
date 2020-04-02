@@ -112,17 +112,6 @@ else()
 endif()
 
 enable_language(CXX)
-if(DEFINED RW_USE_UBLAS_LAPACK)
-    if(NOT DEFINED WIN32)
-        set(BLA_STATIC ON)
-    endif()
-    find_package(BLASLAPACK REQUIRED)
-    set(LAPACK_BLAS_LIBRARY_DIRS)
-    foreach(lib IN LISTS LAPACK_LIBRARIES BLAS_LIBRARIES)
-        get_filename_component(TMP_DIR ${lib} PATH)
-        list(APPEND LAPACK_BLAS_LIBRARY_DIRS ${TMP_DIR})
-    endforeach(lib)
-endif()
 
 # ##################################################################################################
 # DEPENDENCIES - OPTIONAL these dependencies are optional, which is the user can switch off modules

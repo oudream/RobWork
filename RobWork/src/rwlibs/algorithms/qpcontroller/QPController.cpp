@@ -22,12 +22,8 @@
 #include <rw/models/Device.hpp>
 #include <rw/common/macros.hpp>
 
-#include <boost/numeric/ublas/vector.hpp>
-#include <boost/numeric/ublas/matrix.hpp>
-
 #include <cmath>
 
-using namespace boost::numeric::ublas;
 using namespace rw::math;
 using namespace rw::models;
 using namespace rw::kinematics;
@@ -43,13 +39,13 @@ QPController::QPController(double h, const State& state, Device* device):
      _device = device;
      _n = device->getDOF();
 
-     _qmin = _device->getBounds().first.m();
-     _qmax = _device->getBounds().second.m();
+     _qmin = _device->getBounds().first.e();
+     _qmax = _device->getBounds().second.e();
 
-     _vmax = _device->getVelocityLimits().m();
+     _vmax = _device->getVelocityLimits().e();
      _vmin = _vmax*(-1.0);
 
-     _amax = _device->getAccelerationLimits().m();
+     _amax = _device->getAccelerationLimits().e();
      _amin = _amax*(-1.0);
 
      _statusArray = new char[256];
@@ -95,16 +91,16 @@ Q QPController::solve(const Q& q, const Q& dq, const VelocityScrew6D<>& tcp_scre
         }*/
     _device->setQ(q, _state);
 
-    matrix<double> jac = _device->baseJend(_state).m();
+    Eigen::MatrixXd jac = _device->baseJend(_state).e();
     //trim jacobian to remove rool rotation
-    //    matrix_range<matrix<double> > jac(jac6, range(0,6), range(0, jac6.size2()));
+    //    matrix_range<Eigen::MatrixXd > jac(jac6, range(0,6), range(0, jac6.size2()));
 
-    matrix<double> A = prod(trans(jac),jac);
-    VectorBase b = prod(trans(jac),tcp_vel);
+    Eigen::MatrixXd A = jac.transpose()*jac;
+    VectorBase b = jac.transpose()*tcp_vel;
 
     VectorBase lower(_n);
     VectorBase upper(_n);
-    calculateVelocityLimits(lower, upper, q.m(), dq.m());
+    calculateVelocityLimits(lower, upper, q.e(), dq.e());
     VectorBase sol1 = inequalitySolve(A, b, lower, upper);
 
     return Q(sol1);
@@ -194,14 +190,14 @@ void QPController::calculateVelocityLimits(
 }
 
 QPController::VectorBase QPController::inequalitySolve(
-    const matrix<double>& G,
+    const Eigen::MatrixXd& G,
     const VectorBase& b,
     const VectorBase& lower,
     const VectorBase& upper)
 {
-    matrix<double> cmat = zero_matrix<double>(2*lower.size(), lower.size());
+    Eigen::MatrixXd cmat = Eigen::MatrixXd::Zero(2*lower.size(), lower.size());
     VectorBase limits(2*lower.size());
-    for (size_t i = 0; i<lower.size(); i++) {
+    for (int i = 0; i<lower.size(); i++) {
         cmat(2*i,i) = 1;
         cmat(2*i+1,i) = -1;
         limits(2*i) = lower(i);
@@ -215,15 +211,8 @@ QPController::VectorBase QPController::inequalitySolve(
 
     if (status == QPSolver::FAILURE) {
         RW_WARN("Error QPSolver could not solve with a valid solution");
-        return Q::zero(lower.size()).m();
+        return Q::zero(lower.size()).e();
     }
-    /*    for (size_t i = 0; i<res.size(); i++) {
-        if (res(i) > upper(i)) {
-            res(i) = upper(i);
-        } else if (res(i) < lower(i)) {
-            res(i) = lower(i);
-        }
-        }*/
 
     return res;
 }

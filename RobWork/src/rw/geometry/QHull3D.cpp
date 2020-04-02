@@ -23,7 +23,6 @@
 
 using namespace std;
 using namespace rw::geometry;
-using namespace boost::numeric;
 
 void QHull3D::rebuild(const std::vector<rw::math::Vector3D<> >& vertices){
     using namespace rw::math;

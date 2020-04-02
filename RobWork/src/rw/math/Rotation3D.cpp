@@ -46,18 +46,6 @@ bool Rotation3D<T>::isProperRotation(T precision) const {
 }
 
 template<class T>
-typename Rotation3D<T>::BoostMatrix3x3 Rotation3D<T>::m() const
-{
-    BoostMatrix3x3 matrix;
-    for(size_t i=0;i<3;i++){
-        matrix(i,0) = _m[i][0];
-        matrix(i,1) = _m[i][1];
-        matrix(i,2) = _m[i][2];
-    }
-    return matrix;
-}
-
-template<class T>
 typename Rotation3D<T>::EigenMatrix3x3 Rotation3D<T>::e() const
 {
     EigenMatrix3x3 matrix;

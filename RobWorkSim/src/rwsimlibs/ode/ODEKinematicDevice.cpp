@@ -23,9 +23,6 @@
 #include <rw/math/Math.hpp>
 #include <rwsim/dynamics/KinematicDevice.hpp>
 
-//#include <boost/numeric/ublas/vector.hpp>
-//#include <boost/numeric/ublas/vector_proxy.hpp>
-
 using namespace rw::math;
 using namespace rw::kinematics;
 using namespace rw::models;
@@ -80,35 +77,6 @@ namespace {
                 jsub(x,y) = jac(x,y);
         return jsub;
     }
-
-//    /**
-//     * @brief Calculates velocity vector of the i'th joint
-//     * @param Jq [in] the jacobian @f$ \mathbf{J}_{\mathbf{q}} @f$
-//     * @param dq [in] the joint velocity vector @f$ \dot{\mathbf{q}} @f$
-//     * @return the velocity vector @f$ \mathbf{\nu} @f$
-//     * @relates Jacobian
-//     */
-//    VelocityScrew6D<> mult(const Jacobian& Jq, const Q& dq, int column)
-//    {
-//        using namespace boost::numeric::ublas;
-//        int m = (int)Jq.size1();
-//        RW_ASSERT(column<(int)Jq.size2());
-//
-//        matrix<double> subjac(m,column+1);
-//        matrix_range<matrix<double> > mr (subjac, range (0, m), range (0, column+1));
-//        for (unsigned i = 0; i < mr.size1 (); ++ i)
-//            for (unsigned j = 0; j < mr.size2 (); ++ j)
-//                mr (i, j) = Jq(i,j);
-//
-//        vector<double> subdq(column+1);
-//        vector_range<vector<double> > vr (subdq, range(0, column+1));
-//        for (unsigned i = 0; i < vr.size (); ++ i)
-//            vr (i) = dq(i);
-//
-//        return VelocityScrew6D<>(prod(subjac, subdq));
-//    }
-
-
 }
 
 void ODEKinematicDevice::update(const rwlibs::simulation::Simulator::UpdateInfo& info, rw::kinematics::State& state){

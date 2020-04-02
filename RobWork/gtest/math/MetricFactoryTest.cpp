@@ -36,7 +36,7 @@ TEST(MetricFactory, Q) {
         MetricFactory::makeWeightedManhattan(
             std::vector<double>());
 
-    Metric<boost::numeric::ublas::vector<double> >::Ptr bv =
+    Metric<Eigen::VectorXd >::Ptr bv =
         MetricFactory::makeWeightedManhattan(
-            boost::numeric::ublas::vector<double>());
+            Eigen::VectorXd());
 }

@@ -157,21 +157,6 @@ Model3D::Ptr Loader3DS::load(const std::string& name)
 		for(size_t j=0; j<obj_dst._texCoords.size();j++)
 			obj_dst._texCoords[j] = toVector2D(&(obj_src.TexCoords[j*2]));
 		obj_dst._mappedToFaces = false;
-/*
-		std::cout << "Model stats : \n";
-		std::cout << "nr vertices : " << obj_dst._vertices.size() << std::endl;
-		std::cout << "nr faces    : " << obj_dst._faces.size() << std::endl;
-		std::cout << "nr mat faces: " << obj_dst._matFaces.size() << std::endl;
-		std::cout << "nr mat faces: " << obj_dst._matFaces[0]->_subFaces.size() << std::endl;
-		std::cout << "nr normals  : " << obj_dst._normals.size() << std::endl;
-		std::cout << "nr transform: " << obj_dst._transform << std::endl;
-		std::cout << "size_of(Vector3D): " << sizeof(Vector3D<float>) << std::endl;
-		std::cout << "size_of(Ublas vector): " << sizeof(boost::numeric::ublas::bounded_vector<float, 3>) << std::endl;
-		std::cout << "size_of(IndexedTriangle): " << sizeof(IndexedTriangleN0<>) << std::endl;
-		std::cout << "size_of(IndexedTriangle): " << sizeof(IndexedTriangleN0<unsigned short>) << std::endl;
-		std::cout << "size_of(uint16_t): " << sizeof(uint16_t) << std::endl;
-		std::cout << "size_of(uint8_t): " << sizeof(uint8_t) << std::endl;
-		*/
 
 	}
 	//model->optimize(35*Deg2Rad);

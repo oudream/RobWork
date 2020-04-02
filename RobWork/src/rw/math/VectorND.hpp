@@ -25,10 +25,6 @@
 
 #include <rw/common/Serializable.hpp>
 
-#include <boost/numeric/ublas/vector.hpp>
-#include <boost/numeric/ublas/vector_expression.hpp>
-#include <boost/numeric/ublas/io.hpp>
-
 #include <rw/common/OutputArchive.hpp>
 #include <rw/common/InputArchive.hpp>
 
@@ -50,8 +46,6 @@ namespace rw { namespace math {
     class VectorND: public rw::common::Serializable
     {
     public:
-        //! The type of the internal Boost VectorND implementation.
-        //typedef boost::numeric::ublas::bounded_vector<T, N> BoostBoundedVector;
 
 		//! The type of the internal Eigen Vector
 		
@@ -69,18 +63,6 @@ namespace rw { namespace math {
 			_vec = EigenVectorND(N);
         }
 
-        /**
-         * @brief Creates a 3D VectorND from VectorND_expression
-         *
-         * @param v [in] an ublas VectorND_expression
-         */
-        /*template <class R>
-		VectorND(const Eigen::Matrix<R, N, 1>& v)
-        {
-			_vec = v;
-		}*/
-
-
 		/**
          * @brief Creates a 3D VectorND from Eigen type.
          *
@@ -93,35 +75,6 @@ namespace rw { namespace math {
 				RW_THROW("Unable to initialize VectorND with "<<v.rows()<<" x "<<v.cols()<< " matrix");
 			_vec = v;
 		}
-
-		/**
-         * @brief Creates a 3D VectorND from Boost vector expression.
-         *
-         * @param r [in] an ublas VectorND_expression
-         */
-        template <class R>
-        explicit VectorND(const boost::numeric::ublas::vector_expression<R>& r)
-        {
-			boost::numeric::ublas::bounded_vector<T, N> m(r);
-			for (size_t i = 0; i<N; i++) {
-				_vec(i) = m(i);
-			}
-		}
-
-  //      const BoostBoundedVector& m() const {
-		//	return _vec;
-		//}
-
-        /**
-           @brief Converts to Boost ublas::bounded_vector.
-         */
-        boost::numeric::ublas::bounded_vector<T, N> m() {
-			boost::numeric::ublas::bounded_vector<T, N> m;
-			for (int i = 0; i<_vec.size(); i++)
-				m(i) = _vec(i);
-
-			return m;
-        }
 
         /**
            @brief Accessor for the internal Eigen VectorND.

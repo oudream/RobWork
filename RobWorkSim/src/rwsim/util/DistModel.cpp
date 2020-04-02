@@ -13,7 +13,6 @@ double DistModel::refit( std::vector<rw::math::Vector3D<> >& data ){
 
 	_invalid = false;
 
-	using namespace boost::numeric;
 	using namespace rw::math;
 
 	Vector3D<> centroid(0,0,0);

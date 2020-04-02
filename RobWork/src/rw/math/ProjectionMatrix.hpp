@@ -18,8 +18,8 @@
 #ifndef RW_MATH_PROJECTIONMATRIX_HPP_
 #define RW_MATH_PROJECTIONMATRIX_HPP_
 
-#include <boost/numeric/ublas/matrix.hpp>
 #include <rw/common/Ptr.hpp>
+#include <Eigen/Eigen>
 
 namespace rw {
 namespace math {
@@ -29,7 +29,7 @@ namespace math {
      */
     class ProjectionMatrix {
     private:
-        boost::numeric::ublas::bounded_matrix<double, 4, 4> _matrix;
+        Eigen::Matrix<double, 4, 4> _matrix;
     public:
         typedef rw::common::Ptr<ProjectionMatrix> Ptr;
 
@@ -37,7 +37,7 @@ namespace math {
         ProjectionMatrix(){};
         
         //! @brief get the boost matrix corresponding to this projection
-        const boost::numeric::ublas::bounded_matrix<double, 4, 4> m() const {
+        const Eigen::Matrix<double, 4, 4> m() const {
            return _matrix;
         }
 

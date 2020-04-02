@@ -79,7 +79,7 @@ void ArcBall::drag(const std::pair<float,float>& newPt, math::Quaternion<float>&
     {
         //We're ok, so return the perpendicular vector as the transform after all
         //In the quaternion values, w is cosine (theta / 2), where theta is rotation angle
-        math::Quaternion<float> tmpQuat(perp(0),perp(1),perp(2),inner_prod(_stVec.m(),_enVec.m()));
+        math::Quaternion<float> tmpQuat(perp(0),perp(1),perp(2),_stVec.e().dot(_enVec.e()));
         newRot = tmpQuat;
     }
     else //if its zero

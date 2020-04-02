@@ -96,7 +96,7 @@ void CRSA465::move(rw::math::Q& q)
 
 Q CRSA465::getQ()
 {
-    boost::numeric::ublas::vector<float> q;
+    Eigen::VectorXf q;
     if (_aci.GetJointConfig(q(0),q(1),q(2),q(3),q(4),q(5))) {
         Q qres(6);
         for (int i = 0; i<6; i++)

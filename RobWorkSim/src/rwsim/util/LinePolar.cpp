@@ -89,10 +89,9 @@ void LinePolar::print(const LinePolar& line)
         line.getTheta() * rw::math::Rad2Deg);
 }
 
-typedef boost::numeric::ublas::vector<double> Vec;
 Vec LinePolar::toUblas(const LinePolar& line)
 {
-    Vec vec(2);
+    Eigen::Vector2d vec;
     vec(0) = line.getRho();
     vec(1) = line.getTheta();
     return vec;

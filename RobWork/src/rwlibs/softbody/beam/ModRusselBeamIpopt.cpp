@@ -41,7 +41,7 @@ ModRusselBeamIpopt::~ModRusselBeamIpopt() {
 
 
 
-void ModRusselBeamIpopt::solve ( boost::numeric::ublas::vector< double >& xinituser, boost::numeric::ublas::vector< double >& U, boost::numeric::ublas::vector< double >& V ) {    
+void ModRusselBeamIpopt::solve ( Eigen::VectorXd& xinituser, Eigen::VectorXd& U, Eigen::VectorXd& V ) {    
     vector<int> integralIndices  = getIntegralIndices();
 
 
@@ -76,7 +76,7 @@ void ModRusselBeamIpopt::solve ( boost::numeric::ublas::vector< double >& xinitu
     }
 
     
-    boost::numeric::ublas::vector< double > res = nlp->getSolution();
+    Eigen::VectorXd res = nlp->getSolution();
     double Ee = nlp->getEnergyElastic();
     std::cout << "Ee: " << Ee << std::endl;
 

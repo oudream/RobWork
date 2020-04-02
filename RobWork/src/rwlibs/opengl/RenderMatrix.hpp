@@ -21,7 +21,7 @@
 
 //! @file RenderMatrix.hpp
 
-#include <boost/numeric/ublas/matrix.hpp>
+#include <Eigen/Eigen>
 
 #include <rw/graphics/Render.hpp>
 
@@ -37,7 +37,7 @@ namespace rwlibs { namespace opengl {
     {
     private:
         float _width,_height,_maxZ,_zscale;
-        boost::numeric::ublas::matrix<float> _vals;
+        Eigen::MatrixXf _vals;
 
     public:
         //! @brief smart pointer type to this class

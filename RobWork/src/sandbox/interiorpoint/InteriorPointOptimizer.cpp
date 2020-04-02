@@ -25,32 +25,31 @@
 #include "InteriorPointOptimizer.hpp"
 
 using namespace rw::math;
-using namespace boost::numeric::ublas;
 
 namespace internal {
-    void compute_f_info_EXT(const vector<double>& x, double &f, boost::numeric::ublas::vector<double> &df, boost::numeric::ublas::matrix<double> &ddf) {
+    void compute_f_info_EXT(const Eigen::VectorXd& x, double &f, Eigen::VectorXd &df, Eigen::MatrixXd &ddf) {
 
     }
 
     void compute_con_info_i_EXT(int i,
-                                const vector<double>& x,
-                                boost::numeric::ublas::vector<double> &a,
-                                boost::numeric::ublas::matrix<double> &da,
-                                boost::numeric::ublas::matrix<double> &dda) {
+                                const Eigen::VectorXd& x,
+                                Eigen::VectorXd &a,
+                                Eigen::MatrixXd &da,
+                                Eigen::MatrixXd &dda) {
 
     }
 
 }
 
 void InteriorPointOptimizer::initialize() {
-    _x = vector<double>(N);
-    _s = vector<double>(M);
-    _z = vector<double>(M);
-    _df = vector<double>(N);
-    _ddf = matrix<double>(N,N);
-    _a = vector<double>(M);
-    _da = matrix<double>(M,N);
-    _dda = matrix<double>(N,N);
+    _x = Eigen::VectorXd(N);
+    _s = Eigen::VectorXd(M);
+    _z = Eigen::VectorXd(M);
+    _df = Eigen::VectorXd(N);
+    _ddf = Eigen::MatrixXd(N,N);
+    _a = Eigen::VectorXd(M);
+    _da = Eigen::MatrixXd(M,N);
+    _dda = Eigen::MatrixXd(N,N);
     _accuracy = 1e-9;
 }
 
@@ -84,18 +83,18 @@ InteriorPointOptimizer::~InteriorPointOptimizer()
 
 }
 
-void InteriorPointOptimizer::objectFunction(const boost::numeric::ublas::vector<double>& x,
+void InteriorPointOptimizer::objectFunction(const Eigen::VectorXd& x,
                                             double &f,
-                                            boost::numeric::ublas::vector<double> &df,
-                                            boost::numeric::ublas::matrix<double> &ddf) {
+                                            Eigen::VectorXd &df,
+                                            Eigen::MatrixXd &ddf) {
     RW_THROW("Object function undefined for InteriorPointMethod");
 }
 
-void InteriorPointOptimizer::constraintFunction(const boost::numeric::ublas::vector<double>& x,
+void InteriorPointOptimizer::constraintFunction(const Eigen::VectorXd& x,
                                                 int i,
-                                                boost::numeric::ublas::vector<double> &a,
-                                                boost::numeric::ublas::matrix<double> &da,
-                                                boost::numeric::ublas::matrix<double> &dda)
+                                                Eigen::VectorXd &a,
+                                                Eigen::MatrixXd &da,
+                                                Eigen::MatrixXd &dda)
 {
     RW_THROW("Constraint function undefined for InteriorPointMethod");
 }
@@ -115,12 +114,12 @@ double InteriorPointOptimizer::getAccuracy() {
 // Verification of objective and constraints (needs an admissible x)
 void InteriorPointOptimizer::verify_user_defined_objective_and_constraints() {
     double h,delta,ftest,fold,atest;
-    vector<double> xtest(N),dxtest(N);
-    matrix<double> ddfold(N,N);
-    vector<double> dfold(N);
-    matrix<double> ddaold(N,N);
-    matrix<double> daold(M,N);
-    vector<double> aold(M);
+    Eigen::VectorXd xtest(N),dxtest(N);
+    Eigen::MatrixXd ddfold(N,N);
+    Eigen::VectorXd dfold(N);
+    Eigen::MatrixXd ddaold(N,N);
+    Eigen::MatrixXd daold(M,N);
+    Eigen::VectorXd aold(M);
 
     for(size_t j=0; j<M; j++) {
         compute_con_info_i_EXT(_x, j, _a, _da, _dda);
@@ -165,11 +164,11 @@ void InteriorPointOptimizer::verify_user_defined_objective_and_constraints() {
 
 
 
-void InteriorPointOptimizer::choleskySolve(int n_e, int bw, matrix<double> &A, vector<double> &b, vector<double> &x) {
+void InteriorPointOptimizer::choleskySolve(int n_e, int bw, Eigen::MatrixXd &A, Eigen::VectorXd &b, Eigen::VectorXd &x) {
 
     // "n_e" is the dimension of the system. "bw" is the bandwidth measured as the max-distance
     // from the diagonal of a non-zero element in A.
-    vector<double> y(n_e);
+    Eigen::VectorXd y(n_e);
     int ist,jst;
 
     for (int k = 0; k < n_e; ++k) {
@@ -201,7 +200,7 @@ void InteriorPointOptimizer::choleskySolve(int n_e, int bw, matrix<double> &A, v
 
 
 // Computation of objective contributions to the linear equations
-void InteriorPointOptimizer::compute_f_info(matrix<double> &A, vector<double> &RHS) {
+void InteriorPointOptimizer::compute_f_info(Eigen::MatrixXd &A, Eigen::VectorXd &RHS) {
 
     compute_f_info_EXT(_x,  _f, _df, _ddf);
     for (size_t jj = 0; jj < N; ++jj) {
@@ -214,7 +213,7 @@ void InteriorPointOptimizer::compute_f_info(matrix<double> &A, vector<double> &R
 
 
 // Computation of constraint contributions to the linear equations
-void InteriorPointOptimizer::compute_con_info(matrix<double> &A, vector<double> &RHS) {
+void InteriorPointOptimizer::compute_con_info(Eigen::MatrixXd &A, Eigen::VectorXd &RHS) {
 
     double zs;
 
@@ -231,7 +230,7 @@ void InteriorPointOptimizer::compute_con_info(matrix<double> &A, vector<double> 
 }
 
 // merit_info and differentiated merit_info implements the merit function given by Eq. 19.26 in Nocedal and Wright
-void InteriorPointOptimizer::merit_info(vector<double> &x, vector<double> &s, double &phi, double &eta){
+void InteriorPointOptimizer::merit_info(Eigen::VectorXd &x, Eigen::VectorXd &s, double &phi, double &eta){
     phi = 0;
     phi +=_f;
     for (size_t i = 0; i < M; ++i) {
@@ -242,7 +241,7 @@ void InteriorPointOptimizer::merit_info(vector<double> &x, vector<double> &s, do
     }
 }
 
-void InteriorPointOptimizer::Dmerit_info(vector<double> &x, vector<double> &s, vector<double> &dx, vector<double> &ds, double &Dphi, double &eta) {
+void InteriorPointOptimizer::Dmerit_info(Eigen::VectorXd &x, Eigen::VectorXd &s, Eigen::VectorXd &dx, Eigen::VectorXd &ds, double &Dphi, double &eta) {
 
     Dphi=0;
     for (size_t i = 0; i < N; ++i)
@@ -267,10 +266,10 @@ void InteriorPointOptimizer::Dmerit_info(vector<double> &x, vector<double> &s, v
 
 
 // trust region based update. Method used is Nocedal and Wright p. 572-577. NOTICS: Adaptive updates of eta for efficiency is still not implemented
-void InteriorPointOptimizer::update(vector<double> &x, vector<double> &dx, vector<double> &s, vector<double> &z) {
+void InteriorPointOptimizer::update(Eigen::VectorXd &x, Eigen::VectorXd &dx, Eigen::VectorXd &s, Eigen::VectorXd &z) {
     double phi0,phi,Dphi;
-    vector<double> x0(N);
-    vector<double> s0(M),ds(M);
+    Eigen::VectorXd x0(N);
+    Eigen::VectorXd s0(M),ds(M);
     double tmax,t,oldt,fval,oldfval,eps;
     size_t i,jj;
 
@@ -326,14 +325,14 @@ void InteriorPointOptimizer::update(vector<double> &x, vector<double> &dx, vecto
 }
 
 
-int InteriorPointOptimizer::solve(const vector<double>& x_init) {
+int InteriorPointOptimizer::solve(const Eigen::VectorXd& x_init) {
     _x = x_init;
-    matrix<double> A(N, N);
-    vector<double> RHS(N);
-    vector<double> dx(N);
-    zero_matrix<double> A0(N, N);
-    zero_vector<double> RHS0(N);
-    vector<double> oldx(N),diffx(N);
+    Eigen::MatrixXd A(N, N);
+    Eigen::VectorXd RHS(N);
+    Eigen::VectorXd dx(N);
+    Eigen::MatrixXd A0 = Eigen::MatrixXd::Zero(N, N);
+    Eigen::VectorXd RHS0 = Eigen::Vector2d::Zero(N);
+    Eigen::VectorXd oldx(N),diffx(N);
     int n_eq_solves=0;
     int bw=N;
     double testval;

@@ -345,7 +345,6 @@ public:
     }
 
 private:
-    //typedef boost::numeric::ublas::bounded_vector<T, 7> V;
 
     //ParabolicBlend<V> _blend;
 

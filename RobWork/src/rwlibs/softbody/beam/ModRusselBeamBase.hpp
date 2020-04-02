@@ -50,7 +50,7 @@ public:
     virtual ~ModRusselBeamBase();
     
 public:
-    virtual void solve ( boost::numeric::ublas::vector< double >& xinituser, boost::numeric::ublas::vector<double> &U, boost::numeric::ublas::vector<double> &V ) = 0;
+    virtual void solve ( Eigen::VectorXd& xinituser, Eigen::VectorXd &U, Eigen::VectorXd &V ) = 0;
     
 public:
     /**
@@ -59,7 +59,7 @@ public:
      * @param U reference to the vector to store the x-component in 
      * @param avec reference to the vector of angles
      **/
-    void integrateAngleU ( boost::numeric::ublas::vector<double> &U, const boost::numeric::ublas::vector<double> &avec );
+    void integrateAngleU ( Eigen::VectorXd &U, const Eigen::VectorXd &avec );
     
     /**
      * @brief given a vector of angles, calculates the y-part of the corresponding curve
@@ -67,7 +67,7 @@ public:
      * @param V reference to the vector to store the x-component in 
      * @param avec reference to the vector of angles
      **/
-    void integrateAngleV ( boost::numeric::ublas::vector<double> &V, const boost::numeric::ublas::vector<double> &avec );
+    void integrateAngleV ( Eigen::VectorXd &V, const Eigen::VectorXd &avec );
     
     /**
      * @brief precomputes the indices on the beam at which to place integral constraints
