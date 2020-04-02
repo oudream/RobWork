@@ -368,7 +368,7 @@ rw::math::Transform3D< double > ModRussel_NLP::get_planeTbeam ( void ) const {
 
 
 
-const boost::numeric::ublas::vector< double >& ModRussel_NLP::getSolution ( void ) const {
+const Eigen::VectorXd& ModRussel_NLP::getSolution ( void ) const {
     return _x;
 }
 
@@ -380,7 +380,7 @@ double ModRussel_NLP::getEnergyElastic ( void ) const {
 
 
 
-void ModRussel_NLP::setStartingGuess ( const boost::numeric::ublas::vector< double >& xinituser ) {
+void ModRussel_NLP::setStartingGuess ( const Eigen::VectorXd& xinituser ) {
     RW_ASSERT(xinituser.size() == _xinit.size() + 1);
     
     for (int i = 0; i < (int) _xinit.size(); i++)

@@ -109,7 +109,6 @@ public:
 
         // 2. Compute centroid for convex hull
         // 2.1 centroid is computed using the triangles of the convex hull
-        //ublas::bounded_matrix<T,3,3> covar;
 		Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> covar( Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>::Zero(3, 3) );
         Vector3D<T> centroid(0,0,0);
         // we only use triangle centers the vertices directly

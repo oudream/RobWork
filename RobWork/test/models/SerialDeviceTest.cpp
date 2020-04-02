@@ -181,15 +181,15 @@ BOOST_AUTO_TEST_CASE(forwardKinematicsTest)
 
         BOOST_CHECK(simple.getQ(state)[0] == Pi/2.0);
 
-        BOOST_CHECK(norm_inf(joint1->getTransform(state).P()) == 0);
-        BOOST_CHECK(norm_inf(joint1->getTransform(state).R().m() - EAA<>(0.0, 0.0, Pi/2.0).toRotation3D().m()) <= 1e-6);
+        BOOST_CHECK(joint1->getTransform(state).P().e().lpNorm<Eigen::Infinity>() == 0);
+        BOOST_CHECK((joint1->getTransform(state).R().e() - EAA<>(0.0, 0.0, Pi/2.0).toRotation3D().e()).lpNorm<Eigen::Infinity>() <= 1e-6);
 
         Transform3D<> bTe_s = simple.baseTend(state);
 
         //std::cout << bTe_s << "\n";
 
-        BOOST_CHECK(norm_inf(bTe_s.P()) == 0);
-        BOOST_CHECK(norm_inf(bTe_s.R().m() - EAA<>(0.0, 0.0, Pi/2.0).toRotation3D().m()) <= 1e-6);
+        BOOST_CHECK(bTe_s.P().e().lpNorm<Eigen::Infinity>() == 0);
+        BOOST_CHECK((bTe_s.R().e() - EAA<>(0.0, 0.0, Pi/2.0).toRotation3D().e()).lpNorm<Eigen::Infinity>() <= 1e-6);
 
         //std::cout << bTe_s << "\n";
         //std::cout << b.cTf(&e);
@@ -258,14 +258,12 @@ BOOST_AUTO_TEST_CASE(forwardKinematicsTest)
         //Transform3D<> bTe3 = puma560Device.bTf(&endEffector);
         Transform3D<> compare = Puma560(q, a2, d3, a3, d4);
 
-        BOOST_CHECK(norm_inf(bTe1.P() - compare.P()) < 1e-6);
-        BOOST_CHECK(norm_inf(bTe1.R().m() - compare.R().m()) < 1e-6);
+        BOOST_CHECK((bTe1.P() - compare.P()).e().lpNorm<Eigen::Infinity>() < 1e-6);
+        BOOST_CHECK((bTe1.R().e() - compare.R().e()).lpNorm<Eigen::Infinity>() < 1e-6);
 
-        BOOST_CHECK(norm_inf(bTe2.P() - compare.P()) < 1e-6);
-        BOOST_CHECK(norm_inf(bTe2.R().m() - compare.R().m()) < 1e-6);
+        BOOST_CHECK((bTe2.P() - compare.P()).e().lpNorm<Eigen::Infinity>() < 1e-6);
+        BOOST_CHECK((bTe2.R().e() - compare.R().e()).lpNorm<Eigen::Infinity>() < 1e-6);
 
-        //BOOST_CHECK(norm_inf(bTe3.P() - compare.P()) < 1e-6);
-        //BOOST_CHECK(norm_inf(bTe3.R().m() - compare.R().m()) < 1e-6);
     }
 }
 
@@ -344,12 +342,12 @@ BOOST_AUTO_TEST_CASE(SerialDeviceTest){
     kr16t.setQ(qwp,state);
 
     BOOST_CHECK(
-        norm_inf(kr16t.baseTend(state).P() - Vector3D<>(1.16074, 0.0, 0.22074)) < 1e-5);
+        (kr16t.baseTend(state).P() - Vector3D<>(1.16074, 0.0, 0.22074)).e().lpNorm<Eigen::Infinity>() < 1e-5);
 
     BOOST_CHECK(
-        norm_inf(
-            kr16t.baseTend(state).R().m() -
-            Rotation3D<>(0.0, -1.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0).m()) < 1e-6);
+        (
+            kr16t.baseTend(state).R().e() -
+            Rotation3D<>(0.0, -1.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0).e()).lpNorm<Eigen::Infinity>() < 1e-6);
 
     BOOST_CHECK(kr16t.getName() == "KR16");
 

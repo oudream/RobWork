@@ -120,9 +120,6 @@ public:
      * @return matrix of texel pressure values
      */
     virtual const TactileArrayModel::ValueMatrix& getTexelData( ) const = 0;
-
-    //virtual boost::numeric::ublas::matrix<bool> getMatrixMask() = 0;
-
 };
 
 }

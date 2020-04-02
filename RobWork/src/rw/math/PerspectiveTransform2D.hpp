@@ -19,8 +19,6 @@
 #ifndef RW_MATH_PERSPECTIVETRANSFORM2D_HPP
 #define RW_MATH_PERSPECTIVETRANSFORM2D_HPP
 
-
-#include <boost/numeric/ublas/matrix.hpp>
 #include <Eigen/Eigen>
 #include "Vector3D.hpp"
 #include "Vector2D.hpp"
@@ -41,9 +39,6 @@ namespace rw { namespace math {
 	private:
 		//! Eigen 3x3 matrix used as internal data structure.
 		typedef Eigen::Matrix<T, 3, 3> EigenMatrix3x3;
-		
-		//! Boost bounded 3x3 matrix
-		typedef boost::numeric::ublas::bounded_matrix<T, 3, 3> BoostMatrix3x3;
 
 	public:
 		/**
@@ -80,22 +75,6 @@ namespace rw { namespace math {
             _matrix(2, 1) = r32;
             _matrix(2, 2) = r33;
         }
-
-		/**
-		 * @brief constructor
-		 * @param r
-		 * @return
-		 */
-        template <class R>
-        explicit PerspectiveTransform2D(const boost::numeric::ublas::matrix_expression<R>& r) 
-			//: _matrix(r)
-        {
-			BoostMatrix3x3 rm(r);
-			for (size_t i = 0; i<3; i++) 
-				for (size_t j = 0; j<3; j++) 
-					_matrix(i,j) = rm(i,j);
-				
-		}
 
 		/**
 		 * @brief constructor
@@ -208,46 +187,31 @@ namespace rw { namespace math {
 	     * @param v
 	     * @return
 	     */
-	       Vector3D<T> calc3dVec(
-	            const PerspectiveTransform2D<T>& hT,
-	            const Vector2D<T>& v)
-	        {
-	            const T x = v(0);
-	            const T y = v(1);
+		Vector3D<T> calc3dVec(
+			const PerspectiveTransform2D<T>& hT,
+			const Vector2D<T>& v)
+		{
+			const T x = v(0);
+			const T y = v(1);
 
-	            const T g = hT(2, 0);
-	            const T h = hT(2, 1);
-	            const T one = static_cast<T>(1);
-	            //const T lenInv = one / (g * x + h * y + one);
-	            const T len = (g * x + h * y + one);
+			const T g = hT(2, 0);
+			const T h = hT(2, 1);
+			const T one = static_cast<T>(1);
+			//const T lenInv = one / (g * x + h * y + one);
+			const T len = (g * x + h * y + one);
 
-	            const T a = hT(0, 0);
-	            const T b = hT(0, 1);
-	            const T c = hT(0, 2);
+			const T a = hT(0, 0);
+			const T b = hT(0, 1);
+			const T c = hT(0, 2);
 
-	            const T d = hT(1, 0);
-	            const T e = hT(1, 1);
-	            const T f = hT(1, 2);
+			const T d = hT(1, 0);
+			const T e = hT(1, 1);
+			const T f = hT(1, 2);
 
-	            return Vector3D<T>(
-	                (a * x + b * y + c) ,
-	                (d * x + e * y + f) ,
-	                len);
-	        }
-
-
-        /**
-         * @brief Returns Boost matrix representing the 3x3 matrix @f$ \mathbf{M}\in SO(3)
-         * @f$ that represents this rotation
-         *
-         * @return @f$ \mathbf{M}\in SO(3) @f$
-         */
-        BoostMatrix3x3 m() { 
-			BoostMatrix3x3 rm;
-			for (size_t i = 0; i<3; i++) 
-				for (size_t j = 0; j<3; j++) 
-					rm(i,j) = _matrix(i,j);
-			return rm; 
+			return Vector3D<T>(
+				(a * x + b * y + c) ,
+				(d * x + e * y + f) ,
+				len);
 		}
 
         /**

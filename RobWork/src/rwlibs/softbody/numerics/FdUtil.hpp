@@ -18,8 +18,7 @@ Copyright 2013 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
 #ifndef RWLIBS_SOFTBODY_FDUTIL_HPP
 #define RWLIBS_SOFTBODY_FDUTIL_HPP
 
-// #include <vector>
-#include <boost/numeric/ublas/vector.hpp>
+#include <Eigen/Eigen>
 
 namespace rwlibs {
 namespace softbody {
@@ -43,7 +42,7 @@ class FdUtil
      * @param df vector to put the derivatives in
      * @param h stepsize    
      **/
-	static void vectorDerivative(const boost::numeric::ublas::vector<double> &f, boost::numeric::ublas::vector<double> &df, const double h);
+	static void vectorDerivative(const Eigen::VectorXd &f, Eigen::VectorXd &df, const double h);
 
 };
 /*@}*/

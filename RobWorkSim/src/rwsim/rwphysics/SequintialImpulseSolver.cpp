@@ -75,9 +75,9 @@ bool SequintialImpulseSolver::solveGroup( CEdgeGroup& group,
 
     // now comes the actual impulse determination using sequential impulses
     RW_DEBUG("* Calculate and accumulate impulses on individual contacts");
-    boost::numeric::ublas::vector<double> error(nrOfContacts*2);
-    boost::numeric::ublas::vector<double> jnLast(nrOfContacts);
-    boost::numeric::ublas::vector<double> jtLast(nrOfContacts);
+    Eigen::VectorXd error(nrOfContacts*2);
+    Eigen::VectorXd jnLast(nrOfContacts);
+    Eigen::VectorXd jtLast(nrOfContacts);
     size_t MAX_ITERATIONS = 20; // TODO: use another measure than fixed number
     double avgErrChg = 0.0, lastAvgErrChg=0.0, err;
     size_t j;
@@ -130,13 +130,6 @@ bool SequintialImpulseSolver::solveGroup( CEdgeGroup& group,
         }
     }
     RW_DEBUG("* ERROR: " << err <<  "Iterations: " << j);
-    /*for(size_t i=0;i<realContacts.size();i++){
-        Contact &contact = *realContacts[i];
-        ContactPointList::iterator point = contact.contactPoints.begin();
-       // for(;point!=contact.contactPoints.end();++point){
-       //   std::cout << "Impulses: " << point->nImpulse << " " << point->tImpulse << " " << point->dist << std::endl;
-        //}
-    }*/
 
     return true;
 }

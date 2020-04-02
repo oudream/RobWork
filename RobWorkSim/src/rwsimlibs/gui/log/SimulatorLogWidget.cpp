@@ -186,7 +186,7 @@ void SimulatorLogWidget::updateOpenGLView() {
 				renders.push_back(rg);
 		}
 	}
-	const ProjectionMatrix proj = _glview->getViewCamera()->getProjectionMatrix();
+	//const ProjectionMatrix proj = _glview->getViewCamera()->getProjectionMatrix();
 	/*for(const RenderGeometry::Ptr render : renders) {
 		const Geometry::Ptr geo = render->getGeometry();
 		const TriMesh::Ptr mesh = geo->getGeometryData()->getTriMesh();

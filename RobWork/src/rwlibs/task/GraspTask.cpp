@@ -13,7 +13,6 @@ using namespace rw::common;
 using namespace rw::math;
 using namespace rw::trajectory;
 using namespace rwlibs::task;
-using namespace boost::numeric;
 using namespace boost::property_tree;
 
 namespace {

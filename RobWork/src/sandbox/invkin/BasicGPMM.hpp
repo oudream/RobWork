@@ -157,7 +157,7 @@ public:
      * Usage: Setup to ignore tool roll
      * \code
      * BasicGPM* gpm = new BasicGPM(device, device->getEnd(), state, qhome, dt)
-     * boost::numeric::ublas::matrix<double> P = boost::numeric::ublas::zero_matrix<double>(5,6);
+     * Eigen::MatrixXd P = Eigen::MatrixXd::Zero(5,6);
      * for (int i = 0; i<5; i++)
      *     P(i,i) = 1;
      * gpm->setProjection(P, BasicGPM::ControlFrame);

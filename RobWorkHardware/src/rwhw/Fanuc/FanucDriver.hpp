@@ -192,7 +192,7 @@ namespace rwhw {
         void *_iHandle;
         unsigned int _progNrToCall;
         bool _isCallFinished,_notifyProgram,_isCallWaiting;
-        boost::numeric::ublas::bounded_vector<float, 3> _callArg;
+        class Eigen::Vector3f _callArg;
 
         float _error;
         int _updateCnt;

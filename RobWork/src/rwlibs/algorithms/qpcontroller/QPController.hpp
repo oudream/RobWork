@@ -23,8 +23,6 @@
  * @file QPController.hpp
  */
 
-#include <boost/numeric/ublas/vector.hpp>
-
 #include <rw/math/VelocityScrew6D.hpp>
 #include <rw/math/Q.hpp>
 #include <rw/kinematics/State.hpp>
@@ -82,9 +80,9 @@ namespace rwlibs { namespace algorithms {
                           const rw::math::VelocityScrew6D<>& tcpscrew);
 
     private:
-        typedef rw::math::Q::BoostVector VectorBase;
+        typedef rw::math::Q::Base VectorBase;
 
-        VectorBase inequalitySolve(const boost::numeric::ublas::matrix<double>& G,
+        VectorBase inequalitySolve(const Eigen::MatrixXd& G,
         				      const VectorBase& b,
         				      const VectorBase& lower,
         				      const VectorBase& upper);

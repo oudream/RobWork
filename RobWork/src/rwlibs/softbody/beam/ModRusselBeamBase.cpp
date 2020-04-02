@@ -45,7 +45,7 @@ ModRusselBeamBase::~ModRusselBeamBase() {
 
 
 
-void ModRusselBeamBase::integrateAngleU ( boost::numeric::ublas::vector< double >& U, const boost::numeric::ublas::vector< double >& avec ) {
+void ModRusselBeamBase::integrateAngleU ( Eigen::VectorXd& U, const Eigen::VectorXd& avec ) {
     // integrates x-component of angle, assuming implictly a(0) = 0;
     
     const double h = ( getGeometry()->get_b() - getGeometry()->get_a() ) / avec.size();
@@ -65,7 +65,7 @@ void ModRusselBeamBase::integrateAngleU ( boost::numeric::ublas::vector< double 
 
 
 
-void ModRusselBeamBase::integrateAngleV ( boost::numeric::ublas::vector< double >& V, const boost::numeric::ublas::vector< double >& avec ) {
+void ModRusselBeamBase::integrateAngleV ( Eigen::VectorXd& V, const Eigen::VectorXd& avec ) {
     // integrates y-component of angle, assuming implictly a(0) = 0;
     
     const double h = ( getGeometry()->get_b() - getGeometry()->get_a() ) / avec.size();

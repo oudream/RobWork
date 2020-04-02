@@ -26,9 +26,6 @@
 #include "Vector3D.hpp"
 #include "Rotation3D.hpp"
 #include <rw/common/Serializable.hpp>
-#include <boost/numeric/ublas/matrix.hpp>
-#include <boost/numeric/ublas/matrix_expression.hpp>
-#include <boost/numeric/ublas/matrix_proxy.hpp>
 
 #include <Eigen/Eigen>
 
@@ -44,12 +41,6 @@ namespace rw { namespace math {
     class InertiaMatrix
     {
     public:
-    	/**
-    	 * @brief Legacy type for Boost matrix implementation.
-    	 * @deprecated Users should migrate to the Base type based on Eigen.
-    	 */
-        typedef boost::numeric::ublas::bounded_matrix<T, 3, 3> BoostBase;
-
         //! @brief The type of the internal Eigen matrix implementation.
 		typedef Eigen::Matrix<T, 3, 3> Base;
 
@@ -146,28 +137,6 @@ namespace rw { namespace math {
             _matrix(2,2) = k;
         }
 
-
-        /**
-         * @brief Construct a rotation matrix from a Boost matrix expression.
-         *
-         * The matrix expression must be convertible to a 3x3 bounded matrix.
-         *
-         * It is the responsibility of the user that 3x3 matrix is indeed an
-         * inertia matrix.
-         *
-         * @deprecated Please consider using Eigen matrices instead.
-         */
-        template <class R>
-        explicit InertiaMatrix(
-            const boost::numeric::ublas::matrix_expression<R>& r) 
-        {
-			BoostBase b(r);
-			for (size_t i = 0; i<3;i++)
-				for (size_t j = 0; j<3; j++)
-					_matrix(i,j) = b(i,j);		
-		}
-
-
         /**
            @brief Construct an internal matrix from a Eigen::MatrixBase
 
@@ -216,21 +185,6 @@ namespace rw { namespace math {
         {
             return _matrix;
         }
-
-        /**
-         * @brief Returns boost matrix  
-         *
-         * @return @f$ \mathbf{M}\in SO(3) @f$
-         */
-        BoostBase m()
-        {
-			BoostBase b(3,3);
-			for (size_t i = 0; i<3;i++)
-				for (size_t j = 0; j<3; j++)
-					b(i,j) = _matrix(i,j);
-            return b;
-        }
-
 
         /**
          * @brief Calculates \f$ \robabx{a}{c}{\mathbf{R}} =

@@ -41,7 +41,6 @@ using namespace rw::common;
 using namespace rw::invkin;
 using namespace rw::trajectory;
 
-using namespace boost::numeric;
 
 namespace {
 
@@ -173,18 +172,6 @@ bool JacobianIKSolverM::solveLocal(
         }
         break;
         case(SVD):{
-            //std::cout << " size: "  << J.m().size1() <<  " < "<< J.m().size2() << std::endl;
-            /*ublas::identity_matrix<double> I ( J.m().size1() );
-            ublas::matrix<double> W = I;
-            //std::cout << "3";
-            for(size_t i=0;i<J.m().size1()/6;i++){
-                int off = i*6;
-                W(off+3,off+3) = 4;
-                W(off+4,off+4) = 4;
-                W(off+5,off+5) = 4;
-            }*/
-            //std::cout << " size: "  << W.size1() <<  " < "<< W.size2() << std::endl;
-            //Jp = LinearAlgebra::pseudoInverse( prod(W, J.m()) );
             Jp = LinearAlgebra::pseudoInverse(  J.e() );
             //Q dq ( prod( Jp , b_eXed_vec) );
 			Q dq ( Jp*b_eXed_vec);
@@ -198,11 +185,8 @@ bool JacobianIKSolverM::solveLocal(
             // TODO: not implemented yet for now we just use DLS
         }
         case(DLS):{
-            //std::cout << "Error: " << cnt << " : "<< error << std::endl;
             double lambda = 0.4; // dampening factor, for now a fixed value
-            //ublas::matrix<double> U = prod( J.m(), trans(J.m()) ); // U = J * (J^T)
 			Eigen::MatrixXd U = J.e() * J.e().transpose();
-            //ublas::identity_matrix<double> I ( U.size2() );
 			U = U + lambda*Eigen::MatrixXd::Identity(U.rows(), U.cols());
             Eigen::MatrixXd Uinv = U.inverse();
             //LinearAlgebra::invertMatrix(U, Uinv);

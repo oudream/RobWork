@@ -19,7 +19,6 @@
 #define RWHW_DSACON32_HPP
 
 #include <rwhw/serialport/SerialPort.hpp>
-#include <boost/numeric/ublas/vector.hpp>
 #include "ConvertUtil.hpp"
 #include "TactileMatrix.hpp"
 #include "TactileMaskMatrix.hpp"

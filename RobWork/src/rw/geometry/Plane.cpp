@@ -113,7 +113,6 @@ double Plane::refit (const std::vector< rw::math::Vector3D<> >& data)
         _d                            = -dot (_normal, p);
     }
     else {
-        using namespace boost::numeric;
         using namespace rw::math;
 
         Eigen::MatrixXd covar (Eigen::MatrixXd::Zero (3, 3));

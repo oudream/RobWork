@@ -41,8 +41,6 @@ using namespace std;
 using namespace robwork;
 using namespace rwsim::dynamics;
 
-using namespace boost::numeric::ublas;
-
 int binSearchRec(const double value, std::vector<double>& surfaceArea, size_t start, size_t end){
     if(start==end)
         return start;

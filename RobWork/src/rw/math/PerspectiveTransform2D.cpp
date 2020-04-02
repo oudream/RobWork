@@ -25,7 +25,6 @@
 
 using namespace rw::common;
 using namespace rw::math;
-using namespace boost::numeric;
 
 template <class T>
 PerspectiveTransform2D<T>
@@ -40,8 +39,6 @@ PerspectiveTransform2D<T>::calcTransform(
 
 	Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> A(rows, cols);
 	Eigen::VectorXd y(rows);
-	//ublas::matrix<double> A(rows, cols);
-	//ublas::vector<double> y(rows);
 
 	for (size_t i = 0; i < n; i++) {
 		const double xn = static_cast<double>(pts1[i](0));
@@ -78,7 +75,6 @@ PerspectiveTransform2D<T>::calcTransform(
 
 	// now calculate the pseudo inverse to the constructed matrix
 	Eigen::VectorXd x = LinearAlgebra::pseudoInverse(A)*y;
-	//const ublas::vector<double> x = prod(LinearAlgebra::pseudoInverse(A), y);
     return PerspectiveTransform2D(
         static_cast<T>(x(0)),
         static_cast<T>(x(1)),

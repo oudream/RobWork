@@ -315,10 +315,10 @@ public:
 
 
     DAE_DATA_TYPE(Transform)
-        Transform():matrix(boost::numeric::ublas::zero_matrix<double>(4,4)){}
+        Transform():matrix(Eigen::MatrixXd::Zero(4,4)){}
 
         rw::math::Transform3D<> transform;
-        boost::numeric::ublas::bounded_matrix<double, 4, 4> matrix;
+        Eigen::Matrix<double, 4, 4> matrix;
     };
 
     DAE_DATA_TYPE(InstanceNode)

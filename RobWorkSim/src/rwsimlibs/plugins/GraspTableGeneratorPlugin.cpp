@@ -43,8 +43,6 @@ using namespace rw::geometry;
 using namespace rw::graspplanning;
 using namespace rwlibs::simulation;
 
-using namespace boost::numeric::ublas;
-
 #define RW_DEBUGS( str ) std::cout << str  << std::endl;
 
 namespace {

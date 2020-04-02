@@ -392,7 +392,6 @@ Rotation3D<> DOMBasisTypes::readRotation3D (DOMElem::Ptr element, bool doCheckHe
         quat.normalize ();
         Rotation3D<> rot = quat.toRotation3D ();
 
-        using namespace boost::numeric::ublas;
         while (fabs (rot.e ().determinant () - 1.0) > 0.00001) {
             Eigen::MatrixXd u, v;
             Eigen::VectorXd w;
@@ -421,7 +420,6 @@ Rotation3D<> DOMBasisTypes::readRotation3D (DOMElem::Ptr element, bool doCheckHe
                           values[7],
                           values[8]);
 
-        using namespace boost::numeric::ublas;
         while (fabs (rot.e ().determinant () - 1.0) > 0.00001) {
             Eigen::MatrixXd u, v;
             Eigen::VectorXd w;

@@ -10,7 +10,6 @@
 USE_ROBWORK_NAMESPACE
 using namespace robwork;
 using namespace std;
-using namespace boost::numeric;
 using namespace boost::property_tree;
 using namespace rwlibs::task;
 

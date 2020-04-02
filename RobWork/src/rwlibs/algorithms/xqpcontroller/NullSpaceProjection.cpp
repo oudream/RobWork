@@ -23,21 +23,17 @@
 #include <rw/models/Device.hpp>
 #include <rwlibs/algorithms/qpcontroller/QPSolver.hpp>
 
-#include <boost/numeric/ublas/vector.hpp>
-#include <boost/numeric/ublas/vector_proxy.hpp>
-
 using namespace rwlibs::algorithms;
 
 using namespace rw::math;
 using namespace rw::models;
 using namespace rw::kinematics;
-using namespace boost::numeric::ublas;
 using namespace rwlibs::algorithms::qpcontroller;
 
 NullSpaceProjection::NullSpaceProjection(Device* device, Frame* controlFrame, const State& state, double dt):
     _state(state),
     _dt(dt),
-    _P(identity_matrix<double>(6)),
+    _P(Eigen::MatrixXd::Identity(6,6)),
     _space(BaseFrame)
 {
     _device = device;
@@ -86,57 +82,49 @@ Q NullSpaceProjection::solve(const Q& q, const Q& dqcurrent, const Q& dq1) {
     _device->setQ(q, _state);
 
     //Calculate the right projection depending on whether it is in the base frame or the frame of control
-    matrix<double> P;
+    Eigen::MatrixXd P;
     if (_space == ControlFrame) {
         Rotation3D<> rot = inverse(_device->baseTframe(_controlFrame, _state).R());
-        matrix<double> R = zero_matrix<double>(6,6);
-        matrix_range<matrix<double> > rot1(R, range(0,3), range(0,3));
-        rot1 = rot.m();
-        matrix_range<matrix<double> > rot2(R, range(3,6), range(3,6));
-        rot2 = rot.m();
-        P = prod(_P,R);
+        Eigen::MatrixXd R = Eigen::MatrixXd::Zero(6,6);
+        R.block(0,0,3,3) = rot.e();
+        R.block(3,3,6,6) = rot.e(); 
+        P = _P*R;
     } else {
         P = _P;
     }
     //Get the Jacobian and make the projection
-    matrix<double> jac = prod(P, _device->baseJframe(_controlFrame, _state).m());
-    //matrix<double> jac = _device->baseJframe(_controlFrame, _state).m();
+    Eigen::MatrixXd jac = P* _device->baseJframe(_controlFrame, _state).e();
+    //Eigen::MatrixXd jac = _device->baseJframe(_controlFrame, _state).m();
 
-    matrix<double> jac_inv = LinearAlgebra::pseudoInverse(jac);
+    Eigen::MatrixXd jac_inv = LinearAlgebra::pseudoInverse(jac);
 
-    matrix<double> jac_ort = identity_matrix<double>(_dof) - prod(jac_inv, jac);
+    Eigen::MatrixXd jac_ort = Eigen::MatrixXd::Identity(_dof,_dof) - jac_inv* jac;
 
-    matrix<double> cmat(2*jac_ort.size1(), jac_ort.size2());
+    Eigen::MatrixXd cmat(2*jac_ort.rows(), jac_ort.cols());
 
-    matrix_range<matrix<double> > cmat1(cmat, range(0, jac_ort.size1()), range(0, jac_ort.size2()));
-    cmat1 = jac_ort;
+    cmat.block(0,0,jac_ort.rows(),jac_ort.cols()) = jac_ort;
+    cmat.block(jac_ort.rows(), 0, 2*jac_ort.rows(), jac_ort.cols()) = -jac_ort;
 
-    matrix_range<matrix<double> > cmat2(cmat, range(jac_ort.size1(), 2*jac_ort.size1()), range(0, jac_ort.size2()));
-
-    cmat2 = -jac_ort;
-
-    vector<double> cvec(2*jac_ort.size1());
-    vector_range<vector<double> > cvec1(cvec, range(0, lower.size()));
-    cvec1 = lower.m();
-    vector_range<vector<double> > cvec2(cvec, range(lower.size(), 2*lower.size()));
-    cvec2 = -upper.m();
+    Eigen::VectorXd cvec(2*jac_ort.rows());
+    cvec.head(lower.size()) = lower.e();
+    cvec.segment(lower.size(), 2*lower.size())= -upper.e();
 
 
-    matrix<double> jTj = prod(trans(jac_ort), jac_ort);
-    vector<double> jTx = prod(trans(jac_ort), getGradient(q).m());
+    Eigen::MatrixXd jTj = jac_ort.transpose() * jac_ort;
+    Eigen::VectorXd jTx = jac_ort.transpose() * getGradient(q).e();
 
-    vector<double> qstart = zero_vector<double>(_dof);
+    Eigen::VectorXd qstart = Eigen::VectorXd::Zero(_dof);
 
     //std::cout<<"cvec = "<<cvec<<std::endl;
 
     QPSolver::Status status;
-    vector<double> res = QPSolver::inequalitySolve(jTj, -1*jTx, cmat, cvec, qstart, status);
+    Eigen::VectorXd res = QPSolver::inequalitySolve(jTj, -1*jTx, cmat, cvec, qstart, status);
     if (status == QPSolver::SUBOPTIMAL)
         std::cout<<"Returns something suboptimal"<<std::endl;
     if (status == QPSolver::FAILURE)
         std::cout<<"Returns Error"<<std::endl;
 
-    vector<double> nsp = prod(jac_ort, res);
+    Eigen::VectorXd nsp = jac_ort * res;
 
     return Q(nsp);
 }
@@ -210,7 +198,7 @@ void NullSpaceProjection::calculateVelocityLimits(Q& lower,
 }
 
 
-void NullSpaceProjection::setProjection(const boost::numeric::ublas::matrix<double>& P, ProjectionFrame space) {
+void NullSpaceProjection::setProjection(const Eigen::MatrixXd& P, ProjectionFrame space) {
     _P = P;
     _space = space;
 }

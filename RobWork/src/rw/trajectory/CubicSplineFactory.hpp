@@ -119,30 +119,6 @@ public:
 	 */
 	static InterpolatorTrajectory<rw::math::Q>::Ptr makeClampedSpline(const QPath& qpath, const std::vector<double>& times, const rw::math::Q& dqStart, const rw::math::Q& dqEnd);
 
-
-#ifdef RW_USE_UBLAS_LAPACK
-	/**
-	 * @brief LAPACK based version of makeNaturalSpline
-	 */
-	static InterpolatorTrajectory<rw::math::Q>::Ptr makeNaturalSplineLapack(QPath::Ptr qpath, double timeStep=1.0);
-
-	/**
-	 * @brief LAPACK based version of makeNaturalSpline
-	 */
-	static InterpolatorTrajectory<rw::math::Q>::Ptr makeNaturalSplineLapack(TimedQPath::Ptr tqpath);
-
-	/**
-	 * @brief LAPACK based version of makeNaturalSpline
-	 */
-	static InterpolatorTrajectory<rw::math::Q>::Ptr makeClampedSplineLapack(QPath::Ptr qpath, const rw::math::Q& dqStart, const rw::math::Q& dqEnd,	double timeStep=1.0);
-
-	/**
-	 * @brief LAPACK based version of makeNaturalSpline
-	 */
-	static InterpolatorTrajectory<rw::math::Q>::Ptr makeClampedSplineLapack(TimedQPath::Ptr tqpath, const rw::math::Q& dqStart, const rw::math::Q& dqEnd);
-
-#endif
-
 private:
 	CubicSplineFactory();
 

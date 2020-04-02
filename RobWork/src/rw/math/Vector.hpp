@@ -23,9 +23,6 @@
  * @file Vector.hpp
  */
 #include <rw/common/macros.hpp>
-#include <boost/numeric/ublas/vector.hpp>
-#include <boost/numeric/ublas/vector_expression.hpp>
-#include <boost/numeric/ublas/io.hpp>
 
 #include <Eigen/Eigen>
 
@@ -39,17 +36,14 @@ namespace rw { namespace math {
     class Vector
     {
     public:
-        //! The type of the internal Boost vector implementation.
-        typedef boost::numeric::ublas::vector<T> Base;
-
-        //! The Boost vector expression for initialization to zero.
-        typedef boost::numeric::ublas::zero_vector<T> ZeroBase;
+            //! The type of the internal Eigen vector implementation.
+        typedef Eigen::Matrix<T,Eigen::Dynamic,1> Base;
 
         //! Const forward iterator.
-        typedef typename Base::const_iterator const_iterator;
+        //typedef typename Base::const_iterator const_iterator;
 
         //! Forward iterator.
-        typedef typename Base::iterator iterator;
+        /*typedef typename Base::iterator iterator;
 
         //! Value type.
         typedef typename Base::value_type value_type;
@@ -65,7 +59,7 @@ namespace rw { namespace math {
 
         //! Difference type.
         typedef typename Base::difference_type difference_type;
-
+*/
         /**
          * @brief A configuration of vector of length \b dim.
          */
@@ -112,13 +106,13 @@ namespace rw { namespace math {
          */
         static Vector zero(int n)
         {
-            return Vector(ZeroBase(n));
+            return Vector(Base::Zero(n));
         }
 
         /**
          * @brief The dimension of the configuration vector.
          */
-        size_t size() const { return m().size(); }
+        size_t size() const { return e().size(); }
 
         /**
            @brief True if the configuration is of dimension zero.
@@ -132,40 +126,40 @@ namespace rw { namespace math {
          * @param r [in] An expression for a vector of doubles
          */
         template <class R>
-        explicit Vector(const boost::numeric::ublas::vector_expression<R>& r) :
+        explicit Vector(const Eigen::MatrixBase<R>& r) :
             _vec(r)
         {}
 
         /**
-         * @brief Accessor for the internal Boost vector state.
+         * @brief Accessor for the internal Eigen vector state.
          */
-        const Base& m() const { return _vec; }
+        const Base& e() const { return _vec; }
 
         /**
-         * @brief Accessor for the internal Boost vector state.
+         * @brief Accessor for the internal Eigen vector state.
          */
-        Base& m() { return _vec; }
+        Base& e() { return _vec; }
 
         /**
            @brief Start of sequence iterator.
         */
-        const_iterator begin() const { return m().begin(); }
+        //const_iterator begin() const { return e().begin(); }
 
         /**
            @brief End of sequence iterator.
         */
-        const_iterator end() const { return m().end(); }
+        //const_iterator end() const { return e().end(); }
 
         /**
            @brief Start of sequence iterator.
         */
-        iterator begin() { return m().begin(); }
+        //iterator begin() { return e().begin(); }
 
         /**
            @brief End of sequence iterator.
         */
-        iterator end() { return m().end(); }
-
+        //iterator end() { return e().end(); }
+        
         /**
          * @brief Extracts a sub part (range) of this Vector.
          * @param start [in] Start index
@@ -202,7 +196,7 @@ namespace rw { namespace math {
          * @return the norm
          */
         T norm2() const {
-            return norm_2(m());
+            return e().norm();
         }
 
         /**
@@ -210,7 +204,7 @@ namespace rw { namespace math {
          * @return the norm
          */
         T norm1() const {
-            return norm_1(m());
+            return e().sum();
         }
 
         /**
@@ -218,7 +212,9 @@ namespace rw { namespace math {
          * @return the norm
          */
         T normInf() const {
-            return norm_inf(m());
+            
+            Eigen::VectorXd tmp = e(). template cast<double>();
+            return tmp.lpNorm<Eigen::Infinity>();
         }
 
         //----------------------------------------------------------------------
@@ -229,35 +225,35 @@ namespace rw { namespace math {
          * @param i [in] index in the vector
          * @return const reference to element
          */
-        const T& operator()(size_t i) const { return m()(i); }
+        const T& operator()(size_t i) const { return e()(i); }
 
         /**
          * @brief Returns reference to vector element
          * @param i [in] index in the vector
          * @return reference to element
          */
-        T& operator()(size_t i) { return m()(i); }
+        T& operator()(size_t i) { return e()(i); }
 
         /**
          * @brief Returns reference to vector element
          * @param i [in] index in the vector
          * @return const reference to element
          */
-        const T& operator[](size_t i) const { return m()(i); }
+        const T& operator[](size_t i) const { return e()(i); }
 
         /**
          * @brief Returns reference to vector element
          * @param i [in] index in the vector
          * @return reference to element
          */
-        T& operator[](size_t i) { return m()(i); }
+        T& operator[](size_t i) { return e()(i); }
 
         /**
            @brief Scalar division.
          */
         const Vector operator/(T s) const
         {
-            return Vector(m() / s);
+            return Vector(e() / s);
         }
 
         /**
@@ -265,7 +261,7 @@ namespace rw { namespace math {
          */
         const Vector operator*(T s) const
         {
-            return Vector(m() * s);
+            return Vector(e() * s);
         }
 
         /**
@@ -273,7 +269,7 @@ namespace rw { namespace math {
          */
         friend const Vector operator*(T s, const Vector& v)
         {
-            return Vector(s * v.m());
+            return Vector(s * v.e());
         }
 
         /**
@@ -281,7 +277,7 @@ namespace rw { namespace math {
          */
         const Vector operator-(const Vector& b) const
         {
-            return Vector(m() - b.m());
+            return Vector(e() - b.e());
         }
 
         /**
@@ -289,7 +285,7 @@ namespace rw { namespace math {
          */
         const Vector operator+(const Vector& b) const
         {
-            return Vector(m() + b.m());
+            return Vector(e() + b.e());
         }
 
         /**
@@ -297,7 +293,7 @@ namespace rw { namespace math {
          */
         Vector& operator*=(T s)
         {
-            m() *= s;
+            e() *= s;
             return *this;
         }
 
@@ -306,7 +302,7 @@ namespace rw { namespace math {
          */
         Vector& operator/=(T s)
         {
-            m() /= s;
+            e() /= s;
             return *this;
         }
 
@@ -315,7 +311,7 @@ namespace rw { namespace math {
          */
         Vector& operator+=(const Vector& v)
         {
-            _vec += v.m();
+            _vec += v.e();
             return *this;
         }
 
@@ -324,7 +320,7 @@ namespace rw { namespace math {
          */
         Vector& operator-=(const Vector& v)
         {
-        	_vec -= v.m();
+        	_vec -= v.e();
             return *this;
         }
 
@@ -333,7 +329,7 @@ namespace rw { namespace math {
          */
         const Vector operator-() const
         {
-            return Vector(-m());
+            return Vector(-e());
         }
 
         /**
@@ -473,7 +469,7 @@ namespace rw { namespace math {
     */
     template<class A>
     A dot(const Vector<A>& a, const Vector<A>& b){
-        return inner_prod(a.m(), b.m());
+        return a.e().dot(b.e());
     }
 
     /**

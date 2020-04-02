@@ -324,7 +324,7 @@ int testClosedFormWithQ(const Q& q, std::vector<DHParameterSet>& dhparams) {
 
 BOOST_AUTO_TEST_CASE( testClosedFormInverseKinematics ) {
     //std::cout<<"- Testing PieperSolver"<<std::endl;
-    Q q(boost::numeric::ublas::zero_vector<double>(6));
+    Q q(Q::Base::Zero(6));
 
     std::vector<DHParameterSet> dhparams;
     dhparams.push_back(DHParameterSet(0,0,0,0));

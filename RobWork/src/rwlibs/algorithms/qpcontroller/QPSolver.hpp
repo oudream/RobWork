@@ -23,8 +23,7 @@
  * @file QPSolver.hpp
  */
 
-#include <boost/numeric/ublas/vector.hpp>
-#include <boost/numeric/ublas/matrix.hpp>
+#include <Eigen/Eigen>
 
 namespace rwlibs { namespace algorithms { namespace qpcontroller {
 
@@ -67,26 +66,26 @@ namespace rwlibs { namespace algorithms { namespace qpcontroller {
          *
          * \param status [out] Gives the status of the solving
          */
-        static boost::numeric::ublas::vector<double>
+        static Eigen::VectorXd
         inequalitySolve(
-            const boost::numeric::ublas::matrix<double>& G,
-            const boost::numeric::ublas::vector<double>& d,
-            boost::numeric::ublas::matrix<double>& A,
-            const boost::numeric::ublas::vector<double>& b,
-            const boost::numeric::ublas::vector<double>& xstart,
+            const Eigen::MatrixXd& G,
+            const Eigen::VectorXd& d,
+            Eigen::MatrixXd& A,
+            const Eigen::VectorXd& b,
+            const Eigen::VectorXd& xstart,
             Status& status);
 
         //TODO Investigate the possibility of making a hot-start of the
         //algorithm for better performance
 
     private:
-        static boost::numeric::ublas::vector<double> getInitialConfig(
-            boost::numeric::ublas::matrix<double>& A,
-            const boost::numeric::ublas::vector<double>& b);
+        static Eigen::VectorXd getInitialConfig(
+            Eigen::MatrixXd& A,
+            const Eigen::VectorXd& b);
 
-        static boost::numeric::ublas::vector<double> safeApprox(
-            boost::numeric::ublas::matrix<double>& A,
-            const boost::numeric::ublas::vector<double>& b);
+        static Eigen::VectorXd safeApprox(
+            Eigen::MatrixXd& A,
+            const Eigen::VectorXd& b);
     };
 
 }}} // end namespaces

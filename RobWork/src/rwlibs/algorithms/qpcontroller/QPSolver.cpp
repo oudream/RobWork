@@ -22,13 +22,9 @@
 #include <rw/math/Math.hpp>
 #include <rw/common/macros.hpp>
 
-#include <boost/numeric/ublas/vector.hpp>
-#include <boost/numeric/ublas/vector_proxy.hpp>
-
 #include <cmath>
 #include <list>
 
-using namespace boost::numeric::ublas;
 using namespace rw::math;
 
 using namespace rwlibs::algorithms::qpcontroller;
@@ -45,26 +41,26 @@ namespace {
 }
 
 
-vector<double> QPSolver::getInitialConfig(matrix<double>& A, const vector<double>& b) {
-    size_t m = A.size1();
-    size_t n = A.size2();
+Eigen::VectorXd QPSolver::getInitialConfig(Eigen::MatrixXd& A, const Eigen::VectorXd& b) {
+    size_t m = A.rows();
+    size_t n = A.cols();
 
-    vector<double> x(n);
+    Eigen::VectorXd x(n);
 
 
     for (size_t i = 0; i<n; i++) {
         x(i) = 0.5*(b(2*i)-b(2*i+1));
     }
 
-    vector<double> ax;
-    ax = prod(A, x);
+    Eigen::VectorXd ax;
+    ax = A *x ;
 
-    vector<double> delta;
+    Eigen::VectorXd delta;
 
     if (ax(m-1)+EPS<b(m-1)) {
-        for (size_t i = 0; i<b.size()-1; i++) {
-            matrix_row<matrix<double> > grad(A, i);
-            delta = prod(A, grad);
+        for (int i = 0; i<b.size()-1; i++) {
+            Eigen::RowVectorXd grad = A.row(i);
+            delta = A *grad;
 
             if (fabs(delta(m-1))>EPS) {
                 double error = b(m-1)-ax(m-1);
@@ -74,7 +70,7 @@ vector<double> QPSolver::getInitialConfig(matrix<double>& A, const vector<double
                     double limit = (b(i)-ax(i));
                     double dq2 = limit/(delta(i));
                     x += grad*std::max(dq1, dq2);
-                    ax = prod(A, x);
+                    ax = A*x;
                 }
             }
         }
@@ -84,15 +80,15 @@ vector<double> QPSolver::getInitialConfig(matrix<double>& A, const vector<double
 }
 
 
-vector<double> QPSolver::safeApprox(matrix<double>& A, const vector<double>& b) {
+Eigen::VectorXd QPSolver::safeApprox(Eigen::MatrixXd& A, const Eigen::VectorXd& b) {
 
-    vector<double> x = getInitialConfig(A, b);
+    Eigen::VectorXd x = getInitialConfig(A, b);
 
-    size_t m = A.size1();
+    size_t m = A.rows();
 
 
-    matrix_row<matrix<double> > grad(A, m-1);
-    double alpha = (b(m-1)-inner_prod(grad, x))/inner_prod(grad, grad);
+    Eigen::RowVectorXd grad = A.row(m-1);
+    double alpha = (b(m-1)-grad.dot(x)/grad.dot(grad));
     x += alpha*grad;
     return x;
 }
@@ -108,26 +104,26 @@ vector<double> QPSolver::safeApprox(matrix<double>& A, const vector<double>& b) 
  * \param A Matrix used to represent the linear inequality constraints. The dimensions should be m times n
  * \param b Vector with the lower limit for the constraints. We'll assume that b<=0. The length of b should be m
  */
-vector<double> QPSolver::inequalitySolve(
-    const matrix<double>& G,
-    const vector<double>& d,
-    matrix<double>& A,
-    const vector<double>& b,
-    const vector<double>& xstart,
+Eigen::VectorXd QPSolver::inequalitySolve(
+    const Eigen::MatrixXd& G,
+    const Eigen::VectorXd& d,
+    Eigen::MatrixXd& A,
+    const Eigen::VectorXd& b,
+    const Eigen::VectorXd& xstart,
     Status& status)
 {
-    const size_t n = G.size1();
-    const size_t m = A.size1();
+    const size_t n = G.rows();
+    const size_t m = A.rows();
 
     //   bool finished = false;
     //size_t itcnt = 0;
-    matrix_row<matrix<double> > jz(A, m-1);
+    Eigen::RowVectorXd jz = A.row(m-1);
 
 
-    vector<double> x = xstart;//getInitialConfig(A, b);
+    Eigen::VectorXd x = xstart;//getInitialConfig(A, b);
 
-    vector<double> bcompare = prod(A, x);
-    for (size_t i = 0; i<b.size(); i++)
+    Eigen::VectorXd bcompare = A * x;
+    for (int i = 0; i<b.size(); i++)
         if (bcompare(i)+ERROR_LIMIT < b(i)) {
             status = FAILURE;
             std::cout<<"Warning: Invalid start configuration"<<i<<"   "<<bcompare(i)-b(i)<<std::endl;
@@ -152,13 +148,13 @@ vector<double> QPSolver::inequalitySolve(
          *            |A_k 0     |.|\lambda|= | 0  |
          * where g_k=G.x_k+d
          */
-        matrix<double> M = zero_matrix<double>(n+Wk.size());
+        Eigen::MatrixXd M = Eigen::MatrixXd::Zero(n+Wk.size(),n+Wk.size());
 
 
-        vector<double> rhs = zero_vector<double>(n+Wk.size());
+        Eigen::VectorXd rhs = Eigen::VectorXd::Zero(n+Wk.size());
 
-        for (size_t i = 0; i<G.size1(); i++)
-            for (size_t j = 0; j<G.size2(); j++)
+        for (int i = 0; i<G.rows(); i++)
+            for (int j = 0; j<G.rows(); j++)
                 M(i,j) = G(i,j);
         size_t next = n;
         for (IntList::const_iterator ci = Wk.begin(); ci != Wk.end(); ci++) {
@@ -168,38 +164,33 @@ vector<double> QPSolver::inequalitySolve(
             }
             ++next;
         }
-        vector<double> g_k;
-        g_k = prod(G,x)+d;
-        for (size_t i = 0; i<g_k.size(); i++)
+        Eigen::VectorXd g_k;
+        g_k = G*x+d;
+        for (int i = 0; i<g_k.size(); i++)
             rhs(i) = -g_k(i);
 
 
-        matrix<double> Minv = LinearAlgebra::pseudoInverse(M, 1e-12);
+        Eigen::MatrixXd Minv = LinearAlgebra::pseudoInverse(M, 1e-12);
 
-        vector<double> pl(prod(Minv, rhs));
+        Eigen::VectorXd pl(Minv*rhs);
 
-        vector<double> p_k(n);
+        Eigen::VectorXd p_k(n);
         for (size_t i = 0; i<n; i++)
             p_k(i) = pl(i);
 
         //Is the step zero
         //      std::cout<<"p_k = "<<p_k<<std::endl;
-        if (norm_inf(p_k) < 1e-8) {
+        if (p_k.lpNorm<Eigen::Infinity>() < 1e-8) {
 
-            vector<double> lambda;
-            lambda = (vector_range<vector<double> >(pl, range(n,pl.size())));
-
-            /*      vector<double> lambda(pl.size()-n);
-            for (size_t i = 0; i<lambda.size(); i++) {
-                lambda(i) = pl(i+n);
-                }*/
+            Eigen::VectorXd lambda;
+            lambda = pl.tail(n-pl.size());
 
             // std::cout<<"lambda = "<<min(lambda)<<std::endl;
 
             if (Math::min(lambda) >= -QP_EPSILON) {
-                vector<double> bcompare(x.size());
-                bcompare = prod(A, x);
-                for (size_t i = 0; i<b.size(); i++)
+                Eigen::VectorXd bcompare(x.size());
+                bcompare = A* x;
+                for (int i = 0; i<b.size(); i++)
 
                     if (bcompare(i) + ERROR_LIMIT < b(i)) {
 
@@ -238,13 +229,13 @@ vector<double> QPSolver::inequalitySolve(
             bool blocked = false;
             for (IntList::iterator it = notWk.begin(); it != notWk.end(); it++) {
                 double b_i = b[*it];
-                vector<double> a_i(A.size2());
-                for (size_t i = 0; i<A.size2(); i++)
+                Eigen::VectorXd a_i(A.cols());
+                for (int i = 0; i<A.cols(); i++)
                     a_i(i) = A(*it,i);
-                double a_iTp_k = inner_prod(a_i,p_k);
+                double a_iTp_k = a_i.dot(p_k);
 
                 if (a_iTp_k < 0) {
-                    double val = (b_i-inner_prod(a_i,x))/(a_iTp_k);
+                    double val = (b_i-a_i.dot(x))/(a_iTp_k);
 
                     if (val<=minval) {
                         minval = val;
@@ -253,8 +244,6 @@ vector<double> QPSolver::inequalitySolve(
                     }
                 }
             }
-            //      std::cout<<"minval = "<<minval<<std::endl;
-            //std::cout<<"blocked "<<blocked<<"  "<<true<<std::endl;
             double alpha = std::min(1.0, minval);
             x = x+(p_k*alpha);
             if (blocked) {
@@ -267,9 +256,9 @@ vector<double> QPSolver::inequalitySolve(
     RW_WARN("QPSolver did not terminate correctly. This may be due to round off error.");
 
 
-    bcompare = prod(A, x);
+    bcompare = A *x;
 
-    for (size_t i = 0; i<b.size(); i++) {
+    for (int i = 0; i<b.size(); i++) {
         if (bcompare(i)+ERROR_LIMIT < b(i)) {
             std::cout<<"QPSolver Failed to find result valid for all constraints "<<i<<std::endl;
             RW_WARN("QPSolver failed to find a result valid for Constraint "<<i);

@@ -1,13 +1,11 @@
 #ifndef BFGS_HPP_
 #define BFGS_HPP_
 
+#include <Eigen/Eigen>
+
 /**
  * @file BFGS.hpp
  */
-
-#include <boost/numeric/ublas/vector.hpp>
-#include <boost/numeric/ublas/matrix.hpp>
-#include <boost/numeric/ublas/operation.hpp>
 
 namespace rwlibs { namespace algorithms {
 
@@ -24,9 +22,9 @@ namespace rwlibs { namespace algorithms {
 
 		public:
 			//! Vector type used in the minimazation algorithm.
-        		typedef boost::numeric::ublas::vector<double> vector;
+        		typedef Eigen::VectorXd vector;
 			//! MAtrix type used in the minimazation algorithm.
-        		typedef boost::numeric::ublas::matrix<double> matrix;
+        		typedef Eigen::MatrixXd matrix;
 
 			/**
 			 * @brief Minimisation function struct.

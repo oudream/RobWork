@@ -18,7 +18,7 @@ Copyright 2013 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
 #ifndef RWLIBS_SOFTBODY_RUSSELINTEGRAND_HPP
 #define RWLIBS_SOFTBODY_RUSSELINTEGRAND_HPP
 
-#include <boost/numeric/ublas/vector.hpp>
+#include <Eigen/Eigen>
 
 namespace rwlibs {
 namespace softbody {
@@ -40,8 +40,8 @@ struct RusselIntegrand {
      **/
     RusselIntegrand (
         const BeamGeometry &geom,
-        const boost::numeric::ublas::vector<double>& a,
-        const boost::numeric::ublas::vector<double>& da
+        const Eigen::VectorXd& a,
+        const Eigen::VectorXd& da
     ) ;;
 
 
@@ -72,8 +72,8 @@ struct RusselIntegrand {
 
 private:
     const BeamGeometry &_geom;
-    const boost::numeric::ublas::vector<double>& _a;
-    const boost::numeric::ublas::vector<double>& _da;
+    const Eigen::VectorXd& _a;
+    const Eigen::VectorXd& _da;
 };
 
 
@@ -94,8 +94,8 @@ struct RusselIntegrandEonly : public RusselIntegrand {
      **/
     RusselIntegrandEonly (
         const BeamGeometry &geom,
-        const boost::numeric::ublas::vector<double>& a,
-        const boost::numeric::ublas::vector<double>& da
+        const Eigen::VectorXd& a,
+        const Eigen::VectorXd& da
     ) ;;
 
     /**

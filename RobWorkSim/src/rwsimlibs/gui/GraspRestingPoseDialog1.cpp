@@ -43,7 +43,6 @@ using namespace rw::loaders;
 using namespace rw::trajectory;
 using namespace rwlibs::simulation;
 
-using namespace boost::numeric::ublas;
 
 #define RW_DEBUGS( str ) std::cout << str  << std::endl;
 

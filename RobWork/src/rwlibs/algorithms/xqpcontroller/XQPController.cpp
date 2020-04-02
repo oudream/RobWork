@@ -22,14 +22,13 @@
 #include <rw/models/Device.hpp>
 #include <rw/math/Math.hpp>
 #include <rw/common/macros.hpp>
+#include <Eigen/Eigen>
 
 using namespace rwlibs::algorithms;
 using namespace rw::math;
 using namespace rw::kinematics;
 using namespace rw::models;
 using namespace rwlibs::algorithms::qpcontroller;
-
-using namespace boost::numeric::ublas;
 
 
 XQPController::XQPController(Device::Ptr device,
@@ -42,7 +41,7 @@ XQPController::XQPController(Device::Ptr device,
 	_dt(dt),
 	_dof(device->getDOF()),
 	_space(BaseFrame),
-	_P(identity_matrix<double>(6))
+	_P(Eigen::MatrixXd::Identity(6,6))
 {
     _qlower = _device->getBounds().first;
     _qupper = _device->getBounds().second;
@@ -64,14 +63,14 @@ void XQPController::setVelScale(double scale) {
 }
 
 
-Q XQPController::inequalitySolve(const matrix<double>& G,
- 				      			 const vector<double>& b,
- 				      			 const vector<double>& lower,
- 				      			 const vector<double>& upper,
+Q XQPController::inequalitySolve(const Eigen::MatrixXd& G,
+ 				      			 const Eigen::VectorXd& b,
+ 				      			 const Eigen::VectorXd& lower,
+ 				      			 const Eigen::VectorXd& upper,
  				      			 const std::list<Constraint>& constraints) {
-    matrix<double> cmat = zero_matrix<double>(2*lower.size() + constraints.size(), lower.size());
-    vector<double> limits(2*lower.size() + constraints.size());
-    for (size_t i = 0; i<lower.size(); i++) {
+    Eigen::MatrixXd cmat = Eigen::MatrixXd::Zero(2*lower.size() + constraints.size(), lower.size());
+    Eigen::VectorXd limits(2*lower.size() + constraints.size());
+    for (int i = 0; i<lower.size(); i++) {
         cmat(2*i,i) = 1;
         cmat(2*i+1,i) = -1;
         limits(2*i) = lower(i);
@@ -89,10 +88,10 @@ Q XQPController::inequalitySolve(const matrix<double>& G,
     }
 
 
-    //vector<double> qstart = (lower+upper)/2.0;
-    vector<double> qstart(zero_vector<double>(lower.size()));
+    //Eigen::VectorXd qstart = (lower+upper)/2.0;
+    Eigen::VectorXd qstart(Eigen::VectorXd::Zero(lower.size()));
     //Try to start it with the minimal velocity
-    for (size_t i = 0; i<qstart.size(); i++) {
+    for (int i = 0; i<qstart.size(); i++) {
         if (qstart(i) < lower(i))
             qstart(i) = lower(i);
         if (qstart(i) > upper(i))
@@ -107,13 +106,13 @@ Q XQPController::inequalitySolve(const matrix<double>& G,
             qstart = upper;
             std::cout<<"Sets start to upper"<<std::endl;
         } else {*/
-            for (size_t i = 0; i<qstart.size(); i++) {
+            for (int i = 0; i<qstart.size(); i++) {
                 if (c._a(i) < 0)
                     qstart(i) = lower(i);
                 else
                     qstart(i) = upper(i);
             }
-            if (inner_prod(c._a.m(), qstart)< c._b) {
+            if (c._a.e().dot(qstart)< c._b) {
                 std::cout<<"Could not find a valid starting velocity"<<std::endl;
                 std::cout<<"a = "<<c._a<<std::endl;
                 std::cout<<"b = "<<c._b<<std::endl;
@@ -130,7 +129,7 @@ Q XQPController::inequalitySolve(const matrix<double>& G,
 
 
     QPSolver::Status status;
-    vector<double> res = QPSolver::inequalitySolve(G, -1*b, cmat, limits, qstart, status);
+    Eigen::VectorXd res = QPSolver::inequalitySolve(G, -1*b, cmat, limits, qstart, status);
     if (status == QPSolver::SUBOPTIMAL)
         std::cout<<"Solution appears to be suboptimal"<<std::endl;
     if (status == QPSolver::FAILURE)
@@ -142,8 +141,8 @@ Q XQPController::inequalitySolve(const matrix<double>& G,
 
 
 
-void XQPController::calculateVelocityLimits(vector<double>& lower,
-                                            vector<double>& upper,
+void XQPController::calculateVelocityLimits(Eigen::VectorXd& lower,
+                                            Eigen::VectorXd& upper,
                                             const Q& q,
                                             const Q& dq)
 {
@@ -225,30 +224,28 @@ Q XQPController::solve(const rw::math::Q& q,
     */
 
     _device->setQ(q, _state);
-    matrix<double> P;
+    Eigen::MatrixXd P;
     if (_space == ControlFrame) {
         Rotation3D<> rot = inverse(_device->baseTframe(_controlFrame, _state).R());
-        matrix<double> R = zero_matrix<double>(6,6);
-        matrix_range<matrix<double> > rot1(R, range(0,3), range(0,3));
-        rot1 = rot.m();
-        matrix_range<matrix<double> > rot2(R, range(3,6), range(3,6));
-        rot2 = rot.m();
-        P = prod(_P,R);
+        Eigen::MatrixXd R = Eigen::MatrixXd::Zero(6,6);
+        R.block<3,3>(0,0) = rot.e();
+        R.block<3,3>(3,3) = rot.e();
+        P = _P*R;
     } else {
         P = _P;
     }
 
-    vector<double> tcp_vel = prod(P, tcpscrew.m());
-	matrix<double> jac = prod(P, _device->baseJframe(_controlFrame,_state).m());
+    Eigen::VectorXd tcp_vel = P*tcpscrew.e();
+	Eigen::MatrixXd jac = P * _device->baseJframe(_controlFrame,_state).e();
 
     //trim jacobian to remove world z-rotation
-    //    matrix_range<matrix<double> > jac(jac6, range(0,6), range(0, jac6.size2()));
+    //    matrix_range<Eigen::MatrixXd > jac(jac6, range(0,6), range(0, jac6.size2()));
 
-    matrix<double> A = prod(trans(jac),jac);
-    vector<double> b = prod(trans(jac),tcp_vel);
+    Eigen::MatrixXd A = jac.transpose() * jac;
+    Eigen::VectorXd b = jac.transpose() * tcp_vel;
 
-    vector<double> lower(_dof);
-    vector<double> upper(_dof);
+    Eigen::VectorXd lower(_dof);
+    Eigen::VectorXd upper(_dof);
 
     calculateVelocityLimits(lower, upper, q, dq);
     Q sol1 = inequalitySolve(A, b, lower, upper, constraints);
@@ -257,7 +254,7 @@ Q XQPController::solve(const rw::math::Q& q,
 
 }
 
-void XQPController::setProjection(const matrix<double>& P, ProjectionFrame space) {
+void XQPController::setProjection(const Eigen::MatrixXd& P, ProjectionFrame space) {
     _P = P;
     _space = space;
 }

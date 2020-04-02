@@ -22,7 +22,7 @@ Copyright 2013 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
 
 using namespace rwlibs::softbody;
 
-RusselIntegrand::RusselIntegrand ( const BeamGeometry& geom, const boost::numeric::ublas::vector< double, boost::numeric::ublas::unbounded_array< double, std::allocator< double > > >& a, const boost::numeric::ublas::vector< double, boost::numeric::ublas::unbounded_array< double, std::allocator< double > > >& da ) :
+RusselIntegrand::RusselIntegrand ( const BeamGeometry& geom, const Eigen::VectorXd& a, const Eigen::VectorXd& da ):
     _geom ( geom ),
     _a ( a ),
     _da ( da ) {
@@ -68,7 +68,7 @@ double RusselIntegrand::operator() ( const int i ) const {
 
 
 
-RusselIntegrandEonly::RusselIntegrandEonly ( const BeamGeometry& geom, const boost::numeric::ublas::vector< double >& a, const boost::numeric::ublas::vector< double >& da ) :
+RusselIntegrandEonly::RusselIntegrandEonly ( const BeamGeometry& geom, const Eigen::VectorXd& a, const Eigen::VectorXd& da ) :
     RusselIntegrand ( geom, a, da ) {
 }
 

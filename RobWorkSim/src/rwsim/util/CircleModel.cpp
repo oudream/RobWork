@@ -93,8 +93,6 @@ namespace {
 }
 
 void CircleModel::refit(const std::vector<Vector3D<> >& data){
-
-    using namespace boost::numeric;
     using namespace rw::math;
 
     Eigen::MatrixXd covar( Eigen::MatrixXd::Zero(3, 3) );

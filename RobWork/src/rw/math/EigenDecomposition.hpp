@@ -44,9 +44,6 @@ namespace math {
          */
         Eigen::Matrix<T, Eigen::Dynamic, 1> getEigenVector(size_t i){
 			return _vectors.col(i);			
-            //boost::numeric::ublas::vector<T> v =
-            //		boost::numeric::ublas::matrix_column<boost::numeric::ublas::matrix<T> >(_vectors, i);
-            //return v;
         }
 
         /**
@@ -107,8 +104,6 @@ namespace math {
             for(size_t i=0;i<map.size();i++) {
 				_vectors.col(i) = vectors.col(map[i]);
 				_values(i) = values(map[i]);
-            	//ublas::matrix_column<ublas::matrix<T> >(_vectors,i) = ublas::matrix_column<ublas::matrix<T> >(vectors, map[i]);
-             //   _values(i) = values(map[i]);
             }
         }
 
