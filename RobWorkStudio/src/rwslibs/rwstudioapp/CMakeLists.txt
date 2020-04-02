@@ -1,6 +1,6 @@
 set(SUBSYS_NAME sdurws_robworkstudioapp)
 set(SUBSYS_DESC "A rwstudio application that may be started in a thread.")
-set(SUBSYS_DEPS sdurws)
+set(SUBSYS_DEPS sdurws RW::sdurw)
 
 if(RWS_USE_STATIC_LINK_PLUGINS)
     set(
@@ -33,12 +33,14 @@ if(build)
     target_link_libraries(
         ${SUBSYS_NAME}
         PUBLIC sdurws ${QT_LIBRARIES}
-        PRIVATE ${SUBSYS_DEPS} RW::sdurw ${GLUT_glut_LIBRARY}
+        PRIVATE ${SUBSYS_DEPS} ${GLUT_glut_LIBRARY}
     )
     target_include_directories(
         ${SUBSYS_NAME}
         INTERFACE $<BUILD_INTERFACE:${RWS_ROOT}/src> $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
     )
+
+    
     if(RWS_USE_STATIC_LINK_PLUGINS)
 
         if(TARGET sdurws_jog)

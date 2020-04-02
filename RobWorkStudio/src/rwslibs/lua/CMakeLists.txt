@@ -1,6 +1,6 @@
 set(SUBSYS_NAME sdurws_luapl)
 set(SUBSYS_DESC "A lua plugin")
-set(SUBSYS_DEPS sdurws sdurws_luaeditor RW::sdurw_lua)
+set(SUBSYS_DEPS sdurws sdurws_luaeditor RW::sdurw_lua RW::sdurw)
 
 set(DEFAULT ${RWS_HAVE_LUA})
 set(REASON)
@@ -23,7 +23,7 @@ if(build)
     set(SrcFiles Lua.cpp)
     set(SRC_FILES_HPP Lua.hpp)
 
-    qt5_wrap_cpp(MocSrcFiles ${SRC_FILES_HPP} TARGET ${SUBSYS_NAME})
+    #qt5_wrap_cpp(MocSrcFiles ${SRC_FILES_HPP} TARGET ${SUBSYS_NAME})
     # Rcc the files:
     qt5_add_resources(RccSrcFiles resources.qrc)
 

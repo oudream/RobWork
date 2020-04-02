@@ -30,7 +30,7 @@ message(STATUS "RobWorkStudio: ROOT dir: ${RWS_ROOT}")
 #
 # Setup the default include and library dirs for RobWorkStudio
 #
-# INCLUDE("${RWSTUDIO_ROOT}/cmake/RobWorkStudioBuildConfig${CMAKE_BUILD_TYPE}.cmake")
+set(CMAKE_MODULE_PATH ${RWS_ROOT}/cmake/Modules ${CMAKE_MODULE_PATH})
 
 # ##################################################################################################
 # DEPENDENCIES - REQUIRED Check for all dependencies, this adds LIBRARY_DIRS and include dirs that
@@ -85,19 +85,8 @@ find_package(OpenGL REQUIRED)
 
 set(Boost_NO_BOOST_CMAKE TRUE) # From Boost 1.70, CMake files are provided by Boost - we are not yet
                                # ready to handle it And some extra packages for boost
-unset(Boost_USE_STATIC_LIBS)
-unset(Boost_FIND_QUIETLY)
-if(DEFINED UNIX)
-    find_package(Boost REQUIRED program_options)
-elseif(DEFINED WIN32)
-    set(Boost_USE_STATIC_LIBS ON)
-    find_package(Boost COMPONENTS program_options)
-    # If static libraries for Windows were not found, try searching again for the shared ones
-    if(NOT Boost_PROGRAM_OPTIONS_FOUND)
-        set(Boost_USE_STATIC_LIBS OFF)
-        find_package(Boost REQUIRED program_options)
-    endif()
-endif()
+set(Boost_USE_STATIC_LIBS ${RW_BUILD_WITH_BOOST_USE_STATIC_LIB})
+find_package(Boost REQUIRED program_options)
 
 # Find and setup Qt.
 find_package(Qt5Core QUIET)
@@ -108,6 +97,7 @@ if(Qt5Core_FOUND AND Qt5Gui_FOUND AND Qt5Widgets_FOUND AND Qt5OpenGL_FOUND)
     set(QT_LIBRARIES ${Qt5Core_LIBRARIES} ${Qt5Gui_LIBRARIES} ${Qt5Widgets_LIBRARIES}
                      ${Qt5OpenGL_LIBRARIES})
     message(STATUS "RobWorkStudio: Using Qt5.")
+    set(CMAKE_AUTOMOC ON)
 else()
     message(STATUS "RobWorkStudio: One or more Qt5 modules not found:")
     if(Qt5Core_FOUND)
@@ -287,7 +277,7 @@ set(ROBWORKSTUDIO_LIBRARY_DIRS ${Boost_LIBRARY_DIRS} ${RWS_ROOT}/libs/${RWS_BUIL
 # for some compilers.
 #
 set(
-    ROBWORKSTUDIO_LIBRARIES
+    ROBWORKSTUDIO_LIBRARIES_INTERNAL
     sdurws_robworkstudioapp
     sdurws_jog
     sdurws_log
@@ -306,4 +296,19 @@ set(
     qtpropertybrowser
 )
 
-set(ROBWORKSTUDIO_DEPEND ${QT_LIBRARIES} ${Boost_LIBRARIES} ${OPENGL_LIBRARIES} ${GLUT_glut_LIBRARY})
+set(ROBWORKSTUDIO_LIBRARIES_EXTERNAL ${QT_LIBRARIES} ${Boost_LIBRARIES} ${OPENGL_LIBRARIES} ${GLUT_glut_LIBRARY})
+
+set(ROBWORKSTUDIO_LIBRARIES)
+foreach(l ${ROBWORKSTUDIO_LIBRARIES_EXTERNAL})
+    unset(tmp CACHE)
+    find_library(tmp ${l} PATHS ${ROBWORKSTUDIO_LIBRARY_DIRS} NO_DEFAULT_PATH)
+    if(tmp)
+        list(APPEND ROBWORKSTUDIO_LIBRARIES ${tmp})
+    else()
+        list(APPEND ROBWORKSTUDIO_LIBRARIES ${l})
+    endif()
+endforeach(l)
+set(ROBWORKSTUDIO_LIBRARIES ${ROBWORKSTUDIO_LIBRARIES_INTERNAL} ${ROBWORKSTUDIO_LIBRARIES})
+
+
+

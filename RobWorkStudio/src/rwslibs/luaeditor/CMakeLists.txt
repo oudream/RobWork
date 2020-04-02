@@ -31,7 +31,7 @@ if(build)
 
     set_source_files_properties(${SrcFiles} PROPERTIES OBJECT_DEPENDS "${UIS_OUT_H}")
 
-    qt5_wrap_cpp(MocSrcFiles ${SRC_FILES_HPP})
+    #qt5_wrap_cpp(MocSrcFiles ${SRC_FILES_HPP})
 
     rws_add_component(
         ${SUBSYS_NAME}

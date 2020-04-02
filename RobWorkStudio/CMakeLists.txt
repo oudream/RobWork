@@ -1,6 +1,10 @@
 # Test CMake version
 cmake_minimum_required(VERSION 3.5.1 FATAL_ERROR)
 
+if(POLICY CMP0071) # Introduce cmake 3.10
+    cmake_policy(SET CMP0071 NEW)
+endif()
+
 if(POLICY CMP0072) # Introduce cmake 3.11
     cmake_policy(SET CMP0072 NEW)
 endif()
@@ -173,31 +177,17 @@ install(EXPORT ${PROJECT_PREFIX}Targets
 
 # Install dependencies on Windows
 if(WIN32)
-    # Trim the Qt library lists and take only the libraries corresponding to the build type
-    set(QT_LIBRARIES_INSTALL "")
-    set(copy_lib TRUE)
-    rw_is_release(IS_RELEASE)
-    foreach(s ${QT_LIBRARIES})
-        if("${s}" STREQUAL "optimized")
-            if(${IS_RELEASE})
-                set(copy_lib TRUE)
-            else()
-                set(copy_lib FALSE)
-            endif()
-        elseif("${s}" STREQUAL "debug")
-            if(NOT ${IS_RELEASE})
-                set(copy_lib TRUE)
-            else()
-                set(copy_lib FALSE)
-            endif()
-        elseif(copy_lib)
-            list(APPEND QT_LIBRARIES_INSTALL "${s}")
-        else()
-            set(copy_lib TRUE)
-        endif()
-    endforeach(s)
+    set(_RWS_MODULES_ROOT "${RWS_ROOT}/cmake/Modules")
+    install(
+        FILES "${_RWS_MODULES_ROOT}/Find_QT5_DIR.cmake" "${_RWS_MODULES_ROOT}/FindQt5Core.cmake" 
+        "${_RWS_MODULES_ROOT}/FindQt5Gui.cmake" "${_RWS_MODULES_ROOT}/FindQt5OpenGL.cmake" 
+        "${_RWS_MODULES_ROOT}/FindQt5Widgets.cmake"
+        DESTINATION "${RWS_INSTALL_DIR}/cmake/Modules"
+        COMPONENT cmake
+    )
 endif()
-unset(QTDIR)
+
+
 
 # this will configure the dependency file that will be used if install is invoked
 # GET_TARGET_PROPERTY(rwstudio_executable_name RobWorkStudio LOCATION) # not allowed anymore - must use generator
