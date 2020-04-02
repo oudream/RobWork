@@ -891,39 +891,49 @@ macro(RW_CREATE_INSTALLER)
         set(BLOCKED_COMPONENTS pkgconfig rwtest)
 
         foreach(_comp ${CPACK_COMPONENTS_ALL})
+            string(REPLACE "-" "_" _dispName ${_comp})
             string(TOUPPER "${_comp}" _COMP)
 
             if(${RW_SUBSYS_BUILD_${_comp}})
+                #string(REPLACE "RW::" "" _depList "${RW_SUBSYS_DEPEND_${_comp}}")
+                #string(REPLACE "RWS::" "" _depList "${_depList}")  
+                #string(REPLACE "RWSIM::" "" _depList "${_depList}")  
+                #string(REPLACE "RWHW::" "" _depList "${_depList}")
+
+                set(_depList "${RW_SUBSYS_DEPEND_${_comp}}")
+                list(FILTER _depList EXCLUDE REGEX "RW.*::")
                 cpack_add_component(${_comp}
-                    DISPLAY_NAME "${_comp}"
+                    DISPLAY_NAME "${_dispName}"
                     DESCRIPTION "${RW_SUBSYS_DESC_${_comp}}"
                     GROUP "${RW_SUBSYS_PREFIX_${_comp}}"
-                    DEPENDS "${RW_SUBSYS_DEPEND_${_comp}}"
+                    DEPENDS "${_depList}"
                     INSTALL_TYPES ${RW_SUBSYS_PREFIX_${_comp}}_i Full Dev 
                     #DOWNLOADED
                     #ARCHIVE_FILE #Name_of_file_to_generate_for_download
                 )
-                #message(STATUS "component: ${CPACK_COMPONENT_${_COMP}_DISPLAY_NAME} - group: ${CPACK_COMPONENT_${_COMP}_GROUP}")
+                message(STATUS "component: ${CPACK_COMPONENT_${_COMP}_DISPLAY_NAME} - group: ${CPACK_COMPONENT_${_COMP}_GROUP}")
+                message(STATUS "     - depend: ${_depList}")
             elseif(NOT ${RW_SUBSYS_BUILD_${_comp}})
-                #message(STATUS "Component: ${_comp} not installed")
+                message(STATUS "Component: ${_comp} not installed")
             elseif(${_comp} IN_LIST EXTERNAL_COMPONENTS)
                 cpack_add_component(${_comp}
-                    DISPLAY_NAME "${_comp}"
+                    DISPLAY_NAME "${_dispName}"
                     DESCRIPTION "RobWorkDependencie"
                     GROUP DEP
                     INSTALL_TYPES Full Dev 
                     #DOWNLOADED
                     #ARCHIVE_FILE #Name_of_file_to_generate_for_download
                 )
+                message(STATUS "component: ${CPACK_COMPONENT_${_COMP}_DISPLAY_NAME} - group: ${CPACK_COMPONENT_${_COMP}_GROUP}")
             else()
                 cpack_add_component(${_comp}
-                    DISPLAY_NAME "${_comp}"
+                    DISPLAY_NAME "${_dispName}"
                     GROUP MISC
                     INSTALL_TYPES Full Dev
                     #DOWNLOADED
                     #ARCHIVE_FILE #Name_of_file_to_generate_for_download
                 )
-                #message(STATUS "from: ${_COMP} - component: ${CPACK_COMPONENT_${_COMP}_DISPLAY_NAME} - group: ${CPACK_COMPONENT_${_COMP}_GROUP}")
+                message(STATUS "component: ${CPACK_COMPONENT_${_COMP}_DISPLAY_NAME} - group: ${CPACK_COMPONENT_${_COMP}_GROUP}")
             endif()
         endforeach()
     endif()

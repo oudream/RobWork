@@ -298,7 +298,6 @@ stages:
     - make -j$(nproc)
     - "for file in ./ex-*; do if [ -f $file ] ; then  echo -e '\n EXECUTING: '$file && $file localhost && EXERWHW=$EXERWHW' '$file || exit 1 ; fi; done"
 
-
 .linux-build-debian:
   extends: .CI-common-linux
   stage: build

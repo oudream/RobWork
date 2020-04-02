@@ -3,7 +3,7 @@
 # files for the library.
 macro(RWS_ADD_PLUGIN _name _lib_type)
     add_library(${_name} ${_lib_type} ${ARGN})
-
+    add_dependencies(${_name} sdurws)
     # Only link if needed
     if(WIN32 AND MSVC)
         set_target_properties(${_name} PROPERTIES LINK_FLAGS_RELEASE /OPT:REF)
@@ -27,7 +27,7 @@ macro(RWS_ADD_PLUGIN _name _lib_type)
                 VERSION ${ROBWORKSTUDIO_VERSION} SOVERSION ${ROBWORKSTUDIO_VERSION_MAJOR}.${ROBWORKSTUDIO_VERSION_MINOR}
                 # DEFINE_SYMBOL "RWAPI_EXPORTS"
         )
-    endif(NOT ("${_lib_type}" STREQUAL "MODULE" AND ${CMAKE_SYSTEM_NAME} MATCHES "Darwin"))
+    endif()
 
     install(
         TARGETS ${_name}
