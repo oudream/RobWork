@@ -27,8 +27,7 @@ namespace proximity {
 		typedef rw::common::Ptr<ProximityFilter> Ptr;
 
 		/**
-		 * @brief returns the next possibly colliding framepair.
-		 * @return a frame pair
+		 * @brief pop the current front.
 		 */
 		virtual void pop() = 0;
 
@@ -50,6 +49,8 @@ namespace proximity {
 		 * call to update then this will return true, else false will be returned.
 		 */
 		virtual bool isEmpty() = 0;
+
+		virtual ~ProximityFilter() {};
 
 	};
 

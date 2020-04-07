@@ -113,7 +113,7 @@ int main(int argumentCount, char** argumentArray) {
 	std::string measurementFilePath = optionParser.getMeasurementFilePath();
 	std::cout << "Loading measurements [ " << measurementFilePath << " ].. "<<std::endl;	
 	std::vector<CalibrationMeasurement::Ptr> measurements = XMLCalibrationMeasurementFile<XMLDetectionInfoBaseSerializer>::load(measurementFilePath);
-	BOOST_FOREACH(CalibrationMeasurement::Ptr measurement, measurements) {
+	for(CalibrationMeasurement::Ptr measurement: measurements) {
 		if (workCell->findDevice(measurement->getDeviceName()) == NULL) {
 			std::cout<<"Unable to find device named: "<<measurement->getDeviceName()<<std::endl;
 			return -1;

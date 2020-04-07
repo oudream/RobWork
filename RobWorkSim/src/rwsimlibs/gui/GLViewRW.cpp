@@ -38,7 +38,7 @@
 #include <QToolBar>
 #include <QMenu>
 
-#include <boost/foreach.hpp>
+
 
 USE_ROBWORK_NAMESPACE
 
@@ -60,7 +60,7 @@ namespace
         const std::vector<Drawable::Ptr>& drawables,
         bool value)
     {
-        BOOST_FOREACH(Drawable::Ptr da, drawables) { da->setHighlighted(value); }
+        for(Drawable::Ptr da: drawables) { da->setHighlighted(value); }
     }
 /*
     void setPairHighlighted(
@@ -77,7 +77,7 @@ namespace
         const FramePairSet& pairs,
         bool value)
     {
-        BOOST_FOREACH(const FramePair& pair, pairs) {
+        for(const FramePair& pair: pairs) {
         	drawer.setHighlighted(value, pair.first);
         	drawer.setHighlighted(value, pair.second);
         }
@@ -304,7 +304,7 @@ void GLViewRW::clear()
 void GLViewRW::setDrawType(Render::DrawType drawType)
 {
     // set DrawType for all Drawable in the view
-    BOOST_FOREACH(Drawable* da, _drawables) { da->setDrawType(drawType); }
+    for(Drawable* da: _drawables) { da->setDrawType(drawType); }
 }
 
 void GLViewRW::setDrawTypeSlot()
@@ -328,7 +328,7 @@ void GLViewRW::setTransparentSlot()
         alpha = 1.0;
 
     // set alpha for all Drawable in the view
-    BOOST_FOREACH(Drawable* da, _drawables) { da->setTransparency(alpha); }
+    for(Drawable* da: _drawables) { da->setTransparency(alpha); }
 
     updateGL();
 }
@@ -421,7 +421,7 @@ void GLViewRW::paintGL()
     // draw all drawables
     DrawableNode::RenderInfo info;
     info._mask = DrawableNode::ALL;
-    BOOST_FOREACH(Drawable* da, _drawables) { da->draw(info); }
+    for(Drawable* da: _drawables) { da->draw(info); }
 
 }
 

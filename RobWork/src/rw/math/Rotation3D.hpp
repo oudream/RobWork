@@ -28,10 +28,6 @@
 #include <rw/common/macros.hpp>
 #include <rw/common/Serializable.hpp>
 
-#include <boost/numeric/ublas/matrix.hpp>
-#include <boost/numeric/ublas/matrix_expression.hpp>
-#include <boost/numeric/ublas/matrix_proxy.hpp>
-
 #include <Eigen/Eigen>
 
 #include <limits>
@@ -67,9 +63,6 @@ namespace rw { namespace math {
     public:
         //! Value type.
         typedef T value_type;
-
-        //! @brief Type for the legacy Boost matrix implementation.
-        typedef boost::numeric::ublas::bounded_matrix<T, 3, 3> BoostMatrix3x3;
 
         //! @brief The type of the internal Eigen matrix implementation.
 		typedef Eigen::Matrix<T, 3, 3> EigenMatrix3x3;
@@ -290,13 +283,7 @@ namespace rw { namespace math {
          */
         bool isProperRotation(T precision) const;
 
-        /**
-         * @brief Returns a Boost 3x3 matrix @f$ \mathbf{M}\in SO(3)
-         * @f$ that represents this rotation
-         *
-         * @return @f$ \mathbf{M}\in SO(3) @f$
-         */
-        BoostMatrix3x3 m() const;
+
 
 		/**
          * @brief Returns a Eigen 3x3 matrix @f$ \mathbf{M}\in SO(3)
@@ -333,31 +320,6 @@ namespace rw { namespace math {
             // return Vector3D<T>(prod(aRb.m(), bVc.m()));
         }
 
-
-        /**
-           @brief Construct a rotation matrix from a Boost matrix expression.
-
-           The matrix expression must be convertible to a 3x3 bounded matrix.
-
-           It is the responsibility of the user that 3x3 matrix is indeed a
-           rotation matrix.
-         */
-        template <class R>
-        explicit Rotation3D(const boost::numeric::ublas::matrix_expression<R>& r)
-        {
-            BoostMatrix3x3 m(r);
-            _m[0][0] = m(0,0);
-            _m[0][1] = m(0,1);
-            _m[0][2] = m(0,2);
-            _m[1][0] = m(1,0);
-            _m[1][1] = m(1,1);
-            _m[1][2] = m(1,2);
-            _m[2][0] = m(2,0);
-            _m[2][1] = m(2,1);
-            _m[2][2] = m(2,2);
-
-        }
-
 		  /**
            @brief Construct a rotation matrix from a 3x3 Eigen matrix
 
@@ -366,15 +328,15 @@ namespace rw { namespace math {
          */
 		template <class R>
 		explicit Rotation3D(const EigenMatrix3x3& r) {
-            _m[0][0] = m(0,0);
-            _m[0][1] = m(0,1);
-            _m[0][2] = m(0,2);
-            _m[1][0] = m(1,0);
-            _m[1][1] = m(1,1);
-            _m[1][2] = m(1,2);
-            _m[2][0] = m(2,0);
-            _m[2][1] = m(2,1);
-            _m[2][2] = m(2,2);
+            _m[0][0] = r(0,0);
+            _m[0][1] = r(0,1);
+            _m[0][2] = r(0,2);
+            _m[1][0] = r(1,0);
+            _m[1][1] = r(1,1);
+            _m[1][2] = r(1,2);
+            _m[2][0] = r(2,0);
+            _m[2][1] = r(2,1);
+            _m[2][2] = r(2,2);
 		}
 
 		  /**

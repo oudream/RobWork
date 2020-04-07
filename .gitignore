@@ -28,6 +28,7 @@
 /out/*
 /debian
 /obj-x86_64-linux-gnu
+/DEBPKG
 
 
 # /RobWork/
@@ -3406,6 +3407,7 @@ RobWorkSim/src/rwsimlibs/swig/python/RobWorkSim-*.egg-info
 
 # /RobWorkStudio/bin/MinSizeRel
 /RobWorkStudio/bin/MinSizeRel/TestSuiteConfig.xml
+/RobWorkStudio/bin/MinSizeRel/RobWorkStudio.ini
 
 # /RobWorkStudio/cmake/
 /RobWorkStudio/cmake/RobWorkStudioConfigDebug.cmake
@@ -4047,6 +4049,3 @@ RobWorkSim/src/rwsimlibs/swig/python/RobWorkSim-*.egg-info
 
 #/doc/sphinx/apidoc/java
 /doc/sphinx/apidoc/java/org
-
-
-

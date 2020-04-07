@@ -1,6 +1,6 @@
 set(SUBSYS_NAME sdurws)
 set(SUBSYS_DESC "Visulization tool")
-set(SUBSYS_DEPS sdurw)
+set(SUBSYS_DEPS RW::sdurw)
 
 set(build TRUE)
 set(DEFAULT TRUE)
@@ -67,8 +67,9 @@ if(build)
 
     set_source_files_properties(${SRC_FILES_CPP} PROPERTIES OBJECT_DEPENDS "${UIS_OUT_H}")
 
-    set(MocSrcFiles)
-    qt5_wrap_cpp(MocSrcFiles ${MocHeaderFiles} TARGET ${SUBSYS_NAME})
+    #set(MocSrcFiles)
+    #qt5_wrap_cpp(MocSrcFiles ${MocHeaderFiles} TARGET ${SUBSYS_NAME})
+    #set(CMAKE_AUTOMOC ON)
     set_source_files_properties(${MocSrcFiles} PROPERTIES OBJECT_DEPENDS "${UIS_OUT_H}")
 
     # Resource files to rcc and compile:

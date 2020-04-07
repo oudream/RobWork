@@ -68,7 +68,7 @@ namespace dynamics {
 	private:
 		int links;
 		rw::core::math::Vector3D<double > temp, pci;
-		boost::numeric::ublas::bounded_matrix<double,3,3> cI;
+		Eigen::Matrix<double,3,3> cI;
 		RigidBody* cur_body;
 		double m;
 		rw::core::math::Transform3D<double> Ti;

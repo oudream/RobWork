@@ -41,6 +41,7 @@ namespace proximity {
 			_owner(owner)
 		{
 		}
+
 		/**
 		 * @brief Destructor
 		 */

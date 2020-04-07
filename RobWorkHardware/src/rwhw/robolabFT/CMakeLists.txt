@@ -1,6 +1,6 @@
 set(SUBSYS_NAME sdurwhw_robolabFT)
 set(SUBSYS_DESC "Driver for robolab force torque device")
-set(SUBSYS_DEPS sdurwhw_serialport sdurw)
+set(SUBSYS_DEPS sdurwhw_serialport RW::sdurw)
 
 set(build TRUE)
 set(DEFAULT TRUE)

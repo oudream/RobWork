@@ -21,7 +21,7 @@
 
 #include <rw/models/Device.hpp>
 
-#include <boost/foreach.hpp>
+
 
 using namespace rw::trajectory;
 using namespace rw::math;
@@ -97,7 +97,7 @@ TimedStatePath TimedUtil::makeTimedStatePath(
 
     TimedStatePath result;
     typedef Timed<Q> TimedQ;
-    BOOST_FOREACH(const TimedQ& qt, qts) {
+    for(const TimedQ& qt: qts) {
         device.setQ(qt.getValue(), state);
         result.push_back(
             makeTimed(

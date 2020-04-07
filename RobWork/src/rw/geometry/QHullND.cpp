@@ -72,12 +72,8 @@ void qhull::build(size_t dim,
 
 
     if (!exitcode) {
-        //        facetT *facet;
-        //ublas::vector<double> center = ublas::zero_vector<double>(dim);
-        //ublas::vector<double> vert = ublas::zero_vector<double>(dim);
 
         // Loop through all vertices,
-        //size_t nrVerts = 0;
         vertexT *vertex;//, **vertexp;
         for (vertex=qhT_pointer->vertex_list;vertex && vertex->next;vertex= vertex->next)
         {
@@ -95,7 +91,6 @@ void qhull::build(size_t dim,
         //center /= (double)nrVerts;
 
         // also find all facets, such that we can recreate the hull
-        //ublas::vector<double> zerov = ublas::zero_vector<double>(dim);
 
         // For all facets:
         facetT *facet;
@@ -112,8 +107,6 @@ void qhull::build(size_t dim,
             int vertex_n, vertex_i;
             //std::cout << "{ ";
             // if offset is positive then the center is outside
-            //ublas::vector<double> n = ublas::zero_vector<double>(dim);
-            //ublas::vector<double> v = ublas::zero_vector<double>(dim);
             for(size_t j=0;j<dim;j++){
                 faceNormals.push_back( facet->normal[j] );
             }

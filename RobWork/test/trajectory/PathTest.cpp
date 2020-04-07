@@ -29,7 +29,7 @@
 #include <sandbox/AsciiPathSaver.hpp>
 
 #include <iostream>
-#include <boost/foreach.hpp>
+
 
 using namespace rw::math;
 using namespace rw::models;
@@ -52,7 +52,7 @@ BOOST_AUTO_TEST_CASE( PathTest ){
         q(0) = 3;
         path.push_back(q);
         int index = 1;
-        BOOST_FOREACH(Q q, path) {
+        for(Q q: path) {
             BOOST_CHECK(q(0) == index);
             index++;
         }

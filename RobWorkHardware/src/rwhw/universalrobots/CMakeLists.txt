@@ -1,6 +1,6 @@
 set(SUBSYS_NAME sdurwhw_universalrobots)
 set(SUBSYS_DESC "Driver for universal robot ")
-set(SUBSYS_DEPS)
+set(SUBSYS_DEPS RW::sdurw)
 
 # make sure that SDH can be found
 set(build TRUE)

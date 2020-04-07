@@ -323,32 +323,7 @@ void WorkCellScene::updateSceneGraph(State& state)
             RW_WARN("ParentNode is null!");
             continue;
         }
-        /*
-        if( !node->hasParent( parentNode ) ){
-            // find any parent node that is a frame and remove it
-
-            std::vector<SceneNode::Ptr> nodesToDelete;
-            BOOST_FOREACH(SceneNode::Ptr np, node->_parentNodes){
-                GroupNode *gnode = np->asGroupNode();
-                if(gnode ){
-                    if(_nodeFrameMap.find(np.cast<GroupNode>())!=_nodeFrameMap.end())
-                        nodesToDelete.push_back(np);
-                }
-            }
-            BOOST_FOREACH(SceneNode::Ptr np, nodesToDelete){
-                if( GroupNode* gnode = np->asGroupNode()){
-                    gnode->removeChild(node);
-                    node->removeParent(np);
-                }
-            }
-            GroupNode::addChild(node, parentNode);
-        }
-
-        if( !parentNode->hasChild(node) ){
-            parentNode->addChild(node);
-        }
-        */
-
+    
         // now for each DrawableInfo on frame check that they are on the frame
 
         // The information of drawables is located in SceneDescriptor and "model::Object"s
@@ -405,8 +380,6 @@ void WorkCellScene::updateSceneGraph(State& state)
         }
     }
 
-    //std::cout << "_opaqueDrawables: " << _opaqueDrawables.size()  << std::endl;
-    //std::cout << "_translucentDrawables: " << _translucentDrawables.size()  << std::endl;
     _worldNode = _frameNodeMap[_wc->getWorldFrame()];
 
     // Removing non-exsisting frames from NodeFrameMap
@@ -928,12 +901,12 @@ bool WorkCellScene::removeDrawable(const std::string& name, const Frame* f) {
 
 Frame* WorkCellScene::getFrame(DrawableNode::Ptr d) const 
 {
-    //std::cout << d->_parentNodes.size() << std::endl;
     GroupNode::Ptr gn = d->_parentNodes.front().cast<GroupNode>();
     if(gn==NULL) {
 		RW_WARN("Group Node is NULL");
         return NULL;
 	}
+    //std::cout << "GroupeNode: " << gn->getName() << std::endl;
 	const NodeFrameMap::const_iterator it = _nodeFrameMap.find(gn);
     if(it != _nodeFrameMap.end())
     	return it->second;

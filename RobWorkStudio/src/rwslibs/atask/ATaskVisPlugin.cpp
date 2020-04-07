@@ -21,7 +21,7 @@
 #include <QFileDialog>
 
 #include <boost/bind.hpp>
-#include <boost/foreach.hpp>
+
 
 using namespace rw::common;
 using namespace rw::math;
@@ -363,7 +363,7 @@ void ATaskVisPlugin::constructPlayback() {
 					RW_ASSERT(maleFlexFrames.size() == astate.maleflexT.size());
 					// Find the world transform of the first flexible frame
 					Transform3D<> wTflex = wTmaleTCPNew;
-					BOOST_REVERSE_FOREACH(const Transform3D<> &flexT, astate.maleflexT) {
+					for(const Transform3D<> &flexT: rw::common::make_iterPair(astate.maleflexT.rbegin(),astate.maleflexT.rend())) {
 						wTflex = wTflex*inverse(flexT);
 					}
 					// Find the transform to the first flexible frame from the parent frame

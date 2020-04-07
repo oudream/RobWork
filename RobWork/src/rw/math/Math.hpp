@@ -23,6 +23,7 @@
  * @file rw/math/Math.hpp
  */
 #include <cmath>
+#include <algorithm>
 
 #include "EAA.hpp"
 #include "RPY.hpp"
@@ -119,32 +120,6 @@ namespace rw { namespace math {
         static Rotation3D<A> zyxToRotation3D(A roll, A pitch, A yaw)
         {
             return RPY<A>(roll, pitch, yaw).toRotation3D();
-        }
-
-        /**
-         * \brief Constructs a 3x3 skew-symmetric matrix \f$ S\in so(3)\f$
-         * \param s [in] the \f$ s_x \f$, \f$ s_y \f$ and \f$ s_z \f$ of the matrix
-         * \return The 3x3 skew-symmetric matrix \f$S\f$
-         *
-         * \f$
-         * S =
-         * \left[
-         * \begin{array}{ccc}
-         *    0 & -s_z &  s_y\\
-         *  s_z &    0 & -s_x\\
-         * -s_y &  s_x &    0
-         * \end{array}
-         * \right]
-         * \f$
-         */
-        template<class R>
-        static inline boost::numeric::ublas::bounded_matrix<R, 3, 3> skew(const boost::numeric::ublas::bounded_vector<R, 3>& s)
-        {
-            boost::numeric::ublas::bounded_matrix<R, 3, 3> S;
-            S(0,0) =   0.0; S(0,1) = -s[2]; S(0,2) =  s[1];
-            S(1,0) =  s[2]; S(1,1) =   0.0; S(1,2) = -s[0];
-            S(2,0) = -s[1]; S(2,1) =  s[0]; S(2,2) =   0.0;
-            return S;
         }
 
         /**
@@ -419,25 +394,6 @@ namespace rw { namespace math {
         static Q sqrt(const Q& q);
 
         /**
-         * @brief Returns vector with the absolute values
-         *
-         * Given a vector \f$v=[v_1,v_2,\ldots,v_n]\f$ then Abs(v) is defined as
-         * \f$Abs(v)=[abs(v_1),abs(v_i),\ldots,abs(v_n)] \f$
-         *
-         * @param v [in] the vector \f$v\f$
-         * @return the vector \f$Abs(v)\f$
-         */
-        template<class T>
-        static boost::numeric::ublas::vector<T> abs(const boost::numeric::ublas::vector<T>& v)
-        {
-            boost::numeric::ublas::vector<T> result(v.size());
-            for (size_t i = 0; i < v.size(); i++)
-                result[i] = std::fabs(v[i]);
-
-            return result;
-        }
-
-        /**
           * @brief Returns vector with the absolute values
           *
           * Given a vector \f$v=[v_1,v_2,\ldots,v_n]\f$ then Abs(v) is defined as
@@ -462,18 +418,9 @@ namespace rw { namespace math {
          * @param v [in] the vector v
          * @return the smallest element
          */
-        template<class T>
-        static T min(const boost::numeric::ublas::vector<T>& v)
-        {
-            if (v.size() == 0)
-                return 0;
-
-            T minval = v(0);
-            for (size_t i = 1; i<v.size(); i++)
-                if (v(i)<minval)
-                    minval = v(i);
-            return minval;
-        }
+        static double min(const Q& v) { 
+            std::vector<double> vec = v.toStdVector();
+            return *std::min_element(vec.begin(), vec.end()); }
 
         /**
          * @brief Returns the largest element of v
@@ -483,38 +430,10 @@ namespace rw { namespace math {
          * @param v [in] the vector v
          * @return the largest element
          */
-        template<class T>
-        static T max(const boost::numeric::ublas::vector<T>& v)
-        {
-            if (v.size() == 0)
-                return 0;
+        static double max(const Q& v) { 
+            std::vector<double> vec = v.toStdVector();
+            return *std::max_element(vec.begin(), vec.end()); }
 
-            T maxval = v(0);
-            for (size_t i = 1; i<v.size(); i++)
-                if (v(i)>maxval)
-                    maxval = v(i);
-            return maxval;
-        }
-
-        /**
-         * @brief Returns the smallest element of v
-         *
-         * If the vector has zero length, the method returns 0
-         *
-         * @param v [in] the vector v
-         * @return the smallest element
-         */
-        static double min(const Q& v) { return min(v.m()); }
-
-        /**
-         * @brief Returns the largest element of v
-         *
-         * If the vector has zero length, the method returns 0
-         *
-         * @param v [in] the vector v
-         * @return the largest element
-         */
-        static double max(const Q& v) { return max(v.m()); }
 
         /**
          * @brief Returns vector with the elementwise smallest elements of \b a and \b b

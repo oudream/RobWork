@@ -9,7 +9,7 @@
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
 #include <boost/optional.hpp>
-#include <boost/foreach.hpp>
+
 #include <boost/lexical_cast.hpp>
 #include <boost/filesystem/path.hpp>
 #include <rw/loaders/model3d/STLFile.hpp>
@@ -25,7 +25,6 @@ USE_ROBWORK_NAMESPACE;
 using namespace robwork;
 using namespace rwsim;
 using namespace rw::loaders;
-using namespace boost::numeric;
 using namespace boost::property_tree;
 using namespace rwlibs::xml;
 

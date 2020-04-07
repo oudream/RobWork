@@ -13,26 +13,34 @@ if(build)
     set(SrcFiles GTaskVisPlugin.cpp)
     set(SRC_FILES_HPP GTaskVisPlugin.hpp)
 
-    set_source_files_properties(${SrcFiles} PROPERTIES OBJECT_DEPENDS "${UIS_OUT_H}")
+    # set_source_files_properties(${SrcFiles} PROPERTIES OBJECT_DEPENDS "${UIS_OUT_H}")
 
-    qt5_wrap_cpp(MocSrcFiles ${SRC_FILES_HPP} TARGET ${SUBSYS_NAME})
+    #qt5_wrap_cpp(MocSrcFiles ${SRC_FILES_HPP} TARGET ${SUBSYS_NAME})
     # Rcc the files:
     qt5_add_resources(RccSrcFiles gtask_resources.qrc)
 
     rws_add_plugin(
         ${SUBSYS_NAME}
         MODULE
+        ${UIS_OUT_H}
         ${SrcFiles}
         ${MocSrcFiles}
         ${RccSrcFiles}
-        ${UIS_OUT_H}
     )
-    rw_add_includes(${SUBSYS_NAME} "rwslibs/gtask" ${SRC_FILES_HPP})
-    # Need to add the current binary dir to the include directory because the generated source files are placed here
-    target_include_directories(${SUBSYS_NAME} PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
-    target_link_libraries(${SUBSYS_NAME} PUBLIC ${SUBSYS_DEPS} ${QT_LIBRARIES} PRIVATE ${OPENGL_LIBRARIES} RW::sdurw_task RW::sdurw)
-    target_include_directories(${SUBSYS_NAME}
-        INTERFACE
-        $<BUILD_INTERFACE:${RWS_ROOT}/src> $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
+    rw_add_includes(${SUBSYS_NAME} "rwslibs/gtask" ${SRC_FILES_HPP} ${UIS_FILES})
+    # Need to add the current binary dir to the include directory because the generated source files
+    # are placed here
+    target_include_directories(
+        ${SUBSYS_NAME}
+        PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}> 
+    )
+    target_link_libraries(
+        ${SUBSYS_NAME}
+        PUBLIC ${SUBSYS_DEPS} ${QT_LIBRARIES}
+        PRIVATE ${OPENGL_LIBRARIES} RW::sdurw_task RW::sdurw
+    )
+    target_include_directories(
+        ${SUBSYS_NAME}
+        INTERFACE $<BUILD_INTERFACE:${RWS_ROOT}/src> $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
     )
 endif()

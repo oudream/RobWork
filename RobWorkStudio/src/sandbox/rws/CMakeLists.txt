@@ -1,6 +1,6 @@
 set(SUBSYS_NAME sdurws_sandbox)
 set(SUBSYS_DESC "Missing description!")
-set(SUBSYS_DEPS sdurw)
+set(SUBSYS_DEPS RW::sdurw)
 
 set(build TRUE)
 set(DEFAULT TRUE)

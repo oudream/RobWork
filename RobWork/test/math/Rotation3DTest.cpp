@@ -177,7 +177,7 @@ BOOST_AUTO_TEST_CASE(Rotation3DTest)
     const Rotation3D<> r3 = eaa.toRotation3D();
 
     BOOST_CHECK(LinearAlgebra::isSO(r3.e()));
-    BOOST_CHECK(r3.m().size1() == r3.m().size2() && r3.m().size1() == 3);
+    BOOST_CHECK(r3.e().rows() == r3.e().cols() && r3.e().rows() == 3);
 
     BOOST_CHECK(r1 == r1);
     BOOST_CHECK(!(r1 == r3));

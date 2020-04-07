@@ -50,7 +50,7 @@
 #include <rw/loaders/xml/XMLBasisTypes.hpp>
 #include <rw/loaders/xml/XMLPathFormat.hpp>
 
-#include <boost/foreach.hpp>
+
 #include "ColladaFormat.hpp"
 #include <rw/loaders/xml/XercesUtils.hpp>
 
@@ -439,27 +439,7 @@ namespace {
         //std::cout << std::endl;
         return array;
     }
-/*
-    Dae::TechniqueCommonSource readTechniqueCommonSource(DOMElement* element, ColladaLoader::ParserState& state){
-        Dae::Source source;
-        source.id = getAttrib(element, "id");
-        source.name = getAttrib(element, "name");
-        DOMChildVector domvect(element->getChildNodes());
-        BOOST_FOREACH(DOMNode* node, domvect){
-            DOMElement* child = dynamic_cast<DOMElement*>(node);
-            if (child == NULL)
-                continue;
-            std::cout << XMLStr(child->getNodeName()).str() << std::endl;
-            if(isName(child,"bool_array")){
-            } else if(isName(child,"float_array")){
-            } else if(isName(child,"int_array")){
-            } else if(isName(child,"technique")){
-                RW_WARN("NOT IMPLEMENTED YET!");
-            }
-        }
-        return technique;
-    }
-*/
+
     struct ScopedPush{
         ScopedPush(Dae::Data* d, ColladaLoader::ParserState& state):_data(d),_state(state){
             if(d->id=="" && d->sid=="")
@@ -478,7 +458,7 @@ namespace {
 
     size_t getStride(std::vector<Dae::InputShared*>& inputs){
         size_t stride = 0;
-        BOOST_FOREACH(Dae::InputShared* input,  inputs){
+        for(Dae::InputShared* input:  inputs){
             if(input->semantic=="TEXCOORD"){
                 stride+=1;
             } else if(input->semantic=="VERTEX"){
@@ -514,7 +494,7 @@ namespace {
         ScopedPush p(accessor, state);
 
         DOMElemChildVector domChildren(element);
-        BOOST_FOREACH(DOMElement* child, domChildren){
+        for(DOMElement* child: domChildren){
             DEBUGL( XMLStr(child->getNodeName()).str() );
 
             if(isName(child,"param")){
@@ -533,7 +513,7 @@ namespace {
         ScopedPush p(source, state);
 
         DOMElemChildVector domChildren(element);
-        BOOST_FOREACH(DOMElement* child, domChildren){
+        for(DOMElement* child: domChildren){
             DEBUGL( XMLStr(child->getNodeName()).str() );
 
             if(isName(child,"bool_array")){
@@ -593,7 +573,7 @@ namespace {
         ScopedPush p(vertices,state);
 
         DOMElemChildVector domChildren(element);
-        BOOST_FOREACH(DOMElement* child, domChildren){
+        for(DOMElement* child: domChildren){
             DEBUGL( XMLStr(child->getNodeName()).str() );
 
             if( isName(child, "input") ) {
@@ -616,7 +596,7 @@ namespace {
         ScopedPush p(tris, state);
 
         DOMElemChildVector domChildren(element);
-        BOOST_FOREACH(DOMElement* child, domChildren){
+        for(DOMElement* child: domChildren){
             DEBUGL( XMLStr(child->getNodeName()).str() );
 
             if ( isName(child, "input" ) ) {
@@ -641,7 +621,7 @@ namespace {
         ScopedPush p(mesh, state);
 
         DOMElemChildVector domChildren(element);
-        BOOST_FOREACH(DOMElement* child, domChildren){
+        for(DOMElement* child: domChildren){
             DEBUGL( XMLStr(child->getNodeName()).str() );
 
             if ( isName(child, "source" ) ) {
@@ -676,7 +656,7 @@ namespace {
     std::string getChildString(DOMElement* element, const std::string& name){
         DEBUGL("getChildString(" << name << ")");
         DOMElemChildVector domChildren(element);
-        BOOST_FOREACH(DOMElement* child, domChildren){
+        for(DOMElement* child: domChildren){
             DEBUGL( XMLStr(child->getNodeName()).str() );
             if ( isName(child, name ) ) {
                 XMLStr xmlstr(child->getTextContent());
@@ -691,7 +671,7 @@ namespace {
         ScopedPush p(asset, state);
 
         DOMElemChildVector domChildren(element);
-        BOOST_FOREACH(DOMElement* child, domChildren){
+        for(DOMElement* child: domChildren){
             DEBUGL( XMLStr(child->getNodeName()).str() );
 
             if ( isName(child, "contributor") ) {
@@ -723,7 +703,7 @@ namespace {
         ScopedPush p(mat, state);
 
         DOMElemChildVector domChildren(element);
-        BOOST_FOREACH(DOMElement* child, domChildren){
+        for(DOMElement* child: domChildren){
             DEBUGL( XMLStr(child->getNodeName()).str() );
             if(isName(child, "technique_hint")){
                 RW_WARN("NOT IMPL YET");
@@ -746,7 +726,7 @@ namespace {
         ScopedPush p(mat, state);
 
         DOMElemChildVector domChildren(element);
-        BOOST_FOREACH(DOMElement* child, domChildren){
+        for(DOMElement* child: domChildren){
             DEBUGL( XMLStr(child->getNodeName()).str() );
 
             if(isName(child, "asset")){
@@ -767,7 +747,7 @@ namespace {
         ScopedPush p(iMat, state);
 
         DOMElemChildVector domChildren(element);
-        BOOST_FOREACH(DOMElement* child, domChildren){
+        for(DOMElement* child: domChildren){
             DEBUGL( XMLStr(child->getNodeName()).str() );
             if(isName(child, "technique_override")){
                 iMat->ref = getAttrib(child, "ref");
@@ -793,7 +773,7 @@ namespace {
         ScopedPush p(render, state);
 
         DOMElemChildVector domChildren(element);
-        BOOST_FOREACH(DOMElement* child, domChildren){
+        for(DOMElement* child: domChildren){
             DEBUGL( XMLStr(child->getNodeName()).str() );
             if(isName(child, "layer")){
                 render->layers.push_back( XMLStr(child->getTextContent()).str() );
@@ -817,7 +797,7 @@ namespace {
         ScopedPush p(evalScene, state);
 
         DOMElemChildVector domChildren(element);
-        BOOST_FOREACH(DOMElement* child, domChildren){
+        for(DOMElement* child: domChildren){
             DEBUGL( XMLStr(child->getNodeName()).str() );
             if(isName(child, "asset")){
                 evalScene->asset = readAsset(child, state);
@@ -840,7 +820,7 @@ namespace {
         ScopedPush p(effect, state);
 
         DOMElemChildVector domChildren(element);
-        BOOST_FOREACH(DOMElement* child, domChildren){
+        for(DOMElement* child: domChildren){
             DEBUGL( XMLStr(child->getNodeName()).str() );
             if(isName(child, "asset")){
                 effect->asset = readAsset(child, state);
@@ -869,10 +849,6 @@ namespace {
         Accessor():_acc(NULL){}
         Accessor(Dae::Accessor* accessor):_acc(accessor)
         {
-            //std::cout << "Nr params: " << _acc->params.size() << std::endl;
-            //std::cout << _acc->stride << std::endl;
-            //std::cout << _acc->offset << std::endl;
-            //std::cout << _acc->name << std::endl;
         }
 
         int getVal(int i){
@@ -882,7 +858,7 @@ namespace {
         int getValIndex(const std::string& v){
 
             int i=0;
-            BOOST_FOREACH(Dae::Param *param, _acc->params){
+            for(Dae::Param *param: _acc->params){
                 if(param->name==v)
                     return i;
                 i++;
@@ -1010,7 +986,7 @@ namespace {
             offsets = std::vector<int>(10, 0);
             stride_per_vertex = 0;
             vertOffset = 0;
-            BOOST_FOREACH(Dae::InputShared* input, inputs){
+            for(Dae::InputShared* input: inputs){
                 if(input->semantic == "VERTEX"){
                     vertOffset = input->offset;
                     if(offsets[input->offset]<1){
@@ -1039,7 +1015,7 @@ namespace {
         }
 
         int getOffset(std::string semantic){
-            BOOST_FOREACH(Dae::InputShared* input, inputs){
+            for(Dae::InputShared* input: inputs){
                 if(input->semantic==semantic)
                     return input->offset;
             }
@@ -1053,7 +1029,7 @@ namespace {
 
 
     Dae::Source* getSource(const std::string& semantic, std::vector<Dae::Input*>& inputs, ColladaLoader::ParserState& state){
-        BOOST_FOREACH(Dae::Input* input,  inputs){
+        for(Dae::Input* input:  inputs){
             if(semantic==input->semantic)
                 return state.get<Dae::Source>(input->source);
         }
@@ -1062,7 +1038,7 @@ namespace {
 
 
     bool has(const std::string& semantic, std::vector<Dae::Input*>& inputs){
-        BOOST_FOREACH(Dae::Input* input,  inputs){
+        for(Dae::Input* input:  inputs){
             if(semantic==input->semantic)
                 return true;
         }
@@ -1085,7 +1061,7 @@ namespace {
         //Dae::Vertices *verts = mesh->vertices;
 
 
-        BOOST_FOREACH(Dae::Triangles* tri, mesh->tris){
+        for(Dae::Triangles* tri: mesh->tris){
             std::string triname = tri->name;
             if(triname=="")
                 triname = tri->id;
@@ -1103,7 +1079,7 @@ namespace {
             // the stride indicates how many inputs there are
             int stride = tri->inputs.size();
 
-            BOOST_FOREACH(Dae::InputShared *ishared, tri->inputs){
+            for(Dae::InputShared *ishared: tri->inputs){
                 // here we just check that we can find the source
                 if(ishared->semantic=="VERTEX"){
                     triVertex = state.get<Dae::Vertices>(ishared->source);
@@ -1199,7 +1175,7 @@ namespace {
         RW_ASSERT(geom);
         std::string name = geom->name;
         std::cout << "Geom name: "<< name << std::endl;
-        BOOST_FOREACH(Dae::Mesh* mesh, geom->meshes){
+        for(Dae::Mesh* mesh: geom->meshes){
             std::cout << "mesh" << std::endl;
             Model3D::Ptr rwmesh = makeRWMesh(mesh, state);
             //for(size_t i=0;i<rwmesh.size();i++){
@@ -1225,7 +1201,7 @@ Dae::Library<Dae::Camera>* ColladaLoader::readLibraryCameras(DOMElement* element
     ScopedPush p(camera, state);
 
     DOMElemChildVector domChildren(element);
-    BOOST_FOREACH(DOMElement* child, domChildren){
+    for(DOMElement* child: domChildren){
         DEBUGL( XMLStr(child->getNodeName()).str() );
         // TODO parse cameras into camera structure
         RW_WARN("Not implemented yet!");
@@ -1245,7 +1221,7 @@ Dae::Node* ColladaLoader::readNode(DOMElement* element, ColladaLoader::ParserSta
     /// TODO: the layers attrib
     std::vector<double> arrayTmp;
     DOMElemChildVector domChildren(element);
-    BOOST_FOREACH(DOMElement* child, domChildren){
+    for(DOMElement* child: domChildren){
         DEBUGL( XMLStr(child->getNodeName()).str() );
 
         if(isName(child, "asset")){
@@ -1350,7 +1326,7 @@ Dae::Geometry* ColladaLoader::readGeometry(DOMElement* element, ColladaLoader::P
     ScopedPush p(geom, state);
 
     DOMElemChildVector domChildren(element);
-    BOOST_FOREACH(DOMElement* child, domChildren){
+    for(DOMElement* child: domChildren){
         DEBUGL( XMLStr(child->getNodeName()).str() );
         if(isName(child, "asset")){
             geom->asset = readAsset(child, state);
@@ -1380,7 +1356,7 @@ Dae::Library<Dae::Geometry>* ColladaLoader::readLibraryGeometries(DOMElement* el
     ScopedPush p(geomLib, state);
 
     DOMElemChildVector domChildren(element);
-    BOOST_FOREACH(DOMElement* child, domChildren){
+    for(DOMElement* child: domChildren){
         DEBUGL( XMLStr(child->getNodeName()).str() );
         if (isName(child, "asset")) {
             geomLib->asset = readAsset(child, state);
@@ -1401,7 +1377,7 @@ Dae::VisualScene* ColladaLoader::readVisualScene(xercesc::DOMElement* element, P
     ScopedPush p(scene, state);
 
     DOMElemChildVector domChildren(element);
-    BOOST_FOREACH(DOMElement* child, domChildren){
+    for(DOMElement* child: domChildren){
         DEBUGL( XMLStr(child->getNodeName()).str() );
         if (isName(child, "asset")) {
             scene->asset = readAsset(child, state);
@@ -1424,7 +1400,7 @@ Dae::Library<Dae::VisualScene>* ColladaLoader::readLibraryVisualScenes(DOMElemen
     ScopedPush p(visualSceneLib, state);
 
     DOMElemChildVector domChildren(element);
-    BOOST_FOREACH(DOMElement* child, domChildren){
+    for(DOMElement* child: domChildren){
         DEBUGL( XMLStr(child->getNodeName()).str() );
         if (isName(child, "asset")) {
             visualSceneLib->asset = readAsset(child, state);
@@ -1445,7 +1421,7 @@ Dae::Library<Dae::Effect>* ColladaLoader::readLibraryEffects(DOMElement* element
     ScopedPush p(matLib, state);
 
     DOMElemChildVector domChildren(element);
-    BOOST_FOREACH(DOMElement* child, domChildren){
+    for(DOMElement* child: domChildren){
         DEBUGL( XMLStr(child->getNodeName()).str() );
         if (isName(child, "asset")) {
             matLib->asset = readAsset(child, state);
@@ -1467,7 +1443,7 @@ Dae::Library<Dae::Material>* ColladaLoader::readLibraryMaterials(DOMElement* ele
     ScopedPush p(matLib, state);
 
     DOMElemChildVector domChildren(element);
-    BOOST_FOREACH(DOMElement* child, domChildren){
+    for(DOMElement* child: domChildren){
         DEBUGL( XMLStr(child->getNodeName()).str() );
         if (isName(child, "asset")) {
             matLib->asset = readAsset(child, state);
@@ -1492,7 +1468,7 @@ Dae::InstanceVisualScene* ColladaLoader::readInstanceVisualScene(DOMElement* ele
     Dae::VisualScene *vscene = state.get<Dae::VisualScene>(data->url);
 
     Frame *world = state.wc->getWorldFrame();
-    BOOST_FOREACH(Dae::Node* node, vscene->nodes){
+    for(Dae::Node* node: vscene->nodes){
         std::cout << "Node: " << node->name << std::endl;
         std::cout << "-- type: " << node->type << std::endl;
 
@@ -1501,7 +1477,7 @@ Dae::InstanceVisualScene* ColladaLoader::readInstanceVisualScene(DOMElement* ele
         // nodes need to be mapped to frames, but in RobWork these frames would either be Fixed, Movable or Joints.
         // for now we use FixedFrame
         Transform3D<> transform;
-        BOOST_FOREACH(Dae::Transform* t, node->transforms){transform = transform*t->transform;}
+        for(Dae::Transform* t: node->transforms){transform = transform*t->transform;}
         FixedFrame *frame = new FixedFrame(node->name, transform);
         state.wc->getStateStructure()->addFrame(frame, world);
 
@@ -1510,12 +1486,12 @@ Dae::InstanceVisualScene* ColladaLoader::readInstanceVisualScene(DOMElement* ele
         if(node->igeometries.size()>0){
             std::vector<Model3D::Ptr> geoms;
             // now look for geometry and add it to the Object
-            BOOST_FOREACH(Dae::InstanceGeometry* igeom, node->igeometries){
+            for(Dae::InstanceGeometry* igeom: node->igeometries){
                 std::cout << "igeom: " << igeom->name << " : " << igeom->url << std::endl;
                 Dae::Geometry* geom = state.get<Dae::Geometry>(igeom->url);
                 std::cout << "Geom: " << geom->name << std::endl;
                 std::vector<Model3D::Ptr> rwgeom = makeRWGeometry(geom, state);
-                BOOST_FOREACH(Model3D::Ptr g, rwgeom){
+                for(Model3D::Ptr g: rwgeom){
                     geoms.push_back( g );
                     if(getScene())
                         getScene()->addModel3D(geom->name, g, frame); // TODO: which layers should it be visible on
@@ -1533,14 +1509,14 @@ Dae::InstanceVisualScene* ColladaLoader::readInstanceVisualScene(DOMElement* ele
         // sensors
 
         // follow child nodes
-        BOOST_FOREACH(Dae::InstanceNode* child, node->inodes){
+        for(Dae::InstanceNode* child: node->inodes){
             RW_WARN("Not impl yet!");
         }
 
     }
 
     DOMElemChildVector domChildren(element);
-    BOOST_FOREACH(DOMElement* child, domChildren){
+    for(DOMElement* child: domChildren){
         DEBUGL( XMLStr(child->getNodeName()).str() );
         if (isName(child, "extra")) {
             data->extras.push_back( readExtra(child,state) );
@@ -1552,7 +1528,7 @@ Dae::InstanceVisualScene* ColladaLoader::readInstanceVisualScene(DOMElement* ele
 
 void ColladaLoader::readScene(DOMElement* element, ColladaLoader::ParserState& state) {
     DOMElemChildVector domChildren(element);
-    BOOST_FOREACH(DOMElement* child, domChildren){
+    for(DOMElement* child: domChildren){
         DEBUGL( XMLStr(child->getNodeName()).str() );
         if (isName(child, "instance_physics_scene")) {
             RW_WARN("NOT IMPLEMENTED YET!");
@@ -1572,7 +1548,7 @@ void ColladaLoader::readCollada(DOMElement* element, ColladaLoader::ParserState&
     state.data.xmlns = getAttrib(element, "xmlns");
     state.data.base = getAttrib(element, "base");
     DOMElemChildVector domChildren(element);
-    BOOST_FOREACH(DOMElement* child, domChildren){
+    for(DOMElement* child: domChildren){
         DEBUGL( XMLStr(child->getNodeName()).str() );
         if (isName(child, "asset")) {
             state.data.asset = readAsset(child, state);

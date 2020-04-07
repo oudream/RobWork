@@ -5,7 +5,7 @@
 #include <rw/invkin/ResolvedRateSolver.hpp>
 #include <rw/invkin/SimpleMultiSolver.hpp>
 
-#include <boost/foreach.hpp>
+
 
 #include "CG3IKSolver2D.hpp"
 #include <rw/geometry/Contour2DUtil.hpp>
@@ -72,7 +72,7 @@ std::vector<GraspResult> query(const rw::kinematics::State& state, int maxNrOfQs
         DContact3D con = _generator.generateNext();
         // the contact is allready half tested for force closure.. so apply some other filter.
         bool goodContact = false;
-        BOOST_FOREACH(ContactFilter *filter, _cfilters){
+        for(ContactFilter *filter: _cfilters){
             goodContact &= filter->check(con);
             if( !goodContact )
                 break;

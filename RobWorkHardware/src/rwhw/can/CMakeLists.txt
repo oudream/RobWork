@@ -1,6 +1,6 @@
 set(SUBSYS_NAME sdurwhw_can)
 set(SUBSYS_DESC "Library of drivers for different CAN devices")
-set(SUBSYS_DEPS sdurw)
+set(SUBSYS_DEPS RW::sdurw)
 
 set(build TRUE)
 set(DEFAULT TRUE)

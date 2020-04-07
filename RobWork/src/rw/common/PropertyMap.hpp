@@ -26,6 +26,7 @@
 #include "PropertyBase.hpp"
 #include "Property.hpp"
 #include "macros.hpp"
+#include "PairIterator.hpp"
 
 #include <set>
 
@@ -435,7 +436,7 @@ namespace rw { namespace common {
         typedef MapType::const_iterator iterator;
 
         //! @brief Type for a range of properties.
-        typedef std::pair<iterator,iterator> Range;
+        typedef iter_pair<iterator> Range;
 
         /**
            @brief Range of all PropertyBase* objects stored.

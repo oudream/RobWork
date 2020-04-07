@@ -6,7 +6,7 @@
 #include <rwlibs/proximitystrategies/ProximityStrategyFactory.hpp>
 #include <rwlibs/proximitystrategies/ProximityStrategyPQP.hpp>
 
-#include <boost/foreach.hpp>
+
 
 using namespace rw::proximity;
 using namespace rwlibs::proximitystrategies;
@@ -70,7 +70,7 @@ namespace {
 		for(int i=0; i<dists.p1s.size(); i++){
 			const Vector3D<> &v = dists.p1s[i];
 			bool inBlob = false;
-			BOOST_FOREACH(FilteredPoint& p, blobs){
+			for(FilteredPoint& p: blobs){
 			//for(int j=0; j<blobs.size(); j++){
 				double dist = MetricUtil::dist2<Vector3D<> >(v,p.p);
 				if( dist < sepDist ){

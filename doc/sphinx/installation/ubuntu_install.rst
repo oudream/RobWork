@@ -18,9 +18,17 @@ The Simplest install to get all our packages can then be done with:
                          libsdurwhw-all-dev \
                          libsdurwsim-all-dev
 
+.. warning::
+
+    In The upgrade from 1.0.9 to 1.0.11 a package name was changed, causing errors when running an apt upgrade.
+    The Error can be fixed with:
+    
+    sudo dpkg --remove --force-remove-reinstreq libsdurw-geometry1.0
+    sudo dpkg --remove --force-remove-reinstreq libsdurw-geometry-dev
+
 .. note::
 
-    When using the precompiled packages the following interfaces will NOT be available : Java, Lua, Python. Matlab.
+    When using the precompiled packages the following interfaces will NOT be available : Java, Matlab.
 
 PPA packages
 ------------
@@ -49,8 +57,8 @@ For the development packages including the newest version of robwork and the inc
 +---------------------------------+-----------------------------------+------------------------------------+-----------------------+
 |  - libsdurw                     |  - libsdurws                      |  - libsdurwhw-camera               |  - libsdurwsim        |
 |  - libsdurw-algorithms          |  - libsdurws-atask                |  - libsdurwhw-can                  |  - libsdurwsim-bullet |
-|  - libsdurw-analytic-geometry   |  - libsdurws-gtask                |  - libsdurwhw-dockwelder           |                       |
-|  - libsdurw-assembly            |  - libsdurws-jog                  |  - libsdurwhw-netft                |                       |
+|  - libsdurw-geometry            |  - libsdurws-gtask                |  - libsdurwhw-dockwelder           |  - libsdurws-gui      |
+|  - libsdurw-assembly            |  - libsdurws-jog                  |  - libsdurwhw-netft                |  - libsdurwsim-ode    |
 |  - libsdurw-calibration         |  - libsdurws-log                  |  - libsdurwhw-pcube                |                       |
 |  - libsdurw-control             |  - libsdurws-planning             |  - libsdurwhw-robolabft            |                       |
 |  - libsdurw-csg                 |  - libsdurws-playback             |  - libsdurwhw-robotiq              |                       |
@@ -98,7 +106,7 @@ some packages containing all the individual packages exists.
 These packages is made for quick installation.
 In the package name "lib<Library>-all" means all packages belonging to <Library>,
 and "-all-dev" is a development version of the "-all" package.
-The ".robwork-all" includes all packages for all four main robwork code libraries.
+The "-robwork-all" includes all packages for all four main robwork code libraries.
 
 - libsdurw-all-dev
 - libsdurw-all
@@ -135,7 +143,7 @@ Do notice that the cmake packages are versioned to fit with the RobWork Versions
 special mentions
 ################
 
-These are the remaning special packages not mentioned yet.
+These are the remaining special packages not mentioned yet.
 
 - libsdurwhw-dev
     - This package is automatically fetched when needed and contains the shared include files for RobWorkHardWare
@@ -144,4 +152,58 @@ These are the remaning special packages not mentioned yet.
     - The program will automatically detect and load sdurws plugins as you download them.
 - sdurw-doc
     - This packages don't contain anything, but it is planned to contain a complete version of the documentation.
+
+Ubuntu uninstallation by PPA
+*****************************
+
+There are a few ways of uninstalling the packages once installed with ppa.
+
+Uninstall by knowledge
+-----------------------
+
+If you know the specific packages installed like:
+
+.. code-block:: bash
+
+    sudo apt-get install libsdurw-all-dev \
+                         libsdurws-all-dev \
+                         libsdurwhw-all-dev \
+                         libsdurwsim-all-dev
+
+Then the uninstall is mostly the reverse:
+.. code-block:: bash
+
+    sudo apt-get remove libsdurw-all-dev  \
+                        libsdurws-all-dev \
+                        libsdurwhw-all-dev \
+                        libsdurwsim-all-dev
+
+    sudo apt-get autoremove
+
+The autoremove is very important as, the first command only removes the specified packages,
+but doesn't remove all the dependencies of the installed packages.
+In the given example since <package>-all-dev is a metapackage that doesn't contain anything
+the entirety of robwork will still be installed after "apt-get remove ..." is called.
+It is only after autoremove is called that it is uninstalled.
+
+Uninstall by search
+-------------------
+
+If you don't remember which packages you installed then it is possible to make apt-get look for them.
+To make sure that the correct packages are selected, before removing them, it is good practice to make a simulated run.
+
+.. code-block:: bash
+
+    sudo apt-get -s remove *sdurw*
+
+This command will find all packages installed and not installed that includes sdurw, which all our packages except for robworkstudio does.
+If you look through the output and find everything satisfying then all of RobWork can be uninstall with:
+
+.. code-block:: bash
+
+    sudo apt-get remove *sdurw*
+    sudo apt-get remove robworkstudio
+    sudo apt-get autoremove
+
+For good measure autoremove is still used, to make sure that robwork's external dependencies that haven't been installed intentionally are removed.
 

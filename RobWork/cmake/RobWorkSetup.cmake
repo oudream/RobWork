@@ -42,117 +42,54 @@ set(ROBWORK_LIBRARIES_INTERNAL)
 set(CMAKE_MODULE_PATH ${RW_ROOT}/cmake/Modules ${CMAKE_MODULE_PATH})
 
 #
-# include the build specific configuration of RobWork
-#
-# INCLUDE("${RW_ROOT}/build/RobWorkConfig${CMAKE_BUILD_TYPE}.cmake")
-# LINK_DIRECTORIES(${RW_ARCHIVE_OUT_DIR} ${RW_LIBRARY_OUT_DIR}) LIST(APPEND CMAKE_LIBRARY_PATH
-# ${RW_LIBRARY_OUT_DIR})
-
-#
 # We need the Boost package and some of its components. Test libraries are optional and can be
 # compiled from header instead.
 #
 
-set(Boost_NO_BOOST_CMAKE TRUE) # From Boost 1.70, CMake files are provided by Boost - we are not yet
-                               # ready to handle it
-unset(Boost_USE_STATIC_LIBS)
+if(NOT DEFINED USE_BOOST_STATIC)
+    set(USE_BOOST_STATIC OFF)    
+    if(DEFINED WIN32)
+        set(USE_BOOST_STATIC ON)  
+    endif()
+endif()
+set(Boost_USE_STATIC_LIBS ${USE_BOOST_STATIC})
+set(Boost_NO_BOOST_CMAKE TRUE) # From Boost 1.70, CMake files are provided by Boost - we can't handle it
 unset(Boost_FIND_QUIETLY)
 set(Boost_LIBRARIES_TMP "")
-if(DEFINED UNIX)
-    # SET(Boost_USE_STATIC_LIBS ON)
-    find_package(
-        Boost
-        REQUIRED
+
+if(${RW_BUILD_TYPE} STREQUAL "release")
+    set(Boost_USE_DEBUG_LIBS         OFF) # ignore debug libs and
+    set(Boost_USE_RELEASE_LIBS       ON)  # only find release libs
+endif()
+
+find_package(
+    Boost
+    REQUIRED
+    COMPONENTS
         filesystem
         regex
         serialization
         system
         thread
         program_options
-    )
-    set(Boost_LIBRARIES_TMP ${Boost_LIBRARIES_TMP} ${Boost_LIBRARIES})
-    # Test libraries are optional
-    set(Boost_FIND_QUIETLY TRUE)
+)
+set(Boost_LIBRARIES_TMP ${Boost_LIBRARIES})
+set(Boost_FIND_QUIETLY TRUE) # Test libraries are optional
 
-    # On Mac OS only the header only version of boost unit test seems to work for now, needs further
-    # investigation
-    if(NOT ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-        find_package(Boost COMPONENTS test_exec_monitor unit_test_framework)
-        set(Boost_LIBRARIES_TMP ${Boost_LIBRARIES_TMP} ${Boost_LIBRARIES})
-    endif(NOT ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-
-    if(NOT Boost_TEST_EXEC_MONITOR_FOUND OR NOT Boost_UNIT_TEST_FRAMEWORK_FOUND)
-        # header only SET(Boost_USE_STATIC_LIBS OFF) FIND_PACKAGE(Boost COMPONENTS test_exec_monitor
-        # unit_test_framework)
-        set(RW_USE_BOOST_STATIC_TEST_LIBS off)
-    else()
-        # libraries found
-        set(RW_USE_BOOST_STATIC_TEST_LIBS on)
-    endif()
-
-elseif(DEFINED WIN32)
-    set(Boost_USE_STATIC_LIBS ON)
-    set(BOOST_ALL_DYN_LINK OFF)
-    set(Boost_USE_MULTITHREADED      ON)
-
-    if(${RW_BUILD_TYPE} STREQUAL "release")
-        set(Boost_USE_DEBUG_LIBS         OFF) # ignore debug libs and
-        set(Boost_USE_RELEASE_LIBS       ON)  # only find release libs
-    endif()
-
-    find_package(
-        Boost
-        COMPONENTS
-            filesystem
-            regex
-            serialization
-            system
-            thread
-            program_options
-    )
-    set(Boost_LIBRARIES_TMP ${Boost_LIBRARIES_TMP} ${Boost_LIBRARIES})
-    # If static libraries for Windows were not found, try searching again for the shared ones
-    if(
-        NOT Boost_FILESYSTEM_FOUND
-        OR NOT Boost_REGEX_FOUND
-        OR NOT Boost_SERIALIZATION_FOUND
-        OR NOT Boost_SYSTEM_FOUND
-        OR NOT Boost_THREAD_FOUND
-    )
-        set(Boost_USE_STATIC_LIBS OFF)
-        find_package(
-            Boost
-            REQUIRED
-            COMPONENTS
-                filesystem
-                regex
-                serialization
-                system
-                thread
-                program_options
-        )
-        set(ROBWORK_LIBRARIES_EXTERNAL ${ROBWORK_LIBRARIES_EXTERNAL} ${Boost_LIBRARIES})
-        set(Boost_LIBRARIES_TMP ${Boost_LIBRARIES_TMP} ${Boost_LIBRARIES})
-        set(BOOST_ALL_DYN_LINK ON)
-    endif()
-
-    # Test libraries are optional
-    set(Boost_USE_STATIC_LIBS ON)
-    set(Boost_FIND_QUIETLY TRUE)
+# On Mac OS only the header only version of boost unit test seems to work for now, needs further
+# investigation
+if(NOT ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     find_package(Boost COMPONENTS test_exec_monitor unit_test_framework)
     set(Boost_LIBRARIES_TMP ${Boost_LIBRARIES_TMP} ${Boost_LIBRARIES})
-    # If static libraries for Windows were not found, try searching again for the shared ones
-    if(NOT Boost_TEST_EXEC_MONITOR_FOUND OR NOT Boost_UNIT_TEST_FRAMEWORK_FOUND)
-        # SET(Boost_USE_STATIC_LIBS OFF) FIND_PACKAGE(Boost COMPONENTS test_exec_monitor
-        # unit_test_framework)
-        set(RW_USE_BOOST_STATIC_TEST_LIBS off)
-    else()
-        # libraries found
-        set(RW_USE_BOOST_STATIC_TEST_LIBS on)
-
-    endif()
 endif()
-set(Boost_LIBRARIES ${Boost_LIBRARIES_TMP})
+
+if(NOT Boost_TEST_EXEC_MONITOR_FOUND OR NOT Boost_UNIT_TEST_FRAMEWORK_FOUND)
+    set(RW_USE_BOOST_STATIC_TEST_LIBS off)
+else()
+    set(RW_USE_BOOST_STATIC_TEST_LIBS on)
+endif()
+
+set(Boost_LIBRARIES ${Boost_LIBRARIES_TMP} ${Boost_LIBRARIES})
 
 message(
     STATUS
@@ -174,28 +111,7 @@ else()
     endif()
 endif()
 
-#
-# We depend on BLAS and Lapack. These depend on FORTRAN, so we enable that
-#
 enable_language(CXX)
-# ENABLE_LANGUAGE(Fortran)
-
-if(DEFINED RW_USE_UBLAS_LAPACK)
-    if(NOT DEFINED WIN32)
-        set(BLA_STATIC ON)
-    endif()
-    # FIND_PACKAGE(BLAS REQUIRED) FIND_PACKAGE(LAPACK REQUIRED)
-    find_package(BLASLAPACK REQUIRED)
-
-    set(LAPACK_BLAS_LIBRARY_DIRS)
-    # get_filename_component(BLAS_LIBRARY_DIRS ${BLAS_LIBRARIES} PATH)
-    # get_filename_component(LAPACK_LIBRARY_DIRS ${LAPACK_LIBRARIES} PATH)
-
-    foreach(lib IN LISTS LAPACK_LIBRARIES BLAS_LIBRARIES)
-        get_filename_component(TMP_DIR ${lib} PATH)
-        list(APPEND LAPACK_BLAS_LIBRARY_DIRS ${TMP_DIR})
-    endforeach(lib)
-endif()
 
 # ##################################################################################################
 # DEPENDENCIES - OPTIONAL these dependencies are optional, which is the user can switch off modules
@@ -501,45 +417,51 @@ if(RW_USE_ASSIMP)
         message(STATUS "RobWork: Assimp 3.0 installation NOT FOUND! Using RobWork ext Assimp.")
 
         set(ASSIMP_INCLUDE_DIRS "${RW_ROOT}/ext/assimp/include")
-        set(ASSIMP_LIBRARIES "sdurw_assimp")
-        set(ASSIMP_LIBRARY_DIRS ${RW_LIBRARY_OUT_DIR})
-        set(RW_HAVE_ASSIMP TRUE)
-        set(ROBWORK_LIBRARIES_INTERNAL ${ROBWORK_LIBRARIES_INTERNAL} ${ASSIMP_LIBRARIES})
+        if(EXISTS ${ASSIMP_INCLUDE_DIRS})
+            set(ASSIMP_LIBRARIES "sdurw_assimp")
+            set(ASSIMP_LIBRARY_DIRS ${RW_LIBRARY_OUT_DIR})
+            set(RW_HAVE_ASSIMP TRUE)
+            set(ROBWORK_LIBRARIES_INTERNAL ${ROBWORK_LIBRARIES_INTERNAL} ${ASSIMP_LIBRARIES})
 
-        # Find Zlib
-        if(NOT RW_HAVE_ZLIB)
-            find_package(ZLIB QUIET)
-            if(ZLIB_FOUND)
-                message(STATUS "RobWork: Native ZLIB FOUND")
-                set(ROBWORK_LIBRARIES_EXTERNAL ${ROBWORK_LIBRARIES_EXTERNAL} ${ZLIB_LIBRARIES})
-            else()
-                message(STATUS "RobWork: No ZLIB FOUND - using internal")
-                set(RW_ENABLE_INTERNAL_ZLIB_TARGET ON)
-                set(ZLIB_INCLUDE_DIRS "${RW_ROOT}/ext/zlib")
-                set(ZLIB_LIBRARY_DIRS ${RW_LIBRARY_OUT_DIR})
-                set(ZLIB_LIBRARIES sdurw_zlib)
-                set(ROBWORK_LIBRARIES_INTERNAL ${ROBWORK_LIBRARIES_INTERNAL} ${ZLIB_LIBRARIES})
-            endif()
-            set(RW_HAVE_ZLIB ON)
-        endif(NOT RW_HAVE_ZLIB)
+            # Find Zlib
+            if(NOT RW_HAVE_ZLIB)
+                find_package(ZLIB QUIET)
+                if(ZLIB_FOUND)
+                    message(STATUS "RobWork: Native ZLIB FOUND")
+                    set(ROBWORK_LIBRARIES_EXTERNAL ${ROBWORK_LIBRARIES_EXTERNAL} ${ZLIB_LIBRARIES})
+                else()
+                    message(STATUS "RobWork: No ZLIB FOUND - using internal")
+                    set(RW_ENABLE_INTERNAL_ZLIB_TARGET ON)
+                    set(ZLIB_INCLUDE_DIRS "${RW_ROOT}/ext/zlib")
+                    set(ZLIB_LIBRARY_DIRS ${RW_LIBRARY_OUT_DIR})
+                    set(ZLIB_LIBRARIES sdurw_zlib)
+                    set(ROBWORK_LIBRARIES_INTERNAL ${ROBWORK_LIBRARIES_INTERNAL} ${ZLIB_LIBRARIES})
+                endif()
+                set(RW_HAVE_ZLIB ON)
+            endif(NOT RW_HAVE_ZLIB)
 
-        # Find Minizip/Unzip
-        if(NOT RW_HAVE_MINIZIP)
-            find_package(MINIZIP QUIET)
-            if(MINIZIP_FOUND)
-                message(STATUS "RobWork: Native MINIZIP FOUND")
-                set(ROBWORK_LIBRARIES_EXTERNAL ${ROBWORK_LIBRARIES_EXTERNAL} ${MINIZIP_LIBRARIES})
-            else()
-                message(STATUS "RobWork: No MINIZIP FOUND - using internal")
-                set(RW_ENABLE_INTERNAL_MINIZIP_TARGET ON)
-                set(MINIZIP_INCLUDE_DIRS "${RW_ROOT}/ext/unzip")
-                set(MINIZIP_LIBRARY_DIRS ${RW_LIBRARY_OUT_DIR})
-                set(MINIZIP_LIBRARIES "sdurw_unzip")
-                set(ROBWORK_LIBRARIES_INTERNAL ${ROBWORK_LIBRARIES_INTERNAL} ${MINIZIP_LIBRARIES})
-            endif()
-            set(RW_HAVE_MINIZIP ON)
-        endif(NOT RW_HAVE_MINIZIP)
-
+            # Find Minizip/Unzip
+            if(NOT RW_HAVE_MINIZIP)
+                find_package(MINIZIP QUIET)
+                if(MINIZIP_FOUND)
+                    message(STATUS "RobWork: Native MINIZIP FOUND")
+                    set(ROBWORK_LIBRARIES_EXTERNAL ${ROBWORK_LIBRARIES_EXTERNAL}
+                                                   ${MINIZIP_LIBRARIES})
+                else()
+                    message(STATUS "RobWork: No MINIZIP FOUND - using internal")
+                    set(RW_ENABLE_INTERNAL_MINIZIP_TARGET ON)
+                    set(MINIZIP_INCLUDE_DIRS "${RW_ROOT}/ext/unzip")
+                    set(MINIZIP_LIBRARY_DIRS ${RW_LIBRARY_OUT_DIR})
+                    set(MINIZIP_LIBRARIES "sdurw_unzip")
+                    set(ROBWORK_LIBRARIES_INTERNAL ${ROBWORK_LIBRARIES_INTERNAL}
+                                                   ${MINIZIP_LIBRARIES})
+                endif()
+                set(RW_HAVE_MINIZIP ON)
+            endif(NOT RW_HAVE_MINIZIP)
+        else()
+        message(STATUS "RobWork: RobWork ext Assimp, NOT FOUND, disabeling assimp functions")
+            set(ASSIMP_INCLUDE_DIRS "")
+        endif()
     endif()
 else()
     message(STATUS "RobWork: Assimp DISABLED!")
@@ -575,7 +497,7 @@ if(PYTHONLIBS_FOUND)
     message(STATUS "Found Python libraries ${PYTHONLIBS_VERSION_STRING}")
 endif()
 if(PYTHON_LIBRARY STREQUAL "NOTFOUND")
-	set(PYTHON_LIBRARY "")
+    set(PYTHON_LIBRARY "")
 endif()
 
 #
@@ -971,15 +893,18 @@ set(
     sdurw
 )
 
+message(STATUS "DIRS: ${ROBWORK_LIBRARY_DIRS}")
 set(ROBWORK_LIBRARIES)
 foreach(l ${ROBWORK_LIBRARIES_EXTERNAL})
     unset(tmp CACHE)
-    find_library(tmp ${l} PATHS ${ROBWORK_LIBRARY_DIRS} NO_DEFAULT_PATH)
-    if(tmp)
-        list(APPEND ROBWORK_LIBRARIES ${tmp})
-    else()
-        list(APPEND ROBWORK_LIBRARIES ${l})
+    if(NOT ("${l}" STREQUAL "debug" OR "${l}" STREQUAL "optimized") )
+        find_library(tmp ${l} PATHS ${ROBWORK_LIBRARY_DIRS} NO_DEFAULT_PATH)
+        if(tmp)
+            list(APPEND ROBWORK_LIBRARIES ${tmp})
+        else()
+            list(APPEND ROBWORK_LIBRARIES ${l})
+        endif()
     endif()
 endforeach(l)
 
-set(ROBWORK_LIBRARIES ${ROBWORK_LIBRARIES_INTERNAL} ${ROBWORK_LIBRARIES} )
+set(ROBWORK_LIBRARIES ${ROBWORK_LIBRARIES_INTERNAL} ${ROBWORK_LIBRARIES})

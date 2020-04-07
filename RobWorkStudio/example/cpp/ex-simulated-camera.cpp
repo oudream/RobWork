@@ -14,8 +14,12 @@ using namespace rwlibs::simulation;
 using namespace rws;
 
 int main(int argc, char** argv) {
-    if (argc != 2)
-        RW_THROW("Provide the path to RobWorkData as first argument.");
+
+    if (argc < 2) {
+        std::cout << "Usage: " << argv[0] << "/path/to/robworkdata" << std::endl;
+        exit (1);
+    }
+
     static const std::string WC_FILE = std::string(argv[1]) + "/scenes/SensorTestScene/SimpleWorkcell.xml";
     const WorkCell::Ptr wc = WorkCellLoader::Factory::load(WC_FILE);
     if (wc.isNull())
@@ -36,11 +40,7 @@ int main(int argc, char** argv) {
 
     RobWorkStudioApp app("");
     app.start();
-    while(app.getRobWorkStudio() == nullptr) {
-        if(!app.isRunning())
-            RW_THROW("Could not start RobWorkStudio application!");
-        TimerUtil::sleepMs(100);
-    }
+
     RobWorkStudio* const rwstudio = app.getRobWorkStudio();
     rwstudio->postOpenWorkCell(WC_FILE);
     TimerUtil::sleepMs(5000);
@@ -78,8 +78,7 @@ int main(int argc, char** argv) {
     img->saveAsPPM("Image2.ppm");
 
     simcam->stop();
-    rwstudio->postExit();
-    TimerUtil::sleepMs(1000);
+    app.close();
 
     return 0;
 }

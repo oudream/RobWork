@@ -40,7 +40,7 @@ set(PROJECT_AUTHOR "Anders Prier Lindvig")
 set(PROJECT_COPYRIGHT "2019")
 set(PROJECT_MAIL "anpl@mmmi.sdu.dk")
 
-if(${CODE})
+if(${CODE})	
 	set(Boost_USE_MULTITHREAD ON)
 	find_package(Boost REQUIRED COMPONENTS system thread)
 	find_package(Threads)

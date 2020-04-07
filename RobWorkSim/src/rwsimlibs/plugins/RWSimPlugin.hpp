@@ -16,7 +16,7 @@
 #include <rws/RobWorkStudioPlugin.hpp>
 
 #include <RobWorkSimConfig.hpp>
-#ifdef RWSIM_HAVE_LUA
+#ifdef RWSIM_PLUGIN_HAVE_LUA
 #include <rwlibs/swig/lua/LuaState.hpp>
 #include <rwsimlibs/swig/lua/Lua.hpp>
 #include <rwsimlibs/swig/ScriptTypes.hpp>
@@ -110,7 +110,7 @@ class RWSimPlugin : public rws::RobWorkStudioPlugin, private Ui::RWSimPlugin
     private:
 
 
-        #ifdef RWSIM_HAVE_LUA
+        #ifdef RWSIM_PLUGIN_HAVE_LUA
     	rwlibs::swig::LuaState::Ptr _luastate;
         #endif
 

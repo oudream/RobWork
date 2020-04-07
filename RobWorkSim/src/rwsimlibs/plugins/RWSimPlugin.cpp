@@ -6,7 +6,7 @@
 
 #include <sstream>
 
-#include <boost/foreach.hpp>
+
 
 #include <RobWorkStudio.hpp>
 
@@ -73,7 +73,7 @@ RWSimPlugin::RWSimPlugin():
 {
     setupUi(this);
 
-#ifdef RWSIM_HAVE_LUA
+#ifdef RWSIM_PLUGIN_HAVE_LUA
     _luastate = 0;
 #endif
 
@@ -230,7 +230,7 @@ void RWSimPlugin::btnPressed(){
     	sim->init(state);
     	_sim = ownedPtr(new ThreadSimulator(sim, getRobWorkStudio()->getState()));
 
-#ifdef RWSIM_HAVE_LUA
+#ifdef RWSIM_PLUGIN_HAVE_LUA
     	rwsim::swig::addSimulatorInstance(_sim, "rwsimplugin");
 #endif
 
@@ -447,7 +447,7 @@ namespace {
 
 	std::vector<Eigen::MatrixXf> getTactileData(const std::vector<SimulatedSensor::Ptr>& sensors, const State& state){
 		std::vector<Eigen::MatrixXf> datas;
-		BOOST_FOREACH(const SimulatedSensor::Ptr& sensor, sensors){
+		for(const SimulatedSensor::Ptr& sensor: sensors){
         	if( TactileArraySensor *tsensor = dynamic_cast<TactileArraySensor*>( sensor.get() ) ) {
                 datas.push_back( tsensor->getTexelData(state) );
             }
@@ -525,7 +525,7 @@ void RWSimPlugin::updateStatus(){
 
 void RWSimPlugin::open(rw::models::WorkCell* workcell){
 
-#ifdef RWSIM_HAVE_LUA
+#ifdef RWSIM_PLUGIN_HAVE_LUA
 	struct RWSimLuaLibrary: public rwlibs::swig::LuaState::LuaLibrary {
 		const std::string getId(){ return "RWSimLuaLibrary"; }
 		bool initLibrary(rwlibs::swig::LuaState& lstate){
@@ -554,7 +554,7 @@ void RWSimPlugin::open(rw::models::WorkCell* workcell){
 	_state = getRobWorkStudio()->getState();
 
 	// add sensor drawables to the workcell drawer
-    BOOST_FOREACH(SimulatedSensor::Ptr sensor,  _dwc->getSensors()){
+    for(SimulatedSensor::Ptr sensor:  _dwc->getSensors()){
         if( TactileArraySensor::Ptr tsensor = sensor.cast<TactileArraySensor>() ){
             //std::cout << "ADDING TACTILE SENSOR DRAWER..." << std::endl;
         	log().debug() << "Adding tactile sensor render to \"" << sensor->getSensorModel()->getName() << "\"!" << std::endl;
@@ -565,7 +565,7 @@ void RWSimPlugin::open(rw::models::WorkCell* workcell){
     }
 
     _deviceControlBox->clear();
-    BOOST_FOREACH(DynamicDevice::Ptr device, _dwc->getDynamicDevices()){
+    for(DynamicDevice::Ptr device: _dwc->getDynamicDevices()){
         rw::models::Device *dev = &device->getModel();
         if( dynamic_cast<JointDevice*>(dev) == NULL )
             continue;
@@ -575,7 +575,7 @@ void RWSimPlugin::open(rw::models::WorkCell* workcell){
         _deviceControlBox->addItem(dev->getName().c_str());
     }
 
-    BOOST_FOREACH(SimulatedController::Ptr ctrl, _dwc->getControllers()){
+    for(SimulatedController::Ptr ctrl: _dwc->getControllers()){
         RW_ASSERT(ctrl!=NULL);
         _deviceControlBox->addItem(ctrl->getControllerName().c_str());
     }

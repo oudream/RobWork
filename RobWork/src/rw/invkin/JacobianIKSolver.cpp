@@ -29,7 +29,6 @@
 #include <rw/trajectory/LinearInterpolator.hpp>
 
 using namespace boost;
-using namespace boost::numeric;
 using namespace rw::math;
 using namespace rw::models;
 using namespace rw::kinematics;
@@ -105,7 +104,6 @@ bool JacobianIKSolver::solveLocal(const Transform3D<> &bTed,
     Q q = _device->getQ(state);
     const int maxIterations = maxIter;
     Device::QBox bounds = _device->getBounds();
-    //LinearAlgebra::BoostMatrix<double>::type Jp;
 	Eigen::MatrixXd Jp;
 
 
@@ -159,24 +157,15 @@ bool JacobianIKSolver::solveLocal(const Transform3D<> &bTed,
             // TODO: not implemented yet for now we just use DLS
         }
         case(DLS):{
-            //std::cout << "Error: " << cnt << " : "<< error << std::endl;
             double lambda = 0.4; // dampening factor, for now a fixed value
-            //std::cout << "1";
             Eigen::MatrixXd U = J.e() * J.e().transpose(); // U = J * (J^T)
-            //std::cout << "2";
-            //ublas::identity_matrix<double> I ( U.size2() );
-            //std::cout << "3";
 			U = U + lambda*Eigen::MatrixXd::Identity(U.rows(), U.cols());
-            //std::cout << "4";
-            //ublas::matrix<double> Uinv(U.size1(),U.size2());
-            //std::cout << "5";
             Eigen::MatrixXd Uinv = U.inverse();
-            //std::cout << "6";
             Eigen::VectorXd dT = Uinv*dS;
-            //std::cout << "7";
+
             // Use these two lines for the traditional DLS method
             Eigen::VectorXd dTheta = J.e().transpose()*dT;
-            //std::cout << "8";
+
             // Scale back to not exceed maximum angle changes
 			double maxChange = dTheta.lpNorm<Eigen::Infinity>();
             if ( maxChange>45.0*Deg2Rad) {

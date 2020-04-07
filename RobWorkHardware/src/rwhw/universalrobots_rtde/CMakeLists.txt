@@ -1,6 +1,6 @@
 set(SUBSYS_NAME sdurwhw_universalrobots_rtde)
 set(SUBSYS_DESC "Driver for universal robot using the newer RTDE interface.")
-set(SUBSYS_DEPS)
+set(SUBSYS_DEPS RW::sdurw)
 
 set(DEFAULT TRUE)
 set(REASON)

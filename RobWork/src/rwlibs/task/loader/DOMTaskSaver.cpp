@@ -28,7 +28,7 @@
 #include <rw/loaders/dom/DOMPropertyMapFormat.hpp>
 #include <rwlibs/task/Task.hpp>
 
-#include <boost/foreach.hpp>
+
 
 using namespace rw::common;
 using namespace rw::loaders;
@@ -107,7 +107,7 @@ void DOMTaskSaver::writeTargets(typename Task<T>::Ptr task, DOMElem::Ptr parent)
 	std::vector<rw::common::Ptr<Target<T> > > targets = task->getTargets();
 
 	int targetId = 0;
-	BOOST_FOREACH(rw::common::Ptr<Target<T> > target, targets) {
+	for(rw::common::Ptr<Target<T> > target: targets) {
         DOMElem::Ptr targetElement = element->addChild(Identifiers<T>::targetId());
         DOMElem::Ptr attr = targetElement->addAttribute(DOMTaskFormat::idTargetIdAttr());
         attr->setValue(targetId);
@@ -163,7 +163,7 @@ void DOMTaskSaver::writeEntities(typename Task<T>::Ptr task, DOMElem::Ptr parent
 	DOMElem::Ptr entriesElement = parent->addChild(DOMTaskFormat::idEntities());
 
 	std::vector<Entity::Ptr> entities = task->getEntities();
-	BOOST_FOREACH(Entity::Ptr entity, entities) {
+	for(Entity::Ptr entity: entities) {
 		switch (entity->entityType()) {
 		case EntityType::Task:
 			writeTask(entity.cast<Task<T> >(), entriesElement);

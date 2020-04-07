@@ -27,7 +27,7 @@
 #include <rw/kinematics/Stateless.hpp>
 #include <rw/kinematics/StatelessData.hpp>
 
-//#include <boost/foreach.hpp>
+//
 
 using namespace rw::kinematics;
 using namespace rw::math;
@@ -53,10 +53,10 @@ void sharedPtrTest(){
         SharedVector vf = f1;
         f2 = vf;
     }
-    BOOST_FOREACH(boost::shared_ptr<Frame>& frame, f1){
+    for(boost::shared_ptr<Frame>& frame: f1){
         std::cout << frame->getName() << " " << frame.use_count() << std::endl;
     }
-    BOOST_FOREACH(boost::shared_ptr<Frame>& frame, f2){
+    for(boost::shared_ptr<Frame>& frame: f2){
         std::cout << frame->getName() << " " << frame.use_count() << std::endl;
     }
 }

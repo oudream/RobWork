@@ -211,11 +211,6 @@ void BasicFilterStrategy::initializeCollisionFramePairs(const State& state) {
 		applyRule(rule, _workcell, result);
 	}
 
-	//std::cout<<"Frame Pairs = "<<std::endl;
-	//BOOST_FOREACH(FramePair fp, result) {
-	//	std::cout<<fp.first->getName()<<" to "<<fp.second->getName()<<std::endl;
-	//}
-
 	_collisionPairs.insert(result.begin(), result.end());
 }
 

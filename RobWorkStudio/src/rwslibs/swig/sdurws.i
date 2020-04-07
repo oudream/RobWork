@@ -19,6 +19,7 @@ using rw::pathplanning::PathPlanner;
 
 %}
 
+%include <exception.i>
 %import <rwlibs/swig/sdurw.i> 
 
 %pragma(java) jniclassclassmodifiers="class"
@@ -75,6 +76,12 @@ bool isRunning();
  * @return The running robworkstudio instance
  */
 RobWorkStudio* getRobWorkStudioFromQt ();
+
+
+/**
+ * @brief Close a running RobWorkStudio Instance. Blocking until rws is closed. This might take awaile.
+ */
+void closeRobWorkStudio ();
 
 
 
@@ -345,6 +352,11 @@ namespace rws{
          * @return true if running false otherwise
          */
         bool isRunning();
+
+        /**
+         * @brief Close RobWorkStudio. Blocking until rws is closed. This might take awaile.
+         */
+        void close ();
 
         /**
          * @brief get handle to the running RobWorkStudio instance.

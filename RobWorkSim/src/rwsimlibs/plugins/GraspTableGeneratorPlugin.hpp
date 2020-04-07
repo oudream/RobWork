@@ -14,7 +14,7 @@
 
 #include <rw/kinematics/FrameMap.hpp>
 #include <rwsim/util/MovingAverage.hpp>
-#include <boost/numeric/ublas/matrix.hpp>
+#include <Eigen/Eigen>
 
 #include <rwsimlibs/gui/ThreadSafeStack.hpp>
 
@@ -55,7 +55,7 @@ class GraspTableGeneratorPlugin : public rws::RobWorkStudioPlugin
         Q_INTERFACES( rws::RobWorkStudioPlugin )
         Q_PLUGIN_METADATA(IID "dk.sdu.mip.Robwork.RobWorkStudioPlugin/0.1" FILE "GraspTableGeneratorPlugin.json")
     public:
-        typedef std::vector<boost::numeric::ublas::matrix<float> > TactileSensorData;
+        typedef std::vector<Eigen::MatrixXf > TactileSensorData;
 
         /**
          * @brief constructor

@@ -181,7 +181,9 @@ foreach(
     if(TARGET ${_expectedTarget})
         set(TARGET_EXISTS True)
     endif()
+
 endforeach()
+
 if(NOT TARGET_EXISTS)
     include("${RWHWCFG_ROOT}/RobWorkHardwareTargets.cmake")
 endif()
@@ -195,16 +197,20 @@ if(EXISTS "${RWHWCFG_ROOT}/../src/RobWorkHardwareConfig.hpp")
     set(RWHW_INCLUDE_EXT "${RWHW_ROOT}/ext")
     set(RWHW_INCLUDE_SRC "${RWHW_ROOT}/src/")
     set(RWHW_LIBS "${RWHW_ROOT}/libs/${RWHW_BUILD_TYPE}/")
-
+    set(IS_INSTALL FALSE)
 else()
     set(succmsg "RobWorkHardware: Found a RobWorkHardware installation")
+    set(IS_INSTALL TRUE)
     # Found a RobWork installation
     if(WIN32)
         # RobWorkConfig.cmake is installed to RWHW_ROOT/cmake
-        set(RWHW_ROOT "${RWHWCFG_ROOT}/..")
-        set(RWHW_INCLUDE_EXT "${RWHW_ROOT}/ext")
-        set(RWHW_INCLUDE_SRC "${RWHW_ROOT}/include")
-        set(RWHW_LIBS "${RWHW_ROOT}/libs/${RWHW_BUILD_TYPE}")
+        set(RWHW_ROOT "${RWHWCFG_ROOT}/../..")
+        set(RWHW_INCLUDE_EXT "${RWHW_ROOT}/../ext")
+        set(
+            RWHW_INCLUDE_SRC
+            "${RWHW_ROOT}/include/robworkhardware-${RobWorkHardware_VERSION_MAJOR}.${RobWorkHardware_VERSION_MINOR}"
+        )
+        set(RWHW_LIBS "${RWHW_ROOT}/lib")
     else()
         # RobWorkConfig.cmake is installed to RWHW_INTALL/share/robworkhardware-x.y
 
@@ -213,11 +219,11 @@ else()
         set(RWHW_LIBS "${RWHW_INSTALL}/lib/")
         set(
             RWHW_INCLUDE_SRC
-            "${RWHW_INSTALL}/include/robworkhardware-${RobWork_VERSION_MAJOR}.${RobWork_VERSION_MINOR}"
+            "${RWHW_INSTALL}/include/robworkhardware-${RobWorkHardware_VERSION_MAJOR}.${RobWorkHardware_VERSION_MINOR}"
         )
         set(
             RWHW_INCLUDE_EXT
-            "${RWHW_INSTALL}/include/robworkhardware-${RobWork_VERSION_MAJOR}.${RobWork_VERSION_MINOR}/ext"
+            "${RWHW_INSTALL}/include/robworkhardware-${RobWorkHardware_VERSION_MAJOR}.${RobWorkHardware_VERSION_MINOR}/ext"
         )
     endif(WIN32)
 endif()
@@ -233,19 +239,29 @@ if(EXISTS ${RWHWCFG_ROOT}/RobWorkHardwareBuildConfig_${RWHW_BUILD_TYPE}.cmake)
 
     list(APPEND CMAKE_MODULE_PATH ${RWHWCFG_ROOT}/Modules)
 
-    # now find robwork
-    find_package(
-        RobWork
-        REQUIRED
-        HINTS
-        ${RWHW_BUILD_WITH_RW_ROOT}
-        ${RWHW_ROOT}/../RobWork
-        ${RWHWCFG_ROOT}/../../RobWork
-    )
+    # Find RobWork
+    if(NOT DEFINED RobWork_FOUND OR NOT ${RobWork_FOUND})
+        if(${IS_INSTALL})
+            find_package(RobWork QUIET)
+        else()
+            set(RobWork_FOUND FALSE)
+        endif()
+
+        if(NOT ${RobWork_FOUND})
+            find_package(RobWork REQUIRED HINTS ${RWHW_BUILD_WITH_RW_ROOT}/cmake)
+        endif()
+    else()
+        message(STATUS "RobWork Already Found")
+    endif()
 
     set(BOOST_ROOT ${RWHW_BUILD_WITH_BOOST_ROOT})
     set(BOOST_INCLUDEDIR ${RWHW_BUILD_WITH_BOOST_INCLUDE_DIR})
     set(BOOST_LIBRARYDIR ${RWHW_BUILD_WITH_BOOST_LIBRARY_DIR})
+
+    if(DEFINED WIN32 AND ${IS_INSTALL})
+        set(BOOST_INCLUDEDIR "${RW_INCLUDE_EXT}/boost")
+        set(BOOST_LIBRARYDIR "${RW_LIBS}")
+    endif()
 
     # TODO for each component that is enabled we might need to include additional stuff
 
@@ -260,7 +276,12 @@ if(EXISTS ${RWHWCFG_ROOT}/RobWorkHardwareBuildConfig_${RWHW_BUILD_TYPE}.cmake)
             unset(FOUND CACHE)
             if(RESULT)
                 message(STATUS "Found in list: ${RESULT}")
-                find_library(FOUND ${RESULT} PATHS ${RWHW_LIBS} NO_DEFAULT_PATH)
+                find_library(
+                    FOUND ${RESULT}
+                    PATHS ${RWHW_LIBS}
+                    PATH_SUFFIXES ${RWHW_BUILD_WITH_LIBRARY_SUBDIRS}
+                    NO_DEFAULT_PATH
+                )
             endif()
 
             if(FOUND)
@@ -272,7 +293,26 @@ if(EXISTS ${RWHWCFG_ROOT}/RobWorkHardwareBuildConfig_${RWHW_BUILD_TYPE}.cmake)
             endif()
         endforeach()
     else()
-        set(OPTIONAL_LIBRARIES_TO_INCLUDE ${RWHW_BUILD_WITH_LIBRARIES})
+        foreach(lib IN LISTS RW_BUILD_WITH_LIBRARIES)
+            unset(FOUND CACHE)
+            find_library(
+                FOUND ${lib}
+                PATHS ${RWHW_LIBS}
+                PATH_SUFFIXES ${RWHW_BUILD_WITH_LIBRARY_SUBDIRS} NO_DEFAULT_PATH
+            )
+            if(FOUND)
+                list(APPEND OPTIONAL_LIBRARIES_TO_INCLUDE "${lib}")
+                rw_message("Looking for ${lib} - found")
+            else()
+                if(${lib} STREQUAL "sdurw")
+                    list(APPEND OPTIONAL_LIBRARIES_TO_INCLUDE "${lib}")
+                    rw_message("Looking for ${lib} - not found")
+                else()
+                    rw_message("Looking for ${lib} - not found (ignored)")
+                endif()
+
+            endif()
+        endforeach()
     endif()
 
     # SDH
@@ -388,6 +428,41 @@ if(EXISTS ${RWHWCFG_ROOT}/RobWorkHardwareBuildConfig_${RWHW_BUILD_TYPE}.cmake)
         endif()
     endif()
 
+    list(FIND OPTIONAL_LIBRARIES_TO_INCLUDE "sdurwhw_universalrobots_rtde" USE_UR_RTDE)
+    list(FIND LIBRARIES_TO_INCLUDE "sdurwhw_universalrobots_rtde" MUST_USE_UR_RTDE)
+    if(${USE_UR_RTDE} GREATER -1 OR ${MUST_USE_UR_RTDE} GREATER -1)  
+        find_package(ur_rtde QUIET)
+        if(NOT ur_rtde_FOUND)
+            set(UR_RTDE_PATH)
+            if(WIN32 AND IS_INSTALL)
+                set(UR_RTDE_PATH "${RWHW_LIBS}/cmake")
+            endif()
+            find_package(ur_rtde REQUIRED PATHS ${UR_RTDE_PATH})
+        endif()
+
+        if(WIN32 AND IS_INSTALL)
+            #find static filepath properties
+            get_target_property(I_DIR ur_rtde::rtde INTERFACE_INCLUDE_DIRECTORIES)
+            get_target_property(L_LIBS ur_rtde::rtde INTERFACE_LINK_LIBRARIES)
+
+            #find boost path to be replaced
+            set(boost_DIR ${I_DIR})
+            list(FILTER boost_DIR INCLUDE REGEX "/boost.*")
+            get_filename_component(MOD_ROOT ${boost_DIR} NAME)
+            set(regex "${boost_DIR}\/[a-z0-9.-]*")
+            string(REGEX MATCH "${regex}" boost_LIB_DIR ${L_LIBS})
+
+            #replace boost path
+            string(REPLACE "${boost_DIR}" "${BOOST_INCLUDEDIR}" I_DIR "${I_DIR}")
+            string(REPLACE "${boost_LIB_DIR}" "${BOOST_LIBRARYDIR}" L_LIBS "${L_LIBS}")
+            set_target_properties(ur_rtde::rtde PROPERTIES
+                INTERFACE_INCLUDE_DIRECTORIES "${I_DIR}"
+                INTERFACE_LINK_LIBRARIES  "${L_LIBS}"
+                )
+        endif()
+        list(APPEND OPTIONAL_LIBRARIES_TO_INCLUDE ur_rtde::rtde)
+    endif()
+
     # Set extra compiler flags. The user should be able to change this
     set(
         RWHW_CXX_FLAGS
@@ -396,7 +471,6 @@ if(EXISTS ${RWHWCFG_ROOT}/RobWorkHardwareBuildConfig_${RWHW_BUILD_TYPE}.cmake)
                     flags and not those of RobWorkHardware"
     )
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${RWHW_CXX_FLAGS}")
-    # MESSAGE(STATUS "RobWorkHardware: Using CXX flags: ${RWHW_CXX_FLAGS}")
 
     # Set extra linker flags. The user should be able to change this
     set(
@@ -468,7 +542,7 @@ set(ROBWORKHARDWARE_LIBRARIES_TMP ${ROBWORKHARDWARE_LIBRARIES})
 set(ROBWORKHARDWARE_LIBRARIES)
 foreach(l ${ROBWORKHARDWARE_LIBRARIES_TMP})
     unset(tmp CACHE)
-    find_library(tmp ${l} PATHS ${ROBWORKHARDWARE_LIBRARY_DIRS} NO_DEFAULT_PATH)
+    find_library(tmp ${l} PATHS ${RWHW_LIBS} PATH_SUFFIXES ${RWHW_BUILD_WITH_LIBRARY_SUBDIRS} NO_DEFAULT_PATH)
     if(tmp)
         list(APPEND ROBWORKHARDWARE_LIBRARIES ${tmp})
     else()

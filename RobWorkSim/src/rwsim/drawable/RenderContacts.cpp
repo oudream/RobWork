@@ -19,7 +19,7 @@
 
 #include <rw/sensor/Contact3D.hpp>
 
-#include <boost/foreach.hpp>
+
 
 using namespace rw::sensor;
 using namespace rw::math;
@@ -48,7 +48,7 @@ void RenderContacts::addContact(const Contact3D& contacts){
 }
 
 void RenderContacts::addContacts(const std::vector<Contact3D>& contacts){
-	BOOST_FOREACH(const Contact3D& contact, contacts){
+	for(const Contact3D& contact: contacts){
 		_contacts.push_back(contact);
 	}
 }
@@ -58,7 +58,7 @@ void RenderContacts::setContacts(const std::vector<Contact3D>& contacts){
 }
 
 void RenderContacts::draw(const DrawableNode::RenderInfo& info, DrawType type, double alpha) const{
-    BOOST_FOREACH(const Contact3D& con, _contacts){
+    for(const Contact3D& con: _contacts){
     	Vector3D<> pos = con.p;
     	Vector3D<> nforce = con.n * con.normalForce;
 		//if( _force.norm2()<0.001 )

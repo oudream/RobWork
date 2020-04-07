@@ -376,7 +376,7 @@ public:
     }
 
 private:
-    typedef boost::numeric::ublas::bounded_vector<T, 7> V;
+    typedef Eigen::Matrix<T, 7,1> V;
     InterpolatorUtil::Transform2VectorWrapper<V,T> _wrap1;
     InterpolatorUtil::Transform2VectorWrapper<V,T> _wrap2;
     LloydHaywardBlend<V> _blend;

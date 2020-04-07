@@ -38,7 +38,7 @@
 #include <xercesc/parsers/XercesDOMParser.hpp>
 #include <xercesc/util/XMLUni.hpp>
 
-#include <boost/foreach.hpp>
+
 
 using namespace xercesc;
 using namespace rw::common;
@@ -140,7 +140,7 @@ void XMLTaskSaver::writeTargets(typename Task<T>::Ptr task, xercesc::DOMElement*
 	std::vector<rw::common::Ptr<Target<T> > > targets = task->getTargets();
 
 	int targetId = 0;
-	BOOST_FOREACH(rw::common::Ptr<Target<T> > target, targets) {
+	for(rw::common::Ptr<Target<T> > target: targets) {
 		xercesc::DOMElement* targetElement = doc->createElement(Identifiers<T>::targetId());
 		targetsElement->appendChild(targetElement);
 
@@ -215,7 +215,7 @@ void XMLTaskSaver::writeEntities(typename Task<T>::Ptr task, xercesc::DOMElement
     element->appendChild(entriesElement);
 
 	std::vector<Entity::Ptr> entities = task->getEntities();
-	BOOST_FOREACH(Entity::Ptr entity, entities) {
+	for(Entity::Ptr entity: entities) {
 		switch (entity->entityType()) {
 		case EntityType::Task:
 			writeTask(entity.cast<Task<T> >(), entriesElement, doc);

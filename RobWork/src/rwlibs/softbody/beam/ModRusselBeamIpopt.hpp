@@ -57,7 +57,7 @@ public:
      * @param U vector to put the x-component of the curve in
      * @param V vector to put the x-component of the curve in
      **/
-    void solve ( boost::numeric::ublas::vector< double >& xinituser, boost::numeric::ublas::vector<double> &U, boost::numeric::ublas::vector<double> &V );
+    void solve ( Eigen::VectorXd& xinituser, Eigen::VectorXd &U, Eigen::VectorXd &V );
 
 private:
     Ipopt::SmartPtr< Ipopt::TNLP > _nlp;

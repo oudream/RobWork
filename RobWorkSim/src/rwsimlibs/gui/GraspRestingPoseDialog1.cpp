@@ -2,7 +2,7 @@
 
 #include <iostream>
 #include <fstream>
-#include <boost/foreach.hpp>
+
 
 #include <rw/math/RPY.hpp>
 #include <rw/math/Math.hpp>
@@ -43,7 +43,6 @@ using namespace rw::loaders;
 using namespace rw::trajectory;
 using namespace rwlibs::simulation;
 
-using namespace boost::numeric::ublas;
 
 #define RW_DEBUGS( str ) std::cout << str  << std::endl;
 
@@ -69,7 +68,7 @@ namespace {
 
         file << "# tactile sensor data \n";
         // save tactile data
-        BOOST_FOREACH(matrix<float>& data, datas){
+        for(matrix<float>& data: datas){
             for(size_t x=0;x<data.size1(); x++){
                 for(size_t y=0;y<data.size2(); y++){
                     file << data(x,y) << " ";
@@ -160,7 +159,7 @@ _graspNotStable(false)
 
     RW_DEBUGS("- Setting devices ");
     std::vector<DynamicDevice*> devices = _dwc->getDynamicDevices();
-    BOOST_FOREACH(DynamicDevice* device, devices){
+    for(DynamicDevice* device: devices){
         if(dynamic_cast<RigidDevice*>(device)){
             rw::models::Device *dev = &device->getModel();
             RW_ASSERT(dev);
@@ -170,7 +169,7 @@ _graspNotStable(false)
     }
 
     RW_DEBUGS("- Setting objects ");
-    BOOST_FOREACH(Body *body, _dwc->getBodies() ){
+    for(Body *body: _dwc->getBodies() ){
         Frame *obj = &body->getBodyFrame();
         if(obj==NULL)
             continue;
@@ -219,7 +218,7 @@ void GraspRestingPoseDialog::initializeStart(){
 
     RW_DEBUGS("- Getting object!");
     std::string objName = _objectBox->currentText().toStdString();
-    BOOST_FOREACH(Body* body, _dwc->getBodies()){
+    for(Body* body: _dwc->getBodies()){
         if(RigidBody* rbody = dynamic_cast<RigidBody*>(body)){
             if(rbody->getBodyFrame().getName()==objName){
                 _bodies.push_back(rbody);
@@ -362,7 +361,7 @@ void GraspRestingPoseDialog::btnPressed(){
         _stopBtn->setDisabled(true);
         _resetBtn->setDisabled(false);
         _timer->stop();
-        BOOST_FOREACH(Ptr<ThreadSimulator> sim,  _simulators){
+        for(Ptr<ThreadSimulator> sim:  _simulators){
             if(sim->isRunning())
                 sim->stop();
         }
@@ -449,7 +448,7 @@ void GraspRestingPoseDialog::saveRestingState( Ptr<ThreadSimulator> sim ){
     int fingersWithData = 0;
     std::vector<SimulatedSensorPtr> sensors = sim->getSimulator()->getSensors();
     std::vector<matrix<float> > datas;
-    BOOST_FOREACH(SimulatedSensorPtr& sensor, sensors){
+    for(SimulatedSensorPtr& sensor: sensors){
         if( TactileArraySensor *tsensor = dynamic_cast<TactileArraySensor*>( sensor.get() ) ) {
             datas.push_back( tsensor->getTexelData() );
 
@@ -472,7 +471,7 @@ void GraspRestingPoseDialog::saveRestingState( Ptr<ThreadSimulator> sim ){
     if(g3d.contacts.size()<2)
         return;
     Transform3D<> wTf = Kinematics::worldTframe(_handBase, state);
-    BOOST_FOREACH(Contact3D &c, g3d.contacts){
+    for(Contact3D &c: g3d.contacts){
         sstr << c.p << "  " << c.n << " ";
     }
 
@@ -687,7 +686,7 @@ void GraspRestingPoseDialog::calcColFreeRandomCfg(rw::kinematics::State& state){
     std::vector<RigidBody*> bodies;
     while( _colDect->inCollision(state, &result, false) ){
         nrOfTries++;
-        BOOST_FOREACH(rw::kinematics::FramePair pair, result){
+        for(rw::kinematics::FramePair pair: result){
             // generate new collision free configuration between
             RigidBody *body1 = _frameToBody[*pair.first];
             RigidBody *body2 = _frameToBody[*pair.second];
@@ -755,7 +754,7 @@ void GraspRestingPoseDialog::calcRandomCfg(std::vector<RigidBody*> &bodies, rw::
 /*
 
 
-    BOOST_FOREACH(RigidBody *rbody, bodies){
+    for(RigidBody *rbody: bodies){
         double roll = Math::ran(lowR, highR);
         double pitch = Math::ran(lowP, highP);
         double yaw = Math::ran(lowY, highY);

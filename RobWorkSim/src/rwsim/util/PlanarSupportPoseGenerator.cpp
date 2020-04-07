@@ -3,7 +3,7 @@
 #include <rw/geometry/QHull3D.hpp>
 //#include <rw/geometry/IncrementalHull.hpp>
 #include <rw/common/Ptr.hpp>
-#include <boost/foreach.hpp>
+
 #include <rw/geometry/Geometry.hpp>
 #include <rw/geometry/GeometryUtil.hpp>
 #include <rw/geometry/TriangleUtil.hpp>
@@ -162,7 +162,7 @@ void PlanarSupportPoseGenerator::analyze(const std::vector<rw::geometry::Geometr
     _com = masscenter;
     // then we find the convex hull of all vertexes of all geoms
     std::vector<Vector3D<> > vertices;
-    BOOST_FOREACH(Geometry::Ptr geom, bodies){
+    for(Geometry::Ptr geom: bodies){
         GeometryData::Ptr geomdata = geom->getGeometryData();
         TriMesh::Ptr mesh = geomdata->getTriMesh(false);
         Transform3D<> t3d = geom->getTransform();
@@ -170,7 +170,7 @@ void PlanarSupportPoseGenerator::analyze(const std::vector<rw::geometry::Geometr
         if( dynamic_cast<IndexedTriMesh<>*>(mesh.get()) ){
             IndexedTriMesh<>* idxmesh = dynamic_cast<IndexedTriMesh<>*>(mesh.get());
             std::vector<Vector3D<> >& verts = idxmesh->getVertices();
-            BOOST_FOREACH(Vector3D<>& v, verts){ vertices.push_back( t3d*v ); }
+            for(Vector3D<>& v: verts){ vertices.push_back( t3d*v ); }
         } else {
             IndexedTriMesh<>::Ptr idxMesh = TriangleUtil::toIndexedTriMesh<IndexedTriMeshN0<> >(*mesh,0.00001);
             std::vector<Vector3D<> > verts = idxMesh->getVertices();
@@ -229,7 +229,7 @@ void PlanarSupportPoseGenerator::doAnalysis(){
         }
     }
 
-    BOOST_FOREACH(int triIdx, result){
+    for(int triIdx: result){
         TriangleN1<>& tri = (*fmesh)[triIdx];
         Plane p(tri[0],tri[1],tri[2]);
 
@@ -308,7 +308,7 @@ void PlanarSupportPoseGenerator::doAnalysis(){
     }
 
     std::cout << "Now ";
-    BOOST_FOREACH(Plane& p, _supportPlanes){
+    for(Plane& p: _supportPlanes){
         double height = p.distance(_com);
     	SupportPose pose( -p.normal() , height);
         std::cout << "- " << -p.normal() << std::endl;

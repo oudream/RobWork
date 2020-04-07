@@ -6,7 +6,7 @@
 #include <sstream>
 #include <fstream>
 
-#include <boost/foreach.hpp>
+
 
 #include "RWSimGuiConfig.hpp"
 
@@ -137,7 +137,7 @@ SupportPoseAnalyserDialog::SupportPoseAnalyserDialog(const rw::kinematics::State
 	_zaxis.resize( _bodies.size() );
 
     // load combobox
-    BOOST_FOREACH(RigidBody::Ptr  body, _bodies){
+    for(RigidBody::Ptr  body: _bodies){
         _ui->_selectObjBox->addItem( body->getBodyFrame()->getName().c_str() );
     }
     _frameRender = ownedPtr(new RenderFrame());
@@ -235,7 +235,7 @@ SupportPoseAnalyserDialog::SupportPoseAnalyserDialog(const rw::kinematics::State
 
     _bodies = DynamicUtil::getRigidBodies(*_dwc);
     // load combobox
-    BOOST_FOREACH(RigidBody::Ptr body, _bodies){
+    for(RigidBody::Ptr body: _bodies){
         _ui->_planarObjectBox->addItem( body->getBodyFrame()->getName().c_str() );
     }
 
@@ -321,7 +321,7 @@ void SupportPoseAnalyserDialog::btnPressed(){
 
     	RigidBody* selectedObj=NULL;
     	std::string selectedName = _ui->_planarObjectBox->currentText().toStdString();
-    	BOOST_FOREACH(RigidBody::Ptr obj, _bodies){
+    	for(RigidBody::Ptr obj: _bodies){
     	    if( obj->getBodyFrame()->getName()==selectedName ){
     	        selectedObj = obj.get();
     	        break;
@@ -388,7 +388,7 @@ void SupportPoseAnalyserDialog::btnPressed(){
 
         RigidBody* selectedObj=NULL;
         std::string selectedName = _ui->_planarObjectBox->currentText().toStdString();
-        BOOST_FOREACH(RigidBody::Ptr obj, _bodies){
+        for(RigidBody::Ptr obj: _bodies){
             if( obj->getBodyFrame()->getName()==selectedName ){
                 selectedObj = obj.get();
                 break;
@@ -461,7 +461,7 @@ void SupportPoseAnalyserDialog::saveDistribution(){
 void SupportPoseAnalyserDialog::showPlanarDistribution(){
     RigidBody* body=NULL;
     std::string selectedName = _ui->_planarObjectBox->currentText().toStdString();
-    BOOST_FOREACH(RigidBody::Ptr obj, _bodies){
+    for(RigidBody::Ptr obj: _bodies){
         if( obj->getBodyFrame()->getName()==selectedName ){
             body = obj.get();
             break;
@@ -489,7 +489,7 @@ void SupportPoseAnalyserDialog::showPlanarDistribution(){
     _zaxis.push_back( std::vector<Vector3D<> >(poses.size()) );
 
     int j=0;
-    BOOST_FOREACH(const Transform3D<>& t, poses){
+    for(const Transform3D<>& t: poses){
         // add a point to the graphics view
         EAA<> eaa(t.R());
         RPY<> rpy(t.R());
@@ -632,11 +632,9 @@ void SupportPoseAnalyserDialog::changedEvent(){
 
 
     	std::vector<Vector3D<> > &xaxis = _xaxisS[body];
-    	//std::vector<Vector3D<> > &yaxis = _yaxisS[body];
-    	//std::vector<Vector3D<> > &zaxis = _zaxisS[body];
     	std::cout << "xaxis.size()==_xaxis.size() " << xaxis.size() << "==" << _xaxis[bodyIdx].size()<< std::endl;
     	if(xaxis.size()==_xaxis[bodyIdx].size()){
-			BOOST_FOREACH(int idx, poseIdxList){
+			for(int idx: poseIdxList){
 			    // visualize the EAA instead
 			    if(_ui->_rpyBox->isChecked() ){
 			        RPY<> eaa(_startTransforms[bodyIdx][idx].R() );
@@ -645,14 +643,12 @@ void SupportPoseAnalyserDialog::changedEvent(){
                     EAA<> eaa(_startTransforms[bodyIdx][idx].R() );
                     _selPosePntRenderZ->addPoint( Vector3D<>(eaa[0]/4,eaa[1]/4,eaa[2]/4 ) );
 			    }
-			    //_selPosePntRenderX->addPoint( xaxis[idx] );
-				//_selPosePntRenderY->addPoint( yaxis[idx] );
-				//_selPosePntRenderZ->addPoint( zaxis[idx] );
 			}
 
 			// now add everything else
 			std::size_t pidx = 0;
-			for(std::size_t i = 0; i < (_startTransforms.size() > 0)? _startTransforms[bodyIdx].size() : 0; i++){
+			size_t length = (_startTransforms.size() > 0)? _startTransforms[bodyIdx].size() : 0;
+			for(std::size_t i = 0; i < length ; i++){
 			    if( pidx<poseIdxList.size() && (int)i==poseIdxList[pidx] ){
 			        pidx++;
 			        continue;
@@ -841,7 +837,7 @@ namespace {
         	bool inGroup=false;
             for(size_t j=0; j<lineGroups.size() && !inGroup; j++) {
             	LineGroup &group = lineGroups[j];
-            	BOOST_FOREACH(Line& gline, group){
+            	for(Line& gline: group){
             		if(fabs(gline.rho-line.rho)<epsRho &&
             		   fabs(gline.theta-line.theta)<epsTheta){
 						inGroup=true;
@@ -863,10 +859,10 @@ namespace {
         // ************************************************
         // then for each group we calculate the line that is the average of the group
         std::vector<Line> avgLines;
-        BOOST_FOREACH(LineGroup& group, lineGroups){
+        for(LineGroup& group: lineGroups){
         	Line avgline(0,0);
         	//std::cout << "Group: " << group.size() << std::endl;
-        	BOOST_FOREACH(Line& gline, group){
+        	for(Line& gline: group){
         		//gline.print();
         		avgline.rho += gline.rho;
         		avgline.theta += gline.theta;
@@ -986,7 +982,7 @@ namespace {
 
 		void add(const Vector3D<>& v, const Vector3D<>& n, int idx){
 			int i=0;
-			BOOST_FOREACH(const Vector3D<>& sv, _set){
+			for(const Vector3D<>& sv: _set){
 				if(MetricUtil::dist2(v,sv)<_eps){
 					_setStats[i]++;
 					_poseIdx[i].push_back(idx);
@@ -1118,7 +1114,7 @@ namespace {
         std::list<const KDTreeQ<KDTreeValue>::KDNode*> result;
         Q diff(6, dist, dist, dist, angle, angle, angle);
         // find neighbors and connect them
-        BOOST_FOREACH(KDTreeQ<KDTreeValue>::KDNode &n, nodes){
+        for(KDTreeQ<KDTreeValue>::KDNode &n: nodes){
             KDTreeValue &val = n.value;
             // check if the node is allready part of a region
             if(val.get<1>() >=0)
@@ -1128,7 +1124,7 @@ namespace {
             nntree->nnSearchRect(n.key-diff, n.key+diff, result);
             int currentIndex = -1;
             // first see if any has an id
-            BOOST_FOREACH(const KDTreeQ<KDTreeValue>::KDNode* nn, result){
+            for(const KDTreeQ<KDTreeValue>::KDNode* nn: result){
                 KDTreeValue nnval = nn->value;
                 if(nnval.get<1>() >=0){
                     currentIndex = nnval.get<1>();
@@ -1142,7 +1138,7 @@ namespace {
                 freeRegion++;
             }
             val.get<1>() = currentIndex;
-            BOOST_FOREACH(const KDTreeQ<KDTreeValue>::KDNode* nn, result){
+            for(const KDTreeQ<KDTreeValue>::KDNode* nn: result){
                 KDTreeValue nnval = nn->value;
                 if(nnval.get<1>() >=0 && nnval.get<1>()!=currentIndex){
 
@@ -1150,7 +1146,7 @@ namespace {
 
                     // merge all previously defined nnval.get<1>() into freeRegion
                     regions[nnval.get<1>()] = false;
-                    BOOST_FOREACH(KDTreeQ<KDTreeValue>::KDNode &npro, nodes){
+                    for(KDTreeQ<KDTreeValue>::KDNode &npro: nodes){
                         KDTreeValue &npval = npro.value;
                         // check if the node is allready part of a region
                         if(npval.get<1>() == nnval.get<1>())
@@ -1164,7 +1160,7 @@ namespace {
         // now print region information
         std::vector<int> validRegions;
         typedef std::map<int,bool>::value_type mapType;
-        BOOST_FOREACH(mapType val , regions){
+        for(mapType val : regions){
             if(val.second==true){
                 validRegions.push_back(val.first);
             }
@@ -1174,7 +1170,7 @@ namespace {
         std::cout << "Nr of detected regions: " << validRegions.size() << std::endl;
         std::map<int,std::vector<int> >* statMap = new std::map<int,std::vector<int> >();
 
-        BOOST_FOREACH(KDTreeQ<KDTreeValue>::KDNode &n, nodes){
+        for(KDTreeQ<KDTreeValue>::KDNode &n: nodes){
             KDTreeValue &val = n.value;
             // check if the node is allready part of a region
             (*statMap)[val.get<1>()].push_back( val.get<0>() );
@@ -1212,7 +1208,7 @@ void SupportPoseAnalyserDialog::process(){
         sposes.clear();
 
         typedef std::map<int,std::vector<int> >::value_type mapType2;
-        BOOST_FOREACH(mapType2 val, *regions){
+        for(mapType2 val: *regions){
             if(val.second.size() > 4)
                 Log::infoLog() << "Region stat: " << val.first << ":" << val.second.size() ;
 
@@ -1220,7 +1216,7 @@ void SupportPoseAnalyserDialog::process(){
             double angle = 0;
             int count = 0;
             std::vector<Transform3D<> > transformations;
-            BOOST_FOREACH(int idx, val.second){
+            for(int idx: val.second){
                 count ++;
                 std::cout << idx << std::endl;
                 RW_ASSERT(_startTransforms.size()>j);
@@ -1377,7 +1373,7 @@ void SupportPoseAnalyserDialog::process(){
 
 			}
 			bool hasPose = false;
-			BOOST_FOREACH(CircleIdx &circleIdx, circlePoses){
+			for(CircleIdx &circleIdx: circlePoses){
 				if(circlePose==circleIdx){
 					hasPose = true;
 					break;
@@ -1431,7 +1427,7 @@ void SupportPoseAnalyserDialog::updateResultView(){
 	_ui->_resultView->clear();
 
 	int i=0;
-	BOOST_FOREACH(const SupportPose &pose, _supportPoses[body]){
+	for(const SupportPose &pose: _supportPoses[body]){
 		std::stringstream str;
 		str << "(" << i << ") [ " << pose._degree << " , " << pose._probability << " ] ";
 

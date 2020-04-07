@@ -224,7 +224,7 @@ namespace rw { namespace math {
          */
         T angle() const
         {
-            return norm_2(_eaa.m());
+            return _eaa.e().norm();
         }
 
         /**

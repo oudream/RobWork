@@ -30,7 +30,7 @@ namespace
 {
     double norm_inf(const Vector3D<>& v)
     {
-        return norm_inf(v.m());
+        return v.normInf();
     }
 }
 

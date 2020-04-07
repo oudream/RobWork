@@ -29,7 +29,7 @@
 #include <rw/math/Transform3D.hpp>
 #include <rw/math/VelocityScrew6D.hpp>
 
-//#include <boost/foreach.hpp>
+//
 #include <rw/geometry/Geometry.hpp>
 
 #include <rw/kinematics/Stateless.hpp>
@@ -74,7 +74,7 @@ namespace dynamics {
         	//std::cout << "Frames: \n";
         	//RW_ASSERT(frames.size()>0);
         	//std::cout << "- " << frames[0]->getName() << "\n";
-        	//BOOST_FOREACH(rw::kinematics::Frame* frame, frames){
+        	//for(rw::kinematics::Frame* frame: frames){
         	//	std::cout <<"-- "<< frame->getName() << "\n";
         	//}
         	std::cout << std::endl;
@@ -90,7 +90,7 @@ namespace dynamics {
         	//ostr << "Frames: \n";
         	//RW_ASSERT(frames.size()>0);
         	//ostr << "- " << frames[0]->getName() << "\n";
-        	//BOOST_FOREACH(rw::kinematics::Frame* frame, frames){
+        	//for(rw::kinematics::Frame* frame: frames){
         	//	ostr <<"-- "<< frame->getName() << "\n";
         	//}
         	ostr << std::endl;

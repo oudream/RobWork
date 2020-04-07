@@ -7,7 +7,7 @@
 
 #include <QImage>
 #include <QImageReader>
-#include <boost/foreach.hpp>
+
 
 using namespace rws;
 using namespace rw::sensor;
@@ -25,7 +25,7 @@ namespace {
     	std::vector<std::string> getImageFormats(){
     	    QList<QByteArray> formats = QImageReader::supportedImageFormats();
     	    std::vector<std::string> subformats;
-    	    BOOST_FOREACH(QByteArray& format, formats){
+    	    for(QByteArray& format: formats){
     	        std::string str = format.toUpper().data();
     	        subformats.push_back(str);
     	    }
@@ -64,8 +64,8 @@ std::vector<Extension::Descriptor> RWSImageLoaderPlugin::getExtensionDescriptors
     exts.push_back(Extension::Descriptor("QImageLoader","rw.loaders.ImageLoader"));
     //QList<QByteArray> formats = QImageReader::supportedImageFormats();
     std::string formats[] = {"BMP","GIF","JPG","JPEG","MNG","PNG","PBM","PGM","PPM","TIFF","XBM","XPM","SVG","TGA"};
-    //BOOST_FOREACH(QByteArray& format, formats){
-    BOOST_FOREACH(std::string& format, formats){
+    //for(QByteArray& format: formats){
+    for(std::string& format: formats){
     	//std::cout << "setting format: " << format.toUpper().data() << std::endl;
     	exts.back().getProperties().set(format, true);
     }
@@ -77,7 +77,7 @@ rw::common::Ptr<Extension> RWSImageLoaderPlugin::makeExtension(const std::string
 		Extension::Ptr extension = rw::common::ownedPtr( new Extension("QImageLoader","rw.loaders.ImageLoader",
 				this, ownedPtr(new QImageLoader()) ) );
 	    QList<QByteArray> formats = QImageReader::supportedImageFormats();
-	    BOOST_FOREACH(QByteArray& format, formats){
+	    for(QByteArray& format: formats){
 	    	extension->getProperties().set(format.toUpper().data(), true);
 	    }
 	    return extension;

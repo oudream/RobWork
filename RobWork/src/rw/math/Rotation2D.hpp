@@ -27,10 +27,6 @@
 
 #include <rw/common/Serializable.hpp>
 
-#include <boost/numeric/ublas/matrix.hpp>
-#include <boost/numeric/ublas/matrix_expression.hpp>
-#include <boost/numeric/ublas/matrix_proxy.hpp>
-
 #include <Eigen/Eigen>
 
 namespace rw { namespace math {
@@ -65,9 +61,6 @@ namespace rw { namespace math {
     public:
         //! Value type.
         typedef T value_type;
-
-        //! The type of the internal Boost matrix implementation.
-        typedef boost::numeric::ublas::bounded_matrix<T, 2, 2> BoostMatrix2x2;
 
         //! The type of the internal Boost matrix implementation.
 		typedef Eigen::Matrix<T, 2, 2> EigenMatrix2x2;
@@ -160,30 +153,6 @@ namespace rw { namespace math {
             _m[1][0] = i[1]; 
 			_m[1][1] = i[0];
         }
-
-
-
-
-        /**
-           @brief Construct a rotation matrix from a Boost matrix expression.
-
-           The matrix expression must be convertible to a 2x2 bounded matrix.
-
-           It is the responsibility of the user that 2x2 matrix is indeed a
-           rotation matrix.
-         */
-        template <class R>
-        explicit Rotation2D(
-            const boost::numeric::ublas::matrix_expression<R>& r) 
-        {
-			BoostMatrix2x2 b(r);
-			_m[0][0] = b(0,0);
-			_m[0][1] = b(0,1);
-			_m[1][0] = b(1,0);
-			_m[1][1] = b(1,1);
-		}
-
-
 		
         /**
            @brief Construct a rotation matrix from an Eigen matrix.
@@ -272,24 +241,6 @@ namespace rw { namespace math {
         bool operator!=(const Rotation2D<T> &rhs) const {
             return !(*this == rhs);
         }
-
-        /**
-         * @brief Returns a boost 2x2 matrix @f$ \mathbf{M}\in SO(2)
-         * @f$ that represents this rotation
-         *
-         * @return @f$ \mathbf{M}\in SO(2) @f$
-         */
-        BoostMatrix2x2 m2()
-        {
-			BoostMatrix2x2 matrix;
-			matrix(0,0) = _m[0][0];
-			matrix(0,1) = _m[0][1];			
-			matrix(1,0) = _m[1][0];			
-			matrix(1,1) = _m[1][1];
-			return matrix;
-        }
-
-
 		
         /**
          * @brief Returns a boost 2x2 matrix @f$ \mathbf{M}\in SO(2)

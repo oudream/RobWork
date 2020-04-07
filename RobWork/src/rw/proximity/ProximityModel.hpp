@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -20,84 +20,92 @@
 
 #include <rw/common/Ptr.hpp>
 
-#include <vector>
 #include <string>
+#include <vector>
 
-namespace rw { namespace geometry { class Geometry; } }
-namespace rw { namespace kinematics { class Frame; } }
+namespace rw { namespace geometry {
+    class Geometry;
+}}    // namespace rw::geometry
+namespace rw { namespace kinematics {
+    class Frame;
+}}    // namespace rw::kinematics
 
-namespace rw {
-namespace proximity {
+namespace rw { namespace proximity {
 
     class ProximityStrategy;
 
     /**
      * @brief Class for managing the collision geometries associated to a frame
      **/
-    class ProximityModel {
-    public:
-		//! @brief smart pointer type to this class
-		typedef rw::common::Ptr<ProximityModel> Ptr;
+    class ProximityModel
+    {
+      public:
+        //! @brief smart pointer type to this class
+        typedef rw::common::Ptr< ProximityModel > Ptr;
 
-		//ProximityModel(rw::common::Ptr<ProximityStrategy> pOwner):
+        // ProximityModel(rw::common::Ptr<ProximityStrategy> pOwner):
         /**
          * @brief Constructor
          *
          * @param pOwner the ProximityStrategy owning this ProximityModel
          **/
-        ProximityModel(ProximityStrategy* pOwner):
-            owner(pOwner),
-			_frame(NULL)
-        {}
+        ProximityModel (ProximityStrategy* pOwner) : owner (pOwner), _frame (NULL) {}
 
-        virtual ~ProximityModel();
+        virtual ~ProximityModel ();
 
         /**
          * @brief return vector of names for the geometries added to this ProximityModel
          *
          **/
-        std::vector<std::string> getGeometryIDs();
-
-        //void addModel(const CollisionModelInfo& model){
-        //    _collisionModels.push_back();
-        //}
-
-        //std::vector<CollisionModelInfo> _collisionModels;
-
+        std::vector< std::string > getGeometryIDs ();
 
         /**
-         * @brief adds geometry 
+         *  @brief get the associated Geometries
+         */
+        std::vector< rw::common::Ptr< rw::geometry::Geometry > > getGeometries ();
+
+        /**
+         * @brief adds geometry
          *
          * @param geom the geometry to add
          **/
-        bool addGeometry(const rw::geometry::Geometry& geom);
-        
+        bool addGeometry (const rw::geometry::Geometry& geom);
+
+        /**
+         * @brief adds geometry using pointer
+         *
+         * @param geom [in] the geometry to add
+         * @param forceCopy [in]
+         **/
+        bool addGeometry (rw::common::Ptr< rw::geometry::Geometry > geom, bool forceCopy = false);
+
         /**
          * @brief removes a geometry from the ProximityModel
          *
          * @param geoid name of geometry to remove
          * @return bool
-         **/       
-        bool removeGeometry(const std::string& geoid);
+         **/
+        bool removeGeometry (const std::string& geoid);
 
         /**
          * @brief return pointer to the associated frame
          *
          **/
-        rw::kinematics::Frame* getFrame(){ return _frame;};
-                
-        void setFrame(rw::kinematics::Frame* frame){ _frame = frame; }
+        const rw::kinematics::Frame* getFrame () { return _frame; };
+
         /**
          * @brief sets the associated frame
          *
          * @param frame frame to set
-         **/     
-        
-		ProximityStrategy* owner;
-    private:
-		rw::kinematics::Frame* _frame;
+         **/
+
+        void setFrame (const rw::kinematics::Frame* frame) { _frame = frame; }
+
+        ProximityStrategy* owner;
+
+      private:
+        const rw::kinematics::Frame* _frame;
     };
-}
-}
+}}    // namespace rw::proximity
 
 #endif /* PROXIMITYMODEL_HPP_ */

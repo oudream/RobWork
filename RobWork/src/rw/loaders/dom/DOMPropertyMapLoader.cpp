@@ -21,7 +21,7 @@
 #include <rw/loaders/dom/DOMPropertyMapFormat.hpp>
 #include <rw/common/DOMParser.hpp>
 
-#include <boost/foreach.hpp>
+
 
 using namespace rw;
 using namespace rw::math;
@@ -56,7 +56,7 @@ PropertyBase::Ptr DOMPropertyMapLoader::readProperty(DOMElem::Ptr element, bool 
 
 	std::string name = "", description = "";
 	DOMElem::Ptr value = NULL;
-	BOOST_FOREACH( DOMElem::Ptr child, element->getChildren() ){
+	for( DOMElem::Ptr child: element->getChildren() ){
 		if (child->isName(DOMPropertyMapFormat::idPropertyName()) ) {
 			name = child->getValue();
 		} else if (child->isName(DOMPropertyMapFormat::idPropertyDescription())) {
@@ -73,7 +73,7 @@ PropertyBase::Ptr DOMPropertyMapLoader::readProperty(DOMElem::Ptr element, bool 
 	if (value == NULL)
 		RW_THROW("Parse Error: data value not defined in Property with name \""<< name << "\"!");
 
-	BOOST_FOREACH( DOMElem::Ptr child, value->getChildren() ){
+	for( DOMElem::Ptr child: value->getChildren() ){
 		if (child->isName(DOMPropertyMapFormat::idPropertyMap())) {
 			return ownedPtr(new Property<PropertyMap>(name, description, DOMPropertyMapLoader::readProperties(child, true)));
 		} else if (child->isName(DOMBasisTypes::idString())) {
@@ -138,7 +138,7 @@ PropertyMap DOMPropertyMapLoader::readProperties(DOMElem::Ptr element, bool chec
     	    RW_THROW("Parse error: Expected \"PropertyMap\" got \"" + element->getName() + "\"!");
 
     PropertyMap properties;
-    BOOST_FOREACH(DOMElem::Ptr child, element->getChildren()){
+    for(DOMElem::Ptr child: element->getChildren()){
 		if ( child->isName(DOMPropertyMapFormat::idProperty()) ) {
 			PropertyBase::Ptr property = readProperty(child, false);
 			if (property != NULL)

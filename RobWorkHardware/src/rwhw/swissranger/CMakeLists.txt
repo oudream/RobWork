@@ -1,6 +1,6 @@
 set(SUBSYS_NAME sdurwhw_swissranger)
 set(SUBSYS_DESC "Swiss ranger driver")
-set(SUBSYS_DEPS sdurw)
+set(SUBSYS_DEPS RW::sdurw)
 
 set(build TRUE)
 set(DEFAULT FALSE)

@@ -56,7 +56,7 @@
 #include <fstream>
 
 #include <boost/bind.hpp>
-#include <boost/foreach.hpp>
+
 
 using namespace rw::math;
 using namespace rw::common;
@@ -175,7 +175,7 @@ RWSimulatorPlugin::RWSimulatorPlugin():
             std::vector<std::string> engineIDs =
                 PhysicsEngine::Factory::getEngineIDs();
             _engineBox = new QComboBox();
-            BOOST_FOREACH(std::string engineID, engineIDs){
+            for(std::string engineID: engineIDs){
                 _engineBox->addItem(engineID.c_str());
             }
             lay->addWidget(_engineBox);
@@ -315,7 +315,7 @@ void RWSimulatorPlugin::open(rw::models::WorkCell* workcell)
         RW_WARN("Physics engine does not support debug rendering!");
     }
 
-    BOOST_FOREACH(SimulatedSensor::Ptr sensor,  _dworkcell->getSensors()){
+    for(SimulatedSensor::Ptr sensor:  _dworkcell->getSensors()){
         if( sensor.cast<rwsim::sensor::TactileArraySensor>() ){
         	rwsim::sensor::TactileArraySensor::Ptr tsensor = sensor.cast<rwsim::sensor::TactileArraySensor>();
             TactileArrayRender *render = new TactileArrayRender(tsensor->getTactileArrayModel());

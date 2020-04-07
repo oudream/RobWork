@@ -123,12 +123,17 @@ bool CollisionDetector::inCollision (const kinematics::State& state, ProximityDa
         const Transform3D<> aT = fk.get (*pair.first);
         const Transform3D<> bT = fk.get (*pair.second);
         bool res               = _npstrategy.isNull ();
-        if (!res)
+        if (!res) {
             res = _npstrategy->inCollision (a, aT, b, bT, data);
+            if (res) {
+                proxdata._collisionData._fullInfo.push_back (data);
+            }
+        }
         if (res) {
             proxdata._collisionData.collidingFrames.insert (pair);
-            if (stopAtFirstContact)
+            if (stopAtFirstContact) {
                 return true;
+            }
         }
     }
 
@@ -163,16 +168,22 @@ bool CollisionDetector::inCollision (const State& state, QueryResult* result,
         const Transform3D<> aT = fk.get (*pair.first);
         const Transform3D<> bT = fk.get (*pair.second);
         bool res               = _npstrategy.isNull ();
-        if (!res)
+        if (!res) {
             res = _npstrategy->inCollision (a, aT, b, bT, data);
+            if (res && result) {
+                result->_fullInfo.push_back (data);
+            }
+        }
         if (res) {
             if (result) {
                 result->collidingFrames.insert (pair);
-                if (stopAtFirstContact)
+                if (stopAtFirstContact) {
                     return true;
+                }
             }
-            else
+            else {
                 return true;
+            }
         }
     }
 
@@ -188,7 +199,7 @@ void CollisionDetector::addGeometry (rw::kinematics::Frame* frame,
         RW_THROW ("Unable to add NULL as geometry");
     }
     if (!_npstrategy.isNull ()) {
-        _npstrategy->addModel (frame, *geometry);
+        _npstrategy->addModel (frame, geometry);
         _frameToModels[*frame] = _npstrategy->getModel (frame);
     }
 
@@ -206,14 +217,14 @@ void CollisionDetector::removeGeometry (rw::kinematics::Frame* frame, const std:
     _bpfilter->removeGeometry (frame, geoid);
     // todo: remember to update all midphase filters
 
-    // now use the dispatcher to find the right ProximityModel to add the geom to
+    // now use the dispatcher to find the right ProximityModel to remove the geom from
     if (!_npstrategy.isNull ()) {
         if (!_npstrategy->hasModel (frame)) {
             RW_THROW ("Frame does not have any proximity models attached!");
         }
 
         ProximityModel::Ptr model = _npstrategy->getModel (frame);
-        _npstrategy->removeGeometry (model.get (), geoid);
+        model->removeGeometry(geoid);
         _frameToModels[*frame] = _npstrategy->getModel (frame);
     }
 }
@@ -246,4 +257,10 @@ bool CollisionDetector::hasGeometry (rw::kinematics::Frame* frame, const std::st
             return true;
     }
     return false;
+}
+
+rw::geometry::Geometry::Ptr CollisionDetector::getGeometry (rw::kinematics::Frame* frame, const std::string& geometryId)
+{
+
+    return NULL;
 }

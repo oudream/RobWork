@@ -93,8 +93,8 @@ void RenderMatrix::draw(const DrawableNode::RenderInfo& info, DrawableNode::Draw
 	float x_offset = 0;
     float y_offset = 0;
 
-	for (size_t col = 0; col < _vals.size1(); x_offset += _width) {
-		for (size_t row = 0; row < _vals.size2(); y_offset += _height) {
+	for (int col = 0; col < _vals.rows(); x_offset += _width) {
+		for (int row = 0; row < _vals.cols(); y_offset += _height) {
 			float zval = (float)Math::clamp(_vals(col, row), 0.0f, _maxZ) * _zscale;
 
 			// calculate and draw color

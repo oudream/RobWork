@@ -51,7 +51,7 @@ using namespace rw::models;
 #include <rwsim/dynamics/DynamicWorkCell.hpp>
 #include <rwsim/sensor/SimulatedFTSensor.hpp>
 
-#include <boost/foreach.hpp>
+
 
 using namespace rw::common;
 using namespace rw::kinematics;
@@ -123,12 +123,12 @@ void BtSimulator::step(double dt, State& state){
     //std::cout << "Controller" << std::endl;
 	Simulator::UpdateInfo info(dt);
 	info.dt_prev = dt;
-    BOOST_FOREACH(SimulatedController::Ptr controller, _controllers ) {
+    for(SimulatedController::Ptr controller: _controllers ) {
         controller->update(info, state);
 
     }
     //std::cout << "Dev" << std::endl;
-    BOOST_FOREACH(BtDevice *dev, _btDevices){
+    for(BtDevice *dev: _btDevices){
         dev->update(dt,state);
     }
 
@@ -136,11 +136,11 @@ void BtSimulator::step(double dt, State& state){
 	// update all device force/velocity input
     // then for kinematic bodies
 
-    BOOST_FOREACH(BtBody* const body, _btBodies) {
+    for(BtBody* const body: _btBodies) {
     	body->update(dt, state); // updates velocities for kinematic objects
     }
 
-    BOOST_FOREACH(BtConstraint* const constraint, _constraints) {
+    for(BtConstraint* const constraint: _constraints) {
     	constraint->update(dt, state); // apply spring forces
     }
 
@@ -159,25 +159,25 @@ void BtSimulator::step(double dt, State& state){
 		const BtBody::BodyMetaData* const dataB = static_cast<BtBody::BodyMetaData*>(objectB->getUserPointer());
 		const BtBody* const bodyA = _rwFrameToBtBody[dataA->frame];
 		const BtBody* const bodyB = _rwFrameToBtBody[dataB->frame];
-	    BOOST_FOREACH(BtTactileSensor* const sensor, _btSensors) {
+	    for(BtTactileSensor* const sensor: _btSensors) {
 	    	sensor->addContactManifold(info, state, manifold, bodyA, bodyB);
 	    }
 	}
 
-    BOOST_FOREACH(BtTactileSensor* const sensor, _btSensors) {
+    for(BtTactileSensor* const sensor: _btSensors) {
     	sensor->addConstraintsFeedback(info, state);
     }
 
-    BOOST_FOREACH(BtDevice *dev, _btDevices){
+    for(BtDevice *dev: _btDevices){
         dev->postUpdate(state);
     }
 
-    BOOST_FOREACH(BtConstraint* const constraint, _constraints) {
+    for(BtConstraint* const constraint: _constraints) {
     	constraint->postUpdate(state);
     }
 
 	// now copy all transforms into state
-    BOOST_FOREACH(BtBody* const body, _btBodies) {
+    for(BtBody* const body: _btBodies) {
 		body->postupdate(state);
 	}
 }
@@ -217,20 +217,20 @@ void BtSimulator::resetScene(State& state)
 	}*/
 
 	// Delete all sensors
-	BOOST_FOREACH(BtTactileSensor* const sensor, _btSensors) {
+	for(BtTactileSensor* const sensor: _btSensors) {
 		delete sensor;
 	}
 	_btSensors.clear();
 	_sensors.clear();
 
 	// Delete all constraints (sensors must be deleted first)
-	BOOST_FOREACH(BtConstraint* const constraint, _constraints) {
+	for(BtConstraint* const constraint: _constraints) {
 		delete constraint;
 	}
 	_constraints.clear();
 
 	// Delete all bodies (constraints must be deleted first)
-	BOOST_FOREACH(BtBody* const btBody, _btBodies) {
+	for(BtBody* const btBody: _btBodies) {
 		delete btBody;
 	}
 	_btBodies.clear();
@@ -238,24 +238,24 @@ void BtSimulator::resetScene(State& state)
 	_rwBtBodyToFrame.clear();
 
 	// Now add new bodies with new initial state
-	BOOST_FOREACH(const Body::Ptr body, _dwc->getBodies()) {
+	for(const Body::Ptr body: _dwc->getBodies()) {
 		addBody(body,state);
 	}
 
 	// Add the constraints
 	const DynamicWorkCell::ConstraintList& constraints = _dwc->getConstraints();
-	BOOST_FOREACH(const Constraint::Ptr constraint, constraints) {
+	for(const Constraint::Ptr constraint: constraints) {
 		addConstraint(constraint);
 	}
 
 	// Add the sensors
 	const DynamicWorkCell::SensorList& sensors = _dwc->getSensors();
-	BOOST_FOREACH(const SimulatedSensor::Ptr sensor, sensors) {
+	for(const SimulatedSensor::Ptr sensor: sensors) {
 		addSensor(sensor, state);
 	}
 
     //std::cout << "Dev" << std::endl;
-    /*BOOST_FOREACH(btDevice *dev, _btDevices){
+    /*for(btDevice *dev: _btDevices){
         dev->update(0,state);
     }*/
 
@@ -331,7 +331,7 @@ void BtSimulator::initPhysics(State& state) {
 
 #if 0
 	// ok, now add constraints
-	BOOST_FOREACH(DynamicDevice::Ptr device, _dwc->getDynamicDevices() ){
+	for(DynamicDevice::Ptr device: _dwc->getDynamicDevices() ){
 		if( device.cast<RigidDevice>()!=NULL ){
 			std::cout << "RigidDevice...." << std::endl;
 			// add kinematic constraints from base to joint1, joint1 to joint2 and so forth
@@ -438,7 +438,7 @@ void BtSimulator::initPhysics(State& state) {
 			std::cout << "KinematicDevice...." << std::endl;
 			const KinematicDevice::Ptr kdev = device.cast<KinematicDevice>();
 			std::vector<FrameBodyPair> frameBodyList;
-			BOOST_FOREACH(const Body::Ptr body, kdev->getLinks() ){
+			for(const Body::Ptr body: kdev->getLinks() ){
 				Frame* const frame = body->getBodyFrame();
 				btRigidBody *btBody = _rwFrameToBtBody[frame];
 
@@ -470,18 +470,18 @@ void BtSimulator::exitPhysics(){
 	//remove the rigidbodies from the dynamics world and delete them
 	if(_initPhysicsHasBeenRun){
 
-		BOOST_FOREACH(BtTactileSensor* const sensor, _btSensors) {
+		for(BtTactileSensor* const sensor: _btSensors) {
 			delete sensor;
 		}
 		_btSensors.clear();
 		_sensors.clear();
 
-		BOOST_FOREACH(BtConstraint* const constraint, _constraints) {
+		for(BtConstraint* const constraint: _constraints) {
 			delete constraint;
 		}
 		_constraints.clear();
 
-		BOOST_FOREACH(BtBody* const btBody, _btBodies) {
+		for(BtBody* const btBody: _btBodies) {
 			delete btBody;
 		}
 		_btBodies.clear();
@@ -596,7 +596,7 @@ void BtSimulator::addSensor(SimulatedSensor::Ptr sensor, State& state){
 			_sensors.push_back(sensor);
 
 			// Find all constraints between the two bodies
-			BOOST_FOREACH(BtConstraint* const constraint, _constraints) {
+			for(BtConstraint* const constraint: _constraints) {
 				btRigidBody* const parent = constraint->getBtParent();
 				btRigidBody* const child = constraint->getBtChild();
 				if (parent == parentBtBody->getBulletBody() || parent == sensorBtBody->getBulletBody()) {
@@ -620,7 +620,7 @@ void BtSimulator::addSensor(SimulatedSensor::Ptr sensor, State& state){
 			_sensors.push_back(sensor);
 
 			// Find all constraints between the two bodies
-			BOOST_FOREACH(BtConstraint* const constraint, _constraints) {
+			for(BtConstraint* const constraint: _constraints) {
 				btRigidBody* const parent = constraint->getBtParent();
 				btRigidBody* const child = constraint->getBtChild();
 				if (parent == btBody->getBulletBody() || child == btBody->getBulletBody()) {

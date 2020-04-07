@@ -73,7 +73,7 @@ SurfaceSample TaskGenerator::sample(TriMeshSurfaceSampler& sampler, ProximityMod
         cstrategy->inCollision(object, Transform3D<>::identity(), ray, rayTrans, data);
         typedef std::pair<int,int> PrimID;
         
-        BOOST_FOREACH(PrimID pid, data.getCollisionData()._geomPrimIds) {
+        for(PrimID pid: data.getCollisionData()._geomPrimIds) {
 			
 			// search for a triangle that has a normal
 			Triangle<> tri = mesh->getTriangle(pid.first);
@@ -112,7 +112,7 @@ SurfaceSample TaskGenerator::sample(TriMeshSurfaceSampler& sampler, ProximityMod
 				// test if the target belongs in the area around hinted grasps
 				Transform3D<> targetW = wTobj * target; //inverse(wTobj) * target;
 				
-				BOOST_FOREACH (Transform3D<> hint, _td->getHints()) {
+				for(Transform3D<> hint : _td->getHints()) {
 					// calculate distance
 					Q teachDist = _td->getTeachDistance();
 					
@@ -203,8 +203,8 @@ rwlibs::task::GraspTask::Ptr TaskGenerator::filterTasks(const rwlibs::task::Gras
 	int nTasks = 0;
 	
 	typedef std::pair<class GraspSubTask*, class GraspTarget*> TaskTarget;
-	BOOST_FOREACH (TaskTarget p, tasks1->getAllTargets()) {
-	//BOOST_FOREACH(GraspTarget& target, tasks->getSubTasks()[0].getTargets()) {
+	for(TaskTarget p : tasks1->getAllTargets()) {
+	//for(GraspTarget& target: tasks->getSubTasks()[0].getTargets()) {
 		if (p.second->getResult()->testStatus == GraspTask::Success ||
 			p.second->getResult()->testStatus == GraspTask::Interference ||
 			p.second->getResult()->testStatus == GraspTask::ObjectSlipped ||
@@ -232,7 +232,7 @@ rwlibs::task::GraspTask::Ptr TaskGenerator::filterTasks(const rwlibs::task::Gras
     std::list<const NNSearch::KDNode*> result;
     
     int nRemoved = 0;
-    BOOST_FOREACH (NNSearch::KDNode& node, nodes) {
+    for(NNSearch::KDNode& node : nodes) {
 		if (node.value->testStatus != GraspTask::Filtered) {
 			result.clear();
 			Q key = node.key;
@@ -240,7 +240,7 @@ rwlibs::task::GraspTask::Ptr TaskGenerator::filterTasks(const rwlibs::task::Gras
 			//nntree->nnSearchElipse(key, diff, result);
 
 			int removed = 0;
-			BOOST_FOREACH (const NNSearch::KDNode* n, result) {
+			for(const NNSearch::KDNode* n : result) {
 				if (n->key == node.key) continue;
 				
 				// this is where a node gets removed
@@ -268,8 +268,8 @@ int TaskGenerator::countTasks(const rwlibs::task::GraspTask::Ptr tasks, const rw
 	int n = 0;
 	
 	typedef std::pair<class GraspSubTask*, class GraspTarget*> TaskTarget;
-	BOOST_FOREACH (TaskTarget p, tasks->getAllTargets()) {
-	//BOOST_FOREACH (GraspTarget* target, tasks->getAllTargets().second) { //tasks->getSubTasks()[0].getTargets()) {
+	for(TaskTarget p : tasks->getAllTargets()) {
+	//for(GraspTarget* target : tasks->getAllTargets().second) { //tasks->getSubTasks()[0].getTargets()) {
 		//cout << p.second->getResult()->testStatus << endl;
 		if (p.second->getResult()->testStatus == status) {
 			++n;
@@ -286,11 +286,11 @@ rwlibs::task::GraspTask::Ptr  TaskGenerator::copyTasks(const rwlibs::task::Grasp
 	GraspTask::Ptr tasks_copy = tasks->clone();
 	
 	// clone subtasks
-	BOOST_FOREACH (GraspSubTask& subtask, tasks->getSubTasks()) {
+	for(GraspSubTask& subtask : tasks->getSubTasks()) {
 		GraspSubTask subtask_copy = subtask.clone();
 		
 		// copy targets
-		BOOST_FOREACH (GraspTarget& target, subtask.getTargets()) {
+		for(GraspTarget& target : subtask.getTargets()) {
 			if (!onlySuccesses || target.getResult()->testStatus == GraspTask::Success) {
 				subtask_copy.addTarget(target);
 			}
@@ -311,10 +311,10 @@ rwlibs::task::GraspTask::Ptr TaskGenerator::addPerturbations(rwlibs::task::Grasp
 	
 	int generated = 0;
 	bool stop = false;
-	BOOST_FOREACH (GraspSubTask &stask, tasks->getSubTasks()) {
+	for(GraspSubTask &stask : tasks->getSubTasks()) {
 		GraspSubTask stask_copy = stask.clone();
 		
-        BOOST_FOREACH (GraspTarget &target, stask.getTargets()) {
+        for(GraspTarget &target : stask.getTargets()) {
             
             for (int i=0; i < perturbationsPerTarget; i++) {
                 Vector3D<> pos(Math::ranNormalDist(0, sigma_p), Math::ranNormalDist(0, sigma_p), Math::ranNormalDist(0, sigma_p));
@@ -395,7 +395,7 @@ rwlibs::task::GraspTask::Ptr TaskGenerator::generateTask(int nTargets, rw::kinem
     
     // make CD for WC & add rules excluding interference objects
     CollisionDetector::Ptr cdetect = new CollisionDetector(_td->getWorkCell(), ProximityStrategyFactory::makeDefaultCollisionStrategy());
-    BOOST_FOREACH (Object::Ptr obj, _td->getInterferenceObjects()) {
+    for(Object::Ptr obj : _td->getInterferenceObjects()) {
 		cdetect->addRule(ProximitySetupRule::makeExclude("gripper.Base", obj->getBase()->getName()));
 		cdetect->addRule(ProximitySetupRule::makeExclude("gripper.LeftFinger", obj->getBase()->getName()));
 		cdetect->addRule(ProximitySetupRule::makeExclude("gripper.RightFinger", obj->getBase()->getName()));

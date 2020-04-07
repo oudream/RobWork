@@ -22,14 +22,10 @@
 /**
  * @file Q.hpp
  */
-
-#include <boost/numeric/ublas/vector.hpp>
-#include <boost/numeric/ublas/io.hpp>
 #include <Eigen/Eigen>
 #include <rw/common/macros.hpp>
-//#include <cstdarg>
-
 #include <rw/common/Serializable.hpp>
+#include <boost/serialization/split_free.hpp>
 
 namespace rw { namespace math {
 
@@ -39,38 +35,11 @@ namespace rw { namespace math {
     class Q
     {
     public:
-        //! Boost vector type
-        typedef boost::numeric::ublas::vector<double> BoostVector;
-
-
 		//! Eigen vector used as internal datastructure.
 		typedef Eigen::Matrix<double, Eigen::Dynamic, 1> Base;
 
-		
-
-        ////! The Boost vector expression for initialization to zero.
-        //typedef boost::numeric::ublas::zero_vector<double> ZeroBase;
-
-        ////! Const forward iterator.
-        //typedef Base::const_iterator const_iterator;
-
-        ////! Forward iterator.
-        //typedef Base::iterator iterator;
-
         //! Value type.
         typedef double value_type;
-
-        ////! Reference type.
-        //typedef Base::reference reference;
-
-        ////! Pointer type.
-        //typedef Base::pointer pointer;
-
-        ////! Const pointer type.
-        //typedef Base::const_pointer const_pointer;
-
-        ////! Difference type.
-        //typedef Base::difference_type difference_type;
 
         /**
          * @brief A configuration of vector of length \b dim.
@@ -113,19 +82,6 @@ namespace rw { namespace math {
          * @param ... [in] Values to initialize [q(2);q(n-1)]
          *
          */
-        /*
-        Q(size_t n, double arg1, double arg2, ...):
-            _vec(n)
-        {
-            va_list ap;
-            va_start(ap, arg2);
-            _vec(0) = arg1;
-            _vec(1) = arg2;
-            for (size_t i = 2; i < n; i++ ){
-                _vec[i] = va_arg(ap, double);
-            }
-            va_end(ap);
-          }*/
         Q(size_t n, double a0, double a1);
         
          /**
@@ -309,66 +265,18 @@ namespace rw { namespace math {
         bool empty() const { return size() == 0; }
 
         /**
-         * @brief Construct a configuration vector from a Boost vector
-         * expression.
-         *
-         * @param r [in] An expression for a vector of doubles
-         */
-        template <class R>
-        explicit Q(const boost::numeric::ublas::vector_expression<R>& r) /*:
-		_vec(r.size())*/
-        {
-			const BoostVector v(r);
-			_vec.resize(v.size());
-			for (size_t i = 0; i<size(); i++)
-				_vec(i) = v(i);
-		}
-
-        /**
-         * @brief Accessor for the internal Boost vector state.
-         */
-        BoostVector m() const { 
-			BoostVector v(size());
-			for (size_t i = 0; i<size(); i++)
-				v(i) = _vec(i);
-			return v; 
-		}
-
-
-        /**
-         * @brief Accessor for the internal Boost vector state.
+         * @brief Accessor for the internal Eigen vector state.
          */
         const Base& e() const { 
 			return _vec; 
 		}
 
         /**
-         * @brief Accessor for the internal Boost vector state.
+         * @brief Accessor for the internal Eigen vector state.
          */
         Base& e() { 
 			return _vec; 
 		}
-
-
-        /**
-           @brief Start of sequence iterator.
-        */
-        //const_iterator begin() const { return m().begin(); }
-
-        /**
-           @brief End of sequence iterator.
-        */
-        //const_iterator end() const { return m().end(); }
-
-        /**
-           @brief Start of sequence iterator.
-        */
-        //iterator begin() { return m().begin(); }
-
-        /**
-           @brief End of sequence iterator.
-        */
-        //iterator end() { return m().end(); }
 
         /**
          * @brief Extracts a sub part (range) of this Q.
@@ -600,10 +508,6 @@ namespace rw { namespace math {
     private:
         Base _vec;
     };
-
-
-
-
 
     /**
      * @brief Compares \b q1 and \b q2 for equality.

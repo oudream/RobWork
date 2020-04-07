@@ -13,7 +13,6 @@ USE_ROBWORK_NAMESPACE;
 using namespace robwork;
 using namespace rwsim;
 using namespace rwsim::dynamics;
-using namespace boost::numeric;
 using namespace boost::property_tree;
 using boost::algorithm::trim;
 using namespace rwlibs::xml;
@@ -405,7 +404,7 @@ void TaskDescriptionLoader::save(const TaskDescription::Ptr td, const std::strin
 	tree.put("TaskDescription.Gripper.Controller", td->_controllerID);
 	
 	// save interference objects
-	BOOST_FOREACH (rw::models::Object::Ptr obj, td->_interferenceObjects) {
+	for(rw::models::Object::Ptr obj : td->_interferenceObjects) {
 		PTree node;
 		
 		node.put_value(obj->getName());
@@ -448,7 +447,7 @@ void TaskDescriptionLoader::save(const TaskDescription::Ptr td, const std::strin
 	tree.put("TaskDescription.CoverageDistance", XMLHelpers::QToString(covDist));
 	
 	// save grasp hints
-	BOOST_FOREACH (Transform3D<> hint, td->_hints) {
+	for(Transform3D<> hint : td->_hints) {
 		PTree node;
 		
 		node.put("Pos", XMLHelpers::QToString(Q(3, hint.P()[0], hint.P()[1], hint.P()[2])));
@@ -459,7 +458,7 @@ void TaskDescriptionLoader::save(const TaskDescription::Ptr td, const std::strin
 	}
 	
 	// save alignments
-	/*BOOST_FOREACH (Alignment a, td->_alignments) {
+	/*for(Alignment a : td->_alignments) {
 		PTree node;
 		
 		node.put("Pos", XMLHelpers::QToString(Q(3, a.pose.P()[0], a.pose.P()[1], a.pose.P()[2])));

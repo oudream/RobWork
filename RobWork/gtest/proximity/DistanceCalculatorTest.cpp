@@ -57,6 +57,7 @@ public:
 
 
 		strategy = DistanceStrategy::Factory::makeStrategy(GetParam());
+        strategy->clear();
 		ASSERT_FALSE(strategy.isNull());
         distCalc = new DistanceCalculator(wc, strategy);
     }

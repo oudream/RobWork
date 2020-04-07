@@ -22,20 +22,18 @@
 #include <rw/math/Constants.hpp>
 #include <rw/math/Rotation2D.hpp>
 #include "Contour2DInfoMap.hpp"
-#include <boost/numeric/ublas/matrix.hpp>
 #include <rw/common/macros.hpp>
 #include <rw/kinematics/Kinematics.hpp>
 #include <rw/kinematics/Frame.hpp>
 #include <rw/models/Joint.hpp>
 
-#include <boost/foreach.hpp>
+
 
 #include <queue>
 
 using namespace rw::geometry;
 using namespace rw::kinematics;
 using namespace rw::models;
-using namespace boost::numeric;
 using namespace rw::math;
 using namespace rw::sensor;
 using namespace rw::graspplanning;
@@ -118,10 +116,8 @@ std::vector<Grasp2D >
 
     std::priority_queue<GraspItem,std::vector<GraspItem>, Prioritize> queue;
 
-    //std::priority_queue<double, &Grasp2D> grasps(nrOfGrasps);
-    //std::cout << "Nr of candidates: " <<  _graspCandidates.size() << std::endl;
     double bestQuality = 0;
-    BOOST_FOREACH(Grasp2D& candidate, _graspCandidates){
+    for(Grasp2D& candidate: _graspCandidates){
         double quality  = measure.computeQuality(candidate);
         if( minQuality<quality ){
             queue.push(GraspItem(quality,&candidate));
@@ -205,10 +201,10 @@ void CG3Grasp2DGen::init(
             }
 
             // now comes the real filtering
-            BOOST_FOREACH(Contact2D *thumCon, thumList){
+            for(Contact2D *thumCon: thumList){
                 if( thumCon==NULL )
                     continue;
-                BOOST_FOREACH(Contact2D *f1Con, f1List){
+                for(Contact2D *f1Con: f1List){
                     if( f1Con==NULL )
                         continue;
 
@@ -218,7 +214,7 @@ void CG3Grasp2DGen::init(
                         continue;
 
                     const Vector2D<> f1Dir = rotPsiPhi*_f1Dir;
-                    BOOST_FOREACH(Contact2D *f2Con, f2List){
+                    for(Contact2D *f2Con: f2List){
                         if( f2Con==NULL )
                             continue;
 

@@ -23,12 +23,9 @@ Copyright 2013 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
  */
 
 #include <boost/shared_ptr.hpp>
-#include <boost/numeric/ublas/vector.hpp>
-
 
 #include "BeamGeometry.hpp"
 #include "BeamObstaclePlane.hpp"
-
 
 #include "IpTNLP.hpp"
 
@@ -151,7 +148,7 @@ public:
      *
      * @return solution vector
      **/
-    const boost::numeric::ublas::vector<double> &getSolution ( void ) const;
+    const Eigen::VectorXd &getSolution ( void ) const;
     
     
     /**
@@ -168,7 +165,7 @@ public:
      *
      * @param xinituser vector of deformation angles to be used as starting guess
      **/    
-    void setStartingGuess ( const boost::numeric::ublas::vector< double >& xinituser );
+    void setStartingGuess ( const Eigen::VectorXd& xinituser );
 
 
 private:
@@ -176,14 +173,14 @@ private:
     boost::shared_ptr< BeamObstaclePlane > _obstaclePtr;
     rw::math::Transform3D<> _planeTbeam;
 
-    boost::numeric::ublas::vector<double>   _a; // vector of M angles
-    boost::numeric::ublas::vector<double>   _da; // vector of M angle derivatives
+    Eigen::VectorXd  _a; // vector of M angles
+    Eigen::VectorXd   _da; // vector of M angle derivatives
 
-    boost::numeric::ublas::vector<double>   _x; // solution vector, M-1
+    Eigen::VectorXd   _x; // solution vector, M-1
 
     std::vector<int> _integralIndices; // vector of indices at which to check for penetration
 
-    boost::numeric::ublas::vector<double>   _xinit; // starting guess
+    Eigen::VectorXd   _xinit; // starting guess
 
     double _Ee; // total elastic energy for last valid solution
 };

@@ -21,7 +21,7 @@
 #include <rwsim/contacts/Contact.hpp>
 #include <rwsim/contacts/RenderContacts.hpp>
 
-#include <boost/foreach.hpp>
+
 
 #include <QHeaderView>
 
@@ -67,7 +67,7 @@ void ContactTableWidget::setContacts(const std::vector<Contact>& contacts) {
 	setRowCount(nrOfContacts);
 	setSortingEnabled(false);
 	int row = 0;
-	BOOST_FOREACH(const Contact& c, _contacts) {
+	for(const Contact& c: _contacts) {
 		const std::string& nameA = c.getNameA();
 		const std::string& nameB = c.getNameB();
 		const QString hover = toQString(c);

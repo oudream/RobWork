@@ -20,7 +20,7 @@
 #include <rw/math/EAA.hpp>
 #include <rw/math/Vector3D.hpp>
 #include <rw/math/Constants.hpp>
-#include <boost/foreach.hpp>
+
 #include <iostream>
 
 using namespace rw::math;
@@ -79,7 +79,7 @@ WrenchMeasure3D::WrenchMeasure3D(int resolution, bool useUnitVectors):
 double WrenchMeasure3D::quality(const rw::graspplanning::Grasp3D& grasp) const {
     std::vector< QHullND<6>::VectorND > vertices;
 
-    BOOST_FOREACH(const rw::sensor::Contact3D& c, grasp.contacts ){
+    for(const rw::sensor::Contact3D& c: grasp.contacts ){
         // std::cout  << "get cone: " << c.n << " " << c.normalForce << std::endl;
          if(c.normalForce<0.0001){
         	 RW_WARN("Normal force too small! : " << c.normalForce);
@@ -91,7 +91,7 @@ double WrenchMeasure3D::quality(const rw::graspplanning::Grasp3D& grasp) const {
     	 if(!_useUnitVectors)
     	     normalForce = c.normalForce;
          std::vector<Vector3D<> > verts = getCone(c.n,normalForce,c.mu,_resolution);
-         BOOST_FOREACH(const Vector3D<> &force, verts){
+         for(const Vector3D<> &force: verts){
              Vector3D<> torque =  cross(arm,force);
              QHullND<6>::VectorND vertice;
              vertice[0] = force[0];

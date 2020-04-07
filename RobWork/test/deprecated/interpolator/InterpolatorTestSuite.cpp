@@ -31,12 +31,12 @@
 #include <rw/math/Vector3D.hpp>
 #include <rw/math/RPY.hpp>
 #include <rw/math/Rotation3D.hpp>
-
+/*
 #include <boost/numeric/bindings/lapack/spsv.hpp>
 #include <boost/numeric/bindings/lapack/gesvd.hpp>
 #include <boost/numeric/bindings/traits/ublas_banded.hpp>
 #include <boost/numeric/bindings/traits/ublas_matrix.hpp>
-#include <boost/numeric/bindings/traits/ublas_vector.hpp>
+#include <boost/numeric/bindings/traits/ublas_vector.hpp>*/
 
 #include <string>
 
@@ -46,8 +46,8 @@ using namespace rw;
 using namespace rw::math;
 using namespace rw::interpolator;
 
-namespace lapack = boost::numeric::bindings::lapack;
-namespace ublas = boost::numeric::ublas;
+//namespace lapack = boost::numeric::bindings::lapack;
+//namespace ublas = boost::numeric::ublas;
 
 bool close_enough(Q v1,Q v2){
     bool enough = true;

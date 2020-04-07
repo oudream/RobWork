@@ -28,6 +28,7 @@
 #include <rw/common/PropertyMap.hpp>
 
 #include <QApplication>
+#include <QCloseEvent>
 #include <QMessageBox>
 #include <QSplashScreen>
 #ifdef RWS_USE_STATIC_LINK_PLUGINS
@@ -55,18 +56,17 @@
 #ifdef RWS_HAVE_PLUGIN_WORKCELLEDITOR
 #include <rwslibs/workcelleditorplugin/WorkcellEditorPlugin.hpp>
 #endif
-#ifdef RWS_HAVE_LUA
+#ifdef RWS_HAVE_PLUGIN_LUAPL
 #include <rwslibs/lua/Lua.hpp>
 #endif
 #endif
-
 
 #ifdef RWS_HAVE_GLUT
 #include <GL/freeglut.h>
 #endif
 
-#include <boost/program_options/parsers.hpp>
 #include <boost/filesystem.hpp>
+#include <boost/program_options/parsers.hpp>
 
 USE_ROBWORK_NAMESPACE
 using namespace robwork;
@@ -101,12 +101,38 @@ RobWorkStudioApp::RobWorkStudioApp (const std::string& args) :
 {}
 
 RobWorkStudioApp::~RobWorkStudioApp ()
-{}
+{
+    if (_isRunning) {
+        QCloseEvent e = QCloseEvent ();
+        _rwstudio->event (&e);
+    }
+}
 
 void RobWorkStudioApp::start ()
 {
-    _isRunning = true;
-    _thread    = new boost::thread (boost::bind (&RobWorkStudioApp::run, this));
+    _thread = new boost::thread (boost::bind (&RobWorkStudioApp::run, this));
+    while (!this->isRunning ()) {
+        rw::common::TimerUtil::sleepMs (1);
+    }
+}
+
+void RobWorkStudioApp::close ()
+{
+    if (isRunning ()) {
+        _rwstudio->postExit ();
+        while (isRunning ()) {
+            rw::common::TimerUtil::sleepMs (1);
+        }
+
+        // Make Sure All Widgets are closed to avoid segfault
+        QWidgetList all_w = QApplication::allWidgets ();
+        long ctime        = rw::common::TimerUtil::currentTimeMs ();
+        while (all_w.count () > 0 && rw::common::TimerUtil::currentTimeMs () - ctime < 300) {
+            rw::common::TimerUtil::sleepMs (1);
+            all_w = QApplication::allWidgets ();
+        }
+        rw::common::TimerUtil::sleepMs (1000);    // Final timing to let the rest of QT close down
+    }
 }
 
 void initReasource ()
@@ -114,10 +140,11 @@ void initReasource ()
     Q_INIT_RESOURCE (rwstudio_resources);
 }
 
-int RobWorkStudioApp::run() {
+int RobWorkStudioApp::run ()
+{
     {
         initReasource ();
-        
+
         char* argv[30];
         std::vector< std::string > args = boost::program_options::split_unix (_args);
         for (size_t i = 0; i < args.size (); i++) {
@@ -131,6 +158,7 @@ int RobWorkStudioApp::run() {
         ProgramOptions poptions ("RobWorkStudio", RW_VERSION);
         poptions.addStringOption ("ini-file", "RobWorkStudio.ini", "RobWorkStudio ini-file");
         poptions.addStringOption ("input-file", "", "Project/Workcell/Device input file");
+        poptions.addStringOption ("rwsplugin", "", "load RobWorkStudio plugin, not to be confused with '--rwplug'");
         poptions.addStringOption ("nosplash", "", "If defined the splash screen will not be shown");
         poptions.setPositionalOption ("input-file", -1);
         poptions.initOptions ();
@@ -140,6 +168,7 @@ int RobWorkStudioApp::run() {
         bool showSplash       = false;    //! map.has("nosplash");
         std::string inifile   = map.get< std::string > ("ini-file", "");
         std::string inputfile = map.get< std::string > ("input-file", "");
+        std::string rwsplugin = map.get< std::string > ("rwsplugin","");
         {
             MyQApplication app (argc, argv);
 #ifdef RWS_HAVE_GLUT
@@ -193,7 +222,7 @@ int RobWorkStudioApp::run() {
                     rwstudio.addPlugin (new rws::Calibration (), false, Qt::RightDockWidgetArea);
 #endif
 
-#if RWS_HAVE_LUA
+#if RWS_HAVE_PLUGIN_LUAPL
                     rwstudio.addPlugin (new rws::Lua (), false, Qt::LeftDockWidgetArea);
 #endif
 
@@ -253,6 +282,9 @@ int RobWorkStudioApp::run() {
                             splash->showMessage ("Opening workcell...");
                         rwstudio.openFile (inputfile);
                     }
+                    if (!rwsplugin.empty()){
+                        rwstudio.loadPlugin(rwsplugin);
+                    }
 
                     // load configuration into RobWorkStudio
                     if (showSplash) {
@@ -261,20 +293,28 @@ int RobWorkStudioApp::run() {
                     }
                     _rwstudio = &rwstudio;
                     rwstudio.show ();
+
+                    _isRunning = true;
                     app.exec ();
+                    _isRunning = false;
+                    _rwstudio  = NULL;
                 }
             }
             catch (const Exception& e) {
                 std::cout << e.what () << std::endl;
                 QMessageBox::critical (NULL, "RW Exception", e.what ());
+                _isRunning = false;
                 return -1;
             }
             catch (std::exception& e) {
                 std::cout << e.what () << std::endl;
                 QMessageBox::critical (NULL, "Exception", e.what ());
+                _isRunning = false;
                 return -1;
             }
         }
+        _isRunning = false;
+        std::cout << "IsRunning False" << std::endl << std::flush;
         return 0;
     }
 }

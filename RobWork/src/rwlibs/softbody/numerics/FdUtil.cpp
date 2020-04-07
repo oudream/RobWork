@@ -19,7 +19,7 @@ Copyright 2013 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
 
 using namespace rwlibs::softbody;
 
-void FdUtil::vectorDerivative(const boost::numeric::ublas::vector< double >& f, boost::numeric::ublas::vector< double >& df, const double h)
+void FdUtil::vectorDerivative(const Eigen::VectorXd& f, Eigen::VectorXd& df, const double h)
 {
     assert(f.size() > 1);
     

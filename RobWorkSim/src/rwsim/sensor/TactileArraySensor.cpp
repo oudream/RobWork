@@ -30,7 +30,7 @@
 #include <rwlibs/proximitystrategies/ProximityStrategyPQP.hpp>
 #include <rwsim/dynamics/Body.hpp>
 
-#include <boost/foreach.hpp>
+
 
 using namespace rw::math;
 using namespace rw::sensor;
@@ -245,7 +245,7 @@ TactileArraySensor::TactileArraySensor(const std::string& name,
 	//if (model.isNull())
 	//	RW_THROW("No geometry has been associated with the frame " << _body->getBodyFrame()->getName());
 	ProximityModel::Ptr model = _narrowStrategy->createModel();
-	BOOST_FOREACH(const Geometry::Ptr geom, _body->getGeometry()) {
+	for(const Geometry::Ptr geom: _body->getGeometry()) {
 		_narrowStrategy->addGeometry(model.get(),geom,false);
 	}
 	ProximityStrategyData pdata;
@@ -392,7 +392,7 @@ namespace {
         for(int i=0;i<10;i++){
             double pensum = 0;
             int nrOfPoints = 0;
-            BOOST_FOREACH(TactileArraySensor::DistPoint& dp, points){
+            for(TactileArraySensor::DistPoint& dp: points){
                 if(dp.dist<0)
                     continue;
                 pensum += dp.dist;
@@ -406,7 +406,7 @@ namespace {
             double diffStep = Math::clamp(diff/(nrOfPoints*2), -initPen/10, initPen/10);
             penetration += diffStep;
             //std::cout << "DIFF: " << diff << " " << diffStep << std::endl;
-            BOOST_FOREACH(TactileArraySensor::DistPoint& dp, points){
+            for(TactileArraySensor::DistPoint& dp: points){
                 dp.dist = dp.dist + diffStep;
                 //std::cout << "Dist: " << dp.dist << std::endl;
             }
@@ -635,7 +635,7 @@ void TactileArraySensor::ClassState::update(const rwlibs::simulation::Simulator:
 		//ProximityModelPtr modelA = _narrowStrategy->getModel(tframe);
 		//ProximityModel::Ptr modelB = _tsensor->_narrowStrategy->getModel(bframe);
 		ProximityModel::Ptr modelB = _tsensor->_narrowStrategy->createModel();
-		BOOST_FOREACH(const Geometry::Ptr geom, body->getGeometry()) {
+		for(const Geometry::Ptr geom: body->getGeometry()) {
 			_tsensor->_narrowStrategy->addGeometry(modelB.get(),geom,false);
 		}
 
@@ -693,7 +693,7 @@ void TactileArraySensor::ClassState::update(const rwlibs::simulation::Simulator:
 			}
 	    	std::vector<rw::sensor::Contact3D> &bforce = (*iter).second;
 	    	// add to total force
-	    	BOOST_FOREACH(rw::sensor::Contact3D& c, bforce){
+	    	for(rw::sensor::Contact3D& c: bforce){
 	    		//std::cout << "TotalNormalForce += " << (-c.normalForce) << std::endl;
 	    		totalNormalForce += -c.normalForce;
 	    	}
@@ -960,7 +960,7 @@ void TactileArraySensor::update(double dt, rw::kinematics::State& state){
     BodyForceMap::iterator iter = _forces.begin();
     for(;iter!=_forces.end();++iter){
         //std::cout << "ITER" << std::endl;
-        BOOST_FOREACH(const Contact3D& c, (*iter).second){
+        for(const Contact3D& c: (*iter).second){
             //std::cout << "N: " << c.n << "\n";
             //std::cout << "F: " << c.f << "\n";
             if(MetricUtil::norm2(c.f)<0.0000001)
@@ -979,12 +979,12 @@ void TactileArraySensor::update(double dt, rw::kinematics::State& state){
         cnormal = normalize(cnormal);
         //std::cout << "Generate contacts: " << cnormal << std::endl;
         RW_ASSERT(MetricUtil::norm2(cnormal)>0.1);
-        std::vector<DistPoint> res = generateContacts(body, -cnormal, state);
+        Eigen::Matrix<DistPoint,-1,1> res = generateContacts(body, -cnormal, state);
 
-        boost::numeric::ublas::matrix<DistPoint> contacts(_accForces.size1(),_accForces.size2());
+        Eigen::Matrix<DistPoint,-1,-1> contacts(_accForces.size1(),_accForces.size2());
         double weightedArea = 0;
         // now filter away the distances that are double in cells
-        BOOST_FOREACH(DistPoint& dp, res){
+        for(DistPoint& dp: res){
             Vector3D<> p = _hmapTf * dp.p1;
 
             int xIdx = (int)( floor(p(0)/_texelSize(0)));
@@ -1050,7 +1050,7 @@ void TactileArraySensor::update(double dt, rw::kinematics::State& state){
             }
         }
 /*
-        BOOST_FOREACH(DistPoint& dp, res){
+        for(DistPoint& dp: res){
             totalDist += 0.001-dp.dist;
         }*/
         //std::cout << "TOTAL DIST: " << totalDist << std::endl;
@@ -1068,7 +1068,7 @@ void TactileArraySensor::update(double dt, rw::kinematics::State& state){
 
         double penetration = determinePenetration(_elasticity, _maxPenetration, res, totalForce);
         totalDist = 0;
-        BOOST_FOREACH(DistPoint& dp, res){
+        for(DistPoint& dp: res){
             double dist = dp.dist;
             if(dist<=0)
                 continue;
@@ -1079,7 +1079,7 @@ void TactileArraySensor::update(double dt, rw::kinematics::State& state){
         if( totalDist>0 ){
             double scale = totalForce/totalDist;
             //std::cout << "scale: " << scale << std::endl;
-            BOOST_FOREACH(DistPoint& dp, res){
+            for(DistPoint& dp: res){
                 double dist = dp.dist;
                 if(dist<=0)
                     continue;
@@ -1110,8 +1110,8 @@ void TactileArraySensor::update(double dt, rw::kinematics::State& state){
 
             // copy and convert accumulated forces into pressure values
             double texelArea = _texelSize(0)*_texelSize(1);
-            for(size_t x=0; x<_accForces.size1(); x++){
-                for(size_t y=0; y<_accForces.size2(); y++){
+            for(size_t x=0; x<_accForces.rows(); x++){
+                for(size_t y=0; y<_accForces.cols(); y++){
                     // clamp to max pressure
                     //if( _accForces(x,y)/texelArea>1.0 )
                     //    std::cout << "Pressure: ("<<x<<","<<y<<") " << _accForces(x,y)/texelArea << " N/m^2 " << std::endl;
@@ -1121,7 +1121,7 @@ void TactileArraySensor::update(double dt, rw::kinematics::State& state){
             //std::cout << "_pressure" << std::endl;
             //std::cout << _pressure << std::endl;
 
-            _accForces = ublas::zero_matrix<double>(_accForces.size1(),_accForces.size2());
+            _accForces = Eigen::MatrixXd::Zero(_accForces.rows(),_accForces.cols());
             _allForces = _allAccForces;
             _allAccForces.clear();
         }
@@ -1226,8 +1226,8 @@ void TactileArraySensor::update(double dt, rw::kinematics::State& state){
 
     // copy and convert accumulated forces into pressure values
     double texelArea = _texelSize(0)*_texelSize(1);
-    for(size_t x=0; x<_accForces.size1(); x++){
-        for(size_t y=0; y<_accForces.size2(); y++){
+    for(size_t x=0; x<_accForces.rows(); x++){
+        for(size_t y=0; y<_accForces.cols(); y++){
             // clamp to max pressure
             //if( _accForces(x,y)/texelArea>1.0 )
             //    std::cout << "Pressure: ("<<x<<","<<y<<") " << _accForces(x,y)/texelArea << " N/m^2 " << std::endl;
@@ -1235,7 +1235,7 @@ void TactileArraySensor::update(double dt, rw::kinematics::State& state){
         }
     }
     //std::cout << _pressure << std::endl;
-    _accForces = ublas::zero_matrix<double>(_accForces.size1(),_accForces.size2());
+    _accForces = Eigen::MatrixXd::Zero(_accForces.rows(),_accForces.cols());
 
     _allForces = _allAccForces;
     _allAccForces.clear();

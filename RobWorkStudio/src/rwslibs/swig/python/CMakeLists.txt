@@ -1,6 +1,6 @@
-set(SUBSYS_NAME sdurws_py)
+set(SUBSYS_NAME sdurws_python)
 set(SUBSYS_DESC "Interface for accessing RobWorkStudio from python.")
-set(SUBSYS_DEPS sdurws sdurws_robworkstudioapp)
+set(SUBSYS_DEPS sdurws sdurws_robworkstudioapp RW::sdurw_python)
 
 set(build TRUE)
 
@@ -27,6 +27,9 @@ if(build)
     include(UseSWIG)
     include_directories(${PYTHON_INCLUDE_DIRS})
 
+    add_library(${SUBSYS_NAME} INTERFACE)
+    add_library(${PROJECT_PREFIX}::${SUBSYS_NAME} ALIAS ${SUBSYS_NAME} )
+
     set_source_files_properties(../sdurws.i PROPERTIES CPLUSPLUS ON)
     set_source_files_properties(../sdurws.i PROPERTIES SWIG_FLAGS "-includeall")
     if(NOT ${SWIG_VERSION} VERSION_LESS 4.0.0)
@@ -34,22 +37,14 @@ if(build)
     endif()
     include_directories(${RW_ROOT}/src)
 
-    execute_process(
-        COMMAND python3 -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())"
-        OUTPUT_VARIABLE PYTHON_SITE_PACKAGES
-        OUTPUT_STRIP_TRAILING_WHITESPACE
-    )
-
     set(RWS_MODULE sdurws)
     configure_file(RobWorkStudio.egg-info.in
                    ${CMAKE_CURRENT_SOURCE_DIR}/RobWorkStudio-${ROBWORKSTUDIO_VERSION}.egg-info)
 
-    if(NOT "${PYTHON_SITE_PACKAGES}" STREQUAL "")
-        install(
-            FILES ${CMAKE_CURRENT_SOURCE_DIR}/RobWorkStudio-${ROBWORKSTUDIO_VERSION}.egg-info
-            DESTINATION ${PYTHON_SITE_PACKAGES}
-        )
-    endif()
+    install(
+        FILES ${CMAKE_CURRENT_SOURCE_DIR}/RobWorkStudio-${ROBWORKSTUDIO_VERSION}.egg-info
+        DESTINATION ${PYTHON_INSTALL_DIR}
+    )
 
     if(POLICY CMP0078)
         set(LIB_SUFIX _py)
@@ -87,7 +82,8 @@ if(build)
         ${TARGET_NAME}
         PROPERTIES
             ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_SWIG_OUTDIR}"
-            LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SWIG_OUTDIR}" RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SWIG_OUTDIR}"
+            LIBRARY_OUTPUT_DIRECTORY
+                "${CMAKE_SWIG_OUTDIR}" RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SWIG_OUTDIR}"
     )
 
     # ############# Documentation ##############
@@ -116,21 +112,28 @@ if(build)
     # ################# Install files ################
     configure_file(__init__.py.in ${CMAKE_SWIG_OUTDIR}/__init__.py)
 
-    if(NOT "${PYTHON_SITE_PACKAGES}" STREQUAL "")
-        install(TARGETS ${TARGET_NAME} DESTINATION "${PYTHON_SITE_PACKAGES}/${RWS_MODULE}")
+    target_link_libraries(${SUBSYS_NAME} INTERFACE ${TARGET_NAME})
+
+    install(
+            TARGETS ${TARGET_NAME} 
+            EXPORT ${PROJECT_PREFIX}Targets 
+            DESTINATION "${PYTHON_INSTALL_DIR}/${RWS_MODULE}" COMPONENT swig
+        )
         install(
             FILES ${CMAKE_SWIG_OUTDIR}/${RWS_MODULE}.py
-            DESTINATION "${PYTHON_SITE_PACKAGES}/${RWS_MODULE}"
+            DESTINATION "${PYTHON_INSTALL_DIR}/${RWS_MODULE}"
         )
-        install(FILES ${CMAKE_SWIG_OUTDIR}/__init__.py DESTINATION "${PYTHON_SITE_PACKAGES}/${RWS_MODULE}")
-    endif()
+        install(
+            FILES ${CMAKE_SWIG_OUTDIR}/__init__.py
+            DESTINATION "${PYTHON_INSTALL_DIR}/${RWS_MODULE}"
+        )
     # ###### Final linking and dependency checks ######
 
-    swig_link_libraries(
-        sdurws${LIB_SUFIX}
-        ${SUBSYS_DEPS}
-        RW::sdurw
-        ${PYTHON_LIBRARIES}
+    swig_link_libraries(sdurws${LIB_SUFIX} ${SUBSYS_DEPS} RW::sdurw ${PYTHON_LIBRARIES})
+
+    install(
+        TARGETS ${SUBSYS_NAME}
+        EXPORT ${PROJECT_PREFIX}Targets
     )
 
 endif()

@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,40 +15,38 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #include "LogBufferedMsg.hpp"
 
-#include <boost/foreach.hpp>
+
 #include <iomanip>
 
 using namespace rw::common;
 
-LogBufferedMsg::LogBufferedMsg(std::ostream* stream):
-    _stream(stream),
-	_tabLevel(0)
+LogBufferedMsg::LogBufferedMsg (std::ostream* stream) : _stream (stream), _tabLevel (0)
 {}
 
-LogBufferedMsg::~LogBufferedMsg()
+LogBufferedMsg::~LogBufferedMsg ()
 {
-    flush();
+    flush ();
 }
 
-void LogBufferedMsg::doWrite(const std::string& msg)
+void LogBufferedMsg::doWrite (const std::string& msg)
 {
-	_buffer.push_back(std::make_pair(msg, _tabLevel));
+    _buffer.push_back (std::make_pair (msg, _tabLevel));
 }
 
-void LogBufferedMsg::doFlush()
+void LogBufferedMsg::doFlush ()
 {
-	typedef std::pair<std::string, int> StringIntPair;
-	BOOST_FOREACH(const StringIntPair& pair, _buffer) {
-		*_stream << std::setw(pair.second)<<std::setfill(' ');
+    typedef std::pair< std::string, int > StringIntPair;
+    for (const StringIntPair& pair : _buffer) {
+        *_stream << std::setw (pair.second) << std::setfill (' ');
         *_stream << pair.first;
     }
-    _stream->flush();
-    _buffer.clear();
+    _stream->flush ();
+    _buffer.clear ();
 }
 
-void LogBufferedMsg::doSetTabLevel(int tablevel) {
-	_tabLevel = tablevel;
+void LogBufferedMsg::doSetTabLevel (int tablevel)
+{
+    _tabLevel = tablevel;
 }

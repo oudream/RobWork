@@ -1,6 +1,6 @@
 set(SUBSYS_NAME sdurwhw_netft)
 set(SUBSYS_DESC "driver for netft")
-set(SUBSYS_DEPS sdurw)
+set(SUBSYS_DEPS RW::sdurw)
 
 set(build TRUE)
 set(default TRUE)
@@ -8,7 +8,7 @@ set(default TRUE)
 set(Boost_NO_BOOST_CMAKE TRUE) # From Boost 1.70, CMake files are provided by Boost - we are not yet ready to
                                # handle it
 
-find_package(Boost REQUIRED COMPONENTS system regex QUIET)
+find_package(Boost QUIET COMPONENTS system regex)
 set(DEFAULT TRUE)
 set(REASON)
 if(NOT Boost_FOUND)

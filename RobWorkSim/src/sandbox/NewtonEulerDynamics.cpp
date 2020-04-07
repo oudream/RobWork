@@ -20,7 +20,6 @@
 using namespace rw::core::kinematics;
 using namespace rw::core::math;
 using namespace rw::core::models;
-using namespace boost::numeric::ublas;
 using namespace std;
 
 NewtonEulerDynamics::NewtonEulerDynamics(const SerialDevice &rob,bool print) :

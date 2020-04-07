@@ -19,7 +19,7 @@
 
 #include <rwlibs/os/rwgl.hpp>
 
-#include <boost/foreach.hpp>
+
 
 using namespace rw::math;
 using namespace rw::graphics;
@@ -72,7 +72,7 @@ void RenderPoints::draw(const DrawableNode::RenderInfo& info, DrawType type, dou
         glPushMatrix();
         glColor4f(_color[0],_color[1],_color[2], a);
         //glColor3fv(_color);
-        BOOST_FOREACH(const Vector3D<> &p, _points){
+        for(const Vector3D<> &p: _points){
         	glTranslatef((float)p(0), (float)p(1), (float)p(2));
         	gluSphere(_gl->sphereObj, 0.01, 3, 3);
         	glTranslatef((float)-p(0), (float)-p(1), (float)-p(2));
@@ -81,7 +81,7 @@ void RenderPoints::draw(const DrawableNode::RenderInfo& info, DrawType type, dou
     }
     glPopAttrib();
 
-	//BOOST_FOREACH(const Vector3D<> &p, _points){
+	//for(const Vector3D<> &p: _points){
 	//	glVertex3f( (float)p(0), (float)p(1), (float)p(2) );
 	//}
 	//glEnd( );

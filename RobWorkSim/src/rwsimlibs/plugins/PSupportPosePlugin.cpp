@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-#include <boost/foreach.hpp>
+
 
 #include "RWSimGuiConfig.hpp"
 
@@ -112,7 +112,7 @@ SupportPoseAnalyserDialog::SupportPoseAnalyserDialog(const rw::kinematics::State
 	_zaxis.resize( _bodies.size() );
 
     // load combobox
-    BOOST_FOREACH(RigidBody* body, _bodies){
+    for(RigidBody* body: _bodies){
     	_selectObjBox->addItem( body->getBodyFrame().getName().c_str() );
     }
     _frameRender = ownedPtr(new RenderFrame());
@@ -210,7 +210,7 @@ SupportPoseAnalyserDialog::SupportPoseAnalyserDialog(const rw::kinematics::State
 
     _bodies = DynamicUtil::getRigidBodies(*_dwc);
     // load combobox
-    BOOST_FOREACH(RigidBody* body, _bodies){
+    for(RigidBody* body: _bodies){
         _planarObjectBox->addItem( body->getBodyFrame().getName().c_str() );
     }
 
@@ -297,7 +297,7 @@ void SupportPoseAnalyserDialog::btnPressed(){
 
     	RigidBody* selectedObj=NULL;
     	std::string selectedName = _planarObjectBox->currentText().toStdString();
-    	BOOST_FOREACH(RigidBody* obj, _bodies){
+    	for(RigidBody* obj: _bodies){
     	    if( obj->getBodyFrame().getName()==selectedName ){
     	        selectedObj = obj;
     	        break;
@@ -364,7 +364,7 @@ void SupportPoseAnalyserDialog::btnPressed(){
 
         RigidBody* selectedObj=NULL;
         std::string selectedName = _planarObjectBox->currentText().toStdString();
-        BOOST_FOREACH(RigidBody* obj, _bodies){
+        for(RigidBody* obj: _bodies){
             if( obj->getBodyFrame().getName()==selectedName ){
                 selectedObj = obj;
                 break;
@@ -437,7 +437,7 @@ void SupportPoseAnalyserDialog::saveDistribution(){
 void SupportPoseAnalyserDialog::showPlanarDistribution(){
     RigidBody* body=NULL;
     std::string selectedName = _planarObjectBox->currentText().toStdString();
-    BOOST_FOREACH(RigidBody* obj, _bodies){
+    for(RigidBody* obj: _bodies){
         if( obj->getBodyFrame().getName()==selectedName ){
             body = obj;
             break;
@@ -465,7 +465,7 @@ void SupportPoseAnalyserDialog::showPlanarDistribution(){
     _zaxis.push_back( std::vector<Vector3D<> >(poses.size()) );
 
     int j=0;
-    BOOST_FOREACH(const Transform3D<>& t, poses){
+    for(const Transform3D<>& t: poses){
         // add a point to the graphics view
         EAA<> eaa(t.R());
         RPY<> rpy(t.R());
@@ -600,7 +600,7 @@ void SupportPoseAnalyserDialog::changedEvent(){
     	std::vector<Vector3D<> > &zaxis = _zaxisS[body];
     	std::cout << "xaxis.size()==_xaxis.size() " << xaxis.size() << "==" << _xaxis[bodyIdx].size()<< std::endl;
     	if(xaxis.size()==_xaxis[bodyIdx].size()){
-			BOOST_FOREACH(int idx, poseIdxList){
+			for(int idx: poseIdxList){
 				_selPosePntRenderX->addPoint( xaxis[idx] );
 				_selPosePntRenderY->addPoint( yaxis[idx] );
 				_selPosePntRenderZ->addPoint( zaxis[idx] );
@@ -779,7 +779,7 @@ namespace {
         	bool inGroup=false;
             for(size_t j=0; j<lineGroups.size() && !inGroup; j++) {
             	LineGroup &group = lineGroups[j];
-            	BOOST_FOREACH(Line& gline, group){
+            	for(Line& gline: group){
             		if(fabs(gline.rho-line.rho)<epsRho &&
             		   fabs(gline.theta-line.theta)<epsTheta){
 						inGroup=true;
@@ -801,10 +801,10 @@ namespace {
         // ************************************************
         // then for each group we calculate the line that is the average of the group
         std::vector<Line> avgLines;
-        BOOST_FOREACH(LineGroup& group, lineGroups){
+        for(LineGroup& group: lineGroups){
         	Line avgline(0,0);
         	//std::cout << "Group: " << group.size() << std::endl;
-        	BOOST_FOREACH(Line& gline, group){
+        	for(Line& gline: group){
         		//gline.print();
         		avgline.rho += gline.rho;
         		avgline.theta += gline.theta;
@@ -924,7 +924,7 @@ namespace {
 
 		void add(const Vector3D<>& v, const Vector3D<>& n, int idx){
 			int i=0;
-			BOOST_FOREACH(const Vector3D<>& sv, _set){
+			for(const Vector3D<>& sv: _set){
 				if(MetricUtil::dist2(v,sv)<_eps){
 					_setStats[i]++;
 					_poseIdx[i].push_back(idx);
@@ -1129,7 +1129,7 @@ void SupportPoseAnalyserDialog::process(){
 
 			}
 			bool hasPose = false;
-			BOOST_FOREACH(CircleIdx &circleIdx, circlePoses){
+			for(CircleIdx &circleIdx: circlePoses){
 				if(circlePose==circleIdx){
 					hasPose = true;
 					break;
@@ -1183,7 +1183,7 @@ void SupportPoseAnalyserDialog::updateResultView(){
 	_resultView->clear();
 
 	int i=0;
-	BOOST_FOREACH(const SupportPose &pose, _supportPoses[body]){
+	for(const SupportPose &pose: _supportPoses[body]){
 		std::stringstream str;
 		str << "(" << i << ") [ " << pose._degree << " , " << pose._probability << " ] ";
 

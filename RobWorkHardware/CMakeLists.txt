@@ -34,11 +34,11 @@ else()
     endif()
 endif()
 find_package(RobWork ${ROBWORKHARDWARE_VERSION} REQUIRED)
+set(Boost_USE_STATIC_LIBS ${RW_BUILD_WITH_BOOST_USE_STATIC_LIB})
 
 # ##################################################################################################
 # include the macros from robwork
 include(${RW_ROOT}/cmake/RobWorkMacros.cmake)
-# INCLUDE(${RWS_ROOT}/cmake/RobWorkStudioMacros.cmake)
 
 rw_init_project(${RWHW_ROOT} RobWorkHardware RWHW ${ROBWORKHARDWARE_VERSION})
 rw_get_os_info()
@@ -92,7 +92,7 @@ configure_file("${RWHW_ROOT}/cmake/CTestCustom.cmake.in" "CTestCustom.cmake")
 include(CMakeDependentOption)
 cmake_dependent_option(RWHW_IS_TESTS_ENABLED "Set when you want to build the tests" ON
                        "${RWHW_BUILD_TESTS}" OFF)
-if(RWS_IS_TESTS_ENABLED)
+if(RWHW_IS_TESTS_ENABLED)
     message(STATUS "RobWorkHardware: tests ENABLED!")
     include(CTest)
     add_subdirectory(test)

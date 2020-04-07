@@ -19,7 +19,7 @@
 #define RW_MATH_POSE2D_HPP_
 
 #include <rw/math/Transform2D.hpp>
-#include <boost/numeric/ublas/vector.hpp>
+#include <Eigen/Eigen>
 
 namespace rw {
 namespace math {
@@ -200,17 +200,16 @@ namespace math {
 		}
 
 		/**
-		 * @brief Convert to a Boost vector of (x, y, theta).
-		 * @param pose [in] the pose.
-		 * @return boost vector.
+		 * @brief return a Eigen vector of (x, y, theta).
+		 * @return Eigen vector.
 		 */
-		static boost::numeric::ublas::vector<T> toUblas(const Pose2D& pose){
-			typedef boost::numeric::ublas::vector<T> Vec;
-			    Vec vec(3);
-			    vec(0) = pose.x();
-			    vec(1) = pose.y();
-			    vec(2) = pose.theta();
-			    return vec;
+		//template<class T>
+		Eigen::Matrix<T,3,1> e() const {
+			Eigen::Matrix<T,3,1> vec;
+			vec(0) = _pos(0);
+			vec(1) = _pos(1);
+			vec(2) = _theta;
+			return vec;
 		}
 	private:
 		rw::math::Vector2D<T> _pos;

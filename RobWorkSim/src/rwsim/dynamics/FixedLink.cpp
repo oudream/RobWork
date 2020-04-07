@@ -20,11 +20,8 @@
 #include <rw/models/Joint.hpp>
 #include <rw/kinematics/Kinematics.hpp>
 #include <rw/math/Q.hpp>
+#include <Eigen/Eigen>
 
-#include <boost/numeric/ublas/matrix.hpp>
-#include <boost/numeric/ublas/matrix_proxy.hpp>
-
-using namespace boost::numeric;
 using namespace rw::math;
 using namespace rw::models;
 using namespace rw::kinematics;
@@ -32,17 +29,16 @@ using namespace rwsim::dynamics;
 
 namespace {
 
-	ublas::matrix<double> getBlockDiagInertia(Device &dev, std::vector<FixedLink*>& parents, 
+	Eigen::MatrixXd getBlockDiagInertia(Device &dev, std::vector<FixedLink*>& parents, 
 											  FixedLink* current){
-		using namespace boost::numeric::ublas;
 		size_t n = dev.getDOF();
-		matrix<double> A( zero_matrix<double>(n*3,n*3) );
+		Eigen::MatrixXd A = Eigen::MatrixXd::Zero(n*3,n*3);
 		for(size_t i=0;i<parents.size()+1;i++){
-			matrix_range<matrix<double> > Ar (A, range(i*3, i*3+3), range(i*3, i*3+3));
+			Eigen::Block Ar = A.block(i*3,i*3,i*3+3,i*3+3);
 			if(i==parents.size()){
-				Ar = current->getInertia().m();
+				Ar = current->getInertia().e();
 			} else {
-				Ar = parents[i]->getInertia().m();
+				Ar = parents[i]->getInertia().e();
 			}
 		}
 		return A;
@@ -220,7 +216,7 @@ void FixedLink::updatePosition(double h, State &state){
 #include <rw/math/LinearAlgebra.hpp>
 
 rw::math::InertiaMatrix<> FixedLink::getEffectiveMassW(const rw::math::Vector3D<>& wPc){
-	using namespace boost::numeric::ublas;
+
 	std::cout << "Eff mass W" << std::endl;
 	// calculate the block diagonal inertia matrix of all child bodies
 	// the matrix has n blocks where n is number of dof
@@ -245,7 +241,6 @@ rw::math::InertiaMatrix<> FixedLink::getEffectiveMassW(const rw::math::Vector3D<
 }
 
 rw::math::InertiaMatrix<> FixedLink::getEffectiveMass(){
-	using namespace boost::numeric::ublas;
 	std::cout << "Eff mass";
 	// calculate the block diagonal inertia matrix of all child bodies
 	// the matrix has n blocks where n is number of dof
@@ -273,7 +268,7 @@ rw::math::InertiaMatrix<> FixedLink::getEffectiveMass(){
 
 void FixedLink::updateImpulse(){
 	std::cout << "FixedLink: Update impulse!" << std::endl;
-	ublas::vector<double> cartImpulse(6);
+	Eigen::VectorXd cartImpulse(6);
 	cartImpulse(0) = _linImpulse(0);
 	cartImpulse(1) = _linImpulse(1);
 	cartImpulse(2) = _linImpulse(2);
@@ -285,12 +280,12 @@ void FixedLink::updateImpulse(){
 	//InertiaMatrix<> K = getEffectiveMass();
 	
 	std::cout << "get diag inertia" << std::endl;
-	ublas::matrix<double> A = getBlockDiagInertia(_dev, _parents, this);
+	Eigen::MatrixXd A = getBlockDiagInertia(_dev, _parents, this);
 	std::cout << "Calc JT_P" << std::endl;
-	ublas::vector<double> JT_P =  prod( trans(_jac.m()) , cartImpulse );
+	Eigen::VectorXd JT_P =  _jac.e().transpose() * cartImpulse ;
 	std::cout << "Calc jointVel" << std::endl;
-	ublas::vector<double> jointVel = prod( LinearAlgebra::pseudoInverse(A) , JT_P );  
-	//ublas::vector<double> jointVel = prod( LinearAlgebra::PseudoInverse(_jac.m()) , cartImpulse ) *0.001 ;
+	Eigen::VectorXd jointVel = LinearAlgebra::pseudoInverse(A) * JT_P;  
+	
 	// add the velocity to all joints that is affected
 	std::cout << "Add vel to parents: " 
 			  << " " << _parents.size() 
@@ -309,21 +304,20 @@ void FixedLink::updateImpulse(){
 
 void FixedLink::updateVelocity(double h, State &state){
 	std::cout << "FixedLink: Update velocity!" << _jointFrame.getName() << std::endl;
-	ublas::vector<double> cartForce(6);
+	Eigen::VectorXd cartForce(6);
 	cartForce(0) = _force(0);
 	cartForce(1) = _force(1);
 	cartForce(2) = _force(2);
 	cartForce(3) = _torque(0);
 	cartForce(4) = _torque(1);
 	cartForce(5) = _torque(2);
-	ublas::vector<double> tmp = prod( trans(_jac.m()) , cartForce );
-	ublas::vector<double> jointTorque = prod(_jac.m(), tmp ) * h;
-	//std::cout << "Joint Torque: " << jointTorque << std::endl;
+	Eigen::VectorXd tmp = _jac.e().transpose * cartForce ;
+	Eigen::VectorXd jointTorque = (_jac.e() * tmp ) * h;
+
 	for(size_t i = 0; i<_parents.size(); i++){
-		//std::cout << "Adding to parent " << i << std::endl; 
 		_parents[i]->addQd( jointTorque(i) );
 	}
-	//std::cout << "Adding FORCE : " << _acc*h << " and " << jointTorque(_parents.size()) << std::endl;
+	
 	addQd( jointTorque(_parents.size()) + _acc*h );
 	
 	//_vel += _acc*h + jointTorque();

@@ -78,7 +78,7 @@ double GripperTaskSimulator::calculateInterference(SimState& sstate, const rw::k
 	vector<double> interferenceAngles;
 	vector<double> interferences;
 	
-	BOOST_FOREACH (Object::Ptr obj, _td->getInterferenceObjects()) {
+	for(Object::Ptr obj : _td->getInterferenceObjects()) {
 		
 		Transform3D<> Tbefore = obj->getBase()->getTransform(state0);
 		Transform3D<> Tafter = obj->getBase()->getTransform(state1);
@@ -171,7 +171,7 @@ rw::math::Q GripperTaskSimulator::calculateWrenchMeasurement() const
 	int successes = 0;
 	typedef std::pair<class GraspSubTask*, class GraspTarget*> TaskTarget;
 	//DEBUG << "WRENCHES!" << endl;
-	BOOST_FOREACH (TaskTarget p, _gtask->getAllTargets()) {
+	for(TaskTarget p : _gtask->getAllTargets()) {
 		//DEBUG << "??? " << p.second->getResult()->testStatus << endl;
 		if (p.second->getResult()->testStatus == GraspTask::Success || p.second->getResult()->testStatus == GraspTask::ObjectSlipped) {
 			successes++;
@@ -217,7 +217,7 @@ double GripperTaskSimulator::calculateAlignment() const {
 	int successes = 0;
 	vector<Rotation3D<> > rot_before, rot_after;
 	typedef std::pair<class GraspSubTask*, class GraspTarget*> TaskTarget;
-	BOOST_FOREACH (TaskTarget p, _gtask->getAllTargets()) {
+	for(TaskTarget p : _gtask->getAllTargets()) {
 		
 		// we only take succesful grasps
 		if (p.second->getResult()->testStatus == GraspTask::Success) {
@@ -242,7 +242,7 @@ double GripperTaskSimulator::calculateAlignment() const {
 	int inliers = 0;
 	Rotation3DAngleMetric<double> metric;
 	DEBUG << "Models found (" << models.size() << "):" << endl;
-	BOOST_FOREACH (const StablePose0DModel& m, models) {
+	for(const StablePose0DModel& m : models) {
 		DEBUG << " - StablePose: " << m << ", QUALITY: " << m.getQuality() << ", INLIERS: " << m.getNumberOfInliers() << endl;
 		inliers += m.getNumberOfInliers();
 		
@@ -254,7 +254,7 @@ double GripperTaskSimulator::calculateAlignment() const {
 		// mean
 		vector<double> diffs;
 		double avg_diff = 0.0;
-		BOOST_FOREACH (size_t idx, indices) {
+		for(size_t idx : indices) {
 			double diff = metric.distance(rot_before[idx], rot_after[idx]);
 			diffs.push_back(diff);
 			avg_diff += diff;
@@ -264,7 +264,7 @@ double GripperTaskSimulator::calculateAlignment() const {
 		
 		// variance
 		double variance = 0.0;
-		BOOST_FOREACH (double diff, diffs) {
+		for(double diff : diffs) {
 			double dvar = diff - avg_diff;
 			//DEBUG << "Dvar= " << dvar << endl;
 			variance += dvar * dvar;
@@ -393,7 +393,7 @@ void GripperTaskSimulator::evaluateGripper()
 		<< "/" << drops << "/" << failures << endl;
 		
 	/*typedef std::pair<class GraspSubTask*, class GraspTarget*> TaskTarget;
-	BOOST_FOREACH (TaskTarget p, _gtask->getAllTargets()) {
+	for(TaskTarget p : _gtask->getAllTargets()) {
 		DEBUG << GraspTask::toString((GraspTask::TestStatus)p.second->getResult()->testStatus) << endl;
 	}*/
 	

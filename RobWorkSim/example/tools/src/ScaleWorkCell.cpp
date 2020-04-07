@@ -13,7 +13,6 @@
 using namespace rw::common;
 using namespace rw::loaders;
 using namespace rw::models;
-using namespace boost::numeric;
 
 int main(int argc, char** argv)
 {

@@ -11,7 +11,10 @@ using rw::pathplanning::PathPlanner;
 using rw::trajectory::Path;
 %}
 
+%include <exception.i>
+
 %import <rwlibs/swig/sdurw.i>
+
 
 %pragma(java) jniclassimports=%{
 import org.robwork.sdurw.*;

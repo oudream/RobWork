@@ -21,7 +21,7 @@
 #include <rw/common/macros.hpp>
 #include <rw/models/WorkCell.hpp>
 
-#include <boost/foreach.hpp>
+
 
 using namespace rw;
 using namespace rw::kinematics;
@@ -53,8 +53,8 @@ void SAPFilterStrategy::initialize() {
     _frameToGeoIdMap.clear();
     std::vector<Object::Ptr> objects = _workcell->getObjects();
 
-    BOOST_FOREACH(Object::Ptr object, objects) {
-        BOOST_FOREACH(geometry::Geometry::Ptr geom, object->getGeometry() ){
+    for(Object::Ptr object: objects) {
+        for(geometry::Geometry::Ptr geom: object->getGeometry() ){
             Frame* frame = geom->getFrame();
             RW_ASSERT(frame);
             _frameToGeoIdMap[*frame].push_back(geom->getName());
@@ -191,7 +191,7 @@ void SAPFilterStrategy::initializeCollisionFramePairs(const State& state) {
 		std::vector<FrameList> staticGroups = Kinematics::getStaticFrameGroups(_workcell->getWorldFrame(), _workcell->getDefaultState());
 		
 		FramePairSet exclude_set;
-		BOOST_FOREACH(FrameList& group, staticGroups) {
+		for(FrameList& group: staticGroups) {
 			typedef FrameList::const_iterator I;
 			for (I from = group.begin(); from != group.end(); ++from) {
 				for (I to = from + 1; to != group.end(); ++to) {
@@ -200,7 +200,7 @@ void SAPFilterStrategy::initializeCollisionFramePairs(const State& state) {
 			}
 		}
 
-		BOOST_FOREACH(FramePair fp, exclude_set) {
+		for(FramePair fp: exclude_set) {
 			FramePairSet::iterator it = result.find(fp);
 			if (it != result.end()) {
 				result.erase(it);
@@ -209,14 +209,9 @@ void SAPFilterStrategy::initializeCollisionFramePairs(const State& state) {
 
 	}
 
-	BOOST_FOREACH(const ProximitySetupRule& rule, _psetup.getProximitySetupRules()) {
+	for(const ProximitySetupRule& rule: _psetup.getProximitySetupRules()) {
 		applyRule(rule, _workcell, result);
 	}
-
-	//std::cout<<"Frame Pairs = "<<std::endl;
-	//BOOST_FOREACH(FramePair fp, result) {
-	//	std::cout<<fp.first->getName()<<" to "<<fp.second->getName()<<std::endl;
-	//}
 
 	_collisionPairs.insert(result.begin(), result.end());
 }
@@ -238,11 +233,11 @@ void SAPFilterStrategy::applyRule(const ProximitySetupRule& rule, WorkCell::Ptr 
 		}
 		break;
 	case ProximitySetupRule::INCLUDE_RULE:
-		BOOST_FOREACH(Frame* frame1, frames) {
+		for(Frame* frame1: frames) {
 		    if(frame1==NULL)
 		        continue;
 			if (rule.matchPatternA(frame1->getName())) {
-				BOOST_FOREACH(Frame* frame2, frames) {
+				for(Frame* frame2: frames) {
 		            if(frame2==NULL)
 		                continue;
 

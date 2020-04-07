@@ -13,6 +13,7 @@ using rwlibs::task::Task;
 
 %include <std_string.i>
 %include <std_vector.i>
+%include <exception.i>
 
 %import <rwlibs/swig/sdurw.i>
 %import <rwlibs/swig/sdurw_task.i>

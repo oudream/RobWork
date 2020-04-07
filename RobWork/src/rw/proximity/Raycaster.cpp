@@ -23,7 +23,7 @@
 
 #define TRI_WIDTH 0.00001
 
-#include <boost/foreach.hpp>
+
 
 using namespace rw::math;
 using namespace rw::kinematics;
@@ -106,7 +106,7 @@ bool Raycaster::shoot(const rw::math::Vector3D<>& pos,
 			contacts.clear();
 			_cdstrategy->getCollisionContacts(contacts, result.data);
 
-			BOOST_FOREACH(CollisionStrategy::Contact &contact, contacts){
+			for(CollisionStrategy::Contact &contact: contacts){
 				double dist = MetricUtil::dist2(contact.point, pos);
 				if(dist<minDist){
 					result.point = contact.point;

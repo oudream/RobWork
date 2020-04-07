@@ -3,6 +3,8 @@
 #include "DrawableUtil.hpp"
 #include "RWGLTexture.hpp"
 
+#include <rw/graphics/SceneCamera.hpp>
+
 using namespace rw::math;
 
 using namespace rwlibs::opengl;
@@ -23,7 +25,6 @@ void RenderModel3D::draw (const DrawableNode::RenderInfo& info, DrawableNode::Dr
                           double alpha) const
 {
     glPushAttrib (GL_ALL_ATTRIB_BITS);
-
     switch (type) {
         case DrawableNode::SOLID:
             glPolygonMode (GL_FRONT, GL_FILL);
@@ -51,36 +52,237 @@ void RenderModel3D::draw (const DrawableNode::RenderInfo& info, DrawableNode::Dr
     }
     glPopAttrib ();
 }
+namespace rwlibs { namespace opengl {
+    struct TPFace
+    {
+        size_t _mat;
+        std::vector< const float* > _texCord;
+        std::vector< const float* > _normal;
+        std::vector< const float* > _vertex;
+        rw::math::Transform3D< float > _transform;
+        double dist2cam;
+        bool operator< (const TPFace& lhs) { return dist2cam < lhs.dist2cam; }
+        bool operator< (const TPFace& lhs) const { return dist2cam < lhs.dist2cam; }
+    };
+}}    // namespace rwlibs::opengl
+
+template< class T >
+void RenderModel3D::makeVertexList (const Model3D::Object3D< T >& obj, std::vector< TPFace >& list,
+                                    Transform3D< float > initial) const
+{
+    Transform3D< float > trans = initial * obj._transform;
+    if (obj._normals.size () != 0 && obj._vertices.size () != 0) {
+        // Loop through the faces as sorted by material and draw them
+        for (const typename Model3D::Object3DGeneric::MaterialMapData& data : obj._materialMap) {
+            TPFace tmpTPFace;
+            tmpTPFace._transform = trans;
+            tmpTPFace._mat       = data.matId;
+
+            if (_model->_materials[data.matId].hasTexture ()) {
+                if (obj._mappedToFaces) {
+                    for (std::size_t i = data.startIdx; i < data.startIdx + data.size; i++) {
+                        TPFace face                                   = tmpTPFace;
+                        const rw::geometry::IndexedTriangle< T >& tri = obj._faces[i];
+
+                        face._texCord.push_back (&obj._texCoords[i * 3](0));
+                        face._normal.push_back (&obj._normals[tri[0]](0));
+                        face._vertex.push_back (&obj._vertices[tri[0]](0));
+
+                        face._texCord.push_back (&obj._texCoords[i * 3 + 1](0));
+                        face._normal.push_back (&obj._normals[tri[1]](0));
+                        face._vertex.push_back (&obj._vertices[tri[1]](0));
+
+                        face._texCord.push_back (&obj._texCoords[i * 3 + 2](0));
+                        face._normal.push_back (&obj._normals[tri[2]](0));
+                        face._vertex.push_back (&obj._vertices[tri[2]](0));
+
+                        list.push_back (face);
+                    }
+                }
+                else {
+                    for (std::size_t i = data.startIdx; i < data.startIdx + data.size; i++) {
+                        TPFace face                                   = tmpTPFace;
+                        const rw::geometry::IndexedTriangle< T >& tri = obj._faces[i];
+
+                        face._texCord.push_back (&obj._texCoords[tri[0]](0));
+                        face._normal.push_back (&obj._normals[tri[0]](0));
+                        face._vertex.push_back (&obj._vertices[tri[0]](0));
+
+                        face._texCord.push_back (&obj._texCoords[tri[1]](0));
+                        face._normal.push_back (&obj._normals[tri[1]](0));
+                        face._vertex.push_back (&obj._vertices[tri[1]](0));
+
+                        face._texCord.push_back (&obj._texCoords[tri[2]](0));
+                        face._normal.push_back (&obj._normals[tri[2]](0));
+                        face._vertex.push_back (&obj._vertices[tri[2]](0));
+
+                        list.push_back (face);
+                    }
+                }
+            }
+            else {
+                for (std::size_t i = data.startIdx; i < data.startIdx + data.size; i++) {
+                    TPFace face                                   = tmpTPFace;
+                    const rw::geometry::IndexedTriangle< T >& tri = obj._faces[i];
+
+                    face._normal.push_back (&obj._normals[tri[0]](0));
+                    face._vertex.push_back (&obj._vertices[tri[0]](0));
+
+                    face._normal.push_back (&obj._normals[tri[1]](0));
+                    face._vertex.push_back (&obj._vertices[tri[1]](0));
+
+                    face._normal.push_back (&obj._normals[tri[2]](0));
+                    face._vertex.push_back (&obj._vertices[tri[2]](0));
+
+                    list.push_back (face);
+                }
+            }
+        }
+    }
+
+    for (const Model3D::Object3DGeneric::Ptr& child : obj._kids) {
+        if (const Model3D::Object3D< uint8_t >::Ptr objPtrT =
+                child.cast< Model3D::Object3D< uint8_t > > ()) {
+            makeVertexList< uint8_t > (*objPtrT, list, trans);
+        }
+        else if (const Model3D::Object3D< uint16_t >::Ptr objPtrT =
+                     child.cast< Model3D::Object3D< uint16_t > > ()) {
+            makeVertexList< uint16_t > (*objPtrT, list, trans);
+        }
+        else if (const Model3D::Object3D< uint32_t >::Ptr objPtrT =
+                     child.cast< Model3D::Object3D< uint32_t > > ()) {
+            makeVertexList< uint32_t > (*objPtrT, list, trans);
+        }
+        else {
+            RW_THROW ("RenderModel3D could not recognize the type of Object3D in the model.");
+        }
+    }
+}
+
+void RenderModel3D::drawTPFaceList (const std::vector< TPFace >& list,
+                                    const DrawableNode::RenderInfo& info,
+                                    rw::graphics::DrawableNode::DrawType type, double alpha,
+                                    bool disableMaterials) const
+{
+    glPushMatrix ();
+
+    for (size_t i = 0; i < list.size (); i++) {
+        glPushMatrix ();
+        DrawableUtil::multGLTransform (list[i]._transform);
+        size_t j;
+        for (j = i; j < list.size (); j++) {
+            if (list[i]._transform != list[j]._transform) {
+                break;
+            }
+            glPushMatrix ();
+
+            if (!disableMaterials) {
+                useMaterial (_model->_materials[list[j]._mat], type, alpha);
+            }
+            if (_model->_materials[list[j]._mat].hasTexture ()) {
+                glEnable (GL_TEXTURE_2D);
+            }
+            size_t k;
+            for (k = j; k < list.size (); k++) {
+                if (list[i]._transform != list[k]._transform) {
+                    break;
+                }
+                if (list[k]._mat != list[j]._mat && !disableMaterials) {
+                    break;
+                }
+
+                glBegin (GL_TRIANGLES);
+                if (!list[k]._texCord.empty ()) {
+                    glTexCoord2fv (list[k]._texCord[0]);
+                }
+                glNormal3fv (list[k]._normal[0]);
+                glVertex3fv (list[k]._vertex[0]);
+                if (!list[k]._texCord.empty ()) {
+                    glTexCoord2fv (list[k]._texCord[1]);
+                }
+                glNormal3fv (list[k]._normal[1]);
+                glVertex3fv (list[k]._vertex[1]);
+                if (!list[k]._texCord.empty ()) {
+                    glTexCoord2fv (list[k]._texCord[2]);
+                }
+                glNormal3fv (list[k]._normal[2]);
+                glVertex3fv (list[k]._vertex[2]);
+                glEnd ();
+            }
+            if (_model->_materials[list[k]._mat].hasTexture ()) {
+                glDisable (GL_TEXTURE_2D);
+            }
+            j = k - 1;
+            glPopMatrix ();
+        }
+        i = j - 1;
+
+        glPopMatrix ();
+    }
+    glPopMatrix ();
+}
 
 void RenderModel3D::drawUsingSimple (const DrawableNode::RenderInfo& info, DrawType type,
                                      double alpha, bool disableMaterials) const
 {
     glPushMatrix ();
-    // std::cout << "draw arrays" << std::endl;
     // Move the model
     DrawableUtil::multGLTransform (_model->getTransform ());
-    // glScalef(scale, scale, scale);
 
-    // Loop through the objects
-    for(Model3D::Object3DGeneric::Ptr& objPtr: _model->getObjects ()) {
-        if (const Model3D::Object3D< uint8_t >::Ptr objPtrT =
-                objPtr.cast< Model3D::Object3D< uint8_t > > ()) {
+    if (!info._renderTransparent) {
+        // Loop through the objects
+        for (Model3D::Object3DGeneric::Ptr& objPtr : _model->getObjects ()) {
+            if (const Model3D::Object3D< uint8_t >::Ptr objPtrT =
+                    objPtr.cast< Model3D::Object3D< uint8_t > > ()) {
+                drawUsingSimpleFct (info, *objPtrT, type, alpha, disableMaterials);
+            }
+            else if (const Model3D::Object3D< uint16_t >::Ptr objPtrT =
+                         objPtr.cast< Model3D::Object3D< uint16_t > > ()) {
+                drawUsingSimpleFct (info, *objPtrT, type, alpha, disableMaterials);
+            }
+            else if (const Model3D::Object3D< uint32_t >::Ptr objPtrT =
+                         objPtr.cast< Model3D::Object3D< uint32_t > > ()) {
+                drawUsingSimpleFct (info, *objPtrT, type, alpha, disableMaterials);
+            }
+            else {
+                RW_THROW ("RenderModel3D could not recognize the type of Object3D in the model.");
+            }
+        }
+    }
+    else {
+        std::vector< TPFace > list;
 
-            drawUsingSimpleFct (info, *objPtrT, type, alpha, disableMaterials);
+        for (Model3D::Object3DGeneric::Ptr& objPtr : _model->getObjects ()) {
+            if (const Model3D::Object3D< uint8_t >::Ptr objPtrT =
+                    objPtr.cast< Model3D::Object3D< uint8_t > > ()) {
+                makeVertexList< uint8_t > (*objPtrT, list, cast< float > (_model->getTransform ()));
+            }
+            else if (const Model3D::Object3D< uint16_t >::Ptr objPtrT =
+                         objPtr.cast< Model3D::Object3D< uint16_t > > ()) {
+                makeVertexList< uint16_t > (
+                    *objPtrT, list, cast< float > (_model->getTransform ()));
+            }
+            else if (const Model3D::Object3D< uint32_t >::Ptr objPtrT =
+                         objPtr.cast< Model3D::Object3D< uint32_t > > ()) {
+                makeVertexList< uint32_t > (
+                    *objPtrT, list, cast< float > (_model->getTransform ()));
+            }
+            else {
+                RW_THROW ("RenderModel3D could not recognize the type of Object3D in the model.");
+            }
         }
-        else if (const Model3D::Object3D< uint16_t >::Ptr objPtrT =
-                     objPtr.cast< Model3D::Object3D< uint16_t > > ()) {
-
-            drawUsingSimpleFct (info, *objPtrT, type, alpha, disableMaterials);
+        Transform3D< float > cTw = cast< float > (inverse (info._cam->getTransform ()));
+        Transform3D< float > wTm = cast <float > (info._wTm);
+        for (TPFace& f : list) {
+            for (size_t i = 0; i < f._vertex.size (); i++) {
+                Vector3D< float > v (f._vertex[i][0], f._vertex[i][1], f._vertex[i][2]);
+                v = wTm * f._transform * v;
+                v = cTw * v;
+                f.dist2cam += v[2];
+            }
         }
-        else if (const Model3D::Object3D< uint32_t >::Ptr objPtrT =
-                     objPtr.cast< Model3D::Object3D< uint32_t > > ()) {
-                         
-            drawUsingSimpleFct (info, *objPtrT, type, alpha, disableMaterials);
-        }
-        else {
-            RW_THROW ("RenderModel3D could not recognize the type of Object3D in the model.");
-        }
+        std::sort (list.begin (), list.end ());
+        drawTPFaceList (list, info, type, alpha, disableMaterials);
     }
 
     glPopMatrix ();
@@ -99,17 +301,14 @@ void RenderModel3D::drawUsingArrays (const DrawableNode::RenderInfo& info, DrawT
     for (Model3D::Object3DGeneric::Ptr& objPtr : _model->getObjects ()) {
         if (const Model3D::Object3D< uint8_t >::Ptr objPtrT =
                 objPtr.cast< Model3D::Object3D< uint8_t > > ()) {
-
             drawUsingArraysFct (info, *objPtrT, type, alpha);
         }
         else if (const Model3D::Object3D< uint16_t >::Ptr objPtrT =
                      objPtr.cast< Model3D::Object3D< uint16_t > > ()) {
-
             drawUsingArraysFct (info, *objPtrT, type, alpha);
         }
         else if (const Model3D::Object3D< uint32_t >::Ptr objPtrT =
                      objPtr.cast< Model3D::Object3D< uint32_t > > ()) {
-
             drawUsingArraysFct (info, *objPtrT, type, alpha);
         }
         else {
@@ -198,7 +397,6 @@ void RenderModel3D::drawUsingSimpleFct (const DrawableNode::RenderInfo& info,
             }
             glPopMatrix ();
         }
-        // std::cout << glGetError() << std::endl;
     }
 
     // draw children
@@ -206,17 +404,14 @@ void RenderModel3D::drawUsingSimpleFct (const DrawableNode::RenderInfo& info,
     for (const Model3D::Object3DGeneric::Ptr& child : obj._kids) {
         if (const Model3D::Object3D< uint8_t >::Ptr objPtrT =
                 child.cast< Model3D::Object3D< uint8_t > > ()) {
-
             drawUsingSimpleFct< uint8_t > (info, *objPtrT, type, alpha, disableMaterials);
         }
         else if (const Model3D::Object3D< uint16_t >::Ptr objPtrT =
                      child.cast< Model3D::Object3D< uint16_t > > ()) {
-
             drawUsingSimpleFct< uint16_t > (info, *objPtrT, type, alpha, disableMaterials);
         }
         else if (const Model3D::Object3D< uint32_t >::Ptr objPtrT =
                      child.cast< Model3D::Object3D< uint32_t > > ()) {
-
             drawUsingSimpleFct< uint32_t > (info, *objPtrT, type, alpha, disableMaterials);
         }
         else {
@@ -256,12 +451,13 @@ void RenderModel3D::drawUsingArraysFct (const DrawableNode::RenderInfo& info,
 
         // Loop through the faces as sorted by material and draw them
         for (const typename Model3D::Object3DGeneric::MaterialMapData& data : obj._materialMap) {
-
             useMaterial (_model->_materials[data.matId], type, alpha);
 
             // Draw the faces using an index to the vertex array
-            glDrawElements (
-                GL_TRIANGLES, GLsizei(data.size * 3), GL_UNSIGNED_SHORT, &(obj._faces.at (data.startIdx)));
+            glDrawElements (GL_TRIANGLES,
+                            GLsizei (data.size * 3),
+                            GL_UNSIGNED_SHORT,
+                            &(obj._faces.at (data.startIdx)));
         }
 
         if (obj.hasTexture ()) {

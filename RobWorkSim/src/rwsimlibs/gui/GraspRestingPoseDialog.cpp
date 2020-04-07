@@ -1,6 +1,6 @@
 #include "GraspRestingPoseDialog.hpp"
 
-#include <boost/foreach.hpp>
+
 
 #include <rw/loaders/path/PathLoader.hpp>
 #include <rw/loaders/dom/DOMPropertyMapLoader.hpp>
@@ -109,7 +109,7 @@ namespace {
 
         // save tactile data
         int idx=0;
-        BOOST_FOREACH(GraspRestingPoseDialog::TactileSensorData& tdata, datas){
+        for(GraspRestingPoseDialog::TactileSensorData& tdata: datas){
 
             file << "# Q " << idx << "/" << datas.size() << "\n";
             for(size_t i=0;i<handq.back().size(); i++)
@@ -117,7 +117,7 @@ namespace {
             file << "\n\n";
 
             file << "# Tdata " << idx << "/" << datas.size() << "\n";
-            BOOST_FOREACH(matrix<float>& data, tdata){
+            for(matrix<float>& data: tdata){
                 for(size_t x=0;x<data.size1(); x++){
                     for(size_t y=0;y<data.size2(); y++){
                         file << data(x,y) << " ";
@@ -185,7 +185,7 @@ namespace {
 
         // save tactile data
         int idx=0;
-        BOOST_FOREACH(GraspRestingPoseDialog::TactileSensorData& tdata, datas){
+        for(GraspRestingPoseDialog::TactileSensorData& tdata: datas){
 
             file << "# Q " << idx << "/" << datas.size() << "\n";
             for(size_t i=0;i<handq.back().size(); i++)
@@ -193,7 +193,7 @@ namespace {
             file << "\n\n";
 
             file << "# Tdata " << idx << "/" << datas.size() << "\n";
-			BOOST_FOREACH(Eigen::MatrixXf& data, tdata){
+			for(Eigen::MatrixXf& data: tdata){
 				for(Eigen::DenseIndex x=0;x<data.rows(); x++){
 					for(Eigen::DenseIndex y=0;y<data.cols(); y++){
 						file << data(x,y) << " ";
@@ -295,7 +295,7 @@ GraspRestingPoseDialog::GraspRestingPoseDialog(const rw::kinematics::State& stat
 
     RW_DEBUGS("- Setting devices ");
     std::vector<DynamicDevice::Ptr> devices = _dwc->getDynamicDevices();
-    BOOST_FOREACH(DynamicDevice::Ptr device, devices){
+    for(DynamicDevice::Ptr device: devices){
         if( device.cast<RigidDevice>() ){
             rw::models::Device *dev = &device->getModel();
             RW_ASSERT(dev);
@@ -305,7 +305,7 @@ GraspRestingPoseDialog::GraspRestingPoseDialog(const rw::kinematics::State& stat
     }
 
     RW_DEBUGS("- Setting objects ");
-    BOOST_FOREACH(Body::Ptr body, _dwc->getBodies() ){
+    for(Body::Ptr body: _dwc->getBodies() ){
         Frame *obj = body->getBodyFrame();
         if(obj==NULL)
             continue;
@@ -440,7 +440,7 @@ void GraspRestingPoseDialog::initializeStart(){
 
     RW_DEBUGS("- Getting object!");
     std::string objName = _ui->_objectBox->currentText().toStdString();
-    BOOST_FOREACH(Body::Ptr body, _dwc->getBodies()){
+    for(Body::Ptr body: _dwc->getBodies()){
         if(RigidBody::Ptr rbody = body.cast<RigidBody>() ){
             if(rbody->getBodyFrame()->getName()==objName){
                 _bodies.push_back(rbody);
@@ -535,11 +535,11 @@ void GraspRestingPoseDialog::initializeStart(){
     _hand->getModel().setQ(preQ, _defstate);
     file << "Preshape configuration type: " << _ui->_preshapeStratBox->currentText().toStdString() << "\n";
     file << "preshapes:  \n";
-    BOOST_FOREACH(Q pq, _preshapes){
+    for(Q pq: _preshapes){
     	file << "- " << pq << "\n";
     }
     file << "\nTargets: \n";
-    BOOST_FOREACH(Q pq, _targetQ){
+    for(Q pq: _targetQ){
     	file << "- " << pq << "\n";
     }
 
@@ -620,7 +620,7 @@ namespace {
 
 	std::vector<Eigen::MatrixXf> getTactileData(const std::vector<SimulatedSensor::Ptr>& sensors, const State& state){
 		std::vector<Eigen::MatrixXf> datas;
-		BOOST_FOREACH(const SimulatedSensor::Ptr& sensor, sensors){
+		for(const SimulatedSensor::Ptr& sensor: sensors){
         	if( TactileArraySensor *tsensor = dynamic_cast<TactileArraySensor*>( sensor.get() ) ) {
                 datas.push_back( tsensor->getTexelData(state) );
             }
@@ -653,7 +653,7 @@ void GraspRestingPoseDialog::stepCallBack(int i, const rw::kinematics::State& st
     // check if any contact forces are too large...
     bool largeForces = false;
     std::vector<rw::sensor::Contact3D> contacts = _bodySensor->getContacts(state);
-    BOOST_FOREACH(rw::sensor::Contact3D& con, contacts){
+    for(rw::sensor::Contact3D& con: contacts){
     	if( con.normalForce >1000 )
     		largeForces = true;
     }
@@ -692,7 +692,7 @@ void GraspRestingPoseDialog::stepCallBack(int i, const rw::kinematics::State& st
     // save tactile data
     std::vector<SimulatedSensor::Ptr> sensors = sim->getSensors();
     std::vector<std::vector<Contact3D> > tactileContacts;
-    BOOST_FOREACH(SimulatedSensor::Ptr& sensor, sensors){
+    for(SimulatedSensor::Ptr& sensor: sensors){
         if( TactileArraySensor *tsensor = dynamic_cast<TactileArraySensor*>( sensor.get() ) ) {
             datas.push_back( tsensor->getTexelData(state) );
 
@@ -779,7 +779,7 @@ void GraspRestingPoseDialog::stepCallBack(int i, const rw::kinematics::State& st
 					qualities(1) = 0;
 
 					std::cout << "*** Center of object: " << cm << std::endl;
-					BOOST_FOREACH(Contact3D& c, g3d.contacts){
+					for(Contact3D& c: g3d.contacts){
 						std::cout << c.p << std::endl;
 						std::cout << "\t" << c.p-cm << std::endl;
 					}
@@ -806,7 +806,7 @@ void GraspRestingPoseDialog::stepCallBack(int i, const rw::kinematics::State& st
             GraspTable::GraspData data;
 
             // all contacts are in world coordinates. Transform them...
-            BOOST_FOREACH(std::vector<Contact3D>& convec, tactileContacts){
+            for(std::vector<Contact3D>& convec: tactileContacts){
             	for(size_t i=0;i<convec.size();i++){
             		Contact3D &con = convec[i];
             		//_wTf*point,_wTf.R()*snormal,_wTf.R()*force
@@ -1056,7 +1056,7 @@ void GraspRestingPoseDialog::btnPressed(){
         _ui->_stopBtn->setDisabled(true);
         _ui->_resetBtn->setDisabled(false);
         _timer->stop();
-        BOOST_FOREACH(Ptr<ThreadSimulator> sim,  _simulators){
+        for(Ptr<ThreadSimulator> sim:  _simulators){
             if(sim->isRunning())
                 sim->stop();
         }
@@ -1147,7 +1147,7 @@ bool GraspRestingPoseDialog::saveRestingState(int simidx, DynamicSimulator::Ptr 
     int fingersWithData = 0;
     std::vector<SimulatedSensor::Ptr> sensors = sim->getSensors();
     std::vector<Eigen::MatrixXf> datas;
-    BOOST_FOREACH(SimulatedSensor::Ptr& sensor, sensors){
+    for(SimulatedSensor::Ptr& sensor: sensors){
         if( TactileArraySensor *tsensor = dynamic_cast<TactileArraySensor*>( sensor.get() ) ) {
             datas.push_back( tsensor->getTexelData(state) );
 
@@ -1175,7 +1175,7 @@ bool GraspRestingPoseDialog::saveRestingState(int simidx, DynamicSimulator::Ptr 
         return false;
     }
     //Transform3D<> wTf = Kinematics::worldTframe(_handBase, state);
-    BOOST_FOREACH(Contact3D &c, g3d.contacts){
+    for(Contact3D &c: g3d.contacts){
         sstr << c.p << "  " << c.n << " ";
     }
 
@@ -1215,7 +1215,7 @@ bool GraspRestingPoseDialog::saveRestingState(int simidx, DynamicSimulator::Ptr 
     } else {
     	std::cout << "STABLE  : \n";
     }
-    BOOST_FOREACH(Contact3D &c, g3d.contacts){
+    for(Contact3D &c: g3d.contacts){
         std::cout << "\t" << c.p << "  " << c.n << " \n";
     }
 
@@ -1360,7 +1360,7 @@ void GraspRestingPoseDialog::calcColFreeRandomCfg(rw::kinematics::State& state){
     std::vector<RigidBody*> bodies;
     while( _colDect->inCollision(state, &result, false) ){
         nrOfTries++;
-        BOOST_FOREACH(rw::kinematics::FramePair pair, result){
+        for(rw::kinematics::FramePair pair: result){
             // generate new collision free configuration between
             RigidBody *body1 = _frameToBody[*pair.first];
             RigidBody *body2 = _frameToBody[*pair.second];
@@ -1489,7 +1489,7 @@ void GraspRestingPoseDialog::calcRandomCfg(std::vector<RigidBody::Ptr> &bodies, 
 /*
 
 
-    BOOST_FOREACH(RigidBody *rbody, bodies){
+    for(RigidBody *rbody: bodies){
         double roll = Math::ran(lowR, highR);
         double pitch = Math::ran(lowP, highP);
         double yaw = Math::ran(lowY, highY);
