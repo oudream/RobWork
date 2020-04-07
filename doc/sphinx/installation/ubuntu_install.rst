@@ -18,9 +18,17 @@ The Simplest install to get all our packages can then be done with:
                          libsdurwhw-all-dev \
                          libsdurwsim-all-dev
 
+.. warning::
+
+    In The upgrade from 1.0.9 to 1.0.11 a package name was changed, causing errors when running an apt upgrade.
+    The Error can be fixed with:
+    
+    sudo dpkg --remove --force-remove-reinstreq libsdurw-geometry1.0
+    sudo dpkg --remove --force-remove-reinstreq libsdurw-geometry-dev
+
 .. note::
 
-    When using the precompiled packages the following interfaces will NOT be available : Java, Lua, Python. Matlab.
+    When using the precompiled packages the following interfaces will NOT be available : Java, Matlab.
 
 PPA packages
 ------------
@@ -49,8 +57,8 @@ For the development packages including the newest version of robwork and the inc
 +---------------------------------+-----------------------------------+------------------------------------+-----------------------+
 |  - libsdurw                     |  - libsdurws                      |  - libsdurwhw-camera               |  - libsdurwsim        |
 |  - libsdurw-algorithms          |  - libsdurws-atask                |  - libsdurwhw-can                  |  - libsdurwsim-bullet |
-|  - libsdurw-analytic-geometry   |  - libsdurws-gtask                |  - libsdurwhw-dockwelder           |                       |
-|  - libsdurw-assembly            |  - libsdurws-jog                  |  - libsdurwhw-netft                |                       |
+|  - libsdurw-geometry            |  - libsdurws-gtask                |  - libsdurwhw-dockwelder           |  - libsdurws-gui      |
+|  - libsdurw-assembly            |  - libsdurws-jog                  |  - libsdurwhw-netft                |  - libsdurwsim-ode    |
 |  - libsdurw-calibration         |  - libsdurws-log                  |  - libsdurwhw-pcube                |                       |
 |  - libsdurw-control             |  - libsdurws-planning             |  - libsdurwhw-robolabft            |                       |
 |  - libsdurw-csg                 |  - libsdurws-playback             |  - libsdurwhw-robotiq              |                       |
@@ -98,7 +106,7 @@ some packages containing all the individual packages exists.
 These packages is made for quick installation.
 In the package name "lib<Library>-all" means all packages belonging to <Library>,
 and "-all-dev" is a development version of the "-all" package.
-The ".robwork-all" includes all packages for all four main robwork code libraries.
+The "-robwork-all" includes all packages for all four main robwork code libraries.
 
 - libsdurw-all-dev
 - libsdurw-all
