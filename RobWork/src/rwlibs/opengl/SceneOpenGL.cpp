@@ -384,7 +384,8 @@ struct TransparentVisitor
     double distToCamera;
     Transform3D<> drawFrame;
     DrawableNode* node;
-    bool operator< (TransparentVisitor& other) { return other.distToCamera > distToCamera; }
+    bool operator< (const TransparentVisitor& other) { return other.distToCamera > distToCamera; }
+    bool operator< (const TransparentVisitor& other) const { return other.distToCamera > distToCamera; }
 };
 
 struct RenderPreVisitor
