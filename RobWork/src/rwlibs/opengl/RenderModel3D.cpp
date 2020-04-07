@@ -62,6 +62,7 @@ namespace rwlibs { namespace opengl {
         rw::math::Transform3D< float > _transform;
         double dist2cam;
         bool operator< (const TPFace& lhs) { return dist2cam < lhs.dist2cam; }
+        bool operator< (const TPFace& lhs) const { return dist2cam < lhs.dist2cam; }
     };
 }}    // namespace rwlibs::opengl
 
