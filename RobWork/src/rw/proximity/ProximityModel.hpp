@@ -43,7 +43,6 @@ namespace rw { namespace proximity {
         //! @brief smart pointer type to this class
         typedef rw::common::Ptr< ProximityModel > Ptr;
 
-        // ProximityModel(rw::common::Ptr<ProximityStrategy> pOwner):
         /**
          * @brief Constructor
          *
@@ -60,20 +59,19 @@ namespace rw { namespace proximity {
         std::vector< std::string > getGeometryIDs ();
 
         /**
-         *  @brief get the associated Geometries
+         * @brief get the associated Geometries
+         * @return a list of Geomety pointers beloninh to the model
          */
         std::vector< rw::common::Ptr< rw::geometry::Geometry > > getGeometries ();
 
         /**
          * @brief adds geometry
-         *
          * @param geom the geometry to add
          **/
         bool addGeometry (const rw::geometry::Geometry& geom);
 
         /**
          * @brief adds geometry using pointer
-         *
          * @param geom [in] the geometry to add
          * @param forceCopy [in]
          **/
