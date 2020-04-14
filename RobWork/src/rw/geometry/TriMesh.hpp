@@ -47,14 +47,23 @@ namespace geometry {
 
 		/**
 		 * @brief gets the triangle at index idx.
+		 * @param idx [in] the index of the triangle.
+		 * @return the triangle at index idx
 		 */
 		virtual Triangle<double> getTriangle(size_t idx) const = 0;
 
-
+		/**
+		 * @brief gets the triangle at index idx.
+		 * @param idx [in] the index of the triangle.
+		 * @param dst [out] where to store the triangle at index idx
+		 */
 		virtual void getTriangle(size_t idx, Triangle<double>& dst) const = 0;
-        /**
-         * @brief gets the triangle at index idx, but with floating precision
-         */
+
+		/**
+		 * @brief gets the triangle at index idx. Using Floating point presicion 
+		 * @param idx [in] the index of the triangle.
+		 * @param dst [out] where to store the triangle at index idx
+		 */
 		virtual void getTriangle(size_t idx, Triangle<float>& dst) const = 0;
 
 
@@ -83,7 +92,7 @@ namespace geometry {
 		rw::common::Ptr<TriMesh> getTriMesh(bool forceCopy=true);
 
 		//! @copydoc getTriMesh
-		rw::common::Ptr<const TriMesh> getTriMesh(bool forceCopy=true) const;
+		//rw::common::Ptr<const TriMesh> getTriMesh(bool forceCopy=true) const;
 
         //! @copydoc GeometryData::isConvex
         virtual bool isConvex() { return _isConvex; }
