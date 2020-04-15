@@ -1439,6 +1439,12 @@
 // ################# ProximityModel 
     class ProximityModel {
       public:
+
+        /**
+         * @brief Constructor
+         *
+         * @param pOwner the ProximityStrategy owning this ProximityModel
+         **/
         ProximityModel(ProximityStrategy* pOwner);
         /**
          * @brief return vector of names for the geometries added to this ProximityModel
@@ -1446,15 +1452,25 @@
          **/
         std::vector<std::string> getGeometryIDs();
         /**
+         * @brief get the associated Geometries
+         * @return a list of Geomety pointers beloninh to the model
+         */
+        std::vector< rw::common::Ptr< Geometry > > getGeometries ();
+        /**
          * @brief adds geometry 
-         *
          * @param geom the geometry to add
          **/
         bool addGeometry(const Geometry& geom);
+
+        /**
+         * @brief adds geometry using pointer
+         * @param geom [in] the geometry to add
+         * @param forceCopy [in]
+         **/
+        bool addGeometry (rw::common::Ptr< Geometry > geom, bool forceCopy = false);
         
         /**
          * @brief removes a geometry from the ProximityModel
-         *
          * @param geoid name of geometry to remove
          * @return bool
          **/       
@@ -1477,6 +1493,7 @@
         
     };
     %template(ProximityModelPtr) rw::common::Ptr<ProximityModel>;
+    //%template(GeometryPtrVector) std::vector< rw::common::Ptr< Geometry > >;
     OWNEDPTR(ProximityModel);
 
 // ################# ProximitySetup

@@ -91,7 +91,10 @@ namespace rw { namespace geometry {
 		//! @brief destructor
 		virtual ~Geometry();
 
-		//! @brief gets the scaling factor applied when using this geometry
+		/** 
+		 * @brief gets the scaling factor applied when using this geometry
+		 * @return the scale as double
+		 */
 		double getScale() const {return _scale;}
 
 		/**
@@ -101,37 +104,69 @@ namespace rw { namespace geometry {
 		 */
 		void setScale(double scale){_scale = scale;}
 
-		//! @brief set transformation
+		/**
+		 * @brief set transformation
+		 * @param t2d [in] the new transform
+		 */
 		void setTransform(const rw::math::Transform3D<>& t3d){_transform = t3d;}
 
-		//! @brief get transformation
+		/**
+		 * @brief get transformation
+		 * @return the Current transform
+		 */
 		const rw::math::Transform3D<>& getTransform() const {return _transform;}
 
-		//! @brief get geometry data
+		/**
+		 * @brief get geometry data
+		 * @return the geometry data stored
+		 */
 		GeometryData::Ptr getGeometryData(){return _data;}
 
-		//! @brief get geometry data
+		/**
+		 * @brief get geometry data
+		 */
 		const GeometryData::Ptr getGeometryData() const {return _data;}
 
-		//! @brief set transformation
+		/**
+		 * @brief set transformation
+		 * @param data [in] the new geometry data
+		 */
 		void setGeometryData(GeometryData::Ptr data){_data = data;}
 
-		//! @brief get name of this geometry
+		/**
+		 * @brief get name of this geometry
+		 * @return name as string
+		 */
 		const std::string& getName() const {return _name; }
 
-        //! @brief get file path of this geometry
+        /**
+		 * @brief get file path of this geometry
+		 * @return the file path as string
+		 */
         const std::string& getFilePath() const {return _filePath; }
 		
-		//! @brief get identifier of this geometry
+		/**
+		 * @brief get identifier of this geometry
+		 * @return the id of the geometry
+		 */
 		const std::string& getId() const {return getName(); }
 
-		//! @brief set name of this geometry
+		/**
+		 * @brief set name of this geometry
+		 * @param name [in] the new name of the geometry
+		 */
 		void setName(const std::string& name) {_name = name; }
 
-        //! @brief set file path this geometry
+        /**
+		 * @brief set file path this geometry
+		 * @param name [in] path to a geometry file
+		 */
         void setFilePath(const std::string& name) {_filePath = name; }
 
-		//! @brief set identifier of this geometry
+		/**
+		 * @brief set identifier of this geometry
+		 * @param id [in] new id
+		 */
 		void setId(const std::string& id) { setName(id); }
 
 		/**
@@ -180,13 +215,21 @@ namespace rw { namespace geometry {
 		 */
 		int getMask(){ return _mask; }
 
-		//! @brief util function for creating a Sphere geometry
+		/**
+		 * @brief util function for creating a Sphere geometry
+		 */
 		static Geometry::Ptr makeSphere(double radi);
-		//! @brief util function for creating a Box geometry
+		/**
+		 * @brief util function for creating a Box geometry
+		 */
 		static Geometry::Ptr makeBox(double x, double y, double z);
-		//! @brief util function for creating a Cone geometry
+		/**
+		 * @brief util function for creating a Cone geometry
+		 */
 		static Geometry::Ptr makeCone(double height, double radiusTop, double radiusBot);
-		//! @brief util function for creating a Cylinder geometry
+		/**
+		 * @brief util function for creating a Cylinder geometry
+		 */
 		static Geometry::Ptr makeCylinder(float radius, float height);
 
 		/**
