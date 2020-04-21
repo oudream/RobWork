@@ -17,7 +17,9 @@
 
 #include "SpiralParameterization.hpp"
 
-using namespace rw::common;
+#include <rw/core/PropertyMap.hpp>
+
+using namespace rw::core;
 using namespace rwlibs::assembly;
 
 SpiralParameterization::SpiralParameterization(PropertyMap::Ptr pmap) {

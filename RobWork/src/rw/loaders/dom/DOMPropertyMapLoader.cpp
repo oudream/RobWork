@@ -19,13 +19,12 @@
 #include "DOMBasisTypes.hpp"
 #include "DOMPathLoader.hpp"
 #include <rw/loaders/dom/DOMPropertyMapFormat.hpp>
-#include <rw/common/DOMParser.hpp>
-
-
+#include <rw/core/DOMParser.hpp>
+#include <rw/core/DOMElem.hpp>
 
 using namespace rw;
 using namespace rw::math;
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::loaders;
 using namespace rw::trajectory;
 

@@ -22,7 +22,7 @@
 #include <float.h>
 #include <rw/math/VectorND.hpp>
 #include <rw/geometry/GeometryUtil.hpp>
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 #include "ConvexHullND.hpp"
 
 namespace rw {

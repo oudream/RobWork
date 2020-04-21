@@ -29,8 +29,9 @@
 #include <rwsim/dynamics/DynamicWorkCell.hpp>
 
 #include <rw/common/TimerUtil.hpp>
-#include <rw/common/Ptr.hpp>
-//#include <rw/proximity/CollisionDetector.hpp>
+#include <rw/core/Ptr.hpp>
+#include <rw/core/StringUtil.hpp>
+
 #include <rw/loaders/path/PathLoader.hpp>
 #include <rwlibs/opengl/Drawable.hpp>
 
@@ -89,7 +90,7 @@ namespace {
 
 	    std::string file = filename.toStdString();
 	    if (!file.empty())
-	        previousOpenDirectory = rw::common::StringUtil::getDirectoryName(file);
+	        previousOpenDirectory = rw::core::StringUtil::getDirectoryName(file);
 
 	    return file;
 	}
@@ -140,7 +141,7 @@ SupportPoseAnalyserDialog::SupportPoseAnalyserDialog(const rw::kinematics::State
     for(RigidBody::Ptr  body: _bodies){
         _ui->_selectObjBox->addItem( body->getBodyFrame()->getName().c_str() );
     }
-    _frameRender = ownedPtr(new RenderFrame());
+    _frameRender = rw::core::ownedPtr(new RenderFrame());
     _fDraw = new Drawable( _frameRender , "FrameRender0");
     _fDraw1 = new Drawable( _frameRender, "FrameRender1" );
     _fDraw2 = new Drawable( _frameRender, "FrameRender2" );
@@ -148,9 +149,9 @@ SupportPoseAnalyserDialog::SupportPoseAnalyserDialog(const rw::kinematics::State
     _fDraw4 = new Drawable( _frameRender, "FrameRender4" );
     _fDraw5 = new Drawable( _frameRender, "FrameRender5" );
 
-    _xRender = ownedPtr(new RenderPoints());
-    _yRender = ownedPtr(new RenderPoints());
-    _zRender = ownedPtr(new RenderPoints());
+    _xRender = rw::core::ownedPtr(new RenderPoints());
+    _yRender = rw::core::ownedPtr(new RenderPoints());
+    _zRender = rw::core::ownedPtr(new RenderPoints());
     _xRender->setColor(1.0,0.0,0.0);
     _yRender->setColor(0.0,1.0,0.0);
     _zRender->setColor(0.0,0.0,1.0);
@@ -158,20 +159,20 @@ SupportPoseAnalyserDialog::SupportPoseAnalyserDialog(const rw::kinematics::State
     _yDraw = new Drawable( _yRender, "PointsRendery" );
     _zDraw = new Drawable( _zRender, "PointsRenderz" );
 
-    _selPosePntRenderX = ownedPtr(new RenderPoints());
+    _selPosePntRenderX = rw::core::ownedPtr(new RenderPoints());
     _selPoseDrawX = new Drawable( _selPosePntRenderX , "PoseRenderx");
-    _selPosePntRenderY = ownedPtr(new RenderPoints());
+    _selPosePntRenderY = rw::core::ownedPtr(new RenderPoints());
     _selPoseDrawY = new Drawable( _selPosePntRenderY, "PoseRendery" );
-    _selPosePntRenderZ = ownedPtr(new RenderPoints());
+    _selPosePntRenderZ = rw::core::ownedPtr(new RenderPoints());
     _selPoseDrawZ = new Drawable( _selPosePntRenderZ , "PoseRenderz");
     _selPosePntRenderX->setColor(1.0,0.0,0.0);
     _selPosePntRenderY->setColor(0.0,1.0,0.0);
     _selPosePntRenderZ->setColor(0.0,0.0,1.0);
 
 
-    _xcRender = ownedPtr(new RenderCircles());
-    _ycRender = ownedPtr(new RenderCircles());
-    _zcRender = ownedPtr(new RenderCircles());
+    _xcRender = rw::core::ownedPtr(new RenderCircles());
+    _ycRender = rw::core::ownedPtr(new RenderCircles());
+    _zcRender = rw::core::ownedPtr(new RenderCircles());
     _xcRender->setColor(1.0,0.0,0.0);
     _ycRender->setColor(0.0,1.0,0.0);
     _zcRender->setColor(0.0,0.0,1.0);
@@ -253,7 +254,7 @@ void SupportPoseAnalyserDialog::btnPressed(){
     	if(filename.empty())
     		return;
     	try{
-                _path = ownedPtr(new rw::trajectory::TimedStatePath);
+                _path = rw::core::ownedPtr(new rw::trajectory::TimedStatePath);
     		*_path = PathLoader::loadTimedStatePath(*_wc,filename);
     	} catch(const Exception&) {
     		_path = NULL;
@@ -267,7 +268,7 @@ void SupportPoseAnalyserDialog::btnPressed(){
     	if(filename.empty())
     		return;
     	try{
-                _startPath = ownedPtr(new rw::trajectory::TimedStatePath);
+                _startPath = rw::core::ownedPtr(new rw::trajectory::TimedStatePath);
                 *_startPath = PathLoader::loadTimedStatePath(*_wc,filename);
     	} catch(const Exception&) {
     		_startPath = NULL;
@@ -330,7 +331,7 @@ void SupportPoseAnalyserDialog::btnPressed(){
     	if(selectedObj==NULL) return;
 
     	// get triangle mesh of object
-    	std::vector<rw::common::Ptr<Geometry> > geoms = selectedObj->getGeometry();
+    	std::vector<rw::core::Ptr<Geometry> > geoms = selectedObj->getGeometry();
 
     	// add it to the planar support pose analyzer
     	PlanarSupportPoseGenerator gen;
@@ -1089,7 +1090,7 @@ void SupportPoseAnalyserDialog::addStatePath(rw::trajectory::TimedStatePath::Ptr
 
 namespace {
 
-    rw::common::Ptr< std::map<int,std::vector<int> > > calculateRegions(const std::vector<Transform3D<> >& data, double dist, double angle){
+    rw::core::Ptr< std::map<int,std::vector<int> > > calculateRegions(const std::vector<Transform3D<> >& data, double dist, double angle){
         std::cout << "Dist : " << dist << std::endl;
         std::cout << "Angle: " << angle*Rad2Deg << "deg" << std::endl;
         // now build a kdtree with all end configurations
@@ -1176,7 +1177,7 @@ namespace {
             (*statMap)[val.get<1>()].push_back( val.get<0>() );
         }
         std::cout << "found regions" << std::endl;
-        return ownedPtr( statMap );
+        return rw::core::ownedPtr( statMap );
     }
 
 
@@ -1202,7 +1203,7 @@ void SupportPoseAnalyserDialog::process(){
         const Transform3D<> wTb = Kinematics::worldTframe(_bodies[j]->getMovableFrame(), _defaultState);
 
         // first we compute regions which should work as stable poses
-        Ptr< std::map<int, std::vector<int> > > regions = calculateRegions(_endTransforms[j], dist, angle);
+        rw::core::Ptr< std::map<int, std::vector<int> > > regions = calculateRegions(_endTransforms[j], dist, angle);
 
         std::vector<SupportPose> &sposes = _supportPoses[_bodies[j].get()];
         sposes.clear();

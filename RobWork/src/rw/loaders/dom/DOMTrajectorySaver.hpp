@@ -44,7 +44,7 @@ public:
     /**
      * @brief Saves the QTrajectory \b trajectory to file
      *
-     * If an error occurs while saving an rw::common::Exception is thrown
+     * If an error occurs while saving an rw::core::Exception is thrown
      *
      * @param trajectory [in] Trajectory to save
      * @param filename [in] Target filename
@@ -54,7 +54,7 @@ public:
     /**
      * @brief Saves the Vector3DTrajectory \b trajectory to file
      *
-     * If an error occurs while saving an rw::common::Exception is thrown
+     * If an error occurs while saving an rw::core::Exception is thrown
      *
      * @param trajectory [in] Trajectory to save
      * @param filename [in] Target filename
@@ -64,7 +64,7 @@ public:
     /**
      * @brief Saves the Rotation3DTrajectory \b trajectory to file
      *
-     * If an error occurs while saving an rw::common::Exception is thrown
+     * If an error occurs while saving an rw::core::Exception is thrown
      *
      * @param trajectory [in] Trajectory to save
      * @param filename [in] Target filename
@@ -74,7 +74,7 @@ public:
     /**
      * @brief Saves the Transform3DTrajectory \b trajectory to file
      *
-     * If an error occurs while saving an rw::common::Exception is thrown
+     * If an error occurs while saving an rw::core::Exception is thrown
      *
      * @param trajectory [in] Trajectory to save
      * @param filename [in] Target filename
@@ -84,7 +84,7 @@ public:
     /**
      * @brief Writes the QTrajectory \b trajectory to stream
      *
-     * If an error occurs while saving an rw::common::Exception is thrown
+     * If an error occurs while saving an rw::core::Exception is thrown
      *
      * @param trajectory [in] Trajectory to write
      * @param outstream [in] Output stream
@@ -94,7 +94,7 @@ public:
     /**
      * @brief Writes the Vector3DQTrajectory \b trajectory to stream
      *
-     * If an error occurs while saving an rw::common::Exception is thrown
+     * If an error occurs while saving an rw::core::Exception is thrown
      *
      * @param trajectory [in] Trajectory to write
      * @param outstream [in] Output stream
@@ -104,7 +104,7 @@ public:
     /**
      * @brief Writes the QRotation3Drajectory \b trajectory to stream
      *
-     * If an error occurs while saving an rw::common::Exception is thrown
+     * If an error occurs while saving an rw::core::Exception is thrown
      *
      * @param trajectory [in] Trajectory to write
      * @param outstream [in] Output stream
@@ -114,7 +114,7 @@ public:
     /**
      * @brief Writes the Transform3DTrajectory \b trajectory to stream
      *
-     * If an error occurs while saving an rw::common::Exception is thrown
+     * If an error occurs while saving an rw::core::Exception is thrown
      *
      * @param trajectory [in] Trajectory to write
      * @param outstream [in] Output stream

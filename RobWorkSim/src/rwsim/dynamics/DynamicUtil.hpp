@@ -21,7 +21,7 @@
 //! @file DynamicUtil.hpp
 
 #include <vector>
-
+#include <rw/core/Ptr.hpp>
 #include "RigidBody.hpp"
 
 namespace rw { namespace kinematics { class Frame; } }
@@ -86,7 +86,7 @@ namespace dynamics {
 		 * @param max_jointvel [in] (optional) the joint velocity threshold. Default is 0.05 rad/s.
 		 * @return
 		 */
-		static bool isResting(rw::common::Ptr<DynamicWorkCell> dwc,
+		static bool isResting(rw::core::Ptr<DynamicWorkCell> dwc,
 		                      const rw::kinematics::State& state,
 		                      double max_linvel = 0.02,
 		                      double max_angvel = 0.1,
@@ -100,7 +100,7 @@ namespace dynamics {
 		 * @param max_jointvel [in] (optional) the angular joint velocity threshold. Default is 0.05 rad/s.
 		 * @return
 		 */
-        static bool isResting(rw::common::Ptr<DynamicDevice> dev,
+        static bool isResting(rw::core::Ptr<DynamicDevice> dev,
                               const rw::kinematics::State& state,
                               double max_linjointvel = 0.02,
                               double max_jointvel = 0.05);

@@ -39,7 +39,7 @@ namespace bullet {
 class BtContactStrategy: public rwsim::contacts::ContactStrategy {
 public:
 	//! @brief smart pointer type to this class
-	typedef rw::common::Ptr<BtContactStrategy> Ptr;
+	typedef rw::core::Ptr<BtContactStrategy> Ptr;
 
 	//! @brief Create new strategy.
 	BtContactStrategy();
@@ -48,7 +48,7 @@ public:
 	virtual ~BtContactStrategy();
 
 	//! @copydoc rwsim::contacts::ContactStrategy::match
-	virtual bool match(rw::common::Ptr<const rw::geometry::GeometryData> geoA, rw::common::Ptr<const rw::geometry::GeometryData> geoB);
+	virtual bool match(rw::core::Ptr<const rw::geometry::GeometryData> geoA, rw::core::Ptr<const rw::geometry::GeometryData> geoB);
 
 	//! @copydoc rwsim::contacts::ContactStrategy::findContacts(rw::proximity::ProximityModel::Ptr,const rw::math::Transform3D<>&,rw::proximity::ProximityModel::Ptr,const rw::math::Transform3D<>&,ContactStrategyData&,ContactStrategyTracking&,rwsim::log::SimulatorLogScope* log) const
 	virtual std::vector<rwsim::contacts::Contact> findContacts(
@@ -82,8 +82,8 @@ public:
 	//! @copydoc rwsim::contacts::ContactStrategy::addGeometry(rw::proximity::ProximityModel*,const rw::geometry::Geometry&)
 	virtual bool addGeometry(rw::proximity::ProximityModel* model, const rw::geometry::Geometry& geom);
 
-	//! @copydoc rwsim::contacts::ContactStrategy::addGeometry(rw::proximity::ProximityModel*,rw::common::Ptr<rw::geometry::Geometry>,bool)
-	virtual bool addGeometry(rw::proximity::ProximityModel* model, rw::common::Ptr<rw::geometry::Geometry> geom, bool forceCopy=true);
+	//! @copydoc rwsim::contacts::ContactStrategy::addGeometry(rw::proximity::ProximityModel*,rw::core::Ptr<rw::geometry::Geometry>,bool)
+	virtual bool addGeometry(rw::proximity::ProximityModel* model, rw::core::Ptr<rw::geometry::Geometry> geom, bool forceCopy=true);
 
 	//! @copydoc rwsim::contacts::ContactStrategy::removeGeometry
 	virtual bool removeGeometry(rw::proximity::ProximityModel* model, const std::string& geomId);

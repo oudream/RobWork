@@ -17,16 +17,16 @@
 
 #include "XmlCalibrationLoader.hpp"
 
-#include <rw/common/DOMElem.hpp>
-#include <rw/common/DOMParser.hpp>
-#include <rw/common/Ptr.hpp>
+#include <rw/core/DOMElem.hpp>
+#include <rw/core/DOMParser.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/loaders/dom/DOMBasisTypes.hpp>
 #include <rw/models/SerialDevice.hpp>
 #include <rw/models/WorkCell.hpp>
 #include <rwlibs/calibration/FixedFrameCalibration.hpp>
 
 using namespace rwlibs::calibration;
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::math;
 using namespace rw::models;
 using namespace rw::loaders;
@@ -57,7 +57,7 @@ FixedFrameCalibration::Ptr readFixedFrameCalibration (DOMElem::Ptr felement, Wor
     //	RW_THROW("\"isPostCorrection\" attribute missing.");
     // bool isPostCorrection = transformElement->getAttributeValueAsBool("isPostCorrection");
 
-    return rw::common::ownedPtr (new FixedFrameCalibration (fixedFrame, t3d));
+    return rw::core::ownedPtr (new FixedFrameCalibration (fixedFrame, t3d));
 }
 
 }    // namespace

@@ -18,12 +18,12 @@
 #ifndef BRAINSTATE_HPP_
 #define BRAINSTATE_HPP_
 
-#include <rw/common/PropertyMap.hpp>
+#include <rw/core/PropertyMap.hpp>
 #include <rw/kinematics/State.hpp>
 
 class BrainState {
 public:
-    rw::common::PropertyMap _pmap;
+    rw::core::PropertyMap _pmap;
     rw::kinematics::State _rwstate;// yes, this is cheating a bit... but it makes life easier
 
     BrainState(rw::kinematics::State& state):_rwstate(state){}
@@ -37,9 +37,9 @@ public:
         return true;
     }
 
-    rw::common::PropertyMap& getMap(){ return _pmap; }
+    rw::core::PropertyMap& getMap(){ return _pmap; }
 
-    const rw::common::PropertyMap& getMap() const { return _pmap; }
+    const rw::core::PropertyMap& getMap() const { return _pmap; }
 
     rw::kinematics::State& getRobWorkState(){ return _rwstate; }
     void setRobWorkState(rw::kinematics::State& state){ _rwstate = state; }

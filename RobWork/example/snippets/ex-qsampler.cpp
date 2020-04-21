@@ -6,7 +6,7 @@
 #include <rw/math/Q.hpp>
 #include <rwlibs/proximitystrategies/ProximityStrategyYaobi.hpp>
 
-using rw::common::ownedPtr;
+using rw::core::ownedPtr;
 using rw::math::Q;
 using namespace rw::models;
 using rw::proximity::CollisionDetector;

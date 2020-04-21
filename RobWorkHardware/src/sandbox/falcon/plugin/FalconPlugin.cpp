@@ -3,7 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <rw/rw.hpp>
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 using namespace std;
 USE_ROBWORK_NAMESPACE

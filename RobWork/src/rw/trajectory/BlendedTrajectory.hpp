@@ -59,7 +59,7 @@ namespace trajectory {
          * @param ascaleIn [in] The acceleration scale [0;1]
          * @param verbose [in] True to print our debug text
          */
-		BlendedTrajectory(rw::common::Ptr<rw::models::Device> deviceIn,
+		BlendedTrajectory(rw::core::Ptr<rw::models::Device> deviceIn,
 		                  const rw::trajectory::QPath& pathIn,
 		                  const std::vector<double>& betaIn,
 		                  const double vscaleIn,
@@ -92,7 +92,7 @@ namespace trajectory {
 
 		//! @copydoc Trajectory<T>::getIterator(double) const
 		virtual typename TrajectoryIterator<T>::Ptr getIterator(double dt) const {
-			return rw::common::ownedPtr(new BlendedTrajectoryIterator<T>(const_cast<BlendedTrajectory*>(this), dt));
+			return rw::core::ownedPtr(new BlendedTrajectoryIterator<T>(const_cast<BlendedTrajectory*>(this), dt));
 		}
 		
 
@@ -132,7 +132,7 @@ namespace trajectory {
 
         // Class variables
         bool verbose;
-        rw::common::Ptr<rw::models::Device> device; // Device
+        rw::core::Ptr<rw::models::Device> device; // Device
         unsigned int K; // DOF
         rw::trajectory::QPath path; // Path
         unsigned int Npath; // Path size

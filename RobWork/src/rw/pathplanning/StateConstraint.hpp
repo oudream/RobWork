@@ -23,11 +23,11 @@
    @file StateConstraint.hpp
 */
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include <vector>
 
-namespace rw { namespace common { class Log; } }
+namespace rw { namespace core { class Log; } }
 namespace rw { namespace proximity { class CollisionDetector; } }
 namespace rw { namespace kinematics { class State; } }
 
@@ -42,15 +42,15 @@ namespace rw { namespace pathplanning {
     {
     public:
 		//! @brief smart pointer type to this class
-		typedef rw::common::Ptr<StateConstraint> Ptr;
+		typedef rw::core::Ptr<StateConstraint> Ptr;
 		//! @brief smart pointer type to this class
-		typedef rw::common::Ptr< const StateConstraint > CPtr;
+		typedef rw::core::Ptr< const StateConstraint > CPtr;
 
 		/**
 		 * @brief Set the log to be used for writing debug info
 		 * @param log [in] Log to which debug information is to be written
 		 */
-		virtual void setLog(rw::common::Ptr<rw::common::Log> log);
+		virtual void setLog(rw::core::Ptr<rw::core::Log> log);
 
         /**
            @brief True if the work cell is considered to be in collision for the
@@ -69,7 +69,7 @@ namespace rw { namespace pathplanning {
            @brief Map a collision detector to a state constraint.
         */
 		static StateConstraint::Ptr make(
-			rw::common::Ptr<rw::proximity::CollisionDetector> detector);
+			rw::core::Ptr<rw::proximity::CollisionDetector> detector);
 
         /**
            @brief Combine a set of state constraints into a single state
@@ -88,7 +88,7 @@ namespace rw { namespace pathplanning {
          * @brief Set a log.
          * @param log [in] the log.
          */
-		virtual void doSetLog(rw::common::Ptr<rw::common::Log> log) = 0;
+		virtual void doSetLog(rw::core::Ptr<rw::core::Log> log) = 0;
 
         /**
            @brief Constructor

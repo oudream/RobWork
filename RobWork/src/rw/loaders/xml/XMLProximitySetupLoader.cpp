@@ -42,7 +42,6 @@
 #include "XercesUtils.hpp"
 
 using namespace xercesc;
-using namespace rw::common;
 using namespace rw::loaders;
 using namespace rw::proximity;
 

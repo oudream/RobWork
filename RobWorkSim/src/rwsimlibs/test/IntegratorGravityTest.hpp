@@ -49,7 +49,7 @@ public:
 	virtual ~IntegratorGravityTest();
 
 	//! @copydoc EngineTest::run
-	virtual void run(TestHandle::Ptr handle, const std::string& engineID, const rw::common::PropertyMap& parameters, rw::common::Ptr<rwsim::log::SimulatorLogScope> verbose = NULL);
+	virtual void run(TestHandle::Ptr handle, const std::string& engineID, const rw::core::PropertyMap& parameters, rw::core::Ptr<rwsim::log::SimulatorLogScope> verbose = NULL);
 
 	//! @copydoc EngineTest::getRunTime
 	virtual double getRunTime() const;

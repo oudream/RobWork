@@ -106,7 +106,7 @@ void PropertyView::frameSelectedListener(Frame* frame) {
             int index = _cmbFrames->findText(frame->getName().c_str());
             _cmbFrames->setCurrentIndex(index);
         }
-        //rw::common::Ptr< PropertyMap > map = rw::common::ownedPtr( new PropertyMap( frame->getPropertyMap() ) );
+        //rw::core::Ptr< PropertyMap > map = rw::common::ownedPtr( new PropertyMap( frame->getPropertyMap() ) );
         _inspector->setPropertyMap( &frame->getPropertyMap() );
         //_inspector->setPropertyMap(NULL);
     }

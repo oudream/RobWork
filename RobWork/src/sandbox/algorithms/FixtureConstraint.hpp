@@ -45,7 +45,7 @@ namespace rwlibs { namespace algorithms {
 class FixtureConstraint {
 	public:
 		//! @brief Smart pointer type to this class.
-		typedef rw::common::Ptr<FixtureConstraint> Ptr;
+		typedef rw::core::Ptr<FixtureConstraint> Ptr;
 		
 		//! @copydoc ConstraintModel::MinSamples
 		static const int MinSamples = 3; // ??

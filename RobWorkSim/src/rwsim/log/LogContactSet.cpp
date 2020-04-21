@@ -24,6 +24,7 @@
 #include "LogPositions.hpp"
 
 using namespace rw::common;
+using namespace rw::core;
 using namespace rwsim::contacts;
 using namespace rwsim::log;
 

@@ -8,7 +8,7 @@
 #include <boost/circular_buffer.hpp>
 
 // RW
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/kinematics/State.hpp>
 #include <rw/math/Q.hpp>
 #include <rw/math/Transform3D.hpp>
@@ -37,7 +37,7 @@ namespace rwhw {
     */
    class FTCompensation {
       public:
-	   	typedef rw::common::Ptr<FTCompensation> Ptr;
+	   	typedef rw::core::Ptr<FTCompensation> Ptr;
 
          /**
           * @brief F/T vector type

@@ -6,6 +6,7 @@
 #include <rwlibs/control/JointController.hpp>
 #include <rwlibs/control/SyncVelocityRamp.hpp>
 #include <rwlibs/simulation/SimulatedController.hpp>
+#include <rw/core/Ptr.hpp>
 
 namespace rwsim { namespace dynamics { class KinematicDevice; } }
 
@@ -71,7 +72,7 @@ namespace control {
 
 	};
 
-	typedef rw::common::Ptr<VelRampController> VelRampControllerPtr;
+	typedef rw::core::Ptr<VelRampController> VelRampControllerPtr;
 
 	//! @}
 }

@@ -23,7 +23,6 @@
 
 #include "Kinematics.hpp"
 using namespace rw::math;
-using namespace rw::common;
 using namespace rw::kinematics;
 
 Frame::Frame(int dof, const std::string& name) :

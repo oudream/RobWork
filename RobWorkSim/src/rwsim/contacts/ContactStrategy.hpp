@@ -26,7 +26,8 @@
 
 #include "Contact.hpp"
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
+#include <rw/core/PropertyMap.hpp>
 #include <rw/proximity/ProximityStrategy.hpp>
 #include <rw/proximity/ProximityModel.hpp>
 
@@ -52,7 +53,7 @@ class ContactStrategyTracking;
 class ContactStrategy: public rw::proximity::ProximityStrategy {
 public:
 	//! @brief smart pointer type to this class
-	typedef rw::common::Ptr<ContactStrategy> Ptr;
+	typedef rw::core::Ptr<ContactStrategy> Ptr;
 
 	//! @brief Create new contact strategy.
 	ContactStrategy() {};
@@ -67,7 +68,7 @@ public:
 	 * @param geoB [in] geometry data for the second object.
 	 * @return true if this strategy can be used for the given geometries.
 	 */
-	virtual bool match(rw::common::Ptr<const rw::geometry::GeometryData> geoA, rw::common::Ptr<const rw::geometry::GeometryData> geoB) = 0;
+	virtual bool match(rw::core::Ptr<const rw::geometry::GeometryData> geoA, rw::core::Ptr<const rw::geometry::GeometryData> geoB) = 0;
 
 	/**
 	 * @brief Check if there is contact between two contact models.
@@ -168,8 +169,8 @@ public:
 	//! @copydoc rw::proximity::ProximityStrategy::addGeometry(rw::proximity::ProximityModel*,const rw::geometry::Geometry&)
 	virtual bool addGeometry(rw::proximity::ProximityModel* model, const rw::geometry::Geometry& geom) = 0;
 
-	//! @copydoc rw::proximity::ProximityStrategy::addGeometry(rw::proximity::ProximityModel*,rw::common::Ptr<rw::geometry::Geometry>,bool)
-	virtual bool addGeometry(rw::proximity::ProximityModel* model, rw::common::Ptr<rw::geometry::Geometry> geom, bool forceCopy=false) = 0;
+	//! @copydoc rw::proximity::ProximityStrategy::addGeometry(rw::proximity::ProximityModel*,rw::core::Ptr<rw::geometry::Geometry>,bool)
+	virtual bool addGeometry(rw::proximity::ProximityModel* model, rw::core::Ptr<rw::geometry::Geometry> geom, bool forceCopy=false) = 0;
 
 	//! @copydoc rw::proximity::ProximityStrategy::removeGeometry
 	virtual bool removeGeometry(rw::proximity::ProximityModel* model, const std::string& geomId) = 0;
@@ -185,25 +186,25 @@ public:
 	 *
 	 * @return reference to the property map.
 	 */
-	virtual rw::common::PropertyMap& getPropertyMap();
+	virtual rw::core::PropertyMap& getPropertyMap();
 
 	/**
 	 * @brief Get the properties used by the contact strategy.
 	 *
 	 * @return the property map.
 	 */
-	virtual const rw::common::PropertyMap& getPropertyMap() const;
+	virtual const rw::core::PropertyMap& getPropertyMap() const;
 
 	/**
 	 * @brief Set which properties the contact strategy should use.
 	 *
 	 * @param map [in] the property map to get properties from.
 	 */
-	virtual void setPropertyMap(const rw::common::PropertyMap& map);
+	virtual void setPropertyMap(const rw::core::PropertyMap& map);
 
 protected:
 	//! @brief Properties for strategy.
-	rw::common::PropertyMap _propertyMap;
+	rw::core::PropertyMap _propertyMap;
 };
 //! @}
 } /* namespace contacts */

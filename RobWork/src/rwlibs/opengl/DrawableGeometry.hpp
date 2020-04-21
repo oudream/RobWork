@@ -27,7 +27,7 @@
 
 #include <rw/math/Vector3D.hpp>
 #include <rw/math/Transform3D.hpp>
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/graphics/DrawableGeometryNode.hpp>
 
 namespace rwlibs { namespace opengl {
@@ -59,7 +59,7 @@ namespace rwlibs { namespace opengl {
     public:
 
         //! @brief smart pointer type to this class
-        typedef rw::common::Ptr<DrawableGeometry> Ptr;
+        typedef rw::core::Ptr<DrawableGeometry> Ptr;
 
         /**
          * @brief Constructer for Drawable
@@ -79,7 +79,7 @@ namespace rwlibs { namespace opengl {
         /**
          * @brief Get this drawables Render object
          */
-        std::vector<rw::common::Ptr<rw::graphics::Render> > getRenders() const;
+        std::vector<rw::core::Ptr<rw::graphics::Render> > getRenders() const;
 
         //--------------------- inherited from DrawableGeometryNode
         //! @copydoc rw::graphics::DrawableGeometryNode::setColor(double r, double g, double b, double alpha)
@@ -97,7 +97,7 @@ namespace rwlibs { namespace opengl {
         //! @copydoc rw::graphics::DrawableGeometryNode::addLine()
         void addLine(const rw::math::Vector3D<>& v1, const rw::math::Vector3D<>& v2);
         //! @copydoc rw::graphics::DrawableGeometryNode::addGeometry()
-        void addGeometry(rw::common::Ptr<rw::geometry::Geometry> geom);
+        void addGeometry(rw::core::Ptr<rw::geometry::Geometry> geom);
         //! @copydoc rw::graphics::DrawableGeometryNode::addFrameAxis()
         void addFrameAxis(double size);
 
@@ -135,14 +135,14 @@ namespace rwlibs { namespace opengl {
 
     protected:
         //! @brief The drawable that controls the rendering of the geometry, frame axes and more.
-        rw::common::Ptr<Drawable> _drawable;
+        rw::core::Ptr<Drawable> _drawable;
 
         //! @brief Linear to render.
-        rw::common::Ptr<RenderLines> _rlines;
+        rw::core::Ptr<RenderLines> _rlines;
         //! @brief Renders for frames.
-        std::vector<rw::common::Ptr<RenderFrame> > _rframes;
+        std::vector<rw::core::Ptr<RenderFrame> > _rframes;
         //! @brief Renders for geometries.
-        std::vector<rw::common::Ptr<RenderGeometry> > _rgeoms;
+        std::vector<rw::core::Ptr<RenderGeometry> > _rgeoms;
     private:
         double _alpha;
         rw::math::Vector3D<> _rgb;

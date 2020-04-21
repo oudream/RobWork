@@ -8,6 +8,7 @@
 
 #include <rw/graphics/Render.hpp>
 #include <rw/kinematics/State.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include <boost/circular_buffer.hpp>
 
@@ -37,7 +38,7 @@ namespace drawable {
 		 * @param N [in] max nr of states that is to be rendered
 		 */
 		RenderGhost(rw::kinematics::Frame *frame,
-				rw::common::Ptr<rw::graphics::WorkCellScene> drawer,
+				rw::core::Ptr<rw::graphics::WorkCellScene> drawer,
 				size_t N);
 	
 		/**
@@ -47,7 +48,7 @@ namespace drawable {
 		 * @param N [in] max nr of states that is to be rendered
 		 */
 		RenderGhost(std::list<rw::kinematics::Frame*> frames,
-				rw::common::Ptr<rw::graphics::WorkCellScene> drawer,
+				rw::core::Ptr<rw::graphics::WorkCellScene> drawer,
 				size_t N);
 
 		/**
@@ -82,7 +83,7 @@ namespace drawable {
 	
 	private:
 		std::list<rw::kinematics::Frame*> _frames;
-		rw::common::Ptr<rw::graphics::WorkCellScene> _drawer;
+		rw::core::Ptr<rw::graphics::WorkCellScene> _drawer;
 		//std::vector<rw::kinematics::State> _states;
 		rwlibs::opengl::RenderFrame *_drawFrame;
 

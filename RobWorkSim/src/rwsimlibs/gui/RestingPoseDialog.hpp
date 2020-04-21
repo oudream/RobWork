@@ -101,7 +101,7 @@ class RestingPoseDialog : public QDialog
         rw::kinematics::State _defstate;
         rw::kinematics::State _state;
         QTimer *_timer;
-        std::vector<rw::common::Ptr<rwsim::simulator::ThreadSimulator> > _simulators;
+        std::vector<rw::core::Ptr<rwsim::simulator::ThreadSimulator> > _simulators;
         std::vector<rw::kinematics::State> _initStates;
         std::vector<double> _simStartTimes;
         int _nrOfTests;

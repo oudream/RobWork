@@ -23,8 +23,8 @@
 
 #include "ProximityStrategy.hpp"
 
-#include <rw/common/ExtensionPoint.hpp>
-#include <rw/common/Ptr.hpp>
+#include <rw/core/ExtensionPoint.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/math/Transform3D.hpp>
 
 namespace rw { namespace kinematics {
@@ -46,7 +46,7 @@ namespace rw { namespace proximity {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::common::Ptr< DistanceStrategy > Ptr;
+        typedef rw::core::Ptr< DistanceStrategy > Ptr;
 
         /**
          * @brief DistanceResult contains basic information about the distance
@@ -269,7 +269,7 @@ namespace rw { namespace proximity {
          *  - PQP - rwlibs::proximitystrategies::ProximityStrategyPQP - Proximity Query Package
          *  - FCL - rwlibs::proximitystrategies::ProximityStrategyFCL - Flexible Collision Library
          */
-        class Factory : public rw::common::ExtensionPoint< DistanceStrategy >
+        class Factory : public rw::core::ExtensionPoint< DistanceStrategy >
         {
           public:
             /**

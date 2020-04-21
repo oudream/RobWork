@@ -25,6 +25,7 @@
 
 #include <rw/pathplanning/QToQPlanner.hpp>
 #include <rw/math/Metric.hpp>
+#include <rw/core/Ptr.hpp>
 
 namespace rw { namespace pathplanning { class PlannerConstraint; } }
 namespace rw { namespace pathplanning { class QSampler; } }
@@ -44,7 +45,7 @@ namespace rwlibs { namespace pathplanners {
     {
     public:
     	//! @brief Smart pointer type for a RRTPlanner.
-        typedef rw::common::Ptr<RRTPlanner> Ptr;
+        typedef rw::core::Ptr<RRTPlanner> Ptr;
 
         //! The type of RRT planner to construct.
         enum PlannerType {
@@ -100,7 +101,7 @@ namespace rwlibs { namespace pathplanners {
         */
 		static rw::pathplanning::QToQPlanner::Ptr makeQToQPlanner(
             const rw::pathplanning::PlannerConstraint& constraint,
-			rw::common::Ptr<rw::pathplanning::QSampler> sampler,
+			rw::core::Ptr<rw::pathplanning::QSampler> sampler,
 			rw::math::QMetric::Ptr metric,
             double extend,
             PlannerType type = RRTBalancedBidirectional);
@@ -120,7 +121,7 @@ namespace rwlibs { namespace pathplanners {
         */
 		static rw::pathplanning::QToQPlanner::Ptr makeQToQPlanner(
             const rw::pathplanning::PlannerConstraint& constraint,
-			rw::common::Ptr<rw::models::Device> device,
+			rw::core::Ptr<rw::models::Device> device,
             PlannerType type = RRTBalancedBidirectional);
 
     private:

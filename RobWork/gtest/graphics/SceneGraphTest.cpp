@@ -18,8 +18,9 @@
 #include <gtest/gtest.h>
 
 #include <rw/graphics/SceneGraph.hpp>
+#include <rw/core/Ptr.hpp>
 
-using rw::common::ownedPtr;
+using rw::core::ownedPtr;
 using namespace rw::graphics;
 using namespace rw::math;
 
@@ -74,7 +75,7 @@ public:
     double getAlpha() { return 1; }
     void addLines(const std::vector<rw::geometry::Line >&) {}
     void addLine(const Vector3D<>&, const Vector3D<>&) {}
-    void addGeometry(rw::common::Ptr<class rw::geometry::Geometry>) {}
+    void addGeometry(rw::core::Ptr<class rw::geometry::Geometry>) {}
     void addFrameAxis(double) {}
 };
 
@@ -89,13 +90,13 @@ public:
     void update() {}
     void clear() {}
     DrawableGeometryNode::Ptr makeDrawableFrameAxis(const std::string&, double, int) { return NULL; }
-    DrawableGeometryNode::Ptr makeDrawable(const std::string&, rw::common::Ptr<class rw::geometry::Geometry>, int) { return NULL; }
+    DrawableGeometryNode::Ptr makeDrawable(const std::string&, rw::core::Ptr<class rw::geometry::Geometry>, int) { return NULL; }
     DrawableGeometryNode::Ptr makeDrawable(const std::string&, const std::vector<class rw::geometry::Line >&, int) { return NULL; }
     DrawableNode::Ptr makeDrawable(const std::string&, const class rw::sensor::Image&, int) { return NULL; }
     DrawableNode::Ptr makeDrawable(const std::string&, const rw::geometry::PointCloud&, int) { return NULL; }
-    DrawableNode::Ptr makeDrawable(const std::string&, rw::common::Ptr<class Model3D>, int) { return NULL; }
-    DrawableNode::Ptr makeDrawable(const std::string&, const std::string&, rw::common::Ptr<rw::kinematics::Frame>, int ) {return NULL; }
-    DrawableNode::Ptr makeDrawable(const std::string&, rw::common::Ptr<class Render>, int) { return NULL; }
+    DrawableNode::Ptr makeDrawable(const std::string&, rw::core::Ptr<class Model3D>, int) { return NULL; }
+    DrawableNode::Ptr makeDrawable(const std::string&, const std::string&, rw::core::Ptr<rw::kinematics::Frame>, int ) {return NULL; }
+    DrawableNode::Ptr makeDrawable(const std::string&, rw::core::Ptr<class Render>, int) { return NULL; }
     DrawableNode::Ptr makeDrawable(const std::string&, int) { return NULL; }
     SceneCamera::Ptr makeCamera(const std::string&) { return NULL; }
 };
@@ -174,7 +175,7 @@ TEST(SceneGraph, Test) {
 
 
     //TESTING if tree is built correctly.
-    //This should showcase addChild(rw::common::Ptr<SceneNode> child, GroupNode::Ptr parent);
+    //This should showcase addChild(rw::core::Ptr<SceneNode> child, GroupNode::Ptr parent);
 
     ASSERT_FALSE(root.isNull());    //Assert if root exists
     EXPECT_EQ(5u,root->nrOfChildren()); //root has 5 children
@@ -267,7 +268,7 @@ TEST(SceneGraph, Test) {
     EXPECT_EQ(11u, drawables.size()); //There should be 11 leafs/drawables
 
 
-    // TESTING virtual std::vector<DrawableNode::Ptr> getDrawables(rw::common::Ptr<SceneNode> node);
+    // TESTING virtual std::vector<DrawableNode::Ptr> getDrawables(rw::core::Ptr<SceneNode> node);
     // test for uniqueness ?
     std::vector<DrawableNode::Ptr> drawables0 = scene->getDrawables(root);
     std::vector<DrawableNode::Ptr> drawables1 = scene->getDrawables(group1);
@@ -317,7 +318,7 @@ TEST(SceneGraph, Test) {
     EXPECT_EQ(l11->getName(),"Leaf11");
 
 
-    // TESTING virtual DrawableNode::Ptr findDrawable(const std::string& name, rw::common::Ptr<SceneNode> node)
+    // TESTING virtual DrawableNode::Ptr findDrawable(const std::string& name, rw::core::Ptr<SceneNode> node)
     DrawableNode::Ptr rt = scene->findDrawable("Leaf5",root);
     l1 = scene->findDrawable("Leaf1",group1);
     l2 = scene->findDrawable("Leaf2",group4);
@@ -407,7 +408,7 @@ TEST(SceneGraph, Test) {
     EXPECT_FALSE(group7->hasChild(leaf6));
     EXPECT_FALSE(root->hasChild(leaf6));
 
-    // TESTING virtual bool removeDrawable(DrawableNode::Ptr drawable, rw::common::Ptr<SceneNode> node);
+    // TESTING virtual bool removeDrawable(DrawableNode::Ptr drawable, rw::core::Ptr<SceneNode> node);
     scene->removeDrawable(leaf1,group3);
     EXPECT_TRUE(group1->hasChild(leaf1));
     EXPECT_FALSE(group3->hasChild(leaf1));

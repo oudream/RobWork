@@ -5,6 +5,7 @@
 
 #include <rwlibs/control/JointController.hpp>
 #include <rwlibs/simulation/SimulatedController.hpp>
+#include <rw/core/Ptr.hpp>
 
 namespace rwsim { namespace dynamics { class DynamicDevice; } }
 
@@ -29,7 +30,7 @@ namespace control {
 	class PDController: public rwlibs::control::JointController, public rwlibs::simulation::SimulatedController {
 	public:
 
-	    typedef rw::common::Ptr<PDController> Ptr;
+	    typedef rw::core::Ptr<PDController> Ptr;
 		/**
 		 * @brief constructor
 		 * @param name
@@ -44,7 +45,7 @@ namespace control {
 		 */
 		PDController(
 		        const std::string& name,
-		        rw::common::Ptr<rwsim::dynamics::DynamicDevice> rdev,
+		        rw::core::Ptr<rwsim::dynamics::DynamicDevice> rdev,
 				ControlMode cmode,
 				const std::vector<PDParam>& pdparams,
 				double dt
@@ -61,7 +62,7 @@ namespace control {
 		 */
 		PDController(
 		        const std::string& name,
-				rw::common::Ptr<rwsim::dynamics::DynamicDevice> rdev,
+				rw::core::Ptr<rwsim::dynamics::DynamicDevice> rdev,
 				ControlMode cmode,
 				const PDParam& pdparam,
 				double dt
@@ -145,7 +146,7 @@ namespace control {
 		PDController();
 
 	private:
-		rw::common::Ptr<rwsim::dynamics::DynamicDevice> _ddev;
+		rw::core::Ptr<rwsim::dynamics::DynamicDevice> _ddev;
 		rw::math::Q _maxVel;
 		rw::math::Q _lastError, _currentError, _target, _currentQ, _currentVel;
 		rw::math::Q _targetVel;
@@ -156,7 +157,7 @@ namespace control {
 		bool _enabled;
 	};
 
-	typedef rw::common::Ptr<PDController> PDControllerPtr;
+	typedef rw::core::Ptr<PDController> PDControllerPtr;
 	//! @}
 }
 }

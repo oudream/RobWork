@@ -48,7 +48,7 @@ namespace graphics {
     class Model3D {
     public:
         //! @brief smart pointer type to this class
-        typedef rw::common::Ptr<Model3D> Ptr;
+        typedef rw::core::Ptr<Model3D> Ptr;
 
         /**
          * Constructor.
@@ -134,7 +134,7 @@ namespace graphics {
          */
         struct MaterialPolys {
         	//! @brief Smart pointer type for MaterialPolys.
-            typedef rw::common::Ptr<MaterialPolys> Ptr;
+            typedef rw::core::Ptr<MaterialPolys> Ptr;
 
             /**
              *  @brief  Index into the vertice array of the Object3D.
@@ -154,7 +154,7 @@ namespace graphics {
         class Object3DGeneric {
 		public:
         	//! @brief Smart pointer type for Object3DGeneric.
-            typedef rw::common::Ptr<Object3DGeneric> Ptr;
+            typedef rw::core::Ptr<Object3DGeneric> Ptr;
 		
             //! @brief test if the object is textured
             bool hasTexture() const{ return _hasTexture;}
@@ -282,7 +282,7 @@ namespace graphics {
         class Object3D: public Object3DGeneric {
 		public:
         	//! @brief Smart pointer type for Object3D.
-            typedef rw::common::Ptr<Object3D> Ptr;
+            typedef rw::core::Ptr<Object3D> Ptr;
 
             /**
              * @brief constructor
@@ -412,7 +412,7 @@ namespace graphics {
          * @param mat [in] the material properties to use for the geometry.
          * @param geom [in] the geometry to add.
          */
-        void addGeometry(const Material& mat, rw::common::Ptr<class rw::geometry::Geometry> geom);
+        void addGeometry(const Material& mat, rw::core::Ptr<class rw::geometry::Geometry> geom);
 
         /**
          * @brief add a triangle mesh to this model3d

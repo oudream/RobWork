@@ -42,10 +42,10 @@ namespace geometry {
     {
         public:
             //! @brief Smart pointer type to ImplicitShell
-            typedef rw::common::Ptr<ImplicitShell> Ptr;
+            typedef rw::core::Ptr<ImplicitShell> Ptr;
 
             //! @brief Smart pointer type for a const ImplicitShell.
-            typedef rw::common::Ptr<const ImplicitShell> CPtr;
+            typedef rw::core::Ptr<const ImplicitShell> CPtr;
 
             //! @brief Constructor.
             ImplicitShell(): _resolution(10) {}
@@ -63,7 +63,7 @@ namespace geometry {
             virtual std::size_t size() const = 0;
 
             //! @copydoc Shell::getFace
-            virtual rw::common::Ptr<const ImplicitFace> getFace(std::size_t idx) const = 0;
+            virtual rw::core::Ptr<const ImplicitFace> getFace(std::size_t idx) const = 0;
 
             /**
              * @brief Get a surface patch.
@@ -82,7 +82,7 @@ namespace geometry {
             void setMeshResolution(double resolution) { _resolution = resolution; }
 
         private:
-            virtual rw::common::Ptr<const Face> doGetFace(std::size_t idx) const;
+            virtual rw::core::Ptr<const Face> doGetFace(std::size_t idx) const;
 
         protected:
             //! @brief Resolution to use for discretization into triangle mesh.

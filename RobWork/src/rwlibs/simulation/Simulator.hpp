@@ -21,7 +21,8 @@
 //! @file Simulator.hpp
 
 #include <rw/kinematics/State.hpp>
-#include <rw/common/PropertyMap.hpp>
+#include <rw/core/PropertyMap.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/sensor/Sensor.hpp>
 #include <rwlibs/control/Controller.hpp>
 
@@ -38,7 +39,7 @@ namespace simulation {
     {
     public:
 		//! smart pointer type of simulator
-    	typedef rw::common::Ptr<Simulator> Ptr;
+    	typedef rw::core::Ptr<Simulator> Ptr;
 
         /**
          * @brief step info is used when updating controllers, devices and bodies.
@@ -116,7 +117,7 @@ namespace simulation {
         /**
          * @brief get propertymap of this simulator
          */
-        virtual rw::common::PropertyMap& getPropertyMap() = 0;
+        virtual rw::core::PropertyMap& getPropertyMap() = 0;
 
         //! get sensor with specific name
         virtual rw::sensor::Sensor::Ptr getSensor(const std::string& name){ return NULL; }

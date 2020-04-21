@@ -25,6 +25,9 @@
  */
 
 #include "AssemblyParameterization.hpp"
+#include <rw/core/Ptr.hpp>
+
+namespace rw { namespace core { class PropertyMap; }}
 
 namespace rwlibs {
 namespace assembly {
@@ -38,13 +41,13 @@ namespace assembly {
 class CircularPiHParameterization: public AssemblyParameterization {
 public:
 	//! @brief smart pointer type to this class
-    typedef rw::common::Ptr<CircularPiHParameterization> Ptr;
+    typedef rw::core::Ptr<CircularPiHParameterization> Ptr;
 
     /**
      * @brief Construct a new parameterization from a PropertyMap.
      * @param map [in] the PropertyMap to get the parameters from.
      */
-	CircularPiHParameterization(const rw::common::Ptr<rw::common::PropertyMap> map);
+	CircularPiHParameterization(const rw::core::Ptr<rw::core::PropertyMap> map);
 
 	/**
 	 * @brief Construct a new parameterization with the given values.
@@ -62,16 +65,16 @@ public:
 	virtual ~CircularPiHParameterization();
 
 	//! @copydoc rwlibs::assembly::AssemblyParameterization::toPropertyMap
-	rw::common::Ptr<rw::common::PropertyMap> toPropertyMap() const;
+	rw::core::Ptr<rw::core::PropertyMap> toPropertyMap() const;
 
 	//! @copydoc rwlibs::assembly::AssemblyParameterization::clone
 	AssemblyParameterization::Ptr clone() const;
 
 	//! @copydoc rwlibs::assembly::AssemblyParameterization::make
-	AssemblyParameterization::Ptr make(rw::common::Ptr<rw::common::PropertyMap> pmap) const;
+	AssemblyParameterization::Ptr make(rw::core::Ptr<rw::core::PropertyMap> pmap) const;
 
 	//! @copydoc rwlibs::assembly::AssemblyParameterization::reset
-	void reset(rw::common::Ptr<rw::common::PropertyMap> pmap);
+	void reset(rw::core::Ptr<rw::core::PropertyMap> pmap);
 
 public:
 	/**

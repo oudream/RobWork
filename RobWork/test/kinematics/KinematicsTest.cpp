@@ -17,6 +17,7 @@
 
 #include "../TestSuiteConfig.hpp"
 
+#include <rw/core/Ptr.hpp>
 #include <rw/kinematics/State.hpp>
 #include <rw/kinematics/StateStructure.hpp>
 #include <rw/kinematics/FixedFrame.hpp>
@@ -73,13 +74,13 @@ public:
     StateCache::Ptr clone() const{
         StateCacheObject *scache = new StateCacheObject();
         scache->A = A;
-        return rw::common::ownedPtr( scache );
+        return rw::core::ownedPtr( scache );
     }
 };
 
 class StateDataWithCache: public StateData {
 public:
-    StateDataWithCache():StateData(2,"MyStateWithCache", rw::common::ownedPtr( new StateCacheObject() ) ){
+    StateDataWithCache():StateData(2,"MyStateWithCache", rw::core::ownedPtr( new StateCacheObject() ) ){
     }
 
     void setA(int i, State &state){
@@ -89,7 +90,7 @@ public:
         // if cache is empty, then initialize it
         if(cache == NULL){
 
-            cache = rw::common::ownedPtr( new StateCacheObject() );
+            cache = rw::core::ownedPtr( new StateCacheObject() );
 
             setCache( cache , state);
 
@@ -105,7 +106,7 @@ public:
         StateCache::Ptr cache = this->getCache(state);
         // if cache is empty, then initialize it
         if(cache == NULL){
-            cache = rw::common::ownedPtr( new StateCacheObject() );
+            cache = rw::core::ownedPtr( new StateCacheObject() );
             setCache( cache , state);
         }
         StateCacheObject *sobj = (StateCacheObject*)cache.get();

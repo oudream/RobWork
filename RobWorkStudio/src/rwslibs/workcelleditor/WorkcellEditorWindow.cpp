@@ -23,7 +23,8 @@
 #include "WorkcellHighlighter.hpp"
 #include "ui_WorkcellEditorWindow.h"
 
-#include <rw/common/Log.hpp>
+#include <rw/core/Log.hpp>
+#include <rw/core/StringUtil.hpp>
 #include <rw/loaders/WorkCellLoader.hpp>
 #include <rwlibs/swig/ScriptTypes.hpp>
 #include <rws/RobWorkStudio.hpp>
@@ -42,13 +43,13 @@
 #include <fstream>
 
 // using namespace xercesc;
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::loaders;
 using namespace rw::math;
 using namespace rws;
 using namespace rwlibs;
 
-WorkcellEditorWindow::WorkcellEditorWindow (rw::common::Log::Ptr output,
+WorkcellEditorWindow::WorkcellEditorWindow (rw::core::Log::Ptr output,
                                             rws::RobWorkStudio* rwstudio, QWidget* parent) :
     QMainWindow (parent),
     _output (output), _rws (rwstudio), ignoreNextWorkcellOpen (false)
@@ -65,7 +66,7 @@ WorkcellEditorWindow::WorkcellEditorWindow (rw::common::Log::Ptr output,
     makeEditor ();
 
     openWorkCell (_rws->getWorkcell ()->getFilePath ().c_str ());
-    rw::common::Log::infoLog () << "Opening: workcell "
+    rw::core::Log::infoLog () << "Opening: workcell "
                                 << _rws->getWorkcell ()->getFilePath ().c_str () << "\n";
 }
 
@@ -647,7 +648,7 @@ bool WorkcellEditorWindow::save (const std::string& filename)
          "/home/prier/RobWork/RobWork/xml-schemas/rwxml_workcell.xsd");
         */
 
-        rw::common::Log ().setLevel (rw::common::Log::Debug);
+        rw::core::Log ().setLevel (rw::core::Log::Debug);
         rw::models::WorkCell::Ptr wc = nullptr;
 
         if (!isTmpFile) {
@@ -658,7 +659,7 @@ bool WorkcellEditorWindow::save (const std::string& filename)
             wc = rw::loaders::WorkCellLoader::Factory::load (filename);
             file.remove ();
         }
-        rw::common::Log ().setLevel (rw::common::Log::Info);
+        rw::core::Log ().setLevel (rw::core::Log::Info);
 
         if (_rws != nullptr) {
             ignoreNextWorkcellOpen = true;

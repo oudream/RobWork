@@ -23,7 +23,7 @@
 
 #include <rw/math/Transform3D.hpp>
 #include <rw/math/Q.hpp>
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 namespace rw { namespace kinematics { class State; } }
 namespace rw { namespace pathplanning { class QConstraint; } }
@@ -65,7 +65,7 @@ namespace rw { namespace invkin {
     {
     public:
 		//! @brief smart pointer type to this class
-		typedef rw::common::Ptr<IKMetaSolver> Ptr;
+		typedef rw::core::Ptr<IKMetaSolver> Ptr;
 
         /**
          * @brief Constructs IKMetaSolver
@@ -81,8 +81,8 @@ namespace rw { namespace invkin {
          * collision detection used.
          */
 		IKMetaSolver(IterativeIK::Ptr iksolver,
-			const rw::common::Ptr<class rw::models::Device> device,
-			rw::common::Ptr<rw::proximity::CollisionDetector> collisionDetector = NULL);
+			const rw::core::Ptr<class rw::models::Device> device,
+			rw::core::Ptr<rw::proximity::CollisionDetector> collisionDetector = NULL);
 
         /**
          * @brief Constructs IKMetaSolver
@@ -97,8 +97,8 @@ namespace rw { namespace invkin {
          * constraints is applied
          */
 		IKMetaSolver(IterativeIK::Ptr iksolver,
-			const rw::common::Ptr<class rw::models::Device> device,
-			rw::common::Ptr<rw::pathplanning::QConstraint> constraint);
+			const rw::core::Ptr<class rw::models::Device> device,
+			rw::core::Ptr<rw::pathplanning::QConstraint> constraint);
 
 
         /**
@@ -168,13 +168,13 @@ namespace rw { namespace invkin {
         /**
          * @copydoc InvKinSolver::getTCP
          */
-        virtual rw::common::Ptr< const rw::kinematics::Frame > getTCP() const;                      
+        virtual rw::core::Ptr< const rw::kinematics::Frame > getTCP() const;                      
 
     private:
 		IterativeIK::Ptr _iksolver;
-		rw::common::Ptr<rw::proximity::CollisionDetector> _collisionDetector;
-		mutable rw::common::Ptr<rw::pathplanning::QConstraint> _constraint;
-		const rw::common::Ptr<class rw::models::Device> _device;
+		rw::core::Ptr<rw::proximity::CollisionDetector> _collisionDetector;
+		mutable rw::core::Ptr<rw::pathplanning::QConstraint> _constraint;
+		const rw::core::Ptr<class rw::models::Device> _device;
 
 
         std::pair<rw::math::Q, rw::math::Q> _bounds;

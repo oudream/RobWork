@@ -34,7 +34,7 @@
 #include <rw/kinematics/FKRange.hpp>
 #include <rw/math/Q.hpp>
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/invkin/IKMetaSolver.hpp>
 
 
@@ -251,7 +251,7 @@ private:
 
 
     TransformSliderWidget* _transformSliderWidget;
-    rw::common::Ptr<rw::invkin::IterativeIK> _iksolver;
+    rw::core::Ptr<rw::invkin::IterativeIK> _iksolver;
 
     bool _updating;
 

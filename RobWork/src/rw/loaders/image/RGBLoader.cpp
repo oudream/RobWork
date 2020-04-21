@@ -19,7 +19,7 @@
 
 #include "RGBLoader.hpp"
 
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 #include <stdio.h>
 
 using namespace rw::loaders;

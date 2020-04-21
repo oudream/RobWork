@@ -31,7 +31,7 @@ List::List(const std::vector<Expression::Ptr>& args):
 	FunctionBase("List")
 {
 	for(const Expression::Ptr arg: args) {
-		const rw::common::Ptr<const FunctionBase> fct = arg.cast<const FunctionBase>();
+		const rw::core::Ptr<const FunctionBase> fct = arg.cast<const FunctionBase>();
 		if (!fct.isNull()) {
 			if (fct->getName() == "List")
 				_data.push_back(List::fromExpression(*fct));
@@ -43,11 +43,11 @@ List::List(const std::vector<Expression::Ptr>& args):
 	}
 }
 
-List::List(const std::list<rw::common::Ptr<const Expression> >& args):
+List::List(const std::list<rw::core::Ptr<const Expression> >& args):
 	FunctionBase("List")
 {
-	for(const rw::common::Ptr<const Expression> arg: args) {
-		const rw::common::Ptr<const FunctionBase> fct = arg.cast<const FunctionBase>();
+	for(const rw::core::Ptr<const Expression> arg: args) {
+		const rw::core::Ptr<const FunctionBase> fct = arg.cast<const FunctionBase>();
 		if (!fct.isNull()) {
 			if (fct->getName() == "List")
 				_data.push_back(List::fromExpression(*fct));
@@ -62,8 +62,8 @@ List::List(const std::list<rw::common::Ptr<const Expression> >& args):
 List::~List() {
 }
 
-std::list<rw::common::Ptr<const Mathematica::Expression> > List::getArguments() const {
-	std::list<rw::common::Ptr<const Mathematica::Expression> > res;
+std::list<rw::core::Ptr<const Mathematica::Expression> > List::getArguments() const {
+	std::list<rw::core::Ptr<const Mathematica::Expression> > res;
 	for(const Expression::Ptr e: _data) {
 		res.push_back(e);
 	}
@@ -74,7 +74,7 @@ Mathematica::Expression::Ptr List::operator[](std::size_t i) {
 	return _data[i];
 }
 
-rw::common::Ptr<const Mathematica::Expression> List::operator[](std::size_t i) const {
+rw::core::Ptr<const Mathematica::Expression> List::operator[](std::size_t i) const {
 	return _data[i];
 }
 

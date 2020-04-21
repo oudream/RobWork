@@ -11,6 +11,7 @@
 #include "DirectionSetOptimizer.hpp"
 #include "LineSearch.hpp"
 #include "GoldenSectionLineSearch.hpp"
+#include <rw/core/Ptr.hpp>
 
 namespace rwlibs {
 namespace optimization {
@@ -26,7 +27,7 @@ namespace optimization {
 class TaxiCabOptimizer: public DirectionSetOptimizer {
 public:
 	//! Smart pointer.
-	typedef rw::common::Ptr<TaxiCabOptimizer> Ptr;
+	typedef rw::core::Ptr<TaxiCabOptimizer> Ptr;
 
 public:
 	/**
@@ -38,9 +39,9 @@ public:
 	 * @param strategy [in] line search strategy (default: golden section)
 	 */
 	TaxiCabOptimizer(typename FunctionType::Ptr function, double stepSize = 1.0,
-			StopCondition::Ptr stopCondition = rw::common::ownedPtr(
+			StopCondition::Ptr stopCondition = rw::core::ownedPtr(
 					new StopCondition(100, 0.01)), LineSearch::Ptr strategy =
-					rw::common::ownedPtr(new GoldenSectionLineSearch()));
+					rw::core::ownedPtr(new GoldenSectionLineSearch()));
 
 	//! Destructor.
 	virtual ~TaxiCabOptimizer();

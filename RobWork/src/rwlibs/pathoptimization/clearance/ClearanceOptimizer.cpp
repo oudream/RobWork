@@ -19,7 +19,7 @@
 #include "ClearanceOptimizer.hpp"
 #include "ClearanceCalculator.hpp"
 
-#include <rw/common/Log.hpp>
+#include <rw/core/Log.hpp>
 #include <rw/common/Timer.hpp>
 #include <rw/math/Random.hpp>
 #include <rw/models/Device.hpp>
@@ -28,6 +28,7 @@
 
 using namespace rw::math;
 using namespace rw::common;
+using namespace rw::core;
 using namespace rw::kinematics;
 using namespace rw::models;
 using namespace rw::pathplanning;
@@ -104,7 +105,7 @@ QPath ClearanceOptimizer::optimize(const QPath& inputPath, double stepsize, size
             }
         }
         if(fully_optimized){
-            rw::common::Log::log().debug() << "Stoped clearance optimization early due to completion. Took " << cnt << " iterations and " << timer.getTime() << " seconds." << std::endl;
+            rw::core::Log::log().debug() << "Stoped clearance optimization early due to completion. Took " << cnt << " iterations and " << timer.getTime() << " seconds." << std::endl;
             break;
         }
         
@@ -278,9 +279,9 @@ void ClearanceOptimizer::subDivideAndAugmentPath(const QPath& path, AugmentedPat
 //	std::cout<<"SubDivide Finished "<<result.size()<<std::endl;
 	result.push_back(AugmentedQ(path.back(), clearance(path.back())));
 #ifdef RW_HAVE_OMP 
-	rw::common::Log::log().debug() << "Time to subdivided and augment " << timer1.getTime() << std::endl;
+	rw::core::Log::log().debug() << "Time to subdivided and augment " << timer1.getTime() << std::endl;
 #else
-	rw::common::Log::log().debug() << "Time to subdivided and augment " << timer1.getTime() << "  " << timer2.getTime() << std::endl;
+	rw::core::Log::log().debug() << "Time to subdivided and augment " << timer1.getTime() << "  " << timer2.getTime() << std::endl;
 #endif
 }
 

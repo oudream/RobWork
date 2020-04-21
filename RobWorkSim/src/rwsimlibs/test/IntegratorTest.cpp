@@ -25,6 +25,7 @@
 #include <rwsim/dynamics/DynamicWorkCell.hpp>
 
 using namespace rw::common;
+using namespace rw::core;
 using namespace rw::geometry;
 using namespace rw::graphics;
 using namespace rw::kinematics;
@@ -50,7 +51,7 @@ bool IntegratorTest::isEngineSupported(const std::string& engineID) const {
 	return true;
 }
 
-rw::common::Ptr<rwsim::dynamics::DynamicWorkCell> IntegratorTest::getDWC(const rw::common::PropertyMap& map) {
+rw::core::Ptr<rwsim::dynamics::DynamicWorkCell> IntegratorTest::getDWC(const rw::core::PropertyMap& map) {
 	const std::string integrator = map.get<std::string>("IntegratorType");
 	if (_integratorTypeToDWC.find(integrator) == _integratorTypeToDWC.end()) {
 		_integratorTypeToDWC[integrator] = makeIntegratorDWC(integrator);
@@ -58,7 +59,7 @@ rw::common::Ptr<rwsim::dynamics::DynamicWorkCell> IntegratorTest::getDWC(const r
 	return _integratorTypeToDWC[integrator];
 }
 
-rw::common::Ptr<rw::common::PropertyMap> IntegratorTest::getDefaultParameters() const {
+rw::core::Ptr<rw::core::PropertyMap> IntegratorTest::getDefaultParameters() const {
 	const PropertyMap::Ptr map = EngineTest::getDefaultParameters();
 	map->add<double>("Timestep","Timestep size in ms.",DEFAULT_DT);
 	map->add<std::string>("IntegratorType","Integrator type.",DEFAULT_INTEGRATOR);

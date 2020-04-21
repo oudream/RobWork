@@ -25,11 +25,11 @@
 #include <boost/spirit/include/classic_actor.hpp>
 #include <boost/spirit/include/phoenix1.hpp>
 
-#include <rw/common/IOUtil.hpp>
-#include <rw/common/macros.hpp>
+#include <rw/core/IOUtil.hpp>
+#include <rw/core/macros.hpp>
 
 using namespace rw;
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::loaders;
 using namespace rw::sensor;
 
@@ -186,7 +186,7 @@ rw::sensor::Image::Ptr PGMLoader::load(const std::string& filename)
     typedef position_iterator<V::const_iterator> iterator_t;
     iterator_t first(input.begin(),input.end());
     iterator_t last;
-    rw::common::Ptr<V> output = rw::common::ownedPtr(new V());
+    rw::core::Ptr<V> output = rw::core::ownedPtr(new V());
     PGMParser p(*output);
 
     parse_info<iterator_t> info =

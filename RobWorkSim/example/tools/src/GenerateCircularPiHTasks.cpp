@@ -31,7 +31,7 @@
 #include <boost/program_options/variables_map.hpp>
 #include <boost/program_options/parsers.hpp>
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::geometry;
 using namespace rw::math;
 using namespace rw::models;

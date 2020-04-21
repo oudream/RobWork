@@ -20,7 +20,7 @@ namespace optimization {
 class DirectionSetOptimizer: public Optimizer {
 public:
 	//! Smart pointer.
-	typedef rw::common::Ptr<DirectionSetOptimizer> Ptr;
+	typedef rw::core::Ptr<DirectionSetOptimizer> Ptr;
 
 	/**
 	 * @brief A type for a direction used by direction set methods.
@@ -42,9 +42,9 @@ public:
 	 */
 	DirectionSetOptimizer(typename FunctionType::Ptr function, double stepSize =
 			1.0,
-			StopCondition::Ptr stopCondition = rw::common::ownedPtr(
+			StopCondition::Ptr stopCondition = rw::core::ownedPtr(
 					new StopCondition(100, 0.01)), LineSearch::Ptr strategy =
-					rw::common::ownedPtr(new GoldenSectionLineSearch()));
+					rw::core::ownedPtr(new GoldenSectionLineSearch()));
 
 	//! Destructor.
 	virtual ~DirectionSetOptimizer();

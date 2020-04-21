@@ -20,7 +20,7 @@
 #include "List.hpp"
 #include "Rule.hpp"
 
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 
 
 
@@ -61,9 +61,9 @@ ListPlot::ListPlot (const std::vector< double >& x, const std::vector< double >&
 ListPlot::~ListPlot ()
 {}
 
-std::list< rw::common::Ptr< const Mathematica::Expression > > ListPlot::getArguments () const
+std::list< rw::core::Ptr< const Mathematica::Expression > > ListPlot::getArguments () const
 {
-    std::list< rw::common::Ptr< const Expression > > res;
+    std::list< rw::core::Ptr< const Expression > > res;
     res.push_back (_data);
     for (const Expression::Ptr option : _options) {
         res.push_back (option);

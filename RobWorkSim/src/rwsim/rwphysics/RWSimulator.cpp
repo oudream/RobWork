@@ -33,6 +33,8 @@ using namespace rwsim::dynamics;
 using namespace rwsim;
 using namespace rw::math;
 using namespace rw::common;
+using namespace rw::core;
+using namespace rw::core;
 using namespace rw::kinematics;
 using namespace rwsim;
 
@@ -87,7 +89,7 @@ void RWSimulator::load(dynamics::DynamicWorkCell::Ptr dwc){
     _dwc = dwc;
 }
 
-bool RWSimulator::setContactDetector(rw::common::Ptr<rwsim::contacts::ContactDetector> detector) {
+bool RWSimulator::setContactDetector(rw::core::Ptr<rwsim::contacts::ContactDetector> detector) {
 	return false;
 }
 

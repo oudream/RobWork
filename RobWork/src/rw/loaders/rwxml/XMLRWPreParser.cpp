@@ -25,8 +25,8 @@
 #include "XMLErrorHandler.hpp"
 #include "XMLParser.hpp"
 
-#include <rw/common/macros.hpp>
-#include <rw/common/StringUtil.hpp>
+#include <rw/core/macros.hpp>
+#include <rw/core/StringUtil.hpp>
 
 #include <boost/spirit/include/classic_core.hpp>
 #include <boost/spirit/include/classic_symbols.hpp>
@@ -39,7 +39,7 @@ using namespace boost::spirit::classic;
 using namespace phoenix;
 
 using namespace rw::loaders;
-using namespace rw::common;
+using namespace rw::core;
 
 namespace {
 

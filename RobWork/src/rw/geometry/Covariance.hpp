@@ -72,7 +72,7 @@ namespace geometry {
                 IndexedTriMesh<T>* imesh = dynamic_cast<IndexedTriMesh<T>*>(mesh.get());
                 initialize( imesh->getVertices() );
             } else {
-                rw::common::Ptr<IndexedTriMeshN0<T> > ipmesh = TriangleUtil::toIndexedTriMesh< IndexedTriMeshN0<T> >(*mesh);
+                rw::core::Ptr<IndexedTriMeshN0<T> > ipmesh = TriangleUtil::toIndexedTriMesh< IndexedTriMeshN0<T> >(*mesh);
                 initialize( ipmesh->getVertices() );
             }
         }

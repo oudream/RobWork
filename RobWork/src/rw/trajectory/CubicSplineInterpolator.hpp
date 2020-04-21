@@ -24,7 +24,7 @@
  */
 
 #include "Interpolator.hpp"
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 #include <rw/math/Transform3D.hpp>
 #include <rw/math/Rotation3D.hpp>
 
@@ -234,7 +234,7 @@ class CubicSplineInterpolator<rw::math::Transform3D<T> >: public Interpolator<rw
 
 };
 
-//typedef rw::common::Ptr<CubicSplineInterpolator> CubicSplineInterpolatorPtr;
+//typedef rw::core::Ptr<CubicSplineInterpolator> CubicSplineInterpolatorPtr;
 
 /** @} */
 

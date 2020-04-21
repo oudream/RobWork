@@ -19,7 +19,7 @@
 #define RW_GEOMETRY_GEOMETRY_HPP_
 
 #include <rw/math/Transform3D.hpp>
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include "GeometryData.hpp"
 
 namespace rw { namespace kinematics { class Frame; } }
@@ -40,9 +40,9 @@ namespace rw { namespace geometry {
 	class Geometry {
 	public:
         //! @brief smart pointer type to this class
-        typedef rw::common::Ptr<Geometry> Ptr;
+        typedef rw::core::Ptr<Geometry> Ptr;
 		//! @brief smart pointer type to this const class
-		typedef rw::common::Ptr<const Geometry> CPtr;
+		typedef rw::core::Ptr<const Geometry> CPtr;
 
         /**
          * @brief A geometry may belong to a specific group of geometries. These groups

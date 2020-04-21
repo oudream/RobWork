@@ -19,10 +19,10 @@
 
 #include "../TestEnvironment.hpp"
 
-#include <rw/common/DOMParser.hpp>
-#include <rw/common/Plugin.hpp>
+#include <rw/core/DOMParser.hpp>
+#include <rw/core/Plugin.hpp>
 
-using namespace rw::common;
+using namespace rw::core;
 
 TEST(PluginTest, loadDirectPlugin)
 {
@@ -32,7 +32,7 @@ TEST(PluginTest, loadDirectPlugin)
     const DOMElem::Ptr runtime = elem->getChild("runtime");
     const std::string libpath = runtime->getAttributeValue("library");
 
-    const rw::common::Ptr<Plugin> plugin = Plugin::load(libpath);
+    const rw::core::Ptr<Plugin> plugin = Plugin::load(libpath);
 
     EXPECT_EQ("TestPlugin", plugin->getId());
     EXPECT_EQ("Name of test plugin", plugin->getName());
@@ -56,9 +56,9 @@ TEST(PluginTest, loadDirectPlugin)
         EXPECT_EQ("", extDesc[0].name);
         EXPECT_EQ("", extDesc[1].name);
         EXPECT_EQ("", extDesc[2].name);
-        EXPECT_EQ("sdurw_common-gtest.ExtensionPointA", extDesc[0].point);
-        EXPECT_EQ("sdurw_common-gtest.ExtensionPointA", extDesc[1].point);
-        EXPECT_EQ("sdurw_common-gtest.ExtensionPointB", extDesc[2].point);
+        EXPECT_EQ("sdurw_core-gtest.ExtensionPointA", extDesc[0].point);
+        EXPECT_EQ("sdurw_core-gtest.ExtensionPointA", extDesc[1].point);
+        EXPECT_EQ("sdurw_core-gtest.ExtensionPointB", extDesc[2].point);
     }
     EXPECT_TRUE(extDesc[0].props.has("TestProperty"));
     EXPECT_EQ("prop",
@@ -77,9 +77,9 @@ TEST(PluginTest, loadDirectPlugin)
     EXPECT_EQ("", ext1->getName());
     EXPECT_EQ("", ext2->getName());
     EXPECT_EQ("", ext3->getName());
-    EXPECT_EQ("sdurw_common-gtest.ExtensionPointA", ext1->getPoint());
-    EXPECT_EQ("sdurw_common-gtest.ExtensionPointA", ext2->getPoint());
-    EXPECT_EQ("sdurw_common-gtest.ExtensionPointB", ext3->getPoint());
+    EXPECT_EQ("sdurw_core-gtest.ExtensionPointA", ext1->getPoint());
+    EXPECT_EQ("sdurw_core-gtest.ExtensionPointA", ext2->getPoint());
+    EXPECT_EQ("sdurw_core-gtest.ExtensionPointB", ext3->getPoint());
     EXPECT_TRUE(ext1->getProperties().has("TestProperty"));
     EXPECT_EQ("prop",
             ext1->getProperties().get("TestProperty",
@@ -90,7 +90,7 @@ TEST(PluginTest, loadLazyPlugin)
 {
     std::string xmlpath = TestEnvironment::executableDir();
     xmlpath += "test_plugin.rwplugin.xml";
-    const rw::common::Ptr<Plugin> plugin = Plugin::load(xmlpath);
+    const rw::core::Ptr<Plugin> plugin = Plugin::load(xmlpath);
 
     EXPECT_EQ("TestLazyPlugin", plugin->getId());
     EXPECT_EQ("Name of plugin for test.", plugin->getName());
@@ -114,9 +114,9 @@ TEST(PluginTest, loadLazyPlugin)
         EXPECT_EQ("Name of first extension.", extDesc[0].name);
         EXPECT_EQ("Name of second extension.", extDesc[1].name);
         EXPECT_EQ("Name of third extension.", extDesc[2].name);
-        EXPECT_EQ("sdurw_common-gtest.ExtensionPointA", extDesc[0].point);
-        EXPECT_EQ("sdurw_common-gtest.ExtensionPointA", extDesc[1].point);
-        EXPECT_EQ("sdurw_common-gtest.ExtensionPointB", extDesc[2].point);
+        EXPECT_EQ("sdurw_core-gtest.ExtensionPointA", extDesc[0].point);
+        EXPECT_EQ("sdurw_core-gtest.ExtensionPointA", extDesc[1].point);
+        EXPECT_EQ("sdurw_core-gtest.ExtensionPointB", extDesc[2].point);
     }
     EXPECT_TRUE(extDesc[0].props.has("TestProperty"));
     EXPECT_EQ("prop",
@@ -135,9 +135,9 @@ TEST(PluginTest, loadLazyPlugin)
     EXPECT_EQ("", ext1->getName());
     EXPECT_EQ("", ext2->getName());
     EXPECT_EQ("", ext3->getName());
-    EXPECT_EQ("sdurw_common-gtest.ExtensionPointA", ext1->getPoint());
-    EXPECT_EQ("sdurw_common-gtest.ExtensionPointA", ext2->getPoint());
-    EXPECT_EQ("sdurw_common-gtest.ExtensionPointB", ext3->getPoint());
+    EXPECT_EQ("sdurw_core-gtest.ExtensionPointA", ext1->getPoint());
+    EXPECT_EQ("sdurw_core-gtest.ExtensionPointA", ext2->getPoint());
+    EXPECT_EQ("sdurw_core-gtest.ExtensionPointB", ext3->getPoint());
     EXPECT_TRUE(ext1->getProperties().has("TestProperty"));
     EXPECT_EQ("prop",
             ext1->getProperties().get("TestProperty",

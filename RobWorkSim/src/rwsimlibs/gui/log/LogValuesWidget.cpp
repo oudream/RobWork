@@ -30,7 +30,7 @@ using namespace rwsim::dynamics;
 using namespace rwsim::log;
 using namespace rwsimlibs::gui;
 
-LogValuesWidget::LogValuesWidget(rw::common::Ptr<const LogValues> entry, QWidget* parent):
+LogValuesWidget::LogValuesWidget(rw::core::Ptr<const LogValues> entry, QWidget* parent):
 	SimulatorLogEntryWidget(parent),
 	_ui(new Ui::LogValuesWidget()),
 	_values(entry)
@@ -48,18 +48,18 @@ LogValuesWidget::LogValuesWidget(rw::common::Ptr<const LogValues> entry, QWidget
 LogValuesWidget::~LogValuesWidget() {
 }
 
-void LogValuesWidget::setDWC(rw::common::Ptr<const DynamicWorkCell> dwc) {
+void LogValuesWidget::setDWC(rw::core::Ptr<const DynamicWorkCell> dwc) {
 }
 
-void LogValuesWidget::setEntry(rw::common::Ptr<const SimulatorLog> entry) {
-	const rw::common::Ptr<const LogValues> set = entry.cast<const LogValues>();
+void LogValuesWidget::setEntry(rw::core::Ptr<const SimulatorLog> entry) {
+	const rw::core::Ptr<const LogValues> set = entry.cast<const LogValues>();
 	if (!(set == NULL))
 		_values = set;
 	else
 		RW_THROW("LogValuesWidget (setEntry): invalid entry!");
 }
 
-rw::common::Ptr<const SimulatorLog> LogValuesWidget::getEntry() const {
+rw::core::Ptr<const SimulatorLog> LogValuesWidget::getEntry() const {
 	return _values;
 }
 
@@ -83,7 +83,7 @@ void LogValuesWidget::updateEntryWidget() {
 	_ui->_values->setSortingEnabled(true);
 }
 
-void LogValuesWidget::showGraphics(rw::common::Ptr<GroupNode> root, rw::common::Ptr<SceneGraph> graph) {
+void LogValuesWidget::showGraphics(rw::core::Ptr<GroupNode> root, rw::core::Ptr<SceneGraph> graph) {
 }
 
 std::string LogValuesWidget::getName() const {
@@ -96,15 +96,15 @@ LogValuesWidget::Dispatcher::Dispatcher() {
 LogValuesWidget::Dispatcher::~Dispatcher() {
 }
 
-SimulatorLogEntryWidget* LogValuesWidget::Dispatcher::makeWidget(rw::common::Ptr<const SimulatorLog> entry, QWidget* parent) const {
-	const rw::common::Ptr<const LogValues> tentry = entry.cast<const LogValues>();
+SimulatorLogEntryWidget* LogValuesWidget::Dispatcher::makeWidget(rw::core::Ptr<const SimulatorLog> entry, QWidget* parent) const {
+	const rw::core::Ptr<const LogValues> tentry = entry.cast<const LogValues>();
 	if (!(tentry == NULL))
 		return new LogValuesWidget(tentry, parent);
 	RW_THROW("LogValuesWidget::Dispatcher (makeWidget): invalid entry!");
 	return NULL;
 }
 
-bool LogValuesWidget::Dispatcher::accepts(rw::common::Ptr<const SimulatorLog> entry) const {
+bool LogValuesWidget::Dispatcher::accepts(rw::core::Ptr<const SimulatorLog> entry) const {
 	if (!(entry.cast<const LogValues>() == NULL))
 		return true;
 	return false;

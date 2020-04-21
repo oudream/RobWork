@@ -12,7 +12,7 @@
 #include <QDialog>
 
 #include <rw/kinematics/State.hpp>
-
+#include <rw/core/Ptr.hpp>
 #include <rwsim/dynamics/RigidBody.hpp>
 #include <rw/kinematics/FrameMap.hpp>
 
@@ -124,9 +124,9 @@ class GraspRestingPoseDialog : public QDialog
          */
         void calcColFreeRandomCfg(rw::kinematics::State& state);
 
-        bool isSimulationFinished( rw::common::Ptr<rwsim::simulator::DynamicSimulator> sim, const rw::kinematics::State& state );
+        bool isSimulationFinished( rw::core::Ptr<rwsim::simulator::DynamicSimulator> sim, const rw::kinematics::State& state );
 
-        bool saveRestingState( int simidx, rw::common::Ptr<rwsim::simulator::DynamicSimulator> sim , const rw::kinematics::State& state );
+        bool saveRestingState( int simidx, rw::core::Ptr<rwsim::simulator::DynamicSimulator> sim , const rw::kinematics::State& state );
 
 
     private:
@@ -146,7 +146,7 @@ class GraspRestingPoseDialog : public QDialog
         rw::kinematics::State _defstate;
         rw::kinematics::State _state;
         QTimer *_timer;
-        std::vector<rw::common::Ptr<rwsim::simulator::ThreadSimulator> > _simulators;
+        std::vector<rw::core::Ptr<rwsim::simulator::ThreadSimulator> > _simulators;
         std::vector<rw::kinematics::State> _initStates;
         std::vector<double> _simStartTimes;
         int _nrOfTests;
@@ -165,14 +165,14 @@ class GraspRestingPoseDialog : public QDialog
         rwsim::util::MovingAverage _avgSimTime;
         rwsim::util::MovingAverage _avgTime;
 
-        std::vector<rw::common::Ptr<rwsim::control::PDController> > _controllers;
+        std::vector<rw::core::Ptr<rwsim::control::PDController> > _controllers;
         std::vector<rw::math::Q> _preshapes;
         std::vector<rw::math::Q> _targetQ;
         rwsim::dynamics::RigidBody::Ptr _body;
-        rw::common::Ptr<rwsim::dynamics::RigidDevice> _hand;
+        rw::core::Ptr<rwsim::dynamics::RigidDevice> _hand;
         rw::kinematics::MovableFrame *_handBase,*_object;
 
-        rw::common::Ptr<rwsim::sensor::BodyContactSensor> _bodySensor;
+        rw::core::Ptr<rwsim::sensor::BodyContactSensor> _bodySensor;
 
         bool _exitHard;
 
@@ -183,7 +183,7 @@ class GraspRestingPoseDialog : public QDialog
         std::vector<std::vector< rw::math::Q > > _handconfigs;
         std::vector<std::vector< TactileSensorData > > _tactiledatas;
 
-        std::vector<rw::common::Ptr<CallBackFunctor> > _functors;
+        std::vector<rw::core::Ptr<CallBackFunctor> > _functors;
         std::vector<double> _nextTimeUpdate;
         int _nrOfTestsOld;
 

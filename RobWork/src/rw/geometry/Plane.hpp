@@ -41,7 +41,7 @@ namespace geometry {
 		/**
 		 * @brief Smart pointer to Plane
 		 */
-		typedef rw::common::Ptr<Plane> Ptr;
+		typedef rw::core::Ptr<Plane> Ptr;
 
 		//! @brief The value type for a plane (double precision).
 		typedef double value_type;
@@ -148,7 +148,7 @@ namespace geometry {
 		 * @brief Calculates the intersection between the line and plane.
 		 *
 		 * The line defined by \b p1 and \b p2 is considered infinitely long.
-		 * Throws a rw::common::Exception if the line is parallel to the plane.
+		 * Throws a rw::core::Exception if the line is parallel to the plane.
 		 *
 		 * @param p1 [in] point 1 on the line
 		 * @param p2 [in] point 2 on the line

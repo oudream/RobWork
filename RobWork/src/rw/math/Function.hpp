@@ -19,7 +19,7 @@
 #ifndef RW_MATH_FUNCTION_HPP
 #define RW_MATH_FUNCTION_HPP
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 /**
  * @file rw/math/Math.hpp
@@ -40,7 +40,7 @@ namespace rw { namespace math {
     {
     public:
 		//! Smart pointer to this type of class.
-		typedef rw::common::Ptr<Function> Ptr;
+		typedef rw::core::Ptr<Function> Ptr;
 
 	public:
 		/**
@@ -64,7 +64,7 @@ namespace rw { namespace math {
 	{
 	public:
 		//! Smart pointer to this type of class.
-		typedef rw::common::Ptr<Function1Diff> Ptr;
+		typedef rw::core::Ptr<Function1Diff> Ptr;
 		
 	public:
 		/**

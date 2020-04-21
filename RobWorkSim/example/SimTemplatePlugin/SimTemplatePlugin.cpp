@@ -11,7 +11,7 @@
 
 #include <QTimer>
 
-using namespace rw::common;
+using namespace rw::core;
 using rw::kinematics::State;
 using rw::models::WorkCell;
 using rws::RobWorkStudioPlugin;

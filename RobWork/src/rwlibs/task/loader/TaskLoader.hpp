@@ -26,7 +26,7 @@
 
 #include "../Task.hpp"
 
-#include <rw/common/ExtensionPoint.hpp>
+#include <rw/core/ExtensionPoint.hpp>
 
 namespace rwlibs {
 namespace task {
@@ -39,7 +39,7 @@ namespace task {
 class TaskLoader {
 public:
 	//! @brief Smart pointer type for a TaskLoader.
-	typedef rw::common::Ptr<TaskLoader> Ptr;
+	typedef rw::core::Ptr<TaskLoader> Ptr;
 
 	//! @brief Constructor.
 	TaskLoader() {}
@@ -94,7 +94,7 @@ public:
 	 * @brief A factory for TaskLoader. This factory also defines an
 	 * extension point for task loaders.
 	 */
-    class Factory: public rw::common::ExtensionPoint<TaskLoader> {
+    class Factory: public rw::core::ExtensionPoint<TaskLoader> {
     public:
         /**
          * @brief Get loader for a specific format.
@@ -124,7 +124,7 @@ public:
         static std::vector<std::string> getSupportedFormats();
 
     private:
-        Factory(): rw::common::ExtensionPoint<TaskLoader>("rwlibs.task.TaskLoader", "Loaders for the RobWork Task format.") {}
+        Factory(): rw::core::ExtensionPoint<TaskLoader>("rwlibs.task.TaskLoader", "Loaders for the RobWork Task format.") {}
     };
 };
 //! @}

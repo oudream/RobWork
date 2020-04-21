@@ -1,7 +1,7 @@
 #ifndef BODYCONTROLLERWIDGET_HPP_
 #define BODYCONTROLLERWIDGET_HPP_
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include <QDialog>
 
@@ -19,12 +19,12 @@ class BodyControlDialog : public QDialog
     Q_OBJECT
 
 public:
-    BodyControlDialog(//rw::common::Ptr<rwsim::dynamics::DynamicWorkCell> dwc,
-                      rw::common::Ptr<rwsim::control::BodyController> bodycontroller,
+    BodyControlDialog(//rw::core::Ptr<rwsim::dynamics::DynamicWorkCell> dwc,
+                      rw::core::Ptr<rwsim::control::BodyController> bodycontroller,
                       QWidget *parent = 0);
 
-    BodyControlDialog(//rw::common::Ptr<rwsim::dynamics::DynamicWorkCell> dwc,
-                      rw::common::Ptr<rwsim::simulator::DynamicSimulator> simulator,
+    BodyControlDialog(//rw::core::Ptr<rwsim::dynamics::DynamicWorkCell> dwc,
+                      rw::core::Ptr<rwsim::simulator::DynamicSimulator> simulator,
                       QWidget *parent = 0);
 
     virtual ~BodyControlDialog(){}
@@ -32,8 +32,8 @@ public:
 
 
 private:
-    rw::common::Ptr<rwsim::control::BodyController> _bodyctrl;
-    //rw::common::Ptr<rwsim::simulator::DynamicSimulator> _sim;
+    rw::core::Ptr<rwsim::control::BodyController> _bodyctrl;
+    //rw::core::Ptr<rwsim::simulator::DynamicSimulator> _sim;
     JogGroup *_jogGroup;
 };
 

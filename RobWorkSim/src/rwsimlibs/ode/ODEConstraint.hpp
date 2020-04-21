@@ -26,7 +26,7 @@
 
 #include <rw/math/VectorND.hpp>
 #include <rwlibs/simulation/Simulator.hpp>
-
+#include <rw/core/Ptr.hpp>
 #include <ode/ode.h>
 
 // Forward declarations
@@ -59,7 +59,7 @@ public:
 	 * @param child [in] the child ODEBody.
 	 * @param simulator [in] the ODESimulator that creates this constraint.
 	 */
-	ODEConstraint(rw::common::Ptr<const rwsim::dynamics::Constraint> constraint, const ODEBody* const parent, const ODEBody* const child, const ODESimulator* const simulator);
+	ODEConstraint(rw::core::Ptr<const rwsim::dynamics::Constraint> constraint, const ODEBody* const parent, const ODEBody* const child, const ODESimulator* const simulator);
 
 	//! @brief Destructor.
 	virtual ~ODEConstraint();
@@ -119,7 +119,7 @@ private:
 	void setMotorDirLin(const rw::math::Vector3D<> axis, unsigned int dirNumber) const;
 	void setMotorDirAng(const rw::math::Vector3D<> axis, unsigned int dirNumber) const;
 
-	const rw::common::Ptr<const rwsim::dynamics::Constraint> _rwConstraint;
+	const rw::core::Ptr<const rwsim::dynamics::Constraint> _rwConstraint;
 	const ODEBody* const _parent;
 	const ODEBody* const _child;
 	const dWorldID _world;

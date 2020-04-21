@@ -20,7 +20,7 @@
 
 //! @file SimulatedScanner25D.hpp
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/sensor/Scanner25D.hpp>
 #include "SimulatedSensor.hpp"
 
@@ -38,7 +38,7 @@ namespace rwlibs { namespace simulation {
     {
     public:
         //! @brief smart pointer type of this class
-        typedef rw::common::Ptr<SimulatedScanner25D> Ptr;
+        typedef rw::core::Ptr<SimulatedScanner25D> Ptr;
 
     public:
         /**
@@ -49,7 +49,7 @@ namespace rwlibs { namespace simulation {
          */
     	SimulatedScanner25D(const std::string& name,
     	                    rw::kinematics::Frame *frame,
-							rw::common::Ptr<FrameGrabber25D> framegrabber);
+							rw::core::Ptr<FrameGrabber25D> framegrabber);
 
         /**
          * @brief constructor
@@ -61,7 +61,7 @@ namespace rwlibs { namespace simulation {
     	SimulatedScanner25D(const std::string& name,
                             const std::string& desc,
                             rw::kinematics::Frame *frame,
-							rw::common::Ptr<FrameGrabber25D> framegrabber);
+							rw::core::Ptr<FrameGrabber25D> framegrabber);
 
     	/**
     	 * @brief destructor
@@ -116,7 +116,7 @@ namespace rwlibs { namespace simulation {
         rw::sensor::Scanner25D::Ptr getScanner25DSensor(rwlibs::simulation::Simulator::Ptr instance);
 
     private:
-        rw::common::Ptr<FrameGrabber25D> _framegrabber;
+        rw::core::Ptr<FrameGrabber25D> _framegrabber;
         double _frameRate, _dtsum;
         bool _isAcquired,_isOpenned;
     };

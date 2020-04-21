@@ -29,7 +29,7 @@
 
 #include <QItemSelection>
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::geometry;
 using namespace rw::graphics;
 using namespace rw::kinematics;
@@ -41,7 +41,7 @@ using namespace rwsim::dynamics;
 using namespace rwsim::log;
 using namespace rwsimlibs::gui;
 
-CollisionResultWidget::CollisionResultWidget(rw::common::Ptr<const LogCollisionResult> entry, QWidget* parent):
+CollisionResultWidget::CollisionResultWidget(rw::core::Ptr<const LogCollisionResult> entry, QWidget* parent):
 	SimulatorLogEntryWidget(parent),
 	_ui(new Ui::CollisionResultWidget()),
 	_positions(entry->getPositions()),
@@ -77,19 +77,19 @@ CollisionResultWidget::~CollisionResultWidget() {
 	}
 }
 
-void CollisionResultWidget::setDWC(rw::common::Ptr<const DynamicWorkCell> dwc) {
+void CollisionResultWidget::setDWC(rw::core::Ptr<const DynamicWorkCell> dwc) {
 	_dwc = dwc;
 }
 
-void CollisionResultWidget::setEntry(rw::common::Ptr<const SimulatorLog> entry) {
-	const rw::common::Ptr<const LogCollisionResult> set = entry.cast<const LogCollisionResult>();
+void CollisionResultWidget::setEntry(rw::core::Ptr<const SimulatorLog> entry) {
+	const rw::core::Ptr<const LogCollisionResult> set = entry.cast<const LogCollisionResult>();
 	if (!(set == NULL))
 		_result = set;
 	else
 		RW_THROW("CollisionResultWidget (setEntry): invalid entry!");
 }
 
-rw::common::Ptr<const SimulatorLog> CollisionResultWidget::getEntry() const {
+rw::core::Ptr<const SimulatorLog> CollisionResultWidget::getEntry() const {
 	return _result;
 }
 
@@ -258,15 +258,15 @@ CollisionResultWidget::Dispatcher::Dispatcher() {
 CollisionResultWidget::Dispatcher::~Dispatcher() {
 }
 
-SimulatorLogEntryWidget* CollisionResultWidget::Dispatcher::makeWidget(rw::common::Ptr<const SimulatorLog> entry, QWidget* parent) const {
-	const rw::common::Ptr<const LogCollisionResult> tentry = entry.cast<const LogCollisionResult>();
+SimulatorLogEntryWidget* CollisionResultWidget::Dispatcher::makeWidget(rw::core::Ptr<const SimulatorLog> entry, QWidget* parent) const {
+	const rw::core::Ptr<const LogCollisionResult> tentry = entry.cast<const LogCollisionResult>();
 	if (!(tentry == NULL))
 		return new CollisionResultWidget(tentry, parent);
 	RW_THROW("CollisionResultWidget::Dispatcher (makeWidget): invalid entry!");
 	return NULL;
 }
 
-bool CollisionResultWidget::Dispatcher::accepts(rw::common::Ptr<const SimulatorLog> entry) const {
+bool CollisionResultWidget::Dispatcher::accepts(rw::core::Ptr<const SimulatorLog> entry) const {
 	if (!(entry.cast<const LogCollisionResult>() == NULL))
 		return true;
 	return false;

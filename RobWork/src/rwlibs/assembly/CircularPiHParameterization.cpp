@@ -17,9 +17,9 @@
 
 #include "CircularPiHParameterization.hpp"
 
-#include <rw/common/PropertyMap.hpp>
+#include <rw/core/PropertyMap.hpp>
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rwlibs::assembly;
 
 CircularPiHParameterization::CircularPiHParameterization(const PropertyMap::Ptr map) {

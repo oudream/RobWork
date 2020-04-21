@@ -4,7 +4,8 @@
 
 using namespace rwsim::simulator;
 using namespace rwsim::dynamics;
-using namespace rw::common;
+using namespace rw::core;
+using namespace rw::core;
 
 PhysicsEngine::Factory::Factory():
 		ExtensionPoint<Dispatcher>("rwsim.simulator.PhysicsEngine", "Example extension point")
@@ -37,7 +38,7 @@ bool PhysicsEngine::Factory::hasEngineID(const std::string& engineID){
     return false;
 }
 
-PhysicsEngine::Ptr PhysicsEngine::Factory::makePhysicsEngine(rw::common::Ptr<DynamicWorkCell> dwc)
+PhysicsEngine::Ptr PhysicsEngine::Factory::makePhysicsEngine(rw::core::Ptr<DynamicWorkCell> dwc)
 {
     // select an engine ID
     std::vector<std::string> ids = getEngineIDs();
@@ -50,7 +51,7 @@ PhysicsEngine::Ptr PhysicsEngine::Factory::makePhysicsEngine(rw::common::Ptr<Dyn
 PhysicsEngine::Ptr PhysicsEngine::Factory::makePhysicsEngine(const std::string& engineID)
 {
     if( engineID == "RWPhysics"){
-        rwsim::simulator::RWSimulator::Ptr rwphys = ownedPtr( new rwsim::simulator::RWSimulator() );
+        rwsim::simulator::RWSimulator::Ptr rwphys = rw::core::ownedPtr( new rwsim::simulator::RWSimulator() );
         return rwphys;
     }
 
@@ -58,7 +59,7 @@ PhysicsEngine::Ptr PhysicsEngine::Factory::makePhysicsEngine(const std::string& 
     std::vector<Extension::Ptr> exts = ep.getExtensions();
     for(Extension::Ptr& ext : exts) {
         if(ext->getProperties().get("engineID",ext->getName() ) == engineID){
-            const rw::common::Ptr<const Dispatcher> dispatch = ext->getObject().cast<Dispatcher>();
+            const rw::core::Ptr<const Dispatcher> dispatch = ext->getObject().cast<Dispatcher>();
             // optionally add any properties options...
             return dispatch->makePhysicsEngine();
         }
@@ -66,10 +67,10 @@ PhysicsEngine::Ptr PhysicsEngine::Factory::makePhysicsEngine(const std::string& 
     return NULL;
 }
 
-PhysicsEngine::Ptr PhysicsEngine::Factory::makePhysicsEngine(const std::string& engineID, rw::common::Ptr<DynamicWorkCell> dwc)
+PhysicsEngine::Ptr PhysicsEngine::Factory::makePhysicsEngine(const std::string& engineID, rw::core::Ptr<DynamicWorkCell> dwc)
 {
     if( engineID == "RWPhysics"){
-        rwsim::simulator::RWSimulator::Ptr rwphys = ownedPtr( new rwsim::simulator::RWSimulator(dwc) );
+        rwsim::simulator::RWSimulator::Ptr rwphys = rw::core::ownedPtr( new rwsim::simulator::RWSimulator(dwc) );
         return rwphys;
     }
 
@@ -77,7 +78,7 @@ PhysicsEngine::Ptr PhysicsEngine::Factory::makePhysicsEngine(const std::string& 
     std::vector<Extension::Ptr> exts = ep.getExtensions();
     for(Extension::Ptr& ext : exts) {
         if(ext->getProperties().get("engineID",ext->getName() ) == engineID){
-            const rw::common::Ptr<const Dispatcher> dispatch = ext->getObject().cast<Dispatcher>();
+            const rw::core::Ptr<const Dispatcher> dispatch = ext->getObject().cast<Dispatcher>();
             PhysicsEngine::Ptr engine = dispatch->makePhysicsEngine();
             engine->load(dwc);
             // optionally add any properties options...

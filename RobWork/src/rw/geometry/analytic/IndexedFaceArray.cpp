@@ -19,7 +19,7 @@
 
 #include "Face.hpp"
 
-using rw::common::ownedPtr;
+using rw::core::ownedPtr;
 using namespace rw::geometry;
 using namespace rw::math;
 
@@ -31,7 +31,7 @@ struct IndexedFaceArray::CenterSort {
     }
 };
 
-IndexedFaceArray::IndexedFaceArray(rw::common::Ptr<const Shell> shell):
+IndexedFaceArray::IndexedFaceArray(rw::core::Ptr<const Shell> shell):
 	_shell(shell),
 	_faces(_shell->size()),
 	_first(0),
@@ -41,7 +41,7 @@ IndexedFaceArray::IndexedFaceArray(rw::common::Ptr<const Shell> shell):
 		_faces[i].originalID = i;
 }
 
-IndexedFaceArray::IndexedFaceArray(rw::common::Ptr<const Shell> shell, const std::vector<IndexedFace>& faces, std::size_t first, std::size_t last):
+IndexedFaceArray::IndexedFaceArray(rw::core::Ptr<const Shell> shell, const std::vector<IndexedFace>& faces, std::size_t first, std::size_t last):
 	_shell(shell),
 	_faces(faces),
 	_first(first),

@@ -34,18 +34,18 @@ SimulatorLogModel::SimulatorLogModel(QObject *parent):
 SimulatorLogModel::~SimulatorLogModel() {
 }
 
-void SimulatorLogModel::setRoot(rw::common::Ptr<const SimulatorLog> root) {
+void SimulatorLogModel::setRoot(rw::core::Ptr<const SimulatorLog> root) {
 	_root = root;
 	beginResetModel();
 }
 
-void SimulatorLogModel::compare(rw::common::Ptr<const SimulatorLog> info) {
+void SimulatorLogModel::compare(rw::core::Ptr<const SimulatorLog> info) {
 	compare(_root,info);
 }
 
-void SimulatorLogModel::compare(rw::common::Ptr<const SimulatorLog> a, rw::common::Ptr<const SimulatorLog> b) {
-	const rw::common::Ptr<const SimulatorLogScope> aScope = a.cast<const SimulatorLogScope>();
-	const rw::common::Ptr<const SimulatorLogScope> bScope = b.cast<const SimulatorLogScope>();
+void SimulatorLogModel::compare(rw::core::Ptr<const SimulatorLog> a, rw::core::Ptr<const SimulatorLog> b) {
+	const rw::core::Ptr<const SimulatorLogScope> aScope = a.cast<const SimulatorLogScope>();
+	const rw::core::Ptr<const SimulatorLogScope> bScope = b.cast<const SimulatorLogScope>();
 	if (*a == *b)
 		return;
 	else
@@ -68,9 +68,9 @@ void SimulatorLogModel::compare(rw::common::Ptr<const SimulatorLog> a, rw::commo
 	}
 }
 
-void SimulatorLogModel::compareFailSubTree(rw::common::Ptr<const SimulatorLog> a) {
+void SimulatorLogModel::compareFailSubTree(rw::core::Ptr<const SimulatorLog> a) {
 	_bgColor[a.get()] = QColor(255,0,0);
-	const rw::common::Ptr<const SimulatorLogScope> aScope = a.cast<const SimulatorLogScope>();
+	const rw::core::Ptr<const SimulatorLogScope> aScope = a.cast<const SimulatorLogScope>();
 	if (!aScope.isNull()) {
 		const std::vector<SimulatorLog::Ptr> aChildren = aScope->getChildren();
 		for(const SimulatorLog::Ptr child : aChildren) {

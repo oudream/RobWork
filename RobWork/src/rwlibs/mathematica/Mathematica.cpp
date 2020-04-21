@@ -55,7 +55,7 @@ struct Mathematica::Environment
 
 struct Mathematica::LinkImpl
 {
-    typedef rw::common::Ptr< const LinkImpl > Ptr;
+    typedef rw::core::Ptr< const LinkImpl > Ptr;
     LinkImpl (const Environment* env, const std::string& args) : env (env), err (0)
     {
 #if WSINTERFACE >= 3
@@ -137,7 +137,7 @@ const Mathematica::Link& Mathematica::Link::operator<< (const ToExpression& expr
     return (*this) << EvaluatePacket (expression);
 }
 
-void Mathematica::Link::operator>> (rw::common::Ptr< Packet >& result) const
+void Mathematica::Link::operator>> (rw::core::Ptr< Packet >& result) const
 {
     result = NULL;
     wait ();
@@ -228,7 +228,7 @@ Mathematica::Link::Ptr Mathematica::createLink (const std::string& name, LinkPro
         args << "TCPIP";
     }
 
-    const rw::common::Ptr< Link > link = ownedPtr (new Link ());
+    const rw::core::Ptr< Link > link = ownedPtr (new Link ());
     link->name                         = name;
     link->impl                         = ownedPtr (new LinkImpl (_env, args.str ()));
     if (link->isOpen ()) {
@@ -250,7 +250,7 @@ Mathematica::Link::Ptr Mathematica::connectToLink (const std::string& name)
     if (name != "")
         args << " -linkname \"" + name + "\"";
 
-    const rw::common::Ptr< Link > link = ownedPtr (new Link ());
+    const rw::core::Ptr< Link > link = ownedPtr (new Link ());
     link->name                         = name;
     link->impl                         = ownedPtr (new LinkImpl (_env, args.str ()));
     if (link->isOpen ()) {
@@ -265,7 +265,7 @@ Mathematica::Link::Ptr Mathematica::launchKernel ()
     if (_env == NULL)
         return NULL;
 
-    const rw::common::Ptr< Link > link = ownedPtr (new Link ());
+    const rw::core::Ptr< Link > link = ownedPtr (new Link ());
     link->impl = ownedPtr (new LinkImpl (_env, "-linklaunch -linkname 'math -wstp'"));
     if (link->isOpen ()) {
         _links.push_back (link);
@@ -276,10 +276,10 @@ Mathematica::Link::Ptr Mathematica::launchKernel ()
 
 bool Mathematica::closeLink (Link::Ptr link)
 {
-    std::list< rw::common::Ptr< Link > >::iterator it;
+    std::list< rw::core::Ptr< Link > >::iterator it;
     for (it = _links.begin (); it != _links.end (); it++) {
         if (*it == link) {
-            const rw::common::Ptr< Link > l = *it;
+            const rw::core::Ptr< Link > l = *it;
             l->impl->close ();
             l->impl = NULL;
             _links.erase (it);
@@ -324,10 +324,10 @@ void Mathematica::FunctionBase::out (std::ostream& stream, std::size_t indent) c
         stream << " ";
     indent += 3;
     stream << getName () << "[";
-    const std::list< rw::common::Ptr< const Expression > >& arguments = getArguments ();
-    for (const rw::common::Ptr< const Expression > arg : arguments) {
+    const std::list< rw::core::Ptr< const Expression > >& arguments = getArguments ();
+    for (const rw::core::Ptr< const Expression > arg : arguments) {
         RW_ASSERT (!arg.isNull ());
-        const rw::common::Ptr< const FunctionBase > fct = arg.cast< const FunctionBase > ();
+        const rw::core::Ptr< const FunctionBase > fct = arg.cast< const FunctionBase > ();
         if (!fct.isNull ()) {
             stream << '\n';
             fct->out (stream, indent);
@@ -380,11 +380,11 @@ void Mathematica::Function::setArgument (std::size_t i, Expression::Ptr arg)
     _arguments.insert (it, arg);
 }
 
-std::list< rw::common::Ptr< const Mathematica::Expression > >
+std::list< rw::core::Ptr< const Mathematica::Expression > >
 Mathematica::Function::getArguments () const
 {
-    std::list< rw::common::Ptr< const Mathematica::Expression > > res;
-    for (const rw::common::Ptr< const Mathematica::Expression > arg : _arguments) {
+    std::list< rw::core::Ptr< const Mathematica::Expression > > res;
+    for (const rw::core::Ptr< const Mathematica::Expression > arg : _arguments) {
         res.push_back (arg);
     }
     return res;
@@ -408,9 +408,9 @@ void Mathematica::put (LinkImpl::Ptr link, const Expression& expression)
     switch (expression.getType ()) {
         case Expression::Function: {
             const FunctionBase& fct = dynamic_cast< const FunctionBase& > (expression);
-            const std::list< rw::common::Ptr< const Expression > >& args = fct.getArguments ();
+            const std::list< rw::core::Ptr< const Expression > >& args = fct.getArguments ();
             WSPutFunction (lp, fct.getName ().c_str (), (int) args.size ());
-            BOOSTfor_FOREACH (const rw::common::Ptr< const Expression > arg, args)
+            BOOSTfor_FOREACH (const rw::core::Ptr< const Expression > arg, args)
             {
                 put (link, *arg);
             }
@@ -611,7 +611,7 @@ std::ostream& rwlibs::mathematica::operator<< (std::ostream& out,
 }
 
 Mathematica::AutoExpression::AutoExpression (const std::list< AutoExpression >& args) :
-    _exp (rw::common::ownedPtr (new List ()))
+    _exp (rw::core::ownedPtr (new List ()))
 {
     for (const AutoExpression& val: args) {
         _exp.cast< List > ()->add (val);
@@ -620,7 +620,7 @@ Mathematica::AutoExpression::AutoExpression (const std::list< AutoExpression >& 
 
 #if __cplusplus >= 201103L
 Mathematica::AutoExpression::AutoExpression (const std::initializer_list< AutoExpression >& args) :
-    _exp (rw::common::ownedPtr (new List ()))
+    _exp (rw::core::ownedPtr (new List ()))
 {
     for (const AutoExpression& val : args) {
         _exp.cast< List > ()->add (val);

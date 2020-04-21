@@ -18,7 +18,7 @@
 #include "../TestSuiteConfig.hpp"
 
 #include <iostream>
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include <rw/common/INIArchive.hpp>
 #include <rw/common/BINArchive.hpp>
@@ -29,6 +29,7 @@
 #include <rw/math/Vector2D.hpp>
 
 using namespace rw::common;
+using namespace rw::core;
 using namespace rw::math;
 
 

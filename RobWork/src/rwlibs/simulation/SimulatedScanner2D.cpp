@@ -20,7 +20,7 @@
 
 using namespace rwlibs::simulation;
 using namespace rw::sensor;
-using namespace rw::common;
+using namespace rw::core;
 
 namespace {
 
@@ -55,7 +55,7 @@ namespace {
 
 
 SimulatedScanner2D::SimulatedScanner2D(const std::string& name, rw::kinematics::Frame* frame, FrameGrabber25D::Ptr framegrabber):
-   SimulatedSensor( rw::common::ownedPtr( new Scanner2DModel(name, framegrabber->getFieldOfViewY(), static_cast<int>(framegrabber->getWidth()), frame) )),
+   SimulatedSensor( rw::core::ownedPtr( new Scanner2DModel(name, framegrabber->getFieldOfViewY(), static_cast<int>(framegrabber->getWidth()), frame) )),
    _framegrabber(framegrabber),
     _frameRate(30),
     _dtsum(0),
@@ -150,8 +150,8 @@ rw::sensor::Scanner2D::Ptr SimulatedScanner2D::getScanner2DSensor(rwlibs::simula
 	if( instance->hasHandle(this) )
 		return instance->getSensorHandle(this).cast<rw::sensor::Scanner2D>();
 
-	rw::common::Ptr<Sensor2DWrapper> handle =
-			rw::common::ownedPtr( new Sensor2DWrapper(this) );
+	rw::core::Ptr<Sensor2DWrapper> handle =
+			rw::core::ownedPtr( new Sensor2DWrapper(this) );
 
 	instance->addHandle(this, handle );
 	return handle;

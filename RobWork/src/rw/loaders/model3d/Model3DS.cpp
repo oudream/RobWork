@@ -82,12 +82,12 @@
 
 #include <rw/loaders/ImageLoader.hpp>
 
-#include <rw/common/macros.hpp>
-#include <rw/common/StringUtil.hpp>
+#include <rw/core/macros.hpp>
+#include <rw/core/StringUtil.hpp>
 
 #include <cstdio>
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::graphics;
 
 // The chunk's id numbers

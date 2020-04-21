@@ -29,7 +29,7 @@ CameraModel::CameraModel(
     :
     SensorModel(name, frame, modelInfo),
     _pmatrix(projection),
-    _sdata(1, rw::common::ownedPtr( new CameraModelCache()).cast<StateCache>())
+    _sdata(1, rw::core::ownedPtr( new CameraModelCache()).cast<StateCache>())
 {
 	add(_sdata);
 }

@@ -33,7 +33,7 @@
 #include <rwsimlibs/ode/ODESimulator.hpp>
 #include <rwsim/control/SerialDeviceController.hpp>
 
-using rw::common::ownedPtr;
+using rw::core::ownedPtr;
 using namespace rw::kinematics;
 using rw::math::Q;
 using rw::models::Device;

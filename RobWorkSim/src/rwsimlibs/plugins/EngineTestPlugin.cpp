@@ -20,6 +20,7 @@
 #include <rw/common/LogFileWriter.hpp>
 #include <rw/common/ThreadPool.hpp>
 #include <rw/common/ThreadTask.hpp>
+#include <rw/core/PropertyMap.hpp>
 
 #include <RobWorkStudioConfig.hpp>
 #include <rws/RobWorkStudio.hpp>
@@ -36,6 +37,7 @@
 #include <QListWidgetItem>
 
 using namespace rw::common;
+using namespace rw::core;
 using namespace rw::math;
 using namespace rw::trajectory;
 using namespace rwsim::dynamics;

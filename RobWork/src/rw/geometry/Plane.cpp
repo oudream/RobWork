@@ -25,7 +25,7 @@
 
 using namespace rw::geometry;
 using namespace rw::math;
-using namespace rw::common;
+using namespace rw::core;
 
 Q Plane::getParameters () const
 {
@@ -192,7 +192,7 @@ double Plane::refit (const std::vector< rw::math::Vector3D<> >& data)
 
 rw::math::Metric< Plane >::Ptr Plane::makeMetric (double angToDistWeight)
 {
-    return rw::common::ownedPtr (new PlaneMetric (angToDistWeight));
+    return rw::core::ownedPtr (new PlaneMetric (angToDistWeight));
 }
 
 /*namespace {

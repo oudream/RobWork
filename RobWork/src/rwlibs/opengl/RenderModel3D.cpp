@@ -14,7 +14,7 @@ RenderModel3D::RenderModel3D (Model3D::Ptr model) : _model (model)
 {
     // create list of textures
     for (std::size_t i = 0; i < _model->_textures.size (); i++) {
-        _textures.push_back (rw::common::ownedPtr (new RWGLTexture ()));
+        _textures.push_back (rw::core::ownedPtr (new RWGLTexture ()));
     }
 }
 

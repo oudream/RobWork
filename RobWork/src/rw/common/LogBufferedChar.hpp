@@ -21,7 +21,7 @@
 
 #include <ostream>
 #include <vector>
-#include "LogWriter.hpp"
+#include <rw/core/LogWriter.hpp>
 
 namespace rw {
 namespace common {
@@ -37,7 +37,7 @@ namespace common {
  * the entire content of the buffer it is truncated.
  *
  */
-class LogBufferedChar: public LogWriter
+class LogBufferedChar: public rw::core::LogWriter
 {
 public:
     /**

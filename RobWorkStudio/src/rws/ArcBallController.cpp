@@ -248,7 +248,7 @@ void ArcBallController::zoom(double amount)
     setPivotScale();
 }
 
-void ArcBallController::autoZoom(rw::common::Ptr<rw::models::WorkCell> workcell, rw::common::Ptr<const State> state, double fovy, double aspectRatio)
+void ArcBallController::autoZoom(rw::core::Ptr<rw::models::WorkCell> workcell, rw::core::Ptr<const State> state, double fovy, double aspectRatio)
 {
     // The intention is to get a list off "interest points in the workcell"
     // In the first implementation, interest points is the origo of the frames in the workcell.

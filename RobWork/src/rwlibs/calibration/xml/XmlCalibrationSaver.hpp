@@ -18,7 +18,7 @@
 #ifndef RWLIBS_CALIBRATION_XMLCALIBRATIONSAVER_HPP
 #define RWLIBS_CALIBRATION_XMLCALIBRATIONSAVER_HPP
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include <iosfwd>
 #include <string>
@@ -40,14 +40,14 @@ public:
 	 * @param workcellCalibration [in] workcellCalibration to store
 	 * @param fileName [in] Name of the file to which to write.
 	 */
-	static void save(rw::common::Ptr<WorkCellCalibration> workcellCalibration, std::string fileName);
+	static void save(rw::core::Ptr<WorkCellCalibration> workcellCalibration, std::string fileName);
 
 	/**
 	 * @brief Writes \b workcellCalibration to stream.
 	 * @param workcellCalibration [in] workcellCalibration to write
 	 * @param ostream [in] Stream to write to
 	 */
-	static void save(rw::common::Ptr<WorkCellCalibration> workcellCalibration, std::ostream& ostream);
+	static void save(rw::core::Ptr<WorkCellCalibration> workcellCalibration, std::ostream& ostream);
 };
 
 /* @} */

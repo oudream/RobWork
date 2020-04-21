@@ -19,7 +19,7 @@ public:
 	std::vector<rw::common::Extension::Descriptor> getExtensionDescriptors();
 	
 	//! Override Plugin::makeExtension
-	rw::common::Ptr<rw::common::Extension> makeExtension(const std::string& str);
+	rw::core::Ptr<rw::common::Extension> makeExtension(const std::string& str);
 };
 
 #endif

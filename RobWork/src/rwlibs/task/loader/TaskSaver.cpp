@@ -22,9 +22,10 @@
 #include "XMLTaskSaver.hpp"
 #endif
 
-#include <rw/common/StringUtil.hpp>
+#include <rw/core/StringUtil.hpp>
+#include <rw/core/Extension.hpp>
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rwlibs::task;
 
 TaskSaver::Ptr TaskSaver::Factory::getTaskSaver(const std::string& format, const std::string& id) {
@@ -42,12 +43,12 @@ TaskSaver::Ptr TaskSaver::Factory::getTaskSaver(const std::string& format, const
 	}
 	if(StringUtil::toLower(format) == "xml") {
 		if (id.empty())
-			return rw::common::ownedPtr( new DOMTaskSaver() );
+			return rw::core::ownedPtr( new DOMTaskSaver() );
 		else if (StringUtil::toUpper(id) == "DOM")
-			return rw::common::ownedPtr( new DOMTaskSaver() );
+			return rw::core::ownedPtr( new DOMTaskSaver() );
 #ifdef RW_HAVE_XERCES
 		else if (StringUtil::toUpper(id) == "XERCES")
-			return rw::common::ownedPtr( new DOMTaskSaver() );
+			return rw::core::ownedPtr( new DOMTaskSaver() );
 #endif
 	}
 	return NULL;

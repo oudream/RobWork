@@ -31,7 +31,7 @@ using namespace rw::math;
 using namespace rw::models;
 using namespace rw::kinematics;
 using namespace rw::invkin;
-using namespace rw::common;
+using namespace rw::core;
 
 namespace {
 class IterativeQIKSampler : public QIKSampler

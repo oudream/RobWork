@@ -20,6 +20,7 @@
 
 #include <rw/kinematics/Frame.hpp>
 #include <rw/models/WorkCell.hpp>
+#include <rw/core/PropertyMap.hpp>
 
 using namespace rw::proximity;
 
@@ -96,7 +97,7 @@ CollisionSetup CollisionSetup::get(const rw::models::WorkCell& wc){
 }
 
 
-CollisionSetup CollisionSetup::get(const rw::common::PropertyMap& map){
+CollisionSetup CollisionSetup::get(const rw::core::PropertyMap& map){
     return map.get<CollisionSetup>("CollisionSetup", CollisionSetup());
 }
 
@@ -104,6 +105,6 @@ void CollisionSetup::set(const CollisionSetup& setup, rw::models::WorkCell::Ptr 
     set(setup, wc->getWorldFrame()->getPropertyMap());
 }
 
-void CollisionSetup::set(const CollisionSetup& setup, rw::common::PropertyMap& map){
+void CollisionSetup::set(const CollisionSetup& setup, rw::core::PropertyMap& map){
     map.addForce<CollisionSetup>("CollisionSetup", "setup for collision checking", setup);
 }

@@ -22,7 +22,7 @@
 #include <rw/math/Vector3D.hpp>
 #include <rw/math/Q.hpp>
 #include <rw/math/Pose6D.hpp>
-#include <rw/common/PropertyMap.hpp>
+#include <rw/core/PropertyMap.hpp>
 #include "Grasp3D.hpp"
 #include <rw/sensor/TactileArray.hpp>
 
@@ -37,7 +37,7 @@ namespace graspplanning {
 	 */
 	class GraspTable {
 	public:
-	    typedef rw::common::Ptr<GraspTable> Ptr;
+	    typedef rw::core::Ptr<GraspTable> Ptr;
 
 		//! @brief this version increase each time the file format is changed
 		static const unsigned int GTABLE_VERSION = 0x00001;
@@ -147,7 +147,7 @@ namespace graspplanning {
          * @param filename [in] name of file
          * @return GraspTable
          */
-        static rw::common::Ptr<GraspTable> load(const std::string& filename);
+        static rw::core::Ptr<GraspTable> load(const std::string& filename);
 
         /**
          * @brief save this grasp table to file \b filename
@@ -169,7 +169,7 @@ namespace graspplanning {
         std::string _objectId;
         int _calibForceIndex;
 
-		rw::common::PropertyMap _properties;
+		rw::core::PropertyMap _properties;
 		std::vector<GraspData> _graspData;
 
 	};

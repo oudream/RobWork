@@ -24,7 +24,7 @@
  */
 
 #include <rw/math/Transform3D.hpp>
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include "SceneNode.hpp"
 
@@ -56,7 +56,7 @@ namespace rw { namespace graphics {
     public:
 
         //! @brief smart pointer type to this class
-        typedef rw::common::Ptr<DrawableNode> Ptr;
+        typedef rw::core::Ptr<DrawableNode> Ptr;
 
     	/**
     	 * @brief draw mask is used to filter which drawables to exclude from rendering.
@@ -104,7 +104,7 @@ namespace rw { namespace graphics {
     	    //! @brief Disabling rendering of normals.
     	    bool _disableNormalRender;
             //! @brief Rendering camera
-            rw::common::Ptr<SceneCamera> _cam;
+            rw::core::Ptr<SceneCamera> _cam;
             //! @brief Transform  World to model
             rw::math::Transform3D<> _wTm;
     	};

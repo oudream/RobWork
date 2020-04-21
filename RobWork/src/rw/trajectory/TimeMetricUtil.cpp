@@ -18,7 +18,7 @@
 
 #include "TimeMetricUtil.hpp"
 
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 #include <rw/math/Q.hpp>
 #include <rw/math/MetricUtil.hpp>
 #include <rw/models/Device.hpp>

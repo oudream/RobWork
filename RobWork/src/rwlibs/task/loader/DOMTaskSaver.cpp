@@ -18,9 +18,9 @@
 #include "DOMTaskSaver.hpp"
 #include "DOMTaskFormat.hpp"
 
-#include <rw/common/DOMParser.hpp>
-#include <rw/common/DOMElem.hpp>
-#include <rw/common/StringUtil.hpp>
+#include <rw/core/DOMParser.hpp>
+#include <rw/core/DOMElem.hpp>
+#include <rw/core/StringUtil.hpp>
 #include <rw/math/Q.hpp>
 #include <rw/math/Transform3D.hpp>
 #include <rw/loaders/dom/DOMBasisTypes.hpp>
@@ -30,7 +30,7 @@
 
 
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::loaders;
 using namespace rw::math;
 using namespace rwlibs::task;
@@ -104,10 +104,10 @@ template <class T>
 void DOMTaskSaver::writeTargets(typename Task<T>::Ptr task, DOMElem::Ptr parent) {
     DOMElem::Ptr element = parent->addChild(DOMTaskFormat::idTargets());
 
-	std::vector<rw::common::Ptr<Target<T> > > targets = task->getTargets();
+	std::vector<rw::core::Ptr<Target<T> > > targets = task->getTargets();
 
 	int targetId = 0;
-	for(rw::common::Ptr<Target<T> > target: targets) {
+	for(rw::core::Ptr<Target<T> > target: targets) {
         DOMElem::Ptr targetElement = element->addChild(Identifiers<T>::targetId());
         DOMElem::Ptr attr = targetElement->addAttribute(DOMTaskFormat::idTargetIdAttr());
         attr->setValue(targetId);

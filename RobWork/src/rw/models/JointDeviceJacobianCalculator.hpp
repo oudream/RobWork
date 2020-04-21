@@ -50,7 +50,7 @@ public:
      * @param tcps [in] List of tool end-effectors for which to calculate the Jacobian.
      * @param state [in] State giving how frame are connected
      */
-	JointDeviceJacobianCalculator(rw::common::Ptr<class JointDevice> device,
+	JointDeviceJacobianCalculator(rw::core::Ptr<class JointDevice> device,
                                   const kinematics::Frame* base,
                                   const std::vector<kinematics::Frame*>& tcps,
                                   const kinematics::State& state);

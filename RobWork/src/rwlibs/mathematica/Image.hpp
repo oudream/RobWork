@@ -25,8 +25,9 @@
  */
 
 #include "Mathematica.hpp"
+#include <rw/core/Ptr.hpp>
 
-namespace rw { namespace common { class PropertyMap; } }
+namespace rw { namespace core { class PropertyMap; } }
 namespace rw { namespace sensor { class Image; } }
 
 namespace rwlibs {
@@ -41,13 +42,13 @@ class Rule;
 class Image: public Mathematica::FunctionBase {
 public:
 	//! @brief Smart pointer type.
-	typedef rw::common::Ptr<Image> Ptr;
+	typedef rw::core::Ptr<Image> Ptr;
 
 	/**
 	 * @brief Construct a Image expression from a RobWork image.
 	 * @param image [in] the image.
 	 */
-	Image(rw::common::Ptr<const rw::sensor::Image> image);
+	Image(rw::core::Ptr<const rw::sensor::Image> image);
 
 	/**
 	 * @brief Construct a Image expression.
@@ -60,13 +61,13 @@ public:
 	 * @param data [in] the data expression (e.g. a variable name, table/list expression, or data array).
 	 * @param options [in] the options to use (such as ColorSpace, ImageSize etc.)
 	 */
-	Image(const Mathematica::Expression& data, const rw::common::PropertyMap& options);
+	Image(const Mathematica::Expression& data, const rw::core::PropertyMap& options);
 
 	//! @brief Destructor.
 	virtual ~Image();
 
 	//! @copydoc Mathematica::FunctionBase::getArguments
-	virtual std::list<rw::common::Ptr<const Mathematica::Expression> > getArguments() const;
+	virtual std::list<rw::core::Ptr<const Mathematica::Expression> > getArguments() const;
 
 	//! @copydoc Mathematica::Expression::clone
 	virtual Mathematica::Expression::Ptr clone() const;
@@ -84,7 +85,7 @@ public:
 	 * @return the parsed Image expression.
 	 * @throws rw::common::Exception if parsing fails.
 	 */
-	static rw::common::Ptr<rw::sensor::Image> toRobWorkImage(const Mathematica::Expression& expression);
+	static rw::core::Ptr<rw::sensor::Image> toRobWorkImage(const Mathematica::Expression& expression);
 
 private:
 	Image();
@@ -92,7 +93,7 @@ private:
 private:
 	Mathematica::Expression::Ptr _data;
 	Mathematica::String::Ptr _type;
-	std::list<rw::common::Ptr<Rule> > _rules;
+	std::list<rw::core::Ptr<Rule> > _rules;
 };
 //! @}
 } /* namespace mathematica */

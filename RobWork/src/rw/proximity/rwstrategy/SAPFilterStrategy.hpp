@@ -32,7 +32,7 @@ namespace rw { namespace proximity {
 class SAPFilterStrategy: public ProximityFilterStrategy {
 public:
 	//! @brief smart pointer type to this class
-	typedef rw::common::Ptr<SAPFilterStrategy> Ptr;
+	typedef rw::core::Ptr<SAPFilterStrategy> Ptr;
 
 private:
 	/**
@@ -77,14 +77,14 @@ public:
 	 *
 	 * @param workcell [in] the workcell.
 	 */
-	SAPFilterStrategy(rw::common::Ptr<rw::models::WorkCell> workcell);
+	SAPFilterStrategy(rw::core::Ptr<rw::models::WorkCell> workcell);
 
 	/**
 	 * @brief constructor - constructs frame pairs based on the \b setup
 	 * @param workcell [in] the workcell
 	 * @param setup [in] the ProximitySetup describing exclude/include relations
 	 */
-	SAPFilterStrategy(rw::common::Ptr<rw::models::WorkCell> workcell, const ProximitySetup& setup);
+	SAPFilterStrategy(rw::core::Ptr<rw::models::WorkCell> workcell, const ProximitySetup& setup);
 
 
 	//! @brief destructor
@@ -96,7 +96,7 @@ public:
 	virtual void reset(const rw::kinematics::State& state);
 
 	//! @copydoc ProximityFilterStrategy::createProximityCache
-	virtual ProximityCache::Ptr createProximityCache(){ return rw::common::ownedPtr(new Cache(this)); }
+	virtual ProximityCache::Ptr createProximityCache(){ return rw::core::ownedPtr(new Cache(this)); }
 
 	//! @copydoc ProximityFilterStrategy::update
 	virtual ProximityFilter::Ptr update(const rw::kinematics::State& state);
@@ -145,19 +145,19 @@ public:
 
 private:
 
-	rw::common::Ptr<rw::models::WorkCell> _workcell;
+	rw::core::Ptr<rw::models::WorkCell> _workcell;
     ProximitySetup _psetup;
 	kinematics::FramePairSet _collisionPairs;
 	
 	kinematics::FrameMap<std::vector<std::string> > _frameToGeoIdMap;
 
-	void applyRule(const ProximitySetupRule& rule, rw::common::Ptr<rw::models::WorkCell> workcell, rw::kinematics::FramePairSet& result);
+	void applyRule(const ProximitySetupRule& rule, rw::core::Ptr<rw::models::WorkCell> workcell, rw::kinematics::FramePairSet& result);
 	void initialize();
 	void initializeCollisionFramePairs(const rw::kinematics::State& state);
 };
 
 #ifdef RW_USE_DEPREACTED
-typedef rw::common::Ptr<SAPFilterStrategy> SAPFilterStrategyPtr;
+typedef rw::core::Ptr<SAPFilterStrategy> SAPFilterStrategyPtr;
 #endif
 }
 }

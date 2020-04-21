@@ -19,11 +19,12 @@
 #include "StopCriteria.hpp"
 
 #include <rw/common/Timer.hpp>
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 
 
 using namespace rw::pathplanning;
 using namespace rw::common;
+using namespace rw::core;
 
 namespace
 {

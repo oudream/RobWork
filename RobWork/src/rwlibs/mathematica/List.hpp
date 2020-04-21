@@ -25,8 +25,8 @@
  */
 
 #include "Mathematica.hpp"
-
-#include <rw/common/macros.hpp>
+#include <rw/core/Ptr.hpp>
+#include <rw/core/macros.hpp>
 
 namespace rwlibs {
 namespace mathematica {
@@ -37,7 +37,7 @@ namespace mathematica {
 class List: public Mathematica::FunctionBase {
 public:
 	//! @brief Smart pointer type.
-	typedef rw::common::Ptr<List> Ptr;
+	typedef rw::core::Ptr<List> Ptr;
 
 	//! @brief Construct empty list.
 	List();
@@ -52,7 +52,7 @@ public:
 	 * @brief Construct list from a list of arguments.
 	 * @param args [in] the list of arguments
 	 */
-	List(const std::list<rw::common::Ptr<const Mathematica::Expression> >& args);
+	List(const std::list<rw::core::Ptr<const Mathematica::Expression> >& args);
 
 #if __cplusplus >= 201103L
 	/**
@@ -77,7 +77,7 @@ public:
 	virtual ~List();
 
 	//! @copydoc Mathematica::FunctionBase::getArguments
-	virtual std::list<rw::common::Ptr<const Mathematica::Expression> > getArguments() const;
+	virtual std::list<rw::core::Ptr<const Mathematica::Expression> > getArguments() const;
 
 	//! @copydoc Mathematica::Expression::clone
 	virtual Mathematica::Expression::Ptr clone() const;
@@ -94,7 +94,7 @@ public:
 	 * @param i [in] the index.
 	 * @return the expression.
 	 */
-	rw::common::Ptr<const Mathematica::Expression> operator[](std::size_t i) const;
+	rw::core::Ptr<const Mathematica::Expression> operator[](std::size_t i) const;
 
 	/**
 	 * @brief Add an expression to list.
@@ -131,7 +131,7 @@ public:
 	 */
 	template<typename T>
 	static List::Ptr toList(const T& vector) {
-		const List::Ptr list = rw::common::ownedPtr(new List());
+		const List::Ptr list = rw::core::ownedPtr(new List());
 		for (std::size_t i = 0; i < vector.size(); i++) {
 			list->add(vector[i]);
 		}

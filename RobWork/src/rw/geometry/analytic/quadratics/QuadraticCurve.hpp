@@ -47,10 +47,10 @@ namespace geometry {
 class QuadraticCurve: public ParametricCurve {
 public:
 	//! @brief Smart pointer type for QuadraticCurve.
-	typedef rw::common::Ptr<QuadraticCurve> Ptr;
+	typedef rw::core::Ptr<QuadraticCurve> Ptr;
 
 	//! @brief Smart pointer type for a const QuadraticCurve.
-	typedef rw::common::Ptr<const QuadraticCurve> CPtr;
+	typedef rw::core::Ptr<const QuadraticCurve> CPtr;
 
 	//! @brief The four possible curve types.
 	typedef enum Type {

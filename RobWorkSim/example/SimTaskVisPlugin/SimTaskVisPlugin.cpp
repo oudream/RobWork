@@ -22,7 +22,7 @@
 
 #include <stack>
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::geometry;
 using namespace rw::graphics;
 using namespace rw::kinematics;
@@ -40,7 +40,7 @@ namespace {
 
     public:
         //! @brief smart pointer type to this class
-        typedef rw::common::Ptr<RenderTargets> Ptr;
+        typedef rw::core::Ptr<RenderTargets> Ptr;
 
         struct Target {
             GLfloat color[4];
@@ -466,8 +466,8 @@ void SimTaskVisPlugin::saveConfig(){
     }
 }
 
-rw::common::PropertyMap& SimTaskVisPlugin::settings(){
-    return getRobWorkStudio()->getPropertyMap().get<rw::common::PropertyMap>("RobWorkStudioSettings");
+rw::core::PropertyMap& SimTaskVisPlugin::settings(){
+    return getRobWorkStudio()->getPropertyMap().get<rw::core::PropertyMap>("RobWorkStudioSettings");
 }
 
 

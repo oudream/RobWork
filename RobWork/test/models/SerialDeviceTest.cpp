@@ -16,6 +16,8 @@
  ********************************************************************************/
 #include "../TestSuiteConfig.hpp"
 
+#include <rw/core/Ptr.hpp>
+
 #include <rw/models/SerialDevice.hpp>
 #include <rw/models/Joint.hpp>
 #include <rw/models/RevoluteJoint.hpp>
@@ -82,12 +84,12 @@ namespace
 
 BOOST_AUTO_TEST_CASE(JointTest)
 {
-    rw::common::Ptr<RevoluteJoint> rjoint = rw::common::ownedPtr(new RevoluteJoint("RevoluteJointA", Transform3D<>::identity()));
+    rw::core::Ptr<RevoluteJoint> rjoint = rw::core::ownedPtr(new RevoluteJoint("RevoluteJointA", Transform3D<>::identity()));
 
     BOOST_CHECK(rjoint->getBounds().first(0) < -1000000.0);
     BOOST_CHECK(rjoint->getBounds().second(0) > 1000000.0);
 
-    rw::common::Ptr<PrismaticJoint> pjoint = rw::common::ownedPtr(new PrismaticJoint("PrismaticJointB",Transform3D<>::identity()));
+    rw::core::Ptr<PrismaticJoint> pjoint = rw::core::ownedPtr(new PrismaticJoint("PrismaticJointB",Transform3D<>::identity()));
     BOOST_CHECK(pjoint->getBounds().first(0) < -1000000.0);
     BOOST_CHECK(pjoint->getBounds().second(0) > 1000000.0);
 }

@@ -353,7 +353,7 @@ namespace rw { namespace math {
         template <class VectorType>
         inline static typename Metric<VectorType>::Ptr makeEuclidean()
         {
-            return rw::common::ownedPtr(new EuclideanMetric<VectorType>);
+            return rw::core::ownedPtr(new EuclideanMetric<VectorType>);
         }
 
         /**
@@ -367,7 +367,7 @@ namespace rw { namespace math {
         template <class VectorType>
         inline static typename Metric<VectorType>::Ptr makeWeightedEuclidean(const VectorType& weights)
         {
-            return rw::common::ownedPtr(new WeightedEuclideanMetric<VectorType>(weights));
+            return rw::core::ownedPtr(new WeightedEuclideanMetric<VectorType>(weights));
         }
 
         /**
@@ -378,7 +378,7 @@ namespace rw { namespace math {
         template <class VectorType>
 		inline static typename Metric<VectorType>::Ptr makeInfinity()
         {
-            return rw::common::ownedPtr(new InfinityMetric<VectorType>);
+            return rw::core::ownedPtr(new InfinityMetric<VectorType>);
         }
 
         /**
@@ -392,7 +392,7 @@ namespace rw { namespace math {
         template <class VectorType>
 		inline static typename Metric<VectorType>::Ptr makeWeightedInfinity(const VectorType& weights)
         {
-            return rw::common::ownedPtr(new WeightedInfinityMetric<VectorType>(weights));
+            return rw::core::ownedPtr(new WeightedInfinityMetric<VectorType>(weights));
         }
 
         /**
@@ -404,7 +404,7 @@ namespace rw { namespace math {
 		inline static typename Metric<VectorType>::Ptr makeMahalanobis(
             const Eigen::Matrix<typename VectorType::value_type,Eigen::Dynamic,1>& omega)
         {
-            return rw::common::ownedPtr(new MahalanobisMetric<VectorType>(omega));
+            return rw::core::ownedPtr(new MahalanobisMetric<VectorType>(omega));
         }
 
         /**
@@ -415,7 +415,7 @@ namespace rw { namespace math {
         template <class VectorType>
 		inline static typename Metric<VectorType>::Ptr makeManhattan()
         {
-            return rw::common::ownedPtr(new ManhattanMetric<VectorType>);
+            return rw::core::ownedPtr(new ManhattanMetric<VectorType>);
         }
 
         /**
@@ -426,7 +426,7 @@ namespace rw { namespace math {
         template <class VectorType>
 		inline static typename Metric<VectorType>::Ptr makeWeightedManhattan(const VectorType& weights)
         {
-            return rw::common::ownedPtr(new WeightedManhattanMetric<VectorType>(weights));
+            return rw::core::ownedPtr(new WeightedManhattanMetric<VectorType>(weights));
         }
 
 
@@ -438,7 +438,7 @@ namespace rw { namespace math {
 		 */
 		template <class T >
 		static typename Metric<Rotation3D<T> >::Ptr makeRotation3DMetric() {
-			return rw::common::ownedPtr(new Rotation3DAngleMetric<T>());
+			return rw::core::ownedPtr(new Rotation3DAngleMetric<T>());
 		}
 
 		/**
@@ -452,7 +452,7 @@ namespace rw { namespace math {
 		 */
 		template <class T >
 		static typename Metric<Transform3D<T> >::Ptr makeTransform3DMetric(double linWeight, double angWeight) {
-			return rw::common::ownedPtr(new Transform3DAngleMetric<T>(linWeight, angWeight));
+			return rw::core::ownedPtr(new Transform3DAngleMetric<T>(linWeight, angWeight));
 		}
       private: // The constructers are declared private so that this class can't be instanciated and avoid auto generated constucters
         MetricFactory();

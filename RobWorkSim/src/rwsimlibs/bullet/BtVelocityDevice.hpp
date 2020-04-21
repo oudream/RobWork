@@ -26,7 +26,7 @@
 
 #include "BtDevice.hpp"
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include <vector>
 
@@ -45,7 +45,7 @@ namespace bullet {
 class BtVelocityDevice: public BtDevice {
 public:
 	//! @brief Constructor.
-	BtVelocityDevice(rw::common::Ptr<rwsim::dynamics::RigidDevice> rdev, const std::vector<btTypedConstraint*>& constraints);
+	BtVelocityDevice(rw::core::Ptr<rwsim::dynamics::RigidDevice> rdev, const std::vector<btTypedConstraint*>& constraints);
 
 	//! @brief Destructor.
 	virtual ~BtVelocityDevice();
@@ -57,7 +57,7 @@ public:
 	virtual void postUpdate(rw::kinematics::State& state);
 
 private:
-	const rw::common::Ptr<rwsim::dynamics::RigidDevice> _rdev;
+	const rw::core::Ptr<rwsim::dynamics::RigidDevice> _rdev;
     const std::vector<btTypedConstraint*> _constraints;
 };
 //! @}

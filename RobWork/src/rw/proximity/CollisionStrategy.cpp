@@ -21,9 +21,10 @@
 #include "ProximityStrategyData.hpp"
 
 #include <rw/proximity/rwstrategy/ProximityStrategyRW.hpp>
+#include <rw/core/Extension.hpp>
 
 using namespace rw::proximity;
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::kinematics;
 using namespace rw::math;
 
@@ -68,7 +69,7 @@ namespace
         virtual bool addGeometry(ProximityModel* model, const rw::geometry::Geometry& geom)
         { return _strategy->addGeometry(model,geom);};
 
-        virtual bool addGeometry(ProximityModel* model, rw::common::Ptr<rw::geometry::Geometry> geom, bool forceCopy=false)
+        virtual bool addGeometry(ProximityModel* model, rw::core::Ptr<rw::geometry::Geometry> geom, bool forceCopy=false)
         { return _strategy->addGeometry(model,geom,forceCopy);};
         virtual bool removeGeometry(ProximityModel* model, const std::string& geomId)
         { return _strategy->removeGeometry(model, geomId);}
@@ -76,7 +77,7 @@ namespace
         virtual std::vector<std::string> getGeometryIDs(ProximityModel* model)
         { return _strategy->getGeometryIDs(model);}
 
-        virtual std::vector< rw::common::Ptr< rw::geometry::Geometry > > getGeometrys (rw::proximity::ProximityModel* model)
+        virtual std::vector< rw::core::Ptr< rw::geometry::Geometry > > getGeometrys (rw::proximity::ProximityModel* model)
         {
             return _strategy->getGeometrys(model);
         }

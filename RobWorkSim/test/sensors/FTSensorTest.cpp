@@ -31,7 +31,7 @@
 #include <rwsim/sensor/SimulatedFTSensor.hpp>
 #include <rwsimlibs/ode/ODESimulator.hpp>
 
-using rw::common::ownedPtr;
+using rw::core::ownedPtr;
 using rw::kinematics::State;
 using rw::math::Vector3D;
 using namespace rw::trajectory;

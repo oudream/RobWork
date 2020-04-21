@@ -17,15 +17,16 @@
 
 #include "ThreadTask.hpp"
 
-#include "Exception.hpp"
-#include "ThreadPool.hpp"
-#include "ThreadSafeVariable.hpp"
-#include "macros.hpp"
+#include <rw/core/Exception.hpp>
+#include <rw/common/ThreadPool.hpp>
+#include <rw/common/ThreadSafeVariable.hpp>
+#include <rw/core/macros.hpp>
 
 #include <boost/bind.hpp>
 
 
 using namespace rw::common;
+using namespace rw::core;
 
 ThreadTask::ThreadTask (ThreadTask::Ptr parent) :
     _pool (new ThreadSafeVariable< ThreadPool::Ptr > (parent != NULL ? parent->getThreadPool ()

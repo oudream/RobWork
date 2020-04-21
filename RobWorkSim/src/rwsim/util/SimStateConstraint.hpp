@@ -18,7 +18,7 @@
 #ifndef RWSIM_UTIL_SIMSTATECONSTRAINT_HPP_
 #define RWSIM_UTIL_SIMSTATECONSTRAINT_HPP_
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 namespace rw { namespace kinematics { class State; } }
 namespace rwsim { namespace simulator { class DynamicSimulator; } }
@@ -29,7 +29,7 @@ namespace util {
 	class SimStateConstraint {
 	public:
 
-	    typedef rw::common::Ptr<SimStateConstraint> Ptr;
+	    typedef rw::core::Ptr<SimStateConstraint> Ptr;
 
 	    virtual bool isSatisfied(const rw::kinematics::State &state, simulator::DynamicSimulator *sim) = 0;
 	};

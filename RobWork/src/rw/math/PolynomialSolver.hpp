@@ -101,7 +101,7 @@ public:
 	 * @brief Get all real solutions of the equation.
 	 * @param epsilon [in] the root is considered a real root if \f$ |im(x)| \leq 2 \epsilon |real(x)|\f$ .
 	 * @return a list of real solutions.
-	 * @throws rw::common::Exception if the Laguerre method fails, or the maximum number of iterations has been reached.
+	 * @throws rw::core::Exception if the Laguerre method fails, or the maximum number of iterations has been reached.
 	 * @see PolynomialSolver for more details about the method used.
 	 */
 	std::vector<double> getRealSolutions(double epsilon = 1.0e-14);
@@ -110,7 +110,7 @@ public:
 	 * @brief Get all solutions of the equation including complex solutions.
 	 * @param epsilon [in] highest order coefficients will be removed if they have absolute real and imaginary values less than \f$ \epsilon \f$ .
 	 * @return a list of complex solutions.
-	 * @throws rw::common::Exception if the Laguerre method fails, or the maximum number of iterations has been reached.
+	 * @throws rw::core::Exception if the Laguerre method fails, or the maximum number of iterations has been reached.
 	 * @see PolynomialSolver for more details about the method used.
 	 */
 	virtual std::vector<std::complex<double> > getSolutions(double epsilon = 1.0e-14);

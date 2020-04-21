@@ -24,7 +24,7 @@
  * \copydoc rw::geometry::BREP
  */
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/geometry/GeometryData.hpp>
 #include <rw/geometry/OBB.hpp>
 #include <rw/math/Vector3D.hpp>
@@ -81,10 +81,10 @@ class TriMesh;
 class BREP: public rw::geometry::GeometryData {
 public:
     //! @brief Smart pointer type to BREP
-    typedef rw::common::Ptr<BREP> Ptr;
+    typedef rw::core::Ptr<BREP> Ptr;
 
     //! @brief Smart pointer type to const BREP
-    typedef rw::common::Ptr<const BREP> CPtr;
+    typedef rw::core::Ptr<const BREP> CPtr;
 
 	//! @brief Destructor.
 	virtual ~BREP();
@@ -101,7 +101,7 @@ public:
 	 * @param forceCopy [in] generate a new copy, or use a cached TriMesh.
 	 * @return a new TriMesh if \b forceCopy is true, or a shared cached TriMesh if \b forceCopy is false.
 	 */
-	virtual rw::common::Ptr<TriMesh> getTriMesh(bool forceCopy=true);
+	virtual rw::core::Ptr<TriMesh> getTriMesh(bool forceCopy=true);
 
 	//! @copydoc GeometryData::isConvex
 	virtual bool isConvex();
@@ -142,7 +142,7 @@ public:
 	 * @brief Get a Shell representation as a proxy to the BREP.
 	 * @return smart pointer to a Shell proxy object.
 	 */
-	inline rw::common::Ptr<const Shell> shellProxy() const { return doShellProxyBREP(); }
+	inline rw::core::Ptr<const Shell> shellProxy() const { return doShellProxyBREP(); }
 
 	/**
 	 * @brief Get the curves in a given loop.
@@ -152,13 +152,13 @@ public:
 	 * @param loopIdx [in] the loop index.
 	 * @return an ordered vector of curves.
 	 */
-	std::vector<rw::common::Ptr<Curve> > getCurves(std::size_t loopIdx) const;
+	std::vector<rw::core::Ptr<Curve> > getCurves(std::size_t loopIdx) const;
 
 	//! @brief Convenience type for a set of curves in a BREP.
 	class CommonCurveSet {
 	public:
 	    //! @brief Smart pointer type to CommonCurveSet
-	    typedef rw::common::Ptr<const CommonCurveSet> CPtr;
+	    typedef rw::core::Ptr<const CommonCurveSet> CPtr;
 
 	    //! @brief Constructor.
 		CommonCurveSet() {}
@@ -326,7 +326,7 @@ public:
      * @param second [in] id of the second edge. 0-indexing is expected, with a sign that indicates the edge direction.
      * @note Implementations calling this function should remember to delete the curve associated to the second
      * half-edge if it is different than the curve set for the first half-edge.
-     * @throws rw::common::Exception if one of the given half-edges is already connected to another half-edge.
+     * @throws rw::core::Exception if one of the given half-edges is already connected to another half-edge.
      */
     void stitchEdges(std::size_t first, std::size_t second);
 
@@ -370,7 +370,7 @@ public:
 	 * @param faceIndex [in] the face index, which should be less than loopCount().
 	 * @return a triangle mesh.
 	 */
-	rw::common::Ptr<TriMesh> faceTriMesh(std::size_t faceIndex);
+	rw::core::Ptr<TriMesh> faceTriMesh(std::size_t faceIndex);
 
 	/**
 	 * @brief Set the resolution used for discretization in the getTriMesh and faceTriMesh functions.
@@ -490,7 +490,7 @@ protected:
 
 private:
 	class CommonCurveSetGeneric;
-	virtual rw::common::Ptr<const Shell> doShellProxyBREP() const;
+	virtual rw::core::Ptr<const Shell> doShellProxyBREP() const;
     virtual BREP::Ptr doClone() const = 0;
     virtual void doRemoveCurve(std::size_t curveIndex) = 0;
 

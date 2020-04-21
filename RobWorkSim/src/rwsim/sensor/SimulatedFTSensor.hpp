@@ -22,6 +22,7 @@
 #include <rw/sensor/FTSensor.hpp>
 #include <rw/sensor/FTSensorModel.hpp>
 #include <rwsim/dynamics/Body.hpp>
+#include <rw/core/Ptr.hpp>
 
 namespace rwsim {
 namespace sensor {
@@ -35,7 +36,7 @@ namespace sensor {
 	class SimulatedFTSensor: public SimulatedTactileSensor {
 	public:
 		//! @brief Smart pointer type for SimulatedFTSensor.
-		typedef rw::common::Ptr<SimulatedFTSensor> Ptr;
+		typedef rw::core::Ptr<SimulatedFTSensor> Ptr;
 
 		/**
 		 * @brief constructor - the forces will be described relative to body \b body1
@@ -158,7 +159,7 @@ namespace sensor {
 	private:
 		rwsim::dynamics::Body::Ptr _body, _body1;
 		rw::kinematics::Frame *_sframe;
-		rw::common::Ptr<rw::sensor::FTSensorModel> _ftmodel;
+		rw::core::Ptr<rw::sensor::FTSensorModel> _ftmodel;
 
 		struct FTStateData {
 			rw::math::Vector3D<> _force, _forceTmp, _torque, _torqueTmp;

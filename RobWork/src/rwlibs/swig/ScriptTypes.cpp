@@ -17,23 +17,23 @@
 
 #include "ScriptTypes.hpp"
 
-using rw::common::ownedPtr;
+using rw::core::ownedPtr;
 
 namespace {
-    ::rw::common::LogWriter::Ptr _writer;
+    ::rw::core::LogWriter::Ptr _writer;
 }
 
 void rwlibs::swig::writelog(const std::string& msg){
-	::rw::common::Log::log().setEnable( ::rw::common::Log::User8Mask );
+	::rw::core::Log::log().setEnable( ::rw::core::Log::User8Mask );
 	if (_writer.isNull())
 	    rwlibs::swig::setlog( &Log::infoLog() );
-    ::rw::common::Log::log().write(::rw::common::Log::User8, msg);
+    ::rw::core::Log::log().write(::rw::core::Log::User8, msg);
 
 }
 
-void rwlibs::swig::setlog(::rw::common::LogWriter::Ptr writer){
+void rwlibs::swig::setlog(::rw::core::LogWriter::Ptr writer){
     _writer = writer;
-    ::rw::common::Log::log().setWriter(::rw::common::Log::User8, writer);
+    ::rw::core::Log::log().setWriter(::rw::core::Log::User8, writer);
 }
 
 rw::math::Rotation3D<> rwlibs::swig::getRandomRotation3D()

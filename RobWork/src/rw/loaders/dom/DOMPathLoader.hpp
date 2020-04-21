@@ -24,10 +24,11 @@
 #include <rw/math/Vector3D.hpp>
 #include <rw/math/Rotation3D.hpp>
 #include <rw/math/Transform3D.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include <string>
 
-namespace rw { namespace common { class DOMElem; } }
+namespace rw { namespace core { class DOMElem; } }
 namespace rw { namespace models { class WorkCell; } }
 
 namespace rw {
@@ -64,7 +65,7 @@ public:
      * @param workcell documentation missing !
      * @param schemaFileName [in] Name of the schema to use. If empty it will use the schema specified in the XML-file if available.
      */
-	DOMPathLoader(const std::string& filename, rw::common::Ptr<rw::models::WorkCell> workcell = NULL, const std::string& schemaFileName = "");
+	DOMPathLoader(const std::string& filename, rw::core::Ptr<rw::models::WorkCell> workcell = NULL, const std::string& schemaFileName = "");
 
 
     /**
@@ -73,13 +74,13 @@ public:
      * It is possible to specify whether to use the default schema which is the default behavior. If a
      * schema is specified in the XML-file or no schema should be used set \b useDefaultSchema to false.
      *
-     * Throw rw::common::Exception if reading the path fails
+     * Throw rw::core::Exception if reading the path fails
      *
      * @param instream [in] The input stream to read from
      * @param workcell documentation missing !
      * @param schemaFileName [in] Name of the schema to use. If empty it will use the schema specified in the XML-file if available.
      */
-	DOMPathLoader(std::istream& instream, rw::common::Ptr<rw::models::WorkCell> workcell = NULL, const std::string& schemaFileName = "");
+	DOMPathLoader(std::istream& instream, rw::core::Ptr<rw::models::WorkCell> workcell = NULL, const std::string& schemaFileName = "");
 
 
     /**
@@ -91,7 +92,7 @@ public:
      *
      * @param element [in] DOMElement representing the path
      */
-    DOMPathLoader(rw::common::Ptr<rw::common::DOMElem> element);
+    DOMPathLoader(rw::core::Ptr<rw::core::DOMElem> element);
 
 
     /**
@@ -119,7 +120,7 @@ public:
     /**
      * @brief Returns path loaded
      *
-     * If the loaded path is not of type QPath a rw::common::Exception is thrown.
+     * If the loaded path is not of type QPath a rw::core::Exception is thrown.
      *
      * @return Pointer to the path
      */
@@ -128,7 +129,7 @@ public:
     /**
      * @brief Returns path loaded
      *
-     * If the loaded path is not of type Vector3DPath a rw::common::Exception is thrown.
+     * If the loaded path is not of type Vector3DPath a rw::core::Exception is thrown.
      *
      * @return Pointer to the path
      */
@@ -137,7 +138,7 @@ public:
     /**
      * @brief Returns path loaded
      *
-     * If the loaded path is not of type Rotation3DPath a rw::common::Exception is thrown.
+     * If the loaded path is not of type Rotation3DPath a rw::core::Exception is thrown.
      *
      * @return Pointer to the path
      */
@@ -146,7 +147,7 @@ public:
     /**
      * @brief Returns loaded path
      *
-     * If the loaded path is not of type Transform3DPatha rw::common::Exception is thrown.
+     * If the loaded path is not of type Transform3DPatha rw::core::Exception is thrown.
      *
      * @return Pointer to the path
      */
@@ -155,7 +156,7 @@ public:
     /**
      * @brief Returns loaded path
      *
-     * If the loaded path is not of type StatePath a rw::common::Exception is thrown.
+     * If the loaded path is not of type StatePath a rw::core::Exception is thrown.
      *
      * @return Pointer to the path
      */
@@ -165,7 +166,7 @@ public:
     /**
      * @brief Returns loaded path
      *
-     * If the loaded path is not of type TimedQPath a rw::common::Exception is thrown.
+     * If the loaded path is not of type TimedQPath a rw::core::Exception is thrown.
      *
      * @return Pointer to the path
      */
@@ -175,7 +176,7 @@ public:
     /**
      * @brief Returns loaded path
      *
-     * If the loaded path is not of type TimedStatePath a rw::common::Exception is thrown.
+     * If the loaded path is not of type TimedStatePath a rw::core::Exception is thrown.
      *
      * @return Pointer to the path
      */
@@ -260,7 +261,7 @@ public:
 private:
 	static const Initializer initializer;
 
-   void readPath(rw::common::Ptr<rw::common::DOMElem> element);
+   void readPath(rw::core::Ptr<rw::core::DOMElem> element);
 
    rw::trajectory::QPath::Ptr _qPath;
    rw::trajectory::Vector3DPath::Ptr _v3dPath;
@@ -271,7 +272,7 @@ private:
    rw::trajectory::TimedStatePath::Ptr _timedStatePath;
 
     Type _type;
-    rw::common::Ptr<rw::models::WorkCell> _workcell;
+    rw::core::Ptr<rw::models::WorkCell> _workcell;
 };
 
 /** @} */

@@ -20,7 +20,7 @@
 
 #include <rw/math/LinearAlgebra.hpp>
 #include <rw/math/Math.hpp>
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 
 #include <cmath>
 #include <list>

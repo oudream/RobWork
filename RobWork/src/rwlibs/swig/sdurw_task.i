@@ -2,7 +2,7 @@
 
 %{
 #include <rwlibs/swig/ScriptTypes.hpp>
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 using namespace rwlibs::swig;
 using rwlibs::task::Task;
@@ -19,14 +19,14 @@ class Task
 };
 
 %template (TaskSE3) Task<rw::math::Transform3D<double> >;
-%template (TaskSE3Ptr) rw::common::Ptr<Task<rw::math::Transform3D<double> > >;
+%template (TaskSE3Ptr) rw::core::Ptr<Task<rw::math::Transform3D<double> > >;
 OWNEDPTR(Task<rw::math::Transform3D<double> > );
 
 class GraspTask {
 public:
     GraspTask():
-    GraspTask(rw::common::Ptr<Task<rw::math::Transform3D<double> > > task);
-    rw::common::Ptr<Task<rw::math::Transform3D<double> > > toCartesianTask();
+    GraspTask(rw::core::Ptr<Task<rw::math::Transform3D<double> > > task);
+    rw::core::Ptr<Task<rw::math::Transform3D<double> > > toCartesianTask();
     std::string getGripperID();
     std::string getTCPID();
     std::string getGraspControllerID();
@@ -34,15 +34,15 @@ public:
     void setTCPID(const std::string& id);
     void setGraspControllerID(const std::string& id);
     static std::string toString(GraspResult::TestStatus status);
-    static void saveUIBK(rw::common::Ptr<GraspTask> task, const std::string& name );
-    static void saveRWTask(rw::common::Ptr<GraspTask> task, const std::string& name );
-    static void saveText(rw::common::Ptr<GraspTask> task, const std::string& name );
-    static rw::common::Ptr<GraspTask> load(const std::string& name);
-    static rw::common::Ptr<GraspTask> load(std::istringstream& inputStream);
-    rw::common::Ptr<GraspTask> clone();
+    static void saveUIBK(rw::core::Ptr<GraspTask> task, const std::string& name );
+    static void saveRWTask(rw::core::Ptr<GraspTask> task, const std::string& name );
+    static void saveText(rw::core::Ptr<GraspTask> task, const std::string& name );
+    static rw::core::Ptr<GraspTask> load(const std::string& name);
+    static rw::core::Ptr<GraspTask> load(std::istringstream& inputStream);
+    rw::core::Ptr<GraspTask> clone();
 };
 
-%template (GraspTaskPtr) rw::common::Ptr<GraspTask>;
+%template (GraspTaskPtr) rw::core::Ptr<GraspTask>;
 OWNEDPTR(GraspTask);
 
 class GraspResult {
@@ -67,7 +67,7 @@ public:
         SizeOfStatusArray
      };
 };
-%template (GraspResultPtr) rw::common::Ptr<GraspResult>;
+%template (GraspResultPtr) rw::core::Ptr<GraspResult>;
 OWNEDPTR(GraspResult);
 
 /* @} */

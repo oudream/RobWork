@@ -23,8 +23,8 @@
  * @file Device.hpp
  */
 
-#include <rw/common/Ptr.hpp>
-#include <rw/common/PropertyMap.hpp>
+#include <rw/core/Ptr.hpp>
+#include <rw/core/PropertyMap.hpp>
 #include <rw/math/Q.hpp>
 #include <rw/math/Transform3D.hpp>
 #include <rw/kinematics/Stateless.hpp>
@@ -57,9 +57,9 @@ namespace rw { namespace models {
     {
     public:
 		//! @brief smart pointer type to this class
-		typedef rw::common::Ptr<Device> Ptr;
+		typedef rw::core::Ptr<Device> Ptr;
 		//! @brief const smart pointer type to this class
-		typedef rw::common::Ptr< const Device > CPtr;
+		typedef rw::core::Ptr< const Device > CPtr;
 
         //! Lower and upper corner of a box shaped configuration space.
         typedef std::pair<math::Q, math::Q> QBox;
@@ -376,17 +376,17 @@ namespace rw { namespace models {
          *
          * @return The property map of the device.
          */
-        const common::PropertyMap& getPropertyMap() const { return _propertyMap; }
+        const core::PropertyMap& getPropertyMap() const { return _propertyMap; }
 
         /**
          * @copydoc getPropertyMap
          */
-        common::PropertyMap& getPropertyMap() { return _propertyMap; }
+        core::PropertyMap& getPropertyMap() { return _propertyMap; }
 
     private:
         std::string _name;
 
-        common::PropertyMap _propertyMap;
+        core::PropertyMap _propertyMap;
 
     private:
         Device(const Device&);

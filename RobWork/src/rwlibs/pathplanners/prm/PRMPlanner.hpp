@@ -23,6 +23,7 @@
 
 #include <rw/math/Metric.hpp>
 #include <rw/common/Timer.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include <rwlibs/algorithms/kdtree/KDTreeQ.hpp>
 
@@ -96,7 +97,7 @@ namespace rwlibs { namespace pathplanners {
     {
     public:
 		//! @brief smart pointer type to this class
-		typedef rw::common::Ptr<PRMPlanner> Ptr;
+		typedef rw::core::Ptr<PRMPlanner> Ptr;
 
         /**
          * @brief Constructs PRMPlanner
@@ -128,8 +129,8 @@ namespace rwlibs { namespace pathplanners {
            @param state [in] State of rest of the workcell
         */
         PRMPlanner(
-        	rw::common::Ptr<rw::pathplanning::QConstraint> constraint,
-			rw::common::Ptr<rw::pathplanning::QSampler> sampler,
+        	rw::core::Ptr<rw::pathplanning::QConstraint> constraint,
+			rw::core::Ptr<rw::pathplanning::QSampler> sampler,
             double resolution,
             const rw::models::Device& device,
             const rw::kinematics::State& state);
@@ -248,11 +249,11 @@ namespace rwlibs { namespace pathplanners {
 
     private:
         bool _roadmap_initialized;
-        rw::common::Ptr<rw::pathplanning::QConstraint> _constraint;
-		rw::common::Ptr<rw::pathplanning::QSampler> _sampler;
+        rw::core::Ptr<rw::pathplanning::QConstraint> _constraint;
+		rw::core::Ptr<rw::pathplanning::QSampler> _sampler;
         double _resolution;
 
-		rw::common::Ptr<rw::pathplanning::QEdgeConstraint> _edge;
+		rw::core::Ptr<rw::pathplanning::QEdgeConstraint> _edge;
 
         std::pair<rw::math::Q, rw::math::Q> _bounds;
 

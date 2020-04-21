@@ -19,7 +19,7 @@ limitations under the License.
 
 #include <math.h>
 
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 
 
 using namespace std;

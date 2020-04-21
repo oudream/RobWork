@@ -17,7 +17,7 @@
 
 #include "BasicFilterStrategy.hpp"
 
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 #include <rw/kinematics/Kinematics.hpp>
 #include <rw/models/Object.hpp>
 #include <rw/models/WorkCell.hpp>
@@ -25,7 +25,7 @@
 using namespace rw;
 using namespace rw::kinematics;
 using namespace rw::proximity;
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::models;
 
 BasicFilterStrategy::BasicFilterStrategy(rw::models::WorkCell::Ptr workcell):
@@ -68,12 +68,12 @@ void BasicFilterStrategy::reset(const rw::kinematics::State& state)
 
 //! @copydoc ProximityFilterStrategy::update
 ProximityFilter::Ptr BasicFilterStrategy::update(const rw::kinematics::State& state){
-	return rw::common::ownedPtr( new BasicFilterStrategy::Filter(_collisionPairs.begin(), _collisionPairs.end() ) );
+	return rw::core::ownedPtr( new BasicFilterStrategy::Filter(_collisionPairs.begin(), _collisionPairs.end() ) );
 }
 
 //! @copydoc ProximityFilterStrategy::createProximityCache
 ProximityFilter::Ptr BasicFilterStrategy::update(const rw::kinematics::State& state, ProximityCache::Ptr data){
-	return rw::common::ownedPtr( new BasicFilterStrategy::Filter(_collisionPairs.begin(), _collisionPairs.end() ) );
+	return rw::core::ownedPtr( new BasicFilterStrategy::Filter(_collisionPairs.begin(), _collisionPairs.end() ) );
 }
 
 

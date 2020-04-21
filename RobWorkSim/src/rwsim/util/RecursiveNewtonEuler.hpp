@@ -24,7 +24,7 @@
  * \copydoc rwsim::util::RecursiveNewtonEuler
  */
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/math/Vector3D.hpp>
 #include <rw/math/Q.hpp>
 #include <rw/math/Wrench6D.hpp>
@@ -48,13 +48,13 @@ namespace util {
 class RecursiveNewtonEuler {
 public:
 	//! @brief smart pointer type to this class
-	typedef rw::common::Ptr<RecursiveNewtonEuler> Ptr;
+	typedef rw::core::Ptr<RecursiveNewtonEuler> Ptr;
 
 	/**
 	 * @brief Constructor for inverse dynamics for a RigidDevice
 	 * @param device [in] a rigid device
 	 */
-	RecursiveNewtonEuler(rw::common::Ptr<rwsim::dynamics::RigidDevice> device);
+	RecursiveNewtonEuler(rw::core::Ptr<rwsim::dynamics::RigidDevice> device);
 
 	/**
 	 * @brief Destructor
@@ -172,8 +172,8 @@ private:
 	static std::string invalidMsg();
 	static rw::math::Vector3D<> toVector3D(const rw::math::EAA<> &eaa);
 
-	const rw::common::Ptr<rwsim::dynamics::RigidDevice> _rdev;
-	const rw::common::Ptr<rw::models::JointDevice> _jdev;
+	const rw::core::Ptr<rwsim::dynamics::RigidDevice> _rdev;
+	const rw::core::Ptr<rw::models::JointDevice> _jdev;
 	rw::math::Vector3D<> _gravity;
 	rw::math::Vector3D<> _payloadCOM;
 	double _payloadMass;

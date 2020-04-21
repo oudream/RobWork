@@ -25,16 +25,17 @@
 #include <rw/kinematics/StateStructure.hpp>
 #include <rw/proximity/CollisionSetup.hpp>
 #include <rw/sensor/SensorModel.hpp>
+#include <rw/core/PropertyMap.hpp>
 
 #include <boost/bind.hpp>
 
 using namespace rw::models;
 using namespace rw::kinematics;
 using namespace rw::graphics;
-using namespace rw::common;
+using namespace rw::core;
 
 WorkCell::WorkCell(const std::string& name):
-    _tree(rw::common::ownedPtr(new StateStructure())),
+    _tree(rw::core::ownedPtr(new StateStructure())),
     _name(name),
     _calibrationFilename(""),
     _map(new PropertyMap()),
@@ -148,7 +149,7 @@ void WorkCell::remove(Frame::Ptr frame) {
 void WorkCell::removeObject(Object* object) {
     object->unregister();
     //_tree->remove( object );
-    for (std::vector<rw::common::Ptr<Object> >::iterator i = _objects.begin(); i != _objects.end(); ++i) {
+    for (std::vector<rw::core::Ptr<Object> >::iterator i = _objects.begin(); i != _objects.end(); ++i) {
         if (i->get() == object) {
             _objects.erase(i);
             break;
@@ -157,7 +158,7 @@ void WorkCell::removeObject(Object* object) {
 }
 
 
-void WorkCell::add(rw::common::Ptr<Object> object) {
+void WorkCell::add(rw::core::Ptr<Object> object) {
 
     object->registerIn( _tree );
     _objects.push_back(object);
@@ -165,8 +166,8 @@ void WorkCell::add(rw::common::Ptr<Object> object) {
     _workCellChangedEvent.fire(WORKCELL_CHANGED);
 }
 
-void WorkCell::remove(rw::common::Ptr<Device> dev) {
-    std::vector<rw::common::Ptr<Device> >::iterator iter;
+void WorkCell::remove(rw::core::Ptr<Device> dev) {
+    std::vector<rw::core::Ptr<Device> >::iterator iter;
     dev->unregister( );
     // remove from list
     for(iter = _devices.begin() ; iter!=_devices.end();++iter) {
@@ -182,8 +183,8 @@ void WorkCell::remove(rw::common::Ptr<Device> dev) {
     _workCellChangedEvent.fire(WORKCELL_CHANGED);
 }
 
-void WorkCell::remove(rw::common::Ptr<Object> object) {
-    std::vector<rw::common::Ptr<Object> >::iterator iter;
+void WorkCell::remove(rw::core::Ptr<Object> object) {
+    std::vector<rw::core::Ptr<Object> >::iterator iter;
     object->unregister( );
     // remove from list
     for(iter = _objects.begin() ; iter!=_objects.end();++iter) {
@@ -199,8 +200,8 @@ void WorkCell::remove(rw::common::Ptr<Object> object) {
     _workCellChangedEvent.fire(WORKCELL_CHANGED);
 }
 
-void WorkCell::remove(rw::common::Ptr<rw::sensor::SensorModel> sensor) {
-    std::vector<rw::common::Ptr<rw::sensor::SensorModel> >::iterator iter;
+void WorkCell::remove(rw::core::Ptr<rw::sensor::SensorModel> sensor) {
+    std::vector<rw::core::Ptr<rw::sensor::SensorModel> >::iterator iter;
     sensor->unregister( );
     // remove from list
     for(iter = _sensors.begin() ; iter!=_sensors.end();++iter) {
@@ -217,8 +218,8 @@ void WorkCell::remove(rw::common::Ptr<rw::sensor::SensorModel> sensor) {
 }
 
 
-void WorkCell::remove(rw::common::Ptr<ControllerModel> controller) {
-    std::vector<rw::common::Ptr<ControllerModel> >::iterator iter;
+void WorkCell::remove(rw::core::Ptr<ControllerModel> controller) {
+    std::vector<rw::core::Ptr<ControllerModel> >::iterator iter;
     controller->unregister( );
     // remove from list
     for(iter = _controllers.begin() ; iter!=_controllers.end();++iter) {
@@ -237,19 +238,19 @@ void WorkCell::remove(rw::common::Ptr<ControllerModel> controller) {
 
 
 
-void WorkCell::add(rw::common::Ptr<rw::sensor::SensorModel> sensor){
+void WorkCell::add(rw::core::Ptr<rw::sensor::SensorModel> sensor){
     sensor->registerIn(_tree);
     _sensors.push_back(sensor);
     _workCellChangedEvent.fire(WORKCELL_CHANGED);
 }
 
-void WorkCell::add(rw::common::Ptr<rw::models::ControllerModel> controller){
+void WorkCell::add(rw::core::Ptr<rw::models::ControllerModel> controller){
 	controller->registerIn(_tree);
 	_controllers.push_back(controller);
 	_workCellChangedEvent.fire(WORKCELL_CHANGED);
 }
 
-void WorkCell::add(rw::common::Ptr<Device> device){
+void WorkCell::add(rw::core::Ptr<Device> device){
 	addDevice(device);
 }
 

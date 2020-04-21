@@ -27,7 +27,7 @@
 
 #include "QState.hpp"
 #include "TreeState.hpp"
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 
 
@@ -38,7 +38,7 @@ namespace rw { namespace kinematics {
 	class StateCache;
 	
 
-//    typedef rw::common::Ptr<StateStructure> StateStructurePtr;
+//    typedef rw::core::Ptr<StateStructure> StateStructurePtr;
 //#endif
 
     /** @addtogroup kinematics */
@@ -161,7 +161,7 @@ namespace rw { namespace kinematics {
          * @brief Returns pointer to the state structure (the  structure of Frame's and StateData)
          * @return Pointer to the StateStructure matching the frame
          */
-		rw::common::Ptr<StateStructure> getStateStructure() const;
+		rw::core::Ptr<StateStructure> getStateStructure() const;
 
 
 
@@ -193,13 +193,13 @@ namespace rw { namespace kinematics {
          * @brief the cache part of the state
          * @return vector of caches, the mapping from StateData to cache is located in StateSetup
          */
-        //std::vector<rw::common::Ptr<StateCache> >& getCacheState(){return _cache_state;}
+        //std::vector<rw::core::Ptr<StateCache> >& getCacheState(){return _cache_state;}
 
-        rw::common::Ptr<StateCache> getCache(int id);
+        rw::core::Ptr<StateCache> getCache(int id);
 
-        rw::common::Ptr<StateCache> getCache(int id) const;
+        rw::core::Ptr<StateCache> getCache(int id) const;
 
-        void setCache(int id, rw::common::Ptr<StateCache> cache);
+        void setCache(int id, rw::core::Ptr<StateCache> cache);
 
 
         /**
@@ -212,7 +212,7 @@ namespace rw { namespace kinematics {
     private:
         TreeState _tree_state;
         QState _q_state;
-        std::vector<rw::common::Ptr<StateCache> > _cache_state;
+        std::vector<rw::core::Ptr<StateCache> > _cache_state;
         int _stateUniqueId;
     };
 

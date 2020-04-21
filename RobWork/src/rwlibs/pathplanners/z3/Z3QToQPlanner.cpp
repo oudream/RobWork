@@ -19,6 +19,8 @@
 
 #include <rw/pathplanning/QSampler.hpp>
 #include <rwlibs/pathplanners/rrt/RRTTree.hpp>
+#include <rw/core/PairIterator.hpp>
+#include <rw/math/Q.hpp>
 
 
 
@@ -113,7 +115,7 @@ void connectToQs (Node* from, Tree& tree, std::vector< Q >& qs, QToQPlanner& loc
     }
 
     // Erase the configurations that we used.
-    for (size_t index: rw::common::make_iterPair (eraseIndices.rbegin (), eraseIndices.rend ())) {
+    for (size_t index: rw::core::make_iterPair (eraseIndices.rbegin (), eraseIndices.rend ())) {
         qs.erase (qs.begin () + index);
     }
 }
@@ -126,12 +128,12 @@ std::vector< Q > sampleConfigurations (int cnt, QSampler& sampler)
     return result;
 }
 
-rw::common::Ptr< Tree > makeTree (const Q& q)
+rw::core::Ptr< Tree > makeTree (const Q& q)
 {
     QPath path;
     path.push_back (q);
     path.push_back (q);
-    return rw::common::ownedPtr< Tree > (new Tree (NodeValue (q, path)));
+    return rw::core::ownedPtr< Tree > (new Tree (NodeValue (q, path)));
 }
 }    // namespace
 
@@ -150,8 +152,8 @@ Z3QToQPlanner::Z3QToQPlanner (QSampler::Ptr sampler, QToQPlanner::Ptr localPlann
 bool Z3QToQPlanner::doQuery (const Q& start, const Q& goal, QPath& result, const StopCriteria& stop)
 {
     for (int repeat = 0; !stop.stop () && (_repeatCnt < 0 || repeat < _repeatCnt); repeat++) {
-        rw::common::Ptr< Tree > startTree = makeTree (start);
-        rw::common::Ptr< Tree > goalTree  = makeTree (goal);
+        rw::core::Ptr< Tree > startTree = makeTree (start);
+        rw::core::Ptr< Tree > goalTree  = makeTree (goal);
 
         std::vector< Q > startQs = sampleConfigurations (_nodeCnt, *_sampler);
         std::vector< Q > goalQs  = sampleConfigurations (_nodeCnt, *_sampler);

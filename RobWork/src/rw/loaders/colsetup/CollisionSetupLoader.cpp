@@ -21,15 +21,15 @@
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
 #include <boost/optional.hpp>
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 #include <set>
 #include <rw/proximity/CollisionSetup.hpp>
-#include <rw/common/StringUtil.hpp>
+#include <rw/core/StringUtil.hpp>
 #include <fstream>
 typedef boost::property_tree::ptree PTree;
 using namespace std;
 using namespace rw;
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::loaders;
 using namespace rw::proximity;
 

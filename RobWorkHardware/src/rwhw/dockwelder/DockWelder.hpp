@@ -18,9 +18,6 @@
 #ifndef RWHW_DOCKWELDER_HPP
 #define RWHW_DOCKWELDER_HPP
 
-
-
-
 #include <rw/math/Q.hpp>
 
 namespace rwhw {

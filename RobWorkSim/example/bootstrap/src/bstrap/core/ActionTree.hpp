@@ -18,11 +18,11 @@
 #ifndef ACTIONTREE_HPP_
 #define ACTIONTREE_HPP_
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 class ActionTree {
 public:
-    typedef rw::common::Ptr<ActionTree> Ptr;
+    typedef rw::core::Ptr<ActionTree> Ptr;
 
 
 };

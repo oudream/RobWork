@@ -32,7 +32,7 @@
 #include <rwsim/sensor/TactileArraySensor.hpp>
 #include <rwsimlibs/ode/ODESimulator.hpp>
 
-using rw::common::ownedPtr;
+using rw::core::ownedPtr;
 using rw::kinematics::State;
 using rw::sensor::TactileArrayModel;
 using namespace rw::trajectory;

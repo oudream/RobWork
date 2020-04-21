@@ -18,25 +18,15 @@
 #include "Cylinder.hpp"
 
 #include <rw/math/Constants.hpp>
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 #include "PlainTriMesh.hpp"
 
 
 using namespace rw::geometry;
 using namespace rw::math;
-using namespace rw::common;
-/*
-namespace {
-	std::string toString(float dx, float dy, int dz)
-    {
-        if (dz < 0) RW_THROW("Negative number of faces " << dz);
+using namespace rw::core;
 
-		std::stringstream str;
-		str << "Cylinder " << dx << " " << dy << " " << dz;
-		return str.str();
- 	}
-}
-*/
+
 Cylinder::Cylinder(int levels):
   Primitive(levels), _radius(1), _height(1)
 {

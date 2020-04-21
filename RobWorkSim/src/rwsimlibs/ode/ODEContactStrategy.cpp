@@ -30,6 +30,7 @@
 #include <ode/collision.h>
 
 using namespace rw::common;
+using namespace rw::core;
 using namespace rw::geometry;
 using namespace rw::kinematics;
 using namespace rw::math;
@@ -39,7 +40,7 @@ using namespace rwsim::simulator;
 
 class ODEContactStrategy::ODEContactModel: public ContactModel {
 public:
-	typedef rw::common::Ptr<ODEContactModel> Ptr;
+	typedef rw::core::Ptr<ODEContactModel> Ptr;
 	ODEContactModel(ODEContactStrategy* pOwner): ContactModel(pOwner), space(0) { setFrame(NULL); }
 	virtual ~ODEContactModel() {}
 	virtual std::string getName() const {
@@ -115,7 +116,7 @@ ODEContactStrategy::ODEContactStrategy() {
 ODEContactStrategy::~ODEContactStrategy() {
 }
 
-bool ODEContactStrategy::match(rw::common::Ptr<const GeometryData> geoA, rw::common::Ptr<const GeometryData> geoB) {
+bool ODEContactStrategy::match(rw::core::Ptr<const GeometryData> geoA, rw::core::Ptr<const GeometryData> geoB) {
 	// Plane-Cylinder
 	if (geoA->getType() == GeometryData::PlanePrim && geoB->getType() == GeometryData::CylinderPrim)
 		return true;

@@ -24,7 +24,7 @@
 
 #include "ProximityModel.hpp"
 
-#include <rw/common/ExtensionPoint.hpp>
+#include <rw/core/ExtensionPoint.hpp>
 #include <rw/kinematics/FrameMap.hpp>
 
 #include <string>
@@ -54,7 +54,7 @@ namespace rw { namespace proximity {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::common::Ptr< ProximityStrategy > Ptr;
+        typedef rw::core::Ptr< ProximityStrategy > Ptr;
 
         /**
          * @brief Destructor.
@@ -73,7 +73,7 @@ namespace rw { namespace proximity {
          * with the frame; false otherwise.
          */
         // virtual bool addModel(const kinematics::Frame* frame);
-        virtual bool addModel (rw::common::Ptr< rw::models::Object > object);
+        virtual bool addModel (rw::core::Ptr< rw::models::Object > object);
 
         /**
          * @brief Adds a Proximity model to a frame where the geometry is copied
@@ -102,7 +102,7 @@ namespace rw { namespace proximity {
          * with the frame; false otherwise.
          */
         virtual bool addModel (const rw::kinematics::Frame* frame,
-                               rw::common::Ptr< rw::geometry::Geometry > faces,
+                               rw::core::Ptr< rw::geometry::Geometry > faces,
                                bool forceCopy = false);
 
         /**
@@ -164,7 +164,7 @@ namespace rw { namespace proximity {
          * @return
          */
         virtual bool addGeometry (ProximityModel* model,
-                                  rw::common::Ptr< rw::geometry::Geometry > geom,
+                                  rw::core::Ptr< rw::geometry::Geometry > geom,
                                   bool forceCopy = false) = 0;
 
         /**
@@ -186,7 +186,7 @@ namespace rw { namespace proximity {
          * @param model [in] the model containing the geometries
          * @return all geometry associated to the proximity model
          */
-        virtual std::vector< rw::common::Ptr< rw::geometry::Geometry > > getGeometrys (rw::proximity::ProximityModel* model) ;
+        virtual std::vector< rw::core::Ptr< rw::geometry::Geometry > > getGeometrys (rw::proximity::ProximityModel* model) ;
         
         /**
          * @brief Clears any stored model information
@@ -211,7 +211,7 @@ namespace rw { namespace proximity {
          *  - FCL - rwlibs::proximitystrategies::ProximityStrategyFCL - Flexible Collision Library
          *  - Yaobi - rwlibs::proximitystrategies::ProximityStrategyYaobi - Yaobi
          */
-        class Factory : public rw::common::ExtensionPoint< ProximityStrategy >
+        class Factory : public rw::core::ExtensionPoint< ProximityStrategy >
         {
           public:
             /**

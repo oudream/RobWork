@@ -21,7 +21,7 @@
 #include <rw/geometry/GeometryData.hpp>
 #include <rw/geometry/analytic/quadratics/QuadraticBREP.hpp>
 
-using rw::common::Extension;
+using rw::core::Extension;
 using rw::geometry::GeometryData;
 using namespace rwlibs::geometry;
 

@@ -23,7 +23,7 @@
  * @file JacobianIKSolver.hpp
  */
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/invkin/IterativeIK.hpp>
 #include <rw/kinematics/FKRange.hpp>
 #include <vector>
@@ -85,9 +85,9 @@ namespace rw { namespace invkin {
     {
     public:
 		//! @brief smart pointer type to this class
-		typedef rw::common::Ptr<JacobianIKSolver> Ptr;
+		typedef rw::core::Ptr<JacobianIKSolver> Ptr;
 		//! @brief smart pointer type to this const class
-		typedef rw::common::Ptr< const JacobianIKSolver > CPtr;
+		typedef rw::core::Ptr< const JacobianIKSolver > CPtr;
 
         //! @brief the type of jacobian solver
         typedef enum{Transpose, SVD, DLS, SDLS} JacobianSolverType;
@@ -97,7 +97,7 @@ namespace rw { namespace invkin {
          * @param device [in] the device to do inverse kinematics for.
          * @param state [in] the initial state.
          */
-        JacobianIKSolver(rw::common::Ptr< const rw::models::Device > device, const kinematics::State& state);
+        JacobianIKSolver(rw::core::Ptr< const rw::models::Device > device, const kinematics::State& state);
 
         /**
          * @brief Constructs JacobianIKSolver for device, where the frame \b foi will
@@ -106,7 +106,7 @@ namespace rw { namespace invkin {
          * @param foi [in] end effector frame.
          * @param state [in] the initial state.
          */
-        JacobianIKSolver(rw::common::Ptr< const rw::models::Device > device,
+        JacobianIKSolver(rw::core::Ptr< const rw::models::Device > device,
                      const rw::kinematics::Frame *foi,
                      const kinematics::State& state);
 
@@ -169,13 +169,13 @@ namespace rw { namespace invkin {
         /**
          * @copydoc InvKinSolver::getTCP
          */
-        virtual rw::common::Ptr< const rw::kinematics::Frame > getTCP() const;            
+        virtual rw::core::Ptr< const rw::kinematics::Frame > getTCP() const;            
 
     private:
-        rw::common::Ptr< const rw::models::Device > _device;
+        rw::core::Ptr< const rw::models::Device > _device;
         double _interpolationStep;
         kinematics::FKRange _fkrange;
-        rw::common::Ptr<models::JacobianCalculator> _devJac;
+        rw::core::Ptr<models::JacobianCalculator> _devJac;
         bool _useJointClamping, _useInterpolation, _checkJointLimits;
         JacobianSolverType _solverType;
 

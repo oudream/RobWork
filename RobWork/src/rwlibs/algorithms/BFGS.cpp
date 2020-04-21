@@ -1,6 +1,6 @@
 #include "BFGS.hpp"
 
-#include <rw/common/Log.hpp>
+#include <rw/core/Log.hpp>
 
 using namespace rwlibs::algorithms;
 
@@ -103,7 +103,7 @@ int BFGS::optimizer(
 		double ykdotsk = yk.dot(sk);
 		if(std::abs(ykdotsk)<1e-12)
 		{
-			rw::common::Log::debugLog() <<"norm2(y(k)): " << yk.norm() << " norm2(s(k)): "<< sk.norm() <<" yk dot sk: "<<std::abs(ykdotsk)<< "\n";
+			rw::core::Log::debugLog() <<"norm2(y(k)): " << yk.norm() << " norm2(s(k)): "<< sk.norm() <<" yk dot sk: "<<std::abs(ykdotsk)<< "\n";
 			STATUS = GRADIENTWARNING;
 			break;
 		}
@@ -153,10 +153,10 @@ int BFGS::optimizer(
 		xk = xk1;
 		gfk = gfk1;
 	}
-	rw::common::Log::debugLog() << "Iterations: "<<k<<" gradientnorm: "<< gfk.norm() << "\n";
-	rw::common::Log::debugLog() << "Solution x: "<< "\n";
+	rw::core::Log::debugLog() << "Iterations: "<<k<<" gradientnorm: "<< gfk.norm() << "\n";
+	rw::core::Log::debugLog() << "Solution x: "<< "\n";
 	for(unsigned int i=0;i<xk.size();i++)
-		rw::common::Log::debugLog() <<"	"<<xk(i)<< "\n";
+		rw::core::Log::debugLog() <<"	"<<xk(i)<< "\n";
 	startguess = xk;
 	return STATUS;
 }

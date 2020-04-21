@@ -362,7 +362,7 @@ public:
      * @return The State read from \b element
      */
     static rw::kinematics::State readState(xercesc::DOMElement* element,
-		rw::common::Ptr<rw::models::WorkCell> workcell,
+		rw::core::Ptr<rw::models::WorkCell> workcell,
 		bool doCheckHeader = false);
 
 
@@ -376,7 +376,7 @@ public:
      *
      * Reads in \b element and returns a pair of strings.
      * If \b doCheckHeader = true it checks that the element tag name matches XMLBasicTypes::StringPairId.
-     * Throws a rw::common::Exception if header does not match or if failing to read two strings.
+     * Throws a rw::core::Exception if header does not match or if failing to read two strings.
      *
      * @param element [in] Element to read
      * @param doCheckHeader [in] True if the element name should be checked
@@ -390,7 +390,7 @@ public:
      * Reads in all string pairs which are childs of the element \b element. This is
      * for example used when reading in DAF setups.
      *
-     * Throws rw::common::Exception if failing to read and parse content.
+     * Throws rw::core::Exception if failing to read and parse content.
      *
      * @param element [in] Element which string pairs as children
      * @return List of string pairs
@@ -402,7 +402,7 @@ public:
      *
      * Reads in all strings which are childs of the element \b element.
      *
-     * Throws rw::common::Exception if failing to read and parse content.
+     * Throws rw::core::Exception if failing to read and parse content.
      *
      * @param element [in] Element which string pairs as children
      * @return List of strings
@@ -413,7 +413,7 @@ public:
      * @brief Reads in a string element
      *
      * Reads in \b element as a string element.
-     * Throws a rw::common::Exception on error
+     * Throws a rw::core::Exception on error
      *
      * @param element [in] Element to parse
      * @param doCheckHeader [in] True if the element name should be checked
@@ -425,7 +425,7 @@ public:
      * @brief Reads in a double element
      *
      * Read in \b element and converts the content to a double
-     * Throws a rw::common::Exception if failing to read or parse.
+     * Throws a rw::core::Exception if failing to read or parse.
      *
      * @param element [in] Element to read in
      * @param doCheckHeader [in] True if the element name should be checked
@@ -438,7 +438,7 @@ public:
      * @brief Reads in a double element
      *
      * Read in \b element and converts the content to a double
-     * Throws a rw::common::Exception if failing to read or parse.
+     * Throws a rw::core::Exception if failing to read or parse.
      *
      * @param element [in] Element to read in
      * @param doCheckHeader [in] True if the element name should be checked
@@ -450,7 +450,7 @@ public:
      * @brief Reads in an integer element
      *
      * Read in \b element and converts the content to an integer
-     * Throws a rw::common::Exception if failing to read or parse.
+     * Throws a rw::core::Exception if failing to read or parse.
      *
      * @param element [in] Element to read in
      * @param doCheckHeader [in] True if the element name should be checked
@@ -462,7 +462,7 @@ public:
      * @brief Reads in a list of integers from \b element
      *
      * Read in \b element and converts the content to a list of integers
-     * Throws a rw::common::Exception if failing to read or parse.
+     * Throws a rw::core::Exception if failing to read or parse.
      *
      * @param element [in] Element to read in
      * @param doCheckHeader [in] True if the element name should be checked
@@ -474,7 +474,7 @@ public:
      * @brief Reads in a list of doubles from \b element
      *
      * Read in \b element and converts the content to a list of doubles
-     * Throws a rw::common::Exception if failing to read or parse.
+     * Throws a rw::core::Exception if failing to read or parse.
      *
      * @param element [in] Element to read in
      * @param doCheckHeader [in] True if the element name should be checked
@@ -488,7 +488,7 @@ public:
      * Read in \b element and converts the content to a bool. Only if the content of the
      * node equals "true" is true returned. Otherwise the method returns false.
      *
-     * Throws a rw::common::Exception if failing to read or parse.
+     * Throws a rw::core::Exception if failing to read or parse.
      *
      * @param element [in] Element to read in
      * @param doCheckHeader [in] True if the element name should be checked
@@ -503,7 +503,7 @@ public:
      * node is the returned. In case of multiple nodes only the content of the first is
      * returned.
      *
-     * If no DOMText-nodes can be found and \b exceptionOnEmpty is true it throws a rw::common::Exception.
+     * If no DOMText-nodes can be found and \b exceptionOnEmpty is true it throws a rw::core::Exception.
      * Otherwise an empty string is returned.
      *
      * @param element [in] Element to read in
@@ -519,7 +519,7 @@ public:
      * node is the returned. In case of multiple nodes only the content of the first is
      * returned.
      *
-     * If no DOMText-nodes can be found and \b exceptionOnEmpty is true it throws a rw::common::Exception.
+     * If no DOMText-nodes can be found and \b exceptionOnEmpty is true it throws a rw::core::Exception.
      * Otherwise an empty string is returned.
      *
      * @param element [in] Element to read in
@@ -546,7 +546,7 @@ public:
      *
      * Creates a DOMElement owned by \b doc and representing \b q
      *
-     * This method may throw a rw::common::Exception in case of errors
+     * This method may throw a rw::core::Exception in case of errors
      *
      * @param q [in] Value to represent
      * @param doc [in] Document which should contain the element
@@ -559,7 +559,7 @@ public:
      *
      * Creates a DOMElement owned by \b doc and representing \b v
      *
-     * This method may throw a rw::common::Exception in case of errors
+     * This method may throw a rw::core::Exception in case of errors
      *
      * @param v [in] Value to represent
      * @param doc [in] Document which should contain the element
@@ -572,7 +572,7 @@ public:
      *
      * Creates a DOMElement owned by \b doc and representing \b v
      *
-     * This method may throw a rw::common::Exception in case of errors
+     * This method may throw a rw::core::Exception in case of errors
      *
      * @param v [in] Value to represent
      * @param doc [in] Document which should contain the element
@@ -585,7 +585,7 @@ public:
      *
      * Creates a DOMElement owned by \b doc and representing \b rpy
      *
-     * This method may throw a rw::common::Exception in case of errors
+     * This method may throw a rw::core::Exception in case of errors
      *
      * @param rpy [in] Value to represent
      * @param doc [in] Document which should contain the element
@@ -598,7 +598,7 @@ public:
      *
      * Creates a DOMElement owned by \b doc and representing \b eaa
      *
-     * This method may throw a rw::common::Exception in case of errors
+     * This method may throw a rw::core::Exception in case of errors
      *
      * @param eaa [in] Value to represent
      * @param doc [in] Document which should contain the element
@@ -611,7 +611,7 @@ public:
      *
      * Creates a DOMElement owned by \b doc and representing \b quat
      *
-     * This method may throw a rw::common::Exception in case of errors
+     * This method may throw a rw::core::Exception in case of errors
      *
      * @param quat [in] Value to represent
      * @param doc [in] Document which should contain the element
@@ -624,7 +624,7 @@ public:
      *
      * Creates a DOMElement owned by \b doc and representing \b rot
      *
-     * This method may throw a rw::common::Exception in case of errors
+     * This method may throw a rw::core::Exception in case of errors
      *
      * @param rot [in] Value to represent
      * @param doc [in] Document which should contain the element
@@ -638,7 +638,7 @@ public:
      *
      * Creates a DOMElement owned by \b doc and representing \b rot
      *
-     * This method may throw a rw::common::Exception in case of errors
+     * This method may throw a rw::core::Exception in case of errors
      *
      * @param rot [in] Value to represent
      * @param doc [in] Document which should contain the element
@@ -665,7 +665,7 @@ public:
      *
      * Creates a DOMElement owned by \b doc and representing \b vs
      *
-     * This method may throw a rw::common::Exception in case of errors
+     * This method may throw a rw::core::Exception in case of errors
      *
      * @param vs [in] Value to represent
      * @param doc [in] Document which should contain the element
@@ -678,7 +678,7 @@ public:
      *
      * Creates a DOMElement owned by \b doc and representing \b state
      *
-     * The method may throw a rw::common::Exception in case of errors
+     * The method may throw a rw::core::Exception in case of errors
      *
      * @param state [in] Value to represent
      * @param doc [in] Document which should contain the element
@@ -691,7 +691,7 @@ public:
      *
      * Creates a DOMElement owned by \b doc and representing the rw::kinematics::QState contained in \b state
      *
-     * The method may throw a rw::common::Exception in case of errors
+     * The method may throw a rw::core::Exception in case of errors
      *
      * @param state [in] Value to represent
      * @param doc [in] Document which should contain the element
@@ -704,7 +704,7 @@ public:
      *
      * Creates a DOMElement owned by \b doc and representing the rw::kinematics::QState contained in \b state
      *
-     * The method may throw a rw::common::Exception in case of errors
+     * The method may throw a rw::core::Exception in case of errors
      *
      * @param state [in] Value to represent
      * @param doc [in] Document which should contain the element
@@ -717,7 +717,7 @@ public:
       *
       * Creates a DOMElement owned by \b doc and representing \b value
       *
-      * The method may throw a rw::common::Exception in case of errors
+      * The method may throw a rw::core::Exception in case of errors
       *
       * @param value [in] Value to represent
       * @param doc [in] Document which should contain the element
@@ -730,7 +730,7 @@ public:
      *
      * Creates a DOMElement owned by \b doc and representing \b value
      *
-     * The method may throw a rw::common::Exception in case of errors
+     * The method may throw a rw::core::Exception in case of errors
      *
      * @param value [in] Value to represent
      * @param doc [in] Document which should contain the element
@@ -744,7 +744,7 @@ public:
      *
      * Creates a DOMElement owned by \b doc and representing \b value
      *
-     * The method may throw a rw::common::Exception in case of errors
+     * The method may throw a rw::core::Exception in case of errors
      *
      * @param value [in] Value to represent
      * @param doc [in] Document which should contain the element
@@ -758,7 +758,7 @@ public:
      *
      * Creates a DOMElement owned by \b doc and representing \b value
      *
-     * The method may throw a rw::common::Exception in case of errors
+     * The method may throw a rw::core::Exception in case of errors
      *
      * @param value [in] Value to represent
      * @param doc [in] Document which should contain the element
@@ -771,7 +771,7 @@ public:
      *
      * Creates a DOMElement owned by \b doc and representing \b string
      *
-     * The method may throw a rw::common::Exception in case of errors
+     * The method may throw a rw::core::Exception in case of errors
      *
      * @param string [in] Value to represent
      * @param doc [in] Document which should contain the element
@@ -784,7 +784,7 @@ public:
      *
      * Creates a DOMElement owned by \b doc and representing \b strings
      *
-     * The method may throw a rw::common::Exception in case of errors
+     * The method may throw a rw::core::Exception in case of errors
      *
      * @param strings [in] Value to represent
      * @param doc [in] Document which should contain the element
@@ -797,7 +797,7 @@ public:
      *
      * Creates a DOMElement owned by \b doc and representing \b ints
      *
-     * The method may throw a rw::common::Exception in case of errors
+     * The method may throw a rw::core::Exception in case of errors
      *
      * @param ints [in] Value to represent
      * @param doc [in] Document which should contain the element
@@ -810,7 +810,7 @@ public:
      *
      * Creates a DOMElement owned by \b doc and representing \b doubles
      *
-     * The method may throw a rw::common::Exception in case of errors
+     * The method may throw a rw::core::Exception in case of errors
      *
      * @param doubles [in] Value to represent
      * @param doc [in] Document which should contain the element
@@ -823,7 +823,7 @@ public:
      *
      * Creates a DOMElement owned by \b doc and representing strings \b first and \b second
      *
-     * The method may throw a rw::common::Exception in case of errors
+     * The method may throw a rw::core::Exception in case of errors
      *
      * @param first [in] First string in the pair
      * @param second [in] Second string in the pair

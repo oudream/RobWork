@@ -25,6 +25,7 @@
  */
 
 #include "LogForceTorque.hpp"
+#include <rw/core/Ptr.hpp>
 
 namespace rwsim {
 namespace log {
@@ -40,7 +41,7 @@ class LogConstraints;
 class LogConstraintForceTorque: public LogForceTorque {
 public:
     //! Smart pointer type of LogConstraintForceTorque
-    typedef rw::common::Ptr<LogConstraintForceTorque> Ptr;
+    typedef rw::core::Ptr<LogConstraintForceTorque> Ptr;
 
     //! @copydoc SimulatorLogEntry::SimulatorLogEntry
     LogConstraintForceTorque(SimulatorLogScope* parent);
@@ -91,10 +92,10 @@ public:
 	 *
 	 * @return the log entry with positions of constraints (or NULL if not linked).
 	 */
-	rw::common::Ptr<LogConstraints> getConstraints() const;
+	rw::core::Ptr<LogConstraints> getConstraints() const;
 
 private:
-	rw::common::Ptr<LogConstraints> _constraints;
+	rw::core::Ptr<LogConstraints> _constraints;
 	const std::string _emptyStr;
 };
 //! @}

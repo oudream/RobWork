@@ -25,6 +25,7 @@
  */
 
 #include "SimulatorLogEntry.hpp"
+#include <rw/core/Ptr.hpp>
 
 namespace rwsim {
 namespace log {
@@ -40,7 +41,7 @@ class LogContactSet;
 class LogContactVelocities: public SimulatorLogEntry {
 public:
     //! Smart pointer type of LogContactVelocities
-    typedef rw::common::Ptr<LogContactVelocities> Ptr;
+    typedef rw::core::Ptr<LogContactVelocities> Ptr;
 
     //! @copydoc SimulatorLogEntry::SimulatorLogEntry
     LogContactVelocities(SimulatorLogScope* parent);
@@ -82,7 +83,7 @@ public:
 	 *
 	 * @return the log entry with positions of contacts (or NULL if not linked).
 	 */
-	rw::common::Ptr<LogContactSet> getContacts() const;
+	rw::core::Ptr<LogContactSet> getContacts() const;
 
 	/**
 	 * @brief Get the contact velocity acting at the first body.
@@ -107,7 +108,7 @@ public:
 	void setVelocity(std::size_t i, const rw::math::Vector3D<>& velocityA, const rw::math::Vector3D<>& velocityB);
 
 private:
-	rw::common::Ptr<LogContactSet> _contacts;
+	rw::core::Ptr<LogContactSet> _contacts;
 	std::vector<std::pair<rw::math::Vector3D<>, rw::math::Vector3D<> > > _velocities;
 };
 //! @}

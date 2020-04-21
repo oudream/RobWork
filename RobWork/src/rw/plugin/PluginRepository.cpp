@@ -17,12 +17,12 @@
 
 #include "PluginRepository.hpp"
 
-#include <rw/common/IOUtil.hpp>
+#include <rw/core/IOUtil.hpp>
 #include "DynamicLibraryLoader.hpp"
+#include <rw/core/Exception.hpp>
 
 
-
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::plugin;
 
 

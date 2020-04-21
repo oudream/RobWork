@@ -3,6 +3,7 @@
 #include <rw/loaders/ImageLoader.hpp>
 
 using namespace rw::common;
+using namespace rw::core;
 using rw::loaders::ImageLoader;
 using rw::sensor::Image;
 

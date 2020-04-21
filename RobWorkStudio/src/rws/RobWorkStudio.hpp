@@ -27,13 +27,13 @@
 
 #include <vector>
 
-
-
-
 #include <rw/models/WorkCell.hpp>
 #include <rw/trajectory/Path.hpp>
-#include <rw/common/Log.hpp>
-#include <rw/common/Event.hpp>
+#include <rw/core/Log.hpp>
+#include <rw/core/Event.hpp>
+#include <rw/core/PropertyMap.hpp>
+#include <rw/core/PropertyBase.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include "RWStudioView3D.hpp"
 
@@ -51,7 +51,7 @@ class QToolBar;
 class PropertyViewEditor;
 class HelpAssistant;
 
-namespace rw { class RobWork; }
+namespace rw { namespace core { class RobWork; }}
 
 namespace rws {
 
@@ -72,7 +72,7 @@ namespace rws {
 		/**
 		   @brief RobWorkStudio object with a number of plugins loaded elsewhere.
 		*/
-		RobWorkStudio(const rw::common::PropertyMap& map);
+		RobWorkStudio(const rw::core::PropertyMap& map);
 
 		/**
 		 * @brief destructor
@@ -91,7 +91,7 @@ namespace rws {
 		 * @brief returns the property map of this instance of robwork studio
 		 * @return propertymap
 		 */		
-		rw::common::PropertyMap& getPropertyMap(){			
+		rw::core::PropertyMap& getPropertyMap(){			
 			return _propMap;			
 		}
 		
@@ -256,13 +256,13 @@ namespace rws {
 		 * @brief the log of RobWorkStudio.
 		 * @return a reference to the log.
 		 */		
-		rw::common::Log& log();
+		rw::core::Log& log();
 
 		/**
 		 * @brief the log of RobWorkStudio.
 		 * @return a smart pointer to the log.
 		 */
-		rw::common::Log::Ptr logPtr();
+		rw::core::Log::Ptr logPtr();
 
 		/**
 		 * @brief Handle an event.
@@ -304,7 +304,7 @@ namespace rws {
 		 * This event is fired when setState is called, or when a user (plugin)
 		 * manually calls fire.
 		 */
-		typedef rw::common::Event<StateChangedListener, const rw::kinematics::State&> StateChangedEvent;
+		typedef rw::core::Event<StateChangedListener, const rw::kinematics::State&> StateChangedEvent;
 
 		/**
 		 * @brief Returns StateChangeEvent needed for subscribing and firing the event.
@@ -328,7 +328,7 @@ namespace rws {
 		 *
 		 * The selected rw::kinematics::Frame* is provided as an argument
 		 */
-		typedef rw::common::Event<FrameSelectedListener, rw::kinematics::Frame*> FrameSelectedEvent;
+		typedef rw::core::Event<FrameSelectedListener, rw::kinematics::Frame*> FrameSelectedEvent;
 
 		/**
 		 * @brief Returns FrameSelectedEvent needed for subscription and firing of events
@@ -351,7 +351,7 @@ namespace rws {
 		/**
 		 * @brief Defines event for generic user events
 		 */
-		typedef rw::common::Event<GenericEventListener, const std::string&> GenericEvent;
+		typedef rw::core::Event<GenericEventListener, const std::string&> GenericEvent;
 
 		/**
 		 * @brief Returns GenericEvent needed for subscription and firing of events
@@ -372,7 +372,7 @@ namespace rws {
         /**
          * @brief Defines event for generic user events
          */
-        typedef rw::common::Event<GenericAnyEventListener, const std::string&, boost::any> GenericAnyEvent;
+        typedef rw::core::Event<GenericAnyEventListener, const std::string&, boost::any> GenericAnyEvent;
 
         /**
          * @brief a generic event like GenericEvent but with the possibility of attaching
@@ -415,7 +415,7 @@ namespace rws {
 		/**
 		 * @brief Defines event for key pressed events
 		 */
-		typedef rw::common::Event<KeyEventListener, int, Qt::KeyboardModifiers> KeyEvent;
+		typedef rw::core::Event<KeyEventListener, int, Qt::KeyboardModifiers> KeyEvent;
 
 		/**
 		 * @brief Returns KeyEvent needed for subscription and firing of events
@@ -437,7 +437,7 @@ namespace rws {
 		/**
 		 * @brief Defines event for mouse pressed events
 		 */
-		typedef rw::common::Event<MousePressedEventListener, QMouseEvent*> MousePressedEvent;
+		typedef rw::core::Event<MousePressedEventListener, QMouseEvent*> MousePressedEvent;
 
 		/**
 		 * @brief Returns MousePressedEvent needed for subscription and firing of events
@@ -459,7 +459,7 @@ namespace rws {
 		/**
 		 * @brief Defines event for key pressed events
 		 */
-		typedef rw::common::Event<StateTrajectoryChangedListener, const rw::trajectory::TimedStatePath&>  StateTrajectoryChangedEvent;
+		typedef rw::core::Event<StateTrajectoryChangedListener, const rw::trajectory::TimedStatePath&>  StateTrajectoryChangedEvent;
 
 		/**
 		 * @brief Returns stateTrajectoryChangedEvent needed for subscription and firing of event
@@ -480,7 +480,7 @@ namespace rws {
 		/**
 		 * @brief Defines event for key pressed events
 		 */
-		typedef rw::common::Event<StateTrajectoryPtrChangedListener, const rw::trajectory::TimedStatePath::Ptr>  StateTrajectoryPtrChangedEvent;
+		typedef rw::core::Event<StateTrajectoryPtrChangedListener, const rw::trajectory::TimedStatePath::Ptr>  StateTrajectoryPtrChangedEvent;
 
 		/**
 		 * @brief Returns stateTrajectoryChangedEvent needed for subscription and firing of event
@@ -505,7 +505,7 @@ namespace rws {
 		/**
 		 * @brief Defines event for PositionChanged.
 		 */
-		typedef rw::common::Event<PositionSelectedListener, const rw::math::Vector3D<>&> PositionSelectedEvent;
+		typedef rw::core::Event<PositionSelectedListener, const rw::math::Vector3D<>&> PositionSelectedEvent;
 
 		/**
 		 * @brief Returns PositionChangedEvent object needed for subscription to and firing of event
@@ -575,7 +575,7 @@ namespace rws {
 		 * @brief Handles changed properties.
 		 * @param base [in] the changed property.
 		 */
-		void propertyChangedListener(rw::common::PropertyBase* base);
+		void propertyChangedListener(rw::core::PropertyBase* base);
 
 		/**
 		 * @brief Add a plugin.
@@ -619,7 +619,7 @@ namespace rws {
          * @brief Get the current RobWorkStudio settings.
          * @return a reference to the settings.
          */
-        rw::common::PropertyMap& getSettings(){ return *_settingsMap; }
+        rw::core::PropertyMap& getSettings(){ return *_settingsMap; }
 
 	private:
 		// all events are defined here
@@ -686,7 +686,7 @@ namespace rws {
 		void openDrawable(const QString& filename);
 		void openWorkCellFile(const QString& filename);
 
-		rw::common::Ptr<rw::RobWork> _robwork;
+		rw::core::Ptr<rw::core::RobWork> _robwork;
 
 		RWStudioView3D* _view;
 		AboutBox* _aboutBox;
@@ -706,8 +706,8 @@ namespace rws {
 
 		rw::trajectory::TimedStatePath::Ptr _timedStatePath;
 
-		rw::common::PropertyMap _propMap;
-		rw::common::PropertyMap *_settingsMap;
+		rw::core::PropertyMap _propMap;
+		rw::core::PropertyMap *_settingsMap;
 		std::vector<std::pair<QAction*,std::string> > _lastFilesActions;
 		HelpAssistant *_assistant;
 	private:

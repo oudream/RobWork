@@ -19,8 +19,8 @@
 
 #include "PPMLoader.hpp"
 
-#include <rw/common/StringUtil.hpp>
-#include <rw/common/macros.hpp>
+#include <rw/core/StringUtil.hpp>
+#include <rw/core/macros.hpp>
 #include <boost/cstdint.hpp>
 //#include <ctype.h>
 #include <fstream>
@@ -30,7 +30,7 @@
 
 
 using namespace rw;
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::loaders;
 using namespace rw::sensor;
 
@@ -102,7 +102,7 @@ namespace {
 			}while(std::isspace(tmp, std::locale())==0);
 
 			//Convert the string to a value
-			std::pair<bool, unsigned long> uLongPair= rw::common::StringUtil::toULong(input);
+			std::pair<bool, unsigned long> uLongPair= rw::core::StringUtil::toULong(input);
 			if(uLongPair.first) {
 				output = (X)uLongPair.second;
 			}
@@ -183,7 +183,7 @@ namespace {
 				break;
 			case 1:
 				//Width
-				uIntPair = rw::common::StringUtil::toUInt(input);
+				uIntPair = rw::core::StringUtil::toUInt(input);
 				if(uIntPair.first) {
 					width = uIntPair.second;
 				}
@@ -196,7 +196,7 @@ namespace {
 				break;
 			case 2:
 				//Heigth
-				uIntPair = rw::common::StringUtil::toUInt(input);
+				uIntPair = rw::core::StringUtil::toUInt(input);
 				if(uIntPair.first) {
 					heigth = uIntPair.second;
 				}
@@ -209,7 +209,7 @@ namespace {
 				break;
 			case 3:
 				//Pixel max value
-				uLongPair = rw::common::StringUtil::toULong(input);
+				uLongPair = rw::core::StringUtil::toULong(input);
 				if(uLongPair.first) {
 					pixelMax = uLongPair.second;
 				}
@@ -293,7 +293,7 @@ rw::sensor::Image::Ptr PPMLoader::load(const std::string& filename)
 	}
 
 	//Get Image data
-	rw::sensor::Image::Ptr img = rw::common::ownedPtr(new rw::sensor::Image(width, heigth, Image::RGB, depth));
+	rw::sensor::Image::Ptr img = rw::core::ownedPtr(new rw::sensor::Image(width, heigth, Image::RGB, depth));
 	if(type==binary) {
 		getBinaryImageData(readerObj, img);
 	}

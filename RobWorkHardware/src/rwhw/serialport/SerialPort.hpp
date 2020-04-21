@@ -26,7 +26,7 @@
 #endif
 
 #include <rw/common/TimerUtil.hpp>
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <iostream>
 #include <cstring>
 
@@ -44,7 +44,7 @@ namespace rwhw {
     class SerialPort {
     public:
 
-        typedef rw::common::Ptr<SerialPort> Ptr;
+        typedef rw::core::Ptr<SerialPort> Ptr;
 
         /**
          * @brief Baudrate for communication
@@ -153,7 +153,7 @@ namespace rwhw {
 		#endif
     };
 
-    typedef rw::common::Ptr<SerialPort> SerialPortPtr;
+    typedef rw::core::Ptr<SerialPort> SerialPortPtr;
 
     /**@}*/
 } // end namespace

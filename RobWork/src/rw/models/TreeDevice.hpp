@@ -25,7 +25,7 @@
 
 #include "JointDevice.hpp"
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include <vector>
 
@@ -87,7 +87,7 @@ namespace rw { namespace models {
     {
     public:
 		//! @brief smart pointer type to this class
-		typedef rw::common::Ptr<TreeDevice> Ptr;
+		typedef rw::core::Ptr<TreeDevice> Ptr;
         
 		/**
          * @brief Constructor
@@ -132,7 +132,7 @@ namespace rw { namespace models {
         std::vector<kinematics::Frame*> _ends;
 
         // Base to getEnds() Jacobians are calculated here.
-        rw::common::Ptr<JacobianCalculator> _djmulti;
+        rw::core::Ptr<JacobianCalculator> _djmulti;
     };
 
     /*@}*/

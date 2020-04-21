@@ -4,7 +4,7 @@
 #include "NetFTCommon.hpp"
 
 // RW
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/common/TimerUtil.hpp>
 
 // STL
@@ -37,7 +37,7 @@
 namespace rwhw {
     class NetFTLogging {
         public:
-    		typedef rw::common::Ptr<NetFTLogging> Ptr;
+    		typedef rw::core::Ptr<NetFTLogging> Ptr;
 
             // NetFT packet
             struct NetFTData {

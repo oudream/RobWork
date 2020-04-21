@@ -152,7 +152,7 @@ namespace rw { namespace geometry {
 		 * are considered the equal.
 		 */
 		template <class TRILIST>
-		static rw::common::Ptr<TRILIST> toIndexedTriMesh(const TriMesh& triMesh,
+		static rw::core::Ptr<TRILIST> toIndexedTriMesh(const TriMesh& triMesh,
 										 double epsilon=0.00001)
 		{
 		    typedef typename TRILIST::value_type T;
@@ -199,7 +199,7 @@ namespace rw { namespace geometry {
 
             delete verticesIdx;
 
-			return rw::common::ownedPtr( new TRILIST(rw::common::ownedPtr(vertices), rw::common::ownedPtr(triangles)) );
+			return rw::core::ownedPtr( new TRILIST(rw::core::ownedPtr(vertices), rw::core::ownedPtr(triangles)) );
 		}
 
 
@@ -228,8 +228,8 @@ namespace rw { namespace geometry {
                 static std::pair<TriMesh::Ptr, TriMesh::Ptr> divide(TriMesh::Ptr trimesh, Plane::Ptr plane) {
                         typedef typename TRI::value_type T;
                         using namespace rw::math;
-                        typename PlainTriMesh<TRI>::Ptr front = rw::common::ownedPtr(new PlainTriMesh<TRI>());
-                        typename PlainTriMesh<TRI>::Ptr back = rw::common::ownedPtr(new PlainTriMesh<TRI>());
+                        typename PlainTriMesh<TRI>::Ptr front = rw::core::ownedPtr(new PlainTriMesh<TRI>());
+                        typename PlainTriMesh<TRI>::Ptr back = rw::core::ownedPtr(new PlainTriMesh<TRI>());
                         for (size_t i = 0; i<trimesh->size(); i++) {
                                 const Triangle<>& tri = trimesh->getTriangle(i);
                                 double d0 = plane->distance(tri.getVertex(0));

@@ -9,7 +9,7 @@
 using namespace rws::swig;
 using namespace rwlibs::swig;
 
-rw::common::Ptr< rws::swig::RobWorkStudio > rwstudio_internal;
+rw::core::Ptr< rws::swig::RobWorkStudio > rwstudio_internal;
 
 rws::swig::RobWorkStudio* rws::swig::getRobWorkStudio ()
 {
@@ -42,23 +42,23 @@ void rws::swig::setState (State& state)
 {
     return getRobWorkStudio ()->postState (state);
 }
-rw::common::Ptr< Device > rws::swig::findDevice (const std::string& name)
+rw::core::Ptr< Device > rws::swig::findDevice (const std::string& name)
 {
     return getRobWorkStudio ()->getWorkCell ()->findDevice (name);
 }
-rw::common::Ptr< JointDevice > rws::swig::findJointDevice (const std::string& name)
+rw::core::Ptr< JointDevice > rws::swig::findJointDevice (const std::string& name)
 {
     return getRobWorkStudio ()->getWorkCell ()->findDevice< JointDevice > (name);
 }
-rw::common::Ptr< SerialDevice > rws::swig::findSerialDevice (const std::string& name)
+rw::core::Ptr< SerialDevice > rws::swig::findSerialDevice (const std::string& name)
 {
     return getRobWorkStudio ()->getWorkCell ()->findDevice< SerialDevice > (name);
 }
-rw::common::Ptr< TreeDevice > rws::swig::findTreeDevice (const std::string& name)
+rw::core::Ptr< TreeDevice > rws::swig::findTreeDevice (const std::string& name)
 {
     return getRobWorkStudio ()->getWorkCell ()->findDevice< TreeDevice > (name);
 }
-rw::common::Ptr< ParallelDevice > rws::swig::findParallelDevice (const std::string& name)
+rw::core::Ptr< ParallelDevice > rws::swig::findParallelDevice (const std::string& name)
 {
     return getRobWorkStudio ()->getWorkCell ()->findDevice< ParallelDevice > (name);
 }
@@ -102,12 +102,12 @@ void rws::swig::moveTo (const std::string& fname, const std::string& mname, Tran
 
 static rws::RobWorkStudioApp* robApp = NULL;
 
-rw::common::Ptr< RobWorkStudio > rws::swig::getRobWorkStudioInstance ()
+rw::core::Ptr< RobWorkStudio > rws::swig::getRobWorkStudioInstance ()
 {
     return getRobWorkStudioInstance ("");
 }
 
-rw::common::Ptr< RobWorkStudio > rws::swig::getRobWorkStudioInstance (const std::string& args)
+rw::core::Ptr< RobWorkStudio > rws::swig::getRobWorkStudioInstance (const std::string& args)
 {
     // create a thread that start QApplication and
     if (robApp == NULL || !robApp->isRunning ()) {
@@ -135,13 +135,13 @@ bool rws::swig::isRunning ()
     return robApp->isRunning ();
 }
 
-rwlibs::swig::Q rws::swig::getQ (rw::common::Ptr< rwlibs::swig::Device > dev)
+rwlibs::swig::Q rws::swig::getQ (rw::core::Ptr< rwlibs::swig::Device > dev)
 {
     if (dev == NULL)
         RW_THROW ("Device is NULL!");
     return dev->getQ (getState ());
 }
-void rws::swig::setQ (rw::common::Ptr< rwlibs::swig::Device > dev, rwlibs::swig::Q q)
+void rws::swig::setQ (rw::core::Ptr< rwlibs::swig::Device > dev, rwlibs::swig::Q q)
 {
     if (dev == NULL)
         RW_THROW ("Device is NULL!");

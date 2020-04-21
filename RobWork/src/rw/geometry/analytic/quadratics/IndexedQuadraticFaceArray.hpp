@@ -26,7 +26,7 @@
 
 #include "QuadraticShell.hpp"
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/geometry/OBB.hpp>
 #include <rw/math/Transform3D.hpp>
 
@@ -41,10 +41,10 @@ namespace geometry {
 class IndexedQuadraticFaceArray: public QuadraticShell {
 public:
     //! @brief Smart pointer type to IndexedQuadraticFaceArray
-    typedef rw::common::Ptr<IndexedQuadraticFaceArray> Ptr;
+    typedef rw::core::Ptr<IndexedQuadraticFaceArray> Ptr;
 
 	//! @brief Smart pointer type for a const IndexedQuadraticFaceArray.
-	typedef rw::common::Ptr<const IndexedQuadraticFaceArray> CPtr;
+	typedef rw::core::Ptr<const IndexedQuadraticFaceArray> CPtr;
 
 	//! @brief Structure that holds information for each face.
 	struct IndexedFace {
@@ -66,7 +66,7 @@ public:
 	 * @brief Construct new indexed face array.
 	 * @param quadric [in] the underlying Shell.
 	 */
-	IndexedQuadraticFaceArray(rw::common::Ptr<const QuadraticShell> quadric);
+	IndexedQuadraticFaceArray(rw::core::Ptr<const QuadraticShell> quadric);
 
 	/**
 	 * @brief Construct new indexed face array.
@@ -75,7 +75,7 @@ public:
 	 * @param first [in] skip the \b first \b faces.
 	 * @param last [in] last index of \b faces to include.
 	 */
-	IndexedQuadraticFaceArray(rw::common::Ptr<const QuadraticShell> quadric, const std::vector<IndexedFace>& faces, std::size_t first, std::size_t last);
+	IndexedQuadraticFaceArray(rw::core::Ptr<const QuadraticShell> quadric, const std::vector<IndexedFace>& faces, std::size_t first, std::size_t last);
 
 	//! @brief Destructor.
 	virtual ~IndexedQuadraticFaceArray();
@@ -87,7 +87,7 @@ public:
 	virtual std::size_t size() const;
 
 	//! @copydoc QuadraticShell::getFace(std::size_t) const
-	virtual rw::common::Ptr<const QuadraticFace> getFace(std::size_t idx) const;
+	virtual rw::core::Ptr<const QuadraticFace> getFace(std::size_t idx) const;
 
 	//! @copydoc QuadraticShell::getFace(std::size_t,QuadraticFace&) const
 	virtual void getFace(std::size_t idx, QuadraticFace& dst) const;
@@ -131,7 +131,7 @@ public:
 private:
 	struct CenterSort;
 
-	const rw::common::Ptr<const QuadraticShell> _quadric;
+	const rw::core::Ptr<const QuadraticShell> _quadric;
 	std::vector<IndexedFace> _faces;
 	std::size_t _first;
 	std::size_t _last;

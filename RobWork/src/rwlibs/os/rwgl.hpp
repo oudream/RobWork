@@ -19,7 +19,7 @@
 #ifndef RWLIBS_OS_RWGL_HPP
 #define RWLIBS_OS_RWGL_HPP
 
-#include <rw/common/os.hpp>
+#include <rw/core/os.hpp>
 
 
 #if defined(RW_CYGWIN)

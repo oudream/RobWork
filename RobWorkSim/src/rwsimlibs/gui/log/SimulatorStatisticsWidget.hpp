@@ -24,7 +24,7 @@
  * \copydoc rwsimlibs::gui::SimulatorStatisticsWidget
  */
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <QWidget>
 
 namespace rwsim { namespace log { class SimulatorStatistics; } }
@@ -47,7 +47,7 @@ public:
 	 * @param stats [in] the statistics.
 	 * @param parent [in] (optional) the parent Qt widget. Ownership is shared by the caller and the parent widget if given.
 	 */
-	SimulatorStatisticsWidget(rw::common::Ptr<const rwsim::log::SimulatorStatistics> stats, QWidget* parent = 0);
+	SimulatorStatisticsWidget(rw::core::Ptr<const rwsim::log::SimulatorStatistics> stats, QWidget* parent = 0);
 
 	//! @brief Destructor.
 	virtual ~SimulatorStatisticsWidget();
@@ -63,7 +63,7 @@ private slots:
 
 private:
     Ui::SimulatorStatisticsWidget* const _ui;
-    rw::common::Ptr<const rwsim::log::SimulatorStatistics> _stats;
+    rw::core::Ptr<const rwsim::log::SimulatorStatistics> _stats;
     class MathematicaPlotWidget* const _mathematica;
 };
 //! @}

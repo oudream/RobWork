@@ -22,10 +22,11 @@
 
 #include <rwlibs/task/Task.hpp>
 #include <rwlibs/task/Entity.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include <string>
 
-namespace rw { namespace common { class DOMElem; } }
+namespace rw { namespace core { class DOMElem; } }
 
 namespace rwlibs {
 namespace task {
@@ -62,31 +63,31 @@ public:
 	rwlibs::task::TaskLoader::Ptr clone() const;
 
 private:
-	rwlibs::task::TaskBasePtr readTask(rw::common::Ptr<rw::common::DOMElem> element);
+	rwlibs::task::TaskBasePtr readTask(rw::core::Ptr<rw::core::DOMElem> element);
 
-	void readEntityData(rw::common::Ptr<rw::common::DOMElem> element, rw::common::Ptr<rwlibs::task::Entity> entity);
+	void readEntityData(rw::core::Ptr<rw::core::DOMElem> element, rw::core::Ptr<rwlibs::task::Entity> entity);
 
-	rwlibs::task::Action::Ptr readAction(rw::common::Ptr<rw::common::DOMElem> element);
-
-	template <class T>
-	typename rwlibs::task::Motion<T>::Ptr readMotion(rw::common::Ptr<rw::common::DOMElem> element);
+	rwlibs::task::Action::Ptr readAction(rw::core::Ptr<rw::core::DOMElem> element);
 
 	template <class T>
-	typename rwlibs::task::Target<T>::Ptr readTarget(rw::common::Ptr<rw::common::DOMElem> element);
+	typename rwlibs::task::Motion<T>::Ptr readMotion(rw::core::Ptr<rw::core::DOMElem> element);
 
 	template <class T>
-	void readTargets(rw::common::Ptr<rw::common::DOMElem> element, typename rwlibs::task::Task<T>::Ptr task);
+	typename rwlibs::task::Target<T>::Ptr readTarget(rw::core::Ptr<rw::core::DOMElem> element);
 
 	template <class T>
-	void readEntities(rw::common::Ptr<rw::common::DOMElem> element, typename rwlibs::task::Task<T>::Ptr task);
+	void readTargets(rw::core::Ptr<rw::core::DOMElem> element, typename rwlibs::task::Task<T>::Ptr task);
+
+	template <class T>
+	void readEntities(rw::core::Ptr<rw::core::DOMElem> element, typename rwlibs::task::Task<T>::Ptr task);
 
 
 
-	void readAugmentations(rw::common::Ptr<rw::common::DOMElem> element, rwlibs::task::TaskBase::Ptr task);
+	void readAugmentations(rw::core::Ptr<rw::core::DOMElem> element, rwlibs::task::TaskBase::Ptr task);
 
 
 	template <class T>
-	typename rwlibs::task::Task<T>::Ptr readTemplateTask(rw::common::Ptr<rw::common::DOMElem> element);
+	typename rwlibs::task::Task<T>::Ptr readTemplateTask(rw::core::Ptr<rw::core::DOMElem> element);
     
 private:
 	typedef std::map<std::string, rwlibs::task::TargetBase::Ptr> TargetMap;

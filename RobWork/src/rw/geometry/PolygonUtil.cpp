@@ -20,9 +20,9 @@
 #include <list>
 #include <stack>
 
-#include <rw/common/Log.hpp>
+#include <rw/core/LogWriter.hpp>
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::math;
 using namespace rw::geometry;
 

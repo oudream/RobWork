@@ -35,9 +35,9 @@ namespace control {
 
     public:
 
-        typedef rw::common::Ptr<SuctionCupController> Ptr;
+        typedef rw::core::Ptr<SuctionCupController> Ptr;
 
-        SuctionCupController(const std::string& name, rw::common::Ptr<rwsim::dynamics::SuctionCup> dev);
+        SuctionCupController(const std::string& name, rw::core::Ptr<rwsim::dynamics::SuctionCup> dev);
 
         virtual ~SuctionCupController();
 
@@ -57,7 +57,7 @@ namespace control {
         bool isEnabled() const { return _enabled; }
 
     private:
-        rw::common::Ptr<rwsim::dynamics::SuctionCup> _dev;
+        rw::core::Ptr<rwsim::dynamics::SuctionCup> _dev;
 
         //rwsim::sensor::SuctionCupSensor::Ptr _sensor;
         std::vector<Spring> _springs;

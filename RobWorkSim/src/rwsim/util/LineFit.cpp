@@ -16,7 +16,7 @@
  ********************************************************************************/
 
 #include "LineFit.hpp"
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 #include <rw/math/Constants.hpp>
 #include <rw/use_robwork_namespace.hpp>
 

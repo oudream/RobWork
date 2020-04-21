@@ -24,7 +24,7 @@
  */
 
 #include <rw/math/Transform3D.hpp>
-#include <rw/common/PropertyMap.hpp>
+#include <rw/core/PropertyMap.hpp>
 #include <rw/kinematics/FKRange.hpp>
 
 #include "IterativeIK.hpp"
@@ -91,17 +91,17 @@ namespace rw { namespace invkin {
         /**
          * @copydoc InvKinSolver::getTCP
          */
-        virtual rw::common::Ptr< const rw::kinematics::Frame > getTCP() const;            
+        virtual rw::core::Ptr< const rw::kinematics::Frame > getTCP() const;            
 
     private:
         double _maxQuatStep;
 
         const models::SerialDevice* _device;
 
-        common::PropertyMap _properties;
+        core::PropertyMap _properties;
 
         kinematics::FKRange _fkrange;
-        rw::common::Ptr<rw::models::JacobianCalculator> _devJac;
+        rw::core::Ptr<rw::models::JacobianCalculator> _devJac;
 
     };
 

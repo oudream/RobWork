@@ -42,7 +42,7 @@ namespace sensor {
 class TactileArrayModel : public SensorModel {
 public:
     //! smart pointer type
-    typedef rw::common::Ptr<TactileArrayModel> Ptr;
+    typedef rw::core::Ptr<TactileArrayModel> Ptr;
 
     //! type of tactile array readings
     typedef Eigen::MatrixXf ValueMatrix;
@@ -150,8 +150,8 @@ protected:
     //! cache to store state information
     class TactileModelCache: public rw::kinematics::StateCache {
 	public:
-		typedef rw::common::Ptr<TactileModelCache> Ptr;
-		rw::common::Ptr<ValueMatrix> _data;
+		typedef rw::core::Ptr<TactileModelCache> Ptr;
+		rw::core::Ptr<ValueMatrix> _data;
 
 		//! constructor
 		TactileModelCache()
@@ -166,10 +166,10 @@ protected:
 			return stmp;
 		};
 
-		virtual rw::common::Ptr<StateCache> clone() const{
-			TactileModelCache::Ptr cache = rw::common::ownedPtr( new TactileModelCache(*this) );
+		virtual rw::core::Ptr<StateCache> clone() const{
+			TactileModelCache::Ptr cache = rw::core::ownedPtr( new TactileModelCache(*this) );
 			if(_data!=NULL)
-				cache->_data = rw::common::ownedPtr( new ValueMatrix( *_data ));
+				cache->_data = rw::core::ownedPtr( new ValueMatrix( *_data ));
 			return cache;
 		};
 	};

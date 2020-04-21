@@ -37,6 +37,7 @@
 #include <iomanip>
 
 using namespace rw::common;
+using namespace rw::core;
 using namespace rw::geometry;
 using namespace rw::kinematics;
 using namespace rw::math;
@@ -72,7 +73,7 @@ private:
 
 ContactDetector::ContactDetector(WorkCell::Ptr wc, ProximityFilterStrategy::Ptr filter):
 	_wc(wc),
-	_bpfilter(filter == NULL ? ownedPtr( new BasicFilterStrategy(wc) ) : filter),
+	_bpfilter(filter == NULL ? rw::core::ownedPtr( new BasicFilterStrategy(wc) ) : filter),
 	_orderFramePairs(new OrderFramePairs(wc)),
 	_timer(0)
 {
@@ -170,7 +171,7 @@ ContactDetector::StrategyTable ContactDetector::getContactStrategies(const std::
 	return res;
 }
 
-ContactDetector::StrategyTable ContactDetector::getContactStrategies(const std::string& frameA, rw::common::Ptr<const GeometryData> geometryA, const std::string& frameB, rw::common::Ptr<const GeometryData> geometryB) const {
+ContactDetector::StrategyTable ContactDetector::getContactStrategies(const std::string& frameA, rw::core::Ptr<const GeometryData> geometryA, const std::string& frameB, rw::core::Ptr<const GeometryData> geometryB) const {
 	StrategyTable res;
 	StrategyTable table = getContactStrategies(frameA,frameB);
 	std::list<StrategyTableRow>::const_iterator it;
@@ -279,13 +280,13 @@ void ContactDetector::setDefaultStrategies(const PropertyMap& map) {
     if (spheres > 1) {
     	ContactStrategy* strat = new BallBallStrategy();
     	strat->setPropertyMap(map);
-    	addContactStrategy(ownedPtr(strat), pri);
+    	addContactStrategy(rw::core::ownedPtr(strat), pri);
     	pri++;
     }
 #ifdef RW_HAVE_PQP
 	ContactStrategy* strat = new ContactStrategyPQP();
 	strat->setPropertyMap(map);
-    addContactStrategy(ownedPtr(strat),pri);
+    addContactStrategy(rw::core::ownedPtr(strat),pri);
 #endif
 }
 
@@ -424,7 +425,7 @@ std::vector<Contact> ContactDetector::findContacts(const State& state, ContactDe
 					if (stratMatch.strategy->match(geoA->getGeometryData(),geoB->getGeometryData())) {
 						SimulatorLogScope::Ptr stratLog = NULL;
 						if (log != NULL) {
-							stratLog = ownedPtr(new SimulatorLogScope(log));
+							stratLog = rw::core::ownedPtr(new SimulatorLogScope(log));
 							stratLog->setDescription(pair.first->getName() + "-" + pair.second->getName());
 							stratLog->setFilename(__FILE__);
 							stratLog->setLineBegin(__LINE__);
@@ -490,7 +491,7 @@ std::vector<Contact> ContactDetector::updateContacts(const State& state, Contact
 		const Frame* const frameB = info.frames.second;
 		SimulatorLogScope::Ptr stratLog = NULL;
 		if (log != NULL) {
-			stratLog = ownedPtr(new SimulatorLogScope(log));
+			stratLog = rw::core::ownedPtr(new SimulatorLogScope(log));
 			stratLog->setDescription(frameA->getName() + "-" + frameB->getName());
 			stratLog->setFilename(__FILE__);
 			stratLog->setLineBegin(__LINE__);
@@ -682,13 +683,13 @@ void ContactDetector::printTable(const std::vector<std::vector<Cell> > &table, s
 }
 
 ContactDetector::Ptr ContactDetector::makeDefault(WorkCell::Ptr workcell) {
-	ContactDetector::Ptr def = ownedPtr(new ContactDetector(workcell));
+	ContactDetector::Ptr def = rw::core::ownedPtr(new ContactDetector(workcell));
 	def->setDefaultStrategies();
 	return def;
 }
 
 ContactDetector::Ptr ContactDetector::makeDefault(WorkCell::Ptr workcell, const PropertyMap& map) {
-	ContactDetector::Ptr def = ownedPtr(new ContactDetector(workcell));
+	ContactDetector::Ptr def = rw::core::ownedPtr(new ContactDetector(workcell));
 	def->setDefaultStrategies(map);
 	return def;
 }

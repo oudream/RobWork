@@ -27,6 +27,7 @@
 #include "LogStep.hpp"
 
 using namespace rw::common;
+using namespace rw::core;
 using namespace rwsim::log;
 
 SimulatorLogScope::SimulatorLogScope(SimulatorLogScope* parent):
@@ -120,7 +121,7 @@ void SimulatorLogScope::appendChild(SimulatorLog::Ptr child) {
 	_statistics = NULL;
 }
 
-rw::common::Ptr<const SimulatorStatistics> SimulatorLogScope::getStatistics() {
+rw::core::Ptr<const SimulatorStatistics> SimulatorLogScope::getStatistics() {
 	if (_statistics == NULL) {
 		_statistics = ownedPtr(new SimulatorStatistics(this));
 	}

@@ -21,8 +21,6 @@
 #include <boost/thread/mutex.hpp>
 #include <boost/thread/condition.hpp>
 
-using namespace rw::common;
-
 /**
  * @brief Concurrent queue of WorkPiles
  *

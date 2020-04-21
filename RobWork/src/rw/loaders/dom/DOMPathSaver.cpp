@@ -17,7 +17,8 @@
 
 #include "DOMPathSaver.hpp"
 
-#include <rw/common/DOMParser.hpp>
+#include <rw/core/DOMParser.hpp>
+#include <rw/core/Exception.hpp>
 #include <rw/loaders/dom/DOMPathLoader.hpp>
 #include <rw/loaders/dom/DOMBasisTypes.hpp>
 
@@ -25,7 +26,7 @@ using namespace rw::trajectory;
 using namespace rw::loaders;
 using namespace rw::math;
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::kinematics;
 
 DOMPathSaver::Initializer::Initializer() {
@@ -202,10 +203,10 @@ void DOMPathSaver::write(const TimedStatePath& path, std::ostream& outstream) {
 
 //------------------------------------------------------------------------
 
-rw::common::DOMElem::Ptr DOMPathSaver::createTransform3DPath(const rw::trajectory::Transform3DPath &path, rw::common::DOMElem::Ptr doc) {
+rw::core::DOMElem::Ptr DOMPathSaver::createTransform3DPath(const rw::trajectory::Transform3DPath &path, rw::core::DOMElem::Ptr doc) {
     return createElement<Transform3D<>, Transform3DPath>(path, DOMPathLoader::idT3DPath(), doc);
 }
 
-rw::common::DOMElem::Ptr DOMPathSaver::createQPath(const rw::trajectory::QPath &path, rw::common::DOMElem::Ptr doc) {
+rw::core::DOMElem::Ptr DOMPathSaver::createQPath(const rw::trajectory::QPath &path, rw::core::DOMElem::Ptr doc) {
     return createElement<Q, QPath>(path, DOMPathLoader::idQPath(), doc);
 }

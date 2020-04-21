@@ -22,6 +22,7 @@
 
 #include <rw/graphics/Model3D.hpp>
 #include <rw/graphics/Render.hpp>
+#include <rw/core/Ptr.hpp>
 
 namespace rwlibs { namespace opengl {
     class RWGLTexture;
@@ -40,7 +41,7 @@ namespace rwlibs { namespace opengl {
 
       public:
         //! @brief smart pointer type to this class
-        typedef rw::common::Ptr< RenderModel3D > Ptr;
+        typedef rw::core::Ptr< RenderModel3D > Ptr;
 
         /**
          * @brief constructor.
@@ -113,7 +114,7 @@ namespace rwlibs { namespace opengl {
                              rw::graphics::DrawableNode::DrawType type, double alpha,
                              bool disableMaterials) const;
 
-        std::vector< rw::common::Ptr< rwlibs::opengl::RWGLTexture > > _textures;
+        std::vector< rw::core::Ptr< rwlibs::opengl::RWGLTexture > > _textures;
         // bool _shownormals;
     };
 

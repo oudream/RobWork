@@ -36,7 +36,7 @@
 #include <RobWorkStudio.hpp>
 
 #include <rw/math/Transform3D.hpp>
-#include <rw/common/StringUtil.hpp>
+#include <rw/core/StringUtil.hpp>
 //#include <rw/models/Device.hpp>
 #include <rwlibs/opengl/Drawable.hpp>
 
@@ -48,9 +48,9 @@
 #include <rwsim/simulator/DynamicSimulator.hpp>
 #include <rwsim/simulator/PhysicsEngine.hpp>
 
-#include <rw/common/Log.hpp>
-#include <rw/common/Exception.hpp>
-#include <rw/common/LogStreamWriter.hpp>
+#include <rw/core/Log.hpp>
+#include <rw/core/Exception.hpp>
+#include <rw/core/LogStreamWriter.hpp>
 
 #include <sstream>
 #include <fstream>
@@ -60,6 +60,7 @@
 
 using namespace rw::math;
 using namespace rw::common;
+using namespace rw::core;
 using rw::graphics::Render;
 using rw::trajectory::Timed;
 using rw::kinematics::State;
@@ -493,7 +494,7 @@ void RWSimulatorPlugin::open(){
 void RWSimulatorPlugin::open(const std::string& file)
 {
     if (!file.empty()){
-        _previousOpenDirectory = rw::common::StringUtil::getDirectoryName(file);
+        _previousOpenDirectory = rw::core::StringUtil::getDirectoryName(file);
 
         try {
         	_dworkcell = DynamicWorkCellLoader::load(file);

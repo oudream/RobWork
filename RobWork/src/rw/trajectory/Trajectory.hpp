@@ -18,7 +18,7 @@
 #ifndef RW_TRAJECTORY_TRAJECTORY_HPP
 #define RW_TRAJECTORY_TRAJECTORY_HPP
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/math/Q.hpp>
 #include <rw/math/Vector3D.hpp>
 #include <rw/math/Rotation3D.hpp>
@@ -42,7 +42,7 @@ class Trajectory
 {
 public:
     //! @brief smart pointer type
-    typedef rw::common::Ptr<Trajectory<T> > Ptr;
+    typedef rw::core::Ptr<Trajectory<T> > Ptr;
 
     /**
      * @brief Destructor

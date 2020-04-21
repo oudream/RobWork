@@ -55,7 +55,7 @@ class PluginRepository
 {
 public:
 	//! @brief Smart pointer type for PluginRepository.
-    typedef rw::common::Ptr<PluginRepository> Ptr;
+    typedef rw::core::Ptr<PluginRepository> Ptr;
 
     /**
      * @brief Constructs an empty repository
@@ -71,7 +71,7 @@ public:
      * @brief Loads in a PluginFactoryBase from a file.
      * 
      * If the file could not be loaded or does not contain an object of type
-     * PluginFactoryBase a rw::common::Exception is thrown.
+     * PluginFactoryBase a rw::core::Exception is thrown.
      *
      * @param filename [in] File to load
      */
@@ -81,7 +81,7 @@ public:
      * @brief Attempts to load all dll files in folder
      *
      * If finding a dll file which can not be loaded or does not contain an object of type
-     * PluginFactoryBase a rw::common::Exception is thrown.
+     * PluginFactoryBase a rw::core::Exception is thrown.
      * 
      * @param path [in] Path from which to attempt for load plugins
      * @param searchSubFolders [in] True to search recursively into subfolders.
@@ -123,16 +123,16 @@ public:
     std::map<std::string, PluginFactoryBase::Ptr>& getAllPlugins();
 
     /**
-     * @brief Returns all rw::common::PluginFactory<T> instances which matches the template argument T
+     * @brief Returns all rw::core::PluginFactory<T> instances which matches the template argument T
      *
      * @return List of all factories matching T 
      */
     template <class T>
-    std::vector<rw::common::Ptr<PluginFactory<T> > > getPlugins() {
-        std::vector<rw::common::Ptr<PluginFactory<T> > > result;
+    std::vector<rw::core::Ptr<PluginFactory<T> > > getPlugins() {
+        std::vector<rw::core::Ptr<PluginFactory<T> > > result;
 		
         for (std::map<std::string, PluginFactoryBase::Ptr>::iterator it = _str2constructorMap.begin(); it != _str2constructorMap.end(); ++it) {
-            rw::common::Ptr<PluginFactory<T> > factory = (*it).second.cast<PluginFactory<T> >();
+            rw::core::Ptr<PluginFactory<T> > factory = (*it).second.cast<PluginFactory<T> >();
             if (factory != NULL)
                 result.push_back(factory);
 

@@ -25,7 +25,7 @@
  */
 
 #include "SimulatorLogEntry.hpp"
-
+#include <rw/core/Ptr.hpp>
 #include <rw/math/Rotation3D.hpp>
 #include <rw/math/Vector3D.hpp>
 
@@ -40,7 +40,7 @@ namespace log {
 class LogConstraints: public SimulatorLogEntry {
 public:
     //! Smart pointer type of LogConstraints
-    typedef rw::common::Ptr<LogConstraints> Ptr;
+    typedef rw::core::Ptr<LogConstraints> Ptr;
 
     //! @copydoc SimulatorLogEntry::SimulatorLogEntry
     LogConstraints(SimulatorLogScope* parent);

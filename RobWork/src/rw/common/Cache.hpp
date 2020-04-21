@@ -18,8 +18,8 @@
 #ifndef RW_COMMON_CACHE_HPP
 #define RW_COMMON_CACHE_HPP
 
-#include <rw/common/Ptr.hpp>
-#include <rw/common/macros.hpp>
+#include <rw/core/Ptr.hpp>
+#include <rw/core/macros.hpp>
 #include <map>
 
 namespace rw { namespace common {
@@ -35,7 +35,7 @@ namespace rw { namespace common {
 	{
 	public:
 	    //! @brief smart pointer type to this class
-	    typedef rw::common::Ptr<Cache> Ptr;
+	    typedef rw::core::Ptr<Cache> Ptr;
 
 		/**
 		 * @brief default constructor
@@ -68,7 +68,7 @@ namespace rw { namespace common {
 		/**
 		 * @brief gets the value that is associated with the key
 		 */
-		rw::common::Ptr<VAL> get(const KEY& key){
+		rw::core::Ptr<VAL> get(const KEY& key){
 			if( _map.find(key) == _map.end() )
 				RW_THROW("Key does not exist!");
 			return _map[key];
@@ -79,14 +79,14 @@ namespace rw { namespace common {
 		 * time. The rights to val is taken ower by this class.
 		 */
 		void add(const KEY& key, VAL *val){
-			_map[key] = ownedPtr( val );
+			_map[key] = rw::core::ownedPtr( val );
 		}
 
 		/**
 		 * @brief Ads a value to a key that was aquired at some specific
 		 * time. The rights to value is not changed.
 		 */
-		void add(const KEY& key, rw::common::Ptr<VAL> &val){
+		void add(const KEY& key, rw::core::Ptr<VAL> &val){
 			_map[key] = val;
 		}
 
@@ -105,7 +105,7 @@ namespace rw { namespace common {
 		}
 
 	private:
-		typedef std::map<KEY, rw::common::Ptr<VAL> > KeyToValMap;
+		typedef std::map<KEY, rw::core::Ptr<VAL> > KeyToValMap;
 		KeyToValMap _map;
 	};
     /*@}*/

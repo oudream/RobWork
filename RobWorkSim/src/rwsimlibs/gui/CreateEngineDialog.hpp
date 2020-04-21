@@ -9,7 +9,7 @@
 #define CREATEENGINEDIALOG_HPP_
 
 #include <rwsim/simulator/DynamicSimulator.hpp>
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include <QObject>
 #include <QDialog>
@@ -25,7 +25,7 @@ class CreateEngineDialog : public QDialog
 	Q_OBJECT
 
 public:
-	CreateEngineDialog(rw::common::Ptr<rwsim::dynamics::DynamicWorkCell> dwc, QWidget *parent = 0);
+	CreateEngineDialog(rw::core::Ptr<rwsim::dynamics::DynamicWorkCell> dwc, QWidget *parent = 0);
 
 	rwsim::simulator::DynamicSimulator::Ptr getSimulator(){ return _sim; };
 
@@ -36,7 +36,7 @@ private slots:
 private:
 	Ui::CreateEngineDialog *_ui;
 	rwsim::simulator::DynamicSimulator::Ptr _sim;
-	rw::common::Ptr<rwsim::dynamics::DynamicWorkCell> _dwc;
+	rw::core::Ptr<rwsim::dynamics::DynamicWorkCell> _dwc;
 };
 
 

@@ -15,16 +15,18 @@
  * limitations under the License.
  ********************************************************************************/
 
+#include <rw/core/Exception.hpp>
 #include <rw/geometry/Geometry.hpp>
 #include <rw/geometry/Sphere.hpp>
 #include <rw/kinematics/MovableFrame.hpp>
 #include <rw/kinematics/StateStructure.hpp>
 #include <rw/models/RigidObject.hpp>
 #include <rw/proximity/ProximityStrategy.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include <gtest/gtest.h>
 
-using rw::common::ownedPtr;
+using rw::core::ownedPtr;
 using namespace rw::geometry;
 using namespace rw::kinematics;
 using namespace rw::models;
@@ -182,7 +184,7 @@ TEST_P (ProximityStrategyTest, GeometryIDs)
     try {
         error_raised = !strategy->addModel (frame, geom1B);
     }
-    catch (rw::common::Exception& e) {
+    catch (rw::core::Exception& e) {
         error_raised = true;
     }
 	//TODO(kalor) find ud af om den skal være false eller true

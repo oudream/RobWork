@@ -18,13 +18,13 @@
 #include "Cone.hpp"
 
 #include <rw/math/Constants.hpp>
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 #include "PlainTriMesh.hpp"
 #include <rw/math/Vector2D.hpp>
 
 using namespace rw::geometry;
 using namespace rw::math;
-using namespace rw::common;
+using namespace rw::core;
 
 Cone::Cone(const rw::math::Q& initQ, int levels):
     Primitive(levels)

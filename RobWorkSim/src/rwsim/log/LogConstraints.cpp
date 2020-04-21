@@ -23,6 +23,7 @@
 #include <rw/common/OutputArchive.hpp>
 
 using namespace rw::common;
+using namespace rw::core;
 using namespace rw::math;
 using namespace rwsim::log;
 

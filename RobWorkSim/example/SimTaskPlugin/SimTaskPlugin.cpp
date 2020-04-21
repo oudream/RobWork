@@ -41,6 +41,7 @@
 #include <stack>
 
 using namespace rw::common;
+using namespace rw::core;
 using rw::geometry::GeometryUtil;
 using namespace rw::graspplanning;
 using namespace rw::kinematics;
@@ -546,8 +547,8 @@ void SimTaskPlugin::saveConfig(){
     }
 }
 
-rw::common::PropertyMap& SimTaskPlugin::settings(){
-    return getRobWorkStudio()->getPropertyMap().get<rw::common::PropertyMap>("RobWorkStudioSettings");
+rw::core::PropertyMap& SimTaskPlugin::settings(){
+    return getRobWorkStudio()->getPropertyMap().get<rw::core::PropertyMap>("RobWorkStudioSettings");
 }
 
 

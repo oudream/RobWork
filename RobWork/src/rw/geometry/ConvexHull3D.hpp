@@ -37,7 +37,7 @@ namespace geometry {
 	class ConvexHull3D {
 	public:
 	    //! smart pointer type of this class
-	    typedef rw::common::Ptr<ConvexHull3D> Ptr;
+	    typedef rw::core::Ptr<ConvexHull3D> Ptr;
 
 	    //! destructor
 	    virtual ~ConvexHull3D(){};

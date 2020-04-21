@@ -34,7 +34,7 @@ namespace graphics {
     public:
 
         //! @brief smart pointer type of this class
-        typedef rw::common::Ptr<GroupNode> Ptr;
+        typedef rw::core::Ptr<GroupNode> Ptr;
 
         //! @brief constructor
         GroupNode(const std::string& name);

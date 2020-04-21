@@ -8,7 +8,7 @@
 #include <rwsim/dynamics/RigidDevice.hpp>
 #include <rwsim/util/RecursiveNewtonEuler.hpp>
 
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 #include <rw/math/Wrench6D.hpp>
 #include <rw/sensor/FTSensor.hpp>
 
@@ -17,13 +17,13 @@ using namespace rwsim::dynamics;
 using namespace rwsim::util;
 
 using namespace rw::math;
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::trajectory;
 using namespace rw::kinematics;
 
 SerialDeviceController::SerialDeviceController(
 		const std::string& name, DynamicDevice::Ptr ddev):
-		SimulatedController(rw::common::ownedPtr(new rw::models::ControllerModel(name,ddev->getKinematicModel()->getBase()))),
+		SimulatedController(rw::core::ownedPtr(new rw::models::ControllerModel(name,ddev->getKinematicModel()->getBase()))),
 	_ddev(ddev),
 	_currentQ(Q::zero(ddev->getModel().getDOF())),
 	_currentQd(Q::zero(ddev->getModel().getDOF())),
@@ -53,7 +53,7 @@ SerialDeviceController::SerialDeviceController(
 
 SerialDeviceController::SerialDeviceController(
 		const std::string& name, RigidDevice::Ptr ddev):
-		SimulatedController(rw::common::ownedPtr(new rw::models::ControllerModel(name,ddev->getKinematicModel()->getBase()))),
+		SimulatedController(rw::core::ownedPtr(new rw::models::ControllerModel(name,ddev->getKinematicModel()->getBase()))),
 	_ddev(ddev),
 	_rdev(ddev),
 	_currentQ(Q::zero(ddev->getModel().getDOF())),
@@ -262,8 +262,8 @@ SerialDeviceController::CompiledTarget SerialDeviceController::makeTrajectory(
 		double timeGuess = t3d_metric->distance(lastT, targets.back().lin_target);
 		//std::cout << "TIMEGUESS: " << timeGuess << std::endl;
 		LinearInterpolator<Transform3D<> >::Ptr ramp =
-	            rw::common::ownedPtr( new LinearInterpolator<Transform3D<> >( lastT , targets.back().lin_target,timeGuess /* *(100.0/targets.back().speed )*/ ));
-	    InterpolatorTrajectory<Transform3D<> >::Ptr  ttraj = rw::common::ownedPtr( new InterpolatorTrajectory<Transform3D<> >() );
+	            rw::core::ownedPtr( new LinearInterpolator<Transform3D<> >( lastT , targets.back().lin_target,timeGuess /* *(100.0/targets.back().speed )*/ ));
+	    InterpolatorTrajectory<Transform3D<> >::Ptr  ttraj = rw::core::ownedPtr( new InterpolatorTrajectory<Transform3D<> >() );
 	    ttraj->add(ramp);
 	    ctarget.t3dtraj = ttraj;
 

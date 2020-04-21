@@ -20,11 +20,12 @@
 
 #include <QMainWindow>
 
-#include <rw/common/PropertyMap.hpp>
+#include <rw/core/PropertyMap.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include <map>
 
-namespace rw { namespace common { class Log; } }
+namespace rw { namespace core { class Log; } }
 namespace rwlibs { namespace swig { class LuaState; } }
 
 class CodeEditor;
@@ -58,7 +59,7 @@ namespace rws {
          * @param rwstudio [in] instance of RobWorkStudio
          * @param parent [in] the Qt parent widget
          */
-        LuaEditorWindow(rw::common::Ptr<rwlibs::swig::LuaState> lua, rw::common::Ptr<rw::common::Log> output, rws::RobWorkStudio* rwstudio, QWidget *parent);
+        LuaEditorWindow(rw::core::Ptr<rwlibs::swig::LuaState> lua, rw::core::Ptr<rw::core::Log> output, rws::RobWorkStudio* rwstudio, QWidget *parent);
 
         //! @brief destructor
         virtual ~LuaEditorWindow();
@@ -67,7 +68,7 @@ namespace rws {
          * @brief change the lua state
          * @param lua [in] the new lua state which is to be used.
          */
-        void setLuaState(rw::common::Ptr<rwlibs::swig::LuaState> lua){_lua = lua;}
+        void setLuaState(rw::core::Ptr<rwlibs::swig::LuaState> lua){_lua = lua;}
 
     public Q_SLOTS:
         void on_actionNew_triggered(bool);
@@ -89,7 +90,7 @@ namespace rws {
         QAbstractItemModel *modelFromFile(const QString& fileName, TreeModelCompleter* completer);
 
         struct EditorTab {
-        	typedef rw::common::Ptr<EditorTab> Ptr;
+        	typedef rw::core::Ptr<EditorTab> Ptr;
         	std::string _id;
         	CodeEditor *_editor;
             LuaHighlighter *_highlighter;
@@ -108,9 +109,9 @@ namespace rws {
         std::map<QWidget*, EditorTab::Ptr> _editors;
         class Ui::LuaEditorWindow *_ui;
 
-        rw::common::Ptr<rwlibs::swig::LuaState> _lua;
-        rw::common::Ptr<rw::common::Log> _output;
-        rw::common::PropertyMap _pmap;
+        rw::core::Ptr<rwlibs::swig::LuaState> _lua;
+        rw::core::Ptr<rw::core::Log> _output;
+        rw::core::PropertyMap _pmap;
 
         bool _isRunning;
 

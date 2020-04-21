@@ -6,7 +6,7 @@
 #include <rwsim/dynamics/DynamicWorkCell.hpp>
 
 using rw::math::Transform3D;
-using rw::common::PropertyMap;
+using rw::core::PropertyMap;
 using rw::kinematics::Kinematics;
 using rwsim::dynamics::Body;
 

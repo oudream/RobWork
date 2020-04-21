@@ -23,7 +23,7 @@
  * @file Render.hpp
  */
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include "DrawableNode.hpp"
 namespace rw { namespace graphics {
 
@@ -38,7 +38,7 @@ namespace rw { namespace graphics {
     class Render {
     public:
         //! @brief smart pointer type to this class
-        typedef rw::common::Ptr<Render> Ptr;
+        typedef rw::core::Ptr<Render> Ptr;
 
         /**
          * @brief when calling render on the draw mode or type
@@ -68,7 +68,7 @@ namespace rw { namespace graphics {
         Render& operator=(const Render&);
     };
     //! smart pointer type
-    typedef rw::common::Ptr<Render> RenderPtr;
+    typedef rw::core::Ptr<Render> RenderPtr;
 
     /*@}*/
 }} // end namespaces

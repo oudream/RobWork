@@ -23,7 +23,7 @@
  * @file ClosedFormIK.hpp
  */
 #include "InvKinSolver.hpp"
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 namespace rw { namespace models { class Device; } }
 
@@ -49,7 +49,7 @@ namespace rw { namespace invkin {
     {
     public:
 		//! @brief smart pointer type to this class
-		typedef rw::common::Ptr<ClosedFormIK> Ptr;
+		typedef rw::core::Ptr<ClosedFormIK> Ptr;
 
 		/**
            @brief Closed-form IK solver for a device.

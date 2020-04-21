@@ -23,7 +23,7 @@ namespace geometry {
  */
 class TriMeshSurfaceSampler {
 public:
-    typedef rw::common::Ptr<TriMeshSurfaceSampler> Ptr;
+    typedef rw::core::Ptr<TriMeshSurfaceSampler> Ptr;
 
     //! constructor
     TriMeshSurfaceSampler();

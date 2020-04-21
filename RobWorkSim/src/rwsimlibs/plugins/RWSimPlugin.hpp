@@ -10,7 +10,7 @@
 
 #include "ui_RWSimPlugin.h"
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/trajectory/Path.hpp>
 
 #include <rws/RobWorkStudioPlugin.hpp>
@@ -105,7 +105,7 @@ class RWSimPlugin : public rws::RobWorkStudioPlugin, private Ui::RWSimPlugin
     protected:
     	void updateStatus();
 
-    	rw::common::PropertyMap& settings();
+    	rw::core::PropertyMap& settings();
 
     private:
 
@@ -119,8 +119,8 @@ class RWSimPlugin : public rws::RobWorkStudioPlugin, private Ui::RWSimPlugin
 
         QTimer *_timer;
         UserContext _context;
-        rw::common::Ptr<rwsim::dynamics::DynamicWorkCell> _dwc;
-        rw::common::Ptr<rwsim::simulator::ThreadSimulator> _sim;
+        rw::core::Ptr<rwsim::dynamics::DynamicWorkCell> _dwc;
+        rw::core::Ptr<rwsim::simulator::ThreadSimulator> _sim;
 
         rw::kinematics::State _state;
 
@@ -128,7 +128,7 @@ class RWSimPlugin : public rws::RobWorkStudioPlugin, private Ui::RWSimPlugin
 
         rw::trajectory::TimedStatePath _path;
         rwlibs::opengl::Drawable *_debugDrawable;
-        rw::common::Ptr<rwsim::drawable::SimulatorDebugRender> _debugRender;
+        rw::core::Ptr<rwsim::drawable::SimulatorDebugRender> _debugRender;
 
         bool _openCalled;
 

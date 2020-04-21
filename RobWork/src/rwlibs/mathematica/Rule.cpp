@@ -19,7 +19,7 @@
 #include "List.hpp"
 
 #include <rw/common/PropertyBase.hpp>
-#include <rw/common/PropertyMap.hpp>
+#include <rw/core/PropertyMap.hpp>
 #include <rw/math/Vector2D.hpp>
 #include <rw/math/Vector3D.hpp>
 #include <rw/math/Q.hpp>
@@ -84,8 +84,8 @@ Rule::Rule(const PropertyBase& property):
 Rule::~Rule() {
 }
 
-std::list<rw::common::Ptr<const Mathematica::Expression> > Rule::getArguments() const {
-	std::list<rw::common::Ptr<const Mathematica::Expression> > res;
+std::list<rw::core::Ptr<const Mathematica::Expression> > Rule::getArguments() const {
+	std::list<rw::core::Ptr<const Mathematica::Expression> > res;
 	res.push_back(_name);
 	res.push_back(_value);
 	return res;
@@ -113,9 +113,9 @@ std::list<Rule::Ptr> Rule::toRules(const PropertyMap& options) {
 	return rules;
 }
 
-PropertyMap::Ptr Rule::toPropertyMap(const std::list<rw::common::Ptr<const Mathematica::Expression> >& rules) {
+PropertyMap::Ptr Rule::toPropertyMap(const std::list<rw::core::Ptr<const Mathematica::Expression> >& rules) {
 	const PropertyMap::Ptr map = ownedPtr(new PropertyMap());
-	for(rw::common::Ptr<const Mathematica::Expression> rule : rules) {
+	for(rw::core::Ptr<const Mathematica::Expression> rule : rules) {
 		map->add(toProperty(*rule));
 	}
 	return map;
@@ -127,18 +127,18 @@ PropertyBase::Ptr Rule::toProperty(const Mathematica::Expression& rule) {
 	const Mathematica::FunctionBase& fct = dynamic_cast<const Mathematica::FunctionBase&>(rule);
 	if (fct.getName() != "Rule")
 		RW_THROW("Expected function with name Rule, not " << fct.getName() << ".");
-	const std::list<rw::common::Ptr<const Mathematica::Expression> >& args = fct.getArguments();
+	const std::list<rw::core::Ptr<const Mathematica::Expression> >& args = fct.getArguments();
 	if (args.size() != 2)
 		RW_THROW("Expected two arguments for Rule function expression (" << args.size() << " found).");
 
 	// Find name of rule
-	rw::common::Ptr<const Mathematica::Expression> nameArg = args.front();
+	rw::core::Ptr<const Mathematica::Expression> nameArg = args.front();
 	if (nameArg->getType() != Mathematica::Expression::Symbol)
 		RW_THROW("First argument of Rule expression was not a Symbol.");
 	const std::string name = nameArg.cast<const Mathematica::Symbol>()->getName();
 
 	// Find value of rule
-	rw::common::Ptr<const Mathematica::Expression> valueArg = args.back();
+	rw::core::Ptr<const Mathematica::Expression> valueArg = args.back();
 	switch(valueArg->getType()) {
 	    case Mathematica::Expression::Array:
 	    {

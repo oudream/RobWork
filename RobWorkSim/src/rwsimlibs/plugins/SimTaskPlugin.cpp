@@ -19,6 +19,7 @@
 //#include <fstream>
 #include <sstream>
 
+using namespace rw::core;
 using namespace rw::common;
 using namespace rw::models;
 using namespace rw::kinematics;
@@ -380,8 +381,8 @@ void SimTaskPlugin::updateConfig(){
 
 }
 
-rw::common::PropertyMap& SimTaskPlugin::settings(){
-    return getRobWorkStudio()->getPropertyMap().get<rw::common::PropertyMap>("RobWorkStudioSettings");
+rw::core::PropertyMap& SimTaskPlugin::settings(){
+    return getRobWorkStudio()->getPropertyMap().get<rw::core::PropertyMap>("RobWorkStudioSettings");
 }
 
 
@@ -440,7 +441,7 @@ GraspTask::Ptr SimTaskPlugin::generateTasks(int nrTasks){
     if(body==NULL){
         RW_THROW("OBJECT DOES NOT EXIST: " << objectName);
     }
-    std::vector<rw::common::Ptr<Geometry> > geoms = body->getGeometry();
+    std::vector<rw::core::Ptr<Geometry> > geoms = body->getGeometry();
     SurfacePoseSampler ssurf( geoms );
     ssurf.setRandomRotationEnabled(false);
 

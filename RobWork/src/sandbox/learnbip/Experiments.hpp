@@ -8,14 +8,14 @@
 #ifndef EXPERIMENTS_HPP_
 #define EXPERIMENTS_HPP_
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/sensor/Contact3D.hpp>
 #include <rwlibs/task/Task.hpp>
 #include <rwlibs/task/GraspTask.hpp>
 
 class Experiments {
 public:
-    typedef rw::common::Ptr<Experiments> Ptr;
+    typedef rw::core::Ptr<Experiments> Ptr;
 
     Experiments(){}
 
@@ -34,7 +34,7 @@ private:
 
 
 struct Experiment {
-    typedef rw::common::Ptr<Experiment> Ptr;
+    typedef rw::core::Ptr<Experiment> Ptr;
 
     Experiment():id(-1),testStatus(rwlibs::task::GraspTask::UnInitialized){}
 

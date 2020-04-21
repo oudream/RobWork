@@ -61,7 +61,7 @@ public:
     void loadConfig(bool automatic);
     void saveConfig();
     //void updateConfig();
-    rw::common::PropertyMap& settings();
+    rw::core::PropertyMap& settings();
 
 private slots:
     void updateVis();

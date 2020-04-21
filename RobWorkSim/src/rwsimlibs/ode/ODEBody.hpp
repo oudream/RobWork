@@ -68,7 +68,7 @@ namespace simulator {
 		 * @param conID [in]
 		 */
 		ODEBody(dBodyID odeBody,
-				rw::common::Ptr<rwsim::dynamics::RigidBody> rwbody,
+				rw::core::Ptr<rwsim::dynamics::RigidBody> rwbody,
 				rw::math::Vector3D<> offset,
 				int matID, int conID);
 
@@ -95,7 +95,7 @@ namespace simulator {
 		 * @param matID
 		 * @param conID
 		 */
-		ODEBody(dBodyID odeBody, rw::common::Ptr<rwsim::dynamics::KinematicBody> rwbody,int matID, int conID);
+		ODEBody(dBodyID odeBody, rw::core::Ptr<rwsim::dynamics::KinematicBody> rwbody,int matID, int conID);
 
 		/**
 		 * @brief constructor for fixed bodies
@@ -225,8 +225,8 @@ namespace simulator {
         std::vector<dGeomID> _geomIds;
         std::vector<ODEUtil::TriGeomData*> _triGeomDatas;
 
-        rw::common::Ptr<rwsim::dynamics::RigidBody> _rwBody;
-        rw::common::Ptr<rwsim::dynamics::KinematicBody> _kBody;
+        rw::core::Ptr<rwsim::dynamics::RigidBody> _rwBody;
+        rw::core::Ptr<rwsim::dynamics::KinematicBody> _kBody;
 
         rw::math::Vector3D<> _offset;
 		rw::math::Vector3D<> _lastForce;

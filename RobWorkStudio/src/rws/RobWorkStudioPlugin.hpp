@@ -28,7 +28,7 @@
 #include <QAction>
 #include <QString>
 
-#include <rw/RobWork.hpp>
+#include <rw/core/RobWork.hpp>
 #include <rw/kinematics/State.hpp>
 
 // Make the RWS_USE_QT5 definition available to all plugins:
@@ -36,7 +36,7 @@
 
 #include <boost/tuple/tuple.hpp>
 
-#include <rw/common/Log.hpp>
+#include <rw/core/Log.hpp>
 
 namespace rw { namespace models { class WorkCell; } }
 
@@ -123,23 +123,23 @@ namespace rws {
 		 * @brief Sets the RobWork instance to be used by the plugin
 		 * @param robwork [in] RobWork instance
 		 */
-		virtual void setRobWorkInstance(rw::RobWork::Ptr robwork);
+		virtual void setRobWorkInstance(rw::core::RobWork::Ptr robwork);
 
 		/**
 		 * @brief Returns RobWork instance used by the plugin
 		 */
-		virtual rw::RobWork::Ptr getRobWorkInstance();
+		virtual rw::core::RobWork::Ptr getRobWorkInstance();
 
 		/**
 		 * @brief returns the RobWorkStudio log instance
 		 */
-		virtual rw::common::Log& log();
+		virtual rw::core::Log& log();
 
 		/**
 		 * @brief Sets the log to use
 		 * @param log [in] Pointer to the log to use.
 		 */
-		virtual void setLog(rw::common::Log::Ptr log);
+		virtual void setLog(rw::core::Log::Ptr log);
 
 		//! get current state of RobWorkStudio
 		const rw::kinematics::State& getState();
@@ -187,10 +187,10 @@ namespace rws {
 		RobWorkStudio* _studio;
 
 		///! @brief The RobWork instance to be used
-		rw::RobWork::Ptr _robwork;
+		rw::core::RobWork::Ptr _robwork;
 
 		///! @brief The log instance to be used
-		rw::common::Log::Ptr _log;
+		rw::core::Log::Ptr _log;
 	};
 
 }

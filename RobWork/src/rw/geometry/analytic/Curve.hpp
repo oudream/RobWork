@@ -24,7 +24,7 @@
  * \copydoc rw::geometry::Curve
  */
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/geometry/OBB.hpp>
 #include <rw/math/Vector3D.hpp>
 
@@ -44,10 +44,10 @@ namespace geometry {
 class Curve {
 public:
 	//! @brief Smart pointer type for Curve.
-	typedef rw::common::Ptr<Curve> Ptr;
+	typedef rw::core::Ptr<Curve> Ptr;
 
 	//! @brief Smart pointer type for a const Curve.
-	typedef rw::common::Ptr<const Curve> CPtr;
+	typedef rw::core::Ptr<const Curve> CPtr;
 
 	//! @brief Constructor.
 	Curve() {}

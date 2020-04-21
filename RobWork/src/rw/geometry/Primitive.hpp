@@ -38,7 +38,7 @@ namespace geometry {
     class Primitive: public GeometryData {
 	public:
 		//! Smart pointer to this type of class.
-		typedef rw::common::Ptr<Primitive> Ptr;
+		typedef rw::core::Ptr<Primitive> Ptr;
 		
     public:
 

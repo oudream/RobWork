@@ -28,11 +28,13 @@
 #include <rw/kinematics/FrameMap.hpp>
 
 #include <rws/RobWorkStudioPlugin.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include "SliderTab.hpp"
 
 namespace rw { namespace kinematics { class MovableFrame; } }
 namespace rw { namespace models { class Device; } }
+namespace rw { namespace core { class PropertyMap; } }
 
 class QTabWidget;
 
@@ -121,7 +123,7 @@ private:
 
     rw::models::WorkCell* _workcell;
     rw::kinematics::State _state;
-	rw::common::Ptr<rw::models::Device> _selectedDevice;
+	rw::core::Ptr<rw::models::Device> _selectedDevice;
     JointSliderWidget* _jointSliderWidget;
     JointSliderWidget* _jointSliderWidgetFull;
 
@@ -132,7 +134,7 @@ private:
 
     QComboBox* _cmbDevices;
     QTabWidget* _tabWidget;
-	std::vector<std::pair<rw::common::Ptr<rw::models::Device>, rw::kinematics::MovableFrame*> > _items;
+	std::vector<std::pair<rw::core::Ptr<rw::models::Device>, rw::kinematics::MovableFrame*> > _items;
     std::vector<unsigned int> _chosenTabs;
     QComboBox *_cmbAngleUnit, *_cmbDistanceUnit;
 
@@ -143,7 +145,7 @@ private:
     QTabWidget* _tabWidget;
 */
     void removeTabs();
-	void constructTabs(rw::common::Ptr<rw::models::Device> device);
+	void constructTabs(rw::core::Ptr<rw::models::Device> device);
     void constructCartTab(rw::kinematics::MovableFrame* device);
 
     void stateChangedListener(const rw::kinematics::State& state);
@@ -154,7 +156,7 @@ private:
     void updateValues();
 
     void updateUnit(const std::string& angles, const std::string& distances);
-    rw::common::PropertyMap* _rwsSettings;
+    rw::core::PropertyMap* _rwsSettings;
     std::map<std::string, double> _angleUnitConverters, _distanceUnitConverters;
 
     rw::kinematics::FrameMap<int> _frameToIndex;

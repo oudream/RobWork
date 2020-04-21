@@ -22,9 +22,9 @@
 #include <QTextEdit>
 #include <QObject>
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
-namespace rw { namespace common { class LogWriter; } }
+namespace rw { namespace core { class LogWriter; } }
 namespace rwlibs { namespace swig { class LuaState; } }
 
 namespace rws {
@@ -88,7 +88,7 @@ namespace rws {
         int _histIdx;
         int _lastBlockNumber;
 
-        rw::common::Ptr<rw::common::LogWriter> _logWriter;
+        rw::core::Ptr<rw::core::LogWriter> _logWriter;
 
         rws::LuaExecutionThread *_luaRunner;
         rwlibs::swig::LuaState *_luastate;

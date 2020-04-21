@@ -19,7 +19,7 @@
 #define RW_GEOMETRY_INDEXEDTRIMESH_HPP_
 
 #include <rw/math/Vector3D.hpp>
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include "TriMesh.hpp"
 #include "Triangle.hpp"
 #include "IndexedTriangle.hpp"
@@ -55,7 +55,7 @@ namespace geometry {
     	//! the vertex array type
     	typedef std::vector<rw::math::Vector3D<T> > VertexArray;
     	//! the smart pointer type of this triangle mesh
-    	typedef rw::common::Ptr<IndexedTriMesh<T> > Ptr;
+    	typedef rw::core::Ptr<IndexedTriMesh<T> > Ptr;
 
     protected:
 
@@ -66,7 +66,7 @@ namespace geometry {
     	 * @param triStride [in] the stride of the indice array (set using setTriArray).
     	 * @param idxsize [in] the size in bytes of an indice in the indice array
     	 */
-    	IndexedTriMesh(rw::common::Ptr<VertexArray> vertices, rw::common::Ptr<VertexArray> normals,
+    	IndexedTriMesh(rw::core::Ptr<VertexArray> vertices, rw::core::Ptr<VertexArray> normals,
     				uint8_t triStride, uint8_t idxsize):
     					_vertices(vertices.get()),
     					_vertPtr(vertices),
@@ -227,11 +227,11 @@ namespace geometry {
         //! @brief pointer to vertice array
 		VertexArray *_vertices;
 		//! @brief Smart pointer to maintain ownership of vertice array.
-		rw::common::Ptr<VertexArray> _vertPtr;
+		rw::core::Ptr<VertexArray> _vertPtr;
 		//! @brief pointer to normal array
 		VertexArray *_normals;
 		//! @brief Smart pointer to maintain ownership of normals array.
-		rw::common::Ptr<VertexArray> _normPtr;
+		rw::core::Ptr<VertexArray> _normPtr;
 		//! @brief pointer to indice array
 		uint8_t *_triIdxArr;
 		//! @brief The stride.
@@ -254,9 +254,9 @@ namespace geometry {
 
 
 	//! @brief smart pointer type of IndexedTriMeshD
-    typedef rw::common::Ptr<IndexedTriMesh<> > IndexedTriMeshDPtr;
+    typedef rw::core::Ptr<IndexedTriMesh<> > IndexedTriMeshDPtr;
     //! @brief smart pointer type of IndexedTriMeshF
-    typedef rw::common::Ptr<IndexedTriMesh<float> > IndexedTriMeshFPtr;
+    typedef rw::core::Ptr<IndexedTriMesh<float> > IndexedTriMeshFPtr;
 
 	/**
 	 * @brief an Indexed Triangle mesh with zero normals
@@ -273,20 +273,20 @@ namespace geometry {
 		//! @copydoc IndexedTriMesh::VertexArray
 		typedef typename IndexedTriMesh<T>::VertexArray VertexArray;
 		//! @brief Smart pointer type of this class.
-		typedef rw::common::Ptr<IndexedTriMeshN0<T, S> > Ptr;
+		typedef rw::core::Ptr<IndexedTriMeshN0<T, S> > Ptr;
 
 	private:
-		rw::common::Ptr<TriangleArray> _triangles;
+		rw::core::Ptr<TriangleArray> _triangles;
 
 	public:
 		//! @brief Constructor
 		IndexedTriMeshN0():
 			IndexedTriMesh<T>(
-			        rw::common::ownedPtr( new VertexArray() ),
-			        rw::common::ownedPtr( new VertexArray() ),
+			        rw::core::ownedPtr( new VertexArray() ),
+			        rw::core::ownedPtr( new VertexArray() ),
 					(uint8_t)sizeof(tri_type),
 					(uint8_t)sizeof(S)),
-			_triangles( rw::common::ownedPtr( new TriangleArray() ) )
+			_triangles( rw::core::ownedPtr( new TriangleArray() ) )
 		{
 		}
 
@@ -297,10 +297,10 @@ namespace geometry {
 		IndexedTriMeshN0(VertexArray* vertices):
 			IndexedTriMesh<T>(
 					vertices,
-					rw::common::ownedPtr( new VertexArray() ),
+					rw::core::ownedPtr( new VertexArray() ),
 					(uint8_t)sizeof(tri_type),
 					(uint8_t)sizeof(S)),
-			_triangles( rw::common::ownedPtr( new TriangleArray() ) )
+			_triangles( rw::core::ownedPtr( new TriangleArray() ) )
 		{
 		}
 
@@ -310,14 +310,14 @@ namespace geometry {
 		 * @param normals [in] pointer to vector of normals.
 		 */
 		IndexedTriMeshN0(
-				rw::common::Ptr<VertexArray> vertices,
-				rw::common::Ptr<VertexArray> normals):
+				rw::core::Ptr<VertexArray> vertices,
+				rw::core::Ptr<VertexArray> normals):
 			IndexedTriMesh<T>(
 					vertices,
 					normals,
 					(uint8_t)sizeof(tri_type),
 					(uint8_t)sizeof(S)),
-			_triangles( rw::common::ownedPtr( new TriangleArray() ) )
+			_triangles( rw::core::ownedPtr( new TriangleArray() ) )
 		{
 		}
 
@@ -328,9 +328,9 @@ namespace geometry {
 		 * @param triangles [in] pointer to array of triangles.
 		 */
 		IndexedTriMeshN0(
-				rw::common::Ptr<VertexArray> vertices,
-				rw::common::Ptr<VertexArray> normals,
-				rw::common::Ptr<TriangleArray> triangles):
+				rw::core::Ptr<VertexArray> vertices,
+				rw::core::Ptr<VertexArray> normals,
+				rw::core::Ptr<TriangleArray> triangles):
 			IndexedTriMesh<T>(
 					vertices,
 					normals,
@@ -348,10 +348,10 @@ namespace geometry {
 		 * @param vertices [in] pointer to vector of vertices.
 		 * @param triangles [in] pointer to array of triangles.
 		 */
-		IndexedTriMeshN0(rw::common::Ptr<VertexArray> vertices, rw::common::Ptr<TriangleArray> triangles):
+		IndexedTriMeshN0(rw::core::Ptr<VertexArray> vertices, rw::core::Ptr<TriangleArray> triangles):
 			IndexedTriMesh<T>(
 					vertices,
-					rw::common::ownedPtr( new VertexArray() ),
+					rw::core::ownedPtr( new VertexArray() ),
 					(uint8_t)sizeof(tri_type),
 					(uint8_t)sizeof(S)),
 			_triangles( triangles )
@@ -367,12 +367,12 @@ namespace geometry {
 		 */
 		IndexedTriMeshN0(const IndexedTriMeshN0& mesh):
 		    IndexedTriMesh<T>(
-		            rw::common::ownedPtr(new VertexArray( mesh.getVertices() )),
-		            rw::common::ownedPtr(new VertexArray( mesh.getNormals() )),
+		            rw::core::ownedPtr(new VertexArray( mesh.getVertices() )),
+		            rw::core::ownedPtr(new VertexArray( mesh.getNormals() )),
 		            (uint8_t)sizeof(tri_type),
 		            (uint8_t)sizeof(S)
 		    ),
-		    _triangles( rw::common::ownedPtr(new TriangleArray(mesh.getTriangles()) ) )
+		    _triangles( rw::core::ownedPtr(new TriangleArray(mesh.getTriangles()) ) )
 		{
             if(_triangles!=NULL && _triangles->size()>0)
                 this->setTriArray((uint8_t*)&((*_triangles)[0].getVertexIdx(0)));
@@ -605,7 +605,7 @@ namespace geometry {
 
 		//! @copydoc TriMesh::clone
 		TriMesh::Ptr clone() const {
-			return rw::common::ownedPtr( new IndexedTriMeshN0(*this) );
+			return rw::core::ownedPtr( new IndexedTriMeshN0(*this) );
 		}
 
 	};

@@ -48,7 +48,7 @@
 #include <xercesc/util/XMLUni.hpp>
 
 using namespace xercesc;
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::math;
 using namespace rw::loaders;
 using namespace rw::trajectory;
@@ -284,7 +284,7 @@ namespace {
             {
                 RW_THROW("XMLPathWriter: DOMException:  " << XMLStr(e.getMessage()).str());
             }
-            catch (const rw::common::Exception& exp) {
+            catch (const rw::core::Exception& exp) {
                 throw exp;
             }
             catch (...)

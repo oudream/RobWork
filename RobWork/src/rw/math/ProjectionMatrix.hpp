@@ -18,7 +18,7 @@
 #ifndef RW_MATH_PROJECTIONMATRIX_HPP_
 #define RW_MATH_PROJECTIONMATRIX_HPP_
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <Eigen/Eigen>
 
 namespace rw {
@@ -31,7 +31,7 @@ namespace math {
     private:
         Eigen::Matrix<double, 4, 4> _matrix;
     public:
-        typedef rw::common::Ptr<ProjectionMatrix> Ptr;
+        typedef rw::core::Ptr<ProjectionMatrix> Ptr;
 
         //! @brief constructor
         ProjectionMatrix(){};

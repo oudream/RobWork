@@ -38,7 +38,7 @@ Frame* State::getFrame (int id)
     return _q_state.getStateSetup ()->getFrame (id);
 }
 
-rw::common::Ptr< StateCache > State::getCache (int id)
+rw::core::Ptr< StateCache > State::getCache (int id)
 {
     int cacheIdx = _q_state.getStateSetup ()->getCacheIdx (id);
     if (cacheIdx < 0)
@@ -46,7 +46,7 @@ rw::common::Ptr< StateCache > State::getCache (int id)
     return _cache_state[cacheIdx];
 }
 
-rw::common::Ptr< StateCache > State::getCache (int id) const
+rw::core::Ptr< StateCache > State::getCache (int id) const
 {
     int cacheIdx = _q_state.getStateSetup ()->getCacheIdx (id);
     if (cacheIdx < 0)
@@ -54,7 +54,7 @@ rw::common::Ptr< StateCache > State::getCache (int id) const
     return _cache_state[cacheIdx];
 }
 
-void State::setCache (int id, rw::common::Ptr< StateCache > cache)
+void State::setCache (int id, rw::core::Ptr< StateCache > cache)
 {
     int cacheIdx = _q_state.getStateSetup ()->getCacheIdx (id);
     if (cacheIdx < 0)

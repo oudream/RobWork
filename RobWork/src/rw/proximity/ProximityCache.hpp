@@ -19,7 +19,7 @@
 #ifndef RW_PROXIMITY_PROXIMITYCACHE_HPP
 #define RW_PROXIMITY_PROXIMITYCACHE_HPP
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include <cstddef>
 
@@ -33,7 +33,7 @@ namespace proximity {
 	class ProximityCache {
 	public:
 		//! @brief smart pointer type to this class
-		typedef rw::common::Ptr<ProximityCache> Ptr;
+		typedef rw::core::Ptr<ProximityCache> Ptr;
 		/**
 		 * @brief Constructor
 		 */

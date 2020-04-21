@@ -23,7 +23,7 @@
 #include <boost/spirit/include/classic_core.hpp>
 #include <boost/spirit/include/classic_exceptions.hpp>
 #include <boost/spirit/include/classic_position_iterator.hpp>
-#include <rw/common/Log.hpp>
+#include <rw/core/Log.hpp>
 
 namespace rw{
 namespace loaders{
@@ -144,7 +144,7 @@ namespace loaders{
                       << " File: " << lc.file
                       << " Line: " << lc.line
                       << " Col: " << lc.column << std::endl;
-            rw::common::Log::warningLog() << "exception caught in:" << std::endl
+            rw::core::Log::warningLog() << "exception caught in:" << std::endl
                                        << " File: " << lc.file
                                        << " Line: " << lc.line
                                        << " Col: " << lc.column << std::endl;
@@ -152,37 +152,37 @@ namespace loaders{
             std::cout << "Following was parsed until error:" << std::endl
                       << std::string(scan.first,error.where) << std::endl;
 
-            rw::common::Log::warningLog() << "Following was parsed until error:" << std::endl
+            rw::core::Log::warningLog() << "Following was parsed until error:" << std::endl
                                                  << std::string(scan.first,error.where) << std::endl;
 
             //std::cout << "In this context: " << std::string(scan.first,scan.last) << std::endl;
             std::cout << "Error occoured in parsing element: " << error.descriptor._elemname << std::endl;
-            rw::common::Log::warningLog() << "Error occoured in parsing element: " << error.descriptor._elemname
+            rw::core::Log::warningLog() << "Error occoured in parsing element: " << error.descriptor._elemname
                                           << std::endl;
             switch( error.descriptor._err ){
             case( xml_bad_end_elem ):
                 std::cout << "End element name does not match start element name!" << std::endl;
-                rw::common::Log::warningLog() << "End element name does not match start element name!" << std::endl;
+                rw::core::Log::warningLog() << "End element name does not match start element name!" << std::endl;
                 break;
             case( xml_missing_brack ):
                 std::cout << "Missing end bracket!" << std::endl;
-                rw::common::Log::warningLog() << "Missing end bracket!" << std::endl;
+                rw::core::Log::warningLog() << "Missing end bracket!" << std::endl;
                 break;
             case( xml_att_expected ):
                 std::cout << "Expected specific attribute here!" << std::endl;
-                rw::common::Log::warningLog() << "Expected specific attribute here!" << std::endl;
+                rw::core::Log::warningLog() << "Expected specific attribute here!" << std::endl;
                 break;
             case( xml_att_unexpected ):
                 std::cout << "Unexpected attribute!" << std::endl;
-                rw::common::Log::warningLog() << "Unexpected attribute!" << std::endl;
+                rw::core::Log::warningLog() << "Unexpected attribute!" << std::endl;
                 break;
             case( xml_starttag_end_exp ):
                 std::cout << "Expected '/>' or '>' in start element " << std::endl;
-                rw::common::Log::warningLog() << "Expected '/>' or '>' in start element " << std::endl;
+                rw::core::Log::warningLog() << "Expected '/>' or '>' in start element " << std::endl;
                 break;
             case( xml_bad_child ):
                 std::cout << "A child node failed to parse!! " << std::endl;
-                rw::common::Log::warningLog() << "A child node failed to parse!! " << std::endl;
+                rw::core::Log::warningLog() << "A child node failed to parse!! " << std::endl;
                 break;
             default:
                 std::cout << "Default.." << std::endl;

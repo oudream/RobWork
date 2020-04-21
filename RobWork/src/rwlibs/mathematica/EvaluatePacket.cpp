@@ -26,7 +26,7 @@ EvaluatePacket::EvaluatePacket(const Mathematica::Expression& expression):
 {
 }
 
-EvaluatePacket::EvaluatePacket(rw::common::Ptr<const Mathematica::Expression> expression):
+EvaluatePacket::EvaluatePacket(rw::core::Ptr<const Mathematica::Expression> expression):
 	Packet("EvaluatePacket",Mathematica::Evaluate),
 	_expression(expression)
 {
@@ -35,12 +35,12 @@ EvaluatePacket::EvaluatePacket(rw::common::Ptr<const Mathematica::Expression> ex
 EvaluatePacket::~EvaluatePacket() {
 }
 
-const rw::common::Ptr<const Mathematica::Expression> EvaluatePacket::expression() {
+const rw::core::Ptr<const Mathematica::Expression> EvaluatePacket::expression() {
 	return _expression;
 }
 
-std::list<rw::common::Ptr<const Mathematica::Expression> > EvaluatePacket::getArguments() const {
-	return std::list<rw::common::Ptr<const Mathematica::Expression> >(1, _expression);
+std::list<rw::core::Ptr<const Mathematica::Expression> > EvaluatePacket::getArguments() const {
+	return std::list<rw::core::Ptr<const Mathematica::Expression> >(1, _expression);
 }
 
 Mathematica::Expression::Ptr EvaluatePacket::clone() const {

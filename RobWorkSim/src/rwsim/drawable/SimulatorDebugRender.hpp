@@ -19,6 +19,7 @@
 #define RWSIM_DRAWABLE_SIMULATORDEBUGRENDER_HPP_
 
 #include <rw/graphics/Render.hpp>
+#include <rw/core/Ptr.hpp>
 
 namespace rwsim {
 namespace drawable {
@@ -27,7 +28,7 @@ namespace drawable {
 	class SimulatorDebugRender : public rw::graphics::Render {
 	public:
 		//! @brief Smart pointer type for SimulatorDebugRender.
-	    typedef rw::common::Ptr<SimulatorDebugRender> Ptr;
+	    typedef rw::core::Ptr<SimulatorDebugRender> Ptr;
 
 		//virtual ~SimulatorDebugRender(){};
 

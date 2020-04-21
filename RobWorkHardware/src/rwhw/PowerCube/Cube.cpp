@@ -18,7 +18,7 @@
 #include "Cube.hpp"
 
 #include <rw/common/TimerUtil.hpp>
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 
 #include <iostream>
 #include <vector>

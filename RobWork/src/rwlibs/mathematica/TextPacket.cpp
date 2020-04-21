@@ -33,8 +33,8 @@ const Mathematica::String& TextPacket::string() {
 	return _string;
 }
 
-std::list<rw::common::Ptr<const Mathematica::Expression> > TextPacket::getArguments() const {
-	return std::list<rw::common::Ptr<const Mathematica::Expression> >(1, _string.clone());
+std::list<rw::core::Ptr<const Mathematica::Expression> > TextPacket::getArguments() const {
+	return std::list<rw::core::Ptr<const Mathematica::Expression> >(1, _string.clone());
 }
 
 Mathematica::Expression::Ptr TextPacket::clone() const {

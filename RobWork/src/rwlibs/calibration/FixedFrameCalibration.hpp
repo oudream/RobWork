@@ -20,6 +20,7 @@
 
 #include "Calibration.hpp"
 #include <rw/kinematics/FixedFrame.hpp>
+#include <rw/core/Ptr.hpp>
 
 namespace rwlibs {
 namespace calibration {
@@ -35,7 +36,7 @@ class FixedFrameCalibration: public Calibration {
 public:
 
 	/** @brief Typedef for pointer to FixedFrameCalibration */
-	typedef rw::common::Ptr<FixedFrameCalibration> Ptr;
+	typedef rw::core::Ptr<FixedFrameCalibration> Ptr;
 
 	/** 
 	* @brief Constructs FixedFrameCalibration for \b frame. Initializes correction to the current transformation of the frame.

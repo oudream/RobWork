@@ -1,6 +1,6 @@
 #include "PDController.hpp"
 
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 #include <rwsim/dynamics/DynamicDevice.hpp>
 
 using namespace rwsim::control;
@@ -26,7 +26,7 @@ PDController::PDController(
 		const std::vector<PDParam>& pdparams,
 		double dt):
 	JointController(name, &rdev->getModel()),
-	SimulatedController(rw::common::ownedPtr(new rw::models::ControllerModel(name,rdev->getKinematicModel()->getBase()))),
+	SimulatedController(rw::core::ownedPtr(new rw::models::ControllerModel(name,rdev->getKinematicModel()->getBase()))),
 	_ddev(rdev),
 	_lastError(rw::math::Q::zero(rdev->getModel().getDOF())),
 	_currentError(rw::math::Q::zero(rdev->getModel().getDOF())),
@@ -52,7 +52,7 @@ PDController::PDController(
 		const PDParam& pdparam,
 		double dt):
 	JointController(name, &rdev->getModel()),
-	SimulatedController(rw::common::ownedPtr(new rw::models::ControllerModel(name,rdev->getKinematicModel()->getBase()))),
+	SimulatedController(rw::core::ownedPtr(new rw::models::ControllerModel(name,rdev->getKinematicModel()->getBase()))),
 	_ddev(rdev),
 	_lastError(rw::math::Q::zero(rdev->getModel().getDOF())),
 	_currentError(rw::math::Q::zero(rdev->getModel().getDOF())),

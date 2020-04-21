@@ -26,7 +26,7 @@
 
 #include <QDialog>
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 namespace rw { namespace models { class WorkCell; } }
 namespace rw { namespace sensor { class FTSensor; } }
@@ -65,7 +65,7 @@ public:
 	 * @brief Set a workcell. This will allow configuration of a concrete assembly task for the given workcell, using the TaskSetupDialog.
 	 * @param wc [in] the workcell.
 	 */
-	void setWorkCell(rw::common::Ptr<const rw::models::WorkCell> wc);
+	void setWorkCell(rw::core::Ptr<const rw::models::WorkCell> wc);
 
 private Q_SLOTS:
 	void step();
@@ -76,10 +76,10 @@ private:
 	Cell makeCell(rwlibs::assembly::AssemblyControlStrategy* strategy) const;
 
 	rw::sensor::FTSensor* const _dummyFTSensor;
-	rw::common::Ptr<const rw::models::WorkCell> _wc;
+	rw::core::Ptr<const rw::models::WorkCell> _wc;
 
 	Ui::StrategyLibraryDialog* const _ui;
-	rw::common::Ptr<rwlibs::assembly::AssemblyRegistry> _registry;
+	rw::core::Ptr<rwlibs::assembly::AssemblyRegistry> _registry;
 	std::vector<Cell> _cells;
 	QTimer* const _timer;
 };

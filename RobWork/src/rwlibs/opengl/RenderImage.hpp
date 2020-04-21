@@ -21,7 +21,7 @@
 
 //! @file RenderImage.hpp
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/graphics/Render.hpp>
 
 namespace rw { namespace sensor { class Image; } }
@@ -43,7 +43,7 @@ class RWGLTexture;
     {
     public:
         //! @brief smart pointer type to this class
-        typedef rw::common::Ptr<RenderImage> Ptr;
+        typedef rw::core::Ptr<RenderImage> Ptr;
 
         /**
          * @brief constructor
@@ -79,14 +79,14 @@ class RWGLTexture;
     private:
         int _w, _h;
         float _scale;
-        rw::common::Ptr<RWGLTexture> _tex;
+        rw::core::Ptr<RWGLTexture> _tex;
     };
 
     /**
      * @brief Legacy type of a smart pointer for RenderImage.
      * @deprecated Use RenderImage::Ptr instead. This type will be removed sometime in the future.
      */
-    typedef rw::common::Ptr<RenderImage> RenderImagePtr;
+    typedef rw::core::Ptr<RenderImage> RenderImagePtr;
 
     /*@}*/
 }} // end namespaces

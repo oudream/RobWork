@@ -22,8 +22,8 @@
 #include <QMenu>
 #include <QToolBar>
 
-using rw::RobWork;
-using namespace rw::common;
+using rw::core::RobWork;
+using namespace rw::core;
 using namespace rw::models;
 
 using namespace rws;
@@ -112,11 +112,11 @@ RobWork::Ptr RobWorkStudioPlugin::getRobWorkInstance() {
 }
 
 
-rw::common::Log& RobWorkStudioPlugin::log(){
+rw::core::Log& RobWorkStudioPlugin::log(){
 	return *_log;
 }
 
-void RobWorkStudioPlugin::setLog(rw::common::Log::Ptr log){
+void RobWorkStudioPlugin::setLog(rw::core::Log::Ptr log){
     _log = log;
     Log::setLog(_log);
 }

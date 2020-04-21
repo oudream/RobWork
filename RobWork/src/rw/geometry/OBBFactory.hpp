@@ -73,14 +73,14 @@ namespace geometry {
                 return makeBV(*mesh);
             }
             // TODO: this might be very inefficient
-            rw::common::Ptr<rw::geometry::TriMesh> geommesh = geom.getTriMesh(false);
+            rw::core::Ptr<rw::geometry::TriMesh> geommesh = geom.getTriMesh(false);
             return makeBV(*geommesh);
         }
 
         //! @copydoc BVFactory::makeBV(rw::geometry::Primitive&)
         rw::geometry::OBB<T> makeBV(rw::geometry::Primitive& geom){
             // TODO: this might be very inefficient
-            rw::common::Ptr<rw::geometry::TriMesh> geommesh = geom.getTriMesh(false);
+            rw::core::Ptr<rw::geometry::TriMesh> geommesh = geom.getTriMesh(false);
             return makeBV(*geommesh);
         }
 

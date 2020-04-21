@@ -22,7 +22,7 @@
 /**
  * @file Vector.hpp
  */
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 
 #include <Eigen/Eigen>
 

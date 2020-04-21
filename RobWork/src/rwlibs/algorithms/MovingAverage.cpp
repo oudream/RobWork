@@ -7,7 +7,7 @@
 
 #include "MovingAverage.hpp"
 
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 
 MovingAverage::MovingAverage(std::size_t N):
 	_len((int)N),_invLen(1.0),_cb(_len,0.0),_sum(0.0),_idx(0)

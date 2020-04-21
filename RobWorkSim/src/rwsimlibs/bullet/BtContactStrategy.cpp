@@ -46,6 +46,7 @@
 #include <LinearMath/btDefaultMotionState.h>
 
 using namespace rw::common;
+using namespace rw::core;
 using namespace rw::geometry;
 using namespace rw::kinematics;
 using namespace rw::math;
@@ -56,7 +57,7 @@ using namespace rwsimlibs::bullet;
 namespace {
 class BtContactModel: public ContactModel {
 public:
-	typedef rw::common::Ptr<BtContactModel> Ptr;
+	typedef rw::core::Ptr<BtContactModel> Ptr;
 	BtContactModel(BtContactStrategy* pOwner): ContactModel(pOwner) { setFrame(NULL); }
 	virtual ~BtContactModel() {
 		clear();
@@ -138,7 +139,7 @@ BtContactStrategy::~BtContactStrategy() {
 	delete config;
 }
 
-bool BtContactStrategy::match(rw::common::Ptr<const GeometryData> geoA, rw::common::Ptr<const GeometryData> geoB) {
+bool BtContactStrategy::match(rw::core::Ptr<const GeometryData> geoA, rw::core::Ptr<const GeometryData> geoB) {
 	// List of primitive pairs seperately considered
 	// Ball-Ball
 	if (geoA->getType() == GeometryData::SpherePrim && geoB->getType() == GeometryData::SpherePrim)
@@ -264,7 +265,7 @@ std::string BtContactStrategy::getName() {
 }
 
 ProximityModel::Ptr BtContactStrategy::createModel() {
-	return ownedPtr(new BtContactModel(this));
+	return rw::core::ownedPtr(new BtContactModel(this));
 }
 
 void BtContactStrategy::destroyModel(ProximityModel* model) {

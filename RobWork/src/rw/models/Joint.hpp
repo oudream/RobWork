@@ -42,7 +42,7 @@ namespace rw { namespace models {
     {
     public:
 		//! @brief smart pointer type to this class
-		typedef rw::common::Ptr<Joint> Ptr;
+		typedef rw::core::Ptr<Joint> Ptr;
 
     protected:
         /**

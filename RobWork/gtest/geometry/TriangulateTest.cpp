@@ -20,6 +20,7 @@
 #include "../TestEnvironment.hpp"
 
 #include <rw/geometry/Triangulate.hpp>
+#include <rw/core/Exception.hpp>
 
 #include <vector>
 
@@ -183,7 +184,7 @@ TEST_F(TriangulateTest, processPoints3D) {
     result.clear();
 
     // Check if processPoints fails when points are closer than precision
-    ASSERT_THROW(tr.processPoints(contour_square3D,result,0.0005,10.0),rw::common::Exception);
+    ASSERT_THROW(tr.processPoints(contour_square3D,result,0.0005,10.0),rw::core::Exception);
 
 
 
@@ -192,7 +193,7 @@ TEST_F(TriangulateTest, processPoints3D) {
     line.push_back(Vector3D<double>(2.0,2.0,0.0));
 
     // Check if processPoints fails when edges of the contour are colinear:
-    ASSERT_THROW(tr.processPoints(line,result,1,0.0001),rw::common::Exception);
+    ASSERT_THROW(tr.processPoints(line,result,1,0.0001),rw::core::Exception);
 
 }
 }

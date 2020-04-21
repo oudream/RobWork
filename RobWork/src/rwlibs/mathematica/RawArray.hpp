@@ -27,7 +27,8 @@
 #include "Mathematica.hpp"
 #include "List.hpp"
 
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include <boost/multi_array.hpp>
 
@@ -66,7 +67,7 @@ private:
  */
 template<>
 inline Mathematica::Symbol::Ptr RawArrayUtil::getType<unsigned char>() {
-	return rw::common::ownedPtr(new Mathematica::Symbol("Byte"));
+	return rw::core::ownedPtr(new Mathematica::Symbol("Byte"));
 }
 
 //! @brief Representation of a N-dimensional %Mathematica array with fixed depth.
@@ -74,7 +75,7 @@ template <typename T, std::size_t Dim>
 class RawArray: public Mathematica::Array<T> {
 public:
 	//! @brief Smart pointer type.
-	typedef rw::common::Ptr<RawArray<T,Dim> > Ptr;
+	typedef rw::core::Ptr<RawArray<T,Dim> > Ptr;
 
 	//! @brief The underlying array type.
 	typedef boost::multi_array<T, Dim> ArrayType;
@@ -190,14 +191,14 @@ public:
 	static RawArray<T, Dim>::Ptr fromExpression(const Mathematica::FunctionBase& exp) {
 		if (exp.getName() != "RawArray")
 			RW_THROW("Expected function with name RawArray, not " << exp.getName() << ".");
-		const std::list<rw::common::Ptr<const Mathematica::Expression> > args = exp.getArguments();
+		const std::list<rw::core::Ptr<const Mathematica::Expression> > args = exp.getArguments();
 		if (args.size() != 2)
 			RW_THROW("Expected two arguments for RawArray, not " << args.size() << ".");
 
 		// Find the shape
 		boost::array<typename ArrayType::index,Dim> shape;
-		rw::common::Ptr<const Mathematica::Expression> arrayArg = args.back();
-		rw::common::Ptr<const Mathematica::FunctionBase> fct;
+		rw::core::Ptr<const Mathematica::Expression> arrayArg = args.back();
+		rw::core::Ptr<const Mathematica::FunctionBase> fct;
 		bool cont = true;
 		typename boost::array<typename ArrayType::index,Dim>::size_type dim = 0;
 		while(cont) {
@@ -219,9 +220,9 @@ public:
 
 		arrayArg = args.back();
 		fct = arrayArg.cast<const Mathematica::FunctionBase>();
-		const rw::common::Ptr<const List> list = List::fromExpression(*fct);
+		const rw::core::Ptr<const List> list = List::fromExpression(*fct);
 
-		RawArray<T,Dim>::Ptr array = rw::common::ownedPtr(new RawArray<T,Dim>(shape));
+		RawArray<T,Dim>::Ptr array = rw::core::ownedPtr(new RawArray<T,Dim>(shape));
 		const std::vector<std::size_t> size = array->getSize();
 		boost::array<typename ArrayType::index,Dim> cur;
 		setValues(array->_array,list,0,cur,size);
@@ -236,14 +237,14 @@ public:
 	 * @param cur [in] the current indices.
 	 * @param size [in] the shape of the array.
 	 */
-	static void setValues(ArrayType& array, rw::common::Ptr<const List> list, std::size_t level, boost::array<typename ArrayType::index,Dim> cur, const std::vector<std::size_t>& size) {
-		const std::list<rw::common::Ptr<const Mathematica::Expression> >& args = list->getArguments();
-		std::list<rw::common::Ptr<const Mathematica::Expression> >::const_iterator it = args.begin();
+	static void setValues(ArrayType& array, rw::core::Ptr<const List> list, std::size_t level, boost::array<typename ArrayType::index,Dim> cur, const std::vector<std::size_t>& size) {
+		const std::list<rw::core::Ptr<const Mathematica::Expression> >& args = list->getArguments();
+		std::list<rw::core::Ptr<const Mathematica::Expression> >::const_iterator it = args.begin();
 		if (level == Dim-1) {
 			for (std::size_t i = 0; i < size[level]; i++) {
 				cur[level] = i;
-				const rw::common::Ptr<const Mathematica::Expression> exp = *it;
-				const rw::common::Ptr<const Mathematica::Integer> integer = exp.cast<const Mathematica::Integer>();
+				const rw::core::Ptr<const Mathematica::Expression> exp = *it;
+				const rw::core::Ptr<const Mathematica::Integer> integer = exp.cast<const Mathematica::Integer>();
 				if (integer.isNull())
 					RW_THROW("Expected integer at this level of the array.");
 				array(cur) = (T)integer->value();
@@ -252,13 +253,13 @@ public:
 		} else {
 			for (std::size_t i = 0; i < size[level]; i++) {
 				cur[level] = i;
-				const rw::common::Ptr<const Mathematica::Expression> exp = *it;
-				const rw::common::Ptr<const Mathematica::FunctionBase> fct = exp.cast<const Mathematica::FunctionBase>();
+				const rw::core::Ptr<const Mathematica::Expression> exp = *it;
+				const rw::core::Ptr<const Mathematica::FunctionBase> fct = exp.cast<const Mathematica::FunctionBase>();
 				if (fct.isNull())
 					RW_THROW("Expected function at this level of the array.");
 				if (fct->getName() != "List")
 					RW_THROW("Expected function with name \"List\", instead got \"" << fct->getName() << "\".");
-				const rw::common::Ptr<const List> listChild = fct.cast<const List>();
+				const rw::core::Ptr<const List> listChild = fct.cast<const List>();
 				RW_ASSERT(!listChild.isNull());
 				setValues(array,listChild,level+1,cur,size);
 				it++;
@@ -275,11 +276,11 @@ public:
 	 * @return a list.
 	 */
 	static List::Ptr createList(const ArrayType& array, std::size_t level, boost::array<typename ArrayType::index,Dim> cur, const std::vector<std::size_t>& size) {
-		const List::Ptr list = rw::common::ownedPtr(new List());
+		const List::Ptr list = rw::core::ownedPtr(new List());
 		if (level == Dim-1) {
 			for (std::size_t i = 0; i < size[level]; i++) {
 				cur[level] = i;
-				list->add(rw::common::ownedPtr(new Mathematica::Integer(array(cur))));
+				list->add(rw::core::ownedPtr(new Mathematica::Integer(array(cur))));
 			}
 		} else {
 			for (std::size_t i = 0; i < size[level]; i++) {
@@ -314,7 +315,7 @@ public:
 
 	//! @copydoc Mathematica::Expression::clone
 	virtual Mathematica::Expression::Ptr clone() const {
-		return rw::common::ownedPtr(new RawArray<T,Dim>(_array));
+		return rw::core::ownedPtr(new RawArray<T,Dim>(_array));
 	}
 
 	//! @copydoc Mathematica::Array::size
@@ -346,7 +347,7 @@ template<typename T>
 class RawArray<T,Dynamic>: public Mathematica::Array<T> {
 public:
 	//! @brief Smart pointer type.
-	typedef rw::common::Ptr<RawArray<T,Dynamic> > Ptr;
+	typedef rw::core::Ptr<RawArray<T,Dynamic> > Ptr;
 
 	/**
 	 * @brief Construct new array with a dynamic dimensionality.
@@ -389,7 +390,7 @@ public:
 
 	//! @copydoc Mathematica::Expression::clone
 	Mathematica::Expression::Ptr clone() const {
-		return rw::common::ownedPtr(new RawArray<T,Dynamic>(_data,_dims,_depth));
+		return rw::core::ownedPtr(new RawArray<T,Dynamic>(_data,_dims,_depth));
 	}
 
 	//! @copydoc Mathematica::Array::size

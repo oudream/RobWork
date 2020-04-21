@@ -22,7 +22,7 @@
 
 #include <rw/models/Models.hpp>
 #include <rw/models/WorkCell.hpp>
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 #include <rw/kinematics/State.hpp>
 #include <rw/proximity/CollisionDetector.hpp>
 
@@ -30,7 +30,7 @@
 using namespace rw::math;
 using namespace rw::kinematics;
 using namespace rw::models;
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::proximity;
 using namespace rw::pathplanning;
 
@@ -190,7 +190,7 @@ bool QConstraint::inCollision(const rw::math::Q& q) const
     return doInCollision(q);
 }
 
-void QConstraint::setLog(rw::common::Log::Ptr log) {
+void QConstraint::setLog(rw::core::Log::Ptr log) {
 	doSetLog(log);
 }
 
@@ -215,7 +215,7 @@ QConstraint::Ptr QConstraint::make(
             state));
 }
 
-QConstraint::Ptr QConstraint::make(rw::common::Ptr<CollisionDetector> detector,
+QConstraint::Ptr QConstraint::make(rw::core::Ptr<CollisionDetector> detector,
 	Device::CPtr device,
     const State& state)
 {

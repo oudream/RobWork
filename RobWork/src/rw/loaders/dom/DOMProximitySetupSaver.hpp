@@ -18,10 +18,12 @@
 #ifndef RW_LOADERS_DOMPROXIMITYSETUPSAVER_HPP
 #define RW_LOADERS_DOMPROXIMITYSETUPSAVER_HPP
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
-namespace rw { namespace common { class DOMElem; } }
-namespace rw { namespace common { class DOMParser; } }
+namespace rw { namespace core { 
+    class DOMElem; 
+    class DOMParser; 
+}}
 namespace rw { namespace proximity { class ProximitySetup; } }
 
 namespace rw {
@@ -44,17 +46,17 @@ public:
      *
      * Constructs element representing the include or exclude patterns defined in the proximity setup.
      *
-     * @throws rw::common::Exception if the type of a ProximitySetupRule is not supported.
+     * @throws rw::core::Exception if the type of a ProximitySetupRule is not supported.
      *
      * @param prox [in] ProximitySetup to save.
      * @param parent [out] DOMDocument which should contain the ProximitySetup representation
      */
-    static void save(const rw::proximity::ProximitySetup& prox, rw::common::Ptr<rw::common::DOMElem> parent);
+    static void save(const rw::proximity::ProximitySetup& prox, rw::core::Ptr<rw::core::DOMElem> parent);
 
     /**
      * @brief Saves the proximity setup \b prox to a file named \b filename
      *
-     * @throws rw::common::Exception if the type of a ProximitySetupRule is not supported.
+     * @throws rw::core::Exception if the type of a ProximitySetupRule is not supported.
      *
      * @param prox [in] ProximitySetup to save.
      * @param filename [in] Filename
@@ -73,13 +75,13 @@ public:
     /**
      * @brief Creates DOMDocument for \b prox
      *
-     * @throws rw::common::Exception if the type of a property is not supported.
+     * @throws rw::core::Exception if the type of a property is not supported.
      *
      * @param prox [in] ProximitySetup
      * @param parser [in] DOMParser to use
      * @return DOMDocument containing ProximitySetup.
      */
-    static rw::common::Ptr<rw::common::DOMElem> createDOMDocument(const rw::proximity::ProximitySetup& prox, rw::common::Ptr<rw::common::DOMParser> parser);
+    static rw::core::Ptr<rw::core::DOMElem> createDOMDocument(const rw::proximity::ProximitySetup& prox, rw::core::Ptr<rw::core::DOMParser> parser);
 
 	/**
 	 * @brief Utility class which initializes local static variables.

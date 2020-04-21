@@ -44,6 +44,7 @@
 #include <rwsim/simulator/DynamicSimulator.hpp>
 
 using namespace rw::common;
+using namespace rw::core;
 using namespace rw::invkin;
 using namespace rw::kinematics;
 using namespace rw::math;
@@ -108,7 +109,7 @@ private:
 	AssemblySimulator* _simulator;
 };*/
 
-AssemblySimulator::AssemblySimulator(rw::common::Ptr<DynamicWorkCell> dwc, const std::string &engineID, rw::common::Ptr<rwsim::contacts::ContactDetector> contactDetector, SimulatorLogScope::Ptr verbose):
+AssemblySimulator::AssemblySimulator(rw::core::Ptr<DynamicWorkCell> dwc, const std::string &engineID, rw::core::Ptr<rwsim::contacts::ContactDetector> contactDetector, SimulatorLogScope::Ptr verbose):
 	_dwc(dwc),
 	_engineID(engineID),
 	_contactDetector(contactDetector),
@@ -141,7 +142,7 @@ void AssemblySimulator::setDt(double dt) {
 	_dt = dt;
 }
 
-void AssemblySimulator::start(rw::common::Ptr<ThreadTask> task) {
+void AssemblySimulator::start(rw::core::Ptr<ThreadTask> task) {
 	{
 		boost::mutex::scoped_lock lock(_mutex);
 		_running = true;

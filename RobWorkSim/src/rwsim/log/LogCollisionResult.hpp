@@ -25,7 +25,7 @@
  */
 
 #include "SimulatorLogEntry.hpp"
-
+#include <rw/core/Ptr.hpp>
 #include <rw/proximity/CollisionStrategy.hpp>
 
 namespace rwsim {
@@ -42,7 +42,7 @@ class LogPositions;
 class LogCollisionResult: public SimulatorLogEntry {
 public:
     //! Smart pointer type of LogCollisionResult
-    typedef rw::common::Ptr<LogCollisionResult> Ptr;
+    typedef rw::core::Ptr<LogCollisionResult> Ptr;
 
     //! @copydoc SimulatorLogEntry::SimulatorLogEntry
     LogCollisionResult(SimulatorLogScope* parent);
@@ -127,10 +127,10 @@ public:
 	 *
 	 * @return the log entry with positions of objects (or NULL if not linked).
 	 */
-	rw::common::Ptr<LogPositions> getPositions() const;
+	rw::core::Ptr<LogPositions> getPositions() const;
 
 private:
-	rw::common::Ptr<LogPositions> _positions;
+	rw::core::Ptr<LogPositions> _positions;
 	std::vector<ResultInfo> _results;
 };
 //! @}

@@ -18,7 +18,7 @@
 #include "KinematicDevice.hpp"
 #include <rw/models/Joint.hpp>
 
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 
 using namespace rw::kinematics;
 using namespace rw::models;
@@ -130,7 +130,7 @@ KinematicDevice::KinematicDevice(
                     _velocity((int)dev->getDOF())
 {
     for(size_t i=0;i<objects.size(); i++){
-        _links.push_back( rw::common::ownedPtr( new KinematicLink(objects[i].first, objects[i].second, this, i) ) );
+        _links.push_back( rw::core::ownedPtr( new KinematicLink(objects[i].first, objects[i].second, this, i) ) );
     }
     add(_velocity);
 }

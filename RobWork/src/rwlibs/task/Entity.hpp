@@ -19,7 +19,8 @@
 #ifndef RWLIBS_TASK_ENTITY_HPP
 #define RWLIBS_TASK_ENTITY_HPP
 
-#include <rw/common/PropertyMap.hpp>
+#include <rw/core/PropertyMap.hpp>
+#include <rw/core/Ptr.hpp>
 
 namespace rwlibs {
 namespace task {
@@ -74,7 +75,7 @@ class Entity
 {
 public:
 	//! @brief smart pointer type to this class
-    typedef rw::common::Ptr<Entity> Ptr;
+    typedef rw::core::Ptr<Entity> Ptr;
     
 	/**
      * @brief Constructs an Entity with a given type,
@@ -95,18 +96,18 @@ public:
     virtual ~Entity() {}
 
     /**
-     * @brief Returns reference to rw::common::PropertyMap associated with the Entity
+     * @brief Returns reference to rw::core::PropertyMap associated with the Entity
      * @return Reference to PropertyMap
      */
-    rw::common::PropertyMap& getPropertyMap() {
+    rw::core::PropertyMap& getPropertyMap() {
         return _properties;
     }
 
     /**
-     * @brief Returns reference to rw::common::PropertyMap associated with the Entity
+     * @brief Returns reference to rw::core::PropertyMap associated with the Entity
      * @return Reference to PropertyMap
      */
-    const rw::common::PropertyMap& getPropertyMap() const {
+    const rw::core::PropertyMap& getPropertyMap() const {
         return _properties;
     }
 
@@ -116,7 +117,7 @@ public:
      * Overrides the current propertymap with \b propertymap
      * @param propertymap [in] The propertymap to use
      */
-    void setPropertyMap(const rw::common::PropertyMap& propertymap) {
+    void setPropertyMap(const rw::core::PropertyMap& propertymap) {
     	_properties = propertymap;
     }
 
@@ -172,7 +173,7 @@ public:
     /**
      * @brief Method which can be used to explicitly and safely casting an Entity.
      *
-     * If the cast in impossible the method may throws a rw::common::Exception or
+     * If the cast in impossible the method may throws a rw::core::Exception or
      * return NULL if casting to a pointer.
      *
      * Example:
@@ -193,7 +194,7 @@ public:
 
 protected:
     //! @brief Properties of entity.
-    rw::common::PropertyMap _properties;
+    rw::core::PropertyMap _properties;
     //! @brief The type of entity.
     EntityType _entityType;
     //! @brief The index of the entity.

@@ -19,6 +19,7 @@
 #include "RenderGeometry.hpp"
 #include <rw/geometry/TriMesh.hpp>
 #include <rw/math/Vector3D.hpp>
+#include <rw/core/Ptr.hpp>
 #include "DrawableUtil.hpp"
 
 using namespace rwlibs::opengl;
@@ -49,7 +50,7 @@ RenderGeometry::RenderGeometry(Geometry::Ptr geometry):
 }
 
 RenderGeometry::RenderGeometry(rw::geometry::TriMesh::Ptr mesh):
-        _geometry(rw::common::ownedPtr( new Geometry(mesh) ) ), _r(0.8f),_g(0.8f),_b(0.8f)
+        _geometry(rw::core::ownedPtr( new Geometry(mesh) ) ), _r(0.8f),_g(0.8f),_b(0.8f)
 {
     float color[3];
     _geometry->getColor(color);

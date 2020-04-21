@@ -20,6 +20,7 @@
 
 #include <rw/math/Transform3D.hpp>
 #include <rw/geometry/TriMesh.hpp>
+#include <rw/core/Ptr.hpp>
 
 #define CSGJS_HEADER_ONLY
 #include <csgjs/csgjs.cpp>
@@ -40,7 +41,7 @@ class CSGModel
 {
 public:
 	//! @brief Smart pointer type for CSGModel.
-	typedef rw::common::Ptr<CSGModel> Ptr;
+	typedef rw::core::Ptr<CSGModel> Ptr;
 	
 public:
 	//! @brief Constructor.
@@ -97,7 +98,7 @@ private:
 	
 	bool _needsConversion; // is it neccessary to convert to TriMesh?
 	
-	rw::common::Ptr<csgjs_model> _model; // csgjs library geometry representation
+	rw::core::Ptr<csgjs_model> _model; // csgjs library geometry representation
 	rw::geometry::TriMesh::Ptr _mesh; // RobWork geometry representation
 };
 

@@ -24,14 +24,14 @@
 #include <rwsim/log/LogConstraints.hpp>
 #include <rwsim/log/LogPositions.hpp>
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::graphics;
 using namespace rw::math;
 using namespace rwlibs::opengl;
 using namespace rwsim::log;
 using namespace rwsimlibs::gui;
 
-ConstraintWidget::ConstraintWidget(rw::common::Ptr<const LogConstraints> entry, QWidget* parent):
+ConstraintWidget::ConstraintWidget(rw::core::Ptr<const LogConstraints> entry, QWidget* parent):
 	SimulatorLogEntryWidget(parent),
 	_ui(new Ui::ConstraintWidget()),
 	_constraints(entry)
@@ -55,18 +55,18 @@ ConstraintWidget::~ConstraintWidget() {
 	}
 }
 
-void ConstraintWidget::setDWC(rw::common::Ptr<const rwsim::dynamics::DynamicWorkCell> dwc) {
+void ConstraintWidget::setDWC(rw::core::Ptr<const rwsim::dynamics::DynamicWorkCell> dwc) {
 }
 
-void ConstraintWidget::setEntry(rw::common::Ptr<const SimulatorLog> entry) {
-	const rw::common::Ptr<const LogConstraints> set = entry.cast<const LogConstraints>();
+void ConstraintWidget::setEntry(rw::core::Ptr<const SimulatorLog> entry) {
+	const rw::core::Ptr<const LogConstraints> set = entry.cast<const LogConstraints>();
 	if (!(set == NULL))
 		_constraints = set;
 	else
 		RW_THROW("ConstraintWidget (setEntry): invalid entry!");
 }
 
-rw::common::Ptr<const SimulatorLog> ConstraintWidget::getEntry() const {
+rw::core::Ptr<const SimulatorLog> ConstraintWidget::getEntry() const {
 	return _constraints;
 }
 
@@ -124,15 +124,15 @@ ConstraintWidget::Dispatcher::Dispatcher() {
 ConstraintWidget::Dispatcher::~Dispatcher() {
 }
 
-SimulatorLogEntryWidget* ConstraintWidget::Dispatcher::makeWidget(rw::common::Ptr<const SimulatorLog> entry, QWidget* parent) const {
-	const rw::common::Ptr<const LogConstraints> set = entry.cast<const LogConstraints>();
+SimulatorLogEntryWidget* ConstraintWidget::Dispatcher::makeWidget(rw::core::Ptr<const SimulatorLog> entry, QWidget* parent) const {
+	const rw::core::Ptr<const LogConstraints> set = entry.cast<const LogConstraints>();
 	if (!(set == NULL))
 		return new ConstraintWidget(set, parent);
 	RW_THROW("ConstraintWidget::Dispatcher (makeWidget): invalid entry!");
 	return NULL;
 }
 
-bool ConstraintWidget::Dispatcher::accepts(rw::common::Ptr<const SimulatorLog> entry) const {
+bool ConstraintWidget::Dispatcher::accepts(rw::core::Ptr<const SimulatorLog> entry) const {
 	if (!(entry.cast<const LogConstraints>() == NULL))
 		return true;
 	return false;

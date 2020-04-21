@@ -8,7 +8,7 @@
 #ifndef RWLIBS_TASK_GRASPTASK_HPP_
 #define RWLIBS_TASK_GRASPTASK_HPP_
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include "Task.hpp"
 #include "GraspSubTask.hpp"
 
@@ -29,7 +29,7 @@ namespace task {
 class GraspTask {
 public:
 	/// Smart pointer to this type of class.
-	typedef rw::common::Ptr<GraspTask> Ptr;
+	typedef rw::core::Ptr<GraspTask> Ptr;
 
 	/**
 	 * Defines outcome of a single grasp result.
@@ -144,7 +144,7 @@ public:
 	 * Targets are NOT copied.
 	 */
 	GraspTask::Ptr clone() {
-		GraspTask::Ptr res = rw::common::ownedPtr(new GraspTask());
+		GraspTask::Ptr res = rw::core::ownedPtr(new GraspTask());
 		res->_gripperID = _gripperID;
 		res->_tcpID = _tcpID;
 		res->_graspControllerID = _graspControllerID;

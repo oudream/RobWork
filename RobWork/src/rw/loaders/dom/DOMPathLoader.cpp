@@ -19,7 +19,8 @@
 
 #include "DOMBasisTypes.hpp"
 
-#include <rw/common/DOMParser.hpp>
+#include <rw/core/DOMParser.hpp>
+#include <rw/core/DOMElem.hpp>
 #include <rw/math/Q.hpp>
 #include <rw/models/WorkCell.hpp>
 #include <rw/trajectory/CircularInterpolator.hpp>
@@ -33,7 +34,7 @@
 
 using namespace rw;
 using namespace rw::math;
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::trajectory;
 using namespace rw::loaders;
 using namespace rw::kinematics;
@@ -321,7 +322,7 @@ void DOMPathLoader::readPath (DOMElem::Ptr element)
         _type = Transform3DType;
     }
     else if (element->isName (idStatePath ())) {
-        _statePath = ownedPtr (new StatePath ());
+        _statePath = rw::core::ownedPtr (new StatePath ());
         read< State, StatePath::Ptr > (element, _statePath, _workcell);
         _type = StateType;
     }
@@ -331,7 +332,7 @@ void DOMPathLoader::readPath (DOMElem::Ptr element)
         _type = TimedQType;
     }
     else if (element->isName (idTimedStatePath ())) {
-        _timedStatePath = ownedPtr (new TimedStatePath ());
+        _timedStatePath = rw::core::ownedPtr (new TimedStatePath ());
         read< TimedState, TimedStatePath::Ptr > (element, _timedStatePath, _workcell);
         _type = TimedStateType;
     }

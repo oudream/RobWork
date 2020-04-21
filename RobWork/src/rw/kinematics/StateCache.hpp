@@ -23,7 +23,7 @@
    @file StateCache.hpp
 */
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 
 namespace rw { namespace kinematics {
@@ -42,7 +42,7 @@ namespace rw { namespace kinematics {
     public:
 
         //! Smart pointer type
-        typedef rw::common::Ptr<StateCache> Ptr;
+        typedef rw::core::Ptr<StateCache> Ptr;
 
         /**
          * @brief destructor
@@ -75,7 +75,7 @@ namespace rw { namespace kinematics {
         /**
          * @brief this creates a deep copy of this cache
          */
-        virtual rw::common::Ptr<StateCache> clone() const = 0;
+        virtual rw::core::Ptr<StateCache> clone() const = 0;
 
     protected:
         StateCache(){};

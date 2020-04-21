@@ -18,14 +18,14 @@
 #ifndef RW_COLLISION_COLLISIONSETUP_HPP
 #define RW_COLLISION_COLLISIONSETUP_HPP
 
-#include <rw/common/Ptr.hpp>
-#include <rw/common/StringUtil.hpp>
+#include <rw/core/Ptr.hpp>
+#include <rw/core/StringUtil.hpp>
 
 #include <set>
 #include <string>
 #include <vector>
 
-namespace rw { namespace common { class PropertyMap; } }
+namespace rw { namespace core { class PropertyMap; } }
 namespace rw { namespace kinematics { class Frame; } }
 namespace rw { namespace models { class WorkCell; } }
 
@@ -66,20 +66,20 @@ public:
 
      @param excludeStaticPairs [in] if true exclude statically related pairs.
      */
-    CollisionSetup(const rw::common::StringPairList& exclude,
+    CollisionSetup(const rw::core::StringPairList& exclude,
                    const std::set<std::string>& volatileFrames,
                    bool excludeStaticPairs);
 
 
-	void addExcludePair(rw::common::StringPair& pair);
+	void addExcludePair(rw::core::StringPair& pair);
 
-	void removeExcludePair(rw::common::StringPair& pair);
+	void removeExcludePair(rw::core::StringPair& pair);
 
     /**
      * @brief Returns the exclude list
      * @return the exclude list
      */
-    const rw::common::StringPairList& getExcludeList() const
+    const rw::core::StringPairList& getExcludeList() const
     {
         return _exclude;
     }
@@ -113,17 +113,17 @@ public:
     static CollisionSetup merge(const CollisionSetup& a, const CollisionSetup& b);
 
     static CollisionSetup get(const rw::models::WorkCell& wc);
-    static CollisionSetup get(rw::common::Ptr<rw::models::WorkCell> wc);
+    static CollisionSetup get(rw::core::Ptr<rw::models::WorkCell> wc);
 
-    static CollisionSetup get(const rw::common::PropertyMap& map);
+    static CollisionSetup get(const rw::core::PropertyMap& map);
 
-    static void set(const CollisionSetup& setup, rw::common::Ptr<rw::models::WorkCell> wc);
+    static void set(const CollisionSetup& setup, rw::core::Ptr<rw::models::WorkCell> wc);
 
-    static void set(const CollisionSetup& setup, rw::common::PropertyMap& map);
+    static void set(const CollisionSetup& setup, rw::core::PropertyMap& map);
 
 
 private:
-    rw::common::StringPairList _exclude;
+    rw::core::StringPairList _exclude;
     std::set<std::string> _volatileFrames;
     bool _excludeStaticPairs;
 };

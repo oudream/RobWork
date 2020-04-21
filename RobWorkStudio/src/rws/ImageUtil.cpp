@@ -1,11 +1,12 @@
 
 #include "ImageUtil.hpp"
+#include <rw/core/Ptr.hpp>
 
 #include <QImage>
 
 using namespace rws;
 using namespace rw::sensor;
-using namespace rw::common;
+using namespace rw::core;
 
 rw::sensor::Image::Ptr ImageUtil::toRwImage( const QImage& srcimg ){
     if(srcimg.isNull())

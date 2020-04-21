@@ -2,16 +2,16 @@
 #ifndef SCHEMA_HPP_
 #define SCHEMA_HPP_
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include "BrainState.hpp"
 #include "MotorProgram.hpp"
 
-namespace rw { namespace common { class PropertyMap; } }
+namespace rw { namespace core { class PropertyMap; } }
 
 class Predictor {
 public:
-    typedef rw::common::Ptr<Predictor> Ptr;
+    typedef rw::core::Ptr<Predictor> Ptr;
 
     virtual BrainState makePrediction(const BrainState& state) = 0; // pure-function
 
@@ -19,7 +19,7 @@ public:
 
 class Condition {
 public:
-    typedef rw::common::Ptr<Condition> Ptr;
+    typedef rw::core::Ptr<Condition> Ptr;
 
     virtual bool isConditionMet(const BrainState& state) = 0;
 };
@@ -44,7 +44,7 @@ public:
 class Schema
 {
 public:
-    typedef rw::common::Ptr<Schema> Ptr;
+    typedef rw::core::Ptr<Schema> Ptr;
 
     Schema(const std::string& name,
            Condition::Ptr precondition,
@@ -70,7 +70,7 @@ public:
 
     MotorProgram::Ptr getMotorProgram();
     void setMotorProgram( MotorProgram::Ptr mp);
-    void executeMotorProgram( rw::common::Ptr<rw::common::PropertyMap> parameters, const BrainState& bstate  );
+    void executeMotorProgram( rw::core::Ptr<rw::core::PropertyMap> parameters, const BrainState& bstate  );
 
 
 

@@ -33,9 +33,9 @@ namespace invkin {
 class ClosedFormIKSolverUR: public rw::invkin::ClosedFormIK {
 public:
 	//! @brief Smart pointer type to ClosedFormURSolver
-	typedef rw::common::Ptr<ClosedFormIKSolverUR> Ptr;
+	typedef rw::core::Ptr<ClosedFormIKSolverUR> Ptr;
 	//! @brief Smart pointer type to const ClosedFormURSolver
-	typedef rw::common::Ptr<const ClosedFormIKSolverUR> CPtr;
+	typedef rw::core::Ptr<const ClosedFormIKSolverUR> CPtr;
 
 	/**
 	 * @brief Construct new closed form solver for a Universal Robot.
@@ -43,7 +43,7 @@ public:
 	 * @param device [in] the device.
 	 * @param state [in] the state to use to extract dimensions.
 	 */
-	ClosedFormIKSolverUR(const rw::common::Ptr<const rw::models::SerialDevice> device, const rw::kinematics::State& state);
+	ClosedFormIKSolverUR(const rw::core::Ptr<const rw::models::SerialDevice> device, const rw::kinematics::State& state);
 
 	//! @brief Destructor.
 	virtual ~ClosedFormIKSolverUR();
@@ -57,7 +57,7 @@ public:
     /**
      * @copydoc InvKinSolver::getTCP
      */
-    virtual rw::common::Ptr< const rw::kinematics::Frame > getTCP() const;            
+    virtual rw::core::Ptr< const rw::kinematics::Frame > getTCP() const;            
 
 private:
     rw::math::Q adjustJoints(const rw::math::Q &q) const;
@@ -77,7 +77,7 @@ private:
 	static rw::math::Vector3D<> getPerpendicularVector(const rw::math::Vector3D<> &vec);
 
 private:
-    const rw::common::Ptr<const rw::models::SerialDevice> _device;
+    const rw::core::Ptr<const rw::models::SerialDevice> _device;
     bool _checkJointLimits;
     std::vector<const rw::kinematics::Frame*> _frames;
     double _lTcp, _baseRadius, _baseRadiusSqr, _endCircleRadius, _l1, _l2, _lJ0J1;	

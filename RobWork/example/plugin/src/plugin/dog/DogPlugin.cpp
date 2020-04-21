@@ -9,6 +9,7 @@ using animals::Dog;
 using namespace rw::common;
 
 
+
 RW_ADD_PLUGIN(DogPlugin)
 
 

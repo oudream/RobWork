@@ -37,7 +37,7 @@
 #include <QPushButton>
 #include <QTimer>
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::graphics;
 using rw::kinematics::State;
 using namespace rw::math;
@@ -118,7 +118,7 @@ StrategyLibraryDialog::~StrategyLibraryDialog() {
 	delete _ui;
 }
 
-void StrategyLibraryDialog::setWorkCell(rw::common::Ptr<const WorkCell> wc) {
+void StrategyLibraryDialog::setWorkCell(rw::core::Ptr<const WorkCell> wc) {
 	_wc = NULL;
 	bool enableConfig = false;
 	if (wc.isNull()) {

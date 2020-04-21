@@ -28,7 +28,7 @@
 
 #include <rw/math/Vector3D.hpp>
 #include <rw/geometry/Line.hpp>
-
+#include <rw/core/Ptr.hpp>
 #include "RANSACModel.hpp"
 
 
@@ -49,7 +49,7 @@ class StructuredLineModel : public RANSACModel<StructuredLineModel, rw::math::Ve
 {
 	public:
 		//! @brief Smart pointer type to this class.
-		typedef rw::common::Ptr<StructuredLineModel> Ptr;
+		typedef rw::core::Ptr<StructuredLineModel> Ptr;
 		
 	public: // constructors
 		/**

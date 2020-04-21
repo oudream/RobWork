@@ -20,7 +20,7 @@
 #include "PiHStrategy.hpp"
 #include "SpiralStrategy.hpp"
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rwlibs::assembly;
 
 AssemblyRegistry::AssemblyRegistry():
@@ -43,7 +43,7 @@ AssemblyRegistry::AssemblyRegistry():
 AssemblyRegistry::~AssemblyRegistry() {
 }
 
-void AssemblyRegistry::addStrategy(const std::string id, rw::common::Ptr<AssemblyControlStrategy> strategy) {
+void AssemblyRegistry::addStrategy(const std::string id, rw::core::Ptr<AssemblyControlStrategy> strategy) {
 	_map[id] = strategy;
 }
 

@@ -68,7 +68,7 @@ namespace {
 }
 
 WrenchMeasure3D::WrenchMeasure3D(int resolution, bool useUnitVectors):
-    _chullCalculator( rw::common::ownedPtr(new QHullND<6>() ) ),
+    _chullCalculator( rw::core::ownedPtr(new QHullND<6>() ) ),
     _resolution(resolution),
     _useUnitVectors(useUnitVectors),
     _lambda(1.0/0.1)

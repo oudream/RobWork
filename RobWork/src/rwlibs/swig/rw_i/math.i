@@ -1048,10 +1048,10 @@ public:
 };
 
 %template (MetricQ) Metric<rw::math::Q>;
-%template (MetricQPtr) rw::common::Ptr<Metric<rw::math::Q> >;
-%template (MetricQCPtr) rw::common::Ptr<const Metric<rw::math::Q> >;
+%template (MetricQPtr) rw::core::Ptr<Metric<rw::math::Q> >;
+%template (MetricQCPtr) rw::core::Ptr<const Metric<rw::math::Q> >;
 %template (MetricSE3) Metric<rw::math::Transform3D<double> >;
-%template (MetricSE3Ptr) rw::common::Ptr<Metric<rw::math::Transform3D<double> > >;
+%template (MetricSE3Ptr) rw::core::Ptr<Metric<rw::math::Transform3D<double> > >;
 OWNEDPTR(Metric<rw::math::Q> );
 OWNEDPTR(Metric<rw::math::Transform3D<double> > );
 
@@ -1066,7 +1066,7 @@ class MetricFactory
 };
 
 %extend MetricFactory {
-    static rw::common::Ptr<rw::math::Metric<rw::math::Q>> makeEuclideanQ(){
+    static rw::core::Ptr<rw::math::Metric<rw::math::Q>> makeEuclideanQ(){
         return rw::math::MetricFactory::makeEuclidean<rw::math::Q>();
     }
 }

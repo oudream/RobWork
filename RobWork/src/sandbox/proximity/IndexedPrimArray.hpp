@@ -3,6 +3,7 @@
 
 #include <rw/geometry/TriMesh.hpp>
 #include <rw/math/Transform3D.hpp>
+#include <rw/core/Ptr.hpp>
 
 namespace rw {
 namespace proximity {
@@ -20,7 +21,7 @@ namespace proximity {
 	class IndexedPrimArray : public PrimArrayAccessor<PRIM> {
 	private:
 		rw::geometry::TriMesh::Ptr _objArr;
-		rw::common::Ptr< std::vector<T> > _idxArr;
+		rw::core::Ptr< std::vector<T> > _idxArr;
 		size_t _first,_last;
 
 	public:
@@ -30,9 +31,9 @@ namespace proximity {
 		 * from [0:0,1:1,2:2,....,i:i]
 		 * @param objArr [in] the triangle mesh on which to create a proxy
 		 */
-		IndexedPrimArray(rw::common::Ptr<PrimArrayAccessor<PRIM> > objArr):
+		IndexedPrimArray(rw::core::Ptr<PrimArrayAccessor<PRIM> > objArr):
 			_objArr(objArr),
-			_idxArr(rw::common::ownedPtr(new std::vector<T>(objArr->getSize()))),
+			_idxArr(rw::core::ownedPtr(new std::vector<T>(objArr->getSize()))),
 			_first(0),
 			_last(objArr->getSize())
 		{
@@ -49,8 +50,8 @@ namespace proximity {
 		 * @param objArr [in] the triangle mesh on which to create a proxy
 		 * @param idxArr [in] the index mapping
 		 */
-		IndexedPrimArray(rw::common::Ptr<PrimArrayAccessor<PRIM> > objArr,
-						rw::common::Ptr< std::vector<T> > idxArr):
+		IndexedPrimArray(rw::core::Ptr<PrimArrayAccessor<PRIM> > objArr,
+						rw::core::Ptr< std::vector<T> > idxArr):
 			_objArr(objArr),
 			_idxArr(idxArr),
 			_first(0),
@@ -66,8 +67,8 @@ namespace proximity {
 		 * @param idxArr [in] the index mapping
 		 * @param first [in] the first index
 		 */
-		IndexedPrimArray(rw::common::Ptr<PrimArrayAccessor<PRIM> > objArr,
-						rw::common::Ptr< std::vector<T> > idxArr,
+		IndexedPrimArray(rw::core::Ptr<PrimArrayAccessor<PRIM> > objArr,
+						rw::core::Ptr< std::vector<T> > idxArr,
 						size_t first,
 						size_t last):
 			_objArr(objArr),
@@ -155,8 +156,8 @@ namespace proximity {
 			return IndexedPrimArray<T>(_objArr,_idxArr,_first+first, _first+last);
 		}
 
-		rw::common::Ptr<TriMesh> clone() const{
-			return rw::common::ownedPtr( new IndexedTriArray<T>(_objArr,_idxArr,_first, _last) );
+		rw::core::Ptr<TriMesh> clone() const{
+			return rw::core::ownedPtr( new IndexedTriArray<T>(_objArr,_idxArr,_first, _last) );
 		}
 
 		size_t getGlobalIndex(int idx){ return (*_idxArr)[_first+idx]; }

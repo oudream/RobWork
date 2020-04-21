@@ -21,11 +21,12 @@
 #include "StateSampler.hpp"
 #include "SimStateConstraint.hpp"
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/common/TimerUtil.hpp>
 #include <rw/trajectory/Timed.hpp>
 #include <rwsim/simulator/ThreadSimulator.hpp>
 
+using namespace rw::core;
 using namespace rw::common;
 using namespace rw::kinematics;
 using namespace rw::trajectory;

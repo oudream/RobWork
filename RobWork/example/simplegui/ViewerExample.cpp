@@ -8,7 +8,7 @@
 
 #include <iostream>
 
-using rw::common::ownedPtr;
+using rw::core::ownedPtr;
 
 class MyListener: public EventListener {
     public:

@@ -35,7 +35,7 @@ namespace geometry {
 	{
 	public:
 		//! @brief smart pointer type to this class
-		typedef rw::common::Ptr<Contour2D> Ptr;
+		typedef rw::core::Ptr<Contour2D> Ptr;
 
 
 	    /**

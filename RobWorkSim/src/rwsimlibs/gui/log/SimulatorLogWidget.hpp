@@ -24,13 +24,13 @@
  * \copydoc rwsimlibs::gui::SimulatorLogWidget
  */
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include <QWidget>
 
 #include <map>
 
-namespace rw { namespace common { class PropertyMap; } }
+namespace rw { namespace core { class PropertyMap; } }
 namespace rw { namespace graphics { class GroupNode; } }
 namespace rwlibs { namespace opengl { class Drawable; } }
 namespace rwsim { namespace dynamics { class DynamicWorkCell; } }
@@ -70,19 +70,19 @@ public:
 	 * @brief Set the dynamic workcell for visualisation.
 	 * @param dwc [in] the dynamic workcell.
 	 */
-	void setDWC(rw::common::Ptr<const rwsim::dynamics::DynamicWorkCell> dwc);
+	void setDWC(rw::core::Ptr<const rwsim::dynamics::DynamicWorkCell> dwc);
 
 	/**
 	 * @brief Set the simulation log to show.
 	 * @param info [in/out] the simulation log (might be updated with statistics).
 	 */
-	void setLog(rw::common::Ptr<rwsim::log::SimulatorLogScope> info);
+	void setLog(rw::core::Ptr<rwsim::log::SimulatorLogScope> info);
 
 	/**
 	 * @brief Compare with a different log.
 	 * @param info [in] the other simulation log.
 	 */
-	void compare(rw::common::Ptr<const rwsim::log::SimulatorLogScope> info);
+	void compare(rw::core::Ptr<const rwsim::log::SimulatorLogScope> info);
 
 	/**
 	 * @brief Try to find a specific simulation time.
@@ -97,7 +97,7 @@ public:
 	 * @brief Set properties for widget.
 	 * @param properties [in/out] properties, such as default values for scaling of graphical elements.
 	 */
-	virtual void setProperties(rw::common::Ptr<rw::common::PropertyMap> properties);
+	virtual void setProperties(rw::core::Ptr<rw::core::PropertyMap> properties);
 
 public slots:
 	//! @brief Update the graphical view.
@@ -112,14 +112,14 @@ private slots:
 
 private:
     Ui::SimulatorLogWidget* const _ui;
-    rw::common::Ptr<const rwsim::dynamics::DynamicWorkCell> _dwc;
+    rw::core::Ptr<const rwsim::dynamics::DynamicWorkCell> _dwc;
     rws::SceneOpenGLViewer* const _glview;
-    rw::common::Ptr<rwsim::log::SimulatorLogScope> _log;
+    rw::core::Ptr<rwsim::log::SimulatorLogScope> _log;
     SimulatorLogModel* _model;
 
-    rw::common::Ptr<rw::graphics::GroupNode> _root;
+    rw::core::Ptr<rw::graphics::GroupNode> _root;
 
-    rw::common::Ptr<rw::common::PropertyMap> _properties;
+    rw::core::Ptr<rw::core::PropertyMap> _properties;
     std::map<const rwsim::log::SimulatorLog*, std::list<QWidget*> > _entryToWidgets;
 };
 //! @}

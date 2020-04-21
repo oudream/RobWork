@@ -26,7 +26,8 @@
 
 #include "../Task.hpp"
 
-#include <rw/common/ExtensionPoint.hpp>
+#include <rw/core/ExtensionPoint.hpp>
+#include <rw/core/Ptr.hpp>
 
 namespace rwlibs {
 namespace task {
@@ -39,7 +40,7 @@ namespace task {
 class TaskSaver {
 public:
 	//! @brief Smart pointer type for a TaskSaver.
-	typedef rw::common::Ptr<TaskSaver> Ptr;
+	typedef rw::core::Ptr<TaskSaver> Ptr;
 
 	//! @brief Constructor.
 	TaskSaver() {}
@@ -78,7 +79,7 @@ public:
 	 * @brief A factory for TaskSaver. This factory also defines an
 	 * extension point for task savers.
 	 */
-    class Factory: public rw::common::ExtensionPoint<TaskSaver> {
+    class Factory: public rw::core::ExtensionPoint<TaskSaver> {
     public:
         /**
          * @brief Get saver for a specific format.
@@ -114,7 +115,7 @@ public:
     	static bool save(rwlibs::task::CartesianTask::Ptr task, const std::string& filename);
 
     private:
-        Factory(): rw::common::ExtensionPoint<TaskSaver>("rwlibs.task.TaskSaver", "Savers for the RobWork Task format.") {}
+        Factory(): rw::core::ExtensionPoint<TaskSaver>("rwlibs.task.TaskSaver", "Savers for the RobWork Task format.") {}
     };
 };
 //! @}

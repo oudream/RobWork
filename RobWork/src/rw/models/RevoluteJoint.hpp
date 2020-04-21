@@ -44,7 +44,7 @@ namespace rw { namespace models {
     {
     public:
 		//! @brief smart pointer type to this class
-		typedef rw::common::Ptr<RevoluteJoint> Ptr;
+		typedef rw::core::Ptr<RevoluteJoint> Ptr;
 
         /**
          * @brief Constructs RevoluteJoint

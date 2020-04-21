@@ -21,7 +21,7 @@
 
 #include <rw/math/RPY.hpp>
 #include <rw/math/Jacobian.hpp>
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 #include <rw/kinematics/MovableFrame.hpp>
 
 using namespace rw::math;

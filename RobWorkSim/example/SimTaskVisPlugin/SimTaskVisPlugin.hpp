@@ -58,7 +58,7 @@ public:
     void saveConfig();
     void updateConfig();
 
-    rw::common::PropertyMap& settings();
+    rw::core::PropertyMap& settings();
 
     //std::vector<rw::sensor::Contact3D> getObjectContacts(const rw::kinematics::State& state);
 
@@ -77,12 +77,12 @@ private:
     typedef enum Status {UnInitialized = 0, Success, CollisionInitially, ObjectMissed, ObjectDropped, ObjectSlipped, TimeOut, SimulationFailure} TestStatus;
 
     rw::models::WorkCell* _wc;
-    rw::common::Ptr<rwsim::dynamics::DynamicWorkCell> _dwc;
+    rw::core::Ptr<rwsim::dynamics::DynamicWorkCell> _dwc;
 
     rw::models::Device* _hand;
     rw::kinematics::MovableFrame *_mbase;
     rw::kinematics::Frame *_tcp;
-    std::vector<rw::common::Ptr<rwsim::dynamics::RigidBody> > _objects;
+    std::vector<rw::core::Ptr<rwsim::dynamics::RigidBody> > _objects;
 
     rwlibs::task::CartesianTask::Ptr _roottask,_currenttask;
     std::vector<rwlibs::task::CartesianTask::Ptr> _taskQueue;
@@ -93,9 +93,9 @@ private:
 
     std::vector<std::pair<rwlibs::task::CartesianTask::Ptr, rwlibs::task::CartesianTarget::Ptr> > _ymtargets;
 
-    rw::common::PropertyMap _config;
+    rw::core::PropertyMap _config;
 
-    rw::common::Ptr<rw::graphics::Render> _render;
+    rw::core::Ptr<rw::graphics::Render> _render;
 };
 
 #endif /*RINGONHOOKPLUGIN_HPP_*/

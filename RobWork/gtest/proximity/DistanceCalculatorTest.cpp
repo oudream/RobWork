@@ -18,7 +18,7 @@
 #include <gtest/gtest.h>
 #include "../TestEnvironment.hpp"
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/kinematics/State.hpp>
 #include <rw/loaders/WorkCellLoader.hpp>
 #include <rw/models/WorkCell.hpp>
@@ -28,7 +28,7 @@
 #include <vector>
 //#include <iostream>
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::kinematics;
 using namespace rw::loaders;
 using namespace rw::proximity;

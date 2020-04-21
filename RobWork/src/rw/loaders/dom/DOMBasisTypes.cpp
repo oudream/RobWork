@@ -17,9 +17,9 @@
 
 #include "DOMBasisTypes.hpp"
 
-#include <rw/common/DOMElem.hpp>
-#include <rw/common/StringUtil.hpp>
-#include <rw/common/macros.hpp>
+#include <rw/core/DOMElem.hpp>
+#include <rw/core/StringUtil.hpp>
+#include <rw/core/macros.hpp>
 #include <rw/kinematics/Frame.hpp>
 #include <rw/kinematics/StateStructure.hpp>
 #include <rw/math/LinearAlgebra.hpp>
@@ -32,7 +32,7 @@
 #include <vector>
 
 using namespace rw::math;
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::kinematics;
 using namespace rw::models;
 using namespace rw::loaders;
@@ -1041,7 +1041,7 @@ DOMElem::Ptr DOMBasisTypes::createTransform3D (const Transform3D<>& t, DOMElem::
 }
 
 DOMElem::Ptr DOMBasisTypes::createTransform2D (const rw::math::Transform2D<>& t,
-                                               rw::common::DOMElem::Ptr doc)
+                                               rw::core::DOMElem::Ptr doc)
 {
     DOMElem::Ptr element = doc->addChild (idTransform2D ());
     createElement (idPos (), createStringFromArray (t.P ()), element);

@@ -25,8 +25,8 @@
 
 #include "InvKinSolver.hpp"
 
-#include <rw/common/Ptr.hpp>
-#include <rw/common/PropertyMap.hpp>
+#include <rw/core/Ptr.hpp>
+#include <rw/core/PropertyMap.hpp>
 
 namespace rw { namespace kinematics { class State; } }
 namespace rw { namespace models { class Device; } }
@@ -53,9 +53,9 @@ namespace rw { namespace invkin {
     public:
 
 		//! @brief smart pointer type to this class
-		typedef rw::common::Ptr<IterativeIK> Ptr;
+		typedef rw::core::Ptr<IterativeIK> Ptr;
 		//! @brief smart pointer type to this const class
-		typedef rw::common::Ptr< const IterativeIK > CPtr;
+		typedef rw::core::Ptr< const IterativeIK > CPtr;
 
 		/**
 		 * @brief Destructor
@@ -95,13 +95,13 @@ namespace rw { namespace invkin {
          * @brief Returns the PropertyMap
          * @return Reference to the PropertyMap
          */
-        virtual rw::common::PropertyMap& getProperties();
+        virtual rw::core::PropertyMap& getProperties();
 
         /**
          * @brief Returns the PropertyMap
          * return Reference to the PropertyMap
          */
-        virtual const rw::common::PropertyMap& getProperties() const;
+        virtual const rw::core::PropertyMap& getProperties() const;
 
         /**
            @brief Default iterative inverse kinematics solver for a device and
@@ -110,7 +110,7 @@ namespace rw { namespace invkin {
            @param device [in] Device for which to solve IK.
            @param state [in] Fixed state for which IK is solved.
         */
-		static IterativeIK::Ptr makeDefault(rw::common::Ptr<rw::models::Device> device,
+		static IterativeIK::Ptr makeDefault(rw::core::Ptr<rw::models::Device> device,
                                             const rw::kinematics::State& state);
 
     protected:
@@ -123,7 +123,7 @@ namespace rw { namespace invkin {
         /**
          * @brief the Properties
          */
-        rw::common::PropertyMap _properties;
+        rw::core::PropertyMap _properties;
 
     private:
         IterativeIK(const IterativeIK&);

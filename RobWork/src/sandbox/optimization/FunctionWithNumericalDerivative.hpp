@@ -8,7 +8,7 @@
 #ifndef SRC_RW_MATH_FUNCTIONWITHNUMERICALDERIVATIVE_
 #define SRC_RW_MATH_FUNCTIONWITHNUMERICALDERIVATIVE_
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/math/Function.hpp>
 #include "NumericalDerivative.hpp"
 
@@ -26,7 +26,7 @@ class FunctionWithNumericalDerivative: public rw::math::Function1Diff<RES_T,
 		ARG_T, GRAD_T> {
 public:
 	//! Smart pointer.
-	typedef rw::common::Ptr<FunctionWithNumericalDerivative> Ptr;
+	typedef rw::core::Ptr<FunctionWithNumericalDerivative> Ptr;
 
 public:
 	/**

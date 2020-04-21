@@ -21,7 +21,7 @@
 //! @file RenderGeometry.hpp
 
 #include <rw/graphics/Render.hpp>
-
+#include <rw/core/Ptr.hpp>
 #include <rw/geometry/Geometry.hpp>
 
 namespace rwlibs {
@@ -37,7 +37,7 @@ namespace opengl {
     class RenderGeometry: public rw::graphics::Render {
     public:
         //! @brief smart pointer type to this class
-        typedef rw::common::Ptr<RenderGeometry> Ptr;
+        typedef rw::core::Ptr<RenderGeometry> Ptr;
 
         /**
          * @brief Constructs RenderGeometry object
@@ -55,7 +55,7 @@ namespace opengl {
          *
          * @param mesh [in] the triangle mesh to draw
          */
-        RenderGeometry(rw::common::Ptr<rw::geometry::TriMesh> mesh);
+        RenderGeometry(rw::core::Ptr<rw::geometry::TriMesh> mesh);
 
         /**
          * @brief Destructor
@@ -92,7 +92,7 @@ namespace opengl {
         void render() const;
     private:
         rw::geometry::Geometry::Ptr _geometry;
-        rw::common::Ptr<rw::geometry::TriMesh> _mesh;
+        rw::core::Ptr<rw::geometry::TriMesh> _mesh;
         float _r, _g, _b;
     };
 

@@ -11,7 +11,8 @@
 #include <rws/RobWorkStudioPlugin.hpp>
 
 #include <rw/kinematics/State.hpp>
-
+#include <rw/core/Ptr.hpp>
+#include <rw/core/PropertyMap.hpp>
 #include <rw/kinematics/FrameMap.hpp>
 #include <rwsim/util/MovingAverage.hpp>
 #include <Eigen/Eigen>
@@ -119,7 +120,7 @@ class GraspTableGeneratorPlugin : public rws::RobWorkStudioPlugin
         void readConfiguration();
 
     private:
-        rw::common::PropertyMap _settings;
+        rw::core::PropertyMap _settings;
 
         struct CallBackFunctor {
             CallBackFunctor(int i,GraspTableGeneratorPlugin *parent):_i(i),_parent(parent){}
@@ -140,7 +141,7 @@ class GraspTableGeneratorPlugin : public rws::RobWorkStudioPlugin
         rw::kinematics::State _defstate;
         rw::kinematics::State _state;
         QTimer *_timer;
-        std::vector<rw::common::Ptr<rwsim::simulator::ThreadSimulator> > _simulators;
+        std::vector<rw::core::Ptr<rwsim::simulator::ThreadSimulator> > _simulators;
         std::vector<rw::kinematics::State> _initStates;
         std::vector<double> _simStartTimes;
         int _nrOfTests;
@@ -153,21 +154,21 @@ class GraspTableGeneratorPlugin : public rws::RobWorkStudioPlugin
         std::vector<rw::kinematics::State> _resultPoses;
 
         rw::kinematics::FrameMap<rwsim::dynamics::RigidBody*> _frameToBody;
-        rw::common::Ptr<rwsim::dynamics::DynamicWorkCell> _dwc;
+        rw::core::Ptr<rwsim::dynamics::DynamicWorkCell> _dwc;
 
         rw::proximity::CollisionDetector *_colDect;
         double _lastTime,_lastBelowThresUpdate;
         rwsim::util::MovingAverage _avgSimTime;
         rwsim::util::MovingAverage _avgTime;
 
-        std::vector<rw::common::Ptr<rwsim::control::PDController> > _controllers;
+        std::vector<rw::core::Ptr<rwsim::control::PDController> > _controllers;
         std::vector<rw::math::Q> _preshapes;
         std::vector<rw::math::Q> _targetQ;
         rwsim::dynamics::RigidBody *_body;
         rwsim::dynamics::RigidDevice *_hand;
         rw::kinematics::MovableFrame *_handBase,*_object;
 
-        rw::common::Ptr<rwsim::sensor::BodyContactSensor> _bodySensor;
+        rw::core::Ptr<rwsim::sensor::BodyContactSensor> _bodySensor;
 
         bool _exitHard;
 
@@ -178,7 +179,7 @@ class GraspTableGeneratorPlugin : public rws::RobWorkStudioPlugin
         std::vector<std::vector< rw::math::Q > > _handconfigs;
         std::vector<std::vector< TactileSensorData > > _tactiledatas;
 
-        std::vector<rw::common::Ptr<CallBackFunctor> > _functors;
+        std::vector<rw::core::Ptr<CallBackFunctor> > _functors;
         std::vector<double> _nextTimeUpdate;
         int _nrOfTestsOld;
 
@@ -193,13 +194,13 @@ class GraspTableGeneratorPlugin : public rws::RobWorkStudioPlugin
         int _nrOfGraspsInGroup, _lastTableBackupCnt;
         int _tactileDataOnAllCnt;
 
-        rw::common::Ptr<rwsim::util::GraspStrategy> _gstrategy;
-        rw::common::Ptr<rwsim::util::GraspPolicy> _gpolicy;
-        rw::common::Ptr<rwsim::simulator::DynamicSimulator> _simulator;
+        rw::core::Ptr<rwsim::util::GraspStrategy> _gstrategy;
+        rw::core::Ptr<rwsim::util::GraspPolicy> _gpolicy;
+        rw::core::Ptr<rwsim::simulator::DynamicSimulator> _simulator;
 
         rw::graspplanning::GraspTable *_gtable;
         std::string _configFile; // loadet on initialization
-        rw::common::PropertyMap _config;
+        rw::core::PropertyMap _config;
 
 };
 

@@ -4,6 +4,7 @@
 #include <rw/models.hpp>
 #include <rw/proximity.hpp>
 #include <rwlibs/proximitystrategies/ProximityStrategyFactory.hpp>
+#include <rw/core/Exception.hpp>
 
 #include <iostream>
 #include <math.h>
@@ -41,7 +42,7 @@ void printPSD (ProximityStrategyData data)
             cout << "            Geometry: " << geo << endl;
         }
     }
-    catch (rw::common::Exception& e) {
+    catch (rw::core::Exception& e) {
         cout << "            " << e.what () << endl;
     }
 

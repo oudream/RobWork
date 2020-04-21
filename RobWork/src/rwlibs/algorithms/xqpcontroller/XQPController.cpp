@@ -21,7 +21,7 @@
 #include <rwlibs/algorithms/qpcontroller/QPSolver.hpp>
 #include <rw/models/Device.hpp>
 #include <rw/math/Math.hpp>
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 #include <Eigen/Eigen>
 
 using namespace rwlibs::algorithms;

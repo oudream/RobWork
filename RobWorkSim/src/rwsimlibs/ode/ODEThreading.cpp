@@ -17,7 +17,7 @@
 
 #include "ODEThreading.hpp"
 
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 
 #ifdef ODE_WITH_THREADING_IMPL
 #include <ode/odeinit.h>
@@ -27,7 +27,7 @@
 
 #include <boost/thread/mutex.hpp>
 
-using rw::common::ownedPtr;
+using rw::core::ownedPtr;
 using rwsim::simulator::ODEThreading;
 
 #ifdef ODE_WITH_THREADING_IMPL
@@ -91,7 +91,7 @@ void ODEThreading::initThreading(dWorldID world) {
 #ifdef ODE_WITH_THREADING_IMPL
 	static bool supported = isSupported();
 	if (supported) {
-		static const rw::common::Ptr<ThreadImpl> data = ODEThreading::data();
+		static const rw::core::Ptr<ThreadImpl> data = ODEThreading::data();
 		data->threading[world] = dThreadingAllocateMultiThreadedImplementation();
 		data->pool[world] = dThreadingAllocateThreadPool(1, 0, dAllocateFlagBasicData, NULL);
 		dThreadingThreadPoolServeMultiThreadedImplementation(data->pool[world], data->threading[world]);
@@ -105,7 +105,7 @@ void ODEThreading::destroyThreading(dWorldID world) {
 #ifdef ODE_WITH_THREADING_IMPL
 	static bool supported = isSupported();
 	if (supported) {
-		static const rw::common::Ptr<ThreadImpl> data = ODEThreading::data();
+		static const rw::core::Ptr<ThreadImpl> data = ODEThreading::data();
 		dThreadingImplementationShutdownProcessing(data->threading[world]);
 		dThreadingFreeThreadPool(data->pool[world]);
 		dWorldSetStepThreadingImplementation(world, NULL, NULL);
@@ -114,7 +114,7 @@ void ODEThreading::destroyThreading(dWorldID world) {
 #endif
 }
 
-rw::common::Ptr<ODEThreading::ThreadImpl> ODEThreading::data() {
-	static const rw::common::Ptr<ThreadImpl> data = ownedPtr(new ThreadImpl());
+rw::core::Ptr<ODEThreading::ThreadImpl> ODEThreading::data() {
+	static const rw::core::Ptr<ThreadImpl> data = ownedPtr(new ThreadImpl());
 	return data;
 }

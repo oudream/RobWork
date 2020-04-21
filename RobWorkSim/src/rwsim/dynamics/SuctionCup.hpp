@@ -5,6 +5,7 @@
 #include <rwsim/dynamics/Body.hpp>
 #include <rwsim/dynamics/RigidBody.hpp>
 #include "DynamicDevice.hpp"
+#include <rw/core/Ptr.hpp>
 
 namespace rwsim {
 namespace dynamics {
@@ -26,7 +27,7 @@ namespace dynamics {
 
     public:
         //! smart pointer type of SuctionCup
-        typedef rw::common::Ptr<SuctionCup> Ptr;
+        typedef rw::core::Ptr<SuctionCup> Ptr;
 
         SuctionCup(const std::string& name,
                    rwsim::dynamics::Body::Ptr base,
@@ -43,7 +44,7 @@ namespace dynamics {
 
         rwsim::dynamics::Body::Ptr getEndBody(){ return _endBody; };
 
-        void addToWorkCell(rw::common::Ptr<rwsim::dynamics::DynamicWorkCell> dwc);
+        void addToWorkCell(rw::core::Ptr<rwsim::dynamics::DynamicWorkCell> dwc);
 
         double getRadius(){ return _radius; }
 

@@ -22,7 +22,7 @@
 #include <rw/proximity/ProximitySetup.hpp>
 #include <string>
 
-namespace rw { namespace common { class DOMElem; } }
+namespace rw { namespace core { class DOMElem; } }
 
 namespace rw {
 namespace loaders {
@@ -41,7 +41,7 @@ public:
 	/**
 	 * @brief Loads ProximitySetup from \b filename
 	 *
-	 * Throws rw::common::Exception on errors
+	 * Throws rw::core::Exception on errors
 	 *
 	 * @param filename [in] Name of input file
 	 * @param schemaFileName [in] Optional name of schema file to be used for verification
@@ -52,7 +52,7 @@ public:
 	/**
 	 * @brief Loads ProximitySetup from \b instream
 	 *
-	 * Throws rw::common::Exception on errors
+	 * Throws rw::core::Exception on errors
 	 *
 	 * @param instream [in] Stream containing XML ProximitySetup
 	 * @param schemaFileName [in] Optional name of schema file to be used for verification
@@ -63,16 +63,16 @@ public:
 	/**
 	 * @brief Reads ProximitySetup from \b element
 	 *
-	 * Throws rw::common::Exception on errors
+	 * Throws rw::core::Exception on errors
 	 *
 	 * @param element [in] Element containing ProximitySetup
 	 * @return The ProximitySetup
 	 */
-	static rw::proximity::ProximitySetup readProximitySetup(rw::common::Ptr<rw::common::DOMElem> element);
+	static rw::proximity::ProximitySetup readProximitySetup(rw::core::Ptr<rw::core::DOMElem> element);
 
 
 private:
-	static std::pair<std::string, std::string> readFramePatternAttributes(rw::common::Ptr<rw::common::DOMElem> element);
+	static std::pair<std::string, std::string> readFramePatternAttributes(rw::core::Ptr<rw::core::DOMElem> element);
 
 };
 

@@ -86,7 +86,7 @@ namespace proximity {
              * @brief Cached data used by the collision detector to speed up
              * consecutive queries.
              */
-            rw::common::Ptr<ProximityCache> _cache;
+            rw::core::Ptr<ProximityCache> _cache;
 
         private:
             CollisionDetector::QueryType _colQueryType;

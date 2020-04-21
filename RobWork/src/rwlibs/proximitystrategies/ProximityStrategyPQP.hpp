@@ -34,6 +34,7 @@
 #include <rw/proximity/DistanceStrategy.hpp>
 #include <rw/proximity/ProximityCache.hpp>
 #include <rw/proximity/ProximityStrategyData.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include <PQP/PQP.h>
 
@@ -82,11 +83,11 @@ namespace rwlibs { namespace proximitystrategies {
                                  public rw::proximity::DistanceMultiStrategy
     {
       public:
-        typedef rw::common::Ptr< ProximityStrategyPQP > Ptr;
+        typedef rw::core::Ptr< ProximityStrategyPQP > Ptr;
         //! @brief cache key
         typedef std::pair< rw::geometry::GeometryData*, double > CacheKey;
         //! @brief smart pointer to PQP model
-        typedef rw::common::Ptr< PQP::PQP_Model > PQPModelPtr;
+        typedef rw::core::Ptr< PQP::PQP_Model > PQPModelPtr;
 
         //! @brief cache for any of the queries possible on this PQPStrategy
         struct PQPProximityCache : public rw::proximity::ProximityCache
@@ -104,10 +105,10 @@ namespace rwlibs { namespace proximitystrategies {
         //! @brief
         struct RWPQPModel
         {
-            RWPQPModel (rw::common::Ptr< rw::geometry::Geometry > geo, rw::math::Transform3D<> trans, PQPModelPtr model) :
+            RWPQPModel (rw::core::Ptr< rw::geometry::Geometry > geo, rw::math::Transform3D<> trans, PQPModelPtr model) :
                 geo (geo), t3d (trans), pqpmodel (model)
             {}
-            rw::common::Ptr< rw::geometry::Geometry > geo;
+            rw::core::Ptr< rw::geometry::Geometry > geo;
             rw::math::Transform3D<> t3d;
             PQPModelPtr pqpmodel;
             CacheKey ckey;
@@ -151,9 +152,9 @@ namespace rwlibs { namespace proximitystrategies {
         bool addGeometry (rw::proximity::ProximityModel* model, const rw::geometry::Geometry& geom);
 
         //! @copydoc rw::proximity::ProximityStrategy::addGeometry(ProximityModel* model,
-        //! rw::common::Ptr<rw::geometry::Geometry> geom, bool forceCopy=false)
+        //! rw::core::Ptr<rw::geometry::Geometry> geom, bool forceCopy=false)
         bool addGeometry (rw::proximity::ProximityModel* model,
-                          rw::common::Ptr< rw::geometry::Geometry > geom, bool forceCopy = false);
+                          rw::core::Ptr< rw::geometry::Geometry > geom, bool forceCopy = false);
 
         /**
          * @copydoc rw::proximity::ProximityStrategy::removeGeometry
@@ -168,7 +169,7 @@ namespace rwlibs { namespace proximitystrategies {
         /**
          * @copydoc rw::proximity::ProximityStrategy::getGeometrys
          */
-        std::vector < rw::common::Ptr< rw::geometry::Geometry > > getGeometrys (rw::proximity::ProximityModel* model);
+        std::vector < rw::core::Ptr< rw::geometry::Geometry > > getGeometrys (rw::proximity::ProximityModel* model);
 
         /**
          * @brief not implemented yet in rw::proximity::CollisionStrategy::setFirstContact

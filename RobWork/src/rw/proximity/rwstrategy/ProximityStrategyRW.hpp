@@ -26,6 +26,7 @@
 #include "BinaryBVTree.hpp"
 
 #include <rw/common/Cache.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/geometry/OBBToleranceCollider.hpp>
 #include <rw/proximity/CollisionStrategy.hpp>
 #include <rw/proximity/ProximityCache.hpp>
@@ -49,7 +50,7 @@ namespace rw { namespace proximity {
 
     {
       public:
-        typedef rw::common::Ptr< ProximityStrategyRW > Ptr;
+        typedef rw::core::Ptr< ProximityStrategyRW > Ptr;
 
         //! @brief cache key
         typedef std::pair< std::string, double > CacheKey;
@@ -62,9 +63,9 @@ namespace rw { namespace proximity {
             virtual void clear () {}
 
             // TODO: reuse stuff from the collision test
-            rw::common::Ptr< rw::proximity::BVTreeCollider< rw::proximity::BinaryOBBPtrTreeD > >
+            rw::core::Ptr< rw::proximity::BVTreeCollider< rw::proximity::BinaryOBBPtrTreeD > >
                 tcollider;
-            rw::common::Ptr< rw::proximity::BVTreeCollider< rw::proximity::BinaryOBBPtrTreeD > >
+            rw::core::Ptr< rw::proximity::BVTreeCollider< rw::proximity::BinaryOBBPtrTreeD > >
                 tolcollider;
             rw::geometry::OBBToleranceCollider<>* tolCollider;
         };
@@ -73,15 +74,15 @@ namespace rw { namespace proximity {
 
         struct Model
         {
-            typedef rw::common::Ptr< Model > Ptr;
+            typedef rw::core::Ptr< Model > Ptr;
 
-            Model (rw::common::Ptr< rw::geometry::Geometry> geo, rw::math::Transform3D<> trans,
+            Model (rw::core::Ptr< rw::geometry::Geometry> geo, rw::math::Transform3D<> trans,
                    rw::proximity::BinaryOBBPtrTreeD::Ptr obbtree) :
                 geo (geo),
                 scale (1), t3d (trans), tree (obbtree)
             {}
 
-            rw::common::Ptr< rw::geometry::Geometry> geo;
+            rw::core::Ptr< rw::geometry::Geometry> geo;
             double scale;
             rw::math::Transform3D<> t3d;
             rw::proximity::BinaryOBBPtrTreeD::Ptr tree;
@@ -123,7 +124,7 @@ namespace rw { namespace proximity {
         bool addGeometry (rw::proximity::ProximityModel* model, const rw::geometry::Geometry& geom);
 
         bool addGeometry (rw::proximity::ProximityModel* model,
-                          rw::common::Ptr< rw::geometry::Geometry > geom, bool);
+                          rw::core::Ptr< rw::geometry::Geometry > geom, bool);
 
         /**
          * @copydoc rw::proximity::ProximityStrategy::removeGeometry
@@ -138,7 +139,7 @@ namespace rw { namespace proximity {
         /**
          * @copydoc rw::proximity::ProximityStrategy::getGeometrys
          */
-        std::vector< rw::common::Ptr< rw::geometry::Geometry > > getGeometrys (rw::proximity::ProximityModel* model);
+        std::vector< rw::core::Ptr< rw::geometry::Geometry > > getGeometrys (rw::proximity::ProximityModel* model);
 
         /**
          * @copydoc rw::proximity::CollisionStrategy::doInCollision

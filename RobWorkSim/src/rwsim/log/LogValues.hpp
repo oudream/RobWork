@@ -25,7 +25,7 @@
  */
 
 #include "SimulatorLogEntry.hpp"
-
+#include <rw/core/Ptr.hpp>
 namespace rwsim {
 namespace log {
 //! @addtogroup rwsim_log
@@ -37,7 +37,7 @@ namespace log {
 class LogValues: public SimulatorLogEntry {
 public:
     //! Smart pointer type of LogValues
-    typedef rw::common::Ptr<LogValues> Ptr;
+    typedef rw::core::Ptr<LogValues> Ptr;
 
     //! @copydoc SimulatorLogEntry::SimulatorLogEntry
     LogValues(SimulatorLogScope* parent);
