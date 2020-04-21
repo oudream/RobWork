@@ -36,6 +36,7 @@ if(build)
         set(INCLUDE_INSTALL_DIR "${INCLUDE_INSTALL_DIR}/ext")
         set(PYTHON_BINDINGS OFF)
         add_subdirectory(${RWHW_ROOT}/ext/ur_rtde ur_rtde_ext)
+        set(UR_RTDE_DIR "${CMAKE_CURRENT_BINARY_DIR}/ur_rtde_ext/ur_rtde" CACHE PATH "UR_RDTE cmake dir")
         set(INCLUDE_INSTALL_DIR ${tmp})
     endif()
 
