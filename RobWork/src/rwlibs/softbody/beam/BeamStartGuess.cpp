@@ -20,7 +20,7 @@ Copyright 2013 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
 
 #include <rwlibs/softbody/beam/EBBeam.hpp>
 
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 
 #include <math.h>
 

@@ -44,7 +44,7 @@ class Scanner2D: public Scanner
 {
 public:
 	//! @brief smart pointer type to this class
-	typedef rw::common::Ptr<Scanner2D> Ptr;
+	typedef rw::core::Ptr<Scanner2D> Ptr;
 
 protected:
 

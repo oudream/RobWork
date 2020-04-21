@@ -41,8 +41,8 @@ ToExpression::ToExpression(const Mathematica::String& expression):
 ToExpression::~ToExpression() {
 }
 
-std::list<rw::common::Ptr<const Mathematica::Expression> > ToExpression::getArguments() const {
-	return std::list<rw::common::Ptr<const Mathematica::Expression> >(1,_expression);
+std::list<rw::core::Ptr<const Mathematica::Expression> > ToExpression::getArguments() const {
+	return std::list<rw::core::Ptr<const Mathematica::Expression> >(1,_expression);
 }
 
 Mathematica::Expression::Ptr ToExpression::clone() const {

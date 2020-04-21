@@ -21,12 +21,12 @@ namespace geometry {
 	class IndexedTriArray : public rw::geometry::TriMesh {
 	private:
 		rw::geometry::TriMesh::Ptr _objArr;
-		rw::common::Ptr< std::vector<T> > _idxArr;
-		rw::common::Ptr< std::vector< rw::math::Vector3D<float> > > _centerArr;
-		rw::common::Ptr< std::vector< float > > _valArr;
+		rw::core::Ptr< std::vector<T> > _idxArr;
+		rw::core::Ptr< std::vector< rw::math::Vector3D<float> > > _centerArr;
+		rw::core::Ptr< std::vector< float > > _valArr;
 
 		typedef boost::tuple<T,float,rw::math::Vector3D<float> > ValueType;
-		rw::common::Ptr< std::vector<ValueType> > _valCenterArr;
+		rw::core::Ptr< std::vector<ValueType> > _valCenterArr;
 		size_t _first,_last;
 
 	public:
@@ -38,10 +38,10 @@ namespace geometry {
 		 */
 		IndexedTriArray(TriMesh::Ptr objArr):
 			_objArr(objArr),
-			_idxArr(rw::common::ownedPtr(new std::vector<T>(objArr->getSize()))),
-			_centerArr(rw::common::ownedPtr(new std::vector< rw::math::Vector3D<float> >(objArr->getSize()))),
-			_valArr(rw::common::ownedPtr(new std::vector<float>(objArr->getSize()))),
-			_valCenterArr( rw::common::ownedPtr( new std::vector<ValueType>( objArr->getSize() ) ) ),
+			_idxArr(rw::core::ownedPtr(new std::vector<T>(objArr->getSize()))),
+			_centerArr(rw::core::ownedPtr(new std::vector< rw::math::Vector3D<float> >(objArr->getSize()))),
+			_valArr(rw::core::ownedPtr(new std::vector<float>(objArr->getSize()))),
+			_valCenterArr( rw::core::ownedPtr( new std::vector<ValueType>( objArr->getSize() ) ) ),
 			_first(0),
 			_last(objArr->getSize())
 		{
@@ -69,12 +69,12 @@ namespace geometry {
 		 * @param idxArr [in] the index mapping
 		 */
 		IndexedTriArray(TriMesh::Ptr objArr,
-						rw::common::Ptr< std::vector<T> > idxArr):
+						rw::core::Ptr< std::vector<T> > idxArr):
 			_objArr(objArr),
 			_idxArr(idxArr),
-			_centerArr(rw::common::ownedPtr(new std::vector< rw::math::Vector3D<float> >(objArr->getSize()))),
-			_valArr(rw::common::ownedPtr(new std::vector<float>(objArr->getSize()))),
-			_valCenterArr( rw::common::ownedPtr( new std::vector<ValueType>( objArr->getSize() ) ) ),
+			_centerArr(rw::core::ownedPtr(new std::vector< rw::math::Vector3D<float> >(objArr->getSize()))),
+			_valArr(rw::core::ownedPtr(new std::vector<float>(objArr->getSize()))),
+			_valCenterArr( rw::core::ownedPtr( new std::vector<ValueType>( objArr->getSize() ) ) ),
 			_first(0),
 			_last(idxArr->size())
 		{
@@ -100,10 +100,10 @@ namespace geometry {
 		 * @param last
 		 */
 		IndexedTriArray(TriMesh::Ptr objArr,
-						rw::common::Ptr< std::vector<T> > idxArr,
-						rw::common::Ptr< std::vector< rw::math::Vector3D<float> > > centerArr,
-						rw::common::Ptr< std::vector< float > > valArr,
-						rw::common::Ptr< std::vector< boost::tuple<T,float,rw::math::Vector3D<float> > > > valCenterArr,
+						rw::core::Ptr< std::vector<T> > idxArr,
+						rw::core::Ptr< std::vector< rw::math::Vector3D<float> > > centerArr,
+						rw::core::Ptr< std::vector< float > > valArr,
+						rw::core::Ptr< std::vector< boost::tuple<T,float,rw::math::Vector3D<float> > > > valCenterArr,
 						size_t first,
 						size_t last):
 			_objArr(objArr),
@@ -256,8 +256,8 @@ namespace geometry {
 			return IndexedTriArray<T>(_objArr,_idxArr,_centerArr, _valArr, _valCenterArr, _first+first, _first+last);
 		}
 
-		rw::common::Ptr<TriMesh> clone() const{
-			return rw::common::ownedPtr( new IndexedTriArray<T>(_objArr,_idxArr,_centerArr, _valArr, _valCenterArr, _first, _last) );
+		rw::core::Ptr<TriMesh> clone() const{
+			return rw::core::ownedPtr( new IndexedTriArray<T>(_objArr,_idxArr,_centerArr, _valArr, _valCenterArr, _first, _last) );
 		}
 
 				//! @copydoc TriMesh::scale

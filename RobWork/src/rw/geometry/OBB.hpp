@@ -207,7 +207,7 @@ public:
     * be the frame of the OBB itself.
     */
     TriMesh::Ptr createMesh(bool local = false) const{
-		typename PlainTriMesh<Triangle<T> >::Ptr mesh = rw::common::ownedPtr(new PlainTriMesh<Triangle<T> >(12));
+		typename PlainTriMesh<Triangle<T> >::Ptr mesh = rw::core::ownedPtr(new PlainTriMesh<Triangle<T> >(12));
 
         T x = _halfLng(0);
 		T y = _halfLng(1);

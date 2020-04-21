@@ -26,7 +26,7 @@
 
 #include "ContactStrategy.hpp"
 #include "ContactModelGeometry.hpp"
-
+#include <rw/core/Ptr.hpp>
 #include <rw/geometry/Geometry.hpp>
 #include <rw/geometry/GeometryData.hpp>
 
@@ -46,7 +46,7 @@ protected:
 
 public:
 	//! @brief smart pointer type to this class
-	typedef rw::common::Ptr<ContactStrategyGeometry<A, B> > Ptr;
+	typedef rw::core::Ptr<ContactStrategyGeometry<A, B> > Ptr;
 
 	/**
 	 * @brief Construct new strategy
@@ -62,7 +62,7 @@ public:
 	 * @copydoc rwsim::contacts::ContactStrategy::createModel
 	 */
 	virtual rw::proximity::ProximityModel::Ptr createModel() {
-		return rw::common::ownedPtr(new GeometryModel(this));
+		return rw::core::ownedPtr(new GeometryModel(this));
 	}
 
 	/**
@@ -104,7 +104,7 @@ public:
 	}
 
 	/**
-	 * @copydoc rwsim::contacts::ContactStrategy::addGeometry(rw::proximity::ProximityModel*,rw::common::Ptr<rw::geometry::Geometry>,bool)
+	 * @copydoc rwsim::contacts::ContactStrategy::addGeometry(rw::proximity::ProximityModel*,rw::core::Ptr<rw::geometry::Geometry>,bool)
 	 */
 	virtual bool addGeometry(rw::proximity::ProximityModel* model, rw::geometry::Geometry::Ptr geom, bool forceCopy=false) {
 		return addGeometry(model, *geom);

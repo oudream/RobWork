@@ -18,12 +18,13 @@
 
 #include "SceneOpenGLViewer.hpp"
 
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
+#include <rw/core/PropertyMap.hpp>
 #include <rw/geometry/Geometry.hpp>
 #include <rw/graphics/Render.hpp>
 #include <rw/graphics/WorkCellScene.hpp>
 #include <rw/math/Constants.hpp>
-
+#include <rw/core/Ptr.hpp>
 #include <rwlibs/opengl/DrawableUtil.hpp>
 
 #include "ArcBallController.hpp"
@@ -37,7 +38,7 @@
 using namespace rw::kinematics;
 using namespace rw::graphics;
 using namespace rw::math;
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::geometry;
 using namespace rwlibs::opengl;
 
@@ -53,7 +54,7 @@ namespace
         int _x,_y,_width,_height;
     public:
         //! @brief smart pointer type to this class
-        typedef rw::common::Ptr<RenderQuad> Ptr;
+        typedef rw::core::Ptr<RenderQuad> Ptr;
 
         /* Functions inherited from Render */
         /**
@@ -109,7 +110,7 @@ namespace
 
     public:
         //! @brief smart pointer type to this class
-        typedef rw::common::Ptr<RenderQuad> Ptr;
+        typedef rw::core::Ptr<RenderQuad> Ptr;
 
         RenderFonts(double x, double y, double z, QString text, QFont font, QGLWidget* glwidget):
             _x(x),_y(y),_z(z),_text(text),_font(font),_qglwidget(glwidget){
@@ -209,7 +210,7 @@ void SceneOpenGLViewer::init()
     _mainCamGroup->setEnabled(true);
 
     // add a node to render background
-    rw::common::Ptr<RenderQuad> backgroundRender = ownedPtr(new RenderQuad());
+    rw::core::Ptr<RenderQuad> backgroundRender = ownedPtr(new RenderQuad());
 
     backgroundRender->setTopColor( _backgroundColorTop->getValue() );
     backgroundRender->setBottomColor( _backgroundColorBottom->getValue() );
@@ -606,7 +607,7 @@ void SceneOpenGLViewer::destroyView(View::Ptr view)
 void SceneOpenGLViewer::updateState(const State& state) 
 {
 	if(_state==NULL)
-		_state = rw::common::ownedPtr(new State());
+		_state = rw::core::ownedPtr(new State());
 	*_state = state;
 	_renderInfo._state = _state.get();
 }

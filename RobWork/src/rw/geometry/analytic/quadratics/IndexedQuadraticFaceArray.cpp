@@ -18,7 +18,7 @@
 #include "IndexedQuadraticFaceArray.hpp"
 #include "QuadraticFace.hpp"
 
-using rw::common::ownedPtr;
+using rw::core::ownedPtr;
 using namespace rw::geometry;
 
 struct IndexedQuadraticFaceArray::CenterSort {
@@ -29,7 +29,7 @@ struct IndexedQuadraticFaceArray::CenterSort {
     }
 };
 
-IndexedQuadraticFaceArray::IndexedQuadraticFaceArray(rw::common::Ptr<const QuadraticShell> quadric):
+IndexedQuadraticFaceArray::IndexedQuadraticFaceArray(rw::core::Ptr<const QuadraticShell> quadric):
 	_quadric(quadric),
 	_faces(quadric->size()),
 	_first(0),
@@ -39,7 +39,7 @@ IndexedQuadraticFaceArray::IndexedQuadraticFaceArray(rw::common::Ptr<const Quadr
 		_faces[i].originalID = i;
 }
 
-IndexedQuadraticFaceArray::IndexedQuadraticFaceArray(rw::common::Ptr<const QuadraticShell> quadric, const std::vector<IndexedFace>& faces, std::size_t first, std::size_t last):
+IndexedQuadraticFaceArray::IndexedQuadraticFaceArray(rw::core::Ptr<const QuadraticShell> quadric, const std::vector<IndexedFace>& faces, std::size_t first, std::size_t last):
 	_quadric(quadric),
 	_faces(faces),
 	_first(first),

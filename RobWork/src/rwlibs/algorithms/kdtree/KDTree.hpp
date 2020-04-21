@@ -24,7 +24,8 @@
 #include <algorithm>
 #include <queue>
 #include <rw/math/Metric.hpp>
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
+#include <rw/core/Ptr.hpp>
 #include <float.h>
 #include <rw/math/Math.hpp>
 #include <boost/any.hpp>
@@ -60,7 +61,7 @@ namespace rwlibs { namespace algorithms {
         size_t _nrOfNodes;
         TreeNode *_root;
         std::vector<TreeNode>* _nodes;
-        rw::common::Ptr< rw::math::Metric<KEY> > _metric;
+        rw::core::Ptr< rw::math::Metric<KEY> > _metric;
 
     public:
 
@@ -84,7 +85,7 @@ namespace rwlibs { namespace algorithms {
         * @endcond
         * @param metric documentation missing !
         */
-        KDTree(rw::common::Ptr< rw::math::Metric<KEY> > metric):
+        KDTree(rw::core::Ptr< rw::math::Metric<KEY> > metric):
         _nrOfNodes(0),
         _root(NULL),
         _nodes(new std::vector<TreeNode>())
@@ -103,7 +104,7 @@ namespace rwlibs { namespace algorithms {
         };
 
 
-        rw::common::Ptr< rw::math::Metric<KEY> > getMetric(){ return _metric; }
+        rw::core::Ptr< rw::math::Metric<KEY> > getMetric(){ return _metric; }
 
         /**
         * @brief Builds a KDTree from a list of key values and nodes. This method is more efficient
@@ -112,7 +113,7 @@ namespace rwlibs { namespace algorithms {
         * @param metric documentation missing !
         * @return if build succesfull then a pointer to a KD-tree is returned else NULL
         */
-        static KDTree<KEY,DIM>* buildTree(std::vector<KDNode>& nodes, rw::common::Ptr< rw::math::Metric<KEY> > metric){
+        static KDTree<KEY,DIM>* buildTree(std::vector<KDNode>& nodes, rw::core::Ptr< rw::math::Metric<KEY> > metric){
             if(nodes.size()==0)
                 return NULL;
 
@@ -139,7 +140,7 @@ namespace rwlibs { namespace algorithms {
         * @param metric documentation missing !
         * @return if build succesfull then a pointer to a KD-tree is returned else NULL
         */
-        static KDTree<KEY,DIM>* buildTree(const std::vector<KDNode*>& nodes, rw::common::Ptr< rw::math::Metric<KEY> > metric){
+        static KDTree<KEY,DIM>* buildTree(const std::vector<KDNode*>& nodes, rw::core::Ptr< rw::math::Metric<KEY> > metric){
             if(nodes.size()==0)
                 return NULL;
 
@@ -339,7 +340,7 @@ namespace rwlibs { namespace algorithms {
 
         KDTree(){};
 
-        KDTree(TreeNode &root, std::vector<TreeNode> *nodes, rw::common::Ptr< rw::math::Metric<KEY> > metric):
+        KDTree(TreeNode &root, std::vector<TreeNode> *nodes, rw::core::Ptr< rw::math::Metric<KEY> > metric):
             _root(&root),_nodes(nodes),_metric(metric)
         {
         };

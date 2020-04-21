@@ -21,7 +21,7 @@
 #include <rw/math/Transform3D.hpp>
 #include <rw/math/Vector3D.hpp>
 #include <rw/math/Vector2D.hpp>
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/graphics/DrawableNode.hpp>
 
 #include <QEvent>
@@ -37,7 +37,7 @@ namespace rws {
 	class CameraController {
 	public:
 	    //! @brief smart pointer type of this class
-	    typedef rw::common::Ptr<CameraController> Ptr;
+	    typedef rw::core::Ptr<CameraController> Ptr;
 
 
 		//! @brief destructor
@@ -107,7 +107,7 @@ namespace rws {
 		 * @param fovy [in] the field of view in the vertical direction (in radians).
 		 * @param aspectRatio [in] the aspect ratio of (width divided by height).
 		 */
-		virtual void autoZoom(rw::common::Ptr<rw::models::WorkCell> workcell, rw::common::Ptr<const rw::kinematics::State> state, double fovy, double aspectRatio) = 0;
+		virtual void autoZoom(rw::core::Ptr<rw::models::WorkCell> workcell, rw::core::Ptr<const rw::kinematics::State> state, double fovy, double aspectRatio) = 0;
 
 		/**
          * @brief set the 3D coordinate that should be zoomed towards.

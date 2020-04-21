@@ -23,6 +23,7 @@
 #include <rw/math/Vector3D.hpp>
 
 #include <rw/graphics/Render.hpp>
+#include <rw/core/Ptr.hpp>
 
 namespace rw { namespace geometry { class Line; } }
 
@@ -36,7 +37,7 @@ namespace rwlibs { namespace opengl {
     {
     public:
         //! @brief smart pointer type to this class
-        typedef rw::common::Ptr<RenderLines> Ptr;
+        typedef rw::core::Ptr<RenderLines> Ptr;
 
         /**
          * @brief Constructs RenderLine with no lines
@@ -117,7 +118,7 @@ namespace rwlibs { namespace opengl {
     };
 
     //! smart pointer to renderlines
-    typedef rw::common::Ptr<RenderLines> RenderLinesPtr;
+    typedef rw::core::Ptr<RenderLines> RenderLinesPtr;
 //! @}
 }} // end namespaces
 

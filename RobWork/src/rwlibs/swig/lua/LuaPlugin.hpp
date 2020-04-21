@@ -24,7 +24,8 @@
  * \copydoc rwlibs::swig::LuaPlugin
  */
 
-#include <rw/common/Plugin.hpp>
+#include <rw/core/Plugin.hpp>
+#include <rw/core/Extension.hpp>
 
 namespace rwlibs {
     namespace swig {
@@ -37,7 +38,7 @@ namespace rwlibs {
          *
          * One plugin is generated for each of the Lua modules in RobWork (except the rw module itself).
          */
-        class LuaPlugin: public rw::common::Plugin
+        class LuaPlugin: public rw::core::Plugin
         {
             public:
                 //! @brief Constructor.
@@ -46,11 +47,11 @@ namespace rwlibs {
                 //! @brief Destructor.
                 virtual ~LuaPlugin();
 
-                //! @copydoc rw::common::Plugin::getExtensionDescriptors
-                std::vector<rw::common::Extension::Descriptor> getExtensionDescriptors();
+                //! @copydoc rw::core::Plugin::getExtensionDescriptors
+                std::vector<rw::core::Extension::Descriptor> getExtensionDescriptors();
 
-                //! @copydoc rw::common::Plugin::makeExtension
-                rw::common::Ptr<rw::common::Extension> makeExtension(const std::string& str);
+                //! @copydoc rw::core::Plugin::makeExtension
+                rw::core::Ptr<rw::core::Extension> makeExtension(const std::string& str);
         };
     //! @}
 

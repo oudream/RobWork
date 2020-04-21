@@ -3,8 +3,10 @@
 #include <bstrap/core/BrainState.hpp>
 
 #include <rwsim/control/PoseController.hpp>
+#include <rw/core/PropertyMap.hpp>
+#include <rw/math/Transform3D.hpp>
 
-using rw::common::PropertyMap;
+using rw::core::PropertyMap;
 using rw::math::Transform3D;
 
 GraspMotorProgram::GraspMotorProgram(const std::string& name,
@@ -28,7 +30,7 @@ void GraspMotorProgram::update(const BrainState& bstate){
 
 }
 
-void GraspMotorProgram::setParameters(rw::common::Ptr<rw::common::PropertyMap> parameters, const BrainState& bstate){
+void GraspMotorProgram::setParameters(rw::core::Ptr<rw::core::PropertyMap> parameters, const BrainState& bstate){
     // PropertyMap input;
     // input.set<std::string>("objectName","object");
     // input.set<Transform3D<> >("objectTransform", Transform3D<>() );

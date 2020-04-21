@@ -44,10 +44,10 @@ namespace geometry {
     {
         public:
             //! @brief Smart pointer type to ImplicitBREP
-            typedef rw::common::Ptr<ImplicitBREP> Ptr;
+            typedef rw::core::Ptr<ImplicitBREP> Ptr;
 
             //! @brief Smart pointer type to const ImplicitBREP
-            typedef rw::common::Ptr<const ImplicitBREP> CPtr;
+            typedef rw::core::Ptr<const ImplicitBREP> CPtr;
 
             //! @brief Constructor.
             ImplicitBREP();
@@ -71,16 +71,16 @@ namespace geometry {
             ImplicitBREP::Ptr clone() const;
 
             //! @copydoc BREP::shellProxy
-            rw::common::Ptr<const ImplicitShell> shellProxy() const;
+            rw::core::Ptr<const ImplicitShell> shellProxy() const;
 
             //! @copydoc BREP::getCurves
-            std::vector<rw::common::Ptr<ParametricCurve> > getCurves(std::size_t loopIdx) const;
+            std::vector<rw::core::Ptr<ParametricCurve> > getCurves(std::size_t loopIdx) const;
 
             //! @brief Convenience type for a set of curves in a BREP.
             class CommonParametricCurveSet {
             public:
                 //! @brief Smart pointer type to CommonParametricCurveSet
-                typedef rw::common::Ptr<const CommonParametricCurveSet> CPtr;
+                typedef rw::core::Ptr<const CommonParametricCurveSet> CPtr;
 
                 //! @brief Constructor.
                 CommonParametricCurveSet() {}
@@ -131,7 +131,7 @@ namespace geometry {
 
         private:
             class CommonParametricCurveSetImpl;
-            virtual rw::common::Ptr<const Shell> doShellProxyBREP() const;
+            virtual rw::core::Ptr<const Shell> doShellProxyBREP() const;
             virtual BREP::Ptr doClone() const { return clone(); }
 
             // Geometry

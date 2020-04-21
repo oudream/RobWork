@@ -30,7 +30,7 @@
 #include <rw/math/Rotation3D.hpp>
 #include <rw/math/Math.hpp>
 #include <rw/math/MetricUtil.hpp>
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 
 namespace rw { namespace trajectory {
 

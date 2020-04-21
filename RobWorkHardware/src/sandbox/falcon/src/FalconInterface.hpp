@@ -18,7 +18,7 @@
 #ifndef RWHW_FALCONINTERFACE_HPP
 #define RWHW_FALCONINTERFACE_HPP
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/math/Vector3D.hpp>
 #include <boost/array.hpp>
 #include <boost/thread.hpp>
@@ -36,7 +36,7 @@ namespace rwhw {
 class FalconInterface
 {
 	public: // typedefs
-		typedef rw::common::Ptr<FalconInterface> Ptr;
+		typedef rw::core::Ptr<FalconInterface> Ptr;
 		
 	public: // constants
 		/// Button states for the spherical grip

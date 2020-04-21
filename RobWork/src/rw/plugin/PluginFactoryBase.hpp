@@ -18,7 +18,7 @@
 #ifndef RW_PLUGIN_PLUGINFACTORYBASE_HPP
 #define RW_PLUGIN_PLUGINFACTORYBASE_HPP
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <string>
 
 namespace rw {
@@ -38,7 +38,7 @@ class PluginFactoryBase
 {
 public:
     //! smart pointer for this class
-    typedef rw::common::Ptr<PluginFactoryBase> Ptr;
+    typedef rw::core::Ptr<PluginFactoryBase> Ptr;
 
     /**
      * @brief Constructor 
@@ -63,9 +63,9 @@ private:
 };
 
 /**
- * @brief Definition of rw::common::Ptr to a PluginFactoryBase
+ * @brief Definition of rw::core::Ptr to a PluginFactoryBase
  */
-typedef rw::common::Ptr<PluginFactoryBase> PluginFactoryBasePtr;
+typedef rw::core::Ptr<PluginFactoryBase> PluginFactoryBasePtr;
 
 /** @} */
 

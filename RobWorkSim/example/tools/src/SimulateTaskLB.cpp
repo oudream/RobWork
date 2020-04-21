@@ -18,6 +18,7 @@
 
 using namespace std;
 using namespace rw::common;
+using namespace rw::core;
 using rw::geometry::Geometry;
 using rw::kinematics::State;
 using rw::loaders::PathLoader;

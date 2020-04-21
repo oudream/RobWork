@@ -2,7 +2,7 @@
 
 %{
 #include <rwlibs/swig/ScriptTypes.hpp>
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 using namespace rwlibs::swig;
 %}
@@ -68,18 +68,18 @@ public:
     /**
      * @brief get the sensor model of this simulated sensor. 
      */
-    rw::common::Ptr<SensorModel> getSensorModel();
+    rw::core::Ptr<SensorModel> getSensorModel();
 
     /**
      * @brief get a handle to controlling an instance of the simulated sensor in a specific simulator
      *
      * @param sim [in] the simulator in which the handle is active
      */
-    rw::common::Ptr<Sensor> getSensorHandle(rw::common::Ptr<Simulator> sim);
+    rw::core::Ptr<Sensor> getSensorHandle(rw::core::Ptr<Simulator> sim);
 };
 
-%template (SimulatedSensorPtr) rw::common::Ptr<SimulatedSensor>;
-%template (SimulatedSensorPtrVector) std::vector<rw::common::Ptr<SimulatedSensor> >;
+%template (SimulatedSensorPtr) rw::core::Ptr<SimulatedSensor>;
+%template (SimulatedSensorPtrVector) std::vector<rw::core::Ptr<SimulatedSensor> >;
 
 %nodefaultctor SimulatedController;
 /**
@@ -115,7 +115,7 @@ public:
      *
      * @return controller handle
      */
-    virtual rw::common::Ptr<Controller> getControllerHandle(rw::common::Ptr<Simulator> sim) = 0;
+    virtual rw::core::Ptr<Controller> getControllerHandle(rw::core::Ptr<Simulator> sim) = 0;
 
     /**
      * @brief disable or enable this controller
@@ -132,8 +132,8 @@ public:
     virtual bool isEnabled() const = 0;
 };
 
-%template (SimulatedControllerPtr) rw::common::Ptr<SimulatedController>;
-%template (SimulatedControllerPtrVector) std::vector<rw::common::Ptr<SimulatedController> >;
+%template (SimulatedControllerPtr) rw::core::Ptr<SimulatedController>;
+%template (SimulatedControllerPtrVector) std::vector<rw::core::Ptr<SimulatedController> >;
 
 %nodefaultctor Simulator;
 class Simulator {
@@ -159,7 +159,7 @@ public:
 
 };
 
-%template (SimulatorPtr) rw::common::Ptr<Simulator>;
+%template (SimulatorPtr) rw::core::Ptr<Simulator>;
 
 /**
  * @brief The FrameGrabber abstract interface, can be used to grab images from a
@@ -228,7 +228,7 @@ public:
     virtual void grab(Frame *frame, const State& state) = 0;
 };
 
-%template (FrameGrabberPtr) rw::common::Ptr<FrameGrabber>;
+%template (FrameGrabberPtr) rw::core::Ptr<FrameGrabber>;
 
 /**
  * @brief The FrameGrabber25D abstract interface, can be used to grab images from a
@@ -305,7 +305,7 @@ public:
     virtual double getMinDepth() = 0;
 };
 
-%template (FrameGrabber25DPtr) rw::common::Ptr<FrameGrabber25D>;
+%template (FrameGrabber25DPtr) rw::core::Ptr<FrameGrabber25D>;
 
 /**
  * @brief An implementation of the FrameGrabber interface. The GLFrameGrabber
@@ -353,17 +353,17 @@ public:
      * @param drawer [in] the scene viewer
      * @return true if initialization succeeded, false otherwise (depends on the capabilities of the SceneViewer).
      */
-    bool init(rw::common::Ptr<SceneViewer> drawer);
+    bool init(rw::core::Ptr<SceneViewer> drawer);
 
     //! @copydoc FrameGrabber::grab
     void grab(Frame* frame, const State& state);
 };
 
-%template (GLFrameGrabberPtr) rw::common::Ptr<GLFrameGrabber>;
+%template (GLFrameGrabberPtr) rw::core::Ptr<GLFrameGrabber>;
 OWNEDPTR(GLFrameGrabber)
 
-%extend rw::common::Ptr<GLFrameGrabber> {
-    rw::common::Ptr<FrameGrabber> asFrameGrabberPtr() { return *$self; }
+%extend rw::core::Ptr<GLFrameGrabber> {
+    rw::core::Ptr<FrameGrabber> asFrameGrabberPtr() { return *$self; }
 }
 
 /**
@@ -406,7 +406,7 @@ public:
      * @param drawer [in] the scene viewer
      * @return true if initialization succeeded, false otherwise (depends on the capabilities of the SceneViewer).
      */
-    bool init(rw::common::Ptr<SceneViewer> drawer);
+    bool init(rw::core::Ptr<SceneViewer> drawer);
 
     /**
      * @brief set the maximum depth that is percieved by this frame grabber.
@@ -441,11 +441,11 @@ public:
     virtual double getFieldOfViewY();
 };
 
-%template (GLFrameGrabber25DPtr) rw::common::Ptr<GLFrameGrabber25D>;
+%template (GLFrameGrabber25DPtr) rw::core::Ptr<GLFrameGrabber25D>;
 OWNEDPTR(GLFrameGrabber25D)
 
-%extend rw::common::Ptr<GLFrameGrabber25D> {
-    rw::common::Ptr<FrameGrabber25D> asFrameGrabber25DPtr() { return *$self; }
+%extend rw::core::Ptr<GLFrameGrabber25D> {
+    rw::core::Ptr<FrameGrabber25D> asFrameGrabber25DPtr() { return *$self; }
 }
 
 /**
@@ -467,7 +467,7 @@ public:
      * @param frame [in] frame to which the camera is attached
      * @param frameGrabber [in] the frameGrabber from which this Camera should grab images
      */
-    SimulatedCamera(const std::string& name, double fov, Frame* frame, rw::common::Ptr<FrameGrabber> frameGrabber);
+    SimulatedCamera(const std::string& name, double fov, Frame* frame, rw::core::Ptr<FrameGrabber> frameGrabber);
 
     /**
      * @brief constructor
@@ -476,7 +476,7 @@ public:
      * @param frameGrabber [in] the frameGrabber from which this Camera should grab
      * images.
      */
-    SimulatedCamera(rw::common::Ptr<CameraModel> model, rw::common::Ptr<FrameGrabber> frameGrabber);
+    SimulatedCamera(rw::core::Ptr<CameraModel> model, rw::core::Ptr<FrameGrabber> frameGrabber);
 
     /**
      * @brief destructor
@@ -543,17 +543,17 @@ public:
      */
     void reset(const State& state);
 
-    rw::common::Ptr<Sensor> getSensor();
+    rw::core::Ptr<Sensor> getSensor();
 
     /**
      * @brief Get the camera sensor.
      *
      * @return the sensor.
      */
-    rw::common::Ptr<Camera> getCameraSensor();
+    rw::core::Ptr<Camera> getCameraSensor();
 };
 
-%template (SimulatedCameraPtr) rw::common::Ptr<SimulatedCamera>;
+%template (SimulatedCameraPtr) rw::core::Ptr<SimulatedCamera>;
 OWNEDPTR(SimulatedCamera)
 
 /**
@@ -570,7 +570,7 @@ public:
      * @param framegrabber [in] the framegrabber used for grabbing 2.5D images
      */
     SimulatedScanner2D(const std::string& name, Frame* frame,
-    		rw::common::Ptr<FrameGrabber25D> framegrabber);
+    		rw::core::Ptr<FrameGrabber25D> framegrabber);
 
     /**
      * @brief constructor
@@ -583,7 +583,7 @@ public:
     SimulatedScanner2D(const std::string& name,
             const std::string& desc,
             Frame* frame,
-			rw::common::Ptr<FrameGrabber25D> framegrabber);
+			rw::core::Ptr<FrameGrabber25D> framegrabber);
 
     /**
      * @brief destructor
@@ -632,7 +632,7 @@ public:
      *
      * @return Scnner2D handle.
      */
-    rw::common::Ptr<Scanner2D> getScanner2DSensor(Simulator* instance);
+    rw::core::Ptr<Scanner2D> getScanner2DSensor(Simulator* instance);
 
     //! @copydoc rw::sensor::Scanner2DModel::getAngularRange
     virtual double getAngularRange();
@@ -640,7 +640,7 @@ public:
     virtual size_t getMeasurementCount() const;
 };
 
-%template (SimulatedScanner2DPtr) rw::common::Ptr<SimulatedScanner2D>;
+%template (SimulatedScanner2DPtr) rw::core::Ptr<SimulatedScanner2D>;
 OWNEDPTR(SimulatedScanner2D)
 
 /**
@@ -659,7 +659,7 @@ public:
      */
 	SimulatedScanner25D(const std::string& name,
 	                    Frame *frame,
-						rw::common::Ptr<FrameGrabber25D> framegrabber);
+						rw::core::Ptr<FrameGrabber25D> framegrabber);
 
     /**
      * @brief constructor
@@ -672,7 +672,7 @@ public:
 	SimulatedScanner25D(const std::string& name,
                         const std::string& desc,
                         Frame *frame,
-						rw::common::Ptr<FrameGrabber25D> framegrabber);
+						rw::core::Ptr<FrameGrabber25D> framegrabber);
 
 	/**
 	 * @brief destructor
@@ -720,16 +720,16 @@ public:
 	 *
      * @param instance [in] the simulator in which the handle is active
      */
-    rw::common::Ptr<Sensor> getSensorHandle(rw::common::Ptr<Simulator> instance);
+    rw::core::Ptr<Sensor> getSensorHandle(rw::core::Ptr<Simulator> instance);
 
 	//! get instance of scanner
-    rw::common::Ptr<Scanner25D> getScanner25DSensor(rw::common::Ptr<Simulator> instance);
+    rw::core::Ptr<Scanner25D> getScanner25DSensor(rw::core::Ptr<Simulator> instance);
 
 private:
-    rw::common::Ptr<FrameGrabber25D> _framegrabber;
+    rw::core::Ptr<FrameGrabber25D> _framegrabber;
     double _frameRate, _dtsum;
     bool _isAcquired,_isOpenned;
 };
 
-%template (SimulatedScanner25DPtr) rw::common::Ptr<SimulatedScanner25D>;
+%template (SimulatedScanner25DPtr) rw::core::Ptr<SimulatedScanner25D>;
 OWNEDPTR(SimulatedScanner25D)

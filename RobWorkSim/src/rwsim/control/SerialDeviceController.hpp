@@ -11,7 +11,7 @@
 #include <rw/math/VelocityScrew6D.hpp>
 #include <rw/math/Transform3D.hpp>
 #include <rw/math/Wrench6D.hpp>
-
+#include <rw/core/Ptr.hpp>
 #include <rwsim/dynamics/DynamicDevice.hpp>
 
 #include <boost/thread/mutex.hpp>
@@ -38,7 +38,7 @@ namespace control {
 	class SerialDeviceController: public rwlibs::simulation::SimulatedController {
 
 	public:
-		typedef rw::common::Ptr<SerialDeviceController> Ptr;
+		typedef rw::core::Ptr<SerialDeviceController> Ptr;
 		/**
 		 *
 		 * @param name [in] controller name
@@ -51,7 +51,7 @@ namespace control {
 		 * @param name [in] name of controller
 		 * @param ddev [in] the RigidDevice that should be controlled
 		 */
-		SerialDeviceController(const std::string& name, rw::common::Ptr<rwsim::dynamics::RigidDevice> ddev);
+		SerialDeviceController(const std::string& name, rw::core::Ptr<rwsim::dynamics::RigidDevice> ddev);
 
 		//! destructor
 		virtual ~SerialDeviceController();
@@ -217,11 +217,11 @@ namespace control {
 
 	private:
         dynamics::DynamicDevice::Ptr _ddev;
-		rw::common::Ptr<rwsim::dynamics::RigidDevice> _rdev;
+		rw::core::Ptr<rwsim::dynamics::RigidDevice> _rdev;
 		rw::math::Q _target;
 		rw::math::Q _currentQ, _currentQd;
 		bool _enabled, _stop, _pause;
-		rw::common::Ptr<rw::invkin::JacobianIKSolver> _solver;
+		rw::core::Ptr<rw::invkin::JacobianIKSolver> _solver;
 
 		bool _targetAdded;
 

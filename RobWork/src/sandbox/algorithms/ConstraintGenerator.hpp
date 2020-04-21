@@ -48,7 +48,7 @@ namespace rwlibs { namespace algorithms {
 class ConstraintGenerator {
 	public:
 		//! @brief Smart pointer type to this class.
-		typedef rw::common::Ptr<ConstraintGenerator> Ptr;
+		typedef rw::core::Ptr<ConstraintGenerator> Ptr;
 		
 	public: // constructors
 		/**

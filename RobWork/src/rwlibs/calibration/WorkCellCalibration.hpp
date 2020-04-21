@@ -20,6 +20,7 @@
 #define RWLIBS_CALIBRATION_WORKCELLCALIBRATION_HPP
 
 #include "Calibration.hpp"
+#include <rw/core/Ptr.hpp>
 
 namespace rw { namespace kinematics { class Frame; } }
 namespace rw { namespace models { class SerialDevice; } }
@@ -36,7 +37,7 @@ namespace calibration {
 class WorkCellCalibration: public Calibration {
 public:
 	/** @brief Declaration of smart pointer */	 
-	typedef rw::common::Ptr<WorkCellCalibration> Ptr;
+	typedef rw::core::Ptr<WorkCellCalibration> Ptr;
 
 	/**
 	 * @brief Construct an empty work cell calibration 

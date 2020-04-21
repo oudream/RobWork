@@ -8,7 +8,9 @@
 #ifndef RWSIM_SWIG_LUAPLUGIN_HPP_
 #define RWSIM_SWIG_LUAPLUGIN_HPP_
 
-#include <rw/common/Plugin.hpp>
+#include <rw/core/Plugin.hpp>
+#include <rw/core/Extension.hpp>
+#include <rw/core/Ptr.hpp>
 
 namespace rwslibs {
 namespace swig {
@@ -16,7 +18,7 @@ namespace swig {
     /**
      * @brief A Lua plugin that define extensions for rwlibs.swig.LuaState.LuaLibrary
      */
-    class LuaPlugin: public rw::common::Plugin {
+    class LuaPlugin: public rw::core::Plugin {
     public:
 
         /**
@@ -27,11 +29,11 @@ namespace swig {
         //! destructor
         virtual ~LuaPlugin();
 
-        //! @copydoc rw::common::Plugin::getExtensionDescriptors
-        std::vector<rw::common::Extension::Descriptor> getExtensionDescriptors();
+        //! @copydoc rw::core::Plugin::getExtensionDescriptors
+        std::vector<rw::core::Extension::Descriptor> getExtensionDescriptors();
 
-        //! @copydoc rw::common::Plugin::makeExtension
-        rw::common::Ptr<rw::common::Extension> makeExtension(const std::string& str);
+        //! @copydoc rw::core::Plugin::makeExtension
+        rw::core::Ptr<rw::core::Extension> makeExtension(const std::string& str);
 
     };
 

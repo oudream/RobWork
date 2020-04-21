@@ -5,8 +5,9 @@
 #include <boost/property_tree/xml_parser.hpp>
 #include <boost/filesystem.hpp>
 #include <iostream>
+#include <rw/core/Log.hpp>
 
-#include <rw/RobWork.hpp>
+#include <rw/core/RobWork.hpp>
 
 #ifdef RW_USE_BOOST_STATIC_TEST_LIBS
 #include <boost/test/unit_test.hpp>
@@ -36,7 +37,7 @@ std::string testFilePath() { return _testfilesDir; }
 
 boost::unit_test::test_suite* init_unit_test_suite(int argc, char** const argv)
 {
-	rw::RobWork::init(argc,argv);
+	rw::core::RobWork::init(argc,argv);
 
     // Get the top level suite from the registry
     boost::unit_test::unit_test_log.set_threshold_level(boost::unit_test::log_successful_tests);
@@ -51,9 +52,9 @@ boost::unit_test::test_suite* init_unit_test_suite(int argc, char** const argv)
     //log << path << std::endl;
     //log << "sanfdælsajflojfjljdsifdsifidsfjd" << std::endl;
     //log << path.parent_path().string() + "/TestSuiteConfig.xml" << std::endl;
-    rw::common::Log::getInstance()->setEnable(rw::common::Log::Debug);
-    rw::common::Log::getInstance()->setLevel(rw::common::Log::Debug);
-    rw::RobWork::init(argc,argv);
+    rw::core::Log::getInstance()->setEnable(rw::core::Log::Debug);
+    rw::core::Log::getInstance()->setLevel(rw::core::Log::Debug);
+    rw::core::RobWork::init(argc,argv);
     //rw::RobWork::getInstance()->initialize();
 
     try{

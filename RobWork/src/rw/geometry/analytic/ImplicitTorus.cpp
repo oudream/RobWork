@@ -26,7 +26,7 @@
 #include <rw/geometry/analytic/quadratics/QuadraticSurface.hpp>
 #include <rw/math/Vector2D.hpp>
 
-using rw::common::ownedPtr;
+using rw::core::ownedPtr;
 using namespace rw::geometry;
 using namespace rw::math;
 

@@ -22,8 +22,9 @@
 
 #include <rws/RobWorkStudioPlugin.hpp>
 #include <RobWorkStudioConfig.hpp>
+#include <rw/core/Ptr.hpp>
 
-namespace rw { namespace common { class Message; } }
+namespace rw { namespace core { class Message; } }
 
 class WriterWrapper;
 
@@ -83,7 +84,7 @@ public:
     void receiveMessage(
         const std::string& plugin,
         const std::string& id,
-        const rw::common::Message& msg);
+        const rw::core::Message& msg);
 
     /**
      * @brief Write to the log window.
@@ -108,7 +109,7 @@ private:
 private:
     QTextEdit* _editor;
     QTextCursor *_endCursor;
-    std::vector<rw::common::Ptr<WriterWrapper> > _writers;
+    std::vector<rw::core::Ptr<WriterWrapper> > _writers;
 };
 
 }

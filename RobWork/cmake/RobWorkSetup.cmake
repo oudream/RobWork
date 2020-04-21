@@ -891,6 +891,7 @@ set(
     sdurw_control
     sdurw_proximitystrategies
     sdurw
+    sdurw_core
 )
 
 message(STATUS "DIRS: ${ROBWORK_LIBRARY_DIRS}")

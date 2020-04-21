@@ -22,6 +22,7 @@
 
 #include <rw/kinematics/State.hpp>
 #include <rw/trajectory/Path.hpp>
+#include <rw/core/Ptr.hpp>
 
 struct lua_State;
 
@@ -73,7 +74,7 @@ namespace rws {
         void resetLua();
 
     private:
-        rw::common::Ptr<rwlibs::swig::LuaState> _lua;
+        rw::core::Ptr<rwlibs::swig::LuaState> _lua;
         rw::kinematics::State _state;
         std::string _previousOpenDirectory;
 

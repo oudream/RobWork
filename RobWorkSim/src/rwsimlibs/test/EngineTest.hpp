@@ -24,7 +24,7 @@
  * \copydoc rwsimlibs::test::EngineTest
  */
 
-#include <rw/common/ExtensionPoint.hpp>
+#include <rw/core/ExtensionPoint.hpp>
 #include <rw/trajectory/Path.hpp>
 
 #include <limits>
@@ -46,7 +46,7 @@ namespace test {
 class EngineTest {
 public:
 	//! @brief Smart pointer to EngineTest.
-	typedef rw::common::Ptr<EngineTest> Ptr;
+	typedef rw::core::Ptr<EngineTest> Ptr;
 
 	//! @brief The callback type for the current simulation time
 	typedef boost::function<void(double time, bool failed, bool done)> TimeCallback;
@@ -120,7 +120,7 @@ public:
 	class TestHandle {
 	public:
 		//! @brief Smart pointer.
-		typedef rw::common::Ptr<TestHandle> Ptr;
+		typedef rw::core::Ptr<TestHandle> Ptr;
 
 		//! @brief Constructor.
 		TestHandle();
@@ -213,13 +213,13 @@ public:
 		 * @brief Set the Dynamic WorkCell used in the test.
 		 * @param dwc [in] reference to a DynamicWorkCell smart pointer.
 		 */
-		void setDynamicWorkCell(const rw::common::Ptr<rwsim::dynamics::DynamicWorkCell>& dwc);
+		void setDynamicWorkCell(const rw::core::Ptr<rwsim::dynamics::DynamicWorkCell>& dwc);
 
 		/**
 		 * @brief Get the Dynamic WorkCell used in the test.
 		 * @return reference to a DynamicWorkCell smart pointer.
 		 */
-		const rw::common::Ptr<rwsim::dynamics::DynamicWorkCell>& getDynamicWorkCell() const;
+		const rw::core::Ptr<rwsim::dynamics::DynamicWorkCell>& getDynamicWorkCell() const;
 
 	private:
 		std::string _error;
@@ -227,7 +227,7 @@ public:
 		std::vector<Result> _results;
 		rw::common::ThreadSafeVariable<bool>* _abort;
 		TimeCallback _cb;
-		rw::common::Ptr<rwsim::dynamics::DynamicWorkCell> _dwc;
+		rw::core::Ptr<rwsim::dynamics::DynamicWorkCell> _dwc;
 	};
 
 	//! @brief Construct new test.
@@ -251,7 +251,7 @@ public:
 	 * @param task [in] the task to add simulation work to.
 	 * @return a TestHandle which makes it possible to interact with the test during the test run.
 	 */
-	virtual TestHandle::Ptr runThread(const std::string& engineID, const rw::common::PropertyMap& parameters, rw::common::Ptr<rwsim::log::SimulatorLogScope> verbose, rw::common::Ptr<rw::common::ThreadTask> task);
+	virtual TestHandle::Ptr runThread(const std::string& engineID, const rw::core::PropertyMap& parameters, rw::core::Ptr<rwsim::log::SimulatorLogScope> verbose, rw::core::Ptr<rw::common::ThreadTask> task);
 
 	/**
 	 * @brief Run the test.
@@ -260,7 +260,7 @@ public:
 	 * @param parameters [in] the parameters for the test run.
 	 * @param verbose [in] (optional) record detailed internal debug information in the engine during simulation.
 	 */
-	virtual void run(TestHandle::Ptr handle, const std::string& engineID, const rw::common::PropertyMap& parameters, rw::common::Ptr<rwsim::log::SimulatorLogScope> verbose = NULL) = 0;
+	virtual void run(TestHandle::Ptr handle, const std::string& engineID, const rw::core::PropertyMap& parameters, rw::core::Ptr<rwsim::log::SimulatorLogScope> verbose = NULL) = 0;
 
 	/**
 	 * @brief Get the length of the simulation.
@@ -273,19 +273,19 @@ public:
 	 * @param map [in] properties for test workcell.
 	 * @return a smart pointer to a dynamic workcell.
 	 */
-	virtual rw::common::Ptr<rwsim::dynamics::DynamicWorkCell> getDWC(const rw::common::PropertyMap& map) = 0;
+	virtual rw::core::Ptr<rwsim::dynamics::DynamicWorkCell> getDWC(const rw::core::PropertyMap& map) = 0;
 
 	/**
 	 * @brief Get the default parameters used by the test.
 	 * @return the default test parameters.
 	 */
-	virtual rw::common::Ptr<rw::common::PropertyMap> getDefaultParameters() const;
+	virtual rw::core::Ptr<rw::core::PropertyMap> getDefaultParameters() const;
 
 	/**
 	 * @brief Get a vector of predefined parameters.
 	 * @return the predefines parameters.
 	 */
-	virtual std::vector<rw::common::Ptr<rw::common::PropertyMap> > getPredefinedParameters() const;
+	virtual std::vector<rw::core::Ptr<rw::core::PropertyMap> > getPredefinedParameters() const;
 
 	/**
      * @addtogroup extensionpoints
@@ -294,7 +294,7 @@ public:
 	/**
 	 * @brief A factory for engine tests. This factory also defines an ExtensionPoint.
 	 */
-	class Factory: public rw::common::ExtensionPoint<EngineTest> {
+	class Factory: public rw::core::ExtensionPoint<EngineTest> {
 	public:
 		/**
 		 * @brief Get the available tests.
@@ -317,14 +317,14 @@ public:
 		static EngineTest::Ptr getTest(const std::string& test);
 
 	private:
-		static std::vector<rw::common::Extension>& internalExtensions();
+		static std::vector<rw::core::Extension>& internalExtensions();
 		Factory();
 	};
 	//! @}
 
 protected:
 	//! @brief Type for a function initializing the state.
-	typedef boost::function<void(rw::common::Ptr<const rwsim::dynamics::DynamicWorkCell>, rw::kinematics::State&)> InitCallback;
+	typedef boost::function<void(rw::core::Ptr<const rwsim::dynamics::DynamicWorkCell>, rw::kinematics::State&)> InitCallback;
 
 	//! @brief The info passed in a callback function.
 	struct EngineLoopInfo {
@@ -336,7 +336,7 @@ protected:
 		 * @param state [in] the current state of the simulation.
 		 * @param dt [in] the time-step used.
 		 */
-		EngineLoopInfo(TestHandle::Ptr handle, const std::string& engineID, rw::common::Ptr<const rwsim::dynamics::DynamicWorkCell> dwc, const rw::kinematics::State* state, double dt):
+		EngineLoopInfo(TestHandle::Ptr handle, const std::string& engineID, rw::core::Ptr<const rwsim::dynamics::DynamicWorkCell> dwc, const rw::kinematics::State* state, double dt):
 			handle(handle), engineID(engineID), dwc(dwc), state(state), dt(dt), time(0)
 		{
 		}
@@ -346,7 +346,7 @@ protected:
 		//! @brief The current engine being tested.
 		const std::string engineID;
 		//! @brief The dynamic workcell.
-		const rw::common::Ptr<const rwsim::dynamics::DynamicWorkCell> dwc;
+		const rw::core::Ptr<const rwsim::dynamics::DynamicWorkCell> dwc;
 		//! @brief The current state (can not be changed).
 		const rw::kinematics::State* state;
 		//! @brief The time-step used.
@@ -368,7 +368,7 @@ protected:
 	 * @param callback [in] (optional) call a function after each step of the simulation.
 	 * @param initialize [in] (optional) call a function that sets the initial state.
 	 */
-	void runEngineLoop(double dt, TestHandle::Ptr handle, const std::string& engineID, const rw::common::PropertyMap& parameters, rw::common::Ptr<rwsim::log::SimulatorLogScope> verbose, TestCallback callback = 0, InitCallback initialize = 0);
+	void runEngineLoop(double dt, TestHandle::Ptr handle, const std::string& engineID, const rw::core::PropertyMap& parameters, rw::core::Ptr<rwsim::log::SimulatorLogScope> verbose, TestCallback callback = 0, InitCallback initialize = 0);
 };
 //! @}
 } /* namespace test */

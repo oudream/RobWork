@@ -19,7 +19,7 @@
 #include "URCommon.hpp"
 
 #include <rw/common/TimerUtil.hpp>
-#include <rw/common/Log.hpp>
+#include <rw/core/Log.hpp>
 
 #include <boost/thread.hpp>
 #include <boost/asio/write.hpp>
@@ -31,6 +31,7 @@
 
 using namespace rw::math;
 using namespace rw::common;
+using namespace rw::core;
 using namespace rwhw;
 using namespace boost::asio::ip;
 

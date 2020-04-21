@@ -29,6 +29,7 @@
 
 #include <rws/RobWorkStudio.hpp>
 
+#include <rw/core/PropertyMap.hpp>
 #include <rw/kinematics/Kinematics.hpp>
 #include <rw/kinematics/MovableFrame.hpp>
 #include <rw/models/JointDevice.hpp>
@@ -41,7 +42,6 @@
 #include <rw/models/UniversalJoint.hpp>
 #include <rw/models/PrismaticSphericalJoint.hpp>
 #include <rw/models/PrismaticUniversalJoint.hpp>
-//#include <sandbox/models/BeamJoint.hpp>
 
 using namespace rw::math;
 using namespace rw::kinematics;
@@ -366,7 +366,7 @@ void Jog::open(WorkCell* workcell)
     } else {
         close();
     }
-    _rwsSettings = getRobWorkStudio()->getPropertyMap().getPtr<rw::common::PropertyMap>("RobWorkStudioSettings");
+    _rwsSettings = getRobWorkStudio()->getPropertyMap().getPtr<rw::core::PropertyMap>("RobWorkStudioSettings");
     if(_rwsSettings) {
         // Find the unit properties if there are any
         std::string unitDescAngle = _rwsSettings->get<std::string>("AngleUnit", "");
@@ -685,7 +685,7 @@ void Jog::update() {
 		removeTabs();
 		_frameToIndex.clear();
     }
-    _rwsSettings = getRobWorkStudio()->getPropertyMap().getPtr<rw::common::PropertyMap>("RobWorkStudioSettings");
+    _rwsSettings = getRobWorkStudio()->getPropertyMap().getPtr<rw::core::PropertyMap>("RobWorkStudioSettings");
     if(_rwsSettings) {
         // Find the unit properties if there are any
         std::string unitDescAngle = _rwsSettings->get<std::string>("AngleUnit", "");

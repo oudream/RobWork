@@ -22,7 +22,7 @@
 
 #include <rw/math/Q.hpp>
 #include <rw/models/Device.hpp>
-
+#include <rw/core/Ptr.hpp>
 #include <rw/kinematics/Stateless.hpp>
 
 #include "Body.hpp"
@@ -41,7 +41,7 @@ namespace dynamics {
 
 	public:
 		//! @brief Smart pointer type for a DynamicDevice.
-	    typedef rw::common::Ptr<DynamicDevice> Ptr;
+	    typedef rw::core::Ptr<DynamicDevice> Ptr;
 
 		/**
 		 * @brief Destructor.

@@ -17,7 +17,7 @@
 
 #include "MaterialDataMap.hpp"
 
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 
 
 using namespace rwsim::dynamics;

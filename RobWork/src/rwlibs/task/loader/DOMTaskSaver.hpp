@@ -20,13 +20,13 @@
 
 #include "TaskSaver.hpp"
 
-#include <rw/common/DOMElem.hpp>
 #include <rwlibs/task/Task.hpp>
 #include <rwlibs/task/Entity.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include <string>
 
-namespace rw { namespace common { class DOMElem; } }
+namespace rw { namespace core { class DOMElem; } }
 
 namespace rwlibs {
 namespace task {
@@ -73,28 +73,28 @@ public:
 	};
 
 private:
-    void writeTask(TaskBase::Ptr task, rw::common::Ptr<rw::common::DOMElem> parent);
+    void writeTask(TaskBase::Ptr task, rw::core::Ptr<rw::core::DOMElem> parent);
 
 	template <class T>
-    void saveImpl(typename Task<T>::Ptr task, rw::common::Ptr<rw::common::DOMElem> parrent);
+    void saveImpl(typename Task<T>::Ptr task, rw::core::Ptr<rw::core::DOMElem> parrent);
 
 
-    void writeEntityInfo(Entity::Ptr entity, rw::common::Ptr<rw::common::DOMElem> parent);
-
-	template <class T>
-    void writeTargets(typename Task<T>::Ptr task, rw::common::Ptr<rw::common::DOMElem> parent);
+    void writeEntityInfo(Entity::Ptr entity, rw::core::Ptr<rw::core::DOMElem> parent);
 
 	template <class T>
-    void writeMotion(typename Motion<T>::Ptr motion, rw::common::Ptr<rw::common::DOMElem> element);
+    void writeTargets(typename Task<T>::Ptr task, rw::core::Ptr<rw::core::DOMElem> parent);
+
+	template <class T>
+    void writeMotion(typename Motion<T>::Ptr motion, rw::core::Ptr<rw::core::DOMElem> element);
 
 
 	template <class T>
-    void writeEntities(typename Task<T>::Ptr task, rw::common::Ptr<rw::common::DOMElem> parent);
+    void writeEntities(typename Task<T>::Ptr task, rw::core::Ptr<rw::core::DOMElem> parent);
 
-    void writeAction(Action::Ptr action, rw::common::Ptr<rw::common::DOMElem> parent);
+    void writeAction(Action::Ptr action, rw::core::Ptr<rw::core::DOMElem> parent);
 
 	template <class T>
-    void writeTaskImpl(typename Task<T>::Ptr task, rw::common::Ptr<rw::common::DOMElem> element);
+    void writeTaskImpl(typename Task<T>::Ptr task, rw::core::Ptr<rw::core::DOMElem> element);
 
 
 	std::map<rwlibs::task::TargetBase::Ptr, std::string> _targetMap;

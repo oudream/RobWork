@@ -25,8 +25,8 @@
 
 #include <string>
 
-#include <rw/common/ExtensionPoint.hpp>
-#include <rw/common/Ptr.hpp>
+#include <rw/core/ExtensionPoint.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/math/Transform3D.hpp>
 
 #include "ProximityStrategy.hpp"
@@ -46,7 +46,7 @@ namespace rw { namespace proximity {
     class CollisionToleranceStrategy: public virtual ProximityStrategy {
     public:
 		//! @brief smart pointer type to this class
-		typedef rw::common::Ptr<CollisionToleranceStrategy> Ptr;
+		typedef rw::core::Ptr<CollisionToleranceStrategy> Ptr;
 
         /**
          * @brief Destroys object
@@ -134,7 +134,7 @@ namespace rw { namespace proximity {
     	 *  - Bullet - rwlibs::proximitystrategies::ProximityStrategyBullet - Bullet Physics
     	 *  - PQP - rwlibs::proximitystrategies::ProximityStrategyPQP - Proximity Query Package
     	 */
-    	class Factory: public rw::common::ExtensionPoint<CollisionToleranceStrategy> {
+    	class Factory: public rw::core::ExtensionPoint<CollisionToleranceStrategy> {
     	public:
     		/**
     		 * @brief Get the available strategies.

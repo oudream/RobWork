@@ -104,7 +104,7 @@ Lua::Lua()
 
     //this->setWidget(vwidget);  // Sets the widget on the QDockWidget
 
-    _lua = rw::common::ownedPtr( new rwlibs::swig::LuaState() );
+    _lua = rw::core::ownedPtr( new rwlibs::swig::LuaState() );
     //_lua->setRobWorkStudio( getRobWorkStudio() );
     _lua->reset();
 }

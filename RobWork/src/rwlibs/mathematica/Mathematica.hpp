@@ -24,8 +24,8 @@
  * \copydoc rwlibs::mathematica::Mathematica
  */
 
-#include <rw/common/Ptr.hpp>
-#include <rw/common/macros.hpp>
+#include <rw/core/Ptr.hpp>
+#include <rw/core/macros.hpp>
 
 #include <list>
 #include <vector>
@@ -85,7 +85,7 @@ class ToExpression;
 class Mathematica {
 public:
 	//! @brief Smart pointer.
-	typedef rw::common::Ptr<Mathematica> Ptr;
+	typedef rw::core::Ptr<Mathematica> Ptr;
 
 	//! @brief Available link protocols.
 	enum LinkProtocol {
@@ -129,7 +129,7 @@ public:
 	//! @brief Representation of a link.
 	struct Link {
 		//! @brief Smart pointer to a link.
-		typedef rw::common::Ptr<const Link> Ptr;
+		typedef rw::core::Ptr<const Link> Ptr;
 
 		//! @brief Constructor.
 		Link();
@@ -141,7 +141,7 @@ public:
 		std::string name;
 
 		//! @brief Internals.
-		rw::common::Ptr<const LinkImpl> impl;
+		rw::core::Ptr<const LinkImpl> impl;
 
 		/**
 		 * @brief Check if the link is open.
@@ -186,7 +186,7 @@ public:
 		 * @brief Get the next packet on link (blocks until packet is available).
 		 * @param result [out] a pointer to the retrieved packet.
 		 */
-		void operator>>(rw::common::Ptr<Packet>& result) const;
+		void operator>>(rw::core::Ptr<Packet>& result) const;
 	};
 
 	//! @brief Constructor.
@@ -240,7 +240,7 @@ public:
 	class Expression {
 	public:
 		//! @brief Smart pointer type.
-		typedef rw::common::Ptr<Expression> Ptr;
+		typedef rw::core::Ptr<Expression> Ptr;
 
 		//! @brief Type of expression.
 		typedef enum Type {
@@ -286,7 +286,7 @@ public:
 		 * @note Only available for C++11
 		 */
 		template <typename Type>
-		static void toList(std::list<rw::common::Ptr<Type> >&) {}
+		static void toList(std::list<rw::core::Ptr<Type> >&) {}
 
 		/**
 		 * @brief Helper function for extracting a list of arguments when given as a variable number of arguments.
@@ -296,8 +296,8 @@ public:
 		 * @note Only available for C++11
 		 */
 		template <typename Type, typename Exp, typename... T>
-		static void toList(std::list<rw::common::Ptr<Type> >& list, const Exp& r, T... t) {
-			const rw::common::Ptr<Type> exp = AutoExpression(r).expression().cast<Type>();
+		static void toList(std::list<rw::core::Ptr<Type> >& list, const Exp& r, T... t) {
+			const rw::core::Ptr<Type> exp = AutoExpression(r).expression().cast<Type>();
 			if (exp == NULL)
 				RW_THROW("Encountered expression of unexpected type.");
 			else
@@ -311,7 +311,7 @@ public:
 	class String: public Expression {
 	public:
 		//! @brief Smart pointer type
-		typedef rw::common::Ptr<String> Ptr;
+		typedef rw::core::Ptr<String> Ptr;
 
 		/**
 		 * @brief Construct new primitive.
@@ -335,7 +335,7 @@ public:
 		void out(std::ostream& stream) const { stream << _value; }
 
 		//! @copydoc Expression::clone
-		virtual Expression::Ptr clone() const { return rw::common::ownedPtr( new String(_value) ); }
+		virtual Expression::Ptr clone() const { return rw::core::ownedPtr( new String(_value) ); }
 
 		/**
 		 * @brief Get the value.
@@ -351,7 +351,7 @@ public:
 	class Integer: public Expression {
 	public:
 		//! @brief Smart pointer type
-		typedef rw::common::Ptr<Integer> Ptr;
+		typedef rw::core::Ptr<Integer> Ptr;
 
 		/**
 		 * @brief Construct new integer.
@@ -369,7 +369,7 @@ public:
 		void out(std::ostream& stream) const { stream << _value; }
 
 		//! @copydoc Expression::clone
-		virtual Expression::Ptr clone() const { return rw::common::ownedPtr( new Integer(_value) ); }
+		virtual Expression::Ptr clone() const { return rw::core::ownedPtr( new Integer(_value) ); }
 
 		/**
 		 * @brief Get the value.
@@ -385,7 +385,7 @@ public:
 	class Real: public Expression {
 	public:
 		//! @brief Smart pointer type
-		typedef rw::common::Ptr<Real> Ptr;
+		typedef rw::core::Ptr<Real> Ptr;
 
 		/**
 		 * @brief Construct new floating point value.
@@ -403,7 +403,7 @@ public:
 		void out(std::ostream& stream) const { stream << _value; }
 
 		//! @copydoc Expression::clone
-		virtual Expression::Ptr clone() const { return rw::common::ownedPtr( new Real(_value) ); }
+		virtual Expression::Ptr clone() const { return rw::core::ownedPtr( new Real(_value) ); }
 
 		/**
 		 * @brief Get the value.
@@ -419,7 +419,7 @@ public:
 	class Symbol: public Expression {
 	public:
 		//! @brief Smart pointer type
-		typedef rw::common::Ptr<Symbol> Ptr;
+		typedef rw::core::Ptr<Symbol> Ptr;
 
 		/**
 		 * @brief Copy constructor.
@@ -449,7 +449,7 @@ public:
 		void out(std::ostream& stream) const { stream << _name; }
 
 		//! @copydoc Expression::clone
-		virtual Expression::Ptr clone() const { return rw::common::ownedPtr( new Symbol(_name) ); }
+		virtual Expression::Ptr clone() const { return rw::core::ownedPtr( new Symbol(_name) ); }
 
 		/**
 		 * @brief Get the name of the symbol.
@@ -465,7 +465,7 @@ public:
 	class FunctionBase: public Expression {
 	public:
 		//! @brief Smart pointer type
-		typedef rw::common::Ptr<FunctionBase> Ptr;
+		typedef rw::core::Ptr<FunctionBase> Ptr;
 
 		/**
 		 * @brief Construct new function.
@@ -489,7 +489,7 @@ public:
 		 * @brief Get a list of arguments for this function.
 		 * @return list of arguments.
 		 */
-		virtual std::list<rw::common::Ptr<const Expression> > getArguments() const = 0;
+		virtual std::list<rw::core::Ptr<const Expression> > getArguments() const = 0;
 
 		/**
 		 * @brief Print function by using indentations.
@@ -507,7 +507,7 @@ public:
 	class Function: public FunctionBase {
 	public:
 		//! @brief Smart pointer type
-		typedef rw::common::Ptr<Function> Ptr;
+		typedef rw::core::Ptr<Function> Ptr;
 
 		/**
 		 * @brief Construct new function.
@@ -547,7 +547,7 @@ public:
 		void setArgument(std::size_t i, Expression::Ptr arg);
 
 		//! @copydoc FunctionBase::getArguments
-		virtual std::list<rw::common::Ptr<const Expression> > getArguments() const;
+		virtual std::list<rw::core::Ptr<const Expression> > getArguments() const;
 
 		//! @copydoc FunctionBase::getArguments
 		virtual std::list<Expression::Ptr> getArguments();
@@ -564,7 +564,7 @@ public:
 	class Array: public Expression {
 	public:
 		//! @brief Smart pointer type
-		typedef rw::common::Ptr<Array<T> > Ptr;
+		typedef rw::core::Ptr<Array<T> > Ptr;
 
 		//! @brief Destructor.
 		virtual ~Array() {}
@@ -607,37 +607,37 @@ public:
 		 * @brief Construct from double.
 		 * @param val [in] the value.
 		 */
-		AutoExpression(double val): _exp(rw::common::ownedPtr(new Real(val))) {}
+		AutoExpression(double val): _exp(rw::core::ownedPtr(new Real(val))) {}
 
 		/**
 		 * @brief Construct from float.
 		 * @param val [in] the value.
 		 */
-		AutoExpression(float val): _exp(rw::common::ownedPtr(new Real(val))) {}
+		AutoExpression(float val): _exp(rw::core::ownedPtr(new Real(val))) {}
 
 		/**
 		 * @brief Construct from int.
 		 * @param val [in] the value.
 		 */
-		AutoExpression(int val): _exp(rw::common::ownedPtr(new Integer(val))) {}
+		AutoExpression(int val): _exp(rw::core::ownedPtr(new Integer(val))) {}
 
 		/**
 		 * @brief Construct from bool.
 		 * @param val [in] the value.
 		 */
-		AutoExpression(bool val): _exp(rw::common::ownedPtr(new Symbol(val?"True":"False"))) {}
+		AutoExpression(bool val): _exp(rw::core::ownedPtr(new Symbol(val?"True":"False"))) {}
 
 		/**
 		 * @brief Construct from string.
 		 * @param string [in] the value.
 		 */
-		AutoExpression(const std::string& string): _exp(rw::common::ownedPtr(new String(string))) {}
+		AutoExpression(const std::string& string): _exp(rw::core::ownedPtr(new String(string))) {}
 
 		/**
 		 * @brief Construct from string.
 		 * @param string [in] the value.
 		 */
-		AutoExpression(const char* string): _exp(rw::common::ownedPtr(new String(string))) {}
+		AutoExpression(const char* string): _exp(rw::core::ownedPtr(new String(string))) {}
 
 		/**
 		 * @brief Construct from list of arguments.
@@ -670,7 +670,7 @@ public:
 	class Packet: public FunctionBase {
 	public:
 		//! @brief Smart pointer type.
-		typedef rw::common::Ptr<Packet> Ptr;
+		typedef rw::core::Ptr<Packet> Ptr;
 
 		/**
 		 * @brief Construct new expression.
@@ -693,19 +693,19 @@ public:
 	};
 
 private:
-	static void put(rw::common::Ptr<const LinkImpl> link, const Expression& expression);
-	static void error(rw::common::Ptr<const LinkImpl> link);
-	static std::string readString(rw::common::Ptr<const LinkImpl> link, bool symbol);
-	static Expression::Ptr readExpression(rw::common::Ptr<const LinkImpl> link);
-	static void addExpression(Function::Ptr exp, rw::common::Ptr<const LinkImpl> link);
-	static void readRawByteArray(rw::common::Ptr<const LinkImpl> link, std::ostream& stream);
-	static int expectFunction(rw::common::Ptr<const LinkImpl> link, const std::string& name);
+	static void put(rw::core::Ptr<const LinkImpl> link, const Expression& expression);
+	static void error(rw::core::Ptr<const LinkImpl> link);
+	static std::string readString(rw::core::Ptr<const LinkImpl> link, bool symbol);
+	static Expression::Ptr readExpression(rw::core::Ptr<const LinkImpl> link);
+	static void addExpression(Function::Ptr exp, rw::core::Ptr<const LinkImpl> link);
+	static void readRawByteArray(rw::core::Ptr<const LinkImpl> link, std::ostream& stream);
+	static int expectFunction(rw::core::Ptr<const LinkImpl> link, const std::string& name);
 
 	struct Environment;
 
 private:
 	Environment* _env;
-	std::list<rw::common::Ptr<Link> > _links;
+	std::list<rw::core::Ptr<Link> > _links;
 };
 
 /**

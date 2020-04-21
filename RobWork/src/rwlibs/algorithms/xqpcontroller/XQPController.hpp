@@ -23,6 +23,7 @@
 #include <rw/math/Q.hpp>
 #include <rw/math/VelocityScrew6D.hpp>
 #include <rw/kinematics/State.hpp>
+#include <rw/core/Ptr.hpp>
 
 namespace rw { namespace models { class Device; } }
 
@@ -47,7 +48,7 @@ public:
 	/**
 	 * @brief Definition of smart pointer to XQPController
 	 */
-	typedef rw::common::Ptr<XQPController> Ptr;
+	typedef rw::core::Ptr<XQPController> Ptr;
 
     /**
      * @brief Constraint for the XQPController
@@ -81,7 +82,7 @@ public:
      * @param state [in] State specifying how frames are assempled
      * @param dt [in] time step size
      */
-	XQPController(rw::common::Ptr<rw::models::Device> device,
+	XQPController(rw::core::Ptr<rw::models::Device> device,
 				  rw::kinematics::Frame* controlFrame,
 				  const rw::kinematics::State& state,
 				  double dt);
@@ -163,7 +164,7 @@ public:
 	 */
 	void setVelScale(double scale);
 private:
-	rw::common::Ptr<rw::models::Device> _device;
+	rw::core::Ptr<rw::models::Device> _device;
 	rw::kinematics::Frame* _controlFrame;
 	rw::kinematics::State _state;
 	double _dt;

@@ -20,6 +20,7 @@
 
 using namespace rwsim::simulator;
 using namespace rw::common;
+using namespace rw::core;
 
 RW_ADD_PLUGIN(ODEPlugin)
 
@@ -43,7 +44,7 @@ ODEPlugin::~ODEPlugin()
 {
 }
 
-std::vector<rw::common::Extension::Descriptor> ODEPlugin::getExtensionDescriptors()
+std::vector<rw::core::Extension::Descriptor> ODEPlugin::getExtensionDescriptors()
 {
     std::vector<Extension::Descriptor> exts;
     exts.push_back(Extension::Descriptor("ODEPhysicsEngine","rwsim.simulator.PhysicsEngine"));
@@ -55,10 +56,10 @@ std::vector<rw::common::Extension::Descriptor> ODEPlugin::getExtensionDescriptor
     return exts;
 }
 
-rw::common::Ptr<rw::common::Extension> ODEPlugin::makeExtension(const std::string& str)
+rw::core::Ptr<rw::core::Extension> ODEPlugin::makeExtension(const std::string& str)
 {
     if(str=="ODEPhysicsEngine"){
-        Extension::Ptr extension = rw::common::ownedPtr( new Extension("ODEPhysicsEngine","rwsim.simulator.PhysicsEngine",
+        Extension::Ptr extension = rw::core::ownedPtr( new Extension("ODEPhysicsEngine","rwsim.simulator.PhysicsEngine",
                 this, ownedPtr(new Dispatcher()) ) );
 
         // todo: add posible properties to the extension descriptor

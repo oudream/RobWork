@@ -24,6 +24,7 @@
 #include <rw/math/Quaternion.hpp>
 #include <rw/graphics/SceneCamera.hpp>
 #include "CameraController.hpp"
+#include <rw/core/Ptr.hpp>
 
 namespace rw { namespace models { class WorkCell; } }
 
@@ -67,7 +68,7 @@ namespace rws{
 
 	public:
 		//! @brief Smart pointer type for ArcBallController
-		typedef rw::common::Ptr<ArcBallController> Ptr;
+		typedef rw::core::Ptr<ArcBallController> Ptr;
 
 		/**
 		 * @brief constructor
@@ -128,7 +129,7 @@ namespace rws{
         void zoom(double amount);
 
         //! @copydoc CameraController::autoZoom
-        void autoZoom(rw::common::Ptr<rw::models::WorkCell> workcell, rw::common::Ptr<const rw::kinematics::State> state, double fovy, double aspectRatio);
+        void autoZoom(rw::core::Ptr<rw::models::WorkCell> workcell, rw::core::Ptr<const rw::kinematics::State> state, double fovy, double aspectRatio);
 
 		//! @copydoc CameraController::setZoomTarget
 		void setZoomTarget(rw::math::Vector3D<double> target, bool enable=true);

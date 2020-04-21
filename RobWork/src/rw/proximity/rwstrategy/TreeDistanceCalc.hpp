@@ -63,7 +63,7 @@ public:
      * balanced in the way that it switches between descending in the
      * trees.
      */
-    static rw::common::Ptr<TreeDistanceCalc> makeBalancedDFSDistanceCalc(rw::common::Ptr< BVDISTANCECALC > bvdistcalc);
+    static rw::core::Ptr<TreeDistanceCalc> makeBalancedDFSDistanceCalc(rw::core::Ptr< BVDISTANCECALC > bvdistcalc);
 
 
     //TreeDistanceCalc* makeBalancedBFSCollider();

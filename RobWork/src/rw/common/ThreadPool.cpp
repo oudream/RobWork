@@ -18,7 +18,7 @@
 #include "ThreadPool.hpp"
 #include "ThreadSafeVariable.hpp"
 
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 #include <boost/bind.hpp>
 #include <boost/function.hpp>
 #include <boost/thread/thread.hpp>

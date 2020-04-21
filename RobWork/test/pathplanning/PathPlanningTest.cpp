@@ -31,6 +31,7 @@
 #include <rw/loaders/WorkCellLoader.hpp>
 #include <rw/models/WorkCell.hpp>
 #include <rw/math/MetricFactory.hpp>
+#include <rw/core/Ptr.hpp>
 
 #if RW_HAVE_PQP == 1
 #include <rwlibs/proximitystrategies/ProximityStrategyPQP.hpp>
@@ -41,6 +42,7 @@ using rwlibs::proximitystrategies::ProximityStrategyPQP;
 using rwlibs::proximitystrategies::ProximityStrategyYaobi;
 #endif
 
+using namespace rw::core;
 using namespace rw::common;
 using rw::kinematics::State;
 using rw::loaders::WorkCellLoader;

@@ -25,6 +25,7 @@
  */
 
 #include "Mathematica.hpp"
+#include <rw/core/Ptr.hpp>
 
 namespace rwlibs {
 namespace mathematica {
@@ -35,7 +36,7 @@ namespace mathematica {
 class FactorInteger: public Mathematica::FunctionBase {
 public:
 	//! @brief Smart pointer type.
-	typedef rw::common::Ptr<FactorInteger> Ptr;
+	typedef rw::core::Ptr<FactorInteger> Ptr;
 
 	/**
 	 * @brief Construct expression.
@@ -53,7 +54,7 @@ public:
 	virtual ~FactorInteger();
 
 	//! @copydoc Mathematica::FunctionBase::getArguments
-	std::list<rw::common::Ptr<const Mathematica::Expression> > getArguments() const;
+	std::list<rw::core::Ptr<const Mathematica::Expression> > getArguments() const;
 
 	//! @copydoc Mathematica::Expression::clone
 	Mathematica::Expression::Ptr clone() const;

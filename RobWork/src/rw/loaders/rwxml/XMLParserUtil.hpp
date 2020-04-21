@@ -27,7 +27,7 @@
 #include <rw/math/Vector3D.hpp>
 #include <rw/math/RPY.hpp>
 
-#include <rw/common/Property.hpp>
+#include <rw/core/Property.hpp>
 
 #include <vector>
 #include <map>
@@ -261,7 +261,7 @@ public:
 	std::vector<DummyCalibration> _calibration; // device calibration
 
     std::map<std::string,
-        std::vector<boost::shared_ptr<rw::common::Property<std::string> > > > _propMap;
+        std::vector<boost::shared_ptr<rw::core::Property<std::string> > > > _propMap;
 
     std::map<std::string, std::vector<DummyModel> > _modelMap;
     std::map<std::string, std::vector<DummyLimit> > _limitMap;

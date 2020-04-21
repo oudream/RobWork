@@ -18,7 +18,7 @@
 #ifndef PROPERTYVIEWDIALOG_HPP_
 #define PROPERTYVIEWDIALOG_HPP_
 
-#include <rw/common/PropertyMap.hpp>
+#include <rw/core/PropertyMap.hpp>
 
 #include <QDialog>
 
@@ -33,15 +33,15 @@ public:
 	 * @param map [in] the property map to show.
 	 * @param parent [in] the parent widget that owns the dialog.
 	 */
-	PropertyViewDialog(rw::common::PropertyMap::Ptr map, QWidget *parent);
+	PropertyViewDialog(rw::core::PropertyMap::Ptr map, QWidget *parent);
 
 private Q_SLOTS:
 	void acceptPressed();
 	void rejectPressed();
 private:
 	class Ui_PropertyViewDialog *ui;
-	rw::common::PropertyMap::Ptr _pOriginalProperties;
-	rw::common::PropertyMap _workingCopy;
+	rw::core::PropertyMap::Ptr _pOriginalProperties;
+	rw::core::PropertyMap _workingCopy;
 };
 
 #endif /* PROPERTYVIEWDIALOG_HPP_ */

@@ -15,7 +15,7 @@
  * limitations under the License.
  ********************************************************************************/
 
-#include <rw/RobWork.hpp>
+#include <rw/core/RobWork.hpp>
 
 #include <rwlibs/assembly/AssemblyRegistry.hpp>
 #include <rwlibs/assembly/AssemblyResult.hpp>
@@ -33,8 +33,7 @@
 #include <boost/program_options/variables_map.hpp>
 #include <boost/program_options/parsers.hpp>
 
-using namespace rw;
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::proximity;
 using namespace rw::math;
 using namespace rwlibs::assembly;

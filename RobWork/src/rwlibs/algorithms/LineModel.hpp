@@ -28,6 +28,7 @@
 
 #include <rw/math/Vector3D.hpp>
 #include <rw/geometry/Line.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include "RANSACModel.hpp"
 
@@ -44,7 +45,7 @@ class LineModel : public RANSACModel<LineModel, rw::math::Vector3D<> >
 {
 	public:
 		//! @brief Smart pointer type to this class.
-		typedef rw::common::Ptr<LineModel> Ptr;
+		typedef rw::core::Ptr<LineModel> Ptr;
 		
 	public: // constructors
 		/**

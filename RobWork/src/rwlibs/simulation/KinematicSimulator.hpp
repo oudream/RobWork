@@ -22,6 +22,7 @@
 //! @file KinematicSimulator.hpp
 
 #include "Simulator.hpp"
+#include <rw/core/Ptr.hpp>
 
 namespace rwlibs {
 namespace simulation {
@@ -36,7 +37,7 @@ namespace simulation {
     class KinematicSimulator: public Simulator {
     public:
     	//! smart pointer type of KinematicSimulator
-    	typedef rw::common::Ptr<KinematicSimulator> Ptr;
+    	typedef rw::core::Ptr<KinematicSimulator> Ptr;
 
     	/**
          * @brief add a simulated controller to the simulator

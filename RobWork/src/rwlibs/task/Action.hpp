@@ -21,6 +21,8 @@
 
 #include "Entity.hpp"
 
+#include <rw/core/Ptr.hpp>
+
 namespace rwlibs {
 namespace task {
 
@@ -76,7 +78,7 @@ private:
  * @brief Specification of an action in a task
  *
  * An Action in a task can be used to specify e.g. when to turn a tool on/off.
- * The default action only contains a simple type and a rw::common::PropertyMap,
+ * The default action only contains a simple type and a rw::core::PropertyMap,
  * which can be used to store value associated with the event. It is the responsibility
  * of the user to interpret an Action and do what is necessary.
  */
@@ -84,7 +86,7 @@ class Action: public Entity
 {
 public:
 	//! @brief smart pointer type to this class
-    typedef rw::common::Ptr<Action> Ptr;
+    typedef rw::core::Ptr<Action> Ptr;
 
     /**
      * @brief Construct an Action with a given type
@@ -115,8 +117,8 @@ public:
      * @brief Make a copy of the action.
      * @return new identical action.
      */
-    virtual rw::common::Ptr<Action> clone() {
-    	return rw::common::ownedPtr(new Action(_actionType));
+    virtual rw::core::Ptr<Action> clone() {
+    	return rw::core::ownedPtr(new Action(_actionType));
     }
 
 private:

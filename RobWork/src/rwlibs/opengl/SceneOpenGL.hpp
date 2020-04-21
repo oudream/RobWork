@@ -23,6 +23,7 @@
  */
 
 #include <rw/graphics/SceneGraph.hpp>
+#include <rw/core/Ptr.hpp>
 
 namespace rwlibs { namespace opengl {
 
@@ -36,7 +37,7 @@ namespace rwlibs { namespace opengl {
     class SceneOpenGL: public rw::graphics::SceneGraph {
     public:
     	//! @brief Smart pointer type for SceneOpenGL.
-        typedef rw::common::Ptr<SceneOpenGL> Ptr;
+        typedef rw::core::Ptr<SceneOpenGL> Ptr;
 
         /**
          * @brief Creates object
@@ -78,21 +79,21 @@ namespace rwlibs { namespace opengl {
         // interface for adding drawables
         //! @copydoc rw::graphics::SceneGraph::makeDrawableFrameAxis
         rw::graphics::DrawableGeometryNode::Ptr makeDrawableFrameAxis(const std::string& name, double size, int dmask);
-        //! @copydoc rw::graphics::SceneGraph::makeDrawable(const std::string&,rw::common::Ptr<rw::geometry::Geometry>,int)
-        rw::graphics::DrawableGeometryNode::Ptr makeDrawable(const std::string& name, rw::common::Ptr<rw::geometry::Geometry> geom, int dmask);
+        //! @copydoc rw::graphics::SceneGraph::makeDrawable(const std::string&,rw::core::Ptr<rw::geometry::Geometry>,int)
+        rw::graphics::DrawableGeometryNode::Ptr makeDrawable(const std::string& name, rw::core::Ptr<rw::geometry::Geometry> geom, int dmask);
         //! @copydoc rw::graphics::SceneGraph::makeDrawable(const std::string&,const std::vector<rw::geometry::Line >&,int)
         rw::graphics::DrawableGeometryNode::Ptr makeDrawable(const std::string& name, const std::vector<rw::geometry::Line >& lines, int dmask);
 
-        //! @copydoc rw::graphics::SceneGraph::makeDrawable(const std::string&,rw::common::Ptr<rw::graphics::Model3D>,int)
-        rw::graphics::DrawableNode::Ptr makeDrawable(const std::string& name, rw::common::Ptr<rw::graphics::Model3D> model, int dmask);
+        //! @copydoc rw::graphics::SceneGraph::makeDrawable(const std::string&,rw::core::Ptr<rw::graphics::Model3D>,int)
+        rw::graphics::DrawableNode::Ptr makeDrawable(const std::string& name, rw::core::Ptr<rw::graphics::Model3D> model, int dmask);
         //! @copydoc rw::graphics::SceneGraph::makeDrawable(const std::string&,const class rw::sensor::Image&,int)
         rw::graphics::DrawableNode::Ptr makeDrawable(const std::string& name, const class rw::sensor::Image& img, int dmask);
         //! @copydoc rw::graphics::SceneGraph::makeDrawable(const std::string&,const rw::geometry::PointCloud&,int)
         rw::graphics::DrawableNode::Ptr makeDrawable(const std::string& name, const rw::geometry::PointCloud& scan, int dmask);
         //! @copydoc rw::graphics::SceneGraph::makeDrawable(const std::string& const std::string& int)
-        rw::graphics::DrawableNode::Ptr makeDrawable(const std::string& name, const std::string &text, const rw::common::Ptr<rw::kinematics::Frame> labelFrame, int dmask);
-        //! @copydoc rw::graphics::SceneGraph::makeDrawable(const std::string&,rw::common::Ptr<rw::graphics::Render>,int)
-        rw::graphics::DrawableNode::Ptr makeDrawable(const std::string& name, rw::common::Ptr<rw::graphics::Render> render, int dmask);
+        rw::graphics::DrawableNode::Ptr makeDrawable(const std::string& name, const std::string &text, const rw::core::Ptr<rw::kinematics::Frame> labelFrame, int dmask);
+        //! @copydoc rw::graphics::SceneGraph::makeDrawable(const std::string&,rw::core::Ptr<rw::graphics::Render>,int)
+        rw::graphics::DrawableNode::Ptr makeDrawable(const std::string& name, rw::core::Ptr<rw::graphics::Render> render, int dmask);
         //! @copydoc rw::graphics::SceneGraph::makeDrawable(const std::string&,int)
         rw::graphics::DrawableNode::Ptr makeDrawable(const std::string& filename, int dmask);
         //rw::graphics::DrawableNode::Ptr makeDrawable(const rw::models::DrawableModelInfo& info);
@@ -100,9 +101,9 @@ namespace rwlibs { namespace opengl {
         //rw::graphics::DrawableNode::Ptr makeDrawable(const rw::models::Object& info);
 
         //! @copydoc rw::graphics::SceneGraph::makeCamera
-        rw::common::Ptr<rw::graphics::SceneCamera> makeCamera(const std::string& name);
+        rw::core::Ptr<rw::graphics::SceneCamera> makeCamera(const std::string& name);
         //! @copydoc rw::graphics::SceneGraph::makeCameraGroup
-        rw::common::Ptr<rw::graphics::CameraGroup> makeCameraGroup(const std::string& name);
+        rw::core::Ptr<rw::graphics::CameraGroup> makeCameraGroup(const std::string& name);
         void clear();
 
     public:

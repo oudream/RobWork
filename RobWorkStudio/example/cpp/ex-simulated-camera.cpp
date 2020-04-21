@@ -3,7 +3,10 @@
 #include <rwlibs/simulation/GLFrameGrabber.hpp>
 #include <rwlibs/simulation/SimulatedCamera.hpp>
 #include <rwslibs/rwstudioapp/RobWorkStudioApp.hpp>
+#include <rw/core/Ptr.hpp>
+#include <rw/core/PropertyMap.hpp>
 
+using namespace rw::core;
 using namespace rw::common;
 using rw::graphics::SceneViewer;
 using namespace rw::kinematics;

@@ -40,9 +40,9 @@ class MinimumClearanceCalculator: public ClearanceCalculator
 {
 public:
     //! A pointer to a MinimumClearanceCalculator.
-	typedef typename rw::common::Ptr< MinimumClearanceCalculator > Ptr;
+	typedef typename rw::core::Ptr< MinimumClearanceCalculator > Ptr;
 	//! A pointer to a const MinimumClearanceCalculator.
-	typedef typename rw::common::Ptr< const MinimumClearanceCalculator > CPtr;
+	typedef typename rw::core::Ptr< const MinimumClearanceCalculator > CPtr;
     
     /**
      * @brief Constructs a MinimumClearanceCalculator using the \b DistanceCalculator provided.
@@ -51,14 +51,14 @@ public:
      *
      * @param distancecalculator [in] The distance calculator to use
      */
-	MinimumClearanceCalculator(const rw::common::Ptr< const rw::proximity::DistanceCalculator>& distancecalculator);
+	MinimumClearanceCalculator(const rw::core::Ptr< const rw::proximity::DistanceCalculator>& distancecalculator);
 
 	/**
 	 * @brief Constructs a MinimumClearanceCalculator for a workcell
 	 * @param workcell [in] WorkCell for which to calculate the minimum clearance
 	 * @param state [in] State of the workcell
 	 */
-	MinimumClearanceCalculator(const rw::common::Ptr<rw::models::WorkCell>& workcell,
+	MinimumClearanceCalculator(const rw::core::Ptr<rw::models::WorkCell>& workcell,
 	                           const rw::kinematics::State& state);
 
 	/**
@@ -72,7 +72,7 @@ public:
 	double clearance(const rw::kinematics::State& state) const;
 
 private:
-	rw::common::Ptr< const rw::proximity::DistanceCalculator > _distancecalculator;
+	rw::core::Ptr< const rw::proximity::DistanceCalculator > _distancecalculator;
 };
 
 

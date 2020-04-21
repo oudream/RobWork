@@ -23,7 +23,7 @@
  */
 
 #include <rw/common/Cache.hpp>
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/proximity/CollisionStrategy.hpp>
 
 #include <map>
@@ -48,16 +48,16 @@ namespace rwlibs { namespace proximitystrategies {
     */
     class ProximityStrategyYaobi : public rw::proximity::CollisionStrategy
     {
-        typedef rw::common::Ptr< yaobi::CollModel > YaobiModelPtr;
+        typedef rw::core::Ptr< yaobi::CollModel > YaobiModelPtr;
 
         struct RWYaobiModel
         {
-            RWYaobiModel (rw::common::Ptr< rw::geometry::Geometry > geo,
+            RWYaobiModel (rw::core::Ptr< rw::geometry::Geometry > geo,
                           rw::math::Transform3D<> trans, YaobiModelPtr model) :
                 geo (geo),
                 t3d (trans), yaobimodel (model)
             {}
-            rw::common::Ptr< rw::geometry::Geometry > geo;
+            rw::core::Ptr< rw::geometry::Geometry > geo;
             rw::math::Transform3D<> t3d;
             YaobiModelPtr yaobimodel;
         };
@@ -98,9 +98,9 @@ namespace rwlibs { namespace proximitystrategies {
         bool addGeometry (rw::proximity::ProximityModel* model, const rw::geometry::Geometry& geom);
 
         //! @copydoc rw::proximity::ProximityStrategy::addGeometry(ProximityModel* model,
-        //! rw::common::Ptr<rw::geometry::Geometry> geom, bool forceCopy=false)
+        //! rw::core::Ptr<rw::geometry::Geometry> geom, bool forceCopy=false)
         bool addGeometry (rw::proximity::ProximityModel* model,
-                          rw::common::Ptr< rw::geometry::Geometry > geom, bool forceCopy = false);
+                          rw::core::Ptr< rw::geometry::Geometry > geom, bool forceCopy = false);
 
         /**
          * @copydoc rw::proximity::ProximityStrategy::removeGeometry
@@ -115,7 +115,7 @@ namespace rwlibs { namespace proximitystrategies {
         /**
          * @copydoc rw::proximity::ProximityStrategy::getGeometrys
          */
-        std::vector < rw::common::Ptr< rw::geometry::Geometry > > getGeometrys (rw::proximity::ProximityModel* model);
+        std::vector < rw::core::Ptr< rw::geometry::Geometry > > getGeometrys (rw::proximity::ProximityModel* model);
 
         /**
          *  @copydoc rw::proximity::ProximityStrategy::clear

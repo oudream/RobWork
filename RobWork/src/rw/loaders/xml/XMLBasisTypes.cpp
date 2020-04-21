@@ -25,8 +25,8 @@
 #include <xercesc/dom/DOMText.hpp>
 #include <xercesc/util/XMLDouble.hpp>
 
-#include <rw/common/macros.hpp>
-#include <rw/common/StringUtil.hpp>
+#include <rw/core/macros.hpp>
+#include <rw/core/StringUtil.hpp>
 #include <rw/kinematics/Frame.hpp>
 #include <rw/kinematics/StateStructure.hpp>
 #include <rw/math/LinearAlgebra.hpp>
@@ -37,7 +37,7 @@
 using namespace xercesc;
 
 using namespace rw::math;
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::kinematics;
 using namespace rw::models;
 using namespace rw::loaders;

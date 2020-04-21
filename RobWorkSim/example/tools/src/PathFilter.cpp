@@ -7,7 +7,7 @@
 
 #include <vector>
 
-#include <rw/common/Log.hpp>
+#include <rw/core/Log.hpp>
 #include <rw/common/TimerUtil.hpp>
 #include <rw/kinematics/MovableFrame.hpp>
 #include <rw/loaders/path/PathLoader.hpp>
@@ -19,6 +19,7 @@
 #include <fstream>
 
 using namespace rw::common;
+using namespace rw::core;
 using namespace rw::kinematics;
 using rw::loaders::PathLoader;
 using namespace rw::math;

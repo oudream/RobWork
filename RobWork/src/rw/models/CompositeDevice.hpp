@@ -131,7 +131,7 @@ namespace rw { namespace models {
     private:
 		std::vector<Device::Ptr> _devices;
         std::vector<kinematics::Frame*> _ends;
-        rw::common::Ptr<class JacobianCalculator> _djmulti;
+        rw::core::Ptr<class JacobianCalculator> _djmulti;
     };
 
     /*@}*/

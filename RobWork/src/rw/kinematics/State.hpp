@@ -28,7 +28,7 @@
 #include "QState.hpp"
 #include "TreeState.hpp"
 #include "StateCache.hpp"
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/common/Serializable.hpp>
 
 
@@ -67,7 +67,7 @@ namespace rw { namespace kinematics {
     {
     public:
     	//! @brief Smart pointer type to State.
-    	typedef rw::common::Ptr<State> Ptr;
+    	typedef rw::core::Ptr<State> Ptr;
         //! Value type.
         typedef double value_type;
 
@@ -270,7 +270,7 @@ namespace rw { namespace kinematics {
          * @brief Returns pointer to the state structure (the structure of Frame's and StateData)
          * @return Pointer to the StateStructure matching the frame
          */
-		rw::common::Ptr<StateStructure> getStateStructure() const;
+		rw::core::Ptr<StateStructure> getStateStructure() const;
 
 		//void add(Stateless& obj);
 
@@ -315,13 +315,13 @@ namespace rw { namespace kinematics {
          * @brief the cache part of the state
          * @return vector of caches, the mapping from StateData to cache is located in StateSetup
          */
-        //std::vector<rw::common::Ptr<StateCache> >& getCacheState(){return _cache_state;}
+        //std::vector<rw::core::Ptr<StateCache> >& getCacheState(){return _cache_state;}
 
-        rw::common::Ptr<StateCache> getCache(int id);
+        rw::core::Ptr<StateCache> getCache(int id);
 
-        rw::common::Ptr<StateCache> getCache(int id) const;
+        rw::core::Ptr<StateCache> getCache(int id) const;
 
-        void setCache(int id, rw::common::Ptr<StateCache> cache);
+        void setCache(int id, rw::core::Ptr<StateCache> cache);
 
         /**
          * @brief Constructs a state
@@ -333,7 +333,7 @@ namespace rw { namespace kinematics {
     private:
         TreeState _tree_state;
         QState _q_state;
-        std::vector<rw::common::Ptr<StateCache> > _cache_state;
+        std::vector<rw::core::Ptr<StateCache> > _cache_state;
         int _stateUniqueId;
     };
 

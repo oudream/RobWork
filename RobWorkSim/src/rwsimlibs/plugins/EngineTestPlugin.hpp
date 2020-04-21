@@ -89,12 +89,12 @@ private:
     rwsimlibs::test::EngineTest::Ptr _test;
     rwsimlibs::test::EngineTest::TestHandle::Ptr _testHandle;
     std::string _engine;
-    rw::common::Ptr<rw::common::PropertyMap> _input;
-    rw::common::Ptr<rwsim::dynamics::DynamicWorkCell> _dwc;
-    rw::common::Ptr<rwsim::log::SimulatorLogScope> _log;
+    rw::core::Ptr<rw::core::PropertyMap> _input;
+    rw::core::Ptr<rwsim::dynamics::DynamicWorkCell> _dwc;
+    rw::core::Ptr<rwsim::log::SimulatorLogScope> _log;
     rwsimlibs::gui::SimulatorLogWidget* _logWidget;
-    rw::common::Ptr<rw::common::ThreadPool> _threadPool;
-    rw::common::Ptr<rw::common::ThreadTask> _runTask;
+    rw::core::Ptr<rw::common::ThreadPool> _threadPool;
+    rw::core::Ptr<rw::common::ThreadTask> _runTask;
     bool _simFailed;
 };
 //! @}

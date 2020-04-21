@@ -48,10 +48,10 @@
 #include <rw/math/RPY.hpp>
 #include <rw/math/Transform3D.hpp>
 
-#include <rw/common/Property.hpp>
-#include <rw/common/StringUtil.hpp>
-#include <rw/common/IOUtil.hpp>
-#include <rw/common/macros.hpp>
+#include <rw/core/Property.hpp>
+#include <rw/core/StringUtil.hpp>
+#include <rw/core/IOUtil.hpp>
+#include <rw/core/macros.hpp>
 
 #include <rw/loaders/colsetup/CollisionSetupLoader.hpp>
 #include <rw/loaders/dom/DOMProximitySetupLoader.hpp>
@@ -65,7 +65,7 @@
 #include <stack>
 
 using namespace rw::math;
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::kinematics;
 using namespace rw::models;
 using namespace rw::graphics;
@@ -148,7 +148,7 @@ public:
     std::vector<std::string> proxSetupFilenames;
 };
 
-void addPropertyToMap(const DummyProperty &dprop, common::PropertyMap& map){
+void addPropertyToMap(const DummyProperty &dprop, core::PropertyMap& map){
     if(dprop._type=="string"){
         map.add(dprop._name, dprop._desc, dprop._val);
     } else if(dprop._type=="double"){
@@ -586,7 +586,7 @@ void addDevicePropsToFrame(DummyDevice &dev, const std::string& name, DummySetup
 	Frame *frame = setup.frameMap[name];
 	// add properties specified in device context
 	//std::cout << "Search props: " << name << std::endl;
-	std::vector<boost::shared_ptr<rw::common::Property<std::string> > > proplist = dev._propMap[frame->getName()];
+	std::vector<boost::shared_ptr<rw::core::Property<std::string> > > proplist = dev._propMap[frame->getName()];
 
 	//std::cout << "Nr Props in list: " << proplist.size() << std::endl;
 	for (size_t j = 0; j < proplist.size(); j++) {

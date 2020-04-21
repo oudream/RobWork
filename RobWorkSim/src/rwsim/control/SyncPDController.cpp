@@ -6,7 +6,7 @@ using namespace rwsim::control;
 
 SyncPDController::SyncPDController(const std::string& name, rwsim::dynamics::RigidDevice* rdev, const rw::kinematics::State& state):
 	JointController(name, &rdev->getModel()),
-	SimulatedController(rw::common::ownedPtr(new rw::models::ControllerModel(name,rdev->getKinematicModel()->getBase()))),
+	SimulatedController(rw::core::ownedPtr(new rw::models::ControllerModel(name,rdev->getKinematicModel()->getBase()))),
 	_ddev(rdev),
 	_time(0.0),
 	_target(rdev->getModel().getQ(state)),

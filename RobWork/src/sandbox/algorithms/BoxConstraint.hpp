@@ -44,7 +44,7 @@ namespace rwlibs { namespace algorithms {
 class BoxConstraint {
 	public:
 		//! @brief Smart pointer type to this class.
-		typedef rw::common::Ptr<BoxConstraint> Ptr;
+		typedef rw::core::Ptr<BoxConstraint> Ptr;
 		
 		//! @copydoc ConstraintModel::MinSamples
 		static const int MinSamples = 1; // ??

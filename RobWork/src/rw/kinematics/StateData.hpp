@@ -149,23 +149,23 @@ namespace rw { namespace kinematics {
          * @param state [in] the state.
          * @return the cache.
          */
-        rw::common::Ptr<StateCache> getCache(const State& state) const ;
+        rw::core::Ptr<StateCache> getCache(const State& state) const ;
 
         //! @copydoc getCache(const State&) const .
-        rw::common::Ptr<StateCache> getCache(State& state);
+        rw::core::Ptr<StateCache> getCache(State& state);
 
         /**
          * @brief Get default cache.
          * @return the cache.
          */
-        rw::common::Ptr<StateCache> getDefaultCache(){ return _cache; }
+        rw::core::Ptr<StateCache> getDefaultCache(){ return _cache; }
 
         /**
          * @brief Set the cache values.
          * @param cache [in] the cache.
          * @param state [in/out] state updated with new cache.
          */
-        void setCache(rw::common::Ptr<StateCache> cache, State& state);
+        void setCache(rw::core::Ptr<StateCache> cache, State& state);
 
         /**
          * @brief Get the state structure.
@@ -197,7 +197,7 @@ namespace rw { namespace kinematics {
          * @copydoc StateData(int, const std::string&)
          * @param cache [in] a cache.
          */
-        StateData(int size, const std::string& name, rw::common::Ptr<StateCache> cache);
+        StateData(int size, const std::string& name, rw::core::Ptr<StateCache> cache);
 
 
     private:
@@ -229,7 +229,7 @@ namespace rw { namespace kinematics {
 
         bool _hasCache;
 
-        rw::common::Ptr<StateCache> _cache;
+        rw::core::Ptr<StateCache> _cache;
 
     private:
         // StateData should not be copied.

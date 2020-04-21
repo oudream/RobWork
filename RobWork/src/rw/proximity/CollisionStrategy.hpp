@@ -26,8 +26,8 @@
 #include <string>
 
 #include <rw/math/Transform3D.hpp>
-#include <rw/common/Ptr.hpp>
-#include <rw/common/ExtensionPoint.hpp>
+#include <rw/core/Ptr.hpp>
+#include <rw/core/ExtensionPoint.hpp>
 #include <rw/kinematics/FrameMap.hpp>
 
 
@@ -50,7 +50,7 @@ namespace rw { namespace proximity {
     class CollisionStrategy : public virtual ProximityStrategy {
     public:
 		//! @brief smart pointer type to this class
-		typedef rw::common::Ptr<CollisionStrategy> Ptr;
+		typedef rw::core::Ptr<CollisionStrategy> Ptr;
 
 		//! the type of query that is to be performed
         typedef enum{FirstContact, AllContacts} QueryType;
@@ -216,7 +216,7 @@ namespace rw { namespace proximity {
            be in collision if \b strategy claim they are in collision for a
            tolerance of \b tolerance.
         */
-		static CollisionStrategy::Ptr make(rw::common::Ptr<CollisionToleranceStrategy> strategy,
+		static CollisionStrategy::Ptr make(rw::core::Ptr<CollisionToleranceStrategy> strategy,
                          double tolerance);
 
         /**
@@ -227,7 +227,7 @@ namespace rw { namespace proximity {
            be in collision if \b strategy claim they are in collision for a
            tolerance of \b tolerance.
         */
-        static CollisionStrategy::Ptr make(rw::common::Ptr<CollisionToleranceStrategy> strategy,
+        static CollisionStrategy::Ptr make(rw::core::Ptr<CollisionToleranceStrategy> strategy,
                          const rw::kinematics::FrameMap<double>& frameToTolerance,
                          double defaultTolerance);
 
@@ -249,7 +249,7 @@ namespace rw { namespace proximity {
     	 *  - FCL - rwlibs::proximitystrategies::ProximityStrategyFCL - Flexible Collision Library
     	 *  - Yaobi - rwlibs::proximitystrategies::ProximityStrategyYaobi - Yaobi
     	 */
-    	class Factory: public rw::common::ExtensionPoint<CollisionStrategy> {
+    	class Factory: public rw::core::ExtensionPoint<CollisionStrategy> {
     	public:
     		//! @brief Constructor.
     		Factory();

@@ -26,7 +26,7 @@
 #include "Image.hpp"
 #include "SensorModel.hpp"
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/math/ProjectionMatrix.hpp>
 
 #include <string>
@@ -47,9 +47,9 @@ namespace rw { namespace sensor {
     {
     public:
 		//! @brief smart pointer type to this class
-		typedef rw::common::Ptr<CameraModel> Ptr;
+		typedef rw::core::Ptr<CameraModel> Ptr;
 		//! @brief smart pointer type to this const class
-		typedef rw::common::Ptr<const CameraModel> CPtr;
+		typedef rw::core::Ptr<const CameraModel> CPtr;
 
     public:
 
@@ -119,8 +119,8 @@ namespace rw { namespace sensor {
         //! CameraModelCache that define data to store in the State
         class CameraModelCache: public rw::kinematics::StateCache {
             public:
-            typedef rw::common::Ptr<CameraModelCache> Ptr;
-            rw::common::Ptr<rw::sensor::Image> _image;
+            typedef rw::core::Ptr<CameraModelCache> Ptr;
+            rw::core::Ptr<rw::sensor::Image> _image;
 
             //! constructor
             CameraModelCache()
@@ -135,10 +135,10 @@ namespace rw { namespace sensor {
             }
 
             //! @copydoc rw::kinematics::StateCache::clone
-            virtual rw::common::Ptr<StateCache> clone() const {
-                CameraModelCache::Ptr cache = rw::common::ownedPtr( new CameraModelCache(*this) );
+            virtual rw::core::Ptr<StateCache> clone() const {
+                CameraModelCache::Ptr cache = rw::core::ownedPtr( new CameraModelCache(*this) );
                 if(_image != NULL)
-                    cache->_image = rw::common::ownedPtr( new Image( *_image ));
+                    cache->_image = rw::core::ownedPtr( new Image( *_image ));
                 return cache;
             }
         };

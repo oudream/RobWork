@@ -32,7 +32,9 @@
 #include "LogVelocities.hpp"
 #include "LogValues.hpp"
 
-using namespace rw::common;
+using rw::common::InputArchive;
+using rw::common::OutputArchive;
+using namespace rw::core;
 using namespace rwsim::log;
 
 SimulatorLogEntry::SimulatorLogEntry(SimulatorLogScope* parent):
@@ -134,33 +136,33 @@ bool SimulatorLogEntry::Factory::hasEntryType(const std::string& entryType) {
 
 SimulatorLogEntry::Ptr SimulatorLogEntry::Factory::makeEntry(const std::string& entryType, SimulatorLogScope* parent) {
 	if (entryType == LogCollisionResult::getTypeID())
-		return ownedPtr(new LogCollisionResult(parent));
+		return rw::core::ownedPtr(new LogCollisionResult(parent));
 	else if (entryType == LogConstraintForceTorque::getTypeID())
-		return ownedPtr(new LogConstraintForceTorque(parent));
+		return rw::core::ownedPtr(new LogConstraintForceTorque(parent));
 	else if (entryType == LogConstraints::getTypeID())
-		return ownedPtr(new LogConstraints(parent));
+		return rw::core::ownedPtr(new LogConstraints(parent));
 	else if (entryType == LogContactForceTorque::getTypeID())
-		return ownedPtr(new LogContactForceTorque(parent));
+		return rw::core::ownedPtr(new LogContactForceTorque(parent));
 	else if (entryType == LogContactSet::getTypeID())
-		return ownedPtr(new LogContactSet(parent));
+		return rw::core::ownedPtr(new LogContactSet(parent));
 	else if (entryType == LogContactVelocities::getTypeID())
-		return ownedPtr(new LogContactVelocities(parent));
+		return rw::core::ownedPtr(new LogContactVelocities(parent));
 	else if (entryType == LogEquationSystem::getTypeID())
-		return ownedPtr(new LogEquationSystem(parent));
+		return rw::core::ownedPtr(new LogEquationSystem(parent));
 	else if (entryType == LogPositions::getTypeID())
-		return ownedPtr(new LogPositions(parent));
+		return rw::core::ownedPtr(new LogPositions(parent));
 	else if (entryType == LogVelocities::getTypeID())
-		return ownedPtr(new LogVelocities(parent));
+		return rw::core::ownedPtr(new LogVelocities(parent));
 	else if (entryType == LogMessage::getTypeID())
-		return ownedPtr(new LogMessage(parent));
+		return rw::core::ownedPtr(new LogMessage(parent));
 	else if (entryType == LogValues::getTypeID())
-		return ownedPtr(new LogValues(parent));
+		return rw::core::ownedPtr(new LogValues(parent));
 
 	SimulatorLogEntry::Factory factory;
 	std::vector<Extension::Ptr> exts = factory.getExtensions();
 	for(Extension::Ptr ext : exts) {
 		if(ext->getProperties().get("entryType",ext->getName() ) == entryType){
-			const rw::common::Ptr<const SimulatorLogEntry> base = ext->getObject().cast<const SimulatorLogEntry>();
+			const rw::core::Ptr<const SimulatorLogEntry> base = ext->getObject().cast<const SimulatorLogEntry>();
 			return base->createNew(parent);
 		}
 	}

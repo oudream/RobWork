@@ -122,7 +122,7 @@ JointControlDialog::JointControlDialog(
     setWindowTitle(tr("Joint Control"));
 }
 
-CurTab::CurTab(rw::common::Ptr<rwlibs::control::JointController> jcontroller, QWidget *parent):
+CurTab::CurTab(rw::core::Ptr<rwlibs::control::JointController> jcontroller, QWidget *parent):
 		QWidget(parent)
 {
 	if( !(jcontroller->getControlModes() & rwlibs::control::JointController::CURRENT) )

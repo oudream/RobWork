@@ -19,14 +19,15 @@
 
 #include <iostream>
 #include <rw/common/Timer.hpp>
-#include <rw/common/Ptr.hpp>
-#include <rw/common/Event.hpp>
+#include <rw/core/Ptr.hpp>
+#include <rw/core/Event.hpp>
 #include <boost/any.hpp>
 #include <boost/function.hpp>
 #include <boost/bind.hpp>
 
 
 using namespace rw::common;
+using namespace rw::core;
 
 class A {
 public:
@@ -35,7 +36,7 @@ public:
     }
 };
 
-typedef rw::common::Ptr<A> APtr;
+typedef rw::core::Ptr<A> APtr;
 
 class B: public A {
 public:
@@ -43,7 +44,7 @@ public:
         std::cout << "B" << std::endl;
     }
 };
-typedef rw::common::Ptr<B> BPtr;
+typedef rw::core::Ptr<B> BPtr;
 
 BOOST_AUTO_TEST_CASE( PtrTest )
 {
@@ -77,7 +78,7 @@ BOOST_AUTO_TEST_CASE( TimerTest )
 
 
 typedef boost::function<void(const std::string&, boost::any)> GenericAnyEventListener;
-typedef rw::common::Event<GenericAnyEventListener, const std::string&, boost::any> GenericAnyEvent;
+typedef rw::core::Event<GenericAnyEventListener, const std::string&, boost::any> GenericAnyEvent;
 
 namespace {
 	bool b1,b2;

@@ -25,6 +25,7 @@
  */
 
 #include <rw/trajectory/Path.hpp>
+#include <rw/core/Ptr.hpp>
 
 // Forward declarations
 namespace rw { namespace trajectory { template <class T> class Timed; }}
@@ -50,7 +51,7 @@ class AssemblyState;
 class AssemblyResult {
 public:
 	//! @brief smart pointer type to this class
-    typedef rw::common::Ptr<AssemblyResult> Ptr;
+    typedef rw::core::Ptr<AssemblyResult> Ptr;
 
 	//! @brief Different error codes.
 	typedef enum Error {
@@ -66,7 +67,7 @@ public:
 	 * @brief Construct result from a CartesianTask representation.
 	 * @param task [in] the CartesianTask to construct result from.
 	 */
-	AssemblyResult(rw::common::Ptr<rwlibs::task::CartesianTask> task);
+	AssemblyResult(rw::core::Ptr<rwlibs::task::CartesianTask> task);
 
     //! @brief Destructor.
 	virtual ~AssemblyResult();
@@ -81,7 +82,7 @@ public:
 	 * @brief Convert to the CartesianTask format.
 	 * @return a CartesianTask representing the AssemblyResult.
 	 */
-	rw::common::Ptr<rwlibs::task::CartesianTask> toCartesianTask();
+	rw::core::Ptr<rwlibs::task::CartesianTask> toCartesianTask();
 
 	/**
 	 * @brief Store a result to a file.

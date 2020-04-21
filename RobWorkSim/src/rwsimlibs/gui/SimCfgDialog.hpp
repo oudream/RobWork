@@ -8,7 +8,7 @@
 #ifndef SIMULATORCFGDIALOG_HPP_
 #define SIMULATORCFGDIALOG_HPP_
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include <QObject>
 #include <QDialog>
@@ -24,7 +24,7 @@ class SimCfgDialog : public QDialog
         Q_OBJECT
 
     public:
-        SimCfgDialog(rw::common::Ptr<rwsim::simulator::DynamicSimulator> sim, QWidget *parent = 0);
+        SimCfgDialog(rw::core::Ptr<rwsim::simulator::DynamicSimulator> sim, QWidget *parent = 0);
 
     private slots:
         void btnPressed();

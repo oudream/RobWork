@@ -20,7 +20,7 @@
 
 #include <rw/geometry/PointCloud.hpp>
 #include "SensorModel.hpp"
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 namespace rw {
 namespace sensor {
@@ -36,7 +36,7 @@ class Scanner25DModel: public SensorModel
 {
 public:
 	//! @brief smart pointer type to this class
-	typedef rw::common::Ptr<Scanner25DModel> Ptr;
+	typedef rw::core::Ptr<Scanner25DModel> Ptr;
 
     /**
      * @brief constructor
@@ -82,7 +82,7 @@ protected:
     //! cache object for storing relevant state information
     class Scanner25DModelCache: public rw::kinematics::StateCache {
 	public:
-		typedef rw::common::Ptr<Scanner25DModelCache> Ptr;
+		typedef rw::core::Ptr<Scanner25DModelCache> Ptr;
 		rw::geometry::PointCloud _cloud;
 		//! constructor
 		Scanner25DModelCache(int width, int height):
@@ -94,8 +94,8 @@ protected:
 		size_t size() const{ return _cloud.size()*sizeof( rw::geometry::PointCloud::point_type); };
 
 		//! @copydoc rw::kinematics::StateCache::clone
-		virtual rw::common::Ptr<StateCache> clone() const{
-			Scanner25DModelCache::Ptr cache = rw::common::ownedPtr( new Scanner25DModelCache(*this) );
+		virtual rw::core::Ptr<StateCache> clone() const{
+			Scanner25DModelCache::Ptr cache = rw::core::ownedPtr( new Scanner25DModelCache(*this) );
 			return cache;
 		};
 	};

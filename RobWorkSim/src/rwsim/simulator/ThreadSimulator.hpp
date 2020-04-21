@@ -34,7 +34,7 @@ namespace simulator {
 	class ThreadSimulator {
 	public:
 	    //! smart pointer type
-	    typedef rw::common::Ptr<ThreadSimulator> Ptr;
+	    typedef rw::core::Ptr<ThreadSimulator> Ptr;
 
 		/**
 		 * @brief constructor - using the default workcell state as starting state

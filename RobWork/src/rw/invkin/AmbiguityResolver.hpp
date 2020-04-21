@@ -47,7 +47,7 @@ public:
      * @param invkin [in] The inverse kinematics solver to obtain solutions from
      * @param device [in] the device for which to calculate inverse kinematics
      */
-	AmbiguityResolver(const InvKinSolver::Ptr& invkin, rw::common::Ptr<rw::models::JointDevice> device);
+	AmbiguityResolver(const InvKinSolver::Ptr& invkin, rw::core::Ptr<rw::models::JointDevice> device);
 
     /**
      * @brief Destructor
@@ -68,11 +68,11 @@ public:
     /**
      * @copydoc InvKinSolver::getTCP
      */
-    virtual rw::common::Ptr< const rw::kinematics::Frame > getTCP() const;            
+    virtual rw::core::Ptr< const rw::kinematics::Frame > getTCP() const;            
 
 private:
 	InvKinSolver::Ptr _invkin;
-	rw::common::Ptr<rw::models::Device> _device;
+	rw::core::Ptr<rw::models::Device> _device;
     std::vector<size_t> _indices;
     rw::math::Q _lower;
     rw::math::Q _upper;

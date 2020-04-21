@@ -22,7 +22,8 @@
 #include <rwsim/simulator/ThreadSimulator.hpp>
 
 #include <rw/common/TimerUtil.hpp>
-#include <rw/common/Ptr.hpp>
+#include <rw/core/StringUtil.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/proximity/CollisionDetector.hpp>
 #include <rw/graspplanning/GraspTable.hpp>
 #include <rwsim/sensor/TactileArraySensor.hpp>
@@ -35,6 +36,7 @@ using namespace rwsim::sensor;
 using namespace rw::math;
 using namespace rw::kinematics;
 using namespace rw::common;
+using namespace rw::core;
 using namespace rw::proximity;
 using namespace rw::trajectory;
 using namespace rw::graspplanning;
@@ -60,7 +62,7 @@ namespace {
 
 	    std::string file = filename.toStdString();
 	    if (!file.empty())
-	        previousOpenDirectory = rw::common::StringUtil::getDirectoryName(file);
+	        previousOpenDirectory = rw::core::StringUtil::getDirectoryName(file);
 
 	    return file;
 	}

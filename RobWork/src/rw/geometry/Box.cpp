@@ -17,22 +17,13 @@
 
 #include "Box.hpp"
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include "PlainTriMesh.hpp"
 
 using namespace rw::geometry;
 using namespace rw::math;
-using namespace rw::common;
-/*
-namespace
-{
-	std::string toString(double dx, double dy, double dz){
-		std::stringstream str;
-		str << "Box " << dx << " " << dy << " " << dz;
-		return str.str();
- 	}
-}
-*/
+using namespace rw::core;
+
 Box::Box(const rw::math::Q& initQ){
 	setParameters(initQ);
 }

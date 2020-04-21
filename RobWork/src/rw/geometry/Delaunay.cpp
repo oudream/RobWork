@@ -25,7 +25,7 @@ extern "C" {
 
 #include <boost/numeric/conversion/cast.hpp>
 
-using rw::common::ownedPtr;
+using rw::core::ownedPtr;
 using namespace rw::math;
 using namespace rw::geometry;
 
@@ -94,13 +94,13 @@ namespace {
         typedef typename Mesh::TriangleArray TriangleArray;
 
         // Add vertices
-        const rw::common::Ptr<VertexArray> meshV = ownedPtr(new VertexArray(hullVertices.size()));
+        const rw::core::Ptr<VertexArray> meshV = ownedPtr(new VertexArray(hullVertices.size()));
         for(size_t i = 0; i < hullVertices.size(); i++) {
             (*meshV)[i] = Vector3D<>(hullVertices[i][0], hullVertices[i][1], (values.size() == hullVertices.size()) ? values[i] : 0);
         }
 
         // Add triangles
-        const rw::common::Ptr<TriangleArray> meshTri = ownedPtr(new TriangleArray(faceIdxs.size()/3));
+        const rw::core::Ptr<TriangleArray> meshTri = ownedPtr(new TriangleArray(faceIdxs.size()/3));
         for(size_t i = 0; i < faceIdxs.size()/3; i++) {
             const typename Mesh::tri_type tempTri(faceIdxs[i*3+0], faceIdxs[i*3+1], faceIdxs[i*3+2]);
             const Vector3D<>& v1 = (*meshV)[tempTri[0]];

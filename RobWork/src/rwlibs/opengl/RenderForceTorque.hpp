@@ -25,8 +25,8 @@
  */
 
 #include <rwlibs/os/rwgl.hpp>
-
 #include <rw/graphics/Render.hpp>
+#include <rw/core/Ptr.hpp>
 
 namespace rwlibs {
 namespace opengl {
@@ -40,7 +40,7 @@ class RenderForceTorque : public rw::graphics::Render
 {
 public:
 	//! @brief smart pointer type to this class
-	typedef rw::common::Ptr<RenderForceTorque> Ptr;
+	typedef rw::core::Ptr<RenderForceTorque> Ptr;
 
 	//! @brief Constructs a RenderForceTorque
 	RenderForceTorque();

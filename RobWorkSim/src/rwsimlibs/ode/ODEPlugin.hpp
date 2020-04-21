@@ -18,7 +18,7 @@
 #ifndef RWSIM_SIMULATOR_ODEPLUGIN_HPP_
 #define RWSIM_SIMULATOR_ODEPLUGIN_HPP_
 
-#include <rw/common/Plugin.hpp>
+#include <rw/core/Plugin.hpp>
 
 namespace rwsim {
 namespace simulator {
@@ -26,7 +26,7 @@ namespace simulator {
 /**
  * @brief A ODE plugin that define extensions for rwsim.simulator.PhysicsEngine
  */
-class ODEPlugin: public rw::common::Plugin {
+class ODEPlugin: public rw::core::Plugin {
 public:
 
     /**
@@ -37,11 +37,11 @@ public:
     //! destructor
     virtual ~ODEPlugin();
 
-    //! @copydoc rw::common::Plugin::getExtensionDescriptors
-    std::vector<rw::common::Extension::Descriptor> getExtensionDescriptors();
+    //! @copydoc rw::core::Plugin::getExtensionDescriptors
+    std::vector<rw::core::Extension::Descriptor> getExtensionDescriptors();
 
-    //! @copydoc rw::common::Plugin::makeExtension
-    rw::common::Ptr<rw::common::Extension> makeExtension(const std::string& str);
+    //! @copydoc rw::core::Plugin::makeExtension
+    rw::core::Ptr<rw::core::Extension> makeExtension(const std::string& str);
 
 };
 

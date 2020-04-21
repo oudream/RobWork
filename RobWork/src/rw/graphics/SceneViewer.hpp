@@ -7,7 +7,8 @@
 #include "SceneGraph.hpp"
 #include "SceneCamera.hpp"
 
-#include <rw/common/PropertyMap.hpp>
+#include <rw/core/PropertyMap.hpp>
+#include <rw/core/Event.hpp>
 
 namespace rw {
 namespace graphics {
@@ -20,7 +21,7 @@ namespace graphics {
     class SceneViewer {
     public:
         //! @brief smart pointer type to this class
-        typedef rw::common::Ptr<SceneViewer> Ptr;
+        typedef rw::core::Ptr<SceneViewer> Ptr;
 
         //! @brief Constructor.
         SceneViewer(){}
@@ -38,7 +39,7 @@ namespace graphics {
         virtual void setLogo(const std::string& string) = 0;
 
         //! @brief get propertymap
-        virtual rw::common::PropertyMap& getPropertyMap() = 0;
+        virtual rw::core::PropertyMap& getPropertyMap() = 0;
 
 
         //! @brief Update the view.
@@ -60,7 +61,7 @@ namespace graphics {
          * @brief Set the WorkCell scene.
          * @param wcscene [in] the workcell scene.
          */
-        virtual void setWorkCellScene(rw::common::Ptr<class WorkCellScene> wcscene) { _wcscene = wcscene; }
+        virtual void setWorkCellScene(rw::core::Ptr<class WorkCellScene> wcscene) { _wcscene = wcscene; }
 
         /**
          * @brief Get the world node.
@@ -86,7 +87,7 @@ namespace graphics {
         //// ---------------- View functions
         struct View {
         	//! @brief Smart pointer for a View.
-            typedef rw::common::Ptr<View> Ptr;
+            typedef rw::core::Ptr<View> Ptr;
 
             /**
              * @brief Construct new view.
@@ -214,7 +215,7 @@ namespace graphics {
         /**
          * @brief Defines event for PositionChanged.
          */
-        typedef rw::common::Event<PositionSelectedListener, const rw::math::Vector3D<>&> PositionSelectedEvent;
+        typedef rw::core::Event<PositionSelectedListener, const rw::math::Vector3D<>&> PositionSelectedEvent;
 
         /**
          * @brief Returns PositionChangedEvent object needed for subscription to and firing of event
@@ -255,7 +256,7 @@ namespace graphics {
         //! @brief Event for selection of a position.
         PositionSelectedEvent _positionSelectedEvent;
         //! @brief The WorkCell scene.
-        rw::common::Ptr<class WorkCellScene> _wcscene;
+        rw::core::Ptr<class WorkCellScene> _wcscene;
         
         //View::Ptr _mainView;
         //std::vector<View::Ptr> _views;

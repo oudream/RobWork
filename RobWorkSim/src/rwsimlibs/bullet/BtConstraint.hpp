@@ -24,7 +24,7 @@
  * \copydoc rwsimlibs::bullet::BtConstraint
  */
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/math/Vector3D.hpp>
 
 // Forward declarations
@@ -59,7 +59,7 @@ public:
 	 * @param child [in] the child Bullet body.
 	 * @param btWorld [in] the Bullet world that this constraint should belong to.
 	 */
-	BtConstraint(rw::common::Ptr<const rwsim::dynamics::Constraint> constraint, const BtBody* const parent, const BtBody* const child, btDynamicsWorld* btWorld);
+	BtConstraint(rw::core::Ptr<const rwsim::dynamics::Constraint> constraint, const BtBody* const parent, const BtBody* const child, btDynamicsWorld* btWorld);
 
 	//! @brief Destructor.
 	virtual ~BtConstraint();
@@ -74,7 +74,7 @@ public:
 	 * @brief Get the RobWork constraint.
 	 * @return a pointer to a constant Constraint object.
 	 */
-	rw::common::Ptr<const rwsim::dynamics::Constraint> getRWConstraint() const;
+	rw::core::Ptr<const rwsim::dynamics::Constraint> getRWConstraint() const;
 
 	/**
 	 * @brief Get the Bullet parent body.
@@ -124,7 +124,7 @@ private:
 	void destroyJoint();
 
 private:
-	const rw::common::Ptr<const rwsim::dynamics::Constraint> _rwConstraint;
+	const rw::core::Ptr<const rwsim::dynamics::Constraint> _rwConstraint;
 	const BtBody* const _parent;
 	const BtBody* const _child;
     btDynamicsWorld* const _btDynamicsWorld;

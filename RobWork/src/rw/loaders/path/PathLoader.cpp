@@ -22,9 +22,9 @@
 #include <rw/models/WorkCell.hpp>
 #include <rw/kinematics/Frame.hpp>
 #include <rw/kinematics/State.hpp>
-#include <rw/common/macros.hpp>
-#include <rw/common/StringUtil.hpp>
-#include <rw/common/IOUtil.hpp>
+#include <rw/core/macros.hpp>
+#include <rw/core/StringUtil.hpp>
+#include <rw/core/IOUtil.hpp>
 #include <rw/trajectory/TimedUtil.hpp>
 
 #include <fstream>
@@ -32,7 +32,7 @@
 using namespace rw::math;
 using namespace rw::loaders;
 using namespace rw::models;
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::kinematics;
 using namespace rw::trajectory;
 

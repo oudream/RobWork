@@ -30,7 +30,6 @@
 namespace rw { namespace kinematics { class State; } }
 
 using namespace rw::math;
-using namespace rw::common;
 using namespace rw::models;
 using namespace rw::kinematics;
 using namespace rw::invkin;

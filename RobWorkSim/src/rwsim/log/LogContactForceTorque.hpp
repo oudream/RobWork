@@ -25,6 +25,7 @@
  */
 
 #include "LogForceTorque.hpp"
+#include <rw/core/Ptr.hpp>
 
 namespace rwsim {
 namespace log {
@@ -40,7 +41,7 @@ class LogContactSet;
 class LogContactForceTorque: public LogForceTorque {
 public:
     //! Smart pointer type of LogContactForceTorque
-    typedef rw::common::Ptr<LogContactForceTorque> Ptr;
+    typedef rw::core::Ptr<LogContactForceTorque> Ptr;
 
     //! @copydoc SimulatorLogEntry::SimulatorLogEntry
     LogContactForceTorque(SimulatorLogScope* parent);
@@ -91,10 +92,10 @@ public:
 	 *
 	 * @return the log entry with positions of contacts (or NULL if not linked).
 	 */
-	rw::common::Ptr<LogContactSet> getContacts() const;
+	rw::core::Ptr<LogContactSet> getContacts() const;
 
 private:
-	rw::common::Ptr<LogContactSet> _contacts;
+	rw::core::Ptr<LogContactSet> _contacts;
 	const std::string _emptyStr;
 };
 //! @}

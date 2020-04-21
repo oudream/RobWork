@@ -24,6 +24,7 @@
  */
 
 #include <rw/sensor/Image.hpp>
+#include <rw/core/Ptr.hpp>
 
 namespace rw { namespace kinematics { class Frame; } }
 namespace rw { namespace kinematics { class State; } }
@@ -40,7 +41,7 @@ namespace rwlibs { namespace simulation {
     {
     public:
     	//! @brief Smart pointer type for FrameGrabber.
-        typedef rw::common::Ptr<FrameGrabber> Ptr;
+        typedef rw::core::Ptr<FrameGrabber> Ptr;
 
         /**
          * @brief constructor

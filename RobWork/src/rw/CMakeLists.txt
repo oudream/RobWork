@@ -55,7 +55,8 @@ if(build)
     list(APPEND RW_LIB_FILES_HPP ${SRC_FILES_HPP})
 
     rw_add_library(${SUBSYS_NAME} ${RW_LIB_FILES_CPP} ${RW_LIB_FILES_HPP})
-    target_link_libraries(${SUBSYS_NAME} PUBLIC ${Boost_LIBRARIES})
+    target_link_libraries(${SUBSYS_NAME} PUBLIC ${Boost_LIBRARIES} sdurw_core)
+
     if(RW_HAVE_XERCES)
         target_link_libraries(${SUBSYS_NAME} PUBLIC ${XERCESC_LIBRARIES})
     endif()
@@ -64,6 +65,7 @@ if(build)
     endif()
 
     target_link_libraries(${SUBSYS_NAME} PRIVATE ${QHULL_LIBRARIES} ${CMAKE_DL_LIBS})
+
     target_include_directories(${SUBSYS_NAME}
         PUBLIC
         $<BUILD_INTERFACE:${EIGEN3_INCLUDE_DIR}>
@@ -72,6 +74,7 @@ if(build)
         $<BUILD_INTERFACE:${PQP_INCLUDE_DIR}>
         $<BUILD_INTERFACE:${RW_ROOT}/src> $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
     )
+    
     if(RW_ENABLE_INTERNAL_PQP_TARGET)
         target_include_directories(${SUBSYS_NAME} PUBLIC $<INSTALL_INTERFACE:${RW_EXT_INSTALL_DIR}/rwpqp>)
     else()

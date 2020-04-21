@@ -24,7 +24,7 @@
  * \copydoc rw::geometry::HyperSphere
  */
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include <Eigen/Core>
 
@@ -51,7 +51,7 @@ namespace geometry {
 class HyperSphere {
 public:
 	//! @brief Smart pointer type for HyperSphere.
-	typedef rw::common::Ptr<const HyperSphere> Ptr;
+	typedef rw::core::Ptr<const HyperSphere> Ptr;
 
 	/**
 	 * @brief Construct a hyper-sphere of unit size.

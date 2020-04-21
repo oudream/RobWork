@@ -25,6 +25,7 @@
  */
 
 #include "Mathematica.hpp"
+#include <rw/core/Ptr.hpp>
 
 namespace rwlibs {
 namespace mathematica {
@@ -35,7 +36,7 @@ namespace mathematica {
 class ToExpression: public Mathematica::FunctionBase {
 public:
 	//! @brief Smart pointer type.
-	typedef rw::common::Ptr<ToExpression> Ptr;
+	typedef rw::core::Ptr<ToExpression> Ptr;
 
 	/**
 	 * @brief Get expression from a string.
@@ -59,13 +60,13 @@ public:
 	virtual ~ToExpression();
 
 	//! @copydoc Mathematica::FunctionBase::getArguments
-	std::list<rw::common::Ptr<const Mathematica::Expression> > getArguments() const;
+	std::list<rw::core::Ptr<const Mathematica::Expression> > getArguments() const;
 
 	//! @copydoc Mathematica::Expression::clone
 	Mathematica::Expression::Ptr clone() const;
 
 private:
-	rw::common::Ptr<Mathematica::String> _expression;
+	rw::core::Ptr<Mathematica::String> _expression;
 };
 //! @}
 } /* namespace mathematica */

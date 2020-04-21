@@ -26,7 +26,8 @@
 
 #include "ui_ATaskVisPlugin.h"
 #include <rws/RobWorkStudioPlugin.hpp>
-
+#include <rw/core/PropertyMap.hpp>
+#include <rw/core/Ptr.hpp>
 #include <boost/any.hpp>
 
 // Forward declarations
@@ -96,20 +97,20 @@ private:
     void selectTask(std::size_t i);
     void selectResult(std::size_t i);
     void constructPlayback();
-    rw::common::PropertyMap& settings();
+    rw::core::PropertyMap& settings();
 
 private:
     rw::models::WorkCell* _wc;
     PropertyViewEditor* _editor;
-    std::vector<rw::common::Ptr<rwlibs::assembly::AssemblyTask> > _tasks;
-    std::vector<rw::common::Ptr<rwlibs::assembly::AssemblyResult> > _results;
-    rw::common::Ptr<rwlibs::assembly::AssemblyTask> _currentTask;
-    rw::common::Ptr<rwlibs::assembly::AssemblyResult> _currentResult;
+    std::vector<rw::core::Ptr<rwlibs::assembly::AssemblyTask> > _tasks;
+    std::vector<rw::core::Ptr<rwlibs::assembly::AssemblyResult> > _results;
+    rw::core::Ptr<rwlibs::assembly::AssemblyTask> _currentTask;
+    rw::core::Ptr<rwlibs::assembly::AssemblyResult> _currentResult;
     bool _showReal;
-    rw::common::Ptr<rwlibs::opengl::RenderForceTorque> _maleFTrender;
-    rw::common::Ptr<rwlibs::opengl::RenderForceTorque> _femaleFTrender;
-    rw::common::Ptr<rwlibs::opengl::RenderPointCloud> _contactPointRender;
-    rw::common::Ptr<rwlibs::opengl::RenderLines> _contactNormalRender;
+    rw::core::Ptr<rwlibs::opengl::RenderForceTorque> _maleFTrender;
+    rw::core::Ptr<rwlibs::opengl::RenderForceTorque> _femaleFTrender;
+    rw::core::Ptr<rwlibs::opengl::RenderPointCloud> _contactPointRender;
+    rw::core::Ptr<rwlibs::opengl::RenderLines> _contactNormalRender;
 };
 //! @}
 } /* namespace rwslibs */

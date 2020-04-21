@@ -18,13 +18,14 @@
 #include "TaskLoader.hpp"
 #include <RobWorkConfig.hpp>
 #include "DOMTaskLoader.hpp"
+#include <rw/core/Extension.hpp>
 #ifdef RW_HAVE_XERCES
 #include "XMLTaskLoader.hpp"
 #endif
 
-#include <rw/common/StringUtil.hpp>
+#include <rw/core/StringUtil.hpp>
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rwlibs::task;
 
 TaskLoader::Ptr TaskLoader::Factory::getTaskLoader(const std::string& format, const std::string& id) {
@@ -42,12 +43,12 @@ TaskLoader::Ptr TaskLoader::Factory::getTaskLoader(const std::string& format, co
 	}
 	if(StringUtil::toLower(format) == "xml") {
 		if (id.empty())
-			return rw::common::ownedPtr( new DOMTaskLoader() );
+			return rw::core::ownedPtr( new DOMTaskLoader() );
 		else if (StringUtil::toUpper(id) == "DOM")
-			return rw::common::ownedPtr( new DOMTaskLoader() );
+			return rw::core::ownedPtr( new DOMTaskLoader() );
 #ifdef RW_HAVE_XERCES
 		else if (StringUtil::toUpper(id) == "XERCES")
-			return rw::common::ownedPtr( new DOMTaskLoader() );
+			return rw::core::ownedPtr( new DOMTaskLoader() );
 #endif
 	}
 	return NULL;

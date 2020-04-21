@@ -81,11 +81,11 @@ namespace proximity {
 
 		void setRayFrame(rw::kinematics::Frame* rayframe);
 
-		void add(rw::common::Ptr<rw::geometry::Geometry> geom);
+		void add(rw::core::Ptr<rw::geometry::Geometry> geom);
 
-		void add(rw::common::Ptr<rw::models::Object> object);
+		void add(rw::core::Ptr<rw::models::Object> object);
 
-		void add(rw::common::Ptr<rw::models::WorkCell> wc);
+		void add(rw::core::Ptr<rw::models::WorkCell> wc);
 
 		/**
 		 * @brief shoots a ray in the direction of the vector \b direction starting from
@@ -109,7 +109,7 @@ namespace proximity {
 
 		//rw::proximity::CollisionDetectorPtr _detector;
 		std::vector<rw::kinematics::Frame*> _frames;
-		rw::common::Ptr<rw::proximity::CollisionStrategy> _cdstrategy;
+		rw::core::Ptr<rw::proximity::CollisionStrategy> _cdstrategy;
 		rw::geometry::PlainTriMeshF::Ptr _ray;
 		rw::kinematics::Frame *_rayFrame;
 

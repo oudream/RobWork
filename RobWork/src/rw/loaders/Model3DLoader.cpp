@@ -1,9 +1,10 @@
 #include "Model3DLoader.hpp"
+#include <rw/core/Extension.hpp>
 
 using namespace rw::loaders;
+using namespace rw::core;
 
-rw::common::Ptr<Model3DLoader> Model3DLoader::Factory::getModel3DLoader(const std::string& format){
-	using namespace rw::common;
+rw::core::Ptr<Model3DLoader> Model3DLoader::Factory::getModel3DLoader(const std::string& format){
 	Model3DLoader::Factory ep;
 	std::vector<Extension::Ptr> exts = ep.getExtensions();
 	for(Extension::Ptr ext : exts) {
@@ -19,7 +20,6 @@ rw::common::Ptr<Model3DLoader> Model3DLoader::Factory::getModel3DLoader(const st
 }
 
 bool Model3DLoader::Factory::hasModel3DLoader(const std::string& format){
-	using namespace rw::common;
 	Model3DLoader::Factory ep;
 	std::vector<Extension::Descriptor> exts = ep.getExtensionDescriptors();
 	for(Extension::Descriptor& ext : exts) {

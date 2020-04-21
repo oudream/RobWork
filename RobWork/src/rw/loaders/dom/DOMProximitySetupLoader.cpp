@@ -17,13 +17,13 @@
 
 #include "DOMProximitySetupLoader.hpp"
 
-#include <rw/common/DOMElem.hpp>
-#include <rw/common/DOMParser.hpp>
+#include <rw/core/DOMElem.hpp>
+#include <rw/core/DOMParser.hpp>
 
 
 #include <iostream>
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::loaders;
 using namespace rw::proximity;
 

@@ -31,6 +31,7 @@
 #include <QItemSelection>
 
 using namespace rw::common;
+using namespace rw::core;
 using namespace rw::geometry;
 using namespace rw::graphics;
 using namespace rw::math;
@@ -39,7 +40,7 @@ using namespace rwsim::dynamics;
 using namespace rwsim::log;
 using namespace rwsimlibs::gui;
 
-BodyMotionWidget::BodyMotionWidget(rw::common::Ptr<const LogPositions> entry, QWidget* parent):
+BodyMotionWidget::BodyMotionWidget(rw::core::Ptr<const LogPositions> entry, QWidget* parent):
 	SimulatorLogEntryWidget(parent),
 	_ui(new Ui::BodyMotionWidget()),
 	_dwc(NULL),
@@ -54,7 +55,7 @@ BodyMotionWidget::BodyMotionWidget(rw::common::Ptr<const LogPositions> entry, QW
 			this, SLOT(motionBodiesChanged(const QItemSelection &, const QItemSelection &)));
 }
 
-BodyMotionWidget::BodyMotionWidget(rw::common::Ptr<const LogVelocities> entry, QWidget* parent):
+BodyMotionWidget::BodyMotionWidget(rw::core::Ptr<const LogVelocities> entry, QWidget* parent):
 	SimulatorLogEntryWidget(parent),
 	_ui(new Ui::BodyMotionWidget()),
 	_dwc(NULL),
@@ -80,13 +81,13 @@ BodyMotionWidget::~BodyMotionWidget() {
 	}
 }
 
-void BodyMotionWidget::setDWC(rw::common::Ptr<const DynamicWorkCell> dwc) {
+void BodyMotionWidget::setDWC(rw::core::Ptr<const DynamicWorkCell> dwc) {
 	_dwc = dwc;
 }
 
-void BodyMotionWidget::setEntry(rw::common::Ptr<const SimulatorLog> entry) {
-	const rw::common::Ptr<const LogPositions> pos = entry.cast<const LogPositions>();
-	const rw::common::Ptr<const LogVelocities> vel = entry.cast<const LogVelocities>();
+void BodyMotionWidget::setEntry(rw::core::Ptr<const SimulatorLog> entry) {
+	const rw::core::Ptr<const LogPositions> pos = entry.cast<const LogPositions>();
+	const rw::core::Ptr<const LogVelocities> vel = entry.cast<const LogVelocities>();
 	if (!(pos == NULL)) {
 		_positions = pos;
 	} else if (!(vel == NULL)) {
@@ -97,7 +98,7 @@ void BodyMotionWidget::setEntry(rw::common::Ptr<const SimulatorLog> entry) {
 	}
 }
 
-rw::common::Ptr<const SimulatorLog> BodyMotionWidget::getEntry() const {
+rw::core::Ptr<const SimulatorLog> BodyMotionWidget::getEntry() const {
 	if (!(_velocities == NULL))
 		return _velocities;
 	else if (!(_positions == NULL))
@@ -195,7 +196,7 @@ std::string BodyMotionWidget::getName() const {
 	return "Motion";
 }
 
-void BodyMotionWidget::setProperties(rw::common::Ptr<rw::common::PropertyMap> properties) {
+void BodyMotionWidget::setProperties(rw::core::Ptr<rw::core::PropertyMap> properties) {
 	SimulatorLogEntryWidget::setProperties(properties);
 	if (!_properties.isNull()) {
 		if (!_properties->has("BodyMotionWidget_LinA"))
@@ -318,9 +319,9 @@ BodyMotionWidget::Dispatcher::Dispatcher() {
 BodyMotionWidget::Dispatcher::~Dispatcher() {
 }
 
-SimulatorLogEntryWidget* BodyMotionWidget::Dispatcher::makeWidget(rw::common::Ptr<const SimulatorLog> entry, QWidget* parent) const {
-	rw::common::Ptr<const LogPositions> const pos = entry.cast<const LogPositions>();
-	rw::common::Ptr<const LogVelocities> const vel = entry.cast<const LogVelocities>();
+SimulatorLogEntryWidget* BodyMotionWidget::Dispatcher::makeWidget(rw::core::Ptr<const SimulatorLog> entry, QWidget* parent) const {
+	rw::core::Ptr<const LogPositions> const pos = entry.cast<const LogPositions>();
+	rw::core::Ptr<const LogVelocities> const vel = entry.cast<const LogVelocities>();
 	if (!(pos == NULL))
 		return new BodyMotionWidget(pos, parent);
 	else if (!(vel == NULL))
@@ -329,7 +330,7 @@ SimulatorLogEntryWidget* BodyMotionWidget::Dispatcher::makeWidget(rw::common::Pt
 	return NULL;
 }
 
-bool BodyMotionWidget::Dispatcher::accepts(rw::common::Ptr<const SimulatorLog> entry) const {
+bool BodyMotionWidget::Dispatcher::accepts(rw::core::Ptr<const SimulatorLog> entry) const {
 	if (!(entry.cast<const LogPositions>() == NULL))
 		return true;
 	else if (!(entry.cast<const LogVelocities>() == NULL))

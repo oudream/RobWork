@@ -1,7 +1,7 @@
 #ifndef __ANIMAL_HPP
 #define __ANIMAL_HPP
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 
 
@@ -10,7 +10,7 @@ namespace animals {
 class Animal {
 public:
 
-	typedef rw::common::Ptr<Animal> Ptr;
+	typedef rw::core::Ptr<Animal> Ptr;
 	
 public:
 

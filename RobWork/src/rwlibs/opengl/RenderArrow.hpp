@@ -26,6 +26,7 @@
 #include <rwlibs/os/rwgl.hpp>
 
 #include <rw/graphics/Render.hpp>
+#include <rw/core/Ptr.hpp>
 
 namespace rwlibs { namespace opengl {
 
@@ -42,7 +43,7 @@ namespace rwlibs { namespace opengl {
         mutable GLUquadricObj *_quadratic;
     public:
         //! @brief smart pointer type to this class
-        typedef rw::common::Ptr<RenderArrow> Ptr;
+        typedef rw::core::Ptr<RenderArrow> Ptr;
 
         /**
          * @brief Constructs a RenderFrame

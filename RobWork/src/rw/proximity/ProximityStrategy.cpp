@@ -19,15 +19,14 @@
 #include <rw/proximity/rwstrategy/ProximityStrategyRW.hpp>
 
 #include <vector>
-//#include <rw/common/macros.hpp>
-//#include <rw/common/Exception.hpp>
+#include <rw/core/Extension.hpp>
 #include <rw/models/Object.hpp>
 #include <rw/models/RigidObject.hpp>
 
 using namespace rw::proximity;
 using namespace rw::kinematics;
 using namespace rw::geometry;
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::models;
 
 ProximityStrategy::ProximityStrategy () : _frameToModel (NULL, 100)
@@ -165,7 +164,7 @@ ProximityStrategy::Ptr ProximityStrategy::Factory::makeStrategy (const std::stri
     return NULL;
 }
 
-std::vector< rw::common::Ptr< rw::geometry::Geometry > > ProximityStrategy::getGeometrys (rw::proximity::ProximityModel* model){
+std::vector< rw::core::Ptr< rw::geometry::Geometry > > ProximityStrategy::getGeometrys (rw::proximity::ProximityModel* model){
     RW_THROW("This Is a Virtual Function and needs to be replaced when Inherited");
-    return std::vector< rw::common::Ptr< rw::geometry::Geometry > >();
+    return std::vector< rw::core::Ptr< rw::geometry::Geometry > >();
 }

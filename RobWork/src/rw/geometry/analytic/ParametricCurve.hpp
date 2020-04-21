@@ -26,7 +26,7 @@
 
 #include "Curve.hpp"
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/geometry/OBB.hpp>
 #include <rw/math/Vector3D.hpp>
 
@@ -44,10 +44,10 @@ namespace geometry {
 class ParametricCurve: public Curve {
 public:
 	//! @brief Smart pointer type for ParametricCurve.
-	typedef rw::common::Ptr<ParametricCurve> Ptr;
+	typedef rw::core::Ptr<ParametricCurve> Ptr;
 
 	//! @brief Smart pointer type for a const ParametricCurve.
-	typedef rw::common::Ptr<const ParametricCurve> CPtr;
+	typedef rw::core::Ptr<const ParametricCurve> CPtr;
 
 	//! @brief Constructor.
 	ParametricCurve() {}

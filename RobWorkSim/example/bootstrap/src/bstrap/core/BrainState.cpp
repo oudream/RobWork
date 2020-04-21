@@ -18,11 +18,11 @@
 #ifndef BRAINSTATE_HPP_
 #define BRAINSTATE_HPP_
 
-#include <rw/common/PropertyMap.hpp>
+#include <rw/core/PropertyMap.hpp>
 
 class BrainState {
 public:
-    rw::common::PropertyMap _pmap;
+    rw::core::PropertyMap _pmap;
 
     bool equal(const BrainState& state){
         //TODO: implement comparison

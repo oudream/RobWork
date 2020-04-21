@@ -171,7 +171,7 @@ public:
 private:
     const rw::models::Device* _device;
 
-    rw::common::Ptr<rw::models::JacobianCalculator> _jacCalc;
+    rw::core::Ptr<rw::models::JacobianCalculator> _jacCalc;
     std::vector<rw::kinematics::Frame*> _foi; // frames of interest, end frames
     std::vector<boost::shared_ptr<rw::kinematics::FKRange> > _fkranges;
 

@@ -26,10 +26,10 @@
 
 #include <rw/loaders/Model3DFactory.hpp>
 
-#include <rw/common/StringUtil.hpp>
-#include <rw/common/IOUtil.hpp>
-#include <rw/common/macros.hpp>
-#include <rw/common/Ptr.hpp>
+#include <rw/core/StringUtil.hpp>
+#include <rw/core/IOUtil.hpp>
+#include <rw/core/macros.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include <rw/loaders/GeometryFactory.hpp>
 #include <rw/loaders/model3d/STLFile.hpp>
@@ -43,7 +43,7 @@
 using namespace rw;
 using namespace rwlibs::opengl;
 using namespace rw::loaders;
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::geometry;
 using namespace rw::graphics;
 
@@ -92,7 +92,7 @@ RWDrawablePtr DrawableFactory::constructFromGeometry(const std::string& str, con
     	if (getCache().isInCache(str,""))
     		return ownedPtr(new Drawable(getCache().get(str), name));
     }
-	rw::common::Ptr<Geometry> geometry = GeometryFactory::getGeometry(str);
+	rw::core::Ptr<Geometry> geometry = GeometryFactory::getGeometry(str);
     Render *render = new RenderGeometry(geometry);
 
     if( useCache ) {

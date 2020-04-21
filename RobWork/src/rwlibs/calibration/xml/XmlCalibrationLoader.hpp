@@ -20,6 +20,7 @@
 
 
 #include <rwlibs/calibration/WorkCellCalibration.hpp>
+#include <rw/core/Ptr.hpp>
 
 
 namespace rw { namespace models { class WorkCell; } }
@@ -42,7 +43,7 @@ namespace calibration {
 		* @param workcell [in] Workcell to which the calibration are associated
 		* @param filename [in] Name of the file to load
 		*/
-		static WorkCellCalibration::Ptr load(rw::common::Ptr<rw::models::WorkCell> workcell, std::string filename);
+		static WorkCellCalibration::Ptr load(rw::core::Ptr<rw::models::WorkCell> workcell, std::string filename);
 	};
 
 	/* @} */

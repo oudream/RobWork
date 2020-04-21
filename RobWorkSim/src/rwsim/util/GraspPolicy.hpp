@@ -18,8 +18,8 @@
 #ifndef RWSIM_UTIL_GRASPPOLICY_HPP_
 #define RWSIM_UTIL_GRASPPOLICY_HPP_
 
-#include <rw/common/PropertyMap.hpp>
-#include <rw/common/Ptr.hpp>
+#include <rw/core/PropertyMap.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rwlibs/simulation/SimulatedController.hpp>
 
 namespace rwsim {
@@ -38,7 +38,7 @@ namespace util {
     public:
 
         //! @brief smart pointer type of this object
-        typedef rw::common::Ptr<GraspPolicy> Ptr;
+        typedef rw::core::Ptr<GraspPolicy> Ptr;
 
         virtual void reset(const rw::kinematics::State& state) = 0;
 
@@ -46,7 +46,7 @@ namespace util {
 
         virtual std::string getIdentifier() = 0;
 
-        virtual rw::common::PropertyMap getSettings() = 0;
+        virtual rw::core::PropertyMap getSettings() = 0;
 
         virtual void applySettings() = 0;
 

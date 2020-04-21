@@ -18,7 +18,7 @@
 #ifndef RW_LOADERS_DOMPATHSAVER_HPP
 #define RW_LOADERS_DOMPATHSAVER_HPP
 
-#include <rw/common/DOMElem.hpp>
+#include <rw/core/DOMElem.hpp>
 
 #include <rw/trajectory/Path.hpp>
 #include <rw/trajectory/Timed.hpp>
@@ -47,7 +47,7 @@ public:
     /**
      * @brief Saves the rw::trajectory::QPath \b path to file
      *
-     * If an error occurs while saving a rw::common::Exception is thrown
+     * If an error occurs while saving a rw::core::Exception is thrown
      *
      * @param path [in] Path to save
      * @param filename [in] Target filename
@@ -57,7 +57,7 @@ public:
     /**
      * @brief Saves rw::trajectory::Vector3DPath \b path to file
      *
-     * If an error occurs while saving a rw::common::Exception is thrown
+     * If an error occurs while saving a rw::core::Exception is thrown
      *
      * @param path [in] Path to save
      * @param filename [in] Target filename
@@ -67,7 +67,7 @@ public:
     /**
      * @brief Saves rw::trajectory::Rotation3DPath \b path to file
      *
-     * If an error occurs while saving a rw::common::Exception is thrown
+     * If an error occurs while saving a rw::core::Exception is thrown
      *
      * @param path [in] Path to save
      * @param filename [in] Target filename
@@ -77,7 +77,7 @@ public:
     /**
      * @brief Saves rw::trajectory::Transform3DPath \b path to file
      *
-     * If an error occurs while saving a rw::common::Exception is thrown
+     * If an error occurs while saving a rw::core::Exception is thrown
      *
      * @param path [in] Path to save
      * @param filename [in] Target filename
@@ -87,7 +87,7 @@ public:
     /**
      * @brief Saves rw::trajectory::StatePath \b to file
      *
-     * If an error occurs while saving a rw::common::Exception is thrown
+     * If an error occurs while saving a rw::core::Exception is thrown
      *
      * @param path [in] Path to save
      * @param filename [in] Target filename
@@ -98,7 +98,7 @@ public:
     /**
      * @brief Saves rw::trajectory::TimedQPath \b to file
      *
-     * If an error occurs while saving a rw::common::Exception is thrown
+     * If an error occurs while saving a rw::core::Exception is thrown
      *
      * @param path [in] Path to save
      * @param filename [in] Target filename
@@ -108,7 +108,7 @@ public:
     /**
      * @brief Saves rw::trajectory::TimedStatePath \b to file
      *
-     * If an error occurs while saving a rw::common::Exception is thrown
+     * If an error occurs while saving a rw::core::Exception is thrown
      *
      * @param path [in] Path to save
      * @param filename [in] Target filename
@@ -120,7 +120,7 @@ public:
     /**
      * @brief Writes the rw::trajectory::QPath \b path to \b outstream
      *
-     * If an error occurs while saving a rw::common::Exception is thrown
+     * If an error occurs while saving a rw::core::Exception is thrown
      *
      * @param path [in] Path to save
      * @param outstream [in] Stream to write to
@@ -130,7 +130,7 @@ public:
     /**
      * @brief Writes rw::trajectory::Vector3DPath \b path to \b outstream
      *
-     * If an error occurs while saving a rw::common::Exception is thrown
+     * If an error occurs while saving a rw::core::Exception is thrown
      *
      * @param path [in] Path to save8
      * @param outstream [in] Stream to write to
@@ -140,7 +140,7 @@ public:
     /**
      * @brief Writes rw::trajectory::Rotation3DPath \b path to \b outstream
      *
-     * If an error occurs while saving a rw::common::Exception is thrown
+     * If an error occurs while saving a rw::core::Exception is thrown
      *
      * @param path [in] Path to save
      * @param outstream [in] Stream to write to
@@ -150,7 +150,7 @@ public:
     /**
      * @brief Writes rw::trajectory::Rotation3DPath \b path to \b outstream
      *
-     * If an error occurs while saving a rw::common::Exception is thrown
+     * If an error occurs while saving a rw::core::Exception is thrown
      *
      * @param path [in] Path to save
      * @param outstream [in] Stream to write to
@@ -160,7 +160,7 @@ public:
     /**
      * @brief Writes rw::trajectory::Rotation3DPath \b path to \b outstream
      *
-     * If an error occurs while saving a rw::common::Exception is thrown
+     * If an error occurs while saving a rw::core::Exception is thrown
      *
      * @param path [in] Path to save
      * @param outstream [in] Stream to write to
@@ -171,7 +171,7 @@ public:
     /**
      * @brief Writes rw::trajectory::Rotation3DPath \b path to \b outstream
      *
-     * If an error occurs while saving a rw::common::Exception is thrown
+     * If an error occurs while saving a rw::core::Exception is thrown
      *
      * @param path [in] Path to save
      * @param outstream [in] Stream to write to
@@ -181,7 +181,7 @@ public:
     /**
      * @brief Writes rw::trajectory::Rotation3DPath \b path to \b outstream
      *
-     * If an error occurs while saving a rw::common::Exception is thrown
+     * If an error occurs while saving a rw::core::Exception is thrown
      *
      * @param path [in] Path to save
      * @param outstream [in] Stream to write to
@@ -198,7 +198,7 @@ public:
      * @param doc [in] Document which should contain the element
      * @return Pointer to the newly created DOMElem
      */
-    static rw::common::DOMElem::Ptr createTransform3DPath(const rw::trajectory::Transform3DPath &path, rw::common::DOMElem::Ptr doc);
+    static rw::core::DOMElem::Ptr createTransform3DPath(const rw::trajectory::Transform3DPath &path, rw::core::DOMElem::Ptr doc);
 
     /**
      * @brief Creates a DOMElem to represent \b path
@@ -209,7 +209,7 @@ public:
      * @param doc [in] Document which should contain the element
      * @return Pointer to the newly created DOMElem
      */
-    static rw::common::DOMElem::Ptr createQPath(const rw::trajectory::QPath &path, rw::common::DOMElem::Ptr doc);
+    static rw::core::DOMElem::Ptr createQPath(const rw::trajectory::QPath &path, rw::core::DOMElem::Ptr doc);
 
 	/**
 	 * @brief Utility class which initializes local static variables.

@@ -126,7 +126,7 @@ namespace rwlibs { namespace simulation {
     /**
      * @brief Definition of pointer to SimulatedScanner2D
      */
-    typedef rw::common::Ptr<SimulatedScanner2D> SimulatedScanner2DPtr;
+    typedef rw::core::Ptr<SimulatedScanner2D> SimulatedScanner2DPtr;
 
     //! @}
 }

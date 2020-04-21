@@ -26,7 +26,7 @@
 
 #include <QTableWidget>
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/math/Vector3D.hpp>
 
 namespace rw { namespace graphics { class GroupNode; } }
@@ -61,7 +61,7 @@ public:
 	 * @param root [in] the node to add drawables to.
 	 * @param graph [in] the scene graph.
 	 */
-	virtual void showGraphics(rw::common::Ptr<rw::graphics::GroupNode> root, rw::common::Ptr<rw::graphics::SceneGraph> graph);
+	virtual void showGraphics(rw::core::Ptr<rw::graphics::GroupNode> root, rw::core::Ptr<rw::graphics::SceneGraph> graph);
 
 	//! @brief Select all contacts.
 	virtual void selectAll();
@@ -82,8 +82,8 @@ private:
 
 private:
 	std::vector<rwsim::contacts::Contact> _contacts;
-    rw::common::Ptr<rw::graphics::GroupNode> _root;
-    rw::common::Ptr<rw::graphics::SceneGraph> _graph;
+    rw::core::Ptr<rw::graphics::GroupNode> _root;
+    rw::core::Ptr<rw::graphics::SceneGraph> _graph;
 };
 
 QT_END_NAMESPACE

@@ -18,13 +18,13 @@
 #include "Tube.hpp"
 
 #include <rw/math/Constants.hpp>
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 #include "PlainTriMesh.hpp"
 #include <rw/math/Vector2D.hpp>
 
 using namespace rw::geometry;
 using namespace rw::math;
-using namespace rw::common;
+using namespace rw::core;
 
 Tube::Tube(float radius, float thickness, float height, int levels):
 	Primitive(levels), _radius(radius),_thickness(thickness),_height(height)

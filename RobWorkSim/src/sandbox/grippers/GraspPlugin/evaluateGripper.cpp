@@ -1,6 +1,6 @@
 #include <iostream>
 #include <rw/rw.hpp>
-#include <rw/RobWork.hpp>
+#include <rw/core/RobWork.hpp>
 #include <rw/common/ExtensionRegistry.hpp>
 #include <rwsim/rwsim.hpp>
 #include <rwsim/loaders/DynamicWorkCellLoader.hpp>

@@ -19,7 +19,7 @@
 #include "SBLInternal.hpp"
 
 #include <rw/pathplanning/QEdgeConstraintIncremental.hpp>
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 #include <rw/math/Random.hpp>
 #include <rw/pathplanning/QSampler.hpp>
 #include <rw/pathplanning/StopCriteria.hpp>

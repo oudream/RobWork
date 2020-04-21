@@ -46,7 +46,7 @@ namespace rwlibs { namespace algorithms {
 class ConstraintModel : public RANSACModel<ConstraintModel, rw::math::Transform3D<> > {
 	public:
 		//! @brief Smart pointer type to this class.
-		typedef rw::common::Ptr<ConstraintModel> Ptr;
+		typedef rw::core::Ptr<ConstraintModel> Ptr;
 		
 	public: // constructors
 		/**

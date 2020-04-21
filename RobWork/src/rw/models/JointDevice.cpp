@@ -26,7 +26,7 @@
 using namespace rw::models;
 using namespace rw::kinematics;
 using namespace rw::math;
-using namespace rw::common;
+using namespace rw::core;
 
 // Constructor
 
@@ -57,16 +57,6 @@ JointDevice::JointDevice(const std::string& name,
 
 }
 
-// Methods specific to JointDevice.
-/*
-Joint* JointDevice::getActiveJoint(size_t index) const
-{
-    const Joint* joint = _joints.at(index);
-    return const_cast<Joint*>(joint);
-}
-*/
-// Jacobians
-
 Jacobian JointDevice::baseJend(const State& state) const
 {
    /* FKTable fk(state);
@@ -78,13 +68,6 @@ Jacobian JointDevice::baseJend(const State& state) const
 }
 
 
-/*
-Jacobian JointDevice::baseJframes(const std::vector<Frame*>& frames,
-                                  const State& state) const
-{
-    return baseDJframes(frames, state)->get(state);
-}
-*/
 JacobianCalculator::Ptr JointDevice::baseJCframes(const std::vector<Frame*>& frames,
                                                 const State& state) const
 {
@@ -131,10 +114,6 @@ void JointDevice::setBounds(const std::pair<Q, Q>& bounds)
     }
 
 }
-
-
-
-
 
 void JointDevice::setQ(const Q& q, State& state) const
 {

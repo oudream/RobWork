@@ -19,10 +19,10 @@
 #ifndef RWS_QDRAW_HPP
 #define RWS_QDRAW_HPP
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 class StateDraw;
-typedef rw::common::Ptr<StateDraw> StateDrawPtr;
+typedef rw::core::Ptr<StateDraw> StateDrawPtr;
 
 namespace rw { namespace kinematics { class State; } }
 

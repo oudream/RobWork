@@ -18,7 +18,7 @@
 #include "SAPFilterStrategy.hpp"
 
 #include <rw/kinematics/Kinematics.hpp>
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 #include <rw/models/WorkCell.hpp>
 
 
@@ -70,12 +70,12 @@ void SAPFilterStrategy::reset(const rw::kinematics::State& state)
 
 //! @copydoc ProximityFilterStrategy::update
 ProximityFilter::Ptr SAPFilterStrategy::update(const rw::kinematics::State& state){
-	return rw::common::ownedPtr( new SAPFilterStrategy::Filter(_collisionPairs.begin(), _collisionPairs.end() ) );
+	return rw::core::ownedPtr( new SAPFilterStrategy::Filter(_collisionPairs.begin(), _collisionPairs.end() ) );
 }
 
 //! @copydoc ProximityFilterStrategy::createProximityCache
 ProximityFilter::Ptr SAPFilterStrategy::update(const rw::kinematics::State& state, ProximityCache::Ptr data){
-	return rw::common::ownedPtr( new SAPFilterStrategy::Filter(_collisionPairs.begin(), _collisionPairs.end() ) );
+	return rw::core::ownedPtr( new SAPFilterStrategy::Filter(_collisionPairs.begin(), _collisionPairs.end() ) );
 }
 
 

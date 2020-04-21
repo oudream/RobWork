@@ -34,7 +34,7 @@ StereoCameraModel::StereoCameraModel(const std::string& name,
 	 	 rw::kinematics::Frame* frame,
 	 	 const std::string& modelInfo):
 		SensorModel(name, frame, modelInfo),
-		_sdata(1, rw::common::ownedPtr( new StereoCameraModelCache()).cast<StateCache>()),
+		_sdata(1, rw::core::ownedPtr( new StereoCameraModelCache()).cast<StateCache>()),
 		_pmatrix( ProjectionMatrix::makePerspective(fov*height/width, width/height, 0.001, 30) ),
 		_TR(TR), _TL(TL)
 {

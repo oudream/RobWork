@@ -19,7 +19,7 @@
 #ifndef RW_MODELS_JACOBIANCALCULATOR_HPP
 #define RW_MODELS_JACOBIANCALCULATOR_HPP
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/math/Jacobian.hpp>
 
 namespace rw { namespace kinematics { class State; } }
@@ -36,7 +36,7 @@ class JacobianCalculator
 {
 public:
 	//! smart pointer type
-	typedef rw::common::Ptr<JacobianCalculator> Ptr;
+	typedef rw::core::Ptr<JacobianCalculator> Ptr;
 
     /**
      * @brief Destructor

@@ -25,7 +25,7 @@
 
 
 using namespace rwlibs::opengl;
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::math;
 
 DrawableGeometry::DrawableGeometry (const std::string& name, unsigned int dmask) :
@@ -36,7 +36,7 @@ DrawableGeometry::DrawableGeometry (const std::string& name, unsigned int dmask)
 DrawableGeometry::~DrawableGeometry ()
 {}
 
-std::vector< rw::common::Ptr< rw::graphics::Render > > DrawableGeometry::getRenders () const
+std::vector< rw::core::Ptr< rw::graphics::Render > > DrawableGeometry::getRenders () const
 {
     return _drawable->getRenders ();
 }

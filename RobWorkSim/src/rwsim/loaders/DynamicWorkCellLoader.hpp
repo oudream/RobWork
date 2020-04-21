@@ -19,6 +19,7 @@
 #define RWSIM_DYNAMICS_DYNAMICWORKCELLLOADER_HPP_
 
 #include <rwsim/dynamics/DynamicWorkCell.hpp>
+#include <rw/core/Ptr.hpp>
 
 namespace rwsim {
 namespace loaders {
@@ -33,7 +34,7 @@ namespace loaders {
     	 * @brief load a workcell
     	 * @param filename
     	 */
-        static rw::common::Ptr<dynamics::DynamicWorkCell>
+        static rw::core::Ptr<dynamics::DynamicWorkCell>
         	load(const std::string& filename);
 
     };

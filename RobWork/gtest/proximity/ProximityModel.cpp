@@ -21,10 +21,11 @@
 #include <rw/kinematics/StateStructure.hpp>
 #include <rw/proximity/ProximityModel.hpp>
 #include <rw/proximity/ProximityStrategy.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include <gtest/gtest.h>
 
-using rw::common::ownedPtr;
+using rw::core::ownedPtr;
 using namespace rw::geometry;
 using namespace rw::kinematics;
 using namespace rw::models;

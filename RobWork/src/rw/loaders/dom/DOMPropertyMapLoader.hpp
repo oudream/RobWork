@@ -19,10 +19,11 @@
 #define RW_LOADERS_DOMPROPERTYMAPLOADER_HPP
 
 
-#include <rw/common/PropertyMap.hpp>
-#include <rw/common/PropertyBase.hpp>
+#include <rw/core/PropertyMap.hpp>
+#include <rw/core/PropertyBase.hpp>
+#include <rw/core/Ptr.hpp>
 
-namespace rw { namespace common { class DOMElem; } }
+namespace rw { namespace core { class DOMElem; } }
 
 namespace rw {
 namespace loaders {
@@ -31,7 +32,7 @@ namespace loaders {
 /*@{*/
 
 /**
- * @brief Class for loading rw::common::PropertyMap from XML
+ * @brief Class for loading rw::core::PropertyMap from XML
  *
  * The loader is capable of loading all type defined in rw::common::PropertyType.
  *
@@ -44,48 +45,48 @@ public:
     /**
      * @brief Reads in a Property from DOMElement.
      *
-     * May throw rw::common::Exception
+     * May throw rw::core::Exception
      *
      * @param element [in] DOMElement describing Property
      * @param checkHeader [in] True to check that the header of \b element matches XMLPropertyFormat::PropertyId
      * @return Pointer to the property
      */
-	static rw::common::PropertyBase::Ptr readProperty(rw::common::Ptr<rw::common::DOMElem> element, bool checkHeader = true);
+	static rw::core::PropertyBase::Ptr readProperty(rw::core::Ptr<rw::core::DOMElem> element, bool checkHeader = true);
 
 
     /**
      * @brief Reads in a PropertyMap from DOMElement
      *
-     * May throw rw::common::Exception
+     * May throw rw::core::Exception
      *
      * @param element [in] DOMElement describing PropertyMap
      * @param checkHeader [in] True to check that the header of \b element matches XMLPropertyFormat::PropertyMapId
      * @return Loaded PropertyMap
      */
-    static rw::common::PropertyMap readProperties(rw::common::Ptr<rw::common::DOMElem> element, bool checkHeader = true);
-    static bool hasProperties(rw::common::Ptr<rw::common::DOMElem> element);
+    static rw::core::PropertyMap readProperties(rw::core::Ptr<rw::core::DOMElem> element, bool checkHeader = true);
+    static bool hasProperties(rw::core::Ptr<rw::core::DOMElem> element);
 
     /**
-     * @brief Read in rw::common::PropertyMap from file
+     * @brief Read in rw::core::PropertyMap from file
      *
-     * Throws rw::common::Exception if an error occurs
+     * Throws rw::core::Exception if an error occurs
      *
      * @param filename [in] File to load
      * @param schemaFileName [in] Name of the schema to use. If empty it will use the schema specified in the XML-file if available.
      * @return Loaded PropertyMap
      */
-    static rw::common::PropertyMap load(const std::string& filename, const std::string& schemaFileName = "");
+    static rw::core::PropertyMap load(const std::string& filename, const std::string& schemaFileName = "");
 
     /**
-     * @brief Read in rw::common::PropertyMap from istream
+     * @brief Read in rw::core::PropertyMap from istream
      *
-     * Throws rw::common::Exception if an error occurs
+     * Throws rw::core::Exception if an error occurs
      *
      * @param instream [in] Input stream to read from
      * @param schemaFileName [in] Name of the schema to use. If empty it will use the schema specified in the XML-file if available.
      * @return Loaded PropertyMap
      */
-    static rw::common::PropertyMap load(std::istream& instream, const std::string& schemaFileName = "");
+    static rw::core::PropertyMap load(std::istream& instream, const std::string& schemaFileName = "");
 
 	/**
 	 * @brief Utility class which initializes local static variables.

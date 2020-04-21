@@ -46,7 +46,7 @@ namespace rw { namespace models {
     {
     public:
 		//! @brief smart pointer type to this class
-		typedef rw::common::Ptr<ParallelDevice> Ptr;
+		typedef rw::core::Ptr<ParallelDevice> Ptr;
 
 		//! @brief type for a set of legs.
 		typedef std::vector<ParallelLeg*> Legs;

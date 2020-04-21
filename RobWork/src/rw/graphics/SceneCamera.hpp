@@ -35,7 +35,7 @@ namespace graphics {
     class SceneCamera: public SceneNode {
     public:
     	//! @brief Smart pointer type for SceneCamera.
-        typedef rw::common::Ptr<SceneCamera> Ptr;
+        typedef rw::core::Ptr<SceneCamera> Ptr;
 
         //! @brief Mode for aspect ratio control.
         typedef enum{Auto, //!< The aspect is automatically adjusted to fit entire viewport
@@ -222,7 +222,7 @@ namespace graphics {
     class CameraGroup {
     public:
     	//! @brief Smart pointer type for CameraGroup.
-        typedef rw::common::Ptr<CameraGroup> Ptr;
+        typedef rw::core::Ptr<CameraGroup> Ptr;
 
         //! @brief Destructor.
         virtual ~CameraGroup(){}
@@ -312,7 +312,7 @@ namespace graphics {
          * @brief Copy to point cloud.
          * @param img [out] point cloud to copy to.
          */
-        virtual void setCopyToScan25D( rw::common::Ptr<rw::geometry::PointCloud> img ) = 0;
+        virtual void setCopyToScan25D( rw::core::Ptr<rw::geometry::PointCloud> img ) = 0;
 
         /**
          * @brief Enable multi-sampling.

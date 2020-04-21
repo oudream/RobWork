@@ -24,7 +24,7 @@
 
 #include "IterativeIK.hpp"
 
-#include <rw/common/PropertyMap.hpp>
+#include <rw/core/PropertyMap.hpp>
 #include <rw/kinematics/FrameMap.hpp>
 #include <rw/kinematics/FramePairMap.hpp>
 #include <rw/math/Transform3D.hpp>
@@ -54,7 +54,7 @@ namespace rw { namespace invkin {
     {
     public:
 		//! @brief smart pointer type to this class
-		typedef rw::common::Ptr<ParallelIKSolver> Ptr;
+		typedef rw::core::Ptr<ParallelIKSolver> Ptr;
 
 		/**
 		 * @brief Construct new solver.
@@ -194,11 +194,11 @@ namespace rw { namespace invkin {
         /**
          * @copydoc InvKinSolver::getTCP
          */
-        virtual rw::common::Ptr< const rw::kinematics::Frame > getTCP() const;                   
+        virtual rw::core::Ptr< const rw::kinematics::Frame > getTCP() const;                   
 
     private:
-        void updateDeltaX(const std::vector<Target>& targets, const rw::kinematics::FramePairMap<rw::common::Ptr<rw::models::ParallelLeg> >& targetLegs, const rw::kinematics::State& state, rw::math::Q& deltaX, const Eigen::MatrixXd::Index nCon) const;
-        void updateJacobian(const std::vector<Target>& targets, const rw::kinematics::FramePairMap<rw::common::Ptr<rw::models::ParallelLeg> >& targetLegs, const rw::kinematics::State& state, rw::math::Jacobian& jacobian) const;
+        void updateDeltaX(const std::vector<Target>& targets, const rw::kinematics::FramePairMap<rw::core::Ptr<rw::models::ParallelLeg> >& targetLegs, const rw::kinematics::State& state, rw::math::Q& deltaX, const Eigen::MatrixXd::Index nCon) const;
+        void updateJacobian(const std::vector<Target>& targets, const rw::kinematics::FramePairMap<rw::core::Ptr<rw::models::ParallelLeg> >& targetLegs, const rw::kinematics::State& state, rw::math::Jacobian& jacobian) const;
 
         const models::ParallelDevice* _device;
         std::vector<std::vector<rw::models::ParallelLeg*> > _junctions;

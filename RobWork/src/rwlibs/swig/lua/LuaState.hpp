@@ -18,7 +18,8 @@
 #ifndef RWLIBS_SWIG_LUASTATE_HPP_
 #define RWLIBS_SWIG_LUASTATE_HPP_
 
-#include <rw/common/ExtensionPoint.hpp>
+#include <rw/core/ExtensionPoint.hpp>
+#include <rw/core/Ptr.hpp>
 #include <vector>
 
 // forward declaration
@@ -36,7 +37,7 @@ namespace swig {
 class LuaState {
 public:
 	//! smart pointer type of LuaState
-	typedef rw::common::Ptr<LuaState> Ptr;
+	typedef rw::core::Ptr<LuaState> Ptr;
 
     //! @brief constructor
     LuaState();
@@ -52,7 +53,7 @@ public:
 
 
     struct LuaLibrary {
-    	typedef rw::common::Ptr<LuaLibrary> Ptr;
+    	typedef rw::core::Ptr<LuaLibrary> Ptr;
     	virtual ~LuaLibrary() {};
     	virtual const std::string getId() = 0;
     	virtual bool initLibrary(LuaState& state) = 0;
@@ -80,17 +81,17 @@ public:
 	 * extension point for LuaLibraries. This permit users to define extensions to
 	 * the lua interfaces through RobWork extension.
 	 */
-    class Factory: public rw::common::ExtensionPoint<LuaLibrary> {
+    class Factory: public rw::core::ExtensionPoint<LuaLibrary> {
     public:
     	//! constructor
-        Factory():rw::common::ExtensionPoint<LuaLibrary>("rwlibs.swig.LuaState.LuaLibrary", "Extension point for Lua add-on libraries, acked in robwork plugins."){};
+        Factory():rw::core::ExtensionPoint<LuaLibrary>("rwlibs.swig.LuaState.LuaLibrary", "Extension point for Lua add-on libraries, acked in robwork plugins."){};
 
         /**
          * @brief get a specific lua library based on id
          * @param id [in] string identifier of lua library
          * @return a lualibrary if matching lib exists else NULL
          */
-        static rw::common::Ptr<LuaLibrary> getLuaLibrary(const std::string& id);
+        static rw::core::Ptr<LuaLibrary> getLuaLibrary(const std::string& id);
 
         /**
          * @brief get all avaliable lua libraries

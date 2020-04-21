@@ -5,7 +5,7 @@
 #include <boost/program_options/variables_map.hpp>
 #include <boost/program_options/positional_options.hpp>
 
-#include "PropertyMap.hpp"
+#include <rw/core/PropertyMap.hpp>
 
 namespace rw {
 namespace common {
@@ -76,13 +76,13 @@ namespace common {
 		 * @brief Get parsed properties in RobWork format in the form of a PropertyMap.
 		 * @return the property map with parsed options.
 		 */
-		rw::common::PropertyMap getPropertyMap(){ return _pmap;}
+		rw::core::PropertyMap getPropertyMap(){ return _pmap;}
 
 	private:
 		int checkVariablesMap(boost::program_options::variables_map &vm);
 	private:
 		std::string _appName;
-		rw::common::PropertyMap _pmap;
+		rw::core::PropertyMap _pmap;
 		std::string _inputFile,_version;
 		std::vector<std::string> _additionalStringOptions;
 		boost::program_options::options_description _optionDesc;

@@ -26,6 +26,7 @@
 
 #include "SimulatorLogEntry.hpp"
 #include <rw/math/Wrench6D.hpp>
+#include <rw/core/Ptr.hpp>
 
 namespace rwsim {
 namespace log {
@@ -38,7 +39,7 @@ namespace log {
 class LogForceTorque: public SimulatorLogEntry {
 public:
     //! Smart pointer type of LogForceTorque
-    typedef rw::common::Ptr<LogForceTorque> Ptr;
+    typedef rw::core::Ptr<LogForceTorque> Ptr;
 
     //! @copydoc SimulatorLogEntry::SimulatorLogEntry
     LogForceTorque(SimulatorLogScope* parent);

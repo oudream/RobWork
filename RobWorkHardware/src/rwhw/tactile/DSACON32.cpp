@@ -17,12 +17,13 @@
 
 #include "DSACON32.hpp"
 
-#include <rw/common/macros.hpp>
-
+#include <rw/core/macros.hpp>
+#include <rw/common/TimerUtil.hpp>
 #include <boost/numeric/conversion/cast.hpp>
 
-using namespace rw::common;
+
 using namespace rwhw;
+using rw::common::TimerUtil;
 
 #define DEFAULT_TIMEOUT 1000
 

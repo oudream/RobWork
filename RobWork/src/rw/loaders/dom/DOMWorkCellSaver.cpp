@@ -17,8 +17,9 @@
 
 #include "DOMWorkCellSaver.hpp"
 
-#include <rw/common/DOMElem.hpp>
-#include <rw/common/DOMParser.hpp>
+#include <rw/core/DOMElem.hpp>
+#include <rw/core/DOMParser.hpp>
+#include <rw/core/PropertyBase.hpp>
 #include <rw/loaders/dom/DOMBasisTypes.hpp>
 #include <rw/loaders/dom/DOMPropertyMapSaver.hpp>
 #include <rw/loaders/dom/DOMProximitySetupSaver.hpp>
@@ -51,7 +52,7 @@
 #include <rw/geometry/Cylinder.hpp>
 #include <rw/geometry/Tube.hpp>
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::loaders;
 using namespace rw::math;
 using namespace rw::kinematics;
@@ -68,16 +69,16 @@ namespace {
         }
 
         template<class T>
-        DOMElem::Ptr createElement(T object, rw::common::Ptr<const rw::models::WorkCell> workcell, DOMElem::Ptr parent);
+        DOMElem::Ptr createElement(T object, rw::core::Ptr<const rw::models::WorkCell> workcell, DOMElem::Ptr parent);
 
         template<class T>
-        DOMElem::Ptr createElement(T object, rw::common::Ptr<const rw::models::WorkCell> workcell, Device::Ptr dev, DOMElem::Ptr parent);
+        DOMElem::Ptr createElement(T object, rw::core::Ptr<const rw::models::WorkCell> workcell, Device::Ptr dev, DOMElem::Ptr parent);
 
         template<class T>
-        DOMElem::Ptr createElement(T object, rw::common::Ptr<const rw::models::WorkCell> workcell, const State state, DOMElem::Ptr parent);
+        DOMElem::Ptr createElement(T object, rw::core::Ptr<const rw::models::WorkCell> workcell, const State state, DOMElem::Ptr parent);
 
         template<class T>
-        DOMElem::Ptr createElement(T object, rw::common::Ptr<const rw::models::WorkCell> workcell, const State state, Device::Ptr dev,
+        DOMElem::Ptr createElement(T object, rw::core::Ptr<const rw::models::WorkCell> workcell, const State state, Device::Ptr dev,
                                    DOMElem::Ptr parent);
 
     private:
@@ -465,13 +466,13 @@ namespace {
     }
 
     template<>
-    DOMElem::Ptr ElementCreator::createElement<RevoluteJoint*>(RevoluteJoint* frame, rw::common::Ptr<const rw::models::WorkCell> workcell,
+    DOMElem::Ptr ElementCreator::createElement<RevoluteJoint*>(RevoluteJoint* frame, rw::core::Ptr<const rw::models::WorkCell> workcell,
                                                                const State state, DOMElem::Ptr parent) {
     return parent;
     }
 
     template<>
-    DOMElem::Ptr ElementCreator::createElement<RevoluteJoint*>(RevoluteJoint* frame, rw::common::Ptr<const rw::models::WorkCell> workcell,
+    DOMElem::Ptr ElementCreator::createElement<RevoluteJoint*>(RevoluteJoint* frame, rw::core::Ptr<const rw::models::WorkCell> workcell,
                                                                const State state, Device::Ptr dev, DOMElem::Ptr parent)
     {
         // Check if this is a DHJoint
@@ -745,7 +746,7 @@ namespace {
     }
 
     template<>
-    DOMElem::Ptr ElementCreator::createElement<MovableFrame*>(MovableFrame* frame, rw::common::Ptr<const rw::models::WorkCell> workcell,
+    DOMElem::Ptr ElementCreator::createElement<MovableFrame*>(MovableFrame* frame, rw::core::Ptr<const rw::models::WorkCell> workcell,
                                                               const State state, DOMElem::Ptr parent) {
         DOMElem::Ptr element = parent->addChild("Frame");
 
@@ -772,7 +773,7 @@ namespace {
 
         for(const PropertyBase::Ptr prop: frame->getPropertyMap().getProperties())
                     {
-                        const Property<std::string>* property = toProperty<std::string>(prop);
+                        const Property<std::string>* property = rw::core::toProperty<std::string>(prop);
                         if (property != nullptr) {
                             DOMElem::Ptr prop_element = element->addChild(DOMPropertyMapFormat::idProperty());
                             prop_element->addAttribute("name")->setValue(property->getIdentifier());
@@ -786,7 +787,7 @@ namespace {
     }
 
     template<>
-    DOMElem::Ptr ElementCreator::createElement<FixedFrame*>(FixedFrame* frame, rw::common::Ptr<const rw::models::WorkCell> workcell,
+    DOMElem::Ptr ElementCreator::createElement<FixedFrame*>(FixedFrame* frame, rw::core::Ptr<const rw::models::WorkCell> workcell,
                                                             DOMElem::Ptr parent) {
         DOMElem::Ptr element = parent->addChild("Frame");
 
@@ -813,7 +814,7 @@ namespace {
 
         for(const PropertyBase::Ptr prop: frame->getPropertyMap().getProperties())
                     {
-                        const Property<std::string>* property = toProperty<std::string>(prop);
+                        const Property<std::string>* property = rw::core::toProperty<std::string>(prop);
                         if (property != nullptr) {
                             DOMElem::Ptr prop_element = element->addChild(DOMPropertyMapFormat::idProperty());
                             prop_element->addAttribute("name")->setValue(property->getIdentifier());
@@ -827,7 +828,7 @@ namespace {
     }
 
     template<>
-    DOMElem::Ptr ElementCreator::createElement<FixedFrame*>(FixedFrame* frame, rw::common::Ptr<const rw::models::WorkCell> workcell,
+    DOMElem::Ptr ElementCreator::createElement<FixedFrame*>(FixedFrame* frame, rw::core::Ptr<const rw::models::WorkCell> workcell,
                                                             Device::Ptr dev, DOMElem::Ptr parent) {
         DOMElem::Ptr element = parent->addChild("Frame");
         // Set attributes
@@ -875,7 +876,7 @@ namespace {
 
         for(const PropertyBase::Ptr prop: frame->getPropertyMap().getProperties())
         {
-            const Property<std::string>* property = toProperty<std::string>(prop);
+            const Property<std::string>* property = rw::core::toProperty<std::string>(prop);
             if (property != nullptr) {
                 DOMElem::Ptr prop_element = element->addChild(DOMPropertyMapFormat::idProperty());
                 prop_element->addAttribute("name")->setValue(property->getIdentifier());
@@ -891,7 +892,7 @@ namespace {
         return element;
     }
 
-    void writeDeviceFrame(Frame* frame, ElementCreator& creator, rw::common::Ptr<const rw::models::WorkCell> workcell, const State state, Device::Ptr dev,
+    void writeDeviceFrame(Frame* frame, ElementCreator& creator, rw::core::Ptr<const rw::models::WorkCell> workcell, const State state, Device::Ptr dev,
                     DOMElem::Ptr parent) {
         if(FixedFrame* ff = dynamic_cast<FixedFrame*>(frame)) {
             //std::cout << "The frame type was Fixed!" << std::endl;
@@ -923,7 +924,7 @@ namespace {
         }*/
     }
 
-    void writeFrame(Frame* frame, ElementCreator& creator, rw::common::Ptr<const rw::models::WorkCell> workcell, const State state,
+    void writeFrame(Frame* frame, ElementCreator& creator, rw::core::Ptr<const rw::models::WorkCell> workcell, const State state,
                     DOMElem::Ptr parent) {
         if(FixedFrame* ff = dynamic_cast<FixedFrame*>(frame)) {
             //std::cout << "The frame type was Fixed!" << std::endl;
@@ -952,7 +953,7 @@ namespace {
         }*/
     }
 
-    void createDOMDocument(DOMElem::Ptr rootDoc, rw::common::Ptr<const rw::models::WorkCell> workcell, const State state) {
+    void createDOMDocument(DOMElem::Ptr rootDoc, rw::core::Ptr<const rw::models::WorkCell> workcell, const State state) {
         DOMElem::Ptr rootElement = rootDoc->addChild("WorkCell");
         rootElement->addAttribute("name")->setValue(workcell->getName());
         ElementCreator creator(rootElement);
@@ -1057,7 +1058,7 @@ namespace {
     }
 } // end of anonymous namespace
 
-void DOMWorkCellSaver::save(rw::common::Ptr<const rw::models::WorkCell> workcell, const State& state, std::string fileName) {
+void DOMWorkCellSaver::save(rw::core::Ptr<const rw::models::WorkCell> workcell, const State& state, std::string fileName) {
     DOMParser::Ptr doc = DOMParser::make();
     DOMElem::Ptr root = doc->getRootElement();
 
@@ -1067,7 +1068,7 @@ void DOMWorkCellSaver::save(rw::common::Ptr<const rw::models::WorkCell> workcell
     doc->save( fileName );
 }
 
-void DOMWorkCellSaver::save(rw::common::Ptr<const rw::models::WorkCell> workcell, const State& state, std::ostream& ostream) {
+void DOMWorkCellSaver::save(rw::core::Ptr<const rw::models::WorkCell> workcell, const State& state, std::ostream& ostream) {
     DOMParser::Ptr doc = DOMParser::make();
     DOMElem::Ptr root = doc->getRootElement();
 

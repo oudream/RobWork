@@ -22,12 +22,12 @@ using namespace rwlibs::mathematica;
 std::size_t RawArrayUtil::detectDimensions(const Mathematica::FunctionBase& exp) {
 	if (exp.getName() != "RawArray")
 		RW_THROW("Expected function with name RawArray, not " << exp.getName() << ".");
-	const std::list<rw::common::Ptr<const Mathematica::Expression> >& args = exp.getArguments();
+	const std::list<rw::core::Ptr<const Mathematica::Expression> >& args = exp.getArguments();
 	if (args.size() != 2)
 		RW_THROW("Expected two arguments for RawArray, not " << args.size() << ".");
-	rw::common::Ptr<const Mathematica::Expression> array = args.back();
+	rw::core::Ptr<const Mathematica::Expression> array = args.back();
 	std::size_t dim = 0;
-	rw::common::Ptr<const Mathematica::FunctionBase> fct;
+	rw::core::Ptr<const Mathematica::FunctionBase> fct;
 	bool cont = true;;
 	do {
 		fct = array.cast<const Mathematica::FunctionBase>();

@@ -22,7 +22,7 @@
 //#include <rw/geometry/BVCollider.hpp>
 //#include <rw/geometry/TriTriIntersectDeviller.hpp>
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/math/Transform3D.hpp>
 #include <rw/proximity/CollisionStrategy.hpp>
 
@@ -45,7 +45,7 @@ namespace proximity {
 
 	public:
         //! @brief smart pointer for this class
-        typedef rw::common::Ptr<BVTreeToleranceCollider<BVTREE> > Ptr;
+        typedef rw::core::Ptr<BVTreeToleranceCollider<BVTREE> > Ptr;
 
         /**
          * @brief destructor

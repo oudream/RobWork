@@ -18,12 +18,12 @@
 #ifndef RW_MODELS_DHPARAMETERSET_HPP
 #define RW_MODELS_DHPARAMETERSET_HPP
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include <string>
 #include <vector>
 
-namespace rw { namespace common { class PropertyMap; } }
+namespace rw { namespace core { class PropertyMap; } }
 namespace rw { namespace kinematics { class Frame; } }
 
 namespace rw {
@@ -148,13 +148,13 @@ public:
      * @param device [in] SerialDevice for which to get the DH parameters
      * @return The set of DH parameters
      */
-	static std::vector<DHParameterSet> getDHParameters(rw::common::Ptr<SerialDevice> device);
+	static std::vector<DHParameterSet> getDHParameters(rw::core::Ptr<SerialDevice> device);
 
-	static const DHParameterSet* get(const rw::common::PropertyMap& pmap);
+	static const DHParameterSet* get(const rw::core::PropertyMap& pmap);
 
 	static const DHParameterSet* get(const rw::models::Joint* joint);
 
-    static void set(const DHParameterSet& dhset, rw::common::PropertyMap& pmap);
+    static void set(const DHParameterSet& dhset, rw::core::PropertyMap& pmap);
 
     static void set(const DHParameterSet& dhset, rw::kinematics::Frame* joint);
 

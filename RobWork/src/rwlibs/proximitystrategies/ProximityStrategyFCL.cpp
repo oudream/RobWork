@@ -26,7 +26,7 @@
 #include <fcl/collision.h>
 #include <fcl/distance.h>
 
-using rw::common::ownedPtr;
+using rw::core::ownedPtr;
 using namespace rw::math;
 using namespace rw::proximity;
 using namespace rw::geometry;
@@ -157,7 +157,7 @@ bool ProximityStrategyFCL::addGeometry (rw::proximity::ProximityModel* model,
      * to allocate */
     std::size_t numberOfVertices = numberOfTriangles * 3;
 
-    rw::common::Ptr< fcl::BVHModel< BV > > fclBVHModel = ownedPtr (new fcl::BVHModel< BV >);
+    rw::core::Ptr< fcl::BVHModel< BV > > fclBVHModel = ownedPtr (new fcl::BVHModel< BV >);
 
     int returnCode = 0;
     returnCode     = fclBVHModel->beginModel (numberOfTriangles, numberOfVertices);
@@ -238,13 +238,13 @@ ProximityStrategyFCL::getGeometryIDs (rw::proximity::ProximityModel* model)
 
     return geometryIDs;
 }
-std::vector< rw::common::Ptr< rw::geometry::Geometry > >
+std::vector< rw::core::Ptr< rw::geometry::Geometry > >
 ProximityStrategyFCL::getGeometrys (rw::proximity::ProximityModel* model)
 {
     RW_ASSERT (model != 0);
     FCLProximityModel* pmodel = dynamic_cast< FCLProximityModel* > (model);
 
-    std::vector< rw::common::Ptr< rw::geometry::Geometry > > geometrys;
+    std::vector< rw::core::Ptr< rw::geometry::Geometry > > geometrys;
     geometrys.reserve (pmodel->models.size ());
     for (const auto& m : pmodel->models) {
         geometrys.push_back (m.geo);

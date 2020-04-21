@@ -21,8 +21,8 @@
 
 #include "PluginFactoryBase.hpp"
 
-#include <rw/common/Ptr.hpp>
-#include <rw/common/macros.hpp>
+#include <rw/core/Ptr.hpp>
+#include <rw/core/macros.hpp>
 
 
 namespace rw {
@@ -56,7 +56,7 @@ template <class T>
 class PluginFactory: public PluginFactoryBase {
 public:
 	//! @brief Smart pointer type for PluginFactory.
-    typedef rw::common::Ptr<PluginFactory<T> > Ptr;
+    typedef rw::core::Ptr<PluginFactory<T> > Ptr;
 
     /**
      * @brief Constructs a PluginFactory
@@ -76,7 +76,7 @@ public:
      * 
      * @return Pointer with ownership to new plugin instance.
      */
-    virtual rw::common::Ptr<T> make() {
+    virtual rw::core::Ptr<T> make() {
         RW_THROW2(5000, "PluginFactory<T>::make() is not implemented");
     };
 
@@ -87,7 +87,7 @@ public:
      * 
      * @return Pointer with ownership to new plugin instance.
      */
-    virtual rw::common::Ptr<T> make(const std::string&) {
+    virtual rw::core::Ptr<T> make(const std::string&) {
         RW_THROW2(5001, "PluginFactory<T>::make(const std::string&) is not implemented");
     };
 

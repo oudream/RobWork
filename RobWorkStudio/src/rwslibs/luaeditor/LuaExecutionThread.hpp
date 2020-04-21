@@ -20,9 +20,9 @@
 
 #include <QThread>
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
-namespace rw { namespace common { class LogWriter; } }
+namespace rw { namespace core { class LogWriter; } }
 namespace rwlibs { namespace swig { class LuaState; } }
 
 namespace rws {
@@ -42,7 +42,7 @@ public:
      * @param output
      * @param parent
      */
-    LuaExecutionThread(const std::string& cmd, rw::common::Ptr<rwlibs::swig::LuaState> lstate, rw::common::Ptr<rw::common::LogWriter> output, QObject *parent =
+    LuaExecutionThread(const std::string& cmd, rw::core::Ptr<rwlibs::swig::LuaState> lstate, rw::core::Ptr<rw::core::LogWriter> output, QObject *parent =
                                NULL) :
             QThread(parent), _cmd(cmd), _lua(lstate), _output(output)
     {
@@ -55,7 +55,7 @@ public:
      * @param lstate [in] the current lua state
      * @param output [in] the log in which to print result
      */
-    void set(const std::string& cmd, rw::common::Ptr<rwlibs::swig::LuaState> lstate, rw::common::Ptr<rw::common::LogWriter> output);
+    void set(const std::string& cmd, rw::core::Ptr<rwlibs::swig::LuaState> lstate, rw::core::Ptr<rw::core::LogWriter> output);
 
     //! @brief executes the command
     void run();
@@ -96,8 +96,8 @@ public:
 private:
     std::string _cmd, _resstring;
     int _resVal;
-    rw::common::Ptr<rwlibs::swig::LuaState> _lua;
-    rw::common::Ptr<rw::common::LogWriter> _output;
+    rw::core::Ptr<rwlibs::swig::LuaState> _lua;
+    rw::core::Ptr<rw::core::LogWriter> _output;
 };
 
 } // namespace

@@ -19,7 +19,7 @@
 #define RW_LOADERS_DOMTRAJECTORYLOADER_HPP
 
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/trajectory/Trajectory.hpp>
 #include <rw/math/Q.hpp>
 #include <rw/math/Vector3D.hpp>
@@ -28,7 +28,7 @@
 
 #include <string>
 
-namespace rw { namespace common { class DOMElem; } }
+namespace rw { namespace core { class DOMElem; } }
 
 namespace rw {
 namespace loaders {
@@ -270,12 +270,12 @@ public:
 private:
 	static const Initializer initializer;
 
-    void readTrajectory(rw::common::Ptr<rw::common::DOMElem> element);
+    void readTrajectory(rw::core::Ptr<rw::core::DOMElem> element);
 
-    rw::common::Ptr<rw::trajectory::Trajectory<rw::math::Q> > _qTrajectory;
-    rw::common::Ptr<rw::trajectory::Trajectory<rw::math::Vector3D<> > > _v3dTrajectory;
-    rw::common::Ptr<rw::trajectory::Trajectory<rw::math::Rotation3D<> > > _r3dTrajectory;
-    rw::common::Ptr<rw::trajectory::Trajectory<rw::math::Transform3D<> > > _t3dTrajectory;
+    rw::core::Ptr<rw::trajectory::Trajectory<rw::math::Q> > _qTrajectory;
+    rw::core::Ptr<rw::trajectory::Trajectory<rw::math::Vector3D<> > > _v3dTrajectory;
+    rw::core::Ptr<rw::trajectory::Trajectory<rw::math::Rotation3D<> > > _r3dTrajectory;
+    rw::core::Ptr<rw::trajectory::Trajectory<rw::math::Transform3D<> > > _t3dTrajectory;
 
     Type _type;
 };

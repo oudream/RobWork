@@ -1,7 +1,7 @@
 #include <rw/math/Metric.hpp>
 #include <rw/math/MetricFactory.hpp>
 
-using rw::common::Ptr;
+using rw::core::Ptr;
 using namespace rw::math;
 
 void metricExample()

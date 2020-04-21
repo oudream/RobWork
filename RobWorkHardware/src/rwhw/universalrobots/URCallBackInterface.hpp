@@ -24,7 +24,7 @@
 #include <rw/math/Transform3D.hpp>
 #include <rw/math/Wrench6D.hpp>
 #include <rw/math/VelocityScrew6D.hpp>
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include <boost/thread.hpp>
 #include <boost/asio.hpp>
@@ -215,7 +215,7 @@ private:
 
 	URPrimaryInterface _urPrimary;
 	ControllerBox _cb;
-	rw::common::Ptr<boost::thread> _thread;
+	rw::core::Ptr<boost::thread> _thread;
 
 	unsigned int _callbackPort;
     boost::asio::ip::address _callbackIP;

@@ -19,7 +19,7 @@
 #include "LuaState.hpp"
 #include "Lua_@RW_MODULE@.hpp"
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rwlibs::swig;
 
 RW_ADD_PLUGIN(LuaPlugin)
@@ -59,7 +59,7 @@ std::vector<Extension::Descriptor> LuaPlugin::getExtensionDescriptors()
 Extension::Ptr LuaPlugin::makeExtension(const std::string& str)
 {
     if(str=="RWLua_@RW_MODULE@") {
-        Extension::Ptr extension = rw::common::ownedPtr( new Extension("RWLua_@RW_MODULE@","rwlibs.swig.LuaState.LuaLibrary",
+        Extension::Ptr extension = rw::core::ownedPtr( new Extension("RWLua_@RW_MODULE@","rwlibs.swig.LuaState.LuaLibrary",
                 this, ownedPtr(new RWLuaLibrary()) ) );
         extension->getProperties().set<std::string>("ID", "@RW_MODULE@");
         return extension;

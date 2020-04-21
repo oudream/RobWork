@@ -23,7 +23,7 @@
 #include "TactileMatrix.hpp"
 #include "TactileMaskMatrix.hpp"
 #include <rw/common/TimerUtil.hpp>
-#include <rw/common/macros.hpp>
+#include <rw/core/Exception.hpp>
 
 namespace rwhw {
 
@@ -210,7 +210,7 @@ namespace rwhw {
                     sPort->write((char*)data, len);
                     ReadAck(id, timeout, sPort);
                     break;
-                } catch (const rw::common::Exception&) {
+                } catch (const rw::core::Exception&) {
                     // do nothing
                 }
             }

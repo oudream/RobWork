@@ -1,6 +1,6 @@
 set(SUBSYS_NAME sdurwhw_universalrobots)
 set(SUBSYS_DESC "Driver for universal robot ")
-set(SUBSYS_DEPS RW::sdurw)
+set(SUBSYS_DEPS RW::sdurw RW::sdurw_core)
 
 # make sure that SDH can be found
 set(build TRUE)
@@ -51,7 +51,7 @@ if(build)
     # MESSAGE("${header}${FILEVAR21}${end}")
 
     rw_add_library(${SUBSYS_NAME} ${SRC_CPP} ${SRC_HPP})
-    target_link_libraries(${SUBSYS_NAME} PUBLIC RW::sdurw)
+    target_link_libraries(${SUBSYS_NAME} PUBLIC RW::sdurw RW::sdurw_core)
     target_include_directories(${SUBSYS_NAME}
         INTERFACE
         $<BUILD_INTERFACE:${RWHW_ROOT}/src> $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>

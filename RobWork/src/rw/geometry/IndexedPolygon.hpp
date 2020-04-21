@@ -19,7 +19,7 @@
 #ifndef RW_GEOMETRY_INDEXEDPOLYGON_HPP_
 #define RW_GEOMETRY_INDEXEDPOLYGON_HPP_
 
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 #include <rw/common/types.hpp>
 //#include <rw/math/Vector3D.hpp>
 
@@ -38,7 +38,7 @@ namespace geometry {
     public:
 	
 		//! @brief Smart pointer to IndexedPolygonN
-		typedef rw::common::Ptr<IndexedPolygon<T> > Ptr;
+		typedef rw::core::Ptr<IndexedPolygon<T> > Ptr;
 	
         //! @brief value type of the index pointer
         typedef T value_type;
@@ -87,7 +87,7 @@ namespace geometry {
 
 	public:
 		//! @brief Smart pointer to IndexedPolygonN
-		typedef rw::common::Ptr<IndexedPolygonN<T> > Ptr;
+		typedef rw::core::Ptr<IndexedPolygonN<T> > Ptr;
 
 	    //! @brief Constructs IndexedPolygon with space for n vertices
 		IndexedPolygonN()
@@ -159,7 +159,7 @@ namespace geometry {
 		std::vector<T> _normals;
     public:
 		//! @brief Smart pointer to IndexedPolygonNN
-		typedef rw::common::Ptr<IndexedPolygonNN<T> > Ptr;
+		typedef rw::core::Ptr<IndexedPolygonNN<T> > Ptr;
 
         //! @brief Construct IndexPolygonNN with space for n vertices and normals
         IndexedPolygonNN(size_t n):

@@ -23,7 +23,7 @@
 
 #include <rw/sensor/Image.hpp>
 #include <rw/geometry/PointCloud.hpp>
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include "Model3D.hpp"
 #include "DrawableNode.hpp"
@@ -47,7 +47,7 @@ namespace graphics {
          */
         struct DrawableProxy {
         	//! @brief Smart pointer for type DrawableProxy.
-            typedef rw::common::Ptr<DrawableProxy> Ptr;
+            typedef rw::core::Ptr<DrawableProxy> Ptr;
 
             DrawableProxy():visible(true),highlighted(false),alpha(1.0),dmask(0),dtype(DrawableNode::SOLID),scale(0),frameSize(0){}
 
@@ -75,7 +75,7 @@ namespace graphics {
             //! @brief The 3d model.
             Model3D::Ptr model;
             //! @brief The geometry.
-            rw::common::Ptr<class rw::geometry::Geometry> geom;
+            rw::core::Ptr<class rw::geometry::Geometry> geom;
             //! @brief Frameize.
             double frameSize;
             //! @brief An image.
@@ -117,7 +117,7 @@ namespace graphics {
 
     public:
         //! @brief smart pointer to this class
-        typedef rw::common::Ptr<SceneDescriptor> Ptr;
+        typedef rw::core::Ptr<SceneDescriptor> Ptr;
 
         /**
          * @brief constructor
@@ -224,7 +224,7 @@ namespace graphics {
          * @param dmask [in] the drawable mask
          * @return the drawable node geometry
          */
-        DrawableProxy::Ptr  addGeometry(const std::string& name, rw::common::Ptr<class rw::geometry::Geometry> geom, rw::kinematics::Frame* frame, int dmask=DrawableNode::Physical);
+        DrawableProxy::Ptr  addGeometry(const std::string& name, rw::core::Ptr<class rw::geometry::Geometry> geom, rw::kinematics::Frame* frame, int dmask=DrawableNode::Physical);
 
         /**
          * @brief create and add a drawable node of a frame axis to the scene

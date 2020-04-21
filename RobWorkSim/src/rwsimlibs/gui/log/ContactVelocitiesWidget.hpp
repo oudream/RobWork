@@ -25,7 +25,7 @@
  */
 
 #include "SimulatorLogEntryWidget.hpp"
-
+#include <rw/core/Ptr.hpp>
 #include <rw/math/Vector3D.hpp>
 
 namespace rwsim { namespace contacts { class Contact; } }
@@ -50,25 +50,25 @@ public:
 	 * @param entry [in] a contact velocities entry.
 	 * @param parent [in] (optional) the parent Qt widget. Ownership is shared by the caller and the parent widget if given.
 	 */
-	ContactVelocitiesWidget(rw::common::Ptr<const rwsim::log::LogContactVelocities> entry, QWidget* parent = 0);
+	ContactVelocitiesWidget(rw::core::Ptr<const rwsim::log::LogContactVelocities> entry, QWidget* parent = 0);
 
 	//! @brief Destructor.
 	virtual ~ContactVelocitiesWidget();
 
 	//! @copydoc SimulatorLogEntryWidget::setDWC
-	virtual void setDWC(rw::common::Ptr<const rwsim::dynamics::DynamicWorkCell> dwc);
+	virtual void setDWC(rw::core::Ptr<const rwsim::dynamics::DynamicWorkCell> dwc);
 
 	//! @copydoc SimulatorLogEntryWidget::setEntry
-	virtual void setEntry(rw::common::Ptr<const rwsim::log::SimulatorLog> entry);
+	virtual void setEntry(rw::core::Ptr<const rwsim::log::SimulatorLog> entry);
 
 	//! @copydoc SimulatorLogEntryWidget::getEntry
-	virtual rw::common::Ptr<const rwsim::log::SimulatorLog> getEntry() const;
+	virtual rw::core::Ptr<const rwsim::log::SimulatorLog> getEntry() const;
 
 	//! @copydoc SimulatorLogEntryWidget::updateEntryWidget
 	virtual void updateEntryWidget();
 
 	//! @copydoc SimulatorLogEntryWidget::showGraphics
-	virtual void showGraphics(rw::common::Ptr<rw::graphics::GroupNode> root, rw::common::Ptr<rw::graphics::SceneGraph> graph);
+	virtual void showGraphics(rw::core::Ptr<rw::graphics::GroupNode> root, rw::core::Ptr<rw::graphics::SceneGraph> graph);
 
 	//! @copydoc SimulatorLogEntryWidget::getName
 	virtual std::string getName() const;
@@ -83,10 +83,10 @@ public:
 		virtual ~Dispatcher();
 
 		//! @copydoc SimulatorLogEntryWidget::Dispatcher::makeWidget
-		SimulatorLogEntryWidget* makeWidget(rw::common::Ptr<const rwsim::log::SimulatorLog> entry, QWidget* parent = 0) const;
+		SimulatorLogEntryWidget* makeWidget(rw::core::Ptr<const rwsim::log::SimulatorLog> entry, QWidget* parent = 0) const;
 
 		//! @copydoc SimulatorLogEntryWidget::Dispatcher::accepts
-		bool accepts(rw::common::Ptr<const rwsim::log::SimulatorLog> entry) const;
+		bool accepts(rw::core::Ptr<const rwsim::log::SimulatorLog> entry) const;
 	};
 
 private slots:
@@ -99,10 +99,10 @@ private:
 
 private:
     Ui::ContactVelocitiesWidget* const _ui;
-    rw::common::Ptr<const rwsim::log::LogContactVelocities> _velocities;
-    rw::common::Ptr<const rwsim::log::LogContactSet> _contactSet;
-    rw::common::Ptr<rw::graphics::GroupNode> _root;
-    rw::common::Ptr<rw::graphics::SceneGraph> _graph;
+    rw::core::Ptr<const rwsim::log::LogContactVelocities> _velocities;
+    rw::core::Ptr<const rwsim::log::LogContactSet> _contactSet;
+    rw::core::Ptr<rw::graphics::GroupNode> _root;
+    rw::core::Ptr<rw::graphics::SceneGraph> _graph;
 };
 //! @}
 } /* namespace gui */

@@ -41,7 +41,7 @@ namespace rw { namespace kinematics {
     {
     public:
 		//! @brief smart pointer type to this class
-		typedef rw::common::Ptr<FixedFrame> Ptr;
+		typedef rw::core::Ptr<FixedFrame> Ptr;
 
         /**
          * @brief A frame fixed to its parent with a constant relative transform

@@ -24,8 +24,9 @@
 #include <rw/kinematics/StateStructure.hpp>
 #include <rw/proximity/CollisionToleranceStrategy.hpp>
 #include <rw/proximity/ProximityStrategyData.hpp>
+#include <rw/core/Ptr.hpp>
 
-using rw::common::ownedPtr;
+using rw::core::ownedPtr;
 using namespace rw::geometry;
 using namespace rw::kinematics;
 using namespace rw::math;
@@ -91,7 +92,7 @@ INSTANTIATE_TEST_CASE_P(ProximityStrategy, CollisionToleranceStrategyTest, ::tes
 TEST_P(CollisionToleranceStrategyTest, Plane_Cuboid) {
 	static const double s = 0.1;
 	static const double offset = 0.057;
-	const rw::common::Ptr<Plane> plane = ownedPtr(new Plane());
+	const rw::core::Ptr<Plane> plane = ownedPtr(new Plane());
 	Geometry geomA(plane);
 	const Box::Ptr box = ownedPtr(new Box(s,s,s));
 	const Geometry::Ptr geomB = ownedPtr(new Geometry(box,Transform3D<>(Vector3D<>(0,0,offset))));

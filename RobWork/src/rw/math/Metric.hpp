@@ -25,7 +25,7 @@
 
 #include "Q.hpp"
 #include "Transform3D.hpp"
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 namespace rw { namespace math {
 
@@ -50,9 +50,9 @@ namespace rw { namespace math {
         typedef typename T::value_type scalar_type;
 
         //! A pointer to a Metric<T>.
-        typedef typename rw::common::Ptr<Metric<T> > Ptr;
+        typedef typename rw::core::Ptr<Metric<T> > Ptr;
 		//! A pointer to a const Metric<T>.
-		typedef typename rw::common::Ptr<const Metric<T> > CPtr;
+		typedef typename rw::core::Ptr<const Metric<T> > CPtr;
 
         /**
            @brief Destructor

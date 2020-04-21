@@ -148,7 +148,7 @@ RigidDevice::RigidDevice(rwsim::dynamics::Body::Ptr base,
     _jdev(dev)
 {
     for(size_t i=0;i<objects.size(); i++){
-        _links.push_back( rw::common::ownedPtr( new RigidLink(objects[i].first, objects[i].second, this, i) ) );
+        _links.push_back( rw::core::ownedPtr( new RigidLink(objects[i].first, objects[i].second, this, i) ) );
         //this->add( *_links.back() );
     }
 

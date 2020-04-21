@@ -5,7 +5,7 @@
 #include <rw/models/SerialDevice.hpp>
 #include <rw/models/WorkCell.hpp>
 
-using rw::common::Log;
+using rw::core::Log;
 using namespace rw::kinematics;
 using rw::loaders::WorkCellLoader;
 using namespace rw::math;

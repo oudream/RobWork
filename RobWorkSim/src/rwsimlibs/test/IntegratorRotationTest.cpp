@@ -22,7 +22,7 @@
 
 #include <boost/bind.hpp>
 
-using rw::common::PropertyMap;
+using rw::core::PropertyMap;
 using rw::kinematics::State;
 using namespace rw::math;
 using rw::trajectory::TimedState;
@@ -38,7 +38,7 @@ IntegratorRotationTest::IntegratorRotationTest() {
 IntegratorRotationTest::~IntegratorRotationTest() {
 }
 
-void IntegratorRotationTest::run(TestHandle::Ptr handle, const std::string& engineID, const PropertyMap& parameters, rw::common::Ptr<rwsim::log::SimulatorLogScope> verbose) {
+void IntegratorRotationTest::run(TestHandle::Ptr handle, const std::string& engineID, const PropertyMap& parameters, rw::core::Ptr<rwsim::log::SimulatorLogScope> verbose) {
 	static const InitCallback initCb( boost::bind(&IntegratorRotationTest::initialize, _1, _2) );
 	static const TestCallback cb( boost::bind(&IntegratorRotationTest::updateResults, _1) );
 	const double dt = parameters.get<double>("Timestep")/1000.;
@@ -62,7 +62,7 @@ DynamicWorkCell::Ptr IntegratorRotationTest::makeIntegratorDWC(const std::string
 	return dwc;
 }
 
-double IntegratorRotationTest::getExpectedEnergy(const rw::common::Ptr<const DynamicWorkCell> dwc) {
+double IntegratorRotationTest::getExpectedEnergy(const rw::core::Ptr<const DynamicWorkCell> dwc) {
 	State state = dwc->getWorkcell()->getDefaultState();
 	const RigidBody::Ptr rbody = dwc->findBody<RigidBody>("Object");
 	RW_ASSERT(!rbody.isNull());
@@ -70,7 +70,7 @@ double IntegratorRotationTest::getExpectedEnergy(const rw::common::Ptr<const Dyn
 	return rbody->calcEnergy(state);
 }
 
-void IntegratorRotationTest::initialize(rw::common::Ptr<const DynamicWorkCell> dwc, State& state) {
+void IntegratorRotationTest::initialize(rw::core::Ptr<const DynamicWorkCell> dwc, State& state) {
 	const RigidBody::Ptr rbody = dwc->findBody<RigidBody>("Object");
 	RW_ASSERT(!rbody.isNull());
 	rbody->setAngVelW(Vector3D<>(0,0,ANGULAR_VELOCITY),state);
@@ -80,7 +80,7 @@ void IntegratorRotationTest::updateResults(const EngineLoopInfo& info) {
 	// Extract info
 	const TestHandle::Ptr handle = info.handle;
 	const std::string& engineID = info.engineID;
-	const rw::common::Ptr<const DynamicWorkCell> dwc = info.dwc;
+	const rw::core::Ptr<const DynamicWorkCell> dwc = info.dwc;
 	const State& state = *info.state;
 	const double time = info.time;
 

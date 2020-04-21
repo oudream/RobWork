@@ -21,6 +21,7 @@
 #include <rw/math/Transform3D.hpp>
 #include <rw/math/Quaternion.hpp>
 #include <rw/math/InertiaMatrix.hpp>
+#include <rw/core/Ptr.hpp>
 #include <ode/ode.h>
 
 namespace rw { namespace geometry { class Geometry; } }
@@ -97,7 +98,7 @@ namespace simulator {
 
         struct TriMeshData {
         public:
-            typedef rw::common::Ptr<TriMeshData> Ptr;
+            typedef rw::core::Ptr<TriMeshData> Ptr;
 
             TriMeshData(int sizeI,int sizeV):
                 indices(sizeI*2,0),
@@ -141,9 +142,9 @@ namespace simulator {
         };
 
 
-        static TriMeshData::Ptr buildTriMesh(rw::common::Ptr<rw::geometry::GeometryData> gdata,bool invert = false);
+        static TriMeshData::Ptr buildTriMesh(rw::core::Ptr<rw::geometry::GeometryData> gdata,bool invert = false);
 
-        static std::vector<TriGeomData*> buildTriGeom(std::vector<rw::common::Ptr<rw::geometry::Geometry> > geoms,
+        static std::vector<TriGeomData*> buildTriGeom(std::vector<rw::core::Ptr<rw::geometry::Geometry> > geoms,
                                                       dSpaceID spaceid,
                                                       rw::kinematics::Frame* ref,
                                                       const rw::kinematics::State& state,

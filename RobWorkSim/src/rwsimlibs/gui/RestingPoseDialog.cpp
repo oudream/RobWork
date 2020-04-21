@@ -3,7 +3,7 @@
 #include <iostream>
 
 
-
+#include <rw/core/StringUtil.hpp>
 #include <rw/math/RPY.hpp>
 #include <rw/math/Math.hpp>
 #include <rw/math/Random.hpp>
@@ -19,7 +19,7 @@
 #include <rwsim/simulator/ThreadSimulator.hpp>
 
 #include <rw/common/TimerUtil.hpp>
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/proximity/CollisionDetector.hpp>
 #include <rw/loaders/path/PathLoader.hpp>
 #include <rwsim/loaders/ScapePoseFormat.hpp>
@@ -36,6 +36,7 @@ using namespace rwsim::simulator;
 using namespace rw::math;
 using namespace rw::kinematics;
 using namespace rw::common;
+using namespace rw::core;
 using namespace rw::proximity;
 using namespace rw::loaders;
 using namespace rw::trajectory;

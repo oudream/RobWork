@@ -24,7 +24,7 @@
  * \copydoc rw::geometry::Face
  */
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/geometry/OBB.hpp>
 #include <rw/math/Vector3D.hpp>
 #include <rw/math/Transform3D.hpp>
@@ -50,10 +50,10 @@ class TriMesh;
 class Face {
 public:
     //! @brief Smart pointer type to Face
-    typedef rw::common::Ptr<Face> Ptr;
+    typedef rw::core::Ptr<Face> Ptr;
 
     //! @brief Smart pointer type to const Face
-    typedef rw::common::Ptr<const Face> CPtr;
+    typedef rw::core::Ptr<const Face> CPtr;
 
     //! @brief Constructor.
 	Face();
@@ -107,7 +107,7 @@ public:
 	 * @param forceCopy [in] (not currently used in default implementation)
 	 * @return a new TriMesh.
 	 */
-	virtual rw::common::Ptr<TriMesh> getTriMesh(bool forceCopy=true) const;
+	virtual rw::core::Ptr<TriMesh> getTriMesh(bool forceCopy=true) const;
 
 	/**
 	 * @brief Find the extent of the surface along a specific direction.

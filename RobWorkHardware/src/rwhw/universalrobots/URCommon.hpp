@@ -22,7 +22,7 @@
 #include <rw/math/Q.hpp>
 #include <rw/common/types.hpp>
 #include <rw/common/TimerUtil.hpp>
-#include <rw/common/Log.hpp>
+#include <rw/core/Log.hpp>
 
 #include <boost/asio.hpp>
 

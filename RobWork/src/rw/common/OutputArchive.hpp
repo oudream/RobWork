@@ -18,8 +18,8 @@
 #ifndef RW_COMMON_OUTPUTARCHIVE_HPP
 #define RW_COMMON_OUTPUTARCHIVE_HPP
 
-#include "Archive.hpp"
-#include "Serializable.hpp"
+#include <rw/common/Archive.hpp>
+#include <rw/common/Serializable.hpp>
 #include <boost/cstdint.hpp>
 #include <boost/type_traits.hpp>
 

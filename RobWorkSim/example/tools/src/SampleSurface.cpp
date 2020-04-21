@@ -11,7 +11,7 @@
 #include <rwlibs/task/loader/TaskSaver.hpp>
 
 using namespace std;
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::geometry;
 using rw::loaders::GeometryFactory;
 using namespace rw::math;

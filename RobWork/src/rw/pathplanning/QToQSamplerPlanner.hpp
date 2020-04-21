@@ -41,7 +41,7 @@ namespace rw { namespace pathplanning {
     {
 	public:
 		//! @brief smart pointer type to this class
-		typedef rw::common::Ptr<QToQSamplerPlanner> Ptr;
+		typedef rw::core::Ptr<QToQSamplerPlanner> Ptr;
 
 	};
 

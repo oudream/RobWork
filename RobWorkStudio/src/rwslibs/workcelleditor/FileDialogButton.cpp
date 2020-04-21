@@ -17,9 +17,9 @@
 
 #include "FileDialogButton.hpp"
 #include <QFileDialog>
-#include <rw/common/StringUtil.hpp>
+#include <rw/core/StringUtil.hpp>
 
-using namespace rw::common;
+using namespace rw::core;
 
 FileDialogButton::FileDialogButton(QString path) : QPushButton() {
     setText("Select CAD File");

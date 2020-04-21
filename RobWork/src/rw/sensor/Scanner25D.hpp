@@ -21,7 +21,7 @@
 #include "Scanner.hpp"
 #include <rw/geometry/PointCloud.hpp>
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 namespace rw {
 namespace sensor {
@@ -40,7 +40,7 @@ class Scanner25D: public Scanner
 {
 public:
 	//! @brief smart pointer type to this class
-	typedef rw::common::Ptr<Scanner25D> Ptr;
+	typedef rw::core::Ptr<Scanner25D> Ptr;
 
 protected:
 

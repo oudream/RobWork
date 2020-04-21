@@ -21,7 +21,8 @@
 
 #include <RobWorkConfig.hpp>
 
-#include <rw/common/PropertyMap.hpp>
+#include <rw/core/PropertyMap.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/trajectory/Path.hpp>
 #include <rw/math/Metric.hpp>
 //#include <rw/models/WorkCell.hpp>
@@ -59,9 +60,9 @@ namespace pathoptimization {
 class ClearanceOptimizer {
 public:
 	//! @brief smart pointer type to this class
-	typedef rw::common::Ptr<ClearanceOptimizer> Ptr;
+	typedef rw::core::Ptr<ClearanceOptimizer> Ptr;
 	//! @brief smart pointer type to this const class
-	typedef rw::common::Ptr< const ClearanceOptimizer > CPtr;
+	typedef rw::core::Ptr< const ClearanceOptimizer > CPtr;
 
     /**
      * @brief Deleted default constructor.
@@ -80,10 +81,10 @@ public:
      * @param metric [in] Metric to use for computing distance betweem configurations
      * @param clearanceCalculator [in] Calculator for calculating the clearance
      */
-	ClearanceOptimizer(const rw::common::Ptr< const rw::models::Device >& device,
+	ClearanceOptimizer(const rw::core::Ptr< const rw::models::Device >& device,
 		const rw::kinematics::State& state,
 		const rw::math::QMetric::CPtr& metric,
-		const rw::common::Ptr< const ClearanceCalculator >& clearanceCalculator);
+		const rw::core::Ptr< const ClearanceCalculator >& clearanceCalculator);
 
     /**
      * @brief Destructor
@@ -138,14 +139,14 @@ public:
 	 *
      * @return The PropertyMap
      */
-	rw::common::PropertyMap& getPropertyMap();
+	rw::core::PropertyMap& getPropertyMap();
 
     /**
      * @brief Returns the ClearanceCalculator associated with the optimizer.
      *
      * @return Const reference to the ClearanceCalculator.
      */
-    const rw::common::Ptr< const ClearanceCalculator>& getClearanceCalculator() const;
+    const rw::core::Ptr< const ClearanceCalculator>& getClearanceCalculator() const;
     
 	/**
 	 * @brief Sets the minimum clearance optimized for.
@@ -170,7 +171,7 @@ public:
 	*
 	* @param stateConstraint [in] the constraint.
 	*/
-	void setStateConstraint(const rw::common::Ptr< const rw::pathplanning::StateConstraint >& stateConstraint);
+	void setStateConstraint(const rw::core::Ptr< const rw::pathplanning::StateConstraint >& stateConstraint);
 
 	/**
 	* @brief Set a configuration constraint in the clearance optimizer.
@@ -179,7 +180,7 @@ public:
 	*
 	* @param qConstraint [in] the constraint.
 	*/
-	void setQConstraint(const rw::common::Ptr< const rw::pathplanning::QConstraint >& qConstraint);
+	void setQConstraint(const rw::core::Ptr< const rw::pathplanning::QConstraint >& qConstraint);
 
 private:
 
@@ -214,24 +215,24 @@ private:
 	//Returns a random direction
 	rw::math::Q randomDirection() const;
 
-	rw::common::PropertyMap _propertymap;
+	rw::core::PropertyMap _propertymap;
 
 	//rw::models::WorkCell::Ptr _workcell;
-	rw::common::Ptr< const rw::models::Device > _device = nullptr;
+	rw::core::Ptr< const rw::models::Device > _device = nullptr;
 	rw::kinematics::State _state;
 	rw::math::QMetric::CPtr _metric = nullptr;
-	rw::common::Ptr< const ClearanceCalculator> _clearanceCalculator = nullptr;
+	rw::core::Ptr< const ClearanceCalculator> _clearanceCalculator = nullptr;
 	double _stepsize;
 	size_t _dof;
 
 	//! @brief Value determining the clearance needed for a path being OK.
     double _minClearance = 0.1;
 	//! @brief Used to determine if a state is allowed or not.
-	rw::common::Ptr< const rw::pathplanning::StateConstraint > _stateConstraint = nullptr;
+	rw::core::Ptr< const rw::pathplanning::StateConstraint > _stateConstraint = nullptr;
 	//! @brief Used to determine if a configuration is allowed or not.
-	rw::common::Ptr< const rw::pathplanning::QConstraint > _qConstraintUser = nullptr;
+	rw::core::Ptr< const rw::pathplanning::QConstraint > _qConstraintUser = nullptr;
 	//! @brief Used to determine if a configuration is within device limits.
-	rw::common::Ptr< const rw::pathplanning::QConstraint > _qConstraint = nullptr;
+	rw::core::Ptr< const rw::pathplanning::QConstraint > _qConstraint = nullptr;
 };
 
 /** @} */

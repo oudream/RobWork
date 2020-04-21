@@ -24,6 +24,7 @@
 #include <Eigen/Eigen>
 
 #include <rw/graphics/Render.hpp>
+#include <rw/core/Ptr.hpp>
 
 namespace rwlibs { namespace opengl {
 
@@ -41,7 +42,7 @@ namespace rwlibs { namespace opengl {
 
     public:
         //! @brief smart pointer type to this class
-        typedef rw::common::Ptr<RenderMatrix> Ptr;
+        typedef rw::core::Ptr<RenderMatrix> Ptr;
 
         /**
          * @brief Constructs a RenderMatrix

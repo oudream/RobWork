@@ -8,7 +8,7 @@
 #ifndef SRC_RW_MATH_FUNCTIONWRAPPER_HPP_
 #define SRC_RW_MATH_FUNCTIONWRAPPER_HPP_
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/math/Function.hpp>
 #include <boost/function.hpp>
 
@@ -25,7 +25,7 @@ template<class RES_T = double, class ARG_T = double>
 class FunctionWrapper: virtual public Function<RES_T, ARG_T> {
 public:
 	//! Smart pointer type
-	typedef rw::common::Ptr<FunctionWrapper> Ptr;
+	typedef rw::core::Ptr<FunctionWrapper> Ptr;
 
 public:
 	/**
@@ -67,7 +67,7 @@ class Function1DiffWrapper: public FunctionWrapper<RES_T, ARG_T>,
 		virtual public Function1Diff<RES_T, ARG_T, GRAD_T> {
 public:
 	//! Smart pointer type
-	typedef rw::common::Ptr<Function1DiffWrapper> Ptr;
+	typedef rw::core::Ptr<Function1DiffWrapper> Ptr;
 
 public:
 	/**

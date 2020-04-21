@@ -24,7 +24,7 @@
  */
 
 #include <rw/math/Transform3D.hpp>
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include "DrawableNode.hpp"
 
@@ -53,7 +53,7 @@ namespace rw { namespace graphics {
     public:
 
         //! @brief smart pointer type to this class
-        typedef rw::common::Ptr<DrawableNodeClone> Ptr;
+        typedef rw::core::Ptr<DrawableNodeClone> Ptr;
 
         /**
          * @brief constructor

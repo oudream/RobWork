@@ -37,7 +37,7 @@ namespace geometry {
 class GenericFace: public Face {
 public:
     //! @brief Smart pointer type to GenericFace
-    typedef rw::common::Ptr<GenericFace> Ptr;
+    typedef rw::core::Ptr<GenericFace> Ptr;
 
     //! @brief Constructor.
 	GenericFace();
@@ -73,7 +73,7 @@ public:
 	 * @brief Set surface.
 	 * @param surface [in] the surface.
 	 */
-	void setSurface(rw::common::Ptr<const Surface> surface) { _surface = surface; }
+	void setSurface(rw::core::Ptr<const Surface> surface) { _surface = surface; }
 
 	/**
 	 * @brief Set surface.
@@ -86,13 +86,13 @@ public:
 	 * @param vertex [in] the start vertex.
 	 * @param curve [in] the curve.
 	 */
-	void setCurve(std::size_t vertex, rw::common::Ptr<const Curve> curve);
+	void setCurve(std::size_t vertex, rw::core::Ptr<const Curve> curve);
 
 	/**
 	 * @brief Set the curves.
 	 * @param curves [in] vector of directed curves.
 	 */
-	void setCurves(const std::vector<rw::common::Ptr<const Curve> >& curves);
+	void setCurves(const std::vector<rw::core::Ptr<const Curve> >& curves);
 
 	/**
 	 * @brief Set vertex.
@@ -108,8 +108,8 @@ public:
 	void setVertices(const std::vector<rw::math::Vector3D<> >& vertices);
 
 private:
-	rw::common::Ptr<const Surface> _surface;
-	std::vector<rw::common::Ptr<const Curve> > _curves;
+	rw::core::Ptr<const Surface> _surface;
+	std::vector<rw::core::Ptr<const Curve> > _curves;
 	std::vector<rw::math::Vector3D<> > _vertices;
 };
 //! @}

@@ -21,7 +21,7 @@
 #include "UniversalRobotsData.hpp"
 #include "URMessage.hpp"
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <boost/asio.hpp>
 #include <boost/system/error_code.hpp>
 #include <boost/thread.hpp>
@@ -36,7 +36,7 @@ namespace rwhw {
 class URPrimaryInterface  {
 
 public:
-	typedef rw::common::Ptr<URPrimaryInterface> Ptr;
+	typedef rw::core::Ptr<URPrimaryInterface> Ptr;
 
 	/**
 	 * @brief Creates object
@@ -51,7 +51,7 @@ public:
 	/**
 	 * @brief Connect to the UR
 	 *
-	 * Throws a rw::common::Exception if failing to connect
+	 * Throws a rw::core::Exception if failing to connect
 	 * @param host [in] IP address of the UR
 	 * @param port [in] Port for connecting to the UR. Defaults to 30002.
 	 */
@@ -135,7 +135,7 @@ private:
 	long _lastPackageTime;
 
 
-	rw::common::Ptr<boost::thread> _thread;
+	rw::core::Ptr<boost::thread> _thread;
 	mutable boost::mutex _mutex;
 	bool _stop;
 	void run();

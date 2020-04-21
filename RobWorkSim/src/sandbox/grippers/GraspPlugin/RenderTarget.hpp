@@ -17,7 +17,7 @@ class RenderTargets: public rw::graphics::Render
 {
 	public:
 		//! @brief smart pointer type to this class
-		typedef rw::common::Ptr<RenderTargets> Ptr;
+		typedef rw::core::Ptr<RenderTargets> Ptr;
 
 		struct Target {
 			GLfloat color[4];

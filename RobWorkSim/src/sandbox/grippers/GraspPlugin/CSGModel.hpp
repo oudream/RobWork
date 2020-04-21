@@ -11,7 +11,7 @@
 
 
 #include <iostream>
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/math/Vector3D.hpp>
 #include <rw/math/Transform3D.hpp>
 #include <rw/geometry/TriMesh.hpp>
@@ -29,7 +29,7 @@ namespace rw {
 		{
 			public:
 				//! @brief Smart pointer to this type of class
-				typedef rw::common::Ptr<CSGModel> Ptr;
+				typedef rw::core::Ptr<CSGModel> Ptr;
 		
 				// constructors
 				/** @brief Constructor. */

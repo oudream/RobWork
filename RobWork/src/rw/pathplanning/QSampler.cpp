@@ -24,7 +24,7 @@
 #include <rw/math/Math.hpp>
 
 using namespace rw::math;
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::models;
 using namespace rw::pathplanning;
 using namespace rw::kinematics;

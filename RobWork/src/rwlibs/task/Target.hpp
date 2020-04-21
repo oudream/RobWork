@@ -22,7 +22,7 @@
 #include "Entity.hpp"
 #include "TypeRepository.hpp"
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include <rw/math/Q.hpp>
 #include <rw/math/Transform3D.hpp>
@@ -44,7 +44,7 @@ class TargetBase: public Entity
 {
 public:
 	//! @brief smart pointer type to this class
-    typedef rw::common::Ptr<TargetBase> Ptr;
+    typedef rw::core::Ptr<TargetBase> Ptr;
 
     /**
      * @brief Constructs TargetBase with a given type
@@ -73,7 +73,7 @@ public:
      *
      * The user need to provide the type as template argument.
      *
-     * May throw a rw::common::Exception if type conversion is invalid.
+     * May throw a rw::core::Exception if type conversion is invalid.
      * @return Value of target
      */
     template <class T>
@@ -92,7 +92,7 @@ class Target: public TargetBase
 {
 public:
 	//! @brief smart pointer type to this class
-    typedef rw::common::Ptr<Target<T> > Ptr;
+    typedef rw::core::Ptr<Target<T> > Ptr;
     /**
      * @brief Construct Target with value \b value.
      * @param value [in] Value of target
@@ -119,8 +119,8 @@ public:
      * @brief Make a copy of the target.
      * @return new identical target.
      */
-    rw::common::Ptr<Target<T> > clone() {
-    	return rw::common::ownedPtr(new Target<T>(*this));
+    rw::core::Ptr<Target<T> > clone() {
+    	return rw::core::ownedPtr(new Target<T>(*this));
     }
 
 private:

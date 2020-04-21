@@ -23,7 +23,7 @@
    @file QIKSampler.hpp
 */
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/math/Q.hpp>
 #include <rw/math/Transform3D.hpp>
 
@@ -46,9 +46,9 @@ namespace rw { namespace pathplanning {
     {
     public:
 		//! @brief smart pointer type to this class
-		typedef rw::common::Ptr<QIKSampler> Ptr;
+		typedef rw::core::Ptr<QIKSampler> Ptr;
 		//! @brief smart pointer type to this const class
-		typedef rw::common::Ptr< const QIKSampler > CPtr;
+		typedef rw::core::Ptr< const QIKSampler > CPtr;
 
         /**
            @brief Sample a configuration that solves an IK problem for \b
@@ -90,10 +90,10 @@ namespace rw { namespace pathplanning {
            maxAttempts is chosen.
         */
 		static QIKSampler::Ptr make(
-			rw::common::Ptr<rw::models::Device> device,
+			rw::core::Ptr<rw::models::Device> device,
             const rw::kinematics::State& state,
-			rw::common::Ptr<rw::invkin::IterativeIK> solver = NULL,
-			rw::common::Ptr<QSampler> seed = NULL,
+			rw::core::Ptr<rw::invkin::IterativeIK> solver = NULL,
+			rw::core::Ptr<QSampler> seed = NULL,
             int maxAttempts = -1);
 
         /**
@@ -110,7 +110,7 @@ namespace rw { namespace pathplanning {
         */
         static QIKSampler::Ptr makeConstrained(
 		    QIKSampler::Ptr sampler,
-			rw::common::Ptr<QConstraint> constraint,
+			rw::core::Ptr<QConstraint> constraint,
             int maxAttempts = -1);
 
     protected:

@@ -43,7 +43,7 @@ namespace rw { namespace kinematics {
     {
     public:
 		//! @brief smart pointer type to this class
-		typedef rw::common::Ptr<MovableFrame> Ptr;
+		typedef rw::core::Ptr<MovableFrame> Ptr;
 
 
         /**

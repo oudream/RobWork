@@ -27,6 +27,7 @@
 #include <rw/graphics/Render.hpp>
 #include <rw/math/VelocityScrew6D.hpp>
 #include <rwlibs/os/rwgl.hpp>
+#include <rw/core/Ptr.hpp>
 
 namespace rwlibs {
 namespace opengl {
@@ -37,7 +38,7 @@ namespace opengl {
 class RenderVelocity: public rw::graphics::Render {
 public:
 	//! @brief smart pointer type to this class
-	typedef rw::common::Ptr<RenderVelocity> Ptr;
+	typedef rw::core::Ptr<RenderVelocity> Ptr;
 
 	//! @brief Constructor
 	RenderVelocity();

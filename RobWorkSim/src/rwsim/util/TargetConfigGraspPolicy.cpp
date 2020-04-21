@@ -22,7 +22,7 @@
 #include <rwsim/dynamics/DynamicDevice.hpp>
 
 using namespace rw::math;
-using namespace rw::common;
+using namespace rw::core;
 using namespace rwlibs::control;
 using namespace rwsim::util;
 using namespace rwsim::control;

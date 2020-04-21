@@ -22,6 +22,8 @@
 
 #include <rw/kinematics/FrameMap.hpp>
 #include <rw/kinematics/FramePairMap.hpp>
+#include <rw/core/Ptr.hpp>
+#include <rw/core/PropertyMap.hpp>
 
 #include <rwsim/dynamics/DynamicWorkCell.hpp>
 #include <rwsim/dynamics/MaterialDataMap.hpp>
@@ -109,7 +111,7 @@ namespace simulator {
 		//! type of broad phase collision detection to use
 		typedef enum{Simple, HashTable, QuadTree} SpaceType;
 		//! smart pointer type
-		typedef rw::common::Ptr<ODESimulator> Ptr;
+		typedef rw::core::Ptr<ODESimulator> Ptr;
 
 		//! empty constructor
         ODESimulator();
@@ -119,7 +121,7 @@ namespace simulator {
 		 * @param dwc [in] the dynamic workcell for which the simulator should work
 		 * @param detector [in] the contact detector to use
 		 */
-		ODESimulator(dynamics::DynamicWorkCell::Ptr dwc, rw::common::Ptr<rwsim::contacts::ContactDetector> detector = NULL);
+		ODESimulator(dynamics::DynamicWorkCell::Ptr dwc, rw::core::Ptr<rwsim::contacts::ContactDetector> detector = NULL);
 
 		/**
 		 * @brief destructor
@@ -130,7 +132,7 @@ namespace simulator {
 		void load(rwsim::dynamics::DynamicWorkCell::Ptr dwc);
 
 		//! @copydoc PhysicsEngine::setContactDetector
-		bool setContactDetector(rw::common::Ptr<rwsim::contacts::ContactDetector> detector);
+		bool setContactDetector(rw::core::Ptr<rwsim::contacts::ContactDetector> detector);
 
 		/**
 		 * @brief sets the ODE step method that should be used for stepping
@@ -178,7 +180,7 @@ namespace simulator {
 		drawable::SimulatorDebugRender::Ptr createDebugRender();
 
 		//! @copydoc rwsim::simulator::PhysicsEngine::getPropertyMap
-		virtual rw::common::PropertyMap& getPropertyMap(){ return _propertyMap;};
+		virtual rw::core::PropertyMap& getPropertyMap(){ return _propertyMap;};
 
 		//! @copydoc rwsim::simulator::PhysicsEngine::emitPropertyChanged
 		void emitPropertyChanged();
@@ -377,7 +379,7 @@ namespace simulator {
 
 		dynamics::DynamicWorkCell::Ptr _dwc;
 		double _time;
-        rw::common::Ptr<ODEDebugRender> _render;
+        rw::core::Ptr<ODEDebugRender> _render;
         std::vector<dContact> _contacts;
         std::vector<dContact> _filteredContacts;
         std::vector<dynamics::ContactPoint> _rwcontacts;
@@ -438,7 +440,7 @@ namespace simulator {
 
 		std::vector<ODEUtil::TriGeomData*> _triGeomDatas;
 
-		rw::common::PropertyMap _propertyMap;
+		rw::core::PropertyMap _propertyMap;
 
 		// ENGINE specific properties
 		int _maxIter;
@@ -462,11 +464,11 @@ namespace simulator {
 
 		bool _isSimulatorInitialized;
 
-		rw::common::Ptr<rw::proximity::BasicFilterStrategy> _bpstrategy;
-		rw::kinematics::FrameMap<rw::common::Ptr<rw::proximity::ProximityModel> > _frameToModels;
+		rw::core::Ptr<rw::proximity::BasicFilterStrategy> _bpstrategy;
+		rw::kinematics::FrameMap<rw::core::Ptr<rw::proximity::ProximityModel> > _frameToModels;
 		boost::mutex _contactMutex;
 
-		rw::common::Ptr<rwsim::contacts::ContactDetector> _detector;
+		rw::core::Ptr<rwsim::contacts::ContactDetector> _detector;
 
         bool _logContactingBodies;
         std::vector<boost::tuple<std::string, std::string, dynamics::ContactPoint> > _contactPoints, _contactPointsTmp;

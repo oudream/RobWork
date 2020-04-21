@@ -28,7 +28,7 @@ using namespace rw::kinematics;
 using namespace rw::math;
 using namespace rw::models;
 
-ClosedFormIKSolverKukaIIWA::ClosedFormIKSolverKukaIIWA(const rw::common::Ptr<const rw::models::SerialDevice> device, const State& state):
+ClosedFormIKSolverKukaIIWA::ClosedFormIKSolverKukaIIWA(const rw::core::Ptr<const rw::models::SerialDevice> device, const State& state):
 	_device(device),
 	_checkJointLimits(true),
 	_qLow(device->getBounds().first),

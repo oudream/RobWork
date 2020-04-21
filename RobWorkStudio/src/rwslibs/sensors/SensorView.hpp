@@ -20,7 +20,7 @@
 
 #include <QWidget>
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 namespace rw { namespace sensor { class Camera; } }
 namespace rwlibs { namespace opengl { class RenderScan; } }
@@ -36,7 +36,7 @@ class SensorView: public QWidget {
     Q_OBJECT
 public:
 	//! @brief Smart pointer type for SensorView.
-	typedef rw::common::Ptr<SensorView> Ptr;
+	typedef rw::core::Ptr<SensorView> Ptr;
 
 	/**
 	 * @brief Construct new widget.
@@ -81,7 +81,7 @@ public:
 	 * @param camera [in] the camera sensor.
 	 * @param parent [in] owner widget.
 	 */
-	CameraView(rw::common::Ptr<rw::sensor::Camera> camera, QWidget* parent = NULL);
+	CameraView(rw::core::Ptr<rw::sensor::Camera> camera, QWidget* parent = NULL);
 
 	//! @copydoc SensorView::update
     virtual void update();
@@ -90,7 +90,7 @@ public:
     virtual void makeCurrent() {}
 
 private:
-	rw::common::Ptr<rw::sensor::Camera> _camera;
+	rw::core::Ptr<rw::sensor::Camera> _camera;
     ImageView* _pImageView;    
 };
 
@@ -108,7 +108,7 @@ public:
      * @brief Initialize view.
      * @param scanner [in] the simulated scanner.
      */
-	virtual void initialize(rw::common::Ptr<rwlibs::simulation::SimulatedScanner25D> scanner);
+	virtual void initialize(rw::core::Ptr<rwlibs::simulation::SimulatedScanner25D> scanner);
 
 	//! @copydoc SensorView::update
     virtual void update();
@@ -117,8 +117,8 @@ public:
     virtual void makeCurrent();
 
 private:
-    rw::common::Ptr<rwlibs::simulation::SimulatedScanner25D> _scanner;
-    rw::common::Ptr<rwlibs::opengl::RenderScan> _scanRender;
+    rw::core::Ptr<rwlibs::simulation::SimulatedScanner25D> _scanner;
+    rw::core::Ptr<rwlibs::opengl::RenderScan> _scanRender;
 	ImageView* _pImageView;
 
 };
@@ -136,7 +136,7 @@ public:
      * @brief Initialize view.
      * @param scanner [in] the simulated scanner.
      */
-    virtual void initialize(rw::common::Ptr<rwlibs::simulation::SimulatedScanner2D> scanner);
+    virtual void initialize(rw::core::Ptr<rwlibs::simulation::SimulatedScanner2D> scanner);
 
 	//! @copydoc SensorView::update
     virtual void update();
@@ -145,8 +145,8 @@ public:
     virtual void makeCurrent();
 
 private:
-    rw::common::Ptr<rwlibs::simulation::SimulatedScanner2D> _scanner;
-	rw::common::Ptr<rwlibs::opengl::RenderScan> _scanRender;
+    rw::core::Ptr<rwlibs::simulation::SimulatedScanner2D> _scanner;
+	rw::core::Ptr<rwlibs::opengl::RenderScan> _scanRender;
 	ImageView* _pImageView;
 
 };

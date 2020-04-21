@@ -23,7 +23,7 @@
    @file QSampler.hpp
 */
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/math/Q.hpp>
 #include <rw/math/Transform3D.hpp>
 #include <rw/models/Device.hpp>
@@ -45,9 +45,9 @@ namespace rw { namespace pathplanning {
     {
     public:
 		//! @brief smart pointer type to this class
-		typedef rw::common::Ptr<QSampler> Ptr;
+		typedef rw::core::Ptr<QSampler> Ptr;
 		//! @brief smart pointer type to this const class
-		typedef rw::common::Ptr< const QSampler > CPtr;
+		typedef rw::core::Ptr< const QSampler > CPtr;
 
         /**
            @brief Sample a configuration.
@@ -138,7 +138,7 @@ namespace rw { namespace pathplanning {
            @param sampler [in] Sampler of IK solutions for \b target.
            @param target [in] Target for IK solver.
         */
-		static QSampler::Ptr make(rw::common::Ptr<QIKSampler> sampler,
+		static QSampler::Ptr make(rw::core::Ptr<QIKSampler> sampler,
             const rw::math::Transform3D<>& target);
 
         /**
@@ -155,7 +155,7 @@ namespace rw { namespace pathplanning {
         */
 		static QSampler::Ptr makeConstrained(
 			QSampler::Ptr sampler,
-			rw::common::Ptr<const QConstraint> constraint,
+			rw::core::Ptr<const QConstraint> constraint,
             int maxAttempts = -1);
 
         /**

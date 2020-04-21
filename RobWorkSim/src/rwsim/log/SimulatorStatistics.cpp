@@ -40,7 +40,7 @@ void SimulatorStatistics::update() {
 	const std::vector<SimulatorLog::Ptr> children = _log->getChildren();
 	for(const SimulatorLog::Ptr child : children) {
 		if (const SimulatorLogScope::Ptr scope = child.cast<SimulatorLogScope>()) {
-			const rw::common::Ptr<const SimulatorStatistics> stats = scope->getStatistics();
+			const rw::core::Ptr<const SimulatorStatistics> stats = scope->getStatistics();
 			if (!stats.isNull()) {
 				const DataSeries& prop = stats->getPropagated();
 				for (DataSeries::const_iterator it = prop.begin(); it != prop.end(); it++) {
@@ -50,7 +50,7 @@ void SimulatorStatistics::update() {
 				}
 			}
 		} else if (child.cast<LogValues>()) {
-			const rw::common::Ptr<const LogValues> values = child.cast<const LogValues>();
+			const rw::core::Ptr<const LogValues> values = child.cast<const LogValues>();
 			const std::vector<double>& val = values->getValues();
 			const std::vector<std::string>& labels = values->getLabels();
 			RW_ASSERT(val.size() == labels.size());

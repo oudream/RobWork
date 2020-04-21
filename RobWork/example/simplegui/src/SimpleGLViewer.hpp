@@ -17,7 +17,7 @@ class Menu;
 class SimpleGLViewer: public rw::graphics::SceneViewer {
     public:
     	//! @brief smart pointer type to this class
-    	typedef rw::common::Ptr<SimpleGLViewer> Ptr;
+    	typedef rw::core::Ptr<SimpleGLViewer> Ptr;
 
         //! @brief Constructor.
 		SimpleGLViewer();
@@ -35,7 +35,7 @@ class SimpleGLViewer: public rw::graphics::SceneViewer {
         virtual void setLogo(const std::string& string);
 
         //! @copydoc rw::graphics::SceneViewer::getPropertyMap
-        virtual rw::common::PropertyMap& getPropertyMap();
+        virtual rw::core::PropertyMap& getPropertyMap();
 
         //! @copydoc rw::graphics::SceneViewer::updateView
         virtual void updateView();
@@ -99,7 +99,7 @@ class SimpleGLViewer: public rw::graphics::SceneViewer {
 
         void setKeyListener(EventListener *listener);
 
-        void setWorkcell(rw::common::Ptr<rw::models::WorkCell> workcell);
+        void setWorkcell(rw::core::Ptr<rw::models::WorkCell> workcell);
 
         const rw::kinematics::State& getState();
 
@@ -122,11 +122,11 @@ class SimpleGLViewer: public rw::graphics::SceneViewer {
         InternalData* const _data;
 
     private:
-        rw::common::Ptr<rwlibs::opengl::SceneOpenGL> _scene;
+        rw::core::Ptr<rwlibs::opengl::SceneOpenGL> _scene;
         rw::graphics::GroupNode::Ptr _worldNode;
-        rw::common::Ptr<rw::kinematics::State> _state;
+        rw::core::Ptr<rw::kinematics::State> _state;
 
-        rw::common::Ptr<rw::models::WorkCell> _wc;
+        rw::core::Ptr<rw::models::WorkCell> _wc;
 
         std::map<int,Menu*> _menuMap;
 };

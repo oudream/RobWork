@@ -20,8 +20,8 @@
 
 #include "ProximitySetupRule.hpp"
 
-#include <rw/common/Ptr.hpp>
-#include <rw/common/PropertyMap.hpp>
+#include <rw/core/Ptr.hpp>
+#include <rw/core/PropertyMap.hpp>
 
 #include <string>
 #include <vector>
@@ -125,11 +125,11 @@ public:
 	}
 
     static ProximitySetup get(const rw::models::WorkCell& wc);
-    static ProximitySetup get(rw::common::Ptr<rw::models::WorkCell> wc);
-    static ProximitySetup get(const rw::common::PropertyMap& map);
+    static ProximitySetup get(rw::core::Ptr<rw::models::WorkCell> wc);
+    static ProximitySetup get(const rw::core::PropertyMap& map);
 
-    static void set(const ProximitySetup& setup, rw::common::Ptr<rw::models::WorkCell> wc);
-    static void set(const ProximitySetup& setup, rw::common::PropertyMap& map);
+    static void set(const ProximitySetup& setup, rw::core::Ptr<rw::models::WorkCell> wc);
+    static void set(const ProximitySetup& setup, rw::core::PropertyMap& map);
 
 private:
 	std::vector<ProximitySetupRule> _rules;

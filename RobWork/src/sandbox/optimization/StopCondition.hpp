@@ -10,6 +10,7 @@
 
 #include <limits>
 #include "Optimizer.hpp"
+#include <rw/core/Ptr.hpp>
 
 namespace rwlibs {
 namespace optimization {
@@ -18,7 +19,7 @@ namespace optimization {
 class Optimizer;
 
 namespace {
-typedef rw::common::Ptr<Optimizer> OptimizerPtr;
+typedef rw::core::Ptr<Optimizer> OptimizerPtr;
 }
 
 /** @addtogroup optimization */
@@ -30,7 +31,7 @@ typedef rw::common::Ptr<Optimizer> OptimizerPtr;
 class StopCondition {
 public:
 	//! Smart pointer.
-	typedef rw::common::Ptr<StopCondition> Ptr;
+	typedef rw::core::Ptr<StopCondition> Ptr;
 
 public:
 	/**

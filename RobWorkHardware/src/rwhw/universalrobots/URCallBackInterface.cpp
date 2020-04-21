@@ -19,12 +19,12 @@
 #include "URCommon.hpp"
 #include <rw/math/Transform3D.hpp>
 #include <rw/math/EAA.hpp>
-#include <rw/common/Log.hpp>
+#include <rw/core/Log.hpp>
 #include <fstream>
 
 #include "urscript.hpp"
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::math;
 using namespace rwhw; 
 using namespace boost::asio::ip;

@@ -22,7 +22,7 @@
 #include "DependentJoint.hpp"
 
 
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 #include <rw/kinematics/FKTable.hpp>
 #include <rw/kinematics/Kinematics.hpp>
 #include <rw/math/Jacobian.hpp>

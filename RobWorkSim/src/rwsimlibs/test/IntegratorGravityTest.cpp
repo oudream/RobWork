@@ -22,7 +22,7 @@
 
 #include <boost/bind.hpp>
 
-using rw::common::PropertyMap;
+using rw::core::PropertyMap;
 using rw::kinematics::State;
 using namespace rw::math;
 using rw::trajectory::TimedState;
@@ -36,7 +36,7 @@ IntegratorGravityTest::IntegratorGravityTest() {
 IntegratorGravityTest::~IntegratorGravityTest() {
 }
 
-void IntegratorGravityTest::run(TestHandle::Ptr handle, const std::string& engineID, const PropertyMap& parameters, rw::common::Ptr<rwsim::log::SimulatorLogScope> verbose) {
+void IntegratorGravityTest::run(TestHandle::Ptr handle, const std::string& engineID, const PropertyMap& parameters, rw::core::Ptr<rwsim::log::SimulatorLogScope> verbose) {
 	static const TestCallback cb( boost::bind(&IntegratorGravityTest::updateResults, _1) );
 	const double dt = parameters.get<double>("Timestep")/1000.;
 
@@ -61,7 +61,7 @@ void IntegratorGravityTest::updateResults(const EngineLoopInfo& info) {
 	// Extract info
 	const TestHandle::Ptr handle = info.handle;
 	const std::string& engineID = info.engineID;
-	const rw::common::Ptr<const DynamicWorkCell> dwc = info.dwc;
+	const rw::core::Ptr<const DynamicWorkCell> dwc = info.dwc;
 	const State& state = *info.state;
 	const double time = info.time;
 	const double dt = info.dt;

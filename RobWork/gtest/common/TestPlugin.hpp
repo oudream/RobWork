@@ -15,13 +15,13 @@
  * limitations under the License.
  ********************************************************************************/
 
-#include <rw/common/Plugin.hpp>
+#include <rw/core/Plugin.hpp>
 
-class TestPlugin: public rw::common::Plugin {
+class TestPlugin: public rw::core::Plugin {
 public:
 	TestPlugin();
 	virtual ~TestPlugin();
-    std::vector<rw::common::Extension::Descriptor> getExtensionDescriptors();
-    rw::common::Ptr<rw::common::Extension> makeExtension(const std::string& id);
+    std::vector<rw::core::Extension::Descriptor> getExtensionDescriptors();
+    rw::core::Ptr<rw::core::Extension> makeExtension(const std::string& id);
     std::vector<std::string> getExtensionPointIDs();
 };

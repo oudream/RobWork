@@ -36,7 +36,7 @@ namespace sensor {
 class TactileArray : public Sensor {
 public:
     //! smart pointer type
-    typedef rw::common::Ptr<TactileArray> Ptr;
+    typedef rw::core::Ptr<TactileArray> Ptr;
 
     //! type of tactile array readings
     typedef TactileArrayModel::ValueMatrix ValueMatrix;

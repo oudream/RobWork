@@ -17,7 +17,7 @@ namespace control {
 	class RigidBodyGenerator: public rwlibs::simulation::SimulatedController {
 	public:
 
-	    typedef rw::common::Ptr<RigidBodyGenerator> Ptr;
+	    typedef rw::core::Ptr<RigidBodyGenerator> Ptr;
 
 
 	    /**

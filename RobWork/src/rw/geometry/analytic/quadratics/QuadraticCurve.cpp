@@ -23,7 +23,7 @@
 
 #include <limits>
 
-using rw::common::ownedPtr;
+using rw::core::ownedPtr;
 using namespace rw::math;
 using namespace rw::geometry;
 

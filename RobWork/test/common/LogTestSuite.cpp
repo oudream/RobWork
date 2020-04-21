@@ -17,11 +17,12 @@
 
 #include "../TestSuiteConfig.hpp"
 
-#include <rw/common/Log.hpp>
-#include <rw/common/LogStreamWriter.hpp>
+#include <rw/core/Log.hpp>
+#include <rw/core/LogStreamWriter.hpp>
 #include <rw/common/LogBufferedMsg.hpp>
 //#include <rw/common/LogBufferedChar.hpp>
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
+#include <rw/core/Ptr.hpp>
 #include <sstream>
 
 #include <iostream>
@@ -29,6 +30,7 @@
 using namespace boost;
 
 using namespace rw::common;
+using namespace rw::core;
 
 BOOST_AUTO_TEST_CASE(LogTest) {
     /**

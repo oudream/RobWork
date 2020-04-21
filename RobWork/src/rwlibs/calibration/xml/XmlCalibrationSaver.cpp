@@ -17,15 +17,15 @@
 
 #include "XmlCalibrationSaver.hpp"
 
-#include <rw/common/DOMElem.hpp>
-#include <rw/common/DOMParser.hpp>
+#include <rw/core/DOMElem.hpp>
+#include <rw/core/DOMParser.hpp>
 
 #include <rw/loaders/dom/DOMBasisTypes.hpp>
 
 #include <rwlibs/calibration/WorkCellCalibration.hpp>
 #include <rwlibs/calibration/FixedFrameCalibration.hpp>
 using namespace rwlibs::calibration;
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::loaders;
 using namespace rw::math;
 using namespace rw;

@@ -22,6 +22,9 @@
 #include <map>
 
 #include <rw/models/WorkCell.hpp>
+#include <rw/core/PropertyMap.hpp>
+#include <rw/core/Ptr.hpp>
+#include <rw/core/Event.hpp>
 
 #include "Body.hpp"
 #include "Constraint.hpp"
@@ -82,9 +85,9 @@ namespace dynamics {
         //! @brief Type for the collection of simulated sensors.
         typedef std::vector<rwlibs::simulation::SimulatedSensor::Ptr> SensorList;
         //! @brief Smart pointer type for DynamicWorkCell.
-        typedef rw::common::Ptr<DynamicWorkCell> Ptr;
+        typedef rw::core::Ptr<DynamicWorkCell> Ptr;
         //! @brief Smart pointer type for const DynamicWorkCell.
-        typedef rw::common::Ptr<const DynamicWorkCell> CPtr;
+        typedef rw::core::Ptr<const DynamicWorkCell> CPtr;
 
         /**
          * @brief Constructor
@@ -131,7 +134,7 @@ namespace dynamics {
     	 * @return body if found, NULL otherwise
     	 */
         template<class T>
-        rw::common::Ptr<T> findBody(const std::string& name) const{
+        rw::core::Ptr<T> findBody(const std::string& name) const{
             Body::Ptr body = findBody(name);
             if(body==NULL) return NULL;
             return body.cast<T>();
@@ -142,10 +145,10 @@ namespace dynamics {
          * @return list of all bodies of type \b T
          */
         template<class T>
-        std::vector<rw::common::Ptr<T> > findBodies() const{
-            std::vector<rw::common::Ptr<T> > bodies;
+        std::vector<rw::core::Ptr<T> > findBodies() const{
+            std::vector<rw::core::Ptr<T> > bodies;
             for(const Body::Ptr b : _allbodies ){
-                if(rw::common::Ptr<T> tb = b.cast<T>()){
+                if(rw::core::Ptr<T> tb = b.cast<T>()){
                     bodies.push_back(tb);
                 }
             }
@@ -199,7 +202,7 @@ namespace dynamics {
          * @return body if found, NULL otherwise
          */
         template<class T>
-        rw::common::Ptr<T> findDevice(const std::string& name) const{
+        rw::core::Ptr<T> findDevice(const std::string& name) const{
             DynamicDevice::Ptr dev = findDevice(name);
             if(dev==NULL) return NULL;
             return dev.cast<T>();
@@ -238,7 +241,7 @@ namespace dynamics {
          * @return
          */
         template<class T>
-        rw::common::Ptr<T> findSensor(const std::string& name) const {
+        rw::core::Ptr<T> findSensor(const std::string& name) const {
             rwlibs::simulation::SimulatedSensor::Ptr sensor = findSensor(name);
             if(sensor==NULL) 
 		        return NULL;
@@ -283,7 +286,7 @@ namespace dynamics {
     	 * @return the simulated controller if found, NULL otherwise.
     	 */
     	template<class T>
-    	rw::common::Ptr<T> findController(const std::string& name) const {
+    	rw::core::Ptr<T> findController(const std::string& name) const {
     	    rwlibs::simulation::SimulatedController::Ptr controller = findController(name);
               if(controller==NULL) return NULL;
               return controller.cast<T>();
@@ -358,7 +361,7 @@ namespace dynamics {
          * @param body [in] the body to test for.
          * @return true if body is part of the device.
          */
-        bool inDevice(rw::common::Ptr<const Body> body) const;
+        bool inDevice(rw::core::Ptr<const Body> body) const;
 
         /**
          * @brief Set the gravity in this dynamic workcell
@@ -381,7 +384,7 @@ namespace dynamics {
          * @brief get the settings and properties for the physics engine
          * @return propertymap
          */
-        rw::common::PropertyMap& getEngineSettings(){
+        rw::core::PropertyMap& getEngineSettings(){
         	return _engineSettings;
         }
 
@@ -389,7 +392,7 @@ namespace dynamics {
          * @brief Get the settings and properties for the physics engine.
          * @return a reference to a constant PropertyMap.
          */
-        const rw::common::PropertyMap& getEngineSettings() const {
+        const rw::core::PropertyMap& getEngineSettings() const {
         	return _engineSettings;
         }
 
@@ -405,7 +408,7 @@ namespace dynamics {
         //! @brief Type for an event listener.
         typedef boost::function<void(DWCEventType, boost::any)> DWCChangedListener;
         //! @brief Type for the event.
-        typedef rw::common::Event<DWCChangedListener, DWCEventType, boost::any> DWCChangedEvent;
+        typedef rw::core::Event<DWCChangedListener, DWCEventType, boost::any> DWCChangedEvent;
 
         /**
          * @brief Returns StateChangeEvent needed for subscribing and firing the event.
@@ -438,7 +441,7 @@ namespace dynamics {
         MaterialDataMap _matDataMap;
         ContactDataMap _contactDataMap;
 
-        rw::common::PropertyMap _engineSettings;
+        rw::core::PropertyMap _engineSettings;
 
     };
     //! @}

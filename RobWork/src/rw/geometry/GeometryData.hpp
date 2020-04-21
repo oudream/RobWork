@@ -19,7 +19,7 @@
 #ifndef RW_GEOMETRY_GEOMETRYDATA_HPP_
 #define RW_GEOMETRY_GEOMETRYDATA_HPP_
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include <string>
 //! @file GeometryData.hpp
@@ -37,7 +37,7 @@ namespace rw { namespace geometry {
 	class GeometryData {
 	public:
         //! @brief smart pointer type to this class
-        typedef rw::common::Ptr<GeometryData> Ptr;
+        typedef rw::core::Ptr<GeometryData> Ptr;
 
 		//! @brief geometry data types
 		typedef enum {PointCloud,
@@ -68,7 +68,7 @@ namespace rw { namespace geometry {
 		 *
 		 * @return TriMesh representation of this GeometryData
 		 */
-		virtual rw::common::Ptr<TriMesh> getTriMesh(bool forceCopy=true) = 0;
+		virtual rw::core::Ptr<TriMesh> getTriMesh(bool forceCopy=true) = 0;
 
 		/**
 		 * @brief test if this geometry data is convex

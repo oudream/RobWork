@@ -55,7 +55,7 @@ using namespace xercesc;
 using namespace rwlibs::task;
 using namespace rw::loaders;
 using namespace rw::math;
-using namespace rw::common;
+using namespace rw::core;
 
 XMLTaskLoader::Initializer::Initializer() {
 	static bool done = false;

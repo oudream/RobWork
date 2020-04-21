@@ -3,11 +3,11 @@
 
 #include <fstream>
 
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 #include <rw/math/Constants.hpp>
 
 using namespace rw::loaders;
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::graphics;
 using namespace rw::geometry;
 using namespace rw::math;

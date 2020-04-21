@@ -17,7 +17,7 @@
 
 #include "TreeView.hpp"
 
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 #include <rw/graphics/DrawableNode.hpp>
 #include <rw/kinematics/Kinematics.hpp>
 #include <rw/loaders/GeometryFactory.hpp>
@@ -49,7 +49,7 @@ using namespace rws;
 using namespace rw::math;
 using namespace rw::kinematics;
 using namespace rw::models;
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::geometry;
 using namespace rw::loaders;
 

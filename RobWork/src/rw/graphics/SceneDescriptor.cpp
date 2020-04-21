@@ -24,7 +24,7 @@
 using namespace rw::graphics;
 using namespace rw::kinematics;
 using namespace rw::geometry;
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::sensor;
 
 //----------------------------------------------------------------------------
@@ -169,7 +169,7 @@ SceneDescriptor::DrawableProxy::Ptr SceneDescriptor::addFrameAxis (const std::st
 
 SceneDescriptor::DrawableProxy::Ptr
 SceneDescriptor::addGeometry (const std::string& name,
-                              rw::common::Ptr< class rw::geometry::Geometry > geom,
+                              rw::core::Ptr< class rw::geometry::Geometry > geom,
                               rw::kinematics::Frame* frame, int dmask)
 {
     DrawableProxy::Ptr proxy = ownedPtr (new DrawableProxy ());

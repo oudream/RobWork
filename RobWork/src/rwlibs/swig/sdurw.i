@@ -3,7 +3,7 @@
 %{
 #include <RobWorkConfig.hpp>
 #include <rwlibs/swig/ScriptTypes.hpp>
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/loaders/path/PathLoader.hpp>
 #include <rw/loaders/dom/DOMPropertyMapLoader.hpp>
 #include <rw/loaders/dom/DOMPropertyMapSaver.hpp>
@@ -81,7 +81,7 @@ void writelog(const std::string& msg);
     try {
         //printf("Entering function : $name\n"); // uncomment to get a print out of all function calls
         $action
-    }catch(rw::common::Exception& e ){
+    }catch(rw::core::Exception& e ){
         SWIG_exception(SWIG_RuntimeError,e.what());
     }catch(...){
         SWIG_exception(SWIG_RuntimeError,"unknown error");
@@ -99,16 +99,16 @@ void writelog(const std::string& msg);
         return ::rw::common::TimerUtil::currentTimeMs( );
     }
     void infoLog(const std::string& msg){
-        ::rw::common::Log::infoLog() << msg << std::endl;
+        ::rw::core::Log::infoLog() << msg << std::endl;
     }
     void debugLog(const std::string& msg){
-        ::rw::common::Log::debugLog() << msg << std::endl;
+        ::rw::core::Log::debugLog() << msg << std::endl;
     }
     void warnLog(const std::string& msg){
-        ::rw::common::Log::warningLog() << msg << std::endl;
+        ::rw::core::Log::warningLog() << msg << std::endl;
     }
     void errorLog(const std::string& msg){
-        ::rw::common::Log::errorLog() << msg << std::endl;
+        ::rw::core::Log::errorLog() << msg << std::endl;
     }
 %}
 
@@ -142,7 +142,7 @@ namespace std {
  * COMMON
  ********************************************/
 
-namespace rw { namespace common {
+namespace rw { namespace core {
 
 /**
   * @brief The Ptr type represents a smart pointer that can take ownership
@@ -183,7 +183,7 @@ public:
     bool isNull();
 
     template<class A>
-    bool operator==(const rw::common::Ptr<A>& p) const;
+    bool operator==(const rw::core::Ptr<A>& p) const;
 #if defined(SWIGJAVA)
 	%rename(dereference) get;
 #endif
@@ -208,7 +208,7 @@ Ptr<T> ownedPtr(T* ptr);
 }}
 
 %define OWNEDPTR(ownedPtr_type)
-namespace rw { namespace common {
+namespace rw { namespace core {
 #if defined(SWIGJAVA)
  %typemap (in) ownedPtr_type* %{
   jclass objcls = jenv->GetObjectClass(jarg1_);
@@ -233,19 +233,19 @@ namespace rw { namespace common {
 /** @addtogroup swig */
 /* @{ */
 
-//! @copydoc rw::common::PropertyMap
+//! @copydoc rw::core::PropertyMap
 class PropertyMap
 {
 public: 
-	//! @copydoc rw::common::PropertyMap::PropertyMap
+	//! @copydoc rw::core::PropertyMap::PropertyMap
 	PropertyMap();
-	//! @copydoc rw::common::PropertyMap::has
+	//! @copydoc rw::core::PropertyMap::has
 	bool has(const std::string& identifier) const;
-    //! @copydoc rw::common::PropertyMap::size
+    //! @copydoc rw::core::PropertyMap::size
     size_t size() const;
-    //! @copydoc rw::common::PropertyMap::empty 
+    //! @copydoc rw::core::PropertyMap::empty 
     bool empty() const;
-    //! @copydoc rw::common::PropertyMap::erase
+    //! @copydoc rw::core::PropertyMap::erase
     bool erase(const std::string& identifier);
     
 	%extend {
@@ -288,7 +288,7 @@ public:
 	}    
  
 };
-%template (PropertyMapPtr) rw::common::Ptr<PropertyMap>;
+%template (PropertyMapPtr) rw::core::Ptr<PropertyMap>;
 OWNEDPTR(PropertyMap)
 
 /**
@@ -422,7 +422,7 @@ public:
 	 *
 	 * @return a Log
 	 */
-    static rw::common::Ptr<Log> getInstance();
+    static rw::core::Ptr<Log> getInstance();
 
     /**
      * @brief convenience function of getInstance
@@ -436,7 +436,7 @@ public:
      *
      * @param log [in] the log that will be used through the static log methods.
      */
-    static void setLog(rw::common::Ptr<Log> log);
+    static void setLog(rw::core::Ptr<Log> log);
 
     //************************* Here follows the member interface
 
@@ -466,7 +466,7 @@ public:
      * @param id [in] logindex
      * @return log writer
      */
-    rw::common::Ptr<LogWriter> getWriter(LogIndex id);
+    rw::core::Ptr<LogWriter> getWriter(LogIndex id);
 
     /**
      * @brief Associates a LogWriter with the LogIndex \b id.
@@ -483,7 +483,7 @@ public:
      * @param id [in] the LogIndex that the logwriter is associated with.
      * @param writer [in] LogWriter object to use
      */
-    void setWriter(LogIndex id, rw::common::Ptr<LogWriter> writer);
+    void setWriter(LogIndex id, rw::core::Ptr<LogWriter> writer);
 
     /**
      * @brief Associates a LogWriter with the logs specified with \b mask.
@@ -500,7 +500,7 @@ public:
      * @param mask [in] the LogIndexMask that the logwriter is associated with.
      * @param writer [in] LogWriter object to use
      */
-	void setWriterForMask(int mask, rw::common::Ptr<LogWriter> writer);
+	void setWriterForMask(int mask, rw::core::Ptr<LogWriter> writer);
 
     %extend {
 		/**
@@ -640,7 +640,7 @@ public:
 	void setDisable(int mask);
 };
 
-%template (LogPtr) rw::common::Ptr<Log>;
+%template (LogPtr) rw::core::Ptr<Log>;
 OWNEDPTR(Log)
 
 /**
@@ -731,7 +731,7 @@ protected:
 	virtual void doFlush() = 0;
 };
 
-%template (LogWriterPtr) rw::common::Ptr<LogWriter>;
+%template (LogWriterPtr) rw::core::Ptr<LogWriter>;
 
 /**
  * @brief Standard type for user messages of RobWork.
@@ -815,9 +815,9 @@ public:
 	void waitForEmptyQueue();
 };
 
-%template (MessagePtr) rw::common::Ptr<Message>;
+%template (MessagePtr) rw::core::Ptr<Message>;
 
-%template (ThreadPoolPtr) rw::common::Ptr<ThreadPool>;
+%template (ThreadPoolPtr) rw::core::Ptr<ThreadPool>;
 OWNEDPTR(ThreadPool)
 
 class ThreadTask {
@@ -832,11 +832,11 @@ public:
     	DONE
     } TaskState;
 
-	ThreadTask(rw::common::Ptr<ThreadTask> parent);
-	ThreadTask(rw::common::Ptr<ThreadPool> pool);
+	ThreadTask(rw::core::Ptr<ThreadTask> parent);
+	ThreadTask(rw::core::Ptr<ThreadPool> pool);
 	virtual ~ThreadTask();
-	bool setThreadPool(rw::common::Ptr<ThreadPool> pool);
-	rw::common::Ptr<ThreadPool> getThreadPool();
+	bool setThreadPool(rw::core::Ptr<ThreadPool> pool);
+	rw::core::Ptr<ThreadPool> getThreadPool();
 	//virtual void run();
 	//virtual void subTaskDone(ThreadTask* subtask);
 	//virtual void idle();
@@ -845,14 +845,14 @@ public:
     TaskState wait(ThreadTask::TaskState previous);
     void waitUntilDone();
     TaskState getState();
-    bool addSubTask(rw::common::Ptr<ThreadTask> subtask);
-    std::vector<rw::common::Ptr<ThreadTask> > getSubTasks();
+    bool addSubTask(rw::core::Ptr<ThreadTask> subtask);
+    std::vector<rw::core::Ptr<ThreadTask> > getSubTasks();
     void setKeepAlive(bool keepAlive);
     bool keepAlive();
 };
 
-%template (ThreadTaskPtr) rw::common::Ptr<ThreadTask>;
-%template (ThreadTaskPtrVector) std::vector<rw::common::Ptr<ThreadTask> >;
+%template (ThreadTaskPtr) rw::core::Ptr<ThreadTask>;
+%template (ThreadTaskPtrVector) std::vector<rw::core::Ptr<ThreadTask> >;
 OWNEDPTR(ThreadTask)
 
 class Plugin {
@@ -865,18 +865,18 @@ public:
     const std::string& getVersion();
 };
 
-%template (PluginPtr) rw::common::Ptr<Plugin>;
-%template (PluginPtrVector) std::vector<rw::common::Ptr<Plugin> >;
+%template (PluginPtr) rw::core::Ptr<Plugin>;
+%template (PluginPtrVector) std::vector<rw::core::Ptr<Plugin> >;
 
 struct ExtensionDescriptor {
 	ExtensionDescriptor();
 	ExtensionDescriptor(const std::string& id_, const std::string& point_);
 
     std::string id,name,point;
-    rw::common::PropertyMap props;
+    rw::core::PropertyMap props;
 
-    //rw::common::PropertyMap& getProperties();
-    const rw::common::PropertyMap& getProperties() const;
+    //rw::core::PropertyMap& getProperties();
+    const rw::core::PropertyMap& getProperties() const;
 };
 
 class Extension {
@@ -887,18 +887,18 @@ public:
 	const std::string& getName();
 };
 
-%template (ExtensionPtr) rw::common::Ptr<Extension>;
-%template (ExtensionPtrVector) std::vector<rw::common::Ptr<Extension> >;
+%template (ExtensionPtr) rw::core::Ptr<Extension>;
+%template (ExtensionPtrVector) std::vector<rw::core::Ptr<Extension> >;
 
 class ExtensionRegistry {
 public:
 	ExtensionRegistry();
-	static rw::common::Ptr<ExtensionRegistry> getInstance();
-	std::vector<rw::common::Ptr<Extension> > getExtensions(const std::string& ext_point_id) const;
-	std::vector<rw::common::Ptr<Plugin> > getPlugins() const;
+	static rw::core::Ptr<ExtensionRegistry> getInstance();
+	std::vector<rw::core::Ptr<Extension> > getExtensions(const std::string& ext_point_id) const;
+	std::vector<rw::core::Ptr<Plugin> > getPlugins() const;
 };
 
-%template (ExtensionRegistryPtr) rw::common::Ptr<ExtensionRegistry>;
+%template (ExtensionRegistryPtr) rw::core::Ptr<ExtensionRegistry>;
 
 /**
  * @brief The timer class provides an easy to use platform independent timer
@@ -1105,13 +1105,13 @@ public:
  public:
 	RobWork();
 	
-	static rw::common::Ptr<RobWork> getInstance();
+	static rw::core::Ptr<RobWork> getInstance();
 	
 	std::string getVersion() const;
 	void initialize();
  };
  
- %template (RobWorkPtr) rw::common::Ptr<RobWork>;
+ %template (RobWorkPtr) rw::core::Ptr<RobWork>;
 
 /********************************************
  * GEOMETRY
@@ -1144,7 +1144,7 @@ public:
 	 * GeometryData is alive.
 	 * @return TriMesh representation of this GeometryData
 	 */
-    virtual rw::common::Ptr<TriMesh> getTriMesh(bool forceCopy=true) = 0;
+    virtual rw::core::Ptr<TriMesh> getTriMesh(bool forceCopy=true) = 0;
 
     /**
      * @brief test if this geometry data is convex
@@ -1160,7 +1160,7 @@ public:
     static std::string toString(GeometryType type);
 };
 
-%template (GeometryDataPtr) rw::common::Ptr<GeometryData>;
+%template (GeometryDataPtr) rw::core::Ptr<GeometryData>;
 OWNEDPTR(GeometryData);
 
 class TriMesh: public GeometryData {
@@ -1201,7 +1201,7 @@ class TriMesh: public GeometryData {
      * @brief make a clone of this triangle mesh
      * @return clone of this trimesh
      */
-    virtual rw::common::Ptr<TriMesh> clone() const = 0;
+    virtual rw::core::Ptr<TriMesh> clone() const = 0;
 
     /**
      * @brief Scale all vertices in the mesh.
@@ -1209,12 +1209,8 @@ class TriMesh: public GeometryData {
     virtual void scale(double scale) = 0;
 
     //! @copydoc GeometryData::getTriMesh
-    rw::common::Ptr<TriMesh> getTriMesh(bool forceCopy=true);
+    rw::core::Ptr<TriMesh> getTriMesh(bool forceCopy=true);
 
-    /*#if !defined(SWIGJAVA)
-        //! @copydoc getTriMesh
-        rw::common::Ptr<const TriMesh> getTriMesh(bool forceCopy=true) const;
-    #endif*/
     //! @copydoc GeometryData::isConvex
     virtual bool isConvex() { return _isConvex; }
 
@@ -1226,12 +1222,12 @@ class TriMesh: public GeometryData {
     double getVolume() const;
 };
 
-%template (TriMeshPtr) rw::common::Ptr<TriMesh>;
+%template (TriMeshPtr) rw::core::Ptr<TriMesh>;
 
 class Primitive: public GeometryData {
 public:
-    rw::common::Ptr<TriMesh> getTriMesh(bool forceCopy=true);
-    virtual rw::common::Ptr<TriMesh> createMesh(int resolution) const = 0;
+    rw::core::Ptr<TriMesh> getTriMesh(bool forceCopy=true);
+    virtual rw::core::Ptr<TriMesh> createMesh(int resolution) const = 0;
     virtual rw::math::Q getParameters() const = 0;
 };
 
@@ -1241,7 +1237,7 @@ public:
     Sphere(const rw::math::Q& initQ);
     Sphere(double radi):_radius(radi);
     double getRadius();
-    rw::common::Ptr<TriMesh> createMesh(int resolution) const;
+    rw::core::Ptr<TriMesh> createMesh(int resolution) const;
     rw::math::Q getParameters() const;
     GeometryData::GeometryType getType() const;
 };
@@ -1251,7 +1247,7 @@ public:
     Box();
     Box(double x, double y, double z);
     Box(const rw::math::Q& initQ);
-    rw::common::Ptr<TriMesh> createMesh(int resolution) const;
+    rw::core::Ptr<TriMesh> createMesh(int resolution) const;
     rw::math::Q getParameters() const;
     GeometryType getType() const;
 };
@@ -1263,7 +1259,7 @@ public:
     double getHeight();
     double getTopRadius();
     double getBottomRadius();
-    rw::common::Ptr<TriMesh> createMesh(int resolution) const;
+    rw::core::Ptr<TriMesh> createMesh(int resolution) const;
     rw::math::Q getParameters() const;
     GeometryType getType() const;
 };
@@ -1285,7 +1281,7 @@ public:
 #endif
     double distance(const rw::math::Vector3D<double>& point);
     double refit( std::vector<rw::math::Vector3D<double> >& data );
-    rw::common::Ptr<TriMesh> createMesh(int resolution) const ;
+    rw::core::Ptr<TriMesh> createMesh(int resolution) const ;
     rw::math::Q getParameters() const;
     GeometryType getType() const;
 };
@@ -1316,7 +1312,7 @@ public:
 	  * @param resolution the resolution.
 	  * @return the TriMesh.
 	  */
-	rw::common::Ptr<TriMesh> createMesh(int resolution) const;
+	rw::core::Ptr<TriMesh> createMesh(int resolution) const;
 	rw::math::Q getParameters() const;
 	GeometryType getType() const;
 };
@@ -1327,7 +1323,7 @@ public:
     virtual bool isInside(const rw::math::Vector3D<double>& vertex) = 0;
     virtual double getMinDistInside(const rw::math::Vector3D<double>& vertex) = 0;
     virtual double getMinDistOutside(const rw::math::Vector3D<double>& vertex) = 0;
-    virtual rw::common::Ptr<PlainTriMeshN1> toTriMesh() = 0;
+    virtual rw::core::Ptr<PlainTriMeshN1> toTriMesh() = 0;
 };
 
 
@@ -1338,7 +1334,7 @@ class Geometry {
      * @param data
      * @param scale
      */
-    Geometry(rw::common::Ptr<GeometryData> data, double scale=1.0);
+    Geometry(rw::core::Ptr<GeometryData> data, double scale=1.0);
 
 
     /**
@@ -1355,7 +1351,7 @@ class Geometry {
      * @param t3d [in] transform
      * @param scale [in] scaling factor
      */
-    Geometry(rw::common::Ptr<GeometryData> data, const rw::math::Transform3D<double> & t3d,
+    Geometry(rw::core::Ptr<GeometryData> data, const rw::math::Transform3D<double> & t3d,
              double scale=1.0);
 
     /**
@@ -1387,19 +1383,19 @@ class Geometry {
      * @brief get geometry data
      * @return the geometry data stored
      */
-    rw::common::Ptr<GeometryData> getGeometryData();
+    rw::core::Ptr<GeometryData> getGeometryData();
 #if !defined(SWIGJAVA)
     /**
      * @brief get geometry data
      * @return the geometry data stored
      */
-    const rw::common::Ptr<GeometryData> getGeometryData() const;
+    const rw::core::Ptr<GeometryData> getGeometryData() const;
 #endif
     /**
      * @brief set transformation
      * @param data [in] the new geometry data
      */
-    void setGeometryData(rw::common::Ptr<GeometryData> data);
+    void setGeometryData(rw::core::Ptr<GeometryData> data);
     /**
      * @brief get name of this geometry
      * @return name as string
@@ -1471,22 +1467,22 @@ class Geometry {
     /**
      * @brief util function for creating a Sphere geometry
      */
-    static rw::common::Ptr<Geometry> makeSphere(double radi);
+    static rw::core::Ptr<Geometry> makeSphere(double radi);
 
     /**
      * @brief util function for creating a Box geometry
      */
-    static rw::common::Ptr<Geometry> makeBox(double x, double y, double z);
+    static rw::core::Ptr<Geometry> makeBox(double x, double y, double z);
 
     /**
      * @brief util function for creating a Cone geometry
      */
-    static rw::common::Ptr<Geometry> makeCone(double height, double radiusTop, double radiusBot);
+    static rw::core::Ptr<Geometry> makeCone(double height, double radiusTop, double radiusBot);
 
     /**
      * @brief util function for creating a Cylinder geometry
      */
-    static rw::common::Ptr<Geometry> makeCylinder(float radius, float height);
+    static rw::core::Ptr<Geometry> makeCylinder(float radius, float height);
 
     /**
      * @brief Construct a grid.
@@ -1498,7 +1494,7 @@ class Geometry {
      * @param ydir [in] the direction of the second dimension.
      * @return a new grid geometry.
      */
-    static rw::common::Ptr<Geometry> makeGrid(int dim_x, int dim_y,double size_x=1.0, double size_y=1.0,
+    static rw::core::Ptr<Geometry> makeGrid(int dim_x, int dim_y,double size_x=1.0, double size_y=1.0,
                                         const rw::math::Vector3D<double>& xdir = rw::math::Vector3D<double>::x(),
                                         const rw::math::Vector3D<double>& ydir = rw::math::Vector3D<double>::y());
 
@@ -1508,27 +1504,27 @@ class Geometry {
      */
     void getColor(float color[3]);
 };
-%template (GeometryPtr) rw::common::Ptr<Geometry>;
-%template (GeometryPtrVector) std::vector<rw::common::Ptr<Geometry> >;
+%template (GeometryPtr) rw::core::Ptr<Geometry>;
+%template (GeometryPtrVector) std::vector<rw::core::Ptr<Geometry> >;
 OWNEDPTR(Geometry);
 
 class STLFile {
 public:
     static void save(const TriMesh& mesh, const std::string& filename);
-    static rw::common::Ptr<PlainTriMeshN1f> load(const std::string& filename);
+    static rw::core::Ptr<PlainTriMeshN1f> load(const std::string& filename);
 };
 
 class PlainTriMeshN1
 {
 };
 
-%template (PlainTriMeshN1Ptr) rw::common::Ptr<PlainTriMeshN1>;
+%template (PlainTriMeshN1Ptr) rw::core::Ptr<PlainTriMeshN1>;
 
 class PlainTriMeshN1f
 {
 };
 
-%template (PlainTriMeshN1fPtr) rw::common::Ptr<PlainTriMeshN1f>;
+%template (PlainTriMeshN1fPtr) rw::core::Ptr<PlainTriMeshN1f>;
 
 %nodefaultctor Triangle;
 
@@ -1571,16 +1567,12 @@ namespace rw { namespace geometry{
 	     */
 		const rw::math::Vector3D<T>& getVertex(size_t i) const;
 
-        /**
-         * @brief get vertex at index i
-         */
+        /*
+        //TODO(kalor) implement operators
         const rw::math::Vector3D<T>& operator[](size_t i) const;
-
-        /**
-         * @brief get vertex at index i
-         */
         rw::math::Vector3D<T>& operator[](size_t i);
-
+        */
+       
 		/**
 		 * @brief calculates the face normal of this triangle. It is assumed
 		 * that the triangle vertices are arranged counter clock wise.
@@ -1688,7 +1680,7 @@ public:
     void resize(int w, int h);
 
 	//! @copydoc getTriMesh
-	rw::common::Ptr<TriMesh> getTriMesh(bool forceCopy=true);
+	rw::core::Ptr<TriMesh> getTriMesh(bool forceCopy=true);
 
 	const rw::math::Transform3D<float>& getDataTransform() const;
 
@@ -1698,7 +1690,7 @@ public:
 	 * @param filename [in] name of PCD file
 	 * @return a point cloud
 	 */
-	static rw::common::Ptr<PointCloud> loadPCD( const std::string& filename );
+	static rw::core::Ptr<PointCloud> loadPCD( const std::string& filename );
 
 	/**
 	 * @brief save point cloud in PCD file format (PCL library format)
@@ -1713,16 +1705,16 @@ public:
                         rw::math::Transform3D<float>::identity());
 };
 
-%template (PointCloudPtr) rw::common::Ptr<PointCloud>;
+%template (PointCloudPtr) rw::core::Ptr<PointCloud>;
 
 
 /********************************************
  * GRAPHICS
  ********************************************/
 
-%template (WorkCellScenePtr) rw::common::Ptr<WorkCellScene>;
-%template (DrawableNodePtr) rw::common::Ptr<DrawableNode>;
-%template (DrawableNodePtrVector) std::vector<rw::common::Ptr<DrawableNode> >;
+%template (WorkCellScenePtr) rw::core::Ptr<WorkCellScene>;
+%template (DrawableNodePtr) rw::core::Ptr<DrawableNode>;
+%template (DrawableNodePtrVector) std::vector<rw::core::Ptr<DrawableNode> >;
 
 OWNEDPTR(WorkCellScene);
 
@@ -1787,7 +1779,7 @@ public:
     //    } SmoothMethod;
     //void optimize(double smooth_angle, SmoothMethod method=WEIGHTED_NORMALS);
     //int addObject(Object3D::Ptr obj);
-    //void addGeometry(const Material& mat, rw::common::Ptr<Geometry> geom);
+    //void addGeometry(const Material& mat, rw::core::Ptr<Geometry> geom);
     //void addTriMesh(const Material& mat, const rw::geometry::TriMesh& mesh);
     //int addMaterial(const Material& mat);
     //Material* getMaterial(const std::string& matid);
@@ -1801,13 +1793,13 @@ public:
     void setName(const std::string& name);
     int getMask();
     void setMask(int mask);
-    rw::common::Ptr<GeometryData> toGeometryData();
+    rw::core::Ptr<GeometryData> toGeometryData();
     bool isDynamic() const;
     void setDynamic(bool dynamic);
 };
 
-%template (Model3DPtr) rw::common::Ptr<Model3D>;
-%template (Model3DPtrVector) std::vector<rw::common::Ptr<Model3D> >;
+%template (Model3DPtr) rw::core::Ptr<Model3D>;
+%template (Model3DPtrVector) std::vector<rw::core::Ptr<Model3D> >;
 OWNEDPTR(Model3D);
 
 class Render {
@@ -1821,12 +1813,12 @@ public:
     virtual void draw(const DrawableNode::RenderInfo& info, DrawableNode::DrawType type, double alpha) const = 0;
 };
 
-%template (RenderPtr) rw::common::Ptr<Render>;
+%template (RenderPtr) rw::core::Ptr<Render>;
 
 class WorkCellScene {
  public:
 
-     rw::common::Ptr<WorkCell> getWorkCell();
+     rw::core::Ptr<WorkCell> getWorkCell();
 
      void setState(const State& state);
 
@@ -1850,38 +1842,38 @@ class WorkCellScene {
      void setTransparency(double alpha, Frame* f);
 
      //DrawableGeometryNode::Ptr addLines( const std::string& name, const std::vector<rw::geometry::Line >& lines, Frame* frame, int dmask=DrawableNode::Physical);
-     //DrawableGeometryNode::Ptr addGeometry(const std::string& name, rw::common::Ptr<Geometry> geom, Frame* frame, int dmask=DrawableNode::Physical);
-     rw::common::Ptr<DrawableNode> addFrameAxis(const std::string& name, double size, Frame* frame, int dmask=DrawableNode::Virtual);
-     //rw::common::Ptr<DrawableNode> addModel3D(const std::string& name, rw::common::Ptr<Model3D> model, Frame* frame, int dmask=DrawableNode::Physical);
-     //rw::common::Ptr<DrawableNode> addImage(const std::string& name, const rw::sensor::Image& img, Frame* frame, int dmask=DrawableNode::Virtual);
-     //rw::common::Ptr<DrawableNode> addScan(const std::string& name, const rw::sensor::Scan2D& scan, Frame* frame, int dmask=DrawableNode::Virtual);
-     //rw::common::Ptr<DrawableNode> addScan(const std::string& name, const rw::sensor::Image25D& scan, Frame* frame, int dmask=DrawableNode::Virtual);
-     rw::common::Ptr<DrawableNode> addRender(const std::string& name, rw::common::Ptr<Render> render, Frame* frame, int dmask=DrawableNode::Physical);
+     //DrawableGeometryNode::Ptr addGeometry(const std::string& name, rw::core::Ptr<Geometry> geom, Frame* frame, int dmask=DrawableNode::Physical);
+     rw::core::Ptr<DrawableNode> addFrameAxis(const std::string& name, double size, Frame* frame, int dmask=DrawableNode::Virtual);
+     //rw::core::Ptr<DrawableNode> addModel3D(const std::string& name, rw::core::Ptr<Model3D> model, Frame* frame, int dmask=DrawableNode::Physical);
+     //rw::core::Ptr<DrawableNode> addImage(const std::string& name, const rw::sensor::Image& img, Frame* frame, int dmask=DrawableNode::Virtual);
+     //rw::core::Ptr<DrawableNode> addScan(const std::string& name, const rw::sensor::Scan2D& scan, Frame* frame, int dmask=DrawableNode::Virtual);
+     //rw::core::Ptr<DrawableNode> addScan(const std::string& name, const rw::sensor::Image25D& scan, Frame* frame, int dmask=DrawableNode::Virtual);
+     rw::core::Ptr<DrawableNode> addRender(const std::string& name, rw::core::Ptr<Render> render, Frame* frame, int dmask=DrawableNode::Physical);
 
-     rw::common::Ptr<DrawableNode> addDrawable(const std::string& filename, Frame* frame, int dmask);
-     void addDrawable(rw::common::Ptr<DrawableNode> drawable, Frame*);
+     rw::core::Ptr<DrawableNode> addDrawable(const std::string& filename, Frame* frame, int dmask);
+     void addDrawable(rw::core::Ptr<DrawableNode> drawable, Frame*);
 
-     //std::vector<rw::common::Ptr<DrawableNode> > getDrawables();
-     //std::vector<rw::common::Ptr<DrawableNode> > getDrawables(Frame* f);
+     //std::vector<rw::core::Ptr<DrawableNode> > getDrawables();
+     //std::vector<rw::core::Ptr<DrawableNode> > getDrawables(Frame* f);
 
-     //std::vector<rw::common::Ptr<DrawableNode> > getDrawablesRec(Frame* f, State& state);
-     rw::common::Ptr<DrawableNode> findDrawable(const std::string& name);
+     //std::vector<rw::core::Ptr<DrawableNode> > getDrawablesRec(Frame* f, State& state);
+     rw::core::Ptr<DrawableNode> findDrawable(const std::string& name);
 
-     rw::common::Ptr<DrawableNode> findDrawable(const std::string& name, Frame* frame);
+     rw::core::Ptr<DrawableNode> findDrawable(const std::string& name, Frame* frame);
 
-     std::vector<rw::common::Ptr<DrawableNode> > findDrawables(const std::string& name);
+     std::vector<rw::core::Ptr<DrawableNode> > findDrawables(const std::string& name);
 
      bool removeDrawables(Frame* f);
 
      bool removeDrawables(const std::string& name);
 
-     bool removeDrawable(rw::common::Ptr<DrawableNode> drawable);
+     bool removeDrawable(rw::core::Ptr<DrawableNode> drawable);
 
-     bool removeDrawable(rw::common::Ptr<DrawableNode> drawable, Frame* f);
+     bool removeDrawable(rw::core::Ptr<DrawableNode> drawable, Frame* f);
 
      bool removeDrawable(const std::string& name);
      bool removeDrawable(const std::string& name, Frame* f);
-     Frame* getFrame(rw::common::Ptr<DrawableNode>  d);
+     Frame* getFrame(rw::core::Ptr<DrawableNode>  d);
 
      //rw::graphics::GroupNode::Ptr getNode(Frame* frame);
  };
@@ -1891,7 +1883,7 @@ class SceneViewer
 {
 };
  
-%template (SceneViewerPtr) rw::common::Ptr<SceneViewer>;
+%template (SceneViewerPtr) rw::core::Ptr<SceneViewer>;
 
 /********************************************
  * GRASPPLANNING
@@ -1979,7 +1971,7 @@ public:
 	const State& getDefaultState() const;
 	const std::vector<Frame*>& getFrames() const;
 };
-%template (StateStructurePtr) rw::common::Ptr<StateStructure>;
+%template (StateStructurePtr) rw::core::Ptr<StateStructure>;
 OWNEDPTR(StateStructure);
 
 /**
@@ -2191,8 +2183,8 @@ private:
     Frame& operator=(const Frame&);
 };
 
-%template (FramePtr) rw::common::Ptr<Frame>;
-%template (FrameCPtr) rw::common::Ptr<const Frame>;
+%template (FramePtr) rw::core::Ptr<Frame>;
+%template (FrameCPtr) rw::core::Ptr<const Frame>;
 %template (FrameVector) std::vector<Frame*>;
 %template (FramePair) std::pair< Frame *, Frame * >;
 %template (FramePairVector) std::vector< std::pair< Frame *, Frame * > >;
@@ -2545,14 +2537,14 @@ public:
      *
      * @return The end frame (to).
      */
-    rw::common::Ptr< const Frame > getEnd() const;
+    rw::core::Ptr< const Frame > getEnd() const;
 
     /**
      * @brief Returns the first frame in the range.
      *
      * @return The base frame (from).
      */
-    rw::common::Ptr< const Frame > getBase() const;
+    rw::core::Ptr< const Frame > getBase() const;
 };
 
 /**
@@ -2655,13 +2647,13 @@ public:
      *
      * @param filename [in] path to workcell file.
      */
-	virtual rw::common::Ptr<WorkCell> loadWorkCell(const std::string& filename) = 0;
+	virtual rw::core::Ptr<WorkCell> loadWorkCell(const std::string& filename) = 0;
 
 protected:
 	WorkCellLoader();
 };
 
-%template (WorkCellLoaderPtr) rw::common::Ptr<WorkCellLoader>;
+%template (WorkCellLoaderPtr) rw::core::Ptr<WorkCellLoader>;
 
 /**
  * @brief A factory for WorkCellLoader. This factory also defines the
@@ -2677,7 +2669,7 @@ public:
 	 * The extension name is case-insensitive.
 	 * @return a suitable loader.
 	 */
-	static rw::common::Ptr<WorkCellLoader> getWorkCellLoader(const std::string& format);
+	static rw::core::Ptr<WorkCellLoader> getWorkCellLoader(const std::string& format);
 
     /**
      * @brief Loads/imports a WorkCell from a file.
@@ -2688,7 +2680,7 @@ public:
      *
      * @param filename [in] name of the WorkCell file.
      */
-	static rw::common::Ptr<WorkCell> load(const std::string& filename);
+	static rw::core::Ptr<WorkCell> load(const std::string& filename);
 private:
 	WorkCellLoaderFactory();
 };
@@ -2696,17 +2688,17 @@ private:
 class ImageLoader {
 public:
 	virtual ~ImageLoader();
-	virtual rw::common::Ptr<Image> loadImage(const std::string& filename) = 0;
+	virtual rw::core::Ptr<Image> loadImage(const std::string& filename) = 0;
 	virtual std::vector<std::string> getImageFormats() = 0;
 	virtual bool isImageSupported(const std::string& format);
 };
 
-%template (ImageLoaderPtr) rw::common::Ptr<ImageLoader>;
+%template (ImageLoaderPtr) rw::core::Ptr<ImageLoader>;
 
 class ImageLoaderFactory {
 public:
 	ImageLoaderFactory();
-	static rw::common::Ptr<ImageLoader> getImageLoader(const std::string& format);
+	static rw::core::Ptr<ImageLoader> getImageLoader(const std::string& format);
 	static bool hasImageLoader(const std::string& format);
 	static std::vector<std::string> getSupportedFormats();
 };
@@ -2721,10 +2713,10 @@ public:
 
     enum Type { QType = 0, Vector3DType, Rotation3DType, Transform3DType};
     Type getType();
-    rw::common::Ptr<Trajectory<rw::math::Q> > getQTrajectory();
-    rw::common::Ptr<Trajectory<rw::math::Vector3D<double> > > getVector3DTrajectory();
-    rw::common::Ptr<Trajectory<rw::math::Rotation3D<double> > > getRotation3DTrajectory();
-    rw::common::Ptr<Trajectory<rw::math::Transform3D<double> > > getTransform3DTrajectory();
+    rw::core::Ptr<Trajectory<rw::math::Q> > getQTrajectory();
+    rw::core::Ptr<Trajectory<rw::math::Vector3D<double> > > getVector3DTrajectory();
+    rw::core::Ptr<Trajectory<rw::math::Rotation3D<double> > > getRotation3DTrajectory();
+    rw::core::Ptr<Trajectory<rw::math::Transform3D<double> > > getTransform3DTrajectory();
 };
 
 class XMLTrajectorySaver
@@ -2868,7 +2860,7 @@ public:
     };
 };
 
-%template (JacobianCalculatorPtr) rw::common::Ptr<JacobianCalculator>;
+%template (JacobianCalculatorPtr) rw::core::Ptr<JacobianCalculator>;
 
 class WorkCell {
 public:
@@ -2915,8 +2907,8 @@ public:
      * @param frame [in] Frame to add
      * @param parent [in] Parent frame - uses World is parent == NULL
      */
-    void addFrame(rw::common::Ptr<Frame> frame,
-            rw::common::Ptr<Frame> parent = NULL);
+    void addFrame(rw::core::Ptr<Frame> frame,
+            rw::core::Ptr<Frame> parent = NULL);
 
 
     /**
@@ -2941,15 +2933,15 @@ public:
      * @param frame [in] Frame to add
      * @param parent [in] Parent frame - uses World is parent == NULL
      */
-    void addDAF(rw::common::Ptr<Frame> frame,
-            rw::common::Ptr<Frame> parent = NULL);
+    void addDAF(rw::core::Ptr<Frame> frame,
+            rw::core::Ptr<Frame> parent = NULL);
 
     /**
      * @brief Removes \b frame from work cell
      *
      * @param frame [in] Frame to remove
      * @deprecated Since January 2018.
-     * Please use remove(rw::common::Ptr<rw::kinematics::Frame>)
+     * Please use remove(rw::core::Ptr<rw::kinematics::Frame>)
      * instead.
      */
     void remove(Frame* frame);
@@ -2959,7 +2951,7 @@ public:
      *
      * @param frame [in] Frame to remove
      */
-    void remove(rw::common::Ptr<Frame> frame);
+    void remove(rw::core::Ptr<Frame> frame);
 
     /**
      * @brief Adds a Device to the WorkCell.
@@ -2968,7 +2960,7 @@ public:
      *
      * @param device [in] pointer to device.
      */
-    void addDevice(rw::common::Ptr<Device> device);
+    void addDevice(rw::core::Ptr<Device> device);
 
     /**
      * @brief Returns a reference to a vector with pointers to the
@@ -2976,7 +2968,7 @@ public:
      *
      * @return const vector with pointers to Device(s).
      */
-    const std::vector<rw::common::Ptr<Device> >& getDevices() const;
+    const std::vector<rw::core::Ptr<Device> >& getDevices() const;
 
     /**
      * @brief Returns frame with the specified name.
@@ -3056,7 +3048,7 @@ public:
      *
      * @return The device named \b name or NULL if no such device.
      */
-    rw::common::Ptr<Device> findDevice(const std::string& name) const;
+    rw::core::Ptr<Device> findDevice(const std::string& name) const;
 
     %extend {
         /**
@@ -3068,7 +3060,7 @@ public:
          *
          * @return The device named \b name or NULL if no such device.
          */
-        rw::common::Ptr<JointDevice> findJointDevice(const std::string& name)
+        rw::core::Ptr<JointDevice> findJointDevice(const std::string& name)
         { 
             return $self->WorkCell::findDevice<JointDevice>(name); 
         }
@@ -3082,7 +3074,7 @@ public:
          *
          * @return The device named \b name or NULL if no such device.
          */
-        rw::common::Ptr<SerialDevice> findSerialDevice(const std::string& name)
+        rw::core::Ptr<SerialDevice> findSerialDevice(const std::string& name)
         { 
             return $self->WorkCell::findDevice<SerialDevice>(name); 
         }
@@ -3096,7 +3088,7 @@ public:
          *
          * @return The device named \b name or NULL if no such device.
          */
-        rw::common::Ptr<TreeDevice> findTreeDevice(const std::string& name)
+        rw::core::Ptr<TreeDevice> findTreeDevice(const std::string& name)
         { 
             return $self->WorkCell::findDevice<TreeDevice>(name); 
         }
@@ -3110,7 +3102,7 @@ public:
          *
          * @return The device named \b name or NULL if no such device.
          */
-        rw::common::Ptr<ParallelDevice> findParallelDevice(const std::string& name)
+        rw::core::Ptr<ParallelDevice> findParallelDevice(const std::string& name)
         { 
             return $self->WorkCell::findDevice<ParallelDevice>(name); 
         }
@@ -3121,7 +3113,7 @@ public:
          *
          * @return vector with pointers to Device(s) of type T.
          */
-        std::vector < rw::common::Ptr<JointDevice> > findJointDevices()
+        std::vector < rw::core::Ptr<JointDevice> > findJointDevices()
         { 
             return $self->WorkCell::findDevices<JointDevice>(); 
         }
@@ -3132,7 +3124,7 @@ public:
          *
          * @return vector with pointers to Device(s) of type T.
          */
-        std::vector < rw::common::Ptr<SerialDevice> > findSerialDevices()
+        std::vector < rw::core::Ptr<SerialDevice> > findSerialDevices()
         { 
             return $self->WorkCell::findDevices<SerialDevice>(); 
         }
@@ -3143,7 +3135,7 @@ public:
          *
          * @return vector with pointers to Device(s) of type T.
          */
-        std::vector < rw::common::Ptr<TreeDevice> > findTreeDevices()
+        std::vector < rw::core::Ptr<TreeDevice> > findTreeDevices()
         { 
             return $self->WorkCell::findDevices<TreeDevice>(); 
         }
@@ -3154,7 +3146,7 @@ public:
          *
          * @return vector with pointers to Device(s) of type T.
          */
-        std::vector < rw::common::Ptr<ParallelDevice> > findParallelDevices()
+        std::vector < rw::core::Ptr<ParallelDevice> > findParallelDevices()
         { 
             return $self->WorkCell::findDevices<ParallelDevice>(); 
         }
@@ -3178,7 +3170,7 @@ public:
      *
      * @return The sensor with name \b name or NULL if no such sensor.
      */
-    rw::common::Ptr<SensorModel> findSensor(const std::string& name) const;
+    rw::core::Ptr<SensorModel> findSensor(const std::string& name) const;
 
     //TODO(kalor) findSensor<T>(name);
     //TODO(kalor) findSensors<T>();
@@ -3187,7 +3179,7 @@ public:
      * @brief Returns all frames in workcell
      * @return List of all frames
      */
-    std::vector<rw::common::Ptr<SensorModel> > getSensors() const;
+    std::vector<rw::core::Ptr<SensorModel> > getSensors() const;
 
 
     //TODO(kalor) findController<T>(name);
@@ -3205,20 +3197,20 @@ public:
      * @return The controller with name \b name or NULL if no such
      * controller.
      */
-    rw::common::Ptr<rw::models::ControllerModel> findController(const std::string& name) const;
+    rw::core::Ptr<rw::models::ControllerModel> findController(const std::string& name) const;
     
     /**
      * @brief Returns all controllers in workcell
      * @return List of all controllers
      */
-    std::vector<rw::common::Ptr<ControllerModel> > getControllers() const;
+    std::vector<rw::core::Ptr<ControllerModel> > getControllers() const;
 
     /**
      * @brief Returns all object in the work cell
      *
      * @return All object in work cell
      */
-    std::vector<rw::common::Ptr<Object> > getObjects() const;
+    std::vector<rw::core::Ptr<Object> > getObjects() const;
 
     /**
      * @brief The object named \b name of the workcell.
@@ -3229,25 +3221,25 @@ public:
      *
      * @return The object named \b name or NULL if no such object.
      */
-    rw::common::Ptr<Object> findObject(const std::string& name) const;
+    rw::core::Ptr<Object> findObject(const std::string& name) const;
 
     //! @brief Add device to workcell
-    void add(rw::common::Ptr<Device> device);
+    void add(rw::core::Ptr<Device> device);
     //! @brief Add object to workcell
-    void add(rw::common::Ptr<Object> object);
+    void add(rw::core::Ptr<Object> object);
     //! @brief Add sensormodel to workcell
-    void add(rw::common::Ptr<SensorModel> sensor);
+    void add(rw::core::Ptr<SensorModel> sensor);
     //! @brief Add controllermodel to workcell
-    void add(rw::common::Ptr<ControllerModel> controller);
+    void add(rw::core::Ptr<ControllerModel> controller);
 
     //! @brief Remove object from workcell
-    void remove(rw::common::Ptr<Object> object);
+    void remove(rw::core::Ptr<Object> object);
     //! @brief Remove device from workcell
-    void remove(rw::common::Ptr<Device> device);
+    void remove(rw::core::Ptr<Device> device);
     //! @brief Remove sensormodel from workcell
-    void remove(rw::common::Ptr<SensorModel> sensor);
+    void remove(rw::core::Ptr<SensorModel> sensor);
     //! @brief Remove controllermodel from workcell
-    void remove(rw::common::Ptr<ControllerModel> controller);
+    void remove(rw::core::Ptr<ControllerModel> controller);
 
     std::string getFilename () const;
     std::string getFilePath () const;
@@ -3259,7 +3251,7 @@ private:
     WorkCell& operator=(const WorkCell&);
 };
 
-%template (WorkCellPtr) rw::common::Ptr<WorkCell>;
+%template (WorkCellPtr) rw::core::Ptr<WorkCell>;
 
 class Object
 {
@@ -3270,31 +3262,31 @@ public:
     Frame* getBase();
     const std::vector<Frame*>& getFrames();
     void addFrame(Frame* frame);
-    const std::vector<rw::common::Ptr<Geometry> >& getGeometry() const;
-    const std::vector<rw::common::Ptr<Model3D> >& getModels() const;
+    const std::vector<rw::core::Ptr<Geometry> >& getGeometry() const;
+    const std::vector<rw::core::Ptr<Model3D> >& getModels() const;
 
     // stuff that should be implemented by deriving classes
-     const std::vector<rw::common::Ptr<Geometry> >& getGeometry(const State& state) const;
-    const std::vector<rw::common::Ptr<Model3D> >& getModels(const State& state) const;
+     const std::vector<rw::core::Ptr<Geometry> >& getGeometry(const State& state) const;
+    const std::vector<rw::core::Ptr<Model3D> >& getModels(const State& state) const;
     virtual double getMass(State& state) const = 0;
     virtual rw::math::Vector3D<double> getCOM(State& state) const = 0;
     virtual rw::math::InertiaMatrix<double> getInertia(State& state) const = 0;
 };
-%template (ObjectPtr) rw::common::Ptr<Object>;
+%template (ObjectPtr) rw::core::Ptr<Object>;
 OWNEDPTR(Object);
 
 class RigidObject : public Object {
 public:
 	RigidObject(Frame* baseframe);
-	RigidObject(Frame* baseframe, rw::common::Ptr<Geometry> geom);
-	RigidObject(Frame* baseframe, std::vector<rw::common::Ptr<Geometry> > geom);
+	RigidObject(Frame* baseframe, rw::core::Ptr<Geometry> geom);
+	RigidObject(Frame* baseframe, std::vector<rw::core::Ptr<Geometry> > geom);
 	RigidObject(std::vector<Frame*> frames);
-	RigidObject(std::vector<Frame*> frames, rw::common::Ptr<Geometry> geom);
-	RigidObject(std::vector<Frame*> frames, std::vector<rw::common::Ptr<Geometry> > geom);
-	void addGeometry(rw::common::Ptr<Geometry> geom);
-	void removeGeometry(rw::common::Ptr<Geometry> geom);
-	void addModel(rw::common::Ptr<Model3D> model);
-	void removeModel(rw::common::Ptr<Model3D> model);
+	RigidObject(std::vector<Frame*> frames, rw::core::Ptr<Geometry> geom);
+	RigidObject(std::vector<Frame*> frames, std::vector<rw::core::Ptr<Geometry> > geom);
+	void addGeometry(rw::core::Ptr<Geometry> geom);
+	void removeGeometry(rw::core::Ptr<Geometry> geom);
+	void addModel(rw::core::Ptr<Model3D> model);
+	void removeModel(rw::core::Ptr<Model3D> model);
     double getMass() const;
     void setMass(double mass);
     rw::math::InertiaMatrix<double> getInertia() const;
@@ -3302,14 +3294,14 @@ public:
     void setCOM(const rw::math::Vector3D<double>& com);
     void approximateInertia();
     void approximateInertiaCOM();
-    const std::vector<rw::common::Ptr<Geometry> >& getGeometry() const ;
-    const std::vector<rw::common::Ptr<Model3D> >& getModels() const;
+    const std::vector<rw::core::Ptr<Geometry> >& getGeometry() const ;
+    const std::vector<rw::core::Ptr<Model3D> >& getModels() const;
     double getMass(State& state) const;
     rw::math::InertiaMatrix<double> getInertia(State& state) const;
     rw::math::Vector3D<double> getCOM(State& state) const;
 };
 
-%template (RigidObjectPtr) rw::common::Ptr<RigidObject>;
+%template (RigidObjectPtr) rw::core::Ptr<RigidObject>;
 OWNEDPTR(RigidObject);
 
 class DeformableObject: public Object
@@ -3324,9 +3316,9 @@ public:
      */
     DeformableObject(Frame* baseframe, int nr_of_nodes);
 
-    //DeformableObject(Frame* baseframe, rw::common::Ptr<Model3D> model);
+    //DeformableObject(Frame* baseframe, rw::core::Ptr<Model3D> model);
 
-    //DeformableObject(Frame* baseframe, rw::common::Ptr<Geometry> geom);
+    //DeformableObject(Frame* baseframe, rw::core::Ptr<Geometry> geom);
 
     //! destructor
     virtual ~DeformableObject();
@@ -3377,14 +3369,14 @@ public:
     //rw::geometry::IndexedTriMesh<float>::Ptr getMesh(State& cstate);
 
     //! @copydoc rw::models::Object::getGeometry
-    const std::vector<rw::common::Ptr<Geometry> >& getGeometry(const State& state) const;
+    const std::vector<rw::core::Ptr<Geometry> >& getGeometry(const State& state) const;
 
     //! @copydoc rw::models::Object::getModels
-    const std::vector<rw::common::Ptr<Model3D> >& getModels() const;
+    const std::vector<rw::core::Ptr<Model3D> >& getModels() const;
 
 
     //! @copydoc rw::models::Object::getModels
-    const std::vector<rw::common::Ptr<Model3D> >& getModels(const State& state) const;
+    const std::vector<rw::core::Ptr<Model3D> >& getModels(const State& state) const;
     
     /**
      * @brief get mass in Kg of this object
@@ -3414,10 +3406,10 @@ public:
      * @param model [in/out] model to be updated
      * @param state
      */
-    void update(rw::common::Ptr<Model3D> model, const State& state);
+    void update(rw::core::Ptr<Model3D> model, const State& state);
 };
 
-%template (DeformableObjectPtr) rw::common::Ptr<DeformableObject>;
+%template (DeformableObjectPtr) rw::core::Ptr<DeformableObject>;
 OWNEDPTR(DeformableObject);
 
 class Device
@@ -3447,7 +3439,7 @@ public:
     virtual rw::math::Jacobian baseJend(const State& state) const = 0;
     virtual rw::math::Jacobian baseJframe(const Frame* frame,const State& state) const;
     virtual rw::math::Jacobian baseJframes(const std::vector<Frame*>& frames,const State& state) const;
-    //virtual rw::common::Ptr<JacobianCalculator> baseJCend(const State& state) const;
+    //virtual rw::core::Ptr<JacobianCalculator> baseJCend(const State& state) const;
     //virtual JacobianCalculatorPtr baseJCframe(const Frame* frame, const State& state) const;
     //virtual JacobianCalculatorPtr baseJCframes(const std::vector<Frame*>& frames, const State& state) const = 0;
 private:
@@ -3455,13 +3447,13 @@ private:
     Device& operator=(const Device&);
 };
 
-%template (DevicePtr) rw::common::Ptr<Device>;
-%template (DeviceCPtr) rw::common::Ptr<const Device>;
-%template (DevicePtrVector) std::vector<rw::common::Ptr<Device> >;
+%template (DevicePtr) rw::core::Ptr<Device>;
+%template (DeviceCPtr) rw::core::Ptr<const Device>;
+%template (DevicePtrVector) std::vector<rw::core::Ptr<Device> >;
 OWNEDPTR(Device)
 
-%extend rw::common::Ptr<Device> {
-    rw::common::Ptr<const Device> asDeviceCPtr() { return *$self; }
+%extend rw::core::Ptr<Device> {
+    rw::core::Ptr<const Device> asDeviceCPtr() { return *$self; }
 }
 
 class JointDevice: public Device
@@ -3491,8 +3483,8 @@ public:
 #endif
 };
 
-%template (JointDevicePtr) rw::common::Ptr<JointDevice>;
-%template (JointDeviceCPtr) rw::common::Ptr<const JointDevice>;
+%template (JointDevicePtr) rw::core::Ptr<JointDevice>;
+%template (JointDeviceCPtr) rw::core::Ptr<const JointDevice>;
 OWNEDPTR(JointDevice)
 
 class CompositeDevice: public JointDevice
@@ -3500,44 +3492,44 @@ class CompositeDevice: public JointDevice
 public:
     CompositeDevice(
         Frame* base,
-		const std::vector<rw::common::Ptr<Device> >& devices,
+		const std::vector<rw::core::Ptr<Device> >& devices,
         Frame* end,
         const std::string& name,
         const State& state);
 
     CompositeDevice(
         Frame *base,
-		const std::vector<rw::common::Ptr<Device> >& devices,
+		const std::vector<rw::core::Ptr<Device> >& devices,
         const std::vector<Frame*>& ends,
         const std::string& name,
         const State& state);
 };
 
-%template (CompositeDevicePtr) rw::common::Ptr<CompositeDevice>;
+%template (CompositeDevicePtr) rw::core::Ptr<CompositeDevice>;
 OWNEDPTR(CompositeDevice)
 
-%extend rw::common::Ptr<CompositeDevice> {
-    rw::common::Ptr<Device> asDevicePtr() { return *$self; }
-    rw::common::Ptr<const Device> asDeviceCPtr() { return *$self; }
-    rw::common::Ptr<JointDevice> asJointDevicePtr() { return *$self; }
-    rw::common::Ptr<const JointDevice> asJointDeviceCPtr() { return *$self; }
+%extend rw::core::Ptr<CompositeDevice> {
+    rw::core::Ptr<Device> asDevicePtr() { return *$self; }
+    rw::core::Ptr<const Device> asDeviceCPtr() { return *$self; }
+    rw::core::Ptr<JointDevice> asJointDevicePtr() { return *$self; }
+    rw::core::Ptr<const JointDevice> asJointDeviceCPtr() { return *$self; }
 }
 
 class SerialDevice: public JointDevice
 {
 };
-%template (SerialDevicePtr) rw::common::Ptr<SerialDevice>;
-%template (SerialDeviceCPtr) rw::common::Ptr<const SerialDevice>;
+%template (SerialDevicePtr) rw::core::Ptr<SerialDevice>;
+%template (SerialDeviceCPtr) rw::core::Ptr<const SerialDevice>;
 OWNEDPTR(SerialDevice)
 
-%extend rw::common::Ptr<SerialDevice> {
-    rw::common::Ptr<const SerialDevice> asSerialDeviceCPtr() { return *$self; }
+%extend rw::core::Ptr<SerialDevice> {
+    rw::core::Ptr<const SerialDevice> asSerialDeviceCPtr() { return *$self; }
 }
 
 class ParallelDevice: public JointDevice
 {
 };
-%template (ParallelDevicePtr) rw::common::Ptr<ParallelDevice>;
+%template (ParallelDevicePtr) rw::core::Ptr<ParallelDevice>;
 OWNEDPTR(ParallelDevice)
 
 class TreeDevice: public JointDevice
@@ -3549,8 +3541,8 @@ public:
 		const std::string& name,
 		const State& state);
 };
-%template (TreeDevicePtr) rw::common::Ptr<TreeDevice>;
-%template (TreeDeviceCPtr) rw::common::Ptr<const TreeDevice>;
+%template (TreeDevicePtr) rw::core::Ptr<TreeDevice>;
+%template (TreeDeviceCPtr) rw::core::Ptr<const TreeDevice>;
 OWNEDPTR(TreeDevice)
 
 %nodefaultctor DHParameterSet;
@@ -3613,14 +3605,14 @@ public:
      * The frame can be NULL.
      * @return pointer to sensor model
      */
-    rw::common::Ptr<SensorModel> getSensorModel() const;
+    rw::core::Ptr<SensorModel> getSensorModel() const;
 
     /**
      * @brief Sets the frame to which the sensor should be attached
      *
      * @param smodel set the sensor model
      */
-    virtual void setSensorModel(rw::common::Ptr<SensorModel> smodel);
+    virtual void setSensorModel(rw::core::Ptr<SensorModel> smodel);
 
     /**
      * @brief gets the propertymap of this sensor
@@ -3628,7 +3620,7 @@ public:
     PropertyMap& getPropertyMap();
 };
 
-%template (SensorPtr) rw::common::Ptr<Sensor>;
+%template (SensorPtr) rw::core::Ptr<Sensor>;
 
 /**
  * @brief a general sensormodel interface. The sensormodel describe the model of a sensor
@@ -3708,7 +3700,7 @@ public:
     PropertyMap& getPropertyMap();
 };
 
-%template (SensorModelPtr) rw::common::Ptr<SensorModel>;
+%template (SensorModelPtr) rw::core::Ptr<SensorModel>;
 OWNEDPTR(SensorModel)
 
 /**
@@ -3887,7 +3879,7 @@ public:
     virtual double setGain(double Value);
 };
 
-%template (CameraPtr) rw::common::Ptr<Camera>;
+%template (CameraPtr) rw::core::Ptr<Camera>;
 
 /**
  * @brief The CameraModel class defines a generel pinhole camera model where
@@ -3922,7 +3914,7 @@ public:
      * @param state [in] which state the image is taken from.
      * @return last image captured from camera.
      */
-    rw::common::Ptr<Image> getImage(const State& state);
+    rw::core::Ptr<Image> getImage(const State& state);
 
     /**
      * @brief set the image in the state
@@ -3930,7 +3922,7 @@ public:
      * @param img [in] image to set in state
      * @param state [in/out] the state in which to set the image.
      */
-    void setImage(rw::common::Ptr<Image> img, State& state);
+    void setImage(rw::core::Ptr<Image> img, State& state);
 
     /**
      * @brief get horisontal field of view.
@@ -3957,8 +3949,8 @@ public:
     double getNearClippingPlane() const;
 };
 
-%template (CameraModelPtr) rw::common::Ptr<CameraModel>;
-%template (CameraModelCPtr) rw::common::Ptr<const CameraModel>;
+%template (CameraModelPtr) rw::core::Ptr<CameraModel>;
+%template (CameraModelCPtr) rw::core::Ptr<const CameraModel>;
 
 /**
  * @brief The image class is a simple wrapper around a char data array.
@@ -4167,10 +4159,10 @@ public:
      *
      * @return new image.
      */
-    rw::common::Ptr<Image> copyFlip(bool horizontal, bool vertical) const;
+    rw::core::Ptr<Image> copyFlip(bool horizontal, bool vertical) const;
 };
 
-%template (ImagePtr) rw::common::Ptr<Image>;
+%template (ImagePtr) rw::core::Ptr<Image>;
 
 class Scanner: public Sensor
 {
@@ -4250,7 +4242,7 @@ public:
 
 };
 
-%template (Scanner2DPtr) rw::common::Ptr<Scanner2D>;
+%template (Scanner2DPtr) rw::core::Ptr<Scanner2D>;
 
 /**
  * @brief The Scanner2DModel encapsulate the basic model of a
@@ -4313,7 +4305,7 @@ public:
     void setDistanceRange(double min, double max );
 };
 
-%template (Scanner2DModelPtr) rw::common::Ptr<Scanner2DModel>;
+%template (Scanner2DModelPtr) rw::core::Ptr<Scanner2DModel>;
 
 /**
  * @brief an interface describing a 3D scanner sensor. The scanner takes
@@ -4339,7 +4331,7 @@ public:
 
 };
 
-%template (Scanner25DPtr) rw::common::Ptr<Scanner25D>;
+%template (Scanner25DPtr) rw::core::Ptr<Scanner25D>;
 
 /**
  * @brief Model of a 25D (2D with depth information) scanner. The images are
@@ -4388,7 +4380,7 @@ public:
     void setRange(double min, double max);
 };
 
-%template (Scanner25DModelPtr) rw::common::Ptr<Scanner25DModel>;
+%template (Scanner25DModelPtr) rw::core::Ptr<Scanner25DModel>;
 
 /********************************************
  * TRAJECTORY
@@ -4439,60 +4431,60 @@ public:
 
 %template (TimedQVector) std::vector<Timed<rw::math::Q> >;
 %template (TimedStateVector) std::vector<Timed<State> >;
-%template (TimedQVectorPtr) rw::common::Ptr<std::vector<Timed<rw::math::Q> > >;
-%template (TimedStateVectorPtr) rw::common::Ptr<std::vector<Timed<State> > >;
+%template (TimedQVectorPtr) rw::core::Ptr<std::vector<Timed<rw::math::Q> > >;
+%template (TimedStateVectorPtr) rw::core::Ptr<std::vector<Timed<State> > >;
 OWNEDPTR(std::vector<Timed<rw::math::Q> > )
 //OWNEDPTR(std::vector<Timed<State> > )
 
 %template (PathSE3) Path<rw::math::Transform3D<double> >;
-%template (PathSE3Ptr) rw::common::Ptr<Path<rw::math::Transform3D<double> > >;
+%template (PathSE3Ptr) rw::core::Ptr<Path<rw::math::Transform3D<double> > >;
 %template (PathQ) Path<rw::math::Q>;
-%template (PathQPtr) rw::common::Ptr<Path<rw::math::Q> >;
+%template (PathQPtr) rw::core::Ptr<Path<rw::math::Q> >;
 %template (PathTimedQ) Path<Timed<rw::math::Q> >;
-%template (PathTimedQPtr) rw::common::Ptr<Path<Timed<rw::math::Q> > >;
+%template (PathTimedQPtr) rw::core::Ptr<Path<Timed<rw::math::Q> > >;
 %template (PathTimedState) Path<Timed<State> >;
-%template (PathTimedStatePtr) rw::common::Ptr<Path<Timed<State> > >;
+%template (PathTimedStatePtr) rw::core::Ptr<Path<Timed<State> > >;
 OWNEDPTR(Path<rw::math::Transform3D<double> > )
 OWNEDPTR(Path<rw::math::Q> )
 OWNEDPTR(Path<Timed<rw::math::Q> > )
 OWNEDPTR(Path<Timed<State> > )
 
 %extend Path<rw::math::Q> {
-    rw::common::Ptr<Path<Timed<rw::math::Q> > > toTimedQPath(rw::math::Q speed){
+    rw::core::Ptr<Path<Timed<rw::math::Q> > > toTimedQPath(rw::math::Q speed){
         rw::trajectory::TimedQPath tpath =
                 rw::trajectory::TimedUtil::makeTimedQPath(speed, *$self);
-        return rw::common::ownedPtr( new rw::trajectory::TimedQPath(tpath) );
+        return rw::core::ownedPtr( new rw::trajectory::TimedQPath(tpath) );
     }
 
-    rw::common::Ptr<Path<Timed<rw::math::Q> > > toTimedQPath(rw::common::Ptr<Device> dev){
+    rw::core::Ptr<Path<Timed<rw::math::Q> > > toTimedQPath(rw::core::Ptr<Device> dev){
         rw::trajectory::TimedQPath tpath =
                 rw::trajectory::TimedUtil::makeTimedQPath(*dev, *$self);
-        return rw::common::ownedPtr( new rw::trajectory::TimedQPath(tpath) );
+        return rw::core::ownedPtr( new rw::trajectory::TimedQPath(tpath) );
     }
 
-    rw::common::Ptr<Path<Timed<State> > > toTimedStatePath(rw::common::Ptr<Device> dev,
+    rw::core::Ptr<Path<Timed<State> > > toTimedStatePath(rw::core::Ptr<Device> dev,
                                                      const State& state){
         rw::trajectory::TimedStatePath tpath =
                 rw::trajectory::TimedUtil::makeTimedStatePath(*dev, *$self, state);
-        return rw::common::ownedPtr( new rw::trajectory::TimedStatePath(tpath) );
+        return rw::core::ownedPtr( new rw::trajectory::TimedStatePath(tpath) );
     }
 
 };
 
 %extend Path<Timed<State> > {
 	
-	static rw::common::Ptr<Path<Timed<State> > > load(const std::string& filename, rw::common::Ptr<WorkCell> wc){
-		rw::common::Ptr<rw::trajectory::TimedStatePath> spath = 
-                    rw::common::ownedPtr(new rw::trajectory::TimedStatePath);
+	static rw::core::Ptr<Path<Timed<State> > > load(const std::string& filename, rw::core::Ptr<WorkCell> wc){
+		rw::core::Ptr<rw::trajectory::TimedStatePath> spath = 
+                    rw::core::ownedPtr(new rw::trajectory::TimedStatePath);
                 *spath = rw::loaders::PathLoader::loadTimedStatePath(*wc, filename);
-		return rw::common::Ptr<rw::trajectory::TimedStatePath>( spath );
+		return rw::core::Ptr<rw::trajectory::TimedStatePath>( spath );
 	}
 	
-	void save(const std::string& filename, rw::common::Ptr<WorkCell> wc){		 		
+	void save(const std::string& filename, rw::core::Ptr<WorkCell> wc){		 		
 		rw::loaders::PathLoader::storeTimedStatePath(*wc,*$self,filename); 
 	}
 	
-	void append(rw::common::Ptr<Path<Timed<State> > > spath){
+	void append(rw::core::Ptr<Path<Timed<State> > > spath){
 		double startTime = 0;
 		if($self->size()>0)
 			startTime = (*$self).back().getTime(); 
@@ -4508,17 +4500,17 @@ OWNEDPTR(Path<Timed<State> > )
 
 %extend Path<State > {
 	
-	static rw::common::Ptr<Path<State> > load(const std::string& filename, rw::common::Ptr<WorkCell> wc){
-            rw::common::Ptr<rw::trajectory::StatePath> spath = rw::common::ownedPtr(new rw::trajectory::StatePath);
+	static rw::core::Ptr<Path<State> > load(const std::string& filename, rw::core::Ptr<WorkCell> wc){
+            rw::core::Ptr<rw::trajectory::StatePath> spath = rw::core::ownedPtr(new rw::trajectory::StatePath);
             *spath = rw::loaders::PathLoader::loadStatePath(*wc, filename);
-		return rw::common::ownedPtr( spath );
+		return rw::core::ownedPtr( spath );
 	}
 	
-	void save(const std::string& filename, rw::common::Ptr<WorkCell> wc){		 		
+	void save(const std::string& filename, rw::core::Ptr<WorkCell> wc){		 		
 		rw::loaders::PathLoader::storeStatePath(*wc,*$self,filename); 
 	}
 	
-	void append(rw::common::Ptr<Path<State> > spath){
+	void append(rw::core::Ptr<Path<State> > spath){
 		double startTime = 0;
 		if($self->size()>0)
 			startTime = (*$self).front().getTime(); 
@@ -4529,9 +4521,9 @@ OWNEDPTR(Path<Timed<State> > )
 	}
 	
 	
-	rw::common::Ptr<Path<Timed<State> > > toTimedStatePath(double timeStep){
-		rw::common::Ptr<TimedStatePath> spath = 
-			rw::common::ownedPtr( new rw::trajectory::TimedStatePath() );	
+	rw::core::Ptr<Path<Timed<State> > > toTimedStatePath(double timeStep){
+		rw::core::Ptr<TimedStatePath> spath = 
+			rw::core::ownedPtr( new rw::trajectory::TimedStatePath() );	
 		for(size_t i = 0; i<spath->size(); i++){
 			Timed<State> tstate(timeStep*i, (*spath)[i]); 
 			spath->push_back( tstate );
@@ -4561,12 +4553,12 @@ public:
 %template (BlendSE3) Blend<rw::math::Transform3D<double> >;
 %template (BlendQ) Blend<rw::math::Q>;
 
-%template (BlendR1Ptr) rw::common::Ptr<Blend<double> >;
-%template (BlendR2Ptr) rw::common::Ptr<Blend<rw::math::Vector2D<double> > >;
-%template (BlendR3Ptr) rw::common::Ptr<Blend<rw::math::Vector3D<double> > >;
-%template (BlendSO3Ptr) rw::common::Ptr<Blend<rw::math::Rotation3D<double> > >;
-%template (BlendSE3Ptr) rw::common::Ptr<Blend<rw::math::Transform3D<double> > >;
-%template (BlendQPtr) rw::common::Ptr<Blend<rw::math::Q> >;
+%template (BlendR1Ptr) rw::core::Ptr<Blend<double> >;
+%template (BlendR2Ptr) rw::core::Ptr<Blend<rw::math::Vector2D<double> > >;
+%template (BlendR3Ptr) rw::core::Ptr<Blend<rw::math::Vector3D<double> > >;
+%template (BlendSO3Ptr) rw::core::Ptr<Blend<rw::math::Rotation3D<double> > >;
+%template (BlendSE3Ptr) rw::core::Ptr<Blend<rw::math::Transform3D<double> > >;
+%template (BlendQPtr) rw::core::Ptr<Blend<rw::math::Q> >;
 
 OWNEDPTR(Blend<double> )
 OWNEDPTR(Blend<rw::math::Vector2D<double> > )
@@ -4592,12 +4584,12 @@ public:
 %template (InterpolatorSE3) Interpolator<rw::math::Transform3D<double> >;
 %template (InterpolatorQ) Interpolator<rw::math::Q>;
 
-%template (InterpolatorR1Ptr) rw::common::Ptr<Interpolator<double> >;
-%template (InterpolatorR2Ptr) rw::common::Ptr<Interpolator<rw::math::Vector2D<double> > >;
-%template (InterpolatorR3Ptr) rw::common::Ptr<Interpolator<rw::math::Vector3D<double> > >;
-%template (InterpolatorSO3Ptr) rw::common::Ptr<Interpolator<rw::math::Rotation3D<double> > >;
-%template (InterpolatorSE3Ptr) rw::common::Ptr<Interpolator<rw::math::Transform3D<double> > >;
-%template (InterpolatorQPtr) rw::common::Ptr<Interpolator<rw::math::Q> >;
+%template (InterpolatorR1Ptr) rw::core::Ptr<Interpolator<double> >;
+%template (InterpolatorR2Ptr) rw::core::Ptr<Interpolator<rw::math::Vector2D<double> > >;
+%template (InterpolatorR3Ptr) rw::core::Ptr<Interpolator<rw::math::Vector3D<double> > >;
+%template (InterpolatorSO3Ptr) rw::core::Ptr<Interpolator<rw::math::Rotation3D<double> > >;
+%template (InterpolatorSE3Ptr) rw::core::Ptr<Interpolator<rw::math::Transform3D<double> > >;
+%template (InterpolatorQPtr) rw::core::Ptr<Interpolator<rw::math::Q> >;
 
 OWNEDPTR(Interpolator<double> )
 OWNEDPTR(Interpolator<rw::math::Vector2D<double> > )
@@ -4747,7 +4739,7 @@ public:
     virtual double endTime() const;
 
     std::vector<T> getPath(double dt, bool uniform = true);
-    //virtual typename rw::common::Ptr< TrajectoryIterator<T> > getIterator(double dt = 1) const = 0;
+    //virtual typename rw::core::Ptr< TrajectoryIterator<T> > getIterator(double dt = 1) const = 0;
 
 protected:
     /**
@@ -4764,13 +4756,13 @@ protected:
 %template (TrajectorySE3) Trajectory<rw::math::Transform3D<double> >;
 %template (TrajectoryQ) Trajectory<rw::math::Q>;
 
-%template (TrajectoryStatePtr) rw::common::Ptr<Trajectory<State> >;
-%template (TrajectoryR1Ptr) rw::common::Ptr<Trajectory<double> >;
-%template (TrajectoryR2Ptr) rw::common::Ptr<Trajectory<rw::math::Vector2D<double> > >;
-%template (TrajectoryR3Ptr) rw::common::Ptr<Trajectory<rw::math::Vector3D<double> > >;
-%template (TrajectorySO3Ptr) rw::common::Ptr<Trajectory<rw::math::Rotation3D<double> > >;
-%template (TrajectorySE3Ptr) rw::common::Ptr<Trajectory<rw::math::Transform3D<double> > >;
-%template (TrajectoryQPtr) rw::common::Ptr<Trajectory<rw::math::Q> >;
+%template (TrajectoryStatePtr) rw::core::Ptr<Trajectory<State> >;
+%template (TrajectoryR1Ptr) rw::core::Ptr<Trajectory<double> >;
+%template (TrajectoryR2Ptr) rw::core::Ptr<Trajectory<rw::math::Vector2D<double> > >;
+%template (TrajectoryR3Ptr) rw::core::Ptr<Trajectory<rw::math::Vector3D<double> > >;
+%template (TrajectorySO3Ptr) rw::core::Ptr<Trajectory<rw::math::Rotation3D<double> > >;
+%template (TrajectorySE3Ptr) rw::core::Ptr<Trajectory<rw::math::Transform3D<double> > >;
+%template (TrajectoryQPtr) rw::core::Ptr<Trajectory<rw::math::Q> >;
 
 OWNEDPTR(Trajectory<State> )
 OWNEDPTR(Trajectory<double> )
@@ -4784,15 +4776,15 @@ template <class T>
 class InterpolatorTrajectory: public Trajectory<T> {
 public:
     InterpolatorTrajectory(double startTime = 0);
-    void add(rw::common::Ptr<Interpolator<T> > interpolator);
-    void add(rw::common::Ptr<Blend<T> > blend,
-             rw::common::Ptr<Interpolator<T> > interpolator);
+    void add(rw::core::Ptr<Interpolator<T> > interpolator);
+    void add(rw::core::Ptr<Blend<T> > blend,
+             rw::core::Ptr<Interpolator<T> > interpolator);
     void add(InterpolatorTrajectory<T>* trajectory);
     size_t getSegmentsCount() const;
 
 
 
-    //std::pair<rw::common::Ptr<Blend<T> >, rw::common::Ptr<Interpolator<T> > > getSegment(size_t index) const;
+    //std::pair<rw::core::Ptr<Blend<T> >, rw::core::Ptr<Interpolator<T> > > getSegment(size_t index) const;
 };
 
 %template (InterpolatorTrajectoryR1) InterpolatorTrajectory<double>;
@@ -4807,20 +4799,20 @@ public:
 class TrajectoryFactory
 {
 public:
-    static rw::common::Ptr<StateTrajectory> makeFixedTrajectory(const State& state, double duration);
-    static rw::common::Ptr<QTrajectory> makeFixedTrajectory(const rw::math::Q& q, double duration);
-    static rw::common::Ptr<StateTrajectory> makeLinearTrajectory(const TimedStatePath& path);
-    static rw::common::Ptr<StateTrajectory> makeLinearTrajectory(const StatePath& path,
+    static rw::core::Ptr<StateTrajectory> makeFixedTrajectory(const State& state, double duration);
+    static rw::core::Ptr<QTrajectory> makeFixedTrajectory(const rw::math::Q& q, double duration);
+    static rw::core::Ptr<StateTrajectory> makeLinearTrajectory(const TimedStatePath& path);
+    static rw::core::Ptr<StateTrajectory> makeLinearTrajectory(const StatePath& path,
         const models::WorkCell& workcell);
-    static rw::common::Ptr<StateTrajectory> makeLinearTrajectoryUnitStep(const StatePath& path);
-    static rw::common::Ptr<QTrajectory> makeLinearTrajectory(const TimedQPath& path);
-    static rw::common::Ptr<QTrajectory> makeLinearTrajectory(const QPath& path, const rw::math::Q& speeds);
-    static rw::common::Ptr<QTrajectory> makeLinearTrajectory(const QPath& path, const models::Device& device);
-    static rw::common::Ptr<QTrajectory> makeLinearTrajectory(const QPath& path, rw::common::Ptr<QMetric> metric);
-    static rw::common::Ptr<Transform3DTrajectory> makeLinearTrajectory(const Transform3DPath& path, const std::vector<double>& times);
-    static rw::common::Ptr<Transform3DTrajectory> makeLinearTrajectory(const Transform3DPath& path, const rw::common::Ptr<Transform3DMetric> metric);
-    static rw::common::Ptr<StateTrajectory> makeEmptyStateTrajectory();
-    static rw::common::Ptr<QTrajectory > makeEmptyQTrajectory();
+    static rw::core::Ptr<StateTrajectory> makeLinearTrajectoryUnitStep(const StatePath& path);
+    static rw::core::Ptr<QTrajectory> makeLinearTrajectory(const TimedQPath& path);
+    static rw::core::Ptr<QTrajectory> makeLinearTrajectory(const QPath& path, const rw::math::Q& speeds);
+    static rw::core::Ptr<QTrajectory> makeLinearTrajectory(const QPath& path, const models::Device& device);
+    static rw::core::Ptr<QTrajectory> makeLinearTrajectory(const QPath& path, rw::core::Ptr<QMetric> metric);
+    static rw::core::Ptr<Transform3DTrajectory> makeLinearTrajectory(const Transform3DPath& path, const std::vector<double>& times);
+    static rw::core::Ptr<Transform3DTrajectory> makeLinearTrajectory(const Transform3DPath& path, const rw::core::Ptr<Transform3DMetric> metric);
+    static rw::core::Ptr<StateTrajectory> makeEmptyStateTrajectory();
+    static rw::core::Ptr<QTrajectory > makeEmptyQTrajectory();
 };
 
 */

@@ -4,7 +4,7 @@
 #include "XMLHelpers.hpp"
 
 #define DEBUG cout
-//rw::common::Log::debugLog()
+//rw::core::Log::debugLog()
 
 
 

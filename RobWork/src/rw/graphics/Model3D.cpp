@@ -114,11 +114,11 @@ rw::geometry::GeometryData::Ptr Model3D::toGeometryData ()
     IndexedTriMeshF::Ptr mesh;
 
     if (totalVerts < UINT8_MAX)
-        mesh = mesh8 = rw::common::ownedPtr (new IndexedTriMeshN0< float, uint8_t > ());
+        mesh = mesh8 = rw::core::ownedPtr (new IndexedTriMeshN0< float, uint8_t > ());
     else if (totalVerts < UINT16_MAX)
-        mesh = mesh16 = rw::common::ownedPtr (new IndexedTriMeshN0< float, uint16_t > ());
+        mesh = mesh16 = rw::core::ownedPtr (new IndexedTriMeshN0< float, uint16_t > ());
     else if (totalVerts < UINT32_MAX)
-        mesh = mesh32 = rw::common::ownedPtr (new IndexedTriMeshN0< float, uint32_t > ());
+        mesh = mesh32 = rw::core::ownedPtr (new IndexedTriMeshN0< float, uint32_t > ());
     else
         RW_THROW ("The Model3D has too many vertices to be converted to GeometryData "
                   "(IndexedTriMesh) - should be less than "
@@ -247,7 +247,7 @@ void Model3D::addTriMesh (const Material& mat, const TriMesh& mesh)
         if (meshSize > maxMeshSize)
             meshSize = maxMeshSize;
 
-        Object3D< uint16_t >::Ptr obj = rw::common::ownedPtr (new Object3D< uint16_t > ("MeshObj"));
+        Object3D< uint16_t >::Ptr obj = rw::core::ownedPtr (new Object3D< uint16_t > ("MeshObj"));
         obj->_vertices.resize (meshSize * 3);
         obj->_normals.resize (meshSize * 3);
         obj->_faces.resize (meshSize);

@@ -20,7 +20,7 @@
 
 #include "PolynomialND.hpp"
 
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 #include <rw/common/Serializable.hpp>
 
 #include <vector>

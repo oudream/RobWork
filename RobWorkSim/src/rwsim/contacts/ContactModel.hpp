@@ -25,6 +25,7 @@
  */
 
 #include <rw/proximity/ProximityModel.hpp>
+#include <rw/core/Ptr.hpp>
 
 namespace rwsim {
 namespace contacts {
@@ -40,7 +41,7 @@ namespace contacts {
 class ContactModel: public rw::proximity::ProximityModel {
 public:
 	//! @brief smart pointer type to this class
-	typedef rw::common::Ptr<ContactModel> Ptr;
+	typedef rw::core::Ptr<ContactModel> Ptr;
 
 	/**
 	 * @brief Construct new contact model.

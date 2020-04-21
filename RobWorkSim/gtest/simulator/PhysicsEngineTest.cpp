@@ -23,6 +23,7 @@
 
 
 using namespace rw::common;
+using namespace rw::core;
 using namespace rwsim::simulator;
 using namespace rwsimlibs::test;
 

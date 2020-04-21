@@ -48,6 +48,7 @@ using namespace rw::models;
 using namespace rw::geometry;
 using namespace rw::math;
 using namespace rw::common;
+using namespace rw::core;
 using namespace rw::sensor;
 using namespace rw::proximity;
 

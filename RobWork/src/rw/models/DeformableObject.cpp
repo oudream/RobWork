@@ -10,23 +10,23 @@ using namespace rw::math;
 
 
 DeformableObject::DeformableObject(rw::kinematics::Frame* baseframe, int nr_of_nodes):
-	Object(baseframe),_rstate(1, rw::common::ownedPtr( new DeformableObjectCache(nr_of_nodes)).cast<StateCache>() )
+	Object(baseframe),_rstate(1, rw::core::ownedPtr( new DeformableObjectCache(nr_of_nodes)).cast<StateCache>() )
 {
 	add(_rstate);
-	_model = rw::common::ownedPtr( new rw::graphics::Model3D(baseframe->getName()+"_M"));
+	_model = rw::core::ownedPtr( new rw::graphics::Model3D(baseframe->getName()+"_M"));
 
 	Model3D::Material mat("gray",0.7f,0.7f,0.7f);
 	int matId = _model->addMaterial( mat );
-	_mesh = rw::common::ownedPtr( new IndexedTriMeshN0<float>() );
+	_mesh = rw::core::ownedPtr( new IndexedTriMeshN0<float>() );
 	_mesh->getVertices().resize(nr_of_nodes, Vector3D<float>(0,0,0));
 	_mesh->getNormals().resize(nr_of_nodes, Vector3D<float>(0,0,0));
-	Model3D::Object3D<uint16_t>::Ptr obj = rw::common::ownedPtr( new Model3D::Object3D<uint16_t>("Obj1") );
+	Model3D::Object3D<uint16_t>::Ptr obj = rw::core::ownedPtr( new Model3D::Object3D<uint16_t>("Obj1") );
 	obj->_vertices.resize(nr_of_nodes, Vector3D<float>(0,0,0));
 	obj->_normals.resize(nr_of_nodes, Vector3D<float>(0,0,1));
 	obj->_faces.resize(0);
 	obj->_materialMap.push_back( Model3D::Object3D<uint16_t>::MaterialMapData((uint16_t)matId,0,(uint16_t)0) );
 	_model->addObject( obj );
-	_geom = rw::common::ownedPtr( new rw::geometry::Geometry(_mesh, std::string(baseframe->getName()+"_G")) );
+	_geom = rw::core::ownedPtr( new rw::geometry::Geometry(_mesh, std::string(baseframe->getName()+"_G")) );
 }
 
 DeformableObject::DeformableObject(rw::kinematics::Frame* baseframe, rw::graphics::Model3D::Ptr model):
@@ -37,10 +37,10 @@ DeformableObject::DeformableObject(rw::kinematics::Frame* baseframe, rw::graphic
 	const int nrOfVertices = static_cast<int>(_mesh->getVertices().size());
 	if (_mesh->getVertices().size() != static_cast<std::size_t>(nrOfVertices))
 		RW_THROW("There are too many vertices in the mesh to create a DeformableObject.");
-	_rstate = rw::kinematics::StatelessData<int>(1,rw::common::ownedPtr( new DeformableObjectCache(nrOfVertices)).cast<StateCache>() );
+	_rstate = rw::kinematics::StatelessData<int>(1,rw::core::ownedPtr( new DeformableObjectCache(nrOfVertices)).cast<StateCache>() );
 	add(_rstate);
 
-	_geom = rw::common::ownedPtr( new rw::geometry::Geometry(_mesh, std::string(baseframe->getName()+"_G")) );
+	_geom = rw::core::ownedPtr( new rw::geometry::Geometry(_mesh, std::string(baseframe->getName()+"_G")) );
 }
 
 DeformableObject::DeformableObject(rw::kinematics::Frame* baseframe, rw::geometry::Geometry::Ptr geom):
@@ -52,10 +52,10 @@ DeformableObject::DeformableObject(rw::kinematics::Frame* baseframe, rw::geometr
 	const int nrOfVertices = static_cast<int>(_mesh->getVertices().size());
 	if (_mesh->getVertices().size() != static_cast<std::size_t>(nrOfVertices))
 		RW_THROW("There are too many vertices in the mesh to create a DeformableObject.");
-   _rstate = rw::kinematics::StatelessData<int>(1,rw::common::ownedPtr( new DeformableObjectCache(nrOfVertices)).cast<StateCache>() );
+   _rstate = rw::kinematics::StatelessData<int>(1,rw::core::ownedPtr( new DeformableObjectCache(nrOfVertices)).cast<StateCache>() );
    add(_rstate);
-   _geom = rw::common::ownedPtr( new rw::geometry::Geometry(_mesh, std::string(baseframe->getName()+"_G")) );
-   _model = rw::common::ownedPtr( new rw::graphics::Model3D(baseframe->getName()+"_M"));
+   _geom = rw::core::ownedPtr( new rw::geometry::Geometry(_mesh, std::string(baseframe->getName()+"_G")) );
+   _model = rw::core::ownedPtr( new rw::graphics::Model3D(baseframe->getName()+"_M"));
    Model3D::Material mat("gray",0.7f,0.7f,0.7f);
    _model->addGeometry(mat, _geom);
 }
@@ -106,7 +106,7 @@ void DeformableObject::setNode(int id, const rw::math::Vector3D<float>& v, rw::k
 	 std::vector<rw::geometry::Geometry::Ptr> geoms;
 	 // get a copy of the models with the configuration from the state
 	 for(rw::geometry::Geometry::Ptr geom : getGeometry()) {
-	 	 geoms.push_back( rw::common::ownedPtr( new rw::geometry::Geometry(*geom)) );
+	 	 geoms.push_back( rw::core::ownedPtr( new rw::geometry::Geometry(*geom)) );
 	 }
 	 _rstate.getStateCache<DeformableObjectCache>(state)->_geoms = geoms;
 	 return _rstate.getStateCache<DeformableObjectCache>(state)->_geoms;
@@ -123,7 +123,7 @@ void DeformableObject::setNode(int id, const rw::math::Vector3D<float>& v, rw::k
 
 	 // get a copy of the models with the configuration from the state
 	 for(rw::graphics::Model3D::Ptr model : getModels()) {
-	 	 models.push_back( rw::common::ownedPtr( new rw::graphics::Model3D(*model)) );
+	 	 models.push_back( rw::core::ownedPtr( new rw::graphics::Model3D(*model)) );
 	 }
 	 _rstate.getStateCache<DeformableObjectCache>(state)->_models = models;
 	 return _rstate.getStateCache<DeformableObjectCache>(state)->_models;

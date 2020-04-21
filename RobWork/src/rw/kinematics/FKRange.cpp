@@ -18,7 +18,7 @@
 
 #include "FKRange.hpp"
 
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 #include "Frame.hpp"
 
 using namespace rw::kinematics;

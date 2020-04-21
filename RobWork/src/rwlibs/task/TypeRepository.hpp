@@ -20,7 +20,7 @@
 #ifndef RWLIBS_TASK_TYPEREPOSITORY_HPP
 #define RWLIBS_TASK_TYPEREPOSITORY_HPP
 
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 //#include <tr1/unordered_map>
 #include <map>
 #include <string>
@@ -117,7 +117,7 @@ public:
      * @brief Returns the Type associated to the template type T
      *
      * With the get method is is possible to specify whether to add the type
-     * if it does not exists or whether to throw a rw::common::Exception. If the
+     * if it does not exists or whether to throw a rw::core::Exception. If the
      * type if not defined and no exception is throw it returns Undefined.
      */
     template <class T>

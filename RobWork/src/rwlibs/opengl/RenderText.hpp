@@ -9,7 +9,7 @@
 #include <rwlibs/opengl/SceneOpenGL.hpp>
 
 #include <rw/graphics/Render.hpp>
-
+#include <rw/core/Ptr.hpp>
 #include <RobWorkConfig.hpp>
 
 #include <vector>
@@ -26,7 +26,7 @@ namespace rwlibs { namespace opengl {
          * @brief Constructs a RenderText
          * @param text [in] the text to be rendered
          */
-        RenderText(std::string text, rw::common::Ptr<rw::kinematics::Frame> frame);
+        RenderText(std::string text, rw::core::Ptr<rw::kinematics::Frame> frame);
         
         //! @copydoc rw::graphics::Render::draw(const DrawableNode::RenderInfo& info, DrawableNode::DrawType type, double alpha) const
         void draw(const rw::graphics::DrawableNode::RenderInfo& info,
@@ -37,7 +37,7 @@ namespace rwlibs { namespace opengl {
     private:
 
         std::string _text;
-        rw::common::Ptr<rw::kinematics::Frame> _frame;
+        rw::core::Ptr<rw::kinematics::Frame> _frame;
         bool _haveGlut;
 
         //Text width and text height in pixels

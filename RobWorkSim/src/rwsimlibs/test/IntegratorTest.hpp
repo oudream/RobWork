@@ -48,20 +48,20 @@ public:
 	virtual bool isEngineSupported(const std::string& engineID) const;
 
 	//! @copydoc EngineTest::getDWC
-	virtual rw::common::Ptr<rwsim::dynamics::DynamicWorkCell> getDWC(const rw::common::PropertyMap& map);
+	virtual rw::core::Ptr<rwsim::dynamics::DynamicWorkCell> getDWC(const rw::core::PropertyMap& map);
 
 	//! @copydoc EngineTest::getDefaultParameters
-	virtual rw::common::Ptr<rw::common::PropertyMap> getDefaultParameters() const;
+	virtual rw::core::Ptr<rw::core::PropertyMap> getDefaultParameters() const;
 
 	/**
 	 * @brief Create new dynamic workcell.
 	 * @param integratorType [in] (optional) the integrator to use.
 	 * @return the dynamic workcell.
 	 */
-	virtual rw::common::Ptr<rwsim::dynamics::DynamicWorkCell> makeIntegratorDWC(const std::string& integratorType = "");
+	virtual rw::core::Ptr<rwsim::dynamics::DynamicWorkCell> makeIntegratorDWC(const std::string& integratorType = "");
 
 private:
-	std::map<std::string,rw::common::Ptr<rwsim::dynamics::DynamicWorkCell> > _integratorTypeToDWC;
+	std::map<std::string,rw::core::Ptr<rwsim::dynamics::DynamicWorkCell> > _integratorTypeToDWC;
 };
 //! @}
 } /* namespace test */

@@ -45,10 +45,10 @@ class Face;
 class IndexedFaceArray: public Shell {
 public:
     //! @brief Smart pointer type to IndexedFaceArray
-    typedef rw::common::Ptr<IndexedFaceArray> Ptr;
+    typedef rw::core::Ptr<IndexedFaceArray> Ptr;
 
 	//! @brief Smart pointer type for a const IndexedFaceArray.
-	typedef rw::common::Ptr<const IndexedFaceArray> CPtr;
+	typedef rw::core::Ptr<const IndexedFaceArray> CPtr;
 
 	//! @brief Structure that holds information for each face.
 	struct IndexedFace {
@@ -70,7 +70,7 @@ public:
 	 * @brief Construct new indexed face array.
 	 * @param shell [in] the underlying Shell.
 	 */
-	IndexedFaceArray(rw::common::Ptr<const Shell> shell);
+	IndexedFaceArray(rw::core::Ptr<const Shell> shell);
 
 	/**
 	 * @brief Construct new indexed face array.
@@ -79,7 +79,7 @@ public:
 	 * @param first [in] skip the \b first \b faces.
 	 * @param last [in] last index of \b faces to include.
 	 */
-	IndexedFaceArray(rw::common::Ptr<const Shell> shell, const std::vector<IndexedFace>& faces, std::size_t first, std::size_t last);
+	IndexedFaceArray(rw::core::Ptr<const Shell> shell, const std::vector<IndexedFace>& faces, std::size_t first, std::size_t last);
 
 	//! @brief Destructor.
 	virtual ~IndexedFaceArray();
@@ -130,11 +130,11 @@ public:
 	std::size_t getGlobalIndex(std::size_t idx) const;
 
 private:
-	virtual rw::common::Ptr<const Face> doGetFace(std::size_t idx) const;
+	virtual rw::core::Ptr<const Face> doGetFace(std::size_t idx) const;
 
 	struct CenterSort;
 
-	const rw::common::Ptr<const Shell> _shell;
+	const rw::core::Ptr<const Shell> _shell;
 	std::vector<IndexedFace> _faces;
 	std::size_t _first;
 	std::size_t _last;

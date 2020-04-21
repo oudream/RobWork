@@ -41,7 +41,7 @@
 
 
 using namespace xercesc;
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::math;
 using namespace rw::loaders;
 using namespace rwlibs::task;
@@ -137,10 +137,10 @@ void XMLTaskSaver::writeTargets(typename Task<T>::Ptr task, xercesc::DOMElement*
     xercesc::DOMElement* targetsElement = doc->createElement(XMLTaskFormat::idTargets());
     element->appendChild(targetsElement);
 
-	std::vector<rw::common::Ptr<Target<T> > > targets = task->getTargets();
+	std::vector<rw::core::Ptr<Target<T> > > targets = task->getTargets();
 
 	int targetId = 0;
-	for(rw::common::Ptr<Target<T> > target: targets) {
+	for(rw::core::Ptr<Target<T> > target: targets) {
 		xercesc::DOMElement* targetElement = doc->createElement(Identifiers<T>::targetId());
 		targetsElement->appendChild(targetElement);
 
@@ -279,7 +279,7 @@ bool XMLTaskSaver::saveImpl(typename Task<T>::Ptr task, XMLFormatTarget* target)
 		
         try
         {
-			rw::common::Ptr<xercesc::DOMDocument> doc = NULL;
+			rw::core::Ptr<xercesc::DOMDocument> doc = NULL;
              doc = ownedPtr(impl->createDocument(0,               // root element namespace URI.
                                         Identifiers<T>::taskId(), // root element name
                                         0));                   	  // We do not wish to specify a document type
@@ -299,7 +299,7 @@ bool XMLTaskSaver::saveImpl(typename Task<T>::Ptr task, XMLFormatTarget* target)
         {
             RW_THROW("XMLTaskSaver: DOMException:  " << XMLString::transcode(e.getMessage()));
         }
-        catch (const rw::common::Exception& exp) {
+        catch (const rw::core::Exception& exp) {
             throw exp;
         } 
         catch (...)

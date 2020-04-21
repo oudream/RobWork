@@ -32,7 +32,7 @@
 #include <xercesc/util/XMLDouble.hpp>
 
 using namespace rw::math;
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::loaders;
 using namespace rw::trajectory;
 using namespace xercesc;

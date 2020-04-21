@@ -18,7 +18,7 @@
 
 #include "BasicGPM.hpp"
 
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 #include <rw/math/Math.hpp>
 #include <rw/math/LinearAlgebra.hpp>
 #include <rw/math/Jacobian.hpp>

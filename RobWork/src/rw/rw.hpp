@@ -28,6 +28,7 @@
 */
 
 #include "common.hpp"
+#include <rw/core.hpp>
 #include "geometry.hpp"
 #include "invkin.hpp"
 #include "kinematics.hpp"
@@ -39,7 +40,5 @@
 #include "trajectory.hpp"
 #include "proximity.hpp"
 #include "graspplanning.hpp"
-
-#include "RobWork.hpp"
 
 #endif // end include guard

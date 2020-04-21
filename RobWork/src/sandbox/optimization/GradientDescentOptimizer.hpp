@@ -10,6 +10,7 @@
 
 #include "GradientOptimizer.hpp"
 #include "Types.hpp"
+#include <rw/core/Ptr.hpp>
 
 namespace rwlibs {
 namespace optimization {
@@ -29,7 +30,7 @@ namespace optimization {
 class GradientDescentOptimizer: public GradientOptimizer {
 public:
 	//! Smart pointer.
-	typedef rw::common::Ptr<GradientDescentOptimizer> Ptr;
+	typedef rw::core::Ptr<GradientDescentOptimizer> Ptr;
 
 public:
 	/**

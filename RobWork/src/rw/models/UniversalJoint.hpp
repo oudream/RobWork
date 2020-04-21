@@ -39,7 +39,7 @@ namespace models {
 class UniversalJoint: public Joint {
 public:
 	//! @brief Smart pointer type of UniversalJoint
-	typedef rw::common::Ptr<UniversalJoint> Ptr;
+	typedef rw::core::Ptr<UniversalJoint> Ptr;
 
     /**
      * @brief Construct a universal joint.

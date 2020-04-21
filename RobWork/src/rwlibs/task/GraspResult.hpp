@@ -9,7 +9,7 @@
 #define SRC_RWLIBS_TASK_GRASPRESULT_HPP_
 
 #include <vector>
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/math/Q.hpp>
 #include <rw/math/Transform3D.hpp>
 #include <rw/sensor/Contact3D.hpp>
@@ -24,7 +24,7 @@ namespace task {
 struct GraspResult {
 public:
 	/// Smart pointer to this type of class
-	typedef rw::common::Ptr<GraspResult> Ptr;
+	typedef rw::core::Ptr<GraspResult> Ptr;
 
 	//! the possible discrete outcomes of a single task simulation
 	enum TestStatus {

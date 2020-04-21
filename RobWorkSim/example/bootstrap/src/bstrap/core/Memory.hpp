@@ -3,7 +3,7 @@
 #ifndef MEMORY_HPP_
 #define MEMORY_HPP_
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 class BrainState;
 
@@ -12,7 +12,7 @@ class BrainState;
  */
 class Memory{
 public:
-    typedef rw::common::Ptr<Memory> Ptr;
+    typedef rw::core::Ptr<Memory> Ptr;
 
 
     /**

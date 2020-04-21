@@ -24,7 +24,7 @@
 
 #include "RRTNode.hpp"
 
-#include <rw/common/PairIterator.hpp>
+#include <rw/core/PairIterator.hpp>
 
 #include <vector>
 
@@ -80,7 +80,7 @@ namespace rwlibs { namespace pathplanners {
          * @brief Get all nodes in the tree.
          * @return a pair of iterators for the first and last node in the tree respectively.
          */
-        rw::common::iter_pair< const_iterator > getNodes () const
+        rw::core::iter_pair< const_iterator > getNodes () const
         {
             return std::make_pair (_nodes.begin (), _nodes.end ());
         }

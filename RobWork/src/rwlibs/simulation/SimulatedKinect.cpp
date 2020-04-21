@@ -27,7 +27,7 @@ using namespace rwlibs::simulation;
 using namespace rw::sensor;
 using namespace rw::math;
 using namespace rw::graphics;
-using namespace rw::common;
+using namespace rw::core;
 
 namespace {
 /*
@@ -67,21 +67,21 @@ namespace {
 		{
 
 		}
-		static rw::common::Ptr<KinectSensorModel> make(rw::sensor::CameraModel::Ptr camModel, rw::sensor::Scanner25DModel::Ptr scanModel){
-			return rw::common::ownedPtr( new KinectSensorModel(camModel,scanModel));
+		static rw::core::Ptr<KinectSensorModel> make(rw::sensor::CameraModel::Ptr camModel, rw::sensor::Scanner25DModel::Ptr scanModel){
+			return rw::core::ownedPtr( new KinectSensorModel(camModel,scanModel));
 		}
 	};
 
-	rw::common::Ptr<CameraModel> makeDefaultCameraModel(const std::string& name,
+	rw::core::Ptr<CameraModel> makeDefaultCameraModel(const std::string& name,
 			rw::kinematics::Frame *frame, double fov, int w, int h, double nearVal, double farVal)
 	{
-		return rw::common::ownedPtr( new CameraModel(ProjectionMatrix::makePerspective(fov*Deg2Rad,w,h,nearVal,farVal), name, frame ) );
+		return rw::core::ownedPtr( new CameraModel(ProjectionMatrix::makePerspective(fov*Deg2Rad,w,h,nearVal,farVal), name, frame ) );
 	}
 
-	rw::common::Ptr<Scanner25DModel> makeDefaultScannerModel(const std::string& name,
+	rw::core::Ptr<Scanner25DModel> makeDefaultScannerModel(const std::string& name,
 			rw::kinematics::Frame *frame, double fov, int w, int h, double nearVal, double farVal)
 	{
-		return rw::common::ownedPtr( new Scanner25DModel(name, w, h, frame ) );
+		return rw::core::ownedPtr( new Scanner25DModel(name, w, h, frame ) );
 	}
 
 }
@@ -102,7 +102,7 @@ SimulatedKinect::SimulatedKinect(const std::string& name, rw::kinematics::Frame 
         _img(new rw::sensor::Image( _width, _height, rw::sensor::Image::RGB, rw::sensor::Image::Depth8U )),
         _scan(new rw::geometry::PointCloud(_width,_height))
 {
-    //_rsensor = rw::common::ownedPtr( new Scanner25DWrapper(this, frame,  name) );
+    //_rsensor = rw::core::ownedPtr( new Scanner25DWrapper(this, frame,  name) );
 }
 
 SimulatedKinect::SimulatedKinect(const std::string& name,
@@ -124,7 +124,7 @@ SimulatedKinect::SimulatedKinect(const std::string& name,
         _scan(new rw::geometry::PointCloud(_width,_height))
 {
 
-    //_rsensor = rw::common::ownedPtr( new Scanner25DWrapper(this, frame,  name) );
+    //_rsensor = rw::core::ownedPtr( new Scanner25DWrapper(this, frame,  name) );
 }
 
 SimulatedKinect::SimulatedKinect(rw::sensor::CameraModel::Ptr camModel, rw::sensor::Scanner25DModel::Ptr scannerModel):

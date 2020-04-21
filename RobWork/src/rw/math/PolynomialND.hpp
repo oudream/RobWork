@@ -24,7 +24,7 @@
  * \copydoc rw::math::PolynomialND
  */
 
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 
 #include <Eigen/Core>
 

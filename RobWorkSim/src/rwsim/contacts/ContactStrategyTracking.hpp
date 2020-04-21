@@ -24,7 +24,7 @@
  * \copydoc rwsim::contacts::ContactStrategyTracking
  */
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 namespace rwsim {
 namespace contacts {
@@ -45,7 +45,7 @@ class ContactStrategyTracking;
 class ContactStrategyTracking {
 public:
 	//! @brief Smart pointer type.
-	typedef rw::common::Ptr<ContactStrategyTracking> Ptr;
+	typedef rw::core::Ptr<ContactStrategyTracking> Ptr;
 
 	//! @brief Constructor.
 	ContactStrategyTracking();
@@ -69,7 +69,7 @@ public:
 	//! @brief Base struct that can be extended for user specific data.
 	struct UserData {
 		//! @brief Smart pointer type.
-		typedef rw::common::Ptr<const UserData> Ptr;
+		typedef rw::core::Ptr<const UserData> Ptr;
 
 		//! @brief Constructor.
 		UserData() {}

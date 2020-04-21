@@ -24,6 +24,7 @@
 
 #include <rw/proximity/CollisionStrategy.hpp>
 #include <rw/proximity/DistanceStrategy.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include <string>
 #include <utility>
@@ -59,10 +60,10 @@ namespace rwlibs { namespace proximitystrategies {
     {
       public:
         //! @brief Smart pointer type for FCL Proximity strategy.
-        typedef rw::common::Ptr< ProximityStrategyFCL > Ptr;
+        typedef rw::core::Ptr< ProximityStrategyFCL > Ptr;
 
         //! @brief Type of internal collision geometry.
-        typedef rw::common::Ptr< fcl::CollisionGeometry > FCLBVHModelPtr;
+        typedef rw::core::Ptr< fcl::CollisionGeometry > FCLBVHModelPtr;
 
         //! @brief Datatype to hold the FCL bounding volume and related geometrical data.
         struct FCLModel
@@ -73,14 +74,14 @@ namespace rwlibs { namespace proximitystrategies {
              * @param transform [in] transform of the geometry.
              * @param model [in] the internal model of the collision geometry.
              */
-            FCLModel (rw::common::Ptr< rw::geometry::Geometry > geo,
+            FCLModel (rw::core::Ptr< rw::geometry::Geometry > geo,
                       const rw::math::Transform3D<>& transform, FCLBVHModelPtr model) :
                 geo (geo),
                 t3d (transform), model (model)
             { /* Empty */
             }
             //! @brief Identifier for the geometry.
-            rw::common::Ptr< rw::geometry::Geometry > geo;
+            rw::core::Ptr< rw::geometry::Geometry > geo;
             //! @brief Location of the geometry.
             rw::math::Transform3D<> t3d;
             //! @brief Using fcl::CollisionGeometry as the type of the model, to allow holding all
@@ -146,12 +147,12 @@ namespace rwlibs { namespace proximitystrategies {
 
         /**
          * @copydoc rw::proximity::ProximityStrategy::addGeometry(ProximityModel* model,
-         * rw::common::Ptr<rw::geometry::Geometry> geom, bool forceCopy=false)
+         * rw::core::Ptr<rw::geometry::Geometry> geom, bool forceCopy=false)
          *
          * @throws Exception when a bounding volume type has been chosen that is not supported.
          */
         bool addGeometry (rw::proximity::ProximityModel* model,
-                          rw::common::Ptr< rw::geometry::Geometry > geom, bool forceCopy = false);
+                          rw::core::Ptr< rw::geometry::Geometry > geom, bool forceCopy = false);
 
         //! @copydoc rw::proximity::ProximityStrategy::removeGeometry
         bool removeGeometry (rw::proximity::ProximityModel* model, const std::string& geomId);
@@ -162,7 +163,7 @@ namespace rwlibs { namespace proximitystrategies {
         /**
          * @copydoc rw::proximity::ProximityStrategy::getGeometrys
          */
-        std::vector< rw::common::Ptr< rw::geometry::Geometry > >
+        std::vector< rw::core::Ptr< rw::geometry::Geometry > >
         getGeometrys (rw::proximity::ProximityModel* model);
 
         //! @copydoc rw::proximity::ProximityStrategy::clear
@@ -256,7 +257,7 @@ namespace rwlibs { namespace proximitystrategies {
         bool addGeometry (rw::proximity::ProximityModel* model, const rw::geometry::Geometry& geom);
         template< typename BV >
         bool addGeometry (rw::proximity::ProximityModel* model,
-                          rw::common::Ptr< rw::geometry::Geometry > geom, bool forceCopy);
+                          rw::core::Ptr< rw::geometry::Geometry > geom, bool forceCopy);
 
       private:
         BV _bv;

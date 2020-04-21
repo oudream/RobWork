@@ -37,7 +37,6 @@ using namespace boost;
 using namespace rw::math;
 using namespace rw::models;
 using namespace rw::kinematics;
-using namespace rw::common;
 using namespace rw::invkin;
 using namespace rw::trajectory;
 

@@ -25,11 +25,11 @@
  */
 
 #include <string>
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <boost/mpl/equal_to.hpp>
 #include <boost/mpl/int.hpp>
 #include <rw/common/types.hpp>
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 
 namespace rw {
 namespace sensor {
@@ -74,7 +74,7 @@ class Image
 {
 public:
 	//! @brief smart pointer type to this class
-	typedef rw::common::Ptr<Image> Ptr;
+	typedef rw::core::Ptr<Image> Ptr;
 
 	//! @brief
 	struct Pixel4i

@@ -23,9 +23,9 @@
 
 #include <RobWorkConfig.hpp>
 #include <RobWorkStudioConfig.hpp>
-#include <rw/RobWork.hpp>
+#include <rw/core/RobWork.hpp>
 #include <rw/common/ProgramOptions.hpp>
-#include <rw/common/PropertyMap.hpp>
+#include <rw/core/PropertyMap.hpp>
 
 #include <QApplication>
 #include <QCloseEvent>

@@ -31,7 +31,8 @@
 
 #include <rws/RobWorkStudio.hpp>
 
-#include <rw/common/StringUtil.hpp>
+#include <rw/core/StringUtil.hpp>
+#include <rw/core/Exception.hpp>
 #include <rw/loaders/path/PathLoader.hpp>
 #include <rw/loaders/path/PathLoaderCSV.hpp>
 
@@ -41,7 +42,7 @@
 
 using namespace rw::trajectory;
 using namespace rw::loaders;
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::math;
 using namespace rw::models;
 using namespace rw::kinematics;

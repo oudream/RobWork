@@ -48,7 +48,7 @@ class Scanner2DModel: public SensorModel
 {
 public:
 	//! @brief smart pointer type to this class
-	typedef rw::common::Ptr<Scanner2DModel> Ptr;
+	typedef rw::core::Ptr<Scanner2DModel> Ptr;
 
     /**
      * @brief constructor
@@ -116,7 +116,7 @@ protected:
     //! cache to allow storing state information
     class Scanner2DModelCache: public rw::kinematics::StateCache {
 	public:
-		typedef rw::common::Ptr<Scanner2DModelCache> Ptr;
+		typedef rw::core::Ptr<Scanner2DModelCache> Ptr;
 		rw::geometry::PointCloud _cloud;
 
 		//! constructor
@@ -127,8 +127,8 @@ protected:
 		//! @copydoc rw::kinematics::StateCache::size
 		size_t size() const{ return _cloud.size()*sizeof(rw::geometry::PointCloud::point_type); };
 		//! @copydoc rw::kinematics::StateCache::clone
-		virtual rw::common::Ptr<StateCache> clone() const{
-			Scanner2DModelCache::Ptr cache = rw::common::ownedPtr( new Scanner2DModelCache(*this) );
+		virtual rw::core::Ptr<StateCache> clone() const{
+			Scanner2DModelCache::Ptr cache = rw::core::ownedPtr( new Scanner2DModelCache(*this) );
 			return cache;
 		};
 	};

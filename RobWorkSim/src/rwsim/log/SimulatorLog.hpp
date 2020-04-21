@@ -24,6 +24,7 @@
  * \copydoc rwsim::log::SimulatorLog
  */
 
+#include <rw/core/Ptr.hpp>
 #include <rw/common/Serializable.hpp>
 
 namespace rwsim {
@@ -42,7 +43,7 @@ class SimulatorLogScope;
 class SimulatorLog: public rw::common::Serializable {
 public:
     //! Smart pointer type of SimulatorLog
-    typedef rw::common::Ptr<SimulatorLog> Ptr;
+    typedef rw::core::Ptr<SimulatorLog> Ptr;
 
     /**
      * @brief Constructor.

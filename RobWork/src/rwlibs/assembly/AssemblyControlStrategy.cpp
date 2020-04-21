@@ -18,7 +18,7 @@
 #include "AssemblyControlStrategy.hpp"
 #include "AssemblyParameterization.hpp"
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rwlibs::assembly;
 
 AssemblyControlStrategy::AssemblyControlStrategy()

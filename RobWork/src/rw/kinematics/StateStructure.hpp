@@ -25,8 +25,8 @@
 
 #include "State.hpp"
 
-#include <rw/common/Ptr.hpp>
-#include <rw/common/Event.hpp>
+#include <rw/core/Ptr.hpp>
+#include <rw/core/Event.hpp>
 
 #include <boost/function.hpp>
 
@@ -48,7 +48,7 @@ namespace rw { namespace kinematics {
     class StateStructure {
     public:
         //! smart pointer type of this class
-        typedef rw::common::Ptr<StateStructure> Ptr;
+        typedef rw::core::Ptr<StateStructure> Ptr;
 
         /**
          * @brief constructs a frame tree with a default root frame
@@ -109,7 +109,7 @@ namespace rw { namespace kinematics {
          * frame.
          *
          */
-        void addFrame(rw::common::Ptr<Frame> frame, rw::common::Ptr<Frame> parent = NULL);
+        void addFrame(rw::core::Ptr<Frame> frame, rw::core::Ptr<Frame> parent = NULL);
 
         /**
          * @brief adds a DAF to the frame tree and dynamicly associates
@@ -118,7 +118,7 @@ namespace rw { namespace kinematics {
          * @note the parent frame must exist in the frame tree and cannot be
          * NULL.
          */
-        void addDAF(rw::common::Ptr<Frame> frame, rw::common::Ptr<Frame> parent);
+        void addDAF(rw::core::Ptr<Frame> frame, rw::core::Ptr<Frame> parent);
 
         /**
          * @brief removes a StateData object from the tree. The actual
@@ -240,10 +240,10 @@ namespace rw { namespace kinematics {
         typedef boost::function<void(const kinematics::StateData*)> StateDataRemovedListener;
 
         //! @brief Defines event for StateData added.
-        typedef rw::common::Event<StateDataAddedListener, const kinematics::StateData*> StateDataAddedEvent;
+        typedef rw::core::Event<StateDataAddedListener, const kinematics::StateData*> StateDataAddedEvent;
 
         //! @brief Defines event for StateData removed.
-        typedef rw::common::Event<StateDataRemovedListener, const kinematics::StateData*> StateDataRemovedEvent;
+        typedef rw::core::Event<StateDataRemovedListener, const kinematics::StateData*> StateDataRemovedEvent;
 
         /**
          * @brief Returns StateDataAddedEvent object needed for subscription to and firing of event
@@ -317,7 +317,7 @@ namespace rw { namespace kinematics {
      * @brief Shortcut for smart pointer type.
      * @deprecated Please use StateStructure::Ptr instead!
      */
-    typedef rw::common::Ptr<StateStructure> StateStructurePtr;
+    typedef rw::core::Ptr<StateStructure> StateStructurePtr;
 
     /*@}*/
 }}

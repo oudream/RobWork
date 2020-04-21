@@ -53,9 +53,9 @@ private slots:
 
 private:
     rw::models::WorkCell* _wc;
-    rw::common::Ptr<rwsim::dynamics::DynamicWorkCell> _dwc;
-    rw::common::Ptr<rwsim::simulator::ThreadSimulator> _tsim;
-    rw::common::Ptr<rwsim::simulator::DynamicSimulator> _sim;
+    rw::core::Ptr<rwsim::dynamics::DynamicWorkCell> _dwc;
+    rw::core::Ptr<rwsim::simulator::ThreadSimulator> _tsim;
+    rw::core::Ptr<rwsim::simulator::DynamicSimulator> _sim;
 
     QTimer *_timer;
     rw::common::Timer _wallTimer, _wallTotalTimer;

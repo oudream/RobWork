@@ -17,7 +17,7 @@
 
 #include "ProximityModel.hpp"
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/geometry/Geometry.hpp>
 #include <rw/proximity/ProximityStrategy.hpp>
 
@@ -26,7 +26,7 @@ using namespace rw::proximity;
 ProximityModel::~ProximityModel ()
 {}
 
-bool ProximityModel::addGeometry (rw::common::Ptr< rw::geometry::Geometry > geom, bool forceCopy)
+bool ProximityModel::addGeometry (rw::core::Ptr< rw::geometry::Geometry > geom, bool forceCopy)
 {
     return owner->addGeometry (this, geom);
 }
@@ -47,7 +47,7 @@ std::vector< std::string > ProximityModel::getGeometryIDs ()
     return owner->getGeometryIDs (this);
 }
 
-std::vector< rw::common::Ptr< rw::geometry::Geometry > > ProximityModel::getGeometries ()
+std::vector< rw::core::Ptr< rw::geometry::Geometry > > ProximityModel::getGeometries ()
 {
     return owner->getGeometrys (this);;
 }

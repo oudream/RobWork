@@ -23,7 +23,7 @@
  * @file TrajectoryIterator.hpp
  */
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 namespace rw { namespace trajectory {
 
@@ -39,7 +39,7 @@ namespace rw { namespace trajectory {
     public:
 
 		//! @brief smart pointer type
-        typedef rw::common::Ptr<TrajectoryIterator<T> > Ptr;
+        typedef rw::core::Ptr<TrajectoryIterator<T> > Ptr;
 
         /**
          * @brief Returns the current position (time) of the iterator
