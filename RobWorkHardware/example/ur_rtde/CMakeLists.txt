@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.6.0)
+cmake_minimum_required(VERSION 3.5.1)
 PROJECT(UR_RTDE_TEST)
 
 #Include default settings for constructing a robwork dependent project

@@ -1,16 +1,13 @@
 # check compiler/operating system
 
-IF(COMPONENT_pcube_ENABLE AND COMPONENT_CAN_ENABLE)
-    set(LibraryList
-        sdurwhw_pcube 
-        sdurwhw_can 
-        ntcan.lib
-        sdurwhw_serialport
-        ${ROBWORK_LIBRARIES}
-    )
-    
-    LINK_DIRECTORIES(${ESDCAN_LIB_DIR})
-    
+if(NOT DEFINED RWHW_ROOT)
+    set(RWHW_ROOT "$ENV{RWHW_ROOT}/cmake")
+endif()
+
+find_package(RobWorkHardware REQUIRED COMPONENTS pcube can serialport PATHS "${RWHW_ROOT}")
+
+if(RobWorkHardware_FOUND)
     add_executable(PCubeExample PCubeExample.cpp )
-    target_link_libraries(PCubeExample ${LibraryList})
-ENDIF(COMPONENT_pcube_ENABLE AND COMPONENT_CAN_ENABLE)
+    target_link_libraries(PCubeExample PUBLIC ${ROBWORKHARDWARE_LIBRARIES})
+    target_include_directories(PCubeExample PUBLIC ${ROBWORKHARDWARE_INCLUDE_DIRS})
+endif()

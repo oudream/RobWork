@@ -80,8 +80,6 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${RWHW_CXX_FLAGS}")
 # now add all source directories to process.
 add_subdirectory(ext)
 add_subdirectory(src)
-# add_subdirectory(test CMakeTmp/test)
-add_subdirectory(example)
 
 # ##################################################################################################
 # testing
