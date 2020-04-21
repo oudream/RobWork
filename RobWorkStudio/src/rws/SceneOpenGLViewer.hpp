@@ -29,7 +29,10 @@
 
 #include <QGLWidget>
 
-#include <rw/common/PropertyMap.hpp>
+#include <rw/core/PropertyMap.hpp>
+#include <rw/core/Property.hpp>
+#include <rw/core/Ptr.hpp>
+
 #include <rw/math/Vector3D.hpp>
 
 #include <rwlibs/opengl/SceneOpenGL.hpp>
@@ -42,7 +45,9 @@
 namespace rw { namespace graphics { class Render; } }
 namespace rw { namespace kinematics { class Frame; } }
 namespace rw { namespace models { class WorkCell; } }
+namespace rw { namespace core { class PropertyBase; }}
 namespace rwlibs { namespace opengl { class SceneOpenGL; } }
+
 
 class QMouseEvent;
 
@@ -68,7 +73,7 @@ class SceneOpenGLViewer: public QGLWidget, public SceneViewerWidget {
 
 public:
 	//! @brief Smart pointer type for SceneOpenGLViewer.
-    typedef rw::common::Ptr<SceneOpenGLViewer> Ptr;
+    typedef rw::core::Ptr<SceneOpenGLViewer> Ptr;
 
     /**
      * @brief Constructor.
@@ -81,7 +86,7 @@ public:
      * @param pmap [in] propertyies for the viewer.
      * @param parent [in] the parent widget (the owner of this widget).
      */
-    SceneOpenGLViewer(rw::common::PropertyMap& pmap, QWidget* parent = 0);
+    SceneOpenGLViewer(rw::core::PropertyMap& pmap, QWidget* parent = 0);
 
     //! @brief Destructor.
     virtual ~SceneOpenGLViewer();
@@ -101,7 +106,7 @@ public:
     rw::graphics::SceneGraph::Ptr getScene(){ return _scene; }
 
     //! @copydoc rw::graphics::SceneViewer::getPropertyMap
-    rw::common::PropertyMap& getPropertyMap(){return _pmap->getValue();}
+    rw::core::PropertyMap& getPropertyMap(){return _pmap->getValue();}
 
     //! @copydoc rw::graphics::SceneViewer::getViewCamera
     virtual rw::graphics::SceneCamera::Ptr getViewCamera() { return _mainCam; }
@@ -199,7 +204,7 @@ public:
      * @brief listener callback for property changed in getPropertyMap
      * @param base
      */
-    void propertyChangedListener(rw::common::PropertyBase* base);
+    void propertyChangedListener(rw::core::PropertyBase* base);
     
     /**
      * @brief picks the frame that has drawables that intersect the ray cast into the screen from
@@ -243,7 +248,7 @@ protected:
     void wheelEvent(QWheelEvent* event);
 
     //! @copydoc rw::graphics::SceneViewer::setWorkCellScene
-    void setWorkCellScene(rw::common::Ptr<rw::graphics::WorkCellScene> wcscene){
+    void setWorkCellScene(rw::core::Ptr<rw::graphics::WorkCellScene> wcscene){
         _wcscene = wcscene;
     }
 
@@ -256,14 +261,14 @@ protected:
 private:
     void init();
 
-	void propertyUpdated(rw::common::PropertyBase* base);
+	void propertyUpdated(rw::core::PropertyBase* base);
 
     void setupCameraView(int camNr, bool setupViewport = true);
 
 private:
 
 	rwlibs::opengl::SceneOpenGL::Ptr _scene;
-	rw::common::Ptr<rw::graphics::WorkCellScene> _wcscene;
+	rw::core::Ptr<rw::graphics::WorkCellScene> _wcscene;
 
 	// the main camera which is controlled by the gui
     rw::graphics::SceneCamera::Ptr _mainCam, _backCam, frontCam;
@@ -272,19 +277,19 @@ private:
     View::Ptr _mainView, _currentView;
     std::vector<View::Ptr> _views;
 
-    rw::common::Ptr<rw::kinematics::State> _state;
+    rw::core::Ptr<rw::kinematics::State> _state;
 
     std::string _viewLogo;
 
     int _width, _height;
     // Background Color definitions
 
-    rw::common::Property<rw::common::PropertyMap>::Ptr _pmap;
-    rw::common::Property<bool>::Ptr _viewBackground;
-    rw::common::Property<rw::math::Vector3D<> >::Ptr _backgroundColorTop, _backgroundColorBottom;
+    rw::core::Property<rw::core::PropertyMap>::Ptr _pmap;
+    rw::core::Property<bool>::Ptr _viewBackground;
+    rw::core::Property<rw::math::Vector3D<> >::Ptr _backgroundColorTop, _backgroundColorBottom;
 
     CameraController::Ptr _cameraCtrl;
-    rw::common::Ptr<rw::graphics::Render> _backgroundRender;
+    rw::core::Ptr<rw::graphics::Render> _backgroundRender;
     rw::graphics::DrawableNode::Ptr _backgroundnode;
     rw::graphics::DrawableGeometryNode::Ptr _pivotDrawable;
     rw::graphics::GroupNode::Ptr _worldNode;

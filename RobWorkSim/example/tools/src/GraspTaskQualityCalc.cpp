@@ -19,7 +19,7 @@
 #include <boost/filesystem.hpp>
 
 using namespace std;
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::geometry;
 using namespace rw::kinematics;
 using namespace rw::math;

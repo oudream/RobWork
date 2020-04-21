@@ -18,13 +18,15 @@
 #include "../TestSuiteConfig.hpp"
 
 #include <rw/math/MetricUtil.hpp>
+#include <rw/core/Exception.hpp>
 #include <rw/trajectory/Trajectory.hpp>
 #include <rw/trajectory/TrajectorySequence.hpp>
 #include <rw/trajectory/RampInterpolator.hpp>
 #include <rw/trajectory/CubicSplineFactory.hpp>
 #include <rw/trajectory/LinearInterpolator.hpp>
+#include <rw/core/Ptr.hpp>
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::math;
 using namespace rw::trajectory;
 
@@ -232,9 +234,9 @@ BOOST_AUTO_TEST_CASE( CubicSplineInterpolation ){
         BOOST_TEST_MESSAGE("Testing if exceptions are cast when too small paths are given as arguments!");
         // check throw on empty QPath
         QPath::Ptr path = ownedPtr(new QPath());
-        BOOST_CHECK_THROW( CubicSplineFactory::makeNaturalSpline(path), rw::common::Exception );
+        BOOST_CHECK_THROW( CubicSplineFactory::makeNaturalSpline(path), rw::core::Exception );
         path->push_back(Q(3));
-        BOOST_CHECK_THROW( CubicSplineFactory::makeNaturalSpline(path), rw::common::Exception );
+        BOOST_CHECK_THROW( CubicSplineFactory::makeNaturalSpline(path), rw::core::Exception );
 
     }
 
@@ -293,7 +295,7 @@ BOOST_AUTO_TEST_CASE( CubicSplineInterpolation ){
     //////// ************ for some reason this makes assertion
     {
         BOOST_TEST_MESSAGE("Testing natural spline generation on TIMEDPATH");
-        Ptr< TimedQPath > path = rw::common::ownedPtr(new TimedQPath());
+        Ptr< TimedQPath > path = rw::core::ownedPtr(new TimedQPath());
         Q q = Q::zero(7);
         q(0) = 1;
         path->push_back(Timed<Q>(0,q));

@@ -20,7 +20,7 @@
 #define RW_COMMON_LOGFILEWRITER_HPP
 
 #include <fstream>
-#include "LogWriter.hpp"
+#include <rw/core/LogWriter.hpp>
 
 namespace rw { namespace common {
 
@@ -30,7 +30,7 @@ namespace rw { namespace common {
 	/**
      * @brief Writes log output to a file 
      */
-    class LogFileWriter : public LogWriter
+    class LogFileWriter : public rw::core::LogWriter
     {
     public:
         /**

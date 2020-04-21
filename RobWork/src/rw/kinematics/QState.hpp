@@ -25,7 +25,7 @@
 
 #include <boost/shared_ptr.hpp>
 #include <rw/math/Q.hpp>
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 
 namespace rw { namespace kinematics {
     class StateSetup;

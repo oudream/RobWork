@@ -5,7 +5,7 @@
 #include <sys/stat.h>
 #include <cmath>
 // RW
-#include <rw/common/Exception.hpp>
+#include <rw/core/Exception.hpp>
 #include <rw/common/TimerUtil.hpp>
 
 
@@ -67,7 +67,7 @@ std::cout<<"_defMinPos = "<<_defMinPos<<std::endl;*/
 				_cube->getMaxCur();
 				//std::cout<<"MAXIMAL CURRENT = "<<maxcur<<std::endl;
 				tmp=false;
-			} catch(rw::common::Exception& e) {
+			} catch(rw::core::Exception& e) {
 				std::cout<<"Exception: "<<e.what()<<std::endl;
 				rw::common::TimerUtil::sleepMs(100);
 				tmp=true;
@@ -130,7 +130,7 @@ bool SchunkPG70::initialize(const std::string& port) {
 	try {
 		_cubePort = CubePort::make(_port);
 		cubes = rwhw::Cube::getCubes(12, 13, _cubePort);
-	} catch(rw::common::Exception& e) {
+	} catch(rw::core::Exception& e) {
 		logTextReadySig(std::string("Parallel gripper error: ") + e.what(), true);
 		return false;
 	}
@@ -166,7 +166,7 @@ void SchunkPG70::close() {
 
 		while(!_cube->moveCurCmd(_graspCurrent)) { rw::common::TimerUtil::sleepMs(100); _port->clean();}
 		
-	} catch(rw::common::Exception& e) {
+	} catch(rw::core::Exception& e) {
 		std::cout<< "Parallel gripper error: " << e.what() << std::endl;
 	}
 }
@@ -181,7 +181,7 @@ void SchunkPG70::open() {
 
 		while(!_cube->moveCurCmd(-_graspCurrent)) { rw::common::TimerUtil::sleepMs(100); _port->clean();}
 
-	} catch(rw::common::Exception& e) {
+	} catch(rw::core::Exception& e) {
 		std::cout<< "Parallel gripper error: " << e.what() << std::endl;
 	}
 
@@ -206,7 +206,7 @@ void SchunkPG70::stop() {
 	try {
 		//_cube->resetCmd();
 		_cube->moveCurCmd(0.0f);
-	} catch(rw::common::Exception& e) {
+	} catch(rw::core::Exception& e) {
 		std::cout << "Parallel gripper error: " << e.what() << std::endl;
 	}
 }
@@ -225,7 +225,7 @@ void SchunkPG70::home() {
 			getStatusMem = status(statusMem);
 		}while(!(statusMem & STATE_HOME_OK) || (!getStatusMem));
 		logTextReadySig("Home is found successful", true);
-	} catch(rw::common::Exception& e) {
+	} catch(rw::core::Exception& e) {
 		std::cout << "Parallel gripper error: " << e.what() << std::endl;
 	}
 	//  rw::math::Q qHome(1);
@@ -240,7 +240,7 @@ bool SchunkPG70::getQ(rw::math::Q &q) {
 	try {
 		double tmp = 0.5 * (double)_cube->getActPos();
 		q(0)=tmp;
-	} catch(rw::common::Exception& e) {
+	} catch(rw::core::Exception& e) {
 		std::cout << "Parallel gripper error: " << e.what() << std::endl;
 		return false;
 	}
@@ -287,7 +287,7 @@ bool SchunkPG70::setQ(const rw::math::Q& q) {
 		}while((statusMem & (STATE_MOTION | STATE_RAMP_ACC | STATE_RAMP_STEADY | STATE_RAMP_DEC) )!=0 || (!getStatusMem));
 		logTextReadySig("Movements done", true);
 
-	} catch(rw::common::Exception& e) {
+	} catch(rw::core::Exception& e) {
 		std::cout << "Parallel gripper error: " << e.what() << std::endl;
 		return false;
 	}
@@ -304,7 +304,7 @@ bool SchunkPG70::setGraspPowerPct(const double pct) {
 			try {
 				//_cube->setMaxCur(-_graspCurrent);
 				_cube->setCur(_graspCurrent);
-			} catch(rw::common::Exception& e) {
+			} catch(rw::core::Exception& e) {
 				std::cout<< "Parallel gripper error: " << e.what() << std::endl;
 				return false;
 			}
@@ -326,7 +326,7 @@ bool SchunkPG70::status(unsigned int &status) {
 	try {
 		status =_cube->getCubeState();
 		std::cout<<"status "<<status<<std::endl;
-	} catch(rw::common::Exception&) {
+	} catch(rw::core::Exception&) {
 		return false;
 	}
 	return true;

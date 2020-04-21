@@ -24,7 +24,7 @@
  */
 
 #include <string>
-#include <rw/common/PropertyMap.hpp>
+#include <rw/core/PropertyMap.hpp>
 #include <rw/kinematics/Stateless.hpp>
 
 
@@ -48,7 +48,7 @@ namespace rw { namespace models {
     public:
 
         //! smart pointer type
-        typedef rw::common::Ptr<ControllerModel> Ptr;
+        typedef rw::core::Ptr<ControllerModel> Ptr;
 
     	/**
          * @brief constructor
@@ -110,18 +110,18 @@ namespace rw { namespace models {
         /**
          * @brief gets the propertymap of this controllermodel
          */
-        rw::common::PropertyMap& getPropertyMap(){return _propertyMap;}
+        rw::core::PropertyMap& getPropertyMap(){return _propertyMap;}
 
         /**
          * @brief gets the propertymap of this controllermodel
          */
-        const rw::common::PropertyMap& getPropertyMap() const {return _propertyMap;}
+        const rw::core::PropertyMap& getPropertyMap() const {return _propertyMap;}
 
     private:
         std::string _name;
         std::string _description;
         kinematics::Frame* _frame;
-        rw::common::PropertyMap _propertyMap;
+        rw::core::PropertyMap _propertyMap;
     };
 
     /** @} */

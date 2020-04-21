@@ -20,7 +20,7 @@
 #define RW_COMMON_LOGMULTIWRITER_HPP
 
 #include <vector>
-#include "LogWriter.hpp"
+#include <rw/core/LogWriter.hpp>
 
 namespace rw { namespace common {
 
@@ -30,7 +30,7 @@ namespace rw { namespace common {
     /**
      * @brief Writes log output to multiple LogWriters
      */
-    class LogMultiWriter : public LogWriter
+    class LogMultiWriter : public rw::core::LogWriter
     {
     public:
         /**
@@ -46,7 +46,7 @@ namespace rw { namespace common {
         /** 
 	    * @brief Adds a LogWriter to be written to
 	    */
-        void addWriter(LogWriter::Ptr writer);
+        void addWriter(rw::core::LogWriter::Ptr writer);
 
 	protected:
         /**
@@ -66,7 +66,7 @@ namespace rw { namespace common {
 
 
     private:
-        std::vector<LogWriter::Ptr> _writers;		
+        std::vector<rw::core::LogWriter::Ptr> _writers;		
     };
 
 	/*@}*/

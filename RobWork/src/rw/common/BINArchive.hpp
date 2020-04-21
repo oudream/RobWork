@@ -21,8 +21,8 @@
 #include <string>
 #include <iosfwd>
 
-#include "InputArchive.hpp"
-#include "OutputArchive.hpp"
+#include <rw/common/InputArchive.hpp>
+#include <rw/common/OutputArchive.hpp>
 
 namespace rw {
 namespace common {

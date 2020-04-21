@@ -31,7 +31,7 @@ class GripperTaskSimulator : public GraspTaskSimulator
 	public:
 	// typedefs
 		/// Smart pointer type.
-		typedef rw::common::Ptr<GripperTaskSimulator> Ptr;
+		typedef rw::core::Ptr<GripperTaskSimulator> Ptr;
 
 	// constructors
 		/**

@@ -18,7 +18,7 @@
 #ifndef RW_MODELS_OBJECT_HPP_
 #define RW_MODELS_OBJECT_HPP_
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/kinematics/Frame.hpp>
 #include <rw/kinematics/StateStructure.hpp>
 #include <rw/kinematics/Stateless.hpp>
@@ -44,9 +44,9 @@ namespace rw { namespace models {
     {
     public:
     	//! smart pointer
-        typedef rw::common::Ptr<Object> Ptr;
+        typedef rw::core::Ptr<Object> Ptr;
 		//! const smart pointer
-		typedef rw::common::Ptr<const Object> CPtr;
+		typedef rw::core::Ptr<const Object> CPtr;
 
     protected:
         //! constructor

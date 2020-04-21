@@ -32,7 +32,7 @@
 
 using namespace boost::program_options;
 using namespace std;
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::geometry;
 using namespace rw::kinematics;
 using namespace rw::loaders;
@@ -379,7 +379,7 @@ int main(int argc, char** argv){
     return 1;
 }
 
-rw::common::Ptr<CutResult> simulateCut(Knife& knife, ProximityModel::Ptr obj, Object::Ptr objPtr, ProximityStrategyPQP& colstrat, CutActionParam& param){
+rw::core::Ptr<CutResult> simulateCut(Knife& knife, ProximityModel::Ptr obj, Object::Ptr objPtr, ProximityStrategyPQP& colstrat, CutActionParam& param){
 	ProximityStrategyData data;
 
 	Ptr<CutResult> res = ownedPtr( new CutResult() );

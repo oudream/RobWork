@@ -19,7 +19,7 @@
 #include "ImplicitFace.hpp"
 #include "ImplicitShell.hpp"
 
-using rw::common::ownedPtr;
+using rw::core::ownedPtr;
 using namespace rw::geometry;
 
 namespace {

@@ -25,8 +25,9 @@
 #include <rw/kinematics/StateStructure.hpp>
 #include <rw/proximity/DistanceMultiStrategy.hpp>
 #include <rw/proximity/ProximityStrategyData.hpp>
+#include <rw/core/Ptr.hpp>
 
-using rw::common::ownedPtr;
+using rw::core::ownedPtr;
 using namespace rw::geometry;
 using namespace rw::kinematics;
 using namespace rw::math;
@@ -107,7 +108,7 @@ TEST(Factory, DistanceMultiStrategy) {
 INSTANTIATE_TEST_CASE_P(ProximityStrategy, DistanceMultiStrategyTest, ::testing::ValuesIn(strategies));
 
 TEST_P(DistanceMultiStrategyTest, Plane_Triangle) {
-	const rw::common::Ptr<Plane> plane = ownedPtr(new Plane());
+	const rw::core::Ptr<Plane> plane = ownedPtr(new Plane());
 	Geometry geomA(plane);
 	const PlainTriMeshD::Ptr mesh = ownedPtr(new PlainTriMeshD());
 	mesh->add(Triangle<>(Vector3D<>(0.3,-0.1,0),Vector3D<>(0.3+0.1,0,0),Vector3D<>(0.3,0.1,0)));
@@ -158,7 +159,7 @@ TEST_P(DistanceMultiStrategyTest, Plane_Triangle) {
 
 TEST_P(DistanceMultiStrategyTest, Plane_Cuboid) {
 	static const double s = 0.1;
-	const rw::common::Ptr<Plane> plane = ownedPtr(new Plane());
+	const rw::core::Ptr<Plane> plane = ownedPtr(new Plane());
 	Geometry geomA(plane);
 	const Box::Ptr box = ownedPtr(new Box(s,s,s));
 	const Geometry::Ptr geomB = ownedPtr(new Geometry(box));

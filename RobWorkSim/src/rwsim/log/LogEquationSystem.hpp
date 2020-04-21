@@ -25,7 +25,7 @@
  */
 
 #include "SimulatorLogEntry.hpp"
-
+#include <rw/core/Ptr.hpp>
 #include <Eigen/Core>
 
 namespace rwsim {
@@ -42,7 +42,7 @@ class LogContactSet;
 class LogEquationSystem: public SimulatorLogEntry {
 public:
     //! Smart pointer type of LogEquationSystem
-    typedef rw::common::Ptr<LogEquationSystem> Ptr;
+    typedef rw::core::Ptr<LogEquationSystem> Ptr;
 
     //! @copydoc SimulatorLogEntry::SimulatorLogEntry
     LogEquationSystem(SimulatorLogScope* parent);

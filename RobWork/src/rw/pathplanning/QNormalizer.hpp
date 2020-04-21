@@ -24,6 +24,7 @@
 */
 
 #include <rw/math/Q.hpp>
+#include <rw/core/Ptr.hpp>
 
 namespace rw { namespace pathplanning {
 
@@ -41,7 +42,7 @@ namespace rw { namespace pathplanning {
     {
     public:
 		//! @brief smart pointer type to this class
-		typedef rw::common::Ptr<QNormalizer> Ptr;
+		typedef rw::core::Ptr<QNormalizer> Ptr;
 
         /**
            @brief Convert from a normalized configuration to a real

@@ -40,7 +40,7 @@ namespace kinematics {
 
     public:
     	//! @brief Smart pointer type for Stateless.
-    	typedef rw::common::Ptr<Stateless> Ptr;
+    	typedef rw::core::Ptr<Stateless> Ptr;
 
     	//! destructor
     	virtual ~Stateless(){}

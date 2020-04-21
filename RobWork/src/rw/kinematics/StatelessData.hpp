@@ -18,7 +18,7 @@
 #ifndef RW_KINEMATICS_STATELESSDATA_HPP_
 #define RW_KINEMATICS_STATELESSDATA_HPP_
 
-#include <rw/common/StringUtil.hpp>
+#include <rw/core/StringUtil.hpp>
 
 #include "StateData.hpp"
 #include "StateCache.hpp"
@@ -40,17 +40,17 @@ namespace kinematics {
     	StatelessData(int dN=1):
             _N(dN)
         {
-            _sdata = boost::shared_ptr<StateData>(new StateData((sizeof(DATA)*dN)/sizeof(double)+1, rw::common::StringUtil::ranName("sdata")));
+            _sdata = boost::shared_ptr<StateData>(new StateData((sizeof(DATA)*dN)/sizeof(double)+1, rw::core::StringUtil::ranName("sdata")));
         }
 
     	/**
     	 * @copydoc StatelessData(int)
     	 * @param cache [in] data cache.
     	 */
-    	StatelessData(int dN, rw::common::Ptr<StateCache> cache):
+    	StatelessData(int dN, rw::core::Ptr<StateCache> cache):
             _N(dN)
         {
-            _sdata = boost::shared_ptr<StateData>(new StateData((sizeof(DATA)*dN)/sizeof(double)+1, rw::common::StringUtil::ranName("sdata"), cache));
+            _sdata = boost::shared_ptr<StateData>(new StateData((sizeof(DATA)*dN)/sizeof(double)+1, rw::core::StringUtil::ranName("sdata"), cache));
         }
 
     	//! destructor

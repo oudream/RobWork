@@ -23,8 +23,14 @@
 
 //#define PHOENIX_LIMIT 15
 
-USE_ROBWORK_NAMESPACE
-using namespace robwork;
+using namespace rw::core;
+using namespace rw::math;
+using namespace rw::graphics;
+using namespace rw::geometry;
+using namespace rw::models;
+using namespace rw::kinematics;
+using namespace rw;
+
 using namespace rws;
 using namespace rwlibs::task;
 
@@ -35,7 +41,7 @@ namespace {
 
     public:
         //! @brief smart pointer type to this class
-        typedef rw::common::Ptr<RenderTargets> Ptr;
+        typedef rw::core::Ptr<RenderTargets> Ptr;
 
         struct Target {
             Target():scale(1.0),enabled(true),ctask(NULL),endTarget(false){};
@@ -451,8 +457,8 @@ void GTaskVisPlugin::updateVis(){
 }
 
 
-rw::common::PropertyMap& GTaskVisPlugin::settings(){
-    return getRobWorkStudio()->getPropertyMap().get<rw::common::PropertyMap>("RobWorkStudioSettings");
+rw::core::PropertyMap& GTaskVisPlugin::settings(){
+    return getRobWorkStudio()->getPropertyMap().get<rw::core::PropertyMap>("RobWorkStudioSettings");
 }
 
 void GTaskVisPlugin::loadTasks(bool automatic){

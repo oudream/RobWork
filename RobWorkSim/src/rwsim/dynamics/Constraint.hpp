@@ -26,6 +26,7 @@
 
 #include <rw/kinematics/StateData.hpp>
 #include <rw/math/Transform3D.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include <boost/thread/mutex.hpp>
 
@@ -53,7 +54,7 @@ class Body;
 class Constraint: public rw::kinematics::StateData {
 public:
     //! @brief smart pointer type to this class
-	typedef rw::common::Ptr<Constraint> Ptr;
+	typedef rw::core::Ptr<Constraint> Ptr;
 
 	//! @brief The different constraint types.
 	typedef enum {

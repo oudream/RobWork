@@ -22,10 +22,11 @@
 #include <rw/models/DHParameterSet.hpp>
 #include <rw/models/SerialDevice.hpp>
 #include <rw/models/TreeDevice.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include <string>
 
-using rw::common::ownedPtr;
+using rw::core::ownedPtr;
 using namespace rw::invkin;
 using rw::kinematics::State;
 using rw::loaders::WorkCellLoader;
@@ -177,7 +178,7 @@ IterativeIK::Ptr makeCCD(SerialDevice* device, State& state)
 
 IterativeIK::Ptr makeJacobianIKSolverSVD(SerialDevice* device, State& state)
 {
-    rw::common::Ptr<JacobianIKSolver> sol = ownedPtr(new JacobianIKSolver(device,state));
+    rw::core::Ptr<JacobianIKSolver> sol = ownedPtr(new JacobianIKSolver(device,state));
     // Should use SVD as default though
     sol->setSolverType(JacobianIKSolver::SVD);
     IterativeIK::Ptr result(sol);
@@ -186,7 +187,7 @@ IterativeIK::Ptr makeJacobianIKSolverSVD(SerialDevice* device, State& state)
 
 IterativeIK::Ptr makeJacobianIKSolverTranspose(SerialDevice* device, State& state)
 {
-    rw::common::Ptr<JacobianIKSolver> sol = ownedPtr(new JacobianIKSolver(device,state));
+    rw::core::Ptr<JacobianIKSolver> sol = ownedPtr(new JacobianIKSolver(device,state));
     sol->setSolverType(JacobianIKSolver::Transpose);
     sol->setMaxIterations(16);
     IterativeIK::Ptr result(sol);
@@ -195,7 +196,7 @@ IterativeIK::Ptr makeJacobianIKSolverTranspose(SerialDevice* device, State& stat
 
 IterativeIK::Ptr makeJacobianIKSolverDLS(SerialDevice* device, State& state)
 {
-    rw::common::Ptr<JacobianIKSolver> sol = ownedPtr(new JacobianIKSolver(device,state));
+    rw::core::Ptr<JacobianIKSolver> sol = ownedPtr(new JacobianIKSolver(device,state));
     sol->setSolverType(JacobianIKSolver::DLS);
     sol->setMaxIterations(50);
     IterativeIK::Ptr result(sol);
@@ -210,7 +211,7 @@ IterativeIK::Ptr makeIKQPSolver(SerialDevice* device, State& state) {
 
 IterativeMultiIK::Ptr makeJacobianIKSolverMSVD(TreeDevice* device, State& state)
 {
-    rw::common::Ptr<JacobianIKSolverM> sol = ownedPtr(new JacobianIKSolverM(device, state));
+    rw::core::Ptr<JacobianIKSolverM> sol = ownedPtr(new JacobianIKSolverM(device, state));
     // Should use SVD as default though
     sol->setSolverType(JacobianIKSolverM::SVD);
     //sol->setMaxLocalStep(0.4,5.0);
@@ -220,7 +221,7 @@ IterativeMultiIK::Ptr makeJacobianIKSolverMSVD(TreeDevice* device, State& state)
 
 IterativeMultiIK::Ptr makeJacobianIKSolverMTranspose(TreeDevice* device, State& state)
 {
-    rw::common::Ptr<JacobianIKSolverM> sol = ownedPtr(new JacobianIKSolverM(device, state));
+    rw::core::Ptr<JacobianIKSolverM> sol = ownedPtr(new JacobianIKSolverM(device, state));
     // Should use SVD as default though
     sol->setSolverType(JacobianIKSolverM::Transpose);
     sol->setMaxIterations(350);
@@ -230,7 +231,7 @@ IterativeMultiIK::Ptr makeJacobianIKSolverMTranspose(TreeDevice* device, State& 
 
 IterativeMultiIK::Ptr makeJacobianIKSolverMDLS(TreeDevice* device, State& state)
 {
-    rw::common::Ptr<JacobianIKSolverM> sol = ownedPtr(new JacobianIKSolverM(device, state));
+    rw::core::Ptr<JacobianIKSolverM> sol = ownedPtr(new JacobianIKSolverM(device, state));
     // Should use SVD as default though
     sol->setSolverType(JacobianIKSolverM::DLS);
     sol->setMaxIterations(155);

@@ -25,8 +25,9 @@
 #include <rw/kinematics/StateStructure.hpp>
 #include <rw/proximity/CollisionStrategy.hpp>
 #include <rw/proximity/ProximityStrategyData.hpp>
+#include <rw/core/Ptr.hpp>
 
-using rw::common::ownedPtr;
+using rw::core::ownedPtr;
 using namespace rw::geometry;
 using namespace rw::kinematics;
 using namespace rw::math;
@@ -90,7 +91,7 @@ INSTANTIATE_TEST_CASE_P(ProximityStrategy, CollisionStrategyTest, ::testing::Val
 TEST_P(CollisionStrategyTest, Plane_Cuboid) {
 	static const double s = 0.1;
 	static const double offset = 0.057;
-	const rw::common::Ptr<Plane> plane = ownedPtr(new Plane());
+	const rw::core::Ptr<Plane> plane = ownedPtr(new Plane());
 	Geometry geomA(plane);
 	const Box::Ptr box = ownedPtr(new Box(s,s,s));
 	const Geometry::Ptr geomB = ownedPtr(new Geometry(box,Transform3D<>(Vector3D<>(0,0,offset))));
@@ -135,7 +136,7 @@ TEST_P(CollisionStrategyTest, Plane_Cuboid) {
 TEST_P(CollisionStrategyTest, Cuboid_Cuboid) {
 	static const double s = 0.2;
 	static const double offset = 0.057;
-	const rw::common::Ptr<Box> box = ownedPtr(new Box(s, s, s));
+	const rw::core::Ptr<Box> box = ownedPtr(new Box(s, s, s));
 	Geometry geomA(box);
 	const Geometry::Ptr geomB = ownedPtr(new Geometry(box,Transform3D<>(Vector3D<>(0,0,offset))));
 
@@ -184,7 +185,7 @@ TEST_P(CollisionStrategyTest, Cylinder_Cylinder) {
 	static const double r = 0.12;
 	static const float l = 0.2f;
 	static const double offset = 0.057;
-	const rw::common::Ptr<Cylinder> cylinder = ownedPtr(new Cylinder(static_cast<float>(r), l));
+	const rw::core::Ptr<Cylinder> cylinder = ownedPtr(new Cylinder(static_cast<float>(r), l));
 	Geometry geomA(cylinder);
 	const Geometry::Ptr geomB = ownedPtr(new Geometry(cylinder,Transform3D<>(Vector3D<>(offset,0,0))));
 

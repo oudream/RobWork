@@ -20,6 +20,7 @@
 
 #include <rw/math/Q.hpp>
 #include <rw/common/types.hpp>
+#include <rw/core/Ptr.hpp>
 #include <boost/asio.hpp>
 #include <boost/thread.hpp>
 
@@ -78,7 +79,7 @@ class UniversalRobotsRTLogging {
 	/**
 	 * @brief Connects socket to UR on the real-time interface
 	 *
-	 * If not able to connect it throws a rw::common::Exception
+	 * If not able to connect it throws a rw::core::Exception
 	 * @param host [in] host address
 	 * @param port [in] Port to connect to. Defaults to 30003.
 	 */
@@ -99,7 +100,7 @@ class UniversalRobotsRTLogging {
 	private:
 	boost::asio::ip::tcp::socket* _socket;
 	boost::asio::io_service _ioService;
-	rw::common::Ptr<boost::thread> _thread;
+	rw::core::Ptr<boost::thread> _thread;
 	boost::mutex _mutex;
 	bool _connected;
 	bool _hasData;

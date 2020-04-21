@@ -11,7 +11,7 @@
 #include <rw/kinematics/State.hpp>
 #include <rw/graspplanning/GraspTable.hpp>
 #include <rwsim/dynamics/RigidBody.hpp>
-
+#include <rw/core/Ptr.hpp>
 #include <rw/kinematics/FrameMap.hpp>
 
 #include <rwsim/util/MovingAverage.hpp>
@@ -108,7 +108,7 @@ class GraspSelectionDialog : public QDialog
         rw::kinematics::State _defstate;
         rw::kinematics::State _state;
         QTimer *_timer;
-        std::vector<rw::common::Ptr<rwsim::simulator::ThreadSimulator> > _simulators;
+        std::vector<rw::core::Ptr<rwsim::simulator::ThreadSimulator> > _simulators;
         std::vector<rw::kinematics::State> _initStates;
         std::vector<double> _simStartTimes;
         int _nrOfTests;
@@ -130,7 +130,7 @@ class GraspSelectionDialog : public QDialog
         rwsim::util::MovingAverage _avgSimTime;
         rwsim::util::MovingAverage _avgTime;
 
-        rw::common::Ptr<rw::graspplanning::GraspTable> _gtable;
+        rw::core::Ptr<rw::graspplanning::GraspTable> _gtable;
         typedef rwlibs::algorithms::KDTreeQ<rw::graspplanning::GraspTable::GraspData*> SearchTree;
         SearchTree *_kdtree;
         std::vector<SearchTree::KDNode> _nodes;

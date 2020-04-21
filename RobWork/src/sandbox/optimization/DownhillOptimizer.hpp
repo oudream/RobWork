@@ -29,7 +29,7 @@ bool vertexComp(const Vertex& i, const Vertex& j) {
 class DownhillOptimizer: public Optimizer {
 public:
 	//! Smart pointer.
-	typedef rw::common::Ptr<DownhillOptimizer> Ptr;
+	typedef rw::core::Ptr<DownhillOptimizer> Ptr;
 
 	//! Downhill optimizer parameters
 	struct Parameters {

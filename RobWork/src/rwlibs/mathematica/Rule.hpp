@@ -25,9 +25,10 @@
  */
 
 #include "Mathematica.hpp"
+#include <rw/core/Ptr.hpp>
 
-namespace rw { namespace common { class PropertyMap; } }
-namespace rw { namespace common { class PropertyBase; } }
+namespace rw { namespace core { class PropertyMap; } }
+namespace rw { namespace core { class PropertyBase; } }
 
 namespace rwlibs {
 namespace mathematica {
@@ -38,7 +39,7 @@ namespace mathematica {
 class Rule: public Mathematica::FunctionBase {
 public:
 	//! @brief Smart pointer type.
-	typedef rw::common::Ptr<Rule> Ptr;
+	typedef rw::core::Ptr<Rule> Ptr;
 
 	/**
 	 * @brief Construct a new Rule expression.
@@ -57,7 +58,7 @@ public:
 	virtual ~Rule();
 
 	//! @copydoc Mathematica::FunctionBase::getArguments
-	std::list<rw::common::Ptr<const Mathematica::Expression> > getArguments() const;
+	std::list<rw::core::Ptr<const Mathematica::Expression> > getArguments() const;
 
 	//! @copydoc Mathematica::Expression::clone
 	Mathematica::Expression::Ptr clone() const;
@@ -80,7 +81,7 @@ public:
 	 * @return a list of Rule expressions.
 	 * @throws rw::common::Exception if a property not supported.
 	 */
-	static std::list<Rule::Ptr> toRules(const rw::common::PropertyMap& options);
+	static std::list<Rule::Ptr> toRules(const rw::core::PropertyMap& options);
 
 	/**
 	 * @brief Construct PropertyMap from existing expression.
@@ -88,14 +89,14 @@ public:
 	 * @return the PropertyMap.
 	 * @throws rw::common::Exception if parsing fails.
 	 */
-	static rw::common::Ptr<rw::common::PropertyMap> toPropertyMap(const std::list<rw::common::Ptr<const Mathematica::Expression> >& rules);
+	static rw::core::Ptr<rw::core::PropertyMap> toPropertyMap(const std::list<rw::core::Ptr<const Mathematica::Expression> >& rules);
 
 	/**
 	 * @brief Convert a Mathematica rule expression to a Property.
 	 * @param rule [in] the rule expression.
 	 * @return the property.
 	 */
-	static rw::common::Ptr<rw::common::PropertyBase> toProperty(const Mathematica::Expression& rule);
+	static rw::core::Ptr<rw::core::PropertyBase> toProperty(const Mathematica::Expression& rule);
 
 private:
 	Mathematica::Symbol::Ptr _name;

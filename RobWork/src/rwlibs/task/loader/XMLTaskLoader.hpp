@@ -24,6 +24,7 @@
 #include "../Entity.hpp"
 
 #include <xercesc/util/XercesDefs.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include <string>
 
@@ -87,7 +88,7 @@ public:
 private:
 	rwlibs::task::TaskBasePtr readTask(xercesc::DOMElement* element);
 
-	void readEntityData(xercesc::DOMElement* element, rw::common::Ptr<rwlibs::task::Entity> entity);
+	void readEntityData(xercesc::DOMElement* element, rw::core::Ptr<rwlibs::task::Entity> entity);
 
 
 	rwlibs::task::Action::Ptr readAction(xercesc::DOMElement* element);

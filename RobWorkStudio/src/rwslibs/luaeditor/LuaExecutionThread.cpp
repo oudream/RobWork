@@ -23,10 +23,12 @@ extern "C" {
 	#include <lauxlib.h>
 }
 
-#include <rw/common/LogWriter.hpp>
+#include <rw/core/Log.hpp>
+#include <rw/core/LogWriter.hpp>
+#include <rw/core/Exception.hpp>
 #include <rwlibs/swig/lua/LuaState.hpp>
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rws;
 
 
@@ -46,7 +48,7 @@ namespace {
 
 void LuaExecutionThread::set(const std::string& cmd,
              rwlibs::swig::LuaState::Ptr lstate,
-             rw::common::LogWriter::Ptr output)
+             rw::core::LogWriter::Ptr output)
 {
     _cmd = cmd;
     _lua = lstate;

@@ -27,7 +27,7 @@
 
 #include "SensorModel.hpp"
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/math/Transform3D.hpp>
 #include <rw/math/ProjectionMatrix.hpp>
 
@@ -51,7 +51,7 @@ namespace rw { namespace sensor {
    class StereoCameraModel : public SensorModel {
       public:
          //! @brief smart pointer type to this class
-         typedef rw::common::Ptr<StereoCameraModel> Ptr;
+         typedef rw::core::Ptr<StereoCameraModel> Ptr;
 
          //! @brief output calibration file format for SaveCalibration()
          enum CalibrationFormat {
@@ -141,8 +141,8 @@ namespace rw { namespace sensor {
          //! cache to allow storing state information
          class StereoCameraModelCache: public rw::kinematics::StateCache {
      	public:
-     		typedef rw::common::Ptr<StereoCameraModelCache> Ptr;
-     		rw::common::Ptr<rw::sensor::Image> _leftImage,_rightImage;
+     		typedef rw::core::Ptr<StereoCameraModelCache> Ptr;
+     		rw::core::Ptr<rw::sensor::Image> _leftImage,_rightImage;
 
      		//! constructor
      		StereoCameraModelCache()
@@ -160,12 +160,12 @@ namespace rw { namespace sensor {
      		};
 
      		//! @copydoc rw::kinematics::StateCache::clone
-     		virtual rw::common::Ptr<StateCache> clone() const{
-     			StereoCameraModelCache::Ptr cache = rw::common::ownedPtr( new StereoCameraModelCache(*this) );
+     		virtual rw::core::Ptr<StateCache> clone() const{
+     			StereoCameraModelCache::Ptr cache = rw::core::ownedPtr( new StereoCameraModelCache(*this) );
      			if(_leftImage!=NULL)
-     				cache->_leftImage = rw::common::ownedPtr( new Image( *_leftImage ));
+     				cache->_leftImage = rw::core::ownedPtr( new Image( *_leftImage ));
      			if(_rightImage!=NULL)
-     				cache->_rightImage = rw::common::ownedPtr( new Image( *_rightImage ));
+     				cache->_rightImage = rw::core::ownedPtr( new Image( *_rightImage ));
      			return cache;
      		};
      	};

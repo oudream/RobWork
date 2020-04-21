@@ -26,7 +26,7 @@
 
 #include <list>
 
-using rw::common::ownedPtr;
+using rw::core::ownedPtr;
 using namespace rw::geometry;
 using namespace rw::math;
 

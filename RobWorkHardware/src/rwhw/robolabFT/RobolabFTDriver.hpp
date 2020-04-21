@@ -9,10 +9,9 @@
 #define ROBOTLABFT_HPP_
 
 #include <rwhw/serialport/SerialPort.hpp>
-#include <rw/common/TimerUtil.hpp>
-#include <rw/common/macros.hpp>
 #include <rw/math/Vector3D.hpp>
 #include "ConvertUtil.hpp"
+#include <rw/core/Ptr.hpp>
 
 // Boost
 #include <boost/array.hpp>
@@ -29,7 +28,7 @@ typedef std::pair<rw::math::Vector3D<>, rw::math::Vector3D<> > Wrench3D;
     class RobolabFT
     {
     public:
-    	typedef rw::common::Ptr<RobolabFT> Ptr;
+    	typedef rw::core::Ptr<RobolabFT> Ptr;
     	struct RobolabFTData {
 
 			// F/T data: {Fx, Fy, Fz, Tx, Ty, Tz}

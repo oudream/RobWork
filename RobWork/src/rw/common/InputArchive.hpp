@@ -18,9 +18,9 @@
 #ifndef RW_COMMON_INPUTARCHIVE_HPP
 #define RW_COMMON_INPUTARCHIVE_HPP
 
-#include "Archive.hpp"
+#include <rw/common/Archive.hpp>
 
-#include "Serializable.hpp"
+#include <rw/common/Serializable.hpp>
 #include <boost/cstdint.hpp>
 #include <boost/type_traits.hpp>
 

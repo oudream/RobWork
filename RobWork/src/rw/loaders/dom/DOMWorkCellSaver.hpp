@@ -18,7 +18,7 @@
 #ifndef RW_LOADERS_DOMWORKCELLSAVER_HPP
 #define RW_LOADERS_DOMWORKCELLSAVER_HPP
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <string>
 #include <stack>
 #include <ostream>
@@ -46,7 +46,7 @@ public:
      * @param state documentation missing !
 	 * @param fileName [in] Name of the file to which to write.
 	 */
-    static void save(rw::common::Ptr<const rw::models::WorkCell> workcell, const rw::kinematics::State& state, std::string fileName);
+    static void save(rw::core::Ptr<const rw::models::WorkCell> workcell, const rw::kinematics::State& state, std::string fileName);
 
     /**
      * @brief Writes \b workcellCalibration to stream.
@@ -54,7 +54,7 @@ public:
      * @param state documentation missing !
      * @param ostream [in] Stream to write to
      */
-    static void save(rw::common::Ptr<const rw::models::WorkCell> workcell, const rw::kinematics::State& state, std::ostream& ostream);
+    static void save(rw::core::Ptr<const rw::models::WorkCell> workcell, const rw::kinematics::State& state, std::ostream& ostream);
 };
 
 /** @} */

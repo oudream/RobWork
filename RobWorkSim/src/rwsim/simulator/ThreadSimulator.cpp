@@ -13,6 +13,7 @@
 
 #include <rw/common/TimerUtil.hpp>
 
+using namespace rw::core;
 using namespace rw::common;
 using namespace rw::kinematics;
 using namespace rwsim::simulator;

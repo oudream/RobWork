@@ -22,6 +22,7 @@
 
 #include <rw/graphics/Render.hpp>
 #include <rw/sensor/TactileArrayModel.hpp>
+#include <rw/core/Ptr.hpp>
 
 //namespace rw { namespace sensor { class TactileArrayModel; } }
 
@@ -37,13 +38,13 @@ namespace opengl {
     {
     public:
         //! @brief smart pointer type to this class
-        typedef rw::common::Ptr<TactileArrayRender> Ptr;
+        typedef rw::core::Ptr<TactileArrayRender> Ptr;
 
     	/**
     	 * @brief constructor
     	 * @param sensor [in] the tactile array that is to be rendered
     	 */
-        TactileArrayRender(rw::common::Ptr<rw::sensor::TactileArrayModel> sensor):
+        TactileArrayRender(rw::core::Ptr<rw::sensor::TactileArrayModel> sensor):
             _sensor(sensor)
         {
         }
@@ -59,7 +60,7 @@ namespace opengl {
                   double alpha) const;
 
     private:
-        rw::common::Ptr<rw::sensor::TactileArrayModel> _sensor;
+        rw::core::Ptr<rw::sensor::TactileArrayModel> _sensor;
     };
     //! @}
 }

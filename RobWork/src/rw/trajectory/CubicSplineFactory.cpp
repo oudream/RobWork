@@ -18,7 +18,7 @@
 #include "CubicSplineFactory.hpp"
 #include "CubicSplineInterpolator.hpp"
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include <Eigen/Sparse>
 
@@ -29,7 +29,7 @@
 using namespace rw::trajectory;
 
 using namespace rw::math;
-using namespace rw::common;
+using namespace rw::core;
 
 
 InterpolatorTrajectory<Q>::Ptr CubicSplineFactory::makeNaturalSpline(QPath::Ptr qpath, double timeStep)

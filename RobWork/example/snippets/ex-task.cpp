@@ -7,7 +7,7 @@
 #include <iostream>
 
 using namespace rw::math;
-using namespace rw::common;
+using namespace rw::core;
 using namespace rwlibs::task;
 
 void printMotion(QMotion::Ptr motion) {

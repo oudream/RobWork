@@ -22,17 +22,25 @@
 #include <rw/math/Vector3D.hpp>
 #include <rw/proximity/ProximityStrategyData.hpp>
 
-#include <fcl/BVH/BVH_model.h>
-#include <fcl/collision.h>
-#include <fcl/distance.h>
+#if FCL_VERSION_LESS_THEN_0_6_0
+    #include <fcl/BVH/BVH_model.h>
+    #include <fcl/collision.h>
+    #include <fcl/distance.h>
+#else 
+    #include <fcl/geometry/bvh/BVH_model.h>
+    #include <fcl/narrowphase/collision.h>
+    #include <fcl/narrowphase/distance.h>
+    #include <fcl/common/types.h>
+#endif
 
-using rw::common::ownedPtr;
+using rw::core::ownedPtr;
 using namespace rw::math;
 using namespace rw::proximity;
 using namespace rw::geometry;
-using rwlibs::proximitystrategies::ProximityStrategyFCL;
+using namespace rwlibs::proximitystrategies;
 
 namespace {
+    #ifdef FCL_VERSION_LESS_THEN_0_6_0
 fcl::Transform3f toFCL (const Transform3D<>& rwT)
 {
     fcl::Matrix3f rotation (rwT (0, 0),
@@ -49,12 +57,36 @@ fcl::Transform3f toFCL (const Transform3D<>& rwT)
 
     return fclT;
 }
+using rw_AABB = fcl::AABB;
+using rw_OBB = fcl::OBB;
+using rw_RSS = fcl::RSS;
+using rw_OBBRSS = fcl::OBBRSS;
+using rw_kIOS = fcl::kIOS;
+using rw_KDOP16 = fcl::KDOP< 16 >;
+using rw_KDOP18 = fcl::KDOP< 18 > ;
+using rw_KDOP24 = fcl::KDOP< 24 >;
+using fclContact = fcl::Contact;
+#else
+fcl::Transform3d toFCL (const Transform3D<>& rwT)
+{
+    return fcl::Transform3d(rwT.e());
+}
+using rw_AABB = fcl::AABB<double>;
+using rw_OBB = fcl::OBB<double> ;
+using rw_RSS = fcl::RSS<double>;
+using rw_OBBRSS = fcl::OBBRSS<double>;
+using rw_kIOS = fcl::kIOS<double>;
+using rw_KDOP16 = fcl::KDOP<double, 16 >;
+using rw_KDOP18 = fcl::KDOP<double, 18 >;
+using rw_KDOP24 = fcl::KDOP<double, 24 >;
+using fclContact = fcl::Contact<double>;
+#endif
 }    // namespace
 
 ProximityStrategyFCL::ProximityStrategyFCL (BV bv) :
-    _bv (bv), _fclCollisionRequest (new fcl::CollisionRequest ()),
-    _fclDistanceRequest (new fcl::DistanceRequest ()),
-    _fclDistanceResult (new fcl::DistanceResult ())
+    _bv (bv), _fclCollisionRequest (new fclCollisionRequest ()),
+    _fclDistanceRequest (new fclDistanceRequest ()),
+    _fclDistanceResult (new fclDistanceResult ())
 {
     // Setup defaults
     _fclDistanceRequest->enable_nearest_points = true;
@@ -86,14 +118,14 @@ void ProximityStrategyFCL::destroyModel (ProximityModel* model)
 bool ProximityStrategyFCL::addGeometry (ProximityModel* model, const Geometry& geom)
 {
     switch (_bv) {
-        case BV::AABB: return addGeometry< fcl::AABB > (model, geom); break;
-        case BV::OBB: return addGeometry< fcl::OBB > (model, geom); break;
-        case BV::RSS: return addGeometry< fcl::RSS > (model, geom); break;
-        case BV::OBBRSS: return addGeometry< fcl::OBBRSS > (model, geom); break;
-        case BV::kIOS: return addGeometry< fcl::kIOS > (model, geom); break;
-        case BV::KDOP16: return addGeometry< fcl::KDOP< 16 > > (model, geom); break;
-        case BV::KDOP18: return addGeometry< fcl::KDOP< 18 > > (model, geom); break;
-        case BV::KDOP24: return addGeometry< fcl::KDOP< 24 > > (model, geom); break;
+        case BV::AABB: return addGeometry< rw_AABB > (model, geom); break;
+        case BV::OBB: return addGeometry< rw_OBB > (model, geom); break;
+        case BV::RSS: return addGeometry< rw_RSS > (model, geom); break;
+        case BV::OBBRSS: return addGeometry< rw_OBBRSS > (model, geom); break;
+        case BV::kIOS: return addGeometry< rw_kIOS > (model, geom); break;
+        case BV::KDOP16: return addGeometry< rw_KDOP16> (model, geom); break;
+        case BV::KDOP18: return addGeometry< rw_KDOP18 > (model, geom); break;
+        case BV::KDOP24: return addGeometry< rw_KDOP24 > (model, geom); break;
         default:
             RW_THROW ("Implementation error! Support for the chosen FCL bounding volume has not "
                       "been properly implemented!");
@@ -107,14 +139,14 @@ bool ProximityStrategyFCL::addGeometry (rw::proximity::ProximityModel* model,
                                         rw::geometry::Geometry::Ptr geom, bool forceCopy)
 {
     switch (_bv) {
-        case BV::AABB: return addGeometry< fcl::AABB > (model, geom, forceCopy); break;
-        case BV::OBB: return addGeometry< fcl::OBB > (model, geom, forceCopy); break;
-        case BV::RSS: return addGeometry< fcl::RSS > (model, geom, forceCopy); break;
-        case BV::OBBRSS: return addGeometry< fcl::OBBRSS > (model, geom, forceCopy); break;
-        case BV::kIOS: return addGeometry< fcl::kIOS > (model, geom, forceCopy); break;
-        case BV::KDOP16: return addGeometry< fcl::KDOP< 16 > > (model, geom, forceCopy); break;
-        case BV::KDOP18: return addGeometry< fcl::KDOP< 18 > > (model, geom, forceCopy); break;
-        case BV::KDOP24: return addGeometry< fcl::KDOP< 24 > > (model, geom, forceCopy); break;
+        case BV::AABB: return addGeometry< rw_AABB > (model, geom, forceCopy); break;
+        case BV::OBB: return addGeometry< rw_OBB > (model, geom, forceCopy); break;
+        case BV::RSS: return addGeometry< rw_RSS > (model, geom, forceCopy); break;
+        case BV::OBBRSS: return addGeometry< rw_OBBRSS > (model, geom, forceCopy); break;
+        case BV::kIOS: return addGeometry< rw_kIOS > (model, geom, forceCopy); break;
+        case BV::KDOP16: return addGeometry< rw_KDOP16 > (model, geom, forceCopy); break;
+        case BV::KDOP18: return addGeometry< rw_KDOP18 > (model, geom, forceCopy); break;
+        case BV::KDOP24: return addGeometry< rw_KDOP24 > (model, geom, forceCopy); break;
         default:
             RW_THROW ("Implementation error! Support for the chosen FCL bounding volume has not "
                       "been properly implemented!");
@@ -124,13 +156,13 @@ bool ProximityStrategyFCL::addGeometry (rw::proximity::ProximityModel* model,
     return false;
 }
 
-template< typename BV >
+template< typename BV_t >
 bool ProximityStrategyFCL::addGeometry (ProximityModel* model, const Geometry& geom)
 {
     return addGeometry (model, ownedPtr (new Geometry (geom)), true);
 }
 
-template< typename BV >
+template< typename BV_t >
 bool ProximityStrategyFCL::addGeometry (rw::proximity::ProximityModel* model,
                                         rw::geometry::Geometry::Ptr geom, bool forceCopy)
 {
@@ -157,7 +189,8 @@ bool ProximityStrategyFCL::addGeometry (rw::proximity::ProximityModel* model,
      * to allocate */
     std::size_t numberOfVertices = numberOfTriangles * 3;
 
-    rw::common::Ptr< fcl::BVHModel< BV > > fclBVHModel = ownedPtr (new fcl::BVHModel< BV >);
+    rw::core::Ptr< fcl::BVHModel< BV_t > > fclBVHModel = ownedPtr (new fcl::BVHModel< BV_t >);
+
 
     int returnCode = 0;
     returnCode     = fclBVHModel->beginModel (numberOfTriangles, numberOfVertices);
@@ -172,12 +205,18 @@ bool ProximityStrategyFCL::addGeometry (rw::proximity::ProximityModel* model,
         const Vector3D<> v1Tmp = face[1] * scale;
         const Vector3D<> v2Tmp = face[2] * scale;
 
+#ifdef FCL_VERSION_LESS_THEN_0_6_0
         fcl::Vec3f v0, v1, v2;
         for (std::size_t i = 0; i < 3; ++i) {
             v0[i] = v0Tmp[i];
             v1[i] = v1Tmp[i];
             v2[i] = v2Tmp[i];
         }
+#else
+        fcl::Vector3d v0 = v0Tmp.e();
+        fcl::Vector3d v1 = v1Tmp.e();
+        fcl::Vector3d v2 = v2Tmp.e();
+#endif
         /* mband todo:
          * - How to ensure that double is the type supported and that it can just be copied even
          * when SSE is enabled in the FCL library, thus causing it to be floats (or some other
@@ -198,7 +237,7 @@ bool ProximityStrategyFCL::addGeometry (rw::proximity::ProximityModel* model,
 
     /* Could use .scast to use static_cast instead of dynamic_cast and avoid the overhead caused by
      * runtime verification that the converted object is complete. */
-    FCLBVHModelPtr fclBVHModelPtr = fclBVHModel.template cast< fcl::CollisionGeometry > ();
+    FCLBVHModelPtr fclBVHModelPtr = fclBVHModel.template cast< fclCollisionGeometry > ();
     if (!fclBVHModelPtr) {
         return false;
     }
@@ -238,13 +277,13 @@ ProximityStrategyFCL::getGeometryIDs (rw::proximity::ProximityModel* model)
 
     return geometryIDs;
 }
-std::vector< rw::common::Ptr< rw::geometry::Geometry > >
+std::vector< rw::core::Ptr< rw::geometry::Geometry > >
 ProximityStrategyFCL::getGeometrys (rw::proximity::ProximityModel* model)
 {
     RW_ASSERT (model != 0);
     FCLProximityModel* pmodel = dynamic_cast< FCLProximityModel* > (model);
 
-    std::vector< rw::common::Ptr< rw::geometry::Geometry > > geometrys;
+    std::vector< rw::core::Ptr< rw::geometry::Geometry > > geometrys;
     geometrys.reserve (pmodel->models.size ());
     for (const auto& m : pmodel->models) {
         geometrys.push_back (m.geo);
@@ -275,7 +314,7 @@ bool ProximityStrategyFCL::doInCollision (rw::proximity::ProximityModel::Ptr a,
 
     _fclCollisionResults.clear ();
 
-    CollisionResult& collisionResult = data.getCollisionData ();
+    rw::proximity::CollisionResult& collisionResult = data.getCollisionData ();
     collisionResult.clear ();
 
     bool firstContact = false;
@@ -295,7 +334,7 @@ bool ProximityStrategyFCL::doInCollision (rw::proximity::ProximityModel::Ptr a,
 
     /* TODO: Could use the fcl::CollisionResult that is created in _fclCollisionResults, and avoid
      * having the cost of copying data into that collection */
-    fcl::CollisionResult fclCollisionResult;
+    fclCollisionResult fclCollisionResult;
 
     size_t geoIdxA = 0;
     size_t geoIdxB = 0;
@@ -316,7 +355,7 @@ bool ProximityStrategyFCL::doInCollision (rw::proximity::ProximityModel::Ptr a,
                 collisionResult.b    = b;
                 collisionResult._aTb = inverse (wTa) * wTb;
 
-                CollisionResult::CollisionPair collisionPair;
+                rw::proximity::CollisionResult::CollisionPair collisionPair;
                 collisionPair.geoIdxA  = static_cast< int > (geoIdxA);
                 collisionPair.geoIdxB  = static_cast< int > (geoIdxB);
                 collisionPair.startIdx = static_cast< int > (collisionResult._geomPrimIds.size ());
@@ -325,7 +364,7 @@ bool ProximityStrategyFCL::doInCollision (rw::proximity::ProximityModel::Ptr a,
                 collisionResult._collisionPairs.push_back (collisionPair);
 
                 for (size_t j = 0; j < fclCollisionResult.numContacts (); ++j) {
-                    const fcl::Contact& contact = fclCollisionResult.getContact (j);
+                    const fclContact& contact = fclCollisionResult.getContact (j);
                     collisionResult._geomPrimIds.push_back (
                         std::make_pair (contact.b1, contact.b2));
                 }
@@ -371,7 +410,7 @@ rw::proximity::DistanceStrategy::Result& ProximityStrategyFCL::doDistance (
     res.a = a;
     res.b = b;
 
-    fcl::DistanceResult fclDistanceResult;
+    fclDistanceResult AfclDistanceResult;
 
     _fclDistanceRequest->abs_err = data.abs_err;
     _fclDistanceRequest->rel_err = data.rel_err;
@@ -399,8 +438,8 @@ rw::proximity::DistanceStrategy::Result& ProximityStrategyFCL::doDistance (
                                          mb.model.get (),
                                          toFCL (wTb * mb.t3d),
                                          *_fclDistanceRequest,
-                                         fclDistanceResult);
-            RW_ASSERT (fabs (minDistance - fclDistanceResult.min_distance) < 1.0e-16);
+                                         AfclDistanceResult);
+            RW_ASSERT (fabs (minDistance - AfclDistanceResult.min_distance) < 1.0e-16);
 
             // Only update data if a shorter distance has been found
             if (minDistance < res.distance) {
@@ -408,18 +447,18 @@ rw::proximity::DistanceStrategy::Result& ProximityStrategyFCL::doDistance (
 
                 res.geoIdxA = static_cast< int > (geoIdxA);
                 res.geoIdxB = static_cast< int > (geoIdxB);
-                res.idx1    = fclDistanceResult.b1;
-                res.idx2    = fclDistanceResult.b2;
+                res.idx1    = AfclDistanceResult.b1;
+                res.idx2    = AfclDistanceResult.b2;
 
                 if (_fclDistanceRequest->enable_nearest_points) {
                     for (size_t i = 0; i < 3; ++i) {
-                        res.p1[i] = fclDistanceResult.nearest_points[0][i];
-                        res.p2[i] = fclDistanceResult.nearest_points[1][i];
+                        res.p1[i] = AfclDistanceResult.nearest_points[0][i];
+                        res.p2[i] = AfclDistanceResult.nearest_points[1][i];
                     }
                 }
 
                 if (_collectFCLResults) {
-                    *_fclDistanceResult = fclDistanceResult;
+                    *_fclDistanceResult = AfclDistanceResult;
                 }
             }
             if (minDistance <= 0) {
@@ -433,23 +472,23 @@ rw::proximity::DistanceStrategy::Result& ProximityStrategyFCL::doDistance (
     return res;
 }
 
-fcl::CollisionRequest& ProximityStrategyFCL::getCollisionRequest ()
+fclCollisionRequest& ProximityStrategyFCL::getCollisionRequest ()
 {
     return *_fclCollisionRequest;
 }
 
-fcl::DistanceRequest& ProximityStrategyFCL::getDistanceRequest ()
+fclDistanceRequest& ProximityStrategyFCL::getDistanceRequest ()
 {
     return *_fclDistanceRequest;
 }
 
-fcl::CollisionResult& ProximityStrategyFCL::getCollisionResult (std::size_t index)
+fclCollisionResult& ProximityStrategyFCL::getCollisionResult (std::size_t index)
 {
     /* Using .at(...) will throw an exception if index is out of range */
     return _fclCollisionResults.at (index);
 }
 
-fcl::DistanceResult& ProximityStrategyFCL::getDistanceResult ()
+fclDistanceResult& ProximityStrategyFCL::getDistanceResult ()
 {
     return *_fclDistanceResult;
 }

@@ -72,7 +72,7 @@ std::vector< Vector3D<> > getCone (const Vector3D<>& normal, double nforce, doub
 }    // namespace
 
 GWSMeasure3D::GWSMeasure3D (int resolution, bool useUnitVectors) :
-    _chullCalculator (rw::common::ownedPtr (new QHullND< 6 > ())), _resolution (resolution),
+    _chullCalculator (rw::core::ownedPtr (new QHullND< 6 > ())), _resolution (resolution),
     _isInside (false), _minWrench (false), _avgWrench (false), _avgCenterWrench (false),
     _avgOriginWrench (false), _useUnitVectors (useUnitVectors), _lambda (1.0 / 0.1)
 {}

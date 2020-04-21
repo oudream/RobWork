@@ -11,7 +11,7 @@
 #include <QDialog>
 #include <QObject>
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 namespace rwsim { namespace simulator { class DynamicSimulator; } }
 
@@ -24,7 +24,7 @@ class ODESimCfgDialog : public QDialog
         Q_OBJECT
 
     public:
-        ODESimCfgDialog(rw::common::Ptr<rwsim::simulator::DynamicSimulator> sim, QWidget *parent = 0);
+        ODESimCfgDialog(rw::core::Ptr<rwsim::simulator::DynamicSimulator> sim, QWidget *parent = 0);
 
         void initializeStart();
 
@@ -43,7 +43,7 @@ class ODESimCfgDialog : public QDialog
     private:
         Ui::ODESimCfgForm *_ui;
 
-        rw::common::Ptr<rwsim::simulator::DynamicSimulator> _sim;
+        rw::core::Ptr<rwsim::simulator::DynamicSimulator> _sim;
 };
 
 

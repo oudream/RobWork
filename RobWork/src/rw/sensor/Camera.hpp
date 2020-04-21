@@ -26,7 +26,7 @@
 #include "Image.hpp"
 #include "Sensor.hpp"
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include <vector>
 #include <string>
@@ -56,7 +56,7 @@ namespace rw { namespace sensor {
     {
     public:
 		//! @brief smart pointer type to this class
-		typedef rw::common::Ptr<Camera> Ptr;
+		typedef rw::core::Ptr<Camera> Ptr;
 
     protected:
         /**

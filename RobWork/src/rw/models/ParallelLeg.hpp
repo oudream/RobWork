@@ -27,6 +27,7 @@
 #include <vector>
 
 #include <rw/math/Transform3D.hpp>
+#include <rw/core/Ptr.hpp>
 
 namespace rw {
     namespace math {
@@ -54,7 +55,7 @@ namespace rw { namespace models {
     {
     public:
 		//! @brief smart pointer type to this class
-		typedef rw::common::Ptr<ParallelLeg> Ptr;
+		typedef rw::core::Ptr<ParallelLeg> Ptr;
 
         /**
          * @brief Constructs leg from frames

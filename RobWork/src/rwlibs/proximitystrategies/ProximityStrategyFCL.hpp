@@ -24,28 +24,80 @@
 
 #include <rw/proximity/CollisionStrategy.hpp>
 #include <rw/proximity/DistanceStrategy.hpp>
+#include <rw/core/Ptr.hpp>
+
+#include <fcl/config.h>
+#if (FCL_MAJOR_VERSION == 0 && FCL_MINOR_VERSION < 6)
+    #define FCL_VERSION_LESS_THEN_0_6_0 true
+#endif 
+
+
 
 #include <string>
 #include <utility>
 #include <vector>
 
 namespace fcl {
-class CollisionGeometry;
-}
-namespace fcl {
-class CollisionRequest;
-}
-namespace fcl {
-class CollisionResult;
-}
-namespace fcl {
-class DistanceRequest;
-}
-namespace fcl {
-class DistanceResult;
+    #ifdef FCL_VERSION_LESS_THEN_0_6_0
+    class CollisionGeometry;
+    class CollisionResult;
+    class CollisionRequest;
+    class DistanceRequest;
+    class DistanceResult;
+    #else
+    template <typename S = double>
+    class CollisionGeometry;
+
+    template <typename S = double>
+    struct CollisionResult;
+
+    template <typename S = double>
+    struct CollisionRequest;
+
+    template <typename S = double>
+    struct DistanceRequest;
+
+    template <typename S = double>
+    struct DistanceResult;
+    #endif
 }
 
 namespace rwlibs { namespace proximitystrategies {
+    #ifdef FCL_VERSION_LESS_THEN_0_6_0
+
+        //! @brief Type of internal collision result.
+        using fclCollisionResult = fcl::CollisionResult;
+
+        //! @brief Type of internal collision request.
+        using fclCollisionRequest = fcl::CollisionRequest;
+
+        //! @brief Type of internal distance request.
+        using fclDistanceRequest = fcl::DistanceRequest;
+
+        //! @brief Type of internal distance result.
+        using fclDistanceResult = fcl::DistanceResult;
+
+        //! @brief Type of internal collision Geometry.
+        using fclCollisionGeometry = fcl::CollisionGeometry;
+
+#else
+          //! @brief Type of internal collision result.
+        using fclCollisionResult = fcl::CollisionResult<double>;
+
+        //! @brief Type of internal collision request.
+        using fclCollisionRequest = fcl::CollisionRequest<double>;
+
+        //! @brief Type of internal distance request.
+        using fclDistanceRequest = fcl::DistanceRequest<double>;
+
+        //! @brief Type of internal distance result.
+        using fclDistanceResult = fcl::DistanceResult<double>;
+
+        //! @brief Type of internal collision Geometry.
+        using fclCollisionGeometry = fcl::CollisionGeometry<double>;
+#endif
+
+
     /** @addtogroup proximitystrategies */
     /*@{*/
 
@@ -59,10 +111,11 @@ namespace rwlibs { namespace proximitystrategies {
     {
       public:
         //! @brief Smart pointer type for FCL Proximity strategy.
-        typedef rw::common::Ptr< ProximityStrategyFCL > Ptr;
+        typedef rw::core::Ptr< ProximityStrategyFCL > Ptr;
 
         //! @brief Type of internal collision geometry.
-        typedef rw::common::Ptr< fcl::CollisionGeometry > FCLBVHModelPtr;
+        typedef rw::core::Ptr< fclCollisionGeometry > FCLBVHModelPtr;
+
 
         //! @brief Datatype to hold the FCL bounding volume and related geometrical data.
         struct FCLModel
@@ -73,14 +126,14 @@ namespace rwlibs { namespace proximitystrategies {
              * @param transform [in] transform of the geometry.
              * @param model [in] the internal model of the collision geometry.
              */
-            FCLModel (rw::common::Ptr< rw::geometry::Geometry > geo,
+            FCLModel (rw::core::Ptr< rw::geometry::Geometry > geo,
                       const rw::math::Transform3D<>& transform, FCLBVHModelPtr model) :
                 geo (geo),
                 t3d (transform), model (model)
             { /* Empty */
             }
             //! @brief Identifier for the geometry.
-            rw::common::Ptr< rw::geometry::Geometry > geo;
+            rw::core::Ptr< rw::geometry::Geometry > geo;
             //! @brief Location of the geometry.
             rw::math::Transform3D<> t3d;
             //! @brief Using fcl::CollisionGeometry as the type of the model, to allow holding all
@@ -146,12 +199,12 @@ namespace rwlibs { namespace proximitystrategies {
 
         /**
          * @copydoc rw::proximity::ProximityStrategy::addGeometry(ProximityModel* model,
-         * rw::common::Ptr<rw::geometry::Geometry> geom, bool forceCopy=false)
+         * rw::core::Ptr<rw::geometry::Geometry> geom, bool forceCopy=false)
          *
          * @throws Exception when a bounding volume type has been chosen that is not supported.
          */
         bool addGeometry (rw::proximity::ProximityModel* model,
-                          rw::common::Ptr< rw::geometry::Geometry > geom, bool forceCopy = false);
+                          rw::core::Ptr< rw::geometry::Geometry > geom, bool forceCopy = false);
 
         //! @copydoc rw::proximity::ProximityStrategy::removeGeometry
         bool removeGeometry (rw::proximity::ProximityModel* model, const std::string& geomId);
@@ -162,7 +215,7 @@ namespace rwlibs { namespace proximitystrategies {
         /**
          * @copydoc rw::proximity::ProximityStrategy::getGeometrys
          */
-        std::vector< rw::common::Ptr< rw::geometry::Geometry > >
+        std::vector< rw::core::Ptr< rw::geometry::Geometry > >
         getGeometrys (rw::proximity::ProximityModel* model);
 
         //! @copydoc rw::proximity::ProximityStrategy::clear
@@ -211,7 +264,7 @@ namespace rwlibs { namespace proximitystrategies {
          * See the fcl/collision_data.h for the data structure, and look through their documentation
          * for specifics on what solvers that can be chosen.
          */
-        fcl::CollisionRequest& getCollisionRequest ();
+        fclCollisionRequest& getCollisionRequest ();
 
         /**
          * @brief Get access to the DistanceRequest that is used with FCL distance query
@@ -222,7 +275,7 @@ namespace rwlibs { namespace proximitystrategies {
          * @note The rel_err and abs_err fields will be overwritten with the values that are
          * supplied in the rw::proximity::ProximityStrategyData
          */
-        fcl::DistanceRequest& getDistanceRequest ();
+        fclDistanceRequest& getDistanceRequest ();
 
         /**
          * @brief Specify if FCL results should be collected
@@ -237,35 +290,35 @@ namespace rwlibs { namespace proximitystrategies {
         /**
          * @brief Get access to the collected FCL collision results
          */
-        std::vector< fcl::CollisionResult >& getCollisionResults () { return _fclCollisionResults; }
+        std::vector< fclCollisionResult >& getCollisionResults () { return _fclCollisionResults; }
 
         /**
          * @brief Get access to the collected FCL collision result
          *
          * @throws std::out_of_range exception if index is not within the bounds.
          */
-        fcl::CollisionResult& getCollisionResult (std::size_t index);
+        fclCollisionResult& getCollisionResult (std::size_t index);
 
         /**
          * @brief Get access to the collected FCL distance result
          */
-        fcl::DistanceResult& getDistanceResult ();
+        fclDistanceResult& getDistanceResult ();
 
       private:
         template< typename BV >
         bool addGeometry (rw::proximity::ProximityModel* model, const rw::geometry::Geometry& geom);
         template< typename BV >
         bool addGeometry (rw::proximity::ProximityModel* model,
-                          rw::common::Ptr< rw::geometry::Geometry > geom, bool forceCopy);
+                          rw::core::Ptr< rw::geometry::Geometry > geom, bool forceCopy);
 
       private:
         BV _bv;
-        fcl::CollisionRequest* const _fclCollisionRequest;
-        fcl::DistanceRequest* const _fclDistanceRequest;
+        fclCollisionRequest* const _fclCollisionRequest;
+        fclDistanceRequest* const _fclDistanceRequest;
 
         bool _collectFCLResults;
-        std::vector< fcl::CollisionResult > _fclCollisionResults;
-        fcl::DistanceResult* _fclDistanceResult;
+        std::vector< fclCollisionResult > _fclCollisionResults;
+        fclDistanceResult* _fclDistanceResult;
     };
 }}    // namespace rwlibs::proximitystrategies
 

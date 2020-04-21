@@ -24,7 +24,7 @@
  */
 
 #include <rw/math/Transform3D.hpp>
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rwlibs/os/rwgl.hpp>
 #include <rw/graphics/DrawableNode.hpp>
 
@@ -55,7 +55,7 @@ namespace rwlibs { namespace opengl {
     public:
 
         //! @brief smart pointer type to this class
-        typedef rw::common::Ptr<Drawable> Ptr;
+        typedef rw::core::Ptr<Drawable> Ptr;
 
     	/**
     	 * @brief draw mask is used to filter which drawables to exclude from rendering.
@@ -90,7 +90,7 @@ namespace rwlibs { namespace opengl {
          * @param dmask [in] Type of the Drawable. Default value is Physical
          */
         Drawable(
-            rw::common::Ptr<rw::graphics::Render> render,
+            rw::core::Ptr<rw::graphics::Render> render,
             const std::string& name = "",
 			unsigned int dmask = DrawableObject);
 
@@ -189,7 +189,7 @@ namespace rwlibs { namespace opengl {
         /**
          * @brief Get this drawables Render object
          */
-        std::vector<rw::common::Ptr<rw::graphics::Render> > getRenders() const{
+        std::vector<rw::core::Ptr<rw::graphics::Render> > getRenders() const{
         	return _renders;
         }
 
@@ -197,7 +197,7 @@ namespace rwlibs { namespace opengl {
          * @brief Add a render to this drawable.
          * @param render [in] the render.
          */
-        void addRender( rw::common::Ptr<rw::graphics::Render> render ){
+        void addRender( rw::core::Ptr<rw::graphics::Render> render ){
             _renders.push_back(render);
         }
 
@@ -211,7 +211,7 @@ namespace rwlibs { namespace opengl {
          * @brief The renderer that is used to render and draw the
          * drawable
          */
-    	std::vector<rw::common::Ptr<rw::graphics::Render> > _renders;
+    	std::vector<rw::core::Ptr<rw::graphics::Render> > _renders;
 
         /**
          * @brief drawType specified how the Drawable should be visualized

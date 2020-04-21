@@ -41,7 +41,7 @@ namespace models {
 class PrismaticUniversalJoint: public Joint {
 public:
 	//! @brief Smart pointer type of PrismaticUniversalJoint
-	typedef rw::common::Ptr<PrismaticUniversalJoint> Ptr;
+	typedef rw::core::Ptr<PrismaticUniversalJoint> Ptr;
 
     /**
      * @brief Construct a prismatic universal joint.

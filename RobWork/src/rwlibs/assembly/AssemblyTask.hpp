@@ -25,6 +25,7 @@
  */
 
 #include <rw/math/Transform3D.hpp>
+#include <rw/core/Ptr.hpp>
 
 // Forward declarations
 namespace rwlibs { namespace task {
@@ -54,7 +55,7 @@ class AssemblyRegistry;
 class AssemblyTask {
 public:
 	//! @brief smart pointer type to this class
-    typedef rw::common::Ptr<AssemblyTask> Ptr;
+    typedef rw::core::Ptr<AssemblyTask> Ptr;
 
     //! @brief Construct a new uninitialized task.
 	AssemblyTask();
@@ -64,7 +65,7 @@ public:
      * @param task [in] a CartesianTask.
      * @param registry [in] the control strategy registry (required only if user specified strategies will be used).
      */
-	AssemblyTask(rw::common::Ptr<rwlibs::task::CartesianTask> task, rw::common::Ptr<AssemblyRegistry> registry = NULL);
+	AssemblyTask(rw::core::Ptr<rwlibs::task::CartesianTask> task, rw::core::Ptr<AssemblyRegistry> registry = NULL);
 
 	//! @brief Destructor.
 	virtual ~AssemblyTask();
@@ -73,7 +74,7 @@ public:
 	 * @brief Convert to CartesianTask.
 	 * @return a CartesianTask.
 	 */
-	rw::common::Ptr<rwlibs::task::CartesianTask> toCartesianTask();
+	rw::core::Ptr<rwlibs::task::CartesianTask> toCartesianTask();
 
 	/**
 	 * @brief Save a single AssemblyTask to a task file.
@@ -95,7 +96,7 @@ public:
 	 * @param registry [in] a registry of control strategies to be used.
 	 * @return a vector of tasks loaded from the file.
 	 */
-	static std::vector<AssemblyTask::Ptr> load(const std::string& name, rw::common::Ptr<AssemblyRegistry> registry = NULL);
+	static std::vector<AssemblyTask::Ptr> load(const std::string& name, rw::core::Ptr<AssemblyRegistry> registry = NULL);
 
 	/**
 	 * @brief Load tasks from multiple files.
@@ -103,7 +104,7 @@ public:
 	 * @param registry [in] a registry of control strategies to be used.
 	 * @return a vector of tasks loaded from the files.
 	 */
-	static std::vector<AssemblyTask::Ptr> load(const std::vector<std::string>& names, rw::common::Ptr<AssemblyRegistry> registry = NULL);
+	static std::vector<AssemblyTask::Ptr> load(const std::vector<std::string>& names, rw::core::Ptr<AssemblyRegistry> registry = NULL);
 
 	/**
 	 * @brief Load tasks from a input stream.
@@ -111,7 +112,7 @@ public:
 	 * @param registry [in] a registry of control strategies to be used.
 	 * @return a vector of tasks loaded from the stream.
 	 */
-	static std::vector<AssemblyTask::Ptr> load(std::istringstream& inputStream, rw::common::Ptr<AssemblyRegistry> registry = NULL);
+	static std::vector<AssemblyTask::Ptr> load(std::istringstream& inputStream, rw::core::Ptr<AssemblyRegistry> registry = NULL);
 
 	/**
 	 * @brief Clone the task.
@@ -132,9 +133,9 @@ public:
     //! @brief The target relative location of the two objects when assembled (see maleTCP and femaleTCP).
     rw::math::Transform3D<> femaleTmaleTarget;
     //! @brief The control strategy to use for the assembly operation.
-    rw::common::Ptr<AssemblyControlStrategy> strategy;
+    rw::core::Ptr<AssemblyControlStrategy> strategy;
     //! @brief Parameters for the constrol strategy (specific for the control strategy used)
-    rw::common::Ptr<AssemblyParameterization> parameters;
+    rw::core::Ptr<AssemblyParameterization> parameters;
     ///@}
 
     /**

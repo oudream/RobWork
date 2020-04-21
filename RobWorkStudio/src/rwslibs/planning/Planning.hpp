@@ -22,7 +22,7 @@
 
 #include <rw/trajectory/Path.hpp>
 #include <rws/RobWorkStudioPlugin.hpp>
-
+#include <rw/core/Ptr.hpp>
 #include <QObject>
 
 
@@ -75,8 +75,8 @@ class Planning : public RobWorkStudioPlugin
 
   private:
     rw::models::WorkCell* _workcell;
-    rw::common::Ptr< rw::models::Device > _device;
-    rw::common::Ptr< rw::models::Device > _compositeDevice;
+    rw::core::Ptr< rw::models::Device > _device;
+    rw::core::Ptr< rw::models::Device > _compositeDevice;
 
     QComboBox* _cmbDevices;
     QCheckBox* _planAllDev;
@@ -90,7 +90,7 @@ class Planning : public RobWorkStudioPlugin
 
     rw::trajectory::QPath _path;
 
-    rw::common::Ptr< rw::models::Device > getDevice ();
+    rw::core::Ptr< rw::models::Device > getDevice ();
 
     void setAsTimedStatePath ();
 

@@ -1,7 +1,7 @@
 #ifndef RW_PLUGIN_PLUGINCONSTRUCTOR_HPP
 #define RW_PLUGIN_PLUGINCONSTRUCTOR_HPP
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include <string>
 
@@ -32,7 +32,7 @@ private:
 };
 
 
-typedef rw::common::Ptr<PluginConstructor> PluginConstructorPtr;
+typedef rw::core::Ptr<PluginConstructor> PluginConstructorPtr;
 
 } //end namespace plugin
 } //end namespace rw

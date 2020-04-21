@@ -23,7 +23,7 @@
  * @file Blend.hpp
  */
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 namespace rw {
 namespace trajectory {
@@ -46,7 +46,7 @@ class Blend
 {
 public:
 	//! @brief smart pointer type to this class
-	typedef typename rw::common::Ptr<Blend> Ptr;
+	typedef typename rw::core::Ptr<Blend> Ptr;
 
     /**
      * @brief Destructor

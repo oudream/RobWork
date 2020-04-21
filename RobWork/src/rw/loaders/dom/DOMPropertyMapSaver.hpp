@@ -18,11 +18,14 @@
 #ifndef RW_LOADERS_DOMPROPERTYMAPSAVER_HPP
 #define RW_LOADERS_DOMPROPERTYMAPSAVER_HPP
 
-#include <rw/common/DOMElem.hpp>
+#include <rw/core/DOMElem.hpp>
+#include <rw/core/Ptr.hpp>
 
-namespace rw { namespace common { class DOMParser; } }
-namespace rw { namespace common { class PropertyBase; } }
-namespace rw { namespace common { class PropertyMap; } }
+namespace rw { namespace core { 
+    class DOMParser;  
+    class PropertyBase;  
+    class PropertyMap; 
+}}
 
 namespace rw {
 namespace loaders {
@@ -31,7 +34,7 @@ namespace loaders {
 /*@{*/
 
 /**
- * @brief Class for saving rw::common::PropertyMap to XML
+ * @brief Class for saving rw::core::PropertyMap to XML
  *
  * The saver is capable of saving all types defined in rw::common::PropertyType.
  *
@@ -45,55 +48,55 @@ public:
      *
      * Constructs a new DOMElement for the document \b parent and writes the property to it.
      *
-     * @throws rw::common::Exception if the type of the property is not supported.
+     * @throws rw::core::Exception if the type of the property is not supported.
      *
      * @param property [in] Property to save
      * @param parent [in] DOMDocument which should contain the property representation
      */
-    static void save(rw::common::Ptr<rw::common::PropertyBase> property, rw::common::DOMElem::Ptr parent);
+    static void save(rw::core::Ptr<rw::core::PropertyBase> property, rw::core::DOMElem::Ptr parent);
 
     /**
      * @brief Saves properties of a PropertyMap as childs to \b element.
      *
      * Constructs element representing the properties in \b map and adds these as childs to \b element.
      *
-     * Throws rw::common::Expcetion if the type of a property is not supported.
+     * Throws rw::core::Expcetion if the type of a property is not supported.
      *
      * @param map [in] Map of properties to save.
      * @param parent [in] DOMDocument which should contain the PropertyMap representation
      */
-    static void save(const rw::common::PropertyMap& map, rw::common::DOMElem::Ptr parent);
+    static void save(const rw::core::PropertyMap& map, rw::core::DOMElem::Ptr parent);
 
     /**
      * @brief Saves the properties of \b map to file named \b filename
      *
-     * @throws rw::common::Exception if the type of a property is not supported.
+     * @throws rw::core::Exception if the type of a property is not supported.
      *
      * @param map [in] Map of properties to save
      * @param filename [in] Filename
      */
-    static void save(const rw::common::PropertyMap& map, const std::string& filename);
+    static void save(const rw::core::PropertyMap& map, const std::string& filename);
 
     /**
      * @brief Writes the properties of \b map to \b outstream
      *
-     * @throws rw::common::Exception if the type of a property is not supported.
+     * @throws rw::core::Exception if the type of a property is not supported.
      *
      * @param map [in] Map of properties to save
      * @param outstream [in] Output stream
      */
-    static void write(const rw::common::PropertyMap& map, std::ostream& outstream);
+    static void write(const rw::core::PropertyMap& map, std::ostream& outstream);
 
     /**
      * @brief Creates DOMDocument for \b map
      *
-     * @throws rw::common::Exception if the type of a property is not supported.
+     * @throws rw::core::Exception if the type of a property is not supported.
      *
      * @param map [in] Map of properties
      * @param parser [in] DOMParser to use
      * @return DOMDocument containing properties.
      */
-    static rw::common::DOMElem::Ptr createDOMDocument(const rw::common::PropertyMap& map, rw::common::Ptr<rw::common::DOMParser> parser);
+    static rw::core::DOMElem::Ptr createDOMDocument(const rw::core::PropertyMap& map, rw::core::Ptr<rw::core::DOMParser> parser);
 
 	/**
 	 * @brief Utility class which initializes local static variables.

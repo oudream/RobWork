@@ -25,8 +25,7 @@
  */
 
 #include "SimulatorLog.hpp"
-
-#include <rw/common/ExtensionPoint.hpp>
+#include <rw/core/ExtensionPoint.hpp>
 
 namespace rwsim {
 namespace log {
@@ -52,7 +51,7 @@ class SimulatorLogScope;
 class SimulatorLogEntry: public SimulatorLog {
 public:
     //! Smart pointer type of SimulatorLogEntry
-    typedef rw::common::Ptr<SimulatorLogEntry> Ptr;
+    typedef rw::core::Ptr<SimulatorLogEntry> Ptr;
 
     //! @copydoc SimulatorLog::SimulatorLog
 	SimulatorLogEntry(SimulatorLogScope* parent);
@@ -117,7 +116,7 @@ public:
 	 * @brief A factory for a SimulatorLogEntry. This factory also defines an
 	 * extension point for SimulatorLogEntry.
 	 */
-    class Factory: public rw::common::ExtensionPoint<SimulatorLogEntry> {
+    class Factory: public rw::core::ExtensionPoint<SimulatorLogEntry> {
     public:
     	/**
     	 * @brief Get the available entry types.

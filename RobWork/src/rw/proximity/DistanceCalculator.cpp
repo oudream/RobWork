@@ -25,6 +25,7 @@
 #include <rw/kinematics/Kinematics.hpp>
 #include <rw/models/Object.hpp>
 #include <rw/models/WorkCell.hpp>
+#include <rw/core/Exception.hpp>
 
 //#include <omp.h>
 #include <float.h>
@@ -34,6 +35,7 @@
 using namespace rw;
 using namespace rw::math;
 using namespace rw::common;
+using namespace rw::core;
 using namespace rw::kinematics;
 using namespace rw::models;
 using namespace rw::proximity;
@@ -116,7 +118,7 @@ DistanceCalculator::DistanceCalculator(const FramePairList& pairs,
 	_timer.resetAndPause();
 }
 
-void DistanceCalculator::initializeGeometry(rw::common::Ptr<const WorkCell> wc)
+void DistanceCalculator::initializeGeometry(rw::core::Ptr<const WorkCell> wc)
 {
 
     // Add all frames+geometries in workcell to distanceStrategy

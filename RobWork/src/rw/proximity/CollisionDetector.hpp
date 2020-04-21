@@ -28,7 +28,7 @@
 #include "ProximityFilterStrategy.hpp"
 #include "ProximityStrategyData.hpp"
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/common/Timer.hpp>
 #include <rw/kinematics/FrameMap.hpp>
 
@@ -70,9 +70,9 @@ class CollisionDetector
 {
 public:
 	//! @brief smart pointer type to this class
-	typedef rw::common::Ptr<CollisionDetector> Ptr;
+	typedef rw::core::Ptr<CollisionDetector> Ptr;
 	//! @brief smart pointer type to this const class
-	typedef rw::common::Ptr< const CollisionDetector > CPtr;
+	typedef rw::core::Ptr< const CollisionDetector > CPtr;
 
     //! @brief types of collision query
     typedef enum
@@ -107,7 +107,7 @@ public:
 	 *
 	 * @param workcell [in] the workcell.
 	 */
-	CollisionDetector(rw::common::Ptr<rw::models::WorkCell> workcell);
+	CollisionDetector(rw::core::Ptr<rw::models::WorkCell> workcell);
 
 	/**
 	 * @brief Collision detector for a workcell.
@@ -121,7 +121,7 @@ public:
 	 * @param workcell [in] the workcell.
 	 * @param strategy [in/out] the strategy for narrow-phase checking. The strategy will have models added to it.
 	 */
-	CollisionDetector(rw::common::Ptr<rw::models::WorkCell> workcell, CollisionStrategy::Ptr strategy);
+	CollisionDetector(rw::core::Ptr<rw::models::WorkCell> workcell, CollisionStrategy::Ptr strategy);
 
     /**
      * @brief Collision detector for a workcell.
@@ -131,7 +131,7 @@ public:
      * @param strategy [in/out] the strategy for narrow-phase checking. The strategy will have models added to it.
      * @param filter [in] proximity filter used to cull or filter frame-pairs that are obviously not colliding
      */
-	CollisionDetector(rw::common::Ptr<rw::models::WorkCell> workcell,
+	CollisionDetector(rw::core::Ptr<rw::models::WorkCell> workcell,
 		CollisionStrategy::Ptr strategy,
 		ProximityFilterStrategy::Ptr filter);
 
@@ -191,7 +191,7 @@ public:
 	 * @param frame [in] Frame to associate geometry to
 	 * @param geometry [in] Geometry to add
 	 */
-	void addGeometry(rw::kinematics::Frame* frame, const rw::common::Ptr<rw::geometry::Geometry> geometry);
+	void addGeometry(rw::kinematics::Frame* frame, const rw::core::Ptr<rw::geometry::Geometry> geometry);
 
 	/**
 	 * @brief Removes geometry from CollisionDetector
@@ -201,7 +201,7 @@ public:
 	 * @param frame [in] The frame which has the geometry associated
 	 * @param geometry [in] Geometry with the id to be removed
 	 */
-	void removeGeometry(rw::kinematics::Frame* frame, const rw::common::Ptr<rw::geometry::Geometry> geometry);
+	void removeGeometry(rw::kinematics::Frame* frame, const rw::core::Ptr<rw::geometry::Geometry> geometry);
 	
 	/**
 	 * @brief Removes geometry from CollisionDetector
@@ -261,14 +261,14 @@ public:
 	 * @param ID [in] the ID of the geometry
 	 * @return Pointer to the geometry
 	 */
-	rw::common::Ptr<rw::geometry::Geometry> getGeometry(rw::kinematics::Frame* frame, const std::string& geometryId);
+	rw::core::Ptr<rw::geometry::Geometry> getGeometry(rw::kinematics::Frame* frame, const std::string& geometryId);
 
 private:
 	/**
 	 * @brief Initialize the narrow phase strategy for the given workcell.
 	 * @param wc [in] the workcell.
 	 */
-    void initialize(rw::common::Ptr<rw::models::WorkCell> wc);
+    void initialize(rw::core::Ptr<rw::models::WorkCell> wc);
 
     //! @brief Timer for measuring the time spent in inCollision functions.
 	mutable rw::common::Timer _timer;

@@ -18,12 +18,12 @@
 
 #include "PropertyViewEditor.hpp"
 
-#include <rw/common/PropertyMap.hpp>
+#include <rw/core/PropertyMap.hpp>
 
 #include <QtVariantEditorFactory>
 #include <QtVariantPropertyManager>
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::math;
 
 PropertyViewEditor::PropertyViewEditor(QWidget *parent): QtTreePropertyBrowser(parent)

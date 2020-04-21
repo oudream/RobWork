@@ -35,7 +35,7 @@
 
 
 
-namespace rw { namespace common { class LogWriter; } }
+namespace rw { namespace core { class LogWriter; } }
 
 
 /*
@@ -103,7 +103,7 @@ public:
      * @brief Print some information about the frame buffers to the log.
      * @param log [in/out] the log to write to.
      */
-    static void test(rw::common::LogWriter& log);
+    static void test(rw::core::LogWriter& log);
 
     /**
      * @brief Check if frame buffers are available.

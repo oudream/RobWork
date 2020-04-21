@@ -23,8 +23,9 @@
 #include <rw/loaders/image/PGMLoader.hpp>
 #include <rw/loaders/image/PPMLoader.hpp>
 #include <rw/loaders/image/RGBLoader.hpp>
+#include <rw/core/Ptr.hpp>
 
-using rw::common::ownedPtr;
+using rw::core::ownedPtr;
 using namespace rw::loaders;
 using rw::sensor::Image;
 

@@ -28,7 +28,7 @@ using namespace rwlibs::proximitystrategies;
 using namespace rw::proximity;
 using namespace rw::kinematics;
 using namespace rw::models;
-using namespace rw::common;
+using namespace rw::core;
 
 namespace
 {

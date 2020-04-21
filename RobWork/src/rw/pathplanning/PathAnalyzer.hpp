@@ -51,9 +51,9 @@ class PathAnalyzer
 public:
 
 	//! @brief smart pointer type to this class
-    typedef rw::common::Ptr<PathAnalyzer> Ptr;
+    typedef rw::core::Ptr<PathAnalyzer> Ptr;
 	//! @brief smart pointer type to this const class
-    typedef rw::common::Ptr<const PathAnalyzer> CPtr;
+    typedef rw::core::Ptr<const PathAnalyzer> CPtr;
 
     /**
      * @brief Result struct for joint space analysis
@@ -134,7 +134,7 @@ public:
      * @param device [in] Device to be associated with the path
      * @param state [in] State of the workcell
      */
-	PathAnalyzer(const rw::common::Ptr<const rw::models::Device>& device, const rw::kinematics::State& state);
+	PathAnalyzer(const rw::core::Ptr<const rw::models::Device>& device, const rw::kinematics::State& state);
 
 	/**
 	 * @brief Destructor
@@ -184,7 +184,7 @@ public:
 	 * @param distanceCalculator [in] DistanceCalculator to be used in the analysis
 	 * @return Result of the analysis.
 	 */
-	ClearanceAnalysis analyzeClearance(const rw::trajectory::QPath& path, const rw::common::Ptr<const rw::proximity::DistanceCalculator>& distanceCalculator);
+	ClearanceAnalysis analyzeClearance(const rw::trajectory::QPath& path, const rw::core::Ptr<const rw::proximity::DistanceCalculator>& distanceCalculator);
 
     //TODO: Move to path statistics
 	/**
@@ -221,7 +221,7 @@ public:
 
 
 private:
-	rw::common::Ptr<const rw::models::Device> _device;
+	rw::core::Ptr<const rw::models::Device> _device;
     rw::kinematics::State _state;
 };
 

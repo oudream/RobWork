@@ -9,6 +9,7 @@
 #define SRC_RWLIBS_OPTIMIZATION_POWELLOPTIMIZER_HPP_
 
 #include "DirectionSetOptimizer.hpp"
+#include <rw/core/Ptr.hpp>
 
 namespace rwlibs {
 namespace optimization {
@@ -19,16 +20,16 @@ namespace optimization {
 class PowellOptimizer: public DirectionSetOptimizer {
 public:
 	//! Smart pointer.
-	typedef rw::common::Ptr<PowellOptimizer> Ptr;
+	typedef rw::core::Ptr<PowellOptimizer> Ptr;
 
 public:
 	/**
 	 * @brief Constructor.
 	 */
 	PowellOptimizer(typename FunctionType::Ptr function, double stepSize = 1.0,
-			StopCondition::Ptr stopCondition = rw::common::ownedPtr(
+			StopCondition::Ptr stopCondition = rw::core::ownedPtr(
 					new StopCondition(100, 0.01)), LineSearch::Ptr strategy =
-					rw::common::ownedPtr(new GoldenSectionLineSearch()));
+					rw::core::ownedPtr(new GoldenSectionLineSearch()));
 
 	//! Destructor.
 	virtual ~PowellOptimizer();

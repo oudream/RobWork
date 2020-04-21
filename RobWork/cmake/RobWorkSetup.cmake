@@ -830,6 +830,7 @@ set(
     ${QHULL_INCLUDE_DIRS}
     ${CSGJS_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIRS}
+    ${FCL_INCLUDE_DIRS}
     # ${MINIZIP_INCLUDE_DIRS} # Do not include this overall as there is a conflict with another
     # crypt.h that Python
     # includes.
@@ -891,6 +892,7 @@ set(
     sdurw_control
     sdurw_proximitystrategies
     sdurw
+    sdurw_core
 )
 
 message(STATUS "DIRS: ${ROBWORK_LIBRARY_DIRS}")

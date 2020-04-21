@@ -60,7 +60,7 @@
 #include <rwsim/dynamics/ContactCluster.hpp>
 #include <rwsim/dynamics/SuctionCup.hpp>
 #include <rwsim/sensor/SimulatedFTSensor.hpp>
-#include <rw/common/Log.hpp>
+#include <rw/core/Log.hpp>
 
 #include <boost/bind.hpp>
 
@@ -77,13 +77,14 @@ using namespace rw::models;
 using namespace rw::math;
 using namespace rw::proximity;
 using namespace rw::common;
+using namespace rw::core;
 
 using namespace rwlibs::simulation;
 using namespace rwlibs::proximitystrategies;
 
 #define INITIAL_MAX_CONTACTS 1000
 
-#define RW_DEBUGS( str ) rw::common::Log::debugLog() << str  << std::endl;
+#define RW_DEBUGS( str ) rw::core::Log::debugLog() << str  << std::endl;
 //#define RW_DEBUGS( str )
 
 /*

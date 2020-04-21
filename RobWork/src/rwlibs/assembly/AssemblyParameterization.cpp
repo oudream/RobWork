@@ -17,7 +17,8 @@
 
 #include "AssemblyParameterization.hpp"
 
-using namespace rw::common;
+
+using namespace rw::core;
 using namespace rwlibs::assembly;
 
 AssemblyParameterization::AssemblyParameterization():
@@ -25,7 +26,7 @@ AssemblyParameterization::AssemblyParameterization():
 {
 }
 
-AssemblyParameterization::AssemblyParameterization(rw::common::Ptr<PropertyMap> pmap):
+AssemblyParameterization::AssemblyParameterization(rw::core::Ptr<PropertyMap> pmap):
 	_pmap(pmap)
 {
 }
@@ -33,7 +34,7 @@ AssemblyParameterization::AssemblyParameterization(rw::common::Ptr<PropertyMap> 
 AssemblyParameterization::~AssemblyParameterization() {
 }
 
-rw::common::Ptr<PropertyMap> AssemblyParameterization::toPropertyMap() const {
+rw::core::Ptr<PropertyMap> AssemblyParameterization::toPropertyMap() const {
 	return _pmap;
 }
 
@@ -41,12 +42,12 @@ AssemblyParameterization::Ptr AssemblyParameterization::clone() const {
 	return ownedPtr(new AssemblyParameterization(_pmap));
 }
 
-AssemblyParameterization::Ptr AssemblyParameterization::make(rw::common::Ptr<PropertyMap> pmap) const {
+AssemblyParameterization::Ptr AssemblyParameterization::make(rw::core::Ptr<PropertyMap> pmap) const {
 	const AssemblyParameterization::Ptr clone = this->clone();
 	clone->reset(pmap);
 	return clone;
 }
 
-void AssemblyParameterization::reset(rw::common::Ptr<PropertyMap> pmap) {
+void AssemblyParameterization::reset(rw::core::Ptr<PropertyMap> pmap) {
 	_pmap = pmap;
 }

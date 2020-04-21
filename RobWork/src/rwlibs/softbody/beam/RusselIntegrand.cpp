@@ -17,7 +17,7 @@ Copyright 2013 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
 
 #include "RusselIntegrand.hpp"
 
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 #include <rwlibs/softbody/beam/BeamGeometry.hpp>
 
 using namespace rwlibs::softbody;

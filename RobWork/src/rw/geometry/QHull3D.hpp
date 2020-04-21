@@ -41,7 +41,7 @@ namespace geometry {
 	class QHull3D: public ConvexHull3D {
 	public:
 		//! smart pointer type of this class
-		typedef rw::common::Ptr<QHull3D> Ptr;
+		typedef rw::core::Ptr<QHull3D> Ptr;
 
 	    /**
 		 * @brief constructor

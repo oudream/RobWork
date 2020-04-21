@@ -1,7 +1,7 @@
 #ifndef RW_INVKIN_INVKINSOLVER_HPP
 #define RW_INVKIN_INVKINSOLVER_HPP
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/math/Transform3D.hpp>
 #include <rw/math/Q.hpp>
 
@@ -32,9 +32,9 @@ class InvKinSolver
 {
 public:
 	//! @brief smart pointer type to this class
-	typedef rw::common::Ptr<InvKinSolver> Ptr;
+	typedef rw::core::Ptr<InvKinSolver> Ptr;
 	//! @brief smart pointer type to this const class
-	typedef rw::common::Ptr< const InvKinSolver > CPtr;
+	typedef rw::core::Ptr< const InvKinSolver > CPtr;
 
 	//! destructor
 	virtual ~InvKinSolver(){};
@@ -76,7 +76,7 @@ public:
      *
      * @return The TCP Frame used when solving the IK.
      */
-    virtual rw::common::Ptr< const rw::kinematics::Frame > getTCP() const = 0;            
+    virtual rw::core::Ptr< const rw::kinematics::Frame > getTCP() const = 0;            
 
 };
 

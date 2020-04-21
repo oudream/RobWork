@@ -6,7 +6,7 @@ using namespace rwsim::control;
 
 VelRampController::VelRampController(const std::string& name, rwsim::dynamics::KinematicDevice* kdev, const rw::kinematics::State& state):
 	JointController(name, &kdev->getModel()),
-	SimulatedController( rw::common::ownedPtr(new rw::models::ControllerModel(name,kdev->getModel().getBase())) ),
+	SimulatedController( rw::core::ownedPtr(new rw::models::ControllerModel(name,kdev->getModel().getBase())) ),
 	_ddev(kdev),
 	_time(0.0),
 	_velramp(&(kdev->getModel())),

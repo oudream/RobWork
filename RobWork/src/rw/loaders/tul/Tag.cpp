@@ -32,7 +32,7 @@ using namespace boost::spirit::classic;
 using namespace NS;
 
 using namespace rw::math;
-using namespace rw::common;
+using namespace rw::core;
 
 namespace
 {

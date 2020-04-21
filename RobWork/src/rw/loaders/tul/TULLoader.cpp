@@ -40,8 +40,8 @@
 #include <rw/loaders/colsetup/CollisionSetupLoader.hpp>
 #include <rw/proximity/CollisionSetup.hpp>
 
-#include <rw/common/StringUtil.hpp>
-#include <rw/common/macros.hpp>
+#include <rw/core/StringUtil.hpp>
+#include <rw/core/macros.hpp>
 
 #include <rw/kinematics/Kinematics.hpp>
 #include <rw/kinematics/Frame.hpp>
@@ -50,7 +50,7 @@
 #include <rw/kinematics/FixedFrame.hpp>
 #include <rw/kinematics/MovableFrame.hpp>
 #include <rw/kinematics/StateStructure.hpp>
-#include <rw/common/Property.hpp>
+#include <rw/core/Property.hpp>
 
 #include <boost/shared_ptr.hpp>
 
@@ -62,7 +62,7 @@
 
 using namespace rw;
 using namespace rw::math;
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::proximity;
 using namespace rw::models;
 using namespace rw::kinematics;
@@ -318,9 +318,9 @@ private:
                 // the property also.
                 RW_THROW(
                     "No key (of some type T) named "
-                    << rw::common::StringUtil::quote(key())
+                    << rw::core::StringUtil::quote(key())
                     << " in frame "
-                    << rw::common::StringUtil::quote(frame.getName()));
+                    << rw::core::StringUtil::quote(frame.getName()));
             }
             return *value;
         }

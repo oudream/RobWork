@@ -21,10 +21,10 @@
 #include "Frame.hpp"
 #include "StateSetup.hpp"
 
-#include <rw/common/StringUtil.hpp>
+#include <rw/core/StringUtil.hpp>
 
 using namespace rw::kinematics;
-using namespace rw::common;
+using namespace rw::core;
 
 namespace {
     int nrOfDafs(boost::shared_ptr<StateSetup> setup){

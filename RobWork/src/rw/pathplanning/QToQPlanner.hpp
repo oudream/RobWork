@@ -24,7 +24,7 @@
 */
 
 #include "PathPlanner.hpp"
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 namespace rw { namespace pathplanning {
 	class PlannerConstraint;
@@ -43,9 +43,9 @@ namespace rw { namespace pathplanning {
     {
     public:
 		//! @brief smart pointer type to this class
-		typedef rw::common::Ptr<QToQPlanner> Ptr;
+		typedef rw::core::Ptr<QToQPlanner> Ptr;
 		//! @brief smart pointer type to this const class
-		typedef rw::common::Ptr<const QToQPlanner> CPtr;
+		typedef rw::core::Ptr<const QToQPlanner> CPtr;
 
         /**
            @brief Construct a path planner from a region planner.
@@ -55,7 +55,7 @@ namespace rw { namespace pathplanning {
 
            @param planner [in] A planner for a region given by a QSampler.
         */
-		static QToQPlanner::Ptr make(rw::common::Ptr<QToQSamplerPlanner> planner);
+		static QToQPlanner::Ptr make(rw::core::Ptr<QToQSamplerPlanner> planner);
 
         /**
            @brief Construct a path planner from an edge constraint.

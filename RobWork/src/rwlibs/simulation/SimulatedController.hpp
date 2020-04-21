@@ -20,7 +20,7 @@
 
 //! @file SimulatedController.hpp
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rwlibs/control/Controller.hpp>
 #include <rw/models/ControllerModel.hpp>
 #include <rw/kinematics/Stateless.hpp>
@@ -45,7 +45,7 @@ namespace simulation {
 
     public:
         //! @brief smart pointer type of this class
-        typedef rw::common::Ptr<SimulatedController> Ptr;
+        typedef rw::core::Ptr<SimulatedController> Ptr;
 
         /**
          *  @brief get the name of this controller

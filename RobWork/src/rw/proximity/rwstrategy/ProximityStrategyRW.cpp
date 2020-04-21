@@ -20,13 +20,13 @@
 #include "BVTreeColliderFactory.hpp"
 #include "BVTreeFactory.hpp"
 
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 #include <rw/geometry/TriMesh.hpp>
 #include <rw/proximity/ProximityStrategyData.hpp>
 
 #include <vector>
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::proximity;
 using namespace rw::geometry;
 using namespace rw::kinematics;
@@ -160,9 +160,9 @@ ProximityStrategyRW::getGeometryIDs (rw::proximity::ProximityModel* model)
     return res;
 }
 
-std::vector< rw::common::Ptr< rw::geometry::Geometry > >
+std::vector< rw::core::Ptr< rw::geometry::Geometry > >
 ProximityStrategyRW::getGeometrys (rw::proximity::ProximityModel* model){
-    std::vector< rw::common::Ptr< rw::geometry::Geometry >> res;
+    std::vector< rw::core::Ptr< rw::geometry::Geometry >> res;
     RWProximityModel* pmodel = (RWProximityModel*) model;
     for (Model::Ptr& m : pmodel->models) {
         res.push_back (m->geo);

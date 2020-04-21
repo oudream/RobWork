@@ -26,6 +26,7 @@
 #include <rwlibs/os/rwgl.hpp>
 
 #include <rw/graphics/Render.hpp>
+#include <rw/core/Ptr.hpp>
 
 namespace rwlibs { namespace opengl {
 
@@ -46,7 +47,7 @@ namespace rwlibs { namespace opengl {
         mutable float _blue[4];
     public:
         //! @brief smart pointer type to this class
-        typedef rw::common::Ptr<RenderFrame> Ptr;
+        typedef rw::core::Ptr<RenderFrame> Ptr;
 
         /**
          * @brief Constructs a RenderFrame

@@ -28,10 +28,9 @@
 #include <rw/math/Vector3D.hpp>
 #include <rw/math/Transform3D.hpp>
 #include <rw/math/VelocityScrew6D.hpp>
-
-//
+#include <rw/core/Event.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/geometry/Geometry.hpp>
-
 #include <rw/kinematics/Stateless.hpp>
 
 namespace rw { namespace kinematics { class State; } }
@@ -118,7 +117,7 @@ namespace dynamics {
 
     public:
         //! @brief Smart pointer type for a Body.
-        typedef rw::common::Ptr<Body> Ptr;
+        typedef rw::core::Ptr<Body> Ptr;
 
     	//! @brief Destructor.
     	virtual ~Body(){};
@@ -220,7 +219,7 @@ namespace dynamics {
         typedef boost::function<void(BodyEventType)> BodyChangedListener;
 
         //! @brief Type for body events.
-        typedef rw::common::Event<BodyChangedListener, BodyEventType> BodyChangedEvent;
+        typedef rw::core::Event<BodyChangedListener, BodyEventType> BodyChangedEvent;
 
         /**
          * @brief Returns StateChangeEvent needed for subscribing and firing the event.

@@ -20,9 +20,11 @@
 
 #include <rw/loaders/tul/TULLoader.hpp>
 #include <rw/loaders/rwxml/XMLRWLoader.hpp>
-#include <rw/common/StringUtil.hpp>
+#include <rw/core/StringUtil.hpp>
+#include <rw/core/Extension.hpp>
+#include <rw/core/Log.hpp>
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::loaders;
 using rw::models::WorkCell;
 

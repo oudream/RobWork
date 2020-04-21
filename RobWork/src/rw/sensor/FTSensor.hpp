@@ -32,7 +32,7 @@ namespace sensor {
  */
 class FTSensor : public Sensor {
 public:
-	typedef rw::common::Ptr<FTSensor> Ptr;
+	typedef rw::core::Ptr<FTSensor> Ptr;
 
     /**
      * @param name documentation missing !

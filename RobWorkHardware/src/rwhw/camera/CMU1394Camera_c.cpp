@@ -19,8 +19,8 @@
 
 #define CAM_DELAY_SLEEP 1
 
-#include <rw/common/macros.hpp>
-#include <rw/common/Log.hpp>
+#include <rw/core/macros.hpp>
+#include <rw/core/Log.hpp>
 #include <rw/common/TimerUtil.hpp>
 #include <vector>
 

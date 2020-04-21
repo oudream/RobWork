@@ -24,9 +24,9 @@
  */
 
 #include <rw/math/Transform3D.hpp>
-#include <rw/common/PropertyMap.hpp>
+#include <rw/core/PropertyMap.hpp>
 #include <rw/common/ConcatVectorIterator.hpp>
-#include <rw/common/PairIterator.hpp>
+#include <rw/core/PairIterator.hpp>
 #include <vector>
 #include <set>
 #include "StateData.hpp"
@@ -59,9 +59,9 @@ namespace rw { namespace kinematics {
     public:
 
 		//! @brief Smart pointer type for a Frame object
-		typedef rw::common::Ptr<Frame> Ptr;
+		typedef rw::core::Ptr<Frame> Ptr;
 		//! @brief Smart pointer type for a constant Frame object
-		typedef rw::common::Ptr<const Frame> CPtr;
+		typedef rw::core::Ptr<const Frame> CPtr;
 
         /**
          * @brief Destructor for the frame.
@@ -118,12 +118,12 @@ namespace rw { namespace kinematics {
          *
          * @return The property map of the frame.
          */
-        const common::PropertyMap& getPropertyMap() const { return _propertyMap; }
+        const core::PropertyMap& getPropertyMap() const { return _propertyMap; }
 
         /**
          * @copydoc getPropertyMap
          */
-        common::PropertyMap& getPropertyMap() { return _propertyMap; }
+        core::PropertyMap& getPropertyMap() { return _propertyMap; }
 
 
         /**
@@ -195,12 +195,12 @@ namespace rw { namespace kinematics {
         /**
          * @brief Pair of iterators
          */
-        typedef rw::common::iter_pair<iterator> iterator_pair;
+        typedef rw::core::iter_pair<iterator> iterator_pair;
 
         /**
          * @brief Pair of const iterators
          */
-        typedef  rw::common::iter_pair<const_iterator> const_iterator_pair;
+        typedef  rw::core::iter_pair<const_iterator> const_iterator_pair;
 
         /**
          * @brief Iterator pair for the fixed children of the frame.
@@ -327,7 +327,7 @@ namespace rw { namespace kinematics {
     private:
         // Various attributes stored for the frame. Users and constructors of
         // frame are free to use this value as they please.
-        common::PropertyMap _propertyMap;
+        core::PropertyMap _propertyMap;
 
         // static connected parent and children
         Frame* _parent;

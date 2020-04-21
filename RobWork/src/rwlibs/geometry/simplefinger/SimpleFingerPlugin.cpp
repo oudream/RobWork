@@ -21,7 +21,7 @@
 
 
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::geometry;
 using namespace rwlibs::geometry::simplefinger;
 

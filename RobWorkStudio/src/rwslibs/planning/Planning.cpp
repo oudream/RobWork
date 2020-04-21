@@ -19,9 +19,9 @@
 
 #include <RobWorkStudio.hpp>
 
-#include <rw/common/Exception.hpp>
-#include <rw/common/Message.hpp>
-#include <rw/common/StringUtil.hpp>
+#include <rw/core/Exception.hpp>
+#include <rw/core/Message.hpp>
+#include <rw/core/StringUtil.hpp>
 #include <rw/loaders/path/PathLoader.hpp>
 #include <rw/math/Math.hpp>
 #include <rw/math/MetricFactory.hpp>
@@ -53,7 +53,7 @@
 
 #include <vector>
 
-using namespace rw::common;
+using namespace rw::core;
 using rw::kinematics::State;
 using rw::loaders::PathLoader;
 using namespace rw::models;
@@ -277,7 +277,7 @@ void Planning::setStart() {
     std::stringstream str;
     str<<_starts[deviceIndex];
     //_lblStart->setText(str.str().c_str());
-    //rw::common::Message msg( __FILE__, __LINE__, "Start set to: " + str.str());
+    //rw::core::Message msg( __FILE__, __LINE__, "Start set to: " + str.str());
   //  emitMessage("Planning","Info", msg);
 
 }
@@ -308,7 +308,7 @@ void Planning::setGoal() {
     std::stringstream str;
     str << _goals[deviceIndex];
     //_lblGoal->setText(str.str().c_str());
-    rw::common::Message msg( __FILE__, __LINE__, "Goal set to: " + str.str());
+    rw::core::Message msg( __FILE__, __LINE__, "Goal set to: " + str.str());
  //   emitMessage("Planning","Info", msg);
 }
 
@@ -403,7 +403,7 @@ void Planning::plan()
     }
 
     //Get the CDStrategy
-	const rw::common::Ptr<CollisionStrategy> cdstrategy =
+	const rw::core::Ptr<CollisionStrategy> cdstrategy =
         ProximityStrategyFactory::makeCollisionStrategy(_cmbCollisionDetectors->currentText().toStdString());
         //getCollisionStrategy(_cmbCollisionDetectors->currentIndex());
 

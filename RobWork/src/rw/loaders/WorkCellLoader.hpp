@@ -26,7 +26,7 @@
 #include <string>
 #include <rw/graphics/WorkCellScene.hpp>
 #include <rw/models/WorkCell.hpp>
-#include <rw/common/ExtensionPoint.hpp>
+#include <rw/core/ExtensionPoint.hpp>
 
 // Forward declarations
 //namespace rw { namespace models { class WorkCell; }}
@@ -73,7 +73,7 @@ namespace rw { namespace loaders {
     {
     public:
         //! @brief Smart pointer of WorkCellLoader.
-        typedef rw::common::Ptr<WorkCellLoader> Ptr;
+        typedef rw::core::Ptr<WorkCellLoader> Ptr;
 
         //! @brief Destructor.
         virtual ~WorkCellLoader(){}
@@ -95,7 +95,7 @@ namespace rw { namespace loaders {
          * "rw.loaders.WorkCellLoader" extension point where new loaders can be
          * registered.
          */
-        class Factory: public rw::common::ExtensionPoint<WorkCellLoader> {
+        class Factory: public rw::core::ExtensionPoint<WorkCellLoader> {
             public:
                 /**
                  * @brief Get loaders for a specific format.
@@ -103,7 +103,7 @@ namespace rw { namespace loaders {
                  * The extension name is case-insensitive.
                  * @return a suitable loader.
                  */
-                static rw::common::Ptr<WorkCellLoader> getWorkCellLoader(
+                static rw::core::Ptr<WorkCellLoader> getWorkCellLoader(
                         const std::string& format);
 
                 /**
@@ -117,7 +117,7 @@ namespace rw { namespace loaders {
                 static models::WorkCell::Ptr load(const std::string& filename);
 
             private:
-                Factory(): rw::common::ExtensionPoint<WorkCellLoader>(
+                Factory(): rw::core::ExtensionPoint<WorkCellLoader>(
                         "rw.loaders.WorkCellLoader",
                         "Extension point for for WorkCell loaders.")
                 {}

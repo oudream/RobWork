@@ -21,13 +21,12 @@
 #include <rw/models/SerialDevice.hpp>
 #include <rw/models/Joint.hpp>
 
-using namespace rw::common;
 using namespace rw::math;
 using namespace rw::models;
 using namespace rw::kinematics;
 using namespace rw::invkin;
 
-ClosedFormIKSolverUR::ClosedFormIKSolverUR(const rw::common::Ptr<const SerialDevice> device, const State& state):
+ClosedFormIKSolverUR::ClosedFormIKSolverUR(const rw::core::Ptr<const SerialDevice> device, const State& state):
 	_device(device),
 	_checkJointLimits(true)
 {

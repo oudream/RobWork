@@ -24,7 +24,7 @@
  * \copydoc rwsim::simulator::ODEThreading
  */
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include <ode/common.h>
 
@@ -95,7 +95,7 @@ private:
 	ODEThreading();
 
 	struct ThreadImpl;
-	static rw::common::Ptr<ThreadImpl> data();
+	static rw::core::Ptr<ThreadImpl> data();
 };
 //! @}
 } /* namespace simulator */

@@ -18,6 +18,7 @@
 #include "DHParameterSet.hpp"
 #include <rw/models/Joint.hpp>
 #include <rw/models/SerialDevice.hpp>
+#include <rw/core/PropertyMap.hpp>
 
 using namespace rw::models;
 
@@ -35,7 +36,7 @@ const DHParameterSet* DHParameterSet::get(const rw::models::Joint* joint) {
     return get(joint->getPropertyMap());
 }
 
-const DHParameterSet* DHParameterSet::get(const rw::common::PropertyMap& pmap) {
+const DHParameterSet* DHParameterSet::get(const rw::core::PropertyMap& pmap) {
     return pmap.getPtr<DHParameterSet>("DHSet");
 }
 
@@ -43,6 +44,6 @@ void DHParameterSet::set(const DHParameterSet& dhset, rw::kinematics::Frame* joi
     set(dhset, joint->getPropertyMap());
 }
 
-void DHParameterSet::set(const DHParameterSet& dhset, rw::common::PropertyMap& pmap){
+void DHParameterSet::set(const DHParameterSet& dhset, rw::core::PropertyMap& pmap){
     pmap.addForce<DHParameterSet>("DHSet","Denavit-Hartenberg parameters",dhset);
 }

@@ -6,7 +6,7 @@
 #include <rwlibs/control/JointController.hpp>
 #include <rwlibs/control/SyncVelocityRamp.hpp>
 #include <rwlibs/simulation/SimulatedController.hpp>
-
+#include <rw/core/Ptr.hpp>
 #include "PDController.hpp"
 
 namespace rwsim { namespace dynamics { class RigidDevice; } }
@@ -26,7 +26,7 @@ namespace control {
 
 	public:
 
-	    typedef rw::common::Ptr<SyncPDController> Ptr;
+	    typedef rw::core::Ptr<SyncPDController> Ptr;
 
 		/**
 		 * @brief constrictor

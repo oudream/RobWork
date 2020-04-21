@@ -43,7 +43,7 @@ namespace rw { namespace models {
     {
     public:
 		//! @brief smart pointer type to this class
-		typedef rw::common::Ptr<PrismaticJoint> Ptr;
+		typedef rw::core::Ptr<PrismaticJoint> Ptr;
 
         /**
          * @brief Constructs PrismaticJoint

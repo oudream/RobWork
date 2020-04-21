@@ -25,7 +25,8 @@
 
 #include <rw/math/Q.hpp>
 #include <rw/math/Transform3D.hpp>
-#include <rw/common/PropertyMap.hpp>
+#include <rw/core/PropertyMap.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include <vector>
 
@@ -54,7 +55,7 @@ namespace rw { namespace invkin {
     {
     public:
 		//! @brief smart pointer type to this class
-		typedef rw::common::Ptr<IterativeMultiIK> Ptr;
+		typedef rw::core::Ptr<IterativeMultiIK> Ptr;
 
 		/**
 		 * @brief Destructor
@@ -118,13 +119,13 @@ namespace rw { namespace invkin {
          * @brief Returns the PropertyMap
          * @return Reference to the PropertyMap
          */
-        virtual rw::common::PropertyMap& getProperties();
+        virtual rw::core::PropertyMap& getProperties();
 
         /**
          * @brief Returns the PropertyMap
          * return Reference to the PropertyMap
          */
-        virtual const rw::common::PropertyMap& getProperties() const;
+        virtual const rw::core::PropertyMap& getProperties() const;
 
     protected:
         /**
@@ -136,7 +137,7 @@ namespace rw { namespace invkin {
         /**
          * @brief the Properties
          */
-        rw::common::PropertyMap _properties;
+        rw::core::PropertyMap _properties;
 
         /**
          * @brief nr of end effectors

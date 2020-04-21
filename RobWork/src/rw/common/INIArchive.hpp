@@ -23,12 +23,12 @@
 #include <fstream>
 #include <limits>
 
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string.hpp>
 
-#include "InputArchive.hpp"
-#include "OutputArchive.hpp"
+#include <rw/common/InputArchive.hpp>
+#include <rw/common/OutputArchive.hpp>
 
 namespace rw {
 namespace common {

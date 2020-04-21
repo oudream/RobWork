@@ -9,6 +9,7 @@
 #define SRC_RW_MATH_NUMERICALDERIVATIVE_HPP_
 
 #include <rw/math/Function.hpp>
+#include <rw/core/Ptr.hpp>
 
 namespace rw {
 namespace math {
@@ -18,7 +19,7 @@ template<typename RES_T = double, typename ARG_T = double,
 class NumericalDerivative {
 public:
 	//! Smart pointer.
-	typedef rw::common::Ptr<NumericalDerivative> Ptr;
+	typedef rw::core::Ptr<NumericalDerivative> Ptr;
 
 public:
 	//! Constructor.

@@ -4,6 +4,7 @@
 #include <rw/math/Quaternion.hpp>
 #include <rw/models/Device.hpp>
 #include <rwlibs/opengl/RenderFrame.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include <RobWorkStudio.hpp>
 
@@ -17,7 +18,7 @@
 
 using namespace boost::asio;
 
-using rw::common::ownedPtr;
+using rw::core::ownedPtr;
 using namespace rw::kinematics;
 using namespace rw::math;
 using namespace rw::models;

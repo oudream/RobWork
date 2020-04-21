@@ -34,6 +34,7 @@
 #include <rwsim/dynamics/KinematicBody.hpp>
 
 using namespace rw::common;
+using namespace rw::core;
 using namespace rw::geometry;
 using namespace rw::graphics;
 using namespace rw::kinematics;

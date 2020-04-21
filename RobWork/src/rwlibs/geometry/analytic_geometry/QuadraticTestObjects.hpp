@@ -24,7 +24,7 @@
  * \copydoc rwlibs::geometry::QuadraticTestObjects
  */
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 namespace rw { namespace geometry { class QuadraticBREP; } }
 
@@ -44,13 +44,13 @@ namespace rwlibs {
                  * @brief
                  * @return
                  */
-                static rw::common::Ptr<rw::geometry::QuadraticBREP> objectA();
+                static rw::core::Ptr<rw::geometry::QuadraticBREP> objectA();
 
                 /**
                  * @brief
                  * @return
                  */
-                static rw::common::Ptr<rw::geometry::QuadraticBREP> objectB();
+                static rw::core::Ptr<rw::geometry::QuadraticBREP> objectB();
 
             private:
                 QuadraticTestObjects();

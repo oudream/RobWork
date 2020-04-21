@@ -17,7 +17,7 @@
 
 #include "ProximityStrategyYaobi.hpp"
 
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 #include <rw/geometry/Geometry.hpp>
 #include <rw/geometry/TriMesh.hpp>
 #include <rw/proximity/ProximityStrategyData.hpp>
@@ -28,6 +28,7 @@
 #include <yaobi/yaobi_tree_builder.h>
 
 using namespace rw::common;
+using namespace rw::core;
 using namespace rw::proximity;
 using namespace rw::geometry;
 using namespace rw::kinematics;
@@ -271,10 +272,10 @@ ProximityStrategyYaobi::getGeometryIDs (rw::proximity::ProximityModel* model)
     }
     return res;
 }
-std::vector< rw::common::Ptr< rw::geometry::Geometry > >
+std::vector< rw::core::Ptr< rw::geometry::Geometry > >
 ProximityStrategyYaobi::getGeometrys (rw::proximity::ProximityModel* model)
 {
-    std::vector< rw::common::Ptr< rw::geometry::Geometry > > res;
+    std::vector< rw::core::Ptr< rw::geometry::Geometry > > res;
     YaobiProximityModel* pmodel = (YaobiProximityModel*) model;
     for (RWYaobiModel& m : pmodel->models) {
         res.push_back (m.geo);

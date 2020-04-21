@@ -17,11 +17,9 @@
 
 
 #include "../TestSuiteConfig.hpp"
-//#include <rw/models/SerialDevice.hpp>
-//#include <rw/kinematics/State.hpp>
-//#include <rw/math/Vector3D.hpp>
-//#include <rw/math/Rotation3D.hpp>
+
 #include <rw/trajectory/Path.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include <rw/loaders/WorkCellLoader.hpp>
 #include <rw/loaders/path/PathLoader.hpp>
@@ -102,7 +100,7 @@ BOOST_AUTO_TEST_CASE( WorkCellLoaderTest )
     BOOST_TEST_MESSAGE("- Testing WorkCellLoader");
     // Load a tree device that has revolute joints only.
 	std::string file = testFilePath() + "SchunkHand/SchunkHand.xml";
-	rw::common::Ptr<WorkCell> workcell = WorkCellLoader::Factory::load(file);
+	rw::core::Ptr<WorkCell> workcell = WorkCellLoader::Factory::load(file);
 
 
 	BOOST_CHECK(workcell != NULL);

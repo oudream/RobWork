@@ -22,7 +22,7 @@
 
 #include <string>
 
-#include <rw/common/os.hpp>
+#include <rw/core/os.hpp>
 
 #ifdef RW_WIN32
     #include <windows.h>

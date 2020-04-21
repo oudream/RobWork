@@ -80,7 +80,7 @@ bool LogValues::autoLink() {
 }
 
 SimulatorLogEntry::Ptr LogValues::createNew(SimulatorLogScope* parent) const {
-	return rw::common::ownedPtr(new LogValues(parent));
+	return rw::core::ownedPtr(new LogValues(parent));
 }
 
 void LogValues::setData(const std::vector<std::string>& labels, const std::vector<double>& values) {

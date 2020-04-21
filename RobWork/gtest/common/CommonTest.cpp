@@ -18,17 +18,18 @@
 #include <gtest/gtest.h>
 
 #include "../TestEnvironment.hpp"
-#include <rw/common/AnyPtr.hpp>
-#include <rw/common/Ptr.hpp>
+#include <rw/core/AnyPtr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/common/Timer.hpp>
-#include <rw/common/Event.hpp>
-#include <rw/common/StringUtil.hpp>
+#include <rw/core/Event.hpp>
+#include <rw/core/StringUtil.hpp>
 
 #include <boost/any.hpp>
 #include <boost/bind.hpp>
 #include <boost/function.hpp>
 
 using namespace rw::common;
+using namespace rw::core;
 
 class A {
 public:
@@ -38,7 +39,7 @@ public:
     }
 };
 
-typedef rw::common::Ptr<A> APtr;
+typedef rw::core::Ptr<A> APtr;
 
 class B: public A {
 public:
@@ -46,7 +47,7 @@ public:
         std::cout << "B" << std::endl;
     }
 };
-typedef rw::common::Ptr<B> BPtr;
+typedef rw::core::Ptr<B> BPtr;
 
 TEST(PtrTest, CastToSubType) {
     std::vector<APtr> aptrs;
@@ -104,7 +105,7 @@ TEST(GetRelativeDirectoryNameTest, HardcodedPathTest) {
 }
 
 typedef boost::function<void(const std::string&, boost::any)> GenericAnyEventListener;
-typedef rw::common::Event<GenericAnyEventListener, const std::string&, boost::any> GenericAnyEvent;
+typedef rw::core::Event<GenericAnyEventListener, const std::string&, boost::any> GenericAnyEvent;
 
 namespace {
 	bool b1,b2;

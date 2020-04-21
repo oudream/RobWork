@@ -2,7 +2,7 @@
 
 %{
 #include <rwlibs/swig/ScriptTypes.hpp>
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 using namespace rwlibs::swig;
 %}
@@ -41,7 +41,7 @@ public:
 	void setName(const std::string& name);
 };
 
-%template (ControllerPtr) rw::common::Ptr<Controller>;
+%template (ControllerPtr) rw::core::Ptr<Controller>;
 
 %nodefaultctor JointController;
 /**
@@ -107,4 +107,4 @@ public:
     virtual rw::math::Q getQd() = 0;
 };
 
-%template (JointControllerPtr) rw::common::Ptr<JointController>;
+%template (JointControllerPtr) rw::core::Ptr<JointController>;

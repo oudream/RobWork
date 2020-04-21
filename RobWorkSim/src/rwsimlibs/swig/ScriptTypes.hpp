@@ -133,24 +133,24 @@ namespace swig {
     }
 
     // general functions
-    rw::common::Ptr<DynamicWorkCell> getDynamicWorkCell();
+    rw::core::Ptr<DynamicWorkCell> getDynamicWorkCell();
 
     /**
      * @brief set current dynamic workcell instance
      */
-    void setDynamicWorkCell(rw::common::Ptr<DynamicWorkCell> dwc);
+    void setDynamicWorkCell(rw::core::Ptr<DynamicWorkCell> dwc);
 
     /**
      * @brief add instance of simulator
      * @param sim [in]
      * @param id [in] id of simulator
      */
-    void addSimulatorInstance(rw::common::Ptr<ThreadSimulator> sim, const std::string& id);
+    void addSimulatorInstance(rw::core::Ptr<ThreadSimulator> sim, const std::string& id);
 
     //! @brief get first available simulator instance
-    rw::common::Ptr<ThreadSimulator> getSimulatorInstance();
+    rw::core::Ptr<ThreadSimulator> getSimulatorInstance();
 
-    rw::common::Ptr<ThreadSimulator> getSimulatorInstance(const std::string& id);
+    rw::core::Ptr<ThreadSimulator> getSimulatorInstance(const std::string& id);
 
     void removeSimulatorInstance(const std::string& id);
 

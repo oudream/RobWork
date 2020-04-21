@@ -19,6 +19,7 @@
 
 #include <rw/common/BINArchive.hpp>
 #include <rw/common/INIArchive.hpp>
+#include <rw/core/StringUtil.hpp>
 #include <rwsim/loaders/DynamicWorkCellLoader.hpp>
 #include <rwsim/log/SimulatorLogScope.hpp>
 #include <rwsimlibs/gui/log/SimulatorLogWidget.hpp>
@@ -31,6 +32,7 @@
 #include <fstream>
 
 using namespace rw::common;
+using namespace rw::core;
 using rwsim::dynamics::DynamicWorkCell;
 using rwsim::loaders::DynamicWorkCellLoader;
 using rwsim::log::SimulatorLogScope;
@@ -51,7 +53,7 @@ SimulatorLogViewer::SimulatorLogViewer():
 SimulatorLogViewer::~SimulatorLogViewer() {
 }
 
-void SimulatorLogViewer::setDWC(rw::common::Ptr<const DynamicWorkCell> dwc) {
+void SimulatorLogViewer::setDWC(rw::core::Ptr<const DynamicWorkCell> dwc) {
 	_dwc = dwc;
 	if (_dwc == NULL) {
 		_ui->_actionClose->setEnabled(false);
@@ -88,7 +90,7 @@ void SimulatorLogViewer::openDWC() {
 	if (dwcFile.empty())
 		return;
 
-	rw::common::Ptr<DynamicWorkCell> dwc = NULL;
+	rw::core::Ptr<DynamicWorkCell> dwc = NULL;
 	try {
 		dwc = DynamicWorkCellLoader::load(dwcFile);
 	} catch (const Exception& exp) {
@@ -129,7 +131,7 @@ void SimulatorLogViewer::openCompare() {
 		if (!archive.isOpen())
 			QMessageBox::information(NULL, "Exception",	"Could not open the given file: " + QString::fromStdString(file), QMessageBox::Ok);
 		else {
-			scope = ownedPtr(new SimulatorLogScope());
+			scope = rw::core::ownedPtr(new SimulatorLogScope());
 			scope->read(archive,"");
 		}
 	} else {
@@ -139,7 +141,7 @@ void SimulatorLogViewer::openCompare() {
 		if (!archive.isOpen())
 			QMessageBox::information(NULL, "Exception",	"Could not open the given file: " + QString::fromStdString(file), QMessageBox::Ok);
 		else {
-			scope = ownedPtr(new SimulatorLogScope());
+			scope = rw::core::ownedPtr(new SimulatorLogScope());
 			scope->read(archive,"");
 		}
 	}
@@ -193,7 +195,7 @@ int main(int argc, char** argv) {
 		return 1;
 	}
 
-	rw::common::Ptr<DynamicWorkCell> dwc = NULL;
+	rw::core::Ptr<DynamicWorkCell> dwc = NULL;
 	if (vm.count("dwc")) {
 		try {
 			dwc = DynamicWorkCellLoader::load(vm["dwc"].as<std::string>());
@@ -218,7 +220,7 @@ int main(int argc, char** argv) {
     			if (!archive.isOpen())
     				QMessageBox::information(NULL, "Exception",	"Could not open the given file: " + QString::fromStdString(file), QMessageBox::Ok);
     			else {
-    				scope = ownedPtr(new SimulatorLogScope());
+    				scope = rw::core::ownedPtr(new SimulatorLogScope());
     				scope->read(archive,"");
     			}
     		} else {
@@ -229,7 +231,7 @@ int main(int argc, char** argv) {
     			if (!archive.isOpen())
     				QMessageBox::information(NULL, "Exception",	"Could not open the given file: " + QString::fromStdString(file), QMessageBox::Ok);
     			else {
-    				scope = ownedPtr(new SimulatorLogScope());
+    				scope = rw::core::ownedPtr(new SimulatorLogScope());
     				scope->read(archive,"");
     			}
     		}

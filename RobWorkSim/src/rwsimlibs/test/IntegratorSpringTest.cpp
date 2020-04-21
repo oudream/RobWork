@@ -27,6 +27,7 @@
 #include <boost/bind.hpp>
 
 using namespace rw::common;
+using namespace rw::core;
 using namespace rw::kinematics;
 using namespace rw::math;
 using rw::models::WorkCell;
@@ -43,7 +44,7 @@ IntegratorSpringTest::IntegratorSpringTest() {
 IntegratorSpringTest::~IntegratorSpringTest() {
 }
 
-void IntegratorSpringTest::run(TestHandle::Ptr handle, const std::string& engineID, const PropertyMap& parameters, rw::common::Ptr<rwsim::log::SimulatorLogScope> verbose) {
+void IntegratorSpringTest::run(TestHandle::Ptr handle, const std::string& engineID, const PropertyMap& parameters, rw::core::Ptr<rwsim::log::SimulatorLogScope> verbose) {
 	static const TestCallback cb( boost::bind(&IntegratorSpringTest::updateResults, _1) );
 	const double dt = parameters.get<double>("Timestep")/1000.;
 
@@ -125,7 +126,7 @@ void IntegratorSpringTest::updateResults(const EngineLoopInfo& info) {
 	// Extract info
 	const TestHandle::Ptr handle = info.handle;
 	const std::string& engineID = info.engineID;
-	const rw::common::Ptr<const DynamicWorkCell> dwc = info.dwc;
+	const rw::core::Ptr<const DynamicWorkCell> dwc = info.dwc;
 	const State& state = *info.state;
 	const double time = info.time;
 

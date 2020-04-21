@@ -18,7 +18,7 @@
 #ifndef RW_GRAPHICS_SCENENODE_HPP_
 #define RW_GRAPHICS_SCENENODE_HPP_
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include <list>
 #include <string>
@@ -43,7 +43,7 @@ namespace graphics {
         } AddPolicy;
 
         //! @brief Smart pointer type for SceneNode.
-        typedef rw::common::Ptr<SceneNode> Ptr;
+        typedef rw::core::Ptr<SceneNode> Ptr;
 
         //! @brief Type for the list of nodes.
         typedef std::list<SceneNode::Ptr> NodeList;

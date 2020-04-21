@@ -29,7 +29,7 @@ else()
     # try finding it relative to this directory
     find_file(ROBWORKDEVEL_FOUND RobWorkSetup.cmake ${RWHW_ROOT}/../RobWork/cmake NO_DEFAULT_PATH)
     if(ROBWORKDEVEL_FOUND)
-        set(RW_ROOT ${RWHW_ROOT}/../RobWork/)
+        set(RW_ROOT ${RWHW_ROOT}/../RobWork)
         set(RobWork_DIR ${RW_ROOT}/cmake)
     endif()
 endif()
@@ -80,8 +80,6 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${RWHW_CXX_FLAGS}")
 # now add all source directories to process.
 add_subdirectory(ext)
 add_subdirectory(src)
-# add_subdirectory(test CMakeTmp/test)
-add_subdirectory(example)
 
 # ##################################################################################################
 # testing

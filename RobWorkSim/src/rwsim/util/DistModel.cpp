@@ -2,7 +2,7 @@
 
 
 #include <rw/math/Math.hpp>
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 
 using namespace rw::math;
 using namespace rwsim::util;

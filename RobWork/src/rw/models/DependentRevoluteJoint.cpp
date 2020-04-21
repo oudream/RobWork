@@ -18,7 +18,7 @@
 
 #include "DependentRevoluteJoint.hpp"
 #include "RevoluteJoint.hpp"
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 
 using namespace rw::models;
 using namespace rw::kinematics;

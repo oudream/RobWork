@@ -17,14 +17,14 @@
 
 #include "CubePort.hpp"
 
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 
 #include "PCubeProtocol.hpp"
 
 #include <boost/numeric/conversion/cast.hpp>
 
 using namespace rwhw;
-using namespace rw::common;
+using namespace rw::core;
 
 namespace {
 

@@ -18,7 +18,7 @@
 #ifndef RW_MODELS_DEFORMABLEOBJECT_HPP_
 #define RW_MODELS_DEFORMABLEOBJECT_HPP_
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/kinematics/Stateless.hpp>
 #include <rw/geometry/IndexedTriMesh.hpp>
 
@@ -49,7 +49,7 @@ namespace rw { namespace models {
     {
     public:
     	//! smart pointer type
-        typedef rw::common::Ptr<DeformableObject> Ptr;
+        typedef rw::core::Ptr<DeformableObject> Ptr;
 
         /**
          * @brief constructor - constructs a deformable mesh with a specific number of control nodes
@@ -71,7 +71,7 @@ namespace rw { namespace models {
          * @param baseframe [in] base frame of object
          * @param model [in]
          */
-        DeformableObject(rw::kinematics::Frame* baseframe, rw::common::Ptr<rw::graphics::Model3D> model);
+        DeformableObject(rw::kinematics::Frame* baseframe, rw::core::Ptr<rw::graphics::Model3D> model);
 
         /**
          * @brief constructor - control nodes are taken from a triangle mesh generated from triangulating the
@@ -84,7 +84,7 @@ namespace rw { namespace models {
          * @param baseframe [in] base frame of object
          * @param geom [in] geometry to define the faces and nodes
          */
-        DeformableObject(rw::kinematics::Frame* baseframe, rw::common::Ptr<rw::geometry::Geometry> geom);
+        DeformableObject(rw::kinematics::Frame* baseframe, rw::core::Ptr<rw::geometry::Geometry> geom);
 
         //! destructor
         virtual ~DeformableObject();
@@ -164,22 +164,22 @@ namespace rw { namespace models {
  	     * @param model [in/out] model to be updated
  	     * @param state
  	     */
- 	    void update(rw::common::Ptr<rw::graphics::Model3D> model, const rw::kinematics::State& state);
+ 	    void update(rw::core::Ptr<rw::graphics::Model3D> model, const rw::kinematics::State& state);
 
  	    //void update(rw::geometry::Geometry::Ptr geom, const rw::kinematics::State& state);
 
     protected:
         friend class WorkCell;
 
-        const std::vector<rw::common::Ptr<rw::geometry::Geometry> >& doGetGeometry(const rw::kinematics::State& state) const;
-        const std::vector<rw::common::Ptr<rw::graphics::Model3D> >& doGetModels(const rw::kinematics::State& state) const;
+        const std::vector<rw::core::Ptr<rw::geometry::Geometry> >& doGetGeometry(const rw::kinematics::State& state) const;
+        const std::vector<rw::core::Ptr<rw::graphics::Model3D> >& doGetModels(const rw::kinematics::State& state) const;
 
         class DeformableObjectCache: public rw::kinematics::StateCache {
         public:
-        	typedef rw::common::Ptr<DeformableObjectCache> Ptr;
+        	typedef rw::core::Ptr<DeformableObjectCache> Ptr;
         	std::vector<rw::math::Vector3D<float> > _nodes;
-        	std::vector<rw::common::Ptr<rw::graphics::Model3D> > _models;
-        	std::vector<rw::common::Ptr<rw::geometry::Geometry> > _geoms;
+        	std::vector<rw::core::Ptr<rw::graphics::Model3D> > _models;
+        	std::vector<rw::core::Ptr<rw::geometry::Geometry> > _geoms;
 
         	DeformableObjectCache(int nr_of_nodes):
         		_nodes(nr_of_nodes, rw::math::Vector3D<float>(0,0,0) )
@@ -188,8 +188,8 @@ namespace rw { namespace models {
 
         	size_t size() const{ return _nodes.size()*3*sizeof(float); };
 
-            virtual rw::common::Ptr<StateCache> clone() const{
-            	DeformableObjectCache::Ptr cache = rw::common::ownedPtr( new DeformableObjectCache(*this) );
+            virtual rw::core::Ptr<StateCache> clone() const{
+            	DeformableObjectCache::Ptr cache = rw::core::ownedPtr( new DeformableObjectCache(*this) );
             	cache->_models.resize(0);
             	return cache;
             };
@@ -199,10 +199,10 @@ namespace rw { namespace models {
     private:
 
         rw::kinematics::StatelessData<int> _rstate;
-        rw::common::Ptr<rw::geometry::IndexedTriMeshN0<float> > _mesh;
+        rw::core::Ptr<rw::geometry::IndexedTriMeshN0<float> > _mesh;
         std::vector< std::pair<int,rw::kinematics::MovableFrame*> > _frames;
-        rw::common::Ptr<rw::graphics::Model3D> _model;
-        rw::common::Ptr<rw::geometry::Geometry> _geom;
+        rw::core::Ptr<rw::graphics::Model3D> _model;
+        rw::core::Ptr<rw::geometry::Geometry> _geom;
     };
 
     /*@}*/

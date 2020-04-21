@@ -28,6 +28,7 @@
 
 #include <rw/math/Vector3D.hpp>
 #include <rw/geometry/Plane.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include "RANSACModel.hpp"
 
@@ -44,7 +45,7 @@ class PlaneModel : public RANSACModel<PlaneModel, rw::math::Vector3D<> >
 {
 	public:
 		//! @brief Smart pointer type to this class.
-		typedef rw::common::Ptr<PlaneModel> Ptr;
+		typedef rw::core::Ptr<PlaneModel> Ptr;
 		
 	public: // constructors
 		/**

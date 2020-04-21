@@ -16,7 +16,7 @@
 #include "util.hpp"
 
 using namespace std;
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::math;
 using namespace rwlibs::task;
 using namespace rwlibs::algorithms;
@@ -55,7 +55,7 @@ variables_map init(int argc, char** argv){
 int main_jaj(int argc, char** argv);
 int main_lpe(int argc, char** argv);
 
-rw::common::Ptr< std::map<int,std::vector<int> > > calculateRegions(const std::vector<Transform3D<> >& data, double dist, double angle){
+rw::core::Ptr< std::map<int,std::vector<int> > > calculateRegions(const std::vector<Transform3D<> >& data, double dist, double angle){
     typedef boost::tuple<int,int> KDTreeValue; // (transform index, region index)
     typedef KDTreeQ<KDTreeValue> NNSearch;
 

@@ -22,11 +22,14 @@
 #include <boost/thread.hpp>
 #include <boost/thread/mutex.hpp>
 
+#include <rw/core/Ptr.hpp>
 #include <rw/trajectory/Path.hpp>
 
 namespace rw { namespace kinematics { class State; } }
-namespace rwsim { namespace simulator { class DynamicSimulator; } }
-namespace rwsim { namespace simulator { class ThreadSimulator; } }
+namespace rwsim { namespace simulator { 
+	class DynamicSimulator; 
+	class ThreadSimulator; 
+}}
 
 namespace rwsim {
 namespace util {
@@ -57,9 +60,9 @@ namespace util {
 		 * @param initState
 		 * @param restConstraint
 		 */
-		RestingPoseGenerator(rw::common::Ptr<rwsim::simulator::DynamicSimulator> sim,
+		RestingPoseGenerator(rw::core::Ptr<rwsim::simulator::DynamicSimulator> sim,
 				const rw::kinematics::State& initState,
-				rw::common::Ptr<SimStateConstraint> restConstraint);
+				rw::core::Ptr<SimStateConstraint> restConstraint);
 
 		/**
 		 *
@@ -69,10 +72,10 @@ namespace util {
 		 * @param restConstraint
 		 * @return
 		 */
-		RestingPoseGenerator(rw::common::Ptr<rwsim::simulator::DynamicSimulator> sim,
+		RestingPoseGenerator(rw::core::Ptr<rwsim::simulator::DynamicSimulator> sim,
 				const rw::kinematics::State& initState,
-				rw::common::Ptr<StateSampler> sampler,
-				rw::common::Ptr<SimStateConstraint> restConstraint);
+				rw::core::Ptr<StateSampler> sampler,
+				rw::core::Ptr<SimStateConstraint> restConstraint);
 
 		/**
 		 * @brief destructor
@@ -83,7 +86,7 @@ namespace util {
 		 * @brief set the sampler used for initial state
 		 * @param sampler [in] state sampler
 		 */
-		void setInitStateSample(rw::common::Ptr<StateSampler> sampler){
+		void setInitStateSample(rw::core::Ptr<StateSampler> sampler){
 			_sampler = sampler;
 		}
 
@@ -91,7 +94,7 @@ namespace util {
 		 * @brief resting state contraint
 		 * @param restconstraint [in] constraint
 		 */
-		void setRestingCriteria(rw::common::Ptr<SimStateConstraint> restconstraint){
+		void setRestingCriteria(rw::core::Ptr<SimStateConstraint> restconstraint){
 			_restConstraint = restconstraint;
 		}
 
@@ -153,10 +156,10 @@ namespace util {
 	protected:
 		void stepperLoop();
 	private:
-		rw::common::Ptr<rwsim::simulator::ThreadSimulator> _sim;
+		rw::core::Ptr<rwsim::simulator::ThreadSimulator> _sim;
 
-		rw::common::Ptr<StateSampler> _sampler;
-		rw::common::Ptr<SimStateConstraint> _restConstraint;
+		rw::core::Ptr<StateSampler> _sampler;
+		rw::core::Ptr<SimStateConstraint> _restConstraint;
 
 		bool _running, _stopRunning;
 

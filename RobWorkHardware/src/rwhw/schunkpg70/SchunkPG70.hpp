@@ -5,6 +5,7 @@
 #include <rw/math/Q.hpp>
 #include <rwhw/PowerCube/Cube.hpp>
 #include <rwhw/PowerCube/CubePort.hpp>
+#include <rw/core/Ptr.hpp>
 
 
 namespace rwhw {
@@ -13,7 +14,7 @@ namespace rwhw {
 // Gripper device controller class
 class SchunkPG70  {
 public:
-	typedef rw::common::Ptr<SchunkPG70> Ptr;
+	typedef rw::core::Ptr<SchunkPG70> Ptr;
 
 	SchunkPG70();
 	virtual ~SchunkPG70();

@@ -77,7 +77,7 @@ public:
     void setLambda(double lambda){ _lambda = lambda;}
 
 private:
-    rw::common::Ptr<rw::geometry::QHullND<6> > _chullCalculator;
+    rw::core::Ptr<rw::geometry::QHullND<6> > _chullCalculator;
     rw::math::Vector3D<> _objCenter;
     int _resolution;
 

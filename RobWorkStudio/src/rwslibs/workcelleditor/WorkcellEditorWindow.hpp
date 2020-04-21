@@ -18,14 +18,15 @@
 #ifndef WORKCELLEDITORWINDOW_HPP_
 #define WORKCELLEDITORWINDOW_HPP_
 
-#include <rw/common/PropertyMap.hpp>
+#include <rw/core/PropertyMap.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include <QMainWindow>
 #include <map>
 
-namespace rw { namespace common {
+namespace rw { namespace core {
     class Log;
-}}    // namespace rw::common
+}}    // namespace rw::core
 
 class WCCodeEditor;
 
@@ -57,7 +58,7 @@ class WorkcellEditorWindow : public QMainWindow
      * @param rwstudio [in] instance of RobWorkStudio
      * @param parent [in] the Qt parent widget
      */
-    WorkcellEditorWindow (rw::common::Ptr< rw::common::Log > output, rws::RobWorkStudio* rwstudio,
+    WorkcellEditorWindow (rw::core::Ptr< rw::core::Log > output, rws::RobWorkStudio* rwstudio,
                           QWidget* parent);
 
     //! @brief destructor
@@ -107,7 +108,7 @@ class WorkcellEditorWindow : public QMainWindow
 
     struct EditorTab
     {
-        typedef rw::common::Ptr< EditorTab > Ptr;
+        typedef rw::core::Ptr< EditorTab > Ptr;
         std::string _id;
         WCCodeEditor* _editor;
         WorkcellHighlighter* _highlighter;
@@ -133,8 +134,8 @@ class WorkcellEditorWindow : public QMainWindow
 
     class Ui::WorkcellEditorWindow* _ui;
 
-    rw::common::Ptr< rw::common::Log > _output;
-    rw::common::PropertyMap _pmap;
+    rw::core::Ptr< rw::core::Log > _output;
+    rw::core::PropertyMap _pmap;
 
     bool _isRunning;
 

@@ -36,7 +36,7 @@ GraspPolicy::Ptr GraspPolicyFactory::makePolicy(
 		rwsim::dynamics::DynamicDevice* dev)
 {
 	if( id ==  TargetConfigGraspPolicy::getID() ){
-		return rw::common::ownedPtr( new TargetConfigGraspPolicy( dev ) );
+		return rw::core::ownedPtr( new TargetConfigGraspPolicy( dev ) );
 	} else if(id == "TargetVelocity" ){
 
 	}

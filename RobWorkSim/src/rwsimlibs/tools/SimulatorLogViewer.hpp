@@ -26,7 +26,7 @@
 
 #include <QMainWindow>
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 namespace Ui { class SimulatorLogViewer; }
 namespace rwsim { namespace dynamics { class DynamicWorkCell; } }
@@ -56,13 +56,13 @@ public:
 	 * @brief Set the dynamic workcell.
 	 * @param dwc [in] the dynamic workcell.
 	 */
-	void setDWC(rw::common::Ptr<const rwsim::dynamics::DynamicWorkCell> dwc);
+	void setDWC(rw::core::Ptr<const rwsim::dynamics::DynamicWorkCell> dwc);
 
 	/**
 	 * @brief Set the log structure.
 	 * @param log [in/out] the log structure - the statistics info might be updated if requested by user.
 	 */
-	void setLog(rw::common::Ptr<rwsim::log::SimulatorLogScope> log);
+	void setLog(rw::core::Ptr<rwsim::log::SimulatorLogScope> log);
 
 public slots:
 	//! @brief Open dialog for choosing a dynamic workcell.
@@ -79,12 +79,12 @@ signals:
 	 * @brief Signal for a changed dynamic workcell.
 	 * @param dwc [in] the new dynamic workcell, or NULL if no dynamic workcell.
 	 */
-	void dwcChanged(rw::common::Ptr<const rwsim::dynamics::DynamicWorkCell> dwc);
+	void dwcChanged(rw::core::Ptr<const rwsim::dynamics::DynamicWorkCell> dwc);
 
 private:
     Ui::SimulatorLogViewer* const _ui;
-    rw::common::Ptr<const rwsim::dynamics::DynamicWorkCell> _dwc;
-    rw::common::Ptr<rwsim::log::SimulatorLogScope> _log;
+    rw::core::Ptr<const rwsim::dynamics::DynamicWorkCell> _dwc;
+    rw::core::Ptr<rwsim::log::SimulatorLogScope> _log;
     rwsimlibs::gui::SimulatorLogWidget* _widget;
 };
 //! @}

@@ -23,7 +23,7 @@
  * @file LinearInterpolator.hpp
  */
 
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 
 #include <rw/math/Transform3D.hpp>
 #include <rw/math/Rotation3D.hpp>
@@ -54,10 +54,10 @@ namespace rw { namespace trajectory {
     {
     public:
 		//! @brief smart pointer type to instance of class
-		typedef typename rw::common::Ptr<LinearInterpolator> Ptr;
+		typedef typename rw::core::Ptr<LinearInterpolator> Ptr;
 
 		//! @brief smart pointer type const instance of class
-		typedef typename rw::common::Ptr<const LinearInterpolator> CPtr;
+		typedef typename rw::core::Ptr<const LinearInterpolator> CPtr;
 
         /**
          * @brief Construct LinearInterpolator starting a \b start and finishing in \b end
@@ -165,10 +165,10 @@ namespace rw { namespace trajectory {
     {
     public:
 		//! @brief smart pointer type to this class
-		typedef typename rw::common::Ptr<LinearInterpolator<rw::math::Rotation3D<T> > > Ptr;
+		typedef typename rw::core::Ptr<LinearInterpolator<rw::math::Rotation3D<T> > > Ptr;
 		
 		//! @brief smart pointer type const instance of class
-		typedef typename rw::common::Ptr<const LinearInterpolator<rw::math::Rotation3D<T> > > CPtr;
+		typedef typename rw::core::Ptr<const LinearInterpolator<rw::math::Rotation3D<T> > > CPtr;
 
         /**
          * @brief Construct LinearInterpolator starting a \b start and finishing in \b end
@@ -276,10 +276,10 @@ namespace rw { namespace trajectory {
     {
      public:
 		 //! @brief smart pointer type to this class
-		typedef typename rw::common::Ptr<LinearInterpolator<rw::math::Transform3D<T> > > Ptr;
+		typedef typename rw::core::Ptr<LinearInterpolator<rw::math::Transform3D<T> > > Ptr;
 
 		//! @brief smart pointer type const instance of class
-		typedef typename rw::common::Ptr<const LinearInterpolator<rw::math::Transform3D<T> > > CPtr;
+		typedef typename rw::core::Ptr<const LinearInterpolator<rw::math::Transform3D<T> > > CPtr;
 
         /**
          * @brief Construct LinearInterpolator starting a \b start and finishing in \b end

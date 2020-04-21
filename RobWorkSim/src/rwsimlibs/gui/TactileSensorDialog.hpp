@@ -11,7 +11,7 @@
 #include <QObject>
 #include <QDialog>
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/math/Vector2D.hpp>
 
 namespace rw { namespace kinematics { class State; } }

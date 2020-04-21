@@ -31,7 +31,7 @@
 #include <rw/math/Metric.hpp>
 #include <rw/models/Device.hpp>
 #include <rw/kinematics/State.hpp>
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 namespace rw { namespace pathplanning {
 
@@ -48,7 +48,7 @@ namespace rw { namespace pathplanning {
     {
     public:
 		//! @brief smart pointer type to this class
-		typedef rw::common::Ptr<QToTrajPlanner> Ptr;
+		typedef rw::core::Ptr<QToTrajPlanner> Ptr;
 
         /**
            @brief An approach planner for a sampler of IK solutions and a region
@@ -89,17 +89,17 @@ namespace rw { namespace pathplanning {
     	 * extension point for QToTPlanner. This permit users to add
     	 * QToQPlanners that will be available through this factory
     	 */
-        class Factory: public rw::common::ExtensionPoint<QToTPlanner> {
+        class Factory: public rw::core::ExtensionPoint<QToTPlanner> {
         public:
         	//! constructor
-            Factory():rw::common::ExtensionPoint<QToTPlanner>("rw::pathplanning::QToQPlanner", "Extension point for QToTPlanner."){};
+            Factory():rw::core::ExtensionPoint<QToTPlanner>("rw::pathplanning::QToQPlanner", "Extension point for QToTPlanner."){};
 
             /**
              * @brief get a specific planner based on id
              * @param id [in] string identifier of planner library
              * @return a QToTPlanner if matching id exists else NULL
              */
-            static rw::common::Ptr<QToTPlanner> getPlanner(const std::string& id);
+            static rw::core::Ptr<QToTPlanner> getPlanner(const std::string& id);
 
             /**
              * @brief get all avaliable QToQPlanner's

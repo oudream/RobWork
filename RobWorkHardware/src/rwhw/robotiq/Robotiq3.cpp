@@ -1,10 +1,11 @@
 #include "Robotiq3.hpp"
 
 #include <boost/numeric/conversion/cast.hpp>
+#include <rw/core/Log.hpp>
 
 using namespace rwhw;
 using namespace rw::math;
-using namespace rw::common;
+using namespace rw::core;
 
 Robotiq3::Robotiq3():
     Robotiq(rw::math::Q(4,0,0,0,0),

@@ -18,7 +18,7 @@
 
 #include "StateDraw.hpp"
 
-using namespace rw::common;
+using namespace rw::core;
 
 namespace
 {

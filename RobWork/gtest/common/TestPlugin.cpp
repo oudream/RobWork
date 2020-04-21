@@ -17,8 +17,8 @@
 
 #include "TestPlugin.hpp"
 
-using rw::common::Extension;
-using rw::common::Plugin;
+using rw::core::Extension;
+using rw::core::Plugin;
 
 RW_ADD_PLUGIN(TestPlugin)
 
@@ -36,13 +36,13 @@ std::vector<Extension::Descriptor> TestPlugin::getExtensionDescriptors()
     std::vector<Extension::Descriptor> desc;
     desc.push_back(
             Extension::Descriptor("ExtensionId1",
-                    "sdurw_common-gtest.ExtensionPointA"));
+                    "sdurw_core-gtest.ExtensionPointA"));
     desc.push_back(
             Extension::Descriptor("ExtensionId2",
-                    "sdurw_common-gtest.ExtensionPointA"));
+                    "sdurw_core-gtest.ExtensionPointA"));
     desc.push_back(
             Extension::Descriptor("ExtensionId3",
-                    "sdurw_common-gtest.ExtensionPointB"));
+                    "sdurw_core-gtest.ExtensionPointB"));
     desc[0].props.add("TestProperty", "", std::string("prop"));
     return desc;
 }
@@ -51,18 +51,18 @@ Extension::Ptr TestPlugin::makeExtension(const std::string &id)
 {
     if (id == "ExtensionId1") {
         Extension::Descriptor desc("ExtensionId1",
-                "sdurw_common-gtest.ExtensionPointA");
+                "sdurw_core-gtest.ExtensionPointA");
         desc.props.add("TestProperty", "", std::string("prop"));
         return ownedPtr(new Extension(desc, this));
     }
     else if (id == "ExtensionId2")
         return ownedPtr(
                 new Extension("ExtensionId2",
-                        "sdurw_common-gtest.ExtensionPointA", this));
+                        "sdurw_core-gtest.ExtensionPointA", this));
     else if (id == "ExtensionId3")
         return ownedPtr(
                 new Extension("ExtensionId3",
-                        "sdurw_common-gtest.ExtensionPointB", this));
+                        "sdurw_core-gtest.ExtensionPointB", this));
     return NULL;
 }
 

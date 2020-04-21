@@ -2,7 +2,7 @@
 
 %{
 #include <rwlibs/swig/ScriptTypes.hpp>
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 using namespace rwlibs::swig;
 using rw::math::Metric;
@@ -26,8 +26,8 @@ public:
 
     %extend {
 
-        PathLengthOptimizer(rw::common::Ptr<CollisionDetector> cd,
-                            rw::common::Ptr<Device> dev,
+        PathLengthOptimizer(rw::core::Ptr<CollisionDetector> cd,
+                            rw::core::Ptr<Device> dev,
                             const State &state)
         {
             rw::pathplanning::PlannerConstraint constraint =
@@ -35,9 +35,9 @@ public:
             return new PathLengthOptimizer(constraint, rw::math::MetricFactory::makeEuclidean< rw::math::Q>());
         }
 
-        PathLengthOptimizer(rw::common::Ptr<CollisionDetector> cd,
-                            rw::common::Ptr<Device> dev,
-                            rw::common::Ptr<Metric<rw::math::Q> > metric,
+        PathLengthOptimizer(rw::core::Ptr<CollisionDetector> cd,
+                            rw::core::Ptr<Device> dev,
+                            rw::core::Ptr<Metric<rw::math::Q> > metric,
                             const State &state)
         {
             rw::pathplanning::PlannerConstraint constraint =
@@ -45,33 +45,33 @@ public:
             return new PathLengthOptimizer(constraint, metric );
         }
 
-        PathLengthOptimizer(rw::common::Ptr<PlannerConstraint> constraint,
-                            rw::common::Ptr<Metric<rw::math::Q> > metric)
+        PathLengthOptimizer(rw::core::Ptr<PlannerConstraint> constraint,
+                            rw::core::Ptr<Metric<rw::math::Q> > metric)
         {
             return new PathLengthOptimizer(*constraint, metric);
         }
 
-        rw::common::Ptr<Path<rw::math::Q> > pathPruning(rw::common::Ptr<Path<rw::math::Q> > path){
+        rw::core::Ptr<Path<rw::math::Q> > pathPruning(rw::core::Ptr<Path<rw::math::Q> > path){
             PathQ res = $self->rwlibs::pathoptimization::PathLengthOptimizer::pathPruning(*path);
-            return rw::common::ownedPtr( new PathQ(res) );
+            return rw::core::ownedPtr( new PathQ(res) );
         }
 /*
-        rw::common::Ptr<Path<rw::math::Q> > shortCut(rw::common::Ptr<Path<rw::math::Q> > path,
+        rw::core::Ptr<Path<rw::math::Q> > shortCut(rw::core::Ptr<Path<rw::math::Q> > path,
                                        size_t cnt,
                                        double time,
                                        double subDivideLength);
 */
-        rw::common::Ptr<Path<rw::math::Q> > shortCut(rw::common::Ptr<Path<rw::math::Q> > path){
+        rw::core::Ptr<Path<rw::math::Q> > shortCut(rw::core::Ptr<Path<rw::math::Q> > path){
             PathQ res = $self->rwlibs::pathoptimization::PathLengthOptimizer::shortCut(*path);
-            return rw::common::ownedPtr( new PathQ(res) );
+            return rw::core::ownedPtr( new PathQ(res) );
         }
 
-        rw::common::Ptr<Path<rw::math::Q> > partialShortCut(rw::common::Ptr<Path<rw::math::Q> > path){
+        rw::core::Ptr<Path<rw::math::Q> > partialShortCut(rw::core::Ptr<Path<rw::math::Q> > path){
             PathQ res = $self->rwlibs::pathoptimization::PathLengthOptimizer::partialShortCut(*path);
-            return rw::common::ownedPtr( new PathQ(res) );
+            return rw::core::ownedPtr( new PathQ(res) );
         }
 /*
-        rw::common::Ptr<Path<rw::math::Q> > partialShortCut(rw::common::Ptr<Path<rw::math::Q> > path,
+        rw::core::Ptr<Path<rw::math::Q> > partialShortCut(rw::core::Ptr<Path<rw::math::Q> > path,
                                               size_t cnt,
                                               double time,
                                               double subDivideLength);

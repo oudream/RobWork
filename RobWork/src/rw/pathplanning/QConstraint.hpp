@@ -24,8 +24,9 @@
 */
 
 #include <rw/math/Q.hpp>
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/models/Device.hpp>
+#include <rw/core/Log.hpp>
 
 namespace rw { namespace kinematics { class State; } }
 namespace rw { namespace proximity { class CollisionDetector; } }
@@ -44,9 +45,9 @@ namespace rw { namespace pathplanning {
     {
     public:
 		//! @brief smart pointer type to this class
-		typedef rw::common::Ptr<QConstraint> Ptr;
+		typedef rw::core::Ptr<QConstraint> Ptr;
 		//! @brief smart pointer type to this const class
-		typedef rw::common::Ptr< const QConstraint > CPtr;
+		typedef rw::core::Ptr< const QConstraint > CPtr;
 
 
 		/**
@@ -58,7 +59,7 @@ namespace rw { namespace pathplanning {
 		 * @brief Set the log to be used for writing debug info
 		 * @param log [in] Log to which debug information is to be written
 		 */
-		virtual void setLog(rw::common::Log::Ptr log);
+		virtual void setLog(rw::core::Log::Ptr log);
 
 		/**
 		 * @brief Updates the constraint with a new state
@@ -92,7 +93,7 @@ namespace rw { namespace pathplanning {
            @brief Map a state constraint to a configuration constraint.
         */
 		static QConstraint::Ptr make(
-			rw::common::Ptr<StateConstraint> detector,
+			rw::core::Ptr<StateConstraint> detector,
 			rw::models::Device::CPtr device,
             const rw::kinematics::State& state);
 
@@ -100,7 +101,7 @@ namespace rw { namespace pathplanning {
            @brief Map a collision detector to a configuration constraint.
         */
 		static QConstraint::Ptr make(
-			rw::common::Ptr<rw::proximity::CollisionDetector> detector,
+			rw::core::Ptr<rw::proximity::CollisionDetector> detector,
 			rw::models::Device::CPtr device,
             const rw::kinematics::State& state);
 
@@ -162,7 +163,7 @@ namespace rw { namespace pathplanning {
          * @brief Set a log.
          * @param log [in] the log.
          */
-		virtual void doSetLog(rw::common::Log::Ptr log) = 0;
+		virtual void doSetLog(rw::core::Log::Ptr log) = 0;
 
 		/**
 		 * @brief Update constraint.

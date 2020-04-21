@@ -17,7 +17,7 @@
 
 #include "DockWelder.hpp"
 
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 #include <boost/asio.hpp>
 #include <boost/system/system_error.hpp>
 

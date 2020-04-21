@@ -41,13 +41,13 @@ private:
     boost::asio::ip::udp::socket* socket;
     boost::asio::ip::udp::resolver *resolver;
 
-    rw::common::Ptr<rwlibs::opengl::RenderFrame> _renderFrame;
-    std::vector<rw::common::Ptr<rw::graphics::DrawableNode> > _drawables;
+    rw::core::Ptr<rwlibs::opengl::RenderFrame> _renderFrame;
+    std::vector<rw::core::Ptr<rw::graphics::DrawableNode> > _drawables;
 
     std::vector<rw::math::Transform3D<> > _transforms;
     std::vector<std::string> _toFrameName;
 
-    rw::common::Ptr<rw::models::Device> _rightArm, _leftArm;
+    rw::core::Ptr<rw::models::Device> _rightArm, _leftArm;
 };
 
 #endif /*RINGONHOOKPLUGIN_HPP_*/

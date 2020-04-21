@@ -17,8 +17,8 @@
 
 #include "LoaderOBJ.hpp"
 
-#include <rw/common/IOUtil.hpp>
-#include <rw/common/StringUtil.hpp>
+#include <rw/core/IOUtil.hpp>
+#include <rw/core/StringUtil.hpp>
 #include <rw/geometry/IndexedPolygon.hpp>
 #include <rw/geometry/Triangulate.hpp>
 #include <rw/loaders/ImageFactory.hpp>
@@ -31,7 +31,7 @@ using namespace rw::loaders;
 using namespace rw::graphics;
 using namespace rw::graphics;
 using namespace rw::math;
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::geometry;
 
 namespace rw { namespace loaders {
@@ -567,7 +567,7 @@ void OBJReader::Load (const std::string& fileName)
     IOUtil::readFile (fileName, vecBuf);
     vecBuf.push_back (0);
     buffer   = &vecBuf[0];
-    _dirName = rw::common::StringUtil::getDirectoryName (fileName);
+    _dirName = rw::core::StringUtil::getDirectoryName (fileName);
 
     // Read first line
     line = rwStrtok (buffer, "\r\n", &next_line);

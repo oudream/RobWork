@@ -23,11 +23,11 @@
 #include "MovableFrame.hpp"
 #include "FKRange.hpp"
 
-#include <rw/common/StringUtil.hpp>
+#include <rw/core/StringUtil.hpp>
 
 using namespace rw::math;
 using namespace rw::kinematics;
-using namespace rw::common;
+using namespace rw::core;
 
 //----------------------------------------------------------------------
 // Kinematics computation

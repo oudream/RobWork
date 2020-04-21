@@ -28,9 +28,10 @@
 #include <rw/trajectory/ParabolicBlend.hpp>
 #include <rw/trajectory/LloydHaywardBlend.hpp>
 
-#include <rw/common/DOMParser.hpp>
+#include <rw/core/DOMParser.hpp>
+#include <rw/core/Exception.hpp>
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::math;
 using namespace rw::loaders;
 using namespace rw::trajectory;
@@ -230,7 +231,7 @@ namespace {
 				}
 				writeInterpolator(segment.second, root);
 			}
-		} catch (const rw::common::Exception& exp) {
+		} catch (const rw::core::Exception& exp) {
 			throw exp;
 		} catch (...) {
 			RW_THROW("DOMTrajectoryWriter: Unknown Exception while creating saving path");

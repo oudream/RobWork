@@ -37,7 +37,7 @@ using namespace rw::sensor;
 using namespace rw::kinematics;
 using namespace rw::proximity;
 using namespace rw::geometry;
-using namespace rw::common;
+using namespace rw::core;
 using namespace rwsim::dynamics;
 using namespace rwsim::sensor;
 using namespace rwsim;
@@ -135,7 +135,7 @@ rw::sensor::TactileArray::Ptr TactileArraySensor::getTactileArraySensor(rwlibs::
 	// check if handle has already been added to simulator
 	TactileArray::Ptr sensor;
 	if(!sim->hasHandle(this)){
-		sensor = rw::common::ownedPtr( new TactileArrayWrapper(this, sim) );
+		sensor = rw::core::ownedPtr( new TactileArrayWrapper(this, sim) );
 		sim->addHandle(this, sensor);
 	} else {
 		sensor = sim->getSensorHandle(this).cast<TactileArray>();
@@ -301,7 +301,7 @@ TactileArraySensor::TactileArraySensor(const std::string& name,
 	//std::cout << "Dist" << _distDefMatrix << std::endl;
 
     // create state object and add it to
-	_sdata = StatelessData<int>(1, rw::common::ownedPtr( new ClassState(this, getWidth(), getHeight())).cast<rw::kinematics::StateCache>()),
+	_sdata = StatelessData<int>(1, rw::core::ownedPtr( new ClassState(this, getWidth(), getHeight())).cast<rw::kinematics::StateCache>()),
     add( _sdata );
 }
 
@@ -336,7 +336,7 @@ TactileArraySensor::ClassState::Ptr TactileArraySensor::getClassState(rw::kinema
 
 TactileArraySensor::ClassState::Ptr TactileArraySensor::getClassState(rw::kinematics::State& state) {
 	if( _sdata.getStateCache<ClassState>(state) == NULL)
-		_sdata.getStateData()->setCache( rw::common::ownedPtr( new ClassState(this, getWidth(), getHeight())) , state);
+		_sdata.getStateData()->setCache( rw::core::ownedPtr( new ClassState(this, getWidth(), getHeight())) , state);
 	return _sdata.getStateCache<ClassState>(state);
 }
 
@@ -952,7 +952,7 @@ void TactileArraySensor::update(double dt, rw::kinematics::State& state){
         }
     }
 
-    // We first calulate the common contact normal
+    // We first calulate the core contact normal
     Vector3D<> cnormal(0,0,0);
     double totalForce = 0;
     dynamics::Body* body = NULL;

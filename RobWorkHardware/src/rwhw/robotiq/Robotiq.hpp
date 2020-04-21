@@ -3,11 +3,7 @@
 #define RWHW_ROBOTIQ_HPP
 
 #include <rw/math/Q.hpp>
-#include <rw/common/Ptr.hpp>
-#include <rw/models/Device.hpp>
-#include <rw/models/WorkCell.hpp>
-#include <rw/kinematics/State.hpp>
-#include <rwlibs/task/Task.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include <boost/asio.hpp>
 #include <boost/system/error_code.hpp>
@@ -42,7 +38,7 @@ struct ModbusPackage {
 class Robotiq {
 
 public:
-    typedef rw::common::Ptr<Robotiq> Ptr;
+    typedef rw::core::Ptr<Robotiq> Ptr;
 
     virtual ~Robotiq();
 
@@ -195,7 +191,7 @@ public:
     unsigned int getNumberOfJoints() const;
 
 private:
-    rw::common::Ptr<boost::thread> _thread;
+    rw::core::Ptr<boost::thread> _thread;
     mutable boost::mutex _mutex;
     bool _stop;
     bool activate(unsigned int timeout = 0);

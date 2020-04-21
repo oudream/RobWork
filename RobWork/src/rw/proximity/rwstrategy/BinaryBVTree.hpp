@@ -146,7 +146,7 @@ namespace proximity {
 	    typedef BV BVType;
 		typedef PRIM PRIMType;
 		typedef typename BV::value_type value_type;
-		typedef rw::common::Ptr<BinaryBVTree<BV,PRIM> > Ptr;
+		typedef rw::core::Ptr<BinaryBVTree<BV,PRIM> > Ptr;
 		typedef BTPNode<BV,PRIM> Node;
 		typedef typename BTPNode<BV,PRIM>::NodeIterator NodeIterator;
 
@@ -208,7 +208,7 @@ namespace proximity {
             /*
             // this copies all nodes into a memory friendlier structure
             std::pair<int,int> nrNodes = countNodes();
-            rw::common::Ptr<std::vector<Node> > nodes = ownedPtr( new std::vector<Node>(nrNodes.first+nrNodes.second) );
+            rw::core::Ptr<std::vector<Node> > nodes = ownedPtr( new std::vector<Node>(nrNodes.first+nrNodes.second) );
             // now we start with the root node and add all nodes in a preorder traversal fashion.
             int nodeIndex = 0;
             // tuple <new parent, child, isLeft>
@@ -333,7 +333,7 @@ namespace proximity {
 
 		Node *_root;
 		std::vector<size_t> _leafIndexes;
-		//rw::common::Ptr<std::vector<Node> > _nodes;
+		//rw::core::Ptr<std::vector<Node> > _nodes;
 	};
 
 

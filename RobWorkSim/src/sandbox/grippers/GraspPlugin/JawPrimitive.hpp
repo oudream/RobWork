@@ -15,7 +15,7 @@ class JawPrimitive: public Primitive {
 	public:
 	// typedefs
 		//! @brief Smart pointer
-		typedef rw::common::Ptr<JawPrimitive> Ptr;
+		typedef rw::core::Ptr<JawPrimitive> Ptr;
 		
 		//! @brief Cutout types
 		enum CutoutType {

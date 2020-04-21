@@ -1,16 +1,12 @@
-# check compiler/operating system
 
-IF(COMPONENT_robolabFT_ENABLE )
-    FIND_PACKAGE(robolabFT)
+if(NOT DEFINED RWHW_ROOT)
+    set(RWHW_ROOT "$ENV{RWHW_ROOT}/cmake")
+endif()
 
-    INCLUDE_DIRECTORIES( ${ROBOLABFT_INCLUDE_DIR} )
+find_package(RobWorkHardware REQUIRED COMPONENTS robolabFT serialport PATHS "${RWHW_ROOT}")
 
-    set(LibraryList
-    sdurwhw_robolabFT
-      ${ROBWORK_LIBRARIES}
-    )
-    
+if(RobWorkHardware_FOUND)
     add_executable(robolabFT robolabFT.cpp)
-    target_link_libraries(robolabFT ${LibraryList} sdurwhw_serialport -lpthread )
-    
-ENDIF(COMPONENT_robolabFT_ENABLE)
+    target_link_libraries(robolabFT PUBLIC ${ROBWORKHARDWARE_LIBRARIES} -lpthread)
+    target_include_directories(robolabFT PUBLIC ${ROBWORKHARDWARE_INCLUDE_DIRS})
+endif()

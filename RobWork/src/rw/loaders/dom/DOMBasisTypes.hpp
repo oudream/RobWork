@@ -32,7 +32,7 @@
 
 #include <rw/kinematics/State.hpp>
 
-#include <rw/common/DOMElem.hpp>
+#include <rw/core/DOMElem.hpp>
 
 #include <string>
 
@@ -273,7 +273,7 @@ public:
      * @param doCheckHeader [in] True if the header name should be checked
      * @return The element read
      */
-    static rw::math::Q readQ(rw::common::DOMElem::Ptr element, bool doCheckHeader = false);
+    static rw::math::Q readQ(rw::core::DOMElem::Ptr element, bool doCheckHeader = false);
 
     /**
      * @brief Returns rw::math::Vector3D<> element read from \b element
@@ -286,7 +286,7 @@ public:
      * @param doCheckHeader [in] True if the header name should be checked
      * @return The element read
      */
-    static rw::math::Vector3D<> readVector3D(rw::common::DOMElem::Ptr element, bool doCheckHeader = false);
+    static rw::math::Vector3D<> readVector3D(rw::core::DOMElem::Ptr element, bool doCheckHeader = false);
 
     /**
      * @brief Returns rw::math::Vector2D<> element read from \b element
@@ -299,7 +299,7 @@ public:
      * @param doCheckHeader [in] True if the header name should be checked
      * @return The element read
      */
-    static rw::math::Vector2D<> readVector2D(rw::common::DOMElem::Ptr element, bool doCheckHeader = false);
+    static rw::math::Vector2D<> readVector2D(rw::core::DOMElem::Ptr element, bool doCheckHeader = false);
 
     /**
      * @brief Returns rw::math::RPY<> element read from \b element
@@ -312,7 +312,7 @@ public:
      * @param doCheckHeader [in] True if the header name should be checked
      * @return The element read
      */
-    static rw::math::RPY<> readRPY(rw::common::DOMElem::Ptr element, bool doCheckHeader = false);
+    static rw::math::RPY<> readRPY(rw::core::DOMElem::Ptr element, bool doCheckHeader = false);
 
     /**
      * @brief Returns rw::math::EAA<> element read from \b element
@@ -325,7 +325,7 @@ public:
      * @param doCheckHeader [in] True if the header name should be checked
      * @return The element read
      */
-    static rw::math::EAA<> readEAA(rw::common::DOMElem::Ptr element, bool doCheckHeader = false);
+    static rw::math::EAA<> readEAA(rw::core::DOMElem::Ptr element, bool doCheckHeader = false);
 
     /**
      * @brief Returns rw::math::Quaternion<> element read from \b element
@@ -338,7 +338,7 @@ public:
      * @param doCheckHeader [in] True if the header name should be checked
      * @return The element read
      */
-    static rw::math::Quaternion<> readQuaternion(rw::common::DOMElem::Ptr element, bool doCheckHeader = false);
+    static rw::math::Quaternion<> readQuaternion(rw::core::DOMElem::Ptr element, bool doCheckHeader = false);
 
     /**
      * @brief Returns rw::math::Rotation3D<> element read from \b element
@@ -351,7 +351,7 @@ public:
      * @param doCheckHeader [in] True if the header name should be checked
      * @return The element read
      */
-    static rw::math::Rotation3D<> readRotation3D(rw::common::DOMElem::Ptr element, bool doCheckHeader = false);
+    static rw::math::Rotation3D<> readRotation3D(rw::core::DOMElem::Ptr element, bool doCheckHeader = false);
 
     /**
      * @brief Returns rw::math::Rotation3D<> element read from \b element
@@ -363,7 +363,7 @@ public:
      * @param element [in] Element to read
      * @return The element read
      */
-    static rw::math::Rotation3D<> readRotation3DStructure(rw::common::DOMElem::Ptr element);
+    static rw::math::Rotation3D<> readRotation3DStructure(rw::core::DOMElem::Ptr element);
 
 
     /**
@@ -377,7 +377,7 @@ public:
      * @param doCheckHeader [in] True if the header name should be checked
      * @return The element read
      */
-    static rw::math::Rotation2D<> readRotation2D(rw::common::DOMElem::Ptr element, bool doCheckHeader = false);
+    static rw::math::Rotation2D<> readRotation2D(rw::core::DOMElem::Ptr element, bool doCheckHeader = false);
 
 
     /**
@@ -390,7 +390,7 @@ public:
      * @param element [in] Element to read
      * @return The element read
      */
-    static rw::math::Rotation2D<> readRotation2DStructure(rw::common::DOMElem::Ptr element);
+    static rw::math::Rotation2D<> readRotation2DStructure(rw::core::DOMElem::Ptr element);
 
 
     /**
@@ -404,7 +404,7 @@ public:
      * @param doCheckHeader [in] True if the header name should be checked
      * @return The element read
      */
-    static rw::math::Transform3D<> readTransform3D(rw::common::DOMElem::Ptr element, bool doCheckHeader = false);
+    static rw::math::Transform3D<> readTransform3D(rw::core::DOMElem::Ptr element, bool doCheckHeader = false);
 
     /**
      * @brief Returns rw::math::Transform2D<> element read from \b element
@@ -417,7 +417,7 @@ public:
      * @param doCheckHeader [in] True if the header name should be checked
      * @return The element read
      */
-    static rw::math::Transform2D<> readTransform2D(rw::common::DOMElem::Ptr element, bool doCheckHeader = false);
+    static rw::math::Transform2D<> readTransform2D(rw::core::DOMElem::Ptr element, bool doCheckHeader = false);
 
 
     /**
@@ -431,7 +431,7 @@ public:
      * @param doCheckHeader [in] True if the header name should be checked
      * @return The element read
      */
-    static rw::math::VelocityScrew6D<> readVelocityScrew6D(rw::common::DOMElem::Ptr element, bool doCheckHeader = false);
+    static rw::math::VelocityScrew6D<> readVelocityScrew6D(rw::core::DOMElem::Ptr element, bool doCheckHeader = false);
 
 
     /**
@@ -447,8 +447,8 @@ public:
      * @param doCheckHeader [in] True if the header name should be checked
      * @return The State read from \b element
      */
-    static rw::kinematics::State readState(rw::common::DOMElem::Ptr element,
-		rw::common::Ptr<rw::models::WorkCell> workcell,
+    static rw::kinematics::State readState(rw::core::DOMElem::Ptr element,
+		rw::core::Ptr<rw::models::WorkCell> workcell,
 		bool doCheckHeader = false);
 
     /**
@@ -456,13 +456,13 @@ public:
      *
      * Reads in \b element and returns a pair of strings.
      * If \b doCheckHeader = true it checks that the element tag name matches XMLBasicTypes::StringPairId.
-     * Throws a rw::common::Exception if header does not match or if failing to read two strings.
+     * Throws a rw::core::Exception if header does not match or if failing to read two strings.
      *
      * @param element [in] Element to read
      * @param doCheckHeader [in] True if the element name should be checked
      * @return Pair of strings
      */
-    static std::pair<std::string, std::string> readStringPair(rw::common::DOMElem::Ptr element, bool doCheckHeader = false);
+    static std::pair<std::string, std::string> readStringPair(rw::core::DOMElem::Ptr element, bool doCheckHeader = false);
 
     /**
      * @brief Reads in a list of string pairs that are childs of \b element
@@ -470,97 +470,97 @@ public:
      * Reads in all string pairs which are childs of the element \b element. This is
      * for example used when reading in DAF setups.
      *
-     * Throws rw::common::Exception if failing to read and parse content.
+     * Throws rw::core::Exception if failing to read and parse content.
      *
      * @param element [in] Element which string pairs as children
      * @return List of string pairs
      */
-    static std::vector<std::pair<std::string, std::string> > readStringPairs(rw::common::DOMElem::Ptr element);
+    static std::vector<std::pair<std::string, std::string> > readStringPairs(rw::core::DOMElem::Ptr element);
 
     /**
      * @brief Reads in a list of strings that are childs of \b element
      *
      * Reads in all strings which are childs of the element \b element.
      *
-     * Throws rw::common::Exception if failing to read and parse content.
+     * Throws rw::core::Exception if failing to read and parse content.
      *
      * @param element [in] Element which string pairs as children
      * @return List of strings
      */
-    static std::vector<std::string> readStringList(rw::common::DOMElem::Ptr element);
+    static std::vector<std::string> readStringList(rw::core::DOMElem::Ptr element);
 
     /**
      * @brief Reads in a string element
      *
      * Reads in \b element as a string element.
-     * Throws a rw::common::Exception on error
+     * Throws a rw::core::Exception on error
      *
      * @param element [in] Element to parse
      * @param doCheckHeader [in] True if the element name should be checked
      * @return String giving the content of \b element
      */
-    static std::string readString(rw::common::DOMElem::Ptr element, bool doCheckHeader = false);
+    static std::string readString(rw::core::DOMElem::Ptr element, bool doCheckHeader = false);
 
     /**
      * @brief Reads in a double element
      *
      * Read in \b element and converts the content to a double
-     * Throws a rw::common::Exception if failing to read or parse.
+     * Throws a rw::core::Exception if failing to read or parse.
      *
      * @param element [in] Element to read in
      * @param doCheckHeader [in] True if the element name should be checked
      * @return double represented in \b element
      */
-    static double readDouble(rw::common::DOMElem::Ptr element, bool doCheckHeader = false);
+    static double readDouble(rw::core::DOMElem::Ptr element, bool doCheckHeader = false);
 
 
     /**
      * @brief Reads in a double element
      *
      * Read in \b element and converts the content to a double
-     * Throws a rw::common::Exception if failing to read or parse.
+     * Throws a rw::core::Exception if failing to read or parse.
      *
      * @param element [in] Element to read in
      * @param doCheckHeader [in] True if the element name should be checked
      * @return double represented in \b element
      */
-    static float readFloat(rw::common::DOMElem::Ptr element, bool doCheckHeader = false);
+    static float readFloat(rw::core::DOMElem::Ptr element, bool doCheckHeader = false);
 
     /**
      * @brief Reads in an integer element
      *
      * Read in \b element and converts the content to an integer
-     * Throws a rw::common::Exception if failing to read or parse.
+     * Throws a rw::core::Exception if failing to read or parse.
      *
      * @param element [in] Element to read in
      * @param doCheckHeader [in] True if the element name should be checked
      * @return int represented in \b element
      */
-    static int readInt(rw::common::DOMElem::Ptr element, bool doCheckHeader = false);
+    static int readInt(rw::core::DOMElem::Ptr element, bool doCheckHeader = false);
 
     /**
      * @brief Reads in a list of integers from \b element
      *
      * Read in \b element and converts the content to a list of integers
-     * Throws a rw::common::Exception if failing to read or parse.
+     * Throws a rw::core::Exception if failing to read or parse.
      *
      * @param element [in] Element to read in
      * @param doCheckHeader [in] True if the element name should be checked
      * @return std::vector<int> represented in \b element
      */
-    static std::vector<int> readIntList(rw::common::DOMElem::Ptr element, bool doCheckHeader = false);
+    static std::vector<int> readIntList(rw::core::DOMElem::Ptr element, bool doCheckHeader = false);
     
     /**
      * @brief Reads in a list of doubles from \b element
      *
      * Read in \b element and converts the content to a list of doubles
-     * Throws a rw::common::Exception if failing to read or parse.
+     * Throws a rw::core::Exception if failing to read or parse.
      *
      * @param element [in] Element to read in
      * @param doCheckHeader [in] True if the element name should be checked
      * @return std::vector<double> represented in \b element
      */
-    static std::vector<double> readDoubleList(rw::common::DOMElem::Ptr element, bool doCheckHeader = false);
+    static std::vector<double> readDoubleList(rw::core::DOMElem::Ptr element, bool doCheckHeader = false);
 
     /**
      * @brief Reads in a boolean element
@@ -568,13 +568,13 @@ public:
      * Read in \b element and converts the content to a bool. Only if the content of the
      * node equals "true" is true returned. Otherwise the method returns false.
      *
-     * Throws a rw::common::Exception if failing to read or parse.
+     * Throws a rw::core::Exception if failing to read or parse.
      *
      * @param element [in] Element to read in
      * @param doCheckHeader [in] True if the element name should be checked
      * @return bool represented in \b element
      */
-    static bool readBool(rw::common::DOMElem::Ptr element, bool doCheckHeader = false);
+    static bool readBool(rw::core::DOMElem::Ptr element, bool doCheckHeader = false);
 
 
 
@@ -588,7 +588,7 @@ public:
 	 * @param addHeader [in] Whether or not to set the header of \b elem
      * @return newly created DOMElem
 	 */
-	static rw::common::DOMElem::Ptr write(int val, rw::common::DOMElem::Ptr elem, bool addHeader=true);
+	static rw::core::DOMElem::Ptr write(int val, rw::core::DOMElem::Ptr elem, bool addHeader=true);
 
 	/** 
 	 * @brief Writes \b val to \b elem.
@@ -597,7 +597,7 @@ public:
 	 * @param addHeader [in] Whether or not to set the header of \b elem
 	 * @return newly created DOMElem
      */
-	static rw::common::DOMElem::Ptr write(double val, rw::common::DOMElem::Ptr elem, bool addHeader=true);
+	static rw::core::DOMElem::Ptr write(double val, rw::core::DOMElem::Ptr elem, bool addHeader=true);
 
 
 	/** 
@@ -607,7 +607,7 @@ public:
 	 * @param addHeader [in] Whether or not to set the header of \b elem
 	 * @return newly created DOMElem
      */
-	static rw::common::DOMElem::Ptr write(const std::string& str, rw::common::DOMElem::Ptr elem, bool addHeader=true);
+	static rw::core::DOMElem::Ptr write(const std::string& str, rw::core::DOMElem::Ptr elem, bool addHeader=true);
 
 
 	/** 
@@ -617,7 +617,7 @@ public:
 	 * @param addHeader [in] Whether or not to set the header of \b elem
 	 * @return newly created DOMElem
      */
-	static rw::common::DOMElem::Ptr write(const rw::math::Q& val, rw::common::DOMElem::Ptr elem, bool addHeader=true);
+	static rw::core::DOMElem::Ptr write(const rw::math::Q& val, rw::core::DOMElem::Ptr elem, bool addHeader=true);
 
 	/** 
 	 * @brief Writes the content of \b val to \b elem.
@@ -626,7 +626,7 @@ public:
 	 * @param addHeader [in] Whether or not to set the header of \b elem
 	 * @return newly created DOMElem
      */
-	static rw::common::DOMElem::Ptr write(const rw::math::Vector3D<>& val, rw::common::DOMElem::Ptr elem, bool addHeader=true);
+	static rw::core::DOMElem::Ptr write(const rw::math::Vector3D<>& val, rw::core::DOMElem::Ptr elem, bool addHeader=true);
 
 	/** 
 	 * @brief Writes the content of \b val to \b elem.
@@ -635,7 +635,7 @@ public:
 	 * @param addHeader [in] Whether or not to set the header of \b elem
 	 * @return newly created DOMElem
      */
-	static rw::common::DOMElem::Ptr write(const rw::math::Vector2D<>& val, rw::common::DOMElem::Ptr elem, bool addHeader=true);
+	static rw::core::DOMElem::Ptr write(const rw::math::Vector2D<>& val, rw::core::DOMElem::Ptr elem, bool addHeader=true);
 
 
 	/** 
@@ -645,7 +645,7 @@ public:
 	 * @param addHeader [in] Whether or not to set the header of \b elem
 	 * @return newly created DOMElem
      */
-	static rw::common::DOMElem::Ptr write(const rw::math::Transform2D<>& val, rw::common::DOMElem::Ptr elem, bool addHeader=true);
+	static rw::core::DOMElem::Ptr write(const rw::math::Transform2D<>& val, rw::core::DOMElem::Ptr elem, bool addHeader=true);
     
 	/** 
 	 * @brief Writes the content of \b val to \b elem.
@@ -654,7 +654,7 @@ public:
 	 * @param addHeader [in] Whether or not to set the header of \b elem
 	 * @return newly created DOMElem
      */
-	static rw::common::DOMElem::Ptr write(const rw::math::Transform3D<>& val, rw::common::DOMElem::Ptr elem, bool addHeader=true);
+	static rw::core::DOMElem::Ptr write(const rw::math::Transform3D<>& val, rw::core::DOMElem::Ptr elem, bool addHeader=true);
     
 	/** 
 	 * @brief Writes the content of \b val to \b elem.
@@ -663,7 +663,7 @@ public:
 	 * @param addHeader [in] Whether or not to set the header of \b elem
 	 * @return newly created DOMElem
      */
-	static rw::common::DOMElem::Ptr write(const Eigen::MatrixXd& val, rw::common::DOMElem::Ptr elem, bool addHeader=true);
+	static rw::core::DOMElem::Ptr write(const Eigen::MatrixXd& val, rw::core::DOMElem::Ptr elem, bool addHeader=true);
 
 	
 	/**
@@ -671,7 +671,7 @@ public:
 	 * @param elem [in] The element from which to read
 	 * @return Eigen matrix 
 	 */
-	static Eigen::MatrixXd readMatrix( rw::common::DOMElem::Ptr elem );
+	static Eigen::MatrixXd readMatrix( rw::core::DOMElem::Ptr elem );
 
 
     //------------------------ creating and writing DOMElem
@@ -686,111 +686,111 @@ public:
      *
      * @return The new element.
      */
-    static rw::common::DOMElem::Ptr createElement(const std::string& id, const std::string& value, rw::common::DOMElem::Ptr doc);
+    static rw::core::DOMElem::Ptr createElement(const std::string& id, const std::string& value, rw::core::DOMElem::Ptr doc);
 
     /**
      * @brief Creates a DOMElement to represent \b q
      *
      * Creates a DOMElement owned by \b doc and representing \b q
      *
-     * This method may throw a rw::common::Exception in case of errors
+     * This method may throw a rw::core::Exception in case of errors
      *
      * @param q [in] Value to represent
      * @param doc [in] Document which should contain the element
      * @return Pointer to the newly created DOMElement
      */
-    static rw::common::DOMElem::Ptr createQ(const rw::math::Q& q, rw::common::DOMElem::Ptr doc);
+    static rw::core::DOMElem::Ptr createQ(const rw::math::Q& q, rw::core::DOMElem::Ptr doc);
 
     /**
      * @brief Creates a DOMElement to represent \b v
      *
      * Creates a DOMElement owned by \b doc and representing \b v
      *
-     * This method may throw a rw::common::Exception in case of errors
+     * This method may throw a rw::core::Exception in case of errors
      *
      * @param v [in] Value to represent
      * @param doc [in] Document which should contain the element
      * @return Pointer to the newly created DOMElement
      */
-    static rw::common::DOMElem::Ptr createVector3D(const rw::math::Vector3D<>& v, rw::common::DOMElem::Ptr doc);
+    static rw::core::DOMElem::Ptr createVector3D(const rw::math::Vector3D<>& v, rw::core::DOMElem::Ptr doc);
 
     /**
      * @brief Creates a DOMElement to represent \b v
      *
      * Creates a DOMElement owned by \b doc and representing \b v
      *
-     * This method may throw a rw::common::Exception in case of errors
+     * This method may throw a rw::core::Exception in case of errors
      *
      * @param v [in] Value to represent
      * @param doc [in] Document which should contain the element
      * @return Pointer to the newly created DOMElement
      */
-    static rw::common::DOMElem::Ptr createPos(const rw::math::Vector3D<>& v, rw::common::DOMElem::Ptr doc);
+    static rw::core::DOMElem::Ptr createPos(const rw::math::Vector3D<>& v, rw::core::DOMElem::Ptr doc);
 
     /**
      * @brief Creates a DOMElement to represent \b v
      *
      * Creates a DOMElement owned by \b doc and representing \b v
      *
-     * This method may throw a rw::common::Exception in case of errors
+     * This method may throw a rw::core::Exception in case of errors
      *
      * @param v [in] Value to represent
      * @param doc [in] Document which should contain the element
      * @return Pointer to the newly created DOMElement
      */
-    static rw::common::DOMElem::Ptr createVector2D(const rw::math::Vector2D<>& v, rw::common::DOMElem::Ptr doc);
+    static rw::core::DOMElem::Ptr createVector2D(const rw::math::Vector2D<>& v, rw::core::DOMElem::Ptr doc);
 
     /**
      * @brief Creates a DOMElement to represent \b rpy
      *
      * Creates a DOMElement owned by \b doc and representing \b rpy
      *
-     * This method may throw a rw::common::Exception in case of errors
+     * This method may throw a rw::core::Exception in case of errors
      *
      * @param rpy [in] Value to represent
      * @param doc [in] Document which should contain the element
      * @return Pointer to the newly created DOMElement
      */
-    static rw::common::DOMElem::Ptr createRPY(const rw::math::RPY<>& rpy, rw::common::DOMElem::Ptr doc);
+    static rw::core::DOMElem::Ptr createRPY(const rw::math::RPY<>& rpy, rw::core::DOMElem::Ptr doc);
 
     /**
      * @brief Creates a DOMElement to represent \b eaa
      *
      * Creates a DOMElement owned by \b doc and representing \b eaa
      *
-     * This method may throw a rw::common::Exception in case of errors
+     * This method may throw a rw::core::Exception in case of errors
      *
      * @param eaa [in] Value to represent
      * @param doc [in] Document which should contain the element
      * @return Pointer to the newly created DOMElement
      */
-    static rw::common::DOMElem::Ptr createEAA(const rw::math::EAA<>& eaa, rw::common::DOMElem::Ptr doc);
+    static rw::core::DOMElem::Ptr createEAA(const rw::math::EAA<>& eaa, rw::core::DOMElem::Ptr doc);
 
     /**
      * @brief Creates a DOMElement to represent \b quat
      *
      * Creates a DOMElement owned by \b doc and representing \b quat
      *
-     * This method may throw a rw::common::Exception in case of errors
+     * This method may throw a rw::core::Exception in case of errors
      *
      * @param quat [in] Value to represent
      * @param doc [in] Document which should contain the element
      * @return Pointer to the newly created DOMElement
      */
-    static rw::common::DOMElem::Ptr createQuaternion(const rw::math::Quaternion<>& quat, rw::common::DOMElem::Ptr doc);
+    static rw::core::DOMElem::Ptr createQuaternion(const rw::math::Quaternion<>& quat, rw::core::DOMElem::Ptr doc);
 
     /**
      * @brief Creates a DOMElement to represent \b rot
      *
      * Creates a DOMElement owned by \b doc and representing \b rot
      *
-     * This method may throw a rw::common::Exception in case of errors
+     * This method may throw a rw::core::Exception in case of errors
      *
      * @param rot [in] Value to represent
      * @param doc [in] Document which should contain the element
      * @return Pointer to the newly created DOMElement
      */
-    static rw::common::DOMElem::Ptr createRotation3D(const rw::math::Rotation3D<>& rot, rw::common::DOMElem::Ptr doc);
+    static rw::core::DOMElem::Ptr createRotation3D(const rw::math::Rotation3D<>& rot, rw::core::DOMElem::Ptr doc);
 
 
     /**
@@ -798,13 +798,13 @@ public:
      *
      * Creates a DOMElement owned by \b doc and representing \b rot
      *
-     * This method may throw a rw::common::Exception in case of errors
+     * This method may throw a rw::core::Exception in case of errors
      *
      * @param rot [in] Value to represent
      * @param doc [in] Document which should contain the element
      * @return Pointer to the newly created DOMElement
      */
-    static rw::common::DOMElem::Ptr createRotation2D(const rw::math::Rotation2D<>& rot, rw::common::DOMElem::Ptr doc);
+    static rw::core::DOMElem::Ptr createRotation2D(const rw::math::Rotation2D<>& rot, rw::core::DOMElem::Ptr doc);
 
 
     /**
@@ -818,7 +818,7 @@ public:
      * @param doc [in] Document which should contain the element
      * @return Pointer to the newly created DOMElement
      */
-    static rw::common::DOMElem::Ptr createTransform3D(const rw::math::Transform3D<>& trans, rw::common::DOMElem::Ptr doc);
+    static rw::core::DOMElem::Ptr createTransform3D(const rw::math::Transform3D<>& trans, rw::core::DOMElem::Ptr doc);
 
 
     /**
@@ -832,7 +832,7 @@ public:
      * @param doc [in] Document which should contain the element
      * @return Pointer to the newly created DOMElement
      */
-    static rw::common::DOMElem::Ptr createTransform2D(const rw::math::Transform2D<>& trans, rw::common::DOMElem::Ptr doc);
+    static rw::core::DOMElem::Ptr createTransform2D(const rw::math::Transform2D<>& trans, rw::core::DOMElem::Ptr doc);
 
 
     /**
@@ -840,92 +840,78 @@ public:
      *
      * Creates a DOMElement owned by \b doc and representing \b vs
      *
-     * This method may throw a rw::common::Exception in case of errors
+     * This method may throw a rw::core::Exception in case of errors
      *
      * @param vs [in] Value to represent
      * @param doc [in] Document which should contain the element
      * @return Pointer to the newly created DOMElement
      */
-    static rw::common::DOMElem::Ptr createVelocityScrew6D(const rw::math::VelocityScrew6D<>& vs, rw::common::DOMElem::Ptr doc);
+    static rw::core::DOMElem::Ptr createVelocityScrew6D(const rw::math::VelocityScrew6D<>& vs, rw::core::DOMElem::Ptr doc);
 
     /**
      * @brief Creates an element to represent \b state.
      *
      * Creates a DOMElement owned by \b doc and representing \b state
      *
-     * The method may throw a rw::common::Exception in case of errors
+     * The method may throw a rw::core::Exception in case of errors
      *
      * @param state [in] Value to represent
      * @param doc [in] Document which should contain the element
      * @return Pointer to the newly created DOMElement
      */
-    static rw::common::DOMElem::Ptr createState(const rw::kinematics::State& state, rw::common::DOMElem::Ptr doc);
+    static rw::core::DOMElem::Ptr createState(const rw::kinematics::State& state, rw::core::DOMElem::Ptr doc);
 
     /**
      * @brief Creates an element to represent the rw::kinematics::QState contained in \b state.
      *
      * Creates a DOMElement owned by \b doc and representing the rw::kinematics::QState contained in \b state
      *
-     * The method may throw a rw::common::Exception in case of errors
+     * The method may throw a rw::core::Exception in case of errors
      *
      * @param state [in] Value to represent
      * @param doc [in] Document which should contain the element
      * @return Pointer to the newly created DOMElement
      */
-    static rw::common::DOMElem::Ptr createQState(const rw::kinematics::State& state, rw::common::DOMElem::Ptr doc);
+    static rw::core::DOMElem::Ptr createQState(const rw::kinematics::State& state, rw::core::DOMElem::Ptr doc);
 
     /**
      * @brief Creates an element to represent the rw::kinematics::TreeState contained in \b state.
      *
      * Creates a DOMElement owned by \b doc and representing the rw::kinematics::QState contained in \b state
      *
-     * The method may throw a rw::common::Exception in case of errors
+     * The method may throw a rw::core::Exception in case of errors
      *
      * @param state [in] Value to represent
      * @param doc [in] Document which should contain the element
      * @return Pointer to the newly created DOMElement
      */
-    static rw::common::DOMElem::Ptr createTreeState(const rw::kinematics::State& state, rw::common::DOMElem::Ptr doc);
+    static rw::core::DOMElem::Ptr createTreeState(const rw::kinematics::State& state, rw::core::DOMElem::Ptr doc);
 
      /**
       * @brief Creates an element to represent \b value.
       *
       * Creates a DOMElement owned by \b doc and representing \b value
       *
-      * The method may throw a rw::common::Exception in case of errors
+      * The method may throw a rw::core::Exception in case of errors
       *
       * @param value [in] Value to represent
       * @param doc [in] Document which should contain the element
       * @return Pointer to the newly created DOMElement
       */
-    static rw::common::DOMElem::Ptr createBoolean(bool value, rw::common::DOMElem::Ptr doc);
+    static rw::core::DOMElem::Ptr createBoolean(bool value, rw::core::DOMElem::Ptr doc);
 
     /**
      * @brief Creates an element to represent \b value.
      *
      * Creates a DOMElement owned by \b doc and representing \b value
      *
-     * The method may throw a rw::common::Exception in case of errors
+     * The method may throw a rw::core::Exception in case of errors
      *
      * @param value [in] Value to represent
      * @param doc [in] Document which should contain the element
      * @return Pointer to the newly created DOMElement
      */
-    static rw::common::DOMElem::Ptr createDouble(double value, rw::common::DOMElem::Ptr doc);
-
-
-    /**
-     * @brief Creates an element to represent \b value.
-     *
-     * Creates a DOMElement owned by \b doc and representing \b value
-     *
-     * The method may throw a rw::common::Exception in case of errors
-     *
-     * @param value [in] Value to represent
-     * @param doc [in] Document which should contain the element
-     * @return Pointer to the newly created DOMElement
-     */
-    static rw::common::DOMElem::Ptr createFloat(float value, rw::common::DOMElem::Ptr doc);
+    static rw::core::DOMElem::Ptr createDouble(double value, rw::core::DOMElem::Ptr doc);
 
 
     /**
@@ -933,79 +919,93 @@ public:
      *
      * Creates a DOMElement owned by \b doc and representing \b value
      *
-     * The method may throw a rw::common::Exception in case of errors
+     * The method may throw a rw::core::Exception in case of errors
      *
      * @param value [in] Value to represent
      * @param doc [in] Document which should contain the element
      * @return Pointer to the newly created DOMElement
      */
-    static rw::common::DOMElem::Ptr createInteger(int value, rw::common::DOMElem::Ptr doc);
+    static rw::core::DOMElem::Ptr createFloat(float value, rw::core::DOMElem::Ptr doc);
+
+
+    /**
+     * @brief Creates an element to represent \b value.
+     *
+     * Creates a DOMElement owned by \b doc and representing \b value
+     *
+     * The method may throw a rw::core::Exception in case of errors
+     *
+     * @param value [in] Value to represent
+     * @param doc [in] Document which should contain the element
+     * @return Pointer to the newly created DOMElement
+     */
+    static rw::core::DOMElem::Ptr createInteger(int value, rw::core::DOMElem::Ptr doc);
 
     /**
      * @brief Creates an element to represent \b string.
      *
      * Creates a DOMElement owned by \b doc and representing \b string
      *
-     * The method may throw a rw::common::Exception in case of errors
+     * The method may throw a rw::core::Exception in case of errors
      *
      * @param string [in] Value to represent
      * @param doc [in] Document which should contain the element
      * @return Pointer to the newly created DOMElement
      */
-    static rw::common::DOMElem::Ptr createString(const std::string& string, rw::common::DOMElem::Ptr doc);
+    static rw::core::DOMElem::Ptr createString(const std::string& string, rw::core::DOMElem::Ptr doc);
 
     /**
      * @brief Creates an element to represent \b strings.
      *
      * Creates a DOMElement owned by \b doc and representing \b strings
      *
-     * The method may throw a rw::common::Exception in case of errors
+     * The method may throw a rw::core::Exception in case of errors
      *
      * @param strings [in] Value to represent
      * @param doc [in] Document which should contain the element
      * @return Pointer to the newly created DOMElement
      */
-    static rw::common::DOMElem::Ptr createStringList(const std::vector<std::string>& strings, rw::common::DOMElem::Ptr doc);
+    static rw::core::DOMElem::Ptr createStringList(const std::vector<std::string>& strings, rw::core::DOMElem::Ptr doc);
 
     /**
      * @brief Creates an element to represent \b ints.
      *
      * Creates a DOMElement owned by \b doc and representing \b ints
      *
-     * The method may throw a rw::common::Exception in case of errors
+     * The method may throw a rw::core::Exception in case of errors
      *
      * @param ints [in] Value to represent
      * @param doc [in] Document which should contain the element
      * @return Pointer to the newly created DOMElement
      */
-    static rw::common::DOMElem::Ptr createIntList(const std::vector<int>& ints, rw::common::DOMElem::Ptr doc);
+    static rw::core::DOMElem::Ptr createIntList(const std::vector<int>& ints, rw::core::DOMElem::Ptr doc);
     
     /**
      * @brief Creates an element to represent \b doubles.
      *
      * Creates a DOMElement owned by \b doc and representing \b doubles
      *
-     * The method may throw a rw::common::Exception in case of errors
+     * The method may throw a rw::core::Exception in case of errors
      *
      * @param doubles [in] Value to represent
      * @param doc [in] Document which should contain the element
      * @return Pointer to the newly created DOMElement
      */
-    static rw::common::DOMElem::Ptr createDoubleList(const std::vector<double>& doubles, rw::common::DOMElem::Ptr doc);
+    static rw::core::DOMElem::Ptr createDoubleList(const std::vector<double>& doubles, rw::core::DOMElem::Ptr doc);
 
     /**
      * @brief Creates an element to represent strings \b first and \b second.
      *
      * Creates a DOMElement owned by \b doc and representing strings \b first and \b second
      *
-     * The method may throw a rw::common::Exception in case of errors
+     * The method may throw a rw::core::Exception in case of errors
      *
      * @param first [in] First string in the pair
      * @param second [in] Second string in the pair
      * @param doc [in] Document which should contain the element
      * @return Pointer to the newly created DOMElement
      */
-    static rw::common::DOMElem::Ptr createStringPair(const std::string& first, const std::string& second, rw::common::DOMElem::Ptr doc);
+    static rw::core::DOMElem::Ptr createStringPair(const std::string& first, const std::string& second, rw::core::DOMElem::Ptr doc);
 
 	/**
 	 * @brief Utility class which initializes local static variables.

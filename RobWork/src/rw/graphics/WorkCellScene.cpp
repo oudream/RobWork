@@ -17,7 +17,7 @@
 
 #include "WorkCellScene.hpp"
 
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 #include <rw/graphics/DrawableNode.hpp>
 #include <rw/graphics/DrawableNodeClone.hpp>
 #include <rw/graphics/Render.hpp>
@@ -34,7 +34,7 @@
 
 namespace rw { namespace kinematics { class Frame; } }
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::geometry;
 using namespace rw::graphics;
 using namespace rw::kinematics;

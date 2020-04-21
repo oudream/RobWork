@@ -78,10 +78,10 @@ namespace geometry {
     {
         public:
             //! @brief Smart pointer type for ImplicitTorus
-            typedef rw::common::Ptr<ImplicitTorus> Ptr;
+            typedef rw::core::Ptr<ImplicitTorus> Ptr;
 
             //! @brief Smart pointer type for const ImplicitTorus
-            typedef rw::common::Ptr<const ImplicitTorus> CPtr;
+            typedef rw::core::Ptr<const ImplicitTorus> CPtr;
 
             /**
              * @brief A trimming region is defined using an ImplicitSurface.
@@ -126,7 +126,7 @@ namespace geometry {
             virtual std::pair<double,double> extremums(const rw::math::Vector3D<>& direction) const;
 
             //! @copydoc ImplicitSurface::getTriMesh
-            virtual rw::common::Ptr<TriMesh> getTriMesh(const std::vector<rw::math::Vector3D<> >& border = std::vector<rw::math::Vector3D<> >()) const;
+            virtual rw::core::Ptr<TriMesh> getTriMesh(const std::vector<rw::math::Vector3D<> >& border = std::vector<rw::math::Vector3D<> >()) const;
 
             //! @copydoc ImplicitSurface::setDiscretizationResolution
             virtual void setDiscretizationResolution(double resolution) { _stepsPerRevolution = resolution; }
@@ -169,7 +169,7 @@ namespace geometry {
 
         private:
             ImplicitTorus(double R1, double R2, double r1, double r2, const rw::math::Transform3D<>& transform, const std::vector<TrimmingRegion>& conditions, double stepsPerRevolution);
-            rw::common::Ptr<TriMesh> getTriMeshNormalForm(const std::vector<rw::math::Vector3D<> >& border, const rw::math::Transform3D<>& transform = rw::math::Transform3D<>::identity()) const;
+            rw::core::Ptr<TriMesh> getTriMeshNormalForm(const std::vector<rw::math::Vector3D<> >& border, const rw::math::Transform3D<>& transform = rw::math::Transform3D<>::identity()) const;
             typedef enum Place {
                 FRONT,
                 BACK,

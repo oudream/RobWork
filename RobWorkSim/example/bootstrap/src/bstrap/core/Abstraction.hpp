@@ -3,7 +3,7 @@
 #ifndef ABSTRACTION_HPP_
 #define ABSTRACTION_HPP_
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 class BrainState;
 class Memory;
@@ -13,7 +13,7 @@ class Memory;
  */
 class Abstraction {
 public:
-    typedef rw::common::Ptr<Abstraction> Ptr;
+    typedef rw::core::Ptr<Abstraction> Ptr;
 
     /**
      * @brief updates currentstate based on mem and whatever abstract knowledge this

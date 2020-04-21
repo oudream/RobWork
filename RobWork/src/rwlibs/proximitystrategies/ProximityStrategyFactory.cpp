@@ -18,8 +18,8 @@
 
 #include "ProximityStrategyFactory.hpp"
 #include <RobWorkConfig.hpp>
-#include <rw/common/macros.hpp>
-#include <rw/common/StringUtil.hpp>
+#include <rw/core/macros.hpp>
+#include <rw/core/StringUtil.hpp>
 #include <rw/proximity/rwstrategy/ProximityStrategyRW.hpp>
 
 #ifdef RW_HAVE_PQP
@@ -44,44 +44,44 @@ namespace {
 using namespace rwlibs::proximitystrategies;
 using namespace rw::proximity;
 using namespace rw;
-using namespace rw::common;
+using namespace rw::core;
 
 rw::proximity::CollisionStrategy::Ptr ProximityStrategyFactory::makeDefaultCollisionStrategy() {
 
     #ifdef RW_HAVE_PQP
-        return rw::common::ownedPtr<>(new ProximityStrategyPQP());
+        return rw::core::ownedPtr<>(new ProximityStrategyPQP());
     #endif
 
     #ifdef RW_HAVE_YAOBI
-        return rw::common::ownedPtr( new ProximityStrategyYaobi() );
+        return rw::core::ownedPtr( new ProximityStrategyYaobi() );
     #endif
 
 	#ifdef RW_HAVE_BULLET
-        return rw::common::ownedPtr( new ProximityStrategyBullet() );
+        return rw::core::ownedPtr( new ProximityStrategyBullet() );
 	#endif
 
-    return rw::common::ownedPtr<>(new ProximityStrategyRW());
+    return rw::core::ownedPtr<>(new ProximityStrategyRW());
 }
 
 rw::proximity::CollisionStrategy::Ptr ProximityStrategyFactory::makeCollisionStrategy(const std::string& id){
     if(id==RWStr){
-        return rw::common::ownedPtr<>(new ProximityStrategyRW());
+        return rw::core::ownedPtr<>(new ProximityStrategyRW());
     }
 #ifdef RW_HAVE_PQP
     if(id==PQPStr){
-        return rw::common::ownedPtr<>(new ProximityStrategyPQP());
+        return rw::core::ownedPtr<>(new ProximityStrategyPQP());
     }
 #endif
 
 #ifdef RW_HAVE_YAOBI
     if(id==YAOBIStr){
-        return rw::common::ownedPtr( new ProximityStrategyYaobi() );
+        return rw::core::ownedPtr( new ProximityStrategyYaobi() );
     }
 #endif
 
 #ifdef RW_HAVE_BULLET
     if(id==BulletStr){
-    	return rw::common::ownedPtr( new ProximityStrategyBullet() );
+    	return rw::core::ownedPtr( new ProximityStrategyBullet() );
     }
 #endif
 
@@ -121,7 +121,7 @@ std::vector<std::string> ProximityStrategyFactory::getDistanceStrategyIDs(){
 
 rw::proximity::DistanceStrategy::Ptr ProximityStrategyFactory::makeDefaultDistanceStrategy(){
 #ifdef RW_HAVE_PQP
-    return rw::common::ownedPtr<>(new ProximityStrategyPQP());
+    return rw::core::ownedPtr<>(new ProximityStrategyPQP());
 #endif
 
     RW_THROW("No default distance strategies available");
@@ -131,7 +131,7 @@ rw::proximity::DistanceStrategy::Ptr ProximityStrategyFactory::makeDefaultDistan
 rw::proximity::DistanceStrategy::Ptr ProximityStrategyFactory::makeDistanceStrategy(const std::string& id){
 #ifdef RW_HAVE_PQP
     if(id==PQPStr){
-        return rw::common::ownedPtr<>(new ProximityStrategyPQP());
+        return rw::core::ownedPtr<>(new ProximityStrategyPQP());
     }
 #endif
 

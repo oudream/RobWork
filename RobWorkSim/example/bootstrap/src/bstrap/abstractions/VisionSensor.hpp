@@ -16,14 +16,14 @@ public:
 	VisionSensor(rw::kinematics::Frame *visionFrame,
 			//rwsim::simulator::ThreadSimulator::Ptr sim,
 			//rwsim::simulator::DynamicSimulator::Ptr dsim,
-			rw::common::Ptr<rwsim::dynamics::DynamicWorkCell> dwc
+			rw::core::Ptr<rwsim::dynamics::DynamicWorkCell> dwc
 	);
 
 	void update(BrainState& currentState, Memory& mem);
 
 	//rwsim::simulator::DynamicSimulator::Ptr _dsim;
 	//rwsim::simulator::ThreadSimulator::Ptr _sim;
-	rw::common::Ptr<rwsim::dynamics::DynamicWorkCell> _dwc;
+	rw::core::Ptr<rwsim::dynamics::DynamicWorkCell> _dwc;
     rw::kinematics::Frame *_visionFrame;
 };
 

@@ -23,9 +23,10 @@
  * @file Tag.hpp
  */
 
-#include <rw/common/macros.hpp>
-#include <rw/common/Property.hpp>
-#include <rw/common/StringUtil.hpp>
+#include <rw/core/macros.hpp>
+#include <rw/core/Property.hpp>
+#include <rw/core/PropertyBase.hpp>
+#include <rw/core/StringUtil.hpp>
 
 #include <map>
 
@@ -85,7 +86,7 @@ namespace rw { namespace loaders {
          * @brief A sequence of property values.
          */
         typedef std::vector<
-            boost::shared_ptr<common::PropertyBase> >
+            boost::shared_ptr<core::PropertyBase> >
         PropertyList;
 
         /**
@@ -147,9 +148,9 @@ namespace rw { namespace loaders {
         if (p == tag.getPropertyMap().end()) {
             RW_THROW(
                 "No property named "
-                << common::StringUtil::quote(key)
+                << core::StringUtil::quote(key)
                 << " in tag "
-                << common::StringUtil::quote(tag.getName()));
+                << core::StringUtil::quote(tag.getName()));
 
             // To avoid a compiler warning.
             return getAttribute<T>(tag, key, pos);
@@ -160,29 +161,29 @@ namespace rw { namespace loaders {
                     "Can't access index "
                     << pos
                     << " for attribute "
-                    << common::StringUtil::quote(key)
+                    << core::StringUtil::quote(key)
                     << " of length "
                     << (int)vals.size()
                     << " in tag "
-                    << common::StringUtil::quote(tag.getName()));
+                    << core::StringUtil::quote(tag.getName()));
 
                 // To avoid a compiler warning.
                 return getAttribute<T>(tag, key, pos);
             } else {
-                common::PropertyBase* prop = vals.at(pos).get();
-                common::Property<T>* property =
-                    dynamic_cast<common::Property<T>*>(prop);
+                core::PropertyBase* prop = vals.at(pos).get();
+                core::Property<T>* property =
+                    dynamic_cast<core::Property<T>*>(prop);
 
                 if (!property) {
                     RW_THROW(
                         "Value at index "
                         << pos
                         << " for attribute "
-                        << common::StringUtil::quote(key)
+                        << core::StringUtil::quote(key)
                         << " with description "
                         << prop->getDescription()
                         << " in tag "
-                        << common::StringUtil::quote(tag.getName())
+                        << core::StringUtil::quote(tag.getName())
                         << " is of an unexpected type.");
 
                     // To avoid a compiler warning.
@@ -252,9 +253,9 @@ namespace rw { namespace loaders {
             if (pos < 0 || (int)vals.size() <= pos) {
                 return NULL;
             } else {
-                common::PropertyBase* prop = vals.at(pos).get();
-                common::Property<T>* property =
-                    dynamic_cast<common::Property<T>*>(prop);
+                core::PropertyBase* prop = vals.at(pos).get();
+                core::Property<T>* property =
+                    dynamic_cast<core::Property<T>*>(prop);
 
                 if (!property) {
                     return NULL;

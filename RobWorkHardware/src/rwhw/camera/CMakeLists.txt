@@ -1,6 +1,6 @@
 set(SUBSYS_NAME sdurwhw_camera)
 set(SUBSYS_DESC "Library of drivers for different cameras")
-set(SUBSYS_DEPS RW::sdurw)
+set(SUBSYS_DEPS RW::sdurw RW::sdurw_core)
 
 set(build TRUE)
 set(DEFAULT TRUE)
@@ -55,7 +55,7 @@ if(build)
     endif()
 
     rw_add_library(${SUBSYS_NAME} ${SRC_CPP} ${SRC_HPP})
-    target_link_libraries(${SUBSYS_NAME} PUBLIC RW::sdurw)
+    target_link_libraries(${SUBSYS_NAME} PUBLIC RW::sdurw RW::sdurw_core)
     if(DC1394_FOUND)
         target_link_libraries(${SUBSYS_NAME} PUBLIC ${DC1394_LIBRARY})
     endif()

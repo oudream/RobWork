@@ -20,7 +20,7 @@
 #ifndef SIMUTILITYPLUGIN_HPP
 #define SIMUTILITYPLUGIN_HPP
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <RobWorkStudioPlugin.hpp>
 
 #include <QObject>
@@ -93,7 +93,7 @@ private: // qt stuff
 	QPushButton *_restPoseBtn, *_poseAnalyserBtn, *_toolEvalBtn, *_graspSelectBtn;
 
 private:
-    rw::common::Ptr<rwsim::dynamics::DynamicWorkCell> _dwc;
+    rw::core::Ptr<rwsim::dynamics::DynamicWorkCell> _dwc;
     RestingPoseDialog *_restPoseDialog;
 
     SupportPoseAnalyserDialog *_poseAnalyserDialog;

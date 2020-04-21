@@ -35,7 +35,7 @@
 #include "ProximityStrategyYaobi.hpp"
 #endif
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::proximity;
 using namespace rwlibs::proximitystrategies;
 

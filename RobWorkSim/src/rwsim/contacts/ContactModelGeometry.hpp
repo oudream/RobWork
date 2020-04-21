@@ -26,6 +26,7 @@
 
 #include "ContactModel.hpp"
 #include "ContactStrategy.hpp"
+#include <rw/core/Ptr.hpp>
 
 namespace rwsim {
 namespace contacts {
@@ -39,7 +40,7 @@ template <class A, class B>
 class ContactModelGeometry: public rwsim::contacts::ContactModel {
 public:
 	//! @brief smart pointer type to this class
-	typedef rw::common::Ptr<ContactModelGeometry<A, B> > Ptr;
+	typedef rw::core::Ptr<ContactModelGeometry<A, B> > Ptr;
 
 	//! @brief Model for each geometry.
 	template <class T>

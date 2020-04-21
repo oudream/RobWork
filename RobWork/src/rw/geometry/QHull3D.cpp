@@ -18,7 +18,7 @@
 #include "QHull3D.hpp"
 #include "QHullND.hpp"
 
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 #include <float.h>
 
 using namespace std;
@@ -110,7 +110,7 @@ double QHull3D::getMinDistInside(const rw::math::Vector3D<>& vertex){
 rw::geometry::PlainTriMesh<rw::geometry::TriangleN1<double> >::Ptr QHull3D::toTriMesh(){
     using namespace rw::math;
     using namespace rw::geometry;
-    PlainTriMesh<TriangleN1<double> >::Ptr mesh = rw::common::ownedPtr(new PlainTriMesh<TriangleN1<double> >());
+    PlainTriMesh<TriangleN1<double> >::Ptr mesh = rw::core::ownedPtr(new PlainTriMesh<TriangleN1<double> >());
 
     for(size_t i=0;i<_faceIdxs.size()/3; i++){
         Vector3D<> v1 = _hullVertices[ _faceIdxs[i*3+0] ];

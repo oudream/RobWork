@@ -23,6 +23,7 @@
 #include <rw/sensor/Scanner2D.hpp>
 #include "SimulatedSensor.hpp"
 #include <rw/sensor/Scanner2DModel.hpp>
+#include <rw/core/Ptr.hpp>
 
 
 namespace rwlibs { namespace simulation {
@@ -39,7 +40,7 @@ namespace rwlibs { namespace simulation {
     {
     public:
         //! @brief smart pointer of this class
-        typedef rw::common::Ptr<SimulatedScanner2D> Ptr;
+        typedef rw::core::Ptr<SimulatedScanner2D> Ptr;
 
         /**
          * @brief constructor
@@ -48,7 +49,7 @@ namespace rwlibs { namespace simulation {
          * @param framegrabber [in] the framegrabber used for grabbing 2.5D images
          */
         SimulatedScanner2D(const std::string& name, rw::kinematics::Frame* frame,
-        		rw::common::Ptr<FrameGrabber25D> framegrabber);
+        		rw::core::Ptr<FrameGrabber25D> framegrabber);
 
         /**
          * @brief constructor
@@ -60,7 +61,7 @@ namespace rwlibs { namespace simulation {
         SimulatedScanner2D(const std::string& name,
                 const std::string& desc,
                 rw::kinematics::Frame* frame,
-				rw::common::Ptr<FrameGrabber25D> framegrabber);
+				rw::core::Ptr<FrameGrabber25D> framegrabber);
 
         /**
          * @brief destructor
@@ -124,7 +125,7 @@ namespace rwlibs { namespace simulation {
         virtual size_t getMeasurementCount() const;
 
     private:
-        rw::common::Ptr<FrameGrabber25D> _framegrabber;
+        rw::core::Ptr<FrameGrabber25D> _framegrabber;
         double _frameRate, _dtsum;
         bool _isAcquired,_isOpenned;
         rw::sensor::Scanner2DModel::Ptr _smodel;

@@ -125,19 +125,19 @@ namespace simulator {
         //std::vector<std::pair<rwsim::dynamics::Body*,rwsim::dynamics::Body*> > _bodyPairs;
         //std::vector<rw::math::Transform3D<> > _bodyTransforms;
         std::string _name;
-        rw::common::Ptr<rwsim::dynamics::SuctionCup> _dev;
-        rw::common::Ptr<rwsim::sensor::BodyContactSensor> _sensor;
-        rw::common::Ptr<rwsim::dynamics::Body> _tcp;
+        rw::core::Ptr<rwsim::dynamics::SuctionCup> _dev;
+        rw::core::Ptr<rwsim::sensor::BodyContactSensor> _sensor;
+        rw::core::Ptr<rwsim::dynamics::Body> _tcp;
         double _v;
 
         bool _isInContact;
-        rw::common::Ptr<rwsim::dynamics::Body> _object;
+        rw::core::Ptr<rwsim::dynamics::Body> _object;
 
         rw::geometry::TriMesh::Ptr  _spikedCupMesh;
         rw::geometry::Geometry::Ptr _spikedCup;
-        rw::common::Ptr<rw::proximity::ProximityModel> _spikedCupModel;
+        rw::core::Ptr<rw::proximity::ProximityModel> _spikedCupModel;
 
-        rw::common::Ptr<rwlibs::proximitystrategies::ProximityStrategyPQP> _narrowStrategy;
+        rw::core::Ptr<rwlibs::proximitystrategies::ProximityStrategyPQP> _narrowStrategy;
         rw::proximity::ProximityStrategyData _pdata;
         ODESimulator* _odesim;
         dWorldID _worldId;

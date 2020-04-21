@@ -42,7 +42,7 @@
 
 #include <iostream>
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::graphics;
 using namespace rw::kinematics;
 using namespace rw::math;
@@ -107,7 +107,7 @@ struct TaskSetupDialog::InsertionSimulation {
 	}
 };
 
-TaskSetupDialog::TaskSetupDialog(QWidget* parent, rw::common::Ptr<const WorkCell> wc, AssemblyControlStrategy::Ptr strategy):
+TaskSetupDialog::TaskSetupDialog(QWidget* parent, rw::core::Ptr<const WorkCell> wc, AssemblyControlStrategy::Ptr strategy):
 	QDialog(parent),
 	_ui(new Ui::TaskSetupDialog()),
 	_wc(wc),

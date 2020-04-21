@@ -17,14 +17,14 @@
 
 #include "../TestSuiteConfig.hpp"
 
-#include <rw/common/Property.hpp>
-#include <rw/common/PropertyBase.hpp>
-#include <rw/common/PropertyMap.hpp>
+#include <rw/core/Property.hpp>
+#include <rw/core/PropertyBase.hpp>
+#include <rw/core/PropertyMap.hpp>
 
 
 
 using namespace boost;
-using namespace rw::common;
+using namespace rw::core;
 
 BOOST_AUTO_TEST_CASE( PropertyTest )
 {

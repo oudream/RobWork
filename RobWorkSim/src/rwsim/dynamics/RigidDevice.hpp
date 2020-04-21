@@ -19,7 +19,7 @@
 #define RWSIM_DYNAMICS_RIGIDDEVICE_HPP_
 
 #include <rw/math/Q.hpp>
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/models/JointDevice.hpp>
 #include "DynamicDevice.hpp"
 //#include "RigidJoint.hpp"
@@ -44,7 +44,7 @@ namespace dynamics {
 	class RigidDevice : public DynamicDevice {
 	public:
 		//! @brief Smart pointer type for a dynamic device.
-	    typedef rw::common::Ptr<RigidDevice> Ptr;
+	    typedef rw::core::Ptr<RigidDevice> Ptr;
 
 		/**
 		 * @brief Construct new kinematic device.

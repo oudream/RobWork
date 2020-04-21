@@ -222,11 +222,11 @@ namespace loaders {
         {}
 
         rw::loaders::WorkCellLoader::Ptr make(){
-            return rw::common::ownedPtr( new ColladaLoader() );
+            return rw::core::ownedPtr( new ColladaLoader() );
         }
 
         rw::loaders::WorkCellLoader::Ptr make(const std::string&){
-            return rw::common::ownedPtr( new ColladaLoader() );
+            return rw::core::ownedPtr( new ColladaLoader() );
         }
 
 

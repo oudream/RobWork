@@ -10,6 +10,7 @@
 
 #include <rw/math/Transform3D.hpp>
 #include "GraspResult.hpp"
+#include <rw/core/Ptr.hpp>
 
 namespace rwlibs {
 namespace task {
@@ -42,7 +43,7 @@ public:
 	 */
 	GraspResult::Ptr getResult() {
 		if (result == NULL) {
-			result = rw::common::ownedPtr(new GraspResult());
+			result = rw::core::ownedPtr(new GraspResult());
 		}
 
 		return result;

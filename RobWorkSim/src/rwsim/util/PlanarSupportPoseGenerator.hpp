@@ -9,6 +9,7 @@
 #define RWSIM_UTIL_PLANARSUPPORTPOSEGENERATOR_HPP_
 
 #include <rw/geometry/Plane.hpp>
+#include <rw/core/Ptr.hpp>
 #include <vector>
 #include "SupportPose.hpp"
 
@@ -45,7 +46,7 @@ namespace util {
 		 * @param hullGenerator
 		 * @return
 		 */
-		PlanarSupportPoseGenerator(rw::common::Ptr<rw::geometry::ConvexHull3D> hullGenerator);
+		PlanarSupportPoseGenerator(rw::core::Ptr<rw::geometry::ConvexHull3D> hullGenerator);
 
 		/**
 		 * @brief calculates the hull and the support poses.
@@ -54,7 +55,7 @@ namespace util {
 		void analyze(const rw::geometry::TriMesh& mesh);
 
 
-		void analyze(const std::vector<rw::common::Ptr<rw::geometry::Geometry> >& bodies,
+		void analyze(const std::vector<rw::core::Ptr<rw::geometry::Geometry> >& bodies,
 		             rw::kinematics::Frame* ref,
 		             const rw::kinematics::State& state);
 
@@ -79,7 +80,7 @@ namespace util {
 		    _supportPlanes.clear();
 		}
 	private:
-		rw::common::Ptr<rw::geometry::ConvexHull3D> _hullGenerator;
+		rw::core::Ptr<rw::geometry::ConvexHull3D> _hullGenerator;
 		std::vector<SupportPose> _supportPoses;
 		std::vector<rw::geometry::Plane > _supportPlanes;
 		std::vector<std::vector<rw::geometry::TriangleN1<> > > _supportTriangles;

@@ -29,7 +29,7 @@
 using namespace rw::invkin;
 using namespace rw::models;
 using namespace rw::kinematics;
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::math;
 
 ClosedFormIK::Ptr ClosedFormIK::make(const Device& device,

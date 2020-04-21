@@ -21,7 +21,7 @@
 #include "PlayBackSettings.hpp"
 
 #include <rws/RobWorkStudioPlugin.hpp>
-
+#include <rw/core/Ptr.hpp>
 #include <rw/trajectory/Path.hpp>
 
 class Player;
@@ -79,7 +79,7 @@ private Q_SLOTS:
 
 private:
     class MyStateDraw;
-    rw::common::Ptr<StateDraw> makeMyStateDraw();
+    rw::core::Ptr<StateDraw> makeMyStateDraw();
     void draw(const rw::kinematics::State& state);
 
     void csvOpenPlayFile(const std::string& file);
@@ -95,7 +95,7 @@ private:
 
     std::string _previousOpenSaveDirectory;
 
-    rw::common::Ptr<Player> _player;
+    rw::core::Ptr<Player> _player;
 
     QLabel* _info;
 

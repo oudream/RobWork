@@ -17,7 +17,7 @@
 
 class GraspDB {
 public:
-	typedef rw::common::Ptr<GraspDB> Ptr;
+	typedef rw::core::Ptr<GraspDB> Ptr;
 
 	GraspDB();
 	GraspDB(const rwlibs::task::GraspTask::Ptr gtask);

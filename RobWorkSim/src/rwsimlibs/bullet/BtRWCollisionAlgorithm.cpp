@@ -38,7 +38,7 @@ using namespace rwsim::contacts;
 using namespace rwsimlibs::bullet;
 
 BtRWCollisionAlgorithm::BtRWCollisionAlgorithm(
-		rw::common::Ptr<const ContactDetector> detector,
+		rw::core::Ptr<const ContactDetector> detector,
 		const btCollisionAlgorithmConstructionInfo& ci,
 		const btCollisionObjectWrapper* col0Wrap,
 		const btCollisionObjectWrapper* col1Wrap):
@@ -131,7 +131,7 @@ void BtRWCollisionAlgorithm::getAllContactManifolds(btManifoldArray& manifoldArr
 	manifoldArray.push_back(m_manifoldPtr);
 }
 
-BtRWCollisionAlgorithm::CreateFunc::CreateFunc(rw::common::Ptr<const ContactDetector> detector):
+BtRWCollisionAlgorithm::CreateFunc::CreateFunc(rw::core::Ptr<const ContactDetector> detector):
 	_detector(detector)
 {
 }

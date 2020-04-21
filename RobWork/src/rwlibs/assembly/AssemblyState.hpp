@@ -27,6 +27,7 @@
 #include <rw/math/Transform3D.hpp>
 #include <rw/math/Wrench6D.hpp>
 #include <rw/trajectory/Path.hpp>
+#include <rw/core/Ptr.hpp>
 
 // Forward declarations
 namespace rwlibs { namespace task {
@@ -47,7 +48,7 @@ namespace assembly {
 class AssemblyState {
 public:
 	//! @brief smart pointer type to this class
-    typedef rw::common::Ptr<AssemblyState> Ptr;
+    typedef rw::core::Ptr<AssemblyState> Ptr;
 
 	//! @brief Constructor of empty AssemblyState.
 	AssemblyState();
@@ -56,7 +57,7 @@ public:
 	 * @brief Construct AssemblyState from CartesianTarget.
 	 * @param target [in] the CartesianTarget.
 	 */
-	AssemblyState(rw::common::Ptr<rwlibs::task::CartesianTarget> target);
+	AssemblyState(rw::core::Ptr<rwlibs::task::CartesianTarget> target);
 
 	//! @brief Destructor.
 	virtual ~AssemblyState();
@@ -66,7 +67,7 @@ public:
 	 * @param state [in] the state to convert.
 	 * @return new CartesianTarget.
 	 */
-	static rw::common::Ptr<rwlibs::task::CartesianTarget> toCartesianTarget(const AssemblyState &state);
+	static rw::core::Ptr<rwlibs::task::CartesianTarget> toCartesianTarget(const AssemblyState &state);
 
 public:
 	//! @brief A string describing the current phase of the assembly operation.

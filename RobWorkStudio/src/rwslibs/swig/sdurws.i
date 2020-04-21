@@ -3,7 +3,7 @@
 %{
 #include <rwlibs/swig/ScriptTypes.hpp>
 #include <rwslibs/swig/ScriptTypes.hpp>
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rwslibs/rwstudioapp/RobWorkStudioApp.hpp>
 
 using namespace rwlibs::swig;
@@ -42,14 +42,14 @@ import org.robwork.sdurw.*;
  * @brief Launch an instance of RobWorkStudio
  * @return pointer to robworkstudio
  */ 
-rw::common::Ptr<RobWorkStudio> getRobWorkStudioInstance();
+rw::core::Ptr<RobWorkStudio> getRobWorkStudioInstance();
 
 /**
  * @brief Launch an instance of RobWorkStudio
  * @param args [in] string literal of input arguments for robworkstudio
  * @return pointer to robworkstudio
  */
-rw::common::Ptr<RobWorkStudio> getRobWorkStudioInstance(const std::string& args);
+rw::core::Ptr<RobWorkStudio> getRobWorkStudioInstance(const std::string& args);
 
 /**
  * @brief incase RobWorkStudio has been launched by other means then getRobWorkStudioInstance()
@@ -87,11 +87,11 @@ void closeRobWorkStudio ();
 
 const State& getState ();
 void setState (State& state);
-rw::common::Ptr< Device > findDevice (const std::string& name);
-rw::common::Ptr< JointDevice > findJointDevice (const std::string& name);
-rw::common::Ptr< SerialDevice > findSerialDevice (const std::string& name);
-rw::common::Ptr< TreeDevice > findTreeDevice (const std::string& name);
-rw::common::Ptr< ParallelDevice > findParallelDevice (const std::string& name);
+rw::core::Ptr< Device > findDevice (const std::string& name);
+rw::core::Ptr< JointDevice > findJointDevice (const std::string& name);
+rw::core::Ptr< SerialDevice > findSerialDevice (const std::string& name);
+rw::core::Ptr< TreeDevice > findTreeDevice (const std::string& name);
+rw::core::Ptr< ParallelDevice > findParallelDevice (const std::string& name);
 Frame* findFrame (const std::string& name);
 MovableFrame* findMovableFrame (const std::string& name);
 FixedFrame* findFixedFrame (const std::string& name);
@@ -101,8 +101,8 @@ void moveTo (Frame* frame, MovableFrame* mframe, rw::math::Transform3D< double >
 void moveTo (const std::string& fname, const std::string& mname,
              rw::math::Transform3D< double > wTframe);
 
-rw::math::Q getQ (rw::common::Ptr< Device > dev);
-void setQ (rw::common::Ptr< Device > dev, rw::math::Q);
+rw::math::Q getQ (rw::core::Ptr< Device > dev);
+void setQ (rw::core::Ptr< Device > dev, rw::math::Q);
 
 void setTransform (Frame* mframe, rw::math::Transform3D< double > wTframe);
 
@@ -136,15 +136,15 @@ public:
     void showPivotPoint(bool visible);  
     //void setDrawType(rw::graphics::DrawableNode::DrawType drawType); 
     Frame* pickFrame(int x, int y);
-    rw::common::Ptr<DrawableNode> pick(int x, int y);
+    rw::core::Ptr<DrawableNode> pick(int x, int y);
  
-    rw::common::Ptr<WorkCellScene> getWorkCellScene(); 
-    rw::common::Ptr<SceneViewer> getSceneViewer(); 
+    rw::core::Ptr<WorkCellScene> getWorkCellScene(); 
+    rw::core::Ptr<SceneViewer> getSceneViewer(); 
     void saveBufferToFile(const QString& filename);
 
 };
 
-%template (RWStudioView3DPtr) rw::common::Ptr<RWStudioView3D>;
+%template (RWStudioView3DPtr) rw::core::Ptr<RWStudioView3D>;
 
 class RobWorkStudio { 
 public:
@@ -155,17 +155,17 @@ public:
     PropertyMap& getPropertyMap();
 
 
-    rw::common::Ptr<WorkCell> getWorkCell();
+    rw::core::Ptr<WorkCell> getWorkCell();
 
-    rw::common::Ptr<CollisionDetector> getCollisionDetector();
+    rw::core::Ptr<CollisionDetector> getCollisionDetector();
 
-    rw::common::Ptr<WorkCellScene> getWorkCellScene();
+    rw::core::Ptr<WorkCellScene> getWorkCellScene();
 
-    rw::common::Ptr<RWStudioView3D> getView();
+    rw::core::Ptr<RWStudioView3D> getView();
 
     const Path<Timed<State> >& getTimedStatePath();
 
-    rw::common::Log& log();
+    rw::core::Log& log();
 
     //void updateAndRepaint();
     //void setState(const State& state);
@@ -174,7 +174,7 @@ public:
     void postUpdateAndRepaint();
     void postSaveViewGL(const std::string& str);
     void postTimedStatePath(const Path<Timed<State> >& path);
-    void postWorkCell(rw::common::Ptr<WorkCell> workcell);
+    void postWorkCell(rw::core::Ptr<WorkCell> workcell);
     void postOpenWorkCell(const std::string& str);
     void postExit();
 
@@ -182,7 +182,7 @@ public:
 
 
     %extend {
-        void setTimedStatePath(rw::common::Ptr<Path<Timed<State> > > path){
+        void setTimedStatePath(rw::core::Ptr<Path<Timed<State> > > path){
             $self->postTimedStatePath(*path);
         }
 
@@ -190,7 +190,7 @@ public:
             $self->postState(state);
         }
 
-        void setWorkCell(rw::common::Ptr<WorkCell> workcell){
+        void setWorkCell(rw::core::Ptr<WorkCell> workcell){
             $self->postWorkCell(workcell);
         }
 
@@ -281,7 +281,7 @@ public:
 
 };
 
-%template (RobWorkStudioPtr) rw::common::Ptr<RobWorkStudio>;
+%template (RobWorkStudioPtr) rw::core::Ptr<RobWorkStudio>;
 
 /********************************************
  * RWSLIBS GTASK

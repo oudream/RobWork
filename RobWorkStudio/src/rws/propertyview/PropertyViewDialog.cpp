@@ -20,10 +20,10 @@
 
 #include "ui_PropertyViewDialog.h"
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::math;
 
-PropertyViewDialog::PropertyViewDialog(rw::common::PropertyMap::Ptr map, QWidget *parent): 
+PropertyViewDialog::PropertyViewDialog(rw::core::PropertyMap::Ptr map, QWidget *parent): 
 	QDialog(parent),
 	_pOriginalProperties(map),
 	_workingCopy(*map.get())

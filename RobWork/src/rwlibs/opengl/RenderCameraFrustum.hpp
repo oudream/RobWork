@@ -21,6 +21,7 @@
 //! @file RenderCameraFrustum.hpp
 
 #include <rw/graphics/Render.hpp>
+#include <rw/core/Ptr.hpp>
 
 namespace rwlibs { namespace opengl {
 /** @addtogroup opengl */
@@ -32,7 +33,7 @@ namespace rwlibs { namespace opengl {
     {
     public:
         //! @brief smart pointer type to this class
-        typedef rw::common::Ptr<RenderCameraFrustum> Ptr;
+        typedef rw::core::Ptr<RenderCameraFrustum> Ptr;
 
         /**
          * @brief Constructs RenderLine with no lines
@@ -60,7 +61,7 @@ namespace rwlibs { namespace opengl {
     };
 
     //! smart pointer to RenderCameraFrustum
-    typedef rw::common::Ptr<RenderCameraFrustum> RenderCameraFrustumPtr;
+    typedef rw::core::Ptr<RenderCameraFrustum> RenderCameraFrustumPtr;
 //! @}
 }} // end namespaces
 

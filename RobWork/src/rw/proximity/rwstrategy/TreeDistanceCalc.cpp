@@ -7,7 +7,7 @@
 
 #include "TreeDistanceCalc.hpp"
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/math/Transform3D.hpp>
 
 using namespace rw::math;
@@ -46,7 +46,7 @@ namespace {
 
 
 
-        BalancedTreeDistanceCalc(rw::common::Ptr<TreeDistanceCalc::BVDISTANCECALC> bvdistcalc, int n=200):
+        BalancedTreeDistanceCalc(rw::core::Ptr<TreeDistanceCalc::BVDISTANCECALC> bvdistcalc, int n=200):
             _bvdistcalc(bvdistcalc),_BVstack(n),_BVstackIdx(0)
         {
             initVars();
@@ -166,7 +166,7 @@ namespace {
             _nrOfCollidingPrims = 0;
             _firstContact = false;
         }
-        rw::common::Ptr<TreeDistanceCalc::BVDISTANCECALC > _bvdistcalc;
+        rw::core::Ptr<TreeDistanceCalc::BVDISTANCECALC > _bvdistcalc;
 
 
     private:
@@ -210,9 +210,9 @@ namespace {
 
 }
 
-rw::common::Ptr<TreeDistanceCalc> TreeDistanceCalc::makeBalancedDFSDistanceCalc(rw::common::Ptr< TreeDistanceCalc::BVDISTANCECALC > bvdistcalc){
+rw::core::Ptr<TreeDistanceCalc> TreeDistanceCalc::makeBalancedDFSDistanceCalc(rw::core::Ptr< TreeDistanceCalc::BVDISTANCECALC > bvdistcalc){
     std::cout << "making bvalanced distance calculator!" << std::endl;
-    return rw::common::ownedPtr( new BalancedTreeDistanceCalc(bvdistcalc) );
+    return rw::core::ownedPtr( new BalancedTreeDistanceCalc(bvdistcalc) );
 }
 
 /*

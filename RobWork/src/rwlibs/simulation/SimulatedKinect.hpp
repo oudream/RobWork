@@ -20,7 +20,7 @@
 
 //! @file SimulatedKinect.hpp
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include "SimulatedSensor.hpp"
 #include <rw/graphics/SceneViewer.hpp>
 #include <rw/sensor/CameraModel.hpp>
@@ -160,7 +160,7 @@ namespace rwlibs { namespace simulation {
 
         double _frameRate, _dtsum;
         bool _isAcquired,_isOpenned, _noiseEnabled;
-        rw::common::Ptr<rw::sensor::Scanner25D> _rsensor;
+        rw::core::Ptr<rw::sensor::Scanner25D> _rsensor;
 
         rw::graphics::SceneViewer::Ptr _drawer;
         rw::graphics::SceneViewer::View::Ptr _view;

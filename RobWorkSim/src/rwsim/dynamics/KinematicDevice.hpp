@@ -19,7 +19,7 @@
 #define RWSIM_DYNAMICS_KINEMATICDEVICE_HPP_
 
 #include <rw/models/JointDevice.hpp>
-
+#include <rw/core/Ptr.hpp>
 #include "DynamicDevice.hpp"
 
 namespace rw { namespace models { class Object; } }
@@ -49,7 +49,7 @@ namespace dynamics {
 		 * @param dev [in] the kinematic model.
 		 */
 		KinematicDevice(dynamics::Body::Ptr base,
-	                    const std::vector<std::pair<BodyInfo,rw::common::Ptr<rw::models::Object> > >& objects,
+	                    const std::vector<std::pair<BodyInfo,rw::core::Ptr<rw::models::Object> > >& objects,
 						rw::models::JointDevice::Ptr dev);
 
 		//! @brief destructor

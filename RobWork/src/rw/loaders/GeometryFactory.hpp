@@ -18,7 +18,7 @@
 #ifndef RW_LOADERS_GEOMETRYFACTORY_HPP_
 #define RW_LOADERS_GEOMETRYFACTORY_HPP_
 
-#include <rw/common/ExtensionPoint.hpp>
+#include <rw/core/ExtensionPoint.hpp>
 #include <rw/common/FileCache.hpp>
 #include <rw/geometry/Geometry.hpp>
 #include <rw/geometry/GeometryData.hpp>
@@ -70,7 +70,7 @@ namespace rw { namespace loaders {
      * where "type" is a custom geometry type provided by extensions,
      * "parameters" is a space separated string with custom geometry parameters.
      */
-    class GeometryFactory : public rw::common::ExtensionPoint< rw::geometry::GeometryData >
+    class GeometryFactory : public rw::core::ExtensionPoint< rw::geometry::GeometryData >
     {
       public:
         //! Constructor.

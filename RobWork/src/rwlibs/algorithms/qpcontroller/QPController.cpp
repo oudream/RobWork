@@ -20,7 +20,7 @@
 #include "QPSolver.hpp"
 
 #include <rw/models/Device.hpp>
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 
 #include <cmath>
 

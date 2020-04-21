@@ -17,7 +17,7 @@
 
 #include "ARWQToQPlanner.hpp"
 
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 #include <rw/pathplanning/PlannerUtil.hpp>
 #include <rw/trajectory/Path.hpp>
 

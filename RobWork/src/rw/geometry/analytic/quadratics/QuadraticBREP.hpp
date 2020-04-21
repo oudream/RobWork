@@ -79,7 +79,7 @@ class PlainQuadraticShell;
 class QuadraticBREP: public BREP {
 public:
     //! @brief Smart pointer type to QuadraticBREP
-    typedef rw::common::Ptr<QuadraticBREP> Ptr;
+    typedef rw::core::Ptr<QuadraticBREP> Ptr;
 
     //! @brief Constructor.
 	QuadraticBREP();
@@ -103,22 +103,22 @@ public:
 	QuadraticBREP::Ptr clone() const;
 
 	//! @copydoc BREP::shellProxy
-	rw::common::Ptr<const QuadraticShell> shellProxy() const;
+	rw::core::Ptr<const QuadraticShell> shellProxy() const;
 
 	/**
 	 * @brief Get a QuadraticShell representation by copying geometric information to a concrete PlainQuadraticShell object.
 	 * @return smart pointer to a PlainQuadraticShell object.
 	 */
-	rw::common::Ptr<PlainQuadraticShell> shell() const;
+	rw::core::Ptr<PlainQuadraticShell> shell() const;
 
 	//! @copydoc BREP::getCurves
-	std::vector<rw::common::Ptr<QuadraticCurve> > getCurves(std::size_t loopIdx) const;
+	std::vector<rw::core::Ptr<QuadraticCurve> > getCurves(std::size_t loopIdx) const;
 
 	//! @brief Convenience type for a set of curves in a QuadraticBREP.
 	class CommonQuadraticCurveSet: public CommonCurveSet {
 	public:
 	    //! @brief Smart pointer type to CommonQuadraticCurveSet
-	    typedef rw::common::Ptr<const CommonQuadraticCurveSet> CPtr;
+	    typedef rw::core::Ptr<const CommonQuadraticCurveSet> CPtr;
 
 	    //! @brief Constructor.
 		CommonQuadraticCurveSet(): CommonCurveSet() {}
@@ -163,7 +163,7 @@ public:
 
 private:
 	class CommonQuadraticCurveSetImpl;
-	virtual rw::common::Ptr<const Shell> doShellProxyBREP() const;
+	virtual rw::core::Ptr<const Shell> doShellProxyBREP() const;
 	virtual BREP::Ptr doClone() const { return clone(); }
     virtual void doRemoveCurve(std::size_t curveIndex);
 

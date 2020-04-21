@@ -27,6 +27,7 @@
 #include <rw/pathplanning/QToTPlanner.hpp>
 #include <rw/pathplanning/QToQPlanner.hpp>
 #include <rw/pathplanning/QToQSamplerPlanner.hpp>
+#include <rw/core/Ptr.hpp>
 
 namespace rwlibs { namespace pathplanners {
 
@@ -44,7 +45,7 @@ namespace rwlibs { namespace pathplanners {
     {
     public:
     	//! @brief Smart pointer type for SBLPlanner.
-        typedef rw::common::Ptr<SBLPlanner> Ptr;
+        typedef rw::core::Ptr<SBLPlanner> Ptr;
 
         /**
            @brief An SBL based sampled region planner.
@@ -68,7 +69,7 @@ namespace rwlibs { namespace pathplanners {
         */
 		static rw::pathplanning::QToTPlanner::Ptr makeQToTPlanner(
             const SBLSetup& setup,
-			rw::common::Ptr<rw::pathplanning::QIKSampler> ikSampler);
+			rw::core::Ptr<rw::pathplanning::QIKSampler> ikSampler);
 
     private:
         SBLPlanner();

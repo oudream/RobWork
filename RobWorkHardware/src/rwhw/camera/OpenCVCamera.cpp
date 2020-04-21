@@ -21,7 +21,7 @@
 
 #include <cvcam.h>
 
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 #include <vector>
 
 using namespace rw::sensor;

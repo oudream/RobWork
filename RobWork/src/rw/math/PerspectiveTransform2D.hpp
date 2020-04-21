@@ -22,7 +22,7 @@
 #include <Eigen/Eigen>
 #include "Vector3D.hpp"
 #include "Vector2D.hpp"
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 #include <rw/common/Serializable.hpp>
 
 namespace rw { namespace math {

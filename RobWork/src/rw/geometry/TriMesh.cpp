@@ -21,7 +21,7 @@
 using namespace rw::geometry;
 using namespace rw::math;
 
-rw::common::Ptr<TriMesh> TriMesh::getTriMesh(bool forceCopy){
+rw::core::Ptr<TriMesh> TriMesh::getTriMesh(bool forceCopy){
 	if(forceCopy){
 		return clone();
 	}

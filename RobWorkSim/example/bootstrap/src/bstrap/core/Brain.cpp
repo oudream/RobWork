@@ -22,7 +22,7 @@
 #include "Abstraction.hpp"
 #include "Memory.hpp"
 
-using rw::common::PropertyMap;
+using rw::core::PropertyMap;
 using rw::math::Transform3D;
 using rwsim::dynamics::Body;
 

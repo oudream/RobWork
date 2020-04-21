@@ -17,8 +17,8 @@
 #ifndef RW_COMMON_FILECACHE_HPP_
 #define RW_COMMON_FILECACHE_HPP_
 
-#include <rw/common/Ptr.hpp>
-#include <rw/common/macros.hpp>
+#include <rw/core/Ptr.hpp>
+#include <rw/core/macros.hpp>
 #include <map>
 
 namespace rw { namespace common {
@@ -71,7 +71,7 @@ namespace rw { namespace common {
 		/**
 		 * @brief gets the value that is associated with the key
 		 */
-		rw::common::Ptr<VAL> get(const KEY& key)
+		rw::core::Ptr<VAL> get(const KEY& key)
 		{
 			if (_map.find(key) == _map.end())
 				RW_THROW("Key does not exist!");
@@ -85,14 +85,14 @@ namespace rw { namespace common {
 		void add(const KEY& key, VAL *val, const STAMP_T& stamp)
 		{
 			_keyToStamp[key] = stamp;
-			_map[key] = ownedPtr(val);
+			_map[key] = rw::core::ownedPtr(val);
 		}
 
         /**
          * @brief Ads a value to a key that was aquired at some specific
          * time.
          */
-        void add(const KEY& key, rw::common::Ptr<VAL> val, const STAMP_T& stamp)
+        void add(const KEY& key, rw::core::Ptr<VAL> val, const STAMP_T& stamp)
         {
             _keyToStamp[key] = stamp;
             _map[key] = val;
@@ -117,7 +117,7 @@ namespace rw { namespace common {
 
 
 	private:
-		typedef std::map<KEY, rw::common::Ptr<VAL> > KeyToValMap;
+		typedef std::map<KEY, rw::core::Ptr<VAL> > KeyToValMap;
 		KeyToValMap _map;
 		std::map<KEY, STAMP_T> _keyToStamp;
 	};

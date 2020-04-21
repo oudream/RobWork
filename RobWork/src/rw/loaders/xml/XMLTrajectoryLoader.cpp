@@ -37,7 +37,7 @@
 
 
 using namespace xercesc;
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::math;
 using namespace rw::trajectory;
 using namespace rw::loaders;

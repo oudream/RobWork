@@ -21,7 +21,7 @@
 #include <rw/kinematics/Frame.hpp>
 
 #include <rw/kinematics/Kinematics.hpp>
-
+#include <rw/core/Ptr.hpp>
 #include <rw/math/VelocityScrew6D.hpp>
 #include <rw/math/Vector3D.hpp>
 
@@ -45,7 +45,7 @@ namespace dynamics {
     {
     public:
     	//! @brief Smart pointer type for a KinematicBody.
-        typedef rw::common::Ptr<KinematicBody> Ptr;
+        typedef rw::core::Ptr<KinematicBody> Ptr;
 
         //! @copydoc Body::Body()
         KinematicBody(const BodyInfo& info, rw::models::Object::Ptr obj);

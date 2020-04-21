@@ -22,7 +22,7 @@
 //! @file SimulatedSensor.hpp
 
 #include <rw/sensor/SensorModel.hpp>
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include "Simulator.hpp"
 
 namespace rw { namespace kinematics { class Frame; } }
@@ -39,7 +39,7 @@ namespace simulation {
     class SimulatedSensor: public rw::kinematics::Stateless {
     public:
         //! @brief smart pointer type of this class
-        typedef rw::common::Ptr<SimulatedSensor> Ptr;
+        typedef rw::core::Ptr<SimulatedSensor> Ptr;
 
     protected:
         //! constructor

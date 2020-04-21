@@ -18,7 +18,7 @@
 #ifndef _SIMPLEFINGER_PLUGIN_HPP
 #define _SIMPLEFINGER_PLUGIN_HPP
 
-#include <rw/common/Plugin.hpp>
+#include <rw/core/Plugin.hpp>
 
 namespace rwlibs {
 namespace geometry {
@@ -28,18 +28,18 @@ namespace simplefinger {
  * A plugin that adds a simple gripper finger shape as a custom
  * geometry type to be loaded from the workcell.
  */
-class SimpleFingerPlugin: public rw::common::Plugin {
+class SimpleFingerPlugin: public rw::core::Plugin {
 public:
 
 	SimpleFingerPlugin();
 	
 	~SimpleFingerPlugin();
 	
-	//! @copydoc rw::common::Plugin::getExtensionDescriptors
-	std::vector<rw::common::Extension::Descriptor> getExtensionDescriptors();
+	//! @copydoc rw::core::Plugin::getExtensionDescriptors
+	std::vector<rw::core::Extension::Descriptor> getExtensionDescriptors();
 	
-	//! @copydoc rw::common::Plugin::makeExtension
-	rw::common::Ptr<rw::common::Extension> makeExtension(const std::string& str);
+	//! @copydoc rw::core::Plugin::makeExtension
+	rw::core::Ptr<rw::core::Extension> makeExtension(const std::string& str);
 };
 
 } /* simplefinger */

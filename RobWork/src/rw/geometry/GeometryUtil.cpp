@@ -197,7 +197,7 @@ FaceIntegrals compFaceIntegrals (const Triangle< double >& f, const Transform3D<
     return res;
 }
 
-void compVolumeIntegrals (const rw::common::Ptr< const TriMesh > p, const Transform3D<>& t3d,
+void compVolumeIntegrals (const rw::core::Ptr< const TriMesh > p, const Transform3D<>& t3d,
                           double& T0, Vector3D<>& T1, Vector3D<>& T2, Vector3D<>& TP,
                           bool noInertia = false)
 {
@@ -264,7 +264,7 @@ cog[2] * cog[0]; return J;
 }
 */
 MassParameters mirtichMassParameters (double mass, const Transform3D<>& t3d,
-                                      const rw::common::Ptr< const TriMesh > trimesh,
+                                      const rw::core::Ptr< const TriMesh > trimesh,
                                       bool noInertia = false)
 {
     MassParameters par;
@@ -322,7 +322,7 @@ Vector3D<> GeometryUtil::getDimensions (Geometry::Ptr geom)
     return getDimensions (trimesh);
 }
 
-Vector3D<> GeometryUtil::getDimensions (rw::common::Ptr< TriMesh > trimesh)
+Vector3D<> GeometryUtil::getDimensions (rw::core::Ptr< TriMesh > trimesh)
 {
     std::pair< Vector3D<>, Vector3D<> > extremes = getExtremumDistances (trimesh);
     return extremes.second - extremes.first;

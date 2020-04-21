@@ -40,7 +40,7 @@ namespace rwlibs { namespace algorithms {
 class ConstraintSandbox {
 	public:
 		//! @brief Smart pointer type to this class.
-		typedef rw::common::Ptr<ConstraintSandbox> Ptr;
+		typedef rw::core::Ptr<ConstraintSandbox> Ptr;
 		
 	public: // constructors
 		/**

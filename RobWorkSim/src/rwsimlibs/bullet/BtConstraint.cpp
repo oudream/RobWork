@@ -33,7 +33,7 @@ using namespace rw::kinematics;
 using namespace rwsim::dynamics;
 using namespace rwsimlibs::bullet;
 
-BtConstraint::BtConstraint(rw::common::Ptr<const Constraint> constraint, const BtBody* const parent, const BtBody* const child, btDynamicsWorld* btWorld):
+BtConstraint::BtConstraint(rw::core::Ptr<const Constraint> constraint, const BtBody* const parent, const BtBody* const child, btDynamicsWorld* btWorld):
 	_rwConstraint(constraint),
 	_parent(parent),
 	_child(child),
@@ -54,7 +54,7 @@ btTypedConstraint* BtConstraint::getBtConstraint() const {
 	return _btConstraint;
 }
 
-rw::common::Ptr<const Constraint> BtConstraint::getRWConstraint() const {
+rw::core::Ptr<const Constraint> BtConstraint::getRWConstraint() const {
 	return _rwConstraint;
 }
 

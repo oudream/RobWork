@@ -24,7 +24,9 @@
  * \copydoc rwlibs::geometry::AnalyticGeometryPlugin
  */
 
-#include <rw/common/Plugin.hpp>
+#include <rw/core/Plugin.hpp>
+#include <rw/core/Extension.hpp>
+#include <rw/core/Ptr.hpp>
 
 namespace rwlibs {
     namespace geometry {
@@ -40,7 +42,7 @@ namespace rwlibs {
          *  - QuadraticTestObjectA - rwlibs::geometry::QuadraticTestObjects::objectA()
          *  - QuadraticTestObjectB - rwlibs::geometry::QuadraticTestObjects::objectB()
          */
-        class AnalyticGeometryPlugin: public rw::common::Plugin
+        class AnalyticGeometryPlugin: public rw::core::Plugin
         {
             public:
                 //! @brief Construct new plugin
@@ -49,11 +51,11 @@ namespace rwlibs {
                 //! @brief Destructor
                 virtual ~AnalyticGeometryPlugin();
 
-                //! @copydoc rw::common::Plugin::getExtensionDescriptors
-                std::vector<rw::common::Extension::Descriptor> getExtensionDescriptors();
+                //! @copydoc rw::core::Plugin::getExtensionDescriptors
+                std::vector<rw::core::Extension::Descriptor> getExtensionDescriptors();
 
-                //! @copydoc rw::common::Plugin::makeExtension
-                rw::common::Ptr<rw::common::Extension> makeExtension(const std::string& id);
+                //! @copydoc rw::core::Plugin::makeExtension
+                rw::core::Ptr<rw::core::Extension> makeExtension(const std::string& id);
         };
     //! @}
 

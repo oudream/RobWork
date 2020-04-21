@@ -17,7 +17,7 @@
 
 #include "RWGLTexture.hpp"
 
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 #include <rw/sensor/Image.hpp>
 
 using namespace rw::sensor;

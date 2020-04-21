@@ -1,6 +1,6 @@
 #include "SpringJointController.hpp"
 
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 #include <rwsim/dynamics/RigidDevice.hpp>
 
 using namespace rwsim::control;
@@ -17,7 +17,7 @@ SpringJointController::SpringJointController(
 		const std::vector<SpringParam>& springParam,
 		double dt):
 	JointController(name, &rdev->getModel()),
-	SimulatedController(rw::common::ownedPtr(new rw::models::ControllerModel(name,rdev->getKinematicModel()->getBase()))),
+	SimulatedController(rw::core::ownedPtr(new rw::models::ControllerModel(name,rdev->getKinematicModel()->getBase()))),
 	_ddev(rdev),
 	_lastError(rw::math::Q::zero(rdev->getModel().getDOF())),
 	_target(rw::math::Q::zero(rdev->getModel().getDOF())),

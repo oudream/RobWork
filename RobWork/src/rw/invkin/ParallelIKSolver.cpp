@@ -17,7 +17,7 @@
 
 #include "ParallelIKSolver.hpp"
 
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 
 #include <rw/kinematics/Frame.hpp>
 #include <rw/kinematics/FrameMap.hpp>
@@ -39,7 +39,7 @@
 
 #include <vector>
 
-using rw::common::ownedPtr;
+using rw::core::ownedPtr;
 using namespace rw::invkin;
 using namespace rw::kinematics;
 using namespace rw::math;

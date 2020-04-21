@@ -27,6 +27,9 @@
 #include "AssemblyParameterization.hpp"
 
 #include <rw/math/Q.hpp>
+#include <rw/core/Ptr.hpp>
+
+namespace rw { namespace core { class PropertyMap; }}
 
 namespace rwlibs {
 namespace assembly {
@@ -60,13 +63,13 @@ namespace assembly {
 class PiHParameterization: public AssemblyParameterization {
 public:
 	//! @brief Smart pointer type for parameterization.
-	typedef rw::common::Ptr<PiHParameterization> Ptr;
+	typedef rw::core::Ptr<PiHParameterization> Ptr;
 
 	/**
 	 * @brief Construct parameterization from PropertyMap.
 	 * @param pmap [in] a PropertyMap with the parameterization given as properties with user-friendly (non-SI) units.
 	 */
-	PiHParameterization(rw::common::Ptr<rw::common::PropertyMap> pmap);
+	PiHParameterization(rw::core::Ptr<rw::core::PropertyMap> pmap);
 
 	/**
 	 * @brief Construct parameterization with values given directly with SI units.
@@ -97,13 +100,13 @@ public:
 	virtual ~PiHParameterization();
 
 	//! @copydoc AssemblyParameterization::toPropertyMap
-	virtual rw::common::Ptr<rw::common::PropertyMap> toPropertyMap() const;
+	virtual rw::core::Ptr<rw::core::PropertyMap> toPropertyMap() const;
 
 	//! @copydoc AssemblyParameterization::clone
 	virtual AssemblyParameterization::Ptr clone() const;
 
 	//! @copydoc AssemblyParameterization::reset
-	virtual void reset(rw::common::Ptr<rw::common::PropertyMap> pmap);
+	virtual void reset(rw::core::Ptr<rw::core::PropertyMap> pmap);
 
 public:
 	//! @brief Radius of the hole.

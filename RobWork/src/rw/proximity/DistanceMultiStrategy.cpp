@@ -19,8 +19,10 @@
 #include "DistanceMultiStrategy.hpp"
 
 #include "ProximityStrategyData.hpp"
+#include <rw/core/Extension.hpp>
+#include <rw/kinematics/Frame.hpp>
 
-using rw::common::Extension;
+using rw::core::Extension;
 using rw::kinematics::Frame;
 using rw::math::Transform3D;
 using namespace rw::proximity;

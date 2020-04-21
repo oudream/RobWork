@@ -21,8 +21,8 @@
 /**
  * @file WorkCell.hpp
  */
-#include <rw/common/Ptr.hpp>
-#include <rw/common/Event.hpp>
+#include <rw/core/Ptr.hpp>
+#include <rw/core/Event.hpp>
 #include <rw/kinematics/State.hpp>
 
 #include <boost/function.hpp>
@@ -32,7 +32,7 @@
 #include <iosfwd>
 
 // Forward declarations
-namespace rw { namespace common {
+namespace rw { namespace core {
     class PropertyMap;
 }}
 namespace rw { namespace graphics {
@@ -74,9 +74,9 @@ namespace rw { namespace models {
     class WorkCell {
         public:
             //! @brief Smart pointer type to a WorkCell object
-            typedef rw::common::Ptr<WorkCell> Ptr;
+            typedef rw::core::Ptr<WorkCell> Ptr;
             //! @brief Smart pointer type to a constant WorkCell object
-            typedef rw::common::Ptr<const WorkCell> CPtr;
+            typedef rw::core::Ptr<const WorkCell> CPtr;
 
             //! @brief WorkCell Event Types.
             typedef enum {
@@ -113,7 +113,7 @@ namespace rw { namespace models {
              * loaded.
              */
             WorkCell(
-                    rw::common::Ptr<rw::kinematics::StateStructure> tree,
+                    rw::core::Ptr<rw::kinematics::StateStructure> tree,
                     const std::string& name = "",
                     const std::string& filename = "");
 
@@ -162,8 +162,8 @@ namespace rw { namespace models {
              * @param frame [in] Frame to add
              * @param parent [in] Parent frame - uses World is parent == NULL
              */
-            void addFrame(rw::common::Ptr<rw::kinematics::Frame> frame,
-                    rw::common::Ptr<rw::kinematics::Frame> parent = NULL);
+            void addFrame(rw::core::Ptr<rw::kinematics::Frame> frame,
+                    rw::core::Ptr<rw::kinematics::Frame> parent = NULL);
 
             /**
              * @brief Adds dynamically attachable frame (DAF) \b frame with
@@ -188,15 +188,15 @@ namespace rw { namespace models {
              * @param frame [in] Frame to add
              * @param parent [in] Parent frame - uses World is parent == NULL
              */
-            void addDAF(rw::common::Ptr<rw::kinematics::Frame> frame,
-                    rw::common::Ptr<rw::kinematics::Frame> parent = NULL);
+            void addDAF(rw::core::Ptr<rw::kinematics::Frame> frame,
+                    rw::core::Ptr<rw::kinematics::Frame> parent = NULL);
 
             /**
              * @brief Removes \b frame from work cell
              *
              * @param frame [in] Frame to remove
              * @deprecated Since January 2018.
-             * Please use remove(rw::common::Ptr<rw::kinematics::Frame>)
+             * Please use remove(rw::core::Ptr<rw::kinematics::Frame>)
              * instead.
              */
             void remove(kinematics::Frame* frame);
@@ -206,7 +206,7 @@ namespace rw { namespace models {
              *
              * @param frame [in] Frame to remove
              */
-            void remove(rw::common::Ptr<rw::kinematics::Frame> frame);
+            void remove(rw::core::Ptr<rw::kinematics::Frame> frame);
 
             /**
              * @brief Removes \b object from workcell
@@ -222,7 +222,7 @@ namespace rw { namespace models {
              *
              * @param device [in] pointer to device.
              */
-            void addDevice(rw::common::Ptr<Device> device);
+            void addDevice(rw::core::Ptr<Device> device);
 
 
             /**
@@ -231,7 +231,7 @@ namespace rw { namespace models {
              *
              * @return const vector with pointers to Device(s).
              */
-            const std::vector<rw::common::Ptr<Device> >& getDevices() const;
+            const std::vector<rw::core::Ptr<Device> >& getDevices() const;
 
             /**
              * @brief Returns frame with the specified name.
@@ -297,7 +297,7 @@ namespace rw { namespace models {
              *
              * @return The device named \b name or NULL if no such device.
              */
-            rw::common::Ptr<Device> findDevice(const std::string& name) const;
+            rw::core::Ptr<Device> findDevice(const std::string& name) const;
 
             /**
              * @brief The device named \b name of the workcell.
@@ -310,8 +310,8 @@ namespace rw { namespace models {
              * found or if the device is not of type \b T.
              */
             template<class T>
-            rw::common::Ptr<T> findDevice(const std::string& name) const {
-                    rw::common::Ptr<Device> dev = findDevice(name);
+            rw::core::Ptr<T> findDevice(const std::string& name) const {
+                    rw::core::Ptr<Device> dev = findDevice(name);
                     if(dev==NULL)
                         return NULL;
                     return dev.cast<T>();
@@ -324,10 +324,10 @@ namespace rw { namespace models {
              * @return vector with pointers to Device(s) of type T.
              */
             template<class T>
-            std::vector<rw::common::Ptr<T> > findDevices() const {
-                    std::vector<rw::common::Ptr<T> > result;
-                    for(rw::common::Ptr<Device> dev : _devices) {
-                        rw::common::Ptr<T> res = dev.cast<T>();
+            std::vector<rw::core::Ptr<T> > findDevices() const {
+                    std::vector<rw::core::Ptr<T> > result;
+                    for(rw::core::Ptr<Device> dev : _devices) {
+                        rw::core::Ptr<T> res = dev.cast<T>();
                         if(res!=NULL)
                             result.push_back(res);
                     }
@@ -352,7 +352,7 @@ namespace rw { namespace models {
              *
              * @return The sensor with name \b name or NULL if no such sensor.
              */
-            rw::common::Ptr<rw::sensor::SensorModel> findSensor(const std::string& name) const;
+            rw::core::Ptr<rw::sensor::SensorModel> findSensor(const std::string& name) const;
 
             /**
              * @brief Returns sensor with the specified name and type \b T.
@@ -367,8 +367,8 @@ namespace rw { namespace models {
              * the sensor is not of type \b T.
              */
             template<class T>
-            rw::common::Ptr<T> findSensor(const std::string& name) const {
-                    rw::common::Ptr<rw::sensor::SensorModel> sensor = findSensor(name);
+            rw::core::Ptr<T> findSensor(const std::string& name) const {
+                    rw::core::Ptr<rw::sensor::SensorModel> sensor = findSensor(name);
                     if(sensor==NULL)
                         return NULL;
                     return sensor.cast<T>();
@@ -379,11 +379,11 @@ namespace rw { namespace models {
              * @return all frames of type \b T in the workcell
              */
             template<class T>
-            std::vector<rw::common::Ptr<T> > findSensors() const {
-                    const std::vector<rw::common::Ptr<rw::sensor::SensorModel> > sensors = _sensors;
-                    std::vector<rw::common::Ptr<T> > result;
-                    for(rw::common::Ptr<rw::sensor::SensorModel> f : sensors) {
-                        rw::common::Ptr<T> res = f.cast<T>();
+            std::vector<rw::core::Ptr<T> > findSensors() const {
+                    const std::vector<rw::core::Ptr<rw::sensor::SensorModel> > sensors = _sensors;
+                    std::vector<rw::core::Ptr<T> > result;
+                    for(rw::core::Ptr<rw::sensor::SensorModel> f : sensors) {
+                        rw::core::Ptr<T> res = f.cast<T>();
                         if(res!=NULL)
                             result.push_back(res);
                     }
@@ -394,9 +394,9 @@ namespace rw { namespace models {
              * @brief Returns all frames in workcell
              * @return List of all frames
              */
-            std::vector<rw::common::Ptr<rw::sensor::SensorModel> > getSensors() const {
-                std::vector<rw::common::Ptr<rw::sensor::SensorModel> > sensors;
-                for(rw::common::Ptr<rw::sensor::SensorModel> sensor : _sensors) {
+            std::vector<rw::core::Ptr<rw::sensor::SensorModel> > getSensors() const {
+                std::vector<rw::core::Ptr<rw::sensor::SensorModel> > sensors;
+                for(rw::core::Ptr<rw::sensor::SensorModel> sensor : _sensors) {
                     if(sensor!=NULL)
                         sensors.push_back(sensor);
                 }
@@ -417,7 +417,7 @@ namespace rw { namespace models {
              * @return The controller with name \b name or NULL if no such
              * controller.
              */
-            rw::common::Ptr<rw::models::ControllerModel> findController(const std::string& name) const;
+            rw::core::Ptr<rw::models::ControllerModel> findController(const std::string& name) const;
 
             /**
              * @brief Returns controller with the specified name and type \b T.
@@ -428,8 +428,8 @@ namespace rw { namespace models {
              * or the sensor is not of type \b T.
              */
             template<class T>
-            rw::common::Ptr<T> findController(const std::string& name) const {
-                    rw::common::Ptr<ControllerModel> sensor =
+            rw::core::Ptr<T> findController(const std::string& name) const {
+                    rw::core::Ptr<ControllerModel> sensor =
                             findController(name);
                     if(sensor==NULL)
                         return NULL;
@@ -440,11 +440,11 @@ namespace rw { namespace models {
              * @brief Returns all controllers of a specific type \b T.
              */
             template<class T>
-            std::vector<rw::common::Ptr<T> > findControllers() const {
-                    const std::vector<rw::common::Ptr<ControllerModel> > sensors = _controllers;
-                    std::vector<rw::common::Ptr<T> > result;
-                    for(rw::common::Ptr<ControllerModel> f : sensors) {
-                        rw::common::Ptr<T> res = f.cast<T>();
+            std::vector<rw::core::Ptr<T> > findControllers() const {
+                    const std::vector<rw::core::Ptr<ControllerModel> > sensors = _controllers;
+                    std::vector<rw::core::Ptr<T> > result;
+                    for(rw::core::Ptr<ControllerModel> f : sensors) {
+                        rw::core::Ptr<T> res = f.cast<T>();
                         if(res!=NULL)
                             result.push_back(res);
                     }
@@ -455,9 +455,9 @@ namespace rw { namespace models {
              * @brief Returns all controllers in workcell
              * @return List of all controllers
              */
-            std::vector<rw::common::Ptr<ControllerModel> > getControllers() const {
-                std::vector<rw::common::Ptr<ControllerModel> > sensors;
-                for(rw::common::Ptr<ControllerModel> sensor : _controllers) {
+            std::vector<rw::core::Ptr<ControllerModel> > getControllers() const {
+                std::vector<rw::core::Ptr<ControllerModel> > sensors;
+                for(rw::core::Ptr<ControllerModel> sensor : _controllers) {
                     if(sensor!=NULL)
                         sensors.push_back(sensor);
                 }
@@ -471,7 +471,7 @@ namespace rw { namespace models {
              *
              * @return All object in work cell
              */
-            std::vector<rw::common::Ptr<Object> > getObjects() const {
+            std::vector<rw::core::Ptr<Object> > getObjects() const {
                 return _objects;
             }
 
@@ -485,31 +485,31 @@ namespace rw { namespace models {
              *
              * @return The object named \b name or NULL if no such object.
              */
-            rw::common::Ptr<Object> findObject(const std::string& name) const;
+            rw::core::Ptr<Object> findObject(const std::string& name) const;
 
             //! @brief Add device to workcell
-            void add(rw::common::Ptr<Device> device);
+            void add(rw::core::Ptr<Device> device);
             //! @brief Add object to workcell
-            void add(rw::common::Ptr<Object> object);
+            void add(rw::core::Ptr<Object> object);
             //! @brief Add sensormodel to workcell
-            void add(rw::common::Ptr<rw::sensor::SensorModel> sensor);
+            void add(rw::core::Ptr<rw::sensor::SensorModel> sensor);
             //! @brief Add controllermodel to workcell
-            void add(rw::common::Ptr<ControllerModel> controller);
+            void add(rw::core::Ptr<ControllerModel> controller);
 
             //! @brief Remove object from workcell
-            void remove(rw::common::Ptr<Object> object);
+            void remove(rw::core::Ptr<Object> object);
             //! @brief Remove device from workcell
-            void remove(rw::common::Ptr<Device> device);
+            void remove(rw::core::Ptr<Device> device);
             //! @brief Remove sensormodel from workcell
-            void remove(rw::common::Ptr<rw::sensor::SensorModel> sensor);
+            void remove(rw::core::Ptr<rw::sensor::SensorModel> sensor);
             //! @brief Remove controllermodel from workcell
-            void remove(rw::common::Ptr<ControllerModel> controller);
+            void remove(rw::core::Ptr<ControllerModel> controller);
 
             /**
              * @brief gets the complete state structure of the workcell.
              * @return the state structure of the workcell.
              */
-            rw::common::Ptr<rw::kinematics::StateStructure> getStateStructure() {
+            rw::core::Ptr<rw::kinematics::StateStructure> getStateStructure() {
                 return _tree;
             }
 
@@ -522,7 +522,7 @@ namespace rw { namespace models {
             /**
              * @brief Definition of even for work cell changed
              */
-            typedef rw::common::Event<WorkCellChangedListener, int> WorkCellChangedEvent;
+            typedef rw::core::Event<WorkCellChangedListener, int> WorkCellChangedEvent;
 
             /**
              * @brief Returns the work cell changed event
@@ -535,12 +535,12 @@ namespace rw { namespace models {
             /**
              * @brief Properties of this workcell
              */
-            rw::common::PropertyMap& getPropertyMap();
+            rw::core::PropertyMap& getPropertyMap();
 
             /**
              * @brief Properties of this workcell
              */
-            const rw::common::PropertyMap& getPropertyMap() const;
+            const rw::core::PropertyMap& getPropertyMap() const;
 
             /**
              * @brief Returns collision setup associated to work cell
@@ -553,13 +553,13 @@ namespace rw { namespace models {
              * @brief Get the scene descriptor.
              * @return the scene descriptor.
              */
-            rw::common::Ptr<rw::graphics::SceneDescriptor> getSceneDescriptor() { return _sceneDescriptor; }
+            rw::core::Ptr<rw::graphics::SceneDescriptor> getSceneDescriptor() { return _sceneDescriptor; }
 
             /**
              * @brief Set the scene descriptor.
              * @param scene [in] the scene descriptor.
              */
-            void setSceneDescriptor(rw::common::Ptr<rw::graphics::SceneDescriptor> scene) { _sceneDescriptor = scene; }
+            void setSceneDescriptor(rw::core::Ptr<rw::graphics::SceneDescriptor> scene) { _sceneDescriptor = scene; }
 
             /**
              * @brief Returns the full path and filename of the workcell.
@@ -602,18 +602,18 @@ namespace rw { namespace models {
             void stateDataRemovedListener(const rw::kinematics::StateData* data);
 
         private:
-            rw::common::Ptr<rw::kinematics::StateStructure> _tree;
-            std::vector<rw::common::Ptr<Device> > _devices;
-            std::vector<rw::common::Ptr<Object> > _objects;
+            rw::core::Ptr<rw::kinematics::StateStructure> _tree;
+            std::vector<rw::core::Ptr<Device> > _devices;
+            std::vector<rw::core::Ptr<Object> > _objects;
             std::string _name;
             std::string _filename;
             std::string _calibrationFilename;
 
-            rw::common::PropertyMap* _map;
+            rw::core::PropertyMap* _map;
             WorkCellChangedEvent _workCellChangedEvent;
-            std::vector<rw::common::Ptr<rw::sensor::SensorModel> > _sensors;
-            std::vector<rw::common::Ptr<ControllerModel> > _controllers;
-            rw::common::Ptr<rw::graphics::SceneDescriptor> _sceneDescriptor;
+            std::vector<rw::core::Ptr<rw::sensor::SensorModel> > _sensors;
+            std::vector<rw::core::Ptr<ControllerModel> > _controllers;
+            rw::core::Ptr<rw::graphics::SceneDescriptor> _sceneDescriptor;
         private:
             WorkCell();
             WorkCell(const WorkCell&);

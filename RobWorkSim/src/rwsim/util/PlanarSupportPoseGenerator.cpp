@@ -2,7 +2,7 @@
 
 #include <rw/geometry/QHull3D.hpp>
 //#include <rw/geometry/IncrementalHull.hpp>
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include <rw/geometry/Geometry.hpp>
 #include <rw/geometry/GeometryUtil.hpp>
@@ -17,6 +17,7 @@
 
 using namespace rwsim::util;
 using namespace rw::common;
+using namespace rw::core;
 using namespace rw::math;
 using namespace rw::geometry;
 using namespace rw::loaders;

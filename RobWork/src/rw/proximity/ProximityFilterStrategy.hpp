@@ -55,9 +55,9 @@ namespace rw { namespace proximity {
 class ProximityFilterStrategy {
 public:
 	//! @brief smart pointer type to this class
-	typedef rw::common::Ptr<ProximityFilterStrategy> Ptr;
+	typedef rw::core::Ptr<ProximityFilterStrategy> Ptr;
 	//! @brief smart pointer type to this const class
-	typedef rw::common::Ptr<const ProximityFilterStrategy> CPtr;
+	typedef rw::core::Ptr<const ProximityFilterStrategy> CPtr;
 
 	//! @brief Destructor
 	virtual ~ProximityFilterStrategy() {};
@@ -102,7 +102,7 @@ public:
 	 * @param frame [in] Frame which has the geometry associated
 	 * @param geo [in] Geometry
 	 */ 
-	virtual void addGeometry(rw::kinematics::Frame* frame, const rw::common::Ptr<rw::geometry::Geometry> geo) = 0;
+	virtual void addGeometry(rw::kinematics::Frame* frame, const rw::core::Ptr<rw::geometry::Geometry> geo) = 0;
 
 	/** 
 	 * @brief Removes the geometric model \b geo associated with
@@ -111,7 +111,7 @@ public:
 	 * @param frame [in] Frame which has the geometry associated
 	 * @param geo [in] Geometry
 	 */ 
-	virtual void removeGeometry(rw::kinematics::Frame* frame, const rw::common::Ptr<rw::geometry::Geometry> geo) = 0;
+	virtual void removeGeometry(rw::kinematics::Frame* frame, const rw::core::Ptr<rw::geometry::Geometry> geo) = 0;
 
 	/** 
 	 * @brief Removes the geometric model with name \b geoName and which is associated with

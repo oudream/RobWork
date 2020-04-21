@@ -4,7 +4,7 @@
 #include <rw/proximity/CollisionDetector.hpp>
 #include <rwlibs/proximitystrategies/ProximityStrategyYaobi.hpp>
 
-using rw::common::ownedPtr;
+using rw::core::ownedPtr;
 using rw::math::Q;
 using namespace rw::models;
 using rw::pathplanning::PlannerConstraint;

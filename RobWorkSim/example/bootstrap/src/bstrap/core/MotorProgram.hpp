@@ -18,21 +18,21 @@
 #ifndef MOTORPROGRAM_HPP_
 #define MOTORPROGRAM_HPP_
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <QThread>
 #include <QWidget>
 
-namespace rw { namespace common { class PropertyMap; } }
+namespace rw { namespace core { class PropertyMap; } }
 
 class BrainState;
 
 class MotorProgram: public QThread {
     Q_OBJECT
 public:
-    typedef rw::common::Ptr<MotorProgram> Ptr;
+    typedef rw::core::Ptr<MotorProgram> Ptr;
     MotorProgram(const std::string& name, QWidget *parent=NULL);
 
-    void execute(rw::common::Ptr<rw::common::PropertyMap> parameters, const BrainState& bstate);
+    void execute(rw::core::Ptr<rw::core::PropertyMap> parameters, const BrainState& bstate);
 
     //! @brief executes the command
     void run();
@@ -46,7 +46,7 @@ public:
 
 protected:
 
-    virtual void setParameters(rw::common::Ptr<rw::common::PropertyMap> parameters, const BrainState& bstate) = 0;
+    virtual void setParameters(rw::core::Ptr<rw::core::PropertyMap> parameters, const BrainState& bstate) = 0;
     virtual void executionloop() = 0;
 
 private:

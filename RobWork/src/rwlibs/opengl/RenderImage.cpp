@@ -21,7 +21,7 @@
 #include <rw/sensor/Image.hpp>
 #include <rwlibs/os/rwgl.hpp>
 
-using rw::common::ownedPtr;
+using rw::core::ownedPtr;
 using namespace rwlibs::opengl;
 using namespace rw::graphics;
 

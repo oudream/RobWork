@@ -26,10 +26,10 @@
 
 #include <QDialog>
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/math/Transform3D.hpp>
 
-namespace rw { namespace common { class PropertyMap; } }
+namespace rw { namespace core { class PropertyMap; } }
 namespace rw { namespace models { class WorkCell; } }
 namespace rwlibs { namespace assembly { class AssemblyControlStrategy; } }
 namespace rws { class SceneOpenGLViewer; }
@@ -67,7 +67,7 @@ public:
 	 * @param wc [in] the workcell to set up assembly task for.
 	 * @param strategy the assembly strategy to use.
 	 */
-	TaskSetupDialog(QWidget* parent, rw::common::Ptr<const rw::models::WorkCell> wc, rw::common::Ptr<rwlibs::assembly::AssemblyControlStrategy> strategy);
+	TaskSetupDialog(QWidget* parent, rw::core::Ptr<const rw::models::WorkCell> wc, rw::core::Ptr<rwlibs::assembly::AssemblyControlStrategy> strategy);
 
 	//! @brief Destructor.
 	virtual ~TaskSetupDialog();
@@ -92,10 +92,10 @@ private:
 	struct InsertionSimulation;
 
 	Ui::TaskSetupDialog* const _ui;
-	const rw::common::Ptr<const rw::models::WorkCell> _wc;
-	rw::common::Ptr<rwlibs::assembly::AssemblyControlStrategy> _strategy;
+	const rw::core::Ptr<const rw::models::WorkCell> _wc;
+	rw::core::Ptr<rwlibs::assembly::AssemblyControlStrategy> _strategy;
 	QTimer* const _timer;
-	rw::common::Ptr<rw::common::PropertyMap> _propertyMap;
+	rw::core::Ptr<rw::core::PropertyMap> _propertyMap;
 	std::string _lastDir;
 	InsertionSimulation* const _simulation;
 	HelpAssistant* const _help;

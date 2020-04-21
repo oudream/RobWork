@@ -18,8 +18,8 @@
 #ifndef RWSIM_UTIL_GRASPSTRATEGY_HPP_
 #define RWSIM_UTIL_GRASPSTRATEGY_HPP_
 
-#include <rw/common/PropertyMap.hpp>
-#include <rw/common/Ptr.hpp>
+#include <rw/core/PropertyMap.hpp>
+#include <rw/core/Ptr.hpp>
 #include "StateSampler.hpp"
 
 namespace rwsim {
@@ -38,13 +38,13 @@ namespace util {
 	class GraspStrategy {
 	public:
 
-	    typedef rw::common::Ptr<GraspStrategy> Ptr;
+	    typedef rw::core::Ptr<GraspStrategy> Ptr;
 
 		virtual StateSampler::Ptr getSampler() = 0;
 
 		virtual std::string getIdentifier() = 0;
 
-		virtual rw::common::PropertyMap& getSettings() = 0;
+		virtual rw::core::PropertyMap& getSettings() = 0;
 
 		virtual void applySettings() = 0;
 	};

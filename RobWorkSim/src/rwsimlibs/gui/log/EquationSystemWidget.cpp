@@ -28,7 +28,7 @@
 using namespace rwsim::log;
 using namespace rwsimlibs::gui;
 
-EquationSystemWidget::EquationSystemWidget(rw::common::Ptr<const LogEquationSystem> entry, QWidget* parent):
+EquationSystemWidget::EquationSystemWidget(rw::core::Ptr<const LogEquationSystem> entry, QWidget* parent):
 	SimulatorLogEntryWidget(parent),
 	_ui(new Ui::EquationSystemWidget()),
 	_system(entry)
@@ -56,12 +56,12 @@ EquationSystemWidget::EquationSystemWidget(rw::common::Ptr<const LogEquationSyst
 EquationSystemWidget::~EquationSystemWidget() {
 }
 
-void EquationSystemWidget::setDWC(rw::common::Ptr<const rwsim::dynamics::DynamicWorkCell> dwc) {
+void EquationSystemWidget::setDWC(rw::core::Ptr<const rwsim::dynamics::DynamicWorkCell> dwc) {
 	// we do not use any DWC in this widget
 }
 
-void EquationSystemWidget::setEntry(rw::common::Ptr<const SimulatorLog> entry) {
-	const rw::common::Ptr<const LogEquationSystem> system = entry.cast<const LogEquationSystem>();
+void EquationSystemWidget::setEntry(rw::core::Ptr<const SimulatorLog> entry) {
+	const rw::core::Ptr<const LogEquationSystem> system = entry.cast<const LogEquationSystem>();
 	if (!(system == NULL)) {
 		_system = system;
 	} else {
@@ -69,7 +69,7 @@ void EquationSystemWidget::setEntry(rw::common::Ptr<const SimulatorLog> entry) {
 	}
 }
 
-rw::common::Ptr<const SimulatorLog> EquationSystemWidget::getEntry() const {
+rw::core::Ptr<const SimulatorLog> EquationSystemWidget::getEntry() const {
 	return _system;
 }
 
@@ -153,7 +153,7 @@ void EquationSystemWidget::updateEntryWidget() {
 	}
 }
 
-void EquationSystemWidget::showGraphics(rw::common::Ptr<rw::graphics::GroupNode> root, rw::common::Ptr<rw::graphics::SceneGraph> graph) {
+void EquationSystemWidget::showGraphics(rw::core::Ptr<rw::graphics::GroupNode> root, rw::core::Ptr<rw::graphics::SceneGraph> graph) {
 	// no graphics in this widget
 }
 
@@ -167,15 +167,15 @@ EquationSystemWidget::Dispatcher::Dispatcher() {
 EquationSystemWidget::Dispatcher::~Dispatcher() {
 }
 
-SimulatorLogEntryWidget* EquationSystemWidget::Dispatcher::makeWidget(rw::common::Ptr<const SimulatorLog> entry, QWidget* parent) const {
-	rw::common::Ptr<const LogEquationSystem> const system = entry.cast<const LogEquationSystem>();
+SimulatorLogEntryWidget* EquationSystemWidget::Dispatcher::makeWidget(rw::core::Ptr<const SimulatorLog> entry, QWidget* parent) const {
+	rw::core::Ptr<const LogEquationSystem> const system = entry.cast<const LogEquationSystem>();
 	if (!(system == NULL))
 		return new EquationSystemWidget(system, parent);
 	RW_THROW("EquationSystemWidget::Dispatcher (makeWidget): invalid entry!");
 	return NULL;
 }
 
-bool EquationSystemWidget::Dispatcher::accepts(rw::common::Ptr<const SimulatorLog> entry) const {
+bool EquationSystemWidget::Dispatcher::accepts(rw::core::Ptr<const SimulatorLog> entry) const {
 	if (!(entry.cast<const LogEquationSystem>() == NULL))
 		return true;
 	return false;

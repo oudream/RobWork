@@ -2,13 +2,13 @@
 #ifndef CONDITION_HPP_
 #define CONDITION_HPP_
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 class BrainState;
 
 class Condition {
 public:
-    typedef rw::common::Ptr<Condition> Ptr;
+    typedef rw::core::Ptr<Condition> Ptr;
 
     virtual bool isConditionMet(const BrainState& state) = 0;
 };

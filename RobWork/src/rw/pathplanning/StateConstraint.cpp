@@ -17,8 +17,8 @@
 
 #include "StateConstraint.hpp"
 
-#include <rw/common/Log.hpp>
-#include <rw/common/macros.hpp>
+#include <rw/core/Log.hpp>
+#include <rw/core/macros.hpp>
 #include <rw/proximity/CollisionDetector.hpp>
 
 
@@ -27,7 +27,7 @@ using namespace rw::pathplanning;
 using namespace rw::proximity;
 using namespace rw::math;
 using namespace rw::kinematics;
-using namespace rw::common;
+using namespace rw::core;
 
 namespace {
 class FromCollisionDetector : public StateConstraint
@@ -54,7 +54,7 @@ class FromCollisionDetector : public StateConstraint
     void doSetLog (Log::Ptr log) { _log = log; }
 
   private:
-    rw::common::Ptr< CollisionDetector > _detector;
+    rw::core::Ptr< CollisionDetector > _detector;
     Log::Ptr _log;
 };
 
@@ -92,7 +92,7 @@ bool StateConstraint::inCollision (const rw::kinematics::State& state) const
     return doInCollision (state);
 }
 
-void StateConstraint::setLog (rw::common::Log::Ptr log)
+void StateConstraint::setLog (rw::core::Log::Ptr log)
 {
     doSetLog (log);
 }

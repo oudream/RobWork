@@ -18,7 +18,7 @@
 #ifndef PROXIMITYMODEL_HPP_
 #define PROXIMITYMODEL_HPP_
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include <string>
 #include <vector>
@@ -41,7 +41,7 @@ namespace rw { namespace proximity {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::common::Ptr< ProximityModel > Ptr;
+        typedef rw::core::Ptr< ProximityModel > Ptr;
 
         /**
          * @brief Constructor
@@ -62,7 +62,7 @@ namespace rw { namespace proximity {
          * @brief get the associated Geometries
          * @return a list of Geomety pointers beloninh to the model
          */
-        std::vector< rw::common::Ptr< rw::geometry::Geometry > > getGeometries ();
+        std::vector< rw::core::Ptr< rw::geometry::Geometry > > getGeometries ();
 
         /**
          * @brief adds geometry
@@ -75,7 +75,7 @@ namespace rw { namespace proximity {
          * @param geom [in] the geometry to add
          * @param forceCopy [in]
          **/
-        bool addGeometry (rw::common::Ptr< rw::geometry::Geometry > geom, bool forceCopy = false);
+        bool addGeometry (rw::core::Ptr< rw::geometry::Geometry > geom, bool forceCopy = false);
 
         /**
          * @brief removes a geometry from the ProximityModel

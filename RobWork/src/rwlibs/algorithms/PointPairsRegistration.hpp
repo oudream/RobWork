@@ -21,7 +21,7 @@
 
 
 #include <rw/math/Transform3D.hpp>
-#include <rw/common/PropertyMap.hpp>
+#include <rw/core/PropertyMap.hpp>
 
 namespace rwlibs {
 	namespace algorithms {

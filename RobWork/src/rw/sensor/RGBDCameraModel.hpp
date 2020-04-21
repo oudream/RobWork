@@ -25,7 +25,7 @@
 
 #include "SensorModel.hpp"
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 namespace rw { namespace sensor {
    
@@ -39,7 +39,7 @@ namespace rw { namespace sensor {
    class RGBDCameraModel : public SensorModel {
       public:
          //! @brief smart pointer type to this class
-         typedef rw::common::Ptr<RGBDCameraModel> Ptr;
+         typedef rw::core::Ptr<RGBDCameraModel> Ptr;
          
          /**
           * @brief constructor

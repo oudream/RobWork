@@ -27,6 +27,7 @@
 #include <xercesc/framework/XMLFormatter.hpp>
 
 #include <xercesc/util/XMLUni.hpp>
+#include <rw/core/Exception.hpp>
 
 
 
@@ -111,7 +112,7 @@ xercesc::DOMDocument* XercesDocumentWriter::createDocument(const XMLCh* rootName
         {
             RW_THROW("XMLPathWriter: DOMException code:  " << XMLStr(e.getMessage()).str());
         }
-        catch (const rw::common::Exception& exp) {
+        catch (const rw::core::Exception& exp) {
             throw exp;
         }
         catch (...)

@@ -6,7 +6,7 @@
 #include <rw/proximity/CollisionDetector.hpp>
 #include <rwlibs/proximitystrategies/ProximityStrategyYaobi.hpp>
 
-using rw::common::ownedPtr;
+using rw::core::ownedPtr;
 using rw::kinematics::State;
 using rw::loaders::WorkCellLoader;
 using namespace rw::math;

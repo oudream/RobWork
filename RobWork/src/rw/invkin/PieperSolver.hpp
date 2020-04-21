@@ -56,7 +56,7 @@ namespace rw { namespace invkin {
     public:
 
 		//! @brief smart pointer type to this class
-		typedef rw::common::Ptr<PieperSolver> Ptr;
+		typedef rw::core::Ptr<PieperSolver> Ptr;
 
         /**
          * @brief Constructor
@@ -94,7 +94,7 @@ namespace rw { namespace invkin {
         /**
          * @copydoc InvKinSolver::getTCP
          */
-        virtual rw::common::Ptr< const rw::kinematics::Frame > getTCP() const;            
+        virtual rw::core::Ptr< const rw::kinematics::Frame > getTCP() const;            
 
     private:
         std::vector<rw::models::DHParameterSet> _dhparams;

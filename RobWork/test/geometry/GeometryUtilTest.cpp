@@ -27,6 +27,7 @@
 #include <rw/geometry/Tube.hpp>
 #include <rw/math/Vector3D.hpp>
 #include <rw/kinematics/State.hpp>
+#include <rw/core/Ptr.hpp>
 
 #if RW_HAVE_ASSIMP
 #include <rw/loaders/model3d/LoaderAssimp.hpp>
@@ -37,7 +38,7 @@ using rw::loaders::LoaderAssimp;
 using rw::loaders::STLFile;
 #endif
 
-using rw::common::ownedPtr;
+using rw::core::ownedPtr;
 using namespace rw::geometry;
 using rw::kinematics::State;
 using namespace rw::math;

@@ -47,7 +47,7 @@ RWDrawable::Drawable(
     setTransform(rw::math::Transform3D<>::identity() );
 }
 
-RWDrawable::Drawable(rw::common::Ptr<Render> render,
+RWDrawable::Drawable(rw::core::Ptr<Render> render,
                      const std::string& name,
                    unsigned int dmask)
     :

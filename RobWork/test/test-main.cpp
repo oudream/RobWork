@@ -2,7 +2,7 @@
 //#define BOOST_TEST_MODULE "core-test"
 #include "TestSuiteConfig.hpp"
 
-#include <rw/RobWork.hpp>
+#include <rw/core/RobWork.hpp>
 
 #include <boost/property_tree/xml_parser.hpp>
 #include <boost/filesystem.hpp>
@@ -56,7 +56,7 @@ boost::unit_test::test_suite* init_unit_test_suite(int argc, char** const argv)
     boost::filesystem::path path( argv[0] );
 	boost::filesystem::path full_path = boost::filesystem::canonical(path);
 
-    rw::RobWork::init(argc,(const char**)argv);
+    rw::core::RobWork::init(argc,(const char**)argv);
 
     try{
         boost::property_tree::read_xml(full_path.parent_path().string() + "/TestSuiteConfig.xml", tree);

@@ -40,9 +40,9 @@ namespace rw { namespace proximity {
 class BasicFilterStrategy: public ProximityFilterStrategy {
 public:
 	//! @brief smart pointer type to this class
-	typedef rw::common::Ptr<BasicFilterStrategy> Ptr;
+	typedef rw::core::Ptr<BasicFilterStrategy> Ptr;
 	//! @brief smart pointer type to this const class
-	typedef rw::common::Ptr<const BasicFilterStrategy> CPtr;
+	typedef rw::core::Ptr<const BasicFilterStrategy> CPtr;
 
 private:
 	/**
@@ -87,14 +87,14 @@ public:
 	 *
 	 * @param workcell [in] the workcell.
 	 */
-	BasicFilterStrategy(rw::common::Ptr<rw::models::WorkCell> workcell);
+	BasicFilterStrategy(rw::core::Ptr<rw::models::WorkCell> workcell);
 
 	/**
 	 * @brief constructor - constructs frame pairs based on the \b setup
 	 * @param workcell [in] the workcell
 	 * @param setup [in] the ProximitySetup describing exclude/include relations
 	 */
-	BasicFilterStrategy(rw::common::Ptr<rw::models::WorkCell> workcell, const ProximitySetup& setup);
+	BasicFilterStrategy(rw::core::Ptr<rw::models::WorkCell> workcell, const ProximitySetup& setup);
 
 
 	//! @brief destructor
@@ -106,7 +106,7 @@ public:
 	virtual void reset(const rw::kinematics::State& state);
 
 	//! @copydoc ProximityFilterStrategy::createProximityCache
-	virtual ProximityCache::Ptr createProximityCache(){ return rw::common::ownedPtr(new Cache(this)); }
+	virtual ProximityCache::Ptr createProximityCache(){ return rw::core::ownedPtr(new Cache(this)); }
 
 	//! @copydoc ProximityFilterStrategy::update
 	virtual ProximityFilter::Ptr update(const rw::kinematics::State& state);
@@ -123,7 +123,7 @@ public:
 	 * @brief Adds geometry associated to frame
 	 * @param frame [in] Frame which has the geometry associated
 	 */
-	virtual void addGeometry(rw::kinematics::Frame* frame, const rw::common::Ptr<rw::geometry::Geometry>);
+	virtual void addGeometry(rw::kinematics::Frame* frame, const rw::core::Ptr<rw::geometry::Geometry>);
 
 	/** 
 	 * @brief Removes the geometric model \b geo associated with
@@ -131,7 +131,7 @@ public:
 	 *
 	 * @param frame [in] Frame which has the geometry associated
 	 */
-	virtual void removeGeometry(rw::kinematics::Frame* frame, const rw::common::Ptr<rw::geometry::Geometry>);
+	virtual void removeGeometry(rw::kinematics::Frame* frame, const rw::core::Ptr<rw::geometry::Geometry>);
 
 	/** 
 	 * @brief Removes the geometric model \b geo associated with
@@ -155,19 +155,19 @@ public:
 
 private:
 
-	rw::common::Ptr<rw::models::WorkCell> _workcell;
+	rw::core::Ptr<rw::models::WorkCell> _workcell;
     ProximitySetup _psetup;
 	kinematics::FramePairSet _collisionPairs;
 	
 	kinematics::FrameMap<std::vector<std::string> > _frameToGeoIdMap;
 
-	void applyRule(const ProximitySetupRule& rule, rw::common::Ptr<rw::models::WorkCell> workcell, rw::kinematics::FramePairSet& result);
+	void applyRule(const ProximitySetupRule& rule, rw::core::Ptr<rw::models::WorkCell> workcell, rw::kinematics::FramePairSet& result);
 	void initialize();
 	void initializeCollisionFramePairs(const rw::kinematics::State& state);
 };
 
 #ifdef RW_USE_DEPREACTED
-typedef rw::common::Ptr<BasicFilterStrategy> BasicFilterStrategyPtr;
+typedef rw::core::Ptr<BasicFilterStrategy> BasicFilterStrategyPtr;
 #endif
 }
 }

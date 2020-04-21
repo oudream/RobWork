@@ -23,38 +23,31 @@
 #ifndef RW_COMMON_HPP_
 #define RW_COMMON_HPP_
 
-#include "./common/Cache.hpp"
-#include "./common/ConcatVectorIterator.hpp"
-//#include "./common/ConvertUtil.hpp"
-#include "./common/Exception.hpp"
-#include "./common/IOUtil.hpp"
-#include "./common/Log.hpp"
-#include "./common/LogBufferedChar.hpp"
-#include "./common/LogBufferedMsg.hpp"
-#include "./common/LogStreamWriter.hpp"
-#include "./common/LogWriter.hpp"
-#include "./common/macros.hpp"
-#include "./common/Message.hpp"
-#include "./common/os.hpp"
-#include "./common/Property.hpp"
-#include "./common/PropertyBase.hpp"
-#include "./common/PropertyMap.hpp"
-#include "./common/PropertyType.hpp"
-#include "./common/ProgramOptions.hpp"
-#include "./common/Ptr.hpp"
-#include "./common/StringUtil.hpp"
-#include "./common/ThreadPool.hpp"
-#include "./common/ThreadTask.hpp"
-#include "./common/Timer.hpp"
-#include "./common/TimerUtil.hpp"
-#include "./common/VectorIterator.hpp"
-
-#include "./common/InputArchive.hpp"
-#include "./common/OutputArchive.hpp"
-
-#include "./common/Plugin.hpp"
-#include "./common/Extension.hpp"
-#include "./common/ExtensionRegistry.hpp"
-
+#include <rw/common/Archive.hpp>
+#include <rw/common/BINArchive.hpp>
+#include <rw/common/Cache.hpp>
+#include <rw/common/ConcatVectorIterator.hpp>
+#include <rw/common/FileCache.hpp>
+#include <rw/common/INIArchive.hpp>
+#include <rw/common/InputArchive.hpp>
+#include <rw/common/LogBufferedChar.hpp>
+#include <rw/common/LogBufferedMsg.hpp>
+#include <rw/common/LogFileWriter.hpp>
+#include <rw/common/LogMultiWriter.hpp>
+#include <rw/common/OutputArchive.hpp>
+#include <rw/common/PairMap.hpp>
+#include <rw/common/ProgramOptions.hpp>
+#include <rw/common/ScopedTimer.hpp>
+#include <rw/common/Serializable.hpp>
+#include <rw/common/ThreadPool.hpp>
+#include <rw/common/ThreadSafeQueue.hpp>
+#include <rw/common/ThreadSafeStack.hpp>
+#include <rw/common/ThreadSafeVariable.hpp>
+#include <rw/common/ThreadTask.hpp>
+#include <rw/common/Timer.hpp>
+#include <rw/common/TimerUtil.hpp>
+#include <rw/common/Traits.hpp>
+#include <rw/common/VectorIterator.hpp>
+#include <rw/common/types.hpp>
 
 #endif /* COMMON_HPP_ */

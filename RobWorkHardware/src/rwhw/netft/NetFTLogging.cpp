@@ -4,9 +4,10 @@
 #include <exception>
 
 // RW
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 
 using namespace rwhw;
+using namespace rw::core;
 using namespace rw::common;
 using namespace rw::math;
 

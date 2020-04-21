@@ -13,7 +13,7 @@
 #include <boost/filesystem.hpp>
 
 using namespace std;
-using namespace rw::common;
+using namespace rw::core;
 using namespace rwlibs::task;
 using namespace boost::program_options;
 

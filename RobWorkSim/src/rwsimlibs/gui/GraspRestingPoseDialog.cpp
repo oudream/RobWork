@@ -36,6 +36,7 @@ using namespace rwsim::control;
 using namespace rwsim::sensor;
 using namespace rw::math;
 using namespace rw::kinematics;
+using namespace rw::core;
 using namespace rw::common;
 using namespace rw::proximity;
 using namespace rw::loaders;

@@ -20,7 +20,7 @@
 #include "PlainTriMesh.hpp"
 
 using namespace rw::geometry;
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::math;
 
  Pyramid::Pyramid(const rw::math::Q& initQ){

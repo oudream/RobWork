@@ -7,7 +7,7 @@ using namespace rwsim::control;
 using namespace rwsim::dynamics;
 using namespace rw::math;
 using namespace rw::kinematics;
-using namespace rw::common;
+using namespace rw::core;
 using namespace rwlibs::algorithms;
 
 PoseController::PoseController(
@@ -16,7 +16,7 @@ PoseController::PoseController(
 		const rw::kinematics::State& state,
 		double dt):
 	Controller(name),
-	SimulatedController(rw::common::ownedPtr(new rw::models::ControllerModel(name,rdev->getKinematicModel()->getBase()))),
+	SimulatedController(rw::core::ownedPtr(new rw::models::ControllerModel(name,rdev->getKinematicModel()->getBase()))),
 	_ddev(rdev),
     _device( _ddev->getKinematicModel() ),
     _endframe( _device->getEnd() ),
@@ -24,7 +24,7 @@ PoseController::PoseController(
 	_targetVel(0,0,0,0,0,0),
 	_stime(dt),
 	_accTime(0),
-	_xqp( rw::common::ownedPtr(new XQPController(_device, _endframe, state, _stime)))
+	_xqp( rw::core::ownedPtr(new XQPController(_device, _endframe, state, _stime)))
 {
 }
 
@@ -35,7 +35,7 @@ PoseController::PoseController(
 		double dt,
 		rw::kinematics::Frame* endframe):
 	Controller(name),
-	SimulatedController(rw::common::ownedPtr(new rw::models::ControllerModel(name,rdev->getKinematicModel()->getBase()))),
+	SimulatedController(rw::core::ownedPtr(new rw::models::ControllerModel(name,rdev->getKinematicModel()->getBase()))),
     _ddev(rdev),
     _device( _ddev->getKinematicModel() ),
     _endframe( endframe ),

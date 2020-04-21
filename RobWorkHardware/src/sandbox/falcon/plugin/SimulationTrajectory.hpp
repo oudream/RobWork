@@ -5,7 +5,7 @@
 #include <rw/math/Q.hpp>
 #include <rw/math/Transform3D.hpp>
 #include <rw/math/RPY.hpp>
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <vector>
 #include <string>
 
@@ -19,13 +19,13 @@ class SimulationTrajectory
 {
 	public: // types
 		/// Smart pointer
-		typedef rw::common::Ptr<SimulationTrajectory> Ptr;
+		typedef rw::core::Ptr<SimulationTrajectory> Ptr;
 	
 		/// Describes a single simulation step
 		struct SimulationStep
 		{
 			public: // types
-				typedef rw::common::Ptr<SimulationStep> Ptr;
+				typedef rw::core::Ptr<SimulationStep> Ptr;
 				typedef std::pair<std::string, rw::math::Transform3D<> > ObjectPose;
 				typedef std::pair<std::string, std::string> ObjectPair;
 				

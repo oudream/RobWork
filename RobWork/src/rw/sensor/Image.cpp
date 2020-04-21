@@ -17,14 +17,14 @@
 
 
 #include "Image.hpp"
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 
 #include <stdio.h>
 #include <string.h>
 #include <cmath>
 
 using namespace rw::sensor;
-using namespace rw::common;
+using namespace rw::core;
 
 namespace {
 

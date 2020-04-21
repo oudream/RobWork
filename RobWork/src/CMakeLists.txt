@@ -1,5 +1,7 @@
 
 # Subdirectories to process.
+
+add_subdirectory(rw/core)
 add_subdirectory(rw)
 add_subdirectory(rwlibs)
 

@@ -25,7 +25,8 @@
  */
 
 #include <rwsim/simulator/PhysicsEngine.hpp>
-
+#include <rw/core/Ptr.hpp>
+#include <rw/core/PropertyMap.hpp>
 #include <rwsim/dynamics/MaterialDataMap.hpp>
 #include <rwsim/dynamics/ContactDataMap.hpp>
 
@@ -62,16 +63,16 @@ public:
 	 * @brief Construct new simulator.
 	 * @param dwc [in] the dynamic workcell.
 	 */
-	BtSimulator(rw::common::Ptr<rwsim::dynamics::DynamicWorkCell> dwc);
+	BtSimulator(rw::core::Ptr<rwsim::dynamics::DynamicWorkCell> dwc);
 
 	//! @brief Destructor.
 	virtual ~BtSimulator();
 
 	//! @copydoc rwsim::simulator::PhysicsEngine::load
-	void load(rw::common::Ptr<rwsim::dynamics::DynamicWorkCell> dwc);
+	void load(rw::core::Ptr<rwsim::dynamics::DynamicWorkCell> dwc);
 
 	//! @copydoc rwsim::simulator::PhysicsEngine::setContactDetector
-	bool setContactDetector(rw::common::Ptr<rwsim::contacts::ContactDetector> detector);
+	bool setContactDetector(rw::core::Ptr<rwsim::contacts::ContactDetector> detector);
 
 	//! @copydoc rwsim::simulator::PhysicsEngine::step
 	void step(double dt, rw::kinematics::State& state);
@@ -89,31 +90,31 @@ public:
 	double getTime();
 
 	//! @copydoc rwsim::simulator::PhysicsEngine::setEnabled
-	void setEnabled(rw::common::Ptr<rwsim::dynamics::Body> body, bool enabled);
+	void setEnabled(rw::core::Ptr<rwsim::dynamics::Body> body, bool enabled);
 
 	//! @copydoc rwsim::simulator::PhysicsEngine::setDynamicsEnabled
-	void setDynamicsEnabled(rw::common::Ptr<rwsim::dynamics::Body> body, bool enabled);
+	void setDynamicsEnabled(rw::core::Ptr<rwsim::dynamics::Body> body, bool enabled);
 
 	//! @copydoc rwsim::simulator::PhysicsEngine::createDebugRender
 	rwsim::drawable::SimulatorDebugRender::Ptr createDebugRender();
 
 	//! @copydoc rwsim::simulator::PhysicsEngine::getPropertyMap
-	rw::common::PropertyMap& getPropertyMap();
+	rw::core::PropertyMap& getPropertyMap();
 
 	//! @copydoc rwsim::simulator::PhysicsEngine::emitPropertyChanged
 	void emitPropertyChanged();
 
 	//! @copydoc rwsim::simulator::PhysicsEngine::addController
-	void addController(rw::common::Ptr<rwlibs::simulation::SimulatedController> controller);
+	void addController(rw::core::Ptr<rwlibs::simulation::SimulatedController> controller);
 
 	//! @copydoc rwsim::simulator::PhysicsEngine::removeController
-	void removeController(rw::common::Ptr<rwlibs::simulation::SimulatedController> controller);
+	void removeController(rw::core::Ptr<rwlibs::simulation::SimulatedController> controller);
 
 	//! @copydoc rwsim::simulator::PhysicsEngine::addBody
-	void addBody(rw::common::Ptr<rwsim::dynamics::Body> body, rw::kinematics::State& state);
+	void addBody(rw::core::Ptr<rwsim::dynamics::Body> body, rw::kinematics::State& state);
 
 	//! @copydoc rwsim::simulator::PhysicsEngine::addDevice
-	void addDevice(rw::common::Ptr<rwsim::dynamics::DynamicDevice> device, rw::kinematics::State& state);
+	void addDevice(rw::core::Ptr<rwsim::dynamics::DynamicDevice> device, rw::kinematics::State& state);
 
 	//! @copydoc rwsim::simulator::PhysicsEngine::addSensor
 	void addSensor(rwlibs::simulation::SimulatedSensor::Ptr sensor, rw::kinematics::State& state);
@@ -122,10 +123,10 @@ public:
 	void removeSensor(rwlibs::simulation::SimulatedSensor::Ptr sensor);
 
 	//! @copydoc rwsim::simulator::PhysicsEngine::attach
-	void attach(rw::common::Ptr<rwsim::dynamics::Body> b1, rw::common::Ptr<rwsim::dynamics::Body> b2);
+	void attach(rw::core::Ptr<rwsim::dynamics::Body> b1, rw::core::Ptr<rwsim::dynamics::Body> b2);
 
 	//! @copydoc rwsim::simulator::PhysicsEngine::detach
-	void detach(rw::common::Ptr<rwsim::dynamics::Body> b1, rw::common::Ptr<rwsim::dynamics::Body> b2);
+	void detach(rw::core::Ptr<rwsim::dynamics::Body> b1, rw::core::Ptr<rwsim::dynamics::Body> b2);
 
 	//! @copydoc rwsim::simulator::PhysicsEngine::getSensors
 	std::vector<rwlibs::simulation::SimulatedSensor::Ptr> getSensors();
@@ -134,10 +135,10 @@ public:
 	 * @brief Add a Constraint between two bodies.
 	 * @param constraint [in] a pointer to the RobWork constraint.
 	 */
-	void addConstraint(rw::common::Ptr<const rwsim::dynamics::Constraint> constraint);
+	void addConstraint(rw::core::Ptr<const rwsim::dynamics::Constraint> constraint);
 
 private:
-	rw::common::PropertyMap _propertyMap;
+	rw::core::PropertyMap _propertyMap;
 	std::vector<rwlibs::simulation::SimulatedSensor::Ptr> _sensors;
 
 	btDiscreteDynamicsWorld* m_dynamicsWorld;
@@ -146,7 +147,7 @@ private:
 	btConstraintSolver* m_solver;
 	btCollisionConfiguration* m_collisionConfiguration;
 
-	rw::common::Ptr<const rwsim::dynamics::DynamicWorkCell> _dwc;
+	rw::core::Ptr<const rwsim::dynamics::DynamicWorkCell> _dwc;
 	rwsim::dynamics::MaterialDataMap _materialMap;
 	rwsim::dynamics::ContactDataMap _contactMap;
 
@@ -157,7 +158,7 @@ private:
 	std::vector<BtConstraint*> _constraints;
 	std::vector<BtTactileSensor*> _btSensors;
 
-	std::vector<rw::common::Ptr<rwsim::dynamics::DynamicDevice> > _devices;
+	std::vector<rw::core::Ptr<rwsim::dynamics::DynamicDevice> > _devices;
 
 	std::vector<BtDevice*> _btDevices;
 
@@ -165,10 +166,10 @@ private:
 
 	rwsim::drawable::SimulatorDebugRender::Ptr _render;
 
-	std::vector<rw::common::Ptr<rwlibs::simulation::SimulatedController> > _controllers;
+	std::vector<rw::core::Ptr<rwlibs::simulation::SimulatedController> > _controllers;
 
-	rw::common::Ptr<rwsim::contacts::ContactDetector> _detector;
-	rw::common::Ptr<rwsim::contacts::ContactDetectorData> _detectorData;
+	rw::core::Ptr<rwsim::contacts::ContactDetector> _detector;
+	rw::core::Ptr<rwsim::contacts::ContactDetectorData> _detectorData;
 
 	double _time, _dt;
 	bool _initPhysicsHasBeenRun;

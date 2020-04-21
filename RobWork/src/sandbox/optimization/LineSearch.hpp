@@ -10,6 +10,7 @@
 
 #include "Optimizer.hpp"
 #include "Types.hpp"
+#include <rw/core/Ptr.hpp>
 
 namespace rwlibs {
 namespace optimization {
@@ -25,7 +26,7 @@ namespace optimization {
 class LineSearch: public Optimizer {
 public:
 	//! Smart pointer.
-	typedef rw::common::Ptr<LineSearch> Ptr;
+	typedef rw::core::Ptr<LineSearch> Ptr;
 
 public:
 	/**

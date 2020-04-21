@@ -18,7 +18,7 @@
 #ifndef DEVICETAB_H
 #define DEVICETAB_H
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/kinematics/FKRange.hpp>
 #include <rw/kinematics/State.hpp>
 #include <rw/math/Q.hpp>
@@ -428,7 +428,7 @@ class CartesianDeviceTab : public QWidget
      * @param state [in] the initial state.
      */
     CartesianDeviceTab (const std::pair< rw::math::Q, rw::math::Q >& bounds,
-                        rw::common::Ptr< rw::models::Device > device,
+                        rw::core::Ptr< rw::models::Device > device,
                         rw::models::WorkCell* workcell, const rw::kinematics::State& state);
 
     /**
@@ -464,7 +464,7 @@ class CartesianDeviceTab : public QWidget
     QComboBox* _cmbAngleType;
 
     rw::kinematics::State _state;
-    rw::common::Ptr< rw::models::Device > _device;
+    rw::core::Ptr< rw::models::Device > _device;
     std::vector< rw::kinematics::Frame* > _frames;
     rw::kinematics::Frame* _tcpFrame;
     rw::kinematics::Frame* _refFrame;
@@ -473,7 +473,7 @@ class CartesianDeviceTab : public QWidget
     rw::kinematics::FKRange _refTtcp;
 
     TransformSliderWidget* _transformSliderWidget;
-    rw::common::Ptr< rw::invkin::IterativeIK > _iksolver;
+    rw::core::Ptr< rw::invkin::IterativeIK > _iksolver;
 
     bool _updating;
 

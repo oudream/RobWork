@@ -47,10 +47,10 @@ class GenericFace;
 class Shell: public rw::geometry::GeometryData {
 public:
     //! @brief Smart pointer type to Shell
-    typedef rw::common::Ptr<Shell> Ptr;
+    typedef rw::core::Ptr<Shell> Ptr;
 
     //! @brief Smart pointer type to const Shell
-    typedef rw::common::Ptr<const Shell> CPtr;
+    typedef rw::core::Ptr<const Shell> CPtr;
 
 	//! @brief Constructor.
 	Shell();
@@ -62,13 +62,13 @@ public:
 	virtual GeometryType getType() const = 0;
 
 	//! @copydoc GeometryData::getTriMesh
-	virtual rw::common::Ptr<TriMesh> getTriMesh(bool forceCopy=true);
+	virtual rw::core::Ptr<TriMesh> getTriMesh(bool forceCopy=true);
 
 	//! @copydoc GeometryData::isConvex
 	virtual bool isConvex() = 0;
 
 	//! @copydoc GeometryData::getTriMesh
-	virtual rw::common::Ptr<TriMesh> getTriMesh(bool forceCopy=true) const;
+	virtual rw::core::Ptr<TriMesh> getTriMesh(bool forceCopy=true) const;
 
 	/**
 	 * @brief Get the number of surface patches in this shell.
@@ -81,7 +81,7 @@ public:
 	 * @param idx [in] index of patch.
 	 * @return a copy of the surface patch.
 	 */
-	inline rw::common::Ptr<const Face> getFace(std::size_t idx) const { return doGetFace(idx); }
+	inline rw::core::Ptr<const Face> getFace(std::size_t idx) const { return doGetFace(idx); }
 
 	/**
 	 * @brief Get a surface patch.
@@ -104,7 +104,7 @@ public:
 	virtual OBB<> obb() const;
 
 private:
-	virtual rw::common::Ptr<const Face> doGetFace(std::size_t idx) const = 0;
+	virtual rw::core::Ptr<const Face> doGetFace(std::size_t idx) const = 0;
 };
 //! @}
 } /* namespace geometry */

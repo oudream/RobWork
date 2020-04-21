@@ -14,7 +14,7 @@ Copyright 2013 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
     limitations under the License.
 */
 
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 
 #include "ModRusselBeamIpopt.hpp"
 #include "ModRussel_NLP.hpp"

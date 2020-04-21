@@ -18,10 +18,10 @@
 
 #include "IterativeMultiIK.hpp"
 
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 
 using namespace rw::invkin;
-using namespace rw::common;
+using namespace rw::core;
 using namespace boost;
 
 IterativeMultiIK::IterativeMultiIK(size_t nrOfEndEff) :

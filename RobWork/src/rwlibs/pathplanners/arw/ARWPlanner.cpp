@@ -22,7 +22,7 @@
 
 using namespace rwlibs::pathplanners;
 using namespace rw::pathplanning;
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::math;
 using namespace rw::models;
 

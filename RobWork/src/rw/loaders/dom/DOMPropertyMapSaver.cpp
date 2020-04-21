@@ -15,16 +15,16 @@
  * limitations under the License.
  ********************************************************************************/
 
-#include <rw/common/DOMParser.hpp>
-#include <rw/common/Property.hpp>
-#include <rw/common/PropertyBase.hpp>
-#include <rw/common/PropertyMap.hpp>
+#include <rw/core/DOMParser.hpp>
+#include <rw/core/Property.hpp>
+#include <rw/core/PropertyBase.hpp>
+#include <rw/core/PropertyMap.hpp>
 #include <rw/loaders/dom/DOMPropertyMapSaver.hpp>
 #include <rw/loaders/dom/DOMBasisTypes.hpp>
 #include <rw/loaders/dom/DOMPropertyMapFormat.hpp>
 #include <rw/loaders/dom/DOMPathSaver.hpp>
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::loaders;
 using namespace rw::math;
 using namespace rw::trajectory;
@@ -172,7 +172,7 @@ void DOMPropertyMapSaver::save(const PropertyBase::Ptr property, DOMElem::Ptr pa
 
 }
 
-void DOMPropertyMapSaver::save(const rw::common::PropertyMap& map, DOMElem::Ptr parent) {
+void DOMPropertyMapSaver::save(const rw::core::PropertyMap& map, DOMElem::Ptr parent) {
     DOMElem::Ptr root = parent->addChild(DOMPropertyMapFormat::idPropertyMap());
 
     std::pair<PropertyMap::iterator, PropertyMap::iterator> iterators = map.getProperties();
@@ -181,7 +181,7 @@ void DOMPropertyMapSaver::save(const rw::common::PropertyMap& map, DOMElem::Ptr 
     }
 }
 
-void DOMPropertyMapSaver::save(const rw::common::PropertyMap& map, const std::string& filename) {
+void DOMPropertyMapSaver::save(const rw::core::PropertyMap& map, const std::string& filename) {
     /* DOMParser::make() as of this writing returns the default XML parser */
     DOMParser::Ptr parser = DOMParser::make();
 
@@ -189,7 +189,7 @@ void DOMPropertyMapSaver::save(const rw::common::PropertyMap& map, const std::st
     parser->save(filename);
 }
 
-void DOMPropertyMapSaver::write(const rw::common::PropertyMap& map, std::ostream& outstream) {
+void DOMPropertyMapSaver::write(const rw::core::PropertyMap& map, std::ostream& outstream) {
     /* DOMParser::make() as of this writing returns the default XML parser */
     DOMParser::Ptr parser = DOMParser::make();
 
@@ -197,7 +197,7 @@ void DOMPropertyMapSaver::write(const rw::common::PropertyMap& map, std::ostream
     parser->save(outstream);
 }
 
-DOMElem::Ptr DOMPropertyMapSaver::createDOMDocument(const rw::common::PropertyMap& map, DOMParser::Ptr parser) {
+DOMElem::Ptr DOMPropertyMapSaver::createDOMDocument(const rw::core::PropertyMap& map, DOMParser::Ptr parser) {
     DOMElem::Ptr doc = parser->getRootElement();
 
     save(map, doc);

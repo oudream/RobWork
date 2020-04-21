@@ -16,7 +16,7 @@
  ********************************************************************************/
 
 #include "LinePolar.hpp"
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 #include <rw/math/Constants.hpp>
 
 using namespace rwsim::util;

@@ -13,7 +13,7 @@
     typedef rwsimlibs::swig::ThreadSimulatorStepCallbackEnv::cThreadSimulatorStepCallback cThreadSimulatorStepCallback;
 #endif
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 using rw::trajectory::Trajectory;
 using namespace rwlibs::swig;
 using namespace rwsim::swig;
@@ -165,26 +165,26 @@ public:
 		std::size_t priority;
 		ProximitySetup rules;
 		ContactStrategy::Ptr strategy;
-		//FrameMap<std::map<std::string, rw::common::Ptr<ContactModel> > > models;
+		//FrameMap<std::map<std::string, rw::core::Ptr<ContactModel> > > models;
 	};*/
 	//typedef std::list<StrategyTableRow> StrategyTable;
 
-	ContactDetector(rw::common::Ptr<WorkCell> workcell);
-	//ContactDetector(rw::common::Ptr<WorkCell> workcell, rw::common::Ptr<ProximityFilterStrategy> filter);
+	ContactDetector(rw::core::Ptr<WorkCell> workcell);
+	//ContactDetector(rw::core::Ptr<WorkCell> workcell, rw::core::Ptr<ProximityFilterStrategy> filter);
 	virtual ~ContactDetector();
 	//void setProximityFilterStrategy(rw::proximity::ProximityFilterStrategy::Ptr filter);
 	virtual std::vector<Contact> findContacts(const State& state);
 	virtual std::vector<Contact> findContacts(const State& state, ContactDetectorData &data);
 	virtual std::vector<Contact> findContacts(const State& state, ContactDetectorData &data, ContactDetectorTracking& tracking);
 	virtual std::vector<Contact> updateContacts(const State& state, ContactDetectorData &data, ContactDetectorTracking& tracking);
-	//virtual rw::common::Ptr<ProximityFilterStrategy> getProximityFilterStrategy() const;
+	//virtual rw::core::Ptr<ProximityFilterStrategy> getProximityFilterStrategy() const;
 	virtual double getTimer() const;
 	virtual void setTimer(double value = 0);
 	//virtual StrategyTable getContactStategies() const;
-	//virtual StrategyTable getContactStrategies(const std::string& frameA, rw::common::Ptr<const rw::geometry::Geometry> geometryA, const std::string& frameB, rw::common::Ptr<const rw::geometry::Geometry> geometryB) const;
-	virtual void addContactStrategy(rw::common::Ptr<ContactStrategy> strategy, std::size_t priority = 0);
-	//virtual void addContactStrategy(ProximitySetupRule rule, rw::common::Ptr<ContactStrategy> strategy, std::size_t priority = 0);
-	//virtual void addContactStrategy(ProximitySetup rules, rw::common::Ptr<ContactStrategy> strategy, std::size_t priority = 0);
+	//virtual StrategyTable getContactStrategies(const std::string& frameA, rw::core::Ptr<const rw::geometry::Geometry> geometryA, const std::string& frameB, rw::core::Ptr<const rw::geometry::Geometry> geometryB) const;
+	virtual void addContactStrategy(rw::core::Ptr<ContactStrategy> strategy, std::size_t priority = 0);
+	//virtual void addContactStrategy(ProximitySetupRule rule, rw::core::Ptr<ContactStrategy> strategy, std::size_t priority = 0);
+	//virtual void addContactStrategy(ProximitySetup rules, rw::core::Ptr<ContactStrategy> strategy, std::size_t priority = 0);
 	//virtual void addContactStrategy(StrategyTableRow &strategy, std::size_t priority = 0);
 	virtual void removeContactStrategy(std::size_t priority = 0);
 	virtual void clearStrategies();
@@ -194,7 +194,7 @@ public:
 	virtual void printStrategyTable() const;
 };
 
-%template (ContactDetectorPtr) rw::common::Ptr<ContactDetector>;
+%template (ContactDetectorPtr) rw::core::Ptr<ContactDetector>;
 OWNEDPTR(ContactDetector);
 
 class ContactDetectorData {
@@ -207,7 +207,7 @@ public:
 	//ContactStrategyData& getStrategyData(const ContactModel* modelA, const ContactModel* modelB);
 };
 
-%template (ContactDetectorDataPtr) rw::common::Ptr<ContactDetectorData>;
+%template (ContactDetectorDataPtr) rw::core::Ptr<ContactDetectorData>;
 OWNEDPTR(ContactDetectorData);
 
 class ContactDetectorTracking {
@@ -228,7 +228,7 @@ public:
 		ContactInfo(): tracking(NULL), id(0), total(0) {}
 		std::pair<rw::kinematics::Frame*, rw::kinematics::Frame*> frames;
 		std::pair<ContactModel*,ContactModel*> models;
-		rw::common::Ptr<ContactStrategy> strategy;
+		rw::core::Ptr<ContactStrategy> strategy;
 		ContactStrategyTracking* tracking;
 		std::size_t id;
 		std::size_t total;
@@ -238,7 +238,7 @@ public:
 	//ContactStrategyTracking& getStrategyTracking(const ContactModel* modelA, const ContactModel* modelB);
 };
 
-%template (ContactDetectorTrackingPtr) rw::common::Ptr<ContactDetectorTracking>;
+%template (ContactDetectorTrackingPtr) rw::core::Ptr<ContactDetectorTracking>;
 OWNEDPTR(ContactDetectorTracking);
 
 class ContactStrategy //: public rw::proximity::ProximityStrategy
@@ -246,29 +246,29 @@ class ContactStrategy //: public rw::proximity::ProximityStrategy
 public:
 	ContactStrategy();
 	virtual ~ContactStrategy() {};
-	virtual bool match(rw::common::Ptr<GeometryData> geoA, rw::common::Ptr<GeometryData> geoB) = 0;
+	virtual bool match(rw::core::Ptr<GeometryData> geoA, rw::core::Ptr<GeometryData> geoB) = 0;
 	/*
-	virtual std::vector<Contact> findContacts(rw::common::Ptr<ProximityModel> a,
+	virtual std::vector<Contact> findContacts(rw::core::Ptr<ProximityModel> a,
 			const rw::math::Transform3D<double>& wTa,
-			rw::common::Ptr<ProximityModel> b,
+			rw::core::Ptr<ProximityModel> b,
 			const rw::math::Transform3D<double>& wTb) = 0;
 	virtual std::vector<Contact> findContacts(
-			rw::common::Ptr<ProximityModel> a,
+			rw::core::Ptr<ProximityModel> a,
 			const rw::math::Transform3D<double>& wTa,
-			rw::common::Ptr<ProximityModel> b,
+			rw::core::Ptr<ProximityModel> b,
 			const rw::math::Transform3D<double>& wTb,
 			ContactStrategyData &data) = 0;
 	virtual std::vector<Contact> findContacts(
-			rw::common::Ptr<ProximityModel> a,
+			rw::core::Ptr<ProximityModel> a,
 			const rw::math::Transform3D<double>& wTa,
-			rw::common::Ptr<ProximityModel> b,
+			rw::core::Ptr<ProximityModel> b,
 			const rw::math::Transform3D<double>& wTb,
 			ContactStrategyData &data,
 			ContactStrategyTracking& tracking) = 0;
 	virtual std::vector<Contact> updateContacts(
-			rw::common::Ptr<ProximityModel> a,
+			rw::core::Ptr<ProximityModel> a,
 			const rw::math::Transform3D<double>& wTa,
-			rw::common::Ptr<ProximityModel> b,
+			rw::core::Ptr<ProximityModel> b,
 			const rw::math::Transform3D<double>& wTb,
 			ContactStrategyData& data,
 			ContactStrategyTracking& tracking) const = 0;
@@ -292,7 +292,7 @@ public:
 	virtual void setPropertyMap(const PropertyMap& map);
 };
 
-%template (ContactStrategyPtr) rw::common::Ptr<ContactStrategy>;
+%template (ContactStrategyPtr) rw::core::Ptr<ContactStrategy>;
 OWNEDPTR(ContactStrategy);
 
 class Contact {
@@ -346,7 +346,7 @@ public:
 
     std::string getControllerName();
 
-    //rw::common::Ptr<rw::models::Device> getControlledDevice(){ return _device; }
+    //rw::core::Ptr<rw::models::Device> getControlledDevice(){ return _device; }
 
     void setEnabled(bool enabled);
 
@@ -373,7 +373,7 @@ class PDController
 public:
 	PDController(
 	        const std::string& name,
-	        rw::common::Ptr<DynamicDevice> rdev,
+	        rw::core::Ptr<DynamicDevice> rdev,
 			JointController::ControlMode cmode,
 			const std::vector<PDParam>& pdparams,
 			double dt
@@ -381,7 +381,7 @@ public:
 
 	PDController(
 	        const std::string& name,
-	        rw::common::Ptr<DynamicDevice> rdev,
+	        rw::core::Ptr<DynamicDevice> rdev,
 			JointController::ControlMode cmode,
 			const PDParam& pdparam,
 			double dt
@@ -412,7 +412,7 @@ public:
 	rw::math::Q getQd();
 };
 
-%template (PDControllerPtr) rw::common::Ptr<PDController>;
+%template (PDControllerPtr) rw::core::Ptr<PDController>;
 OWNEDPTR(PDController);
 
 %nodefaultctor SerialDeviceController;
@@ -496,7 +496,7 @@ public:
 
 };
 
-%template (SerialDeviceControllerPtr) rw::common::Ptr<SerialDeviceController>;
+%template (SerialDeviceControllerPtr) rw::core::Ptr<SerialDeviceController>;
 OWNEDPTR(SerialDeviceController);
 
 %nodefaultctor BodyController;
@@ -504,7 +504,7 @@ class BodyController
 {
 };
 
-%template (BodyControllerPtr) rw::common::Ptr<BodyController>;
+%template (BodyControllerPtr) rw::core::Ptr<BodyController>;
 
 /********************************************
  * DRAWABLE
@@ -535,7 +535,7 @@ public:
 class Body
 {
 public:
-    //typedef rw::common::Ptr<Body> Ptr;
+    //typedef rw::core::Ptr<Body> Ptr;
     Frame* getBodyFrame() const;
 
     //const std::vector<rw::geometry::Geometry::Ptr>& getGeometry();
@@ -549,13 +549,6 @@ public:
     const std::string& getName() const;
     const std::string& getMaterialID() const;
     const rw::math::InertiaMatrix<double>& getInertia() const;
-
-    //typedef enum{MassChangedEvent} BodyEventType;
-
-    //typedef boost::function<void(BodyEventType)> BodyChangedListener;
-    //typedef rw::common::Event<BodyChangedListener, BodyEventType> BodyChangedEvent;
-    //BodyChangedEvent& changedEvent();
-    //BodyChangedEvent _bodyChangedEvent;
 
     void setMass(double m);
     void setMass(double m, const rw::math::InertiaMatrix<double>& inertia);
@@ -597,19 +590,19 @@ public:
 
     %extend {
 
-        rw::math::Transform3D<double> place(rw::common::Ptr<CollisionDetector> coldect, const State& state, const rw::math::Vector3D<double>& dir){
+        rw::math::Transform3D<double> place(rw::core::Ptr<CollisionDetector> coldect, const State& state, const rw::math::Vector3D<double>& dir){
             return rwsim::dynamics::BodyUtil::placeBody($self, coldect, state, dir);
         }
 
-        rw::math::Transform3D<double> place(rw::common::Ptr<CollisionDetector> coldect, const State& state){
+        rw::math::Transform3D<double> place(rw::core::Ptr<CollisionDetector> coldect, const State& state){
             return rwsim::dynamics::BodyUtil::placeBody($self, coldect, state, -rw::math::Vector3D<double>::z());
         }
         
     };
 };
 
-%template (BodyPtr) rw::common::Ptr<Body>;
-%template (BodyPtrVector) std::vector<rw::common::Ptr<Body> >;
+%template (BodyPtr) rw::core::Ptr<Body>;
+%template (BodyPtrVector) std::vector<rw::core::Ptr<Body> >;
 OWNEDPTR(Body);
 
 
@@ -617,16 +610,16 @@ class FixedBody: public Body
 {
 };
 
-%template (FixedBodyPtr) rw::common::Ptr<FixedBody>;
-%template (FixedBodyPtrVector) std::vector<rw::common::Ptr<FixedBody> >;
+%template (FixedBodyPtr) rw::core::Ptr<FixedBody>;
+%template (FixedBodyPtrVector) std::vector<rw::core::Ptr<FixedBody> >;
 OWNEDPTR(FixedBody);
 
 class KinematicBody: public Body
 {
 };
 
-%template (KinematicBodyPtr) rw::common::Ptr<KinematicBody>;
-%template (KinematicBodyPtrVector) std::vector<rw::common::Ptr<KinematicBody> >;
+%template (KinematicBodyPtr) rw::core::Ptr<KinematicBody>;
+%template (KinematicBodyPtrVector) std::vector<rw::core::Ptr<KinematicBody> >;
 OWNEDPTR(KinematicBody);
 
 class RigidBody : public Body
@@ -635,13 +628,13 @@ public:
     RigidBody(
         const BodyInfo& info,
         MovableFrame* frame,
-        rw::common::Ptr<Geometry> geom
+        rw::core::Ptr<Geometry> geom
         );
 
     RigidBody(
         const BodyInfo& info,
         MovableFrame* frame,
-        const std::vector<rw::common::Ptr<Geometry> >& geoms
+        const std::vector<rw::core::Ptr<Geometry> >& geoms
         );
 
     //rw::math::InertiaMatrix<double> getEffectiveMassW(const rw::math::Vector3D<double>& wPc);
@@ -677,8 +670,8 @@ public:
     //rw::math::InertiaMatrix<double> calcEffectiveInertiaInv(const State& state) const;
 };
 
-%template (RigidBodyPtr) rw::common::Ptr<RigidBody>;
-%template (RigidBodyPtrVector) std::vector<rw::common::Ptr<RigidBody> >;
+%template (RigidBodyPtr) rw::core::Ptr<RigidBody>;
+%template (RigidBodyPtrVector) std::vector<rw::core::Ptr<RigidBody> >;
 OWNEDPTR(RigidBody);
 
 %nodefaultctor Constraint;
@@ -719,8 +712,8 @@ public:
 	//static bool toConstraintType(const std::string &string, Constraint::ConstraintType &type);
 };
 
-%template (ConstraintPtr) rw::common::Ptr<Constraint>;
-%template (ConstraintPtrVector) std::vector<rw::common::Ptr<Constraint> >;
+%template (ConstraintPtr) rw::core::Ptr<Constraint>;
+%template (ConstraintPtrVector) std::vector<rw::core::Ptr<Constraint> >;
 OWNEDPTR(Constraint);
 
 %nodefaultctor DynamicDevice;
@@ -730,8 +723,8 @@ public:
 
     virtual void setQ(const rw::math::Q &q, State& state);
 
-    rw::common::Ptr<Device> getKinematicModel();
-    rw::common::Ptr<Body> getBase();
+    rw::core::Ptr<Device> getKinematicModel();
+    rw::core::Ptr<Body> getBase();
 
     virtual rw::math::Q getJointVelocities(const State& state);
     virtual void setJointVelocities(const rw::math::Q &vel, State& state);
@@ -740,12 +733,12 @@ public:
     virtual rw::math::Q getVelocity(const State& state);
     virtual void setVelocity(const rw::math::Q& vel, State& state);
 
-    virtual std::vector<rw::common::Ptr<Body> > getLinks();
+    virtual std::vector<rw::core::Ptr<Body> > getLinks();
 
 };
 
-%template (DynamicDevicePtr) rw::common::Ptr<DynamicDevice>;
-%template (DynamicDevicePtrVector) std::vector<rw::common::Ptr<DynamicDevice> >;
+%template (DynamicDevicePtr) rw::core::Ptr<DynamicDevice>;
+%template (DynamicDevicePtrVector) std::vector<rw::core::Ptr<DynamicDevice> >;
 OWNEDPTR(DynamicDevice);
 
 %nodefaultctor RigidDevice;
@@ -777,8 +770,8 @@ class RigidDevice : public DynamicDevice {
         void setMotorForceTarget(double force, int i, State& state);
         void setMotorVelocityTarget(double vel, int i, State& state);
 
-        rw::common::Ptr<JointDevice> getJointDevice();
-        std::vector<rw::common::Ptr<Body> > getLinks();
+        rw::core::Ptr<JointDevice> getJointDevice();
+        std::vector<rw::core::Ptr<Body> > getLinks();
 
         //virtual void registerStateData(StateStructure::Ptr statestructure);
 
@@ -787,19 +780,19 @@ class RigidDevice : public DynamicDevice {
         // void setVelocity(rw::math::Q& vel, State& state){ setJointVelocities(vel, state);}
     };
 
-%template (RigidDevicePtr) rw::common::Ptr<RigidDevice>;
-%template (RigidDevicePtrVector) std::vector<rw::common::Ptr<RigidDevice> >;
+%template (RigidDevicePtr) rw::core::Ptr<RigidDevice>;
+%template (RigidDevicePtrVector) std::vector<rw::core::Ptr<RigidDevice> >;
 OWNEDPTR(RigidDevice);
 
 %nodefaultctor SuctionCup;
 class SuctionCup : public DynamicDevice {
 public:
 
-    rw::common::Ptr<Body> getBaseBody();
+    rw::core::Ptr<Body> getBaseBody();
 
-    rw::common::Ptr<Body> getEndBody();
+    rw::core::Ptr<Body> getEndBody();
 
-    //void addToWorkCell(rw::common::Ptr<DynamicWorkCell> dwc);
+    //void addToWorkCell(rw::core::Ptr<DynamicWorkCell> dwc);
 
     double getRadius();
 
@@ -817,20 +810,20 @@ public:
 
     rw::math::Transform3D<double> getOffset();
 
-    std::vector<rw::common::Ptr<Body> > getLinks();
+    std::vector<rw::core::Ptr<Body> > getLinks();
 
     bool isClosed(const State& state);
     void setClosed(bool closed, State& state);
 
-    rw::common::Ptr<Body> getContactBody(const State& state);
-    void setContactBody(rw::common::Ptr<Body> b, State& state);
+    rw::core::Ptr<Body> getContactBody(const State& state);
+    void setContactBody(rw::core::Ptr<Body> b, State& state);
 
     double getPressure(const State& state);
     void setPressure(double pressure, State& state);
 
 };
 
-%template (SuctionCupPtr) rw::common::Ptr<SuctionCup>;
+%template (SuctionCupPtr) rw::core::Ptr<SuctionCup>;
 OWNEDPTR(SuctionCup);
 
 class DynamicWorkCell
@@ -842,14 +835,14 @@ public:
      * @brief Constructor
      */
     
-    DynamicWorkCell(rw::common::Ptr<WorkCell> workcell,
-                    const std::vector<rw::common::Ptr<Body> >& bodies,
-                    const std::vector<rw::common::Ptr<Body> >& allbodies,
-                    const std::vector<rw::common::Ptr<Constraint> >& constraints,
-                    const std::vector<rw::common::Ptr<DynamicDevice> >& devices,
-                    const std::vector<rw::common::Ptr<SimulatedController> >& controllers);
+    DynamicWorkCell(rw::core::Ptr<WorkCell> workcell,
+                    const std::vector<rw::core::Ptr<Body> >& bodies,
+                    const std::vector<rw::core::Ptr<Body> >& allbodies,
+                    const std::vector<rw::core::Ptr<Constraint> >& constraints,
+                    const std::vector<rw::core::Ptr<DynamicDevice> >& devices,
+                    const std::vector<rw::core::Ptr<SimulatedController> >& controllers);
 	
-    rw::common::Ptr<Body> findBody(const std::string& name) const;
+    rw::core::Ptr<Body> findBody(const std::string& name) const;
 
     //template<class T> T* findBody(const std::string& name) const;
     //template<class T> std::vector<T*> findBodies() const;
@@ -861,82 +854,68 @@ public:
     //const SensorList& getSensors();
     //void addSensor(rwlibs::simulation::SimulatedSensor::Ptr sensor);
     //const std::vector<Constraint>& getConstraints();
-    void addController(rw::common::Ptr<SimulatedController> manipulator);
-    rw::common::Ptr<SimulatedController> findController(const std::string& name);
-    rw::common::Ptr<DynamicDevice> findDevice(const std::string& name) const;
-    rw::common::Ptr<SimulatedSensor> findSensor(const std::string& name);
+    void addController(rw::core::Ptr<SimulatedController> manipulator);
+    rw::core::Ptr<SimulatedController> findController(const std::string& name);
+    rw::core::Ptr<DynamicDevice> findDevice(const std::string& name) const;
+    rw::core::Ptr<SimulatedSensor> findSensor(const std::string& name);
 
     //ContactDataMap& getContactData();
     //MaterialDataMap& getMaterialData();
 
-    const std::vector<rw::common::Ptr<Body> >& getBodies();
-    void addBody(rw::common::Ptr<Body> body);
-    rw::common::Ptr<Body> getBody(Frame *f);
+    const std::vector<rw::core::Ptr<Body> >& getBodies();
+    void addBody(rw::core::Ptr<Body> body);
+    rw::core::Ptr<Body> getBody(Frame *f);
     
-    void addConstraint(rw::common::Ptr<Constraint> constraint);
-    const std::vector<rw::common::Ptr<Constraint> >& getConstraints() const;
-	rw::common::Ptr<Constraint> findConstraint(const std::string& name) const;
+    void addConstraint(rw::core::Ptr<Constraint> constraint);
+    const std::vector<rw::core::Ptr<Constraint> >& getConstraints() const;
+	rw::core::Ptr<Constraint> findConstraint(const std::string& name) const;
 
-    rw::common::Ptr<WorkCell> getWorkcell();
+    rw::core::Ptr<WorkCell> getWorkcell();
 
     double getCollisionMargin();
     void setCollisionMargin(double margin);
 
     //WorkCellDimension getWorldDimension();
 
-    bool inDevice(rw::common::Ptr<Body> body);
+    bool inDevice(rw::core::Ptr<Body> body);
     void setGravity(const rw::math::Vector3D<double>& grav);
     const rw::math::Vector3D<double>& getGravity();
     PropertyMap& getEngineSettings();
 
-
-    /*typedef enum{GravityChangedEvent,
-                ConstraintAddedEvent,
-                BodyAddedEvent,
-                DeviceAddedEvent,
-                ControllerAddedEvent,
-                SensorAddedEvent
-    } DWCEventType;
-    */
-
-    //typedef boost::function<void(DWCEventType, boost::any)> DWCChangedListener;
-    //typedef rw::common::Event<DWCChangedListener, DWCEventType, boost::any> DWCChangedEvent;
-    //DWCChangedEvent& changedEvent() { return _changedEvent; }
-
     %extend {
-        rw::common::Ptr<RigidBody> findRigidBody(const std::string& name)
+        rw::core::Ptr<RigidBody> findRigidBody(const std::string& name)
         { return $self->DynamicWorkCell::findBody<RigidBody>(name); }
-        rw::common::Ptr<KinematicBody> findKinematicBody(const std::string& name)
+        rw::core::Ptr<KinematicBody> findKinematicBody(const std::string& name)
         { return $self->DynamicWorkCell::findBody<KinematicBody>(name); }
-        rw::common::Ptr<FixedBody> findFixedBody(const std::string& name)
+        rw::core::Ptr<FixedBody> findFixedBody(const std::string& name)
         { return $self->DynamicWorkCell::findBody<FixedBody>(name); }
 
-        rw::common::Ptr<RigidDevice> findRigidDevice(const std::string& name)
+        rw::core::Ptr<RigidDevice> findRigidDevice(const std::string& name)
         { return $self->DynamicWorkCell::findDevice<RigidDevice>(name); }
-        rw::common::Ptr<SuctionCup> findSuctionCup(const std::string& name)
+        rw::core::Ptr<SuctionCup> findSuctionCup(const std::string& name)
         { return $self->DynamicWorkCell::findDevice<SuctionCup>(name); }
 
-        rw::common::Ptr<SimulatedFTSensor> findFTSensor(const std::string& name)
+        rw::core::Ptr<SimulatedFTSensor> findFTSensor(const std::string& name)
         { 
-        	rw::common::Ptr<SimulatedFTSensor> sensor = $self->DynamicWorkCell::findSensor<SimulatedFTSensor>(name);
+        	rw::core::Ptr<SimulatedFTSensor> sensor = $self->DynamicWorkCell::findSensor<SimulatedFTSensor>(name);
         	if(sensor==NULL)
         		RW_THROW("No such sensor!");
         	return sensor; 
         
         }
 
-        rw::common::Ptr<SerialDeviceController> findSerialDeviceController(const std::string& name)
+        rw::core::Ptr<SerialDeviceController> findSerialDeviceController(const std::string& name)
         { return $self->DynamicWorkCell::findController<SerialDeviceController>(name); }
         
-        rw::common::Ptr<PDController> findPDController(const std::string& name)
+        rw::core::Ptr<PDController> findPDController(const std::string& name)
         { return $self->DynamicWorkCell::findController<PDController>(name); }
         
         void setGravity(double x, double y, double z){
             $self->DynamicWorkCell::setGravity( rw::math::Vector3D<double>(x,y,z) );
         }
         
-		rw::common::Ptr<Body> getBody(const std::string& name) const{
-			rw::common::Ptr<Body> body = $self->findBody(name);
+		rw::core::Ptr<Body> getBody(const std::string& name) const{
+			rw::core::Ptr<Body> body = $self->findBody(name);
 			if(body==NULL)
 				RW_THROW("Could not find body: \"" << name << "\"" );
 			return body;
@@ -946,7 +925,7 @@ public:
     };
 
 };
-%template (DynamicWorkCellPtr) rw::common::Ptr<DynamicWorkCell>;
+%template (DynamicWorkCellPtr) rw::core::Ptr<DynamicWorkCell>;
 OWNEDPTR(DynamicWorkCell);
 
 
@@ -957,7 +936,7 @@ OWNEDPTR(DynamicWorkCell);
 class DynamicWorkCellLoader
 {
 public:
-    static rw::common::Ptr<DynamicWorkCell> load(const std::string& filename);
+    static rw::core::Ptr<DynamicWorkCell> load(const std::string& filename);
 };
 
 /********************************************
@@ -972,8 +951,8 @@ class SimulatedFTSensor //: public SimulatedTactileSensor
 {
 public:
     SimulatedFTSensor(const std::string& name,
-                      rw::common::Ptr<Body> body,
-                      rw::common::Ptr<Body> body1,
+                      rw::core::Ptr<Body> body,
+                      rw::core::Ptr<Body> body1,
                       Frame* frame=NULL);
 
 	virtual ~SimulatedFTSensor();
@@ -985,25 +964,25 @@ public:
 				   const rw::math::Vector3D<double>& force,
 				   const rw::math::Vector3D<double>& cnormal,
 				   State& state,
-				   rw::common::Ptr<Body> body = NULL);
+				   rw::core::Ptr<Body> body = NULL);
 
 	void addForce(const rw::math::Vector3D<double>& point,
 				  const rw::math::Vector3D<double>& force,
 				  const rw::math::Vector3D<double>& cnormal,
 				  State& state,
-				  rw::common::Ptr<Body> body=NULL);
+				  rw::core::Ptr<Body> body=NULL);
 
     void addWrenchToCOM(
                   const rw::math::Vector3D<double>& force,
                   const rw::math::Vector3D<double>& torque,
                   State& state,
-                  rw::common::Ptr<Body> body=NULL);
+                  rw::core::Ptr<Body> body=NULL);
 
     void addWrenchWToCOM(
                   const rw::math::Vector3D<double>& force,
                   const rw::math::Vector3D<double>& torque,
                   State& state,
-                  rw::common::Ptr<Body> body=NULL);
+                  rw::core::Ptr<Body> body=NULL);
 
     rw::math::Transform3D<double> getTransform();
 
@@ -1019,13 +998,13 @@ public:
 
 	void acquire();
 
-	//rw::common::Ptr<FTSensor> getSensor();
+	//rw::core::Ptr<FTSensor> getSensor();
 
-	rw::common::Ptr<Body> getBody1();
-	rw::common::Ptr<Body> getBody2();
+	rw::core::Ptr<Body> getBody1();
+	rw::core::Ptr<Body> getBody2();
 };
 
-%template (SimulatedFTSensorPtr) rw::common::Ptr<SimulatedFTSensor>;
+%template (SimulatedFTSensorPtr) rw::core::Ptr<SimulatedFTSensor>;
 OWNEDPTR(SimulatedFTSensor);
 
 /********************************************
@@ -1037,30 +1016,30 @@ class PhysicsEngine
 {
 public:
 	virtual ~PhysicsEngine(){};
-	virtual void load(rw::common::Ptr<DynamicWorkCell> dwc) = 0;
-	virtual bool setContactDetector(rw::common::Ptr<ContactDetector> detector) = 0;
+	virtual void load(rw::core::Ptr<DynamicWorkCell> dwc) = 0;
+	virtual bool setContactDetector(rw::core::Ptr<ContactDetector> detector) = 0;
 	virtual void step(double dt, State &state) = 0;
 	virtual void resetScene(State& state) = 0;
 	virtual void initPhysics(State& state) = 0;
 	virtual void exitPhysics() = 0;
 	virtual double getTime() = 0;
-	virtual void setEnabled(rw::common::Ptr<Body> body, bool enabled) = 0;
-	virtual void setDynamicsEnabled(rw::common::Ptr<Body> body, bool enabled) = 0;
+	virtual void setEnabled(rw::core::Ptr<Body> body, bool enabled) = 0;
+	virtual void setDynamicsEnabled(rw::core::Ptr<Body> body, bool enabled) = 0;
 	//virtual drawable::SimulatorDebugRender::Ptr createDebugRender() = 0;
 	virtual PropertyMap& getPropertyMap() = 0;
 	virtual void emitPropertyChanged() = 0;
-	virtual void addController(rw::common::Ptr<SimulatedController> controller) = 0;
-	virtual void removeController(rw::common::Ptr<SimulatedController> controller) = 0;
-	virtual void addBody(rw::common::Ptr<Body> body, State &state) = 0;
-	virtual void addDevice(rw::common::Ptr<DynamicDevice> dev, State &state) = 0;
-	virtual void addSensor(rw::common::Ptr<SimulatedSensor> sensor, State &state) = 0;
-	virtual void removeSensor(rw::common::Ptr<SimulatedSensor> sensor) = 0;
-	virtual void attach(rw::common::Ptr<Body> b1, rw::common::Ptr<Body> b2) = 0;
-	virtual void detach(rw::common::Ptr<Body> b1, rw::common::Ptr<Body> b2) = 0;
-	virtual std::vector<rw::common::Ptr<SimulatedSensor> > getSensors() = 0;
+	virtual void addController(rw::core::Ptr<SimulatedController> controller) = 0;
+	virtual void removeController(rw::core::Ptr<SimulatedController> controller) = 0;
+	virtual void addBody(rw::core::Ptr<Body> body, State &state) = 0;
+	virtual void addDevice(rw::core::Ptr<DynamicDevice> dev, State &state) = 0;
+	virtual void addSensor(rw::core::Ptr<SimulatedSensor> sensor, State &state) = 0;
+	virtual void removeSensor(rw::core::Ptr<SimulatedSensor> sensor) = 0;
+	virtual void attach(rw::core::Ptr<Body> b1, rw::core::Ptr<Body> b2) = 0;
+	virtual void detach(rw::core::Ptr<Body> b1, rw::core::Ptr<Body> b2) = 0;
+	virtual std::vector<rw::core::Ptr<SimulatedSensor> > getSensors() = 0;
 };
 
-%template (PhysicsEnginePtr) rw::common::Ptr<PhysicsEngine>;
+%template (PhysicsEnginePtr) rw::core::Ptr<PhysicsEngine>;
 OWNEDPTR(PhysicsEngine);
 
 %nodefaultctor PhysicsEngineFactory;
@@ -1069,77 +1048,77 @@ class PhysicsEngineFactory
 public:
 	static std::vector<std::string> getEngineIDs();
 	static bool hasEngineID(const std::string& engineID);
-	static rw::common::Ptr<PhysicsEngine> makePhysicsEngine(const std::string& engineID, rw::common::Ptr<DynamicWorkCell> dwc);
-    static rw::common::Ptr<PhysicsEngine> makePhysicsEngine(rw::common::Ptr<DynamicWorkCell> dwc);
+	static rw::core::Ptr<PhysicsEngine> makePhysicsEngine(const std::string& engineID, rw::core::Ptr<DynamicWorkCell> dwc);
+    static rw::core::Ptr<PhysicsEngine> makePhysicsEngine(rw::core::Ptr<DynamicWorkCell> dwc);
 };
 
 class DynamicSimulator: public Simulator
 {
 public:
-    DynamicSimulator(rw::common::Ptr<DynamicWorkCell> dworkcell, rw::common::Ptr<PhysicsEngine> pengine);
-    DynamicSimulator(rw::common::Ptr<DynamicWorkCell> dworkcell);
+    DynamicSimulator(rw::core::Ptr<DynamicWorkCell> dworkcell, rw::core::Ptr<PhysicsEngine> pengine);
+    DynamicSimulator(rw::core::Ptr<DynamicWorkCell> dworkcell);
     virtual ~DynamicSimulator();
 
 	%extend {
-		static rw::common::Ptr<DynamicSimulator> make(rw::common::Ptr<DynamicWorkCell> dworkcell, rw::common::Ptr<PhysicsEngine> pengine){
-			return rw::common::ownedPtr( new rwsim::simulator::DynamicSimulator(dworkcell,pengine) );
+		static rw::core::Ptr<DynamicSimulator> make(rw::core::Ptr<DynamicWorkCell> dworkcell, rw::core::Ptr<PhysicsEngine> pengine){
+			return rw::core::ownedPtr( new rwsim::simulator::DynamicSimulator(dworkcell,pengine) );
 		 }
     }
     void exitPhysics();
 	double getTime();
 	State& getState();
-	void setEnabled(rw::common::Ptr<Body> body, bool enabled);
+	void setEnabled(rw::core::Ptr<Body> body, bool enabled);
 
 	//drawable::SimulatorDebugRender::Ptr createDebugRender();
 	PropertyMap& getPropertyMap();
 	
-	void addController(rw::common::Ptr<SimulatedController> controller);
-	void removeController(rw::common::Ptr<SimulatedController> controller);
+	void addController(rw::core::Ptr<SimulatedController> controller);
+	void removeController(rw::core::Ptr<SimulatedController> controller);
 
-	void addBody(rw::common::Ptr<Body> body, State &state);
-	void addDevice(rw::common::Ptr<DynamicDevice> dev, State &state);
-	void addSensor(rw::common::Ptr<SimulatedSensor> sensor, State &state);
-	void removeSensor(rw::common::Ptr<SimulatedSensor> sensor);
-	std::vector<rw::common::Ptr<SimulatedSensor> > getSensors();
+	void addBody(rw::core::Ptr<Body> body, State &state);
+	void addDevice(rw::core::Ptr<DynamicDevice> dev, State &state);
+	void addSensor(rw::core::Ptr<SimulatedSensor> sensor, State &state);
+	void removeSensor(rw::core::Ptr<SimulatedSensor> sensor);
+	std::vector<rw::core::Ptr<SimulatedSensor> > getSensors();
 
 	 // Simulator interface
      void step(double dt);
      void reset(State& state);
 	 void init(State& state);
 	 void setEnabled(Frame* f, bool enabled);
-	 void setDynamicsEnabled(rw::common::Ptr<Body> body, bool enabled);
+	 void setDynamicsEnabled(rw::core::Ptr<Body> body, bool enabled);
 	 // interfaces for manipulating/controlling bodies
-	 void setTarget(rw::common::Ptr<Body> body, const rw::math::Transform3D<double>& t3d, State& state); 
-	 void setTarget(rw::common::Ptr<Body> body, rw::common::Ptr<Trajectory<rw::math::Transform3D<double> > > traj);
+	 void setTarget(rw::core::Ptr<Body> body, const rw::math::Transform3D<double>& t3d, State& state); 
+	 void setTarget(rw::core::Ptr<Body> body, rw::core::Ptr<Trajectory<rw::math::Transform3D<double> > > traj);
 
-	 void disableBodyControl( rw::common::Ptr<Body> body );
+	 void disableBodyControl( rw::core::Ptr<Body> body );
 	 void disableBodyControl( );
 
-	 rw::common::Ptr<BodyController> getBodyController();
+	 rw::core::Ptr<BodyController> getBodyController();
 
-	 void attach(rw::common::Ptr<Body> b1, rw::common::Ptr<Body> b2);
+	 void attach(rw::core::Ptr<Body> b1, rw::core::Ptr<Body> b2);
 
-	 void detach(rw::common::Ptr<Body> b1, rw::common::Ptr<Body> b2);
+	 void detach(rw::core::Ptr<Body> b1, rw::core::Ptr<Body> b2);
 };
 
-%template (DynamicSimulatorPtr) rw::common::Ptr<DynamicSimulator>;
-%extend rw::common::Ptr<DynamicSimulator> { 
-		rw::common::Ptr<Simulator> toSimulator(){
+%template (DynamicSimulatorPtr) rw::core::Ptr<DynamicSimulator>;
+%extend rw::core::Ptr<DynamicSimulator> { 
+		rw::core::Ptr<Simulator> toSimulator(){
 			std::cout << "Casting" << std::endl;
-		 	rw::common::Ptr<Simulator> ssim = *$self;
+		 	rw::core::Ptr<Simulator> ssim = *$self;
 		 	std::cout << "Cast result: " << ssim.isNull() << std::endl;
 		 	return ssim;
 		 }
 		 
-		 rw::common::Ptr<Simulator> toSimulator1(){
+		 rw::core::Ptr<Simulator> toSimulator1(){
 			std::cout << "Casting" << std::endl;
-		 	rw::common::Ptr<rwlibs::simulation::Simulator> ssim = *$self;
+		 	rw::core::Ptr<rwlibs::simulation::Simulator> ssim = *$self;
 		 	std::cout << "Cast result: " << ssim.isNull() << std::endl;
 		 	return ssim;
 		 }
-		 rw::common::Ptr<Simulator> toSimulator2(){
+		 rw::core::Ptr<Simulator> toSimulator2(){
 			std::cout << "Casting" << std::endl;
-		 	rw::common::Ptr<Simulator> ssim = *$self;
+		 	rw::core::Ptr<Simulator> ssim = *$self;
 		 	std::cout << "Cast result: " << ssim.isNull() << std::endl;
 		 	return ssim;
 		 }
@@ -1148,7 +1127,7 @@ public:
 
 class ThreadSimulator {
 	public:
-		ThreadSimulator(rw::common::Ptr<DynamicSimulator> simulator, const State &state);
+		ThreadSimulator(rw::core::Ptr<DynamicSimulator> simulator, const State &state);
 		virtual ~ThreadSimulator();
 		//void setPeriodMs(long period);
 		void setRealTimeScale(double scale);
@@ -1162,7 +1141,7 @@ class ThreadSimulator {
 		void reset(const State& state);
 		bool isRunning();
 		double getTime();
-		rw::common::Ptr<DynamicSimulator> getSimulator();
+		rw::core::Ptr<DynamicSimulator> getSimulator();
 
 #if defined(SWIGJAVA)
 %extend {
@@ -1177,24 +1156,24 @@ class ThreadSimulator {
 		void setInError(bool inError);
 	};
 
-%template (ThreadSimulatorPtr) rw::common::Ptr<ThreadSimulator>;
-%template (ThreadSimulatorPtrVector) std::vector<rw::common::Ptr<ThreadSimulator> >;
+%template (ThreadSimulatorPtr) rw::core::Ptr<ThreadSimulator>;
+%template (ThreadSimulatorPtrVector) std::vector<rw::core::Ptr<ThreadSimulator> >;
 OWNEDPTR(ThreadSimulator);
 
 %nodefaultctor GraspTaskSimulator;
 class GraspTaskSimulator
 {
 public:
-	GraspTaskSimulator(rw::common::Ptr<DynamicWorkCell> dwc, int nrThreads=1);
+	GraspTaskSimulator(rw::core::Ptr<DynamicWorkCell> dwc, int nrThreads=1);
 	virtual ~GraspTaskSimulator();
 	void load(const std::string& filename);
-	void load(rw::common::Ptr<GraspTask> graspTasks);
-	rw::common::Ptr<GraspTask> getTasks();
-	rw::common::Ptr<GraspTask> getResult();
+	void load(rw::core::Ptr<GraspTask> graspTasks);
+	rw::core::Ptr<GraspTask> getTasks();
+	rw::core::Ptr<GraspTask> getResult();
 	size_t getNrTargets();
-	rw::common::Ptr<ThreadSimulator> getSimulator();
-	std::vector<rw::common::Ptr<ThreadSimulator> > getSimulators();
-	void init(rw::common::Ptr<DynamicWorkCell> dwc, const State& initState);
+	rw::core::Ptr<ThreadSimulator> getSimulator();
+	std::vector<rw::core::Ptr<ThreadSimulator> > getSimulators();
+	void init(rw::core::Ptr<DynamicWorkCell> dwc, const State& initState);
 	void startSimulation(const State& initState);
 	void pauseSimulation();
 	void resumeSimulation();
@@ -1210,27 +1189,27 @@ public:
 	void setSimTimeLimit(double limit);
 };
 
-%template (GraspTaskSimulatorPtr) rw::common::Ptr<GraspTaskSimulator>;
+%template (GraspTaskSimulatorPtr) rw::core::Ptr<GraspTaskSimulator>;
 OWNEDPTR(GraspTaskSimulator);
 %nodefaultctor AssemblySimulator;
 class AssemblySimulator
 {
 public:
-	AssemblySimulator(rw::common::Ptr<DynamicWorkCell> dwc, const std::string &engineID, rw::common::Ptr<ContactDetector> contactDetector = NULL);
+	AssemblySimulator(rw::core::Ptr<DynamicWorkCell> dwc, const std::string &engineID, rw::core::Ptr<ContactDetector> contactDetector = NULL);
 	virtual ~AssemblySimulator();
-	void start(rw::common::Ptr<ThreadTask> task = NULL);
+	void start(rw::core::Ptr<ThreadTask> task = NULL);
 	void stopFinishCurrent();
 	void stopCancelCurrent();
 	bool isRunning();
-	void setTasks(std::vector<rw::common::Ptr<AssemblyTask> > tasks);
-	std::vector<rw::common::Ptr<AssemblyResult> > getResults();
+	void setTasks(std::vector<rw::core::Ptr<AssemblyTask> > tasks);
+	std::vector<rw::core::Ptr<AssemblyResult> > getResults();
 	void setStoreExecutionData(bool enable);
 	bool storeExecutionData();
 	double getMaxSimTime() const;
 	void setMaxSimTime(double maxTime);
 };
 
-%template (AssemblySimulatorPtr) rw::common::Ptr<AssemblySimulator>;
+%template (AssemblySimulatorPtr) rw::core::Ptr<AssemblySimulator>;
 OWNEDPTR(AssemblySimulator);
 
 /********************************************
@@ -1257,32 +1236,32 @@ public:
 		typedef enum{WorldStep, WorldQuickStep, WorldFast1} StepMethod;
 		//typedef enum{Simple, HashTable, QuadTree} SpaceType;
 		
-		ODESimulator(rw::common::Ptr<DynamicWorkCell> dwc, rw::common::Ptr<ContactDetector> detector = rw::common::Ptr<ContactDetector>());
+		ODESimulator(rw::core::Ptr<DynamicWorkCell> dwc, rw::core::Ptr<ContactDetector> detector = rw::core::Ptr<ContactDetector>());
 
 		virtual ~ODESimulator();
 		
 		// PhysicsEngine interface
-		void load(rw::common::Ptr<DynamicWorkCell> dwc);
-		bool setContactDetector(rw::common::Ptr<ContactDetector> detector);
+		void load(rw::core::Ptr<DynamicWorkCell> dwc);
+		bool setContactDetector(rw::core::Ptr<ContactDetector> detector);
 		void step(double dt, State& state);
 		void resetScene(State& state);
 		void initPhysics(State& state);
 		void exitPhysics();
 		double getTime();
-		void setEnabled(rw::common::Ptr<Body> body, bool enabled);
-		void setDynamicsEnabled(rw::common::Ptr<Body> body, bool enabled);
+		void setEnabled(rw::core::Ptr<Body> body, bool enabled);
+		void setDynamicsEnabled(rw::core::Ptr<Body> body, bool enabled);
 		//drawable::SimulatorDebugRender::Ptr createDebugRender();
 		virtual PropertyMap& getPropertyMap();
 		void emitPropertyChanged();
-		void addController(rw::common::Ptr<SimulatedController> controller);
-		void removeController(rw::common::Ptr<SimulatedController> controller);
-		void addBody(rw::common::Ptr<Body> body, State &state);
-		void addDevice(rw::common::Ptr<DynamicDevice> dev, State &state);
-		void addSensor(rw::common::Ptr<SimulatedSensor> sensor, State &state);
-		void removeSensor(rw::common::Ptr<SimulatedSensor> sensor);
-		void attach(rw::common::Ptr<Body> b1, rw::common::Ptr<Body> b2);
-		void detach(rw::common::Ptr<Body> b1, rw::common::Ptr<Body> b2);
-		std::vector<rw::common::Ptr<SimulatedSensor> > getSensors();
+		void addController(rw::core::Ptr<SimulatedController> controller);
+		void removeController(rw::core::Ptr<SimulatedController> controller);
+		void addBody(rw::core::Ptr<Body> body, State &state);
+		void addDevice(rw::core::Ptr<DynamicDevice> dev, State &state);
+		void addSensor(rw::core::Ptr<SimulatedSensor> sensor, State &state);
+		void removeSensor(rw::core::Ptr<SimulatedSensor> sensor);
+		void attach(rw::core::Ptr<Body> b1, rw::core::Ptr<Body> b2);
+		void detach(rw::core::Ptr<Body> b1, rw::core::Ptr<Body> b2);
+		std::vector<rw::core::Ptr<SimulatedSensor> > getSensors();
 		
 		// ODESimulator specific
 		void setStepMethod(StepMethod method);
@@ -1290,9 +1269,9 @@ public:
 		bool isInitialized();
 		//const rw::kinematics::FramePairMap<std::vector<dynamics::ContactManifold> >&getContactManifoldMap();
 		//std::vector<ODEBody*>& getODEBodies(){ return _odeBodies;}
-		rw::common::Ptr<DynamicWorkCell> getDynamicWorkCell();
-		void disableCollision(rw::common::Ptr<Body> b1, rw::common::Ptr<Body> b2);
-		void enableCollision(rw::common::Ptr<Body> b1, rw::common::Ptr<Body> b2);
+		rw::core::Ptr<DynamicWorkCell> getDynamicWorkCell();
+		void disableCollision(rw::core::Ptr<Body> b1, rw::core::Ptr<Body> b2);
+		void enableCollision(rw::core::Ptr<Body> b1, rw::core::Ptr<Body> b2);
 		rw::math::Vector3D<double> getGravity();
 		//dWorldID getODEWorldId();
 		//void addODEJoint(ODEJoint* odejoint);
@@ -1335,7 +1314,7 @@ public:
         //dynamics::ContactDataMap& getContactMap(){ return _contactMap; }
 };
 
-%template (ODESimulatorPtr) rw::common::Ptr<ODESimulator>;
+%template (ODESimulatorPtr) rw::core::Ptr<ODESimulator>;
 OWNEDPTR(ODESimulator);
 #endif
 
@@ -1357,13 +1336,13 @@ OWNEDPTR(ODESimulator);
  * General utility functions
  ********************************************/
 
-rw::common::Ptr<DynamicWorkCell> getDynamicWorkCell();
-void setDynamicWorkCell(rw::common::Ptr<DynamicWorkCell> dwc);
+rw::core::Ptr<DynamicWorkCell> getDynamicWorkCell();
+void setDynamicWorkCell(rw::core::Ptr<DynamicWorkCell> dwc);
 
-rw::common::Ptr<ThreadSimulator> getSimulatorInstance(const std::string& id);
-void addSimulatorInstance(rw::common::Ptr<ThreadSimulator> sim, const std::string& id);
-rw::common::Ptr<ThreadSimulator> getSimulatorInstance(const std::string& id);
-rw::common::Ptr<ThreadSimulator> getSimulatorInstance();
+rw::core::Ptr<ThreadSimulator> getSimulatorInstance(const std::string& id);
+void addSimulatorInstance(rw::core::Ptr<ThreadSimulator> sim, const std::string& id);
+rw::core::Ptr<ThreadSimulator> getSimulatorInstance(const std::string& id);
+rw::core::Ptr<ThreadSimulator> getSimulatorInstance();
 void removeSimulatorInstance(const std::string& id);
 std::vector<std::string> getSimulatorInstances();
 

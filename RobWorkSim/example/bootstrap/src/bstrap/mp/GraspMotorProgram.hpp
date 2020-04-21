@@ -30,14 +30,14 @@ class GraspMotorProgram: public MotorProgram {
 public:
 
 	GraspMotorProgram(const std::string& name,
-			rw::common::Ptr<rwsim::control::PoseController> graspController);
-	void setParameters(rw::common::Ptr<rw::common::PropertyMap> parameters, const BrainState& bstate);
+			rw::core::Ptr<rwsim::control::PoseController> graspController);
+	void setParameters(rw::core::Ptr<rw::core::PropertyMap> parameters, const BrainState& bstate);
 	void executionloop();
 	void update(const BrainState& state);
 private:
 	std::string _objName;
     rw::math::Transform3D<> _target;
-    rw::common::Ptr<rwsim::control::PoseController> _graspController;
+    rw::core::Ptr<rwsim::control::PoseController> _graspController;
 
 };
 

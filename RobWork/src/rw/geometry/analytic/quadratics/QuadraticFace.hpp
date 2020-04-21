@@ -27,7 +27,7 @@
 #include "QuadraticCurve.hpp"
 #include "QuadraticSurface.hpp"
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/geometry/analytic/Face.hpp>
 #include <rw/geometry/OBB.hpp>
 #include <rw/math/Vector3D.hpp>
@@ -47,10 +47,10 @@ class TriMesh;
 class QuadraticFace: public Face {
 public:
     //! @brief Smart pointer type to QuadraticFace
-    typedef rw::common::Ptr<QuadraticFace> Ptr;
+    typedef rw::core::Ptr<QuadraticFace> Ptr;
 
     //! @brief Smart pointer type to const QuadraticFace
-    typedef rw::common::Ptr<const QuadraticFace> CPtr;
+    typedef rw::core::Ptr<const QuadraticFace> CPtr;
 
     //! @brief Constructor.
 	QuadraticFace();
@@ -63,7 +63,7 @@ public:
 	 * @param surface [in] the surface data.
 	 * @param vertices [in] vector of vertices.
 	 */
-	QuadraticFace(rw::common::Ptr<const QuadraticSurface> surface, const std::vector<rw::math::Vector3D<> >& vertices);
+	QuadraticFace(rw::core::Ptr<const QuadraticSurface> surface, const std::vector<rw::math::Vector3D<> >& vertices);
 
 	//! @brief Destructor.
 	virtual ~QuadraticFace();
@@ -90,13 +90,13 @@ public:
 	 * @brief Get the Quadratic curves.
 	 * @return vector with the curves.
 	 */
-	const std::vector<rw::common::Ptr<const QuadraticCurve> >& getCurves() const { return _curves; }
+	const std::vector<rw::core::Ptr<const QuadraticCurve> >& getCurves() const { return _curves; }
 
 	/**
 	 * @brief Set Quadratic surface.
 	 * @param surface [in] the surface.
 	 */
-	void setSurface(rw::common::Ptr<const QuadraticSurface> surface) { _surface = surface; }
+	void setSurface(rw::core::Ptr<const QuadraticSurface> surface) { _surface = surface; }
 
 	/**
 	 * @brief Set surface.
@@ -109,13 +109,13 @@ public:
 	 * @param vertex [in] the start vertex.
 	 * @param curve [in] the curve.
 	 */
-	void setCurve(std::size_t vertex, rw::common::Ptr<const QuadraticCurve> curve);
+	void setCurve(std::size_t vertex, rw::core::Ptr<const QuadraticCurve> curve);
 
 	/**
 	 * @brief Set the Quadratic curves.
 	 * @param curves [in] vector of directed curves.
 	 */
-	void setCurves(const std::vector<rw::common::Ptr<const QuadraticCurve> >& curves);
+	void setCurves(const std::vector<rw::core::Ptr<const QuadraticCurve> >& curves);
 
 	/**
 	 * @brief Set vertex.
@@ -131,8 +131,8 @@ public:
 	void setVertices(const std::vector<rw::math::Vector3D<> >& vertices);
 
 private:
-	rw::common::Ptr<const QuadraticSurface> _surface;
-	std::vector<rw::common::Ptr<const QuadraticCurve> > _curves;
+	rw::core::Ptr<const QuadraticSurface> _surface;
+	std::vector<rw::core::Ptr<const QuadraticCurve> > _curves;
 	std::vector<rw::math::Vector3D<> > _vertices;
 };
 //! @}

@@ -19,7 +19,7 @@
 
 using namespace boost::program_options;
 using namespace std;
-using rw::common::Log;
+using rw::core::Log;
 using namespace rw::math;
 using namespace rwlibs::task;
 

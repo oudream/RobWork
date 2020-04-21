@@ -39,7 +39,7 @@ namespace models {
 class SphericalJoint: public Joint {
 public:
 	//! @brief Smart pointer type of SphericalJoint
-	typedef rw::common::Ptr<SphericalJoint> Ptr;
+	typedef rw::core::Ptr<SphericalJoint> Ptr;
 
     /**
      * @brief Construct a spherical joint.

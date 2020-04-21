@@ -18,8 +18,10 @@
 #include <gtest/gtest.h>
 
 #include <rwlibs/pathoptimization/pathlength/PathLengthOptimizer.hpp>
+#include <rw/core/Ptr.hpp>
+#include <rw/core/Log.hpp>
 
-using rw::common::ownedPtr;
+using rw::core::ownedPtr;
 using namespace rw::math;
 using namespace rw::pathplanning;
 using rw::trajectory::QPath;
@@ -35,7 +37,7 @@ namespace {
                 return false;
             }
 
-            virtual void doSetLog(rw::common::Log::Ptr log) {}
+            virtual void doSetLog(rw::core::Log::Ptr log) {}
     };
 
     class TestQEdgeConstraint: public QEdgeConstraint

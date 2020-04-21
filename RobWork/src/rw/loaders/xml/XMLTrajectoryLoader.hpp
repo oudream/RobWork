@@ -19,7 +19,7 @@
 #define RW_LOADERS_TRAJECTORYLOADER_HPP
 
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/trajectory/Trajectory.hpp>
 #include <rw/math/Q.hpp>
 #include <rw/math/Vector3D.hpp>
@@ -219,10 +219,10 @@ private:
 
     void readTrajectory(xercesc::DOMElement* element);
 
-    rw::common::Ptr<rw::trajectory::Trajectory<rw::math::Q> > _qTrajectory;
-    rw::common::Ptr<rw::trajectory::Trajectory<rw::math::Vector3D<> > > _v3dTrajectory;
-    rw::common::Ptr<rw::trajectory::Trajectory<rw::math::Rotation3D<> > > _r3dTrajectory;
-    rw::common::Ptr<rw::trajectory::Trajectory<rw::math::Transform3D<> > > _t3dTrajectory;
+    rw::core::Ptr<rw::trajectory::Trajectory<rw::math::Q> > _qTrajectory;
+    rw::core::Ptr<rw::trajectory::Trajectory<rw::math::Vector3D<> > > _v3dTrajectory;
+    rw::core::Ptr<rw::trajectory::Trajectory<rw::math::Rotation3D<> > > _r3dTrajectory;
+    rw::core::Ptr<rw::trajectory::Trajectory<rw::math::Transform3D<> > > _t3dTrajectory;
 
     Type _type;
 };

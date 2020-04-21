@@ -24,7 +24,7 @@
 
 
 using namespace rw;
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::math;
 using namespace rw::geometry;
 using namespace rwlibs::csg;
@@ -69,7 +69,7 @@ Ptr<csgjs_model> CSGConvert::TriMesh2csgjs_model(const geometry::TriMesh& mesh)
 
 
 
-TriMesh::Ptr CSGConvert::csgjs_model2TriMesh(rw::common::Ptr<csgjs_model> model)
+TriMesh::Ptr CSGConvert::csgjs_model2TriMesh(rw::core::Ptr<csgjs_model> model)
 {
 	PlainTriMeshD* mesh = new PlainTriMeshD;
 	

@@ -24,8 +24,9 @@
 #include <vector>
 #include <queue>
 
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 #include <rw/models/Device.hpp>
+
 
 namespace rwlibs { namespace pathplanners { namespace prm {
 

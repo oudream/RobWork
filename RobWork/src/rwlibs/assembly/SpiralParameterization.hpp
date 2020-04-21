@@ -25,6 +25,9 @@
  */
 
 #include "AssemblyParameterization.hpp"
+#include <rw/core/Ptr.hpp>
+
+namespace rw { namespace core { class PropertyMap; }}
 
 namespace rwlibs {
 namespace assembly {
@@ -58,13 +61,13 @@ namespace assembly {
 class SpiralParameterization: public AssemblyParameterization {
 public:
 	//! @brief Smart pointer type for parameterization.
-	typedef rw::common::Ptr<SpiralParameterization> Ptr;
+	typedef rw::core::Ptr<SpiralParameterization> Ptr;
 
 	/**
 	 * @brief Construct parameterization from PropertyMap.
 	 * @param pmap [in] a PropertyMap with the parameterization given as properties.
 	 */
-	SpiralParameterization(rw::common::Ptr<rw::common::PropertyMap> pmap);
+	SpiralParameterization(rw::core::Ptr<rw::core::PropertyMap> pmap);
 
 	/**
 	 * @brief Construct parameterization with given values.
@@ -94,13 +97,13 @@ public:
 	virtual ~SpiralParameterization();
 
 	//! @copydoc AssemblyParameterization::toPropertyMap
-	virtual rw::common::Ptr<rw::common::PropertyMap> toPropertyMap() const;
+	virtual rw::core::Ptr<rw::core::PropertyMap> toPropertyMap() const;
 
 	//! @copydoc AssemblyParameterization::clone
 	virtual AssemblyParameterization::Ptr clone() const;
 
 	//! @copydoc AssemblyParameterization::reset
-	virtual void reset(rw::common::Ptr<rw::common::PropertyMap> pmap);
+	virtual void reset(rw::core::Ptr<rw::core::PropertyMap> pmap);
 
 public:
 	//! @brief the spiral radius in \f$\frac{m}{rad}\f$.

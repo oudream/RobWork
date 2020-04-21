@@ -26,7 +26,7 @@
 
 #include "BtDevice.hpp"
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include <vector>
 
@@ -53,7 +53,7 @@ public:
 	 * @param dev [in] a kinematic device.
 	 * @param frameToBtBody [in] a list of pairs of Frames and Bullet bodies.
 	 */
-	BtPositionDevice(rw::common::Ptr<rwsim::dynamics::KinematicDevice> dev, const std::vector<FrameBodyPair>& frameToBtBody);
+	BtPositionDevice(rw::core::Ptr<rwsim::dynamics::KinematicDevice> dev, const std::vector<FrameBodyPair>& frameToBtBody);
 
 	//! @brief Destructor.
 	virtual ~BtPositionDevice();
@@ -65,7 +65,7 @@ public:
 	virtual void postUpdate(rw::kinematics::State& state);
 
 private:
-    const rw::common::Ptr<rwsim::dynamics::KinematicDevice> _kdev;
+    const rw::core::Ptr<rwsim::dynamics::KinematicDevice> _kdev;
     const std::vector<FrameBodyPair> _frameToBtBody;
 };
 //! @}

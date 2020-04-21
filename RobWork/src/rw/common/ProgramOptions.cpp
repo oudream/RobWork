@@ -1,6 +1,7 @@
 #include "ProgramOptions.hpp"
 
 #include <rw/math/Q.hpp>
+#include <rw/core/Log.hpp>
 
 //#include <boost/program_options/cmdline.hpp>
 
@@ -13,6 +14,7 @@ using namespace phoenix;
 using namespace boost::program_options;
 using namespace boost::spirit::classic;
 using namespace rw::common;
+using namespace rw::core;
 
 namespace po = boost::program_options;
 
@@ -225,7 +227,7 @@ int ProgramOptions::checkVariablesMap (po::variables_map& vm)
                   << "\t" << _appName << " [options] <workcell-file> \n"
                   << "\t" << _appName << " [options] <device-file> \n"
                   << "\n";
-        rw::common::Log::infoLog () << _optionDesc << "\n";
+        rw::core::Log::infoLog () << _optionDesc << "\n";
         return -1;
     }
 
@@ -292,8 +294,8 @@ int ProgramOptions::parse (const std::string& str)
         return checkVariablesMap (vm);
     }
     catch (std::exception& e) {
-        rw::common::Log::infoLog () << "Command line input error:\n\t " << e.what () << "\n";
-        rw::common::Log::infoLog () << "Specify --help for usage. \n";
+        rw::core::Log::infoLog () << "Command line input error:\n\t " << e.what () << "\n";
+        rw::core::Log::infoLog () << "Specify --help for usage. \n";
     }
     return -1;
 }
@@ -312,8 +314,8 @@ int ProgramOptions::parse (int argc, char** argv)
         return checkVariablesMap (vm);
     }
     catch (std::exception& e) {
-        rw::common::Log::infoLog () << "Command line input error:\n\t " << e.what () << "\n";
-        rw::common::Log::infoLog () << "Specify --help for usage. \n";
+        rw::core::Log::infoLog () << "Command line input error:\n\t " << e.what () << "\n";
+        rw::core::Log::infoLog () << "Specify --help for usage. \n";
     }
     return -1;
 }

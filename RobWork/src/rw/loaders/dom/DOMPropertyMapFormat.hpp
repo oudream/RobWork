@@ -33,7 +33,7 @@ class DOMPropertyMapFormat
 {
 public:
     /**
-     * @brief Get identifier for rw::common::PropertyMap.
+     * @brief Get identifier for rw::core::PropertyMap.
      * @return the identifier.
      */
     static const std::string& idPropertyMap();
@@ -45,19 +45,19 @@ public:
     static const std::string& idProperty();
 
     /**
-     * @brief Get identifier for the name of a rw::common::Property.
+     * @brief Get identifier for the name of a rw::core::Property.
      * @return the identifier.
      */
     static const std::string& idPropertyName();
 
     /**
-     * @brief Get identifier for the description of a rw::common::Property.
+     * @brief Get identifier for the description of a rw::core::Property.
      * @return the identifier.
      */
     static const std::string& idPropertyDescription();
 
     /**
-     * @brief Get identifier for the value of a rw::common::Property.
+     * @brief Get identifier for the value of a rw::core::Property.
      * @return the identifier.
      */
     static const std::string& idPropertyValue();

@@ -17,7 +17,7 @@
 
 #include "Contour2DInfoMap.hpp"
 
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 #include <rw/geometry/Contour2D.hpp>
 #include <rw/math/Constants.hpp>
 #include <rw/math/Math.hpp>

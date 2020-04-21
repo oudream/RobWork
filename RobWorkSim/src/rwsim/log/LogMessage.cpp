@@ -22,6 +22,7 @@
 #include <boost/algorithm/string.hpp>
 
 using namespace rw::common;
+using namespace rw::core;
 using namespace rwsim::log;
 
 #define LINE_WIDTH 64

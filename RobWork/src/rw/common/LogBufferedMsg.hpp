@@ -22,7 +22,7 @@
 #include <ostream>
 #include <vector>
 #include <string>
-#include "LogWriter.hpp"
+#include <rw/core/LogWriter.hpp>
 
 namespace rw { namespace common {
 
@@ -32,7 +32,7 @@ namespace rw { namespace common {
      * The size of the buffer is not fixed and will grow until flush is called.
      * To have a fixed size buffer use LogBufferedChar instead.
      */
-    class LogBufferedMsg: public LogWriter
+    class LogBufferedMsg: public rw::core::LogWriter
     {
     public:
         /**

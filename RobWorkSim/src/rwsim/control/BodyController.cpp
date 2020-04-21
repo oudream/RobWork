@@ -17,14 +17,14 @@
 
 #include "BodyController.hpp"
 
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 #include <rw/kinematics/Kinematics.hpp>
 #include <rw/math/MetricUtil.hpp>
 #include <rw/trajectory/InterpolatorTrajectory.hpp>
 #include <rw/trajectory/RampInterpolator.hpp>
 #include <rwsim/dynamics/KinematicBody.hpp>
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::kinematics;
 using namespace rw::math;
 using namespace rw::trajectory;
@@ -53,7 +53,7 @@ struct BodyController::TargetData {
 
 BodyController::BodyController(const std::string& name):
 	Controller(name),
-	SimulatedController(rw::common::ownedPtr(new rw::models::ControllerModel(name,NULL))),
+	SimulatedController(rw::core::ownedPtr(new rw::models::ControllerModel(name,NULL))),
 	_enabled(true)
 {
 }
@@ -238,9 +238,9 @@ void BodyController::setTarget(Body::Ptr body, const Transform3D<>& target, cons
     data._type = TargetData::Pose6DController;
 
     RampInterpolator<Transform3D<> >::Ptr ramp =
-            rw::common::ownedPtr( new RampInterpolator<Transform3D<> >( from , target, maxLinVel, maxLinAcc, maxAngVel, maxAngAcc));
+            rw::core::ownedPtr( new RampInterpolator<Transform3D<> >( from , target, maxLinVel, maxLinAcc, maxAngVel, maxAngAcc));
     InterpolatorTrajectory<Transform3D<> >::Ptr traj =
-            rw::common::ownedPtr( new InterpolatorTrajectory<Transform3D<> >() );
+            rw::core::ownedPtr( new InterpolatorTrajectory<Transform3D<> >() );
     traj->add(ramp);
     //Log::infoLog() << "from  : " << from << " \n";
     //Log::infoLog() << "target: " << target << " \n";

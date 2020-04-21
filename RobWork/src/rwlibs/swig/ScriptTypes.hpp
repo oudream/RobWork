@@ -19,8 +19,9 @@
 #define RWLIBS_SWIG_SCRIPTTYPES_HPP_
 
 #include <RobWorkConfig.hpp>
-#include <rw/RobWork.hpp>
+#include <rw/core/RobWork.hpp>
 
+#include <rw/core.hpp>
 #include <rw/common.hpp>
 #include <rw/geometry.hpp>
 #include <rw/graphics.hpp>
@@ -94,38 +95,44 @@ namespace swig {
 	/** @addtogroup swig */
 	/*@{*/
 
-	//! @copydoc rw::RobWork
-	typedef rw::RobWork RobWork;
-
 	/**
 	 * @name common
 	 * Wrapped classes in common.
 	 */
 	///@{
-	//! @copydoc rw::common::PropertyMap
-	typedef rw::common::PropertyMap PropertyMap;
-    //! @copydoc rw::common::Log
-    typedef rw::common::Log Log;
-    //! @copydoc rw::common::LogWriter
-    typedef rw::common::LogWriter LogWriter;
-    //! @copydoc rw::common::Message
-    typedef rw::common::Message Message;
+
 	//! @copydoc rw::common::ThreadPool
 	typedef rw::common::ThreadPool ThreadPool;
 	//! @copydoc rw::common::ThreadTask
 	typedef rw::common::ThreadTask ThreadTask;
-	//! @copydoc rw::common::Plugin
-	typedef rw::common::Plugin Plugin;
-	//! @copydoc rw::common::Extension
-	typedef rw::common::Extension Extension;
-	//! @copydoc rw::common::Extension::Descriptor
-	typedef rw::common::Extension::Descriptor ExtensionDescriptor;
-	//! @copydoc rw::common::ExtensionRegistry
-	typedef rw::common::ExtensionRegistry ExtensionRegistry;
 	//! @copydoc rw::common:Timer
 	typedef rw::common::Timer Timer;
 	///@}
 
+	/**
+	 * @name core
+	 * Wrapped classes in core.
+	 */
+	//! @copydoc rw::core::RobWork
+	typedef rw::core::RobWork RobWork;
+	//! @copydoc rw::core::PropertyMap
+	typedef rw::core::PropertyMap PropertyMap;
+    //! @copydoc rw::core::Log
+    typedef rw::core::Log Log;
+    //! @copydoc rw::core::LogWriter
+    typedef rw::core::LogWriter LogWriter;
+    //! @copydoc rw::core::Message
+    typedef rw::core::Message Message;
+	//! @copydoc rw::core::Plugin
+	typedef rw::core::Plugin Plugin;
+	//! @copydoc rw::core::Extension
+	typedef rw::core::Extension Extension;
+	//! @copydoc rw::core::Extension::Descriptor
+	typedef rw::core::Extension::Descriptor ExtensionDescriptor;
+	//! @copydoc rw::core::ExtensionRegistry
+	typedef rw::core::ExtensionRegistry ExtensionRegistry;
+
+	///@}
 	/**
 	 * @name geometry
 	 * Wrapped classes in geometry.
@@ -715,7 +722,7 @@ namespace swig {
 	 * @brief Set the writer to write log to.
 	 * @param writer [in] the writer.
 	 */
-	void setlog(::rw::common::LogWriter::Ptr writer);
+	void setlog(::rw::core::LogWriter::Ptr writer);
 
 	/**
 	 * @brief Convert an entity to string.

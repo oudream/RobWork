@@ -20,7 +20,7 @@
 #include "GraspTask.xml.hpp"
 
 #include <rwlibs/task/GraspTask.hpp>
-
+#include <rw/core/Ptr.hpp>
 #include <RobWorkConfig.hpp>
 
 #include <rwlibs/task/loader/DOMTaskLoader.hpp>
@@ -30,8 +30,8 @@
 #include <rwlibs/task/loader/XMLTaskSaver.hpp>
 #endif
 
-using rw::common::ownedPtr;
-using rw::common::Ptr;
+using rw::core::ownedPtr;
+using rw::core::Ptr;
 using namespace rw::math;
 using namespace rwlibs::task;
 

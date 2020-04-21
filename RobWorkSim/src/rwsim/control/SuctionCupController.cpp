@@ -12,11 +12,11 @@ using namespace rw::kinematics;
 using namespace rw::models;
 using namespace rw::geometry;
 using namespace rw::math;
-using namespace rw::common;
+using namespace rw::core;
 
 
 SuctionCupController::SuctionCupController(const std::string& name, rwsim::dynamics::SuctionCup::Ptr dev):
-		SimulatedController(rw::common::ownedPtr(new rw::models::ControllerModel(name,dev->getBaseBody()->getBodyFrame()))),
+		SimulatedController(rw::core::ownedPtr(new rw::models::ControllerModel(name,dev->getBaseBody()->getBodyFrame()))),
         _dev(dev),_enabled(true),_name(name)
 {
     // initialize springs between the body parts of the device

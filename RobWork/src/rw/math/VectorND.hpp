@@ -31,7 +31,7 @@
 #include <Eigen/Eigen>
 #include "Math.hpp"
 
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 
 namespace rw { namespace math {
 

@@ -28,7 +28,7 @@ TactileArrayModel::TactileArrayModel(const std::string& name,
 			double cw, double ch):
 					SensorModel(name, frame),
 					_fThmap(fThmap),_heightMap(heightMap),_cellWidth(cw),_cellHeight(ch),
-					_sdata(1, rw::common::ownedPtr( new TactileModelCache()).cast<rw::kinematics::StateCache>())
+					_sdata(1, rw::core::ownedPtr( new TactileModelCache()).cast<rw::kinematics::StateCache>())
 {
 	_minPressure = 0;
 	_maxPressure = 1000;

@@ -2,6 +2,8 @@
 
 #include <rw/math/Quaternion.hpp>
 #include <rw/trajectory/Path.hpp>
+#include <rw/core/Exception.hpp>
+#include <rw/core/IOUtil.hpp>
 
 #include <rwlibs/task/loader/DOMTaskSaver.hpp>
 #include <rwlibs/task/loader/DOMTaskLoader.hpp>
@@ -9,7 +11,7 @@
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::math;
 using namespace rw::trajectory;
 using namespace rwlibs::task;

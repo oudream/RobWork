@@ -23,7 +23,7 @@
 
 #include <QObject>
 #include <rws/RobWorkStudioPlugin.hpp>
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 namespace rw { namespace graphics { class DrawableNode; } }
 namespace rw { namespace kinematics { class Frame; } }
@@ -126,7 +126,7 @@ private:
 
     void clearTreeContent();
     void setupFrame(rw::kinematics::Frame& frame, QTreeWidgetItem* parentItem);
-    void constructDrawableList(std::vector<rw::common::Ptr<rw::graphics::DrawableNode> >& drawables);
+    void constructDrawableList(std::vector<rw::core::Ptr<rw::graphics::DrawableNode> >& drawables);
 
     void setupDrawables(rw::kinematics::Frame* frame, QTreeWidgetItem* parent);
 
@@ -161,13 +161,13 @@ private:
     rw::models::WorkCell* _workcell;
     rw::kinematics::State _state;
 
-	typedef std::map<QTreeWidgetItem*, rw::common::Ptr<rw::models::Device> > DeviceMap;
+	typedef std::map<QTreeWidgetItem*, rw::core::Ptr<rw::models::Device> > DeviceMap;
     DeviceMap _deviceMap;
 
     typedef std::map<QTreeWidgetItem*, rw::kinematics::Frame*> FrameMap;
     FrameMap _frameMap;
 
-    typedef std::map<QTreeWidgetItem*, rw::common::Ptr<rw::graphics::DrawableNode> > DrawableMap;
+    typedef std::map<QTreeWidgetItem*, rw::core::Ptr<rw::graphics::DrawableNode> > DrawableMap;
     // maintains the drawables that are not constructed and added from this plugin
     DrawableMap _drawableMap;
 

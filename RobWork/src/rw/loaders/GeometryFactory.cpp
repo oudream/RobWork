@@ -20,9 +20,9 @@
 #include "Model3DFactory.hpp"
 #include "model3d/STLFile.hpp"
 
-#include <rw/common/Extension.hpp>
-#include <rw/common/IOUtil.hpp>
-#include <rw/common/StringUtil.hpp>
+#include <rw/core/Extension.hpp>
+#include <rw/core/IOUtil.hpp>
+#include <rw/core/StringUtil.hpp>
 #include <rw/geometry/Box.hpp>
 #include <rw/geometry/Cone.hpp>
 #include <rw/geometry/Cylinder.hpp>
@@ -37,7 +37,7 @@
 
 using namespace rw::loaders;
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::geometry;
 using namespace rw::kinematics;
 using namespace rw::math;

@@ -1,5 +1,8 @@
 #include <gtest/gtest.h>
 
+#include <rw/core/PropertyMap.hpp>
+#include <rw/core/Property.hpp>
+
 #include <rw/loaders/dom/DOMPropertyMapSaver.hpp>
 #include <rw/loaders/dom/DOMPropertyMapLoader.hpp>
 
@@ -19,132 +22,132 @@ using namespace rw::trajectory;
 
 namespace {
     /* Declaring the functions for recursive use */
-    void comparePropertyMaps(const rw::common::PropertyMap &a, const rw::common::PropertyMap &b);
+    void comparePropertyMaps(const rw::core::PropertyMap &a, const rw::core::PropertyMap &b);
 
-    void compareProperties(const rw::common::PropertyBase::Ptr a, const rw::common::PropertyBase::Ptr b) {
+    void compareProperties(const rw::core::PropertyBase::Ptr a, const rw::core::PropertyBase::Ptr b) {
         EXPECT_EQ(a->getIdentifier(), b->getIdentifier());
         EXPECT_EQ(a->getDescription(), b->getDescription());
         ASSERT_EQ(a->getType().getId(), b->getType().getId());
 
         switch (a->getType().getId()) {
-        case rw::common::PropertyType::PropertyMap: {
-            const rw::common::Property<rw::common::PropertyMap>* pa = rw::common::toProperty<rw::common::PropertyMap>(a);
-            const rw::common::Property<rw::common::PropertyMap>* pb = rw::common::toProperty<rw::common::PropertyMap>(b);
+        case rw::core::PropertyType::PropertyMap: {
+            const rw::core::Property<rw::core::PropertyMap>* pa = rw::core::toProperty<rw::core::PropertyMap>(a);
+            const rw::core::Property<rw::core::PropertyMap>* pb = rw::core::toProperty<rw::core::PropertyMap>(b);
             comparePropertyMaps(pa->getValue(), pb->getValue());
             break;
         }
-        case rw::common::PropertyType::String: {
-            const rw::common::Property<std::string>* pa = rw::common::toProperty<std::string>(a);
-            const rw::common::Property<std::string>* pb = rw::common::toProperty<std::string>(b);
+        case rw::core::PropertyType::String: {
+            const rw::core::Property<std::string>* pa = rw::core::toProperty<std::string>(a);
+            const rw::core::Property<std::string>* pb = rw::core::toProperty<std::string>(b);
             EXPECT_EQ(pa->getValue(), pb->getValue());
             break;
         }
-        case rw::common::PropertyType::Float: {
-            const rw::common::Property<float>* pa = rw::common::toProperty<float>(a);
-            const rw::common::Property<float>* pb = rw::common::toProperty<float>(b);
+        case rw::core::PropertyType::Float: {
+            const rw::core::Property<float>* pa = rw::core::toProperty<float>(a);
+            const rw::core::Property<float>* pb = rw::core::toProperty<float>(b);
             EXPECT_FLOAT_EQ(pa->getValue(), pb->getValue());
             break;
         }
-        case rw::common::PropertyType::Double: {
-            const rw::common::Property<double>* pa = rw::common::toProperty<double>(a);
-            const rw::common::Property<double>* pb = rw::common::toProperty<double>(b);
+        case rw::core::PropertyType::Double: {
+            const rw::core::Property<double>* pa = rw::core::toProperty<double>(a);
+            const rw::core::Property<double>* pb = rw::core::toProperty<double>(b);
             EXPECT_DOUBLE_EQ(pa->getValue(), pb->getValue());
             break;
         }
-        case rw::common::PropertyType::Int: {
-            const rw::common::Property<int>* pa = rw::common::toProperty<int>(a);
-            const rw::common::Property<int>* pb = rw::common::toProperty<int>(b);
+        case rw::core::PropertyType::Int: {
+            const rw::core::Property<int>* pa = rw::core::toProperty<int>(a);
+            const rw::core::Property<int>* pb = rw::core::toProperty<int>(b);
             EXPECT_EQ(pa->getValue(), pb->getValue());
             break;
         }
-        case rw::common::PropertyType::Bool: {
-            const rw::common::Property<bool>* pa = rw::common::toProperty<bool>(a);
-            const rw::common::Property<bool>* pb = rw::common::toProperty<bool>(b);
+        case rw::core::PropertyType::Bool: {
+            const rw::core::Property<bool>* pa = rw::core::toProperty<bool>(a);
+            const rw::core::Property<bool>* pb = rw::core::toProperty<bool>(b);
             EXPECT_EQ(pa->getValue(), pb->getValue());
             break;
         }
-        case rw::common::PropertyType::Vector3D: {
-            const rw::common::Property<Vector3D<> >* pa = rw::common::toProperty<Vector3D<> >(a);
-            const rw::common::Property<Vector3D<> >* pb = rw::common::toProperty<Vector3D<> >(b);
+        case rw::core::PropertyType::Vector3D: {
+            const rw::core::Property<Vector3D<> >* pa = rw::core::toProperty<Vector3D<> >(a);
+            const rw::core::Property<Vector3D<> >* pb = rw::core::toProperty<Vector3D<> >(b);
             EXPECT_DOUBLE_EQ(pa->getValue()[0],pb->getValue()[0]);
             EXPECT_DOUBLE_EQ(pa->getValue()[1],pb->getValue()[1]);
             EXPECT_DOUBLE_EQ(pa->getValue()[2],pb->getValue()[2]);
             break;
         }
-        case rw::common::PropertyType::Vector2D: {
-            const rw::common::Property<Vector2D<> >* pa = rw::common::toProperty<Vector2D<> >(a);
-            const rw::common::Property<Vector2D<> >* pb = rw::common::toProperty<Vector2D<> >(b);
+        case rw::core::PropertyType::Vector2D: {
+            const rw::core::Property<Vector2D<> >* pa = rw::core::toProperty<Vector2D<> >(a);
+            const rw::core::Property<Vector2D<> >* pb = rw::core::toProperty<Vector2D<> >(b);
             EXPECT_DOUBLE_EQ(pa->getValue()[0],pb->getValue()[0]);
             EXPECT_DOUBLE_EQ(pa->getValue()[1],pb->getValue()[1]);
             break;
         }
-        case rw::common::PropertyType::Q: {
-            const rw::common::Property<Q>* pa = rw::common::toProperty<Q>(a);
-            const rw::common::Property<Q>* pb = rw::common::toProperty<Q>(b);
+        case rw::core::PropertyType::Q: {
+            const rw::core::Property<Q>* pa = rw::core::toProperty<Q>(a);
+            const rw::core::Property<Q>* pb = rw::core::toProperty<Q>(b);
             ASSERT_EQ(pa->getValue().size(), pb->getValue().size());
             for (std::size_t i = 0; i < pa->getValue().size(); i++) {
             	EXPECT_DOUBLE_EQ(pa->getValue()[i], pb->getValue()[i]);
             }
             break;
         }
-        case rw::common::PropertyType::Transform3D: {
-            const rw::common::Property<Transform3D<> >* pa = rw::common::toProperty<Transform3D<> >(a);
-            const rw::common::Property<Transform3D<> >* pb = rw::common::toProperty<Transform3D<> >(b);
+        case rw::core::PropertyType::Transform3D: {
+            const rw::core::Property<Transform3D<> >* pa = rw::core::toProperty<Transform3D<> >(a);
+            const rw::core::Property<Transform3D<> >* pb = rw::core::toProperty<Transform3D<> >(b);
             EXPECT_TRUE(pa->getValue().equal(pb->getValue()));
             break;
         }
-        case rw::common::PropertyType::Rotation3D: {
-            const rw::common::Property<Rotation3D<> >* pa = rw::common::toProperty<Rotation3D<> >(a);
-            const rw::common::Property<Rotation3D<> >* pb = rw::common::toProperty<Rotation3D<> >(b);
+        case rw::core::PropertyType::Rotation3D: {
+            const rw::core::Property<Rotation3D<> >* pa = rw::core::toProperty<Rotation3D<> >(a);
+            const rw::core::Property<Rotation3D<> >* pb = rw::core::toProperty<Rotation3D<> >(b);
             EXPECT_TRUE(pa->getValue().equal(pb->getValue()));
             break;
         }
-        case rw::common::PropertyType::RPY: {
-            const rw::common::Property<RPY<> >* pa = rw::common::toProperty<RPY<> >(a);
-            const rw::common::Property<RPY<> >* pb = rw::common::toProperty<RPY<> >(b);
+        case rw::core::PropertyType::RPY: {
+            const rw::core::Property<RPY<> >* pa = rw::core::toProperty<RPY<> >(a);
+            const rw::core::Property<RPY<> >* pb = rw::core::toProperty<RPY<> >(b);
             EXPECT_DOUBLE_EQ(pa->getValue()[0],pb->getValue()[0]);
             EXPECT_DOUBLE_EQ(pa->getValue()[1],pb->getValue()[1]);
             EXPECT_DOUBLE_EQ(pa->getValue()[2],pb->getValue()[2]);
             break;
         }
-        case rw::common::PropertyType::EAA: {
-            const rw::common::Property<EAA<> >* pa = rw::common::toProperty<EAA<> >(a);
-            const rw::common::Property<EAA<> >* pb = rw::common::toProperty<EAA<> >(b);
+        case rw::core::PropertyType::EAA: {
+            const rw::core::Property<EAA<> >* pa = rw::core::toProperty<EAA<> >(a);
+            const rw::core::Property<EAA<> >* pb = rw::core::toProperty<EAA<> >(b);
             EXPECT_DOUBLE_EQ(pa->getValue()[0],pb->getValue()[0]);
             EXPECT_DOUBLE_EQ(pa->getValue()[1],pb->getValue()[1]);
             EXPECT_DOUBLE_EQ(pa->getValue()[2],pb->getValue()[2]);
             break;
         }
-        case rw::common::PropertyType::Quaternion: {
-            const rw::common::Property<Quaternion<> >* pa = rw::common::toProperty<Quaternion<> >(a);
-            const rw::common::Property<Quaternion<> >* pb = rw::common::toProperty<Quaternion<> >(b);
+        case rw::core::PropertyType::Quaternion: {
+            const rw::core::Property<Quaternion<> >* pa = rw::core::toProperty<Quaternion<> >(a);
+            const rw::core::Property<Quaternion<> >* pb = rw::core::toProperty<Quaternion<> >(b);
             EXPECT_NEAR(pa->getValue()(0),pb->getValue()(0),1e-6);
             EXPECT_NEAR(pa->getValue()(1),pb->getValue()(1),1e-6);
             EXPECT_NEAR(pa->getValue()(2),pb->getValue()(2),1e-6);
             EXPECT_NEAR(pa->getValue()(3),pb->getValue()(3),1e-6);
             break;
         }
-        case rw::common::PropertyType::Rotation2D: {
-            const rw::common::Property<Rotation2D<> >* pa = rw::common::toProperty<Rotation2D<> >(a);
-            const rw::common::Property<Rotation2D<> >* pb = rw::common::toProperty<Rotation2D<> >(b);
+        case rw::core::PropertyType::Rotation2D: {
+            const rw::core::Property<Rotation2D<> >* pa = rw::core::toProperty<Rotation2D<> >(a);
+            const rw::core::Property<Rotation2D<> >* pb = rw::core::toProperty<Rotation2D<> >(b);
             EXPECT_DOUBLE_EQ(pa->getValue()(0,0),pb->getValue()(0,0));
             EXPECT_DOUBLE_EQ(pa->getValue()(0,1),pb->getValue()(0,1));
             EXPECT_DOUBLE_EQ(pa->getValue()(1,0),pb->getValue()(1,0));
             EXPECT_DOUBLE_EQ(pa->getValue()(1,1),pb->getValue()(1,1));
             break;
         }
-        case rw::common::PropertyType::VelocityScrew6D: {
-            const rw::common::Property<VelocityScrew6D<> >* pa = rw::common::toProperty<VelocityScrew6D<> >(a);
-            const rw::common::Property<VelocityScrew6D<> >* pb = rw::common::toProperty<VelocityScrew6D<> >(b);
+        case rw::core::PropertyType::VelocityScrew6D: {
+            const rw::core::Property<VelocityScrew6D<> >* pa = rw::core::toProperty<VelocityScrew6D<> >(a);
+            const rw::core::Property<VelocityScrew6D<> >* pb = rw::core::toProperty<VelocityScrew6D<> >(b);
             for (std::size_t i = 0; i < 6; i++) {
             	EXPECT_DOUBLE_EQ(pa->getValue()[i],pb->getValue()[i]);
             }
             break;
         }
-        case rw::common::PropertyType::QPath: {
+        case rw::core::PropertyType::QPath: {
             /* Doing verbose comparison, else the operator== and operator!= could be implemented for rw::trajectory::Path */
-            const rw::common::Property<QPath>* pa = rw::common::toProperty<QPath>(a);
-            const rw::common::Property<QPath>* pb = rw::common::toProperty<QPath>(b);
+            const rw::core::Property<QPath>* pa = rw::core::toProperty<QPath>(a);
+            const rw::core::Property<QPath>* pb = rw::core::toProperty<QPath>(b);
             EXPECT_EQ(pa->getValue().size(), pb->getValue().size());
             
             std::size_t maxIndex = std::max(pa->getValue().size(), pb->getValue().size());
@@ -164,10 +167,10 @@ namespace {
             }
             break;
         }
-        case rw::common::PropertyType::Transform3DPath: {
+        case rw::core::PropertyType::Transform3DPath: {
             /* Doing verbose comparison, else the operator== and operator!= could be implemented for rw::trajectory::Path */
-            const rw::common::Property<Transform3DPath>* pa = rw::common::toProperty<Transform3DPath>(a);
-            const rw::common::Property<Transform3DPath>* pb = rw::common::toProperty<Transform3DPath>(b);
+            const rw::core::Property<Transform3DPath>* pa = rw::core::toProperty<Transform3DPath>(a);
+            const rw::core::Property<Transform3DPath>* pb = rw::core::toProperty<Transform3DPath>(b);
             EXPECT_EQ(pa->getValue().size(), pb->getValue().size());
             
             std::size_t maxIndex = std::max(pa->getValue().size(), pb->getValue().size());
@@ -182,9 +185,9 @@ namespace {
             }
             break;
         }
-        case rw::common::PropertyType::StringList: {
-            const rw::common::Property<std::vector<std::string> >* pa = rw::common::toProperty<std::vector<std::string> >(a);
-            const rw::common::Property<std::vector<std::string> >* pb = rw::common::toProperty<std::vector<std::string> >(b);
+        case rw::core::PropertyType::StringList: {
+            const rw::core::Property<std::vector<std::string> >* pa = rw::core::toProperty<std::vector<std::string> >(a);
+            const rw::core::Property<std::vector<std::string> >* pb = rw::core::toProperty<std::vector<std::string> >(b);
             EXPECT_EQ(pa->getValue().size(), pb->getValue().size());
             
             std::size_t maxIndex = std::max(pa->getValue().size(), pb->getValue().size());
@@ -199,9 +202,9 @@ namespace {
             }
             break;
         }
-        case rw::common::PropertyType::IntList: {
-            const rw::common::Property<std::vector<int> >* pa = rw::common::toProperty<std::vector<int> >(a);
-            const rw::common::Property<std::vector<int> >* pb = rw::common::toProperty<std::vector<int> >(b);
+        case rw::core::PropertyType::IntList: {
+            const rw::core::Property<std::vector<int> >* pa = rw::core::toProperty<std::vector<int> >(a);
+            const rw::core::Property<std::vector<int> >* pb = rw::core::toProperty<std::vector<int> >(b);
             EXPECT_EQ(pa->getValue().size(), pb->getValue().size());
             
             std::size_t maxIndex = std::max(pa->getValue().size(), pb->getValue().size());
@@ -216,9 +219,9 @@ namespace {
             }
             break;
         }
-        case rw::common::PropertyType::DoubleList: {
-            const rw::common::Property<std::vector<double> >* pa = rw::common::toProperty<std::vector<double> >(a);
-            const rw::common::Property<std::vector<double> >* pb = rw::common::toProperty<std::vector<double> >(b);
+        case rw::core::PropertyType::DoubleList: {
+            const rw::core::Property<std::vector<double> >* pa = rw::core::toProperty<std::vector<double> >(a);
+            const rw::core::Property<std::vector<double> >* pb = rw::core::toProperty<std::vector<double> >(b);
             EXPECT_EQ(pa->getValue().size(), pb->getValue().size());
             
             std::size_t maxIndex = std::max(pa->getValue().size(), pb->getValue().size());
@@ -240,12 +243,12 @@ namespace {
         }
     }
 
-    void comparePropertyMaps(const rw::common::PropertyMap &a, const rw::common::PropertyMap &b) {
+    void comparePropertyMaps(const rw::core::PropertyMap &a, const rw::core::PropertyMap &b) {
         ASSERT_EQ(a.size(), b.size());
 
-        rw::common::PropertyMap::iterator it;
+        rw::core::PropertyMap::iterator it;
         for (it = a.getProperties().first; it != a.getProperties().second; ++it) {
-            rw::common::PropertyBase::Ptr pa, pb;
+            rw::core::PropertyBase::Ptr pa, pb;
             pa = *it;
             pb = b.findPropertyBase(pa->getIdentifier());
             ASSERT_FALSE(pb == NULL);
@@ -254,9 +257,9 @@ namespace {
         }
     }        
 
-    void testSaverAndLoader(const rw::common::PropertyMap &map) {
+    void testSaverAndLoader(const rw::core::PropertyMap &map) {
         {
-            rw::common::PropertyMap mapIn;
+            rw::core::PropertyMap mapIn;
             /* Currently just saving to a file in the current directory. Not even cleaning it up or ensuring that it is emptied before writing new things to it. Would probably be more ideal to place the file in $TMP and/or remove it between function invocations. */
             const std::string file("PropertyMap_stringList.xml");
             SCOPED_TRACE("Serialization to file");
@@ -268,7 +271,7 @@ namespace {
             comparePropertyMaps(map, mapIn);
         }
         {
-            rw::common::PropertyMap mapIn;
+            rw::core::PropertyMap mapIn;
             /* Test iostreams */
             std::stringstream mapStream;
             SCOPED_TRACE("Serialization to output stream");
@@ -283,15 +286,15 @@ namespace {
 }
 
 TEST(DOMPropertyMapSaveAndLoad, PropertyMap) {
-    std::vector<rw::common::PropertyMap> items;
+    std::vector<rw::core::PropertyMap> items;
     {
-        rw::common::PropertyMap item;
+        rw::core::PropertyMap item;
 
         items.push_back(item);
     }
     {
-        rw::common::PropertyMap item;
-        rw::common::PropertyMap m;
+        rw::core::PropertyMap item;
+        rw::core::PropertyMap m;
 
         EXPECT_TRUE(!item.add(std::string("int"), std::string("The description of an Int"), 100).isNull());
         EXPECT_TRUE(!m.add(std::string("int"), std::string("The description of an Int"), 1001).isNull());
@@ -301,7 +304,7 @@ TEST(DOMPropertyMapSaveAndLoad, PropertyMap) {
         items.push_back(item);
     }
 
-    for (std::vector<rw::common::PropertyMap>::const_iterator it = items.begin(); it != items.end(); ++it) {
+    for (std::vector<rw::core::PropertyMap>::const_iterator it = items.begin(); it != items.end(); ++it) {
         testSaverAndLoader(*it);
     }
 }
@@ -320,7 +323,7 @@ TEST(DOMPropertyMapSaveAndLoad, String) {
     items.push_back(std::string("NoneRYBDnQrCfAqGTehuiSwv"));
     items.push_back(std::string("This is a manually written string!"));
     for (std::vector<std::string>::const_iterator it = items.begin(); it != items.end(); ++it) {
-        rw::common::PropertyMap map;
+        rw::core::PropertyMap map;
         EXPECT_TRUE(!map.add(std::string("identifier"), std::string("The description of a String"), *it).isNull());
 
         testSaverAndLoader(map);
@@ -337,7 +340,7 @@ TEST(DOMPropertyMapSaveAndLoad, Float) {
     items.push_back(6213.2f);
     items.push_back(0.0234f);
     for (std::vector<float>::const_iterator it = items.begin(); it != items.end(); ++it) {
-        rw::common::PropertyMap map;
+        rw::core::PropertyMap map;
         EXPECT_TRUE(!map.add(std::string("identifier"), std::string("The description of a Float"), *it).isNull());
         
         testSaverAndLoader(map);
@@ -354,7 +357,7 @@ TEST(DOMPropertyMapSaveAndLoad, Double) {
     items.push_back(-1235.2);
     items.push_back(7823.9332);
     for (std::vector<double>::const_iterator it = items.begin(); it != items.end(); ++it) {
-        rw::common::PropertyMap map;
+        rw::core::PropertyMap map;
         EXPECT_TRUE(!map.add(std::string("identifier"), std::string("The description of a Double"), *it).isNull());
 
         testSaverAndLoader(map);
@@ -371,7 +374,7 @@ TEST(DOMPropertyMapSaveAndLoad, Int) {
     items.push_back(45588);
     items.push_back(510);
     for (std::vector<int>::const_iterator it = items.begin(); it != items.end(); ++it) {
-        rw::common::PropertyMap map;
+        rw::core::PropertyMap map;
         EXPECT_TRUE(!map.add(std::string("identifier"), std::string("The description of an Int"), *it).isNull());
 
         testSaverAndLoader(map);
@@ -383,7 +386,7 @@ TEST(DOMPropertyMapSaveAndLoad, Bool) {
     items.push_back(false);
     items.push_back(true);
     for (std::vector<bool>::const_iterator it = items.begin(); it != items.end(); ++it) {
-        rw::common::PropertyMap map;
+        rw::core::PropertyMap map;
         EXPECT_TRUE(!map.add(std::string("identifier"), std::string("The description of a Bool"), *it).isNull());
 
         testSaverAndLoader(map);
@@ -397,7 +400,7 @@ TEST(DOMPropertyMapSaveAndLoad, Vector3D) {
     items.push_back(Vector3D<>(0.0, 0.0, 0.0));
     items.push_back(Vector3D<>(12.0, 12340.0, 98822.0));
     for (std::vector<Vector3D<> >::const_iterator it = items.begin(); it != items.end(); ++it) {
-        rw::common::PropertyMap map;
+        rw::core::PropertyMap map;
         EXPECT_TRUE(!map.add(std::string("identifier"), std::string("The description of a Vector3D"), *it).isNull());
 
         testSaverAndLoader(map);
@@ -410,7 +413,7 @@ TEST(DOMPropertyMapSaveAndLoad, Vector2D) {
     items.push_back(Vector2D<>(1.9, 2.0));
     items.push_back(Vector2D<>(0.0, 0.0));
     for (std::vector<Vector2D<> >::const_iterator it = items.begin(); it != items.end(); ++it) {
-        rw::common::PropertyMap map;
+        rw::core::PropertyMap map;
         EXPECT_TRUE(!map.add(std::string("identifier"), std::string("The description of a Vector2D"), *it).isNull());
 
         testSaverAndLoader(map);
@@ -430,7 +433,7 @@ TEST(DOMPropertyMapSaveAndLoad, Q) {
     items.push_back(Q(2, 4.1, 2.0));
     items.push_back(Q(1, 5.2));
     for (std::vector<Q>::const_iterator it = items.begin(); it != items.end(); ++it) {
-        rw::common::PropertyMap map;
+        rw::core::PropertyMap map;
         EXPECT_TRUE(!map.add(std::string("identifier"), std::string("The description of an Q"), *it).isNull());
 
         testSaverAndLoader(map);
@@ -449,7 +452,7 @@ TEST(DOMPropertyMapSaveAndLoad, Transform3D) {
     items.push_back(Transform3D<>(Vector3D<>(-0.118084, 0.44222, -0.889099), Rotation3D<>(-0.71277384, -0.23857637, 0.65957166, 0.33265399, 0.71289515, 0.61735066, -0.61749071, 0.65944054, -0.42876963)));
     items.push_back(Transform3D<>(Vector3D<>(0.0857885, -0.990521, -0.10728), Rotation3D<>(-0.17678865, 0.8856797, 0.42932184, 0.75682682, 0.40119343, -0.51600097, -0.62925268, 0.23369917, -0.7412326)));
     for (std::vector<Transform3D<> >::const_iterator it = items.begin(); it != items.end(); ++it) {
-        rw::common::PropertyMap map;
+        rw::core::PropertyMap map;
         EXPECT_TRUE(!map.add(std::string("identifier"), std::string("The description of a Transform3D"), *it).isNull());
 
         testSaverAndLoader(map);
@@ -468,7 +471,7 @@ TEST(DOMPropertyMapSaveAndLoad, Rotation3D) {
     items.push_back(Rotation3D<>(-0.97428403, 0.014469281, 0.22485834, 0.01021749, 0.99974655, -0.020060972, -0.22509161, -0.017247597, -0.97418493));
     items.push_back(Rotation3D<>(-0.44357068, -0.57814221, -0.68483329, 0.039335173, -0.77594071, 0.62957824, -0.89537579, 0.25232441, 0.36692587));
     for (std::vector<Rotation3D<> >::const_iterator it = items.begin(); it != items.end(); ++it) {
-        rw::common::PropertyMap map;
+        rw::core::PropertyMap map;
         EXPECT_TRUE(!map.add(std::string("identifier"), std::string("The description of a Rotation3D"), *it).isNull());
 
         testSaverAndLoader(map);
@@ -490,7 +493,7 @@ TEST(DOMPropertyMapSaveAndLoad, RPY) {
     items.push_back(RPY<>(0.2, -1.2, 1.4));
     items.push_back(RPY<>(-4.0, 0.25, 0.68));
     for (std::vector<RPY<> >::const_iterator it = items.begin(); it != items.end(); ++it) {
-        rw::common::PropertyMap map;
+        rw::core::PropertyMap map;
         EXPECT_TRUE(!map.add(std::string("identifier"), std::string("The description of an RPY"), *it).isNull());
 
         testSaverAndLoader(map);
@@ -509,7 +512,7 @@ TEST(DOMPropertyMapSaveAndLoad, EAA) {
     items.push_back(EAA<>(-4.7, -1.4, 1.3));
     items.push_back(EAA<>(-2.9, 3.2, 1.6));
     for (std::vector<EAA<> >::const_iterator it = items.begin(); it != items.end(); ++it) {
-        rw::common::PropertyMap map;
+        rw::core::PropertyMap map;
         EXPECT_TRUE(!map.add(std::string("identifier"), std::string("The description of an EAA"), *it).isNull());
 
         testSaverAndLoader(map);
@@ -532,7 +535,7 @@ TEST(DOMPropertyMapSaveAndLoad, Quaternion) {
     	it->normalize();
     }
     for (std::vector<Quaternion<> >::const_iterator it = items.begin(); it != items.end(); ++it) {
-        rw::common::PropertyMap map;
+        rw::core::PropertyMap map;
         EXPECT_TRUE(!map.add(std::string("identifier"), std::string("The description of a Quaternion"), *it).isNull());
 
         testSaverAndLoader(map);
@@ -551,7 +554,7 @@ TEST(DOMPropertyMapSaveAndLoad, Rotation2D) {
     items.push_back(Rotation2D<>(2.3, 2.0, -4.6, 0.45));
     items.push_back(Rotation2D<>(1.7, 0.58, 5.2, 4.7));
     for (std::vector<Rotation2D<> >::const_iterator it = items.begin(); it != items.end(); ++it) {
-        rw::common::PropertyMap map;
+        rw::core::PropertyMap map;
         EXPECT_TRUE(!map.add(std::string("identifier"), std::string("The description of a Rotation2D"), *it).isNull());
 
         testSaverAndLoader(map);
@@ -570,7 +573,7 @@ TEST(DOMPropertyMapSaveAndLoad, VelocityScrew6D) {
     items.push_back(VelocityScrew6D<>(0.96, -2.2, -3.9, 1.8, -3.8, 1.8));
     items.push_back(VelocityScrew6D<>(5.2, 5.9, -2.1, -2.7, 0.58, 1.8));
     for (std::vector<VelocityScrew6D<> >::const_iterator it = items.begin(); it != items.end(); ++it) {
-        rw::common::PropertyMap map;
+        rw::core::PropertyMap map;
         EXPECT_TRUE(!map.add(std::string("identifier"), std::string("The description of a VelocityScrew6D"), *it).isNull());
 
         testSaverAndLoader(map);
@@ -669,7 +672,7 @@ TEST(DOMPropertyMapSaveAndLoad, QPath) {
     items.push_back(qitems);
     
     for (std::vector<QPath>::const_iterator it = items.begin(); it != items.end(); ++it) {
-        rw::common::PropertyMap map;
+        rw::core::PropertyMap map;
         EXPECT_TRUE(!map.add(std::string("identifier"), std::string("The description of a QPath"), *it).isNull());
 
         testSaverAndLoader(map);
@@ -740,7 +743,7 @@ TEST(DOMPropertyMapSaveAndLoad, Transform3DPath) {
     items.push_back(titems);
 
     for (std::vector<Transform3DPath>::const_iterator it = items.begin(); it != items.end(); ++it) {
-        rw::common::PropertyMap map;
+        rw::core::PropertyMap map;
         EXPECT_TRUE(!map.add(std::string("identifier"), std::string("The description of a Transform3DPath"), *it).isNull());
 
         testSaverAndLoader(map);
@@ -748,7 +751,7 @@ TEST(DOMPropertyMapSaveAndLoad, Transform3DPath) {
 }
 
 TEST(DOMPropertyMapSaveAndLoad, StringList) {
-    rw::common::PropertyMap map;
+    rw::core::PropertyMap map;
     std::vector<std::string> list;
     list.push_back(std::string("first string"));
     list.push_back(std::string("second string"));
@@ -759,7 +762,7 @@ TEST(DOMPropertyMapSaveAndLoad, StringList) {
 }
 
 TEST(DOMPropertyMapSaveAndLoad, IntList) {
-    rw::common::PropertyMap map;
+    rw::core::PropertyMap map;
     std::vector<int> list;
     list.push_back(920501);
     list.push_back(518590);
@@ -770,7 +773,7 @@ TEST(DOMPropertyMapSaveAndLoad, IntList) {
 }
 
 TEST(DOMPropertyMapSaveAndLoad, DoubleList) {
-    rw::common::PropertyMap map;
+    rw::core::PropertyMap map;
     std::vector<double> list;
     list.push_back(3.5);
     list.push_back(0.45);

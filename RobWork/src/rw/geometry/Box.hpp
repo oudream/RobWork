@@ -21,7 +21,7 @@
 
 #include "Primitive.hpp"
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 namespace rw {
 namespace geometry {
@@ -33,7 +33,7 @@ namespace geometry {
 	class Box: public Primitive {
 	public:
 		//! @brief smart pointer type to this class
-        typedef rw::common::Ptr<Box> Ptr;
+        typedef rw::core::Ptr<Box> Ptr;
 		/**
 		 * @brief constructor - creates a 1x1x1 sided box
 		 */

@@ -17,7 +17,7 @@
 
 #include "ODEJoint.hpp"
 
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 #include <rw/kinematics/Kinematics.hpp>
 #include <rw/math/Transform3D.hpp>
 #include <rw/models/RevoluteJoint.hpp>

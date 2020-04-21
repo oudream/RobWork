@@ -25,7 +25,7 @@
 
 #include <rw/trajectory/Path.hpp>
 #include "StopCriteria.hpp"
-#include <rw/common/PropertyMap.hpp>
+#include <rw/core/PropertyMap.hpp>
 
 namespace rw { namespace pathplanning {
 
@@ -44,7 +44,7 @@ namespace rw { namespace pathplanning {
     {
     public:
 		//! @brief smart pointer type to this class
-		typedef rw::common::Ptr<PathPlanner> Ptr;
+		typedef rw::core::Ptr<PathPlanner> Ptr;
         /**
            @brief Destructor
         */
@@ -123,12 +123,12 @@ namespace rw { namespace pathplanning {
         /**
            @brief Property map for the planner.
         */
-        common::PropertyMap& getProperties() { return _properties; }
+        core::PropertyMap& getProperties() { return _properties; }
 
         /**
            @brief Property map for the planner.
         */
-        const common::PropertyMap& getProperties() const { return _properties; }
+        const core::PropertyMap& getProperties() const { return _properties; }
 
     protected:
         /**
@@ -146,7 +146,7 @@ namespace rw { namespace pathplanning {
             const StopCriteria& stop) = 0;
 
     private:
-        common::PropertyMap _properties;
+        core::PropertyMap _properties;
 
     private:
         PathPlanner(const PathPlanner&);

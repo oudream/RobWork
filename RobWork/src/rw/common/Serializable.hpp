@@ -19,7 +19,7 @@
 #define RW_COMMON_SERIALIZABLE_HPP
 
 #include <string>
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 
 namespace rw {
 namespace common {

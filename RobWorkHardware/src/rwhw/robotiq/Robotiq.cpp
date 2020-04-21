@@ -1,6 +1,10 @@
 #include "Robotiq.hpp"
 
 #include <rw/common/TimerUtil.hpp>
+#include <rw/models/Device.hpp>
+#include <rw/models/WorkCell.hpp>
+#include <rw/kinematics/State.hpp>
+#include <rwlibs/task/Task.hpp>
 
 #include <boost/thread.hpp>
 
@@ -17,6 +21,7 @@
 using namespace rw::models;
 using namespace rw::math;
 using namespace rw::common;
+using namespace rw::core;
 using namespace rw::trajectory;
 
 using namespace rwhw;

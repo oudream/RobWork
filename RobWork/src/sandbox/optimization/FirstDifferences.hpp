@@ -67,7 +67,7 @@ template<typename RES_T = double, typename ARG_T = double,
 class FirstDifferences: public NumericalDerivative<RES_T, ARG_T, GRAD_T> {
 public:
 	//! Smart pointer.
-	typedef rw::common::Ptr<FirstDifferences> Ptr;
+	typedef rw::core::Ptr<FirstDifferences> Ptr;
 
 public:
 	/**

@@ -18,7 +18,7 @@
 #include "BtRWCollisionConfiguration.hpp"
 #include "BtRWCollisionAlgorithm.hpp"
 
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 
 #if BT_BULLET_VERSION > 281
 #include "BulletCollision/CollisionDispatch/btCompoundCompoundCollisionAlgorithm.h"
@@ -34,7 +34,7 @@
 using namespace rwsim::contacts;
 using namespace rwsimlibs::bullet;
 
-BtRWCollisionConfiguration::BtRWCollisionConfiguration(rw::common::Ptr<const ContactDetector> detector) {
+BtRWCollisionConfiguration::BtRWCollisionConfiguration(rw::core::Ptr<const ContactDetector> detector) {
 	void* mem;
 
 	int maxSize = 0;

@@ -49,7 +49,7 @@ namespace rw { namespace proximity {
     class ProximityStrategyData
     {
       public:
-        typedef rw::common::Ptr< ProximityStrategyData > Ptr;
+        typedef rw::core::Ptr< ProximityStrategyData > Ptr;
         /**
          * @brief Create Empty ProximityData
          */

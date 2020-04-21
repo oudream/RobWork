@@ -25,7 +25,7 @@ using namespace rw::math;
 #include "XMLRWPreParser.hpp"
 #include "MultipleFileIterator.hpp"
 
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 #include <rw/math/Constants.hpp>
 
 #include <boost/spirit/include/classic_parse_tree.hpp>

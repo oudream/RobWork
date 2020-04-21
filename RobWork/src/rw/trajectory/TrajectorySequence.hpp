@@ -20,7 +20,7 @@
 #define RW_TRAJETORY_TRAJETORYSEQUENCE
 
 #include <rw/trajectory/Trajectory.hpp>
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 
 namespace rw { namespace math { class Q; } }
 
@@ -48,7 +48,7 @@ class TrajectorySequence: public Trajectory<T>
 {
 public:
 	//! @brief smart pointer type
-     typedef rw::common::Ptr<TrajectorySequence<T> > Ptr;
+     typedef rw::core::Ptr<TrajectorySequence<T> > Ptr;
 
 	/**
 	 * @brief Create a trajectory from \b trajectories.
@@ -287,7 +287,7 @@ private:
 public:
 	
 	typename TrajectoryIterator<T>::Ptr getIterator(double dt) const {
-		return rw::common::ownedPtr(new TrajectorySequenceIterator<T>(const_cast<TrajectorySequence<T>*>(this), dt));
+		return rw::core::ownedPtr(new TrajectorySequenceIterator<T>(const_cast<TrajectorySequence<T>*>(this), dt));
 	}
 
 

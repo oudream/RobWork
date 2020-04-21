@@ -22,7 +22,7 @@ namespace graphics {
 class DrawableGeometryNode: public rw::graphics::DrawableNode {
 public:
 	//! @brief Smart pointer type for DrawableGeometryNode.
-    typedef rw::common::Ptr<DrawableGeometryNode> Ptr;
+    typedef rw::core::Ptr<DrawableGeometryNode> Ptr;
 
     /**
      * @brief sets the RGBA color of the geometry
@@ -74,7 +74,7 @@ public:
      * @brief add a geometry to this render
      * @param geom [in] a geometry that should be rendered
      */
-    virtual void addGeometry(rw::common::Ptr<class rw::geometry::Geometry> geom) = 0;
+    virtual void addGeometry(rw::core::Ptr<class rw::geometry::Geometry> geom) = 0;
 
     /**
      * @brief add a frame axis to this geometry

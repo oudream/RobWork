@@ -24,7 +24,8 @@
  * \copydoc rwlibs::assembly::AssemblyRegistry
  */
 
-#include <rw/common/ExtensionPoint.hpp>
+#include <rw/core/ExtensionPoint.hpp>
+#include <rw/core/Ptr.hpp>
 
 namespace rwlibs {
 namespace assembly {
@@ -47,10 +48,10 @@ class AssemblyControlStrategy;
  * must be registered, or the user must create an AssemblyRegistry and add the strategy
  * to this registry manually.
  */
-class AssemblyRegistry: public rw::common::ExtensionPoint<AssemblyControlStrategy> {
+class AssemblyRegistry: public rw::core::ExtensionPoint<AssemblyControlStrategy> {
 public:
 	//! @brief smart pointer type to this class
-    typedef rw::common::Ptr<AssemblyRegistry> Ptr;
+    typedef rw::core::Ptr<AssemblyRegistry> Ptr;
 
 	//! @brief Constructor of initial registry (RobWork strategies are added)
 	AssemblyRegistry();
@@ -63,7 +64,7 @@ public:
 	 * @param id [in] an identifier for this specific strategy (this id is used for serialization).
 	 * @param strategy [in] a pointer to the AssemblyControlStrategy.
 	 */
-	void addStrategy(const std::string id, rw::common::Ptr<AssemblyControlStrategy> strategy);
+	void addStrategy(const std::string id, rw::core::Ptr<AssemblyControlStrategy> strategy);
 
 	/**
 	 * @brief Get the available strategies.
@@ -83,10 +84,10 @@ public:
 	 * @param id [in] the identifier.
 	 * @return a pointer to the strategy.
 	 */
-	rw::common::Ptr<AssemblyControlStrategy> getStrategy(const std::string &id) const;
+	rw::core::Ptr<AssemblyControlStrategy> getStrategy(const std::string &id) const;
 
 private:
-	std::map<std::string, rw::common::Ptr<AssemblyControlStrategy> > _map;
+	std::map<std::string, rw::core::Ptr<AssemblyControlStrategy> > _map;
 };
 //! @}
 } /* namespace assembly */

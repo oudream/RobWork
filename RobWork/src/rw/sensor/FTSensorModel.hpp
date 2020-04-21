@@ -34,7 +34,7 @@ namespace sensor {
 class FTSensorModel : public SensorModel {
 public:
 	//! smart pointer type
-	typedef rw::common::Ptr<FTSensorModel> Ptr;
+	typedef rw::core::Ptr<FTSensorModel> Ptr;
 
     /**
      * Constructor

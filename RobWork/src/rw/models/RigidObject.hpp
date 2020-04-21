@@ -18,7 +18,7 @@
 #ifndef RW_MODELS_RIGIDOBJECT_HPP_
 #define RW_MODELS_RIGIDOBJECT_HPP_
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/geometry/Geometry.hpp>
 #include <rw/graphics/Model3D.hpp>
 
@@ -44,9 +44,9 @@ namespace rw { namespace models {
     {
     public:
 		//! smart pointer
-		typedef rw::common::Ptr<RigidObject> Ptr;
+		typedef rw::core::Ptr<RigidObject> Ptr;
 		//! const smart pointer
-		typedef rw::common::Ptr<const RigidObject> CPtr;
+		typedef rw::core::Ptr<const RigidObject> CPtr;
 
         //! constructor
         RigidObject(rw::kinematics::Frame* baseframe);

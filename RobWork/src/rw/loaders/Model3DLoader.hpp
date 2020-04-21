@@ -20,7 +20,7 @@
 
 //! @file Model3DLoader.hpp
 
-#include <rw/common/ExtensionPoint.hpp>
+#include <rw/core/ExtensionPoint.hpp>
 #include <rw/graphics/Model3D.hpp>
 #include <rw/common/FileCache.hpp>
 
@@ -35,7 +35,7 @@ namespace loaders {
     class Model3DLoader {
     public:
     	//! smart pointer type
-    	typedef rw::common::Ptr<Model3DLoader> Ptr;
+    	typedef rw::core::Ptr<Model3DLoader> Ptr;
 
         //! destructor
         virtual ~Model3DLoader(){};
@@ -58,17 +58,17 @@ namespace loaders {
 		 * @brief a factory for Model3DLoaders. This factory defines an
 		 * extension point for Model3DLoaders.
 		 */
-	    class Factory: public rw::common::ExtensionPoint<Model3DLoader> {
+	    class Factory: public rw::core::ExtensionPoint<Model3DLoader> {
 	    public:
 	    	//! constructor
-	        Factory():rw::common::ExtensionPoint<Model3DLoader>("rw.loaders.Model3DLoader", "Example extension point"){};
+	        Factory():rw::core::ExtensionPoint<Model3DLoader>("rw.loaders.Model3DLoader", "Example extension point"){};
 
 	        /**
 	         * get loader for a specific file format (extension)
 	         * @param format [in] extension of file
 	         * @return
 	         */
-	        static rw::common::Ptr<Model3DLoader> getModel3DLoader(const std::string& format);
+	        static rw::core::Ptr<Model3DLoader> getModel3DLoader(const std::string& format);
 
 	        /**
 	         * test if a loader exist for a specific file format (extension)

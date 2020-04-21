@@ -73,7 +73,7 @@ public:
     void updateConfig();
     void startSimulation();
 
-    rw::common::PropertyMap& settings();
+    rw::core::PropertyMap& settings();
 
 private slots:
     /**
@@ -87,15 +87,15 @@ private:
     rwlibs::task::GraspTask::Ptr generateTasks(int nrTasks);
 private:
     rw::models::WorkCell* _wc;
-    rw::common::Ptr<rwsim::dynamics::DynamicWorkCell> _dwc;
-    rw::common::Ptr<rwsim::simulator::GraspTaskSimulator> _graspSim;
+    rw::core::Ptr<rwsim::dynamics::DynamicWorkCell> _dwc;
+    rw::core::Ptr<rwsim::simulator::GraspTaskSimulator> _graspSim;
 
     QTimer *_timer;
     rw::common::Timer _wallTimer, _wallTotalTimer;
     double _restingTime, _simTime;
 
-    rw::common::Ptr<rwsim::drawable::SimulatorDebugRender> _debugRender;
-    rw::common::PropertyMap _config;
+    rw::core::Ptr<rwsim::drawable::SimulatorDebugRender> _debugRender;
+    rw::core::PropertyMap _config;
     PropertyViewEditor *_propertyView;
     rw::kinematics::State _initState;
     rwlibs::task::GraspTask::Ptr _mergedResult;

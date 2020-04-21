@@ -22,7 +22,7 @@ namespace optimization {
 class GoldenSectionLineSearch: public LineSearch {
 public:
 	//! Smart pointer.
-	typedef rw::common::Ptr<GoldenSectionLineSearch> Ptr;
+	typedef rw::core::Ptr<GoldenSectionLineSearch> Ptr;
 
 public:
 	/**

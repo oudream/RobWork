@@ -22,7 +22,7 @@ using namespace rw::sensor;
 using namespace rw::kinematics;
 
 Scanner25DModel::Scanner25DModel(const std::string& name, int width, int height, rw::kinematics::Frame* frame )
-	: SensorModel(name, frame),_sstate(1, rw::common::ownedPtr( new Scanner25DModelCache(width,height)).cast<StateCache>() ),
+	: SensorModel(name, frame),_sstate(1, rw::core::ownedPtr( new Scanner25DModelCache(width,height)).cast<StateCache>() ),
 	  _width(width),_height(height),_rangeMin(0.0),_rangeMax(1000.0)
 {
 	add(_sstate);

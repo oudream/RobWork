@@ -26,6 +26,7 @@
 #include <rw/math/Transform3D.hpp>
 #include <rw/geometry/PlainTriMesh.hpp>
 #include <rw/proximity/ProximityStrategyData.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include <vector>
 #include <map>
@@ -51,7 +52,7 @@ namespace sensor {
 	class TactileArraySensor: public SimulatedTactileSensor {
 	public:
 		//! @brief Smart pointer type for TactileArraySensor.
-	    typedef rw::common::Ptr<TactileArraySensor> Ptr;
+	    typedef rw::core::Ptr<TactileArraySensor> Ptr;
 
 	    typedef rw::sensor::TactileArrayModel::ValueMatrix ValueMatrix;
 	    typedef rw::sensor::TactileArrayModel::VertexMatrix VertexMatrix;
@@ -67,7 +68,7 @@ namespace sensor {
 		 * @param texelSize [in]
 		 */
 		TactileArraySensor(const std::string& name,
-							rw::common::Ptr<rwsim::dynamics::Body> obj,
+							rw::core::Ptr<rwsim::dynamics::Body> obj,
 							const rw::math::Transform3D<>& fThmap,
 							const ValueMatrix& heightMap,
 							const rw::math::Vector2D<double>& texelSize);
@@ -113,7 +114,7 @@ namespace sensor {
                        const rw::math::Vector3D<>& force,
                        const rw::math::Vector3D<>& snormal,
                        rw::kinematics::State& state,
-					   rw::common::Ptr<rwsim::dynamics::Body> body = NULL);
+					   rw::core::Ptr<rwsim::dynamics::Body> body = NULL);
 
 		/**
 		 * @brief add a force to a point on the sensor geometry. The force is described
@@ -130,21 +131,21 @@ namespace sensor {
                       const rw::math::Vector3D<>& force,
                       const rw::math::Vector3D<>& snormal,
                       rw::kinematics::State& state,
-					  rw::common::Ptr<rwsim::dynamics::Body> body = NULL);
+					  rw::core::Ptr<rwsim::dynamics::Body> body = NULL);
 
         //! @copydoc SimulatedTactileSensor::addWrenchToCOM
         void addWrenchToCOM(
                       const rw::math::Vector3D<>& force,
                       const rw::math::Vector3D<>& torque,
                       rw::kinematics::State& state,
-					  rw::common::Ptr<rwsim::dynamics::Body> body=NULL);
+					  rw::core::Ptr<rwsim::dynamics::Body> body=NULL);
 
         //! @copydoc SimulatedTactileSensor::addWrenchWToCOM
         void addWrenchWToCOM(
                       const rw::math::Vector3D<>& force,
                       const rw::math::Vector3D<>& torque,
                       rw::kinematics::State& state,
-					  rw::common::Ptr<rwsim::dynamics::Body> body=NULL);
+					  rw::core::Ptr<rwsim::dynamics::Body> body=NULL);
 
         //! @copydoc rwlibs::simulation::SimulatedSensor::update
         void update(const rwlibs::simulation::Simulator::UpdateInfo& info, rw::kinematics::State& state);
@@ -230,7 +231,7 @@ namespace sensor {
 		//! class for keeping statefull information
 		class ClassState: public rw::kinematics::StateCache {
 		public:
-		    typedef rw::common::Ptr<TactileArraySensor::ClassState> Ptr;
+		    typedef rw::core::Ptr<TactileArraySensor::ClassState> Ptr;
 
 		    ClassState(TactileArraySensor* tsensor,  size_t dim_x, size_t dim_y);
 
@@ -261,7 +262,7 @@ namespace sensor {
 	         void addForceW(const rw::math::Vector3D<>& point,
 	                       const rw::math::Vector3D<>& force,
 	                       const rw::math::Vector3D<>& snormal,
-						   rw::common::Ptr<rwsim::dynamics::Body> body = NULL);
+						   rw::core::Ptr<rwsim::dynamics::Body> body = NULL);
 
 		/**
 		 * @brief add a force to a point on the sensor geometry. The force is described
@@ -276,7 +277,7 @@ namespace sensor {
 	         void addForce(const rw::math::Vector3D<>& point,
 	                      const rw::math::Vector3D<>& force,
 	                      const rw::math::Vector3D<>& snormal,
-						  rw::common::Ptr<rwsim::dynamics::Body> body = NULL);
+						  rw::core::Ptr<rwsim::dynamics::Body> body = NULL);
 
             //! @copydoc rwlibs::simulation::SimulatedSensor::update
              void update(const rwlibs::simulation::Simulator::UpdateInfo& info, rw::kinematics::State& state);
@@ -294,8 +295,8 @@ namespace sensor {
             /**
              * @brief this creates a deep copy of this cache
              */
-            rw::common::Ptr<rw::kinematics::StateCache> clone() const{
-                return rw::common::ownedPtr( new ClassState( *this ) );
+            rw::core::Ptr<rw::kinematics::StateCache> clone() const{
+                return rw::core::ownedPtr( new ClassState( *this ) );
             }
 
             TactileArraySensor* _tsensor;
@@ -305,7 +306,7 @@ namespace sensor {
             double _accTime, _stime;
             rw::math::Transform3D<> _wTf, _fTw;
             std::vector<rw::sensor::Contact3D> _allAccForces,_allForces;
-            std::map<rw::common::Ptr<rwsim::dynamics::Body>, std::vector<rw::sensor::Contact3D> > _forces;
+            std::map<rw::core::Ptr<rwsim::dynamics::Body>, std::vector<rw::sensor::Contact3D> > _forces;
             rw::proximity::ProximityStrategyData _pdata;
 
         };
@@ -320,7 +321,7 @@ namespace sensor {
 		VertexMatrix _contactMatrix;
 		VertexMatrix _distCenterMatrix;
 
-		//rw::common::Ptr<StateModel> _model;
+		//rw::core::Ptr<StateModel> _model;
 
 		Eigen::MatrixXf _distDefMatrix;
 		const rw::math::Vector2D<> _texelSize;
@@ -338,7 +339,7 @@ namespace sensor {
 		// lowpass filter time constant
 		double _tau;
 
-		rw::common::Ptr<rwsim::dynamics::Body> _body;
+		rw::core::Ptr<rwsim::dynamics::Body> _body;
 
 		double _maskWidth, _maskHeight;
 
@@ -347,10 +348,10 @@ namespace sensor {
 		//std::vector<Contact3D> _forces;
 
 
-		rw::common::Ptr<rw::geometry::Geometry> _ngeom;
-		rw::common::Ptr<rw::geometry::PlainTriMesh<rw::geometry::Triangle<> > > _ntrimesh;
+		rw::core::Ptr<rw::geometry::Geometry> _ngeom;
+		rw::core::Ptr<rw::geometry::PlainTriMesh<rw::geometry::Triangle<> > > _ntrimesh;
 		rw::proximity::ProximityModel::Ptr _nmodel;
-		std::map<rw::kinematics::Frame*, std::vector<rw::common::Ptr<rw::geometry::Geometry> > > _frameToGeoms;
+		std::map<rw::kinematics::Frame*, std::vector<rw::core::Ptr<rw::geometry::Geometry> > > _frameToGeoms;
 
         rw::sensor::TactileArrayModel::Ptr _tmodel;
 	};

@@ -23,8 +23,9 @@
 
 #include <rw/sensor/FTSensor.hpp>
 #include <rw/trajectory/TrajectoryFactory.hpp>
+#include <rw/core/PropertyMap.hpp>
 
-using namespace rw::common;
+using namespace rw::core;
 using rw::kinematics::State;
 using namespace rw::math;
 using namespace rw::trajectory;
@@ -33,7 +34,7 @@ using namespace rwlibs::assembly;
 namespace {
 class SpiralControlState: public AssemblyControlStrategy::ControlState {
 public:
-	typedef rw::common::Ptr<SpiralControlState> Ptr;
+	typedef rw::core::Ptr<SpiralControlState> Ptr;
 
 	SpiralControlState(): phase(INIT) {};
 	virtual ~SpiralControlState() {};
@@ -59,7 +60,7 @@ AssemblyControlStrategy::ControlState::Ptr SpiralStrategy::createState() const {
 }
 
 AssemblyControlResponse::Ptr SpiralStrategy::update(AssemblyParameterization::Ptr parameters, AssemblyState::Ptr real, AssemblyState::Ptr assumed, ControlState::Ptr controlState, State &state, rw::sensor::FTSensor* ftSensor, double time) const {
-	const AssemblyControlResponse::Ptr response = rw::common::ownedPtr(new AssemblyControlResponse());
+	const AssemblyControlResponse::Ptr response = rw::core::ownedPtr(new AssemblyControlResponse());
 	const SpiralParameterization::Ptr sp_param = parameters.cast<SpiralParameterization>();
 	const SpiralControlState::Ptr spiralState = controlState.cast<SpiralControlState>();
 	RW_ASSERT(!spiralState.isNull());
@@ -128,10 +129,10 @@ std::string SpiralStrategy::getDescription() {
 }
 
 AssemblyParameterization::Ptr SpiralStrategy::createParameterization(const PropertyMap::Ptr map) {
-	return rw::common::ownedPtr(new SpiralParameterization(map) );
+	return rw::core::ownedPtr(new SpiralParameterization(map) );
 }
 
-rw::common::Ptr<Transform3DTrajectory> SpiralStrategy::generateTrajectory(SpiralParameterization::Ptr param) const {
+rw::core::Ptr<Transform3DTrajectory> SpiralStrategy::generateTrajectory(SpiralParameterization::Ptr param) const {
 	Path<Transform3D<> > T3Dpath;
 
 	const Transform3D<> initial_pose = Transform3D<>(Vector3D<>(0,0,param->length_start_traj));

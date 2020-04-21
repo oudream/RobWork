@@ -13,6 +13,7 @@
 #include <rw/math/Math.hpp>
 #include <rw/math/Vector3D.hpp>
 #include <rw/geometry/TriMesh.hpp>
+#include <rw/core/Ptr.hpp>
 /**
  * @brief random sampling of points and orientations close to the surface of a geometry.
  *
@@ -26,7 +27,7 @@
  */
 class SurfacePoseSampler: public PoseSampler {
 public:
-    typedef rw::common::Ptr<SurfacePoseSampler> Ptr;
+    typedef rw::core::Ptr<SurfacePoseSampler> Ptr;
 
     SurfacePoseSampler(rw::geometry::Geometry::Ptr geom):
         _minD(0.02),

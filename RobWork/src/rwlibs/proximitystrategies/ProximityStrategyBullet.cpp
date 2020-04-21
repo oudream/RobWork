@@ -18,7 +18,7 @@
 #include "ProximityStrategyBullet.hpp"
 
 #include <rw/common/Exception.hpp>
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 #include <rw/geometry/TriMesh.hpp>
 #include <rw/geometry/TriangleUtil.hpp>
 #include <rw/kinematics/Frame.hpp>
@@ -304,7 +304,7 @@ bool ProximityStrategyBullet::addGeometry (rw::proximity::ProximityModel* model,
         }
     }
 
-    rw::common::Ptr< btCollisionShape > colShape;
+    rw::core::Ptr< btCollisionShape > colShape;
 
     // check if model is in
     CacheKey key (geom.getGeometryData ().get (), geom.getScale ());
@@ -328,7 +328,7 @@ bool ProximityStrategyBullet::addGeometry (rw::proximity::ProximityModel* model,
             IndexedTriMeshN0< float >::Ptr imesh =
                 rw::geometry::TriangleUtil::toIndexedTriMesh< IndexedTriMeshN0< float > > (*mesh);
 
-            rw::common::Ptr< btConvexHullShape > tmpshape = ownedPtr (new btConvexHullShape ());
+            rw::core::Ptr< btConvexHullShape > tmpshape = ownedPtr (new btConvexHullShape ());
 
             std::vector< Vector3D< float > >& vertices = imesh->getVertices ();
             for (size_t i = 0; i < vertices.size (); i++) {
@@ -362,7 +362,7 @@ bool ProximityStrategyBullet::addGeometry (rw::proximity::ProximityModel* model,
             // create the collision shape from the trimesh data
             // bool useQuantizedBvhTree = true;
 
-            // rw::common::Ptr<btCollisionShape> tmpShape  = ownedPtr( new
+            // rw::core::Ptr<btCollisionShape> tmpShape  = ownedPtr( new
             // btBvhTriangleMeshShape(trimesh,useQuantizedBvhTree) ); tmpShape->setMargin(0.0005);
 
             /*
@@ -370,7 +370,7 @@ bool ProximityStrategyBullet::addGeometry (rw::proximity::ProximityModel* model,
                                         btGImpactConvexDecompositionShape(
                                                trimesh, btVector3(1.f,1.f,1.f), btScalar(margin) );
             */
-            rw::common::Ptr< btGImpactMeshShape > tmpShape =
+            rw::core::Ptr< btGImpactMeshShape > tmpShape =
                 ownedPtr (new btGImpactMeshShape (trimesh));
             tmpShape->setMargin (0.0005);
             tmpShape->postUpdate ();
@@ -381,7 +381,7 @@ bool ProximityStrategyBullet::addGeometry (rw::proximity::ProximityModel* model,
         }
     }
 
-    rw::common::Ptr< btCollisionObject > colobj = ownedPtr (new btCollisionObject ());
+    rw::core::Ptr< btCollisionObject > colobj = ownedPtr (new btCollisionObject ());
     colobj->setCollisionShape (colShape.get ());
     colobj->setCollisionFlags (btCollisionObject::CF_KINEMATIC_OBJECT);
     colobj->setActivationState (1);

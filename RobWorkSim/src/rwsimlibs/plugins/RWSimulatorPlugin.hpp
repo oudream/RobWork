@@ -22,9 +22,7 @@
 
 #include <rw/trajectory/Path.hpp>
 
-//#include <rwsim/drawable/RenderContacts.hpp>
-
-//#include <rwlibs/control/JointController.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include <rws/RobWorkStudioPlugin.hpp>
 
@@ -85,7 +83,7 @@ private: // qt stuff
 
 private:
     std::string _previousOpenDirectory;
-    rw::common::Ptr<rwsim::dynamics::DynamicWorkCell> _dworkcell;
+    rw::core::Ptr<rwsim::dynamics::DynamicWorkCell> _dworkcell;
 //    rw::kinematics::State *_state;
     rw::kinematics::State _jointState;
     //rwsim::simulator::ConstantForceManipulator *_gravity;
@@ -103,7 +101,7 @@ private:
     //std::vector<rwsim::dynamics::FixedDevice*> _fdevs;
     QLabel* _timeLabel;
     rw::trajectory::TimedStatePath _statePath;
-    rw::common::Ptr<rwsim::simulator::DynamicSimulator> _simulator;
+    rw::core::Ptr<rwsim::simulator::DynamicSimulator> _simulator;
 
 
     //std::vector<rwlibs::control::JointController*> _controllers;
