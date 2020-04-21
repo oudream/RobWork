@@ -30,9 +30,6 @@
 # set to ON to build shared libraries
 OPTION(PROJECT_SHARED_LIBS "Set to ON to build shared libraries." ON)
 
-# we need the location of RobWork
-SET(RW_ROOT ${ROOT}/../RobWork/)
-
 # Instead of setting the individual variables of robwork you could 
 # use the same options as in the RobWork project
 INCLUDE(${RW_ROOT}/config.cmake OPTIONAL)
