@@ -55,5 +55,5 @@ if(build)
     rw_add_includes(${SUBSYS_NAME} "rwhw/can" ${SRC_HPP})
     rw_add_includes(${SUBSYS_NAME} "rwhw/can/ESDCAN" ${SRC_HPP_ESDCAN})
     rw_add_includes(${SUBSYS_NAME} "rwhw/can/IEICAN02" ${SRC_HPP_IEICAN02})
-
+    set(ROBWORKHARDWARE_LIBRARIES ${ROBWORKHARDWARE_LIBRARIES} ${SUBSYS_NAME} PARENT_SCOPE)
 endif()

@@ -1,22 +1,15 @@
-# check compiler/operating system
+if(NOT DEFINED RWHW_ROOT)
+    set(RWHW_ROOT "$ENV{RWHW_ROOT}/cmake")
+endif()
 
+find_package(RobWorkHardware QUIET COMPONENTS sdh PATHS "${RWHW_ROOT}")
 
-
-IF(COMPONENT_sdh_ENABLE AND SDH_FOUND AND PEAKCAN_FOUND)
-    FIND_PACKAGE(SDH)
-    FIND_PACKAGE(PEAKCAN)
-    INCLUDE_DIRECTORIES( ${SDH_INCLUDE_DIR} )
-
-    set(LibraryList
-    sdurwhw_sdh
-      ${SDH_LIBRARY}
-      ${PEAKCAN_LIBRARIES}
-      ${ROBWORK_LIBRARIES}
-    )
-    
+if(RobWorkHardware_FOUND)
     add_executable(SDHExample1 SDHExample1.cpp sdhoptions.cpp)
-    target_link_libraries(SDHExample1 ${LibraryList})
-    
+    target_link_libraries(SDHExample1 ${ROBWORKHARDWARE_LIBRARIES})
+    target_include_directories(SDHExample1 PUBLIC ${ROBWORKHARDWARE_INCLUDE_DIRS})
+
     add_executable(demo-simple2 demo-simple2.cpp sdhoptions.cpp)
-    target_link_libraries(demo-simple2 ${LibraryList})
-ENDIF(COMPONENT_sdh_ENABLE AND SDH_FOUND AND PEAKCAN_FOUND)
+    target_link_libraries(demo-simple2 ${ROBWORKHARDWARE_LIBRARIES})
+    target_include_directories(demo-simple2 PUBLIC ${ROBWORKHARDWARE_INCLUDE_DIRS})
+endif()
