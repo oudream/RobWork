@@ -6,7 +6,7 @@
 
 #include <rwhw/PowerCube/Cube.hpp>
 #include <rw/common/TimerUtil.hpp>
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 using namespace rwhw;
 using namespace rw::common;
 
