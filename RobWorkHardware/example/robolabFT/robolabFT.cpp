@@ -5,7 +5,7 @@
 //#include <rwhw/serialport/SerialPort.hpp>
 #include <rw/common/Timer.hpp>
 #include <rw/common/TimerUtil.hpp>
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 #include <rw/math/Q.hpp>
 #include <rwhw/robolabFT/RobolabFTDriver.hpp>
 
