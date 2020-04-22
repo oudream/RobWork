@@ -37,7 +37,7 @@ set(ASSIMP_LIBRARIES "${ASSIMP_LIBRARY}" )
 include(FindPackageHandleStandardArgs)
 # handle the QUIETLY and REQUIRED arguments and set ASSIMP_FOUND to TRUE
 # if all listed variables are TRUE
-find_package_handle_standard_args(ASSIMP DEFAULT_MSG
+find_package_handle_standard_args(Assimp DEFAULT_MSG
                                   ASSIMP_LIBRARY ASSIMP_INCLUDE_DIR)
 
 mark_as_advanced(ASSIMP_INCLUDE_DIR ASSIMP_LIBRARY )

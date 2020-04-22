@@ -57,6 +57,10 @@ if(build)
     rw_add_library(${SUBSYS_NAME} ${RW_LIB_FILES_CPP} ${RW_LIB_FILES_HPP})
     target_link_libraries(${SUBSYS_NAME} PUBLIC ${Boost_LIBRARIES} sdurw_core)
 
+
+    if(RW_HAVE_OMP)
+        target_link_libraries(${SUBSYS_NAME} PUBLIC ${OpenMP_CXX_LIBRARIES})
+    endif()
     if(RW_HAVE_XERCES)
         target_link_libraries(${SUBSYS_NAME} PUBLIC ${XERCESC_LIBRARIES})
     endif()

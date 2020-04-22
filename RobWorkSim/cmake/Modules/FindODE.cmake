@@ -23,6 +23,7 @@ FIND_PATH(ODE_INCLUDE_DIR ode/ode.h
     $ENV{DELTA_ROOT}/ext/inc
     ~/Library/Frameworks
     /Library/Frameworks
+    /sr/local/ode/include
     /usr/local/include
     /usr/include
     /usr/include/cal3d
@@ -34,9 +35,8 @@ FIND_PATH(ODE_INCLUDE_DIR ode/ode.h
     /usr/freeware/include
 )
 
-
 MACRO(FIND_ODE_LIBRARY MYLIBRARY MYLIBRARYNAME)
-	set(CMAKE_FIND_LIBRARY_SUFFIXES .so .a .lib)
+	set(CMAKE_FIND_LIBRARY_SUFFIXES .so .a .lib .dylib)
     FIND_LIBRARY(${MYLIBRARY}
         NAMES ${ODE_LIBRARY_NAME} ${MYLIBRARYNAME}
         HINTS
@@ -49,6 +49,7 @@ MACRO(FIND_ODE_LIBRARY MYLIBRARY MYLIBRARYNAME)
         ~/Library/Frameworks
         /Library/Frameworks
         /usr/local/lib
+        /usr/local/opt/ode/lib
         /usr/lib
         /sw/lib
         /opt/local/lib
@@ -106,7 +107,6 @@ IF( ODE_USE_DEBUG )
     ENDIF()    
     
 ELSE()
-    
     IF(ODE_USE_SINGLE)
         SET(RELEASE_LIST ode_single ode )
         SET(DEBUG_LIST ode_singled oded )
@@ -117,67 +117,34 @@ ELSE()
         SET(DEBUG_LIST ode_doubled oded )
         FIND_ODE_LIBRARY(ODE_LIBRARY_TMP "${RELEASE_LIST};${DEBUG_LIST}")
         SET(ODE_BUILD_WITH "DOUBLE")
+    
     ELSE()
         # first try single
-        #MESSAGE("${ODE_LIBRARY_TMP} ___ ${RELEASE_LIST}")
         SET(RELEASE_LIST ode_single ode ode_singled oded)
         FIND_ODE_LIBRARY(ODE_LIBRARY_TMP "${RELEASE_LIST}")
         SET(ODE_BUILD_WITH "SINGLE")
-        #MESSAGE("${ODE_LIBRARY_TMP} ___ ${RELEASE_LIST}")
-        IF(NOT ODE_LIBRARY)
+        IF(NOT ODE_LIBRARY_TMP)
             SET(RELEASE_LIST ode_double ode)
             FIND_ODE_LIBRARY(ODE_LIBRARY_TMP "${RELEASE_LIST}")
             SET(ODE_BUILD_WITH "DOUBLE")
         ENDIF()
         # try debug
-        IF(NOT ODE_LIBRARY)
+        IF(NOT ODE_LIBRARY_TMP)
             SET(DEBUG_LIST ode_singled oded )
             FIND_ODE_LIBRARY(ODE_LIBRARY_TMP "${DEBUG_LIST}")
             SET(ODE_BUILD_WITH "SINGLE")
         ENDIF()
-        IF(NOT ODE_LIBRARY)
+        IF(NOT ODE_LIBRARY_TMP)
             SET(DEBUG_LIST ode_doubled oded )
             FIND_ODE_LIBRARY(ODE_LIBRARY_TMP "${DEBUG_LIST}")
             SET(ODE_BUILD_WITH "DOUBLE")
-        ENDIF()        
+        ENDIF()       
     ENDIF()        
 ENDIF()
 
-#MESSAGE("${ODE_LIBRARY_TMP}")
-#MESSAGE("${ODE_INCLUDE_DIR}")
-#MESSAGE("${ODE_LIBRARY_DEBUG}")
-
-SET(ODE_FOUND NO)
-IF(ODE_LIBRARY_TMP AND ODE_INCLUDE_DIR)
-    SET(ODE_FOUND YES)
-    #IF( ${ODE_BUILD_WITH} STREQUAL "DOUBLE" )
-    #    ADD_DEFINITIONS(-DdDOUBLE)
-    #ELSE()
-    #    ADD_DEFINITIONS(-DdSINGLE)
-    #ENDIF()
+SET(ODE_FOUND false)
+IF(ODE_LIBRARY_TMP AND ODE_INCLUDE_DIR) 
+    set(ODE_FOUND true)
     SET(ODE_LIBRARY ${ODE_LIBRARY_TMP})
     SET(ODE_LIBRARIES ${ODE_LIBRARY})
 ENDIF(ODE_LIBRARY_TMP AND ODE_INCLUDE_DIR)
-
-#MESSAGE("${CMAKE_BINARY_DIR}/odeTestStuff.c")
-
-#file(WRITE "${CMAKE_BINARY_DIR}/odeTestStuff.c" 
-#    "
-#    #define dDOUBLE
-#    #include <ode/ode.h>
-#    int main(const char** args, int nargs ){
-#        int res = dCheckConfiguration (\"ODE_double_precision\");
-#        
-#        return 0;
-#    }
-#    ")
-#TRY_RUN(ODE_LIB_STUFF COMPILE_RES 
-#        "${CMAKE_BINARY_DIR}" 
-#        "${CMAKE_BINARY_DIR}/odeTestStuff.c" 
-#        CMAKE_FLAGS -DINCLUDE_DIRECTORIES:STRING=${ODE_INCLUDE_DIR}
-#        -DLINK_LIBRARIES:STRING=${ODE_LIBRARIES}
-#        COMPILE_OUTPUT_VARIABLE comp)
-
-#MESSAGE("ODE_LIB_STUFF ${ODE_LIB_STUFF}")
-#MESSAGE("COMPILE_RES ${COMPILE_RES}")
-#MESSAGE("comp: ${comp}") 
