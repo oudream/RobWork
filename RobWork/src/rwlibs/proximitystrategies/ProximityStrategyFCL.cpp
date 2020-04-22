@@ -191,7 +191,6 @@ bool ProximityStrategyFCL::addGeometry (rw::proximity::ProximityModel* model,
 
     rw::core::Ptr< fcl::BVHModel< BV_t > > fclBVHModel = ownedPtr (new fcl::BVHModel< BV_t >);
 
-
     int returnCode = 0;
     returnCode     = fclBVHModel->beginModel (numberOfTriangles, numberOfVertices);
     if (returnCode != fcl::BVH_OK) {

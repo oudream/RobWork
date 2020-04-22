@@ -12,6 +12,7 @@ Please choose the platform you would like to install RobWork on:
    installation/ubuntu
    installation/centos
    installation/windows
+   installation/mac_os
 
 Please see the CMake page for details about installation options:
 

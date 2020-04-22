@@ -60,9 +60,14 @@
 #include <rwslibs/lua/Lua.hpp>
 #endif
 #endif
-
 #ifdef RWS_HAVE_GLUT
-#include <GL/freeglut.h>
+    #if defined(RW_MACOS)
+        //#include <GLUT/glut.h>
+        //TODO(kalor) Figure Out how to get GLUT to work as glutBitmapString is undeclared i mac
+        #undef RW_HAVE_GLUT
+    #else
+        #include <GL/freeglut.h>
+    #endif
 #endif
 
 #include <boost/filesystem.hpp>

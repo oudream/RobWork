@@ -1,24 +1,12 @@
-Ubuntu compilation
+MacOS compilation
 **********************
 
 RobWork can be built by the user.
-This guide shows the steps for doing this in Ubuntu 16.04, 18.04, 19.04 and 19.10.
-The compilation on these platforms are tested continuously.
-Current status of the pipeline for the RobWork master branch is:
-
-.. image:: https://robwork.dk/getBadge
-   :target: https://gitlab.com/sdurobotics/RobWork
+This guide shows the steps for doing this in macOS High Sierra v. 10.13.
 
 If you have any suggestions or additions to the guide, please post it on the issue
 tracker https://gitlab.com/sdurobotics/RobWork/issues . This guide was
-last revised in January 2020.
-
-.. note::
-
-   Our goal is to support the current Ubuntu versions that has not reached end of life.
-   Also, we will not support versions that has reached end of standard support.
-   
-   Please see `<https://wiki.ubuntu.com/Releases>`_ for more information.
+last revised in April 2020.
 
 RobWork is basically multiple projects:
 
@@ -37,7 +25,6 @@ RobWork is basically multiple projects:
 Note that RobWork is needed to run RobWorkStudio, RobWorkSim and
 RobWorkHardware. Therefore it is not possible to use these, without
 having RobWork installed on the machine.
-For new users, RobWork and RobWorkStudio will usually be sufficient.
 
 Installing dependencies
 =======================
@@ -48,7 +35,12 @@ In Linux it is quite easy to set up the dependencies as these are
 available as packages in the systems package manager.
 
 The commands shown in the following must be run from a terminal.
-A terminal can usually be opened by pressing Ctrl+Alt+T in Ubuntu.
+
+To install most dependencies homebrew is used.
+
+.. code-block:: shell
+
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 
 Build Tools
 -----------
@@ -56,38 +48,36 @@ Build Tools
 To be able to checkout code it is necessary to install some source code
 management (SCM) tools.
 To be able to checkout the code from our own Git repository, a Git client is
-needed. A Mercurial client is only required if you need to compile ODE for RobWorkSim.
+needed.
 
 .. code-block:: shell
 
-    sudo apt-get install git mercurial
+    brew install git
 
-To compile the C++ code, the GCC compiler should be used on Ubuntu.
-CMake must be used to prepare RobWork for compilation.
+To compile the C++ code, CMake must be used to prepare RobWork for compilation.
 
 .. code-block:: shell
 
-    sudo apt-get install gcc g++ cmake
+    brew install cmake
 
 RobWork Required Dependencies
 -----------------------------
 
-.. image:: ../graphics/logos/Boost.png
-  :width: 100
-  :target: https://www.boost.org
-  :alt: Boost
+Boost is the only required dependency for RobWork
 
-Boost is the only required dependency for RobWork::
+.. code-block:: shell
 
-    sudo apt-get install libboost-dev \
-                         libboost-date-time-dev \
-                         libboost-filesystem-dev \
-                         libboost-program-options-dev \
-                         libboost-regex-dev \
-                         libboost-serialization-dev \
-                         libboost-system-dev \
-                         libboost-test-dev \
-                         libboost-thread-dev
+    brew install boost
+
+RobWork Recommended additional Dependencies
+-------------------------------------------
+
+These dependencies are not necessary for running RobWork, 
+but will replace some of the external dependencies that RobWork comes bundled with.
+
+.. code-block:: shell
+
+    brew install assimp fcl eigen pkg-config
 
 RobWork Optional Dependencies
 -----------------------------
@@ -100,9 +90,7 @@ a good idea to compile Xerces:
 
 .. code-block:: shell
 
-    sudo apt-get install libxerces-c3.1 libxerces-c-dev
-
-For Ubuntu version 18.04 and newer, use libxerces-c3.2 instead.
+    brew install xerces-c
 
 SWIG (optional) is a tool that makes it possible to generate a LUA
 script interface for RobWork. SWIG must be version 3 or newer (since we use C++11).
@@ -112,129 +100,43 @@ you install the following packages:
 
 .. code-block:: shell
 
-    sudo apt-get install swig liblua5.3-dev python3-dev default-jdk
+  brew install swig lua boost-python3 python openjdk
 
-Google Test (optional) is used for unit tests in RobWork. If you are a
-developer and wants to develop code for the RobWork trunk, writing a
-GTest will be a requirement:
+to use Java you need to link it to the system installed packages with:
 
-.. code-block:: shell
+.. code-block:: shell 
 
-    sudo apt-get install libgtest-dev
+  sudo ln -sfn $(brew --prefix)/opt/openjdk/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk.jdk
 
-RobWorkStudio Dependencies
---------------------------
+
+RobWorkStudio Required Dependencies
+-----------------------------------
 
 RobWorkStudio requires Qt to be installed. Only Qt5 is supported:
 
 .. code-block:: shell
 
-    sudo apt-get install qtbase5-dev
+    brew install qt5
 
 RobWorkSim Dependencies
------------------------
-
-If you need to do dynamic simulations, you will probably need the
-RobWorkSim package. If you are in doubt and just need RobWorkStudio, you
-can likely skip this.
+-----------------------------------
+If you need to do dynamic simulations, you will probably need the RobWorkSim package. 
+If you are in doubt and just need RobWorkStudio, you can likely skip this.
 
 Open Dynamics Engine (ODE) can be installed through the package manager:
 
 .. code-block:: shell
 
-    sudo apt-get install libode-dev libodeX
-
-Replace libodeX with the newest version available.
-Ubuntu 16.04 comes with ODE 0.13.1 (libode4), Ubuntu 18.04 with ODE 0.14 (libode6)
-and versions newer than 19.04 with ODE 0.16 (libode8).
-
-Notice that the version from the package manager can sometimes be a bit
-outdated. If you want the latest version, Open Dynamics Engine (ODE)
-must be compiled from source. Use Mercurial to download the source from
-bitbucket (use a dot '.' as the third argument to checkout directly to
-the current folder):
-
-.. code-block:: shell
-
-    hg clone https://bitbucket.org/odedevs/ode
-
-Make sure that the required build tools are installed:
-
-.. code-block:: shell
-
-    sudo apt-get install automake libtool
-
-Open a terminal, go to the ode folder (with the bootstrap file in it)
-and run:
-
-.. code-block:: shell
-
-    ./bootstrap
-    ./configure --enable-double-precision --enable-shared --enable-ou --enable-builtin-threading-impl --disable-demos --disable-asserts
-    make -j4
-
-This will make sure that ODE is built with 4 threads with double
-precision as a shared library.
+    brew install ode
 
 Bullet Physics can also be installed through the package manager.
-Ubuntu 16.04 comes with with 2.83.6, and Ubuntu
-18.04, 19.04 and 19.10 with 2.87. The bullet packages can be installed with the
-following command:
 
 .. code-block:: shell
 
-    sudo apt-get install libbullet-dev libbullet-extras-dev
-
-It is also possible to compile Bullet Physics from source, if a specific
-version is needed. Clone the source code with git (use a dot '.' as the
-third argument to checkout directly to the current folder):
-
-.. code-block:: shell
-
-    git clone https://github.com/bulletphysics/bullet3
-
-Make a Build folder under the bullet3 folder and run CMake to configure
-the build. From within the Build folder, run in a terminal:
-
-.. code-block:: shell
-
-    cmake -DCMAKE_BUILD_TYPE=Release -DUSE_DOUBLE_PRECISION=ON -DBUILD_BULLET3=OFF -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX:PATH=$WORKSPACE/Release -DCMAKE_CXX_FLAGS="-fPIC" -DCMAKE_C_FLAGS="-fPIC" -DBUILD_EXTRAS=OFF -DBUILD_BULLET2_DEMOS=OFF -DBUILD_UNIT_TESTS=OFF -BUILD_CPU_DEMOS=OFF ..
-    make -j4
-
-Modify the options to suit your needs. The shown options will make sure
-that Bullet is built with double precision, required compile flags and
-switch off building of things that are normally unnecessary when used in
-RobWorkSim.
-
-RobWorkHardware Dependencies
-----------------------------
-
-RobWorkHardware compilation depends heavily on which hardware you need
-to use. Install the following package:
-
-.. code-block:: shell
-
-    sudo apt-get install libdc1394-22-dev
-
-It is not currently possible to give any general instructions for
-RobWorkHardware.
+    brew install bullet
 
 Building RobWork
 ================
-
-When the dependencies have been installed, RobWork is ready to be built.
-First, the source must be downloaded, followed by the build procedure.
-
-Getting source files from Git
------------------------------
-
-Make a new directory where you want to install RobWork (in this guide,
-we will install in ~/RobWork):
-
-.. code-block:: shell
-
-    mkdir RobWork
-    cd RobWork
 
 When the dependencies are installed, go ahead and download the newest
 version of RobWork from the Git repository at:
@@ -242,11 +144,13 @@ version of RobWork from the Git repository at:
 https://gitlab.com/sdurobotics/RobWork
 
 In the terminal, this is done as follows: (be sure that you are located
-in the directory where you want to install RobWork)
+in the directory where you want to install RobWork) In this guide we will install in the home directory
 
 .. code-block:: shell
 
-    git clone https://gitlab.com/sdurobotics/RobWork.git .
+    cd ~
+    git clone https://gitlab.com/sdurobotics/RobWork.git
+    cd RobWork
 
 .. note::
 
@@ -270,7 +174,7 @@ problem for the optional dependencies).
 There are overall two methods to let RobWork know where a dependency is
 installed. One is to set an environment variable, another is to set
 CMake options when running the CMake command. Environment variables can
-be set up one time for all in the users home folder in the .bashrc file,
+be set up one time for all in the users home folder in the .bash_profile file,
 while CMake options has to be specified each time you need to rebuild
 RobWork from scratch. The later does however give more fine-grained
 control, as it allows multiple versions of dependencies to be installed
@@ -335,7 +239,7 @@ For RobWorkHardware:
     cmake -DCMAKE_BUILD_TYPE=Release ../../RobWorkHardware
     make -j4
 
-Finally, we need to add the following paths to ~/.bashrc:
+Finally, we need to add the following paths to ~/.bash_profile:
 
 .. code:: shell
 

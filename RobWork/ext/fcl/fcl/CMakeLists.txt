@@ -1,14 +1,5 @@
-cmake_minimum_required(VERSION 2.8.12)
+cmake_minimum_required(VERSION 3.5.1)
 
-# Use MACOSX_RPATH by default on OS X. This was added in CMake 2.8.12 and
-# became default in CMake 3.0. Explicitly setting this policy is necessary to
-# suppress a warning in CMake 3.0 and above.
-if(POLICY CMP0042)
-  cmake_policy(SET CMP0042 NEW)
-endif()
-IF(POLICY CMP0048)
-	CMAKE_POLICY(SET CMP0048 NEW) # we do not set PROJECT_VERSION variable so silence warning
-ENDIF()
 IF(POLICY CMP0074)
 	CMAKE_POLICY(SET CMP0074 NEW)
 ENDIF()

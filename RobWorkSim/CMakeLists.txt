@@ -15,6 +15,8 @@ if(POLICY CMP0086) # Introduce cmake 3.14
     cmake_policy(SET CMP0086 NEW)
 endif()
 
+set (CMAKE_CXX_STANDARD 11)
+
 # ##################################################################################################
 # The name of the project.
 project(RobWorkSim)
