@@ -2,7 +2,7 @@ Ubuntu compilation
 **********************
 
 RobWork can be built by the user.
-This guide shows the steps for doing this in Ubuntu 16.04, 18.04, 19.04 and 19.10.
+This guide shows the steps for doing this in Ubuntu 16.04, 18.04, 19.10 and 20.04.
 The compilation on these platforms are tested continuously.
 Current status of the pipeline for the RobWork master branch is:
 
@@ -11,7 +11,7 @@ Current status of the pipeline for the RobWork master branch is:
 
 If you have any suggestions or additions to the guide, please post it on the issue
 tracker https://gitlab.com/sdurobotics/RobWork/issues . This guide was
-last revised in January 2020.
+last revised in April 2020.
 
 .. note::
 
@@ -100,9 +100,9 @@ a good idea to compile Xerces:
 
 .. code-block:: shell
 
-    sudo apt-get install libxerces-c3.1 libxerces-c-dev
+    sudo apt-get install libxerces-c3.2 libxerces-c-dev
 
-For Ubuntu version 18.04 and newer, use libxerces-c3.2 instead.
+For Ubuntu version 16.04, use libxerces-c3.1 instead.
 
 SWIG (optional) is a tool that makes it possible to generate a LUA
 script interface for RobWork. SWIG must be version 3 or newer (since we use C++11).
@@ -142,9 +142,8 @@ Open Dynamics Engine (ODE) can be installed through the package manager:
 
 .. code-block:: shell
 
-    sudo apt-get install libode-dev libodeX
+    sudo apt-get install libode-dev
 
-Replace libodeX with the newest version available.
 Ubuntu 16.04 comes with ODE 0.13.1 (libode4), Ubuntu 18.04 with ODE 0.14 (libode6)
 and versions newer than 19.04 with ODE 0.16 (libode8).
 
@@ -177,8 +176,8 @@ This will make sure that ODE is built with 4 threads with double
 precision as a shared library.
 
 Bullet Physics can also be installed through the package manager.
-Ubuntu 16.04 comes with with 2.83.6, and Ubuntu
-18.04, 19.04 and 19.10 with 2.87. The bullet packages can be installed with the
+Ubuntu 16.04 comes with 2.83.6, Ubuntu
+18.04 and 19.10 with 2.87, and Ubuntu 20.04 with 2.88. The bullet packages can be installed with the
 following command:
 
 .. code-block:: shell

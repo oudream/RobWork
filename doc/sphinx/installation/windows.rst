@@ -8,7 +8,7 @@ Introduction
 
 This guide shows the steps for building the RobWork packages on a
 Windows platform. The guide is written based on a setup with Windows 10
-and Visual Studio 2017 and the guide is last revised in January 2020. If
+and Visual Studio 2017 and the guide is last revised in April 2020. If
 you have any suggestions or additions to the guide, please post them on
 the issue tracker at https://gitlab.com/sdurobotics/RobWork/issues .
 
@@ -197,6 +197,8 @@ table gives an overview of the version numbers for future reference:
 | Visual Studio      | Visual Studio     | | Visual C++       | | Visual C/C++     |
 | Name               | Version           | | Compiler Toolset | | Compiler Version |
 +====================+===================+====================+====================+
+| Visual Studio 2019 | 16.5              | 14.24              | 19.25              |
++--------------------+-------------------+--------------------+--------------------+
 | Visual Studio 2019 | 16.4              | 14.24              | 19.24              |
 +--------------------+-------------------+--------------------+--------------------+
 | Visual Studio 2019 | 16.3              | 14.23              | 19.23              |
@@ -245,7 +247,7 @@ installed, please check that it is recent enough to support your setup:
 | CMake           | | Maximum Visual Studio | | Maximum Boost     |
 | Version         | | Version Supported     | | Version Supported |
 +=================+=========================+=====================+
-| 3.16.2\*        | Visual Studio 16 2019   | 1.72.0              |
+| 3.16.2-3.17.1\* | Visual Studio 16 2019   | 1.72.0              |
 +-----------------+-------------------------+---------------------+
 | 3.15.3-3.16.1   | Visual Studio 16 2019   | 1.71.0              |
 +-----------------+-------------------------+---------------------+
