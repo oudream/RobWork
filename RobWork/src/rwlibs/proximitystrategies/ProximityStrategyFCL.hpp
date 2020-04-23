@@ -116,7 +116,6 @@ namespace rwlibs { namespace proximitystrategies {
         //! @brief Type of internal collision geometry.
         typedef rw::core::Ptr< fclCollisionGeometry > FCLBVHModelPtr;
 
-
         //! @brief Datatype to hold the FCL bounding volume and related geometrical data.
         struct FCLModel
         {

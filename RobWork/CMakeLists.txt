@@ -16,6 +16,7 @@ endif()
 
 # The name of the project.
 project(RobWork)
+set (CMAKE_CXX_STANDARD 11)
 
 # Setup RobWork Version
 if(DEFINED VERSION)

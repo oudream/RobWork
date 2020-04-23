@@ -91,9 +91,9 @@ bool RWGLFrameBuffer::initialize() {
     glRenderbufferStorageEXT                 = &glRenderbufferStorage;
     glGetRenderbufferParameterivEXT          = &glGetRenderbufferParameteriv;
     glIsRenderbufferEXT                      = &glIsRenderbuffer;
-    glRenderbufferStorageMultisampleEXT      = &glRenderbufferStorageMultisampleEXT;
-    glTexImage2DMultisample                  = &glTexImage2DMultisample;
-    glBlitFrameBufferEXT                     = &glBlitFrameBufferEXT;
+    glRenderbufferStorageMultisampleEXT      = glRenderbufferStorageMultisampleEXT;
+    glTexImage2DMultisample                  = glTexImage2DMultisample;
+    glBlitFrameBufferEXT                     = glBlitFrameBufferEXT;
 
 #else
     // get pointers to GL functions
