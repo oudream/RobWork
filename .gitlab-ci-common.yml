@@ -317,7 +317,13 @@ stages:
     - cd RobWork
     - rm -r ../*.deb || echo "Nothing to remove"
   script:
-    - version=$(./debian/scripts/getVersion.sh ./debian/scripts -n)
+    - version=$(./debian/scripts/getVersion.sh ./debian/scripts -n -p1)
+    - mv ./debian/changelog ./debian/changelog.old
+    - echo "robwork ("$version"-1) bionic; urgency=medium" >> ./debian/changelog && echo "" >> ./debian/changelog
+    - echo "  * Test" >> ./debian/changelog && echo "" >> ./debian/changelog
+    - echo " -- GitLab CI Builder <test@test.test>  " $(date "+%a, %d %b %Y %T +0100") >> ./debian/changelog
+    - echo "" >> ./debian/changelog
+    - cat ./debian/changelog.old >> ./debian/changelog
     - tar --exclude='./debian' --exclude='./.git' -zcvf ../robwork_$version.orig.tar.gz .
     - debuild --no-sign
     - mkdir DEBPKG
@@ -770,7 +776,6 @@ test-debian-pre:ubuntu-1804:
     - "build-debian-pre:ubuntu-1804"
   needs: ["build-debian-pre:ubuntu-1804"]
 
-
 ########################## Ubuntu 1604 ################################
 
 build-RW:ubuntu-1604:
@@ -1071,7 +1076,7 @@ pages:
   tags:
     - linux
   before_script:
-   - rm -r ../*.deb
+   - rm -r ../*.deb || echo nothing to remove
   only:
     refs:
       - debian-pkg@sdurobotics/RobWork
@@ -1099,6 +1104,28 @@ pages:
     variables:
       - $CI_COMMIT_MESSAGE =~ /^WIP:/
 
+.debian-upgrade-test:
+  stage: test
+  tags:
+    - linux
+  only:
+    refs:
+      - debian-pkg@sdurobotics/RobWork
+      - schedules
+      - web
+  except:
+    refs:
+      - /^wip-.*$/
+    variables:
+      - $CI_COMMIT_MESSAGE =~ /^WIP:/
+  before_script:
+    - *uninstall-rw-deb
+    - add-apt-repository ppa:sdurobotics/robwork
+    - apt-get update
+  script:
+    - apt -y install libsdurw-all-dev libsdurws-all-dev libsdurwhw-all-dev libsdurwsim-all-dev
+    - apt -y install ./DEBPKG/*.deb  
+
 build-debian:ubuntu-1804:
   extends: .debian-build
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804-deb
@@ -1109,3 +1136,11 @@ test-debian:ubuntu-1804:
   dependencies:
     - build-debian:ubuntu-1804
   needs: ["build-debian:ubuntu-1804"]
+
+test-debian-upgrade:ubuntu-1804:
+  extends: .debian-upgrade-test
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804-deb
+  dependencies:
+    - build-debian:ubuntu-1804
+  needs: ["build-debian:ubuntu-1804"]
+  

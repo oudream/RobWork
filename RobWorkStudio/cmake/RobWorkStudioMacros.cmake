@@ -15,6 +15,8 @@ macro(RWS_ADD_PLUGIN _name _lib_type)
         set_target_properties(${_name} PROPERTIES LINK_FLAGS -Wl,--as-needed,--no-undefined)
     endif()
 
+    # Set the VERSION and SOVERSION of the library to the RobWorkStudio major and minor versions On MAC OS we can not do
+    # this if we are building a Module (where it does not make much sense anyway)
     if(NOT ("${_lib_type}" STREQUAL "MODULE" AND ${CMAKE_SYSTEM_NAME} MATCHES "Darwin"))
         string(REGEX MATCHALL "[0-9]+" VERSIONS ${ROBWORKSTUDIO_VERSION})
         list(GET VERSIONS 0 ROBWORKSTUDIO_VERSION_MAJOR)

@@ -37,7 +37,6 @@ if(build)
         invkin.hpp
         kinematics.hpp
         loaders.hpp
-        math_fwd.hpp
         math.hpp
         models.hpp
         pathplanning.hpp
