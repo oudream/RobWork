@@ -893,6 +893,8 @@ set(
     sdurw_proximitystrategies
     sdurw
     sdurw_core
+    sdurw_common
+    sdurw_math
 )
 
 set(ROBWORK_LIBRARIES)

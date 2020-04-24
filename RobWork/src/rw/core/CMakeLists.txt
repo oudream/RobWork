@@ -82,4 +82,6 @@ if(build)
                               $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
     )
 
+    rw_add_includes(sdurw_core "rw" ${CMAKE_CURRENT_SOURCE_DIR}/../core.hpp ${CMAKE_CURRENT_SOURCE_DIR}/../math_fwd.hpp)
+
 endif()

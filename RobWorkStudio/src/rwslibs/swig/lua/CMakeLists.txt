@@ -43,13 +43,7 @@ if(build)
             SOURCES ../sdurws.i Lua.cpp ../ScriptTypes.cpp
         )
     else()
-        swig_add_module(
-            ${TARGET_NAME}
-            lua
-            ../sdurws.i
-            Lua.cpp
-            ../ScriptTypes.cpp
-        )
+        swig_add_module(${TARGET_NAME} lua ../sdurws.i Lua.cpp ../ScriptTypes.cpp)
     endif()
 
     if(NOT DEFINED MSVC) # This code is to make it easier to make debian packages
@@ -71,7 +65,7 @@ if(build)
         RW::sdurw_lua
         RW::sdurw
     )
-    if (RW_BUILD_WITH_INTERNAL_LUA)
+    if(RW_BUILD_WITH_INTERNAL_LUA)
         swig_link_libraries(${TARGET_NAME} RW::lua51)
     else()
         swig_link_libraries(${TARGET_NAME} ${RW_BUILD_WITH_LIBRARIES_LUA})
@@ -104,7 +98,7 @@ if(build)
         RW::sdurw
         RW::sdurw_lua_s
     )
-    if (RW_BUILD_WITH_INTERNAL_LUA)
+    if(RW_BUILD_WITH_INTERNAL_LUA)
         target_link_libraries(${TARGET_NAME}_s RW::lua51)
     else()
         target_link_libraries(${TARGET_NAME}_s ${RW_BUILD_WITH_LIBRARIES_LUA})
