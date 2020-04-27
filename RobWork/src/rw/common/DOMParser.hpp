@@ -18,6 +18,11 @@
 #define RW_COMMON_DOMPARSER_HPP
 
 #include <rw/core/DOMParser.hpp>
-#warning "#include <rw/common/DOMParser.hpp> is deprecated use #include <rw/core/DOMParser.hpp> instead"
 
+#include <rw/core/os.hpp>
+#ifdef RW_WIN32
+#pragma message("#include <rw/common/DOMParser.hpp> is deprecated use #include <rw/core/DOMParser.hpp> instead")
+#else
+#warning "#include <rw/common/DOMParser.hpp> is deprecated use #include <rw/core/DOMParser.hpp> instead"
+#endif
 #endif

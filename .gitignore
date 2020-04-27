@@ -7,6 +7,7 @@
 *.cproject
 *.project
 *.settings
+*.old
 *.DS_Store
 
 # /

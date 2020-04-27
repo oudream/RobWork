@@ -19,7 +19,12 @@
 #define RW_COMMON_LOGSTREAMWRITER_HPP_
 
 #include <rw/core/LogStreamWriter.hpp>
-#warning "#include <rw/common/LogStreamWriter.hpp> is deprecated use #include <rw/core/LogStreamWriter.hpp> instead"
 
+#include <rw/core/os.hpp>
+#ifdef RW_WIN32
+#pragma message("#include <rw/common/LogStreamWriter.hpp> is deprecated use #include <rw/core/LogStreamWriter.hpp> instead")
+#else
+#warning "#include <rw/common/LogStreamWriter.hpp> is deprecated use #include <rw/core/LogStreamWriter.hpp> instead"
+#endif
 
 #endif

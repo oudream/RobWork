@@ -19,6 +19,12 @@
 #define RW_COMMON_EXTENSIONREGISTRY_HPP
 
 #include <rw/core/ExtensionRegistry.hpp>
+
+#include <rw/core/os.hpp>
+#ifdef RW_WIN32
+#pragma message("#include <rw/common/ExtensionRegistry.hpp> is deprecated use #include <rw/core/ExtensionRegistry.hpp> instead")
+#else
 #warning "#include <rw/common/ExtensionRegistry.hpp> is deprecated use #include <rw/core/ExtensionRegistry.hpp> instead"
+#endif
 
 #endif

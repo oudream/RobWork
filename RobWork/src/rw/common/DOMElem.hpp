@@ -18,6 +18,12 @@
 #define RW_COMMON_DOMELEM_HPP
 
 #include <rw/core/DOMElem.hpp>
+
+#include <rw/core/os.hpp>
+#ifdef RW_WIN32
+#pragma message("#include <rw/common/DOMElem.hpp> is deprecated use #include <rw/core/DOMElem.hpp> instead")
+#else
 #warning "#include <rw/common/DOMElem.hpp> is deprecated use #include <rw/core/DOMElem.hpp> instead"
+#endif
 
 #endif

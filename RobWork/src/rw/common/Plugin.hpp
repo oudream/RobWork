@@ -19,7 +19,12 @@
 #define RW_COMMON_PLUGIN_HPP
 
 #include <rw/core/Plugin.hpp>
-#warning "#include <rw/core/Plugin.hpp> is deprecated use #include <rw/core/Plugin.hpp> instead"
 
+#include <rw/core/os.hpp>
+#ifdef RW_WIN32
+#pragma message("#include <rw/core/Plugin.hpp> is deprecated use #include <rw/core/Plugin.hpp> instead")
+#else
+#warning "#include <rw/core/Plugin.hpp> is deprecated use #include <rw/core/Plugin.hpp> instead"
+#endif
 
 #endif

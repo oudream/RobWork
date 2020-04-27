@@ -19,6 +19,12 @@
 #define RW_COMMON_MESSAGE_HPP
 
 #include <rw/core/Message.hpp>
+
+#include <rw/core/os.hpp>
+#ifdef RW_WIN32
+#pragma message("#include <rw/common/Message.hpp> is deprecated use #include <rw/core/Message.hpp> instead")
+#else
 #warning "#include <rw/common/Message.hpp> is deprecated use #include <rw/core/Message.hpp> instead"
+#endif
 
 #endif

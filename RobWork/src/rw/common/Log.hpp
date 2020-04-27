@@ -19,7 +19,12 @@
 #define RW_COMMON_LOG_HPP_
 
 #include <rw/core/Log.hpp>
-#warning "#include <rw/common/Log.hpp> is deprecated use #include <rw/core/Log.hpp> instead"
 
+#include <rw/core/os.hpp>
+#ifdef RW_WIN32
+#pragma message("#include <rw/common/Log.hpp> is deprecated use #include <rw/core/Log.hpp> instead")
+#else
+#warning "#include <rw/common/Log.hpp> is deprecated use #include <rw/core/Log.hpp> instead"
+#endif
 
 #endif
