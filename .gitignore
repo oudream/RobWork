@@ -4041,13 +4041,3 @@ RobWorkSim/src/rwsimlibs/swig/python/RobWorkSim-*.egg-info
 /doc/installstuff/RW_package-msvc2005/.csettings
 /doc/installstuff/RW_package-msvc2005/CPackConfig.cmake
 /doc/installstuff/RW_package-msvc2005/CPackSourceConfig.cmake
-
-# /doc/sphinx/apidoc/java
-/doc/sphinx/apidoc/java/org
-/doc/sphinx/apidoc/java/packages.rst
-
-#/doc/sphinx/apidoc
-/doc/sphinx/apidoc/java/packages.rst
-
-#/doc/sphinx/apidoc/java
-/doc/sphinx/apidoc/java/org

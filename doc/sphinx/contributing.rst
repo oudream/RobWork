@@ -5,7 +5,7 @@ Contributing
 ************
 
 When contributing to the RobWork project as a developer, you need to follow the guidelines provided here.
-You should `Setup your IDE`_ to follow the `Coding Guidelines`_. Please read the coding guidelines carefully.
+You should `Setup your IDE`_ to follow the :ref:`coding_standard`. Please read the coding guidelines carefully.
 Finally, some guidelines is given on `Committing Code`_ to our main repository.
 
 

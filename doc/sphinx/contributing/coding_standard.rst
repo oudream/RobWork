@@ -1,3 +1,5 @@
+.. _coding_standard:
+
 Coding Guidelines
 =================
 

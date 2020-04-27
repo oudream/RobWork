@@ -74,7 +74,6 @@ See :ref:`interfaces_python` for more information about execution.
 
 API Reference:
 
-- :java:type:`org.robwork.rw.WorkCellLoaderFactory`
 - `org.robwork.rw.WorkCellLoaderFactory (Javadoc) <../../apidoc/java/javadoc/org/robwork/rw/WorkCellLoaderFactory.html>`__
 
 See :ref:`interfaces_java` for more information about compilation and execution.
@@ -101,7 +100,7 @@ names like this:
 
 **C++**
 
-.. literalinclude:: ../../../RobWork/example/cpp/ex-print-devices.cpp
+.. literalinclude:: ../../../RobWork/example/cpp/ex_print-devices.cpp
    :language: c++
    :linenos:
 
@@ -119,7 +118,7 @@ names like this:
 
 **LUA**
 
-.. literalinclude:: ../../../RobWork/example/lua/ex-print-devices.lua
+.. literalinclude:: ../../../RobWork/example/lua/ex_print-devices.lua
    :language: lua
    :linenos:
 
@@ -133,7 +132,7 @@ An example is shown below of how this can be done:
 
 **C++**
 
-.. literalinclude:: ../../../RobWork/example/cpp/ex-find-from-workcell.cpp
+.. literalinclude:: ../../../RobWork/example/cpp/ex_find-from-workcell.cpp
    :language: c++
    :linenos:
 
@@ -151,7 +150,7 @@ An example is shown below of how this can be done:
 
 **LUA**
 
-.. literalinclude:: ../../../RobWork/example/lua/ex-find-from-workcell.lua
+.. literalinclude:: ../../../RobWork/example/lua/ex_find-from-workcell.lua
    :language: lua
    :linenos:
 

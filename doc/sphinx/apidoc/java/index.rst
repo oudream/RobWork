@@ -8,4 +8,3 @@ Java API Reference
    :maxdepth: 2
 
    Javadoc documentation <javadoc/index>
-   Sphinx documentation <packages>
