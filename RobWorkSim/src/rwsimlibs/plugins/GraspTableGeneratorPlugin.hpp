@@ -15,7 +15,7 @@
 #include <rw/core/PropertyMap.hpp>
 #include <rw/kinematics/FrameMap.hpp>
 #include <rwsim/util/MovingAverage.hpp>
-#include <Eigen/Eigen>
+#include <Eigen/Core>
 
 #include <rwsimlibs/gui/ThreadSafeStack.hpp>
 

@@ -20,7 +20,7 @@
 #include <rw/models/Joint.hpp>
 #include <rw/kinematics/Kinematics.hpp>
 #include <rw/math/Q.hpp>
-#include <Eigen/Eigen>
+#include <Eigen/Core>
 
 using namespace rw::math;
 using namespace rw::models;

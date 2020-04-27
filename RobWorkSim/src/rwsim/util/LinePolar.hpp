@@ -20,7 +20,7 @@
 
 #include "Pose2D.hpp"
 #include "P2D.hpp"
-#include <Eigen/Eigen>
+#include <Eigen/Core>
 
 
 namespace rwsim {

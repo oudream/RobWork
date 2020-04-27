@@ -29,7 +29,7 @@
 #include <rw/math/Pose6D.hpp>
 #include <rw/models/SerialDevice.hpp>
 #include <rw/kinematics/State.hpp>
-#include <Eigen/Eigen>
+#include <Eigen/Core>
 
 #include <string>
 

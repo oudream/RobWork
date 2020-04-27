@@ -22,7 +22,7 @@
 /**
  * @file Q.hpp
  */
-#include <Eigen/Eigen>
+#include <Eigen/Core>
 #include <rw/core/macros.hpp>
 #include <rw/common/Serializable.hpp>
 #include <boost/serialization/split_free.hpp>

@@ -27,7 +27,7 @@
 
 #include <rw/common/Serializable.hpp>
 
-#include <Eigen/Eigen>
+#include <Eigen/Core>
 
 namespace rw { namespace math {
 

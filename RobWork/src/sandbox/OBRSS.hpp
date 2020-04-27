@@ -31,7 +31,7 @@
 #include <rw/math/LinearAlgebra.hpp>
 #include <rw/math/Math.hpp>
 
-#include <Eigen/Eigen>
+#include <Eigen/Core>
 
 #include "BV.hpp"
 
