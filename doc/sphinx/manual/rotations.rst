@@ -59,8 +59,6 @@ See :ref:`interfaces_python` for more information about execution.
 
 API Reference:
 
-- :java:type:`org.robwork.rw.Rotation3d` (double precision)
-- :java:type:`org.robwork.rw.Rotation3f` (float precision)
 - `org.robwork.rw.Rotation3d (Javadoc) <../../apidoc/java/javadoc/org/robwork/rw/Rotation3d.html>`__
 - `org.robwork.rw.Rotation3f (Javadoc) <../../apidoc/java/javadoc/org/robwork/rw/Rotation3f.html>`__
 
@@ -124,8 +122,6 @@ See :ref:`interfaces_python` for more information about execution.
 
 API Reference:
 
-- :java:type:`org.robwork.rw.EAAd` (double precision)
-- :java:type:`org.robwork.rw.EAAf` (float precision)
 - `org.robwork.rw.EAAd (Javadoc) <../../apidoc/java/javadoc/org/robwork/rw/EAAd.html>`__
 - `org.robwork.rw.EAAf (Javadoc) <../../apidoc/java/javadoc/org/robwork/rw/EAAf.html>`__
 
@@ -191,8 +187,6 @@ See :ref:`interfaces_python` for more information about execution.
 
 API Reference:
 
-- :java:type:`org.robwork.rw.RPYd` (double precision)
-- :java:type:`org.robwork.rw.RPYf` (float precision)
 - `org.robwork.rw.RPYd (Javadoc) <../../apidoc/java/javadoc/org/robwork/rw/RPYd.html>`__
 - `org.robwork.rw.RPYf (Javadoc) <../../apidoc/java/javadoc/org/robwork/rw/RPYf.html>`__
 
@@ -251,8 +245,6 @@ See :ref:`interfaces_python` for more information about execution.
 
 API Reference:
 
-- :java:type:`org.robwork.rw.Quaterniond` (double precision)
-- :java:type:`org.robwork.rw.Quaternionf` (float precision)
 - `org.robwork.rw.Quaterniond (Javadoc) <../../apidoc/java/javadoc/org/robwork/rw/Quaterniond.html>`__
 - `org.robwork.rw.Quaternionf (Javadoc) <../../apidoc/java/javadoc/org/robwork/rw/Quaternionf.html>`__
 
@@ -287,7 +279,6 @@ API Reference:
 
 - C++ : `rw::math::Math <../../apidoc/cpp/doxygen/classrw_1_1math_1_1Math.html>`__
 - Python: :py:class:`rw.Math`
-- Java: :java:type:`org.robwork.rw.Math`
 - Javadoc: `org.robwork.rw.Math <../../apidoc/java/javadoc/org/robwork/rw/Math.html>`__
 
 Transformations
@@ -306,7 +297,5 @@ API Reference:
 - Python: :py:class:`rw.Transform3f`
 - Python: :py:class:`rw.Pose6d`
 - Python: :py:class:`rw.Pose6f`
-- Java: :java:type:`org.robwork.rw.Transform3d`
-- Java: :java:type:`org.robwork.rw.Transform3f`
 - Javadoc: `org.robwork.rw.Transform3d <../../apidoc/java/javadoc/org/robwork/rw/Transform3d.html>`__
 - Javadoc: `org.robwork.rw.Transform3f <../../apidoc/java/javadoc/org/robwork/rw/Transform3f.html>`__
