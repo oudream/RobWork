@@ -28,7 +28,7 @@
 #include <rw/common/OutputArchive.hpp>
 #include <rw/common/InputArchive.hpp>
 
-#include <Eigen/Eigen>
+#include <Eigen/Core>
 #include "Math.hpp"
 
 #include <rw/core/macros.hpp>

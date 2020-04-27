@@ -28,7 +28,7 @@
 #include <rw/core/macros.hpp>
 #include <rw/common/Serializable.hpp>
 
-#include <Eigen/Eigen>
+#include <Eigen/Core>
 
 #include <limits>
 

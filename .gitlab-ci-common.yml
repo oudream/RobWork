@@ -88,6 +88,7 @@ stages:
     - "[ -d Build/RWSExamples/UDPKinPlugin ] || mkdir Build/RWSExamples/UDPKinPlugin"
     - "[ -d Build/RWSim ] || mkdir Build/RWSim"
     - "[ -d Build/RWSimExamples ] || mkdir Build/RWSimExamples"
+    - "[ -d Build/RWHWExamples ] || mkdir Build/RWHWExamples"
     - "[ -d gtest ] || mkdir gtest"
   script:
     - cd Build
@@ -200,8 +201,13 @@ stages:
     # Build RobWorkSim Examples
     - cd RWSimExamples
     - cmake -DCMAKE_BUILD_TYPE=Release ../../RobWorkSim/example
-    - make -j${THREADS}
-
+    - make -j$(THREADS)
+    - cd ..
+    # Build RobWorkHardware Examples
+    - cd RWHWExamples
+    - cmake -DCMAKE_BUILD_TYPE=Release ../../RobWorkHardware/example
+    - make -j$(THREADS)
+    
 .linux-tests:
   extends: .CI-common-linux
   stage: test

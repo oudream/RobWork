@@ -22,6 +22,7 @@
  * @file ProximityStrategyFCL.hpp
  */
 
+#include <rw/core/Ptr.hpp>
 #include <rw/proximity/CollisionStrategy.hpp>
 #include <rw/proximity/DistanceStrategy.hpp>
 #include <rw/core/Ptr.hpp>
@@ -33,70 +34,65 @@
 
 
 
+#include <fcl/config.h>
 #include <string>
 #include <utility>
 #include <vector>
 
-namespace fcl {
-    #ifdef FCL_VERSION_LESS_THEN_0_6_0
-    class CollisionGeometry;
-    class CollisionResult;
-    class CollisionRequest;
-    class DistanceRequest;
-    class DistanceResult;
-    #else
-    template <typename S = double>
-    class CollisionGeometry;
-
-    template <typename S = double>
-    struct CollisionResult;
-
-    template <typename S = double>
-    struct CollisionRequest;
-
-    template <typename S = double>
-    struct DistanceRequest;
-
-    template <typename S = double>
-    struct DistanceResult;
-    #endif
-}
-
-namespace rwlibs { namespace proximitystrategies {
-    #ifdef FCL_VERSION_LESS_THEN_0_6_0
-
-        //! @brief Type of internal collision result.
-        using fclCollisionResult = fcl::CollisionResult;
-
-        //! @brief Type of internal collision request.
-        using fclCollisionRequest = fcl::CollisionRequest;
-
-        //! @brief Type of internal distance request.
-        using fclDistanceRequest = fcl::DistanceRequest;
-
-        //! @brief Type of internal distance result.
-        using fclDistanceResult = fcl::DistanceResult;
-
-        //! @brief Type of internal collision Geometry.
-        using fclCollisionGeometry = fcl::CollisionGeometry;
-
-#else
-          //! @brief Type of internal collision result.
-        using fclCollisionResult = fcl::CollisionResult<double>;
-
-        //! @brief Type of internal collision request.
-        using fclCollisionRequest = fcl::CollisionRequest<double>;
-
-        //! @brief Type of internal distance request.
-        using fclDistanceRequest = fcl::DistanceRequest<double>;
-
-        //! @brief Type of internal distance result.
-        using fclDistanceResult = fcl::DistanceResult<double>;
-
-        //! @brief Type of internal collision Geometry.
-        using fclCollisionGeometry = fcl::CollisionGeometry<double>;
+#if (FCL_MAJOR_VERSION == 0 && FCL_MINOR_VERSION < 6)
+#define FCL_VERSION_LESS_THEN_0_6_0 true
 #endif
 
+namespace fcl {
+#ifdef FCL_VERSION_LESS_THEN_0_6_0
+class CollisionGeometry;
+class CollisionResult;
+class CollisionRequest;
+class DistanceRequest;
+class DistanceResult;
+#else
+template< typename S = double > class CollisionGeometry;
+template< typename S = double > struct CollisionResult;
+template< typename S = double > struct CollisionRequest;
+template< typename S = double > struct DistanceRequest;
+template< typename S = double > struct DistanceResult;
+#endif
+}    // namespace fcl
+
+namespace rwlibs { namespace proximitystrategies {
+#ifdef FCL_VERSION_LESS_THEN_0_6_0
+
+    //! @brief Type of internal collision result.
+    using fclCollisionResult = fcl::CollisionResult;
+
+    //! @brief Type of internal collision request.
+    using fclCollisionRequest = fcl::CollisionRequest;
+
+    //! @brief Type of internal distance request.
+    using fclDistanceRequest = fcl::DistanceRequest;
+
+    //! @brief Type of internal distance result.
+    using fclDistanceResult = fcl::DistanceResult;
+
+    //! @brief Type of internal collision Geometry.
+    using fclCollisionGeometry = fcl::CollisionGeometry;
+
+#else
+    //! @brief Type of internal collision result.
+    using fclCollisionResult = fcl::CollisionResult< double >;
+
+    //! @brief Type of internal collision request.
+    using fclCollisionRequest = fcl::CollisionRequest< double >;
+
+    //! @brief Type of internal distance request.
+    using fclDistanceRequest = fcl::DistanceRequest< double >;
+
+    //! @brief Type of internal distance result.
+    using fclDistanceResult = fcl::DistanceResult< double >;
+
+    //! @brief Type of internal collision Geometry.
+    using fclCollisionGeometry = fcl::CollisionGeometry< double >;
+#endif
 
     /** @addtogroup proximitystrategies */
     /*@{*/

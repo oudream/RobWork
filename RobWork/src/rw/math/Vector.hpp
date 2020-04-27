@@ -24,7 +24,7 @@
  */
 #include <rw/core/macros.hpp>
 
-#include <Eigen/Eigen>
+#include <Eigen/Core>
 
 namespace rw { namespace math {
 

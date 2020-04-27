@@ -27,7 +27,7 @@
 #include "Rotation3D.hpp"
 #include <rw/common/Serializable.hpp>
 
-#include <Eigen/Eigen>
+#include <Eigen/Core>
 
 namespace rw { namespace math {
 

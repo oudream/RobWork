@@ -8,7 +8,7 @@
 #ifndef EIGENDECOMPOSITION_HPP_
 #define EIGENDECOMPOSITION_HPP_
 
-#include <Eigen/Eigen>
+#include <Eigen/Core>
 
 #include <vector>
 

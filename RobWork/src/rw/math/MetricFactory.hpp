@@ -541,15 +541,6 @@ namespace rw { namespace math {
     extern template class rw::math::InfinityMetric<std::vector<float> >;
     extern template class rw::math::WeightedInfinityMetric<std::vector<float> >;
 
-    extern template class rw::math::ManhattanMetric<rw::kinematics::State>;
-    extern template class rw::math::WeightedManhattanMetric<rw::kinematics::State>;
-
-    extern template class rw::math::EuclideanMetric<rw::kinematics::State>;
-    extern template class rw::math::WeightedEuclideanMetric<rw::kinematics::State>;
-
-    extern template class rw::math::InfinityMetric<rw::kinematics::State>;
-    extern template class rw::math::WeightedInfinityMetric<rw::kinematics::State>;
-
     /* @} */
 }} // end namespaces
 

@@ -27,6 +27,7 @@
 #include "Rotation3DVector.hpp"
 
 #include <rw/common/Serializable.hpp>
+#include <Eigen/Geometry>
 #include <ostream>
 //#include <boost/math/quaternion.hpp>
 //#include <boost/math/special_functions/sign.hpp>

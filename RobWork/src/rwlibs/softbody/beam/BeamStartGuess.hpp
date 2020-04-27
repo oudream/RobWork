@@ -19,7 +19,7 @@ Copyright 2013 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
 #define RWLIBS_SOFTBODY_BEAMSTARTGUESS_HPP
 
 #include <boost/shared_ptr.hpp>
-#include <Eigen/Eigen>
+#include <Eigen/Core>
 
 namespace rwlibs {
 namespace softbody {

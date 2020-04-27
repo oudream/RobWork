@@ -19,7 +19,7 @@
 #ifndef RW_MATH_PERSPECTIVETRANSFORM2D_HPP
 #define RW_MATH_PERSPECTIVETRANSFORM2D_HPP
 
-#include <Eigen/Eigen>
+#include <Eigen/Core>
 #include "Vector3D.hpp"
 #include "Vector2D.hpp"
 #include <rw/core/macros.hpp>

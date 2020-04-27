@@ -19,7 +19,7 @@
 #define RW_MATH_PROJECTIONMATRIX_HPP_
 
 #include <rw/core/Ptr.hpp>
-#include <Eigen/Eigen>
+#include <Eigen/Core>
 
 namespace rw {
 namespace math {

@@ -19,7 +19,7 @@
 #define RW_MATH_POSE2D_HPP_
 
 #include <rw/math/Transform2D.hpp>
-#include <Eigen/Eigen>
+#include <Eigen/Core>
 
 namespace rw {
 namespace math {
