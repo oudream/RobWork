@@ -18,6 +18,12 @@
 #define RW_COMMON_BOOSTXMLPARSER_
 
 #include <rw/core/BoostXMLParser.hpp>
+
+#include <rw/core/os.hpp>
+#ifdef RW_WIN32
+#pragma message("#include <rw/common/BoostXMLParser.hpp> is deprecated use #include <rw/core/BoostXMLParser.hpp> instead")
+#else
 #warning "#include <rw/common/BoostXMLParser.hpp> is deprecated use #include <rw/core/BoostXMLParser.hpp> instead"
+#endif
 
 #endif

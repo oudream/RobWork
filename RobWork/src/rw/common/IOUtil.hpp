@@ -19,6 +19,12 @@
 #define RW_COMMON_IOUTIL_HPP_
 
 #include <rw/core/IOUtil.hpp>
+
+#include <rw/core/os.hpp>
+#ifdef RW_WIN32
+#pragma message("#include <rw/common/IOUtil.hpp> is deprecated use #include <rw/core/IOUtil.hpp> instead")
+#else
 #warning "#include <rw/common/IOUtil.hpp> is deprecated use #include <rw/core/IOUtil.hpp> instead"
+#endif
 
 #endif

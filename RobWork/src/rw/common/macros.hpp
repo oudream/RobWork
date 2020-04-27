@@ -19,7 +19,12 @@
 #define RW_COMMON_MACROS_HPP
 
 #include <rw/core/macros.hpp>
-#warning "#include <rw/common/macros.hpp> is deprecated use #include <rw/core/macros.hpp> instead"
 
+#include <rw/core/os.hpp>
+#ifdef RW_WIN32
+#pragma message("#include <rw/common/macros.hpp> is deprecated use #include <rw/core/macros.hpp> instead")
+#else
+#warning "#include <rw/common/macros.hpp> is deprecated use #include <rw/core/macros.hpp> instead"
+#endif
 
 #endif 

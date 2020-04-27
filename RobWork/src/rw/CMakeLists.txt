@@ -45,6 +45,7 @@ if(build)
         rw.hpp
         sensor.hpp
         trajectory.hpp
+        math_fwd.hpp
     )
 
     file(GLOB SRC_FILES_CPP ${FILES_CPP})

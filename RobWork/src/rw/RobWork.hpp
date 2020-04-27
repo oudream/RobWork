@@ -18,10 +18,12 @@
 #define RW_ROBWORK_HPP_
 
 #include <rw/core/RobWork.hpp>
-#warning "This is deprecated use <rw/core/RobWork.hpp> instead"
 
-namespace rw {
-    using RobWork = rw::core::RobWork;
-}
+#include <rw/core/os.hpp>
+#ifdef RW_WIN32
+#pragma message("This is deprecated use <rw/core/RobWork.hpp> instead")
+#else
+#warning "This is deprecated use <rw/core/RobWork.hpp> instead"
+#endif 
 
 #endif
