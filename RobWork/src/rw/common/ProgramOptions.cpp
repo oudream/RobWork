@@ -1,6 +1,5 @@
 #include "ProgramOptions.hpp"
 
-#include <rw/math/Q.hpp>
 #include <rw/core/Log.hpp>
 
 //#include <boost/program_options/cmdline.hpp>
@@ -9,6 +8,7 @@
 #include <boost/program_options/variables_map.hpp>
 #include <boost/spirit/include/classic_core.hpp>
 #include <boost/spirit/include/phoenix1.hpp>
+#include <vector>
 
 using namespace phoenix;
 using namespace boost::program_options;
@@ -34,11 +34,11 @@ template< class TYPE > struct Option
 typedef Option< std::string > StringOption;
 typedef Option< int > IntOption;
 typedef Option< double > DoubleOption;
-typedef Option< rw::math::Q > QOption;
+typedef Option< std::vector< double > > QOption;
 typedef std::vector< Option< std::string > > StringOptionList;
 typedef std::vector< Option< int > > IntOptionList;
 typedef std::vector< Option< double > > DoubleOptionList;
-typedef std::vector< Option< rw::math::Q > > QOptionList;
+typedef std::vector < Option< std::vector< double > > > QOptionList;
 
 //////////////// VALIDATORS
 /**
@@ -84,9 +84,6 @@ void handleResult (bool success, boost::any& v, const std::string& name, const T
         }
     }
     else {
-        // throw boost::program_options::validation_error(
-        //		boost::program_options::validation_error::invalid_option_value,
-        //		"invalid property value, use syntax: <name>=<value>");
         RW_THROW ("invalid property value, use syntax: <name>=<value>");
     }
 }
@@ -159,44 +156,66 @@ void validate (boost::any& v, const std::vector< std::string >& values, QOptionL
     // Extract the first string from 'values'. If there is more than
     // one string, it's an error, and exception will be thrown.
     const std::string& s = validators::get_single_string (values);
-
+    size_t name_end      = s.find_first_of ("=", 0);
     // parse the values
-    std::string name;
-    std::vector< double > value;
-    bool success =
-        parse (s.c_str (),
-               ((*(anychar_p - ch_p ('=')))[var (name) = construct_< std::string > (arg1, arg2)] >>
-                ch_p ('=') >> ch_p ('(') >> *(real_p[push_back_a (value)] >> ch_p (',')) >>
-                real_p[push_back_a (value)] >> ch_p (')')),
-               space_p)
-            .full;    // Not a full statement yet, patience...
-    rw::math::Q q (value.size ());
-    for (size_t i = 0; i < value.size (); i++)
-        q[i] = value[i];
+    std::string name   = s.substr (0, name_end);
+    std::string vector = s.substr (++name_end, s.size ()) + "#";
 
-    handleResult< rw::math::Q > (success, v, name, q);
+    std::vector< double > value;
+
+    size_t start_i = 0;
+    size_t digits  = 0;
+    bool isNum     = false;
+    bool success   = true;
+    for (size_t i = 0; i < vector.size (); i++) {
+        char c = vector[i];
+        if ((c <= '9' && c >= '0') || c == '.') {
+            isNum = true;
+            digits++;
+        }
+        else {
+            if (isNum) {
+                isNum = false;
+                try {
+                    value.push_back (std::stod (vector.substr (start_i, digits)));
+                }
+                catch (std::invalid_argument& e) {
+                    success = false;
+                }
+                catch (std::out_of_range& e) {
+                    success = false;
+                }
+                start_i = i + 1;
+                digits  = 0;
+            }
+            else {
+                start_i = i + 1;
+            }
+        }
+    }
+
+    handleResult< std::vector<double> > (success, v, name, value);
 }
 
 }    // namespace
 
 void ProgramOptions::initOptions ()
 {
-    _optionDesc.add_options () ("help", "produce help message") ("version,v",
-                                                                 "print version string")
-        //("ini-file", po::value< std::string >()->default_value("RobWorkStudio.ini"),
-        //"RobWorkStudio ini-file")
+    _optionDesc.add_options ()                   //
+        ("help", "produce help message")         //
+        ("version,v", "print version string")    //
         ("intproperty,i",
          po::value< IntOptionList > ()->composing (),
-         "Add a int property, -iname=2") ("doubleproperty,d",
-                                          po::value< DoubleOptionList > ()->composing (),
-                                          "Add a double property, -dname=2.3") (
-            "qproperty,q",
-            po::value< QOptionList > ()->composing (),
-            "Add a Q property, eg. -qname=\"(1.0,2,32.1,2)\"\nRemember the quotes!!!") (
-            "property,P",
-            po::value< StringOptionList > ()->composing (),
-            "Add a string property, -Pname=pstring")
-        //("input-file", po::value< std::string >(), "Project/Workcell/Device input file")
+         "Add a int property, -iname=2")    //
+        ("doubleproperty,d",
+         po::value< DoubleOptionList > ()->composing (),
+         "Add a double property, -dname=2.3")    //
+        ("qproperty,q",
+         po::value< QOptionList > ()->composing (),
+         "Add a Q property, eg. -qname=\"(1.0,2,32.1,2)\"\nRemember the quotes!!!")    //
+        ("property,P",
+         po::value< StringOptionList > ()->composing (),
+         "Add a string property, -Pname=pstring")    //
         ;
 }
 
@@ -222,11 +241,11 @@ void ProgramOptions::setPositionalOption (const std::string& name, int i)
 int ProgramOptions::checkVariablesMap (po::variables_map& vm)
 {
     if (vm.count ("help")) {
-        std::cout << "Usage:\n\n"
-                  << "\t" << _appName << " [options] <project-file> \n"
-                  << "\t" << _appName << " [options] <workcell-file> \n"
-                  << "\t" << _appName << " [options] <device-file> \n"
-                  << "\n";
+        rw::core::Log::infoLog () << "Usage:\n\n"
+                                  << "\t" << _appName << " [options] <project-file> \n"
+                                  << "\t" << _appName << " [options] <workcell-file> \n"
+                                  << "\t" << _appName << " [options] <device-file> \n"
+                                  << "\n";
         rw::core::Log::infoLog () << _optionDesc << "\n";
         return -1;
     }

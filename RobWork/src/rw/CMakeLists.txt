@@ -54,7 +54,7 @@ if(build)
     list(APPEND RW_LIB_FILES_HPP ${SRC_FILES_HPP})
 
     rw_add_library(${SUBSYS_NAME} ${RW_LIB_FILES_CPP} ${RW_LIB_FILES_HPP})
-    target_link_libraries(${SUBSYS_NAME} PUBLIC ${Boost_LIBRARIES} sdurw_core)
+    target_link_libraries(${SUBSYS_NAME} PUBLIC ${Boost_LIBRARIES} sdurw_core sdurw_common sdurw_math)
 
 
     if(RW_HAVE_OMP)

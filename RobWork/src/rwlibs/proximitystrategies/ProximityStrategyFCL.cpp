@@ -23,14 +23,14 @@
 #include <rw/proximity/ProximityStrategyData.hpp>
 
 #if FCL_VERSION_LESS_THEN_0_6_0
-    #include <fcl/BVH/BVH_model.h>
-    #include <fcl/collision.h>
-    #include <fcl/distance.h>
-#else 
-    #include <fcl/geometry/bvh/BVH_model.h>
-    #include <fcl/narrowphase/collision.h>
-    #include <fcl/narrowphase/distance.h>
-    #include <fcl/common/types.h>
+#include <fcl/BVH/BVH_model.h>
+#include <fcl/collision.h>
+#include <fcl/distance.h>
+#else
+#include <fcl/common/types.h>
+#include <fcl/geometry/bvh/BVH_model.h>
+#include <fcl/narrowphase/collision.h>
+#include <fcl/narrowphase/distance.h>
 #endif
 
 using rw::core::ownedPtr;
@@ -40,7 +40,8 @@ using namespace rw::geometry;
 using namespace rwlibs::proximitystrategies;
 
 namespace {
-    #ifdef FCL_VERSION_LESS_THEN_0_6_0
+#ifdef FCL_VERSION_LESS_THEN_0_6_0
+
 fcl::Transform3f toFCL (const Transform3D<>& rwT)
 {
     fcl::Matrix3f rotation (rwT (0, 0),
@@ -57,36 +58,36 @@ fcl::Transform3f toFCL (const Transform3D<>& rwT)
 
     return fclT;
 }
-using rw_AABB = fcl::AABB;
-using rw_OBB = fcl::OBB;
-using rw_RSS = fcl::RSS;
-using rw_OBBRSS = fcl::OBBRSS;
-using rw_kIOS = fcl::kIOS;
-using rw_KDOP16 = fcl::KDOP< 16 >;
-using rw_KDOP18 = fcl::KDOP< 18 > ;
-using rw_KDOP24 = fcl::KDOP< 24 >;
+using rw_AABB    = fcl::AABB;
+using rw_OBB     = fcl::OBB;
+using rw_RSS     = fcl::RSS;
+using rw_OBBRSS  = fcl::OBBRSS;
+using rw_kIOS    = fcl::kIOS;
+using rw_KDOP16  = fcl::KDOP< 16 >;
+using rw_KDOP18  = fcl::KDOP< 18 >;
+using rw_KDOP24  = fcl::KDOP< 24 >;
+
 using fclContact = fcl::Contact;
 #else
 fcl::Transform3d toFCL (const Transform3D<>& rwT)
 {
-    return fcl::Transform3d(rwT.e());
+    return fcl::Transform3d (rwT.e ());
 }
-using rw_AABB = fcl::AABB<double>;
-using rw_OBB = fcl::OBB<double> ;
-using rw_RSS = fcl::RSS<double>;
-using rw_OBBRSS = fcl::OBBRSS<double>;
-using rw_kIOS = fcl::kIOS<double>;
-using rw_KDOP16 = fcl::KDOP<double, 16 >;
-using rw_KDOP18 = fcl::KDOP<double, 18 >;
-using rw_KDOP24 = fcl::KDOP<double, 24 >;
-using fclContact = fcl::Contact<double>;
+using rw_AABB    = fcl::AABB< double >;
+using rw_OBB     = fcl::OBB< double >;
+using rw_RSS     = fcl::RSS< double >;
+using rw_OBBRSS  = fcl::OBBRSS< double >;
+using rw_kIOS    = fcl::kIOS< double >;
+using rw_KDOP16  = fcl::KDOP< double, 16 >;
+using rw_KDOP18  = fcl::KDOP< double, 18 >;
+using rw_KDOP24  = fcl::KDOP< double, 24 >;
+using fclContact = fcl::Contact< double >;
 #endif
 }    // namespace
 
 ProximityStrategyFCL::ProximityStrategyFCL (BV bv) :
     _bv (bv), _fclCollisionRequest (new fclCollisionRequest ()),
-    _fclDistanceRequest (new fclDistanceRequest ()),
-    _fclDistanceResult (new fclDistanceResult ())
+    _fclDistanceRequest (new fclDistanceRequest ()), _fclDistanceResult (new fclDistanceResult ())
 {
     // Setup defaults
     _fclDistanceRequest->enable_nearest_points = true;
@@ -123,7 +124,7 @@ bool ProximityStrategyFCL::addGeometry (ProximityModel* model, const Geometry& g
         case BV::RSS: return addGeometry< rw_RSS > (model, geom); break;
         case BV::OBBRSS: return addGeometry< rw_OBBRSS > (model, geom); break;
         case BV::kIOS: return addGeometry< rw_kIOS > (model, geom); break;
-        case BV::KDOP16: return addGeometry< rw_KDOP16> (model, geom); break;
+        case BV::KDOP16: return addGeometry< rw_KDOP16 > (model, geom); break;
         case BV::KDOP18: return addGeometry< rw_KDOP18 > (model, geom); break;
         case BV::KDOP24: return addGeometry< rw_KDOP24 > (model, geom); break;
         default:
@@ -176,7 +177,8 @@ bool ProximityStrategyFCL::addGeometry (rw::proximity::ProximityModel* model,
      * fetching it from the cache. */
     for (const auto& m : pmodel->models) {
         if (m.geo->getId () == geom->getId ()) {
-            RW_THROW ("The specified geometry \"" + geom->getId() + "\" (geometry identifiers are supposed to be unique) has "
+            RW_THROW ("The specified geometry \"" + geom->getId () +
+                      "\" (geometry identifiers are supposed to be unique) has "
                       "already been added to the FCL proximity strategy model!");
             return false;
         }
@@ -212,9 +214,9 @@ bool ProximityStrategyFCL::addGeometry (rw::proximity::ProximityModel* model,
             v2[i] = v2Tmp[i];
         }
 #else
-        fcl::Vector3d v0 = v0Tmp.e();
-        fcl::Vector3d v1 = v1Tmp.e();
-        fcl::Vector3d v2 = v2Tmp.e();
+        fcl::Vector3d v0 = v0Tmp.e ();
+        fcl::Vector3d v1 = v1Tmp.e ();
+        fcl::Vector3d v2 = v2Tmp.e ();
 #endif
         /* mband todo:
          * - How to ensure that double is the type supported and that it can just be copied even

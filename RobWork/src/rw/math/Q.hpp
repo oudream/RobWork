@@ -24,6 +24,7 @@
  */
 #include <Eigen/Eigen>
 #include <rw/core/macros.hpp>
+#include <rw/core/PropertyMap.hpp>
 #include <rw/common/Serializable.hpp>
 #include <boost/serialization/split_free.hpp>
 
@@ -52,7 +53,7 @@ namespace rw { namespace math {
          * The vector will be of dimension zero.
          */
         Q() : _vec( (Base::Index) 0) {}
-
+        
         /**
          * @brief Creates a Q of length \b n and initialized with values from \b values
          *
@@ -481,7 +482,7 @@ namespace rw { namespace math {
 			return false;
 		}
 
-		/**
+	/**
 		 * @brief Convert to a standard vector.
 		 * @param v [out] the result.
 		 */
@@ -568,6 +569,12 @@ namespace rw { namespace math {
 
 
     /*@}*/
+}}
+
+namespace rw{ namespace core {
+    //! @copydoc rw::core::PropertyMap::findProperty(const std::string& identifier) const
+    template<>
+    rw::core::Ptr< Property< rw::math::Q > > PropertyMap::findProperty (const std::string& identifier) const;
 }}
 
 namespace rw{ namespace common {
