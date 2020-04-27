@@ -82,7 +82,7 @@ template class rw::math::InfinityMetric<Vector3D<float> >;
 template class rw::math::WeightedInfinityMetric<Vector3D<float> >;
 
 // --
-#include <Eigen/Eigen>
+#include <Eigen/Core>
 
 template class rw::math::ManhattanMetric<Eigen::VectorXd >;
 template class rw::math::WeightedManhattanMetric<Eigen::VectorXd >;

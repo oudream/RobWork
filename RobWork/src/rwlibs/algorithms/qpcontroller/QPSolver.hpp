@@ -23,7 +23,7 @@
  * @file QPSolver.hpp
  */
 
-#include <Eigen/Eigen>
+#include <Eigen/Core>
 
 namespace rwlibs { namespace algorithms { namespace qpcontroller {
 

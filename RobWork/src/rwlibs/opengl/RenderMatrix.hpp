@@ -21,7 +21,7 @@
 
 //! @file RenderMatrix.hpp
 
-#include <Eigen/Eigen>
+#include <Eigen/Core>
 
 #include <rw/graphics/Render.hpp>
 #include <rw/core/Ptr.hpp>

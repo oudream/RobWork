@@ -21,7 +21,7 @@
 
 #include <rw/math/Q.hpp>
 #include <rw/kinematics/State.hpp>
-#include <Eigen/Eigen>
+#include <Eigen/Core>
 
 namespace rw { namespace kinematics { class Frame; } }
 namespace rw { namespace models { class Device; } }

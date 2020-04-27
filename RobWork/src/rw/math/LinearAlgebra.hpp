@@ -22,7 +22,8 @@
 /**
  * @file LinearAlgebra.hpp
  */
-#include <Eigen/Eigen>
+#include <Eigen/Core>
+#include <Eigen/Eigenvalues>
 
 #include <limits>
 

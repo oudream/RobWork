@@ -18,7 +18,7 @@
 #ifndef RW_GEOMETRY_GIFTWRAPHULL3D_HPP_
 #define RW_GEOMETRY_GIFTWRAPHULL3D_HPP_
 
-#include <Eigen/Eigen>
+#include <Eigen/Core>
 #include <boost/function.hpp>
 #include <stack>
 #include <set>

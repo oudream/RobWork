@@ -22,7 +22,7 @@
 #include <rw/models/Device.hpp>
 #include <rw/math/Math.hpp>
 #include <rw/core/macros.hpp>
-#include <Eigen/Eigen>
+#include <Eigen/Core>
 
 using namespace rwlibs::algorithms;
 using namespace rw::math;

@@ -13,7 +13,7 @@
 #include <boost/program_options/parsers.hpp>
 #define BOOST_FILESYSTEM_VERSION 3
 #include <boost/filesystem.hpp>
-#include <Eigen/Eigen>
+#include <Eigen/Core>
 
 using namespace std;
 using namespace rw::core;

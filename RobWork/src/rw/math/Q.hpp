@@ -22,7 +22,7 @@
 /**
  * @file Q.hpp
  */
-#include <Eigen/Eigen>
+#include <Eigen/Core>
 #include <rw/core/macros.hpp>
 #include <rw/core/PropertyMap.hpp>
 #include <rw/common/Serializable.hpp>

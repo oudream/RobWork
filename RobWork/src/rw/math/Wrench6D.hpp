@@ -25,7 +25,7 @@
 
 #include <rw/common/Serializable.hpp>
 
-#include <Eigen/Eigen>
+#include <Eigen/Core>
 #include <Eigen/Core>
 
 #include "Transform3D.hpp"
