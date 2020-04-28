@@ -26,26 +26,6 @@ RobWork depends on third-party software that must be installed prior to compilat
 In Linux it is quite easy to set up the dependencies as these are available as packages in the systems package manager.
 Unfortunately, in CentOS it is also necessary to compile some optional dependencies from scratch.
 
-Build Tools
------------
-
-To be able to checkout code it is necessary to install some source code management (SCM) tools, such as Subversion, Git and Mercurial.
-To be able to checkout the code from our own Git repository, a Git client is needed.
-SVN and Mercurial clients are not strictly required, but depending on your needs it might be worthwhile to install them.
-
-.. code-block:: bash
-
-   sudo yum install subversion git mercurial
-
-
-To compile the C++ code, the GCC compiler should be used on Ubuntu.
-CMake must be used to prepare RobWork for compilation. The minimum CMake version for RobWork is currently 2.8.12, which is also available in CentOS 7.
-
-.. code-block:: bash
-
-   sudo yum install make gcc gcc-c++ cmake
-
-
 Extra Packages for Enterprise Linux (EPEL)
 ------------------------------------------
 
@@ -57,7 +37,28 @@ Add the packages with:
    sudo yum install epel-release
 
 
-This is for instance needed for Assimp, GTest and Bullet and libdc1394.
+This is for instance needed for Assimp, CMake 3, GTest and Bullet and libdc1394.
+
+Build Tools
+-----------
+
+To be able to checkout code it is necessary to install some source code management (SCM) tools, such as Git.
+To be able to checkout the code from our own Git repository, a Git client is needed.
+It is also needed for some dependencies if they must be compiled manually.
+
+.. code-block:: bash
+
+   sudo yum install git
+
+
+To compile the C++ code, the GCC compiler should be used.
+CMake must be used to prepare RobWork for compilation.
+The minimum CMake version for RobWork is currently 3.5.1, which is also available in CentOS 7.
+To use CMake 3, the epel-release package must be installed.
+
+.. code-block:: bash
+
+   sudo yum install make gcc gcc-c++ cmake3
 
 RobWork Required Dependencies
 -----------------------------
@@ -121,11 +122,11 @@ RobWorkSim Dependencies
 If you need to do dynamic simulations, you will probably need the RobWorkSim package. If you are in doubt and just need RobWorkStudio, you can likely skip this.
 
 Open Dynamics Engine (ODE) is not available in the package manager. Instead, ODE must be compiled from source.
-Use Mercurial to download the source from bitbucket:
+Use Git to download the source from bitbucket:
 
 .. code-block:: bash
 
-   hg clone https://bitbucket.org/odedevs/ode
+   git clone https://bitbucket.org/odedevs/ode
 
 
 Open a terminal and run:
