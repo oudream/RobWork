@@ -50,10 +50,7 @@ tricky.
 
 `Build Tools`_
 
-.. - Tortoise SVN
-
 - Git
-- TortoiseHg Mercurial
 - Microsoft Visual Studio
 - CMake
 
@@ -79,27 +76,9 @@ Build Tools
 -----------
 
 To be able to checkout code it is necessary to install some source code
-management (SCM) tools, such as Git and Mercurial. To be
+management (SCM) tools, such as Git. To be
 able to checkout the code from our own Git repository, a Git client is
-needed. A Mercurial client is needed if you want to compile ODE for RobWorkSim.
-
-.. The three SCM tools can be installed in only 20 minutes, and can be
-   expected to use around 360 MB in total.
-
-   **Tortoise SVN client:**
-
-   Download from https://tortoisesvn.net
-
-   Installation of the Tortoise SVN client is straightforward. Expect to
-   use 45 MB on the installation. During installation we recommend that you
-   also install the "command line client tools" as shown below:
-
-   .. figure:: ../../gfx/installation/TortoiseSVN_addCLI.png
-
-       The TortoiseSVN installation options with CLI tools selected.
-
-   Tortoise SVN comes with a GUI that is easy to use and is nicely
-   integrated with Explorer.
+needed. Git is also required for some dependent projects.
 
 **Git client:**
 
@@ -114,35 +93,15 @@ Git from a normal Windows Command Prompt:
 
     Git installation where Git CLI can be used from ordinary Windows Command Prompt.
 
-Git takes up more space than the other SCM tools. Expect to use around
-225 MB.
-
-**TortoiseHg Mercurial client:**
-
-Download from https://www.mercurial-scm.org
-
-Installation of the TortoiseHg Mercurial client is straightforward.
-Expect to use 90 MB on the installation.
-
-
-.. figure:: ../../gfx/installation/TortoiseHg_install.png
-
-    The TortoiseSVN installation options.
+Git takes up around 225 MB of disk space.
 
 **SCM Tools in Windows Context Menu**
 
 Once you have installed the three SCM tools, you will notice that the
 tools have been integrated in the Windows Explorer Context menu. A
-right-click on the desktop, or in a folder, will give the following
-options:
-
-.. figure:: ../../gfx/installation/SCM_contextmenu.png
-
-    The Windows Explorer Context menu.
-
-Typically, you will use "Git GUI Here" to checkout a Git project, "SVN
-Checkout" to checkout a SVN project, or "ToroiseHg-->Clone.." to
-checkout a Mercurial based project.
+right-click on the desktop, or in a folder, will give some
+options.
+Typically, you will use "Git GUI Here" to checkout a Git project.
 
 **Microsoft Visual Studio** should be used to compile RobWork (and
 dependencies) on Windows platforms. RobWork is expected to compile on
@@ -518,12 +477,9 @@ RobWorkSim package. If you are in doubt and just need RobWorkStudio, you
 can likely skip this section.
 
 **Open Dynamics Engine (ODE)** must be compiled from source. Use
-**TortoiseHg (Mercurial)** to download the source from bitbucket:
+**Git** to download the source from bitbucket at the address:
+
 https://bitbucket.org/odedevs/ode
-
-.. figure:: ../../gfx/installation/ODE_clone.png
-
-    Clone ODE with Mercurial client.
 
 CMake is used by ODE 0.15.2 and newer. It takes 10 minutes to setup and
 compile, and takes up around 85 MB. This is the recommended procedure:

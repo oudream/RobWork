@@ -56,11 +56,7 @@ Build Tools
 To be able to checkout code it is necessary to install some source code
 management (SCM) tools.
 To be able to checkout the code from our own Git repository, a Git client is
-needed. A Mercurial client is only required if you need to compile ODE for RobWorkSim.
-
-.. code-block:: shell
-
-    sudo apt-get install git mercurial
+needed. A Git client is also required if you need to compile ODE for RobWorkSim.
 
 To compile the C++ code, the GCC compiler should be used on Ubuntu.
 CMake must be used to prepare RobWork for compilation.
@@ -149,13 +145,13 @@ and versions newer than 19.04 with ODE 0.16 (libode8).
 
 Notice that the version from the package manager can sometimes be a bit
 outdated. If you want the latest version, Open Dynamics Engine (ODE)
-must be compiled from source. Use Mercurial to download the source from
+must be compiled from source. Use Git to download the source from
 bitbucket (use a dot '.' as the third argument to checkout directly to
 the current folder):
 
 .. code-block:: shell
 
-    hg clone https://bitbucket.org/odedevs/ode
+    git clone https://bitbucket.org/odedevs/ode
 
 Make sure that the required build tools are installed:
 
