@@ -20,6 +20,12 @@
 
 
 #include <rw/core/Ptr.hpp>
+
+#include <rw/core/os.hpp>
+#ifdef RW_WIN32
+#pragma message("#include <rw/common/Ptr.hpp> is deprecated use #include <rw/core/Ptr.hpp> instead")
+#else
 #warning "#include <rw/common/Ptr.hpp> is deprecated use #include <rw/core/Ptr.hpp> instead"
+#endif
 
 #endif

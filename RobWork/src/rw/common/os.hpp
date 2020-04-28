@@ -19,6 +19,10 @@
 #define RW_COMMON_OS_HPP_
 
 #include <rw/core/os.hpp>
+#ifdef RW_WIN32
+#pragma message("#include <rw/common/os.hpp> is deprecated use #include <rw/core/os.hpp> instead")
+#else
 #warning "#include <rw/common/os.hpp> is deprecated use #include <rw/core/os.hpp> instead"
+#endif
 
 #endif

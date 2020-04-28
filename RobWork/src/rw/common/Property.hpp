@@ -19,6 +19,12 @@
 #define RW_COMMON_PROPERTY_HPP_
 
 #include <rw/core/Property.hpp>
+
+#include <rw/core/os.hpp>
+#ifdef RW_WIN32
+#pragma message("#include <rw/common/Property.hpp> is deprecated use #include <rw/core/Property.hpp> instead")
+#else
 #warning "#include <rw/common/Property.hpp> is deprecated use #include <rw/core/Property.hpp> instead"
+#endif
 
 #endif

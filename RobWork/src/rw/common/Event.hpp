@@ -19,7 +19,12 @@
 #define RW_COMMON_EVENT_HPP
 
 #include <rw/core/Event.hpp>
-#warning "#include <rw/common/Event.hpp> is deprecated use #include <rw/core/Event.hpp> instead"
 
+#include <rw/core/os.hpp>
+#ifdef RW_WIN32
+#pragma message("#include <rw/common/Event.hpp> is deprecated use #include <rw/core/Event.hpp> instead")
+#else
+#warning "#include <rw/common/Event.hpp> is deprecated use #include <rw/core/Event.hpp> instead"
+#endif
 
 #endif

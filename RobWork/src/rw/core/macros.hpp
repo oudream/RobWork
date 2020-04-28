@@ -27,7 +27,6 @@
 #include <rw/core/Log.hpp>
 #include "Message.hpp"
 #include "IOUtil.hpp"
-
 #include <sstream>
 #include <iostream>
 

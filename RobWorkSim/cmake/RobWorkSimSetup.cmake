@@ -207,7 +207,9 @@ endif()
 #
 
 if(DEFINED USE_WERROR)
-    set(WERROR_FLAG "-Werror ")
+    if(${USE_WERROR})
+        set(WERROR_FLAG "-Werror")
+    endif()
 endif()
 
 if(NOT DEFINED RWSIM_CXX_FLAGS)
