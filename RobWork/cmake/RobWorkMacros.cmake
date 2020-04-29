@@ -389,15 +389,13 @@ endmacro()
 
 macro(RW_OPTIONS PREFIX)
     # Build shared libraries by default.
-    if(NOT DEFINED ${PREFIX}_SHARED_LIBS)
-        set(${PREFIX}_SHARED_LIBS OFF)
-    endif()
+    #if(NOT DEFINED ${PREFIX}_SHARED_LIBS)
+    #    set(${PREFIX}_SHARED_LIBS OFF)
+    #endif()
 
-    if(POLICY CMP0077) # Introduce cmake 3.13
-        cmake_policy(SET CMP0077 OLD)
-    endif()
-
-    option(${PREFIX}_SHARED_LIBS "Build shared libraries." ${${PREFIX}_SHARED_LIBS})
+    option(${PREFIX}_SHARED_LIBS "Build shared libraries." ON)
+    option(BUILD_SHARED_LIBS "Build shared libraries." ${PREFIX}_SHARED_LIBS)
+    
     if(${PREFIX}_SHARED_LIBS)
         set(PROJECT_LIB_PREFIX ${CMAKE_SHARED_LIBRARY_PREFIX})
         set(PROJECT_LIB_SUFFIX ${CMAKE_SHARED_LIBRARY_SUFFIX})

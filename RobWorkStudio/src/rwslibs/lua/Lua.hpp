@@ -37,7 +37,7 @@ namespace rws {
     class Lua : public RobWorkStudioPlugin
     {
         Q_OBJECT
-    #ifndef RW_STATIC_LINK_PLUGINS
+    #ifndef RWS_USE_STATIC_LINK_PLUGINS
         Q_INTERFACES(rws::RobWorkStudioPlugin)
 		Q_PLUGIN_METADATA(IID "dk.sdu.mip.Robwork.RobWorkStudioPlugin/0.1" FILE "plugin.json")
     #endif
