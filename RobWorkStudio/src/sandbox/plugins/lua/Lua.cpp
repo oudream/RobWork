@@ -274,6 +274,6 @@ void Lua::setupToolBar(QToolBar* toolbar)
 */
 
 //----------------------------------------------------------------------
-#ifndef RW_STATIC_LINK_PLUGINS
+#ifndef RWS_USE_STATIC_LINK_PLUGINS
 Q_EXPORT_PLUGIN2(Lua, Lua)
 #endif

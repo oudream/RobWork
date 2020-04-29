@@ -15,7 +15,6 @@
 #cmakedefine RWS_HAVE_SANDBOX 1
 #cmakedefine RWS_HAVE_LUA 1
 #cmakedefine RWS_USE_STATIC_LINK_PLUGINS
-#cmakedefine RW_STATIC_LINK_PLUGINS
 #define RWS_USE_QT5 1
 #cmakedefine RWS_USE_PYTHON3 1
 #cmakedefine RWS_USE_PYTHON2 1
