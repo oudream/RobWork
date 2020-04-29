@@ -53,7 +53,7 @@ bool PyPlugin::initialize (std::string pythonFilePath, std::string pluginName)
     bool exsist = boost::filesystem::exists (pythonFilePath);
     if (exsist) {
         getRobWorkStudio ()->stateChangedEvent ().add (
-            boost::bind (&PyPlugin::stateChangedListener, this, _1), this);
+            boost::bind (&PyPlugin::stateChangedListener, this, boost::arg<1>()), this);
 
         _base->setObjectName (pluginName.c_str ());
 

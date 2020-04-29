@@ -57,7 +57,7 @@ ATaskVisPlugin::~ATaskVisPlugin() {
 
 void ATaskVisPlugin::initialize() {
     getRobWorkStudio()->genericAnyEvent().add(
-          boost::bind(&ATaskVisPlugin::genericAnyEventListener, this, _1, _2), this);
+          boost::bind(&ATaskVisPlugin::genericAnyEventListener, this, boost::arg<1>(), boost::arg<2>()), this);
 
     Log::setLog( _log );
 }

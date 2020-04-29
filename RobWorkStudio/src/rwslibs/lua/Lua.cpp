@@ -126,7 +126,7 @@ void Lua::initialize()
         boost::bind(
             &Lua::stateChangedListener,
             this,
-            _1), this);
+            boost::arg<1>()), this);
 
     // register the lua state in the propertymap
     getRobWorkStudio()->getPropertyMap().add<rwlibs::swig::LuaState::Ptr>(

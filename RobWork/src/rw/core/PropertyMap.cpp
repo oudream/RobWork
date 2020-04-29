@@ -60,14 +60,14 @@ void PropertyMap::swap (PropertyMap& other)
       for(;r.first!=r.second;++r.first){
           (*r.first)->changedEvent().remove( &other );
           (*r.first)->changedEvent().add(
-      boost::bind(&PropertyMap::propertyChangedListener,this,_1), this );
+      boost::bind(&PropertyMap::propertyChangedListener,this,boost::arg<1>()), this );
       }
 
       r = other.getProperties();
       for(;r.first!=r.second;++r.first){
           (*r.first)->changedEvent().remove( this );
           (*r.first)->changedEvent().add(
-      boost::bind(&PropertyMap::propertyChangedListener,&other,_1), &other );
+      boost::bind(&PropertyMap::propertyChangedListener,&other,boost::arg<1>()), &other );
       }*/
 }
 
@@ -110,7 +110,7 @@ bool PropertyMap::insert (PropertyBase::Ptr property)
 {
     if (_properties.insert (property).second) {
         // add to changed listener
-        // property->addChangedListener( boost::bind(&PropertyMap::propertyChangedListener,this,_1)
+        // property->addChangedListener( boost::bind(&PropertyMap::propertyChangedListener,this,boost::arg<1>())
         // );
         return true;
     }

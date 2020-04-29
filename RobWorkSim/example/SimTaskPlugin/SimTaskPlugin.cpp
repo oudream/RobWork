@@ -120,10 +120,10 @@ SimTaskPlugin::~SimTaskPlugin()
 
 void SimTaskPlugin::initialize() {
     getRobWorkStudio()->stateChangedEvent().add(
-            boost::bind(&SimTaskPlugin::stateChangedListener, this, _1), this);
+            boost::bind(&SimTaskPlugin::stateChangedListener, this, boost::arg<1>()), this);
 
     getRobWorkStudio()->genericEvent().add(
-          boost::bind(&SimTaskPlugin::genericEventListener, this, _1), this);
+          boost::bind(&SimTaskPlugin::genericEventListener, this, boost::arg<1>()), this);
 
     Log::setLog( _log );
 }
@@ -1203,7 +1203,7 @@ void SimTaskPlugin::makeSimulator(){
     }
 
     _tsim = ownedPtr( new ThreadSimulator(_sim, state) );
-    ThreadSimulator::StepCallback cb( boost::bind(&SimTaskPlugin::step, this, _1, _2) );
+    ThreadSimulator::StepCallback cb( boost::bind(&SimTaskPlugin::step, this, boost::arg<1>(), boost::arg<2>()) );
 
     _tsim->setStepCallBack( cb );
     _tsim->setTimeStep(0.01);

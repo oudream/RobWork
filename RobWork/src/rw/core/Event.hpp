@@ -73,7 +73,7 @@ namespace rw { namespace core {
      * In: RobWorkStudio.cpp
      *
      * RobWorkStudio::RobWorkStudio(...):
-     * _stateChangedEvent(boost::bind(&RobWorkStudio::fireStateChangedEvent, this, _1)),
+     * _stateChangedEvent(boost::bind(&RobWorkStudio::fireStateChangedEvent, this, boost::arg<1>())),
      * ...
      * {
      * ...
@@ -115,7 +115,7 @@ namespace rw { namespace core {
          *
          * void MyPlugin::initialize() {
          *     getRobWorkStudio()->frameSelectedEvent().add(
-         *         boost::bind(&MyPlugin::frameSelectedListener, this, _1), this);
+         *         boost::bind(&MyPlugin::frameSelectedListener, this, boost::arg<1>()), this);
          * }
          * \endcode
          *

@@ -85,10 +85,10 @@ SimTaskPlugin::~SimTaskPlugin()
 
 void SimTaskPlugin::initialize() {
     getRobWorkStudio()->stateChangedEvent().add(
-            boost::bind(&SimTaskPlugin::stateChangedListener, this, _1), this);
+            boost::bind(&SimTaskPlugin::stateChangedListener, this, boost::arg<1>()), this);
 
     getRobWorkStudio()->genericEvent().add(
-          boost::bind(&SimTaskPlugin::genericEventListener, this, _1), this);
+          boost::bind(&SimTaskPlugin::genericEventListener, this, boost::arg<1>()), this);
     //_log->info() << "Current log..." << std::endl;
     //_log = getRobWorkInstance()->getLogPtr();
     //_log->info() << "NEW log..." << std::endl;

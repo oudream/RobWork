@@ -91,9 +91,9 @@ int runPool(bool stop) {
 		jobDone[i] = false;
 		ThreadPool::WorkFunction work;
 		if (!stop)
-			work = boost::bind(&workFunction,_1,i);
+			work = boost::bind(&workFunction,boost::arg<1>(),i);
 		else
-			work = boost::bind(&workFunctionStop,_1,i);
+			work = boost::bind(&workFunctionStop,boost::arg<1>(),i);
 		pool->addWork(work);
 	}
 

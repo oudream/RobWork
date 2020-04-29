@@ -396,7 +396,7 @@ void GraspTableGeneratorPlugin::close(){
 
 void GraspTableGeneratorPlugin::initialize(){
     getRobWorkStudio()->stateChangedEvent().add(
-    		boost::bind(&GraspTableGeneratorPlugin::stateChangedListener, this, _1), this);
+    		boost::bind(&GraspTableGeneratorPlugin::stateChangedListener, this, boost::arg<1>()), this);
 
     _configFile = getRobWorkStudio()->getPropertyMap().get<std::string>("GraspTableConfigFile","");
 }
