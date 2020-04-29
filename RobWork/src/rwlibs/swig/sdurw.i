@@ -2197,7 +2197,7 @@ private:
  * the scene based on e.g. user input.
  */
 class MovableFrame: public Frame{
-public:
+  public:
 
     /**
      * @brief Construct a MovableFrame with Identiy as the initial
@@ -2233,6 +2233,9 @@ public:
     void moveTo(const rw::math::Transform3D<double>& transform, Frame* refframe, State& state);
 
 };
+//%template (MovableFrameVector) std::vector<MovableFrame> ;
+//%template (MovableFramePtr) rw::core::Ptr<MovableFrame> ;
+//OWNEDPTR(MovableFrame);
 
 class FixedFrame: public Frame {
 public:
@@ -3273,6 +3276,8 @@ public:
     virtual rw::math::InertiaMatrix<double> getInertia(State& state) const = 0;
 };
 %template (ObjectPtr) rw::core::Ptr<Object>;
+%template (ObjectPtrVector) std::vector< rw::core::Ptr< Object > >;
+//%template (ObjectVector) std::vector< Object >;
 OWNEDPTR(Object);
 
 class RigidObject : public Object {
@@ -3485,6 +3490,7 @@ public:
 
 %template (JointDevicePtr) rw::core::Ptr<JointDevice>;
 %template (JointDeviceCPtr) rw::core::Ptr<const JointDevice>;
+%template (JointDevicePtrVector) std::vector< rw::core::Ptr< JointDevice>>;
 OWNEDPTR(JointDevice)
 
 class CompositeDevice: public JointDevice
