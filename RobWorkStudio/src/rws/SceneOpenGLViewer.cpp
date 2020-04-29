@@ -175,26 +175,26 @@ namespace
 void SceneOpenGLViewer::init()
 {
     _pmap->getValue().add<bool>("ReInitializeGL","Reinitializes the opengl configuration.",false)->changedEvent().add(
-            boost::bind(&SceneOpenGLViewer::propertyChangedListener,this,_1), this );
+            boost::bind(&SceneOpenGLViewer::propertyChangedListener,this,boost::arg<1>()), this );
 
     _viewBackground = _pmap->getValue().add<bool>("DrawBackGround", "Draw Back Ground", true);
-    _viewBackground->changedEvent().add(boost::bind(&SceneOpenGLViewer::propertyChangedListener,this, _1));
+    _viewBackground->changedEvent().add(boost::bind(&SceneOpenGLViewer::propertyChangedListener,this, boost::arg<1>()));
 
     _backgroundColorTop = _pmap->getValue().add<Vector3D<> >("BackGroundColorTop", "Top background color", Vector3D<>(1.0,1.0,1.0));
-    _backgroundColorTop->changedEvent().add(boost::bind(&SceneOpenGLViewer::propertyChangedListener,this, _1));
+    _backgroundColorTop->changedEvent().add(boost::bind(&SceneOpenGLViewer::propertyChangedListener,this, boost::arg<1>()));
     _backgroundColorBottom = _pmap->getValue().add<Vector3D<> >("BackGroundColorBottom", "Bottom background color", Vector3D<>(0.2,0.2,1.0));
-    _backgroundColorBottom->changedEvent().add(boost::bind(&SceneOpenGLViewer::propertyChangedListener,this, _1));
+    _backgroundColorBottom->changedEvent().add(boost::bind(&SceneOpenGLViewer::propertyChangedListener,this, boost::arg<1>()));
 
     _pmap->getValue().add<bool>("ShowCollisionModels","Show Collision Models.",false)->changedEvent().add(
-            boost::bind(&SceneOpenGLViewer::propertyChangedListener,this,_1), this );
+            boost::bind(&SceneOpenGLViewer::propertyChangedListener,this,boost::arg<1>()), this );
     _pmap->getValue().add<bool>("ShowVirtualModels","Show Virtual Models.",true)->changedEvent().add(
-            boost::bind(&SceneOpenGLViewer::propertyChangedListener,this,_1), this );
+            boost::bind(&SceneOpenGLViewer::propertyChangedListener,this,boost::arg<1>()), this );
     _pmap->getValue().add<bool>("ShowPhysicalModels","Show Physical Models.",true)->changedEvent().add(
-            boost::bind(&SceneOpenGLViewer::propertyChangedListener,this,_1), this );
+            boost::bind(&SceneOpenGLViewer::propertyChangedListener,this,boost::arg<1>()), this );
     _pmap->getValue().add<bool>("ShowDrawableModels","Show Drawable Models.",true)->changedEvent().add(
-            boost::bind(&SceneOpenGLViewer::propertyChangedListener,this,_1), this );
+            boost::bind(&SceneOpenGLViewer::propertyChangedListener,this,boost::arg<1>()), this );
     _pmap->getValue().add<bool>("ShowAllModels","Show All Models.",false)->changedEvent().add(
-            boost::bind(&SceneOpenGLViewer::propertyChangedListener,this,_1), this );
+            boost::bind(&SceneOpenGLViewer::propertyChangedListener,this,boost::arg<1>()), this );
 
     int dmask = 0;
     if( _pmap->getValue().get<bool>("ShowCollisionModels",false) ) dmask |= DrawableNode::CollisionObject;

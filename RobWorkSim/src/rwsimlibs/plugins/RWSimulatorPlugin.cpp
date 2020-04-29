@@ -534,6 +534,6 @@ void RWSimulatorPlugin::open(const std::string& file)
 void RWSimulatorPlugin::initialize(){
 
     getRobWorkStudio()->genericEvent().add(
-          boost::bind(&RWSimulatorPlugin::genericEventListener, this, _1), this);
+          boost::bind(&RWSimulatorPlugin::genericEventListener, this, boost::arg<1>()), this);
 
 }

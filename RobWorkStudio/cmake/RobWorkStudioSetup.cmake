@@ -249,12 +249,6 @@ if(DEFINED RWS_LINKER_FLAGS)
 
     message(STATUS "RobWorkStudio: Adding RWS linker flags: ${RWS_LINKER_FLAGS}")
 endif()
-# MESSAGE(STATUS "${RW_BUILD_WITH_CXX_FLAGS}") If we are using static linking
-if(RWS_USE_STATIC_LINK_PLUGINS)
-    message(STATUS "RobWorkStudio: Using static linking of default plugins!")
-else()
-    message(STATUS "RobWorkStudio: Using dynamic linking of default plugins!")
-endif()
 
 # ##################################################################################################
 # SETTING UP VARS here we setup the output variables

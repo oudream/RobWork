@@ -4,12 +4,14 @@ cmake_minimum_required(VERSION 3.5.1 FATAL_ERROR)
 if(POLICY CMP0071) # Introduce cmake 3.10
     cmake_policy(SET CMP0071 NEW)
 endif()
-
 if(POLICY CMP0072) # Introduce cmake 3.11
     cmake_policy(SET CMP0072 NEW)
 endif()
 if(POLICY CMP0074)
     cmake_policy(SET CMP0074 NEW)
+endif()
+if(POLICY CMP0077)
+    cmake_policy(SET CMP0077 NEW)
 endif()
 if(POLICY CMP0078)
     cmake_policy(SET CMP0078 NEW)
@@ -85,11 +87,16 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${RWS_CXX_FLAGS}")
 include(${RWS_ROOT}/cmake/RobWorkStudioSetup.cmake)
 rw_set_install_dirs(RobWorkStudio RWS)
 
-set(RW_STATIC_LINK_PLUGINS ${RWS_USE_STATIC_LINK_PLUGINS})
-# linking options
-option(RWS_USE_STATIC_LINK_COMPONENTS
-       "Set to false if dynamic link libraries of components is needed" ON
-)
+option(RWS_USE_STATIC_LINK_PLUGINS "Enable static linkage of built-in RWS plugins." ON)
+if(RWS_SHARED_LIBS)
+    set(RWS_USE_STATIC_LINK_PLUGINS OFF)
+endif()
+
+if(RWS_USE_STATIC_LINK_PLUGINS)
+    message(STATUS "RobWorkStudio: Using static linking of default plugins!")
+else()
+    message(STATUS "RobWorkStudio: Using dynamic linking of default plugins!")
+endif()
 
 # Subdirectories adds plugins and libraries to these variables
 set(RWS_PLUGIN_LIBRARIES)
@@ -109,7 +116,6 @@ configure_file("${RWS_ROOT}/cmake/CTestCustom.cmake.in" "CTestCustom.cmake")
 # configure testing configuration
 configure_file("${RWS_ROOT}/CTestConfig.cmake.in" "${RWS_ROOT}/CTestConfig.cmake")
 
-include(CMakeDependentOption)
 cmake_dependent_option(
     RWS_IS_TESTS_ENABLED "Set when you want to build the tests" ON "${RWS_BUILD_TESTS}" OFF
 )

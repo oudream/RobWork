@@ -30,14 +30,12 @@ if(build)
 
     set(
         FILES_HPP
-        common.hpp
         geometry.hpp
         graphics.hpp
         graspplanning.hpp
         invkin.hpp
         kinematics.hpp
         loaders.hpp
-        math.hpp
         models.hpp
         pathplanning.hpp
         proximity.hpp
@@ -72,7 +70,6 @@ if(build)
 
     target_include_directories(${SUBSYS_NAME}
         PUBLIC
-        $<BUILD_INTERFACE:${EIGEN3_INCLUDE_DIR}>
         ${Boost_INCLUDE_DIR}
         ${XERCESC_INCLUDE_DIR}
         $<BUILD_INTERFACE:${PQP_INCLUDE_DIR}>
@@ -84,22 +81,17 @@ if(build)
     else()
         target_include_directories(${SUBSYS_NAME} PUBLIC $<INSTALL_INTERFACE:${PQP_INCLUDE_DIR}>)
     endif()
-    if(RW_ENABLE_INTERNAL_EIGEN_TARGET)
-        target_include_directories(${SUBSYS_NAME} PUBLIC $<INSTALL_INTERFACE:${RW_EXT_INSTALL_DIR}/eigen3>)
-    else()
-        target_include_directories(${SUBSYS_NAME} PUBLIC $<INSTALL_INTERFACE:${EIGEN3_INCLUDE_DIR}>)
-    endif()
+    rw_include_eigen(${SUBSYS_NAME})
+
     rw_add_includes(${SUBSYS_NAME} "rw" ${FILES_HPP})
     rw_add_include_dirs(
         ${SUBSYS_NAME}
         "rw"
-        common
         geometry
         graspplanning
         invkin
         kinematics
         loaders
-        math
         models
         pathplanning
         proximity

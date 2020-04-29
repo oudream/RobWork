@@ -210,10 +210,10 @@ TreeView::~TreeView()
 
 void TreeView::initialize() {
     getRobWorkStudio()->stateChangedEvent().add(
-            boost::bind(&TreeView::stateChangedListener, this, _1), this);
+            boost::bind(&TreeView::stateChangedListener, this, boost::arg<1>()), this);
 
     getRobWorkStudio()->frameSelectedEvent().add(
-            boost::bind(&TreeView::frameSelectedListener, this, _1), this);
+            boost::bind(&TreeView::frameSelectedListener, this, boost::arg<1>()), this);
 }
 
 void TreeView::frameSelectedListener(rw::kinematics::Frame* frame) {
@@ -867,7 +867,7 @@ void TreeView::open(WorkCell* workcell)
     }
 
     // connect the workcell changed handler
-    _workcell->workCellChangedEvent().add(boost::bind(&TreeView::workcellChangedListener, this, _1), this);
+    _workcell->workCellChangedEvent().add(boost::bind(&TreeView::workcellChangedListener, this, boost::arg<1>()), this);
 }
 
 void TreeView::workcellChangedListener(int){

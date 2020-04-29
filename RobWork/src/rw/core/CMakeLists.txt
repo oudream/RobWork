@@ -84,6 +84,6 @@ if(build)
                               $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
     )
 
-    rw_add_includes(sdurw_core "rw" ${CMAKE_CURRENT_SOURCE_DIR}/../core.hpp)
+    rw_add_includes(${SUBSYS_NAME} "rw" ${CMAKE_CURRENT_SOURCE_DIR}/../core.hpp)
 
 endif()

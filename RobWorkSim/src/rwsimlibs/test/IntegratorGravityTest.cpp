@@ -37,7 +37,7 @@ IntegratorGravityTest::~IntegratorGravityTest() {
 }
 
 void IntegratorGravityTest::run(TestHandle::Ptr handle, const std::string& engineID, const PropertyMap& parameters, rw::core::Ptr<rwsim::log::SimulatorLogScope> verbose) {
-	static const TestCallback cb( boost::bind(&IntegratorGravityTest::updateResults, _1) );
+	static const TestCallback cb( boost::bind(&IntegratorGravityTest::updateResults, boost::arg<1>()) );
 	const double dt = parameters.get<double>("Timestep")/1000.;
 
 	// Initialize results with descriptions

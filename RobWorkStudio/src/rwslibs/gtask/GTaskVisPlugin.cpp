@@ -152,13 +152,13 @@ GTaskVisPlugin::~GTaskVisPlugin()
 
 void GTaskVisPlugin::initialize() {
     getRobWorkStudio()->stateChangedEvent().add(
-            boost::bind(&GTaskVisPlugin::stateChangedListener, this, _1), this);
+            boost::bind(&GTaskVisPlugin::stateChangedListener, this, boost::arg<1>()), this);
 
     //getRobWorkStudio()->genericEvent().add(
-    //      boost::bind(&GTaskVisPlugin::genericEventListener, this, _1), this);
+    //      boost::bind(&GTaskVisPlugin::genericEventListener, this, boost::arg<1>(), this);
 
     getRobWorkStudio()->genericAnyEvent().add(
-          boost::bind(&GTaskVisPlugin::genericAnyEventListener, this, _1, _2), this);
+          boost::bind(&GTaskVisPlugin::genericAnyEventListener, this, boost::arg<1>(), boost::arg<2>()), this);
 
     Log::setLog( _log );
 }

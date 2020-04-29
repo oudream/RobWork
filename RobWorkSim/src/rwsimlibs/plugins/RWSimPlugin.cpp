@@ -242,7 +242,7 @@ void RWSimPlugin::btnPressed(){
     	rwsim::swig::addSimulatorInstance(_sim, "rwsimplugin");
 #endif
 
-    	ThreadSimulator::StepCallback cb( boost::bind(&RWSimPlugin::stepCallBack, this, _2) );
+    	ThreadSimulator::StepCallback cb( boost::bind(&RWSimPlugin::stepCallBack, this, boost::arg<2>()) );
 
         _deviceControlBox->addItem(sim->getBodyController()->getControllerName().c_str());
     	_controlGroupBox->setEnabled(true);
@@ -656,7 +656,7 @@ void RWSimPlugin::close(){
 
 void RWSimPlugin::initialize(){
     getRobWorkStudio()->stateChangedEvent().add(
-    		boost::bind(&RWSimPlugin::stateChangedListener, this, _1), this);
+    		boost::bind(&RWSimPlugin::stateChangedListener, this, boost::arg<1>()), this);
     Log::setLog( _log );
     _timerShot = NULL;
 

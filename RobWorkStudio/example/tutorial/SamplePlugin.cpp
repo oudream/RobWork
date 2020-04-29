@@ -39,7 +39,7 @@ void SamplePlugin::close() { /* do something when the workcell is closed */}
 void SamplePlugin::initialize() {
     /* do something when plugin is initialized */
     getRobWorkStudio()->stateChangedEvent().add(
-            boost::bind(&SamplePlugin::stateChangedListener, this, _1), this);
+            boost::bind(&SamplePlugin::stateChangedListener, this, boost::arg<1>()), this);
 }
 
 void SamplePlugin::stateChangedListener(const State& state) {

@@ -149,13 +149,13 @@ void FalconControl::keyEventListener(int key, Qt::KeyboardModifiers modifier){
 
 void FalconControl::initialize() {
     getRobWorkStudio()->stateChangedEvent().add(
-            boost::bind(&FalconControl::stateChangedListener, this, _1), this);
+            boost::bind(&FalconControl::stateChangedListener, this, boost::arg<1>()), this);
 
     getRobWorkStudio()->genericEvent().add(
-          boost::bind(&FalconControl::genericEventListener, this, _1), this);
+          boost::bind(&FalconControl::genericEventListener, this, boost::arg<1>()), this);
 
     getRobWorkStudio()->keyEvent().add(
-          boost::bind(&FalconControl::keyEventListener, this, _1, _2), this);
+          boost::bind(&FalconControl::keyEventListener, this, boost::arg<1>(), boost::arg<2>()), this);
 
     Log::setLog( _log );
 }
@@ -189,7 +189,7 @@ void FalconControl::startSimulation() {
         }
         
         _tsim = ownedPtr( new ThreadSimulator(_sim, state) );
-        ThreadSimulator::StepCallback cb( boost::bind(&FalconControl::step, this, _1, _2) );
+        ThreadSimulator::StepCallback cb( boost::bind(&FalconControl::step, this, boost::arg<1>(), boost::arg<2>()) );
         _tsim->setStepCallBack( cb );
         _tsim->setRealTimeScale(1.0);
         _tsim->setTimeStep(0.01);

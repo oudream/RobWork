@@ -153,10 +153,6 @@ RobWorkStudio Options
     - Default: OFF
     - Use this option to compile RobWorkStudio Libraries as shared libraries.
 
-- RWS_USE_STATIC_LINK_COMPONENTS
-    - Default: ON
-    - This Options links the RWS components statically to RobWorkStudio.
-
 - RWS_USE_STATIC_LINK_PLUGINS=OFF
     - Default: ON
     - This option creates the RobWorkStudio plugins as static plugins, loaded at compile time.

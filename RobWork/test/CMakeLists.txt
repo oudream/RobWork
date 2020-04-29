@@ -50,11 +50,11 @@ SET(DEFAULT_TEST_ARGS "--log_level=all")
 
 # Repeat for each test
 ADD_EXECUTABLE( sdurw_math-test test-main.cpp ${MATH_TEST_SRC})       
-TARGET_LINK_LIBRARIES( sdurw_math-test sdurw)
+TARGET_LINK_LIBRARIES( sdurw_math-test sdurw_math)
 ADD_TEST( sdurw_math-test ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/sdurw_math-test ${DEFAULT_TEST_ARGS})
 
 ADD_EXECUTABLE( sdurw_common-test test-main.cpp ${COMMON_TEST_SRC})       
-TARGET_LINK_LIBRARIES( sdurw_common-test sdurw)
+TARGET_LINK_LIBRARIES( sdurw_common-test sdurw_common sdurw_math)
 ADD_TEST( sdurw_common-test ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/sdurw_common-test ${DEFAULT_TEST_ARGS})
 
 ADD_EXECUTABLE( sdurw_geometry-test test-main.cpp geometry/GeometryTest.cpp geometry/GeometryUtilTest.cpp geometry/TriangleUtilTest.cpp)       

@@ -207,7 +207,7 @@ namespace dynamics {
          * void MyPlugin::initialize()
          * {
          *     getRobWorkStudio()->stateChangedEvent().add(
-         *         boost::bind(&MyPlugin::stateChangedListener, this, _1), this);
+         *         boost::bind(&MyPlugin::stateChangedListener, this, boost::arg<1>()), this);
          * }
          *
          * void MyPlugin::stateChangedListener(const State& state)

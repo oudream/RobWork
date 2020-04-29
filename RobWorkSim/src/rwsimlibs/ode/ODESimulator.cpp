@@ -197,7 +197,7 @@ ODESimulator::ODESimulator(DynamicWorkCell::Ptr dwc, rwsim::contacts::ContactDet
 
     // setup DWC changed event
     if(_dwc)
-        _dwc->changedEvent().add( boost::bind(&ODESimulator::DWCChangedListener, this, _1, _2), this);
+        _dwc->changedEvent().add( boost::bind(&ODESimulator::DWCChangedListener, this, boost::arg<1>(), boost::arg<2>()), this);
 }
 
 ODESimulator::ODESimulator():
@@ -243,7 +243,7 @@ ODESimulator::ODESimulator():
 
     // setup DWC changed event
     if(_dwc)
-        _dwc->changedEvent().add( boost::bind(&ODESimulator::DWCChangedListener, this, _1, _2), this);
+        _dwc->changedEvent().add( boost::bind(&ODESimulator::DWCChangedListener, this, boost::arg<1>(), boost::arg<2>()), this);
 }
 
 ODESimulator::~ODESimulator() {
@@ -254,7 +254,7 @@ void ODESimulator::load(rwsim::dynamics::DynamicWorkCell::Ptr dwc){
     _dwc = dwc;
     _materialMap = dwc->getMaterialData();
     _contactMap = dwc->getContactData();
-    _dwc->changedEvent().add( boost::bind(&ODESimulator::DWCChangedListener, this, _1, _2), this);
+    _dwc->changedEvent().add( boost::bind(&ODESimulator::DWCChangedListener, this, boost::arg<1>(), boost::arg<2>()), this);
 }
 
 

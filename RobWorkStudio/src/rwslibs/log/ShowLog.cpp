@@ -174,7 +174,7 @@ void ShowLog::frameSelectedListener(rw::kinematics::Frame* frame) {
 void ShowLog::initialize() {
     setParent(getRobWorkStudio());
     getRobWorkStudio()->frameSelectedEvent().add(
-    		boost::bind(&ShowLog::frameSelectedListener, this, _1), this);
+    		boost::bind(&ShowLog::frameSelectedListener, this, boost::arg<1>()), this);
 
 	
     log().setWriterForMask(((Log::AllMask) ^ (Log::WarningMask | Log::DebugMask | Log::FatalMask | Log::CriticalMask | Log::ErrorMask)), _writers[0]);

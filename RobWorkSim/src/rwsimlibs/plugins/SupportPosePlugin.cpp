@@ -578,5 +578,5 @@ void SupportPosePlugin::stateChangedHandler(RobWorkStudioPlugin* sender)
 
 void SupportPosePlugin::initialize(){
     getRobWorkStudio()->genericEvent().add(
-          boost::bind(&SupportPosePlugin::genericEventListener, this, _1), this);
+          boost::bind(&SupportPosePlugin::genericEventListener, this, boost::arg<1>()), this);
 }

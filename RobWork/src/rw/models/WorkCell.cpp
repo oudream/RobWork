@@ -41,8 +41,8 @@ WorkCell::WorkCell(const std::string& name):
     _map(new PropertyMap()),
     _sceneDescriptor( ownedPtr(new SceneDescriptor()) )
 {
-    _tree->stateDataAddedEvent().add( boost::bind(&WorkCell::stateDataAddedListener, this, _1), this );
-    _tree->stateDataRemovedEvent().add( boost::bind(&WorkCell::stateDataRemovedListener, this, _1), this );
+    _tree->stateDataAddedEvent().add( boost::bind(&WorkCell::stateDataAddedListener, this, boost::arg<1>()), this );
+    _tree->stateDataRemovedEvent().add( boost::bind(&WorkCell::stateDataRemovedListener, this, boost::arg<1>()), this );
 }
 
 WorkCell::WorkCell(StateStructure::Ptr tree, const std::string& name, const std::string& filename):
@@ -53,8 +53,8 @@ WorkCell::WorkCell(StateStructure::Ptr tree, const std::string& name, const std:
     _map(new PropertyMap()),
     _sceneDescriptor( ownedPtr(new SceneDescriptor()) )
 {
-    _tree->stateDataAddedEvent().add( boost::bind(&WorkCell::stateDataAddedListener, this, _1), this );
-    _tree->stateDataRemovedEvent().add( boost::bind(&WorkCell::stateDataRemovedListener, this, _1), this );
+    _tree->stateDataAddedEvent().add( boost::bind(&WorkCell::stateDataAddedListener, this, boost::arg<1>()), this );
+    _tree->stateDataRemovedEvent().add( boost::bind(&WorkCell::stateDataRemovedListener, this, boost::arg<1>()), this );
 }
 
 WorkCell::~WorkCell()
