@@ -45,10 +45,10 @@ SimTemplatePlugin::~SimTemplatePlugin()
 
 void SimTemplatePlugin::initialize() {
     getRobWorkStudio()->stateChangedEvent().add(
-            boost::bind(&SimTemplatePlugin::stateChangedListener, this, _1), this);
+            boost::bind(&SimTemplatePlugin::stateChangedListener, this, boost::arg<1>()), this);
 
     getRobWorkStudio()->genericEvent().add(
-          boost::bind(&SimTemplatePlugin::genericEventListener, this, _1), this);
+          boost::bind(&SimTemplatePlugin::genericEventListener, this, boost::arg<1>()), this);
 
     Log::setLog( _log );
 }
@@ -71,7 +71,7 @@ void SimTemplatePlugin::startSimulation() {
         }
         log().debug() << "Creating Thread simulator";
         _tsim = ownedPtr( new ThreadSimulator(_sim, state) );
-        ThreadSimulator::StepCallback cb( boost::bind(&SimTemplatePlugin::step, this, _1, _2) );
+        ThreadSimulator::StepCallback cb( boost::bind(&SimTemplatePlugin::step, this, boost::arg<1>(), boost::arg<2>()) );
         _tsim->setStepCallBack( cb );
         _tsim->setRealTimeScale(1.0);
         _tsim->setTimeStep(0.01);

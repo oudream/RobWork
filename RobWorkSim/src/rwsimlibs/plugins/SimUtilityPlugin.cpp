@@ -286,7 +286,7 @@ void SimUtilityPlugin::stateChangedHandler(RobWorkStudioPlugin* sender)
 
 void SimUtilityPlugin::initialize(){
     getRobWorkStudio()->genericEvent().add(
-          boost::bind(&SimUtilityPlugin::genericEventListener, this, _1), this);
+          boost::bind(&SimUtilityPlugin::genericEventListener, this, boost::arg<1>()), this);
 
 
 

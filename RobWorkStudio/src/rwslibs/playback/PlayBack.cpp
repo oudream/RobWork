@@ -224,7 +224,7 @@ void PlayBack::initialize()
 {
     getRobWorkStudio()->stateTrajectoryPtrChangedEvent().add(
         boost::bind(
-            &PlayBack::stateTrajectoryChangedListener, this, _1),
+            &PlayBack::stateTrajectoryChangedListener, this, boost::arg<1>()),
         this);
 }
 

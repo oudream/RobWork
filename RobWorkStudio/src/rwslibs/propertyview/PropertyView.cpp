@@ -61,8 +61,8 @@ PropertyView::~PropertyView()
 }
 
 void PropertyView::initialize() {
-    getRobWorkStudio()->frameSelectedEvent().add(boost::bind(&PropertyView::frameSelectedListener, this, _1), this);
-//    getRobWorkStudio()->addFrameSelectedListener(boost::bind(&PropertyView::frameSelectedListener, this, _1));
+    getRobWorkStudio()->frameSelectedEvent().add(boost::bind(&PropertyView::frameSelectedListener, this, boost::arg<1>()), this);
+//    getRobWorkStudio()->addFrameSelectedListener(boost::bind(&PropertyView::frameSelectedListener, this, boost::arg<1>());
 }
 
 

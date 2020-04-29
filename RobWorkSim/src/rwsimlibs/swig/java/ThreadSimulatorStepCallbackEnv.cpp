@@ -22,13 +22,13 @@ using namespace rwsim::simulator;
 using namespace rwsimlibs::swig;
 
 ThreadSimulatorStepCallbackEnv::ThreadSimulatorStepCallbackEnv(const ThreadSimulatorStepCallbackEnv &cb):
-	ThreadSimulator::StepCallback(boost::bind(&ThreadSimulatorStepCallbackEnv::callback, this, _1, _2, cb._data)),
+	ThreadSimulator::StepCallback(boost::bind(&ThreadSimulatorStepCallbackEnv::callback, this, boost::arg<1>(), boost::arg<2>(), cb._data)),
 	_cb(cb._cb),
 	_data(cb._data)
 {
 }
 ThreadSimulatorStepCallbackEnv::ThreadSimulatorStepCallbackEnv(cThreadSimulatorStepCallback fct, void *userdata):
-	ThreadSimulator::StepCallback(boost::bind(&ThreadSimulatorStepCallbackEnv::callback, this, _1, _2, userdata)),
+	ThreadSimulator::StepCallback(boost::bind(&ThreadSimulatorStepCallbackEnv::callback, this, boost::arg<1>(), boost::arg<2>(), userdata)),
 	_cb(fct),
 	_data(userdata)
 {
@@ -37,7 +37,7 @@ ThreadSimulatorStepCallbackEnv::~ThreadSimulatorStepCallbackEnv() {
 }
 
 void ThreadSimulatorStepCallbackEnv::set(cThreadSimulatorStepCallback fct, void *userdata) {
-	ThreadSimulator::StepCallback::operator=(boost::bind(&ThreadSimulatorStepCallbackEnv::callback, this, _1, _2, userdata));
+	ThreadSimulator::StepCallback::operator=(boost::bind(&ThreadSimulatorStepCallbackEnv::callback, this, boost::arg<1>(), boost::arg<2>(), userdata));
 	_cb = fct;
 	_data = userdata;
 }

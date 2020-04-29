@@ -141,10 +141,10 @@ SimTaskVisPlugin::~SimTaskVisPlugin()
 
 void SimTaskVisPlugin::initialize() {
     getRobWorkStudio()->stateChangedEvent().add(
-            boost::bind(&SimTaskVisPlugin::stateChangedListener, this, _1), this);
+            boost::bind(&SimTaskVisPlugin::stateChangedListener, this, boost::arg<1>()), this);
 
     getRobWorkStudio()->genericEvent().add(
-          boost::bind(&SimTaskVisPlugin::genericEventListener, this, _1), this);
+          boost::bind(&SimTaskVisPlugin::genericEventListener, this, boost::arg<1>()), this);
 
     Log::setLog( _log );
 }

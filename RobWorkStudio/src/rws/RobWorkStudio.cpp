@@ -1312,7 +1312,7 @@ namespace {
 boost::any RobWorkStudio::waitForAnyEvent(const std::string& id, double timeout){
 	//std::cout << " Wait for ANY event, with id: " << id << std::endl;
     AnyEventListener listener(id);
-    genericAnyEvent().add( boost::bind(&AnyEventListener::cb, &listener, _1, _2), &listener );
+    genericAnyEvent().add( boost::bind(&AnyEventListener::cb, &listener, boost::arg<1>(), boost::arg<2>()), &listener );
     //std::cout << "Added event, now wait!" << std::endl;
     // now wait until event is called
     const double starttime = TimerUtil::currentTime();

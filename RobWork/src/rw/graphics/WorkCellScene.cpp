@@ -200,7 +200,7 @@ void WorkCellScene::setWorkCell(rw::models::WorkCell::Ptr wc)
     _scene->getRoot()->removeChild(_worldNode);
 
     if( wc != NULL ){
-        _wc->workCellChangedEvent().add(boost::bind(&WorkCellScene::workCellChangedListener, this, _1), this);
+        _wc->workCellChangedEvent().add(boost::bind(&WorkCellScene::workCellChangedListener, this, boost::arg<1>()), this);
         State state = _wc->getDefaultState();
         updateSceneGraph( state );
     } else {

@@ -90,7 +90,7 @@ SamplePlugin::~SamplePlugin()
 }
 
 void SamplePlugin::initialize() {
-    getRobWorkStudio()->stateChangedEvent().add(boost::bind(&SamplePlugin::stateChangedListener, this, _1), this);
+    getRobWorkStudio()->stateChangedEvent().add(boost::bind(&SamplePlugin::stateChangedListener, this, boost::arg<1>()), this);
 }
 
 void SamplePlugin::open(WorkCell* workcell)

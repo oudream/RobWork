@@ -36,10 +36,10 @@ TEST(ProgramOptions, Constructor) {
     PropertyMap p = parser.getPropertyMap();
 
     options_description od = parser.getOptionDescription();
-    EXPECT_EQ(od.options().size(),0);
+    EXPECT_EQ(od.options().size(),0u);
 
     positional_options_description pod = parser.getPosOptionDescription();
-    EXPECT_EQ(pod.max_total_count(),0);
+    EXPECT_EQ(pod.max_total_count(),0u);
 
     EXPECT_EQ(p.getName(),"");
     EXPECT_EQ(p.getProperties().begin(),p.getProperties().end());
@@ -50,10 +50,10 @@ TEST(ProgramOptions, initOptions) {
     parser.initOptions();
 
     options_description od = parser.getOptionDescription();
-    EXPECT_EQ(od.options().size(),6);
+    EXPECT_EQ(od.options().size(),6u);
 
     positional_options_description pod = parser.getPosOptionDescription();
-    EXPECT_EQ(pod.max_total_count(),0);
+    EXPECT_EQ(pod.max_total_count(),0u);
 
     PropertyMap p = parser.getPropertyMap();
 

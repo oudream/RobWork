@@ -39,8 +39,8 @@ IntegratorRotationTest::~IntegratorRotationTest() {
 }
 
 void IntegratorRotationTest::run(TestHandle::Ptr handle, const std::string& engineID, const PropertyMap& parameters, rw::core::Ptr<rwsim::log::SimulatorLogScope> verbose) {
-	static const InitCallback initCb( boost::bind(&IntegratorRotationTest::initialize, _1, _2) );
-	static const TestCallback cb( boost::bind(&IntegratorRotationTest::updateResults, _1) );
+	static const InitCallback initCb( boost::bind(&IntegratorRotationTest::initialize, boost::arg<1>(), boost::arg<2>()) );
+	static const TestCallback cb( boost::bind(&IntegratorRotationTest::updateResults, boost::arg<1>()) );
 	const double dt = parameters.get<double>("Timestep")/1000.;
 
 	// Initialize results with descriptions
