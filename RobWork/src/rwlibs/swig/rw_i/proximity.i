@@ -534,7 +534,7 @@
      * two objects.
      */
     class CollisionStrategy : public virtual ProximityStrategy {
-    public:
+      public:
         %extend{
             /**
              * @brief Checks to see if two given frames @f$ \mathcal{F}_a @f$ and
@@ -600,11 +600,11 @@
         struct Contact {
 
             // point described in object A frame
-            rw::math::Vector3D<> point;
+            rw::math::Vector3D<double> point;
 
             // surface normal on object B described in object A coordinates
-            rw::math::Vector3D<> normalA;
-            rw::math::Vector3D<> normalB;
+            rw::math::Vector3D<double> normalA;
+            rw::math::Vector3D<double> normalB;
         };
 
         /**
@@ -662,7 +662,7 @@
      * that are closer than a specified tolerance.
      */
     class CollisionToleranceStrategy: public virtual ProximityStrategy {
-    public:
+      public:
         /**
          * @brief Destroys object
          */

@@ -13,7 +13,6 @@ using rw::math::Metric;
 using namespace rw::math;
 using rw::trajectory::Interpolator;
 using rw::trajectory::Blend;
-using rw::trajectory::Path;
 using rw::trajectory::Timed;
 using rw::trajectory::Trajectory;
 using rw::trajectory::InterpolatorTrajectory;
@@ -136,8 +135,38 @@ namespace std {
 	%template(StringVector) std::vector<string>;
 	%template(DoubleVector) std::vector<double>;
 	%template(IntVector) std::vector<int>;
+    %template(boolVector) std::vector<bool>;
 };
 
+/********************************************
+ * CORE
+ ********************************************/
+namespace rw { namespace core {
+
+    class _n1
+    {};
+    class _n2
+    {};
+    class _n3
+    {};
+    class _n4
+    {};
+    class _n5
+    {};
+    class _n6
+    {};
+    class _n7
+    {};
+    class _n8
+    {};
+    template <class CallBackMethod, class T1 = _n1, class T2 = _n1, class T3 = _n1, class T4 = _n1>
+    class Event
+    {
+    public:
+
+    };
+
+}}
 /********************************************
  * COMMON
  ********************************************/
@@ -1562,11 +1591,6 @@ namespace rw { namespace geometry{
 	     */
 		rw::math::Vector3D<T>& getVertex(size_t i);
 
-	    /**
-	     * @brief get vertex at index i
-	     */
-		const rw::math::Vector3D<T>& getVertex(size_t i) const;
-
         /*
         //TODO(kalor) implement operators
         const rw::math::Vector3D<T>& operator[](size_t i) const;
@@ -1612,6 +1636,68 @@ namespace rw { namespace geometry{
 %template(TriangleD) rw::geometry::Triangle<double>;
 %template(TriangleF) rw::geometry::Triangle<float>;
 
+
+namespace rw { namespace geometry {
+    /**
+     * @brief indexed triangle class that has 3 indices that points to 3
+     * vertices in an array typically used with the IndexedTriMesh  class.
+     * the indice type (size) is templated.
+     */
+    template< class T = uint16_t > class IndexedTriangle
+    {
+      public:
+        //! @brief default constructor
+        IndexedTriangle (){};
+
+        /**
+         * @brief constructor
+         * @param p1 [in] indice to vertice 1
+         * @param p2 [in] indice to vertice 2
+         * @param p3 [in] indice to vertice 3
+         */
+        IndexedTriangle (T p1, T p2, T p3);
+
+        /**
+         * @brief copy constructor
+         *
+         * @param f [in] - The face that is to be copied.
+         */
+        IndexedTriangle (const IndexedTriangle& f);
+
+        /**
+         * @brief returns the index of vertex i of the triangle
+         */
+        T& getVertexIdx (size_t i);
+
+        #if !defined(SWIGJAVA)
+            /**
+             * @brief returns the index of vertex i of the triangle
+             */
+            const T& getVertexIdx (size_t i) const;
+        #endif
+        //TODO(kalor) implement template specilization
+        /**
+         * @brief tests wheather the point x is inside the triangle
+         */
+        /*template< class R >
+        bool isInside (const rw::math::Vector3D< R >& x,
+                       const std::vector< rw::math::Vector3D< R > >& verts);*/
+
+
+        //TODO(kalor) add indexing (below functions)
+        /**
+         * @brief get vertex at index i
+         */
+        //T& operator[] (size_t i) { return getVertexIdx (i); }
+
+        /**
+         * @brief get vertex at index i
+         */
+        //const T& operator[] (size_t i) const { return getVertexIdx (i); }
+    };
+}}
+%template(IndexedTriangleU16) rw::geometry::IndexedTriangle<uint16_t>;
+%template(IndexedTriangleU16Vector) std::vector<rw::geometry::IndexedTriangle<uint16_t>>;
 
 
 /**
@@ -1724,6 +1810,30 @@ OWNEDPTR(WorkCellScene);
 %constant int DNodeCollisionObject = DrawableNode::CollisionObject;
 %nodefaultctor DrawableNode;
 %nodefaultctor WorkCellScene;
+
+struct RenderInfo {
+    /**
+     * @brief Construct new rendering information.
+     * @param mask [in] (optional) the draw type mask. Default is DrawableObject.
+     */
+    RenderInfo(unsigned int mask=4);
+    //! @brief The DrawableTypeMask.
+    unsigned int _mask;
+    //! @brief The DrawType.
+    //TODO(kalor) add DrawType _drawType;
+    //! @brief Pointer to the state.
+    rw::kinematics::State *_state;
+    //! @brief Render transparently.
+    bool _renderTransparent;
+    //! @brief Render as a solid.
+    bool _renderSolid;
+    //! @brief Disabling rendering of normals.
+    bool _disableNormalRender;
+    //! @brief Rendering camera
+    rw::core::Ptr<SceneCamera> _cam;
+    //! @brief Transform  World to model
+    rw::math::Transform3D<double> _wTm;
+};
 
 class DrawableNode {
 public:
@@ -2233,9 +2343,9 @@ class MovableFrame: public Frame{
     void moveTo(const rw::math::Transform3D<double>& transform, Frame* refframe, State& state);
 
 };
-//%template (MovableFrameVector) std::vector<MovableFrame> ;
-//%template (MovableFramePtr) rw::core::Ptr<MovableFrame> ;
-//OWNEDPTR(MovableFrame);
+%template (MovableFrameVector) std::vector<MovableFrame *> ;
+%template (MovableFramePtr) rw::core::Ptr<MovableFrame> ;
+OWNEDPTR(MovableFrame);
 
 class FixedFrame: public Frame {
 public:
@@ -2327,12 +2437,6 @@ namespace rw { namespace kinematics {
 }}
 
 %template(FrameMapd) rw::kinematics::FrameMap< double >;
-
-class Joint: public Frame
-{
-};
-
-%template (JointVector) std::vector<Joint*>;
 
 %nodefaultctor Kinematics;
 /**
@@ -2841,722 +2945,8 @@ namespace rw { namespace math {
 /********************************************
  * MODELS
  ********************************************/
- 
- %nodefaultctor JacobianCalculator;
-//! @brief JacobianCalculator provides an interface for obtaining a Jacobian
-class JacobianCalculator
-{
-public:
-    //! @brief Destructor
-    virtual ~JacobianCalculator();
+ %include <rwlibs/swig/rw_i/models.i>
 
-    %extend {
-		/**
-		 * @brief Returns the Jacobian associated to \b state
-		 *
-		 * @param state [in] State for which to calculate the Jacobian
-		 * @return Jacobian for \b state
-		 */
-		virtual rw::math::Jacobian getJacobian(const State& state) const {
-			return $self->get(state);
-		}
-    };
-};
-
-%template (JacobianCalculatorPtr) rw::core::Ptr<JacobianCalculator>;
-
-class WorkCell {
-public:
-    /**
-     * @brief Constructs an empty WorkCell
-     *
-     * @param name [in] The name of the workcell. A good name for the
-     * workcell would be the (eventual) file that the workcell was
-     * loaded from.
-     */
-    WorkCell(const std::string& name);
-
-    /**
-     * @brief The name of the workcell or the empty string if no name
-     * was provided.
-     * @return the name of the workcell
-     */
-    std::string getName() const;
-
-    /**
-     * @brief Returns pointer to the world frame
-     *
-     * @return Pointer to the world frame
-     */
-    Frame* getWorldFrame() const;
-
-    /**
-     * @brief Adds \b frame with \b parent as parent.
-     *
-     * If parent == NULL, then \b world is used as parent
-     *
-     * @param frame [in] Frame to add
-     * @param parent [in] Parent frame - uses World is parent == NULL
-     * @deprecated Since January 2018.
-     * Please use the addFrame method using smart pointers instead.
-     */
-    void addFrame(Frame* frame, Frame* parent=NULL);
-
-    /**
-     * @brief Adds \b frame with \b parent as parent.
-     *
-     * If parent == NULL, then \b world is used as parent
-     *
-     * @param frame [in] Frame to add
-     * @param parent [in] Parent frame - uses World is parent == NULL
-     */
-    void addFrame(rw::core::Ptr<Frame> frame,
-            rw::core::Ptr<Frame> parent = NULL);
-
-
-    /**
-     * @brief Adds dynamically attachable frame (DAF) \b frame with
-     * \b parent as parent.
-     *
-     * If parent == NULL, then \b world is used as parent
-     *
-     * @param frame [in] Frame to add
-     * @param parent [in] Parent frame - uses World is parent == NULL
-     * @deprecated Since January 2018.
-     * Please use the addDAF method using smart pointers instead.
-     */
-    void addDAF(Frame* frame, Frame* parent = NULL);
-
-    /**
-     * @brief Adds dynamically attachable frame (DAF) \b frame with
-     * \b parent as parent.
-     *
-     * If parent == NULL, then \b world is used as parent
-     *
-     * @param frame [in] Frame to add
-     * @param parent [in] Parent frame - uses World is parent == NULL
-     */
-    void addDAF(rw::core::Ptr<Frame> frame,
-            rw::core::Ptr<Frame> parent = NULL);
-
-    /**
-     * @brief Removes \b frame from work cell
-     *
-     * @param frame [in] Frame to remove
-     * @deprecated Since January 2018.
-     * Please use remove(rw::core::Ptr<rw::kinematics::Frame>)
-     * instead.
-     */
-    void remove(Frame* frame);
-
-    /**
-     * @brief Removes \b frame from work cell
-     *
-     * @param frame [in] Frame to remove
-     */
-    void remove(rw::core::Ptr<Frame> frame);
-
-    /**
-     * @brief Adds a Device to the WorkCell.
-     *
-     * Ownership of \b device is taken.
-     *
-     * @param device [in] pointer to device.
-     */
-    void addDevice(rw::core::Ptr<Device> device);
-
-    /**
-     * @brief Returns a reference to a vector with pointers to the
-     * Device(s) in the WorkCell
-     *
-     * @return const vector with pointers to Device(s).
-     */
-    const std::vector<rw::core::Ptr<Device> >& getDevices() const;
-
-    /**
-     * @brief Returns frame with the specified name.
-     *
-     * If multiple frames has the same name, the first frame encountered
-     * will be returned. If no frame is found, the method returns NULL.
-     *
-     * @param name [in] name of Frame.
-     *
-     * @return The frame with name \b name or NULL if no such frame.
-     */
-    Frame* findFrame(const std::string& name) const;
-
-    %extend {
-        /**
-         * @brief Returns MovableFrame with the specified name.
-         *
-         * If multiple frames has the same name, the first frame encountered
-         * will be returned. If no frame is found, the method returns NULL.
-         *
-         * @param name [in] name of Frame.
-         *
-         * @return The MovableFrame with name \b name or NULL if no such frame.
-         */
-        MovableFrame* findMovableFrame(const std::string& name)
-        { 
-            return $self->WorkCell::findFrame<MovableFrame>(name); 
-        }
-
-        /**
-         * @brief Returns FixedFrame with the specified name.
-         *
-         * If multiple frames has the same name, the first frame encountered
-         * will be returned. If no frame is found, the method returns NULL.
-         *
-         * @param name [in] name of Frame.
-         *
-         * @return The FixedFrame with name \b name or NULL if no such frame.
-         */
-        FixedFrame* findFixedFrame(const std::string& name)
-        { 
-            return $self->WorkCell::findFrame<FixedFrame>(name); 
-        }
-
-        /**
-         * @brief Returns all \b MovableFrames.
-         * @return all frames of type \b MovableFrames in the workcell
-         */
-        std::vector<MovableFrame*> findMovableFrames() const
-        { 
-            return $self->WorkCell::findFrames<MovableFrame>(); 
-        }
-
-        /**
-         * @brief Returns all \b FixedFrame.
-         * @return all frames of type \b FixedFrame in the workcell
-         */
-        std::vector<FixedFrame*> findFixedFrames() const
-        { 
-            return $self->WorkCell::findFrames<FixedFrame>(); 
-        }
-
-    };
-
-    /**
-     * @brief Returns all frames in workcell
-     * @return List of all frames
-     */
-    std::vector<Frame*> getFrames() const;
-
-    /**
-     * @brief The device named \b name of the workcell.
-     *
-     * NULL is returned if there is no such device.
-     *
-     * @param name [in] The device name
-     *
-     * @return The device named \b name or NULL if no such device.
-     */
-    rw::core::Ptr<Device> findDevice(const std::string& name) const;
-
-    %extend {
-        /**
-         * @brief The device named \b name of the workcell.
-         *
-         * NULL is returned if there is no such device.
-         *
-         * @param name [in] The device name
-         *
-         * @return The device named \b name or NULL if no such device.
-         */
-        rw::core::Ptr<JointDevice> findJointDevice(const std::string& name)
-        { 
-            return $self->WorkCell::findDevice<JointDevice>(name); 
-        }
-
-        /**
-         * @brief The device named \b name of the workcell.
-         *
-         * NULL is returned if there is no such device.
-         *
-         * @param name [in] The device name
-         *
-         * @return The device named \b name or NULL if no such device.
-         */
-        rw::core::Ptr<SerialDevice> findSerialDevice(const std::string& name)
-        { 
-            return $self->WorkCell::findDevice<SerialDevice>(name); 
-        }
-
-        /**
-         * @brief The device named \b name of the workcell.
-         *
-         * NULL is returned if there is no such device.
-         *
-         * @param name [in] The device name
-         *
-         * @return The device named \b name or NULL if no such device.
-         */
-        rw::core::Ptr<TreeDevice> findTreeDevice(const std::string& name)
-        { 
-            return $self->WorkCell::findDevice<TreeDevice>(name); 
-        }
-
-        /**
-         * @brief The device named \b name of the workcell.
-         *
-         * NULL is returned if there is no such device.
-         *
-         * @param name [in] The device name
-         *
-         * @return The device named \b name or NULL if no such device.
-         */
-        rw::core::Ptr<ParallelDevice> findParallelDevice(const std::string& name)
-        { 
-            return $self->WorkCell::findDevice<ParallelDevice>(name); 
-        }
-
-        /**
-         * @brief Returns a vector with pointers to the Device(s) with a
-         * specific type \b JointDevice in the WorkCell
-         *
-         * @return vector with pointers to Device(s) of type T.
-         */
-        std::vector < rw::core::Ptr<JointDevice> > findJointDevices()
-        { 
-            return $self->WorkCell::findDevices<JointDevice>(); 
-        }
-
-        /**
-         * @brief Returns a vector with pointers to the Device(s) with a
-         * specific type \b SerialDevice in the WorkCell
-         *
-         * @return vector with pointers to Device(s) of type T.
-         */
-        std::vector < rw::core::Ptr<SerialDevice> > findSerialDevices()
-        { 
-            return $self->WorkCell::findDevices<SerialDevice>(); 
-        }
-
-        /**
-         * @brief Returns a vector with pointers to the Device(s) with a
-         * specific type \b TreeDevice in the WorkCell
-         *
-         * @return vector with pointers to Device(s) of type T.
-         */
-        std::vector < rw::core::Ptr<TreeDevice> > findTreeDevices()
-        { 
-            return $self->WorkCell::findDevices<TreeDevice>(); 
-        }
-
-        /**
-         * @brief Returns a vector with pointers to the Device(s) with a
-         * specific type \b ParallelDevice in the WorkCell
-         *
-         * @return vector with pointers to Device(s) of type T.
-         */
-        std::vector < rw::core::Ptr<ParallelDevice> > findParallelDevices()
-        { 
-            return $self->WorkCell::findDevices<ParallelDevice>(); 
-        }
-    };
-
-    /**
-     * @brief Returns a default State
-     *
-     * @return default State
-     */
-    State getDefaultState() const;
-
-    /**
-     * @brief Returns sensor with the specified name.
-     *
-     * If multiple sensors has the same name, the first sensor
-     * encountered will be returned. If no sensor is found, the method
-     * returns NULL.
-     *
-     * @param name [in] name of sensor.
-     *
-     * @return The sensor with name \b name or NULL if no such sensor.
-     */
-    rw::core::Ptr<SensorModel> findSensor(const std::string& name) const;
-
-    //TODO(kalor) findSensor<T>(name);
-    //TODO(kalor) findSensors<T>();
-
-    /**
-     * @brief Returns all frames in workcell
-     * @return List of all frames
-     */
-    std::vector<rw::core::Ptr<SensorModel> > getSensors() const;
-
-
-    //TODO(kalor) findController<T>(name);
-    //TODO(kalor) findControllers<T>();
-
-    /**
-     * @brief Returns controller with the specified name.
-     *
-     * If multiple controlelrs has the same name, the first controller
-     * encountered will be returned. If no controller is found, the
-     * method returns NULL.
-     *
-     * @param name [in] name of controller.
-     *
-     * @return The controller with name \b name or NULL if no such
-     * controller.
-     */
-    rw::core::Ptr<rw::models::ControllerModel> findController(const std::string& name) const;
-    
-    /**
-     * @brief Returns all controllers in workcell
-     * @return List of all controllers
-     */
-    std::vector<rw::core::Ptr<ControllerModel> > getControllers() const;
-
-    /**
-     * @brief Returns all object in the work cell
-     *
-     * @return All object in work cell
-     */
-    std::vector<rw::core::Ptr<Object> > getObjects() const;
-
-    /**
-     * @brief The object named \b name of the workcell.
-     *
-     * NULL is returned if there is no such object.
-     *
-     * @param name [in] The object name
-     *
-     * @return The object named \b name or NULL if no such object.
-     */
-    rw::core::Ptr<Object> findObject(const std::string& name) const;
-
-    //! @brief Add device to workcell
-    void add(rw::core::Ptr<Device> device);
-    //! @brief Add object to workcell
-    void add(rw::core::Ptr<Object> object);
-    //! @brief Add sensormodel to workcell
-    void add(rw::core::Ptr<SensorModel> sensor);
-    //! @brief Add controllermodel to workcell
-    void add(rw::core::Ptr<ControllerModel> controller);
-
-    //! @brief Remove object from workcell
-    void remove(rw::core::Ptr<Object> object);
-    //! @brief Remove device from workcell
-    void remove(rw::core::Ptr<Device> device);
-    //! @brief Remove sensormodel from workcell
-    void remove(rw::core::Ptr<SensorModel> sensor);
-    //! @brief Remove controllermodel from workcell
-    void remove(rw::core::Ptr<ControllerModel> controller);
-
-    std::string getFilename () const;
-    std::string getFilePath () const;
-
-    
-    PropertyMap& getPropertyMap();
-private:
-    WorkCell(const WorkCell&);
-    WorkCell& operator=(const WorkCell&);
-};
-
-%template (WorkCellPtr) rw::core::Ptr<WorkCell>;
-
-class Object
-{
-public:
-    //! destructor
-    virtual ~Object();
-    const std::string& getName();
-    Frame* getBase();
-    const std::vector<Frame*>& getFrames();
-    void addFrame(Frame* frame);
-    const std::vector<rw::core::Ptr<Geometry> >& getGeometry() const;
-    const std::vector<rw::core::Ptr<Model3D> >& getModels() const;
-
-    // stuff that should be implemented by deriving classes
-     const std::vector<rw::core::Ptr<Geometry> >& getGeometry(const State& state) const;
-    const std::vector<rw::core::Ptr<Model3D> >& getModels(const State& state) const;
-    virtual double getMass(State& state) const = 0;
-    virtual rw::math::Vector3D<double> getCOM(State& state) const = 0;
-    virtual rw::math::InertiaMatrix<double> getInertia(State& state) const = 0;
-};
-%template (ObjectPtr) rw::core::Ptr<Object>;
-%template (ObjectPtrVector) std::vector< rw::core::Ptr< Object > >;
-//%template (ObjectVector) std::vector< Object >;
-OWNEDPTR(Object);
-
-class RigidObject : public Object {
-public:
-	RigidObject(Frame* baseframe);
-	RigidObject(Frame* baseframe, rw::core::Ptr<Geometry> geom);
-	RigidObject(Frame* baseframe, std::vector<rw::core::Ptr<Geometry> > geom);
-	RigidObject(std::vector<Frame*> frames);
-	RigidObject(std::vector<Frame*> frames, rw::core::Ptr<Geometry> geom);
-	RigidObject(std::vector<Frame*> frames, std::vector<rw::core::Ptr<Geometry> > geom);
-	void addGeometry(rw::core::Ptr<Geometry> geom);
-	void removeGeometry(rw::core::Ptr<Geometry> geom);
-	void addModel(rw::core::Ptr<Model3D> model);
-	void removeModel(rw::core::Ptr<Model3D> model);
-    double getMass() const;
-    void setMass(double mass);
-    rw::math::InertiaMatrix<double> getInertia() const;
-    void setInertia(const rw::math::InertiaMatrix<double>& inertia);
-    void setCOM(const rw::math::Vector3D<double>& com);
-    void approximateInertia();
-    void approximateInertiaCOM();
-    const std::vector<rw::core::Ptr<Geometry> >& getGeometry() const ;
-    const std::vector<rw::core::Ptr<Model3D> >& getModels() const;
-    double getMass(State& state) const;
-    rw::math::InertiaMatrix<double> getInertia(State& state) const;
-    rw::math::Vector3D<double> getCOM(State& state) const;
-};
-
-%template (RigidObjectPtr) rw::core::Ptr<RigidObject>;
-OWNEDPTR(RigidObject);
-
-class DeformableObject: public Object
-{
-public:
-
-    /**
-     * @brief constructor - constructs a deformable mesh with a specific number of control nodes
-     * and without any faces. Both geometry and model are created based on nodes.
-     * @param baseframe [in] base frame of object
-     * @param nr_of_nodes [in] the number of controlling nodes in the deformable object
-     */
-    DeformableObject(Frame* baseframe, int nr_of_nodes);
-
-    //DeformableObject(Frame* baseframe, rw::core::Ptr<Model3D> model);
-
-    //DeformableObject(Frame* baseframe, rw::core::Ptr<Geometry> geom);
-
-    //! destructor
-    virtual ~DeformableObject();
-
-
-    /**
-     * @brief get a specific node from the state
-     * @param id [in] id of the node to fetch
-     * @param state [in] current state
-     * @return handle to manipulate a node in the given state.
-     */
-    rw::math::Vector3D<float>& getNode(int id, State& state) const;
-
-    /**
-     * @brief set the value of a specific node in the state.
-     * @param id [in] id of the node
-     * @param v [in] value to set.
-     * @param state [in] state in which to set the value.
-     */
-    void setNode(int id, const rw::math::Vector3D<float>& v, State& state);
-
-    /**
-     * @brief get the number of controlling nodes of this deformable object.
-     * @param state [in]
-     * @return
-     */
-    size_t getNrNodes(const rw::kinematics::State& state) const ;
-    
-    /*
-     * @brief get all faces of this soft body
-     * @return list of indexed triangles - indeces point to vertices/nodes
-     */
-    //const std::vector<rw::geometry::IndexedTriangle<> >& getFaces() const;
-
-    /**
-     * @brief add a face to three existing nodes
-     * @param node1 [in] idx of node 1
-     * @param node2 [in] idx of node 2
-     * @param node3 [in] idx of node 3
-     */
-    void addFace(unsigned int node1, unsigned int node2, unsigned int node3);
-
-    /*
-     * @brief return a triangle mesh representing the softbody in the current state
-     * \b cstate
-     * @param cstate
-     */
-    //rw::geometry::IndexedTriMesh<float>::Ptr getMesh(State& cstate);
-
-    //! @copydoc rw::models::Object::getGeometry
-    const std::vector<rw::core::Ptr<Geometry> >& getGeometry(const State& state) const;
-
-    //! @copydoc rw::models::Object::getModels
-    const std::vector<rw::core::Ptr<Model3D> >& getModels() const;
-
-
-    //! @copydoc rw::models::Object::getModels
-    const std::vector<rw::core::Ptr<Model3D> >& getModels(const State& state) const;
-    
-    /**
-     * @brief get mass in Kg of this object
-     * @param state [in] the state
-     * @return mass in kilo grams
-     */
-    double getMass(State& state) const;
-
-    /**
-     * @brief get center of mass of this object
-     * @param state [in] the state in which to get center of mass
-     * @return Position of COM
-     */    
-    rw::math::Vector3D<double> getCOM(State& state) const;
-
-
-    /**
-     * @brief returns the inertia matrix of this body calculated around COM with the orientation
-     * of the base frame.
-     * @param state [in] the state to get the inertia in
-     * @return matrix with inertia 
-     */
-    rw::math::InertiaMatrix<double> getInertia(State& state) const;
-
-    /**
-     * @brief updates the model with the current state of the deformable model
-     * @param model [in/out] model to be updated
-     * @param state
-     */
-    void update(rw::core::Ptr<Model3D> model, const State& state);
-};
-
-%template (DeformableObjectPtr) rw::core::Ptr<DeformableObject>;
-OWNEDPTR(DeformableObject);
-
-class Device
-{
-public:
-    Device(const std::string& name);
-    //void registerStateData(rw::kinematics::StateStructure::Ptr sstruct);
-    virtual void setQ(const rw::math::Q& q, State& state) const = 0;
-    virtual rw::math::Q getQ(const State& state) const = 0;
-    virtual std::pair<rw::math::Q,rw::math::Q> getBounds() const = 0;
-    virtual rw::math::Q getVelocityLimits() const = 0;
-    virtual void setVelocityLimits(const rw::math::Q& vellimits) = 0;
-    virtual rw::math::Q getAccelerationLimits() const = 0;
-    virtual void setAccelerationLimits(const rw::math::Q& acclimits) = 0;
-    virtual size_t getDOF() const = 0;
-    std::string getName() const;
-    void setName(const std::string& name);
-    virtual Frame* getBase() = 0;
-    virtual Frame* getEnd() = 0;
-#if !defined(SWIGJAVA)
-    virtual const Frame* getBase() const = 0;
-    virtual const Frame* getEnd() const = 0;
-#endif
-    rw::math::Transform3D<double>  baseTframe(const Frame* f, const State& state) const;
-    rw::math::Transform3D<double>  baseTend(const State& state) const;
-    rw::math::Transform3D<double>  worldTbase(const State& state) const;
-    virtual rw::math::Jacobian baseJend(const State& state) const = 0;
-    virtual rw::math::Jacobian baseJframe(const Frame* frame,const State& state) const;
-    virtual rw::math::Jacobian baseJframes(const std::vector<Frame*>& frames,const State& state) const;
-    //virtual rw::core::Ptr<JacobianCalculator> baseJCend(const State& state) const;
-    //virtual JacobianCalculatorPtr baseJCframe(const Frame* frame, const State& state) const;
-    //virtual JacobianCalculatorPtr baseJCframes(const std::vector<Frame*>& frames, const State& state) const = 0;
-private:
-    Device(const Device&);
-    Device& operator=(const Device&);
-};
-
-%template (DevicePtr) rw::core::Ptr<Device>;
-%template (DeviceCPtr) rw::core::Ptr<const Device>;
-%template (DevicePtrVector) std::vector<rw::core::Ptr<Device> >;
-OWNEDPTR(Device)
-
-%extend rw::core::Ptr<Device> {
-    rw::core::Ptr<const Device> asDeviceCPtr() { return *$self; }
-}
-
-class JointDevice: public Device
-{
-public:
-    const std::vector<Joint*>& getJoints() const;
-    void setQ(const rw::math::Q& q, State& state) const;
-    rw::math::Q getQ(const State& state) const;
-    size_t getDOF() const;
-    std::pair<rw::math::Q, rw::math::Q> getBounds() const;
-    void setBounds(const std::pair<rw::math::Q, rw::math::Q>& bounds);
-    rw::math::Q getVelocityLimits() const;
-    void setVelocityLimits(const rw::math::Q& vellimits);
-    rw::math::Q getAccelerationLimits() const;
-    void setAccelerationLimits(const rw::math::Q& acclimits);
-    rw::math::Jacobian baseJend(const State& state) const;
-
-    //JacobianCalculatorPtr baseJCframes(const std::vector<Frame*>& frames,
-    //                                   const State& state) const;
-
-    Frame* getBase();
-    virtual Frame* getEnd();
-
-#if !defined(SWIGJAVA)
-    const Frame* getBase() const;
-    virtual const Frame* getEnd() const;
-#endif
-};
-
-%template (JointDevicePtr) rw::core::Ptr<JointDevice>;
-%template (JointDeviceCPtr) rw::core::Ptr<const JointDevice>;
-%template (JointDevicePtrVector) std::vector< rw::core::Ptr< JointDevice>>;
-OWNEDPTR(JointDevice)
-
-class CompositeDevice: public JointDevice
-{
-public:
-    CompositeDevice(
-        Frame* base,
-		const std::vector<rw::core::Ptr<Device> >& devices,
-        Frame* end,
-        const std::string& name,
-        const State& state);
-
-    CompositeDevice(
-        Frame *base,
-		const std::vector<rw::core::Ptr<Device> >& devices,
-        const std::vector<Frame*>& ends,
-        const std::string& name,
-        const State& state);
-};
-
-%template (CompositeDevicePtr) rw::core::Ptr<CompositeDevice>;
-OWNEDPTR(CompositeDevice)
-
-%extend rw::core::Ptr<CompositeDevice> {
-    rw::core::Ptr<Device> asDevicePtr() { return *$self; }
-    rw::core::Ptr<const Device> asDeviceCPtr() { return *$self; }
-    rw::core::Ptr<JointDevice> asJointDevicePtr() { return *$self; }
-    rw::core::Ptr<const JointDevice> asJointDeviceCPtr() { return *$self; }
-}
-
-class SerialDevice: public JointDevice
-{
-};
-%template (SerialDevicePtr) rw::core::Ptr<SerialDevice>;
-%template (SerialDeviceCPtr) rw::core::Ptr<const SerialDevice>;
-OWNEDPTR(SerialDevice)
-
-%extend rw::core::Ptr<SerialDevice> {
-    rw::core::Ptr<const SerialDevice> asSerialDeviceCPtr() { return *$self; }
-}
-
-class ParallelDevice: public JointDevice
-{
-};
-%template (ParallelDevicePtr) rw::core::Ptr<ParallelDevice>;
-OWNEDPTR(ParallelDevice)
-
-class TreeDevice: public JointDevice
-{
-public:
-	TreeDevice(
-		Frame* base,
-		const std::vector<Frame*>& ends,
-		const std::string& name,
-		const State& state);
-};
-%template (TreeDevicePtr) rw::core::Ptr<TreeDevice>;
-%template (TreeDeviceCPtr) rw::core::Ptr<const TreeDevice>;
-OWNEDPTR(TreeDevice)
-
-%nodefaultctor DHParameterSet;
-class DHParameterSet
-{
-};
-
-%template (DHParameterSetVector) std::vector<DHParameterSet>;
 
 /********************************************
  * PATHPLANNING
@@ -4412,10 +3802,11 @@ public:
 %template (TimedQ) Timed<rw::math::Q>;
 %template (TimedState) Timed<State>;
 
+namespace rw { namespace trajectory {
 template <class T>
 class Path: public std::vector<T>
 {
-public:
+  public:
 
     Path();
     Path(size_t cnt);
@@ -4434,6 +3825,12 @@ public:
     };
 #endif
 };
+}}
+
+
+%template (PathState) rw::trajectory::Path<State>;
+%template (PathStatePtr) rw::core::Ptr<rw::trajectory::Path<State>>;
+OWNEDPTR(rw::core::Ptr<rw::trajectory::Path<State>>)
 
 %template (TimedQVector) std::vector<Timed<rw::math::Q> >;
 %template (TimedStateVector) std::vector<Timed<State> >;
@@ -4442,55 +3839,55 @@ public:
 OWNEDPTR(std::vector<Timed<rw::math::Q> > )
 //OWNEDPTR(std::vector<Timed<State> > )
 
-%template (PathSE3) Path<rw::math::Transform3D<double> >;
-%template (PathSE3Ptr) rw::core::Ptr<Path<rw::math::Transform3D<double> > >;
-%template (PathQ) Path<rw::math::Q>;
-%template (PathQPtr) rw::core::Ptr<Path<rw::math::Q> >;
-%template (PathTimedQ) Path<Timed<rw::math::Q> >;
-%template (PathTimedQPtr) rw::core::Ptr<Path<Timed<rw::math::Q> > >;
-%template (PathTimedState) Path<Timed<State> >;
-%template (PathTimedStatePtr) rw::core::Ptr<Path<Timed<State> > >;
-OWNEDPTR(Path<rw::math::Transform3D<double> > )
-OWNEDPTR(Path<rw::math::Q> )
-OWNEDPTR(Path<Timed<rw::math::Q> > )
-OWNEDPTR(Path<Timed<State> > )
+%template (PathSE3) rw::trajectory::Path<rw::math::Transform3D<double> >;
+%template (PathSE3Ptr) rw::core::Ptr<rw::trajectory::Path<rw::math::Transform3D<double> > >;
+%template (PathQ) rw::trajectory::Path<rw::math::Q>;
+%template (PathQPtr) rw::core::Ptr<rw::trajectory::Path<rw::math::Q> >;
+%template (PathTimedQ) rw::trajectory::Path<Timed<rw::math::Q> >;
+%template (PathTimedQPtr) rw::core::Ptr<rw::trajectory::Path<Timed<rw::math::Q> > >;
+%template (PathTimedState) rw::trajectory::Path<Timed<State> >;
+%template (PathTimedStatePtr) rw::core::Ptr<rw::trajectory::Path<Timed<State> > >;
+OWNEDPTR(rw::trajectory::Path<rw::math::Transform3D<double> > )
+OWNEDPTR(rw::trajectory::Path<rw::math::Q> )
+OWNEDPTR(rw::trajectory::Path<Timed<rw::math::Q> > )
+OWNEDPTR(rw::trajectory::Path<Timed<State> > )
 
-%extend Path<rw::math::Q> {
-    rw::core::Ptr<Path<Timed<rw::math::Q> > > toTimedQPath(rw::math::Q speed){
+%extend rw::trajectory::Path<rw::math::Q> {
+    rw::core::Ptr<rw::trajectory::Path<Timed<rw::math::Q> > > toTimedQPath(rw::math::Q speed){
         rw::trajectory::TimedQPath tpath =
                 rw::trajectory::TimedUtil::makeTimedQPath(speed, *$self);
         return rw::core::ownedPtr( new rw::trajectory::TimedQPath(tpath) );
     }
 
-    rw::core::Ptr<Path<Timed<rw::math::Q> > > toTimedQPath(rw::core::Ptr<Device> dev){
+    rw::core::Ptr<rw::trajectory::Path<Timed<rw::math::Q> > > toTimedQPath(rw::core::Ptr<Device> dev){
         rw::trajectory::TimedQPath tpath =
                 rw::trajectory::TimedUtil::makeTimedQPath(*dev, *$self);
         return rw::core::ownedPtr( new rw::trajectory::TimedQPath(tpath) );
     }
 
-    rw::core::Ptr<Path<Timed<State> > > toTimedStatePath(rw::core::Ptr<Device> dev,
+    rw::core::Ptr<rw::trajectory::Path<Timed<State> > > toTimedStatePath(rw::core::Ptr<Device> dev,
                                                      const State& state){
-        rw::trajectory::TimedStatePath tpath =
+        rw::trajectory::Path<Timed<State>> tpath =
                 rw::trajectory::TimedUtil::makeTimedStatePath(*dev, *$self, state);
-        return rw::core::ownedPtr( new rw::trajectory::TimedStatePath(tpath) );
+        return rw::core::ownedPtr( new rw::trajectory::Path<Timed<State>>(tpath) );
     }
 
 };
 
-%extend Path<Timed<State> > {
+%extend rw::trajectory::Path<Timed<State> > {
 	
-	static rw::core::Ptr<Path<Timed<State> > > load(const std::string& filename, rw::core::Ptr<WorkCell> wc){
-		rw::core::Ptr<rw::trajectory::TimedStatePath> spath = 
-                    rw::core::ownedPtr(new rw::trajectory::TimedStatePath);
+	static rw::core::Ptr<rw::trajectory::Path<Timed<State> > > load(const std::string& filename, rw::core::Ptr<WorkCell> wc){
+		rw::core::Ptr<rw::trajectory::Path<Timed<State>>> spath = 
+                    rw::core::ownedPtr(new rw::trajectory::Path<Timed<State>>);
                 *spath = rw::loaders::PathLoader::loadTimedStatePath(*wc, filename);
-		return rw::core::Ptr<rw::trajectory::TimedStatePath>( spath );
+		return rw::core::Ptr<rw::trajectory::Path<Timed<State>>>( spath );
 	}
 	
 	void save(const std::string& filename, rw::core::Ptr<WorkCell> wc){		 		
 		rw::loaders::PathLoader::storeTimedStatePath(*wc,*$self,filename); 
 	}
 	
-	void append(rw::core::Ptr<Path<Timed<State> > > spath){
+	void append(rw::core::Ptr<rw::trajectory::Path<Timed<State> > > spath){
 		double startTime = 0;
 		if($self->size()>0)
 			startTime = (*$self).back().getTime(); 
@@ -4504,34 +3901,30 @@ OWNEDPTR(Path<Timed<State> > )
 	
 };
 
-%extend Path<State > {
+%extend rw::trajectory::Path<State > {
 	
-	static rw::core::Ptr<Path<State> > load(const std::string& filename, rw::core::Ptr<WorkCell> wc){
-            rw::core::Ptr<rw::trajectory::StatePath> spath = rw::core::ownedPtr(new rw::trajectory::StatePath);
+	static rw::core::Ptr<rw::trajectory::Path<State> > load(const std::string& filename, rw::core::Ptr<WorkCell> wc){
+            rw::core::Ptr<rw::trajectory::Path<State>> spath = rw::core::ownedPtr(new rw::trajectory::StatePath);
             *spath = rw::loaders::PathLoader::loadStatePath(*wc, filename);
-		return rw::core::ownedPtr( spath );
+		return spath;
 	}
 	
 	void save(const std::string& filename, rw::core::Ptr<WorkCell> wc){		 		
 		rw::loaders::PathLoader::storeStatePath(*wc,*$self,filename); 
 	}
 	
-	void append(rw::core::Ptr<Path<State> > spath){
-		double startTime = 0;
-		if($self->size()>0)
-			startTime = (*$self).front().getTime(); 
-		
+	void append(rw::core::Ptr<rw::trajectory::Path<State> > spath){		
 		for(size_t i = 0; i<spath->size(); i++){
 			(*$self).push_back( (*spath)[i] );
 		}
 	}
 	
 	
-	rw::core::Ptr<Path<Timed<State> > > toTimedStatePath(double timeStep){
-		rw::core::Ptr<TimedStatePath> spath = 
-			rw::core::ownedPtr( new rw::trajectory::TimedStatePath() );	
-		for(size_t i = 0; i<spath->size(); i++){
-			Timed<State> tstate(timeStep*i, (*spath)[i]); 
+	rw::core::Ptr<rw::trajectory::Path<Timed<State> > > toTimedStatePath(double timeStep){
+		rw::core::Ptr<rw::trajectory::Path<Timed<State>>> spath = 
+			rw::core::ownedPtr( new rw::trajectory::Path<Timed<State>>() );	
+		for(size_t i = 0; i < $self->size(); i++){
+			Timed<State> tstate(timeStep*i, (*$self)[i]); 
 			spath->push_back( tstate );
 		}	
 		return spath;
@@ -4807,7 +4200,7 @@ class TrajectoryFactory
 public:
     static rw::core::Ptr<StateTrajectory> makeFixedTrajectory(const State& state, double duration);
     static rw::core::Ptr<QTrajectory> makeFixedTrajectory(const rw::math::Q& q, double duration);
-    static rw::core::Ptr<StateTrajectory> makeLinearTrajectory(const TimedStatePath& path);
+    static rw::core::Ptr<StateTrajectory> makeLinearTrajectory(const Path<Timed<State>>& path);
     static rw::core::Ptr<StateTrajectory> makeLinearTrajectory(const StatePath& path,
         const models::WorkCell& workcell);
     static rw::core::Ptr<StateTrajectory> makeLinearTrajectoryUnitStep(const StatePath& path);

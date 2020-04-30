@@ -51,27 +51,27 @@ public:
             return new PathLengthOptimizer(*constraint, metric);
         }
 
-        rw::core::Ptr<Path<rw::math::Q> > pathPruning(rw::core::Ptr<Path<rw::math::Q> > path){
-            PathQ res = $self->rwlibs::pathoptimization::PathLengthOptimizer::pathPruning(*path);
-            return rw::core::ownedPtr( new PathQ(res) );
+        rw::core::Ptr<rw::trajectory::Path<rw::math::Q> > pathPruning(rw::core::Ptr<rw::trajectory::Path<rw::math::Q> > path){
+            rw::trajectory::Path<rw::math::Q> res = $self->rwlibs::pathoptimization::PathLengthOptimizer::pathPruning(*path);
+            return rw::core::ownedPtr( new rw::trajectory::Path<rw::math::Q>(res) );
         }
 /*
-        rw::core::Ptr<Path<rw::math::Q> > shortCut(rw::core::Ptr<Path<rw::math::Q> > path,
+        rw::core::Ptr<rw::trajectory::Path<rw::math::Q> > shortCut(rw::core::Ptr<rw::trajectory::Path<rw::math::Q> > path,
                                        size_t cnt,
                                        double time,
                                        double subDivideLength);
 */
-        rw::core::Ptr<Path<rw::math::Q> > shortCut(rw::core::Ptr<Path<rw::math::Q> > path){
-            PathQ res = $self->rwlibs::pathoptimization::PathLengthOptimizer::shortCut(*path);
-            return rw::core::ownedPtr( new PathQ(res) );
+        rw::core::Ptr<rw::trajectory::Path<rw::math::Q> > shortCut(rw::core::Ptr<rw::trajectory::Path<rw::math::Q> > path){
+            rw::trajectory::Path<rw::math::Q> res = $self->rwlibs::pathoptimization::PathLengthOptimizer::shortCut(*path);
+            return rw::core::ownedPtr( new rw::trajectory::Path<rw::math::Q>(res) );
         }
 
-        rw::core::Ptr<Path<rw::math::Q> > partialShortCut(rw::core::Ptr<Path<rw::math::Q> > path){
-            PathQ res = $self->rwlibs::pathoptimization::PathLengthOptimizer::partialShortCut(*path);
-            return rw::core::ownedPtr( new PathQ(res) );
+        rw::core::Ptr<rw::trajectory::Path<rw::math::Q> > partialShortCut(rw::core::Ptr<rw::trajectory::Path<rw::math::Q> > path){
+            rw::trajectory::Path<rw::math::Q> res = $self->rwlibs::pathoptimization::PathLengthOptimizer::partialShortCut(*path);
+            return rw::core::ownedPtr( new rw::trajectory::Path<rw::math::Q>(res) );
         }
 /*
-        rw::core::Ptr<Path<rw::math::Q> > partialShortCut(rw::core::Ptr<Path<rw::math::Q> > path,
+        rw::core::Ptr<rw::trajectory::Path<rw::math::Q> > partialShortCut(rw::core::Ptr<rw::trajectory::Path<rw::math::Q> > path,
                                               size_t cnt,
                                               double time,
                                               double subDivideLength);

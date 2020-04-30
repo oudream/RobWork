@@ -18,8 +18,11 @@
 #include "DeviceJacobianCalculator.hpp"
 
 #include <rw/kinematics/FKTable.hpp>
-
-
+#include <rw/kinematics/Frame.hpp>
+#include <rw/kinematics/State.hpp>
+#include <rw/math/Jacobian.hpp>
+#include <rw/models/Device.hpp>
+#include <rw/models/Joint.hpp>
 
 using namespace rw::models;
 using namespace rw::kinematics;
@@ -45,7 +48,7 @@ DeviceJacobianCalculator::~DeviceJacobianCalculator ()
 Jacobian DeviceJacobianCalculator::get (const rw::kinematics::State& state) const
 {
     const rw::kinematics::FKTable fk (state);
-    Jacobian jacobian (Jacobian::ZeroBase (6 * _tcps.size (), _dof));
+    Jacobian jacobian (Jacobian::zero (6 * _tcps.size (), _dof));
 
     for (Device::Ptr dev : _devices) {
         Jacobian jac = dev->baseJframes (_tcps, state);

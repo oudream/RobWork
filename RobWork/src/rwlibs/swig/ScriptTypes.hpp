@@ -199,6 +199,12 @@ namespace swig {
 	typedef rw::graphics::SceneNode SceneNode;
 	//! @copydoc rw::graphics::DrawableNode
 	typedef rw::graphics::DrawableNode DrawableNode;
+	//! @copydoc rw::graphics::DrawableNode::RenderInfo
+	typedef rw::graphics::DrawableNode::RenderInfo RenderInfo;
+	//! @copydoc rw::graphics::SceneDescriptor
+	typedef rw::graphics::SceneDescriptor SceneDescriptor;
+	//! @copydoc rw::graphics::SceneCamera
+	typedef rw::graphics::SceneCamera SceneCamera;
 	///@}
 
 	// graspplanning
@@ -249,6 +255,8 @@ namespace swig {
 	typedef rw::kinematics::FixedFrame FixedFrame;
 	//! @copydoc rw::kinematics::State
 	typedef rw::kinematics::State State;
+	//! @copydoc rw::kinematics::Stateless
+	typedef rw::kinematics::Stateless Stateless;
 	//! @copydoc rw::kinematics::StateStructure
 	typedef rw::kinematics::StateStructure StateStructure;
     //! @copydoc rw::kinematics::Kinematics
@@ -352,15 +360,41 @@ namespace swig {
 	///@{
     //! @copydoc rw::models::JacobianCalculator
     typedef rw::models::JacobianCalculator JacobianCalculator;
+	//! @copydoc rw::models::JointDeviceJacobianCalculator
+    typedef rw::models::JointDeviceJacobianCalculator JointDeviceJacobianCalculator;
+	//! @copydoc rw::models::DeviceJacobianCalculator
+    typedef rw::models::DeviceJacobianCalculator DeviceJacobianCalculator;
+	//! @copydoc rw::models::JacobianUtil
+    typedef rw::models::JacobianUtil JacobianUtil;
+
+	
 
 	//! @copydoc rw::models::WorkCell
 	typedef rw::models::WorkCell WorkCell;
+	typedef rw::models::WorkCell::WorkCellChangedListener WorkCellChangedListener;
+
 	//! @copydoc rw::models::Joint
 	typedef rw::models::Joint Joint;
 	//! @copydoc rw::models::RevoluteJoint
 	typedef rw::models::RevoluteJoint RevoluteJoint;
 	//! @copydoc rw::models::PrismaticJoint
 	typedef rw::models::PrismaticJoint PrismaticJoint;
+	//! @copydoc rw::models::PrismaticSphericalJoint
+	typedef rw::models::PrismaticSphericalJoint PrismaticSphericalJoint;
+	//! @copydoc rw::models::PrismaticUniversalJoint
+	typedef rw::models::PrismaticUniversalJoint PrismaticUniversalJoint;
+	//! @copydoc rw::models::SphericalJoint
+	typedef rw::models::SphericalJoint SphericalJoint;
+	//! @copydoc rw::models::DependentJoint
+	typedef rw::models::DependentJoint DependentJoint;
+	//! @copydoc rw::models::DependentPrismaticJoint
+	typedef rw::models::DependentPrismaticJoint DependentPrismaticJoint;
+	//! @copydoc rw::models::DependentRevoluteJoint
+	typedef rw::models::DependentRevoluteJoint DependentRevoluteJoint;
+	//! @copydoc rw::models::VirtualJoint
+	typedef rw::models::VirtualJoint VirtualJoint;
+	//! @copydoc rw::models::UniversalJoint
+	typedef rw::models::UniversalJoint UniversalJoint;
 
 	//! @copydoc rw::models::Object
 	typedef rw::models::Object Object;
@@ -373,19 +407,33 @@ namespace swig {
 	typedef rw::models::Device Device;
 	//! @copydoc rw::models::JointDevice
 	typedef rw::models::JointDevice JointDevice;
+	//! @copydoc rw::models::MobileDevice
+	typedef rw::models::MobileDevice MobileDevice;
 	//! @copydoc rw::models::SerialDevice
 	typedef rw::models::SerialDevice SerialDevice;
 	//! @copydoc rw::models::TreeDevice
 	typedef rw::models::TreeDevice TreeDevice;
 	//! @copydoc rw::models::CompositeDevice
 	typedef rw::models::CompositeDevice CompositeDevice;
+	//! @copydoc rw::models::CompositeJointDevice
+	typedef rw::models::CompositeJointDevice CompositeJointDevice;
 	//! @copydoc rw::models::ParallelDevice
 	typedef rw::models::ParallelDevice ParallelDevice;
+	//! @copydoc rw::models::SE3Device
+	typedef rw::models::SE3Device SE3Device;
+
+
+	//! @copydoc rw::models::ParallelLeg
+	typedef rw::models::ParallelLeg ParallelLeg;
 	//! @copydoc rw::models::DHParameterSet
 	typedef rw::models::DHParameterSet DHParameterSet;
+	//! @copydoc rw::models::RigidBodyInfo
+	typedef rw::models::RigidBodyInfo RigidBodyInfo;
 
 	//! @copydoc rw::models::ControllerModel
 	typedef rw::models::ControllerModel ControllerModel;
+	//! @copydoc rw::models::Models
+	typedef rw::models::Models Models;
 	///@}
 
 	/**
@@ -535,8 +583,6 @@ namespace swig {
 
 	//! @copydoc rw::trajectory::TimedState
 	typedef rw::trajectory::TimedState TimedState;
-	//! @copydoc rw::trajectory::Path
-	typedef rw::trajectory::Path<Q> PathQ;
 	//! @copydoc rw::trajectory::TimedStatePath
 	typedef rw::trajectory::TimedStatePath PathTimedState;
 	//! @copydoc rw::trajectory::Trajectory
@@ -582,8 +628,6 @@ namespace swig {
 
 	//! @copydoc rw::trajectory::Timed
 	typedef rw::trajectory::Timed<AssemblyState> TimedAssemblyState;
-	//! @copydoc rw::trajectory::Path
-	typedef rw::trajectory::Path<rw::trajectory::Timed<AssemblyState> > PathTimedAssemblyState;
 	///@}
 
 	// rwlibs algorithms
