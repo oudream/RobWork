@@ -63,12 +63,9 @@ SET(SRC_FILES
     #osggui/WorkCellScene.cpp
     #osggui/SceneViewer.cpp
     #osggui/ProjectionMatrix.cpp
-    
-    #WrenchMeasure3D.cpp
+
     #ClarkHullND.cpp
     
-    csg/csgjs.cpp
-    csg/CSGConvert.cpp
     csg/CSGModel.cpp
     
     #algorithms/ConstraintModel.cpp
@@ -111,12 +108,9 @@ SET(SRC_FILES_HPP
     		
     ConvertUtil.hpp
     #Log.hpp
-    WrenchMeasure3D.hpp
     calibration/EncoderDecentralization.hpp
     #calibration/BFGS.hpp
     
-    csg/csgjs.cpp
-    csg/CSGConvert.hpp
     csg/CSGModel.hpp
     
     #algorithms/ConstraintGenerator.hpp
@@ -147,6 +141,6 @@ SET(SRC_FILES_HPP
 )
 
 ADD_LIBRARY(sdurw_sandbox ${SRC_FILES} ${SRC_FILES_HPP})
-TARGET_LINK_LIBRARIES(sdurw_sandbox sdurw)
+TARGET_LINK_LIBRARIES(sdurw_sandbox sdurw_csgjs sdurw)
 INSTALL(TARGETS sdurw_sandbox DESTINATION ${LIB_INSTALL_DIR} )
 INSTALL(FILES ${SRC_FILES_HPP} DESTINATION ${INCLUDE_INSTALL_DIR}/sandbox )
