@@ -10,7 +10,6 @@ set(RWS_BUILD_WITH_VERSION_PATCH @ROBWORKSTUDIO_VERSION_PATCH@)
 # ######################################################################################################################
 # dependencies
 set(RWS_BUILD_WITH_LUA @RWS_HAVE_LUA@)
-set(RWS_BUILD_WITH_SANDBOX @RWS_HAVE_SANDBOX@)
 
 set(RWS_BUILD_WITH_PYTHON @RWS_USE_PYTHON@)
 set(RWS_BUILD_WITH_PYTHON_MAJOR_VERSION @PYTHON_VERSION_MAJOR@)

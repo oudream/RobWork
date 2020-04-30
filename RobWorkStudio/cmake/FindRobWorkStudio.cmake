@@ -123,16 +123,6 @@ ENDIF()
 
 # Setup the libraries
 
-IF (RWS_BUILD_WITH_SANDBOX)
-  SET(RWS_SANDBOX_LIB sdurws_sandbox)
-  SET(RWS_HAVE_SANDBOX ON)
-  #MESSAGE(STATUS "RobWorkStudio: Sandbox ENABLED!")
-ELSE ()
-  SET(RWS_HAVE_SANDBOX OFF) 
-  #MESSAGE(STATUS "RobWorkStudio: Sandbox DISABLED!")
-ENDIF ()
-
-# optional compilation of sandbox
 IF (RWS_BUILD_WITH_LUA)
     MESSAGE(STATUS "RobWorkStudio: Lua ENABLED!")
     SET(RWSTUDIO_LUA sdurws_lua_s sdurws_luaeditor)
@@ -153,7 +143,6 @@ SET(ROBWORKSTUDIO_LIBRARY_DIRS
 )
 
 SET(ROBWORKSTUDIO_LIBRARIES_TMP
-    ${RWS_SANDBOX_LIB}
     ${RWSTUDIO_LUA}
     sdurws
     qtpropertybrowser

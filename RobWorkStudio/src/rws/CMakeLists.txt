@@ -72,10 +72,6 @@ if(build)
     #set(CMAKE_AUTOMOC ON)
     set_source_files_properties(${MocSrcFiles} PROPERTIES OBJECT_DEPENDS "${UIS_OUT_H}")
 
-    # Resource files to rcc and compile:
-    if(RWS_BUILD_SANDBOX)
-        # SET(SandboxResourceFiles rwstudio_sandbox_resources.qrc)
-    endif()
     # Rcc the files:
     qt5_add_resources(ResourceFiles rwstudio_resources.qrc)
     # We create a static library named rwstudio that all plugins should link to. Our RobWorkStudio executable
