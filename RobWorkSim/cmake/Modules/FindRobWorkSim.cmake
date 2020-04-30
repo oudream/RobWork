@@ -77,15 +77,6 @@ IF(NOT DEFINED RWSIM_LINKER_FLAGS)
 	)
 ENDIF()
 
-# optional compilation of sandbox
-IF (RWSIM_BUILD_WITH_SANDBOX)
-    MESSAGE(STATUS "RobWorkSim: Sandbox ENABLED!")
-    SET(SANDBOX_LIB "sdurwsim_sandbox")
-ELSE ()
-    MESSAGE(STATUS "RobWorkSim: Sandbox DISABLED!")    
-    SET(RWSIM_HAVE_SANDBOX false)
-ENDIF ()
-
 # test if Bullet exists
 OPTION(RWSIM_USE_BULLET "Set to ON if Bullet should be use. you may need to set BULLET_ROOT" ${RWSIM_BUILD_WITH_BULLET})
 IF(RWSIM_USE_BULLET)
@@ -172,7 +163,6 @@ SET(ROBWORKSIM_LIBRARY_DIRS
 # which is crucial for some compilers.
 # 
 SET(ROBWORKSIM_LIBRARIES_TMP
-  ${RWSIM_SANDBOX}
   sdurwsim_gui
   ${RWSIM_BULLET_LIBRARY}
   ${RWSIM_ODE_LIBRARY}

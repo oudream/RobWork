@@ -28,7 +28,6 @@ using namespace rwlibs::algorithms;
 
 using namespace boost;
 using namespace rw::math;
-using namespace rw::common;
 using namespace rw::models;
 using namespace rw::kinematics;
 
@@ -135,7 +134,7 @@ bool IKGPMMSolver::solveLocal(
             //}
             //std::cout << b_eXed << std::endl;
         }
-        double error = norm_2(b_eXed_vec);
+        double error = b_eXed_vec.norm();
         std::cout << "Error: " << error << std::endl;
         //if(!untilSmallChange){
             if( error  < maxError[0]/*belowMaxError*/ ){

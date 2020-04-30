@@ -56,7 +56,7 @@
 #include <control/VelRampController.hpp>
 #include <control/PDController.hpp>
 #include <control/SyncPDController.hpp>
-#include <sandbox/drawable/TactileArrayRender.hpp>
+#include <rwlibs/opengl/TactileArrayRender.hpp>
 
 #include <simulator/PhysicsEngineFactory.hpp>
 

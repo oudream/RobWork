@@ -138,8 +138,6 @@ class SupportPoseAnalyserDialog : public QDialog
         RestingPoseDialog *_restPoseDialog;
 
         rws::RobWorkStudio *_rwstudio;
-
-        //rw::core::sandbox::LogPtr _log;
 };
 
 

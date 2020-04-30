@@ -15,7 +15,7 @@
 #include <rw/math/Transform3D.hpp>
 #include <rw/geometry/TriMesh.hpp>
 #define CSGJS_HEADER_ONLY
-#include "csgjs.cpp"
+#include <csgjs/csgjs.cpp>
 
 
 

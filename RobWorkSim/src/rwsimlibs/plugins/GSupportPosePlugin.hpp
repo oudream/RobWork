@@ -142,8 +142,6 @@ class SupportPoseAnalyserDialog : public QDialog, private Ui::SupportPoseAnalyse
         RestingPoseDialog *_restPoseDialog;
 
         rws::RobWorkStudio *_rwstudio;
-
-        //rw::common::sandbox::LogPtr _log;
 };
 
 

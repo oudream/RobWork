@@ -58,7 +58,6 @@
 
 using namespace xercesc;
 using namespace rw::math;
-using namespace rw::common;
 using namespace rw::trajectory;
 using namespace rw::loaders;
 using namespace rw::kinematics;
