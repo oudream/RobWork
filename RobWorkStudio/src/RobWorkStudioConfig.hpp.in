@@ -12,7 +12,6 @@
 #define RWS_REVISION "${ROBWORKSTUDIO_REVISION}"
 
 #cmakedefine RWS_HAVE_GLUT 1
-#cmakedefine RWS_HAVE_SANDBOX 1
 #cmakedefine RWS_HAVE_LUA 1
 #cmakedefine RWS_USE_STATIC_LINK_PLUGINS
 #define RWS_USE_QT5 1
