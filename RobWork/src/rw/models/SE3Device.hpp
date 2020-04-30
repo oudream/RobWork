@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  ********************************************************************************/
-
 
 #ifndef RW_MODELS_CARTESIAN6DOFDEVICE_HPP
 #define RW_MODELS_CARTESIAN6DOFDEVICE_HPP
@@ -78,9 +77,9 @@ namespace rw { namespace models {
      * closed-loop control system does not perform well with a "perfect" robot
      * it will probably not perform well with a real robot either.
      */
-    class SE3Device : public Device {
-    public:
-
+    class SE3Device : public Device
+    {
+      public:
         /**
          * @brief Constructor
          *
@@ -88,22 +87,22 @@ namespace rw { namespace models {
          * @param base documentation missing !
          * @param mframe documentation missing !
          */
-        SE3Device(const std::string& name, rw::kinematics::Frame* base, rw::kinematics::MovableFrame* mframe);
+        SE3Device (const std::string& name, rw::kinematics::Frame* base,
+                   rw::kinematics::MovableFrame* mframe);
 
-
-        virtual ~SE3Device(){}
+        virtual ~SE3Device () {}
 
         /**
          * @copydoc Device::setQ
          *
          * @pre q.size() == 6
          */
-        void setQ(const math::Q& q, kinematics::State& state) const;
+        void setQ (const math::Q& q, kinematics::State& state) const;
 
         /**
          * @copydoc Device::getQ
          */
-        math::Q getQ(const kinematics::State& state) const;
+        math::Q getQ (const kinematics::State& state) const;
 
         /**
          * @copydoc Device::getBounds
@@ -114,13 +113,31 @@ namespace rw { namespace models {
          * numerical limits of the real datatype, thus this method returns the
          * range ([DBL_MIN, DBL_MAX]) for each of the 6 inputs
          */
-        std::pair<math::Q, math::Q> getBounds() const;
+        std::pair< math::Q, math::Q > getBounds () const;
 
+        /**
+         * @brief get base of the device
+         * @return base Frame
+         */
+        kinematics::Frame* getBase () { return _base; }
 
-        kinematics::Frame* getBase(){ return _base; }
-        const kinematics::Frame* getBase() const { return _base; }
-        kinematics::Frame* getEnd(){ return _mframe; }
-        const kinematics::Frame* getEnd() const { return _mframe; }
+        /**
+         * @brief get base of the device
+         * @return base Frame
+         */
+        const kinematics::Frame* getBase () const { return _base; }
+
+        /**
+         * @brief get end of the device
+         * @return end Frame
+         */
+        kinematics::Frame* getEnd () { return _mframe; }
+
+        /**
+         * @brief get end of the device
+         * @return end Frame
+         */
+        const kinematics::Frame* getEnd () const { return _mframe; }
 
         /**
          * @brief Calculates the jacobian matrix of the end-effector described
@@ -147,40 +164,57 @@ namespace rw { namespace models {
          * \f]
          *
          */
-        math::Jacobian baseJend(const kinematics::State& state) const;
+        math::Jacobian baseJend (const kinematics::State& state) const;
 
-
-        JacobianCalculator::Ptr baseJCframes(const std::vector<kinematics::Frame*>& frames, const kinematics::State& state) const{return NULL;}
+        JacobianCalculator::Ptr baseJCframes (const std::vector< kinematics::Frame* >& frames,
+                                              const kinematics::State& state) const
+        {
+            return NULL;
+        }
         /**
          * @copydoc Device::getDOF
          *
          * This method always returns the value 6
          */
-        size_t getDOF() const{
-            return 6;
-        }
+        size_t getDOF () const { return 6; }
 
+        /**
+         * @brief set outer bound of the device
+         * @param bounds [in] the minimum Q and the maximum Q
+         */
+        virtual void setBounds (const QBox& bounds);
 
+        /**
+         * @brief get the Joint velocity limit
+         * @return the velocity limit as Q
+         */
+        virtual math::Q getVelocityLimits () const;
 
-        virtual void setBounds(const QBox& bounds);
+        /**
+         * @brief set the Joint velocity limit
+         * @param vellimits [in] the velocity limit as Q
+         */
+        virtual void setVelocityLimits (const math::Q& vellimits);
 
-        virtual math::Q getVelocityLimits() const;
+        /**
+         * @brief get the Joint Acceleration limit
+         * @return the Acceleration limit as Q
+         */
+        math::Q getAccelerationLimits () const;
 
-        virtual void setVelocityLimits(const math::Q& vellimits);
+        /**
+         * @brief set the Joint Acceleration limit
+         * @param acclimit [in] the acceleration limit as Q
+         */
+        void setAccelerationLimits (const math::Q& acclimits);
 
-        math::Q getAccelerationLimits() const;
-
-        void setAccelerationLimits(const math::Q& acclimits);
-
-
-    private:
+      private:
         rw::kinematics::Frame* _base;
         rw::kinematics::MovableFrame* _mframe;
         rw::math::Q _vellimits, _acclimits;
-
     };
 
     /*@}*/
-}} // end namespaces
+}}    // namespace rw::models
 
-#endif // end include guard
+#endif    // end include guard

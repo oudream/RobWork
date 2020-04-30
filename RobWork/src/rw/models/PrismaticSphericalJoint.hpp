@@ -26,72 +26,73 @@
 
 #include "Joint.hpp"
 
-namespace rw {
-namespace models {
-//! @addtogroup models
+namespace rw { namespace models {
+    //! @addtogroup models
 
-//! @{
-/**
- * @brief A prismatic spherical joint that allows rotations in all directions and translation along one direction.
- *
- * Rotation is allowed around all axes. The xy-position is fixed, while the z-axis is translational.
- *
- * This joint is equivalent to a spherical joint followed by a translational joint.
- */
-class PrismaticSphericalJoint: public Joint {
-public:
-	//! @brief Smart pointer type of PrismaticSphericalJoint
-	typedef rw::core::Ptr<PrismaticSphericalJoint> Ptr;
-
+    //! @{
     /**
-     * @brief Construct a prismatic spherical joint.
-     * @param name [in] name of the joint.
-     * @param transform [in] static transform of the joint.
+     * @brief A prismatic spherical joint that allows rotations in all directions and translation
+     * along one direction.
+     *
+     * Rotation is allowed around all axes. The xy-position is fixed, while the z-axis is
+     * translational.
+     *
+     * This joint is equivalent to a spherical joint followed by a translational joint.
      */
-	PrismaticSphericalJoint(const std::string& name, const rw::math::Transform3D<>& transform);
+    class PrismaticSphericalJoint : public Joint
+    {
+      public:
+        //! @brief Smart pointer type of PrismaticSphericalJoint
+        typedef rw::core::Ptr< PrismaticSphericalJoint > Ptr;
 
-	//! @brief Destructor.
-	virtual ~PrismaticSphericalJoint();
+        /**
+         * @brief Construct a prismatic spherical joint.
+         * @param name [in] name of the joint.
+         * @param transform [in] static transform of the joint.
+         */
+        PrismaticSphericalJoint (const std::string& name, const rw::math::Transform3D<>& transform);
 
-	// From Frame
-	//! @brief Frame::doMultiplyTransform
-    virtual void doMultiplyTransform(const rw::math::Transform3D<>& parent,
-                                     const rw::kinematics::State& state,
-									 rw::math::Transform3D<>& result) const;
+        //! @brief Destructor.
+        virtual ~PrismaticSphericalJoint ();
 
-	//! @brief Frame::doGetTransform
-    virtual math::Transform3D<> doGetTransform(const rw::kinematics::State& state) const;
+        // From Frame
+        //! @brief Frame::doMultiplyTransform
+        virtual void doMultiplyTransform (const rw::math::Transform3D<>& parent,
+                                          const rw::kinematics::State& state,
+                                          rw::math::Transform3D<>& result) const;
 
-    // From Joint
-	//! @copydoc Joint::getJacobian
-	virtual void getJacobian(std::size_t row,
-			std::size_t col,
-			const rw::math::Transform3D<>& joint,
-			const rw::math::Transform3D<>& tcp,
-			const rw::kinematics::State& state,
-			rw::math::Jacobian& jacobian) const;
+        //! @brief Frame::doGetTransform
+        virtual math::Transform3D<> doGetTransform (const rw::kinematics::State& state) const;
 
-	//! @copydoc Joint::getFixedTransform
-	virtual rw::math::Transform3D<> getFixedTransform() const;
+        // From Joint
+        //! @copydoc Joint::getJacobian
+        virtual void getJacobian (std::size_t row, std::size_t col,
+                                  const rw::math::Transform3D<>& joint,
+                                  const rw::math::Transform3D<>& tcp,
+                                  const rw::kinematics::State& state,
+                                  rw::math::Jacobian& jacobian) const;
 
-	//! @copydoc Joint::setFixedTransform
-	virtual void setFixedTransform(const rw::math::Transform3D<>& t3d);
+        //! @copydoc Joint::getFixedTransform
+        virtual rw::math::Transform3D<> getFixedTransform () const;
 
-	//! @copydoc Joint::getJointTransform
-	virtual rw::math::Transform3D<> getJointTransform(const rw::kinematics::State& state) const;
+        //! @copydoc Joint::setFixedTransform
+        virtual void setFixedTransform (const rw::math::Transform3D<>& t3d);
 
-	//! @copydoc Joint::setJointMapping
-	virtual void setJointMapping(rw::math::Function1Diff<>::Ptr function);
+        //! @copydoc Joint::getJointTransform
+        virtual rw::math::Transform3D<>
+        getJointTransform (const rw::kinematics::State& state) const;
 
-	//! @copydoc Joint::removeJointMapping
-	virtual void removeJointMapping();
+        //! @copydoc Joint::setJointMapping
+        virtual void setJointMapping (rw::math::Function1Diff<>::Ptr function);
 
-private:
-	rw::math::Transform3D<> _T;
-	rw::math::Function1Diff<>::Ptr _mapping;
-};
-//! @}
-} /* namespace models */
-} /* namespace rw */
+        //! @copydoc Joint::removeJointMapping
+        virtual void removeJointMapping ();
+
+      private:
+        rw::math::Transform3D<> _T;
+        rw::math::Function1Diff<>::Ptr _mapping;
+    };
+    //! @}
+}}    // namespace rw::models
 
 #endif /* RW_MODELS_PRISMATICSPHERICALJOINT_HPP_ */

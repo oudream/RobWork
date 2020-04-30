@@ -15,7 +15,7 @@ SET(FILES_CPP
   JacobianUtil.cpp
   JacobianCalculator.cpp
   JointDeviceJacobianCalculator.cpp  
-  #DeviceJacobianCalculator.cpp
+  DeviceJacobianCalculator.cpp
   MobileDevice.cpp
   TreeDevice.cpp
   CompositeDevice.cpp

@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RW_MODELS_JACOBIANUTIL_HPP
 #define RW_MODELS_JACOBIANUTIL_HPP
 
@@ -27,17 +26,17 @@
 
 namespace rw { namespace math {
     class Jacobian;
-}}
+}}    // namespace rw::math
 
 namespace rw { namespace kinematics {
     class State;
     class Frame;
-}}
+}}    // namespace rw::kinematics
 
 namespace rw { namespace models {
 
-    //class BasicDevice;
-    //class DependentRevoluteJoint;
+    // class BasicDevice;
+    // class DependentRevoluteJoint;
 
     /** @addtogroup models */
     /*@{*/
@@ -48,7 +47,7 @@ namespace rw { namespace models {
     */
     class JacobianUtil
     {
-    public:
+      public:
         /**
            @brief Add to column \b col of \b jacobian the Jacobian of a revolute
            joint with transform \b joint for a tool position of \b tcp.
@@ -56,11 +55,9 @@ namespace rw { namespace models {
            The Jacobian is given relative to the common world frame of \b joint
            and \b tcp.
         */
-        static void addRevoluteJacobianCol(math::Jacobian& jacobian,
-                                           int row,
-                                           int col,
-                                           const math::Transform3D<>& joint,
-                                           const math::Transform3D<>& tcp);
+        static void addRevoluteJacobianCol (math::Jacobian& jacobian, int row, int col,
+                                            const math::Transform3D<>& joint,
+                                            const math::Transform3D<>& tcp);
 
         /**
            @brief Add to column \b col of \b jacobian the Jacobian of a
@@ -70,11 +67,9 @@ namespace rw { namespace models {
            The Jacobian is given relative to the common world frame of \b joint
            and \b tcp.
         */
-        static void addPrismaticJacobianCol(math::Jacobian& jacobian,
-                                            int row,
-                                            int col,
-                                            const math::Transform3D<>& joint,
-                                            const math::Transform3D<>& tcp);
+        static void addPrismaticJacobianCol (math::Jacobian& jacobian, int row, int col,
+                                             const math::Transform3D<>& joint,
+                                             const math::Transform3D<>& tcp);
 
         /**
            @brief Add to column \b col of \b jacobian the Jacobian for a passive
@@ -85,12 +80,9 @@ namespace rw { namespace models {
            The Jacobian is given relative to the common world frame of \b joint
            and \b tcp.
         */
-        static void addPassiveRevoluteJacobianCol(math::Jacobian& jacobian,
-                                                  int row,
-                                                  int col,
-                                                  const math::Transform3D<>& passive,
-                                                  const math::Transform3D<>& tcp,
-                                                  double scale);
+        static void addPassiveRevoluteJacobianCol (math::Jacobian& jacobian, int row, int col,
+                                                   const math::Transform3D<>& passive,
+                                                   const math::Transform3D<>& tcp, double scale);
 
         /**
            @brief True iff \b child is in the subtree of \b parent for a tree
@@ -104,21 +96,20 @@ namespace rw { namespace models {
 
            isInSubTree() runs in time proportional to the size of the subtree.
         */
-        static bool isInSubTree(const kinematics::Frame& parent,
-                                const kinematics::Frame& child,
-                                const kinematics::State& state);
+        static bool isInSubTree (const kinematics::Frame& parent, const kinematics::Frame& child,
+                                 const kinematics::State& state);
 
         /**
            @brief True iff \b child is controlled by a joint of \b device for a
            tree structure of \b state.
         */
-       /* static bool isControlledBy(const BasicDevice& device,
-                                   const DependentRevoluteJoint& child,
-                                   const kinematics::State& state);
-                                   */
+        /* static bool isControlledBy(const BasicDevice& device,
+                                    const DependentRevoluteJoint& child,
+                                    const kinematics::State& state);
+                                    */
     };
 
     /*@}*/
-}} // end namespaces
+}}    // namespace rw::models
 
-#endif // end include guard
+#endif    // end include guard
