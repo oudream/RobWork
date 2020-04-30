@@ -11,7 +11,7 @@
 #include <QTabWidget>
 
 #include "JogGroup.hpp"
-#include <sandbox/control/JointController.hpp>
+#include <rwlibs/control/JointController.hpp>
 
 class SimulatorDialog : public QDialog
 {
