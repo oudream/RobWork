@@ -265,6 +265,6 @@ set(ROBWORKSIM_LIBRARY_DIRS ${Boost_LIBRARY_DIRS} ${RWSIM_CMAKE_LIBRARY_OUTPUT_D
 # Setup the Library List here. We need to make sure the correct order is maintained which is crucial
 # for some compilers.
 #
-set(ROBWORKSIM_LIBRARIES ${RWS_SANDBOX} sdurwsim_bullet sdurwsim_ode sdurwsim_gui sdurwsim)
+set(ROBWORKSIM_LIBRARIES ${RWSIM_SANDBOX} sdurwsim_bullet sdurwsim_ode sdurwsim_gui sdurwsim)
 
 set(ROBWORKSIM_DEPEND ${BULLET_LIBRARIES} ${ODE_LIBRARIES})

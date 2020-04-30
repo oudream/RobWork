@@ -231,9 +231,6 @@ int RobWorkStudioApp::run ()
                     rwstudio.addPlugin (new rws::Lua (), false, Qt::LeftDockWidgetArea);
 #endif
 
-#if RWS_HAVE_SANDBOX
-// Plugins which are avaible in the sandbox
-#endif
 #endif
                     if (showSplash) {
                         splash->showMessage ("Loading static plugins");

@@ -148,15 +148,6 @@ else()
     message(STATUS "RobWork: OpenGL and GLUT NOT FOUND! code disabled!")
 endif()
 
-# optional compilation of sandbox
-if(RWS_BUILD_SANDBOX)
-    message(STATUS "RobWorkStudio: Sandbox ENABLED!")
-    set(SANDBOX_LIB "rsdurws_sandbox")
-    set(RWS_HAVE_SANDBOX true)
-else()
-    message(STATUS "RobWorkStudio: Sandbox DISABLED!")
-endif()
-
 # Check if SWIG is available
 if(RW_BUILD_WITH_SWIG AND NOT DEFINED SWIG_EXECUTABLE)
     set(SWIG_EXECUTABLE ${RW_BUILD_WITH_SWIG_CMD})
@@ -286,7 +277,6 @@ set(
     sdurws_workcelleditor
     sdurws_luapl
     sdurws_luaeditor
-    ${RWS_SANDBOX}
     ${RWS_LUA}
     sdurws
     qtpropertybrowser

@@ -21,7 +21,6 @@
 #  RW_BUILD_WITH_YAOBI 
 #  RW_BUILD_WITH_LUA 
 #  RW_BUILD_WITH_TOLUA 
-#  RW_BUILD_WITH_SANDBOX 
 #
 #
 # Allow the syntax else (), endif (), etc.

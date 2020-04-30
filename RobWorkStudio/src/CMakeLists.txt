@@ -10,12 +10,6 @@ if(POLICY CMP0077) # Introduce cmake 3.13
     cmake_policy(SET CMP0077 OLD)
 endif()
 
-# Then sandbox if choosen
-option(RWS_BUILD_SANDBOX "Set when you want to build the sandbox library" ${RWS_BUILD_SANDBOX})
-if(RWS_BUILD_SANDBOX)
-    add_subdirectory(sandbox)
-endif()
-
 # Propagate libraries to parent directory
 set(RWS_PLUGIN_LIBRARIES ${RWS_PLUGIN_LIBRARIES} PARENT_SCOPE)
 set(RWS_COMPONENT_LIBRARIES ${RWS_COMPONENT_LIBRARIES} PARENT_SCOPE)

@@ -64,8 +64,6 @@
 #include <boost/bind.hpp>
 #include <sstream>
 
-//#include <sandbox/loaders/ColladaLoader.hpp>
-
 using namespace rw;
 using namespace rw::core;
 using namespace rw::common;
