@@ -18,7 +18,7 @@
 #include "Rule.hpp"
 #include "List.hpp"
 
-#include <rw/common/PropertyBase.hpp>
+#include <rw/core/PropertyBase.hpp>
 #include <rw/core/PropertyMap.hpp>
 #include <rw/math/Vector2D.hpp>
 #include <rw/math/Vector3D.hpp>

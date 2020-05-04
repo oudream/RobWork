@@ -88,7 +88,7 @@ public:
      * @brief the transform from the sensor frame to the point of origin.
      * @return transform from sensor frame to point of origin.
      */
-    rw::math::Transform3D<> getTransform();
+    virtual rw::math::Transform3D<> getTransform() = 0;
 
 };
 

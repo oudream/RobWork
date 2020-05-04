@@ -45,6 +45,9 @@ public:
     //! Smart pointer type of SimulatorLog
     typedef rw::core::Ptr<SimulatorLog> Ptr;
 
+    //! Smart pointer type of const SimulatorLog
+    typedef rw::core::Ptr<const SimulatorLog> CPtr;
+
     /**
      * @brief Constructor.
      * @note This item will not be added as a child to the parent scope using this constructor.

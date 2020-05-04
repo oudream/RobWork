@@ -74,10 +74,10 @@ namespace rw { namespace proximity {
              **/
             ProximityModel::Ptr b;
 
-            //! Closest point on f1 to f2, described in f1 reference frame
+            //! Closest point on f1 to f2, described in world reference frame
             math::Vector3D< double > p1;
 
-            //! Closest point on f2 to f1, described in >>>> \b f1 <<<<< reference frame
+            //! Closest point on f2 to f1, described in world reference frame
             math::Vector3D< double > p2;
 
             //! @brief distance between frame f1 and frame f1

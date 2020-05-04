@@ -35,8 +35,8 @@ namespace {
                            double dist,
                            ContactPoint& contact)
     {
-        contact.pA = wTa * p1;
-        contact.pB = wTa * p2;
+        contact.pA = p1;
+        contact.pB = p2;
         double len = (contact.pB-contact.pA).norm2();
         contact.n = (contact.pB-contact.pA)/len;
         contact.p = contact.n*(len/2) + contact.pA;

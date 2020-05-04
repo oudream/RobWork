@@ -284,13 +284,13 @@ SBGraspPlanner3D::query (const rw::kinematics::State& initstate, int maxNrOfQs)
 
             std::cout << "Distance: " << result.distance
                       << " "
-                      //<< MetricUtil::dist2(wTh*(hTobj*result.p2),wTf*result.p1) << " "
                       //<< MetricUtil::dist2(result.p2,result.p1)
+                      //<< MetricUtil::dist2(inverse(wTh*hTobj)*result.p2,inverse(wTf)*result.p1) << " "
                       << "\n";
 
             // for now we estimate the contact normal as the shortest vector
             // between the two objects. Perhaps not entirely true... consider the surface normal
-            Vector3D<> n = (wTh * hTobj) * result.p2 - wTf * result.p1;
+            Vector3D<> n = result.p2 - result.p1;
 
             // next we extract the approach vector which is just the heading of the z-axis
             // in the end effector

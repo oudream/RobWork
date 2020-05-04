@@ -47,8 +47,10 @@ bool ProximityStrategy::addModel (rw::models::Object::Ptr object)
         std::vector< Geometry::Ptr > geoms = robj->getGeometry ();
         for (Geometry::Ptr geom : geoms) {
             Frame* geoframe = geom->getFrame ();
-            if (!hasModel (geoframe))
+            if (!hasModel (geoframe)) {
                 _frameToModel[*geoframe] = createModel ();
+                _frameToModel[*geoframe]->setFrame(geoframe);
+            }
             ProximityModel::Ptr model = getModel (geoframe);
             model->addGeometry (geom);
         }

@@ -198,8 +198,8 @@ void ContactStrategyPQP::findContact(std::vector<Contact> &contacts,
 
 	for(size_t i=0;i<res->distances.size();i++){
 		Contact c;
-		Vector3D<> p1 = wTa*res->p1s[i];
-		Vector3D<> p2 = wTa*res->p2s[i];
+		Vector3D<> p1 = res->p1s[i];
+		Vector3D<> p2 = res->p2s[i];
 		c.setPointA(p1);
 		c.setPointB(p2);
 

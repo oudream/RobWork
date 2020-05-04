@@ -24,6 +24,7 @@ if(build)
         log/SimulatorLogWidget.ui
         log/BodyMotionWidget.ui
         log/CollisionResultWidget.ui
+        log/DistanceResultWidget.ui
         log/ConstraintWidget.ui
         log/ForceTorqueWidget.ui
         log/ContactSetWidget.ui
@@ -56,6 +57,8 @@ if(build)
         log/SimulatorLogEntryWidget.hpp
         log/BodyMotionWidget.hpp
         log/CollisionResultWidget.hpp
+        log/DistanceMultiResultWidget.hpp
+        log/DistanceResultWidget.hpp
         log/ConstraintWidget.hpp
         log/ForceTorqueWidget.hpp
         log/ContactSetWidget.hpp
@@ -92,6 +95,8 @@ if(build)
         log/SimulatorLogWidget.cpp
         log/BodyMotionWidget.cpp
         log/CollisionResultWidget.cpp
+        log/DistanceMultiResultWidget.cpp
+        log/DistanceResultWidget.cpp
         log/ConstraintWidget.cpp
         log/ForceTorqueWidget.cpp
         log/ContactSetWidget.cpp

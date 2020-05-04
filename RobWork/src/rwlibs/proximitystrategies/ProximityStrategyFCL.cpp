@@ -421,6 +421,7 @@ rw::proximity::DistanceStrategy::Result& ProximityStrategyFCL::doDistance (
     size_t geoIdxA = 0;
     size_t geoIdxB = 0;
     for (const auto& ma : aModel->models) {
+        geoIdxB = 0;
         for (const auto& mb : bModel->models) {
             double minDistance = 0;
             /* mband TODO:
