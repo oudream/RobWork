@@ -136,7 +136,7 @@ namespace simulator {
 		void reset(const rw::kinematics::State& state);
 
 		 //! returns the RobWork Body
-		dynamics::Body::Ptr getRwBody(){ return _body; }
+		rwsim::dynamics::Body::Ptr getRwBody() const { return _body; }
 
 		//! get the ODE bodyId
 		dBodyID getBodyID() const { return _bodyId; }

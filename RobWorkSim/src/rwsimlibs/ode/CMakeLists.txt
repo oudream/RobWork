@@ -25,6 +25,7 @@ if(build)
         ODEConstraint.cpp
         ODEContactStrategy.cpp
         ODEThreading.cpp
+        ODELogUtil.cpp
     )
 
     set(
@@ -43,6 +44,7 @@ if(build)
         ODEConstraint.hpp
         ODEContactStrategy.hpp
         ODEThreading.hpp
+        ODELogUtil.hpp
     )
 
     # Detect if ODE comes with threading_impl.h file (version 0.13 and newer).

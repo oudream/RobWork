@@ -409,6 +409,7 @@ DistanceResult& ProximityStrategyPQP::doDistance (ProximityModel::Ptr aModel,
     int geoB = -1;
     for (const RWPQPModel& ma : qdata.a->models) {
         geoA++;
+        geoB = -1;
         for (const RWPQPModel& mb : qdata.b->models) {
             geoB++;
             pqpDistance (ma.pqpmodel.get (),
@@ -421,9 +422,8 @@ DistanceResult& ProximityStrategyPQP::doDistance (ProximityModel::Ptr aModel,
 
             if (rwresult.distance > qdata.cache->_distResult.distance) {
                 rwresult.distance = qdata.cache->_distResult.distance;
-                rwresult.p1       = ma.t3d * fromRapidVector (qdata.cache->_distResult.p1);
-                rwresult.p2 =
-                    inverse (wTa) * wTb * mb.t3d * fromRapidVector (qdata.cache->_distResult.p2);
+                rwresult.p1 = wTa * ma.t3d * fromRapidVector (qdata.cache->_distResult.p1);
+                rwresult.p2 = wTb * mb.t3d * fromRapidVector (qdata.cache->_distResult.p2);
 
                 rwresult.geoIdxA = geoA;
                 rwresult.geoIdxB = geoB;
@@ -451,10 +451,15 @@ MultiDistanceResult& ProximityStrategyPQP::doDistances (ProximityModel::Ptr aMod
     rwresult.b = bModel;
 
     PQP_MultiDistanceResult& result = qdata.cache->_multiDistResult;
-    result.clear ();
 
+    int geoA = -1;
+    int geoB = -1;
     for (const RWPQPModel& ma : qdata.a->models) {
+        geoA++;
+        geoB = -1;
         for (const RWPQPModel& mb : qdata.b->models) {
+            geoB++;
+            result.clear();
             pqpMultiDistance (threshold,
                               ma.pqpmodel.get (),
                               wTa * ma.t3d,
@@ -472,8 +477,8 @@ MultiDistanceResult& ProximityStrategyPQP::doDistances (ProximityModel::Ptr aMod
                 int id      = result.id1s[i];
                 if (dist < rwresult.distance) {
                     rwresult.distance = dist;
-                    rwresult.p1       = ma.t3d * fromRapidVector (result.p1s[i]);
-                    rwresult.p2       = ma.t3d * fromRapidVector (result.p2s[i]);
+                    rwresult.p1 = wTa * ma.t3d * fromRapidVector (result.p1s[i]);
+                    rwresult.p2 = wTa * ma.t3d * fromRapidVector (result.p2s[i]);
                 }
                 IdMap::iterator res = idMap.find (id);
                 if (res == idMap.end ()) {
@@ -505,6 +510,8 @@ MultiDistanceResult& ProximityStrategyPQP::doDistances (ProximityModel::Ptr aMod
             rwresult.p1s.resize (prevSize + vsize);
             rwresult.p2s.resize (prevSize + vsize);
             rwresult.distances.resize (prevSize + vsize);
+            rwresult.geoIdxA.resize (prevSize + vsize);
+            rwresult.geoIdxB.resize (prevSize + vsize);
             rwresult.p1prims.resize (prevSize + vsize);
             rwresult.p2prims.resize (prevSize + vsize);
 
@@ -512,16 +519,20 @@ MultiDistanceResult& ProximityStrategyPQP::doDistances (ProximityModel::Ptr aMod
             for (IdMap::iterator it = idMap.begin (); it != idMap.end (); ++it, k++) {
                 int idx               = (*it).second;
                 rwresult.distances[k] = result.distances[idx];
-                rwresult.p1s[k]       = ma.t3d * fromRapidVector (result.p1s[idx]);
-                rwresult.p2s[k]       = ma.t3d * fromRapidVector (result.p2s[idx]);
+                rwresult.p1s[k]       = wTa * ma.t3d * fromRapidVector (result.p1s[idx]);
+                rwresult.p2s[k]       = wTa * ma.t3d * fromRapidVector (result.p2s[idx]);
+                rwresult.geoIdxA[k]   = geoA;
+                rwresult.geoIdxB[k]   = geoB;
                 rwresult.p1prims[k]   = result.id1s[idx];
                 rwresult.p2prims[k]   = result.id2s[idx];
             }
             for (IdMap::iterator it = idMap1.begin (); it != idMap1.end (); ++it, k++) {
                 int idx               = (*it).second;
                 rwresult.distances[k] = result.distances[idx];
-                rwresult.p1s[k]       = ma.t3d * fromRapidVector (result.p1s[idx]);
-                rwresult.p2s[k]       = ma.t3d * fromRapidVector (result.p2s[idx]);
+                rwresult.p1s[k]       = wTa * ma.t3d * fromRapidVector (result.p1s[idx]);
+                rwresult.p2s[k]       = wTa * ma.t3d * fromRapidVector (result.p2s[idx]);
+                rwresult.geoIdxA[k]   = geoA;
+                rwresult.geoIdxB[k]   = geoB;
                 rwresult.p1prims[k]   = result.id1s[idx];
                 rwresult.p2prims[k]   = result.id2s[idx];
             }
@@ -608,6 +619,7 @@ ProximityStrategyPQP::doDistanceThreshold (ProximityModel::Ptr aModel, const Tra
     int geoB = -1;
     for (const RWPQPModel& ma : a->models) {
         geoA++;
+        geoB = -1;
         for (const RWPQPModel& mb : b->models) {
             geoB++;
             pqpDistanceThreshold (ma.pqpmodel.get (),
@@ -621,8 +633,8 @@ ProximityStrategyPQP::doDistanceThreshold (ProximityModel::Ptr aModel, const Tra
 
             if (rwresult.distance > distResult.distance) {
                 rwresult.distance = distResult.distance;
-                rwresult.p1       = ma.t3d * fromRapidVector (distResult.p1);
-                rwresult.p2       = inverse (wTa) * wTb * mb.t3d * fromRapidVector (distResult.p2);
+                rwresult.p1       = wTa * ma.t3d * fromRapidVector (distResult.p1);
+                rwresult.p2       = wTb * mb.t3d * fromRapidVector (distResult.p2);
 
                 // rwresult.f1 = a;
                 // rwresult.f2 = b;

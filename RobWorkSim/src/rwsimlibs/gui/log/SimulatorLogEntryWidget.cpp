@@ -21,6 +21,8 @@
 #include "ConstraintWidget.hpp"
 #include "ContactSetWidget.hpp"
 #include "ContactVelocitiesWidget.hpp"
+#include "DistanceResultWidget.hpp"
+#include "DistanceMultiResultWidget.hpp"
 #include "EquationSystemWidget.hpp"
 #include "ForceTorqueWidget.hpp"
 #include "LogMessageWidget.hpp"
@@ -75,6 +77,12 @@ SimulatorLogEntryWidget::Factory::getWidgetDispatchers(
     if (dispatcher->accepts(entry))
         res.push_back(dispatcher);
     dispatcher = ownedPtr(new ContactVelocitiesWidget::Dispatcher());
+    if (dispatcher->accepts(entry))
+        res.push_back(dispatcher);
+    dispatcher = ownedPtr(new DistanceResultWidget::Dispatcher());
+    if (dispatcher->accepts(entry))
+        res.push_back(dispatcher);
+    dispatcher = ownedPtr(new DistanceMultiResultWidget::Dispatcher());
     if (dispatcher->accepts(entry))
         res.push_back(dispatcher);
     dispatcher = ownedPtr(new EquationSystemWidget::Dispatcher());

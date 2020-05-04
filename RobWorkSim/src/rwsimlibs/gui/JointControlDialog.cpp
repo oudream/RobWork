@@ -22,7 +22,7 @@ VelTab::VelTab(rwlibs::control::JointController::Ptr jcontroller, QWidget *paren
 
 
 
-PosTab::PosTab(JointControllerPtr jcontroller, QWidget *parent)
+PosTab::PosTab(JointController::Ptr jcontroller, QWidget *parent)
        : QWidget(parent),_jcont(jcontroller)
 {
    if( !(jcontroller->getControlModes() & (JointController::POSITION | JointController::CNT_POSITION)) )

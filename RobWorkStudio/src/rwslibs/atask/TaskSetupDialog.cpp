@@ -88,6 +88,7 @@ public:
 	double getMaxTorque() { return 100; }
 	Vector3D<> getForce() { return Vector3D<>::zero(); }
 	Vector3D<> getTorque() { return Vector3D<>::zero(); }
+	Transform3D<> getTransform() { return Transform3D<>::identity(); }
 };
 }
 

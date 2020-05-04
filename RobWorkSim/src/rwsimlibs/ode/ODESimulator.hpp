@@ -219,6 +219,9 @@ namespace simulator {
 		void attach(rwsim::dynamics::Body::Ptr b1, rwsim::dynamics::Body::Ptr b2);
 		void detach(rwsim::dynamics::Body::Ptr b1, rwsim::dynamics::Body::Ptr b2);
 
+	    //! @copydoc PhysicsEngine::setSimulatorLog
+	    void setSimulatorLog(rw::core::Ptr<rwsim::log::SimulatorLogScope> log);
+
 		void disableCollision(rwsim::dynamics::Body::Ptr b1, rwsim::dynamics::Body::Ptr b2);
 
 		void enableCollision(rwsim::dynamics::Body::Ptr b1, rwsim::dynamics::Body::Ptr b2);
@@ -497,6 +500,7 @@ namespace simulator {
 
 		std::map< std::pair<rw::kinematics::Frame*, rw::kinematics::Frame*>, dJointID > _attachConstraints;
 
+	    class ODELogUtil* _log;
 
 	};
 
