@@ -410,7 +410,7 @@ void Mathematica::put (LinkImpl::Ptr link, const Expression& expression)
             const FunctionBase& fct = dynamic_cast< const FunctionBase& > (expression);
             const std::list< rw::core::Ptr< const Expression > >& args = fct.getArguments ();
             WSPutFunction (lp, fct.getName ().c_str (), (int) args.size ());
-            BOOSTfor_FOREACH (const rw::core::Ptr< const Expression > arg, args)
+            for(const rw::core::Ptr< const Expression > arg : args)
             {
                 put (link, *arg);
             }
