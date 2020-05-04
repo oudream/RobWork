@@ -136,8 +136,8 @@ public:
 	std::string taskID;
 	std::string resultID;
     
-    Path<Timed<AssemblyState> > realState;
-	Path<Timed<AssemblyState> > assumedState;
+    rw::trajectory::Path<Timed<AssemblyState> > realState;
+	rw::trajectory::Path<Timed<AssemblyState> > assumedState;
 	rw::math::Transform3D<double>  approach;
 	std::string errorMessage;
 };
@@ -161,16 +161,16 @@ public:
 	rw::math::Wrench6D<double> ftSensorMale;
 	rw::math::Wrench6D<double> ftSensorFemale;
 	bool contact;
-	Path<rw::math::Transform3D<double> > maleflexT;
-	Path<rw::math::Transform3D<double> > femaleflexT;
-	Path<rw::math::Transform3D<double> > contacts;
+	rw::trajectory::Path<rw::math::Transform3D<double> > maleflexT;
+	rw::trajectory::Path<rw::math::Transform3D<double> > femaleflexT;
+	rw::trajectory::Path<rw::math::Transform3D<double> > contacts;
 	rw::math::Vector3D<double> maxContactForce;
 };
 
 %template (AssemblyStatePtr) rw::core::Ptr<AssemblyState>;
 %template (TimedAssemblyState) Timed<AssemblyState>;
 %template (TimedAssemblyStateVector) std::vector<Timed<AssemblyState> >;
-%template (PathTimedAssemblyState) Path<Timed<AssemblyState> >;
+%template (PathTimedAssemblyState) rw::trajectory::Path<Timed<AssemblyState> >;
 OWNEDPTR(AssemblyState);
 
 class AssemblyTask

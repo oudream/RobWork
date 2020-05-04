@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RW_MODELS_COMPOSITEJOINTDEVICE_HPP
 #define RW_MODELS_COMPOSITEJOINTDEVICE_HPP
 
@@ -24,6 +23,7 @@
  */
 
 #include "JointDevice.hpp"
+
 #include <vector>
 
 namespace rw { namespace models {
@@ -65,7 +65,7 @@ namespace rw { namespace models {
     */
     class CompositeJointDevice : public JointDevice
     {
-    public:
+      public:
         /**
            @brief Constructor
 
@@ -75,12 +75,9 @@ namespace rw { namespace models {
            @param name [in] the name of the device
            @param state [in] the kinematic structure assumed for Jacobian computations
         */
-        CompositeJointDevice(
-            rw::kinematics::Frame* base,
-			const std::vector<Device::Ptr>& devices,
-            rw::kinematics::Frame* end,
-            const std::string& name,
-            const kinematics::State& state);
+        CompositeJointDevice (rw::kinematics::Frame* base,
+                              const std::vector< Device::Ptr >& devices, rw::kinematics::Frame* end,
+                              const std::string& name, const kinematics::State& state);
 
         /**
            @brief Constructor
@@ -91,15 +88,13 @@ namespace rw { namespace models {
            @param name [in] the name of the device
            @param state [in] the kinematic structure assumed for Jacobian computations
         */
-        CompositeJointDevice(
-            rw::kinematics::Frame *base,
-			const std::vector<Device::Ptr>& devices,
-            const std::vector<rw::kinematics::Frame*>& ends,
-            const std::string& name,
-            const kinematics::State& state);
+        CompositeJointDevice (rw::kinematics::Frame* base,
+                              const std::vector< Device::Ptr >& devices,
+                              const std::vector< rw::kinematics::Frame* >& ends,
+                              const std::string& name, const kinematics::State& state);
 
         //! @brief destructor
-        virtual ~CompositeJointDevice(){}
+        virtual ~CompositeJointDevice () {}
 
         /**
            @copydoc Device::setQ
@@ -107,7 +102,7 @@ namespace rw { namespace models {
            The method is implemented via forwarding to the Device::setQ()
            methods of the subdevices.
         */
-        void setQ(const math::Q& q, kinematics::State& state) const;
+        void setQ (const math::Q& q, kinematics::State& state) const;
 
         // Methods specific to CompositeJointDevice follow here.
 
@@ -115,7 +110,7 @@ namespace rw { namespace models {
            @brief like Device::baseJend() but with a Jacobian calculated for all
            end-effectors (see getEnds()).
         */
-        math::Jacobian baseJends(const kinematics::State& state) const;
+        math::Jacobian baseJends (const kinematics::State& state) const;
 
         /**
            @brief The end-effectors of the composite device.
@@ -126,15 +121,15 @@ namespace rw { namespace models {
            This sequence of end-effectors may or may not include the default
            end-effector returned by getEnd().
         */
-        const std::vector<kinematics::Frame*>& getEnds() const { return _ends; }
+        const std::vector< kinematics::Frame* >& getEnds () const { return _ends; }
 
-    private:
-		std::vector<Device::Ptr> _devices;
-        std::vector<kinematics::Frame*> _ends;
-        rw::core::Ptr<class JacobianCalculator> _djmulti;
+      private:
+        std::vector< Device::Ptr > _devices;
+        std::vector< kinematics::Frame* > _ends;
+        rw::core::Ptr< class JacobianCalculator > _djmulti;
     };
 
     /*@}*/
-}} // end namespaces
+}}    // namespace rw::models
 
-#endif // end include guard
+#endif    // end include guard

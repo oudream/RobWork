@@ -2,17 +2,17 @@
 
 #include <rw/rw.hpp>
 #include <rw/loaders/model3d/STLFile.hpp>
-#include "CSGConvert.hpp"
+#include <rwlibs/csg/CSGConvert.hpp>
 
 
 
 using namespace std;
 using namespace rw;
-using namespace rw::common;
 using namespace rw::math;
 using namespace rw::geometry;
 using namespace rw::csg;
 using namespace rw::loaders;
+using rwlibs::csg::CSGConvert;
 
 
 
@@ -330,5 +330,5 @@ ostream& rw::csg::operator<<(ostream& stream, const CSGModel& csgmodel)
 //----------------------------------------------------------------------
 void CSGModel::_convertToTriMesh()
 {
-	_mesh = CSGConvert::csgjs_model2TriMesh(_model);
+	_mesh = CSGConvert::csgjs_model2TriMesh(&_model);
 }

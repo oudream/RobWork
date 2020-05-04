@@ -103,7 +103,7 @@ namespace control {
 		double _time;
 		rw::math::Q _target;
 		rw::math::Q _lastError;
-		rw::sandbox::SyncVelocityRamp _velramp;
+		rw::control::SyncVelocityRamp _velramp;
 		rw::math::Q _currentQ;
 		rw::math::Q _maxVel;
 		rw::math::Q _x;

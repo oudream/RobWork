@@ -226,7 +226,7 @@ class StopCriteria
 %template (StopCriteriaPtrVector) std::vector<rw::core::Ptr<StopCriteria> >;
 
 %nodefaultctor PathPlanner;
-template <class From, class To, class PATH = Path<From> >
+template <class From, class To, class PATH = rw::trajectory::Path<From> >
 class PathPlanner
 {
 public:
@@ -906,20 +906,20 @@ public:
 
     %extend {
 /*
-        rw::core::Ptr<Path<rw::math::Q> > query(rw::math::Q from, rw::math::Q to, rw::core::Ptr<StopCriteria> stop){
-            rw::core::Ptr<Path<rw::math::Q> > path = rw::core::ownedPtr(new PathQ());
+        rw::core::Ptr<rw::trajectory::Path<rw::math::Q> > query(rw::math::Q from, rw::math::Q to, rw::core::Ptr<StopCriteria> stop){
+            rw::core::Ptr<rw::trajectory::Path<rw::math::Q> > path = rw::core::ownedPtr(new PathQ());
             $self->rw::pathplanning::PathPlanner<rw::math::Q,const rw::math::Q>::query(from,to,*path,*stop);
             return path;
         }
 
-        rw::core::Ptr<Path<rw::math::Q> > query(rw::math::Q from, rw::math::Q to, double time){
-            rw::core::Ptr<Path<rw::math::Q> > path = rw::core::ownedPtr(new PathQ());
+        rw::core::Ptr<rw::trajectory::Path<rw::math::Q> > query(rw::math::Q from, rw::math::Q to, double time){
+            rw::core::Ptr<rw::trajectory::Path<rw::math::Q> > path = rw::core::ownedPtr(new PathQ());
             $self->rw::pathplanning::PathPlanner<rw::math::Q,const rw::math::Q>::query(from,to,*path,time);
             return path;
         }
 
-        rw::core::Ptr<Path<rw::math::Q> > query(rw::math::Q from, rw::math::Q to){
-            rw::core::Ptr<Path<rw::math::Q> > path = rw::core::ownedPtr(new PathQ());
+        rw::core::Ptr<rw::trajectory::Path<rw::math::Q> > query(rw::math::Q from, rw::math::Q to){
+            rw::core::Ptr<rw::trajectory::Path<rw::math::Q> > path = rw::core::ownedPtr(new PathQ());
             $self->rw::pathplanning::PathPlanner<rw::math::Q,const rw::math::Q>::query(from,to,*path);
             return path;
         }
@@ -952,20 +952,20 @@ public:
 
     %extend {
 
-        rw::core::Ptr<Path<rw::math::Q> > query(rw::math::Q from, rw::math::Transform3D<double> to, rw::core::Ptr<StopCriteria> stop){
-            rw::core::Ptr<Path<rw::math::Q> > path = rw::core::ownedPtr(new PathQ());
+        rw::core::Ptr<rw::trajectory::Path<rw::math::Q> > query(rw::math::Q from, rw::math::Transform3D<double> to, rw::core::Ptr<StopCriteria> stop){
+            rw::core::Ptr<rw::trajectory::Path<rw::math::Q> > path = rw::core::ownedPtr(new rw::trajectory::Path<rw::math::Q>());
             $self->rw::pathplanning::PathPlanner<rw::math::Q,const rw::math::Transform3D<double> >::query(from,to,*path,*stop);
             return path;
         }
 
-        rw::core::Ptr<Path<rw::math::Q> > query(rw::math::Q from, rw::math::Transform3D<double> to, double time){
-            rw::core::Ptr<Path<rw::math::Q> > path = rw::core::ownedPtr(new PathQ());
+        rw::core::Ptr<rw::trajectory::Path<rw::math::Q> > query(rw::math::Q from, rw::math::Transform3D<double> to, double time){
+            rw::core::Ptr<rw::trajectory::Path<rw::math::Q> > path = rw::core::ownedPtr(new rw::trajectory::Path<rw::math::Q>());
             $self->rw::pathplanning::PathPlanner<rw::math::Q,const rw::math::Transform3D<double> >::query(from,to,*path,time);
             return path;
         }
 
-        rw::core::Ptr<Path<rw::math::Q> > query(rw::math::Q from, rw::math::Transform3D<double> to){
-            rw::core::Ptr<Path<rw::math::Q> > path = rw::core::ownedPtr(new PathQ());
+        rw::core::Ptr<rw::trajectory::Path<rw::math::Q> > query(rw::math::Q from, rw::math::Transform3D<double> to){
+            rw::core::Ptr<rw::trajectory::Path<rw::math::Q> > path = rw::core::ownedPtr(new rw::trajectory::Path<rw::math::Q>());
             $self->rw::pathplanning::PathPlanner<rw::math::Q,const rw::math::Transform3D<double> >::query(from,to,*path);
             return path;
         }

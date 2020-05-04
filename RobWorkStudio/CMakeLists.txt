@@ -55,6 +55,11 @@ include(${RWS_ROOT}/cmake/RobWorkStudioMacros.cmake)
 
 rw_init_project(${RWS_ROOT} RobWorkStudio RWS ${ROBWORKSTUDIO_VERSION})
 rw_get_os_info()
+
+if(DEFINED MSVC)
+    set(RWS_SHARED_LIBS OFF)
+endif()
+
 rw_options(RWS)
 
 # ##################################################################################################

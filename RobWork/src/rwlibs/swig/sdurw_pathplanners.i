@@ -56,7 +56,7 @@ public:
     /**
      * @brief The current path of the random walk.
      */
-	const Path<rw::math::Q>& getPath() const;
+	const rw::trajectory::Path<rw::math::Q>& getPath() const;
 
     /**
      * @brief Constructor
@@ -109,7 +109,7 @@ protected:
     /**
      * @brief The path of random walk.
      */
-	Path<rw::math::Q> _path;
+	rw::trajectory::Path<rw::math::Q> _path;
 };
 
 //! @brief Smart pointer type for a ARWPlanner.

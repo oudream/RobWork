@@ -62,16 +62,6 @@ find_package(OpenGL REQUIRED)
 # ##################################################################################################
 # DEPENDENCIES - OPTIONAL these dependencies are optional, which is the user can switch off modules
 
-# optional compilation of sandbox
-if(RWSIM_BUILD_SANDBOX)
-    message(STATUS "RobWorkSim: Sandbox ENABLED!")
-    set(SANDBOX_LIB "sdurwsim_sandbox")
-    set(RWSIM_HAVE_SANDBOX true)
-else()
-    message(STATUS "RobWorkSim: Sandbox DISABLED!")
-    set(RWSIM_HAVE_SANDBOX false)
-endif()
-
 # Check if SWIG is available
 if(RW_BUILD_WITH_SWIG AND NOT DEFINED SWIG_EXECUTABLE)
     set(SWIG_EXECUTABLE ${RW_BUILD_WITH_SWIG_CMD})
@@ -84,7 +74,6 @@ else()
 endif()
 
 include(CMakeDependentOption)
-# optional compilation of sandbox
 set(RWSIM_HAVE_LUA False)
 cmake_dependent_option(RWSIM_DISABLE_LUA "Set when you want to disable lua!" OFF "RW_BUILD_WITH_LUA"
                        ON)
@@ -265,6 +254,6 @@ set(ROBWORKSIM_LIBRARY_DIRS ${Boost_LIBRARY_DIRS} ${RWSIM_CMAKE_LIBRARY_OUTPUT_D
 # Setup the Library List here. We need to make sure the correct order is maintained which is crucial
 # for some compilers.
 #
-set(ROBWORKSIM_LIBRARIES ${RWSIM_SANDBOX} sdurwsim_bullet sdurwsim_ode sdurwsim_gui sdurwsim)
+set(ROBWORKSIM_LIBRARIES sdurwsim_bullet sdurwsim_ode sdurwsim_gui sdurwsim)
 
 set(ROBWORKSIM_DEPEND ${BULLET_LIBRARIES} ${ODE_LIBRARIES})
