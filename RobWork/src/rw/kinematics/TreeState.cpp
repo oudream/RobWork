@@ -27,19 +27,19 @@ using namespace rw::kinematics;
 using namespace rw::core;
 
 namespace {
-    int nrOfDafs(boost::shared_ptr<StateSetup> setup){
+    int nrOfDafs(rw::core::Ptr<StateSetup> setup){
         return setup->getMaxDAFIdx();
     }
 
-    int nrOfIDs(boost::shared_ptr<StateSetup> setup){
+    int nrOfIDs(rw::core::Ptr<StateSetup> setup){
         return setup->getMaxChildListIdx();
     }
 
-    Frame* getRoot(boost::shared_ptr<StateSetup> setup){
+    Frame* getRoot(rw::core::Ptr<StateSetup> setup){
         return  setup->getTree()->getRoot();
     }
 
-    int getRootIdx(boost::shared_ptr<StateSetup> setup){
+    int getRootIdx(rw::core::Ptr<StateSetup> setup){
         return getRoot(setup)->getID();
     }
 
@@ -63,11 +63,11 @@ TreeState::TreeState(const TreeState &src){
     _dafIdxToParentIdx = src._dafIdxToParentIdx;
 }
 
-boost::shared_ptr<StateSetup> TreeState::getStateSetup() const{
+rw::core::Ptr<StateSetup> TreeState::getStateSetup() const{
     return _setup;
 }
 
-TreeState::TreeState(boost::shared_ptr<StateSetup> setup):
+TreeState::TreeState(rw::core::Ptr<StateSetup> setup):
     _setup(setup),
     _parentIdxToChildList( nrOfIDs(setup), -1 ),
     _childLists(1, FrameList(nrOfDafs(setup))),

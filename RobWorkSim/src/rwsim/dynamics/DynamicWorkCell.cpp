@@ -66,7 +66,7 @@ DynamicWorkCell::DynamicWorkCell(WorkCell::Ptr workcell,
     }
 
     for(Constraint::Ptr b : _constraints) {
-    	workcell->getStateStructure()->addData(b.getSharedPtr());
+    	workcell->getStateStructure()->addData(b);
     }
 
     for(DynamicDevice::Ptr b : _devices) {
@@ -147,7 +147,7 @@ void DynamicWorkCell::addBody(Body::Ptr body){
 }
 
 void DynamicWorkCell::addConstraint(Constraint::Ptr constraint) {
-	_workcell->getStateStructure()->addData(constraint.getSharedPtr());
+	_workcell->getStateStructure()->addData(constraint);
 	_constraints.push_back(constraint);
 }
 
