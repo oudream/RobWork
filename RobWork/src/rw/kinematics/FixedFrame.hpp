@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  ********************************************************************************/
-
 
 #ifndef RW_KINEMATICS_FIXEDFRAME_HPP
 #define RW_KINEMATICS_FIXEDFRAME_HPP
@@ -37,11 +36,11 @@ namespace rw { namespace kinematics {
      * A fixed frame can for example be used for attaching a camera, say, with a
      * fixed offset relative to the tool.
      */
-    class FixedFrame: public Frame
+    class FixedFrame : public Frame
     {
-    public:
-		//! @brief smart pointer type to this class
-		typedef rw::core::Ptr<FixedFrame> Ptr;
+      public:
+        //! @brief smart pointer type to this class
+        typedef rw::core::Ptr< FixedFrame > Ptr;
 
         /**
          * @brief A frame fixed to its parent with a constant relative transform
@@ -50,11 +49,10 @@ namespace rw { namespace kinematics {
          * @param name [in] The name of the frame.
          * @param transform [in] The transform with which to attach the frame.
          */
-        FixedFrame(const std::string& name,
-			const rw::math::Transform3D<>& transform);
+        FixedFrame (const std::string& name, const rw::math::Transform3D<>& transform);
 
         //! @brief destructor
-        virtual ~FixedFrame(){}
+        virtual ~FixedFrame () {}
 
         /**
          * @brief Sets the fixed transform of this frame.
@@ -63,34 +61,34 @@ namespace rw { namespace kinematics {
          * MovableFrame instead or make sure multiple threads are not using this
          * frame when changing the transformation.
          */
-		void setTransform(const rw::math::Transform3D<>& transform);
+        void setTransform (const rw::math::Transform3D<>& transform);
 
-		/**
-		 * @brief Move the frame such that it is located with a relative transform \b refTtarget relative to \b refframe.
-		 * @param refTtarget [in] the transform relative to \b refframe .
-		 * @param refframe [in] the reference frame.
-		 * @param state [in] the state giving the current poses.
-		 */
-		void moveTo(const rw::math::Transform3D<>& refTtarget, Frame* refframe, State& state);
+        /**
+         * @brief Move the frame such that it is located with a relative transform \b refTtarget
+         * relative to \b refframe.
+         * @param refTtarget [in] the transform relative to \b refframe .
+         * @param refframe [in] the reference frame.
+         * @param state [in] the state giving the current poses.
+         */
+        void moveTo (const rw::math::Transform3D<>& refTtarget, Frame* refframe, State& state);
 
         /**
          * @brief get the fixed transform of this frame.
          */
-        const math::Transform3D<>& getFixedTransform() const;
+        const math::Transform3D<>& getFixedTransform () const;
 
-    private:
-        void doMultiplyTransform(const math::Transform3D<>& parent,
-                                 const State& state,
-								 rw::math::Transform3D<>& result) const;
+      private:
+        void doMultiplyTransform (const math::Transform3D<>& parent, const State& state,
+                                  rw::math::Transform3D<>& result) const;
 
-        rw::math::Transform3D<> doGetTransform(const State& state) const;
+        rw::math::Transform3D<> doGetTransform (const State& state) const;
 
-    private:
+      private:
         rw::math::Transform3D<> _transform;
     };
 
     /*@}*/
 
-}} // end namespaces
+}}    // namespace rw::kinematics
 
-#endif // end include guard
+#endif    // end include guard

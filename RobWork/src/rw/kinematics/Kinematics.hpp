@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RW_KINEMATICS_KINEMATICS_HPP
 #define RW_KINEMATICS_KINEMATICS_HPP
 
@@ -25,6 +24,7 @@
 
 #include <rw/kinematics/Frame.hpp>
 #include <rw/math/Transform3D.hpp>
+
 #include <map>
 
 namespace rw { namespace kinematics {
@@ -36,8 +36,9 @@ namespace rw { namespace kinematics {
     /**
        @brief Utility functions for the rw::kinematics module.
     */
-    class Kinematics {
-    public:
+    class Kinematics
+    {
+      public:
         /**
          * @brief The transform of \b frame in relative to the world frame.
          *
@@ -49,8 +50,7 @@ namespace rw { namespace kinematics {
          *
          * @return The transform of the frame relative to the world frame.
          */
-        static math::Transform3D<> worldTframe(const Frame* to, const State& state);
-
+        static math::Transform3D<> worldTframe (const Frame* to, const State& state);
 
         /**
          * @brief The transform of frame \b to relative to frame \b from.
@@ -70,9 +70,8 @@ namespace rw { namespace kinematics {
          *
          * @return The transform from the start frame to the end frame.
          */
-        static math::Transform3D<> frameTframe(
-            const Frame* from, const Frame* to, const State& state);
-
+        static math::Transform3D<> frameTframe (const Frame* from, const Frame* to,
+                                                const State& state);
 
         /** @brief All frames reachable from \b root for a tree structure of \b
          * state.
@@ -88,7 +87,7 @@ namespace rw { namespace kinematics {
          *
          * @return All reachable frames.
          */
-        static std::vector<Frame*> findAllFrames(Frame* root, const State& state);
+        static std::vector< Frame* > findAllFrames (Frame* root, const State& state);
 
         /** @brief All frames reachable from \b root for a tree structure.
          *
@@ -103,7 +102,7 @@ namespace rw { namespace kinematics {
          *
          * @return All reachable frames.
          */
-        static std::vector<Frame*> findAllFrames(Frame* root);
+        static std::vector< Frame* > findAllFrames (Frame* root);
 
         /**
            @brief Find the world frame of the workcell by traversing the path
@@ -112,7 +111,7 @@ namespace rw { namespace kinematics {
            The state \b state is needed to retrieve the parent frames, but the
            world frame returned is the same for any (valid) state.
         */
-        static Frame* worldFrame(Frame* frame, const State& state);
+        static Frame* worldFrame (Frame* frame, const State& state);
 
         /**
            @brief Find the world frame of the workcell by traversing the path
@@ -121,7 +120,7 @@ namespace rw { namespace kinematics {
            The state \b state is needed to retrieve the parent frames, but the
            world frame returned is the same for any (valid) state.
         */
-        static const Frame* worldFrame(const Frame* frame, const State& state);
+        static const Frame* worldFrame (const Frame* frame, const State& state);
 
         /**
            @brief The chain of frames connecting \b child to \b parent.
@@ -136,17 +135,15 @@ namespace rw { namespace kinematics {
            If \b parent is not on the chain from \b child towards the root, then
            an exception is thrown.
         */
-        static std::vector<Frame*> childToParentChain(Frame* child,
-                                                      Frame* parent,
-                                                      const State& state);
+        static std::vector< Frame* > childToParentChain (Frame* child, Frame* parent,
+                                                         const State& state);
 
         /**
            @brief Like ChildToParentChain() except that the frames are returned
            in the reverse order.
         */
-        static std::vector<Frame*> reverseChildToParentChain(Frame* child,
-                                                             Frame* parent,
-                                                             const State& state);
+        static std::vector< Frame* > reverseChildToParentChain (Frame* child, Frame* parent,
+                                                                const State& state);
 
         /**
            @brief The chain of frames connecting \b parent to \b child.
@@ -155,9 +152,8 @@ namespace rw { namespace kinematics {
            parent as well as \b child is NULL then the empty chain is returned.
            Otherwise \b parent is included even if \b parent is NULL.
          */
-        static std::vector<Frame*> parentToChildChain(Frame* parent,
-                                                      Frame* child,
-                                                      const State& state);
+        static std::vector< Frame* > parentToChildChain (Frame* parent, Frame* child,
+                                                         const State& state);
 
         /**
          * @brief A map linking frame names to frames.
@@ -169,20 +165,20 @@ namespace rw { namespace kinematics {
          *
          * @param state [in] The kinematics tree structure.
          */
-        static std::map<std::string, kinematics::Frame*> buildFrameMap(kinematics::Frame* root,
-                                                                       const kinematics::State& state);
+        static std::map< std::string, kinematics::Frame* >
+        buildFrameMap (kinematics::Frame* root, const kinematics::State& state);
 
         /**
            @brief True if \b frame is a DAF and false otherwise.
         */
-        static bool isDAF(const Frame* frame);
+        static bool isDAF (const Frame* frame);
 
         /**
          * @brief Check if frame is fixed.
          * @param frame [in] the frame.
          * @return true if fixed, false otherwise.
          */
-        static bool isFixedFrame(const Frame* frame);
+        static bool isFixedFrame (const Frame* frame);
 
         /**
          * @brief Grip \b item with \b gripper thereby modifying \b state.
@@ -195,7 +191,7 @@ namespace rw { namespace kinematics {
          * @exception An exception is thrown if \b item is not a DAF.
          * @see See also gripFrame(MovableFrame*, Frame*, State&).
          */
-		static void gripFrame(Frame* item, Frame* gripper, State& state);
+        static void gripFrame (Frame* item, Frame* gripper, State& state);
 
         /**
          * @brief Grip \b item with \b gripper thereby modifying \b state.
@@ -207,33 +203,38 @@ namespace rw { namespace kinematics {
          * @param state [in/out] the state.
          * @exception An exception is thrown if \b item is not a DAF.
          * @see See also gripFrame(Frame*, Frame*, State&).
-        */
-        static void gripFrame(MovableFrame* item, Frame* gripper, State& state);
+         */
+        static void gripFrame (MovableFrame* item, Frame* gripper, State& state);
 
         /**
          * @brief Get static frame groups.
          *
-         * A static frame group consist of frames that are fixed with respect to the other frames in the group.
-         * A Dynamically Attachable Frame (DAF) or a MovableFrame will divide a static group.
+         * A static frame group consist of frames that are fixed with respect to the other frames in
+         * the group. A Dynamically Attachable Frame (DAF) or a MovableFrame will divide a static
+         * group.
          * @param root [in] the root frame of the tree to search.
-         * @param state [in] containing information about the current tree state and the Dynamically Attachable Frames (DAF).
+         * @param state [in] containing information about the current tree state and the Dynamically
+         * Attachable Frames (DAF).
          * @return vector with the frame groups.
          */
-        static std::vector<FrameList> getStaticFrameGroups(Frame* root, const State& state);
+        static std::vector< FrameList > getStaticFrameGroups (Frame* root, const State& state);
 
         /**
          * @brief Get static frame groups.
          *
-         * A static frame group consist of frames that are fixed with respect to the other frames in the group.
-         * A Dynamically Attachable Frame (DAF) or a MovableFrame will divide a static group.
+         * A static frame group consist of frames that are fixed with respect to the other frames in
+         * the group. A Dynamically Attachable Frame (DAF) or a MovableFrame will divide a static
+         * group.
          * @param root [in] the root frame of the tree to search.
-         * @param state [in] containing information about the current tree state and the Dynamically Attachable Frames (DAF).
+         * @param state [in] containing information about the current tree state and the Dynamically
+         * Attachable Frames (DAF).
          * @return vector with the frame groups.
          */
-        static std::vector<ConstFrameList> getStaticFrameGroups(const Frame* root, const State& state);
+        static std::vector< ConstFrameList > getStaticFrameGroups (const Frame* root,
+                                                                   const State& state);
     };
 
     /*@}*/
-}} // end namespaces
+}}    // namespace rw::kinematics
 
-#endif // end include guard
+#endif    // end include guard

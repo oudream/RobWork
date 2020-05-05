@@ -767,10 +767,10 @@ public:
     friend const Wrench6D<T> operator*(const Transform3D<T>& aTb,
                                               const Wrench6D<T>& bV);
     
-    friend const Wrench6D operator*(const rw::math::Vector3D<T>& aPb, const Wrench6D<T>& bV);
+    friend const Wrench6D<T> operator*(const rw::math::Vector3D<T>& aPb, const Wrench6D<T>& bV);
 
 
-    friend const Wrench6D operator*(const rw::math::Rotation3D<T>& aRb, const Wrench6D<T>& bV);
+    friend const Wrench6D<T> operator*(const rw::math::Rotation3D<T>& aRb, const Wrench6D<T>& bV);
 #endif
 
     const Wrench6D<T> operator+(const Wrench6D<T>& wrench) const;    

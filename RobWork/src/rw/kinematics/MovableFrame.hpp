@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RW_KINEMATICS_MOVABLEFRAME_HPP
 #define RW_KINEMATICS_MOVABLEFRAME_HPP
 
@@ -27,7 +26,7 @@
 
 namespace rw { namespace kinematics {
 
-	class State;
+    class State;
 
     /** @addtogroup kinematics */
     /* @{ */
@@ -39,12 +38,11 @@ namespace rw { namespace kinematics {
      * A MovableFrame can for example be used for modelling objects moving in
      * the scene based on e.g. user input.
      */
-    class MovableFrame: public Frame
+    class MovableFrame : public Frame
     {
-    public:
-		//! @brief smart pointer type to this class
-		typedef rw::core::Ptr<MovableFrame> Ptr;
-
+      public:
+        //! @brief smart pointer type to this class
+        typedef rw::core::Ptr< MovableFrame > Ptr;
 
         /**
          * @brief Construct a MovableFrame with Identiy as the initial
@@ -52,18 +50,19 @@ namespace rw { namespace kinematics {
          *
          * @param name [in] name of the frame
          */
-        explicit MovableFrame(const std::string& name);
+        explicit MovableFrame (const std::string& name);
 
         //! destructor
-        virtual ~MovableFrame(){};
+        virtual ~MovableFrame (){};
 
         /**
          * @brief Sets the transform in the state. The transform is relative to the
          * MovableFrame's parent frame.
-         * @param transform [in] transform to set. the transform is described relative to parent frame
+         * @param transform [in] transform to set. the transform is described relative to parent
+         * frame
          * @param state [out] state into which to set the transform
          */
-        void setTransform(const math::Transform3D<>& transform, State& state);
+        void setTransform (const math::Transform3D<>& transform, State& state);
 
         /**
          * @brief Changes the transform in the state, such that the movable frame is located in the
@@ -71,7 +70,7 @@ namespace rw { namespace kinematics {
          * @param transform [in] transform to set. transform is described relative to world frame
          * @param state [out] state into which to set the transform
          */
-        void moveTo(const math::Transform3D<>& transform, State& state);
+        void moveTo (const math::Transform3D<>& transform, State& state);
 
         /**
          * @brief Changes the transform in the state, such that the movable frame is located in the
@@ -80,17 +79,16 @@ namespace rw { namespace kinematics {
          * @param refframe [in] the reference frame.
          * @param state [out] state into which to set the transform
          */
-        void moveTo(const math::Transform3D<>& transform, Frame* refframe, State& state);
+        void moveTo (const math::Transform3D<>& transform, Frame* refframe, State& state);
 
-    private:
-        void doMultiplyTransform(const math::Transform3D<>& parent,
-                            const State& state,
-                            math::Transform3D<>& result) const;
+      private:
+        void doMultiplyTransform (const math::Transform3D<>& parent, const State& state,
+                                  math::Transform3D<>& result) const;
 
-        math::Transform3D<> doGetTransform(const State& state) const;
+        math::Transform3D<> doGetTransform (const State& state) const;
     };
 
     /* @} */
-}} // end namespaces
+}}    // namespace rw::kinematics
 
-#endif // end include guard
+#endif    // end include guard

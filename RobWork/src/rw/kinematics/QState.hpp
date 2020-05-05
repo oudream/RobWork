@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RW_KINEMATICS_QSTATE_HPP
 #define RW_KINEMATICS_QSTATE_HPP
 
@@ -24,8 +23,8 @@
  */
 
 #include <rw/core/Ptr.hpp>
-#include <rw/math/Q.hpp>
 #include <rw/core/macros.hpp>
+#include <rw/math/Q.hpp>
 
 namespace rw { namespace kinematics {
     class StateSetup;
@@ -51,11 +50,11 @@ namespace rw { namespace kinematics {
      */
     class QState
     {
-    public:
+      public:
         /**
          * @brief Constructs an empty QState
          */
-        QState();
+        QState ();
 
         /**
          * @brief A configuration state.
@@ -66,10 +65,10 @@ namespace rw { namespace kinematics {
          *
          * @param setup [in] The shared setup for configuration states.
          */
-        explicit QState(rw::core::Ptr<StateSetup> setup);
+        explicit QState (rw::core::Ptr< StateSetup > setup);
 
         //! destructor
-        virtual ~QState();
+        virtual ~QState ();
 
         /**
          * @brief An array of length frame.getDOF() containing the joint values
@@ -80,12 +79,12 @@ namespace rw { namespace kinematics {
          *
          * @return The joint values for the frame.
          */
-        const double* getQ(const StateData& data) const;
+        const double* getQ (const StateData& data) const;
 
         /**
          * @brief non const version of getQ.
          */
-        double* getQ(const StateData& data);
+        double* getQ (const StateData& data);
 
         /**
          * @brief Assign for \b frame the frame.getDOF() joint values of the
@@ -105,7 +104,7 @@ namespace rw { namespace kinematics {
          *   q_in[i] == q_out[i];
          * \endcode
          */
-        void setQ(const StateData& data, const double* vals);
+        void setQ (const StateData& data, const double* vals);
 
         /**
          * @brief streaming operator
@@ -116,7 +115,7 @@ namespace rw { namespace kinematics {
          *
          * @return the stream
          */
-        friend std::ostream& operator<<(std::ostream& os, const QState& state)
+        friend std::ostream& operator<< (std::ostream& os, const QState& state)
         {
             os << state._contents;
             return os;
@@ -125,106 +124,98 @@ namespace rw { namespace kinematics {
         /**
          * @brief Scaling of a configuration state by a scalar.
          */
-        friend QState operator*(const QState& q, double scale)
+        friend QState operator* (const QState& q, double scale)
         {
-            return QState(scale * q._contents, q._setup);
+            return QState (scale * q._contents, q._setup);
         }
 
         /**
          * @brief Scaling of a configuration state by division
          */
-        friend QState operator/(const QState& q, double scale)
+        friend QState operator/ (const QState& q, double scale)
         {
-            return QState(q._contents/scale, q._setup);
+            return QState (q._contents / scale, q._setup);
         }
 
         /**
          * @brief Scaling of a configuration state by a scalar.
          */
-        friend QState operator*(double scale, const QState& q)
+        friend QState operator* (double scale, const QState& q)
         {
-            return QState(scale * q._contents, q._setup);
+            return QState (scale * q._contents, q._setup);
         }
 
         /**
          * @brief Addition of configuration states.
          */
-        friend QState operator+(const QState& a, const QState& b)
+        friend QState operator+ (const QState& a, const QState& b)
         {
             // It does not matter here if we use the setup of a or b.
             // They are assumed to be the identical.
-            return QState(a._contents + b._contents, a._setup);
+            return QState (a._contents + b._contents, a._setup);
         }
 
         /**
          * @brief Subtraction of configuration states.
          */
-        friend QState operator-(const QState& a, const QState& b)
+        friend QState operator- (const QState& a, const QState& b)
         {
-            return QState(a._contents - b._contents, a._setup);
+            return QState (a._contents - b._contents, a._setup);
         }
 
         /**
          * @brief Unary minus operator.
          */
-        QState operator-() const
-        {
-            return QState(-_contents, _setup);
-        }
+        QState operator- () const { return QState (-_contents, _setup); }
 
         /**
          * @brief returns the StateSetup
          */
-        rw::core::Ptr<StateSetup> getStateSetup() const{
-            return _setup;
-        }
+        rw::core::Ptr< StateSetup > getStateSetup () const { return _setup; }
 
-        //void copy(const QState& qstate);
+        // void copy(const QState& qstate);
 
         /**
          * @brief Assignment operator.
          * @param rhs [in] the other QState to assign to this.
          * @return a reference to this QState.
          */
-        QState& operator=(const QState &rhs);
-
+        QState& operator= (const QState& rhs);
 
         /**
            @brief The dimension of the state vector.
          */
-        size_t size() const { return _contents.size(); }
+        size_t size () const { return _contents.size (); }
 
         /**
          * @brief Get element of state.
          * @param index [in] the index.
          * @return the value at given index.
          */
-        double& operator()(size_t index) {
-            RW_ASSERT(index<size());
-            return _contents(index);
+        double& operator() (size_t index)
+        {
+            RW_ASSERT (index < size ());
+            return _contents (index);
         }
 
         //! @copydoc operator()(size_t)
-        const double& operator()(size_t index) const {
-            RW_ASSERT(index<size());
-            return _contents(index);
+        const double& operator() (size_t index) const
+        {
+            RW_ASSERT (index < size ());
+            return _contents (index);
         }
 
-    private:
-        QState(
-            const math::Q& contents,
-            rw::core::Ptr<StateSetup> setup)
-            :
-            _contents(contents),
-            _setup(setup)
+      private:
+        QState (const math::Q& contents, rw::core::Ptr< StateSetup > setup) :
+            _contents (contents), _setup (setup)
         {}
 
-    private:
+      private:
         math::Q _contents;
-        rw::core::Ptr<StateSetup> _setup;
+        rw::core::Ptr< StateSetup > _setup;
     };
 
     /*@}*/
-}} // end namespaces
+}}    // namespace rw::kinematics
 
-#endif // end include guard
+#endif

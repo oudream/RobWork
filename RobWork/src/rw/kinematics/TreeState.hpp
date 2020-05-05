@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RW_KINEMATICS_TREESTATE_HPP
 #define RW_KINEMATICS_TREESTATE_HPP
 
@@ -24,6 +23,7 @@
  */
 
 #include <rw/core/Ptr.hpp>
+
 #include <vector>
 
 namespace rw { namespace kinematics {
@@ -47,30 +47,30 @@ namespace rw { namespace kinematics {
      */
     class TreeState
     {
-    public:
+      public:
         //! @brief vector of frames
-        typedef std::vector<Frame*> FrameList;
+        typedef std::vector< Frame* > FrameList;
 
         /**
          * @brief Construct an empty TreeState
          */
-        TreeState();
+        TreeState ();
 
         /**
          * @brief Construct an empty TreeState
          */
-        explicit TreeState(rw::core::Ptr<StateSetup> setup);
+        explicit TreeState (rw::core::Ptr< StateSetup > setup);
 
         /**
          * @brief Copy constructor.
          * @param other [in] other TreeState to copy.
          */
-        explicit TreeState(const TreeState& other);
+        explicit TreeState (const TreeState& other);
 
         /**
          * @brief destructor
          */
-        virtual ~TreeState();
+        virtual ~TreeState ();
 
         /**
          * @brief The parent frame of \b frame.
@@ -84,12 +84,12 @@ namespace rw { namespace kinematics {
          *
          * @return The parent of the frame or NULL if the frame has no parent.
          */
-        const Frame* getParent(const Frame* frame) const;
+        const Frame* getParent (const Frame* frame) const;
 
         /**
          * @copydoc getParent
          */
-        Frame* getParent(Frame* frame) const;
+        Frame* getParent (Frame* frame) const;
 
         /**
          * @brief The child frames of \b frame.
@@ -105,8 +105,7 @@ namespace rw { namespace kinematics {
          *
          * @return The children of the frame if any children exist, else NULL.
          */
-        const FrameList& getChildren(const Frame* frame) const;
-
+        const FrameList& getChildren (const Frame* frame) const;
 
         /**
          * @brief Move a frame within the tree.
@@ -121,17 +120,16 @@ namespace rw { namespace kinematics {
          * @param frame [in] The frame to move.
          * @param parent [in] The frame to attach \b frame to.
          */
-        void attachFrame(Frame* frame, Frame* parent);
+        void attachFrame (Frame* frame, Frame* parent);
 
         /**
          * @brief gets the StateSetup used to create the TreeState
          * @return the StateSetup
          */
-        rw::core::Ptr<StateSetup> getStateSetup() const;
+        rw::core::Ptr< StateSetup > getStateSetup () const;
 
-    private:
-		
-        rw::core::Ptr<StateSetup> _setup;
+      private:
+        rw::core::Ptr< StateSetup > _setup;
 
         // map descring parent to child relationships
         // size == <nr of Frames>
@@ -143,12 +141,10 @@ namespace rw { namespace kinematics {
 
         // map describing child to parent relationships of DAFs
         // size == <nr of DAFs>
-        std::vector<int> _dafIdxToParentIdx;
-		
-
+        std::vector< int > _dafIdxToParentIdx;
     };
 
     /*@}*/
-}} // end namespaces
+}}    // namespace rw::kinematics
 
-#endif // end include guard
+#endif    // end include guard

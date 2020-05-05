@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  ********************************************************************************/
-
 
 #ifndef RW_KINEMATICS_FKRANGE_HPP
 #define RW_KINEMATICS_FKRANGE_HPP
@@ -50,7 +49,7 @@ namespace rw { namespace kinematics {
      */
     class FKRange
     {
-    public:
+      public:
         /**
          * @brief Forward kinematics for the path leading from \b from to \b to.
          *
@@ -63,43 +62,42 @@ namespace rw { namespace kinematics {
          *
          * @param state [in] The path structure.
          */
-        FKRange(const Frame* from, const Frame* to, const State& state);
+        FKRange (const Frame* from, const Frame* to, const State& state);
 
         /**
          * @brief Default constructor
          *
          * Will always return an identity matrix as the transform
          */
-        FKRange();
+        FKRange ();
 
         /**
          * @brief The relative transform between the frames.
          *
          * @param state [in] Configuration values for the frames of the tree.
          */
-        math::Transform3D<> get(const State& state) const;
+        math::Transform3D<> get (const State& state) const;
 
         /**
          * @brief Returns the last frame in the range.
          *
          * @return The end frame (to).
          */
-        rw::core::Ptr< const Frame > getEnd() const;
+        rw::core::Ptr< const Frame > getEnd () const;
 
         /**
          * @brief Returns the first frame in the range.
          *
          * @return The base frame (from).
          */
-        rw::core::Ptr< const Frame > getBase() const;
-        
-    private:
-        std::vector<const Frame*> _inverseBranch;
-        std::vector<const Frame*> _forwardBranch;
+        rw::core::Ptr< const Frame > getBase () const;
 
+      private:
+        std::vector< const Frame* > _inverseBranch;
+        std::vector< const Frame* > _forwardBranch;
     };
 
     /*@}*/
-}} // end namespaces
+}}    // namespace rw::kinematics
 
-#endif // end include guard
+#endif    // end include guard
