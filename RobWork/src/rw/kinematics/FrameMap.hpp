@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  ********************************************************************************/
-
 
 #ifndef RW_KINEMATICS_FRAMEMAP_HPP
 #define RW_KINEMATICS_FRAMEMAP_HPP
@@ -32,17 +31,14 @@ namespace rw { namespace kinematics {
      *
      * @note A requirement is that all frames must be registered in the same StateStructure.
      */
-    template <class T>
-    class FrameMap {
-    public:
+    template< class T > class FrameMap
+    {
+      public:
         /**
          * @brief creates a framemap
          * @param s [in] the default value of new instances of T
          */
-        FrameMap(int s = 20) :
-            _initialSize(s),
-            _defaultVal(false, T()),
-            _map(s, _defaultVal)
+        FrameMap (int s = 20) : _initialSize (s), _defaultVal (false, T ()), _map (s, _defaultVal)
         {}
 
         /**
@@ -50,10 +46,8 @@ namespace rw { namespace kinematics {
          * @param s [in] nr of elements of the types T with default value "defaultVal"
          * @param defaultVal [in] the default value of new instances of T
          */
-        FrameMap(const T& defaultVal, int s = 20) :
-            _initialSize(s),
-            _defaultVal(false, defaultVal),
-            _map(s, _defaultVal)
+        FrameMap (const T& defaultVal, int s = 20) :
+            _initialSize (s), _defaultVal (false, defaultVal), _map (s, _defaultVal)
         {}
 
         /**
@@ -61,19 +55,19 @@ namespace rw { namespace kinematics {
          * @param frame [in] the frame for which the value is to be associated
          * @param value [in] the value that is to be associated to the frame
          */
-        void insert(const rw::kinematics::Frame& frame, const T& value)
+        void insert (const rw::kinematics::Frame& frame, const T& value)
         {
-            operator[](frame) = value;
+            operator[] (frame) = value;
         }
 
         /**
            @brief True iff a value for \b frame has been inserted in the map (or
            accessed using non-const operator[]).
         */
-        bool has(const rw::kinematics::Frame& frame)
+        bool has (const rw::kinematics::Frame& frame)
         {
-            const int idx = frame.getID();
-            resizeIfNeeded(idx);
+            const int idx = frame.getID ();
+            resizeIfNeeded (idx);
             return _map[idx].first;
         }
 
@@ -88,10 +82,10 @@ namespace rw { namespace kinematics {
            @param frame [in] the frame for which to find its associated values.
            @return reference to the value associated to frame.
         */
-        const T& operator[](const rw::kinematics::Frame& frame) const
+        const T& operator[] (const rw::kinematics::Frame& frame) const
         {
-            const int idx = frame.getID();
-            resizeIfNeeded(idx);
+            const int idx = frame.getID ();
+            resizeIfNeeded (idx);
             return _map[idx].second;
         }
 
@@ -105,51 +99,52 @@ namespace rw { namespace kinematics {
            @param frame [in] the frame for which to find its associated values.
            @return reference to the value associated to frame.
         */
-        T& operator[](const rw::kinematics::Frame& frame)
+        T& operator[] (const rw::kinematics::Frame& frame)
         {
-            const int idx = frame.getID();
-            resizeIfNeeded(idx);
+            const int idx = frame.getID ();
+            resizeIfNeeded (idx);
             OkVal& val = _map[idx];
-            val.first = true;
+            val.first  = true;
             return val.second;
         }
 
         /**
          * @brief Erase an element from the map
          */
-        void erase( const rw::kinematics::Frame& frame ){
-        	const int idx = frame.getID();
-        	_map[idx].first = false;
+        void erase (const rw::kinematics::Frame& frame)
+        {
+            const int idx   = frame.getID ();
+            _map[idx].first = false;
         }
 
         /**
            @brief Clear the frame map.
         */
-        void clear()
+        void clear ()
         {
-            _map.clear();
-            _map.resize(_initialSize, _defaultVal);
+            _map.clear ();
+            _map.resize (_initialSize, _defaultVal);
         }
 
-    private:
-        void resizeIfNeeded(int idx) const
+      private:
+        void resizeIfNeeded (int idx) const
         {
-            const int n = (int)_map.size();
+            const int n = (int) _map.size ();
             if (idx >= n) {
                 const int newSize = idx >= 2 * n ? idx + 1 : 2 * n;
-                _map.resize(newSize, _defaultVal);
+                _map.resize (newSize, _defaultVal);
             }
         }
 
-    private:
-        typedef std::pair<bool, T> OkVal;
+      private:
+        typedef std::pair< bool, T > OkVal;
 
         int _initialSize;
         OkVal _defaultVal;
-        mutable std::vector<OkVal> _map;
+        mutable std::vector< OkVal > _map;
     };
 
-    extern template class rw::kinematics::FrameMap<rw::math::Transform3D<double> >;
-}}
+    extern template class rw::kinematics::FrameMap< rw::math::Transform3D< double > >;
+}}    // namespace rw::kinematics
 
 #endif /*RW_KINEMATICS_FRAMEMAP_HPP*/

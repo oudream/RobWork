@@ -584,6 +584,7 @@
     };
 
     %template (SensorModelPtr) rw::core::Ptr<SensorModel>;
+    %template (VectorSensorModelPtr) std::vector<rw::core::Ptr<SensorModel>>;
     OWNEDPTR(SensorModel)
 // ############### CameraModel ######################
     /**
@@ -1834,9 +1835,7 @@
          * @return matrix of texel pressure values
          */
         Eigen::MatrixXf& getTexelData (State& state) const;
-        #if !defined(SWIGJAVA)
-            const Eigen::MatrixXf& getTexelData (const State& state) const;
-        #endif
+
         /**
          * @brief set the pressure on each texel of the TactileArray in
          * the unit Pa (N/m^2).
