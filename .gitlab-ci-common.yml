@@ -965,6 +965,34 @@ tests:ubuntu-2004:
     ]
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-2004
 
+install-tests:ubuntu-2004:
+  extends: .linux-install-tests
+  dependencies:
+    - build-RW:ubuntu-2004
+    - build-RWS:ubuntu-2004
+    - build-RWHW:ubuntu-2004
+    - build-RWSim:ubuntu-2004
+  needs:
+    [
+      "build-RW:ubuntu-2004",
+      "build-RWS:ubuntu-2004",
+      "build-RWHW:ubuntu-2004",
+      "build-RWSim:ubuntu-2004",
+    ]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-2004
+
+build-debian-pre:ubuntu-2004:
+  extends: .linux-build-debian
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-2004-deb
+
+test-debian-pre:ubuntu-2004:
+  extends: .linux-test-debian
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-2004-deb
+  dependencies:
+    - "build-debian-pre:ubuntu-2004"
+  needs: ["build-debian-pre:ubuntu-2004"]
+
+
 ########################## Centos 7 ################################
 build-RW:centos-7:
   extends: .linux-build-RW
@@ -1137,6 +1165,8 @@ pages:
     - apt -y install libsdurw-all-dev libsdurws-all-dev libsdurwhw-all-dev libsdurwsim-all-dev
     - apt -y install ./DEBPKG/*.deb  
 
+################# debian-pkg ubuntu-1804 #################
+
 build-debian:ubuntu-1804:
   extends: .debian-build
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804-deb
@@ -1154,4 +1184,24 @@ test-debian-upgrade:ubuntu-1804:
   dependencies:
     - build-debian:ubuntu-1804
   needs: ["build-debian:ubuntu-1804"]
+
+########################## Debian pkg ubuntu 2004 ######################################
+
+build-debian:ubuntu-2004:
+  extends: .debian-build
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-2004-deb
+
+test-debian:ubuntu-2004:
+  extends: .debian-test
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-2004-deb
+  dependencies:
+    - build-debian:ubuntu-2004
+  needs: ["build-debian:ubuntu-2004"]
+
+test-debian-upgrade:ubuntu-2004:
+  extends: .debian-upgrade-test
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-2004-deb
+  dependencies:
+    - build-debian:ubuntu-2004
+  needs: ["build-debian:ubuntu-2004"]
   
