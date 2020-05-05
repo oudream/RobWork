@@ -15,63 +15,78 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #include "FTSensorModel.hpp"
 
 using namespace rw::sensor;
 
-FTSensorModel::FTSensorModel(const std::string& name, rw::kinematics::Frame* frame, const std::string& desc):
-    SensorModel(name,frame, desc)
+FTSensorModel::FTSensorModel (const std::string& name, rw::kinematics::Frame* frame,
+                              const std::string& desc) :
+    SensorModel (name, frame, desc)
 {
-	add(_sdata);
+    add (_sdata);
 }
 
-FTSensorModel::~FTSensorModel(){}
+FTSensorModel::~FTSensorModel ()
+{}
 
-rw::math::Wrench6D<> FTSensorModel::getMaxWrench() const
+rw::math::Wrench6D<> FTSensorModel::getMaxWrench () const
 {
-	return _maxWrench;
+    return _maxWrench;
 }
 
-void FTSensorModel::setMaxWrench(const rw::math::Wrench6D<>& max){
-	_maxWrench = max;
-}
-
-rw::math::Vector3D<> FTSensorModel::getMaxForce() const
+void FTSensorModel::setMaxWrench (const rw::math::Wrench6D<>& max)
 {
-	return _maxWrench.force();
+    _maxWrench = max;
 }
 
-rw::math::Vector3D<> FTSensorModel::getMaxTorque() const
+rw::math::Vector3D<> FTSensorModel::getMaxForce () const
 {
-	return _maxWrench.torque();
+    return _maxWrench.force ();
 }
 
-void FTSensorModel::setWrench(const rw::math::Wrench6D<>& wrench, const rw::kinematics::State& state){
-	_sdata.get(state) = wrench;
+rw::math::Vector3D<> FTSensorModel::getMaxTorque () const
+{
+    return _maxWrench.torque ();
 }
 
-rw::math::Vector3D<> FTSensorModel::getForce(const rw::kinematics::State& state)  const{
-	return _sdata.get(state).force();
+void FTSensorModel::setWrench (const rw::math::Wrench6D<>& wrench,
+                               const rw::kinematics::State& state)
+{
+    _sdata.get (state) = wrench;
 }
 
-void FTSensorModel::setForce(const rw::math::Vector3D<>& force, const rw::kinematics::State& state){
-	_sdata.get(state).setForce( force );
+rw::math::Vector3D<> FTSensorModel::getForce (const rw::kinematics::State& state) const
+{
+    return _sdata.get (state).force ();
 }
 
-rw::math::Vector3D<> FTSensorModel::getTorque(const rw::kinematics::State& state) const{
-	return _sdata.get(state).torque();
+void FTSensorModel::setForce (const rw::math::Vector3D<>& force, const rw::kinematics::State& state)
+{
+    _sdata.get (state).setForce (force);
 }
 
-void FTSensorModel::setTorque(const rw::math::Vector3D<>& torque, const rw::kinematics::State& state){
-	_sdata.get(state).setTorque( torque );
+rw::math::Vector3D<> FTSensorModel::getTorque (const rw::kinematics::State& state) const
+{
+    return _sdata.get (state).torque ();
 }
 
-
-rw::math::Transform3D<> FTSensorModel::getTransform() const{
-	return _offset;
+void FTSensorModel::setTorque (const rw::math::Vector3D<>& torque,
+                               const rw::kinematics::State& state)
+{
+    _sdata.get (state).setTorque (torque);
 }
 
-void FTSensorModel::setTransform(const rw::math::Transform3D<>& t3d){
-	_offset = t3d;
+rw::math::Transform3D<> FTSensorModel::getTransform () const
+{
+    return _offset;
+}
+
+void FTSensorModel::setTransform (const rw::math::Transform3D<>& t3d)
+{
+    _offset = t3d;
+}
+
+rw::math::Wrench6D<> FTSensorModel::getWrench (const rw::kinematics::State& state) const
+{
+	return _sdata.get (state);
 }

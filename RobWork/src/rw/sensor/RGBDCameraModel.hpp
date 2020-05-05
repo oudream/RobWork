@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RW_SENSOR_RGBDCAMERAMODEL_HPP
 #define RW_SENSOR_RGBDCAMERAMODEL_HPP
 
@@ -28,36 +27,37 @@
 #include <rw/core/Ptr.hpp>
 
 namespace rw { namespace sensor {
-   
-   /** @addtogroup sensor */
-   /* @{ */
-   
-   /**
-    * @brief
-    *
-    */
-   class RGBDCameraModel : public SensorModel {
-      public:
-         //! @brief smart pointer type to this class
-         typedef rw::core::Ptr<RGBDCameraModel> Ptr;
-         
-         /**
-          * @brief constructor
-          * @param name [in] name of sensor
-          * @param frame documentation missing !
-          * @param modelInfo [in] info string
-          */
-         RGBDCameraModel(const std::string& name, rw::kinematics::Frame* frame, const std::string& modelInfo);
-         
-         /**
-          * @brief destructor
-          */
-         virtual ~RGBDCameraModel();
-         
-   };
-   
-   /* @} */
-   
-}} // end namespaces
 
-#endif // end include guard
+    /** @addtogroup sensor */
+    /* @{ */
+
+    /**
+     * @brief
+     *
+     */
+    class RGBDCameraModel : public SensorModel
+    {
+      public:
+        //! @brief smart pointer type to this class
+        typedef rw::core::Ptr< RGBDCameraModel > Ptr;
+
+        /**
+         * @brief constructor
+         * @param name [in] name of sensor
+         * @param frame documentation missing !
+         * @param modelInfo [in] info string
+         */
+        RGBDCameraModel (const std::string& name, rw::kinematics::Frame* frame,
+                         const std::string& modelInfo);
+
+        /**
+         * @brief destructor
+         */
+        virtual ~RGBDCameraModel ();
+    };
+
+    /* @} */
+
+}}    // namespace rw::sensor
+
+#endif    // end include guard

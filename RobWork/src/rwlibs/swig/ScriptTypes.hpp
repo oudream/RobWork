@@ -524,14 +524,38 @@ namespace swig {
     typedef rw::sensor::Camera Camera;
     //! @copydoc rw::sensor::CameraModel
     typedef rw::sensor::CameraModel CameraModel;
+	//! @copydoc rw::sensor::CameraListener
+    typedef rw::sensor::CameraListener CameraListener;
+	//! @copydoc rw::sensor::CameraFirewire
+    typedef rw::sensor::CameraFirewire CameraFirewire;
+	//! @copydoc rw::sensor::StereoCameraModel
+    typedef rw::sensor::StereoCameraModel StereoCameraModel;
+	//! @copydoc rw::sensor::Contact2D
+    typedef rw::sensor::Contact2D Contact2D;
+	//! @copydoc rw::sensor::Contact3D
+    typedef rw::sensor::Contact3D Contact3D;
+	//! @copydoc rw::sensor::FTSensor
+	typedef rw::sensor::FTSensor FTSensor;
+	//! @copydoc rw::sensor::FTSensorModel
+	typedef rw::sensor::FTSensorModel FTSensorModel;
 	//! @copydoc rw::sensor::Image
 	typedef rw::sensor::Image Image;
+	//! @copydoc rw::sensor::ImageUtil
+	typedef rw::sensor::ImageUtil ImageUtil;
+	//! @copydoc rw::sensor::Pixel4f
+	typedef rw::sensor::Pixel4f Pixel4f;
+	//! @copydoc rw::sensor::Image::Pixel4i
+	typedef rw::sensor::Image::Pixel4i Pixel4i;
     //! @copydoc rw::sensor::Sensor
     typedef rw::sensor::Sensor Sensor;
     //! @copydoc rw::sensor::SensorModel
     typedef rw::sensor::SensorModel SensorModel;
+	//! @copydoc rw::sensor::SensorData
+    typedef rw::sensor::SensorData SensorData;
     //! @copydoc rw::sensor::Scanner
     typedef rw::sensor::Scanner Scanner;
+	//! @copydoc rw::sensor::Scanner1D
+    typedef rw::sensor::Scanner1D Scanner1D;
     //! @copydoc rw::sensor::Scanner2D
     typedef rw::sensor::Scanner2D Scanner2D;
     //! @copydoc rw::sensor::Scanner2DModel
@@ -540,6 +564,17 @@ namespace swig {
     typedef rw::sensor::Scanner25D Scanner25D;
     //! @copydoc rw::sensor::Scanner25DModel
     typedef rw::sensor::Scanner25DModel Scanner25DModel;
+    //! @copydoc rw::sensor::RGBDCameraModel
+    typedef rw::sensor::RGBDCameraModel RGBDCameraModel;
+	
+
+	//! @copydoc rw::sensor::TactileArray
+    typedef rw::sensor::TactileArray TactileArray;
+	//! @copydoc rw::sensor::TactileArrayModel
+    typedef rw::sensor::TactileArrayModel TactileArrayModel;
+	//! @copydoc rw::sensor::TactileArrayUtil
+    typedef rw::sensor::TactileArrayUtil TactileArrayUtil;
+	
 	///@}
 
 	/**

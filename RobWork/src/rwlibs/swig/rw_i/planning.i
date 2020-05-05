@@ -888,7 +888,7 @@ public:
 
         @param planner [in] A planner for a region given by a QSampler.
     */
-    static QToQPlanner::Ptr make(rw::core::Ptr<QToQSamplerPlanner> planner);
+    static rw::core::Ptr<QToQPlanner> make(rw::core::Ptr<QToQSamplerPlanner> planner);
 
     /**
          @brief Construct a path planner from an edge constraint.
@@ -902,7 +902,7 @@ public:
         @param constraint [in] Planner constraint.
         @return A planner that attempts the directly connecting edge only.
     */
-    static QToQPlanner::Ptr make(const PlannerConstraint& constraint);
+    static rw::core::Ptr<QToQPlanner> make(const PlannerConstraint& constraint);
 
     %extend {
 /*

@@ -15,26 +15,23 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RW_SENSOR_SCANNER1D_HPP
 #define RW_SENSOR_SCANNER1D_HPP
 
 #include "Scanner.hpp"
 
-namespace rw {
-namespace sensor {
+namespace rw { namespace sensor {
 
-/**
- * @brief a one dimensional range scanner.
- */
+    /**
+     * @brief a one dimensional range scanner.
+     */
 
-class Scanner1D: public Scanner {
-public:
-    virtual ~Scanner1D();
+    class Scanner1D : public Scanner
+    {
+      public:
+        virtual ~Scanner1D ();
+    };
 
-};
-
-}
-}
+}}    // namespace rw::sensor
 
 #endif /*RW_SENSOR_SCANNER3D_HPP*/

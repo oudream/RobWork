@@ -127,6 +127,7 @@ public:
 
 %template (QVector) std::vector<rw::math::Q>;
 %template(QPair) std::pair<rw::math::Q, rw::math::Q>;
+%template(PairConstQConstQ) std::pair< const rw::math::Q, const rw::math::Q>;
 
 namespace rw {
 namespace math {
