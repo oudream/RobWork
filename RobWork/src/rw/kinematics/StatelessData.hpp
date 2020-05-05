@@ -40,7 +40,7 @@ namespace kinematics {
     	StatelessData(int dN=1):
             _N(dN)
         {
-            _sdata = boost::shared_ptr<StateData>(new StateData((sizeof(DATA)*dN)/sizeof(double)+1, rw::core::StringUtil::ranName("sdata")));
+            _sdata = rw::core::Ptr<StateData>(new StateData((sizeof(DATA)*dN)/sizeof(double)+1, rw::core::StringUtil::ranName("sdata")));
         }
 
     	/**
@@ -50,7 +50,7 @@ namespace kinematics {
     	StatelessData(int dN, rw::core::Ptr<StateCache> cache):
             _N(dN)
         {
-            _sdata = boost::shared_ptr<StateData>(new StateData((sizeof(DATA)*dN)/sizeof(double)+1, rw::core::StringUtil::ranName("sdata"), cache));
+            _sdata = rw::core::Ptr<StateData>(new StateData((sizeof(DATA)*dN)/sizeof(double)+1, rw::core::StringUtil::ranName("sdata"), cache));
         }
 
     	//! destructor
@@ -165,12 +165,12 @@ namespace kinematics {
          * @brief Get the state data.
          * @return state data.
          */
-        boost::shared_ptr<StateData> getStateData(){return _sdata;}
+        rw::core::Ptr<StateData> getStateData(){return _sdata;}
 
 
     private:
         int _N;
-        boost::shared_ptr<StateData> _sdata;
+        rw::core::Ptr<StateData> _sdata;
     };
 
 }

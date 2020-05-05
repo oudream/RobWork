@@ -20,72 +20,53 @@
 
 #include <rw/math/Vector3D.hpp>
 
-namespace rw {
-namespace sensor {
-
-/**
- * @brief data structure for describing a contact in 3D
- */
-class Contact3D
-{
-public:
-    //! @brief constructor
-    Contact3D() :
-        normalForce(0.0),
-        _faceIdx(0),
-        _faceIdx2(0),
-        curvature(0.0),
-        mu(0.6)
-    {
-    }
+namespace rw { namespace sensor {
 
     /**
-     * @brief constructor
-     * @param tp [in] point contact
-     * @param tn [in] contact normal
-     * @param normalf [in] normal force in the contact
+     * @brief data structure for describing a contact in 3D
      */
-    Contact3D(rw::math::Vector3D<> tp, rw::math::Vector3D<> tn, double normalf) :
-        p(tp), n(tn), f(n * normalf), normalForce(normalf),
-        _faceIdx(0),
-        _faceIdx2(0),
-        curvature(0.0),
-        mu(0.6)
+    class Contact3D
     {
-    }
+      public:
+        //! @brief constructor
+        Contact3D () : normalForce (0.0), _faceIdx (0), _faceIdx2 (0), curvature (0.0), mu (0.6) {}
 
-    /**
-     * @brief constructor
-     * @param tp [in] point contact
-     * @param tn [in] contact normal
-     * @param tf [in] force in the contact
-     */
-    Contact3D(rw::math::Vector3D<> tp, rw::math::Vector3D<> tn, rw::math::Vector3D<> tf) :
-        p(tp), n(tn), f(tf),
-        _faceIdx(0),
-        _faceIdx2(0),
-        curvature(0.0),
-        mu(0.6)
-    {
-        normalForce = dot(f, n);
-    }
+        /**
+         * @brief constructor
+         * @param tp [in] point contact
+         * @param tn [in] contact normal
+         * @param normalf [in] normal force in the contact
+         */
+        Contact3D (rw::math::Vector3D<> tp, rw::math::Vector3D<> tn, double normalf) :
+            p (tp), n (tn), f (n * normalf), normalForce (normalf), _faceIdx (0), _faceIdx2 (0),
+            curvature (0.0), mu (0.6)
+        {}
 
+        /**
+         * @brief constructor
+         * @param tp [in] point contact
+         * @param tn [in] contact normal
+         * @param tf [in] force in the contact
+         */
+        Contact3D (rw::math::Vector3D<> tp, rw::math::Vector3D<> tn, rw::math::Vector3D<> tf) :
+            p (tp), n (tn), f (tf), _faceIdx (0), _faceIdx2 (0), curvature (0.0), mu (0.6)
+        {
+            normalForce = dot (f, n);
+        }
 
-    rw::math::Vector3D<> p; //! Contact position
-    rw::math::Vector3D<> n; //! Surface contact normal
-    rw::math::Vector3D<> f; //! the actual force
-    double normalForce; //!  normal force
+        rw::math::Vector3D<> p;    //! Contact position
+        rw::math::Vector3D<> n;    //! Surface contact normal
+        rw::math::Vector3D<> f;    //! the actual force
+        double normalForce;        //!  normal force
 
-    //! index to the geometric primitive on which the contact is located
-    unsigned int _faceIdx, _faceIdx2;
+        //! index to the geometric primitive on which the contact is located
+        unsigned int _faceIdx, _faceIdx2;
 
-    // hmm, dunno about 3d curvature
-    double curvature; //! surface curvature
-    double mu; //! coulomb friction coefficient
-};
+        // hmm, dunno about 3d curvature
+        double curvature;    //! surface curvature
+        double mu;           //! coulomb friction coefficient
+    };
 
-}
-}
+}}    // namespace rw::sensor
 
 #endif /*RW_SENSOR_CONTACT3D_HPP*/
-

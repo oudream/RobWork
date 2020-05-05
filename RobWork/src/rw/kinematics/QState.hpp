@@ -23,7 +23,7 @@
  * @file QState.hpp
  */
 
-#include <boost/shared_ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/math/Q.hpp>
 #include <rw/core/macros.hpp>
 
@@ -66,7 +66,7 @@ namespace rw { namespace kinematics {
          *
          * @param setup [in] The shared setup for configuration states.
          */
-        explicit QState(boost::shared_ptr<StateSetup> setup);
+        explicit QState(rw::core::Ptr<StateSetup> setup);
 
         //! destructor
         virtual ~QState();
@@ -175,7 +175,7 @@ namespace rw { namespace kinematics {
         /**
          * @brief returns the StateSetup
          */
-        boost::shared_ptr<StateSetup> getStateSetup() const{
+        rw::core::Ptr<StateSetup> getStateSetup() const{
             return _setup;
         }
 
@@ -213,7 +213,7 @@ namespace rw { namespace kinematics {
     private:
         QState(
             const math::Q& contents,
-            boost::shared_ptr<StateSetup> setup)
+            rw::core::Ptr<StateSetup> setup)
             :
             _contents(contents),
             _setup(setup)
@@ -221,7 +221,7 @@ namespace rw { namespace kinematics {
 
     private:
         math::Q _contents;
-        boost::shared_ptr<StateSetup> _setup;
+        rw::core::Ptr<StateSetup> _setup;
     };
 
     /*@}*/

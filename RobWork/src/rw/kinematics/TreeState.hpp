@@ -23,7 +23,7 @@
  * @file TreeState.hpp
  */
 
-#include <boost/shared_ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <vector>
 
 namespace rw { namespace kinematics {
@@ -59,7 +59,7 @@ namespace rw { namespace kinematics {
         /**
          * @brief Construct an empty TreeState
          */
-        explicit TreeState(boost::shared_ptr<StateSetup> setup);
+        explicit TreeState(rw::core::Ptr<StateSetup> setup);
 
         /**
          * @brief Copy constructor.
@@ -127,11 +127,11 @@ namespace rw { namespace kinematics {
          * @brief gets the StateSetup used to create the TreeState
          * @return the StateSetup
          */
-        boost::shared_ptr<StateSetup> getStateSetup() const;
+        rw::core::Ptr<StateSetup> getStateSetup() const;
 
     private:
 		
-        boost::shared_ptr<StateSetup> _setup;
+        rw::core::Ptr<StateSetup> _setup;
 
         // map descring parent to child relationships
         // size == <nr of Frames>

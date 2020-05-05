@@ -26,7 +26,7 @@
 #include "Frame.hpp"
 #include "StateStructure.hpp"
 #include "StateData.hpp"
-#include <boost/shared_ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 namespace rw { namespace kinematics {
 
@@ -64,7 +64,7 @@ namespace rw { namespace kinematics {
          */
         explicit StateSetup(int version,
                    StateStructure& tree,
-                   const std::vector<boost::shared_ptr<StateData> >& stateDatas);
+                   const std::vector<rw::core::Ptr<StateData> >& stateDatas);
 
         //! @brief destructor
         ~StateSetup() {}
@@ -198,7 +198,7 @@ namespace rw { namespace kinematics {
          * @return list of valid state datas
          * @note elements in the list is invalid if they are NULL
          */
-        const std::vector<boost::shared_ptr<StateData> >& getStateData() const{
+        const std::vector<rw::core::Ptr<StateData> >& getStateData() const{
             return _datas;
         }
 
@@ -224,7 +224,7 @@ namespace rw { namespace kinematics {
         // pointer to the complete set of frames
         StateStructure* _tree;
 
-        std::vector<boost::shared_ptr<StateData> > _datas;
+        std::vector<rw::core::Ptr<StateData> > _datas;
 
         std::vector<Frame*> _dafs;
 

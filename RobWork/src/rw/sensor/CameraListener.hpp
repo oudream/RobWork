@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  ********************************************************************************/
-
 
 #ifndef RW_SENSOR_CAMERALISTENER_HPP
 #define RW_SENSOR_CAMERALISTENER_HPP
@@ -33,29 +32,29 @@ namespace rw { namespace sensor {
      */
     class CameraListener
     {
-    protected:
+      protected:
         /**
          * @brief constructor
          */
-        CameraListener();
+        CameraListener ();
 
-    public:
+      public:
         /**
          * @brief destructor
          */
-        virtual ~CameraListener();
+        virtual ~CameraListener ();
 
         /**
          * @brief called when the camera wish to signal a change.
          */
-        virtual void notifyChanged() = 0;
+        virtual void notifyChanged () = 0;
 
-    private:
-        CameraListener(const CameraListener&);
-        CameraListener& operator=(const CameraListener&);
+      private:
+        CameraListener (const CameraListener&);
+        CameraListener& operator= (const CameraListener&);
     };
 
     /* @} */
-}} // end namespaces
+}}    // namespace rw::sensor
 
-#endif // end include guard
+#endif    // end include guard

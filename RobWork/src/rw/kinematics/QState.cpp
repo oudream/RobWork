@@ -28,7 +28,7 @@ QState::QState():
 {
 }
 
-QState::QState(boost::shared_ptr<StateSetup> setup) :
+QState::QState(rw::core::Ptr<StateSetup> setup) :
     _contents(setup->size()+1),
     _setup(setup)
 {

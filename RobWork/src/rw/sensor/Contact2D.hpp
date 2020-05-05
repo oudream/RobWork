@@ -3,23 +3,21 @@
 
 #include <rw/math/Vector2D.hpp>
 
-namespace rw {
-namespace sensor {
+namespace rw { namespace sensor {
 
-/**
- * @brief data structure for describing a contact in 2D
- */
-class Contact2D
-{
-public:
-    rw::math::Vector2D<> p; //! Contact position
-    rw::math::Vector2D<> n; //! Surface contact normal
-    double curvature; //! surface curvature
-    double avgCurvature; //! double moving average of the curvature
-    double mu; //! coulomb friction coefficient
-};
+    /**
+     * @brief data structure for describing a contact in 2D
+     */
+    class Contact2D
+    {
+      public:
+        rw::math::Vector2D<> p;    //! Contact position
+        rw::math::Vector2D<> n;    //! Surface contact normal
+        double curvature;          //! surface curvature
+        double avgCurvature;       //! double moving average of the curvature
+        double mu;                 //! coulomb friction coefficient
+    };
 
-}
-}
+}}    // namespace rw::sensor
 
 #endif /*CONTACT_HPP_*/

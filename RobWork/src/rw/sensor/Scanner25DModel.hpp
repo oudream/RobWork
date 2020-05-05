@@ -18,96 +18,110 @@
 #ifndef RW_SENSOR_SCANNER25DMODEL_HPP
 #define RW_SENSOR_SCANNER25DMODEL_HPP
 
-#include <rw/geometry/PointCloud.hpp>
 #include "SensorModel.hpp"
+
 #include <rw/core/Ptr.hpp>
+#include <rw/geometry/PointCloud.hpp>
 
-namespace rw {
-namespace sensor {
+namespace rw { namespace sensor {
 
-/** @addtogroup sensor */
-/* @{ */
-
-/**
- * @brief Model of a 25D (2D with depth information) scanner. The images are
- * essentially point clouds.
- */
-class Scanner25DModel: public SensorModel
-{
-public:
-	//! @brief smart pointer type to this class
-	typedef rw::core::Ptr<Scanner25DModel> Ptr;
+    /** @addtogroup sensor */
+    /* @{ */
 
     /**
-     * @brief constructor
-     * @param frame [in] the frame that the scanner is attached to
-     * @param name [in] name of scanner sensor
-     * @param width
-     * @param height
+     * @brief Model of a 25D (2D with depth information) scanner. The images are
+     * essentially point clouds.
      */
-    Scanner25DModel(const std::string& name, int width, int height, rw::kinematics::Frame* frame );
+    class Scanner25DModel : public SensorModel
+    {
+      public:
+        //! @brief smart pointer type to this class
+        typedef rw::core::Ptr< Scanner25DModel > Ptr;
 
-    /**
-     * @brief Destructor. Closes scanner connection if not already closed.
-     */
-    virtual ~Scanner25DModel();
+        /**
+         * @brief constructor
+         * @param frame [in] the frame that the scanner is attached to
+         * @param name [in] name of scanner sensor
+         * @param width
+         * @param height
+         */
+        Scanner25DModel (const std::string& name, int width, int height,
+                         rw::kinematics::Frame* frame);
 
-    /**
-     * @brief get handle to point cloud data in state.
-     * @param state [in] the state with point cloud data
-     */
-    rw::geometry::PointCloud& getScan(const rw::kinematics::State& state);
+        /**
+         * @brief Destructor. Closes scanner connection if not already closed.
+         */
+        virtual ~Scanner25DModel ();
 
-    /**
-     * @brief set point cloud data in state
-     * @param data [in] point cloud data to set
-     * @param state [in] state in which to set the point cloud
-     */
-    void setScan(const rw::geometry::PointCloud& data, const rw::kinematics::State& state);
+        /**
+         * @brief get handle to point cloud data in state.
+         * @param state [in] the state with point cloud data
+         */
+        rw::geometry::PointCloud& getScan (const rw::kinematics::State& state);
 
-    //! width of images taken with 25 sensor
-    int getWidth() const { return _width; }
+        /**
+         * @brief set point cloud data in state
+         * @param data [in] point cloud data to set
+         * @param state [in] state in which to set the point cloud
+         */
+        void setScan (const rw::geometry::PointCloud& data, const rw::kinematics::State& state);
 
-    //! height of images taken with 25 sensor
-    int getHeight() const { return _height; }
+        //! width of images taken with 25 sensor
+        int getWidth () const { return _width; }
 
-    //! get the min and maximum depth of this scanner in meters
-    std::pair<double,double> getRange() const { return std::make_pair(_rangeMin,_rangeMax); }
-    //! set the min and maximum depth of this scanner in meters
-    void setRange(double min, double max) { _rangeMin = min; _rangeMax = max;}
-    //! set the min and maximum depth of this scanner in meters
-    void setRange(const std::pair<double,double>& range) { _rangeMin = range.first; _rangeMax = range.second;}
+        //! height of images taken with 25 sensor
+        int getHeight () const { return _height; }
 
-protected:
-    //! cache object for storing relevant state information
-    class Scanner25DModelCache: public rw::kinematics::StateCache {
-	public:
-		typedef rw::core::Ptr<Scanner25DModelCache> Ptr;
-		rw::geometry::PointCloud _cloud;
-		//! constructor
-		Scanner25DModelCache(int width, int height):
-			_cloud(width,height)
-		{
-		};
+        //! get the min and maximum depth of this scanner in meters
+        std::pair< double, double > getRange () const
+        {
+            return std::make_pair (_rangeMin, _rangeMax);
+        }
+        //! set the min and maximum depth of this scanner in meters
+        void setRange (double min, double max)
+        {
+            _rangeMin = min;
+            _rangeMax = max;
+        }
+        //! set the min and maximum depth of this scanner in meters
+        void setRange (const std::pair< double, double >& range)
+        {
+            _rangeMin = range.first;
+            _rangeMax = range.second;
+        }
 
-		//! @copydoc rw::kinematics::StateCache::size
-		size_t size() const{ return _cloud.size()*sizeof( rw::geometry::PointCloud::point_type); };
+      protected:
+        //! cache object for storing relevant state information
+        class Scanner25DModelCache : public rw::kinematics::StateCache
+        {
+          public:
+            typedef rw::core::Ptr< Scanner25DModelCache > Ptr;
+            rw::geometry::PointCloud _cloud;
+            //! constructor
+            Scanner25DModelCache (int width, int height) : _cloud (width, height){};
 
-		//! @copydoc rw::kinematics::StateCache::clone
-		virtual rw::core::Ptr<StateCache> clone() const{
-			Scanner25DModelCache::Ptr cache = rw::core::ownedPtr( new Scanner25DModelCache(*this) );
-			return cache;
-		};
-	};
+            //! @copydoc rw::kinematics::StateCache::size
+            size_t size () const
+            {
+                return _cloud.size () * sizeof (rw::geometry::PointCloud::point_type);
+            };
 
-    rw::kinematics::StatelessData<int> _sstate;
-    int _width, _height;
-    double _rangeMin,_rangeMax;
-};
+            //! @copydoc rw::kinematics::StateCache::clone
+            virtual rw::core::Ptr< StateCache > clone () const
+            {
+                Scanner25DModelCache::Ptr cache =
+                    rw::core::ownedPtr (new Scanner25DModelCache (*this));
+                return cache;
+            };
+        };
 
-/*@}*/
+        rw::kinematics::StatelessData< int > _sstate;
+        int _width, _height;
+        double _rangeMin, _rangeMax;
+    };
 
-}
-}
+    /*@}*/
+
+}}    // namespace rw::sensor
 
 #endif /*RW_SENSOR_SCANNER3D_HPP*/

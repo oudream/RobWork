@@ -89,11 +89,11 @@ namespace kinematics {
     	 * @param data [in] data to add.
     	 */
     	void add( StateData* data ){
-    		add( boost::shared_ptr<StateData>(data) );
+    		add( rw::core::Ptr<StateData>(data) );
     	}
 
     	//! implementations of sensor should add all their state data on initialization
-    	void add( boost::shared_ptr<StateData> data ){
+    	void add( rw::core::Ptr<StateData> data ){
     		if(_registered)
     			_stateStruct->addData( data );
     		_datas.push_back( data );
@@ -102,7 +102,7 @@ namespace kinematics {
     	//! @brief True if object has registered its state.
     	bool _registered;
     	//! @brief Data.
-    	std::vector<boost::shared_ptr<StateData> > _datas;
+    	std::vector<rw::core::Ptr<StateData> > _datas;
     	//! @brief The state structure.
     	StateStructure::Ptr _stateStruct;
     };
