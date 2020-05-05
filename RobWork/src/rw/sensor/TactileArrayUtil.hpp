@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,42 +15,38 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef TACTILEARRAYUTIL_HPP_
 #define TACTILEARRAYUTIL_HPP_
 
-#include <vector>
-
 #include <rw/sensor/Contact3D.hpp>
 
-namespace rw { namespace kinematics { class State; } }
+#include <vector>
 
-namespace rw {
-namespace sensor {
-class TactileArrayModel;
+namespace rw { namespace kinematics {
+    class State;
+}}    // namespace rw::kinematics
 
-/**
- * @brief Utillity class for general computations on a tactile array
- */
-class TactileArrayUtil {
+namespace rw { namespace sensor {
+    class TactileArrayModel;
 
-public:
+    /**
+     * @brief Utillity class for general computations on a tactile array
+     */
+    class TactileArrayUtil
+    {
+      public:
+        /**
+         * @brief Estimate the contacts on the tactile array sensor.
+         * @param arraySensor [in] the array sensor that describe the tactile array
+         * @param state [in] the current state of the system
+         * @param minContactForce [in] A threshold value that determines when a force is a contact
+         * force and not just noise.
+         * @return All estimated contacts
+         */
+        static std::vector< Contact3D >
+        estimateContacts (const rw::sensor::TactileArrayModel& arraySensor,
+                          const rw::kinematics::State& state, double minContactForce);
+    };
 
-	/**
-	 * @brief Estimate the contacts on the tactile array sensor.
-	 * @param arraySensor [in] the array sensor that describe the tactile array
-	 * @param state [in] the current state of the system
-	 * @param minContactForce [in] A threshold value that determines when a force is a contact force
-	 * and not just noise.
-	 * @return All estimated contacts
-	 */
-    static std::vector<Contact3D>
-        estimateContacts(const rw::sensor::TactileArrayModel& arraySensor,
-                         const rw::kinematics::State& state,
-                         double minContactForce);
-
-};
-
-}
-}
+}}     // namespace rw::sensor
 #endif /* TACTILEARRAYUTIL_HPP_ */

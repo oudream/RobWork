@@ -30,7 +30,11 @@
 #include "./sensor/StereoCameraModel.hpp"
 #include "./sensor/CameraFirewire.hpp"
 #include "./sensor/CameraListener.hpp"
+#include "./sensor/RGBDCameraModel.hpp"
 #include "./sensor/ImageUtil.hpp"
+
+#include "./sensor/FTSensor.hpp"
+#include "./sensor/FTSensorModel.hpp"
 
 #include "./sensor/Scanner.hpp"
 #include "./sensor/Scanner1D.hpp"
@@ -39,10 +43,14 @@
 #include "./sensor/Scanner25D.hpp"
 #include "./sensor/Scanner25DModel.hpp"
 
+#include "./sensor/TactileArrayModel.hpp"
+#include "./sensor/TactileArrayUtil.hpp"
 #include "./sensor/TactileArray.hpp"
 
 #include "./sensor/SensorData.hpp"
 #include "./sensor/Image.hpp"
+#include "./sensor/ImageUtil.hpp"
+#include "./sensor/Contact2D.hpp"
 #include "./sensor/Contact3D.hpp"
 
 #endif /* SENSOR_HPP_ */
