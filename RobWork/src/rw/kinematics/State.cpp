@@ -73,16 +73,16 @@ void State::copy (const State& from)
     }
 
     // get state data from the from state
-    const std::vector< boost::shared_ptr< StateData > >& fromStateDatas =
+    const std::vector< rw::core::Ptr< StateData > >& fromStateDatas =
         fromQState.getStateSetup ()->getStateData ();
 
-    const std::vector< boost::shared_ptr< StateData > >& toStateDatas =
+    const std::vector< rw::core::Ptr< StateData > >& toStateDatas =
         getQState ().getStateSetup ()->getStateData ();
 
     // for each StateData in from.StateSetup copy its Q values to
     // to this.qstate
     for (size_t i = 0; i < fromStateDatas.size (); i++) {
-        const boost::shared_ptr< StateData >& f = fromStateDatas[i];
+        const rw::core::Ptr< StateData >& f = fromStateDatas[i];
         // check if frame exist in state
         if (f == NULL)
             continue;

@@ -74,7 +74,7 @@ void StateStructure::addData(StateData * const data){
     _stateDataAddedEvent.fire(data);
 }
 
-void StateStructure::addData(const boost::shared_ptr<StateData> data){
+void StateStructure::addData(const rw::core::Ptr<StateData> data){
     addDataInternal(data);
 
     updateDefaultState();
@@ -91,7 +91,7 @@ void StateStructure::addDataInternal(StateData * const data){
     const int id = allocateDataID();
     data->setID(id, this);
     // There is no turning back. Ownership is forever taken.
-    boost::shared_ptr<StateData> sharedData( data );
+    rw::core::Ptr<StateData> sharedData( data );
     _allDatas.at(id) = sharedData;
     _currDatas.at(id) = sharedData;
     _stateIdxMap[sharedData->getName()] = id;
@@ -101,7 +101,7 @@ void StateStructure::addDataInternal(StateData * const data){
     // lastly update the default state
 }
 
-void StateStructure::addDataInternal(const boost::shared_ptr<StateData> data){
+void StateStructure::addDataInternal(const rw::core::Ptr<StateData> data){
     // frame must not be in tree allready
     if(has(data.get())){
         RW_THROW("The StateData has allready been added! State data can only be added once. " << data->getName() << " ID: " << data->getID());
@@ -110,7 +110,7 @@ void StateStructure::addDataInternal(const boost::shared_ptr<StateData> data){
     const int id = allocateDataID();
     data->setID(id, this);
     
-    boost::shared_ptr<StateData> sharedData = data;
+    rw::core::Ptr<StateData> sharedData = data;
     _allDatas.at(id) = sharedData;
     _currDatas.at(id) = sharedData;
     _stateIdxMap[sharedData->getName()] = id;
@@ -152,7 +152,7 @@ void StateStructure::addFrame(Frame::Ptr frame, Frame::Ptr parent){
 
     // now add the state data of the frame
     if(frame.isShared()) {
-        addDataInternal(frame.getSharedPtr());
+        addDataInternal(frame);
     } else {
         addDataInternal(frame.get());
     }
@@ -183,7 +183,7 @@ void StateStructure::addDAF(Frame::Ptr frame, Frame::Ptr parent){
 
     // now add the state data of the frame
     if(frame.isShared()) {
-        addDataInternal(frame.getSharedPtr());
+        addDataInternal(frame);
     } else {
         addDataInternal(frame.get());
     }
@@ -222,7 +222,7 @@ void StateStructure::remove(StateData *data) {
         _frameIdxMap.erase(_frames[id]->getName());
     }
     // setting data in current data list to null
-    _currDatas[id] = boost::shared_ptr<StateData>();
+    _currDatas[id] = rw::core::Ptr<StateData>();
     // update default state
     // the dynamicly attached frames will automaticly be attached to world
     updateDefaultState();
@@ -254,7 +254,7 @@ void StateStructure::cleanup(int ID) {
     // used anymore
     StateSetupList::iterator iter = _setups.begin();
     while(iter!=_setups.end()){
-        if((*iter).use_count()>1){
+        if((*iter).getSharedPtr().use_count()>1){
             ++iter;
         } else {
             //std::cout << "Erasing StateSetup v." << (*iter)->getVersion() << std::endl;
@@ -266,9 +266,9 @@ void StateStructure::cleanup(int ID) {
     // NEXT run through statedata list and remove all data that
     // is not pointed to by anything else.
     // remember to also remove instances from the daf and frame list
-    for(boost::shared_ptr<StateData>& data : _allDatas) {
+    for(rw::core::Ptr<StateData>& data : _allDatas) {
         if(data != NULL){
-            if(data.use_count()==1 || data->getID() == ID){
+            if(data.getSharedPtr().use_count()==1 || data->getID() == ID){
                 // delete the data and put it on available list
                 const int id = data->getID();
                 // test if data is a daf
@@ -288,7 +288,7 @@ void StateStructure::cleanup(int ID) {
                     _frames[id] = NULL;
                     data->setID(-1,NULL);
                 }
-                data = boost::shared_ptr<StateData>();
+                data = rw::core::Ptr<StateData>();
                 _availableDataIds.push_back(id);
             }
         }
@@ -299,7 +299,7 @@ void StateStructure::cleanup(int ID) {
 
 void StateStructure::updateDefaultState(){
     // first create a StateSetup
-    boost::shared_ptr<StateSetup> setup(new StateSetup(_version,*this, _currDatas));
+    rw::core::Ptr<StateSetup> setup(new StateSetup(_version,*this, _currDatas));
     _setups.push_back(setup);
     // construct qstate and tree state and then a new State
     QState qstate(setup);
@@ -309,7 +309,7 @@ void StateStructure::updateDefaultState(){
     // copy the default values into newState
     newState.copy( _defaultState );
     // all caches that are null should be updated with their default cache
-    for(boost::shared_ptr<StateData>& data : _currDatas) {
+    for(rw::core::Ptr<StateData>& data : _currDatas) {
         if(data==NULL)
             continue;
         if(data->hasCache()){
@@ -327,8 +327,8 @@ int StateStructure::allocateDataID()
     if (_availableDataIds.empty()) {
         // if not then generate a new id
         const int id = (int)_allDatas.size();
-        _allDatas.push_back(boost::shared_ptr<StateData>());
-        _currDatas.push_back(boost::shared_ptr<StateData>());
+        _allDatas.push_back(rw::core::Ptr<StateData>());
+        _currDatas.push_back(rw::core::Ptr<StateData>());
         _frames.push_back(NULL);
         RW_ASSERT(_allDatas.size() == _currDatas.size());
         return id;
@@ -350,13 +350,13 @@ Frame* StateStructure::findFrame(const std::string& name) const {
     return _frames[pos->second];
 }
 
-boost::shared_ptr<StateData> StateStructure::findData(const std::string& name) const {
+rw::core::Ptr<StateData> StateStructure::findData(const std::string& name) const {
 	// TODO: make a map for faster searching of state data
 
 	typedef std::map<std::string,int>::const_iterator I;
     const I pos = _stateIdxMap.find(name);
     if (pos == _stateIdxMap.end())
-        return boost::shared_ptr<StateData>();
+        return rw::core::Ptr<StateData>();
     int idx = pos->second;
     return _allDatas[idx];
 }
