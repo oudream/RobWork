@@ -100,13 +100,42 @@ namespace swig {
 	 * Wrapped classes in common.
 	 */
 	///@{
-
+	
+	//! @copydoc rw::common:Archive
+	typedef rw::common::Archive Archive;
+	//! @copydoc rw::common:BINArchive
+	typedef rw::common::BINArchive BINArchive;
+	//! @copydoc rw::common:INIArchive
+	typedef rw::common::INIArchive INIArchive;
+	//! @copydoc rw::common::LogBufferedChar
+	typedef rw::common::LogBufferedChar LogBufferedChar;
+	//! @copydoc rw::common::LogBufferedMsg
+	typedef rw::common::LogBufferedMsg LogBufferedMsg;
+	//! @copydoc rw::common::LogFileWriter
+	typedef rw::common::LogFileWriter LogFileWriter;
+	//! @copydoc rw::common::LogMultiWriter
+	typedef rw::common::LogMultiWriter LogMultiWriter;
+	//! @copydoc rw::common::ProgramOptions
+	typedef rw::common::ProgramOptions ProgramOptions;
 	//! @copydoc rw::common::ThreadPool
 	typedef rw::common::ThreadPool ThreadPool;
 	//! @copydoc rw::common::ThreadTask
 	typedef rw::common::ThreadTask ThreadTask;
 	//! @copydoc rw::common:Timer
 	typedef rw::common::Timer Timer;
+	//! @copydoc rw::common:TimerUtil
+	typedef rw::common::TimerUtil TimerUtil;
+
+
+	//! @copydoc rw::common:InputArchive
+	typedef rw::common::InputArchive InputArchive;
+	//! @copydoc rw::common:OutputArchive
+	typedef rw::common::OutputArchive OutputArchive;
+	//! @copydoc rw::common:Serializable
+	typedef rw::common::Serializable Serializable;
+	//! @copydoc rw::common:ScopedTimer
+	typedef rw::common::ScopedTimer ScopedTimer;
+	
 	///@}
 
 	/**
@@ -127,6 +156,8 @@ namespace swig {
 	typedef rw::core::Plugin Plugin;
 	//! @copydoc rw::core::Extension
 	typedef rw::core::Extension Extension;
+	//! @copydoc rw::core::Exception
+	typedef rw::core::Exception Exception;
 	//! @copydoc rw::core::Extension::Descriptor
 	typedef rw::core::Extension::Descriptor ExtensionDescriptor;
 	//! @copydoc rw::core::ExtensionRegistry
@@ -249,18 +280,28 @@ namespace swig {
     typedef rw::kinematics::FKTable FKTable;
 	//! @copydoc rw::kinematics::Frame
 	typedef rw::kinematics::Frame Frame;
+	//! @copydoc rw::kinematics::FrameType
+	typedef rw::kinematics::FrameType FrameType;
 	//! @copydoc rw::kinematics::MovableFrame
 	typedef rw::kinematics::MovableFrame MovableFrame;
 	//! @copydoc rw::kinematics::FixedFrame
 	typedef rw::kinematics::FixedFrame FixedFrame;
 	//! @copydoc rw::kinematics::State
 	typedef rw::kinematics::State State;
+	//! @copydoc rw::kinematics::StateSetup
+	typedef rw::kinematics::StateSetup StateSetup;
+	//! @copydoc rw::kinematics::StateCache
+	typedef rw::kinematics::StateCache StateCache;
 	//! @copydoc rw::kinematics::Stateless
 	typedef rw::kinematics::Stateless Stateless;
 	//! @copydoc rw::kinematics::StateStructure
 	typedef rw::kinematics::StateStructure StateStructure;
     //! @copydoc rw::kinematics::Kinematics
     typedef rw::kinematics::Kinematics Kinematics;
+	//! @copydoc rw::kinematics::QState
+    typedef rw::kinematics::QState QState;
+	//! @copydoc rw::kinematics::TreeState
+    typedef rw::kinematics::TreeState TreeState;
 	///@}
 
 	/**

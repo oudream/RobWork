@@ -31,11 +31,10 @@
 #include <list>
 #include <vector>
 
-namespace rw {
-namespace core {
+namespace rw { namespace core {
     class Exception;
-}
-namespace common {
+}}    // namespace rw::core
+namespace rw { namespace common {
     // Forward declarations
     class ThreadPool;
 
@@ -115,9 +114,7 @@ namespace common {
 
         /**
          * @brief Create task that will use a specific thread pool.
-         *
          * If no thread pool is given, the task will not use parallelization.
-         *
          * @param pool [in] (optional) a pointer to the ThreadPool to use.
          */
         ThreadTask (rw::core::Ptr< ThreadPool > pool = NULL);
@@ -129,9 +126,7 @@ namespace common {
 
         /**
          * @brief Set which ThreadPool to use to do the actual execution of work.
-         *
          * When execution is started the pool can not be changed anymore.
-         *
          * @param pool [in] pointer to the pool
          * @return true if change was successful, false otherwise.
          */
@@ -150,19 +145,16 @@ namespace common {
          * implemented.
          */
         ///@{
-        //! @brief Function is the first function executed to do the actual work (new subtasks can
-        //! be added in this function).
+        /**
+         *  @brief Function is the first function executed to do the actual work (new subtasks can
+         * be added in this function).
+         */
         virtual void run ();
 
         /**
          * @brief Function is executed each time a subtask has finished (new subtasks can be added
-         in this function).
-         *
-         * If #registerFailure is used to register failures in subtasks, this function should handle
-         or propagate
-         * the failures.
-         *
-         * The default implementation of this function is as follows:
+           in this function). If #registerFailure is used to register failures in subtasks, this function should handle
+           or propagate the failures. The default implementation of this function is as follows:
          * \verbatim
                 for(const Exception& e : subtask->getExceptions()) {
                         registerFailure(e);
@@ -173,12 +165,16 @@ namespace common {
          */
         virtual void subTaskDone (ThreadTask* subtask);
 
-        //! @brief Function is executed when the task becomes idle (new subtasks can be added in
-        //! this function).
+        /**
+         * @brief Function is executed when the task becomes idle (new subtasks can be added in
+         * this function).
+         */
         virtual void idle ();
 
-        //! @brief Function is executed when work is finished (at this point new subtasks can NOT be
-        //! added).
+        /**
+         * @brief Function is executed when work is finished (at this point new subtasks can NOT be
+         * added).
+         */
         virtual void done ();
         ///@}
 
@@ -284,6 +280,5 @@ namespace common {
         boost::mutex _mutex;
     };
     //! @}
-} /* namespace common */
-} /* namespace rw */
+}}     // namespace rw::common
 #endif /* RW_COMMON_THREADTASK_HPP_ */

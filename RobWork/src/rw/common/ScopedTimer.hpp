@@ -20,14 +20,13 @@
 
 #include <rw/common/Timer.hpp>
 
-namespace rw {
-namespace common {
+namespace rw { namespace common {
 
     /**
      * @brief Times what is executed in a scope.
      *
-	 * Automatically calls resume on the timer given in construction and pause when destroyed.
-	 *
+     * Automatically calls resume on the timer given in construction and pause when destroyed.
+     *
      * @note usage
      * \code
      * ...
@@ -40,37 +39,30 @@ namespace common {
      * std::cout << "Time: " << time << std::endl;
      * \endcode
      */
-    class ScopedTimer {
-    public:
+    class ScopedTimer
+    {
+      public:
         /**
          * @brief constructor. Starts the timer
-         * @param timer         
+         * @param timer
          */
-        ScopedTimer(Timer& timer): _timer(timer) {
-        	_timer.resume();
-        }
+        ScopedTimer (Timer& timer) : _timer (timer) { _timer.resume (); }
 
         /**
-         * @brief destructor, stops the timer         
+         * @brief destructor, stops the timer
          */
-        virtual ~ScopedTimer(){
-            _timer.pause();
-        }
+        virtual ~ScopedTimer () { _timer.pause (); }
 
         /**
          * @brief Returns the time wrapped in the ScopedTimer
          * @return Timer wrapped
          */
-        Timer& getTimer() {
-            return _timer;
-        }
+        Timer& getTimer () { return _timer; }
 
-    private:
+      private:
         Timer& _timer;
     };
 
-}
-}
+}}    // namespace rw::common
 
-
-#endif //End include guard
+#endif    // End include guard

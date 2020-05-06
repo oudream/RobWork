@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  ********************************************************************************/
-
 
 #ifndef RW_KINEMATICS_FRAMETYPE_HPP
 #define RW_KINEMATICS_FRAMETYPE_HPP
@@ -45,7 +44,7 @@ namespace rw { namespace kinematics {
      */
     class FrameType
     {
-    public:
+      public:
         /**
          * @brief FrameType enumeration
          */
@@ -63,22 +62,20 @@ namespace rw { namespace kinematics {
          *
          * @param type [in] The type of frame.
          */
-        FrameType(const Type& type) :
-            _type(type)
-        {}
+        FrameType (const Type& type) : _type (type) {}
 
         /**
          * @brief The frame type.
          *
          * @return The frame type.
          */
-        Type get() const { return _type; }
+        Type get () const { return _type; }
 
-    private:
+      private:
         Type _type;
     };
 
     /*@}*/
-}} // end namespaces
+}}    // namespace rw::kinematics
 
-#endif // end include guard
+#endif    // end include guard
