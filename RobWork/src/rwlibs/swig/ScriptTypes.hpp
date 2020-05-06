@@ -100,19 +100,41 @@ namespace swig {
 	 * Wrapped classes in common.
 	 */
 	///@{
-
+	
+	//! @copydoc rw::common:Archive
+	typedef rw::common::Archive Archive;
+	//! @copydoc rw::common:BINArchive
+	typedef rw::common::BINArchive BINArchive;
+	//! @copydoc rw::common:INIArchive
+	typedef rw::common::INIArchive INIArchive;
+	//! @copydoc rw::common::LogBufferedChar
+	typedef rw::common::LogBufferedChar LogBufferedChar;
+	//! @copydoc rw::common::LogBufferedMsg
+	typedef rw::common::LogBufferedMsg LogBufferedMsg;
+	//! @copydoc rw::common::LogFileWriter
+	typedef rw::common::LogFileWriter LogFileWriter;
+	//! @copydoc rw::common::LogMultiWriter
+	typedef rw::common::LogMultiWriter LogMultiWriter;
+	//! @copydoc rw::common::ProgramOptions
+	typedef rw::common::ProgramOptions ProgramOptions;
 	//! @copydoc rw::common::ThreadPool
 	typedef rw::common::ThreadPool ThreadPool;
 	//! @copydoc rw::common::ThreadTask
 	typedef rw::common::ThreadTask ThreadTask;
 	//! @copydoc rw::common:Timer
 	typedef rw::common::Timer Timer;
+	//! @copydoc rw::common:TimerUtil
+	typedef rw::common::TimerUtil TimerUtil;
+
+
 	//! @copydoc rw::common:InputArchive
 	typedef rw::common::InputArchive InputArchive;
 	//! @copydoc rw::common:OutputArchive
 	typedef rw::common::OutputArchive OutputArchive;
 	//! @copydoc rw::common:Serializable
 	typedef rw::common::Serializable Serializable;
+	//! @copydoc rw::common:ScopedTimer
+	typedef rw::common::ScopedTimer ScopedTimer;
 	
 	///@}
 
@@ -134,6 +156,8 @@ namespace swig {
 	typedef rw::core::Plugin Plugin;
 	//! @copydoc rw::core::Extension
 	typedef rw::core::Extension Extension;
+	//! @copydoc rw::core::Exception
+	typedef rw::core::Exception Exception;
 	//! @copydoc rw::core::Extension::Descriptor
 	typedef rw::core::Extension::Descriptor ExtensionDescriptor;
 	//! @copydoc rw::core::ExtensionRegistry
