@@ -29,11 +29,10 @@
 #include <boost/thread/mutex.hpp>
 #include <boost/thread/thread.hpp>
 
-namespace rw {
-namespace core {
+namespace rw { namespace core {
     template< class T > class Ptr;
-}
-namespace common {
+}}    // namespace rw::core
+namespace rw { namespace common {
 
     // Forward declarations
 
@@ -125,6 +124,5 @@ namespace common {
         boost::mutex _queueSizeMutex;
     };
     //! @}
-} /* namespace common */
-} /* namespace rw */
+}}     // namespace rw::common
 #endif /* RW_COMMON_THREADPOOL_HPP_ */

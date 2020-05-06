@@ -5,5 +5,8 @@ namespace boost {
     class multi_array {
 
     };
+    template<Typename T>
+    class function {
 
+    };
 }

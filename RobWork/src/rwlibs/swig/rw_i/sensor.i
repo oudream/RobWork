@@ -1,6 +1,3 @@
-%include <rwlibs/swig/ext_i/eigen.i>
-%include <rwlibs/swig/ext_i/boost.i>
-
 // ############### Sensor ############################
 
     %nodefaultctor Sensor;
