@@ -68,6 +68,9 @@ For the development packages including the newest version of robwork and the inc
 |  - libsdurw-proximitystrategies |  - libsdurws-treeview             |  - libsdurwhw-universalrobots      |                       |
 |  - libsdurw-simulation          |  - libsdurws-workcelleditor       |  - libsdurwhw-universalrobots-rtde |                       |
 |  - libsdurw-task                |  - libsdurws-workcelleditorplugin |                                    |                       |
+|  - libsdurw-core                |                                   |                                    |                       |
+|  - libsdurw-common              |                                   |                                    |                       |
+|  - libsdurw-math                |                                   |                                    |                       |
 +---------------------------------+-----------------------------------+------------------------------------+-----------------------+
 
 Python and Lua packages
