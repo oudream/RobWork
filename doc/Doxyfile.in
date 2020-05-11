@@ -5,7 +5,7 @@
 #---------------------------------------------------------------------------
 DOXYFILE_ENCODING      = UTF-8
 PROJECT_NAME           = RobWorkProject
-PROJECT_NUMBER         = @ROBWORK_VERSION@
+PROJECT_NUMBER         = @ROBWORK_VERSION@-@ROBWORK_BRANCH@
 PROJECT_BRIEF          =
 PROJECT_LOGO           = gfx/rw_logo_64x64.png
 OUTPUT_DIRECTORY       = ../apidocs
