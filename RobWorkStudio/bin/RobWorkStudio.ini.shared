@@ -1,9 +1,9 @@
 [Plugins]
 
-Lua\DockArea=2
-Lua\Filename=$<TARGET_FILE_NAME:sdurws_luapl>
-Lua\Path=$<TARGET_FILE_DIR:sdurws_luapl>
-Lua\Visible=false
+
+
+
+
 
 Sensors\DockArea=2
 Sensors\Filename=$<TARGET_FILE_NAME:sdurws_sensors>
@@ -39,4 +39,3 @@ TreeView\DockArea=1
 TreeView\Filename=$<TARGET_FILE_NAME:sdurws_treeview>
 TreeView\Path=$<TARGET_FILE_DIR:sdurws_treeview>
 TreeView\Visible=false
-

@@ -49,8 +49,7 @@ if(build)
                        "${RWS_ROOT}/bin/${RWS_BUILD_TYPE}/RobWorkStudio.ini.template" COPYONLY)
     else()
         install(FILES "${RWS_ROOT}/bin/RobWorkStudio.ini.shared" DESTINATION ${BIN_INSTALL_DIR} RENAME "RobWorkStudio.ini")
-        # CONFIGURE_FILE("${RWS_ROOT}/bin/RobWorkStudio.ini.shared" "${RWS_ROOT}/bin/${RWS_BUILD_TYPE}/RobWorkStudio.ini"
-        # COPYONLY )
+        configure_file("${RWS_ROOT}/bin/RobWorkStudio.ini.shared.in" "${RWS_ROOT}/bin/RobWorkStudio.ini.shared")
         file(
             GENERATE
             OUTPUT $<TARGET_FILE_DIR:RobWorkStudio>/RobWorkStudio.ini
