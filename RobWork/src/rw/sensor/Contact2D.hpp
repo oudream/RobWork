@@ -11,11 +11,20 @@ namespace rw { namespace sensor {
     class Contact2D
     {
       public:
-        rw::math::Vector2D<> p;    //! Contact position
-        rw::math::Vector2D<> n;    //! Surface contact normal
-        double curvature;          //! surface curvature
-        double avgCurvature;       //! double moving average of the curvature
-        double mu;                 //! coulomb friction coefficient
+        //! @brief Contact position
+        rw::math::Vector2D<double> p;    
+
+        //! @brief Surface contact normal
+        rw::math::Vector2D<double> n;    
+
+        //! @brief surface curvature
+        double curvature;          
+
+         //! @brief double moving average of the curvature
+        double avgCurvature;      
+
+        //! @brief coulomb friction coefficient
+        double mu;  
     };
 
 }}    // namespace rw::sensor

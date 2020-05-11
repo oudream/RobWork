@@ -100,6 +100,5 @@ if(build)
         ${SUBSYS_NAME} PUBLIC $<BUILD_INTERFACE:${RW_ROOT}/src>
                               $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
     )
-
     rw_add_includes(${SUBSYS_NAME} "rw" ${CMAKE_CURRENT_SOURCE_DIR}/../common.hpp)
 endif()

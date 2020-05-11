@@ -795,8 +795,8 @@
          * @param item [in] the frame to grip.
          * @param gripper [in] the grasping frame.
          * @param state [in/out] the state.
-         * @exception An exception is thrown if \b item is not a DAF.
-         * @see See also gripFrame(MovableFrame*, Frame*, State&).
+         * @note An exception is thrown if \b item is not a DAF.
+         * @note See also gripFrame(MovableFrame*, Frame*, State&).
          */
         static void gripFrame (Frame* item, Frame* gripper, State& state);
 
@@ -808,8 +808,8 @@
          * @param item [in] the frame to grip.
          * @param gripper [in] the grasping frame.
          * @param state [in/out] the state.
-         * @exception An exception is thrown if \b item is not a DAF.
-         * @see See also gripFrame(Frame*, Frame*, State&).
+         * @note An exception is thrown if \b item is not a DAF.
+         * @note See also gripFrame(Frame*, Frame*, State&).
          */
         static void gripFrame (MovableFrame* item, Frame* gripper, State& state);
 

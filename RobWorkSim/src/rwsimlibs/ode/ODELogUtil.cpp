@@ -22,6 +22,7 @@
 using rw::kinematics::State;
 using namespace rw::math;
 using rwsim::simulator::ODELogUtil;
+using rwsim::simulator::ODEBody;
 
 ODELogUtil::ODELogUtil()
 {
