@@ -3,7 +3,7 @@
 // to change the definitions then change them in RobWorkConfig.hpp.in  
 // 
 
-#define RW_VERSION "${ROBWORK_VERSION}"
+#define RW_VERSION "${ROBWORK_VERSION}-${ROBWORK_BRANCH}"
 #define RW_VERSION_MAJOR ${ROBWORK_VERSION_MAJOR} 
 #define RW_VERSION_MINOR ${ROBWORK_VERSION_MINOR}
 #define RW_VERSION_PATCH ${ROBWORK_VERSION_PATCH}
