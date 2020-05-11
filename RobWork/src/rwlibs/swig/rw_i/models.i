@@ -507,9 +507,9 @@
          *  {^{base}_n}\mathbf{J}_{\mathbf{q}}(\mathbf{q}) =
          *  \left[
          *    \begin{array}{cccc}
-         *      {^{base}_1}\mathbf{J}_{\mathbf{q}}(\mathbf{q}) &
-         *      {^{base}_2}\mathbf{J}_{\mathbf{q}}(\mathbf{q}) &
-         *      \cdots &
+         *      {^{base}_1}\mathbf{J}_{\mathbf{q}}(\mathbf{q}) 
+         *      {^{base}_2}\mathbf{J}_{\mathbf{q}}(\mathbf{q}) 
+         *      \cdots
          *      {^b_n}\mathbf{J}_{\mathbf{q}}(\mathbf{q}) \\
          *    \end{array}
          *  \right]
@@ -523,7 +523,7 @@
          *        {^{base}}\mathbf{z}_i \times {^{i}\mathbf{p}_n} \\
          *        {^{base}}\mathbf{z}_i \\
          *      \end{array}
-         *    \right] & \textrm{revolute joint}
+         *    \right] \textrm{revolute joint}
          *  \end{array}
          * \f]
          * \f[
@@ -534,7 +534,7 @@
          *        {^{base}}\mathbf{z}_i \\
          *        \mathbf{0} \\
          *    \end{array}
-         *    \right] & \textrm{prismatic joint} \\
+         *    \right] \textrm{prismatic joint} \\
          *  \end{array}
          * \f]
          *
@@ -658,7 +658,6 @@
          * @param beta [in] documentation missing !
          * @param b [in] documentation missing !
          * @param parallel [in] documentation missing !
-         * @param theta [in] \f$\theta_{i-1}\f$
          */
         DHParameterSet(double alpha, double a, double beta, double b, bool parallel);
 
@@ -1520,7 +1519,6 @@
         /**
          * @copydoc JacobianCalculator::get(const rw::kinematics::State& state) const
          */
-        // virtual rw::math::Jacobian get(const rw::kinematics::FKTable& fk) const;
         virtual rw::math::Jacobian get (const State& state) const;
     };
 
@@ -2500,8 +2498,7 @@
         void setInertia(const rw::math::InertiaMatrix<double>& inertia);
 
         /**
-         * @brief get the center of mass of this rigid body seen in the base frame
-         * @return the center of mass 3D coordinate
+         * @brief set the center of mass of this rigid body seen in the base frame
          */
         void setCOM(const rw::math::Vector3D<double>& com);
 
@@ -2512,7 +2509,7 @@
 
         /** 
          * @brief approximates inertia and center of mass based on geometry and mass properties
-	     */
+	       */
         void approximateInertiaCOM();
 
         /**
@@ -2667,12 +2664,12 @@
          *  {^b_n}\mathbf{J}_{\mathbf{q}}(\mathbf{q}) = \mathbf{I}^{6\times 6} =
          *  \left[
          *    \begin{array}{cccccc}
-         *    1 & 0 & 0 & 0 & 0 & 0\\
-         *    0 & 1 & 0 & 0 & 0 & 0\\
-         *    0 & 0 & 1 & 0 & 0 & 0\\
-         *    0 & 0 & 0 & 1 & 0 & 0\\
-         *    0 & 0 & 0 & 0 & 1 & 0\\
-         *    0 & 0 & 0 & 0 & 0 & 1\\
+         *    1 0 0 0 0 0\\
+         *    0 1 0 0 0 0\\
+         *    0 0 1 0 0 0\\
+         *    0 0 0 1 0 0\\
+         *    0 0 0 0 1 0\\
+         *    0 0 0 0 0 1\\
          *    \end{array}
          *  \right]
          * \f]

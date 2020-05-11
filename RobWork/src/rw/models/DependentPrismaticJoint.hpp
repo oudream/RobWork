@@ -71,9 +71,9 @@ namespace rw { namespace models {
          * - Tz(q) is the transform that translates a point an distance q in the
          * direction of the z-axis.
          *
-         * @copydoc kinematics::Frame::getTransform
+         * @copydoc rw::kinematics::Frame::getTransform
          */
-        math::Transform3D<> getTransform (const kinematics::State& state) const;
+        math::Transform3D<> getTransform (const rw::kinematics::State& state) const;
 
         /**
            @brief The joint controlling the passive revolute frame.
@@ -100,7 +100,7 @@ namespace rw { namespace models {
 
         //! @copydoc Joint::getJacobian
         void getJacobian (size_t row, size_t col, const math::Transform3D<>& joint,
-                          const math::Transform3D<>& tcp, const kinematics::State& state,
+                          const math::Transform3D<>& tcp, const rw::kinematics::State& state,
                           math::Jacobian& jacobian) const;
 
         //! @copydoc Joint::getFixedTransform()
@@ -121,12 +121,12 @@ namespace rw { namespace models {
         virtual void removeJointMapping () {}
 
       private:
-        void doMultiplyTransform (const math::Transform3D<>& parent, const kinematics::State& state,
+        void doMultiplyTransform (const math::Transform3D<>& parent, const rw::kinematics::State& state,
                                   math::Transform3D<>& result) const;
 
-        math::Transform3D<> doGetTransform (const kinematics::State& state) const;
+        math::Transform3D<> doGetTransform (const rw::kinematics::State& state) const;
 
-        math::Jacobian doGetJacobian (const kinematics::State& state) const;
+        math::Jacobian doGetJacobian (const rw::kinematics::State& state) const;
 
       private:
         PrismaticJoint _helper;

@@ -106,5 +106,4 @@ if(build)
     if(RW_HAVE_OMP)
         target_link_libraries(${SUBSYS_NAME} PUBLIC ${OpenMP_CXX_LIBRARIES})
     endif()
-
 endif()
