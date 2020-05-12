@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RWLIBS_TASK_TARGET_HPP
 #define RWLIBS_TASK_TARGET_HPP
 
@@ -30,12 +29,8 @@
 namespace rwlibs {
 namespace task {
 
-
-
 /** @addtogroup task */
 /*@{*/
-
-
 
 /**
  * @brief Base class for targets
@@ -58,7 +53,7 @@ public:
     /**
      * @brief Destructor
      */
-    virtual ~TargetBase() {};
+    virtual ~TargetBase() {}
 
 
     /**
@@ -107,13 +102,13 @@ public:
      * @brief Returns the value of the target
      * @return Value of target
      */
-    T& get() { return _value; };
+    T& get() { return _value; }
 
     /**
      * @brief Returns the value of the target
      * @return Value of target
      */
-    const T& get() const { return _value; };
+    const T& get() const { return _value; }
 
     /**
      * @brief Make a copy of the target.
@@ -136,6 +131,9 @@ typedef Target<rw::math::Q> QTarget;
  * Definition of Target with type rw::math::Transform3D
  */
 typedef Target<rw::math::Transform3D<> > CartesianTarget;
+
+extern template class Target<rw::math::Q>;
+extern template class Target<rw::math::Transform3D<> >;
 
 template <class T>
 T& TargetBase::getValue()

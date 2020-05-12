@@ -63,7 +63,7 @@ public:
 	rwlibs::task::TaskLoader::Ptr clone() const;
 
 private:
-	rwlibs::task::TaskBasePtr readTask(rw::core::Ptr<rw::core::DOMElem> element);
+	rwlibs::task::TaskBase::Ptr readTask(rw::core::Ptr<rw::core::DOMElem> element);
 
 	void readEntityData(rw::core::Ptr<rw::core::DOMElem> element, rw::core::Ptr<rwlibs::task::Entity> entity);
 

@@ -307,7 +307,7 @@ void DOMTaskLoader::readAugmentations (DOMElem::Ptr element, TaskBase::Ptr task)
         for (DOMElem::Ptr child : element->getChildren ()) {
             if (!child.isNull ()) {
                 DOMTaskLoader loader;
-                TaskBasePtr augmentation = loader.readTask (child);
+                TaskBase::Ptr augmentation = loader.readTask (child);
                 task->addAugmentation (augmentation, augmentation->getId ());
             }
         }

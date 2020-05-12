@@ -48,7 +48,7 @@ TaskLoader::Ptr TaskLoader::Factory::getTaskLoader(const std::string& format, co
 			return rw::core::ownedPtr( new DOMTaskLoader() );
 #ifdef RW_HAVE_XERCES
 		else if (StringUtil::toUpper(id) == "XERCES")
-			return rw::core::ownedPtr( new DOMTaskLoader() );
+			return rw::core::ownedPtr( new XMLTaskLoader() );
 #endif
 	}
 	return NULL;

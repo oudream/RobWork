@@ -15,6 +15,18 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #include "Motion.hpp"
 
+using namespace rw::math;
+using namespace rwlibs::task;
+
+template class Motion<Q>;
+template class Motion<Transform3D<> >;
+
+template class P2PMotion<Q>;
+template class P2PMotion<Transform3D<> >;
+
+template class LinearMotion<Q>;
+template class LinearMotion<Transform3D<> >;
+
+template class CircularMotion<Transform3D<> >;

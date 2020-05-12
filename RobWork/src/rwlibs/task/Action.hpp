@@ -55,19 +55,14 @@ public:
     {
     }
 
-
-
-
     /**
      * @brief Cast operator enable implicit conversion to int
      *
      * This operator enables using ActionType in a switch statement.
      */
-    operator int() {
+    operator int() const {
         return _type;
     }
-
-
 
 private:
     int _type;
@@ -103,8 +98,6 @@ public:
      * @brief Destructor
      */
     virtual ~Action() {}
-
-
 
     /**
      * @brief Returns the type of the action.
