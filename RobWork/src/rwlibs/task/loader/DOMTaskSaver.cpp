@@ -136,15 +136,15 @@ void DOMTaskSaver::writeMotion(typename Motion<T>::Ptr motion, DOMElem::Ptr pare
 	}
 
     DOMElem::Ptr targetElement = motionElement->addChild(DOMTaskFormat::idMotionStart());
-    targetElement->addChild(_targetMap[motion->startTarget()]); // Maby set value
+    targetElement->setValue(_targetMap[motion->startTarget()]);
 
 	if (motion->motionType() == MotionType::Circular) {
         targetElement = motionElement->addChild(DOMTaskFormat::idMotionMid());
-        targetElement->addChild(_targetMap[motion.template cast<CircularMotion<T> >()->midTarget()]);
+        targetElement->setValue(_targetMap[motion.template cast<CircularMotion<T> >()->midTarget()]);
 	}
 
     targetElement = motionElement->addChild(DOMTaskFormat::idMotionEnd());
-    targetElement->addChild(_targetMap[motion->endTarget()]);
+    targetElement->setValue(_targetMap[motion->endTarget()]);
 
     writeEntityInfo(motion, motionElement);
 }
@@ -240,7 +240,6 @@ bool DOMTaskSaver::save(QTask::Ptr task, const std::string& filename) {
     }
     DOMParser::Ptr parser = DOMParser::Factory::getDOMParser(ext);
     DOMElem::Ptr doc = parser->getRootElement();
-    doc->setName(DOMTaskFormat::idQTask());
     DOMElem::Ptr parent = doc->addChild(DOMTaskFormat::idQTask());
     saveImpl<Q>(task, parent);
     parser->save(filename);

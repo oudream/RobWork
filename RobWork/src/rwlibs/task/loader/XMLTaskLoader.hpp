@@ -86,7 +86,7 @@ public:
 	};
 
 private:
-	rwlibs::task::TaskBasePtr readTask(xercesc::DOMElement* element);
+	rwlibs::task::TaskBase::Ptr readTask(xercesc::DOMElement* element);
 
 	void readEntityData(xercesc::DOMElement* element, rw::core::Ptr<rwlibs::task::Entity> entity);
 

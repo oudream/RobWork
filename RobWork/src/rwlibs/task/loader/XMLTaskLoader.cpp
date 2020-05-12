@@ -315,7 +315,7 @@ void XMLTaskLoader::readAugmentations(xercesc::DOMElement* element, TaskBase::Pt
 		xercesc::DOMElement* child = dynamic_cast<xercesc::DOMElement*>(children->item(i));
 		if (child != NULL) {
 			XMLTaskLoader loader;
-			TaskBasePtr augmentation = loader.readTask(child);
+			TaskBase::Ptr augmentation = loader.readTask(child);
 			task->addAugmentation(augmentation, augmentation->getId());
 		}
 	}

@@ -227,7 +227,7 @@ set(TASK_TEST_LIBRARIES
     ${CMAKE_DL_LIBS}
 )
 
-set(TASK_TEST_SRC task/GraspTaskTest.cpp)
+set(TASK_TEST_SRC task/TaskLoaderTest.cpp task/TaskSaverTest.cpp task/GraspTaskTest.cpp)
 add_executable(sdurw_task-gtest ${TASK_TEST_SRC})
 target_link_libraries(sdurw_task-gtest ${TASK_TEST_LIBRARIES})
 add_rw_gtest(sdurw_task-gtest)

@@ -199,7 +199,7 @@ TEST(GraspTask, saveAndLoadXML) {
 	}
 }
 
-TEST(TaskLoaderSaver, DOMParser) {
+TEST(GraspTaskLoaderSaver, DOMParser) {
 	TaskLoader::Ptr loader;
 	TaskSaver::Ptr saver;
 
@@ -241,14 +241,14 @@ TEST(TaskLoaderSaver, DOMParser) {
 }
 
 #ifdef RW_HAVE_XERCES
-TEST(TaskLoader, Xerces) {
+TEST(TaskLoader, GraspTaskXerces) {
 	TaskLoader::Ptr loader;
 	TaskSaver::Ptr saver;
 
 	loader = TaskLoader::Factory::getTaskLoader("xml","Xerces");
 	saver = TaskSaver::Factory::getTaskSaver("xml","Xerces");
-	ASSERT_FALSE(loader.cast<DOMTaskLoader>().isNull());
-	ASSERT_FALSE(saver.cast<DOMTaskSaver>().isNull());
+	ASSERT_FALSE(loader.cast<XMLTaskLoader>().isNull());
+	ASSERT_FALSE(saver.cast<XMLTaskSaver>().isNull());
 
 	std::ostringstream stream;
 	{
