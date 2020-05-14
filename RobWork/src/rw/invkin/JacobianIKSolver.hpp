@@ -90,7 +90,7 @@ namespace rw { namespace invkin {
 		typedef rw::core::Ptr< const JacobianIKSolver > CPtr;
 
         //! @brief the type of jacobian solver
-        typedef enum{Transpose, SVD, DLS, SDLS} JacobianSolverType;
+        typedef enum{Transpose, SVD, DLS, Weighted} JacobianSolverType;
 
         /**
          * @brief Constructs JacobianIKSolver for device \b device.
@@ -160,6 +160,11 @@ namespace rw { namespace invkin {
          */
         void setSolverType(JacobianSolverType type){ _solverType = type; };
 
+        /**
+         * @brief setWeightVector sets the weight vector used for solver type "Weighted"
+         * @param weights a vector of weights for each degree of freedom, ie weights.size() == DOF
+         */
+        void setWeightVector(Eigen::VectorXd weights);
 
         //! @copydoc InvKinSolver::setCheckJointLimits
         void setCheckJointLimits(bool check){
@@ -178,7 +183,7 @@ namespace rw { namespace invkin {
         rw::core::Ptr<models::JacobianCalculator> _devJac;
         bool _useJointClamping, _useInterpolation, _checkJointLimits;
         JacobianSolverType _solverType;
-
+        Eigen::MatrixXd _w;
     };
 
     /*@}*/

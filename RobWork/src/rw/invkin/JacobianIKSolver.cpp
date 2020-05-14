@@ -46,19 +46,13 @@ JacobianIKSolver::JacobianIKSolver(Device::CPtr device, const Frame *foi, const 
 	_solverType(SVD)
 {
     setMaxIterations(15);
+    Eigen::VectorXd::Ones(_device->getDOF());
 }
 
 JacobianIKSolver::JacobianIKSolver(Device::CPtr device, const State& state):
-    _device(device),
-    _interpolationStep(0.21),
-    _fkrange( device->getBase(), device->getEnd(), state),
-    _devJac( device->baseJCend(state) ),
-    _useJointClamping(false),
-	_useInterpolation(false),
-    _checkJointLimits(false),
-    _solverType(SVD)
+    JacobianIKSolver(device, device->getEnd(), state)
 {
-    setMaxIterations(15);
+
 }
 
 std::vector<Q> JacobianIKSolver::solve(const Transform3D<>& bTed,
@@ -152,9 +146,6 @@ bool JacobianIKSolver::solveLocal(const Transform3D<> &bTed,
             q += dq;
         }
         break;
-        case(SDLS):{
-            // TODO: not implemented yet for now we just use DLS
-        }
         case(DLS):{
             double lambda = 0.4; // dampening factor, for now a fixed value
             Eigen::MatrixXd U = J.e() * J.e().transpose(); // U = J * (J^T)
@@ -174,6 +165,17 @@ bool JacobianIKSolver::solveLocal(const Transform3D<> &bTed,
             q += dq;
         }
         break;
+        case(Weighted):{
+            // Equation 9 from https://ieeexplore.ieee.org/document/370511
+            Eigen::MatrixXd Jw = _w.inverse() * J.e().transpose() *
+                    (J.e()*_w.inverse()*J.e().transpose()).inverse();
+            Q dq (Jw*dS );
+            double dq_len = dq.normInf();
+            if( dq_len > 0.8 )
+                dq *= 0.8/dq_len;
+            q += dq;
+        }
+        break;
 
         }
 
@@ -182,6 +184,14 @@ bool JacobianIKSolver::solveLocal(const Transform3D<> &bTed,
         _device->setQ(q, state);
     }
     return false;
+}
+
+void JacobianIKSolver::setWeightVector(Eigen::VectorXd weights)
+{
+    if (weights.size() != _device->getDOF())
+        throw std::runtime_error("Weight vector must have same length as device DOF!");
+
+    _w = weights.asDiagonal();
 }
 
 rw::kinematics::Frame::CPtr JacobianIKSolver::getTCP() const {
