@@ -15,7 +15,10 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #include "Task.hpp"
 
+using rwlibs::task::Task;
+using namespace rw::math;
 
+template class Task<Q>;
+template class Task<Transform3D<> >;

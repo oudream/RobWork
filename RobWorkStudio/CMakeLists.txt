@@ -22,13 +22,7 @@ endif()
 
 # The name of the project.
 project(RobWorkStudio)
-if(DEFINED VERSION)
-    set(ROBWORKSTUDIO_VERSION ${VERSION})
-    set(RWS_GOT_VERSION True)
-else()
-    set(ROBWORKSTUDIO_VERSION 6.6.6)
-    set(RWS_GOT_VERSION False)
-endif()
+
 set(RWS_ROOT ${CMAKE_CURRENT_SOURCE_DIR})
 message(STATUS "RobWorkStudio version ${ROBWORKSTUDIO_VERSION}")
 
@@ -46,12 +40,22 @@ else()
         set(RobWork_DIR ${RW_ROOT}/cmake)
     endif()
 endif()
-find_package(RobWork ${ROBWORKSTUDIO_VERSION} REQUIRED)
+
+find_package(RobWork REQUIRED PATHS ${RWS_ROOT}/../RobWork/cmake )
 
 # ##################################################################################################
 # include the macros from robwork
 include(${RW_ROOT}/cmake/RobWorkMacros.cmake)
 include(${RWS_ROOT}/cmake/RobWorkStudioMacros.cmake)
+
+if(DEFINED VERSION)
+    set(ROBWORKSTUDIO_VERSION ${VERSION})
+    set(RWS_GOT_VERSION True)
+else()
+    rw_get_git_version(ROBWORKSTUDIO_VERSION ROBWORKSTUDIO_BRANCH)
+    set(RWS_GOT_VERSION False)
+endif()
+
 
 rw_init_project(${RWS_ROOT} RobWorkStudio RWS ${ROBWORKSTUDIO_VERSION})
 rw_get_os_info()

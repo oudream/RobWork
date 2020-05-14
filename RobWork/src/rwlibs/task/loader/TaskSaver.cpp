@@ -48,7 +48,7 @@ TaskSaver::Ptr TaskSaver::Factory::getTaskSaver(const std::string& format, const
 			return rw::core::ownedPtr( new DOMTaskSaver() );
 #ifdef RW_HAVE_XERCES
 		else if (StringUtil::toUpper(id) == "XERCES")
-			return rw::core::ownedPtr( new DOMTaskSaver() );
+			return rw::core::ownedPtr( new XMLTaskSaver() );
 #endif
 	}
 	return NULL;

@@ -43,7 +43,7 @@ void DependentPrismaticJoint::doMultiplyTransform (const Transform3D<>& parent, 
     _helper.multiplyJointTransform (parent, Q (1, q), result);
 }
 
-Transform3D<> DependentPrismaticJoint::getTransform (const kinematics::State& state) const
+Transform3D<> DependentPrismaticJoint::getTransform (const State& state) const
 {
     return doGetTransform (state);
 }

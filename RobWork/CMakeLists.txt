@@ -16,23 +16,24 @@ endif()
 
 # The name of the project.
 project(RobWork)
-set (CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 11)
+
+# set robwork root
+set(RW_ROOT ${CMAKE_CURRENT_SOURCE_DIR})
+include(${RW_ROOT}/cmake/RobWorkMacros.cmake)
 
 # Setup RobWork Version
 if(DEFINED VERSION)
     set(ROBWORK_VERSION ${VERSION})
     set(RW_GOT_VERSION True)
 else()
-    set(ROBWORK_VERSION 6.6.6)
+    rw_get_git_version(ROBWORK_VERSION ROBWORK_BRANCH)
     set(RW_GOT_VERSION False)
 endif()
 
-# set robwork root
-set(RW_ROOT ${CMAKE_CURRENT_SOURCE_DIR})
-
 # guard against in-source builds
 set(CMAKE_MODULE_PATH ${RW_ROOT}/cmake/Modules ${CMAKE_MODULE_PATH})
-include(${RW_ROOT}/cmake/RobWorkMacros.cmake)
+
 
 rw_init_project(${RW_ROOT} RobWork RW ${ROBWORK_VERSION})
 rw_get_os_info()
@@ -41,9 +42,11 @@ rw_options(RW)
 
 # Add an "uninstall" target
 configure_file("${RW_ROOT}/cmake/uninstall_target.cmake.in"
-               "${CMAKE_BINARY_DIR}/uninstall_target.cmake" IMMEDIATE @ONLY)
+               "${CMAKE_BINARY_DIR}/uninstall_target.cmake" IMMEDIATE @ONLY
+)
 add_custom_target(uninstall_sdurw "${CMAKE_COMMAND}" -P
-                  "${CMAKE_BINARY_DIR}/uninstall_target.cmake")
+                                  "${CMAKE_BINARY_DIR}/uninstall_target.cmake"
+)
 
 # This sets up ROBWORK_INCLUDE_DIR and ROBWORK_LIBRARIES
 include(${RW_ROOT}/cmake/RobWorkSetup.cmake)
@@ -70,8 +73,9 @@ configure_file("${RW_ROOT}/cmake/CTestCustom.cmake.in" "CTestCustom.cmake")
 configure_file("${RW_ROOT}/CTestConfig.cmake.in" "${RW_ROOT}/CTestConfig.cmake")
 
 include(CMakeDependentOption)
-cmake_dependent_option(RW_IS_TESTS_ENABLED "Set when you want to build the tests" ON
-                       "${RW_BUILD_TESTS}" OFF)
+cmake_dependent_option(
+    RW_IS_TESTS_ENABLED "Set when you want to build the tests" ON "${RW_BUILD_TESTS}" OFF
+)
 if(RW_IS_TESTS_ENABLED)
     message(STATUS "RobWork tests ENABLED!")
     # TODO Specify SET(SITE "myname") to configure the site name to use when uploading
@@ -89,8 +93,9 @@ endif()
 # ##################################################################################################
 # Test if we should compile the EXAMPLES
 #
-cmake_dependent_option(RW_IS_EXAMPLES_ENABLED "Set when you want to build the examples" ON
-                       "${RW_BUILD_EXAMPLES}" OFF)
+cmake_dependent_option(
+    RW_IS_EXAMPLES_ENABLED "Set when you want to build the examples" ON "${RW_BUILD_EXAMPLES}" OFF
+)
 if(RW_IS_EXAMPLES_ENABLED)
     message(STATUS "RobWork examples ENABLED!")
     add_subdirectory(example)
@@ -107,11 +112,13 @@ configure_file(${RW_ROOT}/src/RobWorkConfig.hpp.in ${RW_ROOT}/src/RobWorkConfig.
 # Configure cmake/RobWorkBuildConfig.cmake.in such that other projects might use RobWork
 
 configure_file(${RW_ROOT}/cmake/RobWorkBuildConfig.cmake.in
-               "${RW_ROOT}/cmake/RobWorkBuildConfig_${RW_BUILD_TYPE}.cmake" @ONLY)
+               "${RW_ROOT}/cmake/RobWorkBuildConfig_${RW_BUILD_TYPE}.cmake" @ONLY
+)
 
 # configure version information
 configure_file(${RW_ROOT}/cmake/RobWorkConfigVersion.cmake.in
-               "${RW_ROOT}/cmake/RobWorkConfigVersion.cmake" @ONLY)
+               "${RW_ROOT}/cmake/RobWorkConfigVersion.cmake" @ONLY
+)
 
 configure_file(${RW_ROOT}/cmake/RobWorkConfig.cmake.in "${RW_ROOT}/cmake/RobWorkConfig.cmake" @ONLY)
 
@@ -124,8 +131,7 @@ if(RW_HAVE_GTEST)
     if(TARGET ${GTEST_LIBRARIES} AND TARGET ${GTEST_MAIN_LIBRARIES})
         export(
             TARGETS ${GTEST_LIBRARIES} ${GTEST_MAIN_LIBRARIES}
-            NAMESPACE ${PROJECT_PREFIX}::
-            APPEND
+            NAMESPACE ${PROJECT_PREFIX}:: APPEND
             FILE "${RW_ROOT}/cmake/gtestTargets.cmake"
         )
     endif()
@@ -143,7 +149,11 @@ install(
 )
 
 # Install stuff
-install(FILES LICENSE.txt NOTICE.txt ChangeLog.txt DESTINATION "${RW_INSTALL_DIR}/" COMPONENT cmake)
+install(
+    FILES LICENSE.txt NOTICE.txt ChangeLog.txt
+    DESTINATION "${RW_INSTALL_DIR}/"
+    COMPONENT cmake
+)
 
 install(
     FILES "cmake/RobWorkBuildConfig_${RW_BUILD_TYPE}.cmake" "cmake/RobWorkMacros.cmake"
@@ -174,8 +184,8 @@ if(WIN32)
         elseif("${s}" STREQUAL "debug")
 
         else()
-            get_filename_component(_dir "${s}" DIRECTORY )
-            get_filename_component(_file "${s}" NAME_WLE )
+            get_filename_component(_dir "${s}" DIRECTORY)
+            get_filename_component(_file "${s}" NAME_WLE)
             string(REGEX MATCH "[a-z]*_[a-z]*" _file ${_file})
             file(GLOB _files "${_dir}/${_file}*lib")
             foreach(file ${_files})
@@ -185,7 +195,11 @@ if(WIN32)
     endforeach()
 
     # Install external libraries
-    install(FILES ${BOOST_LIBRARIES_INSTALL} DESTINATION ${LIB_INSTALL_DIR} COMPONENT boost)
+    install(
+        FILES ${BOOST_LIBRARIES_INSTALL}
+        DESTINATION ${LIB_INSTALL_DIR}
+        COMPONENT boost
+    )
     install(
         DIRECTORY "${Boost_INCLUDE_DIR}/boost/"
         DESTINATION "${RW_INSTALL_DIR}/ext/boost/"
@@ -193,7 +207,11 @@ if(WIN32)
     )
 
     if(RW_HAVE_XERCES)
-        install(FILES ${XERCESC_LIBRARIES} DESTINATION ${LIB_INSTALL_DIR} COMPONENT external)
+        install(
+            FILES ${XERCESC_LIBRARIES}
+            DESTINATION ${LIB_INSTALL_DIR}
+            COMPONENT external
+        )
         install(
             DIRECTORY "${XERCESC_INCLUDE_DIR}/"
             DESTINATION "${RW_INSTALL_DIR}/ext/xerces/"
@@ -213,7 +231,8 @@ endif()
 # GET_TARGET_PROPERTY(rw_executable_name loader-test LOCATION) # not allowed anymore - must use
 # generator expressions instead
 configure_file("${RW_ROOT}/cmake/dependencies.cmake.in" "${RW_ROOT}/cmake/dependencies.cmake.gen"
-               @ONLY)
+               @ONLY
+)
 
 # Disabled generation of the dependencies file (problem with multi-configuration generators like
 # Visual Studio) FILE(GENERATE OUTPUT "${RW_ROOT}/cmake/dependencies.cmake" INPUT
@@ -236,7 +255,11 @@ install(
 # Documentation build target
 find_program(doc_executable doxygen)
 if(doc_executable)
-    add_custom_target(doc doxygen WORKING_DIRECTORY ${RW_ROOT})
+    add_custom_target(
+        doc
+        doxygen
+        WORKING_DIRECTORY ${RW_ROOT}
+    )
 endif()
 
 # Packaging

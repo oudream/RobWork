@@ -9,36 +9,22 @@ set(CMAKE_CXX_STANDARD 11)
 # ##################################################################################################
 # The name of the project.
 project(RobWorkHardware)
-if(DEFINED VERSION)
-    set(ROBWORKHARDWARE_VERSION ${VERSION})
-    set(RWHW_GOT_VERSION True)
-else()
-    set(ROBWORKHARDWARE_VERSION 6.6.6)
-    set(RWHW_GOT_VERSION False)
-endif()
 
 set(RWHW_ROOT ${CMAKE_CURRENT_SOURCE_DIR})
-
-# ##################################################################################################
-# lets start by finding RobWork since this is the primary dependency and because we want to use the
-# macros available in RobWork if RW_ROOT is defined then we use that, else we try finding it the
-# traditional way
-if(RW_ROOT)
-    set(RobWork_DIR ${RW_ROOT}/cmake)
-else()
-    # try finding it relative to this directory
-    find_file(ROBWORKDEVEL_FOUND RobWorkSetup.cmake ${RWHW_ROOT}/../RobWork/cmake NO_DEFAULT_PATH)
-    if(ROBWORKDEVEL_FOUND)
-        set(RW_ROOT ${RWHW_ROOT}/../RobWork)
-        set(RobWork_DIR ${RW_ROOT}/cmake)
-    endif()
-endif()
-find_package(RobWork ${ROBWORKHARDWARE_VERSION} REQUIRED)
+find_package(RobWork REQUIRED PATHS ${RWHW_ROOT}/../RobWork/cmake )
 set(Boost_USE_STATIC_LIBS ${RW_BUILD_WITH_BOOST_USE_STATIC_LIB})
 
 # ##################################################################################################
 # include the macros from robwork
 include(${RW_ROOT}/cmake/RobWorkMacros.cmake)
+
+if(DEFINED VERSION)
+    set(ROBWORKHARDWARE_VERSION ${VERSION})
+    set(RWHW_GOT_VERSION True)
+else()
+    rw_get_git_version(ROBWORKHARDWARE_VERSION ROBWORKHARDWARE_BRANCH)
+    set(RWHW_GOT_VERSION False)
+endif()
 
 rw_init_project(${RWHW_ROOT} RobWorkHardware RWHW ${ROBWORKHARDWARE_VERSION})
 rw_get_os_info()

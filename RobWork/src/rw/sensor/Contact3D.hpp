@@ -54,17 +54,28 @@ namespace rw { namespace sensor {
             normalForce = dot (f, n);
         }
 
-        rw::math::Vector3D<> p;    //! Contact position
-        rw::math::Vector3D<> n;    //! Surface contact normal
-        rw::math::Vector3D<> f;    //! the actual force
-        double normalForce;        //!  normal force
+        //! @brief Contact position
+        rw::math::Vector3D<double> p;    
 
-        //! index to the geometric primitive on which the contact is located
+        //! @brief Surface contact normal
+        rw::math::Vector3D<double> n;    
+
+        //! @brief the actual force
+        rw::math::Vector3D<double> f;    
+
+        //! @brief normal force
+        double normalForce;
+
+        //! @brief index to the geometric primitive on which the contact is located
         unsigned int _faceIdx, _faceIdx2;
 
+
         // hmm, dunno about 3d curvature
-        double curvature;    //! surface curvature
-        double mu;           //! coulomb friction coefficient
+        //! @brief surface curvature
+        double curvature;
+
+         //! @brief coulomb friction coefficient    
+        double mu;                
     };
 
 }}    // namespace rw::sensor

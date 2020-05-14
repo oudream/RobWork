@@ -15,5 +15,10 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #include "Target.hpp"
+
+using namespace rw::math;
+using rwlibs::task::Target;
+
+template class Target<Q>;
+template class Target<Transform3D<> >;

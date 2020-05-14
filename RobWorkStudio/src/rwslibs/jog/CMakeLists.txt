@@ -27,6 +27,7 @@ if(build)
         $<BUILD_INTERFACE:${RWS_ROOT}/src> $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
     )
 
+    rws_plugin_load_details(${SUBSYS_NAME} 1 Jog false)
     if("${RWS_DEFAULT_LIB_TYPE}" STREQUAL "STATIC")
         set(RWS_PLUGIN_LIBRARIES ${RWS_PLUGIN_LIBRARIES} ${SUBSYS_NAME} PARENT_SCOPE)
     endif()

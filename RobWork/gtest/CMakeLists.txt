@@ -106,7 +106,11 @@ add_rw_gtest(sdurw_graphics-gtest)
 # ##################################################################################################
 set(INVKIN_TEST_LIBRARIES sdurw-gtest-main ${GTEST_LIBRARIES} sdurw)
 
-set(INVKIN_TEST_SRC invkin/ClosedFormIKSolverKukaIIWATest.cpp invkin/ParallelIKSolverTest.cpp)
+set(INVKIN_TEST_SRC
+     invkin/ClosedFormIKSolverKukaIIWATest.cpp
+     invkin/ParallelIKSolverTest.cpp
+     invkin/JacobianIKSolverTest.cpp
+     )
 add_executable(sdurw_invkin-gtest ${INVKIN_TEST_SRC})
 target_link_libraries(sdurw_invkin-gtest ${INVKIN_TEST_LIBRARIES})
 add_rw_gtest(sdurw_invkin-gtest)
@@ -227,7 +231,7 @@ set(TASK_TEST_LIBRARIES
     ${CMAKE_DL_LIBS}
 )
 
-set(TASK_TEST_SRC task/GraspTaskTest.cpp)
+set(TASK_TEST_SRC task/TaskLoaderTest.cpp task/TaskSaverTest.cpp task/GraspTaskTest.cpp)
 add_executable(sdurw_task-gtest ${TASK_TEST_SRC})
 target_link_libraries(sdurw_task-gtest ${TASK_TEST_LIBRARIES})
 add_rw_gtest(sdurw_task-gtest)

@@ -94,7 +94,9 @@ endmacro()
 # Try to find the revision, first from Git, then from SVN
 #
 macro(RW_GET_REVISION DIR PREFIX)
-    find_package(Git QUIET)
+    if(NOT Git_FOUND)
+        find_package(Git QUIET)
+    endif()
     if(Git_FOUND)
         execute_process(
             COMMAND ${GIT_EXECUTABLE} describe --dirty --always
@@ -147,6 +149,44 @@ macro(RW_GET_REVISION DIR PREFIX)
             message(STATUS "Current Git revision is ${${PREFIX}_REVISION}")
         endif()
     endif()
+endmacro()
+
+macro(RW_GET_GIT_VERSION _version _branch)
+    set(${_version} "6.6.6")
+    set(${_branch} "unversioned")
+    if(NOT Git_FOUND)
+        find_package(Git QUIET)
+    endif()
+
+    if(Git_FOUND)
+        execute_process(
+            COMMAND ${GIT_EXECUTABLE} show -s --format=%cd --date=short
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+            OUTPUT_VARIABLE tmp_version
+            OUTPUT_STRIP_TRAILING_WHITESPACE
+        )
+        string(REPLACE "-" "." tmp_version ${tmp_version})
+        string(REPLACE "00" "0" tmp_version ${tmp_version})
+        string(REPLACE "01" "1" tmp_version ${tmp_version})
+        string(REPLACE "02" "2" tmp_version ${tmp_version})
+        string(REPLACE "03" "3" tmp_version ${tmp_version})
+        string(REPLACE "04" "4" tmp_version ${tmp_version})
+        string(REPLACE "05" "5" tmp_version ${tmp_version})
+        string(REPLACE "06" "6" tmp_version ${tmp_version})
+        string(REPLACE "07" "7" tmp_version ${tmp_version})
+        string(REPLACE "08" "8" tmp_version ${tmp_version})
+        string(REPLACE "09" "9" tmp_version ${tmp_version})
+        string(SUBSTRING ${tmp_version} 2 -1 ${_version})
+
+        execute_process(
+            COMMAND ${GIT_EXECUTABLE} rev-parse --abbrev-ref HEAD
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+            OUTPUT_VARIABLE ${_branch}
+            OUTPUT_STRIP_TRAILING_WHITESPACE
+        )
+
+    endif()
+
 endmacro()
 
 # ##################################################################################################
@@ -388,14 +428,12 @@ macro(RW_IS_RELEASE IS_RELEASE)
 endmacro()
 
 macro(RW_OPTIONS PREFIX)
-    # Build shared libraries by default.
-    #if(NOT DEFINED ${PREFIX}_SHARED_LIBS)
-    #    set(${PREFIX}_SHARED_LIBS OFF)
-    #endif()
+    # Build shared libraries by default. if(NOT DEFINED ${PREFIX}_SHARED_LIBS)
+    # set(${PREFIX}_SHARED_LIBS OFF) endif()
 
     option(${PREFIX}_SHARED_LIBS "Build shared libraries." ON)
     option(BUILD_SHARED_LIBS "Build shared libraries." ${PREFIX}_SHARED_LIBS)
-    
+
     if(${PREFIX}_SHARED_LIBS)
         set(PROJECT_LIB_PREFIX ${CMAKE_SHARED_LIBRARY_PREFIX})
         set(PROJECT_LIB_SUFFIX ${CMAKE_SHARED_LIBRARY_SUFFIX})
@@ -795,9 +833,7 @@ macro(RW_INCLUDE_EIGEN _name)
             ${_name} INTERFACE $<INSTALL_INTERFACE:${RW_EXT_INSTALL_DIR}/eigen3>
         )
     else()
-        target_include_directories(
-            ${_name} INTERFACE $<INSTALL_INTERFACE:${EIGEN3_INCLUDE_DIR}>
-        )
+        target_include_directories(${_name} INTERFACE $<INSTALL_INTERFACE:${EIGEN3_INCLUDE_DIR}>)
     endif()
 endmacro()
 

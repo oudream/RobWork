@@ -136,6 +136,10 @@ if(build)
     )
     set(CMAKE_SWIG_OUTDIR ${RWS_CMAKE_LIBRARY_OUTPUT_DIRECTORY})
 
+    if(TARGET sdurw_jni)
+        add_dependencies(sdurws_jni sdurw_jni)
+    endif()
+    
     target_link_libraries(${SUBSYS_NAME} INTERFACE sdurws_jni)
     install(
         TARGETS sdurws_jni 

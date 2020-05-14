@@ -36,7 +36,7 @@
         void setDescription (const std::string& description);
 
       public:
-        //! destructor
+        //! @brief destructor
         virtual ~Sensor();
 
         /**
@@ -528,7 +528,7 @@
          */
         SensorModel(const std::string& name, Frame* frame, const std::string& description);
 
-        //! destructor
+        //! @brief destructor
         virtual ~SensorModel();
 
         /**
@@ -663,14 +663,24 @@
     class Contact2D
     {
       public:
-        rw::math::Vector2D<double> p;    //! Contact position
-        rw::math::Vector2D<double> n;    //! Surface contact normal
-        double curvature;          //! surface curvature
-        double avgCurvature;       //! double moving average of the curvature
-        double mu;                 //! coulomb friction coefficient
+        //! @brief Contact position
+        rw::math::Vector2D<double> p;    
+
+        //! @brief Surface contact normal
+        rw::math::Vector2D<double> n;    
+
+        //! @brief surface curvature
+        double curvature;          
+
+         //! @brief double moving average of the curvature
+        double avgCurvature;      
+
+        //! @brief coulomb friction coefficient
+        double mu;                 
     };
-    %template(Contact2DPtr ) rw::core::Ptr<Contact2D>;
-    OWNEDPTR(Contact2D)
+
+    %template( Contact2DPtr ) rw::core::Ptr<Contact2D>;
+    OWNEDPTR(Contact2D);
 // ############### Contact3D ########################
     /**
      * @brief data structure for describing a contact in 3D
@@ -697,18 +707,29 @@
          */
         Contact3D (rw::math::Vector3D<double> tp, rw::math::Vector3D<double> tn, rw::math::Vector3D<double> tf);
 
-        rw::math::Vector3D<double> p;    //! Contact position
-        rw::math::Vector3D<double> n;    //! Surface contact normal
-        rw::math::Vector3D<double> f;    //! the actual force
-        double normalForce;        //!  normal force
+        //! @brief Contact position
+        rw::math::Vector3D<double> p;    
 
-        //! index to the geometric primitive on which the contact is located
+        //! @brief Surface contact normal
+        rw::math::Vector3D<double> n;    
+
+        //! @brief the actual force
+        rw::math::Vector3D<double> f;    
+
+        //! @brief normal force
+        double normalForce;        
+
+        //! @brief index to the geometric primitive on which the contact is located
         unsigned int _faceIdx, _faceIdx2;
 
-        // hmm, dunno about 3d curvature
-        double curvature;    //! surface curvature
-        double mu;           //! coulomb friction coefficient
+        //! @brief surface curvature
+        double curvature;
+
+         //! @brief coulomb friction coefficient    
+        double mu;          
+
     };
+
     %template(Contact3DPtr ) rw::core::Ptr<Contact3D>;
     %template(VectorContact3D) std::vector<Contact3D>;
     OWNEDPTR(Contact3D)
@@ -829,7 +850,7 @@
          */
         rw::math::Wrench6D<double> getWrench (const State& state) const;
 
-        //! set the wrench that is acting on the origin of this FTsensor
+        //! @brief set the wrench that is acting on the origin of this FTsensor
         void setWrench (const rw::math::Wrench6D<double>& wrench, const State& state);
 
         /**
@@ -839,7 +860,7 @@
          */
         rw::math::Vector3D<double> getForce (const State& state) const;
 
-        //! set the force that is acting on the origin of this FTsensor
+        //! @brief set the force that is acting on the origin of this FTsensor
         void setForce (const rw::math::Vector3D<double>& force, const State& state);
 
         /**
@@ -849,7 +870,7 @@
          */
         rw::math::Vector3D<double> getTorque (const State& state) const;
 
-        //! set the torque that is acting on the origin of this FTsensor
+        //! @brief set the torque that is acting on the origin of this FTsensor
         void setTorque (const rw::math::Vector3D<double>& force, const State& state);
 
         /**
@@ -874,14 +895,16 @@
     {
         Pixel4i (int v0, int v1, int v2, int v3);
 
-        int ch[4];    //! up to four channels
+        //! @brief up to four channels
+        int ch[4];    
     };
 
     struct Pixel4f
     {
         Pixel4f (float v0, float v1, float v2, float v3);
 
-        float ch[4];    //! up to four channels
+        //! @brief up to four channels
+        float ch[4];    
     };
 
     /**
@@ -905,11 +928,16 @@
          */
         typedef enum
         {
-            GRAY, //!< Grayscale image 1-channel
-            RGB, //!< 3-channel color image (Standard opengl)
-            RGBA, //!< 4-channel color image with alpha channel
-            BGR, //!< 3-channel color image (Standard OpenCV)
-            BGRA, //!< 4-channel color image with alpha channel
+            //! @brief Grayscale image 1-channel
+            GRAY, 
+            //! @brief 3-channel color image (Standard opengl)
+            RGB,
+            //! @brief 4-channel  color image with alpha channel
+            RGBA, 
+            //! @brief 3-channel color image (Standard OpenCV)
+            BGR,
+            //! @brief 4-channel color image with alpha channel
+            BGRA,
             BayerBG,
             Luv,
             Lab,
@@ -922,13 +950,12 @@
          */
         typedef enum
         {
-            Depth8U, //!< Depth8U
-            Depth8S, //!< Depth8S
-            Depth16U,//!< Depth16U
-            Depth16S,//!< Depth16S
-            Depth32S,//!< Depth32S
+            Depth8U,
+            Depth8S,
+            Depth16U,
+            Depth16S,
+            Depth32S,
             Depth32F
-        //!< Depth32F
         } PixelDepth;
 
         /**
@@ -1513,19 +1540,19 @@
          */
         void setScan(const PointCloud& data, const State& state);
 
-        //! width of images taken with 25 sensor
+        //! @brief width of images taken with 25 sensor
         int getWidth() const;
 
-        //! height of images taken with 25 sensor
+        //! @brief height of images taken with 25 sensor
         int getHeight() const;
 
-        //! get the min and maximum depth of this scanner in meters
+        //! @brief get the min and maximum depth of this scanner in meters
         std::pair< double, double > getRange () const;
 
-        //! set the min and maximum depth of this scanner in meters
+        //! @brief set the min and maximum depth of this scanner in meters
         void setRange(double min, double max);
 
-        //! set the min and maximum depth of this scanner in meters
+        //! @brief set the min and maximum depth of this scanner in meters
         void setRange (const std::pair< double, double >& range);
     };
 
@@ -1601,16 +1628,16 @@
          */
         virtual ~StereoCameraModel ();
 
-        //! get left image
+        //! @brief get left image
         rw::core::Ptr<Image> getLeftImage (const State& state);
 
-        //! set left image
+        //! @brief set left image
         void setLeftImage (rw::core::Ptr<Image> img, State& state);
 
-        //! get right image
+        //! @brief get right image
         rw::core::Ptr<Image> getRightImage (const State& state);
 
-        //! set right image
+        //! @brief set right image
         void setRightImage (rw::core::Ptr<Image> img, State& state);
 
         /**
@@ -1818,10 +1845,10 @@
          */
         const boost::multi_array< rw::math::Vector3D<double>, 2 >& getNormals () const;
 
-        //! get width of tactile array
+        //! @brief get width of tactile array
         int getWidth () const;
 
-        //! get height of tactile array
+        //! @brief get height of tactile array
         int getHeight () const;
 
         //************** the statefull interface (dynamic states) ***************

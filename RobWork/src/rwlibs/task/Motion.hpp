@@ -181,6 +181,9 @@ typedef Motion<rw::math::Q> QMotion;
  */
 typedef Motion<rw::math::Transform3D<> > CartesianMotion;
 
+extern template class Motion<rw::math::Q>;
+extern template class Motion<rw::math::Transform3D<> >;
+
 /**
  * @brief Class describing point to point motions.
  *
@@ -276,6 +279,9 @@ typedef P2PMotion<rw::math::Q> QP2PMotion;
  */
 typedef P2PMotion<rw::math::Transform3D<> > CartesianP2PMotion;
 
+extern template class P2PMotion<rw::math::Q>;
+extern template class P2PMotion<rw::math::Transform3D<> >;
+
 /**
  * @brief Class describing linear motions.
  *
@@ -364,6 +370,9 @@ typedef LinearMotion<rw::math::Q> QLinearMotion;
  * Definition of rw::math::Transform3D based linear motion.
  */
 typedef LinearMotion<rw::math::Transform3D<> > CartesianLinearMotion;
+
+extern template class LinearMotion<rw::math::Q>;
+extern template class LinearMotion<rw::math::Transform3D<> >;
 
 /**
  * @brief Class describing circular motions.
@@ -468,6 +477,8 @@ private:
  * @brief Definition of circular motion with rw::math::Transform type
  */
 typedef CircularMotion<rw::math::Transform3D<> > CartesianCircularMotion;
+
+extern template class CircularMotion<rw::math::Transform3D<> >;
 
 /** @} */
 
