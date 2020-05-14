@@ -41,7 +41,6 @@ SET(COMMON_TEST_SRC
   common/LogTestSuite.cpp
   common/PropertyTest.cpp
   common/StringUtilTest.cpp
-  common/CommonTest.cpp
   common/SerializationTest.cpp
   common/ThreadTest.cpp
 )

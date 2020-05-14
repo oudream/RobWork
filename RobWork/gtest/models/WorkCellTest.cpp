@@ -17,7 +17,6 @@
 
 #include <gtest/gtest.h>
 
-#include <iostream>
 #include <rw/kinematics/Kinematics.hpp>
 #include <rw/kinematics/MovableFrame.hpp>
 #include <rw/kinematics.hpp>
@@ -25,6 +24,7 @@
 #include <rw/models/WorkCell.hpp>
 #include <rw/core/Exception.hpp>
 
+#include <iostream>
 #include <vector>
 
 using namespace std;
@@ -37,13 +37,13 @@ TEST(WorkCell, AddRemoveFrame) {
     const MovableFrame::Ptr frame1 = new MovableFrame("Frame1");
     MovableFrame* frame2 = new MovableFrame("Frame2");
 
-    const boost::shared_ptr<MovableFrame> boostframe3(new MovableFrame("Frame3"));
+    const MovableFrame::Ptr::shared_ptr boostframe3(new MovableFrame("Frame3"));
     const MovableFrame::Ptr frame3(boostframe3);
 
     const MovableFrame::Ptr frame4 = new MovableFrame("Frame4");
     MovableFrame* const frame5 = new MovableFrame("Frame5");
 
-    const boost::shared_ptr<MovableFrame> boostframe6(new MovableFrame("Frame6"));
+    const MovableFrame::Ptr::shared_ptr boostframe6(new MovableFrame("Frame6"));
     const MovableFrame::Ptr frame6(boostframe6);
 
     WorkCell* world;

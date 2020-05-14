@@ -60,7 +60,7 @@ rw::core::Ptr<rw::core::Extension> ODEPlugin::makeExtension(const std::string& s
 {
     if(str=="ODEPhysicsEngine"){
         Extension::Ptr extension = rw::core::ownedPtr( new Extension("ODEPhysicsEngine","rwsim.simulator.PhysicsEngine",
-                this, ownedPtr(new Dispatcher()) ) );
+                this, ownedPtr(new Dispatcher()).cast<PhysicsEngine::Dispatcher>() ) );
 
         // todo: add posible properties to the extension descriptor
         //exts.back().getProperties().set<std::string>(propid, value);

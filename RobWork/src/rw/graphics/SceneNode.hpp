@@ -22,6 +22,7 @@
 
 #include <list>
 #include <string>
+#include <algorithm>
 
 namespace rw {
 namespace graphics {
