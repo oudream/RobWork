@@ -30,33 +30,28 @@ endmacro()
 # RobWork main function for initialization (link with this if needed).
 # ##################################################################################################
 
-set(RWMAIN_TEST_LIBRARIES ${GTEST_BOTH_LIBRARIES} sdurw ${XERCESC_LIBRARIES} ${ASSIMP_LIBRARIES}
-                          ${QHULL_LIBRARIES} ${CMAKE_DL_LIBS}
-)
+set(RWMAIN_TEST_LIBRARIES ${GTEST_BOTH_LIBRARIES} sdurw_core)
 
 set(RWMAIN_TEST_SRC TestEnvironment.cpp test-main.cpp)
 add_library(sdurw-gtest-main STATIC ${RWMAIN_TEST_SRC})
 target_link_libraries(sdurw-gtest-main ${RWMAIN_TEST_LIBRARIES})
 
 # ##################################################################################################
-# Common
+# Core
 # ##################################################################################################
 
-set(COMMON_TEST_LIBRARIES sdurw-gtest-main ${GTEST_LIBRARIES} sdurw ${XERCESC_LIBRARIES}
-                          ${ASSIMP_LIBRARIES} ${QHULL_LIBRARIES}
-)
+set(CORE_TEST_LIBRARIES sdurw-gtest-main ${GTEST_LIBRARIES} sdurw_core)
 
-set(COMMON_TEST_SRC common/CommonTest.cpp common/IteratorTest.cpp common/PairMapTest.cpp
-                    common/PluginTest.cpp common/ProgramOptionTest.cpp
-)
+set(CORE_TEST_SRC core/AnyPtrTest.cpp core/EventTest.cpp core/PluginTest.cpp core/PtrTest.cpp
+                  core/PtrBoostTest.cpp core/StringUtilTest.cpp)
 
-add_executable(sdurw_common-gtest ${COMMON_TEST_SRC})
-target_link_libraries(sdurw_common-gtest ${COMMON_TEST_LIBRARIES})
-add_rw_gtest(sdurw_common-gtest)
+add_executable(sdurw_core-gtest ${CORE_TEST_SRC})
+target_link_libraries(sdurw_core-gtest ${CORE_TEST_LIBRARIES})
+add_rw_gtest(sdurw_core-gtest)
 
 # Create dummy plugins for testing
-add_library(test_plugin.rwplugin MODULE common/TestPlugin.cpp)
-target_link_libraries(test_plugin.rwplugin sdurw)
+add_library(test_plugin.rwplugin MODULE core/TestPlugin.cpp)
+target_link_libraries(test_plugin.rwplugin sdurw_core)
 set_target_properties(
     test_plugin.rwplugin PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
 )
@@ -65,8 +60,22 @@ set_target_properties(
 file(
     GENERATE
     OUTPUT "$<TARGET_FILE_DIR:test_plugin.rwplugin>/test_plugin.rwplugin.xml"
-    INPUT ${CMAKE_CURRENT_SOURCE_DIR}/common/test_plugin.rwplugin.xml.in
+    INPUT ${CMAKE_CURRENT_SOURCE_DIR}/core/test_plugin.rwplugin.xml.in
 )
+
+# ##################################################################################################
+# Common
+# ##################################################################################################
+
+set(COMMON_TEST_LIBRARIES ${GTEST_BOTH_LIBRARIES} sdurw_common sdurw_math)
+
+set(COMMON_TEST_SRC common/IteratorTest.cpp common/PairMapTest.cpp common/ProgramOptionTest.cpp
+                    common/TimerTest.cpp
+)
+
+add_executable(sdurw_common-gtest ${COMMON_TEST_SRC})
+target_link_libraries(sdurw_common-gtest ${COMMON_TEST_LIBRARIES})
+add_rw_gtest(sdurw_common-gtest)
 
 # ##################################################################################################
 # Geometry
