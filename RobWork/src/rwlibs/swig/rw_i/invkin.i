@@ -143,7 +143,7 @@ class JacobianIKSolver : public IterativeIK
 {
 public:
     //! @brief the type of jacobian solver
-    typedef enum{Transpose, SVD, DLS, SDLS} JacobianSolverType;
+    typedef enum{Transpose, SVD, DLS, Weighted} JacobianSolverType;
 
     /**
      * @brief Constructs JacobianIKSolver for device \b device.

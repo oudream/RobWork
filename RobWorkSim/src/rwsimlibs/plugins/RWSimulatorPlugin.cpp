@@ -320,7 +320,7 @@ void RWSimulatorPlugin::open(rw::models::WorkCell* workcell)
         if( sensor.cast<rwsim::sensor::TactileArraySensor>() ){
         	rwsim::sensor::TactileArraySensor::Ptr tsensor = sensor.cast<rwsim::sensor::TactileArraySensor>();
             TactileArrayRender *render = new TactileArrayRender(tsensor->getTactileArrayModel());
-            Drawable *drawable = new Drawable(boost::shared_ptr<Render>(render), tsensor->getName());
+            Drawable *drawable = new Drawable(ownedPtr(render), tsensor->getName());
             getRobWorkStudio()->getWorkCellScene()->addDrawable(drawable, tsensor->getFrame());
         }
     }

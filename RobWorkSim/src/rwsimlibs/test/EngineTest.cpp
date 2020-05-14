@@ -41,7 +41,7 @@ using namespace rwsimlibs::test;
 #define EP_NAME "rwsimlibs.test.EngineTest"
 #define QUOTE(name) #name
 #define ADD_EXTENSION(vector,name) \
-		vector.push_back(Extension(QUOTE(name),EP_NAME,NULL,rw::core::ownedPtr(new name()))); \
+		vector.push_back(Extension(QUOTE(name),EP_NAME,NULL,rw::core::ownedPtr(new name()).cast<EngineTest>())); \
 		vector.back().getProperties().set<std::string>("testID", QUOTE(name))
 
 namespace {
@@ -285,19 +285,26 @@ bool EngineTest::Factory::hasTest(const std::string& test) {
 }
 
 EngineTest::Ptr EngineTest::Factory::getTest(const std::string& test) {
-	const EngineTest::Factory ep;
+    const EngineTest::Factory ep;
     for(Extension& ext : internalExtensions()) {
-        if(ext.getProperties().get<std::string>("testID") == test)
-			return ext.getObject().cast<EngineTest>();
+        if(ext.getProperties().get<std::string>("testID") == test) {
+            EngineTest::Ptr engineTest = ext.getObject().cast<EngineTest>();
+            if (engineTest.isNull())
+                RW_THROW("EngineTest::Factory::getTest: could not find object of type EngineTest.");
+            return engineTest;
+        }
     }
     const std::vector<Extension::Ptr> exts = ep.getExtensions();
-	for(const Extension::Ptr& ext : exts) {
-		const PropertyMap& props = ext->getProperties();
-		if(props.get("testID",ext->getName() ) == test){
-			return ext->getObject().cast<EngineTest>();
-		}
-	}
-	return NULL;
+    for(const Extension::Ptr& ext : exts) {
+        const PropertyMap& props = ext->getProperties();
+        if(props.get("testID",ext->getName() ) == test) {
+            EngineTest::Ptr engineTest = ext->getObject().cast<EngineTest>();
+            if (engineTest.isNull())
+                RW_THROW("EngineTest::Factory::getTest: could not find object of type EngineTest.");
+            return engineTest;
+        }
+    }
+    return NULL;
 }
 
 std::vector<Extension>& EngineTest::Factory::internalExtensions() {

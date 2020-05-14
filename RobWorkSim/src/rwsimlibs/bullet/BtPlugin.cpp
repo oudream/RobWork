@@ -56,7 +56,7 @@ Extension::Ptr BtPlugin::makeExtension(const std::string& str)
     if(str=="BtPhysicsEngine"){
         Extension::Ptr extension = rw::core::ownedPtr(
         		new Extension("BtPhysicsEngine","rwsim.simulator.PhysicsEngine",
-                this, ownedPtr(new Dispatcher()) ) );
+                this, ownedPtr(new Dispatcher()).cast<PhysicsEngine::Dispatcher>() ) );
 
         // todo: add possible properties to the extension descriptor
         extension->getProperties().set<std::string>("engineID", "Bullet");
