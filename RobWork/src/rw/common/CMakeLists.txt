@@ -75,6 +75,7 @@ if(build)
         PropertyBase.hpp
         PropertyMap.hpp
         PropertyType.hpp
+        Ptr.hpp
         ScopedTimer.hpp
         Serializable.hpp
         StringUtil.hpp
