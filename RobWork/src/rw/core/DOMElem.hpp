@@ -21,6 +21,7 @@
 #include <rw/core/PairIterator.hpp>
 #include <rw/core/Ptr.hpp>
 
+#include <cstddef>
 #include <string>
 #include <vector>
 
