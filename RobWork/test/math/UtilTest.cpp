@@ -125,7 +125,7 @@ BOOST_AUTO_TEST_CASE(RandomSeedTest)
     	const Q ranQ = Math::ranQ(Q(2,0.1,0.5),Q(2,0.5,1.0));
     	const Q ranQpair = Math::ranQ(std::make_pair<Q,Q>(Q(2,0.1,0.5),Q(2,0.5,1.0)));
     	const Q ranDir = Math::ranDir(4, 2.1);
-    	const Q ranWeightedDir = Math::ranWeightedDir(3, Q(3,1,2,3), 0.1);
+    	const Q ranWeightedDir = Math::ranWeightedDir(3, Q(3,1.0,2.0,3.0), 0.1);
         // Comparing with a tolerance of 1.0e-06%. This value was found by looking at the highest difference in % (i.e. 2.01204e-07% in my/mband's case) that was reported when running these tests with a too low tolerance (e.g. 1.0e-09).
    	BOOST_CHECK_CLOSE(ran,0.77132064313627779,1.0e-06);
     	BOOST_CHECK_CLOSE(ranFromTo,-0.020743304910138233,1.0e-06);
@@ -166,7 +166,7 @@ BOOST_AUTO_TEST_CASE(RandomSeedTest)
     	const Q ranQ = Math::ranQ(Q(2,0.1,0.5),Q(2,0.5,1.0));
     	const Q ranQpair = Math::ranQ(std::make_pair<Q,Q>(Q(2,0.1,0.5),Q(2,0.5,1.0)));
     	const Q ranDir = Math::ranDir(4, 2.1);
-    	const Q ranWeightedDir = Math::ranWeightedDir(3, Q(3,1,2,3), 0.1);
+    	const Q ranWeightedDir = Math::ranWeightedDir(3, Q(3,1.0,2.0,3.0), 0.1);
     	BOOST_CHECK_CLOSE(ran,0.12696982943452895,1.0e-06);
     	BOOST_CHECK_CLOSE(ranFromTo,0.5149132558144629,1.0e-06);
     	BOOST_CHECK_EQUAL(ranI,6760);

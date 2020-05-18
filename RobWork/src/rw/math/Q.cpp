@@ -24,22 +24,46 @@ using namespace rw::common;
 using namespace rw::core;
 using namespace rw::math;
 
-Q::Q (size_t n, const double* values) : _vec (n)
+template<> Q::Q (size_t n, const double* values) : _vec (n)
 {
-    for (size_t i = 0; i < n; i++)
+    for (size_t i = 0; i < n; i++) {
         _vec (i) = values[i];
+    }
 }
 
-void Q::init (size_t n, const double* values)
+template<> Q::Q (size_t n, double* values) : _vec (n)
 {
-    for (size_t i = 0; i < n; i++)
+    for (size_t i = 0; i < n; i++) {
         _vec (i) = values[i];
+    }
 }
 
-Q::Q (size_t n, double value) : _vec (n)
+template<> Q::Q (int n, const double* values) : _vec (n)
 {
-    for (size_t i = 0; i < n; i++)
+    for (int i = 0; i < n; i++) {
+        _vec (i) = values[i];
+    }
+}
+
+template<> Q::Q (int n, double* values) : _vec (n)
+{
+    for (int i = 0; i < n; i++) {
+        _vec (i) = values[i];
+    }
+}
+
+template<> Q::Q (int n, double value) : _vec (n)
+{
+    for (int i = 0; i < n; i++) {
         _vec (i) = value;
+    }
+}
+
+template<> Q::Q (size_t n, double value) : _vec (n)
+{
+    for (size_t i = 0; i < n; i++) {
+        _vec (i) = value;
+    }
 }
 
 Q::~Q ()
@@ -47,8 +71,9 @@ Q::~Q ()
 
 std::ostream& rw::math::operator<< (std::ostream& out, const Q& v)
 {
-    if (v.size () == 0)
+    if (v.size () == 0) {
         return out << "Q[0]{}";
+    }
     else {
         out << "Q[" << (int) v.size () << "]{";
         for (size_t i = 0; i < v.size () - 1; i++)
@@ -129,113 +154,6 @@ rw::math::Q rw::math::concat (const Q& q1, const Q& q2)
     return q;
 }
 
-Q::Q (size_t n, double a0, double a1) : _vec (n)
-{
-    if (n < 2)
-        RW_THROW ("Vector size must be >= 2");
-    _vec[0] = a0;
-    _vec[1] = a1;
-}
-Q::Q (size_t n, double a0, double a1, double a2) : _vec (n)
-{
-    if (n < 3)
-        RW_THROW ("Vector size must be >= 3");
-    _vec[0] = a0;
-    _vec[1] = a1;
-    _vec[2] = a2;
-}
-Q::Q (size_t n, double a0, double a1, double a2, double a3) : _vec (n)
-{
-    if (n < 4)
-        RW_THROW ("Vector size must be >= 4");
-    _vec[0] = a0;
-    _vec[1] = a1;
-    _vec[2] = a2;
-    _vec[3] = a3;
-}
-Q::Q (size_t n, double a0, double a1, double a2, double a3, double a4) : _vec (n)
-{
-    if (n < 5)
-        RW_THROW ("Vector size must be >= 5");
-    _vec[0] = a0;
-    _vec[1] = a1;
-    _vec[2] = a2;
-    _vec[3] = a3;
-    _vec[4] = a4;
-}
-Q::Q (size_t n, double a0, double a1, double a2, double a3, double a4, double a5) : _vec (n)
-{
-    if (n < 6)
-        RW_THROW ("Vector size must be >= 6");
-    _vec[0] = a0;
-    _vec[1] = a1;
-    _vec[2] = a2;
-    _vec[3] = a3;
-    _vec[4] = a4;
-    _vec[5] = a5;
-}
-Q::Q (size_t n, double a0, double a1, double a2, double a3, double a4, double a5, double a6) :
-    _vec (n)
-{
-    if (n < 7)
-        RW_THROW ("Vector size must be >= 7");
-    _vec[0] = a0;
-    _vec[1] = a1;
-    _vec[2] = a2;
-    _vec[3] = a3;
-    _vec[4] = a4;
-    _vec[5] = a5;
-    _vec[6] = a6;
-}
-Q::Q (size_t n, double a0, double a1, double a2, double a3, double a4, double a5, double a6,
-      double a7) :
-    _vec (n)
-{
-    if (n < 8)
-        RW_THROW ("Vector size must be >= 8");
-    _vec[0] = a0;
-    _vec[1] = a1;
-    _vec[2] = a2;
-    _vec[3] = a3;
-    _vec[4] = a4;
-    _vec[5] = a5;
-    _vec[6] = a6;
-    _vec[7] = a7;
-}
-Q::Q (size_t n, double a0, double a1, double a2, double a3, double a4, double a5, double a6,
-      double a7, double a8) :
-    _vec (n)
-{
-    if (n < 9)
-        RW_THROW ("Vector size must be >= 9");
-    _vec[0] = a0;
-    _vec[1] = a1;
-    _vec[2] = a2;
-    _vec[3] = a3;
-    _vec[4] = a4;
-    _vec[5] = a5;
-    _vec[6] = a6;
-    _vec[7] = a7;
-    _vec[8] = a8;
-}
-Q::Q (size_t n, double a0, double a1, double a2, double a3, double a4, double a5, double a6,
-      double a7, double a8, double a9) :
-    _vec (n)
-{
-    if (n < 10)
-        RW_THROW ("Vector size must be >= 10");
-    _vec[0] = a0;
-    _vec[1] = a1;
-    _vec[2] = a2;
-    _vec[3] = a3;
-    _vec[4] = a4;
-    _vec[5] = a5;
-    _vec[6] = a6;
-    _vec[7] = a7;
-    _vec[8] = a8;
-    _vec[9] = a9;
-}
-
 template<>
 void rw::common::serialization::write (const Q& tmp, OutputArchive& oar, const std::string& id)
 {
@@ -252,7 +170,7 @@ template<> void rw::common::serialization::read (Q& tmp, InputArchive& iar, cons
 template<>
 rw::core::Ptr< Property< Q > > PropertyMap::findProperty (const std::string& identifier) const
 {
-    std::string id        = identifier;
+    std::string id       = identifier;
     PropertyBase::Ptr pb = findPropertyBase (id);
     if (!pb.isNull () && pb->getType ().getId () == PropertyType::DoubleList) {
         id = id + "<Q>";
