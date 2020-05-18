@@ -102,7 +102,7 @@ struct SerializationData: public rw::common::Serializable {
 		data1.push_back(0.5);
 		data1.push_back(0.6);
 		data1.push_back(0.7);
-		data2 = rw::math::Math::ranQ( Q(3,0,0,0), Q(3,1,1,1) );
+		data2 = rw::math::Math::ranQ( Q(3,0.0,0.0,0.0), Q(3,1.0,1.0,1.0) );
 		data3 = rw::math::Math::ran();
 		data4 = rw::math::Math::ranI(0, 10000);
 		data5 = rw::math::Math::ranI(0, 10000);
