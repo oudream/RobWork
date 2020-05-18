@@ -12,7 +12,7 @@ Rotation Matrix
 A 3x3 rotation matrix can be constructed using the Rotation3D type.
 The default Rotation3D<> type uses double precision, while Rotation3D<float> uses float precision.
 Notice that it is only possible to specify the templated types in C++.
-The equivalent types in the script interfaces (Python, Java and LUA) is Rotation3d and Rotation3f
+The equivalent types in the script interfaces (Python, Java and LUA) is Rotation3Dd and Rotation3Df
 for double and float precision respectively.
 
 The constructor for Rotation3D takes the elements of the rotation matrix
@@ -46,8 +46,8 @@ See :ref:`interfaces_cpp` for more information about compilation and execution.
 
 API Reference:
 
-- :py:class:`rw.Rotation3d` (double precision)
-- :py:class:`rw.Rotation3f` (float precision)
+- :py:class:`rw.Rotation3Dd` (double precision)
+- :py:class:`rw.Rotation3Df` (float precision)
 
 See :ref:`interfaces_python` for more information about execution.
 
@@ -59,8 +59,8 @@ See :ref:`interfaces_python` for more information about execution.
 
 API Reference:
 
-- `org.robwork.rw.Rotation3d (Javadoc) <../../apidoc/java/javadoc/org/robwork/rw/Rotation3d.html>`__
-- `org.robwork.rw.Rotation3f (Javadoc) <../../apidoc/java/javadoc/org/robwork/rw/Rotation3f.html>`__
+- `org.robwork.rw.Rotation3Dd (Javadoc) <../../apidoc/java/javadoc/org/robwork/rw/Rotation3Dd.html>`__
+- `org.robwork.rw.Rotation3Df (Javadoc) <../../apidoc/java/javadoc/org/robwork/rw/Rotation3Df.html>`__
 
 See :ref:`interfaces_java` for more information about compilation and execution.
 
@@ -293,9 +293,9 @@ Alternatively, the Pose6D stores a pose using six values. Three values for the p
 API Reference:
 
 - C++ : `rw::math::Transform3D <../../apidoc/cpp/doxygen/classrw_1_1math_1_1Transform3D.html>`__
-- Python: :py:class:`rw.Transform3d`
-- Python: :py:class:`rw.Transform3f`
+- Python: :py:class:`rw.Transform3Dd`
+- Python: :py:class:`rw.Transform3Df`
 - Python: :py:class:`rw.Pose6d`
 - Python: :py:class:`rw.Pose6f`
-- Javadoc: `org.robwork.rw.Transform3d <../../apidoc/java/javadoc/org/robwork/rw/Transform3d.html>`__
-- Javadoc: `org.robwork.rw.Transform3f <../../apidoc/java/javadoc/org/robwork/rw/Transform3f.html>`__
+- Javadoc: `org.robwork.rw.Transform3Dd <../../apidoc/java/javadoc/org/robwork/rw/Transform3Dd.html>`__
+- Javadoc: `org.robwork.rw.Transform3Df <../../apidoc/java/javadoc/org/robwork/rw/Transform3Df.html>`__

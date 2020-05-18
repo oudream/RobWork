@@ -405,11 +405,11 @@ public:
 	// From JointController
 	unsigned int getControlModes();
 	void setControlMode(JointController::ControlMode mode);
-	void setTargetPos(const rw::math::Q& target);
-	void setTargetVel(const rw::math::Q& vals);
-	void setTargetAcc(const rw::math::Q& vals);
-	rw::math::Q getQ();
-	rw::math::Q getQd();
+	void setTargetPos(const Q& target);
+	void setTargetVel(const Q& vals);
+	void setTargetAcc(const Q& vals);
+	Q getQ();
+	Q getQd();
 };
 
 %template (PDControllerPtr) rw::core::Ptr<PDController>;
@@ -434,13 +434,13 @@ public:
 	bool moveLin(const rw::math::Transform3D<double>& target, float speed=100, float blend=0);
 
 	//! @brief move robot from point to point
-	bool movePTP(const rw::math::Q& target, float speed=100, float blend=0);
+	bool movePTP(const Q& target, float speed=100, float blend=0);
 
 	//! @brief move robot from point to point but using a pose as target (require invkin)
 	virtual bool movePTP_T(const rw::math::Transform3D<double>& target, float speed=100, float blend=0);
 
 	//! @brief move robot in a servoing fasion
-	virtual bool moveVelQ(const rw::math::Q& target_joint_velocity);
+	virtual bool moveVelQ(const Q& target_joint_velocity);
 
 	virtual bool moveVelT(const rw::math::VelocityScrew6D<double>& vel);
 
@@ -450,7 +450,7 @@ public:
 
     	bool moveLinFC(const rw::math::Transform3D<double>& target,
     							  const rw::math::Wrench6D<double>& wtarget,
-    							  rw::math::Q selection,
+    							  Q selection,
     							  std::string refframe,
     							  rw::math::Rotation3D<double> offset,
     							  float speed=100,
@@ -474,8 +474,8 @@ public:
 	//! enable safe mode, so that robot stops when collisions are detected
 	bool setSafeModeEnabled(bool enable);
 
-	rw::math::Q getQ();
-	rw::math::Q getQd();
+	Q getQ();
+	Q getQd();
 
 	bool isMoving();
 
@@ -693,8 +693,8 @@ public:
 	public:
 		SpringParams();
 		bool enabled;
-		Matrix compliance;
-		Matrix damping;
+		Eigen::Matrix<double,-1,-1> compliance;
+		Eigen::Matrix<double,-1,-1> damping;
 	};
 
 	Constraint(const std::string& name, const ConstraintType &type, Body* b1, Body* b2);
@@ -719,19 +719,19 @@ OWNEDPTR(Constraint);
 %nodefaultctor DynamicDevice;
 class DynamicDevice {
 public:
-    virtual rw::math::Q getQ(const State& state);
+    virtual Q getQ(const State& state);
 
-    virtual void setQ(const rw::math::Q &q, State& state);
+    virtual void setQ(const Q &q, State& state);
 
     rw::core::Ptr<Device> getKinematicModel();
     rw::core::Ptr<Body> getBase();
 
-    virtual rw::math::Q getJointVelocities(const State& state);
-    virtual void setJointVelocities(const rw::math::Q &vel, State& state);
+    virtual Q getJointVelocities(const State& state);
+    virtual void setJointVelocities(const Q &vel, State& state);
 
     //deprecated
-    virtual rw::math::Q getVelocity(const State& state);
-    virtual void setVelocity(const rw::math::Q& vel, State& state);
+    virtual Q getVelocity(const State& state);
+    virtual void setVelocity(const Q& vel, State& state);
 
     virtual std::vector<rw::core::Ptr<Body> > getLinks();
 
@@ -744,14 +744,14 @@ OWNEDPTR(DynamicDevice);
 %nodefaultctor RigidDevice;
 class RigidDevice : public DynamicDevice {
     public:
-        void setMotorForceLimits(const rw::math::Q& force);
+        void setMotorForceLimits(const Q& force);
 
-        rw::math::Q getMotorForceLimits();
+        Q getMotorForceLimits();
 
-        rw::math::Q getJointVelocities(const State& state);
+        Q getJointVelocities(const State& state);
         double getJointVelocity(int i, const State& state);
 
-        void setJointVelocities(const rw::math::Q& q, State& state);
+        void setJointVelocities(const Q& q, State& state);
         void setJointVelocity(double vel, int i, State& state);
 
         typedef enum{Force, Velocity} MotorControlMode;
@@ -759,12 +759,12 @@ class RigidDevice : public DynamicDevice {
         //std::vector<MotorControlMode> getMotorModes(const State& state);
         MotorControlMode getMotorMode(int i, const State& state);
 
-        rw::math::Q getMotorTargets(const State& state);
+        Q getMotorTargets(const State& state);
         double getMotorTarget(int i, const State& state);
 
-        void setMotorTargets(const rw::math::Q& q, State& state);
-        void setMotorForceTargets(const rw::math::Q& force, State& state);
-        void setMotorVelocityTargets(const rw::math::Q& vel, State& state);
+        void setMotorTargets(const Q& q, State& state);
+        void setMotorForceTargets(const Q& force, State& state);
+        void setMotorVelocityTargets(const Q& vel, State& state);
 
         void setMotorTarget(double q, int i, State& state);
         void setMotorForceTarget(double force, int i, State& state);
@@ -776,8 +776,8 @@ class RigidDevice : public DynamicDevice {
         //virtual void registerStateData(StateStructure::Ptr statestructure);
 
     public: ///// DEPRECATED FUNCTIONS
-        //rw::math::Q getForceLimit() { return getMotorForceLimits(); }
-        // void setVelocity(rw::math::Q& vel, State& state){ setJointVelocities(vel, state);}
+        //Q getForceLimit() { return getMotorForceLimits(); }
+        // void setVelocity(Q& vel, State& state){ setJointVelocities(vel, state);}
     };
 
 %template (RigidDevicePtr) rw::core::Ptr<RigidDevice>;
@@ -798,15 +798,15 @@ public:
 
     double getHeight();
 
-    rw::math::Q getSpringParamsOpen();
+    Q getSpringParamsOpen();
 
-    rw::math::Q getSpringParamsClosed();
+    Q getSpringParamsClosed();
 
-    rw::math::Q getJointVelocities(const State& state);
+    Q getJointVelocities(const State& state);
 
-    void setJointVelocities(const rw::math::Q &vel, State& state);
+    void setJointVelocities(const Q &vel, State& state);
 
-    void addForceTorque(const rw::math::Q &forceTorque, State& state);
+    void addForceTorque(const Q &forceTorque, State& state);
 
     rw::math::Transform3D<double> getOffset();
 

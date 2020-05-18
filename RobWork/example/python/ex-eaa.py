@@ -9,7 +9,7 @@ if __name__ == '__main__':
     rotationFromEAA = eaa.toRotation3D();
     print("Rotation from EAA: " + str(rotationFromEAA));
 
-    rot = Rotation3d(-1,0,0,0,0,1,0,1,0);
+    rot = Rotation3Dd(-1,0,0,0,0,1,0,1,0);
     print("Rotation: " + str(rot));
     eaaFromRotation = EAAd(rot);
     print("EAA from Rotation: " + str(eaaFromRotation));

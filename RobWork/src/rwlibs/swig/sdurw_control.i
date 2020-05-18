@@ -75,21 +75,21 @@ public:
     /**
      * @brief sets the target joint value for the current control mode.
      */
-    virtual void setTargetPos(const rw::math::Q& vals) = 0;
+    virtual void setTargetPos(const Q& vals) = 0;
 
     /**
      * @brief sets the target velocity
      *
      * @param vals [in] in m/s
      */
-    virtual void setTargetVel(const rw::math::Q& vals) = 0;
+    virtual void setTargetVel(const Q& vals) = 0;
 
     /**
      * @brief sets the target acceleration
      *
      * @param vals [in] in m/s^2
      */
-    virtual void setTargetAcc(const rw::math::Q& vals) = 0;
+    virtual void setTargetAcc(const Q& vals) = 0;
 
     /**
      * @brief get kinematic model of device that is controlled
@@ -99,12 +99,12 @@ public:
     /**
      * @brief return the current position of the controlled robot
      */
-    virtual rw::math::Q getQ() = 0;
+    virtual Q getQ() = 0;
 
     /**
      * @brief return the current velocity
      */
-    virtual rw::math::Q getQd() = 0;
+    virtual Q getQd() = 0;
 };
 
 %template (JointControllerPtr) rw::core::Ptr<JointController>;

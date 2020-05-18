@@ -6,11 +6,11 @@ public class ExFwdKinematics {
             Frame frame, MovableFrame mframe, State state)
     {
         // calculate the transform from one frame to another
-        Transform3d fTmf = Kinematics.frameTframe(frame, mframe, state);
+        Transform3Dd fTmf = Kinematics.frameTframe(frame, mframe, state);
         // calculate the transform from world to frame
-        Transform3d wTmf = Kinematics.worldTframe( mframe, state );
+        Transform3Dd wTmf = Kinematics.worldTframe( mframe, state );
         // we can find the world to frame transform by a little jogling
-        Transform3d wTf = wTmf.multiply(inverse(fTmf));
+        Transform3Dd wTf = wTmf.multiply(inverse(fTmf));
         // test if frame is a dynamic attachable frame
         if( Kinematics.isDAF( mframe ) ){
            // attach mframe to end of serial device

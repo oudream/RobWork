@@ -148,7 +148,7 @@ namespace rw { namespace math {
         size_t size () const { return _vec.rows (); }
 
         /**
-           @brief True if the configuration is of dimension zero.
+         * @brief True if the configuration is of dimension zero.
          */
         bool empty () const { return size () == 0; }
 
@@ -257,7 +257,7 @@ namespace rw { namespace math {
         double& operator[] (size_t i) { return _vec (i); }
 
         /**
-           @brief Scalar division.
+         * @brief Scalar division.
          */
         const Q operator/ (double s) const { return Q (_vec / s); }
 

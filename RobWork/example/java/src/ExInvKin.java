@@ -28,7 +28,7 @@ public class ExInvKin {
         ClosedFormIKSolverUR solver = new ClosedFormIKSolverUR(
                 device.asSerialDeviceCPtr(), state);
 
-        final Transform3d Tdesired = new Transform3d(new Vector3d(0.2, -0.2, 0.5),
+        final Transform3Dd Tdesired = new Transform3Dd(new Vector3Dd(0.2, -0.2, 0.5),
                 (new EAAd(0, Pi, 0)).toRotation3D());
         final QVector solutions = solver.solve(Tdesired, state);
 

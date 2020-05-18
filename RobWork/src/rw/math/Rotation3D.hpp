@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RW_MATH_ROTATION3D_HPP
 #define RW_MATH_ROTATION3D_HPP
 
@@ -25,11 +24,10 @@
 
 #include "Vector3D.hpp"
 
-#include <rw/core/macros.hpp>
 #include <rw/common/Serializable.hpp>
+#include <rw/core/macros.hpp>
 
 #include <Eigen/Core>
-
 #include <limits>
 
 namespace rw { namespace math {
@@ -57,20 +55,19 @@ namespace rw { namespace math {
      *  \right]
      * @f$
      */
-    template<class T = double>
-    class Rotation3D
+    template< class T = double > class Rotation3D
     {
-    public:
+      public:
         //! Value type.
         typedef T value_type;
 
         //! @brief The type of the internal Eigen matrix implementation.
-		typedef Eigen::Matrix<T, 3, 3> EigenMatrix3x3;
+        typedef Eigen::Matrix< T, 3, 3 > EigenMatrix3x3;
 
         /**
            @brief A rotation matrix with uninitialized storage.
          */
-        Rotation3D()
+        Rotation3D ()
         {
             _m[0][0] = 1;
             _m[0][1] = 0;
@@ -81,7 +78,6 @@ namespace rw { namespace math {
             _m[2][0] = 0;
             _m[2][1] = 0;
             _m[2][2] = 1;
-
         }
 
         /**
@@ -108,10 +104,7 @@ namespace rw { namespace math {
          *  \right]
          * @f$
          */
-        Rotation3D(
-            T r11, T r12, T r13,
-            T r21, T r22, T r23,
-            T r31, T r32, T r33)
+        Rotation3D (T r11, T r12, T r13, T r21, T r22, T r23, T r31, T r32, T r33)
         {
             _m[0][0] = r11;
             _m[0][1] = r12;
@@ -138,10 +131,7 @@ namespace rw { namespace math {
          * @param j @f$ \robabx{a}{b}{\mathbf{j}} @f$
          * @param k @f$ \robabx{a}{b}{\mathbf{k}} @f$
          */
-        Rotation3D(
-            const Vector3D<T>& i,
-            const Vector3D<T>& j,
-            const Vector3D<T>& k)
+        Rotation3D (const Vector3D< T >& i, const Vector3D< T >& j, const Vector3D< T >& k)
         {
             _m[0][0] = i[0];
             _m[0][1] = j[0];
@@ -169,8 +159,7 @@ namespace rw { namespace math {
          * \right]
          * @f$
          */
-        static const Rotation3D& identity();
-
+        static const Rotation3D& identity ();
 
         /**
          * @brief Normalizes the rotation matrix to satisfy SO(3).
@@ -178,19 +167,7 @@ namespace rw { namespace math {
          * Makes a normalization of the rotation matrix such that the columns
          * are normalized and othogonal s.t. it belongs to SO(3).
          */
-        void normalize();
-
-
-        /**
-         * @brief Returns reference to matrix element
-         * @param row [in] row
-         * @param column [in] column
-         * @return reference to the element
-         */
-        inline T& operator()(size_t row, size_t column)
-        {
-            return _m[row][column];
-        }
+        void normalize ();
 
         /**
          * @brief Returns reference to matrix element
@@ -198,27 +175,34 @@ namespace rw { namespace math {
          * @param column [in] column
          * @return reference to the element
          */
-        inline const T& operator()(size_t row, size_t column) const
-        {
-            return _m[row][column];
-        }
-        
+        inline T& operator() (size_t row, size_t column) { return _m[row][column]; }
+
         /**
-		 * @brief Returns the i'th row of the rotation matrix
-		 * @param i [in] Index of the row to return. Only valid indices are 0, 1 and 2.
-		 */
-        const Vector3D<T> getRow(size_t i) const {
-            RW_ASSERT(i < 3);
-            return Vector3D<T>(_m[i][0],_m[i][1],_m[i][2]);
+         * @brief Returns reference to matrix element
+         * @param row [in] row
+         * @param column [in] column
+         * @return reference to the element
+         */
+        inline const T& operator() (size_t row, size_t column) const { return _m[row][column]; }
+
+        /**
+         * @brief Returns the i'th row of the rotation matrix
+         * @param i [in] Index of the row to return. Only valid indices are 0, 1 and 2.
+         */
+        const Vector3D< T > getRow (size_t i) const
+        {
+            RW_ASSERT (i < 3);
+            return Vector3D< T > (_m[i][0], _m[i][1], _m[i][2]);
         }
 
-		/**
-		 * @brief Returns the i'th column of the rotation matrix
-		 * @param i [in] Index of the column to return. Only valid indices are 0, 1 and 2.
-		 */
-        const Vector3D<T> getCol(size_t i) const {
-            RW_ASSERT(i < 3);
-            return Vector3D<T>(_m[0][i],_m[1][i],_m[2][i]);
+        /**
+         * @brief Returns the i'th column of the rotation matrix
+         * @param i [in] Index of the column to return. Only valid indices are 0, 1 and 2.
+         */
+        const Vector3D< T > getCol (size_t i) const
+        {
+            RW_ASSERT (i < 3);
+            return Vector3D< T > (_m[0][i], _m[1][i], _m[2][i]);
         }
 
         /**
@@ -230,10 +214,11 @@ namespace rw { namespace math {
          * @param rhs [in] Rotation to compare with
          * @return True if equal.
          */
-        bool operator==(const Rotation3D<T> &rhs) const {
-            for (int i = 0; i<3; i++)
-                for (int j = 0; j<3; j++)
-                    if (!(_m[i][j] == rhs(i,j)))
+        bool operator== (const Rotation3D< T >& rhs) const
+        {
+            for (int i = 0; i < 3; i++)
+                for (int j = 0; j < 3; j++)
+                    if (!(_m[i][j] == rhs (i, j)))
                         return false;
             return true;
         }
@@ -247,9 +232,7 @@ namespace rw { namespace math {
          * @param rhs [in] Rotation to compare with
          * @return True if not equal.
          */
-        bool operator!=(const Rotation3D<T> &rhs) const {
-            return !(*this == rhs);
-        }
+        bool operator!= (const Rotation3D< T >& rhs) const { return !(*this == rhs); }
 
         /**
          * @brief Compares rotations with a given precision
@@ -261,10 +244,12 @@ namespace rw { namespace math {
          * @param precision [in] The precision to use for testing
          * @return True if all elements are less than \b precision apart.
          */
-        bool equal(const Rotation3D<T>& rot, const T precision = std::numeric_limits<T>::epsilon()) const {
-            for (int i = 0; i<3; i++)
-                for (int j = 0; j<3; j++)
-                    if (fabs(_m[i][j] - rot(i,j)) > precision)
+        bool equal (const Rotation3D< T >& rot,
+                    const T precision = std::numeric_limits< T >::epsilon ()) const
+        {
+            for (int i = 0; i < 3; i++)
+                for (int j = 0; j < 3; j++)
+                    if (fabs (_m[i][j] - rot (i, j)) > precision)
                         return false;
             return true;
         }
@@ -274,24 +259,22 @@ namespace rw { namespace math {
          *
          * @return True if this rotation is considered a proper rotation
          */
-        bool isProperRotation() const;
+        bool isProperRotation () const;
 
         /**
          * @brief Verify that this rotation is a proper rotation
          *
          * @return True if this rotation is considered a proper rotation
          */
-        bool isProperRotation(T precision) const;
+        bool isProperRotation (T precision) const;
 
-
-
-		/**
+        /**
          * @brief Returns a Eigen 3x3 matrix @f$ \mathbf{M}\in SO(3)
          * @f$ that represents this rotation
          *
          * @return @f$ \mathbf{M}\in SO(3) @f$
          */
-        EigenMatrix3x3 e() const;
+        EigenMatrix3x3 e () const;
 
         /**
          * @brief Calculates \f$ \robabx{a}{c}{\mathbf{R}} =
@@ -301,9 +284,9 @@ namespace rw { namespace math {
          *
          * @return \f$ \robabx{a}{c}{\mathbf{R}} \f$
          */
-        inline const Rotation3D operator*( const Rotation3D& bRc ) const
+        inline const Rotation3D operator* (const Rotation3D& bRc) const
         {
-            return multiply(*this, bRc);
+            return multiply (*this, bRc);
             // return Rotation3D(prod(aRb.m(), bRc.m()));
         }
 
@@ -314,53 +297,49 @@ namespace rw { namespace math {
          * @param bVc [in] \f$ \robabx{b}{c}{\mathbf{v}} \f$
          * @return \f$ \robabx{a}{c}{\mathbf{v}} \f$
          */
-        inline const Vector3D<T> operator*( const Vector3D<T>& bVc) const
+        inline const Vector3D< T > operator* (const Vector3D< T >& bVc) const
         {
-            return multiply(*this, bVc);
+            return multiply (*this, bVc);
             // return Vector3D<T>(prod(aRb.m(), bVc.m()));
         }
 
-		  /**
-           @brief Construct a rotation matrix from a 3x3 Eigen matrix
-
-           It is the responsibility of the user that 3x3 matrix is indeed a
+        /**
+         * @brief Construct a rotation matrix from a 3x3 Eigen matrix
+         * It is the responsibility of the user that 3x3 matrix is indeed a
            rotation matrix.
          */
-		template <class R>
-		explicit Rotation3D(const EigenMatrix3x3& r) {
-            _m[0][0] = r(0,0);
-            _m[0][1] = r(0,1);
-            _m[0][2] = r(0,2);
-            _m[1][0] = r(1,0);
-            _m[1][1] = r(1,1);
-            _m[1][2] = r(1,2);
-            _m[2][0] = r(2,0);
-            _m[2][1] = r(2,1);
-            _m[2][2] = r(2,2);
-		}
+        template< class R > explicit Rotation3D (const EigenMatrix3x3& r)
+        {
+            _m[0][0] = r (0, 0);
+            _m[0][1] = r (0, 1);
+            _m[0][2] = r (0, 2);
+            _m[1][0] = r (1, 0);
+            _m[1][1] = r (1, 1);
+            _m[1][2] = r (1, 2);
+            _m[2][0] = r (2, 0);
+            _m[2][1] = r (2, 1);
+            _m[2][2] = r (2, 2);
+        }
 
-		  /**
-           @brief Construct a rotation matrix from a 3x3 Eigen matrix
-
-           It is the responsibility of the user that 3x3 matrix is indeed a
+        /**
+         * @brief Construct a rotation matrix from a 3x3 Eigen matrix
+         * It is the responsibility of the user that 3x3 matrix is indeed a
            rotation matrix.
-         */
-		template <class R>
-		explicit Rotation3D(const Eigen::MatrixBase<R>& m) {
-			RW_ASSERT(m.cols() == 3);
-			RW_ASSERT(m.rows() == 3);
-            _m[0][0] = m.row(0)(0);
-            _m[0][1] = m.row(0)(1);
-            _m[0][2] = m.row(0)(2);
-            _m[1][0] = m.row(1)(0);
-            _m[1][1] = m.row(1)(1);
-            _m[1][2] = m.row(1)(2);
-            _m[2][0] = m.row(2)(0);
-            _m[2][1] = m.row(2)(1);
-            _m[2][2] = m.row(2)(2);
-		}
-
-
+        */
+        template< class R > explicit Rotation3D (const Eigen::MatrixBase< R >& m)
+        {
+            RW_ASSERT (m.cols () == 3);
+            RW_ASSERT (m.rows () == 3);
+            _m[0][0] = m.row (0) (0);
+            _m[0][1] = m.row (0) (1);
+            _m[0][2] = m.row (0) (2);
+            _m[1][0] = m.row (1) (0);
+            _m[1][1] = m.row (1) (1);
+            _m[1][2] = m.row (1) (2);
+            _m[2][0] = m.row (2) (0);
+            _m[2][1] = m.row (2) (1);
+            _m[2][2] = m.row (2) (2);
+        }
 
         /**
          * @brief Creates a skew symmetric matrix from a Vector3D. Also
@@ -370,28 +349,24 @@ namespace rw { namespace math {
          *
          * @param v [in] vector to create Skew matrix from
          */
-        static Rotation3D<T> skew(const Vector3D<T>& v)
+        static Rotation3D< T > skew (const Vector3D< T >& v)
         {
-                return Rotation3D<T> (0, -v(2), v(1), v(2), 0, -v(0), -v(1), v(0), 0);
+            return Rotation3D< T > (0, -v (2), v (1), v (2), 0, -v (0), -v (1), v (0), 0);
         }
 
-    public:
         // Faster-than-boost matrix multiplications below.
 
+        /**
+         *  @brief Write to \b result the product \b a * \b b.
+         */
+        static void multiply (const Rotation3D< T >& a, const Rotation3D< T >& b,
+                              Rotation3D< T >& result);
 
         /**
          *  @brief Write to \b result the product \b a * \b b.
          */
-        static void multiply(const Rotation3D<T>& a,
-                                    const Rotation3D<T>& b,
-                                    Rotation3D<T>& result);
-
-        /**
-         *  @brief Write to \b result the product \b a * \b b.
-         */
-        static void multiply(const Rotation3D<T>& a,
-                             const Vector3D<T>& b,
-                             Vector3D<T>& result);
+        static void multiply (const Rotation3D< T >& a, const Vector3D< T >& b,
+                              Vector3D< T >& result);
 
         /**
          * @brief Calculates \f$ \robabx{a}{c}{\mathbf{R}} =
@@ -403,7 +378,8 @@ namespace rw { namespace math {
          *
          * @return \f$ \robabx{a}{c}{\mathbf{R}} \f$
          */
-        static const Rotation3D<T> multiply(const Rotation3D<T>& aRb, const Rotation3D<T>& bRc);
+        static const Rotation3D< T > multiply (const Rotation3D< T >& aRb,
+                                               const Rotation3D< T >& bRc);
 
         /**
          * @brief Calculates \f$ \robabx{a}{c}{\mathbf{v}} =
@@ -413,33 +389,33 @@ namespace rw { namespace math {
          * @param bVc [in] \f$ \robabx{b}{c}{\mathbf{v}} \f$
          * @return \f$ \robabx{a}{c}{\mathbf{v}} \f$
          */
-        static const Vector3D<T> multiply(const Rotation3D<T>& aRb,
-                                                 const Vector3D<T>& bVc);
+        static const Vector3D< T > multiply (const Rotation3D< T >& aRb, const Vector3D< T >& bVc);
 
         /**
          * @brief Calculate the inverse.
-         * @note This function changes the object that it is invoked on, but this is about x5 faster than rot = inverse( rot )
-         * @see inverse(const Rotation3D< T > &) for the (slower) version that does not change the rotation object itself.
+         * @note This function changes the object that it is invoked on, but this is about x5 faster
+         * than rot = inverse( rot )
+         * @see inverse(const Rotation3D< T > &) for the (slower) version that does not change the
+         * rotation object itself.
          * @return the inverse rotation.
          */
-        inline Rotation3D<T>& inverse()
+        inline Rotation3D< T >& inverse ()
         {
             T tmpVal = _m[0][1];
             _m[0][1] = _m[1][0];
             _m[1][0] = tmpVal;
 
-            tmpVal = _m[0][2];
+            tmpVal   = _m[0][2];
             _m[0][2] = _m[2][0];
             _m[2][0] = tmpVal;
 
-            tmpVal = _m[1][2];
+            tmpVal   = _m[1][2];
             _m[1][2] = _m[2][1];
             _m[2][1] = tmpVal;
             return *this;
         }
 
-
-    private:
+      private:
         T _m[3][3];
     };
 
@@ -451,13 +427,12 @@ namespace rw { namespace math {
      * @param rot [in] Rotation3D with type T
      * @return Rotation3D with type Q
      */
-    template<class Q, class T>
-    const Rotation3D<Q> cast(const Rotation3D<T>& rot)
+    template< class Q, class T > const Rotation3D< Q > cast (const Rotation3D< T >& rot)
     {
-        Rotation3D<Q> res;
+        Rotation3D< Q > res;
         for (size_t i = 0; i < 3; i++)
             for (size_t j = 0; j < 3; j++)
-                res(i, j) = static_cast<Q>(rot(i, j));
+                res (i, j) = static_cast< Q > (rot (i, j));
         return res;
     }
 
@@ -467,7 +442,8 @@ namespace rw { namespace math {
      *
      * @relates Rotation3D
      *
-     * @see Rotation3D::inverse() for a faster version that modifies the existing rotation object instead of allocating a new one.
+     * @see Rotation3D::inverse() for a faster version that modifies the existing rotation object
+     * instead of allocating a new one.
      *
      * @param aRb [in] the rotation matrix @f$ \robabx{a}{b}{\mathbf{R}} @f$
      *
@@ -477,24 +453,20 @@ namespace rw { namespace math {
      * @f$ \robabx{b}{a}{\mathbf{R}} = \robabx{a}{b}{\mathbf{R}}^{-1} =
      * \robabx{a}{b}{\mathbf{R}}^T @f$
      */
-    template <class T>
-    const Rotation3D<T> inverse(const Rotation3D<T>& aRb)
+    template< class T > const Rotation3D< T > inverse (const Rotation3D< T >& aRb)
     {
-        return Rotation3D<T>(
-                    aRb(0,0),
-                    aRb(1,0),
-                    aRb(2,0),
+        return Rotation3D< T > (aRb (0, 0),
+                                aRb (1, 0),
+                                aRb (2, 0),
 
-                    aRb(0,1),
-                    aRb(1,1),
-                    aRb(2,1),
+                                aRb (0, 1),
+                                aRb (1, 1),
+                                aRb (2, 1),
 
-                    aRb(0,2),
-                    aRb(1,2),
-                    aRb(2,2)
-                );
+                                aRb (0, 2),
+                                aRb (1, 2),
+                                aRb (2, 2));
     }
-
 
     /**
      * @brief Writes rotation matrix to stream
@@ -505,52 +477,57 @@ namespace rw { namespace math {
      * @param r [in] rotation matrix to print
      * @return the updated output stream
      */
-    template <class T>
-    std::ostream& operator<<(std::ostream &os, const Rotation3D<T>& r)
+    template< class T > std::ostream& operator<< (std::ostream& os, const Rotation3D< T >& r)
     {
-        return os
-            << "Rotation3D("
-            << r(0, 0) << ", " << r(0, 1) << ", " << r(0, 2) << ", "
-            << r(1, 0) << ", " << r(1, 1) << ", " << r(1, 2) << ", "
-            << r(2, 0) << ", " << r(2, 1) << ", " << r(2, 2)
-            << ")";
+        return os << "Rotation3D(" << r (0, 0) << ", " << r (0, 1) << ", " << r (0, 2) << ", "
+                  << r (1, 0) << ", " << r (1, 1) << ", " << r (1, 2) << ", " << r (2, 0) << ", "
+                  << r (2, 1) << ", " << r (2, 2) << ")";
     }
 
     // Explicit template specifications.
-    extern template class rw::math::Rotation3D<double>;
-    extern template class rw::math::Rotation3D<float>;
+    extern template class rw::math::Rotation3D< double >;
+    extern template class rw::math::Rotation3D< float >;
 
     /**@}*/
-}} // end namespaces
+}}    // namespace rw::math
 
+namespace rw { namespace common {
+    class OutputArchive;
+    class InputArchive;
+    namespace serialization {
+        /**
+         * @copydoc rw::common::serialization::write
+         * @relatedalso rw::math::Rotation3D
+         */
+        template<>
+        void write (const rw::math::Rotation3D< double >& sobject,
+                    rw::common::OutputArchive& oarchive, const std::string& id);
 
-namespace rw{ namespace common {
-    class OutputArchive; class InputArchive;
-namespace serialization {
-/**
- * @copydoc rw::common::serialization::write
- * @relatedalso rw::math::Rotation3D
- */
-template <> void write(const rw::math::Rotation3D<double>& sobject, rw::common::OutputArchive& oarchive, const std::string& id);
+        /**
+         * @copydoc rw::common::serialization::write
+         * @relatedalso rw::math::Rotation3D
+         */
+        template<>
+        void write (const rw::math::Rotation3D< float >& sobject,
+                    rw::common::OutputArchive& oarchive, const std::string& id);
 
-/**
- * @copydoc rw::common::serialization::write
- * @relatedalso rw::math::Rotation3D
- */
-template <> void write(const rw::math::Rotation3D<float>& sobject, rw::common::OutputArchive& oarchive, const std::string& id);
+        /**
+         * @copydoc rw::common::serialization::read
+         * @relatedalso rw::math::Rotation3D
+         */
+        template<>
+        void read (rw::math::Rotation3D< double >& sobject, rw::common::InputArchive& iarchive,
+                   const std::string& id);
 
-/**
- * @copydoc rw::common::serialization::read
- * @relatedalso rw::math::Rotation3D
- */
-template <> void read(rw::math::Rotation3D<double>& sobject, rw::common::InputArchive& iarchive, const std::string& id);
-
-/**
- * @copydoc rw::common::serialization::read
- * @relatedalso rw::math::Rotation3D
- */
-template <> void read(rw::math::Rotation3D<float>& sobject, rw::common::InputArchive& iarchive, const std::string& id);
-}}} // end namespaces
+        /**
+         * @copydoc rw::common::serialization::read
+         * @relatedalso rw::math::Rotation3D
+         */
+        template<>
+        void read (rw::math::Rotation3D< float >& sobject, rw::common::InputArchive& iarchive,
+                   const std::string& id);
+    }    // namespace serialization
+}}       // namespace rw::common
 
 namespace boost { namespace serialization {
     /**
@@ -560,14 +537,19 @@ namespace boost { namespace serialization {
      * @param version [in] class version (currently version 0).
      * @relatedalso rw::math::Rotation3D
      */
-    template<class Archive, class T>
-    void serialize(Archive & archive, rw::math::Rotation3D<T> & R,
-            const unsigned int version)
+    template< class Archive, class T >
+    void serialize (Archive& archive, rw::math::Rotation3D< T >& R, const unsigned int version)
     {
-        archive & R(0,0); archive & R(0,1); archive & R(0,2);
-        archive & R(1,0); archive & R(1,1); archive & R(1,2);
-        archive & R(2,0); archive & R(2,1); archive & R(2,2);
+        archive& R (0, 0);
+        archive& R (0, 1);
+        archive& R (0, 2);
+        archive& R (1, 0);
+        archive& R (1, 1);
+        archive& R (1, 2);
+        archive& R (2, 0);
+        archive& R (2, 1);
+        archive& R (2, 2);
     }
-}} // end namespaces
+}}    // namespace boost::serialization
 
-#endif // end include guard
+#endif    // end include guard

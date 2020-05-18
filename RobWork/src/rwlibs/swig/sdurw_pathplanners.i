@@ -6,7 +6,7 @@
 
 using namespace rwlibs::swig;
 using rw::math::Metric;
-using rw::math::Q;
+using rw::math::Quaternion;
 using rw::pathplanning::PathPlanner;
 using rw::trajectory::Path;
 %}
@@ -46,7 +46,7 @@ public:
     /**
      * @brief Construct a new random walk with start node at \b start.
      */
-	rw::core::Ptr<ARWExpand> duplicate(const rw::math::Q& start) const;
+	rw::core::Ptr<ARWExpand> duplicate(const Q& start) const;
 
     /**
      * @brief Destructor
@@ -56,7 +56,7 @@ public:
     /**
      * @brief The current path of the random walk.
      */
-	const rw::trajectory::Path<rw::math::Q>& getPath() const;
+	const rw::trajectory::Path<Q>& getPath() const;
 
     /**
      * @brief Constructor
@@ -81,9 +81,9 @@ public:
      * use for variance computation.
      */
 	static rw::core::Ptr<ARWExpand> make(
-        const std::pair<rw::math::Q, rw::math::Q>& bounds,
+        const std::pair<Q, Q>& bounds,
         const PlannerConstraint& constraint,
-        const rw::math::Q& minVariances = rw::math::Q(),
+        const Q& minVariances = Q(),
         int historySize = -1);
 
 protected:
@@ -103,13 +103,13 @@ protected:
     /**
      * @brief Subclass implementation of the duplicate() method.
      */
-	virtual rw::core::Ptr<ARWExpand> doDuplicate(const rw::math::Q& start) const = 0;
+	virtual rw::core::Ptr<ARWExpand> doDuplicate(const Q& start) const = 0;
 
 protected:
     /**
      * @brief The path of random walk.
      */
-	rw::trajectory::Path<rw::math::Q> _path;
+	rw::trajectory::Path<Q> _path;
 };
 
 //! @brief Smart pointer type for a ARWPlanner.
@@ -148,7 +148,7 @@ public:
 	static rw::core::Ptr<QToQPlanner> makeQToQPlanner(
         const PlannerConstraint& constraint,
 		rw::core::Ptr<ARWExpand> expand,
-		rw::core::Ptr<Metric<rw::math::Q> > metric,
+		rw::core::Ptr< rw::math::Metric<Q> > metric,
         double nearDistance);
 
     /**
@@ -178,7 +178,7 @@ public:
 	static rw::core::Ptr<QToQPlanner> makeQToQPlanner(
         const PlannerConstraint& constraint,
 		rw::core::Ptr<Device> device,
-		rw::core::Ptr<Metric<rw::math::Q> > metric = NULL,
+		rw::core::Ptr< rw::math::Metric<Q> > metric = NULL,
         double nearDistance = -1,
         int historySize = -1);
 };
@@ -445,7 +445,7 @@ public:
 	static rw::core::Ptr<QToQPlanner> makeQToQPlanner(
         const PlannerConstraint& constraint,
 		rw::core::Ptr<QSampler> sampler,
-		rw::core::Ptr<Metric<rw::math::Q> > metric,
+		rw::core::Ptr< rw::math::Metric<Q> > metric,
         double extend,
         PlannerType type = RRTBalancedBidirectional);
 
@@ -492,14 +492,14 @@ public:
      * Implementation dependant, the sampler may return the empty
      * configuration if no configurations can be sampled near \b q.
      */
-    rw::math::Q expand(const rw::math::Q& q);
+    Q expand(const Q& q);
 
     /**
      * @brief A configuration space in the shape of a box.
      *
      * The box is given by a lower and upper corner.
      */
-    typedef std::pair<rw::math::Q, rw::math::Q> QBox;
+    typedef std::pair<Q, Q> QBox;
 
     /**
      * @brief Expansion within the overlap of an inner and outer box.
@@ -625,7 +625,7 @@ protected:
     /**
      * @brief Subclass implementation of the expand() method.
      */
-    virtual rw::math::Q doExpand(const rw::math::Q& q) = 0;
+    virtual Q doExpand(const Q& q) = 0;
 
 private:
     SBLExpand(const SBLExpand&);
@@ -678,7 +678,7 @@ public:
 		rw::core::Ptr<QConstraint> constraint,
 		rw::core::Ptr<QEdgeConstraintIncremental> edgeConstraint,
         rw::core::Ptr<SBLExpand> expansion,
-		rw::core::Ptr<Metric<rw::math::Q> > metric,
+		rw::core::Ptr< rw::math::Metric<Q> > metric,
         double connectRadius);
 
     /**
@@ -781,7 +781,7 @@ public:
 		rw::core::Ptr<QConstraint>& constraint,
 		rw::core::Ptr<QEdgeConstraintIncremental>& edgeConstraint,
 		rw::core::Ptr<SBLExpand> expansion,
-		rw::core::Ptr<Metric<rw::math::Q> > metric,
+		rw::core::Ptr< rw::math::Metric<Q> > metric,
         double connectRadius);
 
     //! @brief The constraint that determined if a path or configuration is valid (collision free) or not.
@@ -789,7 +789,7 @@ public:
     //! @brief The expand policy used to sample new configurations in the vicinity.
     rw::core::Ptr<SBLExpand> expansion;
     //! @brief the distance metric for nearest neighbor searching.
-	rw::core::Ptr<Metric<rw::math::Q> > metric;
+	rw::core::Ptr< rw::math::Metric<Q> > metric;
 	//! @brief Attempt connection of the trees if the distance to the nearest neighbor is below this threshold.
     double connectRadius;
 
@@ -941,7 +941,7 @@ public:
         const PlannerConstraint& constraint,
 		rw::core::Ptr<QSampler> directionSampler,
 		rw::core::Ptr<QConstraint> boundsConstraint,
-		rw::core::Ptr<Metric<rw::math::Q> > metric,
+		rw::core::Ptr< rw::math::Metric<Q> > metric,
         double extend,
         double slideImprovement = -1);
 
@@ -971,7 +971,7 @@ public:
     static rw::core::Ptr<QToQPlanner> makeSlidingQToQPlanner(
         const PlannerConstraint& constraint,
 		rw::core::Ptr<Device> device,
-		rw::core::Ptr<Metric<rw::math::Q> > metric = 0,
+		rw::core::Ptr< rw::math::Metric<Q> > metric = 0,
         double extend = -1,
         double slideImprovement = -1);
 };

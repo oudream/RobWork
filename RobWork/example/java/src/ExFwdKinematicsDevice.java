@@ -10,9 +10,9 @@ public class ExFwdKinematicsDevice {
         // get device end effector
         Frame end = sdevice.getEnd();
         // calculate base to end transform
-        Transform3d bTe = sdevice.baseTend(state);
+        Transform3Dd bTe = sdevice.baseTend(state);
         // or just base to any frame
-        Transform3d bTmf = sdevice.baseTframe(mframe, state);
+        Transform3Dd bTmf = sdevice.baseTframe(mframe, state);
         // get device name
         String sdevicename = sdevice.getName();
         // the degrees of freedom of this device

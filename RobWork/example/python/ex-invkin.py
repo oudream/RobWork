@@ -18,7 +18,7 @@ if __name__ == '__main__':
     defState = wc.getDefaultState()
     solver = ClosedFormIKSolverUR(device.asSerialDeviceCPtr(), defState)
 
-    Tdesired = Transform3d(Vector3d(0.2, -0.2, 0.5), EAAd(0, Pi, 0).toRotation3D())
+    Tdesired = Transform3Dd(Vector3Dd(0.2, -0.2, 0.5), EAAd(0, Pi, 0).toRotation3D())
     solutions = solver.solve(Tdesired, defState)
 
     print("Inverse Kinematics for " + device.getName() + ".")
