@@ -1758,7 +1758,7 @@
          * the unit N/m^2.
          * @return matrix of texel pressure values
          */
-        virtual const Eigen::MatrixXf& getTexelData () const = 0;
+        virtual const Eigen::Matrix<float,-1,-1>& getTexelData () const = 0;
     };
     %template(TactileArrayPtr) rw::core::Ptr< TactileArray > ;
     OWNEDPTR(TactileArray);
@@ -1787,7 +1787,7 @@
          * @param cell_height [in] height of cell
          */
         TactileArrayModel (const std::string& name, Frame* sensorframe,
-                           const rw::math::Transform3D<double>& fThmap, const Eigen::MatrixXf& heightMap,
+                           const rw::math::Transform3D<double>& fThmap, const Eigen::Matrix<float,-1,-1>&& heightMap,
                            double cell_width, double cell_height);
 
         /**
@@ -1858,7 +1858,7 @@
          * @param state [in] state to get the values from
          * @return matrix of texel pressure values
          */
-        Eigen::MatrixXf& getTexelData (State& state) const;
+        Eigen::Matrix<float,-1,-1>&& getTexelData (State& state) const;
 
         /**
          * @brief set the pressure on each texel of the TactileArray in
@@ -1866,7 +1866,7 @@
          * @param data [in] pressure values
          * @param state [in] state to set the values in
          */
-        void setTexelData (const Eigen::MatrixXf& data, State& state) const;
+        void setTexelData (const Eigen::Matrix<float,-1,-1>& data, State& state) const;
 
     };
     %template(TactileArrayModelPtr) rw::core::Ptr< TactileArrayModel > ;

@@ -15,5 +15,5 @@ def printDefaultWorkCellStructure(workcell):
     printKinematicTree(
         workcell.getWorldFrame(),
         workcell.getDefaultState(),
-        Transform3d.identity(),
+        Transform3Dd.identity(),
         0);

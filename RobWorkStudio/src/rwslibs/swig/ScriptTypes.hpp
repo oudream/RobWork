@@ -79,20 +79,20 @@ namespace swig {
     rwlibs::swig::MovableFrame* findMovableFrame(const std::string& name);
     rwlibs::swig::FixedFrame* findFixedFrame(const std::string& name);
 
-    void moveTo(rwlibs::swig::MovableFrame* mframe, rwlibs::swig::Transform3d wTframe );
-    void moveTo(rwlibs::swig::Frame* frame, rwlibs::swig::MovableFrame* mframe, rwlibs::swig::Transform3d wTtcp );
-    void moveTo(const std::string& fname, const std::string& mname, rwlibs::swig::Transform3d wTframe );
+    void moveTo(rwlibs::swig::MovableFrame* mframe, rw::math::Transform3D<double> wTframe );
+    void moveTo(rwlibs::swig::Frame* frame, rwlibs::swig::MovableFrame* mframe, rw::math::Transform3D<double> wTtcp );
+    void moveTo(const std::string& fname, const std::string& mname, rw::math::Transform3D<double> wTframe );
 
     // utility functions for
     rwlibs::swig::Q getQ(rw::core::Ptr<rwlibs::swig::Device> dev);
     void setQ(rw::core::Ptr<rwlibs::swig::Device> dev, rwlibs::swig::Q);
 
-    void setTransform(rwlibs::swig::Frame* mframe, rwlibs::swig::Transform3d wTframe );
+    void setTransform(rwlibs::swig::Frame* mframe, rw::math::Transform3D<double> wTframe );
 
-    rwlibs::swig::Transform3d wTf(rwlibs::swig::Frame* frame);
-    rwlibs::swig::Transform3d wTf(const std::string& name);
-    rwlibs::swig::Transform3d fTf(rwlibs::swig::Frame* frame,rwlibs::swig::Frame* to);
-    rwlibs::swig::Transform3d fTf(const std::string& from,const std::string& to);
+    rw::math::Transform3D<double> wTf(rwlibs::swig::Frame* frame);
+    rw::math::Transform3D<double> wTf(const std::string& name);
+    rw::math::Transform3D<double> fTf(rwlibs::swig::Frame* frame,rwlibs::swig::Frame* to);
+    rw::math::Transform3D<double> fTf(const std::string& from,const std::string& to);
 
     /**
      * @brief add geometry to an existing frame or object with name objName

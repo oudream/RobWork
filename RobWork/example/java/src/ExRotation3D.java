@@ -6,8 +6,8 @@ public class ExRotation3D {
     public static void main(String[] args) throws Exception {
         LoaderRW.load("sdurw");
 
-        Rotation3d rotd = new Rotation3d(1,0,0,0,0,-1,0,1,0);
-        Rotation3f rotf = new Rotation3f(1,0,0,0,0,-1,0,1,0);
+        Rotation3Dd rotd = new Rotation3Dd(1,0,0,0,0,-1,0,1,0);
+        Rotation3Df rotf = new Rotation3Df(1,0,0,0,0,-1,0,1,0);
 
         System.out.println("Rotation double:");
         System.out.println(rotd);

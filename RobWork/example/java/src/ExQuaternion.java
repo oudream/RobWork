@@ -8,10 +8,10 @@ public class ExQuaternion {
 
         Quaterniond quat = new Quaterniond(Math.sqrt(2)/2,Math.sqrt(2)/2,0,0);
         System.out.println("Quaternion: " + quat);
-        Rotation3d rotationFromQuat = quat.toRotation3D();
+        Rotation3Dd rotationFromQuat = quat.toRotation3D();
         System.out.println("Rotation from Quaternion: " + rotationFromQuat);
 
-        Rotation3d rot = new Rotation3d(-1,0,0,0,0,1,0,1,0);
+        Rotation3Dd rot = new Rotation3Dd(-1,0,0,0,0,1,0,1,0);
         System.out.println("Rotation: " + rot);
         Quaterniond quatFromRotation = new Quaterniond(rot);
         System.out.println("Quaternion from Rotation: " + quatFromRotation);

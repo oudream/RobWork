@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RW_MATH_FUNCTION_HPP
 #define RW_MATH_FUNCTION_HPP
 
@@ -25,8 +24,6 @@
  * @file rw/math/Math.hpp
  */
 
-
-
 namespace rw { namespace math {
 
     /** @addtogroup math */
@@ -35,46 +32,40 @@ namespace rw { namespace math {
     /**
      *  @brief Interface for functions
      */
-	template<class RES_T = double, class ARG_T = double>
-    class Function
+    template< class RES_T = double, class ARG_T = double > class Function
     {
-    public:
-		//! Smart pointer to this type of class.
-		typedef rw::core::Ptr<Function> Ptr;
+      public:
+        //! Smart pointer to this type of class.
+        typedef rw::core::Ptr< Function > Ptr;
 
-	public:
-		/**
-		 * @brief Returns function value for arguments q.
-		 */
-		virtual RES_T f(ARG_T q) = 0;
-		
-		/**
-		 * @brief Wraps the evaluation of x() with operator().
-		 */
-		RES_T operator()(ARG_T q) {
-			return f(q);
-		}
+        /**
+         * @brief Returns function value for arguments q.
+         */
+        virtual RES_T f (ARG_T q) = 0;
+
+        /**
+         * @brief Wraps the evaluation of x() with operator().
+         */
+        RES_T operator() (ARG_T q) { return f (q); }
     };
 
     /**
      * @brief Interface for functions which are 1 time differentiable
      */
-	template<class RES_T = double, class ARG_T = double, class GRAD_T = double>
-	class Function1Diff: virtual public Function<RES_T, ARG_T>
-	{
-	public:
-		//! Smart pointer to this type of class.
-		typedef rw::core::Ptr<Function1Diff> Ptr;
+    template< class RES_T = double, class ARG_T = double, class GRAD_T = double >
+    class Function1Diff : virtual public Function< RES_T, ARG_T >
+    {
+      public:
+        //! Smart pointer to this type of class.
+        typedef rw::core::Ptr< Function1Diff > Ptr;
 		
-	public:
-		/**
-		 * @brief Returns gradient(derivative) of the function
-		 */
-		virtual GRAD_T df(ARG_T q) = 0;
-	};
-	
+        /**
+         * @brief Returns gradient(derivative) of the function
+         */
+        virtual GRAD_T df (ARG_T q) = 0;
+    };
 
     /*@}*/
-}} // end namespaces
+}}    // namespace rw::math
 
-#endif // end include guard
+#endif    // end include guard

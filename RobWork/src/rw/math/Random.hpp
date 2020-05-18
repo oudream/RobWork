@@ -24,67 +24,67 @@
  * \copydoc rw::math::Random
  */
 
-namespace rw {
-namespace math {
-//! @addtogroup math
+namespace rw { namespace math {
+    //! @addtogroup math
 
-//! @{
-/**
- * @brief Generation of random numbers.
- */
-class Random {
-public:
-	Random() = delete;
-	~Random() = delete;
-
+    //! @{
     /**
-     * @brief A random double in the range [0, 1[ using a uniform distribution.
-     *
-     * @note Uses boost::random
+     * @brief Generation of random numbers.
      */
-    static double ran();
+    class Random
+    {
+      public:
+        Random ()  = delete;
+        ~Random () = delete;
 
-    /**
-     * @brief Seeds the random number generator.
-     *
-     * @note Uses boost::random
-     */
-    static void seed(unsigned seed);
+        /**
+         * @brief A random double in the range [0, 1[ using a uniform distribution.
+         *
+         * @note Uses boost::random
+         */
+        static double ran ();
 
-    /**
-     * @brief Seeds the random number generator with current time of day
-     *
-     * @note Uses boost::random
-     */
-	static void seed();
+        /**
+         * @brief Seeds the random number generator.
+         *
+         * @note Uses boost::random
+         */
+        static void seed (unsigned seed);
 
-    /**
-     * @brief A random double in the range [from, to[ using a uniform distribution.
-     *
-     * @note Uses boost::random
-     */
-    static double ran(double from, double to);
+        /**
+         * @brief Seeds the random number generator with current time of day
+         *
+         * @note Uses boost::random
+         */
+        static void seed ();
 
-    /**
-     * @brief A random integer in the range [from, to[ using a uniform distribution.
-     *
-     * @note Uses boost::random
-     */
-    static int ranI(int from, int to);
+        /**
+         * @brief A random double in the range [from, to[ using a uniform distribution.
+         *
+         * @note Uses boost::random
+         */
+        static double ran (double from, double to);
 
-    /**
-     * @brief Returns a random sample around \b mean with standard deviation \b sigma  using the normal distribution.
-     *
-     * @note Uses boost::random
-     *
-     * @param mean [in] Means value
-     * @param sigma [in] Standard deviation
-     * @return Random sample
-     */
-    static double ranNormalDist(double mean, double sigma);
-};
-//! @}
-} /* namespace math */
-} /* namespace rw */
+        /**
+         * @brief A random integer in the range [from, to[ using a uniform distribution.
+         *
+         * @note Uses boost::random
+         */
+        static int ranI (int from, int to);
+
+        /**
+         * @brief Returns a random sample around \b mean with standard deviation \b sigma  using the
+         * normal distribution.
+         *
+         * @note Uses boost::random
+         *
+         * @param mean [in] Means value
+         * @param sigma [in] Standard deviation
+         * @return Random sample
+         */
+        static double ranNormalDist (double mean, double sigma);
+    };
+    //! @}
+}}    // namespace rw::math
 
 #endif /* RW_MATH_RANDOM_HPP_ */

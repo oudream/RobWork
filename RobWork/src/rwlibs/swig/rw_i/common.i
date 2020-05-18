@@ -1082,7 +1082,7 @@
         /**
          * @brief Adds a LogWriter to be written to
          */
-        void addWriter (rw::core::LogWriter::Ptr writer);
+        void addWriter (rw::core::Ptr<LogWriter> writer);
 
       protected:
         /**
@@ -1138,42 +1138,7 @@
             accessed using non-const operator[]).
             */
             bool has (const Pair& pair) const;
-
-            /**
-             @brief True iff a value for \b frame has been inserted in the map (or
-            accessed using operator[]).
-            @param f1 [in] the first in the pair for which to find its associated values.
-            @param f2 [in] the second in the pair for which to find its associated values.
-            */
-            bool has (const T1 f1, const T1 f2) const;
-
-            /**
-             @brief return a reference to the value that is associated with the
-            pair \b pair.
-
-            If no value has been inserted for \b pair, then the default value of
-            \b T2 is returned. Use has() to see if a value has been stored for \b
-            pair.
-
-            @param pair [in] the pair for which to find its associated values.
-            @return reference to the value associated to the pair.
-            */
-            const T2& operator[] (const Pair& pair) const;
-
-            /**
-             @brief return a reference to the value that is associated with the
-            pair consisting of \b f1 and f2.
-
-            If no value has been inserted the default value of
-            \b T is returned. Use has() to see if a value has been stored for \b
-            frame.
-
-            @param f1 [in] the first in the pair for which to find its associated values.
-            @param f2 [in] the second in the pair for which to find its associated values.
-            @return reference to the value associated to the pair.
-            */
-            const T2& operator() (T1 f1, T1 f2) const;
-
+            
             /**
              @brief return a reference to the value that is associated with the
             \b pair
@@ -1184,56 +1149,54 @@
             @param pair [in] the pair for which to find its associated values.
             @return reference to the value associated to pair.
             */
-            T2& operator[] (const Pair& pair);
+            MAPOPERATOR(T2,Pair); //T2& operator[] (const Pair& pair);
 
             /**
-             @brief return a reference to the value that is associated with the
-            pair consisting of \b f1 and f2.
-
-            If no value has been inserted the default value of
-            \b T is returned. Use has() to see if a value has been stored for \b
-            frame.
-
-            @param f1 [in] the first frame in the pair for which to find its associated values.
-            @param f2 [in] the second frame in the pair for which to find its associated values.
-            @return reference to the value associated to pair.
-        */
-            T2& operator() (T1 f1, T1 f2);
+             * @brief return a reference to the value that is associated with the
+             * pair consisting of \b f1 and f2.
+             * If no value has been inserted the default value of
+             * \b T is returned. Use has() to see if a value has been stored for \b
+             * frame.
+             * @param f1 [in] the first frame in the pair for which to find its associated values.
+             * @param f2 [in] the second frame in the pair for which to find its associated values.
+             * @return reference to the value associated to pair.
+             */
+            MAP2OPERATOR(T2, T1, T1); //T2& operator() (T1 f1, T1 f2);
 
             /**
-             @brief Erase a pair from the map
-            @param pair [in] the pair for which to erase from the map.
-            */
+             * @brief Erase a pair from the map
+             * @param pair [in] the pair for which to erase from the map.
+             */
             void erase (const Pair& pair);
 
             /**
-                     @brief Erase a pair from the map
-                    @param f1 [in] the first frame in the pair for which to erase from the map.
-            @param f2 [in] the second frame in the pair for which to erase from the map.
-                    */
+             * @brief Erase a pair from the map
+             * @param f1 [in] the first frame in the pair for which to erase from the map.
+             * @param f2 [in] the second frame in the pair for which to erase from the map.
+             */
             void erase (T1 f1, T1 f2);
 
             /**
-             @brief Clear the map.
-            */
+             * @brief Clear the map.
+             */
             void clear ();
 
             /**
-                     @brief Return the map size.
-                    @return the number of elements in the map.
-                    */
+             * @brief Return the map size.
+             * @return the number of elements in the map.
+             */
             std::size_t size () const;
 
             /**
-                     @brief Return maximum size.
-                    @return the maximum number of elements that the map object can hold.
-                    */
+             * @brief Return maximum size.
+             * @return the maximum number of elements that the map object can hold.
+             */
             std::size_t max_size () const;
 
             /**
-                     @brief Test whether map is empty.
-                    @return whether the map container is empty, i.e. whether its size is 0.
-                    */
+             * @brief Test whether map is empty.
+             * @return whether the map container is empty, i.e. whether its size is 0.
+             */
             bool empty () const;
         };
     }}
@@ -1618,11 +1581,13 @@
              */
             T operator() ();
 
-            /**
-             * @brief Set the value using the assignment operator (same as using setVariable()).
-             * @param var [in] the new value.
-             */
-            void operator= (const T var);
+            #if !defined(SWIGPYTHON)
+              /**
+               * @brief Set the value using the assignment operator (same as using setVariable()).
+               * @param var [in] the new value.
+               */
+              void operator= (const T var);
+            #endif
 
         };
     }}
@@ -1821,7 +1786,13 @@
          * @brief Get a list of exceptions registered in task and subtasks.
          * @return a list of exceptions.
          */
-        std::list< Exception > getExceptions () const;
+        //std::list< Exception > getExceptions () const;
+        %extend {
+            std::vector<Exception> getException() const{
+              std::list<Exception> init = $self->getExceptions();
+              return std::vector<Exception> (init.begin(),init.end());
+            }
+        }
     };
 
     %template (ThreadTaskPtr) rw::core::Ptr<ThreadTask>;
