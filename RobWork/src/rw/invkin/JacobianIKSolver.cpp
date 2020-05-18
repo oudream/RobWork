@@ -43,10 +43,11 @@ JacobianIKSolver::JacobianIKSolver(Device::CPtr device, const Frame *foi, const 
     _useJointClamping(false),
 	_useInterpolation(false),
     _checkJointLimits(false),
-	_solverType(SVD)
+    _solverType(SVD),
+    _w(Eigen::VectorXd::Ones(_device->getDOF())),
+    _checkJointLimitsTolerance(0.0)
 {
     setMaxIterations(15);
-    Eigen::VectorXd::Ones(_device->getDOF());
 }
 
 JacobianIKSolver::JacobianIKSolver(Device::CPtr device, const State& state):
@@ -80,7 +81,7 @@ std::vector<Q> JacobianIKSolver::solve(const Transform3D<>& bTed,
     {
         std::vector<Q> result;
         Q q = _device->getQ(state);
-        if (!_checkJointLimits || Models::inBounds(q, *_device))
+        if (!_checkJointLimits || Models::inBounds(q, *_device, _checkJointLimitsTolerance))
             result.push_back(q);
 
         return result;
@@ -188,11 +189,19 @@ bool JacobianIKSolver::solveLocal(const Transform3D<> &bTed,
 
 void JacobianIKSolver::setWeightVector(Eigen::VectorXd weights)
 {
-    if (weights.size() != _device->getDOF())
-        throw std::runtime_error("Weight vector must have same length as device DOF!");
+    if (static_cast<size_t>(weights.size()) != _device->getDOF())
+
+        RW_THROW("Weight vector must have same length as device DOF!");
 
     _w = weights.asDiagonal();
 }
+
+
+void JacobianIKSolver::setJointLimitTolerance(double tolerance)
+{
+    _checkJointLimitsTolerance = tolerance;
+}
+
 
 rw::kinematics::Frame::CPtr JacobianIKSolver::getTCP() const {
     return _fkrange.getEnd();
