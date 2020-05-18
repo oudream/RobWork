@@ -73,7 +73,7 @@ public:
 	virtual std::size_t size() const { return _faces.size(); }
 
 	//! @copydoc QuadraticShell::getFace(std::size_t) const
-	virtual rw::core::Ptr<const QuadraticFace> getFace(std::size_t idx) const { return _faces[idx]; }
+	virtual rw::core::Ptr<const QuadraticFace> getFace(std::size_t idx) const { return _faces[idx].cast<const QuadraticFace>(); }
 
 	//! @copydoc QuadraticShell::getFace(std::size_t, QuadraticFace&) const
 	virtual void getFace(std::size_t idx, QuadraticFace& dst) const;
