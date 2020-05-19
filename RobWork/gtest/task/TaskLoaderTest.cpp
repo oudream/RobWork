@@ -17,6 +17,8 @@
 
 #include <gtest/gtest.h>
 
+#include "../TestEnvironment.hpp"
+
 #include "Task.xml.hpp"
 
 #include <RobWorkConfig.hpp>
@@ -97,7 +99,7 @@ TEST(TaskLoader, XercesXMLfromFile)
     file << getTaskXMLXerces();
     file.close();
     const TaskLoader::Ptr loader = TaskLoader::Factory::getTaskLoader("xml", "XERCES");
-    loader->load("TaskLoaderXerces.xml", "http://robwork.org/xml-schemas/rwxml_task.xsd");
+    loader->load("TaskLoaderXerces.xml", TestEnvironment::xmlSchemasDir() + "/rwxml_task.xsd");
     const QTask::Ptr task = loader->getQTask();
     ASSERT_FALSE(task.isNull());
     checkTask(task);
@@ -108,7 +110,7 @@ TEST(TaskLoader, XercesXMLfromStream)
     const TaskLoader::Ptr loader = TaskLoader::Factory::getTaskLoader("xml", "XERCES");
     std::stringstream stream;
     stream << getTaskXML();
-    loader->load(stream, "http://robwork.org/xml-schemas/rwxml_task.xsd");
+    loader->load(stream, TestEnvironment::xmlSchemasDir() + "/rwxml_task.xsd");
     const QTask::Ptr task = loader->getQTask();
     ASSERT_FALSE(task.isNull());
     checkTask(task);

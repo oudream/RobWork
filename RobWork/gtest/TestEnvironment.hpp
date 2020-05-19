@@ -30,49 +30,55 @@
  * @brief Utility class for setting up the test environment.
  */
 class TestEnvironment: public ::testing::Environment {
-public:
-	//! @brief Sets up this Google Test environment.
-	void SetUp();
+    public:
+        //! @brief Sets up this Google Test environment.
+        void SetUp();
 
-	/**
-	 * @brief Initialize the environment with command-line arguments.
-	 * @param argc [in] the number of arguments.
-	 * @param argv [in] the arguments.
-	 */
-	void init(int argc, char** argv);
+        /**
+         * @brief Initialize the environment with command-line arguments.
+         * @param argc [in] the number of arguments.
+         * @param argv [in] the arguments.
+         */
+        void init(int argc, char** argv);
 
-	/**
-	 * @brief Get the test executable directory.
-	 * @return the path.
-	 */
-	static std::string executableDir();
+        /**
+         * @brief Get the test executable directory.
+         * @return the path.
+         */
+        static std::string executableDir();
 
-	/**
-	 * @brief Get the test-files directory.
-	 * @return the path.
-	 */
-	static std::string testfilesDir();
+        /**
+         * @brief Get the test-files directory.
+         * @return the path.
+         */
+        static std::string testfilesDir();
 
-	/**
-	 * @brief Get the environment object.
-	 * @return pointer to this environment.
-	 */
-	static TestEnvironment* get();
+        /**
+         * @brief Get the xml-schemas directory.
+         * @return the path.
+         */
+        static std::string xmlSchemasDir();
 
-	/**
-	 * @brief Create the environment object, initialized with arguments.
-	 * @param argc [in] the number of arguments.
-	 * @param argv [in] the arguments.
-	 * @return pointer to this environment.
-	 */
-	static TestEnvironment* make(int argc, char** argv);
+        /**
+         * @brief Get the environment object.
+         * @return pointer to this environment.
+         */
+        static TestEnvironment* get();
 
-private:
-	TestEnvironment();
-	virtual ~TestEnvironment();
+        /**
+         * @brief Create the environment object, initialized with arguments.
+         * @param argc [in] the number of arguments.
+         * @param argv [in] the arguments.
+         * @return pointer to this environment.
+         */
+        static TestEnvironment* make(int argc, char** argv);
 
-	int _argc;
-	char** _argv;
+    private:
+        TestEnvironment();
+        virtual ~TestEnvironment();
+
+        int _argc;
+        char** _argv;
 };
 
 #endif /* ROBWORK_GTEST_TESTENVIRONMENT_HPP_ */
