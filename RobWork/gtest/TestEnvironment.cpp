@@ -70,6 +70,19 @@ std::string TestEnvironment::testfilesDir ()
     return testfilesDir;
 }
 
+std::string TestEnvironment::xmlSchemasDir()
+{
+    static std::string schemasDir;
+    if (schemasDir.empty ()) {
+        const DOMParser::Ptr parser = DOMParser::make ();
+        parser->load (executableDir () + SLASH + "TestSuiteConfig.xml");
+        const DOMElem::Ptr testElem = parser->getRootElement ()->getChild ("RobWorkTest", false);
+        const DOMElem::Ptr dirElem  = testElem->getChild ("XMLSchemasDIR", false);
+        schemasDir                  = dirElem->getValue () + SLASH;
+    }
+    return schemasDir;
+}
+
 TestEnvironment* TestEnvironment::get ()
 {
     static TestEnvironment* env = new TestEnvironment ();
