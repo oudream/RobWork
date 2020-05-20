@@ -25,11 +25,10 @@ set(CMAKE_CXX_STANDARD 11)
 project(RobWorkSim)
 
 set(RWSIM_ROOT ${CMAKE_CURRENT_SOURCE_DIR})
-find_package(RobWork REQUIRED PATHS ${RWSIM_ROOT}/../RobWork/cmake )
 
 # ##################################################################################################
 # include the macros from robwork
-include(${RW_ROOT}/cmake/RobWorkMacros.cmake)
+include(${RWSIM_ROOT}/../RobWork/cmake/RobWorkMacros.cmake)
 
 if(DEFINED VERSION)
     set(ROBWORKSIM_VERSION ${VERSION})
@@ -39,7 +38,8 @@ else()
     set(RWSIM_GOT_VERSION False)
 endif()
 
-message(STATUS "RobWorkSim version ${ROBWORKSIM_VERSION}")
+find_package(RobWork ${ROBWORKSIM_VERSION} REQUIRED PATHS ${RWSIM_ROOT}/../RobWork/cmake )
+
 
 # for backward compatibility
 set(ROOT RWSIM_ROOT)

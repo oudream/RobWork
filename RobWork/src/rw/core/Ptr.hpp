@@ -54,7 +54,6 @@ namespace rw { namespace core {
 
             //! The type of a standard shared pointer.
             typedef std::shared_ptr< T > cpp_shared_ptr;
-
 #ifdef RW_USE_BOOST_PTR
             //! The internal type of shared pointer used.
             typedef boost_shared_ptr shared_ptr;
@@ -246,7 +245,7 @@ namespace rw { namespace core {
              * ownership
              * @return true if Ptr has shared ownership, false if it has no ownership.
              */
-            bool isShared ()
+            bool isShared () const
             {
                 if (_owned_ptr)
                     return true;
@@ -318,6 +317,17 @@ namespace rw { namespace core {
                 return _owned_ptr;
             }
 
+            /**
+             * @brief Get const Pointer.
+             * @return a copy in the form of Ptr<const T>;
+             */
+            Ptr<const T> cptr() const {
+                if(this->isShared()) {
+                    return Ptr<const T>(std::const_pointer_cast<const T>(this->getCppSharedPtr()));
+                }else {
+                    return this->scast<const T>();
+                }
+            }
         private:
             T* _ptr;
             shared_ptr _owned_ptr;

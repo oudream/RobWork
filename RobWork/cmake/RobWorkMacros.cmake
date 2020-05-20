@@ -165,6 +165,7 @@ macro(RW_GET_GIT_VERSION _version _branch)
             OUTPUT_VARIABLE tmp_version
             OUTPUT_STRIP_TRAILING_WHITESPACE
         )
+        string(SUBSTRING ${tmp_version} 2 -1 tmp_version)
         string(REPLACE "-" "." tmp_version ${tmp_version})
         string(REPLACE "00" "0" tmp_version ${tmp_version})
         string(REPLACE "01" "1" tmp_version ${tmp_version})
@@ -176,8 +177,7 @@ macro(RW_GET_GIT_VERSION _version _branch)
         string(REPLACE "07" "7" tmp_version ${tmp_version})
         string(REPLACE "08" "8" tmp_version ${tmp_version})
         string(REPLACE "09" "9" tmp_version ${tmp_version})
-        string(SUBSTRING ${tmp_version} 2 -1 ${_version})
-
+        set(${_version} ${tmp_version})
         execute_process(
             COMMAND ${GIT_EXECUTABLE} rev-parse --abbrev-ref HEAD
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}

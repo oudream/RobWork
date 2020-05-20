@@ -2,7 +2,7 @@
 #define __ANIMAL_FACTORY_HPP
 
 #include <string>
-#include <rw/common/ExtensionPoint.hpp>
+#include <rw/core/ExtensionPoint.hpp>
 
 #include "Animal.hpp"
 
@@ -10,7 +10,7 @@
 
 namespace animals {
 
-class AnimalFactory: public rw::common::ExtensionPoint<Animal>{
+class AnimalFactory: public rw::core::ExtensionPoint<Animal>{
 private:
 
 	AnimalFactory();

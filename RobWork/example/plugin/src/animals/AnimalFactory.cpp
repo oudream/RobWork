@@ -4,9 +4,9 @@
 
 using std::vector;
 using namespace animals;
-using rw::common::ownedPtr;
-using rw::common::ExtensionPoint;
-using rw::common::Extension;
+using rw::core::ownedPtr;
+using rw::core::ExtensionPoint;
+using rw::core::Extension;
 
 
 
