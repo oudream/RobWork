@@ -11,10 +11,10 @@ public class ExEAA {
         System.out.println("EAA: " + eaa);
         System.out.println(" angle: " + eaa.angle());
         System.out.println(" axis: " + eaa.axis());
-        Rotation3d rotationFromEAA = eaa.toRotation3D();
+        Rotation3Dd rotationFromEAA = eaa.toRotation3D();
         System.out.println("Rotation from RPY: " + rotationFromEAA);
 
-        Rotation3d rot = new Rotation3d(-1,0,0,0,0,1,0,1,0);
+        Rotation3Dd rot = new Rotation3Dd(-1,0,0,0,0,1,0,1,0);
         System.out.println("Rotation: " + rot);
         EAAd eaaFromRotation = new EAAd(rot);
         System.out.println("EAA from Rotation: " + eaaFromRotation);

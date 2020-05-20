@@ -81,7 +81,7 @@ TEST(ProgramOptions, ParseInitOptions) {
     EXPECT_EQ(size,3);
     EXPECT_EQ(fix,2.3);
     EXPECT_EQ(somthing, "HalloWorld");
-    EXPECT_EQ(List,rw::math::Q(4,221.2342,2.0,3,4));
+    EXPECT_EQ(List,rw::math::Q(4,221.2342,2.0,3.0,4.0));
 
     args = "--intproperty size=3 --doubleproperty fix=2.3 --property Something=HalloWorld --qproperty List=(221.2342,2.0,3,4)";
     parser.parse(args);
@@ -94,7 +94,7 @@ TEST(ProgramOptions, ParseInitOptions) {
     EXPECT_EQ(size,3);
     EXPECT_EQ(fix,2.3);
     EXPECT_EQ(somthing, "HalloWorld");
-    EXPECT_EQ(List,rw::math::Q(4,221.2342,2.0,3,4));
+    EXPECT_EQ(List,rw::math::Q(4,221.2342,2.0,3.0,4.0));
 }
 
 //TODO(kalor) add test of setPositionOption and addStringOption

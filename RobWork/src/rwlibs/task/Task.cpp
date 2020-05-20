@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,8 +17,8 @@
 
 #include "Task.hpp"
 
-using rwlibs::task::Task;
 using namespace rw::math;
-
-template class Task<Q>;
-template class Task<Transform3D<> >;
+namespace rwlibs { namespace task {
+    template class Task< Q >;
+    template class Task< Transform3D<> >;
+}}    // namespace rwlibs::task

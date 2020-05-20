@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RW_MATH_RPY_HPP
 #define RW_MATH_RPY_HPP
 
@@ -23,11 +22,11 @@
  * @file RPY.hpp
  */
 
-#include <rw/common/Serializable.hpp>
-
-#include "Rotation3DVector.hpp"
 #include "Rotation3D.hpp"
+#include "Rotation3DVector.hpp"
 #include "Vector3D.hpp"
+
+#include <rw/common/Serializable.hpp>
 
 namespace rw { namespace math {
 
@@ -37,14 +36,13 @@ namespace rw { namespace math {
     /**
      * @brief A class for representing Roll-Pitch-Yaw Euler angle rotations.
      */
-    template<class T = double>
-    class RPY: public Rotation3DVector<T> {
-    public:
-
+    template< class T = double > class RPY : public Rotation3DVector< T >
+    {
+      public:
         /**
          * @brief Constructs rotation in which all elements are initialized to 0
          */
-        RPY() : _rpy(0.0, 0.0, 0.0) {}
+        RPY () : _rpy (0.0, 0.0, 0.0) {}
 
         /**
          * @brief Constructs an initialized roll-pitch-yaw euler angle vector
@@ -52,7 +50,7 @@ namespace rw { namespace math {
          * @param pitch Rotation around y
          * @param yaw Rotation around x
          */
-        RPY(T roll, T pitch, T yaw) : _rpy(roll, pitch, yaw) {}
+        RPY (T roll, T pitch, T yaw) : _rpy (roll, pitch, yaw) {}
 
         /**
          * @brief Constructs an RPY object initialized according to the specified Rotation3D
@@ -68,12 +66,12 @@ namespace rw { namespace math {
          * \f$\alpha=0, \beta=\pi/2 and \gamma = arctan2(r_{21}, r_{22})\f$ is
          * to be used.
          */
-        explicit RPY(const Rotation3D<T>& R, T epsilon = 1e-5);
+        explicit RPY (const Rotation3D< T >& R, T epsilon = 1e-5);
 
         /**
          * @copydoc Rotation3DVector::toRotation3D
          */
-        const Rotation3D<T> toRotation3D() const;
+        const Rotation3D< T > toRotation3D () const;
 
         /**
          * @brief Returns reference to the element
@@ -82,9 +80,7 @@ namespace rw { namespace math {
          *
          * @return reference to the element
          */
-        T& operator()(size_t index){
-            return _rpy(index);
-        }
+        T& operator() (size_t index) { return _rpy (index); }
 
         /**
          * @brief Returns a const reference the an element
@@ -93,10 +89,7 @@ namespace rw { namespace math {
          *
          * @return const reference to the element
          */
-        const T& operator()(size_t index) const {
-            return _rpy(index);
-        }
-
+        const T& operator() (size_t index) const { return _rpy (index); }
 
         /**
          * @brief Returns a const reference the an element
@@ -105,16 +98,16 @@ namespace rw { namespace math {
          *
          * @return const reference to the element
          */
-        const T& operator[](size_t i) const { return (*this)(i); }
+        const T& operator[] (size_t i) const { return (*this) (i); }
 
         /**
-          * @brief Returns reference to the element
-          *
-          * @param i [in] index of element
-          *
-          * @return reference to the element
-          */
-        T& operator[](size_t i) { return (*this)(i); }
+         * @brief Returns reference to the element
+         *
+         * @param i [in] index of element
+         *
+         * @return reference to the element
+         */
+        T& operator[] (size_t i) { return (*this) (i); }
 
         /**
          * @brief Comparison operator.
@@ -125,8 +118,9 @@ namespace rw { namespace math {
          * @param rhs [in] RPY to compare with
          * @return True if equal.
          */
-        bool operator==(const RPY<T> &rhs) const {
-          return (_rpy(0) == rhs(0) && _rpy(1) == rhs(1) && _rpy(2) == rhs(2));
+        bool operator== (const RPY< T >& rhs) const
+        {
+            return (_rpy (0) == rhs (0) && _rpy (1) == rhs (1) && _rpy (2) == rhs (2));
         }
 
         /**
@@ -138,15 +132,13 @@ namespace rw { namespace math {
          * @param rhs [in] RPY to compare with
          * @return True if not equal.
          */
-        bool operator!=(const RPY<T> &rhs) const {
-            return !(*this == rhs);
-        }
+        bool operator!= (const RPY< T >& rhs) const { return !(*this == rhs); }
 
         /**
          * @brief size of this RPY.
          * @return the value 3
          */
-        size_t size() const { return 3; }
+        size_t size () const { return 3; }
 
         /**
          * @brief Ouputs RPY to stream
@@ -157,64 +149,71 @@ namespace rw { namespace math {
          *
          * @return the resulting stream
          */
-        friend std::ostream& operator<<(std::ostream& os, const RPY<T>& rpy){
-            return os <<"RPY {"<<rpy(0)<<", "<<rpy(1)<<", "<<rpy(2)<<"}";
-            //return os << rpy._rpy;
+        friend std::ostream& operator<< (std::ostream& os, const RPY< T >& rpy)
+        {
+            return os << "RPY {" << rpy (0) << ", " << rpy (1) << ", " << rpy (2) << "}";
+            // return os << rpy._rpy;
         }
 
-    private:
-        Vector3D<T> _rpy;
+      private:
+        Vector3D< T > _rpy;
     };
 
-	/**
-	* @brief Casts RPY<T> to RPY<Q>
-	*
-	* @param rpy [in] RPY with type T
-	*
-	* @return RPY with type Q
-	*/
-	template<class Q, class T>
-	const RPY<Q> cast(const RPY<T>& rpy) {
-		return RPY<Q>(
-			static_cast<Q>(rpy(0)),
-			static_cast<Q>(rpy(1)),
-			static_cast<Q>(rpy(2)));
-	}
+    /**
+     * @brief Casts RPY<T> to RPY<Q>
+     *
+     * @param rpy [in] RPY with type T
+     *
+     * @return RPY with type Q
+     */
+    template< class Q, class T > const RPY< Q > cast (const RPY< T >& rpy)
+    {
+        return RPY< Q > (
+            static_cast< Q > (rpy (0)), static_cast< Q > (rpy (1)), static_cast< Q > (rpy (2)));
+    }
 
-	extern template class rw::math::RPY<double>;
-	extern template class rw::math::RPY<float>;
+    extern template class rw::math::RPY< double >;
+    extern template class rw::math::RPY< float >;
 
     /*@}*/
-}} // end namespaces
+}}    // namespace rw::math
 
+namespace rw { namespace common {
+    class OutputArchive;
+    class InputArchive;
+    namespace serialization {
+        /**
+         * @copydoc rw::common::serialization::write
+         * @relatedalso rw::math::RPY
+         */
+        template<>
+        void write (const rw::math::RPY< double >& sobject, rw::common::OutputArchive& oarchive,
+                    const std::string& id);
 
-namespace rw{ namespace common {
-    class OutputArchive; class InputArchive;
-namespace serialization {
-	/**
-	 * @copydoc rw::common::serialization::write
-	 * @relatedalso rw::math::RPY
-	 */
-    template<> void write(const rw::math::RPY<double>& sobject, rw::common::OutputArchive& oarchive, const std::string& id);
+        /**
+         * @copydoc rw::common::serialization::write
+         * @relatedalso rw::math::RPY
+         */
+        template<>
+        void write (const rw::math::RPY< float >& sobject, rw::common::OutputArchive& oarchive,
+                    const std::string& id);
 
-	/**
-	 * @copydoc rw::common::serialization::write
-	 * @relatedalso rw::math::RPY
-	 */
-    template<> void write(const rw::math::RPY<float>& sobject, rw::common::OutputArchive& oarchive, const std::string& id);
+        /**
+         * @copydoc rw::common::serialization::read
+         * @relatedalso rw::math::RPY
+         */
+        template<>
+        void read (rw::math::RPY< double >& sobject, rw::common::InputArchive& iarchive,
+                   const std::string& id);
 
-	/**
-	 * @copydoc rw::common::serialization::read
-	 * @relatedalso rw::math::RPY
-	 */
-    template<> void read(rw::math::RPY<double>& sobject, rw::common::InputArchive& iarchive, const std::string& id);
+        /**
+         * @copydoc rw::common::serialization::read
+         * @relatedalso rw::math::RPY
+         */
+        template<>
+        void read (rw::math::RPY< float >& sobject, rw::common::InputArchive& iarchive,
+                   const std::string& id);
+    }    // namespace serialization
+}}       // namespace rw::common
 
-	/**
-	 * @copydoc rw::common::serialization::read
-	 * @relatedalso rw::math::RPY
-	 */
-    template<> void read(rw::math::RPY<float>& sobject, rw::common::InputArchive& iarchive, const std::string& id);
-}}} // end namespaces
-
-
-#endif // end include guard
+#endif    // end include guard

@@ -161,9 +161,9 @@ box1 = wc:findMovableFrame("m_box")
 box2 = wc:findMovableFrame("m_box2")
 ur = wc:findSerialDevice("UR-6-85-5-A")
 
-pos =  Vector3d(0.3525, 0.3525, 0.1025)
+pos =  Vector3Dd(0.3525, 0.3525, 0.1025)
 rot = RPYd(0, 0, 3.14159)
-trans = Transform3d(pos, rot:toRotation3D())
+trans = Transform3Dd(pos, rot:toRotation3D())
 box2:setTransform(trans,state)
 ur:setQ(Q(6,1.46819, -1.02748, 2.55523, -3.10998, -1.56556, -0.429299),state)
 

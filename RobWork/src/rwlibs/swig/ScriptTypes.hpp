@@ -341,9 +341,9 @@ namespace swig {
 	//! @copydoc rw::math::Vector3D
 	typedef rw::math::Vector3D<float> Vector3f;
 	//! @copydoc rw::math::Rotation3D
-	typedef rw::math::Rotation3D<double> Rotation3d;
+	typedef rw::math::Rotation3D<double> Rotation3Dd;
     //! @copydoc rw::math::Rotation3D
-    typedef rw::math::Rotation3D<float> Rotation3f;
+    typedef rw::math::Rotation3D<float> Rotation3Df;
     //! @copydoc rw::math::Rotation3DVector
     typedef rw::math::Rotation3DVector<double> Rotation3DVectord;
     //! @copydoc rw::math::Rotation3DVector
@@ -361,9 +361,9 @@ namespace swig {
 	//! @copydoc rw::math::Quaternion
 	typedef rw::math::Quaternion<float> Quaternionf;
 	//! @copydoc rw::math::Transform3D
-	typedef rw::math::Transform3D<double> Transform3d;
+	typedef rw::math::Transform3D<double> Transform3Dd;
 	//! @copydoc rw::math::Transform3D
-	typedef rw::math::Transform3D<float> Transform3f;
+	typedef rw::math::Transform3D<float> Transform3Df;
 	//! @copydoc rw::math::Pose6D
 	typedef rw::math::Pose6D<double> Pose6d;
 	//! @copydoc rw::math::Pose6D
@@ -390,8 +390,8 @@ namespace swig {
 	typedef rw::math::QMetric MetricQ;
 	//! @copydoc rw::math::Transform3DMetric
 	typedef rw::math::Transform3DMetric MetricSE3;
-	//! @brief Wrapping of an Eigen matrix.
-	typedef Eigen::MatrixXd Matrix;
+	//! @copydoc rw::math::PolynomialSolver
+	typedef rw::math::PolynomialSolver PolynomialSolver;
 	///@}
 
 	/**
@@ -653,9 +653,9 @@ namespace swig {
 	//! @copydoc rw::trajectory::Blend
 	typedef rw::trajectory::Blend<Vector3d> BlendR3;
 	//! @copydoc rw::trajectory::Blend
-	typedef rw::trajectory::Blend<Rotation3d> BlendSO3;
+	typedef rw::trajectory::Blend<Rotation3Dd> BlendSO3;
 	//! @copydoc rw::trajectory::Blend
-	typedef rw::trajectory::Blend<Transform3d> BlendSE3;
+	typedef rw::trajectory::Blend<Transform3Dd> BlendSE3;
 
 	//! @copydoc rw::trajectory::TimedState
 	typedef rw::trajectory::TimedState TimedState;
@@ -672,9 +672,9 @@ namespace swig {
 	//! @copydoc rw::trajectory::Trajectory
 	typedef rw::trajectory::Trajectory<Vector3d> TrajectoryR3;
 	//! @copydoc rw::trajectory::Trajectory
-	typedef rw::trajectory::Trajectory<Rotation3d> TrajectorySO3;
+	typedef rw::trajectory::Trajectory<Rotation3Dd> TrajectorySO3;
 	//! @copydoc rw::trajectory::Trajectory
-	typedef rw::trajectory::Trajectory<Transform3d> TrajectorySE3;
+	typedef rw::trajectory::Trajectory<Transform3Dd> TrajectorySE3;
 
 	//! @copydoc rw::trajectory::LinearInterpolator
 	typedef rw::trajectory::LinearInterpolator<double> LinearInterpolator;
@@ -900,14 +900,14 @@ namespace swig {
 	 * @brief Math helper function to obtain random rotation.
 	 * @return a random rotation.
 	 */
-	Rotation3d getRandomRotation3D();
+	Rotation3Dd getRandomRotation3D();
 
 	/**
 	 * @brief Math helper function to obtain random transform.
 	 * @param translationLength [in] (optional) the length to translate - default is one meter.
 	 * @return a random transform.
 	 */
-	Transform3d getRandomTransform3D(const double translationLength = 1);
+	Transform3Dd getRandomTransform3D(const double translationLength = 1);
 	/*@}*/
 }
 }

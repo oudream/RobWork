@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RW_MATH_VELOCITYSCREW6D_HPP
 #define RW_MATH_VELOCITYSCREW6D_HPP
 
@@ -23,15 +22,14 @@
  * @file VelocityScrew6D.hpp
  */
 
+#include "EAA.hpp"
+#include "Math.hpp"
+#include "Transform3D.hpp"
+#include "Vector3D.hpp"
+
 #include <rw/common/Serializable.hpp>
 
 #include <Eigen/Core>
-#include <Eigen/Core>
-
-#include "Transform3D.hpp"
-#include "EAA.hpp"
-#include "Vector3D.hpp"
-#include "Math.hpp"
 
 namespace rw { namespace math {
 
@@ -59,14 +57,13 @@ namespace rw { namespace math {
      * with respect to some reference frame.
      *
      */
-    template<class T = double>
-    class VelocityScrew6D
+    template< class T = double > class VelocityScrew6D
     {
-	private:
-		T _screw[6]; 
+      private:
+        T _screw[6];
 
-	public:
-		/**
+      public:
+        /**
          * @brief Constructs a 6 degrees of freedom velocity screw
          *
          * @param vx [in] @f$ v_x @f$
@@ -76,39 +73,40 @@ namespace rw { namespace math {
          * @param wy [in] @f$ \omega_y @f$
          * @param wz [in] @f$ \omega_z @f$
          */
-        VelocityScrew6D(T vx, T vy, T vz, T wx, T wy, T wz);
+        VelocityScrew6D (T vx, T vy, T vz, T wx, T wy, T wz);
 
         /**
          * @brief Construct from Eigen vector representation.
          * @param v [in] Eigen matrix with either one row or one column.
          */
-		template <class R>
-		VelocityScrew6D(const Eigen::MatrixBase<R>& v) {
-			if (v.cols() != 1 || v.rows() != 6)
-				RW_THROW("Unable to initialize VectorND with "<<v.rows()<< " x "<<v.cols()<<" matrix");
-			/* For some reason the following does not WORK AT ALL (JIMMY)
-			_screw[0] = v(0,0);
-			_screw[1] = v(1,0);
-			_screw[2] = v(2,0);
-			_screw[3] = v(3,0);
-			_screw[4] = v(4,0);
-			_screw[5] = v(5,0);
-			*/ // instead use
-			_screw[0] = v.row(0)(0);
-			_screw[1] = v.row(1)(0);
-			_screw[2] = v.row(2)(0);
-			_screw[3] = v.row(3)(0);
-			_screw[4] = v.row(4)(0);
-			_screw[5] = v.row(5)(0);
-		}
+        template< class R > VelocityScrew6D (const Eigen::MatrixBase< R >& v)
+        {
+            if (v.cols () != 1 || v.rows () != 6)
+                RW_THROW ("Unable to initialize VectorND with " << v.rows () << " x " << v.cols ()
+                                                                << " matrix");
+            /* For some reason the following does not WORK AT ALL (JIMMY)
+            _screw[0] = v(0,0);
+            _screw[1] = v(1,0);
+            _screw[2] = v(2,0);
+            _screw[3] = v(3,0);
+            _screw[4] = v(4,0);
+            _screw[5] = v(5,0);
+            */ // instead use
+            _screw[0] = v.row (0) (0);
+            _screw[1] = v.row (1) (0);
+            _screw[2] = v.row (2) (0);
+            _screw[3] = v.row (3) (0);
+            _screw[4] = v.row (4) (0);
+            _screw[5] = v.row (5) (0);
+        }
 
         /**
          * @brief Default Constructor. Initialized the velocity to 0
          */
-		VelocityScrew6D() 
-		{
-			_screw[0] = _screw[1] = _screw[2] = _screw[3] = _screw[4] = _screw[5] = 0;
-		}
+        VelocityScrew6D ()
+        {
+            _screw[0] = _screw[1] = _screw[2] = _screw[3] = _screw[4] = _screw[5] = 0;
+        }
 
         /**
          * @brief Constructs a velocity screw in frame @f$ a @f$ from a
@@ -116,7 +114,7 @@ namespace rw { namespace math {
          *
          * @param transform [in] the corresponding transform.
          */
-        explicit VelocityScrew6D(const Transform3D<T>& transform);
+        explicit VelocityScrew6D (const Transform3D< T >& transform);
 
         /**
          * @brief Constructs a velocity screw from a linear and angular velocity
@@ -124,15 +122,16 @@ namespace rw { namespace math {
          * @param linear [in] linear velocity
          * @param angular [in] angular velocity
          */
-        VelocityScrew6D(const Vector3D<T>& linear, const EAA<T>& angular);
+        VelocityScrew6D (const Vector3D< T >& linear, const EAA< T >& angular);
 
         /**
          * @brief Extracts the linear velocity
          *
          * @return the linear velocity
          */
-        const Vector3D<T> linear() const {
-			return Vector3D<T>(_screw[0], _screw[1], _screw[2]);
+        const Vector3D< T > linear () const
+        {
+            return Vector3D< T > (_screw[0], _screw[1], _screw[2]);
         }
 
         /**
@@ -141,9 +140,7 @@ namespace rw { namespace math {
          *
          * @return the angular velocity
          */
-        const EAA<T> angular() const {
-            return EAA<T>(_screw[3], _screw[4], _screw[5]);
-        }
+        const EAA< T > angular () const { return EAA< T > (_screw[3], _screw[4], _screw[5]); }
 
         /**
          * @brief Returns reference to velocity screw element
@@ -152,8 +149,9 @@ namespace rw { namespace math {
          *
          * @return reference to velocity screw element
          */
-        T& operator()(std::size_t index) {
-            assert(index < 6);
+        T& operator() (std::size_t index)
+        {
+            assert (index < 6);
             return _screw[index];
         }
 
@@ -164,8 +162,9 @@ namespace rw { namespace math {
          *
          * @return const reference to velocity screw element
          */
-        const T& operator()(std::size_t index) const {
-            assert(index < 6);
+        const T& operator() (std::size_t index) const
+        {
+            assert (index < 6);
             return _screw[index];
         }
 
@@ -176,7 +175,7 @@ namespace rw { namespace math {
          *
          * @return const reference to velocity screw element
          */
-        const T& operator[](size_t i) const { return (*this)(i); }
+        const T& operator[] (size_t i) const { return (*this) (i); }
 
         /**
          * @brief Returns const reference to velocity screw element
@@ -185,8 +184,7 @@ namespace rw { namespace math {
          *
          * @return const reference to velocity screw element
          */
-        T& operator[](size_t i) { return (*this)(i); }
-
+        T& operator[] (size_t i) { return (*this) (i); }
 
         /**
          * @brief Adds the velocity screw given as a parameter to the velocity screw.
@@ -196,13 +194,14 @@ namespace rw { namespace math {
          * @return reference to the VelocityScrew6D to support additional
          * assignments.
          */
-        VelocityScrew6D<T>& operator+=(const VelocityScrew6D<T>& screw) {
-            _screw[0] += screw(0);
-			_screw[1] += screw(1);
-			_screw[2] += screw(2);
-			_screw[3] += screw(3);
-			_screw[4] += screw(4);
-			_screw[5] += screw(5);
+        VelocityScrew6D< T >& operator+= (const VelocityScrew6D< T >& screw)
+        {
+            _screw[0] += screw (0);
+            _screw[1] += screw (1);
+            _screw[2] += screw (2);
+            _screw[3] += screw (3);
+            _screw[4] += screw (4);
+            _screw[5] += screw (5);
             return *this;
         }
 
@@ -215,14 +214,15 @@ namespace rw { namespace math {
          * @return reference to the VelocityScrew6D to support additional
          * assignments.
          */
-        VelocityScrew6D<T>& operator-=(const VelocityScrew6D<T>& screw) {
-            _screw[0] -= screw(0);
-			_screw[1] -= screw(1);
-			_screw[2] -= screw(2);
-			_screw[3] -= screw(3);
-			_screw[4] -= screw(4);
-			_screw[5] -= screw(5);            
-			return *this;
+        VelocityScrew6D< T >& operator-= (const VelocityScrew6D< T >& screw)
+        {
+            _screw[0] -= screw (0);
+            _screw[1] -= screw (1);
+            _screw[2] -= screw (2);
+            _screw[3] -= screw (3);
+            _screw[4] -= screw (4);
+            _screw[5] -= screw (5);
+            return *this;
         }
 
         /**
@@ -233,13 +233,14 @@ namespace rw { namespace math {
          * @return reference to the VelocityScrew6D to support additional
          * assigments
          */
-        VelocityScrew6D<T>& operator *= (T s) {
-			_screw[0] *= s;
-			_screw[1] *= s;
-			_screw[2] *= s;
-			_screw[3] *= s;
-			_screw[4] *= s;
-			_screw[5] *= s;
+        VelocityScrew6D< T >& operator*= (T s)
+        {
+            _screw[0] *= s;
+            _screw[1] *= s;
+            _screw[2] *= s;
+            _screw[3] *= s;
+            _screw[4] *= s;
+            _screw[5] *= s;
             return *this;
         }
 
@@ -252,9 +253,10 @@ namespace rw { namespace math {
          * @param rhs [in] VelocityScrew6D to compare with
          * @return True if equal.
          */
-        bool operator==(const VelocityScrew6D<T> &rhs) const {
-            for (int i = 0; i<6; ++i) {
-                if (!(_screw[i] == rhs(i))) {
+        bool operator== (const VelocityScrew6D< T >& rhs) const
+        {
+            for (int i = 0; i < 6; ++i) {
+                if (!(_screw[i] == rhs (i))) {
                     return false;
                 }
             }
@@ -270,10 +272,7 @@ namespace rw { namespace math {
          * @param rhs [in] VelocityScrew6D to compare with
          * @return True if not equal.
          */
-        bool operator!=(const VelocityScrew6D<T> &rhs) const {
-            return !(*this == rhs);
-        }
-
+        bool operator!= (const VelocityScrew6D< T >& rhs) const { return !(*this == rhs); }
 
         /**
          * @brief Scales velocity screw and returns scaled version
@@ -282,7 +281,8 @@ namespace rw { namespace math {
          * @param screw [in] Screw to scale
          * @return Scales screw
          */
-        friend const VelocityScrew6D<T> operator*(T s, const VelocityScrew6D& screw) {
+        friend const VelocityScrew6D< T > operator* (T s, const VelocityScrew6D& screw)
+        {
             VelocityScrew6D result = screw;
             result *= s;
             return result;
@@ -293,7 +293,8 @@ namespace rw { namespace math {
          * @param s [in] scaling value
          * @return Scales screw
          */
-        const VelocityScrew6D<T> operator*( T s) const {
+        const VelocityScrew6D< T > operator* (T s) const
+        {
             VelocityScrew6D result = *this;
             result *= s;
             return result;
@@ -346,14 +347,14 @@ namespace rw { namespace math {
          * \f]
          *
          */
-        friend const VelocityScrew6D<T> operator*(const Transform3D<T>& aTb,
-                                                  const VelocityScrew6D<T>& bV)
+        friend const VelocityScrew6D< T > operator* (const Transform3D< T >& aTb,
+                                                     const VelocityScrew6D< T >& bV)
         {
-            const Vector3D<T>& bv = bV.linear();
-            const EAA<T>& bw = bV.angular();
-            const EAA<T>& aw = aTb.R() * bw;
-            const Vector3D<T>& av = aTb.R() * bv + cross(aTb.P(), aw);
-            return VelocityScrew6D<T>(av, aw);
+            const Vector3D< T >& bv = bV.linear ();
+            const EAA< T >& bw      = bV.angular ();
+            const EAA< T >& aw      = aTb.R () * bw;
+            const Vector3D< T >& av = aTb.R () * bv + cross (aTb.P (), aw);
+            return VelocityScrew6D< T > (av, aw);
         }
 
         /**
@@ -403,13 +404,13 @@ namespace rw { namespace math {
          * \f]
          *
          */
-        friend const VelocityScrew6D<T> operator*(const Vector3D<T>& aPqTop,
-                                                  const VelocityScrew6D<T>& bV)
+        friend const VelocityScrew6D< T > operator* (const Vector3D< T >& aPqTop,
+                                                     const VelocityScrew6D< T >& bV)
         {
-            const Vector3D<T>& bv = bV.linear();
-            const EAA<T>& bw = bV.angular();
-            const Vector3D<T>& av = bv + cross(aPqTop, bw);
-            return VelocityScrew6D<T>(av, bw);
+            const Vector3D< T >& bv = bV.linear ();
+            const EAA< T >& bw      = bV.angular ();
+            const Vector3D< T >& av = bv + cross (aPqTop, bw);
+            return VelocityScrew6D< T > (av, bw);
         }
 
         /**
@@ -453,12 +454,13 @@ namespace rw { namespace math {
          * \right]
          * \f]
          */
-        friend const VelocityScrew6D<T> operator*(const Rotation3D<T>& aRb, const VelocityScrew6D<T>& bV)
+        friend const VelocityScrew6D< T > operator* (const Rotation3D< T >& aRb,
+                                                     const VelocityScrew6D< T >& bV)
         {
-            Vector3D<T> bv = bV.linear();
-            EAA<T> bw = bV.angular();
+            Vector3D< T > bv = bV.linear ();
+            EAA< T > bw      = bV.angular ();
 
-            return VelocityScrew6D<T>(aRb*bv, aRb*bw);
+            return VelocityScrew6D< T > (aRb * bv, aRb * bw);
         }
 
         /**
@@ -469,14 +471,14 @@ namespace rw { namespace math {
          *
          * @return the velocity screw @f$ \mathbf{\nu}_{12} @f$
          */
-        const VelocityScrew6D<T> operator+(const VelocityScrew6D<T>& screw2) const
-        {			
-			return VelocityScrew6D<T>(_screw[0]+screw2._screw[0],
-									  _screw[1]+screw2._screw[1],
-									  _screw[2]+screw2._screw[2],
-									  _screw[3]+screw2._screw[3],
-									  _screw[4]+screw2._screw[4],
-									  _screw[5]+screw2._screw[5]);
+        const VelocityScrew6D< T > operator+ (const VelocityScrew6D< T >& screw2) const
+        {
+            return VelocityScrew6D< T > (_screw[0] + screw2._screw[0],
+                                         _screw[1] + screw2._screw[1],
+                                         _screw[2] + screw2._screw[2],
+                                         _screw[3] + screw2._screw[3],
+                                         _screw[4] + screw2._screw[4],
+                                         _screw[5] + screw2._screw[5]);
         }
 
         /**
@@ -486,14 +488,14 @@ namespace rw { namespace math {
          * \param screw2 [in] \f$\mathbf{\nu}_2\f$
          * \return the velocity screw \f$\mathbf{\nu}_{12} \f$
          */
-        const VelocityScrew6D<T> operator-(const VelocityScrew6D<T>& screw2) const
+        const VelocityScrew6D< T > operator- (const VelocityScrew6D< T >& screw2) const
         {
-            return VelocityScrew6D<T>(_screw[0]-screw2._screw[0],
-									  _screw[1]-screw2._screw[1],
-									  _screw[2]-screw2._screw[2],
-									  _screw[3]-screw2._screw[3],
-									  _screw[4]-screw2._screw[4],
-									  _screw[5]-screw2._screw[5]);
+            return VelocityScrew6D< T > (_screw[0] - screw2._screw[0],
+                                         _screw[1] - screw2._screw[1],
+                                         _screw[2] - screw2._screw[2],
+                                         _screw[3] - screw2._screw[3],
+                                         _screw[4] - screw2._screw[4],
+                                         _screw[5] - screw2._screw[5]);
         }
 
         /**
@@ -503,9 +505,10 @@ namespace rw { namespace math {
          * @param screw [in] velocity screw
          * @return the resulting stream
          */
-        friend std::ostream& operator<<(std::ostream& os, const VelocityScrew6D<T>& screw)
+        friend std::ostream& operator<< (std::ostream& os, const VelocityScrew6D< T >& screw)
         {
-			return os << "{{"<<screw(0)<<","<<screw(1)<<","<<screw(2)<<"},{"<<screw(3)<<","<<screw(4)<<","<<screw(5)<<"}}";
+            return os << "{{" << screw (0) << "," << screw (1) << "," << screw (2) << "},{"
+                      << screw (3) << "," << screw (4) << "," << screw (5) << "}}";
         }
 
         /**
@@ -514,8 +517,10 @@ namespace rw { namespace math {
          *
          * @return the 1-norm
          */
-        T norm1() const {
-			return fabs(_screw[0])+fabs(_screw[1])+fabs(_screw[2])+fabs(_screw[3])+fabs(_screw[4])+fabs(_screw[5]);
+        T norm1 () const
+        {
+            return fabs (_screw[0]) + fabs (_screw[1]) + fabs (_screw[2]) + fabs (_screw[3]) +
+                   fabs (_screw[4]) + fabs (_screw[5]);
         }
 
         /**
@@ -524,8 +529,11 @@ namespace rw { namespace math {
          *
          * @return the 2-norm
          */
-        T norm2() const {
-			return std::sqrt(Math::sqr(_screw[0])+Math::sqr(_screw[1])+Math::sqr(_screw[2])+Math::sqr(_screw[3])+Math::sqr(_screw[4])+Math::sqr(_screw[5]));
+        T norm2 () const
+        {
+            return std::sqrt (Math::sqr (_screw[0]) + Math::sqr (_screw[1]) +
+                              Math::sqr (_screw[2]) + Math::sqr (_screw[3]) +
+                              Math::sqr (_screw[4]) + Math::sqr (_screw[5]));
         }
 
         /**
@@ -534,114 +542,115 @@ namespace rw { namespace math {
          *
          * @return the infinite norm
          */
-        T normInf() const {
-			return std::max(fabs(_screw[0]), std::max(fabs(_screw[1]), std::max(fabs(_screw[2]), std::max(fabs(_screw[3]), std::max(fabs(_screw[4]),fabs(_screw[5]))))));
+        T normInf () const
+        {
+            return std::max (
+                fabs (_screw[0]),
+                std::max (fabs (_screw[1]),
+                          std::max (fabs (_screw[2]),
+                                    std::max (fabs (_screw[3]),
+                                              std::max (fabs (_screw[4]), fabs (_screw[5]))))));
         }
 
         /**
            @brief Converter to Eigen vector
          */
-		Eigen::Matrix<T, 6, 1> e() const {
-			Eigen::Matrix<T, 6, 1> res;
-			for (size_t i = 0; i<6; i++)
-				res(i) = _screw[i];
-			return res;
-		}
-
+        Eigen::Matrix< T, 6, 1 > e () const
+        {
+            Eigen::Matrix< T, 6, 1 > res;
+            for (size_t i = 0; i < 6; i++)
+                res (i) = _screw[i];
+            return res;
+        }
     };
 
-	/**
-	* @brief Takes the 1-norm of the velocity screw. All elements both
-	* angular and linear are given the same weight.
-	*
-	* @param screw [in] the velocity screw
-	* @return the 1-norm
-	*/
-	template <class T>
-	T norm1(const VelocityScrew6D<T>& screw)
-	{
-		return screw.norm1();
-	}
+    /**
+     * @brief Takes the 1-norm of the velocity screw. All elements both
+     * angular and linear are given the same weight.
+     *
+     * @param screw [in] the velocity screw
+     * @return the 1-norm
+     */
+    template< class T > T norm1 (const VelocityScrew6D< T >& screw) { return screw.norm1 (); }
 
-	/**
-	* @brief Takes the 2-norm of the velocity screw. All elements both
-	* angular and linear are given the same weight
-	*
-	* @param screw [in] the velocity screw
-	* @return the 2-norm
-	*/
-	template <class T>
-	T norm2(const VelocityScrew6D<T>& screw)
-	{
-		return screw.norm2();
-	}
+    /**
+     * @brief Takes the 2-norm of the velocity screw. All elements both
+     * angular and linear are given the same weight
+     *
+     * @param screw [in] the velocity screw
+     * @return the 2-norm
+     */
+    template< class T > T norm2 (const VelocityScrew6D< T >& screw) { return screw.norm2 (); }
 
-	/**
-	* @brief Takes the infinite norm of the velocity screw. All elements
-	* both angular and linear are given the same weight.
-	*
-	* @param screw [in] the velocity screw
-	*
-	* @return the infinite norm
-	*/
-	template <class T>
-	T normInf(const VelocityScrew6D<T>& screw)
-	{
-		return screw.normInf();
-	}
+    /**
+     * @brief Takes the infinite norm of the velocity screw. All elements
+     * both angular and linear are given the same weight.
+     *
+     * @param screw [in] the velocity screw
+     *
+     * @return the infinite norm
+     */
+    template< class T > T normInf (const VelocityScrew6D< T >& screw) { return screw.normInf (); }
 
-	/**
-	* @brief Casts VelocityScrew6D<T> to VelocityScrew6D<Q>
-	*
-	* @param vs [in] VelocityScrew6D with type T
-	*
-	* @return VelocityScrew6D with type Q
-	*/
-	template<class Q, class T>
-	const VelocityScrew6D<Q> cast(const VelocityScrew6D<T>& vs)
-	{
-		return VelocityScrew6D<Q>(
-			static_cast<Q>(vs(0)),
-			static_cast<Q>(vs(1)),
-			static_cast<Q>(vs(2)),
-			static_cast<Q>(vs(3)),
-			static_cast<Q>(vs(4)),
-			static_cast<Q>(vs(5)));
-	}
+    /**
+     * @brief Casts VelocityScrew6D<T> to VelocityScrew6D<Q>
+     *
+     * @param vs [in] VelocityScrew6D with type T
+     *
+     * @return VelocityScrew6D with type Q
+     */
+    template< class Q, class T > const VelocityScrew6D< Q > cast (const VelocityScrew6D< T >& vs)
+    {
+        return VelocityScrew6D< Q > (static_cast< Q > (vs (0)),
+                                     static_cast< Q > (vs (1)),
+                                     static_cast< Q > (vs (2)),
+                                     static_cast< Q > (vs (3)),
+                                     static_cast< Q > (vs (4)),
+                                     static_cast< Q > (vs (5)));
+    }
 
-	extern template class rw::math::VelocityScrew6D<double>;
-	extern template class rw::math::VelocityScrew6D<float>;
+    extern template class rw::math::VelocityScrew6D< double >;
+    extern template class rw::math::VelocityScrew6D< float >;
 
     /*@}*/
-}} // end namespaces
+}}    // namespace rw::math
 
+namespace rw { namespace common {
+    class OutputArchive;
+    class InputArchive;
+    namespace serialization {
+        /**
+         * @copydoc rw::common::serialization::write
+         * @relatedalso rw::math::VelocityScrew6D
+         */
+        template<>
+        void write (const rw::math::VelocityScrew6D< double >& sobject,
+                    rw::common::OutputArchive& oarchive, const std::string& id);
 
-namespace rw{ namespace common {
-    class OutputArchive; class InputArchive;
-namespace serialization {
-	/**
-	 * @copydoc rw::common::serialization::write
-	 * @relatedalso rw::math::VelocityScrew6D
-	 */
-    template<> void write(const rw::math::VelocityScrew6D<double>& sobject, rw::common::OutputArchive& oarchive, const std::string& id);
+        /**
+         * @copydoc rw::common::serialization::write
+         * @relatedalso rw::math::VelocityScrew6D
+         */
+        template<>
+        void write (const rw::math::VelocityScrew6D< float >& sobject,
+                    rw::common::OutputArchive& oarchive, const std::string& id);
 
-	/**
-	 * @copydoc rw::common::serialization::write
-	 * @relatedalso rw::math::VelocityScrew6D
-	 */
-    template<> void write(const rw::math::VelocityScrew6D<float>& sobject, rw::common::OutputArchive& oarchive, const std::string& id);
+        /**
+         * @copydoc rw::common::serialization::read
+         * @relatedalso rw::math::VelocityScrew6D
+         */
+        template<>
+        void read (rw::math::VelocityScrew6D< double >& sobject, rw::common::InputArchive& iarchive,
+                   const std::string& id);
 
-	/**
-	 * @copydoc rw::common::serialization::read
-	 * @relatedalso rw::math::VelocityScrew6D
-	 */
-    template<> void read(rw::math::VelocityScrew6D<double>& sobject, rw::common::InputArchive& iarchive, const std::string& id);
+        /**
+         * @copydoc rw::common::serialization::read
+         * @relatedalso rw::math::VelocityScrew6D
+         */
+        template<>
+        void read (rw::math::VelocityScrew6D< float >& sobject, rw::common::InputArchive& iarchive,
+                   const std::string& id);
+    }    // namespace serialization
+}}       // namespace rw::common
 
-	/**
-	 * @copydoc rw::common::serialization::read
-	 * @relatedalso rw::math::VelocityScrew6D
-	 */
-    template<> void read(rw::math::VelocityScrew6D<float>& sobject, rw::common::InputArchive& iarchive, const std::string& id);
-}}} // end namespaces
-
-#endif // end include guard
+#endif    // end include guard

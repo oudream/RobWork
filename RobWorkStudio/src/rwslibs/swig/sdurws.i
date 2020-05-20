@@ -101,8 +101,8 @@ void moveTo (Frame* frame, MovableFrame* mframe, rw::math::Transform3D< double >
 void moveTo (const std::string& fname, const std::string& mname,
              rw::math::Transform3D< double > wTframe);
 
-rw::math::Q getQ (rw::core::Ptr< Device > dev);
-void setQ (rw::core::Ptr< Device > dev, rw::math::Q);
+Q getQ (rw::core::Ptr< Device > dev);
+void setQ (rw::core::Ptr< Device > dev, Q);
 
 void setTransform (Frame* mframe, rw::math::Transform3D< double > wTframe);
 
@@ -234,7 +234,7 @@ public:
             $self->postGenericAnyEvent(id, val);
         }
 
-        void send(const std::string& id, rw::math::Q val){
+        void send(const std::string& id, Q val){
             $self->postGenericAnyEvent(id, val);
         }
 
@@ -259,7 +259,7 @@ public:
             return 1;
         }
 
-        int wait(const std::string& id, rw::math::Q& result, double timeout=-1.0){
+        int wait(const std::string& id, Q& result, double timeout=-1.0){
             try {
                 boost::any data = $self->waitForAnyEvent(id, timeout);
                 Q* q = boost::any_cast<Q>(&data);

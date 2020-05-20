@@ -267,13 +267,14 @@ stages:
     - "for file in ./ex-*; do if [ -f $file ] && [[ ! $file =~ ex-load-workcell ]] ; then  echo -e '\n EXECUTING: '$file && $file /home/robworkdata && EXERW=$EXERW' '$file || exit 1 ; fi; done"
     - ./ex-load-workcell ../../ModelData/XMLScenes/RobotWithHand/Workcell.xml
     # TEST RW PYTHON FILES
+    - *is_shared_runner
     - cd $DIR/RobWork/example/python
-    - "for file in $EXERW ; do echo -e '\n EXECUTING: '$file && python3 ${file}.py /home/robworkdata || exit 1 ; done"
-    - python3 ./ex-load-workcell.py ../ModelData/XMLScenes/RobotWithHand/Workcell.xml
+    - "[[ $SHARED_RUNNER ]] || for file in $EXERW ; do echo -e '\n EXECUTING: '$file && python3 ${file}.py /home/robworkdata || exit 1 ; done"
+    - "[[ $SHARED_RUNNER ]] || python3 ./ex-load-workcell.py ../ModelData/XMLScenes/RobotWithHand/Workcell.xml"
     # TEST RW LUA FILES
     - cd $DIR/RobWork/example/lua
-    - "for file in $EXERW ; do echo -e '\n EXECUTING: '$file && /usr/bin/lua[0-9]* ${file}.lua /home/robworkdata || exit 1 ; done"
-    - /usr/bin/lua[0-9]* ./ex-load-workcell.lua ../ModelData/XMLScenes/RobotWithHand/Workcell.xml
+    - "[[ $SHARED_RUNNER ]] || for file in $EXERW ; do echo -e '\n EXECUTING: '$file && /usr/bin/lua[0-9]* ${file}.lua /home/robworkdata || exit 1 ; done"
+    - "[[ $SHARED_RUNNER ]] || /usr/bin/lua[0-9]* ./ex-load-workcell.lua ../ModelData/XMLScenes/RobotWithHand/Workcell.xml"
     # Test RWS CPP FILES
     - cd $DIR/RobWorkStudio/example/cpp
     - mkdir build && cd build
@@ -284,10 +285,10 @@ stages:
     - "for file in ./ex-*; do if [ -f $file ] ; then  echo -e '\n EXECUTING: '$file && $file /home/robworkdata -t && EXERWS=$EXERWS' '$file || exit 1 ; fi; done"
     # Test RWS PYTHON FILES
     - cd $DIR/RobWorkStudio/example/python
-    - "for file in $EXERWS ; do echo -e '\n EXECUTING: '$file && python3 ${file}.py /home/robworkdata -t || exit 1 ; done"
+    - "[[ $SHARED_RUNNER ]] || for file in $EXERWS ; do echo -e '\n EXECUTING: '$file && python3 ${file}.py /home/robworkdata -t || exit 1 ; done"
     # Test RWS LUA FILES
     - cd $DIR/RobWorkStudio/example/lua
-    - "for file in $EXERWS ; do echo -e '\n EXECUTING: '$file && /usr/bin/lua[0-9]* ${file}.lua /home/robworkdata -t || exit 1 ; done"
+    - "[[ $SHARED_RUNNER ]] || for file in $EXERWS ; do echo -e '\n EXECUTING: '$file && /usr/bin/lua[0-9]* ${file}.lua /home/robworkdata -t || exit 1 ; done"
     # Test RWSIM CPP files
     - cd $DIR/RobWorkSim/example/cpp
     - mkdir build && cd build
@@ -296,10 +297,10 @@ stages:
     - "for file in ./ex-*; do if [ -f $file ] ; then  echo -e '\n EXECUTING: '$file && $file /home/robworkdata && EXERWSIM=$EXERWSIM' '$file || exit 1 ; fi; done"
     # Test RWSSIM PYTHON FILES
     - cd $DIR/RobWorkSim/example/python
-    - "for file in $EXERWSIM ; do echo -e '\n EXECUTING: '$file && python3 ${file}.py /home/robworkdata || exit 1 ; done"
+    - "[[ $SHARED_RUNNER ]] || for file in $EXERWSIM ; do echo -e '\n EXECUTING: '$file && python3 ${file}.py /home/robworkdata || exit 1 ; done"
     # Test RWSIM LUA FILES
     - cd $DIR/RobWorkSim/example/lua
-    - "for file in $EXERWSIM ; do echo -e '\n EXECUTING: '$file && /usr/bin/lua[0-9]* ${file}.lua /home/robworkdata || exit 1 ; done"
+    - "[[ $SHARED_RUNNER ]] || for file in $EXERWSIM ; do echo -e '\n EXECUTING: '$file && /usr/bin/lua[0-9]* ${file}.lua /home/robworkdata || exit 1 ; done"
     # Test RWHW CPP files
     - cd $DIR/RobWorkHardware/example/cpp
     - mkdir build && cd build

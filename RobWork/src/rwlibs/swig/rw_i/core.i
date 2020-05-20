@@ -65,26 +65,26 @@
     }}
 
     %define OWNEDPTR(ownedPtr_type)
-    namespace rw { namespace core {
-    #if defined(SWIGJAVA)
-    %typemap (in) ownedPtr_type* %{
-    jclass objcls = jenv->GetObjectClass(jarg1_);
-    const jfieldID memField = jenv->GetFieldID(objcls, "swigCMemOwn", "Z");
-    jenv->SetBooleanField(jarg1_, memField, (jboolean)false);
-    $1 = *(std::remove_const<ownedPtr_type>::type **)&jarg1;
-    %}
-    #elif defined(SWIGLUA)
-    %typemap (in,checkfn="SWIG_isptrtype") ownedPtr_type* %{
-    if (!SWIG_IsOK(SWIG_ConvertPtr(L,$input,(void**)&$1,$descriptor,SWIG_POINTER_DISOWN))){
-        SWIG_fail_ptr("$symname",$input,$descriptor);
-    }
-    %}
-    #endif
-    %template (ownedPtr) ownedPtr<ownedPtr_type>;
-    #if (defined(SWIGLUA) || defined(SWIGJAVA))
-    %clear ownedPtr_type*;
-    #endif
-    }}
+        namespace rw { namespace core {
+            #if defined(SWIGJAVA)
+                %typemap (in) ownedPtr_type* %{
+                    jclass objcls = jenv->GetObjectClass(jarg1_);
+                    const jfieldID memField = jenv->GetFieldID(objcls, "swigCMemOwn", "Z");
+                    jenv->SetBooleanField(jarg1_, memField, (jboolean)false);
+                    $1 = *(std::remove_const<ownedPtr_type>::type **)&jarg1;
+                %}
+            #elif defined(SWIGLUA)
+                %typemap (in,checkfn="SWIG_isptrtype") ownedPtr_type* %{
+                    if (!SWIG_IsOK(SWIG_ConvertPtr(L,$input,(void**)&$1,$descriptor,SWIG_POINTER_DISOWN))){
+                        SWIG_fail_ptr("$symname",$input,$descriptor);
+                }
+                %}
+            #endif
+            %template (ownedPtr) ownedPtr<ownedPtr_type>;
+            #if (defined(SWIGLUA) || defined(SWIGJAVA))
+                %clear ownedPtr_type*;
+            #endif
+        }}
     %enddef
 //############### AnyPtr
 //############### BoostXMLParser
@@ -122,6 +122,65 @@
 
     }}
 //############### Exception
+
+    %nodefaultctor Exception;
+    /**
+     * @brief Standard exception type of RobWork.
+     *
+     * All exception thrown within RobWork are of the type Exception.
+     *
+     * An exception contains a message (of type Message) for the user and
+     * nothing else.
+     */
+    class Exception : public std::exception
+    {
+      public:
+
+        /**
+         * @brief This constructor creates an empty Exception and should not be used
+         */
+        Exception();
+        /**
+         * @brief Constructor
+         *
+         * @param message [in] A message for a user.
+         */
+        Exception (const Message& message);
+
+        /**
+         * @brief Constructor
+         *
+         * @param id [in] Integer Id to identify the exception
+         * @param message [in] A message for a user.
+         */
+        Exception (int id, const Message& message);
+
+        virtual ~Exception () throw ();
+
+        /**
+         * @brief The message for the user describing the reason for the error.
+         *
+         * @return  The message for the user.
+         */
+        const Message& getMessage () const;
+
+        /**
+         * @brief get id of this exception message
+         * @return id
+         */
+        int getId () const;
+
+        /**
+         * @brief readable description of this esception
+         * @return string description
+         */
+        const char* what () const throw ();
+
+        TOSTRING(Exception)
+    };
+
+    %template( VectorException) std::vector<Exception>;
+
 //############### Extension
     struct ExtensionDescriptor {
         ExtensionDescriptor();
@@ -724,9 +783,9 @@
             void setStringList(const std::string& id, std::vector<std::string> val){ $self->set<std::vector<std::string> >(id,val); }
             void set(const std::string& id, std::vector<std::string> val){ $self->set<std::vector<std::string> >(id,val); }
             
-            rw::math::Q& getQ(const std::string& id){ return $self->get<rw::math::Q>(id); }
-            void setQ(const std::string& id, rw::math::Q q){ $self->set<rw::math::Q>(id, q); }
-            void set(const std::string& id, rw::math::Q q){ $self->set<rw::math::Q>(id, q); }
+            Q& getQ(const std::string& id){ return $self->get<Q>(id); }
+            void setQ(const std::string& id, Q q){ $self->set<Q>(id, q); }
+            void set(const std::string& id, Q q){ $self->set<Q>(id, q); }
 
             rw::math::Pose6D<double>& getPose(const std::string& id){ return $self->get<rw::math::Pose6D<double> >(id); }
             void setPose6D(const std::string& id, rw::math::Pose6D<double> p){  $self->set<rw::math::Pose6D<double> >(id, p); }

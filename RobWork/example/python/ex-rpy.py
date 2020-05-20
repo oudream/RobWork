@@ -6,8 +6,8 @@ if __name__ == '__main__':
     rotationFromRPY = rpy.toRotation3D();
     print("Rotation from RPY: " + str(rotationFromRPY));
 
-    rot = Rotation3d(-1,0,0,0,0,1,0,1,0);
+    rot = Rotation3Dd(-1,0,0,0,0,1,0,1,0);
     print("Rotation: " + str(rot));
     rpyFromRotation = RPYd(rot);
     print("RPY from Rotation: " + str(rpyFromRotation));
-    rot = Rotation3d(1,0,0,0,1,0,0,0,1)
+    rot = Rotation3Dd(1,0,0,0,1,0,0,0,1)

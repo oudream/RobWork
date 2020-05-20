@@ -129,7 +129,7 @@ Q ClosedFormIKSolverUR::adjustJoints(const Q& q) const {
 }
 
 void ClosedFormIKSolverUR::addBaseAngleSolutions(const Transform3D<>& baseTend, const Vector3D<>& baseTdh5, State& state, double angle, std::vector<Q>& res) const {
-	Q tmpQ = Q(6,angle,0,0,0,0,0);
+	Q tmpQ = Q(6,angle,0.0,0.0,0.0,0.0,0.0);
 	_device->setQ(tmpQ, state);
 	const Vector3D<> tcpZ = baseTend.R().getCol(2);
 
@@ -151,7 +151,7 @@ void ClosedFormIKSolverUR::addBaseAngleSolutions(const Transform3D<>& baseTend, 
 
 void ClosedFormIKSolverUR::addElbowSolutions(const Transform3D<>& baseTend, const Vector3D<>& baseTdh5, State& state, double baseAngle, std::pair<double,double> elbow, std::vector<Q>& res) const {
 	if (!Math::isNaN(elbow.first) && !Math::isNaN(elbow.second)) {
-		Q tmpQ = Q(6,baseAngle,elbow.first,elbow.second,0,0,0);
+		Q tmpQ = Q(6,baseAngle,elbow.first,elbow.second,0.0,0.0,0.0);
 		_device->setQ(tmpQ, state);
 		// The three first joints has been determined - find the last three joints.
 		Q q = getOrientationJoints(baseTend,baseTdh5, state);

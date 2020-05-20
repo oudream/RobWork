@@ -166,6 +166,12 @@ namespace rw { namespace invkin {
          */
         void setWeightVector(Eigen::VectorXd weights);
 
+        /**
+         * @brief setJointLimitTolerance set the tolerance used for bound-checking the solution
+         * @param tolerance for joint bounds checking
+         */
+        void setJointLimitTolerance(double tolerance);
+
         //! @copydoc InvKinSolver::setCheckJointLimits
         void setCheckJointLimits(bool check){
             _checkJointLimits = check;
@@ -184,6 +190,7 @@ namespace rw { namespace invkin {
         bool _useJointClamping, _useInterpolation, _checkJointLimits;
         JacobianSolverType _solverType;
         Eigen::MatrixXd _w;
+        double _checkJointLimitsTolerance;
     };
 
     /*@}*/

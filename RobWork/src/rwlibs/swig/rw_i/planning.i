@@ -13,7 +13,7 @@ public:
      * empty() is true then the sampler has no more configurations.
      * Otherwise sample() may (or may not) succeed if called a second time.
      */
-    rw::math::Q sample();
+    Q sample();
 
     /**
      * @brief True if the sampler is known to contain no more
@@ -36,7 +36,7 @@ public:
      *
      * The sampler is considered never empty (empty() always returns false).
      */
-	static rw::core::Ptr<QSampler> makeFixed(const rw::math::Q& q);
+	static rw::core::Ptr<QSampler> makeFixed(const Q& q);
 
     /**
      * @brief Sampler that always returns a single configuration.
@@ -45,7 +45,7 @@ public:
      * empty configuration otherwise. empty() returns true after the first
      * call of sample().
      */
-	static rw::core::Ptr<QSampler> makeSingle(const rw::math::Q& q);
+	static rw::core::Ptr<QSampler> makeSingle(const Q& q);
 
     /**
      * @brief Sampler for the values of a finite sequence.
@@ -54,7 +54,7 @@ public:
      * these samples have been returned, empty() returns true and sample()
      * returns the empty configuration.
      */
-	static rw::core::Ptr<QSampler> makeFinite(const std::vector<rw::math::Q>& qs);
+	static rw::core::Ptr<QSampler> makeFinite(const std::vector<Q>& qs);
 
     /**
      * @brief A sampler to that returns only the first \b cnt samples from
@@ -134,7 +134,7 @@ protected:
     /**
      * @brief Subclass implementation of the sample() method.
      */
-    virtual rw::math::Q doSample() = 0;
+    virtual Q doSample() = 0;
 
     /**
      * @brief Subclass implementation of the empty() method.
@@ -162,9 +162,9 @@ public:
 
     //PlannerConstraint(QConstraint::Ptr constraint, QEdgeConstraint::Ptr edge);
 
-    bool inCollision(const rw::math::Q& q);
+    bool inCollision(const Q& q);
 
-    bool inCollision(const rw::math::Q& q1, const rw::math::Q& q2);
+    bool inCollision(const Q& q1, const Q& q2);
 
     QConstraint& getQConstraint() const { return *_constraint; }
 
@@ -241,9 +241,9 @@ public:
 
 };
 %nodefaultctor PathPlannerQQ;
-%template (PathPlannerQQ) PathPlanner<rw::math::Q,const rw::math::Q>;
+%template (PathPlannerQQ) PathPlanner<Q,const Q>;
 %nodefaultctor PathPlannerQQSampler;
-%template (PathPlannerQQSampler) PathPlanner<rw::math::Q, QSampler>;
+%template (PathPlannerQQSampler) PathPlanner<Q, QSampler>;
 
 /**
  * @brief Normalization of configurations.
@@ -259,35 +259,35 @@ public:
      * @brief Convert from a normalized configuration to a real
      * configuration.
      */
-    rw::math::Q fromNormalized(const rw::math::Q& q) const;
+    Q fromNormalized(const Q& q) const;
 
     /**
      * @brief Convert a real configuration to a normalized configuration.
      */
-    rw::math::Q toNormalized(const rw::math::Q& q) const;
+    Q toNormalized(const Q& q) const;
 
     /**
      * @brief Convert from a normalized configuration to a real
      * configuration and assign the real configuration to \b q.
      */
-    void setFromNormalized(rw::math::Q& q) const;
+    void setFromNormalized(Q& q) const;
 
     /**
      * @brief Convert a real configuration to a normalized configuration and
      * write the normalized configuration to \b q.
      */
-    void setToNormalized(rw::math::Q& q) const;
+    void setToNormalized(Q& q) const;
 
     /**
      * @brief The box of the configuration space with respect to which
      * normalization is done.
      */
-    const std::pair<rw::math::Q, rw::math::Q>& getBounds() const;
+    const std::pair<Q, Q>& getBounds() const;
 
     /**
      * @brief Normalizer for the configuration space box given by \b bounds.
      */
-    explicit QNormalizer(const std::pair<rw::math::Q, rw::math::Q>& bounds);
+    explicit QNormalizer(const std::pair<Q, Q>& bounds);
 
     /**
      * @brief Normalizer for the already normalized configuration space box.
@@ -329,7 +329,7 @@ public:
      * @brief True if the work cell is considered to be in collision for the
      * device configuration \b q.
      */
-    bool inCollision(const rw::math::Q& q) const;
+    bool inCollision(const Q& q) const;
 
     /**
      * @brief A fixed constraint.
@@ -344,7 +344,7 @@ public:
      * The configuration is considered to be in collision if it is outside
      * of the bounds given by \b bounds.
      */
-	static rw::core::Ptr<QConstraint> makeBounds(const std::pair<rw::math::Q, rw::math::Q>& bounds);
+	static rw::core::Ptr<QConstraint> makeBounds(const std::pair<Q, Q>& bounds);
 
     /**
      * @brief Map a state constraint to a configuration constraint.
@@ -386,7 +386,7 @@ public:
      */
 	static rw::core::Ptr<QConstraint> makeNormalized(
 		const rw::core::Ptr<QConstraint>& constraint,
-        const std::pair<rw::math::Q, rw::math::Q>& bounds);
+        const std::pair<Q, Q>& bounds);
 
     /**
      * @brief Map a configuration constraint for standard configurations
@@ -491,7 +491,7 @@ public:
      * @param start [in] Start configuration.
      * @param end [in] End configuration.
      */
-    bool inCollision(const rw::math::Q& start, const rw::math::Q& end) const;
+    bool inCollision(const Q& start, const Q& end) const;
 
     /**
      * @brief Discrete path verification for a linearly interpolated path.
@@ -511,7 +511,7 @@ public:
 	 * @param resolution [in] The test resolution
     */
 	static rw::core::Ptr<QEdgeConstraint> make(rw::core::Ptr<QConstraint> constraint,
-									 rw::core::Ptr<const Metric<rw::math::Q> > metric,
+									 rw::core::Ptr<const rw::math::Metric<Q> > metric,
 									 double resolution);
 
     /**
@@ -558,8 +558,8 @@ protected:
      * By default the method is implemented in terms of instance() and
      * inCollision().
      */
-    virtual bool doInCollision(const rw::math::Q& start,
-							   const rw::math::Q& end) const = 0;
+    virtual bool doInCollision(const Q& start,
+							   const Q& end) const = 0;
 
 
 
@@ -602,8 +602,8 @@ public:
      * @param end [in] End configuration.
      */
     bool inCollision(
-        const rw::math::Q& start,
-        const rw::math::Q& end) const;
+        const Q& start,
+        const Q& end) const;
 
     /**
      * @brief True if the path connecting the start and end configuration
@@ -650,24 +650,24 @@ public:
      * @param end [in] End configuration of path
      */
 	rw::core::Ptr<QEdgeConstraintIncremental> instance(
-        const rw::math::Q& start,
-        const rw::math::Q& end) const;
+        const Q& start,
+        const Q& end) const;
 
     /**
      * @brief The start configuration of the path.
      */
-    const rw::math::Q& getStart() const;
+    const Q& getStart() const;
 
     /**
      * @brief The end configuration of the path.
      */
-    const rw::math::Q& getEnd() const;
+    const Q& getEnd() const;
 
     /**
      * @brief Reset the object to use a different pair of start and end
      * configurations.
      */
-    void reset(const rw::math::Q& start, const rw::math::Q& end);
+    void reset(const Q& start, const Q& end);
 
     // Here we have the factory methods.
 
@@ -692,7 +692,7 @@ public:
      */
 	static rw::core::Ptr<QEdgeConstraintIncremental> make(
 		rw::core::Ptr<QConstraint> constraint,
-		rw::core::Ptr<Metric<rw::math::Q> > metric,
+		rw::core::Ptr< rw::math::Metric<Q> > metric,
         double resolution = 1);
 
     /**
@@ -726,8 +726,8 @@ protected:
      * @param end [in] End configuration of path
      */
     QEdgeConstraintIncremental(
-        const rw::math::Q& start,
-        const rw::math::Q& end);
+        const Q& start,
+        const Q& end);
 
     /**
      * @brief Subclass implementation of the inCollision() method.
@@ -736,8 +736,8 @@ protected:
      * inCollision().
      */
     virtual bool doInCollision(
-        const rw::math::Q& start,
-        const rw::math::Q& end) const;
+        const Q& start,
+        const Q& end) const;
 
     /**
      * @brief Subclass implementation of the inCollision() method.
@@ -768,8 +768,8 @@ protected:
      * @brief Subclass implementation of the instance() method.
      */
 	virtual rw::core::Ptr<QEdgeConstraintIncremental> doClone(
-        const rw::math::Q& start,
-        const rw::math::Q& end) const = 0;
+        const Q& start,
+        const Q& end) const = 0;
 
     /**
      * @brief Subclass implementation of the reset() method.
@@ -798,7 +798,7 @@ public:
      * empty() is true then the sampler has no more configurations.
      * Otherwise sample() may (or may not) succeed if called a second time.
      */
-    rw::math::Q sample(const rw::math::Transform3D<double>& target);
+    Q sample(const rw::math::Transform3D<double>& target);
 
     /**
      * @brief True if the sampler is known to contain no more
@@ -861,7 +861,7 @@ protected:
     /**
      * @brief Subclass implementation of the sample() method.
      */
-    virtual rw::math::Q doSample(
+    virtual Q doSample(
         const rw::math::Transform3D<double>& target) = 0;
 
     /**
@@ -877,7 +877,7 @@ protected:
 %template (QIKSamplerCPtr) rw::core::Ptr<const QIKSampler>;
 
 %nodefaultctor QToQPlanner;
-class QToQPlanner: public PathPlanner<rw::math::Q, const rw::math::Q> {
+class QToQPlanner: public PathPlanner<Q, const Q> {
 public:
 
     /**
@@ -906,26 +906,26 @@ public:
 
     %extend {
 /*
-        rw::core::Ptr<rw::trajectory::Path<rw::math::Q> > query(rw::math::Q from, rw::math::Q to, rw::core::Ptr<StopCriteria> stop){
-            rw::core::Ptr<rw::trajectory::Path<rw::math::Q> > path = rw::core::ownedPtr(new PathQ());
-            $self->rw::pathplanning::PathPlanner<rw::math::Q,const rw::math::Q>::query(from,to,*path,*stop);
+        rw::core::Ptr<rw::trajectory::Path<Q> > query(Q from, Q to, rw::core::Ptr<StopCriteria> stop){
+            rw::core::Ptr<rw::trajectory::Path<Q> > path = rw::core::ownedPtr(new PathQ());
+            $self->rw::pathplanning::PathPlanner<Q,const Q>::query(from,to,*path,*stop);
             return path;
         }
 
-        rw::core::Ptr<rw::trajectory::Path<rw::math::Q> > query(rw::math::Q from, rw::math::Q to, double time){
-            rw::core::Ptr<rw::trajectory::Path<rw::math::Q> > path = rw::core::ownedPtr(new PathQ());
-            $self->rw::pathplanning::PathPlanner<rw::math::Q,const rw::math::Q>::query(from,to,*path,time);
+        rw::core::Ptr<rw::trajectory::Path<Q> > query(Q from, Q to, double time){
+            rw::core::Ptr<rw::trajectory::Path<Q> > path = rw::core::ownedPtr(new PathQ());
+            $self->rw::pathplanning::PathPlanner<Q,const Q>::query(from,to,*path,time);
             return path;
         }
 
-        rw::core::Ptr<rw::trajectory::Path<rw::math::Q> > query(rw::math::Q from, rw::math::Q to){
-            rw::core::Ptr<rw::trajectory::Path<rw::math::Q> > path = rw::core::ownedPtr(new PathQ());
-            $self->rw::pathplanning::PathPlanner<rw::math::Q,const rw::math::Q>::query(from,to,*path);
+        rw::core::Ptr<rw::trajectory::Path<Q> > query(Q from, Q to){
+            rw::core::Ptr<rw::trajectory::Path<Q> > path = rw::core::ownedPtr(new PathQ());
+            $self->rw::pathplanning::PathPlanner<Q,const Q>::query(from,to,*path);
             return path;
         }
 
         PropertyMap& getProperties(){
-            return $self->rw::pathplanning::PathPlanner<rw::math::Q,const rw::math::Q>::getProperties();
+            return $self->rw::pathplanning::PathPlanner<Q,const Q>::getProperties();
         }
         static rw::core::Ptr<QToQPlanner> makeRRT(rw::core::Ptr<CollisionDetector> cdect, rw::core::Ptr<Device> dev, const State& state){
             const rw::pathplanning::PlannerConstraint constraint = rw::pathplanning::PlannerConstraint::make(
@@ -952,26 +952,26 @@ public:
 
     %extend {
 
-        rw::core::Ptr<rw::trajectory::Path<rw::math::Q> > query(rw::math::Q from, rw::math::Transform3D<double> to, rw::core::Ptr<StopCriteria> stop){
-            rw::core::Ptr<rw::trajectory::Path<rw::math::Q> > path = rw::core::ownedPtr(new rw::trajectory::Path<rw::math::Q>());
-            $self->rw::pathplanning::PathPlanner<rw::math::Q,const rw::math::Transform3D<double> >::query(from,to,*path,*stop);
+        rw::core::Ptr<rw::trajectory::Path<Q> > query(Q from, rw::math::Transform3D<double> to, rw::core::Ptr<StopCriteria> stop){
+            rw::core::Ptr<rw::trajectory::Path<Q> > path = rw::core::ownedPtr(new rw::trajectory::Path<Q>());
+            $self->rw::pathplanning::PathPlanner<Q,const rw::math::Transform3D<double> >::query(from,to,*path,*stop);
             return path;
         }
 
-        rw::core::Ptr<rw::trajectory::Path<rw::math::Q> > query(rw::math::Q from, rw::math::Transform3D<double> to, double time){
-            rw::core::Ptr<rw::trajectory::Path<rw::math::Q> > path = rw::core::ownedPtr(new rw::trajectory::Path<rw::math::Q>());
-            $self->rw::pathplanning::PathPlanner<rw::math::Q,const rw::math::Transform3D<double> >::query(from,to,*path,time);
+        rw::core::Ptr<rw::trajectory::Path<Q> > query(Q from, rw::math::Transform3D<double> to, double time){
+            rw::core::Ptr<rw::trajectory::Path<Q> > path = rw::core::ownedPtr(new rw::trajectory::Path<Q>());
+            $self->rw::pathplanning::PathPlanner<Q,const rw::math::Transform3D<double> >::query(from,to,*path,time);
             return path;
         }
 
-        rw::core::Ptr<rw::trajectory::Path<rw::math::Q> > query(rw::math::Q from, rw::math::Transform3D<double> to){
-            rw::core::Ptr<rw::trajectory::Path<rw::math::Q> > path = rw::core::ownedPtr(new rw::trajectory::Path<rw::math::Q>());
-            $self->rw::pathplanning::PathPlanner<rw::math::Q,const rw::math::Transform3D<double> >::query(from,to,*path);
+        rw::core::Ptr<rw::trajectory::Path<Q> > query(Q from, rw::math::Transform3D<double> to){
+            rw::core::Ptr<rw::trajectory::Path<Q> > path = rw::core::ownedPtr(new rw::trajectory::Path<Q>());
+            $self->rw::pathplanning::PathPlanner<Q,const rw::math::Transform3D<double> >::query(from,to,*path);
             return path;
         }
 
         PropertyMap& getProperties(){
-            return $self->rw::pathplanning::PathPlanner<rw::math::Q,const rw::math::Transform3D<double> >::getProperties();
+            return $self->rw::pathplanning::PathPlanner<Q,const rw::math::Transform3D<double> >::getProperties();
         }
 	}	
 };
@@ -985,7 +985,7 @@ public:
    QToQSamplerPlanner plans a configuration space path from a start
    configuration to any configuration in the set represented by a sampler.
 */
-class QToQSamplerPlanner : public PathPlanner<rw::math::Q, QSampler>
+class QToQSamplerPlanner : public PathPlanner<Q, QSampler>
 {
 };
 

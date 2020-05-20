@@ -323,7 +323,7 @@
      * @brief An abstract device class
      *
      * The Device class is the basis for all other devices. It is assumed that all devices
-	 * have a configuration which can be encoded by a rw::math::Q, that all have a base frame
+	 * have a configuration which can be encoded by a Q, that all have a base frame
 	 * representing where in the work cell they are located and a primary end frame. Notice that
 	 * some devices may have multiple end-frames.
      */
@@ -346,7 +346,7 @@
          *
          * @pre q.size() == getDOF()
          */
-        virtual void setQ(const rw::math::Q& q, State& state) const = 0;
+        virtual void setQ(const Q& q, State& state) const = 0;
 
         /**
          * @brief Gets configuration vector @f$ \mathbf{q}\in \mathbb{R}^n @f$
@@ -354,7 +354,7 @@
          * @param state [in] state from which which to get @f$ \mathbf{q} @f$
          * @return configuration vector @f$ \mathbf{q} @f$
          */
-        virtual rw::math::Q getQ(const State& state) const = 0;
+        virtual Q getQ(const State& state) const = 0;
 
         /**
          * @brief Returns the upper @f$ \mathbf{q}_{min} \in \mathbb{R}^n @f$ and
@@ -362,7 +362,7 @@
          *
          * @return std::pair containing @f$ (\mathbf{q}_{min}, \mathbf{q}_{max}) @f$
          */
-        virtual std::pair<rw::math::Q,rw::math::Q> getBounds() const = 0;
+        virtual std::pair<Q,Q> getBounds() const = 0;
 
         /**
          * @brief Sets the upper @f$ \mathbf{q}_{min} \in \mathbb{R}^n @f$ and
@@ -371,7 +371,7 @@
          * @param bounds [in] std::pair containing
          * @f$ (\mathbf{q}_{min}, \mathbf{q}_{max}) @f$
          */
-        virtual void setBounds (const std::pair<rw::math::Q,rw::math::Q>& bounds) = 0;
+        virtual void setBounds (const std::pair<Q,Q>& bounds) = 0;
 
         /**
          * @brief Returns the maximal velocity of the joints
@@ -382,7 +382,7 @@
          *
          * @return the maximal velocity
          */
-        virtual rw::math::Q getVelocityLimits() const = 0;
+        virtual Q getVelocityLimits() const = 0;
 
         /**
          * @brief Sets the maximal velocity of the joints
@@ -393,7 +393,7 @@
          *
          * @param vellimits [in] Q with the maximal velocity
          */
-        virtual void setVelocityLimits(const rw::math::Q& vellimits) = 0;
+        virtual void setVelocityLimits(const Q& vellimits) = 0;
 
         /**
          * @brief Returns the maximal acceleration of the joints
@@ -404,7 +404,7 @@
          *
          * @return the maximal acceleration
          */
-        virtual rw::math::Q getAccelerationLimits() const = 0;
+        virtual Q getAccelerationLimits() const = 0;
 
         /**
          * @brief Sets the maximal acceleration of the joints
@@ -415,7 +415,7 @@
          *
          * @param  acclimits [in] the maximal acceleration
          */
-        virtual void setAccelerationLimits(const rw::math::Q& acclimits) = 0;
+        virtual void setAccelerationLimits(const Q& acclimits) = 0;
 
         /**
          * @brief Returns number of active joints
@@ -876,37 +876,37 @@
          * @brief Sets joint bounds
          * @param bounds [in] the lower and upper bounds of this joint
          */
-        void setBounds (const std::pair< const rw::math::Q, const rw::math::Q >& bounds);
+        void setBounds (const std::pair< const Q, const Q >& bounds);
 
         /**
          * @brief Gets joint bounds
          * @return the lower and upper bound of this joint
          */
-        const std::pair< rw::math::Q, rw::math::Q >& getBounds () const;
+        const std::pair< Q, Q >& getBounds () const;
 
         /**
          * @brief Sets max velocity of joint
          * @param maxVelocity [in] the new maximum velocity of the joint
          */
-        void setMaxVelocity (const rw::math::Q& maxVelocity);
+        void setMaxVelocity (const Q& maxVelocity);
 
         /**
          * @brief Gets max velocity of joint
          * @return the maximum velocity of the joint
          */
-        const rw::math::Q& getMaxVelocity () const;
+        const Q& getMaxVelocity () const;
 
         /**
          * @brief Sets max acceleration of joint
          * @param maxAcceleration [in] the new maximum acceleration of the joint
          */
-        void setMaxAcceleration (const rw::math::Q& maxAcceleration);
+        void setMaxAcceleration (const Q& maxAcceleration);
 
         /**
          * @brief Gets max acceleration of joint
          * @return the maximum acceleration of the joint
          */
-        const rw::math::Q& getMaxAcceleration () const;
+        const Q& getMaxAcceleration () const;
 
         /**
          * @brief Finds the Jacobian of the joints and adds it in \b jacobian.
@@ -1022,31 +1022,31 @@
         const std::vector<Joint*>& getJoints() const;
 
         /** @copydoc Device::setQ */
-        void setQ(const rw::math::Q& q, State& state) const;
+        void setQ(const Q& q, State& state) const;
 
         /** @copydoc Device::getQ */
-        rw::math::Q getQ(const State& state) const;
+        Q getQ(const State& state) const;
 
         /** @copydoc Device::getDOF */
         size_t getDOF() const;
 
         /** @copydoc Device::getBounds */
-        std::pair<rw::math::Q, rw::math::Q> getBounds() const;
+        std::pair<Q, Q> getBounds() const;
 
         /** @copydoc Device::setBounds */
-        void setBounds(const std::pair<rw::math::Q, rw::math::Q>& bounds);
+        void setBounds(const std::pair<Q, Q>& bounds);
 
         /** @copydoc Device::getVelocityLimits */
-        rw::math::Q getVelocityLimits() const;
+        Q getVelocityLimits() const;
 
         /** @copydoc Device::setVelocityLimits */
-        void setVelocityLimits(const rw::math::Q& vellimits);
+        void setVelocityLimits(const Q& vellimits);
 
         /** @copydoc Device::getAccelerationLimits */
-        rw::math::Q getAccelerationLimits() const;
+        Q getAccelerationLimits() const;
 
         /** @copydoc Device::setAccelerationLimits */
-        void setAccelerationLimits(const rw::math::Q& acclimits);
+        void setAccelerationLimits(const Q& acclimits);
 
         /** @copydoc Device::baseJend */
         rw::math::Jacobian baseJend(const State& state) const;
@@ -1143,7 +1143,7 @@
            The method is implemented via forwarding to the Device::setQ()
            methods of the subdevices.
         */
-        void setQ (const rw::math::Q& q, State& state) const;
+        void setQ (const Q& q, State& state) const;
 
         // Methods specific to CompositeDevice follow here.
 
@@ -1249,7 +1249,7 @@
            The method is implemented via forwarding to the Device::setQ()
            methods of the subdevices.
         */
-        void setQ (const rw::math::Q& q, State& state) const;
+        void setQ (const Q& q, State& state) const;
 
         // Methods specific to CompositeJointDevice follow here.
 
@@ -1569,42 +1569,42 @@
         /**
          * @copydoc Device::setQ
          */
-        virtual void setQ (const rw::math::Q& q, State& state) const;
+        virtual void setQ (const Q& q, State& state) const;
 
         /**
          * @copydoc Device::getQ
          */
-        virtual rw::math::Q getQ (const State& state) const;
+        virtual Q getQ (const State& state) const;
 
         /**
          * @copydoc Device::getBounds
          */
-        virtual std::pair< rw::math::Q, rw::math::Q > getBounds () const;
+        virtual std::pair< Q, Q > getBounds () const;
 
         /**
          * @copydoc Device::setBounds
          */
-        virtual void setBounds (const std::pair< rw::math::Q, rw::math::Q >& bounds);
+        virtual void setBounds (const std::pair< Q, Q >& bounds);
 
         /**
          * @copydoc Device::getVelocityLimits
          */
-        virtual rw::math::Q getVelocityLimits () const;
+        virtual Q getVelocityLimits () const;
 
         /**
          * @copydoc Device::setVelocityLimits
          */
-        virtual void setVelocityLimits (const rw::math::Q& vellimits);
+        virtual void setVelocityLimits (const Q& vellimits);
 
         /**
          * @copydoc Device::getAccelerationLimits
          */
-        virtual rw::math::Q getAccelerationLimits () const;
+        virtual Q getAccelerationLimits () const;
 
         /**
          * @copydoc Device::setAccelerationLimits
          */
-        virtual void setAccelerationLimits (const rw::math::Q& acclimits);
+        virtual void setAccelerationLimits (const Q& acclimits);
 
         /**
          * @copydoc Device::getDOF
@@ -1703,20 +1703,20 @@
            upper corners given by \b bounds. Each value of \b q is allowed to be
            outside of the box by the amount \b tolerance.
         */
-        static bool inBounds (const rw::math::Q& q, const std::pair<rw::math::Q,rw::math::Q>& bounds,
+        static bool inBounds (const Q& q, const std::pair<Q,Q>& bounds,
                               double tolerance = 0);
 
         /**
            @brief True iff the configuration \b q is within the joint limits of the
            device \b device.
         */
-        static bool inBounds (const rw::math::Q& q, const Device& device, double tolerance = 0);
+        static bool inBounds (const Q& q, const Device& device, double tolerance = 0);
 
         /**
            @brief True iff the joint value \b val is within the joint limits of the
            joint \b joint with a tolerance of \b tolerance.
         */
-        static bool inBounds (const rw::math::Q& val, const Joint& joint, double tolerance = 0);
+        static bool inBounds (const Q& val, const Joint& joint, double tolerance = 0);
 
         /**
            @brief True iff the joint values of \b state are within the joint limits
@@ -1739,7 +1739,7 @@
            @return Sequence of states - one state for each configuration.
         */
         static rw::trajectory::Path<State> getStatePath (const Device& device,
-                                                       const rw::trajectory::Path<rw::math::Q>& path,
+                                                       const rw::trajectory::Path<Q>& path,
                                                        const State& common_state);
 
         /**
@@ -1753,7 +1753,7 @@
            @param common_state [in] State to share for all configurations.
            @param result [out] Sequence of states - one state for each configuration.
         */
-        static void getStatePath (const Device& device, const rw::trajectory::Path<rw::math::Q>& path,
+        static void getStatePath (const Device& device, const rw::trajectory::Path<Q>& path,
                                   const State& common_state,
                                   rw::trajectory::Path<State>& result);
 
@@ -1834,7 +1834,7 @@
          * automatically computes the values for the unactuated (passive)
          * joints.
          */
-        virtual void setQ (const rw::math::Q& q, State& state) const;
+        virtual void setQ (const Q& q, State& state) const;
 
         /**
          * @brief Set only some of the actuated joints.
@@ -1854,7 +1854,7 @@
          * The input state is expected to contain a valid and consistent configuration of the
          * device.
          */
-        virtual void setQ (const rw::math::Q& q, const std::vector< bool >& enabled,
+        virtual void setQ (const Q& q, const std::vector< bool >& enabled,
                            State& state) const;
 
         /** @copydoc Device::baseJframe */
@@ -1897,7 +1897,7 @@
          * @brief Get bounds for all joints (includes both active and passive joints).
          * @return a pair with the lower and upper limits.
          */
-        std::pair< rw::math::Q, rw::math::Q > getAllBounds () const;
+        std::pair< Q, Q > getAllBounds () const;
 
         /**
          * @brief Get the full configuration vector of the device. This gives the complete state of
@@ -1906,7 +1906,7 @@
          * @return the configuration vector with the joint values for both active and passive
          * joints.
          */
-        rw::math::Q getFullQ (const State& state) const;
+        Q getFullQ (const State& state) const;
 
         /**
          * @brief Set the full configuration of the device.
@@ -1915,7 +1915,7 @@
          * @param q [in] the configuration vector to set.
          * @param state [in/out] the state to update with a new configuration.
          */
-        void setFullQ (const rw::math::Q& q, State& state) const;
+        void setFullQ (const Q& q, State& state) const;
 
         
     };
@@ -2035,14 +2035,14 @@
          * @param state [in] the state with the configuration values.
          * @return the configuration.
          */
-        rw::math::Q getQ (const State& state) const;
+        Q getQ (const State& state) const;
 
         /**
          * @brief Sets q for the leg in the state
          * @param q [in] q to set
          * @param state [out] the State to modify
          */
-        void setQ (const rw::math::Q& q, State& state) const;
+        void setQ (const Q& q, State& state) const;
     };
     %template(ParallelLegPtr) rw::core::Ptr<ParallelLeg>;
     %template(ParallelLegPtrVector) std::vector<rw::core::Ptr<ParallelLeg>>;
@@ -2082,7 +2082,7 @@
          * @param q [in] Joint values for the joint
          * @param result [in] The transform of the frame in the world frame.
          */
-        void multiplyJointTransform (const rw::math::Transform3D<double>& parent, const rw::math::Q& q,
+        void multiplyJointTransform (const rw::math::Transform3D<double>& parent, const Q& q,
                                      rw::math::Transform3D<double>& result) const;
 
         /**
@@ -2302,7 +2302,7 @@
          * @param q [in] Joint values for the joint
          * @param result [in] The transform of the frame in the world frame.
          */
-        void multiplyJointTransform (const rw::math::Transform3D<double>& parent, const rw::math::Q& q,
+        void multiplyJointTransform (const rw::math::Transform3D<double>& parent, const Q& q,
                                      rw::math::Transform3D<double>& result) const;
 
         /**
@@ -2379,7 +2379,7 @@
          * @brief constructs a RigidBodyInfo with a mass, inertia matrix, initial
          * pose and velocity.
          */
-        RigidBodyInfo (double mass, const rw::math::InertiaMatrix<>& Ibody);
+        RigidBodyInfo (double mass, const rw::math::InertiaMatrix<double>& Ibody);
 
         /**
          * @brief destructor
@@ -2395,7 +2395,7 @@
         /**
          * @brief returns the inertia matrix of this rigid body
          */
-        rw::math::InertiaMatrix<> getInertia ();
+        rw::math::InertiaMatrix<double> getInertia ();
     };
 
 // ################# RigidObject
@@ -2604,12 +2604,12 @@
          *
          * @pre q.size() == 6
          */
-        void setQ (const rw::math::Q& q, State& state) const;
+        void setQ (const Q& q, State& state) const;
 
         /**
          * @copydoc Device::getQ
          */
-        rw::math::Q getQ (const State& state) const;
+        Q getQ (const State& state) const;
 
         /**
          * @copydoc Device::getBounds
@@ -2620,7 +2620,7 @@
          * numerical limits of the real datatype, thus this method returns the
          * range ([DBL_MIN, DBL_MAX]) for each of the 6 inputs
          */
-        std::pair< rw::math::Q, rw::math::Q > getBounds () const;
+        std::pair< Q, Q > getBounds () const;
 
         /**
          * @brief get base of the device
@@ -2690,31 +2690,31 @@
          * @brief set outer bound of the device
          * @param bounds [in] the minimum Q and the maximum Q
          */
-        virtual void setBounds (const std::pair<rw::math::Q, rw::math::Q>& bounds);
+        virtual void setBounds (const std::pair<Q, Q>& bounds);
 
         /**
          * @brief get the Joint velocity limit
          * @return the velocity limit as Q
          */
-        virtual rw::math::Q getVelocityLimits () const;
+        virtual Q getVelocityLimits () const;
 
         /**
          * @brief set the Joint velocity limit
          * @param vellimits [in] the velocity limit as Q
          */
-        virtual void setVelocityLimits (const rw::math::Q& vellimits);
+        virtual void setVelocityLimits (const Q& vellimits);
 
         /**
          * @brief get the Joint Acceleration limit
          * @return the Acceleration limit as Q
          */
-        rw::math::Q getAccelerationLimits () const;
+        Q getAccelerationLimits () const;
 
         /**
          * @brief set the Joint Acceleration limit
          * @param acclimit [in] the acceleration limit as Q
          */
-        void setAccelerationLimits (const rw::math::Q& acclimits);
+        void setAccelerationLimits (const Q& acclimits);
     };
 
 // ################# SerialDevice

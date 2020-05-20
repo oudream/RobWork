@@ -33,8 +33,8 @@ namespace rw { namespace math {
     /*@{*/
 
     /**
-       @brief Various metrics and other distance measures.
-    */
+     *  @brief Various metrics and other distance measures.
+     */
     class MetricUtil
     {
     public:

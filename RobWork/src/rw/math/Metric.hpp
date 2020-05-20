@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RW_MATH_METRIC_HPP
 #define RW_MATH_METRIC_HPP
 
@@ -25,6 +24,7 @@
 
 #include "Q.hpp"
 #include "Transform3D.hpp"
+
 #include <rw/core/Ptr.hpp>
 
 namespace rw { namespace math {
@@ -32,95 +32,92 @@ namespace rw { namespace math {
     /** @addtogroup math */
     /* @{ */
 
-    template <class T>
-    class Metric;
+    template< class T > class Metric;
 
     /**
       @brief Template interface for metrics on type T.
 
-      A metric is a function that defines a scalar distance between elements. 
+      A metric is a function that defines a scalar distance between elements.
     */
-    template <class T>
-    class Metric
+    template< class T > class Metric
     {
-    public:
+      public:
         //! The type of element on which the metric operates.
         typedef T value_type;
         //! The type of the scalar
         typedef typename T::value_type scalar_type;
 
         //! A pointer to a Metric<T>.
-        typedef typename rw::core::Ptr<Metric<T> > Ptr;
-		//! A pointer to a const Metric<T>.
-		typedef typename rw::core::Ptr<const Metric<T> > CPtr;
+        typedef typename rw::core::Ptr< Metric< T > > Ptr;
+        //! A pointer to a const Metric<T>.
+        typedef typename rw::core::Ptr< const Metric< T > > CPtr;
 
         /**
            @brief Destructor
         */
-        virtual ~Metric() {}
+        virtual ~Metric () {}
 
         /**
-           @brief The distance from the zero element to q
-        */
-        scalar_type distance(const value_type& q) const { return doDistance(q); }
+         * @brief The distance from the zero element to q
+         */
+        scalar_type distance (const value_type& q) const { return doDistance (q); }
 
         /**
-           @brief The distance from element a to b.
-
-           @param a [in] first element
-           @param b [in] second element
-           @return the distance
-        */
-        scalar_type distance(const value_type& a, const value_type& b) const
+         *  @brief The distance from element a to b.
+         * @param a [in] first element
+         * @param b [in] second element
+         * @return the distance
+         */
+        scalar_type distance (const value_type& a, const value_type& b) const
         {
-            return doDistance(a, b);
+            return doDistance (a, b);
         }
 
         /**
-           @brief The dimension of elements on which this metric operates.
+         * @brief The dimension of elements on which this metric operates.
 
            The returns -1 if the elements don't have a measure of dimension or
            if the metric works for elements of all dimensions.
         */
-        int size() const { return doSize(); }
+        int size () const { return doSize (); }
 
-    protected:
+      protected:
         // Here we have the methods implemented in the subclasses.
 
         /**
            @brief Subclass implementation of the distance() method.
         */
-        virtual scalar_type doDistance(const value_type& q) const = 0;
+        virtual scalar_type doDistance (const value_type& q) const = 0;
 
         /**
            @brief Subclass implementation of the distance() method.
         */
-        virtual scalar_type doDistance(const value_type& a, const value_type& b) const = 0;
+        virtual scalar_type doDistance (const value_type& a, const value_type& b) const = 0;
 
         /**
            @brief Subclass implementation of the size() method.
 
            By default the methods returns -1, i.e. valid for all elements.
         */
-        virtual int doSize() const { return -1; }
+        virtual int doSize () const { return -1; }
 
-    protected:
+      protected:
         //! Protected constructor called by subclassed.
-        Metric() {}
+        Metric () {}
 
         //! Disable copying of superclass.
-        Metric(const Metric&) {}
+        Metric (const Metric&) {}
 
         //! Disable assignment of superclass.
-        Metric& operator=(const Metric&) { return *this; }
+        Metric& operator= (const Metric&) { return *this; }
     };
 
     //! Metrics on configurations.
-    typedef Metric<Q> QMetric;
+    typedef Metric< Q > QMetric;
 
-	//! Metric on Transdform3D
-	typedef Metric<Transform3D<> > Transform3DMetric;
+    //! Metric on Transdform3D
+    typedef Metric< Transform3D<> > Transform3DMetric;
     /* @} */
-}} // end namespaces
+}}    // namespace rw::math
 
-#endif // end include guard
+#endif    // end include guard

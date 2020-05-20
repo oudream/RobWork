@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,16 +15,14 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RW_MATH_LINEARALGEBRA_HPP
 #define RW_MATH_LINEARALGEBRA_HPP
-	
+
 /**
  * @file LinearAlgebra.hpp
  */
 #include <Eigen/Core>
 #include <Eigen/Eigenvalues>
-
 #include <limits>
 
 namespace rw { namespace math {
@@ -32,31 +30,29 @@ namespace rw { namespace math {
     /** @addtogroup math */
     /* @{*/
 
-
     /**
      * @brief Collection of Linear Algebra functions
      */
     class LinearAlgebra
     {
-    public:
+      public:
+        //! @brief Type for Eigen matrices used to reduce namespace cluttering.
+        template< class T = double > struct EigenMatrix
+        {
+            //! type of this matrix
+            typedef Eigen::Matrix< T, Eigen::Dynamic, Eigen::Dynamic > type;
+        };
 
-    	//! @brief Type for Eigen matrices used to reduce namespace cluttering.
-    	template<class T=double>
-    	struct EigenMatrix {
-    	    //! type of this matrix
-			typedef Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> type;
-    	};
+        //! @brief Type for Eigen vectors, used to reduce namespace cluttering.
+        template< class T = double > struct EigenVector
+        {
+            //! type of this Vector
+            typedef Eigen::Matrix< T, Eigen::Dynamic, 1 > type;
+        };
 
-    	//! @brief Type for Eigen vectors, used to reduce namespace cluttering.
-    	template<class T=double>
-    	struct EigenVector {
-    	    //! type of this Vector
-			typedef Eigen::Matrix<T, Eigen::Dynamic, 1> type;
-    	};
-
-		/**
-		 * @brief Performs a singular value decomposition (SVD)
-		 *
+        /**
+         * @brief Performs a singular value decomposition (SVD)
+         *
          * The SVD computes the decomposition
          * \f$ \mathbf{M}=\mathbf{U}*\mathbf{DiagonalMatrix(\sigma)}*\mathbf{V}^T \f$ .
          *
@@ -64,12 +60,11 @@ namespace rw { namespace math {
          * @param U [out] Result matrix \f$\mathbf{U}\f$
          * @param sigma [out] The \f$\mathbf{sigma}\f$ vector with diagonal elements
          * @param V [out] Result matrix \f$\mathbf{V}\f$
-		 */
-		static void svd(const Eigen::MatrixXd& M, Eigen::MatrixXd& U, Eigen::VectorXd& sigma, Eigen::MatrixXd& V);
+         */
+        static void svd (const Eigen::MatrixXd& M, Eigen::MatrixXd& U, Eigen::VectorXd& sigma,
+                         Eigen::MatrixXd& V);
 
-
-
-		 /**
+        /**
          * \brief Calculates the moore-penrose (pseudo) inverse of a matrix
          * @f$ \mathbf{M}^+@f$
          *
@@ -86,9 +81,7 @@ namespace rw { namespace math {
          *
          *
          */
-		static Eigen::MatrixXd pseudoInverse(const Eigen::MatrixXd& am, double precision=1e-6);
-
-
+        static Eigen::MatrixXd pseudoInverse (const Eigen::MatrixXd& am, double precision = 1e-6);
 
         /**
          * @brief Checks the penrose conditions
@@ -117,35 +110,28 @@ namespace rw { namespace math {
          * (XA)^T = XA
          * @f$
          */
-		static bool checkPenroseConditions(
-			const Eigen::MatrixXd& A,
-			const Eigen::MatrixXd& X,
-			double prec);
-
-
+        static bool checkPenroseConditions (const Eigen::MatrixXd& A, const Eigen::MatrixXd& X,
+                                            double prec);
 
         /**
          * \brief Calculates matrix determinant
          * \param m [in] a square matrix
          * \return the matrix determinant
          */
-		template <class R> 
-		static inline double det(const Eigen::MatrixBase<R>& m) {
-			return m.determinant();
-		}
+        template< class R > static inline double det (const Eigen::MatrixBase< R >& m)
+        {
+            return m.determinant ();
+        }
 
-		/**
-		 * @brief Calculates matrix inverse.
+        /**
+         * @brief Calculates matrix inverse.
          * @param M [in] input matrix @f$ \mathbf{M} @f$ to invert
          * @return output matrix @f$ \mathbf{M}^{-1} @f$
          **/
-        template<class T>
-		static T inverse(const Eigen::MatrixBase<T>& M)
+        template< class T > static T inverse (const Eigen::MatrixBase< T >& M)
         {
-			return M.inverse();
+            return M.inverse ();
         }
-
-
 
         /**
          * @brief Checks if a given matrix is in SO(n) (special orthogonal)
@@ -156,10 +142,9 @@ namespace rw { namespace math {
          * \mathbf{R}\mathbf{R}^T=\mathbf{I}, det \mathbf{R}=+1} \f$
          *
          */
-        template<class R>
-        static inline bool isSO(const Eigen::MatrixBase<R>& M)
+        template< class R > static inline bool isSO (const Eigen::MatrixBase< R >& M)
         {
-            return M.cols() == M.rows() && isProperOrthonormal(M);
+            return M.cols () == M.rows () && isProperOrthonormal (M);
         }
 
         /**
@@ -172,13 +157,12 @@ namespace rw { namespace math {
          * \mathbf{R}\mathbf{R}^T=\mathbf{I}, det \mathbf{R}=+1} \f$
          *
          */
-        template<class R>
-        static inline bool isSO(const Eigen::MatrixBase<R>& M, typename R::Scalar precision)
+        template< class R >
+        static inline bool isSO (const Eigen::MatrixBase< R >& M, typename R::Scalar precision)
         {
-            return M.cols() == M.rows() && isProperOrthonormal(M, precision);
+            return M.cols () == M.rows () && isProperOrthonormal (M, precision);
         }
 
- 
         /**
          * @brief Checks if a given matrix is skew-symmetrical
          * @param M [in] \f$ \mathbf{M} \f$ the matrix to check
@@ -187,12 +171,10 @@ namespace rw { namespace math {
          * \f$ \mathbf{M}=-\mathbf{M}^T \f$ holds,
          * false otherwise.
          */
-        template<class R>
-		static inline bool isSkewSymmetric(const Eigen::MatrixBase<R>& M)
+        template< class R > static inline bool isSkewSymmetric (const Eigen::MatrixBase< R >& M)
         {
-			return (M+M.transpose()).template lpNorm<Eigen::Infinity>() == 0.0;
+            return (M + M.transpose ()).template lpNorm< Eigen::Infinity > () == 0.0;
         }
-
 
         /**
          * @brief Checks if a given matrix is proper orthonormal
@@ -201,12 +183,13 @@ namespace rw { namespace math {
          * A matrix is proper orthonormal if it is orthonormal and its determinant
          * is equal to \f$ +1 \f$
          */
-        template<class R>
-        static inline bool isProperOrthonormal(const Eigen::MatrixBase<R>& r, typename R::Scalar precision = std::numeric_limits<typename R::Scalar>::epsilon())
+        template< class R >
+        static inline bool isProperOrthonormal (
+            const Eigen::MatrixBase< R >& r,
+            typename R::Scalar precision = std::numeric_limits< typename R::Scalar >::epsilon ())
         {
-            return isOrthonormal(r, precision) && fabs(r.determinant() - 1.0) <= precision;
+            return isOrthonormal (r, precision) && fabs (r.determinant () - 1.0) <= precision;
         }
-
 
         /**
          * @brief Checks if a given matrix is orthonormal
@@ -221,58 +204,69 @@ namespace rw { namespace math {
          * Another nessesary and sufficient condition of orthonormal matrices is that
          * \f$ \mathbf{M}\mathbf{M}^T=I \f$
          */
-        template<class R>
-        static inline bool isOrthonormal(const Eigen::MatrixBase<R>& r, typename R::Scalar precision = std::numeric_limits<typename R::Scalar>::epsilon())
-        {			
-			return (r * r.transpose()).isIdentity(precision);
-			//const Eigen::MatrixBase<R> m = r*r.transpose() ;
-			//return m.isIdentity(1e-15);
-			//double scale = m.norm();//m.lpNorm<Eigen::Infinity>();
-			//return scale == 0.0;
+        template< class R >
+        static inline bool isOrthonormal (
+            const Eigen::MatrixBase< R >& r,
+            typename R::Scalar precision = std::numeric_limits< typename R::Scalar >::epsilon ())
+        {
+            return (r * r.transpose ()).isIdentity (precision);
+            // const Eigen::MatrixBase<R> m = r*r.transpose() ;
+            // return m.isIdentity(1e-15);
+            // double scale = m.norm();//m.lpNorm<Eigen::Infinity>();
+            // return scale == 0.0;
         }
 
-
-		/**
-		 * @brief Decomposition for a symmetric matrix.
-		 * @param Am1 [in] a symmetric matrix.
-		 * @return the decomposition as a pair with eigenvectors and eigenvalues.
-		 */
-		template<class T>
-		//static std::pair<typename EigenMatrix<T>::type, typename EigenVector<T>::type > eigenDecompositionSymmetric(const typename EigenMatrix<T>::type& Am1)
-		static std::pair<typename EigenMatrix<T>::type, typename EigenVector<T>::type > eigenDecompositionSymmetric(const Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>& Am1)
+        /**
+         * @brief Decomposition for a symmetric matrix.
+         * @param Am1 [in] a symmetric matrix.
+         * @return the decomposition as a pair with eigenvectors and eigenvalues.
+         */
+        template< class T >
+        // static std::pair<typename EigenMatrix<T>::type, typename EigenVector<T>::type >
+        // eigenDecompositionSymmetric(const typename EigenMatrix<T>::type& Am1)
+        static std::pair< typename EigenMatrix< T >::type, typename EigenVector< T >::type >
+        eigenDecompositionSymmetric (const Eigen::Matrix< T, Eigen::Dynamic, Eigen::Dynamic >& Am1)
         {
-			Eigen::SelfAdjointEigenSolver<Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> > eigenSolver;
-			eigenSolver.compute(Am1);
-			return std::make_pair(eigenSolver.eigenvectors(), eigenSolver.eigenvalues());
-		}
-
-		/**
-		 * @brief Eigen decomposition of a matrix.
-		 * @param Am1 [in] the matrix.
-		 * @return the decomposition as a pair with eigenvectors and eigenvalues.
-		 */
-		template<class T>
-		static std::pair<typename EigenMatrix<std::complex<T> >::type, typename EigenVector<std::complex<T> >::type > eigenDecomposition(const typename Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>& Am1)
-        {
-			Eigen::EigenSolver<Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> > eigenSolver;
-			eigenSolver.compute(Am1);
-
-			Eigen::Matrix<std::complex<T>, Eigen::Dynamic, Eigen::Dynamic> vectors = eigenSolver.eigenvectors();
-			Eigen::Matrix<std::complex<T>, Eigen::Dynamic, 1> values = eigenSolver.eigenvalues();
-			return std::make_pair(vectors, values);
+            Eigen::SelfAdjointEigenSolver< Eigen::Matrix< T, Eigen::Dynamic, Eigen::Dynamic > >
+                eigenSolver;
+            eigenSolver.compute (Am1);
+            return std::make_pair (eigenSolver.eigenvectors (), eigenSolver.eigenvalues ());
         }
 
+        /**
+         * @brief Eigen decomposition of a matrix.
+         * @param Am1 [in] the matrix.
+         * @return the decomposition as a pair with eigenvectors and eigenvalues.
+         */
+        template< class T >
+        static std::pair< typename EigenMatrix< std::complex< T > >::type,
+                          typename EigenVector< std::complex< T > >::type >
+        eigenDecomposition (const typename Eigen::Matrix< T, Eigen::Dynamic, Eigen::Dynamic >& Am1)
+        {
+            Eigen::EigenSolver< Eigen::Matrix< T, Eigen::Dynamic, Eigen::Dynamic > > eigenSolver;
+            eigenSolver.compute (Am1);
 
-    private:
+            Eigen::Matrix< std::complex< T >, Eigen::Dynamic, Eigen::Dynamic > vectors =
+                eigenSolver.eigenvectors ();
+            Eigen::Matrix< std::complex< T >, Eigen::Dynamic, 1 > values =
+                eigenSolver.eigenvalues ();
+            return std::make_pair (vectors, values);
+        }
+
+      private:
     };
 
-	template<>
-	std::pair<typename LinearAlgebra::EigenMatrix<double>::type, typename LinearAlgebra::EigenVector<double>::type > LinearAlgebra::eigenDecompositionSymmetric<double>(const Eigen::MatrixXd& Am1);
+    template<>
+    std::pair< typename LinearAlgebra::EigenMatrix< double >::type,
+               typename LinearAlgebra::EigenVector< double >::type >
+    LinearAlgebra::eigenDecompositionSymmetric< double > (const Eigen::MatrixXd& Am1);
 
-	template<>
-	std::pair<typename LinearAlgebra::EigenMatrix<std::complex<double> >::type, typename LinearAlgebra::EigenVector<std::complex<double> >::type > LinearAlgebra::eigenDecomposition<double>(const Eigen::MatrixXd& Am1);
+    template<>
+    std::pair< typename LinearAlgebra::EigenMatrix< std::complex< double > >::type,
+               typename LinearAlgebra::EigenVector< std::complex< double > >::type >
+    LinearAlgebra::eigenDecomposition< double > (const Eigen::MatrixXd& Am1);
 
     /*@}*/
-}} // end namespaces
+}}    // namespace rw::math
 
-#endif // end include guard
+#endif    // end include guard

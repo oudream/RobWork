@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RW_MATH_JACOBIAN_HPP
 #define RW_MATH_JACOBIAN_HPP
 
@@ -23,12 +22,12 @@
  * @file math/Jacobian.hpp
  */
 
-#include <rw/math/VelocityScrew6D.hpp>
+#include <rw/common/Serializable.hpp>
+#include <rw/math/Q.hpp>
 #include <rw/math/Rotation3D.hpp>
 #include <rw/math/Transform3D.hpp>
-#include <rw/math/Q.hpp>
+#include <rw/math/VelocityScrew6D.hpp>
 
-#include <rw/common/Serializable.hpp>
 #include <Eigen/Core>
 
 namespace rw { namespace math {
@@ -51,10 +50,9 @@ namespace rw { namespace math {
      */
     class Jacobian
     {
-    public:
-
+      public:
         //! @brief The type of the internal Eigen matrix implementation.
-		typedef Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> Base;
+        typedef Eigen::Matrix< double, Eigen::Dynamic, Eigen::Dynamic > Base;
 
         /**
          * @brief Creates an empty @f$ m\times n @f$ (uninitialized) Jacobian matrix
@@ -63,39 +61,36 @@ namespace rw { namespace math {
          *
          * @param n [in] number of columns
          */
-        Jacobian(size_t m, size_t n) : _jac(m, n) {}
+        Jacobian (size_t m, size_t n) : _jac (m, n) {}
+
+        /**
+         * @brief Default constructor
+         */
+        Jacobian () {}
 
         /**
            @brief The number of rows.
          */
-        size_t size1() const { 
-			return _jac.rows(); 
-		}
+        size_t size1 () const { return _jac.rows (); }
 
         /**
            @brief The number of columns.
          */
-		size_t size2() const { 
-			return _jac.cols(); 
-		}
+        size_t size2 () const { return _jac.cols (); }
 
         /**
          * @brief Creates an empty @f$ 6\times n @f$ (uninitialized) Jacobian matrix
          *
          * @param n [in] number of columns
          */
-        explicit Jacobian(size_t n) : _jac(6, n) {}
+        explicit Jacobian (size_t n) : _jac (6, n) {}
 
         /**
          * @brief Creates a Jacobian from a Eigen::MatrixBase
          *
          * @param r [in] an Eigen Matrix
          */
-        template <class R>
-        explicit
-		Jacobian(const Eigen::MatrixBase<R>& r) :
-            _jac(r)
-        {}
+        template< class R > explicit Jacobian (const Eigen::MatrixBase< R >& r) : _jac (r) {}
 
         /**
          * @brief Construct zero initialized Jacobian.
@@ -103,31 +98,21 @@ namespace rw { namespace math {
          * @param size2 [in] number of columns.
          * @return zero-initialized jacobian.
          */
-		static Jacobian zero(size_t size1, size_t size2) {
-			return Jacobian(Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic>::Zero(size1, size2));
-		}
+        static Jacobian zero (size_t size1, size_t size2)
+        {
+            return Jacobian (
+                Eigen::Matrix< double, Eigen::Dynamic, Eigen::Dynamic >::Zero (size1, size2));
+        }
 
         /**
            @brief Accessor for the internal Eigen matrix state.
          */
-        Base& e() { return _jac; }
-
+        Base& e () { return _jac; }
 
         /**
            @brief Accessor for the internal Eigen matrix state.
          */
-        const Base& e() const { return _jac; }
-
-		/**
-         * @brief Returns reference to matrix element
-         * @param row [in] row
-         * @param column [in] column
-         * @return reference to the element
-         */
-        double& operator()(size_t row, size_t column)
-        { 
-			return _jac(row, column); 
-		}
+        const Base& e () const { return _jac; }
 
         /**
          * @brief Returns reference to matrix element
@@ -135,10 +120,15 @@ namespace rw { namespace math {
          * @param column [in] column
          * @return reference to the element
          */
-        const double& operator()(size_t row, size_t column) const
-        { 
-			return _jac(row, column); 
-		}
+        double& operator() (size_t row, size_t column) { return _jac (row, column); }
+
+        /**
+         * @brief Returns reference to matrix element
+         * @param row [in] row
+         * @param column [in] column
+         * @return reference to the element
+         */
+        const double& operator() (size_t row, size_t column) const { return _jac (row, column); }
 
         /**
          * @brief Get an element of the jacobian.
@@ -146,9 +136,7 @@ namespace rw { namespace math {
          * @param col [in] the column.
          * @return reference to the element.
          */
-        double& elem(size_t row, size_t col) {
-            return _jac(row, col);
-        }
+        double& elem (size_t row, size_t col) { return _jac (row, col); }
 
         /**
          * @brief Creates the velocity transform jacobian
@@ -172,9 +160,10 @@ namespace rw { namespace math {
          *
          * Change the frame of reference from \b b to frame \b a and reference point
          * from frame \b a to frame \b b:
-         * @f$ \robabx{a}{b}{\bf{J}} =  \robabcdx{a}{b}{a}{b}{\bf{J}_v} \cdot \robabx{b}{a}{\bf{J}} @f$
+         * @f$ \robabx{a}{b}{\bf{J}} =  \robabcdx{a}{b}{a}{b}{\bf{J}_v} \cdot \robabx{b}{a}{\bf{J}}
+         * @f$
          */
-        explicit Jacobian(const Transform3D<>& aTb);
+        explicit Jacobian (const Transform3D<>& aTb);
 
         /**
          * @brief Creates the velocity transform jacobian
@@ -197,10 +186,11 @@ namespace rw { namespace math {
          * \f]
          *
          * Change the frame of reference from \b b to frame \b a :
-         * @f$ \robabx{a}{c}{\bf{J}} =  \robabcdx{a}{b}{c}{c}{\bf{J}_v} \cdot \robabx{b}{c}{\bf{J}} @f$
+         * @f$ \robabx{a}{c}{\bf{J}} =  \robabcdx{a}{b}{c}{c}{\bf{J}_v} \cdot \robabx{b}{c}{\bf{J}}
+         * @f$
          *
          */
-        explicit Jacobian(const Rotation3D<>& aRb);
+        explicit Jacobian (const Rotation3D<>& aRb);
 
         /**
          * @brief Creates the velocity transform jacobian
@@ -224,9 +214,10 @@ namespace rw { namespace math {
          *
          *  transforming the reference point of a Jacobian from
          * frame \b c to frame \b d :
-         * @f$ \robabx{a}{d}{\mathbf{J}} =  \robabcdx{a}{a}{c}{d}{\mathbf{J_v}} \cdot \robabx{a}{c}{\mathbf{J}} @f$
+         * @f$ \robabx{a}{d}{\mathbf{J}} =  \robabcdx{a}{a}{c}{d}{\mathbf{J_v}} \cdot
+         * \robabx{a}{c}{\mathbf{J}} @f$
          */
-        explicit Jacobian(const Vector3D<>& aPb);
+        explicit Jacobian (const Vector3D<>& aPb);
 
         /**
          * @brief add rotation jacobian to a specific row and column in this jacobian
@@ -234,7 +225,7 @@ namespace rw { namespace math {
          * @param row
          * @param col
          */
-        void addRotation(const Vector3D<>& part, size_t row, size_t col);
+        void addRotation (const Vector3D<>& part, size_t row, size_t col);
 
         /**
          * @brief add position jacobian to a specific row and column in this jacobian
@@ -242,9 +233,9 @@ namespace rw { namespace math {
          * @param row
          * @param col
          */
-        void addPosition(const Vector3D<>& part, size_t row, size_t col);
+        void addPosition (const Vector3D<>& part, size_t row, size_t col);
 
-    private:
+      private:
         Base _jac;
     };
 
@@ -255,11 +246,10 @@ namespace rw { namespace math {
      * @return the velocity vector @f$ \mathbf{\nu} @f$
      * @relates Jacobian
      */
-    inline const VelocityScrew6D<> operator*(const Jacobian& Jq, const Q& dq)
+    inline const VelocityScrew6D<> operator* (const Jacobian& Jq, const Q& dq)
     {
-        return VelocityScrew6D<>(Jq.e()*dq.e());
+        return VelocityScrew6D<> (Jq.e () * dq.e ());
     }
-
 
     /**
      * @brief Calculates joint velocities
@@ -272,10 +262,10 @@ namespace rw { namespace math {
      *
      * @relates Jacobian
      */
-    inline const Q operator*(const Jacobian& JqInv, const VelocityScrew6D<>& v)
+    inline const Q operator* (const Jacobian& JqInv, const VelocityScrew6D<>& v)
     {
-        return Q(JqInv.e() * v.e());
-			//prod(JqInv.m(), v.m()));
+        return Q (JqInv.e () * v.e ());
+        // prod(JqInv.m(), v.m()));
     }
 
     /**
@@ -290,10 +280,10 @@ namespace rw { namespace math {
      *
      * @relates Jacobian
      */
-    inline const Jacobian operator*(const Jacobian& j1, const Jacobian& j2)
+    inline const Jacobian operator* (const Jacobian& j1, const Jacobian& j2)
     {
-        return Jacobian(j1.e() * j2.e());
-		//return Jacobian(prod(j1.m(), j2.m()));
+        return Jacobian (j1.e () * j2.e ());
+        // return Jacobian(prod(j1.m(), j2.m()));
     }
 
     /**
@@ -301,10 +291,7 @@ namespace rw { namespace math {
 
        @relates Jacobian
     */
-    inline std::ostream& operator<<(std::ostream& out, const Jacobian& v)
-    {
-        return out << v.e();
-    }
+    inline std::ostream& operator<< (std::ostream& out, const Jacobian& v) { return out << v.e (); }
 
     /**
        @brief Rotates each column of \b v by \b r.
@@ -313,26 +300,31 @@ namespace rw { namespace math {
 
        @relates Jacobian
     */
-    const Jacobian operator*(const Rotation3D<>& r, const Jacobian& v);
+    const Jacobian operator* (const Rotation3D<>& r, const Jacobian& v);
 
     /*@}*/
-}} // end namespaces
+}}    // namespace rw::math
 
-namespace rw{ namespace common {
-    class OutputArchive; class InputArchive;
-namespace serialization {
-	/**
-	 * @copydoc rw::common::serialization::write
-	 * @relatedalso rw::math::Jacobian
-	 */
-    template<> void write(const rw::math::Jacobian& sobject, rw::common::OutputArchive& oarchive, const std::string& id);
+namespace rw { namespace common {
+    class OutputArchive;
+    class InputArchive;
+    namespace serialization {
+        /**
+         * @copydoc rw::common::serialization::write
+         * @relatedalso rw::math::Jacobian
+         */
+        template<>
+        void write (const rw::math::Jacobian& sobject, rw::common::OutputArchive& oarchive,
+                    const std::string& id);
 
-	/**
-	 * @copydoc rw::common::serialization::read
-	 * @relatedalso rw::math::Jacobian
-	 */
-    template<> void read(rw::math::Jacobian& sobject, rw::common::InputArchive& iarchive, const std::string& id);
-}}} // end namespaces
+        /**
+         * @copydoc rw::common::serialization::read
+         * @relatedalso rw::math::Jacobian
+         */
+        template<>
+        void read (rw::math::Jacobian& sobject, rw::common::InputArchive& iarchive,
+                   const std::string& id);
+    }    // namespace serialization
+}}       // namespace rw::common
 
-
-#endif // end include guard
+#endif    // end include guard
