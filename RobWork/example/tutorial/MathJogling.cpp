@@ -1,11 +1,11 @@
-#include <rw/common/Log.hpp>
+#include <rw/core/Log.hpp>
 #include <rw/math/EAA.hpp>
 #include <rw/math/RPY.hpp>
 #include <rw/math/Rotation3D.hpp>
 #include <rw/math/Quaternion.hpp>
 #include <rw/math/Transform3D.hpp>
 
-using rw::common::Log;
+using rw::core::Log;
 using namespace rw::math;
 
 int main(int argc, char** argv) {

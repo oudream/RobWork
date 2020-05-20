@@ -205,6 +205,28 @@ namespace rw { namespace kinematics {
             return _contents (index);
         }
 
+        /**
+         * @brief Get element of state.
+         * @param index [in] the index.
+         * @return the value at given index.
+         */
+        double& operator[] (size_t index)
+        {
+            RW_ASSERT (index < size ());
+            return _contents (index);
+        }
+
+        /**
+         * @brief Get element of state.
+         * @param index [in] the index.
+         * @return the value at given index.
+         */
+        double operator[] (size_t index) const
+        {
+            RW_ASSERT (index < size ());
+            return _contents (index);
+        }
+
       private:
         QState (const math::Q& contents, rw::core::Ptr< StateSetup > setup) :
             _contents (contents), _setup (setup)

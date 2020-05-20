@@ -389,10 +389,10 @@ RobWork/example/java/src/*.log
 /RobWork/example/plugin/bin
 
 # /RobWork/example/plugin/src/tools/
-/RobWork/example/plugin/src/tools/Debug
-/RobWork/example/plugin/src/tools/MinSizeRel
-/RobWork/example/plugin/src/tools/RelWithDebInfo
-/RobWork/example/plugin/src/tools/Release
+/RobWork/example/plugin/src/tools/debug
+/RobWork/example/plugin/src/tools/minsizerel
+/RobWork/example/plugin/src/tools/relwithdebinfo
+/RobWork/example/plugin/src/tools/release
 /RobWork/example/plugin/src/tools/path.hpp
 
 # /RobWork/example/simplegui/
@@ -4034,4 +4034,5 @@ RobWorkSim/src/rwsimlibs/swig/python/RobWorkSim-*.egg-info
 /doc/installstuff/RW_package-msvc2005/.csettings
 /doc/installstuff/RW_package-msvc2005/CPackConfig.cmake
 /doc/installstuff/RW_package-msvc2005/CPackSourceConfig.cmake
+
 

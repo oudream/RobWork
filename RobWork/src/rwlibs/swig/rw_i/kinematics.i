@@ -956,17 +956,6 @@
          */
         void setQ (const StateData& data, const double* vals);
 
-        /** TODO(kalor) implement
-         * @brief streaming operator
-         *
-         * @param os [in] output stream
-         *
-         * @param state [in] state to stream out
-         *
-         * @return the stream
-         */
-        //friend std::ostream& operator<< (std::ostream& os, const QState& state);
-
         /**
          * @brief Scaling of a configuration state by a scalar.
          */
@@ -1016,8 +1005,8 @@
          */
         //double& operator() (size_t index);
 
-        // @copydoc operator()(size_t)
-        //const double& operator() (size_t index) const;
+        TOSTRING(QState);
+        ARRAYOPERATOR(double);
     };
 //################ State
     %nodefaultctor State;
@@ -1182,32 +1171,6 @@
          */
         size_t size () const;
 
-        /*TODO(kalor) implement
-         * @brief Provides direct access to the configurations stored in the state
-         *
-         * Notice that modifying a state directly may result in the state being inconsistent
-         *
-         * @param index [in] Index of element to access
-         */
-        //double& operator() (size_t index);
-
-        /*TODO(kalor) implement
-         * @brief Provides direct read access to the configurations stored in the state
-         *
-         * @param index [in] Index of element to access
-         */
-        //const double& operator() (size_t index) const;
-
-        /*TODO(kalor) implement
-           @brief Same as operator().
-         */
-        //double& operator[] (size_t index);
-
-        /* TODO(kalor) implement
-           @brief Same as operator().
-         */
-        //const double& operator[] (size_t index) const;
-
         /**
          * @brief gets the frame with id \b id. If a frame with id \b id does not exist
          * NULL is returned
@@ -1240,6 +1203,8 @@
          * @return default state.
          */
         static const State& getDefault (StateData* data);
+
+        ARRAYOPERATOR(double);
 
     };
     %template (StateVector) std::vector<State>;

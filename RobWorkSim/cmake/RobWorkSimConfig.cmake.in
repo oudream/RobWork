@@ -132,7 +132,7 @@ endmacro()
 
 # ##################################################################################################
 
-get_filename_component(RWSIMCFG_ROOT ${CMAKE_CURRENT_LIST_FILE} PATH)
+set(RWSIMCFG_ROOT ${CMAKE_CURRENT_LIST_DIR})
 
 # check if user specified a RobWorkSim_DIR
 if(DEFINED RobWorkSim_DIR)
@@ -157,6 +157,7 @@ if(DEFINED RobWorkSim_DIR)
         # found no RobWork installation ot build tree in RobWorkSim_DIR so we try extracting it from
         # RobWorkSimConfig.cmake location instead
     endif()
+    get_filename_component(RWSIMCFG_ROOT ${RWSIMCFG_ROOT} ABSOLUTE)
 endif()
 
 # get the relavant build type

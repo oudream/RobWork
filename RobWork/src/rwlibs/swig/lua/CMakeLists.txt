@@ -72,12 +72,16 @@ if(build)
         set(SOURCE ${SOURCE} Lua_${RW_MODULE}.cpp)
 
         # ############ lua interface generation ##############
+
         if((CMAKE_VERSION VERSION_GREATER 3.8) OR (CMAKE_VERSION VERSION_EQUAL 3.8))
             swig_add_library(
                 ${TARGET_NAME}
                 TYPE SHARED
                 LANGUAGE lua
+                OUTPUT_DIR ${CMAKE_CURRENT_BINARY_DIR}
+                OUTFILE_DIR ${CMAKE_CURRENT_BINARY_DIR}
                 SOURCES ${RW_MODULE_FILENAME} ${SOURCE}
+                
             )
         else()
             swig_add_module(${TARGET_NAME} lua ${RW_MODULE_FILENAME} ${SOURCE})
@@ -90,7 +94,7 @@ if(build)
                     PREFIX ""
                     OUTPUT_NAME ${RW_MODULE}
                     ARCHIVE_OUTPUT_DIRECTORY "${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua"
-                    LIBRARY_OUTPUT_DIRECTORY "${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua"
+                    RUNTIME_OUTPUT_DIRECTORY "${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua"
                     LIBRARY_OUTPUT_DIRECTORY "${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua"
             )
         endif()

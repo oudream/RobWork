@@ -1,7 +1,7 @@
 #ifndef __DOG_PLUGIN_HPP
 #define __DOG_PLUGIN_HPP
 
-#include <rw/common/Plugin.hpp>
+#include <rw/core/Plugin.hpp>
 
 
 

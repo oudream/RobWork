@@ -131,7 +131,7 @@ macro(GET_ROBWORKHARDWARE_BUILD_TYPE CFG_ROOT RWHW_BUILD_TYPE)
 
 endmacro()
 
-get_filename_component(RWHWCFG_ROOT ${CMAKE_CURRENT_LIST_FILE} PATH)
+set(RWHWCFG_ROOT ${CMAKE_CURRENT_LIST_DIR})
 
 # check if user specified a RobWorkHardware_DIR
 if(DEFINED RobWorkHardware_DIR)
@@ -156,6 +156,7 @@ if(DEFINED RobWorkHardware_DIR)
         # found no RobWorkHardware installation ot build tree in RobWorkHardware_DIR so we try
         # extracting it from RobWorkHardwareConfig.cmake location instead
     endif()
+    get_filename_component(RWHWCFG_ROOT ${RWHWCFG_ROOT} ABSOLUTE)
 endif()
 
 # get the relavant build type

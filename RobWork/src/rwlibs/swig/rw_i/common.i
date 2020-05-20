@@ -1139,28 +1139,8 @@
             */
             bool has (const Pair& pair) const;
             
-            /**
-             @brief return a reference to the value that is associated with the
-            \b pair
-
-            If no value has been inserted for \b pair, then the default value of
-            \b T2 is inserted in the map and returned.
-
-            @param pair [in] the pair for which to find its associated values.
-            @return reference to the value associated to pair.
-            */
             MAPOPERATOR(T2,Pair); //T2& operator[] (const Pair& pair);
 
-            /**
-             * @brief return a reference to the value that is associated with the
-             * pair consisting of \b f1 and f2.
-             * If no value has been inserted the default value of
-             * \b T is returned. Use has() to see if a value has been stored for \b
-             * frame.
-             * @param f1 [in] the first frame in the pair for which to find its associated values.
-             * @param f2 [in] the second frame in the pair for which to find its associated values.
-             * @return reference to the value associated to pair.
-             */
             MAP2OPERATOR(T2, T1, T1); //T2& operator() (T1 f1, T1 f2);
 
             /**
@@ -1782,11 +1762,10 @@
          */
         void registerFailure (const Exception& e);
 
-        /**
+        /*
          * @brief Get a list of exceptions registered in task and subtasks.
          * @return a list of exceptions.
          */
-        //std::list< Exception > getExceptions () const;
         %extend {
             std::vector<Exception> getException() const{
               std::list<Exception> init = $self->getExceptions();

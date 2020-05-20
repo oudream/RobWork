@@ -24,28 +24,15 @@ endif()
 project(RobWorkStudio)
 
 set(RWS_ROOT ${CMAKE_CURRENT_SOURCE_DIR})
-message(STATUS "RobWorkStudio version ${ROBWORKSTUDIO_VERSION}")
 
 # ##################################################################################################
 # lets start by finding RobWork since this is the primary dependency and because we want to use the
 # macros available in RobWork if RW_ROOT is defined then we use that, else we try finding it the
 # traditional way
-if(RW_ROOT)
-    set(RobWork_DIR ${RW_ROOT}/cmake)
-else()
-    # try finding it relative to this directory
-    find_file(ROBWORKDEVEL_FOUND RobWorkSetup.cmake ${RWS_ROOT}/../RobWork/cmake NO_DEFAULT_PATH)
-    if(ROBWORKDEVEL_FOUND)
-        set(RW_ROOT ${RWS_ROOT}/../RobWork)
-        set(RobWork_DIR ${RW_ROOT}/cmake)
-    endif()
-endif()
-
-find_package(RobWork REQUIRED PATHS ${RWS_ROOT}/../RobWork/cmake )
 
 # ##################################################################################################
 # include the macros from robwork
-include(${RW_ROOT}/cmake/RobWorkMacros.cmake)
+include(${RWS_ROOT}/../RobWork/cmake/RobWorkMacros.cmake)
 include(${RWS_ROOT}/cmake/RobWorkStudioMacros.cmake)
 
 if(DEFINED VERSION)
@@ -55,6 +42,7 @@ else()
     rw_get_git_version(ROBWORKSTUDIO_VERSION ROBWORKSTUDIO_BRANCH)
     set(RWS_GOT_VERSION False)
 endif()
+find_package(RobWork ${ROBWORKSTUDIO_VERSION} REQUIRED PATHS ${RWS_ROOT}/../RobWork/cmake )
 
 
 rw_init_project(${RWS_ROOT} RobWorkStudio RWS ${ROBWORKSTUDIO_VERSION})

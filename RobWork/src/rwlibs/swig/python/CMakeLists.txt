@@ -93,6 +93,8 @@ if(build)
                 ${RW_MODULE}${LIB_SUFIX}
                 TYPE SHARED
                 LANGUAGE python
+                #OUTPUT_DIR ${CMAKE_CURRENT_BINARY_DIR}
+                OUTFILE_DIR ${CMAKE_CURRENT_BINARY_DIR}
                 SOURCES ${RW_MODULE_FILENAME} ../ScriptTypes.cpp
             )
         else()
