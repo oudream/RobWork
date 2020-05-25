@@ -84,7 +84,6 @@ macro(RWS_ADD_COMPONENT _name)
 endmacro()
 
 macro(RWS_PLUGIN_LOAD_DETAILS _subsys_name _dockarea _name _visible)
-    message(STATUS "Setting upp plugin")
     set(${_name}_DOCKAREA
         "${_name}\\DockArea=${_dockarea}"
         CACHE INTERNAL "PLugin Load details for {_name}" FORCE

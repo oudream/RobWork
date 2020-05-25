@@ -56,8 +56,8 @@ xercesc::DOMDocument* XercesDocumentReader::readDocument(XercesDOMParser& parser
 
     parser.parse(filename.c_str());
     if (parser.getErrorCount() != 0) {
-	std::cerr<<std::endl<<std::endl<<"Error(s) parsing file '"<<filename<<"': "<<std::endl<<errorHandler.getMessages()<<std::endl;
-        RW_THROW(""<<parser.getErrorCount()<<" Error(s) parsing "<<filename<<": "<<XMLStr(errorHandler.getMessages()).str());
+	    std::cerr<<std::endl<<std::endl<<"Error(s) parsing file '"<<filename<<"': "<<std::endl<<errorHandler.getMessages()<<std::endl;
+        RW_THROW(""<<parser.getErrorCount()<<" Error(s) parsing "<<filename<<": "<<errorHandler.getMessages());
     }
     return parser.getDocument();
 }

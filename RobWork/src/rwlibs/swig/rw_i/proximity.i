@@ -945,7 +945,7 @@
 
         void clear();
 
-        //TODO(kalor) add printout
+        TOSTRING(DistanceStrategyResult);
     };
     %template(DistanceStrategyResultVector) std::vector<DistanceStrategyResult>;
 
@@ -1625,10 +1625,6 @@
          * @brief Check whether \b name matches pattern B
          */
         bool matchPatternB(const std::string& str) const;
-            
-        //TODO(kalor) Print function
-
-
 
         /**
          * @brief Compares if two rules are the same
@@ -1654,6 +1650,8 @@
          * @brief Make an include rule for the patterns
          */
         static ProximitySetupRule makeInclude(const std::string& patternA, const std::string& patternB);
+
+        TOSTRING(ProximitySetupRule);
     };
 
     %template(ProximitySetupRuleVector) std::vector<ProximitySetupRule>;

@@ -601,15 +601,15 @@
          *  \mathbf{R}=
          *  \left[
          *  \begin{array}{ccc}
-         *  {}^A\hat{X}_B & {}^A\hat{Y}_B & {}^A\hat{Z}_B
+         *  {}^A\hat{X}_B {}^A\hat{Y}_B {}^A\hat{Z}_B
          *  \end{array}
          *  \right]
          *  =
          *  \left[
          *  \begin{array}{ccc}
-         *  r_{11} & r_{12} & r_{13} \\
-         *  r_{21} & r_{22} & r_{23} \\
-         *  r_{31} & r_{32} & r_{33}
+         *  r_{11} r_{12} r_{13} \\
+         *  r_{21} r_{22} r_{23} \\
+         *  r_{31} r_{32} r_{33}
          *  \end{array}
          *  \right]
          * @f$
@@ -639,9 +639,9 @@
              *  \mathbf{R} =
              *  \left[
              *  \begin{array}{ccc}
-             *  r_{11} & r_{12} & r_{13} \\
-             *  r_{21} & r_{22} & r_{23} \\
-             *  r_{31} & r_{32} & r_{33}
+             *  r_{11} r_{12} r_{13} \\
+             *  r_{21} r_{22} r_{23} \\
+             *  r_{31} r_{32} r_{33}
              *  \end{array}
              *  \right]
              * @f$
@@ -655,7 +655,7 @@
              * @f$ \robabx{a}{b}{\mathbf{R}} =
              * \left[
              *  \begin{array}{ccc}
-             *   \robabx{a}{b}{\mathbf{i}} & \robabx{a}{b}{\mathbf{j}} & \robabx{a}{b}{\mathbf{k}}
+             *   \robabx{a}{b}{\mathbf{i}} \robabx{a}{b}{\mathbf{j}} \robabx{a}{b}{\mathbf{k}}
              *  \end{array}
              * \right]
              * @f$
@@ -680,9 +680,9 @@
              * \mathbf{R} =
              * \left[
              * \begin{array}{ccc}
-             * 1 & 0 & 0 \\
-             * 0 & 1 & 0 \\
-             * 0 & 0 & 1
+             * 1 0 0 \\
+             * 0 1 0 \\
+             * 0 0 1
              * \end{array}
              * \right]
              * @f$
@@ -827,7 +827,7 @@
              * @brief Calculate the inverse.
              * @note This function changes the object that it is invoked on, but this is about x5 faster
              * than rot = inverse( rot )
-             * @see inverse(const rw::math::Rotation3D< T > &) for the (slower) version that does not change the
+             * @note see inverse(const rw::math::Rotation3D< T > &) for the (slower) version that does not change the
              * rotation object itself.
              * @return the inverse rotation.
              */
@@ -876,7 +876,7 @@
          *
          * @relates Rotation3D
          *
-         * @see Rotation3D::inverse() for a faster version that modifies the existing rotation object
+         * @note see Rotation3D::inverse() for a faster version that modifies the existing rotation object
          * instead of allocating a new one.
          *
          * @param aRb [in] the rotation matrix @f$ \robabx{a}{b}{\mathbf{R}} @f$
@@ -1066,9 +1066,9 @@
              * @f$
              * \mathbf{R} = e^{[\mathbf{\hat{k}}],\theta}=\mathbf{I}^{3x3}+[\mathbf{\hat{k}}]
              * sin\theta+[{\mathbf{\hat{k}}}]^2(1-cos\theta) = \left[ \begin{array}{ccc}
-             *      k_xk_xv\theta + c\theta & k_xk_yv\theta - k_zs\theta & k_xk_zv\theta + k_ys\theta \\
-             *      k_xk_yv\theta + k_zs\theta & k_yk_yv\theta + c\theta & k_yk_zv\theta - k_xs\theta\\
-             *      k_xk_zv\theta - k_ys\theta & k_yk_zv\theta + k_xs\theta & k_zk_zv\theta + c\theta
+             *      k_xk_xv\theta + c\theta k_xk_yv\theta - k_zs\theta k_xk_zv\theta + k_ys\theta \\
+             *      k_xk_yv\theta + k_zs\theta k_yk_yv\theta + c\theta k_yk_zv\theta - k_xs\theta\\
+             *      k_xk_zv\theta - k_ys\theta k_yk_zv\theta + k_xs\theta k_zk_zv\theta + c\theta
              *    \end{array}
              *  \right]
              * @f$
@@ -1318,9 +1318,9 @@
              * \mathbf{rot} =
              *  \left[
              *   \begin{array}{ccc}
-             *      1-2(q_y^2-q_z^2) & 2(q_x\ q_y+q_z\ q_w)& 2(q_x\ q_z-q_y\ q_w) \\
-             *      2(q_x\ q_y-q_z\ q_w) & 1-2(q_x^2-q_z^2) & 2(q_y\ q_z+q_x\ q_w)\\
-             *      2(q_x\ q_z+q_y\ q_w) & 2(q_y\ q_z-q_x\ q_z) & 1-2(q_x^2-q_y^2)
+             *      1-2(q_y^2-q_z^2) 2(q_x\ q_y+q_z\ q_w) 2(q_x\ q_z-q_y\ q_w) \\
+             *      2(q_x\ q_y-q_z\ q_w) 1-2(q_x^2-q_z^2) 2(q_y\ q_z+q_x\ q_w)\\
+             *      2(q_x\ q_z+q_y\ q_w) 2(q_y\ q_z-q_x\ q_z) 1-2(q_x^2-q_y^2)
              *    \end{array}
              *  \right]
              * @f$
@@ -1401,8 +1401,8 @@
          * \mathbf{T} =
          * \left[
          *  \begin{array}{cc}
-         *  \mathbf{R} & \mathbf{d} \\
-         *  \begin{array}{ccc}0 & 0 & 0\end{array} & 1
+         *  \mathbf{R} \mathbf{d} \\
+         *  \begin{array}{ccc}0 0 0\end{array} 1
          *  \end{array}
          * \right]
          * @f$
@@ -1464,10 +1464,10 @@
              *  \robabx{i-1}{i}{\mathbf{T}}=
              *  \left[
              *    \begin{array}{cccc}
-             *      c\theta_i & -s\theta_i c\alpha_i &  s\theta_i s\alpha_i & a_i c\theta_i \\
-             *      s\theta_i &  c\theta_i c\alpha_i & -c\theta_i s\alpha_i & a_i s\theta_i \\
-             *      0         &  s\alpha_i           &  c\alpha_i           & d_i \\
-             *      0         &  0                   & 0                    & 1
+             *      c\theta_i -s\theta_i c\alpha_i  s\theta_i s\alpha_i a_i c\theta_i \\
+             *      s\theta_i  c\theta_i c\alpha_i -c\theta_i s\alpha_i a_i s\theta_i \\
+             *      0          s\alpha_i            c\alpha_i           d_i \\
+             *      0          0                   0                    1
              *    \end{array}
              *  \right]
              * @f$
@@ -1491,10 +1491,10 @@
              * \robabx{i-1}{i}{\mathbf{T}} =
              * \left[
              * \begin{array}{cccc}
-             * c\theta_i & -s\theta_i & 0 & a_{i-1} \\
-             * s\theta_i c\alpha_{i-1} & c\theta_i c\alpha_{i-1} & -s\alpha_{i-1} & -s\alpha_{i-1}d_i \\
-             * s\theta_i s\alpha_{i-1} & c\theta_i s\alpha_{i-1} &  c\alpha_{i-1} &  c\alpha_{i-1}d_i \\
-             * 0 & 0 & 0 & 1
+             * c\theta_i -s\theta_i 0 a_{i-1} \\
+             * s\theta_i c\alpha_{i-1} c\theta_i c\alpha_{i-1} -s\alpha_{i-1} -s\alpha_{i-1}d_i \\
+             * s\theta_i s\alpha_{i-1} c\theta_i s\alpha_{i-1}  c\alpha_{i-1}  c\alpha_{i-1}d_i \\
+             * 0 0 0 1
              * \end{array}
              * \right]
              * @f$
@@ -1521,10 +1521,10 @@
              *  \robabx{i-1}{i}{\mathbf{T}}=
              *  \left[
              *    \begin{array}{cccc}
-             *       c\beta_i & s\alpha_i s\beta_i &  c\alpha_i s\beta_i &  a_i c\beta_i \\
-             *       0        & c\alpha_i          & -s\alpha_i          &  b_i \\
-             *      -s\beta_i & s\alpha_i c\beta_i &  c\alpha_i c\beta_i & -a_i s\beta \\
-             *      0         & 0                  & 0                    & 1
+             *       c\beta_i s\alpha_i s\beta_i  c\alpha_i s\beta_i  a_i c\beta_i \\
+             *       0        c\alpha_i          -s\alpha_i           b_i \\
+             *      -s\beta_i s\alpha_i c\beta_i  c\alpha_i c\beta_i -a_i s\beta \\
+             *      0         0                  0                    1
              *    \end{array}
              *  \right]
              * @f$
@@ -1539,10 +1539,10 @@
              * \mathbf{T} =
              * \left[
              * \begin{array}{cccc}
-             * 1 & 0 & 0 & 0\\
-             * 0 & 1 & 0 & 0\\
-             * 0 & 0 & 1 & 0\\
-             * 0 & 0 & 0 & 1
+             * 1 0 0 0\\
+             * 0 1 0 0\\
+             * 0 0 1 0\\
+             * 0 0 0 1
              * \end{array}
              * \right]
              * @f$
@@ -1583,9 +1583,9 @@
              * \robabx{a}{c}{\mathbf{T}} =
              * \left[
              *  \begin{array}{cc}
-             *  \robabx{a}{b}{\mathbf{R}}\robabx{b}{c}{\mathbf{R}} & \robabx{a}{b}{\mathbf{d}} +
-             * \robabx{a}{b}{\mathbf{R}}\robabx{b}{c}{\mathbf{d}} \\ \begin{array}{ccc}0 & 0 &
-             * 0\end{array} & 1 \end{array} \right]
+             *  \robabx{a}{b}{\mathbf{R}}\robabx{b}{c}{\mathbf{R}} \robabx{a}{b}{\mathbf{d}} +
+             * \robabx{a}{b}{\mathbf{R}}\robabx{b}{c}{\mathbf{d}} \\ \begin{array}{ccc}0 0 
+             * 0\end{array} 1 \end{array} \right]
              * @f$
              */
             const Transform3D operator* (const Transform3D& bTc) const;
@@ -2094,9 +2094,9 @@
              * \right] =
              * \left[
              *  \begin{array}{cc}
-             *    \robabx{a}{b}{\mathbf{R}} & S(\robabx{a}{b}{\mathbf{p}})
+             *    \robabx{a}{b}{\mathbf{R}} S(\robabx{a}{b}{\mathbf{p}})
              *    \robabx{a}{b}{\mathbf{R}} \\
-             *    \mathbf{0}^{3x3} & \robabx{a}{b}{\mathbf{R}}
+             *    \mathbf{0}^{3x3} \robabx{a}{b}{\mathbf{R}}
              *  \end{array}
              * \right]
              * \robabx{b}{b}{\mathbf{\nu}} =
@@ -2144,9 +2144,9 @@
              * \right] =
              * \left[
              *  \begin{array}{cc}
-             *    \robabx{a}{b}{\mathbf{R}} & S(\robabx{a}{b}{\mathbf{p}})
+             *    \robabx{a}{b}{\mathbf{R}} S(\robabx{a}{b}{\mathbf{p}})
              *    \robabx{a}{b}{\mathbf{R}} \\
-             *    \mathbf{0}^{3x3} & \robabx{a}{b}{\mathbf{R}}
+             *    \mathbf{0}^{3x3} \robabx{a}{b}{\mathbf{R}}
              *  \end{array}
              * \right]
              * \robabx{b}{b}{\mathbf{\nu}} =
@@ -2191,8 +2191,8 @@
              * \right] =
              * \left[
              *  \begin{array}{cc}
-             *    \robabx{a}{b}{\mathbf{R}} & \mathbf{0}^{3x3} \\
-             *    \mathbf{0}^{3x3} & \robabx{a}{b}{\mathbf{R}}
+             *    \robabx{a}{b}{\mathbf{R}} \mathbf{0}^{3x3} \\
+             *    \mathbf{0}^{3x3} \robabx{a}{b}{\mathbf{R}}
              *  \end{array}
              * \right]
              * \robabx{b}{i}{\mathbf{\nu}} =
@@ -2335,9 +2335,9 @@
              *  \mathbf{R} =
              *  \left[
              *  \begin{array}{ccc}
-             *  r_{11} & r_{12} & r_{13} \\
-             *  r_{21} & r_{22} & r_{23} \\
-             *  r_{31} & r_{32} & r_{33}
+             *  r_{11} r_{12} r_{13} \\
+             *  r_{21} r_{22} r_{23} \\
+             *  r_{31} r_{32} r_{33}
              *  \end{array}
              *  \right]
              * @f$
@@ -2352,7 +2352,7 @@
              * @f$ \robabx{a}{b}{\mathbf{R}} =
              * \left[
              *  \begin{array}{ccc}
-             *   \robabx{a}{b}{\mathbf{i}} & \robabx{a}{b}{\mathbf{j}} & \robabx{a}{b}{\mathbf{k}}
+             *   \robabx{a}{b}{\mathbf{i}} \robabx{a}{b}{\mathbf{j}} \robabx{a}{b}{\mathbf{k}}
              *  \end{array}
              * \right]
              * @f$
@@ -2693,14 +2693,14 @@
          *
          * @param aTb [in] @f$ \robabx{a}{b}{\bf{T}} @f$
          *
-         * @return @f$ \robabcdx{a}{b}{a}{b}{\bf{J_v}} @f$
+         * @note @f$ \robabcdx{a}{b}{a}{b}{\bf{J_v}} @f$
          *
          * \f[
          * \robabcdx{a}{b}{a}{b}{\bf{J_v}} =
          * \left[
          *  \begin{array}{cc}
-         *    \robabx{a}{b}{\mathbf{R}} & S(\robabx{a}{b}{\mathbf{d}})\robabx{a}{b}{\mathbf{R}} \\
-         *    \mathbf{0}^{3x3} & \robabx{a}{b}{\mathbf{R}}
+         *    \robabx{a}{b}{\mathbf{R}} S(\robabx{a}{b}{\mathbf{d}})\robabx{a}{b}{\mathbf{R}} \\
+         *    \mathbf{0}^{3x3} \robabx{a}{b}{\mathbf{R}}
          *  \end{array}
          * \right]
          * \f]
@@ -2720,14 +2720,14 @@
          *
          * @param aRb [in] @f$ \robabx{a}{b}{\bf{R}} @f$
          *
-         * @return @f$ \robabcdx{a}{b}{i}{i}{\bf{J}_v} @f$
+         * @note @f$ \robabcdx{a}{b}{i}{i}{\bf{J}_v} @f$
          *
          * \f[
          * \robabcdx{a}{b}{i}{i}{\bf{J_v}} =
          * \left[
          *  \begin{array}{cc}
-         *    \robabx{a}{b}{\mathbf{R}} & \mathbf{0}^{3x3} \\
-         *    \mathbf{0}^{3x3} & \robabx{a}{b}{\mathbf{R}}
+         *    \robabx{a}{b}{\mathbf{R}} \mathbf{0}^{3x3} \\
+         *    \mathbf{0}^{3x3} \robabx{a}{b}{\mathbf{R}}
          *  \end{array}
          * \right]
          * \f]
@@ -2747,14 +2747,14 @@
          *
          * @param aPb [in] @f$ \robabx{a}{b}{\bf{P}} @f$
          *
-         * @return @f$ \robabcdx{i}{i}{b}{a}{\bf{J}_v} @f$
+         * @note @f$ \robabcdx{i}{i}{b}{a}{\bf{J}_v} @f$
          *
          * \f[
          * \robabcdx{i}{i}{b}{a}{\bf{J}_v} =
          * \left[
          *  \begin{array}{cc}
-         *    \bf{I}^{3x3} & S(\robabx{a}{b}{\bf{P}}) \\
-         *    \bf{0}^{3x3} & \bf{I}^{3x3}
+         *    \bf{I}^{3x3} S(\robabx{a}{b}{\bf{P}}) \\
+         *    \bf{0}^{3x3} \bf{I}^{3x3}
          *  \end{array}
          * \right]
          * \f]
@@ -3091,9 +3091,14 @@
          * between two lines.
          */
         enum IntersectResult {
-            PARALLEL,      //! Two lines are parallel
-            COINCIDENT,    //! Two lines are parallel and coinciding
-            INTERSECTS     //! Two lines intersects at one point
+            //! @brief Two lines are parallel
+            PARALLEL,    
+
+            //! @brief Two lines are parallel and coinciding
+            COINCIDENT,   
+
+            //! @brief Two lines intersects at one point 
+            INTERSECTS     
         };
 
         /**
@@ -3400,7 +3405,7 @@
             /**
              * @brief Increase the order of this polynomial.
              * @param increase [in] how much to increase the order (default is 1).
-             * @see increaseOrder(std::size_t,const Coef&) for a version that initializes the new
+             * @note see increaseOrder(std::size_t,const Coef&) for a version that initializes the new
              * coefficients to a certain value.
              */
             void increaseOrder (std::size_t increase = 1);
@@ -3553,7 +3558,7 @@
 
         };
 
-        /*
+        /**
          * @brief Multiply 3D polynomial matrix with 3D polynomial vector.
          * @param A [in] the matrix expression.
          * @param b [in] the vector expression.
@@ -3572,33 +3577,33 @@
         operator* (const rw::math::PolynomialND< Eigen::Matrix< double, 1, 3 >,double >& a,
                 const rw::math::PolynomialND< Eigen::Matrix<double,3,3>,double>& A);
 
-        //! @copydoc operator*(const rw::math::PolynomialND<Eigen::Matrix<double,3,3>>&, const
-        //! rw::math::PolynomialND<Eigen::Matrix<double,3,1>>&)
+         // @copydoc operator*(const rw::math::PolynomialND<Eigen::Matrix<double,3,3>>&, const
+        // rw::math::PolynomialND<Eigen::Matrix<double,3,1>>&)
         rw::math::PolynomialND< Eigen::Matrix<double,3,1>,double> operator* (const rw::math::PolynomialND< Eigen::Matrix<double,3,3>,double>& A,
                                                 const Eigen::Matrix<double,3,1>& b);
 
-        //! @copydoc operator*(const rw::math::PolynomialND<Eigen::Matrix<double,1,3>,double >&, const
-        //! rw::math::PolynomialND<Eigen::Matrix<double,3,3>>&)
+         // @copydoc operator*(const rw::math::PolynomialND<Eigen::Matrix<double,1,3>,double >&, const
+        // rw::math::PolynomialND<Eigen::Matrix<double,3,3>>&)
         rw::math::PolynomialND< Eigen::Matrix< double, 1, 3 >,double >
         operator* (const rw::math::PolynomialND< Eigen::Matrix< double, 1, 3 >,double >& a, const Eigen::Matrix<double,3,3>& A);
 
-        //! @copydoc operator*(const rw::math::PolynomialND<Eigen::Matrix<double,3,3>>&, const
-        //! rw::math::PolynomialND<Eigen::Matrix<double,3,1>>&)
+         // @copydoc operator*(const rw::math::PolynomialND<Eigen::Matrix<double,3,3>>&, const
+        // rw::math::PolynomialND<Eigen::Matrix<double,3,1>>&)
         rw::math::PolynomialND< Eigen::Matrix<float,3,1>, float >
         operator* (const rw::math::PolynomialND< Eigen::Matrix<float,3,3>, float >& A,
                 const rw::math::PolynomialND< Eigen::Matrix<float,3,1>, float >& b);
 
-        //! @copydoc operator*(const rw::math::PolynomialND<Eigen::Matrix<double,1,3>,double >&, const
-        //! rw::math::PolynomialND<Eigen::Matrix<double,3,3>>&)
+         // @copydoc operator*(const rw::math::PolynomialND<Eigen::Matrix<double,1,3>,double >&, const
+        // rw::math::PolynomialND<Eigen::Matrix<double,3,3>>&)
         rw::math::PolynomialND< Eigen::Matrix< float, 1, 3 >, float >
         operator* (const rw::math::PolynomialND< Eigen::Matrix< float, 1, 3 >, float >& a,
                 const rw::math::PolynomialND< Eigen::Matrix<float,3,3>, float >& A);
 
-        //! @copydoc operator*(const rw::math::PolynomialND<Eigen::Matrix<double,3,3>>&, const Eigen::Matrix<double,3,1>&)
+         // @copydoc operator*(const rw::math::PolynomialND<Eigen::Matrix<double,3,3>>&, const Eigen::Matrix<double,3,1>&)
         rw::math::PolynomialND< Eigen::Matrix<float,3,1>, float >
         operator* (const rw::math::PolynomialND< Eigen::Matrix<float,3,3>, float >& A, const Eigen::Matrix<float,3,1>& b);
 
-        //! @copydoc operator*(const rw::math::PolynomialND<Eigen::Matrix<double,1,3>,double >&, const Eigen::Matrix<double,3,3>&)
+         // @copydoc operator*(const rw::math::PolynomialND<Eigen::Matrix<double,1,3>,double >&, const Eigen::Matrix<double,3,3>&)
         rw::math::PolynomialND< Eigen::Matrix< float, 1, 3 >, float >
         operator* (const rw::math::PolynomialND< Eigen::Matrix< float, 1, 3 >, float >& a,
                 const Eigen::Matrix<float,3,3>& A);
@@ -3755,7 +3760,7 @@
             operator* (const rw::math::Polynomial< T >& p,
                     const rw::math::PolynomialND< Eigen::Matrix< T, 3, 1 >, T >& polynomial);
 
-            //! @copydoc operator*(const rw::math::Polynomial<T>&, const rw::math::PolynomialND<Eigen::Matrix<T,3,1>,T>&)
+             // @copydoc operator*(const rw::math::Polynomial<T>&, const rw::math::PolynomialND<Eigen::Matrix<T,3,1>,T>&)
             friend rw::math::PolynomialND< Eigen::Matrix< T, 1, 3 >, T >
             operator* (const rw::math::Polynomial< T >& p,
                     const rw::math::PolynomialND< Eigen::Matrix< T, 1, 3 >, T >& polynomial);
@@ -3779,7 +3784,7 @@
             friend rw::math::PolynomialND< Eigen::Matrix< T, 3, 1 >, T >
             operator* (const rw::math::Polynomial< T >& p, const Eigen::Matrix< T, 3, 1 >& a);
 
-            //! @copydoc operator*(const rw::math::Polynomial<T>&, const Eigen::Matrix<T,3,1>&)
+             // @copydoc operator*(const rw::math::Polynomial<T>&, const Eigen::Matrix<T,3,1>&)
             friend rw::math::PolynomialND< Eigen::Matrix< T, 1, 3 >, T >
             operator* (const rw::math::Polynomial< T >& p, const Eigen::Matrix< T, 1, 3 >& a);
 
@@ -3912,7 +3917,12 @@
         rw::math::PolynomialND< Eigen::Matrix<double,3,1>,double> operator* (const rw::math::PolynomialND< Eigen::Matrix<double,3,1>,double>& polynomial,
                                                 const rw::math::Polynomial<double>& p);
 
-        //! @copydoc operator*(const rw::math::PolynomialND<Eigen::Matrix<double,3,1>>&, const rw::math::Polynomial<double>&)
+        /**
+         * @brief Multiply 3D polynomial vector with a polynomial with scalar coefficients.
+         * @param polynomial [in] the polynomial vector.
+         * @param p [in] polynomial with scalar coefficients.
+         * @return a 3D polynomial vector.
+         */
         rw::math::PolynomialND< Eigen::Matrix< double, 1, 3 >,double >
         operator* (const rw::math::PolynomialND< Eigen::Matrix< double, 1, 3 >,double >& polynomial,
                 const rw::math::Polynomial<double>& p);
@@ -3926,22 +3936,18 @@
         rw::math::PolynomialND< Eigen::Matrix<double,3,3>,double> operator* (const rw::math::PolynomialND< Eigen::Matrix<double,3,3>,double>& polynomial,
                                                 const rw::math::Polynomial<double>& p);
 
-        //! @copydoc operator*(const rw::math::PolynomialND<Eigen::Matrix<double,1,3>,double >&, const
-        //! rw::math::PolynomialND<Eigen::Matrix<double,3,1> >&)
+
         rw::math::Polynomial< float > operator* (const rw::math::PolynomialND< Eigen::Matrix< float, 1, 3 >, float >& a,
                                     const rw::math::PolynomialND< Eigen::Matrix< float, 3, 1 >, float >& b);
 
-        //! @copydoc operator*(const rw::math::PolynomialND<Eigen::Matrix<double,3,1>>&, const rw::math::Polynomial<double>&)
         rw::math::PolynomialND< Eigen::Matrix<float,3,1>, float >
         operator* (const rw::math::PolynomialND< Eigen::Matrix<float,3,1>, float >& polynomial,
                 const rw::math::Polynomial< float >& p);
 
-        //! @copydoc operator*(const rw::math::PolynomialND<Eigen::Matrix<double,1,3>,double >&, const rw::math::Polynomial<double>&)
         rw::math::PolynomialND< Eigen::Matrix< float, 1, 3 >, float >
         operator* (const rw::math::PolynomialND< Eigen::Matrix< float, 1, 3 >, float >& polynomial,
                 const rw::math::Polynomial< float >& p);
 
-        //! @copydoc operator*(const rw::math::PolynomialND<Eigen::Matrix<double,3,3> >&, const rw::math::Polynomial<double>&)
         rw::math::PolynomialND< Eigen::Matrix<float,3,3>, float >
         operator* (const rw::math::PolynomialND< Eigen::Matrix<float,3,3>, float >& polynomial,
                 const rw::math::Polynomial< float >& p);
@@ -4030,7 +4036,7 @@
          * @param epsilon [in] the root is considered a real root if \f$ |im(x)| \leq 2 \epsilon
          * |real(x)|\f$ .
          * @return a list of real solutions.
-         * @throws rw::core::Exception if the Laguerre method fails, or the maximum number of
+         * @note throws rw::core::Exception if the Laguerre method fails, or the maximum number of
          * iterations has been reached.
          * @see PolynomialSolver for more details about the method used.
          */
@@ -4041,7 +4047,7 @@
          * @param epsilon [in] highest order coefficients will be removed if they have absolute real
          * and imaginary values less than \f$ \epsilon \f$ .
          * @return a list of complex solutions.
-         * @throws rw::core::Exception if the Laguerre method fails, or the maximum number of
+         * @note throws rw::core::Exception if the Laguerre method fails, or the maximum number of
          * iterations has been reached.
          * @see PolynomialSolver for more details about the method used.
          */
@@ -4228,14 +4234,14 @@
          *  \mathbf{R}=
          *  \left[
          *  \begin{array}{cc}
-         *  {}^A\hat{X}_B & {}^A\hat{Y}_B
+         *  {}^A\hat{X}_B {}^A\hat{Y}_B
          *  \end{array}
          *  \right]
          *  =
          *  \left[
          *  \begin{array}{cc}
-         *  r_{11} & r_{12} \\
-         *  r_{21} & r_{22}
+         *  r_{11} r_{12} \\
+         *  r_{21} r_{22}
          *  \end{array}
          *  \right]
          * @f$
@@ -4260,8 +4266,8 @@
              *  \mathbf{R} =
              *  \left[
              *  \begin{array}{cc}
-             *  r_{11} & r_{12} \\
-             *  r_{21} & r_{22}
+             *  r_{11} r_{12} \\
+             *  r_{21} r_{22}
              *  \end{array}
              *  \right]
              * @f$
@@ -4273,7 +4279,7 @@
              * @f$ \robabx{a}{b}{\mathbf{R}} =
              * \left[
              *  \begin{array}{cc}
-             *   \robabx{a}{b}{\mathbf{i}} & \robabx{a}{b}{\mathbf{j}}
+             *   \robabx{a}{b}{\mathbf{i}} \robabx{a}{b}{\mathbf{j}}
              *  \end{array}
              * \right]
              * @f$
@@ -4288,7 +4294,7 @@
              * @f$ \robabx{a}{b}{\mathbf{R}} =
              * \left[
              *  \begin{array}{cc}
-             *   \robabx{a}{b}{\mathbf{i}} & \robabx{a}{b}{\mathbf{j}}
+             *   \robabx{a}{b}{\mathbf{i}} \robabx{a}{b}{\mathbf{j}}
              *  \end{array}
              * \right]
              * @f$
@@ -4314,8 +4320,8 @@
              * \mathbf{R} =
              * \left[
              * \begin{array}{cc}
-             * 1 & 0\\
-             * 0 & 1
+             * 1 0\\
+             * 0 1
              * \end{array}
              * \right]
              * @f$
@@ -4578,8 +4584,8 @@
          * \mathbf{T} =
          * \left[
          *  \begin{array}{cc}
-         *  \mathbf{R} & \mathbf{d} \\
-         *  \begin{array}{ccc}0 & 0 & 0\end{array} & 1
+         *  \mathbf{R} \mathbf{d} \\
+         *  \begin{array}{ccc}0 0 0\end{array} 1
          *  \end{array}
          * \right]
          * @f$
@@ -4610,9 +4616,9 @@
              * \mathbf{T} =
              * \left[
              * \begin{array}{ccc}
-             * 1 & 0 & 0 \\
-             * 0 & 1 & 0 \\
-             * 0 & 0 & 1 \\
+             * 1 0 0 \\
+             * 0 1 0 \\
+             * 0 0 1 \\
              * \end{array}
              * \right]
              * @f$
@@ -4631,9 +4637,9 @@
                 \robabx{a}{c}{\mathbf{T}} =
                 \left[
                 \begin{array}{cc}
-                \robabx{a}{b}{\mathbf{R}}\robabx{b}{c}{\mathbf{R}} &
+                \robabx{a}{b}{\mathbf{R}}\robabx{b}{c}{\mathbf{R}}
                 \robabx{a}{b}{\mathbf{d}} + \robabx{a}{b}{\mathbf{R}}\robabx{b}{c}{\mathbf{d}} \\
-                \begin{array}{ccc} 0 & 0 & 0 \end{array} & 1
+                \begin{array}{ccc} 0 0 0 \end{array} 1
                 \end{array}
                 \right]
                 @f$
@@ -4684,8 +4690,8 @@
          * \robabx{a}{b}{\mathbf{T}}^{-1} =
          * \left[
          *  \begin{array}{cc}
-         *  \robabx{a}{b}{\mathbf{R}}^{T} & - \robabx{a}{b}{\mathbf{R}}^{T} \robabx{a}{b}{\mathbf{d}} \\
-         *  \begin{array}{ccc}0 & 0 & 0\end{array} & 1
+         *  \robabx{a}{b}{\mathbf{R}}^{T} - \robabx{a}{b}{\mathbf{R}}^{T} \robabx{a}{b}{\mathbf{d}} \\
+         *  \begin{array}{ccc}0 0 0\end{array} 1
          *  \end{array}
          * \right]
          *
@@ -5182,9 +5188,9 @@
              * S =
              * \left[
              * \begin{array}{ccc}
-             *    0 & -s_z &  s_y\\
-             *  s_z &    0 & -s_x\\
-             * -s_y &  s_x &    0
+             *    0 -s_z  s_y\\
+             *  s_z    0 -s_x\\
+             * -s_y  s_x    0
              * \end{array}
              * \right]
              * \f$

@@ -22,7 +22,6 @@ if(NOT SWIG_FOUND)
     set(DEFAULT false)
     set(REASON "SWIG not found!")
 else()
-
     find_package(Java)
     find_package(JNI)
     if(NOT (JAVA_FOUND AND JNI_FOUND))

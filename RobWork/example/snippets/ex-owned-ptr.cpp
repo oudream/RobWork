@@ -1,4 +1,4 @@
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 using namespace rw::common;
 

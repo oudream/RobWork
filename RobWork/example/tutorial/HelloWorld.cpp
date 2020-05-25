@@ -1,5 +1,5 @@
-#include <rw/common/macros.hpp>
-#include <rw/common/Log.hpp>
+#include <rw/core/macros.hpp>
+#include <rw/core/Log.hpp>
 
 USE_ROBWORK_NAMESPACE
 using namespace robwork;

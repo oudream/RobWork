@@ -17,7 +17,6 @@ if(build)
         SupportPoseAnalyserDialog.ui
         CreateEngineDialog.ui
         SimCfgDialog.ui
-        ODESimCfgForm.ui
         SDHPlugin.ui
         TactileSensorDialog.ui
         # GraspTableGeneratorPlugin.ui
@@ -33,10 +32,7 @@ if(build)
         log/LogValuesWidget.ui
         log/SimulatorStatisticsWidget.ui
     )
-    qt5_wrap_ui(UIS_OUT_H ${FILES_UI})
 
-    # Moc the files:
-    set(MocSrcFiles)
     set(
         SrcFiles_HPP
         ContactTableWidget.hpp
@@ -49,7 +45,6 @@ if(build)
         GLViewRW.hpp
         CreateEngineDialog.hpp
         SimCfgDialog.hpp
-        ODESimCfgDialog.hpp
         BodyControllerWidget.hpp
         TactileSensorDialog.hpp
         log/SimulatorLogWidget.hpp
@@ -69,11 +64,6 @@ if(build)
         log/SimulatorLogWidget.hpp
         log/SimulatorStatisticsWidget.hpp
     )
-    qt5_wrap_cpp(MocSrcFiles ${SrcFiles_HPP})
-
-    # Rcc the files:
-    set(RccSrcFiles)
-    qt5_add_resources(RccSrcFiles resources.qrc)
 
     set(
         SrcFiles
@@ -110,11 +100,15 @@ if(build)
     )
     set(ODE_LIB)
     if(RWSIM_HAVE_ODE)
+        set(FILES_UI ${FILES_UI} ODESimCfgForm.ui)
+        set(SrcFiles_HPP ${SrcFiles_HPP} ODESimCfgDialog.hpp)
         set(SrcFiles ${SrcFiles} ODESimCfgDialog.cpp)
         set(ODE_LIB sdurwsim_ode)
     endif()
 
-    # set_source_files_properties(${SrcFiles} PROPERTIES OBJECT_DEPENDS "${UIS_OUT_H}")
+    qt5_wrap_ui(UIS_OUT_H ${FILES_UI})
+    qt5_wrap_cpp(MocSrcFiles ${SrcFiles_HPP})
+    qt5_add_resources(RccSrcFiles resources.qrc)
 
     rw_add_library(${SUBSYS_NAME} ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles} ${UIS_OUT_H})
     rw_add_includes(${SUBSYS_NAME} "rwsimlibs/gui" ${SrcFiles_HPP})

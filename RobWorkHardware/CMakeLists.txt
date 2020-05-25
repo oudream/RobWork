@@ -9,14 +9,12 @@ set(CMAKE_CXX_STANDARD 11)
 # ##################################################################################################
 # The name of the project.
 project(RobWorkHardware)
-
 set(RWHW_ROOT ${CMAKE_CURRENT_SOURCE_DIR})
-find_package(RobWork REQUIRED PATHS ${RWHW_ROOT}/../RobWork/cmake )
-set(Boost_USE_STATIC_LIBS ${RW_BUILD_WITH_BOOST_USE_STATIC_LIB})
 
 # ##################################################################################################
 # include the macros from robwork
-include(${RW_ROOT}/cmake/RobWorkMacros.cmake)
+
+include(${RWHW_ROOT}/../RobWork/cmake/RobWorkMacros.cmake)
 
 if(DEFINED VERSION)
     set(ROBWORKHARDWARE_VERSION ${VERSION})
@@ -25,6 +23,8 @@ else()
     rw_get_git_version(ROBWORKHARDWARE_VERSION ROBWORKHARDWARE_BRANCH)
     set(RWHW_GOT_VERSION False)
 endif()
+find_package(RobWork ${ROBWORKHARDWARE_VERSION} REQUIRED PATHS ${RWHW_ROOT}/../RobWork/cmake )
+set(Boost_USE_STATIC_LIBS ${RW_BUILD_WITH_BOOST_USE_STATIC_LIB})
 
 rw_init_project(${RWHW_ROOT} RobWorkHardware RWHW ${ROBWORKHARDWARE_VERSION})
 rw_get_os_info()
