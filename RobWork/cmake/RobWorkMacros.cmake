@@ -388,7 +388,7 @@ macro(RW_SET_INSTALL_DIRS PROJECT_NAME PREFIX)
 
     set(RW_PLUGIN_INSTALL_DIR "${LIB_INSTALL_DIR}/RobWork/rwplugins")
     set(RWS_PLUGIN_INSTALL_DIR "${LIB_INSTALL_DIR}/RobWork/rwsplugins")
-    set(STATIC_LIB_INSTALL_DIR "${LIB_INSTALL_DIR}/RobWork")
+    set(STATIC_LIB_INSTALL_DIR "${LIB_INSTALL_DIR}/RobWork/static")
     set(JAVA_INSTALL_DIR "${LIB_INSTALL_DIR}/RobWork/Java")
 
     execute_process(
@@ -511,19 +511,24 @@ macro(RW_ADD_LIBRARY _name)
         set_target_properties(${_name} PROPERTIES LINK_FLAGS -Wl,--as-needed,--no-undefined)
     endif()
     #
-    if(${PROJECT_USE_SONAME})
+    if(${PROJECT_USE_SONAME} AND ${LIB_TYPE} STREQUAL "SHARED")
         set_target_properties(
             ${_name} PROPERTIES VERSION ${PROJECT_VERSION} SOVERSION
                                 ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
         )
     endif()
 
+    set(lib_dir ${LIB_INSTALL_DIR})
+    if("${LIB_TYPE}" STREQUAL "STATIC")
+        set(lib_dir ${STATIC_LIB_INSTALL_DIR})
+    endif()
+
     install(
         TARGETS ${_name}
         EXPORT ${PROJECT_PREFIX}Targets
         RUNTIME DESTINATION ${BIN_INSTALL_DIR} COMPONENT ${_component}
-        LIBRARY DESTINATION ${LIB_INSTALL_DIR} COMPONENT ${_component}
-        ARCHIVE DESTINATION ${LIB_INSTALL_DIR} COMPONENT ${_component}
+        LIBRARY DESTINATION ${lib_dir} COMPONENT ${_component}
+        ARCHIVE DESTINATION ${lib_dir} COMPONENT ${_component}
     )
 
 endmacro()

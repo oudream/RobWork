@@ -94,7 +94,6 @@ if(build)
         ${SUBSYS_DEPS}
         ${RWS_PLUGIN_LIBRARIES}
         ${RWS_MODULE}
-        RW::sdurw_lua
         RW::sdurw
         RW::sdurw_lua_s
     )

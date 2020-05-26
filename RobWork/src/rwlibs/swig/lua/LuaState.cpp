@@ -17,108 +17,116 @@
 
 #include "LuaState.hpp"
 
-#include <rwlibs/swig/ScriptTypes.hpp>
 #include "Lua_sdurw.hpp"
+
+#include <rwlibs/swig/ScriptTypes.hpp>
 
 using namespace rwlibs::swig;
 
-LuaState::LuaState():_lua(NULL)
+LuaState::LuaState () : _lua (NULL)
 {}
 
-LuaState::~LuaState(){
-    if(_lua!=NULL)
-        lua_close(_lua);
+LuaState::~LuaState ()
+{
+    if (_lua != NULL)
+        lua_close (_lua);
     _lua = NULL;
 }
 
-int LuaState::runCmd(const std::string& cmd){
-    int error = luaL_loadbuffer(_lua, cmd.c_str(), cmd.size(), "");
+int LuaState::runCmd (const std::string& cmd)
+{
+    int error = luaL_loadbuffer (_lua, cmd.c_str (), cmd.size (), "");
     if (!error)
-        error = lua_pcall(_lua, 0, 0, 0);
+        error = lua_pcall (_lua, 0, 0, 0);
     return error;
 }
 
-void LuaState::addLibrary(LuaLibrary::Ptr lib){
-    _libraryCBs.push_back( lib );
+void LuaState::addLibrary (LuaLibrary::Ptr lib)
+{
+    _libraryCBs.push_back (lib);
 }
 
-void LuaState::removeLibrary(const std::string& id){
-    int idx=-1;
-	for(std::size_t i=0;i<_libraryCBs.size();i++){
-		if(_libraryCBs[i]->getId()==id){
-			idx = (int)i;
-		}
-	}
-	if(idx<0){
-		return;
-	}
-	_libraryCBs.erase(_libraryCBs.begin()+idx);
-	reset();
+void LuaState::removeLibrary (const std::string& id)
+{
+    int idx = -1;
+    for (std::size_t i = 0; i < _libraryCBs.size (); i++) {
+        if (_libraryCBs[i]->getId () == id) {
+            idx = (int) i;
+        }
+    }
+    if (idx < 0) {
+        return;
+    }
+    _libraryCBs.erase (_libraryCBs.begin () + idx);
+    reset ();
 }
 
+void LuaState::reset ()
+{
+    if (_lua != NULL)
+        lua_close (_lua);
 
-void LuaState::reset(){
-    if (_lua!=NULL)
-        lua_close(_lua);
+    _lua = luaL_newstate ();
 
-    _lua = luaL_newstate();
+    luaL_openlibs (_lua);
 
-    luaL_openlibs(_lua);
+    rwlibs::swig::openLuaLibRW_sdurw (_lua);
 
-    rwlibs::swig::openLuaLibRW_sdurw( _lua );
-
-    for(LuaLibrary::Ptr cb : _libraryCBs) {
-        cb->initLibrary( *this );
+    for (LuaLibrary::Ptr cb : _libraryCBs) {
+        cb->initLibrary (*this);
     }
 
     // get extension point libs
-    std::vector<LuaLibrary::Ptr> libs = LuaState::Factory::getLuaLibraries();
-    for(LuaLibrary::Ptr cb : libs) {
-        cb->initLibrary( *this );
+    std::vector< LuaLibrary::Ptr > libs = LuaState::Factory::getLuaLibraries ();
+    for (LuaLibrary::Ptr cb : libs) {
+        if(! cb.isNull() ){
+            cb->initLibrary (*this);
+        }
     }
-
-
     // add rw and rws namespaces
-    runCmd("rw = rwlua.rw");
+    runCmd ("rw = rwlua.rw");
 }
 
-
-std::vector<LuaState::LuaLibrary::Ptr> LuaState::Factory::getLuaLibraries(){
-	using namespace rw::common;
-	LuaState::Factory ep;
-	std::vector<Extension::Ptr> exts = ep.getExtensions();
-	std::vector<LuaState::LuaLibrary::Ptr> libs;
-	for(Extension::Ptr ext : exts) {
-		// else try casting to ImageLoader
-		LuaState::LuaLibrary::Ptr lib = ext->getObject().cast<LuaState::LuaLibrary>();
-		libs.push_back(lib);
-	}
-	return libs;
+std::vector< LuaState::LuaLibrary::Ptr > LuaState::Factory::getLuaLibraries ()
+{
+    using namespace rw::common;
+    LuaState::Factory ep;
+    std::vector< Extension::Ptr > exts = ep.getExtensions ();
+    std::vector< LuaState::LuaLibrary::Ptr > libs;
+    for (Extension::Ptr ext : exts) {
+        // else try casting to ImageLoader
+        LuaState::LuaLibrary::Ptr lib = ext->getObject ().cast< LuaState::LuaLibrary > ();
+        if(!lib.isNull()){
+            libs.push_back (lib);
+        }
+    }
+    return libs;
 }
 
-std::vector<std::string> LuaState::Factory::getLuaLibraryIDs(){
-	using namespace rw::common;
-	LuaState::Factory ep;
-	std::vector<Extension::Ptr> exts = ep.getExtensions();
-	std::vector<std::string> libs;
-	for(Extension::Ptr ext : exts) {
-		// else try casting to ImageLoader
-		//LuaState::LuaLibrary::Ptr lib = ext->getObject().cast<LuaState::LuaLibrary>();
-		libs.push_back( ext->getId() );
-	}
-	return libs;
+std::vector< std::string > LuaState::Factory::getLuaLibraryIDs ()
+{
+    using namespace rw::common;
+    LuaState::Factory ep;
+    std::vector< Extension::Ptr > exts = ep.getExtensions ();
+    std::vector< std::string > libs;
+    for (Extension::Ptr ext : exts) {
+        // else try casting to ImageLoader
+        // LuaState::LuaLibrary::Ptr lib = ext->getObject().cast<LuaState::LuaLibrary>();
+        libs.push_back (ext->getId ());
+    }
+    return libs;
 }
 
-LuaState::LuaLibrary::Ptr LuaState::Factory::getLuaLibrary(const std::string& id){
-	using namespace rw::common;
-	LuaState::Factory ep;
-	std::vector<Extension::Ptr> exts = ep.getExtensions();
-	for(Extension::Ptr ext : exts) {
-		if(ext->getId()!=id)
-			continue;
-		LuaState::LuaLibrary::Ptr lib = ext->getObject().cast<LuaState::LuaLibrary>();
-		return lib;
-	}
-	return NULL;
+LuaState::LuaLibrary::Ptr LuaState::Factory::getLuaLibrary (const std::string& id)
+{
+    using namespace rw::common;
+    LuaState::Factory ep;
+    std::vector< Extension::Ptr > exts = ep.getExtensions ();
+    for (Extension::Ptr ext : exts) {
+        if (ext->getId () != id)
+            continue;
+        LuaState::LuaLibrary::Ptr lib = ext->getObject ().cast< LuaState::LuaLibrary > ();
+        return lib;
+    }
+    return NULL;
 }
-
