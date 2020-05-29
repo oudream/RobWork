@@ -249,7 +249,7 @@
         double norm1 () const;
 
         /**
-         * @brief Returns the infinte norm (\f$\inf\f$-norm) of the configuration
+         * @brief Returns the infinte norm (\f$ \inf\f$ -norm) of the configuration
          * @return the norm
          */
         double normInf () const;
@@ -427,7 +427,7 @@
             T norm1();
 
             /**
-             * @brief Returns the infinte norm (\f$\inf\f$-norm) of the vector
+             * @brief Returns the infinte norm (\f$ \inf\f$ -norm) of the vector
              * @return the norm
              */         
             T normInf();
@@ -548,7 +548,7 @@
             T norm1();
 
             /**
-             * @brief Returns the infinte norm (\f$\inf\f$-norm) of the vector
+             * @brief Returns the infinte norm (\f$ \inf\f$ -norm) of the vector
              * @return the norm
              */
             T normInf(); 
@@ -1006,7 +1006,7 @@
             EAA(const rw::math::Rotation3D<T>& rot);
 
             /**
-             * @brief Constructs an EAA vector initialized to \f$\{0,0,0\}\f$
+             * @brief Constructs an EAA vector initialized to \f$ \{0,0,0\}\f$
              */
             EAA();
 
@@ -1044,7 +1044,7 @@
             /**
              * @brief Constructs an initialized EAA vector
              *
-             * The angle of the EAA are \f$\|eaa\|\f$ and the axis is \f$\frac{eaa}{\|eaa\|}\f$
+             * The angle of the EAA are \f$ \|eaa\|\f$ and the axis is \f$ \frac{eaa}{\|eaa\|}\f$
              * @param eaa [in] Values to initialize the EAA
              */
             explicit EAA (Vector3D< T > eaa);
@@ -1179,7 +1179,7 @@
              *
              * @param epsilon [in] Value specifying the value for which \f$
              * cos(\beta)\f$ is assumed 0 and the special case solution assuming
-             * \f$\alpha=0, \beta=\pi/2 and \gamma = arctan2(r_{21}, r_{22})\f$ is
+             * \f$ \alpha=0, \beta=\pi/2 and \gamma = arctan2(r_{21}, r_{22})\f$ is
              * to be used.
              */
             RPY(const rw::math::Rotation3D<T>& rot, T epsilon = 1e-5);
@@ -1227,7 +1227,7 @@
          * Quaternions can be added and multiplied in a similar way as usual
          * algebraic numbers. Though there are differences. Quaternion
          * multiplication is not commutative which means
-         * @f$Q\cdot P \neq P\cdot Q @f$
+         * @f$ Q\cdot P \neq P\cdot Q @f$
          */
         template<class T> class Quaternion: public Rotation3DVector<T>
         {
@@ -1340,7 +1340,7 @@
              * @brief Calculates a slerp interpolation between \b this and \b v.
              *
              * The slerp interpolation ensures a constant velocity across the interpolation.
-             * For \f$t=0\f$ the result is \b this and for \f$t=1\f$ it is \b v.
+             * For \f$ t=0 \f$ the result is \b this and for \f$ t=1 \f$ it is \b v.
              *
              * @note Algorithm and implementation is thanks to euclideanspace.com
              */
@@ -1739,13 +1739,13 @@
             Pose6D(const rw::math::Transform3D<T>& t3d);
 
             /**
-             * @brief Returns the \f$i\f$'th element in the pose.
+             * @brief Returns the \f$ i\f$ 'th element in the pose.
              *
-             * \f$i\in\{0,1,2\} \f$ corresponds to \f$\{x,y,z\}\f$ respectively.
-             * \f$i\in\{3,4,5\}\f$ corresponds to the equivalent angle axis.
+             * \f$ i\in\{0,1,2\} \f$ corresponds to \f$ \{x,y,z\}\f$ respectively.
+             * \f$ i\in\{3,4,5\}\f$ corresponds to the equivalent angle axis.
              *
              * @param i [in] index to return
-             * @return the \f$i\f$'th index of the pose.
+             * @return the \f$ i\f$ 'th index of the pose.
              */
             T get (size_t i) const;
 
@@ -1831,7 +1831,7 @@
 
             /**
              * @brief Constructs a velocity screw in frame @f$ a @f$ from a
-             * transform @f$\robabx{a}{b}{\mathbf{T}} @f$.
+             * transform @f$ \robabx{a}{b}{\mathbf{T}} @f$ .
              *
              * @param transform [in] the corresponding transform.
              */
@@ -1891,10 +1891,10 @@
 
             /**
              * @brief Subtracts two velocity screws
-             * \f$\mathbf{\nu}_{12}=\mathbf{\nu}_1-\mathbf{\nu}_2\f$
+             * \f$ \mathbf{\nu}_{12}=\mathbf{\nu}_1-\mathbf{\nu}_2\f$
              *
-             * \param screw2 [in] \f$\mathbf{\nu}_2\f$
-             * \return the velocity screw \f$\mathbf{\nu}_{12} \f$
+             * \param screw2 [in] \f$ \mathbf{\nu}_2\f$
+             * \return the velocity screw \f$ \mathbf{\nu}_{12} \f$
              */
             VelocityScrew6D<T> operator-(const VelocityScrew6D<T>& other) const;
 
@@ -2063,149 +2063,6 @@
              */
             const Wrench6D<T> operator*(T s) const;
 
-
-            /**
-             * @brief Changes frame of reference and referencepoint of
-             * wrench: @f$ \robabx{b}{b}{\mathbf{w}}\to
-             * \robabx{a}{a}{\mathbf{w}} @f$
-             *
-             * The frames @f$ \mathcal{F}_a @f$ and @f$ \mathcal{F}_b @f$ are
-             * rigidly connected.
-             *
-             * @param aTb [in] the location of frame @f$ \mathcal{F}_b @f$ wrt.
-             * frame @f$ \mathcal{F}_a @f$: @f$ \robabx{a}{b}{\mathbf{T}} @f$
-             *
-             * @param bV [in] wrench wrt. frame @f$ \mathcal{F}_b @f$: @f$
-             * \robabx{b}{b}{\mathbf{\nu}} @f$
-             *
-             * @return the wrench wrt. frame @f$ \mathcal{F}_a @f$: @f$
-             * \robabx{a}{a}{\mathbf{\nu}} @f$
-             *
-             * Transformation of both the wrench reference point and of the base to
-             * which the wrench is expressed
-             *
-             * \f[
-             * \robabx{a}{a}{\mathbf{w}} =
-             * \left[
-             *  \begin{array}{c}
-             *  \robabx{a}{a}{\mathbf{force}} \\
-             *  \robabx{a}{a}{\mathbf{torque}}
-             *  \end{array}
-             * \right] =
-             * \left[
-             *  \begin{array}{cc}
-             *    \robabx{a}{b}{\mathbf{R}} S(\robabx{a}{b}{\mathbf{p}})
-             *    \robabx{a}{b}{\mathbf{R}} \\
-             *    \mathbf{0}^{3x3} \robabx{a}{b}{\mathbf{R}}
-             *  \end{array}
-             * \right]
-             * \robabx{b}{b}{\mathbf{\nu}} =
-             * \left[
-             *  \begin{array}{c}
-             *    \robabx{a}{b}{\mathbf{R}} \robabx{b}{b}{\mathbf{v}} +
-             *    \robabx{a}{b}{\mathbf{p}} \times \robabx{a}{b}{\mathbf{R}}
-             *    \robabx{b}{b}{\mathbf{\omega}}\\
-             *    \robabx{a}{b}{\mathbf{R}} \robabx{b}{b}{\mathbf{\omega}}
-             *  \end{array}
-             * \right]
-             * \f]
-             *
-             */
-            friend const Wrench6D<T> operator*(const rw::math::Transform3D<T>& aTb,
-                                                    const Wrench6D<T>& bV);
-            
-            /**
-             * @brief Changes wrench referencepoint of
-             * wrench: @f$ \robabx{b}{b}{\mathbf{w}}\to
-             * \robabx{a}{a}{\mathbf{w}} @f$
-             *
-             * The frames @f$ \mathcal{F}_a @f$ and @f$ \mathcal{F}_b @f$ are
-             * rigidly connected.
-             *
-             * @param aPb [in] the location of frame @f$ \mathcal{F}_b @f$ wrt.
-             * frame @f$ \mathcal{F}_a @f$: @f$ \robabx{a}{b}{\mathbf{T}} @f$
-             *
-             * @param bV [in] wrench wrt. frame @f$ \mathcal{F}_b @f$: @f$
-             * \robabx{b}{b}{\mathbf{\nu}} @f$
-             *
-             * @return the wrench wrt. frame @f$ \mathcal{F}_a @f$: @f$
-             * \robabx{a}{a}{\mathbf{\nu}} @f$
-             *
-             * Transformation of both the velocity reference point and of the base to
-             * which the wrench is expressed
-             *
-             * \f[
-             * \robabx{a}{a}{\mathbf{w}} =
-             * \left[
-             *  \begin{array}{c}
-             *  \robabx{a}{a}{\mathbf{force}} \\
-             *  \robabx{a}{a}{\mathbf{torque}}
-             *  \end{array}
-             * \right] =
-             * \left[
-             *  \begin{array}{cc}
-             *    \robabx{a}{b}{\mathbf{R}} S(\robabx{a}{b}{\mathbf{p}})
-             *    \robabx{a}{b}{\mathbf{R}} \\
-             *    \mathbf{0}^{3x3} \robabx{a}{b}{\mathbf{R}}
-             *  \end{array}
-             * \right]
-             * \robabx{b}{b}{\mathbf{\nu}} =
-             * \left[
-             *  \begin{array}{c}
-             *    \robabx{a}{b}{\mathbf{R}} \robabx{b}{b}{\mathbf{v}} +
-             *    \robabx{a}{b}{\mathbf{p}} \times \robabx{a}{b}{\mathbf{R}}
-             *    \robabx{b}{b}{\mathbf{\omega}}\\
-             *    \robabx{a}{b}{\mathbf{R}} \robabx{b}{b}{\mathbf{\omega}}
-             *  \end{array}
-             * \right]
-             * \f]
-             *
-             */
-            friend const Wrench6D<T> operator*(const rw::math::Vector3D<T>& aPb, const Wrench6D<T>& bV);
-
-            /**
-             * @brief Changes frame of reference for wrench: @f$
-             * \robabx{b}{i}{\mathbf{w}}\to \robabx{a}{i}{\mathbf{w}}
-             * @f$
-             *
-             * @param aRb [in] the change in orientation between frame
-             * @f$ \mathcal{F}_a @f$ and frame
-             * @f$ \mathcal{F}_b @f$: @f$ \robabx{a}{b}{\mathbf{R}} @f$
-             *
-             * @param bV [in] velocity screw wrt. frame
-             * @f$ \mathcal{F}_b @f$: @f$ \robabx{b}{i}{\mathbf{\nu}} @f$
-             *
-             * @return the wrench wrt. frame @f$ \mathcal{F}_a @f$:
-             * @f$ \robabx{a}{i}{\mathbf{w}} @f$
-             *
-             * Transformation of the base to which the wrench is expressed. The wrench
-             * reference point is left intact
-             *
-             * \f[
-             * \robabx{a}{i}{\mathbf{w}} =
-             * \left[
-             *  \begin{array}{c}
-             *  \robabx{a}{i}{\mathbf{force}} \\
-             *  \robabx{a}{i}{\mathbf{torque}}
-             *  \end{array}
-             * \right] =
-             * \left[
-             *  \begin{array}{cc}
-             *    \robabx{a}{b}{\mathbf{R}} \mathbf{0}^{3x3} \\
-             *    \mathbf{0}^{3x3} \robabx{a}{b}{\mathbf{R}}
-             *  \end{array}
-             * \right]
-             * \robabx{b}{i}{\mathbf{\nu}} =
-             * \left[
-             *  \begin{array}{c}
-             *    \robabx{a}{b}{\mathbf{R}} \robabx{b}{i}{\mathbf{v}} \\
-             *    \robabx{a}{b}{\mathbf{R}} \robabx{b}{i}{\mathbf{\omega}}
-             *  \end{array}
-             * \right]
-             * \f]
-             */
-            friend const Wrench6D<T> operator*(const rw::math::Rotation3D<T>& aRb, const Wrench6D<T>& bV);
-
             /**
              * @brief Adds two wrenches together @f$
              * \mathbf{w}_{12}=\mathbf{w}_1+\mathbf{w}_2 @f$
@@ -2218,10 +2075,10 @@
 
             /**
              * @brief Subtracts two velocity screws
-             * \f$\mathbf{\nu}_{12}=\mathbf{\nu}_1-\mathbf{\nu}_2\f$
+             * \f$ \mathbf{\nu}_{12}=\mathbf{\nu}_1-\mathbf{\nu}_2\f$
              *
-             * \param rhs [in] \f$\mathbf{w}_1\f$
-             * \return the wrench \f$\mathbf{w}_{12} \f$
+             * \param rhs [in] \f$ \mathbf{w}_1\f$
+             * \return the wrench \f$ \mathbf{w}_{12} \f$
              */
             const Wrench6D<T> operator-(const Wrench6D<T>& wrench) const;
 
@@ -2267,6 +2124,159 @@
     %template (Wrench6Dd) rw::math::Wrench6D<double>;
     %template (Wrench6Df) rw::math::Wrench6D<float>;
     %template (VectorWrench6Dd) std::vector<rw::math::Wrench6D<double> >;
+
+    %extend rw::math::Transform3D { // Transform3D * Wrench 6D
+         /**
+         * @brief Changes frame of reference and referencepoint of
+         * wrench: @f$ \robabx{b}{b}{\mathbf{w}}\to
+         * \robabx{a}{a}{\mathbf{w}} @f$
+         *
+         * The frames @f$ \mathcal{F}_a @f$ and @f$ \mathcal{F}_b @f$ are
+         * rigidly connected.
+         *
+         * @param aTb [in] the location of frame @f$ \mathcal{F}_b @f$ wrt.
+         * frame @f$ \mathcal{F}_a @f$: @f$ \robabx{a}{b}{\mathbf{T}} @f$
+         *
+         * @param bV [in] wrench wrt. frame @f$ \mathcal{F}_b @f$: @f$
+         * \robabx{b}{b}{\mathbf{\nu}} @f$
+         *
+         * @return the wrench wrt. frame @f$ \mathcal{F}_a @f$: @f$
+         * \robabx{a}{a}{\mathbf{\nu}} @f$
+         *
+         * Transformation of both the wrench reference point and of the base to
+         * which the wrench is expressed
+         *
+         * \f[
+         * \robabx{a}{a}{\mathbf{w}} =
+         * \left[
+         *  \begin{array}{c}
+         *  \robabx{a}{a}{\mathbf{force}} \\
+         *  \robabx{a}{a}{\mathbf{torque}}
+         *  \end{array}
+         * \right] =
+         * \left[
+         *  \begin{array}{cc}
+         *    \robabx{a}{b}{\mathbf{R}} S(\robabx{a}{b}{\mathbf{p}})
+         *    \robabx{a}{b}{\mathbf{R}} \\
+         *    \mathbf{0}^{3x3} \robabx{a}{b}{\mathbf{R}}
+         *  \end{array}
+         * \right]
+         * \robabx{b}{b}{\mathbf{\nu}} =
+         * \left[
+         *  \begin{array}{c}
+         *    \robabx{a}{b}{\mathbf{R}} \robabx{b}{b}{\mathbf{v}} +
+         *    \robabx{a}{b}{\mathbf{p}} \times \robabx{a}{b}{\mathbf{R}}
+         *    \robabx{b}{b}{\mathbf{\omega}}\\
+         *    \robabx{a}{b}{\mathbf{R}} \robabx{b}{b}{\mathbf{\omega}}
+         *  \end{array}
+         * \right]
+         * \f]
+         *
+         */
+        const Wrench6D<T> operator*(const Wrench6D<T>& bV) {
+            return (*$self)*bV;
+        }
+    }
+
+    %extend rw::math::Rotation3D { // Rotation3D * Wrench6D
+        /**
+         * @brief Changes frame of reference for wrench: @f$
+         * \robabx{b}{i}{\mathbf{w}}\to \robabx{a}{i}{\mathbf{w}}
+         * @f$
+         *
+         * @param aRb [in] the change in orientation between frame
+         * @f$ \mathcal{F}_a @f$ and frame
+         * @f$ \mathcal{F}_b @f$: @f$ \robabx{a}{b}{\mathbf{R}} @f$
+         *
+         * @param bV [in] velocity screw wrt. frame
+         * @f$ \mathcal{F}_b @f$: @f$ \robabx{b}{i}{\mathbf{\nu}} @f$
+         *
+         * @return the wrench wrt. frame @f$ \mathcal{F}_a @f$:
+         * @f$ \robabx{a}{i}{\mathbf{w}} @f$
+         *
+         * Transformation of the base to which the wrench is expressed. The wrench
+         * reference point is left intact
+         *
+         * \f[
+         * \robabx{a}{i}{\mathbf{w}} =
+         * \left[
+         *  \begin{array}{c}
+         *  \robabx{a}{i}{\mathbf{force}} \\
+         *  \robabx{a}{i}{\mathbf{torque}}
+         *  \end{array}
+         * \right] =
+         * \left[
+         *  \begin{array}{cc}
+         *    \robabx{a}{b}{\mathbf{R}} \mathbf{0}^{3x3} \\
+         *    \mathbf{0}^{3x3} \robabx{a}{b}{\mathbf{R}}
+         *  \end{array}
+         * \right]
+         * \robabx{b}{i}{\mathbf{\nu}} =
+         * \left[
+         *  \begin{array}{c}
+         *    \robabx{a}{b}{\mathbf{R}} \robabx{b}{i}{\mathbf{v}} \\
+         *    \robabx{a}{b}{\mathbf{R}} \robabx{b}{i}{\mathbf{\omega}}
+         *  \end{array}
+         * \right]
+         * \f]
+         */
+        const Wrench6D<T> operator*(const Wrench6D<T>& bV) {
+            return (*$self)*bV;
+        }
+    }
+
+    %extend rw::math::Vector3D { // Vector3D * Wrench6D
+        /**
+         * @brief Changes wrench referencepoint of
+         * wrench: @f$ \robabx{b}{b}{\mathbf{w}}\to
+         * \robabx{a}{a}{\mathbf{w}} @f$
+         *
+         * The frames @f$ \mathcal{F}_a @f$ and @f$ \mathcal{F}_b @f$ are
+         * rigidly connected.
+         *
+         * @param aPb [in] the location of frame @f$ \mathcal{F}_b @f$ wrt.
+         * frame @f$ \mathcal{F}_a @f$: @f$ \robabx{a}{b}{\mathbf{T}} @f$
+         *
+         * @param bV [in] wrench wrt. frame @f$ \mathcal{F}_b @f$: @f$
+         * \robabx{b}{b}{\mathbf{\nu}} @f$
+         *
+         * @return the wrench wrt. frame @f$ \mathcal{F}_a @f$: @f$
+         * \robabx{a}{a}{\mathbf{\nu}} @f$
+         *
+         * Transformation of both the velocity reference point and of the base to
+         * which the wrench is expressed
+         *
+         * \f[
+         * \robabx{a}{a}{\mathbf{w}} =
+         * \left[
+         *  \begin{array}{c}
+         *  \robabx{a}{a}{\mathbf{force}} \\
+         *  \robabx{a}{a}{\mathbf{torque}}
+         *  \end{array}
+         * \right] =
+         * \left[
+         *  \begin{array}{cc}
+         *    \robabx{a}{b}{\mathbf{R}} S(\robabx{a}{b}{\mathbf{p}})
+         *    \robabx{a}{b}{\mathbf{R}} \\
+         *    \mathbf{0}^{3x3} \robabx{a}{b}{\mathbf{R}}
+         *  \end{array}
+         * \right]
+         * \robabx{b}{b}{\mathbf{\nu}} =
+         * \left[
+         *  \begin{array}{c}
+         *    \robabx{a}{b}{\mathbf{R}} \robabx{b}{b}{\mathbf{v}} +
+         *    \robabx{a}{b}{\mathbf{p}} \times \robabx{a}{b}{\mathbf{R}}
+         *    \robabx{b}{b}{\mathbf{\omega}}\\
+         *    \robabx{a}{b}{\mathbf{R}} \robabx{b}{b}{\mathbf{\omega}}
+         *  \end{array}
+         * \right]
+         * \f]
+         *
+         */
+        const Wrench6D<T> operator*(const Wrench6D<T>& bV) {
+            return (*$self)*bV;
+        }
+    }
 
     namespace rw { namespace math {
         /**
@@ -2393,18 +2403,6 @@
              * @brief Calculates \f$ \robabx{a}{c}{\mathbf{R}} =
              * \robabx{a}{b}{\mathbf{R}} \robabx{b}{c}{\mathbf{R}} \f$
              *
-             * @param aRb [in] \f$ \robabx{a}{b}{\mathbf{R}} \f$
-             *
-             * @param bRc [in] \f$ \robabx{b}{c}{\mathbf{R}} \f$
-             *
-             * @return \f$ \robabx{a}{c}{\mathbf{R}} \f$
-             */
-            friend InertiaMatrix<T> operator*(const rw::math::Rotation3D<T>& aRb, const InertiaMatrix<T>& bRc);
-
-            /**
-             * @brief Calculates \f$ \robabx{a}{c}{\mathbf{R}} =
-             * \robabx{a}{b}{\mathbf{R}} \robabx{b}{c}{\mathbf{R}} \f$
-             *
              * @param bRc [in] \f$ \robabx{b}{c}{\mathbf{R}} \f$
              *
              * @return \f$ \robabx{a}{c}{\mathbf{R}} \f$
@@ -2458,6 +2456,23 @@
     %template (InertiaMatrixd) rw::math::InertiaMatrix<double>;
     %template (InertiaMatrixf) rw::math::InertiaMatrix<float>;
     %template (InertiaMatrixdVector) std::vector<rw::math::InertiaMatrix<double> >;
+
+    %extend rw::math::Rotation3D {
+        /**
+         * @brief Calculates \f$ \robabx{a}{c}{\mathbf{R}} =
+         * \robabx{a}{b}{\mathbf{R}} \robabx{b}{c}{\mathbf{R}} \f$
+         *
+         * @param aRb [in] \f$ \robabx{a}{b}{\mathbf{R}} \f$
+         *
+         * @param bRc [in] \f$ \robabx{b}{c}{\mathbf{R}} \f$
+         *
+         * @return \f$ \robabx{a}{c}{\mathbf{R}} \f$
+         */
+        InertiaMatrix<T> operator*(const InertiaMatrix<T>& bRc){
+            return (*$self) * bRc;
+        }
+
+    }
 
     namespace rw { namespace math {
         /**
@@ -3049,10 +3064,15 @@
              */
             virtual RES_T f (ARG_T q) = 0;
 
-            /**
-             * @brief Wraps the evaluation of x() with operator().
-             */
-            RES_T operator() (ARG_T q);
+            
+            %extend {
+                /**
+                 * @brief Wraps the evaluation of x() with operator().
+                 */
+                RES_T operate(ARG_T q){
+                    return (*$self)(q);
+                }
+            }
         };
 
 
@@ -3367,7 +3387,7 @@
          * @f$
          *
          * The polynomial is represented as a list of coefficients ordered from lowest-order term to
-         * highest-order term, \f${c_0,c_1,...,c_n}\f$.
+         * highest-order term, \f$ {c_0,c_1,...,c_n}\f$ .
          */
         template< typename Coef, typename Scalar> class PolynomialND
         {
@@ -3420,7 +3440,7 @@
             /**
              * @brief Evaluate the polynomial using Horner's Method.
              * @param x [in] the input parameter.
-             * @return the value \f$f(x)\f$.
+             * @return the value \f$ f(x)\f$ .
              */
             Coef evaluate (const Scalar& x) const;
 
@@ -3428,7 +3448,7 @@
              * @brief Evaluate the first \b n derivatives of the polynomial using Horner's Method.
              * @param x [in] the input parameter.
              * @param n [in] the number of derivatives to find (default is the first derivative only)
-             * @return a vector of values \f${f(x),\dot{f}(x),\ddot{f}(x),\cdots}\f$.
+             * @return a vector of values \f$ {f(x),\dot{f}(x),\ddot{f}(x),\cdots}\f$ .
              */
             std::vector< Coef > evaluateDerivatives (const Scalar& x, std::size_t n = 1) const;
 
@@ -3449,13 +3469,6 @@
             rw::math::PolynomialND< Coef, Scalar > derivative (std::size_t n = 1) const;
 
             /**
-             * @brief Get specific coefficient.
-             * @param i [in] the power of the term to get coefficient for.
-             * @return the coefficient.
-             */
-            Coef& operator() (size_t i);
-
-            /**
              * @brief Scalar multiplication
              * @param s [in] scalar to multiply with.
              * @return new polynomial after multiplication.
@@ -3469,28 +3482,28 @@
              */
             const rw::math::PolynomialND< Coef, Scalar > operator/ (Scalar s) const;
 
-            /**
+            /*
              * @brief Scalar multiplication
              * @param s [in] the scalar to multiply with.
              * @return reference to same polynomial with changed coefficients.
              */
             rw::math::PolynomialND< Coef, Scalar >& operator*= (Scalar s);
 
-            /**
+            /*
              * @brief Scalar division
              * @param s [in] the scalar to divide with.
              * @return reference to same polynomial with changed coefficients.
              */
             rw::math::PolynomialND< Coef, Scalar >& operator/= (Scalar s);
 
-            /**
+            /*
              * @brief Scalar multiplication
              * @param s [in] scalar to multiply with.
              * @param p [in] polynomial to multiply with.
              * @return new polynomial after multiplication.
              */
-            friend const rw::math::PolynomialND< Coef, Scalar > operator* (Scalar s,
-                                                                const rw::math::PolynomialND< Coef, Scalar >& p);
+            //friend const rw::math::PolynomialND< Coef, Scalar > operator* (Scalar s,
+            //                                                    const rw::math::PolynomialND< Coef, Scalar >& p);
 
             /**
              * @brief Polynomial subtraction.
@@ -3531,7 +3544,7 @@
             template< typename OutCoef, typename Coef2 = Coef >
             rw::math::PolynomialND< OutCoef, Scalar > multiply (const Coef2& b) const;
 
-            #if !defined(SWIGPYTHON)
+            #if !defined(SWIGPYTHON) && !defined(SWIGJAVA)
                 /**
                  * @brief Assignment.
                  * @param b [in] the polynomial to take coefficients from.
@@ -3637,7 +3650,7 @@
          * @f$
          *
          * The polynomial is represented as a list of coefficients ordered from lowest-order term to
-         * highest-order term, \f${c_0,c_1,...,c_n}\f$.
+         * highest-order term, \f$ {c_0,c_1,...,c_n}\f$ .
          */
         template< typename T = double > class Polynomial : public rw::math::PolynomialND< T, T >
         {
@@ -3685,8 +3698,8 @@
              *
              * @param x [in] the input parameter.
              * @param err [out] estimate of the absolute error.
-             * @return the value \f$f(x)\f$.
-             * @note Error is the absolute size of the interval where \f$f(x)\f$ can be, assuming
+             * @return the value \f$ f(x)\f$ .
+             * @note Error is the absolute size of the interval where \f$ f(x)\f$ can be, assuming
              * coefficients are exact.
              */
             template< typename ErrT = T > T evaluate (const T& x, ErrT& err) const;
@@ -3705,8 +3718,8 @@
              * @param x [in] the input parameter.
              * @param err [out] estimate of the absolute errors.
              * @param n [in] the number of derivatives to find (default is the first derivative only)
-             * @return the value \f$\dot{f}(x)\f$.
-             * @note Error is the absolute size of the interval where \f$f(x)\f$ can be, assuming
+             * @return the value \f$ \dot{f}(x)\f$ .
+             * @note Error is the absolute size of the interval where \f$ f(x)\f$ can be, assuming
              * coefficients are exact.
              */
             template< typename ErrT = T >
@@ -3756,14 +3769,12 @@
              * @param polynomial [in] polynomial vector.
              * @return a 3D polynomial vector.
              */
-            friend rw::math::PolynomialND< Eigen::Matrix< T, 3, 1 >, T >
-            operator* (const rw::math::Polynomial< T >& p,
-                    const rw::math::PolynomialND< Eigen::Matrix< T, 3, 1 >, T >& polynomial);
+            rw::math::PolynomialND< Eigen::Matrix< T, 3, 1 >, T >
+            operator* (const rw::math::PolynomialND< Eigen::Matrix< T, 3, 1 >, T >& polynomial) const;
 
              // @copydoc operator*(const rw::math::Polynomial<T>&, const rw::math::PolynomialND<Eigen::Matrix<T,3,1>,T>&)
-            friend rw::math::PolynomialND< Eigen::Matrix< T, 1, 3 >, T >
-            operator* (const rw::math::Polynomial< T >& p,
-                    const rw::math::PolynomialND< Eigen::Matrix< T, 1, 3 >, T >& polynomial);
+            rw::math::PolynomialND< Eigen::Matrix< T, 1, 3 >, T >
+            operator* (const rw::math::PolynomialND< Eigen::Matrix< T, 1, 3 >, T >& polynomial) const;
 
             /**
              * @brief Multiply polynomial with scalar coefficients with a 3D polynomial matrix.
@@ -3771,9 +3782,8 @@
              * @param polynomial [in] polynomial matrix.
              * @return a 3D polynomial matrix.
              */
-            friend rw::math::PolynomialND< Eigen::Matrix< T, 3, 3 >, T >
-            operator* (const rw::math::Polynomial< T >& p,
-                    const rw::math::PolynomialND< Eigen::Matrix< T, 3, 3 >, T >& polynomial);
+            rw::math::PolynomialND< Eigen::Matrix< T, 3, 3 >, T >
+            operator* (const rw::math::PolynomialND< Eigen::Matrix< T, 3, 3 >, T >& polynomial) const;
 
             /**
              * @brief Multiply polynomial with scalar coefficients with a vector.
@@ -3781,12 +3791,10 @@
              * @param a [in] vector to multiply with.
              * @return a 3D polynomial vector.
              */
-            friend rw::math::PolynomialND< Eigen::Matrix< T, 3, 1 >, T >
-            operator* (const rw::math::Polynomial< T >& p, const Eigen::Matrix< T, 3, 1 >& a);
+            rw::math::PolynomialND< Eigen::Matrix< T, 3, 1 >, T > operator* (const Eigen::Matrix< T, 3, 1 >& a) const;
 
-             // @copydoc operator*(const rw::math::Polynomial<T>&, const Eigen::Matrix<T,3,1>&)
-            friend rw::math::PolynomialND< Eigen::Matrix< T, 1, 3 >, T >
-            operator* (const rw::math::Polynomial< T >& p, const Eigen::Matrix< T, 1, 3 >& a);
+             //! @copydoc operator*(const rw::math::Polynomial<T>&, const Eigen::Matrix<T,3,1>&)
+            rw::math::PolynomialND< Eigen::Matrix< T, 1, 3 >, T > operator* (const Eigen::Matrix< T, 1, 3 >& a) const;
 
             /**
              * @brief Multiply polynomial with scalar coefficients with a matrix.
@@ -3794,8 +3802,7 @@
              * @param A [in] matrix to multiply with.
              * @return a 3D polynomial matrix.
              */
-            friend rw::math::PolynomialND< Eigen::Matrix< T, 3, 3 >, T >
-            operator* (const rw::math::Polynomial< T >& p, const Eigen::Matrix< T, 3, 3 >& A);
+            rw::math::PolynomialND< Eigen::Matrix< T, 3, 3 >, T > operator* (const Eigen::Matrix< T, 3, 3 >& A) const;
 
             /**
              * @brief Scalar division
@@ -3832,13 +3839,13 @@
              */
             rw::math::Polynomial< T >& operator/= (T s);
 
-            /**
+            /*
              * @brief Scalar multiplication
              * @param s [in] scalar to multiply with.
              * @param p [in] polynomial to multiply with.
              * @return new polynomial after multiplication.
              */
-            friend const rw::math::Polynomial< T > operator* (T s, const rw::math::Polynomial< T >& p);
+            //friend const rw::math::Polynomial< T > operator* (T s, const rw::math::Polynomial< T >& p);
 
             /**
              * @brief Polynomial subtraction.
@@ -3868,7 +3875,7 @@
              */
             rw::math::Polynomial< T >& operator+= (const rw::math::Polynomial< T >& b);
 
-            #if !defined(SWIGPYTHON)
+            #if !defined(SWIGPYTHON) && !defined(SWIGJAVA)
                 /**
                  * @brief Assignment.
                  * @param b [in] the polynomial to take coefficients from.
@@ -3968,33 +3975,33 @@
      *
      * Some Polynomials are particularly easy to solve. A polynomial of the form
      * \f$ a x^n + b = 0\f$
-     * will be solved by taking the n'th roots of \f$-\frac{b}{a}\f$ directly, giving n distinct
+     * will be solved by taking the n'th roots of \f$ -\frac{b}{a}\f$ directly, giving n distinct
      * roots in the complex plane.
      *
      * To illustrate the procedure, consider the equation:
      * \f$ 10^{-15} x^8 - 10^{-15} x^7 + x^7 + 2 x^6 - x^4 - 2x^3 + 10^{-15} x= 0\f$
      *
      * The solver will use the following procedure (here with the precision \f$ \epsilon =
-     * 10^{-14}\f$):
+     * 10^{-14}\f$ ):
      *
-     * 1. Remove terms that are small compared to \f$\epsilon\f$: \f$ x^7 + 2 x^6 - x^4 - 2x^3 =
+     * 1. Remove terms that are small compared to \f$ \epsilon\f$ : \f$ x^7 + 2 x^6 - x^4 - 2x^3 =
      * 0\f$
      *
      * 2. Find zero roots and reduce the order: There is a triple root in x = 0 and the remaining
-     * polynomial becomes: \f$ x^4 + 2 x^3 - x - 2 = 0\f$.
+     * polynomial becomes: \f$ x^4 + 2 x^3 - x - 2 = 0\f$ .
      *
      * 3. Use Laguerre to find a root of \f$ x^4 + 2 x^3 - x - 2 = 0\f$
      *
      * Depending on the initial guess for Laguerre, different roots might be found first.
      * The algorithm will proceed differently depending on the found root:
      *
-     * 1. If root x=-2 is found, remaining polynomial after deflation is \f$ x^3 -1 = 0\f$.
+     * 1. If root x=-2 is found, remaining polynomial after deflation is \f$ x^3 -1 = 0\f$ .
      * The roots are found directly as the cubic root of 1, which is three distinct roots in the
      * complex plane (one is on the real axis).
      *
      * 2. If root x=1 is found, remaining polynomial after deflation is \f$ x^3 + 3 x^2 +3 x + 2 =
-     * 0\f$. The roots are found analytically, giving one real root x=-2 and two complex conjugate
-     * roots \f$x = -0.5 \pm \frac{\sqrt{3}}{2} i\f$.
+     * 0\f$ . The roots are found analytically, giving one real root x=-2 and two complex conjugate
+     * roots \f$ x = -0.5 \pm \frac{\sqrt{3}}{2} i\f$ .
      *
      * 3. If other roots than x=1 or x=-2 is found (a complex root), remaining polynomial is a third
      * order polynomial with complex coefficients. This polynomial is solved analytically to give
@@ -4135,18 +4142,6 @@
              */
             rw::math::Vector2D< T >& getPos ();
 
-            //! @copydoc getPos()
-            const rw::math::Vector2D< T >& getPos () const;
-
-            /**
-             * @brief Returns reference to vector element (x,y,theta)
-             *
-             * @param i [in] index in the vector \f$i\in \{0,1,2\} \f$
-             *
-             * @return const reference to element
-             */
-            const T& operator() (size_t i) const;
-
             /**
              * @brief The transform corresponding to the pose.
              * @param pose [in] the pose.
@@ -4159,7 +4154,6 @@
              * @return Eigen vector.
              */
             Eigen::Matrix< T, 3, 1 > e () const;
-
             TOSTRING(rw::math::Pose2D<T>)
             ARRAYOPERATOR(T)
         };
@@ -4368,7 +4362,7 @@
              *
              * @return \f$ \robabx{a}{c}{\mathbf{R}} \f$
              */
-            friend const Rotation2D operator* (const Rotation2D& aRb, const Rotation2D& bRc);
+            const Rotation2D operator* (const Rotation2D& bRc) const;
 
             /**
              * @brief Calculates \f$ \robabx{a}{c}{\mathbf{v}} =
@@ -4378,7 +4372,7 @@
              * @param bVc [in] \f$ \robabx{b}{c}{\mathbf{v}} \f$
              * @return \f$ \robabx{a}{c}{\mathbf{v}} \f$
              */
-            friend const Vector2D< T > operator* (const Rotation2D& aRb, const Vector2D< T >& bVc);
+            const Vector2D< T > operator* (const Vector2D< T >& bVc);
 
             TOSTRING(rw::math::Rotation2D<T>)
             MATRIXOPERATOR(T)
@@ -4644,18 +4638,17 @@
                 \right]
                 @f$
             */
-            friend const Transform2D operator* (const Transform2D& aTb, const Transform2D& bTc);
+            const Transform2D operator* (const Transform2D& bTc) const;
 
             /**
-             @brief Calculates @f$ \robax{a}{\mathbf{p}} =
-            \robabx{a}{b}{\mathbf{T}} \robax{b}{\mathbf{p}} \f$ thus transforming
-            point @f$ \mathbf{p} @f$ from frame @f$ b @f$ to frame @f$ a @f$
-
-            @param aTb [in] @f$ \robabx{a}{c}{\mathbf{T}} @f$
-            @param bP [in] @f$ \robax{b}{\mathbf{p}} @f$
-            @return @f$ \robax{a}{\mathbf{p}} @f$
-            */
-            friend const Vector2D< T > operator* (const Transform2D& aTb, const Vector2D< T >& bP);
+             * @brief Calculates @f$ \robax{a}{\mathbf{p}} =
+             * \robabx{a}{b}{\mathbf{T}} \robax{b}{\mathbf{p}} \f$ thus transforming
+             * point @f$ \mathbf{p} @f$ from frame @f$ b @f$ to frame @f$ a @f$
+             * @param aTb [in] @f$ \robabx{a}{c}{\mathbf{T}} @f$
+             * @param bP [in] @f$ \robax{b}{\mathbf{p}} @f$
+             * @return @f$ \robax{a}{\mathbf{p}} @f$
+             */
+            const Vector2D< T > operator* (const Vector2D< T >& bP) const;
 
             /**
              * @brief Gets the rotation part @f$ \mathbf{R} @f$ from @f$ \mathbf{T} @f$
@@ -4802,7 +4795,7 @@
             T norm1 ();
 
             /**
-             * @brief Returns the infinte norm (\f$\inf\f$-norm) of the configuration
+             * @brief Returns the infinte norm (\f$ \inf\f$ -norm) of the configuration
              * @return the norm
              */
             T normInf () const;
@@ -4820,10 +4813,10 @@
              */
             const Vector operator* (T s) const;
 
-            /**
+            /*
              * @brief Scalar multiplication.
              */
-            friend const Vector operator* (T s, const Vector& v);
+            //friend const Vector operator* (T s, const Vector& v);
 
             /**
              * @brief Vector subtraction.
@@ -5008,7 +5001,7 @@
             T norm1 () const;
 
             /**
-             * @brief Returns the infinte norm (\f$\inf\f$-norm) of the VectorND
+             * @brief Returns the infinte norm (\f$ \inf\f$ -norm) of the VectorND
              * @return the norm
              */
             T normInf () const;
@@ -5090,7 +5083,7 @@
         template< size_t ND, class T > T dot (const VectorND< ND, T >& v1, const VectorND< ND, T >& v2);
 
         /**
-         * @brief Returns the normalized VectorND \f$\mathbf{n}=\frac{\mathbf{v}}{\|\mathbf{v}\|} \f$.
+         * @brief Returns the normalized VectorND \f$ \mathbf{n}=\frac{\mathbf{v}}{\|\mathbf{v}\|} \f$ .
          * In case \f$ \|mathbf{v}\| = 0\f$ the zero VectorND is returned.
          * @param v [in] \f$ \mathbf{v} \f$ which should be normalized
          * @return the normalized VectorND \f$ \mathbf{n} \f$
@@ -5181,8 +5174,8 @@
 
             /**
              * \brief Constructs a 3x3 skew-symmetric matrix \f$ S\in so(3)\f$
-             * \param s [in] the \f$ s_x \f$, \f$ s_y \f$ and \f$ s_z \f$ of the matrix
-             * \return The 3x3 skew-symmetric matrix \f$S\f$
+             * \param s [in] the \f$ s_x \f$ , \f$ s_y \f$ and \f$ s_z \f$ of the matrix
+             * \return The 3x3 skew-symmetric matrix \f$ S\f$
              *
              * \f$
              * S =
@@ -5399,11 +5392,11 @@
             /**
              * @brief Returns vector with the absolute values
              *
-             * Given a vector \f$v=[v_1,v_2,\ldots,v_n]\f$ then Abs(v) is defined as
-             * \f$Abs(v)=[abs(v_1),abs(v_i),\ldots,abs(v_n)] \f$
+             * Given a vector \f$ v=[v_1,v_2,\ldots,v_n]\f$ then Abs(v) is defined as
+             * \f$ Abs(v)=[abs(v_1),abs(v_i),\ldots,abs(v_n)] \f$
              *
-             * @param v [in] the vector \f$v\f$
-             * @return the vector \f$Abs(v)\f$
+             * @param v [in] the vector \f$ v\f$
+             * @return the vector \f$ Abs(v)\f$
              */
             static Q abs(const Q& v);
             
@@ -5448,11 +5441,11 @@
             /**
              * @brief Returns vector with the absolute values
              *
-             * Given a vector \f$v=[v_1,v_2,\ldots,v_n]\f$ then Abs(v) is defined as
-             * \f$Abs(v)=[abs(v_1),abs(v_i),\ldots,abs(v_n)] \f$
+             * Given a vector \f$ v=[v_1,v_2,\ldots,v_n]\f$ then Abs(v) is defined as
+             * \f$ Abs(v)=[abs(v_1),abs(v_i),\ldots,abs(v_n)] \f$
              *
-             * @param v [in] the vector \f$v\f$
-             * @return the vector \f$Abs(v)\f$
+             * @param v [in] the vector \f$ v\f$
+             * @return the vector \f$ Abs(v)\f$
              */
             template< class T > static Vector3D< T > abs (const Vector3D< T >& v);
 
@@ -5590,7 +5583,6 @@
     %template (eaaToQuaternion) rw::math::Math::eaaToQuaternion<double>;
     %template (eaaToQuaternion) rw::math::Math::eaaToQuaternion<float>;
     %template (zyxToRotation3D) rw::math::Math::zyxToRotation3D<double>;
-    %template (zyxToRotation3D) rw::math::Math::zyxToRotation3D<float>;
     %template (skew) rw::math::Math::skew<double>;
     %template (skew) rw::math::Math::skew<float>;
     %template (ranQuaterniond) rw::math::Math::ranQuaternion<double>;

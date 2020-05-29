@@ -37,6 +37,11 @@ namespace rw { namespace sensor {
         SensorData (long timeStamp = 0) : _stamp (timeStamp) {}
 
         /**
+         * @brief Destructor
+         */
+        virtual ~SensorData() {}
+
+        /**
          * @brief get timestamp of this sensor data
          * @return timestamp in ms
          */

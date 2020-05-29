@@ -124,17 +124,17 @@ namespace rw { namespace kinematics {
         /**
          * @brief Scaling of a configuration state by a scalar.
          */
-        friend QState operator* (const QState& q, double scale)
+        QState operator* (double scale) const
         {
-            return QState (scale * q._contents, q._setup);
+            return QState (scale * this->_contents, this->_setup);
         }
 
         /**
          * @brief Scaling of a configuration state by division
          */
-        friend QState operator/ (const QState& q, double scale)
+        QState operator/ (double scale) const 
         {
-            return QState (q._contents / scale, q._setup);
+            return QState (this->_contents / scale, this->_setup);
         }
 
         /**
@@ -148,19 +148,19 @@ namespace rw { namespace kinematics {
         /**
          * @brief Addition of configuration states.
          */
-        friend QState operator+ (const QState& a, const QState& b)
+        QState operator+ (const QState& b) const
         {
             // It does not matter here if we use the setup of a or b.
             // They are assumed to be the identical.
-            return QState (a._contents + b._contents, a._setup);
+            return QState (this->_contents + b._contents, this->_setup);
         }
 
         /**
          * @brief Subtraction of configuration states.
          */
-        friend QState operator- (const QState& a, const QState& b)
+        QState operator- (const QState& b) const
         {
-            return QState (a._contents - b._contents, a._setup);
+            return QState (this->_contents - b._contents, this->_setup);
         }
 
         /**
@@ -172,8 +172,6 @@ namespace rw { namespace kinematics {
          * @brief returns the StateSetup
          */
         rw::core::Ptr< StateSetup > getStateSetup () const { return _setup; }
-
-        // void copy(const QState& qstate);
 
         /**
          * @brief Assignment operator.
