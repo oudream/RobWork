@@ -255,12 +255,12 @@ namespace rw { namespace math {
          *
          * @return \f$ \robabx{a}{c}{\mathbf{R}} \f$
          */
-        friend const Rotation2D operator* (const Rotation2D& aRb, const Rotation2D& bRc)
+        const Rotation2D operator* (const Rotation2D& bRc) const
         {
-            return Rotation2D (aRb (0, 0) * bRc (0, 0) + aRb (0, 1) * bRc (1, 0),
-                               aRb (0, 0) * bRc (0, 1) + aRb (0, 1) * bRc (1, 1),
-                               aRb (1, 0) * bRc (0, 0) + aRb (1, 1) * bRc (1, 0),
-                               aRb (1, 0) * bRc (0, 1) + aRb (1, 1) * bRc (1, 1));
+            return Rotation2D ((*this) (0, 0) * bRc (0, 0) + (*this) (0, 1) * bRc (1, 0),
+                               (*this) (0, 0) * bRc (0, 1) + (*this) (0, 1) * bRc (1, 1),
+                               (*this) (1, 0) * bRc (0, 0) + (*this) (1, 1) * bRc (1, 0),
+                               (*this) (1, 0) * bRc (0, 1) + (*this) (1, 1) * bRc (1, 1));
         }
 
         /**
@@ -271,10 +271,10 @@ namespace rw { namespace math {
          * @param bVc [in] \f$ \robabx{b}{c}{\mathbf{v}} \f$
          * @return \f$ \robabx{a}{c}{\mathbf{v}} \f$
          */
-        friend const Vector2D< T > operator* (const Rotation2D& aRb, const Vector2D< T >& bVc)
+        const Vector2D< T > operator* ( const Vector2D< T >& bVc) const
         {
-            return Vector2D< T > (aRb (0, 0) * bVc (0) + aRb (0, 1) * bVc (1),
-                                  aRb (1, 0) * bVc (0) + aRb (1, 1) * bVc (1));
+            return Vector2D< T > ((*this) (0, 0) * bVc (0) + (*this) (0, 1) * bVc (1),
+                                  (*this) (1, 0) * bVc (0) + (*this) (1, 1) * bVc (1));
         }
 
         /**

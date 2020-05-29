@@ -43,6 +43,8 @@ namespace rw { namespace math {
          */
         virtual RES_T f (ARG_T q) = 0;
 
+        virtual ~Function() {};
+
         /**
          * @brief Wraps the evaluation of x() with operator().
          */
@@ -63,6 +65,8 @@ namespace rw { namespace math {
          * @brief Returns gradient(derivative) of the function
          */
         virtual GRAD_T df (ARG_T q) = 0;
+
+        virtual ~Function1Diff() {};
     };
 
     /*@}*/

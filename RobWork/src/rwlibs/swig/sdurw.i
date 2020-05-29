@@ -7,7 +7,6 @@
 #include <rw/loaders/path/PathLoader.hpp>
 #include <rw/loaders/dom/DOMPropertyMapLoader.hpp>
 #include <rw/loaders/dom/DOMPropertyMapSaver.hpp>
-#include <Eigen/Core>
 
 using namespace rwlibs::swig;
 using rw::math::Metric;
@@ -61,7 +60,14 @@ SWIG_JAVABODY_TYPEWRAPPER(public, public, public, SWIGTYPE)
 
 #endif
 %rename(incement) operator++;
-%rename(notEqual) operator!=;
+
+#if defined(SWIGJAVA) || defined(SWIGLUA)
+    %rename(addAssign) operator +=;
+    %rename(subtractAssign) operator -=;
+    %rename(multiplyAssign) operator *=;
+    %rename(devideAssign) operator /=;
+    %rename(notEqual) operator!=;
+#endif
 
 #if (defined(SWIGPYTHON) || defined(SWIGLUA))
 %feature("flatnested");
@@ -141,6 +147,18 @@ void writelog(const std::string& msg);
     }
 %enddef
 
+%define ARRAYOPERATOR2(ret)
+    %extend {
+        #if (defined(SWIGLUA) || defined(SWIGPYTHON))
+            ret __getitem__(int i)const {return (*$self)(i); }
+            void __setitem__(int i,ret d){ (*$self)(i) = d; }
+        #elif defined(SWIGJAVA)
+            ret get(std::size_t i) const { return (*$self)(i); }
+            void set(std::size_t i,ret d){ (*$self)(i) = d; }
+        #endif
+    }
+%enddef
+
 %define MATRIXOPERATOR(ret)
     %extend {
         #if (defined(SWIGLUA) || defined(SWIGPYTHON))
@@ -177,6 +195,25 @@ void writelog(const std::string& msg);
     }
 %enddef
 
+%define INCREMENT(ret)
+    %extend {
+        /**
+         * @brief Increments the class
+         * @return The incremented class
+         */
+        ret increment() {return *$self++; }
+    }
+%enddef
+
+%define COPY(ret)
+    %extend {
+        /**
+         * @brief Creates a copy of the class
+         * @return a copy of the class
+         */
+        ret copy() {return *$self; }
+    }
+%enddef
 
 /********************************************
  * Constants
@@ -1131,11 +1168,11 @@ class SceneViewer
  *     if wc.isNull():
  *         raise Exception("WorkCell could not be loaded")
  * @endPythonOnly
- * @beginJavaOnly <pre> \code
+ * @beginJavaOnly <pre> <code>
  * WorkCellPtr wc = WorkCellLoaderFactory.load("scene.wc.xml");
  * if (wc.isNull())
  *     throw new Exception("WorkCell could not be loaded.");
- * \endcode </pre> @endJavaOnly
+ * </code> </pre> @endJavaOnly
  * Alternatively a WorkCell can be loaded in the less convenient way:
  * @beginPythonOnly
  * ::\n
@@ -1144,12 +1181,12 @@ class SceneViewer
  *    if wc.isNull():
  *        raise Exception("WorkCell could not be loaded")
  * @endPythonOnly
- * @beginJavaOnly <pre> \code
+ * @beginJavaOnly <pre> <code>
  * WorkCellLoaderPtr loader = WorkCellLoaderFactory.getWorkCellLoader(".wc.xml");
  * WorkCellPtr wc = loader.loadWorkCell("scene.wc.xml");
  * if (wc.isNull())
  *     throw new Exception("WorkCell could not be loaded.");
- * \endcode </pre> @endJavaOnly
+ * </code> </pre> @endJavaOnly
  */
 class WorkCellLoader {
 public:

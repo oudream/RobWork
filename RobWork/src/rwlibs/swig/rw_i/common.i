@@ -1,3 +1,4 @@
+
 //############### Archive
     /**
      * @brief archive interface for serializaion classes.
@@ -575,6 +576,7 @@
         void clear ();
     };
 //############### ConcatVectorIterator
+
     namespace rw {namespace common {
         /**
          * @brief Forward iterator for the concatenation of a pair of vectors of
@@ -612,17 +614,13 @@
              */
             T* operator-> () const ;
 
-            /**
-             * @brief Increments the position of the iterator
-             * @return Reference to the incremented iterator
-             */
-            ConcatVectorIterator& operator++ ();
+            INCREMENT(ConcatVectorIterator&);
 
-            /**
+            /*
              * @brief Increments the position of the iterator
              * @return the ConcatVectorIterator with the value before the incrementation
              */
-            ConcatVectorIterator operator++ (int);
+            //ConcatVectorIterator operator++ (int);
 
             /**
              * @brief Tests whether the positions of two iterators are equal
@@ -664,17 +662,13 @@
              */
             const T* operator-> () const;
 
-            /**
-             * @brief Increments the position of the iterator
-             * @return Reference to the incremented iterator
-             */
-            ConstConcatVectorIterator& operator++ ();
+            INCREMENT(ConstConcatVectorIterator&);
 
-            /**
+            /*
              * @brief Increments the position of the iterator
              * @return the ConstConcatVectorIterator with the value before the incrementation
              */
-            ConstConcatVectorIterator operator++ (int);
+            //ConstConcatVectorIterator operator++ (int);
 
             /**
              * @brief Tests whether the positions of two iterators are equal
@@ -2052,17 +2046,13 @@
              */
             T* operator-> () const;
 
-            /**
-             * @brief Increments the position of the iterator
-             * @return Reference to the incremented iterator
-             */
-            VectorIterator& operator++ ();
+            INCREMENT(VectorIterator&);
 
-            /**
+            /*
              * @brief Increments the position of the iterator
              * @return the VectorIterator with the value before the incrementation
              */
-            VectorIterator operator++ (int);
+            //VectorIterator operator++ (int);
 
             /**
              * @brief Tests whether the positions of two iterators are equal
@@ -2104,19 +2094,13 @@
              */
             const T* operator-> () const;
 
-            /**
-             * @brief Increments the position of the iterator
-             *
-             * @return Reference to the incremented iterator
-             */
-            ConstVectorIterator& operator++ ();
+            INCREMENT(ConstVectorIterator&);
 
-            /**
+            /*
              * @brief Increments the position of the iterator
-             *
              * @return the VectorIterator with the value before the incrementation
              */
-            ConstVectorIterator operator++ (int);
+            //ConstVectorIterator operator++ (int);
 
             /**
              * @brief Tests whether the positions of two iterators are equal

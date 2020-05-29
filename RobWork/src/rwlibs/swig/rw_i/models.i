@@ -635,8 +635,8 @@
         /**
          * @brief Constructor
          * @param alpha [in] \f$\alpha_{i-1}\f$
-         * @param a [in] \f$a_{i-1}\f$
-         * @param d [in] \f$d_{i}\f$
+         * @param a [in] \f$ a_{i-1}\f$
+         * @param d [in] \f$ d_{i}\f$
          * @param theta [in] \f$\theta_{i-1}\f$
          */
         DHParameterSet(double alpha, double a, double d, double theta);
@@ -644,8 +644,8 @@
         /**
          * @brief Constructor
          * @param alpha [in] \f$\alpha_{i-1}\f$
-         * @param a [in] \f$a_{i-1}\f$
-         * @param d [in] \f$d_{i}\f$
+         * @param a [in] \f$ a_{i-1}\f$
+         * @param d [in] \f$ d_{i}\f$
          * @param theta [in] \f$\theta_{i-1}\f$
          * @param type documentation missing !
          */
@@ -654,7 +654,7 @@
         /**
          * @brief Constructor
          * @param alpha [in] \f$\alpha_{i-1}\f$
-         * @param a [in] \f$a_{i-1}\f$
+         * @param a [in] \f$ a_{i-1}\f$
          * @param beta [in] documentation missing !
          * @param b [in] documentation missing !
          * @param parallel [in] documentation missing !
@@ -665,13 +665,13 @@
         /** @brief \f$\alpha_{i-1}\f$ **/
         double alpha() const;
 
-        /** @brief \f$a_{i-1}\f$ **/
+        /** @brief \f$ a_{i-1}\f$ **/
         double a() const;
 
-        /** @brief \f$d_{i} \f$ **/
+        /** @brief \f$ d_{i} \f$ **/
         double d() const;
 
-        /** @brief \f$\theta_{i} \f$ **/
+        /** @brief \f$ \theta_{i} \f$ **/
         double theta() const;
 
         double b() const;
@@ -1528,9 +1528,9 @@
      * @brief Provides a differential controlled mobile device
      *
      * The MobileDevice class provides a differential controlled mobile device
-     * with non-holonomic constraints. The \f$x\f$ direction is defined as
-     * straight forward and \f$z\f$ vertically up. The wheels are assumed to be
-     * positioned summetrically around the base and have \f$0\f$ \f$x\f$
+     * with non-holonomic constraints. The \f$ x\f$ direction is defined as
+     * straight forward and \f$ z\f$ vertically up. The wheels are assumed to be
+     * positioned summetrically around the base and have \f$ 0\f$ \f$ x\f$
      * component.
      *
      * When using setQ it takes 2 parameters, which corresponds to the distances

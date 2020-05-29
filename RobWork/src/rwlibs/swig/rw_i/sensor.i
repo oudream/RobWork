@@ -1574,6 +1574,11 @@
         SensorData (long timeStamp = 0);
 
         /**
+         * @brief Destructor
+         */
+        virtual ~SensorData();
+
+        /**
          * @brief get timestamp of this sensor data
          * @return timestamp in ms
          */
@@ -1584,6 +1589,8 @@
          * @param timestamp [in] time in ms
          */
         virtual void setTimeStamp (long timestamp);
+
+        
     };
 
 // ############### StereoCameraModel #################

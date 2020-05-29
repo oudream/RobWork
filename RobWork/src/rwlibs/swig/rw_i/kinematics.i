@@ -658,7 +658,7 @@
         /**
          * @brief The transform of \b frame in relative to the world frame.
          *
-         * If to=NULL the method returns a \f$4\times 4\f$ identify matrix
+         * If to=NULL the method returns a \f$ 4 \times 4\f$ identify matrix
          *
          * @param to [in] The transform for which to find the world frame.
          *
@@ -959,27 +959,27 @@
         /**
          * @brief Scaling of a configuration state by a scalar.
          */
-        friend QState operator* (const QState& q, double scale);
+        QState operator* (double scale) const;
 
         /**
          * @brief Scaling of a configuration state by division
          */
-        friend QState operator/ (const QState& q, double scale);
+        QState operator/ (double scale) const ;
 
-        /**
+        /*
          * @brief Scaling of a configuration state by a scalar.
          */
-        friend QState operator* (double scale, const QState& q);
+        //friend QState operator* (double scale, const QState& q);
 
         /**
          * @brief Addition of configuration states.
          */
-        friend QState operator+ (const QState& a, const QState& b);
+        QState operator+ (const QState& b) const;
 
         /**
          * @brief Subtraction of configuration states.
          */
-        friend QState operator- (const QState& a, const QState& b);
+        QState operator- (const QState& b) const;
 
         /**
          * @brief Unary minus operator.
@@ -991,23 +991,16 @@
          */
         rw::core::Ptr< StateSetup > getStateSetup () const;
 
-        // void copy(const QState& qstate);
-
         /**
            @brief The dimension of the state vector.
          */
         size_t size () const;
 
-        /*TODO(kalor) implement
-         * @brief Get element of state.
-         * @param index [in] the index.
-         * @return the value at given index.
-         */
-        //double& operator() (size_t index);
-
         TOSTRING(QState);
         ARRAYOPERATOR(double);
     };
+
+
 //################ State
     %nodefaultctor State;
     /**
@@ -1090,14 +1083,14 @@
          *
          * The tree state remains the same.
          */
-        friend State operator/ (const State& state, double scale);
+        State operator/ (double scale) const;
 
-        /**
+        /*
          * @brief Scaling of the configuration state by a scalar.
          *
          * The tree state remains the same.
          */
-        friend State operator* (double scale, const State& state);
+        //friend State operator* (double scale, const State& state);
 
         /**
          * @brief Addition of configuration states.
@@ -1107,7 +1100,7 @@
          * you to use setTreeStateInState() to make you explicitly choose the
          * tree state.
          */
-        friend State operator+ (const State& a, const State& b);
+        State operator+ (const State& b) const;
 
         /**
          * @brief Subtraction of configuration states.
@@ -1117,7 +1110,7 @@
          * you to use setTreeStateInState() to make you explicitly choose the
          * tree state.
          */
-        friend State operator- (const State& a, const State& b);
+        State operator- (const State& b)const;
 
         /**
          * @brief Unary minus operator.

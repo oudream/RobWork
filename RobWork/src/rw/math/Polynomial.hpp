@@ -277,20 +277,18 @@ namespace rw { namespace math {
          * @param polynomial [in] polynomial vector.
          * @return a 3D polynomial vector.
          */
-        friend PolynomialND< Eigen::Matrix< T, 3, 1 >, T >
-        operator* (const Polynomial< T >& p,
-                   const PolynomialND< Eigen::Matrix< T, 3, 1 >, T >& polynomial)
+        PolynomialND< Eigen::Matrix< T, 3, 1 >, T >
+        operator* (const PolynomialND< Eigen::Matrix< T, 3, 1 >, T >& polynomial) const
         {
-            return p.template multiply< Eigen::Matrix< T, 3, 1 >, Eigen::Matrix< T, 3, 1 > > (
+            return this->template multiply< Eigen::Matrix< T, 3, 1 >, Eigen::Matrix< T, 3, 1 > > (
                 polynomial);
         }
 
         //! @copydoc operator*(const Polynomial<T>&, const PolynomialND<Eigen::Matrix<T,3,1>,T>&)
-        friend PolynomialND< Eigen::Matrix< T, 1, 3 >, T >
-        operator* (const Polynomial< T >& p,
-                   const PolynomialND< Eigen::Matrix< T, 1, 3 >, T >& polynomial)
+        PolynomialND< Eigen::Matrix< T, 1, 3 >, T >
+        operator* (const PolynomialND< Eigen::Matrix< T, 1, 3 >, T >& polynomial) const
         {
-            return p.template multiply< Eigen::Matrix< T, 1, 3 >, Eigen::Matrix< T, 1, 3 > > (
+            return this->template multiply< Eigen::Matrix< T, 1, 3 >, Eigen::Matrix< T, 1, 3 > > (
                 polynomial);
         }
 
@@ -300,11 +298,10 @@ namespace rw { namespace math {
          * @param polynomial [in] polynomial matrix.
          * @return a 3D polynomial matrix.
          */
-        friend PolynomialND< Eigen::Matrix< T, 3, 3 >, T >
-        operator* (const Polynomial< T >& p,
-                   const PolynomialND< Eigen::Matrix< T, 3, 3 >, T >& polynomial)
+        PolynomialND< Eigen::Matrix< T, 3, 3 >, T >
+        operator* (const PolynomialND< Eigen::Matrix< T, 3, 3 >, T >& polynomial) const
         {
-            return p.template multiply< Eigen::Matrix< T, 3, 3 >, Eigen::Matrix< T, 3, 3 > > (
+            return this->template multiply< Eigen::Matrix< T, 3, 3 >, Eigen::Matrix< T, 3, 3 > > (
                 polynomial);
         }
 
@@ -314,17 +311,17 @@ namespace rw { namespace math {
          * @param a [in] vector to multiply with.
          * @return a 3D polynomial vector.
          */
-        friend PolynomialND< Eigen::Matrix< T, 3, 1 >, T >
-        operator* (const Polynomial< T >& p, const Eigen::Matrix< T, 3, 1 >& a)
+        PolynomialND< Eigen::Matrix< T, 3, 1 >, T > operator* (const Eigen::Matrix< T, 3, 1 >& a) const
         {
-            return p.template multiply< Eigen::Matrix< T, 3, 1 >, Eigen::Matrix< T, 3, 1 > > (a);
+            return this->template multiply< Eigen::Matrix< T, 3, 1 >, Eigen::Matrix< T, 3, 1 > > (
+                a);
         }
 
         //! @copydoc operator*(const Polynomial<T>&, const Eigen::Matrix<T,3,1>&)
-        friend PolynomialND< Eigen::Matrix< T, 1, 3 >, T >
-        operator* (const Polynomial< T >& p, const Eigen::Matrix< T, 1, 3 >& a)
+        PolynomialND< Eigen::Matrix< T, 1, 3 >, T > operator* (const Eigen::Matrix< T, 1, 3 >& a) const
         {
-            return p.template multiply< Eigen::Matrix< T, 1, 3 >, Eigen::Matrix< T, 1, 3 > > (a);
+            return this->template multiply< Eigen::Matrix< T, 1, 3 >, Eigen::Matrix< T, 1, 3 > > (
+                a);
         }
 
         /**
@@ -333,10 +330,10 @@ namespace rw { namespace math {
          * @param A [in] matrix to multiply with.
          * @return a 3D polynomial matrix.
          */
-        friend PolynomialND< Eigen::Matrix< T, 3, 3 >, T >
-        operator* (const Polynomial< T >& p, const Eigen::Matrix< T, 3, 3 >& A)
+        PolynomialND< Eigen::Matrix< T, 3, 3 >, T > operator* (const Eigen::Matrix< T, 3, 3 >& A) const
         {
-            return p.template multiply< Eigen::Matrix< T, 3, 3 >, Eigen::Matrix< T, 3, 3 > > (A);
+            return this->template multiply< Eigen::Matrix< T, 3, 3 >, Eigen::Matrix< T, 3, 3 > > (
+                A);
         }
 
         /**
