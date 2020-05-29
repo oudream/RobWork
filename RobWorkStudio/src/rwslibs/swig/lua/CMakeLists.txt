@@ -22,29 +22,20 @@ rw_subsys_option(
 
 if(build)
     set(RWSIM_HAVE_LUA TRUE CACHE INTERNAL "")
-    # MESSAGE(STATUS "SWIG found adding swig modules!")
+    
     include(UseSWIG)
 
-    set(CMAKE_SWIG_FLAGS "")
-
-    set_source_files_properties(../sdurws.i PROPERTIES CPLUSPLUS ON)
-    set_source_files_properties(../sdurws.i PROPERTIES SWIG_FLAGS "-includeall")
     include_directories(${RW_ROOT}/src)
 
     set(RWS_MODULE sdurws)
     set(TARGET_NAME ${RWS_MODULE}_lua)
-
     # ############ lua interface generation ##############
-    if((CMAKE_VERSION VERSION_GREATER 3.8) OR (CMAKE_VERSION VERSION_EQUAL 3.8))
-        swig_add_library(
-            ${TARGET_NAME}
-            TYPE SHARED
-            LANGUAGE lua
-            SOURCES ../sdurws.i Lua.cpp ../ScriptTypes.cpp
-        )
-    else()
-        swig_add_module(${TARGET_NAME} lua ../sdurws.i Lua.cpp ../ScriptTypes.cpp)
-    endif()
+    rw_add_swig(
+        ${RWS_MODULE} lua SHARED 
+        TARGET_NAME ${TARGET_NAME}
+        SOURCES ../sdurws.i Lua.cpp ../ScriptTypes.cpp
+        INSTALL_DIR ${LUA_INSTALL_DIR}
+    )
 
     if(NOT DEFINED MSVC) # This code is to make it easier to make debian packages
         set_target_properties(
@@ -57,6 +48,7 @@ if(build)
                 LIBRARY_OUTPUT_DIRECTORY "${RWS_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua"
         )
     endif()
+    
     swig_link_libraries(
         ${TARGET_NAME}
         ${SUBSYS_DEPS}
@@ -71,23 +63,15 @@ if(build)
         swig_link_libraries(${TARGET_NAME} ${RW_BUILD_WITH_LIBRARIES_LUA})
         target_include_directories(${TARGET_NAME} PUBLIC ${RW_BUILD_WITH_LUA_INCLUDE_DIR})
     endif()
-    add_library(${PROJECT_PREFIX}::${TARGET_NAME} ALIAS ${TARGET_NAME})
 
     # ############ lua static interface generation ##############
-    if((CMAKE_COMPILER_IS_GNUCC) OR (CMAKE_C_COMPILER_ID STREQUAL "Clang"))
-        set_target_properties(${TARGET_NAME} PROPERTIES LINK_FLAGS -Wl,--no-undefined)
-    endif()
-
-    if((CMAKE_VERSION VERSION_GREATER 3.12.0) OR (CMAKE_VERSION VERSION_EQUAL 3.12.0))
-        swig_add_library(
-            ${TARGET_NAME}_s
-            TYPE STATIC
-            LANGUAGE lua
-            SOURCES ../sdurws.i Lua.cpp ../ScriptTypes.cpp
-        )
-    else()
-        add_library(${TARGET_NAME}_s STATIC ${swig_generated_sources} ${swig_other_sources})
-    endif()
+    
+    rw_add_swig(
+        ${RWS_MODULE} lua STATIC
+        TARGET_NAME ${TARGET_NAME}_s
+        SOURCES ../sdurws.i Lua.cpp ../ScriptTypes.cpp
+        INSTALL_DIR ${STATIC_LIB_INSTALL_DIR}
+    )
 
     target_link_libraries(
         ${TARGET_NAME}_s
@@ -103,7 +87,6 @@ if(build)
         target_link_libraries(${TARGET_NAME}_s ${RW_BUILD_WITH_LIBRARIES_LUA})
         target_include_directories(${TARGET_NAME}_s PUBLIC ${RW_BUILD_WITH_LUA_INCLUDE_DIR})
     endif()
-    add_library(${PROJECT_PREFIX}::${TARGET_NAME}_s ALIAS ${TARGET_NAME}_s)
 
     # Visual Studio or mingw this is used to indicate static linking to Visual Studio or mingw
     if(DEFINED MSVC)
@@ -119,17 +102,4 @@ if(build)
     if((CMAKE_COMPILER_IS_GNUCC) OR (CMAKE_C_COMPILER_ID STREQUAL "Clang"))
         set_target_properties(sdurwslua_plugin.rwplugin PROPERTIES LINK_FLAGS -Wl,--no-undefined)
     endif()
-
-    # ############ INSTALL LUA LIBRARY #############################
-    install(
-        TARGETS ${TARGET_NAME}_s
-        EXPORT ${PROJECT_PREFIX}Targets
-        DESTINATION ${STATIC_LIB_INSTALL_DIR} COMPONENT swig
-    )
-
-    install(
-        TARGETS ${TARGET_NAME} 
-        EXPORT ${PROJECT_PREFIX}Targets 
-        DESTINATION ${LUA_INSTALL_DIR} COMPONENT swig
-    )
 endif()
