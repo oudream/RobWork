@@ -26,32 +26,19 @@ if(build)
     # MESSAGE(STATUS "SWIG found adding swig modules!")
     include(UseSWIG)
 
-    set(CMAKE_SWIG_FLAGS "")
-
-    set_source_files_properties(../sdurwsim.i PROPERTIES CPLUSPLUS ON)
-    set_source_files_properties(../sdurwsim.i PROPERTIES SWIG_FLAGS "-includeall")
     include_directories(${RWSIM_ROOT}/src ${RW_ROOT}/src)
 
     set(RWSIM_MODULE sdurwsim)
     set(TARGET_NAME ${RWSIM_MODULE}_lua)
 
     # ############ lua interface generation ##############
-    if((CMAKE_VERSION VERSION_GREATER 3.8) OR (CMAKE_VERSION VERSION_EQUAL 3.8))
-        swig_add_library(
-            ${TARGET_NAME}
-            TYPE SHARED
-            LANGUAGE lua
-            SOURCES ../sdurwsim.i ../ScriptTypes.cpp Lua.cpp
-        )
-    else()
-        swig_add_module(
-            ${TARGET_NAME}
-            lua
-            ../sdurwsim.i
-            ../ScriptTypes.cpp
-            Lua.cpp
-        )
-    endif()
+    rw_add_swig(
+        ${RWSIM_MODULE} lua SHARED 
+        TARGET_NAME ${TARGET_NAME}
+        SOURCES ../sdurwsim.i Lua.cpp ../ScriptTypes.cpp
+        INSTALL_DIR ${LUA_INSTALL_DIR}
+    )
+
 
     if(NOT DEFINED MSVC) # This code is to make it easier to make debian packages
         set_target_properties(
@@ -66,30 +53,25 @@ if(build)
     endif()
 
     swig_link_libraries(${TARGET_NAME} ${RWSIM_ODE_LIBRARY} ${RWSIM_MODULE})
+
     if (RW_BUILD_WITH_INTERNAL_LUA)
         swig_link_libraries(${TARGET_NAME} RW::lua51)
     else()
         swig_link_libraries(${TARGET_NAME} ${RW_BUILD_WITH_LIBRARIES_LUA})
         target_include_directories(${TARGET_NAME} PUBLIC ${RW_BUILD_WITH_LUA_INCLUDE_DIR})
     endif()
-    if((CMAKE_COMPILER_IS_GNUCC) OR (CMAKE_C_COMPILER_ID STREQUAL "Clang"))
-        set_target_properties(${TARGET_NAME} PROPERTIES LINK_FLAGS -Wl,--no-undefined)
-    endif()
+
 
     # ############ lua static interface generation ##############
-    if((CMAKE_VERSION VERSION_GREATER 3.12.0) OR (CMAKE_VERSION VERSION_EQUAL 3.12.0))
-        swig_add_library(
-            ${TARGET_NAME}_s
-            TYPE STATIC
-            LANGUAGE lua
-            SOURCES ../sdurwsim.i ../ScriptTypes.cpp Lua.cpp
-        )
-    else()
-        add_library(${TARGET_NAME}_s STATIC Lua.cpp ${swig_generated_sources} ${swig_other_sources})
-        add_dependencies(${TARGET_NAME}_s ${TARGET_NAME}) # avoid using the source files before they have been
-                                                          # generated
-    endif()
+    rw_add_swig(
+        ${RWSIM_MODULE} lua SHARED 
+        TARGET_NAME ${TARGET_NAME}_s
+        SOURCES ../sdurwsim.i Lua.cpp ../ScriptTypes.cpp
+        INSTALL_DIR ${LUA_INSTALL_DIR}
+    )
+
     target_link_libraries(${TARGET_NAME}_s ${RWSIM_ODE_LIBRARY} ${RWSIM_MODULE})
+    
     if (RW_BUILD_WITH_INTERNAL_LUA)
         target_link_libraries(${TARGET_NAME}_s RW::lua51)
     else()

@@ -162,8 +162,7 @@ macro(RW_GET_GIT_VERSION _version _branch)
         execute_process(
             COMMAND ${GIT_EXECUTABLE} show -s --format=%cd --date=short
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-            OUTPUT_VARIABLE tmp_version
-            OUTPUT_STRIP_TRAILING_WHITESPACE
+            OUTPUT_VARIABLE tmp_version OUTPUT_STRIP_TRAILING_WHITESPACE
         )
         string(SUBSTRING ${tmp_version} 2 -1 tmp_version)
         string(REPLACE "-" "." tmp_version ${tmp_version})
@@ -181,8 +180,7 @@ macro(RW_GET_GIT_VERSION _version _branch)
         execute_process(
             COMMAND ${GIT_EXECUTABLE} rev-parse --abbrev-ref HEAD
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-            OUTPUT_VARIABLE ${_branch}
-            OUTPUT_STRIP_TRAILING_WHITESPACE
+            OUTPUT_VARIABLE ${_branch} OUTPUT_STRIP_TRAILING_WHITESPACE
         )
 
     endif()
@@ -566,6 +564,113 @@ macro(RW_ADD_PLUGIN _name _lib_type)
 endmacro()
 
 # ##################################################################################################
+# add a swig library of library _name into language _language.
+
+macro(RW_ADD_SWIG _name _language _type)
+
+    # ###### Handle Options #####
+    set(options) # Used to marke flags
+    set(oneValueArgs TARGET_NAME INSTALL_DIR CXX_FILE_DIR LANGUAGE_FILE_DIR) # used to marke values with a single value
+    set(multiValueArgs SOURCES DEPEND SWIG_FLAGS)
+    cmake_parse_arguments(SLIB "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
+
+    # ###### Setup default options ########
+    set(CM_VERSION 3.8)
+    if(${_type} STREQUAL "STATIC")
+        set(CM_VERSION 3.12)
+    endif()
+
+    if(NOT DEFINED SLIB_TARGET_NAME)
+        set(SLIB_TARGET_NAME ${_name}_${language})
+    endif()
+
+    if(NOT DEFINED SLIB_CXX_FILE_DIR) 
+        set(SLIB_CXX_FILE_DIR ${CMAKE_CURRENT_BINARY_DIR})
+    endif()
+    if(NOT DEFINED SLIB_LANGUAGE_FILE_DIR) 
+        set(SLIB_LANGUAGE_FILE_DIR ${CMAKE_CURRENT_BINARY_DIR})
+    endif()
+
+    # ########## Setup SWIG compile ###########
+
+    include(UseSWIG)
+    set(CMAKE_SWIG_FLAGS ${SLIB_SWIG_FLAGS})
+    set(RW_MODULE_FILENAME ../${_name}.i)
+
+    set_source_files_properties(${RW_MODULE_FILENAME} PROPERTIES CPLUSPLUS ON)
+    if(${_language} STREQUAL java AND NOT ${SWIG_VERSION} VERSION_LESS 4.0.0 )
+        set_source_files_properties(
+            ${RW_MODULE_FILENAME} PROPERTIES SWIG_FLAGS "-includeall;-doxygen"
+        )
+    else()
+        set_source_files_properties(${RW_MODULE_FILENAME} PROPERTIES SWIG_FLAGS "-includeall")
+    endif()
+
+    unset(CMAKE_SWIG_OUTDIR)
+
+    if((CMAKE_VERSION VERSION_GREATER 3.12) OR (CMAKE_VERSION VERSION_EQUAL 3.12))
+        swig_add_library(
+            ${SLIB_TARGET_NAME}
+            TYPE ${_type}
+            LANGUAGE ${_language}
+            OUTPUT_DIR ${SLIB_LANGUAGE_FILE_DIR}
+            OUTFILE_DIR ${SLIB_CXX_FILE_DIR}
+            SOURCES ${RW_MODULE_FILENAME} ${SLIB_SOURCES}
+        )
+    elseif((CMAKE_VERSION VERSION_GREATER 3.8) OR (CMAKE_VERSION VERSION_EQUAL 3.8))
+        set(CMAKE_SWIG_OUTDIR ${SLIB_LANGUAGE_FILE_DIR})
+
+        swig_add_library(
+            ${SLIB_TARGET_NAME}
+            TYPE ${_type}
+            LANGUAGE ${_language}
+            SOURCES ${RW_MODULE_FILENAME} ${SLIB_SOURCES}
+        )
+    else()
+        set(CMAKE_SWIG_OUTDIR ${SLIB_LANGUAGE_FILE_DIR})
+
+        if(${_type} STREQUAL "STATIC")
+            add_library(${SLIB_TARGET_NAME} STATIC ${SLIB_SOURCES} ${swig_generated_sources}
+                                                   ${swig_other_sources}
+            )
+        else()
+            swig_add_module(${SLIB_TARGET_NAME} ${_language} ${RW_MODULE_FILENAME} ${SOURCE})
+        endif()
+    endif()
+    
+    if(NOT POLICY CMP0078)
+        set(SLIB_TARGET_NAME ${SWIG_MODULE_${SLIB_TARGET_NAME}_REAL_NAME})
+    endif()
+
+    target_include_directories(${SLIB_TARGET_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+    add_library(${PROJECT_PREFIX}::${SLIB_TARGET_NAME} ALIAS ${SLIB_TARGET_NAME})
+
+    if((CMAKE_COMPILER_IS_GNUCC) OR (CMAKE_C_COMPILER_ID STREQUAL "Clang"))
+        set_target_properties(${SLIB_TARGET_NAME} PROPERTIES LINK_FLAGS -Wl,--no-undefined)
+    endif()
+
+    install(
+        TARGETS ${SLIB_TARGET_NAME}
+        EXPORT ${PROJECT_PREFIX}Targets
+        DESTINATION ${SLIB_INSTALL_DIR}
+        COMPONENT swig
+    )
+
+    # ######## Post processing ########
+    if(NOT DEFINED SLIB_COMPILE_BUFFER)
+        set(SLIB_COMPILE_BUFFER
+            ${SLIB_TARGET_NAME}
+            CACHE INTERNAL "Used to limit the swig compiler" FORCE
+        )
+    else()
+        if(TARGET ${SLIB_COMPILE_BUFFER})
+            add_dependencies(${SLIB_TARGET_NAME} ${SLIB_COMPILE_BUFFER})
+            set(SLIB_COMPILE_BUFFER ${SLIB_TARGET_NAME})
+        endif()
+    endif()
+endmacro()
+
+# ##################################################################################################
 # Set a value in a global, cached map. _map The map name. _key The key name. _value The value.
 macro(SET_IN_GLOBAL_MAP _map _key _value)
     set("${_map}_${_key}"
@@ -914,50 +1019,39 @@ macro(RW_CREATE_INSTALLER)
         # Setup Install Groupes ####
         cpack_add_component_group(
             RW
-            DISPLAY_NAME
-            "RobWork"
-            DESCRIPTION
-            "Tools for controlling robots"
-            EXPANDED
-            BOLD_TITLE
+            DISPLAY_NAME "RobWork"
+            DESCRIPTION "Tools for controlling robots"
+            EXPANDED BOLD_TITLE
         )
         cpack_add_component_group(
             RWS
-            DISPLAY_NAME
-            "RobWorkStudio"
-            DESCRIPTION
-            "Tools for Visulizing robot control"
-            EXPANDED
-            BOLD_TITLE
+            DISPLAY_NAME "RobWorkStudio"
+            DESCRIPTION "Tools for Visulizing robot control" EXPANDED BOLD_TITLE
         )
         cpack_add_component_group(
             RWHW
-            DISPLAY_NAME
-            "RobWorkHardware"
-            DESCRIPTION
-            "Tools for Visulizing robot control"
-            EXPANDED
-            BOLD_TITLE
+            DISPLAY_NAME "RobWorkHardware"
+            DESCRIPTION "Tools for Visulizing robot control" EXPANDED BOLD_TITLE
         )
         cpack_add_component_group(
             RWSIM
-            DISPLAY_NAME
-            "RobWorkSim"
-            DESCRIPTION
-            "Tools for simulating robots"
-            EXPANDED
-            BOLD_TITLE
+            DISPLAY_NAME "RobWorkSim"
+            DESCRIPTION "Tools for simulating robots" EXPANDED BOLD_TITLE
         )
         cpack_add_component_group(
-            MISC DISPLAY_NAME "Miscellaneous" DESCRIPTION "Theses are Other Packages"
+            MISC
+            DISPLAY_NAME "Miscellaneous"
+            DESCRIPTION "Theses are Other Packages"
         )
         cpack_add_component_group(
-            DEP DISPLAY_NAME "Dependencies" DESCRIPTION
-            "Theses are external dependencies for the RobWork packages"
+            DEP
+            DISPLAY_NAME "Dependencies"
+            DESCRIPTION "Theses are external dependencies for the RobWork packages"
         )
         cpack_add_component_group(
-            DEVEL DISPLAY_NAME "Development Files" DESCRIPTION
-            "Theses are packages needed when you want to use robwork for development"
+            DEVEL
+            DISPLAY_NAME "Development Files"
+            DESCRIPTION "Theses are packages needed when you want to use robwork for development"
         )
 
         # Setup Install Types ####
@@ -997,19 +1091,12 @@ macro(RW_CREATE_INSTALLER)
                 list(FILTER _depList EXCLUDE REGEX "RW.*::")
                 cpack_add_component(
                     ${_comp}
-                    DISPLAY_NAME
-                    "${_dispName}"
-                    DESCRIPTION
-                    "${RW_SUBSYS_DESC_${_comp}}"
-                    GROUP
-                    "${RW_SUBSYS_PREFIX_${_comp}}"
-                    DEPENDS
-                    "${_depList}"
-                    INSTALL_TYPES
-                    ${RW_SUBSYS_PREFIX_${_comp}}_i
-                    Full
-                    Dev
-                    # DOWNLOADED ARCHIVE_FILE #Name_of_file_to_generate_for_download
+                    DISPLAY_NAME "${_dispName}"
+                    DESCRIPTION "${RW_SUBSYS_DESC_${_comp}}"
+                    GROUP "${RW_SUBSYS_PREFIX_${_comp}}"
+                    DEPENDS "${_depList}"
+                    INSTALL_TYPES ${RW_SUBSYS_PREFIX_${_comp}}_i Full Dev
+                                  # DOWNLOADED ARCHIVE_FILE #Name_of_file_to_generate_for_download
                 )
                 message(
                     STATUS
@@ -1021,16 +1108,11 @@ macro(RW_CREATE_INSTALLER)
             elseif(${_comp} IN_LIST EXTERNAL_COMPONENTS)
                 cpack_add_component(
                     ${_comp}
-                    DISPLAY_NAME
-                    "${_dispName}"
-                    DESCRIPTION
-                    "RobWorkDependencie"
-                    GROUP
-                    DEP
-                    INSTALL_TYPES
-                    Full
-                    Dev
-                    # DOWNLOADED ARCHIVE_FILE #Name_of_file_to_generate_for_download
+                    DISPLAY_NAME "${_dispName}"
+                    DESCRIPTION "RobWorkDependencie"
+                    GROUP DEP
+                    INSTALL_TYPES Full Dev
+                                  # DOWNLOADED ARCHIVE_FILE #Name_of_file_to_generate_for_download
                 )
                 message(
                     STATUS
@@ -1039,14 +1121,10 @@ macro(RW_CREATE_INSTALLER)
             else()
                 cpack_add_component(
                     ${_comp}
-                    DISPLAY_NAME
-                    "${_dispName}"
-                    GROUP
-                    MISC
-                    INSTALL_TYPES
-                    Full
-                    Dev
-                    # DOWNLOADED ARCHIVE_FILE #Name_of_file_to_generate_for_download
+                    DISPLAY_NAME "${_dispName}"
+                    GROUP MISC
+                    INSTALL_TYPES Full Dev
+                                  # DOWNLOADED ARCHIVE_FILE #Name_of_file_to_generate_for_download
                 )
                 message(
                     STATUS
