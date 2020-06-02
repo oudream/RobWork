@@ -122,9 +122,9 @@ namespace rw { namespace kinematics {
          *
          * The tree state remains the same.
          */
-        friend State operator/ (const State& state, double scale)
+        State operator/ ( double scale) const
         {
-            return State (state._q_state / scale, state._tree_state, state.getUniqueId ());
+            return State (this->_q_state / scale, this->_tree_state, this->getUniqueId ());
         }
 
         /**
@@ -145,9 +145,9 @@ namespace rw { namespace kinematics {
          * you to use setTreeStateInState() to make you explicitly choose the
          * tree state.
          */
-        friend State operator+ (const State& a, const State& b)
+        State operator+ (const State& b) const 
         {
-            return State (a._q_state + b._q_state, a._tree_state, a.getUniqueId ());
+            return State (this->_q_state + b._q_state, this->_tree_state, this->getUniqueId ());
         }
 
         /**
@@ -158,9 +158,9 @@ namespace rw { namespace kinematics {
          * you to use setTreeStateInState() to make you explicitly choose the
          * tree state.
          */
-        friend State operator- (const State& a, const State& b)
+        State operator- (const State& b) const
         {
-            return State (a._q_state - b._q_state, a._tree_state, a.getUniqueId ());
+            return State (this->_q_state - b._q_state, this->_tree_state, this->getUniqueId ());
         }
 
         /**

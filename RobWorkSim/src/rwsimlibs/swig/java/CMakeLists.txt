@@ -3,6 +3,12 @@ set(SUBSYS_DESC "Interface for accessing RobWorkSim from java.")
 set(SUBSYS_DEPS RW::sdurw_java RWS::sdurws_java sdurwsim)
 set(build TRUE)
 
+if(TARGET RWS::sdurws_jni)
+message(STATUS "RWS::sdurws_java is target")
+else()
+message(STATUS "RWS::sdurws_java is not target")
+endif()
+
 set(DEFAULT TRUE)
 set(REASON)
 if(NOT SWIG_FOUND)
@@ -29,34 +35,22 @@ if(build)
     include(UseJava)
     include(UseSWIG)
 
-    set_source_files_properties(../sdurwsim.i PROPERTIES CPLUSPLUS ON)
-    set_source_files_properties(../sdurwsim.i PROPERTIES SWIG_FLAGS "-includeall")
-    if(NOT ${SWIG_VERSION} VERSION_LESS 4.0.0)
-        set_source_files_properties(../sdurwsim.i PROPERTIES SWIG_FLAGS "-includeall;-doxygen")
-    endif()
     include_directories(${RWSIM_ROOT}/src ${RW_ROOT}/src)
 
     include_directories(${JAVA_INCLUDE_DIRS} ${JNI_INCLUDE_DIRS})
-    set(CMAKE_SWIG_FLAGS "-package" "org.robwork.sdurwsim")
-    # Put java files in different directory suitable for JAR generation later on
-    set(CMAKE_SWIG_OUTDIR ${CMAKE_CURRENT_BINARY_DIR}/java_src/org/robwork/sdurwsim)
-    # SWIG
-    if((CMAKE_VERSION VERSION_GREATER 3.8) OR (CMAKE_VERSION VERSION_EQUAL 3.8))
-        swig_add_library(
-            sdurwsim_jni
-            TYPE MODULE
-            LANGUAGE java
-            SOURCES ../sdurwsim.i ThreadSimulatorStepCallbackEnv.cpp ../ScriptTypes.cpp
-        )
-    else()
-        swig_add_module(sdurwsim_jni java ../sdurwsim.i ThreadSimulatorStepCallbackEnv.cpp
-                        ../ScriptTypes.cpp
-        )
-    endif()
+
+    rw_add_swig(
+        sdurwsim java MODULE
+        TARGET_NAME sdurwsim_jni
+        INSTALL_DIR ${JAVA_INSTALL_DIR}
+        SOURCES ../sdurwsim.i ThreadSimulatorStepCallbackEnv.cpp ../ScriptTypes.cpp
+        CXX_FILE_DIR ${CMAKE_CURRENT_BINARY_DIR}/java_src/org/robwork/sdurwsim
+        LANGUAGE_FILE_DIR ${CMAKE_CURRENT_BINARY_DIR}/java_src/org/robwork/sdurwsim
+        SWIG_FLAGS "-package" "org.robwork.sdurwsim"
+    )
+
     swig_link_libraries(sdurwsim_jni ${RWSIM_ODE_LIBRARY} sdurwsim)
-    if((CMAKE_COMPILER_IS_GNUCC) OR (CMAKE_C_COMPILER_ID STREQUAL "Clang"))
-        set_target_properties(sdurwsim_jni PROPERTIES LINK_FLAGS -Wl,--no-undefined)
-    endif()
+
     # Force removal of previous Java compilation and source when interface file changes This is
     # required as types may be removed or change name (in this case previous java classes would
     # interfere with current compilation).
@@ -69,6 +63,7 @@ if(build)
         COMMENT "Removing old Java source..."
     )
     add_custom_target(CleanDepRWSIM DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/CleanDep)
+
     if((CMAKE_GENERATOR MATCHES "Make") AND (NOT CMAKE_VERSION VERSION_LESS 3.12))
         add_dependencies(sdurwsim_jni_swig_compilation CleanDepRWSIM)
     else()

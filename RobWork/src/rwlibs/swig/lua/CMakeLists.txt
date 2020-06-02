@@ -1,7 +1,6 @@
 set(SUBSYS_NAME sdurw_lua)
 set(SUBSYS_DESC "Interface for accessing RobWork from lua.")
-set(
-    SUBSYS_DEPS
+set(SUBSYS_DEPS
     sdurw
     sdurw_assembly
     sdurw_control
@@ -33,7 +32,10 @@ rw_subsys_option(
 )
 
 if(build)
-    set(RWSIM_HAVE_LUA TRUE CACHE INTERNAL "")
+    set(RWSIM_HAVE_LUA
+        TRUE
+        CACHE INTERNAL ""
+    )
     # MESSAGE(STATUS "SWIG found adding swig modules!")
     include(UseSWIG)
 
@@ -55,12 +57,6 @@ if(build)
         sdurw_opengl
     )
 
-        set(RW_MODULE_FILENAME ../${RW_MODULE}.i)
-        set(TARGET_NAME ${RW_MODULE}_lua)
-
-        set_source_files_properties(${RW_MODULE_FILENAME} PROPERTIES CPLUSPLUS ON)
-        set_source_files_properties(${RW_MODULE_FILENAME} PROPERTIES SWIG_FLAGS "-includeall")
-
         configure_file(Lua.hpp.in ${CMAKE_CURRENT_SOURCE_DIR}/Lua_${RW_MODULE}.hpp @ONLY)
         configure_file(Lua.cpp.in Lua_${RW_MODULE}.cpp @ONLY)
         configure_file(LuaPlugin.cpp.in LuaPlugin_${RW_MODULE}.cpp @ONLY)
@@ -73,62 +69,48 @@ if(build)
 
         # ############ lua interface generation ##############
 
-        if((CMAKE_VERSION VERSION_GREATER 3.8) OR (CMAKE_VERSION VERSION_EQUAL 3.8))
-            swig_add_library(
-                ${TARGET_NAME}
-                TYPE SHARED
-                LANGUAGE lua
-                OUTPUT_DIR ${CMAKE_CURRENT_BINARY_DIR}
-                OUTFILE_DIR ${CMAKE_CURRENT_BINARY_DIR}
-                SOURCES ${RW_MODULE_FILENAME} ${SOURCE}
-                
-            )
-        else()
-            swig_add_module(${TARGET_NAME} lua ${RW_MODULE_FILENAME} ${SOURCE})
-        endif()
+        set(TARGET_NAME ${RW_MODULE}_lua)
+        rw_add_swig(
+            ${RW_MODULE} lua SHARED 
+            TARGET_NAME ${TARGET_NAME}
+            SOURCES ${SOURCE}
+            INSTALL_DIR ${LUA_INSTALL_DIR}
+        )
 
         if(NOT DEFINED MSVC) # This code is to make it easier to make debian packages
             set_target_properties(
                 ${TARGET_NAME}
-                PROPERTIES
-                    PREFIX ""
-                    OUTPUT_NAME ${RW_MODULE}
-                    ARCHIVE_OUTPUT_DIRECTORY "${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua"
-                    RUNTIME_OUTPUT_DIRECTORY "${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua"
-                    LIBRARY_OUTPUT_DIRECTORY "${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua"
+                PROPERTIES PREFIX ""
+                           OUTPUT_NAME ${RW_MODULE}
+                           ARCHIVE_OUTPUT_DIRECTORY "${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua"
+                           RUNTIME_OUTPUT_DIRECTORY "${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua"
+                           LIBRARY_OUTPUT_DIRECTORY "${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua"
             )
         endif()
 
-        target_include_directories(${TARGET_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
         if(NOT RW_ENABLE_INTERNAL_LUA_TARGET)
             target_include_directories(${TARGET_NAME} PUBLIC ${LUA_INCLUDE_DIR})
         endif()
-        add_library(${PROJECT_PREFIX}::${TARGET_NAME} ALIAS ${TARGET_NAME})
+
         add_dependencies(${SUBSYS_NAME}_all ${TARGET_NAME})
 
         # ############ lua static interface generation ##############
-        if((CMAKE_COMPILER_IS_GNUCC) OR (CMAKE_C_COMPILER_ID STREQUAL "Clang"))
-            set_target_properties(${TARGET_NAME} PROPERTIES LINK_FLAGS -Wl,--no-undefined)
-        endif()
+        rw_add_swig(
+            ${RW_MODULE} lua STATIC
+            TARGET_NAME ${TARGET_NAME}_s
+            SOURCES ${SOURCE}
+            INSTALL_DIR ${STATIC_LIB_INSTALL_DIR}
+        )
 
-        if((CMAKE_VERSION VERSION_GREATER 3.12.0) OR (CMAKE_VERSION VERSION_EQUAL 3.12.0))
-            swig_add_library(
-                ${TARGET_NAME}_s
-                TYPE STATIC
-                LANGUAGE lua
-                SOURCES ${RW_MODULE_FILENAME} ${SOURCE}
-            )
-        else()
-            add_library(${TARGET_NAME}_s STATIC ${SOURCE} ${swig_generated_sources}
-                                                ${swig_other_sources})
+        if(NOT ((CMAKE_VERSION VERSION_GREATER 3.12.0) OR (CMAKE_VERSION VERSION_EQUAL 3.12.0)))
             add_dependencies(${TARGET_NAME}_s sdurw_lua) # avoid using the source files before they
                                                          # have been generated
         endif()
-        target_include_directories(${TARGET_NAME}_s PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+
         if(NOT RW_ENABLE_INTERNAL_LUA_TARGET)
             target_include_directories(${TARGET_NAME}_s PUBLIC ${LUA_INCLUDE_DIR})
         endif()
-        add_library(${PROJECT_PREFIX}::${TARGET_NAME}_s ALIAS ${TARGET_NAME}_s)
+
         add_dependencies(${SUBSYS_NAME}_all ${TARGET_NAME}_s)
 
         # this is used to indicate static linking to Visual Studio or mingw
@@ -138,38 +120,23 @@ if(build)
             set_target_properties(${TARGET_NAME}_s PROPERTIES COMPILE_FLAGS "-DSTATIC_LINKED")
         endif()
 
-        # Add rwplugin
+        # ############### Add rwplugin #####################
         if(NOT "${RW_MODULE}" STREQUAL "sdurw")
             add_library(${RW_MODULE}_lua_plugin.rwplugin MODULE LuaPlugin_${RW_MODULE}.cpp)
             target_link_libraries(${RW_MODULE}_lua_plugin.rwplugin ${RW_MODULE}_lua_s)
             target_include_directories(
-                ${RW_MODULE}_lua_plugin.rwplugin
-                PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}
+                ${RW_MODULE}_lua_plugin.rwplugin PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}
             )
             if((CMAKE_COMPILER_IS_GNUCC) OR (CMAKE_C_COMPILER_ID STREQUAL "Clang"))
                 set_target_properties(
-                    ${RW_MODULE}_lua_plugin.rwplugin
-                    PROPERTIES LINK_FLAGS -Wl,--no-undefined
+                    ${RW_MODULE}_lua_plugin.rwplugin PROPERTIES LINK_FLAGS -Wl,--no-undefined
                 )
             endif()
             add_dependencies(${SUBSYS_NAME}_all ${RW_MODULE}_lua_plugin.rwplugin)
-            install(
-                TARGETS ${RW_MODULE}_lua_plugin.rwplugin
-                LIBRARY DESTINATION ${RW_PLUGIN_INSTALL_DIR}
+            install(TARGETS ${RW_MODULE}_lua_plugin.rwplugin
+                    LIBRARY DESTINATION ${RW_PLUGIN_INSTALL_DIR}
             )
         endif()
-
-        install(
-            TARGETS ${TARGET_NAME}_s
-            EXPORT ${PROJECT_PREFIX}Targets
-            DESTINATION ${STATIC_LIB_INSTALL_DIR} COMPONENT swig
-        )
-
-        install(
-            TARGETS ${TARGET_NAME} 
-            EXPORT ${PROJECT_PREFIX}Targets 
-            DESTINATION ${LUA_INSTALL_DIR} COMPONENT swig
-        )
 
     endforeach()
 
@@ -188,7 +155,7 @@ if(build)
     target_link_libraries(sdurw_lua_s sdurw ${LUA_LIBRARIES})
     target_link_libraries(sdurw_assembly_lua_s sdurw_assembly sdurw_lua_s ${LUA_LIBRARIES})
     target_link_libraries(sdurw_control_lua_s sdurw_control sdurw_lua_s)
-    target_link_libraries(sdurw_pathoptimization_lua_s sdurw_pathoptimization sdurw_lua_s ${LUA_LIBRARIES})
+    target_link_libraries(sdurw_pathoptimization_lua_s sdurw_pathoptimization sdurw_lua_s ${LUA_LIBRARIES} )
     target_link_libraries(sdurw_pathplanners_lua_s sdurw_pathplanners sdurw_lua_s ${LUA_LIBRARIES})
     target_link_libraries(sdurw_proximitystrategies_lua_s sdurw_proximitystrategies sdurw_lua_s ${LUA_LIBRARIES})
     target_link_libraries(sdurw_simulation_lua_s sdurw_simulation sdurw_lua_s ${LUA_LIBRARIES})

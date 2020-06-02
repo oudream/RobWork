@@ -138,9 +138,9 @@ namespace rw { namespace math {
            \right]
            @f$
         */
-        friend const Transform2D operator* (const Transform2D& aTb, const Transform2D& bTc)
+        const Transform2D operator* (const Transform2D& bTc) const
         {
-            return Transform2D (aTb._d + aTb._R * bTc._d, aTb._R * bTc._R);
+            return Transform2D (this->_d + this->_R * bTc._d, this->_R * bTc._R);
         }
 
         /**
@@ -152,9 +152,9 @@ namespace rw { namespace math {
            @param bP [in] @f$ \robax{b}{\mathbf{p}} @f$
            @return @f$ \robax{a}{\mathbf{p}} @f$
         */
-        friend const Vector2D< T > operator* (const Transform2D& aTb, const Vector2D< T >& bP)
+         const Vector2D< T > operator* ( const Vector2D< T >& bP) const
         {
-            return aTb._R * bP + aTb._d;
+            return this->_R * bP + this->_d;
         }
 
         /**

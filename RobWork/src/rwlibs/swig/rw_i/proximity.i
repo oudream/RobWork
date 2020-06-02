@@ -362,11 +362,9 @@
             }
         }
         %extend {
-            /*
-            static rw::core::Ptr<CollisionDetector> make(rw::core::Ptr<WorkCell> workcell){
+            /*static rw::core::Ptr<CollisionDetector> make(rw::core::Ptr<WorkCell> workcell){
                 return rw::core::ownedPtr( new CollisionDetector(workcell, rwlibs::proximitystrategies::ProximityStrategyFactory::makeDefaultCollisionStrategy()) );
-            }
-            */
+            }*/
 
             static rw::core::Ptr<CollisionDetector> make(rw::core::Ptr<WorkCell> workcell, rw::core::Ptr<CollisionStrategy> strategy){
                 return rw::core::ownedPtr( new CollisionDetector(workcell, strategy) );

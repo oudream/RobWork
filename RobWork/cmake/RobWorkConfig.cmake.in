@@ -160,12 +160,9 @@ endif()
 # get the relavant build type
 get_robwork_build_type(${RWCFG_ROOT} RW_BUILD_TYPE)
 
-message(STATUS "FINDING ROBWORK TARGETS: ")
 if(NOT TARGET sdurw)
     include("${RWCFG_ROOT}/RobWorkTargets.cmake")
-    message(STATUS "TARGET FILE FOUND ")
 endif()
-message(STATUS "DONE FINDING ROBWORK TARGETS: ")
 
 # check whether RobWorkConfig.cmake is found into a RobWork installation or in a build tree
 if(EXISTS "${RWCFG_ROOT}/../src/RobWorkConfig.hpp")
