@@ -30,13 +30,14 @@ if(build)
     set(RWS_MODULE sdurws)
     set(TARGET_NAME ${RWS_MODULE}_lua)
     # ############ lua interface generation ##############
+    
     rw_add_swig(
         ${RWS_MODULE} lua SHARED 
         TARGET_NAME ${TARGET_NAME}
         SOURCES ../sdurws.i Lua.cpp ../ScriptTypes.cpp
         INSTALL_DIR ${LUA_INSTALL_DIR}
     )
-
+    unset(SLIB_COMPILE_BUFFER CACHE)
     if(NOT DEFINED MSVC) # This code is to make it easier to make debian packages
         set_target_properties(
             ${TARGET_NAME}

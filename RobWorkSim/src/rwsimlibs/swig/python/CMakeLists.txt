@@ -31,9 +31,13 @@ if(build)
 
     set(RWSIM_MODULE sdurwsim)
 
-
     configure_file(RobWorkSim.egg-info.in
                    ${CMAKE_CURRENT_SOURCE_DIR}/RobWorkSim-${ROBWORKSIM_VERSION}.egg-info)
+
+    install(
+        FILES ${CMAKE_CURRENT_SOURCE_DIR}/RobWorkSim-${ROBWORKSTUDIO_VERSION}.egg-info
+        DESTINATION ${PYTHON_INSTALL_DIR}
+    )
 
     if(POLICY CMP0078)
         set(LIB_SUFIX _py)
@@ -46,7 +50,7 @@ if(build)
     rw_add_swig(
         ${RWSIM_MODULE} python SHARED
         TARGET_NAME ${TARGET_NAME}
-        INSTALL_DIR ${PYTHON_INSTALL_DIR}
+        INSTALL_DIR ${PYTHON_INSTALL_DIR}/${RWSIM_MODULE}
         LANGUAGE_FILE_DIR ${RWSIM_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RWSIM_MODULE}
         SOURCES ../ScriptTypes.cpp
         SWIG_FLAGS ${SWIG_FLAGS}
@@ -89,17 +93,18 @@ if(build)
     endif()
 
     # ################# Install files ################
-    configure_file(__init__.py.in ${RWSIM_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RWSIM_MODULE}/__init__.py)
-    
+    configure_file(__init__.py.in
+                   ${RWSIM_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RWSIM_MODULE}/__init__.py)
+
     install(
-        FILES ${CMAKE_SWIG_OUTDIR}/${RWSIM_MODULE}.py
+        FILES ${RWSIM_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RWSIM_MODULE}/${RWSIM_MODULE}.py
         DESTINATION "${PYTHON_INSTALL_DIR}/${RWSIM_MODULE}"
     )
     install(
-        FILES ${CMAKE_SWIG_OUTDIR}/__init__.py
+        FILES ${RWSIM_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RWSIM_MODULE}/__init__.py
         DESTINATION "${PYTHON_INSTALL_DIR}/${RWSIM_MODULE}"
     )
-    
+
     # ###### Final linking and dependency checks ######
 
     swig_link_libraries(sdurwsim${LIB_SUFIX} ${RWSIM_ODE_LIBRARY} sdurwsim ${PYTHON_LIBRARIES})

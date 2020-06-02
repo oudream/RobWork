@@ -32,6 +32,7 @@ namespace {
 struct RWSLuaLibrary: rwlibs::swig::LuaState::LuaLibrary {
 	virtual const std::string getId(){ return "RWSLua"; }
 	virtual bool initLibrary(rwlibs::swig::LuaState& state){
+        std::cout << "INIT rws LUALIB" << std::endl << std::flush;
 		rwslibs::swig::openLuaLibRWS( state.get() );
 		// initialize variables
 

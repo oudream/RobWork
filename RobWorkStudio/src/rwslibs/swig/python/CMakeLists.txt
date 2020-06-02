@@ -52,7 +52,7 @@ if(build)
     rw_add_swig(
         ${RWS_MODULE} python SHARED
         TARGET_NAME ${TARGET_NAME}
-        INSTALL_DIR ${PYTHON_INSTALL_DIR}
+        INSTALL_DIR ${PYTHON_INSTALL_DIR}/${RWS_MODULE}
         LANGUAGE_FILE_DIR ${RWS_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RWS_MODULE}
         SOURCES ../ScriptTypes.cpp
         SWIG_FLAGS ${SWIG_FLAGS}

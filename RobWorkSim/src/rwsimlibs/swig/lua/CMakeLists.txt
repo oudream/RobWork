@@ -64,7 +64,7 @@ if(build)
 
     # ############ lua static interface generation ##############
     rw_add_swig(
-        ${RWSIM_MODULE} lua SHARED 
+        ${RWSIM_MODULE} lua STATIC 
         TARGET_NAME ${TARGET_NAME}_s
         SOURCES ../sdurwsim.i Lua.cpp ../ScriptTypes.cpp
         INSTALL_DIR ${LUA_INSTALL_DIR}
