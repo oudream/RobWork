@@ -19,7 +19,7 @@
 #define RW_LOADERS_IMAGE_IMAGELOADER_HPP
 
 #include <rw/sensor/Image.hpp>
-#include <rw/common/ExtensionPoint.hpp>
+#include <rw/core/ExtensionPoint.hpp>
 
 namespace rw { namespace loaders {
 
@@ -34,7 +34,7 @@ namespace rw { namespace loaders {
 	{
 	public:
 		//! smart pointer type
-	    typedef rw::common::Ptr<ImageLoader> Ptr;
+	    typedef rw::core::Ptr<ImageLoader> Ptr;
 
 	    //! destructor
 	    virtual ~ImageLoader(){}
@@ -69,17 +69,17 @@ namespace rw { namespace loaders {
 		 * @brief a factory for ImageLoader. This factory also defines an
 		 * extension point for image loaders.
 		 */
-	    class Factory: public rw::common::ExtensionPoint<ImageLoader> {
+	    class Factory: public rw::core::ExtensionPoint<ImageLoader> {
 	    public:
 	    	//! constructor
-	        Factory():rw::common::ExtensionPoint<ImageLoader>("rw.loaders.ImageLoader", "Example extension point"){};
+	        Factory():rw::core::ExtensionPoint<ImageLoader>("rw.loaders.ImageLoader", "Example extension point"){};
 
 	        /**
 	         * @brief get an image loader for a specific file format
 	         * @param format [in] image format eg. png, jpeg, ...
 	         * @return
 	         */
-	        static rw::common::Ptr<ImageLoader> getImageLoader(const std::string& format);
+	        static rw::core::Ptr<ImageLoader> getImageLoader(const std::string& format);
 
 	        /**
 	         * @brief test if a imageloader for a specific fileformat exists.

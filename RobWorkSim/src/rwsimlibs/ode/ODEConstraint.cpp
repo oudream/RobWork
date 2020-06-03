@@ -28,7 +28,7 @@ using namespace rwlibs::simulation;
 using namespace rwsim::dynamics;
 using namespace rwsim::simulator;
 
-ODEConstraint::ODEConstraint(rw::common::Ptr<const Constraint> constraint, const ODEBody* const parent, const ODEBody* const child, const ODESimulator* const simulator):
+ODEConstraint::ODEConstraint(rw::core::Ptr<const Constraint> constraint, const ODEBody* const parent, const ODEBody* const child, const ODESimulator* const simulator):
 	_rwConstraint(constraint),
 	_parent(parent),
 	_child(child),

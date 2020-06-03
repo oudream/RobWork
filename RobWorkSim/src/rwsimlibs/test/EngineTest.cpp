@@ -23,11 +23,13 @@
 
 #include <rw/common/ThreadTask.hpp>
 #include <rw/common/ThreadSafeVariable.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include <rwsim/simulator/PhysicsEngine.hpp>
 #include <rwsim/simulator/DynamicSimulator.hpp>
 
 using namespace rw::common;
+using namespace rw::core;
 using namespace rw::kinematics;
 using rw::math::Q;
 using namespace rw::trajectory;
@@ -39,11 +41,11 @@ using namespace rwsimlibs::test;
 #define EP_NAME "rwsimlibs.test.EngineTest"
 #define QUOTE(name) #name
 #define ADD_EXTENSION(vector,name) \
-		vector.push_back(Extension(QUOTE(name),EP_NAME,NULL,ownedPtr(new name()))); \
+		vector.push_back(Extension(QUOTE(name),EP_NAME,NULL,rw::core::ownedPtr(new name()).cast<EngineTest>())); \
 		vector.back().getProperties().set<std::string>("testID", QUOTE(name))
 
 namespace {
-void makeInternalExtensions(std::vector<rw::common::Extension>& internal) {
+void makeInternalExtensions(std::vector<rw::core::Extension>& internal) {
 	ADD_EXTENSION(internal,IntegratorGravityTest);
 	ADD_EXTENSION(internal,IntegratorRotationTest);
 	ADD_EXTENSION(internal,IntegratorSpringTest);
@@ -54,17 +56,17 @@ private:
 	EngineTest* const _test;
 	const std::string _engineID;
 	const PropertyMap& _map;
-	rw::common::Ptr<rwsim::log::SimulatorLogScope> _verbose;
+	rw::core::Ptr<rwsim::log::SimulatorLogScope> _verbose;
 	EngineTest::TestHandle::Ptr _handle;
 
 public:
-	RunTask(ThreadTask::Ptr parent, EngineTest* test, const std::string& engineID, const PropertyMap& map, rw::common::Ptr<rwsim::log::SimulatorLogScope> verbose):
+	RunTask(ThreadTask::Ptr parent, EngineTest* test, const std::string& engineID, const PropertyMap& map, rw::core::Ptr<rwsim::log::SimulatorLogScope> verbose):
 		ThreadTask(parent),
 		_test(test),
 		_engineID(engineID),
 		_map(map),
 		_verbose(verbose),
-		_handle(ownedPtr(new EngineTest::TestHandle()))
+		_handle(rw::core::ownedPtr(new EngineTest::TestHandle()))
 	{
 	}
 
@@ -226,20 +228,20 @@ EngineTest::EngineTest()
 EngineTest::~EngineTest() {
 }
 
-EngineTest::TestHandle::Ptr EngineTest::runThread(const std::string& engineID, const PropertyMap& parameters, const rw::common::Ptr<rwsim::log::SimulatorLogScope> verbose, const ThreadTask::Ptr task) {
+EngineTest::TestHandle::Ptr EngineTest::runThread(const std::string& engineID, const PropertyMap& parameters, const rw::core::Ptr<rwsim::log::SimulatorLogScope> verbose, const ThreadTask::Ptr task) {
 	if (task == NULL) {
-		const TestHandle::Ptr handle = ownedPtr(new TestHandle());
+		const TestHandle::Ptr handle = rw::core::ownedPtr(new TestHandle());
 		run(handle, engineID, parameters, verbose);
 		return handle;
 	} else {
 		RunTask* const runTask = new RunTask(task, this, engineID, parameters, verbose);
-		task->addSubTask(ownedPtr(runTask));
+		task->addSubTask(rw::core::ownedPtr(runTask));
 		return runTask->getHandle();
 	}
 }
 
 PropertyMap::Ptr EngineTest::getDefaultParameters() const {
-	return ownedPtr(new PropertyMap());
+	return rw::core::ownedPtr(new PropertyMap());
 }
 
 std::vector<PropertyMap::Ptr> EngineTest::getPredefinedParameters() const {
@@ -283,19 +285,26 @@ bool EngineTest::Factory::hasTest(const std::string& test) {
 }
 
 EngineTest::Ptr EngineTest::Factory::getTest(const std::string& test) {
-	const EngineTest::Factory ep;
+    const EngineTest::Factory ep;
     for(Extension& ext : internalExtensions()) {
-        if(ext.getProperties().get<std::string>("testID") == test)
-			return ext.getObject().cast<EngineTest>();
+        if(ext.getProperties().get<std::string>("testID") == test) {
+            EngineTest::Ptr engineTest = ext.getObject().cast<EngineTest>();
+            if (engineTest.isNull())
+                RW_THROW("EngineTest::Factory::getTest: could not find object of type EngineTest.");
+            return engineTest;
+        }
     }
     const std::vector<Extension::Ptr> exts = ep.getExtensions();
-	for(const Extension::Ptr& ext : exts) {
-		const PropertyMap& props = ext->getProperties();
-		if(props.get("testID",ext->getName() ) == test){
-			return ext->getObject().cast<EngineTest>();
-		}
-	}
-	return NULL;
+    for(const Extension::Ptr& ext : exts) {
+        const PropertyMap& props = ext->getProperties();
+        if(props.get("testID",ext->getName() ) == test) {
+            EngineTest::Ptr engineTest = ext->getObject().cast<EngineTest>();
+            if (engineTest.isNull())
+                RW_THROW("EngineTest::Factory::getTest: could not find object of type EngineTest.");
+            return engineTest;
+        }
+    }
+    return NULL;
 }
 
 std::vector<Extension>& EngineTest::Factory::internalExtensions() {
@@ -303,7 +312,7 @@ std::vector<Extension>& EngineTest::Factory::internalExtensions() {
 	return _internal;
 }
 
-void EngineTest::runEngineLoop(const double dt, const TestHandle::Ptr handle, const std::string& engineID, const PropertyMap& parameters, const rw::common::Ptr<rwsim::log::SimulatorLogScope> verbose, const TestCallback callback, const InitCallback initialize) {
+void EngineTest::runEngineLoop(const double dt, const TestHandle::Ptr handle, const std::string& engineID, const PropertyMap& parameters, const rw::core::Ptr<rwsim::log::SimulatorLogScope> verbose, const TestCallback callback, const InitCallback initialize) {
 	const DynamicWorkCell::Ptr dwc = getDWC(parameters);
 	if (dwc == NULL) {
 		handle->setError("Could not make dynamic workcell.");

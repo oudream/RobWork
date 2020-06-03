@@ -26,7 +26,7 @@ ReturnExpressionPacket::ReturnExpressionPacket(const Mathematica::Expression& ex
 {
 }
 
-ReturnExpressionPacket::ReturnExpressionPacket(rw::common::Ptr<const Mathematica::Expression> expression):
+ReturnExpressionPacket::ReturnExpressionPacket(rw::core::Ptr<const Mathematica::Expression> expression):
 	Packet("ReturnExpressionPacket",Mathematica::ReturnExpression),
 	_expression(expression)
 {
@@ -35,12 +35,12 @@ ReturnExpressionPacket::ReturnExpressionPacket(rw::common::Ptr<const Mathematica
 ReturnExpressionPacket::~ReturnExpressionPacket() {
 }
 
-const rw::common::Ptr<const Mathematica::Expression> ReturnExpressionPacket::expression() {
+const rw::core::Ptr<const Mathematica::Expression> ReturnExpressionPacket::expression() {
 	return _expression;
 }
 
-std::list<rw::common::Ptr<const Mathematica::Expression> > ReturnExpressionPacket::getArguments() const {
-	return std::list<rw::common::Ptr<const Mathematica::Expression> >(1, _expression);
+std::list<rw::core::Ptr<const Mathematica::Expression> > ReturnExpressionPacket::getArguments() const {
+	return std::list<rw::core::Ptr<const Mathematica::Expression> >(1, _expression);
 }
 
 Mathematica::Expression::Ptr ReturnExpressionPacket::clone() const {

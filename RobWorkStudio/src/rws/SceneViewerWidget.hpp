@@ -25,13 +25,14 @@
 #include <QWidget>
 #include <rw/graphics/SceneViewer.hpp>
 #include <rw/graphics/SceneGraph.hpp>
+#include <rw/core/Ptr.hpp>
 
 namespace rws {
     //! @brief Class representing a Qt widget for 3D visualization of a scene.
     class SceneViewerWidget: public rw::graphics::SceneViewer {
     public:
     	//! @brief Smart pointer type for a SceneViewerWidget.
-        typedef rw::common::Ptr<SceneViewerWidget> Ptr;
+        typedef rw::core::Ptr<SceneViewerWidget> Ptr;
 
         /**
          * @brief Get rendering info for the scene.

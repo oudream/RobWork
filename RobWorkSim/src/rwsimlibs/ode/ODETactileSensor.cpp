@@ -232,11 +232,11 @@ void ODETactileSensor::update(const rwlibs::simulation::Simulator::UpdateInfo& i
             //std::cout << dist << std::endl;
             //std::cout << "- force: " << force << std::endl;
             if (bodyIdx == 0) {
-                pos = _wTa[midx] * cm.p1s[i];
-                //normal = _wTb.R()*cm.p2s[i]-_wTa.R()*cm.p1s[i];
+                pos = _cm.p1s[i];
+                //normal = cm.p2s[i]-cm.p1s[i];
             } else {
-                pos = _wTa[midx] * cm.p2s[i];
-                //normal = _wTa.R()*cm.p1s[i]-_wTb.R()*cm.p2s[i];
+                pos = cm.p2s[i];
+                //normal = cm.p1s[i]-cm.p2s[i];
             }
 
             _rwsensor->addForceW(pos, force, gnormal);

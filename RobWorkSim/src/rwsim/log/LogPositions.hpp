@@ -25,7 +25,7 @@
  */
 
 #include "SimulatorLogEntry.hpp"
-
+#include <rw/core/Ptr.hpp>
 #include <rw/math/Transform3D.hpp>
 
 namespace rwsim {
@@ -39,7 +39,7 @@ namespace log {
 class LogPositions: public SimulatorLogEntry {
 public:
     //! Smart pointer type of LogPositions
-    typedef rw::common::Ptr<LogPositions> Ptr;
+    typedef rw::core::Ptr<LogPositions> Ptr;
 
     //! @copydoc SimulatorLogEntry::SimulatorLogEntry
     LogPositions(SimulatorLogScope* parent);

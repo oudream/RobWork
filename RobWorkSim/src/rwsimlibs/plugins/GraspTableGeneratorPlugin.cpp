@@ -5,7 +5,8 @@
 
 #include <boost/bind.hpp>
 
-
+#include <rw/core/StringUtil.hpp>
+#include <rw/core/LogWriter.hpp>
 #include <rw/loaders/dom/DOMPropertyMapLoader.hpp>
 #include <rw/loaders/dom/DOMPropertyMapSaver.hpp>
 
@@ -34,6 +35,7 @@ using namespace rwsim::util;
 using namespace rw::math;
 using namespace rw::kinematics;
 using namespace rw::common;
+using namespace rw::core;
 using namespace rw::proximity;
 using namespace rw::loaders;
 using namespace rw::sensor;
@@ -212,7 +214,7 @@ void GraspTableGeneratorPlugin::loadConfiguration(const std::string& file){
 
 	getRobWorkStudio()->getPropertyMap().set<std::string>(
 			"PreviousDirectory",
-			rw::common::StringUtil::getDirectoryName(configFile));
+			rw::core::StringUtil::getDirectoryName(configFile));
 
     PropertyMap map;
     try {
@@ -394,7 +396,7 @@ void GraspTableGeneratorPlugin::close(){
 
 void GraspTableGeneratorPlugin::initialize(){
     getRobWorkStudio()->stateChangedEvent().add(
-    		boost::bind(&GraspTableGeneratorPlugin::stateChangedListener, this, _1), this);
+    		boost::bind(&GraspTableGeneratorPlugin::stateChangedListener, this, boost::arg<1>()), this);
 
     _configFile = getRobWorkStudio()->getPropertyMap().get<std::string>("GraspTableConfigFile","");
 }

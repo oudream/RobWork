@@ -5,6 +5,7 @@
 
 #include <rwlibs/control/JointController.hpp>
 #include <rwlibs/simulation/SimulatedController.hpp>
+#include <rw/core/Ptr.hpp>
 
 namespace rwsim { namespace dynamics { class RigidDevice; } }
 
@@ -124,7 +125,7 @@ namespace control {
 		bool _enabled;
 	};
 
-	typedef rw::common::Ptr<BeamJointController> BeamJointControllerPtr;
+	typedef rw::core::Ptr<BeamJointController> BeamJointControllerPtr;
 	//! @}
 }
 }

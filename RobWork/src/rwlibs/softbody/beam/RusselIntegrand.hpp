@@ -18,7 +18,7 @@ Copyright 2013 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
 #ifndef RWLIBS_SOFTBODY_RUSSELINTEGRAND_HPP
 #define RWLIBS_SOFTBODY_RUSSELINTEGRAND_HPP
 
-#include <Eigen/Eigen>
+#include <Eigen/Core>
 
 namespace rwlibs {
 namespace softbody {

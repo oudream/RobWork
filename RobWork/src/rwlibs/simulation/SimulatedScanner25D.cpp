@@ -54,7 +54,7 @@ public:
 }
 
 SimulatedScanner25D::SimulatedScanner25D(const std::string& name, rw::kinematics::Frame *frame, FrameGrabber25D::Ptr framegrabber):
-	SimulatedSensor(rw::common::ownedPtr(
+	SimulatedSensor(rw::core::ownedPtr(
 			new Scanner25DModel(name,static_cast<int>(framegrabber->getWidth()), static_cast<int>(framegrabber->getHeight()), frame)
 	)),
 	_framegrabber(framegrabber),
@@ -66,7 +66,7 @@ SimulatedScanner25D::SimulatedScanner25D(const std::string& name, rw::kinematics
 }
 
 SimulatedScanner25D::SimulatedScanner25D(const std::string& name, const std::string& desc, rw::kinematics::Frame *frame, FrameGrabber25D::Ptr framegrabber):
-	SimulatedSensor(rw::common::ownedPtr(
+	SimulatedSensor(rw::core::ownedPtr(
 			new Scanner25DModel(name,static_cast<int>(framegrabber->getWidth()), static_cast<int>(framegrabber->getHeight()), frame)
 	)),
 	_framegrabber(framegrabber),
@@ -138,8 +138,8 @@ rw::sensor::Sensor::Ptr SimulatedScanner25D::getSensorHandle(rwlibs::simulation:
 	if( instance->hasHandle(this) )
 		return instance->getSensorHandle(this).cast<rw::sensor::Scanner25D>();
 
-	rw::common::Ptr<Scanner25DWrapper> handle =
-			rw::common::ownedPtr( new Scanner25DWrapper(this) );
+	rw::core::Ptr<Scanner25DWrapper> handle =
+			rw::core::ownedPtr( new Scanner25DWrapper(this) );
 
 	instance->addHandle(this, handle );
 	return handle;
@@ -150,8 +150,8 @@ rw::sensor::Scanner25D::Ptr SimulatedScanner25D::getScanner25DSensor(rwlibs::sim
 	if( instance->hasHandle(this) )
 		return instance->getSensorHandle(this).cast<rw::sensor::Scanner25D>();
 
-	rw::common::Ptr<Scanner25DWrapper> handle =
-			rw::common::ownedPtr( new Scanner25DWrapper(this) );
+	rw::core::Ptr<Scanner25DWrapper> handle =
+			rw::core::ownedPtr( new Scanner25DWrapper(this) );
 
 	instance->addHandle(this, handle );
 	return handle;

@@ -26,7 +26,7 @@ EnterExpressionPacket::EnterExpressionPacket(const Mathematica::Expression& expr
 {
 }
 
-EnterExpressionPacket::EnterExpressionPacket(rw::common::Ptr<const Mathematica::Expression> expression):
+EnterExpressionPacket::EnterExpressionPacket(rw::core::Ptr<const Mathematica::Expression> expression):
 	Packet("EnterExpressionPacket",Mathematica::EnterExpression),
 	_expression(expression)
 {
@@ -35,12 +35,12 @@ EnterExpressionPacket::EnterExpressionPacket(rw::common::Ptr<const Mathematica::
 EnterExpressionPacket::~EnterExpressionPacket() {
 }
 
-const rw::common::Ptr<const Mathematica::Expression> EnterExpressionPacket::expression() {
+const rw::core::Ptr<const Mathematica::Expression> EnterExpressionPacket::expression() {
 	return _expression;
 }
 
-std::list<rw::common::Ptr<const Mathematica::Expression> > EnterExpressionPacket::getArguments() const {
-	return std::list<rw::common::Ptr<const Mathematica::Expression> >(1, _expression);
+std::list<rw::core::Ptr<const Mathematica::Expression> > EnterExpressionPacket::getArguments() const {
+	return std::list<rw::core::Ptr<const Mathematica::Expression> >(1, _expression);
 }
 
 Mathematica::Expression::Ptr EnterExpressionPacket::clone() const {

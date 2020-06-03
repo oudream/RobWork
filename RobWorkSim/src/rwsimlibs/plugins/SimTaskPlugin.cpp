@@ -19,6 +19,7 @@
 //#include <fstream>
 #include <sstream>
 
+using namespace rw::core;
 using namespace rw::common;
 using namespace rw::models;
 using namespace rw::kinematics;
@@ -84,10 +85,10 @@ SimTaskPlugin::~SimTaskPlugin()
 
 void SimTaskPlugin::initialize() {
     getRobWorkStudio()->stateChangedEvent().add(
-            boost::bind(&SimTaskPlugin::stateChangedListener, this, _1), this);
+            boost::bind(&SimTaskPlugin::stateChangedListener, this, boost::arg<1>()), this);
 
     getRobWorkStudio()->genericEvent().add(
-          boost::bind(&SimTaskPlugin::genericEventListener, this, _1), this);
+          boost::bind(&SimTaskPlugin::genericEventListener, this, boost::arg<1>()), this);
     //_log->info() << "Current log..." << std::endl;
     //_log = getRobWorkInstance()->getLogPtr();
     //_log->info() << "NEW log..." << std::endl;
@@ -380,8 +381,8 @@ void SimTaskPlugin::updateConfig(){
 
 }
 
-rw::common::PropertyMap& SimTaskPlugin::settings(){
-    return getRobWorkStudio()->getPropertyMap().get<rw::common::PropertyMap>("RobWorkStudioSettings");
+rw::core::PropertyMap& SimTaskPlugin::settings(){
+    return getRobWorkStudio()->getPropertyMap().get<rw::core::PropertyMap>("RobWorkStudioSettings");
 }
 
 
@@ -440,7 +441,7 @@ GraspTask::Ptr SimTaskPlugin::generateTasks(int nrTasks){
     if(body==NULL){
         RW_THROW("OBJECT DOES NOT EXIST: " << objectName);
     }
-    std::vector<rw::common::Ptr<Geometry> > geoms = body->getGeometry();
+    std::vector<rw::core::Ptr<Geometry> > geoms = body->getGeometry();
     SurfacePoseSampler ssurf( geoms );
     ssurf.setRandomRotationEnabled(false);
 

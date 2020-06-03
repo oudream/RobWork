@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RW_SENSOR_IMAGEUTIL_HPP
 #define RW_SENSOR_IMAGEUTIL_HPP
 
@@ -23,86 +22,90 @@
  * @file rw/sensor/ImageUtil.hpp
  */
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
-namespace rw { namespace geometry { class PointCloud; } }
+namespace rw { namespace geometry {
+    class PointCloud;
+}}    // namespace rw::geometry
 
 namespace rw { namespace sensor {
 
-class Image;
+    class Image;
 
-/** @addtogroup sensor */
-/*@{*/
-
-/**
- * @brief a collection of simple image utility functions
- */
-class ImageUtil {
-public:
+    /** @addtogroup sensor */
+    /*@{*/
 
     /**
-     * @brief converts an image of RGB type into an image of
-     * GRAY type.
+     * @brief a collection of simple image utility functions
      */
-    static void RGB2GRAY(const Image& src, Image& dst);
+    class ImageUtil
+    {
+      public:
+        /**
+         * @brief converts an image of RGB type into an image of
+         * GRAY type.
+         */
+        static void RGB2GRAY (const Image& src, Image& dst);
 
-    /*
-     * @brief converts an image of type GRAY into an image of type RGB
-     * @param src
-     * @param dst
-     */
-    //static void GRAY2RGB(const Image& src, Image& dst);
+        /*
+         * @brief converts an image of type GRAY into an image of type RGB
+         * @param src
+         * @param dst
+         */
+        // static void GRAY2RGB(const Image& src, Image& dst);
 
-    /**
-     * @brief sets the value of all channels of an image to
-     * \b color.
-     */
-    static void reset(Image& img, int color=0);
+        /**
+         * @brief sets the value of all channels of an image to
+         * \b color.
+         */
+        static void reset (Image& img, int color = 0);
 
-    /**
-     * @brief flips the image around the x-axis (horizontal)
-     * @param img
-     */
-    static void flipX(Image& img);
+        /**
+         * @brief flips the image around the x-axis (horizontal)
+         * @param img
+         */
+        static void flipX (Image& img);
 
-    /**
-     * @brief flips the image around the y-axis (vertical)
-     * @param img
-     */
-    static void flipY(Image& img);
+        /**
+         * @brief flips the image around the y-axis (vertical)
+         * @param img
+         */
+        static void flipY (Image& img);
 
-    /**
-     * @cond
-     * @param img
-     * @endcond
-     */
-    //static void flipY(const Image& srcimg, Image& dstimg);
+        /**
+         * @cond
+         * @param img
+         * @endcond
+         */
+        // static void flipY(const Image& srcimg, Image& dstimg);
 
-    /**
-     * convert pointcloud to a depth image. Colors are scaled to min and ax distance of
-     * points.
-     * @param cloud [in] cloud to convert to image
-     * @return image showing the pointcloud as a depth image
-     */
-    static rw::common::Ptr<rw::sensor::Image> makeDepthImage(const rw::geometry::PointCloud& cloud) ;
+        /**
+         * convert pointcloud to a depth image. Colors are scaled to min and ax distance of
+         * points.
+         * @param cloud [in] cloud to convert to image
+         * @return image showing the pointcloud as a depth image
+         */
+        static rw::core::Ptr< rw::sensor::Image >
+        makeDepthImage (const rw::geometry::PointCloud& cloud);
 
-    /**
-     * convert pointcloud to a depth image. Colors are scaled to min and max distance
-     * specified by user
-     * @param cloud [in] cloud to convert to image
-     * @param min [in] the minimum distance corresponding to black
-     * @param max [in] the maximum distance corresponding to white
-     * @return image showing the pointcloud as a depth image
-     */
-    static rw::common::Ptr<rw::sensor::Image> makeDepthImage(const rw::geometry::PointCloud& cloud, float min, float max);
-private:
-    ImageUtil();
-};
+        /**
+         * convert pointcloud to a depth image. Colors are scaled to min and max distance
+         * specified by user
+         * @param cloud [in] cloud to convert to image
+         * @param min [in] the minimum distance corresponding to black
+         * @param max [in] the maximum distance corresponding to white
+         * @return image showing the pointcloud as a depth image
+         */
+        static rw::core::Ptr< rw::sensor::Image >
+        makeDepthImage (const rw::geometry::PointCloud& cloud, float min, float max);
 
-/*@}*/
+      private:
+        ImageUtil ();
+    };
 
-}
-}
+    /*@}*/
+
+}}    // namespace rw::sensor
 
 /// for SDTV not HDTV
 /*

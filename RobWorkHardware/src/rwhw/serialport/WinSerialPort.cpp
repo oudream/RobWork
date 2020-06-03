@@ -17,7 +17,7 @@
 
 #include "SerialPort.hpp"
 
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 
 #include <stdio.h>   /* Standard input/output definitions */
 #include <iostream>

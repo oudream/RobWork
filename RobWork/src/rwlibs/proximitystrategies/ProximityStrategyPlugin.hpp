@@ -24,7 +24,8 @@
  * \copydoc rwlibs::proximitystrategies::ProximityStrategyPlugin
  */
 
-#include <rw/common/Plugin.hpp>
+#include <rw/core/Plugin.hpp>
+#include <rw/core/Extension.hpp>
 
 namespace rwlibs {
 namespace proximitystrategies {
@@ -40,7 +41,7 @@ namespace proximitystrategies {
  *  - PQP - rwlibs::proximitystrategies::ProximityStrategyPQP - Proximity Query Package
  *  - Yaobi - rwlibs::proximitystrategies::ProximityStrategyYaobi - Yaobi
  */
-class ProximityStrategyPlugin: public rw::common::Plugin {
+class ProximityStrategyPlugin: public rw::core::Plugin {
 public:
 	//! @brief Construct new plugin
 	ProximityStrategyPlugin();
@@ -48,13 +49,13 @@ public:
 	//! @brief Destructor
 	virtual ~ProximityStrategyPlugin();
 
-	//! @copydoc rw::common::Plugin::getExtensionDescriptors
-    std::vector<rw::common::Extension::Descriptor> getExtensionDescriptors();
+	//! @copydoc rw::core::Plugin::getExtensionDescriptors
+    std::vector<rw::core::Extension::Descriptor> getExtensionDescriptors();
 
-	//! @copydoc rw::common::Plugin::makeExtension
-    rw::common::Ptr<rw::common::Extension> makeExtension(const std::string& id);
+	//! @copydoc rw::core::Plugin::makeExtension
+    rw::core::Ptr<rw::core::Extension> makeExtension(const std::string& id);
 
-    //! @brief Register the plugins extensions in the rw::common::ExtensionRegistry.
+    //! @brief Register the plugins extensions in the rw::core::ExtensionRegistry.
     static void registerPlugin();
 };
 //! @}

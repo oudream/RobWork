@@ -25,6 +25,7 @@
  */
 
 #include "Mathematica.hpp"
+#include <rw/core/Ptr.hpp>
 
 namespace rwlibs {
 namespace mathematica {
@@ -35,7 +36,7 @@ namespace mathematica {
 class ReturnPacket: public Mathematica::Packet {
 public:
 	//! @brief Smart pointer type.
-	typedef rw::common::Ptr<ReturnPacket> Ptr;
+	typedef rw::core::Ptr<ReturnPacket> Ptr;
 
 	/**
 	 * @brief Construct a new packet.
@@ -47,7 +48,7 @@ public:
 	 * @brief Construct a new packet.
 	 * @param expression [in] the expression.
 	 */
-	ReturnPacket(rw::common::Ptr<const Mathematica::Expression> expression);
+	ReturnPacket(rw::core::Ptr<const Mathematica::Expression> expression);
 
 	//! @brief Destructor.
 	virtual ~ReturnPacket();
@@ -56,16 +57,16 @@ public:
 	 * @brief Get the expression stored in the packet.
 	 * @return the expression.
 	 */
-	const rw::common::Ptr<const Mathematica::Expression> expression();
+	const rw::core::Ptr<const Mathematica::Expression> expression();
 
 	//! @copydoc Mathematica::FunctionBase::getArguments
-	std::list<rw::common::Ptr<const Mathematica::Expression> > getArguments() const;
+	std::list<rw::core::Ptr<const Mathematica::Expression> > getArguments() const;
 
 	//! @copydoc Mathematica::Expression::clone
 	Mathematica::Expression::Ptr clone() const;
 
 private:
-	const rw::common::Ptr<const Mathematica::Expression> _expression;
+	const rw::core::Ptr<const Mathematica::Expression> _expression;
 };
 //! @}
 } /* namespace mathematica */

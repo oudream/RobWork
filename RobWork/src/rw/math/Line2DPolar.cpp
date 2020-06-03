@@ -16,7 +16,7 @@
  ********************************************************************************/
 
 #include "Line2DPolar.hpp"
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 #include <rw/common/InputArchive.hpp>
 #include <rw/common/OutputArchive.hpp>
 

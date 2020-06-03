@@ -29,6 +29,7 @@
 
 #include <rws/RobWorkStudio.hpp>
 
+#include <rw/core/PropertyMap.hpp>
 #include <rw/kinematics/Kinematics.hpp>
 #include <rw/kinematics/MovableFrame.hpp>
 #include <rw/models/JointDevice.hpp>
@@ -41,7 +42,6 @@
 #include <rw/models/UniversalJoint.hpp>
 #include <rw/models/PrismaticSphericalJoint.hpp>
 #include <rw/models/PrismaticUniversalJoint.hpp>
-//#include <sandbox/models/BeamJoint.hpp>
 
 using namespace rw::math;
 using namespace rw::kinematics;
@@ -317,13 +317,13 @@ Jog::~Jog()
 void Jog::initialize()
 {
     getRobWorkStudio()->stateChangedEvent().add(
-    		boost::bind(&Jog::stateChangedListener, this, _1), this);
+    		boost::bind(&Jog::stateChangedListener, this, boost::arg<1>()), this);
 
     getRobWorkStudio()->frameSelectedEvent().add(
-    		boost::bind(&Jog::frameSelectedListener, this, _1), this);
+    		boost::bind(&Jog::frameSelectedListener, this, boost::arg<1>()), this);
     		
     getRobWorkStudio()->genericEvent().add(
-		boost::bind(&Jog::genericEventListener, this, _1), this);
+		boost::bind(&Jog::genericEventListener, this, boost::arg<1>()), this);
 }
 
 
@@ -336,7 +336,7 @@ void Jog::open(WorkCell* workcell)
     close();
     _workcell = workcell;
     
-    _workcell->workCellChangedEvent().add(boost::bind(&Jog::workcellChangedListener, this, _1), this);
+    _workcell->workCellChangedEvent().add(boost::bind(&Jog::workcellChangedListener, this, boost::arg<1>()), this);
     
     _selectedFrame = 0;
     if (workcell) {
@@ -366,7 +366,7 @@ void Jog::open(WorkCell* workcell)
     } else {
         close();
     }
-    _rwsSettings = getRobWorkStudio()->getPropertyMap().getPtr<rw::common::PropertyMap>("RobWorkStudioSettings");
+    _rwsSettings = getRobWorkStudio()->getPropertyMap().getPtr<rw::core::PropertyMap>("RobWorkStudioSettings");
     if(_rwsSettings) {
         // Find the unit properties if there are any
         std::string unitDescAngle = _rwsSettings->get<std::string>("AngleUnit", "");
@@ -685,7 +685,7 @@ void Jog::update() {
 		removeTabs();
 		_frameToIndex.clear();
     }
-    _rwsSettings = getRobWorkStudio()->getPropertyMap().getPtr<rw::common::PropertyMap>("RobWorkStudioSettings");
+    _rwsSettings = getRobWorkStudio()->getPropertyMap().getPtr<rw::core::PropertyMap>("RobWorkStudioSettings");
     if(_rwsSettings) {
         // Find the unit properties if there are any
         std::string unitDescAngle = _rwsSettings->get<std::string>("AngleUnit", "");

@@ -13,9 +13,9 @@
 using namespace rwlibs::opengl;
 using namespace rw::geometry;
 using namespace rw::math;
-using namespace rw::common;
+using namespace rw::core;
 
-rw::common::Ptr<RenderLines> RenderUtil::makeCameraViewRender(
+rw::core::Ptr<RenderLines> RenderUtil::makeCameraViewRender(
 		double w, double h, double fovy,
 		double vnear, double vfar)
 {
@@ -65,7 +65,7 @@ rw::common::Ptr<RenderLines> RenderUtil::makeCameraViewRender(
 	return ownedPtr( new RenderLines(lines) );
 }
 
-rw::common::Ptr<RenderLines> makeWorldGridRender(float size, float resolution)
+rw::core::Ptr<RenderLines> makeWorldGridRender(float size, float resolution)
 {
 	float halfsize = size/2;
 	std::vector<Line> lines;

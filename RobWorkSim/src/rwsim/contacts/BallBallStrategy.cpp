@@ -22,7 +22,7 @@
 #include <rw/geometry/Geometry.hpp>
 #include <rw/geometry/Sphere.hpp>
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::geometry;
 using namespace rw::proximity;
 using namespace rw::math;
@@ -37,7 +37,7 @@ struct BallBallStrategy::Model {
 
 class BallBallStrategy::BallModel: public ContactModel {
 public:
-	typedef rw::common::Ptr<BallModel> Ptr;
+	typedef rw::core::Ptr<BallModel> Ptr;
 	BallModel(ContactStrategy *owner): ContactModel(owner) {}
 	virtual std::string getName() const { return "BallModel"; }
 	std::vector<Model> models;
@@ -102,7 +102,7 @@ BallBallStrategy::~BallBallStrategy()
 {
 }
 
-bool BallBallStrategy::match(rw::common::Ptr<const GeometryData> geoA, rw::common::Ptr<const GeometryData> geoB) {
+bool BallBallStrategy::match(rw::core::Ptr<const GeometryData> geoA, rw::core::Ptr<const GeometryData> geoB) {
 	if (geoA->getType() == GeometryData::SpherePrim && geoB->getType() == GeometryData::SpherePrim)
 		return true;
 	return false;

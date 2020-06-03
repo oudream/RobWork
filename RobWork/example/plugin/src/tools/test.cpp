@@ -1,8 +1,8 @@
 #include <path.hpp>
 
 #include <iostream>
-#include <rw/RobWork.hpp>
-#include <rw/common/Plugin.hpp>
+#include <rw/core/RobWork.hpp>
+#include <rw/core/Plugin.hpp>
 
 #include <animals.hpp>
 

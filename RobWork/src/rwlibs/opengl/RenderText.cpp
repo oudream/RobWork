@@ -20,8 +20,15 @@
 #include <rw/kinematics/Frame.hpp>
 
 #ifdef RW_HAVE_GLUT
-    #include <GL/freeglut.h>
+    #if defined(RW_MACOS)
+        //#include <GLUT/glut.h>
+        //TODO(kalor) Figure Out how to get GLUT to work as glutBitmapString is undeclared i mac
+        #undef RW_HAVE_GLUT
+    #else
+        #include <GL/freeglut.h>
+    #endif
 #endif
+
 
 using namespace rwlibs::opengl;
 using namespace rw::graphics;

@@ -22,7 +22,7 @@
 
 class Predictor {
 public:
-    typedef rw::common::Ptr<Predictor> Ptr;
+    typedef rw::core::Ptr<Predictor> Ptr;
 
     virtual BrainState makePrediction(const BrainState& state) = 0; // pure-function
 

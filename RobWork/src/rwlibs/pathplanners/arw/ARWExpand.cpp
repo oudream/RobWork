@@ -17,13 +17,14 @@
 
 
 #include "ARWExpand.hpp"
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
+#include <rw/core/PairIterator.hpp>
 #include <rw/pathplanning/PlannerUtil.hpp>
 #include <rw/models/Models.hpp>
 #include <rw/trajectory/Path.hpp>
 #include <rw/math/Math.hpp>
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::math;
 using namespace rw::models;
 using namespace rw::trajectory;
@@ -65,7 +66,7 @@ namespace
         Q sum_squares = Q::zero(path.front().size());
         Q sum_elements = sum_squares;
         int cnt = 0;
-        for(const Q& q: rw::common::make_iterPair(path.rbegin(), path.rend())) {
+        for(const Q& q: rw::core::make_iterPair(path.rbegin(), path.rend())) {
             if (cnt < historySize) {
 
                 sum_squares += Math::sqr(q);

@@ -19,7 +19,7 @@
          * @return true if a Proximity model was succesfully created and linked
          * with the frame; false otherwise.
          */
-        virtual bool addModel(rw::common::Ptr<Object> object);
+        virtual bool addModel(rw::core::Ptr<Object> object);
 
         /**
          * @brief Adds a Proximity model to a frame where the geometry is copied
@@ -51,7 +51,7 @@
          */
         virtual bool addModel(
             const Frame* frame,
-            rw::common::Ptr<Geometry> faces,
+            rw::core::Ptr<Geometry> faces,
             bool forceCopy = false
             );
 
@@ -83,13 +83,13 @@
          * has been associated to frame then NULL is returned.
          * @param frame [in] frame for which an proximitymodel is associated
          */
-        rw::common::Ptr<ProximityModel> getModel(const Frame* frame);
+        rw::core::Ptr<ProximityModel> getModel(const Frame* frame);
 
         //// this is the new interface based on CollisionModelInfo
         /**
          * @brief creates an empty ProximityModel
          */
-		virtual rw::common::Ptr<ProximityModel> createModel() = 0;
+		virtual rw::core::Ptr<ProximityModel> createModel() = 0;
 
         /**
          * @brief deallocates the memory used for \b model
@@ -113,7 +113,7 @@
          * @param forceCopy
          * @return
          */
-        virtual bool addGeometry(ProximityModel* model, rw::common::Ptr<Geometry> geom, bool forceCopy=false) = 0;
+        virtual bool addGeometry(ProximityModel* model, rw::core::Ptr<Geometry> geom, bool forceCopy=false) = 0;
 
         /**
          * @brief removes a geometry from a specific proximity model
@@ -140,7 +140,7 @@
          */
         ProximityStrategy();
     };
-    %template(ProximityStrategyPtr) rw::common::Ptr<ProximityStrategy>;
+    %template(ProximityStrategyPtr) rw::core::Ptr<ProximityStrategy>;
     OWNEDPTR(ProximityStrategy);
 
 // ################# CollisionDetector 
@@ -160,8 +160,8 @@
              * @param index the index in the vector
              * @return a pointer to a copy of the ProximityStrategyData
              */
-            rw::common::Ptr<ProximityStrategyData> getFullInfo(unsigned int i){
-                return rw::common::ownedPtr(new ProximityStrategyData($self->_fullInfo[i]));
+            rw::core::Ptr<ProximityStrategyData> getFullInfo(unsigned int i){
+                return rw::core::ownedPtr(new ProximityStrategyData($self->_fullInfo[i]));
             }
 
         }
@@ -211,7 +211,7 @@
          *
          * @param workcell [in] the workcell.
          */
-        CollisionDetector(rw::common::Ptr<WorkCell> workcell);
+        CollisionDetector(rw::core::Ptr<WorkCell> workcell);
 
         /**
          * @brief Collision detector for a workcell.
@@ -225,7 +225,7 @@
          * @param workcell [in] the workcell.
          * @param strategy [in/out] the strategy for narrow-phase checking. The strategy will have models added to it.
          */
-        CollisionDetector(rw::common::Ptr<WorkCell> workcell, rw::common::Ptr<CollisionStrategy> strategy);
+        CollisionDetector(rw::core::Ptr<WorkCell> workcell, rw::core::Ptr<CollisionStrategy> strategy);
 
         /**
          * @brief Collision detector for a workcell.
@@ -235,9 +235,9 @@
          * @param strategy [in/out] the strategy for narrow-phase checking. The strategy will have models added to it.
          * @param filter [in] proximity filter used to cull or filter frame-pairs that are obviously not colliding
          */
-        CollisionDetector(rw::common::Ptr<WorkCell> workcell,
-            rw::common::Ptr<CollisionStrategy> strategy,
-            rw::common::Ptr<ProximityFilterStrategy> filter);
+        CollisionDetector(rw::core::Ptr<WorkCell> workcell,
+            rw::core::Ptr<CollisionStrategy> strategy,
+            rw::core::Ptr<ProximityFilterStrategy> filter);
 
         /**
          * @brief Check the workcell for collisions.
@@ -266,13 +266,13 @@
         /**
          * @brief The broad phase collision strategy of the collision checker.
          */
-        rw::common::Ptr<ProximityFilterStrategy> getProximityFilterStrategy() const;
+        rw::core::Ptr<ProximityFilterStrategy> getProximityFilterStrategy() const;
 
         /**
          * @brief Get the narrow-phase collision strategy.
          * @return the strategy if set, otherwise NULL.
          */
-        rw::common::Ptr<CollisionStrategy> getCollisionStrategy() const;
+        rw::core::Ptr<CollisionStrategy> getCollisionStrategy() const;
 
         /**
          * @brief Add Geometry associated to \b frame
@@ -282,7 +282,7 @@
          * @param frame [in] Frame to associate geometry to
          * @param geometry [in] Geometry to add
          */
-        void addGeometry(Frame* frame, const rw::common::Ptr<Geometry> geometry);
+        void addGeometry(Frame* frame, const rw::core::Ptr<Geometry> geometry);
 
         /**
          * @brief Removes geometry from CollisionDetector
@@ -292,7 +292,7 @@
          * @param frame [in] The frame which has the geometry associated
          * @param geometry [in] Geometry with the id to be removed
          */
-        void removeGeometry(Frame* frame, const rw::common::Ptr<Geometry> geometry);
+        void removeGeometry(Frame* frame, const rw::core::Ptr<Geometry> geometry);
 
         /**
          * @brief Removes geometry from CollisionDetector
@@ -362,18 +362,16 @@
             }
         }
         %extend {
-            /*
-            static rw::common::Ptr<CollisionDetector> make(rw::common::Ptr<WorkCell> workcell){
-                return rw::common::ownedPtr( new CollisionDetector(workcell, rwlibs::proximitystrategies::ProximityStrategyFactory::makeDefaultCollisionStrategy()) );
-            }
-            */
+            /*static rw::core::Ptr<CollisionDetector> make(rw::core::Ptr<WorkCell> workcell){
+                return rw::core::ownedPtr( new CollisionDetector(workcell, rwlibs::proximitystrategies::ProximityStrategyFactory::makeDefaultCollisionStrategy()) );
+            }*/
 
-            static rw::common::Ptr<CollisionDetector> make(rw::common::Ptr<WorkCell> workcell, rw::common::Ptr<CollisionStrategy> strategy){
-                return rw::common::ownedPtr( new CollisionDetector(workcell, strategy) );
+            static rw::core::Ptr<CollisionDetector> make(rw::core::Ptr<WorkCell> workcell, rw::core::Ptr<CollisionStrategy> strategy){
+                return rw::core::ownedPtr( new CollisionDetector(workcell, strategy) );
             }
         }
     };
-    %template (CollisionDetectorPtr) rw::common::Ptr<CollisionDetector>;
+    %template (CollisionDetectorPtr) rw::core::Ptr<CollisionDetector>;
     OWNEDPTR(CollisionDetector);
 
 // ################# CollisionSetup
@@ -455,13 +453,13 @@
         //static CollisionSetup merge(const CollisionSetup& a, const CollisionSetup& b);
 
         static CollisionSetup get(const WorkCell& wc);
-        static CollisionSetup get(rw::common::Ptr<WorkCell> wc);
+        static CollisionSetup get(rw::core::Ptr<WorkCell> wc);
 
-        static CollisionSetup get(const rw::common::PropertyMap& map);
+        static CollisionSetup get(const rw::core::PropertyMap& map);
 
-        static void set(const CollisionSetup& setup, rw::common::Ptr<WorkCell> wc);
+        static void set(const CollisionSetup& setup, rw::core::Ptr<WorkCell> wc);
 
-        static void set(const CollisionSetup& setup, rw::common::PropertyMap& map);
+        static void set(const CollisionSetup& setup, rw::core::PropertyMap& map);
     };
     %template(StringPairVector) std::vector < std::pair <std::string, std::string> >; 
     %template(StringPair) std::pair <std::string, std::string>; 
@@ -490,10 +488,10 @@
     struct CollisionStrategyResult
         {
         //! @brief reference to the first model
-        rw::common::Ptr<ProximityModel> a;
+        rw::core::Ptr<ProximityModel> a;
 
         //! @brief reference to the second model
-        rw::common::Ptr<ProximityModel> b;
+        rw::core::Ptr<ProximityModel> b;
 
         //! @brief transformation from a to b
         rw::math::Transform3D<double> _aTb;
@@ -534,7 +532,7 @@
      * two objects.
      */
     class CollisionStrategy : public virtual ProximityStrategy {
-    public:
+      public:
         %extend{
             /**
              * @brief Checks to see if two given frames @f$ \mathcal{F}_a @f$ and
@@ -591,20 +589,20 @@
          * colliding, false otherwise.
          */
         bool inCollision(
-            rw::common::Ptr<ProximityModel> a,
+            rw::core::Ptr<ProximityModel> a,
             const rw::math::Transform3D<double>& wTa,
-            rw::common::Ptr<ProximityModel> b,
+            rw::core::Ptr<ProximityModel> b,
             const rw::math::Transform3D<double>& wTb,
             ProximityStrategyData& data);
 
         struct Contact {
 
             // point described in object A frame
-            rw::math::Vector3D<> point;
+            rw::math::Vector3D<double> point;
 
             // surface normal on object B described in object A coordinates
-            rw::math::Vector3D<> normalA;
-            rw::math::Vector3D<> normalB;
+            rw::math::Vector3D<double> normalA;
+            rw::math::Vector3D<double> normalB;
         };
 
         /**
@@ -614,7 +612,7 @@
          * be in collision if \b strategy claim they are in collision for a
          * tolerance of \b tolerance.
         */
-        static rw::common::Ptr<CollisionStrategy> make(rw::common::Ptr<CollisionToleranceStrategy> strategy,
+        static rw::core::Ptr<CollisionStrategy> make(rw::core::Ptr<CollisionToleranceStrategy> strategy,
                             double tolerance);
 
         /**
@@ -624,7 +622,7 @@
          * be in collision if \b strategy claim they are in collision for a
          * tolerance of \b tolerance.
          */
-        static rw::common::Ptr<CollisionStrategy> make(rw::common::Ptr<CollisionToleranceStrategy> strategy,
+        static rw::core::Ptr<CollisionStrategy> make(rw::core::Ptr<CollisionToleranceStrategy> strategy,
                             const rw::kinematics::FrameMap< double >& frameToTolerance,
                             double defaultTolerance);
     protected:
@@ -640,9 +638,9 @@
          * colliding, false otherwise.
          */
         virtual bool doInCollision(
-            rw::common::Ptr<ProximityModel> a,
+            rw::core::Ptr<ProximityModel> a,
             const rw::math::Transform3D<double>& wTa,
-            rw::common::Ptr<ProximityModel> b,
+            rw::core::Ptr<ProximityModel> b,
             const rw::math::Transform3D<double>& wTb,
             ProximityStrategyData& data) = 0;
 
@@ -652,7 +650,7 @@
         CollisionStrategy();
     };
 
-    %template (CollisionStrategyPtr) rw::common::Ptr<CollisionStrategy>;
+    %template (CollisionStrategyPtr) rw::core::Ptr<CollisionStrategy>;
     OWNEDPTR(CollisionStrategy);
 // ################# CollisionToleranceStrategy
 
@@ -662,7 +660,7 @@
      * that are closer than a specified tolerance.
      */
     class CollisionToleranceStrategy: public virtual ProximityStrategy {
-    public:
+      public:
         /**
          * @brief Destroys object
          */
@@ -724,9 +722,9 @@
          * colliding, false otherwise.
          */
         bool isWithinDistance(
-			rw::common::Ptr<ProximityModel> a,
+			rw::core::Ptr<ProximityModel> a,
             const rw::math::Transform3D<double>& wTa,
-			rw::common::Ptr<ProximityModel> b,
+			rw::core::Ptr<ProximityModel> b,
             const rw::math::Transform3D<double>& wTb,
             double tolerance,
             ProximityStrategyData& data);
@@ -748,9 +746,9 @@
          * colliding, false otherwise.
          */
         virtual bool doIsWithinDistance(
-                    rw::common::Ptr<ProximityModel> a,
+                    rw::core::Ptr<ProximityModel> a,
                     const rw::math::Transform3D<double>& wTa,
-                    rw::common::Ptr<ProximityModel> b,
+                    rw::core::Ptr<ProximityModel> b,
                     const rw::math::Transform3D<double>& wTb,
                     double tolerance,
                     ProximityStrategyData& data) = 0;
@@ -762,7 +760,7 @@
         CollisionToleranceStrategy();
     };
 
-    %template(CollisionToleranceStrategyPtr) rw::common::Ptr<CollisionToleranceStrategy>;
+    %template(CollisionToleranceStrategyPtr) rw::core::Ptr<CollisionToleranceStrategy>;
     OWNEDPTR(CollisionToleranceStrategy);
 // ################# DistanceCalculator 
 
@@ -794,8 +792,8 @@
          * @param initial_state [in] - the work cell state to use for the initial traversal of the tree.
          */
         DistanceCalculator(Frame *root,
-                            rw::common::Ptr<WorkCell> workcell,
-                            rw::common::Ptr<DistanceStrategy> strategy,
+                            rw::core::Ptr<WorkCell> workcell,
+                            rw::core::Ptr<DistanceStrategy> strategy,
                             const State& initial_state);
         /**
          * @brief Construct distance calculator for a WorkCell with an associated
@@ -807,8 +805,8 @@
          * @param workcell [in] the workcell to check
          * @param strategy [in] the distance calculation strategy to use
          */
-        DistanceCalculator(rw::common::Ptr<WorkCell> workcell,
-            rw::common::Ptr<DistanceStrategy> strategy);
+        DistanceCalculator(rw::core::Ptr<WorkCell> workcell,
+            rw::core::Ptr<DistanceStrategy> strategy);
 
         /**
          * @brief Constructs distance calculator for a selected set of frames
@@ -823,7 +821,7 @@
          * @param strategy [in] the distance calculation strategy to use
          */
         DistanceCalculator(const std::vector< std::pair< Frame *, Frame * > >& pairs,
-            rw::common::Ptr<DistanceStrategy> strategy);
+            rw::core::Ptr<DistanceStrategy> strategy);
 
         /**
          * @brief Destructor
@@ -871,7 +869,7 @@
          *
          * @param strategy [in] - the primitive distance calculator to use.
          */
-        void setDistanceStrategy(rw::common::Ptr<DistanceStrategy> strategy);
+        void setDistanceStrategy(rw::core::Ptr<DistanceStrategy> strategy);
 
         /**
          * @brief Adds distance model to frame
@@ -896,10 +894,10 @@
 
         void resetComputationTimeAndCount();
 
-        //void setDistanceThresholdStrategy(rw::common::Ptr<DistanceStrategy> strategy);
+        //void setDistanceThresholdStrategy(rw::core::Ptr<DistanceStrategy> strategy);
 
     };
-    %template (DistanceCalculatorPtr) rw::common::Ptr<DistanceCalculator>;
+    %template (DistanceCalculatorPtr) rw::core::Ptr<DistanceCalculator>;
     OWNEDPTR(DistanceCalculator);
 
 // ################# DistanceStrategy 
@@ -915,12 +913,12 @@
         /**
          * @brief pointer to the ProximityModel containing the geometries for the first frame
          **/
-        rw::common::Ptr<ProximityModel> a;
+        rw::core::Ptr<ProximityModel> a;
         
         /**
          * @brief pointer to the ProximityModel containing the geometries for the second frame
          **/
-        rw::common::Ptr<ProximityModel> b;
+        rw::core::Ptr<ProximityModel> b;
 
         //! Closest point on f1 to f2, described in \b f1 reference frame
         rw::math::Vector3D<double> p1;
@@ -945,7 +943,7 @@
 
         void clear();
 
-        //TODO(kalor) add printout
+        TOSTRING(DistanceStrategyResult);
     };
     %template(DistanceStrategyResultVector) std::vector<DistanceStrategyResult>;
 
@@ -1011,9 +1009,9 @@
          * separated and not in collision.
          */
         DistanceStrategyResult& distance(
-            rw::common::Ptr<ProximityModel> a,
+            rw::core::Ptr<ProximityModel> a,
             const rw::math::Transform3D<double>& wTa,
-            rw::common::Ptr<ProximityModel> b,
+            rw::core::Ptr<ProximityModel> b,
             const rw::math::Transform3D<double>& wTb,
             ProximityStrategyData& data);
 
@@ -1076,15 +1074,15 @@
          * separated and not in collision.
          */
         DistanceStrategyResult& distance(
-                rw::common::Ptr<ProximityModel> a,
+                rw::core::Ptr<ProximityModel> a,
                 const rw::math::Transform3D<double>& wTa,
-                rw::common::Ptr<ProximityModel> b,
+                rw::core::Ptr<ProximityModel> b,
                 const rw::math::Transform3D<double>& wTb,
                 double threshold,
                 ProximityStrategyData& data);
     };
 
-    %template (DistanceStrategyPtr) rw::common::Ptr<DistanceStrategy>;
+    %template (DistanceStrategyPtr) rw::core::Ptr<DistanceStrategy>;
     OWNEDPTR(DistanceStrategy);
 // ################# DistanceMultiStrategy
     /**
@@ -1093,10 +1091,10 @@
      */
     struct DistanceMultiStrategyResult {
         //! @brief reference to the first proximity model
-        rw::common::Ptr<ProximityModel> a;
+        rw::core::Ptr<ProximityModel> a;
 
         //! @brief reference to the second proximity model
-        rw::common::Ptr<ProximityModel> b;
+        rw::core::Ptr<ProximityModel> b;
 
         //! Closest point on f1 to f2, described in f1 reference frame
         rw::math::Vector3D<double> p1;
@@ -1193,14 +1191,14 @@
          * @copydoc doDistances
          */
         DistanceMultiStrategyResult& distances(
-            rw::common::Ptr<ProximityModel> a,
+            rw::core::Ptr<ProximityModel> a,
             const rw::math::Transform3D<double>& wTa,
-            rw::common::Ptr<ProximityModel> b,
+            rw::core::Ptr<ProximityModel> b,
             const rw::math::Transform3D<double>& wTb,
             double tolerance,
             ProximityStrategyData& data);
     };
-    %template(DistanceMultiStrategyPtr) rw::common::Ptr<DistanceMultiStrategy>;
+    %template(DistanceMultiStrategyPtr) rw::core::Ptr<DistanceMultiStrategy>;
     OWNEDPTR(DistanceMultiStrategy);
 
 // ################# ProximityCache
@@ -1231,7 +1229,7 @@
          */ 
         virtual void clear() = 0;
     };
-    %template(ProximityCachePtr) rw::common::Ptr<ProximityCache>;
+    %template(ProximityCachePtr) rw::core::Ptr<ProximityCache>;
     OWNEDPTR(ProximityCache);
 
 // ################# ProximityData
@@ -1281,11 +1279,11 @@
          * @brief Cached data used by the collision detector to speed up
          * consecutive queries.
          */
-        rw::common::Ptr<ProximityCache> _cache;
+        rw::core::Ptr<ProximityCache> _cache;
 
     };
 
-    %template (ProximityDataPtr) rw::common::Ptr<ProximityData>;
+    %template (ProximityDataPtr) rw::core::Ptr<ProximityData>;
 
 // ################# ProximityFilter
 	/**
@@ -1324,7 +1322,7 @@
         virtual ~ProximityFilter();
 
 	};
-    %template(ProximityFilterPtr) rw::common::Ptr<ProximityFilter>;
+    %template(ProximityFilterPtr) rw::core::Ptr<ProximityFilter>;
 
 // ################# ProximityFilterStrategy
     %nodefaultctor ProximityFilterStrategy;
@@ -1366,14 +1364,14 @@
          *
          * @return
          */
-        virtual rw::common::Ptr<ProximityCache> createProximityCache() = 0;
+        virtual rw::core::Ptr<ProximityCache> createProximityCache() = 0;
 
         /**
          * @brief Do an update
          * @param state [in] the state.
          * @return
          */
-        virtual rw::common::Ptr<ProximityFilter> update(const State& state) = 0;
+        virtual rw::core::Ptr<ProximityFilter> update(const State& state) = 0;
 
         /**
          * @brief called once before acquirering all possibly colliding
@@ -1381,7 +1379,7 @@
          * @param state [in] the state for which collision detection is performed.
          * @param data
          */
-        virtual rw::common::Ptr<ProximityFilter> update(const State& state, rw::common::Ptr<ProximityCache> data) = 0;
+        virtual rw::core::Ptr<ProximityFilter> update(const State& state, rw::core::Ptr<ProximityCache> data) = 0;
 
         /**
          * @brief get the proximity setup that describe the include/exclude rules of this
@@ -1395,7 +1393,7 @@
          * @param frame [in] Frame which has the geometry associated
          * @param geo [in] Geometry
          */ 
-        virtual void addGeometry(Frame* frame, const rw::common::Ptr<Geometry> geo) = 0;
+        virtual void addGeometry(Frame* frame, const rw::core::Ptr<Geometry> geo) = 0;
 
         /** 
          * @brief Removes the geometric model \b geo associated with
@@ -1404,7 +1402,7 @@
          * @param frame [in] Frame which has the geometry associated
          * @param geo [in] Geometry
          */ 
-        virtual void removeGeometry(Frame* frame, const rw::common::Ptr<Geometry> geo) = 0;
+        virtual void removeGeometry(Frame* frame, const rw::core::Ptr<Geometry> geo) = 0;
 
         /** 
          * @brief Removes the geometric model with name \b geoName and which is associated with
@@ -1432,13 +1430,19 @@
     };
 
     //! @brief smart pointer type to this class
-    %template(ProximityFilterStrategyPtr) rw::common::Ptr<ProximityFilterStrategy>;
+    %template(ProximityFilterStrategyPtr) rw::core::Ptr<ProximityFilterStrategy>;
     //! @brief smart pointer type to this const class
-    %template(ProximityFilterStrategyCPtr) rw::common::Ptr<const ProximityFilterStrategy>;
+    %template(ProximityFilterStrategyCPtr) rw::core::Ptr<const ProximityFilterStrategy>;
 
 // ################# ProximityModel 
     class ProximityModel {
       public:
+
+        /**
+         * @brief Constructor
+         *
+         * @param pOwner the ProximityStrategy owning this ProximityModel
+         **/
         ProximityModel(ProximityStrategy* pOwner);
         /**
          * @brief return vector of names for the geometries added to this ProximityModel
@@ -1446,15 +1450,25 @@
          **/
         std::vector<std::string> getGeometryIDs();
         /**
+         * @brief get the associated Geometries
+         * @return a list of Geomety pointers beloninh to the model
+         */
+        std::vector< rw::core::Ptr< Geometry > > getGeometries ();
+        /**
          * @brief adds geometry 
-         *
          * @param geom the geometry to add
          **/
         bool addGeometry(const Geometry& geom);
+
+        /**
+         * @brief adds geometry using pointer
+         * @param geom [in] the geometry to add
+         * @param forceCopy [in]
+         **/
+        bool addGeometry (rw::core::Ptr< Geometry > geom, bool forceCopy = false);
         
         /**
          * @brief removes a geometry from the ProximityModel
-         *
          * @param geoid name of geometry to remove
          * @return bool
          **/       
@@ -1476,7 +1490,7 @@
         ProximityStrategy* owner;
         
     };
-    %template(ProximityModelPtr) rw::common::Ptr<ProximityModel>;
+    %template(ProximityModelPtr) rw::core::Ptr<ProximityModel>;
     OWNEDPTR(ProximityModel);
 
 // ################# ProximitySetup
@@ -1532,11 +1546,11 @@
         std::string getFileName() const;
 
         static ProximitySetup get(const WorkCell& wc);
-        static ProximitySetup get(rw::common::Ptr<WorkCell> wc);
-        static ProximitySetup get(const rw::common::PropertyMap& map);
+        static ProximitySetup get(rw::core::Ptr<WorkCell> wc);
+        static ProximitySetup get(const rw::core::PropertyMap& map);
 
-        static void set(const ProximitySetup& setup, rw::common::Ptr<WorkCell> wc);
-        static void set(const ProximitySetup& setup, rw::common::PropertyMap& map);
+        static void set(const ProximitySetup& setup, rw::core::Ptr<WorkCell> wc);
+        static void set(const ProximitySetup& setup, rw::core::PropertyMap& map);
     };
 
 // ################# ProximitySetupRule
@@ -1609,10 +1623,6 @@
          * @brief Check whether \b name matches pattern B
          */
         bool matchPatternB(const std::string& str) const;
-            
-        //TODO(kalor) Print function
-
-
 
         /**
          * @brief Compares if two rules are the same
@@ -1638,6 +1648,8 @@
          * @brief Make an include rule for the patterns
          */
         static ProximitySetupRule makeInclude(const std::string& patternA, const std::string& patternB);
+
+        TOSTRING(ProximitySetupRule);
     };
 
     %template(ProximitySetupRuleVector) std::vector<ProximitySetupRule>;
@@ -1715,7 +1727,7 @@
     };
     OWNEDPTR(ProximityStrategyData);
     %template (ProximityStrategyDataVector) std::vector<ProximityStrategyData>;
-    %template (ProximityStrategyDataPtrVector) std::vector<rw::common::Ptr<ProximityStrategyData> >;
-    %template (ProximityStrategyDataPtr) rw::common::Ptr<ProximityStrategyData>;
+    %template (ProximityStrategyDataPtrVector) std::vector<rw::core::Ptr<ProximityStrategyData> >;
+    %template (ProximityStrategyDataPtr) rw::core::Ptr<ProximityStrategyData>;
 
 //

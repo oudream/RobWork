@@ -18,8 +18,9 @@
 #include <gtest/gtest.h>
 
 #include <rw/geometry/IndexedTriMesh.hpp>
+#include <rw/core/Ptr.hpp>
 
-using rw::common::ownedPtr;
+using rw::core::ownedPtr;
 using rw::geometry::Triangle;
 using rw::geometry::IndexedTriangle;
 using rw::geometry::IndexedTriMeshN0;
@@ -55,12 +56,12 @@ TYPED_TEST(IndexedTriMeshTest, GetTriangleTest) {
 	const Vector3D<T> vertex1(static_cast<T>(0.3),static_cast<T>(0.4),static_cast<T>(0.5));
 	const Vector3D<T> vertex2(static_cast<T>(0.6),static_cast<T>(0.7),static_cast<T>(0.8));
 	const Vector3D<T> vertex3(static_cast<T>(0.9),static_cast<T>(1.0),static_cast<T>(1.1));
-	const rw::common::Ptr<VertexArray> vertices = ownedPtr(new VertexArray(4)); // allocation of exact size is important
+	const rw::core::Ptr<VertexArray> vertices = ownedPtr(new VertexArray(4)); // allocation of exact size is important
 	(*vertices)[0] = vertex0;
 	(*vertices)[1] = vertex1;
 	(*vertices)[2] = vertex2;
 	(*vertices)[3] = vertex3;
-	const rw::common::Ptr<TriangleArray> triangles = ownedPtr(new TriangleArray(3)); // allocation of exact size is important
+	const rw::core::Ptr<TriangleArray> triangles = ownedPtr(new TriangleArray(3)); // allocation of exact size is important
 	(*triangles)[0] = IndexedTriangle<S>(0,1,2);
 	(*triangles)[1] = IndexedTriangle<S>(2,3,1);
 	(*triangles)[2] = IndexedTriangle<S>(3,2,1);
@@ -93,12 +94,12 @@ TYPED_TEST(IndexedTriMeshTest, GetIndexedTriangleTest) {
 	const Vector3D<T> vertex1(0.3,0.4,0.5);
 	const Vector3D<T> vertex2(0.6,0.7,0.8);
 	const Vector3D<T> vertex3(0.9,1.0,1.1);
-	const rw::common::Ptr<VertexArray> vertices = ownedPtr(new VertexArray(4)); // allocation of exact size is important
+	const rw::core::Ptr<VertexArray> vertices = ownedPtr(new VertexArray(4)); // allocation of exact size is important
 	(*vertices)[0] = vertex0;
 	(*vertices)[1] = vertex1;
 	(*vertices)[2] = vertex2;
 	(*vertices)[3] = vertex3;
-	const rw::common::Ptr<TriangleArray> triangles = ownedPtr(new TriangleArray(3)); // allocation of exact size is important
+	const rw::core::Ptr<TriangleArray> triangles = ownedPtr(new TriangleArray(3)); // allocation of exact size is important
 	(*triangles)[0] = IndexedTriangle<S>(0,1,2);
 	(*triangles)[1] = IndexedTriangle<S>(2,3,1);
 	(*triangles)[2] = IndexedTriangle<S>(3,2,1);

@@ -2,6 +2,8 @@
 #define GTaskVisPlugin_HPP
 
 #include <rws/RobWorkStudioPlugin.hpp>
+#include <rw/core/Ptr.hpp>
+#include <rw/core/PropertyMap.hpp>
 
 #include <QObject>
 
@@ -87,7 +89,7 @@ public:
      * @brief Get the settings.
      * @return the settings.
      */
-    rw::common::PropertyMap& settings();
+    rw::core::PropertyMap& settings();
 
 private Q_SLOTS:
     void updateVis();
@@ -101,10 +103,10 @@ private:
     int _nrOfExperiments, _totalNrOfExperiments;
 
     QTimer *_timer;
-    rw::common::Ptr<rwlibs::task::GraspTask> _graspTask;
+    rw::core::Ptr<rwlibs::task::GraspTask> _graspTask;
     std::vector<std::pair<rwlibs::task::GraspSubTask*, rwlibs::task::GraspTarget*> > _ymtargets;
-    rw::common::Ptr<rw::graphics::Render> _render;
-    rw::common::Ptr<rw::graphics::DrawableNode> _targetDrawable;
+    rw::core::Ptr<rw::graphics::Render> _render;
+    rw::core::Ptr<rw::graphics::DrawableNode> _targetDrawable;
 };
 
 #endif

@@ -32,7 +32,7 @@
 #include <boost/numeric/conversion/cast.hpp>
 
 using namespace std;
-using namespace rw::common;
+using namespace rw::core;
 using rw::geometry::Geometry;
 using namespace rw::kinematics;
 using namespace rw::loaders;

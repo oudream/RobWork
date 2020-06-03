@@ -35,6 +35,7 @@
 
 using namespace rwlibs::pathplanners;
 using namespace rw::math;
+using namespace rw::core;
 using namespace rw::common;
 using namespace rw::pathplanning;
 using namespace rw::kinematics;

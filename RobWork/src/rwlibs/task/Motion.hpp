@@ -22,7 +22,7 @@
 #include "Entity.hpp"
 #include "Target.hpp"
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 namespace rwlibs {
 namespace task {
@@ -74,7 +74,7 @@ class MotionBase: public Entity
 {
 public:
 	//! @brief smart pointer type to this class
-    typedef rw::common::Ptr<MotionBase> Ptr;
+    typedef rw::core::Ptr<MotionBase> Ptr;
     /**
      * @brief Constructs motion
      * @param motionType [in] Type of the motion
@@ -117,12 +117,12 @@ template <class T>
 class Motion: public MotionBase {
 public:
 	//! @brief smart pointer type to this class
-    typedef rw::common::Ptr<Motion<T> > Ptr;
+    typedef rw::core::Ptr<Motion<T> > Ptr;
 
     /**
      * Convenient typedef of pointer to target of type T
      */
-    typedef rw::common::Ptr<Target<T> > TargetPtr;
+    typedef rw::core::Ptr<Target<T> > TargetPtr;
 
     /**
      * @brief Returns value of the start target
@@ -153,7 +153,7 @@ public:
      * @param newTargets [in] a vector of targets.
      * @return new identical motion.
      */
-    virtual rw::common::Ptr<Motion<T> > clone(const std::vector<TargetPtr>& newTargets) = 0;
+    virtual rw::core::Ptr<Motion<T> > clone(const std::vector<TargetPtr>& newTargets) = 0;
 
     //! @brief Do reverse motion.
     virtual void reverse() = 0;
@@ -181,6 +181,9 @@ typedef Motion<rw::math::Q> QMotion;
  */
 typedef Motion<rw::math::Transform3D<> > CartesianMotion;
 
+extern template class Motion<rw::math::Q>;
+extern template class Motion<rw::math::Transform3D<> >;
+
 /**
  * @brief Class describing point to point motions.
  *
@@ -192,12 +195,12 @@ class P2PMotion: public Motion<T>
 {
 public:
 	//! @brief smart pointer type to this class
-    typedef rw::common::Ptr<P2PMotion<T> > Ptr;
+    typedef rw::core::Ptr<P2PMotion<T> > Ptr;
 
     /**
      * Definition of target for convenience.
      */
-    typedef rw::common::Ptr<Target<T> > TargetPtr;
+    typedef rw::core::Ptr<Target<T> > TargetPtr;
 
     /**
      * @brief Constructs P2PMotion between \b start and \b end
@@ -240,7 +243,7 @@ public:
     }
 
     //! @copydoc Motion::clone
-    virtual rw::common::Ptr<Motion<T> > clone(const std::vector<TargetPtr>& newTargets) {
+    virtual rw::core::Ptr<Motion<T> > clone(const std::vector<TargetPtr>& newTargets) {
     	TargetPtr start;
     	TargetPtr end;
     	for(TargetPtr target : newTargets) {
@@ -249,7 +252,7 @@ public:
     		if (target->getIndex() == endTarget()->getIndex())
     			end = target;
     	}
-    	rw::common::Ptr<Motion<T> > result = rw::common::ownedPtr(new P2PMotion<T>(start, end));
+    	rw::core::Ptr<Motion<T> > result = rw::core::ownedPtr(new P2PMotion<T>(start, end));
     	result->setPropertyMap(this->getPropertyMap());
     	result->setIndex(this->getIndex());
     	result->setId(this->getId());
@@ -276,6 +279,9 @@ typedef P2PMotion<rw::math::Q> QP2PMotion;
  */
 typedef P2PMotion<rw::math::Transform3D<> > CartesianP2PMotion;
 
+extern template class P2PMotion<rw::math::Q>;
+extern template class P2PMotion<rw::math::Transform3D<> >;
+
 /**
  * @brief Class describing linear motions.
  *
@@ -286,12 +292,12 @@ template <class T>
 class LinearMotion: public Motion<T> {
 public:
 	//! @brief smart pointer type to this class
-    typedef rw::common::Ptr<LinearMotion<T> > Ptr;
+    typedef rw::core::Ptr<LinearMotion<T> > Ptr;
 
     /**
      * Definition of target for convenience.
      */
-    typedef rw::common::Ptr<Target<T> > TargetPtr;
+    typedef rw::core::Ptr<Target<T> > TargetPtr;
 
     /**
      * @brief Construct LinearMotion from \b start to \b end
@@ -333,7 +339,7 @@ public:
      }
 
      //! @copydoc Motion::clone
-     virtual rw::common::Ptr<Motion<T> > clone(const std::vector<TargetPtr>& newTargets) {
+     virtual rw::core::Ptr<Motion<T> > clone(const std::vector<TargetPtr>& newTargets) {
      	TargetPtr start;
      	TargetPtr end;
      	for(TargetPtr target : newTargets) {
@@ -342,7 +348,7 @@ public:
      		if (target->getIndex() == endTarget()->getIndex())
      			end = target;
      	}
-     	return rw::common::ownedPtr(new LinearMotion<T>(start, end));
+     	return rw::core::ownedPtr(new LinearMotion<T>(start, end));
      }
 
      //! @copydoc Motion::reverse
@@ -365,6 +371,9 @@ typedef LinearMotion<rw::math::Q> QLinearMotion;
  */
 typedef LinearMotion<rw::math::Transform3D<> > CartesianLinearMotion;
 
+extern template class LinearMotion<rw::math::Q>;
+extern template class LinearMotion<rw::math::Transform3D<> >;
+
 /**
  * @brief Class describing circular motions.
  *
@@ -375,12 +384,12 @@ template <class T>
 class CircularMotion: public Motion<T> {
 public:
 	//! @brief smart pointer type to this class
-    typedef rw::common::Ptr<CircularMotion<T> > Ptr;
+    typedef rw::core::Ptr<CircularMotion<T> > Ptr;
 
     /**
      * Definition of target for convenience.
      */
-    typedef rw::common::Ptr<Target<T> > TargetPtr;
+    typedef rw::core::Ptr<Target<T> > TargetPtr;
 
     /**
      * @brief Construct a CircularMotion starting in \b start, going through \b mid and ending in \b end
@@ -440,7 +449,7 @@ public:
     }
 
     //! @copydoc Motion::clone
-    virtual rw::common::Ptr<Motion<T> > clone(const std::vector<TargetPtr>& newTargets) {
+    virtual rw::core::Ptr<Motion<T> > clone(const std::vector<TargetPtr>& newTargets) {
 		TargetPtr start, mid, end;
 		for(TargetPtr target : newTargets) {
 			if (target->getIndex() == _start->getIndex())
@@ -450,7 +459,7 @@ public:
 			if (target->getIndex() == _end->getIndex())
 				end = target;
 		}
-		return rw::common::ownedPtr(new CircularMotion(start, mid, end));
+		return rw::core::ownedPtr(new CircularMotion(start, mid, end));
 	}
 
     //! @copydoc Motion::reverse
@@ -468,6 +477,8 @@ private:
  * @brief Definition of circular motion with rw::math::Transform type
  */
 typedef CircularMotion<rw::math::Transform3D<> > CartesianCircularMotion;
+
+extern template class CircularMotion<rw::math::Transform3D<> >;
 
 /** @} */
 

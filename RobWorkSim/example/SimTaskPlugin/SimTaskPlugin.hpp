@@ -74,7 +74,7 @@ public:
     void step(rwsim::simulator::ThreadSimulator* sim, const rw::kinematics::State& state);
     void startSimulation();
 
-    rw::common::PropertyMap& settings();
+    rw::core::PropertyMap& settings();
 
     //std::vector<rw::sensor::Contact3D> getObjectContacts(const rw::kinematics::State& state);
     struct GraspedObject {
@@ -87,7 +87,7 @@ public:
     GraspedObject getObjectContacts(const rw::kinematics::State& state);
     std::vector<rw::sensor::Contact3D> getObjectContacts(const rw::kinematics::State& state,
                                                          rwsim::dynamics::RigidBody::Ptr object,
-                                                         rw::common::Ptr<rwsim::sensor::BodyContactSensor> sensor,
+                                                         rw::core::Ptr<rwsim::sensor::BodyContactSensor> sensor,
                                                          std::vector<rwsim::dynamics::Body::Ptr>& bodies);
 
     rw::math::Q calcGraspQuality(const rw::kinematics::State& state);
@@ -116,9 +116,9 @@ private:
         InvKinFailure} TestStatus;
 
     rw::models::WorkCell* _wc;
-    rw::common::Ptr<rwsim::dynamics::DynamicWorkCell> _dwc;
-    rw::common::Ptr<rwsim::simulator::ThreadSimulator> _tsim;
-    rw::common::Ptr<rwsim::simulator::DynamicSimulator> _sim;
+    rw::core::Ptr<rwsim::dynamics::DynamicWorkCell> _dwc;
+    rw::core::Ptr<rwsim::simulator::ThreadSimulator> _tsim;
+    rw::core::Ptr<rwsim::simulator::DynamicSimulator> _sim;
 
     rw::math::Transform3D<> _bTe,
                             _wTe_n,
@@ -127,16 +127,16 @@ private:
     rw::kinematics::State _restObjState, _postLiftObjState, _homeState, _simState;
 
     //rw::math::Q _startQ;
-    rw::common::Ptr<rw::models::Device> _hand;
-    rw::common::Ptr<rwsim::dynamics::DynamicDevice> _dhand;
-    rw::common::Ptr<rwsim::dynamics::RigidDevice> _rhand;
+    rw::core::Ptr<rw::models::Device> _hand;
+    rw::core::Ptr<rwsim::dynamics::DynamicDevice> _dhand;
+    rw::core::Ptr<rwsim::dynamics::RigidDevice> _rhand;
     rw::kinematics::MovableFrame *_mbase;
     rw::kinematics::Frame *_tcp;
     //rwsim::dynamics::RigidBody *_object;
     std::vector<rwsim::dynamics::RigidBody::Ptr> _objects;
-    rw::common::Ptr<rwlibs::control::JointController> _controller;
+    rw::core::Ptr<rwlibs::control::JointController> _controller;
     //rwsim::sensor::BodyContactSensor::Ptr _bsensor;
-    std::vector<rw::common::Ptr<rwsim::sensor::BodyContactSensor> > _bsensors;
+    std::vector<rw::core::Ptr<rwsim::sensor::BodyContactSensor> > _bsensors;
 
     rw::math::Transform3D<> _home, _approach, _approachDef;
     //rw::math::Transform3D<double> _objectBeginLift;
@@ -165,10 +165,9 @@ private:
     bool _configured;
     //bool _calcWrenchQuality;
     double _maxObjectGripperDistance;
-    rw::common::Ptr<rw::proximity::CollisionDetector> _collisionDetector;
-    //rw::common::Timer _wallTimer;
+    rw::core::Ptr<rw::proximity::CollisionDetector> _collisionDetector;
 
-    rw::common::PropertyMap _config;
+    rw::core::PropertyMap _config;
     PropertyViewEditor *_propertyView;
     int _lastSaveTaskIndex;
 };

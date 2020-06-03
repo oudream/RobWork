@@ -24,13 +24,16 @@
  */
 
 #include <rw/invkin/IterativeMultiIK.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/math/Q.hpp>
 
 #include <vector>
 
-namespace rw { namespace kinematics { class Frame; } }
-namespace rw { namespace kinematics { class FKRange; } }
-namespace rw { namespace kinematics { class State; } }
+namespace rw { namespace kinematics { 
+    class Frame; 
+    class FKRange; 
+    class State; 
+}}
 
 namespace rw { namespace models {
     class JointDevice;
@@ -181,7 +184,7 @@ namespace rw { namespace invkin {
     private:
 
         const models::Device* _device;
-        rw::common::Ptr<models::JacobianCalculator> _jacCalc;
+        rw::core::Ptr<models::JacobianCalculator> _jacCalc;
         std::vector<kinematics::Frame*> _foi; // frames of interest, end frames
         std::vector<boost::shared_ptr<kinematics::FKRange> > _fkranges;
         double _interpolationStep;

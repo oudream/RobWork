@@ -24,7 +24,7 @@
  * \copydoc rwsimlibs::bullet::BtRWCollisionAlgorithm
  */
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include <BulletCollision/BroadphaseCollision/btCollisionAlgorithm.h>
 #include <BulletCollision/CollisionDispatch/btCollisionCreateFunc.h>
@@ -49,7 +49,7 @@ public:
 	 * @param col0Wrap [in] information about the first bullet body.
 	 * @param col1Wrap [in] information about the second bullet body.
 	 */
-	BtRWCollisionAlgorithm(rw::common::Ptr<const rwsim::contacts::ContactDetector> detector,
+	BtRWCollisionAlgorithm(rw::core::Ptr<const rwsim::contacts::ContactDetector> detector,
 			const btCollisionAlgorithmConstructionInfo& ci,
 			const btCollisionObjectWrapper* col0Wrap,
 			const btCollisionObjectWrapper* col1Wrap);
@@ -100,7 +100,7 @@ public:
 		 * @brief New factory.
 		 * @param detector [in] the detector to use.
 		 */
-		CreateFunc(rw::common::Ptr<const rwsim::contacts::ContactDetector> detector);
+		CreateFunc(rw::core::Ptr<const rwsim::contacts::ContactDetector> detector);
 
 		//! @brief Destructor.
 		virtual ~CreateFunc();
@@ -115,11 +115,11 @@ public:
 		virtual	btCollisionAlgorithm* CreateCollisionAlgorithm(btCollisionAlgorithmConstructionInfo& ci, const btCollisionObjectWrapper* body0Wrap,const btCollisionObjectWrapper* body1Wrap);
 
 	private:
-		rw::common::Ptr<const rwsim::contacts::ContactDetector> _detector;
+		rw::core::Ptr<const rwsim::contacts::ContactDetector> _detector;
 	};
 
 private:
-	rw::common::Ptr<const rwsim::contacts::ContactDetector> _detector;
+	rw::core::Ptr<const rwsim::contacts::ContactDetector> _detector;
 	btPersistentManifold* m_manifoldPtr;
 	rwsim::contacts::ContactStrategyData* _stratData;
 };

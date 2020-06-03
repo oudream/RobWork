@@ -2,6 +2,7 @@
 #include <rw/loaders/ImageLoader.hpp>
 
 using namespace rw::common;
+using namespace rw::core;
 using rw::loaders::ImageLoader;
 using rw::sensor::Image;
 
@@ -31,7 +32,7 @@ void loadFile(ThreadPool* pool, const std::string &file) {
 int main(int argc, const char* argv[]) {
 	ThreadPool::Ptr pool = ownedPtr(new ThreadPool(std::atoi(argv[1])));
 	for (int i = 2; i < argc; i++) {
-		ThreadPool::WorkFunction work = boost::bind(&loadFile,_1,argv[i]);
+		ThreadPool::WorkFunction work = boost::bind(&loadFile,boost::arg<1>(),argv[i]);
 		pool->addWork(work);
 	}
 	pool->waitForEmptyQueue();

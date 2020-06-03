@@ -21,7 +21,7 @@
 
 #include <vector>
 
-#include <rw/common/StringUtil.hpp>
+#include <rw/core/StringUtil.hpp>
 
 #include <boost/spirit/include/classic.hpp>
 #include <boost/spirit/include/classic_core.hpp>
@@ -107,7 +107,7 @@ namespace rw { namespace loaders {
          * @return the current directory
          */
         std::string getDirectory(){
-            return rw::common::StringUtil::getDirectoryName( getFile() );
+            return rw::core::StringUtil::getDirectoryName( getFile() );
         }
 
         /**

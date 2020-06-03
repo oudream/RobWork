@@ -35,7 +35,8 @@ extern "C" {
 
 #include "TreeModelCompleter.hpp"
 #include "LuaExecutionThread.hpp"
-#include <rw/common/Log.hpp>
+#include <rw/core/Log.hpp>
+#include <rw/core/StringUtil.hpp>
 #include <rwlibs/swig/ScriptTypes.hpp>
 #include <rwlibs/swig/lua/LuaState.hpp>
 #include <rws/RobWorkStudio.hpp>
@@ -43,7 +44,8 @@ extern "C" {
 #include "ui_LuaEditorWindow.h"
 
 
-using namespace rw::common;
+using namespace rw::core;
+using namespace rw::core;
 using namespace rw::math;
 using namespace rws;
 using namespace rwlibs;
@@ -61,7 +63,7 @@ namespace {
 
 }
 
-LuaEditorWindow::LuaEditorWindow(rwlibs::swig::LuaState::Ptr lua, rw::common::Log::Ptr output, rws::RobWorkStudio* rwstudio, QWidget *parent):
+LuaEditorWindow::LuaEditorWindow(rwlibs::swig::LuaState::Ptr lua, rw::core::Log::Ptr output, rws::RobWorkStudio* rwstudio, QWidget *parent):
 	QMainWindow(parent),
 	_lua(lua),
 	_output(output),

@@ -37,7 +37,7 @@
 #include <QPushButton>
 #include <QTimer>
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::graphics;
 using rw::kinematics::State;
 using namespace rw::math;
@@ -60,6 +60,7 @@ public:
 	double getMaxTorque() { return 100; }
 	Vector3D<> getForce() { return Vector3D<>::zero(); }
 	Vector3D<> getTorque() { return Vector3D<>::zero(); }
+    Transform3D<> getTransform() { return Transform3D<>::identity(); }
 };
 }
 
@@ -118,7 +119,7 @@ StrategyLibraryDialog::~StrategyLibraryDialog() {
 	delete _ui;
 }
 
-void StrategyLibraryDialog::setWorkCell(rw::common::Ptr<const WorkCell> wc) {
+void StrategyLibraryDialog::setWorkCell(rw::core::Ptr<const WorkCell> wc) {
 	_wc = NULL;
 	bool enableConfig = false;
 	if (wc.isNull()) {

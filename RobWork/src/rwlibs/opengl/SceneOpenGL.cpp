@@ -17,7 +17,8 @@
 
 #include "SceneOpenGL.hpp"
 
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
+#include <rw/core/Log.hpp>
 #include <rw/geometry/Geometry.hpp>
 #include <rw/graphics/Render.hpp>
 #include <rw/graphics/SceneCamera.hpp>
@@ -37,7 +38,7 @@
 #include <vector>
 #include <algorithm>
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::graphics;
 using namespace rw::math;
 
@@ -520,7 +521,7 @@ void drawScene (SceneGraph* graph, CameraGroup::Ptr camGroup, SceneGraph::Render
     if (!camGroup->isEnabled ())
         return;
 
-    rw::common::Ptr< SimpleCameraGroup > scam = camGroup.cast< SimpleCameraGroup > ();
+    rw::core::Ptr< SimpleCameraGroup > scam = camGroup.cast< SimpleCameraGroup > ();
     bool offscreenEnabled                     = false;
     GLint oldDim[4];    // viewport dimensions [ x,y,width,height ]
     RW_ASSERT (scam);
@@ -839,7 +840,7 @@ SceneCamera::Ptr SceneOpenGL::makeCamera (const std::string& name)
     return ownedPtr (new SceneCamera (name, getRoot ()));
 }
 
-rw::common::Ptr< CameraGroup > SceneOpenGL::makeCameraGroup (const std::string& name)
+rw::core::Ptr< CameraGroup > SceneOpenGL::makeCameraGroup (const std::string& name)
 {
     return ownedPtr (new SimpleCameraGroup (name));
 }
@@ -863,7 +864,7 @@ DrawableGeometryNode::Ptr SceneOpenGL::makeDrawableFrameAxis (const std::string&
 }
 
 DrawableGeometryNode::Ptr SceneOpenGL::makeDrawable (const std::string& name,
-                                                     rw::common::Ptr< rw::geometry::Geometry > geom,
+                                                     rw::core::Ptr< rw::geometry::Geometry > geom,
                                                      int dmask)
 {
     DrawableGeometry::Ptr drawable = ownedPtr (new DrawableGeometry (name, dmask));
@@ -881,7 +882,7 @@ DrawableGeometryNode::Ptr SceneOpenGL::makeDrawable (const std::string& name,
 }
 
 DrawableNode::Ptr SceneOpenGL::makeDrawable (const std::string& name,
-                                             rw::common::Ptr< Model3D > model, int dmask)
+                                             rw::core::Ptr< Model3D > model, int dmask)
 {
     RenderModel3D::Ptr render = ownedPtr (new RenderModel3D (model));
     Drawable::Ptr drawable    = ownedPtr (new Drawable (render, name, dmask));
@@ -906,7 +907,7 @@ DrawableNode::Ptr SceneOpenGL::makeDrawable (const std::string& name,
 
 rw::graphics::DrawableNode::Ptr
 SceneOpenGL::makeDrawable (const std::string& name, const std::string& text,
-                           rw::common::Ptr< rw::kinematics::Frame > labelFrame, int dmask)
+                           rw::core::Ptr< rw::kinematics::Frame > labelFrame, int dmask)
 {
     RenderText::Ptr render = ownedPtr (new RenderText (text, labelFrame));
     Drawable::Ptr drawable = ownedPtr (new Drawable (render, name, dmask));
@@ -914,7 +915,7 @@ SceneOpenGL::makeDrawable (const std::string& name, const std::string& text,
 }
 
 DrawableNode::Ptr SceneOpenGL::makeDrawable (const std::string& name,
-                                             rw::common::Ptr< Render > render, int dmask)
+                                             rw::core::Ptr< Render > render, int dmask)
 {
     Drawable::Ptr drawable = ownedPtr (new Drawable (render, name, dmask));
     return drawable;

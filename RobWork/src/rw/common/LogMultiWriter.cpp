@@ -20,6 +20,7 @@
 
 
 using namespace rw::common;
+using namespace rw::core;
 
 LogMultiWriter::LogMultiWriter ()
 {}

@@ -23,7 +23,7 @@ sys.path.insert(0, '@RWSIM_LIBS@/sdurwsim')
 # -- Project information -----------------------------------------------------
 
 project = 'RobWork'
-copyright = '2009-2019, SDU Robotics'
+copyright = '2009-2020, SDU Robotics'
 author = 'SDU Robotics'
 
 # The full version, including alpha/beta/rc tags
@@ -37,7 +37,7 @@ release = '@RW_BUILD_WITH_VERSION@'
 # ones.
 extensions = [
     'sphinx.ext.autodoc',
-    'javasphinx'
+    'sphinx.ext.mathjax'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -48,6 +48,7 @@ templates_path = ['_templates']
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
+mathjax_path = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
 
 # -- Options for HTML output -------------------------------------------------
 

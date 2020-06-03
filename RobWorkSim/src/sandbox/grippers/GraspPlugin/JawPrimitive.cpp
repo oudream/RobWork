@@ -1,7 +1,7 @@
 #include "JawPrimitive.hpp"
 
 #include <sstream>
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/geometry/PlainTriMesh.hpp>
 #include "CSGModel.hpp"
 

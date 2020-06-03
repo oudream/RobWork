@@ -18,7 +18,7 @@
 #include <gtest/gtest.h>
 #include "../TestEnvironment.hpp"
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/loaders/WorkCellLoader.hpp>
 #include <rw/loaders/dom/DOMProximitySetupSaver.hpp>
 #include <rw/models/WorkCell.hpp>
@@ -29,7 +29,7 @@
 
 #include <string>
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::loaders;
 using namespace rw::proximity;
 using namespace std;
@@ -70,7 +70,7 @@ TEST_F (DOMProximitySetupSaverTest, LoadWCSerializeProxAndReload)
     serializedProxSetup = rw::proximity::ProximitySetup::get(*wcUsingProx);
 
     // Perform a collision detection on the default wc state
-    CollisionDetector::Ptr cd = rw::common::ownedPtr(new CollisionDetector(
+    CollisionDetector::Ptr cd = rw::core::ownedPtr(new CollisionDetector(
             wcUsingProx,
             rwlibs::proximitystrategies::ProximityStrategyFactory::makeDefaultCollisionStrategy()));
     CollisionDetector::QueryResult res;

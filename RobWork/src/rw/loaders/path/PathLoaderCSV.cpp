@@ -17,8 +17,8 @@
 
 #include "PathLoaderCSV.hpp"
 
-#include <rw/common/macros.hpp>
-#include <rw/common/StringUtil.hpp>
+#include <rw/core/macros.hpp>
+#include <rw/core/StringUtil.hpp>
 #include <rw/kinematics/State.hpp>
 #include <rw/models/Device.hpp>
 #include <rw/models/WorkCell.hpp>
@@ -27,7 +27,7 @@
 #include <string>
 #include <vector>
 
-using rw::common::StringUtil;
+using rw::core::StringUtil;
 using rw::kinematics::State;
 using rw::loaders::PathLoaderCSV;
 using rw::math::Q;

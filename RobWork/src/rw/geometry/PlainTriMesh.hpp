@@ -61,7 +61,7 @@ namespace geometry {
 
 	public:
 		//! smart pointer type of this class
-		typedef rw::common::Ptr<PlainTriMesh<TRI> > Ptr;
+		typedef rw::core::Ptr<PlainTriMesh<TRI> > Ptr;
 
 	    //! the triangle type
 	    typedef typename TRI::value_type value_type;
@@ -211,8 +211,8 @@ namespace geometry {
 		};
 
 		//! @copydoc TriMesh::clone
-		rw::common::Ptr<TriMesh> clone() const{
-			return rw::common::ownedPtr( new PlainTriMesh(*this) );
+		rw::core::Ptr<TriMesh> clone() const{
+			return rw::core::ownedPtr( new PlainTriMesh(*this) );
 		}
 
 

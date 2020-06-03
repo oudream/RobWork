@@ -24,7 +24,7 @@
 using namespace rwlibs::pathplanners;
 using namespace rw::pathplanning;
 using namespace rw::math;
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::trajectory;
 
 namespace
@@ -74,7 +74,7 @@ QToQPlanner::Ptr SBLPlanner::makeQToQPlanner(const SBLSetup& setup)
 }
 
 rw::pathplanning::QToTPlanner::Ptr SBLPlanner::makeQToTPlanner(const SBLSetup& setup,
-															   rw::common::Ptr<QIKSampler> ikSampler)
+															   rw::core::Ptr<QIKSampler> ikSampler)
 {
     return QToTPlanner::make(makeQToQSamplerPlanner(setup), ikSampler);
 }

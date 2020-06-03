@@ -32,6 +32,8 @@
 #include <rw/proximity/CollisionDetector.hpp>
 #include <rw/graphics/SceneViewer.hpp>
 #include <rw/graphics/WorkCellScene.hpp>
+#include <rw/core/Ptr.hpp>
+#include <rw/core/PropertyMap.hpp>
 
 namespace rw { namespace graphics { class DrawableGeometryNode; } }
 namespace rw { namespace kinematics { class State; } }
@@ -62,7 +64,7 @@ class RWStudioView3D: public QWidget {
 
 public:
 	//! @brief Smart pointer type for RWStudioView3D.
-    typedef rw::common::Ptr<RWStudioView3D> Ptr;
+    typedef rw::core::Ptr<RWStudioView3D> Ptr;
     
 public:
     /**
@@ -131,7 +133,7 @@ public:
      * @brief get propertymap
      * @return propertymap
      */
-    rw::common::PropertyMap& getPropertyMap(){ return _pmap->getValue(); }
+    rw::core::PropertyMap& getPropertyMap(){ return _pmap->getValue(); }
 
     /**
      * @brief Get the scene.
@@ -149,7 +151,7 @@ public:
      * @brief Set the workcell.
      * @param workcell [in] the workcell.
      */
-    void setWorkCell(rw::common::Ptr<rw::models::WorkCell> workcell);
+    void setWorkCell(rw::core::Ptr<rw::models::WorkCell> workcell);
 
     //! @brief Clear the view.
     void clear();
@@ -239,12 +241,12 @@ private:
     rws::SceneViewerWidget* _viewWidget;
     rw::graphics::SceneViewer* _view;
     rw::graphics::WorkCellScene::Ptr _wcscene;
-    rw::common::Ptr<rw::models::WorkCell> _wc;
+    rw::core::Ptr<rw::models::WorkCell> _wc;
     RobWorkStudio *_rws;
 
-    rw::common::Ptr<rw::graphics::DrawableGeometryNode> _floorDrawable;
+    rw::core::Ptr<rw::graphics::DrawableGeometryNode> _floorDrawable;
 
-    rw::common::Property<rw::common::PropertyMap>::Ptr _pmap;
+    rw::core::Property<rw::core::PropertyMap>::Ptr _pmap;
     std::string _viewLogo;
     QAction *_showSolidAction;
     QAction *_showWireAction;
@@ -280,7 +282,7 @@ private:
     std::vector<std::pair<QAction*,rw::math::Transform3D<> > > _customViews;
     rw::proximity::CollisionDetector::QueryResult _qryResult;
 
-    std::vector<std::pair<SensorCameraView, rw::common::Ptr<rwlibs::opengl::RenderCameraFrustum> > > _sensorCameraViews;
+    std::vector<std::pair<SensorCameraView, rw::core::Ptr<rwlibs::opengl::RenderCameraFrustum> > > _sensorCameraViews;
 };
 
 //! @}

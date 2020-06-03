@@ -19,23 +19,25 @@
 #ifndef RWLIBS_ALGORTIHMS_KDTREEQ_HPP_
 #define RWLIBS_ALGORTIHMS_KDTREEQ_HPP_
 
-#include <vector>
-#include <list>
-#include <algorithm>
-#include <queue>
-#include <map>
-#include <rw/math/Q.hpp>
-#include <rw/math/MetricUtil.hpp>
 #include "KDTree.hpp"
-#include <rw/common/macros.hpp>
-#include <float.h>
-#include <rw/math/Math.hpp>
 
 #include <rw/common/InputArchive.hpp>
 #include <rw/common/OutputArchive.hpp>
+#include <rw/common/Serializable.hpp>
+#include <rw/core/Ptr.hpp>
+#include <rw/core/macros.hpp>
+#include <rw/math/Math.hpp>
+#include <rw/math/MetricUtil.hpp>
+#include <rw/math/Q.hpp>
 
+#include <algorithm>
 #include <boost/numeric/conversion/cast.hpp>
 #include <boost/tuple/tuple.hpp>
+#include <float.h>
+#include <list>
+#include <map>
+#include <queue>
+#include <vector>
 
 namespace rwlibs { namespace algorithms {
 
@@ -58,7 +60,7 @@ namespace rwlibs { namespace algorithms {
         struct TreeNode;
 
     public:
-        typedef rw::common::Ptr<KDTreeQ<VALUE_TYPE> > Ptr;
+        typedef rw::core::Ptr<KDTreeQ<VALUE_TYPE> > Ptr;
 
         typedef rw::math::Q KEY;
 

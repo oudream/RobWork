@@ -22,7 +22,7 @@
 using namespace rw::kinematics;
 
 StateSetup::StateSetup (int version, StateStructure& tree,
-                        const std::vector< boost::shared_ptr< StateData > >& stateDatas) :
+                        const std::vector< rw::core::Ptr< StateData > >& stateDatas) :
     _version (version),
     _tree (&tree), _datas (stateDatas), _initMaxID (tree.getMaxID ())
 {
@@ -34,7 +34,7 @@ StateSetup::StateSetup (int version, StateStructure& tree,
     }
     // Traverse the data and calculate the offsets.
     int offset = 0;
-    for (boost::shared_ptr< StateData >& dval : _datas) {
+    for (rw::core::Ptr< StateData >& dval : _datas) {
         if (dval == NULL)
             continue;
         _offsets.at (dval->getID ()) = offset;
@@ -50,7 +50,7 @@ StateSetup::StateSetup (int version, StateStructure& tree,
     }
     // Traverse the data and calculate the offsets.
     offset = 0;
-    for (boost::shared_ptr< StateData >& dval : _datas) {
+    for (rw::core::Ptr< StateData >& dval : _datas) {
         if (dval == NULL)
             continue;
         if (dval->hasCache ()) {

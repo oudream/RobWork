@@ -18,15 +18,15 @@
 #include "TestEnvironment.hpp"
 
 #include <RobWorkConfig.hpp>
-#include <rw/RobWork.hpp>
-#include <rw/common/DOMElem.hpp>
-#include <rw/common/DOMParser.hpp>
+#include <rw/core/RobWork.hpp>
+#include <rw/core/DOMElem.hpp>
+#include <rw/core/DOMParser.hpp>
 
 #include <boost/filesystem.hpp>
 
-using rw::RobWork;
-using rw::common::DOMElem;
-using rw::common::DOMParser;
+using rw::core::RobWork;
+using rw::core::DOMElem;
+using rw::core::DOMParser;
 
 TestEnvironment::TestEnvironment () : _argc (0), _argv (NULL)
 {}
@@ -68,6 +68,19 @@ std::string TestEnvironment::testfilesDir ()
         testfilesDir                = dirElem->getValue () + SLASH;
     }
     return testfilesDir;
+}
+
+std::string TestEnvironment::xmlSchemasDir()
+{
+    static std::string schemasDir;
+    if (schemasDir.empty ()) {
+        const DOMParser::Ptr parser = DOMParser::make ();
+        parser->load (executableDir () + SLASH + "TestSuiteConfig.xml");
+        const DOMElem::Ptr testElem = parser->getRootElement ()->getChild ("RobWorkTest", false);
+        const DOMElem::Ptr dirElem  = testElem->getChild ("XMLSchemasDIR", false);
+        schemasDir                  = dirElem->getValue () + SLASH;
+    }
+    return schemasDir;
 }
 
 TestEnvironment* TestEnvironment::get ()

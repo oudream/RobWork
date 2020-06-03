@@ -19,7 +19,6 @@
 #ifndef RWLIBS_PROXIMITYSTRATEGIES_ProximityStrategyFactory_HPP
 #define RWLIBS_PROXIMITYSTRATEGIES_ProximityStrategyFactory_HPP
 
-#include <rw/common/Ptr.hpp>
 #include <rw/proximity/CollisionStrategy.hpp>
 #include <rw/proximity/CollisionToleranceStrategy.hpp>
 #include <rw/proximity/DistanceStrategy.hpp>

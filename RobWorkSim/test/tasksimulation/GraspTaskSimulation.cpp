@@ -42,6 +42,7 @@ using rwsim::simulator::ODEThreading;
 #endif
 
 using namespace rw::common;
+using namespace rw::core;
 using rw::kinematics::State;
 using rw::models::WorkCell;
 using rwlibs::task::GraspTask;

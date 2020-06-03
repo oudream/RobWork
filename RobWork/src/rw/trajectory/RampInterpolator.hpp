@@ -49,10 +49,10 @@ namespace rw { namespace trajectory {
     {
     public:
 		//! @brief smart pointer type to instance of class
-		typedef typename rw::common::Ptr<RampInterpolator> Ptr;
+		typedef typename rw::core::Ptr<RampInterpolator> Ptr;
 
 		//! @brief smart pointer type const instance of class
-		typedef typename rw::common::Ptr<const RampInterpolator> CPtr;
+		typedef typename rw::core::Ptr<const RampInterpolator> CPtr;
 
         /**
          * @brief Construct RampInterpolator starting at \b start and finishing in \b end
@@ -261,10 +261,10 @@ namespace rw { namespace trajectory {
     {
     public:
         //! @brief smart pointer type to this class
-        typedef rw::common::Ptr<RampInterpolator<double> > Ptr;
+        typedef rw::core::Ptr<RampInterpolator<double> > Ptr;
 
         //! @brief smart pointer type const instance of class
-        typedef rw::common::Ptr<const RampInterpolator<double> > CPtr;
+        typedef rw::core::Ptr<const RampInterpolator<double> > CPtr;
 
         /**
          * @brief Construct RampInterpolator starting a \b start and finishing in \b end.
@@ -339,10 +339,10 @@ namespace rw { namespace trajectory {
     {
     public:
 		//! @brief smart pointer type to this class
-		typedef typename rw::common::Ptr<RampInterpolator<rw::math::Rotation3D<T> > > Ptr;
+		typedef typename rw::core::Ptr<RampInterpolator<rw::math::Rotation3D<T> > > Ptr;
 		
 		//! @brief smart pointer type const instance of class
-		typedef typename rw::common::Ptr<const RampInterpolator<rw::math::Rotation3D<T> > > CPtr;
+		typedef typename rw::core::Ptr<const RampInterpolator<rw::math::Rotation3D<T> > > CPtr;
 
         /**
          * @brief Construct RampInterpolator starting a \b start and finishing in \b end.
@@ -445,10 +445,10 @@ namespace rw { namespace trajectory {
     {
     public:
         //! @brief smart pointer type to this class
-        typedef typename rw::common::Ptr<RampInterpolator<rw::math::Vector3D<T> > > Ptr;
+        typedef typename rw::core::Ptr<RampInterpolator<rw::math::Vector3D<T> > > Ptr;
 
         //! @brief smart pointer type const instance of class
-        typedef typename rw::common::Ptr<const RampInterpolator<rw::math::Vector3D<T> > > CPtr;
+        typedef typename rw::core::Ptr<const RampInterpolator<rw::math::Vector3D<T> > > CPtr;
 
         /**
          * @brief Construct RampInterpolator starting a \b start and finishing in \b end.
@@ -538,10 +538,10 @@ namespace rw { namespace trajectory {
     {
      public:
 		 //! @brief smart pointer type to this class
-		typedef typename rw::common::Ptr<RampInterpolator<rw::math::Transform3D<T> > > Ptr;
+		typedef typename rw::core::Ptr<RampInterpolator<rw::math::Transform3D<T> > > Ptr;
 
 		//! @brief smart pointer type const instance of class
-		typedef typename rw::common::Ptr<const RampInterpolator<rw::math::Transform3D<T> > > CPtr;
+		typedef typename rw::core::Ptr<const RampInterpolator<rw::math::Transform3D<T> > > CPtr;
 
         /**
          * @brief Construct RampInterpolator starting a \b start and finishing in \b end

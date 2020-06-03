@@ -23,6 +23,7 @@
 #include <rw/math/Vector3D.hpp>
 
 #include <rw/graphics/Render.hpp>
+#include <rw/core/Ptr.hpp>
 
 namespace rwlibs { namespace opengl {
 /** @addtogroup opengl */
@@ -34,7 +35,7 @@ namespace rwlibs { namespace opengl {
     {
     public:
         //! @brief smart pointer type to this class
-        typedef rw::common::Ptr<RenderPointCloud> Ptr;
+        typedef rw::core::Ptr<RenderPointCloud> Ptr;
 
         /**
          * @brief Constructs RenderPointCloud with no points
@@ -140,7 +141,7 @@ namespace rwlibs { namespace opengl {
      * @brief Legacy type of a smart pointer for RenderPointCloud.
      * @deprecated Use RenderPointCloud::Ptr instead. This type will be removed sometime in the future.
      */
-    typedef rw::common::Ptr<RenderPointCloud> RenderPointCloudPtr;
+    typedef rw::core::Ptr<RenderPointCloud> RenderPointCloudPtr;
 //! @}
 }} // end namespaces
 

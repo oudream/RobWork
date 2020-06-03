@@ -8,7 +8,6 @@ set(REASON)
 rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} ${REASON} DEPENDS ${SUBSYS_DEPS} ADD_DOC)
 
 if(build)
-    message("CALIBRATION SET FILES")
     set(SRC_FILES xml/XmlCalibrationLoader.cpp xml/XmlCalibrationSaver.cpp Calibration.cpp FixedFrameCalibration.cpp
                   WorkCellCalibration.cpp)
 

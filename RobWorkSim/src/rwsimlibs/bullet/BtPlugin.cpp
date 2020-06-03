@@ -18,7 +18,7 @@
 #include "BtPlugin.hpp"
 #include "BtSimulator.hpp"
 
-using namespace rw::common;
+using namespace rw::core;
 using rwsim::simulator::PhysicsEngine;
 using namespace rwsimlibs::bullet;
 
@@ -54,9 +54,9 @@ std::vector<Extension::Descriptor> BtPlugin::getExtensionDescriptors()
 Extension::Ptr BtPlugin::makeExtension(const std::string& str)
 {
     if(str=="BtPhysicsEngine"){
-        Extension::Ptr extension = rw::common::ownedPtr(
+        Extension::Ptr extension = rw::core::ownedPtr(
         		new Extension("BtPhysicsEngine","rwsim.simulator.PhysicsEngine",
-                this, ownedPtr(new Dispatcher()) ) );
+                this, ownedPtr(new Dispatcher()).cast<PhysicsEngine::Dispatcher>() ) );
 
         // todo: add possible properties to the extension descriptor
         extension->getProperties().set<std::string>("engineID", "Bullet");

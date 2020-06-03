@@ -10,7 +10,7 @@
 #include <rwsim/loaders/DynamicWorkCellLoader.hpp>
 #include <rwsim/simulator/GraspTaskSimulator.hpp>
 
-#include <rw/RobWork.hpp>
+#include <rw/core/RobWork.hpp>
 
 #include <boost/program_options/options_description.hpp>
 #include <boost/program_options/variables_map.hpp>
@@ -22,6 +22,7 @@
 #include <rw/models/Models.hpp>
 
 using namespace std;
+using namespace rw::core;
 using namespace rw::common;
 using rw::kinematics::State;
 using rw::loaders::PathLoader;
@@ -62,7 +63,7 @@ std::vector<GraspTask::Ptr> splitTask(GraspTask::Ptr grasptask, int split){
 
 int main(int argc, char** argv)
 {
-    rw::RobWork::getInstance()->initialize();
+    rw::core::RobWork::getInstance()->initialize();
 
 	static const unsigned int SEED = static_cast<unsigned int>(time(NULL));
 	Random::seed(SEED);

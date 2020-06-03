@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,59 +15,57 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #include "Device.hpp"
-#include <rw/math/Jacobian.hpp>
+
 #include <rw/kinematics/Kinematics.hpp>
+#include <rw/math/Jacobian.hpp>
 
 using namespace rw::models;
 using namespace rw::math;
 using namespace rw::kinematics;
 
-Transform3D<double> Device::baseTframe(
-    const Frame* f, const State& state) const
+Transform3D< double > Device::baseTframe (const Frame* f, const State& state) const
 {
-    return Kinematics::frameTframe(getBase(), f, state);
+    return Kinematics::frameTframe (getBase (), f, state);
 }
 
-Transform3D<double> Device::worldTbase(const State& state) const
+Transform3D< double > Device::worldTbase (const State& state) const
 {
-    return Kinematics::worldTframe(getBase(), state);
+    return Kinematics::worldTframe (getBase (), state);
 }
 
-Transform3D<double> Device::baseTend(const State& state) const {
-    return Kinematics::frameTframe(getBase(), getEnd(), state);
+Transform3D< double > Device::baseTend (const State& state) const
+{
+    return Kinematics::frameTframe (getBase (), getEnd (), state);
 }
 
 // Jacobians
 
-Jacobian Device::baseJend(const State& state) const
+Jacobian Device::baseJend (const State& state) const
 {
-    return baseJframe(getEnd(), state);
+    return baseJframe (getEnd (), state);
 }
 
-Jacobian Device::baseJframe(const Frame* frame,
-                            const State& state) const
+Jacobian Device::baseJframe (const Frame* frame, const State& state) const
 {
-    std::vector<Frame*> frames(1, const_cast<Frame*>(frame)); // Dirty.
-    return baseJframes(frames, state);
+    std::vector< Frame* > frames (1, const_cast< Frame* > (frame));    // Dirty.
+    return baseJframes (frames, state);
 }
 
-JacobianCalculator::Ptr Device::baseJCend(const State& state) const
+JacobianCalculator::Ptr Device::baseJCend (const State& state) const
 {
-    return baseJCframe(getEnd(), state);
+    return baseJCframe (getEnd (), state);
 }
 
-JacobianCalculator::Ptr Device::baseJCframe(const Frame* frame,
-                                                      const State& state) const
+JacobianCalculator::Ptr Device::baseJCframe (const Frame* frame, const State& state) const
 {
-    std::vector<Frame*> frames(1, const_cast<Frame*>(frame)); // Dirty.
-    return baseJCframes(frames, state);
+    std::vector< Frame* > frames (1, const_cast< Frame* > (frame));    // Dirty.
+    return baseJCframes (frames, state);
 }
 
 // Streaming operator
 
-std::ostream& rw::models::operator<<(std::ostream& out, const Device& device)
+std::ostream& rw::models::operator<< (std::ostream& out, const Device& device)
 {
-    return out << "Device[" << device.getName() << "]";
+    return out << "Device[" << device.getName () << "]";
 }

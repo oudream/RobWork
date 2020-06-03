@@ -19,6 +19,7 @@
 #define _SIMPLEFINGER_HPP
 
 #include <rw/geometry/Primitive.hpp>
+#include <rw/core/Ptr.hpp>
 
 namespace rwlibs {
 namespace geometry {
@@ -30,7 +31,7 @@ namespace simplefinger {
 class SimpleFinger: public rw::geometry::Primitive {
 public:
 	//! Smart pointer to this type of class.
-	typedef rw::common::Ptr<SimpleFinger> Ptr;
+	typedef rw::core::Ptr<SimpleFinger> Ptr;
 
 public:
 	/**

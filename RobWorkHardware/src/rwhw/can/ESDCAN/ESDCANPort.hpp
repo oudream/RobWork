@@ -22,7 +22,7 @@
 
 #include <vector>
 #include <iostream>
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include <ntcan.h>
 #if defined( OSNAME_LINUX ) && ! defined( NTCAN_HANDLE )
@@ -41,7 +41,7 @@ namespace rwhw {
     class ESDCANPort: public CanPort
     {
     public:
-        typedef rw::common::Ptr<ESDCANPort> Ptr;
+        typedef rw::core::Ptr<ESDCANPort> Ptr;
         /**
          * @brief Status struct
          */

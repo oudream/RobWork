@@ -24,8 +24,8 @@
 */
 
 
-#include <rw/common/macros.hpp>
-#include <rw/common/Ptr.hpp>
+#include <rw/core/macros.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include "Trajectory.hpp"
 #include "Interpolator.hpp"
@@ -46,7 +46,7 @@ namespace rw { namespace trajectory {
     typedef Trajectory<rw::kinematics::State> StateTrajectory;
 
     //! A pointer to a StateTrajectory.
-    typedef rw::common::Ptr<StateTrajectory> StateTrajectoryPtr;
+    typedef rw::core::Ptr<StateTrajectory> StateTrajectoryPtr;
 */
 
     /**
@@ -106,7 +106,7 @@ namespace rw { namespace trajectory {
 
     public:
         //! @brief smart pointer type
-        typedef rw::common::Ptr<InterpolatorTrajectory<T> > Ptr;
+        typedef rw::core::Ptr<InterpolatorTrajectory<T> > Ptr;
 
         /**
          * @brief Construct an empty trajectory
@@ -175,7 +175,7 @@ namespace rw { namespace trajectory {
 		 * @copydoc Trajectory::getIterator
 		 */
 		typename TrajectoryIterator<T>::Ptr getIterator(double dt) const {
-			return rw::common::ownedPtr(new InterpolatorTrajectoryIterator<T>(const_cast<InterpolatorTrajectory*>(this), dt));
+			return rw::core::ownedPtr(new InterpolatorTrajectoryIterator<T>(const_cast<InterpolatorTrajectory*>(this), dt));
 		}
 
 
@@ -187,7 +187,7 @@ namespace rw { namespace trajectory {
          *
          * @param interpolator [in] The interpolator to add
          */
-        void add(rw::common::Ptr<Interpolator<T> > interpolator) {
+        void add(rw::core::Ptr<Interpolator<T> > interpolator) {
             add(NULL, interpolator);
         }
 
@@ -198,10 +198,10 @@ namespace rw { namespace trajectory {
          * Interpolator of the trajectory onto \b interpolator, which become the
          * new last interpolator of the trajectory.
          */
-        void add(rw::common::Ptr<Blend<T> > blend,
-                 rw::common::Ptr<Interpolator<T> > interpolator)
+        void add(rw::core::Ptr<Blend<T> > blend,
+                 rw::core::Ptr<Interpolator<T> > interpolator)
         {
-            addSegment(blend, rw::common::Ptr<Blend<T> >(NULL), interpolator);
+            addSegment(blend, rw::core::Ptr<Blend<T> >(NULL), interpolator);
         }
 
         /**
@@ -231,12 +231,12 @@ namespace rw { namespace trajectory {
             return _segments.size();
         }
 
-        std::pair<rw::common::Ptr<Blend<T> >, rw::common::Ptr<Interpolator<T> > > getSegment(size_t index) const {
+        std::pair<rw::core::Ptr<Blend<T> >, rw::core::Ptr<Interpolator<T> > > getSegment(size_t index) const {
             const Segment segment = _segments[index];
-            const rw::common::Ptr<Interpolator<T> > interpolator = segment.interpolator;
-            const rw::common::Ptr<Blend<T> > blend = segment.blend1;
+            const rw::core::Ptr<Interpolator<T> > interpolator = segment.interpolator;
+            const rw::core::Ptr<Blend<T> > blend = segment.blend1;
 
-            return  std::pair<rw::common::Ptr<Blend<T> >,rw::common::Ptr<Interpolator<T> > >(blend, interpolator);
+            return  std::pair<rw::core::Ptr<Blend<T> >,rw::core::Ptr<Interpolator<T> > >(blend, interpolator);
         }
 
 

@@ -22,8 +22,9 @@
 
 #include <rw/kinematics/Kinematics.hpp>
 #include <rw/sensor/FTSensor.hpp>
+#include <rw/core/PropertyMap.hpp>
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::math;
 using namespace rw::kinematics;
 using namespace rw::sensor;
@@ -31,7 +32,7 @@ using namespace rwlibs::assembly;
 
 class CircularPiHControlStrategy::CircularControlState: public ControlState {
 public:
-	typedef rw::common::Ptr<CircularControlState> Ptr;
+	typedef rw::core::Ptr<CircularControlState> Ptr;
 
 	CircularControlState(): phase(APPROACHING), counter(0) {};
 	virtual ~CircularControlState() {};

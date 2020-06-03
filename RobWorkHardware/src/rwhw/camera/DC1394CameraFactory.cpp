@@ -15,7 +15,7 @@
  * limitations under the License.
  ********************************************************************************/
 
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 
 #include "DC1394CameraFactory.hpp"
 

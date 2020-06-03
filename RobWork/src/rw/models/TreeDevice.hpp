@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RW_MODELS_TREEDEVICE_HPP
 #define RW_MODELS_TREEDEVICE_HPP
 
@@ -25,12 +24,12 @@
 
 #include "JointDevice.hpp"
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include <vector>
 
 namespace rw { namespace models {
-	class JacobianCalculator;
+    class JacobianCalculator;
 
     /** @addtogroup models */
     /*@{*/
@@ -85,11 +84,11 @@ namespace rw { namespace models {
      */
     class TreeDevice : public JointDevice
     {
-    public:
-		//! @brief smart pointer type to this class
-		typedef rw::common::Ptr<TreeDevice> Ptr;
-        
-		/**
+      public:
+        //! @brief smart pointer type to this class
+        typedef rw::core::Ptr< TreeDevice > Ptr;
+
+        /**
          * @brief Constructor
          *
          * @param base [in] the base frame of the robot
@@ -97,25 +96,22 @@ namespace rw { namespace models {
          * @param name [in] name of device
          * @param state [in] the initial state of everything
          */
-        TreeDevice(
-            kinematics::Frame* base,
-            const std::vector<kinematics::Frame*>& ends,
-            const std::string& name,
-            const kinematics::State& state);
+        TreeDevice (kinematics::Frame* base, const std::vector< kinematics::Frame* >& ends,
+                    const std::string& name, const kinematics::State& state);
 
         //! @brief destructor
-        virtual ~TreeDevice();
+        virtual ~TreeDevice ();
 
         /**
          * @brief like Device::baseJend() but with a Jacobian calculated for all
          * end effectors.
          */
-        math::Jacobian baseJends(const kinematics::State& state) const;
+        math::Jacobian baseJends (const kinematics::State& state) const;
 
         /**
            @brief The end-effectors of the tree device.
          */
-        const std::vector<kinematics::Frame*>& getEnds() const { return _ends; }
+        const std::vector< kinematics::Frame* >& getEnds () const { return _ends; }
 
         /**
          * @brief Frames of the device.
@@ -124,18 +120,17 @@ namespace rw { namespace models {
          * devices in RobWorkStudio. The method really isn't of much use for
          * everyday programming.
          */
-        const std::vector<kinematics::Frame*>& frames() const
-        { return _kinematicChain; }
+        const std::vector< kinematics::Frame* >& frames () const { return _kinematicChain; }
 
-    private:
-        std::vector<kinematics::Frame*> _kinematicChain;
-        std::vector<kinematics::Frame*> _ends;
+      private:
+        std::vector< kinematics::Frame* > _kinematicChain;
+        std::vector< kinematics::Frame* > _ends;
 
         // Base to getEnds() Jacobians are calculated here.
-        rw::common::Ptr<JacobianCalculator> _djmulti;
+        rw::core::Ptr< JacobianCalculator > _djmulti;
     };
 
     /*@}*/
-}} // end namespaces
+}}    // namespace rw::models
 
-#endif // end include guard
+#endif    // end include guard

@@ -134,7 +134,7 @@ endmacro()
 
 # ##################################################################################################
 
-get_filename_component(RWSCFG_ROOT ${CMAKE_CURRENT_LIST_FILE} PATH)
+set(RWSCFG_ROOT ${CMAKE_CURRENT_LIST_DIR})
 
 # check if user specified a RobWorkStudio_DIR
 if(DEFINED RobWorkStudio_DIR)
@@ -155,6 +155,7 @@ if(DEFINED RobWorkStudio_DIR)
         # found no RobWorkStudio installation ot build tree in RobWorkStudio_DIR so we try
         # extracting it from RobWorkStudioConfig.cmake location instead
     endif()
+    get_filename_component(RWSCFG_ROOT ${RWSCFG_ROOT} ABSOLUTE)
 endif()
 
 # get the relavant build type

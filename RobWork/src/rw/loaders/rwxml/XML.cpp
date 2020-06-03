@@ -17,9 +17,9 @@
 
 #include "XML.hpp"
 
-#include <rw/common/PropertyMap.hpp>
-#include <rw/common/StringUtil.hpp>
-#include <rw/common/macros.hpp>
+#include <rw/core/PropertyMap.hpp>
+#include <rw/core/StringUtil.hpp>
+#include <rw/core/macros.hpp>
 #include <rw/math/Q.hpp>
 #include <rw/math/RPY.hpp>
 #include <rw/math/Rotation3D.hpp>
@@ -37,7 +37,7 @@ typedef boost::property_tree::ptree PTree;
 
 using namespace std;
 using namespace rw::math;
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::loaders;
 using namespace boost::property_tree;
 

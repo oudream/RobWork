@@ -26,6 +26,7 @@
 
 #include <rw/common/Serializable.hpp>
 #include <rw/math/Transform3D.hpp>
+#include <rw/core/Ptr.hpp>
 
 namespace rw { namespace kinematics { class Frame; } }
 namespace rw { namespace models { class WorkCell; } }
@@ -62,14 +63,14 @@ public:
 	 *
 	 * @return contact model specific to the strategy that created the contact.
 	 */
-	rw::common::Ptr<ContactModel> getModelA() const;
+	rw::core::Ptr<ContactModel> getModelA() const;
 
 	/**
 	 * @brief Get the contact model for the second object.
 	 *
 	 * @return contact model specific to the strategy that created the contact.
 	 */
-	rw::common::Ptr<ContactModel> getModelB() const;
+	rw::core::Ptr<ContactModel> getModelB() const;
 
 	/**
 	 * @brief Get the frame for the first object.
@@ -139,14 +140,14 @@ public:
 	 *
 	 * @param modelA [in] contact model specific for the contact strategy that generates the contact.
 	 */
-	void setModelA(rw::common::Ptr<ContactModel> modelA);
+	void setModelA(rw::core::Ptr<ContactModel> modelA);
 
 	/**
 	 * @brief Set the contact model for the second object.
 	 *
 	 * @param modelB [in] contact model specific for the contact strategy that generates the contact.
 	 */
-	void setModelB(rw::common::Ptr<ContactModel> modelB);
+	void setModelB(rw::core::Ptr<ContactModel> modelB);
 
 	/**
 	 * @brief Set the frame for the first object.
@@ -258,7 +259,7 @@ public:
 	virtual void write(class rw::common::OutputArchive& oarchive, const std::string& id) const;
 
 private:
-	rw::common::Ptr<ContactModel> _a, _b;
+	rw::core::Ptr<ContactModel> _a, _b;
 	const rw::kinematics::Frame * _frameA;
 	const rw::kinematics::Frame * _frameB;
 	std::string _nameA;

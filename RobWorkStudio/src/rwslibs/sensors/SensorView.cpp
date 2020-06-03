@@ -30,7 +30,7 @@
 #include <rws/ImageView.hpp>
 
 using namespace rws;
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::sensor;
 using namespace rwlibs::simulation;
 using namespace rwlibs::opengl;
@@ -114,7 +114,7 @@ Scan2DView::Scan2DView(QWidget* parent):
     layout->addWidget(_pImageView);
 }
 
-void Scan2DView::initialize(rw::common::Ptr<SimulatedScanner2D> scanner) {
+void Scan2DView::initialize(rw::core::Ptr<SimulatedScanner2D> scanner) {
     _scanner = scanner;
 }
 

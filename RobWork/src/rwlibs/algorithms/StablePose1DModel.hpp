@@ -27,7 +27,7 @@
  */
 
 #include <rw/math/Rotation3D.hpp>
-
+#include <rw/core/Ptr.hpp>
 #include "RANSACModel.hpp"
 
 
@@ -50,7 +50,7 @@ class StablePose1DModel : public RANSACModel<StablePose1DModel, rw::math::Rotati
 {
 	public:
 		//! @brief Smart pointer type to this class.
-		typedef rw::common::Ptr<StablePose1DModel> Ptr;
+		typedef rw::core::Ptr<StablePose1DModel> Ptr;
 		
 	public: // constructors
 		/**

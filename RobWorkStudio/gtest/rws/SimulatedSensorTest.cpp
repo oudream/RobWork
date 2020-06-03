@@ -18,6 +18,7 @@
 #include <gtest/gtest.h>
 #include "../TestEnvironment.hpp"
 
+#include <rw/core/PropertyMap.hpp>
 #include <rw/models/WorkCell.hpp>
 #include <rw/kinematics/Frame.hpp>
 #include <rw/kinematics/State.hpp>
@@ -42,6 +43,7 @@
 using rw::geometry::PointCloud;
 using rw::kinematics::Frame;
 using rw::loaders::WorkCellLoader;
+using rw::core::PropertyMap;
 using namespace rwlibs::simulation;
 using rws::RobWorkStudio;
 using std::string;

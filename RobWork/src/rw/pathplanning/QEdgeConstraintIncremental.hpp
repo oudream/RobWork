@@ -23,7 +23,7 @@
    @file QEdgeConstraintIncremental.hpp
 */
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/math/Q.hpp>
 #include <rw/math/Metric.hpp>
 
@@ -58,7 +58,7 @@ namespace rw { namespace pathplanning {
     {
     public:
 		//! @brief smart pointer type to this class
-		typedef rw::common::Ptr<QEdgeConstraintIncremental> Ptr;
+		typedef rw::core::Ptr<QEdgeConstraintIncremental> Ptr;
 
         /**
            @brief Destructor
@@ -161,7 +161,7 @@ namespace rw { namespace pathplanning {
            empty configuration.
         */
 		static QEdgeConstraintIncremental::Ptr make(
-			rw::common::Ptr<QConstraint> constraint,
+			rw::core::Ptr<QConstraint> constraint,
 			rw::math::QMetric::Ptr metric,
             double resolution = 1);
 
@@ -174,8 +174,8 @@ namespace rw { namespace pathplanning {
            resolution.
         */
 		static QEdgeConstraintIncremental::Ptr makeDefault(
-			rw::common::Ptr<QConstraint> constraint,
-			rw::common::Ptr<rw::models::Device> device);
+			rw::core::Ptr<QConstraint> constraint,
+			rw::core::Ptr<rw::models::Device> device);
 
         /**
            @brief A fixed edge constraint.

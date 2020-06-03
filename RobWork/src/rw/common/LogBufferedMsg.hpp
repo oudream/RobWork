@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,14 +15,14 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RW_COMMON_LOGBUFFEREDMSG_HPP
 #define RW_COMMON_LOGBUFFEREDMSG_HPP
 
+#include <rw/core/LogWriter.hpp>
+
 #include <ostream>
-#include <vector>
 #include <string>
-#include "LogWriter.hpp"
+#include <vector>
 
 namespace rw { namespace common {
 
@@ -32,9 +32,9 @@ namespace rw { namespace common {
      * The size of the buffer is not fixed and will grow until flush is called.
      * To have a fixed size buffer use LogBufferedChar instead.
      */
-    class LogBufferedMsg: public LogWriter
+    class LogBufferedMsg : public rw::core::LogWriter
     {
-    public:
+      public:
         /**
          * @brief Constructs LogBufferedMsg with a target ostream
          *
@@ -44,38 +44,38 @@ namespace rw { namespace common {
          *
          * @param stream [in] Stream to write to
          */
-        LogBufferedMsg(std::ostream* stream);
+        LogBufferedMsg (std::ostream* stream);
 
         /**
          * @brief Destructor
          *
          * Calls flush before destruction
          */
-        virtual ~LogBufferedMsg();
+        virtual ~LogBufferedMsg ();
 
-	protected:
+      protected:
         /**
          * @brief Writes str to the buffer
          * @param str [in] str to write
          */
-        virtual void doWrite(const std::string& str);
+        virtual void doWrite (const std::string& str);
 
         /**
          * @brief Write content of buffer to output stream and flush it
          */
-        virtual void doFlush();
+        virtual void doFlush ();
 
-		/**
-		 * @copydoc LogWriter::setTabLevel
-		 */
-		virtual void doSetTabLevel(int tablevel);
+        /**
+         * @copydoc LogWriter::setTabLevel
+         */
+        virtual void doSetTabLevel (int tablevel);
 
-    private:
-		std::vector<std::pair<std::string, int> > _buffer;
+      private:
+        std::vector< std::pair< std::string, int > > _buffer;
         std::ostream* _stream;
-		int _tabLevel;
+        int _tabLevel;
     };
 
-}} // end namespaces
+}}    // namespace rw::common
 
-#endif // end include guard
+#endif    // end include guard

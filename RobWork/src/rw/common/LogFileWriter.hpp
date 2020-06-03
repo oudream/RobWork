@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,61 +15,60 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RW_COMMON_LOGFILEWRITER_HPP
 #define RW_COMMON_LOGFILEWRITER_HPP
 
+#include <rw/core/LogWriter.hpp>
+
 #include <fstream>
-#include "LogWriter.hpp"
 
 namespace rw { namespace common {
 
-	/** @addtogroup common */
-	/*@{*/
+    /** @addtogroup common */
+    /*@{*/
 
-	/**
-     * @brief Writes log output to a file 
+    /**
+     * @brief Writes log output to a file
      */
-    class LogFileWriter : public LogWriter
+    class LogFileWriter : public rw::core::LogWriter
     {
-    public:
+      public:
         /**
          * @brief Constructs LogFileWriter writing to a file named \b filename
          *
          * Throws exception if failing to open file
          *
-         * @param filename [in] Name of file 
+         * @param filename [in] Name of file
          */
-        LogFileWriter(const std::string& filename);
+        LogFileWriter (const std::string& filename);
 
         /**
          * @brief Destructor
          */
-        ~LogFileWriter();
+        ~LogFileWriter ();
 
-	protected:
+      protected:
         /**
          * @copydoc LogWriter::write(const std::string&)
          */
-        void doWrite(const std::string& str);
+        void doWrite (const std::string& str);
 
         /**
          * @brief Calls flush on the ostream
          */
-        void doFlush();
+        void doFlush ();
 
-		/**
-		 * @copydoc LogWriter::setTabLevel(int)
-		 */
-		void doSetTabLevel(int tabLevel);
+        /**
+         * @copydoc LogWriter::setTabLevel(int)
+         */
+        void doSetTabLevel (int tabLevel);
 
-		
-    private:
+      private:
         std::ofstream _stream;
-		int _tabLevel;
+        int _tabLevel;
     };
 
-	/*@}*/
-}} // end namespaces
+    /*@}*/
+}}    // namespace rw::common
 
-#endif // end include guard
+#endif    // end include guard

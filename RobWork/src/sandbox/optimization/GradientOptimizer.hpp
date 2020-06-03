@@ -12,6 +12,7 @@
 #include "FirstDifferences.hpp"
 #include "Optimizer.hpp"
 #include "Types.hpp"
+#include <rw/core/Ptr.hpp>
 
 namespace rwlibs {
 namespace optimization {
@@ -39,7 +40,7 @@ typedef typename rw::math::FirstDifferences<ResultType, VectorType, GradientType
 class GradientOptimizer: public Optimizer {
 public:
 //! Smart pointer.
-	typedef rw::common::Ptr<GradientOptimizer> Ptr;
+	typedef rw::core::Ptr<GradientOptimizer> Ptr;
 
 public:
 	/**
@@ -50,7 +51,7 @@ public:
 	 */
 	GradientOptimizer(typename FunctionType::Ptr function,
 			typename NumericalDerivativeType::Ptr numericalDerivative =
-					rw::common::ownedPtr(new FirstDifferencesMethod(0.01)));
+					rw::core::ownedPtr(new FirstDifferencesMethod(0.01)));
 
 	/**
 	 * @copydoc OptimizerBase::setFunction

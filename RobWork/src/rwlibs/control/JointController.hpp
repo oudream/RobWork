@@ -20,10 +20,10 @@
 
 #include <rw/math/Q.hpp>
 
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 #include <rw/models/Device.hpp>
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include "Controller.hpp"
 
@@ -39,7 +39,7 @@ class JointController: public Controller
 
 public:
     //! @brief smart pointer of this class
-    typedef rw::common::Ptr<JointController> Ptr;
+    typedef rw::core::Ptr<JointController> Ptr;
 
     //! control mode
     typedef enum
@@ -121,7 +121,7 @@ private:
 
 };
 
-typedef rw::common::Ptr<JointController> JointControllerPtr;
+typedef rw::core::Ptr<JointController> JointControllerPtr;
 }
 }
 #endif /*JOINTCONTROLLER_HPP_*/

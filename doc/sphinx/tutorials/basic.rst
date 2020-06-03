@@ -140,7 +140,7 @@ Do this to compile and run the project:
 
 
 Math joggling
-============
+=============
 
 This tutorial will demonstrate some of the basic math functionality available in RobWork. This is mostly
 related to homogenous transformations, rotations, conversions and so on.

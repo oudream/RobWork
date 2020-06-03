@@ -6,7 +6,7 @@ print("Quaternion: " .. tostring(quat))
 rotationFromQuat = quat:toRotation3D();
 print("Rotation from Quaternion: " .. tostring(rotationFromQuat));
 
-rot = Rotation3d(-1,0,0,0,0,1,0,1,0);
+rot = Rotation3Dd(-1,0,0,0,0,1,0,1,0);
 print("Rotation: " .. tostring(rot));
 quatFromRotation = Quaterniond(rot);
 print("Quaternion from Rotation: " .. tostring(quatFromRotation))

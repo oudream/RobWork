@@ -27,7 +27,7 @@ class TaskGenerator
 	public:
 	// types
 		/// Smart pointer type to this class.
-		typedef rw::common::Ptr<TaskGenerator> Ptr;
+		typedef rw::core::Ptr<TaskGenerator> Ptr;
 		
 	// constructors
 		/// Constructor.

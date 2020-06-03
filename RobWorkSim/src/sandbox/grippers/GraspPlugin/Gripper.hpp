@@ -6,7 +6,7 @@
 #pragma once
 
 #include <iostream>
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/math/Q.hpp>
 #include <rw/math/Transform3D.hpp>
 #include <rw/models/WorkCell.hpp>
@@ -46,7 +46,7 @@ namespace rw {
 struct GripperQuality
 {
 	// typedefs
-	typedef rw::common::Ptr<GripperQuality> Ptr;
+	typedef rw::core::Ptr<GripperQuality> Ptr;
 	
 	// constructors
 	GripperQuality() :
@@ -131,7 +131,7 @@ class Gripper // : public TreeDevice
 	public:
 	// typedefs
 		/// Smart pointer.
-		typedef rw::common::Ptr<Gripper> Ptr;
+		typedef rw::core::Ptr<Gripper> Ptr;
 		
 	// constructors
 		/// Basic constructor.
@@ -181,7 +181,7 @@ class Gripper // : public TreeDevice
 		{
 			using rw::geometry::Geometry;
 			using rw::geometry::JawPrimitive;
-			using rw::common::ownedPtr;
+			using rw::core::ownedPtr;
 			
 			if (_isJawParametrized) {
 				std::cout << "Generating jaw geometry..." << std::endl;
@@ -248,7 +248,7 @@ class Gripper // : public TreeDevice
 		{
 			using rw::geometry::Geometry;
 			using rw::geometry::Box;
-			using rw::common::ownedPtr;
+			using rw::core::ownedPtr;
 			
 			if (_isBaseParametrized) {
 				_baseGeometry = ownedPtr(new Geometry(new Box(_baseParameters), std::string("BaseGeo")));

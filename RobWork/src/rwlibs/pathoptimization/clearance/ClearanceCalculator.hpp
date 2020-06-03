@@ -19,7 +19,7 @@
 #ifndef RWLIBS_PATHOPTIMIZATION_CLEARANCECALCULATOR_HPP
 #define RWLIBS_PATHOPTIMIZATION_CLEARANCECALCULATOR_HPP
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 namespace rw { namespace kinematics { class State; } }
 
@@ -43,9 +43,9 @@ class ClearanceCalculator
 {
 public:
 	//! A pointer to a ClearanceCalculator.
-	typedef typename rw::common::Ptr< ClearanceCalculator > Ptr;
+	typedef typename rw::core::Ptr< ClearanceCalculator > Ptr;
 	//! A pointer to a const ClearanceCalculator.
-	typedef typename rw::common::Ptr< const ClearanceCalculator > CPtr;
+	typedef typename rw::core::Ptr< const ClearanceCalculator > CPtr;
 
 	/**
 	 * @brief Destructor
@@ -64,7 +64,7 @@ public:
 /**
  * @brief Pointer to a ClearanceCalculator
  */
-typedef rw::common::Ptr<ClearanceCalculator> ClearanceCalculatorPtr;
+typedef rw::core::Ptr<ClearanceCalculator> ClearanceCalculatorPtr;
 
 /* @} */
 

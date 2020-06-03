@@ -217,7 +217,7 @@ public:
     DAE_DATA_TYPE(Array )
         unsigned int count;
         std::string  name;
-        rw::common::Ptr<std::vector<T> > data;
+        rw::core::Ptr<std::vector<T> > data;
     };
 
     DAE_DATA_TYPE(Accessor)
@@ -271,7 +271,7 @@ public:
         unsigned int count;
         std::string material;
         std::vector<InputShared*> inputs;
-        rw::common::Ptr<std::vector<unsigned int> > p;
+        rw::core::Ptr<std::vector<unsigned int> > p;
         std::vector<Extra*> extras;
     };
 

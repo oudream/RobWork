@@ -27,7 +27,7 @@
 #include <rw/sensor/CameraFirewire.hpp>
 #include <rw/sensor/Image.hpp>
 #include <rw/kinematics/Frame.hpp>
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 
 
 //#include <libraw1394/raw1394.h>

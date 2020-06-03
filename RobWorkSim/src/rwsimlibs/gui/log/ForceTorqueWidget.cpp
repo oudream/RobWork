@@ -26,7 +26,7 @@
 
 #include <QItemSelection>
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::graphics;
 using namespace rw::kinematics;
 using namespace rw::math;
@@ -35,7 +35,7 @@ using namespace rwsim::dynamics;
 using namespace rwsim::log;
 using namespace rwsimlibs::gui;
 
-ForceTorqueWidget::ForceTorqueWidget(rw::common::Ptr<const LogForceTorque> entry, QWidget* parent):
+ForceTorqueWidget::ForceTorqueWidget(rw::core::Ptr<const LogForceTorque> entry, QWidget* parent):
 	SimulatorLogEntryWidget(parent),
 	_ui(new Ui::ForceTorqueWidget()),
 	_forces(entry)
@@ -76,11 +76,11 @@ ForceTorqueWidget::~ForceTorqueWidget() {
 	}
 }
 
-void ForceTorqueWidget::setDWC(rw::common::Ptr<const DynamicWorkCell> dwc) {
+void ForceTorqueWidget::setDWC(rw::core::Ptr<const DynamicWorkCell> dwc) {
 }
 
-void ForceTorqueWidget::setEntry(rw::common::Ptr<const SimulatorLog> entry) {
-	const rw::common::Ptr<const LogForceTorque> set = entry.cast<const LogForceTorque>();
+void ForceTorqueWidget::setEntry(rw::core::Ptr<const SimulatorLog> entry) {
+	const rw::core::Ptr<const LogForceTorque> set = entry.cast<const LogForceTorque>();
 	if (!(set == NULL)) {
 		_forces = set;
 	} else {
@@ -88,7 +88,7 @@ void ForceTorqueWidget::setEntry(rw::common::Ptr<const SimulatorLog> entry) {
 	}
 }
 
-rw::common::Ptr<const SimulatorLog> ForceTorqueWidget::getEntry() const {
+rw::core::Ptr<const SimulatorLog> ForceTorqueWidget::getEntry() const {
 	return _forces;
 }
 
@@ -142,7 +142,7 @@ std::string ForceTorqueWidget::getName() const {
 	return "Forces and Torques";
 }
 
-void ForceTorqueWidget::setProperties(rw::common::Ptr<rw::common::PropertyMap> properties) {
+void ForceTorqueWidget::setProperties(rw::core::Ptr<rw::core::PropertyMap> properties) {
 	SimulatorLogEntryWidget::setProperties(properties);
 	if (!_properties.isNull()) {
 		if (!_properties->has("ForceTorqueWidget_LinA"))
@@ -310,15 +310,15 @@ ForceTorqueWidget::Dispatcher::Dispatcher() {
 ForceTorqueWidget::Dispatcher::~Dispatcher() {
 }
 
-SimulatorLogEntryWidget* ForceTorqueWidget::Dispatcher::makeWidget(rw::common::Ptr<const SimulatorLog> entry, QWidget* parent) const {
-	const rw::common::Ptr<const LogForceTorque> forces = entry.cast<const LogForceTorque>();
+SimulatorLogEntryWidget* ForceTorqueWidget::Dispatcher::makeWidget(rw::core::Ptr<const SimulatorLog> entry, QWidget* parent) const {
+	const rw::core::Ptr<const LogForceTorque> forces = entry.cast<const LogForceTorque>();
 	if (!(forces == NULL))
 		return new ForceTorqueWidget(forces, parent);
 	RW_THROW("ForceTorqueWidget::Dispatcher (makeWidget): invalid entry!");
 	return NULL;
 }
 
-bool ForceTorqueWidget::Dispatcher::accepts(rw::common::Ptr<const SimulatorLog> entry) const {
+bool ForceTorqueWidget::Dispatcher::accepts(rw::core::Ptr<const SimulatorLog> entry) const {
 	if (!(entry.cast<const LogForceTorque>() == NULL))
 		return true;
 	return false;

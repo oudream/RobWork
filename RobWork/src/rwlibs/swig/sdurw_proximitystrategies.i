@@ -2,7 +2,7 @@
 
 %{
 #include <rwlibs/swig/ScriptTypes.hpp>
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 using namespace rwlibs::swig;
 %}
@@ -26,13 +26,13 @@ class ProximityStrategyFactory
 public:
     static std::vector<std::string> getCollisionStrategyIDs();
 
-	static rw::common::Ptr<CollisionStrategy> makeDefaultCollisionStrategy();
+	static rw::core::Ptr<CollisionStrategy> makeDefaultCollisionStrategy();
 
-	static rw::common::Ptr<CollisionStrategy> makeCollisionStrategy(const std::string& id);
+	static rw::core::Ptr<CollisionStrategy> makeCollisionStrategy(const std::string& id);
 
     static std::vector<std::string> getDistanceStrategyIDs();
 
-	static rw::common::Ptr<DistanceStrategy> makeDefaultDistanceStrategy();
+	static rw::core::Ptr<DistanceStrategy> makeDefaultDistanceStrategy();
 
-	static rw::common::Ptr<DistanceStrategy> makeDistanceStrategy(const std::string& id);
+	static rw::core::Ptr<DistanceStrategy> makeDistanceStrategy(const std::string& id);
 };

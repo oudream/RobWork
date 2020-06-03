@@ -21,7 +21,7 @@
 //! @file RenderScan.hpp
 
 #include <rw/geometry/PointCloud.hpp>
-
+#include <rw/core/Ptr.hpp>
 #include <rw/graphics/Render.hpp>
 
 namespace rw { namespace sensor { class Scanner25DModel; } }
@@ -39,7 +39,7 @@ namespace opengl {
 	class RenderScan: public rw::graphics::Render{
 	public:
         //! @brief smart pointer type to this class
-        typedef rw::common::Ptr<RenderScan> Ptr;
+        typedef rw::core::Ptr<RenderScan> Ptr;
 
         //! @brief constructor
 		RenderScan();
@@ -52,7 +52,7 @@ namespace opengl {
          * @param scanner
          * @return
          */
-        RenderScan(const rw::common::Ptr<rw::sensor::Scanner25DModel> scanner);
+        RenderScan(const rw::core::Ptr<rw::sensor::Scanner25DModel> scanner);
 
         //! @brief destructor
 		virtual ~RenderScan();
@@ -94,7 +94,7 @@ namespace opengl {
         float _minDepth,_maxDepth;
 	};
 	//! smart pointer type
-	typedef rw::common::Ptr<RenderScan> RenderScanPtr;
+	typedef rw::core::Ptr<RenderScan> RenderScanPtr;
 
 	//! @}
 }

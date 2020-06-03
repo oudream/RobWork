@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,66 +15,16 @@
  * limitations under the License.
  ********************************************************************************/
 
+#ifndef RW_COMMON_LOGSTREAMWRITER_HPP_
+#define RW_COMMON_LOGSTREAMWRITER_HPP_
 
-#ifndef RW_COMMON_LOGSTREAMWRITER_HPP
-#define RW_COMMON_LOGSTREAMWRITER_HPP
+#include <rw/core/LogStreamWriter.hpp>
 
-#include <iosfwd>
-#include "LogWriter.hpp"
+#include <rw/core/os.hpp>
+#ifdef RW_WIN32
+#pragma message("#include <rw/common/LogStreamWriter.hpp> is deprecated use #include <rw/core/LogStreamWriter.hpp> instead")
+#else
+#warning "#include <rw/common/LogStreamWriter.hpp> is deprecated use #include <rw/core/LogStreamWriter.hpp> instead"
+#endif
 
-namespace rw { namespace common {
-
-	/** @addtogroup common */
-	/*@{*/
-
-	/**
-     * @brief Writes log output to a std::ostream
-     */
-    class LogStreamWriter : public LogWriter
-    {
-    public:
-        /**
-         * @brief Constructs LogStreamWriter with a target output stream
-         *
-         * The LogStreamWriter keeps a reference to the stream object. Destroying
-         * the stream object while the LogStreamWriter has a reference to it
-         * results in undefined behavior.
-         *
-         * Ownership of the stream is not taken.
-         *
-         * @param stream [in] Stream to write to
-         */
-        LogStreamWriter(std::ostream* stream);
-
-        /**
-         * @brief Destructor
-         *
-         * Calls flush on the output stream before destruction
-         */
-        ~LogStreamWriter();
-
-	protected:
-        /**
-         * @copydoc LogWriter::write(const std::string&)
-         */
-        void doWrite(const std::string& str);
-
-        /**
-         * @brief Calls flush on the ostream
-         */
-        void doFlush();
-
-		/** 
-	 	 * @copydoc LogWriter::setTabLevel(int)
-		 */
-		void doSetTabLevel(int tabLevel);
-
-    private:
-        std::ostream* _stream;
-		int _tabLevel;
-    };
-
-	/*@}*/
-}} // end namespaces
-
-#endif // end include guard
+#endif

@@ -18,7 +18,7 @@
 #ifndef RW_LOADERS_XERCESUTILS_HPP
 #define RW_LOADERS_XERCESUTILS_HPP
 
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 
 #include <xercesc/dom/DOM.hpp>
 #include <xercesc/parsers/XercesDOMParser.hpp>
@@ -280,7 +280,7 @@ public:
      *
      * The \b parser has ownership of the DOMDocument returned.
      *
-     * Throws a rw::common::Exception if failing to read document
+     * Throws a rw::core::Exception if failing to read document
      *
      * @param parser [in] Parse to use for reading in
      * @param filename [in] File to parse
@@ -294,7 +294,7 @@ public:
      *
      * The \b parser has ownership of the DOMDocument returned.
      *
-     * Throws a rw::common::Exception if failing to read document
+     * Throws a rw::core::Exception if failing to read document
      *
      * @param parser [in] Parse to use for reading in
      * @param instream [in] Input stream to read from
@@ -308,7 +308,7 @@ public:
      *
      * The \b parser has ownership of the DOMDocument returned.
      *
-     * Throws a rw::common::Exception if failing to read document
+     * Throws a rw::core::Exception if failing to read document
      *
      * This method can be used to write to a custom output. See Xerces documentation
      * for information about how to create a XMLFormatTarget

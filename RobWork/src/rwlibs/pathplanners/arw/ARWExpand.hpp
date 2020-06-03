@@ -23,7 +23,7 @@
    @file ARWExpand.hpp
 */
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/math/Q.hpp>
 #include <rw/models/Device.hpp>
 #include <rw/trajectory/Path.hpp>
@@ -43,7 +43,7 @@ namespace rwlibs { namespace pathplanners {
     {
     public:
 		//! @brief smart pointer type to this class
-        typedef rw::common::Ptr<ARWExpand> Ptr;
+        typedef rw::core::Ptr<ARWExpand> Ptr;
 
         /**
            @brief Expand the path by one step and return true if a new

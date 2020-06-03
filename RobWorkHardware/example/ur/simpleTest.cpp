@@ -6,10 +6,9 @@
 #include <rwhw/universalrobots/URCallBackInterface.hpp>
 #include <rwhw/universalrobots/UniversalRobotsRTLogging.hpp>
 
-USE_ROBWORK_NAMESPACE
-
-using namespace robwork;
 using namespace rwhw;
+using namespace rw::common;
+using namespace rw::math;
 
 
 int main(int argc, char** argv)
@@ -33,7 +32,7 @@ int main(int argc, char** argv)
     //std::cout<<"Transfer Script: "<<scriptFile<<std::endl;
     _ur.connect(ip, 30001);
 
-    _ur.startInterface(port);
+    _ur.startCommunication(port);
     _urrt.start();
 
 

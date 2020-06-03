@@ -20,7 +20,7 @@
 #include "SimulatorLogEntryWidget.hpp"
 #include "SimulatorStatisticsWidget.hpp"
 
-#include <rw/common/PropertyMap.hpp>
+#include <rw/core/PropertyMap.hpp>
 #include <rw/geometry/Line.hpp>
 
 #include <rwsim/dynamics/DynamicWorkCell.hpp>
@@ -41,6 +41,7 @@
 #include <QItemSelection>
 
 using namespace rw::common;
+using namespace rw::core;
 using namespace rw::geometry;
 using namespace rw::graphics;
 using namespace rw::math;
@@ -56,8 +57,8 @@ SimulatorLogWidget::SimulatorLogWidget(QWidget* parent):
 	_glview(new SceneOpenGLViewer(_ui->_viewFrame)),
 	_log(NULL),
 	_model(new SimulatorLogModel(this)),
-	_root(ownedPtr(new GroupNode("World"))),
-	_properties(ownedPtr(new PropertyMap()))
+	_root(rw::core::ownedPtr(new GroupNode("World"))),
+	_properties(rw::core::ownedPtr(new rw::core::PropertyMap()))
 {
 	_ui->setupUi(this);
 
@@ -68,7 +69,7 @@ SimulatorLogWidget::SimulatorLogWidget(QWidget* parent):
 
     // No background
     _glview->getPropertyMap().set<bool>("DrawBackGround", false);
-    const Property<bool>::Ptr bgProp = _glview->getPropertyMap().findProperty<bool>("DrawBackGround");
+    const rw::core::Property<bool>::Ptr bgProp = _glview->getPropertyMap().findProperty<bool>("DrawBackGround");
     bgProp->setValue(false);
     bgProp->changedEvent().fire(bgProp.get());
 
@@ -107,18 +108,18 @@ SimulatorLogWidget::~SimulatorLogWidget() {
 	delete _model;
 }
 
-void SimulatorLogWidget::setDWC(rw::common::Ptr<const DynamicWorkCell> dwc) {
+void SimulatorLogWidget::setDWC(rw::core::Ptr<const DynamicWorkCell> dwc) {
 	_ui->_tree->selectionModel()->clearSelection();
 	_dwc = dwc;
 }
 
-void SimulatorLogWidget::setLog(rw::common::Ptr<SimulatorLogScope> log) {
+void SimulatorLogWidget::setLog(rw::core::Ptr<SimulatorLogScope> log) {
 	_ui->_tree->selectionModel()->clearSelection();
 	_log = log;
 	_model->setRoot(_log);
 }
 
-void SimulatorLogWidget::compare(rw::common::Ptr<const rwsim::log::SimulatorLogScope> info) {
+void SimulatorLogWidget::compare(rw::core::Ptr<const rwsim::log::SimulatorLogScope> info) {
 	_model->compare(info);
 }
 
@@ -144,7 +145,7 @@ void SimulatorLogWidget::updateInfo() {
 	_model->update();
 }
 
-void SimulatorLogWidget::setProperties(const PropertyMap::Ptr properties) {
+void SimulatorLogWidget::setProperties(const rw::core::PropertyMap::Ptr properties) {
 	_properties = properties;
 	for (const std::pair<const rwsim::log::SimulatorLog*, std::list<QWidget*> > widgets: _entryToWidgets) {
 		for (QWidget* const widget : widgets.second) {
@@ -252,7 +253,7 @@ void SimulatorLogWidget::selectionChanged(const QItemSelection& selected, const 
 		RW_ASSERT(_entryToWidgets.find(entry) == _entryToWidgets.end());
 		SimulatorLogScope* const scope = dynamic_cast<SimulatorLogScope*>(entry);
 		if (scope) {
-			const rw::common::Ptr<const SimulatorStatistics> stats = scope->getStatistics();
+			const rw::core::Ptr<const SimulatorStatistics> stats = scope->getStatistics();
 			if (!stats.isNull()) {
 				if (stats->getSeries().size() > 0) {
 					SimulatorStatisticsWidget* const widget = new SimulatorStatisticsWidget(stats,_ui->_pageStack);
@@ -341,7 +342,7 @@ void SimulatorLogWidget::selectionChanged(const QItemSelection& selected, const 
 
 	if (_entryToWidgets.size() == 0) {
 		bool showNoPage = true;
-		const rw::common::Ptr<const SimulatorStatistics> stats = _log->getStatistics();
+		const rw::core::Ptr<const SimulatorStatistics> stats = _log->getStatistics();
 		if (!stats.isNull()) {
 			if (stats->getSeries().size() > 0) {
 				SimulatorStatisticsWidget* const widget = new SimulatorStatisticsWidget(stats,_ui->_pageStack);
@@ -427,7 +428,7 @@ void SimulatorLogWidget::tabCloseRequested(int index) {
 	const SimulatorLogEntryWidget* const ewidget = dynamic_cast<const SimulatorLogEntryWidget*>(widget);
 	if (ewidget == NULL)
 		return;
-	const rw::common::Ptr<const SimulatorLog> entry = ewidget->getEntry();
+	const rw::core::Ptr<const SimulatorLog> entry = ewidget->getEntry();
 	if (entry == NULL)
 		return;
 	QItemSelection deselection;

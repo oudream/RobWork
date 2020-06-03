@@ -38,7 +38,7 @@
 #include <sstream>
 
 using namespace rw::math;
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::sensor;
 using namespace rw::kinematics;
 using namespace rw::models;
@@ -100,7 +100,7 @@ Sensors::~Sensors ()
 void Sensors::initialize ()
 {
     getRobWorkStudio ()->stateChangedEvent ().add (
-        boost::bind (&Sensors::stateChangedListener, this, _1), this);
+        boost::bind (&Sensors::stateChangedListener, this, boost::arg<1>()), this);
 }
 
 void Sensors::updateSim ()

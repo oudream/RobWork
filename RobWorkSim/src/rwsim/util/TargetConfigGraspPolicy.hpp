@@ -18,8 +18,8 @@
 #ifndef RWSIM_UTIL_TARGETCONFIGGRASPPOLICY_HPP_
 #define RWSIM_UTIL_TARGETCONFIGGRASPPOLICY_HPP_
 
-#include <rw/common/PropertyMap.hpp>
-#include <rw/common/Ptr.hpp>
+#include <rw/core/PropertyMap.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rwlibs/simulation/SimulatedController.hpp>
 
 #include "GraspPolicy.hpp"
@@ -38,7 +38,7 @@ namespace util {
     class TargetConfigGraspPolicy: public GraspPolicy {
     public:
 
-        typedef rw::common::Ptr<TargetConfigGraspPolicy> Ptr;
+        typedef rw::core::Ptr<TargetConfigGraspPolicy> Ptr;
 
         /**
          * @brief constructor
@@ -61,13 +61,13 @@ namespace util {
 
         virtual std::string getIdentifier(){ return TargetConfigGraspPolicy::getID();}
 
-        virtual rw::common::PropertyMap getSettings(){ return _settings;};
+        virtual rw::core::PropertyMap getSettings(){ return _settings;};
 
         virtual void applySettings();
 
     private:
 
-        rw::common::PropertyMap _settings;
+        rw::core::PropertyMap _settings;
         rwsim::dynamics::DynamicDevice* _dev;
         rwlibs::simulation::SimulatedController::Ptr _controller;
     };

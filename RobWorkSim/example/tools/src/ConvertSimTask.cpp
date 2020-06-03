@@ -13,7 +13,7 @@
 #include <boost/property_tree/xml_parser.hpp>
 
 using namespace std;
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::math;
 using namespace rwlibs::task;
 using namespace boost::property_tree;

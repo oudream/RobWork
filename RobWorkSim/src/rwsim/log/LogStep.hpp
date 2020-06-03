@@ -25,6 +25,7 @@
  */
 
 #include "SimulatorLogScope.hpp"
+#include <rw/core/Ptr.hpp>
 
 namespace rwsim {
 namespace log {
@@ -39,7 +40,7 @@ namespace log {
 class LogStep: public SimulatorLogScope {
 public:
     //! Smart pointer type of LogStep
-    typedef rw::common::Ptr<LogStep> Ptr;
+    typedef rw::core::Ptr<LogStep> Ptr;
 
     //! @copydoc SimulatorLog::SimulatorLog
 	LogStep(SimulatorLogScope* parent);

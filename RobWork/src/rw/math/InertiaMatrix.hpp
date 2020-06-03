@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RW_MATH_INERTIAMATRIX_HPP
 #define RW_MATH_INERTIAMATRIX_HPP
 
@@ -23,11 +22,12 @@
  * @file InertiaMatrix.hpp
  */
 
-#include "Vector3D.hpp"
 #include "Rotation3D.hpp"
+#include "Vector3D.hpp"
+
 #include <rw/common/Serializable.hpp>
 
-#include <Eigen/Eigen>
+#include <Eigen/Core>
 
 namespace rw { namespace math {
 
@@ -37,12 +37,11 @@ namespace rw { namespace math {
     /**
      * @brief A 3x3 inertia matrix
      */
-    template<class T = double>
-    class InertiaMatrix
+    template< class T = double > class InertiaMatrix
     {
-    public:
+      public:
         //! @brief The type of the internal Eigen matrix implementation.
-		typedef Eigen::Matrix<T, 3, 3> Base;
+        typedef Eigen::Matrix< T, 3, 3 > Base;
 
         /**
          * @brief Constructs an initialized 3x3 rotation matrix
@@ -68,21 +67,17 @@ namespace rw { namespace math {
          *  \right]
          * @f$
          */
-        InertiaMatrix(
-            T r11, T r12, T r13,
-            T r21, T r22, T r23,
-            T r31, T r32, T r33
-            )
+        InertiaMatrix (T r11, T r12, T r13, T r21, T r22, T r23, T r31, T r32, T r33)
         {
-            _matrix(0, 0) = r11;
-            _matrix(0, 1) = r12;
-            _matrix(0, 2) = r13;
-            _matrix(1, 0) = r21;
-            _matrix(1, 1) = r22;
-            _matrix(1, 2) = r23;
-            _matrix(2, 0) = r31;
-            _matrix(2, 1) = r32;
-            _matrix(2, 2) = r33;
+            _matrix (0, 0) = r11;
+            _matrix (0, 1) = r12;
+            _matrix (0, 2) = r13;
+            _matrix (1, 0) = r21;
+            _matrix (1, 1) = r22;
+            _matrix (1, 2) = r23;
+            _matrix (2, 0) = r31;
+            _matrix (2, 1) = r32;
+            _matrix (2, 2) = r33;
         }
 
         /**
@@ -99,20 +94,17 @@ namespace rw { namespace math {
          * @param j @f$ \robabx{a}{b}{\mathbf{j}} @f$
          * @param k @f$ \robabx{a}{b}{\mathbf{k}} @f$
          */
-        InertiaMatrix(
-            const Vector3D<T>& i,
-            const Vector3D<T>& j,
-            const Vector3D<T>& k)
+        InertiaMatrix (const Vector3D< T >& i, const Vector3D< T >& j, const Vector3D< T >& k)
         {
-            _matrix(0,0) = i[0];
-            _matrix(0,1) = j[0];
-            _matrix(0,2) = k[0];
-            _matrix(1,0) = i[1];
-            _matrix(1,1) = j[1];
-            _matrix(1,2) = k[1];
-            _matrix(2,0) = i[2];
-            _matrix(2,1) = j[2];
-            _matrix(2,2) = k[2];
+            _matrix (0, 0) = i[0];
+            _matrix (0, 1) = j[0];
+            _matrix (0, 2) = k[0];
+            _matrix (1, 0) = i[1];
+            _matrix (1, 1) = j[1];
+            _matrix (1, 2) = k[1];
+            _matrix (2, 0) = i[2];
+            _matrix (2, 1) = j[2];
+            _matrix (2, 2) = k[2];
         }
 
         /**
@@ -121,32 +113,26 @@ namespace rw { namespace math {
          * @param j [in] m(1,1)
          * @param k [in] m(2,2)
          */
-        InertiaMatrix(
-            T i = 0.0,
-            T j = 0.0,
-            T k = 0.0) 
+        InertiaMatrix (T i = 0.0, T j = 0.0, T k = 0.0)
         {
-            _matrix(0,0) = i;
-            _matrix(0,1) = 0;
-            _matrix(0,2) = 0;
-            _matrix(1,0) = 0;
-            _matrix(1,1) = j;
-            _matrix(1,2) = 0;
-            _matrix(2,0) = 0;
-            _matrix(2,1) = 0;
-            _matrix(2,2) = k;
+            _matrix (0, 0) = i;
+            _matrix (0, 1) = 0;
+            _matrix (0, 2) = 0;
+            _matrix (1, 0) = 0;
+            _matrix (1, 1) = j;
+            _matrix (1, 2) = 0;
+            _matrix (2, 0) = 0;
+            _matrix (2, 1) = 0;
+            _matrix (2, 2) = k;
         }
 
         /**
            @brief Construct an internal matrix from a Eigen::MatrixBase
 
-           It is the responsibility of the user that 3x3 matrix is indeed an 
-		   inertia matrix.
-         */        
-        explicit InertiaMatrix(const Base& r) : _matrix(r)
-        {
-		}
-
+           It is the responsibility of the user that 3x3 matrix is indeed an
+                   inertia matrix.
+         */
+        explicit InertiaMatrix (const Base& r) : _matrix (r) {}
 
         /**
          * @brief Returns reference to matrix element
@@ -154,10 +140,7 @@ namespace rw { namespace math {
          * @param column [in] column
          * @return reference to the element
          */
-        T& operator()(size_t row, size_t column)
-        {
-            return _matrix(row, column);
-        }
+        T& operator() (size_t row, size_t column) { return _matrix (row, column); }
 
         /**
          * @brief Returns reference to matrix element
@@ -165,26 +148,17 @@ namespace rw { namespace math {
          * @param column [in] column
          * @return reference to the element
          */
-        const T& operator()(size_t row, size_t column) const
-        {
-            return _matrix(row, column);
-        }
+        const T& operator() (size_t row, size_t column) const { return _matrix (row, column); }
 
         /**
-         * @brief Returns reference to the internal 3x3 matrix 
+         * @brief Returns reference to the internal 3x3 matrix
          */
-        const Base& e() const
-        {
-            return _matrix;
-        }
+        const Base& e () const { return _matrix; }
 
         /**
-         * @brief Returns reference to the internal 3x3 matrix 
+         * @brief Returns reference to the internal 3x3 matrix
          */
-        Base& e()
-        {
-            return _matrix;
-        }
+        Base& e () { return _matrix; }
 
         /**
          * @brief Calculates \f$ \robabx{a}{c}{\mathbf{R}} =
@@ -196,45 +170,41 @@ namespace rw { namespace math {
          *
          * @return \f$ \robabx{a}{c}{\mathbf{R}} \f$
          */
-        friend InertiaMatrix operator*(const Rotation3D<T>& aRb, const InertiaMatrix& bRc)
+        friend InertiaMatrix operator* (const Rotation3D< T >& aRb, const InertiaMatrix& bRc)
         {
-            return InertiaMatrix(aRb.e()*bRc.e());
+            return InertiaMatrix (aRb.e () * bRc.e ());
         }
 
         /**
          * @brief Calculates \f$ \robabx{a}{c}{\mathbf{R}} =
          * \robabx{a}{b}{\mathbf{R}} \robabx{b}{c}{\mathbf{R}} \f$
          *
-         * @param aRb [in] \f$ \robabx{a}{b}{\mathbf{R}} \f$
-         *
          * @param bRc [in] \f$ \robabx{b}{c}{\mathbf{R}} \f$
          *
          * @return \f$ \robabx{a}{c}{\mathbf{R}} \f$
          */
-        friend InertiaMatrix operator*(const InertiaMatrix& aRb, const Rotation3D<T>& bRc)
+        InertiaMatrix operator* (const Rotation3D< T >& bRc) const
         {
-            return InertiaMatrix(aRb.e()* bRc.e());
+            return InertiaMatrix (this->e () * bRc.e ());
         }
 
         /**
          * @brief Calculates the addition between the two InertiaMatrices
          */
-        friend InertiaMatrix operator+(const InertiaMatrix& I1, const InertiaMatrix& I2)
+        InertiaMatrix operator+ (const InertiaMatrix& I2) const
         {
-            return InertiaMatrix( I1.e()+I2.e());
+            return InertiaMatrix (this->e () + I2.e ());
         }
 
         /**
          * @brief Calculates \f$ \robabx{a}{c}{\mathbf{v}} =
          * \robabx{a}{b}{\mathbf{R}} \robabx{b}{c}{\mathbf{v}} \f$
-         *
-         * @param aRb [in] \f$ \robabx{a}{b}{\mathbf{R}} \f$
          * @param bVc [in] \f$ \robabx{b}{c}{\mathbf{v}} \f$
          * @return \f$ \robabx{a}{c}{\mathbf{v}} \f$
          */
-        friend Vector3D<T> operator*(const InertiaMatrix& aRb, const Vector3D<T>& bVc)
+        Vector3D< T > operator* (const Vector3D< T >& bVc) const
         {
-            return Vector3D<T>(aRb.e() * bVc.e());
+            return Vector3D< T > ( this->e () * bVc.e ());
         }
 
         /**
@@ -243,9 +213,9 @@ namespace rw { namespace math {
          * @param r [in] rotation matrix to print
          * @return the updated output stream
          */
-        friend std::ostream& operator<<(std::ostream &os, const InertiaMatrix& r)
+        friend std::ostream& operator<< (std::ostream& os, const InertiaMatrix& r)
         {
-            return os << r.e();
+            return os << r.e ();
         }
 
         /**
@@ -254,13 +224,10 @@ namespace rw { namespace math {
          * @param radi [in] radius of sphere.
          * @return the inertia matrix.
          */
-        static InertiaMatrix<T> makeSolidSphereInertia(T mass, T radi){
-            T tmpV = (T)(2.0/5.0)*mass*radi*radi;
-            return InertiaMatrix<T>(
-                    tmpV, 0, 0,
-                    0, tmpV, 0,
-                    0, 0, tmpV
-                );
+        static InertiaMatrix< T > makeSolidSphereInertia (T mass, T radi)
+        {
+            T tmpV = (T) (2.0 / 5.0) * mass * radi * radi;
+            return InertiaMatrix< T > (tmpV, 0, 0, 0, tmpV, 0, 0, 0, tmpV);
         }
 
         /**
@@ -269,13 +236,10 @@ namespace rw { namespace math {
          * @param radi [in] radius of sphere.
          * @return the inertia matrix.
          */
-        static InertiaMatrix<T> makeHollowSphereInertia(T mass, T radi){
-            T tmpV = (T)(2.0/3.0)*mass*radi*radi;
-            return InertiaMatrix<T>(
-                    tmpV, 0, 0,
-                    0, tmpV, 0,
-                    0, 0, tmpV
-                );
+        static InertiaMatrix< T > makeHollowSphereInertia (T mass, T radi)
+        {
+            T tmpV = (T) (2.0 / 3.0) * mass * radi * radi;
+            return InertiaMatrix< T > (tmpV, 0, 0, 0, tmpV, 0, 0, 0, tmpV);
         }
 
         /**
@@ -287,87 +251,96 @@ namespace rw { namespace math {
          * @param z
          * @return
          */
-        static InertiaMatrix<T> makeCuboidInertia(T mass, T x, T y, T z){
-            return InertiaMatrix<T>(
-                    (T)(1/12.0*mass*(y*y+z*z)), 0, 0,
-                    0, (T)(1/12.0*mass*(x*x+z*z)), 0,
-                    0, 0, (T)(1/12.0*mass*(x*x+y*y))
-                );
+        static InertiaMatrix< T > makeCuboidInertia (T mass, T x, T y, T z)
+        {
+            return InertiaMatrix< T > ((T) (1 / 12.0 * mass * (y * y + z * z)),
+                                       0,
+                                       0,
+                                       0,
+                                       (T) (1 / 12.0 * mass * (x * x + z * z)),
+                                       0,
+                                       0,
+                                       0,
+                                       (T) (1 / 12.0 * mass * (x * x + y * y)));
         }
 
-
-
-
-
-    private:
+      private:
         Base _matrix;
     };
 
-	/**
-	* @brief Calculates the inverse @f$ \robabx{b}{a}{\mathbf{R}} =
-	* \robabx{a}{b}{\mathbf{R}}^{-1} @f$ of a rotation matrix
-	*
-	* @param aRb [in] the rotation matrix @f$ \robabx{a}{b}{\mathbf{R}} @f$
-	*
-	* @return the matrix inverse @f$ \robabx{b}{a}{\mathbf{R}} =
-	* \robabx{a}{b}{\mathbf{R}}^{-1} @f$
-	*
-	* @f$ \robabx{b}{a}{\mathbf{R}} = \robabx{a}{b}{\mathbf{R}}^{-1} =
-	* \robabx{a}{b}{\mathbf{R}}^T @f$
-	*/
-	template <class Q>
-	InertiaMatrix<Q> inverse(const InertiaMatrix<Q>& aRb)
-	{
-		return InertiaMatrix<Q>(aRb.e().inverse());
-	}
+    /**
+     * @brief Calculates the inverse @f$ \robabx{b}{a}{\mathbf{R}} =
+     * \robabx{a}{b}{\mathbf{R}}^{-1} @f$ of a rotation matrix
+     *
+     * @param aRb [in] the rotation matrix @f$ \robabx{a}{b}{\mathbf{R}} @f$
+     *
+     * @return the matrix inverse @f$ \robabx{b}{a}{\mathbf{R}} =
+     * \robabx{a}{b}{\mathbf{R}}^{-1} @f$
+     *
+     * @f$ \robabx{b}{a}{\mathbf{R}} = \robabx{a}{b}{\mathbf{R}}^{-1} =
+     * \robabx{a}{b}{\mathbf{R}}^T @f$
+     */
+    template< class Q > InertiaMatrix< Q > inverse (const InertiaMatrix< Q >& aRb)
+    {
+        return InertiaMatrix< Q > (aRb.e ().inverse ());
+    }
 
-	/**
-	* @brief Casts InertiaMatrix<T> to InertiaMatrix<Q>
-	* @param rot [in] InertiaMatrix with type T
-	* @return InertiaMatrix with type Q
-	*/
-	template<class Q, class T>
-	InertiaMatrix<Q> cast(const InertiaMatrix<T>& rot)
-	{
-		InertiaMatrix<Q> res(InertiaMatrix<Q>::identity());
-		for (size_t i = 0; i<3; i++)
-			for (size_t j = 0; j<3; j++)
-				res(i, j) = static_cast<Q>(rot(i, j));
-		return res;
-	}
+    /**
+     * @brief Casts InertiaMatrix<T> to InertiaMatrix<Q>
+     * @param rot [in] InertiaMatrix with type T
+     * @return InertiaMatrix with type Q
+     */
+    template< class Q, class T > InertiaMatrix< Q > cast (const InertiaMatrix< T >& rot)
+    {
+        InertiaMatrix< Q > res (InertiaMatrix< Q >::identity ());
+        for (size_t i = 0; i < 3; i++)
+            for (size_t j = 0; j < 3; j++)
+                res (i, j) = static_cast< Q > (rot (i, j));
+        return res;
+    }
 
-	extern template class rw::math::InertiaMatrix<double>;
-	extern template class rw::math::InertiaMatrix<float>;
+    extern template class rw::math::InertiaMatrix< double >;
+    extern template class rw::math::InertiaMatrix< float >;
 
     /*@}*/
-}} // end namespaces
+}}    // namespace rw::math
 
-namespace rw{ namespace common {
-    class OutputArchive; class InputArchive;
-namespace serialization {
-	/**
-	 * @copydoc rw::common::serialization::write
-	 * @relatedalso rw::math::InertiaMatrix
-	 */
-	template<> void write(const rw::math::InertiaMatrix<double>& sobject, rw::common::OutputArchive& oarchive, const std::string& id);
+namespace rw { namespace common {
+    class OutputArchive;
+    class InputArchive;
+    namespace serialization {
+        /**
+         * @copydoc rw::common::serialization::write
+         * @relatedalso rw::math::InertiaMatrix
+         */
+        template<>
+        void write (const rw::math::InertiaMatrix< double >& sobject,
+                    rw::common::OutputArchive& oarchive, const std::string& id);
 
-	/**
-	 * @copydoc rw::common::serialization::write
-	 * @relatedalso rw::math::InertiaMatrix
-	 */
-	template<> void write(const rw::math::InertiaMatrix<float>& sobject, rw::common::OutputArchive& oarchive, const std::string& id);
+        /**
+         * @copydoc rw::common::serialization::write
+         * @relatedalso rw::math::InertiaMatrix
+         */
+        template<>
+        void write (const rw::math::InertiaMatrix< float >& sobject,
+                    rw::common::OutputArchive& oarchive, const std::string& id);
 
-	/**
-	 * @copydoc rw::common::serialization::read
-	 * @relatedalso rw::math::InertiaMatrix
-	 */
-	template<> void read(rw::math::InertiaMatrix<double>& sobject, rw::common::InputArchive& iarchive, const std::string& id);
+        /**
+         * @copydoc rw::common::serialization::read
+         * @relatedalso rw::math::InertiaMatrix
+         */
+        template<>
+        void read (rw::math::InertiaMatrix< double >& sobject, rw::common::InputArchive& iarchive,
+                   const std::string& id);
 
-	/**
-	 * @copydoc rw::common::serialization::read
-	 * @relatedalso rw::math::InertiaMatrix
-	 */
-	template<> void read(rw::math::InertiaMatrix<float>& sobject, rw::common::InputArchive& iarchive, const std::string& id);
-}}} // end namespaces
+        /**
+         * @copydoc rw::common::serialization::read
+         * @relatedalso rw::math::InertiaMatrix
+         */
+        template<>
+        void read (rw::math::InertiaMatrix< float >& sobject, rw::common::InputArchive& iarchive,
+                   const std::string& id);
+    }    // namespace serialization
+}}       // namespace rw::common
 
-#endif // end include guard
+#endif    // end include guard

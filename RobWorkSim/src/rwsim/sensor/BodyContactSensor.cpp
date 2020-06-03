@@ -32,8 +32,8 @@ namespace {
 }
 
 BodyContactSensor::BodyContactSensor(const std::string& name, rw::kinematics::Frame* frame):
-        SimulatedTactileSensor( rw::common::ownedPtr( new SensorModel(name,frame,"Direct mapped tactile body contact sensor."))),
-        _sdata(1, rw::common::ownedPtr( new ClassState()).cast<rw::kinematics::StateCache>())
+        SimulatedTactileSensor( rw::core::ownedPtr( new SensorModel(name,frame,"Direct mapped tactile body contact sensor."))),
+        _sdata(1, rw::core::ownedPtr( new ClassState()).cast<rw::kinematics::StateCache>())
 {
 	add(_sdata);
 }

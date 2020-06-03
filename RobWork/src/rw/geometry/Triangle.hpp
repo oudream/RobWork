@@ -40,7 +40,7 @@ namespace geometry {
 	    //! @brief value type of vertices
 	    typedef T value_type;
 
-	    //@brief default constructor
+	    //! @brief default constructor
 	    Triangle(){};
 
 	    /**

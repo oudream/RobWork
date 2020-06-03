@@ -17,12 +17,13 @@
 
 #include <gtest/gtest.h>
 
+#include <rw/core/Ptr.hpp>
 #include <rw/graphics/WorkCellScene.hpp>
 #include <rw/graphics/SceneGraph.hpp>
 #include <rw/models/WorkCell.hpp>
 #include <rw/kinematics/MovableFrame.hpp>
 
-using rw::common::ownedPtr;
+using rw::core::ownedPtr;
 using namespace rw::graphics;
 using namespace rw::math;
 using namespace rw::models;
@@ -80,7 +81,7 @@ public:
 	double getAlpha() { return 1; }
 	void addLines(const std::vector<rw::geometry::Line >& lines) {}
 	void addLine(const Vector3D<>& v1, const Vector3D<>& v2) {}
-	void addGeometry(rw::common::Ptr<class rw::geometry::Geometry> geom) {}
+	void addGeometry(rw::core::Ptr<class rw::geometry::Geometry> geom) {}
 	void addFrameAxis(double size) {}
 };
 
@@ -97,15 +98,15 @@ public:
 	DrawableGeometryNode::Ptr makeDrawableFrameAxis(const std::string& name, double size, int dmask=DrawableNode::Physical) {
 		return ownedPtr(new DummyDrawableGeometry("FrameAxis"));
 	}
-	DrawableGeometryNode::Ptr makeDrawable(const std::string& name, rw::common::Ptr<class rw::geometry::Geometry> geom, int dmask=DrawableNode::Physical) {
+	DrawableGeometryNode::Ptr makeDrawable(const std::string& name, rw::core::Ptr<class rw::geometry::Geometry> geom, int dmask=DrawableNode::Physical) {
 		return ownedPtr(new DummyDrawableGeometry(name));
 	}
 	DrawableGeometryNode::Ptr makeDrawable(const std::string& name, const std::vector<class rw::geometry::Line >& lines, int dmask=DrawableNode::Physical) { return NULL; }
 	DrawableNode::Ptr makeDrawable(const std::string& name, const class rw::sensor::Image& img, int dmask=DrawableNode::Virtual) { return NULL; }
 	DrawableNode::Ptr makeDrawable(const std::string& name, const rw::geometry::PointCloud& scan, int dmask=DrawableNode::Virtual) { return NULL; }
-	DrawableNode::Ptr makeDrawable(const std::string& name, rw::common::Ptr<class Model3D> model, int dmask=DrawableNode::Physical) { return NULL; }
-	DrawableNode::Ptr makeDrawable(const std::string&, const std::string&, rw::common::Ptr<rw::kinematics::Frame>,int ) {return NULL; }
-	DrawableNode::Ptr makeDrawable(const std::string& name, rw::common::Ptr<class Render> render, int dmask=DrawableNode::Physical) {
+	DrawableNode::Ptr makeDrawable(const std::string& name, rw::core::Ptr<class Model3D> model, int dmask=DrawableNode::Physical) { return NULL; }
+	DrawableNode::Ptr makeDrawable(const std::string&, const std::string&, rw::core::Ptr<rw::kinematics::Frame>,int ) {return NULL; }
+	DrawableNode::Ptr makeDrawable(const std::string& name, rw::core::Ptr<class Render> render, int dmask=DrawableNode::Physical) {
 		return ownedPtr(new DummyDrawable(name));
 	}
 	DrawableNode::Ptr makeDrawable(const std::string& filename, int dmask=DrawableNode::Physical) { return NULL; }

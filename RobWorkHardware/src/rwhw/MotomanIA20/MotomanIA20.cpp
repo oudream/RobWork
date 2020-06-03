@@ -19,6 +19,8 @@
 
 #include	<stdio.h>
 #include "MotomanIA20.hpp"
+#include <rw/core/macros.hpp>
+#include <rw/common/TimerUtil.hpp>
 
 using namespace rwhw;
 

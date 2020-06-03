@@ -2,11 +2,11 @@
 
 %{
 #include <rwlibs/swig/ScriptTypes.hpp>
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 using namespace rwlibs::swig;
 using rw::math::Metric;
-using rw::math::Q;
+using rw::math::Quaternion;
 using rw::pathplanning::PathPlanner;
 using rw::trajectory::Path;
 %}
@@ -46,7 +46,7 @@ public:
     /**
      * @brief Construct a new random walk with start node at \b start.
      */
-	rw::common::Ptr<ARWExpand> duplicate(const rw::math::Q& start) const;
+	rw::core::Ptr<ARWExpand> duplicate(const Q& start) const;
 
     /**
      * @brief Destructor
@@ -56,7 +56,7 @@ public:
     /**
      * @brief The current path of the random walk.
      */
-	const Path<rw::math::Q>& getPath() const;
+	const rw::trajectory::Path<Q>& getPath() const;
 
     /**
      * @brief Constructor
@@ -80,10 +80,10 @@ public:
      * @param historySize [in] Number of previous elements of the path to
      * use for variance computation.
      */
-	static rw::common::Ptr<ARWExpand> make(
-        const std::pair<rw::math::Q, rw::math::Q>& bounds,
+	static rw::core::Ptr<ARWExpand> make(
+        const std::pair<Q, Q>& bounds,
         const PlannerConstraint& constraint,
-        const rw::math::Q& minVariances = rw::math::Q(),
+        const Q& minVariances = Q(),
         int historySize = -1);
 
 protected:
@@ -103,17 +103,17 @@ protected:
     /**
      * @brief Subclass implementation of the duplicate() method.
      */
-	virtual rw::common::Ptr<ARWExpand> doDuplicate(const rw::math::Q& start) const = 0;
+	virtual rw::core::Ptr<ARWExpand> doDuplicate(const Q& start) const = 0;
 
 protected:
     /**
      * @brief The path of random walk.
      */
-	Path<rw::math::Q> _path;
+	rw::trajectory::Path<Q> _path;
 };
 
 //! @brief Smart pointer type for a ARWPlanner.
-%template (ARWExpandPtr) rw::common::Ptr<ARWExpand>;
+%template (ARWExpandPtr) rw::core::Ptr<ARWExpand>;
 
 %nodefaultctor ARWPlanner;
 /**
@@ -145,10 +145,10 @@ public:
      *
      * @param nearDistance [in] Threshold for distance to goal node.
      */
-	static rw::common::Ptr<QToQPlanner> makeQToQPlanner(
+	static rw::core::Ptr<QToQPlanner> makeQToQPlanner(
         const PlannerConstraint& constraint,
-		rw::common::Ptr<ARWExpand> expand,
-		rw::common::Ptr<Metric<rw::math::Q> > metric,
+		rw::core::Ptr<ARWExpand> expand,
+		rw::core::Ptr< rw::math::Metric<Q> > metric,
         double nearDistance);
 
     /**
@@ -175,16 +175,16 @@ public:
      * to include in computation of the next expand step. If \b historySize
      * is negative, a default value for the parameter is chosen.
      */
-	static rw::common::Ptr<QToQPlanner> makeQToQPlanner(
+	static rw::core::Ptr<QToQPlanner> makeQToQPlanner(
         const PlannerConstraint& constraint,
-		rw::common::Ptr<Device> device,
-		rw::common::Ptr<Metric<rw::math::Q> > metric = NULL,
+		rw::core::Ptr<Device> device,
+		rw::core::Ptr< rw::math::Metric<Q> > metric = NULL,
         double nearDistance = -1,
         int historySize = -1);
 };
 
 //! @brief Smart pointer type for a ARWPlanner.
-%template (ARWPlannerPtr) rw::common::Ptr<ARWPlanner>;
+%template (ARWPlannerPtr) rw::core::Ptr<ARWPlanner>;
 OWNEDPTR(ARWPlanner);
 
 /**
@@ -266,8 +266,8 @@ public:
      * @param state [in] State of rest of the workcell
      */
     PRMPlanner(
-    	rw::common::Ptr<QConstraint> constraint,
-		rw::common::Ptr<QSampler> sampler,
+    	rw::core::Ptr<QConstraint> constraint,
+		rw::core::Ptr<QSampler> sampler,
         double resolution,
         const Device& device,
         const State& state);
@@ -382,7 +382,7 @@ public:
 };
 
 //! @brief Smart pointer type for a PRMPlanner.
-%template (PRMPlannerPtr) rw::common::Ptr<PRMPlanner>;
+%template (PRMPlannerPtr) rw::core::Ptr<PRMPlanner>;
 OWNEDPTR(PRMPlanner);
 
 %nodefaultctor RRTPlanner;
@@ -442,10 +442,10 @@ public:
      *
      * @param type [in] The particular variation the RRT planner algorithm.
      */
-	static rw::common::Ptr<QToQPlanner> makeQToQPlanner(
+	static rw::core::Ptr<QToQPlanner> makeQToQPlanner(
         const PlannerConstraint& constraint,
-		rw::common::Ptr<QSampler> sampler,
-		rw::common::Ptr<Metric<rw::math::Q> > metric,
+		rw::core::Ptr<QSampler> sampler,
+		rw::core::Ptr< rw::math::Metric<Q> > metric,
         double extend,
         PlannerType type = RRTBalancedBidirectional);
 
@@ -462,14 +462,14 @@ public:
      *
      * @param type [in] The particular variation the RRT planner algorithm.
      */
-	static rw::common::Ptr<QToQPlanner> makeQToQPlanner(
+	static rw::core::Ptr<QToQPlanner> makeQToQPlanner(
         const PlannerConstraint& constraint,
-		rw::common::Ptr<Device> device,
+		rw::core::Ptr<Device> device,
         PlannerType type = RRTBalancedBidirectional);
 };
 
 //! @brief Smart pointer type for a RRTPlanner.
-%template (RRTPlannerPtr) rw::common::Ptr<RRTPlanner>;
+%template (RRTPlannerPtr) rw::core::Ptr<RRTPlanner>;
 OWNEDPTR(RRTPlanner);
 
 /**
@@ -492,14 +492,14 @@ public:
      * Implementation dependant, the sampler may return the empty
      * configuration if no configurations can be sampled near \b q.
      */
-    rw::math::Q expand(const rw::math::Q& q);
+    Q expand(const Q& q);
 
     /**
      * @brief A configuration space in the shape of a box.
      *
      * The box is given by a lower and upper corner.
      */
-    typedef std::pair<rw::math::Q, rw::math::Q> QBox;
+    typedef std::pair<Q, Q> QBox;
 
     /**
      * @brief Expansion within the overlap of an inner and outer box.
@@ -520,7 +520,7 @@ public:
      * If the overlap between the boxes is empty, expand() returns the empty
      * configuration.
      */
-    static rw::common::Ptr<SBLExpand> makeUniformBox(
+    static rw::core::Ptr<SBLExpand> makeUniformBox(
         const QBox& outer,
         const QBox& inner);
 
@@ -547,7 +547,7 @@ public:
      * If \b outer is non-empty, the expand() method will always return a
      * non-empty configuration.
      */
-    static rw::common::Ptr<SBLExpand> makeUniformBox(
+    static rw::core::Ptr<SBLExpand> makeUniformBox(
         const QBox& outer,
         double ratio);
 
@@ -562,8 +562,8 @@ public:
      * The inner and outer box are specified as explained for
      * makeUniformBox().
      */
-    static rw::common::Ptr<SBLExpand> makeShrinkingUniformBox(
-    	rw::common::Ptr<QConstraint> constraint,
+    static rw::core::Ptr<SBLExpand> makeShrinkingUniformBox(
+    	rw::core::Ptr<QConstraint> constraint,
         const QBox& outer,
         const QBox& inner);
 
@@ -578,8 +578,8 @@ public:
      * The inner and outer box are specified as explained for
      * makeUniformBox().
      */
-    static rw::common::Ptr<SBLExpand> makeShrinkingUniformBox(
-    	rw::common::Ptr<QConstraint> constraint,
+    static rw::core::Ptr<SBLExpand> makeShrinkingUniformBox(
+    	rw::core::Ptr<QConstraint> constraint,
         const QBox& outer,
         double ratio);
 
@@ -603,11 +603,11 @@ public:
      *
      * The inner box shrinks in size as 1, 1/2, 1/3, ...
      */
-    static rw::common::Ptr<SBLExpand> makeShrinkingUniformJacobianBox(
-    	rw::common::Ptr<QConstraint> constraint,
-		rw::common::Ptr<Device> device,
+    static rw::core::Ptr<SBLExpand> makeShrinkingUniformJacobianBox(
+    	rw::core::Ptr<QConstraint> constraint,
+		rw::core::Ptr<Device> device,
         const State& state,
-        rw::common::Ptr<JacobianCalculator> jacobian,
+        rw::core::Ptr<JacobianCalculator> jacobian,
         double angle_max = -1,
         double disp_max = -1);
 
@@ -625,7 +625,7 @@ protected:
     /**
      * @brief Subclass implementation of the expand() method.
      */
-    virtual rw::math::Q doExpand(const rw::math::Q& q) = 0;
+    virtual Q doExpand(const Q& q) = 0;
 
 private:
     SBLExpand(const SBLExpand&);
@@ -633,7 +633,7 @@ private:
 };
 
 //! @brief Smart pointer type for a SBLExpand.
-%template (SBLExpandPtr) rw::common::Ptr<SBLExpand>;
+%template (SBLExpandPtr) rw::core::Ptr<SBLExpand>;
 OWNEDPTR(SBLExpand);
 
 /**
@@ -675,10 +675,10 @@ public:
      */
     static
     SBLSetup make(
-		rw::common::Ptr<QConstraint> constraint,
-		rw::common::Ptr<QEdgeConstraintIncremental> edgeConstraint,
-        rw::common::Ptr<SBLExpand> expansion,
-		rw::common::Ptr<Metric<rw::math::Q> > metric,
+		rw::core::Ptr<QConstraint> constraint,
+		rw::core::Ptr<QEdgeConstraintIncremental> edgeConstraint,
+        rw::core::Ptr<SBLExpand> expansion,
+		rw::core::Ptr< rw::math::Metric<Q> > metric,
         double connectRadius);
 
     /**
@@ -711,9 +711,9 @@ public:
      */
     static
     SBLSetup make(
-		rw::common::Ptr<QConstraint> constraint,
-		rw::common::Ptr<QEdgeConstraintIncremental> edgeConstraint,
-		rw::common::Ptr<Device> device,
+		rw::core::Ptr<QConstraint> constraint,
+		rw::core::Ptr<QEdgeConstraintIncremental> edgeConstraint,
+		rw::core::Ptr<Device> device,
         double expandRadius = -1,
         double connectRadius = -1);
 
@@ -735,8 +735,8 @@ public:
 	 * @param qconstraint [in] a constraint giving the valid (collision free) configurations.
 	 * @param edgeconstraint [in] a constraint for checking the edges in-between valid configurations.
 	 */
-	SBLPlannerConstraint(rw::common::Ptr<QConstraint> qconstraint, 
-		rw::common::Ptr<QEdgeConstraintIncremental> edgeconstraint):
+	SBLPlannerConstraint(rw::core::Ptr<QConstraint> qconstraint, 
+		rw::core::Ptr<QEdgeConstraintIncremental> edgeconstraint):
 	_qconstraint(qconstraint),
 	_edgeConstraint(edgeconstraint);
 
@@ -778,18 +778,18 @@ public:
 	 * @param connectRadius [in] connect trees if the distance to the nearest neighbor is below this threshold.
 	 */
     SBLOptions(
-		rw::common::Ptr<QConstraint>& constraint,
-		rw::common::Ptr<QEdgeConstraintIncremental>& edgeConstraint,
-		rw::common::Ptr<SBLExpand> expansion,
-		rw::common::Ptr<Metric<rw::math::Q> > metric,
+		rw::core::Ptr<QConstraint>& constraint,
+		rw::core::Ptr<QEdgeConstraintIncremental>& edgeConstraint,
+		rw::core::Ptr<SBLExpand> expansion,
+		rw::core::Ptr< rw::math::Metric<Q> > metric,
         double connectRadius);
 
     //! @brief The constraint that determined if a path or configuration is valid (collision free) or not.
     SBLPlannerConstraint constraint;
     //! @brief The expand policy used to sample new configurations in the vicinity.
-    rw::common::Ptr<SBLExpand> expansion;
+    rw::core::Ptr<SBLExpand> expansion;
     //! @brief the distance metric for nearest neighbor searching.
-	rw::common::Ptr<Metric<rw::math::Q> > metric;
+	rw::core::Ptr< rw::math::Metric<Q> > metric;
 	//! @brief Attempt connection of the trees if the distance to the nearest neighbor is below this threshold.
     double connectRadius;
 
@@ -841,14 +841,14 @@ public:
      *
      * @param setup [in] Setup for the planner.
      */
-	static rw::common::Ptr<QToQSamplerPlanner> makeQToQSamplerPlanner(const SBLSetup& setup);
+	static rw::core::Ptr<QToQSamplerPlanner> makeQToQSamplerPlanner(const SBLSetup& setup);
 
     /**
      * @brief An SBL based point-to-point planner.
      *
      * @param setup [in] Setup for the planner.
      */
-	static rw::common::Ptr<QToQPlanner> makeQToQPlanner(const SBLSetup& setup);
+	static rw::core::Ptr<QToQPlanner> makeQToQPlanner(const SBLSetup& setup);
 
     /**
      * @brief An SBL based point-to-tool-position planner.
@@ -856,13 +856,13 @@ public:
      * @param setup [in] Setup for the planner.
      * @param ikSampler [in] Sampler of IK solutions for the target transform.
      */
-	static rw::common::Ptr<QToTPlanner> makeQToTPlanner(
+	static rw::core::Ptr<QToTPlanner> makeQToTPlanner(
         const SBLSetup& setup,
-		rw::common::Ptr<QIKSampler> ikSampler);
+		rw::core::Ptr<QIKSampler> ikSampler);
 };
 
 //! @brief Smart pointer type for a SBLPlanner.
-%template (SBLPlannerPtr) rw::common::Ptr<SBLPlanner>;
+%template (SBLPlannerPtr) rw::core::Ptr<SBLPlanner>;
 OWNEDPTR(SBLPlanner);
 
 %nodefaultctor Z3Planner;
@@ -889,9 +889,9 @@ public:
      * repeatCnt is negative (the default), the attempts are repeated until
      * the stop criteria returns true.
      */
-	static rw::common::Ptr<QToQPlanner> makeQToQPlanner(
-		rw::common::Ptr<QSampler> sampler,
-		rw::common::Ptr<QToQPlanner> localPlanner,
+	static rw::core::Ptr<QToQPlanner> makeQToQPlanner(
+		rw::core::Ptr<QSampler> sampler,
+		rw::core::Ptr<QToQPlanner> localPlanner,
         int nodeCnt = -1,
         int repeatCnt = -1);
 
@@ -906,9 +906,9 @@ public:
      *
      * @param device [in] Device for which the path is planned.
      */
-	static rw::common::Ptr<QToQPlanner> makeQToQPlanner(
+	static rw::core::Ptr<QToQPlanner> makeQToQPlanner(
         const PlannerConstraint& constraint,
-		rw::common::Ptr<Device> device);
+		rw::core::Ptr<Device> device);
 
     /**
      * @brief Sliding local planner.
@@ -937,11 +937,11 @@ public:
      * slideImprovement is negative, a default value for \b slideImprovement
      * is chosen based on the value of \b extend.
      */
-	static rw::common::Ptr<QToQPlanner> makeSlidingQToQPlanner(
+	static rw::core::Ptr<QToQPlanner> makeSlidingQToQPlanner(
         const PlannerConstraint& constraint,
-		rw::common::Ptr<QSampler> directionSampler,
-		rw::common::Ptr<QConstraint> boundsConstraint,
-		rw::common::Ptr<Metric<rw::math::Q> > metric,
+		rw::core::Ptr<QSampler> directionSampler,
+		rw::core::Ptr<QConstraint> boundsConstraint,
+		rw::core::Ptr< rw::math::Metric<Q> > metric,
         double extend,
         double slideImprovement = -1);
 
@@ -968,33 +968,33 @@ public:
      * slideImprovement is negative, a default value for \b slideImprovement
      * is chosen based on the value of \b extend.
      */
-    static rw::common::Ptr<QToQPlanner> makeSlidingQToQPlanner(
+    static rw::core::Ptr<QToQPlanner> makeSlidingQToQPlanner(
         const PlannerConstraint& constraint,
-		rw::common::Ptr<Device> device,
-		rw::common::Ptr<Metric<rw::math::Q> > metric = 0,
+		rw::core::Ptr<Device> device,
+		rw::core::Ptr< rw::math::Metric<Q> > metric = 0,
         double extend = -1,
         double slideImprovement = -1);
 };
 
 //! @brief Smart pointer type for a Z3Planner.
-%template (Z3PlannerPtr) rw::common::Ptr<Z3Planner>;
+%template (Z3PlannerPtr) rw::core::Ptr<Z3Planner>;
 OWNEDPTR(Z3Planner);
 
 %inline %{
 
-	rw::common::Ptr<QToTPlanner> makeToNearestRRT(rw::common::Ptr<CollisionDetector> cdect, rw::common::Ptr<Device> dev)
+	rw::core::Ptr<QToTPlanner> makeToNearestRRT(rw::core::Ptr<CollisionDetector> cdect, rw::core::Ptr<Device> dev)
     { 
 		rw::kinematics::State state = dev->getStateStructure()->getDefaultState();
       
         const rw::pathplanning::PlannerConstraint constraint = rw::pathplanning::PlannerConstraint::make(
             cdect.get(), dev, state);
       
-        rw::common::Ptr<QToQPlanner> planner = rwlibs::pathplanners::RRTPlanner::makeQToQPlanner(constraint, dev);
+        rw::core::Ptr<QToQPlanner> planner = rwlibs::pathplanners::RRTPlanner::makeQToQPlanner(constraint, dev);
 
 		// creaty ikmeta solver for the planer
-        rw::invkin::JacobianIKSolver::Ptr iksolver = rw::common::ownedPtr( new rw::invkin::JacobianIKSolver(dev,state) );
-       	rw::invkin::IKMetaSolver::Ptr metasolver = rw::common::ownedPtr( new rw::invkin::IKMetaSolver(iksolver, dev, cdect) );
-		rw::common::Ptr<rw::pathplanning::QIKSampler> sampler = rw::pathplanning::QIKSampler::make(dev,state,metasolver);
+        rw::invkin::JacobianIKSolver::Ptr iksolver = rw::core::ownedPtr( new rw::invkin::JacobianIKSolver(dev,state) );
+       	rw::invkin::IKMetaSolver::Ptr metasolver = rw::core::ownedPtr( new rw::invkin::IKMetaSolver(iksolver, dev, cdect) );
+		rw::core::Ptr<rw::pathplanning::QIKSampler> sampler = rw::pathplanning::QIKSampler::make(dev,state,metasolver);
         
 		rw::math::QMetric::Ptr metric = rw::pathplanning::PlannerUtil::timeMetric(*dev);
 

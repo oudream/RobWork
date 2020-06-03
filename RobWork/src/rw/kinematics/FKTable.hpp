@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RW_KINEMATICS_FKTABLE_HPP
 #define RW_KINEMATICS_FKTABLE_HPP
 
@@ -23,15 +22,15 @@
  * @file FKTable.hpp
  */
 
+#include "FrameMap.hpp"
 #include "State.hpp"
 
 #include <rw/math/Transform3D.hpp>
-#include "FrameMap.hpp"
 
 /*
-#include <boost/multi_index_container.hpp>
 #include <boost/multi_index/hashed_index.hpp>
 #include <boost/multi_index/member.hpp>
+#include <boost/multi_index_container.hpp>
 */
 
 namespace rw { namespace kinematics {
@@ -49,21 +48,21 @@ namespace rw { namespace kinematics {
      */
     class FKTable
     {
-    public:
+      public:
         /**
          * @brief Forward kinematics for the work cell state \b state.
          *
          * @param state [in] The work state for which world transforms are to be
          * calculated.
          */
-        FKTable(const State& state);
+        FKTable (const State& state);
 
         /**
          * @brief Forward kinematics for the work cell state \b state.
          * @param state [in] The work state for which world transforms are to be
          * calculated.
-        */
-        FKTable(const State* state);
+         */
+        FKTable (const State* state);
 
         /**
          * @brief The world transform for the frame \b frame.
@@ -72,10 +71,10 @@ namespace rw { namespace kinematics {
          *
          * @return The transform of the frame relative to the world.
          */
-        const math::Transform3D<>& get(const Frame& frame) const;
+        const math::Transform3D<>& get (const Frame& frame) const;
 
         //! @copydoc get(const Frame&) const
-        inline const math::Transform3D<>& get(const Frame* frame) const{ return get(*frame); }
+        inline const math::Transform3D<>& get (const Frame* frame) const { return get (*frame); }
 
         /**
          * @brief Returns State associated with the FKTable
@@ -84,15 +83,15 @@ namespace rw { namespace kinematics {
          *
          * @return State used to calculate the forward kinematics
          */
-        const State& getState() const { return *_sp; }
+        const State& getState () const { return *_sp; }
 
         /**
          * @brief resets the FKTable to \b state
          * @param state
          */
-        void reset(const State& state);
+        void reset (const State& state);
 
-    private:
+      private:
         const State* _sp;
         State _state;
 
@@ -119,7 +118,7 @@ namespace rw { namespace kinematics {
         TransformMap;
         */
 
-        typedef FrameMap<math::Transform3D<> > TransformMap;
+        typedef FrameMap< math::Transform3D<> > TransformMap;
 
         // typedef std::map<const Frame*, math::Transform3D<> > TransformMap;
         // typedef TransformMap::value_type Entry;
@@ -130,12 +129,12 @@ namespace rw { namespace kinematics {
         TransformMap::iterator _end;
         */
 
-    private:
-        FKTable(const FKTable&);
-        //FKTable& operator=(const FKTable&);
+      private:
+        FKTable (const FKTable&);
+        // FKTable& operator=(const FKTable&);
     };
 
     /*@}*/
-}} // end namespaces
+}}    // namespace rw::kinematics
 
-#endif // end include guard
+#endif    // end include guard

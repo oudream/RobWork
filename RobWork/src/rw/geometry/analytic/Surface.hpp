@@ -24,7 +24,7 @@
  * \copydoc rw::geometry::Surface
  */
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/math/Vector3D.hpp>
 #include <rw/math/Transform3D.hpp>
 
@@ -47,9 +47,9 @@ class TriMesh;
 class Surface {
 public:
 	//! @brief Smart pointer type for Surface.
-	typedef rw::common::Ptr<Surface> Ptr;
+	typedef rw::core::Ptr<Surface> Ptr;
 	//! @brief Smart pointer type for const Surface.
-	typedef rw::common::Ptr<const Surface> CPtr;
+	typedef rw::core::Ptr<const Surface> CPtr;
 
 	//! @brief Constructor.
 	Surface() {}
@@ -117,7 +117,7 @@ public:
 	 * @param border [in] (optional) an ordered list of points on the surface, that forms the border of the patch to triangulate.
 	 * @return a new TriMesh.
 	 */
-	virtual rw::common::Ptr<TriMesh> getTriMesh(const std::vector<rw::math::Vector3D<> >& border = std::vector<rw::math::Vector3D<> >()) const = 0;
+	virtual rw::core::Ptr<TriMesh> getTriMesh(const std::vector<rw::math::Vector3D<> >& border = std::vector<rw::math::Vector3D<> >()) const = 0;
 
 	/**
 	 * @brief Set the resolution used for discretization in the getTriMesh function.

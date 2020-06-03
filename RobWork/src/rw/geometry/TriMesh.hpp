@@ -18,7 +18,7 @@
 #ifndef RW_GEOMETRY_TRIMESH_HPP_
 #define RW_GEOMETRY_TRIMESH_HPP_
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include "GeometryData.hpp"
 #include "Triangle.hpp"
@@ -38,7 +38,7 @@ namespace geometry {
 
 	public:
         //! @brief smart pointer type to this class
-        typedef rw::common::Ptr<TriMesh> Ptr;
+        typedef rw::core::Ptr<TriMesh> Ptr;
 
 		/**
 		 * @brief destructor
@@ -47,14 +47,23 @@ namespace geometry {
 
 		/**
 		 * @brief gets the triangle at index idx.
+		 * @param idx [in] the index of the triangle.
+		 * @return the triangle at index idx
 		 */
 		virtual Triangle<double> getTriangle(size_t idx) const = 0;
 
-
+		/**
+		 * @brief gets the triangle at index idx.
+		 * @param idx [in] the index of the triangle.
+		 * @param dst [out] where to store the triangle at index idx
+		 */
 		virtual void getTriangle(size_t idx, Triangle<double>& dst) const = 0;
-        /**
-         * @brief gets the triangle at index idx, but with floating precision
-         */
+
+		/**
+		 * @brief gets the triangle at index idx. Using Floating point presicion 
+		 * @param idx [in] the index of the triangle.
+		 * @param dst [out] where to store the triangle at index idx
+		 */
 		virtual void getTriangle(size_t idx, Triangle<float>& dst) const = 0;
 
 
@@ -72,7 +81,7 @@ namespace geometry {
 		 * @brief make a clone of this triangle mesh
 		 * @return clone of this trimesh
 		 */
-		virtual rw::common::Ptr<TriMesh> clone() const = 0;
+		virtual rw::core::Ptr<TriMesh> clone() const = 0;
 
 		/**
 		 * @brief Scale all vertices in the mesh.
@@ -80,10 +89,10 @@ namespace geometry {
 		virtual void scale(double scale) = 0;
 
 		//! @copydoc GeometryData::getTriMesh
-		rw::common::Ptr<TriMesh> getTriMesh(bool forceCopy=true);
+		rw::core::Ptr<TriMesh> getTriMesh(bool forceCopy=true);
 
 		//! @copydoc getTriMesh
-		rw::common::Ptr<const TriMesh> getTriMesh(bool forceCopy=true) const;
+		rw::core::Ptr<const TriMesh> getTriMesh(bool forceCopy=true) const;
 
         //! @copydoc GeometryData::isConvex
         virtual bool isConvex() { return _isConvex; }

@@ -1,6 +1,7 @@
+unset(SLIB_COMPILE_BUFFER CACHE) # this is used in macro RW_ADD_SWIG
 
+add_subdirectory(java)
 add_subdirectory(lua)
 add_subdirectory(python)
-add_subdirectory(java)
 
-RW_ADD_INCLUDES(swig "rwlibs/swig" ScriptTypes.hpp)
+rw_add_includes(swig "rwlibs/swig" ScriptTypes.hpp)

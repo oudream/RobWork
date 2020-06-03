@@ -17,7 +17,7 @@
 
 #include "TreeView.hpp"
 
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 #include <rw/graphics/DrawableNode.hpp>
 #include <rw/kinematics/Kinematics.hpp>
 #include <rw/loaders/GeometryFactory.hpp>
@@ -49,7 +49,7 @@ using namespace rws;
 using namespace rw::math;
 using namespace rw::kinematics;
 using namespace rw::models;
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::geometry;
 using namespace rw::loaders;
 
@@ -210,10 +210,10 @@ TreeView::~TreeView()
 
 void TreeView::initialize() {
     getRobWorkStudio()->stateChangedEvent().add(
-            boost::bind(&TreeView::stateChangedListener, this, _1), this);
+            boost::bind(&TreeView::stateChangedListener, this, boost::arg<1>()), this);
 
     getRobWorkStudio()->frameSelectedEvent().add(
-            boost::bind(&TreeView::frameSelectedListener, this, _1), this);
+            boost::bind(&TreeView::frameSelectedListener, this, boost::arg<1>()), this);
 }
 
 void TreeView::frameSelectedListener(rw::kinematics::Frame* frame) {
@@ -867,7 +867,7 @@ void TreeView::open(WorkCell* workcell)
     }
 
     // connect the workcell changed handler
-    _workcell->workCellChangedEvent().add(boost::bind(&TreeView::workcellChangedListener, this, _1), this);
+    _workcell->workCellChangedEvent().add(boost::bind(&TreeView::workcellChangedListener, this, boost::arg<1>()), this);
 }
 
 void TreeView::workcellChangedListener(int){

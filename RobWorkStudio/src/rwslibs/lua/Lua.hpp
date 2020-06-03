@@ -22,6 +22,7 @@
 
 #include <rw/kinematics/State.hpp>
 #include <rw/trajectory/Path.hpp>
+#include <rw/core/Ptr.hpp>
 
 struct lua_State;
 
@@ -36,7 +37,7 @@ namespace rws {
     class Lua : public RobWorkStudioPlugin
     {
         Q_OBJECT
-    #ifndef RW_STATIC_LINK_PLUGINS
+    #ifndef RWS_USE_STATIC_LINK_PLUGINS
         Q_INTERFACES(rws::RobWorkStudioPlugin)
 		Q_PLUGIN_METADATA(IID "dk.sdu.mip.Robwork.RobWorkStudioPlugin/0.1" FILE "plugin.json")
     #endif
@@ -73,7 +74,7 @@ namespace rws {
         void resetLua();
 
     private:
-        rw::common::Ptr<rwlibs::swig::LuaState> _lua;
+        rw::core::Ptr<rwlibs::swig::LuaState> _lua;
         rw::kinematics::State _state;
         std::string _previousOpenDirectory;
 

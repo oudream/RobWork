@@ -2,7 +2,7 @@
 #include "RWSImageLoaderPlugin.hpp"
 #include "ImageUtil.hpp"
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/loaders/ImageLoader.hpp>
 
 #include <QImage>
@@ -11,7 +11,7 @@
 
 using namespace rws;
 using namespace rw::sensor;
-using namespace rw::common;
+using namespace rw::core;
 
 RW_ADD_PLUGIN(RWSImageLoaderPlugin)
 
@@ -72,9 +72,9 @@ std::vector<Extension::Descriptor> RWSImageLoaderPlugin::getExtensionDescriptors
     return exts;
 }
 
-rw::common::Ptr<Extension> RWSImageLoaderPlugin::makeExtension(const std::string& str){
+rw::core::Ptr<Extension> RWSImageLoaderPlugin::makeExtension(const std::string& str){
 	if(str=="QImageLoader"){
-		Extension::Ptr extension = rw::common::ownedPtr( new Extension("QImageLoader","rw.loaders.ImageLoader",
+		Extension::Ptr extension = rw::core::ownedPtr( new Extension("QImageLoader","rw.loaders.ImageLoader",
 				this, ownedPtr(new QImageLoader()) ) );
 	    QList<QByteArray> formats = QImageReader::supportedImageFormats();
 	    for(QByteArray& format: formats){

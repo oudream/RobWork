@@ -18,7 +18,7 @@
 #include "Triangulate.hpp"
 
 #include <rw/math/Math.hpp>
-
+#include <rw/core/Log.hpp>
 
 
 using namespace rw::math;
@@ -173,7 +173,7 @@ bool Triangulate::processPoints (const std::vector< rw::math::Vector2D<> >& cont
     int n = (int) contour.size ();
 
     if (n < 3) {
-        rw::common::Log::debugLog ()
+        rw::core::Log::debugLog ()
             << "Triangulate::processPoints has recieved polygon with less than 3 vertices"
             << std::endl;
         return false;
@@ -204,7 +204,7 @@ bool Triangulate::processPoints (const std::vector< rw::math::Vector2D<> >& cont
         if (0 >= (count--)) {
             //** Triangulate: ERROR - probable bad polygon!
             delete[] V;
-            rw::common::Log::debugLog ()
+            rw::core::Log::debugLog ()
                 << "Triangulate::processPoints appear to have received a non-simple polygon"
                 << std::endl;
             return false;

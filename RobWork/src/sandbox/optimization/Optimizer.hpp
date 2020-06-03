@@ -8,7 +8,7 @@
 #ifndef SRC_RWLIBS_OPTIMIZATION_OPTIMIZER_HPP_
 #define SRC_RWLIBS_OPTIMIZATION_OPTIMIZER_HPP_
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/math/Function.hpp>
 //#include <rwlibs/algorithms/IteratedAlgorithm.hpp>
 #include "StopCondition.hpp"
@@ -31,7 +31,7 @@ class StopCondition;
 class Optimizer {
 public:
 	//! Smart pointer.
-	typedef rw::common::Ptr<Optimizer> Ptr;
+	typedef rw::core::Ptr<Optimizer> Ptr;
 
 	//! Optimizer state data structure for logging.
 	struct State {

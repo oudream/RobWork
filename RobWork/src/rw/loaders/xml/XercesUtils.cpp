@@ -27,6 +27,7 @@
 #include <xercesc/framework/XMLFormatter.hpp>
 
 #include <xercesc/util/XMLUni.hpp>
+#include <rw/core/Exception.hpp>
 
 
 
@@ -55,8 +56,8 @@ xercesc::DOMDocument* XercesDocumentReader::readDocument(XercesDOMParser& parser
 
     parser.parse(filename.c_str());
     if (parser.getErrorCount() != 0) {
-	std::cerr<<std::endl<<std::endl<<"Error(s) parsing file '"<<filename<<"': "<<std::endl<<errorHandler.getMessages()<<std::endl;
-        RW_THROW(""<<parser.getErrorCount()<<" Error(s) parsing "<<filename<<": "<<XMLStr(errorHandler.getMessages()).str());
+	    std::cerr<<std::endl<<std::endl<<"Error(s) parsing file '"<<filename<<"': "<<std::endl<<errorHandler.getMessages()<<std::endl;
+        RW_THROW(""<<parser.getErrorCount()<<" Error(s) parsing "<<filename<<": "<<errorHandler.getMessages());
     }
     return parser.getDocument();
 }
@@ -111,7 +112,7 @@ xercesc::DOMDocument* XercesDocumentWriter::createDocument(const XMLCh* rootName
         {
             RW_THROW("XMLPathWriter: DOMException code:  " << XMLStr(e.getMessage()).str());
         }
-        catch (const rw::common::Exception& exp) {
+        catch (const rw::core::Exception& exp) {
             throw exp;
         }
         catch (...)

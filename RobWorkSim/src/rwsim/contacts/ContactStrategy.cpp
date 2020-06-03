@@ -19,7 +19,7 @@
 #include "ContactStrategyData.hpp"
 #include "ContactStrategyTracking.hpp"
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::math;
 using namespace rw::proximity;
 using namespace rwsim::contacts;

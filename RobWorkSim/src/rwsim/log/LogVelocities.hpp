@@ -42,7 +42,7 @@ class LogPositions;
 class LogVelocities: public SimulatorLogEntry {
 public:
     //! Smart pointer type of LogVelocities
-    typedef rw::common::Ptr<LogVelocities> Ptr;
+    typedef rw::core::Ptr<LogVelocities> Ptr;
 
     //! @copydoc SimulatorLogEntry::SimulatorLogEntry
     LogVelocities(SimulatorLogScope* parent);
@@ -78,7 +78,7 @@ public:
 	 *
 	 * @return the log entry with positions of bodies (or NULL if not linked).
 	 */
-	rw::common::Ptr<LogPositions> getPositions() const;
+	rw::core::Ptr<LogPositions> getPositions() const;
 
 	/**
 	 * @brief Get the velocity map.
@@ -126,7 +126,7 @@ public:
 	static std::string getTypeID();
 
 private:
-	rw::common::Ptr<LogPositions> _positions;
+	rw::core::Ptr<LogPositions> _positions;
 	std::map<std::string,rw::math::VelocityScrew6D<> > _velocities;
 };
 //! @}

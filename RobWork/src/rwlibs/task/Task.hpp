@@ -22,7 +22,7 @@
 #include "Entity.hpp"
 #include "Action.hpp"
 #include "Motion.hpp"
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include <map>
 #include <string>
@@ -31,8 +31,6 @@ namespace rwlibs {
 namespace task {
 
 class TaskBase;
-
-typedef rw::common::Ptr<TaskBase> TaskBasePtr;
 
 /** @addtogroup task */
 /*@{*/
@@ -44,11 +42,11 @@ class TaskBase: public Entity {
 
 public:
 	//! @brief smart pointer type to this class
-    typedef rw::common::Ptr<TaskBase> Ptr;
+    typedef rw::core::Ptr<TaskBase> Ptr;
 	/**
 	 * Convenience definition of pointer to Action
 	 */
-	typedef rw::common::Ptr<Action> ActionPtr;
+	typedef rw::core::Ptr<Action> ActionPtr;
 
 	/**
 	 * @brief Constructs a task with a given type
@@ -65,10 +63,6 @@ public:
 	virtual ~TaskBase() {
 	}
 
-	/*virtual rw::common::Ptr<TaskBase> clone() {
-	 RW_THROW("Cloning on TaskBase level not supported!");
-	 }
-	 */
 	/**
 	 * @brief Returns the type of the task
 	 */
@@ -81,7 +75,7 @@ public:
 	 * @param task [in] Task representing the augmentation
 	 * @param id [in] Id associated to augmentation
 	 */
-	void addAugmentation(TaskBasePtr task, const std::string& id) {
+	void addAugmentation(TaskBase::Ptr task, const std::string& id) {
 		_augmentations[id] = task;
 	}
 
@@ -97,12 +91,12 @@ public:
 	/**
 	 * @brief Returns augmentation associated to \b id.
 	 *
-	 * If no augmentation exists the method throws a rw::common::Exception
+	 * If no augmentation exists the method throws a rw::core::Exception
 	 * @param id [in] id of task
 	 * @return Pointer to the augmenting task
 	 */
-	TaskBasePtr getAugmentation(const std::string& id) {
-		std::map<std::string, TaskBasePtr>::iterator it = _augmentations.find(
+	TaskBase::Ptr getAugmentation(const std::string& id) {
+		std::map<std::string, TaskBase::Ptr>::iterator it = _augmentations.find(
 				id);
 		if (it == _augmentations.end())
 			RW_THROW("Unable to find augmentation named \""<<id);
@@ -114,7 +108,7 @@ public:
 	 * @brief Returns map with ids and augmentations
 	 * @return Reference to map with ids and augmentations
 	 */
-	std::map<std::string, TaskBasePtr>& getAugmentations() {
+	std::map<std::string, TaskBase::Ptr>& getAugmentations() {
 		return _augmentations;
 	}
 
@@ -122,7 +116,7 @@ public:
 	 * @brief Returns map with ids and augmentations
 	 * @return Reference to map with ids and augmentations
 	 */
-	const std::map<std::string, TaskBasePtr>& getAugmentations() const {
+	const std::map<std::string, TaskBase::Ptr>& getAugmentations() const {
 		return _augmentations;
 	}
 
@@ -135,14 +129,14 @@ public:
 	 *
 	 * @param entity [in] Entity to add
 	 */
-	void addEntity(rw::common::Ptr<Entity> entity) {
+	void addEntity(rw::core::Ptr<Entity> entity) {
 	    entity->setIndex((int)_entities.size());
 	    _entities.push_back(entity);
 	}
 
 
-    void addEntityToFront(rw::common::Ptr<Entity> entity) {
-        for(rw::common::Ptr<Entity> ent : _entities) {
+    void addEntityToFront(rw::core::Ptr<Entity> entity) {
+        for(rw::core::Ptr<Entity> ent : _entities) {
             ent->setIndex(ent->getIndex() + 1);
         }
         _entities.insert(_entities.begin(), entity);
@@ -155,7 +149,7 @@ public:
 	 * The order of the entities corresponds to the expected order of execution.
 	 * @return Reference to list of entities
 	 */
-	std::vector<rw::common::Ptr<Entity> >& getEntities() {
+	std::vector<rw::core::Ptr<Entity> >& getEntities() {
 		return _entities;
 	}
 
@@ -165,7 +159,7 @@ public:
 	 * The order of the entities corresponds to the expected order of execution.
 	 * @return Reference to list of entities
 	 */
-	const std::vector<rw::common::Ptr<Entity> >& getEntities() const {
+	const std::vector<rw::core::Ptr<Entity> >& getEntities() const {
 		return _entities;
 	}
 
@@ -236,11 +230,11 @@ public:
 protected:
 	Type _type;
 
-	std::map<std::string, TaskBasePtr> _augmentations;
+	std::map<std::string, TaskBase::Ptr> _augmentations;
 
 	std::vector<ActionPtr> _actions;
 
-	std::vector<rw::common::Ptr<Entity> > _entities;
+	std::vector<rw::core::Ptr<Entity> > _entities;
 
 	std::string _deviceName;
 
@@ -252,11 +246,11 @@ protected:
 				!= tmp.rend(); ++it)
 			actions.push_back(*it);
 
-		for (std::map<std::string, TaskBasePtr>::iterator it =
+		for (std::map<std::string, TaskBase::Ptr>::iterator it =
 				_augmentations.begin(); it != _augmentations.end(); ++it)
 			(*it).second->reverse();
 
-		typedef std::vector<rw::common::Ptr<Entity> > EntityVector;
+		typedef std::vector<rw::core::Ptr<Entity> > EntityVector;
 		EntityVector entities = _entities;
 		_entities.clear();
 		for (EntityVector::reverse_iterator it = entities.rbegin(); it
@@ -266,16 +260,16 @@ protected:
 	}
 
 
-	void copyBase(TaskBasePtr target) {
+	void copyBase(TaskBase::Ptr target) {
 		target->_type = _type;
 		target->_deviceName = _deviceName;
 
-		for (std::map<std::string, TaskBasePtr>::iterator it = _augmentations.begin(); it != _augmentations.end(); ++it) {
+		for (std::map<std::string, TaskBase::Ptr>::iterator it = _augmentations.begin(); it != _augmentations.end(); ++it) {
 			target->_augmentations[(*it).first] = NULL;//(*it).second->doClone();
 		}
 	}
 
-    virtual TaskBasePtr doClone() {
+    virtual TaskBase::Ptr doClone() {
         return NULL;
     }
 
@@ -301,19 +295,14 @@ protected:
 	template <class TASK, class TARGET, class MOTION>
 	class GenericTask: public TaskBase {
 	public:
-		//! @brief smart pointer type to this class
-		//typedef rw::common::Ptr<GenericTask<TASK, TARGET, MOTION> > Ptr;
-		//typedef typename TASK::INT TaskPtr;
 		/** Convenience definition of pointer to task */
-		typedef rw::common::Ptr<TASK> TaskPtr;
+		typedef rw::core::Ptr<TASK> TaskPtr;
 
 		/** Convenience definition of pointer to target */
-		typedef rw::common::Ptr<TARGET> TargetPtr;
+		typedef rw::core::Ptr<TARGET> TargetPtr;
 
 		/** Convenience definition of pointer to motion */
-		typedef rw::common::Ptr<MOTION> MotionPtr;
-
-        //typedef rw::common::Ptr<GenericTask> GenericTaskPtr;
+		typedef rw::core::Ptr<MOTION> MotionPtr;
 
 		/**
 		 * @brief Constrcts Task
@@ -324,7 +313,6 @@ protected:
 		GenericTask(Type type = -1, const std::string& id = ""):
 		TaskBase(type, id)
 		{
-
 		}
 
 		/**
@@ -500,24 +488,9 @@ protected:
 	class Task: public GenericTask<Task<T>, Target<T>, Motion<T> > {
 	public:
 		//! @brief smart pointer type to this class
-		typedef typename rw::common::Ptr<Task<T> > Ptr;
+		typedef typename rw::core::Ptr<Task<T> > Ptr;
 
 		typedef int INT;
-
-		/**
-		 * Convenience definition of pointer to Task with type T
-		 */
-		//typedef rw::common::Ptr<Task<T> > TaskPtr;
-
-		/**
-		 * Convenience definition of pointer to Target with type T
-		 */
-		//typedef rw::common::Ptr<Target<T> > TargetPtr;
-
-		/**
-		 * Convenience definition of pointer to Motion with type T
-		 */
-		//typedef rw::common::Ptr<Motion<T> > MotionPtr;
 
 		/**
 		 * @brief Constructs Task
@@ -541,12 +514,12 @@ protected:
 		 * @return Pointer to the target object constructed and added.
 		 */
 		typename Target<T>::Ptr addTargetByValue(const T& value) {
-			this->addTarget(rw::common::ownedPtr(new Target<T>(value)));
+			this->addTarget(rw::core::ownedPtr(new Target<T>(value)));
 			return this->_targets.back();
 		}
 
 		typename Target<T>::Ptr addTargetByValueToFront(const T& value) {
-            this->addTargetToFront(rw::common::ownedPtr(new Target<T>(value)));
+            this->addTargetToFront(rw::core::ownedPtr(new Target<T>(value)));
             return this->_targets.front();
         }
 
@@ -628,7 +601,7 @@ protected:
 	protected:
 
 		virtual TaskBase::Ptr doClone() {
-			typename Task<T>::Ptr result = rw::common::ownedPtr(new Task<T>(this->getId()));
+			typename Task<T>::Ptr result = rw::core::ownedPtr(new Task<T>(this->getId()));
 
 			std::vector<typename Target<T>::Ptr > newTargets;
 			for(typename Target<T>::Ptr target : this->getTargets()) {
@@ -660,14 +633,6 @@ protected:
 			}
 			return result;
 		}
-
-	private:
-		/* std::vector<rw::common::Ptr<Target<T> > > _targets;
-
-		 std::vector<rw::common::Ptr<Motion<T> > > _motions;
-
-		 std::vector<TaskPtr> _tasks;
-		 */
 	};
 
 	/**
@@ -679,6 +644,9 @@ protected:
 	 * Definition of task with type rw::math::Transform3D
 	 */
 	typedef Task<rw::math::Transform3D<> > CartesianTask;
+
+    extern template class Task<rw::math::Q>;
+    extern template class Task<rw::math::Transform3D<> >;
 
 	/** @} */
 

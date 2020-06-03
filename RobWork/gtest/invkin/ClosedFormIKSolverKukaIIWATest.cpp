@@ -17,12 +17,13 @@
 
 #include <gtest/gtest.h>
 
+#include <rw/core/Ptr.hpp>
 #include <rw/invkin/ClosedFormIKSolverKukaIIWA.hpp>
 #include <rw/kinematics/FixedFrame.hpp>
 #include <rw/models/SerialDevice.hpp>
 #include <rw/models/RevoluteJoint.hpp>
 
-using rw::common::ownedPtr;
+using rw::core::ownedPtr;
 using rw::invkin::ClosedFormIKSolverKukaIIWA;
 using namespace rw::kinematics;
 using namespace rw::math;

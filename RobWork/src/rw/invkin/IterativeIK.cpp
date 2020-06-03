@@ -19,11 +19,11 @@
 #include "IterativeIK.hpp"
 #include "JacobianIKSolver.hpp"
 
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 #include <rw/models/Device.hpp>
 
 using namespace rw::invkin;
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::models;
 using namespace rw::kinematics;
 using namespace boost;

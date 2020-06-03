@@ -25,6 +25,7 @@
  */
 
 #include "Mathematica.hpp"
+#include <rw/core/Ptr.hpp>
 
 namespace rwlibs {
 namespace mathematica {
@@ -35,7 +36,7 @@ namespace mathematica {
 class MessagePacket: public Mathematica::Packet {
 public:
 	//! @brief Smart pointer type.
-	typedef rw::common::Ptr<MessagePacket> Ptr;
+	typedef rw::core::Ptr<MessagePacket> Ptr;
 
 	/**
 	 * @brief Construct anew packet.
@@ -60,7 +61,7 @@ public:
 	const Mathematica::String& string();
 
 	//! @copydoc Mathematica::FunctionBase::getArguments
-	std::list<rw::common::Ptr<const Mathematica::Expression> > getArguments() const;
+	std::list<rw::core::Ptr<const Mathematica::Expression> > getArguments() const;
 
 	//! @copydoc Mathematica::Expression::clone
 	Mathematica::Expression::Ptr clone() const;

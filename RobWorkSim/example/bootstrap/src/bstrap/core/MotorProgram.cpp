@@ -9,7 +9,7 @@ MotorProgram::MotorProgram(const std::string& name, QWidget *parent) :
 {
 }
 
-void MotorProgram::execute(rw::common::Ptr<rw::common::PropertyMap> parameters, const BrainState& bstate){
+void MotorProgram::execute(rw::core::Ptr<rw::core::PropertyMap> parameters, const BrainState& bstate){
     setParameters(parameters, bstate);
     start();
 }

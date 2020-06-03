@@ -24,7 +24,7 @@
  * \copydoc rwsimlibs::gui::SimulatorLogModel
  */
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include <QAbstractItemModel>
 #include <QColor>
@@ -53,13 +53,13 @@ public:
 	 * @brief Set the log root.
 	 * @param root [in] the log root.
 	 */
-	void setRoot(rw::common::Ptr<const rwsim::log::SimulatorLog> root);
+	void setRoot(rw::core::Ptr<const rwsim::log::SimulatorLog> root);
 
 	/**
 	 * @brief Compare with a different log.
 	 * @param info [in] the other simulation log.
 	 */
-	void compare(rw::common::Ptr<const rwsim::log::SimulatorLog> info);
+	void compare(rw::core::Ptr<const rwsim::log::SimulatorLog> info);
 
 	/**
 	 * @brief Find a log entity from index.
@@ -83,11 +83,11 @@ public:
     ///@}
 
 private:
-	void compare(rw::common::Ptr<const rwsim::log::SimulatorLog> a, rw::common::Ptr<const rwsim::log::SimulatorLog> b);
-	void compareFailSubTree(rw::common::Ptr<const rwsim::log::SimulatorLog> a);
+	void compare(rw::core::Ptr<const rwsim::log::SimulatorLog> a, rw::core::Ptr<const rwsim::log::SimulatorLog> b);
+	void compareFailSubTree(rw::core::Ptr<const rwsim::log::SimulatorLog> a);
 
 private:
-    rw::common::Ptr<const rwsim::log::SimulatorLog> _root;
+    rw::core::Ptr<const rwsim::log::SimulatorLog> _root;
     std::map<const rwsim::log::SimulatorLog*, QColor> _bgColor;
 };
 //! @}

@@ -24,7 +24,7 @@
  * \copydoc rwsim::contacts::ContactStrategyData
  */
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 namespace rwsim {
 namespace contacts {
@@ -47,7 +47,7 @@ namespace contacts {
 class ContactStrategyData {
 public:
 	//! @brief Smart pointer type.
-	typedef rw::common::Ptr<ContactStrategyData> Ptr;
+	typedef rw::core::Ptr<ContactStrategyData> Ptr;
 
 	//! @brief Constructor.
 	ContactStrategyData();

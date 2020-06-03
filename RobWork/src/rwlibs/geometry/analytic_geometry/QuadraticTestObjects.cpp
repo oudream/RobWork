@@ -22,7 +22,7 @@
 #include <rw/geometry/analytic/quadratics/QuadraticSurface.hpp>
 #include <rw/math/RPY.hpp>
 
-using rw::common::ownedPtr;
+using rw::core::ownedPtr;
 using namespace rw::geometry;
 using rwlibs::geometry::QuadraticTestObjects;
 using namespace rw::math;

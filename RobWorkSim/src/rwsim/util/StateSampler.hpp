@@ -18,7 +18,7 @@
 #ifndef RWSIM_UTIL_STATESAMPLER_HPP_
 #define RWSIM_UTIL_STATESAMPLER_HPP_
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 namespace rw { namespace kinematics { class State; } }
 
@@ -31,7 +31,7 @@ namespace util {
 	class StateSampler {
 		public:
 
-	    typedef rw::common::Ptr<StateSampler> Ptr;
+	    typedef rw::core::Ptr<StateSampler> Ptr;
 
 	    /**
 			   @brief Sample a state.

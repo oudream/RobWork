@@ -25,7 +25,7 @@
  */
 
 #include "ContactStrategyData.hpp"
-
+#include <rw/core/Ptr.hpp>
 #include <map>
 
 namespace rwsim {
@@ -46,7 +46,7 @@ class ContactModel;
 class ContactDetectorData {
 public:
 	//! @brief Smart pointer type.
-	typedef rw::common::Ptr<ContactDetectorData> Ptr;
+	typedef rw::core::Ptr<ContactDetectorData> Ptr;
 
 	//! @brief Constructor.
 	ContactDetectorData();

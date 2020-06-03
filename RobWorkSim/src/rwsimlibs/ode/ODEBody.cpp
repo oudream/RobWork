@@ -17,7 +17,7 @@
 
 #include "ODEBody.hpp"
 
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 #include <rw/kinematics/Kinematics.hpp>
 #include <rw/math/Transform3D.hpp>
 #include <rwsim/dynamics/RigidBody.hpp>
@@ -53,7 +53,7 @@ ODEBody::ODEBody(dBodyID odeBody, RigidBody::Ptr rwbody,
                 _kBody(NULL),
                 _offset(offset)
 {
-    _body->changedEvent().add( boost::bind(&ODEBody::bodyChangedListener, this, _1), this);
+    _body->changedEvent().add( boost::bind(&ODEBody::bodyChangedListener, this, boost::arg<1>()), this);
 }
 
 ODEBody::ODEBody(dBodyID odeBody, KinematicBody::Ptr kbody, int matID, int conID):
@@ -70,7 +70,7 @@ ODEBody::ODEBody(dBodyID odeBody, KinematicBody::Ptr kbody, int matID, int conID
 				_kBody(kbody),
                 _offset(0,0,0)
 {
-    _body->changedEvent().add( boost::bind(&ODEBody::bodyChangedListener, this, _1), this);
+    _body->changedEvent().add( boost::bind(&ODEBody::bodyChangedListener, this, boost::arg<1>()), this);
 }
 
 ODEBody::ODEBody(std::vector<dGeomID> geomIds, dynamics::Body::Ptr body, int matID, int conID):
@@ -87,7 +87,7 @@ ODEBody::ODEBody(std::vector<dGeomID> geomIds, dynamics::Body::Ptr body, int mat
                 _rwBody(NULL),
                 _kBody(NULL)
 {
-    _body->changedEvent().add( boost::bind(&ODEBody::bodyChangedListener, this, _1), this);
+    _body->changedEvent().add( boost::bind(&ODEBody::bodyChangedListener, this, boost::arg<1>()), this);
 }
 
 ODEBody::ODEBody(dBodyID odeBody, dynamics::Body::Ptr body, rw::math::Vector3D<> offset,
@@ -106,7 +106,7 @@ ODEBody::ODEBody(dBodyID odeBody, dynamics::Body::Ptr body, rw::math::Vector3D<>
                 _offset(offset)
 {
     _rwBody = body.cast<RigidBody>();
-    _body->changedEvent().add( boost::bind(&ODEBody::bodyChangedListener, this, _1), this);
+    _body->changedEvent().add( boost::bind(&ODEBody::bodyChangedListener, this, boost::arg<1>()), this);
 }
 
 ODEBody::ODEBody(dBodyID odeBody, rw::kinematics::Frame* frame):

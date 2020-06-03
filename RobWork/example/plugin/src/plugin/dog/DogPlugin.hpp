@@ -1,7 +1,7 @@
 #ifndef __DOG_PLUGIN_HPP
 #define __DOG_PLUGIN_HPP
 
-#include <rw/common/Plugin.hpp>
+#include <rw/core/Plugin.hpp>
 
 
 
@@ -19,7 +19,7 @@ public:
 	std::vector<rw::common::Extension::Descriptor> getExtensionDescriptors();
 	
 	//! Override Plugin::makeExtension
-	rw::common::Ptr<rw::common::Extension> makeExtension(const std::string& str);
+	rw::core::Ptr<rw::common::Extension> makeExtension(const std::string& str);
 };
 
 #endif

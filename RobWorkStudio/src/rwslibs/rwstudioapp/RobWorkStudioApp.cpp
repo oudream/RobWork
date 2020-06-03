@@ -23,9 +23,9 @@
 
 #include <RobWorkConfig.hpp>
 #include <RobWorkStudioConfig.hpp>
-#include <rw/RobWork.hpp>
+#include <rw/core/RobWork.hpp>
 #include <rw/common/ProgramOptions.hpp>
-#include <rw/common/PropertyMap.hpp>
+#include <rw/core/PropertyMap.hpp>
 
 #include <QApplication>
 #include <QCloseEvent>
@@ -60,9 +60,14 @@
 #include <rwslibs/lua/Lua.hpp>
 #endif
 #endif
-
 #ifdef RWS_HAVE_GLUT
-#include <GL/freeglut.h>
+    #if defined(RW_MACOS)
+        //#include <GLUT/glut.h>
+        //TODO(kalor) Figure Out how to get GLUT to work as glutBitmapString is undeclared i mac
+        #undef RW_HAVE_GLUT
+    #else
+        #include <GL/freeglut.h>
+    #endif
 #endif
 
 #include <boost/filesystem.hpp>
@@ -226,9 +231,6 @@ int RobWorkStudioApp::run ()
                     rwstudio.addPlugin (new rws::Lua (), false, Qt::LeftDockWidgetArea);
 #endif
 
-#if RWS_HAVE_SANDBOX
-// Plugins which are avaible in the sandbox
-#endif
 #endif
                     if (showSplash) {
                         splash->showMessage ("Loading static plugins");

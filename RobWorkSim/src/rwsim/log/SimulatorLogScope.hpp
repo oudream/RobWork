@@ -25,6 +25,7 @@
  */
 
 #include "SimulatorLog.hpp"
+#include <rw/core/Ptr.hpp>
 
 namespace rwsim {
 namespace log {
@@ -44,7 +45,7 @@ class SimulatorStatistics;
 class SimulatorLogScope: public SimulatorLog {
 public:
     //! Smart pointer type of SimulatorLogScope
-    typedef rw::common::Ptr<SimulatorLogScope> Ptr;
+    typedef rw::core::Ptr<SimulatorLogScope> Ptr;
 
     //! @copydoc SimulatorLog::SimulatorLog
 	SimulatorLogScope(SimulatorLogScope* parent = NULL);
@@ -97,7 +98,7 @@ public:
 	 * @brief Get statistics for this scope.
 	 * @return the statistics.
 	 */
-	rw::common::Ptr<const SimulatorStatistics> getStatistics();
+	rw::core::Ptr<const SimulatorStatistics> getStatistics();
 
 	/**
 	 * @brief Get the line in the file where this scope begins.
@@ -125,7 +126,7 @@ public:
 
 private:
 	std::vector<SimulatorLog::Ptr> _children;
-	rw::common::Ptr<SimulatorStatistics> _statistics;
+	rw::core::Ptr<SimulatorStatistics> _statistics;
 	std::pair<int, int> _line;
 };
 

@@ -22,6 +22,7 @@
 #include "LogPositions.hpp"
 
 using namespace rw::common;
+using namespace rw::core;
 using namespace rw::kinematics;
 using namespace rw::proximity;
 using namespace rwsim::log;

@@ -17,15 +17,17 @@
 
 #include "ImageLoader.hpp"
 
-#include <rw/common/Extension.hpp>
-#include <rw/common/StringUtil.hpp>
-#include <rw/common/macros.hpp>
+#include <rw/core/Extension.hpp>
+#include <rw/core/StringUtil.hpp>
+#include <rw/core/macros.hpp>
+#include <rw/core/Log.hpp>
+
 #include <rw/loaders/image/PGMLoader.hpp>
 #include <rw/loaders/image/PPMLoader.hpp>
 #include <rw/loaders/image/RGBLoader.hpp>
 
 using namespace rw::loaders;
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::sensor;
 
 bool ImageLoader::isImageSupported (const std::string& format)
@@ -40,7 +42,7 @@ bool ImageLoader::isImageSupported (const std::string& format)
     return false;
 }
 
-rw::common::Ptr< ImageLoader > ImageLoader::Factory::getImageLoader (const std::string& format)
+rw::core::Ptr< ImageLoader > ImageLoader::Factory::getImageLoader (const std::string& format)
 {
     const std::string ext = StringUtil::toUpper (format);
     if (ext == "PGM") {

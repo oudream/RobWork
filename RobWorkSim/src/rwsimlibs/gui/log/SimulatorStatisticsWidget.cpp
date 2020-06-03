@@ -18,7 +18,7 @@
 #include "SimulatorStatisticsWidget.hpp"
 #include "MathematicaPlotWidget.hpp"
 
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 #include <rwsim/log/SimulatorStatistics.hpp>
 
 #include "ui_SimulatorStatisticsWidget.h"
@@ -28,7 +28,7 @@
 using namespace rwsim::log;
 using namespace rwsimlibs::gui;
 
-SimulatorStatisticsWidget::SimulatorStatisticsWidget(rw::common::Ptr<const SimulatorStatistics> stats, QWidget* parent):
+SimulatorStatisticsWidget::SimulatorStatisticsWidget(rw::core::Ptr<const SimulatorStatistics> stats, QWidget* parent):
 	QWidget(parent),
 	_ui(new Ui::SimulatorStatisticsWidget()),
 	_stats(stats),

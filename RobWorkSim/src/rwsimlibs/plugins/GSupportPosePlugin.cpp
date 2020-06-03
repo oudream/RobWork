@@ -25,7 +25,7 @@
 #include <rwsim/simulator/PhysicsEngineFactory.hpp>
 
 #include <rw/common/TimerUtil.hpp>
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/proximity/CollisionDetector.hpp>
 #include <rw/proximity/Proximity.hpp>
 #include <rw/loaders/path/PathLoader.hpp>
@@ -81,7 +81,7 @@ namespace {
 
 	    std::string file = filename.toStdString();
 	    if (!file.empty())
-	        previousOpenDirectory = rw::common::StringUtil::getDirectoryName(file);
+	        previousOpenDirectory = rw::core::StringUtil::getDirectoryName(file);
 
 	    return file;
 	}

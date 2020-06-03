@@ -26,7 +26,7 @@
 
 #include "Surface.hpp"
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/math/Transform3D.hpp>
 #include <rw/math/Vector3D.hpp>
 
@@ -42,10 +42,10 @@ namespace geometry {
 class ImplicitSurface: public Surface {
 public:
 	//! @brief Smart pointer type for ImplicitSurface
-	typedef rw::common::Ptr<ImplicitSurface> Ptr;
+	typedef rw::core::Ptr<ImplicitSurface> Ptr;
 
 	//! @brief Smart pointer type for const ImplicitSurface
-	typedef rw::common::Ptr<const ImplicitSurface> CPtr;
+	typedef rw::core::Ptr<const ImplicitSurface> CPtr;
 
 	//! @brief Constructor.
 	ImplicitSurface() {}
@@ -69,7 +69,7 @@ public:
 	virtual std::pair<double,double> extremums(const rw::math::Vector3D<>& direction) const = 0;
 
 	//! @copydoc Surface::getTriMesh
-	virtual rw::common::Ptr<TriMesh> getTriMesh(const std::vector<rw::math::Vector3D<> >& border = std::vector<rw::math::Vector3D<> >()) const = 0;
+	virtual rw::core::Ptr<TriMesh> getTriMesh(const std::vector<rw::math::Vector3D<> >& border = std::vector<rw::math::Vector3D<> >()) const = 0;
 
 	//! @copydoc Surface::setDiscretizationResolution
 	virtual void setDiscretizationResolution(double resolution) = 0;

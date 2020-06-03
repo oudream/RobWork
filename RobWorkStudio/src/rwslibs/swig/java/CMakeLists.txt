@@ -32,34 +32,24 @@ if(build)
 
     add_library(${SUBSYS_NAME} INTERFACE)
 
-    set_source_files_properties(../sdurws.i PROPERTIES CPLUSPLUS ON)
-    set_source_files_properties(../sdurws.i PROPERTIES SWIG_FLAGS "-includeall")
-
-    if(NOT ${SWIG_VERSION} VERSION_LESS 4.0.0)
-        set_source_files_properties(../sdurws.i PROPERTIES SWIG_FLAGS "-includeall;-doxygen")
-    endif()
-
     include_directories(${RW_ROOT}/src)
     include_directories(${JAVA_INCLUDE_DIRS} ${JNI_INCLUDE_DIRS})
 
-    set(CMAKE_SWIG_FLAGS "-package" "org.robwork.sdurws")
     # Put java files in different directory suitable for JAR generation later on
-    set(CMAKE_SWIG_OUTDIR ${CMAKE_CURRENT_BINARY_DIR}/java_src/org/robwork/sdurws)
-    # SWIG
-    if((CMAKE_VERSION VERSION_GREATER 3.8) OR (CMAKE_VERSION VERSION_EQUAL 3.8))
-        swig_add_library(
-            sdurws_jni
-            TYPE SHARED
-            LANGUAGE java
-            SOURCES ../sdurws.i ../ScriptTypes.cpp
-        )
-    else()
-        swig_add_module(sdurws_jni java ../sdurws.i ../ScriptTypes.cpp)
-    endif()
+    
+    rw_add_swig(
+        sdurws java MODULE
+        TARGET_NAME sdurws_jni
+        INSTALL_DIR ${JAVA_INSTALL_DIR}
+        SOURCES ../ScriptTypes.cpp
+        CXX_FILE_DIR ${CMAKE_CURRENT_BINARY_DIR}/java_src/org/robwork/sdurws
+        LANGUAGE_FILE_DIR ${CMAKE_CURRENT_BINARY_DIR}/java_src/org/robwork/sdurws
+        SWIG_FLAGS "-package" "org.robwork.sdurws"
+    )
+
+
     swig_link_libraries(sdurws_jni sdurws sdurws_robworkstudioapp RW::sdurw)
-    if((CMAKE_COMPILER_IS_GNUCC) OR (CMAKE_C_COMPILER_ID STREQUAL "Clang"))
-        set_target_properties(sdurws_jni PROPERTIES LINK_FLAGS -Wl,--no-undefined)
-    endif()
+
     # Force removal of previous Java compilation and source when interface file changes This is
     # required as types may be removed or change name (in this case previous java classes would
     # interfere with current compilation).
@@ -136,11 +126,11 @@ if(build)
     )
     set(CMAKE_SWIG_OUTDIR ${RWS_CMAKE_LIBRARY_OUTPUT_DIRECTORY})
 
+    if(TARGET sdurw_jni)
+        add_dependencies(sdurws_jni sdurw_jni)
+    endif()
+    
     target_link_libraries(${SUBSYS_NAME} INTERFACE sdurws_jni)
-    install(
-        TARGETS sdurws_jni 
-        EXPORT ${PROJECT_PREFIX}Targets 
-        DESTINATION ${JAVA_INSTALL_DIR} COMPONENT swig)
 
     install(TARGETS ${SUBSYS_NAME} EXPORT ${PROJECT_PREFIX}Targets)
     add_library(${PROJECT_PREFIX}::${SUBSYS_NAME} ALIAS ${SUBSYS_NAME})

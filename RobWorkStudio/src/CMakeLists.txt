@@ -10,12 +10,6 @@ if(POLICY CMP0077) # Introduce cmake 3.13
     cmake_policy(SET CMP0077 OLD)
 endif()
 
-# Then sandbox if choosen
-option(RWS_BUILD_SANDBOX "Set when you want to build the sandbox library" ${RWS_BUILD_SANDBOX})
-if(RWS_BUILD_SANDBOX)
-    add_subdirectory(sandbox)
-endif()
-
 # Propagate libraries to parent directory
 set(RWS_PLUGIN_LIBRARIES ${RWS_PLUGIN_LIBRARIES} PARENT_SCOPE)
 set(RWS_COMPONENT_LIBRARIES ${RWS_COMPONENT_LIBRARIES} PARENT_SCOPE)
@@ -55,8 +49,7 @@ if(build)
                        "${RWS_ROOT}/bin/${RWS_BUILD_TYPE}/RobWorkStudio.ini.template" COPYONLY)
     else()
         install(FILES "${RWS_ROOT}/bin/RobWorkStudio.ini.shared" DESTINATION ${BIN_INSTALL_DIR} RENAME "RobWorkStudio.ini")
-        # CONFIGURE_FILE("${RWS_ROOT}/bin/RobWorkStudio.ini.shared" "${RWS_ROOT}/bin/${RWS_BUILD_TYPE}/RobWorkStudio.ini"
-        # COPYONLY )
+        configure_file("${RWS_ROOT}/bin/RobWorkStudio.ini.shared.in" "${RWS_ROOT}/bin/RobWorkStudio.ini.shared")
         file(
             GENERATE
             OUTPUT $<TARGET_FILE_DIR:RobWorkStudio>/RobWorkStudio.ini

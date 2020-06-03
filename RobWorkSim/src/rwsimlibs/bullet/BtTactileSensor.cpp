@@ -36,7 +36,7 @@ using namespace rwsim::dynamics;
 using namespace rwsim::sensor;
 using namespace rwsimlibs::bullet;
 
-BtTactileSensor::BtTactileSensor(rw::common::Ptr<SimulatedTactileSensor> sensor):
+BtTactileSensor::BtTactileSensor(rw::core::Ptr<SimulatedTactileSensor> sensor):
 	_rwSensor(sensor)
 {
 }
@@ -49,9 +49,9 @@ void BtTactileSensor::addConstraintsFeedback(const Simulator::UpdateInfo& info, 
 	for (std::size_t i = 0; i < _constraints.size(); i++) {
 		BtConstraint* const constraint = _constraints[i];
 		btJointFeedback* const feedback = constraint->getFeedback();
-		rw::common::Ptr<const Constraint> rwConstraint = constraint->getRWConstraint();
-		if(const rw::common::Ptr<SimulatedTactileSensor> tsensor = _rwSensor.cast<SimulatedTactileSensor>()){
-			if(const rw::common::Ptr<SimulatedFTSensor> ftsensor = tsensor.cast<SimulatedFTSensor>()){
+		rw::core::Ptr<const Constraint> rwConstraint = constraint->getRWConstraint();
+		if(const rw::core::Ptr<SimulatedTactileSensor> tsensor = _rwSensor.cast<SimulatedTactileSensor>()){
+			if(const rw::core::Ptr<SimulatedFTSensor> ftsensor = tsensor.cast<SimulatedFTSensor>()){
 				// Add constraints
 				if (rwConstraint->getBody1() == ftsensor->getBody1() && rwConstraint->getBody2() == ftsensor->getBody2()) {
 					const Vector3D<> force = BtUtil::toVector3D(feedback->m_appliedForceBodyB);
@@ -88,8 +88,8 @@ void BtTactileSensor::addConstraintsFeedback(const Simulator::UpdateInfo& info, 
 }
 
 void BtTactileSensor::addContactManifold(const Simulator::UpdateInfo& info, State& state, const btPersistentManifold* manifold, const BtBody* bodyA, const BtBody* bodyB) const {
-	if(const rw::common::Ptr<SimulatedTactileSensor> tsensor = _rwSensor.cast<SimulatedTactileSensor>()){
-		if(const rw::common::Ptr<SimulatedFTSensor> ftsensor = tsensor.cast<SimulatedFTSensor>()){
+	if(const rw::core::Ptr<SimulatedTactileSensor> tsensor = _rwSensor.cast<SimulatedTactileSensor>()){
+		if(const rw::core::Ptr<SimulatedFTSensor> ftsensor = tsensor.cast<SimulatedFTSensor>()){
 			// Add contacts
 			if (bodyA->getRwBody() == ftsensor->getBody1() && bodyB->getRwBody() == ftsensor->getBody2()) {
 				for (int i = 0; i < manifold->getNumContacts(); i++) {

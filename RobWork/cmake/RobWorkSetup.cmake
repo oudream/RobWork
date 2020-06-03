@@ -76,12 +76,9 @@ find_package(
 set(Boost_LIBRARIES_TMP ${Boost_LIBRARIES})
 set(Boost_FIND_QUIETLY TRUE) # Test libraries are optional
 
-# On Mac OS only the header only version of boost unit test seems to work for now, needs further
-# investigation
-if(NOT ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-    find_package(Boost COMPONENTS test_exec_monitor unit_test_framework)
-    set(Boost_LIBRARIES_TMP ${Boost_LIBRARIES_TMP} ${Boost_LIBRARIES})
-endif()
+find_package(Boost COMPONENTS test_exec_monitor unit_test_framework)
+set(Boost_LIBRARIES_TMP ${Boost_LIBRARIES_TMP} ${Boost_LIBRARIES})
+
 
 if(NOT Boost_TEST_EXEC_MONITOR_FOUND OR NOT Boost_UNIT_TEST_FRAMEWORK_FOUND)
     set(RW_USE_BOOST_STATIC_TEST_LIBS off)
@@ -128,11 +125,14 @@ include(CMakeDependentOption)
 set(RW_HAVE_GLUT False)
 
 find_package(GLUT QUIET)
-if(NOT GLUT_FOUND) # Check if free glut exsist
-    find_package(FreeGLUT QUIET)
-    if(FreeGLUT_FOUND)
-        set(GLUT_glut_LIBRARY FreeGLUT::freeglut_static)
-        set(GLUT_FOUND ${FreeGLUT_FOUND})
+
+if(NOT ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+    if(NOT GLUT_FOUND) # Check if free glut exsist
+        find_package(FreeGLUT QUIET)
+        if(FreeGLUT_FOUND)
+            set(GLUT_glut_LIBRARY FreeGLUT::freeglut_static)
+            set(GLUT_FOUND ${FreeGLUT_FOUND})
+        endif()
     endif()
 endif()
 
@@ -600,10 +600,10 @@ endif()
 
 if("${RW_CXX_FLAGS}" STREQUAL "")
     # GCC and MinGW
-    if((CMAKE_COMPILER_IS_GNUCXX) OR (CMAKE_CXX_COMPILER_ID STREQUAL "Clang"))
+    if((CMAKE_COMPILER_IS_GNUCXX) OR (CMAKE_CXX_COMPILER_ID STREQUAL "Clang") OR (CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang"))
         # Turn off annoying GCC warnings
         set(RW_CXX_FLAGS_TMP "-Wall -Wno-strict-aliasing -Wno-unused-function -Wno-pragmas")
-        if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+        if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR (CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang"))
             set(RW_CXX_FLAGS_TMP "-Wall -Wno-strict-aliasing -Wno-unused-function")
         endif()
 
@@ -830,6 +830,7 @@ set(
     ${QHULL_INCLUDE_DIRS}
     ${CSGJS_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIRS}
+    ${FCL_INCLUDE_DIRS}
     # ${MINIZIP_INCLUDE_DIRS} # Do not include this overall as there is a conflict with another
     # crypt.h that Python
     # includes.
@@ -891,9 +892,11 @@ set(
     sdurw_control
     sdurw_proximitystrategies
     sdurw
+    sdurw_core
+    sdurw_common
+    sdurw_math
 )
 
-message(STATUS "DIRS: ${ROBWORK_LIBRARY_DIRS}")
 set(ROBWORK_LIBRARIES)
 foreach(l ${ROBWORK_LIBRARIES_EXTERNAL})
     unset(tmp CACHE)

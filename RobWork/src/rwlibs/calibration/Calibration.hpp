@@ -18,8 +18,8 @@
 #ifndef RWLIBS_CALIBRATION_CALIBRATION_HPP
 #define RWLIBS_CALIBRATION_CALIBRATION_HPP
 
-#include <rw/common/Ptr.hpp>
-#include <rw/common/macros.hpp>
+#include <rw/core/Ptr.hpp>
+#include <rw/core/macros.hpp>
 
 namespace rwlibs {
 	namespace calibration {
@@ -33,7 +33,7 @@ namespace rwlibs {
 		*/
 		class Calibration {
 		public:
-			typedef rw::common::Ptr<Calibration> Ptr;
+			typedef rw::core::Ptr<Calibration> Ptr;
 
 			/**
 			 * @brief Default constructor

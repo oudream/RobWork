@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RW_KINEMATICS_STATECACHE_HPP
 #define RW_KINEMATICS_STATECACHE_HPP
 
@@ -23,8 +22,7 @@
    @file StateCache.hpp
 */
 
-#include <rw/common/Ptr.hpp>
-
+#include <rw/core/Ptr.hpp>
 
 namespace rw { namespace kinematics {
 
@@ -38,16 +36,16 @@ namespace rw { namespace kinematics {
      * The size will allocate "size"-doubles in State objects originating from the
      * StateStructure.
      */
-    class StateCache {
-    public:
-
+    class StateCache
+    {
+      public:
         //! Smart pointer type
-        typedef rw::common::Ptr<StateCache> Ptr;
+        typedef rw::core::Ptr< StateCache > Ptr;
 
         /**
          * @brief destructor
          */
-        virtual ~StateCache(){ };
+        virtual ~StateCache (){};
 
         /**
          * @brief An integer ID for the StateCache.
@@ -62,7 +60,7 @@ namespace rw { namespace kinematics {
          *
          * @return An integer ID for the frame.
          */
-        //inline int getID() const { return _id; }
+        // inline int getID() const { return _id; }
 
         /**
          * @brief The number of doubles allocated by this StateCache in
@@ -70,23 +68,21 @@ namespace rw { namespace kinematics {
          *
          * @return The number of doubles allocated by the StateCache
          */
-        virtual size_t size() const = 0;
+        virtual size_t size () const = 0;
 
         /**
          * @brief this creates a deep copy of this cache
          */
-        virtual rw::common::Ptr<StateCache> clone() const = 0;
+        virtual rw::core::Ptr< StateCache > clone () const = 0;
 
-    protected:
-        StateCache(){};
+      protected:
+        StateCache (){};
         // StateCache should not be copied by other than its inherited class.
-        //StateCache(const StateCache&);
-        //StateCache& operator=(const StateCache&);
-    private:
-
-
+        // StateCache(const StateCache&);
+        // StateCache& operator=(const StateCache&);
+      private:
     };
     /*@}*/
-}}
+}}    // namespace rw::kinematics
 
 #endif /*RW_KINEMATICS_STATEDATA_HPP*/

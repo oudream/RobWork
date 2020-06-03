@@ -16,8 +16,9 @@
  ********************************************************************************/
 
 #include "PiHParameterization.hpp"
+#include <rw/core/PropertyMap.hpp>
 
-using namespace rw::common;
+using namespace rw::core;
 using rw::math::Q;
 using namespace rwlibs::assembly;
 

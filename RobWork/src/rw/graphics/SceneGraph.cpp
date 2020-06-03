@@ -24,7 +24,7 @@
 #include <stack>
 
 using namespace rw::graphics;
-using namespace rw::common;
+using namespace rw::core;
 
 void SceneGraph::setRoot (GroupNode::Ptr node)
 {
@@ -384,7 +384,7 @@ class SimpleCameraGroup : public CameraGroup
 
     void setOffscreenRenderColor (rw::sensor::Image::ColorCode color) { _color = color; }
     void setCopyToImage (rw::sensor::Image::Ptr) {}
-    void setCopyToScan25D (rw::common::Ptr< class rw::geometry::PointCloud >) {}
+    void setCopyToScan25D (rw::core::Ptr< class rw::geometry::PointCloud >) {}
     void setMultiSample (int) {}
     void setMainCamera (SceneCamera::Ptr cam) { _maincam = cam; }
     SceneCamera::Ptr getMainCamera ()

@@ -12,12 +12,12 @@ using namespace rwsim::dynamics;
 using namespace rwsim::simulator;
 using namespace rw::math;
 using namespace rw::kinematics;
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::proximity;
 
 #define RW_DEBUGS( str ) std::cout << str  << std::endl;
 
-ODESimCfgDialog::ODESimCfgDialog(rw::common::Ptr<rwsim::simulator::DynamicSimulator> sim, QWidget *parent):
+ODESimCfgDialog::ODESimCfgDialog(rw::core::Ptr<rwsim::simulator::DynamicSimulator> sim, QWidget *parent):
     QDialog(parent),
     _sim(sim)
 {

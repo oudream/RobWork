@@ -28,7 +28,7 @@
 
 #include <map>
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::kinematics;
 using namespace rw::math;
 using rw::models::WorkCell;
@@ -102,7 +102,7 @@ private:
 	int _x,_y,_width,_height;
 public:
 	//! @brief smart pointer type to this class
-	typedef rw::common::Ptr<RenderQuad> Ptr;
+	typedef rw::core::Ptr<RenderQuad> Ptr;
 
 	/* Functions inherited from Render */
 	/**
@@ -714,17 +714,17 @@ bool SimpleGLViewer::start(){
 
     // initialize cameras
     // add the default/main cameraview group
-    const rw::common::Ptr<rw::graphics::CameraGroup> mainCamGroup = _scene->makeCameraGroup("MainView");
+    const rw::core::Ptr<rw::graphics::CameraGroup> mainCamGroup = _scene->makeCameraGroup("MainView");
     _scene->addCameraGroup(mainCamGroup);
     mainCamGroup->setEnabled(true);
 
     // add a node to render background
-    rw::common::Ptr<RenderQuad> backgroundRender = ownedPtr(new RenderQuad());
+    rw::core::Ptr<RenderQuad> backgroundRender = ownedPtr(new RenderQuad());
     backgroundRender->setTopColor( Vector3D<GLfloat>(1.0f,1.0f,1.0f) );
     backgroundRender->setBottomColor( Vector3D<GLfloat>(0.2f,0.2f,1.0f) );
     backgroundRender->setViewPort(0,0,640,480);
 
-    const rw::common::Ptr<DrawableNode> backgroundnode = _scene->makeDrawable("BackgroundRender", backgroundRender, DrawableNode::ALL);
+    const rw::core::Ptr<DrawableNode> backgroundnode = _scene->makeDrawable("BackgroundRender", backgroundRender, DrawableNode::ALL);
     _scene->addChild(backgroundnode, _scene->getRoot());
     backgroundnode->setVisible(true);
 

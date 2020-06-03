@@ -35,7 +35,7 @@ class TaskDescription
 	public:
 	// types
 		/// Smart pointer to this type of class.
-		typedef rw::common::Ptr<TaskDescription> Ptr;
+		typedef rw::core::Ptr<TaskDescription> Ptr;
 		
 		/// Used for storing baseline and weights for quality measurements.
 		typedef struct { double coverage, success, wrench, topwrench, robustness, stress, volume, alignment; } Qualities;

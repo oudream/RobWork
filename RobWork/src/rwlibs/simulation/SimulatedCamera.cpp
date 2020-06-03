@@ -25,7 +25,7 @@
 using namespace rw::sensor;
 using namespace rw::kinematics;
 using namespace rwlibs::simulation;
-using namespace rw::common;
+using namespace rw::core;
 
 namespace {
 
@@ -66,7 +66,7 @@ SimulatedCamera::SimulatedCamera(const std::string& name, double fov, Frame* fra
 	_isAcquired(false),
 	_started(false),
 	_initialized(false),
-	_csensor(rw::common::ownedPtr(new CameraWrapper(this, name)))
+	_csensor(rw::core::ownedPtr(new CameraWrapper(this, name)))
 {
 }
 
@@ -78,7 +78,7 @@ SimulatedCamera::SimulatedCamera(CameraModel::Ptr model, FrameGrabber::Ptr frame
     _isAcquired(false),
 	_started(false),
 	_initialized(false),
-	_csensor(rw::common::ownedPtr(new CameraWrapper(this, model->getName())))
+	_csensor(rw::core::ownedPtr(new CameraWrapper(this, model->getName())))
 {
 }
 

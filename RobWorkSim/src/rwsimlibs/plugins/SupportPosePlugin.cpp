@@ -39,7 +39,7 @@
 #include <rw/kinematics/Frame.hpp>
 #include <rw/math/Vector3D.hpp>
 #include <rw/math/Transform3D.hpp>
-#include <rw/common/StringUtil.hpp>
+#include <rw/core/StringUtil.hpp>
 #include <rw/models/Device.hpp>
 #include <rwlibs/drawable/Drawable.hpp>
 
@@ -56,12 +56,12 @@
 #include <control/VelRampController.hpp>
 #include <control/PDController.hpp>
 #include <control/SyncPDController.hpp>
-#include <sandbox/drawable/TactileArrayRender.hpp>
+#include <rwlibs/opengl/TactileArrayRender.hpp>
 
 #include <simulator/PhysicsEngineFactory.hpp>
 
-#include <rw/common/Log.hpp>
-#include <rw/common/Exception.hpp>
+#include <rw/core/Log.hpp>
+#include <rw/core/Exception.hpp>
 #include <rw/common/LogStreamWriter.hpp>
 
 #include <iostream>
@@ -292,7 +292,7 @@ SupportPosePlugin::SupportPosePlugin():
 
     std::ofstream *myfile = new std::ofstream();
     myfile->open ("debuglog.txt");
-    rw::common::Log::setWriter("Debug", new rw::common::LogStreamWriter(myfile));
+    rw::core::Log::setWriter("Debug", new rw::core::LogStreamWriter(myfile));
     _timer = new QTimer( NULL );
     connect( _timer, SIGNAL(timeout()), this, SLOT(saveState()) );
     toplay->addStretch(1);
@@ -578,5 +578,5 @@ void SupportPosePlugin::stateChangedHandler(RobWorkStudioPlugin* sender)
 
 void SupportPosePlugin::initialize(){
     getRobWorkStudio()->genericEvent().add(
-          boost::bind(&SupportPosePlugin::genericEventListener, this, _1), this);
+          boost::bind(&SupportPosePlugin::genericEventListener, this, boost::arg<1>()), this);
 }

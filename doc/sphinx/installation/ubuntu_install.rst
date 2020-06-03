@@ -1,7 +1,11 @@
 Ubuntu installation by PPA
 *****************************
 
-Precompiled Debian packages exist for Ubuntu 16.04 and 18.04.
+Precompiled Debian packages exist for:
+ * Ubuntu 16.04
+ * Ubuntu 18.04
+ * Ubuntu 20.04
+ 
 They can be installed by adding sdurobotics/robwork to 'apt' ppa repositories.
 
 .. code-block:: bash
@@ -17,14 +21,6 @@ The Simplest install to get all our packages can then be done with:
                          libsdurws-all-dev \
                          libsdurwhw-all-dev \
                          libsdurwsim-all-dev
-
-.. warning::
-
-    In The upgrade from 1.0.9 to 1.0.11 a package name was changed, causing errors when running an apt upgrade.
-    The Error can be fixed with:
-    
-    sudo dpkg --remove --force-remove-reinstreq libsdurw-geometry1.0
-    sudo dpkg --remove --force-remove-reinstreq libsdurw-geometry-dev
 
 .. note::
 
@@ -68,6 +64,9 @@ For the development packages including the newest version of robwork and the inc
 |  - libsdurw-proximitystrategies |  - libsdurws-treeview             |  - libsdurwhw-universalrobots      |                       |
 |  - libsdurw-simulation          |  - libsdurws-workcelleditor       |  - libsdurwhw-universalrobots-rtde |                       |
 |  - libsdurw-task                |  - libsdurws-workcelleditorplugin |                                    |                       |
+|  - libsdurw-core                |                                   |                                    |                       |
+|  - libsdurw-common              |                                   |                                    |                       |
+|  - libsdurw-math                |                                   |                                    |                       |
 +---------------------------------+-----------------------------------+------------------------------------+-----------------------+
 
 Python and Lua packages

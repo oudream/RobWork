@@ -24,7 +24,7 @@
  * \copydoc rwsimlibs::bullet::BtBody
  */
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/math/Transform3D.hpp>
 
 // Forward declarations
@@ -65,7 +65,7 @@ public:
 	 * @note The initial body state is set when the body is constructed. It is not possible to reset
 	 * the body position and velocity after creation. Instead the body must be deleted and created again.
 	 */
-	BtBody(rw::common::Ptr<rwsim::dynamics::Body> body,
+	BtBody(rw::core::Ptr<rwsim::dynamics::Body> body,
 			const rwsim::dynamics::MaterialDataMap* frictionMap,
 			const rwsim::dynamics::ContactDataMap* collisionMap,
 			btDynamicsWorld* btWorld,
@@ -78,7 +78,7 @@ public:
 	 * @brief Get the RobWork body.
 	 * @return a smart pointer to a RobWork Body.
 	 */
-	rw::common::Ptr<rwsim::dynamics::Body> getRwBody() const;
+	rw::core::Ptr<rwsim::dynamics::Body> getRwBody() const;
 
 	/**
 	 * @brief Get the underlying btRigidBody from Bullet.
@@ -151,29 +151,29 @@ public:
 		 * @brief Constructor.
 		 * @param geometry [in] the geometry.
 		 */
-		GeometryMetaData(rw::common::Ptr<const rw::geometry::Geometry> geometry);
+		GeometryMetaData(rw::core::Ptr<const rw::geometry::Geometry> geometry);
 
 		//! @brief Destrcutor.
 		~GeometryMetaData();
 
 		//! @brief The geometry.
-		const rw::common::Ptr<const rw::geometry::Geometry> geometry;
+		const rw::core::Ptr<const rw::geometry::Geometry> geometry;
 	};
 
 private:
 	btRigidBody* createRigidBody(
 			const rwsim::dynamics::MaterialDataMap* frictionMap,
 			const rwsim::dynamics::ContactDataMap* collisionMap,
-			rw::common::Ptr<rwsim::dynamics::Body> body,
+			rw::core::Ptr<rwsim::dynamics::Body> body,
 			const rw::kinematics::State& state) const;
-	btCollisionShape* createColShape(rw::common::Ptr<const rw::geometry::Geometry> geometry) const;
-	btCompoundShape* getColShape(rw::common::Ptr<rwsim::dynamics::Body> body, const rw::math::Transform3D<>& bTcom) const;
+	btCollisionShape* createColShape(rw::core::Ptr<const rw::geometry::Geometry> geometry) const;
+	btCompoundShape* getColShape(rw::core::Ptr<rwsim::dynamics::Body> body, const rw::math::Transform3D<>& bTcom) const;
 
 private:
-	const rw::common::Ptr<rwsim::dynamics::Body> _rwBody;
-	const rw::common::Ptr<rwsim::dynamics::RigidBody> _rwBodyDynamic;
-	const rw::common::Ptr<rwsim::dynamics::KinematicBody> _rwBodyKinematic;
-	const rw::common::Ptr<rwsim::dynamics::FixedBody> _rwBodyStatic;
+	const rw::core::Ptr<rwsim::dynamics::Body> _rwBody;
+	const rw::core::Ptr<rwsim::dynamics::RigidBody> _rwBodyDynamic;
+	const rw::core::Ptr<rwsim::dynamics::KinematicBody> _rwBodyKinematic;
+	const rw::core::Ptr<rwsim::dynamics::FixedBody> _rwBodyStatic;
     btDynamicsWorld* const _btDynamicsWorld;
 	const rw::math::Transform3D<> _bTcom;
 	btCompoundShape* const _collisionShape;

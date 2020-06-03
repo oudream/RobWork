@@ -18,7 +18,7 @@
 #ifndef PROXIMITYMODEL_HPP_
 #define PROXIMITYMODEL_HPP_
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include <string>
 #include <vector>
@@ -41,9 +41,8 @@ namespace rw { namespace proximity {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::common::Ptr< ProximityModel > Ptr;
+        typedef rw::core::Ptr< ProximityModel > Ptr;
 
-        // ProximityModel(rw::common::Ptr<ProximityStrategy> pOwner):
         /**
          * @brief Constructor
          *
@@ -60,24 +59,23 @@ namespace rw { namespace proximity {
         std::vector< std::string > getGeometryIDs ();
 
         /**
-         *  @brief get the associated Geometries
+         * @brief get the associated Geometries
+         * @return a list of Geomety pointers beloninh to the model
          */
-        std::vector< rw::common::Ptr< rw::geometry::Geometry > > getGeometries ();
+        std::vector< rw::core::Ptr< rw::geometry::Geometry > > getGeometries ();
 
         /**
          * @brief adds geometry
-         *
          * @param geom the geometry to add
          **/
         bool addGeometry (const rw::geometry::Geometry& geom);
 
         /**
          * @brief adds geometry using pointer
-         *
          * @param geom [in] the geometry to add
          * @param forceCopy [in]
          **/
-        bool addGeometry (rw::common::Ptr< rw::geometry::Geometry > geom, bool forceCopy = false);
+        bool addGeometry (rw::core::Ptr< rw::geometry::Geometry > geom, bool forceCopy = false);
 
         /**
          * @brief removes a geometry from the ProximityModel

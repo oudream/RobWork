@@ -29,7 +29,7 @@
 #include <boost/property_tree/ptree.hpp>
 
 namespace rw { namespace math { class Q; }}
-namespace rw { namespace common { class PropertyMap; }}
+namespace rw { namespace core { class PropertyMap; }}
 
 namespace rw { namespace loaders {
 
@@ -103,7 +103,7 @@ const Vector3D<> pos = XML::readVector3D(tree.get_child("Vector3D"));
 \endverbatim
         */
         static void readPropertyMap(
-            const PTree& tree, common::PropertyMap& properties);
+            const PTree& tree, core::PropertyMap& properties);
 
         /**
            @brief Print a formatted version of the tree to \b out.

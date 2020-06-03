@@ -24,7 +24,7 @@
 #include <rw/math/Metric.hpp>
 #include <rw/trajectory/Trajectory.hpp>
 #include <rw/kinematics/State.hpp>
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include <vector>
 

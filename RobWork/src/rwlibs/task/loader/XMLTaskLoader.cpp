@@ -55,7 +55,7 @@ using namespace xercesc;
 using namespace rwlibs::task;
 using namespace rw::loaders;
 using namespace rw::math;
-using namespace rw::common;
+using namespace rw::core;
 
 XMLTaskLoader::Initializer::Initializer() {
 	static bool done = false;
@@ -315,7 +315,7 @@ void XMLTaskLoader::readAugmentations(xercesc::DOMElement* element, TaskBase::Pt
 		xercesc::DOMElement* child = dynamic_cast<xercesc::DOMElement*>(children->item(i));
 		if (child != NULL) {
 			XMLTaskLoader loader;
-			TaskBasePtr augmentation = loader.readTask(child);
+			TaskBase::Ptr augmentation = loader.readTask(child);
 			task->addAugmentation(augmentation, augmentation->getId());
 		}
 	}

@@ -23,7 +23,7 @@ using namespace rwsimlibs::gui;
 
 #if RW_HAVE_MATHEMATICA
 
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 #include <rw/sensor/Image.hpp>
 #include <rwlibs/mathematica/Image.hpp>
 #include <rwlibs/mathematica/List.hpp>

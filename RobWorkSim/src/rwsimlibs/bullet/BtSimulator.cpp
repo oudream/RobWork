@@ -53,7 +53,7 @@ using namespace rw::models;
 
 
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::kinematics;
 
 using namespace rwsim::contacts;
@@ -72,7 +72,7 @@ BtSimulator::BtSimulator():
 	m_dispatcher(NULL),
 	m_solver(NULL),
 	m_collisionConfiguration(NULL),
-	_render( rw::common::ownedPtr(new BtDebugRender(this)) ),
+	_render( rw::core::ownedPtr(new BtDebugRender(this)) ),
 	_time(0.0),
 	_dt(0.001),
 	_initPhysicsHasBeenRun(false)
@@ -85,7 +85,7 @@ BtSimulator::BtSimulator(DynamicWorkCell::Ptr dwc):
 	m_dispatcher(NULL),
 	m_solver(NULL),
 	m_collisionConfiguration(NULL),
-	_render( rw::common::ownedPtr(new BtDebugRender(this)) ),
+	_render( rw::core::ownedPtr(new BtDebugRender(this)) ),
 	_time(0.0),
 	_dt(0.001),
 	_initPhysicsHasBeenRun(false)
@@ -577,8 +577,8 @@ void BtSimulator::addDevice(DynamicDevice::Ptr dev, State& nstate){
 }
 
 void BtSimulator::addSensor(SimulatedSensor::Ptr sensor, State& state){
-	if(const rw::common::Ptr<SimulatedTactileSensor> tsensor = sensor.cast<SimulatedTactileSensor>()){
-		if(const rw::common::Ptr<SimulatedFTSensor> ftsensor = tsensor.cast<SimulatedFTSensor>()){
+	if(const rw::core::Ptr<SimulatedTactileSensor> tsensor = sensor.cast<SimulatedTactileSensor>()){
+		if(const rw::core::Ptr<SimulatedFTSensor> ftsensor = tsensor.cast<SimulatedFTSensor>()){
 			Frame* const parentFrame = ftsensor->getBody1()->getBodyFrame();
 			Frame* const sensorFrame = ftsensor->getBody2()->getBodyFrame();
 
@@ -649,7 +649,7 @@ std::vector<SimulatedSensor::Ptr> BtSimulator::getSensors() {
 	return _sensors;
 }
 
-void BtSimulator::addConstraint(rw::common::Ptr<const Constraint> constraint) {
+void BtSimulator::addConstraint(rw::core::Ptr<const Constraint> constraint) {
 	BtBody* const parent = _rwFrameToBtBody[constraint->getBody1()->getBodyFrame()];
 	BtBody* const child = _rwFrameToBtBody[constraint->getBody2()->getBodyFrame()];
 	if (parent == NULL)

@@ -21,9 +21,10 @@
 #include <rwlibs/simulation/SimulatedSensor.hpp>
 
 #include <rwlibs/simulation/Simulator.hpp>
-
+#include <rw/core/PropertyMap.hpp>
 #include <rwsim/dynamics/DynamicWorkCell.hpp>
-
+#include <rw/core/PropertyMap.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/trajectory/Trajectory.hpp>
 #include <rwsim/drawable/SimulatorDebugRender.hpp>
 #include <rwsim/control/BodyController.hpp>
@@ -58,14 +59,14 @@ namespace simulator {
 	{
 	public:
 	    //! @brief smart pointer type of this class
-	    typedef rw::common::Ptr<DynamicSimulator> Ptr;
+	    typedef rw::core::Ptr<DynamicSimulator> Ptr;
 
 	    /**
 	     * @brief Constructor.
 	     * @param dworkcell [in] the dynamic workcell.
 	     * @param pengine [in] the physics engine to use.
 	     */
-	    DynamicSimulator(rwsim::dynamics::DynamicWorkCell::Ptr dworkcell, rw::common::Ptr<PhysicsEngine> pengine);
+	    DynamicSimulator(rwsim::dynamics::DynamicWorkCell::Ptr dworkcell, rw::core::Ptr<PhysicsEngine> pengine);
 
 	    /**
 	     * @brief Constructor for a DynamicSimulator using a default PhysicsEngine.
@@ -106,19 +107,19 @@ namespace simulator {
 		 * @brief Get the properties used by the simulator.
 		 * @return a reference to the properties.
 		 */
-		rw::common::PropertyMap& getPropertyMap();
+		rw::core::PropertyMap& getPropertyMap();
 
 		/**
 		 * @brief add a simulated controller to this simulator
 		 * @param controller [in] the controller to add.
 		 */
-		void addController(rw::common::Ptr<rwlibs::simulation::SimulatedController> controller);
+		void addController(rw::core::Ptr<rwlibs::simulation::SimulatedController> controller);
 
 		/**
 		 * @brief removes a simulated controller from this simulator
 		 * @param controller [in] the controller to remove.
 		 */
-		void removeController(rw::common::Ptr<rwlibs::simulation::SimulatedController> controller);
+		void removeController(rw::core::Ptr<rwlibs::simulation::SimulatedController> controller);
 
 		/**
 		 * @copydoc addBody(rwsim::dynamics::Body::Ptr)
@@ -300,7 +301,7 @@ namespace simulator {
 
 	private:
 		 rwsim::dynamics::DynamicWorkCell::Ptr _dwc;
-		 rw::common::Ptr<PhysicsEngine> _pengine;
+		 rw::core::Ptr<PhysicsEngine> _pengine;
 		 rwsim::control::BodyController::Ptr _bodyController;
 		 rw::kinematics::State _state;
 	};

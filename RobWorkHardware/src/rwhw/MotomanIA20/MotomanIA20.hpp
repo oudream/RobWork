@@ -23,8 +23,6 @@
  */
 
 #include <rwhw/serialport/SerialPort.hpp>
-#include <rw/common/macros.hpp>
-#include <rw/common/TimerUtil.hpp>
 #include <rw/math/Q.hpp>
 
 namespace rwhw {

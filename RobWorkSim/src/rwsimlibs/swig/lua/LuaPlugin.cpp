@@ -3,7 +3,7 @@
 #include <rwlibs/swig/lua/LuaState.hpp>
 
 using namespace rwsim::swig;
-using namespace rw::common;
+using namespace rw::core;
 
 RW_ADD_PLUGIN(LuaPlugin)
 
@@ -31,7 +31,7 @@ LuaPlugin::~LuaPlugin()
 {
 }
 
-std::vector<rw::common::Extension::Descriptor> LuaPlugin::getExtensionDescriptors()
+std::vector<rw::core::Extension::Descriptor> LuaPlugin::getExtensionDescriptors()
 {
     std::vector<Extension::Descriptor> exts;
     exts.push_back(Extension::Descriptor("RWSimLua","rwlibs.swig.LuaState.LuaLibrary"));
@@ -46,6 +46,7 @@ namespace {
 struct RWSLuaLibrary: rwlibs::swig::LuaState::LuaLibrary {
 	virtual const std::string getId(){ return "RWSimLua"; }
 	virtual bool initLibrary(rwlibs::swig::LuaState& state){
+        std::cout << "INIT rwsim LUALIB" << std::endl << std::flush;
 		luaopen_sdurwsim( state.get() );
 	    //state.runCmd("rwsim = rwsim.lua");
 
@@ -53,10 +54,10 @@ struct RWSLuaLibrary: rwlibs::swig::LuaState::LuaLibrary {
 	};
 };
 }
-rw::common::Ptr<rw::common::Extension> LuaPlugin::makeExtension(const std::string& str)
+rw::core::Ptr<rw::core::Extension> LuaPlugin::makeExtension(const std::string& str)
 {
     if(str=="RWSimLua"){
-        Extension::Ptr extension = rw::common::ownedPtr( new Extension("RWSimLua","rwlibs.swig.LuaState.LuaLibrary",
+        Extension::Ptr extension = rw::core::ownedPtr( new Extension("RWSimLua","rwlibs.swig.LuaState.LuaLibrary",
                 this, ownedPtr(new RWSLuaLibrary()) ) );
 
         // todo: add posible properties to the extension descriptor

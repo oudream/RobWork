@@ -2,7 +2,7 @@
 
 %{
 #include <rwlibs/swig/ScriptTypes.hpp>
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 using namespace rwlibs::swig;
 using rw::trajectory::Path;
@@ -44,7 +44,7 @@ public:
 	*/
 	
 	rw::math::Transform3D<double>  femaleTmaleTarget;
-	rw::common::Ptr<Trajectory<rw::math::Transform3D<double> > > worldTendTrajectory;
+	rw::core::Ptr<Trajectory<rw::math::Transform3D<double> > > worldTendTrajectory;
 	rw::math::VelocityScrew6D<double>  femaleTmaleVelocityTarget;
 	rw::math::Rotation3D<double>  offset;
 	//VectorND<6,bool> selection;
@@ -53,7 +53,7 @@ public:
 	bool success;
 };
 
-%template (AssemblyControlResponsePtr) rw::common::Ptr<AssemblyControlResponse>;
+%template (AssemblyControlResponsePtr) rw::core::Ptr<AssemblyControlResponse>;
 OWNEDPTR(AssemblyControlResponse);
 
 /**
@@ -69,7 +69,7 @@ public:
 	class ControlState {
 	public:
 		//! @brief smart pointer type to this class
-	    typedef rw::common::Ptr<ControlState> Ptr;
+	    typedef rw::core::Ptr<ControlState> Ptr;
 
 		//! @brief Constructor.
 		ControlState() {};
@@ -77,29 +77,29 @@ public:
 		//! @brief Destructor.
 		virtual ~ControlState() {};
 	};
-	virtual rw::common::Ptr<ControlState> createState() const;
+	virtual rw::core::Ptr<ControlState> createState() const;
 	*/
 	
-	//virtual rw::common::Ptr<AssemblyControlResponse> update(rw::common::Ptr<AssemblyParameterization> parameters, rw::common::Ptr<AssemblyState> real, rw::common::Ptr<AssemblyState> assumed, rw::common::Ptr<ControlState> controlState, State &state, FTSensor* ftSensor, double time) const = 0;
-	virtual rw::math::Transform3D<double>  getApproach(rw::common::Ptr<AssemblyParameterization> parameters) = 0;
+	//virtual rw::core::Ptr<AssemblyControlResponse> update(rw::core::Ptr<AssemblyParameterization> parameters, rw::core::Ptr<AssemblyState> real, rw::core::Ptr<AssemblyState> assumed, rw::core::Ptr<ControlState> controlState, State &state, FTSensor* ftSensor, double time) const = 0;
+	virtual rw::math::Transform3D<double>  getApproach(rw::core::Ptr<AssemblyParameterization> parameters) = 0;
 	virtual std::string getID() = 0;
 	virtual std::string getDescription() = 0;
-	virtual rw::common::Ptr<AssemblyParameterization> createParameterization(const rw::common::Ptr<PropertyMap> map) = 0;
+	virtual rw::core::Ptr<AssemblyParameterization> createParameterization(const rw::core::Ptr<PropertyMap> map) = 0;
 };
 
-%template (AssemblyControlStrategyPtr) rw::common::Ptr<AssemblyControlStrategy>;
+%template (AssemblyControlStrategyPtr) rw::core::Ptr<AssemblyControlStrategy>;
 
 class AssemblyParameterization
 {
 public:
 	AssemblyParameterization();
-	AssemblyParameterization(rw::common::Ptr<PropertyMap> pmap);
+	AssemblyParameterization(rw::core::Ptr<PropertyMap> pmap);
 	virtual ~AssemblyParameterization();
-	virtual rw::common::Ptr<PropertyMap> toPropertyMap() const;
-	virtual rw::common::Ptr<AssemblyParameterization> clone() const;
+	virtual rw::core::Ptr<PropertyMap> toPropertyMap() const;
+	virtual rw::core::Ptr<AssemblyParameterization> clone() const;
 };
 
-%template (AssemblyParameterizationPtr) rw::common::Ptr<AssemblyParameterization>;
+%template (AssemblyParameterizationPtr) rw::core::Ptr<AssemblyParameterization>;
 OWNEDPTR(AssemblyParameterization);
 
 class AssemblyRegistry
@@ -107,27 +107,27 @@ class AssemblyRegistry
 public:
 	AssemblyRegistry();
 	virtual ~AssemblyRegistry();
-	void addStrategy(const std::string id, rw::common::Ptr<AssemblyControlStrategy> strategy);
+	void addStrategy(const std::string id, rw::core::Ptr<AssemblyControlStrategy> strategy);
 	std::vector<std::string> getStrategies() const;
 	bool hasStrategy(const std::string& id) const;
-	rw::common::Ptr<AssemblyControlStrategy> getStrategy(const std::string &id) const;
+	rw::core::Ptr<AssemblyControlStrategy> getStrategy(const std::string &id) const;
 };
 
-%template (AssemblyRegistryPtr) rw::common::Ptr<AssemblyRegistry>;
+%template (AssemblyRegistryPtr) rw::core::Ptr<AssemblyRegistry>;
 OWNEDPTR(AssemblyRegistry);
 
 class AssemblyResult
 {
 public:
 	AssemblyResult();
-	AssemblyResult(rw::common::Ptr<Task<rw::math::Transform3D<double> > > task);
+	AssemblyResult(rw::core::Ptr<Task<rw::math::Transform3D<double> > > task);
 	virtual ~AssemblyResult();
-	rw::common::Ptr<AssemblyResult> clone() const;
-	rw::common::Ptr<Task<rw::math::Transform3D<double> > > toCartesianTask();
-	static void saveRWResult(rw::common::Ptr<AssemblyResult> result, const std::string& name);
-	static void saveRWResult(std::vector<rw::common::Ptr<AssemblyResult> > results, const std::string& name);
-	static std::vector<rw::common::Ptr<AssemblyResult> > load(const std::string& name);
-	static std::vector<rw::common::Ptr<AssemblyResult> > load(std::istringstream& inputStream);
+	rw::core::Ptr<AssemblyResult> clone() const;
+	rw::core::Ptr<Task<rw::math::Transform3D<double> > > toCartesianTask();
+	static void saveRWResult(rw::core::Ptr<AssemblyResult> result, const std::string& name);
+	static void saveRWResult(std::vector<rw::core::Ptr<AssemblyResult> > results, const std::string& name);
+	static std::vector<rw::core::Ptr<AssemblyResult> > load(const std::string& name);
+	static std::vector<rw::core::Ptr<AssemblyResult> > load(std::istringstream& inputStream);
 	
 	bool success;
 	//Error error;
@@ -136,23 +136,23 @@ public:
 	std::string taskID;
 	std::string resultID;
     
-    Path<Timed<AssemblyState> > realState;
-	Path<Timed<AssemblyState> > assumedState;
+    rw::trajectory::Path<Timed<AssemblyState> > realState;
+	rw::trajectory::Path<Timed<AssemblyState> > assumedState;
 	rw::math::Transform3D<double>  approach;
 	std::string errorMessage;
 };
 
-%template (AssemblyResultPtr) rw::common::Ptr<AssemblyResult>;
-%template (AssemblyResultPtrVector) std::vector<rw::common::Ptr<AssemblyResult> >;
+%template (AssemblyResultPtr) rw::core::Ptr<AssemblyResult>;
+%template (AssemblyResultPtrVector) std::vector<rw::core::Ptr<AssemblyResult> >;
 OWNEDPTR(AssemblyResult);
 
 class AssemblyState
 {
 public:
 	AssemblyState();
-	//AssemblyState(rw::common::Ptr<Target<rw::math::Transform3D<double> > > target);
+	//AssemblyState(rw::core::Ptr<Target<rw::math::Transform3D<double> > > target);
 	virtual ~AssemblyState();
-	//static rw::common::Ptr<Target<rw::math::Transform3D<double> > > toCartesianTarget(const AssemblyState &state);
+	//static rw::core::Ptr<Target<rw::math::Transform3D<double> > > toCartesianTarget(const AssemblyState &state);
 
 	std::string phase;
 	rw::math::Transform3D<double>  femaleOffset;
@@ -161,36 +161,36 @@ public:
 	rw::math::Wrench6D<double> ftSensorMale;
 	rw::math::Wrench6D<double> ftSensorFemale;
 	bool contact;
-	Path<rw::math::Transform3D<double> > maleflexT;
-	Path<rw::math::Transform3D<double> > femaleflexT;
-	Path<rw::math::Transform3D<double> > contacts;
+	rw::trajectory::Path<rw::math::Transform3D<double> > maleflexT;
+	rw::trajectory::Path<rw::math::Transform3D<double> > femaleflexT;
+	rw::trajectory::Path<rw::math::Transform3D<double> > contacts;
 	rw::math::Vector3D<double> maxContactForce;
 };
 
-%template (AssemblyStatePtr) rw::common::Ptr<AssemblyState>;
+%template (AssemblyStatePtr) rw::core::Ptr<AssemblyState>;
 %template (TimedAssemblyState) Timed<AssemblyState>;
 %template (TimedAssemblyStateVector) std::vector<Timed<AssemblyState> >;
-%template (PathTimedAssemblyState) Path<Timed<AssemblyState> >;
+%template (PathTimedAssemblyState) rw::trajectory::Path<Timed<AssemblyState> >;
 OWNEDPTR(AssemblyState);
 
 class AssemblyTask
 {
 public:
 	AssemblyTask();
-	AssemblyTask(rw::common::Ptr<Task<rw::math::Transform3D<double> > > task, rw::common::Ptr<AssemblyRegistry> registry = NULL);
+	AssemblyTask(rw::core::Ptr<Task<rw::math::Transform3D<double> > > task, rw::core::Ptr<AssemblyRegistry> registry = NULL);
 	virtual ~AssemblyTask();
-	rw::common::Ptr<Task<rw::math::Transform3D<double> > > toCartesianTask();
-	static void saveRWTask(rw::common::Ptr<AssemblyTask> task, const std::string& name);
-	static void saveRWTask(std::vector<rw::common::Ptr<AssemblyTask> > tasks, const std::string& name);
-	static std::vector<rw::common::Ptr<AssemblyTask> > load(const std::string& name, rw::common::Ptr<AssemblyRegistry> registry = NULL);
-	static std::vector<rw::common::Ptr<AssemblyTask> > load(std::istringstream& inputStream, rw::common::Ptr<AssemblyRegistry> registry = NULL);
-	rw::common::Ptr<AssemblyTask> clone() const;
+	rw::core::Ptr<Task<rw::math::Transform3D<double> > > toCartesianTask();
+	static void saveRWTask(rw::core::Ptr<AssemblyTask> task, const std::string& name);
+	static void saveRWTask(std::vector<rw::core::Ptr<AssemblyTask> > tasks, const std::string& name);
+	static std::vector<rw::core::Ptr<AssemblyTask> > load(const std::string& name, rw::core::Ptr<AssemblyRegistry> registry = NULL);
+	static std::vector<rw::core::Ptr<AssemblyTask> > load(std::istringstream& inputStream, rw::core::Ptr<AssemblyRegistry> registry = NULL);
+	rw::core::Ptr<AssemblyTask> clone() const;
 
 	std::string maleID;
     std::string femaleID;
     rw::math::Transform3D<double>  femaleTmaleTarget;
-    rw::common::Ptr<AssemblyControlStrategy> strategy;
-    rw::common::Ptr<AssemblyParameterization> parameters;
+    rw::core::Ptr<AssemblyControlStrategy> strategy;
+    rw::core::Ptr<AssemblyParameterization> parameters;
     
     std::string maleTCP;
     std::string femaleTCP;
@@ -210,6 +210,6 @@ public:
     std::vector<std::string> bodyContactSensors;
 };
 
-%template (AssemblyTaskPtr) rw::common::Ptr<AssemblyTask>;
-%template (AssemblyTaskPtrVector) std::vector<rw::common::Ptr<AssemblyTask> >;
+%template (AssemblyTaskPtr) rw::core::Ptr<AssemblyTask>;
+%template (AssemblyTaskPtrVector) std::vector<rw::core::Ptr<AssemblyTask> >;
 OWNEDPTR(AssemblyTask);

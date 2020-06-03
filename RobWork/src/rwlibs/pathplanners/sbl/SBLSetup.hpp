@@ -24,6 +24,7 @@
 */
 
 #include "SBLOptions.hpp"
+#include <rw/core/Ptr.hpp>
 
 namespace rw { namespace models { class Device; } }
 
@@ -74,7 +75,7 @@ class SBLExpand;
         SBLSetup make(
 			rw::pathplanning::QConstraint::Ptr constraint,
 			rw::pathplanning::QEdgeConstraintIncremental::Ptr edgeConstraint,
-            rw::common::Ptr<SBLExpand> expansion,
+            rw::core::Ptr<SBLExpand> expansion,
 			rw::math::QMetric::Ptr metric,
             double connectRadius);
 
@@ -111,7 +112,7 @@ class SBLExpand;
 			rw::pathplanning::QConstraint::Ptr constraint,
 			rw::pathplanning::QEdgeConstraintIncremental::Ptr edgeConstraint,
 //            const rw::pathplanning::PlannerConstraint& constraint,
-			rw::common::Ptr<rw::models::Device> device,
+			rw::core::Ptr<rw::models::Device> device,
             double expandRadius = -1,
             double connectRadius = -1);
 

@@ -26,9 +26,9 @@
 
 #include <QWidget>
 
-#include <rw/common/ExtensionPoint.hpp>
+#include <rw/core/ExtensionPoint.hpp>
 
-namespace rw { namespace common { class PropertyMap; } }
+namespace rw { namespace core { class PropertyMap; } }
 namespace rw { namespace graphics { class GroupNode; } }
 namespace rw { namespace graphics { class SceneGraph; } }
 namespace rwsim { namespace dynamics { class DynamicWorkCell; } }
@@ -56,19 +56,19 @@ public:
 	 * @brief Set the dynamic workcell for visualisation of the log information.
 	 * @param dwc [in] the dynamic workcell.
 	 */
-	virtual void setDWC(rw::common::Ptr<const rwsim::dynamics::DynamicWorkCell> dwc) = 0;
+	virtual void setDWC(rw::core::Ptr<const rwsim::dynamics::DynamicWorkCell> dwc) = 0;
 
 	/**
 	 * @brief Set the log entity to show.
 	 * @param entry [in] the log entity.
 	 */
-	virtual void setEntry(rw::common::Ptr<const rwsim::log::SimulatorLog> entry) = 0;
+	virtual void setEntry(rw::core::Ptr<const rwsim::log::SimulatorLog> entry) = 0;
 
 	/**
 	 * @brief Get the current log entity.
 	 * @return the log entity.
 	 */
-	virtual rw::common::Ptr<const rwsim::log::SimulatorLog> getEntry() const = 0;
+	virtual rw::core::Ptr<const rwsim::log::SimulatorLog> getEntry() const = 0;
 
 	/**
 	 * @brief Re-read logging data and update widget.
@@ -80,7 +80,7 @@ public:
 	 * @param root [in] the node to add drawables to.
 	 * @param graph [in] the scene graph.
 	 */
-	virtual void showGraphics(rw::common::Ptr<rw::graphics::GroupNode> root, rw::common::Ptr<rw::graphics::SceneGraph> graph) = 0;
+	virtual void showGraphics(rw::core::Ptr<rw::graphics::GroupNode> root, rw::core::Ptr<rw::graphics::SceneGraph> graph) = 0;
 
 	/**
 	 * @brief Get the name of the widget (will be used as the name on tabs).
@@ -92,13 +92,13 @@ public:
 	 * @brief Set properties for widget.
 	 * @param properties [in/out] properties, such as default values for scaling of graphical elements.
 	 */
-	virtual void setProperties(rw::common::Ptr<rw::common::PropertyMap> properties);
+	virtual void setProperties(rw::core::Ptr<rw::core::PropertyMap> properties);
 
 	//! @brief Dispatchers are responsible for creating new widgets of type SimulatorLogEntryWidget.
 	class Dispatcher {
 	public:
 		//! @brief Smart pointer to a dispatcher.
-		typedef rw::common::Ptr<const Dispatcher> Ptr;
+		typedef rw::core::Ptr<const Dispatcher> Ptr;
 
 		//! @brief Destructor.
 		virtual ~Dispatcher() {};
@@ -109,14 +109,14 @@ public:
 		 * @param parent [in] the parent Qt widget (optional).
 		 * @return a pointer to the widget - ownership is shared by the caller and the parent widget if given.
 		 */
-		virtual SimulatorLogEntryWidget* makeWidget(rw::common::Ptr<const rwsim::log::SimulatorLog> entry, QWidget* parent = 0) const = 0;
+		virtual SimulatorLogEntryWidget* makeWidget(rw::core::Ptr<const rwsim::log::SimulatorLog> entry, QWidget* parent = 0) const = 0;
 
 		/**
 		 * @brief Check if the widget created by this dispatcher will be work for the given log entry.
 		 * @param entry [in] the entry.
 		 * @return true if widgets will work for this entry, or false otherwise.
 		 */
-		virtual bool accepts(rw::common::Ptr<const rwsim::log::SimulatorLog> entry) const = 0;
+		virtual bool accepts(rw::core::Ptr<const rwsim::log::SimulatorLog> entry) const = 0;
 
 	protected:
 		Dispatcher() {};
@@ -131,14 +131,14 @@ public:
 	 * @brief A factory for a SimulatorLogEntryWidget. This factory also defines an
 	 * extension point for SimulatorLogEntryWidget::Dispatcher.
 	 */
-    class Factory: public rw::common::ExtensionPoint<SimulatorLogEntryWidget::Dispatcher> {
+    class Factory: public rw::core::ExtensionPoint<SimulatorLogEntryWidget::Dispatcher> {
     public:
     	/**
     	 * @brief Get a list of widget dispatchers that accepts the given entry.
     	 * @param entry [in] the entry to match.
     	 * @return the list of dispatchers.
     	 */
-    	static std::list<SimulatorLogEntryWidget::Dispatcher::Ptr> getWidgetDispatchers(rw::common::Ptr<const rwsim::log::SimulatorLog> entry);
+    	static std::list<SimulatorLogEntryWidget::Dispatcher::Ptr> getWidgetDispatchers(rw::core::Ptr<const rwsim::log::SimulatorLog> entry);
 
     	/**
     	 * @brief Create widget(s) for the given entry.
@@ -146,7 +146,7 @@ public:
 		 * @param parent [in] the parent Qt widget (optional).
     	 * @return a list of new widgets - ownership is shared by the caller and the parent widget if given.
     	 */
-    	static std::list<SimulatorLogEntryWidget*> makeWidgets(rw::common::Ptr<const rwsim::log::SimulatorLog> entry, QWidget* parent = 0);
+    	static std::list<SimulatorLogEntryWidget*> makeWidgets(rw::core::Ptr<const rwsim::log::SimulatorLog> entry, QWidget* parent = 0);
 
     private:
         Factory();
@@ -158,7 +158,7 @@ signals:
 
 protected:
 	//! @brief Widget properties.
-	rw::common::Ptr<rw::common::PropertyMap> _properties;
+	rw::core::Ptr<rw::core::PropertyMap> _properties;
 };
 //! @}
 } /* namespace gui */

@@ -20,7 +20,7 @@
 
 #include <vector>
 #include <rw/math/VectorND.hpp>
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 //! @file ConvexHullND.hpp
 
@@ -37,7 +37,7 @@ namespace geometry {
 	class ConvexHullND {
 	public:
 	    //! smart pointer type of this class
-	    typedef rw::common::Ptr<ConvexHullND<N> > Ptr;
+	    typedef rw::core::Ptr<ConvexHullND<N> > Ptr;
 
 		/**
 		 * @brief rebuilts the hull

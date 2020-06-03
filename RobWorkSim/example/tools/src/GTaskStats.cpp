@@ -13,10 +13,10 @@
 #include <boost/program_options/parsers.hpp>
 #define BOOST_FILESYSTEM_VERSION 3
 #include <boost/filesystem.hpp>
-#include <Eigen/Eigen>
+#include <Eigen/Core>
 
 using namespace std;
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::math;
 using namespace rwlibs::task;
 using namespace boost::program_options;

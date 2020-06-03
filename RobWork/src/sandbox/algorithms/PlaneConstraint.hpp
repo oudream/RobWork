@@ -45,7 +45,7 @@ namespace rwlibs { namespace algorithms {
 class PlaneConstraint : public ConstraintModel {
 	public:
 		//! @brief Smart pointer type to this class.
-		typedef rw::common::Ptr<PlaneConstraint> Ptr;
+		typedef rw::core::Ptr<PlaneConstraint> Ptr;
 		
 		//! @copydoc ConstraintModel::MinSamples
 		static const int MinSamples = 3; // ??

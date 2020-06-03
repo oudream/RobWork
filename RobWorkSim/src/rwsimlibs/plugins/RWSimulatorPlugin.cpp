@@ -36,7 +36,7 @@
 #include <RobWorkStudio.hpp>
 
 #include <rw/math/Transform3D.hpp>
-#include <rw/common/StringUtil.hpp>
+#include <rw/core/StringUtil.hpp>
 //#include <rw/models/Device.hpp>
 #include <rwlibs/opengl/Drawable.hpp>
 
@@ -48,9 +48,9 @@
 #include <rwsim/simulator/DynamicSimulator.hpp>
 #include <rwsim/simulator/PhysicsEngine.hpp>
 
-#include <rw/common/Log.hpp>
-#include <rw/common/Exception.hpp>
-#include <rw/common/LogStreamWriter.hpp>
+#include <rw/core/Log.hpp>
+#include <rw/core/Exception.hpp>
+#include <rw/core/LogStreamWriter.hpp>
 
 #include <sstream>
 #include <fstream>
@@ -60,6 +60,7 @@
 
 using namespace rw::math;
 using namespace rw::common;
+using namespace rw::core;
 using rw::graphics::Render;
 using rw::trajectory::Timed;
 using rw::kinematics::State;
@@ -319,7 +320,7 @@ void RWSimulatorPlugin::open(rw::models::WorkCell* workcell)
         if( sensor.cast<rwsim::sensor::TactileArraySensor>() ){
         	rwsim::sensor::TactileArraySensor::Ptr tsensor = sensor.cast<rwsim::sensor::TactileArraySensor>();
             TactileArrayRender *render = new TactileArrayRender(tsensor->getTactileArrayModel());
-            Drawable *drawable = new Drawable(boost::shared_ptr<Render>(render), tsensor->getName());
+            Drawable *drawable = new Drawable(ownedPtr(render), tsensor->getName());
             getRobWorkStudio()->getWorkCellScene()->addDrawable(drawable, tsensor->getFrame());
         }
     }
@@ -493,7 +494,7 @@ void RWSimulatorPlugin::open(){
 void RWSimulatorPlugin::open(const std::string& file)
 {
     if (!file.empty()){
-        _previousOpenDirectory = rw::common::StringUtil::getDirectoryName(file);
+        _previousOpenDirectory = rw::core::StringUtil::getDirectoryName(file);
 
         try {
         	_dworkcell = DynamicWorkCellLoader::load(file);
@@ -533,6 +534,6 @@ void RWSimulatorPlugin::open(const std::string& file)
 void RWSimulatorPlugin::initialize(){
 
     getRobWorkStudio()->genericEvent().add(
-          boost::bind(&RWSimulatorPlugin::genericEventListener, this, _1), this);
+          boost::bind(&RWSimulatorPlugin::genericEventListener, this, boost::arg<1>()), this);
 
 }

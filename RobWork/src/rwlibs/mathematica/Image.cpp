@@ -19,7 +19,7 @@
 #include "RawArray.hpp"
 #include "Rule.hpp"
 
-#include <rw/common/PropertyMap.hpp>
+#include <rw/core/PropertyMap.hpp>
 #include <rw/sensor/Image.hpp>
 
 
@@ -27,7 +27,7 @@
 using namespace rw::common;
 using namespace rwlibs::mathematica;
 
-Image::Image(rw::common::Ptr<const rw::sensor::Image> image):
+Image::Image(rw::core::Ptr<const rw::sensor::Image> image):
 	Mathematica::FunctionBase("Image")
 {
 	std::vector<std::size_t> dims;
@@ -85,8 +85,8 @@ Image::Image(const Expression& data, const PropertyMap& options):
 Image::~Image() {
 }
 
-std::list<rw::common::Ptr<const Mathematica::Expression> > Image::getArguments() const {
-	std::list<rw::common::Ptr<const Mathematica::Expression> > res;
+std::list<rw::core::Ptr<const Mathematica::Expression> > Image::getArguments() const {
+	std::list<rw::core::Ptr<const Mathematica::Expression> > res;
 	res.push_back(_data);
 	if (!_type.isNull())
 		res.push_back(_type);
@@ -131,32 +131,32 @@ rw::sensor::Image::Ptr Image::toRobWorkImage(const Mathematica::Expression& expr
 	if (fct.getName() != "Image")
 		RW_THROW("Could not create Image expression: Expected Image function, but got \"" << fct.getName() << "\".");
 
-	const std::list<rw::common::Ptr<const Expression> >& args = fct.getArguments();
+	const std::list<rw::core::Ptr<const Expression> >& args = fct.getArguments();
 	if (args.size() == 0)
 		RW_THROW("Expected 1 or more arguments in Image expression.");
-	std::list<rw::common::Ptr<const Expression> >::const_iterator it = args.begin();
-	const rw::common::Ptr<const Expression> dataArg = *it;
+	std::list<rw::core::Ptr<const Expression> >::const_iterator it = args.begin();
+	const rw::core::Ptr<const Expression> dataArg = *it;
 	if (dataArg->getType() != Mathematica::Expression::Function && dataArg->getType() != Mathematica::Expression::Array)
 		RW_THROW("Expected first argument in Image expression to be a Function or an Array.");
 	it++;
 	std::string type = "Real";
 	if (it != args.end()) {
-		const rw::common::Ptr<const Expression> typeArg = *it;
+		const rw::core::Ptr<const Expression> typeArg = *it;
 		if (typeArg->getType() != Mathematica::Expression::String)
 			RW_THROW("Expected second argument in Image expression to be a String.");
 		type = typeArg.cast<const Mathematica::String>()->value();
 	}
-	std::list<rw::common::Ptr<const Expression> > rules;
+	std::list<rw::core::Ptr<const Expression> > rules;
 	for (it++; it != args.end(); it++) {
 		rules.push_back(*it);
 	}
 	const PropertyMap::Ptr map = Rule::toPropertyMap(rules);
 	const std::string colorSpace = map->get<std::string>("ColorSpace","Automatic");
 
-	const rw::common::Ptr<const Mathematica::FunctionBase> dataFct = dataArg.cast<const Mathematica::FunctionBase>();
+	const rw::core::Ptr<const Mathematica::FunctionBase> dataFct = dataArg.cast<const Mathematica::FunctionBase>();
 	if (type == "Byte") {
 		if (colorSpace == "RGB") {
-			rw::common::Ptr<const Mathematica::Array<unsigned char> > array;
+			rw::core::Ptr<const Mathematica::Array<unsigned char> > array;
 			if (!dataFct.isNull())
 				array = RawArray<unsigned char, 3>::fromExpression(*dataFct);
 			else

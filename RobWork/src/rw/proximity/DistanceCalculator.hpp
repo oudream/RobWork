@@ -49,9 +49,9 @@ namespace rw { namespace proximity {
     class DistanceCalculator {
     public:
 		//! @brief smart pointer type to this class
-		typedef rw::common::Ptr<DistanceCalculator> Ptr;
+		typedef rw::core::Ptr<DistanceCalculator> Ptr;
         //! @brief smart pointer type to this const class
-		typedef rw::common::Ptr< const DistanceCalculator > CPtr;
+		typedef rw::core::Ptr< const DistanceCalculator > CPtr;
         /**
          * @brief Distance calculations for a given tree, collision setup and
          * primitive distance calculator. Uses proximity strategy given by the workcell.
@@ -72,7 +72,7 @@ namespace rw { namespace proximity {
          * initial traversal of the tree.
          */
         DistanceCalculator(rw::kinematics::Frame *root,
-                           rw::common::Ptr<rw::models::WorkCell> workcell,
+                           rw::core::Ptr<rw::models::WorkCell> workcell,
 						   DistanceStrategy::Ptr strategy,
         				   const rw::kinematics::State& initial_state);
 
@@ -86,7 +86,7 @@ namespace rw { namespace proximity {
          * @param workcell [in] the workcell to check
          * @param strategy [in] the distance calculation strategy to use
          */
-		DistanceCalculator(rw::common::Ptr<rw::models::WorkCell> workcell,
+		DistanceCalculator(rw::core::Ptr<rw::models::WorkCell> workcell,
 			DistanceStrategy::Ptr strategy);
 
 
@@ -208,7 +208,7 @@ namespace rw { namespace proximity {
          * @brief Initializes the geometry of the workcell. The geometry is added to the used strategy
          * @param wc [in] Pointer to workcell to import geometry from.
          */
-        void initializeGeometry(rw::common::Ptr<const rw::models::WorkCell> wc);
+        void initializeGeometry(rw::core::Ptr<const rw::models::WorkCell> wc);
         /**
          * @brief Initializes the distance pairs to collision check based on
          * collision setup of the workcell.

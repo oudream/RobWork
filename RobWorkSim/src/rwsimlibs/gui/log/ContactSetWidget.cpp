@@ -27,6 +27,7 @@
 #include <QItemSelection>
 
 using namespace rw::common;
+using namespace rw::core;
 using namespace rw::graphics;
 using namespace rw::kinematics;
 using namespace rw::math;
@@ -35,7 +36,7 @@ using namespace rwsim::dynamics;
 using namespace rwsim::log;
 using namespace rwsimlibs::gui;
 
-ContactSetWidget::ContactSetWidget(rw::common::Ptr<const LogContactSet> entry, QWidget* parent):
+ContactSetWidget::ContactSetWidget(rw::core::Ptr<const LogContactSet> entry, QWidget* parent):
 	SimulatorLogEntryWidget(parent),
 	_ui(new Ui::ContactSetWidget()),
 	_contactSet(entry)
@@ -75,18 +76,18 @@ ContactSetWidget::~ContactSetWidget() {
 	}
 }
 
-void ContactSetWidget::setDWC(rw::common::Ptr<const DynamicWorkCell> dwc) {
+void ContactSetWidget::setDWC(rw::core::Ptr<const DynamicWorkCell> dwc) {
 }
 
-void ContactSetWidget::setEntry(rw::common::Ptr<const SimulatorLog> entry) {
-	const rw::common::Ptr<const LogContactSet> set = entry.cast<const LogContactSet>();
+void ContactSetWidget::setEntry(rw::core::Ptr<const SimulatorLog> entry) {
+	const rw::core::Ptr<const LogContactSet> set = entry.cast<const LogContactSet>();
 	if (!(set == NULL))
 		_contactSet = set;
 	else
 		RW_THROW("_contactSet (setEntry): invalid entry!");
 }
 
-rw::common::Ptr<const SimulatorLog> ContactSetWidget::getEntry() const {
+rw::core::Ptr<const SimulatorLog> ContactSetWidget::getEntry() const {
 	return _contactSet;
 }
 
@@ -354,15 +355,15 @@ ContactSetWidget::Dispatcher::Dispatcher() {
 ContactSetWidget::Dispatcher::~Dispatcher() {
 }
 
-SimulatorLogEntryWidget* ContactSetWidget::Dispatcher::makeWidget(rw::common::Ptr<const SimulatorLog> entry, QWidget* parent) const {
-	const rw::common::Ptr<const LogContactSet> contactSet = entry.cast<const LogContactSet>();
+SimulatorLogEntryWidget* ContactSetWidget::Dispatcher::makeWidget(rw::core::Ptr<const SimulatorLog> entry, QWidget* parent) const {
+	const rw::core::Ptr<const LogContactSet> contactSet = entry.cast<const LogContactSet>();
 	if (!(contactSet == NULL))
 		return new ContactSetWidget(contactSet, parent);
 	RW_THROW("ContactSetWidget::Dispatcher (makeWidget): invalid entry!");
 	return NULL;
 }
 
-bool ContactSetWidget::Dispatcher::accepts(rw::common::Ptr<const SimulatorLog> entry) const {
+bool ContactSetWidget::Dispatcher::accepts(rw::core::Ptr<const SimulatorLog> entry) const {
 	if (!(entry.cast<const LogContactSet>() == NULL))
 		return true;
 	return false;

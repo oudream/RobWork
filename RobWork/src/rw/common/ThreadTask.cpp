@@ -17,15 +17,16 @@
 
 #include "ThreadTask.hpp"
 
-#include "Exception.hpp"
-#include "ThreadPool.hpp"
-#include "ThreadSafeVariable.hpp"
-#include "macros.hpp"
+#include <rw/core/Exception.hpp>
+#include <rw/common/ThreadPool.hpp>
+#include <rw/common/ThreadSafeVariable.hpp>
+#include <rw/core/macros.hpp>
 
 #include <boost/bind.hpp>
 
 
 using namespace rw::common;
+using namespace rw::core;
 
 ThreadTask::ThreadTask (ThreadTask::Ptr parent) :
     _pool (new ThreadSafeVariable< ThreadPool::Ptr > (parent != NULL ? parent->getThreadPool ()
@@ -126,7 +127,7 @@ bool ThreadTask::execute ()
     ThreadPool::Ptr pool = _pool->getVariable ();
     // Work is now added to the pool, where it is queued (it might start executing immediately).
     if (pool != NULL) {
-        ThreadPool::WorkFunction workFct = boost::bind (&ThreadTask::runWrap, this, _1);
+        ThreadPool::WorkFunction workFct = boost::bind (&ThreadTask::runWrap, this, boost::arg<1>());
         pool->addWork (workFct);
     }
     else {
@@ -178,7 +179,7 @@ bool ThreadTask::addSubTask (ThreadTask::Ptr subtask)
         std::vector< ThreadTask::Ptr > children = _children->getVariable ();
         children.push_back (subtask);
         _children->setVariable (children);
-        subtask->_parentCallback->setVariable (boost::bind (&ThreadTask::callbackParent, this, _1));
+        subtask->_parentCallback->setVariable (boost::bind (&ThreadTask::callbackParent, this, boost::arg<1>()));
         _childrenMissing->setVariable (_childrenMissing->getVariable () + 1);
         // If the task is currently IDLE, we change the state to CHILDREN.
         if (state == IDLE) {

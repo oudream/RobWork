@@ -28,7 +28,7 @@ using namespace rw::kinematics;
 using namespace rw::math;
 using namespace rw::models;
 
-ClosedFormIKSolverKukaIIWA::ClosedFormIKSolverKukaIIWA(const rw::common::Ptr<const rw::models::SerialDevice> device, const State& state):
+ClosedFormIKSolverKukaIIWA::ClosedFormIKSolverKukaIIWA(const rw::core::Ptr<const rw::models::SerialDevice> device, const State& state):
 	_device(device),
 	_checkJointLimits(true),
 	_qLow(device->getBounds().first),
@@ -126,7 +126,7 @@ std::pair<double,double> ClosedFormIKSolverKukaIIWA::findBaseAngles(const Vector
 }
 
 void ClosedFormIKSolverKukaIIWA::addBaseAngleSolutions(const Rotation3D<>& baseRend, const Vector3D<>& baseP6, const Vector3D<>& basePtarget4, State& state, double angle, std::vector<Q>& res) const {
-	Q tmpQ = Q(7,angle,0,0,0,0,0,0);
+	Q tmpQ = Q(7,angle,0.0,0.0,0.0,0.0,0.0,0.0);
 
 	const Rotation2D<> baseR1(-angle);
 	const Vector3D<> diff = basePtarget4-_baseP2;
@@ -159,7 +159,7 @@ void ClosedFormIKSolverKukaIIWA::addBaseAngleSolutions(const Rotation3D<>& baseR
 }
 
 void ClosedFormIKSolverKukaIIWA::addOuterSolutions(const Rotation3D<>& baseRend, const Vector3D<>& baseP6, State& state, double angle1, double angle2, double angle3, std::vector<Q>& res) const {
-	Q tmpQ = Q(7,angle1,angle2,angle3,0,0,0,0);
+	Q tmpQ = Q(7,angle1,angle2,angle3,0.0,0.0,0.0,0.0);
 	_device->setQ(tmpQ, state);
 
 	const Transform3D<> j3Tbase = _fkRange3_0.get(state);
@@ -192,7 +192,7 @@ void ClosedFormIKSolverKukaIIWA::addOuterSolutions(const Rotation3D<>& baseRend,
 }
 
 void ClosedFormIKSolverKukaIIWA::addRotationSolutions(const Rotation3D<>& baseRend, State& state, double angle1, double angle2, double angle3, double angle4, double angle5, std::vector<Q>& res) const {
-	Q tmpQ = Q(7,angle1,angle2,angle3,angle4,angle5,0,0);
+	Q tmpQ = Q(7,angle1,angle2,angle3,angle4,angle5,0.0,0.0);
 	_device->setQ(tmpQ, state);
 
 	const Vector3D<> tcpZ = baseRend.getCol(2);

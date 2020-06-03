@@ -38,9 +38,11 @@
 #include "RobWorkStudioPlugin.hpp"
 #include "HelpAssistant.hpp"
 
-#include <rw/common/os.hpp>
-#include <rw/common/Exception.hpp>
-#include <rw/common/StringUtil.hpp>
+#include <rw/core/os.hpp>
+#include <rw/core/Exception.hpp>
+#include <rw/core/StringUtil.hpp>
+#include <rw/core/Exception.hpp>
+#include <rw/common/TimerUtil.hpp>
 #include <rw/kinematics/StateStructure.hpp>
 #include <rw/models/WorkCell.hpp>
 #include <rw/proximity/CollisionSetup.hpp>
@@ -62,11 +64,9 @@
 #include <boost/bind.hpp>
 #include <sstream>
 
-//#include <sandbox/loaders/ColladaLoader.hpp>
-
 using namespace rw;
+using namespace rw::core;
 using namespace rw::common;
-
 using namespace rw::loaders;
 using namespace rw::math;
 using namespace rw::models;
@@ -81,14 +81,14 @@ namespace
 {
     WorkCell::Ptr emptyWorkCell()
     {
-        WorkCell::Ptr workcell = rw::common::ownedPtr(new WorkCell(ownedPtr(new StateStructure())));
+        WorkCell::Ptr workcell = rw::core::ownedPtr(new WorkCell(ownedPtr(new StateStructure())));
         CollisionSetup::set(CollisionSetup(), workcell);
         return workcell;
     }
 
     CollisionDetector::Ptr makeCollisionDetector(WorkCell::Ptr workcell)
     {
-        return rw::common::ownedPtr(
+        return rw::core::ownedPtr(
             new CollisionDetector(
                 workcell,
                 ProximityStrategyFactory::makeDefaultCollisionStrategy()
@@ -109,7 +109,7 @@ RobWorkStudio::RobWorkStudio(const PropertyMap& map)
 	//Always create the about box.
 	_aboutBox = new AboutBox(RW_VERSION, RW_REVISION, this);
 	// should load dynamically
-    //rw::common::ExtensionRegistry::getInstance()->registerExtensions( ownedPtr( new RWSImageLoaderPlugin() ) );
+    //rw::core::ExtensionRegistry::getInstance()->registerExtensions( ownedPtr( new RWSImageLoaderPlugin() ) );
     //_robwork->getPluginRepository().addPlugin(ownedPtr( new ColladaLoaderPlugin() ), true);
     std::stringstream sstr;
     sstr << " RobWorkStudio v" << RW_VERSION;
@@ -124,7 +124,7 @@ RobWorkStudio::RobWorkStudio(const PropertyMap& map)
     if( exists(settingsPath) ){
         try {
             _propMap = DOMPropertyMapLoader::load("rwsettings.xml");
-        } catch(rw::common::Exception &e){
+        } catch(rw::core::Exception &e){
             RW_WARN("Could not load settings from 'rwsettings.xml': " << e.getMessage().getText() << "\n Using default settings!");
         } catch(std::exception &e){
             RW_WARN("Could not load settings from 'rwsettings.xml': " << e.what() << "\n Using default settings!");
@@ -209,7 +209,7 @@ void RobWorkStudio::closeEvent( QCloseEvent * e )
         _propMap.erase("LuaState");
         try {
             DOMPropertyMapSaver::save(_propMap, "rwsettings.xml");
-        } catch(const rw::common::Exception& e) {
+        } catch(const rw::core::Exception& e) {
             RW_WARN("Error saving settings file: " << e);
         } catch(...) {
             RW_WARN("Error saving settings file due to unknown exception!");
@@ -232,12 +232,12 @@ void RobWorkStudio::closeEvent( QCloseEvent * e )
 	e->accept();
 }
 
-rw::common::Log& RobWorkStudio::log()
+rw::core::Log& RobWorkStudio::log()
 {
     return _robwork->getLog();  	
 }
 
-rw::common::Log::Ptr RobWorkStudio::logPtr()
+rw::core::Log::Ptr RobWorkStudio::logPtr()
 {
     return _robwork->getLogPtr();
 }
@@ -796,7 +796,7 @@ void RobWorkStudio::reloadWorkCell()
             openWorkCellFile(QString(_workcell->getFilename().c_str()));
         }
     }
-    catch (const rw::common::Exception& exp) {
+    catch (const rw::core::Exception& exp) {
         QMessageBox::information(
             NULL,
             "Exception",
@@ -894,7 +894,7 @@ void RobWorkStudio::openFile(const std::string& file)
             }
         }
     }
-    catch (const rw::common::Exception& exp) {
+    catch (const rw::core::Exception& exp) {
         QMessageBox::information(
             NULL,
             "Exception",
@@ -1068,14 +1068,14 @@ namespace {
         static const QEvent::Type GenericAnyEvent = (QEvent::Type)1209;
 
         boost::any _anyData;
-        rw::common::Ptr<bool> _hs;
+        rw::core::Ptr<bool> _hs;
 
-        RobWorkStudioEvent(QEvent::Type type, rw::common::Ptr<bool> hs, boost::any adata):
+        RobWorkStudioEvent(QEvent::Type type, rw::core::Ptr<bool> hs, boost::any adata):
         	QEvent(type),_anyData(adata),_hs( hs )
         {
         }
 
-        RobWorkStudioEvent(QEvent::Type type, rw::common::Ptr<bool> hs):
+        RobWorkStudioEvent(QEvent::Type type, rw::core::Ptr<bool> hs):
         	QEvent(type),_anyData(NULL),_hs( hs )
         {
         }
@@ -1125,7 +1125,7 @@ namespace {
             //std::cout << "Wait done: " << std::endl;
         }
 
-        rw::common::Ptr<bool> _hs;
+        rw::core::Ptr<bool> _hs;
         RobWorkStudioEvent *event;
 
     };
@@ -1310,7 +1310,7 @@ namespace {
 boost::any RobWorkStudio::waitForAnyEvent(const std::string& id, double timeout){
 	//std::cout << " Wait for ANY event, with id: " << id << std::endl;
     AnyEventListener listener(id);
-    genericAnyEvent().add( boost::bind(&AnyEventListener::cb, &listener, _1, _2), &listener );
+    genericAnyEvent().add( boost::bind(&AnyEventListener::cb, &listener, boost::arg<1>(), boost::arg<2>()), &listener );
     //std::cout << "Added event, now wait!" << std::endl;
     // now wait until event is called
     const double starttime = TimerUtil::currentTime();

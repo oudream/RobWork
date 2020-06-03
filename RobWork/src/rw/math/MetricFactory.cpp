@@ -82,7 +82,7 @@ template class rw::math::InfinityMetric<Vector3D<float> >;
 template class rw::math::WeightedInfinityMetric<Vector3D<float> >;
 
 // --
-#include <Eigen/Eigen>
+#include <Eigen/Core>
 
 template class rw::math::ManhattanMetric<Eigen::VectorXd >;
 template class rw::math::WeightedManhattanMetric<Eigen::VectorXd >;
@@ -123,20 +123,3 @@ template class rw::math::WeightedEuclideanMetric<std::vector<float> >;
 
 template class rw::math::InfinityMetric<std::vector<float> >;
 template class rw::math::WeightedInfinityMetric<std::vector<float> >;
-
-// --
-
-// You can remove this math -> kinematics dependency if you want. Right now we
-// leave it here just to check that states can be treated as vectors.
-
-#include <rw/kinematics/State.hpp>
-using namespace rw::kinematics;
-
-template class rw::math::ManhattanMetric<State>;
-template class rw::math::WeightedManhattanMetric<State>;
-
-template class rw::math::EuclideanMetric<State>;
-template class rw::math::WeightedEuclideanMetric<State>;
-
-template class rw::math::InfinityMetric<State>;
-template class rw::math::WeightedInfinityMetric<State>;

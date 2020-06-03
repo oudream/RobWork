@@ -5,19 +5,12 @@ find_program(SPHINX_EXECUTABLE
              NAMES sphinx-build
              DOC "Sphinx Documentation Builder (sphinx-doc.org)")
 
-find_program(JAVASPHINX_EXECUTABLE
-             NAMES javasphinx-apidoc
-             DOC "Javasphinx API-doc Builder")
-
 find_program(DOXYGEN_EXECUTABLE doxygen
              HINTS ${DOXYGEN_PATH} $ENV{DOXYGEN_PATH}
              DOC "Doxygen API-doc Builder")
 
 if(NOT SPHINX_EXECUTABLE)
   message(FATAL_ERROR "SPHINX_EXECUTABLE (sphinx-build) is not found!")
-endif()
-if(NOT JAVASPHINX_EXECUTABLE)
-  message(FATAL_ERROR "JAVASPHINX_EXECUTABLE (javasphinx-apidoc) is not found!")
 endif()
 if(NOT DOXYGEN_EXECUTABLE)
   message(FATAL_ERROR "DOXYGEN_EXECUTABLE (doxygen) is not found!")
@@ -75,21 +68,6 @@ list(APPEND java_sources java_src_sdurwsim_cmd)
 set(java_packages ${java_packages} org.robwork.sdurwsim)
 
 add_custom_target(java_src SOURCES ${java_sources})
-
-
-add_custom_command(OUTPUT javasphinx_all
-                   COMMAND ${CMAKE_COMMAND} -E echo "Removing old Javasphinx compilation..."
-                   COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_CURRENT_SOURCE_DIR}/apidoc/java/org
-                   COMMAND ${CMAKE_COMMAND} -E echo "Running javasphinx..."
-                   COMMAND ${JAVASPHINX_EXECUTABLE} -f -o ${CMAKE_CURRENT_SOURCE_DIR}/apidoc/java/ java_src/
-                   COMMAND ${CMAKE_COMMAND} -E touch javasphinx_all
-                   DEPENDS ${java_sources}
-                   COMMENT "${JAVASPHINX_EXECUTABLE} for all modules"
-                   VERBATIM)
-
-add_custom_target(javasphinx SOURCES javasphinx_all)
-
-
 
 add_custom_command(OUTPUT javadoc_cmd
                    COMMAND ${CMAKE_COMMAND} -E echo "Removing old Javadoc..."
@@ -150,11 +128,8 @@ add_custom_command(OUTPUT doc_qt
                    VERBATIM)
 
 add_custom_target(sphinx SOURCES doc_html)
-add_dependencies(sphinx javasphinx)
 add_custom_target(sphinx_latex SOURCES doc_latex)
-add_dependencies(sphinx_latex javasphinx)
 add_custom_target(sphinx_qthelp SOURCES doc_qt)
-add_dependencies(sphinx_qthelp javasphinx)
 
 add_custom_command(OUTPUT sphinxapidoc_cmd
 	COMMAND ${CMAKE_COMMAND} -E echo "${CMAKE_CURRENT_SOURCE_DIR}/../../apidocs/html html/apidoc/cpp/doxygen"

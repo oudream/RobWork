@@ -19,7 +19,7 @@
 #include "StateData.hpp"
 
 #include "State.hpp"
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 
 using namespace rw::kinematics;
 
@@ -32,7 +32,7 @@ StateData::StateData(int size, const std::string& name):
     RW_ASSERT(0 <= size);
 }
 
-StateData::StateData(int size, const std::string& name, rw::common::Ptr<StateCache> cache):
+StateData::StateData(int size, const std::string& name, rw::core::Ptr<StateCache> cache):
     _id(-1),
     _size(size),
     _name(name),
@@ -44,7 +44,7 @@ StateData::StateData(int size, const std::string& name, rw::common::Ptr<StateCac
 
 StateData::~StateData(){}
 
-rw::common::Ptr<StateCache> StateData::getCache(const State& state) const{
+rw::core::Ptr<StateCache> StateData::getCache(const State& state) const{
     if( _hasCache==false )
         return NULL; // stop early if we know size is 0
     return state.getCache(_id);
@@ -56,7 +56,7 @@ StateCache::Ptr StateData::getCache(State& state){
     return state.getCache(_id);
 }
 
-void StateData::setCache(rw::common::Ptr<StateCache> cache, State& state){
+void StateData::setCache(rw::core::Ptr<StateCache> cache, State& state){
     if( _hasCache==false ) return; // stop early if we know size is 0
     state.setCache(_id, cache);
 }

@@ -27,6 +27,7 @@
 
 #include <rw/invkin/IterativeMultiIK.hpp>
 #include <rw/kinematics/State.hpp>
+#include <rw/core/PropertyMap.hpp>
 
 namespace rw { namespace models {
     class SerialDevice;
@@ -110,7 +111,7 @@ namespace rwlibs { namespace algorithms {
     private:
         mutable BasicGPMM _controller;
         const rw::models::JointDevice* _device;
-        rw::common::PropertyMap _properties;
+        rw::core::PropertyMap _properties;
         rw::kinematics::State _state;
         double _maxQuatStep;
         std::vector<rw::kinematics::Frame*> _foi; // frames of interest, end frames

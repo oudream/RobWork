@@ -19,15 +19,16 @@
 
 #include "DOMTaskFormat.hpp"
 
-#include <rw/common/DOMParser.hpp>
-#include <rw/common/StringUtil.hpp>
+#include <rw/core/DOMParser.hpp>
+#include <rw/core/StringUtil.hpp>
+#include <rw/core/DOMElem.hpp>
 #include <rw/loaders/dom/DOMBasisTypes.hpp>
 #include <rw/loaders/dom/DOMPropertyMapFormat.hpp>
 #include <rw/loaders/dom/DOMPropertyMapLoader.hpp>
 #include <rw/math/Q.hpp>
 #include <rw/math/Transform3D.hpp>
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::loaders;
 using namespace rw::math;
 using namespace rwlibs::task;
@@ -306,7 +307,7 @@ void DOMTaskLoader::readAugmentations (DOMElem::Ptr element, TaskBase::Ptr task)
         for (DOMElem::Ptr child : element->getChildren ()) {
             if (!child.isNull ()) {
                 DOMTaskLoader loader;
-                TaskBasePtr augmentation = loader.readTask (child);
+                TaskBase::Ptr augmentation = loader.readTask (child);
                 task->addAugmentation (augmentation, augmentation->getId ());
             }
         }

@@ -19,7 +19,7 @@
 #include "QuadraticCurve.hpp"
 #include "QuadraticSurface.hpp"
 
-using rw::common::ownedPtr;
+using rw::core::ownedPtr;
 using namespace rw::geometry;
 using namespace rw::math;
 
@@ -27,7 +27,7 @@ QuadraticFace::QuadraticFace()
 {
 }
 
-QuadraticFace::QuadraticFace(rw::common::Ptr<const QuadraticSurface> surface, const std::vector<Vector3D<> >& vertices):
+QuadraticFace::QuadraticFace(rw::core::Ptr<const QuadraticSurface> surface, const std::vector<Vector3D<> >& vertices):
 	_surface(surface),
 	_curves(vertices.size()),
 	_vertices(vertices)

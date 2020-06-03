@@ -56,10 +56,10 @@ class TriMesh;
 class QuadraticSurface: public ImplicitSurface {
 public:
 	//! @brief Smart pointer type for QuadraticSurface
-	typedef rw::common::Ptr<QuadraticSurface> Ptr;
+	typedef rw::core::Ptr<QuadraticSurface> Ptr;
 
 	//! @brief Smart pointer type for const QuadraticSurface
-	typedef rw::common::Ptr<const QuadraticSurface> CPtr;
+	typedef rw::core::Ptr<const QuadraticSurface> CPtr;
 
 	/**
 	 * @brief A trimming region is defined using an ImplicitSurface.
@@ -130,7 +130,7 @@ public:
 	virtual std::pair<double,double> extremums(const rw::math::Vector3D<>& direction) const;
 
 	//! @copydoc ImplicitSurface::getTriMesh
-	virtual rw::common::Ptr<TriMesh> getTriMesh(const std::vector<rw::math::Vector3D<> >& border = std::vector<rw::math::Vector3D<> >()) const;
+	virtual rw::core::Ptr<TriMesh> getTriMesh(const std::vector<rw::math::Vector3D<> >& border = std::vector<rw::math::Vector3D<> >()) const;
 
 	//! @copydoc ImplicitSurface::setDiscretizationResolution
 	virtual void setDiscretizationResolution(double resolution) { _stepsPerRevolution = resolution; }
@@ -416,7 +416,7 @@ private:
 	inline ImplicitSurface::Ptr doScaleImplicitSurface(double factor) const { return scale(factor); }
 	inline ImplicitSurface::Ptr doCloneImplicitSurface() const { return clone(); }
 
-	rw::common::Ptr<TriMesh> getTriMeshDiagonal(const std::vector<rw::math::Vector3D<> >& border, const rw::math::Rotation3D<>& R = rw::math::Rotation3D<>::identity()) const;
+	rw::core::Ptr<TriMesh> getTriMeshDiagonal(const std::vector<rw::math::Vector3D<> >& border, const rw::math::Rotation3D<>& R = rw::math::Rotation3D<>::identity()) const;
 	std::pair<double,double> extremumsDiagonal(const rw::math::Vector3D<>& dir) const;
 	std::vector<QuadraticCurve> findSilhouette(std::size_t u, std::size_t v, std::size_t e, double eSplit) const;
 	typedef enum Place {

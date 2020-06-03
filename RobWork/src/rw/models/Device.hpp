@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RW_MODELS_DEVICE_HPP
 #define RW_MODELS_DEVICE_HPP
 
@@ -23,23 +22,25 @@
  * @file Device.hpp
  */
 
-#include <rw/common/Ptr.hpp>
-#include <rw/common/PropertyMap.hpp>
-#include <rw/math/Q.hpp>
-#include <rw/math/Transform3D.hpp>
-#include <rw/kinematics/Stateless.hpp>
 #include "JacobianCalculator.hpp"
 
+#include <rw/core/PropertyMap.hpp>
+#include <rw/core/Ptr.hpp>
+#include <rw/kinematics/Stateless.hpp>
+#include <rw/math/Q.hpp>
+#include <rw/math/Transform3D.hpp>
 
-#include <string>
 #include <iosfwd>
+#include <string>
 
-namespace rw { namespace math { class Jacobian; }}
+namespace rw { namespace math {
+    class Jacobian;
+}}    // namespace rw::math
 
 namespace rw { namespace kinematics {
     class Frame;
     class State;
-}}
+}}    // namespace rw::kinematics
 
 namespace rw { namespace models {
     /** @addtogroup models */
@@ -49,34 +50,32 @@ namespace rw { namespace models {
      * @brief An abstract device class
      *
      * The Device class is the basis for all other devices. It is assumed that all devices
-	 * have a configuration which can be encoded by a rw::math::Q, that all have a base frame
-	 * representing where in the work cell they are located and a primary end frame. Notice that
-	 * some devices may have multiple end-frames.
+     * have a configuration which can be encoded by a rw::math::Q, that all have a base frame
+     * representing where in the work cell they are located and a primary end frame. Notice that
+     * some devices may have multiple end-frames.
      */
-    class Device: public rw::kinematics::Stateless
+    class Device : public rw::kinematics::Stateless
     {
-    public:
-		//! @brief smart pointer type to this class
-		typedef rw::common::Ptr<Device> Ptr;
-		//! @brief const smart pointer type to this class
-		typedef rw::common::Ptr< const Device > CPtr;
+      public:
+        //! @brief smart pointer type to this class
+        typedef rw::core::Ptr< Device > Ptr;
+        //! @brief const smart pointer type to this class
+        typedef rw::core::Ptr< const Device > CPtr;
 
         //! Lower and upper corner of a box shaped configuration space.
-        typedef std::pair<math::Q, math::Q> QBox;
+        typedef std::pair< math::Q, math::Q > QBox;
 
         /**
          * Constructs a device with a name
          *
          * @param name [in] name of the device
          */
-        Device(const std::string& name) :
-            _name(name)
-        {}
+        Device (const std::string& name) : _name (name) {}
 
         /**
          * @brief Virtual destructor
          */
-        virtual ~Device(){}
+        virtual ~Device () {}
 
         /**
          * @brief Sets configuration vector @f$ \mathbf{q} \in \mathbb{R}^n @f$
@@ -86,7 +85,7 @@ namespace rw { namespace models {
          *
          * @pre q.size() == getDOF()
          */
-        virtual void setQ(const math::Q& q, kinematics::State& state) const = 0;
+        virtual void setQ (const math::Q& q, kinematics::State& state) const = 0;
 
         /**
          * @brief Gets configuration vector @f$ \mathbf{q}\in \mathbb{R}^n @f$
@@ -94,7 +93,7 @@ namespace rw { namespace models {
          * @param state [in] state from which which to get @f$ \mathbf{q} @f$
          * @return configuration vector @f$ \mathbf{q} @f$
          */
-        virtual math::Q getQ(const kinematics::State& state) const = 0;
+        virtual math::Q getQ (const kinematics::State& state) const = 0;
 
         /**
          * @brief Returns the upper @f$ \mathbf{q}_{min} \in \mathbb{R}^n @f$ and
@@ -102,7 +101,7 @@ namespace rw { namespace models {
          *
          * @return std::pair containing @f$ (\mathbf{q}_{min}, \mathbf{q}_{max}) @f$
          */
-        virtual QBox getBounds() const = 0;
+        virtual QBox getBounds () const = 0;
 
         /**
          * @brief Sets the upper @f$ \mathbf{q}_{min} \in \mathbb{R}^n @f$ and
@@ -111,7 +110,7 @@ namespace rw { namespace models {
          * @param bounds [in] std::pair containing
          * @f$ (\mathbf{q}_{min}, \mathbf{q}_{max}) @f$
          */
-        virtual void setBounds(const QBox& bounds) = 0;
+        virtual void setBounds (const QBox& bounds) = 0;
 
         /**
          * @brief Returns the maximal velocity of the joints
@@ -122,7 +121,7 @@ namespace rw { namespace models {
          *
          * @return the maximal velocity
          */
-        virtual math::Q getVelocityLimits() const = 0;
+        virtual math::Q getVelocityLimits () const = 0;
 
         /**
          * @brief Sets the maximal velocity of the joints
@@ -133,7 +132,7 @@ namespace rw { namespace models {
          *
          * @param vellimits [in] Q with the maximal velocity
          */
-        virtual void setVelocityLimits(const math::Q& vellimits) = 0;
+        virtual void setVelocityLimits (const math::Q& vellimits) = 0;
 
         /**
          * @brief Returns the maximal acceleration of the joints
@@ -144,7 +143,7 @@ namespace rw { namespace models {
          *
          * @return the maximal acceleration
          */
-        virtual math::Q getAccelerationLimits() const = 0;
+        virtual math::Q getAccelerationLimits () const = 0;
 
         /**
          * @brief Sets the maximal acceleration of the joints
@@ -155,70 +154,65 @@ namespace rw { namespace models {
          *
          * @param  acclimits [in] the maximal acceleration
          */
-        virtual void setAccelerationLimits(const math::Q& acclimits) = 0;
+        virtual void setAccelerationLimits (const math::Q& acclimits) = 0;
 
         /**
          * @brief Returns number of active joints
          * @return number of active joints @f$ n @f$
          */
-        virtual size_t getDOF() const = 0;
+        virtual size_t getDOF () const = 0;
 
         /**
          * @brief Returns the name of the device
          * @return name of the device
          */
-        const std::string& getName() const { return _name; }
+        const std::string& getName () const { return _name; }
 
         /**
          * @brief Sets the name of the Device
          * @param name [in] the new name of the frame
          */
-        void setName(const std::string& name) { _name = name; }
+        void setName (const std::string& name) { _name = name; }
 
         /**
-         * @brief a method to return the frame of the base of the
-         * device.
+         * @brief a method to return the frame of the base of the device.
          * @return the base frame
          */
-        virtual kinematics::Frame* getBase() = 0;
+        virtual kinematics::Frame* getBase () = 0;
 
         /**
-         * @brief a method to return the frame of the base of the
-         * device.
+         * @brief a method to return the frame of the base of the device.
          * @return the base frame
          */
-        virtual const kinematics::Frame* getBase() const = 0;
+        virtual const kinematics::Frame* getBase () const = 0;
+
+        /**
+         * @brief a method to return the frame of the end of the device
+         * @return the end frame
+         */
+        virtual kinematics::Frame* getEnd () = 0;
 
         /**
          * @brief a method to return the frame of the end of the device
          *
          * @return the end frame
          */
-        virtual kinematics::Frame* getEnd() = 0;
-
-        /**
-         * @brief a method to return the frame of the end of the device
-         *
-         * @return the end frame
-         */
-        virtual const kinematics::Frame* getEnd() const = 0;
+        virtual const kinematics::Frame* getEnd () const = 0;
 
         /**
          * @brief Calculates the homogeneous transform from base to a frame f
          * @f$ \robabx{b}{f}{\mathbf{T}} @f$
-         *
          * @return the homogeneous transform @f$ \robabx{b}{f}{\mathbf{T}} @f$
          */
-        math::Transform3D<double> baseTframe(
-            const kinematics::Frame* f, const kinematics::State& state) const;
+        math::Transform3D< double > baseTframe (const kinematics::Frame* f,
+                                                const kinematics::State& state) const;
 
         /**
          * @brief Calculates the homogeneous transform from base to the end frame
          * @f$ \robabx{base}{end}{\mathbf{T}} @f$
-         *
          * @return the homogeneous transform @f$ \robabx{base}{end}{\mathbf{T}} @f$
          */
-        math::Transform3D<double> baseTend(const kinematics::State& state) const;
+        math::Transform3D< double > baseTend (const kinematics::State& state) const;
 
         /**
          * @brief Calculates the homogeneous transform from world to base @f$
@@ -226,7 +220,7 @@ namespace rw { namespace models {
          *
          * @return the homogeneous transform @f$ \robabx{w}{b}{\mathbf{T}} @f$
          */
-        math::Transform3D<double> worldTbase(const kinematics::State& state) const;
+        math::Transform3D< double > worldTbase (const kinematics::State& state) const;
 
         /**
          * @brief Calculates the jacobian matrix of the end-effector described
@@ -294,7 +288,7 @@ namespace rw { namespace models {
          *
          * By default the method forwards to baseJframe().
          */
-        virtual math::Jacobian baseJend(const kinematics::State& state) const = 0;
+        virtual math::Jacobian baseJend (const kinematics::State& state) const = 0;
 
         /**
          * @brief Calculates the jacobian matrix of a frame f described in the
@@ -326,20 +320,22 @@ namespace rw { namespace models {
          *
          * By default the method forwards to baseJframes().
          */
-        virtual math::Jacobian baseJframe(
-            const kinematics::Frame* frame,
-            const kinematics::State& state) const;
+        virtual math::Jacobian baseJframe (const kinematics::Frame* frame,
+                                           const kinematics::State& state) const;
 
         /**
-           @brief The Jacobian for a sequence of frames.
-
-           A Jacobian is computed for each of the frames and the Jacobians are
-           stacked on top of eachother.
-        */
-        virtual math::Jacobian baseJframes(const std::vector<kinematics::Frame*>& frames,
-                                           const kinematics::State& state) const
+         * @brief The Jacobian for a sequence of frames.
+         *
+         * A Jacobian is computed for each of the frames and the Jacobians are
+         * stacked on top of eachother.
+         * @param frames [in] the frames to calculate the frames from
+         * @param state [in] the state to calculate in
+         * @return the jacobian
+         */
+        virtual math::Jacobian baseJframes (const std::vector< kinematics::Frame* >& frames,
+                                            const kinematics::State& state) const
         {
-            return baseJCframes(frames, state)->get(state);
+            return baseJCframes (frames, state)->get (state);
         }
 
         /**
@@ -347,19 +343,22 @@ namespace rw { namespace models {
 
            By default this method forwards to baseDJframe().
         */
-        virtual JacobianCalculator::Ptr baseJCend(const kinematics::State& state) const;
+        virtual JacobianCalculator::Ptr baseJCend (const kinematics::State& state) const;
 
         /**
            @brief DeviceJacobian for a particular frame.
 
            By default this method forwards to baseDJframes().
         */
-        virtual JacobianCalculator::Ptr baseJCframe(const kinematics::Frame* frame, const kinematics::State& state) const;
+        virtual JacobianCalculator::Ptr baseJCframe (const kinematics::Frame* frame,
+                                                     const kinematics::State& state) const;
 
         /**
-           @brief DeviceJacobian for a sequence of frames.
-        */
-        virtual JacobianCalculator::Ptr baseJCframes(const std::vector<kinematics::Frame*>& frames, const kinematics::State& state) const = 0;
+         * @brief DeviceJacobian for a sequence of frames.
+         */
+        virtual JacobianCalculator::Ptr
+        baseJCframes (const std::vector< kinematics::Frame* >& frames,
+                      const kinematics::State& state) const = 0;
 
         /**
          * @brief Miscellaneous properties of the device.
@@ -376,29 +375,29 @@ namespace rw { namespace models {
          *
          * @return The property map of the device.
          */
-        const common::PropertyMap& getPropertyMap() const { return _propertyMap; }
+        const core::PropertyMap& getPropertyMap () const { return _propertyMap; }
 
         /**
          * @copydoc getPropertyMap
          */
-        common::PropertyMap& getPropertyMap() { return _propertyMap; }
+        core::PropertyMap& getPropertyMap () { return _propertyMap; }
 
-    private:
+      private:
         std::string _name;
 
-        common::PropertyMap _propertyMap;
+        core::PropertyMap _propertyMap;
 
-    private:
-        Device(const Device&);
-        Device& operator=(const Device&);
+      private:
+        Device (const Device&);
+        Device& operator= (const Device&);
     };
 
     /**
        @brief Streaming operator for devices.
      */
-    std::ostream& operator<<(std::ostream& out, const Device& device);
+    std::ostream& operator<< (std::ostream& out, const Device& device);
 
     /*@}*/
-}} // end namespaces
+}}    // namespace rw::models
 
-#endif // end include guard
+#endif    // end include guard

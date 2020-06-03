@@ -8,7 +8,7 @@
 #include <rwlibs/task/GraspTask.hpp>
 
 using namespace std;
-using rw::common::ownedPtr;
+using rw::core::ownedPtr;
 using namespace rw::math;
 using namespace rwlibs::task;
 

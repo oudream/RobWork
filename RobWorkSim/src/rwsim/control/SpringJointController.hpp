@@ -5,6 +5,7 @@
 
 #include <rwlibs/control/JointController.hpp>
 #include <rwlibs/simulation/SimulatedController.hpp>
+#include <rw/core/Ptr.hpp>
 
 namespace rwsim { namespace dynamics { class RigidDevice; } }
 
@@ -26,7 +27,7 @@ namespace control {
 	        double offset;
 	    };
 
-	    typedef rw::common::Ptr<SpringJointController> Ptr;
+	    typedef rw::core::Ptr<SpringJointController> Ptr;
 
 		/**
 		 * @brief constructor
@@ -43,7 +44,7 @@ namespace control {
 		 */
 		SpringJointController(
 		        const std::string& name,
-		        rw::common::Ptr<rwsim::dynamics::RigidDevice> rdev,
+		        rw::core::Ptr<rwsim::dynamics::RigidDevice> rdev,
 				const std::vector<SpringParam>& springParam,
 				double dt
 				);
@@ -118,7 +119,7 @@ namespace control {
 	private:
 		//std::vector<rw::models::BeamJoint*> _beamJoints;
 
-		rw::common::Ptr<rwsim::dynamics::RigidDevice> _ddev;
+		rw::core::Ptr<rwsim::dynamics::RigidDevice> _ddev;
 		rw::math::Q _maxVel;
 		rw::math::Q _lastError, _target, _currentQ, _currentVel;
 		rw::math::Q _targetVel;

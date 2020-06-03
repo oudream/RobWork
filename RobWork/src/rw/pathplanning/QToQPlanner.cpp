@@ -23,7 +23,7 @@
 using namespace rw::pathplanning;
 using namespace rw::math;
 using namespace rw::kinematics;
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::trajectory;
 
 namespace

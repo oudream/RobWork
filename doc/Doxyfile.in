@@ -5,7 +5,7 @@
 #---------------------------------------------------------------------------
 DOXYFILE_ENCODING      = UTF-8
 PROJECT_NAME           = RobWorkProject
-PROJECT_NUMBER         = @ROBWORK_VERSION@
+PROJECT_NUMBER         = @ROBWORK_VERSION@-@ROBWORK_BRANCH@
 PROJECT_BRIEF          =
 PROJECT_LOGO           = gfx/rw_logo_64x64.png
 OUTPUT_DIRECTORY       = ../apidocs
@@ -103,6 +103,7 @@ WARN_LOGFILE           =
 # configuration options related to the input files
 #---------------------------------------------------------------------------
 INPUT                  = ../RobWork/src \
+                         ../RobWorkHardware/src \
                          ../RobWorkStudio/src \
                          ../RobWorkSim/src \
                          .
@@ -195,9 +196,9 @@ TREEVIEW_WIDTH         = 250
 EXT_LINKS_IN_WINDOW    = NO
 FORMULA_FONTSIZE       = 10
 FORMULA_TRANSPARENT    = YES
-USE_MATHJAX            = NO
+USE_MATHJAX            = YES
 MATHJAX_FORMAT         = HTML-CSS
-MATHJAX_RELPATH        = http://cdn.mathjax.org/mathjax/latest
+MATHJAX_RELPATH        = https://cdn.jsdelivr.net/npm/mathjax
 MATHJAX_EXTENSIONS     =
 MATHJAX_CODEFILE       =
 SEARCHENGINE           = YES

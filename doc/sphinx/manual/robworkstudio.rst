@@ -86,7 +86,7 @@ User Plugins
 ============
 
 Users can easily develop their own plugins for RobWorkStudio.
-See the :ref:`plugins_rws` page for more details about this subject.
+See the :ref:`plugins_sdurws` page for more details about this subject.
 
 
 

@@ -23,7 +23,7 @@
 
 #include "ProximityStrategy.hpp"
 
-#include <rw/common/ExtensionPoint.hpp>
+#include <rw/core/ExtensionPoint.hpp>
 #include <rw/math/Transform3D.hpp>
 
 namespace rw { namespace kinematics {
@@ -44,7 +44,7 @@ namespace rw { namespace proximity {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::common::Ptr< DistanceMultiStrategy > Ptr;
+        typedef rw::core::Ptr< DistanceMultiStrategy > Ptr;
 
         /**
          * @brief DistanceResult contains basic information about the distance
@@ -58,23 +58,28 @@ namespace rw { namespace proximity {
             //! @brief reference to the second proximity model
             ProximityModel::Ptr b;
 
-            //! Closest point on f1 to f2, described in f1 reference frame
+            //! Closest point on f1 to f2, described in world reference frame
             math::Vector3D< double > p1;
 
-            //! Closest point on f2 to f1, described in f2 reference frame
+            //! Closest point on f2 to f1, described in world reference frame
             math::Vector3D< double > p2;
 
             //! @brief distance between frame f1 and frame f2
             double distance;
 
-            //! Closest points on f1 to f2, described in f1 reference frame
+            //! Closest points on f1 to f2, described in world reference frame
             std::vector< math::Vector3D<> > p1s;
 
             /**
-             * @brief Closest point on f2 to f1, IMPORTANT! NOTICE! described in
-             * \b f1  reference frame
+             * @brief Closest point on f2 to f1, described in world reference frame
              */
             std::vector< math::Vector3D<> > p2s;
+
+            //! @brief geometry index to geometry in object A
+            std::vector<int> geoIdxA;
+
+            //! @brief geometry index to geometry in object B
+            std::vector<int> geoIdxB;
 
             /**
              * @brief indices to the primitives which are the closest points on the first proximity
@@ -173,7 +178,7 @@ namespace rw { namespace proximity {
          *  - Bullet - rwlibs::proximitystrategies::ProximityStrategyBullet - Bullet Physics
          *  - PQP - rwlibs::proximitystrategies::ProximityStrategyPQP - Proximity Query Package
          */
-        class Factory : public rw::common::ExtensionPoint< DistanceMultiStrategy >
+        class Factory : public rw::core::ExtensionPoint< DistanceMultiStrategy >
         {
           public:
             /**

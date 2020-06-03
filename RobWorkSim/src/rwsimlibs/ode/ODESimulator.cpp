@@ -49,6 +49,7 @@
 #include "ODESuctionCupDevice.hpp"
 #include "ODEMaterialMap.hpp"
 #include "ODEThreading.hpp"
+#include "ODELogUtil.hpp"
 
 #include <rwsim/dynamics/OBRManifold.hpp>
 
@@ -56,17 +57,21 @@
 #include <rwlibs/proximitystrategies/ProximityStrategyPQP.hpp>
 
 #include <rwsim/contacts/ContactDetector.hpp>
+#include <rwsim/contacts/ContactDetectorData.hpp>
+#include <rwsim/contacts/ContactDetectorTracking.hpp>
 #include <rwsim/dynamics/ContactPoint.hpp>
 #include <rwsim/dynamics/ContactCluster.hpp>
 #include <rwsim/dynamics/SuctionCup.hpp>
+#include <rwsim/log/SimulatorLogScope.hpp>
 #include <rwsim/sensor/SimulatedFTSensor.hpp>
-#include <rw/common/Log.hpp>
+#include <rw/core/Log.hpp>
 
 #include <boost/bind.hpp>
 
 #include <sstream>
 
 using namespace rwsim::dynamics;
+using rwsim::log::SimulatorLogScope;
 using namespace rwsim::simulator;
 using namespace rwsim::sensor;
 using namespace rwsim;
@@ -77,13 +82,14 @@ using namespace rw::models;
 using namespace rw::math;
 using namespace rw::proximity;
 using namespace rw::common;
+using namespace rw::core;
 
 using namespace rwlibs::simulation;
 using namespace rwlibs::proximitystrategies;
 
 #define INITIAL_MAX_CONTACTS 1000
 
-#define RW_DEBUGS( str ) rw::common::Log::debugLog() << str  << std::endl;
+#define RW_DEBUGS( str ) rw::core::Log::debugLog() << str  << std::endl;
 //#define RW_DEBUGS( str )
 
 /*
@@ -177,7 +183,8 @@ ODESimulator::ODESimulator(DynamicWorkCell::Ptr dwc, rwsim::contacts::ContactDet
     _useRobWorkContactGeneration(true),
     _prevStepEndedInCollision(false),
     _detector(detector),
-    _logContactingBodies(false)
+    _logContactingBodies(false),
+    _log(new ODELogUtil())
 {
 
     // verify that the linked ode library has the correct
@@ -196,7 +203,7 @@ ODESimulator::ODESimulator(DynamicWorkCell::Ptr dwc, rwsim::contacts::ContactDet
 
     // setup DWC changed event
     if(_dwc)
-        _dwc->changedEvent().add( boost::bind(&ODESimulator::DWCChangedListener, this, _1, _2), this);
+        _dwc->changedEvent().add( boost::bind(&ODESimulator::DWCChangedListener, this, boost::arg<1>(), boost::arg<2>()), this);
 }
 
 ODESimulator::ODESimulator():
@@ -223,7 +230,8 @@ ODESimulator::ODESimulator():
     _useRobWorkContactGeneration(true),
     _prevStepEndedInCollision(false),
     _detector(NULL),
-    _logContactingBodies(false)
+    _logContactingBodies(false),
+    _log(new ODELogUtil())
 {
 
     // verify that the linked ode library has the correct
@@ -242,18 +250,19 @@ ODESimulator::ODESimulator():
 
     // setup DWC changed event
     if(_dwc)
-        _dwc->changedEvent().add( boost::bind(&ODESimulator::DWCChangedListener, this, _1, _2), this);
+        _dwc->changedEvent().add( boost::bind(&ODESimulator::DWCChangedListener, this, boost::arg<1>(), boost::arg<2>()), this);
 }
 
 ODESimulator::~ODESimulator() {
 	delete _narrowStrategy;
+    delete _log;
 }
 
 void ODESimulator::load(rwsim::dynamics::DynamicWorkCell::Ptr dwc){
     _dwc = dwc;
     _materialMap = dwc->getMaterialData();
     _contactMap = dwc->getContactData();
-    _dwc->changedEvent().add( boost::bind(&ODESimulator::DWCChangedListener, this, _1, _2), this);
+    _dwc->changedEvent().add( boost::bind(&ODESimulator::DWCChangedListener, this, boost::arg<1>(), boost::arg<2>()), this);
 }
 
 
@@ -413,11 +422,30 @@ void ODESimulator::restoreODEState(){
 }
 
 void ODESimulator::step(double dt, rw::kinematics::State& state)
-
 {
-	if(isInErrorGlobal)
-		return;
-	_stepState = &state;
+    const bool doLog = _log->doLog();
+    if (doLog) {
+        _log->beginStep(_time, __FILE__, __LINE__);
+        switch (_stepMethod) {
+            case WorldStep:
+                _log->log("StepMethod", __FILE__, __LINE__) << "WorldStep";
+                break;
+            case WorldQuickStep:
+                _log->log("StepMethod", __FILE__, __LINE__) << "WorldQuickStep";
+                break;
+            //case WorldFast1:
+            //    _log->log("StepMethod", __FILE__, __LINE__) << "WorldFast1";
+            //    break;
+            default:
+                _log->log("StepMethod", __FILE__, __LINE__) << "WorldStep";
+        }
+        _log->addPositions("Positions", _odeBodies, state, __FILE__, __LINE__);
+        _log->addVelocities("Velocities", _odeBodies, state, __FILE__, __LINE__);
+    }
+
+    if(isInErrorGlobal)
+        return;
+    _stepState = &state;
 
 	//std::cout << "-------------------------- STEP --------------------------------" << std::endl;
 	//double dt = 0.001;
@@ -431,6 +459,8 @@ void ODESimulator::step(double dt, rw::kinematics::State& state)
     // Detect collision
     _allcontacts.clear();
     if( _useRobWorkContactGeneration ){
+        if (doLog)
+            _log->log("Contact Detection Type", __FILE__, __LINE__) << (_detector.isNull() ? "RW" : "ContactDetector");
     	if (_detector == NULL) {
     		TIMING("Collision: ", detectCollisionsRW(state, false) );
     	} else {
@@ -441,6 +471,8 @@ void ODESimulator::step(double dt, rw::kinematics::State& state)
             _allcontactsTmp = _allcontacts;
         }
     } else {
+        if (doLog)
+            _log->log("Contact Detection Type", __FILE__, __LINE__) << "ODE Internal";
         try {
             TIMING("Collision: ", dSpaceCollide(_spaceId, this, &nearCallback) );
             _allcontactsTmp = _allcontacts;
@@ -459,8 +491,15 @@ void ODESimulator::step(double dt, rw::kinematics::State& state)
     const int MAX_TIME_ITERATIONS = 10;
     badLCPSolution = false;
     int badLCPcount = 0;
+    if (doLog)
+        _log->beginSection("Rollback Iterations", __FILE__, __LINE__);
     for(i=0;i<MAX_TIME_ITERATIONS;i++){
-
+        if (doLog) {
+            std::stringstream sstr;
+            sstr << "Iteration " << i;
+            _log->beginSection(sstr.str(), __FILE__, __LINE__);
+            _log->addValues("Values", std::vector<double>(1, dttmp),std::vector<std::string>(1, "dt"), __FILE__, __LINE__);
+        }
         if(isInErrorGlobal){
             dJointGroupEmpty(_contactGroupId);
             // and the joint feedbacks that where used is also destroyed
@@ -546,7 +585,7 @@ void ODESimulator::step(double dt, rw::kinematics::State& state)
 	        }
 	    } catch ( ... ) {
 	        std::cout << "ERROR";
-	        Log::errorLog() << "******************** Caught exeption in step function!*******************" << std::endl;
+	        Log::errorLog() << "******************** Caught exception in step function!*******************" << std::endl;
 	        RW_THROW("ODESimulator caught exception.");
 	    }
         ODEThreading::checkSecureStepEnd();
@@ -560,6 +599,8 @@ void ODESimulator::step(double dt, rw::kinematics::State& state)
 
             if(!inCollision){
                 //std::cout << "THERE IS NO PENETRATION" << std::endl;
+                if (_log->doLog())
+                    _log->endSection(__LINE__);
                 break;
             } else {
 
@@ -567,6 +608,8 @@ void ODESimulator::step(double dt, rw::kinematics::State& state)
                     // if we allready tried reducing the timestep then set the inCollisionFlag
                     // and let the contact resolution use the cached contacts
                     _prevStepEndedInCollision = true;
+                    if (_log->doLog())
+                        _log->endSection(__LINE__);
                     break;
                 }
 
@@ -578,6 +621,8 @@ void ODESimulator::step(double dt, rw::kinematics::State& state)
 	            TIMING("Collision Resolution: ", inCollision = detectCollisionsRW(tmpState, true) );
 	            if(!inCollision){
 	                //std::cout << "THERE IS NO PENETRATION" << std::endl;
+	                if (_log->doLog())
+	                    _log->endSection(__LINE__);
 	                break;
 	            }
 	        }
@@ -627,6 +672,8 @@ void ODESimulator::step(double dt, rw::kinematics::State& state)
 
             Log::debugLog() << "----------------------- TOO LARGE PENETRATIONS --------------------" << std::endl;
             RW_THROW("Too Large Penetrations!");
+            if (_log->doLog())
+                _log->endSection(__LINE__);
             break;
         }
         badLCPSolution = false;
@@ -634,7 +681,11 @@ void ODESimulator::step(double dt, rw::kinematics::State& state)
 		dttmp /= 2;
 		restoreODEState();
 		tmpState = state;
+        if (_log->doLog())
+            _log->endSection(__LINE__);
 	}
+    if (doLog)
+        _log->endSection(__LINE__);
     state = tmpState;
 	_oldTime = _time;
 	_time += dttmp;
@@ -662,6 +713,10 @@ void ODESimulator::step(double dt, rw::kinematics::State& state)
     for(size_t i=0; i<_odeBodies.size(); i++){
         //std::cout << "POST Update: " << _odeBodies[i]->getFrame()->getName() << std::endl;
         _odeBodies[i]->postupdate(state);
+    }
+    if (doLog) {
+        _log->addPositions("New Positions", _odeBodies, state, __FILE__, __LINE__);
+        _log->addVelocities("New Velocities", _odeBodies, state, __FILE__, __LINE__);
     }
 
     RW_DEBUGS("------------- Sensor update :");
@@ -704,6 +759,8 @@ void ODESimulator::step(double dt, rw::kinematics::State& state)
         dGeomTriMeshSetLastTransform( geom, data->mBuff[data->mBuffIdx]);
 
 	}
+    if (doLog)
+        _log->endStep(_time, __LINE__);
 	//std::cout << "e";
 	RW_DEBUGS("----------------------- END STEP --------------------------------");
 	//std::cout << "-------------------------- END STEP --------------------------------" << std::endl;
@@ -1590,8 +1647,15 @@ void ODESimulator::detectCollisionsContactDetector(const State& state) {
     //_contactPointsTmp.clear();
     //_contactPoints.clear();
     _contactingBodiesTmp.clear();
-    
-	std::vector<rwsim::contacts::Contact> contacts = _detector->findContacts(state);
+
+    std::vector<rwsim::contacts::Contact> contacts;
+    if (_log->doLog()) {
+        rwsim::contacts::ContactDetectorData data;
+        rwsim::contacts::ContactDetectorTracking tracking;
+        contacts = _detector->findContacts(state, data, tracking, _log->makeScope("Find Contacts", __FILE__, __LINE__));
+    } else {
+        contacts = _detector->findContacts(state);
+    }
     size_t numc = contacts.size();
     /*for(rwsim::contacts::Contact &c : contacts) {
     	std::cout << "ModelA: " << c.getModelA()->getName() << " ModelB: " << c.getModelB()->getName() << " FrameA: " << c.getFrameA()->getName() << " FrameB: " << c.getFrameB()->getName() << " " << c.getNormal() << std::endl;
@@ -1717,6 +1781,8 @@ bool ODESimulator::detectCollisionsRW(rw::kinematics::State& state, bool onlyTes
 		_contactingBodiesTmp.clear();
 	}
 
+    std::vector<MultiDistanceResult> logDistances;
+
     // next we query the BP filter for framepairs that are possibly in collision
     while( !filter->isEmpty() ){
         const FramePair& pair = filter->frontAndPop();
@@ -1826,6 +1892,8 @@ bool ODESimulator::detectCollisionsRW(rw::kinematics::State& state, bool onlyTes
 
         // create all contacts
         size_t numc = res->distances.size();
+        if (numc > 0 && _log->doLog())
+            logDistances.push_back(*res);
         if(_rwcontacts.size()<numc){
             _rwcontacts.resize(numc);
             _contacts.resize(numc);
@@ -1834,8 +1902,8 @@ bool ODESimulator::detectCollisionsRW(rw::kinematics::State& state, bool onlyTes
         for(size_t i=0;i<numc;i++){
 
             dContact &con = _contacts[ni]; 
-            Vector3D<> p1 = aT * res->p1s[i];
-            Vector3D<> p2 = aT * res->p2s[i];
+            Vector3D<> p1 = res->p1s[i];
+            Vector3D<> p2 = res->p2s[i];
             Vector3D<> n, p;
 
             if(res->distances[i]<0.00000001){
@@ -1897,7 +1965,10 @@ bool ODESimulator::detectCollisionsRW(rw::kinematics::State& state, bool onlyTes
         res->clear();
         // update the contact normal using the manifolds
     }
-    
+
+    if (_log->doLog())
+        _log->addDistanceMultiResults("Distance Detection", logDistances, __FILE__, __LINE__);
+
     //if(_logContactingBodies) {
 		_contactingBodies = _contactingBodiesTmp;
 		//_contactPoints = _contactPointsTmp;
@@ -1956,6 +2027,10 @@ void ODESimulator::detach(rwsim::dynamics::Body::Ptr b1, rwsim::dynamics::Body::
     RW_THROW("There are no attachments between body b1 and body b2!");
 }
 
+void ODESimulator::setSimulatorLog(SimulatorLogScope::Ptr log)
+{
+    _log->setSimulatorLog(log);
+}
 
 void ODESimulator::handleCollisionBetween(dGeomID o1, dGeomID o2)
 {
@@ -2324,8 +2399,8 @@ rw::math::Vector3D<> ODESimulator::addContacts(int numc, ODEBody* dataB1, ODEBod
 
             for(int i=0;i<result.distances.size();i++){
                 ContactPoint cp;
-                cp.n = wTa*result.p2s[i]-wTa*result.p1s[i];
-                cp.p = wTa*result.p1s[i];
+                cp.n = result.p2s[i]-result.p1s[i];
+                cp.p = result.p1s[i];
                 _allcontacts.push_back(cp);
             }
         }

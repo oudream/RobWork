@@ -8,7 +8,7 @@
 #ifndef SRC_RW_MATH_FUNCTIONFACTORY_HPP_
 #define SRC_RW_MATH_FUNCTIONFACTORY_HPP_
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/math/Function.hpp>
 #include <rw/math/FunctionWrapper.hpp>
 
@@ -35,7 +35,7 @@ public:
 	static typename rw::math::Function<RES_T, ARG_T>::Ptr makeFunction(
 			RES_T (*fptr)(ARG_T)) {
 
-		return rw::common::ownedPtr(
+		return rw::core::ownedPtr(
 				new rw::math::FunctionWrapper<RES_T, ARG_T>(
 						boost::function<RES_T(ARG_T)>(fptr)));
 	}
@@ -48,7 +48,7 @@ public:
 	template<class RES_T = double, class ARG_T = double>
 	static typename rw::math::Function<RES_T, ARG_T>::Ptr makeFunction(
 			boost::function<RES_T(ARG_T)> f) {
-		return rw::common::ownedPtr(
+		return rw::core::ownedPtr(
 				new rw::math::FunctionWrapper<RES_T, ARG_T>(f));
 	}
 
@@ -61,7 +61,7 @@ public:
 	template<class RES_T = double, class ARG_T = double, class GRAD_T = double>
 	static typename rw::math::Function1Diff<RES_T, ARG_T, GRAD_T>::Ptr makeFunction(
 			RES_T (*fptr)(ARG_T), GRAD_T (*dfptr)(ARG_T)) {
-	return rw::common::ownedPtr(
+	return rw::core::ownedPtr(
 			new rw::math::Function1DiffWrapper<RES_T, ARG_T, GRAD_T>(boost::function<RES_T(ARG_T)>(fptr),
 					boost::function<GRAD_T(ARG_T)>(dfptr)));
 		}
@@ -77,7 +77,7 @@ public:
 		static typename rw::math::Function1Diff<RES_T, ARG_T, GRAD_T>::Ptr makeFunction(
 				boost::function<RES_T(ARG_T)> f,
 				boost::function<GRAD_T(ARG_T)> df) {
-			return rw::common::ownedPtr(
+			return rw::core::ownedPtr(
 					new rw::math::Function1DiffWrapper<RES_T, ARG_T, GRAD_T>(f,
 							df));
 		}

@@ -23,7 +23,7 @@
    @file Path.hpp
 */
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/math/Q.hpp>
 #include <rw/math/Vector3D.hpp>
 #include <rw/math/Rotation3D.hpp>
@@ -50,7 +50,7 @@ class Path: public std::vector<T>
 {
 public:
 	//! @brief smart pointer type to this class
-	typedef rw::common::Ptr<Path> Ptr;
+	typedef rw::core::Ptr<Path> Ptr;
 
 	/**
 	 * @brief Default constructor
@@ -151,7 +151,7 @@ typedef Path<TimedState> TimedStatePath;
 /**
    @brief A pointer to a Path of rw::kinematics::State with associated times
 */
-typedef rw::common::Ptr<Path<TimedState> > TimedStatePathPtr;
+typedef rw::core::Ptr<Path<TimedState> > TimedStatePathPtr;
 
 
 }} // end namespaces

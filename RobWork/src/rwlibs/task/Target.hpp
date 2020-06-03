@@ -15,14 +15,13 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RWLIBS_TASK_TARGET_HPP
 #define RWLIBS_TASK_TARGET_HPP
 
 #include "Entity.hpp"
 #include "TypeRepository.hpp"
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include <rw/math/Q.hpp>
 #include <rw/math/Transform3D.hpp>
@@ -30,12 +29,8 @@
 namespace rwlibs {
 namespace task {
 
-
-
 /** @addtogroup task */
 /*@{*/
-
-
 
 /**
  * @brief Base class for targets
@@ -44,7 +39,7 @@ class TargetBase: public Entity
 {
 public:
 	//! @brief smart pointer type to this class
-    typedef rw::common::Ptr<TargetBase> Ptr;
+    typedef rw::core::Ptr<TargetBase> Ptr;
 
     /**
      * @brief Constructs TargetBase with a given type
@@ -58,7 +53,7 @@ public:
     /**
      * @brief Destructor
      */
-    virtual ~TargetBase() {};
+    virtual ~TargetBase() {}
 
 
     /**
@@ -73,7 +68,7 @@ public:
      *
      * The user need to provide the type as template argument.
      *
-     * May throw a rw::common::Exception if type conversion is invalid.
+     * May throw a rw::core::Exception if type conversion is invalid.
      * @return Value of target
      */
     template <class T>
@@ -92,7 +87,7 @@ class Target: public TargetBase
 {
 public:
 	//! @brief smart pointer type to this class
-    typedef rw::common::Ptr<Target<T> > Ptr;
+    typedef rw::core::Ptr<Target<T> > Ptr;
     /**
      * @brief Construct Target with value \b value.
      * @param value [in] Value of target
@@ -107,20 +102,20 @@ public:
      * @brief Returns the value of the target
      * @return Value of target
      */
-    T& get() { return _value; };
+    T& get() { return _value; }
 
     /**
      * @brief Returns the value of the target
      * @return Value of target
      */
-    const T& get() const { return _value; };
+    const T& get() const { return _value; }
 
     /**
      * @brief Make a copy of the target.
      * @return new identical target.
      */
-    rw::common::Ptr<Target<T> > clone() {
-    	return rw::common::ownedPtr(new Target<T>(*this));
+    rw::core::Ptr<Target<T> > clone() {
+    	return rw::core::ownedPtr(new Target<T>(*this));
     }
 
 private:
@@ -136,6 +131,9 @@ typedef Target<rw::math::Q> QTarget;
  * Definition of Target with type rw::math::Transform3D
  */
 typedef Target<rw::math::Transform3D<> > CartesianTarget;
+
+extern template class Target<rw::math::Q>;
+extern template class Target<rw::math::Transform3D<> >;
 
 template <class T>
 T& TargetBase::getValue()

@@ -3,7 +3,7 @@
 %{
 #include <RobWorkConfig.hpp>
 #include <rwlibs/swig/ScriptTypes.hpp>
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 using namespace rwlibs::swig;
 
@@ -64,5 +64,5 @@ public:
  * @brief Legacy type of a smart pointer for RenderImage.
  * @deprecated Use RenderImage::Ptr instead. This type will be removed sometime in the future.
  */
-%template (RenderImagePtr) rw::common::Ptr<RenderImage>;
+%template (RenderImagePtr) rw::core::Ptr<RenderImage>;
 OWNEDPTR(RenderImage);

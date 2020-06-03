@@ -7,6 +7,8 @@
 *.cproject
 *.project
 *.settings
+*.old
+*.DS_Store
 
 # /
 /cmake_install.cmake
@@ -21,8 +23,6 @@
 /CPackConfig.cmake
 /CPackSourceConfig.cmake
 /CMakeSettings.json
-/.cproject
-/.project
 /.settings
 /.vs/*
 /out/*
@@ -389,10 +389,10 @@ RobWork/example/java/src/*.log
 /RobWork/example/plugin/bin
 
 # /RobWork/example/plugin/src/tools/
-/RobWork/example/plugin/src/tools/Debug
-/RobWork/example/plugin/src/tools/MinSizeRel
-/RobWork/example/plugin/src/tools/RelWithDebInfo
-/RobWork/example/plugin/src/tools/Release
+/RobWork/example/plugin/src/tools/debug
+/RobWork/example/plugin/src/tools/minsizerel
+/RobWork/example/plugin/src/tools/relwithdebinfo
+/RobWork/example/plugin/src/tools/release
 /RobWork/example/plugin/src/tools/path.hpp
 
 # /RobWork/example/simplegui/
@@ -466,8 +466,6 @@ RobWork/example/java/src/*.log
 /RobWork/ext/boostbindings/boost/bin
 /RobWork/ext/boostbindings/boost/CMakeFiles
 /RobWork/ext/boostbindings/boost/apidocs
-/RobWork/ext/boostbindings/boost/.cproject
-/RobWork/ext/boostbindings/boost/.project
 /RobWork/ext/boostbindings/boost/build
 /RobWork/ext/boostbindings/boost/.csettings
 /RobWork/ext/boostbindings/boost/CPackConfig.cmake
@@ -481,8 +479,6 @@ RobWork/example/java/src/*.log
 /RobWork/ext/boostbindings/boost/numeric/bin
 /RobWork/ext/boostbindings/boost/numeric/CMakeFiles
 /RobWork/ext/boostbindings/boost/numeric/apidocs
-/RobWork/ext/boostbindings/boost/numeric/.cproject
-/RobWork/ext/boostbindings/boost/numeric/.project
 /RobWork/ext/boostbindings/boost/numeric/build
 /RobWork/ext/boostbindings/boost/numeric/.csettings
 /RobWork/ext/boostbindings/boost/numeric/CPackConfig.cmake
@@ -496,8 +492,6 @@ RobWork/example/java/src/*.log
 /RobWork/ext/boostbindings/boost/numeric/bindings/bin
 /RobWork/ext/boostbindings/boost/numeric/bindings/CMakeFiles
 /RobWork/ext/boostbindings/boost/numeric/bindings/apidocs
-/RobWork/ext/boostbindings/boost/numeric/bindings/.cproject
-/RobWork/ext/boostbindings/boost/numeric/bindings/.project
 /RobWork/ext/boostbindings/boost/numeric/bindings/build
 /RobWork/ext/boostbindings/boost/numeric/bindings/.csettings
 /RobWork/ext/boostbindings/boost/numeric/bindings/CPackConfig.cmake
@@ -3403,6 +3397,7 @@ RobWorkSim/src/rwsimlibs/swig/python/RobWorkSim-*.egg-info
 /RobWorkStudio/bin/debug
 /RobWorkStudio/bin/Debug
 /RobWorkStudio/bin/relwithdebinfo
+/RobWorkStudio/bin/RobWorkStudio.ini.shared
 /RobWorkStuido/bin/MinSizeRel
 
 # /RobWorkStudio/bin/MinSizeRel
@@ -4040,12 +4035,4 @@ RobWorkSim/src/rwsimlibs/swig/python/RobWorkSim-*.egg-info
 /doc/installstuff/RW_package-msvc2005/CPackConfig.cmake
 /doc/installstuff/RW_package-msvc2005/CPackSourceConfig.cmake
 
-# /doc/sphinx/apidoc/java
-/doc/sphinx/apidoc/java/org
-/doc/sphinx/apidoc/java/packages.rst
 
-#/doc/sphinx/apidoc
-/doc/sphinx/apidoc/java/packages.rst
-
-#/doc/sphinx/apidoc/java
-/doc/sphinx/apidoc/java/org

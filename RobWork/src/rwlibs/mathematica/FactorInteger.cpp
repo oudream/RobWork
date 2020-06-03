@@ -35,8 +35,8 @@ FactorInteger::FactorInteger(const Expression& integer):
 FactorInteger::~FactorInteger() {
 }
 
-std::list<rw::common::Ptr<const Mathematica::Expression> > FactorInteger::getArguments() const {
-	return std::list<rw::common::Ptr<const Mathematica::Expression> >(1,_n);
+std::list<rw::core::Ptr<const Mathematica::Expression> > FactorInteger::getArguments() const {
+	return std::list<rw::core::Ptr<const Mathematica::Expression> >(1,_n);
 }
 
 Mathematica::Expression::Ptr FactorInteger::clone() const {

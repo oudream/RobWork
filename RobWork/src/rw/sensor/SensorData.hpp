@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -18,52 +18,46 @@
 #ifndef RW_SENSOR_SENSORDATA_HPP
 #define RW_SENSOR_SENSORDATA_HPP
 
-namespace rw {
-namespace sensor {
+namespace rw { namespace sensor {
 
-/** @addtogroup sensor */
-/* @{ */
-
-/**
- * @brief toplevel class for sensor data. Basicly describes interface for
- * setting and getting timestamps.
- */
-class SensorData
-{
-public:
-    /**
-     * @brief constructor
-     * @param timeStamp
-     */
-    SensorData(long timeStamp = 0) :
-        _stamp(timeStamp)
-    {
-    }
+    /** @addtogroup sensor */
+    /* @{ */
 
     /**
-     * @brief get timestamp of this sensor data
-     * @return timestamp in ms
+     * @brief toplevel class for sensor data. Basicly describes interface for
+     * setting and getting timestamps.
      */
-    virtual long getTimeStamp()
+    class SensorData
     {
-        return _stamp;
-    }
+      public:
+        /**
+         * @brief constructor
+         * @param timeStamp
+         */
+        SensorData (long timeStamp = 0) : _stamp (timeStamp) {}
 
-    /**
-     * @brief set timestamp of this sensor data
-     * @param timestamp [in] time in ms
-     */
-    virtual void setTimeStamp(long timestamp)
-    {
-        _stamp = timestamp;
-    }
+        /**
+         * @brief Destructor
+         */
+        virtual ~SensorData() {}
 
-private:
-    long _stamp;
-};
+        /**
+         * @brief get timestamp of this sensor data
+         * @return timestamp in ms
+         */
+        virtual long getTimeStamp () { return _stamp; }
 
-/* @} */
-}
-}
+        /**
+         * @brief set timestamp of this sensor data
+         * @param timestamp [in] time in ms
+         */
+        virtual void setTimeStamp (long timestamp) { _stamp = timestamp; }
+
+      private:
+        long _stamp;
+    };
+
+    /* @} */
+}}    // namespace rw::sensor
 
 #endif /* RW_SENSOR_SENSORDATA_HPP */

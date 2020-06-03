@@ -18,7 +18,7 @@
 #ifndef RW_GEOMETRY_POINTCLOUD_HPP_
 #define RW_GEOMETRY_POINTCLOUD_HPP_
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/math/Vector3D.hpp>
 #include <rw/math/Transform3D.hpp>
 
@@ -38,7 +38,7 @@ namespace geometry {
 	class PointCloud: public GeometryData {
 	public:
         //! @brief smart pointer type to this class
-        typedef rw::common::Ptr<PointCloud> Ptr;
+        typedef rw::core::Ptr<PointCloud> Ptr;
         //! type of point used internally in pointcloud
         typedef rw::math::Vector3D<float> point_type;
 
@@ -127,10 +127,10 @@ namespace geometry {
 	    };
 
 		//! @copydoc GeometryData::getTriMesh
-		rw::common::Ptr<TriMesh> getTriMesh(bool forceCopy=true);
+		rw::core::Ptr<TriMesh> getTriMesh(bool forceCopy=true);
 
 		//! @copydoc getTriMesh
-		rw::common::Ptr<const TriMesh> getTriMesh(bool forceCopy=true) const;
+		rw::core::Ptr<const TriMesh> getTriMesh(bool forceCopy=true) const;
 
 		const rw::math::Transform3D<float>& getDataTransform() const { return _sensorTransform; }
 
@@ -139,7 +139,7 @@ namespace geometry {
 		 * @param filename [in] name of PCD file
 		 * @return a point cloud
 		 */
-		static rw::common::Ptr<PointCloud> loadPCD( const std::string& filename );
+		static rw::core::Ptr<PointCloud> loadPCD( const std::string& filename );
 
 		/**
 		 * @brief save point cloud in PCD file format (PCL library format)

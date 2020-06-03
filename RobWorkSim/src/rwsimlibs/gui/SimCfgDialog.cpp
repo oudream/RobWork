@@ -4,7 +4,7 @@
 
 #include <RobWorkSimConfig.hpp>
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rwsim/simulator/PhysicsEngine.hpp>
 
 #include "ODESimCfgDialog.hpp"
@@ -13,7 +13,7 @@
 
 using namespace rwsim::simulator;
 
-SimCfgDialog::SimCfgDialog(rw::common::Ptr<DynamicSimulator> sim, QWidget *parent):
+SimCfgDialog::SimCfgDialog(rw::core::Ptr<DynamicSimulator> sim, QWidget *parent):
     QDialog(parent)
 {
     _ui = new Ui::SimCfgDialog();

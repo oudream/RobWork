@@ -41,12 +41,12 @@ class Brain: public QThread
 {
     Q_OBJECT
 public:
-    typedef rw::common::Ptr<Brain> Ptr;
+    typedef rw::core::Ptr<Brain> Ptr;
 
     Brain(const std::string& name,
-           //rw::common::Ptr<rwsim::simulator::ThreadSimulator> sim,
-		   //rw::common::Ptr<rwsim::simulator::DynamicSimulator> dsim,
-		   //rw::common::Ptr<rwsim::dynamics::DynamicWorkCell> dwc,
+           //rw::core::Ptr<rwsim::simulator::ThreadSimulator> sim,
+		   //rw::core::Ptr<rwsim::simulator::DynamicSimulator> dsim,
+		   //rw::core::Ptr<rwsim::dynamics::DynamicWorkCell> dwc,
            QWidget *parent=NULL) :
             QThread(parent), _name(name), _stopped(true)
 			//_dsim(dsim), _sim(sim), _dwc(dwc)
@@ -74,7 +74,7 @@ public:
 
     std::vector<ActionGoal::Ptr> getActionGoals();
 
-    void add(rw::common::Ptr<Abstraction> abstraciton){ _abstractions.push_back(abstraciton); }
+    void add(rw::core::Ptr<Abstraction> abstraciton){ _abstractions.push_back(abstraciton); }
 
 protected:
     BrainState computeSensorState();
@@ -82,11 +82,11 @@ protected:
 private:
     std::string _name;
     bool _stop, _stopped;
-    //rw::common::Ptr<rwsim::simulator::DynamicSimulator> _dsim;
-    //rw::common::Ptr<rwsim::simulator::ThreadSimulator> _sim;
-    //rw::common::Ptr<rwsim::dynamics::DynamicWorkCell> _dwc;
+    //rw::core::Ptr<rwsim::simulator::DynamicSimulator> _dsim;
+    //rw::core::Ptr<rwsim::simulator::ThreadSimulator> _sim;
+    //rw::core::Ptr<rwsim::dynamics::DynamicWorkCell> _dwc;
     rw::kinematics::State _rwstate;
-    std::vector<rw::common::Ptr<Abstraction> > _abstractions;
+    std::vector<rw::core::Ptr<Abstraction> > _abstractions;
     Memory _memory;
     std::vector<Schema*> _schemas;
 

@@ -5,7 +5,6 @@
 #include "ui_BootstrapPlugin.h"
 
 #include <QObject>
-//#include <rw/common/Timer.hpp>
 
 namespace rwsim { namespace dynamics { class DynamicWorkCell; } }
 namespace rwsim { namespace simulator { class DynamicSimulator; } }
@@ -54,14 +53,13 @@ private slots:
 
 private:
     rw::models::WorkCell* _wc;
-    rw::common::Ptr<rwsim::dynamics::DynamicWorkCell> _dwc;
-    rw::common::Ptr<rwsim::simulator::ThreadSimulator> _tsim;
-    rw::common::Ptr<rwsim::simulator::DynamicSimulator> _sim;
+    rw::core::Ptr<rwsim::dynamics::DynamicWorkCell> _dwc;
+    rw::core::Ptr<rwsim::simulator::ThreadSimulator> _tsim;
+    rw::core::Ptr<rwsim::simulator::DynamicSimulator> _sim;
 
-    rw::common::Ptr<Brain> _brain;
+    rw::core::Ptr<Brain> _brain;
 
     QTimer *_timer;
-    //rw::common::Timer _wallTimer, _wallTotalTimer;
 };
 
 #endif /*BootstrapPlugin_HPP*/

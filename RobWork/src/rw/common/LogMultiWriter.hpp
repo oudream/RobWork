@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,61 +15,60 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RW_COMMON_LOGMULTIWRITER_HPP
 #define RW_COMMON_LOGMULTIWRITER_HPP
 
+#include <rw/core/LogWriter.hpp>
+
 #include <vector>
-#include "LogWriter.hpp"
 
 namespace rw { namespace common {
 
-	/** @addtogroup common */
-	/*@{*/
+    /** @addtogroup common */
+    /*@{*/
 
     /**
      * @brief Writes log output to multiple LogWriters
      */
-    class LogMultiWriter : public LogWriter
+    class LogMultiWriter : public rw::core::LogWriter
     {
-    public:
+      public:
         /**
-        * @brief Constructs empty LogMultiWriter
-        */
-        LogMultiWriter();
-
-        /**
-        * @brief Destructor
-        */
-        ~LogMultiWriter();
-
-        /** 
-	    * @brief Adds a LogWriter to be written to
-	    */
-        void addWriter(LogWriter::Ptr writer);
-
-	protected:
-        /**
-        * @copydoc LogWriter::write(const std::string&)
-        */
-        void doWrite(const std::string& str);
+         * @brief Constructs empty LogMultiWriter
+         */
+        LogMultiWriter ();
 
         /**
-        * @brief Calls flush on the individual writers
-        */
-        void doFlush();
+         * @brief Destructor
+         */
+        ~LogMultiWriter ();
 
         /**
-	    * @copydoc LogWriter::setTabLevel(int)
-	    */
-        void doSetTabLevel(int tabLevel);
+         * @brief Adds a LogWriter to be written to
+         */
+        void addWriter (rw::core::LogWriter::Ptr writer);
 
+      protected:
+        /**
+         * @copydoc LogWriter::write(const std::string&)
+         */
+        void doWrite (const std::string& str);
 
-    private:
-        std::vector<LogWriter::Ptr> _writers;		
+        /**
+         * @brief Calls flush on the individual writers
+         */
+        void doFlush ();
+
+        /**
+         * @copydoc LogWriter::setTabLevel(int)
+         */
+        void doSetTabLevel (int tabLevel);
+
+      private:
+        std::vector< rw::core::LogWriter::Ptr > _writers;
     };
 
-	/*@}*/
-}} // end namespaces
+    /*@}*/
+}}    // namespace rw::common
 
-#endif // end include guard
+#endif    // end include guard

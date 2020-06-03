@@ -18,7 +18,7 @@
 #ifndef RW_STUDIO_PLAYER_MODULE_H
 #define RW_STUDIO_PLAYER_MODULE_H
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/trajectory/Path.hpp>
 #include <rw/trajectory/Trajectory.hpp>
 
@@ -36,7 +36,7 @@ class Player : public QObject
 
 public:
 	//! @brief Smart pointer type for Player.
-	typedef rw::common::Ptr<Player> Ptr;
+	typedef rw::core::Ptr<Player> Ptr;
 
 	/**
 	 * @brief Construct a new player.
@@ -46,7 +46,7 @@ public:
 	 * @param rwstudio [in] the RobWorkStudio instance (used for saving to file during recordings).
 	 */
     Player(rw::trajectory::TimedStatePath statePath,
-           rw::common::Ptr<StateDraw> drawer,
+           rw::core::Ptr<StateDraw> drawer,
            double tickInterval,
            rws::RobWorkStudio* rwstudio);
 
@@ -58,7 +58,7 @@ public:
 	 * @param rwstudio [in] the RobWorkStudio instance (used for saving to file during recordings).
 	 */
     Player(rw::trajectory::TimedStatePath::Ptr statePath,
-           rw::common::Ptr<StateDraw> drawer,
+           rw::core::Ptr<StateDraw> drawer,
            double tickInterval,
            rws::RobWorkStudio* rwstudio);
 
@@ -160,12 +160,12 @@ public:
 
     //! @copydoc Player
     static Player::Ptr makePlayer(const rw::trajectory::TimedStatePath& statePath,
-    					rw::common::Ptr<StateDraw> drawer,
+    					rw::core::Ptr<StateDraw> drawer,
                          double tickInterval,
                          rws::RobWorkStudio* rwstudio);
     //! @copydoc Player
     static Player::Ptr makePlayer(const rw::trajectory::TimedStatePath::Ptr statePath,
-    					rw::common::Ptr<StateDraw> drawer,
+    					rw::core::Ptr<StateDraw> drawer,
                          double tickInterval,
                          rws::RobWorkStudio* rwstudio);
 
@@ -202,7 +202,7 @@ public:
 	rw::trajectory::TimedStatePath::Ptr _path;
 private:
     // How to do the drawing.
-	rw::common::Ptr<StateDraw> _drawer;
+	rw::core::Ptr<StateDraw> _drawer;
 
     // The time between calls to tick().
     double _tickInterval;

@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RW_SENSOR_SENSORMODEL_HPP
 #define RW_SENSOR_SENSORMODEL_HPP
 
@@ -23,14 +22,14 @@
  * @file Sensor.hpp
  */
 
-#include <string>
-#include <rw/common/PropertyMap.hpp>
+#include <rw/core/PropertyMap.hpp>
 #include <rw/kinematics/Stateless.hpp>
 
+#include <string>
 
-namespace rw {
-    namespace kinematics { class Frame;}
-} // end namespaces
+namespace rw { namespace kinematics {
+    class Frame;
+}}    // namespace rw::kinematics
 
 namespace rw { namespace sensor {
 
@@ -43,19 +42,18 @@ namespace rw { namespace sensor {
      * the kinematic model of a robot. A sensormodel should have a name id and be associated,
      * referenced to some frame in the workcell.
      */
-    class SensorModel: public rw::kinematics::Stateless
+    class SensorModel : public rw::kinematics::Stateless
     {
-    public:
-
+      public:
         //! smart pointer type
-        typedef rw::common::Ptr<SensorModel> Ptr;
+        typedef rw::core::Ptr< SensorModel > Ptr;
 
-    	/**
+        /**
          * @brief constructor
          * @param name [in] the name of this sensor
          * @param frame [in] the frame that the sensor is referenced to
          */
-    	SensorModel(const std::string& name, kinematics::Frame* frame);
+        SensorModel (const std::string& name, kinematics::Frame* frame);
 
         /**
          * @brief constructor
@@ -63,67 +61,68 @@ namespace rw { namespace sensor {
          * @param frame [in] the frame that the sensor is referenced to
          * @param description [in] description of the sensor
          */
-        SensorModel(const std::string& name, kinematics::Frame* frame, const std::string& description);
+        SensorModel (const std::string& name, kinematics::Frame* frame,
+                     const std::string& description);
 
         //! destructor
-        virtual ~SensorModel(){}
+        virtual ~SensorModel () {}
 
         /**
          * @brief sets the name of this sensor
          * @param name [in] name of this sensor
          */
-        void setName(const std::string& name) { _name = name; }
+        void setName (const std::string& name) { _name = name; }
 
         /**
          * @brief sets the description of this sensor
          * @param description [in] description of this sensor
          */
-        void setDescription(const std::string& description)
-        { _description = description; }
+        void setDescription (const std::string& description) { _description = description; }
 
         /**
          * @brief returns the name of this sensor
          * @return name of sensor
          */
-        const std::string& getName() const { return _name; }
+        const std::string& getName () const { return _name; }
 
         /**
          * @brief returns a description of this sensor
          * @return reference to this sensors description
          */
-        const std::string& getDescription() const { return _description; }
+        const std::string& getDescription () const { return _description; }
 
         /**
          * @brief The frame to which the sensor is attached.
          *
          * The frame can be NULL.
          */
-        kinematics::Frame* getFrame() const { return _frame; }
+        kinematics::Frame* getFrame () const { return _frame; }
 
         /**
          * @brief Sets the frame to which the sensor should be attached
          *
          * @param frame The frame, which can be NULL
          */
-        virtual void attachTo(kinematics::Frame* frame) { _frame = frame; }
+        virtual void attachTo (kinematics::Frame* frame) { _frame = frame; }
 
         /**
          * @brief gets the propertymap of this sensor
          */
-        rw::common::PropertyMap& getPropertyMap() { return _propertyMap; }
+        rw::core::PropertyMap& getPropertyMap () { return _propertyMap; }
 
         /**
          * @brief gets the propertymap of this sensor
          */
-        const rw::common::PropertyMap& getPropertyMap() const { return _propertyMap; }
-    private:
+        const rw::core::PropertyMap& getPropertyMap () const { return _propertyMap; }
+
+      private:
         std::string _name;
         std::string _description;
         kinematics::Frame* _frame;
-        rw::common::PropertyMap _propertyMap;
+        rw::core::PropertyMap _propertyMap;
     };
 
     /** @} */
-}} // end namespaces
+}}    // namespace rw::sensor
 
-#endif // end include guard
+#endif    // end include guard

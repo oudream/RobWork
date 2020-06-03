@@ -204,7 +204,7 @@ btRigidBody* BtBody::createRigidBody(
 	return btbody;
 }
 
-btCollisionShape* BtBody::createColShape(rw::common::Ptr<const Geometry> geometry) const {
+btCollisionShape* BtBody::createColShape(rw::core::Ptr<const Geometry> geometry) const {
 	btCollisionShape* shape = NULL;
 	if(Cylinder* const cyl = dynamic_cast<Cylinder*>(geometry->getGeometryData().get()) ){
 		const btVector3 halfExtents(cyl->getRadius(),0,cyl->getHeight()/2.);
@@ -272,7 +272,7 @@ BtBody::BodyMetaData::~BodyMetaData() {
 		delete material;
 }
 
-BtBody::GeometryMetaData::GeometryMetaData(rw::common::Ptr<const Geometry> geometry):
+BtBody::GeometryMetaData::GeometryMetaData(rw::core::Ptr<const Geometry> geometry):
 	geometry(geometry)
 {
 }

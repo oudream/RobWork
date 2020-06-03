@@ -15,7 +15,7 @@ The final lines shows how a DAF frame can be attached to another frame. In this 
 
 **C++**
 
-.. literalinclude:: ../../../RobWork/example/cpp/ex-fwd-kinematics.cpp
+.. literalinclude:: ../../../RobWork/example/cpp/ex_fwd-kinematics.cpp
    :language: c++
    :linenos:
 
@@ -39,7 +39,7 @@ See :ref:`interfaces_java` for more information about compilation and execution.
 
 **LUA**
 
-.. literalinclude:: ../../../RobWork/example/lua/ex-fwd-kinematics.lua
+.. literalinclude:: ../../../RobWork/example/lua/ex_fwd-kinematics.lua
    :language: lua
    :linenos:
 
@@ -54,7 +54,7 @@ the joint configurations and getting the joint limits.
 
 **C++**
 
-.. literalinclude:: ../../../RobWork/example/cpp/ex-fwd-kinematics-device.cpp
+.. literalinclude:: ../../../RobWork/example/cpp/ex_fwd-kinematics-device.cpp
    :language: c++
    :linenos:
 
@@ -72,7 +72,7 @@ the joint configurations and getting the joint limits.
 
 **LUA**
 
-.. literalinclude:: ../../../RobWork/example/lua/ex-fwd-kinematics-device.lua
+.. literalinclude:: ../../../RobWork/example/lua/ex_fwd-kinematics-device.lua
    :language: lua
    :linenos:
 
@@ -119,7 +119,7 @@ print also the position of the frame in space:
 
 **C++**
 
-.. literalinclude:: ../../../RobWork/example/cpp/ex-print-kinematic-tree.cpp
+.. literalinclude:: ../../../RobWork/example/cpp/ex_print-kinematic-tree.cpp
    :language: c++
    :linenos:
 
@@ -137,7 +137,7 @@ print also the position of the frame in space:
 
 **LUA**
 
-.. literalinclude:: ../../../RobWork/example/lua/ex-print-kinematic-tree.lua
+.. literalinclude:: ../../../RobWork/example/lua/ex_print-kinematic-tree.lua
    :language: lua
    :linenos:
 
@@ -157,7 +157,7 @@ for a sequence of frames can be efficiently computed:
 
 **C++**
 
-.. literalinclude:: ../../../RobWork/example/cpp/ex-world-transforms.cpp
+.. literalinclude:: ../../../RobWork/example/cpp/ex_world-transforms.cpp
    :language: c++
    :linenos:
 
@@ -181,12 +181,11 @@ API Reference:
 
 API Reference:
 
-- :java:type:`org.robwork.rw.FKTable`
 - `org.robwork.rw.FKTable (Javadoc) <../../apidoc/java/javadoc/org/robwork/rw/FKTable.html>`__
 
 **LUA**
 
-.. literalinclude:: ../../../RobWork/example/lua/ex-world-transforms.lua
+.. literalinclude:: ../../../RobWork/example/lua/ex_world-transforms.lua
    :language: lua
    :linenos:
 
@@ -203,7 +202,7 @@ shows the use of rw::kinematics::FKRange:
 
 **C++**
 
-.. literalinclude:: ../../../RobWork/example/cpp/ex-frame-to-frame-transform.cpp
+.. literalinclude:: ../../../RobWork/example/cpp/ex_frame-to-frame-transform.cpp
    :language: c++
    :linenos:
 
@@ -227,12 +226,11 @@ API Reference:
 
 API Reference:
 
-- :java:type:`org.robwork.rw.FKRange`
 - `org.robwork.rw.FKRange (Javadoc) <../../apidoc/java/javadoc/org/robwork/rw/FKRange.html>`__
 
 **LUA**
 
-.. literalinclude:: ../../../RobWork/example/lua/ex-frame-to-frame-transform.lua
+.. literalinclude:: ../../../RobWork/example/lua/ex_frame-to-frame-transform.lua
    :language: lua
    :linenos:
 
@@ -245,7 +243,7 @@ be computed efficiently as follows:
 
 **C++**
 
-.. literalinclude:: ../../../RobWork/example/cpp/ex-frame-to-frame-transforms.cpp
+.. literalinclude:: ../../../RobWork/example/cpp/ex_frame-to-frame-transforms.cpp
    :language: c++
    :linenos:
 
@@ -263,7 +261,7 @@ be computed efficiently as follows:
 
 **LUA**
 
-.. literalinclude:: ../../../RobWork/example/lua/ex-frame-to-frame-transforms.lua
+.. literalinclude:: ../../../RobWork/example/lua/ex_frame-to-frame-transforms.lua
    :language: lua
    :linenos:
 

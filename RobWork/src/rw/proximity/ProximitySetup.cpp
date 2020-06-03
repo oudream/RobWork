@@ -22,7 +22,9 @@
 #include <rw/models/Object.hpp>
 #include <rw/models/WorkCell.hpp>
 
-using namespace rw::common;
+#include <rw/core/StringUtil.hpp>
+
+using namespace rw::core;
 using namespace rw::proximity;
 
 ProximitySetup::ProximitySetup():
@@ -36,7 +38,7 @@ ProximitySetup::ProximitySetup(const CollisionSetup& csetup):
 		_useExcludeStaticPairs(true),
 		_loadedFromFile(false)
 {
-	for(rw::common::StringPair pair : csetup.getExcludeList()) {
+	for(rw::core::StringPair pair : csetup.getExcludeList()) {
 		addProximitySetupRule(ProximitySetupRule::makeExclude(pair.first, pair.second));
 	}
 	_useExcludeStaticPairs = csetup.excludeStaticPairs();
@@ -76,7 +78,7 @@ ProximitySetup ProximitySetup::get(const rw::models::WorkCell& wc){
 }
 
 
-ProximitySetup ProximitySetup::get(const rw::common::PropertyMap& map){
+ProximitySetup ProximitySetup::get(const rw::core::PropertyMap& map){
     return map.get<ProximitySetup>("ProximitySetup", ProximitySetup());
 }
 
@@ -84,6 +86,6 @@ void ProximitySetup::set(const ProximitySetup& setup, rw::models::WorkCell::Ptr 
     set(setup, wc->getWorldFrame()->getPropertyMap());
 }
 
-void ProximitySetup::set(const ProximitySetup& setup, rw::common::PropertyMap& map){
+void ProximitySetup::set(const ProximitySetup& setup, rw::core::PropertyMap& map){
     map.addForce<ProximitySetup>("ProximitySetup", "setup for proximity checking", setup);
 }

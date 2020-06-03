@@ -13,7 +13,7 @@ public:
      * empty() is true then the sampler has no more configurations.
      * Otherwise sample() may (or may not) succeed if called a second time.
      */
-    rw::math::Q sample();
+    Q sample();
 
     /**
      * @brief True if the sampler is known to contain no more
@@ -29,14 +29,14 @@ public:
     /**
      * @brief Empty sampler.
      */
-	static rw::common::Ptr<QSampler> makeEmpty();
+	static rw::core::Ptr<QSampler> makeEmpty();
 
     /**
      * @brief Sampler that always returns the same configuration.
      *
      * The sampler is considered never empty (empty() always returns false).
      */
-	static rw::common::Ptr<QSampler> makeFixed(const rw::math::Q& q);
+	static rw::core::Ptr<QSampler> makeFixed(const Q& q);
 
     /**
      * @brief Sampler that always returns a single configuration.
@@ -45,7 +45,7 @@ public:
      * empty configuration otherwise. empty() returns true after the first
      * call of sample().
      */
-	static rw::common::Ptr<QSampler> makeSingle(const rw::math::Q& q);
+	static rw::core::Ptr<QSampler> makeSingle(const Q& q);
 
     /**
      * @brief Sampler for the values of a finite sequence.
@@ -54,7 +54,7 @@ public:
      * these samples have been returned, empty() returns true and sample()
      * returns the empty configuration.
      */
-	static rw::common::Ptr<QSampler> makeFinite(const std::vector<rw::math::Q>& qs);
+	static rw::core::Ptr<QSampler> makeFinite(const std::vector<Q>& qs);
 
     /**
      * @brief A sampler to that returns only the first \b cnt samples from
@@ -63,29 +63,29 @@ public:
      * The sampler is considered empty as soon as \b sampler is empty or the
      * sampler has been called \b cnt times or more.
      */
-	static rw::common::Ptr<QSampler> makeFinite(rw::common::Ptr<QSampler> sampler, int cnt);
+	static rw::core::Ptr<QSampler> makeFinite(rw::core::Ptr<QSampler> sampler, int cnt);
 
     /**
      * @brief Uniform random sampling for a box of the configuration space.
      */
-	//static rw::common::Ptr<QSampler> makeUniform(const Device::QBox& bounds);
+	//static rw::core::Ptr<QSampler> makeUniform(const Device::QBox& bounds);
 
     /**
      * @brief Uniform random sampling for a device.
      */
-	static rw::common::Ptr<QSampler> makeUniform(
+	static rw::core::Ptr<QSampler> makeUniform(
         const Device& device);
 
     /**
      * @brief Uniform random sampling for a device.
      */
-	static rw::common::Ptr<QSampler> makeUniform(rw::common::Ptr<const Device> device);
+	static rw::core::Ptr<QSampler> makeUniform(rw::core::Ptr<const Device> device);
 
     /**
      * @brief Map a sampler of standard configurations into a sampler of
      * normalized configurations.
      */
-	//static rw::common::Ptr<QSampler> makeNormalized(rw::common::Ptr<QSampler> sampler, const QNormalizer& normalizer);
+	//static rw::core::Ptr<QSampler> makeNormalized(rw::core::Ptr<QSampler> sampler, const QNormalizer& normalizer);
 
     /**
      * @brief A sampler of IK solutions for a specific target.
@@ -93,7 +93,7 @@ public:
      * @param sampler [in] Sampler of IK solutions for \b target.
      * @param target [in] Target for IK solver.
      */
-	//static rw::common::Ptr<QSampler> make(rw::common::Ptr<QIKSampler> sampler, const rw::math::Transform3D<double>& target);
+	//static rw::core::Ptr<QSampler> make(rw::core::Ptr<QIKSampler> sampler, const rw::math::Transform3D<double>& target);
 
     /**
      * @brief A sampler filtered by a constraint.
@@ -107,9 +107,9 @@ public:
      * is sampled forever until either the \b sampler is empty or a
      * configuration satisfying \b constraint is found.
      */
-	static rw::common::Ptr<QSampler> makeConstrained(
-		rw::common::Ptr<QSampler> sampler,
-		rw::common::Ptr<const QConstraint> constraint,
+	static rw::core::Ptr<QSampler> makeConstrained(
+		rw::core::Ptr<QSampler> sampler,
+		rw::core::Ptr<const QConstraint> constraint,
         int maxAttempts = -1);
 
     /**
@@ -122,7 +122,7 @@ public:
      * can therefore be of length zero.
      */
     //static
-	//	rw::common::Ptr<QSampler> makeBoxDirectionSampler(
+	//	rw::core::Ptr<QSampler> makeBoxDirectionSampler(
     //    const Device::QBox& bounds);
 
 protected:
@@ -134,7 +134,7 @@ protected:
     /**
      * @brief Subclass implementation of the sample() method.
      */
-    virtual rw::math::Q doSample() = 0;
+    virtual Q doSample() = 0;
 
     /**
      * @brief Subclass implementation of the empty() method.
@@ -149,9 +149,9 @@ private:
     QSampler& operator=(const QSampler&);
 };
 //! @brief smart pointer type to this class
-%template (QSamplerPtr) rw::common::Ptr<QSampler>;
+%template (QSamplerPtr) rw::core::Ptr<QSampler>;
 //! @brief smart pointer type to this const class
-%template (QSamplerCPtr) rw::common::Ptr<const QSampler>;
+%template (QSamplerCPtr) rw::core::Ptr<const QSampler>;
 
 OWNEDPTR(QSampler)
 
@@ -162,39 +162,39 @@ public:
 
     //PlannerConstraint(QConstraint::Ptr constraint, QEdgeConstraint::Ptr edge);
 
-    bool inCollision(const rw::math::Q& q);
+    bool inCollision(const Q& q);
 
-    bool inCollision(const rw::math::Q& q1, const rw::math::Q& q2);
+    bool inCollision(const Q& q1, const Q& q2);
 
     QConstraint& getQConstraint() const { return *_constraint; }
 
     //QEdgeConstraint& getQEdgeConstraint() const { return *_edge; }
 
-    const rw::common::Ptr<QConstraint>& getQConstraintPtr();
+    const rw::core::Ptr<QConstraint>& getQConstraintPtr();
 
     //const QEdgeConstraint::Ptr& getQEdgeConstraintPtr() const { return _edge; }
 
     //static PlannerConstraint make(QConstraint::Ptr constraint, QEdgeConstraint::Ptr edge);
 
-    static PlannerConstraint make(rw::common::Ptr<CollisionDetector> detector,
-                                  rw::common::Ptr<const Device> device,
+    static PlannerConstraint make(rw::core::Ptr<CollisionDetector> detector,
+                                  rw::core::Ptr<const Device> device,
                                   const State& state);
 
-    static PlannerConstraint make(rw::common::Ptr<CollisionStrategy> strategy,
-                                  rw::common::Ptr<WorkCell> workcell,
-                                  rw::common::Ptr<const Device> device,
+    static PlannerConstraint make(rw::core::Ptr<CollisionStrategy> strategy,
+                                  rw::core::Ptr<WorkCell> workcell,
+                                  rw::core::Ptr<const Device> device,
                                   const State& state);
 
     /*
     static PlannerConstraint make(rw::proximity::CollisionStrategy::Ptr strategy,
         const rw::proximity::CollisionSetup& setup,
-        rw::common::Ptr<WorkCell> workcell,
-        rw::common::Ptr<Device> device,
+        rw::core::Ptr<WorkCell> workcell,
+        rw::core::Ptr<Device> device,
         const State& state);
      */
 };
 
-%template (PlannerConstraintPtr) rw::common::Ptr<PlannerConstraint>;
+%template (PlannerConstraintPtr) rw::core::Ptr<PlannerConstraint>;
 OWNEDPTR(PlannerConstraint);
 
 %nodefaultctor StopCriteria;
@@ -206,27 +206,27 @@ class StopCriteria
  
  public:
      bool stop() const;
-     rw::common::Ptr<StopCriteria> instance() const;
+     rw::core::Ptr<StopCriteria> instance() const;
      virtual ~StopCriteria();
-     static rw::common::Ptr<StopCriteria> stopAfter(double time);
-     static rw::common::Ptr<StopCriteria> stopNever();
-     static rw::common::Ptr<StopCriteria> stopNow();
-     static rw::common::Ptr<StopCriteria> stopByFlag(bool* stop);
-     //static rw::common::Ptr<StopCriteria> stopByFun(boost::function<bool ()> fun);
-     static rw::common::Ptr<StopCriteria> stopCnt(int cnt);
-     static rw::common::Ptr<StopCriteria> stopEither(
-         const std::vector<rw::common::Ptr<StopCriteria> >& criteria);
+     static rw::core::Ptr<StopCriteria> stopAfter(double time);
+     static rw::core::Ptr<StopCriteria> stopNever();
+     static rw::core::Ptr<StopCriteria> stopNow();
+     static rw::core::Ptr<StopCriteria> stopByFlag(bool* stop);
+     //static rw::core::Ptr<StopCriteria> stopByFun(boost::function<bool ()> fun);
+     static rw::core::Ptr<StopCriteria> stopCnt(int cnt);
+     static rw::core::Ptr<StopCriteria> stopEither(
+         const std::vector<rw::core::Ptr<StopCriteria> >& criteria);
 
-     static rw::common::Ptr<StopCriteria> stopEither(
-         const rw::common::Ptr<StopCriteria>& a,
-         const rw::common::Ptr<StopCriteria>& b);
+     static rw::core::Ptr<StopCriteria> stopEither(
+         const rw::core::Ptr<StopCriteria>& a,
+         const rw::core::Ptr<StopCriteria>& b);
 };
 
-%template (StopCriteriaPtr) rw::common::Ptr<StopCriteria>;
-%template (StopCriteriaPtrVector) std::vector<rw::common::Ptr<StopCriteria> >;
+%template (StopCriteriaPtr) rw::core::Ptr<StopCriteria>;
+%template (StopCriteriaPtrVector) std::vector<rw::core::Ptr<StopCriteria> >;
 
 %nodefaultctor PathPlanner;
-template <class From, class To, class PATH = Path<From> >
+template <class From, class To, class PATH = rw::trajectory::Path<From> >
 class PathPlanner
 {
 public:
@@ -241,9 +241,9 @@ public:
 
 };
 %nodefaultctor PathPlannerQQ;
-%template (PathPlannerQQ) PathPlanner<rw::math::Q,const rw::math::Q>;
+%template (PathPlannerQQ) PathPlanner<Q,const Q>;
 %nodefaultctor PathPlannerQQSampler;
-%template (PathPlannerQQSampler) PathPlanner<rw::math::Q, QSampler>;
+%template (PathPlannerQQSampler) PathPlanner<Q, QSampler>;
 
 /**
  * @brief Normalization of configurations.
@@ -259,35 +259,35 @@ public:
      * @brief Convert from a normalized configuration to a real
      * configuration.
      */
-    rw::math::Q fromNormalized(const rw::math::Q& q) const;
+    Q fromNormalized(const Q& q) const;
 
     /**
      * @brief Convert a real configuration to a normalized configuration.
      */
-    rw::math::Q toNormalized(const rw::math::Q& q) const;
+    Q toNormalized(const Q& q) const;
 
     /**
      * @brief Convert from a normalized configuration to a real
      * configuration and assign the real configuration to \b q.
      */
-    void setFromNormalized(rw::math::Q& q) const;
+    void setFromNormalized(Q& q) const;
 
     /**
      * @brief Convert a real configuration to a normalized configuration and
      * write the normalized configuration to \b q.
      */
-    void setToNormalized(rw::math::Q& q) const;
+    void setToNormalized(Q& q) const;
 
     /**
      * @brief The box of the configuration space with respect to which
      * normalization is done.
      */
-    const std::pair<rw::math::Q, rw::math::Q>& getBounds() const;
+    const std::pair<Q, Q>& getBounds() const;
 
     /**
      * @brief Normalizer for the configuration space box given by \b bounds.
      */
-    explicit QNormalizer(const std::pair<rw::math::Q, rw::math::Q>& bounds);
+    explicit QNormalizer(const std::pair<Q, Q>& bounds);
 
     /**
      * @brief Normalizer for the already normalized configuration space box.
@@ -297,7 +297,7 @@ public:
 private:
     QNormalizer();
 };
-%template (QNormalizerPtr) rw::common::Ptr<QNormalizer>;
+%template (QNormalizerPtr) rw::core::Ptr<QNormalizer>;
 OWNEDPTR(QNormalizer)
 
 /**
@@ -316,7 +316,7 @@ public:
 	 *
 	 * @param log [in] Log to which debug information is to be written
 	 */
-	virtual void setLog(rw::common::Ptr<Log> log);
+	virtual void setLog(rw::core::Ptr<Log> log);
 
 	/**
 	 * @brief Updates the constraint with a new state
@@ -329,14 +329,14 @@ public:
      * @brief True if the work cell is considered to be in collision for the
      * device configuration \b q.
      */
-    bool inCollision(const rw::math::Q& q) const;
+    bool inCollision(const Q& q) const;
 
     /**
      * @brief A fixed constraint.
      *
      * The fixed constraint always returns \b value from inCollision().
      */
-	static rw::common::Ptr<QConstraint> makeFixed(bool value);
+	static rw::core::Ptr<QConstraint> makeFixed(bool value);
 
     /**
      * @brief Constraint for the bounds of the configuration space.
@@ -344,38 +344,38 @@ public:
      * The configuration is considered to be in collision if it is outside
      * of the bounds given by \b bounds.
      */
-	static rw::common::Ptr<QConstraint> makeBounds(const std::pair<rw::math::Q, rw::math::Q>& bounds);
+	static rw::core::Ptr<QConstraint> makeBounds(const std::pair<Q, Q>& bounds);
 
     /**
      * @brief Map a state constraint to a configuration constraint.
      */
-	static rw::common::Ptr<QConstraint> make(
-		rw::common::Ptr<StateConstraint> detector,
-		rw::common::Ptr<const Device> device,
+	static rw::core::Ptr<QConstraint> make(
+		rw::core::Ptr<StateConstraint> detector,
+		rw::core::Ptr<const Device> device,
         const State& state);
 
     /**
      * @brief Map a collision detector to a configuration constraint.
      */
-	static rw::common::Ptr<QConstraint> make(
-		rw::common::Ptr<CollisionDetector> detector,
-		rw::common::Ptr<const Device> device,
+	static rw::core::Ptr<QConstraint> make(
+		rw::core::Ptr<CollisionDetector> detector,
+		rw::core::Ptr<const Device> device,
         const State& state);
 
     /**
      * @brief Combine a set of configuration constraints into a single
      * configuration constraint.
      */
-	static rw::common::Ptr<QConstraint> makeMerged(
-		const std::vector<rw::common::Ptr<QConstraint> >& constraints);
+	static rw::core::Ptr<QConstraint> makeMerged(
+		const std::vector<rw::core::Ptr<QConstraint> >& constraints);
 
     /**
      * @brief Combine a pair of configuration constraints into a single
      * configuration constraint.
      */
-	static rw::common::Ptr<QConstraint> makeMerged(
-		const rw::common::Ptr<QConstraint>& ca,
-		const rw::common::Ptr<QConstraint>& cb);
+	static rw::core::Ptr<QConstraint> makeMerged(
+		const rw::core::Ptr<QConstraint>& ca,
+		const rw::core::Ptr<QConstraint>& cb);
 
     /**
      * @brief Map a configuration constraint for standard configurations
@@ -384,9 +384,9 @@ public:
      * Configuration values are mapped from the range [0, 1] into the
      * corresponding position in the box \b bounds.
      */
-	static rw::common::Ptr<QConstraint> makeNormalized(
-		const rw::common::Ptr<QConstraint>& constraint,
-        const std::pair<rw::math::Q, rw::math::Q>& bounds);
+	static rw::core::Ptr<QConstraint> makeNormalized(
+		const rw::core::Ptr<QConstraint>& constraint,
+        const std::pair<Q, Q>& bounds);
 
     /**
      * @brief Map a configuration constraint for standard configurations
@@ -395,8 +395,8 @@ public:
      * Configuration values are mapped from the range [0, 1] into the
      * corresponding position in the configuration space of \b device.
      */
-	static rw::common::Ptr<QConstraint> makeNormalized(
-		const rw::common::Ptr<QConstraint>& constraint,
+	static rw::core::Ptr<QConstraint> makeNormalized(
+		const rw::core::Ptr<QConstraint>& constraint,
         const Device& device);
 
     /**
@@ -406,12 +406,12 @@ public:
      * Configuration values are mapped from normalized configurations into
      * standard configurations using \b normalizer.
      */
-	static rw::common::Ptr<QConstraint> makeNormalized(
-		const rw::common::Ptr<QConstraint>& constraint,
+	static rw::core::Ptr<QConstraint> makeNormalized(
+		const rw::core::Ptr<QConstraint>& constraint,
         const QNormalizer& normalizer);
 
     %extend {
-        rw::common::Ptr<const QConstraint> asCPtr() { 
+        rw::core::Ptr<const QConstraint> asCPtr() { 
             
             return $self; 
             
@@ -430,7 +430,7 @@ protected:
      *
      * @param log [in] the log.
      */
-	virtual void doSetLog(rw::common::Ptr<rw::common::Log> log) = 0;
+	virtual void doSetLog(rw::core::Ptr<rw::common::Log> log) = 0;
 
 	/**
 	 * @brief Update constraint.
@@ -449,9 +449,9 @@ private:
     QConstraint& operator=(const QConstraint&);
 };
 
-%template (QConstraintPtr) rw::common::Ptr<QConstraint>;
-%template (QConstraintCPtr) rw::common::Ptr<const QConstraint>;
-%template (QConstraintPtrVector) std::vector<rw::common::Ptr<QConstraint> >;
+%template (QConstraintPtr) rw::core::Ptr<QConstraint>;
+%template (QConstraintCPtr) rw::core::Ptr<const QConstraint>;
+%template (QConstraintPtrVector) std::vector<rw::core::Ptr<QConstraint> >;
 
 /**
  * @brief Edge constraint interface.
@@ -476,9 +476,9 @@ class QEdgeConstraint
 {
 public:
 	//! @brief smart pointer type to this class
-	typedef rw::common::Ptr<QEdgeConstraint> Ptr;
+	typedef rw::core::Ptr<QEdgeConstraint> Ptr;
 	//! @brief smart pointer type to this class
-	typedef rw::common::Ptr< const QEdgeConstraint > CPtr;
+	typedef rw::core::Ptr< const QEdgeConstraint > CPtr;
 
     /**
      * @brief Destructor
@@ -491,7 +491,7 @@ public:
      * @param start [in] Start configuration.
      * @param end [in] End configuration.
      */
-    bool inCollision(const rw::math::Q& start, const rw::math::Q& end) const;
+    bool inCollision(const Q& start, const Q& end) const;
 
     /**
      * @brief Discrete path verification for a linearly interpolated path.
@@ -510,8 +510,8 @@ public:
 	 * @param metric [in] Metric with which the resolution it to be measured
 	 * @param resolution [in] The test resolution
     */
-	static rw::common::Ptr<QEdgeConstraint> make(rw::common::Ptr<QConstraint> constraint,
-									 rw::common::Ptr<const Metric<rw::math::Q> > metric,
+	static rw::core::Ptr<QEdgeConstraint> make(rw::core::Ptr<QConstraint> constraint,
+									 rw::core::Ptr<const rw::math::Metric<Q> > metric,
 									 double resolution);
 
     /**
@@ -522,8 +522,8 @@ public:
      * configuration space and are checked by a default collision checking
      * resolution.
      */
-	static rw::common::Ptr<QEdgeConstraint> makeDefault(rw::common::Ptr<QConstraint> constraint,
-		rw::common::Ptr< const Device > device);
+	static rw::core::Ptr<QEdgeConstraint> makeDefault(rw::core::Ptr<QConstraint> constraint,
+		rw::core::Ptr< const Device > device);
 
 
 	/**
@@ -535,7 +535,7 @@ public:
 	 * @param constraints [in] List of constraints to check
 	 * @return Pointer to the resulting QEdgeConstraint. Pointer has ownership.
 	 **/
-	static rw::common::Ptr<QEdgeConstraint> makeMerged(const std::vector<rw::common::Ptr<QEdgeConstraint> >& constraints);
+	static rw::core::Ptr<QEdgeConstraint> makeMerged(const std::vector<rw::core::Ptr<QEdgeConstraint> >& constraints);
 
 	/**
 	 * @brief Makes an edge constraint by combining two edge constraints
@@ -547,7 +547,7 @@ public:
 	 * @param constraint2 [in] Second constraint to check
 	 * @return Pointer to the resulting QEdgeConstraint. Pointer has ownership.
 	 **/
-	static rw::common::Ptr<QEdgeConstraint> makeMerged(rw::common::Ptr<QEdgeConstraint> constraint1, rw::common::Ptr<QEdgeConstraint> constraint2);
+	static rw::core::Ptr<QEdgeConstraint> makeMerged(rw::core::Ptr<QEdgeConstraint> constraint1, rw::core::Ptr<QEdgeConstraint> constraint2);
 
 
 protected:
@@ -558,15 +558,15 @@ protected:
      * By default the method is implemented in terms of instance() and
      * inCollision().
      */
-    virtual bool doInCollision(const rw::math::Q& start,
-							   const rw::math::Q& end) const = 0;
+    virtual bool doInCollision(const Q& start,
+							   const Q& end) const = 0;
 
 
 
 };
 
-%template (QEdgeConstraintPtr) rw::common::Ptr<QEdgeConstraint>;
-%template (QEdgeConstraintPtrVector) std::vector<rw::common::Ptr<QEdgeConstraint> >;
+%template (QEdgeConstraintPtr) rw::core::Ptr<QEdgeConstraint>;
+%template (QEdgeConstraintPtrVector) std::vector<rw::core::Ptr<QEdgeConstraint> >;
 
 /**
  * @brief Edge constraint interface for incremental testing of an edge
@@ -602,8 +602,8 @@ public:
      * @param end [in] End configuration.
      */
     bool inCollision(
-        const rw::math::Q& start,
-        const rw::math::Q& end) const;
+        const Q& start,
+        const Q& end) const;
 
     /**
      * @brief True if the path connecting the start and end configuration
@@ -649,25 +649,25 @@ public:
      * @param start [in] Start configuration of path
      * @param end [in] End configuration of path
      */
-	rw::common::Ptr<QEdgeConstraintIncremental> instance(
-        const rw::math::Q& start,
-        const rw::math::Q& end) const;
+	rw::core::Ptr<QEdgeConstraintIncremental> instance(
+        const Q& start,
+        const Q& end) const;
 
     /**
      * @brief The start configuration of the path.
      */
-    const rw::math::Q& getStart() const;
+    const Q& getStart() const;
 
     /**
      * @brief The end configuration of the path.
      */
-    const rw::math::Q& getEnd() const;
+    const Q& getEnd() const;
 
     /**
      * @brief Reset the object to use a different pair of start and end
      * configurations.
      */
-    void reset(const rw::math::Q& start, const rw::math::Q& end);
+    void reset(const Q& start, const Q& end);
 
     // Here we have the factory methods.
 
@@ -690,9 +690,9 @@ public:
      * Start and end configurations for this initial planner are set to the
      * empty configuration.
      */
-	static rw::common::Ptr<QEdgeConstraintIncremental> make(
-		rw::common::Ptr<QConstraint> constraint,
-		rw::common::Ptr<Metric<rw::math::Q> > metric,
+	static rw::core::Ptr<QEdgeConstraintIncremental> make(
+		rw::core::Ptr<QConstraint> constraint,
+		rw::core::Ptr< rw::math::Metric<Q> > metric,
         double resolution = 1);
 
     /**
@@ -703,9 +703,9 @@ public:
      * configuration space and are checked by a default collision checking
      * resolution.
      */
-	static rw::common::Ptr<QEdgeConstraintIncremental> makeDefault(
-		rw::common::Ptr<QConstraint> constraint,
-		rw::common::Ptr<Device> device);
+	static rw::core::Ptr<QEdgeConstraintIncremental> makeDefault(
+		rw::core::Ptr<QConstraint> constraint,
+		rw::core::Ptr<Device> device);
 
     /**
      * @brief A fixed edge constraint.
@@ -713,7 +713,7 @@ public:
      * The fixed edge constraint always returns \b value from inCollision().
      */
     static
-		rw::common::Ptr<QEdgeConstraintIncremental> makeFixed(bool value);
+		rw::core::Ptr<QEdgeConstraintIncremental> makeFixed(bool value);
 
     // We can implement a bunch of other instances, for example an instance
     // parameterized by an interpolator.
@@ -726,8 +726,8 @@ protected:
      * @param end [in] End configuration of path
      */
     QEdgeConstraintIncremental(
-        const rw::math::Q& start,
-        const rw::math::Q& end);
+        const Q& start,
+        const Q& end);
 
     /**
      * @brief Subclass implementation of the inCollision() method.
@@ -736,8 +736,8 @@ protected:
      * inCollision().
      */
     virtual bool doInCollision(
-        const rw::math::Q& start,
-        const rw::math::Q& end) const;
+        const Q& start,
+        const Q& end) const;
 
     /**
      * @brief Subclass implementation of the inCollision() method.
@@ -767,9 +767,9 @@ protected:
     /**
      * @brief Subclass implementation of the instance() method.
      */
-	virtual rw::common::Ptr<QEdgeConstraintIncremental> doClone(
-        const rw::math::Q& start,
-        const rw::math::Q& end) const = 0;
+	virtual rw::core::Ptr<QEdgeConstraintIncremental> doClone(
+        const Q& start,
+        const Q& end) const = 0;
 
     /**
      * @brief Subclass implementation of the reset() method.
@@ -781,7 +781,7 @@ protected:
     virtual void doReset() = 0;
 };
 
-%template (QEdgeConstraintIncrementalPtr) rw::common::Ptr<QEdgeConstraintIncremental>;
+%template (QEdgeConstraintIncrementalPtr) rw::core::Ptr<QEdgeConstraintIncremental>;
 
 /**
  * @brief Interface for the sampling a configuration that solves an IK
@@ -798,7 +798,7 @@ public:
      * empty() is true then the sampler has no more configurations.
      * Otherwise sample() may (or may not) succeed if called a second time.
      */
-    rw::math::Q sample(const rw::math::Transform3D<double>& target);
+    Q sample(const rw::math::Transform3D<double>& target);
 
     /**
      * @brief True if the sampler is known to contain no more
@@ -828,11 +828,11 @@ public:
      * solver. If \b maxAttempts is negative, a default value for \b
      * maxAttempts is chosen.
      */
-	static rw::common::Ptr<QIKSampler> make(
-		rw::common::Ptr<Device> device,
+	static rw::core::Ptr<QIKSampler> make(
+		rw::core::Ptr<Device> device,
         const State& state,
-		rw::common::Ptr<IterativeIK> solver = NULL,
-		rw::common::Ptr<QSampler> seed = NULL,
+		rw::core::Ptr<IterativeIK> solver = NULL,
+		rw::core::Ptr<QSampler> seed = NULL,
         int maxAttempts = -1);
 
     /**
@@ -847,9 +847,9 @@ public:
      * until either the \b sampler is empty or a configuration satisfying \b
      * constraint is found.
      */
-    static rw::common::Ptr<QIKSampler> makeConstrained(
-	    rw::common::Ptr<QIKSampler> sampler,
-		rw::common::Ptr<QConstraint> constraint,
+    static rw::core::Ptr<QIKSampler> makeConstrained(
+	    rw::core::Ptr<QIKSampler> sampler,
+		rw::core::Ptr<QConstraint> constraint,
         int maxAttempts = -1);
 
 protected:
@@ -861,7 +861,7 @@ protected:
     /**
      * @brief Subclass implementation of the sample() method.
      */
-    virtual rw::math::Q doSample(
+    virtual Q doSample(
         const rw::math::Transform3D<double>& target) = 0;
 
     /**
@@ -873,11 +873,11 @@ protected:
     virtual bool doEmpty() const;
 };
 
-%template (QIKSamplerPtr) rw::common::Ptr<QIKSampler>;
-%template (QIKSamplerCPtr) rw::common::Ptr<const QIKSampler>;
+%template (QIKSamplerPtr) rw::core::Ptr<QIKSampler>;
+%template (QIKSamplerCPtr) rw::core::Ptr<const QIKSampler>;
 
 %nodefaultctor QToQPlanner;
-class QToQPlanner: public PathPlanner<rw::math::Q, const rw::math::Q> {
+class QToQPlanner: public PathPlanner<Q, const Q> {
 public:
 
     /**
@@ -888,7 +888,7 @@ public:
 
         @param planner [in] A planner for a region given by a QSampler.
     */
-    static QToQPlanner::Ptr make(rw::common::Ptr<QToQSamplerPlanner> planner);
+    static rw::core::Ptr<QToQPlanner> make(rw::core::Ptr<QToQSamplerPlanner> planner);
 
     /**
          @brief Construct a path planner from an edge constraint.
@@ -902,38 +902,38 @@ public:
         @param constraint [in] Planner constraint.
         @return A planner that attempts the directly connecting edge only.
     */
-    static QToQPlanner::Ptr make(const PlannerConstraint& constraint);
+    static rw::core::Ptr<QToQPlanner> make(const PlannerConstraint& constraint);
 
     %extend {
 /*
-        rw::common::Ptr<Path<rw::math::Q> > query(rw::math::Q from, rw::math::Q to, rw::common::Ptr<StopCriteria> stop){
-            rw::common::Ptr<Path<rw::math::Q> > path = rw::common::ownedPtr(new PathQ());
-            $self->rw::pathplanning::PathPlanner<rw::math::Q,const rw::math::Q>::query(from,to,*path,*stop);
+        rw::core::Ptr<rw::trajectory::Path<Q> > query(Q from, Q to, rw::core::Ptr<StopCriteria> stop){
+            rw::core::Ptr<rw::trajectory::Path<Q> > path = rw::core::ownedPtr(new PathQ());
+            $self->rw::pathplanning::PathPlanner<Q,const Q>::query(from,to,*path,*stop);
             return path;
         }
 
-        rw::common::Ptr<Path<rw::math::Q> > query(rw::math::Q from, rw::math::Q to, double time){
-            rw::common::Ptr<Path<rw::math::Q> > path = rw::common::ownedPtr(new PathQ());
-            $self->rw::pathplanning::PathPlanner<rw::math::Q,const rw::math::Q>::query(from,to,*path,time);
+        rw::core::Ptr<rw::trajectory::Path<Q> > query(Q from, Q to, double time){
+            rw::core::Ptr<rw::trajectory::Path<Q> > path = rw::core::ownedPtr(new PathQ());
+            $self->rw::pathplanning::PathPlanner<Q,const Q>::query(from,to,*path,time);
             return path;
         }
 
-        rw::common::Ptr<Path<rw::math::Q> > query(rw::math::Q from, rw::math::Q to){
-            rw::common::Ptr<Path<rw::math::Q> > path = rw::common::ownedPtr(new PathQ());
-            $self->rw::pathplanning::PathPlanner<rw::math::Q,const rw::math::Q>::query(from,to,*path);
+        rw::core::Ptr<rw::trajectory::Path<Q> > query(Q from, Q to){
+            rw::core::Ptr<rw::trajectory::Path<Q> > path = rw::core::ownedPtr(new PathQ());
+            $self->rw::pathplanning::PathPlanner<Q,const Q>::query(from,to,*path);
             return path;
         }
 
         PropertyMap& getProperties(){
-            return $self->rw::pathplanning::PathPlanner<rw::math::Q,const rw::math::Q>::getProperties();
+            return $self->rw::pathplanning::PathPlanner<Q,const Q>::getProperties();
         }
-        static rw::common::Ptr<QToQPlanner> makeRRT(rw::common::Ptr<CollisionDetector> cdect, rw::common::Ptr<Device> dev, const State& state){
+        static rw::core::Ptr<QToQPlanner> makeRRT(rw::core::Ptr<CollisionDetector> cdect, rw::core::Ptr<Device> dev, const State& state){
             const rw::pathplanning::PlannerConstraint constraint = rw::pathplanning::PlannerConstraint::make(
                 cdect.get(), dev, state);
             return rwlibs::pathplanners::RRTPlanner::makeQToQPlanner(constraint, dev);
         }
 
-        static rw::common::Ptr<QToQPlanner> makeSBL(rw::common::Ptr<CollisionDetector> cdect, rw::common::Ptr<Device> dev, const State& state){
+        static rw::core::Ptr<QToQPlanner> makeSBL(rw::core::Ptr<CollisionDetector> cdect, rw::core::Ptr<Device> dev, const State& state){
             rw::pathplanning::QConstraint::Ptr qconstraint = rw::pathplanning::QConstraint::make(cdect.get(), dev, state);
             return rwlibs::pathplanners::SBLPlanner::makeQToQPlanner(rwlibs::pathplanners::SBLSetup::make(qconstraint, rw::pathplanning::QEdgeConstraintIncremental::makeDefault(qconstraint, dev), dev));
         }
@@ -941,42 +941,42 @@ public:
     };
 };
 
-%template (QToQPlannerPtr) rw::common::Ptr<QToQPlanner>;
+%template (QToQPlannerPtr) rw::core::Ptr<QToQPlanner>;
 
 %nodefaultctor QToTPlanner;
 class QToTPlanner 
 {
 public:
 	//! @brief smart pointer type to this class
-	typedef rw::common::Ptr<QToTPlanner> Ptr;
+	typedef rw::core::Ptr<QToTPlanner> Ptr;
 
     %extend {
 
-        rw::common::Ptr<Path<rw::math::Q> > query(rw::math::Q from, rw::math::Transform3D<double> to, rw::common::Ptr<StopCriteria> stop){
-            rw::common::Ptr<Path<rw::math::Q> > path = rw::common::ownedPtr(new PathQ());
-            $self->rw::pathplanning::PathPlanner<rw::math::Q,const rw::math::Transform3D<double> >::query(from,to,*path,*stop);
+        rw::core::Ptr<rw::trajectory::Path<Q> > query(Q from, rw::math::Transform3D<double> to, rw::core::Ptr<StopCriteria> stop){
+            rw::core::Ptr<rw::trajectory::Path<Q> > path = rw::core::ownedPtr(new rw::trajectory::Path<Q>());
+            $self->rw::pathplanning::PathPlanner<Q,const rw::math::Transform3D<double> >::query(from,to,*path,*stop);
             return path;
         }
 
-        rw::common::Ptr<Path<rw::math::Q> > query(rw::math::Q from, rw::math::Transform3D<double> to, double time){
-            rw::common::Ptr<Path<rw::math::Q> > path = rw::common::ownedPtr(new PathQ());
-            $self->rw::pathplanning::PathPlanner<rw::math::Q,const rw::math::Transform3D<double> >::query(from,to,*path,time);
+        rw::core::Ptr<rw::trajectory::Path<Q> > query(Q from, rw::math::Transform3D<double> to, double time){
+            rw::core::Ptr<rw::trajectory::Path<Q> > path = rw::core::ownedPtr(new rw::trajectory::Path<Q>());
+            $self->rw::pathplanning::PathPlanner<Q,const rw::math::Transform3D<double> >::query(from,to,*path,time);
             return path;
         }
 
-        rw::common::Ptr<Path<rw::math::Q> > query(rw::math::Q from, rw::math::Transform3D<double> to){
-            rw::common::Ptr<Path<rw::math::Q> > path = rw::common::ownedPtr(new PathQ());
-            $self->rw::pathplanning::PathPlanner<rw::math::Q,const rw::math::Transform3D<double> >::query(from,to,*path);
+        rw::core::Ptr<rw::trajectory::Path<Q> > query(Q from, rw::math::Transform3D<double> to){
+            rw::core::Ptr<rw::trajectory::Path<Q> > path = rw::core::ownedPtr(new rw::trajectory::Path<Q>());
+            $self->rw::pathplanning::PathPlanner<Q,const rw::math::Transform3D<double> >::query(from,to,*path);
             return path;
         }
 
         PropertyMap& getProperties(){
-            return $self->rw::pathplanning::PathPlanner<rw::math::Q,const rw::math::Transform3D<double> >::getProperties();
+            return $self->rw::pathplanning::PathPlanner<Q,const rw::math::Transform3D<double> >::getProperties();
         }
 	}	
 };
 
-%template (QToTPlannerPtr) rw::common::Ptr<QToTPlanner>;
+%template (QToTPlannerPtr) rw::core::Ptr<QToTPlanner>;
 
 %nodefaultctor QToQSamplerPlanner;
 /**
@@ -985,11 +985,11 @@ public:
    QToQSamplerPlanner plans a configuration space path from a start
    configuration to any configuration in the set represented by a sampler.
 */
-class QToQSamplerPlanner : public PathPlanner<rw::math::Q, QSampler>
+class QToQSamplerPlanner : public PathPlanner<Q, QSampler>
 {
 };
 
-%template (QToQSamplerPlannerPtr) rw::common::Ptr<QToQSamplerPlanner>;
+%template (QToQSamplerPlannerPtr) rw::core::Ptr<QToQSamplerPlanner>;
 
 /**
    @brief Interface for the checking for collisions for work cell states.
@@ -1002,7 +1002,7 @@ public:
 	 *
 	 * @param log [in] Log to which debug information is to be written
 	 */
-	virtual void setLog(rw::common::Ptr<Log> log);
+	virtual void setLog(rw::core::Ptr<Log> log);
 
     /**
      * @brief True if the work cell is considered to be in collision for the
@@ -1020,15 +1020,15 @@ public:
     /**
      * @brief Map a collision detector to a state constraint.
      */
-	static rw::common::Ptr<StateConstraint> make(
-		rw::common::Ptr<CollisionDetector> detector);
+	static rw::core::Ptr<StateConstraint> make(
+		rw::core::Ptr<CollisionDetector> detector);
 
     /**
      * @brief Combine a set of state constraints into a single state
      * constraint.
      */
-	static rw::common::Ptr<StateConstraint> make(
-		const std::vector<rw::common::Ptr<StateConstraint> >& constraints);
+	static rw::core::Ptr<StateConstraint> make(
+		const std::vector<rw::core::Ptr<StateConstraint> >& constraints);
 
 protected:
     /**
@@ -1041,7 +1041,7 @@ protected:
      *
      * @param log [in] the log.
      */
-	virtual void doSetLog(rw::common::Ptr<Log> log) = 0;
+	virtual void doSetLog(rw::core::Ptr<Log> log) = 0;
 
     /**
      * @brief Constructor
@@ -1049,6 +1049,6 @@ protected:
     StateConstraint();
 };
 
-%template (StateConstraintPtr) rw::common::Ptr<StateConstraint>;
-%template (StateConstraintCPtr) rw::common::Ptr<const StateConstraint>;
-%template (StateConstraintPtrVector) std::vector<rw::common::Ptr<StateConstraint> >;
+%template (StateConstraintPtr) rw::core::Ptr<StateConstraint>;
+%template (StateConstraintCPtr) rw::core::Ptr<const StateConstraint>;
+%template (StateConstraintPtrVector) std::vector<rw::core::Ptr<StateConstraint> >;

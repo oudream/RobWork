@@ -17,7 +17,7 @@
 
 #include "Random.hpp"
 
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 #include <rw/common/TimerUtil.hpp>
 
 #include <boost/random/mersenne_twister.hpp>

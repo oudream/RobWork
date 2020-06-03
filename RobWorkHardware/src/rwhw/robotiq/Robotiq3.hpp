@@ -4,6 +4,7 @@
 
 
 #include "Robotiq.hpp"
+#include <rw/core/Ptr.hpp>
 
 namespace rwhw {
 
@@ -24,7 +25,7 @@ namespace rwhw {
 
 class Robotiq3 : public Robotiq {
 public:
-    typedef rw::common::Ptr<Robotiq3> Ptr;
+    typedef rw::core::Ptr<Robotiq3> Ptr;
 
     /*
      Global Gripper Status - A global Gripper Status is available. This gives information such as which Operation

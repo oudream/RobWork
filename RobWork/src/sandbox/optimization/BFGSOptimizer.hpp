@@ -20,7 +20,7 @@ namespace optimization {
 class BFGSOptimizer: public GradientOptimizer {
 public:
 	//! Smart pointer.
-	typedef rw::common::Ptr<BFGSOptimizer> Ptr;
+	typedef rw::core::Ptr<BFGSOptimizer> Ptr;
 
 	//! Vector type used for internal calculations.
 	typedef Eigen::VectorXd vector;
@@ -33,9 +33,9 @@ public:
 	 * @brief Constructor.
 	 */
 	BFGSOptimizer(typename FunctionType::Ptr function, double stepSize = 1.0,
-			StopCondition::Ptr stopCondition = rw::common::ownedPtr(
+			StopCondition::Ptr stopCondition = rw::core::ownedPtr(
 					new StopCondition(100, 0.01)), LineSearch::Ptr strategy =
-					rw::common::ownedPtr(new GoldenSectionLineSearch()));
+					rw::core::ownedPtr(new GoldenSectionLineSearch()));
 
 	//! Destructor.
 	virtual ~BFGSOptimizer();

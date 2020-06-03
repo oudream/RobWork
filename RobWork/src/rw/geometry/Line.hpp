@@ -36,7 +36,7 @@ namespace geometry {
 	class Line: public Primitive {
 		public:
 			//! @brief Smart pointer to Line.
-			typedef rw::common::Ptr<Line> Ptr;
+			typedef rw::core::Ptr<Line> Ptr;
 		
 			//! @brief Type of internal values.
 			typedef double value_type;

@@ -23,10 +23,10 @@
 #include <rw/math/Vector3D.hpp>
 #include <rw/math/Transform3D.hpp>
 #include <rw/math/RPY.hpp>
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 
 using namespace rw::loaders;
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::math;
 using namespace rw::geometry;
 using namespace rw::graphics;

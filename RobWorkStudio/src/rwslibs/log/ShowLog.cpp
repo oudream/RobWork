@@ -19,8 +19,9 @@
 
 #include <iomanip>
 
-#include <rw/common/Log.hpp>
-#include <rw/common/StringUtil.hpp>
+#include <rw/core/Log.hpp>
+#include <rw/core/LogWriter.hpp>
+#include <rw/core/StringUtil.hpp>
 #include <rws/RobWorkStudio.hpp>
 
 #include <sstream>
@@ -33,7 +34,7 @@
 #define MESSAGE_ADDED_EVENT 2345
 
 using namespace rw::graphics;
-using namespace rw::common;
+using namespace rw::core;
 using namespace rws;
 
 
@@ -118,7 +119,7 @@ ShowLog::~ShowLog()
 
 bool ShowLog::event(QEvent *event){
     if(event->type() == MESSAGE_ADDED_EVENT) {
-        for(rw::common::Ptr<WriterWrapper> writer : _writers) {
+        for(rw::core::Ptr<WriterWrapper> writer : _writers) {
             for(unsigned int i = 0; i < writer->_msgQueue.size(); i++) {
                 write(writer->_msgQueue[i].first, writer->_msgQueue[i].second);
             }
@@ -148,7 +149,7 @@ void ShowLog::close()
 void ShowLog::receiveMessage(
     const std::string& plugin,
     const std::string& id,
-    const rw::common::Message& msg)
+    const rw::core::Message& msg)
 {
 	RW_WARN("Deprecated function, use log().info() << \"your string\" instead");
 }
@@ -173,7 +174,7 @@ void ShowLog::frameSelectedListener(rw::kinematics::Frame* frame) {
 void ShowLog::initialize() {
     setParent(getRobWorkStudio());
     getRobWorkStudio()->frameSelectedEvent().add(
-    		boost::bind(&ShowLog::frameSelectedListener, this, _1), this);
+    		boost::bind(&ShowLog::frameSelectedListener, this, boost::arg<1>()), this);
 
 	
     log().setWriterForMask(((Log::AllMask) ^ (Log::WarningMask | Log::DebugMask | Log::FatalMask | Log::CriticalMask | Log::ErrorMask)), _writers[0]);

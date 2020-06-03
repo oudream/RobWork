@@ -28,8 +28,9 @@
 #include <rw/trajectory/Path.hpp>
 #include <rwlibs/pathoptimization/clearance/ClearanceOptimizer.hpp>
 #include <rwlibs/pathoptimization/clearance/MinimumClearanceCalculator.hpp>
+#include <rw/core/Ptr.hpp>
 
-using rw::common::ownedPtr;
+using rw::core::ownedPtr;
 using namespace rw::kinematics;
 using namespace rw::math;
 using namespace rw::models;

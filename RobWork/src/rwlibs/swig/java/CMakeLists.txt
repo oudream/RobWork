@@ -1,7 +1,6 @@
 set(SUBSYS_NAME sdurw_java)
 set(SUBSYS_DESC "Interface for accessing RobWork from java.")
-set(
-    SUBSYS_DEPS
+set(SUBSYS_DEPS
     sdurw
     sdurw_assembly
     sdurw_control
@@ -22,7 +21,6 @@ if(NOT SWIG_FOUND)
     set(DEFAULT false)
     set(REASON "SWIG not found!")
 else()
-
     find_package(Java)
     find_package(JNI)
     if(NOT (JAVA_FOUND AND JNI_FOUND))
@@ -52,6 +50,7 @@ if(build)
     foreach(
         RW_MODULE
         ${RW_NAME}
+        ${RW_NAME}_task
         ${RW_NAME}_assembly
         ${RW_NAME}_control
         ${RW_NAME}_pathoptimization
@@ -59,37 +58,22 @@ if(build)
         ${RW_NAME}_proximitystrategies
         ${RW_NAME}_simulation
         ${RW_NAME}_opengl
-        ${RW_NAME}_task
     )
-        set(RW_MODULE_FILENAME ../${RW_MODULE}.i)
-        set_source_files_properties(${RW_MODULE_FILENAME} PROPERTIES CPLUSPLUS ON)
-        set_source_files_properties(${RW_MODULE_FILENAME} PROPERTIES SWIG_FLAGS "-includeall")
+        set(TARGET_NAME ${RW_MODULE}_jni)
 
-        if(NOT ${SWIG_VERSION} VERSION_LESS 4.0.0)
-            set_source_files_properties(${RW_MODULE_FILENAME} PROPERTIES SWIG_FLAGS "-includeall;-doxygen")
-        endif()
+        rw_add_swig(
+            ${RW_MODULE} java MODULE
+            TARGET_NAME ${TARGET_NAME}
+            INSTALL_DIR ${JAVA_INSTALL_DIR}
+            SOURCES ../ScriptTypes.cpp
+            CXX_FILE_DIR ${CMAKE_CURRENT_BINARY_DIR}/java_src_${RW_MODULE}/org/robwork/${RW_MODULE}
+            LANGUAGE_FILE_DIR ${CMAKE_CURRENT_BINARY_DIR}/java_src_${RW_MODULE}/org/robwork/${RW_MODULE}
+            SWIG_FLAGS "-package" "org.robwork.${RW_MODULE}"
+        )
 
-        set(CMAKE_SWIG_FLAGS "-package" "org.robwork.${RW_MODULE}")
-        # Put java files in different directory suitable for JAR generation later on
-        set(CMAKE_SWIG_OUTDIR ${CMAKE_CURRENT_BINARY_DIR}/java_src_${RW_MODULE}/org/robwork/${RW_MODULE})
-        # SWIG
-        if((CMAKE_VERSION VERSION_GREATER 3.8) OR (CMAKE_VERSION VERSION_EQUAL 3.8))
-            swig_add_library(
-                ${RW_MODULE}_jni
-                TYPE MODULE
-                LANGUAGE java
-                SOURCES ${RW_MODULE_FILENAME} ../ScriptTypes.cpp
-            )
-        else()
-            swig_add_module(${RW_MODULE}_jni java ${RW_MODULE_FILENAME} ../ScriptTypes.cpp)
-        endif()
-        add_dependencies(${SUBSYS_NAME} ${RW_MODULE}_jni)
-        if((CMAKE_COMPILER_IS_GNUCC) OR (CMAKE_C_COMPILER_ID STREQUAL "Clang"))
-            set_target_properties(${RW_MODULE}_jni PROPERTIES LINK_FLAGS -Wl,--no-undefined)
-        endif()
-        # Force removal of previous Java compilation and source when interface file changes This is required
-        # as types may be removed or change name (in this case previous java classes would interfere with
-        # current compilation).
+        # Force removal of previous Java compilation and source when interface file changes This is
+        # required as types may be removed or change name (in this case previous java classes would
+        # interfere with current compilation).
         add_custom_command(
             OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/CleanDep_${RW_MODULE}
             COMMAND ${CMAKE_COMMAND} -E remove_directory java_src_${RW_MODULE}
@@ -98,25 +82,27 @@ if(build)
             WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
             COMMENT "Removing old Java source..."
         )
-        add_custom_target(CleanDepRW_${RW_MODULE} DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/CleanDep_${RW_MODULE})
+        add_custom_target(CleanDepRW_${RW_MODULE}
+                          DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/CleanDep_${RW_MODULE}
+        )
+
         if((CMAKE_GENERATOR MATCHES "Make") AND (NOT CMAKE_VERSION VERSION_LESS 3.12))
             add_dependencies(${RW_MODULE}_jni_swig_compilation CleanDepRW_${RW_MODULE})
         else()
             add_dependencies(${RW_MODULE}_jni CleanDepRW_${RW_MODULE})
         endif()
+
         if(NOT "${RW_MODULE}" STREQUAL "${RW_NAME}")
             set(CLASSPATH -classpath ${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/sdurw_java.jar)
             set(LINK_JAVADOC -link ../sdurw)
             if("${RW_MODULE}" STREQUAL "${RW_NAME}_assembly")
                 if(WIN32)
-                    set(
-                        CLASSPATH
+                    set(CLASSPATH
                         -classpath
                         "${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/sdurw_java.jar\;${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/sdurw_task_java.jar"
                     )
                 else()
-                    set(
-                        CLASSPATH
+                    set(CLASSPATH
                         -classpath
                         ${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/sdurw_java.jar:${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/sdurw_task_java.jar
                     )
@@ -124,14 +110,12 @@ if(build)
                 set(LINK_JAVADOC ${LINK_JAVADOC} -link ../sdurw_task)
             elseif("${RW_MODULE}" STREQUAL "sdurw_simulation")
                 if(WIN32)
-                    set(
-                        CLASSPATH
+                    set(CLASSPATH
                         -classpath
                         "${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/sdurw_java.jar\;${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/sdurw_control_java.jar"
                     )
                 else()
-                    set(
-                        CLASSPATH
+                    set(CLASSPATH
                         -classpath
                         ${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/sdurw_java.jar:${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/sdurw_control_java.jar
                     )
@@ -145,69 +129,50 @@ if(build)
             set(LOADERRW_FILE java_src_${RW_MODULE}/org/robwork/LoaderRW.java)
             set(LOADERRW_PKG org.robwork)
             set(LOADERRW_CP_CMD copy_if_different ${CMAKE_CURRENT_SOURCE_DIR}/LoaderRW.java
-                                java_src_${RW_MODULE}/org/robwork/LoaderRW.java)
+                                java_src_${RW_MODULE}/org/robwork/LoaderRW.java
+            )
         endif()
         # Compile java code and create JAR and Javadoc
 
         add_custom_command(
-            TARGET ${RW_MODULE}_jni POST_BUILD
+            TARGET ${RW_MODULE}_jni
+            POST_BUILD
             COMMAND ${CMAKE_COMMAND} -E echo "Removing old Java compilation..."
-            COMMAND
-                ${CMAKE_COMMAND} -E remove_directory "${CMAKE_CURRENT_BINARY_DIR}/java_build_${RW_MODULE}"
-            COMMAND
-                ${CMAKE_COMMAND} -E remove_directory
-                "${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/javadoc/${RW_MODULE}"
+            COMMAND ${CMAKE_COMMAND} -E remove_directory
+                    "${CMAKE_CURRENT_BINARY_DIR}/java_build_${RW_MODULE}"
+            COMMAND ${CMAKE_COMMAND} -E remove_directory
+                    "${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/javadoc/${RW_MODULE}"
             COMMAND ${CMAKE_COMMAND} -E echo "Copying Java source..."
             COMMAND ${CMAKE_COMMAND} -E ${LOADERRW_CP_CMD}
             COMMAND ${CMAKE_COMMAND} -E echo "Compiling Java files..."
-            COMMAND ${CMAKE_COMMAND} -E make_directory java_build_${RW_MODULE}/org/robwork/${RW_MODULE}
+            COMMAND ${CMAKE_COMMAND} -E make_directory
+                    java_build_${RW_MODULE}/org/robwork/${RW_MODULE}
             COMMAND
-                ${Java_JAVAC_EXECUTABLE}
-                ${CLASSPATH}
-                -d
-                ${CMAKE_CURRENT_BINARY_DIR}/java_build_${RW_MODULE}
-                ${LOADERRW_FILE}
+                ${Java_JAVAC_EXECUTABLE} ${CLASSPATH} -d
+                ${CMAKE_CURRENT_BINARY_DIR}/java_build_${RW_MODULE} ${LOADERRW_FILE}
                 java_src_${RW_MODULE}/org/robwork/${RW_MODULE}/*.java
             COMMAND ${CMAKE_COMMAND} -E echo "Creating jar file..."
             COMMAND
-                ${Java_JAR_EXECUTABLE}
-                cvf
-                ${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RW_MODULE}_java.jar
-                -C
-                java_build_${RW_MODULE}
-                .
+                ${Java_JAR_EXECUTABLE} cvf
+                ${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RW_MODULE}_java.jar -C
+                java_build_${RW_MODULE} .
             COMMAND ${CMAKE_COMMAND} -E echo "Creating jar file of source..."
             COMMAND
-                ${Java_JAR_EXECUTABLE}
-                cvf
-                ${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RW_MODULE}_java-source.jar
-                -C
-                java_src_${RW_MODULE}
-                .
+                ${Java_JAR_EXECUTABLE} cvf
+                ${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RW_MODULE}_java-source.jar -C
+                java_src_${RW_MODULE} .
             COMMAND ${CMAKE_COMMAND} -E echo "Creating Javadoc..."
+            COMMAND ${CMAKE_COMMAND} -E make_directory
+                    ${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/javadoc/${RW_MODULE}
             COMMAND
-                ${CMAKE_COMMAND} -E make_directory ${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/javadoc/${RW_MODULE}
-            COMMAND
-                ${Java_JAVADOC_EXECUTABLE}
-                ${CLASSPATH}
-                -d
-                ${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/javadoc/${RW_MODULE}
-                -windowtitle
-                "RobWork Java API Documentation"
-                -public
-                -sourcepath
-                java_src_${RW_MODULE}
-                ${LOADERRW_PKG}
-                org.robwork.${RW_MODULE}
-                ${LINK_JAVADOC}
+                ${Java_JAVADOC_EXECUTABLE} ${CLASSPATH} -d
+                ${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/javadoc/${RW_MODULE} -windowtitle
+                "RobWork Java API Documentation" -public -sourcepath java_src_${RW_MODULE}
+                ${LOADERRW_PKG} org.robwork.${RW_MODULE} ${LINK_JAVADOC}
             WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
         )
+
         target_link_libraries(${SUBSYS_NAME} INTERFACE ${RW_MODULE}_jni)
-        install(
-            TARGETS ${RW_MODULE}_jni
-            EXPORT ${PROJECT_PREFIX}Targets
-            DESTINATION ${JAVA_INSTALL_DIR} COMPONENT swig
-        )
     endforeach()
 
     swig_link_libraries(${RW_NAME}_jni sdurw)
@@ -229,9 +194,6 @@ if(build)
     add_dependencies(${RW_NAME}_task_jni ${RW_NAME}_jni)
     add_dependencies(${RW_NAME}_opengl_jni ${RW_NAME}_jni)
 
-    install(
-            TARGETS ${SUBSYS_NAME}
-            EXPORT ${PROJECT_PREFIX}Targets
-    )
+    install(TARGETS ${SUBSYS_NAME} EXPORT ${PROJECT_PREFIX}Targets)
     add_library(${PROJECT_PREFIX}::${SUBSYS_NAME} ALIAS ${SUBSYS_NAME})
 endif()

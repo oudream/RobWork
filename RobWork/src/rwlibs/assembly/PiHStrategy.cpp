@@ -21,8 +21,9 @@
 #include "PiHParameterization.hpp"
 
 #include <rw/trajectory/TrajectoryFactory.hpp>
+#include <rw/core/PropertyMap.hpp>
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::math;
 using namespace rw::trajectory;
 using namespace rwlibs::assembly;
@@ -30,7 +31,7 @@ using namespace rwlibs::assembly;
 namespace {
 class PiHState: public AssemblyControlStrategy::ControlState {
 public:
-	typedef rw::common::Ptr<PiHState> Ptr;
+	typedef rw::core::Ptr<PiHState> Ptr;
 
 	Transform3DTrajectory::Ptr worldtendTtrajectory;
 	bool doTest;
@@ -236,5 +237,5 @@ std::string PiHStrategy::getDescription() {
 }
 
 AssemblyParameterization::Ptr PiHStrategy::createParameterization(const PropertyMap::Ptr map) {
-	return rw::common::ownedPtr(new PiHParameterization(map) );
+	return rw::core::ownedPtr(new PiHParameterization(map) );
 }

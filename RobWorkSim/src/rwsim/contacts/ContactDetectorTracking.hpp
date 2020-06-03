@@ -26,7 +26,7 @@
 
 #include "ContactStrategyTracking.hpp"
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <vector>
 #include <map>
 
@@ -50,7 +50,7 @@ class ContactStrategy;
 class ContactDetectorTracking {
 public:
 	//! @brief Smart pointer type.
-	typedef rw::common::Ptr<ContactDetectorTracking> Ptr;
+	typedef rw::core::Ptr<ContactDetectorTracking> Ptr;
 
 	//! @brief Constructor.
 	ContactDetectorTracking();
@@ -126,7 +126,7 @@ public:
 		//! @brief The contact models the contact can be calculated from.
 		std::pair<ContactModel*,ContactModel*> models;
 		//! @brief The strategy that found the contact.
-		rw::common::Ptr<ContactStrategy> strategy;
+		rw::core::Ptr<ContactStrategy> strategy;
 		//! @brief Tracking data for this specific pair of contact models (multiple contacts can point to the same).
 		ContactStrategyTracking* tracking;
 		//! @brief A counter if multiple contacts uses the same ContactStrategyTracking (these will then be in order).

@@ -39,7 +39,7 @@ namespace trajectory {
         /**
          * @brief Default constructor creating an empty trajectory
          */
-        DeviceTrajectory(rw::common::Ptr<rw::models::Device> deviceIn, const rw::kinematics::State& state);
+        DeviceTrajectory(rw::core::Ptr<rw::models::Device> deviceIn, const rw::kinematics::State& state);
 
         /**
          * @brief Destructor
@@ -67,7 +67,7 @@ namespace trajectory {
 
 		//! @copydoc Trajectory<T>::getIterator(double) const
 		virtual typename TrajectoryIterator<T>::Ptr getIterator(double dt) const {
-			return rw::common::ownedPtr(new BlendedTrajectoryIterator<T>(const_cast<BlendedTrajectory*>(this), dt));
+			return rw::core::ownedPtr(new BlendedTrajectoryIterator<T>(const_cast<BlendedTrajectory*>(this), dt));
 		}
 
 
@@ -87,7 +87,7 @@ namespace trajectory {
 
 
     private:
-		rw::common::Ptr<rw::models::Device> _dev;
+		rw::core::Ptr<rw::models::Device> _dev;
 		InterpolatorTrajectory<rw::math::Q>::Ptr _trajectory;
         double _time, _timeTotal;
         double _dt;

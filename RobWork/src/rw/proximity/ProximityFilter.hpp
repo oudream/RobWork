@@ -24,7 +24,7 @@ namespace proximity {
 	class ProximityFilter {
 	public:
 		//! @brief smart pointer type to this class
-		typedef rw::common::Ptr<ProximityFilter> Ptr;
+		typedef rw::core::Ptr<ProximityFilter> Ptr;
 
 		/**
 		 * @brief pop the current front.

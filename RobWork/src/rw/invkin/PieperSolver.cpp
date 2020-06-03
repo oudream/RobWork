@@ -17,7 +17,7 @@
 
 
 #include "PieperSolver.hpp"
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 #include <rw/models/Joint.hpp>
 #include <rw/models/DHParameterSet.hpp>
 #include <rw/models/SerialDevice.hpp>

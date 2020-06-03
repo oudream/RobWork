@@ -15,6 +15,7 @@
 #include <QObject>
 #include <QDialog>
 
+#include <rw/core/Ptr.hpp>
 #include <rw/trajectory/Path.hpp>
 #include <rwsim/dynamics/RigidBody.hpp>
 #include <rwsim/util/CircleModel.hpp>
@@ -102,19 +103,19 @@ class SupportPoseAnalyserDialog : public QDialog
         rw::trajectory::TimedStatePath::Ptr _path, _startPath;
         GLViewRW *_view;
 
-        rw::common::Ptr<rwlibs::opengl::RenderFrame> _frameRender;
+        rw::core::Ptr<rwlibs::opengl::RenderFrame> _frameRender;
         rwlibs::opengl::Drawable *_fDraw,*_fDraw1,*_fDraw2,*_fDraw3,*_fDraw4,*_fDraw5;
 
-        rw::common::Ptr<rwsim::drawable::RenderPoints> _xRender,_yRender,_zRender;
+        rw::core::Ptr<rwsim::drawable::RenderPoints> _xRender,_yRender,_zRender;
         rwlibs::opengl::Drawable *_xDraw,*_yDraw,*_zDraw;
 
-        rw::common::Ptr<rwsim::drawable::RenderPoints> _selPosePntRenderX,_selPosePntRenderY,_selPosePntRenderZ;
+        rw::core::Ptr<rwsim::drawable::RenderPoints> _selPosePntRenderX,_selPosePntRenderY,_selPosePntRenderZ;
         rwlibs::opengl::Drawable *_selPoseDrawX,*_selPoseDrawY,*_selPoseDrawZ;
 
-        rw::common::Ptr<rwsim::drawable::RenderPoints> _selxRender,_selyRender,_selzRender;
+        rw::core::Ptr<rwsim::drawable::RenderPoints> _selxRender,_selyRender,_selzRender;
         rwlibs::opengl::Drawable *_selxDraw,*_selyDraw,*_selzDraw;
 
-        rw::common::Ptr<rwsim::drawable::RenderCircles> _xcRender,_ycRender,_zcRender;
+        rw::core::Ptr<rwsim::drawable::RenderCircles> _xcRender,_ycRender,_zcRender;
         rwlibs::opengl::Drawable *_xcDraw,*_ycDraw,*_zcDraw;
 
         std::vector<rwsim::dynamics::RigidBody::Ptr> _bodies;
@@ -137,8 +138,6 @@ class SupportPoseAnalyserDialog : public QDialog
         RestingPoseDialog *_restPoseDialog;
 
         rws::RobWorkStudio *_rwstudio;
-
-        //rw::common::sandbox::LogPtr _log;
 };
 
 

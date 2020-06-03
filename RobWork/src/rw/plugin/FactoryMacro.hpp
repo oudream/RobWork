@@ -19,7 +19,7 @@
 #ifndef RW_PLUGIN_FACTORYMACRO_HPP
 #define RW_PLUGIN_FACTORYMACRO_HPP
 
-#include <rw/common/os.hpp>
+#include <rw/core/os.hpp>
 
 #ifdef RW_WIN32
 #define DLL_EXPORT extern "C" __declspec(dllexport)

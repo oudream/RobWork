@@ -17,7 +17,7 @@
 
 #include "../TestSuiteConfig.hpp"
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/common/Timer.hpp>
 #include <rw/common/ThreadPool.hpp>
 #include <rw/common/ThreadSafeVariable.hpp>
@@ -29,6 +29,7 @@
 #include <boost/test/unit_test_monitor.hpp>
 
 using namespace rw::common;
+using namespace rw::core;
 using rw::math::Random;
 
 static const unsigned int THREADS = 3;
@@ -90,9 +91,9 @@ int runPool(bool stop) {
 		jobDone[i] = false;
 		ThreadPool::WorkFunction work;
 		if (!stop)
-			work = boost::bind(&workFunction,_1,i);
+			work = boost::bind(&workFunction,boost::arg<1>(),i);
 		else
-			work = boost::bind(&workFunctionStop,_1,i);
+			work = boost::bind(&workFunctionStop,boost::arg<1>(),i);
 		pool->addWork(work);
 	}
 

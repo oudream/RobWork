@@ -32,7 +32,7 @@ Face::Face():
 Face::~Face() {
 }
 
-rw::common::Ptr<TriMesh> Face::getTriMesh(bool) const {
+rw::core::Ptr<TriMesh> Face::getTriMesh(bool) const {
 	// Construct loop polygon
 	std::vector<Vector3D<> > polygon3d;
 	for (std::size_t i = 0; i < curveCount(); i++) {
@@ -70,7 +70,7 @@ std::pair<double,double> Face::extremums(const Vector3D<>& dir) const {
 }
 
 OBB<> Face::obb() {
-	const rw::common::Ptr<const TriMesh> mesh = getTriMesh();
+	const rw::core::Ptr<const TriMesh> mesh = getTriMesh();
 	const OBB<> obb = OBB<>::buildTightOBB(*mesh);
 
 	const Rotation3D<> R = obb.getTransform().R();

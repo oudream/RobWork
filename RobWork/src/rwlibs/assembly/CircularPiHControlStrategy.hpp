@@ -25,6 +25,9 @@
  */
 
 #include "AssemblyControlStrategy.hpp"
+#include <rw/core/Ptr.hpp>
+
+namespace rw { namespace core { class PropertyMap; }}
 
 namespace rwlibs {
 namespace assembly {
@@ -38,7 +41,7 @@ namespace assembly {
 class CircularPiHControlStrategy: public AssemblyControlStrategy {
 public:
 	//! @brief smart pointer type to this class
-    typedef rw::common::Ptr<CircularPiHControlStrategy> Ptr;
+    typedef rw::core::Ptr<CircularPiHControlStrategy> Ptr;
 
 	//! @brief Create new control strategy.
 	CircularPiHControlStrategy();
@@ -50,10 +53,10 @@ public:
 	ControlState::Ptr createState() const;
 
 	//! @copydoc rwlibs::assembly::AssemblyControlStrategy::update
-	rw::common::Ptr<AssemblyControlResponse> update(rw::common::Ptr<AssemblyParameterization> parameters, rw::common::Ptr<AssemblyState> real, rw::common::Ptr<AssemblyState> assumed, ControlState::Ptr controlState, rw::kinematics::State &state, rw::sensor::FTSensor* ftSensor, double time) const;
+	rw::core::Ptr<AssemblyControlResponse> update(rw::core::Ptr<AssemblyParameterization> parameters, rw::core::Ptr<AssemblyState> real, rw::core::Ptr<AssemblyState> assumed, ControlState::Ptr controlState, rw::kinematics::State &state, rw::sensor::FTSensor* ftSensor, double time) const;
 
 	//! @copydoc rwlibs::assembly::AssemblyControlStrategy::getApproach
-	rw::math::Transform3D<> getApproach(rw::common::Ptr<AssemblyParameterization> parameters);
+	rw::math::Transform3D<> getApproach(rw::core::Ptr<AssemblyParameterization> parameters);
 
 	//! @copydoc rwlibs::assembly::AssemblyControlStrategy::getID
 	std::string getID();
@@ -62,7 +65,7 @@ public:
 	std::string getDescription();
 
 	//! @copydoc rwlibs::assembly::AssemblyControlStrategy::createParameterization
-	rw::common::Ptr<AssemblyParameterization> createParameterization(const rw::common::Ptr<rw::common::PropertyMap> map);
+	rw::core::Ptr<AssemblyParameterization> createParameterization(const rw::core::Ptr<rw::core::PropertyMap> map);
 
 private:
 	class CircularControlState;

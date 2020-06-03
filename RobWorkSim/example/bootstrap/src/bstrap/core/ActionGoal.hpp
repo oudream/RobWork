@@ -20,7 +20,7 @@
 
 class ActionGoal {
 public:
-    typedef rw::common::Ptr<ActionGoal> Ptr;
+    typedef rw::core::Ptr<ActionGoal> Ptr;
 
 
 };

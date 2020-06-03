@@ -10,7 +10,7 @@
 
 using namespace rwsim::dynamics;
 using namespace rw::math;
-using namespace rw::common;
+using namespace rw::core;
 using namespace rwsim::simulator;
 
 CreateEngineDialog::CreateEngineDialog(Ptr<DynamicWorkCell> dwc, QWidget *parent):

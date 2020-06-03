@@ -30,7 +30,7 @@
 #include <vector>
 #include <boost/thread/mutex.hpp>
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 // Forward declarations
 namespace rw { namespace common { class ThreadTask; }}
@@ -60,7 +60,7 @@ class DynamicSimulator;
 class AssemblySimulator {
 public:
     //! @brief smart pointer type of this class
-    typedef rw::common::Ptr<AssemblySimulator> Ptr;
+    typedef rw::core::Ptr<AssemblySimulator> Ptr;
 
 	/**
 	 * @brief Construct new simulator.
@@ -69,7 +69,7 @@ public:
 	 * @param contactDetector [in] (optional) set a contact detector that should be used by the PhysicsEngine.
 	 * @param verbose [in] (optional) set a logging structure to log to.
 	 */
-	AssemblySimulator(rw::common::Ptr<rwsim::dynamics::DynamicWorkCell> dwc, const std::string &engineID, rw::common::Ptr<rwsim::contacts::ContactDetector> contactDetector = NULL, rw::common::Ptr<rwsim::log::SimulatorLogScope> verbose = NULL);
+	AssemblySimulator(rw::core::Ptr<rwsim::dynamics::DynamicWorkCell> dwc, const std::string &engineID, rw::core::Ptr<rwsim::contacts::ContactDetector> contactDetector = NULL, rw::core::Ptr<rwsim::log::SimulatorLogScope> verbose = NULL);
 
 	//! @brief Destructor.
 	virtual ~AssemblySimulator();
@@ -90,7 +90,7 @@ public:
 	 * @brief Run the simulation.
 	 * @param task (optional) if this simulator runs in a ThreadTask, pass a pointer to this task to let the simulator add work for parallel processing.
 	 */
-	void start(rw::common::Ptr<rw::common::ThreadTask> task = NULL);
+	void start(rw::core::Ptr<rw::common::ThreadTask> task = NULL);
 
 	//! @brief Request stop when current tasks has finished.
 	void stopFinishCurrent();
@@ -108,13 +108,13 @@ public:
 	 * @brief Set the tasks that should be executed in the simulator.
 	 * @param tasks [in] the tasks to execute.
 	 */
-	void setTasks(std::vector<rw::common::Ptr<rwlibs::assembly::AssemblyTask> > tasks);
+	void setTasks(std::vector<rw::core::Ptr<rwlibs::assembly::AssemblyTask> > tasks);
 
 	/**
 	 * @brief Retrieve the results after simulation.
 	 * @return a vector of AssemblyResults.
 	 */
-	std::vector<rw::common::Ptr<rwlibs::assembly::AssemblyResult> > getResults();
+	std::vector<rw::core::Ptr<rwlibs::assembly::AssemblyResult> > getResults();
 
 	/**
 	 * @brief Enable storing trajectory data in the AssemblyResult.
@@ -156,21 +156,21 @@ private:
 	class TaskDispatcher;
 	class TaskSimulation;
 	struct SimState;
-	void runSingle(std::size_t taskIndex, rw::common::Ptr<rwsim::log::SimulatorLogScope> verbose);
+	void runSingle(std::size_t taskIndex, rw::core::Ptr<rwsim::log::SimulatorLogScope> verbose);
 	void runAll();
-	void stateMachine(SimState &state, rw::common::Ptr<rwlibs::assembly::AssemblyTask> task, rw::common::Ptr<rwlibs::assembly::AssemblyResult> result);
+	void stateMachine(SimState &state, rw::core::Ptr<rwlibs::assembly::AssemblyTask> task, rw::core::Ptr<rwlibs::assembly::AssemblyResult> result);
 	static std::vector<rw::math::Q> orderSolutions(const std::vector<rw::math::Q> &solutions, const rw::math::Q &curQ);
-	bool hasContact(rw::common::Ptr<rwsim::sensor::BodyContactSensor> sensor, rw::common::Ptr<rwsim::dynamics::Body> body, rw::kinematics::State& state);
+	bool hasContact(rw::core::Ptr<rwsim::sensor::BodyContactSensor> sensor, rw::core::Ptr<rwsim::dynamics::Body> body, rw::kinematics::State& state);
 
 private:
-	const rw::common::Ptr<rwsim::dynamics::DynamicWorkCell> _dwc;
+	const rw::core::Ptr<rwsim::dynamics::DynamicWorkCell> _dwc;
 	const std::string _engineID;
-	const rw::common::Ptr<rwsim::contacts::ContactDetector> _contactDetector;
-	const rw::common::Ptr<rw::proximity::CollisionDetector> _collisionDetector;
-	const rw::common::Ptr<rwsim::log::SimulatorLogScope> _log;
+	const rw::core::Ptr<rwsim::contacts::ContactDetector> _contactDetector;
+	const rw::core::Ptr<rw::proximity::CollisionDetector> _collisionDetector;
+	const rw::core::Ptr<rwsim::log::SimulatorLogScope> _log;
 
-	std::vector<rw::common::Ptr<rwlibs::assembly::AssemblyTask> > _tasks;
-	std::vector<rw::common::Ptr<rwlibs::assembly::AssemblyResult> > _results;
+	std::vector<rw::core::Ptr<rwlibs::assembly::AssemblyTask> > _tasks;
+	std::vector<rw::core::Ptr<rwlibs::assembly::AssemblyResult> > _results;
 	bool _storeExecutionData;
 	bool _postStopFinish, _postStopCancel;
 	bool _running;

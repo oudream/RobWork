@@ -94,6 +94,8 @@ if(build)
         log/LogContactForceTorque.cpp
         log/LogContactSet.cpp
         log/LogContactVelocities.cpp
+        log/LogDistanceResult.cpp
+        log/LogDistanceMultiResult.cpp
         log/LogEquationSystem.cpp
         log/LogForceTorque.cpp
         log/LogPositions.cpp
@@ -101,6 +103,7 @@ if(build)
         log/LogValues.cpp
         log/LogVelocities.cpp
         log/SimulatorLogScope.cpp
+        log/SimulatorLogUtil.cpp
         log/LogStep.cpp
         log/SimulatorStatistics.cpp
         simulator/DynamicSimulator.cpp
@@ -215,6 +218,8 @@ if(build)
         log/LogContactForceTorque.hpp
         log/LogContactSet.hpp
         log/LogContactVelocities.hpp
+        log/LogDistanceResult.hpp
+        log/LogDistanceMultiResult.hpp
         log/LogEquationSystem.hpp
         log/LogForceTorque.hpp
         log/LogPositions.hpp
@@ -222,6 +227,7 @@ if(build)
         log/LogValues.hpp
         log/LogVelocities.hpp
         log/SimulatorLogScope.hpp
+        log/SimulatorLogUtil.hpp
         log/LogStep.hpp
         log/SimulatorStatistics.hpp
         simulator/DynamicSimulator.hpp

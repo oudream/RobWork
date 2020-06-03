@@ -154,5 +154,5 @@ std::vector<Line> Line::makeGrid(int dim_x, int dim_y, double size_x, double siz
 
 rw::math::Metric<Line>::Ptr Line::makeMetric(double angToDistWeight)
 {
-	return rw::common::ownedPtr(new LineMetric(angToDistWeight));
+	return rw::core::ownedPtr(new LineMetric(angToDistWeight));
 }

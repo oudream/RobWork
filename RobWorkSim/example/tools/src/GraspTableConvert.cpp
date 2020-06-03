@@ -5,7 +5,7 @@
  *      Author: jimali
  */
 
-#include <rw/common/Log.hpp>
+#include <rw/core/Log.hpp>
 #include <rw/graspplanning/GraspTable.hpp>
 #include <rw/math/MetricUtil.hpp>
 #include <rw/math/Random.hpp>
@@ -13,7 +13,7 @@
 
 #include <boost/numeric/conversion/cast.hpp>
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::graspplanning;
 using namespace rw::math;
 

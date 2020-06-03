@@ -72,7 +72,7 @@ SimulatedFTSensor::SimulatedFTSensor(const std::string& name,
                                      Body::Ptr body,
                                      Body::Ptr body1,
                                      Frame* frame):
-        SimulatedTactileSensor(rw::common::ownedPtr( new FTSensorModel(name,getFrameFromBodyOr(frame,body1),"SimulatedFtSensor"))),
+        SimulatedTactileSensor(rw::core::ownedPtr( new FTSensorModel(name,getFrameFromBodyOr(frame,body1),"SimulatedFtSensor"))),
     _body(body),_body1(body1)
 {
 	_ftmodel = getSensorModel().cast<FTSensorModel>();
@@ -193,7 +193,7 @@ FTSensor::Ptr SimulatedFTSensor::getFTSensor(rwlibs::simulation::Simulator::Ptr 
 	// check if handle has already been added to simulator
 	FTSensor::Ptr sensor;
 	if(!sim->hasHandle(this)){
-		sensor = rw::common::ownedPtr( new FTSensorWrapper(this, sim) );
+		sensor = rw::core::ownedPtr( new FTSensorWrapper(this, sim) );
 		sim->addHandle(this, sensor);
 	} else {
 		sensor = sim->getSensorHandle(this).cast<FTSensor>();

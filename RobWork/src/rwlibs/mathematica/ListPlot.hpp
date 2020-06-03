@@ -25,6 +25,7 @@
  */
 
 #include "Mathematica.hpp"
+#include <rw/core/Ptr.hpp>
 
 #if __cplusplus >= 201103L
 #include <initializer_list>
@@ -32,7 +33,7 @@
 #include "Rule.hpp"
 #endif
 
-namespace rw { namespace common { class PropertyMap; } }
+namespace rw { namespace core { class PropertyMap; } }
 
 namespace rwlibs {
 namespace mathematica {
@@ -48,7 +49,7 @@ class Rule;
 class ListPlot: public Mathematica::FunctionBase {
 public:
 	//! @brief Smart pointer type.
-	typedef rw::common::Ptr<ListPlot> Ptr;
+	typedef rw::core::Ptr<ListPlot> Ptr;
 
 	/**
 	 * @brief Construct a ListPlot expression.
@@ -82,9 +83,9 @@ public:
 	ListPlot(const std::initializer_list<std::initializer_list<double> >& data, const Option&... options):
 	Mathematica::FunctionBase("ListPlot")
 	{
-		List::Ptr list = rw::common::ownedPtr(new List());
+		List::Ptr list = rw::core::ownedPtr(new List());
 		for(const std::initializer_list<double>& val : data) {
-			List::Ptr inner = rw::common::ownedPtr(new List());
+			List::Ptr inner = rw::core::ownedPtr(new List());
 			for(const double v : val) {
 				inner->add(v);
 			}
@@ -99,7 +100,7 @@ public:
 	virtual ~ListPlot();
 
 	//! @copydoc Mathematica::FunctionBase::getArguments
-	virtual std::list<rw::common::Ptr<const Mathematica::Expression> > getArguments() const;
+	virtual std::list<rw::core::Ptr<const Mathematica::Expression> > getArguments() const;
 
 	//! @copydoc Mathematica::Expression::clone
 	virtual Mathematica::Expression::Ptr clone() const;

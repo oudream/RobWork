@@ -18,7 +18,7 @@
 #ifndef RW_GRASPPLANNING_GRASPQUALITYMEASURE3D_HPP_
 #define RW_GRASPPLANNING_GRASPQUALITYMEASURE3D_HPP_
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 namespace rw {
 namespace graspplanning {
@@ -31,7 +31,7 @@ class Grasp3D;
 class GraspQualityMeasure3D {
 public:
     //! smart pointer type of this class
-    typedef rw::common::Ptr<GraspQualityMeasure3D> Ptr;
+    typedef rw::core::Ptr<GraspQualityMeasure3D> Ptr;
 
     /**
      * @brief computes the quality of the grasp such that the quality

@@ -22,7 +22,7 @@
  * @file RANSACModel.hpp
  */
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/math/Random.hpp>
 
 #include <vector>
@@ -40,7 +40,7 @@ template<class MODEL, class DATA>
 class RANSACModel {
 public:
 	//! @brief Smart pointer type to this class.
-	typedef rw::common::Ptr<RANSACModel<MODEL, DATA> > Ptr;
+	typedef rw::core::Ptr<RANSACModel<MODEL, DATA> > Ptr;
 
 public:
 	//! @brief Constructor.

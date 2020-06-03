@@ -28,6 +28,7 @@
 #include <rw/models/Joint.hpp>
 #include <rw/models/ParallelDevice.hpp>
 #include <rw/models/WorkCell.hpp>
+#include <rw/core/Exception.hpp>
 
 #include <QApplication>
 #include <QCheckBox>
@@ -44,7 +45,7 @@
 #include <iomanip>
 
 using namespace rw::math;
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::kinematics;
 using namespace rw::models;
 using namespace rw::invkin;

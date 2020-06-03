@@ -36,6 +36,7 @@ using namespace rwsim::control;
 using namespace rwsim::sensor;
 using namespace rw::math;
 using namespace rw::kinematics;
+using namespace rw::core;
 using namespace rw::common;
 using namespace rw::proximity;
 using namespace rw::loaders;
@@ -573,7 +574,7 @@ void GraspRestingPoseDialog::initializeStart(){
         ThreadSimulator *tsim = new ThreadSimulator(sim,state);
         CallBackFunctor *func = new CallBackFunctor(i, this);
         _functors.push_back( ownedPtr(func) );
-        ThreadSimulator::StepCallback cb( boost::bind(&CallBackFunctor::stepCallBack, func, _1, _2) );
+        ThreadSimulator::StepCallback cb( boost::bind(&CallBackFunctor::stepCallBack, func, boost::arg<1>(), boost::arg<2>()) );
 
         tsim->setStepCallBack( cb );
         _simulators.push_back( ownedPtr( tsim ) );

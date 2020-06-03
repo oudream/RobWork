@@ -18,7 +18,7 @@
 #include "Math.hpp"
 #include "MetricFactory.hpp"
 #include "Random.hpp"
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 
 #include <boost/math/special_functions/fpclassify.hpp> // boost::math::isnan()
 

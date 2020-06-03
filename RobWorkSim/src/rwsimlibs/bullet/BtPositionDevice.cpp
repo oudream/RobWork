@@ -27,7 +27,7 @@ using namespace rw::math;
 using namespace rwsim::dynamics;
 using namespace rwsimlibs::bullet;
 
-BtPositionDevice::BtPositionDevice(rw::common::Ptr<KinematicDevice> dev, const std::vector<FrameBodyPair>& frameToBtBody):
+BtPositionDevice::BtPositionDevice(rw::core::Ptr<KinematicDevice> dev, const std::vector<FrameBodyPair>& frameToBtBody):
 	_kdev(dev),
 	_frameToBtBody(frameToBtBody)
 {

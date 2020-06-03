@@ -28,6 +28,7 @@
 QT_BEGIN_NAMESPACE
 
 using namespace rw::common;
+using namespace rw::core;
 using namespace rw::graphics;
 using namespace rw::math;
 using namespace rwsim::contacts;
@@ -104,7 +105,7 @@ void ContactTableWidget::setContacts(const std::vector<Contact>& contacts) {
 	setSortingEnabled(true);
 }
 
-void ContactTableWidget::showGraphics(rw::common::Ptr<GroupNode> root, rw::common::Ptr<SceneGraph> graph) {
+void ContactTableWidget::showGraphics(rw::core::Ptr<GroupNode> root, rw::core::Ptr<SceneGraph> graph) {
 	_root = root;
 	_graph = graph;
 }

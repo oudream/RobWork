@@ -24,7 +24,7 @@
 */
 
 #include <boost/function.hpp>
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <vector>
 
 namespace rw { namespace pathplanning {
@@ -43,7 +43,7 @@ namespace rw { namespace pathplanning {
     {
     public:
 		//! @brief smart pointer type to this class
-		typedef rw::common::Ptr<StopCriteria> Ptr;
+		typedef rw::core::Ptr<StopCriteria> Ptr;
 
         /**
            @brief True is returned when the computation should be stopped.

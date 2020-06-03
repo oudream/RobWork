@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RW_MODELS_JOINTDEVICE_HPP
 #define RW_MODELS_JOINTDEVICE_HPP
 
@@ -25,6 +24,7 @@
 
 #include "Device.hpp"
 #include "JacobianCalculator.hpp"
+
 #include <vector>
 
 namespace rw { namespace models {
@@ -48,111 +48,91 @@ namespace rw { namespace models {
      behaviour. Subclasses typically differ in their implementation of setQ()
      and the Jacobian computation.
      */
-    class JointDevice: public Device
+    class JointDevice : public Device
     {
-    public:
-		//! @brief smart pointer type to this class
-		typedef rw::common::Ptr<JointDevice> Ptr;
-		//! @brief smart pointer type to this class
-		typedef rw::common::Ptr< const JointDevice > CPtr;
+      public:
+        //! @brief smart pointer type to this class
+        typedef rw::core::Ptr< JointDevice > Ptr;
+        //! @brief smart pointer type to this class
+        typedef rw::core::Ptr< const JointDevice > CPtr;
 
         /**
-         @brief Construct the device for a sequence of joints.
-
-         @param name [in] name of device
-
-         @param base [in] the base of the device
-
-         @param end [in] the end (or tool) of the device
-
-         @param joints [in] the joints of the device
-
-         @param state [in] the state that shows how frames are connected as
-         needed for the computation of Jacobians.
+         * @brief Construct the device for a sequence of joints.
+         * @param name [in] name of device
+         * @param base [in] the base of the device
+         * @param end [in] the end (or tool) of the device
+         * @param joints [in] the joints of the device
+         * @param state [in] the state that shows how frames are connected as
+                needed for the computation of Jacobians.
          */
-        JointDevice(const std::string& name, kinematics::Frame* base,
-                    kinematics::Frame* end,
-                    const std::vector<Joint*>& joints,
-                    const kinematics::State& state);
+        JointDevice (const std::string& name, kinematics::Frame* base, kinematics::Frame* end,
+                     const std::vector< Joint* >& joints, const kinematics::State& state);
 
         /**
          * @brief Get all joints of this device
+         * @return all joints
          */
-        const std::vector<Joint*>& getJoints() const {
-            return _joints;
-        }
+        const std::vector< Joint* >& getJoints () const { return _joints; }
 
         // Everything below are methods of Device.
 
         /** @copydoc Device::setQ */
-        void setQ(const math::Q& q, kinematics::State& state) const;
+        void setQ (const math::Q& q, kinematics::State& state) const;
 
         /** @copydoc Device::getQ */
-        math::Q getQ(const kinematics::State& state) const;
+        math::Q getQ (const kinematics::State& state) const;
 
         /** @copydoc Device::getDOF */
-        size_t getDOF() const;
+        size_t getDOF () const;
 
         /** @copydoc Device::getBounds */
-        std::pair<math::Q, math::Q> getBounds() const;
+        std::pair< math::Q, math::Q > getBounds () const;
 
         /** @copydoc Device::setBounds */
-        void setBounds(const std::pair<math::Q, math::Q>& bounds);
+        void setBounds (const std::pair< math::Q, math::Q >& bounds);
 
         /** @copydoc Device::getVelocityLimits */
-        math::Q getVelocityLimits() const;
+        math::Q getVelocityLimits () const;
 
         /** @copydoc Device::setVelocityLimits */
-        void setVelocityLimits(const math::Q& vellimits);
+        void setVelocityLimits (const math::Q& vellimits);
 
         /** @copydoc Device::getAccelerationLimits */
-        math::Q getAccelerationLimits() const;
+        math::Q getAccelerationLimits () const;
 
         /** @copydoc Device::setAccelerationLimits */
-        void setAccelerationLimits(const math::Q& acclimits);
+        void setAccelerationLimits (const math::Q& acclimits);
 
         /** @copydoc Device::baseJend */
-        math::Jacobian baseJend(const kinematics::State& state) const;
+        math::Jacobian baseJend (const kinematics::State& state) const;
 
         /** @copydoc Device::baseJCframes */
-        JacobianCalculator::Ptr baseJCframes(const std::vector<kinematics::Frame*>& frames,
-                                           const kinematics::State& state) const;
+        JacobianCalculator::Ptr baseJCframes (const std::vector< kinematics::Frame* >& frames,
+                                              const kinematics::State& state) const;
 
         /** @copydoc Device::getBase */
-        kinematics::Frame* getBase()
-        {
-            return _base;
-        }
+        kinematics::Frame* getBase () { return _base; }
 
         /** @copydoc Device::getBase */
-        const kinematics::Frame* getBase() const
-        {
-            return _base;
-        }
+        const kinematics::Frame* getBase () const { return _base; }
 
         /** @copydoc Device::getEnd() */
-        virtual kinematics::Frame* getEnd()
-        {
-            return _end;
-        }
+        virtual kinematics::Frame* getEnd () { return _end; }
 
         /** @copydoc Device::getEnd */
-        virtual const kinematics::Frame* getEnd() const
-        {
-            return _end;
-        }
+        virtual const kinematics::Frame* getEnd () const { return _end; }
 
-    private:
+      private:
         kinematics::Frame* _base;
         kinematics::Frame* _end;
 
-        std::vector<Joint*> _joints;
+        std::vector< Joint* > _joints;
         size_t _dof;
 
         JacobianCalculator::Ptr _baseJCend;
     };
 
     /*@}*/
-}} // end namespaces
+}}    // namespace rw::models
 
-#endif // end include guard
+#endif    // end include guard

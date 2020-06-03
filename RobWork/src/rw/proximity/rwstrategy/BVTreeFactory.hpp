@@ -21,7 +21,7 @@
 #include "BinaryBVTree.hpp"
 
 #include <rw/common/Timer.hpp>
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 #include <rw/geometry/BV.hpp>
 #include <rw/geometry/IndexedTriArray.hpp>
 #include <rw/geometry/OBB.hpp>
@@ -125,9 +125,9 @@ namespace rw { namespace proximity {
          * and as such is suitable for creating balanced OBB trees.
          * Median is found in O(n log n) time
          */
-        template< class OBV > rw::common::Ptr< BVSplitterStrategy< OBV > > makeOBVMedianSplitter ()
+        template< class OBV > rw::core::Ptr< BVSplitterStrategy< OBV > > makeOBVMedianSplitter ()
         {
-            return rw::common::ownedPtr (new OBVMedianSplitter< OBV > ());
+            return rw::core::ownedPtr (new OBVMedianSplitter< OBV > ());
         }
 
         /**
@@ -142,9 +142,9 @@ namespace rw { namespace proximity {
          * @return the splitting strategy.
          */
         template< class OBV >
-        rw::common::Ptr< BVShellSplitterStrategy< OBV > > makeOBVShellMedianSplitter ()
+        rw::core::Ptr< BVShellSplitterStrategy< OBV > > makeOBVShellMedianSplitter ()
         {
-            return rw::common::ownedPtr (new OBVShellMedianSplitter< OBV > ());
+            return rw::core::ownedPtr (new OBVShellMedianSplitter< OBV > ());
         }
 
         /**
@@ -155,9 +155,9 @@ namespace rw { namespace proximity {
          * volume is split in two equal parts. Median is found in constant time.
          */
         template< class OBV >
-        rw::common::Ptr< BVSplitterStrategy< OBV > > makeOBVSpatialMedianSplitter ()
+        rw::core::Ptr< BVSplitterStrategy< OBV > > makeOBVSpatialMedianSplitter ()
         {
-            return rw::common::ownedPtr (new OBVSpatialMedianSplitter< OBV > ());
+            return rw::core::ownedPtr (new OBVSpatialMedianSplitter< OBV > ());
         }
 
         /**
@@ -169,9 +169,9 @@ namespace rw { namespace proximity {
          * @return Splitter strategy for OBB tree construction
          */
         template< class OBV >
-        rw::common::Ptr< BVTreeFactory::BVSplitterStrategy< OBV > > makeOBVMeanSplitter ()
+        rw::core::Ptr< BVTreeFactory::BVSplitterStrategy< OBV > > makeOBVMeanSplitter ()
         {
-            return rw::common::ownedPtr (new OBVMeanSplitter< OBV > ());
+            return rw::core::ownedPtr (new OBVMeanSplitter< OBV > ());
         }
 
         /**
@@ -181,9 +181,9 @@ namespace rw { namespace proximity {
          * @return OBB factory
          */
         template< class T >
-        rw::common::Ptr< geometry::BVFactory< rw::geometry::OBB< T > > > makeOBBCovarFactory ()
+        rw::core::Ptr< geometry::BVFactory< rw::geometry::OBB< T > > > makeOBBCovarFactory ()
         {
-            return rw::common::ownedPtr (
+            return rw::core::ownedPtr (
                 new geometry::OBBFactory< T > (geometry::OBBFactory< T >::PCA));
         }
 
@@ -199,9 +199,9 @@ namespace rw { namespace proximity {
                                                int maxTrisInLeaf = 1)
         {
             typedef typename Traits< BVTREE >::BVType BVType;
-            rw::common::Ptr< geometry::BVFactory< typename Traits< BVTREE >::BVType > > bvfactory =
+            rw::core::Ptr< geometry::BVFactory< typename Traits< BVTREE >::BVType > > bvfactory =
                 makeOBBCovarFactory< typename Traits< BVType >::value_type > ();
-            rw::common::Ptr< BVSplitterStrategy< typename Traits< BVTREE >::BVType > > splitter =
+            rw::core::Ptr< BVSplitterStrategy< typename Traits< BVTREE >::BVType > > splitter =
                 makeOBVMedianSplitter< BVType > ();
             return makeTopDownTree< BVTREE > (mesh, *bvfactory, *splitter, maxTrisInLeaf);
         }
@@ -217,9 +217,9 @@ namespace rw { namespace proximity {
         {
             using rw::geometry::BVFactory;
             typedef typename Traits< BVTREE >::BVType BVType;
-            rw::common::Ptr< BVFactory< typename Traits< BVTREE >::BVType > > bvfactory =
+            rw::core::Ptr< BVFactory< typename Traits< BVTREE >::BVType > > bvfactory =
                 makeOBBCovarFactory< typename Traits< BVType >::value_type > ();
-            rw::common::Ptr< BVShellSplitterStrategy< typename Traits< BVTREE >::BVType > >
+            rw::core::Ptr< BVShellSplitterStrategy< typename Traits< BVTREE >::BVType > >
                 splitter = makeOBVShellMedianSplitter< BVType > ();
             return makeTopDownTree< BVTREE > (shell, *bvfactory, *splitter, maxTrisInLeaf);
         }
@@ -229,9 +229,9 @@ namespace rw { namespace proximity {
                                                       int maxTrisInLeaf = 1)
         {
             typedef typename Traits< BVTREE >::BVType BVType;
-            rw::common::Ptr< geometry::BVFactory< typename Traits< BVTREE >::BVType > > bvfactory =
+            rw::core::Ptr< geometry::BVFactory< typename Traits< BVTREE >::BVType > > bvfactory =
                 makeOBBCovarFactory< typename Traits< BVType >::value_type > ();
-            rw::common::Ptr< BVSplitterStrategy< typename Traits< BVTREE >::BVType > > splitter =
+            rw::core::Ptr< BVSplitterStrategy< typename Traits< BVTREE >::BVType > > splitter =
                 makeOBVSpatialMedianSplitter< BVType > ();
             return makeTopDownTree< BVTREE > (mesh, *bvfactory, *splitter, maxTrisInLeaf);
         }
@@ -240,9 +240,9 @@ namespace rw { namespace proximity {
         BVTREE* makeTopDownOBBTreeCovarMean (rw::geometry::TriMesh::Ptr mesh, int maxTrisInLeaf = 1)
         {
             typedef typename Traits< BVTREE >::BVType BVType;
-            rw::common::Ptr< geometry::BVFactory< BVType > > bvfactory =
+            rw::core::Ptr< geometry::BVFactory< BVType > > bvfactory =
                 makeOBBCovarFactory< typename Traits< BVType >::value_type > ();
-            rw::common::Ptr< BVSplitterStrategy< BVType > > splitter =
+            rw::core::Ptr< BVSplitterStrategy< BVType > > splitter =
                 makeOBVMeanSplitter< BVType > ();
             return makeTopDownTree< BVTREE > (mesh, *bvfactory, *splitter, maxTrisInLeaf);
         }
@@ -252,9 +252,9 @@ namespace rw { namespace proximity {
                                                   int maxTrisInLeaf = 1)
         {
             typedef typename Traits< BVTREE >::BVType BVType;
-            rw::common::Ptr< geometry::BVFactory< typename Traits< BVTREE >::BVType > > bvfactory =
+            rw::core::Ptr< geometry::BVFactory< typename Traits< BVTREE >::BVType > > bvfactory =
                 makeOBBCovarFactory< typename Traits< BVType >::value_type > ();
-            rw::common::Ptr< BVSplitterStrategy< typename Traits< BVTREE >::BVType > > splitter =
+            rw::core::Ptr< BVSplitterStrategy< typename Traits< BVTREE >::BVType > > splitter =
                 makeOBVMedianSplitter< BVType > ();
             return makeTopDownTree< BVTREE > (mesh, *bvfactory, *splitter, maxTrisInLeaf);
         }

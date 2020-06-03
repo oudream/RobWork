@@ -27,7 +27,7 @@ extern "C" {
     #include <lauxlib.h>
 }
 
-#include <rw/common/LogWriter.hpp>
+#include <rw/core/LogWriter.hpp>
 #include <rwlibs/swig/ScriptTypes.hpp>
 #include <rwlibs/swig/lua/LuaState.hpp>
 
@@ -35,7 +35,7 @@ extern "C" {
 #include <QKeyEvent>
 #include <QScrollBar>
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rws;
 
 #define MESSAGE_ADDED_EVENT 2345

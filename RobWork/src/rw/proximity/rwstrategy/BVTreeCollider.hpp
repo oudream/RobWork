@@ -18,7 +18,7 @@
 #ifndef RW_PROXIMITY_BVTREECOLLIDER_HPP_
 #define RW_PROXIMITY_BVTREECOLLIDER_HPP_
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/math/Transform3D.hpp>
 #include <rw/proximity/CollisionStrategy.hpp>
 
@@ -40,7 +40,7 @@ namespace proximity {
 
 	public:
         //! @brief smart pointer for this class
-        typedef rw::common::Ptr<BVTreeCollider<BVTREE> > Ptr;
+        typedef rw::core::Ptr<BVTreeCollider<BVTREE> > Ptr;
 
         /**
          * @brief destructor

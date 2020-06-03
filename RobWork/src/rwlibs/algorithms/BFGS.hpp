@@ -1,7 +1,7 @@
 #ifndef BFGS_HPP_
 #define BFGS_HPP_
 
-#include <Eigen/Eigen>
+#include <Eigen/Core>
 
 /**
  * @file BFGS.hpp

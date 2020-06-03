@@ -17,16 +17,18 @@
 
 #include <gtest/gtest.h>
 
+#include <rw/core/Ptr.hpp>
 #include <rw/geometry/Box.hpp>
 #include <rw/geometry/Geometry.hpp>
 #include <rw/geometry/Plane.hpp>
 #include <rw/geometry/PlainTriMesh.hpp>
 #include <rw/kinematics/MovableFrame.hpp>
 #include <rw/kinematics/StateStructure.hpp>
+#include <rw/math/EAA.hpp>
 #include <rw/proximity/DistanceMultiStrategy.hpp>
 #include <rw/proximity/ProximityStrategyData.hpp>
 
-using rw::common::ownedPtr;
+using rw::core::ownedPtr;
 using namespace rw::geometry;
 using namespace rw::kinematics;
 using namespace rw::math;
@@ -107,7 +109,7 @@ TEST(Factory, DistanceMultiStrategy) {
 INSTANTIATE_TEST_CASE_P(ProximityStrategy, DistanceMultiStrategyTest, ::testing::ValuesIn(strategies));
 
 TEST_P(DistanceMultiStrategyTest, Plane_Triangle) {
-	const rw::common::Ptr<Plane> plane = ownedPtr(new Plane());
+	const rw::core::Ptr<Plane> plane = ownedPtr(new Plane());
 	Geometry geomA(plane);
 	const PlainTriMeshD::Ptr mesh = ownedPtr(new PlainTriMeshD());
 	mesh->add(Triangle<>(Vector3D<>(0.3,-0.1,0),Vector3D<>(0.3+0.1,0,0),Vector3D<>(0.3,0.1,0)));
@@ -158,7 +160,7 @@ TEST_P(DistanceMultiStrategyTest, Plane_Triangle) {
 
 TEST_P(DistanceMultiStrategyTest, Plane_Cuboid) {
 	static const double s = 0.1;
-	const rw::common::Ptr<Plane> plane = ownedPtr(new Plane());
+	const rw::core::Ptr<Plane> plane = ownedPtr(new Plane());
 	Geometry geomA(plane);
 	const Box::Ptr box = ownedPtr(new Box(s,s,s));
 	const Geometry::Ptr geomB = ownedPtr(new Geometry(box));
@@ -205,4 +207,81 @@ TEST_P(DistanceMultiStrategyTest, Plane_Cuboid) {
 
 	SCOPED_TRACE("Check ProximityStrategyData");
 	checkProximityStrategyData(data,res);
+}
+
+TEST_P(DistanceMultiStrategyTest, Cuboids_Cuboids) {
+    static const double s = 0.1;
+    static const EAA<> eaa(normalize(Vector3D<>(1,1,1)),Vector3D<>::z());
+    static const Rotation3D<> R(eaa.toRotation3D());
+    static const Transform3D<> wTa1(Vector3D<>(-s/2, 0, 0), R);
+    static const Transform3D<> wTa2(Vector3D<>(+s/2, 0, 0), R);
+    static const Transform3D<> wTb1(Vector3D<>(+s/2, 0, 0), R);
+    static const Transform3D<> wTb2(Vector3D<>(-s/2, 0, eps), R);
+
+    const Box::Ptr box = ownedPtr(new Box(s,s,s));
+    const Geometry::Ptr geomA1 = ownedPtr(new Geometry(box, wTa1));
+    const Geometry::Ptr geomA2 = ownedPtr(new Geometry(box, wTa2));
+    const Geometry::Ptr geomB1 = ownedPtr(new Geometry(box, wTb1));
+    const Geometry::Ptr geomB2 = ownedPtr(new Geometry(box, wTb2));
+
+    static const Transform3D<> wTa(Vector3D<>(0, 0, +(std::sqrt(3)*s+tolerance-eps)/2));
+    static const Transform3D<> wTb(Vector3D<>(0, 0, -(std::sqrt(3)*s+tolerance-eps)/2));
+    DistanceMultiStrategy::Result res;
+
+    // Test the interface where models are stored external to the strategy
+    strategy->addGeometry(modelA.get(), geomA1);
+    strategy->addGeometry(modelA.get(), geomA2);
+    strategy->addGeometry(modelB.get(), geomB1);
+    strategy->addGeometry(modelB.get(), geomB2);
+
+    res = strategy->distances(modelA, wTa, modelB, wTb, tolerance, data);
+
+    // Check result
+    EXPECT_EQ(modelA, res.a);
+    EXPECT_EQ(modelB, res.b);
+    // Points: 5 points to 6 for each pair of cuboid: 2*(5+6)=22 point pairs.
+    // todo: change the following from 22 to 21 when redundant pairs can be avoided in PQP
+    ASSERT_EQ(22u,res.p1s.size());
+    ASSERT_EQ(22u,res.p2s.size());
+    ASSERT_EQ(22u,res.geoIdxA.size());
+    ASSERT_EQ(22u,res.geoIdxB.size());
+    ASSERT_EQ(22u,res.p1prims.size());
+    ASSERT_EQ(22u,res.p2prims.size());
+    ASSERT_EQ(22u,res.distances.size());
+    EXPECT_EQ(res.p1,res.p1s[0]);
+    EXPECT_EQ(res.p2,res.p2s[0]);
+    EXPECT_NEAR(-s/2, res.p1[0],std::numeric_limits<float>::epsilon());
+    EXPECT_NEAR(-s/2, res.p2[0],std::numeric_limits<float>::epsilon());
+    EXPECT_NEAR(+(tolerance-eps)/2, res.p1[2],std::numeric_limits<float>::epsilon());
+    EXPECT_NEAR(-(tolerance-eps)/2+eps, res.p2[2],std::numeric_limits<float>::epsilon());
+    for (std::size_t i = 0; i < res.p1s.size(); i++) {
+        std::stringstream sstr;
+        sstr << "Pair number " << i;
+        SCOPED_TRACE(sstr.str());
+        EXPECT_GE(res.geoIdxA[i],0);
+        EXPECT_LE(res.geoIdxA[i],1);
+        EXPECT_GE(res.geoIdxB[i],0);
+        EXPECT_LE(res.geoIdxB[i],1);
+        EXPECT_GE(res.p1prims[i],0);
+        EXPECT_LE(res.p1prims[i],11);
+        EXPECT_GE(res.p2prims[i],0);
+        EXPECT_LE(res.p2prims[i],11);
+        EXPECT_NEAR(+(tolerance-eps)/2, res.p1s[i][2],std::numeric_limits<float>::epsilon());
+        if (res.geoIdxA[i] == 0) {
+            EXPECT_EQ(res.geoIdxB[i], 1);
+            EXPECT_NEAR(tolerance-eps-eps, res.distances[i], std::numeric_limits<float>::epsilon());
+            EXPECT_NEAR(-s/2, res.p1s[i][0],std::numeric_limits<float>::epsilon());
+            EXPECT_NEAR(-s/2, res.p2s[i][0],std::numeric_limits<float>::epsilon());
+            EXPECT_NEAR(-(tolerance-eps)/2+eps, res.p2s[i][2],std::numeric_limits<float>::epsilon());
+        } else if (res.geoIdxA[i] == 1) {
+            EXPECT_EQ(res.geoIdxB[i], 0);
+            EXPECT_NEAR(tolerance-eps, res.distances[i], std::numeric_limits<float>::epsilon());
+            EXPECT_NEAR(s/2, res.p1s[i][0],std::numeric_limits<float>::epsilon());
+            EXPECT_NEAR(s/2, res.p2s[i][0],std::numeric_limits<float>::epsilon());
+            EXPECT_NEAR(-(tolerance-eps)/2, res.p2s[i][2],std::numeric_limits<float>::epsilon());
+        }
+    }
+
+    SCOPED_TRACE("Check ProximityStrategyData");
+    checkProximityStrategyData(data,res);
 }

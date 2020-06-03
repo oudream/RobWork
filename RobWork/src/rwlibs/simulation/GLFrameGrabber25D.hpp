@@ -24,9 +24,13 @@
 
 #include <rw/graphics/SceneViewer.hpp>
 #include <rw/math/Transform3D.hpp>
+#include <rw/core/Ptr.hpp>
 
-namespace rw { namespace kinematics { class Frame; } }
-namespace rw { namespace kinematics { class State; } }
+namespace rw { namespace kinematics { 
+    class Frame; 
+    class State; 
+}}
+
 
 namespace rwlibs { namespace simulation {
     //! @addtogroup simulation
@@ -50,7 +54,7 @@ namespace rwlibs { namespace simulation {
     {
     public:
     	//! @brief Smart pointer type for GLFrameGrabber25D.
-        typedef rw::common::Ptr<GLFrameGrabber25D> Ptr;
+        typedef rw::core::Ptr<GLFrameGrabber25D> Ptr;
 
         /**
          * @brief constructor

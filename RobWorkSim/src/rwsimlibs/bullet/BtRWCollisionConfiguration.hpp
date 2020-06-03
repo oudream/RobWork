@@ -24,7 +24,7 @@
  * \copydoc rwsimlibs::bullet::BtRWCollisionConfiguration
  */
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include <BulletCollision/CollisionDispatch/btCollisionConfiguration.h>
 #include <LinearMath/btScalar.h>
@@ -45,7 +45,7 @@ public:
 	 * @brief Construct new collision configuration.
 	 * @param detector [in] the RobWork ContactDetector to use.
 	 */
-	BtRWCollisionConfiguration(rw::common::Ptr<const rwsim::contacts::ContactDetector> detector);
+	BtRWCollisionConfiguration(rw::core::Ptr<const rwsim::contacts::ContactDetector> detector);
 
 	//! @brief Destructor.
 	virtual ~BtRWCollisionConfiguration();

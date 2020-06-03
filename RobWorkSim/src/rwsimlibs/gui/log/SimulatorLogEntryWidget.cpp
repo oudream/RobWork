@@ -21,12 +21,14 @@
 #include "ConstraintWidget.hpp"
 #include "ContactSetWidget.hpp"
 #include "ContactVelocitiesWidget.hpp"
+#include "DistanceResultWidget.hpp"
+#include "DistanceMultiResultWidget.hpp"
 #include "EquationSystemWidget.hpp"
 #include "ForceTorqueWidget.hpp"
 #include "LogMessageWidget.hpp"
 #include "LogValuesWidget.hpp"
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rwsim::log;
 using namespace rwsimlibs::gui;
 
@@ -54,7 +56,7 @@ SimulatorLogEntryWidget::Factory::Factory():
 
 std::list<SimulatorLogEntryWidget::Dispatcher::Ptr>
 SimulatorLogEntryWidget::Factory::getWidgetDispatchers(
-        const rw::common::Ptr<const SimulatorLog> entry)
+        const rw::core::Ptr<const SimulatorLog> entry)
 {
     std::list<SimulatorLogEntryWidget::Dispatcher::Ptr> res;
 
@@ -75,6 +77,12 @@ SimulatorLogEntryWidget::Factory::getWidgetDispatchers(
     if (dispatcher->accepts(entry))
         res.push_back(dispatcher);
     dispatcher = ownedPtr(new ContactVelocitiesWidget::Dispatcher());
+    if (dispatcher->accepts(entry))
+        res.push_back(dispatcher);
+    dispatcher = ownedPtr(new DistanceResultWidget::Dispatcher());
+    if (dispatcher->accepts(entry))
+        res.push_back(dispatcher);
+    dispatcher = ownedPtr(new DistanceMultiResultWidget::Dispatcher());
     if (dispatcher->accepts(entry))
         res.push_back(dispatcher);
     dispatcher = ownedPtr(new EquationSystemWidget::Dispatcher());
@@ -102,7 +110,7 @@ SimulatorLogEntryWidget::Factory::getWidgetDispatchers(
 
 std::list<SimulatorLogEntryWidget*>
 SimulatorLogEntryWidget::Factory::makeWidgets(
-        const rw::common::Ptr<const SimulatorLog> entry,
+        const rw::core::Ptr<const SimulatorLog> entry,
         QWidget* parent)
 {
     std::list<SimulatorLogEntryWidget*> res;

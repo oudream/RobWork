@@ -1,7 +1,7 @@
 #include "SuctionCup.hpp"
 #include "DynamicWorkCell.hpp"
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include <string>
 
@@ -10,7 +10,7 @@ using namespace rw::kinematics;
 using namespace rw::models;
 using namespace rw::math;
 using namespace rw::common;
-
+using namespace rw::core;
 namespace {
 
     class SuctionCupDevice: public Device {

@@ -66,7 +66,7 @@ DynamicWorkCell::DynamicWorkCell(WorkCell::Ptr workcell,
     }
 
     for(Constraint::Ptr b : _constraints) {
-    	workcell->getStateStructure()->addData(b.getSharedPtr());
+    	workcell->getStateStructure()->addData(b);
     }
 
     for(DynamicDevice::Ptr b : _devices) {
@@ -91,7 +91,7 @@ DynamicDevice::Ptr DynamicWorkCell::findDevice(const std::string& name) const {
     return NULL;
 }
 
-bool DynamicWorkCell::inDevice(rw::common::Ptr<const Body> body) const {
+bool DynamicWorkCell::inDevice(rw::core::Ptr<const Body> body) const {
 	// inspect name scope, if its the same as any device then
 	const std::string& bname = body->getName();
     for(DynamicDevice::Ptr dev : _devices) {
@@ -147,7 +147,7 @@ void DynamicWorkCell::addBody(Body::Ptr body){
 }
 
 void DynamicWorkCell::addConstraint(Constraint::Ptr constraint) {
-	_workcell->getStateStructure()->addData(constraint.getSharedPtr());
+	_workcell->getStateStructure()->addData(constraint);
 	_constraints.push_back(constraint);
 }
 

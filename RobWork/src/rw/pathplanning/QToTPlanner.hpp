@@ -26,7 +26,7 @@
 #include "PathPlanner.hpp"
 
 #include <rw/math/Metric.hpp>
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 namespace rw { namespace pathplanning {
 	class QIKSampler;
@@ -46,7 +46,7 @@ namespace rw { namespace pathplanning {
     {
     public:
 		//! @brief smart pointer type to this class
-		typedef rw::common::Ptr<QToTPlanner> Ptr;
+		typedef rw::core::Ptr<QToTPlanner> Ptr;
 
         /**
            @brief An approach planner for a sampler of IK solutions and a region
@@ -59,8 +59,8 @@ namespace rw { namespace pathplanning {
            @param ikSampler [in] Sampler of IK solutions for the target transform.
         */
 		static QToTPlanner::Ptr make(
-			rw::common::Ptr<QToQSamplerPlanner> planner,
-			rw::common::Ptr<QIKSampler> ikSampler);
+			rw::core::Ptr<QToQSamplerPlanner> planner,
+			rw::core::Ptr<QIKSampler> ikSampler);
 
         /**
            @brief An approach planner for a standard path planner and a sampler
@@ -72,8 +72,8 @@ namespace rw { namespace pathplanning {
         */
         static
 			QToTPlanner::Ptr makeToNearest(
-			rw::common::Ptr<QToQPlanner> planner,
-			rw::common::Ptr<QIKSampler> sampler,
+			rw::core::Ptr<QToQPlanner> planner,
+			rw::core::Ptr<QIKSampler> sampler,
 			rw::math::QMetric::Ptr metric,
             int cnt);
     };

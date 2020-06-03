@@ -24,7 +24,7 @@
  * \copydoc rwsimlibs::bullet::BtTactileSensor
  */
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rwlibs/simulation/Simulator.hpp>
 
 #include <vector>
@@ -54,7 +54,7 @@ public:
 	 * @brief Create new tactile sensor.
 	 * @param sensor [in] the RobWork sensor.
 	 */
-	BtTactileSensor(rw::common::Ptr<rwsim::sensor::SimulatedTactileSensor> sensor);
+	BtTactileSensor(rw::core::Ptr<rwsim::sensor::SimulatedTactileSensor> sensor);
 
 	//! @brief Destructor.
 	virtual ~BtTactileSensor();
@@ -83,7 +83,7 @@ public:
     void addFeedback(BtConstraint* constraint);
 
 private:
-    rw::common::Ptr<rwsim::sensor::SimulatedTactileSensor> _rwSensor;
+    rw::core::Ptr<rwsim::sensor::SimulatedTactileSensor> _rwSensor;
     std::vector<BtConstraint*> _constraints;
 };
 //! @}

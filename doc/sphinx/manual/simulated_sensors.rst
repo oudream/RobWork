@@ -149,14 +149,14 @@ Code Examples
 C++
 ***
 
-.. literalinclude:: ../../../RobWorkStudio/example/cpp/SimulatedCameraExample.cpp
+.. literalinclude:: ../../../RobWorkStudio/example/cpp/ex-simulated-camera.cpp
    :language: c++
    :linenos:
 
 Python
 ******
 
-.. literalinclude:: ../../../RobWorkStudio/example/python/SimulatedCameraExample.py
+.. literalinclude:: ../../../RobWorkStudio/example/python/ex-simulated-camera.py
    :language: python
    :linenos:
 
@@ -170,6 +170,6 @@ Java
 LUA
 ***
 
-.. literalinclude:: ../../../RobWorkStudio/example/lua/SimulatedCameraExample.lua
+.. literalinclude:: ../../../RobWorkStudio/example/lua/ex-simulated-camera.lua
    :language: lua
    :linenos:

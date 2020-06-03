@@ -53,7 +53,7 @@ namespace rwlibs { namespace proximitystrategies {
                                     public rw::proximity::DistanceMultiStrategy
     {
       public:
-        typedef rw::common::Ptr< ProximityStrategyBullet > Ptr;
+        typedef rw::core::Ptr< ProximityStrategyBullet > Ptr;
         //! @brief cache key
         typedef std::pair< rw::geometry::GeometryData*, double > CacheKey;
 
@@ -72,13 +72,13 @@ namespace rwlibs { namespace proximitystrategies {
         struct BulletModel
         {
             BulletModel (std::string id, rw::math::Transform3D<> trans,
-                         rw::common::Ptr< btCollisionObject > model) :
+                         rw::core::Ptr< btCollisionObject > model) :
                 geoid (id),
                 t3d (trans), model (model)
             {}
             std::string geoid;
             rw::math::Transform3D<> t3d;
-            rw::common::Ptr< btCollisionObject > model;
+            rw::core::Ptr< btCollisionObject > model;
             CacheKey ckey;
         };
 
@@ -117,9 +117,9 @@ namespace rwlibs { namespace proximitystrategies {
         bool addGeometry (rw::proximity::ProximityModel* model, const rw::geometry::Geometry& geom);
 
         //! @copydoc rw::proximity::ProximityStrategy::addGeometry(ProximityModel* model,
-        //! rw::common::Ptr<rw::geometry::Geometry> geom, bool forceCopy=false)
+        //! rw::core::Ptr<rw::geometry::Geometry> geom, bool forceCopy=false)
         bool addGeometry (rw::proximity::ProximityModel* model,
-                          rw::common::Ptr< rw::geometry::Geometry > geom, bool forceCopy = false);
+                          rw::core::Ptr< rw::geometry::Geometry > geom, bool forceCopy = false);
 
         /**
          * @copydoc rw::proximity::ProximityStrategy::removeGeometry
@@ -134,7 +134,7 @@ namespace rwlibs { namespace proximitystrategies {
         /**
          * @copydoc rw::proximity::ProximityStrategy::getGeometrys
          */
-        std::vector < rw::common::Ptr< rw::geometry::Geometry >
+        std::vector < rw::core::Ptr< rw::geometry::Geometry >
                       getGeometrys (rw::proximity::ProximityModel* model);
 
         /**

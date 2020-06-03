@@ -15,14 +15,14 @@
  * limitations under the License.
  ********************************************************************************/
 
-#include <rw/common/DOMParser.hpp>
+#include <rw/core/DOMParser.hpp>
 #include <rw/loaders/dom/DOMProximitySetupSaver.hpp>
 #include <rw/loaders/dom/DOMBasisTypes.hpp>
-#include <rw/common/DOMElem.hpp>
+#include <rw/core/DOMElem.hpp>
 #include <rw/proximity/ProximitySetup.hpp>
 #include <rw/proximity/ProximitySetupRule.hpp>
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::loaders;
 using namespace rw::proximity;
 

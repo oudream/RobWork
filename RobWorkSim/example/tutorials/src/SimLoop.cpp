@@ -3,7 +3,7 @@
 #include <rwsim/loaders/DynamicWorkCellLoader.hpp>
 #include <rwsimlibs/ode/ODESimulator.hpp>
 
-using rw::common::ownedPtr;
+using rw::core::ownedPtr;
 using rw::kinematics::State;
 using rw::math::Q;
 using rw::models::Device;

@@ -50,7 +50,7 @@ namespace graphics {
     class SceneGraph {
     public:
         //! @brief smart pointer type of this class
-        typedef rw::common::Ptr<SceneGraph> Ptr;
+        typedef rw::core::Ptr<SceneGraph> Ptr;
 
         //! @brief Drawing types.
         typedef DrawableNode::DrawType DrawType;
@@ -152,7 +152,7 @@ namespace graphics {
          * @param dmask [in] (optional) the type of drawable. Default is DrawableNode::Physical.
          * @return a drawable geometry node.
          */
-        virtual DrawableGeometryNode::Ptr makeDrawable(const std::string& name, rw::common::Ptr<class rw::geometry::Geometry> geom, int dmask=DrawableNode::Physical) = 0;
+        virtual DrawableGeometryNode::Ptr makeDrawable(const std::string& name, rw::core::Ptr<class rw::geometry::Geometry> geom, int dmask=DrawableNode::Physical) = 0;
 
         /**
          * @brief Create a drawable node for lines.
@@ -188,7 +188,7 @@ namespace graphics {
          * @param dmask [in] (optional) the type of drawable. Default is DrawableNode::Physical.
          * @return a drawable node.
          */
-        virtual DrawableNode::Ptr makeDrawable(const std::string& name, rw::common::Ptr<class Model3D> model, int dmask=DrawableNode::Physical) = 0;
+        virtual DrawableNode::Ptr makeDrawable(const std::string& name, rw::core::Ptr<class Model3D> model, int dmask=DrawableNode::Physical) = 0;
 
         /**
          * @brief Create a drawable node for a text label.
@@ -198,7 +198,7 @@ namespace graphics {
          * @param dmask [in] (optional) the type of drawable. Default is DrawableNode::Virtual.
          * @return a drawable node.
          */
-        virtual DrawableNode::Ptr makeDrawable(const std::string& name, const std::string &text, rw::common::Ptr<rw::kinematics::Frame> labelFrame, int dmask=DrawableNode::Virtual) = 0;
+        virtual DrawableNode::Ptr makeDrawable(const std::string& name, const std::string &text, rw::core::Ptr<rw::kinematics::Frame> labelFrame, int dmask=DrawableNode::Virtual) = 0;
 
         /**
          * @brief Create a drawable node for a render.
@@ -207,7 +207,7 @@ namespace graphics {
          * @param dmask [in] (optional) the type of drawable. Default is DrawableNode::Physical.
          * @return a drawable node.
          */
-        virtual DrawableNode::Ptr makeDrawable(const std::string& name, rw::common::Ptr<class Render> render, int dmask=DrawableNode::Physical) = 0;
+        virtual DrawableNode::Ptr makeDrawable(const std::string& name, rw::core::Ptr<class Render> render, int dmask=DrawableNode::Physical) = 0;
 
         //virtual DrawableNode::Ptr makeDrawable(const rw::models::DrawableModelInfo& info) = 0;
         //virtual DrawableNode::Ptr makeDrawable(const rw::models::CollisionModelInfo& info) = 0;
@@ -225,7 +225,7 @@ namespace graphics {
          * @param name [in] name of the camera.
          * @return the new scene camera.
          */
-        virtual rw::common::Ptr<SceneCamera> makeCamera(const std::string& name) = 0;
+        virtual rw::core::Ptr<SceneCamera> makeCamera(const std::string& name) = 0;
 
         // ************************ abstract interface - fuctionality has default implementation *******************
 
@@ -241,28 +241,28 @@ namespace graphics {
          * @param name [in] name of the group.
          * @return a new camera group.
          */
-        virtual rw::common::Ptr<CameraGroup> makeCameraGroup(const std::string& name);
+        virtual rw::core::Ptr<CameraGroup> makeCameraGroup(const std::string& name);
 
-        //virtual rw::common::Ptr<CameraGroup> getCameraGroup(int groupidx);
+        //virtual rw::core::Ptr<CameraGroup> getCameraGroup(int groupidx);
 
         /**
          * @brief Find a camera group.
          * @param name [in] name of the group.
          * @return the camera group if found, else NULL.
          */
-        virtual rw::common::Ptr<CameraGroup> findCameraGroup(const std::string& name);
+        virtual rw::core::Ptr<CameraGroup> findCameraGroup(const std::string& name);
 
         /**
          * @brief Add a camera group.
          * @param cgroup [in] the group to add.
          */
-        virtual void addCameraGroup(rw::common::Ptr<CameraGroup> cgroup);
+        virtual void addCameraGroup(rw::core::Ptr<CameraGroup> cgroup);
 
         /**
          * @brief Remove a camera group.
          * @param cgroup [in] the group to remove.
          */
-        virtual void removeCameraGroup(rw::common::Ptr<CameraGroup> cgroup);
+        virtual void removeCameraGroup(rw::core::Ptr<CameraGroup> cgroup);
 
         /**
          * @brief Remove a camera group.
@@ -274,7 +274,7 @@ namespace graphics {
          * @brief Get all camera groups.
          * @return a list of camera groups.
          */
-        virtual std::list<rw::common::Ptr<CameraGroup> > getCameraGroups();
+        virtual std::list<rw::core::Ptr<CameraGroup> > getCameraGroups();
 
         /**
          * @brief Set the root of the scene graph.
@@ -291,7 +291,7 @@ namespace graphics {
         /**
          * @brief add a drawable to a node
          */
-        virtual void addChild(rw::common::Ptr<SceneNode> child, GroupNode::Ptr parent);
+        virtual void addChild(rw::core::Ptr<SceneNode> child, GroupNode::Ptr parent);
 
         /**
          * @brief get all drawables in the scene.
@@ -304,7 +304,7 @@ namespace graphics {
          * @param node
          * @return
          */
-        virtual std::vector<DrawableNode::Ptr> getDrawables(rw::common::Ptr<SceneNode> node);
+        virtual std::vector<DrawableNode::Ptr> getDrawables(rw::core::Ptr<SceneNode> node);
 
         /**
          * @brief get all drawable nodes in the subtree of \b node. nodes of type camera will
@@ -312,7 +312,7 @@ namespace graphics {
          * @param node [in]
          * @return
          */
-        virtual std::vector<DrawableNode::Ptr> getDrawablesRec(rw::common::Ptr<SceneNode> node);
+        virtual std::vector<DrawableNode::Ptr> getDrawablesRec(rw::core::Ptr<SceneNode> node);
 
         /**
          * @brief Find a drawable node in the scene graph.
@@ -325,7 +325,7 @@ namespace graphics {
          * @copydoc findDrawable(const std::string&)
          * @param node [in] search only this node and all children recursively.
          */
-        virtual DrawableNode::Ptr findDrawable(const std::string& name, rw::common::Ptr<SceneNode> node);
+        virtual DrawableNode::Ptr findDrawable(const std::string& name, rw::core::Ptr<SceneNode> node);
 
         /**
          * @brief Find multiple drawable nodes in the scene graph.
@@ -361,7 +361,7 @@ namespace graphics {
          * @param node [in] only search this node and children recursively.
          * @return true if removed, false otherwise.
          */
-        virtual bool removeDrawable(DrawableNode::Ptr drawable, rw::common::Ptr<SceneNode> node);
+        virtual bool removeDrawable(DrawableNode::Ptr drawable, rw::core::Ptr<SceneNode> node);
 
         /**
          * @brief Remove a specific drawable with a given name.
@@ -380,39 +380,39 @@ namespace graphics {
         virtual bool removeChild(const std::string& name, GroupNode::Ptr node);
 
         //! @brief Type of a visitor function. Returns true if visit is done.
-        typedef boost::function<bool(rw::common::Ptr<SceneNode>& node, rw::common::Ptr<SceneNode>& parent)> NodeVisitor;
+        typedef boost::function<bool(rw::core::Ptr<SceneNode>& node, rw::core::Ptr<SceneNode>& parent)> NodeVisitor;
 
         //! @brief Type of a filter function.
-        typedef boost::function<bool(const rw::common::Ptr<SceneNode>& node)> NodeFilter;
+        typedef boost::function<bool(const rw::core::Ptr<SceneNode>& node)> NodeFilter;
 
         /**
          * @brief Traverse all nodes in the subtree under \b node recursively.
          * @param node [in] the root node.
          * @param visitor [in] the visitor function to execute for each node visited.
          */
-        void traverse(rw::common::Ptr<SceneNode>& node, NodeVisitor& visitor);
+        void traverse(rw::core::Ptr<SceneNode>& node, NodeVisitor& visitor);
 
         /**
-         * @copydoc traverse(rw::common::Ptr<SceneNode>&, NodeVisitor&)
+         * @copydoc traverse(rw::core::Ptr<SceneNode>&, NodeVisitor&)
          * @param postvisitor [in] the visitor function to execute for each node visited afterwards.
          */
-        void traverse(rw::common::Ptr<SceneNode>& node, NodeVisitor& visitor, NodeVisitor& postvisitor);
+        void traverse(rw::core::Ptr<SceneNode>& node, NodeVisitor& visitor, NodeVisitor& postvisitor);
 
         /**
-         * @copydoc traverse(rw::common::Ptr<SceneNode>&, NodeVisitor&)
+         * @copydoc traverse(rw::core::Ptr<SceneNode>&, NodeVisitor&)
          * @param filter [in] filter which nodes to visit.
          */
-        void traverse(rw::common::Ptr<SceneNode>& node, NodeVisitor& visitor, const NodeFilter& filter);
+        void traverse(rw::core::Ptr<SceneNode>& node, NodeVisitor& visitor, const NodeFilter& filter);
 
         /**
-         * @copydoc traverse(rw::common::Ptr<SceneNode>&, NodeVisitor&, NodeVisitor&)
+         * @copydoc traverse(rw::core::Ptr<SceneNode>&, NodeVisitor&, NodeVisitor&)
          * @param filter [in] filter which nodes to visit.
          */
-        void traverse(rw::common::Ptr<SceneNode>& node, NodeVisitor& visitor, NodeVisitor& postvisitor, const NodeFilter& filter);
+        void traverse(rw::core::Ptr<SceneNode>& node, NodeVisitor& visitor, NodeVisitor& postvisitor, const NodeFilter& filter);
 
     protected:
         //! @brief Construct new scene graph with only a root node "Root".
-        SceneGraph():_root(rw::common::ownedPtr(new GroupNode("Root"))){}
+        SceneGraph():_root(rw::core::ownedPtr(new GroupNode("Root"))){}
 
         /**
          * @brief Construct a new scene graph with a given root node.
@@ -424,7 +424,7 @@ namespace graphics {
         GroupNode::Ptr _root;
 
         //! @brief The camera groups in the graph.
-        std::list<rw::common::Ptr<CameraGroup> > _cameraGroups;
+        std::list<rw::core::Ptr<CameraGroup> > _cameraGroups;
 
     };
 

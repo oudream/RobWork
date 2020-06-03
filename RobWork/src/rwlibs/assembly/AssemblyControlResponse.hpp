@@ -29,6 +29,7 @@
 #include <rw/math/VectorND.hpp>
 #include <rw/math/VelocityScrew6D.hpp>
 #include <rw/math/Wrench6D.hpp>
+#include <rw/core/Ptr.hpp>
 
 // Forward declarations
 namespace rw { namespace trajectory { template <class T> class Trajectory; } }
@@ -44,7 +45,7 @@ namespace assembly {
 class AssemblyControlResponse {
 public:
 	//! @brief smart pointer type to this class
-    typedef rw::common::Ptr<AssemblyControlResponse> Ptr;
+    typedef rw::core::Ptr<AssemblyControlResponse> Ptr;
 
 	//! @brief Constructor.
 	AssemblyControlResponse();
@@ -65,7 +66,7 @@ public:
 	//! @brief Positional control of the robot.
 	rw::math::Transform3D<> femaleTmaleTarget;
 	//! @brief Trajectory control of the robot (in world coordinates).
-	rw::common::Ptr<rw::trajectory::Trajectory<rw::math::Transform3D<> > > worldTendTrajectory;
+	rw::core::Ptr<rw::trajectory::Trajectory<rw::math::Transform3D<> > > worldTendTrajectory;
 	//! @brief Relative velocity target for velocity control.
 	rw::math::VelocityScrew6D<> femaleTmaleVelocityTarget;
 	//! @brief Specify the coordinate axes for hybrid force/torque control.

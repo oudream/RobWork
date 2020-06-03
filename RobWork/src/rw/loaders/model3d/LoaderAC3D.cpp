@@ -17,9 +17,10 @@
 
 #include "LoaderAC3D.hpp"
 
-#include <rw/common/StringUtil.hpp>
+#include <rw/core/StringUtil.hpp>
 #include <rw/common/TimerUtil.hpp>
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
+#include <rw/core/StringUtil.hpp>
 //#include <rw/math/Constants.hpp>
 #include <rw/geometry/Triangulate.hpp>
 #include <rw/loaders/ImageLoader.hpp>
@@ -47,6 +48,7 @@
 using namespace rw::loaders;
 using namespace rw::graphics;
 using namespace rw::math;
+using namespace rw::core;
 using namespace rw::common;
 using namespace rw::geometry;
 

@@ -24,7 +24,7 @@
  * \copydoc rwsim::log::SimulatorStatistics
  */
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include <vector>
 #include <map>
@@ -42,7 +42,7 @@ namespace log {
 class SimulatorStatistics {
 public:
     //! Smart pointer type of SimulatorStatistics
-    typedef rw::common::Ptr<SimulatorStatistics> Ptr;
+    typedef rw::core::Ptr<SimulatorStatistics> Ptr;
 
     //! Type of a DataSeries collection (each series is a name and a list of numbers)
 	typedef std::map<std::string, std::vector<double> > DataSeries;

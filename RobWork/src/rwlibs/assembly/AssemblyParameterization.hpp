@@ -24,8 +24,9 @@
  * \copydoc rwlibs::assembly::AssemblyParameterization
  */
 
-#include <rw/common/Ptr.hpp>
-#include <rw/common/PropertyMap.hpp>
+#include <rw/core/Ptr.hpp>
+
+namespace rw { namespace core { class PropertyMap; }}
 
 namespace rwlibs {
 namespace assembly {
@@ -50,7 +51,7 @@ namespace assembly {
 class AssemblyParameterization {
 public:
 	//! @brief smart pointer type to this class
-    typedef rw::common::Ptr<AssemblyParameterization> Ptr;
+    typedef rw::core::Ptr<AssemblyParameterization> Ptr;
 
     //! @brief Construct an empty parameterization.
 	AssemblyParameterization();
@@ -59,7 +60,7 @@ public:
 	 * @brief Construct a parameterization from a PropertyMap.
 	 * @param pmap [in] a PropertyMap.
 	 */
-	AssemblyParameterization(rw::common::Ptr<rw::common::PropertyMap> pmap);
+	AssemblyParameterization(rw::core::Ptr<rw::core::PropertyMap> pmap);
 
     //! @brief Destructor
 	virtual ~AssemblyParameterization();
@@ -68,7 +69,7 @@ public:
 	 * @brief Store the parameterization in a PropertyMap.
 	 * @return a pointer to a PropertyMap, or NULL if parameterization is empty.
 	 */
-	virtual rw::common::Ptr<rw::common::PropertyMap> toPropertyMap() const;
+	virtual rw::core::Ptr<rw::core::PropertyMap> toPropertyMap() const;
 
 	/**
 	 * @brief Clone the parameterization.
@@ -80,17 +81,17 @@ public:
 	 * @brief Construct a parameterization of same type from a PropertyMap.
 	 * @param pmap [in] a PropertyMap.
 	 */
-	virtual AssemblyParameterization::Ptr make(rw::common::Ptr<rw::common::PropertyMap> pmap) const;
+	virtual AssemblyParameterization::Ptr make(rw::core::Ptr<rw::core::PropertyMap> pmap) const;
 
 	/**
 	 * @brief Reset the parameters by taking new parameters from a PropertyMap.
 	 * @param pmap [in] a PropertyMap.
 	 */
-	virtual void reset(rw::common::Ptr<rw::common::PropertyMap> pmap);
+	virtual void reset(rw::core::Ptr<rw::core::PropertyMap> pmap);
 
 protected:
 	//! @brief The PropertyMap.
-	rw::common::Ptr<rw::common::PropertyMap> _pmap;
+	rw::core::Ptr<rw::core::PropertyMap> _pmap;
 };
 //! @}
 } /* namespace assembly */

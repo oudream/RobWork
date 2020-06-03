@@ -19,7 +19,7 @@
 #define RW_STUDIO_SENSORS_MODULE_H
 
 #include <rws/RobWorkStudioPlugin.hpp>
-
+#include <rw/core/Ptr.hpp>
 #include <rw/kinematics/State.hpp>
 
 namespace rwlibs { namespace simulation { class SimulatedSensor; } }
@@ -81,12 +81,12 @@ private:
 
     struct SensorSet {
     public:
-        SensorSet(rw::common::Ptr<rwlibs::simulation::SimulatedSensor> sensor, rw::common::Ptr<SensorView> view):
+        SensorSet(rw::core::Ptr<rwlibs::simulation::SimulatedSensor> sensor, rw::core::Ptr<SensorView> view):
             sensor(sensor), view(view)
         {}
 
-        rw::common::Ptr<rwlibs::simulation::SimulatedSensor> sensor;
-        rw::common::Ptr<SensorView> view;
+        rw::core::Ptr<rwlibs::simulation::SimulatedSensor> sensor;
+        rw::core::Ptr<SensorView> view;
     };
 
     std::vector<SensorSet> _sensors;

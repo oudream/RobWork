@@ -23,7 +23,7 @@
    @file SimulatedCamera.hpp
 */
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/sensor/Camera.hpp>
 #include <rw/sensor/Image.hpp>
 
@@ -51,7 +51,7 @@ namespace rwlibs { namespace simulation {
     {
     public:
 		//! @brief Smart pointer type for a SimulatedCamera.
-        typedef rw::common::Ptr<SimulatedCamera> Ptr;
+        typedef rw::core::Ptr<SimulatedCamera> Ptr;
 
         /**
          * @brief creates a simulated pinhole camera,
@@ -60,7 +60,7 @@ namespace rwlibs { namespace simulation {
          * @param frame [in] frame to which the camera is attached
          * @param frameGrabber [in] the frameGrabber from which this Camera should grab images
          */
-        SimulatedCamera(const std::string& name, double fov, rw::kinematics::Frame* frame, rw::common::Ptr<FrameGrabber> frameGrabber);
+        SimulatedCamera(const std::string& name, double fov, rw::kinematics::Frame* frame, rw::core::Ptr<FrameGrabber> frameGrabber);
 
         /**
          * @brief constructor
@@ -68,7 +68,7 @@ namespace rwlibs { namespace simulation {
          * @param frameGrabber [in] the frameGrabber from which this Camera should grab
          * images.
          */
-        SimulatedCamera(rw::common::Ptr<rw::sensor::CameraModel> model, rw::common::Ptr<FrameGrabber> frameGrabber);
+        SimulatedCamera(rw::core::Ptr<rw::sensor::CameraModel> model, rw::core::Ptr<FrameGrabber> frameGrabber);
 
         /**
          * @brief destructor
@@ -149,7 +149,7 @@ namespace rwlibs { namespace simulation {
     private:
         double _frameRate;
         double _dtSum;
-        rw::common::Ptr<FrameGrabber> _frameGrabber;
+        rw::core::Ptr<FrameGrabber> _frameGrabber;
         bool _isAcquired;
         bool _started;
         bool _initialized;

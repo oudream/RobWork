@@ -129,13 +129,15 @@ endif()
 set(RWS_HAVE_GLUT False)
 set(RWS_HAVE_FREEGLUT FALSE)
 
+if(NOT ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 find_package(GLUT QUIET)
-if(NOT GLUT_FOUND) # Check if free glut exsist
-    find_package(FreeGLUT QUIET)
-    if(FreeGLUT_FOUND)
-        set(GLUT_glut_LIBRARY FreeGLUT::freeglut)
-        set(GLUT_FOUND ${FreeGLUT_FOUND})
-        set(RWS_HAVE_FREEGLUT TRUE)
+    if(NOT GLUT_FOUND) # Check if free glut exsist
+        find_package(FreeGLUT QUIET)
+        if(FreeGLUT_FOUND)
+            set(GLUT_glut_LIBRARY FreeGLUT::freeglut)
+            set(GLUT_FOUND ${FreeGLUT_FOUND})
+            set(RWS_HAVE_FREEGLUT TRUE)
+        endif()
     endif()
 endif()
 if(OPENGL_FOUND AND GLUT_FOUND)
@@ -144,15 +146,6 @@ if(OPENGL_FOUND AND GLUT_FOUND)
 else()
     set(GLUT_glut_LIBRARY "")
     message(STATUS "RobWork: OpenGL and GLUT NOT FOUND! code disabled!")
-endif()
-
-# optional compilation of sandbox
-if(RWS_BUILD_SANDBOX)
-    message(STATUS "RobWorkStudio: Sandbox ENABLED!")
-    set(SANDBOX_LIB "rsdurws_sandbox")
-    set(RWS_HAVE_SANDBOX true)
-else()
-    message(STATUS "RobWorkStudio: Sandbox DISABLED!")
 endif()
 
 # Check if SWIG is available
@@ -247,12 +240,6 @@ if(DEFINED RWS_LINKER_FLAGS)
 
     message(STATUS "RobWorkStudio: Adding RWS linker flags: ${RWS_LINKER_FLAGS}")
 endif()
-# MESSAGE(STATUS "${RW_BUILD_WITH_CXX_FLAGS}") If we are using static linking
-if(RWS_USE_STATIC_LINK_PLUGINS)
-    message(STATUS "RobWorkStudio: Using static linking of default plugins!")
-else()
-    message(STATUS "RobWorkStudio: Using dynamic linking of default plugins!")
-endif()
 
 # ##################################################################################################
 # SETTING UP VARS here we setup the output variables
@@ -290,7 +277,6 @@ set(
     sdurws_workcelleditor
     sdurws_luapl
     sdurws_luaeditor
-    ${RWS_SANDBOX}
     ${RWS_LUA}
     sdurws
     qtpropertybrowser

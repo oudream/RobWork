@@ -34,8 +34,8 @@ const Mathematica::String& MessagePacket::string() {
 	return _string;
 }
 
-std::list<rw::common::Ptr<const Mathematica::Expression> > MessagePacket::getArguments() const {
-	std::list<rw::common::Ptr<const Mathematica::Expression> > res;
+std::list<rw::core::Ptr<const Mathematica::Expression> > MessagePacket::getArguments() const {
+	std::list<rw::core::Ptr<const Mathematica::Expression> > res;
 	res.push_back(_symbol.clone());
 	res.push_back(_string.clone());
 	return res;

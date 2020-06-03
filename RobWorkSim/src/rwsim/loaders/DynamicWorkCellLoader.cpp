@@ -17,11 +17,11 @@
 
 #include "DynamicWorkCellLoader.hpp"
 
-#include <rw/common/Log.hpp>
-#include <rw/common/Ptr.hpp>
-#include <rw/common/StringUtil.hpp>
+#include <rw/core/Log.hpp>
+#include <rw/core/Ptr.hpp>
+#include <rw/core/StringUtil.hpp>
 #include <rw/common/TimerUtil.hpp>
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 #include <rw/kinematics/Frame.hpp>
 #include <rw/loaders/WorkCellLoader.hpp>
 #include <rw/loaders/rwxml/DependencyGraph.hpp>
@@ -52,7 +52,7 @@
 #include <sstream>
 #include <string>
 //#include <rwsim/dynamics/DynamicUtil.hpp>
-#include <rw/common/PropertyMap.hpp>
+#include <rw/core/PropertyMap.hpp>
 #include <rw/geometry/Geometry.hpp>
 #include <rw/geometry/GeometryUtil.hpp>
 #include <rw/models/RigidObject.hpp>
@@ -83,6 +83,8 @@ using namespace rw::loaders;
 
 using namespace rw::math;
 using namespace rw::common;
+using namespace rw::core;
+using namespace rw::core;
 using namespace rw::sensor;
 using namespace rw::geometry;
 using namespace rwlibs::control;
@@ -94,7 +96,7 @@ using namespace rwlibs::simulation;
 
 using namespace boost::property_tree;
 
-#define RW_DEBUGS(str) rw::common::Log::debugLog () << str << std::endl
+#define RW_DEBUGS(str) rw::core::Log::debugLog () << str << std::endl
 //#define RW_DEBUGS(str)
 
 namespace {
@@ -1623,7 +1625,7 @@ DynamicWorkCell::Ptr readDynamicWC (PTree& tree, ParserState& state)
 }
 }    // namespace
 
-rw::common::Ptr< DynamicWorkCell > DynamicWorkCellLoader::load (const string& filename)
+rw::core::Ptr< DynamicWorkCell > DynamicWorkCellLoader::load (const string& filename)
 {
     std::string file = IOUtil::getAbsoluteFileName (filename);
 

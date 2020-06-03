@@ -17,15 +17,15 @@
 
 #include "TestEnvironment.hpp"
 
-#include <rw/RobWork.hpp>
-#include <rw/common/DOMElem.hpp>
-#include <rw/common/DOMParser.hpp>
+#include <rw/core/RobWork.hpp>
+#include <rw/core/DOMElem.hpp>
+#include <rw/core/DOMParser.hpp>
 
 #include <boost/filesystem.hpp>
 
-using rw::RobWork;
-using rw::common::DOMElem;
-using rw::common::DOMParser;
+using rw::core::RobWork;
+using rw::core::DOMElem;
+using rw::core::DOMParser;
 
 TestEnvironment::TestEnvironment():
 	_argc(0), _argv(NULL)

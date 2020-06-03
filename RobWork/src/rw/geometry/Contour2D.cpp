@@ -18,7 +18,7 @@
 
 #include "Triangulate.hpp"
 
-#include <rw/common/StringUtil.hpp>
+#include <rw/core/StringUtil.hpp>
 #include <rw/math/Line2D.hpp>
 #include <rw/math/Rotation2D.hpp>
 #include <rw/math/Vector3D.hpp>
@@ -46,7 +46,7 @@ void Contour2D::write (Contour2D& objC, std::string file)
 {
     std::ofstream ostr (file.c_str ());
     if (!ostr.is_open ())
-        RW_THROW ("Can't read file " << rw::common::StringUtil::quote (file));
+        RW_THROW ("Can't read file " << rw::core::StringUtil::quote (file));
 
     ostr << "ObjectContour \n";
     ostr << "Size " << objC.size () << "\n";
@@ -67,7 +67,7 @@ Contour2D Contour2D::read (std::string file)
 {
     std::ifstream inp (file.c_str ());
     if (!inp.is_open ())
-        RW_THROW ("Can't read file " << rw::common::StringUtil::quote (file));
+        RW_THROW ("Can't read file " << rw::core::StringUtil::quote (file));
     std::string strToken;
     inp >> strToken;
 
@@ -544,7 +544,7 @@ TriMesh::Ptr Contour2D::toTriMesh (double height)
     if (this->points ().size () < 3)
         RW_THROW ("No contour.");
 
-    PlainTriMeshN1F::Ptr mesh = rw::common::ownedPtr (new PlainTriMeshN1F ());
+    PlainTriMeshN1F::Ptr mesh = rw::core::ownedPtr (new PlainTriMeshN1F ());
 
     sideFaces (*this, height, mesh);
 

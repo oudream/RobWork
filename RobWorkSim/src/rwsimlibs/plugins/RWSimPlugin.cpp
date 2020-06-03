@@ -10,7 +10,10 @@
 
 #include <RobWorkStudio.hpp>
 
-#include <rw/models/JointDevice.hpp> 
+#include <rw/models/JointDevice.hpp>
+#include <rw/core/PropertyMap.hpp> 
+#include <rw/core/Ptr.hpp>
+#include <rw/core/StringUtil.hpp>
 
 #include <rwlibs/opengl/TactileArrayRender.hpp>
 #include <rwlibs/simulation/SimulatedController.hpp>
@@ -43,6 +46,11 @@ using rw::trajectory::TimedState;
 using rw::math::Math;
 using rw::kinematics::State;
 using rw::graphics::Render;
+using rw::core::PropertyMap;
+using rw::core::ownedPtr;
+using rw::core::Log;
+using rw::core::Ptr;
+using rw::core::Exception;
 using namespace rwlibs::opengl;
 using namespace rwlibs::simulation;
 using rwlibs::control::JointController;
@@ -173,8 +181,8 @@ void RWSimPlugin::setupMenu(QMenu* pluginmenu){
 
 }
 
-rw::common::PropertyMap& RWSimPlugin::settings(){
-    return getRobWorkStudio()->getPropertyMap().get<rw::common::PropertyMap>("RobWorkStudioSettings");
+rw::core::PropertyMap& RWSimPlugin::settings(){
+    return getRobWorkStudio()->getPropertyMap().get<rw::core::PropertyMap>("RobWorkStudioSettings");
 }
 
 void RWSimPlugin::btnPressed(){
@@ -234,7 +242,7 @@ void RWSimPlugin::btnPressed(){
     	rwsim::swig::addSimulatorInstance(_sim, "rwsimplugin");
 #endif
 
-    	ThreadSimulator::StepCallback cb( boost::bind(&RWSimPlugin::stepCallBack, this, _2) );
+    	ThreadSimulator::StepCallback cb( boost::bind(&RWSimPlugin::stepCallBack, this, boost::arg<2>()) );
 
         _deviceControlBox->addItem(sim->getBodyController()->getControllerName().c_str());
     	_controlGroupBox->setEnabled(true);
@@ -537,7 +545,7 @@ void RWSimPlugin::open(rw::models::WorkCell* workcell){
     if(lstate!=NULL && lstate!=_luastate){
         _luastate = lstate;
         rwsim::swig::openLuaLibRWSim(_luastate->get() );
-        _luastate->addLibrary( rw::common::Ptr<rwlibs::swig::LuaState::LuaLibrary>(new RWSimLuaLibrary()) );
+        _luastate->addLibrary( rw::core::Ptr<rwlibs::swig::LuaState::LuaLibrary>(new RWSimLuaLibrary()) );
 
         //_luastate->removeLibrary( "LuaLibRWSim" );
     }
@@ -607,7 +615,7 @@ void RWSimPlugin::openDwc(const std::string& file){
 		return;
 
     _context._previousOpenDirectory =
-    	rw::common::StringUtil::getDirectoryName(dwcFile);
+    	rw::core::StringUtil::getDirectoryName(dwcFile);
 
     settings().set<std::string>("RWSimLastOpennedDIR",_context._previousOpenDirectory);
     settings().set<std::string>("RWSimLastOpennedDWC",dwcFile);
@@ -648,7 +656,7 @@ void RWSimPlugin::close(){
 
 void RWSimPlugin::initialize(){
     getRobWorkStudio()->stateChangedEvent().add(
-    		boost::bind(&RWSimPlugin::stateChangedListener, this, _1), this);
+    		boost::bind(&RWSimPlugin::stateChangedListener, this, boost::arg<1>()), this);
     Log::setLog( _log );
     _timerShot = NULL;
 

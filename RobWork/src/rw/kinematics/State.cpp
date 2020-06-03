@@ -20,12 +20,7 @@
 #include "Frame.hpp"
 #include "StateSetup.hpp"
 
-
-
-//#include <rw/common/InputArchive.hpp>
-//#include <rw/common/OutputArchive.hpp>
-
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::kinematics;
 
 State::State ()
@@ -45,7 +40,7 @@ Frame* State::getFrame (int id)
     return _q_state.getStateSetup ()->getFrame (id);
 }
 
-rw::common::Ptr< StateCache > State::getCache (int id)
+rw::core::Ptr< StateCache > State::getCache (int id)
 {
     int cacheIdx = _q_state.getStateSetup ()->getCacheIdx (id);
     if (cacheIdx < 0)
@@ -53,7 +48,7 @@ rw::common::Ptr< StateCache > State::getCache (int id)
     return _cache_state[cacheIdx];
 }
 
-rw::common::Ptr< StateCache > State::getCache (int id) const
+rw::core::Ptr< StateCache > State::getCache (int id) const
 {
     int cacheIdx = _q_state.getStateSetup ()->getCacheIdx (id);
     if (cacheIdx < 0)
@@ -61,7 +56,7 @@ rw::common::Ptr< StateCache > State::getCache (int id) const
     return _cache_state[cacheIdx];
 }
 
-void State::setCache (int id, rw::common::Ptr< StateCache > cache)
+void State::setCache (int id, rw::core::Ptr< StateCache > cache)
 {
     int cacheIdx = _q_state.getStateSetup ()->getCacheIdx (id);
     if (cacheIdx < 0)
@@ -78,16 +73,16 @@ void State::copy (const State& from)
     }
 
     // get state data from the from state
-    const std::vector< boost::shared_ptr< StateData > >& fromStateDatas =
+    const std::vector< rw::core::Ptr< StateData > >& fromStateDatas =
         fromQState.getStateSetup ()->getStateData ();
 
-    const std::vector< boost::shared_ptr< StateData > >& toStateDatas =
+    const std::vector< rw::core::Ptr< StateData > >& toStateDatas =
         getQState ().getStateSetup ()->getStateData ();
 
     // for each StateData in from.StateSetup copy its Q values to
     // to this.qstate
     for (size_t i = 0; i < fromStateDatas.size (); i++) {
-        const boost::shared_ptr< StateData >& f = fromStateDatas[i];
+        const rw::core::Ptr< StateData >& f = fromStateDatas[i];
         // check if frame exist in state
         if (f == NULL)
             continue;

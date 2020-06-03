@@ -27,7 +27,7 @@
 
 using namespace rw::geometry;
 using namespace rw::math;
-using namespace rw::common;
+using namespace rw::core;
 
 namespace {
 

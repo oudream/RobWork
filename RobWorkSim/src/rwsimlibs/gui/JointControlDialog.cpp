@@ -22,7 +22,7 @@ VelTab::VelTab(rwlibs::control::JointController::Ptr jcontroller, QWidget *paren
 
 
 
-PosTab::PosTab(JointControllerPtr jcontroller, QWidget *parent)
+PosTab::PosTab(JointController::Ptr jcontroller, QWidget *parent)
        : QWidget(parent),_jcont(jcontroller)
 {
    if( !(jcontroller->getControlModes() & (JointController::POSITION | JointController::CNT_POSITION)) )
@@ -122,7 +122,7 @@ JointControlDialog::JointControlDialog(
     setWindowTitle(tr("Joint Control"));
 }
 
-CurTab::CurTab(rw::common::Ptr<rwlibs::control::JointController> jcontroller, QWidget *parent):
+CurTab::CurTab(rw::core::Ptr<rwlibs::control::JointController> jcontroller, QWidget *parent):
 		QWidget(parent)
 {
 	if( !(jcontroller->getControlModes() & rwlibs::control::JointController::CURRENT) )

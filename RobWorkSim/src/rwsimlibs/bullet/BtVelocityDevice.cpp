@@ -27,7 +27,7 @@ using namespace rw::math;
 using namespace rwsim::dynamics;
 using namespace rwsimlibs::bullet;
 
-BtVelocityDevice::BtVelocityDevice(rw::common::Ptr<RigidDevice> rdev, const std::vector<btTypedConstraint*>& constraints):
+BtVelocityDevice::BtVelocityDevice(rw::core::Ptr<RigidDevice> rdev, const std::vector<btTypedConstraint*>& constraints):
 	_rdev(rdev),
 	_constraints(constraints)
 {

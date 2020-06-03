@@ -8,7 +8,7 @@
 #include <rwlibs/task/GraspTask.hpp>
 #include <rwsimlibs/ode/ODESimulator.hpp>
 #include <rw/proximity/CollisionDetector.hpp>
-#include <rw/common/Exception.hpp>
+#include <rw/core/Exception.hpp>
 #include <boost/lexical_cast.hpp>
 #include <rwlibs/algorithms/kdtree/KDTree.hpp>
 #include <rwlibs/algorithms/kdtree/KDTreeQ.hpp>

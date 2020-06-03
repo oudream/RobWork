@@ -56,7 +56,7 @@ namespace simulator {
 class GraspTaskSimulator {
 public:
     //! smart pointer type
-    typedef rw::common::Ptr<GraspTaskSimulator> Ptr;
+    typedef rw::core::Ptr<GraspTaskSimulator> Ptr;
 
 public:
     /**
@@ -213,7 +213,7 @@ public:
 
         rw::kinematics::State _postLiftObjState;
 
-        std::vector< rw::common::Ptr<rwsim::sensor::BodyContactSensor> > _bsensors;
+        std::vector< rw::core::Ptr<rwsim::sensor::BodyContactSensor> > _bsensors;
         int _restCount;
         // the explicit values from _task
         rw::kinematics::Frame* _taskRefFrame;
@@ -250,8 +250,8 @@ private:
 
     GraspedObject getObjectContacts(const rw::kinematics::State& state, SimState &sstate);
     std::vector<rw::sensor::Contact3D> getObjectContacts(const rw::kinematics::State& state,
-                                                         rw::common::Ptr<rwsim::dynamics::RigidBody> object,
-                                                         rw::common::Ptr<rwsim::sensor::BodyContactSensor> sensor,
+                                                         rw::core::Ptr<rwsim::dynamics::RigidBody> object,
+                                                         rw::core::Ptr<rwsim::sensor::BodyContactSensor> sensor,
                                                          std::vector<rwsim::dynamics::Body::Ptr>& bodies);
 
 
@@ -285,11 +285,11 @@ protected:
 	    _nrOfExperiments, _lastSaveTaskIndex;
 	int _totalNrOfExperiments;
 
-	std::vector<rw::common::Ptr<rwsim::dynamics::RigidBody> > _objects;
+	std::vector<rw::core::Ptr<rwsim::dynamics::RigidBody> > _objects;
 	rwsim::dynamics::DynamicDevice::Ptr _dhand;
-	rw::common::Ptr<rwsim::dynamics::RigidDevice> _rhand;
+	rw::core::Ptr<rwsim::dynamics::RigidDevice> _rhand;
     rw::models::Device::Ptr _hand;
-    rw::common::Ptr<rwsim::dynamics::KinematicBody> _hbase;
+    rw::core::Ptr<rwsim::dynamics::KinematicBody> _hbase;
     rw::kinematics::MovableFrame *_mbase;
 
     rwlibs::simulation::SimulatedController::Ptr _simGraspController;
@@ -305,7 +305,7 @@ protected:
 	rwlibs::task::GraspTask::Ptr _gtask;
 	std::stack<std::pair<rwlibs::task::GraspSubTask*, rwlibs::task::GraspTarget*> > _taskQueue;
 
-	rw::common::Ptr<rw::proximity::CollisionDetector> _collisionDetector;
+	rw::core::Ptr<rw::proximity::CollisionDetector> _collisionDetector;
 
 	boost::mutex _nextTargetLock;
 	

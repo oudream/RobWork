@@ -24,7 +24,7 @@
  * \copydoc rwsimlibs::bullet::BtPlugin
  */
 
-#include <rw/common/Plugin.hpp>
+#include <rw/core/Plugin.hpp>
 
 namespace rwsimlibs {
 namespace bullet {
@@ -38,7 +38,7 @@ namespace bullet {
  * The following extension is added with the use of this plugin:
  *  - Bullet
  */
-class BtPlugin: public rw::common::Plugin {
+class BtPlugin: public rw::core::Plugin {
 public:
 	//! @brief Construct new plugin
 	BtPlugin();
@@ -46,11 +46,11 @@ public:
 	//! @brief Destructor
 	virtual ~BtPlugin();
 
-    //! @copydoc rw::common::Plugin::getExtensionDescriptors
-	std::vector<rw::common::Extension::Descriptor> getExtensionDescriptors();
+    //! @copydoc rw::core::Plugin::getExtensionDescriptors
+	std::vector<rw::core::Extension::Descriptor> getExtensionDescriptors();
 
-    //! @copydoc rw::common::Plugin::makeExtension
-	rw::common::Ptr<rw::common::Extension> makeExtension(const std::string& str);
+    //! @copydoc rw::core::Plugin::makeExtension
+	rw::core::Ptr<rw::core::Extension> makeExtension(const std::string& str);
 };
 //! @}
 } /* namespace bullet */

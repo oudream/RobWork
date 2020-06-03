@@ -32,7 +32,6 @@ using namespace boost;
 using namespace rw::math;
 using namespace rw::models;
 using namespace rw::kinematics;
-using namespace rw::common;
 using namespace rw::invkin;
 using namespace rw::trajectory;
 
@@ -44,22 +43,17 @@ JacobianIKSolver::JacobianIKSolver(Device::CPtr device, const Frame *foi, const 
     _useJointClamping(false),
 	_useInterpolation(false),
     _checkJointLimits(false),
-	_solverType(SVD)
+    _solverType(SVD),
+    _w(Eigen::VectorXd::Ones(_device->getDOF())),
+    _checkJointLimitsTolerance(0.0)
 {
     setMaxIterations(15);
 }
 
 JacobianIKSolver::JacobianIKSolver(Device::CPtr device, const State& state):
-    _device(device),
-    _interpolationStep(0.21),
-    _fkrange( device->getBase(), device->getEnd(), state),
-    _devJac( device->baseJCend(state) ),
-    _useJointClamping(false),
-	_useInterpolation(false),
-    _checkJointLimits(false),
-    _solverType(SVD)
+    JacobianIKSolver(device, device->getEnd(), state)
 {
-    setMaxIterations(15);
+
 }
 
 std::vector<Q> JacobianIKSolver::solve(const Transform3D<>& bTed,
@@ -87,7 +81,7 @@ std::vector<Q> JacobianIKSolver::solve(const Transform3D<>& bTed,
     {
         std::vector<Q> result;
         Q q = _device->getQ(state);
-        if (!_checkJointLimits || Models::inBounds(q, *_device))
+        if (!_checkJointLimits || Models::inBounds(q, *_device, _checkJointLimitsTolerance))
             result.push_back(q);
 
         return result;
@@ -153,9 +147,6 @@ bool JacobianIKSolver::solveLocal(const Transform3D<> &bTed,
             q += dq;
         }
         break;
-        case(SDLS):{
-            // TODO: not implemented yet for now we just use DLS
-        }
         case(DLS):{
             double lambda = 0.4; // dampening factor, for now a fixed value
             Eigen::MatrixXd U = J.e() * J.e().transpose(); // U = J * (J^T)
@@ -175,6 +166,17 @@ bool JacobianIKSolver::solveLocal(const Transform3D<> &bTed,
             q += dq;
         }
         break;
+        case(Weighted):{
+            // Equation 9 from https://ieeexplore.ieee.org/document/370511
+            Eigen::MatrixXd Jw = _w.inverse() * J.e().transpose() *
+                    (J.e()*_w.inverse()*J.e().transpose()).inverse();
+            Q dq (Jw*dS );
+            double dq_len = dq.normInf();
+            if( dq_len > 0.8 )
+                dq *= 0.8/dq_len;
+            q += dq;
+        }
+        break;
 
         }
 
@@ -184,6 +186,22 @@ bool JacobianIKSolver::solveLocal(const Transform3D<> &bTed,
     }
     return false;
 }
+
+void JacobianIKSolver::setWeightVector(Eigen::VectorXd weights)
+{
+    if (static_cast<size_t>(weights.size()) != _device->getDOF())
+
+        RW_THROW("Weight vector must have same length as device DOF!");
+
+    _w = weights.asDiagonal();
+}
+
+
+void JacobianIKSolver::setJointLimitTolerance(double tolerance)
+{
+    _checkJointLimitsTolerance = tolerance;
+}
+
 
 rw::kinematics::Frame::CPtr JacobianIKSolver::getTCP() const {
     return _fkrange.getEnd();

@@ -15,25 +15,27 @@
  * limitations under the License.
  ********************************************************************************/
 
-#include <gtest/gtest.h>
-
+#include <rw/core/PropertyMap.hpp>
 #include <rws/RobWorkStudio.hpp>
 
 #include <QApplication>
+#include <gtest/gtest.h>
 
+using namespace rw::core;
 using namespace rw::common;
 using namespace rws;
 
-TEST(RobWorkStudio, LaunchTest) {
-	int argc = 1;
-	char name[] = "RobWorkStudio";
-	char* argv[1] = {name};
-	PropertyMap map;
-    QApplication app(argc,argv);
-    RobWorkStudio rwstudio(map);
-    rwstudio.show();
-    app.processEvents();
-    TimerUtil::sleepMs(1000);
-    rwstudio.close();
-    TimerUtil::sleepMs(2000);
+TEST (RobWorkStudio, LaunchTest)
+{
+    int argc      = 1;
+    char name[]   = "RobWorkStudio";
+    char* argv[1] = {name};
+    PropertyMap map;
+    QApplication app (argc, argv);
+    RobWorkStudio rwstudio (map);
+    rwstudio.show ();
+    app.processEvents ();
+    TimerUtil::sleepMs (1000);
+    rwstudio.close ();
+    TimerUtil::sleepMs (2000);
 }

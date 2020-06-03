@@ -37,10 +37,10 @@ namespace geometry {
 class PlainQuadraticShell: public QuadraticShell {
 public:
     //! @brief Smart pointer type to PlainQuadraticShell
-    typedef rw::common::Ptr<PlainQuadraticShell> Ptr;
+    typedef rw::core::Ptr<PlainQuadraticShell> Ptr;
 
 	//! @brief Smart pointer type for a const PlainQuadraticShell.
-	typedef rw::common::Ptr<const PlainQuadraticShell> CPtr;
+	typedef rw::core::Ptr<const PlainQuadraticShell> CPtr;
 
     //! @brief Constructor.
 	PlainQuadraticShell() {}
@@ -49,7 +49,7 @@ public:
 	 * @brief Construct shell from a collection of Quadratic faces.
 	 * @param faces [in] collection of Quadratic faces.
 	 */
-	PlainQuadraticShell(const std::vector<rw::common::Ptr<QuadraticFace> >& faces): _faces(faces) {}
+	PlainQuadraticShell(const std::vector<rw::core::Ptr<QuadraticFace> >& faces): _faces(faces) {}
 
 	/**
 	 * @brief Copy constructor.
@@ -73,7 +73,7 @@ public:
 	virtual std::size_t size() const { return _faces.size(); }
 
 	//! @copydoc QuadraticShell::getFace(std::size_t) const
-	virtual rw::common::Ptr<const QuadraticFace> getFace(std::size_t idx) const { return _faces[idx]; }
+	virtual rw::core::Ptr<const QuadraticFace> getFace(std::size_t idx) const { return _faces[idx].cast<const QuadraticFace>(); }
 
 	//! @copydoc QuadraticShell::getFace(std::size_t, QuadraticFace&) const
 	virtual void getFace(std::size_t idx, QuadraticFace& dst) const;
@@ -85,7 +85,7 @@ public:
 	 * @brief Add Quadratic face.
 	 * @param face [in] quadratic face to add.
 	 */
-	void add(const rw::common::Ptr<QuadraticFace> face) {
+	void add(const rw::core::Ptr<QuadraticFace> face) {
 		_faces.push_back(face);
 	}
 
@@ -118,14 +118,14 @@ public:
 	 * @brief Make a copy of the shell.
 	 * @return a new copy.
 	 */
-	rw::common::Ptr<PlainQuadraticShell> clone() const {
-		return rw::common::ownedPtr( new PlainQuadraticShell(*this) );
+	rw::core::Ptr<PlainQuadraticShell> clone() const {
+		return rw::core::ownedPtr( new PlainQuadraticShell(*this) );
 	}
 
 private:
-	virtual rw::common::Ptr<const Face> doGetFace(std::size_t idx) const;
+	virtual rw::core::Ptr<const Face> doGetFace(std::size_t idx) const;
 
-	std::vector<rw::common::Ptr<QuadraticFace> > _faces;
+	std::vector<rw::core::Ptr<QuadraticFace> > _faces;
 };
 //! @}
 } /* namespace geometry */

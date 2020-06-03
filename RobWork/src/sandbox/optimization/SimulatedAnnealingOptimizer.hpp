@@ -9,6 +9,7 @@
 #define SRC_RWLIBS_OPTIMIZATION_SIMULATEDANNEALINGOPTIMIZER_HPP_
 
 #include "Optimizer.hpp"
+#include <rw/core/Ptr.hpp>
 
 namespace rwlibs {
 namespace optimization {
@@ -19,7 +20,7 @@ namespace optimization {
 class SimulatedAnnealingOptimizer: public Optimizer {
 public:
 	//! Smart pointer.
-	typedef rw::common::Ptr<SimulatedAnnealingOptimizer> Ptr;
+	typedef rw::core::Ptr<SimulatedAnnealingOptimizer> Ptr;
 
 public:
 	/**

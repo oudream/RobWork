@@ -1,8 +1,8 @@
 
 
-SET(QT_MISSING True)
+set(QT_MISSING True)
 # msvc only; mingw will need different logic
-IF(MSVC)
+if(MSVC)
     # look for user-registry pointing to qtcreator
     GET_FILENAME_COMPONENT(QT_BIN [HKEY_CURRENT_USER\\Software\\Classes\\Applications\\QtProject.QtCreator.cpp\\shell\\Open\\Command] PATH)
     if(EXISTS "${QT_BIN}" AND NOT  "${QT_BIN}" STREQUAL "/")
@@ -34,16 +34,19 @@ IF(MSVC)
             SET(QT_MSVC "${QT_MSVC}_64")
         ENDIF()
         SET(QT_PATH "${QT_VERSION}/msvc${QT_MSVC}")
-        if(EXISTS "${QT_PATH}")
-            SET(QT_MISSING False)
-        endif()
     endif()
-ENDIF()
+elseif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+    set(QT_PATH "/usr/local/opt/qt5")
+endif()
+
+if(EXISTS "${QT_PATH}")
+    SET(QT_MISSING False)
+endif()
 
 macro(FIND_QT_PACKAGE _name)
 if(NOT QT_MISSING)
     set(REQ_QUIET)
-    SET(${_name}_DIR "${QT_PATH}/lib/cmake/${_name}")
+    set(${_name}_DIR "${QT_PATH}/lib/cmake/${_name}")
 
     if(${${_name}_FIND_REQUIRED})
         set(REQ_QUIET REQUIRED)

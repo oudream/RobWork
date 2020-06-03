@@ -28,7 +28,7 @@
 
 using namespace rw;
 using namespace rw::math;
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::pathplanning;
 using namespace rw::trajectory;
 using namespace rwlibs::pathplanners;

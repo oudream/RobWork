@@ -19,7 +19,7 @@
 
 #include "RWStudioView3D.hpp"
 
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 #include <rw/math/EAA.hpp>
 #include <rw/geometry/Line.hpp>
 #include <rw/kinematics/Kinematics.hpp>
@@ -50,7 +50,7 @@ using namespace rw::geometry;
 using namespace rw::math;
 using namespace rw::proximity;
 using namespace rw::kinematics;
-using namespace rw::common;
+using namespace rw::core;
 using namespace rwlibs::opengl;
 using namespace rws;
 

@@ -17,9 +17,9 @@
 
 
 #include "ProximitySetupRule.hpp"
-#include <rw/common/StringUtil.hpp>
+#include <rw/core/StringUtil.hpp>
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::proximity;
 
 

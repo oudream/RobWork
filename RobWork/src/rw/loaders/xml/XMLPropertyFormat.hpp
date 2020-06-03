@@ -32,37 +32,37 @@ class XMLPropertyFormat
 {
 public:
     /**
-     * @brief Identifier for rw::common::PropertyMap in the XML format.
+     * @brief Identifier for rw::core::PropertyMap in the XML format.
      * @return the identifier.
      */
     static const XMLCh* idPropertyMap();
 
     /**
-     * @brief Identifier for rw::common::Property in the XML format.
+     * @brief Identifier for rw::core::Property in the XML format.
      * @return the identifier.
      */
     static const XMLCh* idProperty();
 
     /**
-     * @brief Identifier for the name of a rw::common::Property.
+     * @brief Identifier for the name of a rw::core::Property.
      * @return the identifier.
      */
     static const XMLCh* idPropertyName();
 
     /**
-     * @brief Identifier for the description of a rw::common::Property.
+     * @brief Identifier for the description of a rw::core::Property.
      * @return the identifier.
      */
     static const XMLCh* idPropertyDescription();
 
     /**
-     * @brief Identifier for the type of a rw::common::Property.
+     * @brief Identifier for the type of a rw::core::Property.
      * @return the identifier.
      */
     static const XMLCh* idPropertyType();
 
     /**
-     * @brief Identifier for the value of a rw::common::Property.
+     * @brief Identifier for the value of a rw::core::Property.
      * @return the identifier.
      */
     static const XMLCh* idPropertyValue();

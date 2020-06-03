@@ -21,6 +21,7 @@
 using namespace rwhw;
 using namespace rw::math;
 using namespace rw::common;
+using namespace rw::core;
 
 UniversalRobotsRTLogging::UniversalRobotsRTLogging():
 	_socket(NULL),

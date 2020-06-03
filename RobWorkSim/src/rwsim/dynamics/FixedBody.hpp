@@ -21,6 +21,7 @@
 //! @file FixedBody.hpp
 
 #include "Body.hpp"
+#include <rw/core/Ptr.hpp>
 
 namespace rwsim {
 namespace dynamics {
@@ -36,7 +37,7 @@ namespace dynamics {
     {
     public:
     	//! @brief Smart pointer type for a fixed body.
-        typedef rw::common::Ptr<FixedBody> Ptr;
+        typedef rw::core::Ptr<FixedBody> Ptr;
 
         //! @copydoc Body::Body()
     	FixedBody(const BodyInfo& info, rw::models::Object::Ptr obj):

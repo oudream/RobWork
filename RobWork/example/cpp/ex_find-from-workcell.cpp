@@ -1,11 +1,11 @@
-#include <rw/common/Log.hpp>
+#include <rw/core/Log.hpp>
 #include <rw/kinematics/FixedFrame.hpp>
 #include <rw/kinematics/MovableFrame.hpp>
 #include <rw/kinematics/State.hpp>
 #include <rw/models/SerialDevice.hpp>
 #include <rw/models/WorkCell.hpp>
 
-using rw::common::Log;
+using rw::core::Log;
 using namespace rw::kinematics;
 using namespace rw::models;
 

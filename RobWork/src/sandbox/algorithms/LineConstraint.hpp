@@ -44,7 +44,7 @@ namespace rwlibs { namespace algorithms {
 class LineConstraint : public ConstraintModel {
 	public:
 		//! @brief Smart pointer type to this class.
-		typedef rw::common::Ptr<LineConstraint> Ptr;
+		typedef rw::core::Ptr<LineConstraint> Ptr;
 		
 		//! @copydoc ConstraintModel::MinSamples
 		static const int MinSamples = 2;

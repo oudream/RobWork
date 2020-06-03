@@ -9,6 +9,7 @@
 #include "RobolabFTDriver.hpp"
 
 #include <rw/common/TimerUtil.hpp>
+#include <rw/core/macros.hpp>
 
 #include <iostream>
 #include <string>

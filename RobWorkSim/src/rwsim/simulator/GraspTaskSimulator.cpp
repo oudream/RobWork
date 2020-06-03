@@ -21,6 +21,7 @@
 
 using namespace rw::math;
 using namespace rw::common;
+using namespace rw::core;
 using namespace rw::kinematics;
 using namespace rw::proximity;
 using namespace rw::trajectory;
@@ -124,7 +125,7 @@ void GraspTaskSimulator::init(rwsim::dynamics::DynamicWorkCell::Ptr dwc,
 		ThreadSimulator::Ptr tsim = ownedPtr(
 				new ThreadSimulator(sim, initState));
 		ThreadSimulator::StepCallback cb(
-				boost::bind(&GraspTaskSimulator::stepCB, this, _1, _2));
+				boost::bind(&GraspTaskSimulator::stepCB, this, boost::arg<1>(), boost::arg<2>()));
 
 		tsim->setStepCallBack(cb);
 		tsim->setRealTimeScale(0);

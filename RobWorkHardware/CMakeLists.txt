@@ -5,55 +5,40 @@ cmake_minimum_required(VERSION 3.5.1 FATAL_ERROR)
 if(POLICY CMP0074)
     cmake_policy(SET CMP0074 NEW)
 endif()
-
+set(CMAKE_CXX_STANDARD 11)
 # ##################################################################################################
 # The name of the project.
 project(RobWorkHardware)
+set(RWHW_ROOT ${CMAKE_CURRENT_SOURCE_DIR})
+
+# ##################################################################################################
+# include the macros from robwork
+
+include(${RWHW_ROOT}/../RobWork/cmake/RobWorkMacros.cmake)
+
 if(DEFINED VERSION)
     set(ROBWORKHARDWARE_VERSION ${VERSION})
     set(RWHW_GOT_VERSION True)
 else()
-    set(ROBWORKHARDWARE_VERSION 6.6.6)
+    rw_get_git_version(ROBWORKHARDWARE_VERSION ROBWORKHARDWARE_BRANCH)
     set(RWHW_GOT_VERSION False)
 endif()
-
-set(RWHW_ROOT ${CMAKE_CURRENT_SOURCE_DIR})
-
-# ##################################################################################################
-# lets start by finding RobWork since this is the primary dependency and because we want to use the
-# macros available in RobWork if RW_ROOT is defined then we use that, else we try finding it the
-# traditional way
-if(RW_ROOT)
-    set(RobWork_DIR ${RW_ROOT}/cmake)
-else()
-    # try finding it relative to this directory
-    find_file(ROBWORKDEVEL_FOUND RobWorkSetup.cmake ${RWHW_ROOT}/../RobWork/cmake NO_DEFAULT_PATH)
-    if(ROBWORKDEVEL_FOUND)
-        set(RW_ROOT ${RWHW_ROOT}/../RobWork/)
-        set(RobWork_DIR ${RW_ROOT}/cmake)
-    endif()
-endif()
-find_package(RobWork ${ROBWORKHARDWARE_VERSION} REQUIRED)
+find_package(RobWork ${ROBWORKHARDWARE_VERSION} REQUIRED PATHS ${RWHW_ROOT}/../RobWork/cmake )
 set(Boost_USE_STATIC_LIBS ${RW_BUILD_WITH_BOOST_USE_STATIC_LIB})
-
-# ##################################################################################################
-# include the macros from robwork
-include(${RW_ROOT}/cmake/RobWorkMacros.cmake)
 
 rw_init_project(${RWHW_ROOT} RobWorkHardware RWHW ${ROBWORKHARDWARE_VERSION})
 rw_get_os_info()
 rw_set_install_dirs(RobWorkHardware RWHW)
-if(NOT MSVC)
-    set(RWHW_SHARED_LIBS ON)
-endif()
 rw_options(RWHW)
 
 # ##################################################################################################
 # Add an "uninstall" target
 configure_file("${RWHW_ROOT}/cmake/uninstall_target.cmake.in"
-               "${CMAKE_BINARY_DIR}/uninstall_target.cmake" IMMEDIATE @ONLY)
+               "${CMAKE_BINARY_DIR}/uninstall_target.cmake" IMMEDIATE @ONLY
+)
 add_custom_target(uninstall_sdurwhw "${CMAKE_COMMAND}" -P
-                  "${CMAKE_BINARY_DIR}/uninstall_target.cmake")
+                                    "${CMAKE_BINARY_DIR}/uninstall_target.cmake"
+)
 
 # ##################################################################################################
 # setup stuff for RobWorkHardware
@@ -65,12 +50,13 @@ set(CMAKE_MODULE_PATH ${RWHW_ROOT}/cmake/Modules ${CMAKE_MODULE_PATH})
 set(ROBWORKHARDWARE_LIBRARIES)
 
 if(DEFINED USE_WERROR)
-    set(WERROR_FLAG "-Werror")
+    if(${USE_WERROR})
+        set(WERROR_FLAG "-Werror")
+    endif()
 endif()
 
 # also make sure flags from robwork is also used in robworkhardware
-set(
-    RWHW_CXX_FLAGS
+set(RWHW_CXX_FLAGS
     "${WERROR_FLAG} ${RW_BUILD_WITH_CXX_FLAGS}"
     CACHE STRING "Change this to force using your own flags and not those of RobWorkHardware"
 )
@@ -80,8 +66,6 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${RWHW_CXX_FLAGS}")
 # now add all source directories to process.
 add_subdirectory(ext)
 add_subdirectory(src)
-# add_subdirectory(test CMakeTmp/test)
-add_subdirectory(example)
 
 # ##################################################################################################
 # testing
@@ -90,8 +74,9 @@ message(STATUS "RobWorkStudio: platform ${INFO} ")
 
 configure_file("${RWHW_ROOT}/cmake/CTestCustom.cmake.in" "CTestCustom.cmake")
 include(CMakeDependentOption)
-cmake_dependent_option(RWHW_IS_TESTS_ENABLED "Set when you want to build the tests" ON
-                       "${RWHW_BUILD_TESTS}" OFF)
+cmake_dependent_option(
+    RWHW_IS_TESTS_ENABLED "Set when you want to build the tests" ON "${RWHW_BUILD_TESTS}" OFF
+)
 if(RWHW_IS_TESTS_ENABLED)
     message(STATUS "RobWorkHardware: tests ENABLED!")
     include(CTest)
@@ -109,7 +94,8 @@ rw_get_revision(${RWHW_ROOT} ROBWORKHARDWARE)
 
 # first configure the header file
 configure_file(${RWHW_ROOT}/src/RobWorkHardwareConfig.hpp.in
-               ${RWHW_ROOT}/src/RobWorkHardwareConfig.hpp)
+               ${RWHW_ROOT}/src/RobWorkHardwareConfig.hpp
+)
 
 # next build information script make a list of all enabled components
 set(RWHW_ENABLED_COMPONENTS "")
@@ -122,15 +108,18 @@ endforeach()
 set(ROBWORKHARDWARE_LIBRARY_DIRS ${RWHW_CMAKE_LIBRARY_OUTPUT_DIRECTORY})
 set(ROBWORKHARDWARE_INCLUDE_DIR "${RWHW_ROOT}/src ${RWHW_ROOT}/ext")
 configure_file(${RWHW_ROOT}/cmake/RobWorkHardwareBuildConfig.cmake.in
-               "${RWHW_ROOT}/cmake/RobWorkHardwareBuildConfig_${RW_BUILD_TYPE}.cmake" @ONLY)
+               "${RWHW_ROOT}/cmake/RobWorkHardwareBuildConfig_${RW_BUILD_TYPE}.cmake" @ONLY
+)
 
 # Configure build/RobWorkStudioConfig.cmake.in such that other projects might use robworkstudio
 configure_file(${RWHW_ROOT}/cmake/RobWorkHardwareConfig.cmake.in
-               "${RWHW_ROOT}/cmake/RobWorkHardwareConfig.cmake" @ONLY)
+               "${RWHW_ROOT}/cmake/RobWorkHardwareConfig.cmake" @ONLY
+)
 
 # and the version info
 configure_file(${RWHW_ROOT}/cmake/RobWorkHardwareConfigVersion.cmake.in
-               "${RWHW_ROOT}/cmake/RobWorkHardwareConfigVersion.cmake")
+               "${RWHW_ROOT}/cmake/RobWorkHardwareConfigVersion.cmake"
+)
 
 export(
     EXPORT ${PROJECT_PREFIX}Targets
@@ -144,16 +133,12 @@ export(
 #
 
 # configuration
-install(
-    FILES
-        ${RWHW_ROOT}/cmake/RobWorkHardwareConfigVersion.cmake
-        ${RWHW_ROOT}/cmake/RobWorkHardwareConfig.cmake
-    DESTINATION ${RWHW_INSTALL_DIR}/cmake
+install(FILES ${RWHW_ROOT}/cmake/RobWorkHardwareConfigVersion.cmake
+              ${RWHW_ROOT}/cmake/RobWorkHardwareConfig.cmake DESTINATION ${RWHW_INSTALL_DIR}/cmake
 )
 
-install(
-    FILES "cmake/RobWorkHardwareBuildConfig_${RW_BUILD_TYPE}.cmake"
-    DESTINATION ${RWHW_INSTALL_DIR}/cmake
+install(FILES "cmake/RobWorkHardwareBuildConfig_${RW_BUILD_TYPE}.cmake"
+        DESTINATION ${RWHW_INSTALL_DIR}/cmake
 )
 
 install(FILES "${RWHW_ROOT}/src/RobWorkHardwareConfig.hpp" DESTINATION "${INCLUDE_INSTALL_DIR}")

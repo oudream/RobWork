@@ -10,6 +10,7 @@
 
 #include <rw/math/Vector3D.hpp>
 #include <rw/math/Transform3D.hpp>
+#include <rw/core/Ptr.hpp>
 #include "Body.hpp"
 
 namespace rw { namespace proximity { class CollisionDetector; } }
@@ -34,7 +35,7 @@ namespace dynamics {
          * @return the transform.
          */
         static rw::math::Transform3D<> placeBody( rwsim::dynamics::Body::Ptr body,
-                                        rw::common::Ptr<rw::proximity::CollisionDetector> coldect,
+                                        rw::core::Ptr<rw::proximity::CollisionDetector> coldect,
                                         const rw::kinematics::State& state,
                                         const rw::math::Vector3D<>& dir = -rw::math::Vector3D<>::z());
 
@@ -45,7 +46,7 @@ namespace dynamics {
          * @param state [in] the current state.
          * @return the parent body, or NULL if not found.
          */
-        static Body::Ptr getParentBody(Body::Ptr child, rw::common::Ptr<DynamicWorkCell> dwc, const rw::kinematics::State& state);
+        static Body::Ptr getParentBody(Body::Ptr child, rw::core::Ptr<DynamicWorkCell> dwc, const rw::kinematics::State& state);
 
         /**
          * @brief Find the parent body of a frame.
@@ -54,7 +55,7 @@ namespace dynamics {
          * @param state [in] the current state.
          * @return the parent body, or NULL if not found.
          */
-        static Body::Ptr getParentBody(rw::kinematics::Frame* child, rw::common::Ptr<DynamicWorkCell> dwc, const rw::kinematics::State& state );
+        static Body::Ptr getParentBody(rw::kinematics::Frame* child, rw::core::Ptr<DynamicWorkCell> dwc, const rw::kinematics::State& state );
 
 
     };

@@ -1,107 +1,105 @@
-SET(FILES_CPP
-  Common.cpp
-  ConcatVectorIterator.cpp
-  IOUtil.cpp
-  Log.cpp
-  LogWriter.cpp
-  LogBufferedChar.cpp
-  LogBufferedMsg.cpp
-  LogStreamWriter.cpp
-  LogMultiWriter.cpp
-  LogFileWriter.cpp
-  LogMultiWriter.cpp
-  Message.cpp
-  Property.cpp
-  PropertyBase.cpp
-  PropertyMap.cpp
-  PropertyType.cpp
-  StringUtil.cpp
-  Timer.cpp
-  TimerUtil.cpp
-  VectorIterator.cpp
-  Cache.cpp
-  FileCache.cpp
-  PairMap.cpp
-  Exception.cpp
-  Event.cpp
-  ProgramOptions.cpp
-  ThreadPool.cpp
-  ThreadSafeQueue.cpp
-  ThreadSafeStack.cpp
-  ThreadSafeVariable.cpp
-  ThreadTask.cpp
-  
-  Archive.cpp
-  BoostXMLParser.cpp
-  DOMElem.cpp
-  DOMParser.cpp
-  InputArchive.cpp
-  OutputArchive.cpp
-  INIArchive.cpp
-  BINArchive.cpp
-  Serializable.cpp
-  
-  Extension.cpp
-  ExtensionPoint.cpp
-  ExtensionRegistry.cpp
-  Plugin.cpp
+set(SUBSYS_NAME sdurw_common)
+set(SUBSYS_DESC
+    "This is the core of the RobWork FrameWork, providing fonctinality for logging and plugins"
+)
+set(SUBSYS_DEPS sdurw_core)
 
+set(build TRUE)
+rw_subsys_option(
+    build ${SUBSYS_NAME} ${SUBSYS_DESC} ON
+    DEPENDS ${SUBSYS_DEPS}
+    ADD_DOC
 )
 
-SET(FILES_HPP
-  AnyPtr.hpp 
-  Common.hpp
-  ConcatVectorIterator.hpp
-  IOUtil.hpp
-  Log.hpp
-  LogWriter.hpp
-  LogBufferedChar.hpp
-  LogBufferedMsg.hpp
-  LogStreamWriter.hpp
-  LogMultiWriter.hpp
-  LogFileWriter.hpp
-  LogMultiWriter.hpp
-  Message.hpp
-  Property.hpp
-  PropertyBase.hpp
-  PropertyMap.hpp
-  PropertyType.hpp
-  StringUtil.hpp
-  Timer.hpp
-  TimerUtil.hpp
-  VectorIterator.hpp
-  Cache.hpp
-  FileCache.hpp
-  PairMap.hpp
-  Exception.hpp
-  ScopedTimer.hpp
-  Event.hpp
-  ProgramOptions.hpp
-  ThreadPool.hpp
-  ThreadSafeQueue.hpp
-  ThreadSafeStack.hpp
-  ThreadSafeVariable.hpp
-  ThreadTask.hpp
-  
-  Archive.hpp
-  BoostXMLParser.hpp
-  DOMElem.hpp
-  DOMParser.hpp
-  InputArchive.hpp
-  OutputArchive.hpp
-  INIArchive.hpp
-  BINArchive.hpp
-  Serializable.hpp
+if(build)
 
-  Extension.hpp
-  ExtensionPoint.hpp
-  ExtensionRegistry.hpp
-  Plugin.hpp
-  
-)
+    set(FILES_CPP
+        Archive.cpp
+        BINArchive.cpp
+        Cache.cpp
+        ConcatVectorIterator.cpp
+        FileCache.cpp
+        INIArchive.cpp
+        InputArchive.cpp
+        LogBufferedChar.cpp
+        LogBufferedMsg.cpp
+        LogFileWriter.cpp
+        LogMultiWriter.cpp
+        OutputArchive.cpp
+        PairMap.cpp
+        ProgramOptions.cpp
+        Serializable.cpp
+        ThreadPool.cpp
+        ThreadSafeQueue.cpp
+        ThreadSafeStack.cpp
+        ThreadSafeVariable.cpp
+        ThreadTask.cpp
+        Timer.cpp
+        TimerUtil.cpp
+        VectorIterator.cpp
+    )
 
-FILE(GLOB SRC_FILES_CPP ${FILES_CPP})
-FILE(GLOB SRC_FILES_HPP ${FILES_HPP})
+    set(FILES_HPP
+        AnyPtr.hpp
+        Archive.hpp
+        BINArchive.hpp
+        BoostXMLParser.hpp
+        Cache.hpp
+        ConcatVectorIterator.hpp
+        DOMElem.hpp
+        DOMParser.hpp
+        Event.hpp
+        Exception.hpp
+        Extension.hpp
+        ExtensionPoint.hpp
+        ExtensionRegistry.hpp
+        FileCache.hpp
+        INIArchive.hpp
+        IOUtil.hpp
+        InputArchive.hpp
+        Log.hpp
+        LogBufferedChar.hpp
+        LogBufferedMsg.hpp
+        LogFileWriter.hpp
+        LogMultiWriter.hpp
+        LogStreamWriter.hpp
+        LogWriter.hpp
+        macros.hpp
+        Message.hpp
+        os.hpp
+        OutputArchive.hpp
+        PairMap.hpp
+        Plugin.hpp
+        ProgramOptions.hpp
+        Property.hpp
+        PropertyBase.hpp
+        PropertyMap.hpp
+        PropertyType.hpp
+        Ptr.hpp
+        ScopedTimer.hpp
+        Serializable.hpp
+        StringUtil.hpp
+        ThreadPool.hpp
+        ThreadSafeQueue.hpp
+        ThreadSafeStack.hpp
+        ThreadSafeVariable.hpp
+        ThreadTask.hpp
+        Timer.hpp
+        TimerUtil.hpp
+        Traits.hpp
+        types.hpp
+        VectorIterator.hpp
+    )
 
-SET(RW_LIB_FILES_CPP ${RW_LIB_FILES_CPP} ${SRC_FILES_CPP} PARENT_SCOPE)
-SET(RW_LIB_FILES_HPP ${RW_LIB_FILES_HPP} ${SRC_FILES_HPP} PARENT_SCOPE)
+    rw_add_library(${SUBSYS_NAME} ${FILES_CPP} ${FILES_HPP})
+    rw_add_includes(${SUBSYS_NAME} "rw/common" ${FILES_HPP})
+    target_link_libraries(${SUBSYS_NAME} PUBLIC ${Boost_LIBRARIES} sdurw_core)
+
+    rw_include_eigen(${SUBSYS_NAME})
+
+    target_include_directories(
+        ${SUBSYS_NAME} PUBLIC $<BUILD_INTERFACE:${RW_ROOT}/src>
+                              $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
+    )
+    rw_add_includes(${SUBSYS_NAME} "rw" ${CMAKE_CURRENT_SOURCE_DIR}/../common.hpp)
+endif()

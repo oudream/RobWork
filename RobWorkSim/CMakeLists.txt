@@ -8,6 +8,9 @@ endif()
 if(POLICY CMP0074)
     cmake_policy(SET CMP0074 NEW)
 endif()
+if(POLICY CMP0077)
+    cmake_policy(SET CMP0077 NEW)
+endif()
 if(POLICY CMP0078)
     cmake_policy(SET CMP0078 NEW)
 endif()
@@ -15,37 +18,28 @@ if(POLICY CMP0086) # Introduce cmake 3.14
     cmake_policy(SET CMP0086 NEW)
 endif()
 
+set(CMAKE_CXX_STANDARD 11)
+
 # ##################################################################################################
 # The name of the project.
 project(RobWorkSim)
+
+set(RWSIM_ROOT ${CMAKE_CURRENT_SOURCE_DIR})
+
+# ##################################################################################################
+# include the macros from robwork
+include(${RWSIM_ROOT}/../RobWork/cmake/RobWorkMacros.cmake)
+
 if(DEFINED VERSION)
     set(ROBWORKSIM_VERSION ${VERSION})
     set(RWSIM_GOT_VERSION True)
 else()
-    set(ROBWORKSIM_VERSION 6.6.6)
+    rw_get_git_version(ROBWORKSIM_VERSION ROBWORKSIM_BRANCH)
     set(RWSIM_GOT_VERSION False)
 endif()
-set(RWSIM_ROOT ${CMAKE_CURRENT_SOURCE_DIR})
-message(STATUS "RobWorkSim version ${ROBWORKSIM_VERSION}")
 
-# ##################################################################################################
-# lets start by finding RobWork since this is the primary dependency and because we want to use the
-# macros available in RobWork if RW_ROOT is defined then we use that, else we try finding it the
-# traditional way
-if(RW_ROOT)
-    set(RobWork_DIR ${RW_ROOT}/cmake)
-else()
-    # try finding it relative to this directory
-    find_file(ROBWORKDEVEL_FOUND RobWorkSetup.cmake ${RWSIM_ROOT}/../RobWork/cmake NO_DEFAULT_PATH)
-    if(ROBWORKDEVEL_FOUND)
-        set(RobWork_DIR ${RWSIM_ROOT}/../RobWork/cmake)
-    endif()
-endif()
-find_package(RobWork ${ROBWORKSIM_VERSION} REQUIRED)
+find_package(RobWork ${ROBWORKSIM_VERSION} REQUIRED PATHS ${RWSIM_ROOT}/../RobWork/cmake )
 
-# ##################################################################################################
-# include the macros from robwork
-include(${RW_ROOT}/cmake/RobWorkMacros.cmake)
 
 # for backward compatibility
 set(ROOT RWSIM_ROOT)
@@ -71,7 +65,7 @@ rw_set_install_dirs(RobWorkSim RWSIM)
 
 # now lets find RobWorkStudio
 
-find_package(RobWorkStudio ${ROBWORKSIM_VERSION} REQUIRED)
+find_package(RobWorkStudio REQUIRED PATHS ${RWSIM_ROOT}/../RobWorkStudio/cmake)
 
 # ##################################################################################################
 # CONFIGURATION configure build/RobWorkStudioConfig.cmake.in
@@ -79,25 +73,30 @@ find_package(RobWorkStudio ${ROBWORKSIM_VERSION} REQUIRED)
 
 # first configure the header file
 configure_file(${RWSIM_ROOT}/src/RobWorkSimConfig.hpp.in "${RWSIM_ROOT}/src/RobWorkSimConfig.hpp"
-               @ONLY)
+               @ONLY
+)
 
 # next build information script
 configure_file(${RWSIM_ROOT}/cmake/RobWorkSimBuildConfig.cmake.in
-               "${RWSIM_ROOT}/cmake/RobWorkSimBuildConfig_${RWSIM_BUILD_TYPE}.cmake" @ONLY)
+               "${RWSIM_ROOT}/cmake/RobWorkSimBuildConfig_${RWSIM_BUILD_TYPE}.cmake" @ONLY
+)
 
 # Configure build/RobWorkSimConfig.cmake.in such that other projects might use robworkstudio
 configure_file(${RWSIM_ROOT}/cmake/RobWorkSimConfig.cmake.in
-               "${RWSIM_ROOT}/cmake/RobWorkSimConfig.cmake" @ONLY)
+               "${RWSIM_ROOT}/cmake/RobWorkSimConfig.cmake" @ONLY
+)
 
 # and the version info
 configure_file(${RWSIM_ROOT}/cmake/RobWorkSimConfigVersion.cmake.in
-               "${RWSIM_ROOT}/cmake/RobWorkSimConfigVersion.cmake" @ONLY)
+               "${RWSIM_ROOT}/cmake/RobWorkSimConfigVersion.cmake" @ONLY
+)
 
 # Store the test results in a RWSimConfig.hpp file.
-configure_file(${RWSIM_ROOT}/src/RWSimConfig.hpp.in ${RWSIM_ROOT}/src/RobWorkSimConfig.hpp)
+configure_file(${RWSIM_ROOT}/src/RobWorkSimConfig.hpp.in ${RWSIM_ROOT}/src/RobWorkSimConfig.hpp)
 
 configure_file(${RWSIM_ROOT}/src/rwsimlibs/gui/RWSimGuiConfig.hpp.in
-               ${RWSIM_ROOT}/src/rwsimlibs/gui/RWSimGuiConfig.hpp)
+               ${RWSIM_ROOT}/src/rwsimlibs/gui/RWSimGuiConfig.hpp
+)
 
 # process sub directories add_subdirectory(ext)
 add_subdirectory(src)
@@ -114,17 +113,14 @@ export(
 
 # install configuration
 install(
-    FILES
-        "${RWSIM_ROOT}/cmake/RobWorkSimConfigVersion.cmake"
-        "${RWSIM_ROOT}/cmake/RobWorkSimConfig.cmake"
-        "${RWSIM_ROOT}/cmake/RobWorkSimBuildConfig_${RWSIM_BUILD_TYPE}.cmake"
+    FILES "${RWSIM_ROOT}/cmake/RobWorkSimConfigVersion.cmake"
+          "${RWSIM_ROOT}/cmake/RobWorkSimConfig.cmake"
+          "${RWSIM_ROOT}/cmake/RobWorkSimBuildConfig_${RWSIM_BUILD_TYPE}.cmake"
     DESTINATION "${RWSIM_INSTALL_DIR}/cmake"
 )
 
-install(
-    FILES
-        "${RWSIM_ROOT}/cmake/Modules/FindODE.cmake"
-    DESTINATION "${RWSIM_INSTALL_DIR}/cmake/Modules"
+install(FILES "${RWSIM_ROOT}/cmake/Modules/FindODE.cmake"
+        DESTINATION "${RWSIM_INSTALL_DIR}/cmake/Modules"
 )
 
 install(FILES DESTINATION ${RWSIM_INSTALL_DIR}/cmake)
@@ -147,8 +143,9 @@ configure_file("${RWSIM_ROOT}/cmake/CTestCustom.cmake.in" "CTestCustom.cmake")
 configure_file("${RWSIM_ROOT}/CTestConfig.cmake.in" "${RWSIM_ROOT}/CTestConfig.cmake")
 
 include(CMakeDependentOption)
-cmake_dependent_option(RWSIM_IS_TESTS_ENABLED "Set when you want to build the tests" ON
-                       "${RWSIM_BUILD_TESTS}" OFF)
+cmake_dependent_option(
+    RWSIM_IS_TESTS_ENABLED "Set when you want to build the tests" ON "${RWSIM_BUILD_TESTS}" OFF
+)
 if(RWSIM_IS_TESTS_ENABLED)
     message(STATUS "RobWork tests ENABLED!")
     # TODO Specify SET(SITE "myname") to configure the site name to use when uploading
@@ -164,7 +161,8 @@ else()
 endif()
 
 configure_file(${RWSIM_ROOT}/cmake/RobWorkSimBuildConfig.cmake.in
-               "${RWSIM_ROOT}/cmake/RobWorkSimBuildConfig_${RWSIM_BUILD_TYPE}.cmake")
+               "${RWSIM_ROOT}/cmake/RobWorkSimBuildConfig_${RWSIM_BUILD_TYPE}.cmake"
+)
 
 # Packaging
 rw_create_installer()

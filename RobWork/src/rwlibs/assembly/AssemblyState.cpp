@@ -18,7 +18,7 @@
 #include "AssemblyState.hpp"
 #include <rwlibs/task/Target.hpp>
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::math;
 using namespace rw::trajectory;
 using namespace rwlibs::assembly;

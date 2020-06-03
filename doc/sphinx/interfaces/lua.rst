@@ -78,7 +78,7 @@ Conventions & Utilities
 The following conventions are used in the Lua interface:
 
 * RobWork math types are templated with the precision used, such as Rotation3D<double> and Rotation3D<float>.
-  In the script interfaces, this can not be mapped directly. Instead those types are mapped to the types Rotation3d and Rotation3f.
+  In the script interfaces, this can not be mapped directly. Instead those types are mapped to the types Rotation3Dd and Rotation3Df.
   For math types we follow this convention with *d* and *f* for double and float precision respectively.
 * The types must be written with a prefix giving the name of the Lua module where it origins.
   For instance it is necessary to write *rw.Q* or *rw_simulation.Simulator*. The *using* utility function is provided

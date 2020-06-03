@@ -25,6 +25,7 @@
 
 #include <rw/pathplanning/QToQPlanner.hpp>
 #include <rw/math/Metric.hpp>
+#include <rw/core/Ptr.hpp>
 
 namespace rw { namespace pathplanning { class PlannerConstraint; } }
 namespace rw { namespace pathplanning { class QConstraint; } }
@@ -62,7 +63,7 @@ namespace rwlibs { namespace pathplanners {
            the stop criteria returns true.
         */
 		static rw::pathplanning::QToQPlanner::Ptr makeQToQPlanner(
-			rw::common::Ptr<rw::pathplanning::QSampler> sampler,
+			rw::core::Ptr<rw::pathplanning::QSampler> sampler,
 			rw::pathplanning::QToQPlanner::Ptr localPlanner,
             int nodeCnt = -1,
             int repeatCnt = -1);
@@ -80,7 +81,7 @@ namespace rwlibs { namespace pathplanners {
         */
 		static rw::pathplanning::QToQPlanner::Ptr makeQToQPlanner(
             const rw::pathplanning::PlannerConstraint& constraint,
-			rw::common::Ptr<rw::models::Device> device);
+			rw::core::Ptr<rw::models::Device> device);
 
         /**
            @brief Sliding local planner.
@@ -111,8 +112,8 @@ namespace rwlibs { namespace pathplanners {
         */
 		static rw::pathplanning::QToQPlanner::Ptr makeSlidingQToQPlanner(
             const rw::pathplanning::PlannerConstraint& constraint,
-			rw::common::Ptr<rw::pathplanning::QSampler> directionSampler,
-			rw::common::Ptr<rw::pathplanning::QConstraint> boundsConstraint,
+			rw::core::Ptr<rw::pathplanning::QSampler> directionSampler,
+			rw::core::Ptr<rw::pathplanning::QConstraint> boundsConstraint,
 			rw::math::QMetric::Ptr metric,
             double extend,
             double slideImprovement = -1);
@@ -142,7 +143,7 @@ namespace rwlibs { namespace pathplanners {
         */
         static rw::pathplanning::QToQPlanner::Ptr makeSlidingQToQPlanner(
             const rw::pathplanning::PlannerConstraint& constraint,
-			rw::common::Ptr<rw::models::Device> device,
+			rw::core::Ptr<rw::models::Device> device,
 			rw::math::QMetric::Ptr metric = 0,
             double extend = -1,
             double slideImprovement = -1);

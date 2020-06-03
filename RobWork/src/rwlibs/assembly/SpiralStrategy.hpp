@@ -27,6 +27,7 @@
 #include "AssemblyControlStrategy.hpp"
 
 #include <rw/trajectory/Trajectory.hpp>
+namespace rw { namespace core { class PropertyMap; }}
 
 namespace rwlibs {
 namespace assembly {
@@ -55,10 +56,10 @@ public:
 	ControlState::Ptr createState() const;
 
 	//! @copydoc AssemblyControlStrategy::update
-	virtual rw::common::Ptr<AssemblyControlResponse> update(rw::common::Ptr<AssemblyParameterization> parameters, rw::common::Ptr<AssemblyState> real, rw::common::Ptr<AssemblyState> assumed, ControlState::Ptr controlState, rw::kinematics::State &state, rw::sensor::FTSensor* ftSensor, double time) const;
+	virtual rw::core::Ptr<AssemblyControlResponse> update(rw::core::Ptr<AssemblyParameterization> parameters, rw::core::Ptr<AssemblyState> real, rw::core::Ptr<AssemblyState> assumed, ControlState::Ptr controlState, rw::kinematics::State &state, rw::sensor::FTSensor* ftSensor, double time) const;
 
 	//! @copydoc AssemblyControlStrategy::getApproach
-	virtual rw::math::Transform3D<> getApproach(rw::common::Ptr<AssemblyParameterization> parameters);
+	virtual rw::math::Transform3D<> getApproach(rw::core::Ptr<AssemblyParameterization> parameters);
 
 	//! @copydoc AssemblyControlStrategy::getID
 	virtual std::string getID();
@@ -67,10 +68,10 @@ public:
 	virtual std::string getDescription();
 
 	//! @copydoc AssemblyControlStrategy::createParameterization
-	virtual rw::common::Ptr<AssemblyParameterization> createParameterization(const rw::common::Ptr<rw::common::PropertyMap> map);
+	virtual rw::core::Ptr<AssemblyParameterization> createParameterization(const rw::core::Ptr<rw::core::PropertyMap> map);
 
 private:
-	rw::common::Ptr<rw::trajectory::Transform3DTrajectory> generateTrajectory(rw::common::Ptr<SpiralParameterization> param) const;
+	rw::core::Ptr<rw::trajectory::Transform3DTrajectory> generateTrajectory(rw::core::Ptr<SpiralParameterization> param) const;
 
 	rw::math::Transform3D<> _worldTfemale;
 	rw::math::Transform3D<> _femaleTfemTcp;

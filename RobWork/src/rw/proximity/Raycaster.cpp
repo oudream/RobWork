@@ -29,23 +29,9 @@ using namespace rw::math;
 using namespace rw::kinematics;
 using namespace rw::geometry;
 using namespace rw::proximity;
-using namespace rw::common;
+using namespace rw::core;
 
-/*
-Raycaster::Raycaster(double ray_length=100.0):
-	 // create a long triangle used as a ray
-	 _ray( ownedPtr(new PlainTriMeshF(1)) )
-{
-	_cdstrategy = cdetector->getCollisionStrategy();
-	(*_ray)[0] = Triangle<float>( Vector3D<float>(0,(float)-TRI_WIDTH,0),Vector3D<float>(0,(float)TRI_WIDTH,0),Vector3D<float>((float)ray_length,0,0) );
-	_rayModel = _cdstrategy->createModel();
 
-	Geometry geom( _ray ); // we have to wrap the trimesh in an geom object
-	geom.setId("Ray");
-	_rayModel->addGeometry(geom);
-	//_cdstrategy->setFirstContact(false);
-}
-*/
 
 Raycaster::Raycaster(
 				 rw::proximity::CollisionStrategy::Ptr cdstrategy,

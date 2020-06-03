@@ -1,8 +1,8 @@
-#include <rw/common/Log.hpp>
+#include <rw/core/Log.hpp>
 #include <rw/loaders/WorkCellLoader.hpp>
 #include <rw/models/WorkCell.hpp>
 
-using rw::common::Log;
+using rw::core::Log;
 using rw::loaders::WorkCellLoader;
 using rw::models::WorkCell;
 

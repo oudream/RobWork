@@ -45,14 +45,14 @@ namespace invkin {
 class ClosedFormIKSolverKukaIIWA: public ClosedFormIK {
 public:
 	//! @brief Smart pointer type to ClosedFormIKSolverKukaIIWA
-	typedef rw::common::Ptr<ClosedFormIKSolverKukaIIWA> Ptr;
+	typedef rw::core::Ptr<ClosedFormIKSolverKukaIIWA> Ptr;
 
 	/**
 	 * @brief Construct new closed form solver for a Kuka 7 DOF IIWA robot.
 	 * @param device [in] the device.
 	 * @param state [in] the state to get the frame structure and extract the dimensions from.
 	 */
-	ClosedFormIKSolverKukaIIWA(const rw::common::Ptr<const rw::models::SerialDevice> device, const rw::kinematics::State& state);
+	ClosedFormIKSolverKukaIIWA(const rw::core::Ptr<const rw::models::SerialDevice> device, const rw::kinematics::State& state);
 
 	//! @brief Destructor.
 	virtual ~ClosedFormIKSolverKukaIIWA();
@@ -75,7 +75,7 @@ public:
     /**
      * @copydoc InvKinSolver::getTCP
      */
-    virtual rw::common::Ptr< const rw::kinematics::Frame > getTCP() const;            
+    virtual rw::core::Ptr< const rw::kinematics::Frame > getTCP() const;            
 
 private:
 	std::pair<double,double> findBaseAngles(const rw::math::Vector2D<> &pos, const rw::kinematics::State& state) const;
@@ -87,7 +87,7 @@ private:
 	static rw::math::Vector3D<> randomPerpendicularVector(const rw::math::Vector3D<>& v);
 
 private:
-    const rw::common::Ptr<const rw::models::SerialDevice> _device;
+    const rw::core::Ptr<const rw::models::SerialDevice> _device;
     bool _checkJointLimits;
     std::vector<const rw::kinematics::Frame*> _frames;
     const rw::math::Q _qLow;

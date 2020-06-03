@@ -28,7 +28,7 @@
 
 #include <QItemSelection>
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::graphics;
 using namespace rw::kinematics;
 using namespace rw::math;
@@ -38,7 +38,7 @@ using namespace rwsim::dynamics;
 using namespace rwsim::log;
 using namespace rwsimlibs::gui;
 
-ContactVelocitiesWidget::ContactVelocitiesWidget(rw::common::Ptr<const LogContactVelocities> entry, QWidget* parent):
+ContactVelocitiesWidget::ContactVelocitiesWidget(rw::core::Ptr<const LogContactVelocities> entry, QWidget* parent):
 	SimulatorLogEntryWidget(parent),
 	_ui(new Ui::ContactVelocitiesWidget()),
 	_velocities(entry),
@@ -77,11 +77,11 @@ ContactVelocitiesWidget::~ContactVelocitiesWidget() {
 	}
 }
 
-void ContactVelocitiesWidget::setDWC(rw::common::Ptr<const DynamicWorkCell> dwc) {
+void ContactVelocitiesWidget::setDWC(rw::core::Ptr<const DynamicWorkCell> dwc) {
 }
 
-void ContactVelocitiesWidget::setEntry(rw::common::Ptr<const SimulatorLog> entry) {
-	const rw::common::Ptr<const LogContactVelocities> set = entry.cast<const LogContactVelocities>();
+void ContactVelocitiesWidget::setEntry(rw::core::Ptr<const SimulatorLog> entry) {
+	const rw::core::Ptr<const LogContactVelocities> set = entry.cast<const LogContactVelocities>();
 	if (!(set == NULL)) {
 		_velocities = set;
 		_contactSet = _velocities->getContacts();
@@ -90,7 +90,7 @@ void ContactVelocitiesWidget::setEntry(rw::common::Ptr<const SimulatorLog> entry
 	}
 }
 
-rw::common::Ptr<const SimulatorLog> ContactVelocitiesWidget::getEntry() const {
+rw::core::Ptr<const SimulatorLog> ContactVelocitiesWidget::getEntry() const {
 	return _contactSet;
 }
 
@@ -299,15 +299,15 @@ ContactVelocitiesWidget::Dispatcher::Dispatcher() {
 ContactVelocitiesWidget::Dispatcher::~Dispatcher() {
 }
 
-SimulatorLogEntryWidget* ContactVelocitiesWidget::Dispatcher::makeWidget(rw::common::Ptr<const SimulatorLog> entry, QWidget* parent) const {
-	const rw::common::Ptr<const LogContactVelocities> velocities = entry.cast<const LogContactVelocities>();
+SimulatorLogEntryWidget* ContactVelocitiesWidget::Dispatcher::makeWidget(rw::core::Ptr<const SimulatorLog> entry, QWidget* parent) const {
+	const rw::core::Ptr<const LogContactVelocities> velocities = entry.cast<const LogContactVelocities>();
 	if (!(velocities == NULL))
 		return new ContactVelocitiesWidget(velocities, parent);
 	RW_THROW("ContactVelocitiesWidget::Dispatcher (makeWidget): invalid entry!");
 	return NULL;
 }
 
-bool ContactVelocitiesWidget::Dispatcher::accepts(rw::common::Ptr<const SimulatorLog> entry) const {
+bool ContactVelocitiesWidget::Dispatcher::accepts(rw::core::Ptr<const SimulatorLog> entry) const {
 	if (!(entry.cast<const LogContactVelocities>() == NULL))
 		return true;
 	return false;

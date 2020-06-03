@@ -6,6 +6,7 @@
 #include <rw/models/Device.hpp>
 #include <rwlibs/control/Controller.hpp>
 #include <rwlibs/simulation/SimulatedController.hpp>
+#include <rw/core/Ptr.hpp>
 
 namespace rwlibs { namespace algorithms { class XQPController; } }
 namespace rwsim { namespace dynamics { class DynamicDevice; } }
@@ -23,7 +24,7 @@ namespace control {
 	class PoseController: public rwlibs::control::Controller, public rwlibs::simulation::SimulatedController {
 	public:
 	    //! @brief smart pointer type
-	    typedef rw::common::Ptr<PoseController> Ptr;
+	    typedef rw::core::Ptr<PoseController> Ptr;
 
 		/**
 		 * @brief constructor
@@ -39,7 +40,7 @@ namespace control {
 		 */
 		PoseController(
 		        const std::string& name,
-		        rw::common::Ptr<rwsim::dynamics::DynamicDevice> rdev,
+		        rw::core::Ptr<rwsim::dynamics::DynamicDevice> rdev,
 		        const rw::kinematics::State& state,
 				double dt
 				);
@@ -59,7 +60,7 @@ namespace control {
 		 */
 		PoseController(
 		        const std::string& name,
-				rw::common::Ptr<rwsim::dynamics::DynamicDevice> rdev,
+				rw::core::Ptr<rwsim::dynamics::DynamicDevice> rdev,
 		        const rw::kinematics::State& state,
 				double dt,
 				rw::kinematics::Frame* endframe
@@ -97,7 +98,7 @@ namespace control {
 		 * @brief get the device that is controlled by this controller
 		 * @return
 		 */
-		rw::common::Ptr<rw::models::Device> getControlledDevice(){ return _device; }
+		rw::core::Ptr<rw::models::Device> getControlledDevice(){ return _device; }
 
         void setEnabled(bool enabled){ _enabled = enabled; };
 
@@ -121,8 +122,8 @@ namespace control {
 		PoseController();
 
 	private:
-		rw::common::Ptr<rwsim::dynamics::DynamicDevice> _ddev;
-		rw::common::Ptr<rw::models::Device> _device;
+		rw::core::Ptr<rwsim::dynamics::DynamicDevice> _ddev;
+		rw::core::Ptr<rw::models::Device> _device;
         rw::kinematics::Frame *_endframe;
 
 		rw::math::Transform3D<> _target;
@@ -130,7 +131,7 @@ namespace control {
 
         double _stime, _accTime; // sample time
 
-		rw::common::Ptr<rwlibs::algorithms::XQPController> _xqp;
+		rw::core::Ptr<rwlibs::algorithms::XQPController> _xqp;
 		bool _enabled;
 	};
 

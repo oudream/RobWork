@@ -22,7 +22,7 @@
 #include "ProximityData.hpp"
 
 #include <rw/common/ScopedTimer.hpp>
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 #include <rw/kinematics/FKTable.hpp>
 #include <rw/kinematics/Frame.hpp>
 #include <rw/kinematics/State.hpp>
@@ -31,6 +31,7 @@
 
 using namespace rw;
 using namespace rw::common;
+using namespace rw::core;
 using namespace rw::kinematics;
 using namespace rw::models;
 using namespace rw::math;

@@ -2,7 +2,8 @@
 
 #include "StrategyLibraryDialog.hpp"
 
-#include <rw/common/StringUtil.hpp>
+#include <rw/core/StringUtil.hpp>
+#include <rw/core/PairIterator.hpp>
 
 #include <rw/kinematics/Kinematics.hpp>
 #include <rw/kinematics/MovableFrame.hpp>
@@ -23,7 +24,7 @@
 #include <boost/bind.hpp>
 
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::math;
 using namespace rw::models;
 using namespace rw::kinematics;
@@ -56,7 +57,7 @@ ATaskVisPlugin::~ATaskVisPlugin() {
 
 void ATaskVisPlugin::initialize() {
     getRobWorkStudio()->genericAnyEvent().add(
-          boost::bind(&ATaskVisPlugin::genericAnyEventListener, this, _1, _2), this);
+          boost::bind(&ATaskVisPlugin::genericAnyEventListener, this, boost::arg<1>(), boost::arg<2>()), this);
 
     Log::setLog( _log );
 }
@@ -363,7 +364,7 @@ void ATaskVisPlugin::constructPlayback() {
 					RW_ASSERT(maleFlexFrames.size() == astate.maleflexT.size());
 					// Find the world transform of the first flexible frame
 					Transform3D<> wTflex = wTmaleTCPNew;
-					for(const Transform3D<> &flexT: rw::common::make_iterPair(astate.maleflexT.rbegin(),astate.maleflexT.rend())) {
+					for(const Transform3D<> &flexT: rw::core::make_iterPair(astate.maleflexT.rbegin(),astate.maleflexT.rend())) {
 						wTflex = wTflex*inverse(flexT);
 					}
 					// Find the transform to the first flexible frame from the parent frame

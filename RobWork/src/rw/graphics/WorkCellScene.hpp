@@ -45,7 +45,7 @@ namespace graphics {
     class WorkCellScene {
     public:
         //! @brief smart pointer to this class
-        typedef rw::common::Ptr<WorkCellScene> Ptr;
+        typedef rw::core::Ptr<WorkCellScene> Ptr;
 
         /**
          * @brief constructor - creates a workcell with a current SceneGraph
@@ -69,11 +69,11 @@ namespace graphics {
          * @brief set the workcell to render
          * @param wc [in] the workcell that is to be rendered
          */
-        void setWorkCell(rw::common::Ptr<rw::models::WorkCell> wc);
+        void setWorkCell(rw::core::Ptr<rw::models::WorkCell> wc);
 
 
         //! @brief get the workcell that is currently being rendered.
-        rw::common::Ptr<rw::models::WorkCell> getWorkCell();
+        rw::core::Ptr<rw::models::WorkCell> getWorkCell();
 
         /**
          * @brief state changes are updated by calling this method. That includes
@@ -212,7 +212,7 @@ namespace graphics {
          * @param dmask [in] the drawable mask
          * @return the drawable node geometry
          */
-        DrawableGeometryNode::Ptr addGeometry(const std::string& name, rw::common::Ptr<rw::geometry::Geometry> geom, rw::kinematics::Frame* frame, int dmask=DrawableNode::Physical);
+        DrawableGeometryNode::Ptr addGeometry(const std::string& name, rw::core::Ptr<rw::geometry::Geometry> geom, rw::kinematics::Frame* frame, int dmask=DrawableNode::Physical);
 
         /**
          * @brief create and add a drawable node of a frame axis to the scene
@@ -232,7 +232,7 @@ namespace graphics {
          * @param dmask [in] the drawable mask
          * @return the drawable node geometry
          */
-        DrawableNode::Ptr addModel3D(const std::string& name, rw::common::Ptr<class Model3D> model, rw::kinematics::Frame* frame, int dmask=DrawableNode::Physical);
+        DrawableNode::Ptr addModel3D(const std::string& name, rw::core::Ptr<class Model3D> model, rw::kinematics::Frame* frame, int dmask=DrawableNode::Physical);
 
         /**
          * @brief create and add a drawable node of an image to the scene
@@ -263,7 +263,7 @@ namespace graphics {
          * @param dmask [in] the drawable mask
          * @return the drawable node
          */
-        DrawableNode::Ptr addText(const std::string& name, const std::string& text, rw::common::Ptr<rw::kinematics::Frame> frame, int dmask=DrawableNode::Virtual);
+        DrawableNode::Ptr addText(const std::string& name, const std::string& text, rw::core::Ptr<rw::kinematics::Frame> frame, int dmask=DrawableNode::Virtual);
         
         /**
          * @brief create and add a drawable node of a render, to the scene
@@ -273,7 +273,7 @@ namespace graphics {
          * @param dmask [in] the drawable mask
          * @return the drawable node
          */
-        DrawableNode::Ptr addRender(const std::string& name, rw::common::Ptr<class Render> render, rw::kinematics::Frame* frame, int dmask=DrawableNode::Physical);
+        DrawableNode::Ptr addRender(const std::string& name, rw::core::Ptr<class Render> render, rw::kinematics::Frame* frame, int dmask=DrawableNode::Physical);
 
         /**
          * @brief create and add a drawable node from a filename to the scene
@@ -403,7 +403,7 @@ namespace graphics {
 
     private:
         SceneGraph::Ptr _scene;
-        rw::common::Ptr<rw::models::WorkCell> _wc;
+        rw::core::Ptr<rw::models::WorkCell> _wc;
         rw::kinematics::FKTable _fk;
 
         typedef std::map<const rw::kinematics::Frame*, GroupNode::Ptr> FrameNodeMap;
@@ -422,7 +422,7 @@ namespace graphics {
         //! mapping from frame to all its drawables, 1:many
         std::map<const rw::kinematics::Frame*, std::vector<DrawableNode::Ptr> > _frameDrawableMap;
 
-        std::map<rw::common::Ptr<rw::models::DeformableObject>, std::vector<rw::common::Ptr<class Model3D> >  > _deformableObjectsMap;
+        std::map<rw::core::Ptr<rw::models::DeformableObject>, std::vector<rw::core::Ptr<class Model3D> >  > _deformableObjectsMap;
 
         //! world node
         GroupNode::Ptr _worldNode;

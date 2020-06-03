@@ -42,7 +42,7 @@
 
 #include <iostream>
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::graphics;
 using namespace rw::kinematics;
 using namespace rw::math;
@@ -88,6 +88,7 @@ public:
 	double getMaxTorque() { return 100; }
 	Vector3D<> getForce() { return Vector3D<>::zero(); }
 	Vector3D<> getTorque() { return Vector3D<>::zero(); }
+	Transform3D<> getTransform() { return Transform3D<>::identity(); }
 };
 }
 
@@ -107,7 +108,7 @@ struct TaskSetupDialog::InsertionSimulation {
 	}
 };
 
-TaskSetupDialog::TaskSetupDialog(QWidget* parent, rw::common::Ptr<const WorkCell> wc, AssemblyControlStrategy::Ptr strategy):
+TaskSetupDialog::TaskSetupDialog(QWidget* parent, rw::core::Ptr<const WorkCell> wc, AssemblyControlStrategy::Ptr strategy):
 	QDialog(parent),
 	_ui(new Ui::TaskSetupDialog()),
 	_wc(wc),

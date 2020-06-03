@@ -111,16 +111,16 @@ class GraspRestingPoseDialog : public QDialog, private Ui::GraspRestingPoseDialo
          */
         void calcColFreeRandomCfg(rw::kinematics::State& state);
 
-        bool isSimulationFinished( rw::common::Ptr<ThreadSimulator> sim );
+        bool isSimulationFinished( rw::core::Ptr<ThreadSimulator> sim );
 
-        void saveRestingState( rw::common::Ptr<ThreadSimulator> sim );
+        void saveRestingState( rw::core::Ptr<ThreadSimulator> sim );
 
     private:
         Ui::GraspRestingPoseDialog _ui;
         rw::kinematics::State _defstate;
         rw::kinematics::State _state;
         QTimer *_timer;
-        std::vector<rw::common::Ptr<ThreadSimulator> > _simulators;
+        std::vector<rw::core::Ptr<ThreadSimulator> > _simulators;
         std::vector<rw::kinematics::State> _initStates;
         std::vector<double> _simStartTimes;
         int _nrOfTests;

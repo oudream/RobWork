@@ -53,9 +53,9 @@ namespace rw { namespace pathplanning {
     {
     public:
 		//! @brief smart pointer type to this class
-		typedef rw::common::Ptr<PlannerConstraint> Ptr;
+		typedef rw::core::Ptr<PlannerConstraint> Ptr;
 		//! @brief smart pointer type to this const class
-		typedef rw::common::Ptr< const PlannerConstraint > CPtr;
+		typedef rw::core::Ptr< const PlannerConstraint > CPtr;
 
 		/**
 		 * @brief Default constructed without constraints initialized
@@ -112,8 +112,8 @@ namespace rw { namespace pathplanning {
            Path are checked discretely for a default device dependent
            resolution.
         */
-		static PlannerConstraint make(rw::common::Ptr<rw::proximity::CollisionDetector> detector,
-				rw::common::Ptr< const rw::models::Device > device,
+		static PlannerConstraint make(rw::core::Ptr<rw::proximity::CollisionDetector> detector,
+				rw::core::Ptr< const rw::models::Device > device,
 				const rw::kinematics::State& state);
 
 		/**
@@ -124,9 +124,9 @@ namespace rw { namespace pathplanning {
 
            The default collision setup of the workcell is used.
         */
-		static PlannerConstraint make(rw::common::Ptr<rw::proximity::CollisionStrategy> strategy,
-			rw::common::Ptr<rw::models::WorkCell> workcell,
-			rw::common::Ptr< const rw::models::Device > device,
+		static PlannerConstraint make(rw::core::Ptr<rw::proximity::CollisionStrategy> strategy,
+			rw::core::Ptr<rw::models::WorkCell> workcell,
+			rw::core::Ptr< const rw::models::Device > device,
 			const rw::kinematics::State& state);
 
         /**
@@ -136,10 +136,10 @@ namespace rw { namespace pathplanning {
            Path are checked discretely for a default device dependent
            resolution.
         */
-		static PlannerConstraint make(rw::common::Ptr<rw::proximity::CollisionStrategy> strategy,
+		static PlannerConstraint make(rw::core::Ptr<rw::proximity::CollisionStrategy> strategy,
 			const rw::proximity::CollisionSetup& setup,
-			rw::common::Ptr<rw::models::WorkCell> workcell,
-			rw::common::Ptr< const rw::models::Device > device,
+			rw::core::Ptr<rw::models::WorkCell> workcell,
+			rw::core::Ptr< const rw::models::Device > device,
 			const rw::kinematics::State& state);
 
     private:

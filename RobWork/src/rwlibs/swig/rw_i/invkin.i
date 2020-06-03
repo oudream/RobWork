@@ -37,7 +37,7 @@ public:
      * @note The targets \b baseTend must be defined relative to the base of the
      * robot/device.
      */
-    virtual std::vector<rw::math::Q> solve(const rw::math::Transform3D<double> & baseTend, const State& state) const = 0;
+    virtual std::vector<Q> solve(const rw::math::Transform3D<double> & baseTend, const State& state) const = 0;
 
     /**
      * @brief Specifies whether to check joint limits before returning a solution.
@@ -51,10 +51,10 @@ public:
      *
      * @return The TCP Frame used when solving the IK.
      */
-    virtual rw::common::Ptr< const Frame > getTCP() const = 0;
+    virtual rw::core::Ptr< const Frame > getTCP() const = 0;
 };
 
-%template (InvKinSolverPtr) rw::common::Ptr<InvKinSolver>;
+%template (InvKinSolverPtr) rw::core::Ptr<InvKinSolver>;
 
 /**
  * @brief Interface for iterative inverse kinematics algorithms
@@ -121,10 +121,10 @@ public:
        @param device [in] Device for which to solve IK.
        @param state [in] Fixed state for which IK is solved.
     */
-    static rw::common::Ptr<IterativeIK> makeDefault(rw::common::Ptr<Device> device, const State& state);
+    static rw::core::Ptr<IterativeIK> makeDefault(rw::core::Ptr<Device> device, const State& state);
 };
 
-%template (IterativeIKPtr) rw::common::Ptr<IterativeIK>;
+%template (IterativeIKPtr) rw::core::Ptr<IterativeIK>;
 OWNEDPTR(IterativeIK);
 
 /**
@@ -143,7 +143,7 @@ class JacobianIKSolver : public IterativeIK
 {
 public:
     //! @brief the type of jacobian solver
-    typedef enum{Transpose, SVD, DLS, SDLS} JacobianSolverType;
+    typedef enum{Transpose, SVD, DLS, Weighted} JacobianSolverType;
 
     /**
      * @brief Constructs JacobianIKSolver for device \b device.
@@ -151,7 +151,7 @@ public:
      * @param device [in] the device to do inverse kinematics for.
      * @param state [in] the initial state.
      */
-    JacobianIKSolver(rw::common::Ptr<const Device> device, const State& state);
+    JacobianIKSolver(rw::core::Ptr<const Device> device, const State& state);
 
     /**
      * @brief Constructs JacobianIKSolver for device, where the frame \b foi will
@@ -161,7 +161,7 @@ public:
      * @param foi [in] end effector frame.
      * @param state [in] the initial state.
      */
-    JacobianIKSolver(rw::common::Ptr<const Device> device, const Frame *foi, const State& state);
+    JacobianIKSolver(rw::core::Ptr<const Device> device, const Frame *foi, const State& state);
 
     /**
      * @brief Calculates the inverse kinematics
@@ -185,7 +185,7 @@ public:
      * @note The targets \b baseTend must be defined relative to the base of the
      * robot/device.
      */
-    std::vector<rw::math::Q> solve(const rw::math::Transform3D<double> & baseTend, const State& state) const;
+    std::vector<Q> solve(const rw::math::Transform3D<double> & baseTend, const State& state) const;
 
     /**
      * @brief sets the maximal step length that is allowed on the
@@ -245,7 +245,7 @@ public:
 
 };
 
-%template (JacobianIKSolverPtr) rw::common::Ptr<JacobianIKSolver>;
+%template (JacobianIKSolverPtr) rw::core::Ptr<JacobianIKSolver>;
 OWNEDPTR(JacobianIKSolver);
 
 /**
@@ -274,9 +274,9 @@ public:
      * @param collisionDetector [in] CollisionDetector to use. If null no
      * collision detection used.
      */
-    IKMetaSolver(rw::common::Ptr<IterativeIK> iksolver,
-        const rw::common::Ptr<Device> device,
-        rw::common::Ptr<CollisionDetector> collisionDetector = NULL);
+    IKMetaSolver(rw::core::Ptr<IterativeIK> iksolver,
+        const rw::core::Ptr<Device> device,
+        rw::core::Ptr<CollisionDetector> collisionDetector = NULL);
 
     /**
      * @brief Constructs IKMetaSolver
@@ -290,9 +290,9 @@ public:
      * @param constraint [in] QConstraint pointer to use. If null no
      * constraints is applied
      */
-    IKMetaSolver(rw::common::Ptr<IterativeIK> iksolver,
-        const rw::common::Ptr<Device> device,
-        rw::common::Ptr<QConstraint> constraint);
+    IKMetaSolver(rw::core::Ptr<IterativeIK> iksolver,
+        const rw::core::Ptr<Device> device,
+        rw::core::Ptr<QConstraint> constraint);
 
     /**
      * @brief Calculates the inverse kinematics
@@ -318,7 +318,7 @@ public:
      *
      * Searches for a valid solution using the parameters set in the IKMetaSolver
      */
-    std::vector<rw::math::Q> solve(const rw::math::Transform3D<double> & baseTend, const State& state) const;
+    std::vector<Q> solve(const rw::math::Transform3D<double> & baseTend, const State& state) const;
 
     /**
      * @brief Sets up the maximal number of attempts
@@ -369,11 +369,11 @@ public:
      * solution is found. If false it will continue searching for more solution
      * until the maximal number of attemps is met.
      */
-    std::vector<rw::math::Q> solve(const rw::math::Transform3D<double> & baseTend, const State& state, size_t cnt, bool stopatfirst) const;
+    std::vector<Q> solve(const rw::math::Transform3D<double> & baseTend, const State& state, size_t cnt, bool stopatfirst) const;
 
 };
 
-%template (IKMetaSolverPtr) rw::common::Ptr<IKMetaSolver>;
+%template (IKMetaSolverPtr) rw::core::Ptr<IKMetaSolver>;
 OWNEDPTR(IKMetaSolver);
 
 /**
@@ -404,7 +404,7 @@ public:
        You should check for yourself that the closed-form IK for the device
        is correct.
     */
-    static rw::common::Ptr<ClosedFormIK> make(const Device& device, const State& state);
+    static rw::core::Ptr<ClosedFormIK> make(const Device& device, const State& state);
 };
 
 /**
@@ -468,7 +468,7 @@ public:
      * @note The targets \b baseTend must be defined relative to the base of the
      * robot/device.
      */
-    virtual std::vector<rw::math::Q> solve(const rw::math::Transform3D<double> & baseTend, const State& state) const;
+    virtual std::vector<Q> solve(const rw::math::Transform3D<double> & baseTend, const State& state) const;
 
     /**
      * @brief Specifies whether to check joint limits before returning a solution.
@@ -482,11 +482,11 @@ public:
      *
      * @return The TCP Frame used when solving the IK.
      */
-    virtual rw::common::Ptr< const Frame > getTCP() const;
+    virtual rw::core::Ptr< const Frame > getTCP() const;
 
 };
 
-%template (ClosedFormIKPtr) rw::common::Ptr<ClosedFormIK>;
+%template (ClosedFormIKPtr) rw::core::Ptr<ClosedFormIK>;
 
 /**
  * @brief Analytical inverse solver for the Kuka LBR IIWA 7 R800 robot.
@@ -503,7 +503,7 @@ public:
 	 * @param device [in] the device.
 	 * @param state [in] the state to get the frame structure and extract the dimensions from.
 	 */
-	ClosedFormIKSolverKukaIIWA(const rw::common::Ptr<const SerialDevice> device, const State& state);
+	ClosedFormIKSolverKukaIIWA(const rw::core::Ptr<const SerialDevice> device, const State& state);
 
 	//! @brief Destructor.
 	virtual ~ClosedFormIKSolverKukaIIWA();
@@ -530,7 +530,7 @@ public:
      * @note The targets \b baseTend must be defined relative to the base of the
      * robot/device.
      */
-    std::vector<rw::math::Q> solve(const rw::math::Transform3D<double>& baseTend, const State& state) const;
+    std::vector<Q> solve(const rw::math::Transform3D<double>& baseTend, const State& state) const;
 
     /**
      * @brief Find inverse kinematic solutions deterministically by pulling joint 4 as much in the given direction as possible.
@@ -540,7 +540,7 @@ public:
      * @param dir4 [in] unit vector giving the direction to pull joint 4 in (given in base coordinate system).
      * @return List of up to 8 solutions. Notice that the list may be empty.
      */
-    std::vector<rw::math::Q> solve(const rw::math::Transform3D<double>& baseTend, const State& state, const rw::math::Vector3D<double>& dir4) const;
+    std::vector<Q> solve(const rw::math::Transform3D<double>& baseTend, const State& state, const rw::math::Vector3D<double>& dir4) const;
 
     /**
      * @brief Specifies whether to check joint limits before returning a solution.
@@ -554,10 +554,10 @@ public:
      *
      * @return The TCP Frame used when solving the IK.
      */
-    virtual rw::common::Ptr< const Frame > getTCP() const;
+    virtual rw::core::Ptr< const Frame > getTCP() const;
 };
 
-%template (ClosedFormIKSolverKukaIIWAPtr) rw::common::Ptr<ClosedFormIKSolverKukaIIWA>;
+%template (ClosedFormIKSolverKukaIIWAPtr) rw::core::Ptr<ClosedFormIKSolverKukaIIWA>;
 
 /**
  * @brief Analytical inverse kinematics solver to the kinematics of a Universal Robots.
@@ -572,7 +572,7 @@ public:
 	 * @param device [in] the device.
 	 * @param state [in] the state to use to extract dimensions.
 	 */
-	ClosedFormIKSolverUR(const rw::common::Ptr<const SerialDevice> device, const State& state);
+	ClosedFormIKSolverUR(const rw::core::Ptr<const SerialDevice> device, const State& state);
 
 	//! @brief Destructor.
 	virtual ~ClosedFormIKSolverUR();
@@ -599,7 +599,7 @@ public:
      * @note The targets \b baseTend must be defined relative to the base of the
      * robot/device.
      */
-    std::vector<rw::math::Q> solve(const rw::math::Transform3D<double>& baseTend, const State& state) const;
+    std::vector<Q> solve(const rw::math::Transform3D<double>& baseTend, const State& state) const;
 
     /**
      * @brief Specifies whether to check joint limits before returning a solution.
@@ -613,8 +613,8 @@ public:
      *
      * @return The TCP Frame used when solving the IK.
      */
-    virtual rw::common::Ptr< const Frame > getTCP() const;
+    virtual rw::core::Ptr< const Frame > getTCP() const;
 };
 
-%template (ClosedFormIKSolverURPtr) rw::common::Ptr<ClosedFormIKSolverUR>;
-%template (ClosedFormIKSolverURCPtr) rw::common::Ptr<const ClosedFormIKSolverUR>;
+%template (ClosedFormIKSolverURPtr) rw::core::Ptr<ClosedFormIKSolverUR>;
+%template (ClosedFormIKSolverURCPtr) rw::core::Ptr<const ClosedFormIKSolverUR>;

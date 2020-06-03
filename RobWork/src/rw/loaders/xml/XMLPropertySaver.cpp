@@ -42,7 +42,7 @@
 #include <rw/loaders/xml/XMLPathSaver.hpp>
 
 using namespace rw::math;
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::loaders;
 using namespace rw::trajectory;
 using namespace xercesc;
@@ -209,7 +209,7 @@ xercesc::DOMElement* XMLPropertySaver::save(PropertyBase::Ptr property, xercesc:
 
 
 
-void XMLPropertySaver::save(const rw::common::PropertyMap& map, xercesc::DOMElement* parent, xercesc::DOMDocument* doc) {
+void XMLPropertySaver::save(const rw::core::PropertyMap& map, xercesc::DOMElement* parent, xercesc::DOMDocument* doc) {
     std::pair<PropertyMap::iterator, PropertyMap::iterator> iterators = map.getProperties();
     for (PropertyMap::iterator it = iterators.first; it != iterators.second; ++it) {
         xercesc::DOMElement* element = save(*it, doc);
@@ -253,7 +253,7 @@ xercesc::DOMDocument* XMLPropertySaver::createDOMDocument(const PropertyMap& map
         {
             RW_THROW("XMLPropertySaver: DOMException:  " << XMLStr(e.getMessage()).str());
         }
-        catch (const rw::common::Exception& exp) {
+        catch (const rw::core::Exception& exp) {
             throw exp;
         }
         catch (...)
@@ -268,13 +268,13 @@ xercesc::DOMDocument* XMLPropertySaver::createDOMDocument(const PropertyMap& map
     return doc;
 } 
 
-void XMLPropertySaver::save(const rw::common::PropertyMap& map, const std::string& filename) {
+void XMLPropertySaver::save(const rw::core::PropertyMap& map, const std::string& filename) {
     xercesc::DOMDocument* doc = createDOMDocument(map);
     XercesDocumentWriter::writeDocument(doc, filename);
     doc->release();
 }
 
-void XMLPropertySaver::write(const rw::common::PropertyMap& map, std::ostream& outstream) {
+void XMLPropertySaver::write(const rw::core::PropertyMap& map, std::ostream& outstream) {
     xercesc::DOMDocument* doc = createDOMDocument(map);
     XercesDocumentWriter::writeDocument(doc, outstream);
     doc->release();

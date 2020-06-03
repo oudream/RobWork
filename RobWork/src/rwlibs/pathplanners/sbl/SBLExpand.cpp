@@ -24,14 +24,14 @@
 #include <rw/math/Jacobian.hpp>
 #include <rw/math/Constants.hpp>
 #include <rw/models/Device.hpp>
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 #include <rw/kinematics/Kinematics.hpp>
 #include <rw/kinematics/State.hpp>
 
 using namespace rwlibs::pathplanners;
 using namespace rw::pathplanning;
 using namespace rw::math;
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::models;
 using namespace rw::kinematics;
 

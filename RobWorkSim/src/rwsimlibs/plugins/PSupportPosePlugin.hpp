@@ -110,19 +110,19 @@ class SupportPoseAnalyserDialog : public QDialog, private Ui::SupportPoseAnalyse
         rw::trajectory::TimedStatePathPtr _path, _startPath;
         GLViewRW *_view;
 
-        rw::common::Ptr<rw::graphics::RenderFrame> _frameRender;
+        rw::core::Ptr<rw::graphics::RenderFrame> _frameRender;
         rwlibs::drawable::Drawable *_fDraw,*_fDraw1,*_fDraw2,*_fDraw3,*_fDraw4,*_fDraw5;
 
-        rw::common::Ptr<rwsim::drawable::RenderPoints> _xRender,_yRender,_zRender;
+        rw::core::Ptr<rwsim::drawable::RenderPoints> _xRender,_yRender,_zRender;
         rwlibs::drawable::Drawable *_xDraw,*_yDraw,*_zDraw;
 
-        rw::common::Ptr<rwsim::drawable::RenderPoints> _selPosePntRenderX,_selPosePntRenderY,_selPosePntRenderZ;
+        rw::core::Ptr<rwsim::drawable::RenderPoints> _selPosePntRenderX,_selPosePntRenderY,_selPosePntRenderZ;
         rwlibs::drawable::Drawable *_selPoseDrawX,*_selPoseDrawY,*_selPoseDrawZ;
 
-        rw::common::Ptr<rwsim::drawable::RenderPoints> _selxRender,_selyRender,_selzRender;
+        rw::core::Ptr<rwsim::drawable::RenderPoints> _selxRender,_selyRender,_selzRender;
         rwlibs::drawable::Drawable *_selxDraw,*_selyDraw,*_selzDraw;
 
-        rw::common::Ptr<rwsim::drawable::RenderCircles> _xcRender,_ycRender,_zcRender;
+        rw::core::Ptr<rwsim::drawable::RenderCircles> _xcRender,_ycRender,_zcRender;
         rwlibs::drawable::Drawable *_xcDraw,*_ycDraw,*_zcDraw;
 
         std::vector<rwsim::dynamics::RigidBody*> _bodies;
@@ -142,8 +142,6 @@ class SupportPoseAnalyserDialog : public QDialog, private Ui::SupportPoseAnalyse
         RestingPoseDialog *_restPoseDialog;
 
         rws::RobWorkStudio *_rwstudio;
-
-        //rw::common::sandbox::LogPtr _log;
 };
 
 

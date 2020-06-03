@@ -28,6 +28,7 @@
 #include <rw/math/Rotation3D.hpp>
 #include <rw/math/Transform3D.hpp>
 #include <rw/proximity/DistanceStrategy.hpp>
+#include <rw/core/Ptr.hpp>
 
 #if RW_HAVE_PQP == 1
 #include <rwlibs/proximitystrategies/ProximityStrategyPQP.hpp>
@@ -39,7 +40,7 @@ using rwlibs::proximitystrategies::ProximityStrategyPQP;
 
 #include <string>
 
-using rw::common::ownedPtr;
+using rw::core::ownedPtr;
 using namespace rw::geometry;
 using namespace rw::kinematics;
 using namespace rw::math;

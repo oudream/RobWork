@@ -46,7 +46,7 @@ namespace rwlibs { namespace algorithms {
 class StablePoseConstraint : public ConstraintModel {
 	public:
 		//! @brief Smart pointer type to this class.
-		typedef rw::common::Ptr<StablePoseConstraint> Ptr;
+		typedef rw::core::Ptr<StablePoseConstraint> Ptr;
 		
 		//! @copydoc ConstraintModel::MinSamples
 		static const int MinSamples = 4;

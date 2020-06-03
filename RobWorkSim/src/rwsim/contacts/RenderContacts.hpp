@@ -19,6 +19,7 @@
 #define RWSIM_CONTACTS_RENDERCONTACTS_HPP_
 
 #include <rw/graphics/Render.hpp>
+#include <rw/core/Ptr.hpp>
 
 /**
  * @file rwsim/contacts/RenderContacts.hpp
@@ -39,7 +40,7 @@ class Contact;
 class RenderContacts: public rw::graphics::Render {
 public:
     //! @brief smart pointer type to this class
-	typedef rw::common::Ptr<RenderContacts> Ptr;
+	typedef rw::core::Ptr<RenderContacts> Ptr;
 
 	/**
 	 * @brief Construct render with no initial contacts.

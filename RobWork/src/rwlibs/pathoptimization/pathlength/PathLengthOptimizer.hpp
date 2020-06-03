@@ -19,9 +19,9 @@
 #ifndef RWLIBS_PATHOPTIMIZATION_PATHLENGTHOPTIMIZER_HPP
 #define RWLIBS_PATHOPTIMIZATION_PATHLENGTHOPTIMIZER_HPP
 
-#include <rw/common/Ptr.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/math/Metric.hpp>
-#include <rw/common/PropertyMap.hpp>
+#include <rw/core/PropertyMap.hpp>
 #include <rw/pathplanning/PlannerConstraint.hpp>
 #include <rw/trajectory/Path.hpp>
 #include <list>
@@ -54,9 +54,9 @@ namespace rwlibs { namespace pathoptimization {
     {
     public:
 		//! @brief smart pointer type to this class
-		typedef rw::common::Ptr<PathLengthOptimizer> Ptr;
+		typedef rw::core::Ptr<PathLengthOptimizer> Ptr;
 		//! @brief smart pointer type to this const class
-		typedef rw::common::Ptr<const PathLengthOptimizer> CPtr;
+		typedef rw::core::Ptr<const PathLengthOptimizer> CPtr;
 
         //! A list of configurations.
 		typedef std::list<rw::math::Q> QList;
@@ -156,7 +156,7 @@ namespace rwlibs { namespace pathoptimization {
          * @brief Returns the propertymap
          * @return Reference to the property map
          */
-        rw::common::PropertyMap& getPropertyMap();
+        rw::core::PropertyMap& getPropertyMap();
 
         //!Property key for the maximal number of loops
         static const std::string PROP_LOOPCOUNT;
@@ -170,7 +170,7 @@ namespace rwlibs { namespace pathoptimization {
     private:
         rw::pathplanning::PlannerConstraint _constraint;
 		rw::math::QMetric::CPtr _metric;
-        rw::common::PropertyMap _propertyMap;
+        rw::core::PropertyMap _propertyMap;
 
         void pathPruning(QList& path) const;
 

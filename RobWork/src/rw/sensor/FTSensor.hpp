@@ -15,84 +15,77 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RW_SENSOR_TACTILEMULTIAXISSENSOR_HPP
 #define RW_SENSOR_TACTILEMULTIAXISSENSOR_HPP
 
 #include "Sensor.hpp"
 
-#include <rw/math/Vector3D.hpp>
 #include <rw/math/Transform3D.hpp>
+#include <rw/math/Vector3D.hpp>
 
-namespace rw {
-namespace sensor {
-
-/**
- * @brief Interface of a N-axis Force Torque sensor
- */
-class FTSensor : public Sensor {
-public:
-	typedef rw::common::Ptr<FTSensor> Ptr;
+namespace rw { namespace sensor {
 
     /**
-     * @param name documentation missing !
-     * @param desc documentation missing !
-     * @return
+     * @brief Interface of a N-axis Force Torque sensor
      */
-    FTSensor(const std::string& name, const std::string& desc=""):
-        Sensor(name,desc)
+    class FTSensor : public Sensor
     {
+      public:
+        typedef rw::core::Ptr< FTSensor > Ptr;
 
-    }
+        /**
+         * @param name documentation missing !
+         * @param desc documentation missing !
+         * @return
+         */
+        FTSensor (const std::string& name, const std::string& desc = "") : Sensor (name, desc) {}
 
-    /**
-     * @brief destructor
-     * @return
-     */
-    virtual ~FTSensor(){};
+        /**
+         * @brief destructor
+         * @return
+         */
+        virtual ~FTSensor (){};
 
-    /**
-     * @brief acquires force data from the tactile cells
-     */
-    virtual void acquire() = 0;
+        /**
+         * @brief acquires force data from the tactile cells
+         */
+        virtual void acquire () = 0;
 
-    /**
-     * @brief gets the maximum force in Newton that this sensor can measure on any of its
-     * axis.
-     * @return max force in Newton.
-     */
-    virtual double getMaxForce() = 0;
+        /**
+         * @brief gets the maximum force in Newton that this sensor can measure on any of its
+         * axis.
+         * @return max force in Newton.
+         */
+        virtual double getMaxForce () = 0;
 
-    /**
-     * @brief gets the maximum torque in Newton Meter (N m)that this sensor can measure on any of its
-     * axis.
-     * @return max torque in Newton Meter(N m).
-     */
-    virtual double getMaxTorque() = 0;
+        /**
+         * @brief gets the maximum torque in Newton Meter (N m)that this sensor can measure on any
+         * of its axis.
+         * @return max torque in Newton Meter(N m).
+         */
+        virtual double getMaxTorque () = 0;
 
-    /**
-     * @brief gets the force in N that is acting on the origin. The
-     * force is described in relation to the origin.
-     * @return force acting on origin.
-     */
-    virtual rw::math::Vector3D<> getForce() = 0;
+        /**
+         * @brief gets the force in N that is acting on the origin. The
+         * force is described in relation to the origin.
+         * @return force acting on origin.
+         */
+        virtual rw::math::Vector3D<> getForce () = 0;
 
-    /**
-     * @brief gets the torgue in Nm that is acting on the origin. The
-     * torque is described in relation to the origin.
-     * @return torque acting on origin.
-     */
-    virtual rw::math::Vector3D<> getTorque() = 0;
+        /**
+         * @brief gets the torgue in Nm that is acting on the origin. The
+         * torque is described in relation to the origin.
+         * @return torque acting on origin.
+         */
+        virtual rw::math::Vector3D<> getTorque () = 0;
 
-    /**
-     * @brief the transform from the sensor frame to the point of origin.
-     * @return transform from sensor frame to point of origin.
-     */
-    rw::math::Transform3D<> getTransform();
+        /**
+         * @brief the transform from the sensor frame to the point of origin.
+         * @return transform from sensor frame to point of origin.
+         */
+        virtual rw::math::Transform3D<> getTransform () = 0;
+    };
 
-};
-
-}
-}
+}}    // namespace rw::sensor
 
 #endif /*RW_SENSOR_TACTILEARRAY_HPP*/

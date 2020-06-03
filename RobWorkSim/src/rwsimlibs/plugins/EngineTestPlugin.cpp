@@ -20,6 +20,7 @@
 #include <rw/common/LogFileWriter.hpp>
 #include <rw/common/ThreadPool.hpp>
 #include <rw/common/ThreadTask.hpp>
+#include <rw/core/PropertyMap.hpp>
 
 #include <RobWorkStudioConfig.hpp>
 #include <rws/RobWorkStudio.hpp>
@@ -36,6 +37,7 @@
 #include <QListWidgetItem>
 
 using namespace rw::common;
+using namespace rw::core;
 using namespace rw::math;
 using namespace rw::trajectory;
 using namespace rwsim::dynamics;
@@ -115,7 +117,7 @@ EngineTestPlugin::~EngineTestPlugin() {
 }
 
 void EngineTestPlugin::initialize() {
-    getRobWorkStudio()->genericAnyEvent().add(boost::bind(&EngineTestPlugin::genericAnyEventListener, this, _1, _2), this);
+    getRobWorkStudio()->genericAnyEvent().add(boost::bind(&EngineTestPlugin::genericAnyEventListener, this, boost::arg<1>(), boost::arg<2>()), this);
     RobWorkStudioPlugin::initialize();
 }
 
@@ -317,7 +319,7 @@ void EngineTestPlugin::run() {
 		_runTask = ownedPtr(new ThreadTask(_threadPool));
 		_testHandle = _test->runThread(_engine,*_input,_log,_runTask);
 		RW_ASSERT(!_testHandle.isNull());
-		_testHandle->setTimeCallback(boost::function<void(double,bool,bool)>(boost::bind(&EngineTestPlugin::simulatorCallBack, this, _1, _2, _3)));
+		_testHandle->setTimeCallback(boost::function<void(double,bool,bool)>(boost::bind(&EngineTestPlugin::simulatorCallBack, this, boost::arg<1>(), boost::arg<2>(), boost::arg<3>())));
 		_runTask->execute();
 		_ui->run->setText("Abort");
 		_ui->run->setEnabled(true);

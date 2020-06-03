@@ -38,6 +38,7 @@ SET(FILES_HPP
   CameraListener.hpp
   Image.hpp
   ImageUtil.hpp
+  RGBDCameraModel.hpp 
   
   TactileArray.hpp
   TactileArrayUtil.hpp

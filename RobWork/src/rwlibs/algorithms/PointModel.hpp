@@ -27,7 +27,7 @@
  */
 
 #include <rw/math/Vector3D.hpp>
-
+#include <rw/core/Ptr.hpp>
 #include "RANSACModel.hpp"
 
 
@@ -43,7 +43,7 @@ class PointModel : public RANSACModel<PointModel, rw::math::Vector3D<> >
 {
 	public:
 		//! @brief Smart pointer type to this class.
-		typedef rw::common::Ptr<PointModel> Ptr;
+		typedef rw::core::Ptr<PointModel> Ptr;
 		
 	public: // constructors
 		/**

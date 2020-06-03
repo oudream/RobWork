@@ -17,7 +17,7 @@
 
 #include "CMU1394Camera.hpp"
 
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 #include <vector>
 
 #include <windows.h>

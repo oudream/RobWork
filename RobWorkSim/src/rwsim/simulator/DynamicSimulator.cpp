@@ -4,6 +4,7 @@
 
 using namespace rwsim::simulator;
 using namespace rw::common;
+using namespace rw::core;
 using namespace rwsim;
 
 DynamicSimulator::DynamicSimulator(rwsim::dynamics::DynamicWorkCell::Ptr dworkcell, PhysicsEngine::Ptr pengine):
@@ -57,7 +58,7 @@ rwsim::drawable::SimulatorDebugRender::Ptr DynamicSimulator::createDebugRender()
     return _pengine->createDebugRender();
 }
 
-rw::common::PropertyMap& DynamicSimulator::getPropertyMap(){
+rw::core::PropertyMap& DynamicSimulator::getPropertyMap(){
     return _pengine->getPropertyMap();
 }
 

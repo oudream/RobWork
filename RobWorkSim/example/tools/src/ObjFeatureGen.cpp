@@ -98,7 +98,7 @@ class Serializable {
 public:
     virtual ~Serializable(){};
     virtual void serialize(Archive& archive) = 0;
-    rw::common::Ptr<Deserializer> makeDeserializerFactory();
+    rw::core::Ptr<Deserializer> makeDeserializerFactory();
 };
 
 

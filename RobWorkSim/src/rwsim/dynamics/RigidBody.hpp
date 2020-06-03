@@ -23,7 +23,7 @@
 
 #include <rw/kinematics/Frame.hpp>
 #include <rw/kinematics/MovableFrame.hpp>
-
+#include <rw/core/Ptr.hpp>
 #include <rw/kinematics/Kinematics.hpp>
 
 #include "Body.hpp"
@@ -47,7 +47,7 @@ namespace dynamics {
     {
     public:
     	//! @brief Smart pointer type for a RigidBody.
-        typedef rw::common::Ptr<RigidBody> Ptr;
+        typedef rw::core::Ptr<RigidBody> Ptr;
 
         //! @copydoc dynamics::Body::Body()
         RigidBody(const BodyInfo& info, rw::models::Object::Ptr obj);

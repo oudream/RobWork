@@ -34,6 +34,7 @@
 #include <rwlibs/proximitystrategies/ProximityStrategyPQP.hpp>
 
 using namespace rw::common;
+using namespace rw::core;
 using namespace rw::geometry;
 using namespace rw::proximity;
 using namespace rw::math;
@@ -52,7 +53,7 @@ struct ContactStrategyPQP::Model {
 
 class ContactStrategyPQP::TriMeshModel: public ContactModel {
 public:
-	typedef rw::common::Ptr<TriMeshModel> Ptr;
+	typedef rw::core::Ptr<TriMeshModel> Ptr;
 	TriMeshModel(ContactStrategy *owner): ContactModel(owner) {}
 	~TriMeshModel() {
 		if (models.size() > 0) {
@@ -153,7 +154,7 @@ ContactStrategyPQP::~ContactStrategyPQP() {
 	delete _narrowStrategy;
 }
 
-bool ContactStrategyPQP::match(rw::common::Ptr<const GeometryData> geoA, rw::common::Ptr<const GeometryData> geoB) {
+bool ContactStrategyPQP::match(rw::core::Ptr<const GeometryData> geoA, rw::core::Ptr<const GeometryData> geoB) {
 	if (_matchAll)
 		return true;
 	else {
@@ -197,8 +198,8 @@ void ContactStrategyPQP::findContact(std::vector<Contact> &contacts,
 
 	for(size_t i=0;i<res->distances.size();i++){
 		Contact c;
-		Vector3D<> p1 = wTa*res->p1s[i];
-		Vector3D<> p2 = wTa*res->p2s[i];
+		Vector3D<> p1 = res->p1s[i];
+		Vector3D<> p2 = res->p2s[i];
 		c.setPointA(p1);
 		c.setPointB(p2);
 
