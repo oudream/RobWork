@@ -15,6 +15,8 @@ option(WITH_RWHW "Set true to enable compilation of RobWorkHardware!" TRUE)
 option(WITH_RWS "Set true to enable compilation of RobWorkStudio!" TRUE)
 option(WITH_RWSIM "Set true to enable compilation of RobWorkSim!" TRUE)
 
+unset(SLIB_COMPILE_BUFFER CACHE) 
+
 add_subdirectory(RobWork)
 if(WITH_RWHW)
     add_subdirectory(RobWorkHardware)
