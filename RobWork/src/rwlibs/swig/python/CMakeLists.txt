@@ -87,7 +87,7 @@ if(build)
         rw_add_swig(
             ${RW_MODULE} python SHARED
             TARGET_NAME ${TARGET_NAME}
-            INSTALL_DIR ${PYTHON_INSTALL_DIR}
+            INSTALL_DIR ${PYTHON_INSTALL_DIR}/${RW_MODULE}
             LANGUAGE_FILE_DIR ${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RW_MODULE}
             SOURCES ../ScriptTypes.cpp
             SWIG_FLAGS ${SWIG_FLAGS}
@@ -129,12 +129,12 @@ if(build)
         target_link_libraries(${SUBSYS_NAME} INTERFACE ${TARGET_NAME})
 
         install(
-            FILES ${CMAKE_SWIG_OUTDIR}/${RW_MODULE}.py
+            FILES ${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RW_MODULE}/${RW_MODULE}.py
             DESTINATION "${PYTHON_INSTALL_DIR}/${RW_MODULE}"
             COMPONENT swig
         )
         install(
-            FILES ${CMAKE_SWIG_OUTDIR}/__init__.py
+            FILES ${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RW_MODULE}/__init__.py
             DESTINATION "${PYTHON_INSTALL_DIR}/${RW_MODULE}"
             COMPONENT swig
         )

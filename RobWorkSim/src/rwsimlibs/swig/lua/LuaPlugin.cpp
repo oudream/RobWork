@@ -46,6 +46,7 @@ namespace {
 struct RWSLuaLibrary: rwlibs::swig::LuaState::LuaLibrary {
 	virtual const std::string getId(){ return "RWSimLua"; }
 	virtual bool initLibrary(rwlibs::swig::LuaState& state){
+        std::cout << "INIT rwsim LUALIB" << std::endl << std::flush;
 		luaopen_sdurwsim( state.get() );
 	    //state.runCmd("rwsim = rwsim.lua");
 
