@@ -72,15 +72,23 @@ namespace rw { namespace math {
          * @brief Creates a Quaternion from another Quaternion
          * @param quat [in] Quaternion
          */
-        Quaternion (const Quaternion< T >& quat) : Rotation3DVector< T > (), _q (quat._q) {}
+        Quaternion (const Quaternion< T >& quat) : _q (quat._q) {}
+        
+        /**
+         * @brief Creates a Quaternion from another Rotation3DVector type
+         * @param rot [in] The Rotation3DVector type
+         */
+        Quaternion (const Rotation3DVector< T >& rot){setRotation (rot.toRotation3D ());}
 
         /**
          * @brief Extracts a Quaternion from Rotation matrix using
          * setRotation(const Rotation3D<R>& rot)
          * @param rot [in] A 3x3 rotation matrix @f$ \mathbf{rot} @f$
-         *
          */
-        Quaternion (const Rotation3D< T >& rot) { setRotation (rot); }
+        Quaternion (const Rotation3D< T >& rot)
+        {
+            setRotation (rot);
+        }
 
         /**
          * @brief Creates a Quaternion from a Eigen quaternion
