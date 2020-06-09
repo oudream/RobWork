@@ -17,8 +17,11 @@
 
 #include <rw/core/PropertyMap.hpp>
 #include <rws/RobWorkStudio.hpp>
+#include <rws/RobWorkStudioPlugin.hpp>
+#include <rwslibs/rwstudioapp/RobWorkStudioApp.hpp>
 
 #include <QApplication>
+#include <QString>
 #include <gtest/gtest.h>
 
 using namespace rw::core;
@@ -38,4 +41,46 @@ TEST (RobWorkStudio, LaunchTest)
     TimerUtil::sleepMs (1000);
     rwstudio.close ();
     TimerUtil::sleepMs (2000);
+}
+
+TEST (RobWorkStudio, PluginLoadTest)
+{
+    rws::RobWorkStudioApp rwsApp ("");
+    rwsApp.start ();
+    rws::RobWorkStudio* rwstudio = rwsApp.getRobWorkStudio ();
+    TimerUtil::sleepMs (1000);
+    std::vector< rws::RobWorkStudioPlugin* > pl = rwstudio->getPlugins ();
+
+    std::vector< QString > plugins = {"ATaskVisPlugin",
+                                      "PlayBack",
+                                      "Jog",
+                                      "Workcell Editor",
+                                      "Log",
+                                      "LuaConsole",
+                                      "TreeView",
+                                      "Planning",
+                                      "PropertyView",
+                                      "Sensors",
+                                      "GTaskVisPlugin"};
+    for (QString& pn : plugins) {
+        bool exist = false;
+        for (rws::RobWorkStudioPlugin* p : pl) {
+            if (p->name () == pn) {
+                exist = true;
+                break;
+            }
+        }
+        if (!exist) {    // Print som debug output
+            std::cout << "Could not find '" << pn.toStdString () << "' in list: " << std::endl;
+            for (rws::RobWorkStudioPlugin* p : pl) {
+                std::cout << p->name ().toStdString () << ", ";
+            }
+            std::cout << std::endl;
+        }
+
+        EXPECT_TRUE (exist);
+    }
+
+    rwsApp.close ();
+    TimerUtil::sleepMs (1000);
 }

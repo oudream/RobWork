@@ -329,7 +329,11 @@ namespace rw { namespace math {
          */
         friend Transform3DVector< T > operator/ (const T& lhs, const Transform3DVector< T >& rhs)
         {
-            return Transform3DVector< T > (lhs / rhs._t3d);
+            Transform3DVector< T > ret = rhs;
+            for (size_t i = 0; i < ret.size (); i++) {
+                ret[i] = lhs / rhs[i];
+            }
+            return ret;
         }
 
         // ###################################################

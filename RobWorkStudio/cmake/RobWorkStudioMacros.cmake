@@ -15,6 +15,10 @@ macro(RWS_ADD_PLUGIN _name _lib_type)
         set_target_properties(${_name} PROPERTIES LINK_FLAGS -Wl,--as-needed,--no-undefined)
     endif()
 
+    if(${_lib_type} STREQUAL "MODULE" OR ${_lib_type} STREQUAL "SHARED")
+        set_target_properties(${_name} PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/plugins)
+    endif()
+
     # Set the VERSION and SOVERSION of the library to the RobWorkStudio major and minor versions On
     # MAC OS we can not do this if we are building a Module (where it does not make much sense
     # anyway)
