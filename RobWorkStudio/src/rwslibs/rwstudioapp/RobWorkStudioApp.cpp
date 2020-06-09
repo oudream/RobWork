@@ -23,9 +23,9 @@
 
 #include <RobWorkConfig.hpp>
 #include <RobWorkStudioConfig.hpp>
-#include <rw/core/RobWork.hpp>
 #include <rw/common/ProgramOptions.hpp>
 #include <rw/core/PropertyMap.hpp>
+#include <rw/core/RobWork.hpp>
 
 #include <QApplication>
 #include <QCloseEvent>
@@ -61,13 +61,13 @@
 #endif
 #endif
 #ifdef RWS_HAVE_GLUT
-    #if defined(RW_MACOS)
-        //#include <GLUT/glut.h>
-        //TODO(kalor) Figure Out how to get GLUT to work as glutBitmapString is undeclared i mac
-        #undef RW_HAVE_GLUT
-    #else
-        #include <GL/freeglut.h>
-    #endif
+#if defined(RW_MACOS)
+//#include <GLUT/glut.h>
+// TODO(kalor) Figure Out how to get GLUT to work as glutBitmapString is undeclared i mac
+#undef RW_HAVE_GLUT
+#else
+#include <GL/freeglut.h>
+#endif
 #endif
 
 #include <boost/filesystem.hpp>
@@ -163,7 +163,8 @@ int RobWorkStudioApp::run ()
         ProgramOptions poptions ("RobWorkStudio", RW_VERSION);
         poptions.addStringOption ("ini-file", "RobWorkStudio.ini", "RobWorkStudio ini-file");
         poptions.addStringOption ("input-file", "", "Project/Workcell/Device input file");
-        poptions.addStringOption ("rwsplugin", "", "load RobWorkStudio plugin, not to be confused with '--rwplug'");
+        poptions.addStringOption (
+            "rwsplugin", "", "load RobWorkStudio plugin, not to be confused with '--rwplug'");
         poptions.addStringOption ("nosplash", "", "If defined the splash screen will not be shown");
         poptions.setPositionalOption ("input-file", -1);
         poptions.initOptions ();
@@ -173,7 +174,7 @@ int RobWorkStudioApp::run ()
         bool showSplash       = false;    //! map.has("nosplash");
         std::string inifile   = map.get< std::string > ("ini-file", "");
         std::string inputfile = map.get< std::string > ("input-file", "");
-        std::string rwsplugin = map.get< std::string > ("rwsplugin","");
+        std::string rwsplugin = map.get< std::string > ("rwsplugin", "");
         {
             MyQApplication app (argc, argv);
 #ifdef RWS_HAVE_GLUT
@@ -230,13 +231,25 @@ int RobWorkStudioApp::run ()
 #if RWS_HAVE_PLUGIN_LUAPL
                     rwstudio.addPlugin (new rws::Lua (), false, Qt::LeftDockWidgetArea);
 #endif
-
 #endif
+                    // Load all plugins from the local rwsplugins folder
+                    if (boost::filesystem::exists (RWS_COMPILE_PLUGIN_DIR)) {
+                        boost::filesystem::path p2 (RWS_COMPILE_PLUGIN_DIR);
+                        for (boost::filesystem::directory_iterator i (p2);
+                             i != boost::filesystem::directory_iterator ();
+                             i++) {
+                            std::string plPath =
+                                std::string(RWS_COMPILE_PLUGIN_DIR) + "/" + i->path ().filename ().string ();
+                            rwstudio.loadPlugin (plPath.c_str (), 0, 1);
+                        }
+                    }
+
                     if (showSplash) {
                         splash->showMessage ("Loading static plugins");
                     }
                     rwstudio.loadSettingsSetupPlugins (inifile);
 
+                    // Load all plugins from the rwsplugins folder
                     if (boost::filesystem::exists ("/usr/lib/")) {
                         boost::filesystem::path p ("/usr/lib");
                         std::string rwspluginFolder = "";
@@ -284,8 +297,8 @@ int RobWorkStudioApp::run ()
                             splash->showMessage ("Opening workcell...");
                         rwstudio.openFile (inputfile);
                     }
-                    if (!rwsplugin.empty()){
-                        rwstudio.loadPlugin(rwsplugin);
+                    if (!rwsplugin.empty ()) {
+                        rwstudio.loadPlugin (rwsplugin);
                     }
 
                     // load configuration into RobWorkStudio
@@ -316,7 +329,6 @@ int RobWorkStudioApp::run ()
             }
         }
         _isRunning = false;
-        std::cout << "IsRunning False" << std::endl << std::flush;
         return 0;
     }
 }
