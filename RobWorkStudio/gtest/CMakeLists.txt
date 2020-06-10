@@ -51,6 +51,7 @@ target_link_libraries( sdurws-gtest-main PUBLIC ${RW_BUILD_WITH_LIBRARIES_GTEST}
 
 SET(RWS_TEST_LIBRARIES
   sdurws
+  sdurws_robworkstudioapp
   ${QT_LIBRARIES}
   ${RW_BUILD_WITH_LIBRARIES_GTEST}
   RW::sdurw
