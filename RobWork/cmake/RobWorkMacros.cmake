@@ -668,6 +668,7 @@ macro(RW_ADD_SWIG _name _language _type)
         )
     else()
         if(TARGET ${SLIB_COMPILE_BUFFER})
+            message(STATUS "LOOOK: ${SLIB_TARGET_NAME} depends on ${SLIB_COMPILE_BUFFER}")
             add_dependencies(${SLIB_TARGET_NAME} ${SLIB_COMPILE_BUFFER})
             set(
                 SLIB_COMPILE_BUFFER
