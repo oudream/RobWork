@@ -43,6 +43,7 @@ TEST (RobWorkStudio, LaunchTest)
     TimerUtil::sleepMs (2000);
 }
 
+#ifndef WIN32
 TEST (RobWorkStudio, PluginLoadTest)
 {
     rws::RobWorkStudioApp rwsApp ("");
@@ -84,3 +85,4 @@ TEST (RobWorkStudio, PluginLoadTest)
     rwsApp.close ();
     TimerUtil::sleepMs (1000);
 }
+#endif
