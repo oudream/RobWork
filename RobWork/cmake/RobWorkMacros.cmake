@@ -652,7 +652,11 @@ macro(RW_ADD_SWIG _name _language _type)
     add_library(${PROJECT_PREFIX}::${SLIB_TARGET_NAME} ALIAS ${SLIB_TARGET_NAME})
 
     if((CMAKE_COMPILER_IS_GNUCC) OR (CMAKE_C_COMPILER_ID STREQUAL "Clang"))
-        set_target_properties(${SLIB_TARGET_NAME} PROPERTIES LINK_FLAGS -Wl,--no-undefined)
+        if (CMAKE_COMPILER_IS_GNUCC AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 9.0)
+            set_target_properties(${SLIB_TARGET_NAME} PROPERTIES LINK_FLAGS -Wl,--no-undefined,-Wno-unused-variable)
+        else()
+            set_target_properties(${SLIB_TARGET_NAME} PROPERTIES LINK_FLAGS -Wl,--no-undefined)
+        endif()
     endif()
 
     install(TARGETS ${SLIB_TARGET_NAME} EXPORT ${PROJECT_PREFIX}Targets DESTINATION
