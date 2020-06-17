@@ -41,6 +41,7 @@ if(build)
         Statistics.cpp
         Transform2D.cpp
         Transform3D.cpp
+        Transform3DVector.cpp
         Vector.cpp
         Vector2D.cpp
         Vector3D.cpp
@@ -81,6 +82,7 @@ if(build)
         Statistics.hpp
         Transform2D.hpp
         Transform3D.hpp
+        Transform3DVector.hpp
         Vector.hpp
         Vector2D.hpp
         Vector3D.hpp
