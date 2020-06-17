@@ -201,8 +201,8 @@ TimedStatePath PathLoaderCSV::loadTimedStatePath(
     std::string locale = setlocale(LC_ALL, NULL); // save old locale
     setlocale(LC_ALL, "C"); // change locale
     Reader reader(file);
-    return reader.getTimedStatePath(workcell);
     setlocale(LC_ALL, locale.c_str()); // set locale back
+    return reader.getTimedStatePath(workcell);
 }
 
 

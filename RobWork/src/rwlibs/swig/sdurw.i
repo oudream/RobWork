@@ -17,7 +17,14 @@ using rw::trajectory::Timed;
 using rw::trajectory::Trajectory;
 using rw::trajectory::InterpolatorTrajectory;
 using rw::pathplanning::PathPlanner;
+
+#ifndef WIN32
+	#pragma GCC diagnostic push
+	#pragma GCC diagnostic ignored "-Wunused-but-set-variable"
+#endif
 %}
+
+
 
 %pragma(java) jniclassclassmodifiers="class"
 #if defined (SWIGJAVA)
@@ -1922,5 +1929,8 @@ function ownedCPtr(arg)
 end
 }
 #endif
-
-
+%{
+#ifndef WIN32
+	#pragma GCC diagnostic pop
+#endif
+%}

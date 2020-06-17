@@ -1346,6 +1346,7 @@ rw::core::Ptr<ThreadSimulator> getSimulatorInstance();
 void removeSimulatorInstance(const std::string& id);
 std::vector<std::string> getSimulatorInstances();
 
+
 #ifndef WIN32
 	#pragma GCC diagnostic pop
 #endif

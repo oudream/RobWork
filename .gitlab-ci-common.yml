@@ -77,6 +77,7 @@ stages:
   before_script:
     - *remove-rw-install
     - THREADS=$(nproc --all)
+    - WERROR=True
     - "[ -d Build ] || mkdir Build"
     - "[ -d Build/RW ] || mkdir Build/RW"
     - "[ -d Build/RWExamples ] || mkdir Build/RWExamples"
@@ -96,8 +97,8 @@ stages:
     # Build RobWork
     - cd RW
     - *is_shared_runner
-    - "[[ $SHARED_RUNNER ]] || cmake -DCMAKE_BUILD_TYPE=Release ../../RobWork"
-    - "[[ $SHARED_RUNNER ]] && cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_DISABLE_FIND_PACKAGE_XercesC=True -DCMAKE_DISABLE_FIND_PACKAGE_SWIG=True -DRW_USE_FCL=OFF -DRW_USE_ASSIMP=OFF ../../RobWork"
+    - "[[ $SHARED_RUNNER ]] || cmake -DCMAKE_BUILD_TYPE=Release -DUSE_WERROR=$WERROR ../../RobWork"
+    - "[[ $SHARED_RUNNER ]] && cmake -DCMAKE_BUILD_TYPE=Release -DUSE_WERROR=$WERROR -DCMAKE_DISABLE_FIND_PACKAGE_XercesC=True -DCMAKE_DISABLE_FIND_PACKAGE_SWIG=True -DRW_USE_FCL=OFF -DRW_USE_ASSIMP=OFF ../../RobWork"
     - make -j${THREADS}
   artifacts:
     paths:
@@ -118,7 +119,7 @@ stages:
     - cd RWS
     - *is_shared_runner
     - "[[ $SHARED_RUNNER ]] || cmake -DCMAKE_BUILD_TYPE=Release -DUSE_WERROR=$WERROR ../../RobWorkStudio"
-    - "[[ $SHARED_RUNNER ]] && cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_DISABLE_FIND_PACKAGE_SWIG=True ../../RobWorkStudio"
+    - "[[ $SHARED_RUNNER ]] && cmake -DCMAKE_BUILD_TYPE=Release -DUSE_WERROR=$WERROR -DCMAKE_DISABLE_FIND_PACKAGE_SWIG=True ../../RobWorkStudio"
     - make -j${THREADS}
     - cd ..
   artifacts:
@@ -158,7 +159,7 @@ stages:
     - cd RWSim
     - *is_shared_runner
     - "[[ $SHARED_RUNNER ]] || cmake -DCMAKE_BUILD_TYPE=Release -DUSE_WERROR=$WERROR ../../RobWorkSim"
-    - "[[ $SHARED_RUNNER ]] && cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_DISABLE_FIND_PACKAGE_SWIG=True ../../RobWorkSim"
+    - "[[ $SHARED_RUNNER ]] && cmake -DCMAKE_BUILD_TYPE=Release -DUSE_WERROR=$WERROR -DCMAKE_DISABLE_FIND_PACKAGE_SWIG=True ../../RobWorkSim"
     - make -j${THREADS}
     - cd ..
   artifacts:

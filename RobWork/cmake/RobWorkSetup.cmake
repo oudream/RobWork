@@ -602,7 +602,7 @@ if("${RW_CXX_FLAGS}" STREQUAL "")
     # GCC and MinGW
     if((CMAKE_COMPILER_IS_GNUCXX) OR (CMAKE_CXX_COMPILER_ID STREQUAL "Clang") OR (CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang"))
         # Turn off annoying GCC warnings
-        set(RW_CXX_FLAGS_TMP "-Wall -Wno-strict-aliasing -Wno-unused-function -Wno-pragmas")
+        set(RW_CXX_FLAGS_TMP "-Wall -Wno-strict-aliasing -Wno-unused-function")
         if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR (CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang"))
             set(RW_CXX_FLAGS_TMP "-Wall -Wno-strict-aliasing -Wno-unused-function")
         endif()
