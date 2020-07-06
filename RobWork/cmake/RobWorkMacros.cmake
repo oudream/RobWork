@@ -653,7 +653,7 @@ macro(RW_ADD_SWIG _name _language _type)
 
     if((CMAKE_COMPILER_IS_GNUCC) OR (CMAKE_C_COMPILER_ID STREQUAL "Clang"))
         if (CMAKE_COMPILER_IS_GNUCC AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 9.0)
-            set_target_properties(${SLIB_TARGET_NAME} PROPERTIES LINK_FLAGS -Wl,--no-undefined,-Wno-unused-variable)
+            set_target_properties(${SLIB_TARGET_NAME} PROPERTIES LINK_FLAGS -Wl,--no-undefined)
         else()
             set_target_properties(${SLIB_TARGET_NAME} PROPERTIES LINK_FLAGS -Wl,--no-undefined)
         endif()
@@ -672,7 +672,6 @@ macro(RW_ADD_SWIG _name _language _type)
         )
     else()
         if(TARGET ${SLIB_COMPILE_BUFFER})
-            message(STATUS "LOOOK: ${SLIB_TARGET_NAME} depends on ${SLIB_COMPILE_BUFFER}")
             add_dependencies(${SLIB_TARGET_NAME} ${SLIB_COMPILE_BUFFER})
             set(
                 SLIB_COMPILE_BUFFER
