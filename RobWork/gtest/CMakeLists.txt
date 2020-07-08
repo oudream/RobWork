@@ -164,7 +164,7 @@ add_rw_gtest(sdurw_loaders-gtest)
 set(MATH_TEST_LIBRARIES ${GTEST_BOTH_LIBRARIES} sdurw)
 
 set(MATH_TEST_SRC math/MetricFactoryTest.cpp math/PolynomialTest.cpp math/SerializationTest.cpp
-                  math/StatisticsTest.cpp
+                  math/StatisticsTest.cpp math/QuaternionTest.cpp
 )
 add_executable(sdurw_math-gtest ${MATH_TEST_SRC})
 target_link_libraries(sdurw_math-gtest ${MATH_TEST_LIBRARIES})

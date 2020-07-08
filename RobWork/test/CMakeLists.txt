@@ -26,8 +26,7 @@ SET(MATH_TEST_SRC
   math/EAATest.cpp
   math/LinearAlgebraTest.cpp
   math/MathSerializationTest.cpp
-  math/Pose6DTest.cpp 
-  math/QuaternionTest.cpp
+  math/Pose6DTest.cpp
   math/Rotation3DTest.cpp
   math/RPYTest.cpp
   math/Transform3DTest.cpp
