@@ -517,7 +517,7 @@ void WorkCellScene::setFrameLabelVisible(bool visible, Frame::Ptr f)
     GroupNode::Ptr node = _frameNodeMap[f.get()];
     if( visible ){
         if( node->hasChild( "FrameLabel" ) ){
-            // remove current frameaxis
+            // remove current frameLabel
             removeDrawable("FrameLabel",f.get());
         }
 
@@ -527,12 +527,9 @@ void WorkCellScene::setFrameLabelVisible(bool visible, Frame::Ptr f)
         	frameLabelNode->setName("FrameLabel");
         	addDrawable(frameLabelNode, f.get());
         }
-        //_frameDrawableMap[f].push_back(dnode);
-        //node->addChild( dnode );
+
         _scene->update();
-    } else if( !visible && node->hasChild( "FrameAxis" ) ){
-        // remove leaf
-        //node->removeChild( "FrameAxis" );
+    } else if( !visible && node->hasChild( "FrameLabel" ) ){
         removeDrawable("FrameLabel", f.get());
         _scene->update();
 
