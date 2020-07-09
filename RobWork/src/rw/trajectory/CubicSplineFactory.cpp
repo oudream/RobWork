@@ -17,12 +17,12 @@
 
 #include "CubicSplineFactory.hpp"
 
-#include "CubicSplineInterpolator.hpp"
-
 #include <rw/core/Ptr.hpp>
 #include <rw/math/Quaternion.hpp>
 #include <rw/math/Transform3D.hpp>
 #include <rw/math/Vector3D.hpp>
+#include <rw/trajectory/CubicSplineInterpolator.hpp>
+#include <rw/trajectory/SQUADInterpolator.hpp>
 
 #include <Eigen/Sparse>
 
@@ -363,17 +363,17 @@ CubicSplineFactory::makeNaturalSpline (const Path< Timed< Transform3DVector<> > 
 template< typename T >
 typename InterpolatorTrajectory< T >::Ptr
 CubicSplineFactory::makeNaturalSpline (const Path< T >& path, const std::vector< double >& times)
-{   
+{
     if (path.size () < 2) {
         RW_THROW ("Path must be longer than 1!");
     }
     if (path.size () != times.size ()) {
         RW_THROW ("Length of path and times need to be equal");
     }
-    
+
     size_t dim = path[0].size ();     // the number of dimensions of the points
     size_t N   = path.size () - 1;    // we have N+1 points, which yields N splines
-    Eigen::VectorXd B (N + 1);    // make room for boundary conditions
+    Eigen::VectorXd B (N + 1);        // make room for boundary conditions
 
     Eigen::VectorXd Y (N + 1);    // the points that the spline should intersect
 
@@ -443,7 +443,8 @@ CubicSplineFactory::makeNaturalSpline (const Path< T >& path, const std::vector<
         }
     }
     // ************** now create the actual trajectory from the calcualted parameters
-    typename InterpolatorTrajectory< T >::Ptr traj = ownedPtr (new InterpolatorTrajectory< T > (times[0]));
+    typename InterpolatorTrajectory< T >::Ptr traj =
+        ownedPtr (new InterpolatorTrajectory< T > (times[0]));
 
     T ba, bb, bc, bd;
     for (size_t i = 0; i < N; i++) {
@@ -598,13 +599,15 @@ CubicSplineFactory::makeClampedSpline (const Path< T >& path, const std::vector<
 
         for (size_t i = 0; i < (size_t) N; i++) {
             c[j + i * dim] = B[i];
-            b[j + i * dim] = (double) ((Y[i + 1] - Y[i]) / H[i] - H[i] * (B[i + 1] + 2 * B[i]) / 3.0);
+            b[j + i * dim] =
+                (double) ((Y[i + 1] - Y[i]) / H[i] - H[i] * (B[i + 1] + 2 * B[i]) / 3.0);
             d[j + i * dim] = (double) ((B[i + 1] - B[i]) / (3.0 * H[i]));    //   +B[i]+B[i+1];
         }
     }
 
     // ************** now create the actual trajectory from the calcualted parameters
-    typename InterpolatorTrajectory< T >::Ptr traj = ownedPtr (new InterpolatorTrajectory< T > (times[0]));
+    typename InterpolatorTrajectory< T >::Ptr traj =
+        ownedPtr (new InterpolatorTrajectory< T > (times[0]));
 
     T ba, bb, bc, bd;
     for (size_t i = 0; i < N; i++) {
@@ -773,5 +776,56 @@ CubicSplineFactory::makeNaturalSpline (const Path< rw::math::Transform3D<> >& pa
         traj->add (ownedPtr (iptr));
     }
 
+    return traj;
+}
+
+// ###########################################################################
+// #                             SQUAD Functions                             #
+// ###########################################################################
+
+InterpolatorTrajectory< rw::math::Quaternion<> >::Ptr
+CubicSplineFactory::makeSQUAD (const Path< rw::math::Quaternion<> >& path, double timeStep)
+{
+    std::vector< double > times;
+    for (size_t i = 0; i < path.size (); i++) {
+        times.push_back (i * timeStep);
+    }
+    return makeSQUAD (path, times);
+}
+InterpolatorTrajectory< rw::math::Quaternion<> >::Ptr
+CubicSplineFactory::makeSQUAD (const Path< Timed< rw::math::Quaternion<> > >& tpath)
+{
+    Path< rw::math::Quaternion<> > pathN;
+    std::vector< double > times;
+    for (const Timed< rw::math::Quaternion<> >& tq : tpath) {
+        pathN.push_back (tq.getValue ());
+        times.push_back (tq.getTime ());
+    }
+    return makeSQUAD (pathN, times);
+}
+
+InterpolatorTrajectory< rw::math::Quaternion<> >::Ptr
+CubicSplineFactory::makeSQUAD (const Path< rw::math::Quaternion<> >& path, const std::vector< double >& times)
+{
+    InterpolatorTrajectory< Quaternion<> >::Ptr traj =
+        ownedPtr (new InterpolatorTrajectory< Quaternion<> > (times[0]));
+    size_t N = path.size () - 1;
+    std::vector< Quaternion<> > s (path.size ());
+    s[0] = path[0];
+    for (size_t i = 1; i < s.size () - 1; i++) {
+        const Quaternion<>& qn1 = path[i - 1];
+        const Quaternion<>& q0  = path[i];
+        const Quaternion<>& q1  = path[i + 1];
+
+        s[i] = q0 * exp (-1 * (ln (q0.inverse () * q1) + ln (q0.inverse () * qn1)) * (1.0 / 4.0));
+    }
+    s.back () = path.back ();
+
+    for (size_t i = 0; i < N - 1; i++) {
+        double duration = times[i + 1] - times[i];
+        Interpolator< Quaternion<> >* iptr =
+            new SQUADInterpolator< double > (path[i], path[i + 1], s[i], s[i + 1], duration);
+        traj->add (ownedPtr (iptr));
+    }
     return traj;
 }
