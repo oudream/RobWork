@@ -40,6 +40,7 @@ DistanceMultiStrategy::Result DistanceMultiStrategy::distances(
 	if(getModel(a)==NULL || getModel(b)==NULL)
 		RW_THROW("Frame must have a Proximity model attached!");
 	ProximityStrategyData data;
+	data.setMultiDistanceTolerance(tolerance);
 
 	return distances(getModel(a),wTa,getModel(b),wTb,tolerance,data);
 }
@@ -54,7 +55,7 @@ DistanceMultiStrategy::Result& DistanceMultiStrategy::distances(
 {
 	if(getModel(a)==NULL || getModel(b)==NULL)
 		RW_THROW("Frame must have a Proximity model attached!");
-
+	data.setMultiDistanceTolerance(tolerance);
 	return distances(getModel(a),wTa,getModel(b),wTb,tolerance,data);
 }
 

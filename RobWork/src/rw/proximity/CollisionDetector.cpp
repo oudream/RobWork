@@ -225,7 +225,7 @@ void CollisionDetector::removeGeometry (rw::kinematics::Frame* frame, const std:
         }
 
         ProximityModel::Ptr model = _npstrategy->getModel (frame);
-        model->removeGeometry(geoid);
+        model->removeGeometry (geoid);
         _frameToModels[*frame] = _npstrategy->getModel (frame);
     }
 }
@@ -260,8 +260,21 @@ bool CollisionDetector::hasGeometry (rw::kinematics::Frame* frame, const std::st
     return false;
 }
 
-rw::geometry::Geometry::Ptr CollisionDetector::getGeometry (rw::kinematics::Frame* frame, const std::string& geometryId)
+rw::geometry::Geometry::Ptr CollisionDetector::getGeometry (rw::kinematics::Frame* frame,
+                                                            const std::string& geometryId)
 {
+    if (!_frameToModels.has (*frame)) {
+        return NULL;
+    }
 
+    ProximityModel::Ptr model = _frameToModels[*frame];
+    if (model == NULL) {
+        return NULL;
+    }
+
+    for (rw::core::Ptr< Geometry >& geom : model->getGeometries ()) {
+        if (geom->getId () == geometryId)
+            return geom;
+    }
     return NULL;
 }

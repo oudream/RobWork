@@ -1,78 +1,76 @@
-SET(FILES_CPP
-  ProximityCache.cpp
-  ProximityData.cpp
-  ProximityStrategyData.cpp
-  
-  CollisionStrategy.cpp
-  CollisionSetup.cpp
-  CollisionToleranceStrategy.cpp
-  ProximityStrategy.cpp
-  CollisionDetector.cpp
-  DistanceStrategy.cpp
-  DistanceMultiStrategy.cpp
-  #DistanceThresholdStrategy.cpp
-  DistanceCalculator.cpp
-  ProximityModel.cpp
-  
-  ProximityFilterStrategy.cpp
-  ProximitySetup.cpp
-  ProximitySetupRule.cpp
-  BasicFilterStrategy.cpp
-  #ProximityStrategyFactory.cpp
-  Raycaster.cpp
-  
-  rwstrategy/BinaryBVTree.cpp
-  rwstrategy/BinaryIdxBVTree.cpp
-  
-  rwstrategy/BVTree.cpp
-  rwstrategy/BVTreeFactory.cpp
-  rwstrategy/ProximityStrategyRW.cpp
-  rwstrategy/BVTreeCollider.cpp
-  rwstrategy/BVTreeColliderFactory.cpp
-  rwstrategy/BVTreeToleranceCollider.cpp
-  rwstrategy/OBVTreeDFSCollider.cpp
+set(
+    FILES_CPP
+    BasicFilterStrategy.cpp
+    CollisionDetector.cpp
+    CollisionSetup.cpp
+    CollisionStrategy.cpp
+    CollisionToleranceStrategy.cpp
+    DistanceCalculator.cpp
+    DistanceMultiStrategy.cpp
+    DistanceStrategy.cpp
+    ProximityCache.cpp
+    ProximityCalculator.cpp
+    ProximityData.cpp
+    ProximityFilter.cpp
+    ProximityFilterStrategy.cpp
+    ProximityModel.cpp
+    ProximitySetup.cpp
+    ProximitySetupRule.cpp
+    ProximityStrategy.cpp
+    ProximityStrategyData.cpp
+    Raycaster.cpp
+    rwstrategy/BVTree.cpp
+    rwstrategy/BVTreeCollider.cpp
+    rwstrategy/BVTreeColliderFactory.cpp
+    rwstrategy/BVTreeFactory.cpp
+    rwstrategy/BVTreeToleranceCollider.cpp
+    rwstrategy/BinaryBVTree.cpp
+    rwstrategy/BinaryIdxBVTree.cpp
+    rwstrategy/OBVTreeDFSCollider.cpp
+    rwstrategy/ProximityStrategyRW.cpp
 )
 
-SET(FILES_HPP
-  CollisionStrategy.hpp
-  CollisionSetup.hpp
-  CollisionToleranceStrategy.hpp
-  ProximityStrategy.hpp
-  CollisionDetector.hpp
-  DistanceStrategy.hpp
-  DistanceMultiStrategy.hpp
-  DistanceCalculator.hpp
-  ProximityModel.hpp
-  ProximityFilterStrategy.hpp
-  ProximitySetup.hpp
-  ProximitySetupRule.hpp
-  BasicFilterStrategy.hpp
-  #ProximityStrategyFactory.hpp  
-  Raycaster.hpp
-  rwstrategy/BinaryBVTree.hpp
-  rwstrategy/BinaryIdxBVTree.hpp
-  rwstrategy/BVTreeCollider.hpp
-  rwstrategy/BVTree.hpp
-  rwstrategy/BVTreeFactory.hpp
-  rwstrategy/ProximityStrategyRW.hpp
-  rwstrategy/BVTreeColliderFactory.hpp
-  rwstrategy/BVTreeToleranceCollider.hpp
-  rwstrategy/OBVTreeDFSCollider.hpp 
+set(
+    FILES_HPP
+    BasicFilterStrategy.hpp
+    CollisionDetector.hpp
+    CollisionSetup.hpp
+    CollisionStrategy.hpp
+    CollisionToleranceStrategy.hpp
+    DistanceCalculator.hpp
+    DistanceMultiStrategy.hpp
+    DistanceStrategy.hpp
+    ProximityCache.hpp
+    ProximityCalculator.hpp
+    ProximityData.hpp
+    ProximityFilter.hpp
+    ProximityFilterStrategy.hpp
+    ProximityModel.hpp
+    ProximitySetup.hpp
+    ProximitySetupRule.hpp
+    ProximityStrategy.hpp
+    ProximityStrategyData.hpp
+    Raycaster.hpp
+    rwstrategy/BVTree.hpp
+    rwstrategy/BVTreeCollider.hpp
+    rwstrategy/BVTreeColliderFactory.hpp
+    rwstrategy/BVTreeFactory.hpp
+    rwstrategy/BVTreeToleranceCollider.hpp
+    rwstrategy/BinaryBVTree.hpp
+    rwstrategy/BinaryIdxBVTree.hpp
+    rwstrategy/OBVTreeDFSCollider.hpp
+    rwstrategy/ProximityStrategyRW.hpp
 )
 
-IF (RW_HAVE_PQP)
-  SET(FILES_CPP ${FILES_CPP}
-    rwstrategy/TreeDistanceCalc.cpp
-  )
-  SET(FILES_HPP ${FILES_HPP}
-    rwstrategy/TreeDistanceCalc.hpp
-  )
-ENDIF()
+if(RW_HAVE_PQP)
+    set(FILES_CPP ${FILES_CPP} rwstrategy/TreeDistanceCalc.cpp)
+    set(FILES_HPP ${FILES_HPP} rwstrategy/TreeDistanceCalc.hpp)
+endif()
 
-SOURCE_GROUP(proximity FILES ${FILES_CPP} ${FILES_HPP})
+source_group(proximity FILES ${FILES_CPP} ${FILES_HPP})
 
-FILE(GLOB SRC_FILES_CPP ${FILES_CPP})
-FILE(GLOB SRC_FILES_HPP ${FILES_HPP})
+file(GLOB SRC_FILES_CPP ${FILES_CPP})
+file(GLOB SRC_FILES_HPP ${FILES_HPP})
 
-SET(RW_LIB_FILES_CPP ${RW_LIB_FILES_CPP} ${SRC_FILES_CPP} PARENT_SCOPE)
-SET(RW_LIB_FILES_HPP ${RW_LIB_FILES_HPP} ${SRC_FILES_HPP} PARENT_SCOPE)
+set(RW_LIB_FILES_CPP ${RW_LIB_FILES_CPP} ${SRC_FILES_CPP} PARENT_SCOPE)
+set(RW_LIB_FILES_HPP ${RW_LIB_FILES_HPP} ${SRC_FILES_HPP} PARENT_SCOPE)

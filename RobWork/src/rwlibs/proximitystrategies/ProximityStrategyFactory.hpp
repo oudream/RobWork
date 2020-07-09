@@ -15,42 +15,87 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RWLIBS_PROXIMITYSTRATEGIES_ProximityStrategyFactory_HPP
 #define RWLIBS_PROXIMITYSTRATEGIES_ProximityStrategyFactory_HPP
 
 #include <rw/proximity/CollisionStrategy.hpp>
 #include <rw/proximity/CollisionToleranceStrategy.hpp>
 #include <rw/proximity/DistanceStrategy.hpp>
+#include <rw/proximity/DistanceMultiStrategy.hpp>
 
 namespace rwlibs { namespace proximitystrategies {
 
-	/**
-	 * @brief Factory class that enables constructing collision strategies
-	 */
+    /**
+     * @brief Factory class that enables constructing collision strategies
+     */
     class ProximityStrategyFactory
     {
-    public:
-        static std::vector<std::string> getCollisionStrategyIDs();
+      public:
+        /**
+         * @brief Get a list of all available CollisionStrategiy ID's
+         * @return A vector of ID's
+         */
+        static std::vector< std::string > getCollisionStrategyIDs ();
 
         /**
-    	 * @brief function to create a default available collision strategy
-    	 * @return NULL if no collisionstrategies are available else a Ptr to a
-    	 * collision strategy
-    	 */
-		static rw::proximity::CollisionStrategy::Ptr makeDefaultCollisionStrategy();
+         * @brief function to create a default available collision strategy
+         * @return NULL if no collision strategies are available else a Ptr to a
+         * collision strategy
+         */
+        static rw::proximity::CollisionStrategy::Ptr makeDefaultCollisionStrategy ();
 
-		static rw::proximity::CollisionStrategy::Ptr makeCollisionStrategy(const std::string& id);
+		/**
+         * @brief function to create a collision strategy from an ID
+		 * @param id [in] the id of the collision strategy
+         * @return NULL if the \b id dosn't match an available collision strategies else a Ptr to the
+         * collision strategy
+         */
+        static rw::proximity::CollisionStrategy::Ptr makeCollisionStrategy (const std::string& id);
 
-        static std::vector<std::string> getDistanceStrategyIDs();
+        /**
+         * @brief Get a list of all available DistanceStrategiy ID's
+         * @return A vector of ID's
+         */
 
-		static rw::proximity::DistanceStrategy::Ptr makeDefaultDistanceStrategy();
+        static std::vector< std::string > getDistanceStrategyIDs ();
 
-		static rw::proximity::DistanceStrategy::Ptr makeDistanceStrategy(const std::string& id);
+        /**
+         * @brief function to create a default available distance strategy
+         * @return NULL if no distancestrategies are available else a Ptr to a
+         * distance strategy
+         */
+        static rw::proximity::DistanceStrategy::Ptr makeDefaultDistanceStrategy ();
 
+		/**
+         * @brief function to create a distance strategy from an ID
+		 * @param id [in] the id of the distance strategy
+         * @return NULL if the \b id dosn't match an available distance trategies else a Ptr to the
+         * distance strategy
+         */
+        static rw::proximity::DistanceStrategy::Ptr makeDistanceStrategy (const std::string& id);
 
+        /**
+         * @brief Get a list of all available DistanceMultiStrategiy ID's
+         * @return A vector of ID's
+         */
+        static std::vector< std::string > getDistanceMultiStrategyIDs ();
+
+        /**
+         * @brief function to create a default available distance multi strategy
+         * @return NULL if no distance multi strategies are available else a Ptr to a
+         * distance multi strategy
+         */
+        static rw::proximity::DistanceMultiStrategy::Ptr makeDefaultDistanceMultiStrategy ();
+
+		/**
+         * @brief function to create a distance multi strategy from an ID
+		 * @param id [in] the id of the distance multi strategy
+         * @return NULL if the \b id dosn't match an available distance multi strategies else a Ptr to the
+         * distnace multi strategy
+         */
+        static rw::proximity::DistanceMultiStrategy::Ptr makeDistanceMultiStrategy (const std::string& id);
     };
 
-}} // end namespaces
+}}    // namespace rwlibs::proximitystrategies
 
-#endif // end include guard
+#endif    // end include guard
