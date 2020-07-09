@@ -10,3 +10,4 @@ RobWork uses various file formats. The following pages documents some of the mos
 
    file_formats/workcell
    file_formats/dynamic_workcell
+   file_formats/path

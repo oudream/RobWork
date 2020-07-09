@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RW_LOADERS_PATHLOADER_CSV_HPP
 #define RW_LOADERS_PATHLOADER_CSV_HPP
 
@@ -23,56 +22,60 @@
  * @file PathLoader.hpp
  */
 
+#include <rw/trajectory/Path.hpp>
+#include <rw/trajectory/Timed.hpp>
+
 #include <string>
 
-#include <rw/trajectory/Timed.hpp>
-#include <rw/trajectory/Path.hpp>
-
 // Forward declarations
-namespace rw { namespace models { class WorkCell; }}
+namespace rw { namespace models {
+    class WorkCell;
+}}    // namespace rw::models
 
 namespace rw { namespace loaders {
 
-/** @addtogroup loaders */
-/* @{*/
-
-/**
-       @brief Loader for .csv files.
-
-       This loader differs from the standard PathLoader,
-       in that it only considers devices in the workcell.
-
-       The .csv format is implemented as follows. First 2 lines is setup:
-       \verbatim
-       3; <- first line is the path length. The loader exist after loading 3 lines of configurations.
-       6;  <- second line is degrees of freedom (DOF) for all devices in the workcell. (Has to match total DOF in workcell).
-       \endverbatim
-       Then follows the path itself, one configuration-vector at the time:
-       \verbatim
-       -1.5,0.0,-1.5,0.0,-1.5,0.0;
-       -1.0,-1.5,0.0,-1.5,0.0,-1.5;
-       -0.8,0.0,-1.5,0.0,-1.5,0.0;
-       \endverbatim
-       If loadTimedStatePath is used, a timestamp (in seconds) is added in the beginning of each line.
-
-       If a workcell contains more than 1 device, the first device reads the first n values, second device reads next n values etc.
-
-       An example of a file with a path length of 3, DOF of six and a timestamp is given below:
-       \verbatim
-        11;
-        6;
-        0.0,-1.5,0.0,-1.5,0.0,-1.5,0.0;
-        1.0,-1.0,-1.5,0.0,-1.5,0.0,-1.5;
-        1.5,-0.8,0.0,-1.5,0.0,-1.5,0.0;
-       \endverbatim
-
-     */
-class PathLoaderCSV
-{
-public:
-
+    /** @addtogroup loaders */
+    /* @{*/
 
     /**
+     * @brief Loader for .csv files.
+     *
+     * This loader differs from the standard PathLoader,
+     * in that it only considers devices in the workcell.
+     *
+     * The .csv format is implemented as follows. First 2 lines is setup:
+     \verbatim
+      3; <- first line is the path length. The loader exist after loading 3 lines of
+      configurations.
+      6;  <- second line is degrees of freedom (DOF) for all devices in the
+      workcell. (Has to match total DOF in workcell).
+     \endverbatim
+     * Then follows the path itself, one configuration-vector at the time:
+     \verbatim
+      -1.5,0.0,-1.5,0.0,-1.5,0.0;
+      -1.0,-1.5,0.0,-1.5,0.0,-1.5;
+      -0.8,0.0,-1.5,0.0,-1.5,0.0;
+     \endverbatim
+     * If loadTimedStatePath is used, a timestamp (in seconds) is added in the beginning of each
+     * line.
+     *
+     * If a workcell contains more than 1 device, the first device reads the first n values,
+     * second device reads next n values etc.
+     *
+     * An example of a file with a path length of 3, DOF of six and a timestamp is given
+     * below:
+     \verbatim
+      3;
+      6;
+      0.0,-1.5,0.0,-1.5,0.0,-1.5,0.0;
+      1.0,-1.0,-1.5,0.0,-1.5,0.0,-1.5;
+      1.5,-0.8,0.0,-1.5,0.0,-1.5,0.0;
+      \endverbatim
+     */
+    class PathLoaderCSV
+    {
+      public:
+        /**
          * @brief Loads a Path of robot configuration
          *
          * Load and return a path from a file.
@@ -82,33 +85,29 @@ public:
          * @return the path
          */
 
-    static rw::trajectory::QPath loadPath(const std::string& file);
+        static rw::trajectory::QPath loadPath (const std::string& file);
 
-    /**
-           @brief Load a sequence of states for \b workcell from the file named \b
-           file. This loader includes timestamps in the path.
+        /**
+         * @brief Load a sequence of states for \b workcell from the file named \b
+         * file. This loader includes timestamps in the path.
+         *
+         * An exception is thrown if the file can't be read or is of the wrong
+         * format with respect to the work cell.
+         */
+        static rw::trajectory::TimedStatePath
+        loadTimedStatePath (const rw::models::WorkCell& workcell, const std::string& file);
 
-           An exception is thrown if the file can't be read or is of the wrong
-           format with respect to the work cell.
-        */
-    static rw::trajectory::TimedStatePath loadTimedStatePath(
-            const rw::models::WorkCell& workcell,
-            const std::string& file);
+        /**
+         *  @brief Load a sequence of states for \b workcell from the file named \b file.
+         *
+         * An exception is thrown if the file can't be read or is of the wrong
+         * format with respect to the work cell.
+         */
+        static rw::trajectory::StatePath loadStatePath (const models::WorkCell& workcell,
+                                                        const std::string& file);
+    };
 
+    /**@}*/
+}}    // namespace rw::loaders
 
-    /**
-           @brief Load a sequence of states for \b workcell from the file named \b
-           file.
-
-           An exception is thrown if the file can't be read or is of the wrong
-           format with respect to the work cell.
-        */
-    static rw::trajectory::StatePath loadStatePath(
-            const models::WorkCell& workcell,
-            const std::string& file);
-};
-
-/**@}*/
-}} // end namespaces
-
-#endif // end include guard
+#endif    // end include guard
