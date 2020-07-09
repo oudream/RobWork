@@ -28,6 +28,13 @@
 #include "ProximityCache.hpp"
 #include "ProximityModel.hpp"
 
+#include <rw/core/Ptr.hpp>
+#include <rw/kinematics/Frame.hpp>
+
+#include <float.h>
+#include <utility>
+#include <vector>
+
 namespace rw { namespace proximity {
     //! @addtogroup proximity
     // @{
@@ -50,6 +57,9 @@ namespace rw { namespace proximity {
     {
       public:
         typedef rw::core::Ptr< ProximityStrategyData > Ptr;
+        typedef std::vector< ProximityStrategyData > List;
+        typedef rw::core::Ptr< std::vector< ProximityStrategyData > > PtrList;
+
         /**
          * @brief Create Empty ProximityData
          */
@@ -60,6 +70,7 @@ namespace rw { namespace proximity {
             _collisionData.clear ();
             _distanceData.clear ();
             _multiDistanceData.clear ();
+            _multtiDistanceTolerance = DBL_MAX;
         }
 
         /**
@@ -69,7 +80,7 @@ namespace rw { namespace proximity {
             rel_err (data.rel_err), abs_err (data.abs_err), _colQueryType (data._colQueryType),
             _collides (data._collides), _collisionData (data._collisionData),
             _distanceData (data._distanceData), _multiDistanceData (data._multiDistanceData),
-            _cache (data._cache)
+            _multtiDistanceTolerance (data._multtiDistanceTolerance), _cache (data._cache)
         {}
 
         /**
@@ -92,10 +103,27 @@ namespace rw { namespace proximity {
         const CollisionStrategy::Result& getCollisionData () const { return _collisionData; }
 
         /**
+         * @brief get the the colliding frames
+         * @return the cooliding frames, if in collision else a pair of null
+         */
+        std::pair< rw::core::Ptr< const rw::kinematics::Frame >,
+                   rw::core::Ptr< const rw::kinematics::Frame > >
+        getColidingFrames ()
+        {
+            if (!_collisionData.a.isNull () && !_collisionData.b.isNull ()) {
+                return std::make_pair (
+                    rw::core::Ptr< const rw::kinematics::Frame > (_collisionData.a->getFrame ()),
+                    rw::core::Ptr< const rw::kinematics::Frame > (_collisionData.b->getFrame ()));
+            }
+            return std::make_pair (rw::core::Ptr< rw::kinematics::Frame > (NULL),
+                                   rw::core::Ptr< rw::kinematics::Frame > (NULL));
+        }
+
+        /**
          * @brief was collision check in collision
          * @return true if in collision
          */
-        bool inCollision () { return _collides; }
+        bool& inCollision () { return _collides; }
 
         /**
          * @brief set the Collision Query type
@@ -139,21 +167,37 @@ namespace rw { namespace proximity {
             return _multiDistanceData;
         }
 
+        /**
+         * @brief get the tolerance used to treshold which distances are recorded and which are not.
+         * point pairs that are closer than tolerance will be included in the
+         * result.
+         * @return The set tolerance
+         */
+        double getMultiDistanceTolerance () { return _multtiDistanceTolerance; }
+
+        /**
+         * @brief set the tolerance used to treshold which distances are recorded and which are not.
+         * point pairs that are closer than tolerance will be included in the
+         * result.
+         * @param tolerance [in] set the stored tolerance
+         */
+        void setMultiDistanceTolerance (double tolerance) { _multtiDistanceTolerance = tolerance; }
+
         //! @brief relative acceptable error
         double rel_err;
         //! @brief absolute acceptable error
         double abs_err;
 
       private:
+        // Collision data
         CollisionStrategy::QueryType _colQueryType;
-
-        // Following belongs to CollisionData interface
-        //! true if the models are colliding
         bool _collides;
-        //! @brief the features that where colliding
         CollisionStrategy::Result _collisionData;
+
+        // Distance data
         DistanceStrategy::Result _distanceData;
         DistanceMultiStrategy::Result _multiDistanceData;
+        double _multtiDistanceTolerance;
 
         //! @brief proximity cache
         ProximityCache::Ptr _cache;

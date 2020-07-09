@@ -52,6 +52,7 @@ namespace rw { namespace proximity {
 		typedef rw::core::Ptr<DistanceCalculator> Ptr;
         //! @brief smart pointer type to this const class
 		typedef rw::core::Ptr< const DistanceCalculator > CPtr;
+
         /**
          * @brief Distance calculations for a given tree, collision setup and
          * primitive distance calculator. Uses proximity strategy given by the workcell.
@@ -192,6 +193,7 @@ namespace rw { namespace proximity {
 
     	rw::kinematics::Frame* _root;
     	rw::proximity::CollisionSetup _setup;
+        
 		DistanceStrategy::Ptr _strategy;
 		DistanceStrategy::Ptr _thresholdStrategy;
 

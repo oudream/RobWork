@@ -52,6 +52,7 @@ namespace rw { namespace proximity {
          */
         struct Result
         {
+
             //! @brief reference to the first proximity model
             ProximityModel::Ptr a;
 

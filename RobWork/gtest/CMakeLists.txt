@@ -200,17 +200,18 @@ add_rw_gtest(sdurw_pathoptimization-gtest)
 # Proximity
 # ##################################################################################################
 
-set(PROXIMITY_TEST_LIBRARIES sdurw-gtest-main ${GTEST_LIBRARIES} sdurw)
+set(PROXIMITY_TEST_LIBRARIES sdurw-gtest-main ${GTEST_LIBRARIES} sdurw sdurw_proximitystrategies)
 
 set(PROXIMITY_TEST_SRC
     proximity/BVTreeTest.cpp
-    proximity/CollisionStrategy.cpp
-    proximity/CollisionToleranceStrategy.cpp
-    proximity/DistanceMultiStrategy.cpp
-    proximity/DistanceStrategy.cpp
-    proximity/ProximityStrategy.cpp
+    proximity/CollisionStrategyTest.cpp
+    proximity/CollisionToleranceStrategyTest.cpp
+    proximity/DistanceMultiStrategyTest.cpp
+    proximity/DistanceStrategyTest.cpp
+    proximity/ProximityStrategyTest.cpp
     proximity/DistanceCalculatorTest.cpp
-    proximity/ProximityModel.cpp
+    proximity/ProximityModelTest.cpp
+    proximity/ProximityCalculatorTest.cpp
 )
 add_executable(sdurw_proximity-gtest ${PROXIMITY_TEST_SRC})
 target_link_libraries(sdurw_proximity-gtest ${PROXIMITY_TEST_LIBRARIES})

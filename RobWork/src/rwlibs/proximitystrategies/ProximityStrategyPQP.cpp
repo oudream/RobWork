@@ -203,7 +203,8 @@ bool ProximityStrategyPQP::addGeometry (rw::proximity::ProximityModel* model,
     // check if geomid is in model. remove it if it has
     for (RWPQPModel& m : pmodel->models) {
         if (m.geo->getId () == geom->getId ()) {
-            RW_THROW ("The specified geometry \"" + geom->getId() + "\" (geometry identifiers are supposed to be unique) has "
+            RW_THROW ("The specified geometry \"" + geom->getId () +
+                      "\" (geometry identifiers are supposed to be unique) has "
                       "already been added to the proximity strategy model!");
             return false;
         }
@@ -422,8 +423,8 @@ DistanceResult& ProximityStrategyPQP::doDistance (ProximityModel::Ptr aModel,
 
             if (rwresult.distance > qdata.cache->_distResult.distance) {
                 rwresult.distance = qdata.cache->_distResult.distance;
-                rwresult.p1 = wTa * ma.t3d * fromRapidVector (qdata.cache->_distResult.p1);
-                rwresult.p2 = wTb * mb.t3d * fromRapidVector (qdata.cache->_distResult.p2);
+                rwresult.p1       = wTa * ma.t3d * fromRapidVector (qdata.cache->_distResult.p1);
+                rwresult.p2       = wTb * mb.t3d * fromRapidVector (qdata.cache->_distResult.p2);
 
                 rwresult.geoIdxA = geoA;
                 rwresult.geoIdxB = geoB;
@@ -459,7 +460,7 @@ MultiDistanceResult& ProximityStrategyPQP::doDistances (ProximityModel::Ptr aMod
         geoB = -1;
         for (const RWPQPModel& mb : qdata.b->models) {
             geoB++;
-            result.clear();
+            result.clear ();
             pqpMultiDistance (threshold,
                               ma.pqpmodel.get (),
                               wTa * ma.t3d,
@@ -468,7 +469,6 @@ MultiDistanceResult& ProximityStrategyPQP::doDistances (ProximityModel::Ptr aMod
                               data.rel_err,
                               data.abs_err,
                               result);
-
             typedef std::map< int, int > IdMap;
             IdMap idMap;
 
@@ -477,8 +477,8 @@ MultiDistanceResult& ProximityStrategyPQP::doDistances (ProximityModel::Ptr aMod
                 int id      = result.id1s[i];
                 if (dist < rwresult.distance) {
                     rwresult.distance = dist;
-                    rwresult.p1 = wTa * ma.t3d * fromRapidVector (result.p1s[i]);
-                    rwresult.p2 = wTa * ma.t3d * fromRapidVector (result.p2s[i]);
+                    rwresult.p1       = wTa * ma.t3d * fromRapidVector (result.p1s[i]);
+                    rwresult.p2       = wTa * ma.t3d * fromRapidVector (result.p2s[i]);
                 }
                 IdMap::iterator res = idMap.find (id);
                 if (res == idMap.end ()) {
@@ -602,9 +602,6 @@ ProximityStrategyPQP::doDistanceThreshold (ProximityModel::Ptr aModel, const Tra
                                            ProximityModel::Ptr bModel, const Transform3D<>& wTb,
                                            double threshold, ProximityStrategyData& data)
 {
-    // RW_ASSERT(aModel->owner==this);
-    // RW_ASSERT(bModel->owner==this);
-
     PQPProximityModel* a = (PQPProximityModel*) aModel.get ();
     PQPProximityModel* b = (PQPProximityModel*) bModel.get ();
 
