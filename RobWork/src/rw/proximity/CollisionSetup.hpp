@@ -21,115 +21,146 @@
 #include <rw/core/Ptr.hpp>
 #include <rw/core/StringUtil.hpp>
 
+#include <iostream>
 #include <set>
 #include <string>
 #include <vector>
 
-namespace rw { namespace core { class PropertyMap; } }
-namespace rw { namespace kinematics { class Frame; } }
-namespace rw { namespace models { class WorkCell; } }
+namespace rw { namespace core {
+    class PropertyMap;
+}}    // namespace rw::core
+namespace rw { namespace kinematics {
+    class Frame;
+}}    // namespace rw::kinematics
+namespace rw { namespace models {
+    class WorkCell;
+}}    // namespace rw::models
 
-namespace rw {
-namespace proximity {
+namespace rw { namespace proximity {
 
-/** @addtogroup proximity */
-/*@{*/
-//! @file rw/proximity/CollisionSetup.hpp
-/**
- * @brief Setup for the collision checker
- *
- * The CollisionSetup contains information about
- * which frames, not be checked against each other
- */
-class CollisionSetup
-{
-public:
+    /** @addtogroup proximity */
+    /*@{*/
+    //! @file rw/proximity/CollisionSetup.hpp
     /**
-     * @brief Default constructor for when no excludes are described
+     * @brief Setup for the collision checker
+     *
+     * The CollisionSetup contains information about
+     * which frames, not be checked against each other
      */
-    CollisionSetup();
-
-    /**
-     @brief Constructs CollisionSetup with list of exclusions
-
-     @param exclude [in] pairs to be excluded
-     */
-    explicit CollisionSetup(const std::vector<std::pair<std::string,std::string> >& exclude);
-
-    /**
-     @brief CollisionSetup for a list of pairs to exclude and a sequence
-     of volatile frames.
-
-     @param exclude [in] pairs to be excluded
-
-     @param volatileFrames [in] names of frames to treat as volatile.
-
-     @param excludeStaticPairs [in] if true exclude statically related pairs.
-     */
-    CollisionSetup(const rw::core::StringPairList& exclude,
-                   const std::set<std::string>& volatileFrames,
-                   bool excludeStaticPairs);
-
-
-	void addExcludePair(rw::core::StringPair& pair);
-
-	void removeExcludePair(rw::core::StringPair& pair);
-
-    /**
-     * @brief Returns the exclude list
-     * @return the exclude list
-     */
-    const rw::core::StringPairList& getExcludeList() const
+    class CollisionSetup
     {
-        return _exclude;
-    }
+      public:
+        /**
+         * @brief Default constructor for when no excludes are described
+         */
+        CollisionSetup ();
 
-    /**
-     @brief True iff the collision setup for the frame can change over
-     time.
-     */
-    bool isVolatile(const rw::kinematics::Frame& frame) const;
+        /**
+         @brief Constructs CollisionSetup with list of exclusions
 
-    /**
-     @brief True iff all statically related pairs of frames should be
-     excluded.
+         @param exclude [in] pairs to be excluded
+         */
+        explicit CollisionSetup (
+            const std::vector< std::pair< std::string, std::string > >& exclude);
 
-     Note that this will exclude also statically related pairs of frames
-     for which one or both of the pairs are volatile.
-     */
-    bool excludeStaticPairs() const
-    {
-        return _excludeStaticPairs;
-    }
+        /**
+         @brief CollisionSetup for a list of pairs to exclude and a sequence
+         of volatile frames.
 
-    /**
-     * @brief Combine setup of this and setup of \b b into this collision setup.
-     */
-    void merge(const CollisionSetup& b);
+         @param exclude [in] pairs to be excluded
 
-    /**
-     * @brief Combine setup \b a and setup \b b into a single collision setup.
-     */
-    static CollisionSetup merge(const CollisionSetup& a, const CollisionSetup& b);
+         @param volatileFrames [in] names of frames to treat as volatile.
 
-    static CollisionSetup get(const rw::models::WorkCell& wc);
-    static CollisionSetup get(rw::core::Ptr<rw::models::WorkCell> wc);
+         @param excludeStaticPairs [in] if true exclude statically related pairs.
+         */
+        CollisionSetup (const rw::core::StringPairList& exclude,
+                        const std::set< std::string >& volatileFrames, bool excludeStaticPairs);
 
-    static CollisionSetup get(const rw::core::PropertyMap& map);
+        void addExcludePair (rw::core::StringPair& pair);
 
-    static void set(const CollisionSetup& setup, rw::core::Ptr<rw::models::WorkCell> wc);
+        void removeExcludePair (rw::core::StringPair& pair);
 
-    static void set(const CollisionSetup& setup, rw::core::PropertyMap& map);
+        /**
+         * @brief Returns the exclude list
+         * @return the exclude list
+         */
+        const rw::core::StringPairList& getExcludeList () const { return _exclude; }
 
+        /**
+         @brief True iff the collision setup for the frame can change over
+         time.
+         */
+        bool isVolatile (const rw::kinematics::Frame& frame) const;
 
-private:
-    rw::core::StringPairList _exclude;
-    std::set<std::string> _volatileFrames;
-    bool _excludeStaticPairs;
-};
+        /**
+         @brief True iff all statically related pairs of frames should be
+         excluded.
 
-/*@}*/
-}
-} // end namespaces
+         Note that this will exclude also statically related pairs of frames
+         for which one or both of the pairs are volatile.
+         */
+        bool excludeStaticPairs () const { return _excludeStaticPairs; }
 
-#endif // end include guard
+        /**
+         * @brief ostream operator formatting the setup for easy reading
+         */
+        friend std::ostream& operator<< (std::ostream& s, const CollisionSetup& r)
+        {
+            s << "CollisionSetup( Exclude{ ";
+            if (!r._exclude.empty ()) {
+                s<< ", " << r._exclude[0].first << " <=>" << r._exclude[0].second;
+            }
+            bool first = true;
+            for (const rw::core::StringPair& sp : r._exclude) {
+                if (first) {
+                    first = false;
+                    continue;
+                }
+                s << ", " << sp.first << " <=>" << sp.second;
+            }
+            s << "}, Volatile{ ";
+            if (!r._volatileFrames.empty ()) {
+                s << ", " << (*r._volatileFrames.begin ());
+            }
+            first = true;
+            for (const std::string& sp : r._volatileFrames) {
+                if (first) {
+                    first = false;
+                    continue;
+                }
+                s << ", " << sp;
+            }
+            s << "} )";
+
+            return s;
+        }
+
+        /**
+         * @brief Combine setup of this and setup of \b b into this collision setup.
+         */
+        void merge (const CollisionSetup& b);
+
+        /**
+         * @brief Combine setup \b a and setup \b b into a single collision setup.
+         */
+        static CollisionSetup merge (const CollisionSetup& a, const CollisionSetup& b);
+
+        static CollisionSetup get (const rw::models::WorkCell& wc);
+        static CollisionSetup get (rw::core::Ptr< rw::models::WorkCell > wc);
+
+        static CollisionSetup get (const rw::core::PropertyMap& map);
+
+        static void set (const CollisionSetup& setup, rw::core::Ptr< rw::models::WorkCell > wc);
+
+        static void set (const CollisionSetup& setup, rw::core::PropertyMap& map);
+
+      private:
+        rw::core::StringPairList _exclude;
+        std::set< std::string > _volatileFrames;
+        bool _excludeStaticPairs;
+    };
+
+    /*@}*/
+}}    // namespace rw::proximity
+
+#endif    // end include guard

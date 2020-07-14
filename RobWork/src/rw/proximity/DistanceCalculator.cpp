@@ -206,7 +206,7 @@ DistanceStrategy::Result DistanceCalculator::distance(const State& state,
         const Frame* b = p->second;
 
         DistanceStrategy::Result *dist;
-        if (distance.distance == DBL_MAX || _thresholdStrategy == NULL) {
+        if (distance.distance == DBL_MAX || _thresholdStrategy == NULL || result != NULL) {
 	       dist = &_strategy->distance(a, fk.get(*a), b, fk.get(*b), data);
 		} else {
 	        dist = &_thresholdStrategy->distance(a, fk.get(*a), b, fk.get(*b), distance.distance, data);
@@ -263,7 +263,7 @@ DistanceResult DistanceCalculator::distanceOMP(const State& state,
 		tb = fk.get(*b);
 		}
 
-        if (distance.distance == DBL_MAX || _thresholdStrategy == NULL) {
+        if (distance.distance == DBL_MAX || _thresholdStrategy == NULL || result != NULL) {
 	       dist = &_strategy->distance(a, ta, b, tb, data);
 		} else {
 	        dist = &_thresholdStrategy->distance(a, ta, b, tb, distance.distance, data);
@@ -310,7 +310,7 @@ DistanceStrategy::Result DistanceCalculator::distance(const State& state,
         if (a == frame || b == frame) {
 
             DistanceStrategy::Result *dist;
-			if (distance.distance == DBL_MAX) {
+			if (distance.distance == DBL_MAX || result != NULL) {
 				dist = &_strategy->distance(a, fk.get(*a), b, fk.get(*b), data);
 			} else {
 				dist = &_thresholdStrategy->distance(a, fk.get(*a), b, fk.get(*b), distance.distance, data);
