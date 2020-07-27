@@ -703,8 +703,8 @@ void SceneOpenGLViewer::mouseMoveEvent(QMouseEvent* event)
 
 void SceneOpenGLViewer::wheelEvent(QWheelEvent* event)
 {
-    int winx = width()/2;
-    int winy = height()/2;
+    int winx = event->x();
+    int winy = height() - event->y();
     Vector3D<> pos = _scene->unproject(_mainCam, winx, winy);
     _cameraCtrl->setZoomTarget( pos );
     _cameraCtrl->handleEvent( event );
