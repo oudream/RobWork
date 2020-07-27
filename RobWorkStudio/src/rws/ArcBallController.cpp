@@ -238,8 +238,9 @@ void ArcBallController::zoom(double amount)
         _advancedZoomEnabled=false;
         if ((newAmount > 0 &&(newAmount > amount)) || (newAmount < 0 && (amount > newAmount)) || newAmount == 0) {
             newAmount = amount;
-        } 
-        zoom(newAmount);
+        }
+        Vector3D<> translateVector=(dist/dist[2])*newAmount;
+        _viewTransform.P() = _viewTransform.P() + translateVector;
     }
     else {
          Vector3D<> translateVector(0, 0, amount );
