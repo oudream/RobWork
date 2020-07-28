@@ -31,7 +31,8 @@
 #include <limits>
 
 namespace rw { namespace math {
-
+    
+    template< class T > class Rotation3DVector;
     /** @addtogroup math */
     /* @{*/
 
@@ -69,15 +70,15 @@ namespace rw { namespace math {
          */
         Rotation3D ()
         {
-            _m[0][0] = 1;
-            _m[0][1] = 0;
-            _m[0][2] = 0;
-            _m[1][0] = 0;
-            _m[1][1] = 1;
-            _m[1][2] = 0;
-            _m[2][0] = 0;
-            _m[2][1] = 0;
-            _m[2][2] = 1;
+            _m(0,0) = 1;
+            _m(0,1) = 0;
+            _m(0,2) = 0;
+            _m(1,0) = 0;
+            _m(1,1) = 1;
+            _m(1,2) = 0;
+            _m(2,0) = 0;
+            _m(2,1) = 0;
+            _m(2,2) = 1;
         }
 
         /**
@@ -106,15 +107,15 @@ namespace rw { namespace math {
          */
         Rotation3D (T r11, T r12, T r13, T r21, T r22, T r23, T r31, T r32, T r33)
         {
-            _m[0][0] = r11;
-            _m[0][1] = r12;
-            _m[0][2] = r13;
-            _m[1][0] = r21;
-            _m[1][1] = r22;
-            _m[1][2] = r23;
-            _m[2][0] = r31;
-            _m[2][1] = r32;
-            _m[2][2] = r33;
+            _m(0,0) = r11;
+            _m(0,1) = r12;
+            _m(0,2) = r13;
+            _m(1,0) = r21;
+            _m(1,1) = r22;
+            _m(1,2) = r23;
+            _m(2,0) = r31;
+            _m(2,1) = r32;
+            _m(2,2) = r33;
         }
 
         /**
@@ -133,16 +134,22 @@ namespace rw { namespace math {
          */
         Rotation3D (const Vector3D< T >& i, const Vector3D< T >& j, const Vector3D< T >& k)
         {
-            _m[0][0] = i[0];
-            _m[0][1] = j[0];
-            _m[0][2] = k[0];
-            _m[1][0] = i[1];
-            _m[1][1] = j[1];
-            _m[1][2] = k[1];
-            _m[2][0] = i[2];
-            _m[2][1] = j[2];
-            _m[2][2] = k[2];
+            _m(0,0) = i[0];
+            _m(0,1) = j[0];
+            _m(0,2) = k[0];
+            _m(1,0) = i[1];
+            _m(1,1) = j[1];
+            _m(1,2) = k[1];
+            _m(2,0) = i[2];
+            _m(2,1) = j[2];
+            _m(2,2) = k[2];
         }
+
+        /**
+         * @brief Initialize Rotation3D from other rotation types
+         * @param rotVec [in] rotation type such as \b EAA, \b RPY, or \b Quaternion
+         */
+        explicit Rotation3D(const Rotation3DVector<T>& rotVec);
 
         /**
          * @brief Constructs a 3x3 rotation matrix set to identity
@@ -175,7 +182,7 @@ namespace rw { namespace math {
          * @param column [in] column
          * @return reference to the element
          */
-        inline T& operator() (size_t row, size_t column) { return _m[row][column]; }
+        inline T& operator() (size_t row, size_t column) { return _m(row,column); }
 
         /**
          * @brief Returns reference to matrix element
@@ -183,7 +190,7 @@ namespace rw { namespace math {
          * @param column [in] column
          * @return reference to the element
          */
-        inline const T& operator() (size_t row, size_t column) const { return _m[row][column]; }
+        inline const T& operator() (size_t row, size_t column) const { return _m(row,column); }
 
         /**
          * @brief Returns the i'th row of the rotation matrix
@@ -192,7 +199,7 @@ namespace rw { namespace math {
         const Vector3D< T > getRow (size_t i) const
         {
             RW_ASSERT (i < 3);
-            return Vector3D< T > (_m[i][0], _m[i][1], _m[i][2]);
+            return Vector3D< T > (_m(i,0), _m(i,1), _m(i,2));
         }
 
         /**
@@ -202,7 +209,7 @@ namespace rw { namespace math {
         const Vector3D< T > getCol (size_t i) const
         {
             RW_ASSERT (i < 3);
-            return Vector3D< T > (_m[0][i], _m[1][i], _m[2][i]);
+            return Vector3D< T > (_m(0,i), _m(1,i), _m(2,i));
         }
 
         /**
@@ -218,7 +225,7 @@ namespace rw { namespace math {
         {
             for (int i = 0; i < 3; i++)
                 for (int j = 0; j < 3; j++)
-                    if (!(_m[i][j] == rhs (i, j)))
+                    if (!(_m(i,j) == rhs (i, j)))
                         return false;
             return true;
         }
@@ -249,7 +256,7 @@ namespace rw { namespace math {
         {
             for (int i = 0; i < 3; i++)
                 for (int j = 0; j < 3; j++)
-                    if (fabs (_m[i][j] - rot (i, j)) > precision)
+                    if (fabs (_m(i,j) - rot (i, j)) > precision)
                         return false;
             return true;
         }
@@ -274,7 +281,15 @@ namespace rw { namespace math {
          *
          * @return @f$ \mathbf{M}\in SO(3) @f$
          */
-        EigenMatrix3x3 e () const;
+        const EigenMatrix3x3& e () const;
+
+        /**
+         * @brief Returns a Eigen 3x3 matrix @f$ \mathbf{M}\in SO(3)
+         * @f$ that represents this rotation
+         *
+         * @return @f$ \mathbf{M}\in SO(3) @f$
+         */
+        EigenMatrix3x3& e () ;
 
         /**
          * @brief Calculates \f$ \robabx{a}{c}{\mathbf{R}} =
@@ -310,15 +325,15 @@ namespace rw { namespace math {
          */
         template< class R > explicit Rotation3D (const EigenMatrix3x3& r)
         {
-            _m[0][0] = r (0, 0);
-            _m[0][1] = r (0, 1);
-            _m[0][2] = r (0, 2);
-            _m[1][0] = r (1, 0);
-            _m[1][1] = r (1, 1);
-            _m[1][2] = r (1, 2);
-            _m[2][0] = r (2, 0);
-            _m[2][1] = r (2, 1);
-            _m[2][2] = r (2, 2);
+            _m(0,0) = r (0, 0);
+            _m(0,1) = r (0, 1);
+            _m(0,2) = r (0, 2);
+            _m(1,0) = r (1, 0);
+            _m(1,1) = r (1, 1);
+            _m(1,2) = r (1, 2);
+            _m(2,0) = r (2, 0);
+            _m(2,1) = r (2, 1);
+            _m(2,2) = r (2, 2);
         }
 
         /**
@@ -330,15 +345,15 @@ namespace rw { namespace math {
         {
             RW_ASSERT (m.cols () == 3);
             RW_ASSERT (m.rows () == 3);
-            _m[0][0] = m.row (0) (0);
-            _m[0][1] = m.row (0) (1);
-            _m[0][2] = m.row (0) (2);
-            _m[1][0] = m.row (1) (0);
-            _m[1][1] = m.row (1) (1);
-            _m[1][2] = m.row (1) (2);
-            _m[2][0] = m.row (2) (0);
-            _m[2][1] = m.row (2) (1);
-            _m[2][2] = m.row (2) (2);
+            _m(0,0) = m.row (0) (0);
+            _m(0,1) = m.row (0) (1);
+            _m(0,2) = m.row (0) (2);
+            _m(1,0) = m.row (1) (0);
+            _m(1,1) = m.row (1) (1);
+            _m(1,2) = m.row (1) (2);
+            _m(2,0) = m.row (2) (0);
+            _m(2,1) = m.row (2) (1);
+            _m(2,2) = m.row (2) (2);
         }
 
         /**
@@ -401,22 +416,22 @@ namespace rw { namespace math {
          */
         inline Rotation3D< T >& inverse ()
         {
-            T tmpVal = _m[0][1];
-            _m[0][1] = _m[1][0];
-            _m[1][0] = tmpVal;
+            T tmpVal = _m(0,1);
+            _m(0,1) = _m(1,0);
+            _m(1,0) = tmpVal;
 
-            tmpVal   = _m[0][2];
-            _m[0][2] = _m[2][0];
-            _m[2][0] = tmpVal;
+            tmpVal   = _m(0,2);
+            _m(0,2) = _m(2,0);
+            _m(2,0) = tmpVal;
 
-            tmpVal   = _m[1][2];
-            _m[1][2] = _m[2][1];
-            _m[2][1] = tmpVal;
+            tmpVal   = _m(1,2);
+            _m(1,2) = _m(2,1);
+            _m(2,1) = tmpVal;
             return *this;
         }
 
       private:
-        T _m[3][3];
+        EigenMatrix3x3 _m;
     };
 
     /**
