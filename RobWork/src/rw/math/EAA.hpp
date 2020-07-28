@@ -22,10 +22,10 @@
  * @file EAA.hpp
  */
 
-#include "Constants.hpp"
-#include "Rotation3D.hpp"
-#include "Rotation3DVector.hpp"
-#include "Vector3D.hpp"
+#include <rw/math/Constants.hpp>
+#include <rw/math/Rotation3D.hpp>
+#include <rw/math/Rotation3DVector.hpp>
+#include <rw/math/Vector3D.hpp>
 
 #include <rw/common/Serializable.hpp>
 

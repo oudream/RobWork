@@ -22,7 +22,7 @@
  * @file Rotation3D.hpp
  */
 
-#include "Vector3D.hpp"
+#include <rw/math/Vector3D.hpp>
 
 #include <rw/common/Serializable.hpp>
 #include <rw/core/macros.hpp>

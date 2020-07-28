@@ -87,6 +87,8 @@ namespace Eigen{
 %template(EigenVector3d) Eigen::Matrix<double,3,1>;
 %template(EigenVector6f) Eigen::Matrix<float,6,1>;
 %template(EigenVector6d) Eigen::Matrix<double,6,1>;
+%template(EigenVector6f) Eigen::Matrix<float,7,1>;
+%template(EigenVector6d) Eigen::Matrix<double,7,1>;
 
 %template(EigenRowVector3f) Eigen::Matrix<float,1,3>;
 %template(EigenRowVector3d) Eigen::Matrix<double,1,3>;

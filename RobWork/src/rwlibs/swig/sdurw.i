@@ -74,6 +74,7 @@ SWIG_JAVABODY_TYPEWRAPPER(public, public, public, SWIGTYPE)
     %rename(multiplyAssign) operator *=;
     %rename(devideAssign) operator /=;
     %rename(notEqual) operator!=;
+    %rename(assign) operator=;
 #endif
 
 #if (defined(SWIGPYTHON) || defined(SWIGLUA))
