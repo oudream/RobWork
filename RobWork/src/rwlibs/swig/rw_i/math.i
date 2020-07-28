@@ -1216,8 +1216,6 @@
     }}
 
 // ######################### Quaternion
-
-
     namespace rw { namespace math {
         /**
          * @brief A Quaternion @f$ \mathbf{q}\in \mathbb{R}^4 @f$ a complex
@@ -1379,7 +1377,7 @@
 
     %template (Quaterniond) rw::math::Quaternion<double>;
     %template (Quaternionf) rw::math::Quaternion<float>;
-    %template (QuaterniondVector) std::vector< rw::math::Quaternion<double> >;
+    %template (VectorQuaterniond) std::vector< rw::math::Quaternion<double> >;
 
     namespace rw { namespace math {
         /**
@@ -1656,7 +1654,7 @@
 
     %template (Transform3Dd) rw::math::Transform3D<double>;
     %template (Transform3Df) rw::math::Transform3D<float>;
-    %template (Transform3DdVector) std::vector<rw::math::Transform3D<double> >;
+    %template (VectorTransform3Dd) std::vector<rw::math::Transform3D<double> >;
 
     namespace rw { namespace math {
         /**
@@ -4697,6 +4695,15 @@
     %template(Transform2Dd) rw::math::Transform2D<double>;
     %template(Transform2Df) rw::math::Transform2D<float>;
 
+// ######################### Transform3DVector
+
+    %include <rw/math/Transform3DVector.hpp>
+    %template(Transform3DVectord) rw::math::Transform3DVector<double>;
+    %template(Transform3DVectorf) rw::math::Transform3DVector<float>;
+
+    %template(VectorTransform3DVectord) std::vector<rw::math::Transform3DVector<double>>;
+    %template(VectorTransform3DVectorf) std::vector<rw::math::Transform3DVector<float>>;
+    
 // ######################### Vector
     namespace rw { namespace math {
         /**

@@ -23,6 +23,7 @@
 #include <rw/math/InertiaMatrix.hpp>
 #include <rw/math/Transform3D.hpp>
 #include <rw/math/VectorND.hpp>
+#include <rw/math/Math.hpp>
 #include <rw/math/LinearAlgebra.hpp>
 #include <rw/core/Ptr.hpp>
 

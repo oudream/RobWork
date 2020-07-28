@@ -13,6 +13,6 @@ namespace std {
 %template(complexf) std::complex<float>;
 
 #if !defined(SWIGPYTHON)
-    //TODO(kalor) find out why this doesn't work i npython
+    //TODO(kalor) find out why this doesn't work in python
     %template(VectorComplexDouble) std::vector<std::complex<double>>;
 #endif
