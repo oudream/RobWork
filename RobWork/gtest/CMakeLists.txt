@@ -13,8 +13,9 @@ macro(ADD_RW_GTEST target)
     )
     add_custom_target(
         ${target}_report
-        COMMAND $<TARGET_FILE:${target}>
-                --gtest_output=xml:$<TARGET_FILE_DIR:${target}>/gtest_reports/${target}.xml
+        COMMAND
+            $<TARGET_FILE:${target}>
+            --gtest_output=xml:$<TARGET_FILE_DIR:${target}>/gtest_reports/${target}.xml
         DEPENDS ${target} ${target}_report-makedir
     )
     set(REPORT_TARGETS ${REPORT_TARGETS} ${target}_report)
@@ -42,8 +43,15 @@ target_link_libraries(sdurw-gtest-main ${RWMAIN_TEST_LIBRARIES})
 
 set(CORE_TEST_LIBRARIES sdurw-gtest-main ${GTEST_LIBRARIES} sdurw_core)
 
-set(CORE_TEST_SRC core/AnyPtrTest.cpp core/EventTest.cpp core/PluginTest.cpp core/PtrTest.cpp
-                  core/PtrBoostTest.cpp core/StringUtilTest.cpp)
+set(
+    CORE_TEST_SRC
+    core/AnyPtrTest.cpp
+    core/EventTest.cpp
+    core/PluginTest.cpp
+    core/PtrTest.cpp
+    core/PtrBoostTest.cpp
+    core/StringUtilTest.cpp
+)
 
 add_executable(sdurw_core-gtest ${CORE_TEST_SRC})
 target_link_libraries(sdurw_core-gtest ${CORE_TEST_LIBRARIES})
@@ -53,7 +61,8 @@ add_rw_gtest(sdurw_core-gtest)
 add_library(test_plugin.rwplugin MODULE core/TestPlugin.cpp)
 target_link_libraries(test_plugin.rwplugin sdurw_core)
 set_target_properties(
-    test_plugin.rwplugin PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
+    test_plugin.rwplugin
+    PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
 )
 
 # Create XML file for lazy-loading of Test plugin
@@ -70,8 +79,7 @@ file(
 set(COMMON_TEST_LIBRARIES ${GTEST_BOTH_LIBRARIES} sdurw_common sdurw_math)
 
 set(COMMON_TEST_SRC common/IteratorTest.cpp common/PairMapTest.cpp common/ProgramOptionTest.cpp
-                    common/TimerTest.cpp
-)
+                    common/TimerTest.cpp)
 
 add_executable(sdurw_common-gtest ${COMMON_TEST_SRC})
 target_link_libraries(sdurw_common-gtest ${COMMON_TEST_LIBRARIES})
@@ -80,11 +88,18 @@ add_rw_gtest(sdurw_common-gtest)
 # ##################################################################################################
 # Geometry
 # ##################################################################################################
-set(GEOMETRY_TEST_LIBRARIES ${GTEST_BOTH_LIBRARIES} sdurw ${XERCESC_LIBRARIES} ${ASSIMP_LIBRARIES}
-                            ${QHULL_LIBRARIES} ${CMAKE_DL_LIBS}
+set(
+    GEOMETRY_TEST_LIBRARIES
+    ${GTEST_BOTH_LIBRARIES}
+    sdurw
+    ${XERCESC_LIBRARIES}
+    ${ASSIMP_LIBRARIES}
+    ${QHULL_LIBRARIES}
+    ${CMAKE_DL_LIBS}
 )
 
-set(GEOMETRY_TEST_SRC
+set(
+    GEOMETRY_TEST_SRC
     geometry/DelaunayTest.cpp
     geometry/HyperSphereTest.cpp
     geometry/ImplicitTorusTest.cpp
@@ -115,11 +130,8 @@ add_rw_gtest(sdurw_graphics-gtest)
 # ##################################################################################################
 set(INVKIN_TEST_LIBRARIES sdurw-gtest-main ${GTEST_LIBRARIES} sdurw)
 
-set(INVKIN_TEST_SRC
-     invkin/ClosedFormIKSolverKukaIIWATest.cpp
-     invkin/ParallelIKSolverTest.cpp
-     invkin/JacobianIKSolverTest.cpp
-     )
+set(INVKIN_TEST_SRC invkin/ClosedFormIKSolverKukaIIWATest.cpp invkin/ParallelIKSolverTest.cpp
+                    invkin/JacobianIKSolverTest.cpp)
 add_executable(sdurw_invkin-gtest ${INVKIN_TEST_SRC})
 target_link_libraries(sdurw_invkin-gtest ${INVKIN_TEST_LIBRARIES})
 add_rw_gtest(sdurw_invkin-gtest)
@@ -139,7 +151,8 @@ add_rw_gtest(sdurw_kinematics-gtest)
 # Loaders
 # ##################################################################################################
 
-set(LOADERS_TEST_LIBRARIES
+set(
+    LOADERS_TEST_LIBRARIES
     sdurw-gtest-main
     ${GTEST_LIBRARIES}
     sdurw
@@ -151,8 +164,7 @@ set(LOADERS_TEST_LIBRARIES
 )
 
 set(LOADERS_TEST_SRC loaders/DOMProximitySetupSaver.cpp loaders/DOMPropertyMap.cpp
-                     loaders/ImageLoaderTest.cpp loaders/PathLoaderCSVTest.cpp
-)
+                     loaders/ImageLoaderTest.cpp loaders/PathLoaderCSVTest.cpp)
 add_executable(sdurw_loaders-gtest ${LOADERS_TEST_SRC})
 target_link_libraries(sdurw_loaders-gtest ${LOADERS_TEST_LIBRARIES})
 add_rw_gtest(sdurw_loaders-gtest)
@@ -163,8 +175,14 @@ add_rw_gtest(sdurw_loaders-gtest)
 
 set(MATH_TEST_LIBRARIES ${GTEST_BOTH_LIBRARIES} sdurw)
 
-set(MATH_TEST_SRC math/MetricFactoryTest.cpp math/PolynomialTest.cpp math/SerializationTest.cpp
-                  math/StatisticsTest.cpp math/QuaternionTest.cpp
+set(
+    MATH_TEST_SRC
+    math/MetricFactoryTest.cpp
+    math/PolynomialTest.cpp
+    math/SerializationTest.cpp
+    math/StatisticsTest.cpp
+    math/QuaternionTest.cpp
+    math/VectorNDTest.cpp
 )
 add_executable(sdurw_math-gtest ${MATH_TEST_SRC})
 target_link_libraries(sdurw_math-gtest ${MATH_TEST_LIBRARIES})
@@ -177,8 +195,7 @@ add_rw_gtest(sdurw_math-gtest)
 set(MODELS_TEST_LIBRARIES sdurw-gtest-main ${GTEST_LIBRARIES} sdurw)
 
 set(MODELS_TEST_SRC models/JointTest.cpp models/ParallelDeviceTest.cpp models/ParallelLegTest.cpp
-                    models/WorkCellTest.cpp
-)
+                    models/WorkCellTest.cpp)
 add_executable(sdurw_models-gtest ${MODELS_TEST_SRC})
 target_link_libraries(sdurw_models-gtest ${MODELS_TEST_LIBRARIES})
 add_rw_gtest(sdurw_models-gtest)
@@ -190,8 +207,7 @@ add_rw_gtest(sdurw_models-gtest)
 set(PATHOPTIMIZATION_TEST_LIBRARIES ${GTEST_BOTH_LIBRARIES} sdurw_pathoptimization sdurw)
 
 set(PATHOPTIMIZATION_TEST_SRC pathoptimization/ClearanceOptimizerTest.cpp
-                              pathoptimization/PathLengthOptimizerTest.cpp
-)
+                              pathoptimization/PathLengthOptimizerTest.cpp)
 add_executable(sdurw_pathoptimization-gtest ${PATHOPTIMIZATION_TEST_SRC})
 target_link_libraries(sdurw_pathoptimization-gtest ${PATHOPTIMIZATION_TEST_LIBRARIES})
 add_rw_gtest(sdurw_pathoptimization-gtest)
@@ -202,7 +218,8 @@ add_rw_gtest(sdurw_pathoptimization-gtest)
 
 set(PROXIMITY_TEST_LIBRARIES sdurw-gtest-main ${GTEST_LIBRARIES} sdurw sdurw_proximitystrategies)
 
-set(PROXIMITY_TEST_SRC
+set(
+    PROXIMITY_TEST_SRC
     proximity/BVTreeTest.cpp
     proximity/CollisionStrategyTest.cpp
     proximity/CollisionToleranceStrategyTest.cpp
@@ -230,7 +247,8 @@ add_rw_gtest(sdurw_sensor-gtest)
 # Task
 # ##################################################################################################
 
-set(TASK_TEST_LIBRARIES
+set(
+    TASK_TEST_LIBRARIES
     sdurw-gtest-main
     ${GTEST_LIBRARIES}
     sdurw_task
@@ -272,6 +290,6 @@ add_custom_target(
 # ##################################################################################################
 
 set_target_properties(
-    sdurw-gtest_reports ${REPORT_TARGETS} PROPERTIES EXCLUDE_FROM_ALL 1 EXCLUDE_FROM_DEFAULT_BUILD
-                                                     1
+    sdurw-gtest_reports ${REPORT_TARGETS}
+    PROPERTIES EXCLUDE_FROM_ALL 1 EXCLUDE_FROM_DEFAULT_BUILD 1
 )

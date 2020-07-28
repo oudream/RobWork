@@ -25,6 +25,8 @@
  */
 
 #include <rw/math/VectorND.hpp>
+#include <rw/math/Vector3D.hpp>
+#include <rw/math/Transform3D.hpp>
 #include <rwlibs/simulation/Simulator.hpp>
 #include <rw/core/Ptr.hpp>
 #include <ode/ode.h>

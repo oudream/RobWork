@@ -23,6 +23,9 @@
 #include <rw/kinematics/State.hpp>
 #include <rw/math/Q.hpp>
 #include <rw/math/VectorND.hpp>
+#include <rw/math/Quaternion.hpp>
+#include <rw/math/EAA.hpp>
+
 
 #include <QDoubleSpinBox>
 #include <QValidator>
@@ -37,8 +40,6 @@ namespace rw { namespace kinematics {
 }}    // namespace rw::kinematics
 namespace rw { namespace models {
     class Device;
-}}    // namespace rw::models
-namespace rw { namespace models {
     class WorkCell;
 }}    // namespace rw::models
 
