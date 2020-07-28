@@ -29,8 +29,6 @@
 
 #include <Eigen/Geometry>
 #include <ostream>
-//#include <boost/math/quaternion.hpp>
-//#include <boost/math/special_functions/sign.hpp>
 
 namespace rw { namespace math {
 
@@ -50,7 +48,6 @@ namespace rw { namespace math {
     template< class T = double > class Quaternion : public Rotation3DVector< T >
     {
       private:
-        // typedef boost::math::quaternion<T> Base_quaternion;
         typedef Eigen::Quaternion< T > EigenQuaternion;
 
       public:
@@ -100,7 +97,6 @@ namespace rw { namespace math {
         inline void operator= (const EigenQuaternion& r)
         {
             _q = r;
-            // EigenQuaternion::operator=(r);
         }
 
         /**
@@ -110,7 +106,6 @@ namespace rw { namespace math {
         inline T getQx () const
         {
             return _q.x ();
-            // return EigenQuaternion::R_component_1();
         }
 
         /**
@@ -120,7 +115,6 @@ namespace rw { namespace math {
         inline T getQy () const
         {
             return _q.y ();
-            // return EigenQuaternion::R_component_2();
         }
 
         /**
@@ -130,7 +124,6 @@ namespace rw { namespace math {
         inline T getQz () const
         {
             return _q.z ();
-            // return EigenQuaternion::R_component_3();
         }
 
         /**
@@ -140,7 +133,6 @@ namespace rw { namespace math {
         inline T getQw () const
         {
             return _q.w ();
-            // return EigenQuaternion::R_component_4();
         }
 
         /**
@@ -151,7 +143,6 @@ namespace rw { namespace math {
         inline T getLength () const
         {
             return _q.norm ();
-            // return static_cast<T>(sqrt(getLengthSquared()));
         }
 
         /**
@@ -162,11 +153,6 @@ namespace rw { namespace math {
         inline T getLengthSquared () const
         {
             return _q.squaredNorm ();
-            // return static_cast<T>(_q.norm());
-            //    this->a * this->a +
-            //    this->b * this->b +
-            //    this->c * this->c +
-            //    this->d * this->d);
         }
 
         /**
@@ -176,13 +162,6 @@ namespace rw { namespace math {
         inline void normalize ()
         {
             _q.normalize ();
-            // const T mag = getLengthSquared();
-            // const T n = ((T)1.0)/sqrt(mag);
-
-            // this->a *= n;
-            // this->b *= n;
-            // this->c *= n;
-            // this->d *= n;
         };
 
         /**
@@ -309,9 +288,6 @@ namespace rw { namespace math {
         inline const Quaternion< T > operator* (T s) const
         {
             return Quaternion< T > (_q.x () * s, _q.y () * s, _q.z () * s, _q.w () * s);
-            // Quaternion<T> q( *this );
-            // q *= s;
-            // return q;
         }
 
         /**
@@ -320,9 +296,6 @@ namespace rw { namespace math {
         inline friend const Quaternion< T > operator* (T s, const Quaternion< T >& v)
         {
             return v * s;
-            // Quaternion<T> q(v);
-            // q *= s;
-            // return q;
         }
 
         /**
@@ -382,9 +355,6 @@ namespace rw { namespace math {
         inline friend const Quaternion< T > operator- (Quaternion< T > s, const Quaternion< T >& v)
         {
             return Quaternion< T > (s (0) - v (0), s (1) - v (1), s (2) - v (2), s (3) - v (3));
-            // Quaternion<T> q(v);
-            // q *= s;
-            // return q;
         }
 
         /**
