@@ -138,18 +138,31 @@ Notation for math
 
 When possible use the following notation for code and documentation:
 
-============================ =============================== ================================= ===== =================================
-Documentation                Doxygen                         Sphinx                            Code  Description
-============================ =============================== ================================= ===== =================================
-:math:`{{}^{a}{\bf{T}}_{b}}` \\f$\\abx{a}{b}{\\bf{T}}\\f$    \:math\:\`{{}^{a}{\\bf{T}}_{b}}\` aTb   Transform a to b (or b wrt. a)
-**x**                        \\f$\\b{x}\\f$                  \*\*x\*\*                         X     Pose
-**d**                        \\bf{d}                         \*\*d\*\*                         d     Vector
-:math:`\hat{\bf{k}}\theta`   \\f$\\hat{\\bf{k}}\\theta\\f$   \:math\:\`\\hat{\\bf{k}}\\theta\` k     EAA, equivalent angle and axis
-:math:`\bf{\nu}`             \\bf{\\nu}                      \:math\:\`\\bf{\\nu}\`            V     VelocityScrew
-**v**                        \\bf{v}                         \*\*v\*\*                         v     Linear velocity
-:math:`\bf{\omega}`          \\bf{\\omega}                   \:math\:\`\\bf{\\omega}\`         w     Angular velocity
-**q**                        \\f$\\bf{q}\\f$                 \*\*q\*\*                         q     Joint configuration
-============================ =============================== ================================= ===== =================================
+========================================= =========================================== =============================================== ====== ==============================
+Documentation                             Doxygen                                     Sphinx                                          Code   Example of use
+========================================= =========================================== =============================================== ====== ==============================
+:math:`\thetak`                           \\f$\\thetak\\f$                            \:math\:\`\\thetak\`                            thetak Angle-axis (EAA).
+:math:`\robax{a}{\mathbf{p}}`             \\f$\\robax{a}{\\mathbf{p}}\\f$             \:math\:\`\\robax{a}{\\mathbf{p}}\`             aP     Point with respect to frame a.
+:math:`\robabx{a}{b}{\mathbf{T}}`         \\f$\\robabx{a}{b}{\\mathbf{T}}\\f$         \:math\:\`\\robabx{a}{b}{\\mathbf{T}}\`         aTb    Transform a to b (or b wrt. a)
+:math:`\robabcdx{a}{b}{c}{d}{\mathbf{J}}` \\f$\\robabcdx{a}{b}{c}{d}{\\mathbf{J}}\\f$ \:math\:\`\\robabcdx{a}{b}{c}{d}{\\mathbf{J}}\` aJb
+**x**                                     \\b x  **or**  \\f$\\mathbf{x}\\f$          \*\*x\*\*  **or**  \:math\:\`\\mathbf{x}\`      x      Pose
+**d**                                     \\b d  **or**  \\f$\\mathbf{d}\\f$          \*\*d\*\*  **or**  \:math\:\`\\mathbf{d}\`      d      Vector
+:math:`\mathbf{\nu}`                      \\f$\\mathbf{\\nu}\\f$                      \:math\:\`\\mathbf{\\nu}\`                      V      VelocityScrew
+**v**                                     \\b v  **or**  \\f$\\mathbf{v}\\f$          \*\*v\*\*  **or**  \:math\:\`\\mathbf{v}\`      v      Linear velocity
+:math:`\mathbf{\omega}`                   \\f$\\mathbf{\\omega}\\f$                   \:math\:\`\\mathbf{\\omega}\`                   w      Angular velocity
+**q**                                     \\b q  **or**  \\f$\\mathbf{q}\\f$          \*\*q\*\*  **or**  \:math\:\`\\mathbf{q}\`      q      Joint configuration
+========================================= =========================================== =============================================== ====== ==============================
+
+Notice that the following macros are special macros defined for use in the RobWork documentation:
+
+======== =======================================================
+Command  TeX definition
+======== =======================================================
+thetak   \\newcommand{\\thetak}{\\theta\\mathbf{\\hat{k}}}
+robax    \\newcommand{\\robax}[2]{{}^{#1}{#2}}
+robabx   \\newcommand{\\robabx}[3]{{}^{#1}{#3}_{#2}}
+robabcdx \\newcommand{\\robabcdx}[5]{{}^{#1}_{#2}{#5}^{#3}_{#4}}
+======== =======================================================
 
 Include files
 *************
