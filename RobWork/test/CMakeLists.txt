@@ -31,7 +31,6 @@ SET(MATH_TEST_SRC
   math/RPYTest.cpp
   math/Transform3DTest.cpp
   math/UtilTest.cpp
-  math/Vector3DTest.cpp
   math/Vector2DTest.cpp
   math/VelocityScrew6DTest.cpp
   math/Wrench6DTest.cpp

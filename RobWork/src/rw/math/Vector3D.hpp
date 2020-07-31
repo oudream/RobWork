@@ -23,7 +23,7 @@
  */
 #include <rw/common/Serializable.hpp>
 
-#include <Eigen/Core>
+#include <Eigen/Eigen>
 
 namespace rw { namespace math {
 
@@ -86,7 +86,6 @@ namespace rw { namespace math {
 
         /**
          * @brief Creates a 3D vector from vector_expression
-         *
          * @param r [in] an Eigen Vector
          */
         template< class R > explicit Vector3D (const Eigen::MatrixBase< R >& r)
@@ -97,26 +96,306 @@ namespace rw { namespace math {
         }
 
         /**
-         * @brief Returns Eigen vector with the values of *this
+         * @brief construct vector from std::vector
+         * @param vec [in] the vector to construct from
          */
-        const EigenVector3D e () const
+        Vector3D (const std::vector< T >& vec)
         {
-            EigenVector3D v;
-            v (0) = _vec[0];
-            v (1) = _vec[1];
-            v (2) = _vec[2];
-            return v;
+            if (vec.size () != 3u) {
+                RW_THROW ("Wrong Size vector matrix: N of size:" << 3 << " and vector of size: "
+                                                                 << vec.size () << "given");
+            }
+            for (size_t i = 0; i < 3u; i++) {
+                _vec[i] = vec[i];
+            }
         }
 
         /**
          *  @brief The dimension of the vector (i.e. 3).
          * This method is provided to help support generic algorithms using
-           size() and operator[].
-        */
-        size_t size () const { return 3; }
+         * size() and operator[].
+         * @return the size
+         */
+        size_t size () const { return 3u; }
 
-        //----------------------------------------------------------------------
-        // Various operators
+        /**
+         * @brief Get zero vector.
+         * @return vector.
+         */
+        static Vector3D< T > zero () { return Vector3D< T > (0, 0, 0); }
+
+        /**
+         * @brief Get x vector (1,0,0)
+         * @return vector.
+         */
+        static Vector3D< T > x () { return Vector3D< T > (1.0, 0, 0); }
+
+        /**
+         * @brief Get y vector (0,1,0)
+         * @return vector.
+         */
+        static Vector3D< T > y () { return Vector3D< T > (0, 1.0, 0); }
+
+        /**
+         * @brief Get z vector (0,0,1)
+         * @return vector.
+         */
+        static Vector3D< T > z () { return Vector3D< T > (0, 0, 1.0); }
+
+        // ###################################################
+        // #                 Math Operations                 #
+        // ###################################################
+
+        // ########## Eigen Operations
+
+        /**
+         * @brief element wise division.
+         * @param rhs [in] the vector being devided with
+         * @return the resulting Vector3D
+         */
+        template< class R > Vector3D< T > elemDivision (const Eigen::MatrixBase< R >& rhs) const
+        {
+            Vector3D< T > ret = *this;
+            for (size_t i = 0; i < size (); i++) {
+                ret._vec[i] /= rhs[i];
+            }
+            return ret;
+        }
+
+        /**
+         * @brief Elementweise multiplication.
+         * @param rhs [in] vector
+         * @return the element wise product
+         */
+        template< class R > Vector3D< T > elemMultiplcation (const Eigen::MatrixBase< R >& rhs) const
+        {
+            Vector3D< T > ret = *this;
+            for (size_t i = 0; i < size (); i++) {
+                ret._vec[i] *= rhs[i];
+            }
+            return ret;
+        }
+
+        /**
+         * @brief Vector subtraction.
+         */
+        template< class R > Vector3D< T > operator- (const Eigen::MatrixBase< R >& rhs) const
+        {
+            return Vector3D< T > (_vec - rhs);
+        }
+
+        /**
+         * @brief Vector subtraction.
+         */
+        template< class R >
+        friend Vector3D< T > operator- (const Eigen::MatrixBase< R >& lhs,
+                                         const Vector3D< T >& rhs)
+        {
+            return Vector3D< T > (lhs - rhs.e ());
+        }
+
+        /**
+         * @brief Vector addition.
+         */
+        template< class R > Vector3D< T > operator+ (const Eigen::MatrixBase< R >& rhs) const
+        {
+            return Vector3D< T > (_vec + rhs);
+        }
+
+        /**
+         * @brief Vector subtraction.
+         */
+        template< class R >
+        friend Vector3D< T > operator+ (const Eigen::MatrixBase< R >& lhs,
+                                         const Vector3D< T >& rhs)
+        {
+            return Vector3D< T > (lhs + rhs.e ());
+        }
+
+        // ########## Vector3D Operations
+
+        /**
+         * @brief element wise division.
+         * @param rhs [in] the vector being devided with
+         * @return the resulting Vector3D
+         */
+        Vector3D< T > elemDivision (const Vector3D< T >& rhs) const
+        {
+            return Vector3D< T > (
+                _vec[0] / rhs._vec[0], _vec[1] / rhs._vec[1], _vec[2] / rhs._vec[2]);
+        }
+
+        /**
+         * @brief Elementweise multiplication.
+         * @param rhs [in] vector
+         * @return the element wise product
+         */
+        Vector3D< T > elemMultiplcation (const Vector3D< T >& rhs) const
+        {
+            return Vector3D< T > (
+                _vec[0] * rhs._vec[0], _vec[1] * rhs._vec[1], _vec[2] * rhs._vec[2]);
+        }
+
+        /**
+         * @brief Vector subtraction.
+         */
+        Vector3D< T > operator- (const Vector3D< T >& b) const
+        {
+            return Vector3D< T > (_vec[0] - b[0], _vec[1] - b[1], _vec[2] - b[2]);
+        }
+
+        /**
+         * @brief Vector addition.
+         */
+        Vector3D< T > operator+ (const Vector3D< T >& b) const
+        {
+            return Vector3D< T > (_vec[0] + b[0], _vec[1] + b[1], _vec[2] + b[2]);
+        }
+
+        /**
+         * @brief Unary minus.
+         * @brief negative version
+         */
+        Vector3D< T > operator- () const { return Vector3D< T > (-_vec[0], -_vec[1], -_vec[2]); }
+
+        // ########## Scalar Operations
+
+        /**
+         * @brief Scalar division.
+         * @param s [in] the scalar to devide with
+         * @return result of devision
+         */
+        Vector3D< T > operator/ (T s) const
+        {
+            return Vector3D< T > (_vec[0] / s, _vec[1] / s, _vec[2] / s);
+        }
+
+        /**
+         * @brief Scalar division.
+         * @param lhs [in] the scalar to devide with
+         * @param rhs [out] the vector beind devided
+         * @return result of devision
+         */
+        friend Vector3D< T > operator/ (T lhs, const Vector3D< T >& rhs)
+        {
+            return Vector3D< T > (lhs / rhs._vec[0], lhs / rhs._vec[1], lhs / rhs._vec[2]);
+        }
+
+        /**
+         * @brief Scalar multiplication.
+         * @param rhs [in] the scalar to multiply with
+         * @return the product
+         */
+        Vector3D< T > operator* (T rhs) const
+        {
+            return Vector3D< T > (_vec[0] * rhs, _vec[1] * rhs, _vec[2] * rhs);
+        }
+
+        /**
+         * @brief Scalar multiplication.
+         * @param lhs [in] the scalar to multiply with
+         * @param rhs [in] the Vector to be multiplied
+         * @return the product
+         */
+        friend Vector3D< T > operator* (T lhs, const Vector3D< T >& rhs)
+        {
+            return Vector3D< T > (lhs * rhs[0], lhs * rhs[1], lhs * rhs[2]);
+        }
+
+        /**
+         * @brief Scalar subtraction.
+         */
+        Vector3D< T > elemSubtract (const T rhs) const
+        {
+            return Vector3D< T > (_vec[0] - rhs, _vec[1] - rhs, _vec[2] - rhs);
+        }
+
+        /**
+         * @brief Scalar addition.
+         */
+        Vector3D< T > elemAdd (const T rhs) const
+        {
+            return Vector3D< T > (_vec[0] + rhs, _vec[1] + rhs, _vec[2] + rhs);
+        }
+
+        // ########### Math Functions
+
+        /**
+         * @brief Returns the Euclidean norm (2-norm) of the vector
+         * @return the norm
+         */
+        T norm2 () const
+        {
+            return sqrt (_vec[0] * _vec[0] + _vec[1] * _vec[1] + _vec[2] * _vec[2]);
+        }
+
+        /**
+         * @brief Returns the Manhatten norm (1-norm) of the vector
+         * @return the norm
+         */
+        T norm1 () const { return fabs (_vec[0]) + fabs (_vec[1]) + fabs (_vec[2]); }
+
+        /**
+         * @brief Returns the infinte norm (\f$\inf\f$-norm) of the vector
+         * @return the norm
+         */
+        T normInf () const
+        {
+            T res      = fabs (_vec[0]);
+            const T f1 = fabs (_vec[1]);
+            if (f1 > res)
+                res = f1;
+            const T f2 = fabs (_vec[2]);
+            if (f2 > res)
+                res = f2;
+            return res;
+        }
+
+        /**
+         * @brief Calculate cross product
+         * @param vec [in] the vector to cross with
+         * @return the cross product
+         */
+        Vector3D< T > cross (const Vector3D& vec) const
+        {
+            return Vector3D< T > (_vec.cross (vec._vec));
+        }
+
+        /**
+         * @brief calculate the dot product
+         * @param vec [in] the vecor to be dotted
+         * @return the dot product
+         */
+        T dot (const Vector3D& vec) const { return _vec.dot (vec._vec); }
+
+        /**
+         * @brief normalize vector to get length 1
+         * @return the normalized Vector
+         */
+        Vector3D< T > normalize ()
+        {
+            T length = norm2 ();
+            if (length != 0)
+                return (*this) / length;
+            else
+                return Vector3D< T > (0, 0, 0);
+        }
+
+        // ###################################################
+        // #                Acces Operators                  #
+        // ###################################################
+
+        /**
+         * @brief Returns Reference to Eigen Vector
+         * @return reference to underling eigen
+         */
+        EigenVector3D& e () { return _vec; }
+
+        /**
+         * @brief Returns Reference to Eigen Vector
+         * @return copy of eigen vector
+         */
+        const EigenVector3D e () const { return _vec; }
 
         /**
          * @brief Returns reference to vector element
@@ -147,47 +426,22 @@ namespace rw { namespace math {
         T& operator[] (size_t i) { return _vec[i]; }
 
         /**
-           @brief Scalar division.
+         * @brief Streaming operator.
+         * @param out [in/out] the stream to continue
+         * @param v [in] the vector to stream
+         * @param reference to \b out
          */
-        const Vector3D< T > operator/ (T s) const
+        friend std::ostream& operator<< (std::ostream& out, const Vector3D< T >& v)
         {
-            return Vector3D< T > (_vec[0] / s, _vec[1] / s, _vec[2] / s);
+            return out << "Vector3D(" << v[0] << ", " << v[1] << ", " << v[2] << ")";
         }
 
-        /**
-           @brief Scalar multiplication.
-         */
-        const Vector3D< T > operator* (T s) const
-        {
-            return Vector3D< T > (_vec[0] * s, _vec[1] * s, _vec[2] * s);
-        }
+        // ###################################################
+        // #             assignement Operators               #
+        // ###################################################
 
         /**
-           @brief Scalar multiplication.
-         */
-        friend const Vector3D< T > operator* (T s, const Vector3D< T >& v)
-        {
-            return Vector3D< T > (v[0] * s, v[1] * s, v[2] * s);
-        }
-
-        /**
-           @brief Vector subtraction.
-         */
-        const Vector3D< T > operator- (const Vector3D< T >& b) const
-        {
-            return Vector3D< T > (_vec[0] - b[0], _vec[1] - b[1], _vec[2] - b[2]);
-        }
-
-        /**
-           @brief Vector addition.
-         */
-        const Vector3D< T > operator+ (const Vector3D< T >& b) const
-        {
-            return Vector3D< T > (_vec[0] + b[0], _vec[1] + b[1], _vec[2] + b[2]);
-        }
-
-        /**
-           @brief Scalar multiplication.
+         * @brief Scalar multiplication.
          */
         Vector3D< T >& operator*= (T s)
         {
@@ -198,7 +452,7 @@ namespace rw { namespace math {
         }
 
         /**
-           @brief Scalar division.
+         * @brief Scalar division.
          */
         Vector3D< T >& operator/= (T s)
         {
@@ -209,7 +463,7 @@ namespace rw { namespace math {
         }
 
         /**
-           @brief Vector addition.
+         * @brief Vector addition.
          */
         Vector3D< T >& operator+= (const Vector3D< T >& v)
         {
@@ -220,7 +474,7 @@ namespace rw { namespace math {
         }
 
         /**
-           @brief Vector subtraction.
+         * @brief Vector subtraction.
          */
         Vector3D< T >& operator-= (const Vector3D< T >& v)
         {
@@ -231,58 +485,36 @@ namespace rw { namespace math {
         }
 
         /**
-           @brief Unary minus.
+         * @brief copy a vector from eigen type
+         * @param r [in] an Eigen Vector
          */
-        const Vector3D< T > operator- () const
+        template< class R > Vector3D< T >& operator= (const Eigen::MatrixBase< R >& r)
         {
-            return Vector3D< T > (-_vec[0], -_vec[1], -_vec[2]);
+            _vec = r;
+            return *this;
         }
 
         /**
-           @brief Streaming operator.
+         * @brief Vector addition.
          */
-        friend std::ostream& operator<< (std::ostream& out, const Vector3D< T >& v)
+        template< class R > Vector3D< T >& operator+= (const Eigen::MatrixBase< R >& r)
         {
-            return out << "Vector3D(" << v[0] << ", " << v[1] << ", " << v[2] << ")";
-        }
-
-        //----------------------------------------------------------------------
-        // Various friend functions
-
-        /**
-         * @brief Returns the Euclidean norm (2-norm) of the vector
-         * @return the norm
-         */
-        T norm2 () const
-        {
-            return sqrt (_vec[0] * _vec[0] + _vec[1] * _vec[1] + _vec[2] * _vec[2]);
+            _vec += r;
+            return *this;
         }
 
         /**
-         * @brief Returns the Manhatten norm (1-norm) of the vector
-         * @return the norm
+         * @brief Vector subtraction.
          */
-        T norm1 () const
+        template< class R > Vector3D< T >& operator-= (const Eigen::MatrixBase< R >& r)
         {
-            return fabs (_vec[0]) + fabs (_vec[1]) + fabs (_vec[2]);
-            // return norm_1(_vec);
+            _vec -= r;
+            return *this;
         }
 
-        /**
-         * @brief Returns the infinte norm (\f$\inf\f$-norm) of the vector
-         * @return the norm
-         */
-        T normInf () const
-        {
-            T res      = fabs (_vec[0]);
-            const T f1 = fabs (_vec[1]);
-            if (f1 > res)
-                res = f1;
-            const T f2 = fabs (_vec[2]);
-            if (f2 > res)
-                res = f2;
-            return res;
-        }
+        // ###################################################
+        // #                    Comparetors                  #
+        // ###################################################
 
         /**
          * @brief Compare with \b b for equality.
@@ -302,31 +534,58 @@ namespace rw { namespace math {
         bool operator!= (const Vector3D< T >& b) const { return !(*this == b); }
 
         /**
-         * @brief Get zero vector.
-         * @return vector.
+         * @brief Compare with \b rhs for equality.
+         * @param rhs [in] other vector.
+         * @return True if a equals b, false otherwise.
          */
-        static Vector3D< T > zero () { return Vector3D< T > (0, 0, 0); }
+        template< class R > bool operator== (const Eigen::MatrixBase< R >& rhs) const
+        {
+            return this->_vec == rhs;
+        }
 
         /**
-         * @brief Get x vector (1,0,0)
-         * @return vector.
+         * @brief Compare with \b rhs for equality.
+         * @param rhs [in] other vector.
+         * @return True if a equals b, false otherwise.
          */
-        static Vector3D< T > x () { return Vector3D< T > (1.0, 0, 0); }
+        template< class R >
+        friend bool operator== (const Eigen::MatrixBase< R >& lhs, const Vector3D< T >& rhs)
+        {
+            return lhs == rhs._vec;
+        }
 
         /**
-         * @brief Get y vector (0,1,0)
-         * @return vector.
+         *  @brief Compare with \b rhs for inequality.
+         *  @param b [in] other vector.
+         *  @return True if a and b are different, false otherwise.
          */
-        static Vector3D< T > y () { return Vector3D< T > (0, 1.0, 0); }
+        template< class R > bool operator!= (const Eigen::MatrixBase< R >& rhs) const
+        {
+            return !(*this == rhs);
+        }
 
         /**
-         * @brief Get z vector (0,0,1)
-         * @return vector.
+         *  @brief Compare with \b rhs for inequality.
+         *  @param b [in] other vector.
+         *  @return True if a and b are different, false otherwise.
          */
-        static Vector3D< T > z () { return Vector3D< T > (0, 0, 1.0); }
+        template< class R >
+        friend bool operator!= (const Eigen::MatrixBase< R >& lhs, const Vector3D< T >& rhs)
+        {
+            return !(lhs == rhs);
+        }
 
+        /**
+         * @brief implicit conversion to EigenVector
+         */
+        operator EigenVector3D () const { return this->e (); }
+
+        /**
+         * @brief implicit conversion to EigenVector
+         */
+        operator EigenVector3D& ()  { return this->e (); }
       private:
-        T _vec[3];
+        EigenVector3D _vec;
     };
 
     /**

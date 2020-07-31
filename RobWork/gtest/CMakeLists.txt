@@ -182,8 +182,10 @@ set(
     math/SerializationTest.cpp
     math/StatisticsTest.cpp
     math/QuaternionTest.cpp
+    math/Vector3DTest.cpp
     math/VectorNDTest.cpp
 )
+
 add_executable(sdurw_math-gtest ${MATH_TEST_SRC})
 target_link_libraries(sdurw_math-gtest ${MATH_TEST_LIBRARIES})
 add_rw_gtest(sdurw_math-gtest)
