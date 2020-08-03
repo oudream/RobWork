@@ -18,6 +18,8 @@
 #ifndef RW_CORE_MATH_FWD_HPP_
 #define RW_CORE_MATH_FWD_HPP_
 
+#include <stddef.h>
+
 namespace rw { namespace math {
     template< class T > class CameraMatrix;
     // class Constants;
