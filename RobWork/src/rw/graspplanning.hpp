@@ -25,8 +25,8 @@
 
 #include "graspplanning/ApproachMeasure3D.hpp"
 #include "graspplanning/CMDistCCPMeasure3D.hpp"
-#include "graspplanning/CompositeGraspFilter.hpp"
 #include "graspplanning/CompositeContactFilter.hpp"
+#include "graspplanning/CompositeGraspFilter.hpp"
 #include "graspplanning/ContactDistThresFilter.hpp"
 #include "graspplanning/Contour2DInfoMap.hpp"
 #include "graspplanning/CurvatureThresFilter.hpp"

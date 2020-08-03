@@ -18,48 +18,45 @@
 #ifndef RW_GRASPPLANNING_CURVATURETHRESFILTER_HPP_
 #define RW_GRASPPLANNING_CURVATURETHRESFILTER_HPP_
 
-#include "GraspValidateFilter.hpp"
 #include "ContactValidateFilter.hpp"
+#include "GraspValidateFilter.hpp"
 
-namespace rw {
-namespace graspplanning {
-
-/**
- * @brief tests if a grasp is valid in respect to the curvature of the object
- * surface in and around the contact points.
- *
- * This class requires that the face in which the contact point is extracted is
- * registered in the Contact3D data.
- *
- */
-class CurvatureThresFilter: public GraspValidateFilter, public ContactValidateFilter {
-public:
+namespace rw { namespace graspplanning {
 
     /**
-     * @brief constructor
-     * @param minCurvature [in] minimum curvature
-     * @param maxCurvature [in] maximum curvature
-     * @return
+     * @brief tests if a grasp is valid in respect to the curvature of the object
+     * surface in and around the contact points.
+     *
+     * This class requires that the face in which the contact point is extracted is
+     * registered in the Contact3D data.
+     *
      */
-    CurvatureThresFilter(double minCurvature, double maxCurvature):
-        _minCurvature(minCurvature), _maxCurvature(maxCurvature)
-    {};
+    class CurvatureThresFilter : public GraspValidateFilter, public ContactValidateFilter
+    {
+      public:
+        /**
+         * @brief constructor
+         * @param minCurvature [in] minimum curvature
+         * @param maxCurvature [in] maximum curvature
+         * @return
+         */
+        CurvatureThresFilter (double minCurvature, double maxCurvature) :
+            _minCurvature (minCurvature), _maxCurvature (maxCurvature){};
 
-    //! destructor
-    virtual ~CurvatureThresFilter(){};
+        //! destructor
+        virtual ~CurvatureThresFilter (){};
 
-    //! @copydoc GraspValidateFilter::isValid
-    bool isValid(const Grasp3D& grasp);
+        //! @copydoc GraspValidateFilter::isValid
+        bool isValid (const Grasp3D& grasp);
 
-    //! @copydoc ContactValidateFilter::isValid
-    bool isValid(const rw::sensor::Contact3D& contact);
+        //! @copydoc ContactValidateFilter::isValid
+        bool isValid (const rw::sensor::Contact3D& contact);
 
-private:
-    double _minCurvature;
-    double _maxCurvature;
-};
+      private:
+        double _minCurvature;
+        double _maxCurvature;
+    };
 
-}
-}
+}}    // namespace rw::graspplanning
 
 #endif /* PLANECLEARANCEFILTER_HPP_ */

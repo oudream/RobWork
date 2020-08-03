@@ -21,8 +21,6 @@
 #include <rw/core/macros.hpp>
 #include <rw/proximity/CollisionDetector.hpp>
 
-
-
 using namespace rw::pathplanning;
 using namespace rw::proximity;
 using namespace rw::math;

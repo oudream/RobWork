@@ -18,8 +18,8 @@
 #ifndef CODEEDITOR_HPP_
 #define CODEEDITOR_HPP_
 
-#include <QPlainTextEdit>
 #include <QObject>
+#include <QPlainTextEdit>
 
 class QPaintEvent;
 class QResizeEvent;
@@ -27,91 +27,81 @@ class QSize;
 class QWidget;
 class QCompleter;
 
+class WCCodeEditor : public QPlainTextEdit
+{
+    Q_OBJECT
 
-class WCCodeEditor : public QPlainTextEdit {
-Q_OBJECT
+  public:
+    WCCodeEditor (QWidget* parent = 0);
 
-public:
-    WCCodeEditor(QWidget *parent = 0);
+    void lineNumberAreaPaintEvent (QPaintEvent* event);
 
-    void lineNumberAreaPaintEvent(QPaintEvent *event);
+    int lineNumberAreaWidth ();
 
-    int lineNumberAreaWidth();
+    void setCompleter (QCompleter* c);
 
-    void setCompleter(QCompleter *c);
+    QCompleter* completer () const;
 
-    QCompleter *completer() const;
+    typedef enum { Nothing, Executed, ExecutedError, HighLighted } LineState;
 
-    typedef enum {
-        Nothing, Executed, ExecutedError, HighLighted
-    } LineState;
-
-    void setLineState(size_t linenr, LineState state) {
+    void setLineState (size_t linenr, LineState state)
+    {
         if (linenr < 0)
             return;
-        if (_executedLines.size() <= linenr)
-            _executedLines.resize(linenr + 100);
+        if (_executedLines.size () <= linenr)
+            _executedLines.resize (linenr + 100);
         _executedLines[linenr] = state;
     }
 
-    WCCodeEditor::LineState getLineState(int lineNr);
+    WCCodeEditor::LineState getLineState (int lineNr);
 
-protected:
-    void resizeEvent(QResizeEvent *event);
+  protected:
+    void resizeEvent (QResizeEvent* event);
 
-    void keyPressEvent(QKeyEvent *e);
+    void keyPressEvent (QKeyEvent* e);
 
-    void focusInEvent(QFocusEvent *e);
+    void focusInEvent (QFocusEvent* e);
 
-public Q_SLOTS:
+  public Q_SLOTS:
 
-    void insertCompletion(const QString &completion);
+    void insertCompletion (const QString& completion);
 
-    void insertXMLTextUnderCursor(const QString &text);
+    void insertXMLTextUnderCursor (const QString& text);
 
-private Q_SLOTS:
+  private Q_SLOTS:
 
-    void updateLineNumberAreaWidth(int newBlockCount);
+    void updateLineNumberAreaWidth (int newBlockCount);
 
-    void highlightCurrentLine();
+    void highlightCurrentLine ();
 
-    void updateLineNumberArea(const QRect &, int);
+    void updateLineNumberArea (const QRect&, int);
 
+  private:
+    QString textUnderCursor () const;
 
-private:
-    QString textUnderCursor() const;
+    bool hasExecuted (int lineNr);
 
-    bool hasExecuted(int lineNr);
+    void indentSelection ();
+    void unIndentSelection ();
 
-    void indentSelection();
-    void unIndentSelection();
-
-private:
-    QWidget *lineNumberArea;
-    QCompleter *_c;
-    std::vector<LineState> _executedLines;
-
+  private:
+    QWidget* lineNumberArea;
+    QCompleter* _c;
+    std::vector< LineState > _executedLines;
 };
 
+class LineNumberArea : public QWidget
+{
+  public:
+    LineNumberArea (WCCodeEditor* editor) : QWidget (editor) { codeEditor = editor; }
 
-class LineNumberArea : public QWidget {
-public:
-    LineNumberArea(WCCodeEditor *editor) : QWidget(editor) {
-        codeEditor = editor;
-    }
+    QSize sizeHint () const { return QSize (codeEditor->lineNumberAreaWidth (), 0); }
 
-    QSize sizeHint() const {
-        return QSize(codeEditor->lineNumberAreaWidth(), 0);
-    }
+  protected:
+    void paintEvent (QPaintEvent* event) { codeEditor->lineNumberAreaPaintEvent (event); }
 
-protected:
-    void paintEvent(QPaintEvent *event) {
-        codeEditor->lineNumberAreaPaintEvent(event);
-    }
-
-private:
-    WCCodeEditor *codeEditor;
+  private:
+    WCCodeEditor* codeEditor;
 };
-
 
 #endif /* CODEEDITOR_HPP_ */

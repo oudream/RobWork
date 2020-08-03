@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RW_LOADERS_TUL_TAG_HPP
 #define RW_LOADERS_TUL_TAG_HPP
 
@@ -23,10 +22,10 @@
  * @file Tag.hpp
  */
 
-#include <rw/core/macros.hpp>
 #include <rw/core/Property.hpp>
 #include <rw/core/PropertyBase.hpp>
 #include <rw/core/StringUtil.hpp>
+#include <rw/core/macros.hpp>
 
 #include <map>
 
@@ -53,7 +52,7 @@ namespace rw { namespace loaders {
     */
     class Tag
     {
-    public:
+      public:
         /**
          * @brief A tag named \b name.
          *
@@ -64,15 +63,12 @@ namespace rw { namespace loaders {
          *
          * @param file [in] The originating file.
          */
-        Tag(const std::string& name, const std::string& file) :
-            _name(name),
-            _file(file)
-        {}
+        Tag (const std::string& name, const std::string& file) : _name (name), _file (file) {}
 
         /**
          * @brief The name of the tag.
          */
-        const std::string& getName() const { return _name; }
+        const std::string& getName () const { return _name; }
 
         /**
          * @brief The file from which the tag was read.
@@ -80,29 +76,27 @@ namespace rw { namespace loaders {
          * This is great to have for error messages and also it is indispensible
          * when interpreting relative file names stored in tag attributes.
          */
-        const std::string& getFile() const { return _file; }
+        const std::string& getFile () const { return _file; }
 
         /**
          * @brief A sequence of property values.
          */
-        typedef std::vector<
-            boost::shared_ptr<core::PropertyBase> >
-        PropertyList;
+        typedef std::vector< boost::shared_ptr< core::PropertyBase > > PropertyList;
 
         /**
          * @brief A mapping from attribute name to attribute value.
          */
-        typedef std::map<std::string, PropertyList> PropertyMap;
+        typedef std::map< std::string, PropertyList > PropertyMap;
 
         /**
          * @brief The tag properties.
          */
-        const PropertyMap& getPropertyMap() const { return _map; }
+        const PropertyMap& getPropertyMap () const { return _map; }
 
         /**
          * @brief The tag properties.
          */
-        PropertyMap& getPropertyMap() { return _map; }
+        PropertyMap& getPropertyMap () { return _map; }
 
         /**
          * @brief Emit to \b out the tag \b tag in standard tag format.
@@ -111,15 +105,15 @@ namespace rw { namespace loaders {
          * the the output will not be in the valid tag format, but the output may
          * still be useful for debugging.
          */
-        friend std::ostream& operator<<(std::ostream& out, const Tag& tag);
+        friend std::ostream& operator<< (std::ostream& out, const Tag& tag);
 
-    private:
+      private:
         std::string _name;
         std::string _file;
         PropertyMap _map;
     };
 
-    std::ostream& operator<<(std::ostream& out, const Tag& tag);
+    std::ostream& operator<< (std::ostream& out, const Tag& tag);
 
     /**
      * @brief The property value for attribute \b key at position \b pos.
@@ -137,60 +131,44 @@ namespace rw { namespace loaders {
      *
      * @return The value of the property.
      */
-    template <typename T>
-    T& getAttribute(
-        Tag& tag,
-        const std::string& key,
-        int pos)
+    template< typename T > T& getAttribute (Tag& tag, const std::string& key, int pos)
     {
         typedef Tag::PropertyMap::const_iterator I;
-        const I p = tag.getPropertyMap().find(key);
-        if (p == tag.getPropertyMap().end()) {
-            RW_THROW(
-                "No property named "
-                << core::StringUtil::quote(key)
-                << " in tag "
-                << core::StringUtil::quote(tag.getName()));
+        const I p = tag.getPropertyMap ().find (key);
+        if (p == tag.getPropertyMap ().end ()) {
+            RW_THROW ("No property named " << core::StringUtil::quote (key) << " in tag "
+                                           << core::StringUtil::quote (tag.getName ()));
 
             // To avoid a compiler warning.
-            return getAttribute<T>(tag, key, pos);
-        } else {
+            return getAttribute< T > (tag, key, pos);
+        }
+        else {
             const Tag::PropertyList& vals = p->second;
-            if (pos < 0 || (int)vals.size() <= pos) {
-                RW_THROW(
-                    "Can't access index "
-                    << pos
-                    << " for attribute "
-                    << core::StringUtil::quote(key)
-                    << " of length "
-                    << (int)vals.size()
-                    << " in tag "
-                    << core::StringUtil::quote(tag.getName()));
+            if (pos < 0 || (int) vals.size () <= pos) {
+                RW_THROW ("Can't access index " << pos << " for attribute "
+                                                << core::StringUtil::quote (key) << " of length "
+                                                << (int) vals.size () << " in tag "
+                                                << core::StringUtil::quote (tag.getName ()));
 
                 // To avoid a compiler warning.
-                return getAttribute<T>(tag, key, pos);
-            } else {
-                core::PropertyBase* prop = vals.at(pos).get();
-                core::Property<T>* property =
-                    dynamic_cast<core::Property<T>*>(prop);
+                return getAttribute< T > (tag, key, pos);
+            }
+            else {
+                core::PropertyBase* prop      = vals.at (pos).get ();
+                core::Property< T >* property = dynamic_cast< core::Property< T >* > (prop);
 
                 if (!property) {
-                    RW_THROW(
-                        "Value at index "
-                        << pos
-                        << " for attribute "
-                        << core::StringUtil::quote(key)
-                        << " with description "
-                        << prop->getDescription()
-                        << " in tag "
-                        << core::StringUtil::quote(tag.getName())
-                        << " is of an unexpected type.");
+                    RW_THROW ("Value at index "
+                              << pos << " for attribute " << core::StringUtil::quote (key)
+                              << " with description " << prop->getDescription () << " in tag "
+                              << core::StringUtil::quote (tag.getName ())
+                              << " is of an unexpected type.");
 
                     // To avoid a compiler warning.
-                    return getAttribute<T>(tag, key, pos);
-
-                } else {
-                    return property->getValue();
+                    return getAttribute< T > (tag, key, pos);
+                }
+                else {
+                    return property->getValue ();
                 }
             }
         }
@@ -212,14 +190,10 @@ namespace rw { namespace loaders {
      *
      * @return The value of the property.
      */
-    template <typename T>
-    const T& getAttribute(
-        const Tag& tag,
-        const std::string& key,
-        int pos)
+    template< typename T > const T& getAttribute (const Tag& tag, const std::string& key, int pos)
     {
         // Forward to the non-const version.
-        return getAttribute<T>(const_cast<Tag&>(tag),  key, pos);
+        return getAttribute< T > (const_cast< Tag& > (tag), key, pos);
     }
 
     /**
@@ -238,29 +212,27 @@ namespace rw { namespace loaders {
      *
      * @return The value of the property or NULL if no such property.
      */
-    template <typename T>
-    T* getAttributePtr(
-        Tag& tag,
-        const std::string& key,
-        int pos)
+    template< typename T > T* getAttributePtr (Tag& tag, const std::string& key, int pos)
     {
         typedef Tag::PropertyMap::const_iterator I;
-        const I p = tag.getPropertyMap().find(key);
-        if (p == tag.getPropertyMap().end()) {
+        const I p = tag.getPropertyMap ().find (key);
+        if (p == tag.getPropertyMap ().end ()) {
             return NULL;
-        } else {
+        }
+        else {
             const Tag::PropertyList& vals = p->second;
-            if (pos < 0 || (int)vals.size() <= pos) {
+            if (pos < 0 || (int) vals.size () <= pos) {
                 return NULL;
-            } else {
-                core::PropertyBase* prop = vals.at(pos).get();
-                core::Property<T>* property =
-                    dynamic_cast<core::Property<T>*>(prop);
+            }
+            else {
+                core::PropertyBase* prop      = vals.at (pos).get ();
+                core::Property< T >* property = dynamic_cast< core::Property< T >* > (prop);
 
                 if (!property) {
                     return NULL;
-                } else {
-                    return &property->getValue();
+                }
+                else {
+                    return &property->getValue ();
                 }
             }
         }
@@ -282,14 +254,11 @@ namespace rw { namespace loaders {
      *
      * @return The value of the property or NULL if no such property.
      */
-    template <typename T>
-    const T* getAttributePtr(
-        const Tag& tag,
-        const std::string& key,
-        int pos)
+    template< typename T >
+    const T* getAttributePtr (const Tag& tag, const std::string& key, int pos)
     {
         // Forward to non-const version.
-        return getAttributePtr<T>(const_cast<Tag&>(tag), key, pos);
+        return getAttributePtr< T > (const_cast< Tag& > (tag), key, pos);
     }
 
     /**
@@ -303,7 +272,7 @@ namespace rw { namespace loaders {
      *
      * @return The number of attribute values.
      */
-    int getAttributeSize(const Tag& tag, const std::string& key);
+    int getAttributeSize (const Tag& tag, const std::string& key);
 
     /**
      * @brief True if an attribute named \b key has been registered for tag \b
@@ -315,8 +284,7 @@ namespace rw { namespace loaders {
      *
      * @return True iff \b tag contains the attribute named \b name.
      */
-    bool hasAttribute(
-        const Tag& tag, const std::string& key);
+    bool hasAttribute (const Tag& tag, const std::string& key);
 
     /**
      * @brief Load the tags of the file \b file.
@@ -325,9 +293,9 @@ namespace rw { namespace loaders {
      *
      * @return The tags of the file.
      */
-    std::vector<Tag> loadTagFile(const std::string& file);
+    std::vector< Tag > loadTagFile (const std::string& file);
 
     /*@}*/
-}} // end namespaces
+}}    // namespace rw::loaders
 
-#endif // end include guard
+#endif    // end include guard

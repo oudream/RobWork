@@ -271,7 +271,7 @@ namespace rw { namespace math {
          * @param bVc [in] \f$ \robabx{b}{c}{\mathbf{v}} \f$
          * @return \f$ \robabx{a}{c}{\mathbf{v}} \f$
          */
-        const Vector2D< T > operator* ( const Vector2D< T >& bVc) const
+        const Vector2D< T > operator* (const Vector2D< T >& bVc) const
         {
             return Vector2D< T > ((*this) (0, 0) * bVc (0) + (*this) (0, 1) * bVc (1),
                                   (*this) (1, 0) * bVc (0) + (*this) (1, 1) * bVc (1));

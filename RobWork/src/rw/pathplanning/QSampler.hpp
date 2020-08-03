@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  ********************************************************************************/
-
 
 #ifndef RW_PATHPLANNING_QSAMPLER_HPP
 #define RW_PATHPLANNING_QSAMPLER_HPP
@@ -29,8 +28,8 @@
 #include <rw/models/Device.hpp>
 
 namespace rw { namespace pathplanning {
-	class QConstraint;
-	class QNormalizer;
+    class QConstraint;
+    class QNormalizer;
 
     /** @addtogroup pathplanning */
     /** @{*/
@@ -43,11 +42,11 @@ namespace rw { namespace pathplanning {
     */
     class QSampler
     {
-    public:
-		//! @brief smart pointer type to this class
-		typedef rw::core::Ptr<QSampler> Ptr;
-		//! @brief smart pointer type to this const class
-		typedef rw::core::Ptr< const QSampler > CPtr;
+      public:
+        //! @brief smart pointer type to this class
+        typedef rw::core::Ptr< QSampler > Ptr;
+        //! @brief smart pointer type to this const class
+        typedef rw::core::Ptr< const QSampler > CPtr;
 
         /**
            @brief Sample a configuration.
@@ -56,30 +55,30 @@ namespace rw { namespace pathplanning {
            empty() is true then the sampler has no more configurations.
            Otherwise sample() may (or may not) succeed if called a second time.
         */
-        rw::math::Q sample() { return doSample(); }
+        rw::math::Q sample () { return doSample (); }
 
         /**
            @brief True if the sampler is known to contain no more
            configurations.
         */
-        bool empty() const;
+        bool empty () const;
 
         /**
            @brief Destructor
         */
-        virtual ~QSampler() {}
+        virtual ~QSampler () {}
 
         /**
            @brief Empty sampler.
         */
-		static QSampler::Ptr makeEmpty();
+        static QSampler::Ptr makeEmpty ();
 
         /**
            @brief Sampler that always returns the same configuration.
 
            The sampler is considered never empty (empty() always returns false).
         */
-		static QSampler::Ptr makeFixed(const rw::math::Q& q);
+        static QSampler::Ptr makeFixed (const rw::math::Q& q);
 
         /**
            @brief Sampler that always returns a single configuration.
@@ -88,7 +87,7 @@ namespace rw { namespace pathplanning {
            empty configuration otherwise. empty() returns true after the first
            call of sample().
         */
-		static QSampler::Ptr makeSingle(const rw::math::Q& q);
+        static QSampler::Ptr makeSingle (const rw::math::Q& q);
 
         /**
            @brief Sampler for the values of a finite sequence.
@@ -97,7 +96,7 @@ namespace rw { namespace pathplanning {
            these samples have been returned, empty() returns true and sample()
            returns the empty configuration.
         */
-		static QSampler::Ptr makeFinite(const std::vector<rw::math::Q>& qs);
+        static QSampler::Ptr makeFinite (const std::vector< rw::math::Q >& qs);
 
         /**
            @brief A sampler to that returns only the first \b cnt samples from
@@ -106,31 +105,28 @@ namespace rw { namespace pathplanning {
            The sampler is considered empty as soon as \b sampler is empty or the
            sampler has been called \b cnt times or more.
         */
-		static QSampler::Ptr makeFinite(QSampler::Ptr sampler, int cnt);
+        static QSampler::Ptr makeFinite (QSampler::Ptr sampler, int cnt);
 
         /**
            @brief Uniform random sampling for a box of the configuration space.
         */
-		static QSampler::Ptr makeUniform(
-            const rw::models::Device::QBox& bounds);
+        static QSampler::Ptr makeUniform (const rw::models::Device::QBox& bounds);
 
         /**
            @brief Uniform random sampling for a device.
         */
-		static QSampler::Ptr makeUniform(
-            const rw::models::Device& device);
+        static QSampler::Ptr makeUniform (const rw::models::Device& device);
 
         /**
            @brief Uniform random sampling for a device.
         */
-		static QSampler::Ptr makeUniform(rw::models::Device::CPtr device);
+        static QSampler::Ptr makeUniform (rw::models::Device::CPtr device);
 
         /**
            @brief Map a sampler of standard configurations into a sampler of
            normalized configurations.
         */
-		static QSampler::Ptr makeNormalized(QSampler::Ptr sampler,
-            const QNormalizer& normalizer);
+        static QSampler::Ptr makeNormalized (QSampler::Ptr sampler, const QNormalizer& normalizer);
 
         /**
            @brief A sampler of IK solutions for a specific target.
@@ -138,8 +134,8 @@ namespace rw { namespace pathplanning {
            @param sampler [in] Sampler of IK solutions for \b target.
            @param target [in] Target for IK solver.
         */
-		static QSampler::Ptr make(rw::core::Ptr<QIKSampler> sampler,
-            const rw::math::Transform3D<>& target);
+        static QSampler::Ptr make (rw::core::Ptr< QIKSampler > sampler,
+                                   const rw::math::Transform3D<>& target);
 
         /**
            @brief A sampler filtered by a constraint.
@@ -153,10 +149,9 @@ namespace rw { namespace pathplanning {
            is sampled forever until either the \b sampler is empty or a
            configuration satisfying \b constraint is found.
         */
-		static QSampler::Ptr makeConstrained(
-			QSampler::Ptr sampler,
-			rw::core::Ptr<const QConstraint> constraint,
-            int maxAttempts = -1);
+        static QSampler::Ptr makeConstrained (QSampler::Ptr sampler,
+                                              rw::core::Ptr< const QConstraint > constraint,
+                                              int maxAttempts = -1);
 
         /**
            @brief Sampler of direction vectors for a box shaped configuration
@@ -167,20 +162,18 @@ namespace rw { namespace pathplanning {
            center of the box to the configuration. The returned direction vector
            can therefore be of length zero.
         */
-        static
-			QSampler::Ptr makeBoxDirectionSampler(
-            const rw::models::Device::QBox& bounds);
+        static QSampler::Ptr makeBoxDirectionSampler (const rw::models::Device::QBox& bounds);
 
-    protected:
+      protected:
         /**
            @brief Constructor
         */
-        QSampler() {}
+        QSampler () {}
 
         /**
            @brief Subclass implementation of the sample() method.
         */
-        virtual rw::math::Q doSample() = 0;
+        virtual rw::math::Q doSample () = 0;
 
         /**
            @brief Subclass implementation of the empty() method.
@@ -188,14 +181,14 @@ namespace rw { namespace pathplanning {
            By default the sampler is assumed to be sampling an infinite set of
            configurations. IOW. the function returns false by default.
         */
-        virtual bool doEmpty() const;
+        virtual bool doEmpty () const;
 
-    private:
-        QSampler(const QSampler&);
-        QSampler& operator=(const QSampler&);
+      private:
+        QSampler (const QSampler&);
+        QSampler& operator= (const QSampler&);
     };
 
     /* @} */
-}} // end namespaces
+}}    // namespace rw::pathplanning
 
-#endif // end include guard
+#endif    // end include guard

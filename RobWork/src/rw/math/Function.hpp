@@ -43,7 +43,7 @@ namespace rw { namespace math {
          */
         virtual RES_T f (ARG_T q) = 0;
 
-        virtual ~Function() {};
+        virtual ~Function (){};
 
         /**
          * @brief Wraps the evaluation of x() with operator().
@@ -60,13 +60,13 @@ namespace rw { namespace math {
       public:
         //! Smart pointer to this type of class.
         typedef rw::core::Ptr< Function1Diff > Ptr;
-		
+
         /**
          * @brief Returns gradient(derivative) of the function
          */
         virtual GRAD_T df (ARG_T q) = 0;
 
-        virtual ~Function1Diff() {};
+        virtual ~Function1Diff (){};
     };
 
     /*@}*/

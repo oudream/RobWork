@@ -20,6 +20,7 @@
 
 #include <rw/core/Ptr.hpp>
 #include <rw/models/JacobianCalculator.hpp>
+
 #include <vector>
 
 namespace rw { namespace kinematics {
@@ -71,7 +72,7 @@ namespace rw { namespace models {
       private:
         typedef std::vector< std::pair< const Joint*, size_t > > JacobianSetup;
 
-        std::vector<JacobianSetup> _jacobianSetups;
+        std::vector< JacobianSetup > _jacobianSetups;
         std::vector< rw::core::Ptr< Device > > _devices;
         const kinematics::Frame* _base;
         std::vector< kinematics::Frame* > _tcps;

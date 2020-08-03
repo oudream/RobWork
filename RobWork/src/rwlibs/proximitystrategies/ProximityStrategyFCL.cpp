@@ -58,14 +58,14 @@ fcl::Transform3f toFCL (const Transform3D<>& rwT)
 
     return fclT;
 }
-using rw_AABB    = fcl::AABB;
-using rw_OBB     = fcl::OBB;
-using rw_RSS     = fcl::RSS;
-using rw_OBBRSS  = fcl::OBBRSS;
-using rw_kIOS    = fcl::kIOS;
-using rw_KDOP16  = fcl::KDOP< 16 >;
-using rw_KDOP18  = fcl::KDOP< 18 >;
-using rw_KDOP24  = fcl::KDOP< 24 >;
+using rw_AABB   = fcl::AABB;
+using rw_OBB    = fcl::OBB;
+using rw_RSS    = fcl::RSS;
+using rw_OBBRSS = fcl::OBBRSS;
+using rw_kIOS   = fcl::kIOS;
+using rw_KDOP16 = fcl::KDOP< 16 >;
+using rw_KDOP18 = fcl::KDOP< 18 >;
+using rw_KDOP24 = fcl::KDOP< 24 >;
 
 using fclContact = fcl::Contact;
 #else

@@ -153,8 +153,9 @@ namespace rw { namespace common {
 
         /**
          * @brief Function is executed each time a subtask has finished (new subtasks can be added
-           in this function). If #registerFailure is used to register failures in subtasks, this function should handle
-           or propagate the failures. The default implementation of this function is as follows:
+           in this function). If #registerFailure is used to register failures in subtasks, this
+         function should handle or propagate the failures. The default implementation of this
+         function is as follows:
          * \verbatim
                 for(const Exception& e : subtask->getExceptions()) {
                         registerFailure(e);

@@ -17,104 +17,84 @@ limitations under the License.
 
 #include "BeamGeometry.hpp"
 
-#include <math.h>
-
 #include <rw/core/macros.hpp>
 
+#include <math.h>
 
 using namespace std;
 using namespace rw::math;
 using namespace rwlibs::softbody;
 
-BeamGeometry::BeamGeometry(
-		double L, 
-		const std::vector<double> &Exvec,
-		   const std::vector<double> &vxvec,
-		const std::vector<double> &rhovec,
-        const rw::math::Transform3D<> &wTb,
-                 const rw::math::Vector3D<> &G
-		)  
-		: _L(L), _a(0.0), _b(L), _Exvec(Exvec), _vxvec(vxvec), _rhovec(rhovec), _wTb(wTb), _G(G)
+BeamGeometry::BeamGeometry (double L, const std::vector< double >& Exvec,
+                            const std::vector< double >& vxvec, const std::vector< double >& rhovec,
+                            const rw::math::Transform3D<>& wTb, const rw::math::Vector3D<>& G) :
+    _L (L),
+    _a (0.0), _b (L), _Exvec (Exvec), _vxvec (vxvec), _rhovec (rhovec), _wTb (wTb), _G (G)
 {
-	RW_ASSERT (Exvec.size() == rhovec.size() );
-	RW_ASSERT (vxvec.size() == Exvec.size() );
-	_M = _Exvec.size();
+    RW_ASSERT (Exvec.size () == rhovec.size ());
+    RW_ASSERT (vxvec.size () == Exvec.size ());
+    _M = _Exvec.size ();
 
-	const int Nintervals = _M -1;
+    const int Nintervals = _M - 1;
 
-	_h = (_b - _a) / Nintervals;
+    _h = (_b - _a) / Nintervals;
 }
 
+BeamGeometry::~BeamGeometry ()
+{}
 
-
-
-BeamGeometry::~BeamGeometry() {
-
-}
-
-
-
-void BeamGeometry::setTransform ( const rw::math::Transform3D< double >& T ) {
+void BeamGeometry::setTransform (const rw::math::Transform3D< double >& T)
+{
     _wTb = T;
 }
 
-
-
-rw::math::Transform3D< double > BeamGeometry::getTransform ( void ) const {
+rw::math::Transform3D< double > BeamGeometry::getTransform (void) const
+{
     return _wTb;
 }
 
-
-
-rw::math::Vector3D< double > BeamGeometry::getG ( void ) const {
+rw::math::Vector3D< double > BeamGeometry::getG (void) const
+{
     return _G;
 }
 
-
-
-void BeamGeometry::setG ( const rw::math::Vector3D< double >& G ) {
+void BeamGeometry::setG (const rw::math::Vector3D< double >& G)
+{
     _G = G;
 }
 
-
-
-double BeamGeometry::g1 ( void ) const  {
-    Rotation3D<double > beamRTranspose =  getTransform().R().inverse();
-    Vector3D<> g =beamRTranspose * getG();
+double BeamGeometry::g1 (void) const
+{
+    Rotation3D< double > beamRTranspose = getTransform ().R ().inverse ();
+    Vector3D<> g                        = beamRTranspose * getG ();
 
     return g[0];
 }
 
+double BeamGeometry::g2 (void) const
+{
+    Rotation3D< double > beamRTranspose = getTransform ().R ().inverse ();
+    Vector3D<> g                        = beamRTranspose * getG ();
 
-
-double BeamGeometry::g2 ( void ) const  {
-    Rotation3D<double > beamRTranspose = getTransform().R().inverse();
-    Vector3D<> g =beamRTranspose * getG();
-    
     return g[1];
 }
 
-
-
-double BeamGeometry::Ex(const int i) const {
-	return _Exvec[i];
-}
-
-
-
-double BeamGeometry::vx(const int i) const {    
-    return _vxvec[i];   
-}
-
-
-
-double BeamGeometry::rho(const int i) const {
-	return _rhovec[i];
-}
-
-
-
- double BeamGeometry::kappa(const int i) const
+double BeamGeometry::Ex (const int i) const
 {
-    return Ex(i) / (1.0 - pow(vx(i), 2.0) );
+    return _Exvec[i];
+}
+
+double BeamGeometry::vx (const int i) const
+{
+    return _vxvec[i];
+}
+
+double BeamGeometry::rho (const int i) const
+{
+    return _rhovec[i];
+}
+
+double BeamGeometry::kappa (const int i) const
+{
+    return Ex (i) / (1.0 - pow (vx (i), 2.0));
 }

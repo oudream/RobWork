@@ -16,20 +16,24 @@
  ********************************************************************************/
 
 #include "PlainQuadraticShell.hpp"
+
 #include "QuadraticFace.hpp"
 
 #include <rw/geometry/analytic/GenericFace.hpp>
 
 using namespace rw::geometry;
 
-void PlainQuadraticShell::getFace(std::size_t idx, QuadraticFace& dst) const {
-	dst = *_faces[idx];
+void PlainQuadraticShell::getFace (std::size_t idx, QuadraticFace& dst) const
+{
+    dst = *_faces[idx];
 }
 
-void PlainQuadraticShell::getFace(std::size_t idx, GenericFace& face) const {
-	face = *_faces[idx];
+void PlainQuadraticShell::getFace (std::size_t idx, GenericFace& face) const
+{
+    face = *_faces[idx];
 }
 
-Face::CPtr PlainQuadraticShell::doGetFace(std::size_t idx) const {
-	return _faces[idx];
+Face::CPtr PlainQuadraticShell::doGetFace (std::size_t idx) const
+{
+    return _faces[idx];
 }

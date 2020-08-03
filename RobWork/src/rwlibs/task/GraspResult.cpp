@@ -6,5 +6,3 @@
  */
 
 #include "GraspResult.hpp"
-
-

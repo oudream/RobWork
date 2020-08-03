@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,27 +15,24 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RW_GEOMETRY_PYRAMID_HPP_
 #define RW_GEOMETRY_PYRAMID_HPP_
 
-
 #include "Primitive.hpp"
 
-namespace rw {
-namespace geometry {
-
+namespace rw { namespace geometry {
 
     /**
      * @brief a pyrimidal geometric primitive. The pyramid has a rectangular base in the xy-plane
      * and its end pointed lie in the z-axis with a distance from the xy-plane.
      */
-    class Pyramid: public Primitive {
-    public:
+    class Pyramid : public Primitive
+    {
+      public:
         /**
          * @brief constructor
          */
-        Pyramid(const rw::math::Q& initQ);
+        Pyramid (const rw::math::Q& initQ);
 
         /**
          * @brief constructor
@@ -44,32 +41,31 @@ namespace geometry {
          * @param height [in] height of pyramid in z-axis
          * @return
          */
-        Pyramid(double widthx, double widthy, double height);
+        Pyramid (double widthx, double widthy, double height);
 
         //! @brief destructor
-        virtual ~Pyramid();
+        virtual ~Pyramid ();
 
         // inherited from Primitive
         //! @copydoc Primitive::createMesh
-		TriMesh::Ptr createMesh(int resolution) const;
+        TriMesh::Ptr createMesh (int resolution) const;
 
         //! @copydoc Primitive::getParameters
-        virtual rw::math::Q getParameters() const;
-        
+        virtual rw::math::Q getParameters () const;
+
         //! @copydoc Primitive::setParameters
-		virtual void setParameters(const rw::math::Q& q);
+        virtual void setParameters (const rw::math::Q& q);
 
-		//! @copydoc GeometryData::getType
-		GeometryType getType() const { return PyramidPrim; };
+        //! @copydoc GeometryData::getType
+        GeometryType getType () const { return PyramidPrim; };
 
-    protected:
-        bool doIsInside(const rw::math::Vector3D<>& point);
-    private:
+      protected:
+        bool doIsInside (const rw::math::Vector3D<>& point);
+
+      private:
         double _widthX, _widthY, _height;
     };
 
-} // geometry
-} // rw
-
+}}    // namespace rw::geometry
 
 #endif /* PYRAMID_HPP_ */

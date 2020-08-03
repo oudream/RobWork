@@ -16,57 +16,57 @@
  ********************************************************************************/
 
 #include "ODEPlugin.hpp"
+
 #include "ODESimulator.hpp"
 
 using namespace rwsim::simulator;
 using namespace rw::common;
 using namespace rw::core;
 
-RW_ADD_PLUGIN(ODEPlugin)
+RW_ADD_PLUGIN (ODEPlugin)
 
 namespace {
-	class Dispatcher: public PhysicsEngine::Dispatcher {
-	public:
-		Dispatcher() {}
-		virtual ~Dispatcher() {}
-
-		virtual PhysicsEngine::Ptr makePhysicsEngine() const {
-			return ownedPtr(new ODESimulator());
-		}
-	};
-}
-
-ODEPlugin::ODEPlugin():Plugin("ODEPlugin", "ODEPlugin", "0.1")
+class Dispatcher : public PhysicsEngine::Dispatcher
 {
-}
+  public:
+    Dispatcher () {}
+    virtual ~Dispatcher () {}
 
-ODEPlugin::~ODEPlugin()
-{
-}
+    virtual PhysicsEngine::Ptr makePhysicsEngine () const { return ownedPtr (new ODESimulator ()); }
+};
+}    // namespace
 
-std::vector<rw::core::Extension::Descriptor> ODEPlugin::getExtensionDescriptors()
+ODEPlugin::ODEPlugin () : Plugin ("ODEPlugin", "ODEPlugin", "0.1")
+{}
+
+ODEPlugin::~ODEPlugin ()
+{}
+
+std::vector< rw::core::Extension::Descriptor > ODEPlugin::getExtensionDescriptors ()
 {
-    std::vector<Extension::Descriptor> exts;
-    exts.push_back(Extension::Descriptor("ODEPhysicsEngine","rwsim.simulator.PhysicsEngine"));
+    std::vector< Extension::Descriptor > exts;
+    exts.push_back (Extension::Descriptor ("ODEPhysicsEngine", "rwsim.simulator.PhysicsEngine"));
 
     // todo: add posible properties to the extension descriptor
-    exts.back().getProperties().set<std::string>("engineID", "ODE");
-    //exts.back().getProperties().set<std::string>("engineID", "ODE");
+    exts.back ().getProperties ().set< std::string > ("engineID", "ODE");
+    // exts.back().getProperties().set<std::string>("engineID", "ODE");
 
     return exts;
 }
 
-rw::core::Ptr<rw::core::Extension> ODEPlugin::makeExtension(const std::string& str)
+rw::core::Ptr< rw::core::Extension > ODEPlugin::makeExtension (const std::string& str)
 {
-    if(str=="ODEPhysicsEngine"){
-        Extension::Ptr extension = rw::core::ownedPtr( new Extension("ODEPhysicsEngine","rwsim.simulator.PhysicsEngine",
-                this, ownedPtr(new Dispatcher()).cast<PhysicsEngine::Dispatcher>() ) );
+    if (str == "ODEPhysicsEngine") {
+        Extension::Ptr extension = rw::core::ownedPtr (
+            new Extension ("ODEPhysicsEngine",
+                           "rwsim.simulator.PhysicsEngine",
+                           this,
+                           ownedPtr (new Dispatcher ()).cast< PhysicsEngine::Dispatcher > ()));
 
         // todo: add posible properties to the extension descriptor
-        //exts.back().getProperties().set<std::string>(propid, value);
-        extension->getProperties().set<std::string>("engineID", "ODE");
+        // exts.back().getProperties().set<std::string>(propid, value);
+        extension->getProperties ().set< std::string > ("engineID", "ODE");
         return extension;
     }
     return NULL;
 }
-

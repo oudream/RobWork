@@ -10,9 +10,9 @@
 
 namespace rw {
 
-    //! this is a forward declaration of the traits class
-    template<typename T> struct Traits;
+//! this is a forward declaration of the traits class
+template< typename T > struct Traits;
 
-}
+}    // namespace rw
 
 #endif /* TRAITS_HPP_ */

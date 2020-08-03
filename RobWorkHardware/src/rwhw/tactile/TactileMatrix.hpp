@@ -18,58 +18,53 @@
 #ifndef RWHW_TACTILEMATRIX_HPP
 #define RWHW_TACTILEMATRIX_HPP
 
-#include <iostream>
 #include <boost/numeric/ublas/matrix.hpp>
+#include <iostream>
 
 namespace rwhw {
 
-    /** @addtogroup tactile */
-    /* @{ */
+/** @addtogroup tactile */
+/* @{ */
 
-	class TactileMatrix
-	{
-	public:
+class TactileMatrix
+{
+  public:
+    TactileMatrix (std::size_t columns, std::size_t rows) : _data (columns, rows)
+    {
+        // std::cout << "Tactile ( " << columns << ":" << rows << ")" << std::endl;
+        _data = boost::numeric::ublas::zero_matrix< float > (columns, rows);
+    }
 
-		TactileMatrix(std::size_t columns, std::size_t rows):
-			_data(columns,rows)
-		{
-			//std::cout << "Tactile ( " << columns << ":" << rows << ")" << std::endl;
-			_data = boost::numeric::ublas::zero_matrix<float>(columns,rows);
-		}
+    virtual ~TactileMatrix () {}
 
-		virtual ~TactileMatrix(){}
+    void set (std::size_t column, std::size_t row, float val)
+    {
+        // std::cout << "Set :" << column << ";"<< row << ";"<< val << std::endl;
+        _data (column, row) = val;
+    }
 
-		void set(std::size_t column, std::size_t row, float val){
-			//std::cout << "Set :" << column << ";"<< row << ";"<< val << std::endl;
-			_data(column, row) = val;
-		}
+    float get (std::size_t column, std::size_t row) { return _data (column, row); }
 
-		float get(std::size_t column, std::size_t row){
-			return _data(column, row);
-		}
+    const boost::numeric::ublas::matrix< float >& getMatrix () const { return _data; }
 
-		const boost::numeric::ublas::matrix<float>& getMatrix() const{
-			return _data;
-		}
+    std::string toString () const
+    {
+        std::ostringstream ostr;
+        for (size_t row = 0; row < _data.size2 (); row++) {
+            ostr << row * 3.4 + 1.7 << ";";
+            for (size_t col = 0; col < _data.size1 () - 1; col++) {
+                ostr << _data (col, row) << ";";
+            }
+            ostr << _data (_data.size1 () - 1, row) << std::endl;
+        }
+        return ostr.str ();
+    }
 
-		std::string toString() const {
-			std::ostringstream ostr;
-			for(size_t row=0; row<_data.size2(); row++){
-				ostr << row*3.4+1.7 << ";";
-				for(size_t col=0; col<_data.size1()-1; col++){
-					ostr << _data(col,row) << ";";
-				}
-				ostr << _data(_data.size1()-1,row) << std::endl;
-			}
-			return ostr.str();
-		}
+  private:
+    boost::numeric::ublas::matrix< float > _data;
+};
+/* @} */
 
-	private:
-
-		boost::numeric::ublas::matrix<float> _data;
-	};
-    /* @} */
-
-} // rwhw
+}    // namespace rwhw
 
 #endif /*RWHW_TACTILEMATRIX_HPP*/

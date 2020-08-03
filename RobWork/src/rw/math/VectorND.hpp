@@ -156,9 +156,11 @@ namespace rw { namespace math {
         /**
          * @brief Vector subtraction.
          */
-        template< class R > friend VectorND< N, T > operator- (const Eigen::MatrixBase< R >& lhs, const VectorND<N,T> & rhs)
+        template< class R >
+        friend VectorND< N, T > operator- (const Eigen::MatrixBase< R >& lhs,
+                                           const VectorND< N, T >& rhs)
         {
-            return VectorND< N, T > (lhs-rhs.e());
+            return VectorND< N, T > (lhs - rhs.e ());
         }
 
         /**
@@ -172,9 +174,11 @@ namespace rw { namespace math {
         /**
          * @brief Vector subtraction.
          */
-        template< class R > friend VectorND< N, T > operator+ (const Eigen::MatrixBase< R >& lhs, const VectorND<N,T> & rhs)
+        template< class R >
+        friend VectorND< N, T > operator+ (const Eigen::MatrixBase< R >& lhs,
+                                           const VectorND< N, T >& rhs)
         {
-            return VectorND< N, T > (lhs + rhs.e());
+            return VectorND< N, T > (lhs + rhs.e ());
         }
 
         // ########## VectorND Operations
@@ -326,13 +330,13 @@ namespace rw { namespace math {
          * @brief normalize vector to get length 1
          * @return the normalized Vector
          */
-        VectorND<N, T > normalize ()
+        VectorND< N, T > normalize ()
         {
             T length = norm2 ();
             if (length != 0)
                 return (*this) / length;
             else
-                return VectorND<N, T > ();
+                return VectorND< N, T > ();
         }
 
         // ###################################################
@@ -459,7 +463,7 @@ namespace rw { namespace math {
         /**
          * @brief Vector addition.
          */
-       template< class R > VectorND< N, T >& operator+= (const Eigen::MatrixBase< R >& r)
+        template< class R > VectorND< N, T >& operator+= (const Eigen::MatrixBase< R >& r)
         {
             _vec += r;
             return *this;
@@ -525,7 +529,7 @@ namespace rw { namespace math {
          * @return True if a equals b, false otherwise.
          */
         bool operator== (const VectorND< N, T >& rhs) const { return this->_vec == rhs._vec; }
-        
+
         /**
          *  @brief Compare with \b rhs for inequality.
          *  @param rhs [in] other vector.
@@ -559,7 +563,7 @@ namespace rw { namespace math {
         /**
          * @brief implicit conversion to EigenVector
          */
-        operator EigenVectorND& ()  { return this->e (); }
+        operator EigenVectorND& () { return this->e (); }
 
         /**
          * @brief Get zero-initialized vector.
@@ -571,25 +575,25 @@ namespace rw { namespace math {
         void ParamExpansion (size_t& i)
         {
             if (i > N) {
-                RW_THROW ("Vector to big, argc(" << i  << ") != N(" << N << ")" );
+                RW_THROW ("Vector to big, argc(" << i << ") != N(" << N << ")");
             }
             else if (i < N) {
-                RW_THROW ("Vector to small, argc(" << i  << ") != N(" << N << ")");
+                RW_THROW ("Vector to small, argc(" << i << ") != N(" << N << ")");
             }
         }
 
         template< typename R > void ParamExpansion (size_t& i, R arg)
         {
             ParamExpansion (++i);
-            _vec [--i] = T(arg);
+            _vec[--i] = T (arg);
         }
 
         template< typename R, typename... ARGS >
         void ParamExpansion (size_t& i, R arg, ARGS... args)
         {
             ParamExpansion (++i, args...);
-            
-            _vec [--i] = T(arg);
+
+            _vec[--i] = T (arg);
         }
 
         EigenVectorND _vec;
@@ -720,19 +724,18 @@ namespace rw { namespace math {
      *
      * @relates VectorND
      */
-    template< class Q,size_t ND, class T >
+    template< class Q, size_t ND, class T >
     const VectorND< ND, Q > cast (const VectorND< ND, T >& v)
     {
         VectorND< ND, Q > ret;
 
-        for (size_t i = 0; i < v.size(); i++){
-            ret[i] = static_cast<Q>(v[i]);
+        for (size_t i = 0; i < v.size (); i++) {
+            ret[i] = static_cast< Q > (v[i]);
         }
         return ret;
     }
 
-    template< class T>
-    using Vector6D = VectorND<6,T>;
+    template< class T > using Vector6D = VectorND< 6, T >;
 
     extern template class rw::math::VectorND< 6, double >;
     extern template class rw::math::VectorND< 6, float >;
@@ -744,7 +747,6 @@ namespace rw { namespace math {
     extern template class rw::math::VectorND< 3, float >;
     extern template class rw::math::VectorND< 2, double >;
     extern template class rw::math::VectorND< 2, float >;
-
 
     /**@}*/
 }}    // namespace rw::math

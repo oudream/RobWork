@@ -25,48 +25,54 @@
  */
 
 #include <rw/core/Ptr.hpp>
+
 #include <QWidget>
 
-namespace rwsim { namespace log { class SimulatorStatistics; } }
+namespace rwsim { namespace log {
+    class SimulatorStatistics;
+}}    // namespace rwsim::log
 
-namespace Ui { class SimulatorStatisticsWidget; }
+namespace Ui {
+class SimulatorStatisticsWidget;
+}
 
 class QItemSelection;
 
-namespace rwsimlibs {
-namespace gui {
-//! @addtogroup rwsimlibs_gui
+namespace rwsimlibs { namespace gui {
+    //! @addtogroup rwsimlibs_gui
 
-//! @{
-//! @brief Widget for visualisation of rwsim::log::SimulatorStatistics .
-class SimulatorStatisticsWidget: public QWidget {
-    Q_OBJECT
-public:
-	/**
-	 * @brief Construct new widget for statistics.
-	 * @param stats [in] the statistics.
-	 * @param parent [in] (optional) the parent Qt widget. Ownership is shared by the caller and the parent widget if given.
-	 */
-	SimulatorStatisticsWidget(rw::core::Ptr<const rwsim::log::SimulatorStatistics> stats, QWidget* parent = 0);
+    //! @{
+    //! @brief Widget for visualisation of rwsim::log::SimulatorStatistics .
+    class SimulatorStatisticsWidget : public QWidget
+    {
+        Q_OBJECT
+      public:
+        /**
+         * @brief Construct new widget for statistics.
+         * @param stats [in] the statistics.
+         * @param parent [in] (optional) the parent Qt widget. Ownership is shared by the caller and
+         * the parent widget if given.
+         */
+        SimulatorStatisticsWidget (rw::core::Ptr< const rwsim::log::SimulatorStatistics > stats,
+                                   QWidget* parent = 0);
 
-	//! @brief Destructor.
-	virtual ~SimulatorStatisticsWidget();
+        //! @brief Destructor.
+        virtual ~SimulatorStatisticsWidget ();
 
-	/**
-	 * @brief Get name of widget.
-	 * @return the name.
-	 */
-	std::string getName() const;
+        /**
+         * @brief Get name of widget.
+         * @return the name.
+         */
+        std::string getName () const;
 
-private slots:
-	void changed(const QItemSelection& newSelection, const QItemSelection& oldSelection);
+      private slots:
+        void changed (const QItemSelection& newSelection, const QItemSelection& oldSelection);
 
-private:
-    Ui::SimulatorStatisticsWidget* const _ui;
-    rw::core::Ptr<const rwsim::log::SimulatorStatistics> _stats;
-    class MathematicaPlotWidget* const _mathematica;
-};
-//! @}
-} /* namespace gui */
-} /* namespace rwsimlibs */
+      private:
+        Ui::SimulatorStatisticsWidget* const _ui;
+        rw::core::Ptr< const rwsim::log::SimulatorStatistics > _stats;
+        class MathematicaPlotWidget* const _mathematica;
+    };
+    //! @}
+}}     // namespace rwsimlibs::gui
 #endif /* RWSIMLIBS_GUI_SIMULATORSTATISTICSWIDGET_HPP_ */

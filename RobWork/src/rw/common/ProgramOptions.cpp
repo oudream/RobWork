@@ -38,7 +38,7 @@ typedef Option< std::vector< double > > QOption;
 typedef std::vector< Option< std::string > > StringOptionList;
 typedef std::vector< Option< int > > IntOptionList;
 typedef std::vector< Option< double > > DoubleOptionList;
-typedef std::vector < Option< std::vector< double > > > QOptionList;
+typedef std::vector< Option< std::vector< double > > > QOptionList;
 
 //////////////// VALIDATORS
 /**
@@ -194,7 +194,7 @@ void validate (boost::any& v, const std::vector< std::string >& values, QOptionL
         }
     }
 
-    handleResult< std::vector<double> > (success, v, name, value);
+    handleResult< std::vector< double > > (success, v, name, value);
 }
 
 }    // namespace

@@ -15,19 +15,15 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RW_GRASPPLANNING_WRENCHMEASURE3D_HPP_
 #define RW_GRASPPLANNING_WRENCHMEASURE3D_HPP_
 
 #include <rw/graspplanning/GWSMeasure3D.hpp>
 
-namespace rw {
-namespace graspplanning {
-
+namespace rw { namespace graspplanning {
 
     typedef GWSMeasure3D WrenchMeasure3D;
 
-}
-}
+}}    // namespace rw::graspplanning
 
 #endif /* FORCECLOSURE3D_HPP_ */

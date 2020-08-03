@@ -28,175 +28,161 @@ using namespace rwsim::sensor;
 
 namespace {
 
-    class FTSensorWrapper: public FTSensor {
-    private:
-        SimulatedFTSensor* _sensor;
-        rwlibs::simulation::Simulator::Ptr _simHandle;
-    public:
+class FTSensorWrapper : public FTSensor
+{
+  private:
+    SimulatedFTSensor* _sensor;
+    rwlibs::simulation::Simulator::Ptr _simHandle;
 
-        FTSensorWrapper(SimulatedFTSensor* sensor, rwlibs::simulation::Simulator::Ptr sim):
-            FTSensor(sensor->getName()),
-            _sensor(sensor),
-            _simHandle(sim)
-        {
-        }
+  public:
+    FTSensorWrapper (SimulatedFTSensor* sensor, rwlibs::simulation::Simulator::Ptr sim) :
+        FTSensor (sensor->getName ()), _sensor (sensor), _simHandle (sim)
+    {}
 
-        // direct mappings
-        double getMaxForce(){ return _sensor->getMaxForce().normInf(); };
-        double getMaxTorque(){ return _sensor->getMaxTorque().normInf(); };
-        Transform3D<> getTransform(){ return _sensor->getTransform(); };
+    // direct mappings
+    double getMaxForce () { return _sensor->getMaxForce ().normInf (); };
+    double getMaxTorque () { return _sensor->getMaxTorque ().normInf (); };
+    Transform3D<> getTransform () { return _sensor->getTransform (); };
 
-        // mappings that require state
-        void acquire(){ _sensor->acquire(); }
-        Vector3D<> getForce(){ return _sensor->getForce( _simHandle->getState() ); };
-        Vector3D<> getTorque(){ return _sensor->getTorque( _simHandle->getState() ); };
-    };
+    // mappings that require state
+    void acquire () { _sensor->acquire (); }
+    Vector3D<> getForce () { return _sensor->getForce (_simHandle->getState ()); };
+    Vector3D<> getTorque () { return _sensor->getTorque (_simHandle->getState ()); };
+};
 
-    Frame* getFrameFromBodyOr(Frame* frame, Body::Ptr b){
-    	if(frame==NULL)
-    		return b->getBodyFrame();
-    	return frame;
-    }
+Frame* getFrameFromBodyOr (Frame* frame, Body::Ptr b)
+{
+    if (frame == NULL)
+        return b->getBodyFrame ();
+    return frame;
 }
+}    // namespace
 
 /*
 SimulatedFTSensor::SimulatedFTSensor(const std::string& name, dynamics::Body *body):
     TactileMultiAxisSensor(name, "TactileMultiAxisSensor"),_body(body)
 {
-	this->attachTo( body->getBodyFrame() );
+        this->attachTo( body->getBodyFrame() );
 }
 */
 
-
-SimulatedFTSensor::SimulatedFTSensor(const std::string& name,
-                                     Body::Ptr body,
-                                     Body::Ptr body1,
-                                     Frame* frame):
-        SimulatedTactileSensor(rw::core::ownedPtr( new FTSensorModel(name,getFrameFromBodyOr(frame,body1),"SimulatedFtSensor"))),
-    _body(body),_body1(body1)
+SimulatedFTSensor::SimulatedFTSensor (const std::string& name, Body::Ptr body, Body::Ptr body1,
+                                      Frame* frame) :
+    SimulatedTactileSensor (rw::core::ownedPtr (
+        new FTSensorModel (name, getFrameFromBodyOr (frame, body1), "SimulatedFtSensor"))),
+    _body (body), _body1 (body1)
 {
-	_ftmodel = getSensorModel().cast<FTSensorModel>();
+    _ftmodel = getSensorModel ().cast< FTSensorModel > ();
 
-    _sframe = _body1->getBodyFrame();
-    if(frame!=NULL){
+    _sframe = _body1->getBodyFrame ();
+    if (frame != NULL) {
         _sframe = frame;
     }
-    add(_sdata);
+    add (_sdata);
 }
 
-SimulatedFTSensor::~SimulatedFTSensor(){
+SimulatedFTSensor::~SimulatedFTSensor ()
+{}
 
-}
-
-Transform3D<> SimulatedFTSensor::getTransform() const
+Transform3D<> SimulatedFTSensor::getTransform () const
 {
-	return _ftmodel->getTransform();
+    return _ftmodel->getTransform ();
 }
 
-Vector3D<> SimulatedFTSensor::getForce(const State& state) const
+Vector3D<> SimulatedFTSensor::getForce (const State& state) const
 {
-	return _ftmodel->getForce(state);
+    return _ftmodel->getForce (state);
 }
 
-Vector3D<> SimulatedFTSensor::getTorque(const State& state) const
+Vector3D<> SimulatedFTSensor::getTorque (const State& state) const
 {
-	return _ftmodel->getTorque(state);
+    return _ftmodel->getTorque (state);
 }
 
-void SimulatedFTSensor::addForceW(const Vector3D<>& point,
-               const Vector3D<>& force,
-               const Vector3D<>& cnormal,
-               State& state,
-               Body::Ptr body)
+void SimulatedFTSensor::addForceW (const Vector3D<>& point, const Vector3D<>& force,
+                                   const Vector3D<>& cnormal, State& state, Body::Ptr body)
 {
-	const FTStateData &data = _sdata.get(state);
-	addForce(data._bTw*point, data._bTw.R()*force, data._bTw.R()*cnormal, state, body);
+    const FTStateData& data = _sdata.get (state);
+    addForce (data._bTw * point, data._bTw.R () * force, data._bTw.R () * cnormal, state, body);
 }
 
-void SimulatedFTSensor::addForce(const Vector3D<>& point,
-              const Vector3D<>& force,
-              const Vector3D<>& cnormal,
-              State& state,
-              Body::Ptr body)
+void SimulatedFTSensor::addForce (const Vector3D<>& point, const Vector3D<>& force,
+                                  const Vector3D<>& cnormal, State& state, Body::Ptr body)
 {
-	FTStateData &data = _sdata.get(state);
-	data._forceTmp += force;
-	data._torqueTmp += cross(point, force);
+    FTStateData& data = _sdata.get (state);
+    data._forceTmp += force;
+    data._torqueTmp += cross (point, force);
 }
 
-void SimulatedFTSensor::addWrenchToCOM(
-              const Vector3D<>& force,
-              const Vector3D<>& torque,
-              State& state,
-              Body::Ptr body)
+void SimulatedFTSensor::addWrenchToCOM (const Vector3D<>& force, const Vector3D<>& torque,
+                                        State& state, Body::Ptr body)
 {
-	FTStateData &data = _sdata.get(state);
+    FTStateData& data = _sdata.get (state);
     data._forceTmp += force;
     data._torqueTmp += torque;
 };
 
-void SimulatedFTSensor::addWrenchWToCOM(
-              const Vector3D<>& force,
-              const Vector3D<>& torque,
-              State& state,
-              Body::Ptr body)
+void SimulatedFTSensor::addWrenchWToCOM (const Vector3D<>& force, const Vector3D<>& torque,
+                                         State& state, Body::Ptr body)
 {
-	FTStateData &data = _sdata.get(state);
-	data._forceTmp += data._bTw.R() * force;
-	data._torqueTmp += data._bTw.R() * torque;
+    FTStateData& data = _sdata.get (state);
+    data._forceTmp += data._bTw.R () * force;
+    data._torqueTmp += data._bTw.R () * torque;
 };
 
+void SimulatedFTSensor::update (const Simulator::UpdateInfo& info, State& state)
+{
+    // update aux variables
+    FTStateData& data = _sdata.get (state);
+    data._wTb         = Kinematics::worldTframe (_body1->getBodyFrame (), state);
+    data._fTb         = Kinematics::frameTframe (getSensorFrame (), _body1->getBodyFrame (), state);
+    data._bTw         = inverse (data._wTb);
 
-void SimulatedFTSensor::update(const Simulator::UpdateInfo& info, State& state){
-	// update aux variables
-	FTStateData &data = _sdata.get(state);
-	data._wTb = Kinematics::worldTframe( _body1->getBodyFrame(), state);
-	data._fTb = Kinematics::frameTframe( getSensorFrame(), _body1->getBodyFrame(), state);
-	data._bTw = inverse(data._wTb);
+    data._force  = -(data._fTb.R () * data._forceTmp);
+    data._torque = -(data._fTb.R () * (data._torqueTmp - cross (data._fTb.P (), data._forceTmp)));
 
-	data._force = -  (data._fTb.R() * data._forceTmp );
-	data._torque = - (data._fTb.R() * (data._torqueTmp - cross(data._fTb.P(), data._forceTmp)) );
+    data._forceTmp  = Vector3D<> ();
+    data._torqueTmp = Vector3D<> ();
 
-	data._forceTmp = Vector3D<>();
-	data._torqueTmp = Vector3D<>();
+    _ftmodel->setForce (data._force, state);
+    _ftmodel->setTorque (data._torque, state);
 
-    _ftmodel->setForce(data._force, state);
-    _ftmodel->setTorque(data._torque, state);
-
-
-    //Vector3D<> wTforce = _wTb.R()*_force;
-    //Vector3D<> wTtorque = _wTb.R()*_torque;
+    // Vector3D<> wTforce = _wTb.R()*_force;
+    // Vector3D<> wTtorque = _wTb.R()*_torque;
 
     // testing the output:
-    /*std::cout << info.time << "\t" << wTforce[0] << "\t" << wTforce[1] << "\t" << wTforce[2] << "\t"
+    /*std::cout << info.time << "\t" << wTforce[0] << "\t" << wTforce[1] << "\t" << wTforce[2] <<
+       "\t"
             << wTtorque[0] << "\t" << wTtorque[1] << "\t" << wTtorque[2] << "\n";
             */
 
-    //std::cout << "Force : " << _wTb.R()*_force << std::endl;
-    //std::cout << "Torque: " << _wTb.R()*_force << std::endl;
+    // std::cout << "Force : " << _wTb.R()*_force << std::endl;
+    // std::cout << "Torque: " << _wTb.R()*_force << std::endl;
 }
 
-void SimulatedFTSensor::reset(const State& state){
-	FTStateData &data = _sdata.get(state);
-	data._wTb = Kinematics::worldTframe( _body1->getBodyFrame(), state);
-	data._fTb = Kinematics::frameTframe( getSensorFrame(), _body1->getBodyFrame(), state);
-	data._bTw = inverse(data._wTb);
-
-	data._forceTmp = Vector3D<>();
-	data._torqueTmp = Vector3D<>();
-	data._force = Vector3D<>();
-	data._torque = Vector3D<>();
-}
-
-FTSensor::Ptr SimulatedFTSensor::getFTSensor(rwlibs::simulation::Simulator::Ptr sim)
+void SimulatedFTSensor::reset (const State& state)
 {
-	// check if handle has already been added to simulator
-	FTSensor::Ptr sensor;
-	if(!sim->hasHandle(this)){
-		sensor = rw::core::ownedPtr( new FTSensorWrapper(this, sim) );
-		sim->addHandle(this, sensor);
-	} else {
-		sensor = sim->getSensorHandle(this).cast<FTSensor>();
-	}
-	return sensor;
+    FTStateData& data = _sdata.get (state);
+    data._wTb         = Kinematics::worldTframe (_body1->getBodyFrame (), state);
+    data._fTb         = Kinematics::frameTframe (getSensorFrame (), _body1->getBodyFrame (), state);
+    data._bTw         = inverse (data._wTb);
+
+    data._forceTmp  = Vector3D<> ();
+    data._torqueTmp = Vector3D<> ();
+    data._force     = Vector3D<> ();
+    data._torque    = Vector3D<> ();
+}
+
+FTSensor::Ptr SimulatedFTSensor::getFTSensor (rwlibs::simulation::Simulator::Ptr sim)
+{
+    // check if handle has already been added to simulator
+    FTSensor::Ptr sensor;
+    if (!sim->hasHandle (this)) {
+        sensor = rw::core::ownedPtr (new FTSensorWrapper (this, sim));
+        sim->addHandle (this, sensor);
+    }
+    else {
+        sensor = sim->getSensorHandle (this).cast< FTSensor > ();
+    }
+    return sensor;
 };

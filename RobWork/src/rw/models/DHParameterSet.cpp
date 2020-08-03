@@ -16,34 +16,40 @@
  ********************************************************************************/
 
 #include "DHParameterSet.hpp"
+
+#include <rw/core/PropertyMap.hpp>
 #include <rw/models/Joint.hpp>
 #include <rw/models/SerialDevice.hpp>
-#include <rw/core/PropertyMap.hpp>
 
 using namespace rw::models;
 
-std::vector<DHParameterSet> DHParameterSet::getDHParameters(SerialDevice::Ptr device) {
-	std::vector<DHParameterSet> dhset;
-	for(Joint *joint: device->getJoints()){
-        if( get( joint )!=NULL ){
-            dhset.push_back( *get( joint ) );
+std::vector< DHParameterSet > DHParameterSet::getDHParameters (SerialDevice::Ptr device)
+{
+    std::vector< DHParameterSet > dhset;
+    for (Joint* joint : device->getJoints ()) {
+        if (get (joint) != NULL) {
+            dhset.push_back (*get (joint));
         }
-	}
-	return dhset;
+    }
+    return dhset;
 }
 
-const DHParameterSet* DHParameterSet::get(const rw::models::Joint* joint) {
-    return get(joint->getPropertyMap());
+const DHParameterSet* DHParameterSet::get (const rw::models::Joint* joint)
+{
+    return get (joint->getPropertyMap ());
 }
 
-const DHParameterSet* DHParameterSet::get(const rw::core::PropertyMap& pmap) {
-    return pmap.getPtr<DHParameterSet>("DHSet");
+const DHParameterSet* DHParameterSet::get (const rw::core::PropertyMap& pmap)
+{
+    return pmap.getPtr< DHParameterSet > ("DHSet");
 }
 
-void DHParameterSet::set(const DHParameterSet& dhset, rw::kinematics::Frame* joint){
-    set(dhset, joint->getPropertyMap());
+void DHParameterSet::set (const DHParameterSet& dhset, rw::kinematics::Frame* joint)
+{
+    set (dhset, joint->getPropertyMap ());
 }
 
-void DHParameterSet::set(const DHParameterSet& dhset, rw::core::PropertyMap& pmap){
-    pmap.addForce<DHParameterSet>("DHSet","Denavit-Hartenberg parameters",dhset);
+void DHParameterSet::set (const DHParameterSet& dhset, rw::core::PropertyMap& pmap)
+{
+    pmap.addForce< DHParameterSet > ("DHSet", "Denavit-Hartenberg parameters", dhset);
 }

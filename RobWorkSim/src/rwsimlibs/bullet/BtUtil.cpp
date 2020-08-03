@@ -22,34 +22,38 @@
 using namespace rw::math;
 using namespace rwsimlibs::bullet;
 
-BtUtil::BtUtil() {
+BtUtil::BtUtil ()
+{}
+
+BtUtil::~BtUtil ()
+{}
+
+btVector3 BtUtil::makeBtVector (const Vector3D<>& v3d)
+{
+    return btVector3 (v3d (0), v3d (1), v3d (2));
 }
 
-BtUtil::~BtUtil() {
+Vector3D<> BtUtil::toVector3D (const btVector3& v)
+{
+    return Vector3D<> (v[0], v[1], v[2]);
 }
 
-btVector3 BtUtil::makeBtVector(const Vector3D<>& v3d) {
-	return btVector3(v3d(0),v3d(1),v3d(2));
-}
+btTransform BtUtil::makeBtTransform (const Transform3D<>& t3d)
+{
+    btTransform btt3d;
+    const Quaternion<> quat (t3d.R ());
 
-Vector3D<> BtUtil::toVector3D(const btVector3& v) {
-    return Vector3D<>(v[0],v[1],v[2]);
-}
+    const btVector3 btPos (t3d.P ()[0], t3d.P ()[1], t3d.P ()[2]);
+    const btQuaternion btRot (quat.getQx (), quat.getQy (), quat.getQz (), quat.getQw ());
 
-btTransform BtUtil::makeBtTransform(const Transform3D<> &t3d) {
-	btTransform btt3d;
-	const Quaternion<> quat(t3d.R());
-
-	const btVector3 btPos(t3d.P()[0],t3d.P()[1],t3d.P()[2]);
-	const btQuaternion btRot(quat.getQx(),quat.getQy(),quat.getQz(),quat.getQw());
-
-	btt3d.setOrigin(btPos);
-    btt3d.setRotation(btRot);
+    btt3d.setOrigin (btPos);
+    btt3d.setRotation (btRot);
     return btt3d;
 }
 
-Transform3D<> BtUtil::toTransform3D(const btVector3& v, const btQuaternion &q) {
-	const Vector3D<> pos(v[0],v[1],v[2]);
-	const Quaternion<> quat(q[0],q[1],q[2],q[3]);
-	return Transform3D<>(pos,quat);
+Transform3D<> BtUtil::toTransform3D (const btVector3& v, const btQuaternion& q)
+{
+    const Vector3D<> pos (v[0], v[1], v[2]);
+    const Quaternion<> quat (q[0], q[1], q[2], q[3]);
+    return Transform3D<> (pos, quat);
 }

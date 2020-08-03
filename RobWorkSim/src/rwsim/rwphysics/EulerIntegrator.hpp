@@ -3,37 +3,34 @@
 
 #include "BodyIntegrator.hpp"
 
-namespace rwsim {
-namespace simulator {
-	class RWBody;
+namespace rwsim { namespace simulator {
+    class RWBody;
 
-	/**
-	 * @brief body motion integrator that use an implicit Euler formulation to calculate
-	 * the motion of a body
-	 */
+    /**
+     * @brief body motion integrator that use an implicit Euler formulation to calculate
+     * the motion of a body
+     */
     class EulerIntegrator : public BodyIntegrator
     {
-    public:
-
-    	/**
-    	 * @brief constructor
-    	 */
-        EulerIntegrator(RWBody *body);
+      public:
+        /**
+         * @brief constructor
+         */
+        EulerIntegrator (RWBody* body);
 
         //! destructor
-    	virtual ~EulerIntegrator(){};
+        virtual ~EulerIntegrator (){};
 
-    	//!@copydoc BodyIntegrator::updatePosition
-        void updatePosition(double h, rw::kinematics::State& state);
+        //!@copydoc BodyIntegrator::updatePosition
+        void updatePosition (double h, rw::kinematics::State& state);
 
-    	//!@copydoc BodyIntegrator::updateVelocity
-        void updateVelocity(double h, rw::kinematics::State& state);
+        //!@copydoc BodyIntegrator::updateVelocity
+        void updateVelocity (double h, rw::kinematics::State& state);
 
-    private:
-        RWBody *_body;
+      private:
+        RWBody* _body;
     };
 
-}
-}
+}}    // namespace rwsim::simulator
 
 #endif /*EULERINTEGRATOR_HPP_*/

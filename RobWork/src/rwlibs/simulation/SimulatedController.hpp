@@ -20,38 +20,41 @@
 
 //! @file SimulatedController.hpp
 
-#include <rw/core/Ptr.hpp>
-#include <rwlibs/control/Controller.hpp>
-#include <rw/models/ControllerModel.hpp>
-#include <rw/kinematics/Stateless.hpp>
 #include "Simulator.hpp"
 
-namespace rw { namespace kinematics { class State; } }
+#include <rw/core/Ptr.hpp>
+#include <rw/kinematics/Stateless.hpp>
+#include <rw/models/ControllerModel.hpp>
+#include <rwlibs/control/Controller.hpp>
 
-namespace rwlibs {
-namespace simulation {
+namespace rw { namespace kinematics {
+    class State;
+}}    // namespace rw::kinematics
+
+namespace rwlibs { namespace simulation {
     //! @addtogroup simulation
-	// @{
+    // @{
     /**
      * @brief interface of a simulated controller
      */
-    class SimulatedController: public rw::kinematics::Stateless {
-    protected:
-    	/**
-    	 * @brief Constructor.
-    	 * @param model [in] the controller model.
-    	 */
-    	SimulatedController(rw::models::ControllerModel::Ptr model);
+    class SimulatedController : public rw::kinematics::Stateless
+    {
+      protected:
+        /**
+         * @brief Constructor.
+         * @param model [in] the controller model.
+         */
+        SimulatedController (rw::models::ControllerModel::Ptr model);
 
-    public:
+      public:
         //! @brief smart pointer type of this class
-        typedef rw::core::Ptr<SimulatedController> Ptr;
+        typedef rw::core::Ptr< SimulatedController > Ptr;
 
         /**
          *  @brief get the name of this controller
          *  @return name of this controller
          */
-        virtual std::string getControllerName() = 0;
+        virtual std::string getControllerName () = 0;
 
         /**
          * @brief updates/steps the controller with time step \b dt. It will update
@@ -59,44 +62,44 @@ namespace simulation {
          * @param info [in] update information related to the time step.
          * @param state [in/out] the current state
          */
-        virtual void update(const Simulator::UpdateInfo& info, rw::kinematics::State& state) = 0;
+        virtual void update (const Simulator::UpdateInfo& info, rw::kinematics::State& state) = 0;
 
         /**
          * @brief reset the controller to the applied state
          * @param state [in] the state to reset to
          */
-        virtual void reset(const rw::kinematics::State& state) = 0;
+        virtual void reset (const rw::kinematics::State& state) = 0;
 
         /**
-         * @brief get the controller handle eg. statefull handle, associated with this simulated controller
+         * @brief get the controller handle eg. statefull handle, associated with this simulated
+         * controller
          * @return
          */
-        virtual rwlibs::control::Controller::Ptr getControllerHandle(rwlibs::simulation::Simulator::Ptr sim) = 0;
+        virtual rwlibs::control::Controller::Ptr
+        getControllerHandle (rwlibs::simulation::Simulator::Ptr sim) = 0;
 
         /**
          * @brief get the controllermodel of this simulated controller
          * @return
          */
-        rw::models::ControllerModel::Ptr getControllerModel(){ return _model; }
+        rw::models::ControllerModel::Ptr getControllerModel () { return _model; }
 
         /**
          * @brief disable or enable this controller
          * @param enabled
          */
-        virtual void setEnabled(bool enabled) = 0;
+        virtual void setEnabled (bool enabled) = 0;
 
         /**
          * @brief true if this controller is enabled
          * @return
          */
-        virtual bool isEnabled() const = 0;
+        virtual bool isEnabled () const = 0;
 
-    private:
+      private:
         rw::models::ControllerModel::Ptr _model;
-
     };
     //! @}
-}
-}
+}}    // namespace rwlibs::simulation
 
 #endif /*CONTROLLER_HPP_*/

@@ -18,19 +18,15 @@
 #ifndef RWSIM_UTIL_PRESHAPEGRASPSTRATEGY_HPP_
 #define RWSIM_UTIL_PRESHAPEGRASPSTRATEGY_HPP_
 
-namespace rwsim {
-namespace util {
+namespace rwsim { namespace util {
 
-
-	/**
-	 * @brief this strategy samples
-	 */
-	class PreshapeGraspStrategy {
-	public:
-
-
-	};
-}
-}
+    /**
+     * @brief this strategy samples
+     */
+    class PreshapeGraspStrategy
+    {
+      public:
+    };
+}}    // namespace rwsim::util
 
 #endif /* PRESHAPEGRASPSTRATEGY_HPP_ */

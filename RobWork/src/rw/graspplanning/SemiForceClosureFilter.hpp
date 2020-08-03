@@ -22,29 +22,27 @@
 
 #include <cstddef>
 
-namespace rw {
-namespace graspplanning {
+namespace rw { namespace graspplanning {
 
-/**
- * @brief A conservative estimate of the force closure properties of the grasp are
- * used to indicate weather a grasp is valid or not.
- *
- * The method is described in "Grasping the Dice by Dicing the Grasp"
- */
-class SemiForceClosureFilter: public GraspValidateFilter {
-public:
+    /**
+     * @brief A conservative estimate of the force closure properties of the grasp are
+     * used to indicate weather a grasp is valid or not.
+     *
+     * The method is described in "Grasping the Dice by Dicing the Grasp"
+     */
+    class SemiForceClosureFilter : public GraspValidateFilter
+    {
+      public:
+        SemiForceClosureFilter (size_t nrContacts) :
+            _nrContacts (nrContacts), _avgScale (1.0 / nrContacts){};
 
-    SemiForceClosureFilter(size_t nrContacts):
-        _nrContacts(nrContacts),_avgScale(1.0/nrContacts){};
+        virtual ~SemiForceClosureFilter (){};
 
-    virtual ~SemiForceClosureFilter(){};
+        bool isValid (const Grasp3D& grasp);
 
-    bool isValid(const Grasp3D& grasp);
-
-private:
-    size_t _nrContacts;
-    double _avgScale;
-};
-}
-}
+      private:
+        size_t _nrContacts;
+        double _avgScale;
+    };
+}}     // namespace rw::graspplanning
 #endif /* PLANECLEARANCEFILTER_HPP_ */

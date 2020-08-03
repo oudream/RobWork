@@ -18,8 +18,8 @@
 #ifndef RW_LOADERS_GEOMETRYFACTORY_HPP_
 #define RW_LOADERS_GEOMETRYFACTORY_HPP_
 
-#include <rw/core/ExtensionPoint.hpp>
 #include <rw/common/FileCache.hpp>
+#include <rw/core/ExtensionPoint.hpp>
 #include <rw/geometry/Geometry.hpp>
 #include <rw/geometry/GeometryData.hpp>
 

@@ -257,8 +257,8 @@ namespace rw { namespace trajectory {
          * @param timeStep [in] the duration of each SQUAD path
          * @return a trajectory of SQUADInterpolators
          */
-        static InterpolatorTrajectory< rw::math::Quaternion<> >::Ptr makeSQUAD (const Path<rw::math::Quaternion<>>& path,
-                                                                             double timeStep = 1.0);
+        static InterpolatorTrajectory< rw::math::Quaternion<> >::Ptr
+        makeSQUAD (const Path< rw::math::Quaternion<> >& path, double timeStep = 1.0);
 
         /**
          * @brief constructs a Spherical Spline Quaternion interpolation (SQUAD)
@@ -268,7 +268,7 @@ namespace rw { namespace trajectory {
          * @return a trajectory of SQUADInterpolators
          */
         static InterpolatorTrajectory< rw::math::Quaternion<> >::Ptr
-        makeSQUAD (const Path<Timed<rw::math::Quaternion<>>>&  tpath);
+        makeSQUAD (const Path< Timed< rw::math::Quaternion<> > >& tpath);
 
         /**
          * @brief constructs a Spherical Spline Quaternion interpolation (SQUAD)
@@ -278,7 +278,7 @@ namespace rw { namespace trajectory {
          * @return a trajectory of CubicSplineInterpolators
          */
         static InterpolatorTrajectory< rw::math::Quaternion<> >::Ptr
-        makeSQUAD(const Path<rw::math::Quaternion<>>& path, const std::vector< double >& times);
+        makeSQUAD (const Path< rw::math::Quaternion<> >& path, const std::vector< double >& times);
 
       private:
         CubicSplineFactory ();

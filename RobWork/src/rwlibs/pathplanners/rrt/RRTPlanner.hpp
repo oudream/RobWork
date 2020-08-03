@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RWLIBS_PATHPLANNERS_RRT_RRTPLANNER_HPP
 #define RWLIBS_PATHPLANNERS_RRT_RRTPLANNER_HPP
 
@@ -23,13 +22,19 @@
  * @file RRTPlanner.hpp
  */
 
-#include <rw/pathplanning/QToQPlanner.hpp>
-#include <rw/math/Metric.hpp>
 #include <rw/core/Ptr.hpp>
+#include <rw/math/Metric.hpp>
+#include <rw/pathplanning/QToQPlanner.hpp>
 
-namespace rw { namespace pathplanning { class PlannerConstraint; } }
-namespace rw { namespace pathplanning { class QSampler; } }
-namespace rw { namespace models { class Device; } }
+namespace rw { namespace pathplanning {
+    class PlannerConstraint;
+}}    // namespace rw::pathplanning
+namespace rw { namespace pathplanning {
+    class QSampler;
+}}    // namespace rw::pathplanning
+namespace rw { namespace models {
+    class Device;
+}}    // namespace rw::models
 
 namespace rwlibs { namespace pathplanners {
 
@@ -43,9 +48,9 @@ namespace rwlibs { namespace pathplanners {
     */
     class RRTPlanner
     {
-    public:
-    	//! @brief Smart pointer type for a RRTPlanner.
-        typedef rw::core::Ptr<RRTPlanner> Ptr;
+      public:
+        //! @brief Smart pointer type for a RRTPlanner.
+        typedef rw::core::Ptr< RRTPlanner > Ptr;
 
         //! The type of RRT planner to construct.
         enum PlannerType {
@@ -99,12 +104,11 @@ namespace rwlibs { namespace pathplanners {
 
            @param type [in] The particular variation the RRT planner algorithm.
         */
-		static rw::pathplanning::QToQPlanner::Ptr makeQToQPlanner(
-            const rw::pathplanning::PlannerConstraint& constraint,
-			rw::core::Ptr<rw::pathplanning::QSampler> sampler,
-			rw::math::QMetric::Ptr metric,
-            double extend,
-            PlannerType type = RRTBalancedBidirectional);
+        static rw::pathplanning::QToQPlanner::Ptr
+        makeQToQPlanner (const rw::pathplanning::PlannerConstraint& constraint,
+                         rw::core::Ptr< rw::pathplanning::QSampler > sampler,
+                         rw::math::QMetric::Ptr metric, double extend,
+                         PlannerType type = RRTBalancedBidirectional);
 
         /**
            @brief RRT based point-to-point planner.
@@ -119,18 +123,18 @@ namespace rwlibs { namespace pathplanners {
 
            @param type [in] The particular variation the RRT planner algorithm.
         */
-		static rw::pathplanning::QToQPlanner::Ptr makeQToQPlanner(
-            const rw::pathplanning::PlannerConstraint& constraint,
-			rw::core::Ptr<rw::models::Device> device,
-            PlannerType type = RRTBalancedBidirectional);
+        static rw::pathplanning::QToQPlanner::Ptr
+        makeQToQPlanner (const rw::pathplanning::PlannerConstraint& constraint,
+                         rw::core::Ptr< rw::models::Device > device,
+                         PlannerType type = RRTBalancedBidirectional);
 
-    private:
-        RRTPlanner();
-        RRTPlanner(const RRTPlanner&);
-        RRTPlanner& operator=(const RRTPlanner&);
+      private:
+        RRTPlanner ();
+        RRTPlanner (const RRTPlanner&);
+        RRTPlanner& operator= (const RRTPlanner&);
     };
 
     /*\}*/
-}} // end namespaces
+}}    // namespace rwlibs::pathplanners
 
-#endif // end include guard
+#endif    // end include guard

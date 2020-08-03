@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RW_INVKIN_ITERATIVEIK_HPP
 #define RW_INVKIN_ITERATIVEIK_HPP
 
@@ -25,11 +24,15 @@
 
 #include "InvKinSolver.hpp"
 
-#include <rw/core/Ptr.hpp>
 #include <rw/core/PropertyMap.hpp>
+#include <rw/core/Ptr.hpp>
 
-namespace rw { namespace kinematics { class State; } }
-namespace rw { namespace models { class Device; } }
+namespace rw { namespace kinematics {
+    class State;
+}}    // namespace rw::kinematics
+namespace rw { namespace models {
+    class Device;
+}}    // namespace rw::models
 
 namespace rw { namespace invkin {
 
@@ -48,19 +51,18 @@ namespace rw { namespace invkin {
      * ending with the frame defined as the end of the devices, and which is
      * accessible through the Device::getEnd() method.
      */
-    class IterativeIK: public InvKinSolver
+    class IterativeIK : public InvKinSolver
     {
-    public:
+      public:
+        //! @brief smart pointer type to this class
+        typedef rw::core::Ptr< IterativeIK > Ptr;
+        //! @brief smart pointer type to this const class
+        typedef rw::core::Ptr< const IterativeIK > CPtr;
 
-		//! @brief smart pointer type to this class
-		typedef rw::core::Ptr<IterativeIK> Ptr;
-		//! @brief smart pointer type to this const class
-		typedef rw::core::Ptr< const IterativeIK > CPtr;
-
-		/**
-		 * @brief Destructor
-		 */
-        virtual ~IterativeIK() {}
+        /**
+         * @brief Destructor
+         */
+        virtual ~IterativeIK () {}
 
         /**
          * @brief Sets the maximal error for a solution
@@ -70,38 +72,38 @@ namespace rw { namespace invkin {
          *
          * @param maxError [in] the maxError. It will be assumed that maxError > 0
          */
-        virtual void setMaxError(double maxError);
+        virtual void setMaxError (double maxError);
 
         /**
          * @brief Returns the maximal error for a solution
          *
          * @return Maximal error
          */
-        virtual double getMaxError() const;
+        virtual double getMaxError () const;
 
         /**
          * @brief Sets the maximal number of iterations allowed
          *
          * @param maxIterations [in] maximal number of iterations
          */
-        virtual void setMaxIterations(int maxIterations);
+        virtual void setMaxIterations (int maxIterations);
 
         /**
          * @brief Returns the maximal number of iterations
          */
-        virtual int getMaxIterations() const;
+        virtual int getMaxIterations () const;
 
         /**
          * @brief Returns the PropertyMap
          * @return Reference to the PropertyMap
          */
-        virtual rw::core::PropertyMap& getProperties();
+        virtual rw::core::PropertyMap& getProperties ();
 
         /**
          * @brief Returns the PropertyMap
          * return Reference to the PropertyMap
          */
-        virtual const rw::core::PropertyMap& getProperties() const;
+        virtual const rw::core::PropertyMap& getProperties () const;
 
         /**
            @brief Default iterative inverse kinematics solver for a device and
@@ -110,27 +112,27 @@ namespace rw { namespace invkin {
            @param device [in] Device for which to solve IK.
            @param state [in] Fixed state for which IK is solved.
         */
-		static IterativeIK::Ptr makeDefault(rw::core::Ptr<rw::models::Device> device,
-                                            const rw::kinematics::State& state);
+        static IterativeIK::Ptr makeDefault (rw::core::Ptr< rw::models::Device > device,
+                                             const rw::kinematics::State& state);
 
-    protected:
+      protected:
         /**
          * @brief Constructor
          */
-        IterativeIK();
+        IterativeIK ();
 
-    private:
+      private:
         /**
          * @brief the Properties
          */
         rw::core::PropertyMap _properties;
 
-    private:
-        IterativeIK(const IterativeIK&);
-        IterativeIK& operator=(const IterativeIK&);
+      private:
+        IterativeIK (const IterativeIK&);
+        IterativeIK& operator= (const IterativeIK&);
     };
 
     /*@}*/
-}} // end namespaces
+}}    // namespace rw::invkin
 
-#endif // end include guard
+#endif    // end include guard

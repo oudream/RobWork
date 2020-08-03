@@ -93,139 +93,144 @@
 #ifndef RW_GRAPHICS_3DS_MODEL3DS_HPP
 #define RW_GRAPHICS_3DS_MODEL3DS_HPP
 
-#include <vector>
-#include <string>
-#include <rw/graphics/TextureData.hpp>
 #include <rw/common/types.hpp>
+#include <rw/graphics/TextureData.hpp>
 
-namespace rw{
-namespace graphics {
+#include <string>
+#include <vector>
 
+namespace rw { namespace graphics {
 
-class Model3DS
-{
-public:
-    // A VERY simple vector struct
-    // I could have included a complex class but I wanted the model class to stand alone
-    struct Vector {
-        float x;
-        float y;
-        float z;
+    class Model3DS
+    {
+      public:
+        // A VERY simple vector struct
+        // I could have included a complex class but I wanted the model class to stand alone
+        struct Vector
+        {
+            float x;
+            float y;
+            float z;
+        };
+
+        // Vertex struct to make code easier to read in places
+        struct Vertex
+        {
+            float x;
+            float y;
+            float z;
+        };
+
+        // Color struct holds the diffuse color of the material
+        struct Color4i
+        {
+            unsigned char r;
+            unsigned char g;
+            unsigned char b;
+            unsigned char a;
+        };
+
+        // Holds the material info
+        // TODO: add color support for non textured polys
+        struct Material
+        {
+            char name[80];      // The material's name
+            TextureData tex;    // The texture (this is the only outside reference in this class)
+            bool textured;      // whether or not it is textured
+            Color4i color;
+        };
+
+        // Every chunk in the 3ds file starts with this struct
+        struct ChunkHeader
+        {
+            uint16_t id;     // The chunk's id
+            uint32_t len;    // The lenght of the chunk
+        };
+
+        // I sort the mesh by material so that I won't have to switch textures a great deal
+        struct MaterialFaces
+        {
+            // Index to our vertex array of all the faces that use this material
+            std::vector< unsigned short > subFaces;
+            int numSubFaces;    // The number of faces
+            int MatIndex;       // An index to our materials
+        };
+
+        // The 3ds file can be made up of several objects
+        struct Object
+        {
+            char name[80];                     // The object name
+            std::vector< float > Vertexes;     // The array of vertices
+            std::vector< float > Normals;      // The array of the normals for the vertices
+            std::vector< float > TexCoords;    // The array of texture coordinates for the vertices
+            std::vector< unsigned short > Faces;      // The array of face indices
+            int numFaces;                             // The number of faces
+            int numMatFaces;                          // The number of differnet material faces
+            int numVerts;                             // The number of vertices
+            int numTexCoords;                         // The number of vertices
+            bool textured;                            // True: the object has textures
+            std::vector< MaterialFaces > MatFaces;    // The faces are divided by materials
+            Vector pos;                               // The position to move the object to
+            Vector rot;                               // The angles to rotate the object
+        };
+
+        std::string path;                       // The path of the model
+        int numObjects;                         // Total number of objects in the model
+        int numMaterials;                       // Total number of materials in the model
+        int totalVerts;                         // Total number of vertices in the model
+        int totalFaces;                         // Total number of faces in the model
+        bool shownormals;                       // True: show the normals
+        std::vector< Material > Materials;      // The array of materials
+        std::vector< Object > Objects;          // The array of objects in the model
+        Vector pos;                             // The position to move the model to
+        Vector rot;                             // The angles to rotate the model
+        float scale;                            // The size you want the model scaled to
+        bool lit;                               // True: the model is lit
+        bool visible;                           // True: the model gets rendered
+        void Load (const std::string& name);    // Loads a model
+        void Draw ();                           // Draws the model
+        FILE* bin3ds;                           // The binary 3ds file
+        Model3DS ();                            // Constructor
+        virtual ~Model3DS ();                   // Destructor
+
+      private:
+        void IntColorChunkProcessor (long length, long findex, int matindex);
+        void FloatColorChunkProcessor (long length, long findex, int matindex);
+        // Processes the Main Chunk that all the other chunks exist is
+        void MainChunkProcessor (long length, long findex);
+        // Processes the model's info
+        void EditChunkProcessor (long length, long findex);
+
+        // Processes the model's materials
+        void MaterialChunkProcessor (long length, long findex, int matindex);
+        // Processes the names of the materials
+        void MaterialNameChunkProcessor (long length, long findex, int matindex);
+        // Processes the material's diffuse color
+        void DiffuseColorChunkProcessor (long length, long findex, int matindex);
+        // Processes the material's texture maps
+        void TextureMapChunkProcessor (long length, long findex, int matindex);
+        // Processes the names of the textures and load the textures
+        void MapNameChunkProcessor (long length, long findex, int matindex);
+
+        // Processes the model's geometry
+        void ObjectChunkProcessor (long length, long findex, int objindex);
+        // Processes the triangles of the model
+        void TriangularMeshChunkProcessor (long length, long findex, int objindex);
+        // Processes the vertices of the model and loads them
+        void VertexListChunkProcessor (long length, long findex, int objindex);
+        // Processes the texture cordiantes of the vertices and loads them
+        void TexCoordsChunkProcessor (long length, long findex, int objindex);
+        // Processes the faces of the model and loads the faces
+        void FacesDescriptionChunkProcessor (long length, long findex, int objindex);
+        // Processes the materials of the faces and splits them up by material
+        void FacesMaterialsListChunkProcessor (long length, long findex, int objindex,
+                                               int subfacesindex);
+
+        // Calculates the normals of the vertices by averaging
+        // the normals of the faces that use that vertex
+        void CalculateNormals ();
+
+        size_t _retval;
     };
-
-    // Vertex struct to make code easier to read in places
-    struct Vertex {
-        float x;
-        float y;
-        float z;
-    };
-
-    // Color struct holds the diffuse color of the material
-    struct Color4i {
-        unsigned char r;
-        unsigned char g;
-        unsigned char b;
-        unsigned char a;
-    };
-
-    // Holds the material info
-    // TODO: add color support for non textured polys
-    struct Material {
-        char name[80];	// The material's name
-        TextureData tex;	// The texture (this is the only outside reference in this class)
-        bool textured;	// whether or not it is textured
-        Color4i color;
-    };
-
-    // Every chunk in the 3ds file starts with this struct
-    struct ChunkHeader {
-        uint16_t id;	// The chunk's id
-        uint32_t  len;	// The lenght of the chunk
-    };
-
-    // I sort the mesh by material so that I won't have to switch textures a great deal
-    struct MaterialFaces {
-        // Index to our vertex array of all the faces that use this material
-        std::vector<unsigned short> subFaces;
-        int numSubFaces;			// The number of faces
-        int MatIndex;				// An index to our materials
-    };
-
-    // The 3ds file can be made up of several objects
-    struct Object {
-        char name[80];				// The object name
-        std::vector<float> Vertexes;			// The array of vertices
-        std::vector<float> Normals; // The array of the normals for the vertices
-        std::vector<float> TexCoords; // The array of texture coordinates for the vertices
-        std::vector<unsigned short> Faces; // The array of face indices
-        int numFaces;				// The number of faces
-        int numMatFaces;			// The number of differnet material faces
-        int numVerts;				// The number of vertices
-        int numTexCoords;			// The number of vertices
-        bool textured;				// True: the object has textures
-        std::vector<MaterialFaces> MatFaces;	// The faces are divided by materials
-        Vector pos;					// The position to move the object to
-        Vector rot;					// The angles to rotate the object
-    };
-
-    std::string path; // The path of the model
-    int numObjects;			// Total number of objects in the model
-    int numMaterials;		// Total number of materials in the model
-    int totalVerts;			// Total number of vertices in the model
-    int totalFaces;			// Total number of faces in the model
-    bool shownormals;		// True: show the normals
-    std::vector<Material> Materials; // The array of materials
-    std::vector<Object> Objects;		// The array of objects in the model
-    Vector pos;				// The position to move the model to
-    Vector rot;				// The angles to rotate the model
-    float scale;			// The size you want the model scaled to
-    bool lit;				// True: the model is lit
-    bool visible;			// True: the model gets rendered
-    void Load(const std::string& name);	// Loads a model
-    void Draw();			// Draws the model
-    FILE *bin3ds;			// The binary 3ds file
-    Model3DS();			// Constructor
-    virtual ~Model3DS();	// Destructor
-
-private:
-    void IntColorChunkProcessor(long length, long findex, int matindex);
-    void FloatColorChunkProcessor(long length, long findex, int matindex);
-    // Processes the Main Chunk that all the other chunks exist is
-    void MainChunkProcessor(long length, long findex);
-    // Processes the model's info
-    void EditChunkProcessor(long length, long findex);
-
-    // Processes the model's materials
-    void MaterialChunkProcessor(long length, long findex, int matindex);
-    // Processes the names of the materials
-    void MaterialNameChunkProcessor(long length, long findex, int matindex);
-    // Processes the material's diffuse color
-    void DiffuseColorChunkProcessor(long length, long findex, int matindex);
-    // Processes the material's texture maps
-    void TextureMapChunkProcessor(long length, long findex, int matindex);
-    // Processes the names of the textures and load the textures
-    void MapNameChunkProcessor(long length, long findex, int matindex);
-
-    // Processes the model's geometry
-    void ObjectChunkProcessor(long length, long findex, int objindex);
-    // Processes the triangles of the model
-    void TriangularMeshChunkProcessor(long length, long findex, int objindex);
-    // Processes the vertices of the model and loads them
-    void VertexListChunkProcessor(long length, long findex, int objindex);
-    // Processes the texture cordiantes of the vertices and loads them
-    void TexCoordsChunkProcessor(long length, long findex, int objindex);
-    // Processes the faces of the model and loads the faces
-    void FacesDescriptionChunkProcessor(long length, long findex, int objindex);
-    // Processes the materials of the faces and splits them up by material
-    void FacesMaterialsListChunkProcessor(
-        long length, long findex, int objindex, int subfacesindex);
-
-    // Calculates the normals of the vertices by averaging
-    // the normals of the faces that use that vertex
-    void CalculateNormals();
-
-    size_t _retval;
-};
-}
-}
-#endif // Model3DS_H
+}}        // namespace rw::graphics
+#endif    // Model3DS_H

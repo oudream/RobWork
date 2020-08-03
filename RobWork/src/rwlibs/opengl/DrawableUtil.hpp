@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RWLIBS_OPENGL_DrawableUtil_HPP
 #define RWLIBS_OPENGL_DrawableUtil_HPP
 
@@ -23,9 +22,8 @@
  * @file DrawableUtil.hpp
  */
 
-#include <rw/math/Vector3D.hpp>
 #include <rw/math/Transform3D.hpp>
-
+#include <rw/math/Vector3D.hpp>
 #include <rwlibs/os/rwgl.hpp>
 
 namespace rwlibs { namespace opengl {
@@ -38,87 +36,83 @@ namespace rwlibs { namespace opengl {
      */
     class DrawableUtil
     {
-    public:
-
-
+      public:
         /**
-    	 * @brief copy a RW Transform3D to a GL transform representation
-    	 * @param transform [in] the Transform3D object
-    	 * @param gltrans [in] a GLfloat array of size 16
-    	 */
-        static void transform3DToGLTransform(
-            const rw::math::Transform3D<float>& transform,
-            GLfloat* gltrans);
+         * @brief copy a RW Transform3D to a GL transform representation
+         * @param transform [in] the Transform3D object
+         * @param gltrans [in] a GLfloat array of size 16
+         */
+        static void transform3DToGLTransform (const rw::math::Transform3D< float >& transform,
+                                              GLfloat* gltrans);
 
         /**
          * @brief copy a RW Transform3D to a GL transform representation
          * @param transform [in] the Transform3D object
          * @param gltrans [in] a GLfloat array of size 16
          */
-        static void transform3DToGLTransform(
-            const rw::math::Transform3D<double>& transform,
-            GLfloat* gltrans);
+        static void transform3DToGLTransform (const rw::math::Transform3D< double >& transform,
+                                              GLfloat* gltrans);
 
         /**
          * @brief copy a RW Transform3D to a GL transform representation
          * @param transform [in] the Transform3D object
          * @param gltrans [in] a GLfloat array of size 16
          */
-        static void transform3DToGLTransform(
-            const rw::math::Transform3D<double>& transform,
-            GLdouble* gltrans);
+        static void transform3DToGLTransform (const rw::math::Transform3D< double >& transform,
+                                              GLdouble* gltrans);
 
         /**
          * @brief multiplies the transform on the gl stack with the rw transform b transform
          * @param transform [in] the Transform3D object
          */
-        static void multGLTransform(const rw::math::Transform3D<float>& transform)
+        static void multGLTransform (const rw::math::Transform3D< float >& transform)
         {
             GLfloat gltrans[16];
-            transform3DToGLTransform(transform,gltrans);
-            glMultMatrixf(gltrans);
+            transform3DToGLTransform (transform, gltrans);
+            glMultMatrixf (gltrans);
         }
 
         /**
          * @brief multiplies the transform on the gl stack with the rw transform b transform
          * @param transform [in] the Transform3D object
          */
-        static void multGLTransform(const rw::math::Transform3D<double>& transform)
+        static void multGLTransform (const rw::math::Transform3D< double >& transform)
         {
             GLfloat gltrans[16];
-            transform3DToGLTransform(transform,gltrans);
-            glMultMatrixf(gltrans);
+            transform3DToGLTransform (transform, gltrans);
+            glMultMatrixf (gltrans);
         }
 
         /**
          * @brief draw a glVertex3
          * @param v [in] the Vector3D object
          */
-        static void drawGLVertex(const rw::math::Vector3D<>& v){
-            glVertex3f(float(v(0)), float(v(1)), float(v(2)));    // Bottom Left
+        static void drawGLVertex (const rw::math::Vector3D<>& v)
+        {
+            glVertex3f (float (v (0)), float (v (1)), float (v (2)));    // Bottom Left
         }
 
         /**
          * @brief sets up the highlighting functionality. Highlighting is enabled by enabling
          * and disabling GL_LIGHT7 when drawing objects.
          */
-        static void setupHighlightLight() {
-            //We set up GL_LIGHT7 for highlighting
-            GLfloat light7_ambient[] =  {1.0f, 0.0f, 0.0f, 1.0f};
-            GLfloat light7_diffuse[] =  {.6f, .3f, 0.3f, 1.0f};
-            GLfloat light7_specular[] = { 1.0f, 0.2f, 0.2f, 1.0f};
+        static void setupHighlightLight ()
+        {
+            // We set up GL_LIGHT7 for highlighting
+            GLfloat light7_ambient[]  = {1.0f, 0.0f, 0.0f, 1.0f};
+            GLfloat light7_diffuse[]  = {.6f, .3f, 0.3f, 1.0f};
+            GLfloat light7_specular[] = {1.0f, 0.2f, 0.2f, 1.0f};
             // directional assumes that we are looking from above
             GLfloat light7_position[] = {1.0f, 1.0f, 1.0f, 0.0f};
 
-            glLightfv(GL_LIGHT7, GL_AMBIENT, light7_ambient);
-            glLightfv(GL_LIGHT7, GL_DIFFUSE, light7_diffuse);
-            glLightfv(GL_LIGHT7, GL_SPECULAR, light7_specular);
-            glLightfv(GL_LIGHT7, GL_POSITION, light7_position);
+            glLightfv (GL_LIGHT7, GL_AMBIENT, light7_ambient);
+            glLightfv (GL_LIGHT7, GL_DIFFUSE, light7_diffuse);
+            glLightfv (GL_LIGHT7, GL_SPECULAR, light7_specular);
+            glLightfv (GL_LIGHT7, GL_POSITION, light7_position);
         }
-
     };
 
-	/* @} */
-}} // end namespaces
+    /* @} */
+}}    // namespace rwlibs::opengl
 
-#endif // end include guard
+#endif    // end include guard

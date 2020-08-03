@@ -28,108 +28,107 @@
 
 #include <rw/math/VelocityScrew6D.hpp>
 
-namespace rwsim {
-namespace log {
+namespace rwsim { namespace log {
 
-class LogPositions;
+    class LogPositions;
 
-//! @addtogroup rwsim_log
+    //! @addtogroup rwsim_log
 
-//! @{
-/**
- * @brief Logging of body velocities.
- */
-class LogVelocities: public SimulatorLogEntry {
-public:
-    //! Smart pointer type of LogVelocities
-    typedef rw::core::Ptr<LogVelocities> Ptr;
+    //! @{
+    /**
+     * @brief Logging of body velocities.
+     */
+    class LogVelocities : public SimulatorLogEntry
+    {
+      public:
+        //! Smart pointer type of LogVelocities
+        typedef rw::core::Ptr< LogVelocities > Ptr;
 
-    //! @copydoc SimulatorLogEntry::SimulatorLogEntry
-    LogVelocities(SimulatorLogScope* parent);
+        //! @copydoc SimulatorLogEntry::SimulatorLogEntry
+        LogVelocities (SimulatorLogScope* parent);
 
-	//! @brief Destructor.
-	virtual ~LogVelocities();
+        //! @brief Destructor.
+        virtual ~LogVelocities ();
 
-    //! @copydoc SimulatorLogEntry::read
-	virtual void read(class rw::common::InputArchive& iarchive, const std::string& id);
+        //! @copydoc SimulatorLogEntry::read
+        virtual void read (class rw::common::InputArchive& iarchive, const std::string& id);
 
-    //! @copydoc SimulatorLogEntry::write
-	virtual void write(class rw::common::OutputArchive& oarchive, const std::string& id) const;
+        //! @copydoc SimulatorLogEntry::write
+        virtual void write (class rw::common::OutputArchive& oarchive, const std::string& id) const;
 
-	//! @copydoc SimulatorLogEntry::getType
-	virtual std::string getType() const;
+        //! @copydoc SimulatorLogEntry::getType
+        virtual std::string getType () const;
 
-	//! @copydoc SimulatorLogEntry::operator==
-	virtual bool operator==(const SimulatorLog &b) const;
+        //! @copydoc SimulatorLogEntry::operator==
+        virtual bool operator== (const SimulatorLog& b) const;
 
-	//! @copydoc SimulatorLogEntry::getLinkedEntries
-	virtual std::list<SimulatorLogEntry::Ptr> getLinkedEntries() const;
+        //! @copydoc SimulatorLogEntry::getLinkedEntries
+        virtual std::list< SimulatorLogEntry::Ptr > getLinkedEntries () const;
 
-	//! @copydoc SimulatorLogEntry::autoLink
-	virtual bool autoLink();
+        //! @copydoc SimulatorLogEntry::autoLink
+        virtual bool autoLink ();
 
-	//! @copydoc SimulatorLogEntry::createNew
-	virtual SimulatorLogEntry::Ptr createNew(SimulatorLogScope* parent) const;
+        //! @copydoc SimulatorLogEntry::createNew
+        virtual SimulatorLogEntry::Ptr createNew (SimulatorLogScope* parent) const;
 
-	/**
-	 * @brief Get the positions of the bodies.
-	 *
-	 * This is similar to getLinkedEntries.
-	 *
-	 * @return the log entry with positions of bodies (or NULL if not linked).
-	 */
-	rw::core::Ptr<LogPositions> getPositions() const;
+        /**
+         * @brief Get the positions of the bodies.
+         *
+         * This is similar to getLinkedEntries.
+         *
+         * @return the log entry with positions of bodies (or NULL if not linked).
+         */
+        rw::core::Ptr< LogPositions > getPositions () const;
 
-	/**
-	 * @brief Get the velocity map.
-	 * @return the velocity map.
-	 */
-	const std::map<std::string, rw::math::VelocityScrew6D<> >& getVelocities() const;
+        /**
+         * @brief Get the velocity map.
+         * @return the velocity map.
+         */
+        const std::map< std::string, rw::math::VelocityScrew6D<> >& getVelocities () const;
 
-	/**
-	 * @brief Get a velocity.
-	 * @param name [in] the name of the body to get velocity for.
-	 * @return the velocity.
-	 */
-	const rw::math::VelocityScrew6D<>& getVelocity(const std::string& name) const;
+        /**
+         * @brief Get a velocity.
+         * @param name [in] the name of the body to get velocity for.
+         * @return the velocity.
+         */
+        const rw::math::VelocityScrew6D<>& getVelocity (const std::string& name) const;
 
-	/**
-	 * @brief Check if a velocity with the given name exists.
-	 * @param name [in] the name to look for.
-	 * @return true if found, false if not.
-	 */
-	bool has(const std::string& name) const;
+        /**
+         * @brief Check if a velocity with the given name exists.
+         * @param name [in] the name to look for.
+         * @return true if found, false if not.
+         */
+        bool has (const std::string& name) const;
 
-	/**
-	 * @brief Set the velocities.
-	 * @param velocities [in] the velocities.
-	 */
-	void setVelocities(const std::map<std::string, rw::math::VelocityScrew6D<> >& velocities);
+        /**
+         * @brief Set the velocities.
+         * @param velocities [in] the velocities.
+         */
+        void setVelocities (const std::map< std::string, rw::math::VelocityScrew6D<> >& velocities);
 
-	/**
-	 * @brief Set a velocity.
-	 * @param name [in] the name of the body to set velocity for.
-	 * @param velocity [in] the velocity.
-	 */
-	void setVelocity(const std::string& name, const rw::math::VelocityScrew6D<>& velocity);
+        /**
+         * @brief Set a velocity.
+         * @param name [in] the name of the body to set velocity for.
+         * @param velocity [in] the velocity.
+         */
+        void setVelocity (const std::string& name, const rw::math::VelocityScrew6D<>& velocity);
 
-	/**
-	 * @brief Get the number of velocities stored.
-	 * @return the number of velocities.
-	 */
-	std::size_t size() const;
+        /**
+         * @brief Get the number of velocities stored.
+         * @return the number of velocities.
+         */
+        std::size_t size () const;
 
-	/**
-	 * @brief Get the type id of this entry type.
-	 * @return the type id.
-	 */
-	static std::string getTypeID();
+        /**
+         * @brief Get the type id of this entry type.
+         * @return the type id.
+         */
+        static std::string getTypeID ();
 
-private:
-	rw::core::Ptr<LogPositions> _positions;
-	std::map<std::string,rw::math::VelocityScrew6D<> > _velocities;
-};
-//! @}
-} /* namespace log */
-} /* namespace rwsim */
+      private:
+        rw::core::Ptr< LogPositions > _positions;
+        std::map< std::string, rw::math::VelocityScrew6D<> > _velocities;
+    };
+    //! @}
+}}     // namespace rwsim::log
 #endif /* RWSIM_LOG_LOGVELOCITIES_HPP_ */

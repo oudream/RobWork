@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,84 +19,81 @@
 #define RW_TRAJECTORY_DEVICETRAJECTORY_HPP
 
 // RW
-#include "Trajectory.hpp"
 #include "Path.hpp"
+#include "Trajectory.hpp"
 
-namespace rw { namespace models { class Device; } }
+namespace rw { namespace models {
+    class Device;
+}}    // namespace rw::models
 
-namespace rw { 
-namespace trajectory {
-    
+namespace rw { namespace trajectory {
+
     /**
      * @brief Implements a trajectory with blends between segments.
-     * TODO: Briefly describe how 
+     * TODO: Briefly describe how
      *
      *
      */
-    class DeviceTrajectory : public Trajectory<rw::math::Q> {
-    public:
-
+    class DeviceTrajectory : public Trajectory< rw::math::Q >
+    {
+      public:
         /**
          * @brief Default constructor creating an empty trajectory
          */
-        DeviceTrajectory(rw::core::Ptr<rw::models::Device> deviceIn, const rw::kinematics::State& state);
+        DeviceTrajectory (rw::core::Ptr< rw::models::Device > deviceIn,
+                          const rw::kinematics::State& state);
 
         /**
          * @brief Destructor
          */
-        virtual ~DeviceTrajectory();
-
+        virtual ~DeviceTrajectory ();
 
         //! @copydoc Trajectory::x(double) const
-        rw::math::Q x(double t) const{ return _trajectory->x(t); }
+        rw::math::Q x (double t) const { return _trajectory->x (t); }
 
         //! @copydoc Trajectory::dx(double) const
-        rw::math::Q dx(double t) const{ return _trajectory->dx(t); }
+        rw::math::Q dx (double t) const { return _trajectory->dx (t); }
 
         //! @copydoc Trajectory::ddx(double) const
-        rw::math::Q ddx(double t) const{ return _trajectory->ddx(t); }
+        rw::math::Q ddx (double t) const { return _trajectory->ddx (t); }
 
         //! @copydoc Trajectory::duration()
-        double duration() const { return _trajectory->duration(); }
+        double duration () const { return _trajectory->duration (); }
 
         //! @copydoc Trajectory::startTime()
-        double startTime() const { return _trajectory->startTime(); }
+        double startTime () const { return _trajectory->startTime (); }
 
         //! @copydoc Trajectory::endTime()
-        double endTime() const{ return _trajectory->endTime(); }
+        double endTime () const { return _trajectory->endTime (); }
 
-		//! @copydoc Trajectory<T>::getIterator(double) const
-		virtual typename TrajectoryIterator<T>::Ptr getIterator(double dt) const {
-			return rw::core::ownedPtr(new BlendedTrajectoryIterator<T>(const_cast<BlendedTrajectory*>(this), dt));
-		}
-
-
-
-		// use default SE3 blend from last configuration to target
-		void moveL(const rw::math::Transform3D<>& target, double blend=0.0);
-
-		// use default SE3 blend from last configuration to target
-		void moveL(const rw::math::Rotation3D<>& target, double blend=0.0);
+        //! @copydoc Trajectory<T>::getIterator(double) const
+        virtual typename TrajectoryIterator< T >::Ptr getIterator (double dt) const
+        {
+            return rw::core::ownedPtr (
+                new BlendedTrajectoryIterator< T > (const_cast< BlendedTrajectory* > (this), dt));
+        }
 
         // use default SE3 blend from last configuration to target
-        void moveL(const rw::math::Vector3D<>& target, double blend=0.0);
+        void moveL (const rw::math::Transform3D<>& target, double blend = 0.0);
 
-		// use default blend from last configuration to target
-		void moveJ(const rw::math::Q& target, double blend=0.0);
+        // use default SE3 blend from last configuration to target
+        void moveL (const rw::math::Rotation3D<>& target, double blend = 0.0);
 
+        // use default SE3 blend from last configuration to target
+        void moveL (const rw::math::Vector3D<>& target, double blend = 0.0);
 
+        // use default blend from last configuration to target
+        void moveJ (const rw::math::Q& target, double blend = 0.0);
 
-    private:
-		rw::core::Ptr<rw::models::Device> _dev;
-		InterpolatorTrajectory<rw::math::Q>::Ptr _trajectory;
+      private:
+        rw::core::Ptr< rw::models::Device > _dev;
+        InterpolatorTrajectory< rw::math::Q >::Ptr _trajectory;
         double _time, _timeTotal;
         double _dt;
         rw::kinematics::State _state;
-
     };
 
-    }; // End class
-
-}} // End namespaces
+}; }    // namespace rw::trajectory
+}    // End namespaces
 
 #endif

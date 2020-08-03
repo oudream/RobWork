@@ -28,104 +28,127 @@
 #include <rw/math/Transform3D.hpp>
 
 // Forward declarations
-namespace rw { namespace core { class PropertyMap; }}
-namespace rw { namespace kinematics { class State; }}
-namespace rw { namespace models { class WorkCell; }}
-namespace rw { namespace sensor { class FTSensor; }}
+namespace rw { namespace core {
+    class PropertyMap;
+}}    // namespace rw::core
+namespace rw { namespace kinematics {
+    class State;
+}}    // namespace rw::kinematics
+namespace rw { namespace models {
+    class WorkCell;
+}}    // namespace rw::models
+namespace rw { namespace sensor {
+    class FTSensor;
+}}    // namespace rw::sensor
 
-namespace rwlibs {
-namespace assembly {
+namespace rwlibs { namespace assembly {
 
-// Forward declarations
-class AssemblyState;
-class AssemblyControlResponse;
-class AssemblyParameterization;
+    // Forward declarations
+    class AssemblyState;
+    class AssemblyControlResponse;
+    class AssemblyParameterization;
 
-//! @addtogroup assembly
+    //! @addtogroup assembly
 
-//! @{
-/**
- * @brief The interface for control strategies for assembly.
- *
- * The control strategy must implement the getApproach(), update(), createParameterization(), getID() and getDescription() methods.
- *
- * The createState() can be overriden if the user wants to save specific strategy state between calls to update().
- */
-class AssemblyControlStrategy {
-public:
-	//! @brief smart pointer type to this class
-    typedef rw::core::Ptr<AssemblyControlStrategy> Ptr;
+    //! @{
+    /**
+     * @brief The interface for control strategies for assembly.
+     *
+     * The control strategy must implement the getApproach(), update(), createParameterization(),
+     * getID() and getDescription() methods.
+     *
+     * The createState() can be overriden if the user wants to save specific strategy state between
+     * calls to update().
+     */
+    class AssemblyControlStrategy
+    {
+      public:
+        //! @brief smart pointer type to this class
+        typedef rw::core::Ptr< AssemblyControlStrategy > Ptr;
 
-	//! @brief Create new control strategy.
-	AssemblyControlStrategy();
+        //! @brief Create new control strategy.
+        AssemblyControlStrategy ();
 
-	//! @brief Destructor.
-	virtual ~AssemblyControlStrategy();
+        //! @brief Destructor.
+        virtual ~AssemblyControlStrategy ();
 
-	/**
-	 * @brief Derive from the ControlState class to implement state that is specific to a AssemblyControlStrategy.
-	 */
-	class ControlState {
-	public:
-		//! @brief smart pointer type to this class
-	    typedef rw::core::Ptr<ControlState> Ptr;
+        /**
+         * @brief Derive from the ControlState class to implement state that is specific to a
+         * AssemblyControlStrategy.
+         */
+        class ControlState
+        {
+          public:
+            //! @brief smart pointer type to this class
+            typedef rw::core::Ptr< ControlState > Ptr;
 
-		//! @brief Constructor.
-		ControlState() {};
+            //! @brief Constructor.
+            ControlState (){};
 
-		//! @brief Destructor.
-		virtual ~ControlState() {};
-	};
+            //! @brief Destructor.
+            virtual ~ControlState (){};
+        };
 
-	/**
-	 * @brief Create a new ControlState. This is usually done before calling update() the first time.
-	 * @return a new ControlState.
-	 */
-	virtual ControlState::Ptr createState() const;
+        /**
+         * @brief Create a new ControlState. This is usually done before calling update() the first
+         * time.
+         * @return a new ControlState.
+         */
+        virtual ControlState::Ptr createState () const;
 
-	/**
-	 * @brief The main control loop.
-	 * @param parameters [in] the parameters used for the current task.
-	 * @param real [in] the real AssemblyState (can be NULL if not known).
-	 * @param assumed [in] the assumed AssemblyState (should be set by the AssemblyControlStrategy).
-	 * @param controlState [in] a ControlState previously created by the createState() function.
-	 * @param state [in] the real state of the system.
-	 * @param ftSensor [in] a pointer to the male force/torque sensor.
-	 * @param time [in] the current time.
-	 * @return a AssemblyControlResponse with a new target for the male controller (or NULL if nothing should be done).
-	 */
-	virtual rw::core::Ptr<AssemblyControlResponse> update(rw::core::Ptr<AssemblyParameterization> parameters, rw::core::Ptr<AssemblyState> real, rw::core::Ptr<AssemblyState> assumed, ControlState::Ptr controlState, rw::kinematics::State &state, rw::sensor::FTSensor* ftSensor, double time) const = 0;
+        /**
+         * @brief The main control loop.
+         * @param parameters [in] the parameters used for the current task.
+         * @param real [in] the real AssemblyState (can be NULL if not known).
+         * @param assumed [in] the assumed AssemblyState (should be set by the
+         * AssemblyControlStrategy).
+         * @param controlState [in] a ControlState previously created by the createState() function.
+         * @param state [in] the real state of the system.
+         * @param ftSensor [in] a pointer to the male force/torque sensor.
+         * @param time [in] the current time.
+         * @return a AssemblyControlResponse with a new target for the male controller (or NULL if
+         * nothing should be done).
+         */
+        virtual rw::core::Ptr< AssemblyControlResponse >
+        update (rw::core::Ptr< AssemblyParameterization > parameters,
+                rw::core::Ptr< AssemblyState > real, rw::core::Ptr< AssemblyState > assumed,
+                ControlState::Ptr controlState, rw::kinematics::State& state,
+                rw::sensor::FTSensor* ftSensor, double time) const = 0;
 
-	/**
-	 * @brief Get the initial relative configuration between female and male objects (uses object TCP frames as given in the AssemblyTask).
-	 *
-	 * First when approach is reached, the update() control loop will start running.
-	 *
-	 * @param parameters [in] the parameters used for the current task.
-	 * @return relative configuration between female and male objects.
-	 */
-	virtual rw::math::Transform3D<> getApproach(rw::core::Ptr<AssemblyParameterization> parameters) = 0;
+        /**
+         * @brief Get the initial relative configuration between female and male objects (uses
+         * object TCP frames as given in the AssemblyTask).
+         *
+         * First when approach is reached, the update() control loop will start running.
+         *
+         * @param parameters [in] the parameters used for the current task.
+         * @return relative configuration between female and male objects.
+         */
+        virtual rw::math::Transform3D<>
+        getApproach (rw::core::Ptr< AssemblyParameterization > parameters) = 0;
 
-	/**
-	 * @brief All implementations should provide a unique id, which will be used for serialization and in the factory.
-	 * @return a string with the unique id of the control strategy.
-	 */
-	virtual std::string getID() = 0;
+        /**
+         * @brief All implementations should provide a unique id, which will be used for
+         * serialization and in the factory.
+         * @return a string with the unique id of the control strategy.
+         */
+        virtual std::string getID () = 0;
 
-	/**
-	 * @brief A textual description of the control strategy.
-	 * @return a string with a description of the control strategy.
-	 */
-	virtual std::string getDescription() = 0;
+        /**
+         * @brief A textual description of the control strategy.
+         * @return a string with a description of the control strategy.
+         */
+        virtual std::string getDescription () = 0;
 
-	/**
-	 * @brief Construct a parameterization from a PropertyMap - this is required for deserialization and loading of a Assemblyassembly.
-	 * @param map [in] the PropertyMap to construct a parameterization from.
-	 * @return a new AssemblyParameterization.
-	 */
-	virtual rw::core::Ptr<AssemblyParameterization> createParameterization(const rw::core::Ptr<rw::core::PropertyMap> map) = 0;
-};
-//! @}
-} /* namespace assembly */
-} /* namespace rwlibs */
+        /**
+         * @brief Construct a parameterization from a PropertyMap - this is required for
+         * deserialization and loading of a Assemblyassembly.
+         * @param map [in] the PropertyMap to construct a parameterization from.
+         * @return a new AssemblyParameterization.
+         */
+        virtual rw::core::Ptr< AssemblyParameterization >
+        createParameterization (const rw::core::Ptr< rw::core::PropertyMap > map) = 0;
+    };
+    //! @}
+}}     // namespace rwlibs::assembly
 #endif /* RWLIBS_ASSEMBLY_ASSEMBLYCONTROLSTRATEGY_HPP_ */

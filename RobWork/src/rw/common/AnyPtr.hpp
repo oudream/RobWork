@@ -18,10 +18,10 @@
 #define RW_COMMON_ANYPTR_HPP
 
 #include <rw/core/AnyPtr.hpp>
-
 #include <rw/core/os.hpp>
 #ifdef RW_WIN32
-#pragma message("#include <rw/common/AnyPtr.hpp> is deprecated use #include <rw/core/AnyPtr.hpp> instead")
+#pragma message( \
+    "#include <rw/common/AnyPtr.hpp> is deprecated use #include <rw/core/AnyPtr.hpp> instead")
 #else
 #warning "#include <rw/common/AnyPtr.hpp> is deprecated use #include <rw/core/AnyPtr.hpp> instead"
 #endif

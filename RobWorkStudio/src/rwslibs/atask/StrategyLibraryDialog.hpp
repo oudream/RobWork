@@ -24,17 +24,25 @@
  * \copydoc rwslibs::StrategyLibraryDialog
  */
 
-#include <QDialog>
-
 #include <rw/core/Ptr.hpp>
 
-namespace rw { namespace models { class WorkCell; } }
-namespace rw { namespace sensor { class FTSensor; } }
-namespace rwlibs { namespace assembly { class AssemblyControlStrategy; } }
-namespace rwlibs { namespace assembly { class AssemblyRegistry; } }
+#include <QDialog>
+
+namespace rw { namespace models {
+    class WorkCell;
+}}    // namespace rw::models
+namespace rw { namespace sensor {
+    class FTSensor;
+}}    // namespace rw::sensor
+namespace rwlibs { namespace assembly {
+    class AssemblyControlStrategy;
+}}    // namespace rwlibs::assembly
+namespace rwlibs { namespace assembly {
+    class AssemblyRegistry;
+}}    // namespace rwlibs::assembly
 
 namespace Ui {
-    class StrategyLibraryDialog;
+class StrategyLibraryDialog;
 }
 
 namespace rwslibs {
@@ -46,42 +54,45 @@ namespace rwslibs {
  *
  * \image html assembly/StrategyLibraryDialog.png "The dialog with a few strategies available."
  *
- * When a workcell is set in the dialog, the configure buttons will be available for further configuration of a task in the TaskSetupDialog.
- * Notice that example animations are only shown when the strategy parameterizations have been explicitly specified in this dialog.
+ * When a workcell is set in the dialog, the configure buttons will be available for further
+ * configuration of a task in the TaskSetupDialog. Notice that example animations are only shown
+ * when the strategy parameterizations have been explicitly specified in this dialog.
  */
-class StrategyLibraryDialog: public QDialog {
-	Q_OBJECT
-public:
-	/**
-	 * @brief Construct new dialog.
-	 * @param parent the Qt widget owning this dialog.
-	 */
-	StrategyLibraryDialog(QWidget* parent = 0);
+class StrategyLibraryDialog : public QDialog
+{
+    Q_OBJECT
+  public:
+    /**
+     * @brief Construct new dialog.
+     * @param parent the Qt widget owning this dialog.
+     */
+    StrategyLibraryDialog (QWidget* parent = 0);
 
-	//! @brief Destructor.
-	virtual ~StrategyLibraryDialog();
+    //! @brief Destructor.
+    virtual ~StrategyLibraryDialog ();
 
-	/**
-	 * @brief Set a workcell. This will allow configuration of a concrete assembly task for the given workcell, using the TaskSetupDialog.
-	 * @param wc [in] the workcell.
-	 */
-	void setWorkCell(rw::core::Ptr<const rw::models::WorkCell> wc);
+    /**
+     * @brief Set a workcell. This will allow configuration of a concrete assembly task for the
+     * given workcell, using the TaskSetupDialog.
+     * @param wc [in] the workcell.
+     */
+    void setWorkCell (rw::core::Ptr< const rw::models::WorkCell > wc);
 
-private Q_SLOTS:
-	void step();
-	void configure();
+  private Q_SLOTS:
+    void step ();
+    void configure ();
 
-private:
-	struct Cell;
-	Cell makeCell(rwlibs::assembly::AssemblyControlStrategy* strategy) const;
+  private:
+    struct Cell;
+    Cell makeCell (rwlibs::assembly::AssemblyControlStrategy* strategy) const;
 
-	rw::sensor::FTSensor* const _dummyFTSensor;
-	rw::core::Ptr<const rw::models::WorkCell> _wc;
+    rw::sensor::FTSensor* const _dummyFTSensor;
+    rw::core::Ptr< const rw::models::WorkCell > _wc;
 
-	Ui::StrategyLibraryDialog* const _ui;
-	rw::core::Ptr<rwlibs::assembly::AssemblyRegistry> _registry;
-	std::vector<Cell> _cells;
-	QTimer* const _timer;
+    Ui::StrategyLibraryDialog* const _ui;
+    rw::core::Ptr< rwlibs::assembly::AssemblyRegistry > _registry;
+    std::vector< Cell > _cells;
+    QTimer* const _timer;
 };
 //! @}
 } /* namespace rwslibs */

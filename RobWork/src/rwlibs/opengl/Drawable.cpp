@@ -21,123 +21,107 @@
 
 #include <rw/graphics/Render.hpp>
 
-
-
 using namespace rwlibs::opengl;
 using namespace rw::graphics;
-//Due to a name conflict between our Drawable and a Drawable in X11/X.h on Linux, we need a small workaround.
+// Due to a name conflict between our Drawable and a Drawable in X11/X.h on Linux, we need a small
+// workaround.
 typedef rwlibs::opengl::Drawable RWDrawable;
 
+RWDrawable::~Drawable ()
+{}
 
-RWDrawable::~Drawable() {}
+RWDrawable::Drawable (const std::string& name, unsigned int dmask) :
+    DrawableNode (name),
 
-RWDrawable::Drawable(
-                     const std::string& name,
-                   unsigned int dmask)
-    :
-    DrawableNode(name),
-
-    _drawType(DrawableNode::SOLID),
-    _alpha(1.0f),
-    _highlighted(false),
-    _scale(1.0),
-    _enable(true),
-    _dmask(dmask)
+    _drawType (DrawableNode::SOLID), _alpha (1.0f), _highlighted (false), _scale (1.0),
+    _enable (true), _dmask (dmask)
 {
-    setTransform(rw::math::Transform3D<>::identity() );
+    setTransform (rw::math::Transform3D<>::identity ());
 }
 
-RWDrawable::Drawable(rw::core::Ptr<Render> render,
-                     const std::string& name,
-                   unsigned int dmask)
-    :
-    DrawableNode(name),
-    _renders(1,render),
-    _drawType(DrawableNode::SOLID),
-    _alpha(1.0f),
-    _highlighted(false),
-    _scale(1.0),
-    _enable(true),
-    _dmask(dmask)
+RWDrawable::Drawable (rw::core::Ptr< Render > render, const std::string& name, unsigned int dmask) :
+    DrawableNode (name), _renders (1, render), _drawType (DrawableNode::SOLID), _alpha (1.0f),
+    _highlighted (false), _scale (1.0), _enable (true), _dmask (dmask)
 {
-	setTransform(rw::math::Transform3D<>::identity() );
+    setTransform (rw::math::Transform3D<>::identity ());
 }
 
-void RWDrawable::draw(const DrawableNode::RenderInfo& info) const
+void RWDrawable::draw (const DrawableNode::RenderInfo& info) const
 {
     unsigned int mask = info._mask;
-    if (!_enable || ((mask&_dmask)==0) )
+    if (!_enable || ((mask & _dmask) == 0))
         return;
 
     bool highlight = _highlighted;
 
-    glPushMatrix();
+    glPushMatrix ();
 
     if (_scale != 1.0)
-        glScalef(_scale, _scale, _scale);
+        glScalef (_scale, _scale, _scale);
 
-    glMultMatrixf(gltrans);
+    glMultMatrixf (gltrans);
 
     if (highlight) {
-        glDisable(GL_LIGHT0);
-        glEnable(GL_LIGHT7);
+        glDisable (GL_LIGHT0);
+        glEnable (GL_LIGHT7);
     }
     rw::graphics::DrawableNode::DrawType dtype = _drawType;
-    if(dtype==SOLID)
+    if (dtype == SOLID)
         dtype = info._drawType;
 
-    for(const Render::Ptr& render: _renders) {
-        render->draw(info, dtype, _alpha);
+    for (const Render::Ptr& render : _renders) {
+        render->draw (info, dtype, _alpha);
     }
     if (highlight) {
-        glEnable(GL_LIGHT0);
-        glDisable(GL_LIGHT7);
+        glEnable (GL_LIGHT0);
+        glDisable (GL_LIGHT7);
     }
 
-    glPopMatrix();
+    glPopMatrix ();
 }
 
-void RWDrawable::setDrawType(DrawableNode::DrawType drawType)
+void RWDrawable::setDrawType (DrawableNode::DrawType drawType)
 {
     _drawType = drawType;
 }
 
-void RWDrawable::setTransparency(float alpha)
+void RWDrawable::setTransparency (float alpha)
 {
     _alpha = alpha;
 }
 
-float RWDrawable::getTransparency()
+float RWDrawable::getTransparency ()
 {
     return _alpha;
 }
 
-void RWDrawable::setHighlighted(bool b)
+void RWDrawable::setHighlighted (bool b)
 {
     _highlighted = b;
 }
 
-float RWDrawable::getScale() const {
-	return _scale;
-}
-
-const rw::math::Transform3D<>& RWDrawable::getTransform() const
+float RWDrawable::getScale () const
 {
-	return _t3d;
+    return _scale;
 }
 
-void RWDrawable::setTransform(const rw::math::Transform3D<>& t3d)
+const rw::math::Transform3D<>& RWDrawable::getTransform () const
 {
-	_t3d = t3d;
-	DrawableUtil::transform3DToGLTransform(_t3d, gltrans);
+    return _t3d;
 }
 
-bool RWDrawable::isHighlighted() const
+void RWDrawable::setTransform (const rw::math::Transform3D<>& t3d)
+{
+    _t3d = t3d;
+    DrawableUtil::transform3DToGLTransform (_t3d, gltrans);
+}
+
+bool RWDrawable::isHighlighted () const
 {
     return _highlighted;
 }
 
-void RWDrawable::setScale(float scale)
+void RWDrawable::setScale (float scale)
 {
     _scale = scale;
 }

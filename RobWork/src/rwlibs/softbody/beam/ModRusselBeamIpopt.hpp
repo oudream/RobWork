@@ -14,56 +14,48 @@ Copyright 2013 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
     limitations under the License.
 */
 
-
 #ifndef RWLIBS_SOFTBODY_MODRUSSELBEAMIPOPT_HPP
 #define RWLIBS_SOFTBODY_MODRUSSELBEAMIPOPT_HPP
 
+#include "IpIpoptApplication.hpp"
 #include "ModRusselBeamBase.hpp"
 
-#include "IpIpoptApplication.hpp"
+namespace rwlibs { namespace softbody {
+    /** @addtogroup softbody */
+    /*@{*/
 
-
-
-namespace rwlibs {
-namespace softbody {
-/** @addtogroup softbody */
-/*@{*/
-
-/**
- * @brief Implementation of the Modified Russel Beam Problem using IPOPT
- **/
-class ModRusselBeamIpopt : public ModRusselBeamBase
-{
-public:
     /**
-     * @brief Constructor
-     *
-     * @param geomPtr pointer to the beam geometry
-     * @param obstaclePtr pointer to the plane obstacle
-     * @param M number of discretization points
+     * @brief Implementation of the Modified Russel Beam Problem using IPOPT
      **/
-    ModRusselBeamIpopt ( 
-        boost::shared_ptr< BeamGeometry > geomPtr,
-        boost::shared_ptr< BeamObstaclePlane > obstaclePtr,
-        int M );
-    
-    virtual ~ModRusselBeamIpopt();
-    
-    
-    /**
-     * @brief solve the minimization problem
-     *
-     * @param xinituser starting guess, will be overwritten by solution
-     * @param U vector to put the x-component of the curve in
-     * @param V vector to put the x-component of the curve in
-     **/
-    void solve ( Eigen::VectorXd& xinituser, Eigen::VectorXd &U, Eigen::VectorXd &V );
+    class ModRusselBeamIpopt : public ModRusselBeamBase
+    {
+      public:
+        /**
+         * @brief Constructor
+         *
+         * @param geomPtr pointer to the beam geometry
+         * @param obstaclePtr pointer to the plane obstacle
+         * @param M number of discretization points
+         **/
+        ModRusselBeamIpopt (boost::shared_ptr< BeamGeometry > geomPtr,
+                            boost::shared_ptr< BeamObstaclePlane > obstaclePtr, int M);
 
-private:
-    Ipopt::SmartPtr< Ipopt::TNLP > _nlp;
-    Ipopt::SmartPtr< Ipopt::IpoptApplication > _app;
-};
-/*@}*/
-}}
+        virtual ~ModRusselBeamIpopt ();
 
-#endif // MODRUSSELBEAMIPOPT_HPP
+        /**
+         * @brief solve the minimization problem
+         *
+         * @param xinituser starting guess, will be overwritten by solution
+         * @param U vector to put the x-component of the curve in
+         * @param V vector to put the x-component of the curve in
+         **/
+        void solve (Eigen::VectorXd& xinituser, Eigen::VectorXd& U, Eigen::VectorXd& V);
+
+      private:
+        Ipopt::SmartPtr< Ipopt::TNLP > _nlp;
+        Ipopt::SmartPtr< Ipopt::IpoptApplication > _app;
+    };
+    /*@}*/
+}}    // namespace rwlibs::softbody
+
+#endif    // MODRUSSELBEAMIPOPT_HPP

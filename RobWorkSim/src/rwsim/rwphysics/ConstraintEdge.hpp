@@ -2,162 +2,135 @@
 #define DYNAMICS_CONSTRAINTEDGE_HPP_
 
 #include "ConstraintNode.hpp"
-
 #include "Contact.hpp"
 
-namespace rwsim {
-namespace simulator {
-
+namespace rwsim { namespace simulator {
 
     class ConstraintEdge
     {
-    private:
-        ConstraintEdge();
+      private:
+        ConstraintEdge ();
 
-    public:
-
+      public:
         //! @brief edge states
-        typedef enum {NewTouch, PersistentTouch, VanishingTouch,
-                      NewProximity, PersistentProximity,
-                      VanishingProximity, Static } EdgeState;
+        typedef enum {
+            NewTouch,
+            PersistentTouch,
+            VanishingTouch,
+            NewProximity,
+            PersistentProximity,
+            VanishingProximity,
+            Static
+        } EdgeState;
 
         //! @brief Types of edges
-        typedef enum {Logical, //!
-        			  Structural,
-        			  Geometric,
-        			  Physical
-        			  } EdgeType;
+        typedef enum {
+            Logical,    //!
+            Structural,
+            Geometric,
+            Physical
+        } EdgeType;
 
         /**
          * @brief Default constructor
          */
-        ConstraintEdge(CNodePair n,
-                    EdgeType type,
-                    double touchDist,
-                    double penDist,
-                    double sepDist);
+        ConstraintEdge (CNodePair n, EdgeType type, double touchDist, double penDist,
+                        double sepDist);
 
-        ConstraintEdge(CNodePair n,
-                    EdgeType type, int id);
+        ConstraintEdge (CNodePair n, EdgeType type, int id);
 
         /**
          * @brief destructor
          */
-        virtual ~ConstraintEdge(){};
+        virtual ~ConstraintEdge (){};
 
-        inline void setType(EdgeType type) {
-            _type = type;
-        }
-        inline EdgeType getType() const {
-            return _type;
-        }
+        inline void setType (EdgeType type) { _type = type; }
+        inline EdgeType getType () const { return _type; }
 
-        inline void setColor(unsigned char color){
-            _color = color;
-        }
+        inline void setColor (unsigned char color) { _color = color; }
 
-        inline unsigned char getColor() const {
-            return _color;
-        }
+        inline unsigned char getColor () const { return _color; }
 
-        inline const CNodePair& getNodes() const {
-            return _nodes;
-        }
+        inline const CNodePair& getNodes () const { return _nodes; }
 
-        inline double getLastDistance()  const {
-            return _shortestDist[1];
+        inline double getLastDistance () const { return _shortestDist[1]; }
+
+        inline double getDistance () const { return _shortestDist[0]; }
+
+        inline void setDistance (double dist) { _shortestDist[0] = dist; }
+
+        bool isTouching () const
+        {
+            return _state[0] == ConstraintEdge::NewTouch ||
+                   _state[0] == ConstraintEdge::PersistentTouch;
         }
 
-        inline double getDistance()  const {
-            return _shortestDist[0];
+        bool wasTouching () const
+        {
+            return _state[1] == ConstraintEdge::NewTouch ||
+                   _state[1] == ConstraintEdge::PersistentTouch;
         }
 
-        inline void setDistance(double dist) {
-            _shortestDist[0] = dist;
+        bool isObsolete () const
+        {
+            return _state[1] == ConstraintEdge::VanishingProximity &&
+                   _state[0] == ConstraintEdge::VanishingProximity;
         }
+        /*
+                inline ContactModel *getContactModel(){
+                    return _model;
+                }
+        */
+        inline EdgeState getState () const { return _state[0]; }
 
-        bool isTouching() const {
-            return  _state[0]==ConstraintEdge::NewTouch ||
-                    _state[0]==ConstraintEdge::PersistentTouch;
-        }
+        inline void setState (EdgeState state) { _state[0] = state; }
 
-        bool wasTouching() const {
-            return _state[1]==ConstraintEdge::NewTouch ||
-                   _state[1]==ConstraintEdge::PersistentTouch;
-        }
+        inline EdgeState getLastState () const { return _state[1]; }
 
-        bool isObsolete() const {
-            return _state[1]==ConstraintEdge::VanishingProximity &&
-                   _state[0]==ConstraintEdge::VanishingProximity;
-        }
-/*
-        inline ContactModel *getContactModel(){
-            return _model;
-        }
-*/
-        inline EdgeState getState() const {
-            return _state[0];
-        }
-
-        inline void setState( EdgeState state ){
-            _state[0] = state;
-        }
-
-        inline EdgeState getLastState() const {
-            return _state[1];
-        }
-
-        bool isPenetrating() const {
-        	if( _shortestDist[0] < _penDist ){
-        		std::cout << "PENETRATING: " << _shortestDist[0] << " < " << _penDist << std::endl;
-        		std::cout << _nodes.first->getFrame()->getName() << " " << _nodes.second->getFrame()->getName() << std::endl;
-        	}
+        bool isPenetrating () const
+        {
+            if (_shortestDist[0] < _penDist) {
+                std::cout << "PENETRATING: " << _shortestDist[0] << " < " << _penDist << std::endl;
+                std::cout << _nodes.first->getFrame ()->getName () << " "
+                          << _nodes.second->getFrame ()->getName () << std::endl;
+            }
             return _shortestDist[0] < _penDist;
         }
 
-        bool wasSeperating() const {
-            return _shortestDist[1] > _sepDist;
-        }
+        bool wasSeperating () const { return _shortestDist[1] > _sepDist; }
 
-        bool isSeperating() const {
-            return _shortestDist[0]> _sepDist;
-        }
+        bool isSeperating () const { return _shortestDist[0] > _sepDist; }
 
-        void rollBack();
+        void rollBack ();
 
-        void saveState();
+        void saveState ();
 
-        void setResting(bool r) {
-            _resting = r;
-        }
+        void setResting (bool r) { _resting = r; }
 
-        bool isResting() const {
-            return _resting;
-        }
+        bool isResting () const { return _resting; }
 
-        void print();
+        void print ();
 
-        void printState(EdgeState state);
+        void printState (EdgeState state);
 
-        Contact& getContact(){
-            return *_contact;
-        }
+        Contact& getContact () { return *_contact; }
 
-        bool isDeleted(){ return _deleted; };
+        bool isDeleted () { return _deleted; };
 
-        void setDeleted(bool del){ _deleted = del; }
+        void setDeleted (bool del) { _deleted = del; }
 
-        int getID(){ return _id; };
+        int getID () { return _id; };
 
-        void setID( int id ){ _id=id; };
+        void setID (int id) { _id = id; };
 
-        void setThresholds(double touch, double pen, double sep){
+        void setThresholds (double touch, double pen, double sep)
+        {
             _touchDist = touch;
-            _penDist = pen;
-            _sepDist = sep;
+            _penDist   = pen;
+            _sepDist   = sep;
         };
 
-    private: // private variables
+      private:    // private variables
         // color of this edge
         unsigned char _color;
 
@@ -175,22 +148,20 @@ namespace simulator {
         EdgeState _state[3];
 
         bool _resting;
-        double _touchDist,_penDist,_sepDist;
+        double _touchDist, _penDist, _sepDist;
 
         int _id;
 
-    public:
+      public:
         // TODO: these should be template variables
         /*rw::proximity::DistanceResult _narrowCache;
         rw::proximity::MultiDistanceResult _contactSeed;
 
         ContactModel *_model;
         */
-        Contact *_contact;
+        Contact* _contact;
 
-        void *data;
-
+        void* data;
     };
-} // namespace dynamics
-}
+}}     // namespace rwsim::simulator
 #endif /*ConstraintEdge_HPP_*/

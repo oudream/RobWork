@@ -273,7 +273,7 @@ namespace rw { namespace common {
         // void writeImpl(T& object, const std::string& id, typename
         // boost::enable_if_c<boost::is_pointer<T>::value, T>::type* def=NULL){
         //	BOOST_MPL_ASSERT_MSG(boost::is_pointer<T>::value, "type T cannot be of type
-        //reference!");
+        // reference!");
         //}
     };
 

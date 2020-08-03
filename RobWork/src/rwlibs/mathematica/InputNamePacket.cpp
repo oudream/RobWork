@@ -20,23 +20,24 @@
 using namespace rw::common;
 using namespace rwlibs::mathematica;
 
-InputNamePacket::InputNamePacket(const Mathematica::String& string):
-	Packet("InputNamePacket",Mathematica::InputName),
-	_string(string)
+InputNamePacket::InputNamePacket (const Mathematica::String& string) :
+    Packet ("InputNamePacket", Mathematica::InputName), _string (string)
+{}
+
+InputNamePacket::~InputNamePacket ()
+{}
+
+const Mathematica::String& InputNamePacket::string ()
 {
+    return _string;
 }
 
-InputNamePacket::~InputNamePacket() {
+std::list< rw::core::Ptr< const Mathematica::Expression > > InputNamePacket::getArguments () const
+{
+    return std::list< rw::core::Ptr< const Mathematica::Expression > > (1, _string.clone ());
 }
 
-const Mathematica::String& InputNamePacket::string() {
-	return _string;
-}
-
-std::list<rw::core::Ptr<const Mathematica::Expression> > InputNamePacket::getArguments() const {
-	return std::list<rw::core::Ptr<const Mathematica::Expression> >(1, _string.clone());
-}
-
-Mathematica::Expression::Ptr InputNamePacket::clone() const {
-	return ownedPtr(new InputNamePacket(_string));
+Mathematica::Expression::Ptr InputNamePacket::clone () const
+{
+    return ownedPtr (new InputNamePacket (_string));
 }

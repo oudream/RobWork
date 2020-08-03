@@ -21,8 +21,6 @@
 
 #include <rw/math/LinearAlgebra.hpp>
 
-
-
 using namespace rw::geometry;
 using namespace rw::math;
 using namespace rw::core;

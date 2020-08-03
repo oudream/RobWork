@@ -31,11 +31,11 @@
 
 #endif
 
+#include <rw/core/Exception.hpp>
 #include <rw/core/IOUtil.hpp>
 #include <rw/core/Ptr.hpp>
 #include <rw/core/StringUtil.hpp>
 #include <rw/core/macros.hpp>
-#include <rw/core/Exception.hpp>
 #include <rw/geometry/Geometry.hpp>
 #include <rw/loaders/GeometryFactory.hpp>
 #include <rw/loaders/model3d/STLFile.hpp>
@@ -43,7 +43,6 @@
 #include <sstream>
 #include <string>
 #include <sys/stat.h>
-
 
 using namespace rw;
 using namespace rw::core;

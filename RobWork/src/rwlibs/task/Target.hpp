@@ -22,133 +22,120 @@
 #include "TypeRepository.hpp"
 
 #include <rw/core/Ptr.hpp>
-
 #include <rw/math/Q.hpp>
 #include <rw/math/Transform3D.hpp>
 
-namespace rwlibs {
-namespace task {
+namespace rwlibs { namespace task {
 
-/** @addtogroup task */
-/*@{*/
-
-/**
- * @brief Base class for targets
- */
-class TargetBase: public Entity
-{
-public:
-	//! @brief smart pointer type to this class
-    typedef rw::core::Ptr<TargetBase> Ptr;
+    /** @addtogroup task */
+    /*@{*/
 
     /**
-     * @brief Constructs TargetBase with a given type
-     * @param targetType [in] Type of the target
+     * @brief Base class for targets
      */
-    TargetBase(int targetType = -1):
-        Entity(EntityType::Target),
-        _targetType(targetType)
-    {}
-
-    /**
-     * @brief Destructor
-     */
-    virtual ~TargetBase() {}
-
-
-    /**
-     * @brief Returns the type of target
-     */
-    Type targetType() {
-        return _targetType;
-    }
-
-    /**
-     * @brief Returns the value of the target.
-     *
-     * The user need to provide the type as template argument.
-     *
-     * May throw a rw::core::Exception if type conversion is invalid.
-     * @return Value of target
-     */
-    template <class T>
-    T& getValue();
-
-protected:
-    //! @brief The type of the target.
-    Type _targetType;
-};
-
-/**
- * @brief Template class implementing Target
- */
-template <class T>
-class Target: public TargetBase
-{
-public:
-	//! @brief smart pointer type to this class
-    typedef rw::core::Ptr<Target<T> > Ptr;
-    /**
-     * @brief Construct Target with value \b value.
-     * @param value [in] Value of target
-     */
-    Target(const T& value):
-        _value(value)
+    class TargetBase : public Entity
     {
-        _targetType = TypeRepository::instance().get<T>(true);
-    }
+      public:
+        //! @brief smart pointer type to this class
+        typedef rw::core::Ptr< TargetBase > Ptr;
+
+        /**
+         * @brief Constructs TargetBase with a given type
+         * @param targetType [in] Type of the target
+         */
+        TargetBase (int targetType = -1) : Entity (EntityType::Target), _targetType (targetType) {}
+
+        /**
+         * @brief Destructor
+         */
+        virtual ~TargetBase () {}
+
+        /**
+         * @brief Returns the type of target
+         */
+        Type targetType () { return _targetType; }
+
+        /**
+         * @brief Returns the value of the target.
+         *
+         * The user need to provide the type as template argument.
+         *
+         * May throw a rw::core::Exception if type conversion is invalid.
+         * @return Value of target
+         */
+        template< class T > T& getValue ();
+
+      protected:
+        //! @brief The type of the target.
+        Type _targetType;
+    };
 
     /**
-     * @brief Returns the value of the target
-     * @return Value of target
+     * @brief Template class implementing Target
      */
-    T& get() { return _value; }
+    template< class T > class Target : public TargetBase
+    {
+      public:
+        //! @brief smart pointer type to this class
+        typedef rw::core::Ptr< Target< T > > Ptr;
+        /**
+         * @brief Construct Target with value \b value.
+         * @param value [in] Value of target
+         */
+        Target (const T& value) : _value (value)
+        {
+            _targetType = TypeRepository::instance ().get< T > (true);
+        }
+
+        /**
+         * @brief Returns the value of the target
+         * @return Value of target
+         */
+        T& get () { return _value; }
+
+        /**
+         * @brief Returns the value of the target
+         * @return Value of target
+         */
+        const T& get () const { return _value; }
+
+        /**
+         * @brief Make a copy of the target.
+         * @return new identical target.
+         */
+        rw::core::Ptr< Target< T > > clone ()
+        {
+            return rw::core::ownedPtr (new Target< T > (*this));
+        }
+
+      private:
+        T _value;
+    };
 
     /**
-     * @brief Returns the value of the target
-     * @return Value of target
+     * Definition of Target with type rw::math::Q
      */
-    const T& get() const { return _value; }
+    typedef Target< rw::math::Q > QTarget;
 
     /**
-     * @brief Make a copy of the target.
-     * @return new identical target.
+     * Definition of Target with type rw::math::Transform3D
      */
-    rw::core::Ptr<Target<T> > clone() {
-    	return rw::core::ownedPtr(new Target<T>(*this));
+    typedef Target< rw::math::Transform3D<> > CartesianTarget;
+
+    extern template class Target< rw::math::Q >;
+    extern template class Target< rw::math::Transform3D<> >;
+
+    template< class T > T& TargetBase::getValue ()
+    {
+        Target< T >* target = dynamic_cast< Target< T >* > (this);
+        if (target != NULL) {
+            return target->get ();
+        }
+        RW_THROW ("Unable to convert target to specified type");
     }
 
-private:
-    T _value;
-};
+    /** @} */
 
-/**
- * Definition of Target with type rw::math::Q
- */
-typedef Target<rw::math::Q> QTarget;
+}}    // namespace rwlibs::task
 
-/**
- * Definition of Target with type rw::math::Transform3D
- */
-typedef Target<rw::math::Transform3D<> > CartesianTarget;
-
-extern template class Target<rw::math::Q>;
-extern template class Target<rw::math::Transform3D<> >;
-
-template <class T>
-T& TargetBase::getValue()
-{
-    Target<T>* target = dynamic_cast<Target<T>*>(this);
-    if (target != NULL) {
-        return target->get();
-    }
-    RW_THROW("Unable to convert target to specified type");
-}
-
-/** @} */
-
-} //end namespace task
-} //end namespace rwlibs
-
-
-#endif // end include guard
+#endif    // end include guard

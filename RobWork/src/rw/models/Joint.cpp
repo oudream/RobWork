@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,42 +15,33 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #include "Joint.hpp"
 
 #include <cfloat>
 
-
 using namespace rw::models;
 using namespace rw::math;
 
-Joint::Joint(const std::string& name, size_t dof) :
-    Frame((int)dof, name),
-    _bounds(Q(dof), Q(dof)),
-    _maxVelocity(Q(dof)),
-    _maxAcceleration(Q(dof)),
-    _isActive(true)
+Joint::Joint (const std::string& name, size_t dof) :
+    Frame ((int) dof, name), _bounds (Q (dof), Q (dof)), _maxVelocity (Q (dof)),
+    _maxAcceleration (Q (dof)), _isActive (true)
 {
-    for (size_t i = 0; i<dof; i++) {
-        _bounds.first(i) = -DBL_MAX;
-        _bounds.second(i) = DBL_MAX;
-        _maxVelocity(i) = 1;
-        _maxAcceleration(i) = 1;
+    for (size_t i = 0; i < dof; i++) {
+        _bounds.first (i)    = -DBL_MAX;
+        _bounds.second (i)   = DBL_MAX;
+        _maxVelocity (i)     = 1;
+        _maxAcceleration (i) = 1;
     }
 }
 
-
-Joint::Joint(const std::string& name, size_t dof, size_t stateSize):
-        Frame((int)dof, name),
-        _bounds(Q(dof), Q(dof)),
-        _maxVelocity(Q(dof)),
-        _maxAcceleration(Q(dof)),
-        _isActive(true)
+Joint::Joint (const std::string& name, size_t dof, size_t stateSize) :
+    Frame ((int) dof, name), _bounds (Q (dof), Q (dof)), _maxVelocity (Q (dof)),
+    _maxAcceleration (Q (dof)), _isActive (true)
 {
-    for (size_t i = 0; i<dof; i++) {
-        _bounds.first(i) = -DBL_MAX;
-        _bounds.second(i) = DBL_MAX;
-        _maxVelocity(i) = 1;
-        _maxAcceleration(i) = 1;
+    for (size_t i = 0; i < dof; i++) {
+        _bounds.first (i)    = -DBL_MAX;
+        _bounds.second (i)   = DBL_MAX;
+        _maxVelocity (i)     = 1;
+        _maxAcceleration (i) = 1;
     }
 }

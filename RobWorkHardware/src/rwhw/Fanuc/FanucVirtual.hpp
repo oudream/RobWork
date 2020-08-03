@@ -25,169 +25,166 @@
 #include "Fanuc.hpp"
 #include "VelRampProfile.hpp"
 
-#include <rw/math/Q.hpp>
-#include <rw/math/Pose6D.hpp>
-#include <rw/models/SerialDevice.hpp>
 #include <rw/kinematics/State.hpp>
-#include <Eigen/Core>
+#include <rw/math/Pose6D.hpp>
+#include <rw/math/Q.hpp>
+#include <rw/models/SerialDevice.hpp>
 
+#include <Eigen/Core>
 #include <string>
 
 namespace rwhw {
 
-    /** @addtogroup rwhw */
-    /*@{*/
+/** @addtogroup rwhw */
+/*@{*/
+
+/**
+ * @brief Virtual Fanuc
+ *
+ * This class represents a Virtual Fanuc
+ */
+
+class FanucVirtual : public Fanuc
+{
+  public:
+    /**
+     * @brief Construct device
+     * @param fanucModel [in] the Device to work on
+     * @param state [in] state of device
+     */
+    FanucVirtual (rw::models::SerialDevice* fanucModel, const rw::kinematics::State& state);
 
     /**
-     * @brief Virtual Fanuc
-     *
-     * This class represents a Virtual Fanuc
+     * @brief Destructor
      */
+    virtual ~FanucVirtual ();
 
-    class FanucVirtual: public Fanuc
-    {
-    public:
-        /**
-         * @brief Construct device
-         * @param fanucModel [in] the Device to work on
-         * @param state [in] state of device
-         */
-        FanucVirtual(
-            rw::models::SerialDevice* fanucModel,
-            const rw::kinematics::State& state);
+    /**
+     * @copydoc Fanuc::setGlobalSpeed
+     */
+    virtual void setGlobalSpeed (int speed);
 
-        /**
-         * @brief Destructor
-         */
-        virtual ~FanucVirtual();
+    /**
+     * @copydoc Fanuc::getGlobalSpeed
+     */
+    virtual int getGlobalSpeed ();
 
-        /**
-         * @copydoc Fanuc::setGlobalSpeed
-         */
-        virtual void setGlobalSpeed(int speed);
+    /**
+     * @copydoc Fanuc::moveFineQ
+     */
+    virtual void moveFineQ (rw::math::Q const& q);
 
-        /**
-         * @copydoc Fanuc::getGlobalSpeed
-         */
-        virtual int getGlobalSpeed();
+    /**
+     * @copydoc Fanuc::moveCntQ
+     */
+    virtual void moveCntQ (rw::math::Q const& q);
 
-        /**
-         * @copydoc Fanuc::moveFineQ
-         */
-        virtual void moveFineQ(rw::math::Q const &q);
+    /**
+     * @copydoc Fanuc::isMoveComplete
+     */
+    virtual bool isMoveComplete ();
 
-        /**
-         * @copydoc Fanuc::moveCntQ
-         */
-        virtual void moveCntQ(rw::math::Q const &q);
+    /**
+     * @copydoc Fanuc::setCntQSpeed
+     */
+    virtual void setCntQSpeed (int speed);
 
-        /**
-         * @copydoc Fanuc::isMoveComplete
-         */
-        virtual bool isMoveComplete();
+    /**
+     * @copydoc Fanuc::setFineQSpeed
+     */
+    virtual void setFineQSpeed (int speed);
 
-        /**
-         * @copydoc Fanuc::setCntQSpeed
-         */
-        virtual void setCntQSpeed(int speed);
+    /**
+     * @copydoc Fanuc::setCntQAcc
+     */
+    virtual void setCntQAcc (int acc);
 
-        /**
-         * @copydoc Fanuc::setFineQSpeed
-         */
-        virtual void setFineQSpeed(int speed);
+    /**
+     * @copydoc Fanuc::setFineQAcc
+     */
+    virtual void setFineQAcc (int acc);
 
-        /**
-         * @copydoc Fanuc::setCntQAcc
-         */
-        virtual void setCntQAcc(int acc);
+    /**
+     * @copydoc Fanuc::getQ
+     */
+    virtual rw::math::Q getQ ();
 
-        /**
-         * @copydoc Fanuc::setFineQAcc
-         */
-        virtual void setFineQAcc(int acc);
+    /**
+     * @copydoc Fanuc::getQ
+     */
+    virtual rw::math::Q getdQ ();
 
-        /**
-         * @copydoc Fanuc::getQ
-         */
-        virtual rw::math::Q getQ();
+    /**
+     * @copydoc Fanuc::update
+     */
+    virtual void update ();
 
-        /**
-         * @copydoc Fanuc::getQ
-         */
-        virtual rw::math::Q getdQ();
+    /**
+     * @copydoc Fanuc::connect
+     */
+    virtual bool connect ();
 
-        /**
-         * @copydoc Fanuc::update
-         */
-        virtual void update();
+    /**
+     * @copydoc Fanuc::isConnected
+     */
+    virtual bool isConnected ();
 
-        /**
-         * @copydoc Fanuc::connect
-         */
-        virtual bool connect();
+    /**
+     * @copydoc Fanuc::disconnect
+     */
+    virtual void disconnect ();
 
-        /**
-         * @copydoc Fanuc::isConnected
-         */
-        virtual bool isConnected();
+    /**
+     * @copydoc Fanuc::callRobotProgram
+     */
+    virtual void callRobotProgram (unsigned int progNr);
 
-        /**
-         * @copydoc Fanuc::disconnect
-         */
-        virtual void disconnect();
+    /**
+     * @copydoc Fanuc::setCallArguments
+     */
+    virtual void setCallArguments (float arg1, float arg2, float arg3);
 
-        /**
-         * @copydoc Fanuc::callRobotProgram
-         */
-        virtual void callRobotProgram(unsigned int progNr);
+    /**
+     * @copydoc Fanuc::isCallFinished
+     */
+    virtual bool isCallFinished ();
 
-        /**
-         * @copydoc Fanuc::setCallArguments
-         */
-        virtual void setCallArguments(float arg1, float arg2, float arg3);
+    bool notifyProgram () { return true; };
 
-        /**
-         * @copydoc Fanuc::isCallFinished
-         */
-        virtual bool isCallFinished();
+    bool isCallWaiting () { return false; };
 
-        bool notifyProgram( ){ return true;};
+    float getLastError ();
 
-        bool isCallWaiting( ){ return false;};
+  private:
+    rw::models::SerialDevice* _model;
+    rw::kinematics::State _state;
 
-        float getLastError( );
+    // internal state variable for the initializing and closing the DLL
+    bool _isConnected;
 
-    private:
-        rw::models::SerialDevice *_model;
-        rw::kinematics::State _state;
+    // joint pos and velocity
+    rw::math::Q _qCurrent, _dqCurrent;
 
-        // internal state variable for the initializing and closing the DLL
-        bool _isConnected;
+    // timestamp for qCurrent and qdCurrent in ms
+    long long _timeStamp;
+    //
+    typedef enum { IdleCMD, CntCMD, FineCMD, CallCMD } CommandType;
+    // The next command to execute
+    CommandType _nextCmd, _lastCmd;
+    bool _cmdChanged;
+    //
+    unsigned int _accCnt, _accFine, _speedCnt, _speedFine, _globalSpeed;
+    bool _accCntChanged, _accFineChanged, _speedCntChanged, _speedFineChanged, _globalSpeedChanged;
 
-        // joint pos and velocity
-        rw::math::Q _qCurrent, _dqCurrent;
+    rw::math::Q _qValFine, _qValCnt, _qGoal;
+    bool _qFineChanged, _qCntChanged;
 
-        // timestamp for qCurrent and qdCurrent in ms
-        long long _timeStamp;
-        //
-        typedef enum{IdleCMD, CntCMD, FineCMD, CallCMD} CommandType;
-        // The next command to execute
-        CommandType _nextCmd,_lastCmd;
-        bool _cmdChanged;
-        //
-        unsigned int _accCnt, _accFine, _speedCnt, _speedFine, _globalSpeed;
-        bool _accCntChanged, _accFineChanged, _speedCntChanged,
-            _speedFineChanged, _globalSpeedChanged;
+    fanuc::VelRampProfile* _velProfile;
+    unsigned int _progNrToCall;
+    Eigen::Vector3f _callArg;
+};
 
-        rw::math::Q _qValFine,_qValCnt,_qGoal;
-        bool _qFineChanged,_qCntChanged;
+/**@}*/
+}    // namespace rwhw
 
-        fanuc::VelRampProfile *_velProfile;
-        unsigned int _progNrToCall;
-        Eigen::Vector3f _callArg;
-    };
-
-    /**@}*/
-} // end namespaces
-
-#endif // end include guard
+#endif    // end include guard

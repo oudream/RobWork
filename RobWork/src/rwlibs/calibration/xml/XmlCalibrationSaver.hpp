@@ -23,36 +23,37 @@
 #include <iosfwd>
 #include <string>
 
-namespace rwlibs {
-namespace calibration {
-class WorkCellCalibration;
+namespace rwlibs { namespace calibration {
+    class WorkCellCalibration;
 
-/** @addtogroup calibration */
-/*@{*/
+    /** @addtogroup calibration */
+    /*@{*/
 
-/** 
- * @brief Save function for writing a work cell calibration in an XML format
- */
-class XmlCalibrationSaver {
-public:
-	/**
-	 * @brief Saves \b workcellCalibration to the file \b fileName
-	 * @param workcellCalibration [in] workcellCalibration to store
-	 * @param fileName [in] Name of the file to which to write.
-	 */
-	static void save(rw::core::Ptr<WorkCellCalibration> workcellCalibration, std::string fileName);
+    /**
+     * @brief Save function for writing a work cell calibration in an XML format
+     */
+    class XmlCalibrationSaver
+    {
+      public:
+        /**
+         * @brief Saves \b workcellCalibration to the file \b fileName
+         * @param workcellCalibration [in] workcellCalibration to store
+         * @param fileName [in] Name of the file to which to write.
+         */
+        static void save (rw::core::Ptr< WorkCellCalibration > workcellCalibration,
+                          std::string fileName);
 
-	/**
-	 * @brief Writes \b workcellCalibration to stream.
-	 * @param workcellCalibration [in] workcellCalibration to write
-	 * @param ostream [in] Stream to write to
-	 */
-	static void save(rw::core::Ptr<WorkCellCalibration> workcellCalibration, std::ostream& ostream);
-};
+        /**
+         * @brief Writes \b workcellCalibration to stream.
+         * @param workcellCalibration [in] workcellCalibration to write
+         * @param ostream [in] Stream to write to
+         */
+        static void save (rw::core::Ptr< WorkCellCalibration > workcellCalibration,
+                          std::ostream& ostream);
+    };
 
-/* @} */
+    /* @} */
 
-}
-}
+}}    // namespace rwlibs::calibration
 
 #endif /* RWLIBS_CALIBRATION_XMLCALIBRATIONSAVER_HPP */

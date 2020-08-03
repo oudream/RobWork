@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
  * Faculty of Engineering, University of Southern Denmark
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,15 +15,16 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef PROPERTYVIEW_HPP
 #define PROPERTYVIEW_HPP
 
-#include <string>
-
 #include <rws/RobWorkStudioPlugin.hpp>
 
-namespace rw { namespace kinematics { class Frame; } }
+#include <string>
+
+namespace rw { namespace kinematics {
+    class Frame;
+}}    // namespace rw::kinematics
 
 class PropertyViewEditor;
 
@@ -32,51 +33,52 @@ class QComboBox;
 namespace rws {
 
 //! @brief Plugin for editing properties.
-class PropertyView: public RobWorkStudioPlugin {
+class PropertyView : public RobWorkStudioPlugin
+{
     Q_OBJECT
 #ifndef RWS_USE_STATIC_LINK_PLUGINS
-    Q_INTERFACES( rws::RobWorkStudioPlugin )
-    Q_PLUGIN_METADATA(IID "dk.sdu.mip.Robwork.RobWorkStudioPlugin/0.1" FILE "plugin.json")
+    Q_INTERFACES (rws::RobWorkStudioPlugin)
+    Q_PLUGIN_METADATA (IID "dk.sdu.mip.Robwork.RobWorkStudioPlugin/0.1" FILE "plugin.json")
 #endif
-public:
-	//! @brief Constructor.
-    PropertyView();
+  public:
+    //! @brief Constructor.
+    PropertyView ();
 
-	//! @brief Destructor.
-    virtual ~PropertyView();
+    //! @brief Destructor.
+    virtual ~PropertyView ();
 
     //! @copydoc RobWorkStudioPlugin::initialize
-    virtual void initialize();
+    virtual void initialize ();
 
     //! @copydoc RobWorkStudioPlugin::open
-    virtual void open(rw::models::WorkCell* workcell);
+    virtual void open (rw::models::WorkCell* workcell);
 
     //! @copydoc RobWorkStudioPlugin::close
-    virtual void close();
+    virtual void close ();
 
-//protected:
-	//void frameSelectedHandler(rw::kinematics::Frame* frame, RobWorkStudioPlugin* sender);
-private Q_SLOTS:
-    //void frameChanged(rw::kinematics::Frame* frame);
+    // protected:
+    // void frameSelectedHandler(rw::kinematics::Frame* frame, RobWorkStudioPlugin* sender);
+  private Q_SLOTS:
+    // void frameChanged(rw::kinematics::Frame* frame);
 
-	void frameChanged(const QString& item);
+    void frameChanged (const QString& item);
 
-	void propertyChanged(const std::string& identifier);
+    void propertyChanged (const std::string& identifier);
 
-private:
-    void frameSelectedListener(rw::kinematics::Frame* frame);
+  private:
+    void frameSelectedListener (rw::kinematics::Frame* frame);
 
-	void addFrame(const rw::kinematics::Frame* frame);
+    void addFrame (const rw::kinematics::Frame* frame);
 
-	bool _updating;
+    bool _updating;
 
-	rw::kinematics::State _state;
-	rw::models::WorkCell* _workcell;
+    rw::kinematics::State _state;
+    rw::models::WorkCell* _workcell;
 
-	QComboBox* _cmbFrames;
-	PropertyViewEditor* _inspector;
+    QComboBox* _cmbFrames;
+    PropertyViewEditor* _inspector;
 };
 
-}
+}    // namespace rws
 
-#endif //#ifndef PROPERTYVIEW_HPP
+#endif    //#ifndef PROPERTYVIEW_HPP

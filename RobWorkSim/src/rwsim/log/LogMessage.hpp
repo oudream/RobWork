@@ -25,69 +25,69 @@
  */
 
 #include "SimulatorLogEntry.hpp"
+
 #include <rw/core/Ptr.hpp>
-namespace rwsim {
-namespace log {
-//! @addtogroup rwsim_log
+namespace rwsim { namespace log {
+    //! @addtogroup rwsim_log
 
-//! @{
-/**
- * @brief Logging of a generic message.
- */
-class LogMessage: public SimulatorLogEntry {
-public:
-    //! Smart pointer type of LogMessage
-    typedef rw::core::Ptr<LogMessage> Ptr;
+    //! @{
+    /**
+     * @brief Logging of a generic message.
+     */
+    class LogMessage : public SimulatorLogEntry
+    {
+      public:
+        //! Smart pointer type of LogMessage
+        typedef rw::core::Ptr< LogMessage > Ptr;
 
-    //! @copydoc SimulatorLogEntry::SimulatorLogEntry
-    LogMessage(SimulatorLogScope* parent);
+        //! @copydoc SimulatorLogEntry::SimulatorLogEntry
+        LogMessage (SimulatorLogScope* parent);
 
-	//! @brief Destructor.
-	virtual ~LogMessage();
+        //! @brief Destructor.
+        virtual ~LogMessage ();
 
-    //! @copydoc SimulatorLogEntry::read
-	virtual void read(class rw::common::InputArchive& iarchive, const std::string& id);
+        //! @copydoc SimulatorLogEntry::read
+        virtual void read (class rw::common::InputArchive& iarchive, const std::string& id);
 
-    //! @copydoc SimulatorLogEntry::write
-	virtual void write(class rw::common::OutputArchive& oarchive, const std::string& id) const;
+        //! @copydoc SimulatorLogEntry::write
+        virtual void write (class rw::common::OutputArchive& oarchive, const std::string& id) const;
 
-	//! @copydoc SimulatorLogEntry::getType
-	virtual std::string getType() const;
+        //! @copydoc SimulatorLogEntry::getType
+        virtual std::string getType () const;
 
-	//! @copydoc SimulatorLogEntry::operator==
-	virtual bool operator==(const SimulatorLog &b) const;
+        //! @copydoc SimulatorLogEntry::operator==
+        virtual bool operator== (const SimulatorLog& b) const;
 
-	//! @copydoc SimulatorLogEntry::getLinkedEntries
-	virtual std::list<SimulatorLogEntry::Ptr> getLinkedEntries() const;
+        //! @copydoc SimulatorLogEntry::getLinkedEntries
+        virtual std::list< SimulatorLogEntry::Ptr > getLinkedEntries () const;
 
-	//! @copydoc SimulatorLogEntry::autoLink
-	virtual bool autoLink();
+        //! @copydoc SimulatorLogEntry::autoLink
+        virtual bool autoLink ();
 
-	//! @copydoc SimulatorLogEntry::createNew
-	virtual SimulatorLogEntry::Ptr createNew(SimulatorLogScope* parent) const;
+        //! @copydoc SimulatorLogEntry::createNew
+        virtual SimulatorLogEntry::Ptr createNew (SimulatorLogScope* parent) const;
 
-	/**
-	 * @brief Get the stream to output to.
-	 * @return the stream.
-	 */
-	std::ostream& stream();
+        /**
+         * @brief Get the stream to output to.
+         * @return the stream.
+         */
+        std::ostream& stream ();
 
-	/**
-	 * @brief Get the message.
-	 * @return the message.
-	 */
-	std::string getMessage() const;
+        /**
+         * @brief Get the message.
+         * @return the message.
+         */
+        std::string getMessage () const;
 
-	/**
-	 * @brief Get the type id of this entry type.
-	 * @return the type id.
-	 */
-	static std::string getTypeID();
+        /**
+         * @brief Get the type id of this entry type.
+         * @return the type id.
+         */
+        static std::string getTypeID ();
 
-private:
-	std::stringstream _message;
-};
-//! @}
-} /* namespace log */
-} /* namespace rwsim */
+      private:
+        std::stringstream _message;
+    };
+    //! @}
+}}     // namespace rwsim::log
 #endif /* RWSIM_LOG_LOGMESSAGE_HPP_ */

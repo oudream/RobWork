@@ -18,12 +18,16 @@
 #ifndef RWS_LUAEXECUTIONTHREAD_HPP_
 #define RWS_LUAEXECUTIONTHREAD_HPP_
 
-#include <QThread>
-
 #include <rw/core/Ptr.hpp>
 
-namespace rw { namespace core { class LogWriter; } }
-namespace rwlibs { namespace swig { class LuaState; } }
+#include <QThread>
+
+namespace rw { namespace core {
+    class LogWriter;
+}}    // namespace rw::core
+namespace rwlibs { namespace swig {
+    class LuaState;
+}}    // namespace rwlibs::swig
 
 namespace rws {
 
@@ -31,10 +35,10 @@ namespace rws {
  * @brief this class handles the execution of lua commands such that they
  * are executed in a seperate thread.
  */
-class LuaExecutionThread: public QThread
+class LuaExecutionThread : public QThread
 {
     Q_OBJECT
-public:
+  public:
     /**
      * @brief constructor
      * @param cmd
@@ -42,11 +46,11 @@ public:
      * @param output
      * @param parent
      */
-    LuaExecutionThread(const std::string& cmd, rw::core::Ptr<rwlibs::swig::LuaState> lstate, rw::core::Ptr<rw::core::LogWriter> output, QObject *parent =
-                               NULL) :
-            QThread(parent), _cmd(cmd), _lua(lstate), _output(output)
-    {
-    }
+    LuaExecutionThread (const std::string& cmd, rw::core::Ptr< rwlibs::swig::LuaState > lstate,
+                        rw::core::Ptr< rw::core::LogWriter > output, QObject* parent = NULL) :
+        QThread (parent),
+        _cmd (cmd), _lua (lstate), _output (output)
+    {}
 
     /**
      * @brief sets the command to execute, the lua state on which to execute and
@@ -55,51 +59,40 @@ public:
      * @param lstate [in] the current lua state
      * @param output [in] the log in which to print result
      */
-    void set(const std::string& cmd, rw::core::Ptr<rwlibs::swig::LuaState> lstate, rw::core::Ptr<rw::core::LogWriter> output);
+    void set (const std::string& cmd, rw::core::Ptr< rwlibs::swig::LuaState > lstate,
+              rw::core::Ptr< rw::core::LogWriter > output);
 
     //! @brief executes the command
-    void run();
+    void run ();
 
     //! @brief stop a running script
-    void stop();
+    void stop ();
 
     /**
      * @brief on error this returns the error message reported by the lua interpreter
      * @return
      */
-    std::string getReturnString()
-    {
-        return _resstring;
-    }
-    ;
+    std::string getReturnString () { return _resstring; };
 
     /**
      * @brief returns the value which lua reports upon completion of executing
      * the lua command string.
      */
-    int getReturnValue()
-    {
-        return _resVal;
-    }
-    ;
+    int getReturnValue () { return _resVal; };
 
     /**
      * @brief return the command that was executed.
      * @return command string that was executed.
      */
-    std::string getCommand()
-    {
-        return _cmd;
-    }
-    ;
+    std::string getCommand () { return _cmd; };
 
-private:
+  private:
     std::string _cmd, _resstring;
     int _resVal;
-    rw::core::Ptr<rwlibs::swig::LuaState> _lua;
-    rw::core::Ptr<rw::core::LogWriter> _output;
+    rw::core::Ptr< rwlibs::swig::LuaState > _lua;
+    rw::core::Ptr< rw::core::LogWriter > _output;
 };
 
-} // namespace
+}    // namespace rws
 
 #endif /* LUAEDITORWINDOW_HPP_ */

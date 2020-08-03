@@ -15,36 +15,32 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RWSIM_DEVICETAB_H
 #define RWSIM_DEVICETAB_H
 
-#include <QWidget>
-#include <QDoubleSpinBox>
-#include <QSlider>
-#include <QGridLayout>
-#include <QComboBox>
-#include <QLabel>
-
+#include <rw/core/Ptr.hpp>
+#include <rw/invkin/IKMetaSolver.hpp>
+#include <rw/kinematics/FKRange.hpp>
+#include <rw/kinematics/MovableFrame.hpp>
 #include <rw/kinematics/State.hpp>
+#include <rw/math/Q.hpp>
 #include <rw/models/Device.hpp>
 #include <rw/models/SerialDevice.hpp>
 #include <rw/models/WorkCell.hpp>
-#include <rw/kinematics/MovableFrame.hpp>
-#include <rw/kinematics/FKRange.hpp>
-#include <rw/math/Q.hpp>
 
-#include <rw/core/Ptr.hpp>
-#include <rw/invkin/IKMetaSolver.hpp>
+#include <QComboBox>
+#include <QDoubleSpinBox>
+#include <QGridLayout>
+#include <QLabel>
+#include <QSlider>
+#include <QWidget>
 
+class JogWidget : public QWidget
+{
+    JogWidget ();
 
-class JogWidget : public QWidget {
-    JogWidget();
-
-    void set( rw::kinematics::Frame* frame);
-    void set( rw::models::Device* device);
-
-
+    void set (rw::kinematics::Frame* frame);
+    void set (rw::models::Device* device);
 };
 
 // The widget for a single joint.
@@ -52,49 +48,37 @@ class Slider : public QWidget
 {
     Q_OBJECT
 
-public:
-    Slider(const std::string& title,
-           double low,
-           double high,
-           QGridLayout* layout,
-           int row,
-           QWidget* parent);
+  public:
+    Slider (const std::string& title, double low, double high, QGridLayout* layout, int row,
+            QWidget* parent);
 
-    void unitUpdated();
+    void unitUpdated ();
 
     // The current value of the joint.
-    double value() const;
+    double value () const;
 
     // Set a value for the joint.
-    void setValue(double val);
+    void setValue (double val);
 
-    void setUnitConverter(double converter){
-        _toUnit = converter;
-    }
+    void setUnitConverter (double converter) { _toUnit = converter; }
 
-    double getUnitConverter() const {
-        return _toUnit;
-    }
+    double getUnitConverter () const { return _toUnit; }
 
-    void setUnitDescription(const std::string& str){
-        _desc = str;
-    }
+    void setUnitDescription (const std::string& str) { _desc = str; }
 
-    void showEndLabel(bool enabled){
-        _endlabelEnabled = enabled;
-    }
+    void showEndLabel (bool enabled) { _endlabelEnabled = enabled; }
 
-private slots:
-    void boxValueChanged(double val);
-    void sliderValueChanged(int val);
+  private slots:
+    void boxValueChanged (double val);
+    void sliderValueChanged (int val);
 
-signals:
+  signals:
     // Emitted whenever the joint value changes.
-    void valueChanged();
+    void valueChanged ();
 
-private:
-    void setSliderValueFromBox(double val);
-    void setBoxValueFromSlider(int val);
+  private:
+    void setSliderValueFromBox (double val);
+    void setBoxValueFromSlider (int val);
 
     double _low;
     double _high;
@@ -113,151 +97,146 @@ private:
     bool _endlabelEnabled;
 };
 
+class JointSliderWidget : public QWidget
+{
+    Q_OBJECT
 
-class JointSliderWidget: public QWidget {
-  Q_OBJECT
+  public:
+    JointSliderWidget ();
 
-public:
-    JointSliderWidget();
+    void setup (const std::vector< std::string >& titles,
+                const std::pair< rw::math::Q, rw::math::Q >& bounds, const rw::math::Q& q);
 
-    void setup(const std::vector<std::string>& titles,
-               const std::pair<rw::math::Q,rw::math::Q>& bounds,
-               const rw::math::Q& q);
+    void setUnits (const std::vector< double >& converters,
+                   const std::vector< std::string >& descriptions);
 
-    void setUnits(const std::vector<double>& converters, const std::vector<std::string>& descriptions);
+    void updateValues (const rw::math::Q& q);
 
-    void updateValues(const rw::math::Q& q);
+    rw::math::Q getQ ();
 
-    rw::math::Q getQ();
+  signals:
+    void valueChanged (const rw::math::Q& q);
 
-signals:
-    void valueChanged(const rw::math::Q& q);
-    
-public slots:
-    void paste();
+  public slots:
+    void paste ();
 
-private slots:
-    void valueChanged();
-    
-private:
-    std::vector<Slider*> _sliders;
+  private slots:
+    void valueChanged ();
+
+  private:
+    std::vector< Slider* > _sliders;
 
     QGridLayout* _layout;
 };
 
-
-
-
-class TransformSliderWidget: public QWidget {
+class TransformSliderWidget : public QWidget
+{
     Q_OBJECT
-public:
-    TransformSliderWidget(const std::pair<rw::math::Q, rw::math::Q>& bounds, const rw::math::Transform3D<>& transform);
+  public:
+    TransformSliderWidget (const std::pair< rw::math::Q, rw::math::Q >& bounds,
+                           const rw::math::Transform3D<>& transform);
 
-    void setUnits(const std::vector<double>& converters, const std::vector<std::string>& descriptions);
+    void setUnits (const std::vector< double >& converters,
+                   const std::vector< std::string >& descriptions);
 
-    void updateValues(const rw::math::Transform3D<>& transform);
+    void updateValues (const rw::math::Transform3D<>& transform);
 
-    rw::math::Transform3D<> getTransform();
+    rw::math::Transform3D<> getTransform ();
 
-signals:
-    void valueChanged(const rw::math::Transform3D<>& transform);
-    
-public slots:
-    void paste();
-    
-private slots:
-    void valueChanged(const rw::math::Q& q);
-    
-private:
+  signals:
+    void valueChanged (const rw::math::Transform3D<>& transform);
+
+  public slots:
+    void paste ();
+
+  private slots:
+    void valueChanged (const rw::math::Q& q);
+
+  private:
     JointSliderWidget* _jointSliderWidget;
 
     bool _updating;
 };
 
-
-
-class MovableFrameTab: public QWidget {
+class MovableFrameTab : public QWidget
+{
     Q_OBJECT
 
-public:
-    MovableFrameTab(const std::pair<rw::math::Q, rw::math::Q>& bounds,
-                 rw::kinematics::MovableFrame* frame,
-                 rw::models::WorkCell* workcell,
-                 const rw::kinematics::State& state);
+  public:
+    MovableFrameTab (const std::pair< rw::math::Q, rw::math::Q >& bounds,
+                     rw::kinematics::MovableFrame* frame, rw::models::WorkCell* workcell,
+                     const rw::kinematics::State& state);
 
-    void setUnits(const std::vector<double>& converters, const std::vector<std::string>& descriptions);
+    void setUnits (const std::vector< double >& converters,
+                   const std::vector< std::string >& descriptions);
 
-   // void setup(const std::pair<rw::math::Q, rw::math::Q>& bounds, rw::kinematics::Frame* frame);
+    // void setup(const std::pair<rw::math::Q, rw::math::Q>& bounds, rw::kinematics::Frame* frame);
 
-    void updateValues(const rw::kinematics::State& state);
+    void updateValues (const rw::kinematics::State& state);
 
-signals:
-    void stateChanged(const rw::kinematics::State& state);
+  signals:
+    void stateChanged (const rw::kinematics::State& state);
 
-private slots:
-    void transformChanged(const rw::math::Transform3D<>& transform);
-    void refFrameChanged(int index);
+  private slots:
+    void transformChanged (const rw::math::Transform3D<>& transform);
+    void refFrameChanged (int index);
 
-private:
-    std::vector<Slider*> _sliders;
+  private:
+    std::vector< Slider* > _sliders;
     QGridLayout* _layout;
     QComboBox* _cmbFrames;
-    std::vector<rw::kinematics::Frame*> _frames;
+    std::vector< rw::kinematics::Frame* > _frames;
     rw::kinematics::State _state;
     rw::kinematics::MovableFrame* _frame;
     rw::kinematics::Frame* _refframe;
 
-    void doUpdateValues();
+    void doUpdateValues ();
 
     TransformSliderWidget* _transformSliderWidget;
-	bool _updating;
+    bool _updating;
 };
 
-
-
-class CartesianDeviceTab: public QWidget {
+class CartesianDeviceTab : public QWidget
+{
     Q_OBJECT
-public:
-    CartesianDeviceTab(const std::pair<rw::math::Q, rw::math::Q>& bounds,
-		rw::models::Device::Ptr device,
-		rw::models::WorkCell* workcell,
-        const rw::kinematics::State& state);
+  public:
+    CartesianDeviceTab (const std::pair< rw::math::Q, rw::math::Q >& bounds,
+                        rw::models::Device::Ptr device, rw::models::WorkCell* workcell,
+                        const rw::kinematics::State& state);
 
-    void setUnits(const std::vector<double>& converters, const std::vector<std::string>& descriptions);
+    void setUnits (const std::vector< double >& converters,
+                   const std::vector< std::string >& descriptions);
 
-    void updateValues(const rw::kinematics::State& state);
+    void updateValues (const rw::kinematics::State& state);
 
-signals:
-    void stateChanged(const rw::kinematics::State& state);
+  signals:
+    void stateChanged (const rw::kinematics::State& state);
 
-private slots:
-    void transformChanged(const rw::math::Transform3D<>& transform);
+  private slots:
+    void transformChanged (const rw::math::Transform3D<>& transform);
 
-    void tcpFrameChanged(int index);
-    void refFrameChanged(int index);
+    void tcpFrameChanged (int index);
+    void refFrameChanged (int index);
 
-private:
+  private:
     QComboBox* _cmbRefFrame;
     QComboBox* _cmbTcpFrame;
 
     rw::kinematics::State _state;
-	rw::models::Device::Ptr _device;
-    std::vector<rw::kinematics::Frame*> _frames;
+    rw::models::Device::Ptr _device;
+    std::vector< rw::kinematics::Frame* > _frames;
     rw::kinematics::Frame* _tcpFrame;
     rw::kinematics::Frame* _refFrame;
 
     rw::kinematics::FKRange _baseTref;
     rw::kinematics::FKRange _refTtcp;
 
-
     TransformSliderWidget* _transformSliderWidget;
-    rw::core::Ptr<rw::invkin::IterativeIK> _iksolver;
+    rw::core::Ptr< rw::invkin::IterativeIK > _iksolver;
 
     bool _updating;
 
-    void doUpdateValues();
+    void doUpdateValues ();
 };
 
-
-
-#endif //#ifndef DEVICETAB_H
+#endif    //#ifndef DEVICETAB_H

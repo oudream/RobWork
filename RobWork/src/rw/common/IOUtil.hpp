@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,10 +19,10 @@
 #define RW_COMMON_IOUTIL_HPP_
 
 #include <rw/core/IOUtil.hpp>
-
 #include <rw/core/os.hpp>
 #ifdef RW_WIN32
-#pragma message("#include <rw/common/IOUtil.hpp> is deprecated use #include <rw/core/IOUtil.hpp> instead")
+#pragma message( \
+    "#include <rw/common/IOUtil.hpp> is deprecated use #include <rw/core/IOUtil.hpp> instead")
 #else
 #warning "#include <rw/common/IOUtil.hpp> is deprecated use #include <rw/core/IOUtil.hpp> instead"
 #endif

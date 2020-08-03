@@ -19,12 +19,13 @@
 #define RW_COMMON_EXTENSION_HPP_
 
 #include <rw/core/Extension.hpp>
-
 #include <rw/core/os.hpp>
 #ifdef RW_WIN32
-#pragma message("#include <rw/common/Extension.hpp> is deprecated use #include <rw/core/Extension.hpp> instead")
+#pragma message( \
+    "#include <rw/common/Extension.hpp> is deprecated use #include <rw/core/Extension.hpp> instead")
 #else
-#warning "#include <rw/common/Extension.hpp> is deprecated use #include <rw/core/Extension.hpp> instead"
+#warning \
+    "#include <rw/common/Extension.hpp> is deprecated use #include <rw/core/Extension.hpp> instead"
 #endif
 
 #endif

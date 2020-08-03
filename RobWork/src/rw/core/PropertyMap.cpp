@@ -110,7 +110,8 @@ bool PropertyMap::insert (PropertyBase::Ptr property)
 {
     if (_properties.insert (property).second) {
         // add to changed listener
-        // property->addChangedListener( boost::bind(&PropertyMap::propertyChangedListener,this,boost::arg<1>())
+        // property->addChangedListener(
+        // boost::bind(&PropertyMap::propertyChangedListener,this,boost::arg<1>())
         // );
         return true;
     }
@@ -134,7 +135,8 @@ const PropertyBase::Ptr PropertyMap::findPropertyBase (const std::string& identi
 
 rw::core::iter_pair< PropertyMap::iterator > PropertyMap::getProperties () const
 {
-    return rw::core::iter_pair< PropertyMap::iterator >(std::make_pair (_properties.begin (), _properties.end ()));
+    return rw::core::iter_pair< PropertyMap::iterator > (
+        std::make_pair (_properties.begin (), _properties.end ()));
 }
 
 void PropertyMap::notifyListeners (PropertyBase* base)

@@ -26,38 +26,40 @@
 
 #include "IntegratorTest.hpp"
 
-namespace rwsimlibs {
-namespace test {
-//! @addtogroup rwsimlibs_test
+namespace rwsimlibs { namespace test {
+    //! @addtogroup rwsimlibs_test
 
-//! @{
-/**
- * @brief Test for linear free-falling motion.
- *
- * The simulation is illustrated below:
- *
- * \image html tests/integrationGravity.gif "Free-falling motion of a body."
- *
- * An analytical solution is given for this type of motion, which makes it possible to test how well the engines capture free-falling motion.
- */
-class IntegratorGravityTest: public IntegratorTest {
-public:
-	//! @brief Constructor.
-	IntegratorGravityTest();
+    //! @{
+    /**
+     * @brief Test for linear free-falling motion.
+     *
+     * The simulation is illustrated below:
+     *
+     * \image html tests/integrationGravity.gif "Free-falling motion of a body."
+     *
+     * An analytical solution is given for this type of motion, which makes it possible to test how
+     * well the engines capture free-falling motion.
+     */
+    class IntegratorGravityTest : public IntegratorTest
+    {
+      public:
+        //! @brief Constructor.
+        IntegratorGravityTest ();
 
-	//! @brief Destructor.
-	virtual ~IntegratorGravityTest();
+        //! @brief Destructor.
+        virtual ~IntegratorGravityTest ();
 
-	//! @copydoc EngineTest::run
-	virtual void run(TestHandle::Ptr handle, const std::string& engineID, const rw::core::PropertyMap& parameters, rw::core::Ptr<rwsim::log::SimulatorLogScope> verbose = NULL);
+        //! @copydoc EngineTest::run
+        virtual void run (TestHandle::Ptr handle, const std::string& engineID,
+                          const rw::core::PropertyMap& parameters,
+                          rw::core::Ptr< rwsim::log::SimulatorLogScope > verbose = NULL);
 
-	//! @copydoc EngineTest::getRunTime
-	virtual double getRunTime() const;
+        //! @copydoc EngineTest::getRunTime
+        virtual double getRunTime () const;
 
-private:
-	static void updateResults(const EngineLoopInfo& info);
-};
-//! @}
-} /* namespace test */
-} /* namespace rwsimlibs */
+      private:
+        static void updateResults (const EngineLoopInfo& info);
+    };
+    //! @}
+}}     // namespace rwsimlibs::test
 #endif /* RWSIMLIBS_TEST_INTEGRATORGRAVITYTEST_HPP_ */

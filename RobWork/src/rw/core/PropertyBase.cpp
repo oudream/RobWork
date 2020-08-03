@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,39 +15,34 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #include "PropertyBase.hpp"
 
 using namespace rw::core;
 
-PropertyBase::PropertyBase(const std::string& identifier,
-                           const std::string& description):
-    _identifier(identifier),
-    _description(description)
+PropertyBase::PropertyBase (const std::string& identifier, const std::string& description) :
+    _identifier (identifier), _description (description)
+{}
+
+PropertyBase::PropertyBase (const std::string& identifier, const std::string& description,
+                            const PropertyType& propertyType) :
+    _identifier (identifier),
+    _description (description), _propertyType (propertyType)
+{}
+
+PropertyBase::~PropertyBase ()
+{}
+
+const std::string& PropertyBase::getIdentifier () const
 {
-}
-
-
-
-PropertyBase::PropertyBase(const std::string& identifier,
-                           const std::string& description,
-                           const PropertyType& propertyType):
-    _identifier(identifier),
-    _description(description),
-    _propertyType(propertyType)
-{
-}
-
-PropertyBase::~PropertyBase() {}
-
-const std::string& PropertyBase::getIdentifier() const {
     return _identifier;
 }
 
-const std::string& PropertyBase::getDescription() const {
+const std::string& PropertyBase::getDescription () const
+{
     return _description;
 }
 
-const PropertyType& PropertyBase::getType() const {
+const PropertyType& PropertyBase::getType () const
+{
     return _propertyType;
 }

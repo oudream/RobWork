@@ -20,35 +20,35 @@
 
 #include <rw/core/Ptr.hpp>
 
-namespace rw { namespace kinematics { class State; } }
+namespace rw { namespace kinematics {
+    class State;
+}}    // namespace rw::kinematics
 
-namespace rwsim {
-namespace util {
+namespace rwsim { namespace util {
 
-	/**
-	 * @brief interface for generating states.
-	 */
-	class StateSampler {
-		public:
+    /**
+     * @brief interface for generating states.
+     */
+    class StateSampler
+    {
+      public:
+        typedef rw::core::Ptr< StateSampler > Ptr;
 
-	    typedef rw::core::Ptr<StateSampler> Ptr;
+        /**
+                       @brief Sample a state.
 
-	    /**
-			   @brief Sample a state.
+                       If sampling fails, the sampler may return the empty configuration. If
+                       empty() is true then the sampler has no more configurations.
+                       Otherwise sample() may (or may not) succeed if called a second time.
+                    */
+        virtual bool sample (rw::kinematics::State& state) = 0;
 
-			   If sampling fails, the sampler may return the empty configuration. If
-			   empty() is true then the sampler has no more configurations.
-			   Otherwise sample() may (or may not) succeed if called a second time.
-			*/
-			virtual bool sample(rw::kinematics::State& state) = 0;
-
-			/**
-			   @brief True if the sampler is known to contain no more
-			   configurations.
-			*/
-			virtual bool empty() const = 0;
-	};
-}
-}
+        /**
+           @brief True if the sampler is known to contain no more
+           configurations.
+        */
+        virtual bool empty () const = 0;
+    };
+}}    // namespace rwsim::util
 
 #endif /* STATESAMPLER_HPP_ */

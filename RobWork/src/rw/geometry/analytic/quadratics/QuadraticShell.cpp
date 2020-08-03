@@ -16,10 +16,12 @@
  ********************************************************************************/
 
 #include "QuadraticShell.hpp"
+
 #include "QuadraticFace.hpp"
 
 using namespace rw::geometry;
 
-Face::CPtr QuadraticShell::doGetFace(std::size_t idx) const {
-	return getFace(idx);
+Face::CPtr QuadraticShell::doGetFace (std::size_t idx) const
+{
+    return getFace (idx);
 }

@@ -27,159 +27,189 @@
  * @endcond
  */
 
-#include <vector>
-#include <boost/thread/mutex.hpp>
-
 #include <rw/core/Ptr.hpp>
 
-// Forward declarations
-namespace rw { namespace common { class ThreadTask; }}
-namespace rw { namespace kinematics { class State; }}
-namespace rw { namespace math { class Q; }}
-namespace rw { namespace proximity { class CollisionDetector; }}
-namespace rwlibs { namespace assembly { class AssemblyTask; }}
-namespace rwlibs { namespace assembly { class AssemblyResult; }}
-namespace rwsim { namespace contacts { class ContactDetector; }}
-namespace rwsim { namespace dynamics { class Body; }}
-namespace rwsim { namespace dynamics { class DynamicWorkCell; }}
-namespace rwsim { namespace log { class SimulatorLogScope; }}
-namespace rwsim { namespace sensor { class BodyContactSensor; }}
-
-namespace rwsim {
-namespace simulator {
+#include <boost/thread/mutex.hpp>
+#include <vector>
 
 // Forward declarations
-class DynamicSimulator;
+namespace rw { namespace common {
+    class ThreadTask;
+}}    // namespace rw::common
+namespace rw { namespace kinematics {
+    class State;
+}}    // namespace rw::kinematics
+namespace rw { namespace math {
+    class Q;
+}}    // namespace rw::math
+namespace rw { namespace proximity {
+    class CollisionDetector;
+}}    // namespace rw::proximity
+namespace rwlibs { namespace assembly {
+    class AssemblyTask;
+}}    // namespace rwlibs::assembly
+namespace rwlibs { namespace assembly {
+    class AssemblyResult;
+}}    // namespace rwlibs::assembly
+namespace rwsim { namespace contacts {
+    class ContactDetector;
+}}    // namespace rwsim::contacts
+namespace rwsim { namespace dynamics {
+    class Body;
+}}    // namespace rwsim::dynamics
+namespace rwsim { namespace dynamics {
+    class DynamicWorkCell;
+}}    // namespace rwsim::dynamics
+namespace rwsim { namespace log {
+    class SimulatorLogScope;
+}}    // namespace rwsim::log
+namespace rwsim { namespace sensor {
+    class BodyContactSensor;
+}}    // namespace rwsim::sensor
 
-//! @addtogroup rwsim_simulator
+namespace rwsim { namespace simulator {
 
-//! @{
-/**
- * @brief A simulator for execution of AssemblyTasks.
- */
-class AssemblySimulator {
-public:
-    //! @brief smart pointer type of this class
-    typedef rw::core::Ptr<AssemblySimulator> Ptr;
+    // Forward declarations
+    class DynamicSimulator;
 
-	/**
-	 * @brief Construct new simulator.
-	 * @param dwc [in] the dynamic workcell.
-	 * @param engineID [in] the simulator to use for dynamic simulation (for instance "ODE").
-	 * @param contactDetector [in] (optional) set a contact detector that should be used by the PhysicsEngine.
-	 * @param verbose [in] (optional) set a logging structure to log to.
-	 */
-	AssemblySimulator(rw::core::Ptr<rwsim::dynamics::DynamicWorkCell> dwc, const std::string &engineID, rw::core::Ptr<rwsim::contacts::ContactDetector> contactDetector = NULL, rw::core::Ptr<rwsim::log::SimulatorLogScope> verbose = NULL);
+    //! @addtogroup rwsim_simulator
 
-	//! @brief Destructor.
-	virtual ~AssemblySimulator();
+    //! @{
+    /**
+     * @brief A simulator for execution of AssemblyTasks.
+     */
+    class AssemblySimulator
+    {
+      public:
+        //! @brief smart pointer type of this class
+        typedef rw::core::Ptr< AssemblySimulator > Ptr;
 
-	/**
-	 * @brief Get the size of the timestep used in simulation.
-	 * @return the size of the timestep
-	 */
-	double getDt() const;
+        /**
+         * @brief Construct new simulator.
+         * @param dwc [in] the dynamic workcell.
+         * @param engineID [in] the simulator to use for dynamic simulation (for instance "ODE").
+         * @param contactDetector [in] (optional) set a contact detector that should be used by the
+         * PhysicsEngine.
+         * @param verbose [in] (optional) set a logging structure to log to.
+         */
+        AssemblySimulator (rw::core::Ptr< rwsim::dynamics::DynamicWorkCell > dwc,
+                           const std::string& engineID,
+                           rw::core::Ptr< rwsim::contacts::ContactDetector > contactDetector = NULL,
+                           rw::core::Ptr< rwsim::log::SimulatorLogScope > verbose = NULL);
 
-	/**
-	 * @brief Set the size of the timestep to use in simulation.
-	 * @param dt [in] the stepsize (default is 0.001 seconds).
-	 */
-	void setDt(double dt = 0.001);
+        //! @brief Destructor.
+        virtual ~AssemblySimulator ();
 
-	/**
-	 * @brief Run the simulation.
-	 * @param task (optional) if this simulator runs in a ThreadTask, pass a pointer to this task to let the simulator add work for parallel processing.
-	 */
-	void start(rw::core::Ptr<rw::common::ThreadTask> task = NULL);
+        /**
+         * @brief Get the size of the timestep used in simulation.
+         * @return the size of the timestep
+         */
+        double getDt () const;
 
-	//! @brief Request stop when current tasks has finished.
-	void stopFinishCurrent();
+        /**
+         * @brief Set the size of the timestep to use in simulation.
+         * @param dt [in] the stepsize (default is 0.001 seconds).
+         */
+        void setDt (double dt = 0.001);
 
-	//! @brief Request immediate stop. Current tasks are cancelled.
-	void stopCancelCurrent();
+        /**
+         * @brief Run the simulation.
+         * @param task (optional) if this simulator runs in a ThreadTask, pass a pointer to this
+         * task to let the simulator add work for parallel processing.
+         */
+        void start (rw::core::Ptr< rw::common::ThreadTask > task = NULL);
 
-	/**
-	 * @brief Check if simulator is running.
-	 * @return true if running.
-	 */
-	bool isRunning();
+        //! @brief Request stop when current tasks has finished.
+        void stopFinishCurrent ();
 
-	/**
-	 * @brief Set the tasks that should be executed in the simulator.
-	 * @param tasks [in] the tasks to execute.
-	 */
-	void setTasks(std::vector<rw::core::Ptr<rwlibs::assembly::AssemblyTask> > tasks);
+        //! @brief Request immediate stop. Current tasks are cancelled.
+        void stopCancelCurrent ();
 
-	/**
-	 * @brief Retrieve the results after simulation.
-	 * @return a vector of AssemblyResults.
-	 */
-	std::vector<rw::core::Ptr<rwlibs::assembly::AssemblyResult> > getResults();
+        /**
+         * @brief Check if simulator is running.
+         * @return true if running.
+         */
+        bool isRunning ();
 
-	/**
-	 * @brief Enable storing trajectory data in the AssemblyResult.
-	 * @param enable [in] true if trajectory data should be stored, false otherwise.
-	 */
-	void setStoreExecutionData(bool enable);
+        /**
+         * @brief Set the tasks that should be executed in the simulator.
+         * @param tasks [in] the tasks to execute.
+         */
+        void setTasks (std::vector< rw::core::Ptr< rwlibs::assembly::AssemblyTask > > tasks);
 
-	/**
-	 * @brief Check if trajectory data is currently being stored.
-	 * @return true if trajectory data is stored, false otherwise.
-	 */
-	bool storeExecutionData();
+        /**
+         * @brief Retrieve the results after simulation.
+         * @return a vector of AssemblyResults.
+         */
+        std::vector< rw::core::Ptr< rwlibs::assembly::AssemblyResult > > getResults ();
 
-	/**
-	 * @brief Get the currently set limit for the simulation time per task.
-	 * @return the maximum simulated time to spend on a single task.
-	 */
-	double getMaxSimTime() const;
+        /**
+         * @brief Enable storing trajectory data in the AssemblyResult.
+         * @param enable [in] true if trajectory data should be stored, false otherwise.
+         */
+        void setStoreExecutionData (bool enable);
 
-	/**
-	 * @brief Set the limit for simulation time per task.
-	 * @param maxTime [in] the maximum simulated time to spend on a single task.
-	 */
-	void setMaxSimTime(double maxTime);
+        /**
+         * @brief Check if trajectory data is currently being stored.
+         * @return true if trajectory data is stored, false otherwise.
+         */
+        bool storeExecutionData ();
 
-	/**
-	 * @brief Test whether or not the simulation is set up to start in the approach pose.
-	 * @return true if simulation should start in approach pose.
-	 */
-	bool getStartInApproach() const;
+        /**
+         * @brief Get the currently set limit for the simulation time per task.
+         * @return the maximum simulated time to spend on a single task.
+         */
+        double getMaxSimTime () const;
 
-	/**
-	 * @brief Start simulation directly in the approach position as given by the strategy.
-	 * @param val [in] true if simulation should start in approach pose (default is false).
-	 */
-	void setStartInApproach(bool val = false);
+        /**
+         * @brief Set the limit for simulation time per task.
+         * @param maxTime [in] the maximum simulated time to spend on a single task.
+         */
+        void setMaxSimTime (double maxTime);
 
-private:
-	class TaskDispatcher;
-	class TaskSimulation;
-	struct SimState;
-	void runSingle(std::size_t taskIndex, rw::core::Ptr<rwsim::log::SimulatorLogScope> verbose);
-	void runAll();
-	void stateMachine(SimState &state, rw::core::Ptr<rwlibs::assembly::AssemblyTask> task, rw::core::Ptr<rwlibs::assembly::AssemblyResult> result);
-	static std::vector<rw::math::Q> orderSolutions(const std::vector<rw::math::Q> &solutions, const rw::math::Q &curQ);
-	bool hasContact(rw::core::Ptr<rwsim::sensor::BodyContactSensor> sensor, rw::core::Ptr<rwsim::dynamics::Body> body, rw::kinematics::State& state);
+        /**
+         * @brief Test whether or not the simulation is set up to start in the approach pose.
+         * @return true if simulation should start in approach pose.
+         */
+        bool getStartInApproach () const;
 
-private:
-	const rw::core::Ptr<rwsim::dynamics::DynamicWorkCell> _dwc;
-	const std::string _engineID;
-	const rw::core::Ptr<rwsim::contacts::ContactDetector> _contactDetector;
-	const rw::core::Ptr<rw::proximity::CollisionDetector> _collisionDetector;
-	const rw::core::Ptr<rwsim::log::SimulatorLogScope> _log;
+        /**
+         * @brief Start simulation directly in the approach position as given by the strategy.
+         * @param val [in] true if simulation should start in approach pose (default is false).
+         */
+        void setStartInApproach (bool val = false);
 
-	std::vector<rw::core::Ptr<rwlibs::assembly::AssemblyTask> > _tasks;
-	std::vector<rw::core::Ptr<rwlibs::assembly::AssemblyResult> > _results;
-	bool _storeExecutionData;
-	bool _postStopFinish, _postStopCancel;
-	bool _running;
-	double _dt;
-	double _maxSimTime;
-	bool _startInApproach;
-	mutable boost::mutex _mutex;
-};
-//! @}
-} /* namespace simulator */
-} /* namespace rwsim */
+      private:
+        class TaskDispatcher;
+        class TaskSimulation;
+        struct SimState;
+        void runSingle (std::size_t taskIndex,
+                        rw::core::Ptr< rwsim::log::SimulatorLogScope > verbose);
+        void runAll ();
+        void stateMachine (SimState& state, rw::core::Ptr< rwlibs::assembly::AssemblyTask > task,
+                           rw::core::Ptr< rwlibs::assembly::AssemblyResult > result);
+        static std::vector< rw::math::Q >
+        orderSolutions (const std::vector< rw::math::Q >& solutions, const rw::math::Q& curQ);
+        bool hasContact (rw::core::Ptr< rwsim::sensor::BodyContactSensor > sensor,
+                         rw::core::Ptr< rwsim::dynamics::Body > body, rw::kinematics::State& state);
+
+      private:
+        const rw::core::Ptr< rwsim::dynamics::DynamicWorkCell > _dwc;
+        const std::string _engineID;
+        const rw::core::Ptr< rwsim::contacts::ContactDetector > _contactDetector;
+        const rw::core::Ptr< rw::proximity::CollisionDetector > _collisionDetector;
+        const rw::core::Ptr< rwsim::log::SimulatorLogScope > _log;
+
+        std::vector< rw::core::Ptr< rwlibs::assembly::AssemblyTask > > _tasks;
+        std::vector< rw::core::Ptr< rwlibs::assembly::AssemblyResult > > _results;
+        bool _storeExecutionData;
+        bool _postStopFinish, _postStopCancel;
+        bool _running;
+        double _dt;
+        double _maxSimTime;
+        bool _startInApproach;
+        mutable boost::mutex _mutex;
+    };
+    //! @}
+}}     // namespace rwsim::simulator
 #endif /* RWSIM_SIMULATOR_ASSEMBLYSIMULATOR_HPP_ */

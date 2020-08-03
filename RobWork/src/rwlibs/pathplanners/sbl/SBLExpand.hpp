@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RWLIBS_PATHPLANNERS_SBL_SBLEXPAND_HPP
 #define RWLIBS_PATHPLANNERS_SBL_SBLEXPAND_HPP
 
@@ -26,10 +25,18 @@
 #include <rw/core/Ptr.hpp>
 #include <rw/math/Q.hpp>
 
-namespace rw { namespace kinematics { class State; } }
-namespace rw { namespace models { class Device; } }
-namespace rw { namespace models { class JacobianCalculator; } }
-namespace rw { namespace pathplanning { class QConstraint; } }
+namespace rw { namespace kinematics {
+    class State;
+}}    // namespace rw::kinematics
+namespace rw { namespace models {
+    class Device;
+}}    // namespace rw::models
+namespace rw { namespace models {
+    class JacobianCalculator;
+}}    // namespace rw::models
+namespace rw { namespace pathplanning {
+    class QConstraint;
+}}    // namespace rw::pathplanning
 
 namespace rwlibs { namespace pathplanners {
 
@@ -51,9 +58,9 @@ namespace rwlibs { namespace pathplanners {
     */
     class SBLExpand
     {
-    public:
+      public:
         //! @brief Smart pointer type for SBLExpand.
-        typedef rw::core::Ptr<SBLExpand> Ptr;
+        typedef rw::core::Ptr< SBLExpand > Ptr;
 
         /**
            @brief A configuration sampled from the vicinity of \b q.
@@ -61,14 +68,14 @@ namespace rwlibs { namespace pathplanners {
            Implementation dependant, the sampler may return the empty
            configuration if no configurations can be sampled near \b q.
         */
-        rw::math::Q expand(const rw::math::Q& q) { return doExpand(q); }
+        rw::math::Q expand (const rw::math::Q& q) { return doExpand (q); }
 
         /**
            @brief A configuration space in the shape of a box.
 
            The box is given by a lower and upper corner.
         */
-        typedef std::pair<rw::math::Q, rw::math::Q> QBox;
+        typedef std::pair< rw::math::Q, rw::math::Q > QBox;
 
         /**
            @brief Expansion within the overlap of an inner and outer box.
@@ -89,9 +96,7 @@ namespace rwlibs { namespace pathplanners {
            If the overlap between the boxes is empty, expand() returns the empty
            configuration.
         */
-        static SBLExpand::Ptr makeUniformBox(
-            const QBox& outer,
-            const QBox& inner);
+        static SBLExpand::Ptr makeUniformBox (const QBox& outer, const QBox& inner);
 
         /**
            @brief Expansion within a scaled down box of the configuration space.
@@ -116,9 +121,7 @@ namespace rwlibs { namespace pathplanners {
            If \b outer is non-empty, the expand() method will always return a
            non-empty configuration.
         */
-        static SBLExpand::Ptr makeUniformBox(
-            const QBox& outer,
-            double ratio);
+        static SBLExpand::Ptr makeUniformBox (const QBox& outer, double ratio);
 
         /**
            @brief Sample within a box of decreasing size until a collision free
@@ -131,10 +134,9 @@ namespace rwlibs { namespace pathplanners {
            The inner and outer box are specified as explained for
            makeUniformBox().
         */
-        static SBLExpand::Ptr makeShrinkingUniformBox(
-        	rw::core::Ptr<rw::pathplanning::QConstraint> constraint,
-            const QBox& outer,
-            const QBox& inner);
+        static SBLExpand::Ptr
+        makeShrinkingUniformBox (rw::core::Ptr< rw::pathplanning::QConstraint > constraint,
+                                 const QBox& outer, const QBox& inner);
 
         /**
            @brief Sample within a box of shrinking size until a collision free
@@ -147,10 +149,9 @@ namespace rwlibs { namespace pathplanners {
            The inner and outer box are specified as explained for
            makeUniformBox().
         */
-        static SBLExpand::Ptr makeShrinkingUniformBox(
-        	rw::core::Ptr<rw::pathplanning::QConstraint> constraint,
-            const QBox& outer,
-            double ratio);
+        static SBLExpand::Ptr
+        makeShrinkingUniformBox (rw::core::Ptr< rw::pathplanning::QConstraint > constraint,
+                                 const QBox& outer, double ratio);
 
         /**
            @brief Sample within a box of shrinking size until a collision free
@@ -172,36 +173,35 @@ namespace rwlibs { namespace pathplanners {
 
            The inner box shrinks in size as 1, 1/2, 1/3, ...
         */
-        static SBLExpand::Ptr makeShrinkingUniformJacobianBox(
-        	rw::core::Ptr<rw::pathplanning::QConstraint> constraint,
-			rw::core::Ptr<rw::models::Device> device,
-            const rw::kinematics::State& state,
-            rw::core::Ptr<rw::models::JacobianCalculator> jacobian,
-            double angle_max = -1,
-            double disp_max = -1);
+        static SBLExpand::Ptr
+        makeShrinkingUniformJacobianBox (rw::core::Ptr< rw::pathplanning::QConstraint > constraint,
+                                         rw::core::Ptr< rw::models::Device > device,
+                                         const rw::kinematics::State& state,
+                                         rw::core::Ptr< rw::models::JacobianCalculator > jacobian,
+                                         double angle_max = -1, double disp_max = -1);
 
         /**
            @brief Destructor
         */
-        virtual ~SBLExpand() {}
+        virtual ~SBLExpand () {}
 
-    protected:
+      protected:
         /**
            @brief Constructor
         */
-        SBLExpand() {}
+        SBLExpand () {}
 
         /**
            @brief Subclass implementation of the expand() method.
         */
-        virtual rw::math::Q doExpand(const rw::math::Q& q) = 0;
+        virtual rw::math::Q doExpand (const rw::math::Q& q) = 0;
 
-    private:
-        SBLExpand(const SBLExpand&);
-        SBLExpand& operator=(const SBLExpand&);
+      private:
+        SBLExpand (const SBLExpand&);
+        SBLExpand& operator= (const SBLExpand&);
     };
 
     /* @} */
-}} // end namespaces
+}}    // namespace rwlibs::pathplanners
 
-#endif // end include guard
+#endif    // end include guard

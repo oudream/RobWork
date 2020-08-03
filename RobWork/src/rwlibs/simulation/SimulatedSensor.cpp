@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,20 +15,18 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #include "SimulatedSensor.hpp"
 
+namespace rwlibs { namespace simulation {
 
-namespace rwlibs {
-namespace simulation {
+    SimulatedSensor::~SimulatedSensor () {}
 
-SimulatedSensor::~SimulatedSensor(){ }
+    rw::sensor::Sensor::Ptr
+    SimulatedSensor::getSensorHandle (rwlibs::simulation::Simulator::Ptr instance)
+    {
+        if (instance->hasHandle (this))
+            return instance->getSensorHandle (this);
+        return NULL;
+    }
 
-rw::sensor::Sensor::Ptr SimulatedSensor::getSensorHandle(rwlibs::simulation::Simulator::Ptr instance){
-	if( instance->hasHandle(this) )
-		return instance->getSensorHandle(this);
-	return NULL;
-}
-
-}
-}
+}}    // namespace rwlibs::simulation

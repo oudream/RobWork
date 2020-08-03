@@ -15,138 +15,152 @@
  * limitations under the License.
  ********************************************************************************/
 
+#include "LogVelocities.hpp"
+
+#include "LogPositions.hpp"
 #include "SimulatorLogScope.hpp"
 
 #include <rw/common/InputArchive.hpp>
 #include <rw/common/OutputArchive.hpp>
-#include "LogPositions.hpp"
-#include "LogVelocities.hpp"
 
 using namespace rw::common;
 using namespace rw::core;
 using namespace rw::math;
 using namespace rwsim::log;
 
-LogVelocities::LogVelocities(SimulatorLogScope* parent):
-	SimulatorLogEntry(parent)
+LogVelocities::LogVelocities (SimulatorLogScope* parent) : SimulatorLogEntry (parent)
+{}
+
+LogVelocities::~LogVelocities ()
+{}
+
+void LogVelocities::read (class InputArchive& iarchive, const std::string& id)
 {
+    const unsigned int n = iarchive.readUInt ("Velocities");
+    for (unsigned int i = 0; i < n; i++) {
+        const std::string name = iarchive.readString ("Name");
+        iarchive.read (_velocities[name], "VelocityScrew6D");
+    }
+    SimulatorLogEntry::read (iarchive, id);
 }
 
-LogVelocities::~LogVelocities() {
+void LogVelocities::write (class OutputArchive& oarchive, const std::string& id) const
+{
+    oarchive.write (_velocities.size (), "Velocities");
+    std::map< std::string, VelocityScrew6D<> >::const_iterator it;
+    for (it = _velocities.begin (); it != _velocities.end (); it++) {
+        oarchive.write (it->first, "Name");
+        oarchive.write (it->second, "VelocityScrew6D");
+    }
+    SimulatorLogEntry::write (oarchive, id);
 }
 
-void LogVelocities::read(class InputArchive& iarchive, const std::string& id) {
-	const unsigned int n = iarchive.readUInt("Velocities");
-	for (unsigned int i = 0; i < n; i++) {
-		const std::string name = iarchive.readString("Name");
-		iarchive.read(_velocities[name],"VelocityScrew6D");
-	}
-	SimulatorLogEntry::read(iarchive,id);
+std::string LogVelocities::getType () const
+{
+    return getTypeID ();
 }
 
-void LogVelocities::write(class OutputArchive& oarchive, const std::string& id) const {
-	oarchive.write(_velocities.size(),"Velocities");
-	std::map<std::string,VelocityScrew6D<> >::const_iterator it;
-	for (it = _velocities.begin(); it != _velocities.end(); it++) {
-		oarchive.write(it->first,"Name");
-		oarchive.write(it->second,"VelocityScrew6D");
-	}
-	SimulatorLogEntry::write(oarchive,id);
+bool LogVelocities::operator== (const SimulatorLog& b) const
+{
+    if (const LogVelocities* const entry = dynamic_cast< const LogVelocities* > (&b)) {
+        if (*_positions != *entry->_positions)
+            return false;
+        if (_velocities != entry->_velocities)
+            return false;
+    }
+    return SimulatorLogEntry::operator== (b);
 }
 
-std::string LogVelocities::getType() const {
-	return getTypeID();
+std::list< SimulatorLogEntry::Ptr > LogVelocities::getLinkedEntries () const
+{
+    if (_positions == NULL)
+        return std::list< SimulatorLogEntry::Ptr > ();
+    else
+        return std::list< SimulatorLogEntry::Ptr > (1, _positions);
 }
 
-bool LogVelocities::operator==(const SimulatorLog &b) const {
-	if (const LogVelocities* const entry = dynamic_cast<const LogVelocities*>(&b)) {
-		if (*_positions != *entry->_positions)
-			return false;
-		if (_velocities != entry->_velocities)
-			return false;
-	}
-	return SimulatorLogEntry::operator==(b);
+bool LogVelocities::autoLink ()
+{
+    _positions = NULL;
+    // Link to last position entry in tree
+    SimulatorLogScope* scope = getParent ();
+    if (scope == NULL)
+        return false;
+    SimulatorLog* find = this;
+    bool found         = false;
+    while (scope != NULL && !found) {
+        // Find position of entry
+        const std::vector< SimulatorLog::Ptr > children = scope->getChildren ();
+        std::vector< SimulatorLog::Ptr >::const_reverse_iterator it;
+        for (it = children.rbegin (); it != children.rend (); it++) {
+            if (it->isNull ())
+                continue;
+            if (it->get () == find) {
+                break;
+            }
+        }
+        if (it != children.rend ()) {
+            if (it->get () == find)
+                it++;
+        }
+        // Now search backwards
+        for (; it != children.rend (); it++) {
+            RW_ASSERT (*it != NULL);
+            _positions = (*it).cast< LogPositions > ();
+            if (_positions != NULL) {
+                found = true;
+                break;
+            }
+        }
+        find  = scope;
+        scope = scope->getParent ();
+    }
+    return _positions != NULL;
 }
 
-std::list<SimulatorLogEntry::Ptr> LogVelocities::getLinkedEntries() const {
-	if (_positions == NULL)
-		return std::list<SimulatorLogEntry::Ptr>();
-	else
-		return std::list<SimulatorLogEntry::Ptr>(1,_positions);
+SimulatorLogEntry::Ptr LogVelocities::createNew (SimulatorLogScope* parent) const
+{
+    return ownedPtr (new LogVelocities (parent));
 }
 
-bool LogVelocities::autoLink() {
-	_positions = NULL;
-	// Link to last position entry in tree
-	SimulatorLogScope* scope = getParent();
-	if (scope == NULL)
-		return false;
-	SimulatorLog* find = this;
-	bool found = false;
-	while(scope != NULL && !found) {
-		// Find position of entry
-		const std::vector<SimulatorLog::Ptr> children = scope->getChildren();
-		std::vector<SimulatorLog::Ptr>::const_reverse_iterator it;
-		for(it = children.rbegin(); it != children.rend(); it++) {
-			if (it->isNull())
-				continue;
-			if (it->get() == find) {
-				break;
-			}
-		}
-		if (it != children.rend()) {
-			if (it->get() == find)
-				it++;
-		}
-		// Now search backwards
-		for(; it != children.rend(); it++) {
-			RW_ASSERT(*it != NULL);
-			_positions = (*it).cast<LogPositions>();
-			if (_positions != NULL) {
-				found = true;
-				break;
-			}
-		}
-		find = scope;
-		scope = scope->getParent();
-	}
-	return _positions != NULL;
+LogPositions::Ptr LogVelocities::getPositions () const
+{
+    return _positions;
 }
 
-SimulatorLogEntry::Ptr LogVelocities::createNew(SimulatorLogScope* parent) const {
-	return ownedPtr(new LogVelocities(parent));
+const std::map< std::string, VelocityScrew6D<> >& LogVelocities::getVelocities () const
+{
+    return _velocities;
 }
 
-LogPositions::Ptr LogVelocities::getPositions() const {
-	return _positions;
+const VelocityScrew6D<>& LogVelocities::getVelocity (const std::string& name) const
+{
+    const std::map< std::string, VelocityScrew6D<> >::const_iterator it = _velocities.find (name);
+    RW_ASSERT (it != _velocities.end ());
+    return it->second;
 }
 
-const std::map<std::string, VelocityScrew6D<> >& LogVelocities::getVelocities() const {
-	return _velocities;
+bool LogVelocities::has (const std::string& name) const
+{
+    return _velocities.find (name) != _velocities.end ();
 }
 
-const VelocityScrew6D<>& LogVelocities::getVelocity(const std::string& name) const {
-	const std::map<std::string,VelocityScrew6D<> >::const_iterator it = _velocities.find(name);
-	RW_ASSERT(it != _velocities.end());
-	return it->second;
+void LogVelocities::setVelocities (const std::map< std::string, VelocityScrew6D<> >& velocities)
+{
+    _velocities = velocities;
 }
 
-bool LogVelocities::has(const std::string& name) const {
-	return _velocities.find(name) != _velocities.end();
+void LogVelocities::setVelocity (const std::string& name, const VelocityScrew6D<>& velocity)
+{
+    _velocities[name] = velocity;
 }
 
-void LogVelocities::setVelocities(const std::map<std::string, VelocityScrew6D<> >& velocities) {
-	_velocities = velocities;
+std::size_t LogVelocities::size () const
+{
+    return _velocities.size ();
 }
 
-void LogVelocities::setVelocity(const std::string& name, const VelocityScrew6D<>& velocity) {
-	_velocities[name] = velocity;
-}
-
-std::size_t LogVelocities::size() const {
-	return _velocities.size();
-}
-
-std::string LogVelocities::getTypeID() {
-	return "Velocities";
+std::string LogVelocities::getTypeID ()
+{
+    return "Velocities";
 }

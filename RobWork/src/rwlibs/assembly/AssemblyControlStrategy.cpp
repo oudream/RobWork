@@ -16,18 +16,19 @@
  ********************************************************************************/
 
 #include "AssemblyControlStrategy.hpp"
+
 #include "AssemblyParameterization.hpp"
 
 using namespace rw::core;
 using namespace rwlibs::assembly;
 
-AssemblyControlStrategy::AssemblyControlStrategy()
+AssemblyControlStrategy::AssemblyControlStrategy ()
+{}
+
+AssemblyControlStrategy::~AssemblyControlStrategy ()
+{}
+
+AssemblyControlStrategy::ControlState::Ptr AssemblyControlStrategy::createState () const
 {
-}
-
-AssemblyControlStrategy::~AssemblyControlStrategy() {
-}
-
-AssemblyControlStrategy::ControlState::Ptr AssemblyControlStrategy::createState() const {
-	return ownedPtr(new ControlState());
+    return ownedPtr (new ControlState ());
 }

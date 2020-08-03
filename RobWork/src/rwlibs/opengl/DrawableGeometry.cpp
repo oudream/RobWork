@@ -22,8 +22,6 @@
 #include "RenderGeometry.hpp"
 #include "RenderLines.hpp"
 
-
-
 using namespace rwlibs::opengl;
 using namespace rw::core;
 using namespace rw::math;

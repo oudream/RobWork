@@ -24,7 +24,6 @@
 #include <rw/loaders/ImageFactory.hpp>
 #include <rw/math/EAA.hpp>
 
-
 #include <fstream>
 
 using namespace rw::loaders;
@@ -369,7 +368,7 @@ void OBJReader::parse_face (char** next_token)
         }
         face.subFaces.push_back ({v - 1, vn - 1, vt - 1});
     }
-    face.MatIndex = int(_currentMat);
+    face.MatIndex = int (_currentMat);
     _objects.back ().MatFaces.push_back (face);
 }
 
@@ -477,7 +476,7 @@ void OBJReader::parse_mtl_map_Kd (char** next_token)
         else {
             _textures.push_back (
                 TextureData (token, ImageLoader::Factory::load (_dirName + token)));
-            _materials.back ().texId = short(_textures.size () - 1);
+            _materials.back ().texId = short (_textures.size () - 1);
         }
     }
 }
@@ -795,7 +794,7 @@ Model3D::Ptr LoaderOBJ::load (const std::string& name)
 
             obj->setMaterial (matFace.MatIndex);
 
-            int index_s = int(obj->_vertices.size ());
+            int index_s = int (obj->_vertices.size ());
             for (const OBJReader::Face& subFace : matFace.subFaces) {
                 obj->_vertices.push_back (reader._vertexes[subFace.v]);
                 if (0 <= subFace.vn) {

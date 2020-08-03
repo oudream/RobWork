@@ -21,8 +21,6 @@
 #include <rw/pathplanning/PlannerUtil.hpp>
 #include <rw/trajectory/Path.hpp>
 
-
-
 using namespace rw::math;
 using namespace rw::models;
 using namespace rw::trajectory;

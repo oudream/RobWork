@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RW_INVKIN_JacobianIKSolverM_HPP
 #define RW_INVKIN_JacobianIKSolverM_HPP
 
@@ -23,24 +22,24 @@
  * @file JacobianIKSolverM.hpp
  */
 
-#include <rw/invkin/IterativeMultiIK.hpp>
 #include <rw/core/Ptr.hpp>
+#include <rw/invkin/IterativeMultiIK.hpp>
 #include <rw/math/Q.hpp>
 
 #include <vector>
 
-namespace rw { namespace kinematics { 
-    class Frame; 
-    class FKRange; 
-    class State; 
-}}
+namespace rw { namespace kinematics {
+    class Frame;
+    class FKRange;
+    class State;
+}}    // namespace rw::kinematics
 
 namespace rw { namespace models {
     class JointDevice;
     class TreeDevice;
     class Device;
     class JacobianCalculator;
-}} // end namespaces
+}}    // namespace rw::models
 
 namespace rw { namespace invkin {
 
@@ -58,8 +57,8 @@ namespace rw { namespace invkin {
      *
      * The method uses an Newton-Raphson iterative approach and is based on using the inverse of
      * the device Jacobian to compute each local solution in each iteration. Several methods for
-     * calculating/approximating the inverse Jacobian are available, where the SVD method currently is
-     * the most stable, see the JacobianSolverType option for additional options.
+     * calculating/approximating the inverse Jacobian are available, where the SVD method currently
+     * is the most stable, see the JacobianSolverType option for additional options.
      *
      * The method is based on the following approximation:
      *
@@ -75,8 +74,8 @@ namespace rw { namespace invkin {
      * \f$
      *
      * \f$
-     * \Delta \mathbf{T}(\Delta \mathbf{q}) = \robabx{j}{i}{\mathbf{T}}\robabx{b}{e*}{\mathbf{T}}=\mathbf{I}^{4x4}+\mathbf{L}
-     * \f$
+     * \Delta \mathbf{T}(\Delta \mathbf{q}) =
+     * \robabx{j}{i}{\mathbf{T}}\robabx{b}{e*}{\mathbf{T}}=\mathbf{I}^{4x4}+\mathbf{L} \f$
      *
      * \f$
      * \mathbf{L} =
@@ -92,17 +91,15 @@ namespace rw { namespace invkin {
      */
     class JacobianIKSolverM : public IterativeMultiIK
     {
-    public:
+      public:
         //! @brief the type of Jacobian solver
-        typedef enum{Transpose, SVD, DLS, SDLS} JacobianSolverType;
-
+        typedef enum { Transpose, SVD, DLS, SDLS } JacobianSolverType;
 
         /**
          * @brief Constructs JacobianIKSolverM for TreeDevice. Uses the default
          * end effectors of the TreeDevice
          */
-        JacobianIKSolverM(const models::TreeDevice* device,
-                          const kinematics::State& state);
+        JacobianIKSolverM (const models::TreeDevice* device, const kinematics::State& state);
 
         /**
          * @brief Constructs JacobianIKSolverM for a
@@ -110,27 +107,25 @@ namespace rw { namespace invkin {
          * the default end effectors. A list of interest frames are
          * given instead.
          */
-        JacobianIKSolverM(const models::JointDevice* device,
-                          const std::vector<kinematics::Frame*>& foi,
-                          const kinematics::State& state);
+        JacobianIKSolverM (const models::JointDevice* device,
+                           const std::vector< kinematics::Frame* >& foi,
+                           const kinematics::State& state);
 
         //! @brief destructor
-        virtual ~JacobianIKSolverM(){}
+        virtual ~JacobianIKSolverM () {}
 
         /**
          * @brief configures the iterative solver to return the best fit
          * found, even though error criteria was not met.
          * @param returnBestFit [in] set to true if you want best fit returned.
          */
-        void setReturnBestFit(bool returnBestFit){
-            _returnBestFit = returnBestFit;
-        }
+        void setReturnBestFit (bool returnBestFit) { _returnBestFit = returnBestFit; }
 
         /**
          * @brief enables clamping of the solution such that solution always is within joint limits.
          * @param enableClamping [in] true to enable clamping, false otherwise
          */
-        void setClampToBounds(bool enableClamping){_useJointClamping=enableClamping;};
+        void setClampToBounds (bool enableClamping) { _useJointClamping = enableClamping; };
 
         /**
          * @brief the solver may fail or be very slow if the the solution is too far from the
@@ -138,19 +133,22 @@ namespace rw { namespace invkin {
          * an interpolation from initial end effector configuration to the goal target.
          * @param enableInterpolation [in] set true to enable interpolation, false otherwise
          */
-        void setEnableInterpolation(bool enableInterpolation){ _useInterpolation = enableInterpolation; };
+        void setEnableInterpolation (bool enableInterpolation)
+        {
+            _useInterpolation = enableInterpolation;
+        };
 
         /**
          * @brief set the type of solver to use for stepping toward a solution
          * @param type [in] the type of Jacobian solver
          */
-        void setSolverType(JacobianSolverType type){ _solverType = type; };
+        void setSolverType (JacobianSolverType type) { _solverType = type; };
 
         /**
          * @copydoc IterativeIK::solve
          */
-        std::vector<math::Q> solve(const std::vector<math::Transform3D<> >& baseTend,
-                                   const kinematics::State& state) const;
+        std::vector< math::Q > solve (const std::vector< math::Transform3D<> >& baseTend,
+                                      const kinematics::State& state) const;
 
         /**
          * @brief performs a local search toward the the target bTed. No via points
@@ -166,12 +164,9 @@ namespace rw { namespace invkin {
          * @return true if error is below max error
          * @note the result will be saved in state
          */
-        bool solveLocal(const std::vector<rw::math::Transform3D<> > &bTed,
-                        std::vector<double>& maxError,
-                        kinematics::State &state,
-                        int maxIter,
-                        bool untilSmallChange=false) const;
-
+        bool solveLocal (const std::vector< rw::math::Transform3D<> >& bTed,
+                         std::vector< double >& maxError, kinematics::State& state, int maxIter,
+                         bool untilSmallChange = false) const;
 
         /**
          * @brief sets the maximal step length that is allowed on the
@@ -179,14 +174,13 @@ namespace rw { namespace invkin {
          * @param qlength [in] maximal step length in quaternion
          * @param plength [in] maximal step length in position
          */
-        void setMaxLocalStep(double qlength, double plength);
+        void setMaxLocalStep (double qlength, double plength);
 
-    private:
-
+      private:
         const models::Device* _device;
-        rw::core::Ptr<models::JacobianCalculator> _jacCalc;
-        std::vector<kinematics::Frame*> _foi; // frames of interest, end frames
-        std::vector<boost::shared_ptr<kinematics::FKRange> > _fkranges;
+        rw::core::Ptr< models::JacobianCalculator > _jacCalc;
+        std::vector< kinematics::Frame* > _foi;    // frames of interest, end frames
+        std::vector< boost::shared_ptr< kinematics::FKRange > > _fkranges;
         double _interpolationStep;
         bool _returnBestFit;
         bool _useJointClamping, _useInterpolation;
@@ -194,6 +188,6 @@ namespace rw { namespace invkin {
     };
 
     /*@}*/
-}} // end namespaces
+}}    // namespace rw::invkin
 
-#endif // end include guard
+#endif    // end include guard

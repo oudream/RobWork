@@ -19,58 +19,55 @@
 #define RW_PLUGIN_PLUGINFACTORYBASE_HPP
 
 #include <rw/core/Ptr.hpp>
+
 #include <string>
 
-namespace rw {
-namespace plugin {
+namespace rw { namespace plugin {
 
-
-
-/** @addtogroup plugin */
-/*@{*/
-
-/**
- * @brief Base class for PluginFactory.
- *
- * When a PluginFactory is loaded it is stored as a PluginFactoryBase within the rw::plugin::PluginRepository.
- */
-class PluginFactoryBase
-{
-public:
-    //! smart pointer for this class
-    typedef rw::core::Ptr<PluginFactoryBase> Ptr;
+    /** @addtogroup plugin */
+    /*@{*/
 
     /**
-     * @brief Constructor 
+     * @brief Base class for PluginFactory.
      *
-     * @param [in] identifier used to identify the plugin
+     * When a PluginFactory is loaded it is stored as a PluginFactoryBase within the
+     * rw::plugin::PluginRepository.
      */
-    PluginFactoryBase(const std::string& identifier);
+    class PluginFactoryBase
+    {
+      public:
+        //! smart pointer for this class
+        typedef rw::core::Ptr< PluginFactoryBase > Ptr;
+
+        /**
+         * @brief Constructor
+         *
+         * @param [in] identifier used to identify the plugin
+         */
+        PluginFactoryBase (const std::string& identifier);
+
+        /**
+         * @brief Destructor
+         */
+        virtual ~PluginFactoryBase (void);
+
+        /**
+         * @brief Returns identifier associated with the PluginFactory
+         * @return Identifier for the plugin
+         */
+        virtual std::string identifier () const;
+
+      private:
+        std::string _identifier;
+    };
 
     /**
-     * @brief Destructor
+     * @brief Definition of rw::core::Ptr to a PluginFactoryBase
      */
-    virtual ~PluginFactoryBase(void);
+    typedef rw::core::Ptr< PluginFactoryBase > PluginFactoryBasePtr;
 
-    /** 
-     * @brief Returns identifier associated with the PluginFactory
-     * @return Identifier for the plugin
-     */
-    virtual std::string identifier() const;
+    /** @} */
 
-private:
-    std::string _identifier;
-};
+}}    // namespace rw::plugin
 
-/**
- * @brief Definition of rw::core::Ptr to a PluginFactoryBase
- */
-typedef rw::core::Ptr<PluginFactoryBase> PluginFactoryBasePtr;
-
-/** @} */
-
-} //end namespace plugin
-} //end namespace rw
-
-
-#endif //#ifndef RW_PLUGIN_PLUGINFACTORYBASE_HPP
+#endif    //#ifndef RW_PLUGIN_PLUGINFACTORYBASE_HPP

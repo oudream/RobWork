@@ -20,29 +20,28 @@
 using namespace rw::common;
 using namespace rwlibs::mathematica;
 
-EvaluatePacket::EvaluatePacket(const Mathematica::Expression& expression):
-	Packet("EvaluatePacket",Mathematica::Evaluate),
-	_expression(expression.clone())
+EvaluatePacket::EvaluatePacket (const Mathematica::Expression& expression) :
+    Packet ("EvaluatePacket", Mathematica::Evaluate), _expression (expression.clone ())
+{}
+
+EvaluatePacket::EvaluatePacket (rw::core::Ptr< const Mathematica::Expression > expression) :
+    Packet ("EvaluatePacket", Mathematica::Evaluate), _expression (expression)
+{}
+
+EvaluatePacket::~EvaluatePacket ()
+{}
+
+const rw::core::Ptr< const Mathematica::Expression > EvaluatePacket::expression ()
 {
+    return _expression;
 }
 
-EvaluatePacket::EvaluatePacket(rw::core::Ptr<const Mathematica::Expression> expression):
-	Packet("EvaluatePacket",Mathematica::Evaluate),
-	_expression(expression)
+std::list< rw::core::Ptr< const Mathematica::Expression > > EvaluatePacket::getArguments () const
 {
+    return std::list< rw::core::Ptr< const Mathematica::Expression > > (1, _expression);
 }
 
-EvaluatePacket::~EvaluatePacket() {
-}
-
-const rw::core::Ptr<const Mathematica::Expression> EvaluatePacket::expression() {
-	return _expression;
-}
-
-std::list<rw::core::Ptr<const Mathematica::Expression> > EvaluatePacket::getArguments() const {
-	return std::list<rw::core::Ptr<const Mathematica::Expression> >(1, _expression);
-}
-
-Mathematica::Expression::Ptr EvaluatePacket::clone() const {
-	return ownedPtr(new EvaluatePacket(*_expression));
+Mathematica::Expression::Ptr EvaluatePacket::clone () const
+{
+    return ownedPtr (new EvaluatePacket (*_expression));
 }

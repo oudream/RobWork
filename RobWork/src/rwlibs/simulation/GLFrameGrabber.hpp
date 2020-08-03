@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RWLIBS_SIMULATION_CAMERA_GLFRAMEGRAPPER_HPP
 #define RWLIBS_SIMULATION_CAMERA_GLFRAMEGRAPPER_HPP
 
@@ -25,12 +24,16 @@
 
 #include "FrameGrabber.hpp"
 
+#include <rw/core/Ptr.hpp>
 #include <rw/graphics/SceneViewer.hpp>
 #include <rw/math/Transform3D.hpp>
-#include <rw/core/Ptr.hpp>
 
-namespace rw { namespace kinematics { class Frame; } }
-namespace rw { namespace kinematics { class State; } }
+namespace rw { namespace kinematics {
+    class Frame;
+}}    // namespace rw::kinematics
+namespace rw { namespace kinematics {
+    class State;
+}}    // namespace rw::kinematics
 
 namespace rwlibs { namespace simulation {
     /** @addtogroup simulation */
@@ -52,9 +55,9 @@ namespace rwlibs { namespace simulation {
      */
     class GLFrameGrabber : public FrameGrabber
     {
-    public:
-    	//! @brief Smart pointer type for GLFrameGrabber.
-        typedef rw::core::Ptr<GLFrameGrabber> Ptr;
+      public:
+        //! @brief Smart pointer type for GLFrameGrabber.
+        typedef rw::core::Ptr< GLFrameGrabber > Ptr;
 
         /**
          * @brief constructor
@@ -64,40 +67,38 @@ namespace rwlibs { namespace simulation {
          * @param near [in] the minimum depth of camera.
          * @param far [in] the maximum depth of camera.
          */
-        GLFrameGrabber(int width, int height,
-                       double fov,
-                       double near=0.1, double far=10.0);
+        GLFrameGrabber (int width, int height, double fov, double near = 0.1, double far = 10.0);
 
         /**
          * @brief destructor
          */
-        virtual ~GLFrameGrabber();
+        virtual ~GLFrameGrabber ();
 
-        void resize(int width, int height);
+        void resize (int width, int height);
 
-        void resize(int width, int height, rw::sensor::Image::ColorCode colorCode);
-
+        void resize (int width, int height, rw::sensor::Image::ColorCode colorCode);
 
         /**
          * @brief initialize the grabber with a scene viewer. This registers the grabber
          * as a camera in the scene and enables rendering.
          * @param drawer [in] the scene viewer
-         * @return true if initialization succeeded, false otherwise (depends on the capabilities of the SceneViewer).
+         * @return true if initialization succeeded, false otherwise (depends on the capabilities of
+         * the SceneViewer).
          */
-        bool init(rw::graphics::SceneViewer::Ptr drawer);
+        bool init (rw::graphics::SceneViewer::Ptr drawer);
 
         //! @copydoc FrameGrabber::grab
-        void grab(rw::kinematics::Frame* frame, const rw::kinematics::State& state);
+        void grab (rw::kinematics::Frame* frame, const rw::kinematics::State& state);
 
-    private:
-        double _fieldOfView; // in the y-axis
+      private:
+        double _fieldOfView;    // in the y-axis
         rw::graphics::SceneViewer::Ptr _drawer;
-        rw::math::Transform3D<double> _perspTrans;
+        rw::math::Transform3D< double > _perspTrans;
         rw::graphics::SceneViewer::View::Ptr _view;
         double _near, _far;
     };
 
     /* @} */
-}} // end namespaces
+}}    // namespace rwlibs::simulation
 
-#endif // end include guard
+#endif    // end include guard

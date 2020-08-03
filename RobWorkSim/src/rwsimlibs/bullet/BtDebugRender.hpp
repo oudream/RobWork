@@ -27,41 +27,39 @@
 #include <rwsim/drawable/SimulatorDebugRender.hpp>
 //#include <OpenGl/GLDebugDrawer.h>
 
-namespace rwsimlibs {
-namespace bullet {
-class BtSimulator;
+namespace rwsimlibs { namespace bullet {
+    class BtSimulator;
 
-//! @addtogroup rwsimlibs_bullet
+    //! @addtogroup rwsimlibs_bullet
 
-//! @{
-/**
- * @brief Debug render for the Bullet engine.
- */
-class BtDebugRender: public rwsim::drawable::SimulatorDebugRender {
-public:
-	/**
-	 * @brief Constructor.
-	 * @param sim the simulator the debug render is associated to.
-	 */
-	BtDebugRender(BtSimulator *sim);
+    //! @{
+    /**
+     * @brief Debug render for the Bullet engine.
+     */
+    class BtDebugRender : public rwsim::drawable::SimulatorDebugRender
+    {
+      public:
+        /**
+         * @brief Constructor.
+         * @param sim the simulator the debug render is associated to.
+         */
+        BtDebugRender (BtSimulator* sim);
 
-	//! @brief Destructor
-	virtual ~BtDebugRender();
+        //! @brief Destructor
+        virtual ~BtDebugRender ();
 
-    //! @copydoc rw::graphics::Render::draw
-	virtual void draw(const rw::graphics::DrawableNode::RenderInfo& info,
-			DrawType type,
-			double alpha) const;
+        //! @copydoc rw::graphics::Render::draw
+        virtual void draw (const rw::graphics::DrawableNode::RenderInfo& info, DrawType type,
+                           double alpha) const;
 
-    //! @copydoc rwsim::drawable::SimulatorDebugRender::setDrawMask
-	virtual void setDrawMask(unsigned int mask);
+        //! @copydoc rwsim::drawable::SimulatorDebugRender::setDrawMask
+        virtual void setDrawMask (unsigned int mask);
 
-private:
-	BtSimulator *_sim;
-	//GLDebugDrawer *_debugDrawer;
-	unsigned int _drawMask;
-};
-//! @}
-} /* namespace bullet */
-} /* namespace rwsimlibs */
+      private:
+        BtSimulator* _sim;
+        // GLDebugDrawer *_debugDrawer;
+        unsigned int _drawMask;
+    };
+    //! @}
+}}     // namespace rwsimlibs::bullet
 #endif /* RWSIMLIBS_BULLET_BTDEBUGRENDER_HPP_ */

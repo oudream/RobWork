@@ -18,37 +18,36 @@
 #ifndef RWLIBS_CALIBRATION_XMLCALIBRATIONLOADER_HPP_
 #define RWLIBS_CALIBRATION_XMLCALIBRATIONLOADER_HPP_
 
-
-#include <rwlibs/calibration/WorkCellCalibration.hpp>
 #include <rw/core/Ptr.hpp>
+#include <rwlibs/calibration/WorkCellCalibration.hpp>
 
+namespace rw { namespace models {
+    class WorkCell;
+}}    // namespace rw::models
 
-namespace rw { namespace models { class WorkCell; } }
+namespace rwlibs { namespace calibration {
+    /** @addtogroup calibration */
+    /*@{*/
 
-namespace rwlibs {
-namespace calibration {
-/** @addtogroup calibration */
-/*@{*/
+    /**
+     * @brief Loads a calibration file for a workcell.
+     *
+     * The file needs to satisfy the XML format of the calibration
+     */
+    class XmlCalibrationLoader
+    {
+      public:
+        /**
+         * @brief Loads calibration file.
+         * @param workcell [in] Workcell to which the calibration are associated
+         * @param filename [in] Name of the file to load
+         */
+        static WorkCellCalibration::Ptr load (rw::core::Ptr< rw::models::WorkCell > workcell,
+                                              std::string filename);
+    };
 
+    /* @} */
 
-	/**
-	 * @brief Loads a calibration file for a workcell.
-	 * 
-	 * The file needs to satisfy the XML format of the calibration
-	 */
-	class XmlCalibrationLoader {
-	public:
-		/**
-		* @brief Loads calibration file.
-		* @param workcell [in] Workcell to which the calibration are associated
-		* @param filename [in] Name of the file to load
-		*/
-		static WorkCellCalibration::Ptr load(rw::core::Ptr<rw::models::WorkCell> workcell, std::string filename);
-	};
-
-	/* @} */
-
-}
-}
+}}    // namespace rwlibs::calibration
 
 #endif /* RWLIBS_CALIBRATION_XMLCALIBRATIONLOADER_HPP_ */

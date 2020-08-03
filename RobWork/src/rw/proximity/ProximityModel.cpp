@@ -36,7 +36,6 @@ bool ProximityModel::addGeometry (const rw::geometry::Geometry& geom)
     return owner->addGeometry (this, geom);
 }
 
-
 bool ProximityModel::removeGeometry (const std::string& geom)
 {
     return owner->removeGeometry (this, geom);
@@ -49,5 +48,6 @@ std::vector< std::string > ProximityModel::getGeometryIDs ()
 
 std::vector< rw::core::Ptr< rw::geometry::Geometry > > ProximityModel::getGeometries ()
 {
-    return owner->getGeometrys (this);;
+    return owner->getGeometrys (this);
+    ;
 }

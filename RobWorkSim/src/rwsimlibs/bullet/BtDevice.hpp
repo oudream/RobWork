@@ -24,38 +24,39 @@
  * \copydoc rwsimlibs::bullet::BtDevice
  */
 
-namespace rw { namespace kinematics { class State; } }
+namespace rw { namespace kinematics {
+    class State;
+}}    // namespace rw::kinematics
 
-namespace rwsimlibs {
-namespace bullet {
-//! @addtogroup rwsimlibs_bullet
+namespace rwsimlibs { namespace bullet {
+    //! @addtogroup rwsimlibs_bullet
 
-//! @{
-/**
- * @brief An interface for Bullet devices.
- */
-class BtDevice {
-public:
-	//! @brief Destructor.
-	virtual ~BtDevice() {};
+    //! @{
+    /**
+     * @brief An interface for Bullet devices.
+     */
+    class BtDevice
+    {
+      public:
+        //! @brief Destructor.
+        virtual ~BtDevice (){};
 
-	/**
-	 * @brief Update device.
-	 * @param dt [in] the timestep.
-	 * @param state [in/out] the state to update.
-	 */
-	virtual void update(double dt, rw::kinematics::State& state) = 0;
+        /**
+         * @brief Update device.
+         * @param dt [in] the timestep.
+         * @param state [in/out] the state to update.
+         */
+        virtual void update (double dt, rw::kinematics::State& state) = 0;
 
-	/**
-	 * @brief Post update of device.
-	 * @param state [in/out] the result of the update.
-	 */
-	virtual void postUpdate(rw::kinematics::State& state) = 0;
+        /**
+         * @brief Post update of device.
+         * @param state [in/out] the result of the update.
+         */
+        virtual void postUpdate (rw::kinematics::State& state) = 0;
 
-protected:
-	BtDevice() {};
-};
-//! @}
-} /* namespace bullet */
-} /* namespace rwsimlibs */
+      protected:
+        BtDevice (){};
+    };
+    //! @}
+}}     // namespace rwsimlibs::bullet
 #endif /* RWSIMLIBS_BULLET_BTDEVICE_HPP_ */

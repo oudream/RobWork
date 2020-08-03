@@ -219,8 +219,8 @@ namespace rw { namespace proximity {
             typedef typename Traits< BVTREE >::BVType BVType;
             rw::core::Ptr< BVFactory< typename Traits< BVTREE >::BVType > > bvfactory =
                 makeOBBCovarFactory< typename Traits< BVType >::value_type > ();
-            rw::core::Ptr< BVShellSplitterStrategy< typename Traits< BVTREE >::BVType > >
-                splitter = makeOBVShellMedianSplitter< BVType > ();
+            rw::core::Ptr< BVShellSplitterStrategy< typename Traits< BVTREE >::BVType > > splitter =
+                makeOBVShellMedianSplitter< BVType > ();
             return makeTopDownTree< BVTREE > (shell, *bvfactory, *splitter, maxTrisInLeaf);
         }
 

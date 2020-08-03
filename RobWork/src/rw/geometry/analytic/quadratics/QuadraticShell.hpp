@@ -24,72 +24,72 @@
  * \copydoc rw::geometry::QuadraticShell
  */
 
-#include <rw/geometry/analytic/Shell.hpp>
 #include <rw/geometry/OBB.hpp>
+#include <rw/geometry/analytic/Shell.hpp>
 #include <rw/math/Vector3D.hpp>
 
-namespace rw {
-namespace geometry {
+namespace rw { namespace geometry {
 
-class QuadraticFace;
+    class QuadraticFace;
 
-//! @addtogroup geometry
+    //! @addtogroup geometry
 
-//! @{
-/**
- * @brief A collection of Quadratic surface patches, that together form a shell.
- */
-class QuadraticShell: public Shell {
-public:
-    //! @brief Smart pointer type to QuadraticShell
-    typedef rw::core::Ptr<QuadraticShell> Ptr;
+    //! @{
+    /**
+     * @brief A collection of Quadratic surface patches, that together form a shell.
+     */
+    class QuadraticShell : public Shell
+    {
+      public:
+        //! @brief Smart pointer type to QuadraticShell
+        typedef rw::core::Ptr< QuadraticShell > Ptr;
 
-	//! @brief Smart pointer type for a const QuadraticShell.
-	typedef rw::core::Ptr<const QuadraticShell> CPtr;
+        //! @brief Smart pointer type for a const QuadraticShell.
+        typedef rw::core::Ptr< const QuadraticShell > CPtr;
 
-    //! @brief Constructor.
-	QuadraticShell(): _resolution(10) {}
+        //! @brief Constructor.
+        QuadraticShell () : _resolution (10) {}
 
-	//! @brief Destructor.
-	virtual ~QuadraticShell() {}
+        //! @brief Destructor.
+        virtual ~QuadraticShell () {}
 
-	//! @copydoc Shell::getType
-	virtual GeometryType getType() const { return GeometryData::Quadratic; }
+        //! @copydoc Shell::getType
+        virtual GeometryType getType () const { return GeometryData::Quadratic; }
 
-	//! @copydoc Shell::isConvex
-	virtual bool isConvex() = 0;
+        //! @copydoc Shell::isConvex
+        virtual bool isConvex () = 0;
 
-	//! @copydoc Shell::size
-	virtual std::size_t size() const = 0;
+        //! @copydoc Shell::size
+        virtual std::size_t size () const = 0;
 
-	//! @copydoc Shell::getFace
-	virtual rw::core::Ptr<const QuadraticFace> getFace(std::size_t idx) const = 0;
+        //! @copydoc Shell::getFace
+        virtual rw::core::Ptr< const QuadraticFace > getFace (std::size_t idx) const = 0;
 
-	/**
-	 * @brief Get a surface patch.
-	 * @param idx [in] index of the patch.
-	 * @param dst [out] an existing face to write data to.
-	 */
-	virtual void getFace(std::size_t idx, QuadraticFace& dst) const = 0;
+        /**
+         * @brief Get a surface patch.
+         * @param idx [in] index of the patch.
+         * @param dst [out] an existing face to write data to.
+         */
+        virtual void getFace (std::size_t idx, QuadraticFace& dst) const = 0;
 
-	/**
-	 * @brief Set the resolution used for discretization in the getTriMesh and faceTriMesh functions.
-	 *
-	 * The meaning of this parameter depends on the type of surface.
-	 *
-	 * @param resolution [in] the resolution parameter.
-	 */
-	void setMeshResolution(double resolution) { _resolution = resolution; }
+        /**
+         * @brief Set the resolution used for discretization in the getTriMesh and faceTriMesh
+         * functions.
+         *
+         * The meaning of this parameter depends on the type of surface.
+         *
+         * @param resolution [in] the resolution parameter.
+         */
+        void setMeshResolution (double resolution) { _resolution = resolution; }
 
-private:
-	virtual rw::core::Ptr<const Face> doGetFace(std::size_t idx) const;
+      private:
+        virtual rw::core::Ptr< const Face > doGetFace (std::size_t idx) const;
 
-protected:
-	//! @brief Resolution to use for discretization into triangle mesh.
-	double _resolution;
-};
-//! @}
-} /* namespace geometry */
-} /* namespace rw */
+      protected:
+        //! @brief Resolution to use for discretization into triangle mesh.
+        double _resolution;
+    };
+    //! @}
+}}    // namespace rw::geometry
 
 #endif /* RW_GEOMETRY_ANALYTIC_QUADRATICS_QUADRATICSHELL_HPP_ */

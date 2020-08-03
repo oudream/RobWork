@@ -9,28 +9,26 @@
 #define RWSLIBS_SWIG_LUA_HPP_
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
+#include <lauxlib.h>
 #include <lua.h>
 #include <lualib.h>
-#include <lauxlib.h>
-
 
 #ifdef __cplusplus
 }
 #endif
 
-namespace rwslibs {
-namespace swig {
+namespace rwslibs { namespace swig {
 
     /**
      * @brief initialize a lua state
      * @param L
      * @return
      */
-    int openLuaLibRWS(lua_State* L);
+    int openLuaLibRWS (lua_State* L);
 
-}
-}
+}}     // namespace rwslibs::swig
 #endif /* LUA_HPP_ */

@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RWLIBS_PATHPLANNERS_SBL_SBLSETUP_HPP
 #define RWLIBS_PATHPLANNERS_SBL_SBLSETUP_HPP
 
@@ -24,12 +23,15 @@
 */
 
 #include "SBLOptions.hpp"
+
 #include <rw/core/Ptr.hpp>
 
-namespace rw { namespace models { class Device; } }
+namespace rw { namespace models {
+    class Device;
+}}    // namespace rw::models
 
 namespace rwlibs { namespace pathplanners {
-class SBLExpand;
+    class SBLExpand;
 
     /** @addtogroup pathplanners */
     /*@{*/
@@ -49,7 +51,7 @@ class SBLExpand;
     */
     class SBLSetup
     {
-    public:
+      public:
         /**
            @brief Constructor
 
@@ -71,13 +73,10 @@ class SBLExpand;
            @param connectRadius [in] Attempt connection of the trees if the
            distance to the nearest neighbor is below this threshold.
         */
-        static
-        SBLSetup make(
-			rw::pathplanning::QConstraint::Ptr constraint,
-			rw::pathplanning::QEdgeConstraintIncremental::Ptr edgeConstraint,
-            rw::core::Ptr<SBLExpand> expansion,
-			rw::math::QMetric::Ptr metric,
-            double connectRadius);
+        static SBLSetup make (rw::pathplanning::QConstraint::Ptr constraint,
+                              rw::pathplanning::QEdgeConstraintIncremental::Ptr edgeConstraint,
+                              rw::core::Ptr< SBLExpand > expansion, rw::math::QMetric::Ptr metric,
+                              double connectRadius);
 
         /**
            @brief Constructor
@@ -107,25 +106,22 @@ class SBLExpand;
 
            @param connectRadius [in] Neighbor connection radius.
         */
-        static
-        SBLSetup make(
-			rw::pathplanning::QConstraint::Ptr constraint,
-			rw::pathplanning::QEdgeConstraintIncremental::Ptr edgeConstraint,
-//            const rw::pathplanning::PlannerConstraint& constraint,
-			rw::core::Ptr<rw::models::Device> device,
-            double expandRadius = -1,
-            double connectRadius = -1);
+        static SBLSetup make (rw::pathplanning::QConstraint::Ptr constraint,
+                              rw::pathplanning::QEdgeConstraintIncremental::Ptr edgeConstraint,
+                              //            const rw::pathplanning::PlannerConstraint& constraint,
+                              rw::core::Ptr< rw::models::Device > device, double expandRadius = -1,
+                              double connectRadius = -1);
 
-    private:
-        SBLSetup(const SBLOptions& options) : options(options) {}
+      private:
+        SBLSetup (const SBLOptions& options) : options (options) {}
 
-    public:
+      public:
         //! @brief Internal options to use.
         SBLOptions options;
         friend class SBLInternal;
     };
 
     /*@}*/
-}} // end namespaces
+}}    // namespace rwlibs::pathplanners
 
-#endif // end include guard
+#endif    // end include guard

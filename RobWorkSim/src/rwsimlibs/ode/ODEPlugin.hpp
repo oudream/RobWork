@@ -20,32 +20,29 @@
 
 #include <rw/core/Plugin.hpp>
 
-namespace rwsim {
-namespace simulator {
-
-/**
- * @brief A ODE plugin that define extensions for rwsim.simulator.PhysicsEngine
- */
-class ODEPlugin: public rw::core::Plugin {
-public:
+namespace rwsim { namespace simulator {
 
     /**
-     * @brief constructor
+     * @brief A ODE plugin that define extensions for rwsim.simulator.PhysicsEngine
      */
-    ODEPlugin();
+    class ODEPlugin : public rw::core::Plugin
+    {
+      public:
+        /**
+         * @brief constructor
+         */
+        ODEPlugin ();
 
-    //! destructor
-    virtual ~ODEPlugin();
+        //! destructor
+        virtual ~ODEPlugin ();
 
-    //! @copydoc rw::core::Plugin::getExtensionDescriptors
-    std::vector<rw::core::Extension::Descriptor> getExtensionDescriptors();
+        //! @copydoc rw::core::Plugin::getExtensionDescriptors
+        std::vector< rw::core::Extension::Descriptor > getExtensionDescriptors ();
 
-    //! @copydoc rw::core::Plugin::makeExtension
-    rw::core::Ptr<rw::core::Extension> makeExtension(const std::string& str);
+        //! @copydoc rw::core::Plugin::makeExtension
+        rw::core::Ptr< rw::core::Extension > makeExtension (const std::string& str);
+    };
 
-};
-
-}
-}
+}}    // namespace rwsim::simulator
 
 #endif /* ODEBODY_HPP_ */

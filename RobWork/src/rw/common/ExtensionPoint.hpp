@@ -19,13 +19,13 @@
 #define RW_COMMON_EXTENSIONPOINT_HPP
 
 #include <rw/core/ExtensionPoint.hpp>
-
 #include <rw/core/os.hpp>
 #ifdef RW_WIN32
-#pragma message("#include <rw/common/ExtensionPoint.hpp> is deprecated use #include <rw/core/ExtensionPoint.hpp> instead")
+#pragma message( \
+    "#include <rw/common/ExtensionPoint.hpp> is deprecated use #include <rw/core/ExtensionPoint.hpp> instead")
 #else
-#warning "#include <rw/common/ExtensionPoint.hpp> is deprecated use #include <rw/core/ExtensionPoint.hpp> instead"
+#warning \
+    "#include <rw/common/ExtensionPoint.hpp> is deprecated use #include <rw/core/ExtensionPoint.hpp> instead"
 #endif
-
 
 #endif

@@ -18,6 +18,7 @@
 #define RW_COMMON_STRINGUTIL_HPP_
 
 #include <rw/core/StringUtil.hpp>
-#warning "#include <rw/core/StringUtil.hpp> is deprecated use #include <rw/core/StringUtil.hpp> instead"
+#warning \
+    "#include <rw/core/StringUtil.hpp> is deprecated use #include <rw/core/StringUtil.hpp> instead"
 
 #endif

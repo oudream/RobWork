@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #include "StatelessData.hpp"
 
 using namespace rw::kinematics;

@@ -25,42 +25,38 @@ using namespace rw::geometry;
 using namespace rw::models;
 using namespace rwsim::dynamics;
 
-Body::Body(const BodyInfo& info, rw::models::Object::Ptr obj):
-         //rw::kinematics::StateData(obj->getBase()->getName()),
-         _bodyframe(obj->getBase()),
-         _obj(obj),
-         _info(info)
+Body::Body (const BodyInfo& info, rw::models::Object::Ptr obj) :
+    // rw::kinematics::StateData(obj->getBase()->getName()),
+    _bodyframe (obj->getBase ()), _obj (obj), _info (info)
 
 {
-    if(_info.objects.size()==0)
-        _info.objects.push_back(obj);
-    for(Object::Ptr iobj : _info.objects) {
-        for(Frame* f : iobj->getFrames() ) {
-            _frames.push_back(f);
+    if (_info.objects.size () == 0)
+        _info.objects.push_back (obj);
+    for (Object::Ptr iobj : _info.objects) {
+        for (Frame* f : iobj->getFrames ()) {
+            _frames.push_back (f);
         }
-
     }
-
 }
 
-
-rw::math::Vector3D<> Body::getPointVelW(const rw::math::Vector3D<>& p, const rw::kinematics::State& state) const {
-    Transform3D<> wTp = Kinematics::worldTframe(getParentFrame(state), state);
-    Transform3D<> wTb = Kinematics::worldTframe(getBodyFrame(), state);
-
-    VelocityScrew6D<> vel = getVelocity(state);
-    // first transform point to body frame
-    rw::math::Vector3D<> posOnBody = inverse(wTp).R() * (p - wTb.P());
-    // then calculate the velocity of the point relative to the body frame
-    EAA<> e = vel.angular();
-    Vector3D<> tmp(e[0],e[1],e[2]);
-    rw::math::Vector3D<> pVelBody = vel.linear() + cross(tmp, posOnBody);
-    // adn last remember to transform velocity back to world frame
-    return wTp.R() * pVelBody;
-}
-
-
-void Body::setObject(rw::models::Object::Ptr obj)
+rw::math::Vector3D<> Body::getPointVelW (const rw::math::Vector3D<>& p,
+                                         const rw::kinematics::State& state) const
 {
-	_obj = obj;
+    Transform3D<> wTp = Kinematics::worldTframe (getParentFrame (state), state);
+    Transform3D<> wTb = Kinematics::worldTframe (getBodyFrame (), state);
+
+    VelocityScrew6D<> vel = getVelocity (state);
+    // first transform point to body frame
+    rw::math::Vector3D<> posOnBody = inverse (wTp).R () * (p - wTb.P ());
+    // then calculate the velocity of the point relative to the body frame
+    EAA<> e = vel.angular ();
+    Vector3D<> tmp (e[0], e[1], e[2]);
+    rw::math::Vector3D<> pVelBody = vel.linear () + cross (tmp, posOnBody);
+    // adn last remember to transform velocity back to world frame
+    return wTp.R () * pVelBody;
+}
+
+void Body::setObject (rw::models::Object::Ptr obj)
+{
+    _obj = obj;
 }

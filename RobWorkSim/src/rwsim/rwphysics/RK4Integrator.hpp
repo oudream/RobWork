@@ -10,29 +10,27 @@
 
 #include "BodyIntegrator.hpp"
 
-namespace rwsim { namespace dynamics { class RigidBody; } }
+namespace rwsim { namespace dynamics {
+    class RigidBody;
+}}    // namespace rwsim::dynamics
 
-namespace rwsim {
-namespace simulator {
-
+namespace rwsim { namespace simulator {
 
     class RK4Integrator : public BodyIntegrator
     {
-    public:
+      public:
+        RK4Integrator (dynamics::RigidBody* body);
 
-        RK4Integrator(dynamics::RigidBody *body);
+        virtual ~RK4Integrator (){};
 
-        virtual ~RK4Integrator(){};
+        void updatePosition (double h, rw::kinematics::State& state);
 
-        void updatePosition(double h, rw::kinematics::State& state);
+        void updateVelocity (double h, rw::kinematics::State& state);
 
-        void updateVelocity(double h, rw::kinematics::State& state);
-
-    private:
-        dynamics::RigidBody *_body;
+      private:
+        dynamics::RigidBody* _body;
     };
 
-}
-}
+}}    // namespace rwsim::simulator
 
 #endif /* RK4INTEGRATOR_HPP_ */

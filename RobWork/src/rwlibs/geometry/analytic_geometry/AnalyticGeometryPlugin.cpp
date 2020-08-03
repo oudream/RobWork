@@ -16,6 +16,7 @@
  ******************************************************************************/
 
 #include "AnalyticGeometryPlugin.hpp"
+
 #include "QuadraticTestObjects.hpp"
 
 #include <rw/geometry/GeometryData.hpp>
@@ -25,42 +26,45 @@ using rw::core::Extension;
 using rw::geometry::GeometryData;
 using namespace rwlibs::geometry;
 
-RW_ADD_PLUGIN(AnalyticGeometryPlugin)
+RW_ADD_PLUGIN (AnalyticGeometryPlugin)
 
-AnalyticGeometryPlugin::AnalyticGeometryPlugin():
-    Plugin("AnalyticGeometryPlugin", "AnalyticGeometryPlugin", "1.0")
+AnalyticGeometryPlugin::AnalyticGeometryPlugin () :
+    Plugin ("AnalyticGeometryPlugin", "AnalyticGeometryPlugin", "1.0")
+{}
+
+AnalyticGeometryPlugin::~AnalyticGeometryPlugin ()
+{}
+
+std::vector< Extension::Descriptor > AnalyticGeometryPlugin::getExtensionDescriptors ()
 {
-}
+    std::vector< Extension::Descriptor > exts;
 
-AnalyticGeometryPlugin::~AnalyticGeometryPlugin()
-{
-}
-
-std::vector<Extension::Descriptor> AnalyticGeometryPlugin::getExtensionDescriptors()
-{
-    std::vector<Extension::Descriptor> exts;
-
-    exts.push_back(Extension::Descriptor("QuadraticTestObjectA", "rw.loaders.GeometryFactory"));
-    exts.back().getProperties().set<std::string>("type", "QuadraticTestObjectA");
-    exts.push_back(Extension::Descriptor("QuadraticTestObjectB", "rw.loaders.GeometryFactory"));
-    exts.back().getProperties().set<std::string>("type", "QuadraticTestObjectB");
+    exts.push_back (Extension::Descriptor ("QuadraticTestObjectA", "rw.loaders.GeometryFactory"));
+    exts.back ().getProperties ().set< std::string > ("type", "QuadraticTestObjectA");
+    exts.push_back (Extension::Descriptor ("QuadraticTestObjectB", "rw.loaders.GeometryFactory"));
+    exts.back ().getProperties ().set< std::string > ("type", "QuadraticTestObjectB");
 
     return exts;
 }
 
-Extension::Ptr AnalyticGeometryPlugin::makeExtension(const std::string& id)
+Extension::Ptr AnalyticGeometryPlugin::makeExtension (const std::string& id)
 {
     if (id == "QuadraticTestObjectA") {
-        const Extension::Ptr extension = ownedPtr(new Extension(
-                "QuadraticTestObjectA","rw.loaders.GeometryFactory", this,
-                QuadraticTestObjects::objectA().cast<GeometryData>()));
-        extension->getProperties().set<std::string>("type", "QuadraticTestObjectA");
+        const Extension::Ptr extension =
+            ownedPtr (new Extension ("QuadraticTestObjectA",
+                                     "rw.loaders.GeometryFactory",
+                                     this,
+                                     QuadraticTestObjects::objectA ().cast< GeometryData > ()));
+        extension->getProperties ().set< std::string > ("type", "QuadraticTestObjectA");
         return extension;
-    } else if (id == "QuadraticTestObjectB") {
-        const Extension::Ptr extension = ownedPtr(new Extension(
-                "QuadraticTestObjectB","rw.loaders.GeometryFactory",
-                this, QuadraticTestObjects::objectB().cast<GeometryData>()));
-        extension->getProperties().set<std::string>("type", "QuadraticTestObjectB");
+    }
+    else if (id == "QuadraticTestObjectB") {
+        const Extension::Ptr extension =
+            ownedPtr (new Extension ("QuadraticTestObjectB",
+                                     "rw.loaders.GeometryFactory",
+                                     this,
+                                     QuadraticTestObjects::objectB ().cast< GeometryData > ()));
+        extension->getProperties ().set< std::string > ("type", "QuadraticTestObjectB");
         return extension;
     }
 

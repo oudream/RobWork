@@ -18,37 +18,36 @@ Copyright 2013 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
 #ifndef RWLIBS_SOFTBODY_TRAPMETHOD_HPP
 #define RWLIBS_SOFTBODY_TRAPMETHOD_HPP
 
-namespace rwlibs {
-namespace softbody {
-/** @addtogroup softbody */
-/*@{*/
-/**
- * @brief Implementation of the trapezoidal rule for integration
- **/
-class TrapMethod {
-public:
+namespace rwlibs { namespace softbody {
+    /** @addtogroup softbody */
+    /*@{*/
     /**
-     * @brief routine for calculating a definite integral using the trapezoidal rule
-     *
-     * @param func the integrand as a function object
-     * @param M the limit in the integration
-     * @param h the stepsize
-     * @return the evaluated integral
+     * @brief Implementation of the trapezoidal rule for integration
      **/
-    template <class T>   
-    static double inline trapezMethod ( T &func, const int M, const double h ) {
-        const double f0 = func ( 0 );
-        const double fL = func ( ( M-1 ) );
+    class TrapMethod
+    {
+      public:
+        /**
+         * @brief routine for calculating a definite integral using the trapezoidal rule
+         *
+         * @param func the integrand as a function object
+         * @param M the limit in the integration
+         * @param h the stepsize
+         * @return the evaluated integral
+         **/
+        template< class T > static double inline trapezMethod (T& func, const int M, const double h)
+        {
+            const double f0 = func (0);
+            const double fL = func ((M - 1));
 
-        double sum = 0.0;
-        for ( int i = 1; i < M - 1; i++ )
-            sum += func ( i );
+            double sum = 0.0;
+            for (int i = 1; i < M - 1; i++)
+                sum += func (i);
 
-        return ( h / 2.0 ) * ( f0 + fL ) + h * sum;
-    }
-};
-/*@}*/
-}
-}
+            return (h / 2.0) * (f0 + fL) + h * sum;
+        }
+    };
+    /*@}*/
+}}    // namespace rwlibs::softbody
 
-#endif // TRAPMETHOD_HPP
+#endif    // TRAPMETHOD_HPP

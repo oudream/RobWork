@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RW_LOADERS_XML_XML_HPP
 #define RW_LOADERS_XML_XML_HPP
 
@@ -23,13 +22,18 @@
    @file XML.hpp
 */
 
-#include <rw/math/Vector3D.hpp>
 #include <rw/math/Rotation3D.hpp>
 #include <rw/math/Transform3D.hpp>
+#include <rw/math/Vector3D.hpp>
+
 #include <boost/property_tree/ptree.hpp>
 
-namespace rw { namespace math { class Q; }}
-namespace rw { namespace core { class PropertyMap; }}
+namespace rw { namespace math {
+    class Q;
+}}    // namespace rw::math
+namespace rw { namespace core {
+    class PropertyMap;
+}}    // namespace rw::core
 
 namespace rw { namespace loaders {
 
@@ -55,7 +59,7 @@ const Vector3D<> pos = XML::readVector3D(tree.get_child("Vector3D"));
     */
     class XML
     {
-    public:
+      public:
         //! @brief type of property tree
         typedef boost::property_tree::ptree PTree;
 
@@ -64,7 +68,7 @@ const Vector3D<> pos = XML::readVector3D(tree.get_child("Vector3D"));
 <vector3d> ::= Vector3D <number> <number> <number>
 \endverbatim
          */
-        static math::Vector3D<> readVector3D(const PTree& tree);
+        static math::Vector3D<> readVector3D (const PTree& tree);
 
         /**
 \verbatim
@@ -76,21 +80,21 @@ const Vector3D<> pos = XML::readVector3D(tree.get_child("Vector3D"));
         <number> <number> <number>
 \endverbatim
          */
-        static math::Rotation3D<> readRotation3D(const PTree& tree);
+        static math::Rotation3D<> readRotation3D (const PTree& tree);
 
         /**
 \verbatim
 <transform3d> ::= Transform3D <vector3d> <rotation3d>
 \endverbatim
         */
-        static math::Transform3D<> readTransform3D(const PTree& tree);
+        static math::Transform3D<> readTransform3D (const PTree& tree);
 
         /**
 \verbatim
 <q> ::= Q <number> ... <number>
 \endverbatim
         */
-        static math::Q readQ(const PTree& tree);
+        static math::Q readQ (const PTree& tree);
 
         /**
 \verbatim
@@ -102,8 +106,7 @@ const Vector3D<> pos = XML::readVector3D(tree.get_child("Vector3D"));
         (<string> | <number> | <vector3d> | <rotation3d> | <transform3d> | <q>)
 \endverbatim
         */
-        static void readPropertyMap(
-            const PTree& tree, core::PropertyMap& properties);
+        static void readPropertyMap (const PTree& tree, core::PropertyMap& properties);
 
         /**
            @brief Print a formatted version of the tree to \b out.
@@ -111,14 +114,13 @@ const Vector3D<> pos = XML::readVector3D(tree.get_child("Vector3D"));
            This utility is useful for figuring out how the XML representation
            corresponds to the property tree.
         */
-        static
-        void printTree(const PTree& tree, std::ostream& out);
+        static void printTree (const PTree& tree, std::ostream& out);
 
-    private:
-        XML();
+      private:
+        XML ();
     };
 
     /**@}*/
-}} // end namespaces
+}}    // namespace rw::loaders
 
-#endif // end include guard
+#endif    // end include guard

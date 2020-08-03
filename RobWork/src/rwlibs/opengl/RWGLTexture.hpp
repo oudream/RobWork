@@ -23,7 +23,9 @@
 #include <rw/core/Ptr.hpp>
 #include <rwlibs/os/rwgl.hpp>
 
-namespace rw { namespace sensor { class Image; } }
+namespace rw { namespace sensor {
+    class Image;
+}}    // namespace rw::sensor
 
 namespace rwlibs { namespace opengl {
 
@@ -35,19 +37,19 @@ namespace rwlibs { namespace opengl {
      */
     class RWGLTexture
     {
-    public:
-    	//! @brief Smart pointer type for RWGLTexture.
-        typedef rw::core::Ptr<RWGLTexture> Ptr;
+      public:
+        //! @brief Smart pointer type for RWGLTexture.
+        typedef rw::core::Ptr< RWGLTexture > Ptr;
 
         //! @brief Constructor - use init afterwards to initialize the GL texture.
-    	RWGLTexture();
+        RWGLTexture ();
 
         /**
          * @brief constructor that creates a texture based on an image
          * @param img [in] the image that is added to the texture
          * @throws Exception if no OpenGL context is available.
          */
-        RWGLTexture(const rw::sensor::Image& img);
+        RWGLTexture (const rw::sensor::Image& img);
 
         /**
          * @brief constructor that creates a simple texture with an
@@ -57,19 +59,19 @@ namespace rwlibs { namespace opengl {
          * @param b [in] blue color value.
          * @throws Exception if no OpenGL context is available.
          */
-        RWGLTexture(unsigned char r, unsigned char g, unsigned char b);
+        RWGLTexture (unsigned char r, unsigned char g, unsigned char b);
 
         /**
          * @brief destructor
          */
-        virtual ~RWGLTexture();
+        virtual ~RWGLTexture ();
 
         /**
          * @brief set a new image on this texture
          * @param img [in] the image.
          * @throws Exception if no OpenGL context is available.
          */
-        void init(const rw::sensor::Image& img);
+        void init (const rw::sensor::Image& img);
 
         /**
          * @brief Set a new color for this texture.
@@ -78,39 +80,39 @@ namespace rwlibs { namespace opengl {
          * @param b [in] blue color value.
          * @throws Exception if no OpenGL context is available.
          */
-        void init(unsigned char r, unsigned char g, unsigned char b);
+        void init (unsigned char r, unsigned char g, unsigned char b);
 
         // getters and setters
         /**
          * @brief name identifier of this texture
          * @return
          */
-        const std::string& getName() const {return _name;}
+        const std::string& getName () const { return _name; }
 
         /**
          * @brief the width in data pixels of this texture
          * @return
          */
-        int getWidth() const {return _width;}
+        int getWidth () const { return _width; }
 
         /**
          * @brief the height in data pixels of this texture
          * @return
          */
-        int getHeight() const {return _height;}
+        int getHeight () const { return _height; }
 
         /**
          * @brief the texture id
          * @return texture id
          */
-        GLuint getTextureID() const { return _textureID;}
+        GLuint getTextureID () const { return _textureID; }
 
-    private:
+      private:
         int _width, _height;
         GLuint _textureID;
         std::string _name;
     };
     /*@}*/
-}} // namespace
+}}    // namespace rwlibs::opengl
 
 #endif /* RWGLTEXTURE_HPP_ */

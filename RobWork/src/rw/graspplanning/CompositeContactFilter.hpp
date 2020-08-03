@@ -22,57 +22,55 @@
 
 #include <vector>
 
-namespace rw {
-namespace graspplanning {
-
-/**
- * @brief makes it possible to combine several contact filters into one contact filter.
- * Statistics are maintained of the validation succes which can be queried and analysed.
- */
-class CompositeContactFilter : public ContactValidateFilter {
-public:
+namespace rw { namespace graspplanning {
 
     /**
-     * @brief Cconstructor
+     * @brief makes it possible to combine several contact filters into one contact filter.
+     * Statistics are maintained of the validation succes which can be queried and analysed.
      */
-    CompositeContactFilter(bool enableFullStats=false);
+    class CompositeContactFilter : public ContactValidateFilter
+    {
+      public:
+        /**
+         * @brief Cconstructor
+         */
+        CompositeContactFilter (bool enableFullStats = false);
 
-    /**
-     * @brief destructor
-     */
-    virtual ~CompositeContactFilter(){};
+        /**
+         * @brief destructor
+         */
+        virtual ~CompositeContactFilter (){};
 
-    /**
-     * @copydoc ContactValidateFilter::isValid
-     */
-    bool isValid(const rw::sensor::Contact3D& contact);
+        /**
+         * @copydoc ContactValidateFilter::isValid
+         */
+        bool isValid (const rw::sensor::Contact3D& contact);
 
-    /**
-     * @brief add contact validation filter
-     * @param filter
-     */
-    void addFilter(ContactValidateFilter* filter);
+        /**
+         * @brief add contact validation filter
+         * @param filter
+         */
+        void addFilter (ContactValidateFilter* filter);
 
-    /**
-     * @brief get a vector of all contact filters
-     * @return
-     */
-    std::vector<ContactValidateFilter*> getFilters(){return _cfilters;};
+        /**
+         * @brief get a vector of all contact filters
+         * @return
+         */
+        std::vector< ContactValidateFilter* > getFilters () { return _cfilters; };
 
-    /**
-     * @brief set all contact filters
-     */
-    void setFilters(std::vector<ContactValidateFilter*> filters);
+        /**
+         * @brief set all contact filters
+         */
+        void setFilters (std::vector< ContactValidateFilter* > filters);
 
-private:
-    std::vector<ContactValidateFilter*> _cfilters;
-    // the number of contacts that was invalid by the filter indicated by the index
-    std::vector<int> _stats;
-    int _nrOfTests;
-    bool _fullTestEnabled;
-};
+      private:
+        std::vector< ContactValidateFilter* > _cfilters;
+        // the number of contacts that was invalid by the filter indicated by the index
+        std::vector< int > _stats;
+        int _nrOfTests;
+        bool _fullTestEnabled;
+    };
 
-}
-}
+}}    // namespace rw::graspplanning
 
 #endif /* PLANECLEARANCEFILTER_HPP_ */

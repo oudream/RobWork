@@ -40,8 +40,8 @@ namespace rw { namespace math {
 
     /**
      * @brief this class is a interpolatable Transform3D, consisting of a Vecor3D and a Quaternion.
-     * It is implemented to be very Interconvertable with a Transform3D, and allow operations souch as
-     * Transform * scalar and Transform + Transform.
+     * It is implemented to be very Interconvertable with a Transform3D, and allow operations souch
+     * as Transform * scalar and Transform + Transform.
      */
     template< class T = double > class Transform3DVector
     {
@@ -362,7 +362,6 @@ namespace rw { namespace math {
          * @return requested value
          */
         T operator() (size_t i) const { return _t3d[i]; }
-
 
         /**
          * @brief acces operator

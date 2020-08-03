@@ -15,197 +15,178 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RWLIBS_TASK_ENTITY_HPP
 #define RWLIBS_TASK_ENTITY_HPP
 
 #include <rw/core/PropertyMap.hpp>
 #include <rw/core/Ptr.hpp>
 
-namespace rwlibs {
-namespace task {
+namespace rwlibs { namespace task {
 
-/** @addtogroup task */
-/*@{*/
-
-
-/**
- * @brief Type of an Entity
- */
-class EntityType {
-public:
-    /** Enumeration of the type */
-    enum Type {  Undefined = -1 /** Undefined type */
-            , Task = 0 /** The entity is a Task */
-            , Motion = 1 /** The entity is a Motion */
-            , Action = 2 /** The entity is an Action */
-            , Target = 3 /** The entity is a Target */
-            , User = 1024 /** User defined entities starts with this index */
-            };
+    /** @addtogroup task */
+    /*@{*/
 
     /**
-     * @brief Constructs an EntityType object.
-     *
-     * @param type [in] Type of entity. Default is Undefined
+     * @brief Type of an Entity
      */
-    EntityType(int type = Undefined):
-        _type(type)
+    class EntityType
     {
-    }
+      public:
+        /** Enumeration of the type */
+        enum Type {
+            Undefined = -1 /** Undefined type */
+            ,
+            Task = 0 /** The entity is a Task */
+            ,
+            Motion = 1 /** The entity is a Motion */
+            ,
+            Action = 2 /** The entity is an Action */
+            ,
+            Target = 3 /** The entity is a Target */
+            ,
+            User = 1024 /** User defined entities starts with this index */
+        };
 
+        /**
+         * @brief Constructs an EntityType object.
+         *
+         * @param type [in] Type of entity. Default is Undefined
+         */
+        EntityType (int type = Undefined) : _type (type) {}
 
-    /**
-     * @brief Cast operator enable implicit conversion to int
-     *
-     * This operator enables using EntityType in a switch statement.
-     */
-    operator int() {
-        return _type;
-    }
+        /**
+         * @brief Cast operator enable implicit conversion to int
+         *
+         * This operator enables using EntityType in a switch statement.
+         */
+        operator int () { return _type; }
 
-private:
-    int _type;
-};
-
-
-/**
- * @brief Base class of object inserted into a Task
- */
-class Entity
-{
-public:
-	//! @brief smart pointer type to this class
-    typedef rw::core::Ptr<Entity> Ptr;
-    
-	/**
-     * @brief Constructs an Entity with a given type,
-     *
-     * @param type [in] Type of entity
-     * @param id [in] Optional id of entity
-     */
-    Entity(EntityType type, const std::string& id = ""):
-        _entityType(type),
-        _index(-1),
-        _id(id)
-    {}
-
+      private:
+        int _type;
+    };
 
     /**
-     * @brief Destructor
+     * @brief Base class of object inserted into a Task
      */
-    virtual ~Entity() {}
+    class Entity
+    {
+      public:
+        //! @brief smart pointer type to this class
+        typedef rw::core::Ptr< Entity > Ptr;
 
-    /**
-     * @brief Returns reference to rw::core::PropertyMap associated with the Entity
-     * @return Reference to PropertyMap
-     */
-    rw::core::PropertyMap& getPropertyMap() {
-        return _properties;
-    }
+        /**
+         * @brief Constructs an Entity with a given type,
+         *
+         * @param type [in] Type of entity
+         * @param id [in] Optional id of entity
+         */
+        Entity (EntityType type, const std::string& id = "") :
+            _entityType (type), _index (-1), _id (id)
+        {}
 
-    /**
-     * @brief Returns reference to rw::core::PropertyMap associated with the Entity
-     * @return Reference to PropertyMap
-     */
-    const rw::core::PropertyMap& getPropertyMap() const {
-        return _properties;
-    }
+        /**
+         * @brief Destructor
+         */
+        virtual ~Entity () {}
 
-    /**
-     * @brief Sets the content of the propertymap
-     *
-     * Overrides the current propertymap with \b propertymap
-     * @param propertymap [in] The propertymap to use
-     */
-    void setPropertyMap(const rw::core::PropertyMap& propertymap) {
-    	_properties = propertymap;
-    }
+        /**
+         * @brief Returns reference to rw::core::PropertyMap associated with the Entity
+         * @return Reference to PropertyMap
+         */
+        rw::core::PropertyMap& getPropertyMap () { return _properties; }
 
-    /**
-     * @brief Returns index specifying the position of the Entity in a Task
-     *
-     * The index may be used to determine when the order of Actions and Motions in a Task.
-     * It is the responsibility of the task to generate indices. This index does not necessarily
-     * refer to an index in a list of entities.
-     *
-     * @return The index specifying the relative position of the Entity
-     */
-    int getIndex() const {
-        return _index;
-    }
+        /**
+         * @brief Returns reference to rw::core::PropertyMap associated with the Entity
+         * @return Reference to PropertyMap
+         */
+        const rw::core::PropertyMap& getPropertyMap () const { return _properties; }
 
-    /**
-     * @brief Sets the order index of the Entity.
-     *
-     * This method is primarily used by Task to specify the position of an Entity. Modifying
-     * the index does not influence where in a task it is located.
-     *
-     * @param index [in] The index specifying the order
-     */
-    void setIndex(int index) {
-        _index = index;
-    }
+        /**
+         * @brief Sets the content of the propertymap
+         *
+         * Overrides the current propertymap with \b propertymap
+         * @param propertymap [in] The propertymap to use
+         */
+        void setPropertyMap (const rw::core::PropertyMap& propertymap)
+        {
+            _properties = propertymap;
+        }
 
-    /**
-     * @brief Returns the type of Entity.
-     * @return Type of the Entity
-     */
-    virtual EntityType entityType() const {
-        return _entityType;
-    }
+        /**
+         * @brief Returns index specifying the position of the Entity in a Task
+         *
+         * The index may be used to determine when the order of Actions and Motions in a Task.
+         * It is the responsibility of the task to generate indices. This index does not necessarily
+         * refer to an index in a list of entities.
+         *
+         * @return The index specifying the relative position of the Entity
+         */
+        int getIndex () const { return _index; }
 
-    /**
-     * @brief Set the id for the entity.
-     * @param id [in] the id.
-     */
-    void setId(const std::string& id) {
-    	_id = id;
-    }
+        /**
+         * @brief Sets the order index of the Entity.
+         *
+         * This method is primarily used by Task to specify the position of an Entity. Modifying
+         * the index does not influence where in a task it is located.
+         *
+         * @param index [in] The index specifying the order
+         */
+        void setIndex (int index) { _index = index; }
 
-    /**
-     * @brief Get the id of the entity.
-     * @return the id.
-     */
-    const std::string& getId() const {
-    	return _id;
-    }
+        /**
+         * @brief Returns the type of Entity.
+         * @return Type of the Entity
+         */
+        virtual EntityType entityType () const { return _entityType; }
 
-    /**
-     * @brief Method which can be used to explicitly and safely casting an Entity.
-     *
-     * If the cast in impossible the method may throws a rw::core::Exception or
-     * return NULL if casting to a pointer.
-     *
-     * Example:
-     * \code
-     * Action* action = myEntity->cast<Action*>();
-     * \endcode
-     */
-    template <class T>
-    T cast() {
-        try {
-            T entity = dynamic_cast<T>(this);
-            return entity;
-        } catch (std::bad_cast &exp) {
-			RW_THROW("Unable to perform cast: "<<exp.what());
-		}
-        RW_THROW("Unable to perform cast");
-    }
+        /**
+         * @brief Set the id for the entity.
+         * @param id [in] the id.
+         */
+        void setId (const std::string& id) { _id = id; }
 
-protected:
-    //! @brief Properties of entity.
-    rw::core::PropertyMap _properties;
-    //! @brief The type of entity.
-    EntityType _entityType;
-    //! @brief The index of the entity.
-    int _index;
-    //! @brief The id of the entity.
-    std::string _id;
-};
+        /**
+         * @brief Get the id of the entity.
+         * @return the id.
+         */
+        const std::string& getId () const { return _id; }
 
-/** @} */
+        /**
+         * @brief Method which can be used to explicitly and safely casting an Entity.
+         *
+         * If the cast in impossible the method may throws a rw::core::Exception or
+         * return NULL if casting to a pointer.
+         *
+         * Example:
+         * \code
+         * Action* action = myEntity->cast<Action*>();
+         * \endcode
+         */
+        template< class T > T cast ()
+        {
+            try {
+                T entity = dynamic_cast< T > (this);
+                return entity;
+            }
+            catch (std::bad_cast& exp) {
+                RW_THROW ("Unable to perform cast: " << exp.what ());
+            }
+            RW_THROW ("Unable to perform cast");
+        }
 
-} //end namespace task
-} //end namespace rwlibs
+      protected:
+        //! @brief Properties of entity.
+        rw::core::PropertyMap _properties;
+        //! @brief The type of entity.
+        EntityType _entityType;
+        //! @brief The index of the entity.
+        int _index;
+        //! @brief The id of the entity.
+        std::string _id;
+    };
 
-#endif //end include guard
+    /** @} */
+
+}}    // namespace rwlibs::task
+
+#endif    // end include guard

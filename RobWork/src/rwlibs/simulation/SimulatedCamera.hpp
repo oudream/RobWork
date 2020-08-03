@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RWLIBS_SIMULATION_SIMULATEDCAMERA_HPP
 #define RWLIBS_SIMULATION_SIMULATEDCAMERA_HPP
 
@@ -26,15 +25,16 @@
 #include <rw/core/Ptr.hpp>
 #include <rw/sensor/Camera.hpp>
 #include <rw/sensor/Image.hpp>
-
 #include <rwlibs/simulation/SimulatedSensor.hpp>
 
 #include <string>
 
-namespace rw { namespace sensor { class CameraModel; } }
+namespace rw { namespace sensor {
+    class CameraModel;
+}}    // namespace rw::sensor
 
 namespace rwlibs { namespace simulation {
-	class FrameGrabber;
+    class FrameGrabber;
 
     /** @addtogroup simulation */
     /* @{ */
@@ -49,9 +49,9 @@ namespace rwlibs { namespace simulation {
      */
     class SimulatedCamera : public SimulatedSensor
     {
-    public:
-		//! @brief Smart pointer type for a SimulatedCamera.
-        typedef rw::core::Ptr<SimulatedCamera> Ptr;
+      public:
+        //! @brief Smart pointer type for a SimulatedCamera.
+        typedef rw::core::Ptr< SimulatedCamera > Ptr;
 
         /**
          * @brief creates a simulated pinhole camera,
@@ -60,7 +60,8 @@ namespace rwlibs { namespace simulation {
          * @param frame [in] frame to which the camera is attached
          * @param frameGrabber [in] the frameGrabber from which this Camera should grab images
          */
-        SimulatedCamera(const std::string& name, double fov, rw::kinematics::Frame* frame, rw::core::Ptr<FrameGrabber> frameGrabber);
+        SimulatedCamera (const std::string& name, double fov, rw::kinematics::Frame* frame,
+                         rw::core::Ptr< FrameGrabber > frameGrabber);
 
         /**
          * @brief constructor
@@ -68,88 +69,89 @@ namespace rwlibs { namespace simulation {
          * @param frameGrabber [in] the frameGrabber from which this Camera should grab
          * images.
          */
-        SimulatedCamera(rw::core::Ptr<rw::sensor::CameraModel> model, rw::core::Ptr<FrameGrabber> frameGrabber);
+        SimulatedCamera (rw::core::Ptr< rw::sensor::CameraModel > model,
+                         rw::core::Ptr< FrameGrabber > frameGrabber);
 
         /**
          * @brief destructor
          */
-        virtual ~SimulatedCamera();
+        virtual ~SimulatedCamera ();
 
         /**
          * @copydoc rw::sensor::Camera::initialize
          */
-        bool initialize();
+        bool initialize ();
 
         /**
          * @copydoc rw::sensor::Camera::start
          */
-        bool start();
+        bool start ();
 
         /**
          * @copydoc rw::sensor::Camera::stop
          */
-        void stop();
+        void stop ();
 
         /**
          * @copydoc rw::sensor::Camera::acquire
          */
-        void acquire();
+        void acquire ();
 
         /**
          * @copydoc rw::sensor::Camera::isImageReady
          */
-        bool isImageReady();
+        bool isImageReady ();
 
         /**
          * @copydoc rw::sensor::Camera::getImage
          */
-        const rw::sensor::Image* getImage();
+        const rw::sensor::Image* getImage ();
 
         /**
          * @copydoc rw::sensor::Camera::getFrameRate
          */
-        double getFrameRate();
+        double getFrameRate ();
 
         /**
          * @copydoc rw::sensor::Camera::setFrameRate
          */
-        void setFrameRate(double framerate);
+        void setFrameRate (double framerate);
 
         /**
          * @copydoc rw::sensor::Camera::getWidth
          */
-        virtual unsigned int getWidth() const;
+        virtual unsigned int getWidth () const;
 
         /**
          * @copydoc rw::sensor::Camera::getHeight
          */
-        virtual unsigned int getHeight() const;
+        virtual unsigned int getHeight () const;
 
         /**
          * @copydoc SimulatedSensor::update
          */
-        void update(const Simulator::UpdateInfo& info, rw::kinematics::State& state);
+        void update (const Simulator::UpdateInfo& info, rw::kinematics::State& state);
 
         /**
          * @copydoc SimulatedSensor::reset
          */
-        void reset(const rw::kinematics::State& state){}
+        void reset (const rw::kinematics::State& state) {}
 
-        rw::sensor::Sensor::Ptr getSensor(){ return _csensor; }
+        rw::sensor::Sensor::Ptr getSensor () { return _csensor; }
 
         /**
          * @brief Get the camera sensor.
          * @return the sensor.
          */
-        rw::sensor::Camera::Ptr getCameraSensor(){ return _csensor; }
+        rw::sensor::Camera::Ptr getCameraSensor () { return _csensor; }
 
-    private:
-        void acquire(char *imgData);
+      private:
+        void acquire (char* imgData);
 
-    private:
+      private:
         double _frameRate;
         double _dtSum;
-        rw::core::Ptr<FrameGrabber> _frameGrabber;
+        rw::core::Ptr< FrameGrabber > _frameGrabber;
         bool _isAcquired;
         bool _started;
         bool _initialized;
@@ -158,6 +160,6 @@ namespace rwlibs { namespace simulation {
     };
 
     /* @} */
-}} // end namespaces
+}}    // namespace rwlibs::simulation
 
-#endif // end include guard
+#endif    // end include guard

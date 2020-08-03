@@ -20,30 +20,26 @@
 
 #include <rw/core/Ptr.hpp>
 
-namespace rw {
-namespace graspplanning {
+namespace rw { namespace graspplanning {
 
-class Grasp3D;
-
-/**
- * @brief an interface for methods evaluating the quality of a specific grasp
- */
-class GraspQualityMeasure3D {
-public:
-    //! smart pointer type of this class
-    typedef rw::core::Ptr<GraspQualityMeasure3D> Ptr;
+    class Grasp3D;
 
     /**
-     * @brief computes the quality of the grasp such that the quality
-     * is in the interval [0;1] with 1 being the highest quality.
+     * @brief an interface for methods evaluating the quality of a specific grasp
      */
-    virtual double quality(const Grasp3D& grasp) const = 0;
+    class GraspQualityMeasure3D
+    {
+      public:
+        //! smart pointer type of this class
+        typedef rw::core::Ptr< GraspQualityMeasure3D > Ptr;
 
-};
+        /**
+         * @brief computes the quality of the grasp such that the quality
+         * is in the interval [0;1] with 1 being the highest quality.
+         */
+        virtual double quality (const Grasp3D& grasp) const = 0;
+    };
 
-
-
-}
-}
+}}    // namespace rw::graspplanning
 
 #endif /*GRASPQUALITYMEASURE3D_HPP_*/

@@ -18,81 +18,87 @@
 #ifndef RWS_LUACONSOLEWIDGET_HPP_
 #define RWS_LUACONSOLEWIDGET_HPP_
 
-#include <qstringlist.h>
-#include <QTextEdit>
-#include <QObject>
-
 #include <rw/core/Ptr.hpp>
 
-namespace rw { namespace core { class LogWriter; } }
-namespace rwlibs { namespace swig { class LuaState; } }
+#include <QObject>
+#include <QTextEdit>
+#include <qstringlist.h>
+
+namespace rw { namespace core {
+    class LogWriter;
+}}    // namespace rw::core
+namespace rwlibs { namespace swig {
+    class LuaState;
+}}    // namespace rwlibs::swig
 
 namespace rws {
-	class LuaExecutionThread;
+class LuaExecutionThread;
 
+/**
+ * @brief a widget that mimics console functionality for executing lua commands
+ * in a RobWorkStudio framework
+ */
+class LuaConsoleWidget : public QTextEdit
+{
+    Q_OBJECT
+  public:
     /**
-     * @brief a widget that mimics console functionality for executing lua commands
-     * in a RobWorkStudio framework
+     * @brief constructor
+     * @param parent [in] the Qt widget parent
      */
-    class LuaConsoleWidget : public QTextEdit {
-        Q_OBJECT
-    public:
-        /**
-         * @brief constructor
-         * @param parent [in] the Qt widget parent
-         */
-        LuaConsoleWidget(QWidget *parent = 0);
+    LuaConsoleWidget (QWidget* parent = 0);
 
-        //! @brief destructor
-        virtual ~LuaConsoleWidget(){}
+    //! @brief destructor
+    virtual ~LuaConsoleWidget () {}
 
-        //void setCompleter(QCompleter *c);
-        //QCompleter *completer() const;
+    // void setCompleter(QCompleter *c);
+    // QCompleter *completer() const;
 
-        void reset();
+    void reset ();
 
-        void setLuaState(rwlibs::swig::LuaState *lstate);
+    void setLuaState (rwlibs::swig::LuaState* lstate);
 
-        bool event(QEvent *event);
-    protected:
-        //void resizeEvent(QResizeEvent *event);
+    bool event (QEvent* event);
 
-        void keyPressEvent(QKeyEvent *e);
+  protected:
+    // void resizeEvent(QResizeEvent *event);
 
-        virtual QString interpretCommand(QString str, int *res);
+    void keyPressEvent (QKeyEvent* e);
 
-        //void focusInEvent(QFocusEvent *e);
+    virtual QString interpretCommand (QString str, int* res);
 
-    private Q_SLOTS:
-        //Correctly handle the cursor when moved
-        void moveCursor(QTextCursor::MoveOperation action, QTextCursor::MoveMode mode = QTextCursor::MoveAnchor);
-        void runFinished();
+    // void focusInEvent(QFocusEvent *e);
 
+  private Q_SLOTS:
+    // Correctly handle the cursor when moved
+    void moveCursor (QTextCursor::MoveOperation action,
+                     QTextCursor::MoveMode mode = QTextCursor::MoveAnchor);
+    void runFinished ();
 
-    private:
-        bool isInEditionZone();
+  private:
+    bool isInEditionZone ();
 
-        QString getCurrentCommand();
-        void displayPrompt();
-        bool isCommandComplete(QString command);
-        bool execCommand(QString command, bool b);
-        void setCommand(QString command);
+    QString getCurrentCommand ();
+    void displayPrompt ();
+    bool isCommandComplete (QString command);
+    bool execCommand (QString command, bool b);
+    void setCommand (QString command);
 
-        QColor _cmdColor, _errColor, _outColor, _completionColor;
+    QColor _cmdColor, _errColor, _outColor, _completionColor;
 
-        // cached prompt length
-        int _promptLen;
-        // The prompt string
-        QString _promptStr;
-        QStringList _commandHistory;
-        int _histIdx;
-        int _lastBlockNumber;
+    // cached prompt length
+    int _promptLen;
+    // The prompt string
+    QString _promptStr;
+    QStringList _commandHistory;
+    int _histIdx;
+    int _lastBlockNumber;
 
-        rw::core::Ptr<rw::core::LogWriter> _logWriter;
+    rw::core::Ptr< rw::core::LogWriter > _logWriter;
 
-        rws::LuaExecutionThread *_luaRunner;
-        rwlibs::swig::LuaState *_luastate;
-    };
-}
+    rws::LuaExecutionThread* _luaRunner;
+    rwlibs::swig::LuaState* _luastate;
+};
+}    // namespace rws
 
 #endif /* LUACONSOLE_HPP_ */

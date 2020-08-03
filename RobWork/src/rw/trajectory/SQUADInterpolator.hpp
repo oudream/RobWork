@@ -45,10 +45,7 @@ namespace rw { namespace trajectory {
                            rw::math::Quaternion< T > s0, rw::math::Quaternion< T > s1,
                            double duration) :
             _duration (duration),
-            _q0(q0),
-            _q1(q1),
-            _s0(s0),
-            _s1(s1)
+            _q0 (q0), _q1 (q1), _s0 (s0), _s1 (s1)
         {}
 
         rw::math::Quaternion< T > x (double t) const

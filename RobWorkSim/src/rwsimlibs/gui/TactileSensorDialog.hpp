@@ -8,23 +8,30 @@
 #ifndef TACTILESENSORDIALOG_HPP_
 #define TACTILESENSORDIALOG_HPP_
 
-#include <QObject>
-#include <QDialog>
-
 #include <rw/core/Ptr.hpp>
 #include <rw/math/Vector2D.hpp>
 
-namespace rw { namespace kinematics { class State; } }
-namespace rwsim { namespace dynamics { class DynamicWorkCell; } }
-namespace rwsim { namespace sensor { class TactileArraySensor; } }
+#include <QDialog>
+#include <QObject>
 
-struct Moment {
+namespace rw { namespace kinematics {
+    class State;
+}}    // namespace rw::kinematics
+namespace rwsim { namespace dynamics {
+    class DynamicWorkCell;
+}}    // namespace rwsim::dynamics
+namespace rwsim { namespace sensor {
+    class TactileArraySensor;
+}}    // namespace rwsim::sensor
+
+struct Moment
+{
     rw::math::Vector2D<> center;
-    rw::math::Vector2D<> first,second;
+    rw::math::Vector2D<> first, second;
 };
 
 namespace Ui {
-    class TactileSensorDialog;
+class TactileSensorDialog;
 }
 
 class QGraphicsScene;
@@ -39,63 +46,56 @@ class QGraphicsLineItem;
  *
  */
 class TactileSensorDialog : public QDialog
-    {
-        Q_OBJECT
+{
+    Q_OBJECT
 
-    public:
-        TactileSensorDialog(
-                          rwsim::dynamics::DynamicWorkCell *dwc,
-                          QWidget *parent = 0);
+  public:
+    TactileSensorDialog (rwsim::dynamics::DynamicWorkCell* dwc, QWidget* parent = 0);
 
-        void drawTactileInput();
+    void drawTactileInput ();
 
-        void detectFeatures();
+    void detectFeatures ();
 
-    signals:
+  signals:
 
+  public slots:
+    void zoomIn ();
+    void zoomOut ();
+    void rotateLeft ();
+    void rotateRight ();
+    void wheelEvent (QWheelEvent* event);
 
-    public slots:
-        void zoomIn();
-        void zoomOut();
-        void rotateLeft();
-        void rotateRight();
-        void wheelEvent(QWheelEvent* event);
+  private slots:
+    void btnPressed ();
+    void changedEvent ();
+    void setState (const rw::kinematics::State& state);
 
-    private slots:
-        void btnPressed();
-        void changedEvent();
-        void setState(const rw::kinematics::State& state);
+  private:
+    void initTactileInput ();
+    void detectCenterMass ();
+    void findMoments ();
 
+  private:
+    Ui::TactileSensorDialog* _ui;
 
-    private:
-        void initTactileInput();
-        void detectCenterMass();
-        void findMoments();
-    private:
-        Ui::TactileSensorDialog *_ui;
+    rwsim::dynamics::DynamicWorkCell* _dwc;
+    std::vector< rwsim::sensor::TactileArraySensor* > _tsensors;
+    std::vector< Eigen::MatrixXf > _values;
+    QGraphicsScene* _scene;
+    bool _renderingToImage;
 
-        rwsim::dynamics::DynamicWorkCell *_dwc;
-        std::vector<rwsim::sensor::TactileArraySensor*> _tsensors;
-        std::vector<Eigen::MatrixXf> _values;
-        QGraphicsScene *_scene;
-        bool _renderingToImage;
+    std::vector< std::vector< QGraphicsRectItem* > > _rectItems;
+    std::vector< QGraphicsEllipseItem* > _centerItems;
+    std::vector< QGraphicsLineItem* > _momentItems;
+    std::vector< QGraphicsLineItem* > _momentSecItems;
+    std::vector< std::pair< int, int > > _dims;
+    int _saveCnt;
 
-        std::vector< std::vector<QGraphicsRectItem*> > _rectItems;
-        std::vector<QGraphicsEllipseItem*> _centerItems;
-        std::vector<QGraphicsLineItem*> _momentItems;
-        std::vector<QGraphicsLineItem*> _momentSecItems;
-        std::vector<std::pair<int,int> > _dims;
-        int _saveCnt;
+    // typedef std::pair<rw::math::Vector2D<>,rw::math::Vector2D<> > Moment;
 
-
-        //typedef std::pair<rw::math::Vector2D<>,rw::math::Vector2D<> > Moment;
-
-
-        std::vector< rw::math::Vector2D<> > _centers;
-        std::vector< Moment > _moments;
-        int _nrOfPadsH;
-
+    std::vector< rw::math::Vector2D<> > _centers;
+    std::vector< Moment > _moments;
+    int _nrOfPadsH;
 };
-
 
 #endif /* RESTINGPOSEDIALOG_HPP_ */

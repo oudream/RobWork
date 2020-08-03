@@ -25,52 +25,60 @@
  */
 
 #include "AssemblyControlStrategy.hpp"
+
 #include <rw/core/Ptr.hpp>
 
-namespace rw { namespace core { class PropertyMap; }}
+namespace rw { namespace core {
+    class PropertyMap;
+}}    // namespace rw::core
 
-namespace rwlibs {
-namespace assembly {
-//! @addtogroup assembly
-//! @{
-/**
- * @brief A AssemblyControlStrategy that can be used specifically for cylindric peg in hole operations.
- *
- * This strategy mainly serves as a demonstration of how a strategy can be implemented.
- */
-class CircularPiHControlStrategy: public AssemblyControlStrategy {
-public:
-	//! @brief smart pointer type to this class
-    typedef rw::core::Ptr<CircularPiHControlStrategy> Ptr;
+namespace rwlibs { namespace assembly {
+    //! @addtogroup assembly
+    //! @{
+    /**
+     * @brief A AssemblyControlStrategy that can be used specifically for cylindric peg in hole
+     * operations.
+     *
+     * This strategy mainly serves as a demonstration of how a strategy can be implemented.
+     */
+    class CircularPiHControlStrategy : public AssemblyControlStrategy
+    {
+      public:
+        //! @brief smart pointer type to this class
+        typedef rw::core::Ptr< CircularPiHControlStrategy > Ptr;
 
-	//! @brief Create new control strategy.
-	CircularPiHControlStrategy();
+        //! @brief Create new control strategy.
+        CircularPiHControlStrategy ();
 
-	//! @brief Destructor.
-	virtual ~CircularPiHControlStrategy();
+        //! @brief Destructor.
+        virtual ~CircularPiHControlStrategy ();
 
-	//! @copydoc rwlibs::assembly::AssemblyControlStrategy::createState
-	ControlState::Ptr createState() const;
+        //! @copydoc rwlibs::assembly::AssemblyControlStrategy::createState
+        ControlState::Ptr createState () const;
 
-	//! @copydoc rwlibs::assembly::AssemblyControlStrategy::update
-	rw::core::Ptr<AssemblyControlResponse> update(rw::core::Ptr<AssemblyParameterization> parameters, rw::core::Ptr<AssemblyState> real, rw::core::Ptr<AssemblyState> assumed, ControlState::Ptr controlState, rw::kinematics::State &state, rw::sensor::FTSensor* ftSensor, double time) const;
+        //! @copydoc rwlibs::assembly::AssemblyControlStrategy::update
+        rw::core::Ptr< AssemblyControlResponse >
+        update (rw::core::Ptr< AssemblyParameterization > parameters,
+                rw::core::Ptr< AssemblyState > real, rw::core::Ptr< AssemblyState > assumed,
+                ControlState::Ptr controlState, rw::kinematics::State& state,
+                rw::sensor::FTSensor* ftSensor, double time) const;
 
-	//! @copydoc rwlibs::assembly::AssemblyControlStrategy::getApproach
-	rw::math::Transform3D<> getApproach(rw::core::Ptr<AssemblyParameterization> parameters);
+        //! @copydoc rwlibs::assembly::AssemblyControlStrategy::getApproach
+        rw::math::Transform3D<> getApproach (rw::core::Ptr< AssemblyParameterization > parameters);
 
-	//! @copydoc rwlibs::assembly::AssemblyControlStrategy::getID
-	std::string getID();
+        //! @copydoc rwlibs::assembly::AssemblyControlStrategy::getID
+        std::string getID ();
 
-	//! @copydoc rwlibs::assembly::AssemblyControlStrategy::getDescription
-	std::string getDescription();
+        //! @copydoc rwlibs::assembly::AssemblyControlStrategy::getDescription
+        std::string getDescription ();
 
-	//! @copydoc rwlibs::assembly::AssemblyControlStrategy::createParameterization
-	rw::core::Ptr<AssemblyParameterization> createParameterization(const rw::core::Ptr<rw::core::PropertyMap> map);
+        //! @copydoc rwlibs::assembly::AssemblyControlStrategy::createParameterization
+        rw::core::Ptr< AssemblyParameterization >
+        createParameterization (const rw::core::Ptr< rw::core::PropertyMap > map);
 
-private:
-	class CircularControlState;
-};
-//! @}
-} /* namespace assembly */
-} /* namespace rwlibs */
+      private:
+        class CircularControlState;
+    };
+    //! @}
+}}     // namespace rwlibs::assembly
 #endif /* RWLIBS_ASSEMBLY_CIRCULARPIHCONTROLSTRATEGY_HPP_ */

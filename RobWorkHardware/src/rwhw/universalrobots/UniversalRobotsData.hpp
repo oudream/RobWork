@@ -18,87 +18,88 @@
 #ifndef RWHW_UNIVERSALROBOTSDATA_HPP
 #define RWHW_UNIVERSALROBOTSDATA_HPP
 
+#include <rw/common/types.hpp>
 #include <rw/math/Q.hpp>
 #include <rw/math/Vector3D.hpp>
-#include <rw/common/types.hpp>
+
 #include <string>
 
 namespace rwhw {
 
-class UniversalRobotsData {
-
+class UniversalRobotsData
+{
   public:
-	UniversalRobotsData();
-  
-	// connection
-	std::string errorMessage;
+    UniversalRobotsData ();
 
-	// timestamp
-	double driverTimeStamp;
+    // connection
+    std::string errorMessage;
 
-	long controllerTimeStamp;
+    // timestamp
+    double driverTimeStamp;
 
-	// robot
-	int robotMode; // The real robot mode
+    long controllerTimeStamp;
 
-	// joint
-	unsigned char jointMode[6];
-	float jointCurrent[6];
-	float jointVoltage[6];
-	float jointMotorTemperature[6];
-	float jointMicroTemperature[6];
+    // robot
+    int robotMode;    // The real robot mode
 
-	// tool
-	float toolVoltage48V;
-	float toolTemperature;
-	int toolOutputVoltage;
-	int toolMode;
-	float toolCurrent;
+    // joint
+    unsigned char jointMode[6];
+    float jointCurrent[6];
+    float jointVoltage[6];
+    float jointMotorTemperature[6];
+    float jointMicroTemperature[6];
 
-	// master
-	float masterTemperature;
-	float robotVoltage48V;
-	float robotCurrent;
-	float masterIOCurrent;
+    // tool
+    float toolVoltage48V;
+    float toolTemperature;
+    int toolOutputVoltage;
+    int toolMode;
+    float toolCurrent;
 
-	// q, qd (actual positions and velocities)
-	rw::math::Q jointPosition;
-	rw::math::Q jointSpeed;
-	rw::math::Vector3D<double> toolPosition;
-	rw::math::Vector3D<double> toolAxisAngle;
+    // master
+    float masterTemperature;
+    float robotVoltage48V;
+    float robotCurrent;
+    float masterIOCurrent;
 
-	rw::math::Q targetJointPosition;
+    // q, qd (actual positions and velocities)
+    rw::math::Q jointPosition;
+    rw::math::Q jointSpeed;
+    rw::math::Vector3D< double > toolPosition;
+    rw::math::Vector3D< double > toolAxisAngle;
 
-	rw::math::Vector3D<double> laserPointerPosition;
-	// I/O
-	bool digitalIn[10]; // digital input
-	bool digitalOut[10]; // digital output
-	unsigned char analogInputRange[4];
-	unsigned char analogOutputDomain[2];
-	double analogIn[4]; // analog input
-	double analogOut[2]; // analog output
+    rw::math::Q targetJointPosition;
 
-	// slider speed
-	double speedFraction;
+    rw::math::Vector3D< double > laserPointerPosition;
+    // I/O
+    bool digitalIn[10];     // digital input
+    bool digitalOut[10];    // digital output
+    unsigned char analogInputRange[4];
+    unsigned char analogOutputDomain[2];
+    double analogIn[4];     // analog input
+    double analogOut[2];    // analog output
 
-	// true = real robot, false = simulated robot
-	bool real;
+    // slider speed
+    double speedFraction;
 
-	// true = physical real robot, false = simulated real robot
-	bool physical;
-	bool robotPowerOn;
-	bool emergencyStopped;
-	bool securityStopped;
-	bool programRunning;
-	bool programPaused;
+    // true = real robot, false = simulated robot
+    bool real;
 
-	//script command input
-	std::string command;
-	bool newCommand;
+    // true = physical real robot, false = simulated real robot
+    bool physical;
+    bool robotPowerOn;
+    bool emergencyStopped;
+    bool securityStopped;
+    bool programRunning;
+    bool programPaused;
+
+    // script command input
+    std::string command;
+    bool newCommand;
 
   private:
 };
 
-} // end namespace
+}    // namespace rwhw
 
-#endif // end include guard
+#endif    // end include guard

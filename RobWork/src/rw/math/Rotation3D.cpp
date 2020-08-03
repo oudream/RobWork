@@ -51,34 +51,34 @@ template< class T > bool Rotation3D< T >::isProperRotation (T precision) const
 template< class T > void Rotation3D< T >::normalize ()
 {
     T eps00, eps01, eps02, eps11, eps12, eps22, prod0, prod1, prod2, prod;
-    prod0 = _m(0,0) * _m(0,0) + _m(1,0) * _m(1,0) + _m(2,0) * _m(2,0);
+    prod0 = _m (0, 0) * _m (0, 0) + _m (1, 0) * _m (1, 0) + _m (2, 0) * _m (2, 0);
     eps00 = ((T) 1.0 - prod0) / prod0;
-    prod1 = _m(0,1) * _m(0,1) + _m(1,1) * _m(1,1) + _m(2,1) * _m(2,1);
+    prod1 = _m (0, 1) * _m (0, 1) + _m (1, 1) * _m (1, 1) + _m (2, 1) * _m (2, 1);
     eps11 = ((T) 1.0 - prod1) / prod1;
-    prod2 = _m(0,2) * _m(0,2) + _m(1,2) * _m(1,2) + _m(2,2) * _m(2,2);
+    prod2 = _m (0, 2) * _m (0, 2) + _m (1, 2) * _m (1, 2) + _m (2, 2) * _m (2, 2);
     eps22 = ((T) 1.0 - prod2) / prod2;
-    prod  = _m(0,0) * _m(0,1) + _m(1,0) * _m(1,1) + _m(2,0) * _m(2,1);
+    prod  = _m (0, 0) * _m (0, 1) + _m (1, 0) * _m (1, 1) + _m (2, 0) * _m (2, 1);
     eps01 = -prod / (prod0 + prod1);
-    prod  = _m(0,0) * _m(0,2) + _m(1,0) * _m(1,2) + _m(2,0) * _m(2,2);
+    prod  = _m (0, 0) * _m (0, 2) + _m (1, 0) * _m (1, 2) + _m (2, 0) * _m (2, 2);
     eps02 = -prod / (prod0 + prod2);
-    prod  = _m(0,1) * _m(0,2) + _m(1,1) * _m(1,2) + _m(2,1) * _m(2,2);
+    prod  = _m (0, 1) * _m (0, 2) + _m (1, 1) * _m (1, 2) + _m (2, 1) * _m (2, 2);
     eps12 = -prod / (prod1 + prod2);
-    _m(0,0) += eps00 * _m(0,0) + eps01 * _m(0,1) + eps02 * _m(0,2);
-    _m(1,0) += eps00 * _m(1,0) + eps01 * _m(1,1) + eps02 * _m(1,2);
-    _m(2,0) += eps00 * _m(2,0) + eps01 * _m(2,1) + eps02 * _m(2,2);
-    _m(0,1) += eps01 * _m(0,0) + eps11 * _m(0,1) + eps12 * _m(0,2);
-    _m(1,1) += eps01 * _m(1,0) + eps11 * _m(1,1) + eps12 * _m(1,2);
-    _m(2,1) += eps01 * _m(2,0) + eps11 * _m(2,1) + eps12 * _m(2,2);
-    _m(0,2) += eps02 * _m(0,0) + eps12 * _m(0,1) + eps22 * _m(0,2);
-    _m(1,2) += eps02 * _m(1,0) + eps12 * _m(1,1) + eps22 * _m(1,2);
-    _m(2,2) += eps02 * _m(2,0) + eps12 * _m(2,1) + eps22 * _m(2,2);
+    _m (0, 0) += eps00 * _m (0, 0) + eps01 * _m (0, 1) + eps02 * _m (0, 2);
+    _m (1, 0) += eps00 * _m (1, 0) + eps01 * _m (1, 1) + eps02 * _m (1, 2);
+    _m (2, 0) += eps00 * _m (2, 0) + eps01 * _m (2, 1) + eps02 * _m (2, 2);
+    _m (0, 1) += eps01 * _m (0, 0) + eps11 * _m (0, 1) + eps12 * _m (0, 2);
+    _m (1, 1) += eps01 * _m (1, 0) + eps11 * _m (1, 1) + eps12 * _m (1, 2);
+    _m (2, 1) += eps01 * _m (2, 0) + eps11 * _m (2, 1) + eps12 * _m (2, 2);
+    _m (0, 2) += eps02 * _m (0, 0) + eps12 * _m (0, 1) + eps22 * _m (0, 2);
+    _m (1, 2) += eps02 * _m (1, 0) + eps12 * _m (1, 1) + eps22 * _m (1, 2);
+    _m (2, 2) += eps02 * _m (2, 0) + eps12 * _m (2, 1) + eps22 * _m (2, 2);
 
     for (size_t i = 0; i < 3; i++) {
         for (size_t j = 0; j < 3; j++) {
-            if (_m(i,j) > 1)
-                _m(i,j) = 1;
-            else if (_m(i,j) < -1)
-                _m(i,j) = -1;
+            if (_m (i, j) > 1)
+                _m (i, j) = 1;
+            else if (_m (i, j) < -1)
+                _m (i, j) = -1;
         }
     }
 }
@@ -225,42 +225,48 @@ void Rotation3D< T >::multiply (const Rotation3D< T >& a, const Rotation3D< T >&
     result (2, 2) = a20 * b02 + a21 * b12 + a22 * b22;
 }
 
-
 template< class T > Rotation3D< T > Rotation3D< T >::inverse (bool copy)
 {
     if (copy) {
-        return Rotation3D< T > (_m(0,0),
-                                _m(1,0),
-                                _m(2,0),
-                                _m(0,1),
-                                _m(1,1),
-                                _m(2,1),
-                                _m(0,2),
-                                _m(1,2),
-                                _m(2,2));
+        return Rotation3D< T > (_m (0, 0),
+                                _m (1, 0),
+                                _m (2, 0),
+                                _m (0, 1),
+                                _m (1, 1),
+                                _m (2, 1),
+                                _m (0, 2),
+                                _m (1, 2),
+                                _m (2, 2));
     }
-    T tmpVal = _m(0,1);
-    _m(0,1) = _m(1,0);
-    _m(1,0) = tmpVal;
+    T tmpVal  = _m (0, 1);
+    _m (0, 1) = _m (1, 0);
+    _m (1, 0) = tmpVal;
 
-    tmpVal   = _m(0,2);
-    _m(0,2) = _m(2,0);
-    _m(2,0) = tmpVal;
+    tmpVal    = _m (0, 2);
+    _m (0, 2) = _m (2, 0);
+    _m (2, 0) = tmpVal;
 
-    tmpVal   = _m(1,2);
-    _m(1,2) = _m(2,1);
-    _m(2,1) = tmpVal;
+    tmpVal    = _m (1, 2);
+    _m (1, 2) = _m (2, 1);
+    _m (2, 1) = tmpVal;
 
     return *this;
 }
 
 template< class T > Rotation3D< T > Rotation3D< T >::inverse (bool copy) const
 {
-    if(!copy){
-        RW_THROW("You can't modefy a constant object");
+    if (!copy) {
+        RW_THROW ("You can't modefy a constant object");
     }
-    return Rotation3D< T > (
-        _m(0,0), _m(1,0), _m(2,0), _m(0,1), _m(1,1), _m(2,1), _m(0,2), _m(1,2), _m(2,2));
+    return Rotation3D< T > (_m (0, 0),
+                            _m (1, 0),
+                            _m (2, 0),
+                            _m (0, 1),
+                            _m (1, 1),
+                            _m (2, 1),
+                            _m (0, 2),
+                            _m (1, 2),
+                            _m (2, 2));
 }
 
 // Explicit template specifications.

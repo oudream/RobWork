@@ -22,43 +22,36 @@
 using namespace rwhw::fanuc;
 using namespace rw::math;
 
-VelRampProfile::VelRampProfile(
-    const std::vector<Range>& poslimits,
-    const std::vector<Range>& vellimits,
-    const std::vector<Range>& acclimits)
-    :
-    _poslimits(poslimits),
-    _vellimits(vellimits),
-    _acclimits(acclimits)
+VelRampProfile::VelRampProfile (const std::vector< Range >& poslimits,
+                                const std::vector< Range >& vellimits,
+                                const std::vector< Range >& acclimits) :
+    _poslimits (poslimits),
+    _vellimits (vellimits), _acclimits (acclimits)
 {}
 
-VelRampProfile::~VelRampProfile()
+VelRampProfile::~VelRampProfile ()
 {}
 
-Q VelRampProfile::getVelocity(
-    const Q& goalVec,
-    const Q& posVec,
-    const Q& velVec,
-    double dt) const
+Q VelRampProfile::getVelocity (const Q& goalVec, const Q& posVec, const Q& velVec, double dt) const
 {
-    const std::size_t dof = goalVec.size();
-    Q qtarget = goalVec;
-    Q qcurrent = posVec;
-    Q vcurrent = velVec;
-    Q qdot(dof);
+    const std::size_t dof = goalVec.size ();
+    Q qtarget             = goalVec;
+    Q qcurrent            = posVec;
+    Q vcurrent            = velVec;
+    Q qdot (dof);
 
     for (std::size_t i = 0; i < dof; i++) {
-        double dist = qtarget(i) - qcurrent(i);
+        double dist = qtarget (i) - qcurrent (i);
 
-        if (fabs(dist) < 0.01) // round close to zero values to zero
+        if (fabs (dist) < 0.01)    // round close to zero values to zero
             dist = 0;
 
-        double sign = (dist < 0)?-1:1;
-        double vdist = sqrt(fabs(2*dist*_acclimits[i].first))*sign*0.8;
-        double vmin = std::max(vcurrent(i)+_acclimits[i].second*dt, _vellimits[i].second);
-        double vmax = std::min(vcurrent(i)+_acclimits[i].first*dt, _vellimits[i].first);
+        double sign  = (dist < 0) ? -1 : 1;
+        double vdist = sqrt (fabs (2 * dist * _acclimits[i].first)) * sign * 0.8;
+        double vmin  = std::max (vcurrent (i) + _acclimits[i].second * dt, _vellimits[i].second);
+        double vmax  = std::min (vcurrent (i) + _acclimits[i].first * dt, _vellimits[i].first);
 
-        qdot(i) = std::min(vmax, std::max(vmin, vdist));
+        qdot (i) = std::min (vmax, std::max (vmin, vdist));
     }
     return qdot;
 }

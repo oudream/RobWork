@@ -20,22 +20,21 @@
 
 #include "GraspPolicy.hpp"
 
-namespace rwsim { namespace dynamics { class DynamicDevice; } }
-namespace rwsim { namespace dynamics { class DynamicWorkCell; } }
+namespace rwsim { namespace dynamics {
+    class DynamicDevice;
+}}    // namespace rwsim::dynamics
+namespace rwsim { namespace dynamics {
+    class DynamicWorkCell;
+}}    // namespace rwsim::dynamics
 
-namespace rwsim {
-namespace util {
-	class GraspPolicyFactory {
-	public:
+namespace rwsim { namespace util {
+    class GraspPolicyFactory
+    {
+      public:
+        static std::vector< std::string > getAvailablePolicies ();
 
-		static std::vector<std::string> getAvailablePolicies();
-
-		static GraspPolicy::Ptr makePolicy(
-				const std::string& id,
-				dynamics::DynamicWorkCell* dwc,
-				rwsim::dynamics::DynamicDevice* dev);
-
-	};
-}
-}
+        static GraspPolicy::Ptr makePolicy (const std::string& id, dynamics::DynamicWorkCell* dwc,
+                                            rwsim::dynamics::DynamicDevice* dev);
+    };
+}}     // namespace rwsim::util
 #endif /* GRASPPOLICYFACTORY_HPP_ */

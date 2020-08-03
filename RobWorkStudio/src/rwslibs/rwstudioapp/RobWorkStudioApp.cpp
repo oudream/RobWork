@@ -238,8 +238,8 @@ int RobWorkStudioApp::run ()
                         for (boost::filesystem::directory_iterator i (p2);
                              i != boost::filesystem::directory_iterator ();
                              i++) {
-                            std::string plPath =
-                                std::string(RWS_COMPILE_PLUGIN_DIR) + "/" + i->path ().filename ().string ();
+                            std::string plPath = std::string (RWS_COMPILE_PLUGIN_DIR) + "/" +
+                                                 i->path ().filename ().string ();
                             rwstudio.loadPlugin (plPath.c_str (), 0, 1);
                         }
                     }

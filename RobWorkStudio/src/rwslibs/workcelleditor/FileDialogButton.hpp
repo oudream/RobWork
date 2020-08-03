@@ -20,22 +20,22 @@
 
 #include <QPushButton>
 
-class FileDialogButton : public QPushButton {
-Q_OBJECT
+class FileDialogButton : public QPushButton
+{
+    Q_OBJECT
 
-public:
-    FileDialogButton(QString path);
+  public:
+    FileDialogButton (QString path);
 
-    const QString &getFilename() const;
+    const QString& getFilename () const;
 
-public Q_SLOTS:
+  public Q_SLOTS:
 
-    void selectFile();
+    void selectFile ();
 
-private:
+  private:
     QString _filename;
     QString _path;
-
 };
 
-#endif //FILEDIALOGBUTTON_HPP
+#endif    // FILEDIALOGBUTTON_HPP

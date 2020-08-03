@@ -26,30 +26,33 @@
 
 #include <rwsim/simulator/ThreadSimulator.hpp>
 
-namespace rwsimlibs {
-namespace swig {
-//! @addtogroup rwsimlibs_swig
+namespace rwsimlibs { namespace swig {
+    //! @addtogroup rwsimlibs_swig
 
-//! @{
-/**
- * @brief An extension to the StepCallback function defined in ThreadSimulator that allows saving additional environment/user data.
- */
-class ThreadSimulatorStepCallbackEnv: public rwsim::simulator::ThreadSimulator::StepCallback {
-public:
-	typedef void (*cThreadSimulatorStepCallback)(rwsim::simulator::ThreadSimulator*, rw::kinematics::State&, void*);
+    //! @{
+    /**
+     * @brief An extension to the StepCallback function defined in ThreadSimulator that allows
+     * saving additional environment/user data.
+     */
+    class ThreadSimulatorStepCallbackEnv : public rwsim::simulator::ThreadSimulator::StepCallback
+    {
+      public:
+        typedef void (*cThreadSimulatorStepCallback) (rwsim::simulator::ThreadSimulator*,
+                                                      rw::kinematics::State&, void*);
 
-	ThreadSimulatorStepCallbackEnv(const ThreadSimulatorStepCallbackEnv &cb);
-	ThreadSimulatorStepCallbackEnv(cThreadSimulatorStepCallback fct, void *userdata);
-	virtual ~ThreadSimulatorStepCallbackEnv();
-	void set(cThreadSimulatorStepCallback fct, void *userdata);
-	void operator()(rwsim::simulator::ThreadSimulator* sim, rw::kinematics::State& state);
-private:
-	void callback(rwsim::simulator::ThreadSimulator* sim, rw::kinematics::State& state, void* data);
+        ThreadSimulatorStepCallbackEnv (const ThreadSimulatorStepCallbackEnv& cb);
+        ThreadSimulatorStepCallbackEnv (cThreadSimulatorStepCallback fct, void* userdata);
+        virtual ~ThreadSimulatorStepCallbackEnv ();
+        void set (cThreadSimulatorStepCallback fct, void* userdata);
+        void operator() (rwsim::simulator::ThreadSimulator* sim, rw::kinematics::State& state);
 
-	cThreadSimulatorStepCallback _cb;
-	void* _data;
-};
-//! @}
-} /* namespace swig */
-} /* namespace rwsimlibs */
+      private:
+        void callback (rwsim::simulator::ThreadSimulator* sim, rw::kinematics::State& state,
+                       void* data);
+
+        cThreadSimulatorStepCallback _cb;
+        void* _data;
+    };
+    //! @}
+}}     // namespace rwsimlibs::swig
 #endif /* RWSIMLIBS_SWIG_THREADSIMULATORSTEPCALLBACKENV_HPP_ */

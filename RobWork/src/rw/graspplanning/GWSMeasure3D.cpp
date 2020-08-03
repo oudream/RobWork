@@ -23,8 +23,6 @@
 #include <rw/math/EAA.hpp>
 #include <rw/math/Vector3D.hpp>
 
-
-
 using namespace rw::math;
 using namespace rw::geometry;
 using namespace rw::graspplanning;

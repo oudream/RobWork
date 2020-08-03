@@ -17,7 +17,6 @@
 
 #include "LogBufferedMsg.hpp"
 
-
 #include <iomanip>
 
 using namespace rw::common;

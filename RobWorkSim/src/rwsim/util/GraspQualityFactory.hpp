@@ -20,24 +20,21 @@
 
 #include <rw/graspplanning/GraspQualityMeasure3D.hpp>
 
-namespace rwsim {
-namespace util {
+namespace rwsim { namespace util {
 
-	class GraspQualityFactory {
-	public:
+    class GraspQualityFactory
+    {
+      public:
+        /**
+         * @brief a list of available quality metrics.
+         */
+        static std::vector< std::string > getAvailableQualityMeasures ();
 
-		/**
-		 * @brief a list of available quality metrics.
-		 */
-		static std::vector<std::string> getAvailableQualityMeasures();
-
-		/**
-		 * @brief instantiate a quality measure with ID \b id.
-		 * @param id [in] id of quality measure
-		 */
-		static GraspQualityMeasure3DPtr makeQualityMeasure(const std::string& id);
-
-	};
-}
-}
+        /**
+         * @brief instantiate a quality measure with ID \b id.
+         * @param id [in] id of quality measure
+         */
+        static GraspQualityMeasure3DPtr makeQualityMeasure (const std::string& id);
+    };
+}}     // namespace rwsim::util
 #endif /* GRASPSTRATEGYFACTORY_HPP_ */

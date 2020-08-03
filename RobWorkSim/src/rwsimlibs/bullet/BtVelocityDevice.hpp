@@ -30,37 +30,39 @@
 
 #include <vector>
 
-namespace rwsim { namespace dynamics { class RigidDevice; } }
+namespace rwsim { namespace dynamics {
+    class RigidDevice;
+}}    // namespace rwsim::dynamics
 
 class btTypedConstraint;
 
-namespace rwsimlibs {
-namespace bullet {
-//! @addtogroup rwsimlibs_bullet
+namespace rwsimlibs { namespace bullet {
+    //! @addtogroup rwsimlibs_bullet
 
-//! @{
-/**
- * @brief A velocity device.
- */
-class BtVelocityDevice: public BtDevice {
-public:
-	//! @brief Constructor.
-	BtVelocityDevice(rw::core::Ptr<rwsim::dynamics::RigidDevice> rdev, const std::vector<btTypedConstraint*>& constraints);
+    //! @{
+    /**
+     * @brief A velocity device.
+     */
+    class BtVelocityDevice : public BtDevice
+    {
+      public:
+        //! @brief Constructor.
+        BtVelocityDevice (rw::core::Ptr< rwsim::dynamics::RigidDevice > rdev,
+                          const std::vector< btTypedConstraint* >& constraints);
 
-	//! @brief Destructor.
-	virtual ~BtVelocityDevice();
+        //! @brief Destructor.
+        virtual ~BtVelocityDevice ();
 
-	//! @brief @copydoc BtDevice::update
-	virtual void update(double dt, rw::kinematics::State& state);
+        //! @brief @copydoc BtDevice::update
+        virtual void update (double dt, rw::kinematics::State& state);
 
-	//! @brief @copydoc BtDevice::postUpdate
-	virtual void postUpdate(rw::kinematics::State& state);
+        //! @brief @copydoc BtDevice::postUpdate
+        virtual void postUpdate (rw::kinematics::State& state);
 
-private:
-	const rw::core::Ptr<rwsim::dynamics::RigidDevice> _rdev;
-    const std::vector<btTypedConstraint*> _constraints;
-};
-//! @}
-} /* namespace bullet */
-} /* namespace rwsimlibs */
+      private:
+        const rw::core::Ptr< rwsim::dynamics::RigidDevice > _rdev;
+        const std::vector< btTypedConstraint* > _constraints;
+    };
+    //! @}
+}}     // namespace rwsimlibs::bullet
 #endif /* RWSIMLIBS_BULLET_BTVELOCITYDEVICE_HPP_ */

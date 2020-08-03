@@ -18,33 +18,30 @@
 #ifndef RW_GRASPPLANNING_GRASPVALIDATEFILTER_HPP_
 #define RW_GRASPPLANNING_GRASPVALIDATEFILTER_HPP_
 
-namespace rw {
-namespace graspplanning {
+namespace rw { namespace graspplanning {
 
-class Grasp3D;
-
-/**
- * @brief tests if a grasp is valid in respect to some criterias implemented
- * by a sub class.
- */
-class GraspValidateFilter {
-public:
+    class Grasp3D;
 
     /**
-     * @brief destructor
+     * @brief tests if a grasp is valid in respect to some criterias implemented
+     * by a sub class.
      */
-    virtual ~GraspValidateFilter(){};
+    class GraspValidateFilter
+    {
+      public:
+        /**
+         * @brief destructor
+         */
+        virtual ~GraspValidateFilter (){};
 
-    /**
-     * @brief tests if a grasp \b grasp is valid in regard to the criterias
-     * of the class that implements this function.
-     * @param grasp
-     * @return
-     */
-    virtual bool isValid(const Grasp3D& grasp) = 0;
+        /**
+         * @brief tests if a grasp \b grasp is valid in regard to the criterias
+         * of the class that implements this function.
+         * @param grasp
+         * @return
+         */
+        virtual bool isValid (const Grasp3D& grasp) = 0;
+    };
 
-};
-
-}
-}
+}}     // namespace rw::graspplanning
 #endif /* PLANECLEARANCEFILTER_HPP_ */

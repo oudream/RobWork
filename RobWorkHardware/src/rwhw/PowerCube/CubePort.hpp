@@ -18,62 +18,60 @@
 #ifndef CUBEPORT_HPP_
 #define CUBEPORT_HPP_
 
-#include <rwhw/serialport/SerialPort.hpp>
 #include <rwhw/can/CanPort.hpp>
-
+#include <rwhw/serialport/SerialPort.hpp>
 
 namespace rwhw {
-    struct Cmd;
+struct Cmd;
 
-        /** @addtogroup PowerCube */
-        /*@{*/
+/** @addtogroup PowerCube */
+/*@{*/
+
+/**
+ * @brief the this class wraps the communication to external Cubes.
+ * Since the cube communicates over RS232, CAN and Profibus this class
+ * will enable reuse of the Cube class and make sure the commuication
+ * specific stuff is hiden.
+     */
+class CubePort
+{
+  public:
+    /* virtual destructor, making this class appropriate for inheritance */
+    virtual ~CubePort ();
 
     /**
-     * @brief the this class wraps the communication to external Cubes.
-     * Since the cube communicates over RS232, CAN and Profibus this class
-     * will enable reuse of the Cube class and make sure the commuication
-     * specific stuff is hiden.
+     * @brief The structure for transmitting and recieving can messg  es
      */
-    class CubePort {
-    public:
+    struct Message
+    {
+        typedef enum { GET, PUT, ACK, ALL } MsgType;
+        unsigned int timeStamp;     // Timestamp for receive queue objects
+        unsigned int moduleAddr;    // Address of the Cube modedule
+        MsgType msgType;
+        unsigned char length;     // number of data bytes ( 0~8)
+        unsigned char rtr;        // RTR-Bit: 0=dataframe, 1=Remoteframe
+        unsigned char data[8];    // Array for up to 8 data bytes
+    };
 
-      /* virtual destructor, making this class appropriate for inheritance */
-      virtual ~CubePort();
+    static CubePort* make (rwhw::SerialPort* port);
 
-        /**
-         * @brief The structure for transmitting and recieving can messg  es
-         */
-        struct Message {
-            typedef enum{GET,PUT,ACK,ALL} MsgType;
-            unsigned int timeStamp;  // Timestamp for receive queue objects
-            unsigned int moduleAddr; // Address of the Cube modedule
-            MsgType msgType;
-            unsigned char length;    // number of data bytes ( 0~8)
-            unsigned char rtr;       // RTR-Bit: 0=dataframe, 1=Remoteframe
-            unsigned char data[8];   // Array for up to 8 data bytes
-        };
+    static CubePort* make (rwhw::CanPort* port);
 
+    virtual bool read (Message& msg) = 0;
 
-        static CubePort* make(rwhw::SerialPort *port);
+    virtual bool write (const Cmd& cmd, int moduleAddr) = 0;
 
-        static CubePort* make(rwhw::CanPort *port);
-
-        virtual bool read(Message& msg) = 0;
-
-        virtual bool write(const Cmd& cmd, int moduleAddr) = 0;
-
-        /**
-         * @brief broadcast commands are only supported by the CAN
-         * protocol. If used with serial protocol an exeption will be
-         * thrown.
+    /**
+     * @brief broadcast commands are only supported by the CAN
+     * protocol. If used with serial protocol an exeption will be
+     * thrown.
          * @param cmd
          * @return
          */
-        virtual bool broadcast(const Cmd& cmd) = 0;
+    virtual bool broadcast (const Cmd& cmd) = 0;
+};
 
-    };
-
-    /*@}*/
-} //namespace
+/*@}*/
+}    // namespace rwhw
 
 #endif /* CUBEPORT_HPP_ */

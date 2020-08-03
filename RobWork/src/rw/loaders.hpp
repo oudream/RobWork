@@ -23,10 +23,10 @@
 #ifndef RW_LOADERS_HPP_
 #define RW_LOADERS_HPP_
 
+#include "./loaders/ImageLoader.hpp"
 #include "./loaders/colsetup/CollisionSetupLoader.hpp"
 #include "./loaders/image/PGMLoader.hpp"
 #include "./loaders/image/RGBLoader.hpp"
-#include "./loaders/ImageLoader.hpp"
 #include "./loaders/path/PathLoader.hpp"
 #include "./loaders/rwxml/DependencyGraph.hpp"
 #include "./loaders/rwxml/MultipleFileIterator.hpp"
@@ -34,22 +34,10 @@
 #include "./loaders/rwxml/XMLRWLoader.hpp"
 #include "./loaders/rwxml/XMLRWParser.hpp"
 #include "./loaders/rwxml/XMLRWPreParser.hpp"
-#include "loaders/model3d/STLFile.hpp"
 #include "loaders/GeometryFactory.hpp"
+#include "loaders/model3d/STLFile.hpp"
 //#include "./loaders/TaskLoader.hpp"
-#include "./loaders/tul/Tag.hpp"
-#include "./loaders/tul/TULLoader.hpp"
 #include "./loaders/WorkCellLoader.hpp"
-#include "./loaders/rwxml/XML.hpp"
-#include "./loaders/rwxml/XMLErrorHandler.hpp"
-#include "./loaders/rwxml/XMLParser.hpp"
-#include "./loaders/xml/XMLPropertyLoader.hpp"
-#include "./loaders/xml/XMLPropertySaver.hpp"
-#include "./loaders/xml/XMLPathLoader.hpp"
-#include "./loaders/xml/XMLPathSaver.hpp"
-#include "./loaders/xml/XMLTrajectoryLoader.hpp"
-#include "./loaders/xml/XMLTrajectorySaver.hpp"
-
 #include "./loaders/dom/DOMBasisTypes.hpp"
 #include "./loaders/dom/DOMPathLoader.hpp"
 #include "./loaders/dom/DOMPathSaver.hpp"
@@ -57,6 +45,16 @@
 #include "./loaders/dom/DOMProximitySetupLoader.hpp"
 #include "./loaders/dom/DOMTrajectoryLoader.hpp"
 #include "./loaders/dom/DOMTrajectorySaver.hpp"
-
+#include "./loaders/rwxml/XML.hpp"
+#include "./loaders/rwxml/XMLErrorHandler.hpp"
+#include "./loaders/rwxml/XMLParser.hpp"
+#include "./loaders/tul/TULLoader.hpp"
+#include "./loaders/tul/Tag.hpp"
+#include "./loaders/xml/XMLPathLoader.hpp"
+#include "./loaders/xml/XMLPathSaver.hpp"
+#include "./loaders/xml/XMLPropertyLoader.hpp"
+#include "./loaders/xml/XMLPropertySaver.hpp"
+#include "./loaders/xml/XMLTrajectoryLoader.hpp"
+#include "./loaders/xml/XMLTrajectorySaver.hpp"
 
 #endif /* LOADERS_HPP_ */

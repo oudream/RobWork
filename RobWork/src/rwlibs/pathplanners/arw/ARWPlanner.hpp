@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RWLIBS_PATHPLANNERS_ARW_ARWPLANNER_HPP
 #define RWLIBS_PATHPLANNERS_ARW_ARWPLANNER_HPP
 
@@ -24,12 +23,17 @@
 */
 
 #include "ARWExpand.hpp"
-#include <rw/pathplanning/QToQPlanner.hpp>
-#include <rw/math/Metric.hpp>
-#include <rw/core/Ptr.hpp>
 
-namespace rw { namespace models { class Device; } }
-namespace rw { namespace pathplanning { class PlannerConstraint; } }
+#include <rw/core/Ptr.hpp>
+#include <rw/math/Metric.hpp>
+#include <rw/pathplanning/QToQPlanner.hpp>
+
+namespace rw { namespace models {
+    class Device;
+}}    // namespace rw::models
+namespace rw { namespace pathplanning {
+    class PlannerConstraint;
+}}    // namespace rw::pathplanning
 
 namespace rwlibs { namespace pathplanners {
 
@@ -47,8 +51,8 @@ namespace rwlibs { namespace pathplanners {
     */
     class ARWPlanner
     {
-    public:
-        typedef rw::core::Ptr<ARWPlanner> Ptr;
+      public:
+        typedef rw::core::Ptr< ARWPlanner > Ptr;
         /**
            @brief ARW based point-to-point planner.
 
@@ -66,11 +70,9 @@ namespace rwlibs { namespace pathplanners {
 
            @param nearDistance [in] Threshold for distance to goal node.
         */
-		static rw::pathplanning::QToQPlanner::Ptr makeQToQPlanner(
-            const rw::pathplanning::PlannerConstraint& constraint,
-			ARWExpand::Ptr expand,
-			rw::math::QMetric::Ptr metric,
-            double nearDistance);
+        static rw::pathplanning::QToQPlanner::Ptr
+        makeQToQPlanner (const rw::pathplanning::PlannerConstraint& constraint,
+                         ARWExpand::Ptr expand, rw::math::QMetric::Ptr metric, double nearDistance);
 
         /**
            @brief ARW based point-to-point planner.
@@ -96,20 +98,19 @@ namespace rwlibs { namespace pathplanners {
            to include in computation of the next expand step. If \b historySize
            is negative, a default value for the parameter is chosen.
         */
-		static rw::pathplanning::QToQPlanner::Ptr makeQToQPlanner(
-            const rw::pathplanning::PlannerConstraint& constraint,
-			rw::core::Ptr<rw::models::Device> device,
-			rw::math::QMetric::Ptr metric = NULL,
-            double nearDistance = -1,
-            int historySize = -1);
+        static rw::pathplanning::QToQPlanner::Ptr
+        makeQToQPlanner (const rw::pathplanning::PlannerConstraint& constraint,
+                         rw::core::Ptr< rw::models::Device > device,
+                         rw::math::QMetric::Ptr metric = NULL, double nearDistance = -1,
+                         int historySize = -1);
 
-    private:
-        ARWPlanner();
-        ARWPlanner(const ARWPlanner&);
-        ARWPlanner& operator=(const ARWPlanner&);
+      private:
+        ARWPlanner ();
+        ARWPlanner (const ARWPlanner&);
+        ARWPlanner& operator= (const ARWPlanner&);
     };
 
     /*\}*/
-}} // end namespaces
+}}    // namespace rwlibs::pathplanners
 
-#endif // end include guard
+#endif    // end include guard

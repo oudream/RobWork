@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,29 +21,17 @@
 
 using namespace rw::core;
 
-Message::Message(const std::string& file, int line, const std::string& message):
-#if(BOOST_FILESYSTEM_VERSION==2)
-    _file( boost::filesystem::path(file.c_str()).filename() ),
+Message::Message (const std::string& file, int line, const std::string& message) :
+#if (BOOST_FILESYSTEM_VERSION == 2)
+    _file (boost::filesystem::path (file.c_str ()).filename ()),
 #else
-    _file( boost::filesystem::path(file.c_str()).filename().string() ),
+    _file (boost::filesystem::path (file.c_str ()).filename ().string ()),
 #endif
-    _line(line),
-    _message(message)
+    _line (line), _message (message)
+{}
+
+std::ostream& rw::core::operator<< (std::ostream& out, const Message& msg)
 {
-		
-}
-
-
-
-std::ostream&
-rw::core::operator<<(std::ostream& out, const Message& msg)
-{
-    out
-        << msg.getFile()
-        << ":"
-        << msg.getLine()
-        << " "
-        << msg.getText()
-        << std::endl;
+    out << msg.getFile () << ":" << msg.getLine () << " " << msg.getText () << std::endl;
     return out;
 }

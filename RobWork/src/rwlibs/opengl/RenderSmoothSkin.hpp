@@ -18,86 +18,86 @@
 #ifndef RW_DRAWABLE_RENDERSMOOTHSKIN_HPP_
 #define RW_DRAWABLE_RENDERSMOOTHSKIN_HPP_
 
-#include <rw/graphics/Render.hpp>
 #include <rw/geometry/IndexedTriMesh.hpp>
+#include <rw/graphics/Render.hpp>
 #include <rw/math/Vector3D.hpp>
 
-namespace rw { namespace kinematics { class Frame; } }
-namespace rw { namespace kinematics { class State; } }
+namespace rw { namespace kinematics {
+    class Frame;
+}}    // namespace rw::kinematics
+namespace rw { namespace kinematics {
+    class State;
+}}    // namespace rw::kinematics
 
 namespace rwlibs { namespace opengl {
 
     /** @addtogroup opengl */
     /*@{*/
-	//! @file RenderSmoothSkin.hpp
+    //! @file RenderSmoothSkin.hpp
 
-	/**
-	 * @brief renders skin using vertice weights in relation to the bone structure.
-	 *
-	 * Each vertice has a number of bones attached. These attached bones influence the position of
-	 * the vertice.
-	 *
-	 * The transformation of each vertice is weighted against the transformation of each attached bone. Such
-	 * that the vertice position is defined by
-	 * \f$ v' = \sum w_i v . M_{[i]} \f$
-	 * where M is the transform from \b Base frame to the the i'th attached bone (which is not the i'th bone).
-	 *
-	 * @note The number of attached bones to a single vertice should not be too large <5.
-	 */
-	class RenderSmoothSkin: public rw::graphics::Render {
-		//! @brief Type for vertice weights.
-	    typedef std::pair<int, float> VerticeWeight;
+    /**
+     * @brief renders skin using vertice weights in relation to the bone structure.
+     *
+     * Each vertice has a number of bones attached. These attached bones influence the position of
+     * the vertice.
+     *
+     * The transformation of each vertice is weighted against the transformation of each attached
+     * bone. Such that the vertice position is defined by \f$ v' = \sum w_i v . M_{[i]} \f$ where M
+     * is the transform from \b Base frame to the the i'th attached bone (which is not the i'th
+     * bone).
+     *
+     * @note The number of attached bones to a single vertice should not be too large <5.
+     */
+    class RenderSmoothSkin : public rw::graphics::Render
+    {
+        //! @brief Type for vertice weights.
+        typedef std::pair< int, float > VerticeWeight;
 
-	    //! @brief Type for bone weights.
-	    typedef std::vector<VerticeWeight> BoneWeights;
+        //! @brief Type for bone weights.
+        typedef std::vector< VerticeWeight > BoneWeights;
 
-	    //! @brief constructor
-		RenderSmoothSkin(rw::geometry::IndexedTriMesh<>::Ptr mesh,
-		                 rw::kinematics::Frame* base,
-		                 std::vector<rw::kinematics::Frame*>& bones,
-		                 std::vector<BoneWeights>& weights);
+        //! @brief constructor
+        RenderSmoothSkin (rw::geometry::IndexedTriMesh<>::Ptr mesh, rw::kinematics::Frame* base,
+                          std::vector< rw::kinematics::Frame* >& bones,
+                          std::vector< BoneWeights >& weights);
 
-		//! @brief destructor	
-		virtual ~RenderSmoothSkin();
+        //! @brief destructor
+        virtual ~RenderSmoothSkin ();
 
-		//! @copydoc RenderSmoothSkin()
-		void init(rw::geometry::IndexedTriMesh<>::Ptr mesh,
-		     rw::kinematics::Frame* base,
-		     std::vector<rw::kinematics::Frame*>& bones,
-		     std::vector<BoneWeights>& weights);
+        //! @copydoc RenderSmoothSkin()
+        void init (rw::geometry::IndexedTriMesh<>::Ptr mesh, rw::kinematics::Frame* base,
+                   std::vector< rw::kinematics::Frame* >& bones,
+                   std::vector< BoneWeights >& weights);
 
-        //! @copydoc rw::graphics::Render::draw(const DrawableNode::RenderInfo& info, DrawableNode::DrawType type, double alpha) const
-		void draw(const rw::graphics::DrawableNode::RenderInfo& info,
-                  rw::graphics::DrawableNode::DrawType type,
-                  double alpha) const;
+        //! @copydoc rw::graphics::Render::draw(const DrawableNode::RenderInfo& info,
+        //! DrawableNode::DrawType type, double alpha) const
+        void draw (const rw::graphics::DrawableNode::RenderInfo& info,
+                   rw::graphics::DrawableNode::DrawType type, double alpha) const;
 
-		/**
-		 * @brief Update the mesh.
-		 * @param state [in] new state.
-		 */
-        void update(const rw::kinematics::State& state);
+        /**
+         * @brief Update the mesh.
+         * @param state [in] new state.
+         */
+        void update (const rw::kinematics::State& state);
 
-	private:
-		struct VerticeWeightINL {
-		    uint8_t boneIdx;
-		    float weight;
-		};
+      private:
+        struct VerticeWeightINL
+        {
+            uint8_t boneIdx;
+            float weight;
+        };
 
-		std::vector< uint8_t > _weights;
-		std::vector<rw::math::Transform3D<> > _transforms;
+        std::vector< uint8_t > _weights;
+        std::vector< rw::math::Transform3D<> > _transforms;
 
         rw::kinematics::Frame* _base;
-        std::vector<rw::kinematics::Frame*> _bones;
+        std::vector< rw::kinematics::Frame* > _bones;
 
         rw::geometry::IndexedTriMesh<>::Ptr _mesh;
-        std::vector<rw::math::Vector3D<> > _vertices;
-
-
-
-	};
-
+        std::vector< rw::math::Vector3D<> > _vertices;
+    };
 
     /*@}*/
-}}
+}}    // namespace rwlibs::opengl
 
 #endif /* RENDERSKIN_HPP_ */

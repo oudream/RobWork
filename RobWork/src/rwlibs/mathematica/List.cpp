@@ -17,92 +17,97 @@
 
 #include "List.hpp"
 
-
-
 using namespace rw::common;
 using namespace rwlibs::mathematica;
 
-List::List():
-	FunctionBase("List")
+List::List () : FunctionBase ("List")
+{}
+
+List::List (const std::vector< Expression::Ptr >& args) : FunctionBase ("List")
 {
+    for (const Expression::Ptr arg : args) {
+        const rw::core::Ptr< const FunctionBase > fct = arg.cast< const FunctionBase > ();
+        if (!fct.isNull ()) {
+            if (fct->getName () == "List")
+                _data.push_back (List::fromExpression (*fct));
+            else
+                _data.push_back (arg);
+        }
+        else {
+            _data.push_back (arg);
+        }
+    }
 }
 
-List::List(const std::vector<Expression::Ptr>& args):
-	FunctionBase("List")
+List::List (const std::list< rw::core::Ptr< const Expression > >& args) : FunctionBase ("List")
 {
-	for(const Expression::Ptr arg: args) {
-		const rw::core::Ptr<const FunctionBase> fct = arg.cast<const FunctionBase>();
-		if (!fct.isNull()) {
-			if (fct->getName() == "List")
-				_data.push_back(List::fromExpression(*fct));
-			else
-				_data.push_back(arg);
-		} else {
-			_data.push_back(arg);
-		}
-	}
+    for (const rw::core::Ptr< const Expression > arg : args) {
+        const rw::core::Ptr< const FunctionBase > fct = arg.cast< const FunctionBase > ();
+        if (!fct.isNull ()) {
+            if (fct->getName () == "List")
+                _data.push_back (List::fromExpression (*fct));
+            else
+                _data.push_back (arg->clone ());
+        }
+        else {
+            _data.push_back (arg->clone ());
+        }
+    }
 }
 
-List::List(const std::list<rw::core::Ptr<const Expression> >& args):
-	FunctionBase("List")
+List::~List ()
+{}
+
+std::list< rw::core::Ptr< const Mathematica::Expression > > List::getArguments () const
 {
-	for(const rw::core::Ptr<const Expression> arg: args) {
-		const rw::core::Ptr<const FunctionBase> fct = arg.cast<const FunctionBase>();
-		if (!fct.isNull()) {
-			if (fct->getName() == "List")
-				_data.push_back(List::fromExpression(*fct));
-			else
-				_data.push_back(arg->clone());
-		} else {
-			_data.push_back(arg->clone());
-		}
-	}
+    std::list< rw::core::Ptr< const Mathematica::Expression > > res;
+    for (const Expression::Ptr e : _data) {
+        res.push_back (e);
+    }
+    return res;
 }
 
-List::~List() {
+Mathematica::Expression::Ptr List::operator[] (std::size_t i)
+{
+    return _data[i];
 }
 
-std::list<rw::core::Ptr<const Mathematica::Expression> > List::getArguments() const {
-	std::list<rw::core::Ptr<const Mathematica::Expression> > res;
-	for(const Expression::Ptr e: _data) {
-		res.push_back(e);
-	}
-	return res;
+rw::core::Ptr< const Mathematica::Expression > List::operator[] (std::size_t i) const
+{
+    return _data[i];
 }
 
-Mathematica::Expression::Ptr List::operator[](std::size_t i) {
-	return _data[i];
+List& List::add (Expression::Ptr expression)
+{
+    _data.push_back (expression);
+    return *this;
 }
 
-rw::core::Ptr<const Mathematica::Expression> List::operator[](std::size_t i) const {
-	return _data[i];
+List& List::add (const Mathematica::AutoExpression& expression)
+{
+    _data.push_back (expression.expression ());
+    return *this;
 }
 
-List& List::add(Expression::Ptr expression) {
-	_data.push_back(expression);
-	return *this;
+void List::set (std::size_t i, Expression::Ptr expression)
+{
+    _data[i] = expression;
 }
 
-List& List::add(const Mathematica::AutoExpression& expression) {
-	_data.push_back(expression.expression());
-	return *this;
+Mathematica::Expression::Ptr List::clone () const
+{
+    return ownedPtr (new List (_data));
 }
 
-void List::set(std::size_t i, Expression::Ptr expression) {
-	_data[i] = expression;
-}
-
-Mathematica::Expression::Ptr List::clone() const {
-	return ownedPtr(new List(_data));
-}
-
-List::Ptr List::fromExpression(const Expression& exp) {
-	try {
-		const FunctionBase& function = dynamic_cast<const FunctionBase&>(exp);
-		if (function.getName() != "List")
-			RW_THROW("Expression does not appear to be a List.");
-		return ownedPtr(new List(function.getArguments()));
-	} catch(const std::bad_cast&) {
-		RW_THROW("Expression does not appear to be a function (hence it can not be a List).");
-	}
+List::Ptr List::fromExpression (const Expression& exp)
+{
+    try {
+        const FunctionBase& function = dynamic_cast< const FunctionBase& > (exp);
+        if (function.getName () != "List")
+            RW_THROW ("Expression does not appear to be a List.");
+        return ownedPtr (new List (function.getArguments ()));
+    }
+    catch (const std::bad_cast&) {
+        RW_THROW ("Expression does not appear to be a function (hence it can not be a List).");
+    }
 }
