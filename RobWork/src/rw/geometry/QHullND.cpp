@@ -21,10 +21,9 @@
 extern "C"
 {
 #endif
+#include <libqhull_r/libqhull_r.h>
 #include <stdio.h>
 #include <stdlib.h>
-
-#include <libqhull_r/libqhull_r.h>
 
 #if defined(__cplusplus)
 }
@@ -33,69 +32,62 @@ extern "C"
 using namespace std;
 using namespace rw::geometry;
 
-void qhull::build(size_t dim,
-                  double *coords,
-                  size_t nrCoords,
-                  std::vector<int>& vertIdxs,
-                  std::vector<int>& faceIdxs,
-                  std::vector<double>& faceNormals,
-                  std::vector<double>& faceOffsets)
+void qhull::build (size_t dim, double* coords, size_t nrCoords, std::vector< int >& vertIdxs,
+                   std::vector< int >& faceIdxs, std::vector< double >& faceNormals,
+                   std::vector< double >& faceOffsets)
 {
-    vertIdxs.clear();
-    faceIdxs.clear();
-    faceNormals.clear();
-    faceOffsets.clear();
+    vertIdxs.clear ();
+    faceIdxs.clear ();
+    faceNormals.clear ();
+    faceOffsets.clear ();
 
-    std::vector<int>& result = vertIdxs;
+    std::vector< int >& result = vertIdxs;
 
     int curlong, totlong; /* used !qh_NOmem */
     int exitcode;
     boolT ismalloc = false;
     qhT qh;
-    qhT * qhT_pointer = &qh; // allocate memory for qhull
+    qhT* qhT_pointer = &qh;    // allocate memory for qhull
 
-    //qh_init_A (stdin, stdout, stderr, argc, argv);  /* sets qh qhull_command */
-    //char flags[] = "qhull Qt Pp Qs";
+    // qh_init_A (stdin, stdout, stderr, argc, argv);  /* sets qh qhull_command */
+    // char flags[] = "qhull Qt Pp Qs";
 
-    //char flags[] = "qhull Pp n Qt Qx QJ C-0.0001";
-    //char flags[] = "qhull Pp Qs QJ C-0.0001 n";
-    //char flags[] = "qhull Qx Qs W1e-1 C1e-2 Qt Pp n"; //graspit
-    //char flags[] = "qhull Qs Pp Qt n";
+    // char flags[] = "qhull Pp n Qt Qx QJ C-0.0001";
+    // char flags[] = "qhull Pp Qs QJ C-0.0001 n";
+    // char flags[] = "qhull Qx Qs W1e-1 C1e-2 Qt Pp n"; //graspit
+    // char flags[] = "qhull Qs Pp Qt n";
 
     char flags[] = "qhull Pp QJ";
 
     // According to doc. in libqhull_r/user_r.c, the qhull memory should be cleared:
-    qh_zero(qhT_pointer, stderr);
+    qh_zero (qhT_pointer, stderr);
 
     // Then the object is constructed.
-    exitcode = qh_new_qhull(qhT_pointer, (int)dim, (int)nrCoords, coords, ismalloc, flags, NULL, stderr);
-
+    exitcode = qh_new_qhull (
+        qhT_pointer, (int) dim, (int) nrCoords, coords, ismalloc, flags, NULL, stderr);
 
     if (!exitcode) {
-
         // Loop through all vertices,
-        vertexT *vertex;//, **vertexp;
-        for (vertex=qhT_pointer->vertex_list;vertex && vertex->next;vertex= vertex->next)
-        {
-            int vertexIdx = qh_pointid(qhT_pointer,vertex->point);
-            result.push_back(vertexIdx);
+        vertexT* vertex;    //, **vertexp;
+        for (vertex = qhT_pointer->vertex_list; vertex && vertex->next; vertex = vertex->next) {
+            int vertexIdx = qh_pointid (qhT_pointer, vertex->point);
+            result.push_back (vertexIdx);
 
-            //for(size_t i=0; i<dim; i++){
-                //double val = vertex->point[i];
-                //center[i] = center[i] + val;
+            // for(size_t i=0; i<dim; i++){
+            // double val = vertex->point[i];
+            // center[i] = center[i] + val;
             //}
-            //nrVerts++;
-            //result->push_back(contacts->at(vertexIdx));
-            //contacts->at(vertexIdx)=NULL;
+            // nrVerts++;
+            // result->push_back(contacts->at(vertexIdx));
+            // contacts->at(vertexIdx)=NULL;
         }
-        //center /= (double)nrVerts;
+        // center /= (double)nrVerts;
 
         // also find all facets, such that we can recreate the hull
 
         // For all facets:
-        facetT *facet;
-        for (facet=qhT_pointer->facet_list; facet && facet->next; facet = facet->next)
-        {
+        facetT* facet;
+        for (facet = qhT_pointer->facet_list; facet && facet->next; facet = facet->next) {
             /*
             std::cout << "CENTER: ";
             for(int i=0;i<dim;i++){
@@ -103,55 +95,57 @@ void qhull::build(size_t dim,
             }
             std::cout << std::endl;
              */
-            //std::cout << facet->vertices->maxsize << std::endl;
+            // std::cout << facet->vertices->maxsize << std::endl;
             int vertex_n, vertex_i;
-            //std::cout << "{ ";
+            // std::cout << "{ ";
             // if offset is positive then the center is outside
-            for(size_t j=0;j<dim;j++){
-                faceNormals.push_back( facet->normal[j] );
+            for (size_t j = 0; j < dim; j++) {
+                faceNormals.push_back (facet->normal[j]);
             }
-            faceOffsets.push_back(facet->offset);
+            faceOffsets.push_back (facet->offset);
 
-            //int idx = 0;
-            FOREACHvertex_i_(qhT_pointer,facet->vertices)
+            // int idx = 0;
+            FOREACHvertex_i_ (qhT_pointer, facet->vertices)
             {
-                int vertexIdx = qh_pointid(qhT_pointer,vertex->point);
-                faceIdxs.push_back(vertexIdx);
-                //idx = vertexIdx;
-                //std::cout << vertexIdx << " ";
+                int vertexIdx = qh_pointid (qhT_pointer, vertex->point);
+                faceIdxs.push_back (vertexIdx);
+                // idx = vertexIdx;
+                // std::cout << vertexIdx << " ";
             }
-            //std::cout << idx << std::endl;
-            //for(size_t j=0;j<dim;j++){
+            // std::cout << idx << std::endl;
+            // for(size_t j=0;j<dim;j++){
             //    v[j] = coords[dim*idx+j];
             //}
-            //n = n/norm_2(n);
+            // n = n/norm_2(n);
 
-            //double dist;
-            //qh_distplane(&zerov[0],facet,&dist);
-            //if( dist>0 ){
+            // double dist;
+            // qh_distplane(&zerov[0],facet,&dist);
+            // if( dist>0 ){
             //    std::cout << "GRASP IS NOT FORCE CLOSURE" << std::endl;
             //}
 
-
-            //std::cout << " }\n";
+            // std::cout << " }\n";
         }
-
-    } else {
-        cout<<"Not Exit Code!";
+    }
+    else {
+        cout << "Not Exit Code!";
     }
 
-    if (qhT_pointer->VERIFYoutput && !qhT_pointer->FORCEoutput && !qhT_pointer->STOPpoint && !qhT_pointer->STOPcone)
-        qh_check_points(qhT_pointer);
+    if (qhT_pointer->VERIFYoutput && !qhT_pointer->FORCEoutput && !qhT_pointer->STOPpoint &&
+        !qhT_pointer->STOPcone)
+        qh_check_points (qhT_pointer);
 
-    qh_freeqhull(qhT_pointer, False);
-    qh_memfreeshort (qhT_pointer,&curlong, &totlong);
+    qh_freeqhull (qhT_pointer, False);
+    qh_memfreeshort (qhT_pointer, &curlong, &totlong);
     if (curlong || totlong)
-        fprintf (stderr, "qhull internal warning (main): did not free %d bytes of long memory (%d pieces)\n",totlong, curlong);
-    //delete[] coords;
+        fprintf (
+            stderr,
+            "qhull internal warning (main): did not free %d bytes of long memory (%d pieces)\n",
+            totlong,
+            curlong);
+        // delete[] coords;
 
-    #if qh_QHpointer
-    qh_restore_qhull(&qht);
-    #endif
-
-
+#if qh_QHpointer
+    qh_restore_qhull (&qht);
+#endif
 }

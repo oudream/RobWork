@@ -2,21 +2,23 @@
 #ifndef RWHW_ROBOTIQ_HPP
 #define RWHW_ROBOTIQ_HPP
 
-#include <rw/math/Q.hpp>
 #include <rw/core/Ptr.hpp>
+#include <rw/math/Q.hpp>
 
 #include <boost/asio.hpp>
 #include <boost/system/error_code.hpp>
 #include <boost/thread.hpp>
-
-#include <queue>
 #include <fstream>
+#include <queue>
 
 namespace rwhw {
 
-struct ModbusPackage {
-    union {
-        struct {
+struct ModbusPackage
+{
+    union
+    {
+        struct
+        {
             boost::uint16_t transactionID;
             boost::uint16_t protocolID;
             boost::uint16_t length;
@@ -35,12 +37,12 @@ struct ModbusPackage {
  * on a few joints. The limits are therefore approximate
  *
  */
-class Robotiq {
+class Robotiq
+{
+  public:
+    typedef rw::core::Ptr< Robotiq > Ptr;
 
-public:
-    typedef rw::core::Ptr<Robotiq> Ptr;
-
-    virtual ~Robotiq();
+    virtual ~Robotiq ();
 
     /**
      * @brief connect to hand using
@@ -48,158 +50,156 @@ public:
      * @param port
      * @return
      */
-    bool connect(const std::string& host, unsigned int port = 502);
-    bool isConnected() const {
-        return _connected;
-    }
-    void disconnect();
+    bool connect (const std::string& host, unsigned int port = 502);
+    bool isConnected () const { return _connected; }
+    void disconnect ();
 
     /**
      * @brief Command to get the current status from the hand and to store the result in
      * class variables
      */
-    void getAllStatusCMD();
+    void getAllStatusCMD ();
 
     /**
      * @brief tells if the hand thinks it is activated or not. Depends on the internal state
      * variables. Call getAllStatusCMD first.
      */
-    virtual bool isActivated() = 0;
+    virtual bool isActivated () = 0;
 
     /**
-      * @brief tells if the hand thinks it is moving. Depends on the internal state
-      * variables. Call getAllStatusCMD first.
-      */
-    virtual bool isGripperMoving() = 0;
+     * @brief tells if the hand thinks it is moving. Depends on the internal state
+     * variables. Call getAllStatusCMD first.
+     */
+    virtual bool isGripperMoving () = 0;
 
     /**
-      * @brief tells if the hand has been stopped by running into an obstacle before reaching its
-      * target position since the last move call. Depends on the internal state
-      * variables. Call getAllStatusCMD first.
-      */
-    virtual bool isGripperBlocked() = 0;
+     * @brief tells if the hand has been stopped by running into an obstacle before reaching its
+     * target position since the last move call. Depends on the internal state
+     * variables. Call getAllStatusCMD first.
+     */
+    virtual bool isGripperBlocked () = 0;
 
     /**
-      * @brief tells if the hand has reached its target. Depends on the internal state
-      * variables. Call getAllStatusCMD first.
-      */
-    virtual bool isGripperAtTarget() = 0;
+     * @brief tells if the hand has reached its target. Depends on the internal state
+     * variables. Call getAllStatusCMD first.
+     */
+    virtual bool isGripperAtTarget () = 0;
 
     /**
      * @brief sends a move to \b target command to the hand
      * @param target [in] the target to move to
      */
-    void moveCmd(rw::math::Q target);
+    void moveCmd (rw::math::Q target);
 
     /**
      * @brief sends a move to \b target command to the hand
      */
-    void moveCmd();
+    void moveCmd ();
 
     /**
      * @brief stop movement of all gripper joints
      */
-    void stopCmd();
+    void stopCmd ();
 
     /**
      * @brief sets the wanted target for each joint. The target must be within
      * the position limits.
      * @param jointPos
      */
-    void setTargetQ(const rw::math::Q& jointPos);
+    void setTargetQ (const rw::math::Q& jointPos);
 
     /**
      * @brief sets the wanted target velocity (between 0 and 255) for each joint.
      * The velocity must be within the velocity limits.
      * @param jointVel
      */
-    void setTargetQVel(const rw::math::Q& jointVel);
+    void setTargetQVel (const rw::math::Q& jointVel);
 
     /**
      * @brief sets the wanted target Force. The force must be within
      * the force limits.
      * @param jointAcc
      */
-    void setTargetQForce(const rw::math::Q& jointCurr);
+    void setTargetQForce (const rw::math::Q& jointCurr);
 
     /**
      * @brief gets the hands current target configuration. (This is based on the internal
      * representation not necessarily the actual target configuration that the hand has.)
      * @return
      */
-    rw::math::Q getTargetQ();
+    rw::math::Q getTargetQ ();
 
     /**
      * @brief queries the hand for its joint configuration. Depends on the internal state
      * variables. Call getAllStatusCMD first.
      */
-    rw::math::Q getQ();
+    rw::math::Q getQ ();
 
     /**
      * @brief queries the hand for its current power use. Depends on the internal state
      * variables. Call getAllStatusCMD first.
      */
-    rw::math::Q getQCurrent();
+    rw::math::Q getQCurrent ();
 
     /**
-      * @brief returns the hands upper and lower configuration bounds.
-      */
-    virtual std::pair<rw::math::Q, rw::math::Q> getLimitPos() = 0;
+     * @brief returns the hands upper and lower configuration bounds.
+     */
+    virtual std::pair< rw::math::Q, rw::math::Q > getLimitPos () = 0;
 
     /**
-      * @brief returns the hands upper and lower velocity bounds.
-      */
-    virtual std::pair<rw::math::Q, rw::math::Q> getLimitVel() = 0;
+     * @brief returns the hands upper and lower velocity bounds.
+     */
+    virtual std::pair< rw::math::Q, rw::math::Q > getLimitVel () = 0;
 
     /**
-      * @brief returns the hands upper and lower force bounds.
-      */
-    virtual std::pair<rw::math::Q, rw::math::Q> getLimitForce() = 0;
+     * @brief returns the hands upper and lower force bounds.
+     */
+    virtual std::pair< rw::math::Q, rw::math::Q > getLimitForce () = 0;
 
     /**
-      * @brief transforms the hands velocity value to a velocity measured in
-      * m/s.
-      */
-    virtual double getVelocityInMetersPerSecFromTicks(int ticks) const = 0;
+     * @brief transforms the hands velocity value to a velocity measured in
+     * m/s.
+     */
+    virtual double getVelocityInMetersPerSecFromTicks (int ticks) const = 0;
 
     /**
-      * @brief transforms a velocity in m/s in a corresponding value that the hand
-      * understands.
-      * mm/s.
-      */
-    virtual int getTicksFromVelocityInMetersPerSec(double velocity) const = 0;
+     * @brief transforms a velocity in m/s in a corresponding value that the hand
+     * understands.
+     * mm/s.
+     */
+    virtual int getTicksFromVelocityInMetersPerSec (double velocity) const = 0;
 
     /**
-      * @brief transforms the hands force value into an approximate force measured in
-      * Newton.
-      */
-    virtual double getApproximateForceInNewtonFromTicks(int ticks) const = 0;
+     * @brief transforms the hands force value into an approximate force measured in
+     * Newton.
+     */
+    virtual double getApproximateForceInNewtonFromTicks (int ticks) const = 0;
 
     /**
-      * @brief transforms a force in Newton into a value the hand understands.
-      */
-    virtual int getApproximateTicksFromForceInNewton(double force) const = 0;
+     * @brief transforms a force in Newton into a value the hand understands.
+     */
+    virtual int getApproximateTicksFromForceInNewton (double force) const = 0;
 
     /**
-      * @brief transforms the hand delivered current value into current measured in ampere.
-      */
-    double getCurrentInAmpereFromTicks(int ticks) const;
+     * @brief transforms the hand delivered current value into current measured in ampere.
+     */
+    double getCurrentInAmpereFromTicks (int ticks) const;
 
     /**
-      * @brief Returns the number of joints the device has. Zero indicates a problem.
-      */
-    unsigned int getNumberOfJoints() const;
+     * @brief Returns the number of joints the device has. Zero indicates a problem.
+     */
+    unsigned int getNumberOfJoints () const;
 
-private:
-    rw::core::Ptr<boost::thread> _thread;
+  private:
+    rw::core::Ptr< boost::thread > _thread;
     mutable boost::mutex _mutex;
     bool _stop;
-    bool activate(unsigned int timeout = 0);
-    void run();
-    void start();
-    void stop();
+    bool activate (unsigned int timeout = 0);
+    void run ();
+    void start ();
+    void stop ();
 
-    //bool _haveReceivedSize;
+    // bool _haveReceivedSize;
 
     boost::asio::ip::tcp::socket* _socket;
     boost::asio::io_service _ioService;
@@ -208,40 +208,40 @@ private:
 
     bool _connected;
 
-    //static const unsigned int max_buf_len = 5000000;
-    //char buf[max_buf_len];
+    // static const unsigned int max_buf_len = 5000000;
+    // char buf[max_buf_len];
 
     boost::uint16_t _packageIDCounter;
 
-    std::map<boost::uint16_t, std::pair<ModbusPackage, bool> > _packagesIntransit;
+    std::map< boost::uint16_t, std::pair< ModbusPackage, bool > > _packagesIntransit;
 
-    std::queue<ModbusPackage> _packagesOutgoing;
-    std::queue<ModbusPackage> _packagesRecieved;
+    std::queue< ModbusPackage > _packagesOutgoing;
+    std::queue< ModbusPackage > _packagesRecieved;
 
-protected:
-    Robotiq(rw::math::Q currentQ, rw::math::Q currentCurrent, rw::math::Q target, rw::math::Q speed, rw::math::Q force, unsigned int numberOfJoints);
+  protected:
+    Robotiq (rw::math::Q currentQ, rw::math::Q currentCurrent, rw::math::Q target,
+             rw::math::Q speed, rw::math::Q force, unsigned int numberOfJoints);
 
-    ModbusPackage send(ModbusPackage package);
+    ModbusPackage send (ModbusPackage package);
 
-    virtual bool isGripperInReset() = 0;
-    virtual bool isGripperInActivationProcess() = 0;
+    virtual bool isGripperInReset ()             = 0;
+    virtual bool isGripperInActivationProcess () = 0;
 
-    virtual ModbusPackage getMoveCMDRequestPackage(const rw::math::Q & target) const = 0;
-    virtual ModbusPackage getAllStatusCMDRequestPackage() const = 0;
-    virtual void validateStatusPackageAndUpdateState(const ModbusPackage & package) = 0;
-    virtual ModbusPackage getStopCMDRequestPackage() const = 0;
-    virtual void validateStopCMDResponseMessage(const ModbusPackage & answer) const = 0;
-    virtual ModbusPackage getActivateRequestPackage() const = 0;
+    virtual ModbusPackage getMoveCMDRequestPackage (const rw::math::Q& target) const = 0;
+    virtual ModbusPackage getAllStatusCMDRequestPackage () const                     = 0;
+    virtual void validateStatusPackageAndUpdateState (const ModbusPackage& package)  = 0;
+    virtual ModbusPackage getStopCMDRequestPackage () const                          = 0;
+    virtual void validateStopCMDResponseMessage (const ModbusPackage& answer) const  = 0;
+    virtual ModbusPackage getActivateRequestPackage () const                         = 0;
 
-    virtual bool handAfterActivationConnected() const;
-
+    virtual bool handAfterActivationConnected () const;
 
     // Helper functions for big endian / little endian conversion for modbus
-    void setReg(boost::uint8_t& reg, const boost::uint8_t& val) const;
-    void setReg(boost::uint16_t& reg, const boost::uint16_t& val) const;
-    void getReg(const boost::uint16_t& reg, boost::uint16_t& val) const;
-	boost::uint8_t toVal8(int val) const;
-	boost::uint8_t toVal8(double val) const;
+    void setReg (boost::uint8_t& reg, const boost::uint8_t& val) const;
+    void setReg (boost::uint16_t& reg, const boost::uint16_t& val) const;
+    void getReg (const boost::uint16_t& reg, boost::uint16_t& val) const;
+    boost::uint8_t toVal8 (int val) const;
+    boost::uint8_t toVal8 (double val) const;
 
     rw::math::Q _currentQ, _currentCurrent;
     rw::math::Q _target, _speed, _force;
@@ -250,9 +250,8 @@ protected:
     static const boost::uint16_t FC16 = 0x10;
 
     unsigned int _numberOfJoints;
-
 };
 
-} //end namespace
+}    // namespace rwhw
 
-#endif //#ifndef RWHW_ROBOTIQ_HPP
+#endif    //#ifndef RWHW_ROBOTIQ_HPP

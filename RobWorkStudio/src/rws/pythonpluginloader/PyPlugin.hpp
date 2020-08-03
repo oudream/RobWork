@@ -24,9 +24,9 @@ class PyPlugin : public rws::RobWorkStudioPlugin
      */
     bool initialize (std::string pythonFilePath, std::string pluginName);
 
-    void open(rw::models::WorkCell* workcell);
+    void open (rw::models::WorkCell* workcell);
 
-    void close();
+    void close ();
 
   protected:
     /**

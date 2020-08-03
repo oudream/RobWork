@@ -10,6 +10,10 @@
 
 #include "./task/Action.hpp"
 #include "./task/Entity.hpp"
+#include "./task/GraspResult.hpp"
+#include "./task/GraspSubTask.hpp"
+#include "./task/GraspTarget.hpp"
+#include "./task/GraspTask.hpp"
 #include "./task/Motion.hpp"
 #include "./task/Target.hpp"
 #include "./task/Task.hpp"
@@ -17,11 +21,5 @@
 #include "./task/TypeRepository.hpp"
 #include "./task/loader/TaskLoader.hpp"
 #include "./task/loader/TaskSaver.hpp"
-#include "./task/GraspTask.hpp"
-#include "./task/GraspSubTask.hpp"
-#include "./task/GraspTarget.hpp"
-#include "./task/GraspResult.hpp"
-
-
 
 #endif /* RWLIBS_TASK_HPP_ */

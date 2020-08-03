@@ -20,12 +20,14 @@
 #ifndef SIMUTILITYPLUGIN_HPP
 #define SIMUTILITYPLUGIN_HPP
 
-#include <rw/core/Ptr.hpp>
 #include <RobWorkStudioPlugin.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include <QObject>
 
-namespace rwsim { namespace dynamics { class DynamicWorkCell; } }
+namespace rwsim { namespace dynamics {
+    class DynamicWorkCell;
+}}    // namespace rwsim::dynamics
 
 struct RestingConfig;
 class GraspRestingPoseDialog;
@@ -39,69 +41,67 @@ class QPushButton;
  * @brief This plugin defines a set of utilities that are useful for analysis
  * and simulation purposes, that are based on some form of dynamic simulation.
  */
-class SimUtilityPlugin: public rws::RobWorkStudioPlugin {
+class SimUtilityPlugin : public rws::RobWorkStudioPlugin
+{
     Q_OBJECT
-    Q_INTERFACES( rws::RobWorkStudioPlugin )
-    Q_PLUGIN_METADATA(IID "dk.sdu.mip.Robwork.RobWorkStudioPlugin/0.1" FILE "SimUtilityPlugin.json")
-public:
+    Q_INTERFACES (rws::RobWorkStudioPlugin)
+    Q_PLUGIN_METADATA (IID "dk.sdu.mip.Robwork.RobWorkStudioPlugin/0.1" FILE
+                           "SimUtilityPlugin.json")
+  public:
     /**
      * @brief constructor
      */
-    SimUtilityPlugin();
+    SimUtilityPlugin ();
 
     /**
      * @brief destructor
      */
-    virtual ~SimUtilityPlugin();
+    virtual ~SimUtilityPlugin ();
 
     /**
      * @copydoc rws::RobWorkStudioPlugin::open
      */
-    void open(rw::models::WorkCell* workcell);
+    void open (rw::models::WorkCell* workcell);
 
     /**
      * @copydoc rws::RobWorkStudioPlugin::close
      */
-    void close();
+    void close ();
 
     /**
      * @copydoc rws::RobWorkStudioPlugin::initialize
      */
-    void initialize();
+    void initialize ();
 
     /**
      * @brief we listen for events regarding opening and closing of dynamic
      * workcell
      */
-    void genericEventListener(const std::string& event);
+    void genericEventListener (const std::string& event);
 
+  protected:
+    virtual void stateChangedHandler (RobWorkStudioPlugin* sender);
 
-
-protected:
-	virtual void stateChangedHandler(RobWorkStudioPlugin* sender);
-
-private slots:
+  private slots:
     /**
      * @brief
      */
-    void updateViewEvent();
-    void stateChangedEvent(const rw::kinematics::State& state);
-    void btnPressed();
-    void restConfigEvent(const RestingConfig& state);
+    void updateViewEvent ();
+    void stateChangedEvent (const rw::kinematics::State& state);
+    void btnPressed ();
+    void restConfigEvent (const RestingConfig& state);
 
-private: // qt stuff
-	QPushButton *_restPoseBtn, *_poseAnalyserBtn, *_toolEvalBtn, *_graspSelectBtn;
+  private:    // qt stuff
+    QPushButton *_restPoseBtn, *_poseAnalyserBtn, *_toolEvalBtn, *_graspSelectBtn;
 
-private:
-    rw::core::Ptr<rwsim::dynamics::DynamicWorkCell> _dwc;
-    RestingPoseDialog *_restPoseDialog;
+  private:
+    rw::core::Ptr< rwsim::dynamics::DynamicWorkCell > _dwc;
+    RestingPoseDialog* _restPoseDialog;
 
-    SupportPoseAnalyserDialog *_poseAnalyserDialog;
-    GraspRestingPoseDialog *_graspRestPoseDialog;
-    GraspSelectionDialog *_graspSelectionDialog;
-    QTimer *_timer;
+    SupportPoseAnalyserDialog* _poseAnalyserDialog;
+    GraspRestingPoseDialog* _graspRestPoseDialog;
+    GraspSelectionDialog* _graspSelectionDialog;
+    QTimer* _timer;
 };
 
-
-
-#endif //#ifndef ROBOCATCHER_HPP
+#endif    //#ifndef ROBOCATCHER_HPP

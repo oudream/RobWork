@@ -27,69 +27,69 @@
 #include <rw/core/ExtensionPoint.hpp>
 #include <rw/core/Ptr.hpp>
 
-namespace rwlibs {
-namespace assembly {
+namespace rwlibs { namespace assembly {
 
-// Forward declarations
-class AssemblyControlStrategy;
+    // Forward declarations
+    class AssemblyControlStrategy;
 
-//! @addtogroup task
+    //! @addtogroup task
 
-/**
- * @addtogroup extensionpoints
- * @extensionpoint{rwlibs::assembly::AssemblyRegistry,rwlibs::assembly::AssemblyControlStrategy,rwlibs.assembly.AssemblyControlStrategy}
- */
+    /**
+     * @addtogroup extensionpoints
+     * @extensionpoint{rwlibs::assembly::AssemblyRegistry,rwlibs::assembly::AssemblyControlStrategy,rwlibs.assembly.AssemblyControlStrategy}
+     */
 
-//! @{
-/**
- * @brief A registry of control strategies. The registry defines an extension point.
- *
- * Users can define custom assembly control strategies in two ways. Either an extension
- * must be registered, or the user must create an AssemblyRegistry and add the strategy
- * to this registry manually.
- */
-class AssemblyRegistry: public rw::core::ExtensionPoint<AssemblyControlStrategy> {
-public:
-	//! @brief smart pointer type to this class
-    typedef rw::core::Ptr<AssemblyRegistry> Ptr;
+    //! @{
+    /**
+     * @brief A registry of control strategies. The registry defines an extension point.
+     *
+     * Users can define custom assembly control strategies in two ways. Either an extension
+     * must be registered, or the user must create an AssemblyRegistry and add the strategy
+     * to this registry manually.
+     */
+    class AssemblyRegistry : public rw::core::ExtensionPoint< AssemblyControlStrategy >
+    {
+      public:
+        //! @brief smart pointer type to this class
+        typedef rw::core::Ptr< AssemblyRegistry > Ptr;
 
-	//! @brief Constructor of initial registry (RobWork strategies are added)
-	AssemblyRegistry();
+        //! @brief Constructor of initial registry (RobWork strategies are added)
+        AssemblyRegistry ();
 
-	//! @brief Destructor
-	virtual ~AssemblyRegistry();
+        //! @brief Destructor
+        virtual ~AssemblyRegistry ();
 
-	/**
-	 * @brief Add a new strategy.
-	 * @param id [in] an identifier for this specific strategy (this id is used for serialization).
-	 * @param strategy [in] a pointer to the AssemblyControlStrategy.
-	 */
-	void addStrategy(const std::string id, rw::core::Ptr<AssemblyControlStrategy> strategy);
+        /**
+         * @brief Add a new strategy.
+         * @param id [in] an identifier for this specific strategy (this id is used for
+         * serialization).
+         * @param strategy [in] a pointer to the AssemblyControlStrategy.
+         */
+        void addStrategy (const std::string id, rw::core::Ptr< AssemblyControlStrategy > strategy);
 
-	/**
-	 * @brief Get the available strategies.
-	 * @return a vector of identifiers for strategies.
-	 */
-	std::vector<std::string> getStrategies() const;
+        /**
+         * @brief Get the available strategies.
+         * @return a vector of identifiers for strategies.
+         */
+        std::vector< std::string > getStrategies () const;
 
-	/**
-	 * @brief Check if strategy is available.
-	 * @param id [in] the name of the strategy.
-	 * @return true if available, false otherwise.
-	 */
-	bool hasStrategy(const std::string& id) const;
+        /**
+         * @brief Check if strategy is available.
+         * @param id [in] the name of the strategy.
+         * @return true if available, false otherwise.
+         */
+        bool hasStrategy (const std::string& id) const;
 
-	/**
-	 * @brief Get the strategy with a specific identifier.
-	 * @param id [in] the identifier.
-	 * @return a pointer to the strategy.
-	 */
-	rw::core::Ptr<AssemblyControlStrategy> getStrategy(const std::string &id) const;
+        /**
+         * @brief Get the strategy with a specific identifier.
+         * @param id [in] the identifier.
+         * @return a pointer to the strategy.
+         */
+        rw::core::Ptr< AssemblyControlStrategy > getStrategy (const std::string& id) const;
 
-private:
-	std::map<std::string, rw::core::Ptr<AssemblyControlStrategy> > _map;
-};
-//! @}
-} /* namespace assembly */
-} /* namespace rwlibs */
+      private:
+        std::map< std::string, rw::core::Ptr< AssemblyControlStrategy > > _map;
+    };
+    //! @}
+}}     // namespace rwlibs::assembly
 #endif /* RWLIBS_ASSEMBLY_ASSEMBLYREGISTRY_HPP_ */

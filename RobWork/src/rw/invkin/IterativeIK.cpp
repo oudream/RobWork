@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,8 +15,8 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #include "IterativeIK.hpp"
+
 #include "JacobianIKSolver.hpp"
 
 #include <rw/core/macros.hpp>
@@ -28,48 +28,46 @@ using namespace rw::models;
 using namespace rw::kinematics;
 using namespace boost;
 
-IterativeIK::IterativeIK()
+IterativeIK::IterativeIK ()
 {
-    getProperties().add(
-        "MaxIterations", "Max number of iterations", 20);
-    getProperties().add(
-        "MaxError", "Max Error ", 1e-6);
+    getProperties ().add ("MaxIterations", "Max number of iterations", 20);
+    getProperties ().add ("MaxError", "Max Error ", 1e-6);
 }
 
-void IterativeIK::setMaxError(double maxError)
+void IterativeIK::setMaxError (double maxError)
 {
     if (maxError < 0)
-        RW_THROW("MaxError must be positive");
+        RW_THROW ("MaxError must be positive");
 
-    getProperties().set<double>("MaxError", maxError);
+    getProperties ().set< double > ("MaxError", maxError);
 }
 
-double IterativeIK::getMaxError() const
+double IterativeIK::getMaxError () const
 {
-    return getProperties().get<double>("MaxError");
+    return getProperties ().get< double > ("MaxError");
 }
 
-void IterativeIK::setMaxIterations(int maxIterations)
+void IterativeIK::setMaxIterations (int maxIterations)
 {
-    getProperties().set("MaxIterations", maxIterations);
+    getProperties ().set ("MaxIterations", maxIterations);
 }
 
-int IterativeIK::getMaxIterations() const
+int IterativeIK::getMaxIterations () const
 {
-    return getProperties().get<int>("MaxIterations");
+    return getProperties ().get< int > ("MaxIterations");
 }
 
-PropertyMap& IterativeIK::getProperties()
-{
-    return _properties;
-}
-
-const PropertyMap& IterativeIK::getProperties() const
+PropertyMap& IterativeIK::getProperties ()
 {
     return _properties;
 }
 
-IterativeIK::Ptr IterativeIK::makeDefault(Device::Ptr device, const State& state)
+const PropertyMap& IterativeIK::getProperties () const
 {
-    return ownedPtr(new JacobianIKSolver(device, state));
+    return _properties;
+}
+
+IterativeIK::Ptr IterativeIK::makeDefault (Device::Ptr device, const State& state)
+{
+    return ownedPtr (new JacobianIKSolver (device, state));
 }

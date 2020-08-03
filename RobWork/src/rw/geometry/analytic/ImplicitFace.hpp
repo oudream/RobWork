@@ -28,8 +28,7 @@
 #include "ImplicitSurface.hpp"
 #include "ParametricCurve.hpp"
 
-namespace rw {
-namespace geometry {
+namespace rw { namespace geometry {
 
     //! @addtogroup geometry
 
@@ -38,104 +37,107 @@ namespace geometry {
      * @brief Type of Face, where the surface is an ImplicitSurface and the
      * edges are of type ParametricCurve.
      */
-    class ImplicitFace: public Face
+    class ImplicitFace : public Face
     {
-        public:
-            //! @brief Smart pointer type to ImplicitFace
-            typedef rw::core::Ptr<ImplicitFace> Ptr;
+      public:
+        //! @brief Smart pointer type to ImplicitFace
+        typedef rw::core::Ptr< ImplicitFace > Ptr;
 
-            //! @brief Smart pointer type to const ImplicitFace
-            typedef rw::core::Ptr<const ImplicitFace> CPtr;
+        //! @brief Smart pointer type to const ImplicitFace
+        typedef rw::core::Ptr< const ImplicitFace > CPtr;
 
-            //! @brief Constructor.
-            ImplicitFace();
+        //! @brief Constructor.
+        ImplicitFace ();
 
-            /**
-             * @brief Construct face with surface and vertices given initially.
-             *
-             * Curves must be set afterwards.
-             *
-             * @param surface [in] the surface data.
-             * @param vertices [in] vector of vertices.
-             */
-            ImplicitFace(rw::core::Ptr<const ImplicitSurface> surface, const std::vector<rw::math::Vector3D<> >& vertices);
+        /**
+         * @brief Construct face with surface and vertices given initially.
+         *
+         * Curves must be set afterwards.
+         *
+         * @param surface [in] the surface data.
+         * @param vertices [in] vector of vertices.
+         */
+        ImplicitFace (rw::core::Ptr< const ImplicitSurface > surface,
+                      const std::vector< rw::math::Vector3D<> >& vertices);
 
-            //! @brief Destructor.
-            virtual ~ImplicitFace();
+        //! @brief Destructor.
+        virtual ~ImplicitFace ();
 
-            /**
-             * @brief Get the surface of the face.
-             * @return a reference to the surface data.
-             */
-            virtual const ImplicitSurface& surface() const;
+        /**
+         * @brief Get the surface of the face.
+         * @return a reference to the surface data.
+         */
+        virtual const ImplicitSurface& surface () const;
 
-            //! @copydoc Face::curveCount
-            virtual std::size_t curveCount() const { return _curves.size(); }
+        //! @copydoc Face::curveCount
+        virtual std::size_t curveCount () const { return _curves.size (); }
 
-            //! @copydoc Face::getCurve
-            virtual const ParametricCurve& getCurve(std::size_t i) const;
+        //! @copydoc Face::getCurve
+        virtual const ParametricCurve& getCurve (std::size_t i) const;
 
-            //! @copydoc Face::vertices
-            virtual const std::vector<rw::math::Vector3D<> >& vertices() const { return _vertices; }
+        //! @copydoc Face::vertices
+        virtual const std::vector< rw::math::Vector3D<> >& vertices () const { return _vertices; }
 
-            //! @copydoc Face::transform(const rw::math::Vector3D<>&)
-            virtual void transform(const rw::math::Vector3D<>& P);
+        //! @copydoc Face::transform(const rw::math::Vector3D<>&)
+        virtual void transform (const rw::math::Vector3D<>& P);
 
-            //! @copydoc Face::transform(const rw::math::Transform3D<>&)
-            virtual void transform(const rw::math::Transform3D<>& T);
+        //! @copydoc Face::transform(const rw::math::Transform3D<>&)
+        virtual void transform (const rw::math::Transform3D<>& T);
 
-            /**
-             * @brief Get the parametric curves.
-             * @return vector with the curves.
-             */
-            const std::vector<rw::core::Ptr<const ParametricCurve> >& getCurves() const { return _curves; }
+        /**
+         * @brief Get the parametric curves.
+         * @return vector with the curves.
+         */
+        const std::vector< rw::core::Ptr< const ParametricCurve > >& getCurves () const
+        {
+            return _curves;
+        }
 
-            /**
-             * @brief Set implicit surface.
-             * @param surface [in] the surface.
-             */
-            void setSurface(rw::core::Ptr<const ImplicitSurface> surface) { _surface = surface; }
+        /**
+         * @brief Set implicit surface.
+         * @param surface [in] the surface.
+         */
+        void setSurface (rw::core::Ptr< const ImplicitSurface > surface) { _surface = surface; }
 
-            /**
-             * @brief Set surface.
-             * @param surface [in] the surface.
-             */
-            void setSurface(const ImplicitSurface& surface);
+        /**
+         * @brief Set surface.
+         * @param surface [in] the surface.
+         */
+        void setSurface (const ImplicitSurface& surface);
 
-            /**
-             * @brief Set parametric curve (a curve has direction)
-             * @param vertex [in] the start vertex.
-             * @param curve [in] the curve.
-             */
-            void setCurve(std::size_t vertex, rw::core::Ptr<const ParametricCurve> curve);
+        /**
+         * @brief Set parametric curve (a curve has direction)
+         * @param vertex [in] the start vertex.
+         * @param curve [in] the curve.
+         */
+        void setCurve (std::size_t vertex, rw::core::Ptr< const ParametricCurve > curve);
 
-            /**
-             * @brief Set the parametric curves.
-             * @param curves [in] vector of directed curves.
-             */
-            void setCurves(const std::vector<rw::core::Ptr<const ParametricCurve> >& curves);
+        /**
+         * @brief Set the parametric curves.
+         * @param curves [in] vector of directed curves.
+         */
+        void setCurves (const std::vector< rw::core::Ptr< const ParametricCurve > >& curves);
 
-            /**
-             * @brief Set vertex.
-             * @param index [in] vertex index to set.
-             * @param vertex [in] the vertex point.
-             */
-            void setVertex(std::size_t index, const rw::math::Vector3D<>& vertex);
+        /**
+         * @brief Set vertex.
+         * @param index [in] vertex index to set.
+         * @param vertex [in] the vertex point.
+         */
+        void setVertex (std::size_t index, const rw::math::Vector3D<>& vertex);
 
-            /**
-             * @brief Set the vertices.
-             * @param vertices [in] vector of vertices.
-             */
-            void setVertices(const std::vector<rw::math::Vector3D<> >& vertices);
+        /**
+         * @brief Set the vertices.
+         * @param vertices [in] vector of vertices.
+         */
+        void setVertices (const std::vector< rw::math::Vector3D<> >& vertices);
 
-        private:
-            rw::core::Ptr<const ImplicitSurface> _surface;
-            std::vector<rw::core::Ptr<const ParametricCurve> > _curves;
-            std::vector<rw::math::Vector3D<> > _vertices;
+      private:
+        rw::core::Ptr< const ImplicitSurface > _surface;
+        std::vector< rw::core::Ptr< const ParametricCurve > > _curves;
+        std::vector< rw::math::Vector3D<> > _vertices;
     };
-//! @}
+    //! @}
 
-} /* namespace geometry */
-} /* namespace rw */
+}}    // namespace rw::geometry
 
 #endif /* RW_GEOMETRY_ANALYTIC_IMPLICITFACE_HPP_ */

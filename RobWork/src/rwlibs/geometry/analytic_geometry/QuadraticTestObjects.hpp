@@ -26,39 +26,39 @@
 
 #include <rw/core/Ptr.hpp>
 
-namespace rw { namespace geometry { class QuadraticBREP; } }
+namespace rw { namespace geometry {
+    class QuadraticBREP;
+}}    // namespace rw::geometry
 
-namespace rwlibs {
-    namespace geometry {
+namespace rwlibs { namespace geometry {
 
-        //! @addtogroup rwlibs_geometry
+    //! @addtogroup rwlibs_geometry
 
-        //! @{
+    //! @{
+    /**
+     * @brief Library of objects that are made up of Quadratic surfaces.
+     */
+    class QuadraticTestObjects
+    {
+      public:
         /**
-         * @brief Library of objects that are made up of Quadratic surfaces.
+         * @brief
+         * @return
          */
-        class QuadraticTestObjects
-        {
-            public:
-                /**
-                 * @brief
-                 * @return
-                 */
-                static rw::core::Ptr<rw::geometry::QuadraticBREP> objectA();
+        static rw::core::Ptr< rw::geometry::QuadraticBREP > objectA ();
 
-                /**
-                 * @brief
-                 * @return
-                 */
-                static rw::core::Ptr<rw::geometry::QuadraticBREP> objectB();
+        /**
+         * @brief
+         * @return
+         */
+        static rw::core::Ptr< rw::geometry::QuadraticBREP > objectB ();
 
-            private:
-                QuadraticTestObjects();
-                virtual ~QuadraticTestObjects();
-        };
+      private:
+        QuadraticTestObjects ();
+        virtual ~QuadraticTestObjects ();
+    };
     //! @}
 
-    } /* namespace geometry */
-} /* namespace rwlibs */
+}}    // namespace rwlibs::geometry
 
 #endif /* RWLIBS_GEOMETRY_ANALYTIC_GEOMETRY_QUADRATICTESTOBJECTS_HPP_ */

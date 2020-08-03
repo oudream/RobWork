@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RWLIBS_PATHPLANNERS_Z3_Z3QTOQPLANNER_HPP
 #define RWLIBS_PATHPLANNERS_Z3_Z3QTOQPLANNER_HPP
 
@@ -23,11 +22,15 @@
    @file Z3QToQPlanner.hpp
 */
 
-#include <rw/pathplanning/QToQPlanner.hpp>
 #include <rw/core/Ptr.hpp>
+#include <rw/pathplanning/QToQPlanner.hpp>
 
-namespace rw { namespace pathplanning { class QSampler; } }
-namespace rw { namespace math { class Q; } }
+namespace rw { namespace pathplanning {
+    class QSampler;
+}}    // namespace rw::pathplanning
+namespace rw { namespace math {
+    class Q;
+}}    // namespace rw::math
 
 namespace rwlibs { namespace pathplanners {
 
@@ -39,7 +42,7 @@ namespace rwlibs { namespace pathplanners {
     */
     class Z3QToQPlanner : public rw::pathplanning::QToQPlanner
     {
-    public:
+      public:
         /**
            @brief Constructor
 
@@ -54,28 +57,21 @@ namespace rwlibs { namespace pathplanners {
            repeatCnt is negative, the attempts are repeated forever (or until
            the stop criteria returns true).
         */
-        Z3QToQPlanner(
-        	rw::core::Ptr<rw::pathplanning::QSampler> sampler,
-			rw::pathplanning::QToQPlanner::Ptr localPlanner,
-            int nodeCnt,
-            int repeatCnt);
+        Z3QToQPlanner (rw::core::Ptr< rw::pathplanning::QSampler > sampler,
+                       rw::pathplanning::QToQPlanner::Ptr localPlanner, int nodeCnt, int repeatCnt);
 
-    private:
+      private:
+        bool doQuery (const rw::math::Q& start, const rw::math::Q& goal,
+                      rw::trajectory::QPath& path, const rw::pathplanning::StopCriteria& stop);
 
-        bool doQuery(
-            const rw::math::Q& start,
-            const rw::math::Q& goal,
-			rw::trajectory::QPath& path,
-            const rw::pathplanning::StopCriteria& stop);
-
-    private:
-        rw::core::Ptr<rw::pathplanning::QSampler> _sampler;
-		rw::pathplanning::QToQPlanner::Ptr _localPlanner;
+      private:
+        rw::core::Ptr< rw::pathplanning::QSampler > _sampler;
+        rw::pathplanning::QToQPlanner::Ptr _localPlanner;
         int _nodeCnt;
         int _repeatCnt;
     };
 
     /*\}*/
-}} // end namespaces
+}}    // namespace rwlibs::pathplanners
 
-#endif // end include guard
+#endif    // end include guard

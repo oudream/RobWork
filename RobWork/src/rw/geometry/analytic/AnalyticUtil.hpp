@@ -29,8 +29,7 @@
 #include <list>
 #include <vector>
 
-namespace rw {
-namespace geometry {
+namespace rw { namespace geometry {
 
     class QuadraticCurve;
 
@@ -42,34 +41,33 @@ namespace geometry {
      */
     class AnalyticUtil
     {
-        public:
-            /**
-             * @brief Combine discretized borders with curves to form polygons.
-             *
-             * The curves are themselves discretized to form the polygon.
-             *
-             * @param border [in] the full list of points.
-             * @param subborder [in] a list of border sections.
-             * Each section is a vector of indices into \b border.
-             * @param curves [in] the curves to combine with the border
-             * sections.
-             * @param stepsPerRevolution [in] the resolution for discretization
-             * of the curves.
-             * @return a list of polygons. Each polygon is a list of points.
-             */
-            static std::list<std::vector<rw::math::Vector3D<> > > combinePolygons(
-                    const std::vector<rw::math::Vector3D<> >& border,
-                    const std::list<std::vector<std::size_t> >& subborder,
-                    const std::vector<rw::geometry::QuadraticCurve>& curves,
-                    double stepsPerRevolution);
+      public:
+        /**
+         * @brief Combine discretized borders with curves to form polygons.
+         *
+         * The curves are themselves discretized to form the polygon.
+         *
+         * @param border [in] the full list of points.
+         * @param subborder [in] a list of border sections.
+         * Each section is a vector of indices into \b border.
+         * @param curves [in] the curves to combine with the border
+         * sections.
+         * @param stepsPerRevolution [in] the resolution for discretization
+         * of the curves.
+         * @return a list of polygons. Each polygon is a list of points.
+         */
+        static std::list< std::vector< rw::math::Vector3D<> > >
+        combinePolygons (const std::vector< rw::math::Vector3D<> >& border,
+                         const std::list< std::vector< std::size_t > >& subborder,
+                         const std::vector< rw::geometry::QuadraticCurve >& curves,
+                         double stepsPerRevolution);
 
-        private:
-            AnalyticUtil();
-            virtual ~AnalyticUtil();
+      private:
+        AnalyticUtil ();
+        virtual ~AnalyticUtil ();
     };
-//! @}
+    //! @}
 
-} /* namespace geometry */
-} /* namespace rw */
+}}    // namespace rw::geometry
 
 #endif /* RW_GEOMETRY_ANALYTIC_ANALYTICUTIL_HPP_ */

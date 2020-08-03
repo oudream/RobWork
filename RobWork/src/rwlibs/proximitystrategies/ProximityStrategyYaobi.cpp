@@ -131,7 +131,8 @@ bool ProximityStrategyYaobi::addGeometry (rw::proximity::ProximityModel* model,
 
     for (RWYaobiModel& m : pmodel->models) {
         if (m.geo->getId () == geom->getId ()) {
-            RW_THROW ("The specified geometry \"" + geom->getId() + "\" (geometry identifiers are supposed to be unique) has "
+            RW_THROW ("The specified geometry \"" + geom->getId () +
+                      "\" (geometry identifiers are supposed to be unique) has "
                       "already been added to the proximity strategy model!");
             return false;
         }

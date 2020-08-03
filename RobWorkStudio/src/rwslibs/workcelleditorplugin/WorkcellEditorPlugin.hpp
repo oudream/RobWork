@@ -21,51 +21,52 @@
 #include <rws/RobWorkStudioPlugin.hpp>
 
 namespace rws {
-    class WorkcellEditorWindow;
+class WorkcellEditorWindow;
 
-    /**
-     * @brief this plugin provides access to the workcell editor of RobWorkStudio
-     */
-    class WorkcellEditorPlugin : public RobWorkStudioPlugin {
+/**
+ * @brief this plugin provides access to the workcell editor of RobWorkStudio
+ */
+class WorkcellEditorPlugin : public RobWorkStudioPlugin
+{
     Q_OBJECT
 #ifndef RWS_USE_STATIC_LINK_PLUGINS
-    Q_INTERFACES(rws::RobWorkStudioPlugin)
-    Q_PLUGIN_METADATA(IID "dk.sdu.mip.Robwork.RobWorkStudioPlugin/0.1" FILE "plugin.json")
+    Q_INTERFACES (rws::RobWorkStudioPlugin)
+    Q_PLUGIN_METADATA (IID "dk.sdu.mip.Robwork.RobWorkStudioPlugin/0.1" FILE "plugin.json")
 #endif
-    public:
-        //! @brief constructor
-        WorkcellEditorPlugin();
+  public:
+    //! @brief constructor
+    WorkcellEditorPlugin ();
 
-        //! @brief destructor
-        virtual ~WorkcellEditorPlugin();
+    //! @brief destructor
+    virtual ~WorkcellEditorPlugin ();
 
-        //! @copydoc RobWorkStudioPlugin::initialize
-        void initialize();
+    //! @copydoc RobWorkStudioPlugin::initialize
+    void initialize ();
 
-        //! @copydoc RobWorkStudioPlugin::open
-        void open(rw::models::WorkCell *workcell);
+    //! @copydoc RobWorkStudioPlugin::open
+    void open (rw::models::WorkCell* workcell);
 
-        //! @copydoc RobWorkStudioPlugin::close
-        void close();
+    //! @copydoc RobWorkStudioPlugin::close
+    void close ();
 
-        //! @copydoc RobWorkStudioPlugin::setupMenu
-        void setupMenu(QMenu *menu);
+    //! @copydoc RobWorkStudioPlugin::setupMenu
+    void setupMenu (QMenu* menu);
 
-    private Q_SLOTS:
+  private Q_SLOTS:
 
-        void startEditor();
+    void startEditor ();
 
-    private:
-        // This listens for changes to the state of RobWorkStudio.
-        void stateChangedListener(const rw::kinematics::State &state);
+  private:
+    // This listens for changes to the state of RobWorkStudio.
+    void stateChangedListener (const rw::kinematics::State& state);
 
-    private:
-        rw::kinematics::State _state;
-        std::string _previousOpenDirectory;
-        WorkcellEditorWindow *_editor;
-        QAction *_openWorkcellEditorAction;
-    };
+  private:
+    rw::kinematics::State _state;
+    std::string _previousOpenDirectory;
+    WorkcellEditorWindow* _editor;
+    QAction* _openWorkcellEditorAction;
+};
 
-}
+}    // namespace rws
 
 #endif

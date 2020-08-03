@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RW_PATHPLANNING_PATHPLANNER_HPP
 #define RW_PATHPLANNING_PATHPLANNER_HPP
 
@@ -23,9 +22,10 @@
    @file PathPlanner.hpp
 */
 
-#include <rw/trajectory/Path.hpp>
 #include "StopCriteria.hpp"
+
 #include <rw/core/PropertyMap.hpp>
+#include <rw/trajectory/Path.hpp>
 
 namespace rw { namespace pathplanning {
 
@@ -39,16 +39,15 @@ namespace rw { namespace pathplanning {
        From from a start configuration of type \b From to a goal destination
        specified by a parameter of type \b To. The path is of type \b Path.
     */
-	template <class From, class To, class Path = rw::trajectory::Path<From> >
-    class PathPlanner
+    template< class From, class To, class Path = rw::trajectory::Path< From > > class PathPlanner
     {
-    public:
-		//! @brief smart pointer type to this class
-		typedef rw::core::Ptr<PathPlanner> Ptr;
+      public:
+        //! @brief smart pointer type to this class
+        typedef rw::core::Ptr< PathPlanner > Ptr;
         /**
            @brief Destructor
         */
-        virtual ~PathPlanner() {}
+        virtual ~PathPlanner () {}
 
         /**
            @brief Plan a path from the configuration \b from to the destination
@@ -65,12 +64,9 @@ namespace rw { namespace pathplanning {
            @return true if a path between from \b from to \b to was found and
            false otherwise.
         */
-        bool query(const From& from,
-                   To& to,
-                   Path& path,
-                   const StopCriteria& stop)
+        bool query (const From& from, To& to, Path& path, const StopCriteria& stop)
         {
-            return doQuery(from, to, path, stop);
+            return doQuery (from, to, path, stop);
         }
 
         /**
@@ -88,13 +84,9 @@ namespace rw { namespace pathplanning {
            @return true if a path between from \b from to \b to was found and
            false otherwise.
         */
-        bool query(
-            const From& from,
-            To& to,
-            Path& path,
-            double time)
+        bool query (const From& from, To& to, Path& path, double time)
         {
-            return query(from, to, path, *StopCriteria::stopAfter(time));
+            return query (from, to, path, *StopCriteria::stopAfter (time));
         }
 
         /**
@@ -112,48 +104,41 @@ namespace rw { namespace pathplanning {
            @return true if a path between from \b from to \b to was found and
            false otherwise.
         */
-        bool query(
-            const From& from,
-            To& to,
-            Path& path)
+        bool query (const From& from, To& to, Path& path)
         {
-            return query(from, to, path, *StopCriteria::stopNever());
+            return query (from, to, path, *StopCriteria::stopNever ());
         }
 
         /**
            @brief Property map for the planner.
         */
-        core::PropertyMap& getProperties() { return _properties; }
+        core::PropertyMap& getProperties () { return _properties; }
 
         /**
            @brief Property map for the planner.
         */
-        const core::PropertyMap& getProperties() const { return _properties; }
+        const core::PropertyMap& getProperties () const { return _properties; }
 
-    protected:
+      protected:
         /**
            @brief Default constructor provided for subclasses.
         */
-        PathPlanner() {}
+        PathPlanner () {}
 
         /**
            @brief Subclass implementation of the query() method.
         */
-        virtual bool doQuery(
-            const From& from,
-            To& to,
-            Path& path,
-            const StopCriteria& stop) = 0;
+        virtual bool doQuery (const From& from, To& to, Path& path, const StopCriteria& stop) = 0;
 
-    private:
+      private:
         core::PropertyMap _properties;
 
-    private:
-        PathPlanner(const PathPlanner&);
-        PathPlanner& operator=(const PathPlanner&);
+      private:
+        PathPlanner (const PathPlanner&);
+        PathPlanner& operator= (const PathPlanner&);
     };
 
     /*@}*/
-}} // end namespaces
+}}    // namespace rw::pathplanning
 
-#endif // end include guard
+#endif    // end include guard

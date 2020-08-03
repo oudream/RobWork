@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RW_TRAJECTORY_RAMPINTERPOLATOR_HPP
 #define RW_TRAJECTORY_RAMPINTERPOLATOR_HPP
 
@@ -23,12 +22,12 @@
  * @file RampInterpolator.hpp
  */
 
-#include <rw/math/Transform3D.hpp>
-#include <rw/math/Rotation3D.hpp>
-#include <rw/math/Quaternion.hpp>
-#include <rw/math/Math.hpp>
-
 #include "Interpolator.hpp"
+
+#include <rw/math/Math.hpp>
+#include <rw/math/Quaternion.hpp>
+#include <rw/math/Rotation3D.hpp>
+#include <rw/math/Transform3D.hpp>
 //#include "InterpolatorUtil.hpp"
 
 namespace rw { namespace trajectory {
@@ -44,15 +43,14 @@ namespace rw { namespace trajectory {
      *
      * For use with a rw::math::Transform3D see the template specialization
      */
-    template <class T>
-    class RampInterpolator: public Interpolator<T>
+    template< class T > class RampInterpolator : public Interpolator< T >
     {
-    public:
-		//! @brief smart pointer type to instance of class
-		typedef typename rw::core::Ptr<RampInterpolator> Ptr;
+      public:
+        //! @brief smart pointer type to instance of class
+        typedef typename rw::core::Ptr< RampInterpolator > Ptr;
 
-		//! @brief smart pointer type const instance of class
-		typedef typename rw::core::Ptr<const RampInterpolator> CPtr;
+        //! @brief smart pointer type const instance of class
+        typedef typename rw::core::Ptr< const RampInterpolator > CPtr;
 
         /**
          * @brief Construct RampInterpolator starting at \b start and finishing in \b end
@@ -64,15 +62,11 @@ namespace rw { namespace trajectory {
          * @param vellimits [in] velocity limits
          * @param acclimits [in] acceleration limits
          */
-        RampInterpolator(const T& start, const T& end, const T& vellimits, const T& acclimits) :
-            _a(start),
-            _b(end - start),
-            _vel(vellimits),
-            _acc(acclimits),
-            _duration(-1.0)
+        RampInterpolator (const T& start, const T& end, const T& vellimits, const T& acclimits) :
+            _a (start), _b (end - start), _vel (vellimits), _acc (acclimits), _duration (-1.0)
 
         {
-            init();
+            init ();
         }
 
         /**
@@ -88,164 +82,165 @@ namespace rw { namespace trajectory {
          * @param acclimits [in] acceleration limits
          * @param duration [in] Time it takes to from one end to the other.
          */
-        RampInterpolator(const T& start, const T& end, const T& vellimits, const T& acclimits, double duration) :
-            _a(start),
-            _b(end - start),
-            _vel(vellimits),
-            _acc(acclimits),
-            _duration(duration)
+        RampInterpolator (const T& start, const T& end, const T& vellimits, const T& acclimits,
+                          double duration) :
+            _a (start),
+            _b (end - start), _vel (vellimits), _acc (acclimits), _duration (duration)
         {
-            init();
+            init ();
         }
 
-
-        void init(){
+        void init ()
+        {
             using namespace rw::math;
             // calculate max time
             double maxtime = 0;
-            for (size_t i = 0; i<_b.size(); i++) {
-                double t = 0;
-                double tau = _vel(i)/_acc(i);
-                double eps = sqrt(fabs(_b(i))/(_acc(i)));
-                //std::cout<<"tau = "<<tau<<std::endl;
-                //std::cout<<"eps = "<<eps<<std::endl;
-                if (eps<tau)
-                    t = 2*eps;
+            for (size_t i = 0; i < _b.size (); i++) {
+                double t   = 0;
+                double tau = _vel (i) / _acc (i);
+                double eps = sqrt (fabs (_b (i)) / (_acc (i)));
+                // std::cout<<"tau = "<<tau<<std::endl;
+                // std::cout<<"eps = "<<eps<<std::endl;
+                if (eps < tau)
+                    t = 2 * eps;
                 else {
-                    double dtau = tau*_vel(i);
-                    double Ttmp = (fabs(_b(i))-dtau)/_vel(i);
-                    t = Ttmp+2*tau;
+                    double dtau = tau * _vel (i);
+                    double Ttmp = (fabs (_b (i)) - dtau) / _vel (i);
+                    t           = Ttmp + 2 * tau;
                 }
-                maxtime = std::max(t, maxtime);
+                maxtime = std::max (t, maxtime);
             }
             _duration = maxtime;
 
             // calculate ramp
-            _wmax = 1e10;
+            _wmax  = 1e10;
             _dwmax = 1e10;
-            _ws = 0;
+            _ws    = 0;
 
-            for (size_t i = 0; i<_a.size(); i++) {
-                //double dq = fabs(_qend(i)-_qstart(i));
-                double dq = fabs(_b(i));
-                //std::cout<<"dq = "<<dq<<std::endl;
+            for (size_t i = 0; i < _a.size (); i++) {
+                // double dq = fabs(_qend(i)-_qstart(i));
+                double dq = fabs (_b (i));
+                // std::cout<<"dq = "<<dq<<std::endl;
                 if (dq != 0) {
-                    _wmax = std::min(_wmax, _vel(i)/dq);
-                    _dwmax = std::min(_dwmax, _acc(i)/dq);
+                    _wmax  = std::min (_wmax, _vel (i) / dq);
+                    _dwmax = std::min (_dwmax, _acc (i) / dq);
                 }
             }
-            //std::cout<<"wmax = "<<_wmax<<std::endl;
-            //std::cout<<"dwmax = "<<_dwmax<<std::endl;
+            // std::cout<<"wmax = "<<_wmax<<std::endl;
+            // std::cout<<"dwmax = "<<_dwmax<<std::endl;
 
-            //Compare using eq. 13 to see which of the cases
-            double lhs = sqrt(2*Math::sqr(_ws/_dwmax)+4/_dwmax);
-            double rhs = 2*_wmax/_dwmax;
+            // Compare using eq. 13 to see which of the cases
+            double lhs = sqrt (2 * Math::sqr (_ws / _dwmax) + 4 / _dwmax);
+            double rhs = 2 * _wmax / _dwmax;
             if (lhs <= rhs) {
-                _durationRamp = _ws/_wmax+sqrt(2*Math::sqr(_ws/_dwmax)+4/_dwmax);
-                _tau_s = _durationRamp/2-_ws/(2*_dwmax);
-                _tau_e = _durationRamp/2+_ws/(2*_dwmax);
-            } else {
-                _durationRamp = 1/_wmax+(Math::sqr(_wmax-_ws)+Math::sqr(_wmax))/(2*_wmax*_dwmax);
-                _tau_s = (_wmax-_ws)/_dwmax;
-                _tau_e = (_wmax)/_dwmax;
+                _durationRamp = _ws / _wmax + sqrt (2 * Math::sqr (_ws / _dwmax) + 4 / _dwmax);
+                _tau_s        = _durationRamp / 2 - _ws / (2 * _dwmax);
+                _tau_e        = _durationRamp / 2 + _ws / (2 * _dwmax);
             }
-
-
+            else {
+                _durationRamp = 1 / _wmax + (Math::sqr (_wmax - _ws) + Math::sqr (_wmax)) /
+                                                (2 * _wmax * _dwmax);
+                _tau_s = (_wmax - _ws) / _dwmax;
+                _tau_e = (_wmax) / _dwmax;
+            }
         }
 
         /**
          * @copydoc Interpolator::x()
          */
-        T x(double t) const
+        T x (double t) const
         {
-            if (t<0)
+            if (t < 0)
                 t = 0;
 
-            double tau1 = std::min(t, _tau_s);
-            double s1 = _ws*t+0.5*_dwmax*tau1*tau1;
-            if (t<_tau_s)
-                return _a+s1*_b;
+            double tau1 = std::min (t, _tau_s);
+            double s1   = _ws * t + 0.5 * _dwmax * tau1 * tau1;
+            if (t < _tau_s)
+                return _a + s1 * _b;
 
-            double tau2 = std::min(t, _durationRamp-_tau_e);
-            double s2 = _wmax*(tau2-_tau_s) + s1;
-            if (t<=_durationRamp-_tau_e)
-                return _a+s2*_b;
+            double tau2 = std::min (t, _durationRamp - _tau_e);
+            double s2   = _wmax * (tau2 - _tau_s) + s1;
+            if (t <= _durationRamp - _tau_e)
+                return _a + s2 * _b;
 
-            if (t<_durationRamp) {
-                double delta = (_duration-_tau_e);
-                double tpart = _tau_e*_dwmax*t + 0.5*_dwmax*t*t-_dwmax*_durationRamp*t;
-                double cpart = _tau_e*_dwmax*delta + 0.5*_dwmax*delta*delta - _dwmax*_durationRamp*delta;
+            if (t < _durationRamp) {
+                double delta = (_duration - _tau_e);
+                double tpart =
+                    _tau_e * _dwmax * t + 0.5 * _dwmax * t * t - _dwmax * _durationRamp * t;
+                double cpart = _tau_e * _dwmax * delta + 0.5 * _dwmax * delta * delta -
+                               _dwmax * _durationRamp * delta;
 
-                return _a+_b*(s2 - (tpart - cpart)+_tau_e*_dwmax*t-_tau_e*_dwmax*delta);
+                return _a +
+                       _b * (s2 - (tpart - cpart) + _tau_e * _dwmax * t - _tau_e * _dwmax * delta);
             }
-            return _a+_b;
+            return _a + _b;
         }
 
         /**
-         * @copydoc Interpolator::dx() 
+         * @copydoc Interpolator::dx()
          */
-        T dx(double t) const
+        T dx (double t) const
         {
-            if (t<0)
+            if (t < 0)
                 t = 0;
 
-            double tau1 = std::min(t, _tau_s);
-            double ds1 = _ws+_dwmax*tau1;
-            if (t<_tau_s)
-                return ds1*_b;
+            double tau1 = std::min (t, _tau_s);
+            double ds1  = _ws + _dwmax * tau1;
+            if (t < _tau_s)
+                return ds1 * _b;
 
             // double tau2 = std::min(t, _duration-_tau_e);
             double ds2 = ds1;
-            if (t<=_durationRamp-_tau_e)
-                return ds2*_b;
+            if (t <= _durationRamp - _tau_e)
+                return ds2 * _b;
 
-            if (t<_durationRamp) {
-                double delta = t-(_durationRamp-_tau_e);
-                double ds3 = ds2 - _dwmax*delta;
-                return ds3*_b;
+            if (t < _durationRamp) {
+                double delta = t - (_durationRamp - _tau_e);
+                double ds3   = ds2 - _dwmax * delta;
+                return ds3 * _b;
             }
-            return _b*0.0;
+            return _b * 0.0;
         };
 
         /**
          * @copydoc Interpolator::ddx()
          */
-        T ddx(double t) const
+        T ddx (double t) const
         {
-            if (t<_tau_s)
-                return _dwmax*_b;
-            if (t<_durationRamp-_tau_e)
-                return 0*_b;
-            if (t<_durationRamp)
-                return -_dwmax*_b;
-            return 0*_b;
+            if (t < _tau_s)
+                return _dwmax * _b;
+            if (t < _durationRamp - _tau_e)
+                return 0 * _b;
+            if (t < _durationRamp)
+                return -_dwmax * _b;
+            return 0 * _b;
         }
 
         /**
          * @brief Returns the start position of the interpolator
          * @return The start position of the interpolator
          */
-        T getStart() const { return _a; }
+        T getStart () const { return _a; }
 
         /**
          * @brief Returns the end position of the interpolator
          * @return The end position of the interpolator
          */
-        T getEnd() const { return _a + _b; }
+        T getEnd () const { return _a + _b; }
 
         /**
          * @copydoc Interpolator::duration()
          */
-        double duration() const { return _durationRamp; }
+        double duration () const { return _durationRamp; }
 
-    private:
+      private:
         T _a;
         T _b;
         T _vel;
         T _acc;
-        double _duration; // maxtime
+        double _duration;    // maxtime
 
-        //double _maxtime;
+        // double _maxtime;
 
         double _durationRamp;
         double _ws;
@@ -255,16 +250,14 @@ namespace rw { namespace trajectory {
         double _tau_e;
     };
 
-
-    template <>
-    class RampInterpolator<double> : public Interpolator<double>
+    template<> class RampInterpolator< double > : public Interpolator< double >
     {
-    public:
+      public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr<RampInterpolator<double> > Ptr;
+        typedef rw::core::Ptr< RampInterpolator< double > > Ptr;
 
         //! @brief smart pointer type const instance of class
-        typedef rw::core::Ptr<const RampInterpolator<double> > CPtr;
+        typedef rw::core::Ptr< const RampInterpolator< double > > CPtr;
 
         /**
          * @brief Construct RampInterpolator starting a \b start and finishing in \b end.
@@ -274,58 +267,53 @@ namespace rw { namespace trajectory {
          * @param velLimit [in] the max velocity in m/sec
          * @param accLimit [in] the max acceleration in m/sec^2
          */
-        RampInterpolator(double start, double end, double velLimit,double accLimit):
-            _start( start ),
-            _end( end ),
-            _ramp(rw::math::Q(1,0.0), rw::math::Q(1,_end), rw::math::Q(1,velLimit), rw::math::Q(1,accLimit) )
-        {
-        }
+        RampInterpolator (double start, double end, double velLimit, double accLimit) :
+            _start (start), _end (end), _ramp (rw::math::Q (1, 0.0), rw::math::Q (1, _end),
+                                               rw::math::Q (1, velLimit), rw::math::Q (1, accLimit))
+        {}
 
-        virtual ~RampInterpolator(){}
+        virtual ~RampInterpolator () {}
 
         //! @copydoc Interpolator::x()
-        double x(double t) const { return _ramp.x(t)(0); }
+        double x (double t) const { return _ramp.x (t) (0); }
 
         //! @copydoc Interpolator::dx()
-        double dx(double t) const { return _ramp.dx(t)(0); }
+        double dx (double t) const { return _ramp.dx (t) (0); }
 
         //! @copydoc Interpolator::ddx()
-        double ddx(double t) const { return _ramp.ddx(t)(0); }
+        double ddx (double t) const { return _ramp.ddx (t) (0); }
 
         /**
          * @brief Returns the start rotation of the interpolator
          * @return The start rotation of the interpolator
          */
-        double getStart() const { return _start; }
+        double getStart () const { return _start; }
 
         /**
          * @brief Returns the end rotation of the interpolator
          * @return The end rotation of the interpolator
          */
-        double getEnd() const { return _end; }
+        double getEnd () const { return _end; }
 
         /**
          * @copydoc Interpolator::duration()
          */
-        double duration() const { return _ramp.duration(); }
+        double duration () const { return _ramp.duration (); }
 
-    private:
+      private:
         double _start;
         double _end;
-        //double _b;
-        RampInterpolator<rw::math::Q> _ramp;
+        // double _b;
+        RampInterpolator< rw::math::Q > _ramp;
 
-        //double _duration;
+        // double _duration;
     };
-
 
     /**
      * @brief Forward declaration for parabolic blend to make the
      * RampInterpolator<rw::math::Transform3D<T> > a friend
      */
-    template <class T>
-    class ParabolicBlend;
-
+    template< class T > class ParabolicBlend;
 
     /**
      * @brief Implements RampInterpolator for rw::math::Rotation3D<T>
@@ -334,15 +322,16 @@ namespace rw { namespace trajectory {
      * See rw::math::Quaternion::slerp for further information.
      *
      */
-    template <class T>
-    class RampInterpolator<rw::math::Rotation3D<T> > : public Interpolator<rw::math::Rotation3D<T> >
+    template< class T >
+    class RampInterpolator< rw::math::Rotation3D< T > >
+        : public Interpolator< rw::math::Rotation3D< T > >
     {
-    public:
-		//! @brief smart pointer type to this class
-		typedef typename rw::core::Ptr<RampInterpolator<rw::math::Rotation3D<T> > > Ptr;
-		
-		//! @brief smart pointer type const instance of class
-		typedef typename rw::core::Ptr<const RampInterpolator<rw::math::Rotation3D<T> > > CPtr;
+      public:
+        //! @brief smart pointer type to this class
+        typedef typename rw::core::Ptr< RampInterpolator< rw::math::Rotation3D< T > > > Ptr;
+
+        //! @brief smart pointer type const instance of class
+        typedef typename rw::core::Ptr< const RampInterpolator< rw::math::Rotation3D< T > > > CPtr;
 
         /**
          * @brief Construct RampInterpolator starting a \b start and finishing in \b end.
@@ -352,20 +341,18 @@ namespace rw { namespace trajectory {
          * @param velLimit [in] the max rotational velocity in rad/sec
          * @param accLimit [in] the max rotational acceleration in rad/sec^2
          */
-        RampInterpolator(const rw::math::Rotation3D<T>& start,
-                           const rw::math::Rotation3D<T>& end,
-                           double velLimit,
-                           double accLimit):
-            _start( start ),
-            _end( end ),
-            _b( inverse(start)*end ),
-            _ramp(rw::math::Q(1,0.0), rw::math::Q(1,_b.angle()), rw::math::Q(1,velLimit), rw::math::Q(1,accLimit) )
+        RampInterpolator (const rw::math::Rotation3D< T >& start,
+                          const rw::math::Rotation3D< T >& end, double velLimit, double accLimit) :
+            _start (start),
+            _end (end), _b (inverse (start) * end),
+            _ramp (rw::math::Q (1, 0.0), rw::math::Q (1, _b.angle ()), rw::math::Q (1, velLimit),
+                   rw::math::Q (1, accLimit))
         {
-            double angle = _b.angle();
-            if(angle>0.000001){
-                _b[0] = _b[0]/angle;
-                _b[1] = _b[1]/angle;
-                _b[2] = _b[2]/angle;
+            double angle = _b.angle ();
+            if (angle > 0.000001) {
+                _b[0] = _b[0] / angle;
+                _b[1] = _b[1] / angle;
+                _b[2] = _b[2] / angle;
             }
         }
 
@@ -374,12 +361,12 @@ namespace rw { namespace trajectory {
          * @copydoc Interpolator::x()
          * @endcond
          */
-        rw::math::Rotation3D<T> x(double t) const
+        rw::math::Rotation3D< T > x (double t) const
         {
-            rw::math::Rotation3D<T> srot= _start.toRotation3D();
-            double scale = _ramp.x(t)(0);
-            rw::math::EAA<T> rot(_b[0]*scale, _b[1]*scale, _b[2]*scale);
-            return srot* rot.toRotation3D();
+            rw::math::Rotation3D< T > srot = _start.toRotation3D ();
+            double scale                   = _ramp.x (t) (0);
+            rw::math::EAA< T > rot (_b[0] * scale, _b[1] * scale, _b[2] * scale);
+            return srot * rot.toRotation3D ();
         }
 
         /**
@@ -387,11 +374,11 @@ namespace rw { namespace trajectory {
          * @copydoc Interpolator::dx()
          * @endcond
          */
-        rw::math::Rotation3D<T> dx(double t) const
+        rw::math::Rotation3D< T > dx (double t) const
         {
-            double scale = _ramp.dx(t)(0);
-            rw::math::EAA<T> rot(_b[0]*scale, _b[1]*scale, _b[2]*scale);
-            return rot.toRotation3D();
+            double scale = _ramp.dx (t) (0);
+            rw::math::EAA< T > rot (_b[0] * scale, _b[1] * scale, _b[2] * scale);
+            return rot.toRotation3D ();
         }
 
         /**
@@ -399,37 +386,37 @@ namespace rw { namespace trajectory {
          * @copydoc Interpolator::ddx()
          * @endcond
          */
-        rw::math::Rotation3D<T> ddx(double t) const
+        rw::math::Rotation3D< T > ddx (double t) const
         {
-            double scale = _ramp.ddx(t)(0);
-            rw::math::EAA<T> rot(_b[0]*scale, _b[1]*scale, _b[2]*scale);
-            return rot.toRotation3D();
+            double scale = _ramp.ddx (t) (0);
+            rw::math::EAA< T > rot (_b[0] * scale, _b[1] * scale, _b[2] * scale);
+            return rot.toRotation3D ();
         }
 
         /**
          * @brief Returns the start rotation of the interpolator
          * @return The start rotation of the interpolator
          */
-        rw::math::Rotation3D<T> getStart() const { return _start.toRotation3D(); }
+        rw::math::Rotation3D< T > getStart () const { return _start.toRotation3D (); }
 
         /**
          * @brief Returns the end rotation of the interpolator
          * @return The end rotation of the interpolator
          */
-        rw::math::Rotation3D<T> getEnd() const { return _end.toRotation3D(); }
+        rw::math::Rotation3D< T > getEnd () const { return _end.toRotation3D (); }
 
         /**
          * @cond
          * @copydoc Interpolator::duration()
          * @endcond
          */
-        double duration() const { return _ramp.duration(); }
+        double duration () const { return _ramp.duration (); }
 
-    private:
-        rw::math::EAA<T> _start;
-        rw::math::EAA<T> _end;
-        rw::math::EAA<T> _b;
-        RampInterpolator<rw::math::Q> _ramp;
+      private:
+        rw::math::EAA< T > _start;
+        rw::math::EAA< T > _end;
+        rw::math::EAA< T > _b;
+        RampInterpolator< rw::math::Q > _ramp;
 
         double _duration;
     };
@@ -440,15 +427,16 @@ namespace rw { namespace trajectory {
      * The interpolation of Vector3D<> is done over the cartsean distance so that the
      * limits are defined in cartesean space and not on the individual axis of Vector3D
      */
-    template <class T>
-    class RampInterpolator<rw::math::Vector3D<T> > : public Interpolator<rw::math::Vector3D<T> >
+    template< class T >
+    class RampInterpolator< rw::math::Vector3D< T > >
+        : public Interpolator< rw::math::Vector3D< T > >
     {
-    public:
+      public:
         //! @brief smart pointer type to this class
-        typedef typename rw::core::Ptr<RampInterpolator<rw::math::Vector3D<T> > > Ptr;
+        typedef typename rw::core::Ptr< RampInterpolator< rw::math::Vector3D< T > > > Ptr;
 
         //! @brief smart pointer type const instance of class
-        typedef typename rw::core::Ptr<const RampInterpolator<rw::math::Vector3D<T> > > CPtr;
+        typedef typename rw::core::Ptr< const RampInterpolator< rw::math::Vector3D< T > > > CPtr;
 
         /**
          * @brief Construct RampInterpolator starting a \b start and finishing in \b end.
@@ -458,25 +446,22 @@ namespace rw { namespace trajectory {
          * @param velLimit [in] the max velocity in m/sec
          * @param accLimit [in] the max acceleration in m/sec^2
          */
-        RampInterpolator(const rw::math::Vector3D<T>& start,
-                           const rw::math::Vector3D<T>& end,
-                           double velLimit,
-                           double accLimit):
-            _start( start ),
-            _end( end ),
-            _b( end-start ),
-            _ramp(rw::math::Q(1,0.0), rw::math::Q(1,_b.norm2()), rw::math::Q(1,velLimit), rw::math::Q(1,accLimit) )
-        {
-        }
+        RampInterpolator (const rw::math::Vector3D< T >& start, const rw::math::Vector3D< T >& end,
+                          double velLimit, double accLimit) :
+            _start (start),
+            _end (end), _b (end - start),
+            _ramp (rw::math::Q (1, 0.0), rw::math::Q (1, _b.norm2 ()), rw::math::Q (1, velLimit),
+                   rw::math::Q (1, accLimit))
+        {}
 
         /**
          * @cond
          * @copydoc Interpolator::x()
          * @endcond
          */
-        rw::math::Vector3D<T> x(double t) const
+        rw::math::Vector3D< T > x (double t) const
         {
-            return _start + normalize(_b)*_ramp.x(t)(0);
+            return _start + normalize (_b) * _ramp.x (t) (0);
         }
 
         /**
@@ -484,64 +469,58 @@ namespace rw { namespace trajectory {
          * @copydoc Interpolator::dx()
          * @endcond
          */
-        rw::math::Vector3D<T> dx(double t) const
-        {
-            return normalize(_b)*_ramp.dx(t)(0);
-        }
+        rw::math::Vector3D< T > dx (double t) const { return normalize (_b) * _ramp.dx (t) (0); }
 
         /**
          * @cond
          * @copydoc Interpolator::ddx()
          * @endcond
          */
-        rw::math::Vector3D<T> ddx(double t) const
-        {
-            return normalize(_b)*_ramp.ddx(t)(0);
-        }
+        rw::math::Vector3D< T > ddx (double t) const { return normalize (_b) * _ramp.ddx (t) (0); }
 
         /**
          * @brief Returns the start rotation of the interpolator
          * @return The start rotation of the interpolator
          */
-        rw::math::Vector3D<T> getStart() const { return _start; }
+        rw::math::Vector3D< T > getStart () const { return _start; }
 
         /**
          * @brief Returns the end rotation of the interpolator
          * @return The end rotation of the interpolator
          */
-        rw::math::Vector3D<T> getEnd() const { return _end; }
+        rw::math::Vector3D< T > getEnd () const { return _end; }
 
         /**
          * @cond
          * @copydoc Interpolator::duration()
          * @endcond
          */
-        double duration() const { return _ramp.duration(); }
+        double duration () const { return _ramp.duration (); }
 
-    private:
-        rw::math::Vector3D<T> _start;
-        rw::math::Vector3D<T> _end;
-        rw::math::Vector3D<T> _b;
-        RampInterpolator<rw::math::Q> _ramp;
+      private:
+        rw::math::Vector3D< T > _start;
+        rw::math::Vector3D< T > _end;
+        rw::math::Vector3D< T > _b;
+        RampInterpolator< rw::math::Q > _ramp;
 
         double _duration;
     };
-
 
     /**
      * @brief Implements RampInterpolator for rw::math::Transform3D<T>
      *
      * The interpolation of rotation is made using Quaternions.
      */
-    template <class T>
-    class RampInterpolator<rw::math::Transform3D<T> > : public Interpolator<rw::math::Transform3D<T> >
+    template< class T >
+    class RampInterpolator< rw::math::Transform3D< T > >
+        : public Interpolator< rw::math::Transform3D< T > >
     {
-     public:
-		 //! @brief smart pointer type to this class
-		typedef typename rw::core::Ptr<RampInterpolator<rw::math::Transform3D<T> > > Ptr;
+      public:
+        //! @brief smart pointer type to this class
+        typedef typename rw::core::Ptr< RampInterpolator< rw::math::Transform3D< T > > > Ptr;
 
-		//! @brief smart pointer type const instance of class
-		typedef typename rw::core::Ptr<const RampInterpolator<rw::math::Transform3D<T> > > CPtr;
+        //! @brief smart pointer type const instance of class
+        typedef typename rw::core::Ptr< const RampInterpolator< rw::math::Transform3D< T > > > CPtr;
 
         /**
          * @brief Construct RampInterpolator starting a \b start and finishing in \b end
@@ -559,18 +538,14 @@ namespace rw { namespace trajectory {
          * @param angVelLimit documentation missing !
          * @param angAccLimit  documentation missing !
          */
-        RampInterpolator(const rw::math::Transform3D<T>& start,
-                           const rw::math::Transform3D<T>& end,
-                           double linVelLimit,
-                           double linAccLimit,
-                           double angVelLimit,
-                           double angAccLimit):
-            _start(start),
-            _end(end),
-            _posInterpolator(start.P(), end.P(), linVelLimit, linAccLimit),
-            _rotInterpolator(start.R(), end.R(), angVelLimit, angAccLimit)
+        RampInterpolator (const rw::math::Transform3D< T >& start,
+                          const rw::math::Transform3D< T >& end, double linVelLimit,
+                          double linAccLimit, double angVelLimit, double angAccLimit) :
+            _start (start),
+            _end (end), _posInterpolator (start.P (), end.P (), linVelLimit, linAccLimit),
+            _rotInterpolator (start.R (), end.R (), angVelLimit, angAccLimit)
         {
-            _duration = std::max(_posInterpolator.duration(), _rotInterpolator.duration() );
+            _duration = std::max (_posInterpolator.duration (), _rotInterpolator.duration ());
         }
 
         /**
@@ -578,11 +553,11 @@ namespace rw { namespace trajectory {
          * @copydoc Interpolator::x()
          * @endcond
          */
-        rw::math::Transform3D<T> x(double t) const
+        rw::math::Transform3D< T > x (double t) const
         {
-            return rw::math::Transform3D<T>(_posInterpolator.x(t), _rotInterpolator.x(t));
-            //std::cout<<"Pose = "<<_interpolator.x(t)<<std::endl;
-            //return InterpolatorUtil::vecToTrans<V,T>(_interpolator.x(t));
+            return rw::math::Transform3D< T > (_posInterpolator.x (t), _rotInterpolator.x (t));
+            // std::cout<<"Pose = "<<_interpolator.x(t)<<std::endl;
+            // return InterpolatorUtil::vecToTrans<V,T>(_interpolator.x(t));
         }
 
         /**
@@ -590,10 +565,10 @@ namespace rw { namespace trajectory {
          * @copydoc Interpolator::dx()
          * @endcond
          */
-        rw::math::Transform3D<T> dx(double t) const
+        rw::math::Transform3D< T > dx (double t) const
         {
-            return rw::math::Transform3D<T>(_posInterpolator.dx(t), _rotInterpolator.dx(t));
-            //return InterpolatorUtil::vecToTrans<V,T>(_interpolator.dx(t));
+            return rw::math::Transform3D< T > (_posInterpolator.dx (t), _rotInterpolator.dx (t));
+            // return InterpolatorUtil::vecToTrans<V,T>(_interpolator.dx(t));
         }
 
         /**
@@ -601,38 +576,38 @@ namespace rw { namespace trajectory {
          * @copydoc Interpolator::ddx()
          * @endcond
          */
-        rw::math::Transform3D<T> ddx(double t) const
+        rw::math::Transform3D< T > ddx (double t) const
         {
-            return rw::math::Transform3D<T>(_posInterpolator.ddx(t), _rotInterpolator.ddx(t));
-            //return InterpolatorUtil::vecToTrans<V,T>(_interpolator.ddx(t));
+            return rw::math::Transform3D< T > (_posInterpolator.ddx (t), _rotInterpolator.ddx (t));
+            // return InterpolatorUtil::vecToTrans<V,T>(_interpolator.ddx(t));
         }
 
         /**
          * @brief Returns the start position of the interpolator
          * @return The start position of the interpolator
          */
-        rw::math::Transform3D<T> getStart() const { return _start; }
+        rw::math::Transform3D< T > getStart () const { return _start; }
 
         /**
          * @brief Returns the end position of the interpolator
          * @return The end position of the interpolator
          */
-        rw::math::Transform3D<T> getEnd() const { return _end; }
+        rw::math::Transform3D< T > getEnd () const { return _end; }
 
         /**
          * @cond
          * @copydoc Interpolator::duration()
          * @endcond
          */
-        double duration() const { return _duration; }
-
+        double duration () const { return _duration; }
 
         /**
          * @brief Returns RampInterpolator for the position part of the transform
          *
          * @note This method is needed by ParabolicBlend
          */
-		const RampInterpolator<rw::math::Vector3D<T> >& getPositionInterpolator() const {
+        const RampInterpolator< rw::math::Vector3D< T > >& getPositionInterpolator () const
+        {
             return _posInterpolator;
         }
 
@@ -641,30 +616,31 @@ namespace rw { namespace trajectory {
          *
          * @note This method is needed by ParabolicBlend
          */
-		const RampInterpolator<rw::math::Rotation3D<T> >& getRotationInterpolator() const {
+        const RampInterpolator< rw::math::Rotation3D< T > >& getRotationInterpolator () const
+        {
             return _rotInterpolator;
         }
 
-    private:
-        rw::math::Transform3D<T> _start;
-        rw::math::Transform3D<T> _end;
-        RampInterpolator<rw::math::Vector3D<> > _posInterpolator;
-        RampInterpolator<rw::math::Rotation3D<> > _rotInterpolator;
+      private:
+        rw::math::Transform3D< T > _start;
+        rw::math::Transform3D< T > _end;
+        RampInterpolator< rw::math::Vector3D<> > _posInterpolator;
+        RampInterpolator< rw::math::Rotation3D<> > _rotInterpolator;
         double _duration;
     };
 
     /**
      * @brief RampInterpolator with T=rw:math::Q
      */
-    typedef RampInterpolator<rw::math::Q> QRampInterpolator;
+    typedef RampInterpolator< rw::math::Q > QRampInterpolator;
 
     /**
      * @brief RampInterpolator with T=rw:math::Transform3D<>
      */
-    typedef RampInterpolator<rw::math::Transform3D<> > CartesianRampInterpolator;
+    typedef RampInterpolator< rw::math::Transform3D<> > CartesianRampInterpolator;
 
     /** @} */
 
-}} // end namespaces
+}}    // namespace rw::trajectory
 
-#endif // end include guard
+#endif    // end include guard

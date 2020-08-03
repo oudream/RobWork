@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RW_PATHPLANNING_QEDGECONSTRAINTINCREMENTAL_HPP
 #define RW_PATHPLANNING_QEDGECONSTRAINTINCREMENTAL_HPP
 
@@ -24,13 +23,15 @@
 */
 
 #include <rw/core/Ptr.hpp>
-#include <rw/math/Q.hpp>
 #include <rw/math/Metric.hpp>
+#include <rw/math/Q.hpp>
 
-namespace rw { namespace models { class Device; } }
+namespace rw { namespace models {
+    class Device;
+}}    // namespace rw::models
 
 namespace rw { namespace pathplanning {
-	class QConstraint;
+    class QConstraint;
 
     /** @addtogroup pathplanning */
     /*@{*/
@@ -56,14 +57,14 @@ namespace rw { namespace pathplanning {
     */
     class QEdgeConstraintIncremental
     {
-    public:
-		//! @brief smart pointer type to this class
-		typedef rw::core::Ptr<QEdgeConstraintIncremental> Ptr;
+      public:
+        //! @brief smart pointer type to this class
+        typedef rw::core::Ptr< QEdgeConstraintIncremental > Ptr;
 
         /**
            @brief Destructor
         */
-        virtual ~QEdgeConstraintIncremental();
+        virtual ~QEdgeConstraintIncremental ();
 
         /**
            @brief True if the path from \b start to \b end can't be traversed.
@@ -71,15 +72,13 @@ namespace rw { namespace pathplanning {
            @param start [in] Start configuration.
            @param end [in] End configuration.
         */
-        bool inCollision(
-            const rw::math::Q& start,
-            const rw::math::Q& end) const;
+        bool inCollision (const rw::math::Q& start, const rw::math::Q& end) const;
 
         /**
            @brief True if the path connecting the start and end configuration
            can't be traversed.
         */
-        bool inCollision();
+        bool inCollision ();
 
         /**
            @brief Non-negative measure of the amount of the path that still
@@ -92,7 +91,7 @@ namespace rw { namespace pathplanning {
 
            The cost of a fully verified edge can be 0, but does not have to be.
         */
-        double inCollisionCost() const;
+        double inCollisionCost () const;
 
         /**
            @brief Perform a partial check of the path and return true if a
@@ -102,7 +101,7 @@ namespace rw { namespace pathplanning {
            partial checks. The isFullyChecked() method returns true when there
            are no more partial checks to be done.
         */
-        bool inCollisionPartialCheck();
+        bool inCollisionPartialCheck ();
 
         /**
            @brief True if the path has been fully checked.
@@ -111,7 +110,7 @@ namespace rw { namespace pathplanning {
            inCollisionPartialCheck() until inCollisionPartialCheck() returns
            false or isFullyChecked() returns true.
         */
-        bool isFullyChecked() const;
+        bool isFullyChecked () const;
 
         /**
            @brief An edge constraint for a pair of configurations.
@@ -119,25 +118,24 @@ namespace rw { namespace pathplanning {
            @param start [in] Start configuration of path
            @param end [in] End configuration of path
         */
-		QEdgeConstraintIncremental::Ptr instance(
-            const rw::math::Q& start,
-            const rw::math::Q& end) const;
+        QEdgeConstraintIncremental::Ptr instance (const rw::math::Q& start,
+                                                  const rw::math::Q& end) const;
 
         /**
            @brief The start configuration of the path.
         */
-        const rw::math::Q& getStart() const { return _start; }
+        const rw::math::Q& getStart () const { return _start; }
 
         /**
            @brief The end configuration of the path.
         */
-        const rw::math::Q& getEnd() const { return _end; }
+        const rw::math::Q& getEnd () const { return _end; }
 
         /**
            @brief Reset the object to use a different pair of start and end
            configurations.
         */
-        void reset(const rw::math::Q& start, const rw::math::Q& end);
+        void reset (const rw::math::Q& start, const rw::math::Q& end);
 
         // Here we have the factory methods.
 
@@ -160,10 +158,9 @@ namespace rw { namespace pathplanning {
            Start and end configurations for this initial planner are set to the
            empty configuration.
         */
-		static QEdgeConstraintIncremental::Ptr make(
-			rw::core::Ptr<QConstraint> constraint,
-			rw::math::QMetric::Ptr metric,
-            double resolution = 1);
+        static QEdgeConstraintIncremental::Ptr make (rw::core::Ptr< QConstraint > constraint,
+                                                     rw::math::QMetric::Ptr metric,
+                                                     double resolution = 1);
 
         /**
            @brief Default edge constraint for a configuration constraint and a
@@ -173,31 +170,28 @@ namespace rw { namespace pathplanning {
            configuration space and are checked by a default collision checking
            resolution.
         */
-		static QEdgeConstraintIncremental::Ptr makeDefault(
-			rw::core::Ptr<QConstraint> constraint,
-			rw::core::Ptr<rw::models::Device> device);
+        static QEdgeConstraintIncremental::Ptr
+        makeDefault (rw::core::Ptr< QConstraint > constraint,
+                     rw::core::Ptr< rw::models::Device > device);
 
         /**
            @brief A fixed edge constraint.
 
            The fixed edge constraint always returns \b value from inCollision().
         */
-        static
-			QEdgeConstraintIncremental::Ptr makeFixed(bool value);
+        static QEdgeConstraintIncremental::Ptr makeFixed (bool value);
 
         // We can implement a bunch of other instances, for example an instance
         // parameterized by an interpolator.
 
-    protected:
+      protected:
         /**
            @brief Constructor provided for subclasses.
 
            @param start [in] Start configuration of path
            @param end [in] End configuration of path
         */
-        QEdgeConstraintIncremental(
-            const rw::math::Q& start,
-            const rw::math::Q& end);
+        QEdgeConstraintIncremental (const rw::math::Q& start, const rw::math::Q& end);
 
         /**
            @brief Subclass implementation of the inCollision() method.
@@ -205,9 +199,7 @@ namespace rw { namespace pathplanning {
            By default the method is implemented in terms of instance() and
            inCollision().
         */
-        virtual bool doInCollision(
-            const rw::math::Q& start,
-            const rw::math::Q& end) const;
+        virtual bool doInCollision (const rw::math::Q& start, const rw::math::Q& end) const;
 
         /**
            @brief Subclass implementation of the inCollision() method.
@@ -215,31 +207,30 @@ namespace rw { namespace pathplanning {
            By default this method is implemented in terms of
            inCollisionPartialCheck() and isFullyChecked().
         */
-        virtual bool doInCollision();
+        virtual bool doInCollision ();
 
         /**
            @brief Subclass implementation of the inCollisionCost() method.
         */
-        virtual double doInCollisionCost() const = 0;
+        virtual double doInCollisionCost () const = 0;
 
         /**
            @brief Subclass implementation of the inCollisionPartialCheck() method.
 
            By default this method is implemented in terms of inCollision().
         */
-        virtual bool doInCollisionPartialCheck();
+        virtual bool doInCollisionPartialCheck ();
 
         /**
            @brief Subclass implementation of the isFullyChecked() method.
         */
-        virtual bool doIsFullyChecked() const = 0;
+        virtual bool doIsFullyChecked () const = 0;
 
         /**
            @brief Subclass implementation of the instance() method.
         */
-		virtual QEdgeConstraintIncremental::Ptr doClone(
-            const rw::math::Q& start,
-            const rw::math::Q& end) const = 0;
+        virtual QEdgeConstraintIncremental::Ptr doClone (const rw::math::Q& start,
+                                                         const rw::math::Q& end) const = 0;
 
         /**
            @brief Subclass implementation of the reset() method.
@@ -248,18 +239,18 @@ namespace rw { namespace pathplanning {
            called, and therefore the start and end configurations are not passed
            to doReset().
         */
-        virtual void doReset() = 0;
+        virtual void doReset () = 0;
 
-    private:
-        QEdgeConstraintIncremental(const QEdgeConstraintIncremental&);
-        QEdgeConstraintIncremental& operator=(const QEdgeConstraintIncremental&);
+      private:
+        QEdgeConstraintIncremental (const QEdgeConstraintIncremental&);
+        QEdgeConstraintIncremental& operator= (const QEdgeConstraintIncremental&);
 
-    private:
+      private:
         rw::math::Q _start;
         rw::math::Q _end;
     };
 
     /*@}*/
-}} // end namespaces
+}}    // namespace rw::pathplanning
 
-#endif // end include guard
+#endif    // end include guard

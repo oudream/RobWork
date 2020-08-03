@@ -25,44 +25,44 @@
  */
 
 #include "Mathematica.hpp"
+
 #include <rw/core/Ptr.hpp>
 
-namespace rwlibs {
-namespace mathematica {
-//! @addtogroup mathematica
+namespace rwlibs { namespace mathematica {
+    //! @addtogroup mathematica
 
-//! @{
-//! @brief A Mathematica WSTP %TextPacket.
-class TextPacket: public Mathematica::Packet {
-public:
-	//! @brief Smart pointer type.
-	typedef rw::core::Ptr<TextPacket> Ptr;
+    //! @{
+    //! @brief A Mathematica WSTP %TextPacket.
+    class TextPacket : public Mathematica::Packet
+    {
+      public:
+        //! @brief Smart pointer type.
+        typedef rw::core::Ptr< TextPacket > Ptr;
 
-	/**
-	 * @brief Construct new packet.
-	 * @param string [in] the string argument.
-	 */
-	TextPacket(const Mathematica::String& string);
+        /**
+         * @brief Construct new packet.
+         * @param string [in] the string argument.
+         */
+        TextPacket (const Mathematica::String& string);
 
-	//! @brief Destructor.
-	virtual ~TextPacket();
+        //! @brief Destructor.
+        virtual ~TextPacket ();
 
-	/**
-	 * @brief Get the string stored in the packet.
-	 * @return the string.
-	 */
-	const Mathematica::String& string();
+        /**
+         * @brief Get the string stored in the packet.
+         * @return the string.
+         */
+        const Mathematica::String& string ();
 
-	//! @copydoc Mathematica::FunctionBase::getArguments
-	std::list<rw::core::Ptr<const Mathematica::Expression> > getArguments() const;
+        //! @copydoc Mathematica::FunctionBase::getArguments
+        std::list< rw::core::Ptr< const Mathematica::Expression > > getArguments () const;
 
-	//! @copydoc Mathematica::Expression::clone
-	Mathematica::Expression::Ptr clone() const;
+        //! @copydoc Mathematica::Expression::clone
+        Mathematica::Expression::Ptr clone () const;
 
-private:
-	const Mathematica::String _string;
-};
-//! @}
-} /* namespace mathematica */
-} /* namespace rwlibs */
+      private:
+        const Mathematica::String _string;
+    };
+    //! @}
+}}     // namespace rwlibs::mathematica
 #endif /* RWLIBS_MATHEMATICA_TEXTPACKET_HPP_ */

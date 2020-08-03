@@ -19,7 +19,6 @@
 
 #include "SceneCamera.hpp"
 
-
 #include <map>
 #include <stack>
 
@@ -176,26 +175,25 @@ void SceneGraph::traverse (SceneNode::Ptr& root, NodeVisitor& visitor, NodeVisit
                            const NodeFilter& filter)
 {
     // traverse from root node.
-    std::stack<NodeP> nodeStack;
-    nodeStack.push( NodeP(root,NULL, false) );
+    std::stack< NodeP > nodeStack;
+    nodeStack.push (NodeP (root, NULL, false));
 
-    while(!nodeStack.empty()){
-        NodeP &npair = nodeStack.top();
-        if(npair.visited) {
-            nodeStack.pop();
-            postvisitor(npair._first, npair._second);
+    while (!nodeStack.empty ()) {
+        NodeP& npair = nodeStack.top ();
+        if (npair.visited) {
+            nodeStack.pop ();
+            postvisitor (npair._first, npair._second);
 
             continue;
         }
 
         npair.visited = true;
-        visitor(npair._first, npair._second);
-        if(GroupNode* gnode = npair._first->asGroupNode()){
-            for(SceneNode::Ptr& n: gnode->_childNodes){
-                if( filter(n) )
+        visitor (npair._first, npair._second);
+        if (GroupNode* gnode = npair._first->asGroupNode ()) {
+            for (SceneNode::Ptr& n : gnode->_childNodes) {
+                if (filter (n))
                     continue;
-                nodeStack.push( NodeP(n, npair._first, false) );
-
+                nodeStack.push (NodeP (n, npair._first, false));
             }
         }
     }

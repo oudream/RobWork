@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RW_LOADERS_PATHLOADER_HPP
 #define RW_LOADERS_PATHLOADER_HPP
 
@@ -23,13 +22,15 @@
  * @file PathLoader.hpp
  */
 
+#include <rw/trajectory/Path.hpp>
+#include <rw/trajectory/Timed.hpp>
+
 #include <string>
 
-#include <rw/trajectory/Timed.hpp>
-#include <rw/trajectory/Path.hpp>
-
 // Forward declarations
-namespace rw { namespace models { class WorkCell; }}
+namespace rw { namespace models {
+    class WorkCell;
+}}    // namespace rw::models
 
 namespace rw { namespace loaders {
 
@@ -46,26 +47,22 @@ namespace rw { namespace loaders {
      */
     class PathLoader
     {
-    public:
-
-    	/**
-    	 * @brief store a QPath to file
-    	 * @param path
-    	 * @param file
-    	 */
-        static void storePath(
-            const rw::trajectory::QPath& path,
-            const std::string& file);
+      public:
+        /**
+         * @brief store a QPath to file
+         * @param path
+         * @param file
+         */
+        static void storePath (const rw::trajectory::QPath& path, const std::string& file);
 
         /**
          * @brief Store the sequence \b path of \b workcell to the file named \b file.
          *
          *  See also loadTimedStatePath().
          */
-        static void storeTimedStatePath(
-            const rw::models::WorkCell& workcell,
-            const rw::trajectory::TimedStatePath& path,
-            const std::string& file);
+        static void storeTimedStatePath (const rw::models::WorkCell& workcell,
+                                         const rw::trajectory::TimedStatePath& path,
+                                         const std::string& file);
 
         /**
          * @brief Time stamp the sequence \b path of \b workcell and store it to
@@ -77,10 +74,9 @@ namespace rw { namespace loaders {
          * The time stamped sequence can be loaded again with
          * loadTimedStatePath().
          */
-        static void storeVelocityTimedStatePath(
-            const models::WorkCell& workcell,
-            const rw::trajectory::StatePath& path,
-            const std::string& file);
+        static void storeVelocityTimedStatePath (const models::WorkCell& workcell,
+                                                 const rw::trajectory::StatePath& path,
+                                                 const std::string& file);
 
         /**
          * @brief Loads a Path of robot configuration
@@ -91,7 +87,7 @@ namespace rw { namespace loaders {
          * @param file [in] file name
          * @return the path
          */
-        static rw::trajectory::QPath loadPath(const std::string& file);
+        static rw::trajectory::QPath loadPath (const std::string& file);
 
         /**
            @brief Load a sequence of states for \b workcell from the file named \b
@@ -102,11 +98,10 @@ namespace rw { namespace loaders {
 
            See also storeTimedStatePath().
         */
-        static rw::trajectory::TimedStatePath loadTimedStatePath(
-            const rw::models::WorkCell& workcell,
-            const std::string& file);
+        static rw::trajectory::TimedStatePath
+        loadTimedStatePath (const rw::models::WorkCell& workcell, const std::string& file);
 
-    //private:
+        // private:
         // Everything below we probably don't want to support: All we will
         // support is the loading and storing of time stamped paths.
         // JIMMY: hmm, i can use it ;)
@@ -116,10 +111,8 @@ namespace rw { namespace loaders {
          *
          *  See also loadStatePath().
          */
-        static void storeStatePath(
-            const models::WorkCell& workcell,
-            const rw::trajectory::StatePath& path,
-            const std::string& file);
+        static void storeStatePath (const models::WorkCell& workcell,
+                                    const rw::trajectory::StatePath& path, const std::string& file);
 
         /**
            @brief Load a sequence of states for \b workcell from the file named \b
@@ -130,12 +123,11 @@ namespace rw { namespace loaders {
 
            See also storeStatePath().
         */
-        static rw::trajectory::StatePath loadStatePath(
-            const models::WorkCell& workcell,
-            const std::string& file);
+        static rw::trajectory::StatePath loadStatePath (const models::WorkCell& workcell,
+                                                        const std::string& file);
     };
 
     /**@}*/
-}} // end namespaces
+}}    // namespace rw::loaders
 
-#endif // end include guard
+#endif    // end include guard

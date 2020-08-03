@@ -2,8 +2,6 @@
 
 #include <rw/math/Math.hpp>
 
-
-
 using namespace rw::geometry;
 
 TriMeshSurfaceSampler::TriMeshSurfaceSampler (rw::geometry::Geometry::Ptr geom) :

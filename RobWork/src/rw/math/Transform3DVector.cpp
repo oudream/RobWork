@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,13 +15,8 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #include "Transform3DVector.hpp"
 
-
-
-
 // some explicit template specifications
-template class rw::math::Transform3DVector<double>;
-template class rw::math::Transform3DVector<float>;
-
+template class rw::math::Transform3DVector< double >;
+template class rw::math::Transform3DVector< float >;

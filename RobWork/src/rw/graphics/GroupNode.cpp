@@ -17,8 +17,6 @@
 
 #include "GroupNode.hpp"
 
-
-
 using namespace rw::graphics;
 
 GroupNode::GroupNode (const std::string& name) : SceneNode (name, SceneNode::GroupType)

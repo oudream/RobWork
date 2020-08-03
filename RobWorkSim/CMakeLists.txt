@@ -126,7 +126,7 @@ install(FILES "${RWSIM_ROOT}/cmake/Modules/FindODE.cmake"
 install(FILES DESTINATION ${RWSIM_INSTALL_DIR}/cmake)
 
 # misc
-install(FILES LICENSE.txt NOTICE.txt ChangeLog.txt DESTINATION "${RWSIM_INSTALL_DIR}/")
+install(FILES LICENSE.txt NOTICE.txt DESTINATION "${RWSIM_INSTALL_DIR}/")
 
 install(
     EXPORT ${PROJECT_PREFIX}Targets

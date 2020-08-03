@@ -26,55 +26,58 @@
 
 #include "IntegratorTest.hpp"
 
-namespace rwsimlibs {
-namespace test {
-//! @addtogroup rwsimlibs_test
+namespace rwsimlibs { namespace test {
+    //! @addtogroup rwsimlibs_test
 
-//! @{
-/**
- * @brief Test for the motion when an undamped linear spring is used.
- *
- * The simulation is illustrated below:
- *
- * \image html tests/integrationSpring.gif "Animation of undamped spring motion."
- *
- * An analytical solution is given for this type of motion, which makes it possible to test how well the engines solve for undamped springs.
- */
-class IntegratorSpringTest: public IntegratorTest {
-public:
-	//! @brief Constructor.
-	IntegratorSpringTest();
+    //! @{
+    /**
+     * @brief Test for the motion when an undamped linear spring is used.
+     *
+     * The simulation is illustrated below:
+     *
+     * \image html tests/integrationSpring.gif "Animation of undamped spring motion."
+     *
+     * An analytical solution is given for this type of motion, which makes it possible to test how
+     * well the engines solve for undamped springs.
+     */
+    class IntegratorSpringTest : public IntegratorTest
+    {
+      public:
+        //! @brief Constructor.
+        IntegratorSpringTest ();
 
-	//! @brief Destructor.
-	virtual ~IntegratorSpringTest();
+        //! @brief Destructor.
+        virtual ~IntegratorSpringTest ();
 
-	//! @copydoc EngineTest::run
-	virtual void run(TestHandle::Ptr handle, const std::string& engineID, const rw::core::PropertyMap& parameters, rw::core::Ptr<rwsim::log::SimulatorLogScope> verbose = NULL);
+        //! @copydoc EngineTest::run
+        virtual void run (TestHandle::Ptr handle, const std::string& engineID,
+                          const rw::core::PropertyMap& parameters,
+                          rw::core::Ptr< rwsim::log::SimulatorLogScope > verbose = NULL);
 
-	//! @copydoc EngineTest::getRunTime
-	virtual double getRunTime() const;
+        //! @copydoc EngineTest::getRunTime
+        virtual double getRunTime () const;
 
-	//! @copydoc IntegratorTest::makeIntegratorDWC
-	virtual rw::core::Ptr<rwsim::dynamics::DynamicWorkCell> makeIntegratorDWC(const std::string& integratorType = "");
+        //! @copydoc IntegratorTest::makeIntegratorDWC
+        virtual rw::core::Ptr< rwsim::dynamics::DynamicWorkCell >
+        makeIntegratorDWC (const std::string& integratorType = "");
 
-	/**
-	 * @brief Get analytical reference position.
-	 * @param t [in] the time.
-	 * @return the reference position.
-	 */
-	static double referencePosition(double t);
+        /**
+         * @brief Get analytical reference position.
+         * @param t [in] the time.
+         * @return the reference position.
+         */
+        static double referencePosition (double t);
 
-	/**
-	 * @brief Get analytical reference velocity.
-	 * @param t [in] the time.
-	 * @return the reference velocity.
-	 */
-	static double referenceVelocity(double t);
+        /**
+         * @brief Get analytical reference velocity.
+         * @param t [in] the time.
+         * @return the reference velocity.
+         */
+        static double referenceVelocity (double t);
 
-private:
-	static void updateResults(const EngineLoopInfo& info);
-};
-//! @}
-} /* namespace test */
-} /* namespace rwsimlibs */
+      private:
+        static void updateResults (const EngineLoopInfo& info);
+    };
+    //! @}
+}}     // namespace rwsimlibs::test
 #endif /* RWSIMLIBS_TEST_INTEGRATORSPRINGTEST_HPP_ */

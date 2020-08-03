@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RWLIBS_ALGORITHMS_QPCONTROLLER_IKQPSOLVER_HPP
 #define RWLIBS_ALGORITHMS_QPCONTROLLER_IKQPSOLVER_HPP
 
@@ -25,13 +24,13 @@
 
 #include "QPController.hpp"
 
+#include <rw/core/PropertyMap.hpp>
 #include <rw/invkin/IterativeIK.hpp>
 #include <rw/kinematics/State.hpp>
-#include <rw/core/PropertyMap.hpp>
 
 namespace rw { namespace models {
     class SerialDevice;
-}} // end namespaces
+}}    // namespace rw::models
 
 namespace rwlibs { namespace algorithms {
 
@@ -53,8 +52,9 @@ namespace rwlibs { namespace algorithms {
      * Notice that the IKQPSolver is a local method. It there is thus no guarantee that
      * the solution returned will be the global least square.
      */
-    class IKQPSolver: public rw::invkin::IterativeIK {
-    public:
+    class IKQPSolver : public rw::invkin::IterativeIK
+    {
+      public:
         /**
          * @brief Constructs IKQPSolver for device
          *
@@ -63,30 +63,28 @@ namespace rwlibs { namespace algorithms {
          *
          * @param device [in] Device to solve for         * @param state [in] State of the workcell
          */
-        IKQPSolver(rw::models::SerialDevice* device,
-                   const rw::kinematics::State& state);
+        IKQPSolver (rw::models::SerialDevice* device, const rw::kinematics::State& state);
 
         /**
          * @copydoc rw::invkin::IterativeIK::solve
          */
-        std::vector<rw::math::Q> solve(const rw::math::Transform3D<>& baseTend,
-                                       const rw::kinematics::State& state) const;
+        std::vector< rw::math::Q > solve (const rw::math::Transform3D<>& baseTend,
+                                          const rw::kinematics::State& state) const;
 
-        void setCheckJointLimits(bool limit){};
-    private:
+        void setCheckJointLimits (bool limit){};
+
+      private:
         QPController _qpcontroller;
         const rw::models::SerialDevice* _device;
         rw::core::PropertyMap _properties;
         rw::kinematics::State _state;
         double _maxQuatStep;
 
-        bool performLocalSearch(const rw::models::SerialDevice *device,
-                       			const rw::math::Transform3D<> &bTed,
-                       			double maxError,
-                       			rw::kinematics::State &state,
-                       			unsigned int maxIter) const;
+        bool performLocalSearch (const rw::models::SerialDevice* device,
+                                 const rw::math::Transform3D<>& bTed, double maxError,
+                                 rw::kinematics::State& state, unsigned int maxIter) const;
     };
 
-}} // end namespaces
+}}    // namespace rwlibs::algorithms
 
-#endif // end include guard
+#endif    // end include guard

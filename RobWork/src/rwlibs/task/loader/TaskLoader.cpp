@@ -16,8 +16,10 @@
  ********************************************************************************/
 
 #include "TaskLoader.hpp"
-#include <RobWorkConfig.hpp>
+
 #include "DOMTaskLoader.hpp"
+
+#include <RobWorkConfig.hpp>
 #include <rw/core/Extension.hpp>
 #ifdef RW_HAVE_XERCES
 #include "XMLTaskLoader.hpp"
@@ -28,56 +30,62 @@
 using namespace rw::core;
 using namespace rwlibs::task;
 
-TaskLoader::Ptr TaskLoader::Factory::getTaskLoader(const std::string& format, const std::string& id) {
-	TaskLoader::Factory ep;
-	std::vector<Extension::Ptr> exts = ep.getExtensions();
-	for(Extension::Ptr ext : exts) {
-		if(!ext->getProperties().has(format))
-			continue;
-		if (!id.empty()) {
-			if (StringUtil::toUpper(ext->getId()) == StringUtil::toUpper(id))
-				return ext->getObject().cast<const TaskLoader>()->clone();
-		} else {
-			return ext->getObject().cast<const TaskLoader>()->clone();
-		}
-	}
-	if(StringUtil::toLower(format) == "xml") {
-		if (id.empty())
-			return rw::core::ownedPtr( new DOMTaskLoader() );
-		else if (StringUtil::toUpper(id) == "DOM")
-			return rw::core::ownedPtr( new DOMTaskLoader() );
+TaskLoader::Ptr TaskLoader::Factory::getTaskLoader (const std::string& format,
+                                                    const std::string& id)
+{
+    TaskLoader::Factory ep;
+    std::vector< Extension::Ptr > exts = ep.getExtensions ();
+    for (Extension::Ptr ext : exts) {
+        if (!ext->getProperties ().has (format))
+            continue;
+        if (!id.empty ()) {
+            if (StringUtil::toUpper (ext->getId ()) == StringUtil::toUpper (id))
+                return ext->getObject ().cast< const TaskLoader > ()->clone ();
+        }
+        else {
+            return ext->getObject ().cast< const TaskLoader > ()->clone ();
+        }
+    }
+    if (StringUtil::toLower (format) == "xml") {
+        if (id.empty ())
+            return rw::core::ownedPtr (new DOMTaskLoader ());
+        else if (StringUtil::toUpper (id) == "DOM")
+            return rw::core::ownedPtr (new DOMTaskLoader ());
 #ifdef RW_HAVE_XERCES
-		else if (StringUtil::toUpper(id) == "XERCES")
-			return rw::core::ownedPtr( new XMLTaskLoader() );
+        else if (StringUtil::toUpper (id) == "XERCES")
+            return rw::core::ownedPtr (new XMLTaskLoader ());
 #endif
-	}
-	return NULL;
+    }
+    return NULL;
 }
 
-bool TaskLoader::Factory::hasTaskLoader(const std::string& format) {
-	if(StringUtil::toLower(format) == "xml")
-		return true;
+bool TaskLoader::Factory::hasTaskLoader (const std::string& format)
+{
+    if (StringUtil::toLower (format) == "xml")
+        return true;
 
-	TaskLoader::Factory ep;
-	std::vector<Extension::Descriptor> exts = ep.getExtensionDescriptors();
-	for(Extension::Descriptor& ext : exts) {
-		if(!ext.getProperties().has(format))
-			continue;
-		return true;
-	}
-	return false;
+    TaskLoader::Factory ep;
+    std::vector< Extension::Descriptor > exts = ep.getExtensionDescriptors ();
+    for (Extension::Descriptor& ext : exts) {
+        if (!ext.getProperties ().has (format))
+            continue;
+        return true;
+    }
+    return false;
 }
 
-std::vector<std::string> TaskLoader::Factory::getSupportedFormats() {
-	std::set<std::string> ids;
-	TaskLoader::Factory ep;
-	std::vector<Extension::Descriptor> exts = ep.getExtensionDescriptors();
-	ids.insert("xml");
-	for(Extension::Descriptor& ext : exts) {
-		const PropertyMap& p = ext.getProperties();
-		for (PropertyMap::iterator it = p.getProperties().first; it != p.getProperties().second; it++) {
-			ids.insert(StringUtil::toLower((*it)->getIdentifier()));
-		}
-	}
-	return std::vector<std::string>(ids.begin(),ids.end());
+std::vector< std::string > TaskLoader::Factory::getSupportedFormats ()
+{
+    std::set< std::string > ids;
+    TaskLoader::Factory ep;
+    std::vector< Extension::Descriptor > exts = ep.getExtensionDescriptors ();
+    ids.insert ("xml");
+    for (Extension::Descriptor& ext : exts) {
+        const PropertyMap& p = ext.getProperties ();
+        for (PropertyMap::iterator it = p.getProperties ().first; it != p.getProperties ().second;
+             it++) {
+            ids.insert (StringUtil::toLower ((*it)->getIdentifier ()));
+        }
+    }
+    return std::vector< std::string > (ids.begin (), ids.end ());
 }

@@ -19,41 +19,47 @@
 
 using namespace rw::core;
 
-DOMPropertyMapFormat::Initializer::Initializer() {
-	static bool done = false;
-	if (!done) {
-		idPropertyMap();
-		idProperty();
-		idPropertyName();
-		idPropertyDescription();
-		idPropertyValue();
-		done = true;
-	}
+DOMPropertyMapFormat::Initializer::Initializer ()
+{
+    static bool done = false;
+    if (!done) {
+        idPropertyMap ();
+        idProperty ();
+        idPropertyName ();
+        idPropertyDescription ();
+        idPropertyValue ();
+        done = true;
+    }
 }
 
 const DOMPropertyMapFormat::Initializer DOMPropertyMapFormat::initializer;
 
-const std::string& DOMPropertyMapFormat::idPropertyMap() {
-	static const std::string id("PropertyMap");
-	return id;
+const std::string& DOMPropertyMapFormat::idPropertyMap ()
+{
+    static const std::string id ("PropertyMap");
+    return id;
 }
 
-const std::string& DOMPropertyMapFormat::idProperty() {
-	static const std::string id("Property");
-	return id;
+const std::string& DOMPropertyMapFormat::idProperty ()
+{
+    static const std::string id ("Property");
+    return id;
 }
 
-const std::string& DOMPropertyMapFormat::idPropertyName() {
-	static const std::string id("Name");
-	return id;
+const std::string& DOMPropertyMapFormat::idPropertyName ()
+{
+    static const std::string id ("Name");
+    return id;
 }
 
-const std::string& DOMPropertyMapFormat::idPropertyDescription() {
-	static const std::string id("Description");
-	return id;
+const std::string& DOMPropertyMapFormat::idPropertyDescription ()
+{
+    static const std::string id ("Description");
+    return id;
 }
 
-const std::string& DOMPropertyMapFormat::idPropertyValue() {
-	static const std::string id("Value");
-	return id;
+const std::string& DOMPropertyMapFormat::idPropertyValue ()
+{
+    static const std::string id ("Value");
+    return id;
 }

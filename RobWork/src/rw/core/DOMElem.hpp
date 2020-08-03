@@ -128,7 +128,7 @@ namespace rw { namespace core {
          * thrown.
          */
         virtual rw::core::Ptr< DOMElem > getChild (const std::string& name,
-                                                     bool optional = false) = 0;
+                                                   bool optional = false) = 0;
 
         /**
          * @brief get a attribute with a specific name. If more attributes with the same name occur
@@ -141,7 +141,7 @@ namespace rw { namespace core {
          * thrown.
          */
         virtual rw::core::Ptr< DOMElem > getAttribute (const std::string& name,
-                                                         bool optional = false) = 0;
+                                                       bool optional = false) = 0;
 
         /**
          * @brief test if this DOMElem has a child by name \b name.
@@ -448,6 +448,6 @@ namespace rw { namespace core {
  */
 namespace rw { namespace common {
     using namespace rw::core;
-}}
+}}    // namespace rw::common
 
 #endif

@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,47 +15,47 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #include "LogFileWriter.hpp"
 
 #include <rw/core/macros.hpp>
+
 #include <fstream>
 #include <iomanip>
 
 using namespace rw::common;
 
-LogFileWriter::LogFileWriter(const std::string& filename):
-	_tabLevel(0)
+LogFileWriter::LogFileWriter (const std::string& filename) : _tabLevel (0)
 {
     try {
-        _stream.open(filename.c_str());
-    } catch (const std::exception& exp) {
-        RW_THROW("Unable to open log file with message: "<<exp.what());
+        _stream.open (filename.c_str ());
     }
-    if (!_stream.is_open()) {
-        RW_THROW("Unable to open log file with message!");
+    catch (const std::exception& exp) {
+        RW_THROW ("Unable to open log file with message: " << exp.what ());
+    }
+    if (!_stream.is_open ()) {
+        RW_THROW ("Unable to open log file with message!");
     }
 }
 
-LogFileWriter::~LogFileWriter()
+LogFileWriter::~LogFileWriter ()
 {
-    flush();
-    _stream.close();
+    flush ();
+    _stream.close ();
 }
 
-
-void LogFileWriter::doWrite(const std::string& str)
+void LogFileWriter::doWrite (const std::string& str)
 {
-	_stream << std::setw(4*_tabLevel)<<std::setfill(' ')<<"";
-	_stream << str; 
-	_stream.flush();
+    _stream << std::setw (4 * _tabLevel) << std::setfill (' ') << "";
+    _stream << str;
+    _stream.flush ();
 }
 
-void LogFileWriter::doFlush()
+void LogFileWriter::doFlush ()
 {
-    _stream.flush();
+    _stream.flush ();
 }
 
-void LogFileWriter::doSetTabLevel(int tabLevel) {
-	_tabLevel = tabLevel;
+void LogFileWriter::doSetTabLevel (int tabLevel)
+{
+    _tabLevel = tabLevel;
 }

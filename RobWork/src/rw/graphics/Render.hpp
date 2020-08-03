@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RW_GRAPHICS_RENDER_HPP
 #define RW_GRAPHICS_RENDER_HPP
 
@@ -23,8 +22,9 @@
  * @file Render.hpp
  */
 
-#include <rw/core/Ptr.hpp>
 #include "DrawableNode.hpp"
+
+#include <rw/core/Ptr.hpp>
 namespace rw { namespace graphics {
 
     /** @addtogroup graphics */
@@ -35,10 +35,11 @@ namespace rw { namespace graphics {
      *
      * Classes that are able to render them self, may inherit from this class.
      */
-    class Render {
-    public:
+    class Render
+    {
+      public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr<Render> Ptr;
+        typedef rw::core::Ptr< Render > Ptr;
 
         /**
          * @brief when calling render on the draw mode or type
@@ -49,7 +50,7 @@ namespace rw { namespace graphics {
         /**
          * @brief destructor
          */
-        virtual ~Render(){};
+        virtual ~Render (){};
 
         /**
          * @brief draws the object.
@@ -57,20 +58,21 @@ namespace rw { namespace graphics {
          * @param type [in] the drawtype which is being used
          * @param alpha [in] the alpha value to render with
          */
-        virtual void draw(const DrawableNode::RenderInfo& info, DrawableNode::DrawType type, double alpha) const = 0;
+        virtual void draw (const DrawableNode::RenderInfo& info, DrawableNode::DrawType type,
+                           double alpha) const = 0;
 
-    protected:
-    	//! @brief Only instances of classes inheriting Render is allowed
-        Render(){};
+      protected:
+        //! @brief Only instances of classes inheriting Render is allowed
+        Render (){};
 
-    private:
-        Render(const Render&);
-        Render& operator=(const Render&);
+      private:
+        Render (const Render&);
+        Render& operator= (const Render&);
     };
     //! smart pointer type
-    typedef rw::core::Ptr<Render> RenderPtr;
+    typedef rw::core::Ptr< Render > RenderPtr;
 
     /*@}*/
-}} // end namespaces
+}}    // namespace rw::graphics
 
-#endif // end include guard
+#endif    // end include guard

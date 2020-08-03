@@ -15,59 +15,58 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RWLIBS_SIMULATION_KINEMATICSIMULATOR_HPP_
 #define RWLIBS_SIMULATION_KINEMATICSIMULATOR_HPP_
 
 //! @file KinematicSimulator.hpp
 
 #include "Simulator.hpp"
+
 #include <rw/core/Ptr.hpp>
 
-namespace rwlibs {
-namespace simulation {
-	class SimulatedSensor;
-	class SimulatedController;
+namespace rwlibs { namespace simulation {
+    class SimulatedSensor;
+    class SimulatedController;
 
     //! @addtogroup simulation
-	// @{
+    // @{
     /**
      * @brief interface of a kinematic simulator
      */
-    class KinematicSimulator: public Simulator {
-    public:
-    	//! smart pointer type of KinematicSimulator
-    	typedef rw::core::Ptr<KinematicSimulator> Ptr;
+    class KinematicSimulator : public Simulator
+    {
+      public:
+        //! smart pointer type of KinematicSimulator
+        typedef rw::core::Ptr< KinematicSimulator > Ptr;
 
-    	/**
+        /**
          * @brief add a simulated controller to the simulator
          * @param controller [in] the controller to be simulated
          */
-        virtual void addController(SimulatedController *controller);
+        virtual void addController (SimulatedController* controller);
 
         /**
          * @brief add a simulated sensor to the simulator
          * @param sensor [in] the sensor
          */
-        virtual void addSensor(SimulatedSensor *sensor);
+        virtual void addSensor (SimulatedSensor* sensor);
 
         /**
          * @brief remove a sensor from simulation
          * @param sensor [in] sensor that is to be removed
          */
-        virtual void removeSensor(SimulatedSensor *sensor);
+        virtual void removeSensor (SimulatedSensor* sensor);
 
         /**
          * @brief add a simulator that is to be controlled by this simulator
          * @param sim
          */
-        void addSimulator(Simulator *sim);
+        void addSimulator (Simulator* sim);
 
-    	//! @copydoc Simulator::step
-    	void step(double dt);
-
+        //! @copydoc Simulator::step
+        void step (double dt);
     };
     //! @}
-}}
+}}    // namespace rwlibs::simulation
 
 #endif /* KINEMATICSIMULATOR_HPP_ */

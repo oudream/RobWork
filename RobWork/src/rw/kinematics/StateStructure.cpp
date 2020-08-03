@@ -18,8 +18,8 @@
 #include "StateStructure.hpp"
 
 #include "FixedFrame.hpp"
-#include "State.hpp"
 #include "QState.hpp"
+#include "State.hpp"
 #include "StateSetup.hpp"
 #include "TreeState.hpp"
 
@@ -28,335 +28,348 @@
 using rw::math::Transform3D;
 using namespace rw::kinematics;
 
-StateStructure::StateStructure():
-    _version(0),
-    _root(NULL),
-    _stateSetupUniqueId(0)
+StateStructure::StateStructure () : _version (0), _root (NULL), _stateSetupUniqueId (0)
 {
-    _root = new FixedFrame("WORLD",Transform3D<>::identity());
+    _root = new FixedFrame ("WORLD", Transform3D<>::identity ());
     // now add the state data of the frame
     //_frames.push_back(_root);
-    addDataInternal(_root);
-    _frames[_root->getID()] = _root;
+    addDataInternal (_root);
+    _frames[_root->getID ()] = _root;
     // and setup the static frame-parent relationship
-    _root->setParent(NULL);
-    _frameIdxMap[_root->getName()] = _root->getID();
+    _root->setParent (NULL);
+    _frameIdxMap[_root->getName ()] = _root->getID ();
 
-    updateDefaultState();
+    updateDefaultState ();
 }
 
-StateStructure::~StateStructure()
+StateStructure::~StateStructure ()
 {
     // Make Sure that shared Frame pointers are not attached to this statestructure
-    for(size_t i = 0; i < _frames.size(); i++) {
-        //std::cout << "Frame[" << i+1 << "/" << _frames.size() << "]" << std::endl;
+    for (size_t i = 0; i < _frames.size (); i++) {
+        // std::cout << "Frame[" << i+1 << "/" << _frames.size() << "]" << std::endl;
         if (_frames[i] != nullptr) {
-            _frames[i]->setID(-1,NULL);
-            if(_frames[i]->getParent() != NULL) {
-                _frames[i]->getParent()->removeChild(_frames[i]);
-                _frames[i]->setParent(NULL);
+            _frames[i]->setID (-1, NULL);
+            if (_frames[i]->getParent () != NULL) {
+                _frames[i]->getParent ()->removeChild (_frames[i]);
+                _frames[i]->setParent (NULL);
             }
         }
     }
 }
 
-bool StateStructure::has(const StateData * const data){
-    const int id = data->getID();
-    return (id>=0 && id<getMaxID() && _allDatas[id]!=NULL);
+bool StateStructure::has (const StateData* const data)
+{
+    const int id = data->getID ();
+    return (id >= 0 && id < getMaxID () && _allDatas[id] != NULL);
 }
 
-void StateStructure::addData(StateData * const data){
+void StateStructure::addData (StateData* const data)
+{
+    addDataInternal (data);
 
-    addDataInternal(data);
+    updateDefaultState ();
 
-    updateDefaultState();
-
-    _stateDataAddedEvent.fire(data);
+    _stateDataAddedEvent.fire (data);
 }
 
-void StateStructure::addData(const rw::core::Ptr<StateData> data){
-    addDataInternal(data);
+void StateStructure::addData (const rw::core::Ptr< StateData > data)
+{
+    addDataInternal (data);
 
-    updateDefaultState();
+    updateDefaultState ();
 
-    _stateDataAddedEvent.fire(data.get());
+    _stateDataAddedEvent.fire (data.get ());
 }
 
-void StateStructure::addDataInternal(StateData * const data){
+void StateStructure::addDataInternal (StateData* const data)
+{
     // frame must not be in tree allready
-    if(has(data))
-        RW_THROW("The StateData has allready been added! State data can only be added once.");
+    if (has (data))
+        RW_THROW ("The StateData has allready been added! State data can only be added once.");
 
     _version++;
-    const int id = allocateDataID();
-    data->setID(id, this);
+    const int id = allocateDataID ();
+    data->setID (id, this);
     // There is no turning back. Ownership is forever taken.
-    rw::core::Ptr<StateData> sharedData( data );
-    _allDatas.at(id) = sharedData;
-    _currDatas.at(id) = sharedData;
-    _stateIdxMap[sharedData->getName()] = id;
+    rw::core::Ptr< StateData > sharedData (data);
+    _allDatas.at (id)                    = sharedData;
+    _currDatas.at (id)                   = sharedData;
+    _stateIdxMap[sharedData->getName ()] = id;
     // make room in the initial state data array
     // now frame must be in the tree
-    RW_ASSERT(has(data));
+    RW_ASSERT (has (data));
     // lastly update the default state
 }
 
-void StateStructure::addDataInternal(const rw::core::Ptr<StateData> data){
+void StateStructure::addDataInternal (const rw::core::Ptr< StateData > data)
+{
     // frame must not be in tree allready
-    if(has(data.get())){
-        RW_THROW("The StateData has allready been added! State data can only be added once. " << data->getName() << " ID: " << data->getID());
+    if (has (data.get ())) {
+        RW_THROW ("The StateData has allready been added! State data can only be added once. "
+                  << data->getName () << " ID: " << data->getID ());
     }
     _version++;
-    const int id = allocateDataID();
-    data->setID(id, this);
-    
-    rw::core::Ptr<StateData> sharedData = data;
-    _allDatas.at(id) = sharedData;
-    _currDatas.at(id) = sharedData;
-    _stateIdxMap[sharedData->getName()] = id;
+    const int id = allocateDataID ();
+    data->setID (id, this);
+
+    rw::core::Ptr< StateData > sharedData = data;
+    _allDatas.at (id)                     = sharedData;
+    _currDatas.at (id)                    = sharedData;
+    _stateIdxMap[sharedData->getName ()]  = id;
     // make room in the initial state data array
     // now frame must be in the tree
-    RW_ASSERT(has(data.get()));
+    RW_ASSERT (has (data.get ()));
     // lastly update the default state
 }
 
-void StateStructure::addFrame(Frame::Ptr frame, Frame::Ptr parent){
+void StateStructure::addFrame (Frame::Ptr frame, Frame::Ptr parent)
+{
     // both frame and parent must be well defined
-    if(frame == NULL)
-        RW_THROW("Input frame must not be NULL!");
-    if(parent == NULL) {
-        parent = getRoot();
+    if (frame == NULL)
+        RW_THROW ("Input frame must not be NULL!");
+    if (parent == NULL) {
+        parent = getRoot ();
     }
-    RW_ASSERT(frame && parent);
+    RW_ASSERT (frame && parent);
 
     // and parent must exist in the tree, but not the frame
-    if( has(frame.get()) ){
-        RW_THROW("The frame has already been added to the state structure!");
+    if (has (frame.get ())) {
+        RW_THROW ("The frame has already been added to the state structure!");
     }
 
-    if( !has(parent.get()) ){
-        RW_THROW("The parent is not part of the state structure and should be added before frame is!");
+    if (!has (parent.get ())) {
+        RW_THROW (
+            "The parent is not part of the state structure and should be added before frame is!");
     }
 
     // and lastly we must check if the frame has been added to other StateStructure
-    if( frame->getID()!=-1  ){
-        RW_THROW("The frame has already been added to another state structure");
+    if (frame->getID () != -1) {
+        RW_THROW ("The frame has already been added to another state structure");
     }
     // check if frame name is unique
-    if( findFrame(frame->getName())!=NULL )
-        RW_THROW("Frame name is not unique: "<< frame->getName());
+    if (findFrame (frame->getName ()) != NULL)
+        RW_THROW ("Frame name is not unique: " << frame->getName ());
 
     // update the parent child relationships
-    frame->setParent(parent.get());
-    parent->addChild(frame.get());
+    frame->setParent (parent.get ());
+    parent->addChild (frame.get ());
 
     // now add the state data of the frame
-    if(frame.isShared()) {
-        addDataInternal(frame);
-    } else {
-        addDataInternal(frame.get());
+    if (frame.isShared ()) {
+        addDataInternal (frame);
+    }
+    else {
+        addDataInternal (frame.get ());
     }
 
     // add the frame to the framelist
-    _frames[frame->getID()] = frame.get();
+    _frames[frame->getID ()] = frame.get ();
     // remember to add the frame to the frameIdxMap
-    _frameIdxMap[frame->getName()] = frame->getID();
+    _frameIdxMap[frame->getName ()] = frame->getID ();
 
-    updateDefaultState();
+    updateDefaultState ();
 
     // and in the end cleanup
-    cleanup();
+    cleanup ();
 
-    _stateDataAddedEvent.fire(frame.get());
+    _stateDataAddedEvent.fire (frame.get ());
 }
 
-void StateStructure::addDAF(Frame::Ptr frame, Frame::Ptr parent){
+void StateStructure::addDAF (Frame::Ptr frame, Frame::Ptr parent)
+{
     // both frame and parent must be well defined
-    RW_ASSERT(frame && parent);
+    RW_ASSERT (frame && parent);
     // and parent must exist in the tree, but not the frame
-    RW_ASSERT(!has(frame.get()) && has(parent.get()));
+    RW_ASSERT (!has (frame.get ()) && has (parent.get ()));
     // and lastly we must check if the frame has been added to other StateStructure
-    RW_ASSERT( frame->getID()==-1 );
+    RW_ASSERT (frame->getID () == -1);
     // check if frame name is unique
-    if(findFrame(frame->getName())!=NULL)
-        RW_THROW("Frame name is not unique!");
+    if (findFrame (frame->getName ()) != NULL)
+        RW_THROW ("Frame name is not unique!");
 
     // now add the state data of the frame
-    if(frame.isShared()) {
-        addDataInternal(frame);
-    } else {
-        addDataInternal(frame.get());
+    if (frame.isShared ()) {
+        addDataInternal (frame);
+    }
+    else {
+        addDataInternal (frame.get ());
     }
     // push it to the frame list and DAF list
-    _DAFs.push_back(frame.get());
-    _frames[frame->getID()] = frame.get();
+    _DAFs.push_back (frame.get ());
+    _frames[frame->getID ()] = frame.get ();
 
-    updateDefaultState();
+    updateDefaultState ();
 
     // and insert the dynamic frame-parent relationship in the default state
-    _defaultState.getTreeState().attachFrame(frame.get(),parent.get());
+    _defaultState.getTreeState ().attachFrame (frame.get (), parent.get ());
     // remember to add the frame to the frameIdxMap
-    _frameIdxMap[frame->getName()] = frame->getID();
+    _frameIdxMap[frame->getName ()] = frame->getID ();
     // and in the end cleanup
-    cleanup();
+    cleanup ();
 
-    _stateDataAddedEvent.fire(frame.get());
+    _stateDataAddedEvent.fire (frame.get ());
 }
 
-void StateStructure::remove(StateData *data) {
-    RW_ASSERT(data);
-    RW_ASSERT(data->getID()>0);
+void StateStructure::remove (StateData* data)
+{
+    RW_ASSERT (data);
+    RW_ASSERT (data->getID () > 0);
     _version++;
-    int id = data->getID();
-    if( _frames[id]!=NULL ){
+    int id = data->getID ();
+    if (_frames[id] != NULL) {
         // check if frame has staticly connected children
-        Frame::iterator_pair iter = _frames[id]->getChildren();
-        if( iter.first!=iter.second )
-            RW_THROW("Frame has staticly connected children and therefore cannot be removed from tree!");
+        Frame::iterator_pair iter = _frames[id]->getChildren ();
+        if (iter.first != iter.second)
+            RW_THROW (
+                "Frame has staticly connected children and therefore cannot be removed from tree!");
         // make sure the parent frame gets any static connections deleted to the frame
-        Frame *parent = _frames[id]->getParent();
-        if(parent!=NULL)
-            parent->removeChild(_frames[id]);
+        Frame* parent = _frames[id]->getParent ();
+        if (parent != NULL)
+            parent->removeChild (_frames[id]);
 
         // remember to remove the from the frameIdxMap
-        _frameIdxMap.erase(_frames[id]->getName());
+        _frameIdxMap.erase (_frames[id]->getName ());
     }
     // setting data in current data list to null
-    _currDatas[id] = rw::core::Ptr<StateData>();
+    _currDatas[id] = rw::core::Ptr< StateData > ();
     // update default state
     // the dynamicly attached frames will automaticly be attached to world
-    updateDefaultState();
+    updateDefaultState ();
     // perform cleanup
-    cleanup(id);
-    _stateDataRemovedEvent.fire(data);
+    cleanup (id);
+    _stateDataRemovedEvent.fire (data);
 }
 
-State StateStructure::upgradeState(const State& oldState)
+State StateStructure::upgradeState (const State& oldState)
 {
     State state = _defaultState;
-    state.copy( oldState );
+    state.copy (oldState);
     return state;
 }
 
-const State& StateStructure::getDefaultState() const
+const State& StateStructure::getDefaultState () const
 {
     return _defaultState;
 }
 
-void StateStructure::setDefaultState(const State &state)
+void StateStructure::setDefaultState (const State& state)
 {
     // check if state version
-    _defaultState.copy(state);
+    _defaultState.copy (state);
 }
 
-void StateStructure::cleanup(int ID) {
+void StateStructure::cleanup (int ID)
+{
     // first run through StateSetup list and remove all state setups that are not
     // used anymore
-    StateSetupList::iterator iter = _setups.begin();
-    while(iter!=_setups.end()){
-        if((*iter).getSharedPtr().use_count()>1){
+    StateSetupList::iterator iter = _setups.begin ();
+    while (iter != _setups.end ()) {
+        if ((*iter).getSharedPtr ().use_count () > 1) {
             ++iter;
-        } else {
-            //std::cout << "Erasing StateSetup v." << (*iter)->getVersion() << std::endl;
+        }
+        else {
+            // std::cout << "Erasing StateSetup v." << (*iter)->getVersion() << std::endl;
             // erase the setup from the list
-            iter = _setups.erase(iter);
+            iter = _setups.erase (iter);
         }
     }
 
     // NEXT run through statedata list and remove all data that
     // is not pointed to by anything else.
     // remember to also remove instances from the daf and frame list
-    for(rw::core::Ptr<StateData>& data : _allDatas) {
-        if(data != NULL){
-            if(data.getSharedPtr().use_count()==1 || data->getID() == ID){
+    for (rw::core::Ptr< StateData >& data : _allDatas) {
+        if (data != NULL) {
+            if (data.getSharedPtr ().use_count () == 1 || data->getID () == ID) {
                 // delete the data and put it on available list
-                const int id = data->getID();
+                const int id = data->getID ();
                 // test if data is a daf
-                for(size_t i=0;i<_DAFs.size();i++){
-                    if(_DAFs[i]!=NULL && _DAFs[i]->getID()==id){
+                for (size_t i = 0; i < _DAFs.size (); i++) {
+                    if (_DAFs[i] != NULL && _DAFs[i]->getID () == id) {
                         _DAFs[i] = NULL;
                         break;
                     }
                 }
                 // if its a frame then remove it from its parent
-                
-                if (_frames[ id ] != NULL ){
-                    Frame *frame = _frames [id];
-                    if(frame->getParent()!=NULL){
-                        frame->getParent()->removeChild( frame );
-                    }              
+
+                if (_frames[id] != NULL) {
+                    Frame* frame = _frames[id];
+                    if (frame->getParent () != NULL) {
+                        frame->getParent ()->removeChild (frame);
+                    }
                     _frames[id] = NULL;
-                    data->setID(-1,NULL);
+                    data->setID (-1, NULL);
                 }
-                data = rw::core::Ptr<StateData>();
-                _availableDataIds.push_back(id);
+                data = rw::core::Ptr< StateData > ();
+                _availableDataIds.push_back (id);
             }
         }
     }
-
-
 }
 
-void StateStructure::updateDefaultState(){
+void StateStructure::updateDefaultState ()
+{
     // first create a StateSetup
-    rw::core::Ptr<StateSetup> setup(new StateSetup(_version,*this, _currDatas));
-    _setups.push_back(setup);
+    rw::core::Ptr< StateSetup > setup (new StateSetup (_version, *this, _currDatas));
+    _setups.push_back (setup);
     // construct qstate and tree state and then a new State
-    QState qstate(setup);
-    TreeState tstate(setup);
-    State newState( qstate, tstate, _stateSetupUniqueId);
+    QState qstate (setup);
+    TreeState tstate (setup);
+    State newState (qstate, tstate, _stateSetupUniqueId);
     _stateSetupUniqueId++;
     // copy the default values into newState
-    newState.copy( _defaultState );
+    newState.copy (_defaultState);
     // all caches that are null should be updated with their default cache
-    for(rw::core::Ptr<StateData>& data : _currDatas) {
-        if(data==NULL)
+    for (rw::core::Ptr< StateData >& data : _currDatas) {
+        if (data == NULL)
             continue;
-        if(data->hasCache()){
-            if( data->getCache(newState) == NULL )
-                data->setCache( data->getDefaultCache()->clone(), newState );
+        if (data->hasCache ()) {
+            if (data->getCache (newState) == NULL)
+                data->setCache (data->getDefaultCache ()->clone (), newState);
         }
     }
 
     _defaultState = newState;
 }
 
-int StateStructure::allocateDataID()
+int StateStructure::allocateDataID ()
 {
     // check if any ids are currently available
-    if (_availableDataIds.empty()) {
+    if (_availableDataIds.empty ()) {
         // if not then generate a new id
-        const int id = (int)_allDatas.size();
-        _allDatas.push_back(rw::core::Ptr<StateData>());
-        _currDatas.push_back(rw::core::Ptr<StateData>());
-        _frames.push_back(NULL);
-        RW_ASSERT(_allDatas.size() == _currDatas.size());
+        const int id = (int) _allDatas.size ();
+        _allDatas.push_back (rw::core::Ptr< StateData > ());
+        _currDatas.push_back (rw::core::Ptr< StateData > ());
+        _frames.push_back (NULL);
+        RW_ASSERT (_allDatas.size () == _currDatas.size ());
         return id;
-    } else {
-        const int id = _availableDataIds.back();
-        _availableDataIds.pop_back();
+    }
+    else {
+        const int id = _availableDataIds.back ();
+        _availableDataIds.pop_back ();
         return id;
     }
 }
 
-Frame* StateStructure::findFrame(const std::string& name) const {
+Frame* StateStructure::findFrame (const std::string& name) const
+{
     typedef FrameIdxMap::const_iterator I;
-    const I pos = _frameIdxMap.find(name);
-    if (pos == _frameIdxMap.end())
+    const I pos = _frameIdxMap.find (name);
+    if (pos == _frameIdxMap.end ())
         return NULL;
     int idx = pos->second;
-    if( _allDatas[idx]==NULL )
+    if (_allDatas[idx] == NULL)
         return NULL;
     return _frames[pos->second];
 }
 
-rw::core::Ptr<StateData> StateStructure::findData(const std::string& name) const {
-	// TODO: make a map for faster searching of state data
+rw::core::Ptr< StateData > StateStructure::findData (const std::string& name) const
+{
+    // TODO: make a map for faster searching of state data
 
-	typedef std::map<std::string,int>::const_iterator I;
-    const I pos = _stateIdxMap.find(name);
-    if (pos == _stateIdxMap.end())
-        return rw::core::Ptr<StateData>();
+    typedef std::map< std::string, int >::const_iterator I;
+    const I pos = _stateIdxMap.find (name);
+    if (pos == _stateIdxMap.end ())
+        return rw::core::Ptr< StateData > ();
     int idx = pos->second;
     return _allDatas[idx];
 }

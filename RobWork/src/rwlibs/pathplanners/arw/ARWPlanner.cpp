@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,9 +15,10 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #include "ARWPlanner.hpp"
+
 #include "ARWQToQPlanner.hpp"
+
 #include <rw/pathplanning/PlannerUtil.hpp>
 
 using namespace rwlibs::pathplanners;
@@ -26,41 +27,28 @@ using namespace rw::core;
 using namespace rw::math;
 using namespace rw::models;
 
-QToQPlanner::Ptr ARWPlanner::makeQToQPlanner(
-    const PlannerConstraint& constraint,
-	ARWExpand::Ptr expand,
-	QMetric::Ptr metric,
-    double nearDistance)
+QToQPlanner::Ptr ARWPlanner::makeQToQPlanner (const PlannerConstraint& constraint,
+                                              ARWExpand::Ptr expand, QMetric::Ptr metric,
+                                              double nearDistance)
 {
-    return ownedPtr(
-        new ARWQToQPlanner(
-            constraint,
-            expand,
-            metric,
-            nearDistance));
+    return ownedPtr (new ARWQToQPlanner (constraint, expand, metric, nearDistance));
 }
 
-QToQPlanner::Ptr ARWPlanner::makeQToQPlanner(
-    const rw::pathplanning::PlannerConstraint& constraint,
-	rw::models::Device::Ptr device,
-	rw::math::QMetric::Ptr metric,
-    double nearDistance,
-    int historySize)
+QToQPlanner::Ptr ARWPlanner::makeQToQPlanner (const rw::pathplanning::PlannerConstraint& constraint,
+                                              rw::models::Device::Ptr device,
+                                              rw::math::QMetric::Ptr metric, double nearDistance,
+                                              int historySize)
 {
     if (!metric) {
-        metric = PlannerUtil::normalizingInfinityMetric(device->getBounds());
+        metric       = PlannerUtil::normalizingInfinityMetric (device->getBounds ());
         nearDistance = 0.5;
     }
 
-    if (historySize < 0) historySize = 20;
+    if (historySize < 0)
+        historySize = 20;
 
-    return makeQToQPlanner(
-        constraint,
-        ARWExpand::make(
-            device->getBounds(),
-            constraint,
-            Q(),
-            historySize),
-        metric,
-        nearDistance);
+    return makeQToQPlanner (constraint,
+                            ARWExpand::make (device->getBounds (), constraint, Q (), historySize),
+                            metric,
+                            nearDistance);
 }

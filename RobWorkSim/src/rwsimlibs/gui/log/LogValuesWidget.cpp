@@ -17,11 +17,10 @@
 
 #include "LogValuesWidget.hpp"
 
-#include <RobWorkStudioConfig.hpp>
-
-#include <rwsim/log/LogValues.hpp>
 #include "ui_LogValuesWidget.h"
 
+#include <RobWorkStudioConfig.hpp>
+#include <rwsim/log/LogValues.hpp>
 
 using namespace rw::common;
 using namespace rw::graphics;
@@ -30,82 +29,92 @@ using namespace rwsim::dynamics;
 using namespace rwsim::log;
 using namespace rwsimlibs::gui;
 
-LogValuesWidget::LogValuesWidget(rw::core::Ptr<const LogValues> entry, QWidget* parent):
-	SimulatorLogEntryWidget(parent),
-	_ui(new Ui::LogValuesWidget()),
-	_values(entry)
+LogValuesWidget::LogValuesWidget (rw::core::Ptr< const LogValues > entry, QWidget* parent) :
+    SimulatorLogEntryWidget (parent), _ui (new Ui::LogValuesWidget ()), _values (entry)
 {
-	_ui->setupUi(this);
+    _ui->setupUi (this);
 
-	QStringList headerLabels;
-	headerLabels.push_back("Label");
-	headerLabels.push_back("Value");
-	_ui->_values->setHorizontalHeaderLabels(headerLabels);
+    QStringList headerLabels;
+    headerLabels.push_back ("Label");
+    headerLabels.push_back ("Value");
+    _ui->_values->setHorizontalHeaderLabels (headerLabels);
 
-	_ui->_values->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+    _ui->_values->horizontalHeader ()->setSectionResizeMode (QHeaderView::ResizeToContents);
 }
 
-LogValuesWidget::~LogValuesWidget() {
+LogValuesWidget::~LogValuesWidget ()
+{}
+
+void LogValuesWidget::setDWC (rw::core::Ptr< const DynamicWorkCell > dwc)
+{}
+
+void LogValuesWidget::setEntry (rw::core::Ptr< const SimulatorLog > entry)
+{
+    const rw::core::Ptr< const LogValues > set = entry.cast< const LogValues > ();
+    if (!(set == NULL))
+        _values = set;
+    else
+        RW_THROW ("LogValuesWidget (setEntry): invalid entry!");
 }
 
-void LogValuesWidget::setDWC(rw::core::Ptr<const DynamicWorkCell> dwc) {
+rw::core::Ptr< const SimulatorLog > LogValuesWidget::getEntry () const
+{
+    return _values;
 }
 
-void LogValuesWidget::setEntry(rw::core::Ptr<const SimulatorLog> entry) {
-	const rw::core::Ptr<const LogValues> set = entry.cast<const LogValues>();
-	if (!(set == NULL))
-		_values = set;
-	else
-		RW_THROW("LogValuesWidget (setEntry): invalid entry!");
+void LogValuesWidget::updateEntryWidget ()
+{
+    const int nrOfEntries = static_cast< int > (_values->size ());
+    if (_values->size () > static_cast< std::size_t > (nrOfEntries))
+        RW_THROW ("There are too many entries for the widget to handle!");
+
+    _ui->_description->setText (QString::fromStdString (_values->getDescription ()));
+    _ui->_values->setRowCount (nrOfEntries);
+    _ui->_values->setSortingEnabled (false);
+    for (int i = 0; i < nrOfEntries; i++) {
+        std::string label = "No Label";
+        if (nrOfEntries >= i) {
+            if (_values->getLabel (static_cast< std::size_t > (i)) != "")
+                label = _values->getLabel (static_cast< std::size_t > (i));
+        }
+        _ui->_values->setItem (i, 0, new QTableWidgetItem (QString::fromStdString (label)));
+        _ui->_values->setItem (i,
+                               1,
+                               new QTableWidgetItem (QString::number (
+                                   _values->getValue (static_cast< std::size_t > (i)))));
+    }
+    _ui->_values->setSortingEnabled (true);
 }
 
-rw::core::Ptr<const SimulatorLog> LogValuesWidget::getEntry() const {
-	return _values;
+void LogValuesWidget::showGraphics (rw::core::Ptr< GroupNode > root,
+                                    rw::core::Ptr< SceneGraph > graph)
+{}
+
+std::string LogValuesWidget::getName () const
+{
+    return "Values";
 }
 
-void LogValuesWidget::updateEntryWidget() {
-	const int nrOfEntries = static_cast<int>(_values->size());
-	if (_values->size() > static_cast<std::size_t>(nrOfEntries))
-		RW_THROW("There are too many entries for the widget to handle!");
+LogValuesWidget::Dispatcher::Dispatcher ()
+{}
 
-	_ui->_description->setText(QString::fromStdString(_values->getDescription()));
-	_ui->_values->setRowCount(nrOfEntries);
-	_ui->_values->setSortingEnabled(false);
-	for (int i = 0; i < nrOfEntries; i++) {
-		std::string label = "No Label";
-		if (nrOfEntries >= i) {
-			if (_values->getLabel(static_cast<std::size_t>(i)) != "")
-				label = _values->getLabel(static_cast<std::size_t>(i));
-		}
-		_ui->_values->setItem(i,0,new QTableWidgetItem(QString::fromStdString(label)));
-		_ui->_values->setItem(i,1,new QTableWidgetItem(QString::number(_values->getValue(static_cast<std::size_t>(i)))));
-	}
-	_ui->_values->setSortingEnabled(true);
+LogValuesWidget::Dispatcher::~Dispatcher ()
+{}
+
+SimulatorLogEntryWidget*
+LogValuesWidget::Dispatcher::makeWidget (rw::core::Ptr< const SimulatorLog > entry,
+                                         QWidget* parent) const
+{
+    const rw::core::Ptr< const LogValues > tentry = entry.cast< const LogValues > ();
+    if (!(tentry == NULL))
+        return new LogValuesWidget (tentry, parent);
+    RW_THROW ("LogValuesWidget::Dispatcher (makeWidget): invalid entry!");
+    return NULL;
 }
 
-void LogValuesWidget::showGraphics(rw::core::Ptr<GroupNode> root, rw::core::Ptr<SceneGraph> graph) {
-}
-
-std::string LogValuesWidget::getName() const {
-	return "Values";
-}
-
-LogValuesWidget::Dispatcher::Dispatcher() {
-}
-
-LogValuesWidget::Dispatcher::~Dispatcher() {
-}
-
-SimulatorLogEntryWidget* LogValuesWidget::Dispatcher::makeWidget(rw::core::Ptr<const SimulatorLog> entry, QWidget* parent) const {
-	const rw::core::Ptr<const LogValues> tentry = entry.cast<const LogValues>();
-	if (!(tentry == NULL))
-		return new LogValuesWidget(tentry, parent);
-	RW_THROW("LogValuesWidget::Dispatcher (makeWidget): invalid entry!");
-	return NULL;
-}
-
-bool LogValuesWidget::Dispatcher::accepts(rw::core::Ptr<const SimulatorLog> entry) const {
-	if (!(entry.cast<const LogValues>() == NULL))
-		return true;
-	return false;
+bool LogValuesWidget::Dispatcher::accepts (rw::core::Ptr< const SimulatorLog > entry) const
+{
+    if (!(entry.cast< const LogValues > () == NULL))
+        return true;
+    return false;
 }

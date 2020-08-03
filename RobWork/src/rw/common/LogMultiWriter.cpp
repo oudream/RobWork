@@ -17,8 +17,6 @@
 
 #include "LogMultiWriter.hpp"
 
-
-
 using namespace rw::common;
 using namespace rw::core;
 

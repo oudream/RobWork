@@ -15,13 +15,13 @@
  * limitations under the License.
  ********************************************************************************/
 
+#include <rw/core/Extension.hpp>
 #include <rw/kinematics/Frame.hpp>
+#include <rw/models/Object.hpp>
+#include <rw/models/RigidObject.hpp>
 #include <rw/proximity/rwstrategy/ProximityStrategyRW.hpp>
 
 #include <vector>
-#include <rw/core/Extension.hpp>
-#include <rw/models/Object.hpp>
-#include <rw/models/RigidObject.hpp>
 
 using namespace rw::proximity;
 using namespace rw::kinematics;
@@ -49,7 +49,7 @@ bool ProximityStrategy::addModel (rw::models::Object::Ptr object)
             Frame* geoframe = geom->getFrame ();
             if (!hasModel (geoframe)) {
                 _frameToModel[*geoframe] = createModel ();
-                _frameToModel[*geoframe]->setFrame(geoframe);
+                _frameToModel[*geoframe]->setFrame (geoframe);
             }
             ProximityModel::Ptr model = getModel (geoframe);
             model->addGeometry (geom);
@@ -65,7 +65,7 @@ bool ProximityStrategy::addModel (const Frame* frame, const rw::geometry::Geomet
     if (model == NULL) {
         model = createModel ();
     }
-    model->setFrame(frame);
+    model->setFrame (frame);
     bool res = addGeometry (model.get (), geom);
     if (res) {
         _frameToModel[*frame] = model;
@@ -80,8 +80,8 @@ bool ProximityStrategy::addModel (const Frame* frame, rw::geometry::Geometry::Pt
     if (model == NULL) {
         model = createModel ();
     }
-    model->setFrame(frame);
-    bool res = model->addGeometry ( geom, forceCopy);
+    model->setFrame (frame);
+    bool res = model->addGeometry (geom, forceCopy);
     if (res) {
         _frameToModel[*frame] = model;
     }
@@ -166,7 +166,9 @@ ProximityStrategy::Ptr ProximityStrategy::Factory::makeStrategy (const std::stri
     return NULL;
 }
 
-std::vector< rw::core::Ptr< rw::geometry::Geometry > > ProximityStrategy::getGeometrys (rw::proximity::ProximityModel* model){
-    RW_THROW("This Is a Virtual Function and needs to be replaced when Inherited");
-    return std::vector< rw::core::Ptr< rw::geometry::Geometry > >();
+std::vector< rw::core::Ptr< rw::geometry::Geometry > >
+ProximityStrategy::getGeometrys (rw::proximity::ProximityModel* model)
+{
+    RW_THROW ("This Is a Virtual Function and needs to be replaced when Inherited");
+    return std::vector< rw::core::Ptr< rw::geometry::Geometry > > ();
 }

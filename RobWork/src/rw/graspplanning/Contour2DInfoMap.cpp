@@ -23,7 +23,6 @@
 #include <rw/math/Math.hpp>
 #include <rw/math/Vector2D.hpp>
 
-
 #include <cstdio>
 
 using namespace rw::math;

@@ -20,16 +20,13 @@
 
 #include "PhysicsEngine.hpp"
 
-namespace rwsim {
-namespace simulator {
+namespace rwsim { namespace simulator {
 
-	/**
-	 * @brief Factory for creating physics engines
-	 */
-	typedef PhysicsEngine::Factory PhysicsEngineFactory;
+    /**
+     * @brief Factory for creating physics engines
+     */
+    typedef PhysicsEngine::Factory PhysicsEngineFactory;
 
-}
-}
-
+}}    // namespace rwsim::simulator
 
 #endif /* PHYSICSENGINEFACTORY_HPP_ */

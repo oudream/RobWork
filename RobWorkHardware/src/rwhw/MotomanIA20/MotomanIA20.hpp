@@ -22,12 +22,12 @@
  * @file MotomanIA20.hpp
  */
 
-#include <rwhw/serialport/SerialPort.hpp>
 #include <rw/math/Q.hpp>
+#include <rwhw/serialport/SerialPort.hpp>
 
 namespace rwhw {
-    /** @addtogroup MotomanIA20 */
-    /*@{*/
+/** @addtogroup MotomanIA20 */
+/*@{*/
 
 /**
  * @brief Provides simple communication with a Motoman IA20
@@ -38,38 +38,35 @@ namespace rwhw {
  */
 class MotomanIA20
 {
-public:
+  public:
     /**
      * @brief Constructs MotomanIA20 and connects to the robot
      * @param port [in] Port to connect on
      */
-    MotomanIA20(std::string port);
+    MotomanIA20 (std::string port);
 
     /**
      * @brief Destructor. Closes connection to the robot
      */
-	virtual ~MotomanIA20();
+    virtual ~MotomanIA20 ();
 
-	/**
-	 * @brief Sends target positions for the 7 joints
-	 * @param q [in] Joint positions encoded as radians
-	 */
-	void setPosition(rw::math::Q);
+    /**
+     * @brief Sends target positions for the 7 joints
+     * @param q [in] Joint positions encoded as radians
+     */
+    void setPosition (rw::math::Q);
 
-	/**
-	 * @brief Sends target position for the encoders of the 7 joints
-	 * @param raw [in] Encoder targets
-	 */
-	void sendRaw(std::vector<int> raw);
+    /**
+     * @brief Sends target position for the encoders of the 7 joints
+     * @param raw [in] Encoder targets
+     */
+    void sendRaw (std::vector< int > raw);
 
-private:
-	rwhw::SerialPort* _serialPort;
-
-
+  private:
+    rwhw::SerialPort* _serialPort;
 };
 /*@}*/
 
-
-} //end namespace
+}    // namespace rwhw
 
 #endif /*RWHW_MOTOMANIA20_HPP*/

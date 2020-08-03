@@ -23,8 +23,6 @@
 #include <rw/math/Math.hpp>
 #include <rw/math/MetricFactory.hpp>
 
-
-
 using namespace rw::math;
 using namespace rw::models;
 using namespace rw::kinematics;

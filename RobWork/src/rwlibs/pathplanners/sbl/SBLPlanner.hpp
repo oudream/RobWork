@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RWLIBS_PATHPLANNERS_SBL_SBLPLANNER_HPP
 #define RWLIBS_PATHPLANNERS_SBL_SBLPLANNER_HPP
 
@@ -24,10 +23,11 @@
 */
 
 #include "SBLSetup.hpp"
-#include <rw/pathplanning/QToTPlanner.hpp>
+
+#include <rw/core/Ptr.hpp>
 #include <rw/pathplanning/QToQPlanner.hpp>
 #include <rw/pathplanning/QToQSamplerPlanner.hpp>
-#include <rw/core/Ptr.hpp>
+#include <rw/pathplanning/QToTPlanner.hpp>
 
 namespace rwlibs { namespace pathplanners {
 
@@ -43,23 +43,24 @@ namespace rwlibs { namespace pathplanners {
     */
     class SBLPlanner
     {
-    public:
-    	//! @brief Smart pointer type for SBLPlanner.
-        typedef rw::core::Ptr<SBLPlanner> Ptr;
+      public:
+        //! @brief Smart pointer type for SBLPlanner.
+        typedef rw::core::Ptr< SBLPlanner > Ptr;
 
         /**
            @brief An SBL based sampled region planner.
 
            @param setup [in] Setup for the planner.
         */
-		static rw::pathplanning::QToQSamplerPlanner::Ptr makeQToQSamplerPlanner(const SBLSetup& setup);
+        static rw::pathplanning::QToQSamplerPlanner::Ptr
+        makeQToQSamplerPlanner (const SBLSetup& setup);
 
         /**
            @brief An SBL based point-to-point planner.
 
            @param setup [in] Setup for the planner.
         */
-		static rw::pathplanning::QToQPlanner::Ptr makeQToQPlanner(const SBLSetup& setup);
+        static rw::pathplanning::QToQPlanner::Ptr makeQToQPlanner (const SBLSetup& setup);
 
         /**
            @brief An SBL based point-to-tool-position planner.
@@ -67,17 +68,17 @@ namespace rwlibs { namespace pathplanners {
            @param setup [in] Setup for the planner.
            @param ikSampler [in] Sampler of IK solutions for the target transform.
         */
-		static rw::pathplanning::QToTPlanner::Ptr makeQToTPlanner(
-            const SBLSetup& setup,
-			rw::core::Ptr<rw::pathplanning::QIKSampler> ikSampler);
+        static rw::pathplanning::QToTPlanner::Ptr
+        makeQToTPlanner (const SBLSetup& setup,
+                         rw::core::Ptr< rw::pathplanning::QIKSampler > ikSampler);
 
-    private:
-        SBLPlanner();
-        SBLPlanner(const SBLPlanner&);
-        SBLPlanner& operator=(const SBLPlanner&);
+      private:
+        SBLPlanner ();
+        SBLPlanner (const SBLPlanner&);
+        SBLPlanner& operator= (const SBLPlanner&);
     };
 
     /*@}*/
-}} // end namespaces
+}}    // namespace rwlibs::pathplanners
 
-#endif // end include guard
+#endif    // end include guard

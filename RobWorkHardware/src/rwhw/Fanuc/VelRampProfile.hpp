@@ -22,25 +22,24 @@
  * @file VelRampProfile.hpp
  */
 
-#include <vector>
-
 #include <rw/math/Q.hpp>
+
+#include <vector>
 
 namespace rwhw { namespace fanuc {
 
     /** @addtogroup rwhw */
     /*@{*/
 
-
     /**
      * @brief velocity ramp profile
      */
     class VelRampProfile
     {
-    public:
+      public:
         /** @brief Over and upper limit.
          */
-        typedef std::pair<double, double> Range;
+        typedef std::pair< double, double > Range;
 
         /**
          * @brief constructor
@@ -48,15 +47,14 @@ namespace rwhw { namespace fanuc {
          * @param vellimits [in] The lower and upper velocity limits
          * @param acclimits [in] The lower and upper accelleration limits
          */
-        VelRampProfile(
-            const std::vector<Range>& poslimits,
-            const std::vector<Range>& vellimits,
-            const std::vector<Range>& acclimits);
+        VelRampProfile (const std::vector< Range >& poslimits,
+                        const std::vector< Range >& vellimits,
+                        const std::vector< Range >& acclimits);
 
         /**
          * @brief deconstructor
          */
-        ~VelRampProfile();
+        ~VelRampProfile ();
 
         /**
          * @brief Returns the velocity needed for moving towards goal, when
@@ -67,19 +65,16 @@ namespace rwhw { namespace fanuc {
          * @param vel [in] the current velocity
          * @param dt [in] time interval
          */
-        rw::math::Q getVelocity(
-            const rw::math::Q& goal,
-            const rw::math::Q& pos,
-            const rw::math::Q& vel,
-            double dt) const;
+        rw::math::Q getVelocity (const rw::math::Q& goal, const rw::math::Q& pos,
+                                 const rw::math::Q& vel, double dt) const;
 
-    private:
-        std::vector<Range> _poslimits;
-        std::vector<Range> _vellimits;
-        std::vector<Range> _acclimits;
+      private:
+        std::vector< Range > _poslimits;
+        std::vector< Range > _vellimits;
+        std::vector< Range > _acclimits;
     };
 
     /**@}*/
-}} // end namespaces
+}}    // namespace rwhw::fanuc
 
-#endif // end include guard
+#endif    // end include guard

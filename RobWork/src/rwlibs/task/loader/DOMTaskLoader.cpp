@@ -19,9 +19,9 @@
 
 #include "DOMTaskFormat.hpp"
 
+#include <rw/core/DOMElem.hpp>
 #include <rw/core/DOMParser.hpp>
 #include <rw/core/StringUtil.hpp>
-#include <rw/core/DOMElem.hpp>
 #include <rw/loaders/dom/DOMBasisTypes.hpp>
 #include <rw/loaders/dom/DOMPropertyMapFormat.hpp>
 #include <rw/loaders/dom/DOMPropertyMapLoader.hpp>

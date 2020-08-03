@@ -49,8 +49,8 @@ using namespace rw::math;
 using namespace rws;
 using namespace rwlibs;
 
-WorkcellEditorWindow::WorkcellEditorWindow (rw::core::Log::Ptr output,
-                                            rws::RobWorkStudio* rwstudio, QWidget* parent) :
+WorkcellEditorWindow::WorkcellEditorWindow (rw::core::Log::Ptr output, rws::RobWorkStudio* rwstudio,
+                                            QWidget* parent) :
     QMainWindow (parent),
     _output (output), _rws (rwstudio), ignoreNextWorkcellOpen (false)
 {
@@ -67,7 +67,7 @@ WorkcellEditorWindow::WorkcellEditorWindow (rw::core::Log::Ptr output,
 
     openWorkCell (_rws->getWorkcell ()->getFilePath ().c_str ());
     rw::core::Log::infoLog () << "Opening: workcell "
-                                << _rws->getWorkcell ()->getFilePath ().c_str () << "\n";
+                              << _rws->getWorkcell ()->getFilePath ().c_str () << "\n";
 }
 
 WorkcellEditorWindow::~WorkcellEditorWindow ()
@@ -453,9 +453,10 @@ void WorkcellEditorWindow::on_actionAdd_Drawable_triggered (bool)
 
         QString drawable_str;
         QTextStream (&drawable_str)
-            << "<Drawable name=\"" << data.at< QString > ("Name") << "\""
-            << ref_frame_str << " colmodel=\"" << col_model << "\">"
-            << "\n" <<
+            << "<Drawable name=\"" << data.at< QString > ("Name") << "\"" << ref_frame_str
+            << " colmodel=\"" << col_model << "\">"
+            << "\n"
+            <<
             // POS
             indentation << "  <Pos>" << data.at< QVector3D > ("Position").x () << " "
             << data.at< QVector3D > ("Position").y () << " "
@@ -565,19 +566,20 @@ void WorkcellEditorWindow::on_actionAdd_CollisionModel_triggered (bool)
 
         QString col_model_str;
         QTextStream (&col_model_str)
-            << "<CollisionModel name=\"" << data.at< QString > ("Name") << "\""
-            << ref_frame_str << ">"
-            << "\n" 
-            //POS
+            << "<CollisionModel name=\"" << data.at< QString > ("Name") << "\"" << ref_frame_str
+            << ">"
+            << "\n"
+            // POS
             << indentation << "  <Pos>" << data.at< QVector3D > ("Position").x () << " "
             << data.at< QVector3D > ("Position").y () << " "
-            << data.at< QVector3D > ("Position").z () << "</Pos>\n" 
-            //RPY
-            << indentation << "  <RPY>"
-            << data.at< QVector3D > ("RPY").x () << " " << data.at< QVector3D > ("RPY").y () << " "
-            << data.at< QVector3D > ("RPY").z () << "</RPY>"
-            << "\n" 
-            //Model
+            << data.at< QVector3D > ("Position").z ()
+            << "</Pos>\n"
+            // RPY
+            << indentation << "  <RPY>" << data.at< QVector3D > ("RPY").x () << " "
+            << data.at< QVector3D > ("RPY").y () << " " << data.at< QVector3D > ("RPY").z ()
+            << "</RPY>"
+            << "\n"
+            // Model
             << indentation << "  " << model_str << "\n"
             << indentation << "</CollisionModel>";
 

@@ -17,16 +17,14 @@
 
 #include "LoaderAC3D.hpp"
 
-#include <rw/core/StringUtil.hpp>
 #include <rw/common/TimerUtil.hpp>
-#include <rw/core/macros.hpp>
 #include <rw/core/StringUtil.hpp>
+#include <rw/core/macros.hpp>
 //#include <rw/math/Constants.hpp>
 #include <rw/geometry/Triangulate.hpp>
 #include <rw/loaders/ImageLoader.hpp>
 #include <rw/math/EAA.hpp>
 #include <rw/math/MetricUtil.hpp>
-
 
 #include <fstream>
 #include <stack>

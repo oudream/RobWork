@@ -73,7 +73,8 @@ namespace rw { namespace core {
      * In: RobWorkStudio.cpp
      *
      * RobWorkStudio::RobWorkStudio(...):
-     * _stateChangedEvent(boost::bind(&RobWorkStudio::fireStateChangedEvent, this, boost::arg<1>())),
+     * _stateChangedEvent(boost::bind(&RobWorkStudio::fireStateChangedEvent, this,
+     * boost::arg<1>())),
      * ...
      * {
      * ...
@@ -360,6 +361,6 @@ namespace rw { namespace core {
  */
 namespace rw { namespace common {
     using namespace rw::core;
-}}
+}}    // namespace rw::common
 
 #endif /*EVENT_HPP*/

@@ -20,61 +20,61 @@
 #include <rwsim/dynamics/ContactDataMap.hpp>
 #include <rwsim/dynamics/MaterialDataMap.hpp>
 
-
-
 using namespace rwsim::dynamics;
 using namespace rwsimlibs::bullet;
 
-BtMaterial::BtMaterial(
-	const MaterialDataMap* frictionMap,
-	const std::string& material,
-	const ContactDataMap* collisionMap,
-	const std::string& objectType):
-	_frictionMap(frictionMap),
-	_contactDataMap(collisionMap),
-	_material(material),
-	_objectType(objectType)
+BtMaterial::BtMaterial (const MaterialDataMap* frictionMap, const std::string& material,
+                        const ContactDataMap* collisionMap, const std::string& objectType) :
+    _frictionMap (frictionMap),
+    _contactDataMap (collisionMap), _material (material), _objectType (objectType)
+{}
+
+BtMaterial::~BtMaterial ()
+{}
+
+const MaterialDataMap* BtMaterial::getFrictionMap () const
 {
+    return _frictionMap;
 }
 
-BtMaterial::~BtMaterial() {
+const ContactDataMap* BtMaterial::getContactDataMap () const
+{
+    return _contactDataMap;
 }
 
-const MaterialDataMap* BtMaterial::getFrictionMap() const {
-	return _frictionMap;
+const std::string& BtMaterial::getMaterial () const
+{
+    return _material;
 }
 
-const ContactDataMap* BtMaterial::getContactDataMap() const {
-	return _contactDataMap;
+const std::string& BtMaterial::getObjectType () const
+{
+    return _objectType;
 }
 
-const std::string& BtMaterial::getMaterial() const {
-	return _material;
+double BtMaterial::getFriction (const BtMaterial* a, const BtMaterial* b)
+{
+    if (a->getFrictionMap () != b->getFrictionMap ())
+        RW_THROW ("Two BtMaterials did not point to the same FrictionMap!");
+    const std::vector< FrictionData > datas =
+        a->getFrictionMap ()->getFrictionDatas (a->getMaterial (), b->getMaterial ());
+    for (const FrictionData& data : datas) {
+        if (data.type == Coulomb) {
+            const std::vector< FrictionParam > pars = data.parameters;
+            for (const FrictionParam& par : pars) {
+                if (par.first == "Mu" || par.first == "MU" || par.first == "mu")
+                    return par.second[0];
+            }
+        }
+    }
+    RW_THROW ("No Coulomb data was found.");
 }
 
-const std::string& BtMaterial::getObjectType() const {
-	return _objectType;
-}
-
-double BtMaterial::getFriction(const BtMaterial* a, const BtMaterial* b) {
-	if (a->getFrictionMap() != b->getFrictionMap())
-		RW_THROW("Two BtMaterials did not point to the same FrictionMap!");
-	const std::vector<FrictionData> datas = a->getFrictionMap()->getFrictionDatas(a->getMaterial(),b->getMaterial());
-	for(const FrictionData& data: datas) {
-		if (data.type == Coulomb) {
-			const std::vector<FrictionParam> pars = data.parameters;
-			for(const FrictionParam& par: pars) {
-				if (par.first == "Mu" || par.first == "MU" || par.first == "mu")
-					return par.second[0];
-			}
-		}
-	}
-	RW_THROW("No Coulomb data was found.");
-}
-
-double BtMaterial::getRestitution(const BtMaterial* a, const BtMaterial* b) {
-	if (a->getContactDataMap() != b->getContactDataMap())
-		RW_THROW("Two BtMaterials did not point to the same ContactDataMap!");
-	const ContactDataMap::NewtonData& data = a->getContactDataMap()->getNewtonData(a->getObjectType(),b->getObjectType());
-	return data.cr;
+double BtMaterial::getRestitution (const BtMaterial* a, const BtMaterial* b)
+{
+    if (a->getContactDataMap () != b->getContactDataMap ())
+        RW_THROW ("Two BtMaterials did not point to the same ContactDataMap!");
+    const ContactDataMap::NewtonData& data =
+        a->getContactDataMap ()->getNewtonData (a->getObjectType (), b->getObjectType ());
+    return data.cr;
 }

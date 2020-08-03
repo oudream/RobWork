@@ -144,8 +144,8 @@ namespace rw { namespace core {
  * @brief Deprecated namespace since 16/4-2020 for this class
  * @deprecated use rw::core not rw
  */
-namespace rw { 
-    using namespace rw::core;
+namespace rw {
+using namespace rw::core;
 }
 
 #endif    //#ifndef RW_ROBWORK_HPP

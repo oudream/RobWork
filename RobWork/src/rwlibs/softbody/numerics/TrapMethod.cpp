@@ -16,4 +16,3 @@ Copyright 2013 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
 */
 
 #include "TrapMethod.hpp"
-

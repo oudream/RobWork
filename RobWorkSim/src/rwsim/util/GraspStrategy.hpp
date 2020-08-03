@@ -18,12 +18,12 @@
 #ifndef RWSIM_UTIL_GRASPSTRATEGY_HPP_
 #define RWSIM_UTIL_GRASPSTRATEGY_HPP_
 
-#include <rw/core/PropertyMap.hpp>
-#include <rw/core/Ptr.hpp>
 #include "StateSampler.hpp"
 
-namespace rwsim {
-namespace util {
+#include <rw/core/PropertyMap.hpp>
+#include <rw/core/Ptr.hpp>
+
+namespace rwsim { namespace util {
 
     /**
      * @brief a GraspStrategy define how the initial configuration of a grasping
@@ -35,20 +35,19 @@ namespace util {
      *
      * Another example would be to load all start configurations from some file...
      */
-	class GraspStrategy {
-	public:
+    class GraspStrategy
+    {
+      public:
+        typedef rw::core::Ptr< GraspStrategy > Ptr;
 
-	    typedef rw::core::Ptr<GraspStrategy> Ptr;
+        virtual StateSampler::Ptr getSampler () = 0;
 
-		virtual StateSampler::Ptr getSampler() = 0;
+        virtual std::string getIdentifier () = 0;
 
-		virtual std::string getIdentifier() = 0;
+        virtual rw::core::PropertyMap& getSettings () = 0;
 
-		virtual rw::core::PropertyMap& getSettings() = 0;
+        virtual void applySettings () = 0;
+    };
 
-		virtual void applySettings() = 0;
-	};
-
-}
-}
+}}     // namespace rwsim::util
 #endif /* GRASPSTRATEGY_HPP_ */

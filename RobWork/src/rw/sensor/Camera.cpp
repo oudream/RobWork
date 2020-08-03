@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,39 +15,34 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #include "Camera.hpp"
 
 using namespace rw::sensor;
 using namespace rw::kinematics;
 
-Camera::Camera(
-    const std::string& name,
-    const std::string& modelInfo)
-    :
-    Sensor(name, modelInfo),
-    _modelInfo(modelInfo),
-    _initialized(false),
-    _started(false)
+Camera::Camera (const std::string& name, const std::string& modelInfo) :
+    Sensor (name, modelInfo), _modelInfo (modelInfo), _initialized (false), _started (false)
 {}
 
-Camera::~Camera()
+Camera::~Camera ()
 {}
 
-bool Camera::removeListener(CameraListener& listener)
+bool Camera::removeListener (CameraListener& listener)
 {
-    typedef std::vector<CameraListener*>::iterator I;
-    const I p = std::find(_listeners.begin(), _listeners.end(), &listener);
-    const bool ok = p != _listeners.end();
-    if (ok) _listeners.erase(p);
+    typedef std::vector< CameraListener* >::iterator I;
+    const I p     = std::find (_listeners.begin (), _listeners.end (), &listener);
+    const bool ok = p != _listeners.end ();
+    if (ok)
+        _listeners.erase (p);
     return ok;
 }
 
-bool Camera::addListener(CameraListener& listener)
+bool Camera::addListener (CameraListener& listener)
 {
-    typedef std::vector<CameraListener*>::iterator I;
-    const I p = std::find(_listeners.begin(), _listeners.end(), &listener);
-    const bool ok = p != _listeners.end();
-    if (ok) _listeners.push_back(&listener);
+    typedef std::vector< CameraListener* >::iterator I;
+    const I p     = std::find (_listeners.begin (), _listeners.end (), &listener);
+    const bool ok = p != _listeners.end ();
+    if (ok)
+        _listeners.push_back (&listener);
     return ok;
 }

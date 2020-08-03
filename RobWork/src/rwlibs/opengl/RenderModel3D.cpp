@@ -209,9 +209,10 @@ void RenderModel3D::drawTPFaceList (const std::vector< TPFace >& list,
                 glVertex3fv (list[k]._vertex[2]);
                 glEnd ();
             }
-            if(k == list.size()){
+            if (k == list.size ()) {
                 glDisable (GL_TEXTURE_2D);
-            }else if (_model->_materials[list[k]._mat].hasTexture ()) {
+            }
+            else if (_model->_materials[list[k]._mat].hasTexture ()) {
                 glDisable (GL_TEXTURE_2D);
             }
             j = k - 1;

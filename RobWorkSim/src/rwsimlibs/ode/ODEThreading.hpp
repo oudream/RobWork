@@ -28,77 +28,79 @@
 
 #include <ode/common.h>
 
-namespace rwsim {
-namespace simulator {
-//! @addtogroup rwsim_simulator
+namespace rwsim { namespace simulator {
+    //! @addtogroup rwsim_simulator
 
-//! @{
-/**
- * @brief Utility functions related to the use of Open Dynamics Engine from multiple threads.
- *
- * For version 0.12 and earlier, using ODE from multiple threads might work (there is no guarantees).
- *
- * In version 0.13 a new structure for multi-threading was introduced. Open Dynamics Engine must be compiled with the
- * flags --enable-builtin-threading-impl and --enable-ou. This is required to support multi-threading in ODE 0.13 and newer.
- */
-class ODEThreading {
-public:
-	virtual ~ODEThreading();
+    //! @{
+    /**
+     * @brief Utility functions related to the use of Open Dynamics Engine from multiple threads.
+     *
+     * For version 0.12 and earlier, using ODE from multiple threads might work (there is no
+     * guarantees).
+     *
+     * In version 0.13 a new structure for multi-threading was introduced. Open Dynamics Engine must
+     * be compiled with the flags --enable-builtin-threading-impl and --enable-ou. This is required
+     * to support multi-threading in ODE 0.13 and newer.
+     */
+    class ODEThreading
+    {
+      public:
+        virtual ~ODEThreading ();
 
-	/**
-	 * @brief Make sure that threading is supported.
-	 * @throws Exception if Open Dynamics Engine does not support threading.
-	 * @see isSupported
-	 */
-	static void assertSupported();
+        /**
+         * @brief Make sure that threading is supported.
+         * @throws Exception if Open Dynamics Engine does not support threading.
+         * @see isSupported
+         */
+        static void assertSupported ();
 
-	/**
-	 * @brief Check if threading is supported.
-	 *
-	 * The function will return false for ODE 0.13 and newer if ODE is compiled without the --enable-builtin-threading-impl option.
-	 *
-	 * @return true if supported, false otherwise.
-	 * @see assertSupported
-	 */
-	static bool isSupported();
+        /**
+         * @brief Check if threading is supported.
+         *
+         * The function will return false for ODE 0.13 and newer if ODE is compiled without the
+         * --enable-builtin-threading-impl option.
+         *
+         * @return true if supported, false otherwise.
+         * @see assertSupported
+         */
+        static bool isSupported ();
 
-	/**
-	 * @brief If multiple threads try to execute dWorldStep or dWorldQuickStep simultaneously, they should call
-	 * this before each step, followed by checkSecureStepEnd() after the step.
-	 * This will give user-friendly errors if threading is not supported.
-	 * @throws Exception if threading is not supported and this has been called more than once.
-	 */
-	static void checkSecureStepBegin();
+        /**
+         * @brief If multiple threads try to execute dWorldStep or dWorldQuickStep simultaneously,
+         * they should call this before each step, followed by checkSecureStepEnd() after the step.
+         * This will give user-friendly errors if threading is not supported.
+         * @throws Exception if threading is not supported and this has been called more than once.
+         */
+        static void checkSecureStepBegin ();
 
-	/**
-	 * @brief Call this after all dWorldStep and dWorldQuickStep.
-	 * @see checkSecureStepBegin
-	 */
-	static void checkSecureStepEnd();
+        /**
+         * @brief Call this after all dWorldStep and dWorldQuickStep.
+         * @see checkSecureStepBegin
+         */
+        static void checkSecureStepEnd ();
 
-	/**
-	 * @brief Initialize threading structures (only used in ODE 0.13 and newer).
-	 *
-	 * Notice that this will create a worker thread for each world.
-	 *
-	 * @param world [in] the world id.
-	 */
-	static void initThreading(dWorldID world);
+        /**
+         * @brief Initialize threading structures (only used in ODE 0.13 and newer).
+         *
+         * Notice that this will create a worker thread for each world.
+         *
+         * @param world [in] the world id.
+         */
+        static void initThreading (dWorldID world);
 
-	/**
-	 * @brief Destruct threading structures.
-	 * @param world [in] the world id.
-	 */
-	static void destroyThreading(dWorldID world);
+        /**
+         * @brief Destruct threading structures.
+         * @param world [in] the world id.
+         */
+        static void destroyThreading (dWorldID world);
 
-private:
-	ODEThreading();
+      private:
+        ODEThreading ();
 
-	struct ThreadImpl;
-	static rw::core::Ptr<ThreadImpl> data();
-};
-//! @}
-} /* namespace simulator */
-} /* namespace rwsim */
+        struct ThreadImpl;
+        static rw::core::Ptr< ThreadImpl > data ();
+    };
+    //! @}
+}}    // namespace rwsim::simulator
 
 #endif /* RWSIMLIBS_ODE_ODETHREADING_HPP_ */

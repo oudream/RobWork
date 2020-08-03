@@ -23,34 +23,31 @@
 #include "LinuxSerialPort.cpp"
 #endif
 
-bool SerialPort::read(
-    char* buf,
-    const unsigned int n,
-    const unsigned int timeout,
-    const unsigned int sInterval)
+bool SerialPort::read (char* buf, const unsigned int n, const unsigned int timeout,
+                       const unsigned int sInterval)
 {
     unsigned int index = 0;
 
-    const long long time =
-        rw::common::TimerUtil::currentTimeMs() + timeout;
+    const long long time = rw::common::TimerUtil::currentTimeMs () + timeout;
 
     long long currTime = time;
     do {
-        index += read( &(buf[index]), n-index );
-        if(index >= n){
+        index += read (&(buf[index]), n - index);
+        if (index >= n) {
             return true;
         }
-        rw::common::TimerUtil::sleepMs(sInterval);
-        currTime = rw::common::TimerUtil::currentTimeMs();
-    } while( currTime < time );
+        rw::common::TimerUtil::sleepMs (sInterval);
+        currTime = rw::common::TimerUtil::currentTimeMs ();
+    } while (currTime < time);
     return false;
 }
 
-void SerialPort::debugPrint(const char* str, const char* buf, int n) {
-	//printf ("%s ", str);
+void SerialPort::debugPrint (const char* str, const char* buf, int n)
+{
+    // printf ("%s ", str);
 
-	//for(unsigned int i=0; i<n; ++i) {
-	//	printf ("%x ", buf[i]&0xff);
-	//}
-	//printf ("\n");
+    // for(unsigned int i=0; i<n; ++i) {
+    //	printf ("%x ", buf[i]&0xff);
+    //}
+    // printf ("\n");
 }

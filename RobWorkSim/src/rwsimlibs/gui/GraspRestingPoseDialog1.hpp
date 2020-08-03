@@ -14,24 +14,20 @@
 
 #include "ui_GraspRestingPoseDialog.h"
 
-#include <rw/kinematics/State.hpp>
-
-#include <rwsim/dynamics/RigidBody.hpp>
-#include <rwsim/dynamics/DynamicWorkCell.hpp>
-#include <rwsim/simulator/ThreadSimulator.hpp>
-#include <rwsim/control/PDController.hpp>
 #include <rw/kinematics/FrameMap.hpp>
-
+#include <rw/kinematics/State.hpp>
+#include <rw/proximity/CollisionDetector.hpp>
+#include <rwsim/control/PDController.hpp>
+#include <rwsim/dynamics/DynamicWorkCell.hpp>
+#include <rwsim/dynamics/RigidBody.hpp>
+#include <rwsim/dynamics/RigidDevice.hpp>
+#include <rwsim/sensor/BodyContactSensor.hpp>
+#include <rwsim/simulator/ThreadSimulator.hpp>
 #include <rwsim/util/MovingAverage.hpp>
 
-#include <rw/proximity/CollisionDetector.hpp>
-#include <rwsim/dynamics/RigidDevice.hpp>
-
-#include <rwsim/sensor/BodyContactSensor.hpp>
-
 #include <QObject>
-#include <QtGui>
 #include <QTimer>
+#include <QtGui>
 
 /**
  * @brief a grphical interface for calculating resting configurations of
@@ -40,119 +36,114 @@
  *
  */
 class GraspRestingPoseDialog : public QDialog, private Ui::GraspRestingPoseDialog
+{
+    Q_OBJECT
+
+  public:
+    GraspRestingPoseDialog (const rw::kinematics::State& state,
+                            rwsim::dynamics::DynamicWorkCell* dwc,
+                            rw::proximity::CollisionDetector* detector, QWidget* parent = 0);
+
+    const rw::kinematics::State& getState () { return _state; };
+
+    std::vector< rwsim::dynamics::RigidBody* >& getBodies () { return _bodies; };
+
+    std::vector< rw::kinematics::State >& getStartPoses () { return _startPoses; };
+
+    std::vector< rw::kinematics::State >& getRestingPoses () { return _resultPoses; };
+
+    void setPreshapeStrategy (const std::string& str)
     {
-        Q_OBJECT
+        int idx = _preshapeStratBox->findText (str.c_str ());
+        if (idx >= 0)
+            _preshapeStratBox->setCurrentIndex (idx);
+    }
 
-    public:
-        GraspRestingPoseDialog(const rw::kinematics::State& state,
-                          rwsim::dynamics::DynamicWorkCell *dwc,
-                          rw::proximity::CollisionDetector *detector,
-                          QWidget *parent = 0);
+    void setSaveDir (const std::string& str) { _savePath->setText (str.c_str ()); }
 
-        const rw::kinematics::State& getState(){ return _state; };
+    void startAuto ();
+  signals:
+    /**
+     * @brief The state of one simulation thread can be actively monitored
+     * through this signal.
+     * @param state
+     */
+    void stateChanged (const rw::kinematics::State& state);
 
-        std::vector<rwsim::dynamics::RigidBody*>& getBodies(){ return _bodies; };
+    /**
+     * @brief An event that is fired when a resting pose has been calculated.
+     */
+    void restingPoseEvent (const rw::kinematics::State& state);
 
-        std::vector<rw::kinematics::State>& getStartPoses(){return _startPoses;};
+  private slots:
+    void btnPressed ();
+    void changedEvent ();
 
-        std::vector<rw::kinematics::State>& getRestingPoses(){return _resultPoses;};
+  private:
+    void initializeStart ();
+    void updateStatus ();
 
-        void setPreshapeStrategy(const std::string& str){
-            int idx = _preshapeStratBox->findText(str.c_str());
-            if( idx>=0 )
-                _preshapeStratBox->setCurrentIndex(idx);
-        }
+    /**
+     * @brief calculates a random configuration of
+     * all bodies
+     * @param state
+     */
+    void calcRandomCfg (rw::kinematics::State& state);
 
-        void setSaveDir(const std::string& str){
-            _savePath->setText(str.c_str());
-        }
+    /**
+     * @brief Calculate random configuration for \b bodies
+     * @param bodies
+     * @param state
+     */
+    void calcRandomCfg (std::vector< dynamics::RigidBody* >& bodies, rw::kinematics::State& state);
 
-        void startAuto();
-    signals:
-        /**
-         * @brief The state of one simulation thread can be actively monitored
-         * through this signal.
-         * @param state
-         */
-        void stateChanged(const rw::kinematics::State& state);
+    /**
+     * @brief calculates a collision free random configuration of
+     * all bodies
+     * @param state
+     */
+    void calcColFreeRandomCfg (rw::kinematics::State& state);
 
-        /**
-         * @brief An event that is fired when a resting pose has been calculated.
-         */
-        void restingPoseEvent(const rw::kinematics::State& state);
+    bool isSimulationFinished (rw::core::Ptr< ThreadSimulator > sim);
 
-    private slots:
-        void btnPressed();
-        void changedEvent();
+    void saveRestingState (rw::core::Ptr< ThreadSimulator > sim);
 
-    private:
-    	void initializeStart();
-        void updateStatus();
+  private:
+    Ui::GraspRestingPoseDialog _ui;
+    rw::kinematics::State _defstate;
+    rw::kinematics::State _state;
+    QTimer* _timer;
+    std::vector< rw::core::Ptr< ThreadSimulator > > _simulators;
+    std::vector< rw::kinematics::State > _initStates;
+    std::vector< double > _simStartTimes;
+    int _nrOfTests;
+    double _totalSimTime;
+    std::vector< dynamics::RigidBody* > _bodies;
 
-        /**
-         * @brief calculates a random configuration of
-         * all bodies
-         * @param state
-         */
-        void calcRandomCfg(rw::kinematics::State& state);
+    long _startTime;
 
-        /**
-         * @brief Calculate random configuration for \b bodies
-         * @param bodies
-         * @param state
-         */
-        void calcRandomCfg(std::vector<dynamics::RigidBody*> &bodies,
-                           rw::kinematics::State& state);
+    std::vector< rw::kinematics::State > _startPoses;
+    std::vector< rw::kinematics::State > _resultPoses;
 
-        /**
-         * @brief calculates a collision free random configuration of
-         * all bodies
-         * @param state
-         */
-        void calcColFreeRandomCfg(rw::kinematics::State& state);
+    rw::kinematics::FrameMap< dynamics::RigidBody* > _frameToBody;
+    dynamics::DynamicWorkCell* _dwc;
+    rw::proximity::CollisionDetector* _colDect;
+    double _lastTime, _lastBelowThresUpdate;
+    MovingAverage _avgSimTime;
+    MovingAverage _avgTime;
 
-        bool isSimulationFinished( rw::core::Ptr<ThreadSimulator> sim );
+    std::vector< PDControllerPtr > _controllers;
+    std::vector< rw::math::Q > _preshapes;
+    std::vector< rw::math::Q > _targetQ;
+    dynamics::RigidBody* _body;
+    RigidDevice* _hand;
+    rw::kinematics::MovableFrame *_handBase, *_object;
 
-        void saveRestingState( rw::core::Ptr<ThreadSimulator> sim );
+    BodyContactSensorPtr _bodySensor;
 
-    private:
-        Ui::GraspRestingPoseDialog _ui;
-        rw::kinematics::State _defstate;
-        rw::kinematics::State _state;
-        QTimer *_timer;
-        std::vector<rw::core::Ptr<ThreadSimulator> > _simulators;
-        std::vector<rw::kinematics::State> _initStates;
-        std::vector<double> _simStartTimes;
-        int _nrOfTests;
-        double _totalSimTime;
-        std::vector<dynamics::RigidBody*> _bodies;
+    bool _exitHard;
 
-        long _startTime;
-
-        std::vector<rw::kinematics::State> _startPoses;
-        std::vector<rw::kinematics::State> _resultPoses;
-
-        rw::kinematics::FrameMap<dynamics::RigidBody*> _frameToBody;
-        dynamics::DynamicWorkCell *_dwc;
-        rw::proximity::CollisionDetector *_colDect;
-        double _lastTime,_lastBelowThresUpdate;
-        MovingAverage _avgSimTime;
-        MovingAverage _avgTime;
-
-        std::vector<PDControllerPtr> _controllers;
-        std::vector<rw::math::Q> _preshapes;
-        std::vector<rw::math::Q> _targetQ;
-        dynamics::RigidBody *_body;
-        RigidDevice *_hand;
-        rw::kinematics::MovableFrame *_handBase,*_object;
-
-        BodyContactSensorPtr _bodySensor;
-
-        bool _exitHard;
-
-        bool _graspNotStable;
-
+    bool _graspNotStable;
 };
-
 
 #endif /* RESTINGPOSEDIALOG_HPP_ */

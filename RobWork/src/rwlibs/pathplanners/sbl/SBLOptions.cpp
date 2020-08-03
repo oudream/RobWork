@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #include "SBLOptions.hpp"
 
 using namespace rwlibs::pathplanners;
@@ -23,22 +22,17 @@ using namespace rw::pathplanning;
 using namespace rw::math;
 using namespace rw::models;
 
-SBLOptions::SBLOptions(QConstraint::Ptr& constraint,
-	QEdgeConstraintIncremental::Ptr& edgeConstraint,
-	SBLExpand::Ptr expansion,
-	QMetric::Ptr metric,
-    double connectRadius)
-    :
-    constraint(constraint, edgeConstraint),
-    expansion(expansion),
-    metric(metric),
-    connectRadius(connectRadius)
+SBLOptions::SBLOptions (QConstraint::Ptr& constraint,
+                        QEdgeConstraintIncremental::Ptr& edgeConstraint, SBLExpand::Ptr expansion,
+                        QMetric::Ptr metric, double connectRadius) :
+    constraint (constraint, edgeConstraint),
+    expansion (expansion), metric (metric), connectRadius (connectRadius)
 {
     resetCount = 20;
     // resetCount = 200;
 
     rootSampleInterval = 25;
-    nodesPerCell = 10;
+    nodesPerCell       = 10;
 
     nearNodeSelection = NearestNode;
     // nearNodeSelection = UniformSelect;

@@ -19,12 +19,13 @@
 #define RW_COMMON_LOGWRITER_HPP_
 
 #include <rw/core/LogWriter.hpp>
-
 #include <rw/core/os.hpp>
 #ifdef RW_WIN32
-#pragma message("#include <rw/common/LogWriter.hpp> is deprecated use #include <rw/core/LogWriter.hpp> instead")
+#pragma message( \
+    "#include <rw/common/LogWriter.hpp> is deprecated use #include <rw/core/LogWriter.hpp> instead")
 #else
-#warning "#include <rw/common/LogWriter.hpp> is deprecated use #include <rw/core/LogWriter.hpp> instead"
+#warning \
+    "#include <rw/common/LogWriter.hpp> is deprecated use #include <rw/core/LogWriter.hpp> instead"
 #endif
 
 #endif

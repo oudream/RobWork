@@ -20,8 +20,8 @@
 
 #include <rw/proximity/CollisionStrategy.hpp>
 #include <rw/proximity/CollisionToleranceStrategy.hpp>
-#include <rw/proximity/DistanceStrategy.hpp>
 #include <rw/proximity/DistanceMultiStrategy.hpp>
+#include <rw/proximity/DistanceStrategy.hpp>
 
 namespace rwlibs { namespace proximitystrategies {
 
@@ -44,11 +44,11 @@ namespace rwlibs { namespace proximitystrategies {
          */
         static rw::proximity::CollisionStrategy::Ptr makeDefaultCollisionStrategy ();
 
-		/**
+        /**
          * @brief function to create a collision strategy from an ID
-		 * @param id [in] the id of the collision strategy
-         * @return NULL if the \b id dosn't match an available collision strategies else a Ptr to the
-         * collision strategy
+         * @param id [in] the id of the collision strategy
+         * @return NULL if the \b id dosn't match an available collision strategies else a Ptr to
+         * the collision strategy
          */
         static rw::proximity::CollisionStrategy::Ptr makeCollisionStrategy (const std::string& id);
 
@@ -66,9 +66,9 @@ namespace rwlibs { namespace proximitystrategies {
          */
         static rw::proximity::DistanceStrategy::Ptr makeDefaultDistanceStrategy ();
 
-		/**
+        /**
          * @brief function to create a distance strategy from an ID
-		 * @param id [in] the id of the distance strategy
+         * @param id [in] the id of the distance strategy
          * @return NULL if the \b id dosn't match an available distance trategies else a Ptr to the
          * distance strategy
          */
@@ -87,13 +87,14 @@ namespace rwlibs { namespace proximitystrategies {
          */
         static rw::proximity::DistanceMultiStrategy::Ptr makeDefaultDistanceMultiStrategy ();
 
-		/**
+        /**
          * @brief function to create a distance multi strategy from an ID
-		 * @param id [in] the id of the distance multi strategy
-         * @return NULL if the \b id dosn't match an available distance multi strategies else a Ptr to the
-         * distnace multi strategy
+         * @param id [in] the id of the distance multi strategy
+         * @return NULL if the \b id dosn't match an available distance multi strategies else a Ptr
+         * to the distnace multi strategy
          */
-        static rw::proximity::DistanceMultiStrategy::Ptr makeDistanceMultiStrategy (const std::string& id);
+        static rw::proximity::DistanceMultiStrategy::Ptr
+        makeDistanceMultiStrategy (const std::string& id);
     };
 
 }}    // namespace rwlibs::proximitystrategies

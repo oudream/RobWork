@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RWLIBS_OPENGL_DRAWABLEFACTORY_HPP
 #define RWLIBS_OPENGL_DRAWABLEFACTORY_HPP
 
@@ -24,6 +23,7 @@
  */
 
 #include "Drawable.hpp"
+
 #include <rw/common/FileCache.hpp>
 
 namespace rwlibs { namespace opengl {
@@ -34,9 +34,9 @@ namespace rwlibs { namespace opengl {
     /**
      * @brief Factory for construction of drawables based on their type
      */
-    class DrawableFactory {
-    public:
-
+    class DrawableFactory
+    {
+      public:
         /**
          * @brief Factory method for constructing a Drawable based on
          * a string.
@@ -47,7 +47,7 @@ namespace rwlibs { namespace opengl {
          * Otherwise it calls DrawableFactory::LoadDrawableFile
          * otherwise
          */
-        static Drawable::Ptr getDrawable(const std::string& str, const std::string& name);
+        static Drawable::Ptr getDrawable (const std::string& str, const std::string& name);
 
         /**
          * @brief Factory method constructing a Drawable from a file.
@@ -62,7 +62,8 @@ namespace rwlibs { namespace opengl {
          *
          * An exception is thrown if the file can't be loaded.
          */
-        static Drawable::Ptr loadDrawableFile(const std::string &filename, const std::string& name);
+        static Drawable::Ptr loadDrawableFile (const std::string& filename,
+                                               const std::string& name);
 
         /**
          * @brief Factory method constructing a Drawable based on
@@ -78,17 +79,16 @@ namespace rwlibs { namespace opengl {
          * @param useCache [in] True to use caching. Default false
          * @return Point to drawable object
          */
-        static Drawable::Ptr constructFromGeometry(
-            const std::string& str,
-            const std::string& name,
-            bool useCache=false);
+        static Drawable::Ptr constructFromGeometry (const std::string& str, const std::string& name,
+                                                    bool useCache = false);
 
-    private:
-        typedef rw::common::FileCache<std::string, rw::graphics::Render, std::string> FactoryCache;
-    	static FactoryCache& getCache();
+      private:
+        typedef rw::common::FileCache< std::string, rw::graphics::Render, std::string >
+            FactoryCache;
+        static FactoryCache& getCache ();
     };
 
     /*@}*/
-}} // end namespaces
+}}    // namespace rwlibs::opengl
 
-#endif // end include guard
+#endif    // end include guard

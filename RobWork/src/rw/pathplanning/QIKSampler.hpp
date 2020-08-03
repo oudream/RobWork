@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RW_PATHPLANNING_QIKSAMPLER_HPP
 #define RW_PATHPLANNING_QIKSAMPLER_HPP
 
@@ -27,13 +26,19 @@
 #include <rw/math/Q.hpp>
 #include <rw/math/Transform3D.hpp>
 
-namespace rw { namespace kinematics { class State; } }
-namespace rw { namespace models { class Device; } }
-namespace rw { namespace invkin { class IterativeIK; } }
+namespace rw { namespace kinematics {
+    class State;
+}}    // namespace rw::kinematics
+namespace rw { namespace models {
+    class Device;
+}}    // namespace rw::models
+namespace rw { namespace invkin {
+    class IterativeIK;
+}}    // namespace rw::invkin
 
 namespace rw { namespace pathplanning {
-	class QConstraint;
-	class QSampler;
+    class QConstraint;
+    class QSampler;
 
     /** @addtogroup pathplanning */
     /** @{*/
@@ -44,11 +49,11 @@ namespace rw { namespace pathplanning {
     */
     class QIKSampler
     {
-    public:
-		//! @brief smart pointer type to this class
-		typedef rw::core::Ptr<QIKSampler> Ptr;
-		//! @brief smart pointer type to this const class
-		typedef rw::core::Ptr< const QIKSampler > CPtr;
+      public:
+        //! @brief smart pointer type to this class
+        typedef rw::core::Ptr< QIKSampler > Ptr;
+        //! @brief smart pointer type to this const class
+        typedef rw::core::Ptr< const QIKSampler > CPtr;
 
         /**
            @brief Sample a configuration that solves an IK problem for \b
@@ -58,19 +63,18 @@ namespace rw { namespace pathplanning {
            empty() is true then the sampler has no more configurations.
            Otherwise sample() may (or may not) succeed if called a second time.
         */
-        rw::math::Q sample(const rw::math::Transform3D<>& target)
-        { return doSample(target); }
+        rw::math::Q sample (const rw::math::Transform3D<>& target) { return doSample (target); }
 
         /**
            @brief True if the sampler is known to contain no more
            configurations.
         */
-        bool empty() const;
+        bool empty () const;
 
         /**
            @brief Destructor
         */
-        virtual ~QIKSampler() {}
+        virtual ~QIKSampler () {}
 
         /**
            @brief An IK sampler based on an iterative IK solver.
@@ -89,12 +93,10 @@ namespace rw { namespace pathplanning {
            solver. If \b maxAttempts is negative, a default value for \b
            maxAttempts is chosen.
         */
-		static QIKSampler::Ptr make(
-			rw::core::Ptr<rw::models::Device> device,
-            const rw::kinematics::State& state,
-			rw::core::Ptr<rw::invkin::IterativeIK> solver = NULL,
-			rw::core::Ptr<QSampler> seed = NULL,
-            int maxAttempts = -1);
+        static QIKSampler::Ptr make (rw::core::Ptr< rw::models::Device > device,
+                                     const rw::kinematics::State& state,
+                                     rw::core::Ptr< rw::invkin::IterativeIK > solver = NULL,
+                                     rw::core::Ptr< QSampler > seed = NULL, int maxAttempts = -1);
 
         /**
            @brief An IK sampler filtered by a constraint.
@@ -108,22 +110,20 @@ namespace rw { namespace pathplanning {
            until either the \b sampler is empty or a configuration satisfying \b
            constraint is found.
         */
-        static QIKSampler::Ptr makeConstrained(
-		    QIKSampler::Ptr sampler,
-			rw::core::Ptr<QConstraint> constraint,
-            int maxAttempts = -1);
+        static QIKSampler::Ptr makeConstrained (QIKSampler::Ptr sampler,
+                                                rw::core::Ptr< QConstraint > constraint,
+                                                int maxAttempts = -1);
 
-    protected:
+      protected:
         /**
            @brief Constructor
         */
-        QIKSampler() {}
+        QIKSampler () {}
 
         /**
            @brief Subclass implementation of the sample() method.
         */
-        virtual rw::math::Q doSample(
-            const rw::math::Transform3D<>& target) = 0;
+        virtual rw::math::Q doSample (const rw::math::Transform3D<>& target) = 0;
 
         /**
            @brief Subclass implementation of the empty() method.
@@ -131,14 +131,14 @@ namespace rw { namespace pathplanning {
            By default the sampler is assumed to be sampling an infinite set of
            configurations. IOW. the function returns false by default.
         */
-        virtual bool doEmpty() const;
+        virtual bool doEmpty () const;
 
-    private:
-        QIKSampler(const QIKSampler&);
-        QIKSampler& operator=(const QIKSampler&);
+      private:
+        QIKSampler (const QIKSampler&);
+        QIKSampler& operator= (const QIKSampler&);
     };
 
     /* @} */
-}} // end namespaces
+}}    // namespace rw::pathplanning
 
-#endif // end include guard
+#endif    // end include guard

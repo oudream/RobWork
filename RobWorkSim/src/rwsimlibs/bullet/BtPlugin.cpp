@@ -16,50 +16,54 @@
  ********************************************************************************/
 
 #include "BtPlugin.hpp"
+
 #include "BtSimulator.hpp"
 
 using namespace rw::core;
 using rwsim::simulator::PhysicsEngine;
 using namespace rwsimlibs::bullet;
 
-RW_ADD_PLUGIN(BtPlugin)
+RW_ADD_PLUGIN (BtPlugin)
 
 namespace {
-	class Dispatcher: public PhysicsEngine::Dispatcher {
-	public:
-		Dispatcher() {}
-		virtual ~Dispatcher() {}
-
-		virtual PhysicsEngine::Ptr makePhysicsEngine() const {
-			return ownedPtr(new BtSimulator());
-		}
-	};
-}
-
-BtPlugin::BtPlugin():Plugin("BtPlugin", "BtPlugin", "0.1") {}
-
-BtPlugin::~BtPlugin() {}
-
-std::vector<Extension::Descriptor> BtPlugin::getExtensionDescriptors()
+class Dispatcher : public PhysicsEngine::Dispatcher
 {
-    std::vector<Extension::Descriptor> exts;
-    exts.push_back(Extension::Descriptor("BtPhysicsEngine","rwsim.simulator.PhysicsEngine"));
+  public:
+    Dispatcher () {}
+    virtual ~Dispatcher () {}
+
+    virtual PhysicsEngine::Ptr makePhysicsEngine () const { return ownedPtr (new BtSimulator ()); }
+};
+}    // namespace
+
+BtPlugin::BtPlugin () : Plugin ("BtPlugin", "BtPlugin", "0.1")
+{}
+
+BtPlugin::~BtPlugin ()
+{}
+
+std::vector< Extension::Descriptor > BtPlugin::getExtensionDescriptors ()
+{
+    std::vector< Extension::Descriptor > exts;
+    exts.push_back (Extension::Descriptor ("BtPhysicsEngine", "rwsim.simulator.PhysicsEngine"));
 
     // todo: add possible properties to the extension descriptor
-    exts.back().getProperties().set<std::string>("engineID", "Bullet");
+    exts.back ().getProperties ().set< std::string > ("engineID", "Bullet");
 
     return exts;
 }
 
-Extension::Ptr BtPlugin::makeExtension(const std::string& str)
+Extension::Ptr BtPlugin::makeExtension (const std::string& str)
 {
-    if(str=="BtPhysicsEngine"){
-        Extension::Ptr extension = rw::core::ownedPtr(
-        		new Extension("BtPhysicsEngine","rwsim.simulator.PhysicsEngine",
-                this, ownedPtr(new Dispatcher()).cast<PhysicsEngine::Dispatcher>() ) );
+    if (str == "BtPhysicsEngine") {
+        Extension::Ptr extension = rw::core::ownedPtr (
+            new Extension ("BtPhysicsEngine",
+                           "rwsim.simulator.PhysicsEngine",
+                           this,
+                           ownedPtr (new Dispatcher ()).cast< PhysicsEngine::Dispatcher > ()));
 
         // todo: add possible properties to the extension descriptor
-        extension->getProperties().set<std::string>("engineID", "Bullet");
+        extension->getProperties ().set< std::string > ("engineID", "Bullet");
         return extension;
     }
     return NULL;

@@ -33,105 +33,110 @@ class btTypedConstraint;
 class btRigidBody;
 struct btJointFeedback;
 
-namespace rw { namespace kinematics { class State; } }
-namespace rwsim { namespace dynamics { class Constraint; } }
+namespace rw { namespace kinematics {
+    class State;
+}}    // namespace rw::kinematics
+namespace rwsim { namespace dynamics {
+    class Constraint;
+}}    // namespace rwsim::dynamics
 
-namespace rwsimlibs {
-namespace bullet {
+namespace rwsimlibs { namespace bullet {
 
-// Forward declarations
-class BtBody;
+    // Forward declarations
+    class BtBody;
 
-//! @addtogroup rwsimlibs_bullet
+    //! @addtogroup rwsimlibs_bullet
 
-//! @{
-/**
- * @brief Allows constraining the motion between two bodies in Bullet simulation.
- *
- * This is the Bullet implementation of rwsim::dynamics::Constraint
- */
-class BtConstraint {
-public:
-	/**
-	 * @brief Construct a new Bullet implementation of a Constraint.
-	 * @param constraint [in] the RobWork constraint.
-	 * @param parent [in] the parent Bullet body.
-	 * @param child [in] the child Bullet body.
-	 * @param btWorld [in] the Bullet world that this constraint should belong to.
-	 */
-	BtConstraint(rw::core::Ptr<const rwsim::dynamics::Constraint> constraint, const BtBody* const parent, const BtBody* const child, btDynamicsWorld* btWorld);
+    //! @{
+    /**
+     * @brief Allows constraining the motion between two bodies in Bullet simulation.
+     *
+     * This is the Bullet implementation of rwsim::dynamics::Constraint
+     */
+    class BtConstraint
+    {
+      public:
+        /**
+         * @brief Construct a new Bullet implementation of a Constraint.
+         * @param constraint [in] the RobWork constraint.
+         * @param parent [in] the parent Bullet body.
+         * @param child [in] the child Bullet body.
+         * @param btWorld [in] the Bullet world that this constraint should belong to.
+         */
+        BtConstraint (rw::core::Ptr< const rwsim::dynamics::Constraint > constraint,
+                      const BtBody* const parent, const BtBody* const child,
+                      btDynamicsWorld* btWorld);
 
-	//! @brief Destructor.
-	virtual ~BtConstraint();
+        //! @brief Destructor.
+        virtual ~BtConstraint ();
 
-	/**
-	 * @brief Get the Bullet constraint that this class is wrapping.
-	 * @return a pointer to a btTypedConstraint.
-	 */
-	btTypedConstraint* getBtConstraint() const;
+        /**
+         * @brief Get the Bullet constraint that this class is wrapping.
+         * @return a pointer to a btTypedConstraint.
+         */
+        btTypedConstraint* getBtConstraint () const;
 
-	/**
-	 * @brief Get the RobWork constraint.
-	 * @return a pointer to a constant Constraint object.
-	 */
-	rw::core::Ptr<const rwsim::dynamics::Constraint> getRWConstraint() const;
+        /**
+         * @brief Get the RobWork constraint.
+         * @return a pointer to a constant Constraint object.
+         */
+        rw::core::Ptr< const rwsim::dynamics::Constraint > getRWConstraint () const;
 
-	/**
-	 * @brief Get the Bullet parent body.
-	 * @return a pointer to a btRigidBody.
-	 */
-	btRigidBody* getBtParent() const;
+        /**
+         * @brief Get the Bullet parent body.
+         * @return a pointer to a btRigidBody.
+         */
+        btRigidBody* getBtParent () const;
 
-	/**
-	 * @brief Get the Bullet child body.
-	 * @return a pointer to a btRigidBody.
-	 */
-	btRigidBody* getBtChild() const;
+        /**
+         * @brief Get the Bullet child body.
+         * @return a pointer to a btRigidBody.
+         */
+        btRigidBody* getBtChild () const;
 
-	/**
-	 * @brief Get the position where feedback force and torque act on first body.
-	 * @return the position in world coordinates.
-	 */
-	rw::math::Vector3D<> getRefA() const;
+        /**
+         * @brief Get the position where feedback force and torque act on first body.
+         * @return the position in world coordinates.
+         */
+        rw::math::Vector3D<> getRefA () const;
 
-	/**
-	 * @brief Get the position where feedback force and torque act on second body.
-	 * @return the position in world coordinates.
-	 */
-	rw::math::Vector3D<> getRefB() const;
+        /**
+         * @brief Get the position where feedback force and torque act on second body.
+         * @return the position in world coordinates.
+         */
+        rw::math::Vector3D<> getRefB () const;
 
-	/**
-	 * @brief Update spring forces based on given position and velocities.
-	 * @param dt [in] information about the step size.
-	 * @param state [in/out] the state.
-	 */
-	void update(const double dt, rw::kinematics::State& state);
+        /**
+         * @brief Update spring forces based on given position and velocities.
+         * @param dt [in] information about the step size.
+         * @param state [in/out] the state.
+         */
+        void update (const double dt, rw::kinematics::State& state);
 
-	/**
-	 * @brief Update RobWork state with forces.
-	 * @param state [in/out] the state to update.
-	 */
-	void postUpdate(rw::kinematics::State& state);
+        /**
+         * @brief Update RobWork state with forces.
+         * @param state [in/out] the state to update.
+         */
+        void postUpdate (rw::kinematics::State& state);
 
-	/**
-	 * @brief Get the feedback for the constraint.
-	 * @return the bullet feedback.
-	 */
-	btJointFeedback* getFeedback();
+        /**
+         * @brief Get the feedback for the constraint.
+         * @return the bullet feedback.
+         */
+        btJointFeedback* getFeedback ();
 
-private:
-	void createJoint();
-	void destroyJoint();
+      private:
+        void createJoint ();
+        void destroyJoint ();
 
-private:
-	const rw::core::Ptr<const rwsim::dynamics::Constraint> _rwConstraint;
-	const BtBody* const _parent;
-	const BtBody* const _child;
-    btDynamicsWorld* const _btDynamicsWorld;
-	btTypedConstraint* _btConstraint;
-	btJointFeedback* _feedback;
-};
-//! @}
-} /* namespace bullet */
-} /* namespace rwsimlibs */
+      private:
+        const rw::core::Ptr< const rwsim::dynamics::Constraint > _rwConstraint;
+        const BtBody* const _parent;
+        const BtBody* const _child;
+        btDynamicsWorld* const _btDynamicsWorld;
+        btTypedConstraint* _btConstraint;
+        btJointFeedback* _feedback;
+    };
+    //! @}
+}}     // namespace rwsimlibs::bullet
 #endif /* RWSIMLIBS_BULLET_BTCONSTRAINT_HPP_ */

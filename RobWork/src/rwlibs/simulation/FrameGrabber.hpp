@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RWLIBS_SIMULATION_CAMERA_FRAMEGRAPPER_HPP
 #define RWLIBS_SIMULATION_CAMERA_FRAMEGRAPPER_HPP
 
@@ -23,11 +22,15 @@
  * @file FrameGrabber.hpp
  */
 
-#include <rw/sensor/Image.hpp>
 #include <rw/core/Ptr.hpp>
+#include <rw/sensor/Image.hpp>
 
-namespace rw { namespace kinematics { class Frame; } }
-namespace rw { namespace kinematics { class State; } }
+namespace rw { namespace kinematics {
+    class Frame;
+}}    // namespace rw::kinematics
+namespace rw { namespace kinematics {
+    class State;
+}}    // namespace rw::kinematics
 
 namespace rwlibs { namespace simulation {
     /** @addtogroup simulation */
@@ -39,9 +42,9 @@ namespace rwlibs { namespace simulation {
      */
     class FrameGrabber
     {
-    public:
-    	//! @brief Smart pointer type for FrameGrabber.
-        typedef rw::core::Ptr<FrameGrabber> Ptr;
+      public:
+        //! @brief Smart pointer type for FrameGrabber.
+        typedef rw::core::Ptr< FrameGrabber > Ptr;
 
         /**
          * @brief constructor
@@ -49,39 +52,36 @@ namespace rwlibs { namespace simulation {
          * @param height [in] height of the image that this FrameGrabber uses.
          * @param encoding [in] color encoding of the image that this FrameGrabber uses.
          */
-        FrameGrabber(int width, int height, rw::sensor::Image::ColorCode encoding) :
-            _colorCode(encoding)
+        FrameGrabber (int width, int height, rw::sensor::Image::ColorCode encoding) :
+            _colorCode (encoding)
         {
-            _img = new rw::sensor::Image( width, height, encoding, rw::sensor::Image::Depth8U );
+            _img = new rw::sensor::Image (width, height, encoding, rw::sensor::Image::Depth8U);
         }
 
         /**
          * @brief destructor
          */
-        virtual ~FrameGrabber()
-        {
-            delete _img;
-        }
+        virtual ~FrameGrabber () { delete _img; }
 
         /**
          * @brief returns the width of the image
          * @return the width of the image
          */
-        int getWidth() { return _img->getWidth(); }
+        int getWidth () { return _img->getWidth (); }
 
         /**
          * @brief returns the height of the image
          * @return the height of the image
          */
-        int getHeight() { return _img->getHeight(); }
-		
+        int getHeight () { return _img->getHeight (); }
+
         /**
          * @brief resizes the image that this frameGrabber use. The colorcode will
          * default to the one that FrameGrabber was initialized with.
          * @param width [in] width of image
          * @param height [in] height of image
          */
-        virtual void resize(int width, int height);
+        virtual void resize (int width, int height);
 
         /**
          * @brief resizes the image that this frameGrabber use.
@@ -89,36 +89,37 @@ namespace rwlibs { namespace simulation {
          * @param height [in] height of image.
          * @param colorCode [in] Color encoding of the image.
          */
-        virtual void resize(int width, int height, rw::sensor::Image::ColorCode colorCode)
+        virtual void resize (int width, int height, rw::sensor::Image::ColorCode colorCode)
         {
             _colorCode = colorCode;
             delete _img;
-            _img = new rw::sensor::Image(width, height, colorCode, rw::sensor::Image::Depth8U);
+            _img = new rw::sensor::Image (width, height, colorCode, rw::sensor::Image::Depth8U);
         };
 
         /**
          * @brief returns the image
          * @return the image
          */
-        virtual rw::sensor::Image& getImage();
+        virtual rw::sensor::Image& getImage ();
 
         /**
          * @brief this function grabs a image from the specialized source and
          * copies it to the FrameGrabber image.
          */
-        virtual void grab(rw::kinematics::Frame *frame,
-                          const rw::kinematics::State& state) = 0;
-    private:
-        FrameGrabber(){}
-    protected:
+        virtual void grab (rw::kinematics::Frame* frame, const rw::kinematics::State& state) = 0;
+
+      private:
+        FrameGrabber () {}
+
+      protected:
         //! @brief The image
-        rw::sensor::Image *_img;
+        rw::sensor::Image* _img;
 
         //! @brief Colorcode of the image
         rw::sensor::Image::ColorCode _colorCode;
     };
 
     /* @} */
-}} // end namespaces
+}}    // namespace rwlibs::simulation
 
-#endif // end include guard
+#endif    // end include guard

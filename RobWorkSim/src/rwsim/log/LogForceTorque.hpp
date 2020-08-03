@@ -25,109 +25,110 @@
  */
 
 #include "SimulatorLogEntry.hpp"
-#include <rw/math/Wrench6D.hpp>
+
 #include <rw/core/Ptr.hpp>
+#include <rw/math/Wrench6D.hpp>
 
-namespace rwsim {
-namespace log {
-//! @addtogroup rwsim_log
+namespace rwsim { namespace log {
+    //! @addtogroup rwsim_log
 
-//! @{
-/**
- * @brief Logging for forces and torques.
- */
-class LogForceTorque: public SimulatorLogEntry {
-public:
-    //! Smart pointer type of LogForceTorque
-    typedef rw::core::Ptr<LogForceTorque> Ptr;
+    //! @{
+    /**
+     * @brief Logging for forces and torques.
+     */
+    class LogForceTorque : public SimulatorLogEntry
+    {
+      public:
+        //! Smart pointer type of LogForceTorque
+        typedef rw::core::Ptr< LogForceTorque > Ptr;
 
-    //! @copydoc SimulatorLogEntry::SimulatorLogEntry
-    LogForceTorque(SimulatorLogScope* parent);
+        //! @copydoc SimulatorLogEntry::SimulatorLogEntry
+        LogForceTorque (SimulatorLogScope* parent);
 
-	//! @brief Destructor.
-	virtual ~LogForceTorque();
+        //! @brief Destructor.
+        virtual ~LogForceTorque ();
 
-    //! @copydoc SimulatorLogEntry::read
-	virtual void read(class rw::common::InputArchive& iarchive, const std::string& id);
+        //! @copydoc SimulatorLogEntry::read
+        virtual void read (class rw::common::InputArchive& iarchive, const std::string& id);
 
-    //! @copydoc SimulatorLogEntry::write
-	virtual void write(class rw::common::OutputArchive& oarchive, const std::string& id) const;
+        //! @copydoc SimulatorLogEntry::write
+        virtual void write (class rw::common::OutputArchive& oarchive, const std::string& id) const;
 
-	//! @copydoc SimulatorLogEntry::getType
-	virtual std::string getType() const = 0;
+        //! @copydoc SimulatorLogEntry::getType
+        virtual std::string getType () const = 0;
 
-	//! @copydoc SimulatorLogEntry::operator==
-	virtual bool operator==(const SimulatorLog &b) const;
+        //! @copydoc SimulatorLogEntry::operator==
+        virtual bool operator== (const SimulatorLog& b) const;
 
-	//! @copydoc SimulatorLogEntry::getLinkedEntries
-	virtual std::list<SimulatorLogEntry::Ptr> getLinkedEntries() const = 0;
+        //! @copydoc SimulatorLogEntry::getLinkedEntries
+        virtual std::list< SimulatorLogEntry::Ptr > getLinkedEntries () const = 0;
 
-	//! @copydoc SimulatorLogEntry::autoLink
-	virtual bool autoLink() = 0;
+        //! @copydoc SimulatorLogEntry::autoLink
+        virtual bool autoLink () = 0;
 
-	//! @copydoc SimulatorLogEntry::createNew
-	virtual SimulatorLogEntry::Ptr createNew(SimulatorLogScope* parent) const = 0;
+        //! @copydoc SimulatorLogEntry::createNew
+        virtual SimulatorLogEntry::Ptr createNew (SimulatorLogScope* parent) const = 0;
 
-	/**
-	 * @brief Get the size of the linked entry (if any).
-	 * @return size of the linked entry or negative value if not linked.
-	 */
-	virtual int sizeLinkedEntry() const = 0;
+        /**
+         * @brief Get the size of the linked entry (if any).
+         * @return size of the linked entry or negative value if not linked.
+         */
+        virtual int sizeLinkedEntry () const = 0;
 
-	/**
-	 * @brief Get name of the first object.
-	 * @param i [in] the index.
-	 * @return the name or an empty string if not linked properly.
-	 */
-	virtual const std::string& getNameA(std::size_t i) const = 0;
+        /**
+         * @brief Get name of the first object.
+         * @param i [in] the index.
+         * @return the name or an empty string if not linked properly.
+         */
+        virtual const std::string& getNameA (std::size_t i) const = 0;
 
-	/**
-	 * @brief Get name of the second object.
-	 * @param i [in] the index.
-	 * @return the name or an empty string if not linked properly.
-	 */
-	virtual const std::string& getNameB(std::size_t i) const = 0;
+        /**
+         * @brief Get name of the second object.
+         * @param i [in] the index.
+         * @return the name or an empty string if not linked properly.
+         */
+        virtual const std::string& getNameB (std::size_t i) const = 0;
 
-	/**
-	 * @brief Get anchor position on the first object.
-	 * @param i [in] the index.
-	 * @return the anchor point or zero if not linked.
-	 */
-	virtual rw::math::Vector3D<> getPositionA(std::size_t i) const = 0;
+        /**
+         * @brief Get anchor position on the first object.
+         * @param i [in] the index.
+         * @return the anchor point or zero if not linked.
+         */
+        virtual rw::math::Vector3D<> getPositionA (std::size_t i) const = 0;
 
-	/**
-	 * @brief Get anchor position on the second object.
-	 * @param i [in] the index.
-	 * @return the anchor point or zero if not linked.
-	 */
-	virtual rw::math::Vector3D<> getPositionB(std::size_t i) const = 0;
+        /**
+         * @brief Get anchor position on the second object.
+         * @param i [in] the index.
+         * @return the anchor point or zero if not linked.
+         */
+        virtual rw::math::Vector3D<> getPositionB (std::size_t i) const = 0;
 
-	/**
-	 * @brief Get the contact wrench acting at the first body.
-	 * @param i [in] the constraint to get wrench for.
-	 * @return the wrench.
-	 */
-	rw::math::Wrench6D<> getWrenchBodyA(std::size_t i) const;
+        /**
+         * @brief Get the contact wrench acting at the first body.
+         * @param i [in] the constraint to get wrench for.
+         * @return the wrench.
+         */
+        rw::math::Wrench6D<> getWrenchBodyA (std::size_t i) const;
 
-	/**
-	 * @brief Get the contact wrench acting at the second body.
-	 * @param i [in] the constraint to get wrench for.
-	 * @return the wrench.
-	 */
-	rw::math::Wrench6D<> getWrenchBodyB(std::size_t i) const;
+        /**
+         * @brief Get the contact wrench acting at the second body.
+         * @param i [in] the constraint to get wrench for.
+         * @return the wrench.
+         */
+        rw::math::Wrench6D<> getWrenchBodyB (std::size_t i) const;
 
-	/**
-	 * @brief Set a given wrench pair.
-	 * @param i [in] the constraint to set wrench for.
-	 * @param wrenchA [in] the wrench acting in the constraint at the first body.
-	 * @param wrenchB [in] the wrench acting in the constraint at the second body.
-	 */
-	void setWrench(std::size_t i, const rw::math::Wrench6D<>& wrenchA, const rw::math::Wrench6D<>& wrenchB);
+        /**
+         * @brief Set a given wrench pair.
+         * @param i [in] the constraint to set wrench for.
+         * @param wrenchA [in] the wrench acting in the constraint at the first body.
+         * @param wrenchB [in] the wrench acting in the constraint at the second body.
+         */
+        void setWrench (std::size_t i, const rw::math::Wrench6D<>& wrenchA,
+                        const rw::math::Wrench6D<>& wrenchB);
 
-private:
-	std::vector<std::pair<rw::math::Wrench6D<>, rw::math::Wrench6D<> > > _forces;
-};
-//! @}
-} /* namespace log */
-} /* namespace rwsim */
+      private:
+        std::vector< std::pair< rw::math::Wrench6D<>, rw::math::Wrench6D<> > > _forces;
+    };
+    //! @}
+}}     // namespace rwsim::log
 #endif /* RWSIM_LOG_LOGFORCETORQUE_HPP_ */

@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RW_PATHPLANNING_PLANNERUTIL_HPP
 #define RW_PATHPLANNING_PLANNERUTIL_HPP
 
@@ -24,11 +23,13 @@
 */
 
 #include "PlannerConstraint.hpp"
-#include <rw/math/Q.hpp>
-#include <rw/math/Metric.hpp>
-#include <rw/models/Device.hpp>
+
 #include <rw/kinematics/State.hpp>
+#include <rw/math/Metric.hpp>
+#include <rw/math/Q.hpp>
+#include <rw/models/Device.hpp>
 #include <rw/proximity/CollisionDetector.hpp>
+
 #include <vector>
 
 namespace rw { namespace pathplanning {
@@ -39,9 +40,9 @@ namespace rw { namespace pathplanning {
     /**
      * @brief PlannerUtil provides various utilities useful in path planning
      */
-    class PlannerUtil {
-    public:
-
+    class PlannerUtil
+    {
+      public:
         /**
            @brief Collision checking for a path of configurations.
 
@@ -52,10 +53,8 @@ namespace rw { namespace pathplanning {
            @brief path [in] Sequence of configurations.
            @return \b true iff \b path is in collision.
         */
-        static
-        bool inCollision(
-            const PlannerConstraint& constraint,
-            const std::vector<rw::math::Q>& path);
+        static bool inCollision (const PlannerConstraint& constraint,
+                                 const std::vector< rw::math::Q >& path);
 
         /**
            @brief Collision checking for a segment.
@@ -66,13 +65,9 @@ namespace rw { namespace pathplanning {
            @param checkStart [in] Check \b start configuration for collision.
            @param checkEnd [in] Check \b end configuration for collision.
         */
-        static
-        bool inCollision(
-            const PlannerConstraint& constraint,
-            const rw::math::Q& start,
-            const rw::math::Q& end,
-            bool checkStart = true,
-            bool checkEnd = true);
+        static bool inCollision (const PlannerConstraint& constraint, const rw::math::Q& start,
+                                 const rw::math::Q& end, bool checkStart = true,
+                                 bool checkEnd = true);
 
         /**
            @brief Collision checking for a configuration.
@@ -80,9 +75,10 @@ namespace rw { namespace pathplanning {
            @param constraint [in] Collision checking constraint.
            @param q [in] Configuration to check for collisions.
          */
-        static
-        inline bool inCollision(const PlannerConstraint& constraint, const rw::math::Q& q)
-        { return constraint.getQConstraint().inCollision(q); }
+        static inline bool inCollision (const PlannerConstraint& constraint, const rw::math::Q& q)
+        {
+            return constraint.getQConstraint ().inCollision (q);
+        }
 
         /**
          * @brief Description of the different estimation type possible in the
@@ -90,7 +86,7 @@ namespace rw { namespace pathplanning {
          */
         enum EstimateType {
             WORSTCASE = 0, /** Estimate weights corresponding to the maximal distance */
-            AVERAGE /** Estimate weights corresponding to the average distance */
+            AVERAGE        /** Estimate weights corresponding to the average distance */
         };
 
         /**
@@ -104,9 +100,8 @@ namespace rw { namespace pathplanning {
            @return Metric for which the distance from lower to upper corner
            equals \b length.
         */
-		static rw::math::QMetric::Ptr normalizingInfinityMetric(
-            const rw::models::Device::QBox& bounds,
-            double length = 1);
+        static rw::math::QMetric::Ptr
+        normalizingInfinityMetric (const rw::models::Device::QBox& bounds, double length = 1);
 
         /**
            @brief Metric for the distance in time between a pair of
@@ -116,8 +111,7 @@ namespace rw { namespace pathplanning {
            metric assumes that the joints move synchronously with the maximum
            joint velocities given by \b device.
         */
-		static rw::math::QMetric::Ptr timeMetric(
-            const rw::models::Device& device);
+        static rw::math::QMetric::Ptr timeMetric (const rw::models::Device& device);
 
         /**
            @brief Metric for the distance in time between a pair of
@@ -127,8 +121,7 @@ namespace rw { namespace pathplanning {
            metric assumes that the joints move synchronously with the joint
            velocities given by \b speed.
         */
-		static rw::math::QMetric::Ptr timeMetric(
-            const rw::math::Q& speed);
+        static rw::math::QMetric::Ptr timeMetric (const rw::math::Q& speed);
 
         /**
          * @brief Estimate the distance traveled by the frame, when moving the joints
@@ -145,11 +138,10 @@ namespace rw { namespace pathplanning {
          * @param samples [in] The number of samples to use (default 1000)
          * @return Weights representing the distance
          */
-        static rw::math::Q estimateMotionWeights(const rw::models::Device& device,
-                                                 const rw::kinematics::Frame* frame,
-                                                 const rw::kinematics::State& initialState,
-                                                 EstimateType type,
-                                                 size_t samples);
+        static rw::math::Q estimateMotionWeights (const rw::models::Device& device,
+                                                  const rw::kinematics::Frame* frame,
+                                                  const rw::kinematics::State& initialState,
+                                                  EstimateType type, size_t samples);
 
         /**
          * @brief Clamps values to be within bounds
@@ -161,9 +153,7 @@ namespace rw { namespace pathplanning {
          * @param q [in] Configuration to clamp
          * @return The clamped configuration
          */
-        static rw::math::Q clampPosition(
-            const rw::models::Device& device,
-            const rw::math::Q& q);
+        static rw::math::Q clampPosition (const rw::models::Device& device, const rw::math::Q& q);
 
         /**
          * @brief Clamps values to be within bounds
@@ -175,17 +165,16 @@ namespace rw { namespace pathplanning {
          * @param q [in] Configuration to clamp
          * @return The clamped configuration
          */
-        static rw::math::Q clampPosition(
-            const rw::models::Device::QBox& bounds,
-            const rw::math::Q& q);
+        static rw::math::Q clampPosition (const rw::models::Device::QBox& bounds,
+                                          const rw::math::Q& q);
 
-    private:
-        PlannerUtil();
-        PlannerUtil(const PlannerUtil&);
-        PlannerUtil& operator=(const PlannerUtil&);
+      private:
+        PlannerUtil ();
+        PlannerUtil (const PlannerUtil&);
+        PlannerUtil& operator= (const PlannerUtil&);
     };
 
     /* @} */
-}} // end namespaces
+}}    // namespace rw::pathplanning
 
-#endif // end include guard
+#endif    // end include guard

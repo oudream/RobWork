@@ -18,86 +18,89 @@
 #ifndef RWSIM_SIMULATOR_ODETACTILESENSOR_HPP_
 #define RWSIM_SIMULATOR_ODETACTILESENSOR_HPP_
 
-#include <rw/math/Vector3D.hpp>
-#include <rw/math/Transform3D.hpp>
-#include <rwlibs/simulation/Simulator.hpp>
 #include <rw/core/Ptr.hpp>
+#include <rw/math/Transform3D.hpp>
+#include <rw/math/Vector3D.hpp>
+#include <rwlibs/simulation/Simulator.hpp>
 
-#include <vector>
 #include <ode/ode.h>
+#include <vector>
 
-namespace rwsim { namespace dynamics { class Body; } }
-namespace rwsim { namespace sensor { class SimulatedTactileSensor; } }
+namespace rwsim { namespace dynamics {
+    class Body;
+}}    // namespace rwsim::dynamics
+namespace rwsim { namespace sensor {
+    class SimulatedTactileSensor;
+}}    // namespace rwsim::sensor
 
-namespace rwsim {
-namespace simulator {
+namespace rwsim { namespace simulator {
 
     /**
      * @brief
      */
-	class ODETactileSensor {
-	public:
-		ODETactileSensor(sensor::SimulatedTactileSensor *sens);
+    class ODETactileSensor
+    {
+      public:
+        ODETactileSensor (sensor::SimulatedTactileSensor* sens);
 
-		virtual ~ODETactileSensor(){};
+        virtual ~ODETactileSensor (){};
 
-        void clear();
+        void clear ();
 
-        void update(const rwlibs::simulation::Simulator::UpdateInfo& info, rw::kinematics::State& state);
+        void update (const rwlibs::simulation::Simulator::UpdateInfo& info,
+                     rw::kinematics::State& state);
 
-        void addFeedbackGlobal(dJointFeedback*, rw::core::Ptr<rwsim::dynamics::Body> a, rw::core::Ptr<rwsim::dynamics::Body> b, int body);
+        void addFeedbackGlobal (dJointFeedback*, rw::core::Ptr< rwsim::dynamics::Body > a,
+                                rw::core::Ptr< rwsim::dynamics::Body > b, int body);
 
-		void addFeedback(const std::vector<dJointFeedback*>& fback,
-		                 const std::vector<dContactGeom> &g,
-						 rw::core::Ptr<rwsim::dynamics::Body> a,
-						 rw::core::Ptr<rwsim::dynamics::Body> b,
-		                 int body);
+        void addFeedback (const std::vector< dJointFeedback* >& fback,
+                          const std::vector< dContactGeom >& g,
+                          rw::core::Ptr< rwsim::dynamics::Body > a,
+                          rw::core::Ptr< rwsim::dynamics::Body > b, int body);
 
-		// this is for contacts that are not directly specified by the physics solver, eg. if you emulate
-		// multiple contacts with a more complex constraint.
-		void addContact(const rw::math::Vector3D<>& pos,
-		                const rw::math::Vector3D<>& force,
-		                const rw::math::Vector3D<>& normal,
-						rw::core::Ptr<rwsim::dynamics::Body> b);
+        // this is for contacts that are not directly specified by the physics solver, eg. if you
+        // emulate multiple contacts with a more complex constraint.
+        void addContact (const rw::math::Vector3D<>& pos, const rw::math::Vector3D<>& force,
+                         const rw::math::Vector3D<>& normal,
+                         rw::core::Ptr< rwsim::dynamics::Body > b);
 
-	//    void setContacts(const rw::proximity::MultiDistanceResult& res,
-	//                     rw::math::Transform3D<> wTa,
-	//                     rw::math::Transform3D<> wTb);
+        //    void setContacts(const rw::proximity::MultiDistanceResult& res,
+        //                     rw::math::Transform3D<> wTa,
+        //                     rw::math::Transform3D<> wTb);
 
-	private:
-		std::vector<rw::math::Transform3D<> > _wTa,_wTb;
+      private:
+        std::vector< rw::math::Transform3D<> > _wTa, _wTb;
 
-		std::vector<dJointFeedback*> _feedbackGlobal;
+        std::vector< dJointFeedback* > _feedbackGlobal;
 
-		std::vector<std::vector<dJointFeedback*> > _feedback;
-		std::vector<std::vector<dContactGeom> > _geoms;
-		//std::vector<rw::proximity::MultiDistanceResult> _contacts;
+        std::vector< std::vector< dJointFeedback* > > _feedback;
+        std::vector< std::vector< dContactGeom > > _geoms;
+        // std::vector<rw::proximity::MultiDistanceResult> _contacts;
 
-		std::vector<rw::core::Ptr<rwsim::dynamics::Body> > _rwBody;
-		std::vector<int> _bodyFixed;
-		sensor::SimulatedTactileSensor *_rwsensor;
-		//rw::math::Vector3D<> point;
-		std::vector<int> _bodyIdx, _bodyGlobalIdx;
-		std::vector<rw::core::Ptr<rwsim::dynamics::Body> > _bodyGlobal;
-		std::vector<int> _bodyGlobalFixed;
+        std::vector< rw::core::Ptr< rwsim::dynamics::Body > > _rwBody;
+        std::vector< int > _bodyFixed;
+        sensor::SimulatedTactileSensor* _rwsensor;
+        // rw::math::Vector3D<> point;
+        std::vector< int > _bodyIdx, _bodyGlobalIdx;
+        std::vector< rw::core::Ptr< rwsim::dynamics::Body > > _bodyGlobal;
+        std::vector< int > _bodyGlobalFixed;
 
-		struct DirectContact {
-		    DirectContact(const rw::math::Vector3D<>& pos,
-		                  const rw::math::Vector3D<>& force,
-		                  const rw::math::Vector3D<>& normal,
-						  rw::core::Ptr<rwsim::dynamics::Body> body):
-		        p(pos),f(force),n(normal),b(body)
-		    {}
-		    rw::math::Vector3D<> p;
-		    rw::math::Vector3D<> f;
-		    rw::math::Vector3D<> n;
-		    rw::core::Ptr<rwsim::dynamics::Body> b;
-		};
+        struct DirectContact
+        {
+            DirectContact (const rw::math::Vector3D<>& pos, const rw::math::Vector3D<>& force,
+                           const rw::math::Vector3D<>& normal,
+                           rw::core::Ptr< rwsim::dynamics::Body > body) :
+                p (pos),
+                f (force), n (normal), b (body)
+            {}
+            rw::math::Vector3D<> p;
+            rw::math::Vector3D<> f;
+            rw::math::Vector3D<> n;
+            rw::core::Ptr< rwsim::dynamics::Body > b;
+        };
 
-		std::vector< DirectContact > _directContacts;
-
-	};
-}
-}
+        std::vector< DirectContact > _directContacts;
+    };
+}}    // namespace rwsim::simulator
 
 #endif /* ODETACTILESENSOR_HPP_ */

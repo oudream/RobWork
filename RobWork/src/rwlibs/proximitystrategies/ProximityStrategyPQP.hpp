@@ -28,13 +28,13 @@
 #include <vector>
 
 //#include <rw/proximity/CollisionData.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/proximity/CollisionStrategy.hpp>
 #include <rw/proximity/CollisionToleranceStrategy.hpp>
 #include <rw/proximity/DistanceMultiStrategy.hpp>
 #include <rw/proximity/DistanceStrategy.hpp>
 #include <rw/proximity/ProximityCache.hpp>
 #include <rw/proximity/ProximityStrategyData.hpp>
-#include <rw/core/Ptr.hpp>
 
 #include <PQP/PQP.h>
 
@@ -105,8 +105,10 @@ namespace rwlibs { namespace proximitystrategies {
         //! @brief
         struct RWPQPModel
         {
-            RWPQPModel (rw::core::Ptr< rw::geometry::Geometry > geo, rw::math::Transform3D<> trans, PQPModelPtr model) :
-                geo (geo), t3d (trans), pqpmodel (model)
+            RWPQPModel (rw::core::Ptr< rw::geometry::Geometry > geo, rw::math::Transform3D<> trans,
+                        PQPModelPtr model) :
+                geo (geo),
+                t3d (trans), pqpmodel (model)
             {}
             rw::core::Ptr< rw::geometry::Geometry > geo;
             rw::math::Transform3D<> t3d;
@@ -169,7 +171,8 @@ namespace rwlibs { namespace proximitystrategies {
         /**
          * @copydoc rw::proximity::ProximityStrategy::getGeometrys
          */
-        std::vector < rw::core::Ptr< rw::geometry::Geometry > > getGeometrys (rw::proximity::ProximityModel* model);
+        std::vector< rw::core::Ptr< rw::geometry::Geometry > >
+        getGeometrys (rw::proximity::ProximityModel* model);
 
         /**
          * @brief not implemented yet in rw::proximity::CollisionStrategy::setFirstContact

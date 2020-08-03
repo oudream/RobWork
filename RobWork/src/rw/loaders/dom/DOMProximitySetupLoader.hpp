@@ -18,68 +18,69 @@
 #ifndef RW_LOADERS_DOMPROXIMITYSETUPLOADER_HPP
 #define RW_LOADERS_DOMPROXIMITYSETUPLOADER_HPP
 
-
 #include <rw/proximity/ProximitySetup.hpp>
+
 #include <string>
 
-namespace rw { namespace core { class DOMElem; } }
+namespace rw { namespace core {
+    class DOMElem;
+}}    // namespace rw::core
 
-namespace rw {
-namespace loaders {
+namespace rw { namespace loaders {
 
-/** @addtogroup loaders */
-/*@{*/
+    /** @addtogroup loaders */
+    /*@{*/
 
-/**
- * @brief Loader for the XML PropertySetup format
- * 
- * The loader is based on Xerces
- */
-class DOMProximitySetupLoader
-{
-public:
-	/**
-	 * @brief Loads ProximitySetup from \b filename
-	 *
-	 * Throws rw::core::Exception on errors
-	 *
-	 * @param filename [in] Name of input file
-	 * @param schemaFileName [in] Optional name of schema file to be used for verification
-	 * @return The ProximitySetup
-	 */
-	static rw::proximity::ProximitySetup load(const std::string& filename, const std::string& schemaFileName = "");
+    /**
+     * @brief Loader for the XML PropertySetup format
+     *
+     * The loader is based on Xerces
+     */
+    class DOMProximitySetupLoader
+    {
+      public:
+        /**
+         * @brief Loads ProximitySetup from \b filename
+         *
+         * Throws rw::core::Exception on errors
+         *
+         * @param filename [in] Name of input file
+         * @param schemaFileName [in] Optional name of schema file to be used for verification
+         * @return The ProximitySetup
+         */
+        static rw::proximity::ProximitySetup load (const std::string& filename,
+                                                   const std::string& schemaFileName = "");
 
-	/**
-	 * @brief Loads ProximitySetup from \b instream
-	 *
-	 * Throws rw::core::Exception on errors
-	 *
-	 * @param instream [in] Stream containing XML ProximitySetup
-	 * @param schemaFileName [in] Optional name of schema file to be used for verification
-	 * @return The ProximitySetup
-	 */
-	static rw::proximity::ProximitySetup load(std::istream& instream, const std::string& schemaFileName = "");
+        /**
+         * @brief Loads ProximitySetup from \b instream
+         *
+         * Throws rw::core::Exception on errors
+         *
+         * @param instream [in] Stream containing XML ProximitySetup
+         * @param schemaFileName [in] Optional name of schema file to be used for verification
+         * @return The ProximitySetup
+         */
+        static rw::proximity::ProximitySetup load (std::istream& instream,
+                                                   const std::string& schemaFileName = "");
 
-	/**
-	 * @brief Reads ProximitySetup from \b element
-	 *
-	 * Throws rw::core::Exception on errors
-	 *
-	 * @param element [in] Element containing ProximitySetup
-	 * @return The ProximitySetup
-	 */
-	static rw::proximity::ProximitySetup readProximitySetup(rw::core::Ptr<rw::core::DOMElem> element);
+        /**
+         * @brief Reads ProximitySetup from \b element
+         *
+         * Throws rw::core::Exception on errors
+         *
+         * @param element [in] Element containing ProximitySetup
+         * @return The ProximitySetup
+         */
+        static rw::proximity::ProximitySetup
+        readProximitySetup (rw::core::Ptr< rw::core::DOMElem > element);
 
+      private:
+        static std::pair< std::string, std::string >
+        readFramePatternAttributes (rw::core::Ptr< rw::core::DOMElem > element);
+    };
 
-private:
-	static std::pair<std::string, std::string> readFramePatternAttributes(rw::core::Ptr<rw::core::DOMElem> element);
+    /** @} */
 
-};
+}}    // namespace rw::loaders
 
-/** @} */
-
-
-} //end namespace loaders
-} //end namespace rw
-
-#endif //enc include guard
+#endif    // enc include guard

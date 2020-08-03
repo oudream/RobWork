@@ -26,33 +26,32 @@
 
 #include <rw/core/Plugin.hpp>
 
-namespace rwsimlibs {
-namespace bullet {
-//! @addtogroup rwsimlibs_bullet
+namespace rwsimlibs { namespace bullet {
+    //! @addtogroup rwsimlibs_bullet
 
-//! @{
-/**
- * @brief A Bullet plugin that provides additional functionality to the
- * rwsim::simulator::PhysicsEngine::Factory through the plugin structure.
- *
- * The following extension is added with the use of this plugin:
- *  - Bullet
- */
-class BtPlugin: public rw::core::Plugin {
-public:
-	//! @brief Construct new plugin
-	BtPlugin();
+    //! @{
+    /**
+     * @brief A Bullet plugin that provides additional functionality to the
+     * rwsim::simulator::PhysicsEngine::Factory through the plugin structure.
+     *
+     * The following extension is added with the use of this plugin:
+     *  - Bullet
+     */
+    class BtPlugin : public rw::core::Plugin
+    {
+      public:
+        //! @brief Construct new plugin
+        BtPlugin ();
 
-	//! @brief Destructor
-	virtual ~BtPlugin();
+        //! @brief Destructor
+        virtual ~BtPlugin ();
 
-    //! @copydoc rw::core::Plugin::getExtensionDescriptors
-	std::vector<rw::core::Extension::Descriptor> getExtensionDescriptors();
+        //! @copydoc rw::core::Plugin::getExtensionDescriptors
+        std::vector< rw::core::Extension::Descriptor > getExtensionDescriptors ();
 
-    //! @copydoc rw::core::Plugin::makeExtension
-	rw::core::Ptr<rw::core::Extension> makeExtension(const std::string& str);
-};
-//! @}
-} /* namespace bullet */
-} /* namespace rwsimlibs */
+        //! @copydoc rw::core::Plugin::makeExtension
+        rw::core::Ptr< rw::core::Extension > makeExtension (const std::string& str);
+    };
+    //! @}
+}}     // namespace rwsimlibs::bullet
 #endif /* RWSIMLIBS_BULLET_BTPLUGIN_HPP_ */

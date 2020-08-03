@@ -18,9 +18,10 @@
 #ifndef RWHW_UNIVERSALROBOTSRTLOGGING_HPP
 #define RWHW_UNIVERSALROBOTSRTLOGGING_HPP
 
-#include <rw/math/Q.hpp>
 #include <rw/common/types.hpp>
 #include <rw/core/Ptr.hpp>
+#include <rw/math/Q.hpp>
+
 #include <boost/asio.hpp>
 #include <boost/thread.hpp>
 
@@ -31,87 +32,86 @@ namespace rwhw {
  *
  * The 125Hz interface is sometime referred to as the real-time interface, hence "RT" in the name
  */
-class URRTData {
-public:
+class URRTData
+{
+  public:
     /**
-	 * @brief Construct empty URRTData object
-	 */
-	URRTData(): driverTimeStamp(0), controllerTimeStamp(0), digIn(0)
-	{
+     * @brief Construct empty URRTData object
+     */
+    URRTData () : driverTimeStamp (0), controllerTimeStamp (0), digIn (0) {}
 
-	}
+    /**
+     * @brief Timestamp of when data arrived on the PC
+     */
+    double driverTimeStamp;
+    /**
+     * @brief Timestamp given to data by the UR controller
+     */
+    double controllerTimeStamp;
 
-	/**
-	 * @brief Timestamp of when data arrived on the PC
-	 */
-	double driverTimeStamp;
-	/**
-	 * @brief Timestamp given to data by the UR controller
-	 */
-	double controllerTimeStamp;
+    rw::math::Q qTarget;
+    rw::math::Q dqTarget;
+    rw::math::Q ddqTarget;
+    rw::math::Q iTarget;
+    rw::math::Q torqueTarget;
 
-	rw::math::Q qTarget;
-	rw::math::Q dqTarget;
-	rw::math::Q ddqTarget;
-	rw::math::Q iTarget;
-	rw::math::Q torqueTarget;
+    rw::math::Q qActual;
+    rw::math::Q dqActual;
+    rw::math::Q iActual;
 
-	rw::math::Q qActual;
-	rw::math::Q dqActual;
-	rw::math::Q iActual;
+    rw::math::Q accValues;
+    rw::math::Q tcpForce;
+    rw::math::Q toolPose;
+    rw::math::Q tcpSpeed;
 
-	rw::math::Q accValues;
-	rw::math::Q tcpForce;
-	rw::math::Q toolPose;
-	rw::math::Q tcpSpeed;
-
-	int64_t digIn;
+    int64_t digIn;
 };
 
-class UniversalRobotsRTLogging {
-	public:
-	UniversalRobotsRTLogging();
-	~UniversalRobotsRTLogging();
+class UniversalRobotsRTLogging
+{
+  public:
+    UniversalRobotsRTLogging ();
+    ~UniversalRobotsRTLogging ();
 
-	void start();
-	void stop();
+    void start ();
+    void stop ();
 
-	/**
-	 * @brief Connects socket to UR on the real-time interface
-	 *
-	 * If not able to connect it throws a rw::core::Exception
-	 * @param host [in] host address
-	 * @param port [in] Port to connect to. Defaults to 30003.
-	 */
-	void connect(const std::string& host, unsigned int port = 30003);
+    /**
+     * @brief Connects socket to UR on the real-time interface
+     *
+     * If not able to connect it throws a rw::core::Exception
+     * @param host [in] host address
+     * @param port [in] Port to connect to. Defaults to 30003.
+     */
+    void connect (const std::string& host, unsigned int port = 30003);
 
-	/**
-	 * @brief Disconnects socket to UR on the real-time interface
-	 */
-	void disconnect();
+    /**
+     * @brief Disconnects socket to UR on the real-time interface
+     */
+    void disconnect ();
 
-	bool readRTInterfacePacket();
+    bool readRTInterfacePacket ();
 
-	bool hasData() const;
-	URRTData getLastData();
+    bool hasData () const;
+    URRTData getLastData ();
 
-	double driverTime();
+    double driverTime ();
 
-	private:
-	boost::asio::ip::tcp::socket* _socket;
-	boost::asio::io_service _ioService;
-	rw::core::Ptr<boost::thread> _thread;
-	boost::mutex _mutex;
-	bool _connected;
-	bool _hasData;
-	bool _lostConnection;
-	long long _lastPackageTime;
-	bool _stop;
-	void run();
+  private:
+    boost::asio::ip::tcp::socket* _socket;
+    boost::asio::io_service _ioService;
+    rw::core::Ptr< boost::thread > _thread;
+    boost::mutex _mutex;
+    bool _connected;
+    bool _hasData;
+    bool _lostConnection;
+    long long _lastPackageTime;
+    bool _stop;
+    void run ();
 
-	URRTData _data;
+    URRTData _data;
 };
 
-} //end namespace
+}    // namespace rwhw
 
-#endif //#ifndef RWHW_UNIVERSALROBOTSRTLOGGING_HPP
+#endif    //#ifndef RWHW_UNIVERSALROBOTSRTLOGGING_HPP

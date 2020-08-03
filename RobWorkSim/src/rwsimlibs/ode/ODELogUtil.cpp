@@ -21,45 +21,52 @@
 
 using rw::kinematics::State;
 using namespace rw::math;
-using rwsim::simulator::ODELogUtil;
 using rwsim::simulator::ODEBody;
+using rwsim::simulator::ODELogUtil;
 
-ODELogUtil::ODELogUtil()
+ODELogUtil::ODELogUtil ()
+{}
+
+ODELogUtil::~ODELogUtil ()
+{}
+
+void ODELogUtil::addPositions (const std::string& description,
+                               const std::map< std::string, rw::math::Transform3D<> >& positions,
+                               const char* file, int line)
 {
+    SimulatorLogUtil::addPositions (description, positions, file, line);
 }
 
-ODELogUtil::~ODELogUtil()
+void ODELogUtil::addPositions (const std::string& description,
+                               const std::vector< ODEBody* >& bodies, const State& state,
+                               const char* file, int line)
 {
-}
-
-void ODELogUtil::addPositions(const std::string& description, const std::map<std::string, rw::math::Transform3D<> >& positions, const char* file, int line)
-{
-    SimulatorLogUtil::addPositions(description, positions, file, line);
-}
-
-void ODELogUtil::addPositions(const std::string& description, const std::vector<ODEBody*>& bodies, const State& state, const char* file, int line)
-{
-    if (!doLog())
+    if (!doLog ())
         return;
-    std::map<std::string, Transform3D<> > pos;
-    for(const ODEBody* const body : bodies) {
-        pos[body->getRwBody()->getName()] = body->getRwBody()->wTbf(state);
+    std::map< std::string, Transform3D<> > pos;
+    for (const ODEBody* const body : bodies) {
+        pos[body->getRwBody ()->getName ()] = body->getRwBody ()->wTbf (state);
     }
-    addPositions(description, pos, file, line);
+    addPositions (description, pos, file, line);
 }
 
-void ODELogUtil::addVelocities(const std::string& description, const std::map<std::string,rw::math::VelocityScrew6D<> >& velocities, const char* file, int line)
+void ODELogUtil::addVelocities (
+    const std::string& description,
+    const std::map< std::string, rw::math::VelocityScrew6D<> >& velocities, const char* file,
+    int line)
 {
-    SimulatorLogUtil::addVelocities(description, velocities, file, line);
+    SimulatorLogUtil::addVelocities (description, velocities, file, line);
 }
 
-void ODELogUtil::addVelocities(const std::string& description, const std::vector<ODEBody*>& bodies, const State& state, const char* file, int line)
+void ODELogUtil::addVelocities (const std::string& description,
+                                const std::vector< ODEBody* >& bodies, const State& state,
+                                const char* file, int line)
 {
-    if (!doLog())
+    if (!doLog ())
         return;
-    std::map<std::string, VelocityScrew6D<> > vel;
-    for(const ODEBody* const body : bodies) {
-        vel[body->getRwBody()->getName()] = body->getRwBody()->getVelocity(state);
+    std::map< std::string, VelocityScrew6D<> > vel;
+    for (const ODEBody* const body : bodies) {
+        vel[body->getRwBody ()->getName ()] = body->getRwBody ()->getVelocity (state);
     }
-    addVelocities(description, vel, file, line);
+    addVelocities (description, vel, file, line);
 }

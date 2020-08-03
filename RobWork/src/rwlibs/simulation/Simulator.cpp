@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,20 +19,25 @@
 
 using namespace rwlibs::simulation;
 
-rw::sensor::Sensor::Ptr Simulator::getSensorHandle(SimulatedSensor* ssensor, const std::string& type){
-	if(_simsensorToHandle.find(std::make_pair(ssensor,type))==_simsensorToHandle.end()){
-		return NULL;
-	}
-	return _simsensorToHandle[std::make_pair(ssensor,type)];
+rw::sensor::Sensor::Ptr Simulator::getSensorHandle (SimulatedSensor* ssensor,
+                                                    const std::string& type)
+{
+    if (_simsensorToHandle.find (std::make_pair (ssensor, type)) == _simsensorToHandle.end ()) {
+        return NULL;
+    }
+    return _simsensorToHandle[std::make_pair (ssensor, type)];
 }
 
-bool Simulator::hasHandle(SimulatedSensor* ssensor, const std::string& type){
-	if(_simsensorToHandle.find(std::make_pair(ssensor,type))==_simsensorToHandle.end()){
-		return false;
-	}
-	return true;
+bool Simulator::hasHandle (SimulatedSensor* ssensor, const std::string& type)
+{
+    if (_simsensorToHandle.find (std::make_pair (ssensor, type)) == _simsensorToHandle.end ()) {
+        return false;
+    }
+    return true;
 }
 
-void Simulator::addHandle(SimulatedSensor* ssensor, const std::string& type, rw::sensor::Sensor::Ptr sensor){
-	_simsensorToHandle[std::make_pair(ssensor,type)] = sensor;
+void Simulator::addHandle (SimulatedSensor* ssensor, const std::string& type,
+                           rw::sensor::Sensor::Ptr sensor)
+{
+    _simsensorToHandle[std::make_pair (ssensor, type)] = sensor;
 }

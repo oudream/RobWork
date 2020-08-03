@@ -24,38 +24,36 @@
  * \copydoc rwlibs::swig::LuaPlugin
  */
 
-#include <rw/core/Plugin.hpp>
 #include <rw/core/Extension.hpp>
+#include <rw/core/Plugin.hpp>
 
-namespace rwlibs {
-    namespace swig {
+namespace rwlibs { namespace swig {
 
-        //! @addtogroup swig
+    //! @addtogroup swig
 
-        //! @{
-        /**
-         * @brief A Lua plugin that define extensions for rwlibs.swig.LuaState.LuaLibrary.
-         *
-         * One plugin is generated for each of the Lua modules in RobWork (except the rw module itself).
-         */
-        class LuaPlugin: public rw::core::Plugin
-        {
-            public:
-                //! @brief Constructor.
-                LuaPlugin();
+    //! @{
+    /**
+     * @brief A Lua plugin that define extensions for rwlibs.swig.LuaState.LuaLibrary.
+     *
+     * One plugin is generated for each of the Lua modules in RobWork (except the rw module itself).
+     */
+    class LuaPlugin : public rw::core::Plugin
+    {
+      public:
+        //! @brief Constructor.
+        LuaPlugin ();
 
-                //! @brief Destructor.
-                virtual ~LuaPlugin();
+        //! @brief Destructor.
+        virtual ~LuaPlugin ();
 
-                //! @copydoc rw::core::Plugin::getExtensionDescriptors
-                std::vector<rw::core::Extension::Descriptor> getExtensionDescriptors();
+        //! @copydoc rw::core::Plugin::getExtensionDescriptors
+        std::vector< rw::core::Extension::Descriptor > getExtensionDescriptors ();
 
-                //! @copydoc rw::core::Plugin::makeExtension
-                rw::core::Ptr<rw::core::Extension> makeExtension(const std::string& str);
-        };
+        //! @copydoc rw::core::Plugin::makeExtension
+        rw::core::Ptr< rw::core::Extension > makeExtension (const std::string& str);
+    };
     //! @}
 
-    } /* namespace swig */
-} /* namespace rwlibs */
+}}    // namespace rwlibs::swig
 
 #endif /* RWLIBS_SWIG_LUA_LUAPLUGIN_HPP_ */

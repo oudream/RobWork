@@ -118,8 +118,8 @@ namespace rw { namespace core {
           public:
             //! constructor
             Factory () :
-                rw::core::ExtensionPoint< DOMParser > (
-                    "rw.core.DOMParser", "DOM capable parser of fstream and files"){};
+                rw::core::ExtensionPoint< DOMParser > ("rw.core.DOMParser",
+                                                       "DOM capable parser of fstream and files"){};
 
             /**
              * @brief get a DOM parser for a specific file format
@@ -156,6 +156,6 @@ namespace rw { namespace core {
  */
 namespace rw { namespace common {
     using namespace rw::core;
-}}
+}}    // namespace rw::common
 
 #endif

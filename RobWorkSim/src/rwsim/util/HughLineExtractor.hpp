@@ -19,18 +19,19 @@
 #define RWSIM_UTIL_HUGHLINEEXTRACTOR_HPP_
 
 #include <rw/math/Line2D.hpp>
+
 #include <vector>
 
-namespace rw { namespace sensor { class Image; } }
+namespace rw { namespace sensor {
+    class Image;
+}}    // namespace rw::sensor
 
-namespace rwsim {
-namespace util {
+namespace rwsim { namespace util {
 
-	class HughLineExtractor {
-	public:
-		static std::vector<rw::math::Line2D > extractLines(rw::sensor::Image& img);
-
-	};
-}
-}
+    class HughLineExtractor
+    {
+      public:
+        static std::vector< rw::math::Line2D > extractLines (rw::sensor::Image& img);
+    };
+}}     // namespace rwsim::util
 #endif /* HUGHLINEEXTRACTOR_HPP_ */

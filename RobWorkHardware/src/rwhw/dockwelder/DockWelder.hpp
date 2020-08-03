@@ -22,114 +22,117 @@
 
 namespace rwhw {
 
-    /** @addtogroup RobWorkHardware */
-    /* @{ */
+/** @addtogroup RobWorkHardware */
+/* @{ */
+
+/**
+ * @brief Device for controlling the DockWelder robot.
+ * The DockWelder robot is controlled through a ethernet socket connection.
+ */
+class DockWelder
+{
+  public:
+    /**
+     * @brief Constructor
+     */
+    DockWelder ();
 
     /**
-     * @brief Device for controlling the DockWelder robot.
-     * The DockWelder robot is controlled through a ethernet socket connection.
+     * @brief Destructor
      */
-    class DockWelder {
-    public:
-        /**
-         * @brief Constructor
-         */
-        DockWelder();
+    ~DockWelder ();
 
-        /**
-         * @brief Destructor
-         */
-        ~DockWelder();
+    /**
+     * @brief Opens the ethernet connection to the dockwelder controller.
+     * @param serveraddr [in] address of the DockWelder controller
+     */
+    void openConnection (const std::string& serveraddr);
 
+    void closeConnection ();
 
-        /**
-         * @brief Opens the ethernet connection to the dockwelder controller.
-         * @param serveraddr [in] address of the DockWelder controller
-         */
-        void openConnection(const std::string& serveraddr);
+    /**
+     * @brief Turn on servos
+     */
+    void servoOn ();
 
+    /**
+     * @brief Turn off servos
+     */
+    void servoOff ();
 
-        void closeConnection();
+    /**
+     * @brief Set velocity....
+     */
+    void setVelocity (double velocity);
 
-        /**
-         * @brief Turn on servos
-         */
-        void servoOn();
+    /**
+     * @brief Move to a specific configuration
+     */
+    void move (const rw::math::Q& q);
 
-        /**
-         * @brief Turn off servos
-         */
-        void servoOff();
+    /**
+     * @brief Get the current configuration.
+     */
+    rw::math::Q getQ ();
 
-        /**
-         * @brief Set velocity....
-         */
-        void setVelocity(double velocity);
+    /**
+     *
+     */
+    void startMotion ();
 
-        /**
-         * @brief Move to a specific configuration
-         */
-        void move(const rw::math::Q& q);
+    void pauseMotion ();
 
-        /**
-         * @brief Get the current configuration.
-         */
-        rw::math::Q getQ();
+    void stopMotion ();
 
-        /**
-         *
-         */
-        void startMotion();
+    struct StatusStruct
+    {
+        time_t t;
+        int isServoOn;
+        int isLoaded;
+        int isMoving;
+        int isPaused;
+        int isError;
+        int isLimit;
+        rw::math::Q q;
+        int lj00;
+        int hj00;
+        int lj01;
+        int hj01;
+        int lj02;
+        int hj02;
+        int lj10;
+        int hj10;
+        int lj11;
+        int hj11;
+        int lj12;
+        int hj12;
+        int lj20;
+        int hj20;
+        int fj00;
+        int fj01;
+        int fj02;
+        int fj10;
+        int fj11;
+        int fj12;
+        int fj20;
+        int nError;
+        char errbuf[80];
 
-        void pauseMotion();
-
-        void stopMotion();
-
-        struct StatusStruct{
-            time_t t;
-            int isServoOn;
-            int isLoaded;
-            int isMoving;
-            int isPaused;
-            int isError;
-            int isLimit;
-            rw::math::Q q;
-            int lj00; int hj00;
-            int lj01; int hj01;
-            int lj02; int hj02;
-            int lj10; int hj10;
-            int lj11; int hj11;
-            int lj12; int hj12;
-            int lj20; int hj20;
-            int fj00;
-            int fj01;
-            int fj02;
-            int fj10;
-            int fj11;
-            int fj12;
-            int fj20;
-            int nError; char errbuf[80];
-
-            StatusStruct(): q(6) {};
-
-        };
-
-        typedef StatusStruct Status;
-
-        Status status();
-        void printStatus(std::ostream& ostr);
-
-
-
-
-    private:
-        void write(const char* buf);
-        void read(char* buf);
-
+        StatusStruct () : q (6){};
     };
 
-    /* @} */
+    typedef StatusStruct Status;
 
-} //end namespace rwhw
+    Status status ();
+    void printStatus (std::ostream& ostr);
 
-#endif //#ifndef RWHW_DOCKWELDER_HPP
+  private:
+    void write (const char* buf);
+    void read (char* buf);
+};
+
+/* @} */
+
+}    // end namespace rwhw
+
+#endif    //#ifndef RWHW_DOCKWELDER_HPP

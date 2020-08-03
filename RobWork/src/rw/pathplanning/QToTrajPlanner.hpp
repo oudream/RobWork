@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RW_PATHPLANNING_QTOTRAJPLANNER_HPP
 #define RW_PATHPLANNING_QTOTRAJPLANNER_HPP
 
@@ -24,14 +23,14 @@
 */
 
 #include "PathPlanner.hpp"
+#include "QIKSampler.hpp"
 #include "QToQPlanner.hpp"
 #include "QToQSamplerPlanner.hpp"
-#include "QIKSampler.hpp"
 
+#include <rw/core/Ptr.hpp>
+#include <rw/kinematics/State.hpp>
 #include <rw/math/Metric.hpp>
 #include <rw/models/Device.hpp>
-#include <rw/kinematics/State.hpp>
-#include <rw/core/Ptr.hpp>
 
 namespace rw { namespace pathplanning {
 
@@ -44,11 +43,12 @@ namespace rw { namespace pathplanning {
        An approach planner plans a path from a configuration for the device to a
        configuration for the tool.
     */
-    class QToTrajPlanner : public PathPlanner<rw::math::Q, rw::trajectory::Transform3DTrajectory::Ptr >
+    class QToTrajPlanner
+        : public PathPlanner< rw::math::Q, rw::trajectory::Transform3DTrajectory::Ptr >
     {
-    public:
-		//! @brief smart pointer type to this class
-		typedef rw::core::Ptr<QToTrajPlanner> Ptr;
+      public:
+        //! @brief smart pointer type to this class
+        typedef rw::core::Ptr< QToTrajPlanner > Ptr;
 
         /**
            @brief An approach planner for a sampler of IK solutions and a region
@@ -60,9 +60,7 @@ namespace rw { namespace pathplanning {
            @param planner [in] Planner for a QSampler region.
            @param ikSampler [in] Sampler of IK solutions for the target transform.
         */
-		static QToTPlanner::Ptr make(
-			QToQSamplerPlanner::Ptr planner,
-			QIKSampler::Ptr ikSampler);
+        static QToTPlanner::Ptr make (QToQSamplerPlanner::Ptr planner, QIKSampler::Ptr ikSampler);
 
         /**
            @brief An approach planner for a standard path planner and a sampler
@@ -72,52 +70,49 @@ namespace rw { namespace pathplanning {
            from \b sampler and calls \b planner with the configuration closest
            to \b from according to \b metric.
         */
-        static
-			QToTPlanner::Ptr makeToNearest(
-			QToQPlanner::Ptr planner,
-			QIKSampler::Ptr sampler,
-			rw::math::QMetric::Ptr metric,
-            int cnt);
+        static QToTPlanner::Ptr makeToNearest (QToQPlanner::Ptr planner, QIKSampler::Ptr sampler,
+                                               rw::math::QMetric::Ptr metric, int cnt);
 
-    	/**
-    	 * @addtogroup extensionpoints
-    	 * @extensionpoint{rw::pathplanning::QToTPlanner::Factory,rw::pathplanning::QToTPlanner,rw::pathplanning::QToTPlanner}
-    	 */
+        /**
+         * @addtogroup extensionpoints
+         * @extensionpoint{rw::pathplanning::QToTPlanner::Factory,rw::pathplanning::QToTPlanner,rw::pathplanning::QToTPlanner}
+         */
 
-    	/**
-    	 * @brief a factory for QToTPlanner. This factory also defines an
-    	 * extension point for QToTPlanner. This permit users to add
-    	 * QToQPlanners that will be available through this factory
-    	 */
-        class Factory: public rw::core::ExtensionPoint<QToTPlanner> {
-        public:
-        	//! constructor
-            Factory():rw::core::ExtensionPoint<QToTPlanner>("rw::pathplanning::QToQPlanner", "Extension point for QToTPlanner."){};
+        /**
+         * @brief a factory for QToTPlanner. This factory also defines an
+         * extension point for QToTPlanner. This permit users to add
+         * QToQPlanners that will be available through this factory
+         */
+        class Factory : public rw::core::ExtensionPoint< QToTPlanner >
+        {
+          public:
+            //! constructor
+            Factory () :
+                rw::core::ExtensionPoint< QToTPlanner > ("rw::pathplanning::QToQPlanner",
+                                                         "Extension point for QToTPlanner."){};
 
             /**
              * @brief get a specific planner based on id
              * @param id [in] string identifier of planner library
              * @return a QToTPlanner if matching id exists else NULL
              */
-            static rw::core::Ptr<QToTPlanner> getPlanner(const std::string& id);
+            static rw::core::Ptr< QToTPlanner > getPlanner (const std::string& id);
 
             /**
              * @brief get all avaliable QToQPlanner's
              * @return all avalilable QToQPlanners
              */
-            static std::vector<QToTPlanner::Ptr> getPlanners();
+            static std::vector< QToTPlanner::Ptr > getPlanners ();
 
             /**
              * @brief get a list of supported planners
              * @return
              */
-            static std::vector<std::string> getPlannerIDs();
-
+            static std::vector< std::string > getPlannerIDs ();
         };
-
     };
 
     /*@}*/
-}} // end namespaces
+}}    // namespace rw::pathplanning
 
-#endif // end include guard
+#endif    // end include guard

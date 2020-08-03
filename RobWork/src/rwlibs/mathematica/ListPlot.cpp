@@ -22,8 +22,6 @@
 
 #include <rw/core/macros.hpp>
 
-
-
 using namespace rw::common;
 using namespace rwlibs::mathematica;
 
@@ -101,7 +99,7 @@ void ListPlot::setImageSize (int width, int height)
     size.add (width);
     size.add (height);
     Rule::Ptr option = NULL;
-    for (const Expression::Ptr o: _options) {
+    for (const Expression::Ptr o : _options) {
         if (const Rule::Ptr r = o.cast< Rule > ()) {
             if (r->getId () == "ImageSize") {
                 option = r;

@@ -26,32 +26,31 @@
 
 #include <rw/loaders/Model3DLoader.hpp>
 
-namespace rw {
-namespace loaders {
-//! @addtogroup loaders
+namespace rw { namespace loaders {
+    //! @addtogroup loaders
 
-//! @{
-/**
- * @brief Load 3D models using the Open Asset Import Library (Assimp).
- *
- * For further information on Assimp and supported formats, see http://assimp.sourceforge.net
- *
- * So far the loader has been tested for .dae files (Collada).
- *
- * Note that the RobWork loader for Assimp is still work in progress.
- */
-class LoaderAssimp: public rw::loaders::Model3DLoader {
-public:
-	//! @brief Constructor
-	LoaderAssimp();
+    //! @{
+    /**
+     * @brief Load 3D models using the Open Asset Import Library (Assimp).
+     *
+     * For further information on Assimp and supported formats, see http://assimp.sourceforge.net
+     *
+     * So far the loader has been tested for .dae files (Collada).
+     *
+     * Note that the RobWork loader for Assimp is still work in progress.
+     */
+    class LoaderAssimp : public rw::loaders::Model3DLoader
+    {
+      public:
+        //! @brief Constructor
+        LoaderAssimp ();
 
-	//! @brief Destructor
-	virtual ~LoaderAssimp();
+        //! @brief Destructor
+        virtual ~LoaderAssimp ();
 
-    //! @copydoc Model3DLoader::load
-	rw::graphics::Model3D::Ptr load(const std::string& filename);
-};
-//! @}
-} /* namespace loaders */
-} /* namespace rw */
+        //! @copydoc Model3DLoader::load
+        rw::graphics::Model3D::Ptr load (const std::string& filename);
+    };
+    //! @}
+}}     // namespace rw::loaders
 #endif /* RW_LOADERS_LOADERASSIMP_HPP_ */

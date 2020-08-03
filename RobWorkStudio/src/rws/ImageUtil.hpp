@@ -17,23 +17,23 @@ namespace rws {
 /**
  * utility functions (mostly for conversion) for using thw RobWork Image class in Qt contexts
  */
-class ImageUtil {
-public:
-	/**
-	 * @brief Convert Qt image to RobWork image format.
-	 * @param srcimg [in] the QImage.
-	 * @return a new equivalent RobWork image.
-	 */
-    static rw::sensor::Image::Ptr toRwImage( const QImage& srcimg );
+class ImageUtil
+{
+  public:
+    /**
+     * @brief Convert Qt image to RobWork image format.
+     * @param srcimg [in] the QImage.
+     * @return a new equivalent RobWork image.
+     */
+    static rw::sensor::Image::Ptr toRwImage (const QImage& srcimg);
 
     /**
-	 * @brief Convert Qt image to RobWork image format.
+     * @brief Convert Qt image to RobWork image format.
      * @param srcimg [in] the QImage.
      * @param dstimg [out] the RobWork image.
      */
-    static void toRwImage( const QImage& srcimg, rw::sensor::Image& dstimg);
-
+    static void toRwImage (const QImage& srcimg, rw::sensor::Image& dstimg);
 };
 
-}
+}    // namespace rws
 #endif /* IMAGEUTIL_HPP_ */

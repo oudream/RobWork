@@ -20,37 +20,35 @@
 
 //#include <rwsim/dynamics/Body.hpp>
 
-namespace rw { namespace kinematics { class State; } }
+namespace rw { namespace kinematics {
+    class State;
+}}    // namespace rw::kinematics
 
-namespace rwsim {
-namespace simulator {
-	//! @addtogroup rwsim_dynamics
-	//! @{
+namespace rwsim { namespace simulator {
+    //! @addtogroup rwsim_dynamics
+    //! @{
     /**
      * @brief The body controller is a pure interface through which bodies are controlled
      */
     class BodyController
     {
-    public:
+      public:
+        /**
+         * @brief add external forces to the bodies that this
+         * BodyManipulator controls.
+         */
+        virtual void addForces (rw::kinematics::State& state, double time) = 0;
 
-    	/**
-    	 * @brief add external forces to the bodies that this
-    	 * BodyManipulator controls.
-    	 */
-    	virtual void addForces(rw::kinematics::State &state, double time) = 0;
+        /**
+         * @brief resets the state of the body controller to \b state
+         */
+        virtual void reset (rw::kinematics::State& state) = 0;
 
-    	/**
-    	 * @brief resets the state of the body controller to \b state
-    	 */
-    	virtual void reset(rw::kinematics::State &state) = 0;
-
-    	/**
-    	 * @brief return the list of bodies that this controller controls
-    	 */
-    	//virtual std::vector<Body*>& getBodies() = 0;
-
+        /**
+         * @brief return the list of bodies that this controller controls
+         */
+        // virtual std::vector<Body*>& getBodies() = 0;
     };
     //! @}
-}
-}
+}}     // namespace rwsim::simulator
 #endif /*BODYCONTROLLER_HPP_*/

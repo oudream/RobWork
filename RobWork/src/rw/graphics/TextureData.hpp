@@ -15,82 +15,83 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RW_GRAPHICS_TEXTUREDATA_HPP_
 #define RW_GRAPHICS_TEXTUREDATA_HPP_
 
-#include <rw/sensor/Image.hpp>
 #include <rw/math/Vector3D.hpp>
+#include <rw/sensor/Image.hpp>
 
-namespace rw {
-namespace graphics {
+namespace rw { namespace graphics {
 
-	/**
-	 * @brief container for storing texture data.
-	 */
-	class TextureData {
-	public:
-		//! @brief Smart pointer type for TextureData.
-		rw::core::Ptr<TextureData> Ptr;
+    /**
+     * @brief container for storing texture data.
+     */
+    class TextureData
+    {
+      public:
+        //! @brief Smart pointer type for TextureData.
+        rw::core::Ptr< TextureData > Ptr;
 
-		//! constructor
-		TextureData():_name(""),_imageData(NULL){};
+        //! constructor
+        TextureData () : _name (""), _imageData (NULL){};
 
-		/**
-		 * constructor
-		 * @param name [in] texture id
-		 * @param img [in] texture data
-		 */
-		TextureData(const std::string& name, rw::sensor::Image::Ptr img):_name(name),_imageData(img){}
+        /**
+         * constructor
+         * @param name [in] texture id
+         * @param img [in] texture data
+         */
+        TextureData (const std::string& name, rw::sensor::Image::Ptr img) :
+            _name (name), _imageData (img)
+        {}
 
-		/**
-		 * constructor
-		 * @param name [in] texture id
-		 * @param r [in] red value [0:1]
-		 * @param g [in] green value [0:1]
-		 * @param b [in] blue value [0:1]
-		 */
-		TextureData(const std::string& name, float r, float g, float b):
-			_name(name),_imageData(NULL)
-		{
-		 _rgb[0] = r;
-		 _rgb[1] = g;
-		 _rgb[2] = b;
-		}
+        /**
+         * constructor
+         * @param name [in] texture id
+         * @param r [in] red value [0:1]
+         * @param g [in] green value [0:1]
+         * @param b [in] blue value [0:1]
+         */
+        TextureData (const std::string& name, float r, float g, float b) :
+            _name (name), _imageData (NULL)
+        {
+            _rgb[0] = r;
+            _rgb[1] = g;
+            _rgb[2] = b;
+        }
 
-		/**
-		 * @brief check if this texture has image data
-		 * @return true if it has image data, false otherwise
-		 */
-		bool hasImageData() const { return _imageData!=NULL; };
+        /**
+         * @brief check if this texture has image data
+         * @return true if it has image data, false otherwise
+         */
+        bool hasImageData () const { return _imageData != NULL; };
 
-		/**
-		 * @brief get image data
-		 * @return
-		 */
-		rw::sensor::Image::Ptr getImageData() const { return _imageData; }
+        /**
+         * @brief get image data
+         * @return
+         */
+        rw::sensor::Image::Ptr getImageData () const { return _imageData; }
 
-		/**
-		 * @brief get RGB data
-		 * @return
-		 */
-		rw::math::Vector3D<float> getRGBData() const {
-			return rw::math::Vector3D<float>(_rgb[0],_rgb[1],_rgb[2]);
-		}
+        /**
+         * @brief get RGB data
+         * @return
+         */
+        rw::math::Vector3D< float > getRGBData () const
+        {
+            return rw::math::Vector3D< float > (_rgb[0], _rgb[1], _rgb[2]);
+        }
 
-		/**
-		 * @brief get id of texture
-		 * @return
-		 */
-		const std::string& getName() const { return _name; }
+        /**
+         * @brief get id of texture
+         * @return
+         */
+        const std::string& getName () const { return _name; }
 
-	private:
-		std::string _name;
-		rw::sensor::Image::Ptr _imageData;
-		float _rgb[3];
-	};
+      private:
+        std::string _name;
+        rw::sensor::Image::Ptr _imageData;
+        float _rgb[3];
+    };
 
-}
-}
+}}    // namespace rw::graphics
 
 #endif /* TEXTUREDATA_HPP_ */

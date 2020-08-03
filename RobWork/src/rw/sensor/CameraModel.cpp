@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,57 +15,58 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #include "CameraModel.hpp"
 
 using namespace rw::sensor;
 using namespace rw::kinematics;
 
-CameraModel::CameraModel(
-        const rw::math::ProjectionMatrix& projection,
-    const std::string& name,
-    rw::kinematics::Frame* frame,
-    const std::string& modelInfo)
-    :
-    SensorModel(name, frame, modelInfo),
-    _pmatrix(projection),
-    _sdata(1, rw::core::ownedPtr( new CameraModelCache()).cast<StateCache>())
+CameraModel::CameraModel (const rw::math::ProjectionMatrix& projection, const std::string& name,
+                          rw::kinematics::Frame* frame, const std::string& modelInfo) :
+    SensorModel (name, frame, modelInfo),
+    _pmatrix (projection),
+    _sdata (1, rw::core::ownedPtr (new CameraModelCache ()).cast< StateCache > ())
 {
-	add(_sdata);
+    add (_sdata);
 }
 
-CameraModel::~CameraModel()
+CameraModel::~CameraModel ()
 {}
 
-double CameraModel::getFarClippingPlane() const{
-    return _pmatrix.getClipPlanes().second;
+double CameraModel::getFarClippingPlane () const
+{
+    return _pmatrix.getClipPlanes ().second;
 }
 
-double CameraModel::getNearClippingPlane() const{
-    return _pmatrix.getClipPlanes().first;
+double CameraModel::getNearClippingPlane () const
+{
+    return _pmatrix.getClipPlanes ().first;
 }
 
-Image::Ptr CameraModel::getImage(const rw::kinematics::State& state){
-	return 	_sdata.getStateCache<CameraModelCache>(state)->_image;
+Image::Ptr CameraModel::getImage (const rw::kinematics::State& state)
+{
+    return _sdata.getStateCache< CameraModelCache > (state)->_image;
 }
 
-void CameraModel::setImage(Image::Ptr img, rw::kinematics::State& state){
-	_sdata.getStateCache<CameraModelCache>(state)->_image = img;
+void CameraModel::setImage (Image::Ptr img, rw::kinematics::State& state)
+{
+    _sdata.getStateCache< CameraModelCache > (state)->_image = img;
 }
 
-
-rw::math::ProjectionMatrix CameraModel::getProjectionMatrix() const { return _pmatrix; }
-
-double CameraModel::getFieldOfViewX() const{
-	double fovy,aspect,znear,zfar;
-	_pmatrix.getPerspective(fovy,aspect,znear,zfar);
-	return fovy*aspect;
+rw::math::ProjectionMatrix CameraModel::getProjectionMatrix () const
+{
+    return _pmatrix;
 }
 
-double CameraModel::getFieldOfViewY() const{
-	double fovy,aspect,znear,zfar;
-	_pmatrix.getPerspective(fovy,aspect,znear,zfar);
-	return fovy;
+double CameraModel::getFieldOfViewX () const
+{
+    double fovy, aspect, znear, zfar;
+    _pmatrix.getPerspective (fovy, aspect, znear, zfar);
+    return fovy * aspect;
 }
 
-
+double CameraModel::getFieldOfViewY () const
+{
+    double fovy, aspect, znear, zfar;
+    _pmatrix.getPerspective (fovy, aspect, znear, zfar);
+    return fovy;
+}

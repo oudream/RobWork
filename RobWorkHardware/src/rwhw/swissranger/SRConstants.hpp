@@ -42,7 +42,7 @@ namespace rwhw { namespace swissranger {
     /**
      * @brief Image size in pixels
      */
-    const unsigned int IMG_SIZE = IMG_WIDTH*IMG_HEIGHT;
+    const unsigned int IMG_SIZE = IMG_WIDTH * IMG_HEIGHT;
 
     /**
      * @brief Camera focal length in meter
@@ -57,7 +57,7 @@ namespace rwhw { namespace swissranger {
     /**
      * @brief Camera horizontal field of view in radians
      */
-    const double HORZ_FOV_RAD = HORZ_FOV_DEG*3.141592653589793116/180;
+    const double HORZ_FOV_RAD = HORZ_FOV_DEG * 3.141592653589793116 / 180;
 
     /**
      * @brief Width of a single pixel on the chip (in meter)
@@ -70,6 +70,6 @@ namespace rwhw { namespace swissranger {
     const double PIXEL_HEIGHT = 5.4e-5;
     /* @} */
 
-}} // end namespaces
+}}    // namespace rwhw::swissranger
 
-#endif // end include guard
+#endif    // end include guard

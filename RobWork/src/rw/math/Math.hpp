@@ -394,7 +394,7 @@ namespace rw { namespace math {
 
         /**
          * @brief The squares of the elements of \b q.
-        */
+         */
         static Q sqr (const Q& q);
 
         /**

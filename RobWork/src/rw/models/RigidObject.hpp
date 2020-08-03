@@ -184,7 +184,7 @@ namespace rw { namespace models {
         {
             return getInertia ();
         }
-        
+
         //! @copydoc Object::getCOM
         rw::math::Vector3D<> getCOM (rw::kinematics::State& state) const { return _com; }
 

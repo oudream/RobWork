@@ -19,84 +19,107 @@
 #define RW_INVKIN_CLOSEDFORMIK_SOLVER_UR_HPP_
 
 #include <rw/invkin/ClosedFormIK.hpp>
-#include <rw/math/Vector2D.hpp>
 #include <rw/kinematics/FKRange.hpp>
+#include <rw/math/Vector2D.hpp>
 
-namespace rw { namespace models { class SerialDevice; } }
+namespace rw { namespace models {
+    class SerialDevice;
+}}    // namespace rw::models
 
-namespace rw {
-namespace invkin {
-
-/**
- * @brief Analytical inverse kinematics solver to the kinematics of a Universal Robots.
- */
-class ClosedFormIKSolverUR: public rw::invkin::ClosedFormIK {
-public:
-	//! @brief Smart pointer type to ClosedFormURSolver
-	typedef rw::core::Ptr<ClosedFormIKSolverUR> Ptr;
-	//! @brief Smart pointer type to const ClosedFormURSolver
-	typedef rw::core::Ptr<const ClosedFormIKSolverUR> CPtr;
-
-	/**
-	 * @brief Construct new closed form solver for a Universal Robot.
-	 * @note The dimensions will be automatically extracted from the device, using an arbitrary state.
-	 * @param device [in] the device.
-	 * @param state [in] the state to use to extract dimensions.
-	 */
-	ClosedFormIKSolverUR(const rw::core::Ptr<const rw::models::SerialDevice> device, const rw::kinematics::State& state);
-
-	//! @brief Destructor.
-	virtual ~ClosedFormIKSolverUR();
-
-	//! @copydoc InvKinSolver::solve
-    std::vector<rw::math::Q> solve(const rw::math::Transform3D<>& baseTend, const rw::kinematics::State& state) const;
-
-	//! @copydoc InvKinSolver::setCheckJointLimits
-    void setCheckJointLimits(bool check);
+namespace rw { namespace invkin {
 
     /**
-     * @copydoc InvKinSolver::getTCP
+     * @brief Analytical inverse kinematics solver to the kinematics of a Universal Robots.
      */
-    virtual rw::core::Ptr< const rw::kinematics::Frame > getTCP() const;            
+    class ClosedFormIKSolverUR : public rw::invkin::ClosedFormIK
+    {
+      public:
+        //! @brief Smart pointer type to ClosedFormURSolver
+        typedef rw::core::Ptr< ClosedFormIKSolverUR > Ptr;
+        //! @brief Smart pointer type to const ClosedFormURSolver
+        typedef rw::core::Ptr< const ClosedFormIKSolverUR > CPtr;
 
-private:
-    rw::math::Q adjustJoints(const rw::math::Q &q) const;
+        /**
+         * @brief Construct new closed form solver for a Universal Robot.
+         * @note The dimensions will be automatically extracted from the device, using an arbitrary
+         * state.
+         * @param device [in] the device.
+         * @param state [in] the state to use to extract dimensions.
+         */
+        ClosedFormIKSolverUR (const rw::core::Ptr< const rw::models::SerialDevice > device,
+                              const rw::kinematics::State& state);
 
-    void addBaseAngleSolutions(const rw::math::Transform3D<>& baseTend, const rw::math::Vector3D<>& baseTdh5, rw::kinematics::State& state, double angle, std::vector<rw::math::Q>& res) const;
-    void addElbowSolutions(const rw::math::Transform3D<>& baseTend, const rw::math::Vector3D<>& baseTdh5, rw::kinematics::State& state, double baseAngle, std::pair<double,double> elbow, std::vector<rw::math::Q>& res) const;
+        //! @brief Destructor.
+        virtual ~ClosedFormIKSolverUR ();
 
-    // UR specific geometric functions
-    std::pair<rw::math::Vector3D<>,rw::math::Vector3D<> > getJoint4Positions(const rw::math::Vector3D<> &baseTdh5, const rw::math::Vector3D<> &tcpZ, const rw::kinematics::State &state) const;
-    std::pair<std::pair<double,double>,std::pair<double,double> > getElbowJoints(const rw::math::Vector3D<> &intersection, rw::kinematics::State &state) const;
-    rw::math::Q getOrientationJoints(const rw::math::Transform3D<> &baseTend, const rw::math::Vector3D<> &baseTdh5, rw::kinematics::State &state) const;
-	std::vector<double> findBaseAngle(const rw::math::Vector2D<> &pos, const rw::kinematics::State& state) const;
+        //! @copydoc InvKinSolver::solve
+        std::vector< rw::math::Q > solve (const rw::math::Transform3D<>& baseTend,
+                                          const rw::kinematics::State& state) const;
 
-	// Generic geometric functions
-	static std::pair<rw::math::Vector3D<>,rw::math::Vector3D<> > findCirclePlaneIntersection(const rw::math::Vector3D<> &circleCenter, double radius, const rw::math::Vector3D<> &circleDir1, const rw::math::Vector3D<> &circleDir2, const rw::math::Vector3D<> &planeNormal);
-	static std::pair<std::pair<double,double>,std::pair<double,double> > findTwoBarAngles(const rw::math::Vector2D<> &pos, double L1, double L2);
-	static rw::math::Vector3D<> getPerpendicularVector(const rw::math::Vector3D<> &vec);
+        //! @copydoc InvKinSolver::setCheckJointLimits
+        void setCheckJointLimits (bool check);
 
-private:
-    const rw::core::Ptr<const rw::models::SerialDevice> _device;
-    bool _checkJointLimits;
-    std::vector<const rw::kinematics::Frame*> _frames;
-    double _lTcp, _baseRadius, _baseRadiusSqr, _endCircleRadius, _l1, _l2, _lJ0J1;	
+        /**
+         * @copydoc InvKinSolver::getTCP
+         */
+        virtual rw::core::Ptr< const rw::kinematics::Frame > getTCP () const;
 
-	rw::kinematics::FKRange _fkRange0_2;
-	rw::kinematics::FKRange _fkRange2_0;
+      private:
+        rw::math::Q adjustJoints (const rw::math::Q& q) const;
 
-	rw::kinematics::FKRange _fkRange3_0;
-	rw::kinematics::FKRange _fkRange4_3;
-	rw::kinematics::FKRange _fkRange5_4;
-	rw::kinematics::FKRange _fkRange6_5;
+        void addBaseAngleSolutions (const rw::math::Transform3D<>& baseTend,
+                                    const rw::math::Vector3D<>& baseTdh5,
+                                    rw::kinematics::State& state, double angle,
+                                    std::vector< rw::math::Q >& res) const;
+        void addElbowSolutions (const rw::math::Transform3D<>& baseTend,
+                                const rw::math::Vector3D<>& baseTdh5, rw::kinematics::State& state,
+                                double baseAngle, std::pair< double, double > elbow,
+                                std::vector< rw::math::Q >& res) const;
 
-	rw::math::Rotation3D<> _rotAlignElbowJoint;
-	rw::math::Rotation3D<> _rotAlignDH4;
-	rw::math::Vector3D<> _zaxisJoint6In5;
+        // UR specific geometric functions
+        std::pair< rw::math::Vector3D<>, rw::math::Vector3D<> >
+        getJoint4Positions (const rw::math::Vector3D<>& baseTdh5, const rw::math::Vector3D<>& tcpZ,
+                            const rw::kinematics::State& state) const;
+        std::pair< std::pair< double, double >, std::pair< double, double > >
+        getElbowJoints (const rw::math::Vector3D<>& intersection,
+                        rw::kinematics::State& state) const;
+        rw::math::Q getOrientationJoints (const rw::math::Transform3D<>& baseTend,
+                                          const rw::math::Vector3D<>& baseTdh5,
+                                          rw::kinematics::State& state) const;
+        std::vector< double > findBaseAngle (const rw::math::Vector2D<>& pos,
+                                             const rw::kinematics::State& state) const;
 
-	rw::math::Q _qMin, _qMax;
-};
+        // Generic geometric functions
+        static std::pair< rw::math::Vector3D<>, rw::math::Vector3D<> >
+        findCirclePlaneIntersection (const rw::math::Vector3D<>& circleCenter, double radius,
+                                     const rw::math::Vector3D<>& circleDir1,
+                                     const rw::math::Vector3D<>& circleDir2,
+                                     const rw::math::Vector3D<>& planeNormal);
+        static std::pair< std::pair< double, double >, std::pair< double, double > >
+        findTwoBarAngles (const rw::math::Vector2D<>& pos, double L1, double L2);
+        static rw::math::Vector3D<> getPerpendicularVector (const rw::math::Vector3D<>& vec);
 
-} } //End namespaces
+      private:
+        const rw::core::Ptr< const rw::models::SerialDevice > _device;
+        bool _checkJointLimits;
+        std::vector< const rw::kinematics::Frame* > _frames;
+        double _lTcp, _baseRadius, _baseRadiusSqr, _endCircleRadius, _l1, _l2, _lJ0J1;
+
+        rw::kinematics::FKRange _fkRange0_2;
+        rw::kinematics::FKRange _fkRange2_0;
+
+        rw::kinematics::FKRange _fkRange3_0;
+        rw::kinematics::FKRange _fkRange4_3;
+        rw::kinematics::FKRange _fkRange5_4;
+        rw::kinematics::FKRange _fkRange6_5;
+
+        rw::math::Rotation3D<> _rotAlignElbowJoint;
+        rw::math::Rotation3D<> _rotAlignDH4;
+        rw::math::Vector3D<> _zaxisJoint6In5;
+
+        rw::math::Q _qMin, _qMax;
+    };
+
+}}    // namespace rw::invkin
 
 #endif /* RW_INVKIN_CLOSEDFORMIK_SOLVER_UR_HPP_ */

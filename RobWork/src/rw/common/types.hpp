@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifdef _MSC_VER
 #include <boost/cstdint.hpp>
 typedef boost::int8_t int8_t;

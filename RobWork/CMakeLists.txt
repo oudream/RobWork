@@ -150,7 +150,7 @@ install(
 
 # Install stuff
 install(
-    FILES LICENSE.txt NOTICE.txt ChangeLog.txt
+    FILES LICENSE.txt NOTICE.txt
     DESTINATION "${RW_INSTALL_DIR}/"
     COMPONENT cmake
 )

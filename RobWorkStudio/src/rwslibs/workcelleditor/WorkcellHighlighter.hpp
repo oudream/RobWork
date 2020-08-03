@@ -21,29 +21,31 @@
 #ifndef HIGHLIGHTER_H
 #define HIGHLIGHTER_H
 
+#include <QRegularExpression>
 #include <QSyntaxHighlighter>
 #include <QTextCharFormat>
-#include <QRegularExpression>
 
 class QTextDocument;
 
-class WorkcellHighlighter : public QSyntaxHighlighter {
-Q_OBJECT
+class WorkcellHighlighter : public QSyntaxHighlighter
+{
+    Q_OBJECT
 
-public:
-    WorkcellHighlighter(QTextDocument *parent = 0);
+  public:
+    WorkcellHighlighter (QTextDocument* parent = 0);
 
-protected:
-    void highlightBlock(const QString &text);
+  protected:
+    void highlightBlock (const QString& text);
 
-private:
-    struct HighlightingRule {
+  private:
+    struct HighlightingRule
+    {
         QRegularExpression pattern;
         QTextCharFormat format;
     };
-    HighlightingRule makeRule(QString, QColor, int);
+    HighlightingRule makeRule (QString, QColor, int);
 
-    QVector<HighlightingRule> highlightingRules;
+    QVector< HighlightingRule > highlightingRules;
 
     QRegularExpression commentStartExpression;
     QRegularExpression commentEndExpression;

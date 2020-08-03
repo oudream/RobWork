@@ -24,7 +24,6 @@
 #include <rw/math/Transform3D.hpp>
 #include <rw/math/Vector3D.hpp>
 
-
 #include <list>
 #include <stack>
 

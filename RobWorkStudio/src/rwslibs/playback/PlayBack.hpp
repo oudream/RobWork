@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
  * Faculty of Engineering, University of Southern Denmark
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,9 +20,9 @@
 
 #include "PlayBackSettings.hpp"
 
-#include <rws/RobWorkStudioPlugin.hpp>
 #include <rw/core/Ptr.hpp>
 #include <rw/trajectory/Path.hpp>
+#include <rws/RobWorkStudioPlugin.hpp>
 
 class Player;
 class StateDraw;
@@ -38,64 +38,64 @@ class PlayBack : public RobWorkStudioPlugin
 {
     Q_OBJECT
 #ifndef RWS_USE_STATIC_LINK_PLUGINS
-    Q_INTERFACES(rws::RobWorkStudioPlugin)
-    Q_PLUGIN_METADATA(IID "dk.sdu.mip.Robwork.RobWorkStudioPlugin/0.1" FILE "plugin.json")
+    Q_INTERFACES (rws::RobWorkStudioPlugin)
+    Q_PLUGIN_METADATA (IID "dk.sdu.mip.Robwork.RobWorkStudioPlugin/0.1" FILE "plugin.json")
 #endif
-public:
-	//! @brief Constructor.
-    PlayBack();
+  public:
+    //! @brief Constructor.
+    PlayBack ();
 
-	//! @brief Destructor.
-    virtual ~PlayBack();
+    //! @brief Destructor.
+    virtual ~PlayBack ();
 
     //! @copydoc RobWorkStudioPlugin::open
-    virtual void open(rw::models::WorkCell* workcell);
+    virtual void open (rw::models::WorkCell* workcell);
 
     //! @copydoc RobWorkStudioPlugin::close
-    virtual void close();
+    virtual void close ();
 
     //! @copydoc RobWorkStudioPlugin::initialize
-    void initialize();
+    void initialize ();
 
-private:
-	void stateTrajectoryChangedListener(const rw::trajectory::TimedStatePath::Ptr trajectory);
-private Q_SLOTS:
-    void openPath();
-    void savePath();
-    void forwardPlay();
-    void backwardPlay();
-    void pauseOrResumePlay();
-    void toStartPlay();
-    void toEndPlay();
-    void reloadPlay();
-    void sliderSetPosition(int val);
-    void relativePositionChanged(double relative);
-    void speedValueChanged(double percent);
-    void loopPlaybackChanged(int state);
-    void interpolateChanged(int state);
+  private:
+    void stateTrajectoryChangedListener (const rw::trajectory::TimedStatePath::Ptr trajectory);
+  private Q_SLOTS:
+    void openPath ();
+    void savePath ();
+    void forwardPlay ();
+    void backwardPlay ();
+    void pauseOrResumePlay ();
+    void toStartPlay ();
+    void toEndPlay ();
+    void reloadPlay ();
+    void sliderSetPosition (int val);
+    void relativePositionChanged (double relative);
+    void speedValueChanged (double percent);
+    void loopPlaybackChanged (int state);
+    void interpolateChanged (int state);
 
-    void record(bool record);
-    void showSettings();
+    void record (bool record);
+    void showSettings ();
 
-private:
+  private:
     class MyStateDraw;
-    rw::core::Ptr<StateDraw> makeMyStateDraw();
-    void draw(const rw::kinematics::State& state);
+    rw::core::Ptr< StateDraw > makeMyStateDraw ();
+    void draw (const rw::kinematics::State& state);
 
-    void csvOpenPlayFile(const std::string& file);
-    void rawOpenPlayFile(const std::string& file);
-    void openPlayFile(const std::string& file);
-    void setInfoLabel();
+    void csvOpenPlayFile (const std::string& file);
+    void rawOpenPlayFile (const std::string& file);
+    void openPlayFile (const std::string& file);
+    void setInfoLabel ();
 
-    void keyPressEvent(QKeyEvent* event);
+    void keyPressEvent (QKeyEvent* event);
 
-private:
+  private:
     rw::models::WorkCell* _workcell;
-    //rwlibs::drawable::WorkCellGLDrawer* _workcellGLDrawer;
+    // rwlibs::drawable::WorkCellGLDrawer* _workcellGLDrawer;
 
     std::string _previousOpenSaveDirectory;
 
-    rw::core::Ptr<Player> _player;
+    rw::core::Ptr< Player > _player;
 
     QLabel* _info;
 
@@ -104,9 +104,9 @@ private:
     bool _inRelativePositionChanged;
 
     QDoubleSpinBox* _speed;
-    QCheckBox* _loop,*_interpolate;
+    QCheckBox *_loop, *_interpolate;
 
-    std::string _file; // The currently opened file.
+    std::string _file;    // The currently opened file.
 
     PlayBackSettings _settings;
 
@@ -115,6 +115,6 @@ private:
     QAction* _backward;
 };
 
-}
+}    // namespace rws
 
 #endif

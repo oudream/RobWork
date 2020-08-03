@@ -15,75 +15,75 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RWS_FIXEDAXISCONTROLLER_HPP
 #define RWS_FIXEDAXISCONTROLLER_HPP
 
-#include <rw/math/Vector2D.hpp>
-#include <rw/math/Vector3D.hpp>
-#include <rw/math/Quaternion.hpp>
 #include "CameraController.hpp"
 
-namespace rws{
+#include <rw/math/Quaternion.hpp>
+#include <rw/math/Vector2D.hpp>
+#include <rw/math/Vector3D.hpp>
 
-	/**
-	 * @brief the FixedAxis Camera Controller is used to control the camera position
-	 * and orientation in relation to a pivot point where the rotations generated are
-	 * around the fixed axis of the world.
-	 *
-	 * More specifically the horizontal mouse drag rotates the scene around the world z-axis
-	 * whereas the vertical drag movements rotate the scene around the camera y-axis located
-	 * in the pivot point.
-	 */
-	class FixedAxisController: public CameraController {
-	public:
-		/**
-		 * @brief constructor
-		 */
-	    FixedAxisController(GLfloat NewWidth, GLfloat NewHeight);
+namespace rws {
 
-		/**
-		 * @brief destructor
-		 */
-		virtual ~FixedAxisController() { /* nothing to do */ };
+/**
+ * @brief the FixedAxis Camera Controller is used to control the camera position
+ * and orientation in relation to a pivot point where the rotations generated are
+ * around the fixed axis of the world.
+ *
+ * More specifically the horizontal mouse drag rotates the scene around the world z-axis
+ * whereas the vertical drag movements rotate the scene around the camera y-axis located
+ * in the pivot point.
+ */
+class FixedAxisController : public CameraController
+{
+  public:
+    /**
+     * @brief constructor
+     */
+    FixedAxisController (GLfloat NewWidth, GLfloat NewHeight);
 
-		//! @copydoc CameraController::setBounds
-		void setBounds(GLfloat NewWidth, GLfloat NewHeight);
+    /**
+     * @brief destructor
+     */
+    virtual ~FixedAxisController (){/* nothing to do */};
 
-		//! @copydoc CameraController::setCenter
-        void setCenter(const rw::math::Vector3D<>& center, const rw::math::Vector2D<>& screenCenter);
+    //! @copydoc CameraController::setBounds
+    void setBounds (GLfloat NewWidth, GLfloat NewHeight);
 
-        //! @copydoc CameraController::getCenter
-        rw::math::Vector3D<> getCenter(){return _pivotPoint;}
+    //! @copydoc CameraController::setCenter
+    void setCenter (const rw::math::Vector3D<>& center, const rw::math::Vector2D<>& screenCenter);
 
-        //! @copydoc CameraController::draw
-        void draw();
+    //! @copydoc CameraController::getCenter
+    rw::math::Vector3D<> getCenter () { return _pivotPoint; }
 
-        //! @copydoc CameraController::handleEvent
-        virtual void handleEvent(QEvent* event);
+    //! @copydoc CameraController::draw
+    void draw ();
 
-        //! @copydoc CameraController::getTransform
-        rw::math::Transform3D<> getTransform() const;
+    //! @copydoc CameraController::handleEvent
+    virtual void handleEvent (QEvent* event);
 
-        //! @copydoc CameraController::setTransform
-        void setTransform(const rw::math::Transform3D<>& t3d);
+    //! @copydoc CameraController::getTransform
+    rw::math::Transform3D<> getTransform () const;
 
-	private:
-		rw::math::Vector2D<float> _centerPt; // Center of the ball
-		rw::math::Vector3D<float> _stVec;          // Saved click vector
-		rw::math::Vector3D<float> _enVec;          // Saved drag vector
-		GLfloat _adjustWidth;    // Mouse bounds width
-		GLfloat _adjustHeight;   // Mouse bounds height
-		float _arcballRadi; // radius of arcball
-		double _height, _width;
-		rw::math::Transform3D<> _viewTransform;
-		//rw::math::Rotation3D<> _viewRotation;
-		rw::math::Vector3D<> _lastPos,_pivotPoint;
-		double _zoomFactor, _zoomScale;
-		rw::math::Transform3D<> _camTransform;
+    //! @copydoc CameraController::setTransform
+    void setTransform (const rw::math::Transform3D<>& t3d);
 
-	};
+  private:
+    rw::math::Vector2D< float > _centerPt;    // Center of the ball
+    rw::math::Vector3D< float > _stVec;       // Saved click vector
+    rw::math::Vector3D< float > _enVec;       // Saved drag vector
+    GLfloat _adjustWidth;                     // Mouse bounds width
+    GLfloat _adjustHeight;                    // Mouse bounds height
+    float _arcballRadi;                       // radius of arcball
+    double _height, _width;
+    rw::math::Transform3D<> _viewTransform;
+    // rw::math::Rotation3D<> _viewRotation;
+    rw::math::Vector3D<> _lastPos, _pivotPoint;
+    double _zoomFactor, _zoomScale;
+    rw::math::Transform3D<> _camTransform;
+};
 
-}
+}    // namespace rws
 
 #endif

@@ -1,7 +1,7 @@
 /*******************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  ********************************************************************************/
-
 
 #ifndef RW_PATHPLANNING_QTOQSAMPLERPLANNER_HPP
 #define RW_PATHPLANNING_QTOQSAMPLERPLANNER_HPP
@@ -37,15 +36,14 @@ namespace rw { namespace pathplanning {
        QToQSamplerPlanner plans a configuration space path from a start
        configuration to any configuration in the set represented by a sampler.
     */
-    class QToQSamplerPlanner : public PathPlanner<rw::math::Q, QSampler>
+    class QToQSamplerPlanner : public PathPlanner< rw::math::Q, QSampler >
     {
-	public:
-		//! @brief smart pointer type to this class
-		typedef rw::core::Ptr<QToQSamplerPlanner> Ptr;
-
-	};
+      public:
+        //! @brief smart pointer type to this class
+        typedef rw::core::Ptr< QToQSamplerPlanner > Ptr;
+    };
 
     /*@}*/
-}} // end namespaces
+}}    // namespace rw::pathplanning
 
-#endif // end include guard
+#endif    // end include guard

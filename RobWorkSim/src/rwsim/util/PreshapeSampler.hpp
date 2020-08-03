@@ -19,55 +19,54 @@
 #define RWSIM_UTIL_PRESHAPESAMPLER_HPP_
 
 #include "StateSampler.hpp"
+
 #include <rw/core/Ptr.hpp>
 #include <rw/kinematics/State.hpp>
 
-namespace rw { namespace pathplanning { class QSampler; } }
-namespace rw { namespace models { class Device; } }
+namespace rw { namespace pathplanning {
+    class QSampler;
+}}    // namespace rw::pathplanning
+namespace rw { namespace models {
+    class Device;
+}}    // namespace rw::models
 
-namespace rwsim {
-namespace util {
+namespace rwsim { namespace util {
 
+    /**
+     * @brief
+     *
+     * This StateSampler will never become empty
+     *
+     */
+    class PreshapeSampler : public StateSampler
+    {
+      public:
+        /**
+         * @brief create a preshape sampler based on a QSampler
+         * @param dev [in] the device for which configurations are sampled
+         * @param qsampler [in] the configuration sampler
+         * @param initState [in] the initial state
+         */
+        PreshapeSampler (rw::models::Device* dev,
+                         rw::core::Ptr< rw::pathplanning::QSampler > qsampler,
+                         rw::kinematics::State& initState);
 
-	/**
-	 * @brief
-	 *
-	 * This StateSampler will never become empty
-	 *
-	 */
-	class PreshapeSampler: public StateSampler
-	{
-	public:
+        /**
+         * @brief destructor
+         */
+        virtual ~PreshapeSampler ();
 
-		/**
-		 * @brief create a preshape sampler based on a QSampler
-		 * @param dev [in] the device for which configurations are sampled
-		 * @param qsampler [in] the configuration sampler
-		 * @param initState [in] the initial state
-		 */
-		PreshapeSampler(rw::models::Device* dev,
-						rw::core::Ptr<rw::pathplanning::QSampler> qsampler,
-						rw::kinematics::State& initState);
+        //! @copydoc StateSampler::sample
+        bool sample (rw::kinematics::State& state);
 
-		/**
-		 * @brief destructor
-		 */
-		virtual ~PreshapeSampler();
+        //! @copydoc StateSampler::sample
+        bool empty () const { return false; };
 
-
-
-		//! @copydoc StateSampler::sample
-		bool sample(rw::kinematics::State& state);
-
-		//! @copydoc StateSampler::sample
-		bool empty() const{ return false; };
-
-	private:
-		rw::models::Device* _dev;
-		rw::core::Ptr<rw::pathplanning::QSampler> _qsampler;
-		rw::kinematics::State _initState;
-	};
-}
-}
+      private:
+        rw::models::Device* _dev;
+        rw::core::Ptr< rw::pathplanning::QSampler > _qsampler;
+        rw::kinematics::State _initState;
+    };
+}}    // namespace rwsim::util
 
 #endif /* FINITESTATESAMPLER_HPP_ */

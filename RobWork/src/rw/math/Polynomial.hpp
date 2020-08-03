@@ -311,14 +311,16 @@ namespace rw { namespace math {
          * @param a [in] vector to multiply with.
          * @return a 3D polynomial vector.
          */
-        PolynomialND< Eigen::Matrix< T, 3, 1 >, T > operator* (const Eigen::Matrix< T, 3, 1 >& a) const
+        PolynomialND< Eigen::Matrix< T, 3, 1 >, T >
+        operator* (const Eigen::Matrix< T, 3, 1 >& a) const
         {
             return this->template multiply< Eigen::Matrix< T, 3, 1 >, Eigen::Matrix< T, 3, 1 > > (
                 a);
         }
 
         //! @copydoc operator*(const Polynomial<T>&, const Eigen::Matrix<T,3,1>&)
-        PolynomialND< Eigen::Matrix< T, 1, 3 >, T > operator* (const Eigen::Matrix< T, 1, 3 >& a) const
+        PolynomialND< Eigen::Matrix< T, 1, 3 >, T >
+        operator* (const Eigen::Matrix< T, 1, 3 >& a) const
         {
             return this->template multiply< Eigen::Matrix< T, 1, 3 >, Eigen::Matrix< T, 1, 3 > > (
                 a);
@@ -330,7 +332,8 @@ namespace rw { namespace math {
          * @param A [in] matrix to multiply with.
          * @return a 3D polynomial matrix.
          */
-        PolynomialND< Eigen::Matrix< T, 3, 3 >, T > operator* (const Eigen::Matrix< T, 3, 3 >& A) const
+        PolynomialND< Eigen::Matrix< T, 3, 3 >, T >
+        operator* (const Eigen::Matrix< T, 3, 3 >& A) const
         {
             return this->template multiply< Eigen::Matrix< T, 3, 3 >, Eigen::Matrix< T, 3, 3 > > (
                 A);

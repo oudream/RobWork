@@ -18,152 +18,145 @@
 #ifndef RWSIM_UTIL_POINTRANSACFITTING_HPP_
 #define RWSIM_UTIL_POINTRANSACFITTING_HPP_
 
-#include <vector>
 #include "PlaneModel.hpp"
-#include <rw/math/Vector3D.hpp>
+
 #include <rw/math/Random.hpp>
+#include <rw/math/Vector3D.hpp>
+
+#include <vector>
 
 //
 
-namespace rwsim {
-namespace util {
+namespace rwsim { namespace util {
 
+    class PointRANSACFitting
+    {
+      public:
+        /**
+         * @brief fits a number of models to the set of data points
+         * @param data documentation missing !
+         * @param k [in] the maximum number of iterations allowed in the algorithm
+         * @param d [in] the number of close data values required to assert that a model fits well
+         * to data
+         * @param t [in] a threshold value for determining when a datum fits a model
+         */
+        static std::vector< PlaneModel > fit (std::vector< rw::math::Vector3D<> >& data, int k,
+                                              int d, double t);
 
-	class PointRANSACFitting {
-	public:
+        template< class MODEL_T >
+        static std::vector< MODEL_T > fit2 (std::vector< rw::math::Vector3D<> >& data, int k, int d,
+                                            double t)
+        {
+            using namespace rw::math;
+            // std::cout << "Fitting data! " << data.size() << std::endl;
+            int n = MODEL_T::getMinReqData ();    // the minimum number of data required to fit the
+                                                  // model
+                                                  /*
+                                                                  std::cout << "- n: " << n << std::endl
+                                                                                    << "- k: " << k << std::endl
+                                                                                    << "- t: " << t << std::endl
+                                                                                    << "- d: " << d << std::endl
+                                                                                          << "- size: " << data.size() << std::endl;
+                                                  */
+            int iterations = 0;
+            MODEL_T bestModel;
+            std::vector< MODEL_T > models;
+            std::vector< Vector3D<> > bestConsensusSet;
+            std::vector< Vector3D<> > maybeInliers (n);
+            // double bestError = 100000.0;
+            while (++iterations < k) {
+                std::vector< Vector3D<> > consensusSet;
 
-		/**
-		 * @brief fits a number of models to the set of data points
-		 * @param data documentation missing !
-		 * @param k [in] the maximum number of iterations allowed in the algorithm
-		 * @param d [in] the number of close data values required to assert that a model fits well to data
-		 * @param t [in] a threshold value for determining when a datum fits a model
-		 */
-		static std::vector<PlaneModel>
-			fit(std::vector<rw::math::Vector3D<> >& data, int k, int d, double t );
+                // generate n randomly selected values from data
+                for (int i = 0; i < n; i++) {
+                    int idx         = Random::ranI (0, data.size ());
+                    maybeInliers[i] = data[idx];
+                }
 
+                // create a model based on the maybeInliers
+                MODEL_T maybeModel (maybeInliers);
+                if (maybeModel.invalid ())
+                    continue;
 
+                // add the maybe inliers to the conensus set
+                for (int i = 0; i < n; i++) {
+                    consensusSet.push_back (maybeInliers[i]);
+                }
 
-		template <class MODEL_T>
-		static std::vector<MODEL_T>
-		fit2(std::vector<rw::math::Vector3D<> >& data, int k, int d, double t ){
-			using namespace rw::math;
-			//std::cout << "Fitting data! " << data.size() << std::endl;
-			int n = MODEL_T::getMinReqData(); // the minimum number of data required to fit the model
-	/*
-			std::cout << "- n: " << n << std::endl
-					  << "- k: " << k << std::endl
-					  << "- t: " << t << std::endl
-					  << "- d: " << d << std::endl
-						<< "- size: " << data.size() << std::endl;
-	*/
-			int iterations = 0;
-			MODEL_T bestModel;
-			std::vector<MODEL_T> models;
-			std::vector<Vector3D<> > bestConsensusSet;
-			std::vector<Vector3D<> > maybeInliers(n);
-			//double bestError = 100000.0;
-			while( ++iterations < k ){
-				std::vector<Vector3D<> > consensusSet;
+                // check if any point in data fits the model with an error smaller than t
+                for (int i = 0; i < data.size (); i++) {
+                    if (maybeModel.fitError (data[i]) < t) {
+                        consensusSet.push_back (data[i]);
+                    }
+                }
 
-				// generate n randomly selected values from data
-				for(int i=0; i<n; i++){
-					int idx = Random::ranI(0,data.size());
-					maybeInliers[i] = data[idx];
-				}
+                if (consensusSet.size () > d) {
+                    // std::cout << "- Maybe model: "<< consensusSet.size() << std::endl;
+                    // maybeModel.print();
+                    // maybeModel.print();
+                    // double error = maybeModel.refit( consensusSet );
+                    maybeModel.refit (consensusSet);
 
-				// create a model based on the maybeInliers
-				MODEL_T maybeModel( maybeInliers );
-				if( maybeModel.invalid() )
-					continue;
+                    models.push_back (maybeModel);
 
-				// add the maybe inliers to the conensus set
-				for(int i=0; i<n; i++){
-					consensusSet.push_back( maybeInliers[i] );
-				}
+                    /*if( error< bestError ){
+                            bestModel = maybeModel;
+                            bestConsensusSet = consensusSet;
+                            bestError = error;
+                    }*/
+                }
+            }
+            // std::cout << "Merging Models: "<< models.size() << std::endl;
+            if (models.size () <= 1)
+                return models;
+            // merge models that are closely related
+            std::vector< MODEL_T* > modelsPtr (models.size ());
+            for (int i = 0; i < models.size (); i++) {
+                modelsPtr[i] = &models[i];
+            }
 
-				// check if any point in data fits the model with an error smaller than t
-				for( int i=0; i<data.size(); i++){
-					if( maybeModel.fitError( data[i] ) < t ){
-						consensusSet.push_back( data[i] );
-					}
-				}
+            std::vector< MODEL_T > newModels;
+            for (int i = 0; i < modelsPtr.size () - 1; i++) {
+                if (modelsPtr[i] == NULL)
+                    continue;
+                std::vector< MODEL_T* > closeModels;
+                for (int j = i + 1; j < modelsPtr.size (); j++) {
+                    // std::cout << "J: " << j << std::endl;
+                    if (modelsPtr[j] == NULL)
+                        continue;
 
-				if( consensusSet.size()>d ){
-					//std::cout << "- Maybe model: "<< consensusSet.size() << std::endl;
-					//maybeModel.print();
-					//maybeModel.print();
-					//double error = maybeModel.refit( consensusSet );
-					maybeModel.refit( consensusSet );
+                    bool res = models[i].same (models[j], 0.01);
+                    if (!res)
+                        continue;
+                    modelsPtr[j] = NULL;
+                    closeModels.push_back (&models[j]);
+                }
+                // TODO: merge all close models into one model
+                if (closeModels.size () > 0)
+                    newModels.push_back (*closeModels[0]);
+            }
 
-					models.push_back( maybeModel );
-
-					/*if( error< bestError ){
-						bestModel = maybeModel;
-						bestConsensusSet = consensusSet;
-						bestError = error;
-					}*/
-				}
-
-			}
-			//std::cout << "Merging Models: "<< models.size() << std::endl;
-			if(models.size()<=1)
-				return models;
-			// merge models that are closely related
-			std::vector<MODEL_T*> modelsPtr(models.size());
-			for(int i=0;i<models.size();i++){
-				modelsPtr[i] = &models[i];
-			}
-
-			std::vector<MODEL_T> newModels;
-			for(int i=0;i<modelsPtr.size()-1;i++){
-
-				if( modelsPtr[i]==NULL )
-					continue;
-				std::vector<MODEL_T*> closeModels;
-				for(int j=i+1;j<modelsPtr.size();j++){
-					//std::cout << "J: " << j << std::endl;
-					if( modelsPtr[j]==NULL )
-						continue;
-
-					bool res = models[i].same( models[j], 0.01 );
-					if(!res)
-						continue;
-					modelsPtr[j] = NULL;
-					closeModels.push_back( &models[j] );
-				}
-				// TODO: merge all close models into one model
-				if(closeModels.size()>0)
-					newModels.push_back(*closeModels[0]);
-			}
-
-			std::cout << "Nr of models found: " << models.size() << std::endl;
-			std::cout << "filtered to       : " << newModels.size() << std::endl;
-		/*
-			PlaneModel defPlane;
-			for(Vector3D<> &p: data){
-				std::cout << " " << defPlane.fitError(p) << std::endl;
-			}
-			*/
-			/*for(MODEL_T &m: newModels){
-				m.print();
-			}*/
-			/*
-			std::cout << "Best Model \n\r-";
-			bestModel.print();
-			for(Vector3D<> &p: bestConsensusSet){
-				//std::cout << " " << bestModel.fitError(p) << std::endl;
-			}
-			*/
-			return newModels;
-
-
-
-		}
-
-
-	};
-}
-}
+            std::cout << "Nr of models found: " << models.size () << std::endl;
+            std::cout << "filtered to       : " << newModels.size () << std::endl;
+            /*
+                    PlaneModel defPlane;
+                    for(Vector3D<> &p: data){
+                            std::cout << " " << defPlane.fitError(p) << std::endl;
+                    }
+                    */
+            /*for(MODEL_T &m: newModels){
+                    m.print();
+            }*/
+            /*
+            std::cout << "Best Model \n\r-";
+            bestModel.print();
+            for(Vector3D<> &p: bestConsensusSet){
+                    //std::cout << " " << bestModel.fitError(p) << std::endl;
+            }
+            */
+            return newModels;
+        }
+    };
+}}    // namespace rwsim::util
 
 #endif /* PLANEFITTING_HPP_ */

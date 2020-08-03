@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,48 +15,49 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #include "LogWriter.hpp"
 
 #include <sstream>
 
-
 using namespace rw::core;
 
-void LogWriter::write(const std::string& message) {
-	boost::mutex::scoped_lock lock(_mutex);
-	doWrite(message);
-}
-
-void LogWriter::setTabLevel(int tabLevel)
+void LogWriter::write (const std::string& message)
 {
-	boost::mutex::scoped_lock lock(_mutex);
-	doSetTabLevel(tabLevel);
+    boost::mutex::scoped_lock lock (_mutex);
+    doWrite (message);
 }
 
-void LogWriter::flush() {
-	boost::mutex::scoped_lock lock(_mutex);
-	doFlush();
+void LogWriter::setTabLevel (int tabLevel)
+{
+    boost::mutex::scoped_lock lock (_mutex);
+    doSetTabLevel (tabLevel);
 }
 
-void LogWriter::write(const Message& msg)
+void LogWriter::flush ()
+{
+    boost::mutex::scoped_lock lock (_mutex);
+    doFlush ();
+}
+
+void LogWriter::write (const Message& msg)
 {
     std::ostringstream buf;
     buf << msg;
-    write(buf.str());
+    write (buf.str ());
 }
 
-void LogWriter::writeln(const std::string& str)
+void LogWriter::writeln (const std::string& str)
 {
-    write(str + '\n');
+    write (str + '\n');
 }
 
-LogWriter& LogWriter::operator<<(std::ostream& (*pf)(std::ostream&)){
-	std::ostringstream buf;
-	buf << pf;
-	write(buf.str());
+LogWriter& LogWriter::operator<< (std::ostream& (*pf) (std::ostream&) )
+{
+    std::ostringstream buf;
+    buf << pf;
+    write (buf.str ());
     return *this;
 }
 
-LogWriter::~LogWriter()
+LogWriter::~LogWriter ()
 {}

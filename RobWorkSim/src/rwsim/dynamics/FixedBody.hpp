@@ -21,79 +21,81 @@
 //! @file FixedBody.hpp
 
 #include "Body.hpp"
+
 #include <rw/core/Ptr.hpp>
 
-namespace rwsim {
-namespace dynamics {
-	//! @addtogroup rwsim_dynamics
-	//! @{
+namespace rwsim { namespace dynamics {
+    //! @addtogroup rwsim_dynamics
+    //! @{
 
-	/**
-	 * @brief a body with a fixed position, zero velocity and zero force.
-	 *
-	 * This body type is not allowed to move during simulation.
-	 */
+    /**
+     * @brief a body with a fixed position, zero velocity and zero force.
+     *
+     * This body type is not allowed to move during simulation.
+     */
     class FixedBody : public Body
     {
-    public:
-    	//! @brief Smart pointer type for a fixed body.
-        typedef rw::core::Ptr<FixedBody> Ptr;
+      public:
+        //! @brief Smart pointer type for a fixed body.
+        typedef rw::core::Ptr< FixedBody > Ptr;
 
         //! @copydoc Body::Body()
-    	FixedBody(const BodyInfo& info, rw::models::Object::Ptr obj):
-    	    Body(info, obj)
-    	{
-    	}
+        FixedBody (const BodyInfo& info, rw::models::Object::Ptr obj) : Body (info, obj) {}
 
-    	//! @brief destructor
-    	virtual ~FixedBody(){}
+        //! @brief destructor
+        virtual ~FixedBody () {}
 
-    public: // inheritet from Body interface
-
-    	//! @copydoc Body::getPointVelW
-        virtual rw::math::Vector3D<> getPointVelW(const rw::math::Vector3D<>& p, const rw::kinematics::State& state) const {
-        	return rw::math::Vector3D<>(0,0,0);
+      public:    // inheritet from Body interface
+                 //! @copydoc Body::getPointVelW
+        virtual rw::math::Vector3D<> getPointVelW (const rw::math::Vector3D<>& p,
+                                                   const rw::kinematics::State& state) const
+        {
+            return rw::math::Vector3D<> (0, 0, 0);
         };
 
         //! @copydoc Body::getVelocity
-        rw::math::VelocityScrew6D<> getVelocity(const rw::kinematics::State &state) const{
-            return rw::math::VelocityScrew6D<>(0,0,0,0,0,0);
+        rw::math::VelocityScrew6D<> getVelocity (const rw::kinematics::State& state) const
+        {
+            return rw::math::VelocityScrew6D<> (0, 0, 0, 0, 0, 0);
         }
 
         //! @copydoc Body::reset
-    	void reset(rw::kinematics::State &state){}
+        void reset (rw::kinematics::State& state) {}
 
-    	//! @copydoc Body::calcEnergy
-        double calcEnergy(const rw::kinematics::State& state,
-        		const rw::math::Vector3D<>& gravity = rw::math::Vector3D<>::zero(),
-				const rw::math::Vector3D<>& potZero = rw::math::Vector3D<>::zero()) const { return 0; };
+        //! @copydoc Body::calcEnergy
+        double
+        calcEnergy (const rw::kinematics::State& state,
+                    const rw::math::Vector3D<>& gravity = rw::math::Vector3D<>::zero (),
+                    const rw::math::Vector3D<>& potZero = rw::math::Vector3D<>::zero ()) const
+        {
+            return 0;
+        };
 
         //! @copydoc Body::setForce
-        void setForce(const rw::math::Vector3D<>& f, rw::kinematics::State& state){};
+        void setForce (const rw::math::Vector3D<>& f, rw::kinematics::State& state){};
 
         //! @copydoc Body::getForce
-        rw::math::Vector3D<> getForce(const rw::kinematics::State& state) const{
-            return rw::math::Vector3D<>(0,0,0);
+        rw::math::Vector3D<> getForce (const rw::kinematics::State& state) const
+        {
+            return rw::math::Vector3D<> (0, 0, 0);
         }
 
         //! @copydoc Body::addForce
-        void addForce(const rw::math::Vector3D<>& force, rw::kinematics::State& state){};
+        void addForce (const rw::math::Vector3D<>& force, rw::kinematics::State& state){};
 
         //! @copydoc Body::setTorque
-        void setTorque(const rw::math::Vector3D<>& t, rw::kinematics::State& state){};
+        void setTorque (const rw::math::Vector3D<>& t, rw::kinematics::State& state){};
 
         //! @copydoc Body::addTorque
-        void addTorque(const rw::math::Vector3D<>& t, rw::kinematics::State& state) {};
+        void addTorque (const rw::math::Vector3D<>& t, rw::kinematics::State& state){};
 
         //! @copydoc Body::getTorque
-        rw::math::Vector3D<> getTorque(const rw::kinematics::State& state) const{
-            return rw::math::Vector3D<>(0,0,0);
+        rw::math::Vector3D<> getTorque (const rw::kinematics::State& state) const
+        {
+            return rw::math::Vector3D<> (0, 0, 0);
         };
-
-
     };
     //! @}
-}
-}
+}}    // namespace rwsim::dynamics
 
 #endif /*FIXEDBODY_HPP_*/

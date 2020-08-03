@@ -24,86 +24,92 @@
  * \copydoc rwlibs::assembly::AssemblyState
  */
 
+#include <rw/core/Ptr.hpp>
 #include <rw/math/Transform3D.hpp>
 #include <rw/math/Wrench6D.hpp>
 #include <rw/trajectory/Path.hpp>
-#include <rw/core/Ptr.hpp>
 
 // Forward declarations
 namespace rwlibs { namespace task {
-template <class T> class Target;
-typedef Target<rw::math::Transform3D<> > CartesianTarget;
-}}
+    template< class T > class Target;
+    typedef Target< rw::math::Transform3D<> > CartesianTarget;
+}}    // namespace rwlibs::task
 
-namespace rwlibs {
-namespace assembly {
-//! @addtogroup assembly
+namespace rwlibs { namespace assembly {
+    //! @addtogroup assembly
 
-//! @{
-/**
- * @brief Information about the trajectory of the objects and sensor information during execution.
- *
- * This information is serializable through the CartesianTarget format.
- */
-class AssemblyState {
-public:
-	//! @brief smart pointer type to this class
-    typedef rw::core::Ptr<AssemblyState> Ptr;
+    //! @{
+    /**
+     * @brief Information about the trajectory of the objects and sensor information during
+     * execution.
+     *
+     * This information is serializable through the CartesianTarget format.
+     */
+    class AssemblyState
+    {
+      public:
+        //! @brief smart pointer type to this class
+        typedef rw::core::Ptr< AssemblyState > Ptr;
 
-	//! @brief Constructor of empty AssemblyState.
-	AssemblyState();
+        //! @brief Constructor of empty AssemblyState.
+        AssemblyState ();
 
-	/**
-	 * @brief Construct AssemblyState from CartesianTarget.
-	 * @param target [in] the CartesianTarget.
-	 */
-	AssemblyState(rw::core::Ptr<rwlibs::task::CartesianTarget> target);
+        /**
+         * @brief Construct AssemblyState from CartesianTarget.
+         * @param target [in] the CartesianTarget.
+         */
+        AssemblyState (rw::core::Ptr< rwlibs::task::CartesianTarget > target);
 
-	//! @brief Destructor.
-	virtual ~AssemblyState();
+        //! @brief Destructor.
+        virtual ~AssemblyState ();
 
-	/**
-	 * @brief Convert to CartesianTarget representation.
-	 * @param state [in] the state to convert.
-	 * @return new CartesianTarget.
-	 */
-	static rw::core::Ptr<rwlibs::task::CartesianTarget> toCartesianTarget(const AssemblyState &state);
+        /**
+         * @brief Convert to CartesianTarget representation.
+         * @param state [in] the state to convert.
+         * @return new CartesianTarget.
+         */
+        static rw::core::Ptr< rwlibs::task::CartesianTarget >
+        toCartesianTarget (const AssemblyState& state);
 
-public:
-	//! @brief A string describing the current phase of the assembly operation.
-	std::string phase;
+      public:
+        //! @brief A string describing the current phase of the assembly operation.
+        std::string phase;
 
-	//! @brief The offset of the female object relative to the default pose (should only be set if object moves freely).
-	rw::math::Transform3D<> femaleOffset;
+        //! @brief The offset of the female object relative to the default pose (should only be set
+        //! if object moves freely).
+        rw::math::Transform3D<> femaleOffset;
 
-	//! @brief The offset of the male object relative to the default pose (should only be set if object moves freely).
-	rw::math::Transform3D<> maleOffset;
+        //! @brief The offset of the male object relative to the default pose (should only be set if
+        //! object moves freely).
+        rw::math::Transform3D<> maleOffset;
 
-	//! @brief The relative transformation from female to male object (in the TCP frames set in the AssemblyTask).
-	rw::math::Transform3D<> femaleTmale;
+        //! @brief The relative transformation from female to male object (in the TCP frames set in
+        //! the AssemblyTask).
+        rw::math::Transform3D<> femaleTmale;
 
-	//! @brief The reading of the Force/Torque sensor for the male object (in the FTSensor frame).
-	rw::math::Wrench6D<> ftSensorMale;
+        //! @brief The reading of the Force/Torque sensor for the male object (in the FTSensor
+        //! frame).
+        rw::math::Wrench6D<> ftSensorMale;
 
-	//! @brief The reading of the Force/Torque sensor for the female object (in the FTSensor frame).
-	rw::math::Wrench6D<> ftSensorFemale;
+        //! @brief The reading of the Force/Torque sensor for the female object (in the FTSensor
+        //! frame).
+        rw::math::Wrench6D<> ftSensorFemale;
 
-	//! @brief True if there is contact between the two objects.
-	bool contact;
+        //! @brief True if there is contact between the two objects.
+        bool contact;
 
-	//! @brief Transformations for specified male frames.
-	rw::trajectory::Path<rw::math::Transform3D<> > maleflexT;
+        //! @brief Transformations for specified male frames.
+        rw::trajectory::Path< rw::math::Transform3D<> > maleflexT;
 
-	//! @brief Transformations for specified female frames.
-	rw::trajectory::Path<rw::math::Transform3D<> > femaleflexT;
+        //! @brief Transformations for specified female frames.
+        rw::trajectory::Path< rw::math::Transform3D<> > femaleflexT;
 
-	//! @brief Contacts detected.
-	rw::trajectory::Path<rw::math::Transform3D<> > contacts;
+        //! @brief Contacts detected.
+        rw::trajectory::Path< rw::math::Transform3D<> > contacts;
 
-	//! @brief Maximum contact force detected (of the contacts in the \b contacts list).
-	rw::math::Vector3D<> maxContactForce;
-};
-//! @}
-} /* namespace assembly */
-} /* namespace rwlibs */
+        //! @brief Maximum contact force detected (of the contacts in the \b contacts list).
+        rw::math::Vector3D<> maxContactForce;
+    };
+    //! @}
+}}     // namespace rwlibs::assembly
 #endif /* RWLIBS_ASSEMBLY_ASSEMBLYSTATE_HPP_ */

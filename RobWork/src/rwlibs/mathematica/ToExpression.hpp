@@ -25,50 +25,50 @@
  */
 
 #include "Mathematica.hpp"
+
 #include <rw/core/Ptr.hpp>
 
-namespace rwlibs {
-namespace mathematica {
-//! @addtogroup mathematica
+namespace rwlibs { namespace mathematica {
+    //! @addtogroup mathematica
 
-//! @{
-//! @brief Representation of the Mathematica %ToExpression function.
-class ToExpression: public Mathematica::FunctionBase {
-public:
-	//! @brief Smart pointer type.
-	typedef rw::core::Ptr<ToExpression> Ptr;
+    //! @{
+    //! @brief Representation of the Mathematica %ToExpression function.
+    class ToExpression : public Mathematica::FunctionBase
+    {
+      public:
+        //! @brief Smart pointer type.
+        typedef rw::core::Ptr< ToExpression > Ptr;
 
-	/**
-	 * @brief Get expression from a string.
-	 * @param expression [in] the expression as a string.
-	 */
-	ToExpression(const char* expression);
+        /**
+         * @brief Get expression from a string.
+         * @param expression [in] the expression as a string.
+         */
+        ToExpression (const char* expression);
 
-	/**
-	 * @brief Get expression from a string.
-	 * @param expression [in] the expression as a string.
-	 */
-	ToExpression(const std::string& expression);
+        /**
+         * @brief Get expression from a string.
+         * @param expression [in] the expression as a string.
+         */
+        ToExpression (const std::string& expression);
 
-	/**
-	 * @brief Get expression from a string.
-	 * @param expression [in] the expression as a Mathematica string.
-	 */
-	ToExpression(const Mathematica::String& expression);
+        /**
+         * @brief Get expression from a string.
+         * @param expression [in] the expression as a Mathematica string.
+         */
+        ToExpression (const Mathematica::String& expression);
 
-	//! @brief Destructor.
-	virtual ~ToExpression();
+        //! @brief Destructor.
+        virtual ~ToExpression ();
 
-	//! @copydoc Mathematica::FunctionBase::getArguments
-	std::list<rw::core::Ptr<const Mathematica::Expression> > getArguments() const;
+        //! @copydoc Mathematica::FunctionBase::getArguments
+        std::list< rw::core::Ptr< const Mathematica::Expression > > getArguments () const;
 
-	//! @copydoc Mathematica::Expression::clone
-	Mathematica::Expression::Ptr clone() const;
+        //! @copydoc Mathematica::Expression::clone
+        Mathematica::Expression::Ptr clone () const;
 
-private:
-	rw::core::Ptr<Mathematica::String> _expression;
-};
-//! @}
-} /* namespace mathematica */
-} /* namespace rwlibs */
+      private:
+        rw::core::Ptr< Mathematica::String > _expression;
+    };
+    //! @}
+}}     // namespace rwlibs::mathematica
 #endif /* RWLIBS_MATHEMATICA_TOEXPRESSION_HPP_ */

@@ -20,33 +20,32 @@
 
 #include "SDHDriver.hpp"
 
-extern "C" {
+extern "C"
+{
+#include "tolua++.h"
+
+#include <lauxlib.h>
 #include <lua.h>
 #include <lualib.h>
-#include <lauxlib.h>
-#include "tolua++.h"
 }
 
 #include "SDHDriverLuaStub.hpp"
 
-namespace rwlua {
-namespace rwhw {
+namespace rwlua { namespace rwhw {
 
     typedef rwhw::SDHDriver SDH;
 
     /**
      * @brief get current robworkstudio instance
      */
-    SDH* getSDH();
+    SDH* getSDH ();
 
     /**
      * @brief set current robworkstudio instance
      */
-	void setSDH(SDH* driver);
+    void setSDH (SDH* driver);
 
-
-	//! @}
-}}
-
+    //! @}
+}}    // namespace rwlua::rwhw
 
 #endif

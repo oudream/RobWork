@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RW_LOADERS_WORKCELLLOADER_HPP
 #define RW_LOADERS_WORKCELLLOADER_HPP
 
@@ -23,13 +22,14 @@
  * @file WorkCellLoader.hpp
  */
 
-#include <string>
+#include <rw/core/ExtensionPoint.hpp>
 #include <rw/graphics/WorkCellScene.hpp>
 #include <rw/models/WorkCell.hpp>
-#include <rw/core/ExtensionPoint.hpp>
+
+#include <string>
 
 // Forward declarations
-//namespace rw { namespace models { class WorkCell; }}
+// namespace rw { namespace models { class WorkCell; }}
 
 namespace rw { namespace loaders {
 
@@ -71,69 +71,69 @@ namespace rw { namespace loaders {
      */
     class WorkCellLoader
     {
-    public:
+      public:
         //! @brief Smart pointer of WorkCellLoader.
-        typedef rw::core::Ptr<WorkCellLoader> Ptr;
+        typedef rw::core::Ptr< WorkCellLoader > Ptr;
 
         //! @brief Destructor.
-        virtual ~WorkCellLoader(){}
+        virtual ~WorkCellLoader () {}
 
         /**
          * @brief Load a WorkCell from a file.
          * @param filename [in] path to workcell file.
          */
-        virtual models::WorkCell::Ptr loadWorkCell(const std::string& filename) = 0;
+        virtual models::WorkCell::Ptr loadWorkCell (const std::string& filename) = 0;
 
-    	/**
-    	 * @addtogroup extensionpoints
-    	 * @extensionpoint{rw::loaders::WorkCellLoader::Factory, rw::loaders::WorkCellLoader, rw.loaders.WorkCellLoader}
- 	 	 */
-
+        /**
+         * @addtogroup extensionpoints
+         * @extensionpoint{rw::loaders::WorkCellLoader::Factory, rw::loaders::WorkCellLoader,
+         * rw.loaders.WorkCellLoader}
+         */
 
         /**
          * @brief A factory for WorkCellLoader. This factory also defines the
          * "rw.loaders.WorkCellLoader" extension point where new loaders can be
          * registered.
          */
-        class Factory: public rw::core::ExtensionPoint<WorkCellLoader> {
-            public:
-                /**
-                 * @brief Get loaders for a specific format.
-                 * @param format [in] the extension (including initial dot).
-                 * The extension name is case-insensitive.
-                 * @return a suitable loader.
-                 */
-                static rw::core::Ptr<WorkCellLoader> getWorkCellLoader(
-                        const std::string& format);
+        class Factory : public rw::core::ExtensionPoint< WorkCellLoader >
+        {
+          public:
+            /**
+             * @brief Get loaders for a specific format.
+             * @param format [in] the extension (including initial dot).
+             * The extension name is case-insensitive.
+             * @return a suitable loader.
+             */
+            static rw::core::Ptr< WorkCellLoader > getWorkCellLoader (const std::string& format);
 
-                /**
-                 * @brief Loads/imports a WorkCell from a file.
-                 *
-                 * An exception is thrown if the file can't be loaded.
-                 * The %RobWork %XML format is supported by default, as well as
-                 * TUL WorkCell format.
-                 * @param filename [in] name of the WorkCell file.
-                 */
-                static models::WorkCell::Ptr load(const std::string& filename);
+            /**
+             * @brief Loads/imports a WorkCell from a file.
+             *
+             * An exception is thrown if the file can't be loaded.
+             * The %RobWork %XML format is supported by default, as well as
+             * TUL WorkCell format.
+             * @param filename [in] name of the WorkCell file.
+             */
+            static models::WorkCell::Ptr load (const std::string& filename);
 
-            private:
-                Factory(): rw::core::ExtensionPoint<WorkCellLoader>(
-                        "rw.loaders.WorkCellLoader",
-                        "Extension point for for WorkCell loaders.")
-                {}
+          private:
+            Factory () :
+                rw::core::ExtensionPoint< WorkCellLoader > (
+                    "rw.loaders.WorkCellLoader", "Extension point for for WorkCell loaders.")
+            {}
         };
 
-    protected:
-	    //! @brief Constructor.
-		WorkCellLoader() {}
+      protected:
+        //! @brief Constructor.
+        WorkCellLoader () {}
     };
 
-	/**
-	 * @brief Shortcut type for the WorkCellLoader::Factory
-	 * @deprecated Please use WorkCellLoader::Factory instead.
-	 */
+    /**
+     * @brief Shortcut type for the WorkCellLoader::Factory
+     * @deprecated Please use WorkCellLoader::Factory instead.
+     */
     typedef WorkCellLoader::Factory WorkCellFactory;
     /**@}*/
-}} // end namespaces
+}}    // namespace rw::loaders
 
-#endif // end include guard
+#endif    // end include guard

@@ -16,6 +16,7 @@
  ********************************************************************************/
 
 #include "QuadraticFace.hpp"
+
 #include "QuadraticCurve.hpp"
 #include "QuadraticSurface.hpp"
 
@@ -23,74 +24,81 @@ using rw::core::ownedPtr;
 using namespace rw::geometry;
 using namespace rw::math;
 
-QuadraticFace::QuadraticFace()
+QuadraticFace::QuadraticFace ()
+{}
+
+QuadraticFace::QuadraticFace (rw::core::Ptr< const QuadraticSurface > surface,
+                              const std::vector< Vector3D<> >& vertices) :
+    _surface (surface),
+    _curves (vertices.size ()), _vertices (vertices)
+{}
+
+QuadraticFace::~QuadraticFace ()
+{}
+
+const QuadraticSurface& QuadraticFace::surface () const
 {
+    return *_surface;
 }
 
-QuadraticFace::QuadraticFace(rw::core::Ptr<const QuadraticSurface> surface, const std::vector<Vector3D<> >& vertices):
-	_surface(surface),
-	_curves(vertices.size()),
-	_vertices(vertices)
+const QuadraticCurve& QuadraticFace::getCurve (std::size_t i) const
 {
+    return *_curves[i];
 }
 
-QuadraticFace::~QuadraticFace() {
+void QuadraticFace::transform (const Vector3D<>& P)
+{
+    _surface = _surface->transform (P);
+    for (std::size_t i = 0; i < _vertices.size (); i++) {
+        _vertices[i] += P;
+    }
+    for (std::size_t i = 0; i < _curves.size (); i++) {
+        _curves[i] = _curves[i]->transform (P);
+    }
 }
 
-const QuadraticSurface& QuadraticFace::surface() const {
-	return *_surface;
+void QuadraticFace::transform (const Transform3D<>& T)
+{
+    _surface = _surface->transform (T);
+    for (std::size_t i = 0; i < _vertices.size (); i++) {
+        _vertices[i] = T * _vertices[i];
+    }
+    for (std::size_t i = 0; i < _curves.size (); i++) {
+        _curves[i] = _curves[i]->transform (T);
+    }
 }
 
-const QuadraticCurve& QuadraticFace::getCurve(std::size_t i) const {
-	return *_curves[i];
+void QuadraticFace::setSurface (const QuadraticSurface& surface)
+{
+    _surface = surface.clone ();
 }
 
-void QuadraticFace::transform(const Vector3D<>& P) {
-	_surface = _surface->transform(P);
-	for (std::size_t i = 0; i < _vertices.size(); i++) {
-		_vertices[i] += P;
-	}
-	for (std::size_t i = 0; i < _curves.size(); i++) {
-		_curves[i] = _curves[i]->transform(P);
-	}
+void QuadraticFace::setCurve (std::size_t vertex, QuadraticCurve::CPtr curve)
+{
+    if (vertex >= _vertices.size ()) {
+        _vertices.resize (vertex + 1);
+        _curves.resize (vertex + 1);
+    }
+    _curves[vertex] = curve;
 }
 
-void QuadraticFace::transform(const Transform3D<>& T) {
-	_surface = _surface->transform(T);
-	for (std::size_t i = 0; i < _vertices.size(); i++) {
-		_vertices[i] = T*_vertices[i];
-	}
-	for (std::size_t i = 0; i < _curves.size(); i++) {
-		_curves[i] = _curves[i]->transform(T);
-	}
+void QuadraticFace::setCurves (const std::vector< QuadraticCurve::CPtr >& curves)
+{
+    _curves = curves;
+    _vertices.resize (curves.size ());
 }
 
-void QuadraticFace::setSurface(const QuadraticSurface& surface) {
-	_surface = surface.clone();
+void QuadraticFace::setVertex (std::size_t index, const Vector3D<>& vertex)
+{
+    if (index >= _vertices.size ()) {
+        _vertices.resize (index + 1);
+        _curves.resize (index + 1);
+    }
+    _vertices[index] = vertex;
 }
 
-void QuadraticFace::setCurve(std::size_t vertex, QuadraticCurve::CPtr curve) {
-	if (vertex >= _vertices.size()) {
-		_vertices.resize(vertex+1);
-		_curves.resize(vertex+1);
-	}
-	_curves[vertex] = curve;
-}
-
-void QuadraticFace::setCurves(const std::vector<QuadraticCurve::CPtr>& curves) {
-	_curves = curves;
-	_vertices.resize(curves.size());
-}
-
-void QuadraticFace::setVertex(std::size_t index, const Vector3D<>& vertex) {
-	if (index >= _vertices.size()) {
-		_vertices.resize(index+1);
-		_curves.resize(index+1);
-	}
-	_vertices[index] = vertex;
-}
-
-void QuadraticFace::setVertices(const std::vector<Vector3D<> >& vertices) {
-	_vertices = vertices;
-	_curves.resize(vertices.size());
+void QuadraticFace::setVertices (const std::vector< Vector3D<> >& vertices)
+{
+    _vertices = vertices;
+    _curves.resize (vertices.size ());
 }

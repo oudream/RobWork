@@ -19,11 +19,10 @@
 #define RW_MATH_FWD_HPP_
 
 #include <rw/core/math_fwd.hpp>
-
-
 #include <rw/core/os.hpp>
 #ifdef RW_WIN32
-#pragma message("#include <rw/math_fwd.hpp> is deprecated use #include <rw/core/math_fwd.hpp> instead")
+#pragma message( \
+    "#include <rw/math_fwd.hpp> is deprecated use #include <rw/core/math_fwd.hpp> instead")
 #else
 #warning "#include <rw/math_fwd.hpp> is deprecated use #include <rw/core/math_fwd.hpp> instead"
 #endif

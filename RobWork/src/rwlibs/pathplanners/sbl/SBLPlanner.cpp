@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,10 +15,11 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #include "SBLPlanner.hpp"
+
 #include "SBLInternal.hpp"
 #include "SBLSetup.hpp"
+
 #include <rw/pathplanning/QIKSampler.hpp>
 
 using namespace rwlibs::pathplanners;
@@ -27,54 +28,40 @@ using namespace rw::math;
 using namespace rw::core;
 using namespace rw::trajectory;
 
-namespace
+namespace {
+class SBLQToQSamplerPlanner : public rw::pathplanning::QToQSamplerPlanner
 {
-    class SBLQToQSamplerPlanner : public rw::pathplanning::QToQSamplerPlanner
+  public:
+    SBLQToQSamplerPlanner (const SBLSetup& setup) : _options (SBLInternal::getOptions (setup)) {}
+
+  private:
+    bool doQuery (const Q& from, QSampler& to, QPath& result, const StopCriteria& stop)
     {
-    public:
-        SBLQToQSamplerPlanner(const SBLSetup& setup)
-            : _options(SBLInternal::getOptions(setup))
-        {}
+        const SBLInternal::Motion path =
+            SBLInternal::findApproach (from, Q (), SBLInternal::Motion (), to, _options, stop);
 
-    private:
-        bool doQuery(
-            const Q& from,
-            QSampler& to,
-            QPath& result,
-            const StopCriteria& stop)
-        {
-            const SBLInternal::Motion path =
-                SBLInternal::findApproach(
-                    from,
-                    Q(),
-                    SBLInternal::Motion(),
-                    to,
-                    _options,
-                    stop);
+        result.insert (result.end (), path.begin (), path.end ());
 
-            result.insert(result.end(), path.begin(), path.end());
+        return !path.empty ();
+    }
 
-            return !path.empty();
-        }
+  private:
+    SBLOptions _options;
+};
+}    // namespace
 
-    private:
-        SBLOptions _options;
-    };
+QToQSamplerPlanner::Ptr SBLPlanner::makeQToQSamplerPlanner (const SBLSetup& setup)
+{
+    return ownedPtr (new SBLQToQSamplerPlanner (setup));
 }
 
-QToQSamplerPlanner::Ptr SBLPlanner::makeQToQSamplerPlanner(const SBLSetup& setup)
+QToQPlanner::Ptr SBLPlanner::makeQToQPlanner (const SBLSetup& setup)
 {
-    return ownedPtr(new SBLQToQSamplerPlanner(setup));
+    return QToQPlanner::make (makeQToQSamplerPlanner (setup));
 }
 
-QToQPlanner::Ptr SBLPlanner::makeQToQPlanner(const SBLSetup& setup)
+rw::pathplanning::QToTPlanner::Ptr
+SBLPlanner::makeQToTPlanner (const SBLSetup& setup, rw::core::Ptr< QIKSampler > ikSampler)
 {
-    return QToQPlanner::make(
-        makeQToQSamplerPlanner(setup));
-}
-
-rw::pathplanning::QToTPlanner::Ptr SBLPlanner::makeQToTPlanner(const SBLSetup& setup,
-															   rw::core::Ptr<QIKSampler> ikSampler)
-{
-    return QToTPlanner::make(makeQToQSamplerPlanner(setup), ikSampler);
+    return QToTPlanner::make (makeQToQSamplerPlanner (setup), ikSampler);
 }

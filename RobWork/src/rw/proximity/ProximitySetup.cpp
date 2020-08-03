@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,77 +15,75 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #include "ProximitySetup.hpp"
+
 #include "CollisionSetup.hpp"
 
+#include <rw/core/StringUtil.hpp>
 #include <rw/models/Object.hpp>
 #include <rw/models/WorkCell.hpp>
-
-#include <rw/core/StringUtil.hpp>
 
 using namespace rw::core;
 using namespace rw::proximity;
 
-ProximitySetup::ProximitySetup():
-_useIncludeAll(true),
-_useExcludeStaticPairs(true),
-_loadedFromFile(false)
+ProximitySetup::ProximitySetup () :
+    _useIncludeAll (true), _useExcludeStaticPairs (true), _loadedFromFile (false)
 {}
 
-ProximitySetup::ProximitySetup(const CollisionSetup& csetup):
-		_useIncludeAll(true),
-		_useExcludeStaticPairs(true),
-		_loadedFromFile(false)
+ProximitySetup::ProximitySetup (const CollisionSetup& csetup) :
+    _useIncludeAll (true), _useExcludeStaticPairs (true), _loadedFromFile (false)
 {
-	for(rw::core::StringPair pair : csetup.getExcludeList()) {
-		addProximitySetupRule(ProximitySetupRule::makeExclude(pair.first, pair.second));
-	}
-	_useExcludeStaticPairs = csetup.excludeStaticPairs();
+    for (rw::core::StringPair pair : csetup.getExcludeList ()) {
+        addProximitySetupRule (ProximitySetupRule::makeExclude (pair.first, pair.second));
+    }
+    _useExcludeStaticPairs = csetup.excludeStaticPairs ();
 }
 
-ProximitySetup::ProximitySetup(const std::vector<ProximitySetupRule>& rules){
-	for (const ProximitySetupRule &rule : rules){
-		addProximitySetupRule(rule);
-	}
+ProximitySetup::ProximitySetup (const std::vector< ProximitySetupRule >& rules)
+{
+    for (const ProximitySetupRule& rule : rules) {
+        addProximitySetupRule (rule);
+    }
 };
 
-
-void ProximitySetup::addProximitySetupRule(const ProximitySetupRule& rule) {
-	_rules.push_back(rule);
+void ProximitySetup::addProximitySetupRule (const ProximitySetupRule& rule)
+{
+    _rules.push_back (rule);
 }
 
-
-
-
-void ProximitySetup::removeProximitySetupRule(const ProximitySetupRule& rule) {
-	for (std::vector<ProximitySetupRule>::iterator it = _rules.begin(); it != _rules.end(); ++it) {
-		ProximitySetupRule& r = *it;
-		if ( r == rule) {
-			_rules.erase(it); 
-			break;
-		}
-	}
+void ProximitySetup::removeProximitySetupRule (const ProximitySetupRule& rule)
+{
+    for (std::vector< ProximitySetupRule >::iterator it = _rules.begin (); it != _rules.end ();
+         ++it) {
+        ProximitySetupRule& r = *it;
+        if (r == rule) {
+            _rules.erase (it);
+            break;
+        }
+    }
 }
 
-
-ProximitySetup ProximitySetup::get(rw::models::WorkCell::Ptr wc){
-    return get(wc->getWorldFrame()->getPropertyMap());
+ProximitySetup ProximitySetup::get (rw::models::WorkCell::Ptr wc)
+{
+    return get (wc->getWorldFrame ()->getPropertyMap ());
 }
 
-ProximitySetup ProximitySetup::get(const rw::models::WorkCell& wc){
-    return get(wc.getWorldFrame()->getPropertyMap());
+ProximitySetup ProximitySetup::get (const rw::models::WorkCell& wc)
+{
+    return get (wc.getWorldFrame ()->getPropertyMap ());
 }
 
-
-ProximitySetup ProximitySetup::get(const rw::core::PropertyMap& map){
-    return map.get<ProximitySetup>("ProximitySetup", ProximitySetup());
+ProximitySetup ProximitySetup::get (const rw::core::PropertyMap& map)
+{
+    return map.get< ProximitySetup > ("ProximitySetup", ProximitySetup ());
 }
 
-void ProximitySetup::set(const ProximitySetup& setup, rw::models::WorkCell::Ptr wc){
-    set(setup, wc->getWorldFrame()->getPropertyMap());
+void ProximitySetup::set (const ProximitySetup& setup, rw::models::WorkCell::Ptr wc)
+{
+    set (setup, wc->getWorldFrame ()->getPropertyMap ());
 }
 
-void ProximitySetup::set(const ProximitySetup& setup, rw::core::PropertyMap& map){
-    map.addForce<ProximitySetup>("ProximitySetup", "setup for proximity checking", setup);
+void ProximitySetup::set (const ProximitySetup& setup, rw::core::PropertyMap& map)
+{
+    map.addForce< ProximitySetup > ("ProximitySetup", "setup for proximity checking", setup);
 }

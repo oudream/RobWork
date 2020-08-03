@@ -17,60 +17,66 @@
 
 #include "Link.hpp"
 
-#include <rw/models/Joint.hpp>
+#include "DynamicDevice.hpp"
+
 #include <rw/kinematics/Kinematics.hpp>
 #include <rw/math/Q.hpp>
-
-#include "DynamicDevice.hpp"
+#include <rw/models/Joint.hpp>
 
 using namespace rw::math;
 using namespace rw::models;
 using namespace rw::kinematics;
 using namespace rwsim::dynamics;
 
-Link::Link( const BodyInfo& info, rw::models::Object::Ptr obj, DynamicDevice *ddev, size_t id):
-        Body(0, info, obj),
-    _ddev(ddev),
-    _id(id)
+Link::Link (const BodyInfo& info, rw::models::Object::Ptr obj, DynamicDevice* ddev, size_t id) :
+    Body (0, info, obj), _ddev (ddev), _id (id)
+{}
+
+Link::~Link ()
+{}
+
+rw::math::VelocityScrew6D<> getVelocity (rw::kinematics::State& state)
 {
-
+    return _ddev->getVelocity (this, state);
 }
 
-Link::~Link(){}
-
-rw::math::VelocityScrew6D<> getVelocity(rw::kinematics::State &state){
-    return _ddev->getVelocity(this, state);
+void Link::reset (State& state)
+{
+    return _ddev->reset (p, this, state);
 }
 
-
-void Link::reset(State &state){
-    return _ddev->reset(p, this, state);
+double Link::calcEnergy (const State& state, const Vector3D<>& gravity,
+                         const Vector3D<>& potZero) const
+{
+    return _ddev->calcEnergy (this, state);
 }
 
-double Link::calcEnergy(const State& state, const Vector3D<>& gravity, const Vector3D<>& potZero) const {
-    return _ddev->calcEnergy(this, state);
+void Link::setForce (const Vector3D<>& f, State& state)
+{
+    _ddev->setForce (f, this, state);
 }
 
-void Link::setForce(const Vector3D<>& f, State& state){
-    _ddev->setForce(f, this, state);
+Vector3D<> Link::getForce (const State& state) const
+{
+    return _ddev->getForce (this, state);
 }
 
-Vector3D<> Link::getForce(const State& state) const{
-    return _ddev->getForce(this, state);
+void Link::addForce (const Vector3D<>& force, State& state)
+{
+    _ddev->addForce (force, this, state);
 }
 
-void Link::addForce(const Vector3D<>& force, State& state){
-    _ddev->addForce(force, this, state);
+void Link::setTorque (const Vector3D<>& t, State& state)
+{
+    _ddev->setTorque (t, this, state);
 }
 
-void Link::setTorque(const Vector3D<>& t, State& state){
-    _ddev->setTorque(t, this, state);
+void Link::addTorque (const Vector3D<>& t, State& state)
+{
+    _ddev->addTorque (t, this, state);
 }
 
-void Link::addTorque(const Vector3D<>& t, State& state){
-    _ddev->addTorque(t, this, state);
-}
-
-Vector3D<> Link::getTorque(const State& state) const{
-    return _ddev->getTorque(this, state);
+Vector3D<> Link::getTorque (const State& state) const
+{
+    return _ddev->getTorque (this, state);
 }

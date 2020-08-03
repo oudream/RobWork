@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RW_INVKIN_ITERATIVEMULTIIK_HPP
 #define RW_INVKIN_ITERATIVEMULTIIK_HPP
 
@@ -23,14 +22,16 @@
  * @file IterativeIK.hpp
  */
 
-#include <rw/math/Q.hpp>
-#include <rw/math/Transform3D.hpp>
 #include <rw/core/PropertyMap.hpp>
 #include <rw/core/Ptr.hpp>
+#include <rw/math/Q.hpp>
+#include <rw/math/Transform3D.hpp>
 
 #include <vector>
 
-namespace rw { namespace kinematics { class State; } }
+namespace rw { namespace kinematics {
+    class State;
+}}    // namespace rw::kinematics
 
 namespace rw { namespace invkin {
 
@@ -53,14 +54,14 @@ namespace rw { namespace invkin {
      */
     class IterativeMultiIK
     {
-    public:
-		//! @brief smart pointer type to this class
-		typedef rw::core::Ptr<IterativeMultiIK> Ptr;
+      public:
+        //! @brief smart pointer type to this class
+        typedef rw::core::Ptr< IterativeMultiIK > Ptr;
 
-		/**
-		 * @brief Destructor
-		 */
-        virtual ~IterativeMultiIK() {}
+        /**
+         * @brief Destructor
+         */
+        virtual ~IterativeMultiIK () {}
 
         /**
          * @brief Calculates the inverse kinematics
@@ -83,8 +84,9 @@ namespace rw { namespace invkin {
          *
          * @return List of solutions. Notice that the list may be empty.
          */
-        virtual std::vector<rw::math::Q> solve(const std::vector<math::Transform3D<> >& baseTend,
-                                               const kinematics::State& state) const = 0;
+        virtual std::vector< rw::math::Q >
+        solve (const std::vector< math::Transform3D<> >& baseTend,
+               const kinematics::State& state) const = 0;
 
         /**
          * @brief Sets the maximal error for a solution
@@ -94,46 +96,46 @@ namespace rw { namespace invkin {
          *
          * @param maxError [in] the maxError. It will be assumed that maxError > 0
          */
-        virtual void setMaxError(const std::vector<double>& maxError);
+        virtual void setMaxError (const std::vector< double >& maxError);
 
         /**
          * @brief Returns the maximal error for a solution
          *
          * @return Maximal error
          */
-        virtual std::vector<double> getMaxError() const;
+        virtual std::vector< double > getMaxError () const;
 
         /**
          * @brief Sets the maximal number of iterations allowed
          *
          * @param maxIterations [in] maximal number of iterations
          */
-        virtual void setMaxIterations(int maxIterations);
+        virtual void setMaxIterations (int maxIterations);
 
         /**
          * @brief Returns the maximal number of iterations
          */
-        virtual int getMaxIterations() const;
+        virtual int getMaxIterations () const;
 
         /**
          * @brief Returns the PropertyMap
          * @return Reference to the PropertyMap
          */
-        virtual rw::core::PropertyMap& getProperties();
+        virtual rw::core::PropertyMap& getProperties ();
 
         /**
          * @brief Returns the PropertyMap
          * return Reference to the PropertyMap
          */
-        virtual const rw::core::PropertyMap& getProperties() const;
+        virtual const rw::core::PropertyMap& getProperties () const;
 
-    protected:
+      protected:
         /**
          * @brief Constructor
          */
-        IterativeMultiIK(size_t nrOfEndEff);
+        IterativeMultiIK (size_t nrOfEndEff);
 
-    private:
+      private:
         /**
          * @brief the Properties
          */
@@ -144,12 +146,12 @@ namespace rw { namespace invkin {
          */
         size_t _nrOfEndEff;
 
-    private:
-        IterativeMultiIK(const IterativeMultiIK&);
-        IterativeMultiIK& operator=(const IterativeMultiIK&);
+      private:
+        IterativeMultiIK (const IterativeMultiIK&);
+        IterativeMultiIK& operator= (const IterativeMultiIK&);
     };
 
     /*@}*/
-}} // end namespaces
+}}    // namespace rw::invkin
 
-#endif // end include guard
+#endif    // end include guard

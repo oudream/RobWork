@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -22,8 +22,9 @@
 
 using namespace rwlibs::task;
 
-TypeRepository::TypeRepository() {
-    _typeMap[typeid(rw::math::Q).name()] = Type::Q;
-    _typeMap[typeid(rw::math::Transform3D<>).name()] = Type::Transform3D;
-    _next = Type::User;
+TypeRepository::TypeRepository ()
+{
+    _typeMap[typeid (rw::math::Q).name ()]             = Type::Q;
+    _typeMap[typeid (rw::math::Transform3D<>).name ()] = Type::Transform3D;
+    _next                                              = Type::User;
 }

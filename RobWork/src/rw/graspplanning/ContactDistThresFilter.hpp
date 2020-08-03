@@ -20,55 +20,56 @@
 
 #include "GraspValidateFilter.hpp"
 
-namespace rw { namespace sensor { class Contact3D; } }
+namespace rw { namespace sensor {
+    class Contact3D;
+}}    // namespace rw::sensor
 
-namespace rw {
-namespace graspplanning {
-
-/**
- * @brief tests if contact points in a grasp is too close or too far from each other.
- *
- * Two points that are very close is not allowed unless they are approached from opposite
- * directions.
- *
- */
-class ContactDistThresFilter: public GraspValidateFilter {
-public:
+namespace rw { namespace graspplanning {
 
     /**
-     * @brief constructor
-     * @param minDist [in] minimum allowed distance between contact points
-     * @param maxDist [in] maximum allowed distance between contact points
-     * @param allowCloseWhenOpposite [in] if true small distances are allowed when contact normals are
-     * in opposite directions
+     * @brief tests if contact points in a grasp is too close or too far from each other.
+     *
+     * Two points that are very close is not allowed unless they are approached from opposite
+     * directions.
+     *
      */
-    ContactDistThresFilter(double minDist, double maxDist, bool allowCloseWhenOpposite = true):
-        _minDist(minDist), _maxDist(maxDist),_allowCloseWhenOpposite(allowCloseWhenOpposite)
-    {};
+    class ContactDistThresFilter : public GraspValidateFilter
+    {
+      public:
+        /**
+         * @brief constructor
+         * @param minDist [in] minimum allowed distance between contact points
+         * @param maxDist [in] maximum allowed distance between contact points
+         * @param allowCloseWhenOpposite [in] if true small distances are allowed when contact
+         * normals are in opposite directions
+         */
+        ContactDistThresFilter (double minDist, double maxDist,
+                                bool allowCloseWhenOpposite = true) :
+            _minDist (minDist),
+            _maxDist (maxDist), _allowCloseWhenOpposite (allowCloseWhenOpposite){};
 
-    /**
-     * @brief destructor
-     */
-    virtual ~ContactDistThresFilter(){};
+        /**
+         * @brief destructor
+         */
+        virtual ~ContactDistThresFilter (){};
 
-    /**
-     * @copydoc GraspValidateFilter::isValid
-     */
-    bool isValid(const Grasp3D& grasp);
+        /**
+         * @copydoc GraspValidateFilter::isValid
+         */
+        bool isValid (const Grasp3D& grasp);
 
-    /**
-     * @brief tests if the contact pair is valid according to this filter
-     * @param c1 [in] 3d contact
-     * @param c2 [in] 3d contact
-     * @return true if contact pair is within filter criterias, false otherwise
-     */
-    bool isContactPairValid(const rw::sensor::Contact3D& c1, const rw::sensor::Contact3D& c2);
+        /**
+         * @brief tests if the contact pair is valid according to this filter
+         * @param c1 [in] 3d contact
+         * @param c2 [in] 3d contact
+         * @return true if contact pair is within filter criterias, false otherwise
+         */
+        bool isContactPairValid (const rw::sensor::Contact3D& c1, const rw::sensor::Contact3D& c2);
 
-private:
-    double _minDist;
-    double _maxDist;
-    bool _allowCloseWhenOpposite;
-};
-}
-}
+      private:
+        double _minDist;
+        double _maxDist;
+        bool _allowCloseWhenOpposite;
+    };
+}}     // namespace rw::graspplanning
 #endif /* PLANECLEARANCEFILTER_HPP_ */

@@ -20,46 +20,47 @@
 
 #include "StateSampler.hpp"
 
-namespace rw { namespace proximity { class CollisionDetector; } }
+namespace rw { namespace proximity {
+    class CollisionDetector;
+}}    // namespace rw::proximity
 
-namespace rwsim {
-namespace util {
-	//! @addtogroup rwsim_util
-	//! @{
+namespace rwsim { namespace util {
+    //! @addtogroup rwsim_util
+    //! @{
 
-	/**
-	 * @brief samples another state sampler until it returns a collision free
-	 * state.
-	 */
-	class CollisionFreeSampler: public StateSampler
-	{
-	public:
+    /**
+     * @brief samples another state sampler until it returns a collision free
+     * state.
+     */
+    class CollisionFreeSampler : public StateSampler
+    {
+      public:
+        /**
+         * @brief constructor
+         * @param sampler [in] the sampler that is to be wrapped
+         * @param detector [in] the collision detector
+         * @param n [in] max nr of tries pr sample request
+         */
+        CollisionFreeSampler (StateSampler::Ptr sampler,
+                              rw::core::Ptr< rw::proximity::CollisionDetector > detector,
+                              int n = -1);
 
-		/**
-		 * @brief constructor
-		 * @param sampler [in] the sampler that is to be wrapped
-		 * @param detector [in] the collision detector
-		 * @param n [in] max nr of tries pr sample request
-		 */
-		CollisionFreeSampler(StateSampler::Ptr sampler, rw::core::Ptr<rw::proximity::CollisionDetector> detector, int n=-1);
+        /**
+         * @brief destructor
+         */
+        virtual ~CollisionFreeSampler ();
 
-		/**
-		 * @brief destructor
-		 */
-		virtual ~CollisionFreeSampler();
+        //! @copydoc StateSampler::sample
+        bool sample (rw::kinematics::State& state);
 
-		//! @copydoc StateSampler::sample
-		bool sample(rw::kinematics::State& state);
+        //! @copydoc StateSampler::empty
+        bool empty () const { return _sampler->empty (); };
 
-		//! @copydoc StateSampler::empty
-		bool empty() const{ return _sampler->empty(); };
-
-	private:
-		StateSampler::Ptr _sampler;
-		rw::core::Ptr<rw::proximity::CollisionDetector> _detector;
-		int _n;
-	};
-	//! @}
-}
-}
+      private:
+        StateSampler::Ptr _sampler;
+        rw::core::Ptr< rw::proximity::CollisionDetector > _detector;
+        int _n;
+    };
+    //! @}
+}}     // namespace rwsim::util
 #endif /* FINITESTATESAMPLER_HPP_ */

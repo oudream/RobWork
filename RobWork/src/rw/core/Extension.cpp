@@ -1,4 +1,5 @@
 #include "Extension.hpp"
+
 #include <rw/core/Plugin.hpp>
 
 using namespace rw::core;

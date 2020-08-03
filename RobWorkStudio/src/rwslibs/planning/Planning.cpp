@@ -18,7 +18,6 @@
 #include "Planning.hpp"
 
 #include <RobWorkStudio.hpp>
-
 #include <rw/core/Exception.hpp>
 #include <rw/core/Message.hpp>
 #include <rw/core/StringUtil.hpp>
@@ -30,7 +29,6 @@
 #include <rw/pathplanning/PathAnalyzer.hpp>
 #include <rw/proximity/DistanceCalculator.hpp>
 #include <rw/trajectory/TimedUtil.hpp>
-
 #include <rwlibs/pathoptimization/clearance/ClearanceOptimizer.hpp>
 #include <rwlibs/pathoptimization/clearance/MinimumClearanceCalculator.hpp>
 #include <rwlibs/pathoptimization/pathlength/PathLengthOptimizer.hpp>
@@ -43,14 +41,13 @@
 
 //#include <rws/components/propertyview/PropertyInspector.hpp>
 
+#include <QCheckBox>
+#include <QComboBox>
+#include <QFileDialog>
 #include <QGridLayout>
-#include <QPushButton>
 #include <QLabel>
 #include <QMessageBox>
-#include <QComboBox>
-#include <QCheckBox>
-#include <QFileDialog>
-
+#include <QPushButton>
 #include <vector>
 
 using namespace rw::core;
@@ -69,263 +66,249 @@ using rwlibs::proximitystrategies::ProximityStrategyFactory;
 using namespace rws;
 
 namespace {
-    const QString CLEARANCE = "Clearance";
-    const QString PATHPRUNING = "Length (Path Pruning)";
-    const QString SHORTCUT = "Length (ShortCut)";
-    const QString PARTIALSHORTCUT = "Length (Partial ShortCut)";
+const QString CLEARANCE       = "Clearance";
+const QString PATHPRUNING     = "Length (Path Pruning)";
+const QString SHORTCUT        = "Length (ShortCut)";
+const QString PARTIALSHORTCUT = "Length (Partial ShortCut)";
 
-    const QString ARW = "ARW";
-    const QString RRT = "RRT";
-    const QString SBL = "SBL";
-    const QString PRM = "PRM";
-    const QString Z3 = "Z3";
+const QString ARW = "ARW";
+const QString RRT = "RRT";
+const QString SBL = "SBL";
+const QString PRM = "PRM";
+const QString Z3  = "Z3";
 
-    QMetric::CPtr getMetric()
-    {
-        return ownedPtr(new EuclideanMetric<Q>());
-    }
-
-	QToQPlanner::Ptr getPlanner(
-        WorkCell* workcell,
-		Device::Ptr device,
-        const State& state,
-        CollisionDetector* collisionDetector,
-        const QString& type)
-    {
-        const PlannerConstraint constraint = PlannerConstraint::make(
-            collisionDetector, device, state);
-
-        if (type == ARW) {
-            return ARWPlanner::makeQToQPlanner(constraint, device);
-        } else if (type == RRT) {
-            return RRTPlanner::makeQToQPlanner(constraint, device);
-        } else if (type == SBL) {
-			QConstraint::Ptr qconstraint = QConstraint::make(collisionDetector, device, state);
-			return SBLPlanner::makeQToQPlanner(SBLSetup::make(qconstraint, QEdgeConstraintIncremental::makeDefault(qconstraint, device), device));
-        } else if (type == PRM) {
-            Ptr<PRMPlanner> prm = ownedPtr(
-                new PRMPlanner(
-                    device.get(), state, collisionDetector, 0.01));
-
-            prm->setCollisionCheckingStrategy(PRMPlanner::NODECHECK);
-            prm->setShortestPathSearchStrategy(PRMPlanner::DIJKSTRA);
-            prm->setNeighSearchStrategy(PRMPlanner::PARTIAL_INDEX_TABLE);
-            prm->setAStarTimeOutTime(1);
-            prm->buildRoadmap(2000);
-            return prm;
-        } else if (type == Z3) {
-            return Z3Planner::makeQToQPlanner(constraint, device);
-        }
-        else {
-            RW_THROW("Unknown planner " << StringUtil::quote(type.toStdString()));
-        }
-    }
-
+QMetric::CPtr getMetric ()
+{
+    return ownedPtr (new EuclideanMetric< Q > ());
 }
 
+QToQPlanner::Ptr getPlanner (WorkCell* workcell, Device::Ptr device, const State& state,
+                             CollisionDetector* collisionDetector, const QString& type)
+{
+    const PlannerConstraint constraint = PlannerConstraint::make (collisionDetector, device, state);
 
-Planning::Planning():
-    RobWorkStudioPlugin("Planning", QIcon(":/planning.png")),
-    _workcell(nullptr)
+    if (type == ARW) {
+        return ARWPlanner::makeQToQPlanner (constraint, device);
+    }
+    else if (type == RRT) {
+        return RRTPlanner::makeQToQPlanner (constraint, device);
+    }
+    else if (type == SBL) {
+        QConstraint::Ptr qconstraint = QConstraint::make (collisionDetector, device, state);
+        return SBLPlanner::makeQToQPlanner (SBLSetup::make (
+            qconstraint, QEdgeConstraintIncremental::makeDefault (qconstraint, device), device));
+    }
+    else if (type == PRM) {
+        Ptr< PRMPlanner > prm =
+            ownedPtr (new PRMPlanner (device.get (), state, collisionDetector, 0.01));
+
+        prm->setCollisionCheckingStrategy (PRMPlanner::NODECHECK);
+        prm->setShortestPathSearchStrategy (PRMPlanner::DIJKSTRA);
+        prm->setNeighSearchStrategy (PRMPlanner::PARTIAL_INDEX_TABLE);
+        prm->setAStarTimeOutTime (1);
+        prm->buildRoadmap (2000);
+        return prm;
+    }
+    else if (type == Z3) {
+        return Z3Planner::makeQToQPlanner (constraint, device);
+    }
+    else {
+        RW_THROW ("Unknown planner " << StringUtil::quote (type.toStdString ()));
+    }
+}
+
+}    // namespace
+
+Planning::Planning () :
+    RobWorkStudioPlugin ("Planning", QIcon (":/planning.png")), _workcell (nullptr)
 {
     int row = 0;
 
-    QWidget* base = new QWidget(this);
-    QGridLayout* pLayout = new QGridLayout(base);
-    base->setLayout(pLayout);
-    this->setWidget(base);
+    QWidget* base        = new QWidget (this);
+    QGridLayout* pLayout = new QGridLayout (base);
+    base->setLayout (pLayout);
+    this->setWidget (base);
 
-    _planAllDev = new QCheckBox("Plan for all devices");
-    pLayout->addWidget(_planAllDev, row++, 0);
-    connect(_planAllDev, SIGNAL(stateChanged(int)), this, SLOT(setPlanAll(int)));
+    _planAllDev = new QCheckBox ("Plan for all devices");
+    pLayout->addWidget (_planAllDev, row++, 0);
+    connect (_planAllDev, SIGNAL (stateChanged (int)), this, SLOT (setPlanAll (int)));
 
-    pLayout->addWidget(new QLabel("Device: "), row, 0);
+    pLayout->addWidget (new QLabel ("Device: "), row, 0);
 
-    _cmbDevices = new QComboBox();
-    pLayout->addWidget(_cmbDevices, row++, 1);
-    connect(_cmbDevices, SIGNAL(activated(int)), this, SLOT(deviceChanged(int)));
+    _cmbDevices = new QComboBox ();
+    pLayout->addWidget (_cmbDevices, row++, 1);
+    connect (_cmbDevices, SIGNAL (activated (int)), this, SLOT (deviceChanged (int)));
 
-    QPushButton* btnStart = new QPushButton("Set Start");
-    connect(btnStart, SIGNAL(clicked()), this, SLOT(setStart()));
-    pLayout->addWidget(btnStart, row, 0);
+    QPushButton* btnStart = new QPushButton ("Set Start");
+    connect (btnStart, SIGNAL (clicked ()), this, SLOT (setStart ()));
+    pLayout->addWidget (btnStart, row, 0);
 
-    QPushButton* btnGotoStart = new QPushButton("Goto Start");
-    connect(btnGotoStart, SIGNAL(clicked()), this, SLOT(gotoStart()));
-    pLayout->addWidget(btnGotoStart, row++, 1);
+    QPushButton* btnGotoStart = new QPushButton ("Goto Start");
+    connect (btnGotoStart, SIGNAL (clicked ()), this, SLOT (gotoStart ()));
+    pLayout->addWidget (btnGotoStart, row++, 1);
     /*
     _lblStart = new QLabel();
     pLayout->addWidget(_lblStart, row++, 1);
 */
-    QPushButton* btnGoal = new QPushButton("Set Goal");
-    connect(btnGoal, SIGNAL(clicked()), this, SLOT(setGoal()));
-    pLayout->addWidget(btnGoal, row, 0);
+    QPushButton* btnGoal = new QPushButton ("Set Goal");
+    connect (btnGoal, SIGNAL (clicked ()), this, SLOT (setGoal ()));
+    pLayout->addWidget (btnGoal, row, 0);
 
-    QPushButton* btnGotoGoal = new QPushButton("Goto Goal");
-    connect(btnGotoGoal, SIGNAL(clicked()), this, SLOT(gotoGoal()));
-    pLayout->addWidget(btnGotoGoal, row++, 1);
+    QPushButton* btnGotoGoal = new QPushButton ("Goto Goal");
+    connect (btnGotoGoal, SIGNAL (clicked ()), this, SLOT (gotoGoal ()));
+    pLayout->addWidget (btnGotoGoal, row++, 1);
 
     /*
     _lblGoal = new QLabel();
     pLayout->addWidget(_lblGoal, row++, 1);
 */
-    pLayout->addWidget(new QLabel("Planner"), row, 0);
-    _cmbPlanners = new QComboBox();
-    _cmbPlanners->addItem(ARW);
-    _cmbPlanners->addItem(RRT);
-    _cmbPlanners->addItem(SBL);
-    _cmbPlanners->addItem(PRM);
-    _cmbPlanners->addItem(Z3);
-    _cmbPlanners->setCurrentIndex(3);
-    pLayout->addWidget(_cmbPlanners, row++, 1);
+    pLayout->addWidget (new QLabel ("Planner"), row, 0);
+    _cmbPlanners = new QComboBox ();
+    _cmbPlanners->addItem (ARW);
+    _cmbPlanners->addItem (RRT);
+    _cmbPlanners->addItem (SBL);
+    _cmbPlanners->addItem (PRM);
+    _cmbPlanners->addItem (Z3);
+    _cmbPlanners->setCurrentIndex (3);
+    pLayout->addWidget (_cmbPlanners, row++, 1);
 
-    pLayout->addWidget(new QLabel("Collision Detector"), row, 0);
-    _cmbCollisionDetectors = new QComboBox();
-    std::vector<std::string> ids = ProximityStrategyFactory::getCollisionStrategyIDs();
-    for(std::string id : ids) {
-        _cmbCollisionDetectors->addItem(id.c_str());
+    pLayout->addWidget (new QLabel ("Collision Detector"), row, 0);
+    _cmbCollisionDetectors         = new QComboBox ();
+    std::vector< std::string > ids = ProximityStrategyFactory::getCollisionStrategyIDs ();
+    for (std::string id : ids) {
+        _cmbCollisionDetectors->addItem (id.c_str ());
     }
 
-    pLayout->addWidget(_cmbCollisionDetectors, row++, 1);
+    pLayout->addWidget (_cmbCollisionDetectors, row++, 1);
 
+    QPushButton* btnPlan = new QPushButton ("Plan");
+    connect (btnPlan, SIGNAL (clicked ()), this, SLOT (plan ()));
+    pLayout->addWidget (btnPlan, row++, 0);
 
-    QPushButton* btnPlan = new QPushButton("Plan");
-    connect(btnPlan, SIGNAL(clicked()), this, SLOT(plan()));
-    pLayout->addWidget(btnPlan, row++, 0);
+    pLayout->addWidget (new QLabel ("Optimization"), row++, 0);
+    pLayout->addWidget (new QLabel ("Strategy"), row, 0);
+    _cmbOptimization = new QComboBox ();
 
+    _cmbOptimization->addItem (CLEARANCE);
+    _cmbOptimization->addItem (PATHPRUNING);
+    _cmbOptimization->addItem (SHORTCUT);
+    _cmbOptimization->addItem (PARTIALSHORTCUT);
+    pLayout->addWidget (_cmbOptimization, row++, 1);
 
-    pLayout->addWidget(new QLabel("Optimization"), row++, 0);
-    pLayout->addWidget(new QLabel("Strategy"), row, 0);
-    _cmbOptimization = new QComboBox();
+    QPushButton* btnOptimize = new QPushButton ("Optimize");
+    connect (btnOptimize, SIGNAL (clicked ()), this, SLOT (optimize ()));
+    pLayout->addWidget (btnOptimize, row++, 0);
 
+    QPushButton* btnSavePath = new QPushButton ("Save");
+    connect (btnSavePath, SIGNAL (clicked ()), this, SLOT (savePath ()));
+    pLayout->addWidget (btnSavePath, row, 0);
 
-    _cmbOptimization->addItem(CLEARANCE);
-    _cmbOptimization->addItem(PATHPRUNING);
-    _cmbOptimization->addItem(SHORTCUT);
-    _cmbOptimization->addItem(PARTIALSHORTCUT);
-    pLayout->addWidget(_cmbOptimization, row++, 1);
+    QPushButton* btnLoadPath = new QPushButton ("Load");
+    connect (btnLoadPath, SIGNAL (clicked ()), this, SLOT (loadPath ()));
+    pLayout->addWidget (btnLoadPath, row++, 1);
 
-    QPushButton* btnOptimize = new QPushButton("Optimize");
-    connect(btnOptimize, SIGNAL(clicked()), this, SLOT(optimize()));
-    pLayout->addWidget(btnOptimize, row++, 0);
+    QPushButton* btnStatistics = new QPushButton ("Statistics");
+    connect (btnStatistics, SIGNAL (clicked ()), this, SLOT (performStatistics ()));
+    pLayout->addWidget (btnStatistics, row++, 0);
 
-    QPushButton* btnSavePath = new QPushButton("Save");
-    connect(btnSavePath, SIGNAL(clicked()), this, SLOT(savePath()));
-    pLayout->addWidget(btnSavePath, row, 0);
-
-    QPushButton* btnLoadPath = new QPushButton("Load");
-    connect(btnLoadPath, SIGNAL(clicked()), this, SLOT(loadPath()));
-    pLayout->addWidget(btnLoadPath, row++, 1);
-
-
-    QPushButton* btnStatistics = new QPushButton("Statistics");
-    connect(btnStatistics, SIGNAL(clicked()), this, SLOT(performStatistics()));
-    pLayout->addWidget(btnStatistics, row++, 0);
-
-
-    pLayout->setRowStretch(row, 1);
+    pLayout->setRowStretch (row, 1);
 }
 
+Planning::~Planning ()
+{}
 
-Planning::~Planning() {
-
-}
-
-
-void Planning::open(WorkCell* workcell) {
-    _workcell = workcell;
-    const State _state = getRobWorkStudio()->getState();
-    _starts.clear();
-    _goals.clear();
-	std::vector<Device::Ptr> devices = workcell->getDevices();
-    _cmbDevices->clear();
-	for (std::vector<Device::Ptr>::iterator it = devices.begin(); it != devices.end(); ++it) {
-        _cmbDevices->addItem((*it)->getName().c_str());
-        _starts.push_back( (*it)->getQ(_state) );
-        _goals.push_back( (*it)->getQ(_state) );
+void Planning::open (WorkCell* workcell)
+{
+    _workcell          = workcell;
+    const State _state = getRobWorkStudio ()->getState ();
+    _starts.clear ();
+    _goals.clear ();
+    std::vector< Device::Ptr > devices = workcell->getDevices ();
+    _cmbDevices->clear ();
+    for (std::vector< Device::Ptr >::iterator it = devices.begin (); it != devices.end (); ++it) {
+        _cmbDevices->addItem ((*it)->getName ().c_str ());
+        _starts.push_back ((*it)->getQ (_state));
+        _goals.push_back ((*it)->getQ (_state));
     }
 }
 
-void Planning::close() {
-    _cmbDevices->clear();
+void Planning::close ()
+{
+    _cmbDevices->clear ();
 }
 
+void Planning::setPlanAll (int state)
+{}
 
-
-void Planning::setPlanAll(int state){
-
-}
-
-
-void Planning::setStart() {
-	/*
-    Device::Ptr device = _workcell->getDevices().front();
-	Jacobian jac = device->baseJend(getRobWorkStudio()->getState());
-	std::cout<<"Jacobian = "<<jac<<std::endl;
-	std::cout<<"Determinant = "<<LinearAlgebra::det(jac.m())<<std::endl;
-	return;
+void Planning::setStart ()
+{
+    /*
+Device::Ptr device = _workcell->getDevices().front();
+    Jacobian jac = device->baseJend(getRobWorkStudio()->getState());
+    std::cout<<"Jacobian = "<<jac<<std::endl;
+    std::cout<<"Determinant = "<<LinearAlgebra::det(jac.m())<<std::endl;
+    return;
 */
 
+    const State _state = getRobWorkStudio ()->getState ();
+    size_t deviceIndex = (size_t) _cmbDevices->currentIndex ();
+    if (deviceIndex >= _workcell->getDevices ().size ())
+        RW_THROW ("Index out of bounds");
 
-    const State _state = getRobWorkStudio()->getState();
-    size_t deviceIndex = (size_t)_cmbDevices->currentIndex();
-    if (deviceIndex>=_workcell->getDevices().size())
-        RW_THROW("Index out of bounds");
-
-    Device::Ptr device = _workcell->getDevices().at(deviceIndex);
-    _starts[deviceIndex] = device->getQ(_state);
+    Device::Ptr device   = _workcell->getDevices ().at (deviceIndex);
+    _starts[deviceIndex] = device->getQ (_state);
 
     std::stringstream str;
-    str<<_starts[deviceIndex];
+    str << _starts[deviceIndex];
     //_lblStart->setText(str.str().c_str());
-    //rw::core::Message msg( __FILE__, __LINE__, "Start set to: " + str.str());
-  //  emitMessage("Planning","Info", msg);
-
+    // rw::core::Message msg( __FILE__, __LINE__, "Start set to: " + str.str());
+    //  emitMessage("Planning","Info", msg);
 }
 
+void Planning::gotoStart ()
+{
+    State _state       = getRobWorkStudio ()->getState ();
+    size_t deviceIndex = (size_t) _cmbDevices->currentIndex ();
+    if (deviceIndex >= _workcell->getDevices ().size ())
+        RW_THROW ("Index out of bounds");
 
-void Planning::gotoStart(){
-    State _state = getRobWorkStudio()->getState();
-    size_t deviceIndex = (size_t)_cmbDevices->currentIndex();
-    if (deviceIndex>=_workcell->getDevices().size())
-        RW_THROW("Index out of bounds");
-
-	Device::Ptr device = _workcell->getDevices().at(deviceIndex);
-    device->setQ(_starts[deviceIndex],_state);
-    getRobWorkStudio()->setState(_state);
-    //getRobWorkStudio()->fireStateChanged();
+    Device::Ptr device = _workcell->getDevices ().at (deviceIndex);
+    device->setQ (_starts[deviceIndex], _state);
+    getRobWorkStudio ()->setState (_state);
+    // getRobWorkStudio()->fireStateChanged();
 }
 
+void Planning::setGoal ()
+{
+    const State _state = getRobWorkStudio ()->getState ();
+    size_t deviceIndex = (size_t) _cmbDevices->currentIndex ();
+    if (deviceIndex >= _workcell->getDevices ().size ())
+        RW_THROW ("Index out of bounds");
 
-void Planning::setGoal() {
-    const State _state = getRobWorkStudio()->getState();
-    size_t deviceIndex = (size_t)_cmbDevices->currentIndex();
-    if (deviceIndex>=_workcell->getDevices().size())
-        RW_THROW("Index out of bounds");
-
-	Device::Ptr device = _workcell->getDevices().at(deviceIndex);
-    _goals[deviceIndex] = device->getQ(_state);
+    Device::Ptr device  = _workcell->getDevices ().at (deviceIndex);
+    _goals[deviceIndex] = device->getQ (_state);
 
     std::stringstream str;
     str << _goals[deviceIndex];
     //_lblGoal->setText(str.str().c_str());
-    rw::core::Message msg( __FILE__, __LINE__, "Goal set to: " + str.str());
- //   emitMessage("Planning","Info", msg);
+    rw::core::Message msg (__FILE__, __LINE__, "Goal set to: " + str.str ());
+    //   emitMessage("Planning","Info", msg);
 }
 
+void Planning::gotoGoal ()
+{
+    State _state       = getRobWorkStudio ()->getState ();
+    size_t deviceIndex = (size_t) _cmbDevices->currentIndex ();
+    if (deviceIndex >= _workcell->getDevices ().size ())
+        RW_THROW ("Index out of bounds");
 
-void Planning::gotoGoal(){
-    State _state = getRobWorkStudio()->getState();
-    size_t deviceIndex = (size_t)_cmbDevices->currentIndex();
-    if (deviceIndex>=_workcell->getDevices().size())
-        RW_THROW("Index out of bounds");
-
-	Device::Ptr device = _workcell->getDevices().at(deviceIndex);
-    device->setQ(_goals[deviceIndex],_state);
-    getRobWorkStudio()->setState(_state);
+    Device::Ptr device = _workcell->getDevices ().at (deviceIndex);
+    device->setQ (_goals[deviceIndex], _state);
+    getRobWorkStudio ()->setState (_state);
 }
 
-
-void Planning::deviceChanged(int index){
+void Planning::deviceChanged (int index)
+{
     /*
     std::stringstream startstr,goalstr;
     startstr << _starts[index];
@@ -335,261 +318,246 @@ void Planning::deviceChanged(int index){
     */
 }
 
+Device::Ptr Planning::getDevice ()
+{
+    const State _state = getRobWorkStudio ()->getState ();
+    // Get the device model
+    size_t deviceIndex = (size_t) _cmbDevices->currentIndex ();
+    if (deviceIndex >= _workcell->getDevices ().size ())
+        RW_THROW ("Index out of bounds");
 
-Device::Ptr Planning::getDevice() {
-    const State _state = getRobWorkStudio()->getState();
-    //Get the device model
-    size_t deviceIndex = (size_t)_cmbDevices->currentIndex();
-    if (deviceIndex>=_workcell->getDevices().size())
-        RW_THROW("Index out of bounds");
+    bool planForAll = _planAllDev->isChecked ();
 
-    bool planForAll = _planAllDev->isChecked();
-
-    if(planForAll){
+    if (planForAll) {
         // create a composite device that contain all other devices
-		std::vector<Device::Ptr> all = _workcell->getDevices();
-		std::vector<Device::Ptr> devices(all.begin(), all.end());
-                _compositeDevice = ownedPtr(
-            new rw::models::CompositeDevice(
-                devices.front()->getBase(),
-                devices,
-                devices.back()->getEnd(),
-                "Composite",
-                _state));
+        std::vector< Device::Ptr > all = _workcell->getDevices ();
+        std::vector< Device::Ptr > devices (all.begin (), all.end ());
+        _compositeDevice = ownedPtr (new rw::models::CompositeDevice (devices.front ()->getBase (),
+                                                                      devices,
+                                                                      devices.back ()->getEnd (),
+                                                                      "Composite",
+                                                                      _state));
 
         return _compositeDevice;
-    } else {
-        return _workcell->getDevices().at(deviceIndex);
+    }
+    else {
+        return _workcell->getDevices ().at (deviceIndex);
     }
 }
 
-void Planning::plan()
+void Planning::plan ()
 {
-    const State _state = getRobWorkStudio()->getState();
+    const State _state = getRobWorkStudio ()->getState ();
 
-    bool planForAll = _planAllDev->isChecked();
+    bool planForAll = _planAllDev->isChecked ();
 
-    Q start,goal;
-	Device::Ptr device = getDevice();
-    if(planForAll) {
+    Q start, goal;
+    Device::Ptr device = getDevice ();
+    if (planForAll) {
         // create start and goal config
-        Q startTmp(device->getDOF());
-        Q goalTmp(device->getDOF());
+        Q startTmp (device->getDOF ());
+        Q goalTmp (device->getDOF ());
         size_t offset = 0;
-        for(size_t j=0; j<_starts.size(); j++){
-            size_t dof = _starts[j].size();
-            for(size_t i=0; i<dof; i++){
-                startTmp(offset+i) = _starts[j](i);
-                goalTmp(offset+i) = _goals[j](i);
+        for (size_t j = 0; j < _starts.size (); j++) {
+            size_t dof = _starts[j].size ();
+            for (size_t i = 0; i < dof; i++) {
+                startTmp (offset + i) = _starts[j](i);
+                goalTmp (offset + i)  = _goals[j](i);
             }
             offset += dof;
         }
         start = startTmp;
-        goal = goalTmp;
-    } else {
-        size_t deviceIndex = (size_t)_cmbDevices->currentIndex();
-        start = _starts[deviceIndex];
-        goal = _goals[deviceIndex];
+        goal  = goalTmp;
+    }
+    else {
+        size_t deviceIndex = (size_t) _cmbDevices->currentIndex ();
+        start              = _starts[deviceIndex];
+        goal               = _goals[deviceIndex];
     }
 
-    const size_t dof = device->getDOF();
-    if (dof != start.size() || dof != goal.size()) {
-        QMessageBox::information(
-            NULL,
-            "Error",
-            "Start and/or goal configuration does not match device",
-            QMessageBox::Ok);
+    const size_t dof = device->getDOF ();
+    if (dof != start.size () || dof != goal.size ()) {
+        QMessageBox::information (NULL,
+                                  "Error",
+                                  "Start and/or goal configuration does not match device",
+                                  QMessageBox::Ok);
         return;
     }
 
-    //Get the CDStrategy
-	const rw::core::Ptr<CollisionStrategy> cdstrategy =
-        ProximityStrategyFactory::makeCollisionStrategy(_cmbCollisionDetectors->currentText().toStdString());
-        //getCollisionStrategy(_cmbCollisionDetectors->currentIndex());
+    // Get the CDStrategy
+    const rw::core::Ptr< CollisionStrategy > cdstrategy =
+        ProximityStrategyFactory::makeCollisionStrategy (
+            _cmbCollisionDetectors->currentText ().toStdString ());
+    // getCollisionStrategy(_cmbCollisionDetectors->currentIndex());
 
     if (!cdstrategy) {
-        QMessageBox::information(
-            NULL,
-            "Error",
-            "The selected cd-strategy could not be found",
-            QMessageBox::Ok);
+        QMessageBox::information (
+            NULL, "Error", "The selected cd-strategy could not be found", QMessageBox::Ok);
         return;
     }
 
-    CollisionDetector collisionDetector(_workcell, cdstrategy);
+    CollisionDetector collisionDetector (_workcell, cdstrategy);
 
-    //Construct the PathPlanner
-	QToQPlanner::Ptr planner = getPlanner(
-        _workcell, device, _state, &collisionDetector, _cmbPlanners->currentText());
+    // Construct the PathPlanner
+    QToQPlanner::Ptr planner =
+        getPlanner (_workcell, device, _state, &collisionDetector, _cmbPlanners->currentText ());
 
-    //Query
-    _path.clear();
-    if (planner->query(start, goal, _path, 60)) {
-        log().info() << "Path Node Count = "<<_path.size()<<std::endl;
-    } else {
-        log().info() <<"Could not find a solution"<<std::endl;
+    // Query
+    _path.clear ();
+    if (planner->query (start, goal, _path, 60)) {
+        log ().info () << "Path Node Count = " << _path.size () << std::endl;
+    }
+    else {
+        log ().info () << "Could not find a solution" << std::endl;
     }
 
-    setAsTimedStatePath();
-
+    setAsTimedStatePath ();
 }
 
-
-void Planning::setAsTimedStatePath() {
-    State state = getRobWorkStudio()->getState();
-    std::vector<State> states;
-	Device::Ptr device = getDevice();
-    if (_path.size() > 0 && _path.front().size() != device->getDOF()) {
-        QMessageBox::information(
-            NULL,
-            "Error",
-            "Dimensions of device and loaded path does not match",
-            QMessageBox::Ok);
+void Planning::setAsTimedStatePath ()
+{
+    State state = getRobWorkStudio ()->getState ();
+    std::vector< State > states;
+    Device::Ptr device = getDevice ();
+    if (_path.size () > 0 && _path.front ().size () != device->getDOF ()) {
+        QMessageBox::information (
+            NULL, "Error", "Dimensions of device and loaded path does not match", QMessageBox::Ok);
         return;
     }
 
-    getRobWorkStudio()->setTimedStatePath(
-        TimedUtil::makeTimedStatePath(
-            *_workcell,
-            Models::getStatePath(*device, _path, state)));
+    getRobWorkStudio ()->setTimedStatePath (
+        TimedUtil::makeTimedStatePath (*_workcell, Models::getStatePath (*device, _path, state)));
 }
 
-
-void Planning::optimize() {
-    const State _state = getRobWorkStudio()->getState();
-    //TODO Need to make a selfcontaining PropertyInspector, such that QDialog is not needed
+void Planning::optimize ()
+{
+    const State _state = getRobWorkStudio ()->getState ();
+    // TODO Need to make a selfcontaining PropertyInspector, such that QDialog is not needed
     /*PropertyInspector* props = new PropertyInspector();
     QDialog* dialog = new QDialog(this);
     QGridLayout* pLayout = new QGridLayout(dialog);
     dialog->setLayout(pLayout);
     pLayout->addWidget(props);*/
 
-	Device::Ptr device = getDevice();
+    Device::Ptr device = getDevice ();
 
-    if (_cmbOptimization->currentText() == CLEARANCE) {
+    if (_cmbOptimization->currentText () == CLEARANCE) {
         try {
-			DistanceStrategy::Ptr strat = ProximityStrategyFactory::makeDefaultDistanceStrategy();
+            DistanceStrategy::Ptr strat = ProximityStrategyFactory::makeDefaultDistanceStrategy ();
 
-            DistanceCalculator::CPtr distanceCalculator = ownedPtr(
-                new DistanceCalculator(
-                    _workcell->getWorldFrame(),
-					_workcell,
-                        strat,
-                    _state));
+            DistanceCalculator::CPtr distanceCalculator = ownedPtr (
+                new DistanceCalculator (_workcell->getWorldFrame (), _workcell, strat, _state));
 
-			ClearanceCalculator::CPtr clearanceCalculator = ownedPtr(new MinimumClearanceCalculator(distanceCalculator));
-            ClearanceOptimizer optimizer(//_workcell,
-                                         device,
-                                         _state,
-                                         getMetric(),
-                                         clearanceCalculator);
+            ClearanceCalculator::CPtr clearanceCalculator =
+                ownedPtr (new MinimumClearanceCalculator (distanceCalculator));
+            ClearanceOptimizer optimizer (    //_workcell,
+                device,
+                _state,
+                getMetric (),
+                clearanceCalculator);
 
-         /*   props->setPropertyMap(&(optimizer.getPropertyMap()));
-            dialog->exec();
-            props->setPropertyMap(NULL);
-			*/
+            /*   props->setPropertyMap(&(optimizer.getPropertyMap()));
+               dialog->exec();
+               props->setPropertyMap(NULL);
+                           */
 
-            _path = optimizer.optimize(_path);
+            _path = optimizer.optimize (_path);
 
-            log().info()<<"Optimization Finished"<<std::endl;
-        } catch (const Exception& e) {
-            log().info()<<"Exception while Optimizing: "<<e.getMessage().getText()<<std::endl;
+            log ().info () << "Optimization Finished" << std::endl;
+        }
+        catch (const Exception& e) {
+            log ().info () << "Exception while Optimizing: " << e.getMessage ().getText ()
+                           << std::endl;
+        }
+    }
+    else {
+        CollisionDetector collisionDetector (
+            _workcell, ProximityStrategyFactory::makeDefaultCollisionStrategy ());
+
+        PlannerConstraint constraint = PlannerConstraint::make (&collisionDetector, device, _state);
+
+        PathLengthOptimizer optimizer (constraint, MetricFactory::makeEuclidean< Q > ());
+
+        if (_cmbOptimization->currentText () == PATHPRUNING) {
+            _path = optimizer.pathPruning (_path);
+            log ().info () << "Optimization Finished" << std::endl;
         }
 
-    } else {
-        CollisionDetector collisionDetector(
-            _workcell,
-            ProximityStrategyFactory::makeDefaultCollisionStrategy()
-            );
-
-        PlannerConstraint constraint = PlannerConstraint::make(
-            &collisionDetector, device, _state);
-
-        PathLengthOptimizer optimizer(
-            constraint, MetricFactory::makeEuclidean<Q>());
-
-        if (_cmbOptimization->currentText() == PATHPRUNING) {
-            _path = optimizer.pathPruning(_path);
-            log().info()<<"Optimization Finished"<<std::endl;
+        else if (_cmbOptimization->currentText () == SHORTCUT) {
+            /*            props->setPropertyMap(&(optimizer.getPropertyMap()));
+                        dialog->exec();
+                        props->setPropertyMap(NULL);
+            */
+            _path = optimizer.shortCut (_path);
         }
 
-        else if (_cmbOptimization->currentText() == SHORTCUT) {
-/*            props->setPropertyMap(&(optimizer.getPropertyMap()));
-            dialog->exec();
-            props->setPropertyMap(NULL);
-*/
-            _path = optimizer.shortCut(_path);
-        }
-
-        else if (_cmbOptimization->currentText() == PARTIALSHORTCUT) {
+        else if (_cmbOptimization->currentText () == PARTIALSHORTCUT) {
             /*props->setPropertyMap(&(optimizer.getPropertyMap()));
             dialog->exec();
             props->setPropertyMap(NULL);
 */
-            _path = optimizer.partialShortCut(_path);
+            _path = optimizer.partialShortCut (_path);
         }
     }
-    if (_path.size() > 2) {
-        setAsTimedStatePath();
+    if (_path.size () > 2) {
+        setAsTimedStatePath ();
     }
-//    delete dialog;
+    //    delete dialog;
 }
 
+void Planning::performStatistics ()
+{
+    const State _state = getRobWorkStudio ()->getState ();
+    Device::Ptr device = getDevice ();
+    PathAnalyzer analyzer (device, _state);
+    PathAnalyzer::JointSpaceAnalysis jointanalysis = analyzer.analyzeJointSpace (_path);
+    log ().info () << "JointSpaceAnalysis.Length = " << jointanalysis.length << std::endl;
+    log ().info () << "JointSpaceAnalysis.NodeCount = " << jointanalysis.nodecount << std::endl;
 
-void Planning::performStatistics() {
-    const State _state = getRobWorkStudio()->getState();
-	Device::Ptr device = getDevice();
-    PathAnalyzer analyzer( device, _state);
-    PathAnalyzer::JointSpaceAnalysis jointanalysis = analyzer.analyzeJointSpace(_path);
-    log().info()<<"JointSpaceAnalysis.Length = "<<jointanalysis.length<<std::endl;
-    log().info()<<"JointSpaceAnalysis.NodeCount = "<<jointanalysis.nodecount<<std::endl;
+    PathAnalyzer::CartesianAnalysis cartanalysis =
+        analyzer.analyzeCartesian (_path, device->getEnd ());
+    log ().info () << "CartesianAnalysis.length " << cartanalysis.length << std::endl;
+    log ().info () << "CartesianAnalysis.lengths = " << cartanalysis.distances << std::endl;
+    log ().info () << "CartesianAnalysis.lower = " << cartanalysis.lower << std::endl;
+    log ().info () << "CartesianAnalysis.upper = " << cartanalysis.upper << std::endl;
 
-    PathAnalyzer::CartesianAnalysis cartanalysis = analyzer.analyzeCartesian(_path, device->getEnd());
-    log().info()<<"CartesianAnalysis.length "<<cartanalysis.length<<std::endl;
-    log().info()<<"CartesianAnalysis.lengths = "<<cartanalysis.distances<<std::endl;
-    log().info()<<"CartesianAnalysis.lower = "<<cartanalysis.lower<<std::endl;
-    log().info()<<"CartesianAnalysis.upper = "<<cartanalysis.upper<<std::endl;
+    PathAnalyzer::TimeAnalysis timeanalysis = analyzer.analyzeTime (_path);
+    log ().info () << "TimeAnalysis.time1 = " << timeanalysis.time1 << std::endl;
 
-    PathAnalyzer::TimeAnalysis timeanalysis = analyzer.analyzeTime(_path);
-    log().info()<<"TimeAnalysis.time1 = "<<timeanalysis.time1<<std::endl;
+    DistanceStrategy::Ptr strat = ProximityStrategyFactory::makeDefaultDistanceStrategy ();
 
-	DistanceStrategy::Ptr strat = ProximityStrategyFactory::makeDefaultDistanceStrategy();
+    DistanceCalculator distanceCalculator (_workcell->getWorldFrame (), _workcell, strat, _state);
 
-    DistanceCalculator distanceCalculator(
-        _workcell->getWorldFrame(),
-        _workcell,
-        strat,
-        _state);
-
-    PathAnalyzer::ClearanceAnalysis clearanceanalysis = analyzer.analyzeClearance(_path, &distanceCalculator);
-    log().info()<<"ClearanceAnalysis.average = "<<clearanceanalysis.average<<std::endl;
-    log().info()<<"ClearanceAnalysis.min = "<<clearanceanalysis.min<<std::endl;
-
+    PathAnalyzer::ClearanceAnalysis clearanceanalysis =
+        analyzer.analyzeClearance (_path, &distanceCalculator);
+    log ().info () << "ClearanceAnalysis.average = " << clearanceanalysis.average << std::endl;
+    log ().info () << "ClearanceAnalysis.min = " << clearanceanalysis.min << std::endl;
 }
 
-
-void Planning::savePath() {
-    const QString dir(_previousOpenSaveDirectory.c_str());
+void Planning::savePath ()
+{
+    const QString dir (_previousOpenSaveDirectory.c_str ());
     QString selectedFilter;
-    QString filename = QFileDialog::getSaveFileName(this, "Save playback file", dir, "Path files ( *.pth )");
+    QString filename =
+        QFileDialog::getSaveFileName (this, "Save playback file", dir, "Path files ( *.pth )");
 
-    if (!filename.isEmpty()) {
-        _previousOpenSaveDirectory = StringUtil::getDirectoryName(filename.toStdString());
-        PathLoader::storePath(_path, filename.toStdString());
+    if (!filename.isEmpty ()) {
+        _previousOpenSaveDirectory = StringUtil::getDirectoryName (filename.toStdString ());
+        PathLoader::storePath (_path, filename.toStdString ());
     }
 }
 
+void Planning::loadPath ()
+{
+    QString filename = QFileDialog::getOpenFileName (this,
+                                                     "Open path file",    // Title
+                                                     "",                  // Directory
+                                                     "Path files ( *.pth )\n All ( *.* )");
 
-void Planning::loadPath() {
-    QString filename = QFileDialog::getOpenFileName(this, "Open path file", // Title
-                                                    "", // Directory
-                                                    "Path files ( *.pth )\n All ( *.* )");
-
-    if (!filename.isEmpty()) {
-        _previousOpenSaveDirectory = StringUtil::getDirectoryName(filename.toStdString());
-        _path = PathLoader::loadPath(filename.toStdString());
-        setAsTimedStatePath();
-
+    if (!filename.isEmpty ()) {
+        _previousOpenSaveDirectory = StringUtil::getDirectoryName (filename.toStdString ());
+        _path                      = PathLoader::loadPath (filename.toStdString ());
+        setAsTimedStatePath ();
     }
 }
 

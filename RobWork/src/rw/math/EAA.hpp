@@ -22,12 +22,11 @@
  * @file EAA.hpp
  */
 
+#include <rw/common/Serializable.hpp>
 #include <rw/math/Constants.hpp>
 #include <rw/math/Rotation3D.hpp>
 #include <rw/math/Rotation3DVector.hpp>
 #include <rw/math/Vector3D.hpp>
-
-#include <rw/common/Serializable.hpp>
 
 namespace rw { namespace math {
     /** @addtogroup math */
@@ -138,7 +137,7 @@ namespace rw { namespace math {
          */
         EAA (const Vector3D< T >& v1, const Vector3D< T >& v2) : _eaa (0, 0, 0)
         {
-             const T epsilon = (T) 1e-15;
+            const T epsilon = (T) 1e-15;
             T dval          = dot (v1, v2);
             if (fabs (dval - 1) < epsilon) {
                 // if the projection is close to 1 then the angle between the vectors are almost 0

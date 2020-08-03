@@ -19,7 +19,6 @@
 
 #include "PlainTriMesh.hpp"
 
-
 #include <fstream>
 
 using namespace rw::geometry;
