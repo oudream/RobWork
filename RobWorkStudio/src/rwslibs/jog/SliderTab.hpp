@@ -21,11 +21,10 @@
 #include <rw/core/Ptr.hpp>
 #include <rw/kinematics/FKRange.hpp>
 #include <rw/kinematics/State.hpp>
-#include <rw/math/Q.hpp>
-#include <rw/math/VectorND.hpp>
-#include <rw/math/Quaternion.hpp>
 #include <rw/math/EAA.hpp>
-
+#include <rw/math/Q.hpp>
+#include <rw/math/Quaternion.hpp>
+#include <rw/math/VectorND.hpp>
 
 #include <QDoubleSpinBox>
 #include <QValidator>
@@ -429,8 +428,8 @@ class CartesianDeviceTab : public QWidget
      * @param state [in] the initial state.
      */
     CartesianDeviceTab (const std::pair< rw::math::Q, rw::math::Q >& bounds,
-                        rw::core::Ptr< rw::models::Device > device,
-                        rw::models::WorkCell* workcell, const rw::kinematics::State& state);
+                        rw::core::Ptr< rw::models::Device > device, rw::models::WorkCell* workcell,
+                        const rw::kinematics::State& state);
 
     /**
      * @brief Set the units.

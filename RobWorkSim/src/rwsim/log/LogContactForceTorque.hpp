@@ -25,80 +25,80 @@
  */
 
 #include "LogForceTorque.hpp"
+
 #include <rw/core/Ptr.hpp>
 
-namespace rwsim {
-namespace log {
+namespace rwsim { namespace log {
 
-class LogContactSet;
+    class LogContactSet;
 
-//! @addtogroup rwsim_log
+    //! @addtogroup rwsim_log
 
-//! @{
-/**
- * @brief Log a set of contact forces and torques.
- */
-class LogContactForceTorque: public LogForceTorque {
-public:
-    //! Smart pointer type of LogContactForceTorque
-    typedef rw::core::Ptr<LogContactForceTorque> Ptr;
+    //! @{
+    /**
+     * @brief Log a set of contact forces and torques.
+     */
+    class LogContactForceTorque : public LogForceTorque
+    {
+      public:
+        //! Smart pointer type of LogContactForceTorque
+        typedef rw::core::Ptr< LogContactForceTorque > Ptr;
 
-    //! @copydoc SimulatorLogEntry::SimulatorLogEntry
-    LogContactForceTorque(SimulatorLogScope* parent);
+        //! @copydoc SimulatorLogEntry::SimulatorLogEntry
+        LogContactForceTorque (SimulatorLogScope* parent);
 
-	//! @brief Destructor.
-	virtual ~LogContactForceTorque();
+        //! @brief Destructor.
+        virtual ~LogContactForceTorque ();
 
-	//! @copydoc SimulatorLogEntry::getType
-	virtual std::string getType() const;
+        //! @copydoc SimulatorLogEntry::getType
+        virtual std::string getType () const;
 
-	//! @copydoc LogForceTorque::operator==
-	virtual bool operator==(const SimulatorLog &b) const;
+        //! @copydoc LogForceTorque::operator==
+        virtual bool operator== (const SimulatorLog& b) const;
 
-	//! @copydoc SimulatorLogEntry::getLinkedEntries
-	virtual std::list<SimulatorLogEntry::Ptr> getLinkedEntries() const;
+        //! @copydoc SimulatorLogEntry::getLinkedEntries
+        virtual std::list< SimulatorLogEntry::Ptr > getLinkedEntries () const;
 
-	//! @copydoc SimulatorLogEntry::autoLink
-	virtual bool autoLink();
+        //! @copydoc SimulatorLogEntry::autoLink
+        virtual bool autoLink ();
 
-	//! @copydoc SimulatorLogEntry::createNew
-	virtual SimulatorLogEntry::Ptr createNew(SimulatorLogScope* parent) const;
+        //! @copydoc SimulatorLogEntry::createNew
+        virtual SimulatorLogEntry::Ptr createNew (SimulatorLogScope* parent) const;
 
-	//! @copydoc LogForceTorque::sizeLinkedEntry
-	virtual int sizeLinkedEntry() const;
+        //! @copydoc LogForceTorque::sizeLinkedEntry
+        virtual int sizeLinkedEntry () const;
 
-	//! @copydoc LogForceTorque::getNameA
-	virtual const std::string& getNameA(std::size_t i) const;
+        //! @copydoc LogForceTorque::getNameA
+        virtual const std::string& getNameA (std::size_t i) const;
 
-	//! @copydoc LogForceTorque::getNameB
-	virtual const std::string& getNameB(std::size_t i) const;
+        //! @copydoc LogForceTorque::getNameB
+        virtual const std::string& getNameB (std::size_t i) const;
 
-	//! @copydoc LogForceTorque::getPositionA
-	virtual rw::math::Vector3D<> getPositionA(std::size_t i) const;
+        //! @copydoc LogForceTorque::getPositionA
+        virtual rw::math::Vector3D<> getPositionA (std::size_t i) const;
 
-	//! @copydoc LogForceTorque::getPositionB
-	virtual rw::math::Vector3D<> getPositionB(std::size_t i) const;
+        //! @copydoc LogForceTorque::getPositionB
+        virtual rw::math::Vector3D<> getPositionB (std::size_t i) const;
 
-	/**
-	 * @brief Get the type id of this entry type.
-	 * @return the type id.
-	 */
-	static std::string getTypeID();
+        /**
+         * @brief Get the type id of this entry type.
+         * @return the type id.
+         */
+        static std::string getTypeID ();
 
-	/**
-	 * @brief Get the positions of the contacts.
-	 *
-	 * This is similar to getLinkedEntries.
-	 *
-	 * @return the log entry with positions of contacts (or NULL if not linked).
-	 */
-	rw::core::Ptr<LogContactSet> getContacts() const;
+        /**
+         * @brief Get the positions of the contacts.
+         *
+         * This is similar to getLinkedEntries.
+         *
+         * @return the log entry with positions of contacts (or NULL if not linked).
+         */
+        rw::core::Ptr< LogContactSet > getContacts () const;
 
-private:
-	rw::core::Ptr<LogContactSet> _contacts;
-	const std::string _emptyStr;
-};
-//! @}
-} /* namespace log */
-} /* namespace rwsim */
+      private:
+        rw::core::Ptr< LogContactSet > _contacts;
+        const std::string _emptyStr;
+    };
+    //! @}
+}}     // namespace rwsim::log
 #endif /* RWSIM_LOG_LOGCONTACTFORCETORQUE_HPP_ */

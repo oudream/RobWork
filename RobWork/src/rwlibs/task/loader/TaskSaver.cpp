@@ -16,92 +16,101 @@
  ********************************************************************************/
 
 #include "TaskSaver.hpp"
-#include <RobWorkConfig.hpp>
+
 #include "DOMTaskSaver.hpp"
+
+#include <RobWorkConfig.hpp>
 #ifdef RW_HAVE_XERCES
 #include "XMLTaskSaver.hpp"
 #endif
 
-#include <rw/core/StringUtil.hpp>
 #include <rw/core/Extension.hpp>
+#include <rw/core/StringUtil.hpp>
 
 using namespace rw::core;
 using namespace rwlibs::task;
 
-TaskSaver::Ptr TaskSaver::Factory::getTaskSaver(const std::string& format, const std::string& id) {
-	TaskSaver::Factory ep;
-	std::vector<Extension::Ptr> exts = ep.getExtensions();
-	for(Extension::Ptr ext : exts) {
-		if(!ext->getProperties().has(format))
-			continue;
-		if (!id.empty()) {
-			if (StringUtil::toUpper(ext->getId()) == StringUtil::toUpper(id))
-				return ext->getObject().cast<TaskSaver>();
-		} else {
-			return ext->getObject().cast<TaskSaver>();
-		}
-	}
-	if(StringUtil::toLower(format) == "xml") {
-		if (id.empty())
-			return rw::core::ownedPtr( new DOMTaskSaver() );
-		else if (StringUtil::toUpper(id) == "DOM")
-			return rw::core::ownedPtr( new DOMTaskSaver() );
+TaskSaver::Ptr TaskSaver::Factory::getTaskSaver (const std::string& format, const std::string& id)
+{
+    TaskSaver::Factory ep;
+    std::vector< Extension::Ptr > exts = ep.getExtensions ();
+    for (Extension::Ptr ext : exts) {
+        if (!ext->getProperties ().has (format))
+            continue;
+        if (!id.empty ()) {
+            if (StringUtil::toUpper (ext->getId ()) == StringUtil::toUpper (id))
+                return ext->getObject ().cast< TaskSaver > ();
+        }
+        else {
+            return ext->getObject ().cast< TaskSaver > ();
+        }
+    }
+    if (StringUtil::toLower (format) == "xml") {
+        if (id.empty ())
+            return rw::core::ownedPtr (new DOMTaskSaver ());
+        else if (StringUtil::toUpper (id) == "DOM")
+            return rw::core::ownedPtr (new DOMTaskSaver ());
 #ifdef RW_HAVE_XERCES
-		else if (StringUtil::toUpper(id) == "XERCES")
-			return rw::core::ownedPtr( new XMLTaskSaver() );
+        else if (StringUtil::toUpper (id) == "XERCES")
+            return rw::core::ownedPtr (new XMLTaskSaver ());
 #endif
-	}
-	return NULL;
-}
-
-bool TaskSaver::Factory::hasTaskSaver(const std::string& format) {
-	if(StringUtil::toLower(format) == "xml")
-		return true;
-
-	TaskSaver::Factory ep;
-	std::vector<Extension::Descriptor> exts = ep.getExtensionDescriptors();
-	for(Extension::Descriptor& ext : exts){
-		if(!ext.getProperties().has(format))
-			continue;
-		return true;
-	}
-	return false;
-}
-
-std::vector<std::string> TaskSaver::Factory::getSupportedFormats() {
-	std::set<std::string> ids;
-	TaskSaver::Factory ep;
-	std::vector<Extension::Descriptor> exts = ep.getExtensionDescriptors();
-	ids.insert("xml");
-	for(Extension::Descriptor& ext : exts) {
-		const PropertyMap& p = ext.getProperties();
-		for (PropertyMap::iterator it = p.getProperties().first; it != p.getProperties().second; it++) {
-			ids.insert(StringUtil::toLower((*it)->getIdentifier()));
-		}
-	}
-	return std::vector<std::string>(ids.begin(),ids.end());
-}
-
-bool TaskSaver::Factory::save(QTask::Ptr task, const std::string& filename) {
-    std::string ext = StringUtil::toUpper(StringUtil::getFileExtension(filename));
-    if (!ext.empty())
-    	ext = ext.substr(1); // remove dot
-    if (!TaskSaver::Factory::hasTaskSaver(ext)) {
-    	RW_WARN("No TaskSaver can be created for a file with the extension " << ext << "!");
-    	return false;
     }
-    const TaskSaver::Ptr parser = TaskSaver::Factory::getTaskSaver(ext);
-    return parser->save(task,filename);
+    return NULL;
 }
 
-bool TaskSaver::Factory::save(CartesianTask::Ptr task, const std::string& filename) {
-    std::string ext = StringUtil::toUpper(StringUtil::getFileExtension(filename));
-    if (!ext.empty())
-    	ext = ext.substr(1); // remove dot
-    if (!TaskSaver::Factory::hasTaskSaver(ext)) {
-    	RW_WARN("No TaskSaver can be created for a file with the extension " << ext << "!");
-    	return false;
+bool TaskSaver::Factory::hasTaskSaver (const std::string& format)
+{
+    if (StringUtil::toLower (format) == "xml")
+        return true;
+
+    TaskSaver::Factory ep;
+    std::vector< Extension::Descriptor > exts = ep.getExtensionDescriptors ();
+    for (Extension::Descriptor& ext : exts) {
+        if (!ext.getProperties ().has (format))
+            continue;
+        return true;
     }
-    const TaskSaver::Ptr parser = TaskSaver::Factory::getTaskSaver(ext);
-    return parser->save(task,filename);
+    return false;
+}
+
+std::vector< std::string > TaskSaver::Factory::getSupportedFormats ()
+{
+    std::set< std::string > ids;
+    TaskSaver::Factory ep;
+    std::vector< Extension::Descriptor > exts = ep.getExtensionDescriptors ();
+    ids.insert ("xml");
+    for (Extension::Descriptor& ext : exts) {
+        const PropertyMap& p = ext.getProperties ();
+        for (PropertyMap::iterator it = p.getProperties ().first; it != p.getProperties ().second;
+             it++) {
+            ids.insert (StringUtil::toLower ((*it)->getIdentifier ()));
+        }
+    }
+    return std::vector< std::string > (ids.begin (), ids.end ());
+}
+
+bool TaskSaver::Factory::save (QTask::Ptr task, const std::string& filename)
+{
+    std::string ext = StringUtil::toUpper (StringUtil::getFileExtension (filename));
+    if (!ext.empty ())
+        ext = ext.substr (1);    // remove dot
+    if (!TaskSaver::Factory::hasTaskSaver (ext)) {
+        RW_WARN ("No TaskSaver can be created for a file with the extension " << ext << "!");
+        return false;
+    }
+    const TaskSaver::Ptr parser = TaskSaver::Factory::getTaskSaver (ext);
+    return parser->save (task, filename);
+}
+
+bool TaskSaver::Factory::save (CartesianTask::Ptr task, const std::string& filename)
+{
+    std::string ext = StringUtil::toUpper (StringUtil::getFileExtension (filename));
+    if (!ext.empty ())
+        ext = ext.substr (1);    // remove dot
+    if (!TaskSaver::Factory::hasTaskSaver (ext)) {
+        RW_WARN ("No TaskSaver can be created for a file with the extension " << ext << "!");
+        return false;
+    }
+    const TaskSaver::Ptr parser = TaskSaver::Factory::getTaskSaver (ext);
+    return parser->save (task, filename);
 }

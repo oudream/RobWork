@@ -15,6 +15,5 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 // moved to loaders folder
 #include <rw/loaders/Model3DFactory.hpp>

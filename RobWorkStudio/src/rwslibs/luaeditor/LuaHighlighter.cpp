@@ -17,8 +17,7 @@
 
 #include "LuaHighlighter.hpp"
 
-LuaHighlighter::LuaHighlighter (QTextDocument* parent) :
-    QSyntaxHighlighter (parent)
+LuaHighlighter::LuaHighlighter (QTextDocument* parent) : QSyntaxHighlighter (parent)
 {
     HighlightingRule rule;
 
@@ -47,8 +46,7 @@ LuaHighlighter::LuaHighlighter (QTextDocument* parent) :
                     << "\\bthen\\b"
                     << "\\bbreak\\b";
 
-    Q_FOREACH (const QString& pattern, keywordPatterns)
-    {
+    Q_FOREACH (const QString& pattern, keywordPatterns) {
         rule.pattern = QRegExp (pattern);
         rule.format  = keywordFormat;
         highlightingRules.append (rule);
@@ -84,8 +82,7 @@ LuaHighlighter::LuaHighlighter (QTextDocument* parent) :
 
 void LuaHighlighter::highlightBlock (const QString& text)
 {
-    Q_FOREACH (const HighlightingRule& rule, highlightingRules)
-    {
+    Q_FOREACH (const HighlightingRule& rule, highlightingRules) {
         QRegExp expression (rule.pattern);
         int index = expression.indexIn (text);
         while (index >= 0) {
@@ -108,11 +105,9 @@ void LuaHighlighter::highlightBlock (const QString& text)
             commentLength = text.length () - startIndex;
         }
         else {
-            commentLength =
-                endIndex - startIndex + commentEndExpression.matchedLength ();
+            commentLength = endIndex - startIndex + commentEndExpression.matchedLength ();
         }
         setFormat (startIndex, commentLength, multiLineCommentFormat);
-        startIndex =
-            commentStartExpression.indexIn (text, startIndex + commentLength);
+        startIndex = commentStartExpression.indexIn (text, startIndex + commentLength);
     }
 }

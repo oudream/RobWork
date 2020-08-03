@@ -20,35 +20,26 @@
 
 #include <rwsim/drawable/SimulatorDebugRender.hpp>
 
-namespace rwsim {
-namespace simulator {
+namespace rwsim { namespace simulator {
 
-	class ODESimulator;
+    class ODESimulator;
 
-    class ODEDebugRender: public drawable::SimulatorDebugRender
+    class ODEDebugRender : public drawable::SimulatorDebugRender
     {
-        ODESimulator *_sim;
+        ODESimulator* _sim;
         unsigned int _drawMask;
-    public:
 
-        ODEDebugRender(ODESimulator * sim):
-            _sim(sim)
-        {
-        }
+      public:
+        ODEDebugRender (ODESimulator* sim) : _sim (sim) {}
 
-        virtual ~ODEDebugRender(){}
+        virtual ~ODEDebugRender () {}
 
-        virtual void draw(const rw::graphics::DrawableNode::RenderInfo& info,
-                          DrawType draw,
-                          double alpha) const;
+        virtual void draw (const rw::graphics::DrawableNode::RenderInfo& info, DrawType draw,
+                           double alpha) const;
 
-        virtual void setDrawMask(unsigned int mask){
-            _drawMask = mask;
-        }
+        virtual void setDrawMask (unsigned int mask) { _drawMask = mask; }
     };
 
-}
-}
-
+}}    // namespace rwsim::simulator
 
 #endif /* ODEDEBUGRENDER_HPP_ */

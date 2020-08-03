@@ -25,50 +25,50 @@
  */
 
 #include "Mathematica.hpp"
+
 #include <rw/core/Ptr.hpp>
 
-namespace rwlibs {
-namespace mathematica {
-//! @addtogroup mathematica
+namespace rwlibs { namespace mathematica {
+    //! @addtogroup mathematica
 
-//! @{
-//! @brief A Mathematica WSTP %ReturnExpressionPacket.
-class ReturnExpressionPacket: public Mathematica::Packet {
-public:
-	//! @brief Smart pointer type.
-	typedef rw::core::Ptr<ReturnExpressionPacket> Ptr;
+    //! @{
+    //! @brief A Mathematica WSTP %ReturnExpressionPacket.
+    class ReturnExpressionPacket : public Mathematica::Packet
+    {
+      public:
+        //! @brief Smart pointer type.
+        typedef rw::core::Ptr< ReturnExpressionPacket > Ptr;
 
-	/**
-	 * @brief Construct a new packet.
-	 * @param expression [in] the expression.
-	 */
-	ReturnExpressionPacket(const Mathematica::Expression& expression);
+        /**
+         * @brief Construct a new packet.
+         * @param expression [in] the expression.
+         */
+        ReturnExpressionPacket (const Mathematica::Expression& expression);
 
-	/**
-	 * @brief Construct a new packet.
-	 * @param expression [in] the expression.
-	 */
-	ReturnExpressionPacket(rw::core::Ptr<const Mathematica::Expression> expression);
+        /**
+         * @brief Construct a new packet.
+         * @param expression [in] the expression.
+         */
+        ReturnExpressionPacket (rw::core::Ptr< const Mathematica::Expression > expression);
 
-	//! @brief Destructor.
-	virtual ~ReturnExpressionPacket();
+        //! @brief Destructor.
+        virtual ~ReturnExpressionPacket ();
 
-	/**
-	 * @brief Get the expression stored in the packet.
-	 * @return the expression.
-	 */
-	const rw::core::Ptr<const Mathematica::Expression> expression();
+        /**
+         * @brief Get the expression stored in the packet.
+         * @return the expression.
+         */
+        const rw::core::Ptr< const Mathematica::Expression > expression ();
 
-	//! @copydoc Mathematica::FunctionBase::getArguments
-	std::list<rw::core::Ptr<const Mathematica::Expression> > getArguments() const;
+        //! @copydoc Mathematica::FunctionBase::getArguments
+        std::list< rw::core::Ptr< const Mathematica::Expression > > getArguments () const;
 
-	//! @copydoc Mathematica::Expression::clone
-	Mathematica::Expression::Ptr clone() const;
+        //! @copydoc Mathematica::Expression::clone
+        Mathematica::Expression::Ptr clone () const;
 
-private:
-	const rw::core::Ptr<const Mathematica::Expression> _expression;
-};
-//! @}
-} /* namespace mathematica */
-} /* namespace rwlibs */
+      private:
+        const rw::core::Ptr< const Mathematica::Expression > _expression;
+    };
+    //! @}
+}}     // namespace rwlibs::mathematica
 #endif /* RWLIBS_MATHEMATICA_RETURNEXPRESSIONPACKET_HPP_ */

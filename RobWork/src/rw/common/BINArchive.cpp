@@ -18,7 +18,6 @@
 #include "BINArchive.hpp"
 
 #include <boost/filesystem.hpp>
-
 #include <fstream>
 
 using namespace rw::common;

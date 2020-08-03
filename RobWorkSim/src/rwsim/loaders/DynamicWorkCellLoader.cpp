@@ -17,10 +17,10 @@
 
 #include "DynamicWorkCellLoader.hpp"
 
+#include <rw/common/TimerUtil.hpp>
 #include <rw/core/Log.hpp>
 #include <rw/core/Ptr.hpp>
 #include <rw/core/StringUtil.hpp>
-#include <rw/common/TimerUtil.hpp>
 #include <rw/core/macros.hpp>
 #include <rw/kinematics/Frame.hpp>
 #include <rw/loaders/WorkCellLoader.hpp>

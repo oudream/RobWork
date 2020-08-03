@@ -32,31 +32,32 @@ namespace rwhw { namespace swissranger {
     /**
      * @brief Class representing calibration data for the SwissRanger
      */
-    class SRCalibrationData {
-    public:
+    class SRCalibrationData
+    {
+      public:
         /**
          * @brief Default constructor
          */
-        SRCalibrationData();
+        SRCalibrationData ();
 
         /**
          * @brief Destructor
          */
-        ~SRCalibrationData();
+        ~SRCalibrationData ();
 
         /**
          * @brief Loads file with calibration data
          * @param filename [in] file name
          * @return whether the file was successfully loaded
          */
-        bool load(const std::string& filename);
+        bool load (const std::string& filename);
 
         /**
          * @brief Saves file with calibration data
          * @param filename [in] file name
          * @return whether the file was successfully saved
          */
-        bool save(const std::string& filename);
+        bool save (const std::string& filename);
 
         /**
          * @brief Converts raw output distance to distance in meters
@@ -64,9 +65,10 @@ namespace rwhw { namespace swissranger {
          * @param index [in] index of pixel
          * @return distance in meter
          */
-        float getDistance(unsigned short value, int index) {
-            //return (7.5*value)/0xFFFC;
-            return _gains[index]*value-_offsets[index];
+        float getDistance (unsigned short value, int index)
+        {
+            // return (7.5*value)/0xFFFC;
+            return _gains[index] * value - _offsets[index];
         }
 
         /**
@@ -74,57 +76,44 @@ namespace rwhw { namespace swissranger {
          * @param index [in] index of pixel
          * @return x-axis rotation
          */
-        float getAlpha(int index) {
-            return _alphas[index];
-        }
+        float getAlpha (int index) { return _alphas[index]; }
 
         /**
          * @brief Returns the rotation around y-axis for the pixel
          * @param index [in] index of pixel
          * @return y-axis rotation
          */
-        float getBeta(int index) {
-            return _betas[index];
-        }
+        float getBeta (int index) { return _betas[index]; }
 
         /**
          * @brief Sets the offset of the pixel (only to be used when calibrating)
          * @param offset [in] offset of pixel
          * @param index [in] index of pixel
          */
-        void setOffset(float offset, int index) {
-            _offsets[index] = offset;
-        }
+        void setOffset (float offset, int index) { _offsets[index] = offset; }
 
         /**
          * @brief Sets the gain of the pixel (only to be used when calibrating)
          * @param gain [in] gain of pixel
          * @param index [in] index of pixel
          */
-        void setGain(float gain, int index) {
-            _gains[index] = gain;
-        }
+        void setGain (float gain, int index) { _gains[index] = gain; }
 
         /**
          * @brief Sets the x-axis rotation of the pixel (only to be used when calibrating)
          * @param alpha [in] x-axis rotation
          * @param index [in] index of pixel
          */
-        void setAlpha(float alpha, int index) {
-            _alphas[index] = alpha;
-        }
+        void setAlpha (float alpha, int index) { _alphas[index] = alpha; }
 
         /**
          * @brief Sets the y-axis rotation of the pixel (only to be used when calibrating)
          * @param beta [in] y-axis rotation
          * @param index [in] index of pixel
          */
-        void setBeta(float beta, int index) {
-            _betas[index] = beta;
-        }
+        void setBeta (float beta, int index) { _betas[index] = beta; }
 
-
-    private:
+      private:
         float _offsets[IMG_SIZE];
         float _gains[IMG_SIZE];
         float _alphas[IMG_SIZE];
@@ -133,6 +122,6 @@ namespace rwhw { namespace swissranger {
 
     /* @} */
 
-}} // end namespaces
+}}    // namespace rwhw::swissranger
 
-#endif // end include guard
+#endif    // end include guard

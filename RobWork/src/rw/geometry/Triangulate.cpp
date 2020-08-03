@@ -17,9 +17,8 @@
 
 #include "Triangulate.hpp"
 
-#include <rw/math/Math.hpp>
 #include <rw/core/Log.hpp>
-
+#include <rw/math/Math.hpp>
 
 using namespace rw::math;
 using namespace rw::geometry;

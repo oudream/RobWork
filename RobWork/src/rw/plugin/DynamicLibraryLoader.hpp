@@ -15,76 +15,68 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RW_PLUGIN_DYNAMICLIBRARYLOADER_HPP
 #define RW_PLUGIN_DYNAMICLIBRARYLOADER_HPP
 
 #include "DynamicLibraryLoaderBase.hpp"
 
-namespace rw {
-namespace plugin {
+namespace rw { namespace plugin {
 
+    /** @addtogroup plugin */
+    /*@{*/
 
-/** @addtogroup plugin */
-/*@{*/
-
-/**
- * @brief Loader for dynamic/shared libraries
- *
- * The DynamicLibraryLoader provides a template based interface to the
- * DynamicLibraryLoaderBase.
- *
- * Notice that when using the dynamicLibraryLoader it is necessary to link with
- * additional libraries. On Linux/Mac link with "dl". On Windows link with "kernel32".
- *
- */
-template <class T>
-class DynamicLibraryLoader: public DynamicLibraryLoaderBase {
-public:
     /**
-     * @brief Constructs loader and opens the library
+     * @brief Loader for dynamic/shared libraries
      *
-     * When constructed the DynamicLibraryLoader open the library and throws
-     * an exception on failure. The search for the \b funcname entry is not
-     * done until trying to obtain the actual object.
+     * The DynamicLibraryLoader provides a template based interface to the
+     * DynamicLibraryLoaderBase.
      *
-     * @param filename [in] Library file name (with extension)
-     * @param funcname [in] Name of factory function in the library (default: factory0)
+     * Notice that when using the dynamicLibraryLoader it is necessary to link with
+     * additional libraries. On Linux/Mac link with "dl". On Windows link with "kernel32".
+     *
      */
-    DynamicLibraryLoader(const std::string& filename, const std::string& funcname = "factory0"):
-        DynamicLibraryLoaderBase(filename),
-        _funcname(funcname)
+    template< class T > class DynamicLibraryLoader : public DynamicLibraryLoaderBase
     {
+      public:
+        /**
+         * @brief Constructs loader and opens the library
+         *
+         * When constructed the DynamicLibraryLoader open the library and throws
+         * an exception on failure. The search for the \b funcname entry is not
+         * done until trying to obtain the actual object.
+         *
+         * @param filename [in] Library file name (with extension)
+         * @param funcname [in] Name of factory function in the library (default: factory0)
+         */
+        DynamicLibraryLoader (const std::string& filename,
+                              const std::string& funcname = "factory0") :
+            DynamicLibraryLoaderBase (filename),
+            _funcname (funcname)
+        {}
 
-    }
+        /**
+         * @copydoc ~DynamicLibraryLoaderBase
+         */
+        virtual ~DynamicLibraryLoader (){
 
-    /**
-     * @copydoc ~DynamicLibraryLoaderBase
-     */
-    virtual ~DynamicLibraryLoader() {
+        };
 
+        /**
+         * @brief Returns object loaded from library
+         *
+         * Calls the factory method in library and returns the object. This method
+         * throws an exception if the factory method cannot be found.
+         *
+         * @return The loaded object. This may be null
+         */
+        T* get () { return (T*) getObject (_funcname); }
+
+      private:
+        const std::string _funcname;
     };
 
-    /**
-     * @brief Returns object loaded from library
-     *
-     * Calls the factory method in library and returns the object. This method
-     * throws an exception if the factory method cannot be found.
-     *
-     * @return The loaded object. This may be null
-     */
-    T* get() {
-        return (T*) getObject(_funcname);
-    }
+    /** @} */
 
-private:
-    const std::string _funcname;
-};
-
-
-/** @} */
-
-} //end namespace plugin
-} //end namespace rw
+}}    // namespace rw::plugin
 
 #endif /*RW_PLUGIN_DYNAMICLIBRARYLOADER_HPP*/

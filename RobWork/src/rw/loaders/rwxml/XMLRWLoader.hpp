@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,35 +15,34 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RW_LOADERS_XMLRWLOADER_HPP
 #define RW_LOADERS_XMLRWLOADER_HPP
 
-#include <rw/models/WorkCell.hpp>
 #include <rw/loaders/WorkCellLoader.hpp>
+#include <rw/models/WorkCell.hpp>
 
 namespace rw { namespace loaders {
-	/** @addtogroup loaders */
-	/*@{*/
+    /** @addtogroup loaders */
+    /*@{*/
 
-	/**
-	 * @brief this class loads a workcell in xml format from a filename.
-	 *
-	 */
-    class XMLRWLoader: public WorkCellLoader
+    /**
+     * @brief this class loads a workcell in xml format from a filename.
+     *
+     */
+    class XMLRWLoader : public WorkCellLoader
     {
-    public:
+      public:
         //! @brief default constructor
-        XMLRWLoader(){};
+        XMLRWLoader (){};
 
         //! @brief constructor
-        //XMLRWLoader(rw::graphics::WorkCellScene::Ptr scene):WorkCellLoader(scene){};
+        // XMLRWLoader(rw::graphics::WorkCellScene::Ptr scene):WorkCellLoader(scene){};
 
         //! @brief destructor
-        virtual ~XMLRWLoader(){}
+        virtual ~XMLRWLoader () {}
 
         //! @copydoc WorkCellLoader::loadWorkCell(const std::string&)
-        models::WorkCell::Ptr loadWorkCell(const std::string& filename);
+        models::WorkCell::Ptr loadWorkCell (const std::string& filename);
 
         /**
          * @brief Loads/imports robwork workcell in XML file format
@@ -52,17 +51,17 @@ namespace rw { namespace loaders {
          *
          * @param filename [in] filename of XML file
          */
-		static rw::models::WorkCell::Ptr load(const std::string& filename);
+        static rw::models::WorkCell::Ptr load (const std::string& filename);
 
         /**
          * @brief Returns the WorkCellFileName ID, to be used for getting the workcell filename
          *
          * @returns WorkCell filename ID
          */
-        static std::string getWorkCellFileNameId();
+        static std::string getWorkCellFileNameId ();
     };
 
-	/*@}*/
-}} // end namespaces
+    /*@}*/
+}}    // namespace rw::loaders
 
-#endif // end include guard
+#endif    // end include guard

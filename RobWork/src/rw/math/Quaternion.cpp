@@ -54,7 +54,7 @@ template< class T > Quaternion< T > Quaternion< T >::ln () const
     double y = getQy () / sin (a);
     double z = getQz () / sin (a);
 
-    return Quaternion<T> (a * x, a * y, a * z, 0);
+    return Quaternion< T > (a * x, a * y, a * z, 0);
 }
 
 template< class T > Quaternion< T > Quaternion< T >::pow (double power) const

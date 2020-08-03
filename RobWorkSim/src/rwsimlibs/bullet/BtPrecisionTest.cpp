@@ -15,19 +15,20 @@
  * limitations under the License.
  ********************************************************************************/
 
+#include <BulletCollision/CollisionShapes/btSphereShape.h>
+#include <LinearMath/btVector3.h>
 #include <iostream>
 
-#include <LinearMath/btVector3.h>
-#include <BulletCollision/CollisionShapes/btSphereShape.h>
-
-int main() {
-	const btSphereShape sphere(1);
-	btVector3 res;
-	sphere.calculateLocalInertia(1,res); // linking fails with undefined symbol if BT_USE_DOUBLE_PRECISION is wrong
+int main ()
+{
+    const btSphereShape sphere (1);
+    btVector3 res;
+    sphere.calculateLocalInertia (
+        1, res);    // linking fails with undefined symbol if BT_USE_DOUBLE_PRECISION is wrong
 #ifdef BT_USE_DOUBLE_PRECISION
-	std::cout << "DOUBLE" << std::endl;
+    std::cout << "DOUBLE" << std::endl;
 #else
-	std::cout << "SINGLE" << std::endl;
+    std::cout << "SINGLE" << std::endl;
 #endif
-	return 0;
+    return 0;
 }

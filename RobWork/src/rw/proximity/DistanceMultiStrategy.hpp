@@ -52,7 +52,6 @@ namespace rw { namespace proximity {
          */
         struct Result
         {
-
             //! @brief reference to the first proximity model
             ProximityModel::Ptr a;
 
@@ -77,10 +76,10 @@ namespace rw { namespace proximity {
             std::vector< math::Vector3D<> > p2s;
 
             //! @brief geometry index to geometry in object A
-            std::vector<int> geoIdxA;
+            std::vector< int > geoIdxA;
 
             //! @brief geometry index to geometry in object B
-            std::vector<int> geoIdxB;
+            std::vector< int > geoIdxB;
 
             /**
              * @brief indices to the primitives which are the closest points on the first proximity

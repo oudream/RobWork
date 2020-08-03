@@ -17,78 +17,86 @@
 
 #include "LogMessageWidget.hpp"
 
+#include <rwsim/log/LogMessage.hpp>
+
 #include <QTextBrowser>
 #include <QVBoxLayout>
-
-#include <rwsim/log/LogMessage.hpp>
 
 using namespace rw::graphics;
 using namespace rwsim::dynamics;
 using namespace rwsim::log;
 using namespace rwsimlibs::gui;
 
-LogMessageWidget::LogMessageWidget(rw::core::Ptr<const LogMessage> entry, QWidget* parent):
-	SimulatorLogEntryWidget(parent),
-	_message(entry),
-	_text(new QTextBrowser())
+LogMessageWidget::LogMessageWidget (rw::core::Ptr< const LogMessage > entry, QWidget* parent) :
+    SimulatorLogEntryWidget (parent), _message (entry), _text (new QTextBrowser ())
 {
-	setLayout(new QVBoxLayout(this));
-	layout()->addWidget(_text);
+    setLayout (new QVBoxLayout (this));
+    layout ()->addWidget (_text);
 }
 
-LogMessageWidget::~LogMessageWidget() {
+LogMessageWidget::~LogMessageWidget ()
+{}
+
+void LogMessageWidget::setDWC (rw::core::Ptr< const DynamicWorkCell > dwc)
+{}
+
+void LogMessageWidget::setEntry (rw::core::Ptr< const SimulatorLog > entry)
+{
+    const rw::core::Ptr< const LogMessage > msg = entry.cast< const LogMessage > ();
+    if (!(msg == NULL)) {
+        _message = msg;
+    }
+    else {
+        RW_THROW ("LogMessageWidget (setEntry): invalid entry!");
+    }
 }
 
-void LogMessageWidget::setDWC(rw::core::Ptr<const DynamicWorkCell> dwc) {
+rw::core::Ptr< const SimulatorLog > LogMessageWidget::getEntry () const
+{
+    if (!(_message == NULL))
+        return _message;
+    RW_THROW ("LogMessageWidget (getEntry): both positions and velocities is zero!");
+    return NULL;
 }
 
-void LogMessageWidget::setEntry(rw::core::Ptr<const SimulatorLog> entry) {
-	const rw::core::Ptr<const LogMessage> msg = entry.cast<const LogMessage>();
-	if (!(msg == NULL)) {
-		_message = msg;
-	} else {
-		RW_THROW("LogMessageWidget (setEntry): invalid entry!");
-	}
+void LogMessageWidget::updateEntryWidget ()
+{
+    std::stringstream str;
+    str << _message->getDescription () << std::endl;
+    str << std::endl;
+    str << _message->getMessage ();
+    _text->setText (QString::fromStdString (str.str ()));
 }
 
-rw::core::Ptr<const SimulatorLog> LogMessageWidget::getEntry() const {
-	if (!(_message == NULL))
-		return _message;
-	RW_THROW("LogMessageWidget (getEntry): both positions and velocities is zero!");
-	return NULL;
+void LogMessageWidget::showGraphics (rw::core::Ptr< GroupNode > root,
+                                     rw::core::Ptr< SceneGraph > graph)
+{}
+
+std::string LogMessageWidget::getName () const
+{
+    return "Message";
 }
 
-void LogMessageWidget::updateEntryWidget() {
-	std::stringstream str;
-	str << _message->getDescription() << std::endl;
-	str << std::endl;
-	str << _message->getMessage();
-	_text->setText(QString::fromStdString(str.str()));
+LogMessageWidget::Dispatcher::Dispatcher ()
+{}
+
+LogMessageWidget::Dispatcher::~Dispatcher ()
+{}
+
+SimulatorLogEntryWidget*
+LogMessageWidget::Dispatcher::makeWidget (rw::core::Ptr< const SimulatorLog > entry,
+                                          QWidget* parent) const
+{
+    rw::core::Ptr< const LogMessage > const msg = entry.cast< const LogMessage > ();
+    if (!(msg == NULL))
+        return new LogMessageWidget (msg, parent);
+    RW_THROW ("LogMessageWidget::Dispatcher (makeWidget): invalid entry!");
+    return NULL;
 }
 
-void LogMessageWidget::showGraphics(rw::core::Ptr<GroupNode> root, rw::core::Ptr<SceneGraph> graph) {
-}
-
-std::string LogMessageWidget::getName() const {
-	return "Message";
-}
-
-LogMessageWidget::Dispatcher::Dispatcher() {
-}
-
-LogMessageWidget::Dispatcher::~Dispatcher() {
-}
-
-SimulatorLogEntryWidget* LogMessageWidget::Dispatcher::makeWidget(rw::core::Ptr<const SimulatorLog> entry, QWidget* parent) const {
-	rw::core::Ptr<const LogMessage> const msg = entry.cast<const LogMessage>();
-	if (!(msg == NULL))
-		return new LogMessageWidget(msg, parent);
-	RW_THROW("LogMessageWidget::Dispatcher (makeWidget): invalid entry!");
-	return NULL;
-}
-
-bool LogMessageWidget::Dispatcher::accepts(rw::core::Ptr<const SimulatorLog> entry) const {
-	if (!(entry.cast<const LogMessage>() == NULL))
-		return true;
-	return false;
+bool LogMessageWidget::Dispatcher::accepts (rw::core::Ptr< const SimulatorLog > entry) const
+{
+    if (!(entry.cast< const LogMessage > () == NULL))
+        return true;
+    return false;
 }

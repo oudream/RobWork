@@ -55,7 +55,7 @@ namespace rw { namespace sensor {
         }
 
         //! @brief up to four channels
-        float ch[4];  
+        float ch[4];
     };
 
     /**

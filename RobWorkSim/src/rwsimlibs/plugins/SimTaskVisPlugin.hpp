@@ -1,6 +1,8 @@
 #ifndef SimTaskVisPlugin_HPP
 #define SimTaskVisPlugin_HPP
 
+#include "ui_SimTaskVisPlugin.h"
+
 #include <rw/common/Timer.hpp>
 #include <rw/graphics/Render.hpp>
 #include <rwlibs/task.hpp>
@@ -8,12 +10,9 @@
 #include <rws/RobWorkStudioPlugin.hpp>
 
 #include <QObject>
-#include <QtGui>
 #include <QTimer>
-
+#include <QtGui>
 #include <boost/any.hpp>
-
-#include "ui_SimTaskVisPlugin.h"
 
 /**
  * @brief A plugin that continuesly grasps an object from a target pose whereafter it is
@@ -33,50 +32,48 @@
  *
  *
  */
-class SimTaskVisPlugin: public rws::RobWorkStudioPlugin, private Ui::SimTaskVisPlugin
+class SimTaskVisPlugin : public rws::RobWorkStudioPlugin, private Ui::SimTaskVisPlugin
 {
-Q_OBJECT
-Q_INTERFACES( rws::RobWorkStudioPlugin )
-public:
+    Q_OBJECT
+    Q_INTERFACES (rws::RobWorkStudioPlugin)
+  public:
+    SimTaskVisPlugin ();
 
-    SimTaskVisPlugin();
+    virtual ~SimTaskVisPlugin ();
 
-    virtual ~SimTaskVisPlugin();
+    virtual void open (rw::models::WorkCell* workcell);
 
-    virtual void open(rw::models::WorkCell* workcell);
+    virtual void close ();
 
-    virtual void close();
-
-    virtual void initialize();
+    virtual void initialize ();
     /**
      * @brief we listen for events regarding opening and closing of dynamic
      * workcell
      */
-    void genericEventListener(const std::string& event);
-    void genericAnyEventListener(const std::string& event, boost::any data);
+    void genericEventListener (const std::string& event);
+    void genericAnyEventListener (const std::string& event, boost::any data);
 
+    void loadTasks (bool automatic);
+    void saveTasks (bool automatic);
+    void loadConfig (bool automatic);
+    void saveConfig ();
+    // void updateConfig();
+    rw::core::PropertyMap& settings ();
 
-    void loadTasks(bool automatic);
-    void saveTasks(bool automatic);
-    void loadConfig(bool automatic);
-    void saveConfig();
-    //void updateConfig();
-    rw::core::PropertyMap& settings();
+  private slots:
+    void updateVis ();
+    void loadTasks (QString taskFile);
+    void btnPressed ();
+    void stateChangedListener (const rw::kinematics::State& state);
+    void selectGrasp (int i);
 
-private slots:
-    void updateVis();
-    void loadTasks(QString taskFile);
-    void btnPressed();
-    void stateChangedListener(const rw::kinematics::State& state);
-    void selectGrasp(int i);
-
-private:
+  private:
     rw::models::WorkCell* _wc;
     int _nrOfExperiments, _totalNrOfExperiments;
 
-    QTimer *_timer;
+    QTimer* _timer;
     rwlibs::task::GraspTask::Ptr _graspTask;
-    std::vector<std::pair<rwlibs::task::GraspSubTask*, rwlibs::task::GraspTarget*> > _ymtargets;
+    std::vector< std::pair< rwlibs::task::GraspSubTask*, rwlibs::task::GraspTarget* > > _ymtargets;
     rw::graphics::Render::Ptr _render;
 };
 

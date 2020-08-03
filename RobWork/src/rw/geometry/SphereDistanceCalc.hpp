@@ -8,51 +8,52 @@
 #ifndef RW_PROXIMITY_SPHEREDISTANCECALC_HPP_
 #define RW_PROXIMITY_SPHEREDISTANCECALC_HPP_
 
-#include <sandbox/geometry/OBB.hpp>
-#include "BVDistanceCalc.hpp"
-#include <rw/math/Vector3D.hpp>
 #include "BSphere.hpp"
-namespace rw {
-namespace proximity {
+#include "BVDistanceCalc.hpp"
 
-	/**
-	 * @brief class for testing if two Oriented Bounding Boxes are overlapping
-	 */
+#include <rw/math/Vector3D.hpp>
 
-	template<class T=double>
-	class SphereDistanceCalc : public BVDistanceCalc<SphereDistanceCalc<T>, rw::geometry::BSphere<T> > {
-	public:
-		typedef T value_type;
+#include <sandbox/geometry/OBB.hpp>
+namespace rw { namespace proximity {
 
-		//! @brief constructor
-		SphereDistanceCalc(){};
+    /**
+     * @brief class for testing if two Oriented Bounding Boxes are overlapping
+     */
 
-		//! @brief destructor
-		virtual ~SphereDistanceCalc(){};
+    template< class T = double >
+    class SphereDistanceCalc
+        : public BVDistanceCalc< SphereDistanceCalc< T >, rw::geometry::BSphere< T > >
+    {
+      public:
+        typedef T value_type;
 
-		/**
-		 * @brief Calculates the distance between two bounding spheres.
-		 */
-		inline double distance(const rw::geometry::BSphere<T>& a,
-								 const rw::geometry::BSphere<T>& b,
-								 const rw::math::Vector3D<T>& aTb)
-		{
-		    return aTb.norm2()-(a.getRadius()+b.getRadius());
-		}
+        //! @brief constructor
+        SphereDistanceCalc (){};
+
+        //! @brief destructor
+        virtual ~SphereDistanceCalc (){};
+
+        /**
+         * @brief Calculates the distance between two bounding spheres.
+         */
+        inline double distance (const rw::geometry::BSphere< T >& a,
+                                const rw::geometry::BSphere< T >& b,
+                                const rw::math::Vector3D< T >& aTb)
+        {
+            return aTb.norm2 () - (a.getRadius () + b.getRadius ());
+        }
 
         /**
          * @brief calculates the squared distance between two bounding spheres.
          */
-        inline double distanceSqr(const rw::geometry::BSphere<T>& a,
-                                 const rw::geometry::BSphere<T>& b,
-                                 const rw::math::Vector3D<T>& aTb)
+        inline double distanceSqr (const rw::geometry::BSphere< T >& a,
+                                   const rw::geometry::BSphere< T >& b,
+                                   const rw::math::Vector3D< T >& aTb)
         {
-            return MetricUtil::norm2Sqr(aTb)-(a.getRadiusSqr()+b.getRadiusSqr());
+            return MetricUtil::norm2Sqr (aTb) - (a.getRadiusSqr () + b.getRadiusSqr ());
         }
+    };
 
-	};
-
-}
-}
+}}    // namespace rw::proximity
 
 #endif

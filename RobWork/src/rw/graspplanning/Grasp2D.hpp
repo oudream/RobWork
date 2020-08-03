@@ -18,37 +18,32 @@
 #ifndef RW_GRASPPLANNING_GRASP2D_HPP_
 #define RW_GRASPPLANNING_GRASP2D_HPP_
 
-#include <rw/sensor/Contact2D.hpp>
 #include <rw/math/Vector2D.hpp>
+#include <rw/sensor/Contact2D.hpp>
 
-namespace rw {
-namespace graspplanning {
+namespace rw { namespace graspplanning {
 
-/**
- * @brief a grasp is a set of contacts between the object to be grasped and 
- * the robot gripper.
- */
+    /**
+     * @brief a grasp is a set of contacts between the object to be grasped and
+     * the robot gripper.
+     */
 
-class Grasp2D {
-public:
+    class Grasp2D
+    {
+      public:
+        Grasp2D (int nrOfContacts) : contacts (nrOfContacts), approach (nrOfContacts) {}
 
-    Grasp2D(int nrOfContacts):
-        contacts(nrOfContacts),
-        approach(nrOfContacts)
-    {}
-    
-    void scale(double clerance){
-        for(int i=0;i<3;i++)
-            contacts[i].p += normalize(approach[i])*clerance;
-    }
-    
-    double phi,psi;
-    rw::math::Vector2D<> center;
-    std::vector<rw::sensor::Contact2D> contacts;
-    std::vector<rw::math::Vector2D<> > approach;
-    
-};
-}
-}
+        void scale (double clerance)
+        {
+            for (int i = 0; i < 3; i++)
+                contacts[i].p += normalize (approach[i]) * clerance;
+        }
+
+        double phi, psi;
+        rw::math::Vector2D<> center;
+        std::vector< rw::sensor::Contact2D > contacts;
+        std::vector< rw::math::Vector2D<> > approach;
+    };
+}}    // namespace rw::graspplanning
 
 #endif /*GRASP_HPP_*/

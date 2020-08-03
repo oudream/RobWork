@@ -20,11 +20,11 @@
 
 #define QT_NO_EMIT
 
+#include <rw/core/Ptr.hpp>
 #include <rw/trajectory/Path.hpp>
 #include <rws/RobWorkStudioPlugin.hpp>
-#include <rw/core/Ptr.hpp>
-#include <QObject>
 
+#include <QObject>
 
 namespace rw { namespace models {
     class Device;
@@ -44,8 +44,7 @@ class Planning : public RobWorkStudioPlugin
     Q_OBJECT
 #ifndef RWS_USE_STATIC_LINK_PLUGINS
     Q_INTERFACES (rws::RobWorkStudioPlugin)
-    Q_PLUGIN_METADATA (IID "dk.sdu.mip.Robwork.RobWorkStudioPlugin/0.1" FILE
-                           "plugin.json")
+    Q_PLUGIN_METADATA (IID "dk.sdu.mip.Robwork.RobWorkStudioPlugin/0.1" FILE "plugin.json")
 #endif
   public:
     //! @brief Constructor.

@@ -20,94 +20,96 @@
 
 //! @file DynamicUtil.hpp
 
-#include <vector>
-#include <rw/core/Ptr.hpp>
 #include "RigidBody.hpp"
 
-namespace rw { namespace kinematics { class Frame; } }
-namespace rw { namespace kinematics { class State; } }
+#include <rw/core/Ptr.hpp>
 
-namespace rwsim {
-namespace dynamics {
-	class DynamicDevice;
-	class DynamicWorkCell;
+#include <vector>
 
-	//! @addtogroup drawable
-	//! @{
+namespace rw { namespace kinematics {
+    class Frame;
+}}    // namespace rw::kinematics
+namespace rw { namespace kinematics {
+    class State;
+}}    // namespace rw::kinematics
 
-	/**
-	 * @brief Utility functions for calculating dynamic properties
-	 */
-	class DynamicUtil
-	{
-	public:
+namespace rwsim { namespace dynamics {
+    class DynamicDevice;
+    class DynamicWorkCell;
 
-		/**
-		 * @brief util function that locates all frames that is staticly connected to f
-		 * and that has geometry information.
-		 */
-		static std::vector<rw::kinematics::Frame*>
-			getAnchoredFrames(rw::kinematics::Frame &f,
-							  const rw::kinematics::State &state);
+    //! @addtogroup drawable
+    //! @{
 
-		/**
-		 * @brief util function that locates all frames in the sub tree of parent
-		 * that is staticly connected and that has geometry information.
-		 */
-		static std::vector<rw::kinematics::Frame*>
-			getAnchoredChildFrames(rw::kinematics::Frame *parent, const rw::kinematics::State &state);
-		//static double getMaxVelocity(dynamics::DynamicWorkcell& dwc);
-
-		/**
-		 * @brief
-		 * @param parent
-		 * @param state
-		 * @param exclude
-		 * @return
-		 */
-		static std::vector<rw::kinematics::Frame*>
-			getAnchoredChildFrames(rw::kinematics::Frame *parent,
-								   const rw::kinematics::State &state,
-								   const std::vector<rw::kinematics::Frame*>& exclude);
-
-		/**
-		 * @brief get rigid bodies from a dynamic workcell
-		 * @param dwc
-		 * @return all rigid bodies in a dynamic workcell
-		 */
-		static std::vector<RigidBody::Ptr> getRigidBodies(DynamicWorkCell& dwc);
-
-		/**
-		 * @brief Check if the dynamic workcell has reached a steady state where objects are in rest.
-		 * @param dwc [in] the dynamic workcell.
-		 * @param state [in] the current state.
-		 * @param max_linvel [in] (optional) the linear velocity threshold. Default is 0.02 m/s.
-		 * @param max_angvel [in] (optional) the angular velocity threshold. Default is 0.1 rad/s.
-		 * @param max_jointvel [in] (optional) the joint velocity threshold. Default is 0.05 rad/s.
-		 * @return
-		 */
-		static bool isResting(rw::core::Ptr<DynamicWorkCell> dwc,
-		                      const rw::kinematics::State& state,
-		                      double max_linvel = 0.02,
-		                      double max_angvel = 0.1,
-		                      double max_jointvel = 0.05);
-
-		/**
-		 * @brief Check if a device has reached a steady state where it is in rest.
-		 * @param dev [in] the device.
-		 * @param state [in] the current state.
-		 * @param max_linjointvel [in] (optional) the linear joint velocity threshold. Default is 0.02 m/s.
-		 * @param max_jointvel [in] (optional) the angular joint velocity threshold. Default is 0.05 rad/s.
-		 * @return
-		 */
-        static bool isResting(rw::core::Ptr<DynamicDevice> dev,
-                              const rw::kinematics::State& state,
-                              double max_linjointvel = 0.02,
-                              double max_jointvel = 0.05);
-
+    /**
+     * @brief Utility functions for calculating dynamic properties
+     */
+    class DynamicUtil
+    {
+      public:
+        /**
+         * @brief util function that locates all frames that is staticly connected to f
+         * and that has geometry information.
+         */
+        static std::vector< rw::kinematics::Frame* >
+        getAnchoredFrames (rw::kinematics::Frame& f, const rw::kinematics::State& state);
 
         /**
-         * @brief compute torques on a robot arm as a concequence of gravity, position, velocity and acceleration.
+         * @brief util function that locates all frames in the sub tree of parent
+         * that is staticly connected and that has geometry information.
+         */
+        static std::vector< rw::kinematics::Frame* >
+        getAnchoredChildFrames (rw::kinematics::Frame* parent, const rw::kinematics::State& state);
+        // static double getMaxVelocity(dynamics::DynamicWorkcell& dwc);
+
+        /**
+         * @brief
+         * @param parent
+         * @param state
+         * @param exclude
+         * @return
+         */
+        static std::vector< rw::kinematics::Frame* >
+        getAnchoredChildFrames (rw::kinematics::Frame* parent, const rw::kinematics::State& state,
+                                const std::vector< rw::kinematics::Frame* >& exclude);
+
+        /**
+         * @brief get rigid bodies from a dynamic workcell
+         * @param dwc
+         * @return all rigid bodies in a dynamic workcell
+         */
+        static std::vector< RigidBody::Ptr > getRigidBodies (DynamicWorkCell& dwc);
+
+        /**
+         * @brief Check if the dynamic workcell has reached a steady state where objects are in
+         * rest.
+         * @param dwc [in] the dynamic workcell.
+         * @param state [in] the current state.
+         * @param max_linvel [in] (optional) the linear velocity threshold. Default is 0.02 m/s.
+         * @param max_angvel [in] (optional) the angular velocity threshold. Default is 0.1 rad/s.
+         * @param max_jointvel [in] (optional) the joint velocity threshold. Default is 0.05 rad/s.
+         * @return
+         */
+        static bool isResting (rw::core::Ptr< DynamicWorkCell > dwc,
+                               const rw::kinematics::State& state, double max_linvel = 0.02,
+                               double max_angvel = 0.1, double max_jointvel = 0.05);
+
+        /**
+         * @brief Check if a device has reached a steady state where it is in rest.
+         * @param dev [in] the device.
+         * @param state [in] the current state.
+         * @param max_linjointvel [in] (optional) the linear joint velocity threshold. Default is
+         * 0.02 m/s.
+         * @param max_jointvel [in] (optional) the angular joint velocity threshold. Default is 0.05
+         * rad/s.
+         * @return
+         */
+        static bool isResting (rw::core::Ptr< DynamicDevice > dev,
+                               const rw::kinematics::State& state, double max_linjointvel = 0.02,
+                               double max_jointvel = 0.05);
+
+        /**
+         * @brief compute torques on a robot arm as a concequence of gravity, position, velocity and
+         * acceleration.
          * @param q [in] joint position
          * @param dq [in] joint velocity
          * @param ddq [in] joint acceleration
@@ -116,12 +118,12 @@ namespace dynamics {
          * @return
          */
         /*
-        static rw::math::Q computeTorques(const rw::kinematics::State& defstate,const rw::math::Q& q, const rw::math::Q& dq, const rw::math::Q& ddq,
-        								  dynamics::RigidDevice::Ptr dev, const rw::math::Vector3D<>& gravity=rw::math::Vector3D<>(0,0,-9.82));
-	*/
-	};
-	//! @}
-}
-}
+        static rw::math::Q computeTorques(const rw::kinematics::State& defstate,const rw::math::Q&
+        q, const rw::math::Q& dq, const rw::math::Q& ddq, dynamics::RigidDevice::Ptr dev, const
+        rw::math::Vector3D<>& gravity=rw::math::Vector3D<>(0,0,-9.82));
+        */
+    };
+    //! @}
+}}    // namespace rwsim::dynamics
 
 #endif /*DYNAMICUTIL_HPP_*/

@@ -24,63 +24,66 @@
  * \copydoc rwlibs::assembly::AssemblyControlResponse
  */
 
+#include <rw/core/Ptr.hpp>
 #include <rw/math/Rotation3D.hpp>
 #include <rw/math/Transform3D.hpp>
 #include <rw/math/VectorND.hpp>
 #include <rw/math/VelocityScrew6D.hpp>
 #include <rw/math/Wrench6D.hpp>
-#include <rw/core/Ptr.hpp>
 
 // Forward declarations
-namespace rw { namespace trajectory { template <class T> class Trajectory; } }
+namespace rw { namespace trajectory {
+    template< class T > class Trajectory;
+}}    // namespace rw::trajectory
 
-namespace rwlibs {
-namespace assembly {
-//! @addtogroup assembly
+namespace rwlibs { namespace assembly {
+    //! @addtogroup assembly
 
-//! @{
-/**
- * @brief The output from a AssemblyControlStrategy.
- */
-class AssemblyControlResponse {
-public:
-	//! @brief smart pointer type to this class
-    typedef rw::core::Ptr<AssemblyControlResponse> Ptr;
+    //! @{
+    /**
+     * @brief The output from a AssemblyControlStrategy.
+     */
+    class AssemblyControlResponse
+    {
+      public:
+        //! @brief smart pointer type to this class
+        typedef rw::core::Ptr< AssemblyControlResponse > Ptr;
 
-	//! @brief Constructor.
-	AssemblyControlResponse();
+        //! @brief Constructor.
+        AssemblyControlResponse ();
 
-	//! @brief Destructor.
-	virtual ~AssemblyControlResponse();
+        //! @brief Destructor.
+        virtual ~AssemblyControlResponse ();
 
-	//! @brief The control mode.
-	typedef enum Type {
-		POSITION,				//!< Position control
-		POSITION_TRAJECTORY,	//!< Trajectory control
-		VELOCITY,				//!< Velocity control
-		HYBRID_FT_POS			//!< Hybrid position and force/torque control
-	} Type;
+        //! @brief The control mode.
+        typedef enum Type {
+            POSITION,               //!< Position control
+            POSITION_TRAJECTORY,    //!< Trajectory control
+            VELOCITY,               //!< Velocity control
+            HYBRID_FT_POS           //!< Hybrid position and force/torque control
+        } Type;
 
-	//! @brief Choose the control mode.
-	Type type;
-	//! @brief Positional control of the robot.
-	rw::math::Transform3D<> femaleTmaleTarget;
-	//! @brief Trajectory control of the robot (in world coordinates).
-	rw::core::Ptr<rw::trajectory::Trajectory<rw::math::Transform3D<> > > worldTendTrajectory;
-	//! @brief Relative velocity target for velocity control.
-	rw::math::VelocityScrew6D<> femaleTmaleVelocityTarget;
-	//! @brief Specify the coordinate axes for hybrid force/torque control.
-	rw::math::Rotation3D<> offset;
-	//! @brief Select which coordinates axes to use force/torque control instead of position control.
-	rw::math::VectorND<6,bool> selection;
-	//! @brief Specify the force and torque target - only the elements specified by the selection vector is used.
-	rw::math::Wrench6D<> force_torque;
-	//! @brief Indicate whether or not the control strategy has finished the assembly operation.
-	bool done;
-	//! @brief Indicate if the insertion succeeded.
-	bool success;
-};
-//! @}
-} /* namespace assembly */
-} /* namespace rwlibs */
+        //! @brief Choose the control mode.
+        Type type;
+        //! @brief Positional control of the robot.
+        rw::math::Transform3D<> femaleTmaleTarget;
+        //! @brief Trajectory control of the robot (in world coordinates).
+        rw::core::Ptr< rw::trajectory::Trajectory< rw::math::Transform3D<> > > worldTendTrajectory;
+        //! @brief Relative velocity target for velocity control.
+        rw::math::VelocityScrew6D<> femaleTmaleVelocityTarget;
+        //! @brief Specify the coordinate axes for hybrid force/torque control.
+        rw::math::Rotation3D<> offset;
+        //! @brief Select which coordinates axes to use force/torque control instead of position
+        //! control.
+        rw::math::VectorND< 6, bool > selection;
+        //! @brief Specify the force and torque target - only the elements specified by the
+        //! selection vector is used.
+        rw::math::Wrench6D<> force_torque;
+        //! @brief Indicate whether or not the control strategy has finished the assembly operation.
+        bool done;
+        //! @brief Indicate if the insertion succeeded.
+        bool success;
+    };
+    //! @}
+}}     // namespace rwlibs::assembly
 #endif /* RWLIBS_ASSEMBLY_ASSEMBLYCONTROLRESPONSE_HPP_ */

@@ -31,8 +31,6 @@ using namespace rw::kinematics;
 using namespace rw::models;
 using namespace rwlibs::pathplanners;
 
-
-
 namespace {
 typedef QPath Path;
 

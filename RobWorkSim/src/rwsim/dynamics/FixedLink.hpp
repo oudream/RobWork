@@ -20,118 +20,109 @@
 
 //! @file FixedLink.hpp
 
-#include <rw/models/Joint.hpp>
-#include <rw/math/Jacobian.hpp>
-#include <rw/math/Vector3D.hpp>
-
 #include "Body.hpp"
 
-namespace rw { namespace kinematics { class Frame; } }
-namespace rw { namespace models { class Device; } }
+#include <rw/math/Jacobian.hpp>
+#include <rw/math/Vector3D.hpp>
+#include <rw/models/Joint.hpp>
 
-namespace rwsim {
-namespace dynamics {
+namespace rw { namespace kinematics {
+    class Frame;
+}}    // namespace rw::kinematics
+namespace rw { namespace models {
+    class Device;
+}}    // namespace rw::models
 
-	//! @addtogroup rwsim_dynamics
-	//! @{
-	/**
-	 * @brief
-	 */
+namespace rwsim { namespace dynamics {
+
+    //! @addtogroup rwsim_dynamics
+    //! @{
+    /**
+     * @brief
+     */
     class FixedLink : public Body
     {
-    public:
-    	/*FixedLink( const std::string &material,
-    			   rw::kinematics::Frame *base,
-    			   std::vector<FixedLink*> parents,
-    			   rw::models::Device &dev,
-    			   rw::models::Joint &j,
-    			   rw::kinematics::State &state);
-    			   */
-        FixedLink( const BodyInfo& info,
-                   rw::kinematics::Frame *base,
-                   std::vector<FixedLink*> parents,
-                   rw::models::Device &dev,
-                   rw::models::Joint &j,
-                   const std::vector<rw::kinematics::Frame*>& frames,
-                   rw::kinematics::State &state);
+      public:
+        /*FixedLink( const std::string &material,
+                           rw::kinematics::Frame *base,
+                           std::vector<FixedLink*> parents,
+                           rw::models::Device &dev,
+                           rw::models::Joint &j,
+                           rw::kinematics::State &state);
+                           */
+        FixedLink (const BodyInfo& info, rw::kinematics::Frame* base,
+                   std::vector< FixedLink* > parents, rw::models::Device& dev, rw::models::Joint& j,
+                   const std::vector< rw::kinematics::Frame* >& frames,
+                   rw::kinematics::State& state);
 
-    	virtual ~FixedLink();
+        virtual ~FixedLink ();
 
-    public: // functions that need to be implemented by specialized class
-   
-        virtual void saveState(double h, rw::kinematics::State& state);
+      public:    // functions that need to be implemented by specialized class
+        virtual void saveState (double h, rw::kinematics::State& state);
 
-        virtual void rollBack(rw::kinematics::State& state);
+        virtual void rollBack (rw::kinematics::State& state);
 
-        virtual void updateVelocity(double h, rw::kinematics::State& state);
+        virtual void updateVelocity (double h, rw::kinematics::State& state);
 
-        virtual void updatePosition(double h, rw::kinematics::State& state);
+        virtual void updatePosition (double h, rw::kinematics::State& state);
 
-        virtual void updateImpulse();
+        virtual void updateImpulse ();
 
-        rw::math::Vector3D<> getPointVelW(const rw::math::Vector3D<>& wPp);
+        rw::math::Vector3D<> getPointVelW (const rw::math::Vector3D<>& wPp);
 
-        rw::math::InertiaMatrix<> getEffectiveMassW(const rw::math::Vector3D<>& wPc);
+        rw::math::InertiaMatrix<> getEffectiveMassW (const rw::math::Vector3D<>& wPc);
 
-        void resetState(rw::kinematics::State &state);
+        void resetState (rw::kinematics::State& state);
 
-        virtual void reset(){
-           rw::math::Vector3D<> zeroVec = rw::math::Vector3D<>(0.0,0.0,0.0);
-           _force = zeroVec;
-           _torque = zeroVec;
+        virtual void reset ()
+        {
+            rw::math::Vector3D<> zeroVec = rw::math::Vector3D<> (0.0, 0.0, 0.0);
+            _force                       = zeroVec;
+            _torque                      = zeroVec;
         }
 
-        void calcAuxVarialbles(rw::kinematics::State& state){}
+        void calcAuxVarialbles (rw::kinematics::State& state) {}
 
-        double calcEnergy(){return 0;};
-    public:
+        double calcEnergy () { return 0; };
 
-    	rw::math::InertiaMatrix<> getEffectiveMass();
+      public:
+        rw::math::InertiaMatrix<> getEffectiveMass ();
 
-    	void addQd( double vel );
+        void addQd (double vel);
 
-    	void addTorque( double t );
+        void addTorque (double t);
 
-    	double getQd(){
-    		return _vel;
-    	}
+        double getQd () { return _vel; }
 
-        void setAcc(double acc){
-        	_acc = acc;
-        }
+        void setAcc (double acc) { _acc = acc; }
 
-        const std::string& getMaterial(){
-            return _materialID;
-        }
+        const std::string& getMaterial () { return _materialID; }
 
         /**
          * @brief Adds a force described in parent frame to the
          * center of mass of this body
          */
-        virtual void addForce(const rw::math::Vector3D<>& force){
-            _force += force;
-        }
+        virtual void addForce (const rw::math::Vector3D<>& force) { _force += force; }
 
         /**
          * @brief Adds a force described in world frame to the
          * center of mass of this body
          */
-        virtual void addForceW(const rw::math::Vector3D<>& force){
-            _force += _bTw.R() * force;
-        }
+        virtual void addForceW (const rw::math::Vector3D<>& force) { _force += _bTw.R () * force; }
 
         /**
          * @brief Adds a force described in parent frame to this body
          * which is working on a specific position pos that is described relative to
          * this body.
          */
-        virtual void addForceToPos(const rw::math::Vector3D<>& force,
-                                   const rw::math::Vector3D<>& pos){
+        virtual void addForceToPos (const rw::math::Vector3D<>& force,
+                                    const rw::math::Vector3D<>& pos)
+        {
             // calculate the center force contribution
             _force += force;
 
             // calculate the torque contribution
-            _torque += cross( pos, force );
+            _torque += cross (pos, force);
         }
 
         /**
@@ -139,21 +130,22 @@ namespace dynamics {
          * which is worked on a specific position pos that is described
          * relative to world
          */
-        virtual void addForceWToPosW(const rw::math::Vector3D<>& force,
-                                     const rw::math::Vector3D<>& pos);
+        virtual void addForceWToPosW (const rw::math::Vector3D<>& force,
+                                      const rw::math::Vector3D<>& pos);
 
         /**
          * @brief Adds a impulse described in parent frame to this body
          * which is working on a specific position pos that is described relative to
          * this body.
          */
-        virtual void addImpulseToPos(const rw::math::Vector3D<>& impulse,
-                                     const rw::math::Vector3D<>& pos){
+        virtual void addImpulseToPos (const rw::math::Vector3D<>& impulse,
+                                      const rw::math::Vector3D<>& pos)
+        {
             // calculate the center force contribution
             _linImpulse += impulse;
 
             // calculate the torque contribution
-            _angImpulse += cross( pos, impulse );
+            _angImpulse += cross (pos, impulse);
         }
 
         /**
@@ -161,14 +153,14 @@ namespace dynamics {
          * which is worked on a specific position pos that is described
          * relative to world
          */
-        virtual void addImpulseWToPosW(const rw::math::Vector3D<>& impulse,
-                                       const rw::math::Vector3D<>& pos);
+        virtual void addImpulseWToPosW (const rw::math::Vector3D<>& impulse,
+                                        const rw::math::Vector3D<>& pos);
 
         /**
          * @brief adds gravitation to the body where the gravitation is
          * described in body frame
          */
-        virtual void addGravitation(const rw::math::Vector3D<>& grav){
+        virtual void addGravitation (const rw::math::Vector3D<>& grav){
             //_force += grav * _mass;
 
         };
@@ -177,77 +169,65 @@ namespace dynamics {
          * @brief adds gravitation to the body where the gravitation is
          * described in world frame
          */
-        virtual void addGravitationW(const rw::math::Vector3D<>& grav){
+        virtual void addGravitationW (const rw::math::Vector3D<>& grav){
             //_force += (_pTw.R() * grav) * _mass;
         };
 
         /**
          * @brief
          */
-        void addChild(FixedLink *child){
-        	_children.push_back(child);
-        }
+        void addChild (FixedLink* child) { _children.push_back (child); }
 
         /**
          * @brief get the body inertia of the link
          */
-        rw::math::InertiaMatrix<> getInertia(){
-        	return rw::math::InertiaMatrix<>(1,1,1);
-        }
+        rw::math::InertiaMatrix<> getInertia () { return rw::math::InertiaMatrix<> (1, 1, 1); }
 
-        void setTargetVel(double vel){
-        	_targetVel = vel;
-        }
+        void setTargetVel (double vel) { _targetVel = vel; }
         /*
         void setAcc(double acc){
-        	_maxAcc = acc;
+                _maxAcc = acc;
         }*/
 
-        rw::models::Joint *getJoint(){
-            return &_jointFrame;
-        }
+        rw::models::Joint* getJoint () { return &_jointFrame; }
 
-    private:
+      private:
+        std::string _materialID;
 
-    	std::string _materialID;
+        std::vector< FixedLink* > _children, _parents;
 
-    	std::vector<FixedLink*> _children,_parents;
+        rw::models::Joint& _jointFrame;
 
-    	rw::models::Joint &_jointFrame;
+        rw::models::Device& _dev;
 
-    	rw::models::Device &_dev;
+        rw::math::Jacobian _jac, _jacRB;
 
-    	rw::math::Jacobian _jac, _jacRB;
+        rw::math::Vector3D<> _force, _forceRB,    // accumulated force in parent frame
+            _torque, _torqueRB;                   // accumulated torque in parent frame
 
-    	rw::math::Vector3D<> _force, _forceRB, // accumulated force in parent frame
-                             _torque, _torqueRB; // accumulated torque in parent frame
+        rw::math::Vector3D<> _linImpulse, _linImpulseRB,    // linear impulse in parent frame
+            _angImpulse, _angImpulseRB;                     // angular impulse in parent frame
 
-        rw::math::Vector3D<> _linImpulse, _linImpulseRB, // linear impulse in parent frame
-                             _angImpulse, _angImpulseRB; // angular impulse in parent frame
+        rw::math::Transform3D<> _wTb, _wTbRB,    // world to body
+            _bTw, _bTwRB;                        // body to world
 
-        rw::math::Transform3D<> _wTb,_wTbRB, // world to body
-                                _bTw,_bTwRB; // body to world
-
-        rw::math::Transform3D<> _wTbase, _baseTw; // world to base
+        rw::math::Transform3D<> _wTbase, _baseTw;    // world to base
         rw::math::Transform3D<> _baseTb, _bTbase;
 
         rw::math::Transform3D<> _baseTbRB;
         rw::math::Transform3D<> _bTbaseRB;
 
-        double _vel,_pos,_acc,_posRB, _velRB;
+        double _vel, _pos, _acc, _posRB, _velRB;
 
         double _targetVel;
 
-        rw::kinematics::Frame *_base;
+        rw::kinematics::Frame* _base;
 
         int _impulseIterations;
 
         size_t _jointNr;
-
-
     };
     //! @}
-}
-}
+}}    // namespace rwsim::dynamics
 
 #endif /*LINK_HPP_*/

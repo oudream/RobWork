@@ -30,45 +30,49 @@
 
 #include <vector>
 
-namespace rw { namespace kinematics { class Frame; } }
-namespace rwsim { namespace dynamics { class KinematicDevice; } }
+namespace rw { namespace kinematics {
+    class Frame;
+}}    // namespace rw::kinematics
+namespace rwsim { namespace dynamics {
+    class KinematicDevice;
+}}    // namespace rwsim::dynamics
 
 class btRigidBody;
 
-namespace rwsimlibs {
-namespace bullet {
-//! @addtogroup rwsimlibs_bullet
+namespace rwsimlibs { namespace bullet {
+    //! @addtogroup rwsimlibs_bullet
 
-//! @{
-/**
- * @brief A position device.
- */
-class BtPositionDevice: public BtDevice {
-public:
-	//! @brief Definition of a RobWork frame and Bullet body pair.
-	typedef std::pair<const rw::kinematics::Frame*, btRigidBody*> FrameBodyPair;
+    //! @{
+    /**
+     * @brief A position device.
+     */
+    class BtPositionDevice : public BtDevice
+    {
+      public:
+        //! @brief Definition of a RobWork frame and Bullet body pair.
+        typedef std::pair< const rw::kinematics::Frame*, btRigidBody* > FrameBodyPair;
 
-	/**
-	 * @brief Constructor.
-	 * @param dev [in] a kinematic device.
-	 * @param frameToBtBody [in] a list of pairs of Frames and Bullet bodies.
-	 */
-	BtPositionDevice(rw::core::Ptr<rwsim::dynamics::KinematicDevice> dev, const std::vector<FrameBodyPair>& frameToBtBody);
+        /**
+         * @brief Constructor.
+         * @param dev [in] a kinematic device.
+         * @param frameToBtBody [in] a list of pairs of Frames and Bullet bodies.
+         */
+        BtPositionDevice (rw::core::Ptr< rwsim::dynamics::KinematicDevice > dev,
+                          const std::vector< FrameBodyPair >& frameToBtBody);
 
-	//! @brief Destructor.
-	virtual ~BtPositionDevice();
+        //! @brief Destructor.
+        virtual ~BtPositionDevice ();
 
-	//! @brief @copydoc BtDevice::update
-	virtual void update(double dt, rw::kinematics::State& state);
+        //! @brief @copydoc BtDevice::update
+        virtual void update (double dt, rw::kinematics::State& state);
 
-	//! @brief @copydoc BtDevice::postUpdate
-	virtual void postUpdate(rw::kinematics::State& state);
+        //! @brief @copydoc BtDevice::postUpdate
+        virtual void postUpdate (rw::kinematics::State& state);
 
-private:
-    const rw::core::Ptr<rwsim::dynamics::KinematicDevice> _kdev;
-    const std::vector<FrameBodyPair> _frameToBtBody;
-};
-//! @}
-} /* namespace bullet */
-} /* namespace rwsimlibs */
+      private:
+        const rw::core::Ptr< rwsim::dynamics::KinematicDevice > _kdev;
+        const std::vector< FrameBodyPair > _frameToBtBody;
+    };
+    //! @}
+}}     // namespace rwsimlibs::bullet
 #endif /* RWSIMLIBS_BULLET_BTPOSITIONDEVICE_HPP_ */

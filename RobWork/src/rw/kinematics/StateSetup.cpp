@@ -17,8 +17,6 @@
 
 #include "StateSetup.hpp"
 
-
-
 using namespace rw::kinematics;
 
 StateSetup::StateSetup (int version, StateStructure& tree,

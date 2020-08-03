@@ -20,99 +20,101 @@
 
 #include <rw/core/ExtensionPoint.hpp>
 #include <rw/core/Ptr.hpp>
+
 #include <vector>
 
 // forward declaration
 struct lua_State;
 
-namespace rwlibs {
-namespace swig {
-
-
-/**
- * @brief a robwork wrapper for the lua_State struct. The standard robwork lua libs
- * will be initialized automatically. Also this provides an extension point for
- * adding user defined lua enabled libraries.
- */
-class LuaState {
-public:
-	//! smart pointer type of LuaState
-	typedef rw::core::Ptr<LuaState> Ptr;
-
-    //! @brief constructor
-    LuaState();
-
-    //! @brief destructor
-    virtual ~LuaState();
-
-    //! @brief reset this luastate
-    void reset();
-
-    //! @brief run a lua command block
-    int runCmd(const std::string& str);
-
-
-    struct LuaLibrary {
-    	typedef rw::core::Ptr<LuaLibrary> Ptr;
-    	virtual ~LuaLibrary() {};
-    	virtual const std::string getId() = 0;
-    	virtual bool initLibrary(LuaState& state) = 0;
-    };
+namespace rwlibs { namespace swig {
 
     /**
-     * @brief when the LuaState is reset all library constributers will be asked
-     * to add their libraries to the state again.
+     * @brief a robwork wrapper for the lua_State struct. The standard robwork lua libs
+     * will be initialized automatically. Also this provides an extension point for
+     * adding user defined lua enabled libraries.
      */
-    void addLibrary(LuaLibrary::Ptr lib);
+    class LuaState
+    {
+      public:
+        //! smart pointer type of LuaState
+        typedef rw::core::Ptr< LuaState > Ptr;
 
-    //! remove specific library from luastate
-    void removeLibrary(const std::string& id);
+        //! @brief constructor
+        LuaState ();
 
-    //! @brief get the lua_State
-    lua_State* get() { return _lua;}
+        //! @brief destructor
+        virtual ~LuaState ();
 
-	/**
-	 * @addtogroup extensionpoints
-	 * @extensionpoint{rwlibs::swig::LuaState::Factory,rwlibs::swig::LuaState::LuaLibrary,rwlibs.swig.LuaState.LuaLibrary}
-	 */
+        //! @brief reset this luastate
+        void reset ();
 
-	/**
-	 * @brief a factory for LuaLibrary. This factory also defines an
-	 * extension point for LuaLibraries. This permit users to define extensions to
-	 * the lua interfaces through RobWork extension.
-	 */
-    class Factory: public rw::core::ExtensionPoint<LuaLibrary> {
-    public:
-    	//! constructor
-        Factory():rw::core::ExtensionPoint<LuaLibrary>("rwlibs.swig.LuaState.LuaLibrary", "Extension point for Lua add-on libraries, acked in robwork plugins."){};
+        //! @brief run a lua command block
+        int runCmd (const std::string& str);
 
-        /**
-         * @brief get a specific lua library based on id
-         * @param id [in] string identifier of lua library
-         * @return a lualibrary if matching lib exists else NULL
-         */
-        static rw::core::Ptr<LuaLibrary> getLuaLibrary(const std::string& id);
+        struct LuaLibrary
+        {
+            typedef rw::core::Ptr< LuaLibrary > Ptr;
+            virtual ~LuaLibrary (){};
+            virtual const std::string getId ()         = 0;
+            virtual bool initLibrary (LuaState& state) = 0;
+        };
 
         /**
-         * @brief get all avaliable lua libraries
-         * @return all avalilable lua libraries
+         * @brief when the LuaState is reset all library constributers will be asked
+         * to add their libraries to the state again.
          */
-        static std::vector<LuaLibrary::Ptr> getLuaLibraries();
+        void addLibrary (LuaLibrary::Ptr lib);
+
+        //! remove specific library from luastate
+        void removeLibrary (const std::string& id);
+
+        //! @brief get the lua_State
+        lua_State* get () { return _lua; }
 
         /**
-         * @brief get a list of supported lua libraries
-         * @return
+         * @addtogroup extensionpoints
+         * @extensionpoint{rwlibs::swig::LuaState::Factory,rwlibs::swig::LuaState::LuaLibrary,rwlibs.swig.LuaState.LuaLibrary}
          */
-        static std::vector<std::string> getLuaLibraryIDs();
 
+        /**
+         * @brief a factory for LuaLibrary. This factory also defines an
+         * extension point for LuaLibraries. This permit users to define extensions to
+         * the lua interfaces through RobWork extension.
+         */
+        class Factory : public rw::core::ExtensionPoint< LuaLibrary >
+        {
+          public:
+            //! constructor
+            Factory () :
+                rw::core::ExtensionPoint< LuaLibrary > (
+                    "rwlibs.swig.LuaState.LuaLibrary",
+                    "Extension point for Lua add-on libraries, acked in robwork plugins."){};
+
+            /**
+             * @brief get a specific lua library based on id
+             * @param id [in] string identifier of lua library
+             * @return a lualibrary if matching lib exists else NULL
+             */
+            static rw::core::Ptr< LuaLibrary > getLuaLibrary (const std::string& id);
+
+            /**
+             * @brief get all avaliable lua libraries
+             * @return all avalilable lua libraries
+             */
+            static std::vector< LuaLibrary::Ptr > getLuaLibraries ();
+
+            /**
+             * @brief get a list of supported lua libraries
+             * @return
+             */
+            static std::vector< std::string > getLuaLibraryIDs ();
+        };
+
+      private:
+        struct lua_State* _lua;
+        std::vector< LuaLibrary::Ptr > _libraryCBs;
     };
 
-private:
-    struct lua_State *_lua;
-    std::vector< LuaLibrary::Ptr > _libraryCBs;
-};
-
-}
-}
+}}    // namespace rwlibs::swig
 
 #endif /* SHAREDLUASTATE_HPP_ */

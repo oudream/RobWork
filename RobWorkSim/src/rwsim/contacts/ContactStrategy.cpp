@@ -16,6 +16,7 @@
  ********************************************************************************/
 
 #include "ContactStrategy.hpp"
+
 #include "ContactStrategyData.hpp"
 #include "ContactStrategyTracking.hpp"
 
@@ -24,31 +25,36 @@ using namespace rw::math;
 using namespace rw::proximity;
 using namespace rwsim::contacts;
 
-std::vector<Contact> ContactStrategy::findContacts(
-		ProximityModel::Ptr a, const Transform3D<>& wTa,
-		ProximityModel::Ptr b, const Transform3D<>& wTb) const
+std::vector< Contact > ContactStrategy::findContacts (ProximityModel::Ptr a,
+                                                      const Transform3D<>& wTa,
+                                                      ProximityModel::Ptr b,
+                                                      const Transform3D<>& wTb) const
 {
-	ContactStrategyData data;
-	return findContacts(a,wTa,b,wTb,data);
+    ContactStrategyData data;
+    return findContacts (a, wTa, b, wTb, data);
 }
 
-std::vector<Contact> ContactStrategy::findContacts(
-		ProximityModel::Ptr a, const Transform3D<>& wTa,
-		ProximityModel::Ptr b, const Transform3D<>& wTb,
-		ContactStrategyData& data) const
+std::vector< Contact > ContactStrategy::findContacts (ProximityModel::Ptr a,
+                                                      const Transform3D<>& wTa,
+                                                      ProximityModel::Ptr b,
+                                                      const Transform3D<>& wTb,
+                                                      ContactStrategyData& data) const
 {
-	ContactStrategyTracking tracking;
-	return findContacts(a,wTa,b,wTb,data,tracking);
+    ContactStrategyTracking tracking;
+    return findContacts (a, wTa, b, wTb, data, tracking);
 }
 
-PropertyMap& ContactStrategy::getPropertyMap() {
-	return _propertyMap;
+PropertyMap& ContactStrategy::getPropertyMap ()
+{
+    return _propertyMap;
 }
 
-const PropertyMap& ContactStrategy::getPropertyMap() const {
-	return _propertyMap;
+const PropertyMap& ContactStrategy::getPropertyMap () const
+{
+    return _propertyMap;
 }
 
-void ContactStrategy::setPropertyMap(const PropertyMap &map) {
-	_propertyMap = map;
+void ContactStrategy::setPropertyMap (const PropertyMap& map)
+{
+    _propertyMap = map;
 }

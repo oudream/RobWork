@@ -132,7 +132,7 @@ namespace rw { namespace kinematics {
         /**
          * @brief Scaling of a configuration state by division
          */
-        QState operator/ (double scale) const 
+        QState operator/ (double scale) const
         {
             return QState (this->_contents / scale, this->_setup);
         }
@@ -238,4 +238,4 @@ namespace rw { namespace kinematics {
     /*@}*/
 }}    // namespace rw::kinematics
 
-#endif 
+#endif

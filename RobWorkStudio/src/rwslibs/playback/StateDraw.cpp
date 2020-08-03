@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
  * Faculty of Engineering, University of Southern Denmark
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,26 +15,24 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #include "StateDraw.hpp"
 
 using namespace rw::core;
 
-namespace
+namespace {
+class EmptyStateDraw : public StateDraw
 {
-    class EmptyStateDraw : public StateDraw
+  public:
+    EmptyStateDraw () {}
+
+    void draw (const rw::kinematics::State& state) const
     {
-    public:
-        EmptyStateDraw() {}
+        // We simply don't do any drawing.
+    }
+};
+}    // namespace
 
-        void draw(const rw::kinematics::State& state) const
-        {
-            // We simply don't do any drawing.
-        }
-    };
-}
-
-StateDrawPtr makeEmptyStateDraw()
+StateDrawPtr makeEmptyStateDraw ()
 {
-    return ownedPtr(new EmptyStateDraw());
+    return ownedPtr (new EmptyStateDraw ());
 }

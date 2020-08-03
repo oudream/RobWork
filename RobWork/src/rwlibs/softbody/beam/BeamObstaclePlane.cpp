@@ -14,7 +14,6 @@ Copyright 2013 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
     limitations under the License.
 */
 
-
 #include "BeamObstaclePlane.hpp"
 
 #include <rw/math/EAA.hpp>
@@ -22,64 +21,53 @@ Copyright 2013 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
 using namespace rw::math;
 using namespace rwlibs::softbody;
 
-BeamObstaclePlane::BeamObstaclePlane ( const rw::geometry::Plane& plane, const rw::math::Transform3D< double >& trans ) :
-    _planePtr(new rw::geometry::Plane(plane)),
-    _trans(trans),
-    _geomPtr(new rw::geometry::Geometry(_planePtr) )
+BeamObstaclePlane::BeamObstaclePlane (const rw::geometry::Plane& plane,
+                                      const rw::math::Transform3D< double >& trans) :
+    _planePtr (new rw::geometry::Plane (plane)),
+    _trans (trans), _geomPtr (new rw::geometry::Geometry (_planePtr))
+{}
+
+Transform3D< double > BeamObstaclePlane::getTransform (void) const
 {
-
-}
-
-
-Transform3D< double > BeamObstaclePlane::getTransform ( void ) const {
     return _trans;
 }
 
-
-
-void BeamObstaclePlane::setTransform ( const Transform3D< double >& trans ) {
+void BeamObstaclePlane::setTransform (const Transform3D< double >& trans)
+{
     _trans = trans;
 }
 
+double BeamObstaclePlane::get_thetaTCP (const rw::math::Transform3D< double >& planeTbeam) const
+{
+    EAA<> eaa (planeTbeam.R ());
 
-
-
-
-
-
-double BeamObstaclePlane::get_thetaTCP ( const rw::math::Transform3D< double >& planeTbeam ) const {
-    EAA<> eaa(planeTbeam.R());
-    
     return eaa[2];
 }
 
-
-
-double BeamObstaclePlane::get_yTCP ( const rw::math::Transform3D< double >& planeTbeam ) const {
-    return planeTbeam.P()[1] * 1.0e3;
+double BeamObstaclePlane::get_yTCP (const rw::math::Transform3D< double >& planeTbeam) const
+{
+    return planeTbeam.P ()[1] * 1.0e3;
 }
 
+rw::math::Transform3D< double >
+BeamObstaclePlane::compute_planeTbeam (const rw::math::Transform3D< double >& Tbeam)
+{
+    Transform3D<> planeTbeam = _trans;    // init to Tplane
 
+    // compute beam to plane transform
+    Transform3D<>::invMult (planeTbeam, Tbeam);
 
-rw::math::Transform3D< double > BeamObstaclePlane::compute_planeTbeam ( const rw::math::Transform3D< double >& Tbeam ) {
-    Transform3D<> planeTbeam = _trans; // init to Tplane
-    
-    // compute beam to plane transform    
-    Transform3D<>::invMult(planeTbeam, Tbeam);
-    
-    planeTbeam.R().normalize();
-    
+    planeTbeam.R ().normalize ();
+
     return planeTbeam;
 }
 
-
-
-rw::geometry::Plane::Ptr BeamObstaclePlane::getPlane ( void ) const {
+rw::geometry::Plane::Ptr BeamObstaclePlane::getPlane (void) const
+{
     return _planePtr;
 }
 
-
-
-rw::geometry::Geometry::Ptr BeamObstaclePlane::getPlaneGeometry ( void ) const {
+rw::geometry::Geometry::Ptr BeamObstaclePlane::getPlaneGeometry (void) const
+{
     return _geomPtr;
 }

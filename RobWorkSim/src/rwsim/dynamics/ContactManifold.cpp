@@ -60,51 +60,48 @@ namespace {
 
 }
 */
-void ContactManifold::genThresContactManifolds(
-    std::vector<ContactPoint>& src,
-    std::vector<ContactManifold*>& manifolds,
-    double thres)
+void ContactManifold::genThresContactManifolds (std::vector< ContactPoint >& src,
+                                                std::vector< ContactManifold* >& manifolds,
+                                                double thres)
 {
     // 1. clustering locate the deepest penetrating point
-    std::vector<ContactPoint> dst(src.size());
-    std::vector<int> srcIdx(src.size());
-    std::vector<int> dstIdx(src.size());
-
+    std::vector< ContactPoint > dst (src.size ());
+    std::vector< int > srcIdx (src.size ());
+    std::vector< int > dstIdx (src.size ());
 }
 
-void ContactManifold::generateContactManifolds(
-    std::vector<ContactPoint*>& points,
-    std::vector<ContactManifold*>& manifolds)
+void ContactManifold::generateContactManifolds (std::vector< ContactPoint* >& points,
+                                                std::vector< ContactManifold* >& manifolds)
 {
-/*    std::vector<int> validBuckets(64);
-    int nrOfValidBuckets = 0;
+    /*    std::vector<int> validBuckets(64);
+        int nrOfValidBuckets = 0;
 
-    // 1. cluster points together using their normal
-    std::vector<Bucket> buckets(64);
-    for(ContactPoint *point: points){
-        int index = getHashValue64( point->n );
-        if( buckets[index].size()==0 ) {
-            validBuckets[++nrOfValidBuckets] = index;
+        // 1. cluster points together using their normal
+        std::vector<Bucket> buckets(64);
+        for(ContactPoint *point: points){
+            int index = getHashValue64( point->n );
+            if( buckets[index].size()==0 ) {
+                validBuckets[++nrOfValidBuckets] = index;
+            }
+            buckets[index].addPoint( point, point->n);
         }
-        buckets[index].addPoint( point, point->n);
-    }
-    // and now use the position to split the buckets
-    //for(Bucket &bucket: buckets){
-    //}
+        // and now use the position to split the buckets
+        //for(Bucket &bucket: buckets){
+        //}
 
-    // 2. for each cluster identify if any manifold is close
-    for(int i=0; i<nrOfValidBuckets; i++){
-
-    }
-    for(ContactManifold *manifold: manifolds){
-        int index = getHashValue64( manifold->getNormal() );
-
-        if( buckets[index].size()>0 ){
+        // 2. for each cluster identify if any manifold is close
+        for(int i=0; i<nrOfValidBuckets; i++){
 
         }
+        for(ContactManifold *manifold: manifolds){
+            int index = getHashValue64( manifold->getNormal() );
 
-    }
+            if( buckets[index].size()>0 ){
 
-    // 3. update all manifolds with clusters that are close
-*/
+            }
+
+        }
+
+        // 3. update all manifolds with clusters that are close
+    */
 }

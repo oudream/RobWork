@@ -26,53 +26,59 @@
 
 #include "IntegratorTest.hpp"
 
-namespace rwsimlibs {
-namespace test {
-//! @addtogroup rwsimlibs_test
+namespace rwsimlibs { namespace test {
+    //! @addtogroup rwsimlibs_test
 
-//! @{
-/**
- * @brief Test for rotational motion.
- *
- * According to Euler's equations of motion, the rotation around a non-inertial axis of a
- * body will cause a non-linear term in the equations of motion. The simulation is illustrated below:
- *
- * \image html tests/integrationRotation.gif "Motion of rotating body with no gravity."
- *
- * An analytical solution is NOT given for this type of motion. In this test the focus is on preservation of energy.
- */
-class IntegratorRotationTest: public IntegratorTest {
-public:
-	//! @brief Smart pointer to IntegratorRotationTest.
-	typedef rw::core::Ptr<IntegratorRotationTest> Ptr;
+    //! @{
+    /**
+     * @brief Test for rotational motion.
+     *
+     * According to Euler's equations of motion, the rotation around a non-inertial axis of a
+     * body will cause a non-linear term in the equations of motion. The simulation is illustrated
+     * below:
+     *
+     * \image html tests/integrationRotation.gif "Motion of rotating body with no gravity."
+     *
+     * An analytical solution is NOT given for this type of motion. In this test the focus is on
+     * preservation of energy.
+     */
+    class IntegratorRotationTest : public IntegratorTest
+    {
+      public:
+        //! @brief Smart pointer to IntegratorRotationTest.
+        typedef rw::core::Ptr< IntegratorRotationTest > Ptr;
 
-	//! @brief Constructor.
-	IntegratorRotationTest();
+        //! @brief Constructor.
+        IntegratorRotationTest ();
 
-	//! @brief Destructor.
-	virtual ~IntegratorRotationTest();
+        //! @brief Destructor.
+        virtual ~IntegratorRotationTest ();
 
-	//! @copydoc EngineTest::run
-	virtual void run(TestHandle::Ptr handle, const std::string& engineID, const rw::core::PropertyMap& parameters, rw::core::Ptr<rwsim::log::SimulatorLogScope> verbose = NULL);
+        //! @copydoc EngineTest::run
+        virtual void run (TestHandle::Ptr handle, const std::string& engineID,
+                          const rw::core::PropertyMap& parameters,
+                          rw::core::Ptr< rwsim::log::SimulatorLogScope > verbose = NULL);
 
-	//! @copydoc EngineTest::getRunTime
-	virtual double getRunTime() const;
+        //! @copydoc EngineTest::getRunTime
+        virtual double getRunTime () const;
 
-	//! @copydoc IntegratorTest::makeIntegratorDWC
-	virtual rw::core::Ptr<rwsim::dynamics::DynamicWorkCell> makeIntegratorDWC(const std::string& integratorType = "");
+        //! @copydoc IntegratorTest::makeIntegratorDWC
+        virtual rw::core::Ptr< rwsim::dynamics::DynamicWorkCell >
+        makeIntegratorDWC (const std::string& integratorType = "");
 
-	/**
-	 * @brief Get the expected kinetic energy.
-	 * @param dwc [in] the dynamic workcell.
-	 * @return the energy.
-	 */
-	static double getExpectedEnergy(rw::core::Ptr<const rwsim::dynamics::DynamicWorkCell> dwc);
+        /**
+         * @brief Get the expected kinetic energy.
+         * @param dwc [in] the dynamic workcell.
+         * @return the energy.
+         */
+        static double
+        getExpectedEnergy (rw::core::Ptr< const rwsim::dynamics::DynamicWorkCell > dwc);
 
-private:
-	static void initialize(rw::core::Ptr<const rwsim::dynamics::DynamicWorkCell> dwc, rw::kinematics::State& state);
-	static void updateResults(const EngineLoopInfo& info);
-};
-//! @}
-} /* namespace test */
-} /* namespace rwsimlibs */
+      private:
+        static void initialize (rw::core::Ptr< const rwsim::dynamics::DynamicWorkCell > dwc,
+                                rw::kinematics::State& state);
+        static void updateResults (const EngineLoopInfo& info);
+    };
+    //! @}
+}}     // namespace rwsimlibs::test
 #endif /* RWSIMLIBS_TEST_INTEGRATORROTATIONTEST_HPP_ */

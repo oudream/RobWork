@@ -187,8 +187,8 @@ namespace rw { namespace math {
          */
         friend std::ostream& operator<< (std::ostream& os, const Pose2D< T >& pose)
         {
-            return os << " Ppse2D { x: " << pose.x () << ", y: " << pose.y () << ", th: " << pose.theta ()
-                      << "}";
+            return os << " Ppse2D { x: " << pose.x () << ", y: " << pose.y ()
+                      << ", th: " << pose.theta () << "}";
         }
 
         /**

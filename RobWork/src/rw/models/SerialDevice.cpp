@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -30,56 +30,47 @@ using namespace rw::kinematics;
 using namespace rw::math;
 using namespace rw::models;
 
-namespace
+namespace {
+
+std::vector< Joint* > getJointsFromFrames (const std::vector< Frame* >& frames)
 {
+    std::vector< Joint* > active;
 
-    std::vector<Joint*> getJointsFromFrames(const std::vector<Frame*>& frames)
-    {
-        std::vector<Joint*> active;
-
-        typedef std::vector<Frame*>::const_iterator I;
-        for (I p = frames.begin(); p != frames.end(); ++p) {
-            Frame* frame = *p;
-            Joint *joint = dynamic_cast<Joint*>(frame);
-            if ( (joint!=NULL && joint->isActive()) ||
-                    dynamic_cast<DependentJoint*>(frame)!=NULL )
-                active.push_back(joint);
-        }
-        return active;
+    typedef std::vector< Frame* >::const_iterator I;
+    for (I p = frames.begin (); p != frames.end (); ++p) {
+        Frame* frame = *p;
+        Joint* joint = dynamic_cast< Joint* > (frame);
+        if ((joint != NULL && joint->isActive ()) ||
+            dynamic_cast< DependentJoint* > (frame) != NULL)
+            active.push_back (joint);
     }
-
-    // From the root 'first' to the child 'last' inclusive.
-    std::vector<Frame*> getChain(Frame* first, Frame* last, const State& state)
-    {
-        std::vector<Frame*> init = Kinematics::parentToChildChain(first, last,
-                state);
-
-        init.push_back(last);
-        return init;
-    }
+    return active;
 }
 
-SerialDevice::SerialDevice(Frame* first,
-                           Frame* last,
-                           const std::string& name,
-                           const State& state):
-    JointDevice(name, first,
-            last,getJointsFromFrames(getChain(first, last, state)),state),
-    _kinematicChain(getChain(first, last, state))
+// From the root 'first' to the child 'last' inclusive.
+std::vector< Frame* > getChain (Frame* first, Frame* last, const State& state)
 {
-}
+    std::vector< Frame* > init = Kinematics::parentToChildChain (first, last, state);
 
-const std::vector<Frame*>& SerialDevice::frames() const
+    init.push_back (last);
+    return init;
+}
+}    // namespace
+
+SerialDevice::SerialDevice (Frame* first, Frame* last, const std::string& name,
+                            const State& state) :
+    JointDevice (name, first, last, getJointsFromFrames (getChain (first, last, state)), state),
+    _kinematicChain (getChain (first, last, state))
+{}
+
+const std::vector< Frame* >& SerialDevice::frames () const
 {
     return _kinematicChain;
 }
 
-SerialDevice::SerialDevice(const std::vector<Frame*>& serialChain,
-                           const std::string& name, const State& state) :
-    JointDevice(name, serialChain.front(), serialChain.back(),
-                getJointsFromFrames(serialChain), state),
-    _kinematicChain(serialChain)
-{
-}
-
-
+SerialDevice::SerialDevice (const std::vector< Frame* >& serialChain, const std::string& name,
+                            const State& state) :
+    JointDevice (name, serialChain.front (), serialChain.back (), getJointsFromFrames (serialChain),
+                 state),
+    _kinematicChain (serialChain)
+{}

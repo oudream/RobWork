@@ -44,11 +44,10 @@ namespace rw { namespace core {
     class Exception : public std::exception
     {
       public:
-      
         /**
          * @brief This constructor creates an empty Exception and should not be used
          */
-        Exception():_id(-1),_message("unknown",-1){}
+        Exception () : _id (-1), _message ("unknown", -1) {}
 
         /**
          * @brief Constructor

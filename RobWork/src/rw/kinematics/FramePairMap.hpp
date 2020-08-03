@@ -25,27 +25,22 @@
 #include <rw/common/PairMap.hpp>
 
 namespace rw { namespace kinematics {
-	class Frame;
-/** @addtogroup kinematics */
+    class Frame;
+    /** @addtogroup kinematics */
     /*@{*/
 
-	//! @brief A map from an unordered pair of frames to some value.
-    template <class T>
-    class FramePairMap: public rw::common::PairMap<const Frame*, T>
+    //! @brief A map from an unordered pair of frames to some value.
+    template< class T > class FramePairMap : public rw::common::PairMap< const Frame*, T >
     {
-    public:
-    	//! @copydoc rw::common::PairMap::PairMap()
-		FramePairMap() :
-			 rw::common::PairMap<const Frame*, T>()
-		{}
+      public:
+        //! @copydoc rw::common::PairMap::PairMap()
+        FramePairMap () : rw::common::PairMap< const Frame*, T > () {}
 
-		//! @copydoc rw::common::PairMap::PairMap(const T2&)
-    	FramePairMap(const T& defaultVal) :
-    		 rw::common::PairMap<const Frame*, T>(defaultVal)
-		{}
+        //! @copydoc rw::common::PairMap::PairMap(const T2&)
+        FramePairMap (const T& defaultVal) : rw::common::PairMap< const Frame*, T > (defaultVal) {}
     };
     /**@}*/
 
-}}
+}}    // namespace rw::kinematics
 
 #endif /* RW_COMMON_FRAMEPAIRMAP_HPP_ */

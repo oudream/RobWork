@@ -956,7 +956,7 @@ CollisionSetup defaultCollisionSetup (const WorkCell& workcell)
     std::list< Frame::Ptr >::reverse_iterator rit;
     std::list< Frame::Ptr >::iterator it;
     for (rit = frameList.rbegin (); rit != frameList.rend (); rit++) {
-        if ((*rit)->isDAF() || rit->cast< MovableFrame > ()) {
+        if ((*rit)->isDAF () || rit->cast< MovableFrame > ()) {
             continue;
         }
         for (it = frameList.begin (); (*it) != (*rit); it++) {
@@ -964,7 +964,7 @@ CollisionSetup defaultCollisionSetup (const WorkCell& workcell)
             Frame* parent1 = (*it)->getParent ();     // Link N
             Frame* parent2 = (*rit)->getParent ();    // Link N+1
 
-            if ((*it)->isDAF() || it->cast< MovableFrame > ()) {
+            if ((*it)->isDAF () || it->cast< MovableFrame > ()) {
                 continue;
             }
 

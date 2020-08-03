@@ -25,72 +25,72 @@
  */
 
 #include "SimulatorLogScope.hpp"
+
 #include <rw/core/Ptr.hpp>
 
-namespace rwsim {
-namespace log {
-//! @addtogroup rwsim_log
+namespace rwsim { namespace log {
+    //! @addtogroup rwsim_log
 
-//! @{
-/**
- * @brief A special type of scope that is also a simulation step.
- *
- * This scope saves additional information about the time step taken.
- */
-class LogStep: public SimulatorLogScope {
-public:
-    //! Smart pointer type of LogStep
-    typedef rw::core::Ptr<LogStep> Ptr;
+    //! @{
+    /**
+     * @brief A special type of scope that is also a simulation step.
+     *
+     * This scope saves additional information about the time step taken.
+     */
+    class LogStep : public SimulatorLogScope
+    {
+      public:
+        //! Smart pointer type of LogStep
+        typedef rw::core::Ptr< LogStep > Ptr;
 
-    //! @copydoc SimulatorLog::SimulatorLog
-	LogStep(SimulatorLogScope* parent);
+        //! @copydoc SimulatorLog::SimulatorLog
+        LogStep (SimulatorLogScope* parent);
 
-	//! @brief Destructor
-	virtual ~LogStep();
+        //! @brief Destructor
+        virtual ~LogStep ();
 
-	//! @copydoc rw::common::Serializable::read
-	virtual void read(class rw::common::InputArchive& iarchive, const std::string& id);
+        //! @copydoc rw::common::Serializable::read
+        virtual void read (class rw::common::InputArchive& iarchive, const std::string& id);
 
-	//! @copydoc rw::common::Serializable::write
-	virtual void write(class rw::common::OutputArchive& oarchive, const std::string& id) const;
+        //! @copydoc rw::common::Serializable::write
+        virtual void write (class rw::common::OutputArchive& oarchive, const std::string& id) const;
 
-	//! @copydoc SimulatorLog::getType
-	virtual std::string getType() const;
+        //! @copydoc SimulatorLog::getType
+        virtual std::string getType () const;
 
-	//! @copydoc SimulatorLogEntry::operator==
-	virtual bool operator==(const SimulatorLog &b) const;
+        //! @copydoc SimulatorLogEntry::operator==
+        virtual bool operator== (const SimulatorLog& b) const;
 
-	//! @copydoc SimulatorLogScope::getDescription
-	virtual std::string getDescription() const;
+        //! @copydoc SimulatorLogScope::getDescription
+        virtual std::string getDescription () const;
 
-	/**
-	 * @brief Get the time at the beginning of timestep.
-	 * @return the initial time.
-	 */
-	virtual double timeBegin() const;
+        /**
+         * @brief Get the time at the beginning of timestep.
+         * @return the initial time.
+         */
+        virtual double timeBegin () const;
 
-	/**
-	 * @brief Get the time at the end of timestep.
-	 * @return the final time.
-	 */
-	virtual double timeEnd() const;
+        /**
+         * @brief Get the time at the end of timestep.
+         * @return the final time.
+         */
+        virtual double timeEnd () const;
 
-	/**
-	 * @brief Set the time at the beginning of timestep.
-	 * @param time [in] the initial time.
-	 */
-	virtual void setTimeBegin(double time);
+        /**
+         * @brief Set the time at the beginning of timestep.
+         * @param time [in] the initial time.
+         */
+        virtual void setTimeBegin (double time);
 
-	/**
-	 * @brief Set the time at the end of timestep.
-	 * @param time [in] the final time.
-	 */
-	virtual void setTimeEnd(double time);
+        /**
+         * @brief Set the time at the end of timestep.
+         * @param time [in] the final time.
+         */
+        virtual void setTimeEnd (double time);
 
-private:
-	std::pair<double,double> _interval;
-};
-//! @}
-} /* namespace log */
-} /* namespace rwsim */
+      private:
+        std::pair< double, double > _interval;
+    };
+    //! @}
+}}     // namespace rwsim::log
 #endif /* RWSIM_LOG_LOGSTEP_HPP_ */

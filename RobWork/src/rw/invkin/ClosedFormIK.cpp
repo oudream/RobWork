@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,16 +15,14 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #include "ClosedFormIK.hpp"
+
 #include "PieperSolver.hpp"
 
+#include <rw/kinematics/Kinematics.hpp>
+#include <rw/models/DHParameterSet.hpp>
 #include <rw/models/JointDevice.hpp>
 #include <rw/models/RevoluteJoint.hpp>
-#include <rw/models/DHParameterSet.hpp>
-#include <rw/kinematics/Kinematics.hpp>
-
-
 
 using namespace rw::invkin;
 using namespace rw::models;
@@ -32,49 +30,40 @@ using namespace rw::kinematics;
 using namespace rw::core;
 using namespace rw::math;
 
-ClosedFormIK::Ptr ClosedFormIK::make(const Device& device,
-                                   const State& state)
+ClosedFormIK::Ptr ClosedFormIK::make (const Device& device, const State& state)
 {
     // Cast the device.
-    const JointDevice* jd = dynamic_cast<const JointDevice*>(&device);
+    const JointDevice* jd = dynamic_cast< const JointDevice* > (&device);
 
     if (!jd)
-        RW_THROW("Device " << device << " is not a subtype of JointDevice.");
+        RW_THROW ("Device " << device << " is not a subtype of JointDevice.");
 
     // Check DOFs.
-    if (jd->getDOF()) {
-        RW_THROW(
-            "Device " << device << " is not a 6 DOF device. DOF is "
-            << jd->getDOF());
+    if (jd->getDOF ()) {
+        RW_THROW ("Device " << device << " is not a 6 DOF device. DOF is " << jd->getDOF ());
     }
 
     // Extract the DH parameters.
-    std::vector<DHParameterSet> dhs;
-    Joint *lastJoint = NULL;
-    for(Joint *joint: jd->getJoints() ){
-        lastJoint = joint;
-        RevoluteJoint* rj = dynamic_cast<RevoluteJoint*>(joint);
+    std::vector< DHParameterSet > dhs;
+    Joint* lastJoint = NULL;
+    for (Joint* joint : jd->getJoints ()) {
+        lastJoint         = joint;
+        RevoluteJoint* rj = dynamic_cast< RevoluteJoint* > (joint);
         if (!rj)
-            RW_THROW(
-                "Joint " << *joint << " of device "
-                << device << " is not revolute.");
+            RW_THROW ("Joint " << *joint << " of device " << device << " is not revolute.");
 
-        const DHParameterSet* dh = DHParameterSet::get(joint);
+        const DHParameterSet* dh = DHParameterSet::get (joint);
         if (!dh) {
-            RW_THROW(
-                "No Denavit-Hartenberg parameters for joint "
-                << *joint
-                << " of device "
-                << device);
-        } else {
-            dhs.push_back(*dh);
+            RW_THROW ("No Denavit-Hartenberg parameters for joint " << *joint << " of device "
+                                                                    << device);
+        }
+        else {
+            dhs.push_back (*dh);
         }
     }
 
     // Find the transform from the last joint to the end of the device.
-    const Transform3D<> lastToEnd = Kinematics::frameTframe(lastJoint,
-                                                            device.getEnd(),
-                                                            state);
+    const Transform3D<> lastToEnd = Kinematics::frameTframe (lastJoint, device.getEnd (), state);
 
-    return ownedPtr(new PieperSolver(dhs, lastToEnd));
+    return ownedPtr (new PieperSolver (dhs, lastToEnd));
 }

@@ -18,4 +18,3 @@
 #include "RANSACModel.hpp"
 
 using namespace rwlibs::algorithms;
-

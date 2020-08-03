@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RW_RW_HPP
 #define RW_RW_HPP
 
@@ -28,17 +27,18 @@
 */
 
 #include "common.hpp"
-#include <rw/core.hpp>
 #include "geometry.hpp"
+#include "graspplanning.hpp"
 #include "invkin.hpp"
 #include "kinematics.hpp"
 #include "loaders.hpp"
 #include "math.hpp"
 #include "models.hpp"
 #include "pathplanning.hpp"
+#include "proximity.hpp"
 #include "sensor.hpp"
 #include "trajectory.hpp"
-#include "proximity.hpp"
-#include "graspplanning.hpp"
 
-#endif // end include guard
+#include <rw/core.hpp>
+
+#endif    // end include guard

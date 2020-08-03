@@ -15,16 +15,15 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RWLIBS_OPENGL_RENDERMATRIX_HPP
 #define RWLIBS_OPENGL_RENDERMATRIX_HPP
 
 //! @file RenderMatrix.hpp
 
-#include <Eigen/Core>
-
-#include <rw/graphics/Render.hpp>
 #include <rw/core/Ptr.hpp>
+#include <rw/graphics/Render.hpp>
+
+#include <Eigen/Core>
 
 namespace rwlibs { namespace opengl {
 
@@ -36,13 +35,13 @@ namespace rwlibs { namespace opengl {
      */
     class RenderMatrix : public rw::graphics::Render
     {
-    private:
-        float _width,_height,_maxZ,_zscale;
+      private:
+        float _width, _height, _maxZ, _zscale;
         Eigen::MatrixXf _vals;
 
-    public:
+      public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr<RenderMatrix> Ptr;
+        typedef rw::core::Ptr< RenderMatrix > Ptr;
 
         /**
          * @brief Constructs a RenderMatrix
@@ -52,41 +51,39 @@ namespace rwlibs { namespace opengl {
          * @param width [in] Width of matrix in meters
          * @param height [in] Height of matrix in meters
          */
-        RenderMatrix(const std::string& id, size_t cols, size_t rows, float width, float height);
+        RenderMatrix (const std::string& id, size_t cols, size_t rows, float width, float height);
 
         /**
          * Destroys RenderMatrix
          */
-        virtual ~RenderMatrix(){};
+        virtual ~RenderMatrix (){};
 
         /**
          * @brief sets the value of the texel at (col,row)
          */
-        void setValue(size_t col, size_t row, float val){
-        	_vals(col,row) = val;
-        }
+        void setValue (size_t col, size_t row, float val) { _vals (col, row) = val; }
 
         /**
          * @brief sets the max depth of the 3d boxed graph
          */
-        void setMaxDepth(float maxlen){
-        	_maxZ = maxlen;
-        	if(_maxZ < 0.001f)
-        		_maxZ = 0.001f;
+        void setMaxDepth (float maxlen)
+        {
+            _maxZ = maxlen;
+            if (_maxZ < 0.001f)
+                _maxZ = 0.001f;
 
-        	_zscale = 1 / _maxZ;
+            _zscale = 1 / _maxZ;
         }
 
         /* Functions inherited from Render */
 
-        //! @copydoc rw::graphics::Render::draw(const DrawableNode::RenderInfo& info, DrawableNode::DrawType type, double alpha) const
-        void draw(const rw::graphics::DrawableNode::RenderInfo& info,
-                  rw::graphics::DrawableNode::DrawType type,
-                  double alpha) const;
-
+        //! @copydoc rw::graphics::Render::draw(const DrawableNode::RenderInfo& info,
+        //! DrawableNode::DrawType type, double alpha) const
+        void draw (const rw::graphics::DrawableNode::RenderInfo& info,
+                   rw::graphics::DrawableNode::DrawType type, double alpha) const;
     };
 
     /*@}*/
-}} // end namespaces
+}}    // namespace rwlibs::opengl
 
-#endif // end include guard
+#endif    // end include guard

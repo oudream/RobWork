@@ -25,95 +25,96 @@
  */
 
 #include "SimulatorLogEntry.hpp"
+
 #include <rw/core/Ptr.hpp>
+
 #include <Eigen/Core>
 
-namespace rwsim {
-namespace log {
+namespace rwsim { namespace log {
 
-class LogContactSet;
+    class LogContactSet;
 
-//! @addtogroup rwsim_log
+    //! @addtogroup rwsim_log
 
-//! @{
-/**
- * @brief Log entry for a linear equation system \f$\mathbf{A}\mathbf{x}=\mathbf{b}\f$.
- */
-class LogEquationSystem: public SimulatorLogEntry {
-public:
-    //! Smart pointer type of LogEquationSystem
-    typedef rw::core::Ptr<LogEquationSystem> Ptr;
+    //! @{
+    /**
+     * @brief Log entry for a linear equation system \f$\mathbf{A}\mathbf{x}=\mathbf{b}\f$.
+     */
+    class LogEquationSystem : public SimulatorLogEntry
+    {
+      public:
+        //! Smart pointer type of LogEquationSystem
+        typedef rw::core::Ptr< LogEquationSystem > Ptr;
 
-    //! @copydoc SimulatorLogEntry::SimulatorLogEntry
-    LogEquationSystem(SimulatorLogScope* parent);
+        //! @copydoc SimulatorLogEntry::SimulatorLogEntry
+        LogEquationSystem (SimulatorLogScope* parent);
 
-	//! @brief Destructor.
-	virtual ~LogEquationSystem();
+        //! @brief Destructor.
+        virtual ~LogEquationSystem ();
 
-    //! @copydoc SimulatorLogEntry::read
-	virtual void read(class rw::common::InputArchive& iarchive, const std::string& id);
+        //! @copydoc SimulatorLogEntry::read
+        virtual void read (class rw::common::InputArchive& iarchive, const std::string& id);
 
-    //! @copydoc SimulatorLogEntry::write
-	virtual void write(class rw::common::OutputArchive& oarchive, const std::string& id) const;
+        //! @copydoc SimulatorLogEntry::write
+        virtual void write (class rw::common::OutputArchive& oarchive, const std::string& id) const;
 
-	//! @copydoc SimulatorLogEntry::getType
-	virtual std::string getType() const;
+        //! @copydoc SimulatorLogEntry::getType
+        virtual std::string getType () const;
 
-	//! @copydoc SimulatorLogEntry::operator==
-	virtual bool operator==(const SimulatorLog &b) const;
+        //! @copydoc SimulatorLogEntry::operator==
+        virtual bool operator== (const SimulatorLog& b) const;
 
-	//! @copydoc SimulatorLogEntry::getLinkedEntries
-	virtual std::list<SimulatorLogEntry::Ptr> getLinkedEntries() const;
+        //! @copydoc SimulatorLogEntry::getLinkedEntries
+        virtual std::list< SimulatorLogEntry::Ptr > getLinkedEntries () const;
 
-	//! @copydoc SimulatorLogEntry::autoLink
-	virtual bool autoLink();
+        //! @copydoc SimulatorLogEntry::autoLink
+        virtual bool autoLink ();
 
-	//! @copydoc SimulatorLogEntry::createNew
-	virtual SimulatorLogEntry::Ptr createNew(SimulatorLogScope* parent) const;
+        //! @copydoc SimulatorLogEntry::createNew
+        virtual SimulatorLogEntry::Ptr createNew (SimulatorLogScope* parent) const;
 
-	/**
-	 * @brief Get the type id of this entry type.
-	 * @return the type id.
-	 */
-	static std::string getTypeID();
+        /**
+         * @brief Get the type id of this entry type.
+         * @return the type id.
+         */
+        static std::string getTypeID ();
 
-	/**
-	 * @brief Set the equation system.
-	 * @param A [in] the matrix.
-	 * @param b [in] the right-hand-side.
-	 */
-	void set(const Eigen::MatrixXd& A, const Eigen::VectorXd& b);
+        /**
+         * @brief Set the equation system.
+         * @param A [in] the matrix.
+         * @param b [in] the right-hand-side.
+         */
+        void set (const Eigen::MatrixXd& A, const Eigen::VectorXd& b);
 
-	/**
-	 * @brief Set the solution to the system.
-	 * @param x [in] the solution.
-	 */
-	void setSolution(const Eigen::VectorXd& x);
+        /**
+         * @brief Set the solution to the system.
+         * @param x [in] the solution.
+         */
+        void setSolution (const Eigen::VectorXd& x);
 
-	/**
-	 * @brief Get the matrix for the linear equation system.
-	 * @return a reference to the matrix.
-	 */
-	const Eigen::MatrixXd& A() const;
+        /**
+         * @brief Get the matrix for the linear equation system.
+         * @return a reference to the matrix.
+         */
+        const Eigen::MatrixXd& A () const;
 
-	/**
-	 * @brief Get the right-hand side of the equation system.
-	 * @return a reference to the right-hand side.
-	 */
-	const Eigen::VectorXd& b() const;
+        /**
+         * @brief Get the right-hand side of the equation system.
+         * @return a reference to the right-hand side.
+         */
+        const Eigen::VectorXd& b () const;
 
-	/**
-	 * @brief Get the solution.
-	 * @return a reference to the solution.
-	 */
-	const Eigen::VectorXd& x() const;
+        /**
+         * @brief Get the solution.
+         * @return a reference to the solution.
+         */
+        const Eigen::VectorXd& x () const;
 
-private:
-	Eigen::MatrixXd _A;
-	Eigen::VectorXd _x;
-	Eigen::VectorXd _b;
-};
-//! @}
-} /* namespace log */
-} /* namespace rwsim */
+      private:
+        Eigen::MatrixXd _A;
+        Eigen::VectorXd _x;
+        Eigen::VectorXd _b;
+    };
+    //! @}
+}}     // namespace rwsim::log
 #endif /* RWSIM_LOG_LOGEQUATIONSYSTEM_HPP_ */

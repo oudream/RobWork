@@ -25,70 +25,77 @@
  */
 
 #include "SimulatorLogEntryWidget.hpp"
+
 #include <rw/core/Ptr.hpp>
 
-namespace rwsim { namespace log { class LogMessage; } }
+namespace rwsim { namespace log {
+    class LogMessage;
+}}    // namespace rwsim::log
 
 class QTextBrowser;
 
-namespace rwsimlibs {
-namespace gui {
-//! @addtogroup rwsimlibs_gui
+namespace rwsimlibs { namespace gui {
+    //! @addtogroup rwsimlibs_gui
 
-//! @{
-//! @brief Graphical representation of the rwsim::log::LogMessage log entry.
-class LogMessageWidget: public SimulatorLogEntryWidget {
-    Q_OBJECT
-public:
-	/**
-	 * @brief Construct new widget for a log entry.
-	 * @param entry [in] a message entry.
-	 * @param parent [in] (optional) the parent Qt widget. Ownership is shared by the caller and the parent widget if given.
-	 */
-	LogMessageWidget(rw::core::Ptr<const rwsim::log::LogMessage> entry, QWidget* parent = 0);
+    //! @{
+    //! @brief Graphical representation of the rwsim::log::LogMessage log entry.
+    class LogMessageWidget : public SimulatorLogEntryWidget
+    {
+        Q_OBJECT
+      public:
+        /**
+         * @brief Construct new widget for a log entry.
+         * @param entry [in] a message entry.
+         * @param parent [in] (optional) the parent Qt widget. Ownership is shared by the caller and
+         * the parent widget if given.
+         */
+        LogMessageWidget (rw::core::Ptr< const rwsim::log::LogMessage > entry, QWidget* parent = 0);
 
-	//! @brief Destructor.
-	virtual ~LogMessageWidget();
+        //! @brief Destructor.
+        virtual ~LogMessageWidget ();
 
-	//! @copydoc SimulatorLogEntryWidget::setDWC
-	virtual void setDWC(rw::core::Ptr<const rwsim::dynamics::DynamicWorkCell> dwc);
+        //! @copydoc SimulatorLogEntryWidget::setDWC
+        virtual void setDWC (rw::core::Ptr< const rwsim::dynamics::DynamicWorkCell > dwc);
 
-	//! @copydoc SimulatorLogEntryWidget::setEntry
-	virtual void setEntry(rw::core::Ptr<const rwsim::log::SimulatorLog> entry);
+        //! @copydoc SimulatorLogEntryWidget::setEntry
+        virtual void setEntry (rw::core::Ptr< const rwsim::log::SimulatorLog > entry);
 
-	//! @copydoc SimulatorLogEntryWidget::getEntry
-	virtual rw::core::Ptr<const rwsim::log::SimulatorLog> getEntry() const;
+        //! @copydoc SimulatorLogEntryWidget::getEntry
+        virtual rw::core::Ptr< const rwsim::log::SimulatorLog > getEntry () const;
 
-	//! @copydoc SimulatorLogEntryWidget::updateEntryWidget
-	virtual void updateEntryWidget();
+        //! @copydoc SimulatorLogEntryWidget::updateEntryWidget
+        virtual void updateEntryWidget ();
 
-	//! @copydoc SimulatorLogEntryWidget::showGraphics
-	virtual void showGraphics(rw::core::Ptr<rw::graphics::GroupNode> root, rw::core::Ptr<rw::graphics::SceneGraph> graph);
+        //! @copydoc SimulatorLogEntryWidget::showGraphics
+        virtual void showGraphics (rw::core::Ptr< rw::graphics::GroupNode > root,
+                                   rw::core::Ptr< rw::graphics::SceneGraph > graph);
 
-	//! @copydoc SimulatorLogEntryWidget::getName
-	virtual std::string getName() const;
+        //! @copydoc SimulatorLogEntryWidget::getName
+        virtual std::string getName () const;
 
-	//! @copydoc SimulatorLogEntryWidget::Dispatcher
-	class Dispatcher: public SimulatorLogEntryWidget::Dispatcher {
-	public:
-		//! @brief Constructor.
-		Dispatcher();
+        //! @copydoc SimulatorLogEntryWidget::Dispatcher
+        class Dispatcher : public SimulatorLogEntryWidget::Dispatcher
+        {
+          public:
+            //! @brief Constructor.
+            Dispatcher ();
 
-		//! @brief Destructor.
-		virtual ~Dispatcher();
+            //! @brief Destructor.
+            virtual ~Dispatcher ();
 
-		//! @copydoc SimulatorLogEntryWidget::Dispatcher::makeWidget
-		SimulatorLogEntryWidget* makeWidget(rw::core::Ptr<const rwsim::log::SimulatorLog> entry, QWidget* parent = 0) const;
+            //! @copydoc SimulatorLogEntryWidget::Dispatcher::makeWidget
+            SimulatorLogEntryWidget*
+            makeWidget (rw::core::Ptr< const rwsim::log::SimulatorLog > entry,
+                        QWidget* parent = 0) const;
 
-		//! @copydoc SimulatorLogEntryWidget::Dispatcher::accepts
-		bool accepts(rw::core::Ptr<const rwsim::log::SimulatorLog> entry) const;
-	};
+            //! @copydoc SimulatorLogEntryWidget::Dispatcher::accepts
+            bool accepts (rw::core::Ptr< const rwsim::log::SimulatorLog > entry) const;
+        };
 
-private:
-    rw::core::Ptr<const rwsim::log::LogMessage> _message;
-    QTextBrowser* const _text;
-};
-//! @}
-} /* namespace gui */
-} /* namespace rwsimlibs */
+      private:
+        rw::core::Ptr< const rwsim::log::LogMessage > _message;
+        QTextBrowser* const _text;
+    };
+    //! @}
+}}     // namespace rwsimlibs::gui
 #endif /* RWSIMLIBS_GUI_LOGMESSAGEWIDGET_HPP_ */

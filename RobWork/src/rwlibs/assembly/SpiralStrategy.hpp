@@ -27,58 +27,67 @@
 #include "AssemblyControlStrategy.hpp"
 
 #include <rw/trajectory/Trajectory.hpp>
-namespace rw { namespace core { class PropertyMap; }}
+namespace rw { namespace core {
+    class PropertyMap;
+}}    // namespace rw::core
 
-namespace rwlibs {
-namespace assembly {
+namespace rwlibs { namespace assembly {
 
-class SpiralParameterization;
+    class SpiralParameterization;
 
-//! @addtogroup assembly
+    //! @addtogroup assembly
 
-//! @{
-/**
- * @brief Control strategy for a Peg in Hole operation using a spiral search.
- *
- * \image html assembly/SpiralStrategy.png "Top view and side view of the spiral motion performed with the peg to search for hole."
- *
- * See the SpiralParameterization for more information about the parameters.
- */
-class SpiralStrategy: public AssemblyControlStrategy {
-public:
-	//! @brief Constructor.
-	SpiralStrategy();
+    //! @{
+    /**
+     * @brief Control strategy for a Peg in Hole operation using a spiral search.
+     *
+     * \image html assembly/SpiralStrategy.png "Top view and side view of the spiral motion
+     * performed with the peg to search for hole."
+     *
+     * See the SpiralParameterization for more information about the parameters.
+     */
+    class SpiralStrategy : public AssemblyControlStrategy
+    {
+      public:
+        //! @brief Constructor.
+        SpiralStrategy ();
 
-	//! @brief Destructor.
-	virtual ~SpiralStrategy();
+        //! @brief Destructor.
+        virtual ~SpiralStrategy ();
 
-	//! @copydoc AssemblyControlStrategy::createState
-	ControlState::Ptr createState() const;
+        //! @copydoc AssemblyControlStrategy::createState
+        ControlState::Ptr createState () const;
 
-	//! @copydoc AssemblyControlStrategy::update
-	virtual rw::core::Ptr<AssemblyControlResponse> update(rw::core::Ptr<AssemblyParameterization> parameters, rw::core::Ptr<AssemblyState> real, rw::core::Ptr<AssemblyState> assumed, ControlState::Ptr controlState, rw::kinematics::State &state, rw::sensor::FTSensor* ftSensor, double time) const;
+        //! @copydoc AssemblyControlStrategy::update
+        virtual rw::core::Ptr< AssemblyControlResponse >
+        update (rw::core::Ptr< AssemblyParameterization > parameters,
+                rw::core::Ptr< AssemblyState > real, rw::core::Ptr< AssemblyState > assumed,
+                ControlState::Ptr controlState, rw::kinematics::State& state,
+                rw::sensor::FTSensor* ftSensor, double time) const;
 
-	//! @copydoc AssemblyControlStrategy::getApproach
-	virtual rw::math::Transform3D<> getApproach(rw::core::Ptr<AssemblyParameterization> parameters);
+        //! @copydoc AssemblyControlStrategy::getApproach
+        virtual rw::math::Transform3D<>
+        getApproach (rw::core::Ptr< AssemblyParameterization > parameters);
 
-	//! @copydoc AssemblyControlStrategy::getID
-	virtual std::string getID();
+        //! @copydoc AssemblyControlStrategy::getID
+        virtual std::string getID ();
 
-	//! @copydoc AssemblyControlStrategy::getDescription
-	virtual std::string getDescription();
+        //! @copydoc AssemblyControlStrategy::getDescription
+        virtual std::string getDescription ();
 
-	//! @copydoc AssemblyControlStrategy::createParameterization
-	virtual rw::core::Ptr<AssemblyParameterization> createParameterization(const rw::core::Ptr<rw::core::PropertyMap> map);
+        //! @copydoc AssemblyControlStrategy::createParameterization
+        virtual rw::core::Ptr< AssemblyParameterization >
+        createParameterization (const rw::core::Ptr< rw::core::PropertyMap > map);
 
-private:
-	rw::core::Ptr<rw::trajectory::Transform3DTrajectory> generateTrajectory(rw::core::Ptr<SpiralParameterization> param) const;
+      private:
+        rw::core::Ptr< rw::trajectory::Transform3DTrajectory >
+        generateTrajectory (rw::core::Ptr< SpiralParameterization > param) const;
 
-	rw::math::Transform3D<> _worldTfemale;
-	rw::math::Transform3D<> _femaleTfemTcp;
-	rw::math::Transform3D<> _maleTmaleTcp;
-};
-//! @}
-} /* namespace assembly */
-} /* namespace rwlibs */
+        rw::math::Transform3D<> _worldTfemale;
+        rw::math::Transform3D<> _femaleTfemTcp;
+        rw::math::Transform3D<> _maleTmaleTcp;
+    };
+    //! @}
+}}    // namespace rwlibs::assembly
 
 #endif /* RWLIBS_ASSEMBLY_SPIRALSTRATEGY_HPP_ */

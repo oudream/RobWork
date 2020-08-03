@@ -25,77 +25,84 @@
  */
 
 #include "Mathematica.hpp"
+
 #include <rw/core/Ptr.hpp>
 
-namespace rw { namespace core { class PropertyMap; } }
-namespace rw { namespace sensor { class Image; } }
+namespace rw { namespace core {
+    class PropertyMap;
+}}    // namespace rw::core
+namespace rw { namespace sensor {
+    class Image;
+}}    // namespace rw::sensor
 
-namespace rwlibs {
-namespace mathematica {
+namespace rwlibs { namespace mathematica {
 
-class Rule;
+    class Rule;
 
-//! @addtogroup mathematica
+    //! @addtogroup mathematica
 
-//! @{
-//! @brief Representation of the Mathematica %Image function.
-class Image: public Mathematica::FunctionBase {
-public:
-	//! @brief Smart pointer type.
-	typedef rw::core::Ptr<Image> Ptr;
+    //! @{
+    //! @brief Representation of the Mathematica %Image function.
+    class Image : public Mathematica::FunctionBase
+    {
+      public:
+        //! @brief Smart pointer type.
+        typedef rw::core::Ptr< Image > Ptr;
 
-	/**
-	 * @brief Construct a Image expression from a RobWork image.
-	 * @param image [in] the image.
-	 */
-	Image(rw::core::Ptr<const rw::sensor::Image> image);
+        /**
+         * @brief Construct a Image expression from a RobWork image.
+         * @param image [in] the image.
+         */
+        Image (rw::core::Ptr< const rw::sensor::Image > image);
 
-	/**
-	 * @brief Construct a Image expression.
-	 * @param data [in] the data expression (e.g. a variable name, table/list expression, or data array).
-	 */
-	Image(const Mathematica::Expression& data);
+        /**
+         * @brief Construct a Image expression.
+         * @param data [in] the data expression (e.g. a variable name, table/list expression, or
+         * data array).
+         */
+        Image (const Mathematica::Expression& data);
 
-	/**
-	 * @brief Construct a Image expression.
-	 * @param data [in] the data expression (e.g. a variable name, table/list expression, or data array).
-	 * @param options [in] the options to use (such as ColorSpace, ImageSize etc.)
-	 */
-	Image(const Mathematica::Expression& data, const rw::core::PropertyMap& options);
+        /**
+         * @brief Construct a Image expression.
+         * @param data [in] the data expression (e.g. a variable name, table/list expression, or
+         * data array).
+         * @param options [in] the options to use (such as ColorSpace, ImageSize etc.)
+         */
+        Image (const Mathematica::Expression& data, const rw::core::PropertyMap& options);
 
-	//! @brief Destructor.
-	virtual ~Image();
+        //! @brief Destructor.
+        virtual ~Image ();
 
-	//! @copydoc Mathematica::FunctionBase::getArguments
-	virtual std::list<rw::core::Ptr<const Mathematica::Expression> > getArguments() const;
+        //! @copydoc Mathematica::FunctionBase::getArguments
+        virtual std::list< rw::core::Ptr< const Mathematica::Expression > > getArguments () const;
 
-	//! @copydoc Mathematica::Expression::clone
-	virtual Mathematica::Expression::Ptr clone() const;
+        //! @copydoc Mathematica::Expression::clone
+        virtual Mathematica::Expression::Ptr clone () const;
 
-	/**
-	 * @brief Set ImageSize option.
-	 * @param width [in] the width.
-	 * @param height [in] the height.
-	 */
-	void setImageSize(std::size_t width, std::size_t height);
+        /**
+         * @brief Set ImageSize option.
+         * @param width [in] the width.
+         * @param height [in] the height.
+         */
+        void setImageSize (std::size_t width, std::size_t height);
 
-	/**
-	 * @brief Construct RobWork Image from Mathematica Image expression.
-	 * @param expression [in] the expression to parse.
-	 * @return the parsed Image expression.
-	 * @throws rw::common::Exception if parsing fails.
-	 */
-	static rw::core::Ptr<rw::sensor::Image> toRobWorkImage(const Mathematica::Expression& expression);
+        /**
+         * @brief Construct RobWork Image from Mathematica Image expression.
+         * @param expression [in] the expression to parse.
+         * @return the parsed Image expression.
+         * @throws rw::common::Exception if parsing fails.
+         */
+        static rw::core::Ptr< rw::sensor::Image >
+        toRobWorkImage (const Mathematica::Expression& expression);
 
-private:
-	Image();
+      private:
+        Image ();
 
-private:
-	Mathematica::Expression::Ptr _data;
-	Mathematica::String::Ptr _type;
-	std::list<rw::core::Ptr<Rule> > _rules;
-};
-//! @}
-} /* namespace mathematica */
-} /* namespace rwlibs */
+      private:
+        Mathematica::Expression::Ptr _data;
+        Mathematica::String::Ptr _type;
+        std::list< rw::core::Ptr< Rule > > _rules;
+    };
+    //! @}
+}}     // namespace rwlibs::mathematica
 #endif /* RWLIBS_MATHEMATICA_IMAGE_HPP_ */

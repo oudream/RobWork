@@ -24,42 +24,42 @@
  * \copydoc rwlibs::proximitystrategies::ProximityStrategyPlugin
  */
 
-#include <rw/core/Plugin.hpp>
 #include <rw/core/Extension.hpp>
+#include <rw/core/Plugin.hpp>
 
-namespace rwlibs {
-namespace proximitystrategies {
-//! @addtogroup proximitystrategies
+namespace rwlibs { namespace proximitystrategies {
+    //! @addtogroup proximitystrategies
 
-//! @{
-/**
- * @brief A plugin providing proximity strategies for RobWork.
- *
- * The following extensions are added with the use of this plugin (if RobWork is configured to use them):
- *  - Bullet - rwlibs::proximitystrategies::ProximityStrategyBullet - Bullet Physics
- *  - FCL - rwlibs::proximitystrategies::ProximityStrategyFCL - Flexible Collision Library
- *  - PQP - rwlibs::proximitystrategies::ProximityStrategyPQP - Proximity Query Package
- *  - Yaobi - rwlibs::proximitystrategies::ProximityStrategyYaobi - Yaobi
- */
-class ProximityStrategyPlugin: public rw::core::Plugin {
-public:
-	//! @brief Construct new plugin
-	ProximityStrategyPlugin();
+    //! @{
+    /**
+     * @brief A plugin providing proximity strategies for RobWork.
+     *
+     * The following extensions are added with the use of this plugin (if RobWork is configured to
+     * use them):
+     *  - Bullet - rwlibs::proximitystrategies::ProximityStrategyBullet - Bullet Physics
+     *  - FCL - rwlibs::proximitystrategies::ProximityStrategyFCL - Flexible Collision Library
+     *  - PQP - rwlibs::proximitystrategies::ProximityStrategyPQP - Proximity Query Package
+     *  - Yaobi - rwlibs::proximitystrategies::ProximityStrategyYaobi - Yaobi
+     */
+    class ProximityStrategyPlugin : public rw::core::Plugin
+    {
+      public:
+        //! @brief Construct new plugin
+        ProximityStrategyPlugin ();
 
-	//! @brief Destructor
-	virtual ~ProximityStrategyPlugin();
+        //! @brief Destructor
+        virtual ~ProximityStrategyPlugin ();
 
-	//! @copydoc rw::core::Plugin::getExtensionDescriptors
-    std::vector<rw::core::Extension::Descriptor> getExtensionDescriptors();
+        //! @copydoc rw::core::Plugin::getExtensionDescriptors
+        std::vector< rw::core::Extension::Descriptor > getExtensionDescriptors ();
 
-	//! @copydoc rw::core::Plugin::makeExtension
-    rw::core::Ptr<rw::core::Extension> makeExtension(const std::string& id);
+        //! @copydoc rw::core::Plugin::makeExtension
+        rw::core::Ptr< rw::core::Extension > makeExtension (const std::string& id);
 
-    //! @brief Register the plugins extensions in the rw::core::ExtensionRegistry.
-    static void registerPlugin();
-};
-//! @}
-} /* namespace proximitystrategies */
-} /* namespace rwlibs */
+        //! @brief Register the plugins extensions in the rw::core::ExtensionRegistry.
+        static void registerPlugin ();
+    };
+    //! @}
+}}    // namespace rwlibs::proximitystrategies
 
 #endif /* RWLIBS_PROXIMITYSTRATEGIES_PROXIMITYSTRATEGYPLUGIN_HPP_ */

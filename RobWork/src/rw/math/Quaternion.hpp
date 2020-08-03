@@ -94,75 +94,51 @@ namespace rw { namespace math {
          * @brief copy a boost quaternion to this Quaternion
          * @param r [in] - boost quaternion
          */
-        inline void operator= (const EigenQuaternion& r)
-        {
-            _q = r;
-        }
+        inline void operator= (const EigenQuaternion& r) { _q = r; }
 
         /**
          * @brief get method for the x component
          * @return the x component of the quaternion
          */
-        inline T getQx () const
-        {
-            return _q.x ();
-        }
+        inline T getQx () const { return _q.x (); }
 
         /**
          * @brief get method for the y component
          * @return the y component of the quaternion
          */
-        inline T getQy () const
-        {
-            return _q.y ();
-        }
+        inline T getQy () const { return _q.y (); }
 
         /**
          * @brief get method for the z component
          * @return the z component of the quaternion
          */
-        inline T getQz () const
-        {
-            return _q.z ();
-        }
+        inline T getQz () const { return _q.z (); }
 
         /**
          * @brief get method for the w component
          * @return the w component of the quaternion
          */
-        inline T getQw () const
-        {
-            return _q.w ();
-        }
+        inline T getQw () const { return _q.w (); }
 
         /**
          * @brief get length of quaternion
          * @f$ \sqrt{q_x^2+q_y^2+q_z^2+q_w^2} @f$
          * @return the length og this quaternion
          */
-        inline T getLength () const
-        {
-            return _q.norm ();
-        }
+        inline T getLength () const { return _q.norm (); }
 
         /**
          * @brief get squared length of quaternion
          * @f$ q_x^2+q_y^2+q_z^2+q_w^2 @f$
          * @return the length og this quaternion
          */
-        inline T getLengthSquared () const
-        {
-            return _q.squaredNorm ();
-        }
+        inline T getLengthSquared () const { return _q.squaredNorm (); }
 
         /**
          * @brief normalizes this quaternion so that
          * @f$ normalze(Q)=\frac{Q}{\sqrt{q_x^2+q_y^2+q_z^2+q_w^2}} @f$
          */
-        inline void normalize ()
-        {
-            _q.normalize ();
-        };
+        inline void normalize () { _q.normalize (); };
 
         /**
          * @brief Calculates the @f$ 3\times 3 @f$ Rotation matrix

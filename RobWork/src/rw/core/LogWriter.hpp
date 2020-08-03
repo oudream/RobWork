@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,54 +15,52 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RW_CORE_LOGWRITER_HPP
 #define RW_CORE_LOGWRITER_HPP
 
-#include <string>
-#include <sstream>
 #include <rw/core/Message.hpp>
 #include <rw/core/Ptr.hpp>
 
 #include <boost/thread/mutex.hpp>
+#include <sstream>
+#include <string>
 
 namespace rw { namespace core {
 
-	/** @addtogroup core */
-	/*@{*/
+    /** @addtogroup core */
+    /*@{*/
 
-	/**
+    /**
      * @brief Write interface for Logs
      *
      * LogWriter provides an output strategy for a log.
      */
     class LogWriter
     {
-    public:
+      public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr<LogWriter> Ptr;
+        typedef rw::core::Ptr< LogWriter > Ptr;
 
         /**
          * @brief Descructor
          */
-        virtual ~LogWriter();
+        virtual ~LogWriter ();
 
         /**
          * @brief Flush method
          */
-        void flush();
+        void flush ();
 
-		/**
-		 * @brief Set the tab level
-		 */
-		void setTabLevel(int tabLevel);
-
+        /**
+         * @brief Set the tab level
+         */
+        void setTabLevel (int tabLevel);
 
         /**
          * @brief Writes \b str to the log
          * @param str [in] message to write
          */
-        void write(const std::string& str);
+        void write (const std::string& str);
 
         /**
          * @brief Writes \b msg to the log
@@ -72,7 +70,7 @@ namespace rw { namespace core {
          *
          * @param msg [in] message to write
          */
-        void write(const Message& msg);
+        void write (const Message& msg);
 
         /**
          * @brief Writes \b str as a line
@@ -80,24 +78,25 @@ namespace rw { namespace core {
          * By default writeln writes \b str followed by a '\\n'. However, logs
          * are free to implement a line change differently.
          */
-        void writeln(const std::string& str);
+        void writeln (const std::string& str);
 
         /**
          * @brief general stream operator
          */
-        template< class T>
-        LogWriter& operator<<( T t ){
+        template< class T > LogWriter& operator<< (T t)
+        {
             std::stringstream tmp;
             tmp << t;
-            return this->operator<<( tmp.str() );
+            return this->operator<< (tmp.str ());
         }
 
         /**
          * @brief specialized stream operator
         2 */
-        LogWriter& operator<<(const std::string& str){
-        	write(str);
-        	return *this;
+        LogWriter& operator<< (const std::string& str)
+        {
+            write (str);
+            return *this;
         }
 
         /**
@@ -105,41 +104,41 @@ namespace rw { namespace core {
          * @param msg [in] the message.
          * @return a reference to this LogWriter for chaining of stream operators.
          */
-        LogWriter& operator<<(const Message& msg){
-            write(msg);
+        LogWriter& operator<< (const Message& msg)
+        {
+            write (msg);
             return *this;
         }
-
 
         /**
          * @brief specialized stream operator
          */
-        LogWriter& operator<<(const char* str){
-        	write(str);
-        	return *this;
+        LogWriter& operator<< (const char* str)
+        {
+            write (str);
+            return *this;
         }
 
         /**
          * @brief Handle the std::endl and other stream functions.
          */
-        LogWriter& operator<<(std::ostream& (*pf)(std::ostream&));
+        LogWriter& operator<< (std::ostream& (*pf) (std::ostream&) );
 
-    protected:
-        LogWriter() {}
+      protected:
+        LogWriter () {}
 
-		virtual void doWrite(const std::string& message) = 0;
-		virtual void doSetTabLevel(int tabLevel) = 0;
-		virtual void doFlush() = 0;
-    private:
-        LogWriter(const LogWriter&);
-        LogWriter& operator=(const LogWriter&);
-		boost::mutex _mutex;
+        virtual void doWrite (const std::string& message) = 0;
+        virtual void doSetTabLevel (int tabLevel)         = 0;
+        virtual void doFlush ()                           = 0;
+
+      private:
+        LogWriter (const LogWriter&);
+        LogWriter& operator= (const LogWriter&);
+        boost::mutex _mutex;
     };
-	/* @} */
+    /* @} */
 
-
-
-}} // end namespaces
+}}    // namespace rw::core
 
 /**
  * @brief Deprecated namespace since 16/4-2020 for this class
@@ -147,6 +146,6 @@ namespace rw { namespace core {
  */
 namespace rw { namespace common {
     using namespace rw::core;
-}}
+}}    // namespace rw::common
 
 #endif /*RW_CORE_LOGWRITER_HPP*/

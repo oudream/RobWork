@@ -23,91 +23,85 @@
 
 #define TRI_WIDTH 0.00001
 
-
-
 using namespace rw::math;
 using namespace rw::kinematics;
 using namespace rw::geometry;
 using namespace rw::proximity;
 using namespace rw::core;
 
-
-
-Raycaster::Raycaster(
-				 rw::proximity::CollisionStrategy::Ptr cdstrategy,
-				 double ray_length):
-					 _cdstrategy(cdstrategy),
-					 // create a long triangle used as a ray
-					 _ray( ownedPtr(new PlainTriMeshF(1)) )
+Raycaster::Raycaster (rw::proximity::CollisionStrategy::Ptr cdstrategy, double ray_length) :
+    _cdstrategy (cdstrategy),
+    // create a long triangle used as a ray
+    _ray (ownedPtr (new PlainTriMeshF (1)))
 {
-	(*_ray)[0] = Triangle<float>( Vector3D<float>(0,(float)-TRI_WIDTH,0),Vector3D<float>(0,(float)TRI_WIDTH,0),Vector3D<float>((float)ray_length,0,0) );
-	_rayModel = _cdstrategy->createModel();
+    (*_ray)[0] = Triangle< float > (Vector3D< float > (0, (float) -TRI_WIDTH, 0),
+                                    Vector3D< float > (0, (float) TRI_WIDTH, 0),
+                                    Vector3D< float > ((float) ray_length, 0, 0));
+    _rayModel  = _cdstrategy->createModel ();
 
-	Geometry geom( _ray ); // we have to wrap the trimesh in an geom object
-	geom.setId("Ray");
-	_rayModel->addGeometry(geom);
-	//_cdstrategy->setFirstContact(false);
+    Geometry geom (_ray);    // we have to wrap the trimesh in an geom object
+    geom.setId ("Ray");
+    _rayModel->addGeometry (geom);
+    //_cdstrategy->setFirstContact(false);
 }
 
 /*
 Raycaster::Raycaster(rw::proximity::CollisionDetectorPtr cdetect, double ray_length):
-					 _detector(cdetect),
-					 // create a long triangle used as a ray
-					 _ray(1)
+                                         _detector(cdetect),
+                                         // create a long triangle used as a ray
+                                         _ray(1)
 {
-	_ray[0] = Triangle<float>( Vector3D<float>(0,-TRI_WIDTH,0),Vector3D<float>(0,TRI_WIDTH,0),Vector3D<float>(ray_length,0,0) );
-	_rayModel = _cdstrategy->createModel();
+        _ray[0] = Triangle<float>(
+Vector3D<float>(0,-TRI_WIDTH,0),Vector3D<float>(0,TRI_WIDTH,0),Vector3D<float>(ray_length,0,0) );
+        _rayModel = _cdstrategy->createModel();
 
-	Geometry geom( _ray ); // we have to wrap the trimesh in an geom object
-	_rayModel->addGeometry(geom);
+        Geometry geom( _ray ); // we have to wrap the trimesh in an geom object
+        _rayModel->addGeometry(geom);
 
 
 }
 */
 
-Raycaster::~Raycaster(){}
+Raycaster::~Raycaster ()
+{}
 
-
-bool Raycaster::shoot(const rw::math::Vector3D<>& pos,
-				         const rw::math::Vector3D<>& direction,
-				         Raycaster::QueryResult& result,
-				         const rw::kinematics::State& state)
+bool Raycaster::shoot (const rw::math::Vector3D<>& pos, const rw::math::Vector3D<>& direction,
+                       Raycaster::QueryResult& result, const rw::kinematics::State& state)
 {
+    FKTable fk (state);
+    Transform3D<> wTray = Transform3D<>::identity ();
 
-	FKTable fk(state);
-	Transform3D<> wTray = Transform3D<>::identity();
+    if (_rayFrame)
+        wTray = fk.get (_rayFrame);
 
-	if(_rayFrame)
-		wTray = fk.get(_rayFrame);
+    // check collision between ray and all obstacles in the scene
+    double minDist = std::numeric_limits< double >::max ();
+    std::vector< CollisionStrategy::Contact > contacts;
+    for (size_t i = 0; i < _obstacles.size (); i++) {
+        ProximityModel::Ptr object = _obstacles[i];
 
-	// check collision between ray and all obstacles in the scene
-	double minDist = std::numeric_limits<double>::max();
-	std::vector<CollisionStrategy::Contact> contacts;
-	for(size_t i=0; i<_obstacles.size();i++){
-		ProximityModel::Ptr object = _obstacles[i];
+        if (_cdstrategy->inCollision (
+                _rayModel, wTray, object, Transform3D<>::identity (), result.data)) {
+            // now get the contact points and their surface normals
+            contacts.clear ();
+            _cdstrategy->getCollisionContacts (contacts, result.data);
 
-		if( _cdstrategy->inCollision(_rayModel, wTray, object, Transform3D<>::identity(),  result.data) ){
+            for (CollisionStrategy::Contact& contact : contacts) {
+                double dist = MetricUtil::dist2 (contact.point, pos);
+                if (dist < minDist) {
+                    result.point  = contact.point;
+                    result.normal = contact.normalB;
+                }
 
-			// now get the contact points and their surface normals
-			contacts.clear();
-			_cdstrategy->getCollisionContacts(contacts, result.data);
+                if (_queryType == ALL_HITS) {
+                    result.points.push_back (contact.point);
+                    result.normals.push_back (contact.normalB);
+                }
+            }
+        }
+    }
 
-			for(CollisionStrategy::Contact &contact: contacts){
-				double dist = MetricUtil::dist2(contact.point, pos);
-				if(dist<minDist){
-					result.point = contact.point;
-					result.normal = contact.normalB;
-				}
-
-				if(_queryType == ALL_HITS){
-					result.points.push_back(contact.point);
-					result.normals.push_back(contact.normalB);
-				}
-			}
-		}
-	}
-
-	if(minDist ==  std::numeric_limits<double>::max())
-		return false;
-	return true;
+    if (minDist == std::numeric_limits< double >::max ())
+        return false;
+    return true;
 }

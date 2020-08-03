@@ -27,7 +27,6 @@
 #include <BulletCollision/Gimpact/btGImpactCollisionAlgorithm.h>
 #include <BulletCollision/Gimpact/btGImpactShape.h>
 #include <BulletCollision/NarrowPhaseCollision/btGjkEpa2.h>
-
 #include <btBulletCollisionCommon.h>
 #include <btBulletDynamicsCommon.h>
 #include <float.h>
@@ -520,8 +519,8 @@ DistanceResult& ProximityStrategyBullet::distance (ProximityModel::Ptr aModel,
     rwresult.a = aModel;
     rwresult.b = bModel;
 
-    for (const BulletModel& ma: qdata.a->models) {
-        for (const BulletModel& mb: qdata.b->models) {
+    for (const BulletModel& ma : qdata.a->models) {
+        for (const BulletModel& mb : qdata.b->models) {
             btConvexShape* shapeA = dynamic_cast< btConvexShape* > (ma.model.get ());
             btConvexShape* shapeB = dynamic_cast< btConvexShape* > (mb.model.get ());
             if (shapeA == NULL || shapeB == NULL)
@@ -557,8 +556,9 @@ ProximityStrategyBullet::doDistances (ProximityModel::Ptr aModel, const Transfor
     rwresult.a = aModel;
     rwresult.b = bModel;
 
-    for (const BulletModel& ma: qdata.a->models) {
-        for (const BulletModel& mb: qdata.b->models) {}
+    for (const BulletModel& ma : qdata.a->models) {
+        for (const BulletModel& mb : qdata.b->models) {
+        }
     }
     return rwresult;
 }
@@ -568,7 +568,7 @@ ProximityStrategyBullet::getGeometryIDs (rw::proximity::ProximityModel* model)
 {
     std::vector< std::string > res;
     ProximityModelBullet* pmodel = (ProximityModelBullet*) model;
-    for (BulletModel& m: pmodel->models) {
+    for (BulletModel& m : pmodel->models) {
         res.push_back (m.geoid);
     }
     return res;

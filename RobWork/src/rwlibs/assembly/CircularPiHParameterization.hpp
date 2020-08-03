@@ -25,85 +25,94 @@
  */
 
 #include "AssemblyParameterization.hpp"
+
 #include <rw/core/Ptr.hpp>
 
-namespace rw { namespace core { class PropertyMap; }}
+namespace rw { namespace core {
+    class PropertyMap;
+}}    // namespace rw::core
 
-namespace rwlibs {
-namespace assembly {
-//! @addtogroup assembly
-//! @{
-/**
- * @brief The parameterization used for the CircularPiHControlStrategy.
- *
- * The parameterization includes the dimensions of a peg and hole, and three parameters determining the approach of the peg.
- */
-class CircularPiHParameterization: public AssemblyParameterization {
-public:
-	//! @brief smart pointer type to this class
-    typedef rw::core::Ptr<CircularPiHParameterization> Ptr;
-
+namespace rwlibs { namespace assembly {
+    //! @addtogroup assembly
+    //! @{
     /**
-     * @brief Construct a new parameterization from a PropertyMap.
-     * @param map [in] the PropertyMap to get the parameters from.
+     * @brief The parameterization used for the CircularPiHControlStrategy.
+     *
+     * The parameterization includes the dimensions of a peg and hole, and three parameters
+     * determining the approach of the peg.
      */
-	CircularPiHParameterization(const rw::core::Ptr<rw::core::PropertyMap> map);
+    class CircularPiHParameterization : public AssemblyParameterization
+    {
+      public:
+        //! @brief smart pointer type to this class
+        typedef rw::core::Ptr< CircularPiHParameterization > Ptr;
 
-	/**
-	 * @brief Construct a new parameterization with the given values.
-	 * @param holeRadius [in] radius of the hole.
-	 * @param holeLength [in] length of the hole.
-	 * @param pegRadius [in] radius of the peg.
-	 * @param pegLength [in] length of the peg.
-	 * @param angle [in] the angle between the peg axis and the hole axis (default is 0).
-	 * @param distA [in] the distance of the deepest point of the peg to the hole axis in the direction of the peg axis (default is 0).
-	 * @param distB [in] the distance of the deepest point of the peg to the hole axis in perpendicular to the peg axis (default is 0).
-	 */
-	CircularPiHParameterization(double holeRadius, double holeLength, double pegRadius, double pegLength, double angle = 0, double distA = 0, double distB = 0);
+        /**
+         * @brief Construct a new parameterization from a PropertyMap.
+         * @param map [in] the PropertyMap to get the parameters from.
+         */
+        CircularPiHParameterization (const rw::core::Ptr< rw::core::PropertyMap > map);
 
-	//! @brief Destructor.
-	virtual ~CircularPiHParameterization();
+        /**
+         * @brief Construct a new parameterization with the given values.
+         * @param holeRadius [in] radius of the hole.
+         * @param holeLength [in] length of the hole.
+         * @param pegRadius [in] radius of the peg.
+         * @param pegLength [in] length of the peg.
+         * @param angle [in] the angle between the peg axis and the hole axis (default is 0).
+         * @param distA [in] the distance of the deepest point of the peg to the hole axis in the
+         * direction of the peg axis (default is 0).
+         * @param distB [in] the distance of the deepest point of the peg to the hole axis in
+         * perpendicular to the peg axis (default is 0).
+         */
+        CircularPiHParameterization (double holeRadius, double holeLength, double pegRadius,
+                                     double pegLength, double angle = 0, double distA = 0,
+                                     double distB = 0);
 
-	//! @copydoc rwlibs::assembly::AssemblyParameterization::toPropertyMap
-	rw::core::Ptr<rw::core::PropertyMap> toPropertyMap() const;
+        //! @brief Destructor.
+        virtual ~CircularPiHParameterization ();
 
-	//! @copydoc rwlibs::assembly::AssemblyParameterization::clone
-	AssemblyParameterization::Ptr clone() const;
+        //! @copydoc rwlibs::assembly::AssemblyParameterization::toPropertyMap
+        rw::core::Ptr< rw::core::PropertyMap > toPropertyMap () const;
 
-	//! @copydoc rwlibs::assembly::AssemblyParameterization::make
-	AssemblyParameterization::Ptr make(rw::core::Ptr<rw::core::PropertyMap> pmap) const;
+        //! @copydoc rwlibs::assembly::AssemblyParameterization::clone
+        AssemblyParameterization::Ptr clone () const;
 
-	//! @copydoc rwlibs::assembly::AssemblyParameterization::reset
-	void reset(rw::core::Ptr<rw::core::PropertyMap> pmap);
+        //! @copydoc rwlibs::assembly::AssemblyParameterization::make
+        AssemblyParameterization::Ptr make (rw::core::Ptr< rw::core::PropertyMap > pmap) const;
 
-public:
-	/**
-	 * @name Object dimensions
-	 */
-	///@{
-	//! @brief Radius of the hole (should be more than pegRadius).
-	double holeRadius;
-	//! @brief Length of the hole.
-	double holeLength;
-	//! @brief Radius of the peg (should be less than holeRadius).
-	double pegRadius;
-	//! @brief Length of the peg.
-	double pegLength;
-	///@}
+        //! @copydoc rwlibs::assembly::AssemblyParameterization::reset
+        void reset (rw::core::Ptr< rw::core::PropertyMap > pmap);
 
-	/**
-	 * @name Approach parameters
-	 */
-	///@{
-	//! @brief The angle between the peg axis and the hole axis.
-	double angle;
-	//! @brief The distance of the deepest point of the peg to the hole axis in the direction of the peg axis.
-	double distanceA;
-	//! @brief The distance of the deepest point of the peg to the hole axis in perpendicular to the peg axis.
-	double distanceB;
-	///@}
-};
-//! @}
-} /* namespace assembly */
-} /* namespace rwlibs */
+      public:
+        /**
+         * @name Object dimensions
+         */
+        ///@{
+        //! @brief Radius of the hole (should be more than pegRadius).
+        double holeRadius;
+        //! @brief Length of the hole.
+        double holeLength;
+        //! @brief Radius of the peg (should be less than holeRadius).
+        double pegRadius;
+        //! @brief Length of the peg.
+        double pegLength;
+        ///@}
+
+        /**
+         * @name Approach parameters
+         */
+        ///@{
+        //! @brief The angle between the peg axis and the hole axis.
+        double angle;
+        //! @brief The distance of the deepest point of the peg to the hole axis in the direction of
+        //! the peg axis.
+        double distanceA;
+        //! @brief The distance of the deepest point of the peg to the hole axis in perpendicular to
+        //! the peg axis.
+        double distanceB;
+        ///@}
+    };
+    //! @}
+}}     // namespace rwlibs::assembly
 #endif /* RWLIBS_ASSEMBLY_CIRCULARPIHPARAMETERIZATION_HPP_ */

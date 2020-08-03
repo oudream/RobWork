@@ -20,25 +20,23 @@
 using namespace rw::common;
 using namespace rwlibs::mathematica;
 
-FactorInteger::FactorInteger(const Mathematica::Integer& integer):
-	FunctionBase("FactorInteger"),
-	_n(integer.clone())
+FactorInteger::FactorInteger (const Mathematica::Integer& integer) :
+    FunctionBase ("FactorInteger"), _n (integer.clone ())
+{}
+
+FactorInteger::FactorInteger (const Expression& integer) :
+    FunctionBase ("FactorInteger"), _n (integer.clone ())
+{}
+
+FactorInteger::~FactorInteger ()
+{}
+
+std::list< rw::core::Ptr< const Mathematica::Expression > > FactorInteger::getArguments () const
 {
+    return std::list< rw::core::Ptr< const Mathematica::Expression > > (1, _n);
 }
 
-FactorInteger::FactorInteger(const Expression& integer):
-	FunctionBase("FactorInteger"),
-	_n(integer.clone())
+Mathematica::Expression::Ptr FactorInteger::clone () const
 {
-}
-
-FactorInteger::~FactorInteger() {
-}
-
-std::list<rw::core::Ptr<const Mathematica::Expression> > FactorInteger::getArguments() const {
-	return std::list<rw::core::Ptr<const Mathematica::Expression> >(1,_n);
-}
-
-Mathematica::Expression::Ptr FactorInteger::clone() const {
-	return ownedPtr(new FactorInteger(*_n));
+    return ownedPtr (new FactorInteger (*_n));
 }

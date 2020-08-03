@@ -27,39 +27,45 @@ using namespace rw::math;
 using namespace rwsim::dynamics;
 using namespace rwsimlibs::bullet;
 
-BtVelocityDevice::BtVelocityDevice(rw::core::Ptr<RigidDevice> rdev, const std::vector<btTypedConstraint*>& constraints):
-	_rdev(rdev),
-	_constraints(constraints)
+BtVelocityDevice::BtVelocityDevice (rw::core::Ptr< RigidDevice > rdev,
+                                    const std::vector< btTypedConstraint* >& constraints) :
+    _rdev (rdev),
+    _constraints (constraints)
+{}
+
+BtVelocityDevice::~BtVelocityDevice ()
+{}
+
+void BtVelocityDevice::update (double dt, State& state)
 {
-}
-
-BtVelocityDevice::~BtVelocityDevice() {
-}
-
-void BtVelocityDevice::update(double dt, State& state){
-    const Q velQ = _rdev->getJointVelocities(state);
-    for(unsigned int i = 0; i<_constraints.size(); i++){
+    const Q velQ = _rdev->getJointVelocities (state);
+    for (unsigned int i = 0; i < _constraints.size (); i++) {
         const double vel = velQ[i];
-        if(dynamic_cast<btHingeConstraint*>(_constraints[i])){
-            btHingeConstraint* const hinge = dynamic_cast<btHingeConstraint*>(_constraints[i]);
-            hinge->enableAngularMotor(true, vel, 20);
-        } else if( dynamic_cast<btSliderConstraint*>(_constraints[i]) ){
-            btSliderConstraint* const slider = dynamic_cast<btSliderConstraint*>(_constraints[i]);
-            slider->setTargetLinMotorVelocity(vel);
+        if (dynamic_cast< btHingeConstraint* > (_constraints[i])) {
+            btHingeConstraint* const hinge = dynamic_cast< btHingeConstraint* > (_constraints[i]);
+            hinge->enableAngularMotor (true, vel, 20);
         }
-
+        else if (dynamic_cast< btSliderConstraint* > (_constraints[i])) {
+            btSliderConstraint* const slider =
+                dynamic_cast< btSliderConstraint* > (_constraints[i]);
+            slider->setTargetLinMotorVelocity (vel);
+        }
     }
 }
 
-void BtVelocityDevice::postUpdate(State& state) {
-    Q q = _rdev->getModel().getQ(state);
-    for(unsigned int i = 0; i<_constraints.size(); i++){
-        if(dynamic_cast<btHingeConstraint*>(_constraints[i])){
-            btHingeConstraint* const hinge = dynamic_cast<btHingeConstraint*>(_constraints[i]);
-            q[i] = hinge->getHingeAngle();
-        } else if( dynamic_cast<btSliderConstraint*>(_constraints[i]) ){
-//                btSliderConstraint* slider = dynamic_cast<btSliderConstraint*>(_constraints[i]); // simat - not used so commented to suppress warning
+void BtVelocityDevice::postUpdate (State& state)
+{
+    Q q = _rdev->getModel ().getQ (state);
+    for (unsigned int i = 0; i < _constraints.size (); i++) {
+        if (dynamic_cast< btHingeConstraint* > (_constraints[i])) {
+            btHingeConstraint* const hinge = dynamic_cast< btHingeConstraint* > (_constraints[i]);
+            q[i]                           = hinge->getHingeAngle ();
+        }
+        else if (dynamic_cast< btSliderConstraint* > (_constraints[i])) {
+            //                btSliderConstraint* slider =
+            //                dynamic_cast<btSliderConstraint*>(_constraints[i]); // simat - not
+            //                used so commented to suppress warning
         }
     }
-    _rdev->getModel().setQ(q, state);
+    _rdev->getModel ().setQ (q, state);
 }

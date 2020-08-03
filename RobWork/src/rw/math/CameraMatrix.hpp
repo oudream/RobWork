@@ -56,7 +56,7 @@ namespace rw { namespace math {
         /**
          * @brief destructor
          */
-        virtual ~CameraMatrix (){}
+        virtual ~CameraMatrix () {}
 
         /**
          * @brief Returns matrix element reference

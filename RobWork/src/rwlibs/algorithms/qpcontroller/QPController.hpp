@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RWLIBS_ALGORITHMS_QPCONTROLLER_QPCONTROLLER_HPP
 #define RWLIBS_ALGORITHMS_QPCONTROLLER_QPCONTROLLER_HPP
 
@@ -23,11 +22,13 @@
  * @file QPController.hpp
  */
 
-#include <rw/math/VelocityScrew6D.hpp>
-#include <rw/math/Q.hpp>
 #include <rw/kinematics/State.hpp>
+#include <rw/math/Q.hpp>
+#include <rw/math/VelocityScrew6D.hpp>
 
-namespace rw { namespace models { class Device; } }
+namespace rw { namespace models {
+    class Device;
+}}    // namespace rw::models
 
 namespace rwlibs { namespace algorithms {
 
@@ -44,30 +45,30 @@ namespace rwlibs { namespace algorithms {
      * Control for High-Speed Visual Servoing Applications", To appear in International
      * Journal for Advanced Robotic Systems, vol. 4, no. 3, 2007.
      */
-    class QPController {
-    public:
+    class QPController
+    {
+      public:
         /**
          * @brief Construct QPController object
          * @param h [in] step-size to use
          * @param state [in] state of the workcell
          * @param device [in] device to control
          */
-        QPController(double h,
-                     const rw::kinematics::State& state,
-                     rw::models::Device* device);
+        QPController (double h, const rw::kinematics::State& state, rw::models::Device* device);
 
         /**
          * @brief destructor
          */
-        virtual ~QPController();
+        virtual ~QPController ();
 
         /**
          * @brief Computes joint velocities for a tool velocity
          *
          * The method provides the, in a least square sense, optimal joint
          * velocity for the specified tool velocity screw. That is the
-         * \f$\mathbf{\dot{q}}\f$ minimizing \f$\|\mathbf{J}\mathbf{\dot{q}}-\mathbf{\dot{x}}\|^2\f$,
-         * subject to the joint position, velocity and acceleration limits.
+         * \f$\mathbf{\dot{q}}\f$ minimizing
+         * \f$\|\mathbf{J}\mathbf{\dot{q}}-\mathbf{\dot{x}}\|^2\f$, subject to the joint position,
+         * velocity and acceleration limits.
          *
          * @param q [in] current device joint configuration
          * @param dq [in] current device joint velocity
@@ -75,22 +76,17 @@ namespace rwlibs { namespace algorithms {
          *
          * @return the optimal joint velocity
          */
-        rw::math::Q solve(const rw::math::Q& q,
-                          const rw::math::Q& dq,
-                          const rw::math::VelocityScrew6D<>& tcpscrew);
+        rw::math::Q solve (const rw::math::Q& q, const rw::math::Q& dq,
+                           const rw::math::VelocityScrew6D<>& tcpscrew);
 
-    private:
+      private:
         typedef rw::math::Q::Base VectorBase;
 
-        VectorBase inequalitySolve(const Eigen::MatrixXd& G,
-        				      const VectorBase& b,
-        				      const VectorBase& lower,
-        				      const VectorBase& upper);
+        VectorBase inequalitySolve (const Eigen::MatrixXd& G, const VectorBase& b,
+                                    const VectorBase& lower, const VectorBase& upper);
 
-        void calculateVelocityLimits(VectorBase& lower,
-        							 VectorBase& upper,
-        							 const VectorBase& q,
-        							 const VectorBase& dq);
+        void calculateVelocityLimits (VectorBase& lower, VectorBase& upper, const VectorBase& q,
+                                      const VectorBase& dq);
 
         double _h;
         size_t _n;
@@ -106,7 +102,7 @@ namespace rwlibs { namespace algorithms {
         VectorBase _amin;
         VectorBase _amax;
 
-        //Stuff for stats
+        // Stuff for stats
         char* _lowerLimitType;
         char* _upperLimitType;
         char* _statusArray;
@@ -117,6 +113,6 @@ namespace rwlibs { namespace algorithms {
 
     /**@}*/
 
-}} // end namespaces
+}}    // namespace rwlibs::algorithms
 
-#endif // end include guard
+#endif    // end include guard

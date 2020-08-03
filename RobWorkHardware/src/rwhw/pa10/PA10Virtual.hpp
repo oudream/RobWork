@@ -24,57 +24,57 @@
 
 #include "PA10.hpp"
 
-#include <rw/math/Q.hpp>
 #include <rw/common/Timer.hpp>
+#include <rw/math/Q.hpp>
 
 #include <fstream>
 
 namespace rwhw {
 
-    /** @addtogroup pa10 */
-    /*@{*/
+/** @addtogroup pa10 */
+/*@{*/
+
+/**
+ * @brief Implements virtual Mitsubishi PA10
+ */
+class PA10Virtual : public PA10
+{
+  public:
+    /**
+     * @brief Creates object
+     * @param q [in] Initial configuration of device. Default value is 0
+     */
+    PA10Virtual (const rw::math::Q& q = rw::math::Q (rw::math::Q::ZeroBase (7)));
 
     /**
-     * @brief Implements virtual Mitsubishi PA10
+     * @copydoc PA10::start
      */
-    class PA10Virtual: public PA10
-    {
-    public:
-        /**
-         * @brief Creates object
-         * @param q [in] Initial configuration of device. Default value is 0
-         */
-        PA10Virtual(const rw::math::Q& q = rw::math::Q(rw::math::Q::ZeroBase(7)));
+    rw::math::Q start (bool& success);
 
-        /**
-         * @copydoc PA10::start
-         */
-        rw::math::Q start(bool& success);
+    /**
+     * @copydoc PA10::initializeThread
+     *
+     * @note Does nothing for PA10Virtual
+     */
+    void initializeThread ();
 
-        /**
-         * @copydoc PA10::initializeThread
-         *
-         * @note Does nothing for PA10Virtual
-         */
-        void initializeThread();
+    /**
+     * @copydoc PA10::update
+     */
+    rw::math::Q update (const rw::math::Q& dq);
 
-        /**
-         * @copydoc PA10::update
-         */
-        rw::math::Q update(const rw::math::Q& dq);
+    /**
+     * @copydoc PA10::stop
+     */
+    void stop ();
 
-        /**
-         * @copydoc PA10::stop
-         */
-        void stop();
+  private:
+    rw::math::Q _q;
+    rw::math::Q _dqlast;
+    rw::common::Timer _timer;
+};
 
-    private:
-        rw::math::Q _q;
-        rw::math::Q _dqlast;
-        rw::common::Timer _timer;
-    };
+/**@}*/
+}    // namespace rwhw
 
-    /**@}*/
-} // end namespaces
-
-#endif // end include guard
+#endif    // end include guard

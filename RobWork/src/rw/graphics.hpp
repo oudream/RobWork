@@ -20,7 +20,6 @@
  * this file includes all header files from the trajectory namespace
  */
 
-
 #ifndef RW_GRAPHICS_HPP_
 #define RW_GRAPHICS_HPP_
 

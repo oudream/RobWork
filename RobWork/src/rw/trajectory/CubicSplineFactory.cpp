@@ -805,7 +805,8 @@ CubicSplineFactory::makeSQUAD (const Path< Timed< rw::math::Quaternion<> > >& tp
 }
 
 InterpolatorTrajectory< rw::math::Quaternion<> >::Ptr
-CubicSplineFactory::makeSQUAD (const Path< rw::math::Quaternion<> >& path, const std::vector< double >& times)
+CubicSplineFactory::makeSQUAD (const Path< rw::math::Quaternion<> >& path,
+                               const std::vector< double >& times)
 {
     InterpolatorTrajectory< Quaternion<> >::Ptr traj =
         ownedPtr (new InterpolatorTrajectory< Quaternion<> > (times[0]));

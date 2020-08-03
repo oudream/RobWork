@@ -8,22 +8,26 @@
 #ifndef RWSIM_DYNAMICS_BODYUTIL_HPP_
 #define RWSIM_DYNAMICS_BODYUTIL_HPP_
 
-#include <rw/math/Vector3D.hpp>
-#include <rw/math/Transform3D.hpp>
-#include <rw/core/Ptr.hpp>
 #include "Body.hpp"
 
-namespace rw { namespace proximity { class CollisionDetector; } }
-namespace rw { namespace kinematics { class State; } }
+#include <rw/core/Ptr.hpp>
+#include <rw/math/Transform3D.hpp>
+#include <rw/math/Vector3D.hpp>
 
-namespace rwsim {
-namespace dynamics {
-	class DynamicWorkCell;
+namespace rw { namespace proximity {
+    class CollisionDetector;
+}}    // namespace rw::proximity
+namespace rw { namespace kinematics {
+    class State;
+}}    // namespace rw::kinematics
 
-	//! @brief Utility functions related to dynamic bodies.
-    class BodyUtil {
-    public:
+namespace rwsim { namespace dynamics {
+    class DynamicWorkCell;
 
+    //! @brief Utility functions related to dynamic bodies.
+    class BodyUtil
+    {
+      public:
         /**
          * @brief a utility function for calculating the transformation of a body if
          * it is kinematically projected in the direction of \b dir. Where dir is described
@@ -34,10 +38,11 @@ namespace dynamics {
          * @param dir [in] the direction to project.
          * @return the transform.
          */
-        static rw::math::Transform3D<> placeBody( rwsim::dynamics::Body::Ptr body,
-                                        rw::core::Ptr<rw::proximity::CollisionDetector> coldect,
-                                        const rw::kinematics::State& state,
-                                        const rw::math::Vector3D<>& dir = -rw::math::Vector3D<>::z());
+        static rw::math::Transform3D<>
+        placeBody (rwsim::dynamics::Body::Ptr body,
+                   rw::core::Ptr< rw::proximity::CollisionDetector > coldect,
+                   const rw::kinematics::State& state,
+                   const rw::math::Vector3D<>& dir = -rw::math::Vector3D<>::z ());
 
         /**
          * @brief Find the parent body of a body.
@@ -46,7 +51,8 @@ namespace dynamics {
          * @param state [in] the current state.
          * @return the parent body, or NULL if not found.
          */
-        static Body::Ptr getParentBody(Body::Ptr child, rw::core::Ptr<DynamicWorkCell> dwc, const rw::kinematics::State& state);
+        static Body::Ptr getParentBody (Body::Ptr child, rw::core::Ptr< DynamicWorkCell > dwc,
+                                        const rw::kinematics::State& state);
 
         /**
          * @brief Find the parent body of a frame.
@@ -55,11 +61,10 @@ namespace dynamics {
          * @param state [in] the current state.
          * @return the parent body, or NULL if not found.
          */
-        static Body::Ptr getParentBody(rw::kinematics::Frame* child, rw::core::Ptr<DynamicWorkCell> dwc, const rw::kinematics::State& state );
-
-
+        static Body::Ptr getParentBody (rw::kinematics::Frame* child,
+                                        rw::core::Ptr< DynamicWorkCell > dwc,
+                                        const rw::kinematics::State& state);
     };
 
-}
-}
+}}     // namespace rwsim::dynamics
 #endif /* RWSIM_DYNAMICS_BODYUTIL_HPP_ */

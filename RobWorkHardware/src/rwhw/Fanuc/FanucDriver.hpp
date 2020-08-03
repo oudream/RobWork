@@ -26,180 +26,174 @@
 
 namespace rwhw {
 
-    /** @addtogroup rwhw */
-    /*@{*/
+/** @addtogroup rwhw */
+/*@{*/
+
+/**
+ * @brief Only for 6 dof fanuc robots
+ *
+ */
+class FanucDriver : public Fanuc
+{
+  public:
+    /**
+     * @brief construct object
+     * @param ipNr [in] IP address of the robot controller
+     * @param updateRate [in] the rate at which the controller recieves data.
+     */
+    FanucDriver (std::string ipNr, int updateRate);
 
     /**
-     * @brief Only for 6 dof fanuc robots
-     *
+     * @brief destruct object
      */
-    class FanucDriver : public Fanuc
-    {
-    public:
-        /**
-         * @brief construct object
-         * @param ipNr [in] IP address of the robot controller
-         * @param updateRate [in] the rate at which the controller recieves data.
-         */
-        FanucDriver(std::string ipNr, int updateRate);
+    virtual ~FanucDriver ();
 
-        /**
-         * @brief destruct object
-         */
-        virtual ~FanucDriver();
+    /**
+     * @copydoc Fanuc::setGlobalSpeed
+     */
+    virtual void setGlobalSpeed (int speed);
 
-        /**
-         * @copydoc Fanuc::setGlobalSpeed
-         */
-        virtual void setGlobalSpeed(int speed);
+    /**
+     * @copydoc Fanuc::getGlobalSpeed
+     */
+    virtual int getGlobalSpeed ();
 
-        /**
-         * @copydoc Fanuc::getGlobalSpeed
-         */
-        virtual int getGlobalSpeed();
+    /**
+     * @copydoc Fanuc::moveFineQ
+     */
+    virtual void moveFineQ (rw::math::Q const& q);
 
-        /**
-         * @copydoc Fanuc::moveFineQ
-         */
-        virtual void moveFineQ(rw::math::Q const &q);
+    /**
+     * @copydoc Fanuc::moveCntQ
+     */
+    virtual void moveCntQ (rw::math::Q const& q);
 
-        /**
-         * @copydoc Fanuc::moveCntQ
-         */
-        virtual void moveCntQ(rw::math::Q const &q);
+    /**
+     * @copydoc Fanuc::isMoveComplete
+     */
+    virtual bool isMoveComplete ();
 
-        /**
-         * @copydoc Fanuc::isMoveComplete
-         */
-        virtual bool isMoveComplete();
+    /**
+     * @copydoc Fanuc::setCntQSpeed
+     */
+    virtual void setCntQSpeed (int speed);
 
-        /**
-         * @copydoc Fanuc::setCntQSpeed
-         */
-        virtual void setCntQSpeed(int speed);
+    /**
+     * @copydoc Fanuc::setFineQSpeed
+     */
+    virtual void setFineQSpeed (int speed);
 
-        /**
-         * @copydoc Fanuc::setFineQSpeed
-         */
-        virtual void setFineQSpeed(int speed);
+    /**
+     * @copydoc Fanuc::setCntQAcc
+     */
+    virtual void setCntQAcc (int acc);
 
-        /**
-         * @copydoc Fanuc::setCntQAcc
-         */
-        virtual void setCntQAcc(int acc);
+    /**
+     * @copydoc Fanuc::setFineQAcc
+     */
+    virtual void setFineQAcc (int acc);
 
-        /**
-         * @copydoc Fanuc::setFineQAcc
-         */
-        virtual void setFineQAcc(int acc);
+    /**
+     * @copydoc Fanuc::getQ
+     */
+    virtual rw::math::Q getQ ();
 
-        /**
-         * @copydoc Fanuc::getQ
-         */
-        virtual rw::math::Q getQ();
+    /**
+     * @copydoc Fanuc::getQ
+     */
+    virtual rw::math::Q getdQ ();
 
-        /**
-         * @copydoc Fanuc::getQ
-         */
-        virtual rw::math::Q getdQ();
+    /**
+     * @copydoc Fanuc::update
+     */
+    virtual void update ();
 
-        /**
-         * @copydoc Fanuc::update
-         */
-        virtual void update();
+    /**
+     * @copydoc Fanuc::connect
+     */
+    virtual bool connect ();
 
-        /**
-         * @copydoc Fanuc::connect
-         */
-        virtual bool connect();
+    /**
+     * @copydoc Fanuc::isConnected
+     */
+    virtual bool isConnected ();
 
-        /**
-         * @copydoc Fanuc::isConnected
-         */
-        virtual bool isConnected();
+    /**
+     * @copydoc Fanuc::disconnect
+     */
+    virtual void disconnect ();
 
-        /**
-         * @copydoc Fanuc::disconnect
-         */
-        virtual void disconnect();
+    /**
+     * @copydoc Fanuc::callRobotProgram
+     */
+    virtual void callRobotProgram (unsigned int progNr);
 
-        /**
-         * @copydoc Fanuc::callRobotProgram
-         */
-        virtual void callRobotProgram(unsigned int progNr);
+    /**
+     * @copydoc Fanuc::disconnect
+     */
+    virtual void setCallArguments (float arg1, float arg2, float arg3);
 
-        /**
-         * @copydoc Fanuc::disconnect
-         */
-        virtual void setCallArguments(float arg1, float arg2, float arg3);
+    /**
+     * @copydoc Fanuc::isCallFinished
+     */
+    virtual bool isCallFinished ();
 
-        /**
-         * @copydoc Fanuc::isCallFinished
-         */
-        virtual bool isCallFinished();
+    bool notifyProgram ();
 
-        bool notifyProgram( );
+    bool isCallWaiting ();
 
-        bool isCallWaiting( );
+    float getLastError () { return _error; };
 
-        float getLastError(){return _error;};
+    void resetError () { _resetError = true; };
 
-        void resetError(){
+    rw::math::Q getPos ();
 
-            _resetError = true;
-        };
+  private:
+    int _updateRate;
+    std::string _ipNr;
 
+    // internal state variable for the initializing and closing the DLL
+    bool _isLibraryOpen, _isConnected;
+    // joint pos and velocity
+    rw::math::Q _qCurrent, _qdCurrent;
 
-        rw::math::Q getPos();
+    // timestamp for qCurrent and qdCurrent in ms
+    long _timeStamp;
+    //
+    typedef enum { IdleCMD, CntCMD, FineCMD, CallCMD } CommandType;
+    // The next command to execute
+    CommandType _nextCmd, _lastCmd;
+    bool _cmdChanged;
+    //
+    unsigned int _accCnt, _accFine, _speedCnt, _speedFine, _globalSpeed;
 
-    private:
-        int _updateRate;
-        std::string _ipNr;
+    bool _accCntChanged, _accFineChanged, _speedCntChanged, _speedFineChanged, _globalSpeedChanged;
 
+    rw::math::Q _qValFine, _qValCnt, _qValCntLast;
+    bool _qFineChanged, _qCntChanged;
 
-        // internal state variable for the initializing and closing the DLL
-        bool _isLibraryOpen, _isConnected;
-        // joint pos and velocity
-        rw::math::Q _qCurrent, _qdCurrent;
+    // joint position handles for setting home, viaA and viaB configurations
+    void *_qHomeReg, *_stateReg, *_qCntReg, *_qFineReg;    //,*_qViaB;
+    void *_movFineReg, *_movCntReg, *_accFineReg, *_accCntReg;
 
-        // timestamp for qCurrent and qdCurrent in ms
-        long _timeStamp;
-        //
-        typedef enum{IdleCMD, CntCMD, FineCMD, CallCMD} CommandType;
-        // The next command to execute
-        CommandType _nextCmd,_lastCmd;
-        bool _cmdChanged;
-        //
-        unsigned int _accCnt, _accFine, _speedCnt, _speedFine, _globalSpeed;
+    void* _errorReg;
 
-        bool _accCntChanged, _accFineChanged, _speedCntChanged,
-            _speedFineChanged, _globalSpeedChanged;
+    // register handles for obtaining lock on via point A and B
+    void* _notifyReg;    //, *_lockB;
 
-        rw::math::Q _qValFine,_qValCnt,_qValCntLast;
-        bool _qFineChanged,_qCntChanged;
+    void *_arg1Reg, *_arg2Reg, *_arg3Reg;
 
-        // joint position handles for setting home, viaA and viaB configurations
-        void *_qHomeReg,*_stateReg,*_qCntReg,*_qFineReg; //,*_qViaB;
-        void *_movFineReg, *_movCntReg, *_accFineReg, *_accCntReg;
+    void* _iHandle;
+    unsigned int _progNrToCall;
+    bool _isCallFinished, _notifyProgram, _isCallWaiting;
+    class Eigen::Vector3f _callArg;
 
-        void *_errorReg;
+    float _error;
+    int _updateCnt;
+    bool _resetError;
+};
 
-        // register handles for obtaining lock on via point A and B
-        void *_notifyReg;//, *_lockB;
+/**@}*/
+}    // namespace rwhw
 
-        void *_arg1Reg, *_arg2Reg, *_arg3Reg;
-
-        void *_iHandle;
-        unsigned int _progNrToCall;
-        bool _isCallFinished,_notifyProgram,_isCallWaiting;
-        class Eigen::Vector3f _callArg;
-
-        float _error;
-        int _updateCnt;
-        bool _resetError;
-    };
-
-    /**@}*/
-} // end namespaces
-
-#endif // end include guard
+#endif    // end include guard

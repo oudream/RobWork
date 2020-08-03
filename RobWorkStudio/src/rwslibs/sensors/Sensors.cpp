@@ -34,7 +34,6 @@
 #include <QMessageBox>
 #include <QTimer>
 #include <boost/bind.hpp>
-
 #include <sstream>
 
 using namespace rw::math;
@@ -91,7 +90,7 @@ Sensors::Sensors () : RobWorkStudioPlugin ("Sensors", QIcon (":/sensors.png"))
 
 Sensors::~Sensors ()
 {
-    for(SensorSet& set : _sensors) {
+    for (SensorSet& set : _sensors) {
         set.view->close ();
     }
     _sensors.clear ();
@@ -100,12 +99,12 @@ Sensors::~Sensors ()
 void Sensors::initialize ()
 {
     getRobWorkStudio ()->stateChangedEvent ().add (
-        boost::bind (&Sensors::stateChangedListener, this, boost::arg<1>()), this);
+        boost::bind (&Sensors::stateChangedListener, this, boost::arg< 1 > ()), this);
 }
 
 void Sensors::updateSim ()
 {
-    for(SensorSet& set : _sensors) {
+    for (SensorSet& set : _sensors) {
         // getRobWorkStudio()->getView()->makeCurrent(); TODO
         Simulator::UpdateInfo info (0.001 * _ui->spnUpdateTime->value ());
         set.view->makeCurrent ();

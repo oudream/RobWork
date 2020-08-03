@@ -25,60 +25,65 @@
  */
 
 #include "ContactStrategyData.hpp"
+
 #include <rw/core/Ptr.hpp>
+
 #include <map>
 
-namespace rwsim {
-namespace contacts {
-class ContactModel;
+namespace rwsim { namespace contacts {
+    class ContactModel;
 
-//! @addtogroup rwsim_contacts
+    //! @addtogroup rwsim_contacts
 
-//! @{
-/**
- * @brief Container for data that is stored by a contact detector between contact detection calls.
- *
- * This will under normal circumstances be a collection of ContactStrategyData objects for the individual strategies used by the detector.
- *
- * Keeping this data between consecutive calls to the contact detector will allow strategies to exploit spatial and temporal coherence to
- * speed up algorithms.
- */
-class ContactDetectorData {
-public:
-	//! @brief Smart pointer type.
-	typedef rw::core::Ptr<ContactDetectorData> Ptr;
+    //! @{
+    /**
+     * @brief Container for data that is stored by a contact detector between contact detection
+     * calls.
+     *
+     * This will under normal circumstances be a collection of ContactStrategyData objects for the
+     * individual strategies used by the detector.
+     *
+     * Keeping this data between consecutive calls to the contact detector will allow strategies to
+     * exploit spatial and temporal coherence to speed up algorithms.
+     */
+    class ContactDetectorData
+    {
+      public:
+        //! @brief Smart pointer type.
+        typedef rw::core::Ptr< ContactDetectorData > Ptr;
 
-	//! @brief Constructor.
-	ContactDetectorData();
+        //! @brief Constructor.
+        ContactDetectorData ();
 
-	//! @brief Copy data to new container.
-	ContactDetectorData(const ContactDetectorData& data);
+        //! @brief Copy data to new container.
+        ContactDetectorData (const ContactDetectorData& data);
 
-	//! @brief Destructor.
-	virtual ~ContactDetectorData();
+        //! @brief Destructor.
+        virtual ~ContactDetectorData ();
 
-	/**
-	 * @brief Assign data from other container to this container.
-	 * @param data [in] the data to copy.
-	 * @return reference to this container.
-	 */
-	ContactDetectorData& operator=(const ContactDetectorData& data);
+        /**
+         * @brief Assign data from other container to this container.
+         * @param data [in] the data to copy.
+         * @return reference to this container.
+         */
+        ContactDetectorData& operator= (const ContactDetectorData& data);
 
-	//! @brief Remove all data.
-	void clear();
+        //! @brief Remove all data.
+        void clear ();
 
-	/**
-	 * @brief Get the stored ContactStrategyData for a specific pair of ContactModels.
-	 * @param modelA [in] the first ContactModel.
-	 * @param modelB [in] the second ContactModel.
-	 * @return a reference to the ContactStrategyData.
-	 */
-	ContactStrategyData& getStrategyData(const ContactModel* modelA, const ContactModel* modelB);
+        /**
+         * @brief Get the stored ContactStrategyData for a specific pair of ContactModels.
+         * @param modelA [in] the first ContactModel.
+         * @param modelB [in] the second ContactModel.
+         * @return a reference to the ContactStrategyData.
+         */
+        ContactStrategyData& getStrategyData (const ContactModel* modelA,
+                                              const ContactModel* modelB);
 
-private:
-	std::map<const ContactModel*, std::map<const ContactModel*, ContactStrategyData> > _modelPairToData;
-};
-//! @}
-} /* namespace contacts */
-} /* namespace rwsim */
+      private:
+        std::map< const ContactModel*, std::map< const ContactModel*, ContactStrategyData > >
+            _modelPairToData;
+    };
+    //! @}
+}}     // namespace rwsim::contacts
 #endif /* RWSIM_CONTACTS_CONTACTDETECTORDATA_HPP_ */

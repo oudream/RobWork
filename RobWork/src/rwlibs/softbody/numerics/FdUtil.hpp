@@ -20,32 +20,31 @@ Copyright 2013 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
 
 #include <Eigen/Core>
 
-namespace rwlibs {
-namespace softbody {
-  /** @addtogroup softbody */
-/*@{*/
+namespace rwlibs { namespace softbody {
+    /** @addtogroup softbody */
+    /*@{*/
 
-/**
- * @brief Various numerical methods using finite-differences
- **/
-class FdUtil
-{
-    
-    public:
-        /**
-     * @brief calculates the derivatives of a vector
-     * 
-     * calculates the derivatives of a vector using second-order accurate, centered FD expressions at the interior points and first-order accurate forward/backward differences
-     * at the endpoints
-     *
-     * @param f vector of function values
-     * @param df vector to put the derivatives in
-     * @param h stepsize    
+    /**
+     * @brief Various numerical methods using finite-differences
      **/
-	static void vectorDerivative(const Eigen::VectorXd &f, Eigen::VectorXd &df, const double h);
+    class FdUtil
+    {
+      public:
+        /**
+         * @brief calculates the derivatives of a vector
+         *
+         * calculates the derivatives of a vector using second-order accurate, centered FD
+         *expressions at the interior points and first-order accurate forward/backward differences
+         * at the endpoints
+         *
+         * @param f vector of function values
+         * @param df vector to put the derivatives in
+         * @param h stepsize
+         **/
+        static void vectorDerivative (const Eigen::VectorXd& f, Eigen::VectorXd& df,
+                                      const double h);
+    };
+    /*@}*/
+}}    // namespace rwlibs::softbody
 
-};
-/*@}*/
-}}
-
-#endif // FDUTIL_HPP
+#endif    // FDUTIL_HPP

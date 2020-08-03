@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,33 +15,38 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RWLIBS_PATHPLANNERS_PRMPLANNER_HPP
 #define RWLIBS_PATHPLANNERS_PRMPLANNER_HPP
 
-#include <rw/pathplanning/QToQPlanner.hpp>
-
-#include <rw/math/Metric.hpp>
-#include <rw/common/Timer.hpp>
-#include <rw/core/Ptr.hpp>
-
-#include <rwlibs/algorithms/kdtree/KDTreeQ.hpp>
-
-#include <boost/shared_ptr.hpp>
-#include <boost/graph/adjacency_list.hpp>
-#include <boost/graph/astar_search.hpp>
-
-#include <boost/archive/text_oarchive.hpp>
-#include <boost/archive/text_iarchive.hpp>
-
-
 #include "PartialIndexTable.hpp"
 
-namespace rw { namespace kinematics { class State; } }
-namespace rw { namespace pathplanning { class QConstraint; } }
-namespace rw { namespace pathplanning { class QEdgeConstraint; } }
-namespace rw { namespace pathplanning { class QSampler; } }
-namespace rw { namespace proximity { class CollisionDetector; } }
+#include <rw/common/Timer.hpp>
+#include <rw/core/Ptr.hpp>
+#include <rw/math/Metric.hpp>
+#include <rw/pathplanning/QToQPlanner.hpp>
+#include <rwlibs/algorithms/kdtree/KDTreeQ.hpp>
+
+#include <boost/archive/text_iarchive.hpp>
+#include <boost/archive/text_oarchive.hpp>
+#include <boost/graph/adjacency_list.hpp>
+#include <boost/graph/astar_search.hpp>
+#include <boost/shared_ptr.hpp>
+
+namespace rw { namespace kinematics {
+    class State;
+}}    // namespace rw::kinematics
+namespace rw { namespace pathplanning {
+    class QConstraint;
+}}    // namespace rw::pathplanning
+namespace rw { namespace pathplanning {
+    class QEdgeConstraint;
+}}    // namespace rw::pathplanning
+namespace rw { namespace pathplanning {
+    class QSampler;
+}}    // namespace rw::pathplanning
+namespace rw { namespace proximity {
+    class CollisionDetector;
+}}    // namespace rw::proximity
 
 namespace rwlibs { namespace pathplanners {
     /** @addtogroup pathplanners */
@@ -71,8 +76,8 @@ namespace rwlibs { namespace pathplanners {
      *
      * Example of use
      * \code
-     *      PRMPlanner* prm = new PRMPlanner(device, workcell, state, collisionDetector, resolution);
-     *      prm->setCollisionCheckingStrategy(PRMPlanner::LAZY);
+     *      PRMPlanner* prm = new PRMPlanner(device, workcell, state, collisionDetector,
+     * resolution); prm->setCollisionCheckingStrategy(PRMPlanner::LAZY);
      *      prm->setNeighSearchStrategy(PRMPlanner::BRUTE_FORCE);
      *      prm->setShortestPathSearchStrategy(PRMPlanner::A_STAR);
      *      prm->buildRoadmap(1000);
@@ -93,18 +98,18 @@ namespace rwlibs { namespace pathplanners {
      *      Multi-Robot Coordination, G. Sanchez, J.C. Latombe. The International
      *      Journal of Robotics Research, Vol. 21, No. 1, pages 5-26, 2002
      */
-    class PRMPlanner: public rw::pathplanning::QToQPlanner
+    class PRMPlanner : public rw::pathplanning::QToQPlanner
     {
-    public:
-		//! @brief smart pointer type to this class
-		typedef rw::core::Ptr<PRMPlanner> Ptr;
+      public:
+        //! @brief smart pointer type to this class
+        typedef rw::core::Ptr< PRMPlanner > Ptr;
 
         /**
          * @brief Constructs PRMPlanner
          *
          * Constructs a PRMPlanner with a given setup. This method does NOT build the roadmap.
-         * The method estimates the movements of the robot to construct a weighted metric as explained
-         * in the general introduction.
+         * The method estimates the movements of the robot to construct a weighted metric as
+         * explained in the general introduction.
          *
          * @param device [in] Device to plan for
          * @param state [in] State giving the setup of the workcell
@@ -113,11 +118,8 @@ namespace rwlibs { namespace pathplanners {
          * @param resolution [in] Cartesian distance the robot is allowed to move
          * between collision checks.
          */
-        PRMPlanner(
-            rw::models::Device* device,
-            const rw::kinematics::State& state,
-            rw::proximity::CollisionDetector* collisionDetector,
-            double resolution);
+        PRMPlanner (rw::models::Device* device, const rw::kinematics::State& state,
+                    rw::proximity::CollisionDetector* collisionDetector, double resolution);
 
         /**
            @brief Constructs PRMPlanner
@@ -128,38 +130,34 @@ namespace rwlibs { namespace pathplanners {
            @param device [in] Device characteristics
            @param state [in] State of rest of the workcell
         */
-        PRMPlanner(
-        	rw::core::Ptr<rw::pathplanning::QConstraint> constraint,
-			rw::core::Ptr<rw::pathplanning::QSampler> sampler,
-            double resolution,
-            const rw::models::Device& device,
-            const rw::kinematics::State& state);
+        PRMPlanner (rw::core::Ptr< rw::pathplanning::QConstraint > constraint,
+                    rw::core::Ptr< rw::pathplanning::QSampler > sampler, double resolution,
+                    const rw::models::Device& device, const rw::kinematics::State& state);
 
         /**
          * @brief Destructor
          */
-        virtual ~PRMPlanner();
+        virtual ~PRMPlanner ();
 
         /**
          * @brief Build the roadmap with the setup specified
          * @param nodecount [in] Number of nodes to insert
          */
-        void buildRoadmap(size_t nodecount);
-
+        void buildRoadmap (size_t nodecount);
 
         /**
          * @brief Sets the desired average number of neighbors. Default value is 20.
          * @param n [in] Desired average number of neighbors
          */
-        void setNeighborCount(size_t n);
+        void setNeighborCount (size_t n);
 
         /**
          * @brief Enumeration for selecting the node neighbor search strategy
          */
         enum NeighborSearchStrategy {
-            BRUTE_FORCE = 0, /*!< Run through all node and look a which a sufficient close. */
+            BRUTE_FORCE = 0,     /*!< Run through all node and look a which a sufficient close. */
             PARTIAL_INDEX_TABLE, /*!< Use a partial index table to make an more efficient lookup. */
-            KDTREE /*!< Use KD tree for neighbor search */
+            KDTREE               /*!< Use KD tree for neighbor search */
         };
 
         /**
@@ -167,7 +165,7 @@ namespace rwlibs { namespace pathplanners {
          *
          * @param neighborSearchStrategy [in] The nearest neighbor search strategy
          */
-        void setNeighSearchStrategy(NeighborSearchStrategy neighborSearchStrategy);
+        void setNeighSearchStrategy (NeighborSearchStrategy neighborSearchStrategy);
 
         /**
          * @brief Sets up the number of dimensions for the partial index table
@@ -185,15 +183,15 @@ namespace rwlibs { namespace pathplanners {
          *
          * @param dimensions [in] Number of dimensions, which should be
          */
-        void setPartialIndexTableDimensions(size_t dimensions);
+        void setPartialIndexTableDimensions (size_t dimensions);
 
         /**
          * @brief Enumeration for selecting the collision checking strategy
          */
         enum CollisionCheckingStrategy {
-            LAZY = 0, /*!< Perform a Lazy collision checking (no checking on construction).*/
+            LAZY = 0,  /*!< Perform a Lazy collision checking (no checking on construction).*/
             NODECHECK, /*!< Only check node on construction, leave edges unchecked. */
-            FULL /*!<Perform a full check of both nodes and edges. */
+            FULL       /*!<Perform a full check of both nodes and edges. */
         };
 
         /**
@@ -202,14 +200,14 @@ namespace rwlibs { namespace pathplanners {
          * Note: Do not call this after the buildRoadmap as it may result in paths with collisions
          * @param collisionCheckingStrategy [in] The collision checking strategy
          */
-        void setCollisionCheckingStrategy(CollisionCheckingStrategy collisionCheckingStrategy);
+        void setCollisionCheckingStrategy (CollisionCheckingStrategy collisionCheckingStrategy);
 
         /**
          * @brief Enumeration for selecing the shortest path search strategy
          */
         enum ShortestPathSearchStrategy {
             A_STAR = 0, /*!< Use A* to search for shortest path. */
-            DIJKSTRA /*!< Use Dijkstra to search for shortest path. */
+            DIJKSTRA    /*!< Use Dijkstra to search for shortest path. */
         };
 
         /**
@@ -220,7 +218,7 @@ namespace rwlibs { namespace pathplanners {
          *
          * @param shortestPathSearchStrategy [in] shortestPathSearchStrategy
          */
-        void setShortestPathSearchStrategy(ShortestPathSearchStrategy shortestPathSearchStrategy);
+        void setShortestPathSearchStrategy (ShortestPathSearchStrategy shortestPathSearchStrategy);
 
         /**
          * @brief Sets the max time of A* before terminating and calling dijkstra
@@ -233,32 +231,29 @@ namespace rwlibs { namespace pathplanners {
          *
          * @param timeout [in] Timeout time.
          */
-        void setAStarTimeOutTime(double timeout);
+        void setAStarTimeOutTime (double timeout);
 
         /**
          * @brief print timing stats from previous run.
          */
-        void printTimeStats();
+        void printTimeStats ();
 
-    private:
-        bool doQuery(
-            const rw::math::Q& qInit,
-            const rw::math::Q& qGoal,
-            rw::trajectory::QPath& path,
-            const rw::pathplanning::StopCriteria& stop);
+      private:
+        bool doQuery (const rw::math::Q& qInit, const rw::math::Q& qGoal,
+                      rw::trajectory::QPath& path, const rw::pathplanning::StopCriteria& stop);
 
-    private:
+      private:
         bool _roadmap_initialized;
-        rw::core::Ptr<rw::pathplanning::QConstraint> _constraint;
-		rw::core::Ptr<rw::pathplanning::QSampler> _sampler;
+        rw::core::Ptr< rw::pathplanning::QConstraint > _constraint;
+        rw::core::Ptr< rw::pathplanning::QSampler > _sampler;
         double _resolution;
 
-		rw::core::Ptr<rw::pathplanning::QEdgeConstraint> _edge;
+        rw::core::Ptr< rw::pathplanning::QEdgeConstraint > _edge;
 
-        std::pair<rw::math::Q, rw::math::Q> _bounds;
+        std::pair< rw::math::Q, rw::math::Q > _bounds;
 
         rw::math::Q _metricWeights;
-		rw::math::QMetric::Ptr _metric;
+        rw::math::QMetric::Ptr _metric;
 
         double _Rneighbor;
         size_t _Nneighbor;
@@ -277,36 +272,36 @@ namespace rwlibs { namespace pathplanners {
         rw::common::Timer neighborTimer;
         rw::common::Timer enhanceTimer;
 
-
         /**
          * @brief The data contained in the PRM graph node
          */
-        class NodeData{
-        public:
+        class NodeData
+        {
+          public:
             //! Joint configuration
             rw::math::Q q;
 
             //! Has the node been checked for collision
             bool checked;
-        private:
+
+          private:
             friend class boost::serialization::access;
             // When the class Archive corresponds to an output archive, the
             // & operator is defined similar to <<.  Likewise, when the class Archive
             // is a type of input archive the & operator is defined similar to >>.
-            template<class Archive>
-            void serialize(Archive & ar, const unsigned int version)
+            template< class Archive > void serialize (Archive& ar, const unsigned int version)
             {
-                ar & q;
-                ar & checked;
+                ar& q;
+                ar& checked;
             }
-
         };
 
         /**
          * @brief The data contained in the PRM graph edge
          */
-        class EdgeData{
-        public:
+        class EdgeData
+        {
+          public:
             //! The edge-weight (defined as pPath(left, right))
             double weight;
 
@@ -318,35 +313,33 @@ namespace rwlibs { namespace pathplanners {
 
             rw::math::Q q1;
             rw::math::Q q2;
-        private:
+
+          private:
             friend class boost::serialization::access;
             // When the class Archive corresponds to an output archive, the
             // & operator is defined similar to <<.  Likewise, when the class Archive
             // is a type of input archive the & operator is defined similar to >>.
-            template<class Archive>
-            void serialize(Archive & ar, const unsigned int version)
+            template< class Archive > void serialize (Archive& ar, const unsigned int version)
             {
-                ar & weight;
-                ar & resolution;
-                ar & q1;
-                ar & q2;
+                ar& weight;
+                ar& resolution;
+                ar& q1;
+                ar& q2;
             }
         };
 
         /**
          * @brief The PRM (Probabilistic RoadMap)
          */
-        typedef boost::adjacency_list<boost::listS,
-                                      boost::listS,
-                                      boost::undirectedS,
-                                      NodeData,
-                                      EdgeData> PRM;
+        typedef boost::adjacency_list< boost::listS, boost::listS, boost::undirectedS, NodeData,
+                                       EdgeData >
+            PRM;
 
         //! The roadmap
         PRM _graph;
 
         //! List of seeds for the enhancement step
-        std::vector<rw::math::Q> _seeds;
+        std::vector< rw::math::Q > _seeds;
 
         //! A PRM node
         typedef PRM::vertex_descriptor Node;
@@ -354,49 +347,50 @@ namespace rwlibs { namespace pathplanners {
         //! A PRM edge
         typedef PRM::edge_descriptor Edge;
 
-        boost::shared_ptr<prm::PartialIndexTable<Node> > _partialIndexTable;
-        rwlibs::algorithms::KDTreeQ<Node>::Ptr  _kdtree;
-        std::list<const rwlibs::algorithms::KDTreeQ<Node>::KDNode*> _kdnodesSearchResult;
+        boost::shared_ptr< prm::PartialIndexTable< Node > > _partialIndexTable;
+        rwlibs::algorithms::KDTreeQ< Node >::Ptr _kdtree;
+        std::list< const rwlibs::algorithms::KDTreeQ< Node >::KDNode* > _kdnodesSearchResult;
 
-        void initialize(
-            const rw::models::Device& device,
-            const rw::kinematics::State& state);
+        void initialize (const rw::models::Device& device, const rw::kinematics::State& state);
 
-		bool inCollision(const rw::math::Q& a, const rw::math::Q& b) const;
-        bool addEdge(Node n1, Node n2, double dist);
+        bool inCollision (const rw::math::Q& a, const rw::math::Q& b) const;
+        bool addEdge (Node n1, Node n2, double dist);
 
-        void addEdges(Node node);
+        void addEdges (Node node);
 
-        Node addNode(const rw::math::Q& q, bool checked);
+        Node addNode (const rw::math::Q& q, bool checked);
 
-        double estimateRneighbor(size_t roadmapsize);
+        double estimateRneighbor (size_t roadmapsize);
 
-        bool searchForShortestPathDijkstra(
-            const Node& nInit, const Node& nGoal, std::list<Node>& result);
-        bool searchForShortestPathAstar(
-            const Node& nInit, const Node& nGoal, std::list<Node>& result);
+        bool searchForShortestPathDijkstra (const Node& nInit, const Node& nGoal,
+                                            std::list< Node >& result);
+        bool searchForShortestPathAstar (const Node& nInit, const Node& nGoal,
+                                         std::list< Node >& result);
 
-        bool inCollision(std::list<Node>& path);
+        bool inCollision (std::list< Node >& path);
 
-        bool enhanceEdgeCheck(Edge& e);
-        void removeCollidingNode(Node node);
-        void removeCollidingEdge(Edge edge);
+        bool enhanceEdgeCheck (Edge& e);
+        void removeCollidingNode (Node node);
+        void removeCollidingEdge (Edge edge);
 
-        void enhanceAround(const rw::math::Q& q);
-        void enhanceRoadmap();
+        void enhanceAround (const rw::math::Q& q);
+        void enhanceRoadmap ();
 
         size_t _enhanceAroundSeedCount;
         size_t _enhanceRandomFromSeedsCnt;
         size_t _enhanceRandomCnt;
 
-        class EdgeCompare {
-        private:
+        class EdgeCompare
+        {
+          private:
             PRM* _prm;
-        public:
-            EdgeCompare(PRM* prm): _prm(prm) {}
 
-            bool operator()(const Edge& e1, const Edge& e2) const {
-                //return 1;
+          public:
+            EdgeCompare (PRM* prm) : _prm (prm) {}
+
+            bool operator() (const Edge& e1, const Edge& e2) const
+            {
+                // return 1;
                 return (*_prm)[e1].resolution > (*_prm)[e2].resolution;
             }
         };
@@ -404,17 +398,16 @@ namespace rwlibs { namespace pathplanners {
         /**
          * @brief The heuristic distance meassure used by the A* shortest path search
          */
-        class PathHeuristic : public boost::astar_heuristic<PRM, double>{
-        public:
+        class PathHeuristic : public boost::astar_heuristic< PRM, double >
+        {
+          public:
             /**
              * @brief Creates object
              * @param lazy [in] the lazy PRM path planner
              * @param nGoal [in] the goal node
              */
-            PathHeuristic(PRM& prm, const rw::math::QMetric* metric, const Node& nGoal) :
-                _prm(prm),
-                _metric(metric),
-                _qGoal(prm[nGoal].q)
+            PathHeuristic (PRM& prm, const rw::math::QMetric* metric, const Node& nGoal) :
+                _prm (prm), _metric (metric), _qGoal (prm[nGoal].q)
             {}
 
             /**
@@ -422,12 +415,9 @@ namespace rwlibs { namespace pathplanners {
              * @param n [in] the node n
              * @return the distance
              */
-            double operator()(const Node& n)
-            {
-                return _metric->distance(_qGoal, _prm[n].q);
-            }
+            double operator() (const Node& n) { return _metric->distance (_qGoal, _prm[n].q); }
 
-        private:
+          private:
             PRM& _prm;
             //! Controlling pathplanner
             const rw::math::QMetric* _metric;
@@ -436,7 +426,7 @@ namespace rwlibs { namespace pathplanners {
         };
     };
 
-	/* @} */
-}} // end namespaces
+    /* @} */
+}}    // namespace rwlibs::pathplanners
 
-#endif // end include guard
+#endif    // end include guard

@@ -18,78 +18,76 @@
 #ifndef RW_GEOMETRY_OBBFACTORY_HPP_
 #define RW_GEOMETRY_OBBFACTORY_HPP_
 
-#include <rw/geometry/analytic/Shell.hpp>
-#include <rw/geometry/Covariance.hpp>
-#include <rw/geometry/QHull3D.hpp>
-#include <rw/math/EigenDecomposition.hpp>
-#include <rw/math/Vector3D.hpp>
-#include <rw/math/Transform3D.hpp>
-
 #include "BV.hpp"
 #include "OBB.hpp"
 
-namespace rw {
-namespace geometry {
+#include <rw/geometry/Covariance.hpp>
+#include <rw/geometry/QHull3D.hpp>
+#include <rw/geometry/analytic/Shell.hpp>
+#include <rw/math/EigenDecomposition.hpp>
+#include <rw/math/Transform3D.hpp>
+#include <rw/math/Vector3D.hpp>
+
+namespace rw { namespace geometry {
 
     /**
      * @brief factory for computing tight fitting Oriented Bounding Boxes.
      */
-    template<class T>
-    class OBBFactory: public BVFactory<OBB<T> > {
-    public:
-    	//! @brief The supported methods to generate an oriented bounding box from a mesh.
+    template< class T > class OBBFactory : public BVFactory< OBB< T > >
+    {
+      public:
+        //! @brief The supported methods to generate an oriented bounding box from a mesh.
         typedef enum {
-        	PCA,      //!< Principal Component Analysis
-			PCAHull,  //!< Principal Component Analysis Hull
-			DITO14    //!< Ditretahedron method with 14 selected vertices.
+            PCA,        //!< Principal Component Analysis
+            PCAHull,    //!< Principal Component Analysis Hull
+            DITO14      //!< Ditretahedron method with 14 selected vertices.
         } FitMethod;
 
         /**
          * @brief Constructor.
          * @param method [in] (optional) the method to use. Default is the DITO14 method.
          */
-        OBBFactory(FitMethod method = DITO14):_method(method){}
+        OBBFactory (FitMethod method = DITO14) : _method (method) {}
 
         //! @brief Destructor.
-        virtual ~OBBFactory(){}
+        virtual ~OBBFactory () {}
 
         //! @copydoc BVFactory::makeBV(rw::geometry::TriMesh&)
-        virtual rw::geometry::OBB<T> makeBV(rw::geometry::TriMesh& geom){
-            switch(_method){
-            case(DITO14): return makeDITO(geom);
-            case(PCA):return makePCA(geom);
-            case(PCAHull):return makePCAHull(geom);
-            default:
-                RW_THROW("Unsupported fitting method!");
-                break;
+        virtual rw::geometry::OBB< T > makeBV (rw::geometry::TriMesh& geom)
+        {
+            switch (_method) {
+                case (DITO14): return makeDITO (geom);
+                case (PCA): return makePCA (geom);
+                case (PCAHull): return makePCAHull (geom);
+                default: RW_THROW ("Unsupported fitting method!"); break;
             }
-            return makePCA(geom);
+            return makePCA (geom);
         }
 
         //! @copydoc BVFactory::makeBV(rw::geometry::GeometryData&)
-        rw::geometry::OBB<T> makeBV(rw::geometry::GeometryData& geom){
-            rw::geometry::TriMesh* mesh = dynamic_cast<rw::geometry::TriMesh*>(&geom);
-            if( mesh!=NULL ){
-                return makeBV(*mesh);
+        rw::geometry::OBB< T > makeBV (rw::geometry::GeometryData& geom)
+        {
+            rw::geometry::TriMesh* mesh = dynamic_cast< rw::geometry::TriMesh* > (&geom);
+            if (mesh != NULL) {
+                return makeBV (*mesh);
             }
             // TODO: this might be very inefficient
-            rw::core::Ptr<rw::geometry::TriMesh> geommesh = geom.getTriMesh(false);
-            return makeBV(*geommesh);
+            rw::core::Ptr< rw::geometry::TriMesh > geommesh = geom.getTriMesh (false);
+            return makeBV (*geommesh);
         }
 
         //! @copydoc BVFactory::makeBV(rw::geometry::Primitive&)
-        rw::geometry::OBB<T> makeBV(rw::geometry::Primitive& geom){
+        rw::geometry::OBB< T > makeBV (rw::geometry::Primitive& geom)
+        {
             // TODO: this might be very inefficient
-            rw::core::Ptr<rw::geometry::TriMesh> geommesh = geom.getTriMesh(false);
-            return makeBV(*geommesh);
+            rw::core::Ptr< rw::geometry::TriMesh > geommesh = geom.getTriMesh (false);
+            return makeBV (*geommesh);
         }
 
-        rw::geometry::OBB<T> makeDITO(const rw::geometry::TriMesh& mesh) const;
+        rw::geometry::OBB< T > makeDITO (const rw::geometry::TriMesh& mesh) const;
 
         //! @copydoc BVFactory::makeBV(rw::geometry::Shell&)
-        rw::geometry::OBB<T> makeBV(rw::geometry::Shell& geom) {
-        	return geom.obb();
-        }
+        rw::geometry::OBB< T > makeBV (rw::geometry::Shell& geom) { return geom.obb (); }
 
         /**
          * @brief computes covariance over vertices in mesh and calculates the
@@ -97,7 +95,7 @@ namespace geometry {
          * @param mesh [in] the triangle mesh to create oriented bounding box for.
          * @return a tight fitting bounding box
          */
-        rw::geometry::OBB<T> makePCA(const rw::geometry::TriMesh& mesh) const;
+        rw::geometry::OBB< T > makePCA (const rw::geometry::TriMesh& mesh) const;
 
         /**
          * @brief computes covariance over the vertices of the convex hull
@@ -106,147 +104,155 @@ namespace geometry {
          * @param mesh [in] the triangle mesh to create oriented bounding box for.
          * @return a tight fitting bounding box
          */
-        rw::geometry::OBB<T> makePCAHull(const rw::geometry::TriMesh& mesh) const;
+        rw::geometry::OBB< T > makePCAHull (const rw::geometry::TriMesh& mesh) const;
 
-    private:
+      private:
         FitMethod _method;
     };
 
-    template<class T>
-    rw::geometry::OBB<T> OBBFactory<T>::makeDITO(const rw::geometry::TriMesh& mesh) const {
-        return makePCAHull(mesh);
+    template< class T >
+    rw::geometry::OBB< T > OBBFactory< T >::makeDITO (const rw::geometry::TriMesh& mesh) const
+    {
+        return makePCAHull (mesh);
     }
 
-    template<class T>
-    rw::geometry::OBB<T> OBBFactory<T>::makePCA(const rw::geometry::TriMesh& mesh) const {
-        //return rw::geometry::OBB<T>::buildTightOBB(mesh);
+    template< class T >
+    rw::geometry::OBB< T > OBBFactory< T >::makePCA (const rw::geometry::TriMesh& mesh) const
+    {
+        // return rw::geometry::OBB<T>::buildTightOBB(mesh);
 
         using namespace rw::math;
-        //std::cout << "\nMesh size: " << mesh.size() << "\n";
+        // std::cout << "\nMesh size: " << mesh.size() << "\n";
         Covariance<> covar;
-        TriMesh::VerticeIterator iter(mesh);
-        covar.doInitialize<TriMesh::VerticeIterator,3>(iter,iter);
-        EigenDecomposition<> eigend = covar.eigenDecompose();
+        TriMesh::VerticeIterator iter (mesh);
+        covar.doInitialize< TriMesh::VerticeIterator, 3 > (iter, iter);
+        EigenDecomposition<> eigend = covar.eigenDecompose ();
         // the eigendecomposition has the eigen vectors and value.
         // we want the x-axis of the OBB to be aligned with the largest eigen vector.
-        eigend.sort();
-        Vector3D<> axisX( eigend.getEigenVector(2) );
-        Vector3D<> axisY( eigend.getEigenVector(1) );
-        Vector3D<> axisZ = cross(axisX,axisY);
+        eigend.sort ();
+        Vector3D<> axisX (eigend.getEigenVector (2));
+        Vector3D<> axisY (eigend.getEigenVector (1));
+        Vector3D<> axisZ = cross (axisX, axisY);
         // so now we can form the basis of the rotation matrix of the OBB
-        Rotation3D<> rot(normalize(axisX),normalize(axisY),normalize(axisZ));
-        Rotation3D<> rotInv = inverse( rot );
+        Rotation3D<> rot (normalize (axisX), normalize (axisY), normalize (axisZ));
+        Rotation3D<> rotInv = inverse (rot);
         // last we need to find the maximum and minimum points in the mesh to determine
         // the bounds (halflengts) of the OBB
-        Triangle<> t = mesh.getTriangle(0);
-        Vector3D<> p = rotInv * cast<T>(t[0]);
-        Vector3D<> max=p, min=p;
+        Triangle<> t   = mesh.getTriangle (0);
+        Vector3D<> p   = rotInv * cast< T > (t[0]);
+        Vector3D<> max = p, min = p;
         Triangle<> tri;
-        for(size_t i=0;i<mesh.getSize();i++){
-            mesh.getTriangle(i, tri);
-            for(int pidx=0;pidx<3; pidx++){
-                Vector3D<> p = rotInv * cast<T>(tri[pidx]);
-                for(int j=0; j<3; j++){
-                    if( p(j)>max(j) ) max(j) = p(j);
-                    else if( p(j)<min(j) ) min(j) = p(j);
+        for (size_t i = 0; i < mesh.getSize (); i++) {
+            mesh.getTriangle (i, tri);
+            for (int pidx = 0; pidx < 3; pidx++) {
+                Vector3D<> p = rotInv * cast< T > (tri[pidx]);
+                for (int j = 0; j < 3; j++) {
+                    if (p (j) > max (j))
+                        max (j) = p (j);
+                    else if (p (j) < min (j))
+                        min (j) = p (j);
                 }
             }
         }
-        Vector3D<> midPoint = rot*( 0.5*(max+min));
-        Vector3D<> halfLength = 0.5*(max-min);
-        Transform3D<> trans(midPoint,rot);
-        return OBB<T>(trans, halfLength);
+        Vector3D<> midPoint   = rot * (0.5 * (max + min));
+        Vector3D<> halfLength = 0.5 * (max - min);
+        Transform3D<> trans (midPoint, rot);
+        return OBB< T > (trans, halfLength);
     }
 
-    template<class T>
-    rw::geometry::OBB<T> OBBFactory<T>::makePCAHull(const rw::geometry::TriMesh& meshInput) const {
+    template< class T >
+    rw::geometry::OBB< T >
+    OBBFactory< T >::makePCAHull (const rw::geometry::TriMesh& meshInput) const
+    {
         using namespace rw::math;
-        
+
         QHull3D hullgen;
 
-        IndexedTriMeshN0D::Ptr mesh = TriangleUtil::toIndexedTriMesh<IndexedTriMeshN0D>(meshInput);
+        IndexedTriMeshN0D::Ptr mesh =
+            TriangleUtil::toIndexedTriMesh< IndexedTriMeshN0D > (meshInput);
         TriMesh::Ptr pmesh;
-        if(mesh->size()<5){
+        if (mesh->size () < 5) {
             pmesh = mesh;
-        } else {
+        }
+        else {
             // build the convex hull
-            hullgen.rebuild(mesh->getVertices() );
-            pmesh = hullgen.toTriMesh();
+            hullgen.rebuild (mesh->getVertices ());
+            pmesh = hullgen.toTriMesh ();
         }
 
-        //std::cout << "\nMesh size: " << mesh.size() << "\n";
-        Eigen::MatrixXd covarM = Eigen::MatrixXd(3,3);
-        Vector3D<> centroidSum(0,0,0);
-        double aSum= 0;
-        for(size_t i=0;i<pmesh->size();i++){
-            Triangle<> tri = pmesh->getTriangle(i);
+        // std::cout << "\nMesh size: " << mesh.size() << "\n";
+        Eigen::MatrixXd covarM = Eigen::MatrixXd (3, 3);
+        Vector3D<> centroidSum (0, 0, 0);
+        double aSum = 0;
+        for (size_t i = 0; i < pmesh->size (); i++) {
+            Triangle<> tri      = pmesh->getTriangle (i);
             const Vector3D<>& p = tri[0];
             const Vector3D<>& q = tri[1];
             const Vector3D<>& r = tri[2];
-            double a = tri.calcArea();
+            double a            = tri.calcArea ();
             aSum += a;
 
-            Vector3D<> c = (p+q+r)*1.0/3.0;
-            centroidSum += c*a;
+            Vector3D<> c = (p + q + r) * 1.0 / 3.0;
+            centroidSum += c * a;
 
-            double ascale = (a/12.0);
-            covarM(0,0) += ascale*(9*c[0]*c[0] + p[0]*p[0] + q[0]*q[0] + r[0]*r[0] );
-            covarM(1,1) += ascale*(9*c[1]*c[1] + p[1]*p[1] + q[1]*q[1] + r[1]*r[1] );
-            covarM(2,2) += ascale*(9*c[2]*c[2] + p[2]*p[2] + q[2]*q[2] + r[2]*r[2] );
-            covarM(0,1) += ascale*(9*c[0]*c[1] + p[0]*p[1] + q[0]*q[1] + r[0]*r[1] );
-            covarM(0,2) += ascale*(9*c[0]*c[2] + p[0]*p[2] + q[0]*q[2] + r[0]*r[2] );
-            covarM(1,2) += ascale*(9*c[1]*c[2] + p[1]*p[2] + q[1]*q[2] + r[1]*r[2] );
+            double ascale = (a / 12.0);
+            covarM (0, 0) += ascale * (9 * c[0] * c[0] + p[0] * p[0] + q[0] * q[0] + r[0] * r[0]);
+            covarM (1, 1) += ascale * (9 * c[1] * c[1] + p[1] * p[1] + q[1] * q[1] + r[1] * r[1]);
+            covarM (2, 2) += ascale * (9 * c[2] * c[2] + p[2] * p[2] + q[2] * q[2] + r[2] * r[2]);
+            covarM (0, 1) += ascale * (9 * c[0] * c[1] + p[0] * p[1] + q[0] * q[1] + r[0] * r[1]);
+            covarM (0, 2) += ascale * (9 * c[0] * c[2] + p[0] * p[2] + q[0] * q[2] + r[0] * r[2]);
+            covarM (1, 2) += ascale * (9 * c[1] * c[2] + p[1] * p[2] + q[1] * q[2] + r[1] * r[2]);
         }
-        double ah_inv = (1.0/aSum);
-        centroidSum = centroidSum * ah_inv;
+        double ah_inv = (1.0 / aSum);
+        centroidSum   = centroidSum * ah_inv;
 
-        covarM(0,0) = ah_inv * covarM(0,0) - centroidSum[0]*centroidSum[0];
-        covarM(1,1) = ah_inv * covarM(1,1) - centroidSum[1]*centroidSum[1];
-        covarM(2,2) = ah_inv * covarM(2,2) - centroidSum[2]*centroidSum[2];
-        covarM(0,1) = ah_inv * covarM(0,1) - centroidSum[0]*centroidSum[1];
-        covarM(0,2) = ah_inv * covarM(0,2) - centroidSum[0]*centroidSum[2];
-        covarM(1,2) = ah_inv * covarM(1,2) - centroidSum[1]*centroidSum[2];
+        covarM (0, 0) = ah_inv * covarM (0, 0) - centroidSum[0] * centroidSum[0];
+        covarM (1, 1) = ah_inv * covarM (1, 1) - centroidSum[1] * centroidSum[1];
+        covarM (2, 2) = ah_inv * covarM (2, 2) - centroidSum[2] * centroidSum[2];
+        covarM (0, 1) = ah_inv * covarM (0, 1) - centroidSum[0] * centroidSum[1];
+        covarM (0, 2) = ah_inv * covarM (0, 2) - centroidSum[0] * centroidSum[2];
+        covarM (1, 2) = ah_inv * covarM (1, 2) - centroidSum[1] * centroidSum[2];
 
-        covarM(1,0) = covarM(0,1);
-        covarM(2,0) = covarM(0,2);
-        covarM(2,1) = covarM(1,2);
+        covarM (1, 0) = covarM (0, 1);
+        covarM (2, 0) = covarM (0, 2);
+        covarM (2, 1) = covarM (1, 2);
 
-        Covariance<> covar(covarM);
-        EigenDecomposition<> eigend = covar.eigenDecompose();
+        Covariance<> covar (covarM);
+        EigenDecomposition<> eigend = covar.eigenDecompose ();
         // the eigendecomposition has the eigen vectors and value.
         // we want the x-axis of the OBB to be aligned with the largest eigen vector.
-        eigend.sort();
-        Vector3D<> axisX( eigend.getEigenVector(2) );
-        Vector3D<> axisY( eigend.getEigenVector(1) );
-        Vector3D<> axisZ = cross(axisX,axisY);
+        eigend.sort ();
+        Vector3D<> axisX (eigend.getEigenVector (2));
+        Vector3D<> axisY (eigend.getEigenVector (1));
+        Vector3D<> axisZ = cross (axisX, axisY);
         // so now we can form the basis of the rotation matrix of the OBB
-        Rotation3D<> rot(normalize(axisX),normalize(axisY),normalize(axisZ));
-        Rotation3D<> rotInv = inverse( rot );
-        //std::cout << rot << std::endl;
+        Rotation3D<> rot (normalize (axisX), normalize (axisY), normalize (axisZ));
+        Rotation3D<> rotInv = inverse (rot);
+        // std::cout << rot << std::endl;
 
         // last we need to find the maximum and minimum points in the mesh to determine
         // the bounds (halflengts) of the OBB
-        Triangle<> t = pmesh->getTriangle(0);
-        Vector3D<> p = rotInv * cast<T>(t[0]);
-        Vector3D<> max=p, min=p;
-        for(size_t i=0;i<pmesh->getSize();i++){
-            Triangle<> tri = pmesh->getTriangle(i);
-            for(int pidx=0;pidx<3; pidx++){
-                Vector3D<> p = rotInv * cast<T>(tri[pidx]);
-                for(int j=0; j<3; j++){
-                    if( p(j)>max(j) ) max(j) = p(j);
-                    else if( p(j)<min(j) ) min(j) = p(j);
+        Triangle<> t   = pmesh->getTriangle (0);
+        Vector3D<> p   = rotInv * cast< T > (t[0]);
+        Vector3D<> max = p, min = p;
+        for (size_t i = 0; i < pmesh->getSize (); i++) {
+            Triangle<> tri = pmesh->getTriangle (i);
+            for (int pidx = 0; pidx < 3; pidx++) {
+                Vector3D<> p = rotInv * cast< T > (tri[pidx]);
+                for (int j = 0; j < 3; j++) {
+                    if (p (j) > max (j))
+                        max (j) = p (j);
+                    else if (p (j) < min (j))
+                        min (j) = p (j);
                 }
             }
         }
-        Vector3D<> midPoint = rot*( 0.5*(max+min));
-        Vector3D<> halfLength = 0.5*(max-min);
-        Transform3D<> trans(midPoint,rot);
-        return OBB<T>(trans, halfLength);
+        Vector3D<> midPoint   = rot * (0.5 * (max + min));
+        Vector3D<> halfLength = 0.5 * (max - min);
+        Transform3D<> trans (midPoint, rot);
+        return OBB< T > (trans, halfLength);
     }
 
-
-}
-}
+}}    // namespace rw::geometry
 
 #endif

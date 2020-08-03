@@ -16,79 +16,87 @@
  ********************************************************************************/
 
 #include "IndexedQuadraticFaceArray.hpp"
+
 #include "QuadraticFace.hpp"
 
 using rw::core::ownedPtr;
 using namespace rw::geometry;
 
-struct IndexedQuadraticFaceArray::CenterSort {
-	CenterSort() {}
+struct IndexedQuadraticFaceArray::CenterSort
+{
+    CenterSort () {}
 
-    bool operator()(const IndexedFace& i0, const IndexedFace& i1) {
-        return i0.center < i1.center;
-    }
+    bool operator() (const IndexedFace& i0, const IndexedFace& i1) { return i0.center < i1.center; }
 };
 
-IndexedQuadraticFaceArray::IndexedQuadraticFaceArray(rw::core::Ptr<const QuadraticShell> quadric):
-	_quadric(quadric),
-	_faces(quadric->size()),
-	_first(0),
-	_last(_faces.size())
+IndexedQuadraticFaceArray::IndexedQuadraticFaceArray (
+    rw::core::Ptr< const QuadraticShell > quadric) :
+    _quadric (quadric),
+    _faces (quadric->size ()), _first (0), _last (_faces.size ())
 {
-	for (std::size_t i = 0; i < _faces.size(); i++)
-		_faces[i].originalID = i;
+    for (std::size_t i = 0; i < _faces.size (); i++)
+        _faces[i].originalID = i;
 }
 
-IndexedQuadraticFaceArray::IndexedQuadraticFaceArray(rw::core::Ptr<const QuadraticShell> quadric, const std::vector<IndexedFace>& faces, std::size_t first, std::size_t last):
-	_quadric(quadric),
-	_faces(faces),
-	_first(first),
-	_last(last)
+IndexedQuadraticFaceArray::IndexedQuadraticFaceArray (rw::core::Ptr< const QuadraticShell > quadric,
+                                                      const std::vector< IndexedFace >& faces,
+                                                      std::size_t first, std::size_t last) :
+    _quadric (quadric),
+    _faces (faces), _first (first), _last (last)
+{}
+
+IndexedQuadraticFaceArray::~IndexedQuadraticFaceArray ()
+{}
+
+bool IndexedQuadraticFaceArray::isConvex ()
 {
+    return false;
 }
 
-IndexedQuadraticFaceArray::~IndexedQuadraticFaceArray() {
+std::size_t IndexedQuadraticFaceArray::size () const
+{
+    return _last - _first;
 }
 
-bool IndexedQuadraticFaceArray::isConvex() {
-	return false;
+QuadraticFace::CPtr IndexedQuadraticFaceArray::getFace (std::size_t idx) const
+{
+    return _quadric->getFace (_faces[_first + idx].originalID);
 }
 
-std::size_t IndexedQuadraticFaceArray::size() const {
-	return _last-_first;
+void IndexedQuadraticFaceArray::getFace (std::size_t idx, QuadraticFace& dst) const
+{
+    dst = *_quadric->getFace (_faces[_first + idx].originalID);
 }
 
-QuadraticFace::CPtr IndexedQuadraticFaceArray::getFace(std::size_t idx) const {
-	return _quadric->getFace(_faces[_first+idx].originalID);
+IndexedQuadraticFaceArray::IndexedFace
+IndexedQuadraticFaceArray::getIndexedFace (std::size_t idx) const
+{
+    return _faces[_first + idx];
 }
 
-void IndexedQuadraticFaceArray::getFace(std::size_t idx, QuadraticFace& dst) const {
-	dst = *_quadric->getFace(_faces[_first+idx].originalID);
+void IndexedQuadraticFaceArray::getIndexedFace (std::size_t idx, IndexedFace& dst) const
+{
+    dst = _faces[_first + idx];
 }
 
-IndexedQuadraticFaceArray::IndexedFace IndexedQuadraticFaceArray::getIndexedFace(std::size_t idx) const {
-	return _faces[_first+idx];
+void IndexedQuadraticFaceArray::sortAxis (int axis, const rw::math::Transform3D<>& t3d)
+{
+    // first transform the requested splitaxis values
+    for (std::size_t i = _first; i < _first + size (); i++) {
+        IndexedFace& elem = _faces[i];
+        const std::pair< double, double > ext =
+            _quadric->getFace (elem.originalID)->extremums (t3d.R ().getCol (axis));
+        elem.lower  = ext.first + t3d.P () (axis);
+        elem.upper  = ext.second + t3d.P () (axis);
+        elem.center = (ext.first + ext.second) / 2;
+    }
+
+    std::sort (_faces.begin () + _first, _faces.begin () + _last, CenterSort ());
 }
 
-void IndexedQuadraticFaceArray::getIndexedFace(std::size_t idx, IndexedFace& dst) const {
-	dst = _faces[_first+idx];
-}
-
-void IndexedQuadraticFaceArray::sortAxis(int axis, const rw::math::Transform3D<>& t3d) {
-	// first transform the requested splitaxis values
-	for(std::size_t i = _first; i < _first+size(); i++) {
-		IndexedFace& elem = _faces[i];
-		const std::pair<double,double> ext = _quadric->getFace(elem.originalID)->extremums(t3d.R().getCol(axis));
-		elem.lower = ext.first+t3d.P()(axis);
-		elem.upper = ext.second+t3d.P()(axis);
-		elem.center = (ext.first+ext.second)/2;
-	}
-
-	std::sort(_faces.begin()+_first, _faces.begin()+_last, CenterSort());
-}
-
-
-IndexedQuadraticFaceArray IndexedQuadraticFaceArray::getSubRange(std::size_t first, std::size_t last) const {
-	RW_ASSERT(first<last);
-	return IndexedQuadraticFaceArray(_quadric,_faces,_first+first,_first+last);
+IndexedQuadraticFaceArray IndexedQuadraticFaceArray::getSubRange (std::size_t first,
+                                                                  std::size_t last) const
+{
+    RW_ASSERT (first < last);
+    return IndexedQuadraticFaceArray (_quadric, _faces, _first + first, _first + last);
 }

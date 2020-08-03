@@ -17,6 +17,7 @@
 
 #include "SliderTab.hpp"
 
+#include <rw/core/Exception.hpp>
 #include <rw/invkin/IKMetaSolver.hpp>
 #include <rw/invkin/JacobianIKSolver.hpp>
 #include <rw/invkin/ParallelIKSolver.hpp>
@@ -28,7 +29,6 @@
 #include <rw/models/Joint.hpp>
 #include <rw/models/ParallelDevice.hpp>
 #include <rw/models/WorkCell.hpp>
-#include <rw/core/Exception.hpp>
 
 #include <QApplication>
 #include <QCheckBox>
@@ -88,32 +88,32 @@ SliderSpinBox::SliderSpinBox (double low, double high)
 void SliderSpinBox::fixup (QString& input) const
 {
     QString out;
-    int deci = decimals ();
-    bool gotNum=false;
-    bool dot = false;
+    int deci    = decimals ();
+    bool gotNum = false;
+    bool dot    = false;
     for (int i = 0; i < input.count (); i++) {
         if (deci == 0) {
             break;
         }
         if (input[i] == '-' && !gotNum) {
             out += input[i];
-            gotNum=true;
+            gotNum = true;
         }
         else if (input[i] >= '0' && input[i] <= '9') {
             if (dot) {
                 deci--;
             }
             out += input[i];
-            gotNum=true;
+            gotNum = true;
         }
         else if ((input[i] == '.' || input[i] == ',') && !dot) {
             out += input[i];
             dot = true;
         }
     }
-    std::cout << "Input: " << input.toStdString() << std::endl;
+    std::cout << "Input: " << input.toStdString () << std::endl;
     input = out;
-    std::cout << "Output: " << out.toStdString() << std::endl;
+    std::cout << "Output: " << out.toStdString () << std::endl;
 }
 
 QValidator::State SliderSpinBox::validate (QString& text, int& pos) const

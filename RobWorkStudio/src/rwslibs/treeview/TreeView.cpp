@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
  * Faculty of Engineering, University of Southern Denmark
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,27 +21,25 @@
 #include <rw/graphics/DrawableNode.hpp>
 #include <rw/kinematics/Kinematics.hpp>
 #include <rw/loaders/GeometryFactory.hpp>
-#include <rw/models/Joint.hpp>
 #include <rw/models/Device.hpp>
+#include <rw/models/Joint.hpp>
+#include <rw/models/MobileDevice.hpp>
 #include <rw/models/ParallelDevice.hpp>
 #include <rw/models/SerialDevice.hpp>
-#include <rw/models/MobileDevice.hpp>
 #include <rw/models/TreeDevice.hpp>
 #include <rws/RobWorkStudio.hpp>
 
-#include <QLayout>
-#include <QVariant>
-#include <QTreeWidgetItem>
+#include <QFileDialog>
 #include <QInputDialog>
-#include <QTreeWidget>
 #include <QKeyEvent>
+#include <QLayout>
 #include <QMenu>
 #include <QToolBar>
-#include <QFileDialog>
-
+#include <QTreeWidget>
+#include <QTreeWidgetItem>
+#include <QVariant>
 #include <boost/bind.hpp>
 #include <boost/lexical_cast.hpp>
-
 #include <vector>
 
 using namespace rw::graphics;
@@ -56,332 +54,341 @@ using namespace rw::loaders;
 using std::make_pair;
 
 const QString strVisFrameName = "Frame Visualization";
-const std::string FRAMEID = "TreeView:Frame";
+const std::string FRAMEID     = "TreeView:Frame";
 
-namespace
+namespace {
+std::string getFrameName (const Frame& frame)
 {
-    std::string getFrameName(const Frame& frame)
-    {
-        std::string name = frame.getName();
-        size_t index = name.find_last_of('.');
-        if (index == std::string::npos)
-            return frame.getName();
-        else
-            return name.substr(index + 1);
-    }
-
-    std::string getFrameNameFirst(const Frame& frame)
-    {
-        std::string name = frame.getName();
-        size_t index = name.find_first_of('.');
-        if (index == std::string::npos)
-            return frame.getName();
-        else
-            return name.substr(index + 1);
-    }
+    std::string name = frame.getName ();
+    size_t index     = name.find_last_of ('.');
+    if (index == std::string::npos)
+        return frame.getName ();
+    else
+        return name.substr (index + 1);
 }
 
-TreeView::TreeView() :
-    RobWorkStudioPlugin("TreeView", QIcon(":/treeview.png")),
-    _workcell(NULL),
-    _frameAxisSize(0.25)
+std::string getFrameNameFirst (const Frame& frame)
+{
+    std::string name = frame.getName ();
+    size_t index     = name.find_first_of ('.');
+    if (index == std::string::npos)
+        return frame.getName ();
+    else
+        return name.substr (index + 1);
+}
+}    // namespace
+
+TreeView::TreeView () :
+    RobWorkStudioPlugin ("TreeView", QIcon (":/treeview.png")), _workcell (NULL),
+    _frameAxisSize (0.25)
 
 {
-	// Construct widget and layout for QDockWidget
-	QWidget *widg = new QWidget(this);
-	QVBoxLayout *lay = new QVBoxLayout(widg);
-	widg->setLayout(lay);
-	this->setWidget(widg);
+    // Construct widget and layout for QDockWidget
+    QWidget* widg    = new QWidget (this);
+    QVBoxLayout* lay = new QVBoxLayout (widg);
+    widg->setLayout (lay);
+    this->setWidget (widg);
 
     // Setup ToolBar
-    QToolBar* toolbar = new QToolBar();
-    lay->addWidget(toolbar); // own toolbar
-    toolbar->setIconSize(QSize(12,12));
-    lay->setAlignment(toolbar, Qt::AlignTop);
+    QToolBar* toolbar = new QToolBar ();
+    lay->addWidget (toolbar);    // own toolbar
+    toolbar->setIconSize (QSize (12, 12));
+    lay->setAlignment (toolbar, Qt::AlignTop);
 
-    QAction* collapseAllAction = new QAction(QIcon(":/images/collapse_all.png"), "Collapse All", this); // owned
-    connect(collapseAllAction, SIGNAL(triggered()), this, SLOT(collapseAll()));
+    QAction* collapseAllAction =
+        new QAction (QIcon (":/images/collapse_all.png"), "Collapse All", this);    // owned
+    connect (collapseAllAction, SIGNAL (triggered ()), this, SLOT (collapseAll ()));
 
-    QAction* expandAllAction = new QAction(QIcon(":/images/expand_all.png"), "Expand All", this); // owned
-    connect(expandAllAction, SIGNAL(triggered()), this, SLOT(expandAll()));
+    QAction* expandAllAction =
+        new QAction (QIcon (":/images/expand_all.png"), "Expand All", this);    // owned
+    connect (expandAllAction, SIGNAL (triggered ()), this, SLOT (expandAll ()));
 
-    QAction *forceUpdateAction = new QAction(QIcon(":/images/reload.png"), "Force Update", this); // owned
-    connect(forceUpdateAction, SIGNAL(triggered()), this, SLOT(update()));
+    QAction* forceUpdateAction =
+        new QAction (QIcon (":/images/reload.png"), "Force Update", this);    // owned
+    connect (forceUpdateAction, SIGNAL (triggered ()), this, SLOT (update ()));
 
-    QActionGroup* displayTypes = new QActionGroup(this); // owned
-    _showWorkCellStructureAction = new QAction(QIcon(":/images/workcell.png"), "WorkCell Structure", displayTypes); // owned
-    _showWorkCellStructureAction->setCheckable(true);
-    connect(_showWorkCellStructureAction, SIGNAL(triggered()), this, SLOT(showWorkCellStructure()));
+    QActionGroup* displayTypes   = new QActionGroup (this);    // owned
+    _showWorkCellStructureAction = new QAction (
+        QIcon (":/images/workcell.png"), "WorkCell Structure", displayTypes);    // owned
+    _showWorkCellStructureAction->setCheckable (true);
+    connect (
+        _showWorkCellStructureAction, SIGNAL (triggered ()), this, SLOT (showWorkCellStructure ()));
 
-    _showDeviceStructureAction = new QAction(QIcon(":/images/device.png"), "Device Structure", displayTypes); // owned
-    _showDeviceStructureAction->setCheckable(true);
-    connect(_showDeviceStructureAction, SIGNAL(triggered()), this, SLOT(showDeviceStructure()));
+    _showDeviceStructureAction =
+        new QAction (QIcon (":/images/device.png"), "Device Structure", displayTypes);    // owned
+    _showDeviceStructureAction->setCheckable (true);
+    connect (
+        _showDeviceStructureAction, SIGNAL (triggered ()), this, SLOT (showDeviceStructure ()));
 
-    _showFrameStructureAction = new QAction(QIcon(":/images/frame.png"), "Frame Structure", displayTypes); // owned
-    _showFrameStructureAction->setCheckable(true);
-	_showFrameStructureAction->setChecked(true);
-    connect(_showFrameStructureAction, SIGNAL(triggered()), this, SLOT(showFrameStructure()));
+    _showFrameStructureAction =
+        new QAction (QIcon (":/images/frame.png"), "Frame Structure", displayTypes);    // owned
+    _showFrameStructureAction->setCheckable (true);
+    _showFrameStructureAction->setChecked (true);
+    connect (_showFrameStructureAction, SIGNAL (triggered ()), this, SLOT (showFrameStructure ()));
 
-    QAction* increaseFrameAxisSize = new QAction(QIcon(":/images/larger_frameaxis.png"), "Increase frame axis size", this); // owned
-    connect(increaseFrameAxisSize, SIGNAL(triggered()), this, SLOT(increaseFrameAxisSlot()));
+    QAction* increaseFrameAxisSize = new QAction (
+        QIcon (":/images/larger_frameaxis.png"), "Increase frame axis size", this);    // owned
+    connect (increaseFrameAxisSize, SIGNAL (triggered ()), this, SLOT (increaseFrameAxisSlot ()));
 
-    QAction* decreaseFrameAxisSize = new QAction(QIcon(":/images/smaller_frameaxis.png"), "Decrease frame axis size", this); // owned
-    connect(decreaseFrameAxisSize, SIGNAL(triggered()), this, SLOT(decreaseFrameAxisSlot()));
+    QAction* decreaseFrameAxisSize = new QAction (
+        QIcon (":/images/smaller_frameaxis.png"), "Decrease frame axis size", this);    // owned
+    connect (decreaseFrameAxisSize, SIGNAL (triggered ()), this, SLOT (decreaseFrameAxisSlot ()));
 
-
-    toolbar->addAction(collapseAllAction);
-    toolbar->addAction(expandAllAction);
-    toolbar->addAction(forceUpdateAction);
-    toolbar->addSeparator();
-    toolbar->addAction(_showFrameStructureAction);
-	toolbar->addAction(_showWorkCellStructureAction);
-    toolbar->addAction(_showDeviceStructureAction);
-    toolbar->addSeparator();
-    toolbar->addAction(increaseFrameAxisSize);
-    toolbar->addAction(decreaseFrameAxisSize);
+    toolbar->addAction (collapseAllAction);
+    toolbar->addAction (expandAllAction);
+    toolbar->addAction (forceUpdateAction);
+    toolbar->addSeparator ();
+    toolbar->addAction (_showFrameStructureAction);
+    toolbar->addAction (_showWorkCellStructureAction);
+    toolbar->addAction (_showDeviceStructureAction);
+    toolbar->addSeparator ();
+    toolbar->addAction (increaseFrameAxisSize);
+    toolbar->addAction (decreaseFrameAxisSize);
 
     // Setup TreeWidget
-    _treewidget = new QTreeWidget(this);
-    lay->addWidget(_treewidget); // own treewidget
-    _treewidget->setColumnCount(1);
-    QTreeWidgetItem* header = _treewidget->headerItem();
-    _treewidget->setItemHidden(header, true);
-    connect(_treewidget, SIGNAL(itemDoubleClicked(QTreeWidgetItem*, int)), this, SLOT(highlightSlot()));
+    _treewidget = new QTreeWidget (this);
+    lay->addWidget (_treewidget);    // own treewidget
+    _treewidget->setColumnCount (1);
+    QTreeWidgetItem* header = _treewidget->headerItem ();
+    _treewidget->setItemHidden (header, true);
+    connect (_treewidget,
+             SIGNAL (itemDoubleClicked (QTreeWidgetItem*, int)),
+             this,
+             SLOT (highlightSlot ()));
 
     // Setup Context Menu
-    setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(
-        this,
-        SIGNAL(customContextMenuRequested(const QPoint&)),
-        this,
-        SLOT(customContextMenuRequestSlot(const QPoint&)));
+    setContextMenuPolicy (Qt::CustomContextMenu);
+    connect (this,
+             SIGNAL (customContextMenuRequested (const QPoint&)),
+             this,
+             SLOT (customContextMenuRequestSlot (const QPoint&)));
 
-    _contextMenu = new QMenu("Empty", this); // owned
+    _contextMenu = new QMenu ("Empty", this);    // owned
 
-    _toggleFrameAction = new QAction(tr("Show/Remove Frame"), this); // owned
-    connect(_toggleFrameAction, SIGNAL(triggered()), this, SLOT(toggleFrameSlot()));
-    
-    _toggleFramesAction = new QAction(tr("Show/Remove All Frames"), this); // owned
-    connect(_toggleFramesAction, SIGNAL(triggered()), this, SLOT(toggleFramesSlot()));
+    _toggleFrameAction = new QAction (tr ("Show/Remove Frame"), this);    // owned
+    connect (_toggleFrameAction, SIGNAL (triggered ()), this, SLOT (toggleFrameSlot ()));
 
-    _selectFrameAction= new QAction(tr("Select Frame"), this); // owned
-    connect(_selectFrameAction, SIGNAL(triggered()), this, SLOT(selectFrameSlot()));
+    _toggleFramesAction = new QAction (tr ("Show/Remove All Frames"), this);    // owned
+    connect (_toggleFramesAction, SIGNAL (triggered ()), this, SLOT (toggleFramesSlot ()));
 
-    _showSolidAction = new QAction(QIcon(":images/solid.png"), "Solid", this); // owned
-    connect(_showSolidAction, SIGNAL(triggered()), this, SLOT(showSolidSlot()));
+    _selectFrameAction = new QAction (tr ("Select Frame"), this);    // owned
+    connect (_selectFrameAction, SIGNAL (triggered ()), this, SLOT (selectFrameSlot ()));
 
-    _showWireAction = new QAction(QIcon(":/images/wire.png"), "Wire", this); // owned
-    connect(_showWireAction, SIGNAL(triggered()), this, SLOT(showWireSlot()));
+    _showSolidAction = new QAction (QIcon (":images/solid.png"), "Solid", this);    // owned
+    connect (_showSolidAction, SIGNAL (triggered ()), this, SLOT (showSolidSlot ()));
 
-    _showOutlineAction= new QAction(QIcon(":/images/outline.png"), "Outline", this); // owned
-    connect(_showOutlineAction, SIGNAL(triggered()), this, SLOT(showOutlineSlot()));
+    _showWireAction = new QAction (QIcon (":/images/wire.png"), "Wire", this);    // owned
+    connect (_showWireAction, SIGNAL (triggered ()), this, SLOT (showWireSlot ()));
 
-    _showTransparentAction = new QAction(QIcon(":/images/transparent.png"), "Transparent", this); // owned
-    connect(_showTransparentAction, SIGNAL(triggered()), this, SLOT(showTransparentSlot()));
+    _showOutlineAction = new QAction (QIcon (":/images/outline.png"), "Outline", this);    // owned
+    connect (_showOutlineAction, SIGNAL (triggered ()), this, SLOT (showOutlineSlot ()));
 
-    _highlightAction= new QAction(QIcon(":/images/highlight.png"), "Highlight", this); // owned
-    connect(_highlightAction, SIGNAL(triggered()), this, SLOT(highlightSlot()));
+    _showTransparentAction =
+        new QAction (QIcon (":/images/transparent.png"), "Transparent", this);    // owned
+    connect (_showTransparentAction, SIGNAL (triggered ()), this, SLOT (showTransparentSlot ()));
 
-    _poseAction = new QAction(QIcon(":/images/pose.png"), "Read pose", this);
-    connect(_poseAction, SIGNAL(triggered()), this, SLOT(poseSlot()));
+    _highlightAction =
+        new QAction (QIcon (":/images/highlight.png"), "Highlight", this);    // owned
+    connect (_highlightAction, SIGNAL (triggered ()), this, SLOT (highlightSlot ()));
 
-    _toggleAction = new QAction("Toggle enabled", this);
-    connect(_toggleAction, SIGNAL(triggered()), this, SLOT(toggleSlot()));
+    _poseAction = new QAction (QIcon (":/images/pose.png"), "Read pose", this);
+    connect (_poseAction, SIGNAL (triggered ()), this, SLOT (poseSlot ()));
 
+    _toggleAction = new QAction ("Toggle enabled", this);
+    connect (_toggleAction, SIGNAL (triggered ()), this, SLOT (toggleSlot ()));
 
-    _addFrameAction = new QAction("Add frame", this);
-    connect(_addFrameAction, SIGNAL(triggered()), this, SLOT(addFrameSlot()));
+    _addFrameAction = new QAction ("Add frame", this);
+    connect (_addFrameAction, SIGNAL (triggered ()), this, SLOT (addFrameSlot ()));
 
-    _scaleAction = new QAction(QIcon(":images/solid.png"), "Scale", this); // owned
-    connect(_scaleAction, SIGNAL(triggered()), this, SLOT(scaleSlot()));
+    _scaleAction = new QAction (QIcon (":images/solid.png"), "Scale", this);    // owned
+    connect (_scaleAction, SIGNAL (triggered ()), this, SLOT (scaleSlot ()));
 
-    _toggleFrameLabelAction = new QAction(tr("Show/Remove Frame label"), this);
-    connect(_toggleFrameLabelAction, SIGNAL(triggered()), this, SLOT(toggleFrameLabelSlot()));
+    _toggleFrameLabelAction = new QAction (tr ("Show/Remove Frame label"), this);
+    connect (_toggleFrameLabelAction, SIGNAL (triggered ()), this, SLOT (toggleFrameLabelSlot ()));
 
-    _toggleFrameLabelsAction = new QAction(tr("Show/Remove all Frame labels"), this);
-    connect(_toggleFrameLabelsAction, SIGNAL(triggered()), this, SLOT(toggleFrameLabelsSlot()));
-
+    _toggleFrameLabelsAction = new QAction (tr ("Show/Remove all Frame labels"), this);
+    connect (
+        _toggleFrameLabelsAction, SIGNAL (triggered ()), this, SLOT (toggleFrameLabelsSlot ()));
 }
 
-TreeView::~TreeView()
+TreeView::~TreeView ()
 {
-   // Q_CLEANUP_RESOURCE(resources);
+    // Q_CLEANUP_RESOURCE(resources);
 }
 
-void TreeView::initialize() {
-    getRobWorkStudio()->stateChangedEvent().add(
-            boost::bind(&TreeView::stateChangedListener, this, boost::arg<1>()), this);
+void TreeView::initialize ()
+{
+    getRobWorkStudio ()->stateChangedEvent ().add (
+        boost::bind (&TreeView::stateChangedListener, this, boost::arg< 1 > ()), this);
 
-    getRobWorkStudio()->frameSelectedEvent().add(
-            boost::bind(&TreeView::frameSelectedListener, this, boost::arg<1>()), this);
+    getRobWorkStudio ()->frameSelectedEvent ().add (
+        boost::bind (&TreeView::frameSelectedListener, this, boost::arg< 1 > ()), this);
 }
 
-void TreeView::frameSelectedListener(rw::kinematics::Frame* frame) {
+void TreeView::frameSelectedListener (rw::kinematics::Frame* frame)
+{}
 
-}
-
-void TreeView::stateChangedListener(const rw::kinematics::State& state)
+void TreeView::stateChangedListener (const rw::kinematics::State& state)
 {
     // if the daf state change
     //    std::cout << "CHECK FOR DAF CHANGES" << std::endl;
 
     bool forceUpdate = false;
-    for( TreeView::FrameMap::value_type p : _frameMap) {
-        if( Kinematics::isDAF(p.second) ) {
+    for (TreeView::FrameMap::value_type p : _frameMap) {
+        if (Kinematics::isDAF (p.second)) {
             // test if parent changed
-            if(p.second->getParent(state)!=p.second->getParent(_state)){
+            if (p.second->getParent (state) != p.second->getParent (_state)) {
                 forceUpdate = true;
                 break;
             }
         }
     }
-    if(forceUpdate)
-        update();
-
+    if (forceUpdate)
+        update ();
 }
 
-void TreeView::collapseAll(QTreeWidgetItem* item)
+void TreeView::collapseAll (QTreeWidgetItem* item)
 {
     if (item != NULL) {
-        _treewidget->collapseItem(item);
-        for (int i = 0; i < item->childCount(); i++)
-            collapseAll(item->child(i));
+        _treewidget->collapseItem (item);
+        for (int i = 0; i < item->childCount (); i++)
+            collapseAll (item->child (i));
     }
 }
 
-void TreeView::expandAll(QTreeWidgetItem* item)
+void TreeView::expandAll (QTreeWidgetItem* item)
 {
     if (item != NULL) {
-        _treewidget->expandItem(item);
-        for (int i = 0; i < item->childCount(); i++)
-            expandAll(item->child(i));
+        _treewidget->expandItem (item);
+        for (int i = 0; i < item->childCount (); i++)
+            expandAll (item->child (i));
     }
 }
 
-void TreeView::collapseAll()
+void TreeView::collapseAll ()
 {
-    for (int i = 0; i < _treewidget->topLevelItemCount(); i++) {
-        collapseAll(_treewidget->topLevelItem(i));
+    for (int i = 0; i < _treewidget->topLevelItemCount (); i++) {
+        collapseAll (_treewidget->topLevelItem (i));
     }
 }
 
-void TreeView::expandAll()
+void TreeView::expandAll ()
 {
-    for (int i = 0; i < _treewidget->topLevelItemCount(); i++) {
-        expandAll(_treewidget->topLevelItem(i));
+    for (int i = 0; i < _treewidget->topLevelItemCount (); i++) {
+        expandAll (_treewidget->topLevelItem (i));
     }
 }
 
-void TreeView::clearTreeContent()
+void TreeView::clearTreeContent ()
 {
-    while (_treewidget->topLevelItemCount() > 0) {
-        delete _treewidget->takeTopLevelItem(0);
+    while (_treewidget->topLevelItemCount () > 0) {
+        delete _treewidget->takeTopLevelItem (0);
     }
 
-    _deviceMap.clear();
-    _frameMap.clear();
-    _drawableMap.clear();
+    _deviceMap.clear ();
+    _frameMap.clear ();
+    _drawableMap.clear ();
 }
 
-void TreeView::setupDrawables(Frame* frame, QTreeWidgetItem* parent)
+void TreeView::setupDrawables (Frame* frame, QTreeWidgetItem* parent)
 {
-    WorkCellScene::Ptr scene = getRobWorkStudio()->getView()->getWorkCellScene();
+    WorkCellScene::Ptr scene = getRobWorkStudio ()->getView ()->getWorkCellScene ();
 
-    int drawMask = getRobWorkStudio()->getView()->getDrawMask();
+    int drawMask = getRobWorkStudio ()->getView ()->getDrawMask ();
 
-    const std::vector<DrawableNode::Ptr>& drawables =
-        scene->getDrawables(frame);
+    const std::vector< DrawableNode::Ptr >& drawables = scene->getDrawables (frame);
 
-    typedef std::vector<DrawableNode::Ptr>::const_iterator DI;
-    for (DI p = drawables.begin(); p != drawables.end(); ++p) {
+    typedef std::vector< DrawableNode::Ptr >::const_iterator DI;
+    for (DI p = drawables.begin (); p != drawables.end (); ++p) {
         DrawableNode::Ptr drawable = *p;
-        if( !(drawable->getMask() & drawMask) )
+        if (!(drawable->getMask () & drawMask))
             continue;
 
-        RW_ASSERT(drawable);
-        QTreeWidgetItem* item = new QTreeWidgetItem(parent); // owned.
+        RW_ASSERT (drawable);
+        QTreeWidgetItem* item = new QTreeWidgetItem (parent);    // owned.
 
-        item->setText(0, drawable->getName().c_str());
+        item->setText (0, drawable->getName ().c_str ());
         _drawableMap[item] = drawable;
-        if( drawable->getMask() & DrawableNode::CollisionObject ){
-            item->setIcon(0, QIcon(":/images/collision.png"));
-        } else {
-            item->setIcon(0, QIcon(":/images/drawable.png"));
+        if (drawable->getMask () & DrawableNode::CollisionObject) {
+            item->setIcon (0, QIcon (":/images/collision.png"));
+        }
+        else {
+            item->setIcon (0, QIcon (":/images/drawable.png"));
         }
     }
 }
 
-void TreeView::registerFrameItem(Frame* frame, QTreeWidgetItem* item)
+void TreeView::registerFrameItem (Frame* frame, QTreeWidgetItem* item)
 {
-    _frameMap.insert(make_pair(item, frame));
+    _frameMap.insert (make_pair (item, frame));
 }
 
-void TreeView::showWorkCellStructure()
+void TreeView::showWorkCellStructure ()
 {
-	clearTreeContent();
-    _treewidget->setHeaderLabels(QStringList("WorkCell Structure"));
+    clearTreeContent ();
+    _treewidget->setHeaderLabels (QStringList ("WorkCell Structure"));
 
     if (_workcell != NULL) {
-		const std::vector<Device::Ptr>& devices = _workcell->getDevices();
-		typedef std::vector<Device::Ptr>::const_iterator MI;
-        for (MI it = devices.begin(); it != devices.end(); ++it) {
-			SerialDevice::Ptr sdevice = (*it).cast<SerialDevice>();
+        const std::vector< Device::Ptr >& devices = _workcell->getDevices ();
+        typedef std::vector< Device::Ptr >::const_iterator MI;
+        for (MI it = devices.begin (); it != devices.end (); ++it) {
+            SerialDevice::Ptr sdevice = (*it).cast< SerialDevice > ();
             if (sdevice) {
-                QTreeWidgetItem* deviceItem = new QTreeWidgetItem();
-                _treewidget->addTopLevelItem(deviceItem); // own deviceItem
+                QTreeWidgetItem* deviceItem = new QTreeWidgetItem ();
+                _treewidget->addTopLevelItem (deviceItem);    // own deviceItem
 
-                _deviceMap.insert(make_pair(deviceItem, sdevice));
+                _deviceMap.insert (make_pair (deviceItem, sdevice));
 
-                deviceItem->setText(0, sdevice->getName().c_str());
-                deviceItem->setIcon(0, QIcon(":/images/device.png"));
+                deviceItem->setText (0, sdevice->getName ().c_str ());
+                deviceItem->setIcon (0, QIcon (":/images/device.png"));
 
                 // Setup Frames
-                const std::vector<Frame*>& frames = sdevice->frames();
-                typedef std::vector<Frame*>::const_iterator FI;
-                for (FI it = frames.begin(); it != frames.end(); ++it) {
-                    Frame* frame = *it;
-                    QTreeWidgetItem* frameItem = new QTreeWidgetItem(deviceItem); // owned.
-                    frameItem->setText(0, getFrameNameFirst(*frame).c_str());
+                const std::vector< Frame* >& frames = sdevice->frames ();
+                typedef std::vector< Frame* >::const_iterator FI;
+                for (FI it = frames.begin (); it != frames.end (); ++it) {
+                    Frame* frame               = *it;
+                    QTreeWidgetItem* frameItem = new QTreeWidgetItem (deviceItem);    // owned.
+                    frameItem->setText (0, getFrameNameFirst (*frame).c_str ());
 
-                    registerFrameItem(frame, frameItem);
+                    registerFrameItem (frame, frameItem);
 
-                    if (dynamic_cast<Joint*>(frame))
-                        frameItem->setIcon(0, QIcon(":/images/joint.png"));
+                    if (dynamic_cast< Joint* > (frame))
+                        frameItem->setIcon (0, QIcon (":/images/joint.png"));
                     else
-                        frameItem->setIcon(0, QIcon(":/images/frame.png"));
+                        frameItem->setIcon (0, QIcon (":/images/frame.png"));
 
                     // Setup drawables
-                    setupDrawables(frame, frameItem);
+                    setupDrawables (frame, frameItem);
                 }
                 continue;
             }
-			TreeDevice::Ptr tdevice = (*it).cast<TreeDevice>();
+            TreeDevice::Ptr tdevice = (*it).cast< TreeDevice > ();
             if (tdevice) {
-                QTreeWidgetItem* deviceItem = new QTreeWidgetItem();
-                _treewidget->addTopLevelItem(deviceItem); // own deviceItem
+                QTreeWidgetItem* deviceItem = new QTreeWidgetItem ();
+                _treewidget->addTopLevelItem (deviceItem);    // own deviceItem
 
-                _deviceMap.insert(make_pair(deviceItem, tdevice));
+                _deviceMap.insert (make_pair (deviceItem, tdevice));
 
-                deviceItem->setText(0, tdevice->getName().c_str());
-                deviceItem->setIcon(0, QIcon(":/images/device.png"));
+                deviceItem->setText (0, tdevice->getName ().c_str ());
+                deviceItem->setIcon (0, QIcon (":/images/device.png"));
 
                 // Setup Frames
-                const std::vector<Frame*>& frames = tdevice->frames();
-                typedef std::vector<Frame*>::const_iterator FI;
-                for (FI it = frames.begin(); it != frames.end(); ++it) {
-                    Frame* frame = *it;
-                    QTreeWidgetItem* frameItem = new QTreeWidgetItem(deviceItem); // owned.
-                    frameItem->setText(0, getFrameNameFirst(*frame).c_str());
+                const std::vector< Frame* >& frames = tdevice->frames ();
+                typedef std::vector< Frame* >::const_iterator FI;
+                for (FI it = frames.begin (); it != frames.end (); ++it) {
+                    Frame* frame               = *it;
+                    QTreeWidgetItem* frameItem = new QTreeWidgetItem (deviceItem);    // owned.
+                    frameItem->setText (0, getFrameNameFirst (*frame).c_str ());
 
-                    registerFrameItem(frame, frameItem);
+                    registerFrameItem (frame, frameItem);
 
-                    if (dynamic_cast<Joint*>(frame))
-                        frameItem->setIcon(0, QIcon(":/images/joint.png"));
+                    if (dynamic_cast< Joint* > (frame))
+                        frameItem->setIcon (0, QIcon (":/images/joint.png"));
                     else
-                        frameItem->setIcon(0, QIcon(":/images/frame.png"));
+                        frameItem->setIcon (0, QIcon (":/images/frame.png"));
 
                     // Setup drawables
-                    setupDrawables(frame, frameItem);
+                    setupDrawables (frame, frameItem);
                 }
                 continue;
             }
@@ -389,564 +396,585 @@ void TreeView::showWorkCellStructure()
     }
 }
 
-void TreeView::showDeviceStructure()
+void TreeView::showDeviceStructure ()
 {
-    clearTreeContent();
-    _treewidget->setHeaderLabels(QStringList("Device Structure"));
+    clearTreeContent ();
+    _treewidget->setHeaderLabels (QStringList ("Device Structure"));
 
     if (_workcell != NULL) {
-		const std::vector<Device::Ptr>& devices = _workcell->getDevices();
-		typedef std::vector<Device::Ptr>::const_iterator MI;
-        for (MI it = devices.begin(); it != devices.end(); ++it) {
-			SerialDevice::Ptr sdevice = (*it).cast<SerialDevice>();
+        const std::vector< Device::Ptr >& devices = _workcell->getDevices ();
+        typedef std::vector< Device::Ptr >::const_iterator MI;
+        for (MI it = devices.begin (); it != devices.end (); ++it) {
+            SerialDevice::Ptr sdevice = (*it).cast< SerialDevice > ();
             if (sdevice) {
-                QTreeWidgetItem* deviceItem = new QTreeWidgetItem();
-                _treewidget->addTopLevelItem(deviceItem); // own deviceItem
+                QTreeWidgetItem* deviceItem = new QTreeWidgetItem ();
+                _treewidget->addTopLevelItem (deviceItem);    // own deviceItem
 
-                _deviceMap.insert(make_pair(deviceItem, sdevice));
-                deviceItem->setText(0, sdevice->getName().c_str());
-                deviceItem->setIcon(0, QIcon(":/images/device.png"));
+                _deviceMap.insert (make_pair (deviceItem, sdevice));
+                deviceItem->setText (0, sdevice->getName ().c_str ());
+                deviceItem->setIcon (0, QIcon (":/images/device.png"));
 
                 // Setup Frames
-                const std::vector<Frame*>& frames = sdevice->frames();
-                if (!frames.empty())
-                    setupFrame(*frames.front(), deviceItem);
+                const std::vector< Frame* >& frames = sdevice->frames ();
+                if (!frames.empty ())
+                    setupFrame (*frames.front (), deviceItem);
                 continue;
             }
-			TreeDevice::Ptr tdevice = (*it).cast<TreeDevice>();
-            if(tdevice){
-                QTreeWidgetItem* deviceItem = new QTreeWidgetItem();
-                _treewidget->addTopLevelItem(deviceItem); // own deviceItem
+            TreeDevice::Ptr tdevice = (*it).cast< TreeDevice > ();
+            if (tdevice) {
+                QTreeWidgetItem* deviceItem = new QTreeWidgetItem ();
+                _treewidget->addTopLevelItem (deviceItem);    // own deviceItem
 
-                _deviceMap.insert(make_pair(deviceItem, tdevice));
-                deviceItem->setText(0, tdevice->getName().c_str());
-                deviceItem->setIcon(0, QIcon(":/images/device.png"));
+                _deviceMap.insert (make_pair (deviceItem, tdevice));
+                deviceItem->setText (0, tdevice->getName ().c_str ());
+                deviceItem->setIcon (0, QIcon (":/images/device.png"));
 
                 // Setup Frames
-                const std::vector<Frame*>& frames = tdevice->frames();
-                if (!frames.empty())
-                    setupFrame(*frames.front(), deviceItem);
+                const std::vector< Frame* >& frames = tdevice->frames ();
+                if (!frames.empty ())
+                    setupFrame (*frames.front (), deviceItem);
                 continue;
             }
-			ParallelDevice::Ptr pdevice = (*it).cast<ParallelDevice>();
-            if(pdevice){
-                QTreeWidgetItem* deviceItem = new QTreeWidgetItem();
-                _treewidget->addTopLevelItem(deviceItem); // own deviceItem
+            ParallelDevice::Ptr pdevice = (*it).cast< ParallelDevice > ();
+            if (pdevice) {
+                QTreeWidgetItem* deviceItem = new QTreeWidgetItem ();
+                _treewidget->addTopLevelItem (deviceItem);    // own deviceItem
 
-                _deviceMap.insert(make_pair(deviceItem, pdevice));
-                deviceItem->setText(0, pdevice->getName().c_str());
-                deviceItem->setIcon(0, QIcon(":/images/device.png"));
+                _deviceMap.insert (make_pair (deviceItem, pdevice));
+                deviceItem->setText (0, pdevice->getName ().c_str ());
+                deviceItem->setIcon (0, QIcon (":/images/device.png"));
 
                 // Setup Frames
-                Frame* frame = pdevice->getBase();
-                if (frame!=NULL)
-                    setupFrame(*frame, deviceItem);
+                Frame* frame = pdevice->getBase ();
+                if (frame != NULL)
+                    setupFrame (*frame, deviceItem);
                 continue;
             }
-			MobileDevice::Ptr mdevice = (*it).cast<MobileDevice>();
-            if(mdevice){
-                QTreeWidgetItem* deviceItem = new QTreeWidgetItem();
-                _treewidget->addTopLevelItem(deviceItem); // own deviceItem
+            MobileDevice::Ptr mdevice = (*it).cast< MobileDevice > ();
+            if (mdevice) {
+                QTreeWidgetItem* deviceItem = new QTreeWidgetItem ();
+                _treewidget->addTopLevelItem (deviceItem);    // own deviceItem
 
-                _deviceMap.insert(make_pair(deviceItem, mdevice));
-                deviceItem->setText(0, mdevice->getName().c_str());
-                deviceItem->setIcon(0, QIcon(":/images/device.png"));
+                _deviceMap.insert (make_pair (deviceItem, mdevice));
+                deviceItem->setText (0, mdevice->getName ().c_str ());
+                deviceItem->setIcon (0, QIcon (":/images/device.png"));
 
                 // Setup Frames
-                Frame* frame = mdevice->getBase();
-                if (frame!=NULL)
-                    setupFrame(*frame, deviceItem);
+                Frame* frame = mdevice->getBase ();
+                if (frame != NULL)
+                    setupFrame (*frame, deviceItem);
                 continue;
             }
         }
     }
-    _treewidget->update();
+    _treewidget->update ();
 }
 
-void TreeView::showFrameStructure()
+void TreeView::showFrameStructure ()
 {
-    clearTreeContent();
-    _treewidget->setHeaderLabels(QStringList("Frame Structure"));
+    clearTreeContent ();
+    _treewidget->setHeaderLabels (QStringList ("Frame Structure"));
     if (_workcell != NULL) {
-        setupFrame(*_workcell->getWorldFrame(), NULL);
+        setupFrame (*_workcell->getWorldFrame (), NULL);
     }
-    _treewidget->update();
+    _treewidget->update ();
 }
 
-void TreeView::addFromFileSlot(){
+void TreeView::addFromFileSlot ()
+{
     QString selectedFilter;
 
-    std::string previousOpenDirectory = getRobWorkStudio()->getSettings().get<std::string>("PreviousOpenDirectory","");
-    const QString dir(previousOpenDirectory.c_str());
+    std::string previousOpenDirectory =
+        getRobWorkStudio ()->getSettings ().get< std::string > ("PreviousOpenDirectory", "");
+    const QString dir (previousOpenDirectory.c_str ());
 
-    QString filename = QFileDialog::getOpenFileName(
-        this,
-        "Open geometry", // Title
-        dir, // Directory
-        "All supported ( *.stl *.stla *.stlb *.pcd )"
-        "\n All ( *.* )",
-        &selectedFilter);
+    QString filename = QFileDialog::getOpenFileName (this,
+                                                     "Open geometry",    // Title
+                                                     dir,                // Directory
+                                                     "All supported ( *.stl *.stla *.stlb *.pcd )"
+                                                     "\n All ( *.* )",
+                                                     &selectedFilter);
 
-    std::string str = filename.toStdString();
+    std::string str = filename.toStdString ();
 
-    QTreeWidgetItem* item = _treewidget->currentItem();
-    FrameMap::iterator frameIt = _frameMap.find(item);
-    if (frameIt != _frameMap.end()) {
+    QTreeWidgetItem* item      = _treewidget->currentItem ();
+    FrameMap::iterator frameIt = _frameMap.find (item);
+    if (frameIt != _frameMap.end ()) {
         Frame* frame = frameIt->second;
-        //getRobWorkStudio()->frameSelectedEvent().fire(frame);
+        // getRobWorkStudio()->frameSelectedEvent().fire(frame);
 
-        Geometry::Ptr gdata = GeometryFactory::load( str );
+        Geometry::Ptr gdata = GeometryFactory::load (str);
         std::cout << "Geom loaded" << std::endl;
         // create and add a render to the frame
-        getRobWorkStudio()->getWorkCellScene()->addGeometry("geo", gdata, frame);
-
-    } else {
+        getRobWorkStudio ()->getWorkCellScene ()->addGeometry ("geo", gdata, frame);
+    }
+    else {
         std::cout << "could not find frame..... " << std::endl;
     }
-
-
 }
 
-void TreeView::customContextMenuRequestSlot(const QPoint& pos)
+void TreeView::customContextMenuRequestSlot (const QPoint& pos)
 {
-    _contextMenu->clear();
+    _contextMenu->clear ();
 
-    QTreeWidgetItem* item = _treewidget->currentItem();
-    DeviceMap::iterator devIt = _deviceMap.find(item);
-    if (devIt != _deviceMap.end()) {
+    QTreeWidgetItem* item     = _treewidget->currentItem ();
+    DeviceMap::iterator devIt = _deviceMap.find (item);
+    if (devIt != _deviceMap.end ()) {
     }
 
-    FrameMap::iterator frameIt = _frameMap.find(item);
-    if (frameIt != _frameMap.end()) {
-        _contextMenu->addAction(_toggleFrameAction);
-        _contextMenu->addAction(_toggleFramesAction);
-        _contextMenu->addAction(_toggleFrameLabelAction);
-        _contextMenu->addAction(_toggleFrameLabelsAction);
-        _contextMenu->addAction(_selectFrameAction);
+    FrameMap::iterator frameIt = _frameMap.find (item);
+    if (frameIt != _frameMap.end ()) {
+        _contextMenu->addAction (_toggleFrameAction);
+        _contextMenu->addAction (_toggleFramesAction);
+        _contextMenu->addAction (_toggleFrameLabelAction);
+        _contextMenu->addAction (_toggleFrameLabelsAction);
+        _contextMenu->addAction (_selectFrameAction);
         //_contextMenu->addAction(_addFrameAction);
 
-        QMenu *addgeomMenu = _contextMenu->addMenu( "add " );
+        QMenu* addgeomMenu = _contextMenu->addMenu ("add ");
 
-        addgeomMenu->addAction(_addFrameAction);
-        connect(addgeomMenu->addAction("geometry file"), SIGNAL(triggered()),this, SLOT(addFromFileSlot()));
-        connect(addgeomMenu->addAction("model file"), SIGNAL(triggered()),this, SLOT(addFromFileSlot()));
-        connect(addgeomMenu->addAction("primitive"), SIGNAL(triggered()),this, SLOT(addFromFileSlot()));
+        addgeomMenu->addAction (_addFrameAction);
+        connect (addgeomMenu->addAction ("geometry file"),
+                 SIGNAL (triggered ()),
+                 this,
+                 SLOT (addFromFileSlot ()));
+        connect (addgeomMenu->addAction ("model file"),
+                 SIGNAL (triggered ()),
+                 this,
+                 SLOT (addFromFileSlot ()));
+        connect (addgeomMenu->addAction ("primitive"),
+                 SIGNAL (triggered ()),
+                 this,
+                 SLOT (addFromFileSlot ()));
 
-        //addgeomMenu->addAction("from file")->connect( );
+        // addgeomMenu->addAction("from file")->connect( );
 
         //_showSolidAction = new QAction(QIcon(":images/solid.png"), "Solid", this); // owned
-        //connect(_showSolidAction, SIGNAL(triggered()), this, SLOT(showSolidSlot()));
+        // connect(_showSolidAction, SIGNAL(triggered()), this, SLOT(showSolidSlot()));
 
-        _contextMenu->addSeparator();
+        _contextMenu->addSeparator ();
     }
 
-    _contextMenu->addAction(_toggleAction);
-    _contextMenu->addAction(_showSolidAction);
-    _contextMenu->addAction(_showWireAction);
-    _contextMenu->addAction(_showOutlineAction);
-    _contextMenu->addAction(_showTransparentAction);
-    _contextMenu->addAction(_highlightAction);
-    _contextMenu->addAction(_poseAction);
-    _contextMenu->addAction(_scaleAction);
+    _contextMenu->addAction (_toggleAction);
+    _contextMenu->addAction (_showSolidAction);
+    _contextMenu->addAction (_showWireAction);
+    _contextMenu->addAction (_showOutlineAction);
+    _contextMenu->addAction (_showTransparentAction);
+    _contextMenu->addAction (_highlightAction);
+    _contextMenu->addAction (_poseAction);
+    _contextMenu->addAction (_scaleAction);
 
-    _contextMenu->addSeparator();
+    _contextMenu->addSeparator ();
 
-    _contextMenu->popup(QWidget::mapToGlobal(pos));
+    _contextMenu->popup (QWidget::mapToGlobal (pos));
 }
 
-void TreeView::toggleFrameView(QTreeWidgetItem* item)
+void TreeView::toggleFrameView (QTreeWidgetItem* item)
 {
-	RW_ASSERT(item);
-    FrameMap::iterator frameIt = _frameMap.find(item);
-    if (frameIt != _frameMap.end()) {
+    RW_ASSERT (item);
+    FrameMap::iterator frameIt = _frameMap.find (item);
+    if (frameIt != _frameMap.end ()) {
         try {
             Frame* frame = frameIt->second;
-            RW_ASSERT(frame);
-            WorkCellScene::Ptr scene = getRobWorkStudio()->getWorkCellScene();
-            RW_ASSERT(scene);
-            if ( !scene->isFrameAxisVisible(frame) ) {
+            RW_ASSERT (frame);
+            WorkCellScene::Ptr scene = getRobWorkStudio ()->getWorkCellScene ();
+            RW_ASSERT (scene);
+            if (!scene->isFrameAxisVisible (frame)) {
                 // Add new Drawable
-                scene->setFrameAxisVisible(true, frame, _frameAxisSize);
-
-            } else { // Remove the DrawableFrame
-                scene->setFrameAxisVisible(false, frame);
+                scene->setFrameAxisVisible (true, frame, _frameAxisSize);
             }
-        } catch(...){
-
+            else {    // Remove the DrawableFrame
+                scene->setFrameAxisVisible (false, frame);
+            }
         }
-
+        catch (...) {
+        }
     }
 }
 
-void TreeView::toggleFrameLabel(QTreeWidgetItem* item) {
-    RW_ASSERT(item);
-    FrameMap::iterator frameIt = _frameMap.find(item);
-    if (frameIt != _frameMap.end()) {
+void TreeView::toggleFrameLabel (QTreeWidgetItem* item)
+{
+    RW_ASSERT (item);
+    FrameMap::iterator frameIt = _frameMap.find (item);
+    if (frameIt != _frameMap.end ()) {
         try {
             Frame::Ptr frame = frameIt->second;
-            RW_ASSERT(frame);
-            WorkCellScene::Ptr scene = getRobWorkStudio()->getWorkCellScene();
-            RW_ASSERT(scene);
-            if ( !scene->isFrameLabelVisible(frame) ) {
+            RW_ASSERT (frame);
+            WorkCellScene::Ptr scene = getRobWorkStudio ()->getWorkCellScene ();
+            RW_ASSERT (scene);
+            if (!scene->isFrameLabelVisible (frame)) {
                 // Add new Drawable
-                scene->setFrameLabelVisible(true, frame);
-
-            } else { // Remove the DrawableFrame
-                scene->setFrameLabelVisible(false, frame);
+                scene->setFrameLabelVisible (true, frame);
             }
-        } catch(...){
-
+            else {    // Remove the DrawableFrame
+                scene->setFrameLabelVisible (false, frame);
+            }
         }
-
+        catch (...) {
+        }
     }
 }
 
-
-void TreeView::toggleFramesView(QTreeWidgetItem* item)
+void TreeView::toggleFramesView (QTreeWidgetItem* item)
 {
-	RW_ASSERT(item);
+    RW_ASSERT (item);
 
-    toggleFrameView(item);
-    
-    for (int i = 0; i < item->childCount(); i++) {
-            toggleFramesView(item->child(i));
-	}
+    toggleFrameView (item);
+
+    for (int i = 0; i < item->childCount (); i++) {
+        toggleFramesView (item->child (i));
+    }
 }
 
-void TreeView::toggleFrameLabels(QTreeWidgetItem* item)
+void TreeView::toggleFrameLabels (QTreeWidgetItem* item)
 {
-	RW_ASSERT(item);
+    RW_ASSERT (item);
 
-    toggleFrameLabel(item);
-    
-    for (int i = 0; i < item->childCount(); i++) {
-            toggleFrameLabels(item->child(i));
-	}
+    toggleFrameLabel (item);
+
+    for (int i = 0; i < item->childCount (); i++) {
+        toggleFrameLabels (item->child (i));
+    }
 }
 
-
-void TreeView::toggleFrameSlot()
+void TreeView::toggleFrameSlot ()
 {
-    toggleFrameView(_treewidget->currentItem());
-    getRobWorkStudio()->updateAndRepaint();
+    toggleFrameView (_treewidget->currentItem ());
+    getRobWorkStudio ()->updateAndRepaint ();
 }
 
-
-void TreeView::toggleFramesSlot()
+void TreeView::toggleFramesSlot ()
 {
-    toggleFramesView(_treewidget->currentItem());
-    getRobWorkStudio()->updateAndRepaint();
+    toggleFramesView (_treewidget->currentItem ());
+    getRobWorkStudio ()->updateAndRepaint ();
 }
 
-void TreeView::toggleFrameLabelSlot()
+void TreeView::toggleFrameLabelSlot ()
 {
-    toggleFrameLabel(_treewidget->currentItem());
-    getRobWorkStudio()->updateAndRepaint();
+    toggleFrameLabel (_treewidget->currentItem ());
+    getRobWorkStudio ()->updateAndRepaint ();
 }
 
-
-void TreeView::toggleFrameLabelsSlot()
+void TreeView::toggleFrameLabelsSlot ()
 {
-    toggleFrameLabels(_treewidget->currentItem());
-    getRobWorkStudio()->updateAndRepaint();
+    toggleFrameLabels (_treewidget->currentItem ());
+    getRobWorkStudio ()->updateAndRepaint ();
 }
 
-void TreeView::increaseFrameAxisSlot()
+void TreeView::increaseFrameAxisSlot ()
 {
-    if (_treewidget->currentItem() == NULL)
+    if (_treewidget->currentItem () == NULL)
         return;
     _frameAxisSize += 0.05;
     // Toggle frames twice to get new size
-    toggleFramesView(_treewidget->currentItem());
-    toggleFramesView(_treewidget->currentItem());
-    getRobWorkStudio()->updateAndRepaint();
-
+    toggleFramesView (_treewidget->currentItem ());
+    toggleFramesView (_treewidget->currentItem ());
+    getRobWorkStudio ()->updateAndRepaint ();
 }
-void TreeView::decreaseFrameAxisSlot()
+void TreeView::decreaseFrameAxisSlot ()
 {
-    if (_treewidget->currentItem() == NULL)
+    if (_treewidget->currentItem () == NULL)
         return;
     _frameAxisSize -= 0.05;
     // Toggle frames twice to get new size
-    toggleFramesView(_treewidget->currentItem());
-    toggleFramesView(_treewidget->currentItem());
-    getRobWorkStudio()->updateAndRepaint();
-
+    toggleFramesView (_treewidget->currentItem ());
+    toggleFramesView (_treewidget->currentItem ());
+    getRobWorkStudio ()->updateAndRepaint ();
 }
 
-void TreeView::constructDrawableList(std::vector<DrawableNode::Ptr>& drawables)
+void TreeView::constructDrawableList (std::vector< DrawableNode::Ptr >& drawables)
 {
-    WorkCellScene::Ptr scene = getRobWorkStudio()->getView()->getWorkCellScene();
-    _state = getRobWorkStudio()->getState();
-    QList<QTreeWidgetItem*> selected = _treewidget->selectedItems();
-    for (int i = 0; i < selected.size(); ++i) {
-        QTreeWidgetItem* item = selected.at(i);
-        DeviceMap::iterator devIt = _deviceMap.find(item);
-        if (devIt != _deviceMap.end()) {
-			SerialDevice::Ptr sdev = (*devIt).second.cast<SerialDevice>();
-            if (sdev != NULL && sdev->frames().size() > 0) {
-                Frame* base = sdev->frames().front();
-                //assert(_state);
-                std::vector<DrawableNode::Ptr> newdrawables = scene->getDrawablesRec(base, _state);
-                for(DrawableNode::Ptr d : newdrawables){ drawables.push_back(d); }
+    WorkCellScene::Ptr scene           = getRobWorkStudio ()->getView ()->getWorkCellScene ();
+    _state                             = getRobWorkStudio ()->getState ();
+    QList< QTreeWidgetItem* > selected = _treewidget->selectedItems ();
+    for (int i = 0; i < selected.size (); ++i) {
+        QTreeWidgetItem* item     = selected.at (i);
+        DeviceMap::iterator devIt = _deviceMap.find (item);
+        if (devIt != _deviceMap.end ()) {
+            SerialDevice::Ptr sdev = (*devIt).second.cast< SerialDevice > ();
+            if (sdev != NULL && sdev->frames ().size () > 0) {
+                Frame* base = sdev->frames ().front ();
+                // assert(_state);
+                std::vector< DrawableNode::Ptr > newdrawables =
+                    scene->getDrawablesRec (base, _state);
+                for (DrawableNode::Ptr d : newdrawables) {
+                    drawables.push_back (d);
+                }
             }
         }
 
-        FrameMap::iterator frameIt = _frameMap.find(item);
-        if (frameIt != _frameMap.end()) {
-            const std::vector<DrawableNode::Ptr>& frameDrawables = scene->getDrawables(frameIt->second);
+        FrameMap::iterator frameIt = _frameMap.find (item);
+        if (frameIt != _frameMap.end ()) {
+            const std::vector< DrawableNode::Ptr >& frameDrawables =
+                scene->getDrawables (frameIt->second);
 
-            drawables.insert(
-                drawables.end(), frameDrawables.begin(), frameDrawables.end());
+            drawables.insert (drawables.end (), frameDrawables.begin (), frameDrawables.end ());
         }
 
-        DrawableMap::iterator drawableIt = _drawableMap.find(item);
-        if (drawableIt != _drawableMap.end())
-            drawables.push_back(drawableIt->second);
+        DrawableMap::iterator drawableIt = _drawableMap.find (item);
+        if (drawableIt != _drawableMap.end ())
+            drawables.push_back (drawableIt->second);
     }
 }
 
-void TreeView::showSolidSlot()
+void TreeView::showSolidSlot ()
 {
-    std::vector<DrawableNode::Ptr> drawables;
-    constructDrawableList(drawables);
+    std::vector< DrawableNode::Ptr > drawables;
+    constructDrawableList (drawables);
 
-    for(DrawableNode::Ptr& node : drawables)
-        node->setDrawType(DrawableNode::SOLID);
+    for (DrawableNode::Ptr& node : drawables)
+        node->setDrawType (DrawableNode::SOLID);
 
-    getRobWorkStudio()->updateAndRepaint();
+    getRobWorkStudio ()->updateAndRepaint ();
 }
 
-void TreeView::toggleSlot()
+void TreeView::toggleSlot ()
 {
-    std::vector<DrawableNode::Ptr> drawables;
-    constructDrawableList(drawables);
+    std::vector< DrawableNode::Ptr > drawables;
+    constructDrawableList (drawables);
 
-    for(DrawableNode::Ptr& node : drawables)
-        node->setVisible( !(node->isVisible()) );
+    for (DrawableNode::Ptr& node : drawables)
+        node->setVisible (!(node->isVisible ()));
 
-    getRobWorkStudio()->updateAndRepaint();
+    getRobWorkStudio ()->updateAndRepaint ();
 }
 
-void TreeView::showWireSlot()
+void TreeView::showWireSlot ()
 {
-    std::vector<DrawableNode::Ptr> drawables;
-    constructDrawableList(drawables);
+    std::vector< DrawableNode::Ptr > drawables;
+    constructDrawableList (drawables);
 
-    for(DrawableNode::Ptr& node : drawables)
-        node->setDrawType(DrawableNode::WIRE);
+    for (DrawableNode::Ptr& node : drawables)
+        node->setDrawType (DrawableNode::WIRE);
 
-    getRobWorkStudio()->updateAndRepaint();
+    getRobWorkStudio ()->updateAndRepaint ();
 }
 
-void TreeView::showOutlineSlot()
+void TreeView::showOutlineSlot ()
 {
-    std::vector<DrawableNode::Ptr> drawables;
-    constructDrawableList(drawables);
+    std::vector< DrawableNode::Ptr > drawables;
+    constructDrawableList (drawables);
 
-    for(DrawableNode::Ptr& node : drawables)
-        node->setDrawType(DrawableNode::OUTLINE);
+    for (DrawableNode::Ptr& node : drawables)
+        node->setDrawType (DrawableNode::OUTLINE);
 
-    getRobWorkStudio()->updateAndRepaint();
+    getRobWorkStudio ()->updateAndRepaint ();
 }
 
-void TreeView::showTransparentSlot()
+void TreeView::showTransparentSlot ()
 {
     bool ok = false;
-    const float alpha = (float)QInputDialog::getDouble(
-        this, "Select Alpha", "Alpha:", 0.5, 0, 1, 1, &ok);
+    const float alpha =
+        (float) QInputDialog::getDouble (this, "Select Alpha", "Alpha:", 0.5, 0, 1, 1, &ok);
 
     if (ok) {
-        std::vector<DrawableNode::Ptr> drawables;
-        constructDrawableList(drawables);
+        std::vector< DrawableNode::Ptr > drawables;
+        constructDrawableList (drawables);
 
-        for(DrawableNode::Ptr& node : drawables)
-            node->setTransparency(alpha);
+        for (DrawableNode::Ptr& node : drawables)
+            node->setTransparency (alpha);
     }
 
-    getRobWorkStudio()->updateAndRepaint();
+    getRobWorkStudio ()->updateAndRepaint ();
 }
 
-void TreeView::scaleSlot()
+void TreeView::scaleSlot ()
 {
     // create the gui to change the scale of all drawables of a frame
-    std::vector<DrawableNode::Ptr> drawables;
-    constructDrawableList(drawables);
-    if(drawables.size()==0)
+    std::vector< DrawableNode::Ptr > drawables;
+    constructDrawableList (drawables);
+    if (drawables.size () == 0)
         return;
 
-    bool ok = false;
-    const float scale = (float)QInputDialog::getDouble(
-        this, "Select Scale", "Scale:", drawables[0]->getScale(), 0, 1000, 1, &ok);
+    bool ok           = false;
+    const float scale = (float) QInputDialog::getDouble (
+        this, "Select Scale", "Scale:", drawables[0]->getScale (), 0, 1000, 1, &ok);
 
     if (ok) {
-        for(DrawableNode::Ptr& node : drawables)
-            node->setScale(scale);
+        for (DrawableNode::Ptr& node : drawables)
+            node->setScale (scale);
     }
 
-    getRobWorkStudio()->updateAndRepaint();
+    getRobWorkStudio ()->updateAndRepaint ();
 }
 
-void TreeView::highlightSlot()
+void TreeView::highlightSlot ()
 {
-    std::vector<DrawableNode::Ptr> drawables;
-    constructDrawableList(drawables);
+    std::vector< DrawableNode::Ptr > drawables;
+    constructDrawableList (drawables);
 
-    for(DrawableNode::Ptr& node : drawables)
-        node->setHighlighted(!node->isHighlighted());
+    for (DrawableNode::Ptr& node : drawables)
+        node->setHighlighted (!node->isHighlighted ());
 
-    getRobWorkStudio()->updateAndRepaint();
+    getRobWorkStudio ()->updateAndRepaint ();
 }
 
-void TreeView::selectFrameSlot()
+void TreeView::selectFrameSlot ()
 {
-    QTreeWidgetItem* item = _treewidget->currentItem();
-    FrameMap::iterator frameIt = _frameMap.find(item);
-    if (frameIt != _frameMap.end()) {
+    QTreeWidgetItem* item      = _treewidget->currentItem ();
+    FrameMap::iterator frameIt = _frameMap.find (item);
+    if (frameIt != _frameMap.end ()) {
         Frame* frame = frameIt->second;
-        getRobWorkStudio()->frameSelectedEvent().fire(frame);
-    } else {
-        //std::cout<<"Frame not found"<<std::endl;
+        getRobWorkStudio ()->frameSelectedEvent ().fire (frame);
+    }
+    else {
+        // std::cout<<"Frame not found"<<std::endl;
     }
 }
 
-void TreeView::poseSlot() {
-    _state = getRobWorkStudio()->getState();
-    //std::cout << "Pose of frame ";
-    QTreeWidgetItem* item = _treewidget->currentItem();
-    FrameMap::iterator frameIt = _frameMap.find(item);
-    if (frameIt != _frameMap.end()) {
+void TreeView::poseSlot ()
+{
+    _state = getRobWorkStudio ()->getState ();
+    // std::cout << "Pose of frame ";
+    QTreeWidgetItem* item      = _treewidget->currentItem ();
+    FrameMap::iterator frameIt = _frameMap.find (item);
+    if (frameIt != _frameMap.end ()) {
         Frame* frame = frameIt->second;
-        log().info() << frame->getName() << ": " << std::endl
-					<< rw::kinematics::Kinematics::worldTframe(frame, _state) << std::endl;
+        log ().info () << frame->getName () << ": " << std::endl
+                       << rw::kinematics::Kinematics::worldTframe (frame, _state) << std::endl;
         return;
     }
-    DrawableMap::iterator drawableIt = _drawableMap.find(item);
-    if (drawableIt != _drawableMap.end()) {
+    DrawableMap::iterator drawableIt = _drawableMap.find (item);
+    if (drawableIt != _drawableMap.end ()) {
         DrawableNode::Ptr drawable = drawableIt->second;
-        Frame *frame = getRobWorkStudio()->getWorkCellScene()->getFrame(drawable);
+        Frame* frame               = getRobWorkStudio ()->getWorkCellScene ()->getFrame (drawable);
         Transform3D<> t3d;
-        if(frame==NULL){
-            t3d = drawable->getTransform();
-        } else {
-            t3d = rw::kinematics::Kinematics::worldTframe(frame, _state) * drawable->getTransform();
+        if (frame == NULL) {
+            t3d = drawable->getTransform ();
+        }
+        else {
+            t3d =
+                rw::kinematics::Kinematics::worldTframe (frame, _state) * drawable->getTransform ();
         }
 
-        log().info() << drawable->getName() << ": " << std::endl
-                    << t3d << std::endl;
+        log ().info () << drawable->getName () << ": " << std::endl << t3d << std::endl;
         return;
     }
-
 }
 
-void TreeView::addFrameSlot(){
+void TreeView::addFrameSlot ()
+{
     // Open a config menu where parent frame is the highlighted frame
-    QTreeWidgetItem* item = _treewidget->currentItem();
-    FrameMap::iterator frameIt = _frameMap.find(item);
-    if (frameIt != _frameMap.end()) {
-        //Frame* frame = frameIt->second;
-        //getRobWorkStudio()->frameSelectedEvent().fire(frame);
-    } else {
-        //std::cout<<"Frame not found"<<std::endl;
+    QTreeWidgetItem* item      = _treewidget->currentItem ();
+    FrameMap::iterator frameIt = _frameMap.find (item);
+    if (frameIt != _frameMap.end ()) {
+        // Frame* frame = frameIt->second;
+        // getRobWorkStudio()->frameSelectedEvent().fire(frame);
+    }
+    else {
+        // std::cout<<"Frame not found"<<std::endl;
     }
 }
 
-void TreeView::open(WorkCell* workcell)
+void TreeView::open (WorkCell* workcell)
 {
     _workcell = workcell;
-    _state = getRobWorkStudio()->getState();
-    _treewidget->setHeaderLabels(QStringList("WorkCell"));
+    _state    = getRobWorkStudio ()->getState ();
+    _treewidget->setHeaderLabels (QStringList ("WorkCell"));
 
-	//_frameToDrawableMap.clear();
-    if (_showWorkCellStructureAction->isChecked()){
-        showWorkCellStructure();
-    } else if (_showDeviceStructureAction->isChecked()){
-        showDeviceStructure();
-    } else if (_showFrameStructureAction->isChecked()){
-        showFrameStructure();
+    //_frameToDrawableMap.clear();
+    if (_showWorkCellStructureAction->isChecked ()) {
+        showWorkCellStructure ();
+    }
+    else if (_showDeviceStructureAction->isChecked ()) {
+        showDeviceStructure ();
+    }
+    else if (_showFrameStructureAction->isChecked ()) {
+        showFrameStructure ();
     }
 
     // connect the workcell changed handler
-    _workcell->workCellChangedEvent().add(boost::bind(&TreeView::workcellChangedListener, this, boost::arg<1>()), this);
+    _workcell->workCellChangedEvent ().add (
+        boost::bind (&TreeView::workcellChangedListener, this, boost::arg< 1 > ()), this);
 }
 
-void TreeView::workcellChangedListener(int){
-    // we need to call the update slot, but since this is possibly from a non qt thread, we need to separate
-    // it through Qt::queue
-//     std::cout << "TreeView: WORKCELL CHANGED" << std::endl;
-
-    QMetaObject::invokeMethod(this, "update", Qt::QueuedConnection);
-
-}
-
-void TreeView::setupFrame(Frame& frame, QTreeWidgetItem* parentItem)
+void TreeView::workcellChangedListener (int)
 {
-    //State state = getRobWorkStudio()->getState();
-    QTreeWidgetItem* item = new QTreeWidgetItem();
+    // we need to call the update slot, but since this is possibly from a non qt thread, we need to
+    // separate it through Qt::queue
+    //     std::cout << "TreeView: WORKCELL CHANGED" << std::endl;
+
+    QMetaObject::invokeMethod (this, "update", Qt::QueuedConnection);
+}
+
+void TreeView::setupFrame (Frame& frame, QTreeWidgetItem* parentItem)
+{
+    // State state = getRobWorkStudio()->getState();
+    QTreeWidgetItem* item = new QTreeWidgetItem ();
     if (parentItem != NULL) {
-        parentItem->addChild(item); // own item
-    } else {
-        _treewidget->addTopLevelItem(item); // own item
+        parentItem->addChild (item);    // own item
     }
-    
-    std::string name = getFrameName(frame);
-    item->setText(0, name.c_str());
+    else {
+        _treewidget->addTopLevelItem (item);    // own item
+    }
 
-    registerFrameItem(&frame, item);
-    
-    if ( dynamic_cast<Joint*>(&frame) ) {
-        item->setIcon(0,QIcon(":/images/joint.png"));
-    } else {
-        item->setIcon(0,QIcon(":/images/frame.png"));
+    std::string name = getFrameName (frame);
+    item->setText (0, name.c_str ());
+
+    registerFrameItem (&frame, item);
+
+    if (dynamic_cast< Joint* > (&frame)) {
+        item->setIcon (0, QIcon (":/images/joint.png"));
     }
-    
-    Frame::iterator_pair children = frame.getChildren(_state);
+    else {
+        item->setIcon (0, QIcon (":/images/frame.png"));
+    }
+
+    Frame::iterator_pair children = frame.getChildren (_state);
     for (Frame::iterator it = children.first; it != children.second; ++it) {
-        setupFrame(*it, item);
+        setupFrame (*it, item);
     }
-    
-    setupDrawables(&frame, item);
-    
-    
-    
-    std::string showAxisArg = frame.getPropertyMap().get<std::string>("ShowFrameAxis", std::string("false"));
+
+    setupDrawables (&frame, item);
+
+    std::string showAxisArg =
+        frame.getPropertyMap ().get< std::string > ("ShowFrameAxis", std::string ("false"));
     if (showAxisArg == "true") {
-      getRobWorkStudio()->getWorkCellScene()->setFrameAxisVisible(true, &frame, _frameAxisSize);
-    } else if (showAxisArg == "false") {
-      getRobWorkStudio()->getWorkCellScene()->setFrameAxisVisible(false, &frame, _frameAxisSize);
-    } else {
-      log().warning() << "Unrecognized ShowFrameAxis property value " << showAxisArg << "; expected: true/false." << std::endl;
+        getRobWorkStudio ()->getWorkCellScene ()->setFrameAxisVisible (
+            true, &frame, _frameAxisSize);
+    }
+    else if (showAxisArg == "false") {
+        getRobWorkStudio ()->getWorkCellScene ()->setFrameAxisVisible (
+            false, &frame, _frameAxisSize);
+    }
+    else {
+        log ().warning () << "Unrecognized ShowFrameAxis property value " << showAxisArg
+                          << "; expected: true/false." << std::endl;
     }
 }
 
-void TreeView::close()
+void TreeView::close ()
 {
-    clearTreeContent();
+    clearTreeContent ();
 
     _workcell = NULL;
-    _treewidget->setHeaderLabels(QStringList("WorkCell"));
+    _treewidget->setHeaderLabels (QStringList ("WorkCell"));
 }
 
-void TreeView::update(){
-    _state = getRobWorkStudio()->getState();
-    clearTreeContent();
+void TreeView::update ()
+{
+    _state = getRobWorkStudio ()->getState ();
+    clearTreeContent ();
     //_frameToDrawableMap.clear();
-    if (_showWorkCellStructureAction->isChecked()){
-        showWorkCellStructure();
-    } else if (_showDeviceStructureAction->isChecked()){
-        showDeviceStructure();
-    } else if (_showFrameStructureAction->isChecked()){
-        showFrameStructure();
+    if (_showWorkCellStructureAction->isChecked ()) {
+        showWorkCellStructure ();
+    }
+    else if (_showDeviceStructureAction->isChecked ()) {
+        showDeviceStructure ();
+    }
+    else if (_showFrameStructureAction->isChecked ()) {
+        showFrameStructure ();
     }
 }
 
-void TreeView::keyPressEvent ( QKeyEvent * event ){
+void TreeView::keyPressEvent (QKeyEvent* event)
+{
     std::cout << "keyPressedEvent" << std::endl;
-    if(event->key()==Qt::Key_Space){
-        toggleSlot();
-    //} else if(event->key()==Qt::Key_Space){
-
-    } else {
-        QDockWidget::keyPressEvent(event);
+    if (event->key () == Qt::Key_Space) {
+        toggleSlot ();
+        //} else if(event->key()==Qt::Key_Space){
+    }
+    else {
+        QDockWidget::keyPressEvent (event);
     }
 }

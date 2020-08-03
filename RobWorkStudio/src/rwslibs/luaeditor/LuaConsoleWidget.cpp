@@ -16,15 +16,17 @@
  ********************************************************************************/
 
 #include "LuaConsoleWidget.hpp"
+
 #include "LuaExecutionThread.hpp"
 
-#include <sstream>
 #include <iomanip>
+#include <sstream>
 
-extern "C" {
-    #include <lua.h>
-    #include <lualib.h>
-    #include <lauxlib.h>
+extern "C"
+{
+#include <lauxlib.h>
+#include <lua.h>
+#include <lualib.h>
 }
 
 #include <rw/core/LogWriter.hpp>
@@ -42,160 +44,154 @@ using namespace rws;
 
 namespace {
 
-    class WriterWrapper: public LogWriter {
-    public:
-        WriterWrapper(QTextEdit* slog):
-            _slog(slog),_tabLevel(0)
-        {
-        }
+class WriterWrapper : public LogWriter
+{
+  public:
+    WriterWrapper (QTextEdit* slog) : _slog (slog), _tabLevel (0) {}
 
-        virtual ~WriterWrapper(){}
+    virtual ~WriterWrapper () {}
 
-        virtual void writeln(const std::string& str){
-            write(str);
-        }
+    virtual void writeln (const std::string& str) { write (str); }
 
-    protected:
-        virtual void doFlush(){
-        }
+  protected:
+    virtual void doFlush () {}
 
-        /**
-         * @brief Writes \b str to the log
-         * @param str [in] message to write
-         */
-        virtual void doWrite(const std::string& str) {
-            std::stringstream sstr;
-            sstr << std::setw(_tabLevel)<<std::setfill(' ');
-            sstr << str;
+    /**
+     * @brief Writes \b str to the log
+     * @param str [in] message to write
+     */
+    virtual void doWrite (const std::string& str)
+    {
+        std::stringstream sstr;
+        sstr << std::setw (_tabLevel) << std::setfill (' ');
+        sstr << str;
 
-            _msgQueue.push_back(std::make_pair(sstr.str(), _color));
-            QApplication::postEvent( _slog, new QEvent((QEvent::Type)MESSAGE_ADDED_EVENT) );
-        }
+        _msgQueue.push_back (std::make_pair (sstr.str (), _color));
+        QApplication::postEvent (_slog, new QEvent ((QEvent::Type) MESSAGE_ADDED_EVENT));
+    }
 
-        virtual void doSetTabLevel(int tabLevel) {
-            _tabLevel = tabLevel;
-        }
+    virtual void doSetTabLevel (int tabLevel) { _tabLevel = tabLevel; }
 
-    public:
-        std::vector< std::pair<std::string, QColor> > _msgQueue;
+  public:
+    std::vector< std::pair< std::string, QColor > > _msgQueue;
 
-    private:
-        QTextEdit *_slog;
-        QColor _color;
-        int _tabLevel;
-    };
+  private:
+    QTextEdit* _slog;
+    QColor _color;
+    int _tabLevel;
+};
 
+}    // namespace
 
+LuaConsoleWidget::LuaConsoleWidget (QWidget* parent) :
+    QTextEdit (parent), _cmdColor (Qt::black), _errColor (Qt::red), _outColor (Qt::blue),
+    _completionColor (Qt::green), _promptLen (1), _promptStr (">"), _histIdx (0),
+    _lastBlockNumber (0), _luastate (NULL)
+{
+    _logWriter = ownedPtr (new WriterWrapper (this));
+    // connect(this, SIGNAL(blockCountChanged(int)), this, SLOT(updateLineNumberAreaWidth(int)));
+    // connect(this, SIGNAL(updateRequest(const QRect &, int)), this,
+    // SLOT(updateLineNumberArea(const QRect &, int))); connect(this,
+    // SIGNAL(cursorPositionChanged()), this, SLOT(highlightCurrentLine()));
+    _luaRunner = new LuaExecutionThread ("", _luastate, _logWriter, this);
+    connect (_luaRunner, SIGNAL (finished ()), this, SLOT (runFinished ()));
+    // updateLineNumberAreaWidth(0);
+    // highlightCurrentLine();
+    reset ();
 }
 
-LuaConsoleWidget::LuaConsoleWidget(QWidget *parent) :
-     QTextEdit(parent),
-     _cmdColor(Qt::black), _errColor(Qt::red), _outColor(Qt::blue), _completionColor(Qt::green),
-     _promptLen(1), _promptStr(">"), _histIdx(0), _lastBlockNumber(0), _luastate(NULL)
- {
-    _logWriter = ownedPtr( new WriterWrapper(this) );
-     //connect(this, SIGNAL(blockCountChanged(int)), this, SLOT(updateLineNumberAreaWidth(int)));
-     //connect(this, SIGNAL(updateRequest(const QRect &, int)), this, SLOT(updateLineNumberArea(const QRect &, int)));
-     //connect(this, SIGNAL(cursorPositionChanged()), this, SLOT(highlightCurrentLine()));
-    _luaRunner =  new LuaExecutionThread("", _luastate, _logWriter, this);
-    connect(_luaRunner, SIGNAL(finished()), this, SLOT(runFinished()));
-     //updateLineNumberAreaWidth(0);
-     //highlightCurrentLine();
-    reset();
- }
-
-void LuaConsoleWidget::reset()
+void LuaConsoleWidget::reset ()
 {
-    clear();
-    //setTextFormat(Qt::PlainText);
-    setCurrentFont(QFont("Courier"));
-    setReadOnly(false);
+    clear ();
+    // setTextFormat(Qt::PlainText);
+    setCurrentFont (QFont ("Courier"));
+    setReadOnly (false);
     _lastBlockNumber = 0;
 
-    //init attributes
-    //historyIndex = 0;
-    //history.clear();
-    //recordedScript.clear();
-    displayPrompt();
+    // init attributes
+    // historyIndex = 0;
+    // history.clear();
+    // recordedScript.clear();
+    displayPrompt ();
 }
 
-
-bool LuaConsoleWidget::event(QEvent *event){
-    if(event->type()==MESSAGE_ADDED_EVENT){
-        WriterWrapper* writer = (WriterWrapper*)_logWriter.get();
-        for(unsigned int i=0;i<writer->_msgQueue.size();i++){
-            //write(writer->_msgQueue[i].first, writer->_msgQueue[i].second);
-            insertPlainText(writer->_msgQueue[i].first.c_str());
+bool LuaConsoleWidget::event (QEvent* event)
+{
+    if (event->type () == MESSAGE_ADDED_EVENT) {
+        WriterWrapper* writer = (WriterWrapper*) _logWriter.get ();
+        for (unsigned int i = 0; i < writer->_msgQueue.size (); i++) {
+            // write(writer->_msgQueue[i].first, writer->_msgQueue[i].second);
+            insertPlainText (writer->_msgQueue[i].first.c_str ());
         }
-        writer->_msgQueue.clear();
-        moveCursor(QTextCursor::End);
+        writer->_msgQueue.clear ();
+        moveCursor (QTextCursor::End);
         return true;
-    } else {
-        event->ignore();
     }
-    return QTextEdit::event(event);
+    else {
+        event->ignore ();
+    }
+    return QTextEdit::event (event);
+}
+
+// void LuaConsoleWidget::keyPressEvent(QKeyEvent *e)
+//{
+/*
+if (_c && _c->popup()->isVisible()) {
+    // The following keys are forwarded by the completer to the widget
+   switch (e->key()) {
+   case Qt::Key_Enter:
+   case Qt::Key_Return:
+   case Qt::Key_Escape:
+   case Qt::Key_Tab:
+   case Qt::Key_Backtab:
+        e->ignore();
+        return; // let the completer do default behavior
+   default:
+       break;
+   }
+}
+
+bool isShortcut = ((e->modifiers() & Qt::ControlModifier) && (e->key() == Qt::Key_Space)); // CTRL+E
+if (!_c || !isShortcut){ // dont process the shortcut when we have a completer
+    QPlainTextEdit::keyPressEvent(e);
+    return;
+}
+
+const bool ctrlOrShift = e->modifiers() & (Qt::ControlModifier | Qt::ShiftModifier);
+if (!_c || (ctrlOrShift && e->text().isEmpty()))
+    return;
+
+static QString eow("~!@#$%^&*()_+{}|:\"<>?,/;'[]\\-="); // end of word
+bool hasModifier = (e->modifiers() != Qt::NoModifier) && !ctrlOrShift;
+QString completionPrefix = textUnderCursor();
+//std::cout << "textUnderCursor: " << completionPrefix.toStdString() << std::endl;
+if (!isShortcut && (hasModifier || e->text().isEmpty()|| completionPrefix.length() < 1
+                  || eow.contains(e->text().right(1)))) {
+    //std::cout << "HIDE " << std::endl;
+    _c->popup()->hide();
+    return;
 }
 
 
-//void LuaConsoleWidget::keyPressEvent(QKeyEvent *e)
-//{
-    /*
-    if (_c && _c->popup()->isVisible()) {
-        // The following keys are forwarded by the completer to the widget
-       switch (e->key()) {
-       case Qt::Key_Enter:
-       case Qt::Key_Return:
-       case Qt::Key_Escape:
-       case Qt::Key_Tab:
-       case Qt::Key_Backtab:
-            e->ignore();
-            return; // let the completer do default behavior
-       default:
-           break;
-       }
-    }
 
-    bool isShortcut = ((e->modifiers() & Qt::ControlModifier) && (e->key() == Qt::Key_Space)); // CTRL+E
-    if (!_c || !isShortcut){ // dont process the shortcut when we have a completer
-        QPlainTextEdit::keyPressEvent(e);
-        return;
-    }
+if (completionPrefix != _c->completionPrefix()) {
+    //std::cout << "text1" << std::endl;
+    _c->setCompletionPrefix(completionPrefix);
+    _c->popup()->setCurrentIndex(_c->completionModel()->index(0, 0));
+}
+//std::cout << "text2" << std::endl;
 
-    const bool ctrlOrShift = e->modifiers() & (Qt::ControlModifier | Qt::ShiftModifier);
-    if (!_c || (ctrlOrShift && e->text().isEmpty()))
-        return;
-
-    static QString eow("~!@#$%^&*()_+{}|:\"<>?,/;'[]\\-="); // end of word
-    bool hasModifier = (e->modifiers() != Qt::NoModifier) && !ctrlOrShift;
-    QString completionPrefix = textUnderCursor();
-    //std::cout << "textUnderCursor: " << completionPrefix.toStdString() << std::endl;
-    if (!isShortcut && (hasModifier || e->text().isEmpty()|| completionPrefix.length() < 1
-                      || eow.contains(e->text().right(1)))) {
-        //std::cout << "HIDE " << std::endl;
-        _c->popup()->hide();
-        return;
-    }
-
-
-
-    if (completionPrefix != _c->completionPrefix()) {
-        //std::cout << "text1" << std::endl;
-        _c->setCompletionPrefix(completionPrefix);
-        _c->popup()->setCurrentIndex(_c->completionModel()->index(0, 0));
-    }
-    //std::cout << "text2" << std::endl;
-
-    QRect cr = cursorRect();
-    cr.setWidth(_c->popup()->sizeHintForColumn(0)
-                + _c->popup()->verticalScrollBar()->sizeHint().width());
-    _c->complete(cr); // popup it up!
-    _c->popup()->show();
-    */
+QRect cr = cursorRect();
+cr.setWidth(_c->popup()->sizeHintForColumn(0)
+            + _c->popup()->verticalScrollBar()->sizeHint().width());
+_c->complete(cr); // popup it up!
+_c->popup()->show();
+*/
 //}
 
-//Correctly handle the cursor when moved according to the different actions
-//void LuaConsoleWidget::moveCursor(CursorAction action, bool select)
-void LuaConsoleWidget::moveCursor(QTextCursor::MoveOperation action, QTextCursor::MoveMode mode)
+// Correctly handle the cursor when moved according to the different actions
+// void LuaConsoleWidget::moveCursor(CursorAction action, bool select)
+void LuaConsoleWidget::moveCursor (QTextCursor::MoveOperation action, QTextCursor::MoveMode mode)
 {
     /*
     int para, index;
@@ -212,7 +208,8 @@ void LuaConsoleWidget::moveCursor(QTextCursor::MoveOperation action, QTextCursor
         return;
     }
     //Process the up & down keys to navigate into the history (if not empty & if in the first line)
-    else if ( ( (action == QTEXTEDIT_CLASSNAME::MoveDown) || (action == QTEXTEDIT_CLASSNAME::MoveUp) )
+    else if ( ( (action == QTEXTEDIT_CLASSNAME::MoveDown) || (action == QTEXTEDIT_CLASSNAME::MoveUp)
+    )
         && history.size() && (promptParagraph == para))
     {
         //update the historyIndex if up or down
@@ -233,250 +230,244 @@ void LuaConsoleWidget::moveCursor(QTextCursor::MoveOperation action, QTextCursor
     }
 
     */
-
 }
 
-bool LuaConsoleWidget::isInEditionZone()
+bool LuaConsoleWidget::isInEditionZone ()
 {
-    int /*para = textCursor().blockNumber(), */index = textCursor().columnNumber();
-    return ( index >= _promptLen );
+    int /*para = textCursor().blockNumber(), */ index = textCursor ().columnNumber ();
+    return (index >= _promptLen);
 }
 
-//Redirect keyboard actions to perform text suppression and validation
-//of the commands
-//void LuaConsoleWidget::doKeyboardAction(KeyboardAction action)
-void LuaConsoleWidget::keyPressEvent(QKeyEvent *e)
+// Redirect keyboard actions to perform text suppression and validation
+// of the commands
+// void LuaConsoleWidget::doKeyboardAction(KeyboardAction action)
+void LuaConsoleWidget::keyPressEvent (QKeyEvent* e)
 {
-    //Get the current paragraph and the current cursor position
-    int /*para = textCursor().blockNumber(), */index = textCursor().columnNumber();
+    // Get the current paragraph and the current cursor position
+    int /*para = textCursor().blockNumber(), */ index = textCursor ().columnNumber ();
 
-    const bool ctrlMod = e->modifiers() & Qt::ControlModifier ;
-    //const bool shiftMod = e->modifiers() & Qt::ShiftModifier ;
+    const bool ctrlMod = e->modifiers () & Qt::ControlModifier;
+    // const bool shiftMod = e->modifiers() & Qt::ShiftModifier ;
 
-
-    //Get the cursor
-    QTextCursor cursor = textCursor();
-    if(cursor.blockNumber()>_lastBlockNumber){
-        cursor.movePosition(QTextCursor::End);
-        setTextCursor(cursor);
-        _lastBlockNumber = cursor.blockNumber();
-    } else if( cursor.blockNumber()<_lastBlockNumber ){
-        cursor.movePosition(QTextCursor::End);
-        setTextCursor(cursor);
+    // Get the cursor
+    QTextCursor cursor = textCursor ();
+    if (cursor.blockNumber () > _lastBlockNumber) {
+        cursor.movePosition (QTextCursor::End);
+        setTextCursor (cursor);
+        _lastBlockNumber = cursor.blockNumber ();
+    }
+    else if (cursor.blockNumber () < _lastBlockNumber) {
+        cursor.movePosition (QTextCursor::End);
+        setTextCursor (cursor);
     }
 
-    //std::cout << "Cursor: block=" << cursor.blockNumber() << std::endl;
+    // std::cout << "Cursor: block=" << cursor.blockNumber() << std::endl;
 
-    switch (e->key())
-    {
-        //Don't delete the prompt if backspace is pressed
+    switch (e->key ()) {
+        // Don't delete the prompt if backspace is pressed
         case Qt::Key_Backspace: {
-            if(ctrlMod){
-                //Don't delete the prompt if ctrl+backspace is pressed
-                //trick to get the new position of the cursor
-                moveCursor(QTextCursor::WordLeft);
-                //exit if the new position is out of the edition zone
+            if (ctrlMod) {
+                // Don't delete the prompt if ctrl+backspace is pressed
+                // trick to get the new position of the cursor
+                moveCursor (QTextCursor::WordLeft);
+                // exit if the new position is out of the edition zone
                 bool error = false;
-                if ( !isInEditionZone())
+                if (!isInEditionZone ())
                     error = true;
 
-                //setTextCursor(cursor);
+                // setTextCursor(cursor);
                 if (error)
                     return;
-            } else if ( index == _promptLen ){
+            }
+            else if (index == _promptLen) {
                 // don't delete prompt
                 return;
             }
-        }
-        break;
+        } break;
         case Qt::Key_Left: {
-            if ( index == _promptLen ){
+            if (index == _promptLen) {
                 // don't delete prompt
                 return;
             }
-        }
-        break;
+        } break;
 
         case Qt::Key_Home: {
-            cursor.movePosition(QTextCursor::StartOfBlock);
-            for(int i=0;i<_promptLen;i++)
-                cursor.movePosition(QTextCursor::Right);
+            cursor.movePosition (QTextCursor::StartOfBlock);
+            for (int i = 0; i < _promptLen; i++)
+                cursor.movePosition (QTextCursor::Right);
 
-            setTextCursor(cursor);
+            setTextCursor (cursor);
             return;
-        }
-        break;
+        } break;
         case Qt::Key_Up: {
             // take the last command in history
-            int count = _commandHistory.count();
-            if(count==0)
+            int count = _commandHistory.count ();
+            if (count == 0)
                 return;
             _histIdx--;
-            if(_histIdx<0)
-                _histIdx = count-1;
-            setCommand(_commandHistory[_histIdx]);
+            if (_histIdx < 0)
+                _histIdx = count - 1;
+            setCommand (_commandHistory[_histIdx]);
 
             return;
-        }
-        break;
+        } break;
         case Qt::Key_Down: {
             // take the last command in history
-            int count = _commandHistory.count();
-            if(count==0) return;
+            int count = _commandHistory.count ();
+            if (count == 0)
+                return;
             _histIdx++;
-            if(_histIdx>=count)
+            if (_histIdx >= count)
                 _histIdx = 0;
-            setCommand(_commandHistory[_histIdx]);
+            setCommand (_commandHistory[_histIdx]);
             return;
-        }
-        break;
+        } break;
         case Qt::Key_Return: {
             // If return pressed, do the evaluation and append the result
 
-            cursor.movePosition(QTextCursor::End);
-            setTextCursor(cursor);
+            cursor.movePosition (QTextCursor::End);
+            setTextCursor (cursor);
 
-            //Get the command to validate
-            QString command = getCurrentCommand();
+            // Get the command to validate
+            QString command = getCurrentCommand ();
             // execute the command and get back its text result and its return value
-            if ( isCommandComplete(command) ){
-                append("");
-                execCommand(command, false);
-            } else
-            {
-                append("");
-                moveCursor(QTextCursor::End);
+            if (isCommandComplete (command)) {
+                append ("");
+                execCommand (command, false);
+            }
+            else {
+                append ("");
+                moveCursor (QTextCursor::End);
             }
             return;
-        }
-        break;
-        default:
-            break;
+        } break;
+        default: break;
     }
 
-    //std::cout << cursor.blockNumber() << "!=" << _lastBlockNumber << std::endl;
-    if(cursor.blockNumber()!=_lastBlockNumber){
-        moveCursor(QTextCursor::End);
+    // std::cout << cursor.blockNumber() << "!=" << _lastBlockNumber << std::endl;
+    if (cursor.blockNumber () != _lastBlockNumber) {
+        moveCursor (QTextCursor::End);
         return;
     }
-    //If we are here, this means that we can perform the action
-    //by calling the parent implementation
-    QTextEdit::keyPressEvent(e);
+    // If we are here, this means that we can perform the action
+    // by calling the parent implementation
+    QTextEdit::keyPressEvent (e);
 }
 
-void LuaConsoleWidget::displayPrompt(){
-    moveCursor(QTextCursor::End);
-    if(textCursor().columnNumber()>0)
-        append(_promptStr);
+void LuaConsoleWidget::displayPrompt ()
+{
+    moveCursor (QTextCursor::End);
+    if (textCursor ().columnNumber () > 0)
+        append (_promptStr);
     else
-        insertPlainText(_promptStr);
-    verticalScrollBar()->setValue( verticalScrollBar()->maximum() );
-    _lastBlockNumber = textCursor().blockNumber();
+        insertPlainText (_promptStr);
+    verticalScrollBar ()->setValue (verticalScrollBar ()->maximum ());
+    _lastBlockNumber = textCursor ().blockNumber ();
 }
 
-QString LuaConsoleWidget::interpretCommand(QString cmd, int *res){
+QString LuaConsoleWidget::interpretCommand (QString cmd, int* res)
+{
     *res = 0;
 
-    int error = luaL_loadbuffer(_luastate->get(), cmd.toStdString().c_str(), cmd.size(), "");
+    int error = luaL_loadbuffer (_luastate->get (), cmd.toStdString ().c_str (), cmd.size (), "");
     if (!error)
-        error = lua_pcall(_luastate->get(), 0, 0, 0);
+        error = lua_pcall (_luastate->get (), 0, 0, 0);
 
-    QString resstring("");
-    if(error){
-        *res = 1;
-        resstring = lua_tostring(_luastate->get(), -1);
-        lua_pop(_luastate->get(), 1);
-    } else {
+    QString resstring ("");
+    if (error) {
+        *res      = 1;
+        resstring = lua_tostring (_luastate->get (), -1);
+        lua_pop (_luastate->get (), 1);
+    }
+    else {
         *res = 0;
     }
 
     return resstring;
 }
 
-bool LuaConsoleWidget::execCommand(QString command, bool b){
+bool LuaConsoleWidget::execCommand (QString command, bool b)
+{
     // if we want to include echo of command...
-    //displayPrompt();
-    //insertPlainText(command);
-    rwlibs::swig::setlog( _logWriter );
-    setTextColor(_outColor);
-    this->setEnabled(false);
+    // displayPrompt();
+    // insertPlainText(command);
+    rwlibs::swig::setlog (_logWriter);
+    setTextColor (_outColor);
+    this->setEnabled (false);
 
-    _luaRunner->set(command.toStdString(), _luastate , _logWriter);
-    _luaRunner->start();
+    _luaRunner->set (command.toStdString (), _luastate, _logWriter);
+    _luaRunner->start ();
 
     return true;
 }
 
-void LuaConsoleWidget::setLuaState(rwlibs::swig::LuaState *lstate){
+void LuaConsoleWidget::setLuaState (rwlibs::swig::LuaState* lstate)
+{
     //_luaRunner->_lua = lstate;
-    _luastate=lstate;
+    _luastate = lstate;
 }
 
+void LuaConsoleWidget::runFinished ()
+{
+    int res         = _luaRunner->getReturnValue ();
+    QString strRes  = _luaRunner->getReturnString ().c_str ();
+    QString command = _luaRunner->getCommand ().c_str ();
 
-void LuaConsoleWidget::runFinished(){
-
-    int res = _luaRunner->getReturnValue();
-    QString strRes = _luaRunner->getReturnString().c_str();
-    QString command = _luaRunner->getCommand().c_str();
-
-
-
-    //According to the return value, display the result either in red or in blue
-    if (res == 0){
-        setTextColor(_outColor);
-    } else {
-        setTextColor(_errColor);
-        append(strRes);
+    // According to the return value, display the result either in red or in blue
+    if (res == 0) {
+        setTextColor (_outColor);
     }
-    _commandHistory.append(command);
-    _histIdx = _commandHistory.count();
+    else {
+        setTextColor (_errColor);
+        append (strRes);
+    }
+    _commandHistory.append (command);
+    _histIdx = _commandHistory.count ();
 
-    //append(strRes);
+    // append(strRes);
 
-    setTextColor(_cmdColor);
+    setTextColor (_cmdColor);
 
-    this->setEnabled(true);
+    this->setEnabled (true);
 
-    //Display the prompt again
-    displayPrompt();
+    // Display the prompt again
+    displayPrompt ();
 
-    moveCursor(QTextCursor::End);
-    setFocus(Qt::OtherFocusReason);
+    moveCursor (QTextCursor::End);
+    setFocus (Qt::OtherFocusReason);
 }
 
-bool LuaConsoleWidget::isCommandComplete(QString command){
+bool LuaConsoleWidget::isCommandComplete (QString command)
+{
     return true;
 }
 
-void LuaConsoleWidget::setCommand(QString command)
+void LuaConsoleWidget::setCommand (QString command)
 {
-    //Get the current command: we just remove the prompt
-    QTextCursor cursor( textCursor() );
-    cursor.beginEditBlock();
-    cursor.movePosition(QTextCursor::StartOfBlock);
-    cursor.movePosition(QTextCursor::EndOfBlock, QTextCursor::KeepAnchor);
-    cursor.endEditBlock();
+    // Get the current command: we just remove the prompt
+    QTextCursor cursor (textCursor ());
+    cursor.beginEditBlock ();
+    cursor.movePosition (QTextCursor::StartOfBlock);
+    cursor.movePosition (QTextCursor::EndOfBlock, QTextCursor::KeepAnchor);
+    cursor.endEditBlock ();
 
-    QString cmd(_promptStr+command);
-    cursor.insertText(cmd);
-    //selectAll(false);
+    QString cmd (_promptStr + command);
+    cursor.insertText (cmd);
+    // selectAll(false);
 }
 
-
-QString LuaConsoleWidget::getCurrentCommand()
+QString LuaConsoleWidget::getCurrentCommand ()
 {
-    //Get the current command: we just remove the prompt
-    QTextCursor cursor( textCursor() );
-    cursor.beginEditBlock();
-    cursor.movePosition(QTextCursor::StartOfBlock);
-    cursor.movePosition(QTextCursor::EndOfBlock, QTextCursor::KeepAnchor);
-    cursor.endEditBlock();
+    // Get the current command: we just remove the prompt
+    QTextCursor cursor (textCursor ());
+    cursor.beginEditBlock ();
+    cursor.movePosition (QTextCursor::StartOfBlock);
+    cursor.movePosition (QTextCursor::EndOfBlock, QTextCursor::KeepAnchor);
+    cursor.endEditBlock ();
 
-    QString command = cursor.selectedText();
-    command.remove(0,_promptLen);
-    //std::cout << "The command is: " << command.toStdString() << std::endl;
-    //selectAll(false);
+    QString command = cursor.selectedText ();
+    command.remove (0, _promptLen);
+    // std::cout << "The command is: " << command.toStdString() << std::endl;
+    // selectAll(false);
     return command;
 }
-
-

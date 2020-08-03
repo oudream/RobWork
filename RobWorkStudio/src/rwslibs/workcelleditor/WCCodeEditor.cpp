@@ -233,7 +233,8 @@ void WCCodeEditor::unIndentSelection ()
             tc.setPosition (tc.position () - 1, QTextCursor::KeepAnchor);
             tc.removeSelectedText ();
             end--;
-        }else if ( text[0] == -30 && text[1] == -128){ //Empty line
+        }
+        else if (text[0] == -30 && text[1] == -128) {    // Empty line
             continue;
         }
         tc.movePosition (QTextCursor::Down);

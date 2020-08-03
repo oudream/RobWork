@@ -28,118 +28,117 @@
 
 #include <rw/proximity/DistanceStrategy.hpp>
 
-namespace rwsim {
-    namespace log {
+namespace rwsim { namespace log {
 
-        class LogPositions;
+    class LogPositions;
 
-        //! @addtogroup rwsim_log
+    //! @addtogroup rwsim_log
 
-        //! @{
+    //! @{
+    /**
+     * @brief Log detailed info from a distance detection.
+     */
+    class LogDistanceResult : public SimulatorLogEntry
+    {
+      public:
+        //! Smart pointer type of LogDistanceResult
+        typedef rw::common::Ptr< LogDistanceResult > Ptr;
+
+        //! Smart pointer type of const LogDistanceResult
+        typedef rw::common::Ptr< const LogDistanceResult > CPtr;
+
+        //! @copydoc SimulatorLogEntry::SimulatorLogEntry
+        LogDistanceResult (SimulatorLogScope* parent);
+
+        //! @brief Destructor.
+        virtual ~LogDistanceResult ();
+
+        //! @copydoc SimulatorLogEntry::read
+        virtual void read (class rw::common::InputArchive& iarchive, const std::string& id);
+
+        //! @copydoc SimulatorLogEntry::write
+        virtual void write (class rw::common::OutputArchive& oarchive, const std::string& id) const;
+
+        //! @copydoc SimulatorLogEntry::getType
+        virtual std::string getType () const;
+
+        //! @copydoc SimulatorLogEntry::operator==
+        virtual bool operator== (const SimulatorLog& b) const;
+
+        //! @copydoc SimulatorLogEntry::getLinkedEntries
+        virtual std::list< SimulatorLogEntry::Ptr > getLinkedEntries () const;
+
+        //! @copydoc SimulatorLogEntry::autoLink
+        virtual bool autoLink ();
+
+        //! @copydoc SimulatorLogEntry::createNew
+        virtual SimulatorLogEntry::Ptr createNew (SimulatorLogScope* parent) const;
+
         /**
-         * @brief Log detailed info from a distance detection.
+         * @brief Get the type id of this entry type.
+         * @return the type id.
          */
-        class LogDistanceResult: public SimulatorLogEntry
+        static std::string getTypeID ();
+
+        //! @brief The result including info about the ProximityModels.
+        struct ResultInfo
         {
-            public:
-                //! Smart pointer type of LogDistanceResult
-                typedef rw::common::Ptr<LogDistanceResult> Ptr;
+            //! @brief The result of the collision check.
+            rw::proximity::DistanceStrategy::Result result;
 
-                //! Smart pointer type of const LogDistanceResult
-                typedef rw::common::Ptr<const LogDistanceResult> CPtr;
+            //! @brief The name of the first frame.
+            std::string frameA;
 
-                //! @copydoc SimulatorLogEntry::SimulatorLogEntry
-                LogDistanceResult(SimulatorLogScope* parent);
+            //! @brief The name of the second frame.
+            std::string frameB;
 
-                //! @brief Destructor.
-                virtual ~LogDistanceResult();
+            //! @brief The geometry ids for the first frame.
+            std::vector< std::string > geoNamesA;
 
-                //! @copydoc SimulatorLogEntry::read
-                virtual void read(class rw::common::InputArchive& iarchive, const std::string& id);
+            //! @brief The geometry ids for the second frame.
+            std::vector< std::string > geoNamesB;
 
-                //! @copydoc SimulatorLogEntry::write
-                virtual void write(class rw::common::OutputArchive& oarchive, const std::string& id) const;
-
-                //! @copydoc SimulatorLogEntry::getType
-                virtual std::string getType() const;
-
-                //! @copydoc SimulatorLogEntry::operator==
-                virtual bool operator==(const SimulatorLog &b) const;
-
-                //! @copydoc SimulatorLogEntry::getLinkedEntries
-                virtual std::list<SimulatorLogEntry::Ptr> getLinkedEntries() const;
-
-                //! @copydoc SimulatorLogEntry::autoLink
-                virtual bool autoLink();
-
-                //! @copydoc SimulatorLogEntry::createNew
-                virtual SimulatorLogEntry::Ptr createNew(SimulatorLogScope* parent) const;
-
-                /**
-                 * @brief Get the type id of this entry type.
-                 * @return the type id.
-                 */
-                static std::string getTypeID();
-
-                //! @brief The result including info about the ProximityModels.
-                struct ResultInfo {
-                    //! @brief The result of the collision check.
-                    rw::proximity::DistanceStrategy::Result result;
-
-                    //! @brief The name of the first frame.
-                    std::string frameA;
-
-                    //! @brief The name of the second frame.
-                    std::string frameB;
-
-                    //! @brief The geometry ids for the first frame.
-                    std::vector<std::string> geoNamesA;
-
-                    //! @brief The geometry ids for the second frame.
-                    std::vector<std::string> geoNamesB;
-
-                    /**
-                     * @brief Compare with other ResultInfo structure.
-                     * @param b [in] the other structure.
-                     * @return true if equal, false otherwise.
-                     */
-                    bool operator==(const ResultInfo &b) const;
-                };
-
-                /**
-                 * @brief Retrieve the logged result.
-                 * @return the result.
-                 */
-                const std::vector<ResultInfo>& getResults() const;
-
-                /**
-                 * @brief Add the result to this log entry.
-                 * @param result [in] the result.
-                 */
-                void addResult(const rw::proximity::DistanceStrategy::Result& result);
-
-                /**
-                 * @brief Add results to this log entry.
-                 * @param results [in] list of results.
-                 */
-                void addResults(const std::vector<rw::proximity::DistanceStrategy::Result>& results);
-
-                /**
-                 * @brief Get the positions of the objects.
-                 *
-                 * This is similar to getLinkedEntries.
-                 *
-                 * @return the log entry with positions of objects (or NULL if not linked).
-                 */
-                rw::common::Ptr<LogPositions> getPositions() const;
-
-            private:
-                rw::common::Ptr<LogPositions> _positions;
-                std::vector<ResultInfo> _results;
+            /**
+             * @brief Compare with other ResultInfo structure.
+             * @param b [in] the other structure.
+             * @return true if equal, false otherwise.
+             */
+            bool operator== (const ResultInfo& b) const;
         };
-        //! @}
 
-    } /* namespace log */
-} /* namespace rwsim */
+        /**
+         * @brief Retrieve the logged result.
+         * @return the result.
+         */
+        const std::vector< ResultInfo >& getResults () const;
+
+        /**
+         * @brief Add the result to this log entry.
+         * @param result [in] the result.
+         */
+        void addResult (const rw::proximity::DistanceStrategy::Result& result);
+
+        /**
+         * @brief Add results to this log entry.
+         * @param results [in] list of results.
+         */
+        void addResults (const std::vector< rw::proximity::DistanceStrategy::Result >& results);
+
+        /**
+         * @brief Get the positions of the objects.
+         *
+         * This is similar to getLinkedEntries.
+         *
+         * @return the log entry with positions of objects (or NULL if not linked).
+         */
+        rw::common::Ptr< LogPositions > getPositions () const;
+
+      private:
+        rw::common::Ptr< LogPositions > _positions;
+        std::vector< ResultInfo > _results;
+    };
+    //! @}
+
+}}    // namespace rwsim::log
 
 #endif /* RWSIM_LOG_LOGDISTANCERESULT_HPP_ */

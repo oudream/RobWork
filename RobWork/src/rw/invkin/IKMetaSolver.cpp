@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  ********************************************************************************/
-
 
 #include "IKMetaSolver.hpp"
 
@@ -31,56 +30,49 @@ using namespace rw::models;
 using namespace rw::kinematics;
 using namespace rw::pathplanning;
 
-
-IKMetaSolver::IKMetaSolver(IterativeIK::Ptr iksolver,
-						   const Device::Ptr device,
-						   CollisionDetector::Ptr collisionDetector) :
-    _iksolver(iksolver),
-    _collisionDetector(collisionDetector),
-    _constraint(NULL),    
-    _device(device)
+IKMetaSolver::IKMetaSolver (IterativeIK::Ptr iksolver, const Device::Ptr device,
+                            CollisionDetector::Ptr collisionDetector) :
+    _iksolver (iksolver),
+    _collisionDetector (collisionDetector), _constraint (NULL), _device (device)
 {
-    initialize();
+    initialize ();
 }
 
-IKMetaSolver::IKMetaSolver(IterativeIK::Ptr iksolver,
-						   const rw::models::Device::Ptr device,
-						   rw::pathplanning::QConstraint::Ptr constraint):
-   _iksolver(iksolver),
-   _collisionDetector(NULL),
-   _constraint(constraint),
-   _device(device)
+IKMetaSolver::IKMetaSolver (IterativeIK::Ptr iksolver, const rw::models::Device::Ptr device,
+                            rw::pathplanning::QConstraint::Ptr constraint) :
+    _iksolver (iksolver),
+    _collisionDetector (NULL), _constraint (constraint), _device (device)
 {
-    initialize();
+    initialize ();
 }
 
-
-
-void IKMetaSolver::initialize() {
-	_checkForLimits = true;
-	_proximityLimit = 1e-5;
-    _bounds = _device->getBounds();
-    _dof = _device->getDOF();
-    _maxAttempts = 25;
-    _stopAtFirst = false;
+void IKMetaSolver::initialize ()
+{
+    _checkForLimits = true;
+    _proximityLimit = 1e-5;
+    _bounds         = _device->getBounds ();
+    _dof            = _device->getDOF ();
+    _maxAttempts    = 25;
+    _stopAtFirst    = false;
 }
 
-IKMetaSolver::~IKMetaSolver() {}
+IKMetaSolver::~IKMetaSolver ()
+{}
 
-bool IKMetaSolver::betweenLimits(const Q& q) const
+bool IKMetaSolver::betweenLimits (const Q& q) const
 {
-    for (size_t i = 0; i<q.size(); i++) {
-        if (q(i) < _bounds.first(i) || _bounds.second(i) < q(i))
+    for (size_t i = 0; i < q.size (); i++) {
+        if (q (i) < _bounds.first (i) || _bounds.second (i) < q (i))
             return false;
     }
     return true;
 }
 
-Q IKMetaSolver::getRandomConfig() const
+Q IKMetaSolver::getRandomConfig () const
 {
-    Q q(_dof);
-    for (int i = 0; i < (int)_dof; i++) {
-        q(i) = Math::ran(_bounds.first(i), _bounds.second(i));
+    Q q (_dof);
+    for (int i = 0; i < (int) _dof; i++) {
+        q (i) = Math::ran (_bounds.first (i), _bounds.second (i));
     }
     return q;
 }
@@ -88,79 +80,78 @@ Q IKMetaSolver::getRandomConfig() const
 /*
  * Check for doublets an only add if the new solution if different from previous
  */
-void IKMetaSolver::addSolution(const rw::math::Q& q, std::vector<Q>& res) const {
-    if (_proximityLimit<=0) {
-        res.push_back(q);
+void IKMetaSolver::addSolution (const rw::math::Q& q, std::vector< Q >& res) const
+{
+    if (_proximityLimit <= 0) {
+        res.push_back (q);
         return;
     }
 
-    for (std::vector<Q>::iterator it = res.begin(); it != res.end(); ++it) {
-        double d = MetricUtil::distInf(q, *it);
-        if (d <= _proximityLimit) //If different is less than the threshold we don't wish to add it
+    for (std::vector< Q >::iterator it = res.begin (); it != res.end (); ++it) {
+        double d = MetricUtil::distInf (q, *it);
+        if (d <=
+            _proximityLimit)    // If different is less than the threshold we don't wish to add it
             return;
     }
-    res.push_back(q);
+    res.push_back (q);
 }
 
-std::vector<Q> IKMetaSolver::solve(const Transform3D<>& baseTend,
-                                   const State& stateDefault,
-                                   size_t cnt,
-                                   bool stopatfirst) const
+std::vector< Q > IKMetaSolver::solve (const Transform3D<>& baseTend, const State& stateDefault,
+                                      size_t cnt, bool stopatfirst) const
 {
     if (_constraint == NULL && _collisionDetector != NULL) {
-        _constraint = QConstraint::make(_collisionDetector, _device, stateDefault);
+        _constraint = QConstraint::make (_collisionDetector, _device, stateDefault);
     }
-    State state(stateDefault);
-    std::vector<Q> result;
+    State state (stateDefault);
+    std::vector< Q > result;
     while (cnt-- > 0) {
-        std::vector<Q> solutions = _iksolver->solve(baseTend, state);
-        _device->setQ(getRandomConfig(), state);        
-        for (std::vector<Q>::iterator it = solutions.begin(); it != solutions.end(); ++it)
-        {
-            if (!_checkForLimits || betweenLimits(*it)) {
+        std::vector< Q > solutions = _iksolver->solve (baseTend, state);
+        _device->setQ (getRandomConfig (), state);
+        for (std::vector< Q >::iterator it = solutions.begin (); it != solutions.end (); ++it) {
+            if (!_checkForLimits || betweenLimits (*it)) {
                 if (_constraint != NULL) {
-                    if (_constraint->inCollision(*it)) {
+                    if (_constraint->inCollision (*it)) {
                         continue;
                     }
                 }
-                addSolution(*it, result);
-                //result.push_back(*it);
+                addSolution (*it, result);
+                // result.push_back(*it);
                 if (stopatfirst) {
                     return result;
                 }
-            } 
-
-
+            }
         }
     }
     return result;
 }
 
-std::vector<Q> IKMetaSolver::solve(const Transform3D<>& baseTend,
-                                   const State& defaultState) const
+std::vector< Q > IKMetaSolver::solve (const Transform3D<>& baseTend,
+                                      const State& defaultState) const
 {
-    return solve(baseTend, defaultState, _maxAttempts, _stopAtFirst);
+    return solve (baseTend, defaultState, _maxAttempts, _stopAtFirst);
 }
 
-void IKMetaSolver::setMaxAttempts(size_t maxAttempts)
+void IKMetaSolver::setMaxAttempts (size_t maxAttempts)
 {
     _maxAttempts = maxAttempts;
 }
 
-void IKMetaSolver::setStopAtFirst(bool stopAtFirst)
+void IKMetaSolver::setStopAtFirst (bool stopAtFirst)
 {
     _stopAtFirst = stopAtFirst;
 }
 
-void IKMetaSolver::setProximityLimit(double limit) {
+void IKMetaSolver::setProximityLimit (double limit)
+{
     _proximityLimit = limit;
 }
 
-              
-void IKMetaSolver::setCheckJointLimits(bool check) {
+void IKMetaSolver::setCheckJointLimits (bool check)
+{
     _checkForLimits = check;
 }
 
-rw::kinematics::Frame::CPtr IKMetaSolver::getTCP() const {
-    return _iksolver->getTCP();
+rw::kinematics::Frame::CPtr IKMetaSolver::getTCP () const
+{
+    return _iksolver->getTCP ();
 }

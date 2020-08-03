@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,10 +15,10 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #include "RRTPlanner.hpp"
 
 #include "RRTQToQPlanner.hpp"
+
 #include <rw/pathplanning/PlannerUtil.hpp>
 #include <rw/pathplanning/QSampler.hpp>
 
@@ -28,40 +28,30 @@ using namespace rw::math;
 using namespace rw::models;
 using namespace rw::common;
 
-QToQPlanner::Ptr RRTPlanner::makeQToQPlanner(
-    const PlannerConstraint& constraint,
-	QSampler::Ptr sampler,
-	QMetric::Ptr metric,
-    double extend,
-    PlannerType type)
+QToQPlanner::Ptr RRTPlanner::makeQToQPlanner (const PlannerConstraint& constraint,
+                                              QSampler::Ptr sampler, QMetric::Ptr metric,
+                                              double extend, PlannerType type)
 {
     switch (type) {
-    case RRTBasic:
-        return RRTQToQPlanner::makeBasic(constraint, sampler, metric, extend);
-    case RRTConnect:
-        return RRTQToQPlanner::makeConnect(constraint, sampler, metric, extend);
-    case RRTBidirectional:
-        return RRTQToQPlanner::makeBidirectional(
-            constraint, sampler, metric, extend);
-    case RRTBalancedBidirectional:
-        return RRTQToQPlanner::makeBalancedBidirectional(
-            constraint, sampler, metric, extend);
+        case RRTBasic: return RRTQToQPlanner::makeBasic (constraint, sampler, metric, extend);
+        case RRTConnect: return RRTQToQPlanner::makeConnect (constraint, sampler, metric, extend);
+        case RRTBidirectional:
+            return RRTQToQPlanner::makeBidirectional (constraint, sampler, metric, extend);
+        case RRTBalancedBidirectional:
+            return RRTQToQPlanner::makeBalancedBidirectional (constraint, sampler, metric, extend);
     }
-    RW_ASSERT(0);
+    RW_ASSERT (0);
     return 0;
 }
 
-QToQPlanner::Ptr RRTPlanner::makeQToQPlanner(
-    const PlannerConstraint& constraint,
-	Device::Ptr device,
-    PlannerType type)
+QToQPlanner::Ptr RRTPlanner::makeQToQPlanner (const PlannerConstraint& constraint,
+                                              Device::Ptr device, PlannerType type)
 {
     const double extend = 0.05;
 
-    return makeQToQPlanner(
-        constraint,
-        QSampler::makeUniform(device),
-        PlannerUtil::normalizingInfinityMetric(device->getBounds()),
-        extend,
-        type);
+    return makeQToQPlanner (constraint,
+                            QSampler::makeUniform (device),
+                            PlannerUtil::normalizingInfinityMetric (device->getBounds ()),
+                            extend,
+                            type);
 }

@@ -17,64 +17,65 @@
 
 #include "Random.hpp"
 
-#include <rw/core/macros.hpp>
 #include <rw/common/TimerUtil.hpp>
+#include <rw/core/macros.hpp>
 
 #include <boost/random/mersenne_twister.hpp>
+#include <boost/random/normal_distribution.hpp>
 #include <boost/random/uniform_real.hpp>
 #include <boost/random/variate_generator.hpp>
-#include <boost/random/normal_distribution.hpp>
 
 using namespace rw::math;
 
-namespace
+namespace {
+boost::mt19937 generator;
+boost::uniform_real<> distributor;
+
+typedef boost::normal_distribution< double > dist_type;
+
+boost::variate_generator< boost::mt19937&, dist_type >
+    normal_distribution (generator, boost::normal_distribution< double > (0, 1));
+}    // namespace
+
+double Random::ranNormalDist (double mean, double sigma)
 {
-    boost::mt19937 generator;
-    boost::uniform_real<> distributor;
-
-    typedef boost::normal_distribution<double> dist_type;
-
-    boost::variate_generator<boost::mt19937&, dist_type> normal_distribution(
-        generator,
-        boost::normal_distribution<double>(0, 1));
+    return mean + sigma * normal_distribution ();
 }
 
-double Random::ranNormalDist(double mean, double sigma) {
-    return mean + sigma * normal_distribution();
+double Random::ran ()
+{
+    return distributor (generator);
 }
 
-double Random::ran() {
-	return distributor(generator);
-}
-
-void Random::seed(unsigned seed) {
+void Random::seed (unsigned seed)
+{
     // VC++ can't select the correct seed() method without a cast here.
-    generator.seed(
-        static_cast<boost::mt19937::result_type>(
-            seed));
+    generator.seed (static_cast< boost::mt19937::result_type > (seed));
 }
 
-void Random::seed() {
-	seed((unsigned)rw::common::TimerUtil::currentTimeMs());
+void Random::seed ()
+{
+    seed ((unsigned) rw::common::TimerUtil::currentTimeMs ());
 }
 
-double Random::ran(double from, double to) {
-    if(from>to) {
-        RW_THROW("From must be smaller than to: " << from << ">" << to);
-    } else if(from==to){
+double Random::ran (double from, double to)
+{
+    if (from > to) {
+        RW_THROW ("From must be smaller than to: " << from << ">" << to);
+    }
+    else if (from == to) {
         return from;
     }
 
-	double res = from;
-	do {
-		res = from + (to - from) * Random::ran();
-	} while (res >= to);
+    double res = from;
+    do {
+        res = from + (to - from) * Random::ran ();
+    } while (res >= to);
 
-	return res;
-
+    return res;
 }
 
-int Random::ranI(int from, int to)
+int Random::ranI (int from, int to)
 {
-    return (int)floor(Random::ran(from, to));
+    return (int) floor (Random::ran (from, to));
 }

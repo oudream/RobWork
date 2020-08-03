@@ -15,34 +15,36 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #include "Stateless.hpp"
 
 using namespace rw::kinematics;
 
-void Stateless::registerIn(State& state){
-	registerIn( state.getStateStructure() );
-	state.upgrade();
+void Stateless::registerIn (State& state)
+{
+    registerIn (state.getStateStructure ());
+    state.upgrade ();
 }
 
-void Stateless::registerIn(StateStructure::Ptr state){
-	if(_registered)
-		RW_THROW("Stateless Object hass allready been initialized to another state!");
-	//std::cout << "Registering all state datas.... "  << _datas.size() << std::endl;
-	for(int i=0;i< (int) _datas.size(); i++){
-	    //std::cout << "Reg: " << _datas[i]->getName() << " " << _datas[i]->getID() << std::endl;
-		state->addData( _datas[i] );
-	}
-	_stateStruct = state;
-	_registered = true;
+void Stateless::registerIn (StateStructure::Ptr state)
+{
+    if (_registered)
+        RW_THROW ("Stateless Object hass allready been initialized to another state!");
+    // std::cout << "Registering all state datas.... "  << _datas.size() << std::endl;
+    for (int i = 0; i < (int) _datas.size (); i++) {
+        // std::cout << "Reg: " << _datas[i]->getName() << " " << _datas[i]->getID() << std::endl;
+        state->addData (_datas[i]);
+    }
+    _stateStruct = state;
+    _registered  = true;
 }
 
-void Stateless::unregister(){
-	if(!_registered)
-		return;
-	for(size_t i=0;i<_datas.size(); i++){
-		_stateStruct->remove( _datas[i].get() );
-	}
-	_registered = false;
-	_stateStruct = NULL;
+void Stateless::unregister ()
+{
+    if (!_registered)
+        return;
+    for (size_t i = 0; i < _datas.size (); i++) {
+        _stateStruct->remove (_datas[i].get ());
+    }
+    _registered  = false;
+    _stateStruct = NULL;
 }

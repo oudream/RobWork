@@ -20,29 +20,28 @@
 using namespace rw::common;
 using namespace rwlibs::mathematica;
 
-ReturnPacket::ReturnPacket(const Mathematica::Expression& expression):
-	Packet("ReturnPacket",Mathematica::Return),
-	_expression(expression.clone())
+ReturnPacket::ReturnPacket (const Mathematica::Expression& expression) :
+    Packet ("ReturnPacket", Mathematica::Return), _expression (expression.clone ())
+{}
+
+ReturnPacket::ReturnPacket (rw::core::Ptr< const Mathematica::Expression > expression) :
+    Packet ("ReturnPacket", Mathematica::Return), _expression (expression)
+{}
+
+ReturnPacket::~ReturnPacket ()
+{}
+
+const rw::core::Ptr< const Mathematica::Expression > ReturnPacket::expression ()
 {
+    return _expression;
 }
 
-ReturnPacket::ReturnPacket(rw::core::Ptr<const Mathematica::Expression> expression):
-	Packet("ReturnPacket",Mathematica::Return),
-	_expression(expression)
+std::list< rw::core::Ptr< const Mathematica::Expression > > ReturnPacket::getArguments () const
 {
+    return std::list< rw::core::Ptr< const Mathematica::Expression > > (1, _expression);
 }
 
-ReturnPacket::~ReturnPacket() {
-}
-
-const rw::core::Ptr<const Mathematica::Expression> ReturnPacket::expression() {
-	return _expression;
-}
-
-std::list<rw::core::Ptr<const Mathematica::Expression> > ReturnPacket::getArguments() const {
-	return std::list<rw::core::Ptr<const Mathematica::Expression> >(1, _expression);
-}
-
-Mathematica::Expression::Ptr ReturnPacket::clone() const {
-	return ownedPtr(new ReturnPacket(*_expression));
+Mathematica::Expression::Ptr ReturnPacket::clone () const
+{
+    return ownedPtr (new ReturnPacket (*_expression));
 }

@@ -18,55 +18,50 @@
 #ifndef RWSIM_UTIL_DISTMODEL_HPP_
 #define RWSIM_UTIL_DISTMODEL_HPP_
 
-#include <vector>
-#include <rw/math/Vector3D.hpp>
 #include <rw/math/MetricUtil.hpp>
+#include <rw/math/Vector3D.hpp>
 
-namespace rwsim {
-namespace util {
-	//! @addtogroup rwsim_util
-	//! @{
-	class DistModel {
-	public:
-		DistModel( ):_center(0,0,0),_invalid(true){
+#include <vector>
 
-		}
+namespace rwsim { namespace util {
+    //! @addtogroup rwsim_util
+    //! @{
+    class DistModel
+    {
+      public:
+        DistModel () : _center (0, 0, 0), _invalid (true) {}
 
-		DistModel( std::vector<rw::math::Vector3D<> >& data ){
-			refit(data);
-		}
+        DistModel (std::vector< rw::math::Vector3D<> >& data) { refit (data); }
 
-		double refit( std::vector<rw::math::Vector3D<> >& data );
+        double refit (std::vector< rw::math::Vector3D<> >& data);
 
-		bool invalid(){ return _invalid; };
+        bool invalid () { return _invalid; };
 
-		/**
-		 * @brief the
-		 */
-		double fitError( rw::math::Vector3D<>& p ){
-			return rw::math::MetricUtil::dist2(_center,p);
-		}
+        /**
+         * @brief the
+         */
+        double fitError (rw::math::Vector3D<>& p)
+        {
+            return rw::math::MetricUtil::dist2 (_center, p);
+        }
 
-		void print(){
-			std::cout << " " << _center << " " << std::endl;
-		}
+        void print () { std::cout << " " << _center << " " << std::endl; }
 
-		rw::math::Vector3D<>& getCenter(){ return _center; };
+        rw::math::Vector3D<>& getCenter () { return _center; };
 
-		bool same( DistModel& model, double thres){
-			if( (rw::math::MetricUtil::dist2(_center, model.getCenter()) > thres*1.5))
-				return false;
+        bool same (DistModel& model, double thres)
+        {
+            if ((rw::math::MetricUtil::dist2 (_center, model.getCenter ()) > thres * 1.5))
+                return false;
 
-			return true;
-		}
+            return true;
+        }
 
-		static int getMinReqData(){ return 1; };
+        static int getMinReqData () { return 1; };
 
-	private:
-
-		rw::math::Vector3D<> _center; // unit vector of the plane
-		bool _invalid;
-	};
-}
-}
+      private:
+        rw::math::Vector3D<> _center;    // unit vector of the plane
+        bool _invalid;
+    };
+}}     // namespace rwsim::util
 #endif /* DistModel_HPP_ */

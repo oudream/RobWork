@@ -20,50 +20,47 @@
 
 //! @file TactileArrayRender.hpp
 
+#include <rw/core/Ptr.hpp>
 #include <rw/graphics/Render.hpp>
 #include <rw/sensor/TactileArrayModel.hpp>
-#include <rw/core/Ptr.hpp>
 
-//namespace rw { namespace sensor { class TactileArrayModel; } }
+// namespace rw { namespace sensor { class TactileArrayModel; } }
 
-namespace rwlibs {
-namespace opengl {
+namespace rwlibs { namespace opengl {
 
-//! @addtogroup opengl
-// @{
+    //! @addtogroup opengl
+    // @{
     /**
      * @brief renders a TactileArray.
      */
     class TactileArrayRender : public rw::graphics::Render
     {
-    public:
+      public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr<TactileArrayRender> Ptr;
+        typedef rw::core::Ptr< TactileArrayRender > Ptr;
 
-    	/**
-    	 * @brief constructor
-    	 * @param sensor [in] the tactile array that is to be rendered
-    	 */
-        TactileArrayRender(rw::core::Ptr<rw::sensor::TactileArrayModel> sensor):
-            _sensor(sensor)
-        {
-        }
+        /**
+         * @brief constructor
+         * @param sensor [in] the tactile array that is to be rendered
+         */
+        TactileArrayRender (rw::core::Ptr< rw::sensor::TactileArrayModel > sensor) :
+            _sensor (sensor)
+        {}
 
         /**
          * @brief destructor
          */
-        virtual ~TactileArrayRender(){};
+        virtual ~TactileArrayRender (){};
 
-        //! @copydoc rw::graphics::Render::draw(const DrawableNode::RenderInfo& info, DrawableNode::DrawType type, double alpha) const
-        void draw(const rw::graphics::DrawableNode::RenderInfo& info,
-                  rw::graphics::DrawableNode::DrawType type,
-                  double alpha) const;
+        //! @copydoc rw::graphics::Render::draw(const DrawableNode::RenderInfo& info,
+        //! DrawableNode::DrawType type, double alpha) const
+        void draw (const rw::graphics::DrawableNode::RenderInfo& info,
+                   rw::graphics::DrawableNode::DrawType type, double alpha) const;
 
-    private:
-        rw::core::Ptr<rw::sensor::TactileArrayModel> _sensor;
+      private:
+        rw::core::Ptr< rw::sensor::TactileArrayModel > _sensor;
     };
     //! @}
-}
-}
+}}    // namespace rwlibs::opengl
 
 #endif /*TactileSensorRender_HPP_*/

@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,104 +15,105 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RW_GEOMETRY_CYLINDER_HPP_
 #define RW_GEOMETRY_CYLINDER_HPP_
 
 #include "Primitive.hpp"
+
 #include <rw/math/Transform3D.hpp>
 
-namespace rw {
-namespace geometry {
-//! @addtogroup geometry
-// @{
+namespace rw { namespace geometry {
+    //! @addtogroup geometry
+    // @{
 
-	/**
-	 * @brief a cylinder primitive. By default the radius is in the x-y plane and height is along the z-axis
-	 */
-	class Cylinder: public Primitive {
-	public:
+    /**
+     * @brief a cylinder primitive. By default the radius is in the x-y plane and height is along
+     * the z-axis
+     */
+    class Cylinder : public Primitive
+    {
+      public:
+        /**
+         * @brief constructor
+         */
+        Cylinder (int levels = 16);
 
-		/**
-		 * @brief constructor
-		 */
-		Cylinder(int levels=16);
+        /**
+         * @brief Constructs cylinder primitive with the specified setup
+         *
+         * The cylinder is aligned with the height in the z-direction.
+         *
+         * @param radius [in] radius of the cylinder.
+         * @param height [in] height of the cylinder.
+         * @param levels [in] granularity of the mesh
+         */
+        Cylinder (float radius, float height, int levels = 16);
 
-		/**
-		 * @brief Constructs cylinder primitive with the specified setup
-		 *
-		 * The cylinder is aligned with the height in the z-direction.
-		 *
-		 * @param radius [in] radius of the cylinder.
-		 * @param height [in] height of the cylinder.
-     * @param levels [in] granularity of the mesh
-		 */
-		Cylinder(float radius, float height, int levels=16);
-		
-		/**
-		 * @brief Constructor.
-		 * @param initQ [in] vector with (height, radius)
-     * @param levels [in] granularity of the mesh
-		 */
-		Cylinder(const rw::math::Q& initQ, int levels=16);
+        /**
+         * @brief Constructor.
+         * @param initQ [in] vector with (height, radius)
+         * @param levels [in] granularity of the mesh
+         */
+        Cylinder (const rw::math::Q& initQ, int levels = 16);
 
-		/**
-		 * @brief Construct cylinder primitive with specified radius and height and with the given transform.
-		 *
-		 * The cylinder will be centered in the position of \b transform and oriented in the direction of the third column of the 
-		 * rotation matrix of \b transform.
-		 * @param transform [in] The transform specifying how the pose of the cylinder
-		 * @param radius [in] radius of the cylinder.
-		 * @param height [in] height of the cylinder.
-     * @param levels [in] granularity of the mesh
-		 */
-		Cylinder(const rw::math::Transform3D<>& transform, float radius, float height, int levels=16);
+        /**
+         * @brief Construct cylinder primitive with specified radius and height and with the given
+         * transform.
+         *
+         * The cylinder will be centered in the position of \b transform and oriented in the
+         * direction of the third column of the rotation matrix of \b transform.
+         * @param transform [in] The transform specifying how the pose of the cylinder
+         * @param radius [in] radius of the cylinder.
+         * @param height [in] height of the cylinder.
+         * @param levels [in] granularity of the mesh
+         */
+        Cylinder (const rw::math::Transform3D<>& transform, float radius, float height,
+                  int levels = 16);
 
-		//! @brief destructor
-		virtual ~Cylinder();
+        //! @brief destructor
+        virtual ~Cylinder ();
 
-		/**
-		 * @brief Get the radius of the cylinder.
-		 * @return the radius.
-		 */
-		double getRadius() const { return _radius;}
+        /**
+         * @brief Get the radius of the cylinder.
+         * @return the radius.
+         */
+        double getRadius () const { return _radius; }
 
-		/**
-		 * @brief Get the height of the cylinder.
-		 * @return the height.
-		 */
-		double getHeight() const { return _height;}
+        /**
+         * @brief Get the height of the cylinder.
+         * @return the height.
+         */
+        double getHeight () const { return _height; }
 
-		/**
-		 * @brief Returns the transform of the cylinder.
-		 * 
-		 * Default is the identity matrix unless a transform has been specified.
-		 * @return Transform of the cylinder
-		 */
-		const rw::math::Transform3D<float>& getTransform() const { return _transform; }
+        /**
+         * @brief Returns the transform of the cylinder.
+         *
+         * Default is the identity matrix unless a transform has been specified.
+         * @return Transform of the cylinder
+         */
+        const rw::math::Transform3D< float >& getTransform () const { return _transform; }
 
-		// inherited from Primitive
+        // inherited from Primitive
 
-		//! @copydoc Primitive::createMesh
-		TriMesh::Ptr createMesh(int resolution) const;
+        //! @copydoc Primitive::createMesh
+        TriMesh::Ptr createMesh (int resolution) const;
 
-		//! @copydoc Primitive::getParameters
-		virtual rw::math::Q getParameters() const;
-		
-		//! @copydoc Primitive::setParameters
-		virtual void setParameters(const rw::math::Q& q);
+        //! @copydoc Primitive::getParameters
+        virtual rw::math::Q getParameters () const;
 
-		//! @copydoc GeometryData::getType
-		GeometryType getType() const { return CylinderPrim; };
+        //! @copydoc Primitive::setParameters
+        virtual void setParameters (const rw::math::Q& q);
 
-	private:
-		rw::math::Transform3D<float> _transform;
-		float _radius;
-		float _height;
-	};
-	//! @}
+        //! @copydoc GeometryData::getType
+        GeometryType getType () const { return CylinderPrim; };
 
-} // geometry
-} // rw
+      private:
+        rw::math::Transform3D< float > _transform;
+        float _radius;
+        float _height;
+    };
+    //! @}
+
+}}    // namespace rw::geometry
 
 #endif /* CYLINDER_HPP_ */

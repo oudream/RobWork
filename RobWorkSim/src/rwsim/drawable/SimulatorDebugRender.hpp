@@ -18,46 +18,43 @@
 #ifndef RWSIM_DRAWABLE_SIMULATORDEBUGRENDER_HPP_
 #define RWSIM_DRAWABLE_SIMULATORDEBUGRENDER_HPP_
 
-#include <rw/graphics/Render.hpp>
 #include <rw/core/Ptr.hpp>
+#include <rw/graphics/Render.hpp>
 
-namespace rwsim {
-namespace drawable {
+namespace rwsim { namespace drawable {
 
-	//! @brief Render for debugging dynamic simulators.
-	class SimulatorDebugRender : public rw::graphics::Render {
-	public:
-		//! @brief Smart pointer type for SimulatorDebugRender.
-	    typedef rw::core::Ptr<SimulatorDebugRender> Ptr;
+    //! @brief Render for debugging dynamic simulators.
+    class SimulatorDebugRender : public rw::graphics::Render
+    {
+      public:
+        //! @brief Smart pointer type for SimulatorDebugRender.
+        typedef rw::core::Ptr< SimulatorDebugRender > Ptr;
 
-		//virtual ~SimulatorDebugRender(){};
+        // virtual ~SimulatorDebugRender(){};
 
-	    //! @brief Draw mask for drawing nothing.
-		static const unsigned int DRAW_NOTHING = 0;
-	    //! @brief Draw mask for drawing contact normals.
-		static const unsigned int DRAW_CONTACT_NORMAL = 1;
-	    //! @brief Draw mask for drawing contact friction cones.
-		static const unsigned int DRAW_FRICTION_CONE = 2;
-	    //! @brief Draw mask for drawing body forces.
-		static const unsigned int DRAW_BODY_FORCES = 4;
-	    //! @brief Draw mask for drawing collision geometries.
-		static const unsigned int DRAW_COLLISION_GEOMETRY = 8;
+        //! @brief Draw mask for drawing nothing.
+        static const unsigned int DRAW_NOTHING = 0;
+        //! @brief Draw mask for drawing contact normals.
+        static const unsigned int DRAW_CONTACT_NORMAL = 1;
+        //! @brief Draw mask for drawing contact friction cones.
+        static const unsigned int DRAW_FRICTION_CONE = 2;
+        //! @brief Draw mask for drawing body forces.
+        static const unsigned int DRAW_BODY_FORCES = 4;
+        //! @brief Draw mask for drawing collision geometries.
+        static const unsigned int DRAW_COLLISION_GEOMETRY = 8;
 
+        // virtual void draw(DrawType type, double alpha) = 0;
 
-		//virtual void draw(DrawType type, double alpha) = 0;
+        /**
+         * @brief Set the draw mask.
+         * @param mask [in] the draw mask.
+         */
+        virtual void setDrawMask (unsigned int mask) = 0;
 
-		/**
-		 * @brief Set the draw mask.
-		 * @param mask [in] the draw mask.
-		 */
-		virtual void setDrawMask(unsigned int mask) = 0;
+      protected:
+        //! @brief Constructor.
+        SimulatorDebugRender () {}
+    };
 
-	protected:
-		//! @brief Constructor.
-	    SimulatorDebugRender(){}
-
-	};
-
-} // dynamics
-}
+}}     // namespace rwsim::drawable
 #endif /*RENDERSIMDEBUG_HPP_*/

@@ -15,36 +15,34 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RW_GRASPPLANNING_CONTACTVALIDATEFILTER_HPP_
 #define RW_GRASPPLANNING_CONTACTVALIDATEFILTER_HPP_
 
-namespace rw { namespace sensor { class Contact3D; } }
+namespace rw { namespace sensor {
+    class Contact3D;
+}}    // namespace rw::sensor
 
-namespace rw {
-namespace graspplanning {
-
-/**
- * @brief tests if a contact is valid in respect to some criterias implemented
- * by a sub class.
- */
-class ContactValidateFilter {
-public:
+namespace rw { namespace graspplanning {
 
     /**
-     * @brief destructor
+     * @brief tests if a contact is valid in respect to some criterias implemented
+     * by a sub class.
      */
-    virtual ~ContactValidateFilter(){};
+    class ContactValidateFilter
+    {
+      public:
+        /**
+         * @brief destructor
+         */
+        virtual ~ContactValidateFilter (){};
 
-    /**
-     * @brief test if a contact \b contact is valid in regard to the criterias
-     * of the class that implements this function.
-     * @param contact [in] 3d contact
-     * @return true if valid, false otherwise
-     */
-    virtual bool isValid(const rw::sensor::Contact3D& contact) = 0;
-
-};
-}
-}
+        /**
+         * @brief test if a contact \b contact is valid in regard to the criterias
+         * of the class that implements this function.
+         * @param contact [in] 3d contact
+         * @return true if valid, false otherwise
+         */
+        virtual bool isValid (const rw::sensor::Contact3D& contact) = 0;
+    };
+}}    // namespace rw::graspplanning
 #endif

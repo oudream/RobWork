@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RWLIBS_PATHPLANNERS_ARW_ARWQTOQPLANNER_HPP
 #define RWLIBS_PATHPLANNERS_ARW_ARWQTOQPLANNER_HPP
 
@@ -25,8 +24,8 @@
 
 #include "ARWExpand.hpp"
 
-#include <rw/pathplanning/QToQPlanner.hpp>
 #include <rw/pathplanning/PlannerConstraint.hpp>
+#include <rw/pathplanning/QToQPlanner.hpp>
 
 #include <vector>
 
@@ -44,7 +43,7 @@ namespace rwlibs { namespace pathplanners {
     */
     class ARWQToQPlanner : public rw::pathplanning::QToQPlanner
     {
-    public:
+      public:
         /**
            @brief Constructor
 
@@ -58,33 +57,25 @@ namespace rwlibs { namespace pathplanners {
            distance to the node is less than \b nearDistance when measured by \b
            metric.
         */
-        ARWQToQPlanner(
-            const rw::pathplanning::PlannerConstraint& constraint,
-			ARWExpand::Ptr expand,
-			rw::math::QMetric::Ptr metric,
-            double nearDistance);
+        ARWQToQPlanner (const rw::pathplanning::PlannerConstraint& constraint,
+                        ARWExpand::Ptr expand, rw::math::QMetric::Ptr metric, double nearDistance);
 
-    private:
-        bool doQuery(
-            const rw::math::Q& qInit,
-            const rw::math::Q& qGoal,
-            rw::trajectory::QPath& path,
-            const rw::pathplanning::StopCriteria& stop);
+      private:
+        bool doQuery (const rw::math::Q& qInit, const rw::math::Q& qGoal,
+                      rw::trajectory::QPath& path, const rw::pathplanning::StopCriteria& stop);
 
-    private:
+      private:
         rw::pathplanning::PlannerConstraint _constraint;
-		ARWExpand::Ptr _expand;
-		rw::math::QMetric::Ptr _metric;
+        ARWExpand::Ptr _expand;
+        rw::math::QMetric::Ptr _metric;
         double _nearDistance;
 
-    private:
-        bool nearGoal(const rw::math::Q& q, const rw::math::Q& goal) const;
-        bool planPathStep(
-            ARWExpand& expand,
-            const std::vector<rw::math::Q>& goals) const;
+      private:
+        bool nearGoal (const rw::math::Q& q, const rw::math::Q& goal) const;
+        bool planPathStep (ARWExpand& expand, const std::vector< rw::math::Q >& goals) const;
     };
 
     /*\}*/
-}} // end namespaces
+}}    // namespace rwlibs::pathplanners
 
-#endif // end include guard
+#endif    // end include guard

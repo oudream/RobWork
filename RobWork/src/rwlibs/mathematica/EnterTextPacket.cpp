@@ -20,23 +20,24 @@
 using namespace rw::common;
 using namespace rwlibs::mathematica;
 
-EnterTextPacket::EnterTextPacket(const Mathematica::String& string):
-	Packet("EnterTextPacket",Mathematica::EnterText),
-	_string(string)
+EnterTextPacket::EnterTextPacket (const Mathematica::String& string) :
+    Packet ("EnterTextPacket", Mathematica::EnterText), _string (string)
+{}
+
+EnterTextPacket::~EnterTextPacket ()
+{}
+
+const Mathematica::String& EnterTextPacket::string ()
 {
+    return _string;
 }
 
-EnterTextPacket::~EnterTextPacket() {
+std::list< rw::core::Ptr< const Mathematica::Expression > > EnterTextPacket::getArguments () const
+{
+    return std::list< rw::core::Ptr< const Mathematica::Expression > > (1, _string.clone ());
 }
 
-const Mathematica::String& EnterTextPacket::string() {
-	return _string;
-}
-
-std::list<rw::core::Ptr<const Mathematica::Expression> > EnterTextPacket::getArguments() const {
-	return std::list<rw::core::Ptr<const Mathematica::Expression> >(1, _string.clone());
-}
-
-Mathematica::Expression::Ptr EnterTextPacket::clone() const {
-	return ownedPtr(new EnterTextPacket(_string));
+Mathematica::Expression::Ptr EnterTextPacket::clone () const
+{
+    return ownedPtr (new EnterTextPacket (_string));
 }

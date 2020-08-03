@@ -17,12 +17,10 @@
 
 #include "Z3QToQPlanner.hpp"
 
-#include <rw/pathplanning/QSampler.hpp>
-#include <rwlibs/pathplanners/rrt/RRTTree.hpp>
 #include <rw/core/PairIterator.hpp>
 #include <rw/math/Q.hpp>
-
-
+#include <rw/pathplanning/QSampler.hpp>
+#include <rwlibs/pathplanners/rrt/RRTTree.hpp>
 
 using namespace rw::math;
 using namespace rw::pathplanning;
@@ -115,7 +113,7 @@ void connectToQs (Node* from, Tree& tree, std::vector< Q >& qs, QToQPlanner& loc
     }
 
     // Erase the configurations that we used.
-    for (size_t index: rw::core::make_iterPair (eraseIndices.rbegin (), eraseIndices.rend ())) {
+    for (size_t index : rw::core::make_iterPair (eraseIndices.rbegin (), eraseIndices.rend ())) {
         qs.erase (qs.begin () + index);
     }
 }

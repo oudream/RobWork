@@ -121,7 +121,8 @@ namespace rw { namespace models {
         virtual void removeJointMapping () {}
 
       private:
-        void doMultiplyTransform (const math::Transform3D<>& parent, const rw::kinematics::State& state,
+        void doMultiplyTransform (const math::Transform3D<>& parent,
+                                  const rw::kinematics::State& state,
                                   math::Transform3D<>& result) const;
 
         math::Transform3D<> doGetTransform (const rw::kinematics::State& state) const;

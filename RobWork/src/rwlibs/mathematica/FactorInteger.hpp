@@ -25,44 +25,44 @@
  */
 
 #include "Mathematica.hpp"
+
 #include <rw/core/Ptr.hpp>
 
-namespace rwlibs {
-namespace mathematica {
-//! @addtogroup mathematica
+namespace rwlibs { namespace mathematica {
+    //! @addtogroup mathematica
 
-//! @{
-//! @brief Representation of the Mathematica %FactorInteger function.
-class FactorInteger: public Mathematica::FunctionBase {
-public:
-	//! @brief Smart pointer type.
-	typedef rw::core::Ptr<FactorInteger> Ptr;
+    //! @{
+    //! @brief Representation of the Mathematica %FactorInteger function.
+    class FactorInteger : public Mathematica::FunctionBase
+    {
+      public:
+        //! @brief Smart pointer type.
+        typedef rw::core::Ptr< FactorInteger > Ptr;
 
-	/**
-	 * @brief Construct expression.
-	 * @param integer [in] the argument.
-	 */
-	FactorInteger(const Mathematica::Integer& integer);
+        /**
+         * @brief Construct expression.
+         * @param integer [in] the argument.
+         */
+        FactorInteger (const Mathematica::Integer& integer);
 
-	/**
-	 * @brief Construct expression.
-	 * @param integer [in] the argument.
-	 */
-	FactorInteger(const Mathematica::Expression& integer);
+        /**
+         * @brief Construct expression.
+         * @param integer [in] the argument.
+         */
+        FactorInteger (const Mathematica::Expression& integer);
 
-	//! @brief Destructor.
-	virtual ~FactorInteger();
+        //! @brief Destructor.
+        virtual ~FactorInteger ();
 
-	//! @copydoc Mathematica::FunctionBase::getArguments
-	std::list<rw::core::Ptr<const Mathematica::Expression> > getArguments() const;
+        //! @copydoc Mathematica::FunctionBase::getArguments
+        std::list< rw::core::Ptr< const Mathematica::Expression > > getArguments () const;
 
-	//! @copydoc Mathematica::Expression::clone
-	Mathematica::Expression::Ptr clone() const;
+        //! @copydoc Mathematica::Expression::clone
+        Mathematica::Expression::Ptr clone () const;
 
-private:
-	Mathematica::Expression::Ptr _n;
-};
-//! @}
-} /* namespace mathematica */
-} /* namespace rwlibs */
+      private:
+        Mathematica::Expression::Ptr _n;
+    };
+    //! @}
+}}     // namespace rwlibs::mathematica
 #endif /* RWLIBS_MATHEMATICA_FACTORINTEGER_HPP_ */

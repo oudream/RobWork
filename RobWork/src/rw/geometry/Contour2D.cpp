@@ -23,7 +23,6 @@
 #include <rw/math/Rotation2D.hpp>
 #include <rw/math/Vector3D.hpp>
 
-
 #include <fstream>
 
 using namespace rw::math;

@@ -20,76 +20,76 @@
 
 #include <xercesc/util/XercesDefs.hpp>
 
-namespace rw {
-namespace loaders {
-/** @addtogroup loaders */
-/*@{*/
-
-/**
- * @brief Class storing the identifiers used for properties in the XML Path Format
- */
-class XMLPropertyFormat
-{
-public:
-    /**
-     * @brief Identifier for rw::core::PropertyMap in the XML format.
-     * @return the identifier.
-     */
-    static const XMLCh* idPropertyMap();
+namespace rw { namespace loaders {
+    /** @addtogroup loaders */
+    /*@{*/
 
     /**
-     * @brief Identifier for rw::core::Property in the XML format.
-     * @return the identifier.
+     * @brief Class storing the identifiers used for properties in the XML Path Format
      */
-    static const XMLCh* idProperty();
+    class XMLPropertyFormat
+    {
+      public:
+        /**
+         * @brief Identifier for rw::core::PropertyMap in the XML format.
+         * @return the identifier.
+         */
+        static const XMLCh* idPropertyMap ();
 
-    /**
-     * @brief Identifier for the name of a rw::core::Property.
-     * @return the identifier.
-     */
-    static const XMLCh* idPropertyName();
+        /**
+         * @brief Identifier for rw::core::Property in the XML format.
+         * @return the identifier.
+         */
+        static const XMLCh* idProperty ();
 
-    /**
-     * @brief Identifier for the description of a rw::core::Property.
-     * @return the identifier.
-     */
-    static const XMLCh* idPropertyDescription();
+        /**
+         * @brief Identifier for the name of a rw::core::Property.
+         * @return the identifier.
+         */
+        static const XMLCh* idPropertyName ();
 
-    /**
-     * @brief Identifier for the type of a rw::core::Property.
-     * @return the identifier.
-     */
-    static const XMLCh* idPropertyType();
+        /**
+         * @brief Identifier for the description of a rw::core::Property.
+         * @return the identifier.
+         */
+        static const XMLCh* idPropertyDescription ();
 
-    /**
-     * @brief Identifier for the value of a rw::core::Property.
-     * @return the identifier.
-     */
-    static const XMLCh* idPropertyValue();
+        /**
+         * @brief Identifier for the type of a rw::core::Property.
+         * @return the identifier.
+         */
+        static const XMLCh* idPropertyType ();
 
-	/**
-	 * @brief Utility class which initializes local static variables.
-	 *
-	 * If the XMLPropertyFormat is used outside main (as a part of global initialization/destruction), the Initializer
-	 * should be used explicitly to control the static initialization/destruction order.
-	 *
-	 * Notice that the Initializer is automatically defined as a global variable, hence it should not
-	 * be necessary to specify the initializer explicitly if XMLPropertyFormat is to be used in local static
-	 * initialization/destruction.
-	 */
-	class Initializer {
-	public:
-	    //! @brief Initializes when constructed.
-		Initializer();
-	};
+        /**
+         * @brief Identifier for the value of a rw::core::Property.
+         * @return the identifier.
+         */
+        static const XMLCh* idPropertyValue ();
 
-private:
-	static const Initializer initializer;
-};
+        /**
+         * @brief Utility class which initializes local static variables.
+         *
+         * If the XMLPropertyFormat is used outside main (as a part of global
+         * initialization/destruction), the Initializer should be used explicitly to control the
+         * static initialization/destruction order.
+         *
+         * Notice that the Initializer is automatically defined as a global variable, hence it
+         * should not be necessary to specify the initializer explicitly if XMLPropertyFormat is to
+         * be used in local static initialization/destruction.
+         */
+        class Initializer
+        {
+          public:
+            //! @brief Initializes when constructed.
+            Initializer ();
+        };
 
-/** @} */
+      private:
+        static const Initializer initializer;
+    };
 
-} //end namespace loaders
-} //end namespace rw
+    /** @} */
 
-#endif //end include guard
+}}    // namespace rw::loaders
+
+#endif    // end include guard

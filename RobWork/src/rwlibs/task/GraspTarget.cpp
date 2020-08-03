@@ -6,6 +6,3 @@
  */
 
 #include "GraspTarget.hpp"
-
-
-

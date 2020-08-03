@@ -11,49 +11,47 @@
 #include <rw/core/Plugin.hpp>
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
+#include <lauxlib.h>
 #include <lua.h>
 #include <lualib.h>
-#include <lauxlib.h>
 
 #ifdef __cplusplus
 }
 #endif
 
-namespace rwsim {
-namespace swig {
+namespace rwsim { namespace swig {
 
     /**
      * @brief initialize a lua state
      * @param L
      * @return
      */
-    int openLuaLibRWSim(lua_State* L);
+    int openLuaLibRWSim (lua_State* L);
 
     /**
      * @brief A Lua plugin that define extensions for rwlibs.swig.LuaState.LuaLibrary
      */
-    class LuaPlugin: public rw::core::Plugin {
-    public:
-
+    class LuaPlugin : public rw::core::Plugin
+    {
+      public:
         /**
          * @brief constructor
          */
-        LuaPlugin();
+        LuaPlugin ();
 
         //! destructor
-        virtual ~LuaPlugin();
+        virtual ~LuaPlugin ();
 
         //! @copydoc rw::core::Plugin::getExtensionDescriptors
-        std::vector<rw::core::Extension::Descriptor> getExtensionDescriptors();
+        std::vector< rw::core::Extension::Descriptor > getExtensionDescriptors ();
 
         //! @copydoc rw::core::Plugin::makeExtension
-        rw::core::Ptr<rw::core::Extension> makeExtension(const std::string& str);
-
+        rw::core::Ptr< rw::core::Extension > makeExtension (const std::string& str);
     };
 
-}
-}
+}}     // namespace rwsim::swig
 #endif /* LUA_HPP_ */

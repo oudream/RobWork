@@ -20,9 +20,9 @@
 
 //! @file RenderModel3D.hpp
 
+#include <rw/core/Ptr.hpp>
 #include <rw/graphics/Model3D.hpp>
 #include <rw/graphics/Render.hpp>
-#include <rw/core/Ptr.hpp>
 
 namespace rwlibs { namespace opengl {
     class RWGLTexture;
@@ -105,9 +105,9 @@ namespace rwlibs { namespace opengl {
                           rw::graphics::DrawableNode::DrawType type, double alpha) const;
 
         template< class T >
-        void makeVertexList (const rw::graphics::Model3D::Object3D< T >& obj,
-                        std::vector< TPFace >& list,
-                        rw::math::Transform3D< float > initial = rw::math::Transform3D< float > ()) const;
+        void makeVertexList (
+            const rw::graphics::Model3D::Object3D< T >& obj, std::vector< TPFace >& list,
+            rw::math::Transform3D< float > initial = rw::math::Transform3D< float > ()) const;
 
         void drawTPFaceList (const std::vector< TPFace >& list,
                              const rw::graphics::DrawableNode::RenderInfo& info,

@@ -28,25 +28,27 @@
  * efficiently calculated.
  *
  */
-class MovingAverage {
-public:
+class MovingAverage
+{
+  public:
     /**
      * @brief constructor creates a MovingAverage filter over a window of
      * \b N samples.
      * @param N [in] the size of the window of samples
      */
-    MovingAverage(std::size_t N);
+    MovingAverage (std::size_t N);
 
     /**
      * @brief adds a sample
      * @param sample
      */
-    void addSample(double sample){
+    void addSample (double sample)
+    {
         _sum -= _cb[_idx];
         _sum += sample;
         _cb[_idx] = sample;
         _idx++;
-        if(_idx == _len )
+        if (_idx == _len)
             _idx = 0;
     }
 
@@ -54,18 +56,14 @@ public:
      * @brief returns the current average
      * @return
      */
-    double getAverage(){
-        return _sum*_invLen;
-    }
+    double getAverage () { return _sum * _invLen; }
 
-private:
+  private:
     const int _len;
     double _invLen;
-    std::vector<double> _cb;
+    std::vector< double > _cb;
     double _sum;
     int _idx;
-
 };
-
 
 #endif /* MOVINGAVERAGE_HPP_ */

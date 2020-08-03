@@ -25,8 +25,6 @@
 #include <rw/core/macros.hpp>
 #include <rw/kinematics/Kinematics.hpp>
 
-
-
 using namespace rw::models;
 using namespace rw::math;
 using namespace rw::core;

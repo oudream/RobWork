@@ -20,43 +20,40 @@
 
 //! @file Loader3DS.hpp
 
-#include <rw/graphics/Model3D.hpp>
 #include "../Model3DLoader.hpp"
+
+#include <rw/graphics/Model3D.hpp>
 
 #include <string>
 
-namespace rw {
-namespace loaders {
+namespace rw { namespace loaders {
 
     //! @addtogroup graphics
-	// @{
+    // @{
 
     /**
      * @brief This class loads 3DS geometry into a Model3D object.
      */
-	class Loader3DS: public Model3DLoader
-	{
-	public:
-
+    class Loader3DS : public Model3DLoader
+    {
+      public:
         /**
          * @brief constructor
          */
-		Loader3DS(){};
+        Loader3DS (){};
 
-		/**
-		 * @brief destructor
-		 */
-		virtual ~Loader3DS(){};
+        /**
+         * @brief destructor
+         */
+        virtual ~Loader3DS (){};
 
-		//! @copydoc Model3DLoader::load
-		rw::graphics::Model3D::Ptr load(const std::string& filename); // Loads a model
+        //! @copydoc Model3DLoader::load
+        rw::graphics::Model3D::Ptr load (const std::string& filename);    // Loads a model
 
-	private:
-		std::string _path; // The path of the model
+      private:
+        std::string _path;    // The path of the model
+    };
 
-	};
-
-	//! @}
-}
-}
-#endif // RW_DRAWABLE_LOADER_3DS_H
+    //! @}
+}}        // namespace rw::loaders
+#endif    // RW_DRAWABLE_LOADER_3DS_H

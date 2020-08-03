@@ -250,11 +250,11 @@ struct UnitMap
 
     UnitMap ()
     {
-        double Deg2Rad= 3.1415926535897932384626433832795/180.0;
-        _map["mm"]   = 1.0 / 1000.0;
-        _map["cm"]   = 1.0 / 100.0;
-        _map["m"]    = 1;
-        _map["inch"] = 0.0254;
+        double Deg2Rad = 3.1415926535897932384626433832795 / 180.0;
+        _map["mm"]     = 1.0 / 1000.0;
+        _map["cm"]     = 1.0 / 100.0;
+        _map["m"]      = 1;
+        _map["inch"]   = 0.0254;
 
         _map["deg"] = Deg2Rad;
         _map["rad"] = 1;
@@ -505,13 +505,12 @@ DOMElem::Ptr DOMCoreBasisTypes::write (const std::string& str, DOMElem::Ptr elem
 }
 
 DOMElem::Ptr DOMCoreBasisTypes::createElement (const std::string& id, const std::string& value,
-                                           DOMElem::Ptr doc)
+                                               DOMElem::Ptr doc)
 {
     DOMElem::Ptr element = doc->addChild (id);
     element->setValue (value);
     return element;
 }
-
 
 DOMElem::Ptr DOMCoreBasisTypes::createIntList (const std::vector< int >& ints, DOMElem::Ptr doc)
 {
@@ -519,7 +518,7 @@ DOMElem::Ptr DOMCoreBasisTypes::createIntList (const std::vector< int >& ints, D
 }
 
 DOMElem::Ptr DOMCoreBasisTypes::createDoubleList (const std::vector< double >& doubles,
-                                              DOMElem::Ptr doc)
+                                                  DOMElem::Ptr doc)
 {
     return createElement (idDoubleList (), createStringFromVector (doubles), doc);
 }
@@ -550,7 +549,7 @@ DOMElem::Ptr DOMCoreBasisTypes::createString (const std::string& str, DOMElem::P
 }
 
 DOMElem::Ptr DOMCoreBasisTypes::createStringList (const std::vector< std::string >& strings,
-                                              DOMElem::Ptr doc)
+                                                  DOMElem::Ptr doc)
 {
     DOMElem::Ptr element = doc->addChild (idStringList ());
     std::stringstream sstr;
@@ -564,8 +563,8 @@ DOMElem::Ptr DOMCoreBasisTypes::createStringList (const std::vector< std::string
     return element;
 }
 
-DOMElem::Ptr DOMCoreBasisTypes::createStringPair (const std::string& first, const std::string& second,
-                                              DOMElem::Ptr doc)
+DOMElem::Ptr DOMCoreBasisTypes::createStringPair (const std::string& first,
+                                                  const std::string& second, DOMElem::Ptr doc)
 {
     DOMElem::Ptr element = doc->addChild (idStringPair ());
     std::stringstream sstr;

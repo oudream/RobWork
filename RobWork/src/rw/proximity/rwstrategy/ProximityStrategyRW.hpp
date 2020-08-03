@@ -76,13 +76,13 @@ namespace rw { namespace proximity {
         {
             typedef rw::core::Ptr< Model > Ptr;
 
-            Model (rw::core::Ptr< rw::geometry::Geometry> geo, rw::math::Transform3D<> trans,
+            Model (rw::core::Ptr< rw::geometry::Geometry > geo, rw::math::Transform3D<> trans,
                    rw::proximity::BinaryOBBPtrTreeD::Ptr obbtree) :
                 geo (geo),
                 scale (1), t3d (trans), tree (obbtree)
             {}
 
-            rw::core::Ptr< rw::geometry::Geometry> geo;
+            rw::core::Ptr< rw::geometry::Geometry > geo;
             double scale;
             rw::math::Transform3D<> t3d;
             rw::proximity::BinaryOBBPtrTreeD::Ptr tree;
@@ -139,7 +139,8 @@ namespace rw { namespace proximity {
         /**
          * @copydoc rw::proximity::ProximityStrategy::getGeometrys
          */
-        std::vector< rw::core::Ptr< rw::geometry::Geometry > > getGeometrys (rw::proximity::ProximityModel* model);
+        std::vector< rw::core::Ptr< rw::geometry::Geometry > >
+        getGeometrys (rw::proximity::ProximityModel* model);
 
         /**
          * @copydoc rw::proximity::CollisionStrategy::doInCollision

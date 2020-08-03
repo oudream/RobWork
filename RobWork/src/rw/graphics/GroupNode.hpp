@@ -21,38 +21,37 @@
 #include "SceneNode.hpp"
 
 #include <rw/math/Transform3D.hpp>
+
 #include <list>
 
-
-namespace rw {
-namespace graphics {
+namespace rw { namespace graphics {
 
     /**
      * @brief a SceneNode that has a transformation and 0 to many children.
      */
-    class GroupNode: public SceneNode {
-    public:
-
+    class GroupNode : public SceneNode
+    {
+      public:
         //! @brief smart pointer type of this class
-        typedef rw::core::Ptr<GroupNode> Ptr;
+        typedef rw::core::Ptr< GroupNode > Ptr;
 
         //! @brief constructor
-        GroupNode(const std::string& name);
+        GroupNode (const std::string& name);
 
-        virtual ~GroupNode(){};
+        virtual ~GroupNode (){};
 
         //! @copydoc SceneNode::asGroupNode
-        GroupNode* asGroupNode();
+        GroupNode* asGroupNode ();
 
         //! @brief get the number of children
-        size_t nrOfChildren();
+        size_t nrOfChildren ();
 
         /**
          * @brief add a child to this group node
          * @param node [in] the child to add
          * @param policy [in] add it to the front or the back
          */
-        void addChild(SceneNode::Ptr node, AddPolicy policy=Back);
+        void addChild (SceneNode::Ptr node, AddPolicy policy = Back);
 
         /**
          * @brief add a child to the groupnode \b parent
@@ -60,52 +59,51 @@ namespace graphics {
          * @param parent [in] the parent
          * @param policy [in] add it to the front or the back
          */
-        static void addChild(SceneNode::Ptr child, GroupNode::Ptr parent, AddPolicy policy=Back);
+        static void addChild (SceneNode::Ptr child, GroupNode::Ptr parent, AddPolicy policy = Back);
 
         /**
          * @brief test if this group node has the node \b node as child
          * @param node [in] a scene node
          * @return true if \b node is child of this, false otherwise
          */
-        bool hasChild(SceneNode::Ptr node);
+        bool hasChild (SceneNode::Ptr node);
 
         /**
          * @brief test if this group node has a child node with name \b nodename
          * @param nodename [in] name of child node
          * @return true if \b nodename is child of this, false otherwise
          */
-        bool hasChild(const std::string& nodename);
+        bool hasChild (const std::string& nodename);
 
         /**
          * @brief remove \b node from the children list of this node AND removes this
          * node from the parent list of \b node.
-		 *
+         *
          * @param node [in] child node that is to be removed
          */
-        void removeChild(SceneNode::Ptr node);
+        void removeChild (SceneNode::Ptr node);
 
         /**
          * @brief remove node with name \b name from the children list of this node AND removes this
          * node from the parent list of \b node.
-		 *
-		 * @param name [in] child node that is to be removed
+         *
+         * @param name [in] child node that is to be removed
          */
-        void removeChild(const std::string& name);
+        void removeChild (const std::string& name);
 
         //! transform is relative to parent node
-        void setTransform(const rw::math::Transform3D<>& t3d);
+        void setTransform (const rw::math::Transform3D<>& t3d);
 
         //! @brief get transform
-        rw::math::Transform3D<> getTransform();
+        rw::math::Transform3D<> getTransform ();
 
         //! @brief The transform.
         rw::math::Transform3D<> _t3d;
 
         //! @brief List of child nodes.
-        std::list<SceneNode::Ptr> _childNodes;
+        std::list< SceneNode::Ptr > _childNodes;
     };
 
-}
-}
+}}    // namespace rw::graphics
 
 #endif /* GROUPNODE_HPP_ */

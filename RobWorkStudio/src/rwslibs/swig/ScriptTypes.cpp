@@ -86,7 +86,7 @@ void rws::swig::moveTo (MovableFrame* mframe, Transform3Dd wTframe)
 
 void rws::swig::moveTo (Frame* frame, MovableFrame* mframe, Transform3Dd wTtcp)
 {
-    State state               = getState ();
+    State state                = getState ();
     Transform3Dd tcpTbase      = rw::kinematics::Kinematics::frameTframe (frame, mframe, state);
     Transform3Dd wTbase_target = wTtcp * tcpTbase;
     mframe->moveTo (wTbase_target, state);
@@ -123,8 +123,9 @@ rw::core::Ptr< RobWorkStudio > rws::swig::getRobWorkStudioInstance (const std::s
     return robApp->getRobWorkStudio ();
 }
 
-void rws::swig::closeRobWorkStudio(){
-    robApp->close();
+void rws::swig::closeRobWorkStudio ()
+{
+    robApp->close ();
 }
 
 bool rws::swig::isRunning ()
@@ -150,7 +151,7 @@ void rws::swig::setQ (rw::core::Ptr< rwlibs::swig::Device > dev, rwlibs::swig::Q
     setState (state);
 }
 
-void rws::swig::setTransform (rwlibs::swig::Frame* mframe, rw::math::Transform3D<double> wTframe)
+void rws::swig::setTransform (rwlibs::swig::Frame* mframe, rw::math::Transform3D< double > wTframe)
 {
     if (FixedFrame* ff = dynamic_cast< FixedFrame* > (mframe)) {
         ff->setTransform (wTframe);
@@ -162,19 +163,19 @@ void rws::swig::setTransform (rwlibs::swig::Frame* mframe, rw::math::Transform3D
     }
 }
 
-rw::math::Transform3D<double> rws::swig::wTf (rwlibs::swig::Frame* frame)
+rw::math::Transform3D< double > rws::swig::wTf (rwlibs::swig::Frame* frame)
 {
     return rw::kinematics::Kinematics::worldTframe (frame, getState ());
 }
-rw::math::Transform3D<double> rws::swig::fTf (rwlibs::swig::Frame* frame, rwlibs::swig::Frame* to)
+rw::math::Transform3D< double > rws::swig::fTf (rwlibs::swig::Frame* frame, rwlibs::swig::Frame* to)
 {
     return rw::kinematics::Kinematics::frameTframe (frame, to, getState ());
 }
-rw::math::Transform3D<double> rws::swig::wTf (const std::string& name)
+rw::math::Transform3D< double > rws::swig::wTf (const std::string& name)
 {
     return rw::kinematics::Kinematics::worldTframe (findFrame (name), getState ());
 }
-rw::math::Transform3D<double> rws::swig::fTf (const std::string& frame, const std::string& to)
+rw::math::Transform3D< double > rws::swig::fTf (const std::string& frame, const std::string& to)
 {
     return rw::kinematics::Kinematics::frameTframe (findFrame (frame), findFrame (to), getState ());
 }

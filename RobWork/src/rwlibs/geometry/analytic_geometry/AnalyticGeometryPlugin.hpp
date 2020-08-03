@@ -24,42 +24,40 @@
  * \copydoc rwlibs::geometry::AnalyticGeometryPlugin
  */
 
-#include <rw/core/Plugin.hpp>
 #include <rw/core/Extension.hpp>
+#include <rw/core/Plugin.hpp>
 #include <rw/core/Ptr.hpp>
 
-namespace rwlibs {
-    namespace geometry {
+namespace rwlibs { namespace geometry {
 
-        //! @addtogroup rwlibs_geometry
+    //! @addtogroup rwlibs_geometry
 
-        //! @{
-        /**
-         * @brief Plugin adding new analytic geometry types to the
-         * rw.loaders.GeometryFactory extension point.
-         *
-         * The following types are added with the use of this plugin:
-         *  - QuadraticTestObjectA - rwlibs::geometry::QuadraticTestObjects::objectA()
-         *  - QuadraticTestObjectB - rwlibs::geometry::QuadraticTestObjects::objectB()
-         */
-        class AnalyticGeometryPlugin: public rw::core::Plugin
-        {
-            public:
-                //! @brief Construct new plugin
-                AnalyticGeometryPlugin();
+    //! @{
+    /**
+     * @brief Plugin adding new analytic geometry types to the
+     * rw.loaders.GeometryFactory extension point.
+     *
+     * The following types are added with the use of this plugin:
+     *  - QuadraticTestObjectA - rwlibs::geometry::QuadraticTestObjects::objectA()
+     *  - QuadraticTestObjectB - rwlibs::geometry::QuadraticTestObjects::objectB()
+     */
+    class AnalyticGeometryPlugin : public rw::core::Plugin
+    {
+      public:
+        //! @brief Construct new plugin
+        AnalyticGeometryPlugin ();
 
-                //! @brief Destructor
-                virtual ~AnalyticGeometryPlugin();
+        //! @brief Destructor
+        virtual ~AnalyticGeometryPlugin ();
 
-                //! @copydoc rw::core::Plugin::getExtensionDescriptors
-                std::vector<rw::core::Extension::Descriptor> getExtensionDescriptors();
+        //! @copydoc rw::core::Plugin::getExtensionDescriptors
+        std::vector< rw::core::Extension::Descriptor > getExtensionDescriptors ();
 
-                //! @copydoc rw::core::Plugin::makeExtension
-                rw::core::Ptr<rw::core::Extension> makeExtension(const std::string& id);
-        };
+        //! @copydoc rw::core::Plugin::makeExtension
+        rw::core::Ptr< rw::core::Extension > makeExtension (const std::string& id);
+    };
     //! @}
 
-    } /* namespace geometry */
-} /* namespace rwlibs */
+}}    // namespace rwlibs::geometry
 
 #endif /* RWLIBS_GEOMETRY_ANALYTIC_GEOMETRY_ANALYTICGEOMETRYPLUGIN_HPP_ */

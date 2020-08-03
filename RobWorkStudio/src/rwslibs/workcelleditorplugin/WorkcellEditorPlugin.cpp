@@ -17,12 +17,12 @@
 
 #include "WorkcellEditorPlugin.hpp"
 
-#include <QVBoxLayout>
-#include <QMenu>
-#include <QToolBar>
-
 #include <rws/RobWorkStudio.hpp>
 #include <rwslibs/workcelleditor/WorkcellEditorWindow.hpp>
+
+#include <QMenu>
+#include <QToolBar>
+#include <QVBoxLayout>
 
 using namespace rw::math;
 using namespace rw::kinematics;
@@ -32,72 +32,76 @@ using namespace rw::trajectory;
 using namespace rwlibs;
 using namespace rws;
 
-WorkcellEditorPlugin::WorkcellEditorPlugin()
-        :
-        RobWorkStudioPlugin("Workcell Editor", QIcon(":/wceditoricon.png")),
-        _editor(NULL) {
-}
+WorkcellEditorPlugin::WorkcellEditorPlugin () :
+    RobWorkStudioPlugin ("Workcell Editor", QIcon (":/wceditoricon.png")), _editor (NULL)
+{}
 
-WorkcellEditorPlugin::~WorkcellEditorPlugin() {
-}
+WorkcellEditorPlugin::~WorkcellEditorPlugin ()
+{}
 
-void WorkcellEditorPlugin::initialize() {
-    QWidget *widget = new QWidget(this);
-    QVBoxLayout *lay = new QVBoxLayout(widget);
-    widget->setLayout(lay);
-    this->setWidget(widget);
+void WorkcellEditorPlugin::initialize ()
+{
+    QWidget* widget  = new QWidget (this);
+    QVBoxLayout* lay = new QVBoxLayout (widget);
+    widget->setLayout (lay);
+    this->setWidget (widget);
 
     if (_editor == NULL) {
-        _editor = new WorkcellEditorWindow(RobWorkStudioPlugin::_log, getRobWorkStudio(), this);
+        _editor = new WorkcellEditorWindow (RobWorkStudioPlugin::_log, getRobWorkStudio (), this);
     }
 
-    if (_editor->isVisible()) {
-        _editor->setVisible(false);
-    } else {
-        _editor->show();
+    if (_editor->isVisible ()) {
+        _editor->setVisible (false);
+    }
+    else {
+        _editor->show ();
     }
 
-    lay->addWidget(_editor);
+    lay->addWidget (_editor);
 }
 
-void WorkcellEditorPlugin::startEditor() {
+void WorkcellEditorPlugin::startEditor ()
+{
     if (_editor == NULL) {
-        _editor = new WorkcellEditorWindow(RobWorkStudioPlugin::_log, getRobWorkStudio(), this);
+        _editor = new WorkcellEditorWindow (RobWorkStudioPlugin::_log, getRobWorkStudio (), this);
     }
 
-    if (_editor->isVisible()) {
-        _editor->setVisible(false);
-    } else {
-        _editor->show();
+    if (_editor->isVisible ()) {
+        _editor->setVisible (false);
     }
-
+    else {
+        _editor->show ();
+    }
 }
 
-void WorkcellEditorPlugin::stateChangedListener(const State &state) {
+void WorkcellEditorPlugin::stateChangedListener (const State& state)
+{
     _state = state;
 }
 
-void WorkcellEditorPlugin::open(WorkCell *workcell) {
-    stateChangedListener(getRobWorkStudio()->getState());
-    if ( _editor != NULL ) {
-        _editor->openWorkCell(workcell->getFilename().c_str());
+void WorkcellEditorPlugin::open (WorkCell* workcell)
+{
+    stateChangedListener (getRobWorkStudio ()->getState ());
+    if (_editor != NULL) {
+        _editor->openWorkCell (workcell->getFilename ().c_str ());
     }
 }
 
-void WorkcellEditorPlugin::close() {
-}
+void WorkcellEditorPlugin::close ()
+{}
 
-void WorkcellEditorPlugin::setupMenu(QMenu *pluginmenu) {
-    QMenuBar *menu = getRobWorkStudio()->menuBar();
+void WorkcellEditorPlugin::setupMenu (QMenu* pluginmenu)
+{
+    QMenuBar* menu = getRobWorkStudio ()->menuBar ();
 
-    _openWorkcellEditorAction = new QAction(tr("Workcell Editor"), this); // owned
-    connect(_openWorkcellEditorAction, SIGNAL(triggered()), this, SLOT(startEditor()));
+    _openWorkcellEditorAction = new QAction (tr ("Workcell Editor"), this);    // owned
+    connect (_openWorkcellEditorAction, SIGNAL (triggered ()), this, SLOT (startEditor ()));
 
-    boost::tuple<QWidget *, QMenu *, int> action = RobWorkStudioPlugin::getMenu((QWidget *) menu,
-                                                                                std::string("&Tools"));
-    if (action.get<1>() != NULL) {
-        action.get<1>()->addAction(_openWorkcellEditorAction);
-    } else {
-
+    boost::tuple< QWidget*, QMenu*, int > action =
+        RobWorkStudioPlugin::getMenu ((QWidget*) menu, std::string ("&Tools"));
+    if (action.get< 1 > () != NULL) {
+        action.get< 1 > ()->addAction (_openWorkcellEditorAction);
+    }
+    else {
     }
 }

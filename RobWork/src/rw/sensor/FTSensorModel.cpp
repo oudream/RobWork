@@ -88,5 +88,5 @@ void FTSensorModel::setTransform (const rw::math::Transform3D<>& t3d)
 
 rw::math::Wrench6D<> FTSensorModel::getWrench (const rw::kinematics::State& state) const
 {
-	return _sdata.get (state);
+    return _sdata.get (state);
 }

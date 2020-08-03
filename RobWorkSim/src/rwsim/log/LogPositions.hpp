@@ -25,91 +25,91 @@
  */
 
 #include "SimulatorLogEntry.hpp"
+
 #include <rw/core/Ptr.hpp>
 #include <rw/math/Transform3D.hpp>
 
-namespace rwsim {
-namespace log {
-//! @addtogroup rwsim_log
+namespace rwsim { namespace log {
+    //! @addtogroup rwsim_log
 
-//! @{
-/**
- * @brief Logging of body positions.
- */
-class LogPositions: public SimulatorLogEntry {
-public:
-    //! Smart pointer type of LogPositions
-    typedef rw::core::Ptr<LogPositions> Ptr;
+    //! @{
+    /**
+     * @brief Logging of body positions.
+     */
+    class LogPositions : public SimulatorLogEntry
+    {
+      public:
+        //! Smart pointer type of LogPositions
+        typedef rw::core::Ptr< LogPositions > Ptr;
 
-    //! @copydoc SimulatorLogEntry::SimulatorLogEntry
-    LogPositions(SimulatorLogScope* parent);
+        //! @copydoc SimulatorLogEntry::SimulatorLogEntry
+        LogPositions (SimulatorLogScope* parent);
 
-	//! @brief Destructor.
-	virtual ~LogPositions();
+        //! @brief Destructor.
+        virtual ~LogPositions ();
 
-    //! @copydoc SimulatorLogEntry::read
-	virtual void read(class rw::common::InputArchive& iarchive, const std::string& id);
+        //! @copydoc SimulatorLogEntry::read
+        virtual void read (class rw::common::InputArchive& iarchive, const std::string& id);
 
-    //! @copydoc SimulatorLogEntry::write
-	virtual void write(class rw::common::OutputArchive& oarchive, const std::string& id) const;
+        //! @copydoc SimulatorLogEntry::write
+        virtual void write (class rw::common::OutputArchive& oarchive, const std::string& id) const;
 
-	//! @copydoc SimulatorLogEntry::getType
-	virtual std::string getType() const;
+        //! @copydoc SimulatorLogEntry::getType
+        virtual std::string getType () const;
 
-	//! @copydoc SimulatorLogEntry::operator==
-	virtual bool operator==(const SimulatorLog &b) const;
+        //! @copydoc SimulatorLogEntry::operator==
+        virtual bool operator== (const SimulatorLog& b) const;
 
-	//! @copydoc SimulatorLogEntry::getLinkedEntries
-	virtual std::list<SimulatorLogEntry::Ptr> getLinkedEntries() const;
+        //! @copydoc SimulatorLogEntry::getLinkedEntries
+        virtual std::list< SimulatorLogEntry::Ptr > getLinkedEntries () const;
 
-	//! @copydoc SimulatorLogEntry::autoLink
-	virtual bool autoLink();
+        //! @copydoc SimulatorLogEntry::autoLink
+        virtual bool autoLink ();
 
-	//! @copydoc SimulatorLogEntry::createNew
-	virtual SimulatorLogEntry::Ptr createNew(SimulatorLogScope* parent) const;
+        //! @copydoc SimulatorLogEntry::createNew
+        virtual SimulatorLogEntry::Ptr createNew (SimulatorLogScope* parent) const;
 
-	/**
-	 * @brief Get the position map.
-	 * @return the position map.
-	 */
-	const std::map<std::string, rw::math::Transform3D<> >& getPositions() const;
+        /**
+         * @brief Get the position map.
+         * @return the position map.
+         */
+        const std::map< std::string, rw::math::Transform3D<> >& getPositions () const;
 
-	/**
-	 * @brief Get a position.
-	 * @param name [in] the name of the body to get position for.
-	 * @return the position as a transform.
-	 */
-	const rw::math::Transform3D<>& getPosition(const std::string& name) const;
+        /**
+         * @brief Get a position.
+         * @param name [in] the name of the body to get position for.
+         * @return the position as a transform.
+         */
+        const rw::math::Transform3D<>& getPosition (const std::string& name) const;
 
-	/**
-	 * @brief Check if a position with the given name exists.
-	 * @param name [in] the name to look for.
-	 * @return true if found, false if not.
-	 */
-	bool has(const std::string& name) const;
+        /**
+         * @brief Check if a position with the given name exists.
+         * @param name [in] the name to look for.
+         * @return true if found, false if not.
+         */
+        bool has (const std::string& name) const;
 
-	/**
-	 * @brief Set the positions.
-	 * @param positions [in] the positions.
-	 */
-	void setPositions(const std::map<std::string, rw::math::Transform3D<> >& positions);
+        /**
+         * @brief Set the positions.
+         * @param positions [in] the positions.
+         */
+        void setPositions (const std::map< std::string, rw::math::Transform3D<> >& positions);
 
-	/**
-	 * @brief Get the number of positions stored.
-	 * @return the number of positions.
-	 */
-	std::size_t size() const;
+        /**
+         * @brief Get the number of positions stored.
+         * @return the number of positions.
+         */
+        std::size_t size () const;
 
-	/**
-	 * @brief Get the type id of this entry type.
-	 * @return the type id.
-	 */
-	static std::string getTypeID();
+        /**
+         * @brief Get the type id of this entry type.
+         * @return the type id.
+         */
+        static std::string getTypeID ();
 
-private:
-	std::map<std::string,rw::math::Transform3D<> > _positions;
-};
-//! @}
-} /* namespace log */
-} /* namespace rwsim */
+      private:
+        std::map< std::string, rw::math::Transform3D<> > _positions;
+    };
+    //! @}
+}}     // namespace rwsim::log
 #endif /* RWSIM_LOG_LOGPOSITIONS_HPP_ */

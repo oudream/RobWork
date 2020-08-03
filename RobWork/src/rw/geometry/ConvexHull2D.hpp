@@ -22,48 +22,43 @@
 
 #include <rw/math/Vector2D.hpp>
 
-namespace rw {
-namespace geometry {
-//! @addtogroup geometry
-// @{
+namespace rw { namespace geometry {
+    //! @addtogroup geometry
+    // @{
 
+    /**
+     * @brief interface for convexhull calculators on 2d point sets
+     */
+    class ConvexHull2D
+    {
+      public:
+        /**
+         * @brief rebuilts the hull
+         * @param vertices
+         */
+        virtual void rebuild (const std::vector< rw::math::Vector2D<> >& vertices) = 0;
 
-	/**
-	 * @brief interface for convexhull calculators on 2d point sets
-	 */
-	class ConvexHull2D {
-	public:
+        /**
+         * @brief test if the given vertex is inside the convex hull
+         */
+        virtual bool isInside (const rw::math::Vector2D<>& vertex) = 0;
 
-		/**
-		 * @brief rebuilts the hull
-		 * @param vertices
-		 */
-		virtual void rebuild(const std::vector<rw::math::Vector2D<> >& vertices) = 0;
+        /**
+         * @brief if the vertex is inside the convex hull the minimum distance
+         * to any of the half-spaces of the hull is returned. If its not inside
+         * 0 is returned.
+         * @param vertex
+         * @return
+         */
+        virtual double getMinDist (const rw::math::Vector2D<>& vertex) = 0;
 
-		/**
-		 * @brief test if the given vertex is inside the convex hull
-		 */
-		virtual bool isInside(const rw::math::Vector2D<>& vertex) = 0;
-
-		/**
-		 * @brief if the vertex is inside the convex hull the minimum distance
-		 * to any of the half-spaces of the hull is returned. If its not inside
-		 * 0 is returned.
-		 * @param vertex
-		 * @return
-		 */
-		virtual double getMinDist(const rw::math::Vector2D<>& vertex) = 0;
-
-		/**
-		 * @brief create a plain trimesh from the hull facets
-		 * @return the hull facets as a plain triangle mesh with normal information
-		 */
-		virtual std::vector<rw::math::Vector2D<> >* toContour() = 0;
-
-	};
-	//! @}
-}
-}
-
+        /**
+         * @brief create a plain trimesh from the hull facets
+         * @return the hull facets as a plain triangle mesh with normal information
+         */
+        virtual std::vector< rw::math::Vector2D<> >* toContour () = 0;
+    };
+    //! @}
+}}    // namespace rw::geometry
 
 #endif /* HULL3D_HPP_ */

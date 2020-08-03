@@ -366,11 +366,10 @@ std::vector< Frame* > GeometryUtil::getAnchoredChildFrames (Frame* parent, const
     while (!fstack.empty ()) {
         parent = fstack.top ();
         fstack.pop ();
-        for (Frame::Ptr f: parent->getChildrenList (state)) {
-
+        for (Frame::Ptr f : parent->getChildrenList (state)) {
             if (dynamic_cast< FixedFrame* > (parent)) {
-                fstack.push (f.get());
-                res.push_back (f.get());
+                fstack.push (f.get ());
+                res.push_back (f.get ());
             }
         }
     }
@@ -403,7 +402,7 @@ Vector3D<> GeometryUtil::estimateCOG (const std::vector< Geometry::Ptr >& geoms,
         RW_THROW ("At least one geometry is required!");
     double totalVolume = 0;
     Vector3D<> center (0., 0., 0.);
-    for (Geometry::Ptr geom: geoms) {
+    for (Geometry::Ptr geom : geoms) {
         const GeometryData::Ptr gdata = geom->getGeometryData ();
         const TriMesh::Ptr trimesh    = gdata->getTriMesh (false);
         Transform3D<> t3d;
@@ -432,7 +431,7 @@ double GeometryUtil::calcMaxDist (const std::vector< Geometry::Ptr >& geoms,
     double maxDist = 0;
 
     // first find center mass
-    for (Geometry::Ptr geom: geoms) {
+    for (Geometry::Ptr geom : geoms) {
         GeometryData::Ptr gdata = geom->getGeometryData ();
         // check if type of geom is really a trimesh
         TriMesh::Ptr trimesh = gdata->getTriMesh (false);
@@ -480,7 +479,7 @@ InertiaMatrix<> GeometryUtil::estimateInertia (double mass,
     double totalVolume = 0;
     std::vector< MassParameters > par (geoms.size ());
     std::size_t i = 0;
-    for (const Geometry::Ptr geom: geoms) {
+    for (const Geometry::Ptr geom : geoms) {
         const GeometryData::Ptr gdata = geom->getGeometryData ();
         const TriMesh::Ptr trimesh    = gdata->getTriMesh (false);
 
@@ -518,7 +517,7 @@ InertiaMatrix<> GeometryUtil::estimateInertia (double mass,
     double totalVolume = 0;
     std::vector< MassParameters > par (geoms.size ());
     std::size_t i = 0;
-    for (const Geometry::Ptr geom: geoms) {
+    for (const Geometry::Ptr geom : geoms) {
         const GeometryData::Ptr gdata = geom->getGeometryData ();
         const TriMesh::Ptr trimesh    = gdata->getTriMesh (false);
         const Transform3D<> t3d       = reftrans * geom->getTransform ();

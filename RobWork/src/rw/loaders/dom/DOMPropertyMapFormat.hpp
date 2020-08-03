@@ -20,71 +20,71 @@
 
 #include <string>
 
-namespace rw {
-namespace loaders {
+namespace rw { namespace loaders {
 
-/** @addtogroup loaders */
-/*@{*/
-
-/**
- * @brief Class storing the identifiers used for properties
- */
-class DOMPropertyMapFormat
-{
-public:
-    /**
-     * @brief Get identifier for rw::core::PropertyMap.
-     * @return the identifier.
-     */
-    static const std::string& idPropertyMap();
+    /** @addtogroup loaders */
+    /*@{*/
 
     /**
-     * @brief Get identifier for rw::common::Property.
-     * @return the identifier.
+     * @brief Class storing the identifiers used for properties
      */
-    static const std::string& idProperty();
+    class DOMPropertyMapFormat
+    {
+      public:
+        /**
+         * @brief Get identifier for rw::core::PropertyMap.
+         * @return the identifier.
+         */
+        static const std::string& idPropertyMap ();
 
-    /**
-     * @brief Get identifier for the name of a rw::core::Property.
-     * @return the identifier.
-     */
-    static const std::string& idPropertyName();
+        /**
+         * @brief Get identifier for rw::common::Property.
+         * @return the identifier.
+         */
+        static const std::string& idProperty ();
 
-    /**
-     * @brief Get identifier for the description of a rw::core::Property.
-     * @return the identifier.
-     */
-    static const std::string& idPropertyDescription();
+        /**
+         * @brief Get identifier for the name of a rw::core::Property.
+         * @return the identifier.
+         */
+        static const std::string& idPropertyName ();
 
-    /**
-     * @brief Get identifier for the value of a rw::core::Property.
-     * @return the identifier.
-     */
-    static const std::string& idPropertyValue();
+        /**
+         * @brief Get identifier for the description of a rw::core::Property.
+         * @return the identifier.
+         */
+        static const std::string& idPropertyDescription ();
 
-	/**
-	 * @brief Utility class which initializes local static variables.
-	 *
-	 * If the DOMPropertyMapFormat is used outside main (as a part of global initialization/destruction), the Initializer
-	 * should be used explicitly to control the static initialization/destruction order.
-	 *
-	 * Notice that the Initializer is automatically defined as a global variable, hence it should not
-	 * be necessary to specify the initializer explicitly if DOMPropertyMapFormat is to be used in local static
-	 * initialization/destruction.
-	 */
-	class Initializer {
-	public:
-	    //! @brief Initializes when constructed.
-		Initializer();
-	};
+        /**
+         * @brief Get identifier for the value of a rw::core::Property.
+         * @return the identifier.
+         */
+        static const std::string& idPropertyValue ();
 
-private:
-	static const Initializer initializer;
-};
+        /**
+         * @brief Utility class which initializes local static variables.
+         *
+         * If the DOMPropertyMapFormat is used outside main (as a part of global
+         * initialization/destruction), the Initializer should be used explicitly to control the
+         * static initialization/destruction order.
+         *
+         * Notice that the Initializer is automatically defined as a global variable, hence it
+         * should not be necessary to specify the initializer explicitly if DOMPropertyMapFormat is
+         * to be used in local static initialization/destruction.
+         */
+        class Initializer
+        {
+          public:
+            //! @brief Initializes when constructed.
+            Initializer ();
+        };
 
-/** @} */
+      private:
+        static const Initializer initializer;
+    };
 
-} //end namespace loaders
-} //end namespace rw
+    /** @} */
 
-#endif // include guard
+}}    // namespace rw::loaders
+
+#endif    // include guard

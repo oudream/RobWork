@@ -35,8 +35,6 @@
 #include "ToExpression.hpp"
 #include "wstp.h"
 
-
-
 using namespace rw::common;
 using namespace rwlibs::mathematica;
 
@@ -229,8 +227,8 @@ Mathematica::Link::Ptr Mathematica::createLink (const std::string& name, LinkPro
     }
 
     const rw::core::Ptr< Link > link = ownedPtr (new Link ());
-    link->name                         = name;
-    link->impl                         = ownedPtr (new LinkImpl (_env, args.str ()));
+    link->name                       = name;
+    link->impl                       = ownedPtr (new LinkImpl (_env, args.str ()));
     if (link->isOpen ()) {
         _links.push_back (link);
         return link;
@@ -251,8 +249,8 @@ Mathematica::Link::Ptr Mathematica::connectToLink (const std::string& name)
         args << " -linkname \"" + name + "\"";
 
     const rw::core::Ptr< Link > link = ownedPtr (new Link ());
-    link->name                         = name;
-    link->impl                         = ownedPtr (new LinkImpl (_env, args.str ()));
+    link->name                       = name;
+    link->impl                       = ownedPtr (new LinkImpl (_env, args.str ()));
     if (link->isOpen ()) {
         _links.push_back (link);
         return link;
@@ -410,8 +408,7 @@ void Mathematica::put (LinkImpl::Ptr link, const Expression& expression)
             const FunctionBase& fct = dynamic_cast< const FunctionBase& > (expression);
             const std::list< rw::core::Ptr< const Expression > >& args = fct.getArguments ();
             WSPutFunction (lp, fct.getName ().c_str (), (int) args.size ());
-            for(const rw::core::Ptr< const Expression > arg : args)
-            {
+            for (const rw::core::Ptr< const Expression > arg : args) {
                 put (link, *arg);
             }
         } break;
@@ -613,7 +610,7 @@ std::ostream& rwlibs::mathematica::operator<< (std::ostream& out,
 Mathematica::AutoExpression::AutoExpression (const std::list< AutoExpression >& args) :
     _exp (rw::core::ownedPtr (new List ()))
 {
-    for (const AutoExpression& val: args) {
+    for (const AutoExpression& val : args) {
         _exp.cast< List > ()->add (val);
     }
 }

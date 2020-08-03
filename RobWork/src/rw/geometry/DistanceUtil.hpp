@@ -20,27 +20,28 @@
 
 #include <rw/math/Vector3D.hpp>
 
-namespace rw {
-namespace geometry {
+namespace rw { namespace geometry {
 
     /**
      * @brief a class for performing distance calculations between different
      * geometric primitives
      */
-    class DistanceUtil {
-    public:
+    class DistanceUtil
+    {
+      public:
         /**
-         * @brief computes the squared euclidean distance between line segments (line(p1,p2),line(q1,q2))
+         * @brief computes the squared euclidean distance between line segments
+         * (line(p1,p2),line(q1,q2))
          * @param p1 [in] start point on line segment 1
          * @param p2 [in] end point on line segment 1
          * @param q1 [in] start point on line segment 2
          * @param q2 [in] end point on line segment 2
          * @return distance between line segments
          */
-        static double distanceLineLineSqr(const rw::math::Vector3D<>& p1,
-                                          const rw::math::Vector3D<>& p2,
-                                          const rw::math::Vector3D<>& q1,
-                                          const rw::math::Vector3D<>& q2);
+        static double distanceLineLineSqr (const rw::math::Vector3D<>& p1,
+                                           const rw::math::Vector3D<>& p2,
+                                           const rw::math::Vector3D<>& q1,
+                                           const rw::math::Vector3D<>& q2);
 
         /**
          * @brief computes the euclidean distance between line segments (line(p1,p2),line(q1,q2))
@@ -50,16 +51,12 @@ namespace geometry {
          * @param q2 [in] end point on line segment 2
          * @return distance between line segments
          */
-        static double distanceLineLine(const rw::math::Vector3D<>& p1,
-                                       const rw::math::Vector3D<>& p2,
-                                       const rw::math::Vector3D<>& q1,
-                                       const rw::math::Vector3D<>& q2);
-
-
-
+        static double distanceLineLine (const rw::math::Vector3D<>& p1,
+                                        const rw::math::Vector3D<>& p2,
+                                        const rw::math::Vector3D<>& q1,
+                                        const rw::math::Vector3D<>& q2);
     };
 
-}
-}
+}}    // namespace rw::geometry
 
 #endif /* DISTANCEUTIL_HPP_ */

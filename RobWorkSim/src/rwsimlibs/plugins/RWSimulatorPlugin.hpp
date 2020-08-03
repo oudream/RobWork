@@ -20,21 +20,25 @@
 #ifndef RWSIM_RWSIMULATORPLUGIN_HPP
 #define RWSIM_RWSIMULATORPLUGIN_HPP
 
-#include <rw/trajectory/Path.hpp>
-
 #include <rw/core/Ptr.hpp>
-
+#include <rw/trajectory/Path.hpp>
 #include <rws/RobWorkStudioPlugin.hpp>
 
 #include <QObject>
 
-namespace rwlibs { namespace opengl { class Drawable; } }
-//namespace rwsim { namespace drawable { class RenderGhost; } }
-namespace rwsim { namespace dynamics { class DynamicWorkCell; } }
-//namespace rwsim { namespace simulator { class ConstantForceManipulator; } }
-namespace rwsim { namespace simulator { class DynamicSimulator; } }
+namespace rwlibs { namespace opengl {
+    class Drawable;
+}}    // namespace rwlibs::opengl
+// namespace rwsim { namespace drawable { class RenderGhost; } }
+namespace rwsim { namespace dynamics {
+    class DynamicWorkCell;
+}}    // namespace rwsim::dynamics
+// namespace rwsim { namespace simulator { class ConstantForceManipulator; } }
+namespace rwsim { namespace simulator {
+    class DynamicSimulator;
+}}    // namespace rwsim::simulator
 
-//class JointControlDialog;
+// class JointControlDialog;
 
 class QComboBox;
 class QCheckBox;
@@ -42,72 +46,72 @@ class QDoubleSpinBox;
 class QLabel;
 class QTimer;
 
-class RWSimulatorPlugin: public rws::RobWorkStudioPlugin {
+class RWSimulatorPlugin : public rws::RobWorkStudioPlugin
+{
     Q_OBJECT
-    Q_INTERFACES( rws::RobWorkStudioPlugin )
-    Q_PLUGIN_METADATA(IID "dk.sdu.mip.Robwork.RobWorkStudioPlugin/0.1" FILE "RWSimulatorPlugin.json")
-public:
-    RWSimulatorPlugin();
+    Q_INTERFACES (rws::RobWorkStudioPlugin)
+    Q_PLUGIN_METADATA (IID "dk.sdu.mip.Robwork.RobWorkStudioPlugin/0.1" FILE
+                           "RWSimulatorPlugin.json")
+  public:
+    RWSimulatorPlugin ();
 
-    virtual ~RWSimulatorPlugin();
+    virtual ~RWSimulatorPlugin ();
 
-    void open(rw::models::WorkCell* workcell);
+    void open (rw::models::WorkCell* workcell);
 
-    void close();
+    void close ();
 
-    void initialize();
+    void initialize ();
 
-    void genericEventListener(const std::string& event);
+    void genericEventListener (const std::string& event);
 
-    void open(const std::string& file);
-protected:
-	virtual void stateChangedHandler(rws::RobWorkStudioPlugin* sender);
+    void open (const std::string& file);
 
-private slots:
-    void open();
-    void update();
-    void startSimulation();
-    void stopSimulation();
-    void resetSimulation();
-    void printContactGraph();
-    void setSave();
-    void updateCfgInfo();
-    void openControlDialog();
-    void openControlDialog1();
-    void openControlDialog2();
+  protected:
+    virtual void stateChangedHandler (rws::RobWorkStudioPlugin* sender);
 
-private: // qt stuff
-	QCheckBox *_checkBox,*_debugDrawBox,*_forceUpdateBox;
-	QDoubleSpinBox *_dtBox;
-	QComboBox* _engineBox;
+  private slots:
+    void open ();
+    void update ();
+    void startSimulation ();
+    void stopSimulation ();
+    void resetSimulation ();
+    void printContactGraph ();
+    void setSave ();
+    void updateCfgInfo ();
+    void openControlDialog ();
+    void openControlDialog1 ();
+    void openControlDialog2 ();
 
-private:
+  private:    // qt stuff
+    QCheckBox *_checkBox, *_debugDrawBox, *_forceUpdateBox;
+    QDoubleSpinBox* _dtBox;
+    QComboBox* _engineBox;
+
+  private:
     std::string _previousOpenDirectory;
-    rw::core::Ptr<rwsim::dynamics::DynamicWorkCell> _dworkcell;
-//    rw::kinematics::State *_state;
+    rw::core::Ptr< rwsim::dynamics::DynamicWorkCell > _dworkcell;
+    //    rw::kinematics::State *_state;
     rw::kinematics::State _jointState;
-    //rwsim::simulator::ConstantForceManipulator *_gravity;
-    QTimer *_timer;
+    // rwsim::simulator::ConstantForceManipulator *_gravity;
+    QTimer* _timer;
 
-    //rwsim::drawable::RenderContacts _miscForces;
-    //rwsim::drawable::RenderContacts _bodyForces;
+    // rwsim::drawable::RenderContacts _miscForces;
+    // rwsim::drawable::RenderContacts _bodyForces;
 
     double _timeStep;
     double _nextTime;
     bool _save;
-    //JointControlDialog *_jointDialog,*_jointDialog1;
-    //rwsim::drawable::RenderGhost *_ghost;
+    // JointControlDialog *_jointDialog,*_jointDialog1;
+    // rwsim::drawable::RenderGhost *_ghost;
 
-    //std::vector<rwsim::dynamics::FixedDevice*> _fdevs;
+    // std::vector<rwsim::dynamics::FixedDevice*> _fdevs;
     QLabel* _timeLabel;
     rw::trajectory::TimedStatePath _statePath;
-    rw::core::Ptr<rwsim::simulator::DynamicSimulator> _simulator;
+    rw::core::Ptr< rwsim::simulator::DynamicSimulator > _simulator;
 
-
-    //std::vector<rwlibs::control::JointController*> _controllers;
-    rwlibs::opengl::Drawable *_dBtWorld;
+    // std::vector<rwlibs::control::JointController*> _controllers;
+    rwlibs::opengl::Drawable* _dBtWorld;
 };
 
-
-
-#endif //#ifndef ROBOCATCHER_HPP
+#endif    //#ifndef ROBOCATCHER_HPP

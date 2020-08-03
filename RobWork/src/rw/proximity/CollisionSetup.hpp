@@ -108,7 +108,7 @@ namespace rw { namespace proximity {
         {
             s << "CollisionSetup( Exclude{ ";
             if (!r._exclude.empty ()) {
-                s<< ", " << r._exclude[0].first << " <=>" << r._exclude[0].second;
+                s << ", " << r._exclude[0].first << " <=>" << r._exclude[0].second;
             }
             bool first = true;
             for (const rw::core::StringPair& sp : r._exclude) {

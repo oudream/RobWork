@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RWLIBS_ALGORITHMS_QPCONTROLLER_QPSOLVER_HPP
 #define RWLIBS_ALGORITHMS_QPCONTROLLER_QPSOLVER_HPP
 
@@ -27,21 +26,21 @@
 
 namespace rwlibs { namespace algorithms { namespace qpcontroller {
 
-
     /**
      * @brief Class providing an algorithms for solving the quadratic optimization
      * problem associated with the QPController
      */
     class QPSolver
     {
-    public:
+      public:
         /**
          * @brief Enumeration used to indicate status
          */
         enum Status {
             SUCCESS = 0, /* Solved */
-            SUBOPTIMAL, /* Constraint satisfied but the result may be suboptimal. This may occur due to round off errors */
-            FAILURE /* Could not find a solution statisfying all the constraints */
+            SUBOPTIMAL, /* Constraint satisfied but the result may be suboptimal. This may occur due
+                           to round off errors */
+            FAILURE     /* Could not find a solution statisfying all the constraints */
         };
 
         /**
@@ -66,28 +65,19 @@ namespace rwlibs { namespace algorithms { namespace qpcontroller {
          *
          * \param status [out] Gives the status of the solving
          */
-        static Eigen::VectorXd
-        inequalitySolve(
-            const Eigen::MatrixXd& G,
-            const Eigen::VectorXd& d,
-            Eigen::MatrixXd& A,
-            const Eigen::VectorXd& b,
-            const Eigen::VectorXd& xstart,
-            Status& status);
+        static Eigen::VectorXd inequalitySolve (const Eigen::MatrixXd& G, const Eigen::VectorXd& d,
+                                                Eigen::MatrixXd& A, const Eigen::VectorXd& b,
+                                                const Eigen::VectorXd& xstart, Status& status);
 
-        //TODO Investigate the possibility of making a hot-start of the
-        //algorithm for better performance
+        // TODO Investigate the possibility of making a hot-start of the
+        // algorithm for better performance
 
-    private:
-        static Eigen::VectorXd getInitialConfig(
-            Eigen::MatrixXd& A,
-            const Eigen::VectorXd& b);
+      private:
+        static Eigen::VectorXd getInitialConfig (Eigen::MatrixXd& A, const Eigen::VectorXd& b);
 
-        static Eigen::VectorXd safeApprox(
-            Eigen::MatrixXd& A,
-            const Eigen::VectorXd& b);
+        static Eigen::VectorXd safeApprox (Eigen::MatrixXd& A, const Eigen::VectorXd& b);
     };
 
-}}} // end namespaces
+}}}    // namespace rwlibs::algorithms::qpcontroller
 
-#endif // end include guard
+#endif    // end include guard

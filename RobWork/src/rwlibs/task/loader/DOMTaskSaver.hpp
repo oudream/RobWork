@@ -20,90 +20,93 @@
 
 #include "TaskSaver.hpp"
 
-#include <rwlibs/task/Task.hpp>
-#include <rwlibs/task/Entity.hpp>
 #include <rw/core/Ptr.hpp>
+#include <rwlibs/task/Entity.hpp>
+#include <rwlibs/task/Task.hpp>
 
 #include <string>
 
-namespace rw { namespace core { class DOMElem; } }
+namespace rw { namespace core {
+    class DOMElem;
+}}    // namespace rw::core
 
-namespace rwlibs {
-namespace task {
-//! @addtogroup task
+namespace rwlibs { namespace task {
+    //! @addtogroup task
 
-//! @{
-/**
- * @brief Saver for the RobWork task format, using the DOMParser.
- */
-class DOMTaskSaver: public TaskSaver {
-public:
-	//! @brief Constructor.
-    DOMTaskSaver() {}
+    //! @{
+    /**
+     * @brief Saver for the RobWork task format, using the DOMParser.
+     */
+    class DOMTaskSaver : public TaskSaver
+    {
+      public:
+        //! @brief Constructor.
+        DOMTaskSaver () {}
 
-    //! @brief Destructor.
-    virtual ~DOMTaskSaver() {}
+        //! @brief Destructor.
+        virtual ~DOMTaskSaver () {}
 
-    //! @copydoc TaskSaver::save(rwlibs::task::QTask::Ptr, std::ostream&)
-    bool save(rwlibs::task::QTask::Ptr task, std::ostream& outstream);
+        //! @copydoc TaskSaver::save(rwlibs::task::QTask::Ptr, std::ostream&)
+        bool save (rwlibs::task::QTask::Ptr task, std::ostream& outstream);
 
-    //! @copydoc TaskSaver::save(rwlibs::task::CartesianTask::Ptr, std::ostream&)
-    bool save(rwlibs::task::CartesianTask::Ptr task, std::ostream& outstream);
+        //! @copydoc TaskSaver::save(rwlibs::task::CartesianTask::Ptr, std::ostream&)
+        bool save (rwlibs::task::CartesianTask::Ptr task, std::ostream& outstream);
 
-    //! @copydoc TaskSaver::save(rwlibs::task::QTask::Ptr, const std::string&)
-    bool save(rwlibs::task::QTask::Ptr task, const std::string& filename);
+        //! @copydoc TaskSaver::save(rwlibs::task::QTask::Ptr, const std::string&)
+        bool save (rwlibs::task::QTask::Ptr task, const std::string& filename);
 
-    //! @copydoc TaskSaver::save(rwlibs::task::CartesianTask::Ptr, const std::string&)
-    bool save(rwlibs::task::CartesianTask::Ptr task, const std::string& filename);
+        //! @copydoc TaskSaver::save(rwlibs::task::CartesianTask::Ptr, const std::string&)
+        bool save (rwlibs::task::CartesianTask::Ptr task, const std::string& filename);
 
-	/**
-	 * @brief Utility class which initializes local static variables.
-	 *
-     * If the DOMTaskSaver is used outside main (as a part of global initialization/destruction), the Initializer
-	 * should be used explicitly to control the static initialization/destruction order.
-	 *
-	 * Notice that the Initializer is automatically defined as a global variable, hence it should not
-     * be necessary to specify the initializer explicitly if DOMTaskSaver is to be used in local static
-	 * initialization/destruction.
-	 */
-	class Initializer {
-	public:
-	    //! @brief Initializes when constructed.
-		Initializer();
-	};
+        /**
+         * @brief Utility class which initializes local static variables.
+         *
+         * If the DOMTaskSaver is used outside main (as a part of global
+         * initialization/destruction), the Initializer should be used explicitly to control the
+         * static initialization/destruction order.
+         *
+         * Notice that the Initializer is automatically defined as a global variable, hence it
+         * should not be necessary to specify the initializer explicitly if DOMTaskSaver is to be
+         * used in local static initialization/destruction.
+         */
+        class Initializer
+        {
+          public:
+            //! @brief Initializes when constructed.
+            Initializer ();
+        };
 
-private:
-    void writeTask(TaskBase::Ptr task, rw::core::Ptr<rw::core::DOMElem> parent);
+      private:
+        void writeTask (TaskBase::Ptr task, rw::core::Ptr< rw::core::DOMElem > parent);
 
-	template <class T>
-    void saveImpl(typename Task<T>::Ptr task, rw::core::Ptr<rw::core::DOMElem> parrent);
+        template< class T >
+        void saveImpl (typename Task< T >::Ptr task, rw::core::Ptr< rw::core::DOMElem > parrent);
 
+        void writeEntityInfo (Entity::Ptr entity, rw::core::Ptr< rw::core::DOMElem > parent);
 
-    void writeEntityInfo(Entity::Ptr entity, rw::core::Ptr<rw::core::DOMElem> parent);
+        template< class T >
+        void writeTargets (typename Task< T >::Ptr task, rw::core::Ptr< rw::core::DOMElem > parent);
 
-	template <class T>
-    void writeTargets(typename Task<T>::Ptr task, rw::core::Ptr<rw::core::DOMElem> parent);
+        template< class T >
+        void writeMotion (typename Motion< T >::Ptr motion,
+                          rw::core::Ptr< rw::core::DOMElem > element);
 
-	template <class T>
-    void writeMotion(typename Motion<T>::Ptr motion, rw::core::Ptr<rw::core::DOMElem> element);
+        template< class T >
+        void writeEntities (typename Task< T >::Ptr task,
+                            rw::core::Ptr< rw::core::DOMElem > parent);
 
+        void writeAction (Action::Ptr action, rw::core::Ptr< rw::core::DOMElem > parent);
 
-	template <class T>
-    void writeEntities(typename Task<T>::Ptr task, rw::core::Ptr<rw::core::DOMElem> parent);
+        template< class T >
+        void writeTaskImpl (typename Task< T >::Ptr task,
+                            rw::core::Ptr< rw::core::DOMElem > element);
 
-    void writeAction(Action::Ptr action, rw::core::Ptr<rw::core::DOMElem> parent);
+        std::map< rwlibs::task::TargetBase::Ptr, std::string > _targetMap;
 
-	template <class T>
-    void writeTaskImpl(typename Task<T>::Ptr task, rw::core::Ptr<rw::core::DOMElem> element);
+      private:
+        static const Initializer initializer;
+    };
+    //! @}
+}}    // namespace rwlibs::task
 
-
-	std::map<rwlibs::task::TargetBase::Ptr, std::string> _targetMap;
-
-private:
-	static const Initializer initializer;
-};
-//! @}
-} //end namespace task
-} //end namespace rwlibs
-
-#endif //end include guard
+#endif    // end include guard

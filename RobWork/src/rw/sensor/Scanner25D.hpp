@@ -19,63 +19,56 @@
 #define RW_SENSOR_SCANNER25D_HPP
 
 #include "Scanner.hpp"
-#include <rw/geometry/PointCloud.hpp>
 
 #include <rw/core/Ptr.hpp>
+#include <rw/geometry/PointCloud.hpp>
 
-namespace rw {
-namespace sensor {
+namespace rw { namespace sensor {
 
-/** @addtogroup sensor */
-/* @{ */
-
-/**
- * @brief an interface describing a 3D scanner sensor. The scanner takes
- * pictures in the oposite direction of the z-axis of the frame that it is
- * attached to. The x-y plane forms the image plane such that the xy-origin is
- * located in the bottom left corner of the image.
- *
- */
-class Scanner25D: public Scanner
-{
-public:
-	//! @brief smart pointer type to this class
-	typedef rw::core::Ptr<Scanner25D> Ptr;
-
-protected:
+    /** @addtogroup sensor */
+    /* @{ */
 
     /**
-     * @brief constructor
-     * 
-     * @cond
-     * @param frame [in] the frame that the scanner is attached to
-     * @endcond
-     * 
-     * @param name [in] name of scanner sensor
-     * @param desc
+     * @brief an interface describing a 3D scanner sensor. The scanner takes
+     * pictures in the oposite direction of the z-axis of the frame that it is
+     * attached to. The x-y plane forms the image plane such that the xy-origin is
+     * located in the bottom left corner of the image.
+     *
      */
-    Scanner25D(const std::string& name, const std::string& desc = "") :
-        Scanner(name, desc)
+    class Scanner25D : public Scanner
     {
-    }
+      public:
+        //! @brief smart pointer type to this class
+        typedef rw::core::Ptr< Scanner25D > Ptr;
 
-public:
-    /**
-     * @brief Destructor. Closes scanner connection if not already closed.
-     */
-    virtual ~Scanner25D();
+      protected:
+        /**
+         * @brief constructor
+         *
+         * @cond
+         * @param frame [in] the frame that the scanner is attached to
+         * @endcond
+         *
+         * @param name [in] name of scanner sensor
+         * @param desc
+         */
+        Scanner25D (const std::string& name, const std::string& desc = "") : Scanner (name, desc) {}
 
-    /**
-     * @brief gets the last acquired image
-     * @return the image that was last acquired.
-     */
-    virtual const rw::geometry::PointCloud& getScan() = 0;
+      public:
+        /**
+         * @brief Destructor. Closes scanner connection if not already closed.
+         */
+        virtual ~Scanner25D ();
 
-};
+        /**
+         * @brief gets the last acquired image
+         * @return the image that was last acquired.
+         */
+        virtual const rw::geometry::PointCloud& getScan () = 0;
+    };
 
-/*@}*/
+    /*@}*/
 
-}
-}
+}}    // namespace rw::sensor
 
 #endif /*RW_SENSOR_SCANNER3D_HPP*/

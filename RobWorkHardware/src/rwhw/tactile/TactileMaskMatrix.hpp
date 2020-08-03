@@ -18,62 +18,50 @@
 #ifndef RWHW_TACTILEMASKMATRIX_HPP
 #define RWHW_TACTILEMASKMATRIX_HPP
 
-#include <iostream>
 #include <boost/numeric/ublas/matrix.hpp>
+#include <iostream>
 
 namespace rwhw {
-    /** @addtogroup tactile */
-    /* @{ */
+/** @addtogroup tactile */
+/* @{ */
 
-	class TactileMaskMatrix
-	{
-	public:
+class TactileMaskMatrix
+{
+  public:
+    TactileMaskMatrix (std::size_t columns, std::size_t rows) : _data (columns, rows)
+    {
+        _data = boost::numeric::ublas::zero_matrix< bool > (columns, rows);
+    }
 
-		TactileMaskMatrix(std::size_t columns, std::size_t rows):
-			_data(columns,rows)
-		{
-			_data = boost::numeric::ublas::zero_matrix<bool>(columns,rows);
-		}
+    virtual ~TactileMaskMatrix () {}
 
-		virtual ~TactileMaskMatrix(){}
+    std::size_t getWidth () { return _data.size1 (); }
 
-		std::size_t getWidth(){ return _data.size1(); }
+    std::size_t getHeight () { return _data.size2 (); }
 
-		std::size_t getHeight(){ return _data.size2(); }
+    void set (std::size_t column, std::size_t row, bool val) { _data (column, row) = val; }
 
-		void set(std::size_t column, std::size_t row, bool val){
-			_data(column, row) = val;
-		}
+    bool get (std::size_t column, std::size_t row) { return _data (column, row); }
 
-		bool get(std::size_t column, std::size_t row)
-		{
-			return _data(column, row);
-		}
+    const boost::numeric::ublas::matrix< bool >& getMatrix () const { return _data; }
 
-		const boost::numeric::ublas::matrix<bool>& getMatrix() const
-		{
-			return _data;
-		}
+    std::string toString () const
+    {
+        std::ostringstream ostr;
+        for (size_t row = 0; row < _data.size2 (); row++) {
+            for (size_t col = 0; col < _data.size1 (); col++)
+                ostr << (_data (col, row) ? "1" : "0") << " ";
+            ostr << std::endl;
+        }
+        return ostr.str ();
+    }
 
-		std::string toString() const
-		{
-			std::ostringstream ostr;
-			for(size_t row=0; row<_data.size2(); row++)
-			{
-				for(size_t col=0; col<_data.size1(); col++)
-					ostr << (_data(col,row)?"1":"0") << " ";
-				ostr << std::endl;
-			}
-			return ostr.str();
-		}
+  private:
+    boost::numeric::ublas::matrix< bool > _data;
+};
 
-	private:
+/* @} */
 
-		boost::numeric::ublas::matrix<bool> _data;
-	};
-
-    /* @} */
-
-} // namespace rwhw
+}    // namespace rwhw
 
 #endif /*RWHW_TACTILEMASKMATRIX_HPP*/

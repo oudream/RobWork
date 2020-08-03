@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,13 +15,12 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RW_COLLISION_COLLISIONSETUPLOADER_HPP
 #define RW_COLLISION_COLLISIONSETUPLOADER_HPP
 
-#include <string>
 #include <rw/proximity/CollisionSetup.hpp>
 
+#include <string>
 
 /**
  * @file colsetup/CollisionSetupLoader.hpp
@@ -50,7 +49,7 @@ namespace rw { namespace loaders {
      */
     class CollisionSetupLoader
     {
-    public:
+      public:
         /**
          * @brief Load a collision setup from the file \b file.
          *
@@ -62,15 +61,14 @@ namespace rw { namespace loaders {
          *
          * @return The collision setup.
          */
-         static rw::proximity::CollisionSetup load(
-            const std::string& prefix,
-            const std::string& file);
+        static rw::proximity::CollisionSetup load (const std::string& prefix,
+                                                   const std::string& file);
 
-    private:
-        CollisionSetupLoader();
+      private:
+        CollisionSetupLoader ();
     };
 
     /*@}*/
-}} // end namespaces
+}}    // namespace rw::loaders
 
-#endif // end include guard
+#endif    // end include guard

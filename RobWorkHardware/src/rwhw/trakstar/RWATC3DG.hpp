@@ -4,26 +4,25 @@
 #include <rw/common/os.hpp>
 
 #ifdef RW_WIN32
+#include <stdio.h>     // printf
+#include <stdlib.h>    // exit() function
+#include <string.h>    // string handling
+#include <time.h>      // needed for time functions
 #include <windows.h>
-#include <stdio.h>      // printf
-#include <string.h>     // string handling
-#include <stdlib.h>     // exit() function
-#include <time.h>       // needed for time functions
 #endif
 
 #ifdef RW_MAC
 #define MAC
 #endif
 
-
 #ifdef RW_LINUX
 #define LINUX
-#include <unistd.h>
+#include <memory.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <memory.h>
-#include <time.h>
 #include <sys/types.h>
+#include <time.h>
+#include <unistd.h>
 #endif
 
 #include <ATC3DG.h>

@@ -79,7 +79,7 @@ void LuaState::reset ()
     // get extension point libs
     std::vector< LuaLibrary::Ptr > libs = LuaState::Factory::getLuaLibraries ();
     for (LuaLibrary::Ptr cb : libs) {
-        if(! cb.isNull() ){
+        if (!cb.isNull ()) {
             cb->initLibrary (*this);
         }
     }
@@ -96,7 +96,7 @@ std::vector< LuaState::LuaLibrary::Ptr > LuaState::Factory::getLuaLibraries ()
     for (Extension::Ptr ext : exts) {
         // else try casting to ImageLoader
         LuaState::LuaLibrary::Ptr lib = ext->getObject ().cast< LuaState::LuaLibrary > ();
-        if(!lib.isNull()){
+        if (!lib.isNull ()) {
             libs.push_back (lib);
         }
     }

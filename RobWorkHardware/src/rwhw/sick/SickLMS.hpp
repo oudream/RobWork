@@ -20,29 +20,28 @@
 
 #include <rwhw/serialport/SerialPort.hpp>
 
-
 namespace rwhw {
 
 /** @addtogroup sick */
 /*@{*/
-
 
 /**
  * @brief Driver to SICK LMS200/LMS291
  *
  * The SickLMS enables connecting to a SICK LMS200 or LMS291 using a serial connection
  */
-class SickLMS {
-public:
+class SickLMS
+{
+  public:
     /**
      * @brief Constructs SickLMS
      */
-    SickLMS();
+    SickLMS ();
 
     /**
      * @brief Destructor calling stop and reset on the scanner
      */
-    ~SickLMS();
+    ~SickLMS ();
 
     /**
      * @brief Baud rates to communication
@@ -64,7 +63,7 @@ public:
     /**
      * @brief The units of distance
      */
-    enum Units{ UnitMM = 0, UnitCM};
+    enum Units { UnitMM = 0, UnitCM };
 
     /**
      * @brief Connects to Sick LMS
@@ -76,72 +75,72 @@ public:
      * @param port [in] The communication port. On linux typically /dev/ttyS? and on Windows COM?
      * @param baud [in] Baud rate for the communication
      */
-    bool connectToLMS(AngRange range, AngResolution angRes, Units units, const std::string& port, BaudRate baud);
+    bool connectToLMS (AngRange range, AngResolution angRes, Units units, const std::string& port,
+                       BaudRate baud);
 
     /**
      * @brief Acquire a new scan
      * @return Whether a new scan was successfully acquired
      */
-    bool acquire();
+    bool acquire ();
 
     /**
      * @brief Sends stop command to the LMS
      */
-    void stopLMS();
+    void stopLMS ();
 
     /**
      * @brief Resets LMS to default rate of 9600 baud
      */
-    void resetLMS();
+    void resetLMS ();
 
     /**
      * @brief Returns the number of measurements
      */
-    int getDataCount();
+    int getDataCount ();
 
     /**
      * @brief Returns angle for the \b i'th measurement
      * @param i [in] Measurement index. i \in [0;getDataCount[
      * @return Angle in radians
      */
-    float getAngle(int i);
+    float getAngle (int i);
 
     /**
      * @brief Returns distance to the \b i'th measurement
      * @param i [in] Measurement index. i \in [0;getDataCount[
      * @return Distance in meters (independent on unit specified when connecting)
      */
-    float getDistance(int i);
-private:
+    float getDistance (int i);
+
+  private:
     rwhw::SerialPort _port;
 
-    //Maximal amount of data for the SICK is 802
+    // Maximal amount of data for the SICK is 802
     unsigned char _buf[802];
 
-    //Number of measurements
+    // Number of measurements
     int _cnt;
 
     Units _units;
 
     AngResolution _angResolution;
 
-
     typedef unsigned char uchar;
 
-    void write(int len, const uchar *msg);
-    int read(int len, uchar *buf);
-    uchar read();
+    void write (int len, const uchar* msg);
+    int read (int len, uchar* buf);
+    uchar read ();
 
-    bool checkAck(const uchar *ackmsg, int ackmsglen);
-    bool initLMS(const std::string& port, BaudRate baud);
-    bool setRangeRes(AngRange range, AngResolution res);
-    bool setUnits(int unit);
-    bool startLMS();
-
+    bool checkAck (const uchar* ackmsg, int ackmsglen);
+    bool initLMS (const std::string& port, BaudRate baud);
+    bool setRangeRes (AngRange range, AngResolution res);
+    bool setUnits (int unit);
+    bool startLMS ();
 };
 
- /** @} */
+/** @} */
 
-} //end namespace rwhw
+}    // end namespace rwhw
 
 #endif /*RWHW_SICKLMS_HPP*/

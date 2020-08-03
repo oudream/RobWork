@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  ********************************************************************************/
-
 
 #ifndef RW_TRAJECTORY_TIMED_HPP
 #define RW_TRAJECTORY_TIMED_HPP
@@ -35,38 +34,34 @@ namespace rw { namespace trajectory {
     /**
        @brief A tuple of (time, value).
      */
-    template <class T>
-    class Timed
+    template< class T > class Timed
     {
-    public:
+      public:
         /**
            Constructor
          */
-        Timed(double time, const T& value) :
-            _time(time),
-            _value(value)
-        {}
+        Timed (double time, const T& value) : _time (time), _value (value) {}
 
         /**
            Default constructor
         */
-        Timed() : _time(0.0), _value() {}
+        Timed () : _time (0.0), _value () {}
 
         /**
            @brief The time
         */
-        double getTime() const { return _time; }
+        double getTime () const { return _time; }
 
-        double& getTime() { return _time; }
+        double& getTime () { return _time; }
 
         /**
            @brief The value
         */
-        const T& getValue() const { return _value; }
+        const T& getValue () const { return _value; }
 
-        T& getValue() { return _value; }
+        T& getValue () { return _value; }
 
-    private:
+      private:
         double _time;
         T _value;
     };
@@ -74,16 +69,18 @@ namespace rw { namespace trajectory {
     /**
        @brief A tuple of (time, value).
     */
-    template <class T>
-    Timed<T> makeTimed(double time, const T& value) { return Timed<T>(time, value); }
+    template< class T > Timed< T > makeTimed (double time, const T& value)
+    {
+        return Timed< T > (time, value);
+    }
 
     //! A tuple of (time, Q).
-    typedef Timed<rw::math::Q> TimedQ;
+    typedef Timed< rw::math::Q > TimedQ;
 
     //! A tuple of (time, State). See rw::trajectory::Timed<t> template for more info.
-    typedef Timed<rw::kinematics::State> TimedState;
+    typedef Timed< rw::kinematics::State > TimedState;
 
     /*@}*/
-}} // end namespaces
+}}    // namespace rw::trajectory
 
-#endif // end include guard
+#endif    // end include guard
