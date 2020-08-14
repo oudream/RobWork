@@ -98,8 +98,8 @@ TEST (Vector3D, Vector3DOperatorTest)
     Vector3D<> obj1 (3, 3, 3);
     Vector3D<> obj2 (2, 2, 2);
 
-    auto test1 = obj1.elemMultiplcation(obj2);
-    auto test2 = obj1.elemDivision(obj2);
+    auto test1 = obj1.elemMultiply(obj2);
+    auto test2 = obj1.elemDivide(obj2);
     auto test3 = obj1 + obj2;
     auto test4 = obj1 - obj2;
     auto test7 = obj1;
@@ -122,8 +122,8 @@ TEST (Vector3D, EigenOperatorTest)
     Vector3D<> obj1 (3, 3, 3);
     Eigen::Vector3d obj2 (2, 2, 2);
 
-    auto test1  = obj1.elemMultiplcation(obj2);
-    auto test2  = obj1.elemDivision(obj2);
+    auto test1  = obj1.elemMultiply(obj2);
+    auto test2  = obj1.elemDivide(obj2);
     auto test3  = obj1 + obj2;
     auto test3x = obj2 + obj1;
     auto test4  = obj1 - obj2;

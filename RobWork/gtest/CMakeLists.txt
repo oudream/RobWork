@@ -177,6 +177,7 @@ set(MATH_TEST_LIBRARIES ${GTEST_BOTH_LIBRARIES} sdurw)
 
 set(
     MATH_TEST_SRC
+    math/EAATest.cpp
     math/MetricFactoryTest.cpp
     math/PolynomialTest.cpp
     math/SerializationTest.cpp

@@ -23,7 +23,6 @@ CONFIGURE_FILE(
 )
 
 SET(MATH_TEST_SRC 
-  math/EAATest.cpp
   math/LinearAlgebraTest.cpp
   math/MathSerializationTest.cpp
   math/Pose6DTest.cpp

@@ -27,6 +27,7 @@
 #include "SimulatorLogEntry.hpp"
 
 #include <rw/core/Ptr.hpp>
+#include <rw/math/Vector3D.hpp>
 
 namespace rwsim { namespace log {
 
