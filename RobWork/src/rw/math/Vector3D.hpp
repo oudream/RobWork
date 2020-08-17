@@ -153,7 +153,7 @@ namespace rw { namespace math {
          * @param rhs [in] the vector being devided with
          * @return the resulting Vector3D
          */
-        template< class R > Vector3D< T > elemDivision (const Eigen::MatrixBase< R >& rhs) const
+        template< class R > Vector3D< T > elemDivide (const Eigen::MatrixBase< R >& rhs) const
         {
             Vector3D< T > ret = *this;
             for (size_t i = 0; i < size (); i++) {
@@ -167,7 +167,7 @@ namespace rw { namespace math {
          * @param rhs [in] vector
          * @return the element wise product
          */
-        template< class R > Vector3D< T > elemMultiplcation (const Eigen::MatrixBase< R >& rhs) const
+        template< class R > Vector3D< T > elemMultiply (const Eigen::MatrixBase< R >& rhs) const
         {
             Vector3D< T > ret = *this;
             for (size_t i = 0; i < size (); i++) {
@@ -219,7 +219,7 @@ namespace rw { namespace math {
          * @param rhs [in] the vector being devided with
          * @return the resulting Vector3D
          */
-        Vector3D< T > elemDivision (const Vector3D< T >& rhs) const
+        Vector3D< T > elemDivide(const Vector3D< T >& rhs) const
         {
             return Vector3D< T > (
                 _vec[0] / rhs._vec[0], _vec[1] / rhs._vec[1], _vec[2] / rhs._vec[2]);
@@ -230,7 +230,7 @@ namespace rw { namespace math {
          * @param rhs [in] vector
          * @return the element wise product
          */
-        Vector3D< T > elemMultiplcation (const Vector3D< T >& rhs) const
+        Vector3D< T > elemMultiply(const Vector3D< T >& rhs) const
         {
             return Vector3D< T > (
                 _vec[0] * rhs._vec[0], _vec[1] * rhs._vec[1], _vec[2] * rhs._vec[2]);

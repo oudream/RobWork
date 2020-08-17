@@ -19,6 +19,7 @@
 #define RWHW_URMESSAGE_HPP
 
 #include <string>
+#include <iostream>
 
 class URMessage
 {
