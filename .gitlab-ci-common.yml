@@ -18,7 +18,7 @@ stages:
     - if: '$CI_JOB_NAME == "examples:ubuntu-2004"       && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "devel"'
     - if: '$CI_JOB_NAME == "install-tests:ubuntu-2004"  && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "devel"'
     - if: '$CI_JOB_NAME == "tests:ubuntu-2004"          && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "devel"'
-    - if: '$CI_PROJECT_PATH != "sdurobotics/RobWork"'
+    - if: '$CI_PROJECT_PATH != "sdurobotics/RobWork" && $CI_PIPELINE_SOURCE == "merge_request_event"'
       when: never
     - if: '$CI_COMMIT_BRANCH == "debian-pkg"'
       when: never
