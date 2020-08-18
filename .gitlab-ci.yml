@@ -1,11 +1,4 @@
-#include:
-#  - project: 'sdurobotics/RobWork'
-#    ref: devel
-#    file: .gitlab-ci-common.yml
-
-testJob:
-  stage: build
-  tags:
-    - linux 
-  script: 
-    - printenv
+include:
+  - project: 'sdurobotics/RobWork'
+    ref: devel
+    file: .gitlab-ci-common.yml
