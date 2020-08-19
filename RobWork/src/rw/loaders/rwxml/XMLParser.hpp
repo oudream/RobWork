@@ -20,13 +20,17 @@
 
 #include "XMLErrorHandler.hpp"
 
+// Complex must be loaded before phoenix1.hpp
+#include <complex>
+//
+
 #include <boost/spirit/include/classic.hpp>
 #include <boost/spirit/include/classic_core.hpp>
 #include <boost/spirit/include/classic_exceptions.hpp>
 #include <boost/spirit/include/classic_position_iterator.hpp>
 #include <boost/spirit/include/classic_symbols.hpp>
 #include <boost/spirit/include/phoenix1.hpp>
-#include <complex>
+
 
 namespace rw { namespace loaders {
 

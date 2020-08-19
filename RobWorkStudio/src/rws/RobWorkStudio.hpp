@@ -38,6 +38,8 @@
 #include <boost/any.hpp>
 #include <boost/function.hpp>
 #include <vector>
+#include <map>
+#include <string>
 
 class QCloseEvent;
 class QDragEnterEvent;
@@ -697,6 +699,8 @@ class RobWorkStudio : public QMainWindow
     rw::core::PropertyMap* _settingsMap;
     std::vector< std::pair< QAction*, std::string > > _lastFilesActions;
     HelpAssistant* _assistant;
+
+    std::map<std::string,bool> _plugins_loaded;
 
   private:
     void openAllPlugins ();
