@@ -20,11 +20,14 @@
 #include <rw/core/IOUtil.hpp>
 #include <rw/core/macros.hpp>
 
+// Complex must be loaded before phoenix1.hpp
+#include <complex>
+//
+
 #include <boost/spirit/include/classic.hpp>
 #include <boost/spirit/include/classic_actor.hpp>
 #include <boost/spirit/include/classic_dynamic.hpp>
 #include <boost/spirit/include/phoenix1.hpp>
-#include <complex>
 
 using namespace rw;
 using namespace rw::core;
@@ -123,7 +126,7 @@ struct PGMParser : grammar< PGMParser >
                              var (index) +=
                              1)[DataParser_p[InsertAtVector (data, index)]
                                 //[ anychar_p[ assign_key_a( var(data), var(index)) ]//[std::cout <<
-                                //var(index)<< " " << var(width)*var(height) << std::endl]
+                                // var(index)<< " " << var(width)*var(height) << std::endl]
                                 | eps_p[var (std::cout) << "WARNING: PGM file is not well formed, "
                                                            "missing data! Continues parsing"
                                                         << std::endl]]];
@@ -133,8 +136,8 @@ struct PGMParser : grammar< PGMParser >
                 lexeme_d[for_p (
                     var (index) = 0, var (index) < var (width) * var (height) * 2, var (index) += 1)
                              [anychar_p[assign_key_a (var (data), var (index))]    //[std::cout <<
-                                                                                   //var(index)<<
-                                                                                   //std::endl]
+                                                                                   // var(index)<<
+                                                                                   // std::endl]
                               | eps_p[var (std::cout) << "WARNING: PGM file is not well formed, "
                                                          "missing data! Continues parsing"
                                                       << std::endl]]];

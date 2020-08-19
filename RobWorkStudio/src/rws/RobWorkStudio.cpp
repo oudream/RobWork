@@ -100,7 +100,7 @@ RobWorkStudio::RobWorkStudio (const PropertyMap& map) :
     // should load dynamically
     // rw::core::ExtensionRegistry::getInstance()->registerExtensions( ownedPtr( new
     // RWSImageLoaderPlugin() ) ); _robwork->getPluginRepository().addPlugin(ownedPtr( new
-    //ColladaLoaderPlugin() ), true);
+    // ColladaLoaderPlugin() ), true);
     std::stringstream sstr;
     sstr << " RobWorkStudio v" << RW_VERSION;
     QString qstr (sstr.str ().c_str ());
@@ -602,6 +602,10 @@ void RobWorkStudio::setupPlugin (const QString& pathname, const QString& filenam
         py        = e1;
     }
 
+    if (_plugins_loaded[filename.toStdString ()]) {
+        RW_THROW ("Plugin \"" << filename.toStdString () << "\" has already been loaded");
+    }
+
     if (py) {
         setupPyPlugin (pfilename, filename, visible, dock);
     }
@@ -612,49 +616,54 @@ void RobWorkStudio::setupPlugin (const QString& pathname, const QString& filenam
 
 void RobWorkStudio::setupPlugin (const QString& fullname, bool visible, int dock)
 {
-    std::string ext = boost::filesystem::extension (fullname.toStdString ());
+    std::string ext  = boost::filesystem::extension (fullname.toStdString ());
+    std::string base = boost::filesystem::basename (fullname.toStdString ());
     if (ext == "py") {
-        std::string base = boost::filesystem::basename (fullname.toStdString ());
         setupPyPlugin (fullname, base.c_str (), visible, dock);
         return;
     }
-    Qt::DockWidgetArea dockarea = (Qt::DockWidgetArea) dock;
-    QPluginLoader loader (fullname);
+    else if (!_plugins_loaded[base]) {
+        Qt::DockWidgetArea dockarea = (Qt::DockWidgetArea) dock;
+        QPluginLoader loader (fullname);
 
 #if QT_VERSION >= 0x040400
-    // Needed to make dynamicly loaded libraries use dynamic
-    // cast on each others objects. ONLY on linux though.
-    loader.setLoadHints (QLibrary::ResolveAllSymbolsHint | QLibrary::ExportExternalSymbolsHint);
+        // Needed to make dynamicly loaded libraries use dynamic
+        // cast on each others objects. ONLY on linux though.
+        loader.setLoadHints (QLibrary::ResolveAllSymbolsHint | QLibrary::ExportExternalSymbolsHint);
 #endif
 
-    QObject* pluginObject = loader.instance ();
-    if (pluginObject != NULL) {
-        RobWorkStudioPlugin* testP = dynamic_cast< RobWorkStudioPlugin* > (pluginObject);
-        if (testP == NULL) {
-            RW_THROW ("Loaded plugin is NULL, tried loading \"" << fullname.toStdString () << "\"");
-        }
+        QObject* pluginObject = loader.instance ();
+        if (pluginObject != NULL) {
+            RobWorkStudioPlugin* testP = dynamic_cast< RobWorkStudioPlugin* > (pluginObject);
+            if (testP == NULL) {
+                RW_THROW ("Loaded plugin is NULL, tried loading \"" << fullname.toStdString ()
+                                                                    << "\"");
+            }
 
-        RobWorkStudioPlugin* plugin = qobject_cast< RobWorkStudioPlugin* > (pluginObject);
+            RobWorkStudioPlugin* plugin = qobject_cast< RobWorkStudioPlugin* > (pluginObject);
 
-        if (plugin) {
-            addPlugin (plugin, visible, dockarea);
+            if (plugin) {
+                addPlugin (plugin, visible, dockarea);
+            }
+            else {
+                RW_WARN ("Unable to load Plugin" << fullname.toStdString ()
+                                                 << " was not of type RobWorkStudioPlugin");
+                QMessageBox::information (this,
+                                          "Unable to load Plugin",
+                                          fullname + " was not of type RobWorkStudioPlugin",
+                                          QMessageBox::Ok);
+            }
         }
         else {
-            RW_WARN ("Unable to load Plugin" << fullname.toStdString ()
-                                             << " was not of type RobWorkStudioPlugin");
+            RW_WARN ("Unable to load Plugin" << fullname.toStdString () << " was not loaded: \""
+                                             << loader.errorString ().toStdString () + "\"");
             QMessageBox::information (this,
                                       "Unable to load Plugin",
-                                      fullname + " was not of type RobWorkStudioPlugin",
+                                      fullname + " was not loaded: \"" + loader.errorString () +
+                                          "\"",
                                       QMessageBox::Ok);
         }
-    }
-    else {
-        RW_WARN ("Unable to load Plugin" << fullname.toStdString () << " was not loaded: \""
-                                         << loader.errorString ().toStdString () + "\"");
-        QMessageBox::information (this,
-                                  "Unable to load Plugin",
-                                  fullname + " was not loaded: \"" + loader.errorString () + "\"",
-                                  QMessageBox::Ok);
+        _plugins_loaded[base] = true;
     }
 }
 
