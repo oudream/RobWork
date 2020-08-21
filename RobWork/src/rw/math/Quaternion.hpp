@@ -540,6 +540,9 @@ namespace rw { namespace math {
     extern template class rw::math::Quaternion< double >;
     extern template class rw::math::Quaternion< float >;
 
+    using Quaterniond = Quaternion<double>;
+    using Quaternionf = Quaternion<float>;
+
     /*@}*/
 }}    // namespace rw::math
 

@@ -816,6 +816,9 @@ namespace rw { namespace math {
     extern template class rw::math::EAA< double >;
     extern template class rw::math::EAA< float >;
 
+    using EAAd = EAA<double>;
+    using EAAf = EAA<float>;
+
     /*@}*/
 
 }}    // namespace rw::math

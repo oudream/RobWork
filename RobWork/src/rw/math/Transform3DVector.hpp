@@ -567,6 +567,10 @@ namespace rw { namespace math {
 #if !defined(SWIG)
     extern template class rw::math::Transform3DVector< double >;
     extern template class rw::math::Transform3DVector< float >;
+
+    using Transform3DVectord = Transform3DVector<double>;
+    using Transform3DVectorf = Transform3DVector<float>;
+    
 #endif
     /**@}*/
 }}    // namespace rw::math

@@ -175,6 +175,9 @@ namespace rw { namespace math {
     extern template class rw::math::RPY< double >;
     extern template class rw::math::RPY< float >;
 
+    using RPYd = RPY<double>;
+    using RPYf = RPY<float>;
+
     /*@}*/
 }}    // namespace rw::math
 

@@ -579,6 +579,9 @@ namespace rw { namespace math {
     extern template class rw::math::Wrench6D< double >;
     extern template class rw::math::Wrench6D< float >;
 
+    using Wrench6Dd = Wrench6D<double>;
+    using Wrench6Df = Wrench6D<float>;
+
     /*@}*/
 }}    // namespace rw::math
 

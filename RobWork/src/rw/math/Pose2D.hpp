@@ -213,6 +213,9 @@ namespace rw { namespace math {
     extern template class rw::math::Pose2D< double >;
     extern template class rw::math::Pose2D< float >;
 
+    using Pose2Dd = Pose2D<double>;
+    using Pose2Df = Pose2D<float>;
+
     /*@}*/
 }}    // namespace rw::math
 

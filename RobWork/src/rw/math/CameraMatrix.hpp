@@ -108,6 +108,9 @@ namespace rw { namespace math {
 
     extern template class rw::math::CameraMatrix< double >;
     extern template class rw::math::CameraMatrix< float >;
+
+    using CameraMatrixd = CameraMatrix<double>;
+    using CameraMatrixf = CameraMatrix<float>;
 }}    // namespace rw::math
 
 namespace rw { namespace common {

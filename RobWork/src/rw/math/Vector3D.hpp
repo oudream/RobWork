@@ -723,6 +723,9 @@ namespace rw { namespace math {
     extern template class rw::math::Vector3D< double >;
     extern template class rw::math::Vector3D< float >;
 
+    using Vector3Dd = Vector3D<double>;
+    using Vector3Df = Vector3D<float>;
+
     /**@}*/
 }}    // namespace rw::math
 
