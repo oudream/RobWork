@@ -26,7 +26,7 @@
 using namespace rws::python;
 
 #define HERE std::cout << __FILE__ << ":" << __LINE__ << std::endl;
-
+/*
 std::ostream& operator<< (std::ostream& os, PyThreadState* ts)
 {
     os << "PyThreadState {" << std::endl;
@@ -40,7 +40,7 @@ std::ostream& operator<< (std::ostream& os, PyThreadState* ts)
     os << "}";
     return os;
 }
-
+*/
 PyThreadState* ENV_main_thread;
 // swap the current thread state with ts, restore when the object goes out of scope
 
