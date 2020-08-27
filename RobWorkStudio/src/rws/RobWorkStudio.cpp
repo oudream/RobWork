@@ -616,9 +616,9 @@ void RobWorkStudio::setupPlugin (const QString& pathname, const QString& filenam
 
 void RobWorkStudio::setupPlugin (const QString& fullname, bool visible, int dock)
 {
-    std::string ext  = boost::filesystem::extension (fullname.toStdString ());
+    std::string ext = boost::filesystem::extension (fullname.toStdString ());
     std::string base = boost::filesystem::basename (fullname.toStdString ());
-    if (ext == "py") {
+    if (ext == "py" || ext == ".py") {
         setupPyPlugin (fullname, base.c_str (), visible, dock);
         return;
     }
