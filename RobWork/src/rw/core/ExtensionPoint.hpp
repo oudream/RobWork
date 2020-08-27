@@ -17,8 +17,9 @@
 #ifndef RW_CORE_EXTENSIONPOINT_HPP
 #define RW_CORE_EXTENSIONPOINT_HPP
 
+#if !defined(SWIG)
 #include <rw/core/ExtensionRegistry.hpp>
-
+#endif
 namespace rw { namespace core {
 
     class Plugin;
@@ -60,7 +61,7 @@ namespace rw { namespace core {
         const rw::core::PropertyMap& getSchema () const { return _schema; }
 
         //! @brief get all extension descriptions of this extension point
-        std::vector< Extension::Descriptor > getExtensionDescriptors () const
+        std::vector< rw::core::Extension::Descriptor > getExtensionDescriptors () const
         {
             ExtensionRegistry::Ptr reg = ExtensionRegistry::getInstance ();
             return reg->getExtensionDescriptors (_id);

@@ -17,7 +17,7 @@
 
 #ifndef RW_COLLISION_PROXIMITYSETUP_HPP
 #define RW_COLLISION_PROXIMITYSETUP_HPP
-
+#if !defined(SWIG)
 #include "ProximitySetupRule.hpp"
 
 #include <rw/core/PropertyMap.hpp>
@@ -25,7 +25,7 @@
 
 #include <string>
 #include <vector>
-
+#endif
 namespace rw { namespace models {
     class WorkCell;
 }}    // namespace rw::models

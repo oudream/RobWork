@@ -224,7 +224,7 @@
          *
          * @return The property map of the frame.
          */
-        const PropertyMap& getPropertyMap() const;
+        const rw::core::PropertyMap& getPropertyMap() const;
     #endif
 
         /**
@@ -242,7 +242,7 @@
          *
          * @return The property map of the frame.
          */
-        PropertyMap& getPropertyMap();
+        rw::core::PropertyMap& getPropertyMap();
 
 
         /**
@@ -1774,8 +1774,7 @@
 
     };
     %template (StateStructurePtr) rw::core::Ptr<StateStructure>;
-    %template (StateDataRemovedEvent) rw::core::Event< boost::function< void (const StateData*) >, const StateData* >;
-    %template (StateDataAddedEvent) rw::core::Event< boost::function< void (const StateData*) >, const StateData* >;
+    %template (StateDataEvent) rw::core::Event< boost::function< void (const StateData*) >, const StateData* >;
     OWNEDPTR(StateStructure);
 //################ TreeState
     /**

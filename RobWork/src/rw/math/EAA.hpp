@@ -21,15 +21,14 @@
 /**
  * @file EAA.hpp
  */
-
+#if !defined(SWIG)
 #include <rw/common/Serializable.hpp>
 #include <rw/math/Constants.hpp>
 #include <rw/math/Rotation3D.hpp>
 #include <rw/math/Rotation3DVector.hpp>
 #include <rw/math/Vector3D.hpp>
-
 #include <Eigen/Core>
-
+#endif
 namespace rw { namespace math {
     /** @addtogroup math */
     /*@{*/
@@ -813,12 +812,18 @@ namespace rw { namespace math {
             static_cast< Q > (eaa (0)), static_cast< Q > (eaa (1)), static_cast< Q > (eaa (2)));
     }
 
-    extern template class rw::math::EAA< double >;
-    extern template class rw::math::EAA< float >;
 
     /*@}*/
 
 }}    // namespace rw::math
+
+#if !defined(SWIG)
+    extern template class rw::math::EAA< double >;
+    extern template class rw::math::EAA< float >;
+#else
+    SWIG_DECLARE_TEMPLATE(EAAd,rw::math::EAA<double>);
+    SWIG_DECLARE_TEMPLATE(EAAf,rw::math::EAA<float>);
+#endif
 
 namespace rw { namespace common {
     class OutputArchive;

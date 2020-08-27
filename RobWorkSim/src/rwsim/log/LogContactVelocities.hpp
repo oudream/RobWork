@@ -92,14 +92,14 @@ namespace rwsim { namespace log {
          * @param i [in] the contact to get velocity for.
          * @return the velocity.
          */
-        rw::math::Vector3D<> getVelocityBodyA (std::size_t i) const;
+        rw::math::Vector3D<double> getVelocityBodyA (std::size_t i) const;
 
         /**
          * @brief Get the contact velocity acting at the second body.
          * @param i [in] the contact to get velocity for.
          * @return the velocity.
          */
-        rw::math::Vector3D<> getVelocityBodyB (std::size_t i) const;
+        rw::math::Vector3D<double> getVelocityBodyB (std::size_t i) const;
 
         /**
          * @brief Set a given velocity pair.
@@ -107,12 +107,12 @@ namespace rwsim { namespace log {
          * @param velocityA [in] the velocity acting in the contact at the first body.
          * @param velocityB [in] the velocity acting in the contact at the second body.
          */
-        void setVelocity (std::size_t i, const rw::math::Vector3D<>& velocityA,
-                          const rw::math::Vector3D<>& velocityB);
+        void setVelocity (std::size_t i, const rw::math::Vector3D<double>& velocityA,
+                          const rw::math::Vector3D<double>& velocityB);
 
       private:
         rw::core::Ptr< LogContactSet > _contacts;
-        std::vector< std::pair< rw::math::Vector3D<>, rw::math::Vector3D<> > > _velocities;
+        std::vector< std::pair< rw::math::Vector3D<double>, rw::math::Vector3D<double> > > _velocities;
     };
     //! @}
 }}     // namespace rwsim::log

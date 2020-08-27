@@ -17,9 +17,11 @@
 
 #ifndef RW_CORE_OS_HPP
 #define RW_CORE_OS_HPP
-
+#if !defined(SWIG)
 #include <boost/filesystem.hpp>
 #include <string>
+
+#endif
 
 #if defined(__CYGWIN__)
 #define RW_CYGWIN
@@ -37,8 +39,10 @@
 #define DLL_EXPORT extern "C"
 #endif
 
+#if !defined(SWIG)
 #ifdef RW_WIN32
 #include <windows.h>
+#endif
 #endif
 
 /**

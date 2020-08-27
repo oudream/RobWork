@@ -27,7 +27,7 @@ void rwlibs::swig::writelog (const std::string& msg)
 {
     ::rw::core::Log::log ().setEnable (::rw::core::Log::User8Mask);
     if (_writer.isNull ())
-        rwlibs::swig::setlog (&Log::infoLog ());
+        rwlibs::swig::setlog (&rw::core::Log::infoLog ());
     ::rw::core::Log::log ().write (::rw::core::Log::User8, msg);
 }
 

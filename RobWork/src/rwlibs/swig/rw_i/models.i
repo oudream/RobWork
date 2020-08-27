@@ -70,13 +70,13 @@
         /**
          * @brief gets the propertymap of this controllermodel
          */
-        PropertyMap& getPropertyMap ();
+        rw::core::PropertyMap& getPropertyMap ();
 
         #if !defined(SWIGJAVA)
             /**
              * @brief gets the propertymap of this controllermodel
              */
-            const PropertyMap& getPropertyMap () const;
+            const rw::core::PropertyMap& getPropertyMap () const;
         #endif
     };
     %template(ControllerModelPtr) rw::core::Ptr<ControllerModel>;
@@ -600,7 +600,7 @@
          *
          * @return The property map of the device.
          */
-        PropertyMap& getPropertyMap ();
+        rw::core::PropertyMap& getPropertyMap ();
 
       private:
         Device(const Device&);
@@ -695,11 +695,11 @@
          */
         static std::vector<DHParameterSet> getDHParameters(rw::core::Ptr<SerialDevice> device);
 
-        static const DHParameterSet* get(const PropertyMap& pmap);
+        static const DHParameterSet* get(const rw::core::PropertyMap& pmap);
 
         static const DHParameterSet* get(const Joint* joint);
 
-        static void set(const DHParameterSet& dhset, PropertyMap& pmap);
+        static void set(const DHParameterSet& dhset, rw::core::PropertyMap& pmap);
 
         static void set(const DHParameterSet& dhset, Frame* joint);
 
@@ -3470,7 +3470,7 @@
         /**
          * @brief Properties of this workcell
          */
-        PropertyMap& getPropertyMap ();
+        rw::core::PropertyMap& getPropertyMap ();
 
         /**
          * @brief Returns collision setup associated to work cell

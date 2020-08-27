@@ -17,9 +17,9 @@
 
 #ifndef RW_CORE_EVENT_HPP
 #define RW_CORE_EVENT_HPP
-
+#if !defined(SWIG)
 #include <list>
-
+#endif
 namespace rw { namespace core {
 
     class _n1
@@ -42,6 +42,9 @@ namespace rw { namespace core {
     template< class CallBackMethod, class T1 = _n1, class T2 = _n1, class T3 = _n1, class T4 = _n1,
               class T5 = _n1 >
     struct FireFunctor;
+
+    template<class CallBackMethod>
+    struct EventListener;
 
     /**
      * @brief Event is used for managing subscribtions and firing of events.
@@ -87,6 +90,8 @@ namespace rw { namespace core {
     class Event
     {
       public:
+        typedef rw::core::EventListener<CallBackMethod> Listener;
+
         /**
          * @brief constructor
          */
@@ -174,34 +179,7 @@ namespace rw { namespace core {
             }
         }
 
-        /**
-         * @brief Structure for data associated to a listener
-         */
-        struct Listener
-        {
-            /**
-             * @brief The callback method
-             */
-            CallBackMethod callback;
-
-            /**
-             * @brief The object associated with the callback
-             */
-            const void* obj;
-
-            /**
-             * @brief The id associated with the callback
-             */
-            int id;
-
-            /**
-             * @brief Constructs Listener data struct
-             */
-            Listener (CallBackMethod callback, const void* obj, int id) :
-                callback (callback), obj (obj), id (id)
-            {}
-        };
-
+#if !defined(SWIGJAVA)
         //! iterator of event listeners
         typedef typename std::list< Listener >::const_iterator ConstListenerIterator;
 
@@ -214,7 +192,7 @@ namespace rw { namespace core {
         {
             return std::make_pair (_listeners.begin (), _listeners.end ());
         }
-
+#endif
         /**
          * @brief Get the list of listeners for this event.
          * @return list of listeners.
@@ -231,6 +209,36 @@ namespace rw { namespace core {
          * The signature of the \b fire method depends on the FireEventMethod template argument.
          */
         FireFunctor< CallBackMethod, T1, T2, T3, T4, _n1 > fire;
+    };
+
+    /**
+     * @brief Structure for data associated to a listener
+     */
+    template< class CallBackMethod> struct EventListener
+    {
+        /**
+         * @brief The callback method
+         */
+        CallBackMethod callback;
+
+        /**
+         * @brief The object associated with the callback
+         */
+        const void* obj;
+
+        /**
+         * @brief The id associated with the callback
+         */
+        int id;
+
+#if !defined(SWIG)
+        /**
+         * @brief Constructs Listener data struct
+         */
+        EventListener (CallBackMethod callback, const void* obj, int id) :
+            callback (callback), obj (obj), id (id)
+        {}
+#endif
     };
 
     // these empty classes are used in partial specialization of the firefunctor

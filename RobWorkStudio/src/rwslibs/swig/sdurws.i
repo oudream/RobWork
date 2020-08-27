@@ -20,18 +20,23 @@ using rw::pathplanning::PathPlanner;
 %}
 
 %include <exception.i>
+
+%import <rwlibs/swig/sdurw_core.i>
 %import <rwlibs/swig/sdurw.i> 
 
 %pragma(java) jniclassclassmodifiers="class"
 
 %pragma(java) jniclassimports=%{
 import org.robwork.sdurw.*;
+import org.robwork.sdurw_core.*;
 %}
 %pragma(java) moduleimports=%{
 import org.robwork.sdurw.*;
+import org.robwork.sdurw_core.*;
 %}
 %typemap(javaimports) SWIGTYPE %{
 import org.robwork.sdurw.*;
+import org.robwork.sdurw_core.*;
 %}
 
 /********************************************
@@ -148,11 +153,11 @@ public:
 
 class RobWorkStudio { 
 public:
-    RobWorkStudio(const PropertyMap& map);
+    RobWorkStudio(const rw::core::PropertyMap& map);
 
     void openFile(const std::string& filename);
 
-    PropertyMap& getPropertyMap();
+    rw::core::PropertyMap& getPropertyMap();
 
 
     rw::core::Ptr<WorkCell> getWorkCell();
@@ -238,7 +243,7 @@ public:
             $self->postGenericAnyEvent(id, val);
         }
 
-        void send(const std::string& id, const PropertyMap& val){
+        void send(const std::string& id, const rw::core::PropertyMap& val){
             $self->postGenericAnyEvent(id, val);
         }
 

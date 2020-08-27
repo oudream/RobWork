@@ -21,13 +21,14 @@
 /**
  * @file PropertyBase.hpp
  */
-
-#include "Event.hpp"
-#include "PropertyType.hpp"
-#include "Ptr.hpp"
+#if !defined(SWIG)
+#include <rw/core/Event.hpp>
+#include <rw/core/PropertyType.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include <boost/function.hpp>
 #include <string>
+#endif
 
 namespace rw { namespace core {
 
@@ -88,6 +89,7 @@ namespace rw { namespace core {
         */
         virtual PropertyBase* clone () const = 0;
 
+#if !defined(SWIGJAVA)
         /**
          * @brief Method signature for a callback function
          */
@@ -104,12 +106,12 @@ namespace rw { namespace core {
          *
          */
         ChangedEvent& changedEvent () { return _changedEvent; }
-
+#endif
         /**
          * @brief Returns the PropertyType
          * @return the PropertyType
          */
-        const PropertyType& getType () const;
+        const rw::core::PropertyType& getType () const;
 
       private:
         /**
@@ -126,10 +128,10 @@ namespace rw { namespace core {
          * @brief Type of property
          */
         PropertyType _propertyType;
-
+#if!defined(SWIGJAVA)
         //! changed event handler
         ChangedEvent _changedEvent;
-
+#endif
       private:
         PropertyBase (const PropertyBase&);
         PropertyBase& operator= (const PropertyBase&);

@@ -18,12 +18,14 @@
 #ifndef RW_CORE_LOGWRITER_HPP
 #define RW_CORE_LOGWRITER_HPP
 
+#if !defined(SWIG)
 #include <rw/core/Message.hpp>
 #include <rw/core/Ptr.hpp>
 
 #include <boost/thread/mutex.hpp>
 #include <sstream>
 #include <string>
+#endif
 
 namespace rw { namespace core {
 
@@ -80,6 +82,7 @@ namespace rw { namespace core {
          */
         void writeln (const std::string& str);
 
+
         /**
          * @brief general stream operator
          */
@@ -89,6 +92,7 @@ namespace rw { namespace core {
             tmp << t;
             return this->operator<< (tmp.str ());
         }
+
 
         /**
          * @brief specialized stream operator
@@ -110,6 +114,7 @@ namespace rw { namespace core {
             return *this;
         }
 
+#if !defined(SWIGLUA) && !defined(SWIGJAVA)
         /**
          * @brief specialized stream operator
          */
@@ -118,7 +123,7 @@ namespace rw { namespace core {
             write (str);
             return *this;
         }
-
+#endif
         /**
          * @brief Handle the std::endl and other stream functions.
          */
@@ -135,7 +140,7 @@ namespace rw { namespace core {
         LogWriter (const LogWriter&);
         LogWriter& operator= (const LogWriter&);
         boost::mutex _mutex;
-    };
+    };    // namespace core
     /* @} */
 
 }}    // namespace rw::core

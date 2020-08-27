@@ -20,7 +20,6 @@
 
 #include <RobWorkConfig.hpp>
 #include <rw/common.hpp>
-#include <rw/core.hpp>
 #include <rw/core/RobWork.hpp>
 #include <rw/geometry.hpp>
 #include <rw/graphics.hpp>
@@ -135,30 +134,6 @@ namespace swig {
 
     ///@}
 
-    /**
-     * @name core
-     * Wrapped classes in core.
-     */
-    //! @copydoc rw::core::RobWork
-    typedef rw::core::RobWork RobWork;
-    //! @copydoc rw::core::PropertyMap
-    typedef rw::core::PropertyMap PropertyMap;
-    //! @copydoc rw::core::Log
-    typedef rw::core::Log Log;
-    //! @copydoc rw::core::LogWriter
-    typedef rw::core::LogWriter LogWriter;
-    //! @copydoc rw::core::Message
-    typedef rw::core::Message Message;
-    //! @copydoc rw::core::Plugin
-    typedef rw::core::Plugin Plugin;
-    //! @copydoc rw::core::Extension
-    typedef rw::core::Extension Extension;
-    //! @copydoc rw::core::Exception
-    typedef rw::core::Exception Exception;
-    //! @copydoc rw::core::Extension::Descriptor
-    typedef rw::core::Extension::Descriptor ExtensionDescriptor;
-    //! @copydoc rw::core::ExtensionRegistry
-    typedef rw::core::ExtensionRegistry ExtensionRegistry;
 
     ///@}
     /**
@@ -838,55 +813,6 @@ namespace swig {
      * @param writer [in] the writer.
      */
     void setlog (::rw::core::LogWriter::Ptr writer);
-
-    /**
-     * @brief Convert an entity to string.
-     *
-     * It must be possible to stream the entity, \b x, to a ostringstream.
-     * The entity should in general have a stream operator implemented.
-     *
-     * @param x [in] the entity to convert to string.
-     * @return the string representation.
-     */
-    template< typename T > std::string toString (const T& x)
-    {
-        std::ostringstream buf;
-        buf << x;
-        return buf.str ();
-    }
-
-    /**
-     * @brief Convert a vector of entities to a C string.
-     *
-     * This function uses the toString function to do the conversion.
-     *
-     * @param x [in] the entities to convert.
-     * @return a C string representation.
-     */
-    template< typename T > char* printCString (const std::vector< T >& x)
-    {
-        static char tmp[2048];
-        int idx = sprintf (tmp, "[");
-        for (size_t i = 0; i < x.size (); i++)
-            idx += sprintf (&tmp[idx], "%s,", toString< T > (x[i]).c_str ());
-        sprintf (&tmp[idx], "]");
-        return tmp;
-    }
-
-    /**
-     * @brief Convert an entity to a C string.
-     *
-     * This function uses the toString function to do the conversion.
-     *
-     * @param x [in] the entity to convert.
-     * @return a C string representation.
-     */
-    template< typename T > char* printCString (const T& x)
-    {
-        static char tmp[256];
-        sprintf (tmp, "%s", toString< T > (x).c_str ());
-        return tmp;
-    }
 
     /**
      * @brief Math helper function to obtain random rotation.

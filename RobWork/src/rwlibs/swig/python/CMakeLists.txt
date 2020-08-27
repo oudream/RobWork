@@ -1,17 +1,6 @@
 set(SUBSYS_NAME sdurw_python)
 set(SUBSYS_DESC "Interface for accessing RobWork from python.")
-set(
-    SUBSYS_DEPS
-    sdurw
-    sdurw_assembly
-    sdurw_control
-    sdurw_pathoptimization
-    sdurw_pathplanners
-    sdurw_proximitystrategies
-    sdurw_task
-    sdurw_simulation
-    sdurw_opengl
-)
+set(SUBSYS_DEPS)
 
 set(build TRUE)
 
@@ -72,6 +61,7 @@ if(build)
 
     foreach(
         RW_MODULE
+        sdurw_core
         sdurw
         sdurw_task
         sdurw_assembly
@@ -80,78 +70,76 @@ if(build)
         sdurw_pathplanners
         sdurw_proximitystrategies
         sdurw_simulation
-        
         sdurw_opengl
     )
-        set(TARGET_NAME ${RW_MODULE}${LIB_SUFIX})
-        rw_add_swig(
-            ${RW_MODULE} python SHARED
-            TARGET_NAME ${TARGET_NAME}
-            INSTALL_DIR ${PYTHON_INSTALL_DIR}/${RW_MODULE}
-            LANGUAGE_FILE_DIR ${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RW_MODULE}
-            SOURCES ../ScriptTypes.cpp
-            SWIG_FLAGS ${SWIG_FLAGS}
-        )
+        if(TARGET ${RW_MODULE})
 
-        if(NOT POLICY CMP0078)
-            set(TARGET_NAME ${SWIG_MODULE_${TARGET_NAME}_REAL_NAME})
-        endif()
-
-        # Set build destination
-        set_target_properties(
-            ${TARGET_NAME}
-            PROPERTIES
-                ARCHIVE_OUTPUT_DIRECTORY "${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RW_MODULE}"
-                LIBRARY_OUTPUT_DIRECTORY "${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RW_MODULE}"
-                RUNTIME_OUTPUT_DIRECTORY "${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RW_MODULE}"
-        )
-        add_dependencies(${SUBSYS_NAME} ${TARGET_NAME})
-
-        if(NOT ${SWIG_VERSION} VERSION_LESS 4.0.0)
-            find_program(pydoc pydoc3)
-            if(NOT pydoc)
-                find_program(pydoc pydoc)
+            set(SOURCE)
+            if("${RW_MODULE}" STREQUAL "sdurw")
+                set(SOURCE ../ScriptTypes.cpp)
             endif()
-            if(pydoc)
-                add_custom_command(
-                    TARGET ${RW_MODULE}${LIB_SUFIX} POST_BUILD
-                    COMMAND
-                        ${pydoc} -w
-                        ${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RW_MODULE}/${RW_MODULE}.py
-                    WORKING_DIRECTORY ${SWIG_OUT_ORIG}
-                    COMMENT "Creating pydoc..."
-                )
+            set(TARGET_NAME ${RW_MODULE}${LIB_SUFIX})
+            rw_add_swig(
+                ${RW_MODULE} python SHARED
+                TARGET_NAME ${TARGET_NAME}
+                INSTALL_DIR ${PYTHON_INSTALL_DIR}/${RW_MODULE}
+                SOURCES ${SOURCE}
+                LANGUAGE_FILE_DIR ${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RW_MODULE}
+                SWIG_FLAGS ${SWIG_FLAGS}
+            )
+
+            if(NOT POLICY CMP0078)
+                set(TARGET_NAME ${SWIG_MODULE_${TARGET_NAME}_REAL_NAME})
             endif()
+
+            # Set build destination
+            set_target_properties(
+                ${TARGET_NAME}
+                PROPERTIES
+                    ARCHIVE_OUTPUT_DIRECTORY "${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RW_MODULE}"
+                    LIBRARY_OUTPUT_DIRECTORY "${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RW_MODULE}"
+                    RUNTIME_OUTPUT_DIRECTORY "${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RW_MODULE}"
+            )
+            add_dependencies(${SUBSYS_NAME} ${TARGET_NAME})
+
+            if(NOT ${SWIG_VERSION} VERSION_LESS 4.0.0)
+                find_program(pydoc pydoc3)
+                if(NOT pydoc)
+                    find_program(pydoc pydoc)
+                endif()
+                if(pydoc)
+                    add_custom_command(
+                        TARGET ${RW_MODULE}${LIB_SUFIX} POST_BUILD
+                        COMMAND
+                            ${pydoc} -w
+                            ${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RW_MODULE}/${RW_MODULE}.py
+                        WORKING_DIRECTORY ${SWIG_OUT_ORIG}
+                        COMMENT "Creating pydoc..."
+                    )
+                endif()
+            endif()
+
+            configure_file(__init__.py.in
+                           ${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RW_MODULE}/__init__.py)
+
+            target_link_libraries(${SUBSYS_NAME} INTERFACE ${TARGET_NAME})
+
+            install(
+                FILES ${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RW_MODULE}/${RW_MODULE}.py
+                DESTINATION "${PYTHON_INSTALL_DIR}/${RW_MODULE}"
+                COMPONENT swig
+            )
+            install(
+                FILES ${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RW_MODULE}/__init__.py
+                DESTINATION "${PYTHON_INSTALL_DIR}/${RW_MODULE}"
+                COMPONENT swig
+            )
+
+            get_in_map(depends RW_SUBSYS_DEPEND ${RW_MODULE})
+            swig_link_libraries(${RW_MODULE}${LIB_SUFIX} ${RW_MODULE} ${depends}
+                                ${PYTHON_LIBRARIES})
         endif()
-
-        configure_file(__init__.py.in ${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RW_MODULE}/__init__.py)
-
-        target_link_libraries(${SUBSYS_NAME} INTERFACE ${TARGET_NAME})
-
-        install(
-            FILES ${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RW_MODULE}/${RW_MODULE}.py
-            DESTINATION "${PYTHON_INSTALL_DIR}/${RW_MODULE}"
-            COMPONENT swig
-        )
-        install(
-            FILES ${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RW_MODULE}/__init__.py
-            DESTINATION "${PYTHON_INSTALL_DIR}/${RW_MODULE}"
-            COMPONENT swig
-        )
-
     endforeach()
-
-    swig_link_libraries(sdurw${LIB_SUFIX} sdurw ${PYTHON_LIBRARIES})
-    swig_link_libraries(sdurw_assembly${LIB_SUFIX} sdurw_assembly sdurw ${PYTHON_LIBRARIES})
-    swig_link_libraries(sdurw_control${LIB_SUFIX} sdurw_control sdurw ${PYTHON_LIBRARIES})
-    swig_link_libraries(sdurw_pathoptimization${LIB_SUFIX} sdurw_pathoptimization sdurw
-                        ${PYTHON_LIBRARIES})
-    swig_link_libraries(sdurw_pathplanners${LIB_SUFIX} sdurw_pathplanners sdurw ${PYTHON_LIBRARIES})
-    swig_link_libraries(sdurw_proximitystrategies${LIB_SUFIX} sdurw_proximitystrategies sdurw
-                        ${PYTHON_LIBRARIES})
-    swig_link_libraries(sdurw_simulation${LIB_SUFIX} sdurw_simulation sdurw ${PYTHON_LIBRARIES})
-    swig_link_libraries(sdurw_task${LIB_SUFIX} sdurw_task sdurw ${PYTHON_LIBRARIES})
-    swig_link_libraries(sdurw_opengl${LIB_SUFIX} sdurw_opengl sdurw ${PYTHON_LIBRARIES})
 
     if(POLICY CMP0078)
         set(LIB_PREFIX "")
@@ -159,16 +147,17 @@ if(build)
         set(LIB_PREFIX "_")
     endif()
 
-    add_dependencies(${LIB_PREFIX}sdurw_assembly${LIB_SUFIX} ${LIB_PREFIX}sdurw_task${LIB_SUFIX}
-                     ${LIB_PREFIX}sdurw${LIB_SUFIX})
-    add_dependencies(${LIB_PREFIX}sdurw_control${LIB_SUFIX} ${LIB_PREFIX}sdurw${LIB_SUFIX})
-    add_dependencies(${LIB_PREFIX}sdurw_pathoptimization${LIB_SUFIX} ${LIB_PREFIX}sdurw${LIB_SUFIX})
-    add_dependencies(${LIB_PREFIX}sdurw_pathplanners${LIB_SUFIX} ${LIB_PREFIX}sdurw${LIB_SUFIX})
-    add_dependencies(${LIB_PREFIX}sdurw_proximitystrategies${LIB_SUFIX}
-                     ${LIB_PREFIX}sdurw${LIB_SUFIX})
-    add_dependencies(${LIB_PREFIX}sdurw_simulation${LIB_SUFIX} ${LIB_PREFIX}sdurw${LIB_SUFIX})
-    add_dependencies(${LIB_PREFIX}sdurw_task${LIB_SUFIX} ${LIB_PREFIX}sdurw${LIB_SUFIX})
-    add_dependencies(${LIB_PREFIX}sdurw_opengl${LIB_SUFIX} ${LIB_PREFIX}sdurw${LIB_SUFIX})
+    # add_dependencies(${LIB_PREFIX}sdurw_assembly${LIB_SUFIX} ${LIB_PREFIX}sdurw_task${LIB_SUFIX}
+    # ${LIB_PREFIX}sdurw${LIB_SUFIX}) add_dependencies(${LIB_PREFIX}sdurw_control${LIB_SUFIX}
+    # ${LIB_PREFIX}sdurw${LIB_SUFIX})
+    # add_dependencies(${LIB_PREFIX}sdurw_pathoptimization${LIB_SUFIX}
+    # ${LIB_PREFIX}sdurw${LIB_SUFIX}) add_dependencies(${LIB_PREFIX}sdurw_pathplanners${LIB_SUFIX}
+    # ${LIB_PREFIX}sdurw${LIB_SUFIX})
+    # add_dependencies(${LIB_PREFIX}sdurw_proximitystrategies${LIB_SUFIX}
+    # ${LIB_PREFIX}sdurw${LIB_SUFIX}) add_dependencies(${LIB_PREFIX}sdurw_simulation${LIB_SUFIX}
+    # ${LIB_PREFIX}sdurw${LIB_SUFIX}) add_dependencies(${LIB_PREFIX}sdurw_task${LIB_SUFIX}
+    # ${LIB_PREFIX}sdurw${LIB_SUFIX}) add_dependencies(${LIB_PREFIX}sdurw_opengl${LIB_SUFIX}
+    # ${LIB_PREFIX}sdurw${LIB_SUFIX})
 
     install(TARGETS ${SUBSYS_NAME} EXPORT ${PROJECT_PREFIX}Targets)
 endif()

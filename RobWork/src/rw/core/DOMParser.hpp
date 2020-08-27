@@ -18,12 +18,14 @@
 #ifndef RW_CORE_DOMPARSER_HPP
 #define RW_CORE_DOMPARSER_HPP
 
+#if !defined(SWIG)
 #include <rw/core/DOMElem.hpp>
 #include <rw/core/ExtensionPoint.hpp>
 #include <rw/core/Ptr.hpp>
 
 #include <string>
 #include <vector>
+#endif
 
 namespace rw { namespace core {
 
@@ -103,7 +105,7 @@ namespace rw { namespace core {
 
         /**
          * @addtogroup extensionpoints
-         * @extensionpoint{rw::core::DOMParser::Factory,rw::core::DOMParser,rw.core.DOMParser}
+         * @extensionpoint{ rw::core::DOMParser::Factory,rw::core::DOMParser,rw.core.DOMParser }
          * \class DOMParser
          */
 

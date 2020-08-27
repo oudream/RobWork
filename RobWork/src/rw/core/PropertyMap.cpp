@@ -159,3 +159,7 @@ void PropertyMap::propertyChangedListener (PropertyBase* base)
     // notify all listeners
     notifyListeners (base);
 }
+
+void PropertyMap::clearChangedListeners (){
+    _listeners.clear();
+}

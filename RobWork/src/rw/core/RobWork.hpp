@@ -18,12 +18,13 @@
 #ifndef RW_ROBWORK_HPP
 #define RW_ROBWORK_HPP
 
+#if !defined(SWIG)
 #include <RobWorkConfig.hpp>
 #include <rw/core/ExtensionRegistry.hpp>
 #include <rw/core/Log.hpp>
 #include <rw/core/PropertyMap.hpp>
 #include <rw/core/Ptr.hpp>
-
+#endif
 namespace rw { namespace core {
 
     /**

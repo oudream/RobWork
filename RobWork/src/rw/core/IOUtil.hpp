@@ -21,10 +21,11 @@
 /**
  * @file IOUtil.hpp
  */
-
+#if !defined(SWIG)
 #include <ctime>
 #include <string>
 #include <vector>
+#endif
 
 namespace rw { namespace core {
 

@@ -21,16 +21,15 @@
 /**
    @file PropertyType.hpp
 */
-
+#if !defined(SWIG)
 #include <rw/core/math_fwd.hpp>
 
 #include <string>
 #include <vector>
+#endif
 
 namespace rw { namespace trajectory {
     template< class T > class Path;
-    typedef Path< rw::math::Transform3D< double > > Transform3DPath;
-    typedef Path< rw::math::Q > QPath;
 }}    // namespace rw::trajectory
 
 namespace rw { namespace core {
@@ -117,12 +116,16 @@ namespace rw { namespace core {
         }
         //! @copydoc getType(const rw::core::PropertyMap&)
         static PropertyType getType (const std::string& value) { return PropertyType (String); }
+#if !defined(SWIGLUA)
         //! @copydoc getType(const rw::core::PropertyMap&)
         static PropertyType getType (float value) { return PropertyType (Float); }
+#endif
         //! @copydoc getType(const rw::core::PropertyMap&)
         static PropertyType getType (double value) { return PropertyType (Double); }
+#if !defined(SWIGLUA)
         //! @copydoc getType(const rw::core::PropertyMap&)
         static PropertyType getType (int value) { return PropertyType (Int); }
+#endif
         //! @copydoc getType(const rw::core::PropertyMap&)
         static PropertyType getType (bool value) { return PropertyType (Bool); }
         //! @copydoc getType(const rw::core::PropertyMap&)
@@ -173,12 +176,12 @@ namespace rw { namespace core {
             return PropertyType (VelocityScrew6D);
         }
         //! @copydoc getType(const rw::core::PropertyMap&)
-        static PropertyType getType (const rw::trajectory::QPath& value)
+        static PropertyType getType (const rw::trajectory::Path<rw::math::Q>& value)
         {
             return PropertyType (QPath);
         }
         //! @copydoc getType(const rw::core::PropertyMap&)
-        static PropertyType getType (const rw::trajectory::Transform3DPath& value)
+        static PropertyType getType (const rw::trajectory::Path< rw::math::Transform3D< double > >& value)
         {
             return PropertyType (Transform3DPath);
         }
@@ -187,6 +190,8 @@ namespace rw { namespace core {
         {
             return PropertyType (StringList);
         }
+
+#if !defined(SWIGPYTHON)
         //! @copydoc getType(const rw::core::PropertyMap&)
         static PropertyType getType (const std::vector< int >& value)
         {
@@ -197,7 +202,7 @@ namespace rw { namespace core {
         {
             return PropertyType (DoubleList);
         }
-
+#endif
         /**
          * @brief Get the type of a generic value T resolved at compile time.
          * @param value [in] the value to deduct type for.

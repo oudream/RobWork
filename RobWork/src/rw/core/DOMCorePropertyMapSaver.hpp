@@ -18,8 +18,9 @@
 #ifndef RW_CORE_DOMPROPERTYMAPSAVER_HPP
 #define RW_CORE_DOMPROPERTYMAPSAVER_HPP
 
+#if !defined(SWIG)
 #include <rw/core/DOMElem.hpp>
-
+#endif 
 namespace rw { namespace core {
 
     class DOMParser;

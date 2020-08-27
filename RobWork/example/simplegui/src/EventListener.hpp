@@ -1,6 +1,7 @@
 #ifndef EVENTLISTENER_HPP_
 #define EVENTLISTENER_HPP_
 
+namespace example {
 class EventListener {
 public:
    /* enum EventType{MENUITEM_EVENT,MENU_EVENT,SPECIAL_KEY_EVENT,KEY_EVENT};
@@ -12,5 +13,6 @@ public:
     virtual void event(EventType type, void *data) = 0;
 
 };
+}
 
 #endif /*EVENTLISTENER_HPP_*/

@@ -18,9 +18,10 @@
 #ifndef RW_CORE_DOMPROPERTYMAPLOADER_HPP
 #define RW_CORE_DOMPROPERTYMAPLOADER_HPP
 
+#if !defined(SWIG)
 #include <rw/core/PropertyBase.hpp>
 #include <rw/core/PropertyMap.hpp>
-
+#endif
 namespace rw { namespace core {
     class DOMElem;
     /** @addtogroup loaders */

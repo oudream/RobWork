@@ -20,7 +20,7 @@ ExtensionRegistry::~ExtensionRegistry ()
     clearExtensions ();
 }
 
-std::vector< Extension::Descriptor >
+std::vector< rw::core::Extension::Descriptor >
 ExtensionRegistry::getExtensionDescriptors (const std::string& ext_point_id) const
 {
     std::vector< Extension::Descriptor > result;

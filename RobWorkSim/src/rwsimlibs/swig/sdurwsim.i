@@ -86,14 +86,17 @@ void java_ThreadSimulatorStepCallback(ThreadSimulator* sim, State &state, void *
 %include <exception.i>
 
 %import <rwlibs/swig/sdurw.i>
+%import <rwlibs/swig/sdurw_core.i>
 %import <rwlibs/swig/sdurw_assembly.i>
 %import <rwlibs/swig/sdurw_control.i>
 %import <rwlibs/swig/sdurw_simulation.i>
+
 
 %pragma(java) jniclassclassmodifiers="class"
 
 %typemap(javaimports) SWIGTYPE %{
 import org.robwork.sdurw.*;
+import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_assembly.*;
 import org.robwork.sdurw_control.*;
 import org.robwork.sdurw_simulation.*;
@@ -101,12 +104,14 @@ import org.robwork.sdurw_task.*;
 %}
 %pragma(java) moduleimports=%{
 import org.robwork.sdurw.*;
+import org.robwork.sdurw_core.*;
 %}
 %pragma(java) jniclassimports=%{
 import org.robwork.sdurw.*;
 import org.robwork.sdurw_assembly.*;
 import org.robwork.sdurw_simulation.*;
 import org.robwork.sdurw_task.*;
+import org.robwork.sdurw_core.*;
 %}
 
 #if (defined(SWIGPYTHON) || defined(SWIGLUA))
@@ -190,7 +195,7 @@ public:
 	virtual void clearStrategies();
 	//virtual void setContactStrategies(StrategyTable strategies);
 	virtual void setDefaultStrategies();
-	virtual void setDefaultStrategies(const PropertyMap& map);
+	virtual void setDefaultStrategies(const rw::core::PropertyMap& map);
 	virtual void printStrategyTable() const;
 };
 
@@ -285,11 +290,11 @@ public:
 	virtual void clear() = 0;
 	
 	// ContactStrategy:
-	virtual PropertyMap& getPropertyMap();
+	virtual rw::core::PropertyMap& getPropertyMap();
 #if !defined(SWIGJAVA)
-	virtual const PropertyMap& getPropertyMap() const;
+	virtual const rw::core::PropertyMap& getPropertyMap() const;
 #endif
-	virtual void setPropertyMap(const PropertyMap& map);
+	virtual void setPropertyMap(const rw::core::PropertyMap& map);
 };
 
 %template (ContactStrategyPtr) rw::core::Ptr<ContactStrategy>;
@@ -880,7 +885,7 @@ public:
     bool inDevice(rw::core::Ptr<Body> body);
     void setGravity(const rw::math::Vector3D<double>& grav);
     const rw::math::Vector3D<double>& getGravity();
-    PropertyMap& getEngineSettings();
+    rw::core::PropertyMap& getEngineSettings();
 
     %extend {
         rw::core::Ptr<RigidBody> findRigidBody(const std::string& name)
@@ -1026,7 +1031,7 @@ public:
 	virtual void setEnabled(rw::core::Ptr<Body> body, bool enabled) = 0;
 	virtual void setDynamicsEnabled(rw::core::Ptr<Body> body, bool enabled) = 0;
 	//virtual drawable::SimulatorDebugRender::Ptr createDebugRender() = 0;
-	virtual PropertyMap& getPropertyMap() = 0;
+	virtual rw::core::PropertyMap& getPropertyMap() = 0;
 	virtual void emitPropertyChanged() = 0;
 	virtual void addController(rw::core::Ptr<SimulatedController> controller) = 0;
 	virtual void removeController(rw::core::Ptr<SimulatedController> controller) = 0;
@@ -1070,7 +1075,7 @@ public:
 	void setEnabled(rw::core::Ptr<Body> body, bool enabled);
 
 	//drawable::SimulatorDebugRender::Ptr createDebugRender();
-	PropertyMap& getPropertyMap();
+	rw::core::PropertyMap& getPropertyMap();
 	
 	void addController(rw::core::Ptr<SimulatedController> controller);
 	void removeController(rw::core::Ptr<SimulatedController> controller);
@@ -1251,7 +1256,7 @@ public:
 		void setEnabled(rw::core::Ptr<Body> body, bool enabled);
 		void setDynamicsEnabled(rw::core::Ptr<Body> body, bool enabled);
 		//drawable::SimulatorDebugRender::Ptr createDebugRender();
-		virtual PropertyMap& getPropertyMap();
+		virtual rw::core::PropertyMap& getPropertyMap();
 		void emitPropertyChanged();
 		void addController(rw::core::Ptr<SimulatedController> controller);
 		void removeController(rw::core::Ptr<SimulatedController> controller);
