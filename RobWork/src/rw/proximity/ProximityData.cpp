@@ -16,3 +16,4 @@
  ********************************************************************************/
 
 #include "ProximityData.hpp"
+#include <rw/proximity/ProximityStrategyData.hpp>

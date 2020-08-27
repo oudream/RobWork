@@ -216,6 +216,18 @@ target_link_libraries(sdurw_pathoptimization-gtest ${PATHOPTIMIZATION_TEST_LIBRA
 add_rw_gtest(sdurw_pathoptimization-gtest)
 
 # ##################################################################################################
+# Pathplanning
+# ##################################################################################################
+
+set(PATHPLANNING_TEST_LIBRARIES sdurw-gtest-main ${GTEST_LIBRARIES} sdurw_pathplanners sdurw sdurw_proximitystrategies)
+
+set(PATHPLANNING_TEST_SRC pathplanning/PathPlanningTest.cpp)
+
+add_executable(sdurw_pathplanning-gtest ${PATHPLANNING_TEST_SRC})
+target_link_libraries(sdurw_pathplanning-gtest ${PATHPLANNING_TEST_LIBRARIES})
+add_rw_gtest(sdurw_pathplanning-gtest)
+
+# ##################################################################################################
 # Proximity
 # ##################################################################################################
 

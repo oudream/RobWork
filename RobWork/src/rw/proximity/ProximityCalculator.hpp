@@ -118,6 +118,14 @@ namespace rw { namespace proximity {
          */
         ProximityCalculator (rw::core::Ptr< rw::models::WorkCell > workcell,
                              rw::core::Ptr< Strategy > strategy);
+        
+#if __cplusplus >= 201103L
+        //! @brief Copy constructor is non-existent. Copying is not possible!
+        ProximityCalculator (const ProximityCalculator&) = delete;
+
+        //! @brief Assignment operator is non-existent. Copying is not possible!
+        ProximityCalculator& operator= (const ProximityCalculator&) = delete;
+#endif
 
         /**
          * @brief Performece the Proximity calculation based on the chosen strategy type.
@@ -154,6 +162,16 @@ namespace rw { namespace proximity {
         rw::core::Ptr< ProximityFilterStrategy > getProximityFilterStrategy () const
         {
             return _proxFilterStrat;
+        }
+
+        /**
+         * @brief Set the Proximity Filter strategy of the ProximityCalculator.
+         * @param proxStrategy [in] the new ProximityFilterStrategy. 
+         * The strategy is not copied so changes to the strategy will affect the calculator
+         */
+        void setProximityFilterStrategy (rw::core::Ptr< ProximityFilterStrategy > proxStrategy)
+        {
+            _proxFilterStrat = proxStrategy;
         }
 
         /**
@@ -292,6 +310,11 @@ namespace rw { namespace proximity {
 
         void initGeom (rw::core::Ptr< rw::models::WorkCell > wc);
         void initDistPairs (const rw::kinematics::State& state);
+
+#if __cplusplus < 201103L
+        ProximityCalculator (const ProximityCalculator&);
+        ProximityCalculator& operator= (const ProximityCalculator&);
+#endif
     };
 
     /*@}*/

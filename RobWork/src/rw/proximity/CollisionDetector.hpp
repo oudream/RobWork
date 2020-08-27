@@ -24,13 +24,9 @@
  * \copydoc rw::proximity::CollisionDetector
  */
 
-#include "CollisionStrategy.hpp"
-#include "ProximityFilterStrategy.hpp"
-#include "ProximityStrategyData.hpp"
-
-#include <rw/common/Timer.hpp>
 #include <rw/core/Ptr.hpp>
-#include <rw/kinematics/FrameMap.hpp>
+#include <rw/proximity/ProximityCalculator.hpp>
+#include <rw/proximity/ProximityStrategyData.hpp>
 
 #include <vector>
 
@@ -44,7 +40,7 @@ namespace rw { namespace models {
 }}    // namespace rw::models
 
 namespace rw { namespace proximity {
-
+    class CollisionStrategy;
     /** @addtogroup proximity */
     /*@{*/
 
@@ -65,7 +61,7 @@ namespace rw { namespace proximity {
      @note The collision detector is not thread safe and as such should not be used by multiple
      threads at a time.
      */
-    class CollisionDetector
+    class CollisionDetector : public ProximityCalculator< CollisionStrategy >
     {
       public:
         //! @brief smart pointer type to this class
@@ -137,15 +133,8 @@ namespace rw { namespace proximity {
          * not colliding
          */
         CollisionDetector (rw::core::Ptr< rw::models::WorkCell > workcell,
-                           CollisionStrategy::Ptr strategy, ProximityFilterStrategy::Ptr filter);
-
-#if __cplusplus >= 201103L
-        //! @brief Copy constructor is non-existent. Copying is not possible!
-        CollisionDetector (const CollisionDetector&) = delete;
-
-        //! @brief Assignment operator is non-existent. Copying is not possible!
-        CollisionDetector& operator= (const CollisionDetector&) = delete;
-#endif
+                           CollisionStrategy::Ptr strategy,
+                           rw::core::Ptr< ProximityFilterStrategy > filter);
 
         /**
          * @brief Check the workcell for collisions.
@@ -172,15 +161,10 @@ namespace rw { namespace proximity {
         bool inCollision (const kinematics::State& state, class ProximityData& data) const;
 
         /**
-         * @brief The broad phase collision strategy of the collision checker.
-         */
-        ProximityFilterStrategy::Ptr getProximityFilterStrategy () const { return _bpfilter; }
-
-        /**
          * @brief Get the narrow-phase collision strategy.
          * @return the strategy if set, otherwise NULL.
          */
-        CollisionStrategy::Ptr getCollisionStrategy () const { return _npstrategy; }
+        CollisionStrategy::Ptr getCollisionStrategy () const { return getStrategy (); }
 
         /**
          * @brief Add Geometry associated to \b frame
@@ -215,33 +199,6 @@ namespace rw { namespace proximity {
          */
         void removeGeometry (rw::kinematics::Frame* frame, const std::string geometryId);
 
-        //! @brief Adds rule specifying inclusion/exclusion of frame pairs in collision detection
-        void addRule (const ProximitySetupRule& rule);
-
-        //! @brief Removes rule specifying inclusion/exclusion of frame pairs in collision detection
-        void removeRule (const ProximitySetupRule& rule);
-
-        /**
-         * @brief Get the computation time used in the inCollision functions.
-         * @return the total computation time.
-         */
-        double getComputationTime () const { return _timer.getTime (); }
-
-        /**
-         * @brief Get the number of times the inCollision functions have been called.
-         * @return number of calls to inCollision functions.
-         */
-        int getNoOfCalls () const { return _numberOfCalls; }
-
-        /**
-         * @brief Reset the counter for inCollision invocations and the computation timer.
-         */
-        void resetComputationTimeAndCount ()
-        {
-            _timer.resetAndPause ();
-            _numberOfCalls = 0;
-        }
-
         /**
          * @brief return the ids of all the geometries of this frames.
          */
@@ -263,23 +220,6 @@ namespace rw { namespace proximity {
                                                              const std::string& geometryId);
 
       private:
-        /**
-         * @brief Initialize the narrow phase strategy for the given workcell.
-         * @param wc [in] the workcell.
-         */
-        void initialize (rw::core::Ptr< rw::models::WorkCell > wc);
-
-        //! @brief Timer for measuring the time spent in inCollision functions.
-        mutable rw::common::Timer _timer;
-        //! @brief The number of calls to the inCollision functions.
-        mutable int _numberOfCalls;
-        //! @brief the broad phase collision strategy
-        ProximityFilterStrategy::Ptr _bpfilter;
-        //! @brief the narrow phase collision strategy
-        CollisionStrategy::Ptr _npstrategy;
-        //! @brief Map from frame to collision model.
-        rw::kinematics::FrameMap< ProximityModel::Ptr > _frameToModels;
-
 #if __cplusplus < 201103L
       private:
         CollisionDetector (const CollisionDetector&);
