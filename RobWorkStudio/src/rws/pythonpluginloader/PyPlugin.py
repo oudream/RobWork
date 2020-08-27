@@ -38,7 +38,6 @@ rws_cpp_link = cpp_link()
 
 class rwsplugin(QtCore.QObject):
     def __init__(self,link):
-        print("Initializing RWS python plugin")
         self.rws_cpp_link = link
         self.rwstudio = getRobWorkStudioFromQt()
         self.widget_name = rws_cpp_link.get_widget_name()

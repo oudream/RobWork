@@ -60,8 +60,8 @@ if(build)
     )
 
     if(RWS_USE_PYTHON)
-        set(SRC_FILES_CPP ${SRC_FILES_CPP} pythonpluginloader/PyPlugin.cpp)
-        set(SRC_FILES_HPP ${SRC_FILES_HPP} pythonpluginloader/PyPlugin.hpp)
+        set(SRC_FILES_CPP ${SRC_FILES_CPP} pythonpluginloader/PyPlugin.cpp pythonpluginloader/PythonRunner.cpp)
+        set(SRC_FILES_HPP ${SRC_FILES_HPP} pythonpluginloader/PyPlugin.hpp pythonpluginloader/PythonRunner.hpp)
         set(MocHeaderFiles ${MocHeaderFiles} pythonpluginloader/PyPlugin.hpp)
     endif()
 

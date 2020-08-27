@@ -130,7 +130,7 @@ set(RWS_HAVE_GLUT False)
 set(RWS_HAVE_FREEGLUT FALSE)
 
 if(NOT ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-find_package(GLUT QUIET)
+    find_package(GLUT QUIET)
     if(NOT GLUT_FOUND) # Check if free glut exsist
         find_package(FreeGLUT QUIET)
         if(FreeGLUT_FOUND)
@@ -180,6 +180,17 @@ if(NOT RWS_DISABLE_LUA)
     endif()
 else()
     message(STATUS "RobWorkStudio: Lua DISABLED!")
+endif()
+
+# QCodeEditor
+
+find_package(QCodeEditor QUIET)
+if(QCodeEditor_FOUND)
+    set(RWS_QCODEEDITOR_INTERNAL_TARGET OFF)
+    message("QCodeEditor found")
+elseif(Qt5Core_FOUND AND Qt5Widgets_FOUND AND Qt5Gui_FOUND)
+    set(RWS_QCODEEDITOR_INTERNAL_TARGET ON)
+    message(STATUS "QCodeEditor not found building internal target")
 endif()
 
 # ##################################################################################################
@@ -282,7 +293,8 @@ set(
     qtpropertybrowser
 )
 
-set(ROBWORKSTUDIO_LIBRARIES_EXTERNAL ${QT_LIBRARIES} ${Boost_LIBRARIES} ${OPENGL_LIBRARIES} ${GLUT_glut_LIBRARY})
+set(ROBWORKSTUDIO_LIBRARIES_EXTERNAL ${QT_LIBRARIES} ${Boost_LIBRARIES} ${OPENGL_LIBRARIES}
+                                     ${GLUT_glut_LIBRARY})
 
 set(ROBWORKSTUDIO_LIBRARIES)
 foreach(l ${ROBWORKSTUDIO_LIBRARIES_EXTERNAL})
@@ -295,6 +307,3 @@ foreach(l ${ROBWORKSTUDIO_LIBRARIES_EXTERNAL})
     endif()
 endforeach(l)
 set(ROBWORKSTUDIO_LIBRARIES ${ROBWORKSTUDIO_LIBRARIES_INTERNAL} ${ROBWORKSTUDIO_LIBRARIES})
-
-
-
