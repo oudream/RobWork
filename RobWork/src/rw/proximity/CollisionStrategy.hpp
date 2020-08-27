@@ -38,6 +38,7 @@ namespace rw { namespace kinematics {
 
 namespace rw { namespace proximity {
     class CollisionToleranceStrategy;
+    class ProximityStrategyData;
 
     /** @addtogroup proximity */
     /*@{*/

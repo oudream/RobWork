@@ -106,14 +106,14 @@ namespace rw { namespace proximity {
          * @brief get the the colliding frames
          * @return the cooliding frames, if in collision else a pair of null
          */
-        std::pair< rw::core::Ptr< const rw::kinematics::Frame >,
-                   rw::core::Ptr< const rw::kinematics::Frame > >
+        std::pair< rw::core::Ptr< rw::kinematics::Frame >,
+                   rw::core::Ptr< rw::kinematics::Frame > >
         getColidingFrames ()
         {
             if (!_collisionData.a.isNull () && !_collisionData.b.isNull ()) {
                 return std::make_pair (
-                    rw::core::Ptr< const rw::kinematics::Frame > (_collisionData.a->getFrame ()),
-                    rw::core::Ptr< const rw::kinematics::Frame > (_collisionData.b->getFrame ()));
+                    rw::core::Ptr< rw::kinematics::Frame > (_collisionData.a->getFrame ()),
+                    rw::core::Ptr< rw::kinematics::Frame > (_collisionData.b->getFrame ()));
             }
             return std::make_pair (rw::core::Ptr< rw::kinematics::Frame > (NULL),
                                    rw::core::Ptr< rw::kinematics::Frame > (NULL));

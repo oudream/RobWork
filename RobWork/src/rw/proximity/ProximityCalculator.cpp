@@ -35,6 +35,7 @@
 #include <rw/proximity/ProximityStrategyData.hpp>
 
 #include <float.h>
+#include <regex>
 #include <vector>
 
 using namespace rw::common;
@@ -47,6 +48,20 @@ using namespace rw::geometry;
 
 namespace {
 // Find the frame or crash.
+std::vector< std::string > searchName (const std::map< std::string, Frame* >& frameMap,
+                                       const std::string& frameName)
+{
+    std::string regex_pattern = frameName;
+    std::regex reg (regex_pattern);
+    std::vector< std::string > ret;
+    for (const std::pair< std::string, Frame* >& x : frameMap) {
+        if (std::regex_match (x.first, reg)) {
+            ret.push_back (x.first);
+        }
+    }
+    return ret;
+}
+
 Frame* lookupFrame (const std::map< std::string, Frame* >& frameMap, const std::string& frameName)
 {
     const std::map< std::string, Frame* >::const_iterator pos = frameMap.find (frameName);
@@ -82,9 +97,9 @@ namespace rw { namespace proximity {
         catch (const Exception& exp) {
             RW_WARN (exp.what ());
         }
-
         initGeom (workcell);
         initDistPairs (initial_state);
+
         this->resetComputationTimeAndCount ();
     }
 
@@ -94,8 +109,8 @@ namespace rw { namespace proximity {
         _strategy (strategy),
         _state (workcell->getDefaultState ()), _root (workcell->getWorldFrame ())
     {
-        RW_ASSERT (strategy != NULL);
         RW_ASSERT (workcell != NULL);
+
         _proxFilterStrat = ownedPtr (new BasicFilterStrategy (workcell));
         try {
             _setup = ownedPtr (new CollisionSetup ());
@@ -104,9 +119,10 @@ namespace rw { namespace proximity {
         catch (const Exception& exp) {
             RW_WARN (exp.what ());
         }
-
-        initGeom (workcell);
-        initDistPairs (workcell->getDefaultState ());
+        if (!strategy.isNull ()) {
+            initGeom (workcell);
+            initDistPairs (workcell->getDefaultState ());
+        }
         this->resetComputationTimeAndCount ();
     }
 
@@ -188,7 +204,7 @@ namespace rw { namespace proximity {
     {
         ScopedTimer stimer (_timer);
         _numberOfCalls++;
-
+        RW_ASSERT (_strategy != NULL);
         FKTable fk (state);
 
         if (settings != NULL) {
@@ -262,6 +278,7 @@ namespace rw { namespace proximity {
     {
         ScopedTimer stimer (_timer);
         _numberOfCalls++;
+        RW_ASSERT (_strategy != NULL);
 
         FKTable fk (state);
         double tolerance = DBL_MAX;
@@ -440,6 +457,9 @@ namespace rw { namespace proximity {
         }
     }
 
+    template<> void ProximityCalculator< CollisionStrategy >::initDistPairs (const State& state) {
+        //Not nessesary for collision strategy
+    }
     template< class T > void ProximityCalculator< T >::initDistPairs (const State& state)
     {
         _thresholdStrategy = _strategy;
@@ -467,14 +487,30 @@ namespace rw { namespace proximity {
         FramePairList exclude_pairs;
         const std::map< std::string, Frame* >& frameMap =
             Kinematics::buildFrameMap (_root.get (), state);
-        const StringPairList& exclude = _setup->getExcludeList ();
+        StringPairList exclude = _setup->getExcludeList ();
 
-        typedef StringPairList::const_iterator EI;
-        for (EI p = exclude.cbegin (); p != exclude.cend (); ++p) {
-            Frame* first  = lookupFrame (frameMap, p->first);
-            Frame* second = lookupFrame (frameMap, p->second);
-            exclude_pairs.push_back (FramePair (first, second));
-            exclude_pairs.push_back (FramePair (second, first));
+        typedef StringPairList::iterator EI;
+        for (EI p = exclude.begin (); p != exclude.end (); ++p) {
+            if (p->first.find_first_of ("*") != std::string::npos ||
+                p->second.find_first_of ("*") != std::string::npos) {
+                std::vector< std::string > matches_left  = searchName (frameMap, p->first);
+                std::vector< std::string > matches_right = searchName (frameMap, p->second);
+
+                for (std::string& ml : matches_left) {
+                    for (std::string& mr : matches_right) {
+                        Frame* first  = lookupFrame (frameMap, ml);
+                        Frame* second = lookupFrame (frameMap, mr);
+                        exclude_pairs.push_back (FramePair (first, second));
+                        exclude_pairs.push_back (FramePair (second, first));
+                    }
+                }
+            }
+            else {
+                Frame* first  = lookupFrame (frameMap, p->first);
+                Frame* second = lookupFrame (frameMap, p->second);
+                exclude_pairs.push_back (FramePair (first, second));
+                exclude_pairs.push_back (FramePair (second, first));
+            }
         }
 
         // Include in the final list only the pairs that are not present in the

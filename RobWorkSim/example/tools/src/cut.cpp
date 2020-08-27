@@ -23,6 +23,7 @@
 #include <rw/proximity/ProximityData.hpp>
 #include <rw/trajectory/Path.hpp>
 #include <rwlibs/proximitystrategies/ProximityStrategyPQP.hpp>
+#include <rw/proximity/ProximitySetupRule.hpp>
 
 #include <sstream>
 #include <fstream>
