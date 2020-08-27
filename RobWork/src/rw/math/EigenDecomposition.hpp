@@ -105,6 +105,9 @@ namespace rw { namespace math {
         Eigen::Matrix< T, Eigen::Dynamic, Eigen::Dynamic > _vectors;
         Eigen::Matrix< T, Eigen::Dynamic, 1 > _values;
     };
+
+    using EigenDecompositiond = EigenDecomposition<double>;
+    using EigenDecompositionf = EigenDecomposition<float>;
 }}    // namespace rw::math
 
 #endif /* EIGENDECOMPOSITION_HPP_ */

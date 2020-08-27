@@ -519,6 +519,9 @@ namespace rw { namespace math {
     extern template class rw::math::Rotation3D< double >;
     extern template class rw::math::Rotation3D< float >;
 
+    using Rotation3Dd = Rotation3D<double>;
+    using Rotation3Df = Rotation3D<float>;
+
     /**@}*/
 }}    // namespace rw::math
 

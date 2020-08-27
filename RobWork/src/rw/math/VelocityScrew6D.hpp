@@ -612,6 +612,9 @@ namespace rw { namespace math {
     extern template class rw::math::VelocityScrew6D< double >;
     extern template class rw::math::VelocityScrew6D< float >;
 
+    using VelocityScrew6Dd = VelocityScrew6D<double>;
+    using VelocityScrew6Df = VelocityScrew6D<float>;
+
     /*@}*/
 }}    // namespace rw::math
 

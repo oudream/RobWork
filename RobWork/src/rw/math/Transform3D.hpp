@@ -489,6 +489,9 @@ namespace rw { namespace math {
     extern template class rw::math::Transform3D< double >;
     extern template class rw::math::Transform3D< float >;
 
+    using Transform3Dd = Transform3D<double>;
+    using Transform3Df = Transform3D<float>;
+
     /**
      * @brief Calculates
      * @f$ \robabx{b}{a}{\mathbf{T}} = \robabx{a}{b}{\mathbf{T}}^{-1} @f$

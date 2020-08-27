@@ -302,6 +302,9 @@ namespace rw { namespace math {
     extern template class rw::math::InertiaMatrix< double >;
     extern template class rw::math::InertiaMatrix< float >;
 
+    using InertiaMatrixd = InertiaMatrix<double>;
+    using InertiaMatrixf = InertiaMatrix<float>;
+
     /*@}*/
 }}    // namespace rw::math
 

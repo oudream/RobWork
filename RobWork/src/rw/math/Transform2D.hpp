@@ -237,6 +237,9 @@ namespace rw { namespace math {
     extern template class rw::math::Transform2D< double >;
     extern template class rw::math::Transform2D< float >;
 
+    using Transform2Dd = Transform2D<double>;
+    using Transform2Df = Transform2D<float>;
+
     /*@}*/
 
 }}    // namespace rw::math

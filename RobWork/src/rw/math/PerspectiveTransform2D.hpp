@@ -233,6 +233,9 @@ namespace rw { namespace math {
     extern template class rw::math::PerspectiveTransform2D< double >;
     extern template class rw::math::PerspectiveTransform2D< float >;
 
+    using PerspectiveTransform2Dd = PerspectiveTransform2D<double>;
+    using PerspectiveTransform2Df = PerspectiveTransform2D<float>;
+
 }}    // namespace rw::math
 
 namespace rw { namespace common {
