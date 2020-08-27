@@ -3,7 +3,6 @@
 %{
 #include <RobWorkConfig.hpp>
 #include <rwlibs/swig/ScriptTypes.hpp>
-#include <rw/core/Ptr.hpp>
 #include <rw/loaders/path/PathLoader.hpp>
 #include <rw/loaders/dom/DOMPropertyMapLoader.hpp>
 #include <rw/loaders/dom/DOMPropertyMapSaver.hpp>
@@ -49,47 +48,10 @@ SWIG_JAVABODY_TYPEWRAPPER(public, public, public, SWIGTYPE)
 
 //%include <shared_ptr.i>
 
-#if !defined(SWIGJAVA)
-%include "carrays.i"
-%array_class(double, doubleArray);
-#else
-%include "arrays_java.i";
-#endif
-
-#if defined(SWIGJAVA)
-	%rename(multiply) operator*;
-	%rename(divide) operator/;
-	%rename(equals) operator==;
-	%rename(negate) operator-() const;
-	%rename(subtract) operator-;
-	%rename(add) operator+;
-    %rename(leessThan) operator<;
-
-#endif
-%rename(incement) operator++;
-
-#if defined(SWIGJAVA) || defined(SWIGLUA)
-    %rename(addAssign) operator +=;
-    %rename(subtractAssign) operator -=;
-    %rename(multiplyAssign) operator *=;
-    %rename(devideAssign) operator /=;
-    %rename(notEqual) operator!=;
-    %rename(assign) operator=;
-#endif
-
-#if (defined(SWIGPYTHON) || defined(SWIGLUA))
-%feature("flatnested");
-#endif
-
 %include <stl.i>
 %include <exception.i>
 
-%include <rwlibs/swig/ext_i/eigen.i>
-%include <rwlibs/swig/ext_i/boost.i>
-%include <rwlibs/swig/ext_i/std.i>
-
-
-void writelog(const std::string& msg);
+%include <rwlibs/swig/swig_macros.i>
 
 /********************************************
  * General utility functions
@@ -108,6 +70,77 @@ void writelog(const std::string& msg);
         SWIG_exception(SWIG_RuntimeError,"unknown error");
     }
 }
+
+/********************************************
+ * Constants
+ ********************************************/
+
+%constant double Pi = rw::math::Pi;
+%constant double Inch2Meter = rw::math::Inch2Meter;
+%constant double Meter2Inch = rw::math::Meter2Inch;
+%constant double Deg2Rad = rw::math::Deg2Rad;
+%constant double Rad2Deg = rw::math::Rad2Deg;
+
+/********************************************
+ * CORE
+ ********************************************/
+
+//%include <rwlibs/swig/rw_i/core.i>
+%import <rwlibs/swig/sdurw_core.i>
+
+%pragma(java) jniclassimports=%{
+import org.robwork.sdurw_core.*;
+%}
+%pragma(java) moduleimports=%{
+import org.robwork.sdurw_core.*;
+%}
+%typemap(javaimports) SWIGTYPE %{
+import org.robwork.sdurw_core.*;
+%}
+
+%extend rw::core::PropertyMap {
+            
+    bool getBool(const std::string& id){ return $self->get<bool>(id); }
+    void setBool(const std::string& id, bool val){  $self->set<bool>(id,val); }
+    void set(const std::string& id, bool val){  $self->set<bool>(id,val); }
+
+    std::string getString(const std::string& id){ return $self->get<std::string>(id); }
+    void setString(const std::string& id, std::string val){  $self->set<std::string>(id,val); }
+    void set(const std::string& id, std::string val){  $self->set<std::string>(id,val); }
+    
+    std::vector<std::string>& getStringList(const std::string& id){ return $self->get<std::vector<std::string> >(id); }
+    void setStringList(const std::string& id, std::vector<std::string> val){ $self->set<std::vector<std::string> >(id,val); }
+    void set(const std::string& id, std::vector<std::string> val){ $self->set<std::vector<std::string> >(id,val); }
+    
+    Q& getQ(const std::string& id){ return $self->get<Q>(id); }
+    void setQ(const std::string& id, Q q){ $self->set<Q>(id, q); }
+    void set(const std::string& id, Q q){ $self->set<Q>(id, q); }
+
+    rw::math::Pose6D<double>& getPose6D(const std::string& id){ return $self->get<rw::math::Pose6D<double> >(id); }
+    void setPose6D(const std::string& id, rw::math::Pose6D<double> p){  $self->set<rw::math::Pose6D<double> >(id, p); }
+    void set(const std::string& id, rw::math::Pose6D<double> p){  $self->set<rw::math::Pose6D<double> >(id, p); }
+    
+    rw::math::Vector3D<double>& getVector3D(const std::string& id){ return $self->get<rw::math::Vector3D<double> >(id); }
+    void setVector3D(const std::string& id, rw::math::Vector3D<double> p){  $self->set<rw::math::Vector3D<double> >(id, p); }
+    void set(const std::string& id, rw::math::Vector3D<double> p){  $self->set<rw::math::Vector3D<double> >(id, p); }
+
+    rw::math::Transform3D<double> & getTransform3(const std::string& id){ return $self->get<rw::math::Transform3D<double> >(id); }
+    void setTransform3(const std::string& id, rw::math::Transform3D<double>  p){  $self->set<rw::math::Transform3D<double> >(id, p); }
+    void set(const std::string& id, rw::math::Transform3D<double>  p){  $self->set<rw::math::Transform3D<double> >(id, p); }
+
+    PropertyMap& getMap(const std::string& id){ return $self->get<PropertyMap>(id); }
+    void setMap(const std::string& id, PropertyMap p){  $self->set<PropertyMap>(id, p); }
+    void set(const std::string& id, PropertyMap p){  $self->set<PropertyMap>(id, p); }
+
+    void load(const std::string& filename){ *($self) = rw::loaders::DOMPropertyMapLoader::load(filename); }
+    void save(const std::string& filename){ rw::loaders::DOMPropertyMapSaver::save( *($self), filename ); }
+}
+
+%import <rwlibs/swig/ext_i/std.i>
+
+%include <rwlibs/swig/ext_i/eigen.i>
+%include <rwlibs/swig/ext_i/boost.i>
+
 
 %inline %{
     void sleep(double t){
@@ -133,149 +166,15 @@ void writelog(const std::string& msg);
     }
 %}
 
-%define TOSTRING(type)
-    %extend {
-        #if (defined(SWIGLUA) || defined(SWIGPYTHON))
-            char *__str__() { return printCString<type>(*$self); }
-        #elif defined(SWIGJAVA)
-            std::string toString() const { return toString<type>(*$self); }
-        #endif
-    }
-%enddef
 
-%define ARRAYOPERATOR(ret)
-    %extend {
-        #if (defined(SWIGLUA) || defined(SWIGPYTHON))
-            ret __getitem__(int i)const {return (*$self)[i]; }
-            void __setitem__(int i,ret d){ (*$self)[i] = d; }
-        #elif defined(SWIGJAVA)
-            ret get(std::size_t i) const { return (*$self)[i]; }
-            void set(std::size_t i,ret d){ (*$self)[i] = d; }
-        #endif
-    }
-%enddef
+void writelog(const std::string& msg);
 
-%define ARRAYOPERATOR2(ret)
-    %extend {
-        #if (defined(SWIGLUA) || defined(SWIGPYTHON))
-            ret __getitem__(int i)const {return (*$self)(i); }
-            void __setitem__(int i,ret d){ (*$self)(i) = d; }
-        #elif defined(SWIGJAVA)
-            ret get(std::size_t i) const { return (*$self)(i); }
-            void set(std::size_t i,ret d){ (*$self)(i) = d; }
-        #endif
-    }
-%enddef
-
-%define MATRIXOPERATOR(ret)
-    %extend {
-        #if (defined(SWIGLUA) || defined(SWIGPYTHON))
-            ret __getitem__(std::size_t row, std::size_t column)const {return (*$self)(row, column); }
-            void __setitem__(std::size_t row, std::size_t column,ret d){ (*$self)(row, column) = d; }
-        #elif defined(SWIGJAVA)
-            ret get(std::size_t row, std::size_t column) const { return (*$self)(row, column); }
-            void set(std::size_t row, std::size_t column, ret d){ (*$self)(row, column) = d; }
-        #endif
-    }
-%enddef
-
-%define MAPOPERATOR(ret,index)
-    %extend {
-        #if (defined(SWIGLUA) || defined(SWIGPYTHON))
-            ret __getitem__(index i)const {return (*$self)[i]; }
-            void __setitem__(index i,ret d){ (*$self)[i] = d; }
-        #elif defined(SWIGJAVA)
-            ret get(index i) const { return (*$self)[i]; }
-            void set(index i,ret d){ (*$self)[i] = d; }
-        #endif
-    }
-%enddef
-
-%define MAP2OPERATOR(ret, i1,i2)
-    %extend {
-        #if (defined(SWIGLUA) || defined(SWIGPYTHON))
-            ret __getitem__(i1 row, i2 column)const {return (*$self)(row, column); }
-            void __setitem__(i1 row, i2,ret d){ (*$self)(row, column) = d; }
-        #elif defined(SWIGJAVA)
-            ret get(i1 row, i2 column) const { return (*$self)(row, column); }
-            void set(i1 row, i2 column, ret d){ (*$self)(row, column) = d; }
-        #endif
-    }
-%enddef
-
-%define INCREMENT(ret)
-    %extend {
-        /**
-         * @brief Increments the class
-         * @return The incremented class
-         */
-        ret increment() {return *$self++; }
-    }
-%enddef
-
-%define COPY(ret)
-    %extend {
-        /**
-         * @brief Creates a copy of the class
-         * @return a copy of the class
-         */
-        ret copy() {return *$self; }
-    }
-%enddef
-
-/********************************************
- * Constants
- ********************************************/
-
-%constant double Pi = rw::math::Pi;
-%constant double Inch2Meter = rw::math::Inch2Meter;
-%constant double Meter2Inch = rw::math::Meter2Inch;
-%constant double Deg2Rad = rw::math::Deg2Rad;
-%constant double Rad2Deg = rw::math::Rad2Deg;
-
-/********************************************
- * STL vectors (primitive types)
- ********************************************/
-#if (defined(SWIGLUA) || defined(SWIGPYTHON))
-	%extend std::vector<std::string> { char *__str__() { return printCString(*$self); } }
-#endif
-
-namespace std {
-	%template(VectorString) std::vector<string>;
-	%template(VectorDouble) std::vector<double>;
-    %template(VectorFloat) std::vector<float>;
-	%template(VectorInt) std::vector<int>;
-    %template(Vectorbool) std::vector<bool>;
-    %template(pairDoubleDouble) std::pair<double,double>;
-    %template(pairUIntUInt) std::pair<unsigned int, unsigned int>;
-};
-
-/********************************************
- * CORE
- ********************************************/
-
-%include <rwlibs/swig/rw_i/core.i>
 
 /********************************************
  * COMMON
  ********************************************/
 
 %include <rwlibs/swig/rw_i/common.i>
-
-/********************************************
- * ROBWORK CLASS
- ********************************************/ 
- class RobWork {
- public:
-	RobWork();
-	
-	static rw::core::Ptr<RobWork> getInstance();
-	
-	std::string getVersion() const;
-	void initialize();
- };
- 
- %template (RobWorkPtr) rw::core::Ptr<RobWork>;
 
 /********************************************
  * GEOMETRY

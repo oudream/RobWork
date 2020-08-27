@@ -18,7 +18,9 @@
 #ifndef RW_CORE_PAIRITERATOR_HPP
 #define RW_CORE_PAIRITERATOR_HPP
 
+#if !defined(SWIG)
 #include <utility>
+#endif
 
 namespace rw { namespace core {
 

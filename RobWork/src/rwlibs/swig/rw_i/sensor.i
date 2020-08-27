@@ -71,7 +71,7 @@
         /**
          * @brief gets the propertymap of this sensor
          */
-        PropertyMap& getPropertyMap();
+        rw::core::PropertyMap& getPropertyMap();
     };
 
     %template (SensorPtr) rw::core::Ptr<Sensor>;
@@ -575,9 +575,9 @@
 
         /**
          * @brief gets the propertymap of this sensor
-         * @return reference to PropertyMap
+         * @return reference to rw::core::PropertyMap
          */
-        PropertyMap& getPropertyMap();
+        rw::core::PropertyMap& getPropertyMap();
     };
 
     %template (SensorModelPtr) rw::core::Ptr<SensorModel>;

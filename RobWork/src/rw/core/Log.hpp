@@ -22,11 +22,13 @@
    @file Log.hpp
 */
 
+#if !defined(SWIG)
 #include <rw/core/LogWriter.hpp>
 #include <rw/core/Ptr.hpp>
 
 #include <string>
 #include <vector>
+#endif
 
 namespace rw { namespace core {
     class Log;
@@ -154,28 +156,28 @@ namespace rw { namespace core {
          * that is associated with the info loglevel
          * @return info LogWriter
          */
-        static LogWriter& infoLog () { return Log::log ().info (); };
+        static rw::core::LogWriter& infoLog () { return Log::log ().info (); };
 
         /**
          * @brief convenience function for getting the LogWriter
          * that is associated with the warning loglevel
          * @return warning LogWriter
          */
-        static LogWriter& warningLog () { return Log::log ().warning (); };
+        static rw::core::LogWriter& warningLog () { return Log::log ().warning (); };
 
         /**
          * @brief convenience function for getting the LogWriter
          * that is associated with the error loglevel
          * @return error LogWriter
          */
-        static LogWriter& errorLog () { return Log::log ().error (); };
+        static rw::core::LogWriter& errorLog () { return Log::log ().error (); };
 
         /**
          * @brief convenience function for getting the LogWriter
          * that is associated with the debug loglevel
          * @return debug LogWriter
          */
-        static LogWriter& debugLog () { return Log::log ().get (Debug); };
+        static rw::core::LogWriter& debugLog () { return Log::log ().get (Debug); };
 
         /**
          * @brief returns the global log instance. Global in the sence
@@ -221,7 +223,7 @@ namespace rw { namespace core {
          * @param id [in] logindex
          * @return log writer
          */
-        LogWriter::Ptr getWriter (LogIndex id);
+        rw::core::LogWriter::Ptr getWriter (LogIndex id);
 
         /**
          * @brief Associates a LogWriter with the LogIndex \b id.
@@ -238,7 +240,7 @@ namespace rw { namespace core {
          * @param id [in] the LogIndex that the logwriter is associated with.
          * @param writer [in] LogWriter object to use
          */
-        void setWriter (LogIndex id, LogWriter::Ptr writer);
+        void setWriter (LogIndex id, rw::core::LogWriter::Ptr writer);
 
         /**
          * @brief Associates a LogWriter with the logs specified with \b mask.
@@ -255,7 +257,7 @@ namespace rw { namespace core {
          * @param mask [in] the LogIndexMask that the logwriter is associated with.
          * @param writer [in] LogWriter object to use
          */
-        void setWriterForMask (int mask, LogWriter::Ptr writer);
+        void setWriterForMask (int mask, rw::core::LogWriter::Ptr writer);
 
         /**
          * @brief Returns the LogWriter that is associated with LogIndex \b id
@@ -265,7 +267,7 @@ namespace rw { namespace core {
          * @param id [in] loglevel
          * @return Reference to LogWriter object
          */
-        LogWriter& get (LogIndex id);
+        rw::core::LogWriter& get (LogIndex id);
 
         /**
          * @brief Writes \b message to the log
@@ -286,7 +288,7 @@ namespace rw { namespace core {
          * @param id [in] Log identifier
          * @param message [in] Message to write
          */
-        void write (LogIndex id, const Message& message);
+        void write (LogIndex id, const rw::core::Message& message);
 
         /**
          * @brief Writes \b message followed by a '\\n' to the log

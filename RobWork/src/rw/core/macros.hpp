@@ -21,15 +21,15 @@
 /**
  * @file macros.hpp
  */
-
-#include "Exception.hpp"
-#include "IOUtil.hpp"
-#include "Message.hpp"
-
+#if !defined(SWIG)
+#include <rw/core/Exception.hpp>
+#include <rw/core/IOUtil.hpp>
 #include <rw/core/Log.hpp>
+#include <rw/core/Message.hpp>
 
 #include <iostream>
 #include <sstream>
+#endif
 
 /** @addtogroup core */
 /*@{*/

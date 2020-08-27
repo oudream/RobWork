@@ -45,7 +45,7 @@ class AutoClosePlugin : public Plugin
         Plugin::close (handle);
     }
 
-    std::vector< Extension::Descriptor > getExtensionDescriptors ()
+    std::vector< rw::core::Extension::Descriptor > getExtensionDescriptors ()
     {
         return _plugin->getExtensionDescriptors ();
     }

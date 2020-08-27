@@ -31,7 +31,6 @@
 #include <boost/spirit/include/classic_symbols.hpp>
 #include <boost/spirit/include/phoenix1.hpp>
 
-
 namespace rw { namespace loaders {
 
     /**

@@ -11,13 +11,20 @@ using rw::trajectory::Path;
 
 %include <exception.i>
 %import <rwlibs/swig/sdurw.i>
+%import <rwlibs/swig/sdurw_core.i>
 
 
 %pragma(java) jniclassimports=%{
 import org.robwork.sdurw.*;
+import org.robwork.sdurw_core.*;
+%}
+%pragma(java) moduleimports=%{
+import org.robwork.sdurw.*;
+import org.robwork.sdurw_core.*;
 %}
 %typemap(javaimports) SWIGTYPE %{
 import org.robwork.sdurw.*;
+import org.robwork.sdurw_core.*;
 %}
 
 class PathLengthOptimizer
@@ -77,6 +84,6 @@ public:
                                               double subDivideLength);
                                               */
     }
-    PropertyMap& getPropertyMap();
+    rw::core::PropertyMap& getPropertyMap();
 
 };

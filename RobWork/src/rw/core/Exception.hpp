@@ -22,11 +22,13 @@
  * @file Exception.hpp
  */
 
+#if !defined(SWIG)
 #include <rw/core/Message.hpp>
 
 #include <exception>
 #include <iosfwd>
 #include <string>
+#endif
 
 namespace rw { namespace core {
 
@@ -54,7 +56,7 @@ namespace rw { namespace core {
          *
          * @param message [in] A message for a user.
          */
-        Exception (const Message& message) : _id (-1), _message (message)
+        Exception (const rw::core::Message& message) : _id (-1), _message (message)
         {
             std::stringstream sstr;
             sstr << "Id[" << _id << "]" << _message.getFullText ();
@@ -67,7 +69,7 @@ namespace rw { namespace core {
          * @param id [in] Integer Id to identify the exception
          * @param message [in] A message for a user.
          */
-        Exception (int id, const Message& message) : _id (id), _message (message)
+        Exception (int id, const rw::core::Message& message) : _id (id), _message (message)
         {
             std::stringstream sstr;
             sstr << "Id[" << _id << "]" << _message.getFullText ();
@@ -81,7 +83,7 @@ namespace rw { namespace core {
          *
          * @return  The message for the user.
          */
-        const Message& getMessage () const { return _message; }
+        const rw::core::Message& getMessage () const { return _message; }
 
         /**
          * @brief get id of this exception message
@@ -103,22 +105,30 @@ namespace rw { namespace core {
          */
         const char* what () const throw () { return _whatMsg.c_str (); }
 
+#if !defined(SWIG)
+        /**
+         * @brief Format to \b out the message of the exception \b exp.
+         *
+         * The format for the text is
+         *	\code
+         * 	<file>:<line> <message>
+         *	\endcode
+         * @return The stream \b out.
+         */
+        friend std::ostream& operator<< (std::ostream& out, const Exception& exp)
+        {
+            out << exp.getMessage ();
+            return out;
+        }
+#else
+        TOSTRING (rw::core::Exception);
+#endif
+
       private:
         int _id;
-        Message _message;
+        rw::core::Message _message;
         std::string _whatMsg;
     };
-
-    /**
-     * @brief Format to \b out the message of the exception \b exp.
-     *
-     * The format for the text is
-     *	\code
-     * 	<file>:<line> <message>
-     *	\endcode
-     * @return The stream \b out.
-     */
-    std::ostream& operator<< (std::ostream& out, const Exception& exp);
 
     /*@}*/
 }}    // namespace rw::core

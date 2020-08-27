@@ -1,7 +1,9 @@
+require("sdurw_core")
 require("sdurw")
 require("sdurw_simulation")
 require("sdurws")
 
+using("sdurw_core")
 using("sdurw")
 using("sdurw_simulation")
 using("sdurws")

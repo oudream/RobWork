@@ -22,9 +22,10 @@
  * @file StringUtil.hpp
  */
 
+#if !defined(SWIG)
 #include <string>
 #include <vector>
-
+#endif
 namespace rw { namespace core {
 
     /** @addtogroup core */

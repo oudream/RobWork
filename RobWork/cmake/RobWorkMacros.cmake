@@ -652,7 +652,7 @@ macro(RW_ADD_SWIG _name _language _type)
     add_library(${PROJECT_PREFIX}::${SLIB_TARGET_NAME} ALIAS ${SLIB_TARGET_NAME})
 
     if((CMAKE_COMPILER_IS_GNUCC) OR (CMAKE_C_COMPILER_ID STREQUAL "Clang"))
-        if (CMAKE_COMPILER_IS_GNUCC AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 9.0)
+        if(CMAKE_COMPILER_IS_GNUCC AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 9.0)
             set_target_properties(${SLIB_TARGET_NAME} PROPERTIES LINK_FLAGS -Wl,--no-undefined)
         else()
             set_target_properties(${SLIB_TARGET_NAME} PROPERTIES LINK_FLAGS -Wl,--no-undefined)
@@ -682,6 +682,106 @@ macro(RW_ADD_SWIG _name _language _type)
     endif()
 endmacro()
 
+macro(RW_ADD_JAVA_CLEAN_TARGET _name)
+    add_custom_command(
+        OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/CleanDep_${_name}
+        COMMAND ${CMAKE_COMMAND} -E remove_directory java_src_${_name}
+        COMMAND ${CMAKE_COMMAND} -E touch ${CMAKE_CURRENT_BINARY_DIR}/CleanDep_${_name}
+        DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/../${_name}.i"
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+        COMMENT "Removing old Java source..."
+    )
+    add_custom_target(CleanDepRW_${_name} DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/CleanDep_${_name})
+
+    if((CMAKE_GENERATOR MATCHES "Make") AND (NOT CMAKE_VERSION VERSION_LESS 3.12))
+        add_dependencies(${_name}_jni_swig_compilation CleanDepRW_${_name})
+    else()
+        add_dependencies(${_name}_jni CleanDepRW_${_name})
+    endif()
+
+endmacro()
+
+macro(RW_ADD_JAVA_LIB _name)
+    # ###### Handle Options #####
+    set(options) # Used to marke flags
+    set(oneValueArgs LOADER_FILE LOADER_PKG WINDOW_TITLE) # used to marke values with a single value
+    set(multiValueArgs CLASSPATH JAVADOC_LINK)
+    cmake_parse_arguments(JLIB "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
+
+    if(NOT WIN32)
+        string(REPLACE ";" ":" JLIB_CLASSPATH "${JLIB_CLASSPATH}")
+    endif()
+    
+    set(DOC_LINK)
+    foreach(lib ${JLIB_JAVADOC_LINK})
+        set(DOC_LINK ${DOC_LINK} "-link" ${lib})
+    endforeach()
+
+    add_custom_command(
+        TARGET ${_name}_jni POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E echo "Removing old Java compilation..."
+        COMMAND
+            ${CMAKE_COMMAND} -E remove_directory
+            "${CMAKE_CURRENT_BINARY_DIR}/java_build_${_name}"
+        COMMAND
+            ${CMAKE_COMMAND} -E remove_directory
+            "${${PROJECT_PREFIX}_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/javadoc/${_name}"
+        COMMAND ${CMAKE_COMMAND} -E echo "Copying Java source..."
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different 
+        ${CMAKE_CURRENT_SOURCE_DIR}/Loader${PROJECT_PREFIX}.java
+        java_src_${_name}/org/robwork/Loader${PROJECT_PREFIX}.java
+        COMMAND ${CMAKE_COMMAND} -E echo "Compiling Java files..."
+        COMMAND
+            ${CMAKE_COMMAND} -E make_directory
+            java_build_${_name}/org/robwork/${_name}
+        COMMAND
+            ${Java_JAVAC_EXECUTABLE}
+            -classpath
+            ${JLIB_CLASSPATH}
+            -d
+            ${CMAKE_CURRENT_BINARY_DIR}/java_build_${_name}
+            java_src_${_name}/org/robwork/*.java
+            java_src_${_name}/org/robwork/${_name}/*.java
+        COMMAND ${CMAKE_COMMAND} -E echo "Creating jar file..."
+        COMMAND
+            ${Java_JAR_EXECUTABLE}
+            cvf
+            ${${PROJECT_PREFIX}_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RW_MODULE}_java.jar
+            -C
+            java_build_${_name}
+            .
+        COMMAND ${CMAKE_COMMAND} -E echo "Creating jar file of source..."
+        COMMAND
+            ${Java_JAR_EXECUTABLE}
+            cvf
+            ${${PROJECT_PREFIX}_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RW_MODULE}_java-source.jar
+            -C
+            java_src_${_name}
+            .
+        COMMAND ${CMAKE_COMMAND} -E echo "Creating Javadoc..."
+        COMMAND
+            ${CMAKE_COMMAND} -E make_directory
+            ${${PROJECT_PREFIX}_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/javadoc/${_name}
+        COMMAND
+            ${Java_JAVADOC_EXECUTABLE}
+            -classpath
+            ${JLIB_CLASSPATH}
+            -d
+            ${${PROJECT_PREFIX}_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/javadoc/${_name}
+            -windowtitle
+            ${JLIB_WINDOW_TITLE}
+            -public
+            -sourcepath
+            java_src_${_name}
+            ${JLIB_LOADER_PKG}
+            org.robwork.${_name}
+            ${DOC_LINK}
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+    )
+
+
+endmacro()
+
 # ##################################################################################################
 # Set a value in a global, cached map. _map The map name. _key The key name. _value The value.
 macro(SET_IN_GLOBAL_MAP _map _key _value)
@@ -701,7 +801,7 @@ endmacro()
 # met. * _name The name of the subsystem. * ARGN The subsystems and external libraries to depend on.
 macro(RW_SUBSYS_DEPEND _name)
     if(${ARGC} GREATER 1)
-        set_in_global_map(RW_SUBSYS_DEPEND ${_name} ${ARGN})
+        set_in_global_map(RW_SUBSYS_DEPEND ${_name} "${ARGN}")
     else()
         set_in_global_map(RW_SUBSYS_DEPEND ${_name} "")
     endif()
@@ -795,6 +895,7 @@ macro(RW_SUBSYS_OPTION _var _name _desc _default)
         rw_add_doc(${_name})
     endif()
     set_in_global_map(RW_SUBSYS_BUILD ${_name} ${${_var}})
+
     rw_subsys_depend(${_name} ${SUBSYS_DEPENDS})
     rw_add_subsystem(${_name} ${_desc})
 endmacro()

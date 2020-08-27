@@ -18,9 +18,3 @@
 #include "Exception.hpp"
 
 using namespace rw::core;
-
-std::ostream& rw::core::operator<< (std::ostream& out, const Exception& exp)
-{
-    out << exp.getMessage ();
-    return out;
-}

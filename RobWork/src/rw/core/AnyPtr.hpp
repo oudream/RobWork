@@ -18,9 +18,11 @@
 #ifndef RW_CORE_ANY_HPP
 #define RW_CORE_ANY_HPP
 
+#if !defined(SWIG)
 #include <rw/core/Ptr.hpp>
 
 #include <typeinfo>
+#endif
 
 namespace rw { namespace core {
 
@@ -86,11 +88,12 @@ namespace rw { namespace core {
             return content_cast->_ptr.get ();
         }
 
+#if !defined(SWIG)
         /**
          * @brief Support for implicit conversion to bool.
          */
         operator void* () const { return content->getVoidPtr (); }
-
+#endif
         /**
          * @brief Equality operator. This only tests if the pointers to the referenced objects are
          * the same and NOT if the smart pointers are the same.
@@ -101,12 +104,13 @@ namespace rw { namespace core {
         {
             return content->getVoidPtr () == p.get ();
         }
-
+#if !defined(SWIG)
         /**
          * @brief Tests if the smart pointer points to the same instance as \b p
          * @return true if equal, false otherwise.
          */
         bool operator== (void* p) const { return content->getVoidPtr () == p; }
+#endif
 
         /**
          * @brief Check if pointer is null.

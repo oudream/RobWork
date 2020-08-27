@@ -21,9 +21,9 @@
 /**
  * @file Property.hpp
  */
-
-#include "PropertyBase.hpp"
-
+#if !defined(SWIG)
+#include <rw/core/PropertyBase.hpp>
+#endif
 namespace rw { namespace core {
 
     /** @addtogroup core */

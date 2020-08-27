@@ -18,11 +18,12 @@
 #ifndef RW_CORE_EXTENSIONREGISTRY_HPP
 #define RW_CORE_EXTENSIONREGISTRY_HPP
 
+#if !defined(SWIG)
 #include <rw/core/Extension.hpp>
 #include <rw/core/Ptr.hpp>
 
 #include <map>
-
+#endif
 namespace rw { namespace core {
 
     /**
@@ -50,7 +51,7 @@ namespace rw { namespace core {
          * @param ext_point_id [in] identifier of extension point
          * @return list of extension point descriptions
          */
-        std::vector< Extension::Descriptor >
+        std::vector< rw::core::Extension::Descriptor >
         getExtensionDescriptors (const std::string& ext_point_id) const;
 
         /**

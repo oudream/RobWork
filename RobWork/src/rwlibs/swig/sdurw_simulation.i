@@ -10,18 +10,22 @@ using namespace rwlibs::swig;
 %include <std_vector.i>
 %include <exception.i>
 
+%import <rwlibs/swig/sdurw_core.i>
 %import <rwlibs/swig/sdurw.i>
 %import <rwlibs/swig/sdurw_control.i>
 
 %pragma(java) jniclassimports=%{
 import org.robwork.sdurw.*;
+import org.robwork.sdurw_core.*;
 %}
 %pragma(java) moduleimports=%{
 import org.robwork.sdurw.*;
+import org.robwork.sdurw_core.*;
 %}
 %typemap(javaimports) SWIGTYPE %{
 import org.robwork.sdurw.*;
 import org.robwork.sdurw_control.*;
+import org.robwork.sdurw_core.*;
 %}
 
 #if (defined(SWIGPYTHON) || defined(SWIGLUA))
@@ -155,7 +159,7 @@ public:
    virtual double getTime() = 0;
    virtual void setEnabled(Frame* frame, bool enabled) = 0;
    virtual State& getState() = 0;
-   virtual PropertyMap& getPropertyMap() = 0;
+   virtual rw::core::PropertyMap& getPropertyMap() = 0;
 
 };
 

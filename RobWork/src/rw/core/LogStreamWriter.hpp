@@ -18,9 +18,11 @@
 #ifndef RW_CORE_LOGSTREAMWRITER_HPP
 #define RW_CORE_LOGSTREAMWRITER_HPP
 
+#if !defined(SWIG)
 #include <rw/core/LogWriter.hpp>
 
 #include <iosfwd>
+#endif
 
 namespace rw { namespace core {
 

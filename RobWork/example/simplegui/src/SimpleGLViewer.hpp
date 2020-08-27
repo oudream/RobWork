@@ -5,8 +5,9 @@
 
 namespace rw { namespace models { class WorkCell; } }
 namespace rwlibs { namespace opengl { class SceneOpenGL; } }
-
+namespace example{
 class EventListener;
+}
 class Menu;
 
 #include <map>
@@ -97,7 +98,7 @@ class SimpleGLViewer: public rw::graphics::SceneViewer {
 
         void addMenu(Menu *menu);
 
-        void setKeyListener(EventListener *listener);
+        void setKeyListener(example::EventListener *listener);
 
         void setWorkcell(rw::core::Ptr<rw::models::WorkCell> workcell);
 

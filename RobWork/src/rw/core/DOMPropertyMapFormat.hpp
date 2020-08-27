@@ -18,8 +18,9 @@
 #ifndef RW_CORE_DOMPROPERTYMAPFORMAT_HPP
 #define RW_CORE_DOMPROPERTYMAPFORMAT_HPP
 
+#if ! defined(SWIG)
 #include <string>
-
+#endif
 namespace rw { namespace core {
 
     /** @addtogroup loaders */

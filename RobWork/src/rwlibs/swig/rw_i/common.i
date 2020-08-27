@@ -919,7 +919,7 @@
      * the entire content of the buffer it is truncated.
      *
      */
-    class LogBufferedChar : public LogWriter
+    class LogBufferedChar : public rw::core::LogWriter
     {
       public:
         /**
@@ -980,7 +980,7 @@
      * The size of the buffer is not fixed and will grow until flush is called.
      * To have a fixed size buffer use LogBufferedChar instead.
      */
-    class LogBufferedMsg : public LogWriter
+    class LogBufferedMsg : public rw::core::LogWriter
     {
       public:
         /**
@@ -1023,7 +1023,7 @@
      /**
      * @brief Writes log output to a file
      */
-    class LogFileWriter : public LogWriter
+    class LogFileWriter : public rw::core::LogWriter
     {
       public:
         /**
@@ -1060,7 +1060,7 @@
     /**
      * @brief Writes log output to multiple LogWriters
      */
-    class LogMultiWriter : public LogWriter
+    class LogMultiWriter : public rw::core::LogWriter
     {
       public:
         /**
@@ -1076,7 +1076,7 @@
         /**
          * @brief Adds a LogWriter to be written to
          */
-        void addWriter (rw::core::Ptr<LogWriter> writer);
+        void addWriter (rw::core::Ptr<rw::core::LogWriter> writer);
 
       protected:
         /**
@@ -1754,16 +1754,16 @@
          *
          * @param e [in] an exception describing the problem.
          */
-        void registerFailure (const Exception& e);
+        void registerFailure (const rw::core::Exception& e);
 
         /*
          * @brief Get a list of exceptions registered in task and subtasks.
          * @return a list of exceptions.
          */
         %extend {
-            std::vector<Exception> getException() const{
-              std::list<Exception> init = $self->getExceptions();
-              return std::vector<Exception> (init.begin(),init.end());
+            std::vector<rw::core::Exception> getException() const{
+              std::list<rw::core::Exception> init = $self->getExceptions();
+              return std::vector<rw::core::Exception> (init.begin(),init.end());
             }
         }
     };

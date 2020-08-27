@@ -1,6 +1,8 @@
+require("sdurw_core")
 require("sdurw")
 require("sdurw_proximitystrategies")
 
+using("sdurw_core")
 using("sdurw")
 using("sdurw_proximitystrategies")
 

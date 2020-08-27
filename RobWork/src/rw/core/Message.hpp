@@ -21,10 +21,11 @@
 /**
  * @file Message.hpp
  */
-
+#if !defined(SWIG)
 #include <iostream>
 #include <sstream>
 #include <string>
+#endif
 
 namespace rw { namespace core {
 
@@ -143,18 +144,25 @@ namespace rw { namespace core {
         std::string _message;
     };
 
+//#if !defined(SWIG)
     /** @brief Format to \b out the message \b msg.
      *
      * The format for the exception is
-\code
-<file>:<line> <message>
-\endcode
+        \code
+        <file>:<line> <message>
+        \endcode
      * @return The stream \b out.
      */
     std::ostream& operator<< (std::ostream& out, const Message& msg);
 
+//#endif
+
     /*@}*/
 }}    // namespace rw::core
+
+#if defined(SWIG)
+TOSTRING_OUTOFCLASSDEF (rw::core::Message)
+#endif
 
 /**
  * @brief Deprecated namespace since 16/4-2020 for this class

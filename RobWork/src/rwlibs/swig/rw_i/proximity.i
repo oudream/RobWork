@@ -1494,23 +1494,14 @@
     OWNEDPTR(ProximityModel);
 
 // ################# ProximitySetup
-    class ProximitySetup
+    /*class ProximitySetup
     {
     public:
-        /**
-         * @brief Default constructor for when no excludes are described
-         */
+
         ProximitySetup();
 
         ProximitySetup(const CollisionSetup& csetup);
 
-        /**
-         @brief Constructs ProximitySetup with list of exclusions
-        @param rules documentation missing !
-        @cond
-        @param exclude [in] pairs to be excluded
-        @endcond
-        */
         ProximitySetup(const std::vector<ProximitySetupRule>& rules);
 
 
@@ -1518,15 +1509,9 @@
 
         void removeProximitySetupRule(const ProximitySetupRule& rule);
 
-        /**
-         * @brief Returns the exclude list
-         * @return the exclude list
-         */
         const std::vector<ProximitySetupRule>& getProximitySetupRules() const;
 
-        /**
-         * @brief Combine setup of this and setup of \b b into this collision setup.
-         */
+
         void merge(const ProximitySetup& setup, const std::string& prefix);
 
         bool useExcludeStaticPairs() const;
@@ -1551,7 +1536,12 @@
 
         static void set(const ProximitySetup& setup, rw::core::Ptr<WorkCell> wc);
         static void set(const ProximitySetup& setup, rw::core::PropertyMap& map);
-    };
+    };*/
+
+%{
+    #include <rw/proximity/ProximitySetup.hpp>
+%}
+%include <rw/proximity/ProximitySetup.hpp>
 
 // ################# ProximitySetupRule
 

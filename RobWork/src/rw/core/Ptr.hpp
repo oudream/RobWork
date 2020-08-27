@@ -32,9 +32,11 @@
 #include <boost/shared_ptr.hpp>
 #endif
 
+#if !defined(SWIG)
 #include <memory>
 #include <type_traits>
 #include <vector>
+#endif
 
 namespace rw { namespace core {
 
@@ -42,8 +44,8 @@ namespace rw { namespace core {
     /*@{*/
 
     /**
-       @brief Ptr stores a pointer and optionally takes ownership of the value.
-     */
+   @brief Ptr stores a pointer and optionally takes ownership of the value.
+ */
     template< class T > class Ptr
     {
       public:
@@ -72,27 +74,27 @@ namespace rw { namespace core {
         typedef T value_type;
 
         /**
-       @brief Default constructor yielding a NULL-pointer.
+         * @brief Default constructor yielding a NULL-pointer.
          */
         Ptr () : _ptr (0), _owned_ptr () {}
 
         /**
-       @brief Do not take ownership of \b ptr.
-
-       \b ptr can be null.
-
-       The constructor is implicit on purpose.
+         * @brief Do not take ownership of \b ptr.
+         *
+         * \b ptr can be null.
+         *
+         * The constructor is implicit on purpose.
          */
         Ptr (T* ptr) : _ptr (ptr), _owned_ptr () {}
 
 #ifdef RW_USE_BOOST_PTR_COMPLIANCE
         /**
-       @brief Take ownership of \b ptr.
+   @brief Take ownership of \b ptr.
 
-       \b ptr can be null.
+   \b ptr can be null.
 
-       The constructor is implicit on purpose.
-         */
+   The constructor is implicit on purpose.
+     */
         Ptr (boost_shared_ptr ptr) :
             _ptr (ptr.get ()),
 #ifdef RW_USE_BOOST_PTR
@@ -104,11 +106,11 @@ namespace rw { namespace core {
 #endif
 
         /**
-       @brief Take ownership of \b ptr.
-
-       \b ptr can be null.
-
-       The constructor is implicit on purpose.
+         * @brief Take ownership of \b ptr.
+         *
+         * \b ptr can be null.
+         *
+         * The constructor is implicit on purpose.
          */
         Ptr (cpp_shared_ptr ptr) :
             _ptr (ptr.get ()),
@@ -181,6 +183,13 @@ namespace rw { namespace core {
                 return Ptr< S > (static_cast< S* > (_ptr));
         }
 
+#if !defined(SWIG)
+
+        /**
+         * @brief Construct smart pointer from other smart pointer.
+         *
+         * @param p the other (compatible) smart pointer.
+         */
         template< class S >
         Ptr< T > (Ptr< S > const& p,
                   typename std::enable_if< std::is_base_of< T, S >::value >::type* = 0)
@@ -188,6 +197,18 @@ namespace rw { namespace core {
             _owned_ptr = p.getSharedPtr ();
             _ptr       = p.get ();
         }
+#else
+        /**
+         * @brief Construct smart pointer from other smart pointer.
+         *
+         * @param p the other (compatible) smart pointer.
+         */
+        template< class S > Ptr (const Ptr< S >& p)
+        {
+            _owned_ptr = p.getSharedPtr ();
+            _ptr       = p.get ();
+        }
+#endif
 
         /**
          * @brief The pointer stored in the object.
@@ -204,10 +225,12 @@ namespace rw { namespace core {
          */
         pointer operator-> () const { return get (); }
 
+#if !defined(SWIG)
         /**
          *@brief Support for implicit conversion to bool.
          */
         operator const void* () const { return get (); }
+#endif
 
 #ifdef RW_USE_BOOST_PTR_COMPLIANCE
         Ptr< T >& operator= (boost_shared_ptr& ptr)
@@ -217,13 +240,14 @@ namespace rw { namespace core {
             return *this;
         }
 #endif
-
+#if !defined(SWIG)
         Ptr< T >& operator= (cpp_shared_ptr& ptr)
         {
             _ptr       = ptr.get ();
             _owned_ptr = ptr;
             return *this;
         }
+#endif
 
         /**
          * @brief equallity operator, this only tests if the pointers to the referenced objects are
@@ -233,11 +257,12 @@ namespace rw { namespace core {
          */
         template< class A > bool operator== (const Ptr< A >& p) const { return get () == p.get (); }
 
+#if !defined(SWIG)
         /**
          * @brief Tests if the smart pointer points to the same instance as \b p
          */
         bool operator== (void* p) const { return get () == p; }
-
+#endif
         /**
          * @brief check if this Ptr has shared ownership or none
          * ownership
@@ -284,7 +309,7 @@ namespace rw { namespace core {
             return _owned_ptr;
 #endif
         }
-
+#if !defined(SWIG)
 #ifdef RW_USE_BOOST_PTR_COMPLIANCE
         /**
          * @brief Implicitly convert to boost::shared_ptr type.
@@ -293,19 +318,19 @@ namespace rw { namespace core {
          */
         operator boost_shared_ptr () const { return getBoostSharedPtr (); }
 #endif
-
         /**
          * @brief Implicitly convert to std::shared_ptr type.
          *
          * @return std::shared_ptr
          */
         operator cpp_shared_ptr () const { return getCppSharedPtr (); }
-
+#endif
         /**
          * @brief Returns the shared pointer used internally
          */
         shared_ptr getSharedPtr () const { return _owned_ptr; }
 
+#if !defined(SWIG)
         /**
          * @brief Get const Pointer.
          * @return a copy in the form of Ptr<const T>;
@@ -320,12 +345,13 @@ namespace rw { namespace core {
                 return this->scast< const T > ();
             }
         }
-
+#endif
       private:
         T* _ptr;
         shared_ptr _owned_ptr;
     };
 
+#if !defined(SWIGLUA)
     /**
      * @brief Comparator for comparing an ordinary pointer with a smart pointer
      *
@@ -336,12 +362,13 @@ namespace rw { namespace core {
     {
         return p == g.get ();
     }
+#endif
 
     /**
-       @brief A Ptr that takes ownership over a raw pointer \b ptr.
+   @brief A Ptr that takes ownership over a raw pointer \b ptr.
 
-       @relates Ptr
-     */
+   @relates Ptr
+ */
     template< class T > Ptr< T > ownedPtr (T* ptr)
     {
         return Ptr< T > (typename Ptr< T >::shared_ptr (ptr));

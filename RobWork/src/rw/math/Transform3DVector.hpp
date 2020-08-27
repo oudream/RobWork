@@ -250,6 +250,7 @@ namespace rw { namespace math {
             return Transform3DVector< T > (this->_t3d * rhs);
         }
 
+#if !defined(SWIGPYTHON)
         /**
          * @brief Scalar multiplication
          * @param lhs [in] the scalar to multiply with
@@ -260,7 +261,7 @@ namespace rw { namespace math {
         {
             return Transform3DVector< T > (lhs * rhs._t3d);
         }
-
+#endif
         /**
          * @brief Scalar addition
          * @param rhs [in] the scalar to add
@@ -274,7 +275,7 @@ namespace rw { namespace math {
             }
             return ret;
         }
-
+#if !defined(SWIGPYTHON)
         /**
          * @brief Scalar addition
          * @param lhs [in] the scalar to subtraction
@@ -289,7 +290,7 @@ namespace rw { namespace math {
             }
             return ret;
         }
-
+#endif 
         /**
          * @brief Scalar subtraction
          * @param rhs [in] the scalar to subtract
@@ -303,7 +304,7 @@ namespace rw { namespace math {
             }
             return ret;
         }
-
+#if !defined(SWIGPYTHON)
         /**
          * @brief Scalar subtraction
          * @param lhs [in] the scalar to subtract
@@ -318,6 +319,7 @@ namespace rw { namespace math {
             }
             return ret;
         }
+#endif
 
         /**
          * @brief Scalar devision
@@ -328,7 +330,7 @@ namespace rw { namespace math {
         {
             return Transform3DVector< T > (this->_t3d / rhs);
         }
-
+#if !defined(SWIGPYTHON)
         /**
          * @brief Scalar devision
          * @param lhs [in] the scalar to devide with
@@ -343,6 +345,7 @@ namespace rw { namespace math {
             }
             return ret;
         }
+#endif 
 
         // ###################################################
         // #                Acces Operators                  #
@@ -429,6 +432,7 @@ namespace rw { namespace math {
         // #             assignement Operators               #
         // ###################################################
 
+#if !defined(SWIGPYTHON)
         /**
          * @brief copy the transform
          * @param rhs the transform to copy
@@ -439,7 +443,7 @@ namespace rw { namespace math {
             this->_t3d = rhs._t3d;
             return *this;
         }
-
+#endif
         /**
          * @brief add to the transform
          * @param rhs the transform to be added
@@ -461,7 +465,7 @@ namespace rw { namespace math {
             this->_t3d = this->_t3d - rhs._t3d;
             return *this;
         }
-
+#if !defined(SWIGPYTHON)
         /**
          * @brief Override the Roation of the transform
          * @param rhs the new rotation
@@ -472,7 +476,7 @@ namespace rw { namespace math {
             *this = Transform3DVector< T > (this->toVector3D (), rhs);
             return *this;
         }
-
+#endif
         /**
          * @brief add to the Roation of the transform
          * @param rhs the rotation to be added
@@ -495,6 +499,7 @@ namespace rw { namespace math {
             return *this;
         }
 
+#if !defined(SWIGPYTHON)
         /**
          * @brief convert and copy the transform
          * @param rhs the transform to copy
@@ -505,7 +510,8 @@ namespace rw { namespace math {
             this->_t3d = Transform3DVector< T > (rhs)._t3d;
             return *this;
         }
-
+#endif
+#if !defined(SWIGPYTHON)
         /**
          * @brief Override the position of the transform
          * @param rhs the new position
@@ -516,7 +522,7 @@ namespace rw { namespace math {
             *this = Transform3DVector< T > (rhs, this->toQuaternion ());
             return *this;
         }
-
+#endif
         /**
          * @brief add to the position of the transform
          * @param rhs the new position
@@ -538,7 +544,7 @@ namespace rw { namespace math {
             *this = *this - rhs;
             return *this;
         }
-
+#if !defined(SWIGPYTHON)
         /**
          * @brief copy the transform from an eigen vector
          * @param rhs the transform to copy
@@ -549,6 +555,7 @@ namespace rw { namespace math {
             this->_t3d = rhs;
             return *this;
         }
+#endif
 #if !defined(SWIG)
         /**
          * @brief implicit conversion to transform
@@ -563,6 +570,10 @@ namespace rw { namespace math {
       private:
         type _t3d;
     };
+
+#if defined(SWIGPYTHON)
+
+#endif
 
 #if !defined(SWIG)
     extern template class rw::math::Transform3DVector< double >;

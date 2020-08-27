@@ -54,25 +54,12 @@ if(build)
     # Force removal of previous Java compilation and source when interface file changes This is
     # required as types may be removed or change name (in this case previous java classes would
     # interfere with current compilation).
-    add_custom_command(
-        OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/CleanDep
-        COMMAND ${CMAKE_COMMAND} -E remove_directory java_src
-        COMMAND ${CMAKE_COMMAND} -E touch ${CMAKE_CURRENT_BINARY_DIR}/CleanDep
-        DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/../sdurwsim.i"
-        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-        COMMENT "Removing old Java source..."
-    )
-    add_custom_target(CleanDepRWSIM DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/CleanDep)
-
-    if((CMAKE_GENERATOR MATCHES "Make") AND (NOT CMAKE_VERSION VERSION_LESS 3.12))
-        add_dependencies(sdurwsim_jni_swig_compilation CleanDepRWSIM)
-    else()
-        add_dependencies(sdurwsim_jni CleanDepRWSIM)
-    endif()
+    rw_add_java_clean_target(sdurwsim)
 
     # Make sure Robwork jave is compiled first
     foreach( 
         dep
+        sdurw_core_jni
         sdurw_jni
         sdurw_task_jni
         sdurw_assembly_jni
@@ -87,12 +74,12 @@ if(build)
     if(WIN32)
         set(CLASSPATH
             -classpath
-            "${RW_LIBS}/sdurw_java.jar\;${RW_LIBS}/sdurw_task_java.jar\;${RW_LIBS}/sdurw_assembly_java.jar\;${RW_LIBS}/sdurw_control_java.jar\;${RW_LIBS}/sdurw_simulation_java.jar"
+            "${RW_LIBS}/sdurw_core_java.jar\;${RW_LIBS}/sdurw_java.jar\;${RW_LIBS}/sdurw_task_java.jar\;${RW_LIBS}/sdurw_assembly_java.jar\;${RW_LIBS}/sdurw_control_java.jar\;${RW_LIBS}/sdurw_simulation_java.jar"
         )
     else()
         set(CLASSPATH
             -classpath
-            ${RW_LIBS}/sdurw_java.jar:${RW_LIBS}/sdurw_task_java.jar:${RW_LIBS}/sdurw_assembly_java.jar:${RW_LIBS}/sdurw_control_java.jar:${RW_LIBS}/sdurw_simulation_java.jar
+            ${RW_LIBS}/sdurw_core_java.jar:${RW_LIBS}/sdurw_java.jar:${RW_LIBS}/sdurw_task_java.jar:${RW_LIBS}/sdurw_assembly_java.jar:${RW_LIBS}/sdurw_control_java.jar:${RW_LIBS}/sdurw_simulation_java.jar
         )
     endif()
     # Compile java code and create JAR and Javadoc
@@ -138,7 +125,7 @@ if(build)
             ${Java_JAVADOC_EXECUTABLE} ${CLASSPATH} -d
             ${RWSIM_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/javadoc -windowtitle
             "RobWorkSim Java API Documentation" -public -sourcepath java_src org.robwork
-            org.robwork.sdurwsim -link ${RW_LIBS}/javadoc/sdurw
+            org.robwork.sdurwsim -link ${RW_LIBS}/javadoc/sdurw -link ${RW_LIBS}/javadoc/sdurw_core
         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
     )
     set(CMAKE_SWIG_OUTDIR ${RWSIM_CMAKE_LIBRARY_OUTPUT_DIRECTORY})
