@@ -347,7 +347,6 @@ stages:
   artifacts:
     paths:
       - ./DEBPKG
-      - ./debian
     expire_in: 2 day
     when: on_success
 
