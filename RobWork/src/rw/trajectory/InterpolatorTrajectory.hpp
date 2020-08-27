@@ -175,6 +175,36 @@ namespace rw { namespace trajectory {
         /**
          * @brief Adds an interpolator to the end of the trajectory.
          *
+         * When adding the interpolator the Trajectory makes a copy of it
+         *
+         * @param interpolator [in] The interpolator to add
+         */
+        template< template< typename > class I > void add (const I< T >& interpolator)
+        {
+            add (NULL, rw::core::ownedPtr (new I< T > (interpolator)));
+        }
+
+        /**
+         * @brief Adds a blend and an interpolator to the trajectory.
+         *
+         * The Blend added is used to blend between what was previously the last
+         * Interpolator of the trajectory onto \b interpolator, which become the
+         * new last interpolator of the trajectory.
+         * 
+         * When adding the interpolator and blend the Trajectory makes a copy of it
+         * @param blend [in] the blend to add
+         * @param interpolator [in] the interpolator to add
+         */
+        template< template< typename > class B, template< typename > class I >
+        void add (const B< T >& blend, const I< T >& interpolator)
+        {
+            add (rw::core::ownedPtr (new B< T > (blend)),
+                 rw::core::ownedPtr (new I< T > (interpolator)));
+        }
+
+        /**
+         * @brief Adds an interpolator to the end of the trajectory.
+         *
          * When adding the interpolator the Trajectory takes ownership.
          *
          * @param interpolator [in] The interpolator to add
@@ -187,6 +217,8 @@ namespace rw { namespace trajectory {
          * The Blend added is used to blend between what was previously the last
          * Interpolator of the trajectory onto \b interpolator, which become the
          * new last interpolator of the trajectory.
+         * @param blend [in] the blend to add
+         * @param interpolator [in] the interpolator to add
          */
         void add (rw::core::Ptr< Blend< T > > blend,
                   rw::core::Ptr< Interpolator< T > > interpolator)

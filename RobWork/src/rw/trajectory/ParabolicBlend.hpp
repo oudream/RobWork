@@ -25,7 +25,7 @@
 #include "Blend.hpp"
 #include "LinearInterpolator.hpp"
 
-#include <rw/math/Math.hpp>
+#include <rw/core/macros.hpp>
 
 namespace rw { namespace trajectory {
 
@@ -37,10 +37,6 @@ namespace rw { namespace trajectory {
      *
      * A parabolic blend is characterized by a constant acceleration through the blend. The current
      * implementation only supports blending between linear segments.
-     *
-     * Details of how to implement it can be found in [1].
-     *
-     * [1]: Robert J. Schilling, Fundamentals of Robotics: Analysis and Control, pp. 142-145
      */
     template< class T > class ParabolicBlend : public Blend< T >
     {
@@ -52,18 +48,69 @@ namespace rw { namespace trajectory {
          * @param line2 [in] Second segment
          * @param tau [in] Blend time
          */
-        ParabolicBlend (const typename LinearInterpolator< T >::CPtr line1,
-                        const typename LinearInterpolator< T >::CPtr line2, double tau)
+        ParabolicBlend (const LinearInterpolator< T >& line1, const LinearInterpolator< T >& line2,
+                        double tau) : _tau(tau)
         {
-            _tau  = tau;
-            _w1   = line1->getEnd ();
-            T w2  = line2->getEnd ();
-            _dw1  = _w1 - line1->getStart ();
-            T dw2 = w2 - line2->getStart ();
-            _t1   = line1->duration ();
-            _t2   = line2->duration ();
-            _a    = (_t1 * dw2 - _t2 * _dw1) / (2 * _t1 * _t2 * tau);
+            if (_tau > line1.duration () || _tau > line2.duration ()) {
+                RW_THROW ("blend time tau is greater then LineInterpolator duration");
+            }
+            if (line1.getEnd () != line2.getStart ()) {
+                RW_THROW ("Bland cannot be performed when line1.getEnd() != line2.getStart()");
+            }
+            double T1 = line1.duration ();
+            T X       = line1.getEnd ();
+            T v1      = (line1.getStart () - line1.getEnd ()) / (0 - line1.duration ());
+            T v2      = (line2.getEnd () - line1.getEnd ()) / (line2.duration ());
+
+            T K       = (v2 - v1) / (4 * tau);
+            double K2 = -T1 + tau;
+            T& K3     = v1;
+            double K4 = -T1;
+            T& K5     = X;
+
+            _a = K;
+            _b = 2 * K * K2 + K3;
+            _c = K * pow (K2, 2) + K3 * K4 + K5;
+
+            _duration = line1.duration () + line2.duration ();
+            _start    = line1.duration () - _tau;
         }
+
+        /**
+         * @brief Constructs parabolic blend between \b line1 and \b line2 with \b tau
+         * as blend time. The segments is copied for internal storage
+         * @param line1 [in] First segment
+         * @param line2 [in] Second segment
+         * @param tau [in] Blend time
+         */
+        explicit ParabolicBlend (const typename LinearInterpolator< T >::CPtr line1,
+                                 const typename LinearInterpolator< T >::CPtr line2, double tau) :
+            ParabolicBlend (*line1, *line2, tau)
+        {}
+
+        /**
+         * @brief Constructs parabolic blend between \b line1 and \b line2 with \b tau
+         * as blend time. The segments is copied for internal storage
+         * @param line1 [in] First segment
+         * @param line2 [in] Second segment
+         * @param tau [in] Blend time
+         */
+        ParabolicBlend (const typename LinearInterpolator< T >::Ptr line1,
+                        const typename LinearInterpolator< T >::Ptr line2, double tau) :
+            ParabolicBlend (*line1, *line2, tau)
+        {}
+
+        /**
+         * @brief Constructs parabolic blend between \b line1 and \b line2 with \b tau
+         * as blend time. The segments is copied for internal storage
+         * @param line1 [in] First segment.
+         * @param line2 [in] Second segment
+         * @param tau [in] Blend time
+         */
+        ParabolicBlend (const LinearInterpolator< T >* line1, const LinearInterpolator< T >* line2,
+                        double tau) :
+            ParabolicBlend (*line1, *line2, tau)
+        {}
 
         /**
          * @brief Destructor
@@ -77,8 +124,8 @@ namespace rw { namespace trajectory {
          */
         virtual T x (double t) const
         {
-            t = t + _t1 - _tau;
-            return _a / 2.0 * rw::math::Math::sqr (t - _t1 + _tau) + _dw1 * (t - _t1) / _t1 + _w1;
+            t = t + _start;
+            return _a * t * t + _b * t + _c;
         }
 
         /**
@@ -88,8 +135,8 @@ namespace rw { namespace trajectory {
          */
         virtual T dx (double t) const
         {
-            t = t + _t1 - _tau;
-            return _a * (t - _t1 + _tau) + _dw1 / _t1;
+            t = t + _start;
+            return 2 * _a * t + _b;
         }
 
         /**
@@ -97,7 +144,13 @@ namespace rw { namespace trajectory {
          * @copydoc Blend::ddx
          * @endcond
          */
-        virtual T ddx (double t) const { return _a; }
+        virtual T ddx (double t) const { return 2 * _a; }
+
+        /**
+         * @brief get the duration of the blend
+         * @return duration
+         */
+        double duration () const { return _duration; }
 
         /**
          * @cond
@@ -119,11 +172,12 @@ namespace rw { namespace trajectory {
 
       private:
         double _tau;
-        double _t1;
-        double _t2;
-        T _w1;
-        T _dw1;
+        double _duration;
+        double _start;
+
         T _a;
+        T _b;
+        T _c;
     };
 
     /**
@@ -170,7 +224,9 @@ namespace rw { namespace trajectory {
                         double tau) :
             _blend (getBlend (line1, line2, tau)),
             _blendRot (line1->getEnd ())
-        {}
+        {
+            _duration = line1->duration () + line2->duration ();
+        }
 
         /**
          * @brief Destructor
@@ -214,6 +270,22 @@ namespace rw { namespace trajectory {
         }
 
         /**
+         * @brief get the duration of the blend
+         * @return duration
+         */
+        double duration () const { return _duration; }
+
+        /**
+         * @brief get the deviation from the intersection point
+         * @return the deviation
+         */
+        rw::math::Rotation3D<> deviation () const
+        {
+            RW_THROW ("deviation is not implemented for rotation");
+            return rw::math::Rotation3D<> ();
+        }
+
+        /**
          * @cond
          * @copydoc Blend::tau1()
          * @endcond
@@ -234,6 +306,7 @@ namespace rw { namespace trajectory {
       private:
         ParabolicBlend< rw::math::Vector3D< T > > _blend;
         rw::math::Rotation3D< T > _blendRot;
+        double _duration;
     };
 
     /**
@@ -260,7 +333,9 @@ namespace rw { namespace trajectory {
                        tau),
             _rotBlend (&(line1->getRotationInterpolator ()), &(line2->getRotationInterpolator ()),
                        tau)
-        {}
+        {
+            _duration = line1->duration () + line2->duration ();
+        }
 
         /**
          * @brief Destructor
@@ -312,6 +387,22 @@ namespace rw { namespace trajectory {
         }
 
         /**
+         * @brief get the duration of the blend
+         * @return duration
+         */
+        double duration () const { return _duration; }
+
+        /**
+         * @brief get the deviation from the intersection point
+         * @return the deviation
+         */
+        rw::math::Transform3D<> deviation () const
+        {
+            RW_THROW ("deviation is not implemented for transform");
+            return rw::math::Transform3D<> ();
+        }
+
+        /**
          * @cond
          * @copydoc Blend::tau1()
          * @endcond
@@ -333,6 +424,7 @@ namespace rw { namespace trajectory {
 
         ParabolicBlend< rw::math::Vector3D< T > > _posBlend;
         ParabolicBlend< rw::math::Rotation3D< T > > _rotBlend;
+        double _duration;
     };
 
     /** @} */

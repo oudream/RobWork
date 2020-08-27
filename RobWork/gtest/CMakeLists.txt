@@ -273,7 +273,7 @@ add_rw_gtest(sdurw_task-gtest)
 
 set(TRAJECTORY_TEST_LIBRARIES ${GTEST_BOTH_LIBRARIES} sdurw)
 
-set(TRAJECTORY_TEST_SRC trajectory/PathTest.cpp)
+set(TRAJECTORY_TEST_SRC trajectory/PathTest.cpp trajectory/ParabolicBlendTest.cpp)
 add_executable(sdurw_trajectory-gtest ${TRAJECTORY_TEST_SRC})
 target_link_libraries(sdurw_trajectory-gtest ${TRAJECTORY_TEST_LIBRARIES})
 add_rw_gtest(sdurw_trajectory-gtest)
