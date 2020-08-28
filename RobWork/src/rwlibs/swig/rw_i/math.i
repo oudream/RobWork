@@ -696,7 +696,7 @@
              * are normalized and othogonal s.t. it belongs to SO(3).
              */
             void normalize();
-                
+   
             /**
              * @brief Returns the i'th row of the rotation matrix
              *
@@ -754,7 +754,7 @@
              *
              * @return @f$ \mathbf{M}\in SO(3) @f$
              */
-            Eigen::Matrix<T,3,3> e() const;
+            Eigen::Matrix<T,3,3> e();
 
             #if !defined(SWIGJAVA)
                 /**

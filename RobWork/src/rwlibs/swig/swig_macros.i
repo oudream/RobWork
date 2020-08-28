@@ -138,7 +138,29 @@
 
 %define MATRIXOPERATOR(ret)
     %extend {
-        #if (defined(SWIGLUA) || defined(SWIGPYTHON))
+        #if defined(SWIGPYTHON)
+            /*This typemap makes it possible to access Matrix class elements using following syntax:
+            
+            myMatrix[1, 1] = value
+            print myMatrix[1, 1]
+            
+            -- using __getitem__ and __setitem__ methods. */
+            %typemap(in) int[2](int temp[2]) {
+                if (PyTuple_Check($input)) {
+                    if (!PyArg_ParseTuple($input, "ii", temp, temp+1)) {
+                        PyErr_SetString(PyExc_TypeError, "tuple must have 2 elements");
+                        return NULL;
+                    }
+                    $1 = &temp[0];
+                } else {
+                    PyErr_SetString(PyExc_TypeError, "expected a tuple.");
+                    return NULL;
+                }
+            }
+            
+            ret __getitem__(int i[2])const {return (*$self)(i[0], i[1]); }
+            void __setitem__(int i[2], ret d){ (*$self)(i[0], i[1]) = d; }
+        #elif defined(SWIGLUA)
             ret __getitem__(std::size_t row, std::size_t column)const {return (*$self)(row, column); }
             void __setitem__(std::size_t row, std::size_t column,ret d){ (*$self)(row, column) = d; }
         #elif defined(SWIGJAVA)

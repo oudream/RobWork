@@ -36,32 +36,8 @@ namespace Eigen{
             void set(int x, int y, _Scalar value) {
                 (*$self)(x, y) = value;
             }
-
-            #if (defined(SWIGPYTHON))
-             /*This typemap makes it possible to access Matrix class elements using following syntax:
-                
-                myMatrix[1, 1] = value
-                print myMatrix[1, 1]
-                
-                -- using __getitem__ and __setitem__ methods. */
-                %typemap(in) int[2](int temp[2]) {
-                    if (PyTuple_Check($input)) {
-                        if (!PyArg_ParseTuple($input, "ii", temp, temp+1)) {
-                            PyErr_SetString(PyExc_TypeError, "tuple must have 2 elements");
-                            return NULL;
-                        }
-                        $1 = &temp[0];
-                    } else {
-                        PyErr_SetString(PyExc_TypeError, "expected a tuple.");
-                        return NULL;
-                    }
-                }
-                
-                _Scalar __getitem__(int i[2])const {return (*$self)(i[0], i[1]); }
-                void __setitem__(int i[2], _Scalar d){ (*$self)(i[0], i[1]) = d; }
-            #endif
         }
-        
+        MATRIXOPERATOR(_Scalar);
     };
 
     template<typename T>
