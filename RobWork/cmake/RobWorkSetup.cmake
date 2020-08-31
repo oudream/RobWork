@@ -357,6 +357,18 @@ else()
     # SET(TOLUA_INCLUDE_DIR "")
 endif()
 
+#
+# Use numpy for swing bindings if available
+#
+if(SWIG_FOUND)
+    execute_process(
+        COMMAND
+            python3 -c "try: \n\timport numpy; print(\"ON\");\nexcept ImportError:\n\tprint(\"OFF\");"
+        OUTPUT_VARIABLE RW_USE_NUMPY
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
+endif()
+
 if(RW_BUILD_SANDBOX)
     message(STATUS "RobWork: Sandbox ENABLED!")
     set(SANDBOX_LIB "sdurw_sandbox")

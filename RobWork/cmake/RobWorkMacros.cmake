@@ -746,7 +746,7 @@ macro(RW_ADD_JAVA_LIB _name)
         COMMAND
             ${Java_JAR_EXECUTABLE}
             cvf
-            ${${PROJECT_PREFIX}_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RW_MODULE}_java.jar
+            ${${PROJECT_PREFIX}_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${_name}_java.jar
             -C
             java_build_${_name}
             .
@@ -754,7 +754,7 @@ macro(RW_ADD_JAVA_LIB _name)
         COMMAND
             ${Java_JAR_EXECUTABLE}
             cvf
-            ${${PROJECT_PREFIX}_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RW_MODULE}_java-source.jar
+            ${${PROJECT_PREFIX}_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${_name}_java-source.jar
             -C
             java_src_${_name}
             .

@@ -313,7 +313,7 @@ void QCodeEditor::highlightParenthesis(QList<QTextEdit::ExtraSelection>& extraSe
         // Found
         if (counter == 0)
         {
-            ExtraSelection selection{};
+            ExtraSelection selection;
 
             auto directionEnum =
                  direction < 0 ?
@@ -357,7 +357,7 @@ void QCodeEditor::highlightCurrentLine(QList<QTextEdit::ExtraSelection>& extraSe
 {
     if (!isReadOnly())
     {
-        QTextEdit::ExtraSelection selection{};
+        QTextEdit::ExtraSelection selection;
 
         selection.format = m_syntaxStyle->getFormat("CurrentLine");
         selection.format.setForeground(QBrush());

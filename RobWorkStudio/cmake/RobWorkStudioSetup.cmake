@@ -185,12 +185,17 @@ endif()
 # QCodeEditor
 
 find_package(QCodeEditor QUIET)
+set(RWS_USE_QCODEEDITOR ON)
 if(QCodeEditor_FOUND)
     set(RWS_QCODEEDITOR_INTERNAL_TARGET OFF)
     message("QCodeEditor found")
-elseif(Qt5Core_FOUND AND Qt5Widgets_FOUND AND Qt5Gui_FOUND)
+elseif(Qt5Core_FOUND AND Qt5Widgets_FOUND AND Qt5Gui_FOUND AND CMAKE_VERSION VERSION_GREATER 3.6)
     set(RWS_QCODEEDITOR_INTERNAL_TARGET ON)
     message(STATUS "QCodeEditor not found building internal target")
+else()
+    set(RWS_QCODEEDITOR_INTERNAL_TARGET OFF)
+    message(STATUS "QCodeEditor not found. Internal target can't be build")
+    set(RWS_USE_QCODEEDITOR OFF)
 endif()
 
 # ##################################################################################################

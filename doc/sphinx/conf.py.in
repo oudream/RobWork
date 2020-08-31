@@ -13,7 +13,7 @@
 import os
 import sys
 
-rw_modules = ["sdurw","sdurw_assembly","sdurw_control","sdurw_pathoptimization","sdurw_pathplanners","sdurw_proximitystrategies","sdurw_task","sdurw_simulation","sdurw_opengl"]
+rw_modules = ["sdurw_core","sdurw","sdurw_assembly","sdurw_control","sdurw_pathoptimization","sdurw_pathplanners","sdurw_proximitystrategies","sdurw_task","sdurw_simulation","sdurw_opengl"]
 for s in rw_modules:
     sys.path.insert(0, '@RW_LIBS@/'+s)
 sys.path.insert(0, '@RWS_LIBS@/sdurws')
