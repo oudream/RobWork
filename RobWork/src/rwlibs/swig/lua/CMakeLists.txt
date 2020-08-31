@@ -53,9 +53,9 @@ if(build)
             if("${RW_MODULE}" STREQUAL "sdurw")
                 set(SOURCE ../ScriptTypes.cpp)
             endif()
-	    if("${RW_MODULE}" STREQUAL "sdurw_core")
-		set(SOURCE ${SOURCE} LuaState.cpp)
-	    endif()
+            if("${RW_MODULE}" STREQUAL "sdurw_core")
+                set(SOURCE ${SOURCE} LuaState.cpp)
+            endif()
             set(SOURCE ${SOURCE} Lua_${RW_MODULE}.cpp)
 
             # ############ lua interface generation ##############

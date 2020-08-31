@@ -2,8 +2,16 @@ set(SUBSYS_NAME sdurws_pythoneditor)
 set(SUBSYS_DESC "A python editor")
 set(SUBSYS_DEPS sdurws RW::sdurw_python RW::sdurw)
 
-set(DEFAULT ${PYTHONLIBS_FOUND} AND ${PYTHONINTERP_FOUND})
-set(REASON)
+set(RWS_USE_QCODEEDITOR OFF)
+if(${PYTHONLIBS_FOUND} AND ${PYTHONINTERP_FOUND} AND ${RWS_USE_QCODEEDITOR})
+    set(DEFAULT ON)
+    set(REASON)
+else()
+    set(DEFAULT OFF)
+    set(REASON "Either Pyton or QCodeEditor is not installed")
+endif()
+
+
 
 # Verify that sdurws_python will be build
 if(
@@ -11,12 +19,17 @@ if(
     AND (DEFINED BUILD_sdurws_robworkstudioapp AND NOT ${BUILD_sdurws_robworkstudioapp})
     AND (DEFINED BUILD_sdurws_python AND NOT ${BUILD_sdurws_python})
 )
-    set(DEFAULT FALSE)
+    set(DEFAULT OFF)
     set(REASON "Unmet dependencies sdurws_python or sdurws_robworkstudioapp")
 endif()
 
 set(build true)
-rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} DEPENDS ${SUBSYS_DEPS} REASON ${REASON} ADD_DOC)
+rw_subsys_option(
+    build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT}
+    DEPENDS ${SUBSYS_DEPS}
+    REASON ${REASON}
+    ADD_DOC
+)
 
 if(build)
     # Standard cpp files to compile:
@@ -31,11 +44,13 @@ if(build)
     rw_add_includes(${SUBSYS_NAME} "rwslibs/" ${SRC_FILES_HPP})
     target_link_libraries(
         ${SUBSYS_NAME}
-        PUBLIC sdurws ${QT_LIBRARIES} RW::sdurw PRIVATE ${PYTHON_LIBRARIES} QCodeEditor
+        PUBLIC sdurws ${QT_LIBRARIES} RW::sdurw
+        PRIVATE ${PYTHON_LIBRARIES} QCodeEditor
     )
     target_include_directories(
         ${SUBSYS_NAME}
-        INTERFACE $<BUILD_INTERFACE:${RWS_ROOT}/src> $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}> PRIVATE ${PYTHON_INCLUDE_DIRS}
+        INTERFACE $<BUILD_INTERFACE:${RWS_ROOT}/src> $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
+        PRIVATE ${PYTHON_INCLUDE_DIRS}
     )
 
     rws_plugin_load_details(${SUBSYS_NAME} 2 PythonEditor false)
