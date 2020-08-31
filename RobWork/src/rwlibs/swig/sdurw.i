@@ -100,18 +100,7 @@ import org.robwork.sdurw_core.*;
 
 %extend rw::core::PropertyMap {
             
-    bool getBool(const std::string& id){ return $self->get<bool>(id); }
-    void setBool(const std::string& id, bool val){  $self->set<bool>(id,val); }
-    void set(const std::string& id, bool val){  $self->set<bool>(id,val); }
 
-    std::string getString(const std::string& id){ return $self->get<std::string>(id); }
-    void setString(const std::string& id, std::string val){  $self->set<std::string>(id,val); }
-    void set(const std::string& id, std::string val){  $self->set<std::string>(id,val); }
-    
-    std::vector<std::string>& getStringList(const std::string& id){ return $self->get<std::vector<std::string> >(id); }
-    void setStringList(const std::string& id, std::vector<std::string> val){ $self->set<std::vector<std::string> >(id,val); }
-    void set(const std::string& id, std::vector<std::string> val){ $self->set<std::vector<std::string> >(id,val); }
-    
     Q& getQ(const std::string& id){ return $self->get<Q>(id); }
     void setQ(const std::string& id, Q q){ $self->set<Q>(id, q); }
     void set(const std::string& id, Q q){ $self->set<Q>(id, q); }
@@ -128,17 +117,13 @@ import org.robwork.sdurw_core.*;
     void setTransform3(const std::string& id, rw::math::Transform3D<double>  p){  $self->set<rw::math::Transform3D<double> >(id, p); }
     void set(const std::string& id, rw::math::Transform3D<double>  p){  $self->set<rw::math::Transform3D<double> >(id, p); }
 
-    PropertyMap& getMap(const std::string& id){ return $self->get<PropertyMap>(id); }
-    void setMap(const std::string& id, PropertyMap p){  $self->set<PropertyMap>(id, p); }
-    void set(const std::string& id, PropertyMap p){  $self->set<PropertyMap>(id, p); }
-
     void load(const std::string& filename){ *($self) = rw::loaders::DOMPropertyMapLoader::load(filename); }
     void save(const std::string& filename){ rw::loaders::DOMPropertyMapSaver::save( *($self), filename ); }
 }
 
 %import <rwlibs/swig/ext_i/std.i>
 
-%include <rwlibs/swig/ext_i/eigen.i>
+%include <rwlibs/swig/ext_i/rw_eigen.i>
 %include <rwlibs/swig/ext_i/boost.i>
 
 

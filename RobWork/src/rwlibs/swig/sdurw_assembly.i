@@ -15,8 +15,8 @@ using rwlibs::task::Task;
 %include <std_vector.i>
 %include <exception.i>
 
-%import <rwlibs/swig/sdurw.i>
 %import <rwlibs/swig/sdurw_core.i>
+%import <rwlibs/swig/sdurw.i>
 %import <rwlibs/swig/sdurw_task.i>
 
 %pragma(java) jniclassimports=%{

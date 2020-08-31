@@ -8,8 +8,8 @@ using namespace rwlibs::swig;
 %}
 %include <exception.i>
 
-%import <rwlibs/swig/sdurw.i>
 %import <rwlibs/swig/sdurw_core.i>
+%import <rwlibs/swig/sdurw.i>
 
 %pragma(java) jniclassimports=%{
 import org.robwork.sdurw.*;
