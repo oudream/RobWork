@@ -110,7 +110,6 @@ if(build)
     # ###### Final linking and dependency checks ######
 
     swig_link_libraries(sdurws${LIB_SUFIX} ${SUBSYS_DEPS} RW::sdurw ${PYTHON_LIBRARIES})
-
     install(TARGETS ${SUBSYS_NAME} EXPORT ${PROJECT_PREFIX}Targets)
 
 endif()

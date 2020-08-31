@@ -664,20 +664,22 @@ macro(RW_ADD_SWIG _name _language _type)
                                                                         COMPONENT swig)
 
     # ######## Post processing ########
-    if(NOT DEFINED SLIB_COMPILE_BUFFER)
-        set(
-            SLIB_COMPILE_BUFFER
-            ${SLIB_TARGET_NAME}
-            CACHE INTERNAL "Used to limit the swig compiler" FORCE
-        )
-    else()
-        if(TARGET ${SLIB_COMPILE_BUFFER})
-            add_dependencies(${SLIB_TARGET_NAME} ${SLIB_COMPILE_BUFFER})
+    if(NOT DEFINED COMPILE_SWIG_MULTICORE OR "${COMPILE_SWIG_MULTICORE}" STREQUAL "OFF")
+        if(NOT DEFINED SLIB_COMPILE_BUFFER)
             set(
                 SLIB_COMPILE_BUFFER
                 ${SLIB_TARGET_NAME}
                 CACHE INTERNAL "Used to limit the swig compiler" FORCE
             )
+        else()
+            if(TARGET ${SLIB_COMPILE_BUFFER})
+                add_dependencies(${SLIB_TARGET_NAME} ${SLIB_COMPILE_BUFFER})
+                set(
+                    SLIB_COMPILE_BUFFER
+                    ${SLIB_TARGET_NAME}
+                    CACHE INTERNAL "Used to limit the swig compiler" FORCE
+                )
+            endif()
         endif()
     endif()
 endmacro()
@@ -711,7 +713,7 @@ macro(RW_ADD_JAVA_LIB _name)
     if(NOT WIN32)
         string(REPLACE ";" ":" JLIB_CLASSPATH "${JLIB_CLASSPATH}")
     endif()
-    
+
     set(DOC_LINK)
     foreach(lib ${JLIB_JAVADOC_LINK})
         set(DOC_LINK ${DOC_LINK} "-link" ${lib})
@@ -721,19 +723,17 @@ macro(RW_ADD_JAVA_LIB _name)
         TARGET ${_name}_jni POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E echo "Removing old Java compilation..."
         COMMAND
-            ${CMAKE_COMMAND} -E remove_directory
-            "${CMAKE_CURRENT_BINARY_DIR}/java_build_${_name}"
+            ${CMAKE_COMMAND} -E remove_directory "${CMAKE_CURRENT_BINARY_DIR}/java_build_${_name}"
         COMMAND
             ${CMAKE_COMMAND} -E remove_directory
             "${${PROJECT_PREFIX}_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/javadoc/${_name}"
         COMMAND ${CMAKE_COMMAND} -E echo "Copying Java source..."
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different 
-        ${CMAKE_CURRENT_SOURCE_DIR}/Loader${PROJECT_PREFIX}.java
-        java_src_${_name}/org/robwork/Loader${PROJECT_PREFIX}.java
-        COMMAND ${CMAKE_COMMAND} -E echo "Compiling Java files..."
         COMMAND
-            ${CMAKE_COMMAND} -E make_directory
-            java_build_${_name}/org/robwork/${_name}
+            ${CMAKE_COMMAND} -E copy_if_different
+            ${CMAKE_CURRENT_SOURCE_DIR}/Loader${PROJECT_PREFIX}.java
+            java_src_${_name}/org/robwork/Loader${PROJECT_PREFIX}.java
+        COMMAND ${CMAKE_COMMAND} -E echo "Compiling Java files..."
+        COMMAND ${CMAKE_COMMAND} -E make_directory java_build_${_name}/org/robwork/${_name}
         COMMAND
             ${Java_JAVAC_EXECUTABLE}
             -classpath
@@ -778,7 +778,6 @@ macro(RW_ADD_JAVA_LIB _name)
             ${DOC_LINK}
         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
     )
-
 
 endmacro()
 

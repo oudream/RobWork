@@ -754,7 +754,7 @@
              *
              * @return @f$ \mathbf{M}\in SO(3) @f$
              */
-            Eigen::Matrix<T,3,3> e();
+            Eigen::Matrix<T,3,3>& e();
 
             #if !defined(SWIGJAVA)
                 /**

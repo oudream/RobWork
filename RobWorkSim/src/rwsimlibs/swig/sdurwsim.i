@@ -85,11 +85,16 @@ void java_ThreadSimulatorStepCallback(ThreadSimulator* sim, State &state, void *
 %include <shared_ptr.i>
 %include <exception.i>
 
-%import <rwlibs/swig/sdurw.i>
+#ifdef SWIGPYTHON
+%include <rwlibs/swig/ext_i/eigen.i>
+#endif 
+
 %import <rwlibs/swig/sdurw_core.i>
+%import <rwlibs/swig/sdurw.i>
 %import <rwlibs/swig/sdurw_assembly.i>
 %import <rwlibs/swig/sdurw_control.i>
 %import <rwlibs/swig/sdurw_simulation.i>
+
 
 
 %pragma(java) jniclassclassmodifiers="class"
@@ -720,7 +725,6 @@ public:
 %template (ConstraintPtr) rw::core::Ptr<Constraint>;
 %template (ConstraintPtrVector) std::vector<rw::core::Ptr<Constraint> >;
 OWNEDPTR(Constraint);
-
 %nodefaultctor DynamicDevice;
 class DynamicDevice {
 public:
@@ -1350,7 +1354,6 @@ rw::core::Ptr<ThreadSimulator> getSimulatorInstance(const std::string& id);
 rw::core::Ptr<ThreadSimulator> getSimulatorInstance();
 void removeSimulatorInstance(const std::string& id);
 std::vector<std::string> getSimulatorInstances();
-
 
 #ifndef WIN32
 	#pragma GCC diagnostic pop
