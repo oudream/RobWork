@@ -108,7 +108,7 @@ you install the following packages:
 
 .. code-block:: shell
 
-    sudo apt-get install swig liblua5.3-dev python3-dev default-jdk
+    sudo apt-get install swig liblua5.3-dev python3-dev python3-numpy default-jdk
 
 Google Test (optional) is used for unit tests in RobWork. If you are a
 developer and wants to develop code for the RobWork trunk, writing a

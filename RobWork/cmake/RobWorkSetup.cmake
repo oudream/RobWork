@@ -47,24 +47,24 @@ set(CMAKE_MODULE_PATH ${RW_ROOT}/cmake/Modules ${CMAKE_MODULE_PATH})
 #
 
 if(NOT DEFINED USE_BOOST_STATIC)
-    set(USE_BOOST_STATIC OFF)    
+    set(USE_BOOST_STATIC OFF)
     if(DEFINED WIN32)
-        set(USE_BOOST_STATIC ON)  
+        set(USE_BOOST_STATIC ON)
     endif()
 endif()
 set(Boost_USE_STATIC_LIBS ${USE_BOOST_STATIC})
-set(Boost_NO_BOOST_CMAKE TRUE) # From Boost 1.70, CMake files are provided by Boost - we can't handle it
+set(Boost_NO_BOOST_CMAKE TRUE) # From Boost 1.70, CMake files are provided by Boost - we can't
+                               # handle it
 unset(Boost_FIND_QUIETLY)
 set(Boost_LIBRARIES_TMP "")
 
 if(${RW_BUILD_TYPE} STREQUAL "release")
-    set(Boost_USE_DEBUG_LIBS         OFF) # ignore debug libs and
-    set(Boost_USE_RELEASE_LIBS       ON)  # only find release libs
+    set(Boost_USE_DEBUG_LIBS OFF) # ignore debug libs and
+    set(Boost_USE_RELEASE_LIBS ON) # only find release libs
 endif()
 
 find_package(
-    Boost
-    REQUIRED
+    Boost REQUIRED
     COMPONENTS
         filesystem
         regex
@@ -78,7 +78,6 @@ set(Boost_FIND_QUIETLY TRUE) # Test libraries are optional
 
 find_package(Boost COMPONENTS test_exec_monitor unit_test_framework)
 set(Boost_LIBRARIES_TMP ${Boost_LIBRARIES_TMP} ${Boost_LIBRARIES})
-
 
 if(NOT Boost_TEST_EXEC_MONITOR_FOUND OR NOT Boost_UNIT_TEST_FRAMEWORK_FOUND)
     set(RW_USE_BOOST_STATIC_TEST_LIBS off)
@@ -363,10 +362,24 @@ endif()
 if(SWIG_FOUND)
     execute_process(
         COMMAND
-            python3 -c "try: \n\timport numpy; print(\"ON\");\nexcept ImportError:\n\tprint(\"OFF\");"
+            python3 -c
+            "try: \n\timport numpy; print(\"ON\");\nexcept ImportError:\n\tprint(\"OFF\");"
         OUTPUT_VARIABLE RW_USE_NUMPY
         OUTPUT_STRIP_TRAILING_WHITESPACE
     )
+    if(RW_USE_NUMPY)
+        message(STATUS "RobWork is compiled with Numpy")
+        execute_process(
+            COMMAND python3 -c "import numpy; print(numpy.__file__);"
+            OUTPUT_VARIABLE NUMPY_INCLUDE_DIR
+            OUTPUT_STRIP_TRAILING_WHITESPACE
+        )
+        get_filename_component(NUMPY_INCLUDE_DIR "${NUMPY_INCLUDE_DIR}" DIRECTORY)
+        set(NUMPY_INCLUDE_DIR "${NUMPY_INCLUDE_DIR}/core/include")
+        message(STATUS "numpy found at: ${NUMPY_INCLUDE_DIR}")
+    else()
+        message(STATUS "RobWork can't find Numpy.")
+    endif()
 endif()
 
 if(RW_BUILD_SANDBOX)
@@ -471,7 +484,7 @@ if(RW_USE_ASSIMP)
                 set(RW_HAVE_MINIZIP ON)
             endif(NOT RW_HAVE_MINIZIP)
         else()
-        message(STATUS "RobWork: RobWork ext Assimp, NOT FOUND, disabeling assimp functions")
+            message(STATUS "RobWork: RobWork ext Assimp, NOT FOUND, disabeling assimp functions")
             set(ASSIMP_INCLUDE_DIRS "")
         endif()
     endif()
@@ -612,7 +625,11 @@ endif()
 
 if("${RW_CXX_FLAGS}" STREQUAL "")
     # GCC and MinGW
-    if((CMAKE_COMPILER_IS_GNUCXX) OR (CMAKE_CXX_COMPILER_ID STREQUAL "Clang") OR (CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang"))
+    if(
+        (CMAKE_COMPILER_IS_GNUCXX)
+        OR (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+        OR (CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
+    )
         # Turn off annoying GCC warnings
         set(RW_CXX_FLAGS_TMP "-Wall -Wno-strict-aliasing -Wno-unused-function")
         if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR (CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang"))
@@ -882,7 +899,6 @@ set(
     ${OPENGL_LIBRARIES}
     ${XERCESC_LIBRARIES}
     ${BULLET_LIBRARIES}
-    ${LAPACK_LIBRARIES}
     ${BLAS_LIBRARIES}
     ${CMAKE_DL_LIBS}
     ${Mathematica_WSTP_LIBRARIES}
@@ -912,7 +928,7 @@ set(
 set(ROBWORK_LIBRARIES)
 foreach(l ${ROBWORK_LIBRARIES_EXTERNAL})
     unset(tmp CACHE)
-    if(NOT ("${l}" STREQUAL "debug" OR "${l}" STREQUAL "optimized") )
+    if(NOT ("${l}" STREQUAL "debug" OR "${l}" STREQUAL "optimized"))
         find_library(tmp ${l} PATHS ${ROBWORK_LIBRARY_DIRS} NO_DEFAULT_PATH)
         if(tmp)
             list(APPEND ROBWORK_LIBRARIES ${tmp})

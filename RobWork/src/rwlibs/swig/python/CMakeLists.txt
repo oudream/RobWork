@@ -93,7 +93,10 @@ if(build)
             endif()
 
             # Set build destination
-            target_compile_definitions(${TARGET_NAME} PRIVATE RW_USE_NUMPY)
+            target_compile_definitions(${TARGET_NAME} PUBLIC RW_USE_NUMPY)
+            if(RW_USE_NUMPY)
+                target_link_directories(${TARGET_NAME} PUBLIC ${NUMPY_INCLUDE_DIR})
+            endif()
             set_target_properties(
                 ${TARGET_NAME}
                 PROPERTIES

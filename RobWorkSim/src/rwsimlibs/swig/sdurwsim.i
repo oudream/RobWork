@@ -85,7 +85,7 @@ void java_ThreadSimulatorStepCallback(ThreadSimulator* sim, State &state, void *
 %include <shared_ptr.i>
 %include <exception.i>
 
-#ifdef SWIGPYTHON
+#if defined(SWIGPYTHON) && RW_USE_NUMPY
 %include <rwlibs/swig/ext_i/eigen.i>
 #endif 
 
