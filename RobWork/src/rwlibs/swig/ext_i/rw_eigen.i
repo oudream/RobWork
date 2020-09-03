@@ -46,7 +46,7 @@ namespace Eigen{
     };
 }
 
-#ifdef SWIGPYTHON
+#if  defined(SWIGPYTHON) && RW_USE_NUMPY
 %include <rwlibs/swig/ext_i/eigen.i>
 
 #define dxx double,-1,-1

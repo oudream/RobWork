@@ -62,6 +62,12 @@ if(build)
         set(TARGET_NAME ${SWIG_MODULE_sdurwsim${LIB_SUFIX}_REAL_NAME})
     endif()
 
+    set(RW_USE_NUMPY ${RW_BUILD_WITH_NUMPY})
+    target_compile_definitions(${TARGET_NAME} PRIVATE RW_USE_NUMPY)
+    if(RW_USE_NUMPY)
+        target_link_directories(${TARGET_NAME} PRIVATE ${NUMPY_INCLUDE_DIR})
+    endif()
+
     # Set build destination
     set_target_properties(
         ${TARGET_NAME}
@@ -108,7 +114,8 @@ if(build)
     )
     # ###### Final linking and dependency checks ######
 
-    swig_link_libraries(sdurwsim${LIB_SUFIX} ${SUBSYS_DEPS} ${RWSIM_ODE_LIBRARY} ${PYTHON_LIBRARIES})
+    swig_link_libraries(sdurwsim${LIB_SUFIX} ${SUBSYS_DEPS} ${RWSIM_ODE_LIBRARY}
+                        ${PYTHON_LIBRARIES})
     install(TARGETS ${SUBSYS_NAME} EXPORT ${PROJECT_PREFIX}Targets)
 
 endif()
