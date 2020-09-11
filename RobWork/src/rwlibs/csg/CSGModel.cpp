@@ -17,9 +17,11 @@
 
 #include "CSGModel.hpp"
 
-#include "CSGConvert.hpp"
-
 #include <rw/math/RPY.hpp>
+#include <rwlibs/csg/CSGConvert.hpp>
+
+#define CSGJS_HEADER_ONLY
+#include <csgjs/csgjs.cpp>
 
 using namespace std;
 using namespace rw;
