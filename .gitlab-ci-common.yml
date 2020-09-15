@@ -390,7 +390,7 @@ stages:
     - cd Build
     # Build RobWork
     - cd RW
-    - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" -A x64 -DSWIG_EXECUTABLE=%SWIG_ROOT%\swig.exe ../../RobWork
+    - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" -A x64 -DBoost_INCLUDE_DIR=%Boost_INCLUDE_DIR% -DSWIG_EXECUTABLE=%SWIG_ROOT%\swig.exe ../../RobWork
     - msbuild RobWork.sln /property:Configuration=Release /maxcpucount:8
   artifacts:
     paths:
