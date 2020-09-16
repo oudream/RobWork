@@ -22,8 +22,9 @@
 #include <rw/geometry/TriMesh.hpp>
 #include <rw/math/Transform3D.hpp>
 
-#define CSGJS_HEADER_ONLY
-#include <csgjs/csgjs.cpp>
+
+
+struct csgjs_model;
 
 namespace rwlibs { namespace csg {
 

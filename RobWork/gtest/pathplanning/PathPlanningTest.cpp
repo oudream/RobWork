@@ -31,8 +31,6 @@
 #include <rwlibs/pathplanners/rrt/RRTPlanner.hpp>
 #include <rwlibs/pathplanners/sbl/SBLPlanner.hpp>
 
-#include <rw/loaders/xml/XMLPathSaver.hpp>
-
 #include <gtest/gtest.h>
 #include <rwlibs/proximitystrategies/ProximityStrategyFactory.hpp>
 
