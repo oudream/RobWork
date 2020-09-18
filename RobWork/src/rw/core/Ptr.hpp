@@ -105,6 +105,7 @@ namespace rw { namespace core {
         {}
 #endif
 
+#if !defined(SWIG)
         /**
          * @brief Take ownership of \b ptr.
          *
@@ -120,7 +121,7 @@ namespace rw { namespace core {
             _owned_ptr (ptr)
 #endif
         {}
-
+#endif
         /**
          * @brief Cast the smart pointer to a different type.
          * @return smart pointer that can be null if cast was not possible.
@@ -262,7 +263,11 @@ namespace rw { namespace core {
          * @brief Tests if the smart pointer points to the same instance as \b p
          */
         bool operator== (void* p) const { return get () == p; }
+#else 
+        PTR_EQ_C_PTR;
 #endif
+        
+
         /**
          * @brief check if this Ptr has shared ownership or none
          * ownership
@@ -296,7 +301,7 @@ namespace rw { namespace core {
 #endif
         }
 #endif
-
+#if !defined(SWIG)
         /**
          * @brief Returns the shared pointer used internally
          */
@@ -309,6 +314,7 @@ namespace rw { namespace core {
             return _owned_ptr;
 #endif
         }
+#endif 
 #if !defined(SWIG)
 #ifdef RW_USE_BOOST_PTR_COMPLIANCE
         /**
@@ -324,12 +330,12 @@ namespace rw { namespace core {
          * @return std::shared_ptr
          */
         operator cpp_shared_ptr () const { return getCppSharedPtr (); }
-#endif
+
         /**
          * @brief Returns the shared pointer used internally
          */
         shared_ptr getSharedPtr () const { return _owned_ptr; }
-
+#endif
 #if !defined(SWIG)
         /**
          * @brief Get const Pointer.
