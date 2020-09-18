@@ -23,12 +23,12 @@
  *
  * \copydoc rw::common::ThreadPool
  */
-
+#if !defined(SWIG)
 #include <boost/asio/io_service.hpp>
 #include <boost/function/function_fwd.hpp>
 #include <boost/thread/mutex.hpp>
 #include <boost/thread/thread.hpp>
-
+#endif
 namespace rw { namespace core {
     template< class T > class Ptr;
 }}    // namespace rw::core
@@ -39,8 +39,9 @@ namespace rw { namespace common {
     template< typename T > class ThreadSafeVariable;
 
     //! @addtogroup common
-
+#if !defined(SWIG)
     //! @{
+#endif
     /**
      * @brief A thread pool that can be assigned work.
      *
@@ -123,6 +124,8 @@ namespace rw { namespace common {
         ThreadSafeVariable< unsigned int >* _queueSize;
         boost::mutex _queueSizeMutex;
     };
-    //! @}
+#if !defined(SWIG)
+//! @}
+#endif
 }}     // namespace rw::common
 #endif /* RW_COMMON_THREADPOOL_HPP_ */

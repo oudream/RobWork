@@ -18,18 +18,24 @@
 #ifndef RW_COMMON_BINARCHIVE_HPP
 #define RW_COMMON_BINARCHIVE_HPP
 
+#if !defined(SWIG)
 #include <rw/common/InputArchive.hpp>
 #include <rw/common/OutputArchive.hpp>
 
 #include <iosfwd>
 #include <string>
+#endif
 
 namespace rw { namespace common {
 
     /**
      * @brief archive for loading and saving serializable classes.
      */
+#if defined(SWIGJAVA)
+    class BINArchive : public InputArchive
+#else
     class BINArchive : public InputArchive, public virtual OutputArchive
+#endif 
     {
       public:
         //! @brief constructor
@@ -82,13 +88,7 @@ namespace rw { namespace common {
 
         ///////////////////////// WRITING
 
-        void doWrite (bool val, const std::string& id)
-        {
-            if (val)
-                write ((int) 1, id);
-            else
-                write ((int) 0, id);
-        }
+        void doWrite (bool val, const std::string& id);
         void doWrite (boost::int8_t val, const std::string& id) { writeValue (val, id); };
         void doWrite (boost::uint8_t val, const std::string& id) { writeValue (val, id); };
         void doWrite (boost::int16_t val, const std::string& id) { writeValue (val, id); };
@@ -200,11 +200,6 @@ namespace rw { namespace common {
             }
         }
 
-        // template<class T>
-        // void write(const T& object, const std::string& id){
-        //	((OutputArchive*)this)->write<T>(object, id);
-        //}
-
         ///////////////// READING
 
         virtual void doRead (bool& val, const std::string& id);
@@ -292,11 +287,6 @@ namespace rw { namespace common {
 
         //! @copydoc InputArchive::doRead(Eigen::VectorXd&, const std::string&)
         virtual void doRead (Eigen::VectorXd& val, const std::string& id) { readMatrix (val, id); }
-
-        // template<class T>
-        // void read(T& object, const std::string& id){
-        //    ((InputArchive*)this)->read<T>(object, id);
-        //}
 
         //! @copydoc InputArchive::doRead(std::vector<bool>&,const std::string&)
         template< class T > void readValue (std::vector< T >& val, const std::string& id)

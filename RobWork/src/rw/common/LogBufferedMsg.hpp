@@ -18,12 +18,13 @@
 #ifndef RW_COMMON_LOGBUFFEREDMSG_HPP
 #define RW_COMMON_LOGBUFFEREDMSG_HPP
 
+#if !defined(SWIG)
 #include <rw/core/LogWriter.hpp>
 
 #include <ostream>
 #include <string>
 #include <vector>
-
+#endif
 namespace rw { namespace common {
 
     /**

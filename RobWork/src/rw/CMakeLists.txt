@@ -1,6 +1,6 @@
 set(SUBSYS_NAME sdurw)
 set(SUBSYS_DESC "The core RobWork library!")
-set(SUBSYS_DEPS sdurw_core)
+set(SUBSYS_DEPS sdurw_core sdurw_common)
 
 set(build TRUE)
 rw_subsys_option(

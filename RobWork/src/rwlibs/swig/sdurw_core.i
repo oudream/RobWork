@@ -82,7 +82,6 @@ SWIG_JAVABODY_TYPEWRAPPER(public, public, public, SWIGTYPE)
 %{
     #include <rw/core/AnyPtr.hpp>
 %}
-
 %include <rw/core/AnyPtr.hpp>
 
 %{

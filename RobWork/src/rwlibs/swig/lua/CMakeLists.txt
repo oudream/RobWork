@@ -34,6 +34,7 @@ if(build)
     foreach(
         RW_MODULE
         sdurw_core
+        sdurw_common
         sdurw
         sdurw_task
         sdurw_assembly
@@ -108,7 +109,7 @@ if(build)
             endif()
 
             # ############### Add rwplugin #####################
-            if(NOT "${RW_MODULE}" STREQUAL "sdurw" AND NOT "${RW_MODULE}" STREQUAL "sdurw_core")
+            if(NOT "${RW_MODULE}" STREQUAL "sdurw" AND NOT "${RW_MODULE}" STREQUAL "sdurw_core" AND NOT "${RW_MODULE}" STREQUAL "sdurw_common")
                 add_library(${RW_MODULE}_lua_plugin.rwplugin MODULE LuaPlugin_${RW_MODULE}.cpp)
                 target_link_libraries(${RW_MODULE}_lua_plugin.rwplugin ${RW_MODULE}_lua_s)
                 target_include_directories(

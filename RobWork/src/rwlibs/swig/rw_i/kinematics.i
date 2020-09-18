@@ -352,12 +352,13 @@
             /**
              * @brief Iterator pair for all children of the frame.
              */
-            std::vector<Frame*> getChildren(const State& state)
+            std::vector<rw::kinematics::Frame*> getChildren(const State& state)
             {
-                std::vector<Frame*> frames;
+                
                 Frame::iterator_pair pair = $self->getChildren(state);
-                for (Frame::iterator it = pair.first; it != pair.second; it++) {
-                    frames.push_back(&(*it));
+                std::vector<rw::kinematics::Frame*> frames;
+                for (rw::kinematics::Frame& f: $self->getChildren(state)) {
+                    frames.push_back(&f);
                 }
                 return frames;
             }
@@ -1025,7 +1026,7 @@
      * place.)
      */
 
-    class State : public Serializable
+    class State : public rw::common::Serializable
     {
       public:
         //! @brief Smart pointer type to State.

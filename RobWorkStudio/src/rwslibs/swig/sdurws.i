@@ -22,6 +22,7 @@ using rw::pathplanning::PathPlanner;
 %include <exception.i>
 
 %import <rwlibs/swig/sdurw_core.i>
+%import <rwlibs/swig/sdurw_common.i>
 %import <rwlibs/swig/sdurw.i> 
 
 %pragma(java) jniclassclassmodifiers="class"
@@ -29,14 +30,17 @@ using rw::pathplanning::PathPlanner;
 %pragma(java) jniclassimports=%{
 import org.robwork.sdurw.*;
 import org.robwork.sdurw_core.*;
+import org.robwork.sdurw_common.*;
 %}
 %pragma(java) moduleimports=%{
 import org.robwork.sdurw.*;
 import org.robwork.sdurw_core.*;
+import org.robwork.sdurw_common.*;
 %}
 %typemap(javaimports) SWIGTYPE %{
 import org.robwork.sdurw.*;
 import org.robwork.sdurw_core.*;
+import org.robwork.sdurw_common.*;
 %}
 
 /********************************************

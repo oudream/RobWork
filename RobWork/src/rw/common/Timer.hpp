@@ -18,9 +18,11 @@
 #ifndef RW_COMMON_TIMER_HPP
 #define RW_COMMON_TIMER_HPP
 
-#include "TimerUtil.hpp"
+#if !defined(SWIG)
+#include <rw/common/TimerUtil.hpp>
 
 #include <string>
+#endif 
 
 /**
  * @file Timer.hpp

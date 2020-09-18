@@ -23,11 +23,11 @@
  *
  * \copydoc rw::common::ThreadSafeVariable
  */
-
+#if !defined(SWIG)
 #include <boost/thread/condition_variable.hpp>
 #include <boost/thread/mutex.hpp>
 #include <boost/thread/shared_mutex.hpp>
-
+#endif 
 namespace rw { namespace common {
     //! @addtogroup common
 
@@ -125,6 +125,7 @@ namespace rw { namespace common {
                 _waitingCond.notify_all ();
             return _var;
         }
+
 
         /**
          * @brief Use the () operator to access the value.

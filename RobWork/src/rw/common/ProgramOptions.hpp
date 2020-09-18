@@ -1,12 +1,13 @@
 #ifndef RW_COMMON_PROGRAMOPTIONS_HPP_
 #define RW_COMMON_PROGRAMOPTIONS_HPP_
 
+#if !defined(SWIG)
 #include <rw/core/PropertyMap.hpp>
 
 #include <boost/program_options/options_description.hpp>
 #include <boost/program_options/positional_options.hpp>
 #include <boost/program_options/variables_map.hpp>
-
+#endif
 namespace rw { namespace common {
 
     /**

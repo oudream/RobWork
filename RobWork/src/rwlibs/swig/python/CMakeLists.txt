@@ -62,6 +62,7 @@ if(build)
     foreach(
         RW_MODULE
         sdurw_core
+        sdurw_common
         sdurw
         sdurw_task
         sdurw_assembly

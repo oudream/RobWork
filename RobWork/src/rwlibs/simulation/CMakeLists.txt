@@ -1,6 +1,6 @@
 set(SUBSYS_NAME sdurw_simulation)
 set(SUBSYS_DESC "Simulated sensors and controllers")
-set(SUBSYS_DEPS sdurw sdurw_control sdurw_core)
+set(SUBSYS_DEPS sdurw sdurw_control sdurw_core sdurw_common)
 
 set(build TRUE)
 set(DEFAULT TRUE)

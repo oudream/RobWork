@@ -47,14 +47,14 @@ if(build)
         SWIG_FLAGS "-package" "org.robwork.sdurws"
     )
 
-    swig_link_libraries(sdurws_jni sdurws sdurws_robworkstudioapp RW::sdurw RW::sdurw_core)
+    swig_link_libraries(sdurws_jni sdurws sdurws_robworkstudioapp RW::sdurw RW::sdurw_core RW::sdurw_common)
 
     rw_add_java_clean_target(sdurws)
 
     # Compile java code and create JAR and Javadoc
     rw_add_java_lib(
         sdurws
-        CLASSPATH ${RW_LIBS}/sdurw_core_java.jar ${RW_LIBS}/sdurw_java.jar
+        CLASSPATH ${RW_LIBS}/sdurw_core_java.jar ${RW_LIBS}/sdurw_common_java.jar ${RW_LIBS}/sdurw_java.jar
         JAVADOC_LINK ${RW_LIBS}/javadoc/sdurw ${RW_LIBS}/javadoc/sdurw_core
         WINDOW_TITLE "RobWorkStudio Java API Documentation"
     )
