@@ -18,10 +18,11 @@
 #ifndef RW_COMMON_SERIALIZABLE_HPP
 #define RW_COMMON_SERIALIZABLE_HPP
 
+#if !defined(SWIG)
 #include <rw/core/macros.hpp>
 
 #include <string>
-
+#endif
 namespace rw { namespace common {
 
     class InputArchive;

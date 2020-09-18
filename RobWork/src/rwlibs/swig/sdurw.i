@@ -81,22 +81,27 @@ SWIG_JAVABODY_TYPEWRAPPER(public, public, public, SWIGTYPE)
 %constant double Deg2Rad = rw::math::Deg2Rad;
 %constant double Rad2Deg = rw::math::Rad2Deg;
 
+
+%import <rwlibs/swig/sdurw_core.i>
+%import <rwlibs/swig/sdurw_common.i>
+
+%pragma(java) jniclassimports=%{
+import org.robwork.sdurw_core.*;
+import org.robwork.sdurw_common.*;
+%}
+%pragma(java) moduleimports=%{
+import org.robwork.sdurw_core.*;
+import org.robwork.sdurw_common.*;
+%}
+%typemap(javaimports) SWIGTYPE %{
+import org.robwork.sdurw_core.*;
+import org.robwork.sdurw_common.*;
+%}
+
 /********************************************
  * CORE
  ********************************************/
 
-//%include <rwlibs/swig/rw_i/core.i>
-%import <rwlibs/swig/sdurw_core.i>
-
-%pragma(java) jniclassimports=%{
-import org.robwork.sdurw_core.*;
-%}
-%pragma(java) moduleimports=%{
-import org.robwork.sdurw_core.*;
-%}
-%typemap(javaimports) SWIGTYPE %{
-import org.robwork.sdurw_core.*;
-%}
 
 %extend rw::core::PropertyMap {
             
@@ -159,7 +164,7 @@ void writelog(const std::string& msg);
  * COMMON
  ********************************************/
 
-%include <rwlibs/swig/rw_i/common.i>
+//%include <rwlibs/swig/rw_i/common.i>
 
 /********************************************
  * GEOMETRY

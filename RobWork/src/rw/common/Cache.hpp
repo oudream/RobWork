@@ -18,11 +18,12 @@
 #ifndef RW_COMMON_CACHE_HPP
 #define RW_COMMON_CACHE_HPP
 
+#if !defined(SWIG)
 #include <rw/core/Ptr.hpp>
 #include <rw/core/macros.hpp>
 
 #include <map>
-
+#endif
 namespace rw { namespace common {
 
     /** @addtogroup common */

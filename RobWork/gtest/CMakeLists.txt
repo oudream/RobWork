@@ -237,14 +237,15 @@ endif()
 # Pathplanning
 # ##################################################################################################
 
-set(PATHPLANNING_TEST_LIBRARIES sdurw-gtest-main ${GTEST_LIBRARIES} sdurw_pathplanners sdurw sdurw_proximitystrategies)
+if(TARGET sdurw_pathplanners)
+    set(PATHPLANNING_TEST_LIBRARIES sdurw-gtest-main ${GTEST_LIBRARIES} sdurw_pathplanners sdurw sdurw_math sdurw_proximitystrategies)
 
-set(PATHPLANNING_TEST_SRC pathplanning/PathPlanningTest.cpp)
+    set(PATHPLANNING_TEST_SRC pathplanning/PathPlanningTest.cpp)
 
-add_executable(sdurw_pathplanning-gtest ${PATHPLANNING_TEST_SRC})
-target_link_libraries(sdurw_pathplanning-gtest ${PATHPLANNING_TEST_LIBRARIES})
-add_rw_gtest(sdurw_pathplanning-gtest)
-
+    add_executable(sdurw_pathplanning-gtest ${PATHPLANNING_TEST_SRC})
+    target_link_libraries(sdurw_pathplanning-gtest ${PATHPLANNING_TEST_LIBRARIES})
+    add_rw_gtest(sdurw_pathplanning-gtest)
+endif() 
 # ##################################################################################################
 # Proximity
 # ##################################################################################################

@@ -21,9 +21,9 @@
 /**
  * @file PairMap.hpp
  */
-
+#if !defined(SWIG)
 #include <map>
-
+#endif
 namespace rw { namespace common {
 
     /** @addtogroup common */
@@ -82,6 +82,7 @@ namespace rw { namespace common {
         */
         bool has (const T1 f1, const T1 f2) const { return has (Pair (f1, f2)); }
 
+#if !defined(SWIG)
         /**
            @brief return a reference to the value that is associated with the
            pair \b pair.
@@ -105,6 +106,7 @@ namespace rw { namespace common {
             else
                 return _defaultVal;
         }
+#endif
 
         /**
            @brief return a reference to the value that is associated with the
@@ -120,6 +122,7 @@ namespace rw { namespace common {
         */
         const T2& operator() (T1 f1, T1 f2) const { return operator[] (Pair (f1, f2)); }
 
+#if !defined(SWIG)
         /**
            @brief return a reference to the value that is associated with the
            \b pair
@@ -141,7 +144,9 @@ namespace rw { namespace common {
                 _map[p] = _defaultVal;
             return _map[p];
         }
-
+#else
+        MAPOPERATOR (T2&, const Pair&);
+#endif
         /**
           @brief return a reference to the value that is associated with the
           pair consisting of \b f1 and f2.

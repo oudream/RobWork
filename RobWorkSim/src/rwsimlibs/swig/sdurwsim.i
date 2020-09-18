@@ -90,6 +90,7 @@ void java_ThreadSimulatorStepCallback(ThreadSimulator* sim, State &state, void *
 #endif 
 
 %import <rwlibs/swig/sdurw_core.i>
+%import <rwlibs/swig/sdurw_common.i>
 %import <rwlibs/swig/sdurw.i>
 %import <rwlibs/swig/sdurw_assembly.i>
 %import <rwlibs/swig/sdurw_control.i>
@@ -102,6 +103,7 @@ void java_ThreadSimulatorStepCallback(ThreadSimulator* sim, State &state, void *
 %typemap(javaimports) SWIGTYPE %{
 import org.robwork.sdurw.*;
 import org.robwork.sdurw_core.*;
+import org.robwork.sdurw_common.*;
 import org.robwork.sdurw_assembly.*;
 import org.robwork.sdurw_control.*;
 import org.robwork.sdurw_simulation.*;
@@ -110,6 +112,7 @@ import org.robwork.sdurw_task.*;
 %pragma(java) moduleimports=%{
 import org.robwork.sdurw.*;
 import org.robwork.sdurw_core.*;
+import org.robwork.sdurw_common.*;
 %}
 %pragma(java) jniclassimports=%{
 import org.robwork.sdurw.*;
@@ -117,6 +120,7 @@ import org.robwork.sdurw_assembly.*;
 import org.robwork.sdurw_simulation.*;
 import org.robwork.sdurw_task.*;
 import org.robwork.sdurw_core.*;
+import org.robwork.sdurw_common.*;
 %}
 
 #if (defined(SWIGPYTHON) || defined(SWIGLUA))

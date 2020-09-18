@@ -18,13 +18,14 @@
 #ifndef RW_COMMON_OUTPUTARCHIVE_HPP
 #define RW_COMMON_OUTPUTARCHIVE_HPP
 
+#if !defined(SWIG)
 #include <rw/common/Archive.hpp>
 #include <rw/common/Serializable.hpp>
 
 #include <Eigen/Core>
 #include <boost/cstdint.hpp>
 #include <boost/type_traits.hpp>
-
+#endif 
 namespace rw { namespace common {
     /**
      * @brief serializable objects can be written to an output archive.

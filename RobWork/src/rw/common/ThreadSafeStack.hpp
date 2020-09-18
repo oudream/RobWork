@@ -18,9 +18,11 @@
 #ifndef RW_COMMON_THREADSAFESTACK_HPP_
 #define RW_COMMON_THREADSAFESTACK_HPP_
 
+#if !defined(SWIG)
 #include <boost/thread/condition.hpp>
 #include <boost/thread/mutex.hpp>
 #include <stack>
+#endif 
 
 namespace rw { namespace common {
 

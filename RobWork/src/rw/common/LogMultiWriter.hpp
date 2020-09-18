@@ -18,10 +18,11 @@
 #ifndef RW_COMMON_LOGMULTIWRITER_HPP
 #define RW_COMMON_LOGMULTIWRITER_HPP
 
+#if !defined(SWIG)
 #include <rw/core/LogWriter.hpp>
 
 #include <vector>
-
+#endif
 namespace rw { namespace common {
 
     /** @addtogroup common */

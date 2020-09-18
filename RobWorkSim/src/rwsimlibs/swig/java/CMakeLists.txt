@@ -3,12 +3,6 @@ set(SUBSYS_DESC "Interface for accessing RobWorkSim from java.")
 set(SUBSYS_DEPS RW::sdurw_java RWS::sdurws_java sdurwsim)
 set(build TRUE)
 
-if(TARGET RWS::sdurws_jni)
-message(STATUS "RWS::sdurws_java is target")
-else()
-message(STATUS "RWS::sdurws_java is not target")
-endif()
-
 set(DEFAULT TRUE)
 set(REASON)
 if(NOT SWIG_FOUND)
@@ -57,29 +51,15 @@ if(build)
     rw_add_java_clean_target(sdurwsim)
 
     # Make sure Robwork jave is compiled first
-    foreach( 
-        dep
-        sdurw_core_jni
-        sdurw_jni
-        sdurw_task_jni
-        sdurw_assembly_jni
-        sdurw_control_jni
-        sdurw_simulation_jni
-    )
-        if(TARGET ${dep})
-            add_dependencies(sdurwsim_jni ${dep})
-        endif()
-    endforeach()
-
     if(WIN32)
         set(CLASSPATH
             -classpath
-            "${RW_LIBS}/sdurw_core_java.jar\;${RW_LIBS}/sdurw_java.jar\;${RW_LIBS}/sdurw_task_java.jar\;${RW_LIBS}/sdurw_assembly_java.jar\;${RW_LIBS}/sdurw_control_java.jar\;${RW_LIBS}/sdurw_simulation_java.jar"
+            "${RW_LIBS}/sdurw_core_java.jar\;${RW_LIBS}/sdurw_common_java.jar\;${RW_LIBS}/sdurw_java.jar\;${RW_LIBS}/sdurw_task_java.jar\;${RW_LIBS}/sdurw_assembly_java.jar\;${RW_LIBS}/sdurw_control_java.jar\;${RW_LIBS}/sdurw_simulation_java.jar"
         )
     else()
         set(CLASSPATH
             -classpath
-            ${RW_LIBS}/sdurw_core_java.jar:${RW_LIBS}/sdurw_java.jar:${RW_LIBS}/sdurw_task_java.jar:${RW_LIBS}/sdurw_assembly_java.jar:${RW_LIBS}/sdurw_control_java.jar:${RW_LIBS}/sdurw_simulation_java.jar
+            ${RW_LIBS}/sdurw_core_java.jar:${RW_LIBS}/sdurw_common_java.jar:${RW_LIBS}/sdurw_java.jar:${RW_LIBS}/sdurw_task_java.jar:${RW_LIBS}/sdurw_assembly_java.jar:${RW_LIBS}/sdurw_control_java.jar:${RW_LIBS}/sdurw_simulation_java.jar
         )
     endif()
     # Compile java code and create JAR and Javadoc

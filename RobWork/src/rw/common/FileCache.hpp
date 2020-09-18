@@ -20,7 +20,9 @@
 #include <rw/core/Ptr.hpp>
 #include <rw/core/macros.hpp>
 
+#if !defined(SWIG)
 #include <map>
+#endif
 
 namespace rw { namespace common {
 

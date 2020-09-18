@@ -30,6 +30,10 @@
     %rename(streamOperator) operator<<;
 #endif
 
+#if defined(SWIGPYTHON)
+    %rename(copy) operator=;
+#endif 
+
 #if defined(SWIGLUA)
     %rename(c_end) end;
 #endif
