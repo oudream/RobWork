@@ -26,6 +26,13 @@ SWIG_JAVABODY_TYPEWRAPPER(public, public, public, SWIGTYPE)
     %}
 #endif
 
+%define PTR_EQ_C_PTR
+    %extend {
+        bool operator== ( T* p) {
+            return $self->get() == p;
+        }
+    }
+%enddef
 
 %include <rw/core/Ptr.hpp>
 
