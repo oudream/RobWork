@@ -96,7 +96,7 @@ stages:
     # Build RobWork
     - cd RW
     - *is_shared_runner
-    - "[[ $SHARED_RUNNER ]] || cmake -DCMAKE_BUILD_TYPE=Release ../../RobWork"
+    - "[[ $SHARED_RUNNER ]] || cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_sdurw_java=ON -DBUILD_sdurw_python=ON -DBUILD_sdurw_lua=ON ../../RobWork"
     - "[[ $SHARED_RUNNER ]] && cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_DISABLE_FIND_PACKAGE_XercesC=True -DCMAKE_DISABLE_FIND_PACKAGE_SWIG=True -DRW_USE_FCL=OFF -DRW_USE_ASSIMP=OFF ../../RobWork"
     - make -j${THREADS}
   artifacts:
@@ -378,7 +378,7 @@ stages:
     - cd Build
     # Build RobWork
     - cd RW
-    - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 15 2017 Win64" -DSWIG_EXECUTABLE=%SWIG_ROOT%\swig.exe ../../RobWork
+    - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 15 2017 Win64" -DSWIG_EXECUTABLE=%SWIG_ROOT%\swig.exe -DBUILD_sdurw_java=ON -DBUILD_sdurw_python=ON -DBUILD_sdurw_lua=ON ../../RobWork
     - msbuild RobWork.sln /property:Configuration=Release /maxcpucount:8
   artifacts:
     paths:

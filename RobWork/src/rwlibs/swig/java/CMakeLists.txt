@@ -15,7 +15,7 @@ set(SUBSYS_DEPS
 set(build TRUE)
 
 find_package(SWIG 3.0.0 QUIET)
-set(DEFAULT TRUE)
+set(DEFAULT FALSE)
 set(REASON)
 if(NOT SWIG_FOUND)
     set(DEFAULT false)
@@ -26,6 +26,8 @@ else()
     if(NOT (JAVA_FOUND AND JNI_FOUND))
         set(DEFAULT false)
         set(REASON "JAVA or JNI not found!")
+    else()
+        set(REASON "Disabled by default.")
     endif()
 endif()
 
