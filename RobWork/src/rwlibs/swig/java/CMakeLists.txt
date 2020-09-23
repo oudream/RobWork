@@ -82,21 +82,17 @@ if(build)
             if(CMAKE_VERSION VERSION_GREATER 3.12.0)
                 list(TRANSFORM class_path_depend PREPEND "${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/")
                 list(TRANSFORM class_path_depend APPEND "_java.jar")
-                list(TRANSFORM link_path_depend PREPEND "-link\;../")
+                list(TRANSFORM link_path_depend PREPEND "../")
             else()
                 set(cpd)
                 set(lpd)
                 foreach(dep ${depends})
                     set(cpd ${cpd} "${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${dep}_java.jar")
-                    set(lpd ${lpd} "-link\;../${dep}")
+                    set(lpd ${lpd} "../${dep}")
                 endforeach()
                 set(class_path_depend "${cpd}")
                 set(link_path_depend "${lpd}")
             endif ()
-
-            if(NOT WIN32)
-                string(REPLACE ";" ":" class_path_depend "${class_path_depend}")
-            endif()
 
             if("${RW_MODULE}" STREQUAL "sdurw_core")
 
@@ -105,7 +101,6 @@ if(build)
                 set(LOADERRW_CP_CMD copy_if_different ${CMAKE_CURRENT_SOURCE_DIR}/LoaderRW.java
                                     java_src_${RW_MODULE}/org/robwork/LoaderRW.java)
             else()
-                set(CLASSPATH -classpath "${class_path_depend}")
                 set(LINK_JAVADOC ${link_path_depend})
                 set(LOADERRW_FILE)
                 set(LOADERRW_PKG)
@@ -113,62 +108,11 @@ if(build)
             endif()
             # Compile java code and create JAR and Javadoc
 
-            add_custom_command(
-                TARGET ${RW_MODULE}_jni POST_BUILD
-                COMMAND ${CMAKE_COMMAND} -E echo "Removing old Java compilation..."
-                COMMAND
-                    ${CMAKE_COMMAND} -E remove_directory
-                    "${CMAKE_CURRENT_BINARY_DIR}/java_build_${RW_MODULE}"
-                COMMAND
-                    ${CMAKE_COMMAND} -E remove_directory
-                    "${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/javadoc/${RW_MODULE}"
-                COMMAND ${CMAKE_COMMAND} -E echo "Copying Java source..."
-                COMMAND ${CMAKE_COMMAND} -E ${LOADERRW_CP_CMD}
-                COMMAND ${CMAKE_COMMAND} -E echo "Compiling Java files..."
-                COMMAND
-                    ${CMAKE_COMMAND} -E make_directory
-                    java_build_${RW_MODULE}/org/robwork/${RW_MODULE}
-                COMMAND
-                    ${Java_JAVAC_EXECUTABLE}
-                    ${CLASSPATH}
-                    -d
-                    ${CMAKE_CURRENT_BINARY_DIR}/java_build_${RW_MODULE}
-                    ${LOADERRW_FILE}
-                    java_src_${RW_MODULE}/org/robwork/${RW_MODULE}/*.java
-                COMMAND ${CMAKE_COMMAND} -E echo "Creating jar file..."
-                COMMAND
-                    ${Java_JAR_EXECUTABLE}
-                    cvf
-                    ${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RW_MODULE}_java.jar
-                    -C
-                    java_build_${RW_MODULE}
-                    .
-                COMMAND ${CMAKE_COMMAND} -E echo "Creating jar file of source..."
-                COMMAND
-                    ${Java_JAR_EXECUTABLE}
-                    cvf
-                    ${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RW_MODULE}_java-source.jar
-                    -C
-                    java_src_${RW_MODULE}
-                    .
-                COMMAND ${CMAKE_COMMAND} -E echo "Creating Javadoc..."
-                COMMAND
-                    ${CMAKE_COMMAND} -E make_directory
-                    ${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/javadoc/${RW_MODULE}
-                COMMAND
-                    ${Java_JAVADOC_EXECUTABLE}
-                    ${CLASSPATH}
-                    -d
-                    ${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/javadoc/${RW_MODULE}
-                    -windowtitle
-                    "RobWork Java API Documentation"
-                    -public
-                    -sourcepath
-                    java_src_${RW_MODULE}
-                    ${LOADERRW_PKG}
-                    org.robwork.${RW_MODULE}
-                    ${LINK_JAVADOC}
-                WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+            rw_add_java_lib(
+                ${RW_MODULE}
+                CLASSPATH ${class_path_depend}
+                JAVADOC_LINK ${link_path_depend}
+                WINDOW_TITLE "RobWork Java API Documentation"
             )
 
             target_link_libraries(${SUBSYS_NAME} INTERFACE ${RW_MODULE}_jni)
