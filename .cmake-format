@@ -1,0 +1,146 @@
+{
+    "line_width": 100,
+    "tab_size": 4,
+    "max_subargs_per_line": 5,
+    "max_pargs_hwrap": 6,
+    "separate_ctrl_name_with_space": false,
+    "separate_fn_name_with_space": false,
+    "dangle_parens": true,
+    "max_prefix_chars": 2,
+    "max_prefix_chars": 20,
+    "line_ending": "unix",
+    "command_case": "canonical",
+    "keyword_case": "unchanged",
+    "additional_commands": {
+        "foreach": {
+            "pargs": 1,
+            "flags": [
+                "DEP",
+                "IN"
+            ],
+            "kwargs": {
+                "LISTS": "*"
+            }
+        },
+        "set_source_files_properties": {
+            "pargs": 1,
+            "kwargs": {
+                "PROPERTIES": {
+                    "kwargs": {
+                        "SWIG_FLAGS": "*",
+                        "CPLUSPLUS": {
+                            "pargs": 1
+                        }
+                    }
+                }
+            }
+        },
+        "swig_add_library": {
+            "pargs": 1,
+            "kwargs": {
+                "TYPE": 1,
+                "LANGUAGE": 1,
+                "OUTPUT_DIR": 1,
+                "OUTFILE_DIR": 1,
+                "SOURCES": "*"
+            }
+        },
+        "catkin_package": {
+            "flags": [],
+            "kwargs": {
+                "INCLUDE_DIRS": "*",
+                "LIBRARIES": "*",
+                "CATKIN_DEPENDS": "*",
+                "DEPENDS": "*"
+            }
+        },
+        "rw_subsys_option": {
+            "pargs": 4,
+            "flags": [
+                "ADD_DOC"
+            ],
+            "kwargs": {
+                "DEPENDS": "*",
+                "DEPENDS_EXT": "*",
+                "REASON": {
+                    "pargs": 1
+                }
+            }
+        },
+        "set_target_properties": {
+            "kwargs": {
+                "PROPERTIES": {
+                    "kwargs": {
+                        "LINK_FLAGS": "*",
+                        "COMPILE_FLAGS": "*",
+                        "PREFIX": {
+                            "pargs": 1
+                        },
+                        "OUTPUT_NAME": {
+                            "pargs": 1
+                        },
+                        "ARCHIVE_OUTPUT_DIRECTORY": {
+                            "pargs": 1
+                        },
+                        "LIBRARY_OUTPUT_DIRECTORY": {
+                            "pargs": 1
+                        },
+                        "RUNTIME_OUTPUT_DIRECTORY": {
+                            "pargs": 1
+                        }
+                    }
+                }
+            }
+        },
+        "rw_add_swig": {
+            "pargs": 3,
+            "kwargs": {
+                "TARGET_NAME": 1,
+                "INSTALL_DIR": 1,
+                "CXX_FILE_DIR": 1,
+                "LANGUAGE_FILE_DIR": 1,
+                "SWIG_FLAGS": "*",
+                "SOURCES": "*",
+                "DEPEND": "*"
+            }
+        },
+        "rw_add_java_lib": {
+            "pargs": 1,
+            "kwargs": {
+                "LOADER_FILE": 1,
+                "LOADER_PKG": 1,
+                "WINDOW_TITLE": 1,
+                "CLASSPATH": "*",
+                "JAVADOC_LINK": "*",
+                "EXTRA_COPY": {
+                    "kwargs": {
+                        "COMMAND": "*"
+                    }
+                }
+            }
+        }
+    },
+    "always_wrap": [],
+    "algorithm_order": [
+        0,
+        1,
+        2,
+        3,
+        4
+    ],
+    "enable_sort": true,
+    "autosort": false,
+    "hashruler_min_length": 10,
+    "per_command": {},
+    "bullet_char": "*",
+    "enum_char": ".",
+    "enable_markup": true,
+    "first_comment_is_literal": false,
+    "literal_comment_pattern": null,
+    "fence_pattern": "^\\s*([`~]{3}[`~]*)(.*)$",
+    "ruler_pattern": "^\\s*[^\\w\\s]{3}.*[^\\w\\s]{3}$",
+    "canonicalize_hashrulers": true,
+    "emit_byteorder_mark": false,
+    "input_encoding": "utf-8",
+    "output_encoding": "utf-8"
+}
