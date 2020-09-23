@@ -706,12 +706,26 @@ endmacro()
 macro(RW_ADD_JAVA_LIB _name)
     # ###### Handle Options #####
     set(options) # Used to marke flags
-    set(oneValueArgs LOADER_FILE LOADER_PKG WINDOW_TITLE) # used to marke values with a single value
-    set(multiValueArgs CLASSPATH JAVADOC_LINK)
+    set(oneValueArgs LOADER_SOURCE_FILE LOADER_DST_FILE LOADER_PKG WINDOW_TITLE) # used to marke
+                                                                                 # values with a
+                                                                                 # single value
+    set(multiValueArgs CLASSPATH JAVADOC_LINK EXTRA_COPY)
     cmake_parse_arguments(JLIB "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
 
     if(NOT WIN32)
         string(REPLACE ";" ":" JLIB_CLASSPATH "${JLIB_CLASSPATH}")
+    endif()
+
+    set(CLASSPATH -classpath)
+    if("${JLIB_CLASSPATH}" STREQUAL "")
+        set(CLASSPATH)
+    endif()
+
+    if("${JLIB_LOADER_SOURCE_FILE}" STREQUAL "")
+        set(JLIB_LOADER_SOURCE_FILE ${CMAKE_CURRENT_SOURCE_DIR}/Loader${PROJECT_PREFIX}.java)
+    endif()
+    if("${JLIB_LOADER_DST_FILE}" STREQUAL "")
+        set(JLIB_LOADER_DST_FILE java_src_${_name}/org/robwork/Loader${PROJECT_PREFIX}.java)
     endif()
 
     set(DOC_LINK)
@@ -729,14 +743,17 @@ macro(RW_ADD_JAVA_LIB _name)
             "${${PROJECT_PREFIX}_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/javadoc/${_name}"
         COMMAND ${CMAKE_COMMAND} -E echo "Copying Java source..."
         COMMAND
-            ${CMAKE_COMMAND} -E copy_if_different
-            ${CMAKE_CURRENT_SOURCE_DIR}/Loader${PROJECT_PREFIX}.java
-            java_src_${_name}/org/robwork/Loader${PROJECT_PREFIX}.java
+            ${CMAKE_COMMAND}
+            -E
+            copy_if_different
+            ${JLIB_LOADER_SOURCE_FILE}
+            ${JLIB_LOADER_DST_FILE}
+            ${JLIB_EXTRA_COPY}
         COMMAND ${CMAKE_COMMAND} -E echo "Compiling Java files..."
         COMMAND ${CMAKE_COMMAND} -E make_directory java_build_${_name}/org/robwork/${_name}
         COMMAND
             ${Java_JAVAC_EXECUTABLE}
-            -classpath
+            ${CLASSPATH}
             ${JLIB_CLASSPATH}
             -d
             ${CMAKE_CURRENT_BINARY_DIR}/java_build_${_name}
@@ -764,7 +781,7 @@ macro(RW_ADD_JAVA_LIB _name)
             ${${PROJECT_PREFIX}_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/javadoc/${_name}
         COMMAND
             ${Java_JAVADOC_EXECUTABLE}
-            -classpath
+            ${CLASSPATH}
             ${JLIB_CLASSPATH}
             -d
             ${${PROJECT_PREFIX}_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/javadoc/${_name}
