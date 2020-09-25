@@ -36,6 +36,10 @@ if(build)
     include_directories(${RW_ROOT}/src)
     include_directories(${PYTHON_INCLUDE_DIRS})
 
+    if(RW_USE_NUMPY)
+        include_directories(${NUMPY_INCLUDE_DIR})
+    endif()
+
     set(SWIG_FLAGS "-includeall")
     if((PYTHON_VERSION_MAJOR VERSION_GREATER 3) OR (PYTHON_VERSION_MAJOR VERSION_EQUAL 3))
         set(SWIG_FLAGS "${SWIG_FLAGS};-py3")
@@ -97,9 +101,7 @@ if(build)
 
             # Set build destination
             target_compile_definitions(${TARGET_NAME} PUBLIC RW_USE_NUMPY)
-            if(RW_USE_NUMPY)
-                target_link_directories(${TARGET_NAME} PUBLIC ${NUMPY_INCLUDE_DIR})
-            endif()
+
             set_target_properties(
                 ${TARGET_NAME}
                 PROPERTIES
