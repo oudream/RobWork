@@ -5,8 +5,7 @@ import copy
 
 class cpp_link(QtCore.QObject):
     def __init__(self):
-        self.latest_widget=sys.argv[0]
-        self.plugin={self.get_widget_name() : None}
+        self.plugin={"reserved" : None}
     def register_plugin(self,aPlugin):
         if self.plugin[self.get_widget_name()] == None:
             print("Plugin registered as: ", self.get_widget_name())
