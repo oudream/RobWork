@@ -62,7 +62,7 @@ bool URRTDE::reuploadScript ()
 
 void URRTDE::stopRobot ()
 {
-    rtde_control_->stopRobot ();
+    rtde_control_->stopJ ();
 }
 
 bool URRTDE::moveJ (const rw::math::Q& q, double speed, double acceleration)
@@ -140,7 +140,7 @@ bool URRTDE::speedStop ()
     return rtde_control_->speedStop ();
 }
 
-bool URRTDE::forceModeStart (const rw::math::Transform3D<>& task_frame,
+bool URRTDE::forceMode (const rw::math::Transform3D<>& task_frame,
                              const rw::math::Q& selection_vector,
                              const rw::math::Wrench6D<>& wrench, int type,
                              const rw::math::Q& limits)
@@ -156,18 +156,18 @@ bool URRTDE::forceModeStart (const rw::math::Transform3D<>& task_frame,
     std::vector< double > std_wrench  = {
         force[0], force[1], force[2], torque[0], torque[1], torque[2]};
 
-    return rtde_control_->forceModeStart (
+    return rtde_control_->forceMode (
         std_task_frame, std_selection_vector, std_wrench, type, limits.toStdVector ());
 }
 
-bool URRTDE::forceModeUpdate (const rw::math::Wrench6D<>& wrench)
+/*bool URRTDE::forceModeUpdate (const rw::math::Wrench6D<>& wrench)
 {
     const rw::math::Vector3D<> force  = wrench.force ();
     const rw::math::Vector3D<> torque = wrench.torque ();
     std::vector< double > std_wrench  = {
         force[0], force[1], force[2], torque[0], torque[1], torque[2]};
     return rtde_control_->forceModeUpdate (std_wrench);
-}
+}*/
 
 bool URRTDE::forceModeStop ()
 {
