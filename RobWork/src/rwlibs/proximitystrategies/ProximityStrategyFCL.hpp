@@ -31,7 +31,6 @@
 #define FCL_VERSION_LESS_THEN_0_6_0 true
 #endif
 
-#include <fcl/config.h>
 #include <string>
 #include <utility>
 #include <vector>

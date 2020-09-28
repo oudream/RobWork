@@ -102,6 +102,11 @@ void RobWork::initialize (const std::vector< std::string >& plugins)
     _initialized = true;    // must be set before logging to avoid infinite loop
     Log::debugLog () << "Initializing ROBWORK" << std::endl;
 
+    std::string pluginFolder = "libs";
+#if defined(RW_WIN32)
+    pluginFolder = "bin";
+#endif
+
     // user supplied arguments will always be taken into account
 
     // this is the search priority
@@ -126,25 +131,25 @@ void RobWork::initialize (const std::vector< std::string >& plugins)
         if (rwRootVar != NULL)
             plugins.add ("location-2",
                          "Default plugin location for RobWork",
-                         std::string (rwRootVar) + SLASH + "libs" + SLASH + RW_BUILD_TYPE + "/");
+                         std::string (rwRootVar) + SLASH + pluginFolder + SLASH + RW_BUILD_TYPE + "/");
 
         char* rwsRootVar = getenv ("RWS_ROOT");
         if (rwsRootVar != NULL)
             plugins.add ("location-3",
                          "Default plugin location for RobWorkStudio",
-                         std::string (rwsRootVar) + SLASH + "libs" + SLASH + RW_BUILD_TYPE + "/");
+                         std::string (rwsRootVar) + SLASH + pluginFolder + SLASH + RW_BUILD_TYPE + "/");
 
         char* rwsimRootVar = getenv ("RWSIM_ROOT");
         if (rwsimRootVar != NULL)
             plugins.add ("location-4",
                          "Default plugin location for RobWorkSim",
-                         std::string (rwsimRootVar) + SLASH + "libs" + SLASH + RW_BUILD_TYPE + "/");
+                         std::string (rwsimRootVar) + SLASH + pluginFolder + SLASH + RW_BUILD_TYPE + "/");
 
         char* rwhwRootVar = getenv ("RWHW_ROOT");
         if (rwhwRootVar != NULL)
             plugins.add ("location-5",
                          "Default plugin location for RobWorkHardware",
-                         std::string (rwhwRootVar) + SLASH + "libs" + SLASH + RW_BUILD_TYPE + "/");
+                         std::string (rwhwRootVar) + SLASH + pluginFolder + SLASH + RW_BUILD_TYPE + "/");
 
         _settings.add ("plugins", "List of plugins or plugin locations", plugins);
     }
@@ -173,18 +178,18 @@ void RobWork::initialize (const std::vector< std::string >& plugins)
         plugins.add ("location-1", "Default plugin location", std::string ("plugins") + SLASH);
         plugins.add ("location-2",
                      "Default plugin location for RobWork",
-                     buildDir + SLASH + "libs" + SLASH + RW_BUILD_TYPE + SLASH);
+                     buildDir + SLASH + pluginFolder + SLASH + RW_BUILD_TYPE + SLASH);
         plugins.add ("location-3",
                      "Default plugin location for RobWorkStudio",
-                     buildDir + SLASH + ".." + SLASH + "RobWorkStudio" + SLASH + "libs" + SLASH +
+                     buildDir + SLASH + ".." + SLASH + "RobWorkStudio" + SLASH + pluginFolder + SLASH +
                          RW_BUILD_TYPE + SLASH);
         plugins.add ("location-4",
                      "Default plugin location for RobWorkSim",
-                     buildDir + SLASH + ".." + SLASH + "RobWorkSim" + SLASH + "libs" + SLASH +
+                     buildDir + SLASH + ".." + SLASH + "RobWorkSim" + SLASH + pluginFolder + SLASH +
                          RW_BUILD_TYPE + SLASH);
         plugins.add ("location-5",
                      "Default plugin location for RobWorkHardware",
-                     buildDir + SLASH + ".." + SLASH + "RobWorkHardware" + SLASH + "libs" + SLASH +
+                     buildDir + SLASH + ".." + SLASH + "RobWorkHardware" + SLASH + pluginFolder + SLASH +
                          RW_BUILD_TYPE + SLASH);
         _settings.add ("plugins", "List of plugins or plugin locations", plugins);
     }

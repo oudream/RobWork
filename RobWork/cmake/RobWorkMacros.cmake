@@ -541,16 +541,29 @@ endmacro()
 # to. ARGN The source files for the library.
 macro(RW_ADD_PLUGIN _name _lib_type)
     add_library(${_name} ${_lib_type} ${ARGN})
-
+    
     # Only link if needed
     if(WIN32 AND MSVC)
-        set_target_properties(${_name} PROPERTIES LINK_FLAGS_RELEASE /OPT:REF)
-    elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-        # set_target_properties(${_name} PROPERTIES LINK_FLAGS -Wl)
-    elseif(__COMPILER_PATHSCALE)
-        set_target_properties(${_name} PROPERTIES LINK_FLAGS -mp)
+
+    if(${_lib_type} STREQUAL "MODULE")
+        set_target_properties(
+            ${_name}
+            PROPERTIES
+                LINK_FLAGS_RELEASE /OPT:REF
+                ARCHIVE_OUTPUT_DIRECTORY "${${PROJECT_PREFIX}_CMAKE_RUNTIME_OUTPUT_DIRECTORY}/.."
+                RUNTIME_OUTPUT_DIRECTORY "${${PROJECT_PREFIX}_CMAKE_RUNTIME_OUTPUT_DIRECTORY}/.."
+                LIBRARY_OUTPUT_DIRECTORY "${${PROJECT_PREFIX}_CMAKE_RUNTIME_OUTPUT_DIRECTORY}/.."
+        )
     else()
-        set_target_properties(${_name} PROPERTIES LINK_FLAGS -Wl,--as-needed,--no-undefined)
+        set_target_properties(${_name} PROPERTIES LINK_FLAGS_RELEASE /OPT:REF)
+    endif()
+
+    elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+    # set_target_properties(${_name} PROPERTIES LINK_FLAGS -Wl)
+    elseif(__COMPILER_PATHSCALE)
+    set_target_properties(${_name} PROPERTIES LINK_FLAGS -mp)
+    else()
+    set_target_properties(${_name} PROPERTIES LINK_FLAGS -Wl,--as-needed,--no-undefined)
     endif()
     #
     if(${PROJECT_USE_SONAME})
@@ -714,6 +727,8 @@ macro(RW_ADD_JAVA_LIB _name)
 
     if(NOT WIN32)
         string(REPLACE ";" ":" JLIB_CLASSPATH "${JLIB_CLASSPATH}")
+    else()
+        string(REPLACE ";" "\;" JLIB_CLASSPATH "${JLIB_CLASSPATH}")
     endif()
 
     set(CLASSPATH -classpath)
@@ -751,6 +766,7 @@ macro(RW_ADD_JAVA_LIB _name)
             ${JLIB_EXTRA_COPY}
         COMMAND ${CMAKE_COMMAND} -E echo "Compiling Java files..."
         COMMAND ${CMAKE_COMMAND} -E make_directory java_build_${_name}/org/robwork/${_name}
+        COMMAND ${CMAKE_COMMAND} -E echo "Compiling Java files for ${_name} ..."
         COMMAND
             ${Java_JAVAC_EXECUTABLE}
             ${CLASSPATH}
@@ -1242,13 +1258,10 @@ macro(RW_CREATE_INSTALLER)
                     Dev
                     # DOWNLOADED ARCHIVE_FILE #Name_of_file_to_generate_for_download
                 )
-                message(
-                    STATUS
-                        "component: ${CPACK_COMPONENT_${_COMP}_DISPLAY_NAME} - group: ${CPACK_COMPONENT_${_COMP}_GROUP}"
-                )
-                message(STATUS "     - depend: ${_depList}")
+                # message( STATUS "component: ${CPACK_COMPONENT_${_COMP}_DISPLAY_NAME} - group:
+                # ${CPACK_COMPONENT_${_COMP}_GROUP}" ) message(STATUS "     - depend: ${_depList}")
             elseif(NOT ${RW_SUBSYS_BUILD_${_comp}})
-                message(STATUS "Component: ${_comp} not installed")
+                # message(STATUS "Component: ${_comp} not installed")
             elseif(${_comp} IN_LIST EXTERNAL_COMPONENTS)
                 cpack_add_component(
                     ${_comp}
@@ -1263,10 +1276,8 @@ macro(RW_CREATE_INSTALLER)
                     Dev
                     # DOWNLOADED ARCHIVE_FILE #Name_of_file_to_generate_for_download
                 )
-                message(
-                    STATUS
-                        "component: ${CPACK_COMPONENT_${_COMP}_DISPLAY_NAME} - group: ${CPACK_COMPONENT_${_COMP}_GROUP}"
-                )
+                # message( STATUS "component: ${CPACK_COMPONENT_${_COMP}_DISPLAY_NAME} - group:
+                # ${CPACK_COMPONENT_${_COMP}_GROUP}" )
             else()
                 cpack_add_component(
                     ${_comp}
@@ -1279,10 +1290,8 @@ macro(RW_CREATE_INSTALLER)
                     Dev
                     # DOWNLOADED ARCHIVE_FILE #Name_of_file_to_generate_for_download
                 )
-                message(
-                    STATUS
-                        "component: ${CPACK_COMPONENT_${_COMP}_DISPLAY_NAME} - group: ${CPACK_COMPONENT_${_COMP}_GROUP}"
-                )
+                # message( STATUS "component: ${CPACK_COMPONENT_${_COMP}_DISPLAY_NAME} - group:
+                # ${CPACK_COMPONENT_${_COMP}_GROUP}" )
             endif()
         endforeach()
     endif()

@@ -229,8 +229,6 @@ NAMED_OWNEDPTR(PropertyBase, rw::core::PropertyBase);
 %template(setVectorFloat) rw::core::PropertyMap::set<std::vector<float>>;
 %template(setVectorDouble) rw::core::PropertyMap::set<std::vector<double>>;
 
-
-
 %{
     #include <rw/core/PropertyType.hpp>
 %}

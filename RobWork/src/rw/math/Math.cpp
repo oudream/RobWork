@@ -47,7 +47,7 @@ void Math::seed (unsigned seed)
 void Math::seed ()
 {
     Random::seed ();
-    srand (time (NULL));
+    srand ((unsigned int)time (NULL));
 }
 
 double Math::ran (double from, double to)

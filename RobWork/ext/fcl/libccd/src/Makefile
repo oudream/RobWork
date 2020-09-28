@@ -17,7 +17,7 @@
 
 -include Makefile.include
 
-CFLAGS += -I. -fvisibility=hidden
+CFLAGS += -I.
 
 TARGETS = libccd.a
 OBJS = ccd.o mpr.o support.o vec3.o polytope.o
