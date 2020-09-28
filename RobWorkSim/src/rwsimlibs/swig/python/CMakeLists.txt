@@ -27,6 +27,10 @@ if(build)
     include(UseSWIG)
     include_directories(${PYTHON_INCLUDE_DIRS})
 
+    if(RW_USE_NUMPY)
+    include_directories(${NUMPY_INCLUDE_DIR})
+    endif()
+
     add_library(${SUBSYS_NAME} INTERFACE)
     add_library(${PROJECT_PREFIX}::${SUBSYS_NAME} ALIAS ${SUBSYS_NAME})
 
@@ -64,9 +68,6 @@ if(build)
 
     set(RW_USE_NUMPY ${RW_BUILD_WITH_NUMPY})
     target_compile_definitions(${TARGET_NAME} PRIVATE RW_USE_NUMPY)
-    if(RW_USE_NUMPY)
-        target_link_directories(${TARGET_NAME} PRIVATE ${NUMPY_INCLUDE_DIR})
-    endif()
 
     # Set build destination
     set_target_properties(
