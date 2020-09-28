@@ -33,7 +33,7 @@ template< class T > Quaternion< T > Quaternion< T >::exp () const
     Vector3D< T > v (getQx (), getQy (), getQz ());
     double w = std::exp (a) * cos (v.norm2 ());
 
-    v = (v / v.norm2 ()) * sin (v.norm2 ()) * std::exp (a);
+    v = (v / v.norm2 ()) * sin (v.norm2 ()) * T(std::exp (a));
 
     return Quaternion< T > (v[0], v[1], v[2], w);
 }
@@ -42,19 +42,19 @@ template< class T > Quaternion< T > Quaternion< T >::inverse () const
 {
     Quaternion< T > ret;
 
-    ret = (*this) * (-1 / getLengthSquared ());
-    ret[3] *= -1;
+    ret = (*this) * (T(-1.0) / getLengthSquared ());
+    ret[3] *= T(-1.0);
     return ret;
 }
 
 template< class T > Quaternion< T > Quaternion< T >::ln () const
 {
     double a = acos (getQw ());
-    double x = getQx () / sin (a);
-    double y = getQy () / sin (a);
-    double z = getQz () / sin (a);
+    double x = getQx () / T(sin (a));
+    double y = getQy () / T(sin (a));
+    double z = getQz () / T(sin (a));
 
-    return Quaternion< T > (a * x, a * y, a * z, 0);
+    return Quaternion< T > (a * x, a * y, a * z, T(0));
 }
 
 template< class T > Quaternion< T > Quaternion< T >::pow (double power) const

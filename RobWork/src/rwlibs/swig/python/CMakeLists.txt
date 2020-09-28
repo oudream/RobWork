@@ -44,6 +44,7 @@ if(build)
     if((PYTHON_VERSION_MAJOR VERSION_GREATER 3) OR (PYTHON_VERSION_MAJOR VERSION_EQUAL 3))
         set(SWIG_FLAGS "${SWIG_FLAGS};-py3")
     endif()
+    
     if(NOT ${SWIG_VERSION} VERSION_LESS 4.0.0)
         set(SWIG_FLAGS "${SWIG_FLAGS};-doxygen")
     endif()
@@ -118,7 +119,7 @@ if(build)
                 endif()
                 if(pydoc)
                     add_custom_command(
-                        TARGET ${RW_MODULE}${LIB_SUFIX} POST_BUILD
+                        TARGET ${TARGET_NAME} POST_BUILD
                         COMMAND
                             ${pydoc} -w
                             ${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RW_MODULE}/${RW_MODULE}.py
@@ -155,18 +156,6 @@ if(build)
     else()
         set(LIB_PREFIX "_")
     endif()
-
-    # add_dependencies(${LIB_PREFIX}sdurw_assembly${LIB_SUFIX} ${LIB_PREFIX}sdurw_task${LIB_SUFIX}
-    # ${LIB_PREFIX}sdurw${LIB_SUFIX}) add_dependencies(${LIB_PREFIX}sdurw_control${LIB_SUFIX}
-    # ${LIB_PREFIX}sdurw${LIB_SUFIX})
-    # add_dependencies(${LIB_PREFIX}sdurw_pathoptimization${LIB_SUFIX}
-    # ${LIB_PREFIX}sdurw${LIB_SUFIX}) add_dependencies(${LIB_PREFIX}sdurw_pathplanners${LIB_SUFIX}
-    # ${LIB_PREFIX}sdurw${LIB_SUFIX})
-    # add_dependencies(${LIB_PREFIX}sdurw_proximitystrategies${LIB_SUFIX}
-    # ${LIB_PREFIX}sdurw${LIB_SUFIX}) add_dependencies(${LIB_PREFIX}sdurw_simulation${LIB_SUFIX}
-    # ${LIB_PREFIX}sdurw${LIB_SUFIX}) add_dependencies(${LIB_PREFIX}sdurw_task${LIB_SUFIX}
-    # ${LIB_PREFIX}sdurw${LIB_SUFIX}) add_dependencies(${LIB_PREFIX}sdurw_opengl${LIB_SUFIX}
-    # ${LIB_PREFIX}sdurw${LIB_SUFIX})
 
     install(TARGETS ${SUBSYS_NAME} EXPORT ${PROJECT_PREFIX}Targets)
 endif()

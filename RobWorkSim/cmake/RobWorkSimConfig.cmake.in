@@ -231,45 +231,78 @@ if(EXISTS ${RWSIMCFG_ROOT}/RobWorkSimBuildConfig_${RWSIM_BUILD_TYPE}.cmake)
     find_package(RobWork REQUIRED)
     find_package(RobWorkStudio REQUIRED)
 
-    # test if Bullet exists
-    option(RWSIM_USE_BULLET "Set to ON if Bullet should be use. you may need to set BULLET_ROOT"
-           ${RWSIM_BUILD_WITH_BULLET})
-    if(RWSIM_USE_BULLET)
-        if(RWSIM_BUILD_WITH_BULLET)
-            if(NOT BULLET_ROOT)
-                set(BULLET_ROOT ${RWSIM_BUILD_WITH_BULLET_ROOT})
-            endif()
-            if(NOT BULLET_INCLUDE_DIR)
-                set(BULLET_INCLUDE_DIR ${RWSIM_BUILD_WITH_BULLET_INCLUDE_DIR})
-            endif()
+    set(LIBRARIES_TO_INCLUDE) # Libraries that must be included
+    set(OPTIONAL_LIBRARIES_TO_INCLUDE) # libraries that are included if they have been build
 
-            find_package(Bullet)
-            if(BULLET_FOUND)
-                set(RWSIM_BULLET_LIBRARY sdurwsim_bullet)
-                # BULLET_LIBRARIES
-                message(STATUS "RobWorkSim: Bullet enabled and found.")
-            else()
-                set(RWSIM_HAVE_BULLET FALSE)
-                message(
-                    SEND_ERROR
-                        "RobWorkSim: Bullet enabled but not found. Please setup BULLET_ROOT."
-                        ${RWSIM_USE_ODE}
-                )
+    if(RobWorkSim_FIND_COMPONENTS)
+        # FIRST check if all required components are installed/build
+        set(LIBRARIES_TO_INCLUDE sdurwsim)
+        foreach(
+            component
+            IN
+            LISTS RobWorkSim_FIND_COMPONENTS
+        )
+            if(NOT (${component} STREQUAL "sdurwsim"))
+                set(FILTER "sdurwsim_${component}")
+                string(REGEX MATCH ${FILTER} RESULT "${RWSIM_BUILD_WITH_LIBRARIES}")
+
+                unset(FOUND CACHE)
+                if(RESULT)
+                    find_library(
+                        FOUND ${RESULT}
+                        PATHS ${RWSIM_LIBS}
+                        PATH_SUFFIXES ${RWSIM_BUILD_WITH_LIBRARY_SUBDIRS}
+                        NO_DEFAULT_PATH
+                    )
+                endif()
+
+                if(FOUND)
+                    list(APPEND LIBRARIES_TO_INCLUDE "sdurwsim_${component}")
+                    set(RobWorkSim_${component}_FOUND TRUE)
+                else()
+                    set(RobWorkSim_${component}_FOUND FALSE)
+                    if(RobWorkSim_REQUIRED)
+                        set(ROBWORKSIM_EXPERIENCED_FATAL_PROBLEMS TRUE)
+                        message(
+                            FATAL_ERROR
+                                "The component: sdurwsim_${component} has not been built with RobWork. Reconfigure RobWork installation or check component spelling!"
+                        )
+                    else()
+                        set(ROBWORKSIM_EXPERIENCED_FATAL_PROBLEMS TRUE)
+                        message(
+                            WARNING
+                                "The component: sdurwsim_${component} has not been built with RobWork. Reconfigure RobWork installation or check component spelling!"
+                        )
+                    endif()
+                endif()
             endif()
-        else()
-            message(
-                SEND_ERROR
-                    "RobWorkSim: Bullet enabled but RobWorkSim was NOT build with Bullet support! Please recompile RobWorkSim"
-            )
-        endif()
+        endforeach()
     else()
-        message(STATUS "RobWorkSim: Bullet disabled.")
-    endif()
+        foreach(lib IN LISTS RWSIM_BUILD_WITH_LIBRARIES)
+            unset(FOUND CACHE)
+            find_library(
+                FOUND ${lib}
+                PATHS ${RWSIM_LIBS}
+                PATH_SUFFIXES ${RWSIM_BUILD_WITH_LIBRARY_SUBDIRS} NO_DEFAULT_PATH
+            )
+            if(FOUND)
+                list(APPEND OPTIONAL_LIBRARIES_TO_INCLUDE "${lib}")
+                rwsim_message("Looking for ${lib} - found")
+            else()
+                if(${lib} STREQUAL "sdurw")
+                    list(APPEND OPTIONAL_LIBRARIES_TO_INCLUDE "${lib}")
+                    rwsim_message("Looking for ${lib} - not found")
+                else()
+                    rwsim_message("Looking for ${lib} - not found (ignored)")
+                endif()
 
-    # test if ODE exists
-    option(RWSIM_USE_ODE "Set to ON if ODE should be use. you may need to set ODE_ROOT"
-           ${RWSIM_BUILD_WITH_ODE})
-    if(RWSIM_USE_ODE)
+            endif()
+        endforeach()
+    endif()
+    
+    set(tmp_list ${OPTIONAL_LIBRARIES_TO_INCLUDE} ${LIBRARIES_TO_INCLUDE})
+    list(FIND tmp_list "sdurwsim_ode" FOUND)
+    if("${FOUND}" GREATER "-1" )
         if(RWSIM_BUILD_WITH_ODE)
             set(ODE_USE_DOUBLE ${RWSIM_BUILD_WITH_ODE_USE_DOUBLE})
             set(ODE_USE_DEBUG ${RWSIM_BUILD_WITH_ODE_USE_DEBUG})
@@ -279,12 +312,11 @@ if(EXISTS ${RWSIMCFG_ROOT}/RobWorkSimBuildConfig_${RWSIM_BUILD_TYPE}.cmake)
             if(NOT ODE_INCLUDE_DIR)
                 set(ODE_INCLUDE_DIR ${RWSIM_BUILD_WITH_ODE_INCLUDE_DIR})
             endif()
-            find_package(ODE)
+            find_package(ODE REQUIRED PATHS "$ENV(ODE_ROOT)/lib/cmake/ode-*")
             if(ODE_FOUND)
-                set(RWSIM_ODE_LIBRARY sdurwsim_ode)
-                # ODE_LIBRARIES
                 message(STATUS "RobWorkSim: ODE enabled and found. Using ${ODE_BUILD_WITH}")
             else()
+                set(RobWorkSim_ode_FOUND FALSE)
                 message(SEND_ERROR "RobWorkSim: ODE enabled but not found. Please setup ODE_ROOT.")
             endif()
         else()
@@ -293,30 +325,12 @@ if(EXISTS ${RWSIMCFG_ROOT}/RobWorkSimBuildConfig_${RWSIM_BUILD_TYPE}.cmake)
                     "RobWorkSim: ODE enabled but RobWorkSim was NOT build with ODE support! Please recompile RobWorkSim"
             )
         endif()
-    else()
-        message(STATUS "RobWorkSim: ODE disabled.")
-    endif()
-
-    # test if TNTPhysics exists
-    option(RWSIM_USE_TNTPHYSICS "Set to ON if TNTPhysics should be used."
-           ${RWSIM_BUILD_WITH_TNTPHYSICS})
-    if(RWSIM_USE_TNTPHYSICS)
-        if(RWSIM_BUILD_WITH_TNTPHYSICS)
-            set(RWSIM_TNTPHYSICS_LIBRARY sdurwsim_tnt)
-        else()
-            message(
-                SEND_ERROR
-                    "RobWorkSim: TNTPhysics enabled but RobWorkSim was NOT build with TNTPhysics support! Please recompile RobWorkSim"
-            )
-        endif()
-    else()
-        message(STATUS "RobWorkSim: TNTPhysics disabled.")
     endif()
 
     set(ROBWORKSIM_BUILD_PATH "${RWSIM_BUILD_WITH_RWSIM_ROOT}")
     set(ROBWORKSIM_INCLUDE_DIRS_TMP "${RWSIM_BUILD_WITH_INCLUDE_DIRS}" "${ROBWORK_INCLUDE_DIR}")
     set(ROBWORKSIM_LIBRARY_DIRS_TMP "${RWSIM_BUILD_WITH_LIBRARY_DIRS}")
-    set(ROBWORKSIM_LIBRARIES_TMP "${RWSIM_BUILD_WITH_LIBRARIES}" "${RWSIM_BUILD_WITH_LIB_DEPEND}"
+    set(ROBWORKSIM_LIBRARIES_TMP "${LIBRARIES_TO_INCLUDE}" "${OPTIONAL_LIBRARIES_TO_INCLUDE}" "${RWSIM_BUILD_WITH_LIB_DEPEND}"
                                  "${ROBWORK_LIBRARIES}")
 
     # make sure that the library and include paths are pointing to the right locations
@@ -348,6 +362,7 @@ if(EXISTS ${RWSIMCFG_ROOT}/RobWorkSimBuildConfig_${RWSIM_BUILD_TYPE}.cmake)
 
     set(ROBWORKSIM_LIBRARIES_TMP ${ROBWORKSIM_LIBRARIES})
     set(ROBWORKSIM_LIBRARIES)
+
     foreach(l ${ROBWORKSIM_LIBRARIES_TMP})
         unset(tmp CACHE)
         find_library(

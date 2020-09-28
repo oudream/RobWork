@@ -142,8 +142,8 @@ void BtConstraint::createJoint ()
             }
             else {
                 btConstraint->setLimit (i, 0, 0);
-                btConstraint->getRotationalLimitMotor (i)->m_enableMotor   = true;
-                btConstraint->getRotationalLimitMotor (i)->m_maxMotorForce = SIMD_INFINITY;
+                btConstraint->getRotationalLimitMotor (i - 3)->m_enableMotor   = true;
+                btConstraint->getRotationalLimitMotor (i - 3)->m_maxMotorForce = SIMD_INFINITY;
                 // btConstraint->getRotationalLimitMotor(i)->m_limitSoftness = 0;
                 // btConstraint->getRotationalLimitMotor(i)->m_currentLimit = 0;
                 // btConstraint->getRotationalLimitMotor(i)->m_loLimit = -SIMD_INFINITY;

@@ -385,7 +385,7 @@ stages:
     # Build RobWork
     - cd RW
     - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" -A x64 -DBoost_INCLUDE_DIR=%Boost_INCLUDE_DIR% -DBUILD_sdurw_java=ON -DBUILD_sdurw_python=ON -DBUILD_sdurw_lua=ON -DSWIG_EXECUTABLE=%SWIG_ROOT%\swig.exe ../../RobWork
-    - msbuild RobWork.sln /property:Configuration=Release /maxcpucount:8
+    - msbuild RobWork.sln /property:Configuration=Release
   artifacts:
     paths:
       - ./Build
@@ -404,7 +404,7 @@ stages:
     # Build RobWorkHardware
     - cd RWHW
     - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" -A x64 -DBUILD_SHARED_LIBS=OFF -DRWHW_SHARED_LIBS=OFF ../../RobWorkHardware
-    - msbuild RobWorkHardware.sln /property:Configuration=Release /maxcpucount:8
+    - msbuild RobWorkHardware.sln /property:Configuration=Release
   artifacts:
     paths:
       - ./Build/RWHW
@@ -422,7 +422,7 @@ stages:
     # Build RobWorkStudio
     - cd RWS
     - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" -A x64 -DSWIG_EXECUTABLE=%SWIG_ROOT%\swig.exe ../../RobWorkStudio
-    - msbuild RobWorkStudio.sln /property:Configuration=Release /maxcpucount:6
+    - msbuild RobWorkStudio.sln /property:Configuration=Release
   artifacts:
     paths:
       - ./Build/RWS
@@ -439,7 +439,7 @@ stages:
     - cd Build
     - cd RWSim
     - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" -A x64 -DSWIG_EXECUTABLE=%SWIG_ROOT%\swig.exe ../../RobWorkSim
-    - msbuild RobWorkSim.sln /property:Configuration=Release /maxcpucount:8
+    - msbuild RobWorkSim.sln /property:Configuration=Release
   artifacts:
     paths:
       - ./Build/RWSim
@@ -457,31 +457,31 @@ stages:
     # Build RobWork Examples
     - cd RWExamples
     - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" -A x64 ../../RobWork/example
-    - msbuild Project.sln /property:Configuration=Release /maxcpucount:8
+    - msbuild Project.sln /property:Configuration=Release
     - cd ..
     # Build RobWorkStudio Examples
     - cd RWSExamples
     - cd pluginapp
     - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" -A x64 ../../../RobWorkStudio/example/pluginapp
-    - msbuild PluginApp.sln /property:Configuration=Release /maxcpucount:8
+    - msbuild PluginApp.sln /property:Configuration=Release
     - cd ..
     - cd pluginUIapp
     - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" -A x64 ../../../RobWorkStudio/example/pluginUIapp
-    - msbuild PluginUIApp.sln /property:Configuration=Release /maxcpucount:8
+    - msbuild PluginUIApp.sln /property:Configuration=Release
     - cd ..
     - cd tutorial
     - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" -A x64 ../../../RobWorkStudio/example/tutorial
-    - msbuild SamplePluginApp.sln /property:Configuration=Release /maxcpucount:8
+    - msbuild SamplePluginApp.sln /property:Configuration=Release
     - cd ..
     - cd UDPKinPlugin
     - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" -A x64 ../../../RobWorkStudio/example/UDPKinPlugin
-    - msbuild PluginUIApp.sln /property:Configuration=Release /maxcpucount:8
+    - msbuild PluginUIApp.sln /property:Configuration=Release
     - cd ..
     - cd ..
     # Build RobWorkSim Examples
     - cd RWSimExamples
     - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" -A x64 ../../RobWorkSim/example
-    - msbuild RWSimExamples.sln /property:Configuration=Release /maxcpucount:8
+    - msbuild RWSimExamples.sln /property:Configuration=Release
 
 .windows-tests:
   extends: .CI-common

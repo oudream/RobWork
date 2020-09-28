@@ -239,7 +239,7 @@ namespace rw { namespace proximity {
          * @brief Get the number of times the inCollision functions have been called.
          * @return number of calls to inCollision functions.
          */
-        int getNoOfCalls () const { return _numberOfCalls; }
+        size_t getNoOfCalls () const { return _numberOfCalls; }
 
         /**
          * @brief Reset the counter for inCollision invocations and the computation timer.

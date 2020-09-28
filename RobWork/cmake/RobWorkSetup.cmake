@@ -493,25 +493,35 @@ else()
 endif()
 
 # Find Python - prefer version 3 (should be done before GTest) set(Python_ADDITIONAL_VERSIONS 3.8)
-find_package(PythonInterp 3 QUIET)
-find_package(PythonLibs 3 QUIET)
+if(CMAKE_VERSION VERSION_LESS "3.12")
+    find_package(PythonInterp 3 QUIET)
+    find_package(PythonLibs 3 QUIET)
 
-if(NOT PYTHONINTERP_FOUND)
-    find_package(PythonInterp QUIET)
-endif()
-if(NOT PYTHONLIBS_FOUND)
-    find_package(PythonLibs QUIET)
-endif()
+    if(NOT PYTHONINTERP_FOUND)
+        find_package(PythonInterp QUIET)
+    endif()
+    if(NOT PYTHONLIBS_FOUND)
+        find_package(PythonLibs QUIET)
+    endif()
 
-if(PYTHONINTERP_FOUND AND PYTHONLIBS_FOUND)
-    if(NOT (PYTHONLIBS_VERSION_STRING STREQUAL PYTHON_VERSION_STRING))
-        string(ASCII 27 Esc)
-        message(
-            WARNING
-                "${Esc}[33mMatching Versions of python intepretor and python library NOT FOUND. \r"
-                "Found versions are python libs ${PYTHONLIBS_VERSION_STRING} and python intepretor ${PYTHON_VERSION_STRING}. \n"
-                "This can be because you haven't installed python${PYTHON_VERSION_MAJOR}-dev package\n${Esc}[m"
-        )
+    if(PYTHONINTERP_FOUND AND PYTHONLIBS_FOUND)
+        if(NOT (PYTHONLIBS_VERSION_STRING STREQUAL PYTHON_VERSION_STRING))
+            string(ASCII 27 Esc)
+            message(
+                WARNING
+                    "${Esc}[33mMatching Versions of python intepretor and python library NOT FOUND. \r"
+                    "Found versions are python libs ${PYTHONLIBS_VERSION_STRING} and python intepretor ${PYTHON_VERSION_STRING}. \n"
+                    "This can be because you haven't installed python${PYTHON_VERSION_MAJOR}-dev package\n${Esc}[m"
+            )
+        endif()
+    endif()
+else()
+    find_package (Python3 QUIET COMPONENTS Interpreter Development)
+    if (Python3_FOUND)
+        set(PYTHONINTERP_FOUND ${Python3_Interpreter_FOUND})
+        set(PYTHONLIBS_FOUND ${Python3_Development_FOUND})
+        set(PYTHON_LIBRARIES ${Python3_LIBRARIES})
+        set(PYTHON_INCLUDE_DIRS ${Python3_INCLUDE_DIRS})
     endif()
 endif()
 

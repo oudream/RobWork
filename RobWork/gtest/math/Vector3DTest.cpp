@@ -148,7 +148,7 @@ TEST (Vector3D, EigenOperatorTest)
     EXPECT_TRUE (obj2 != obj1);
     EXPECT_FALSE (obj1 == obj2);
     EXPECT_FALSE (obj2 == obj1);
-    obj2 = obj1;
+    obj2 = obj1.e();
     EXPECT_TRUE (obj1 == obj2);
     EXPECT_TRUE (obj2 == obj1);
     EXPECT_FALSE (obj1 != obj2);

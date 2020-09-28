@@ -1,75 +1,67 @@
-cmake_minimum_required(VERSION 3.5.1)
+cmake_minimum_required(VERSION 2.8)
 
-if(POLICY CMP0042)
-  cmake_policy(SET CMP0042 NEW)
-endif()
+IF(POLICY CMP0048)
+	CMAKE_POLICY(SET CMP0048 NEW) # we do not set PROJECT_VERSION variable so silence warning
+ENDIF()
 
-# Can not explicitly declared the software as C in project command due to bug:
-# https://gitlab.kitware.com/cmake/cmake/issues/16967
-project(libccd)
+project(libccd C)
 
-set(CCD_VERSION_MAJOR 2)
-set(CCD_VERSION_MINOR 0)
-set(CCD_VERSION ${CCD_VERSION_MAJOR}.${CCD_VERSION_MINOR})
-
-set(CCD_SOVERSION 2)
+set(CCD_VERSION "2.0")
+set(CCD_SOVERSION "2")
+set(PKG_DESC "Library for collision detection between convex shapes")
 
 # Include GNUInstallDirs to get canonical paths
 include(GNUInstallDirs)
-include(CTest)
 
-option(BUILD_DOCUMENTATION "Build the documentation" OFF)
+include_directories("src/")
 
-option(BUILD_SHARED_LIBS "Build libccd as a shared library" ON)
+# make sure only DOUBLE or SINGLE is set; default to SINGLE
+if (${CCD_SINGLE})
+  set(CCD_DOUBLE false)
+else()
+  set(CCD_SINGLE true)
+endif()
 
-option(ENABLE_DOUBLE_PRECISION
-  "Enable double precision computations instead of single precision" OFF)
-
-# Option for some bundle-like build system in order not to expose
-# any FCL binary symbols in their public ABI
-option(CCD_HIDE_ALL_SYMBOLS "Hide all binary symbols" OFF)
-if (CCD_HIDE_ALL_SYMBOLS)
-  add_definitions("-DCCD_STATIC_DEFINE")
+if (${CCD_DOUBLE})
+  set(CCD_SINGLE false)
 endif()
 
 # set the default build type
-if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
-  set(CMAKE_BUILD_TYPE Release CACHE STRING
-    "Choose the type of build; options are Debug Release RelWithDebInfo MinSizeRel"
-    FORCE)
-  set_property(CACHE CMAKE_BUILD_TYPE PROPERTY
-    STRINGS
-      Debug
-      Release
-      RelWithDebInfo
-      MinSizeRel)
+if (NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE Release)
 endif()
 
-add_subdirectory(src)
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/src/ccd/config.h.cmake.in" "${CMAKE_CURRENT_SOURCE_DIR}/src/ccd/config.h")
 
-if(BUILD_DOCUMENTATION)
-  add_subdirectory(doc)
+if(NOT WIN32)
+    find_library(MATH m)
+else()
+    set(MATH "")
 endif()
 
-include(CMakePackageConfigHelpers)
+set(SOURCE_FILES
+  src/ccd.c
+  src/mpr.c
+  src/polytope.c
+  src/support.c
+  src/vec3.c)
 
-configure_package_config_file(ccd-config.cmake.in ccd-config.cmake
-  INSTALL_DESTINATION "${CMAKE_INSTALL_LIBDIR}/ccd"
-  PATH_VARS CMAKE_INSTALL_INCLUDEDIR CMAKE_INSTALL_LIBDIR
-  NO_CHECK_REQUIRED_COMPONENTS_MACRO)
+add_library(ccd SHARED ${SOURCE_FILES})
+set_target_properties(ccd PROPERTIES VERSION ${CCD_VERSION} SOVERSION ${CCD_SOVERSION})
 
-write_basic_package_version_file(ccd-config-version.cmake
-  VERSION ${CCD_VERSION} COMPATIBILITY AnyNewerVersion)
+target_link_libraries(ccd ${MATH})
 
-install(FILES
-  "${CMAKE_BINARY_DIR}/ccd-config.cmake"
-  "${CMAKE_BINARY_DIR}/ccd-config-version.cmake"
-  DESTINATION "${CMAKE_INSTALL_LIBDIR}/ccd")
+add_library(ccd_static STATIC ${SOURCE_FILES})
+set_target_properties(ccd_static PROPERTIES OUTPUT_NAME ccd)
+target_link_libraries(ccd_static ${MATH})
 
-set(CCD_PKGCONFIG_DESCRIPTION
-  "Library for collision detection between convex shapes")
-configure_file(ccd.pc.in ccd.pc @ONLY)
-install(FILES "${CMAKE_BINARY_DIR}/ccd.pc"
-  DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig")
+set(pkg_conf_file "${CMAKE_CURRENT_SOURCE_DIR}/ccd.pc")
+configure_file("${pkg_conf_file}.in" "${pkg_conf_file}" @ONLY)
 
-install(FILES BSD-LICENSE DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/doc/ccd")
+install(TARGETS ccd ccd_static
+    EXPORT ${PROJECT_PREFIX}Targets
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
+install(DIRECTORY src/ccd DESTINATION ${CMAKE_INSTALL_INCLUDEDIR} FILES_MATCHING PATTERN "*.h")
+install(FILES "${pkg_conf_file}" DESTINATION
+  ${CMAKE_INSTALL_LIBDIR}/pkgconfig COMPONENT pkgconfig)

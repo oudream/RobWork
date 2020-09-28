@@ -28,5 +28,4 @@ if(NOT CCD_FOUND)
         set(CCD_FOUND True)
     endif()
 endif()
-
 add_subdirectory(fcl)
