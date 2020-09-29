@@ -176,18 +176,18 @@ class URRTDE
      * tcp speed along/about the axis. For non-compliant axes, these values are the maximum allowed
      * deviation along/about an axis between the actual tcp position and the one set by the program.
      */
-    bool forceMode (const rw::math::Transform3D<>& task_frame,
-                         const rw::math::Q& selection_vector, const rw::math::Wrench6D<>& wrench,
-                         int type, const rw::math::Q& limits);
+    bool forceMode (const rw::math::Transform3D<>& task_frame, const rw::math::Q& selection_vector,
+                    const rw::math::Wrench6D<>& wrench, int type, const rw::math::Q& limits);
 
+#if URRTDE_INTERNAL
     /*
      * @brief Update the wrench the robot will apply to its environment
      * @param wrench The forces/torques the robot will apply to its environment. The robot adjusts
      * its position along/about compliant axis in order to achieve the specified force/torque.
      * Values have no effect for non-compliant axes
      */
-    //bool forceModeUpdate (const rw::math::Wrench6D<>& wrench);
-
+    bool forceModeUpdate (const rw::math::Wrench6D<>& wrench);
+#endif
     //! @copydoc ur_rtde::RTDEControlInterface::forceModeStop
     bool forceModeStop ();
 
