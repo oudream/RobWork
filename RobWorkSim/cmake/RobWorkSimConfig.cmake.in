@@ -312,18 +312,13 @@ if(EXISTS ${RWSIMCFG_ROOT}/RobWorkSimBuildConfig_${RWSIM_BUILD_TYPE}.cmake)
             if(NOT ODE_INCLUDE_DIR)
                 set(ODE_INCLUDE_DIR ${RWSIM_BUILD_WITH_ODE_INCLUDE_DIR})
             endif()
-            find_package(ODE REQUIRED PATHS "$ENV(ODE_ROOT)/lib/cmake/ode-*")
+            find_package(ODE REQUIRED)
             if(ODE_FOUND)
                 message(STATUS "RobWorkSim: ODE enabled and found. Using ${ODE_BUILD_WITH}")
             else()
                 set(RobWorkSim_ode_FOUND FALSE)
                 message(SEND_ERROR "RobWorkSim: ODE enabled but not found. Please setup ODE_ROOT.")
             endif()
-        else()
-            message(
-                SEND_ERROR
-                    "RobWorkSim: ODE enabled but RobWorkSim was NOT build with ODE support! Please recompile RobWorkSim"
-            )
         endif()
     endif()
 
