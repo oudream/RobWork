@@ -92,7 +92,6 @@ stages:
     - "[ -d Build ] || mkdir Build"
     - "[ -d Build/RW ] || mkdir Build/RW"
     - "[ -d Build/RWExamples ] || mkdir Build/RWExamples"
-    - "[ -d Build/RWHW ] || mkdir Build/RWHW"
     - "[ -d Build/RWS ] || mkdir Build/RWS"
     - "[ -d Build/RWSExamples ] || mkdir Build/RWSExamples"
     - "[ -d Build/RWSExamples/pluginapp ] || mkdir Build/RWSExamples/pluginapp"
@@ -101,7 +100,6 @@ stages:
     - "[ -d Build/RWSExamples/UDPKinPlugin ] || mkdir Build/RWSExamples/UDPKinPlugin"
     - "[ -d Build/RWSim ] || mkdir Build/RWSim"
     - "[ -d Build/RWSimExamples ] || mkdir Build/RWSimExamples"
-    - "[ -d Build/RWHWExamples ] || mkdir Build/RWHWExamples"
     - "[ -d gtest ] || mkdir gtest"
   script:
     - printenv
@@ -134,25 +132,6 @@ stages:
     paths:
       - ./Build/RWS
       - ./RobWorkStudio
-    expire_in: 2 day
-    when: on_success
-
-.linux-build-RWHW:
-  extends: .CI-common-linux
-  stage: build_second
-  tags:
-    - linux
-  script:
-    - cd Build
-    # Build RobWorkHardware
-    - cd RWHW
-    - cmake -DCMAKE_BUILD_TYPE=Release -DUSE_WERROR=$WERROR ../../RobWorkHardware
-    - make -j${THREADS}
-
-  artifacts:
-    paths:
-      - ./Build/RWHW
-      - ./RobWorkHardware
     expire_in: 2 day
     when: on_success
 
@@ -211,10 +190,6 @@ stages:
     - cmake -DCMAKE_BUILD_TYPE=Release ../../RobWorkSim/example
     - make -j$(THREADS)
     - cd ..
-    # Build RobWorkHardware Examples
-    - cd RWHWExamples
-    - cmake -DCMAKE_BUILD_TYPE=Release ../../RobWorkHardware/example
-    - make -j$(THREADS)
 
 .linux-tests:
   extends: .CI-common-linux
@@ -255,8 +230,6 @@ stages:
     - *remove-rw-install
     - cd ./Build/RW
     - make install
-    - cd ../RWHW
-    - make install
     - cd ../RWS
     - make install
     - cd ../RWSim
@@ -274,14 +247,13 @@ stages:
     - "for file in ./ex-*; do if [ -f $file ] && [[ ! $file =~ ex-load-workcell ]] ; then  echo -e '\n EXECUTING: '$file && $file /home/robworkdata && EXERW=$EXERW' '$file || exit 1 ; fi; done"
     - ./ex-load-workcell ../../ModelData/XMLScenes/RobotWithHand/Workcell.xml
     # TEST RW PYTHON FILES
-    - *is_shared_runner
     - cd $DIR/RobWork/example/python
-    - "[[ $SHARED_RUNNER ]] || for file in $EXERW ; do echo -e '\n EXECUTING: '$file && python3 ${file}.py /home/robworkdata || exit 1 ; done"
-    - "[[ $SHARED_RUNNER ]] || python3 ./ex-load-workcell.py ../ModelData/XMLScenes/RobotWithHand/Workcell.xml"
+    - "for file in $EXERW ; do echo -e '\n EXECUTING: '$file && python3 ${file}.py /home/robworkdata || exit 1 ; done"
+    - "python3 ./ex-load-workcell.py ../ModelData/XMLScenes/RobotWithHand/Workcell.xml"
     # TEST RW LUA FILES
     - cd $DIR/RobWork/example/lua
-    - "[[ $SHARED_RUNNER ]] || for file in $EXERW ; do echo -e '\n EXECUTING: '$file && /usr/bin/lua[0-9]* ${file}.lua /home/robworkdata || exit 1 ; done"
-    - "[[ $SHARED_RUNNER ]] || /usr/bin/lua[0-9]* ./ex-load-workcell.lua ../ModelData/XMLScenes/RobotWithHand/Workcell.xml"
+    - "for file in $EXERW ; do echo -e '\n EXECUTING: '$file && /usr/bin/lua[0-9]* ${file}.lua /home/robworkdata || exit 1 ; done"
+    - "/usr/bin/lua[0-9]* ./ex-load-workcell.lua ../ModelData/XMLScenes/RobotWithHand/Workcell.xml"
     # Test RWS CPP FILES
     - cd $DIR/RobWorkStudio/example/cpp
     - mkdir build && cd build
@@ -292,10 +264,10 @@ stages:
     - "for file in ./ex-*; do if [ -f $file ] ; then  echo -e '\n EXECUTING: '$file && $file /home/robworkdata -t && EXERWS=$EXERWS' '$file || exit 1 ; fi; done"
     # Test RWS PYTHON FILES
     - cd $DIR/RobWorkStudio/example/python
-    - "[[ $SHARED_RUNNER ]] || for file in $EXERWS ; do echo -e '\n EXECUTING: '$file && python3 ${file}.py /home/robworkdata -t || exit 1 ; done"
+    - "for file in $EXERWS ; do echo -e '\n EXECUTING: '$file && python3 ${file}.py /home/robworkdata -t || exit 1 ; done"
     # Test RWS LUA FILES
     - cd $DIR/RobWorkStudio/example/lua
-    - "[[ $SHARED_RUNNER ]] || for file in $EXERWS ; do echo -e '\n EXECUTING: '$file && /usr/bin/lua[0-9]* ${file}.lua /home/robworkdata -t || exit 1 ; done"
+    - "for file in $EXERWS ; do echo -e '\n EXECUTING: '$file && /usr/bin/lua[0-9]* ${file}.lua /home/robworkdata -t || exit 1 ; done"
     # Test RWSIM CPP files
     - cd $DIR/RobWorkSim/example/cpp
     - mkdir build && cd build
@@ -304,16 +276,10 @@ stages:
     - "for file in ./ex-*; do if [ -f $file ] ; then  echo -e '\n EXECUTING: '$file && $file /home/robworkdata && EXERWSIM=$EXERWSIM' '$file || exit 1 ; fi; done"
     # Test RWSSIM PYTHON FILES
     - cd $DIR/RobWorkSim/example/python
-    - "[[ $SHARED_RUNNER ]] || for file in $EXERWSIM ; do echo -e '\n EXECUTING: '$file && python3 ${file}.py /home/robworkdata || exit 1 ; done"
+    - "for file in $EXERWSIM ; do echo -e '\n EXECUTING: '$file && python3 ${file}.py /home/robworkdata || exit 1 ; done"
     # Test RWSIM LUA FILES
     - cd $DIR/RobWorkSim/example/lua
-    - "[[ $SHARED_RUNNER ]] || for file in $EXERWSIM ; do echo -e '\n EXECUTING: '$file && /usr/bin/lua[0-9]* ${file}.lua /home/robworkdata || exit 1 ; done"
-    # Test RWHW CPP files
-    - cd $DIR/RobWorkHardware/example/cpp
-    - mkdir build && cd build
-    - cmake ..
-    - make -j$(nproc)
-    - "for file in ./ex-*; do if [ -f $file ] ; then  echo -e '\n EXECUTING: '$file && $file localhost && EXERWHW=$EXERWHW' '$file || exit 1 ; fi; done"
+    - "for file in $EXERWSIM ; do echo -e '\n EXECUTING: '$file && /usr/bin/lua[0-9]* ${file}.lua /home/robworkdata || exit 1 ; done"
 
 .linux-build-debian:
   extends: .CI-common-linux
@@ -370,7 +336,6 @@ stages:
     - "if not exist Build mkdir Build"
     - "if not exist Build\\RW mkdir Build\\RW"
     - "if not exist Build\\RWExamples mkdir Build\\RWExamples"
-    - "if not exist Build\\RWHW mkdir Build\\RWHW"
     - "if not exist Build\\RWS mkdir Build\\RWS"
     - "if not exist Build\\RWSExamples mkdir Build\\RWSExamples"
     - "if not exist Build\\RWSExamples\\pluginapp mkdir Build\\RWSExamples\\pluginapp"
@@ -391,24 +356,6 @@ stages:
       - ./Build
       - ./RobWork
       - ./gtest
-    expire_in: 2 day
-    when: on_success
-
-.windows-build-RWHW:
-  extends: .CI-common
-  stage: build_second
-  tags:
-    - windows
-  script:
-    - cd Build
-    # Build RobWorkHardware
-    - cd RWHW
-    - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" -A x64 -DBUILD_SHARED_LIBS=OFF -DRWHW_SHARED_LIBS=OFF ../../RobWorkHardware
-    - msbuild RobWorkHardware.sln -m /property:Configuration=Release
-  artifacts:
-    paths:
-      - ./Build/RWHW
-      - ./RobWorkHardware
     expire_in: 2 day
     when: on_success
 
@@ -520,7 +467,6 @@ stages:
     - "[ -d Build ] || mkdir Build"
     - "[ -d Build/RW ] || mkdir Build/RW"
     - "[ -d Build/RWExamples ] || mkdir Build/RWExamples"
-    - "[ -d Build/RWHW ] || mkdir Build/RWHW"
     - "[ -d Build/RWS ] || mkdir Build/RWS"
     - "[ -d Build/RWSExamples ] || mkdir Build/RWSExamples"
     - "[ -d Build/RWSExamples/pluginapp ] || mkdir Build/RWSExamples/pluginapp"
@@ -549,14 +495,6 @@ stages:
   tags:
     - mac
 
-.mac-build-RWHW:
-  extends: .linux-build-RWHW
-  before_script:
-    - THREADS=3
-    - WERROR=False
-  tags:
-    - mac
-
 .mac-examples:
   extends: .linux-examples
   before_script:
@@ -572,12 +510,6 @@ build-RW:macOS-HighSierra:
 
 build-RWS:macOS-HighSierra:
   extends: .mac-build-RWS
-  dependencies:
-    - build-RW:macOS-HighSierra
-  needs: ["build-RW:macOS-HighSierra"]
-
-build-RWHW:macOS-HighSierra:
-  extends: .mac-build-RWHW
   dependencies:
     - build-RW:macOS-HighSierra
   needs: ["build-RW:macOS-HighSierra"]
@@ -600,12 +532,6 @@ build-RWS:windows10-vs16:
     - build-RW:windows10-vs16
   needs: ["build-RW:windows10-vs16"]
 
-build-RWHW:windows10-vs16:
-  extends: .windows-build-RWHW
-  dependencies:
-    - build-RW:windows10-vs16
-  needs: ["build-RW:windows10-vs16"]
-
 build-RWSim:windows10-vs16:
   extends: .windows-build-RWSim
   dependencies:
@@ -618,13 +544,11 @@ examples:windows10-vs16:
   dependencies:
     - build-RW:windows10-vs16
     - build-RWS:windows10-vs16
-    - build-RWHW:windows10-vs16
     - build-RWSim:windows10-vs16
   needs:
     [
       "build-RW:windows10-vs16",
       "build-RWS:windows10-vs16",
-      "build-RWHW:windows10-vs16",
       "build-RWSim:windows10-vs16",
     ]
 
@@ -633,13 +557,11 @@ tests:windows10-vs16:
   dependencies:
     - build-RW:windows10-vs16
     - build-RWS:windows10-vs16
-    - build-RWHW:windows10-vs16
     - build-RWSim:windows10-vs16
   needs:
     [
       "build-RW:windows10-vs16",
       "build-RWS:windows10-vs16",
-      "build-RWHW:windows10-vs16",
       "build-RWSim:windows10-vs16",
     ]
 
@@ -651,13 +573,6 @@ build-RW:ubuntu-1804:
 
 build-RWS:ubuntu-1804:
   extends: .linux-build-RWS
-  dependencies:
-    - build-RW:ubuntu-1804
-  needs: ["build-RW:ubuntu-1804"]
-  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
-
-build-RWHW:ubuntu-1804:
-  extends: .linux-build-RWHW
   dependencies:
     - build-RW:ubuntu-1804
   needs: ["build-RW:ubuntu-1804"]
@@ -676,13 +591,11 @@ examples:ubuntu-1804:
   dependencies:
     - build-RW:ubuntu-1804
     - build-RWS:ubuntu-1804
-    - build-RWHW:ubuntu-1804
     - build-RWSim:ubuntu-1804
   needs:
     [
       "build-RW:ubuntu-1804",
       "build-RWS:ubuntu-1804",
-      "build-RWHW:ubuntu-1804",
       "build-RWSim:ubuntu-1804",
     ]
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
@@ -692,13 +605,11 @@ tests:ubuntu-1804:
   dependencies:
     - build-RW:ubuntu-1804
     - build-RWS:ubuntu-1804
-    - build-RWHW:ubuntu-1804
     - build-RWSim:ubuntu-1804
   needs:
     [
       "build-RW:ubuntu-1804",
       "build-RWS:ubuntu-1804",
-      "build-RWHW:ubuntu-1804",
       "build-RWSim:ubuntu-1804",
     ]
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
@@ -708,13 +619,11 @@ install-tests:ubuntu-1804:
   dependencies:
     - build-RW:ubuntu-1804
     - build-RWS:ubuntu-1804
-    - build-RWHW:ubuntu-1804
     - build-RWSim:ubuntu-1804
   needs:
     [
       "build-RW:ubuntu-1804",
       "build-RWS:ubuntu-1804",
-      "build-RWHW:ubuntu-1804",
       "build-RWSim:ubuntu-1804",
     ]
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
@@ -743,13 +652,6 @@ build-RWS:ubuntu-1604:
   needs: ["build-RW:ubuntu-1604"]
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1604
 
-build-RWHW:ubuntu-1604:
-  extends: .linux-build-RWHW
-  dependencies:
-    - build-RW:ubuntu-1604
-  needs: ["build-RW:ubuntu-1604"]
-  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1604
-
 build-RWSim:ubuntu-1604:
   extends: .linux-build-RWSim
   dependencies:
@@ -763,13 +665,11 @@ examples:ubuntu-1604:
   dependencies:
     - build-RW:ubuntu-1604
     - build-RWS:ubuntu-1604
-    - build-RWHW:ubuntu-1604
     - build-RWSim:ubuntu-1604
   needs:
     [
       "build-RW:ubuntu-1604",
       "build-RWS:ubuntu-1604",
-      "build-RWHW:ubuntu-1604",
       "build-RWSim:ubuntu-1604",
     ]
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1604
@@ -779,31 +679,23 @@ tests:ubuntu-1604:
   dependencies:
     - build-RW:ubuntu-1604
     - build-RWS:ubuntu-1604
-    - build-RWHW:ubuntu-1604
     - build-RWSim:ubuntu-1604
   needs:
     [
       "build-RW:ubuntu-1604",
       "build-RWS:ubuntu-1604",
-      "build-RWHW:ubuntu-1604",
       "build-RWSim:ubuntu-1604",
     ]
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1604
 
 ########################## Ubuntu 1910 ################################
+
 build-RW:ubuntu-1910:
   extends: .linux-build-RW
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1910
 
 build-RWS:ubuntu-1910:
   extends: .linux-build-RWS
-  dependencies:
-    - build-RW:ubuntu-1910
-  needs: ["build-RW:ubuntu-1910"]
-  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1910
-
-build-RWHW:ubuntu-1910:
-  extends: .linux-build-RWHW
   dependencies:
     - build-RW:ubuntu-1910
   needs: ["build-RW:ubuntu-1910"]
@@ -822,13 +714,11 @@ examples:ubuntu-1910:
   dependencies:
     - build-RW:ubuntu-1910
     - build-RWS:ubuntu-1910
-    - build-RWHW:ubuntu-1910
     - build-RWSim:ubuntu-1910
   needs:
     [
       "build-RW:ubuntu-1910",
       "build-RWS:ubuntu-1910",
-      "build-RWHW:ubuntu-1910",
       "build-RWSim:ubuntu-1910",
     ]
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1910
@@ -838,31 +728,23 @@ tests:ubuntu-1910:
   dependencies:
     - build-RW:ubuntu-1910
     - build-RWS:ubuntu-1910
-    - build-RWHW:ubuntu-1910
     - build-RWSim:ubuntu-1910
   needs:
     [
       "build-RW:ubuntu-1910",
       "build-RWS:ubuntu-1910",
-      "build-RWHW:ubuntu-1910",
       "build-RWSim:ubuntu-1910",
     ]
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1910
 
 ########################## Ubuntu 2004 (MAIN) ################################
+
 build-RW:ubuntu-2004:
   extends: .linux-build-RW
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-2004
 
 build-RWS:ubuntu-2004:
   extends: .linux-build-RWS
-  dependencies:
-    - build-RW:ubuntu-2004
-  needs: ["build-RW:ubuntu-2004"]
-  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-2004
-
-build-RWHW:ubuntu-2004:
-  extends: .linux-build-RWHW
   dependencies:
     - build-RW:ubuntu-2004
   needs: ["build-RW:ubuntu-2004"]
@@ -881,13 +763,11 @@ examples:ubuntu-2004:
   dependencies:
     - build-RW:ubuntu-2004
     - build-RWS:ubuntu-2004
-    - build-RWHW:ubuntu-2004
     - build-RWSim:ubuntu-2004
   needs:
     [
       "build-RW:ubuntu-2004",
       "build-RWS:ubuntu-2004",
-      "build-RWHW:ubuntu-2004",
       "build-RWSim:ubuntu-2004",
     ]
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-2004
@@ -897,13 +777,11 @@ tests:ubuntu-2004:
   dependencies:
     - build-RW:ubuntu-2004
     - build-RWS:ubuntu-2004
-    - build-RWHW:ubuntu-2004
     - build-RWSim:ubuntu-2004
   needs:
     [
       "build-RW:ubuntu-2004",
       "build-RWS:ubuntu-2004",
-      "build-RWHW:ubuntu-2004",
       "build-RWSim:ubuntu-2004",
     ]
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-2004
@@ -913,13 +791,11 @@ install-tests:ubuntu-2004:
   dependencies:
     - build-RW:ubuntu-2004
     - build-RWS:ubuntu-2004
-    - build-RWHW:ubuntu-2004
     - build-RWSim:ubuntu-2004
   needs:
     [
       "build-RW:ubuntu-2004",
       "build-RWS:ubuntu-2004",
-      "build-RWHW:ubuntu-2004",
       "build-RWSim:ubuntu-2004",
     ]
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-2004
@@ -936,19 +812,13 @@ test-debian-pre:ubuntu-2004:
   needs: ["build-debian-pre:ubuntu-2004"]
 
 ########################## Centos 7 ################################
+
 build-RW:centos-7:
   extends: .linux-build-RW
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:centos-7
 
 build-RWS:centos-7:
   extends: .linux-build-RWS
-  dependencies:
-    - build-RW:centos-7
-  needs: ["build-RW:centos-7"]
-  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:centos-7
-
-build-RWHW:centos-7:
-  extends: .linux-build-RWHW
   dependencies:
     - build-RW:centos-7
   needs: ["build-RW:centos-7"]
@@ -967,13 +837,11 @@ examples:centos-7:
   dependencies:
     - build-RW:centos-7
     - build-RWS:centos-7
-    - build-RWHW:centos-7
     - build-RWSim:centos-7
   needs:
     [
       "build-RW:centos-7",
       "build-RWS:centos-7",
-      "build-RWHW:centos-7",
       "build-RWSim:centos-7",
     ]
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:centos-7
@@ -983,13 +851,11 @@ tests:centos-7:
   dependencies:
     - build-RW:centos-7
     - build-RWS:centos-7
-    - build-RWHW:centos-7
     - build-RWSim:centos-7
   needs:
     [
       "build-RW:centos-7",
       "build-RWS:centos-7",
-      "build-RWHW:centos-7",
       "build-RWSim:centos-7",
     ]
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:centos-7
@@ -1001,13 +867,11 @@ build:doc:
   dependencies:
     - build-RW:ubuntu-1804
     - build-RWS:ubuntu-1804
-    - build-RWHW:ubuntu-1804
     - build-RWSim:ubuntu-1804
   needs:
     [
       "build-RW:ubuntu-1804",
       "build-RWS:ubuntu-1804",
-      "build-RWHW:ubuntu-1804",
       "build-RWSim:ubuntu-1804",
     ]
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804-doc
@@ -1017,13 +881,11 @@ build:doc-2004:
   dependencies:
     - build-RW:ubuntu-2004
     - build-RWS:ubuntu-2004
-    - build-RWHW:ubuntu-2004
     - build-RWSim:ubuntu-2004
   needs:
     [
       "build-RW:ubuntu-2004",
       "build-RWS:ubuntu-2004",
-      "build-RWHW:ubuntu-2004",
       "build-RWSim:ubuntu-2004",
     ]
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-2004-doc
@@ -1080,7 +942,7 @@ pages:
     - add-apt-repository ppa:sdurobotics/robwork
     - apt-get update
   script:
-    - apt -y install libsdurw-all-dev libsdurws-all-dev libsdurwhw-all-dev libsdurwsim-all-dev
+    - apt -y install libsdurw-all-dev libsdurws-all-dev libsdurwsim-all-dev
     - apt -y install ./DEBPKG/*.deb
 
 ################# debian-pkg ubuntu-1804 #################
