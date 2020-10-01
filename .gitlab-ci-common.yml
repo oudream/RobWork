@@ -385,7 +385,7 @@ stages:
     # Build RobWork
     - cd RW
     - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" -A x64 -DBoost_INCLUDE_DIR=%Boost_INCLUDE_DIR% -DBUILD_sdurw_java=ON -DBUILD_sdurw_python=ON -DBUILD_sdurw_lua=ON -DSWIG_EXECUTABLE=%SWIG_ROOT%\swig.exe ../../RobWork
-    - msbuild RobWork.sln /property:Configuration=Release
+    - msbuild RobWork.sln -m /property:Configuration=Release
   artifacts:
     paths:
       - ./Build
@@ -404,7 +404,7 @@ stages:
     # Build RobWorkHardware
     - cd RWHW
     - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" -A x64 -DBUILD_SHARED_LIBS=OFF -DRWHW_SHARED_LIBS=OFF ../../RobWorkHardware
-    - msbuild RobWorkHardware.sln /property:Configuration=Release
+    - msbuild RobWorkHardware.sln -m /property:Configuration=Release
   artifacts:
     paths:
       - ./Build/RWHW
@@ -422,7 +422,7 @@ stages:
     # Build RobWorkStudio
     - cd RWS
     - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" -A x64 -DSWIG_EXECUTABLE=%SWIG_ROOT%\swig.exe ../../RobWorkStudio
-    - msbuild RobWorkStudio.sln /property:Configuration=Release
+    - msbuild RobWorkStudio.sln -m /property:Configuration=Release
   artifacts:
     paths:
       - ./Build/RWS
@@ -439,7 +439,7 @@ stages:
     - cd Build
     - cd RWSim
     - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" -A x64 -DSWIG_EXECUTABLE=%SWIG_ROOT%\swig.exe ../../RobWorkSim
-    - msbuild RobWorkSim.sln /property:Configuration=Release
+    - msbuild RobWorkSim.sln -m /property:Configuration=Release
   artifacts:
     paths:
       - ./Build/RWSim
@@ -457,31 +457,31 @@ stages:
     # Build RobWork Examples
     - cd RWExamples
     - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" -A x64 ../../RobWork/example
-    - msbuild Project.sln /property:Configuration=Release
+    - msbuild Project.sln -m /property:Configuration=Release
     - cd ..
     # Build RobWorkStudio Examples
     - cd RWSExamples
     - cd pluginapp
     - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" -A x64 ../../../RobWorkStudio/example/pluginapp
-    - msbuild PluginApp.sln /property:Configuration=Release
+    - msbuild PluginApp.sln -m /property:Configuration=Release
     - cd ..
     - cd pluginUIapp
     - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" -A x64 ../../../RobWorkStudio/example/pluginUIapp
-    - msbuild PluginUIApp.sln /property:Configuration=Release
+    - msbuild PluginUIApp.sln -m /property:Configuration=Release
     - cd ..
     - cd tutorial
     - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" -A x64 ../../../RobWorkStudio/example/tutorial
-    - msbuild SamplePluginApp.sln /property:Configuration=Release
+    - msbuild SamplePluginApp.sln -m /property:Configuration=Release
     - cd ..
     - cd UDPKinPlugin
     - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" -A x64 ../../../RobWorkStudio/example/UDPKinPlugin
-    - msbuild PluginUIApp.sln /property:Configuration=Release
+    - msbuild PluginUIApp.sln -m /property:Configuration=Release
     - cd ..
     - cd ..
     # Build RobWorkSim Examples
     - cd RWSimExamples
     - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" -A x64 ../../RobWorkSim/example
-    - msbuild RWSimExamples.sln /property:Configuration=Release
+    - msbuild RWSimExamples.sln -m /property:Configuration=Release
 
 .windows-tests:
   extends: .CI-common
@@ -492,21 +492,21 @@ stages:
     - cd Build
     # Run RobWork tests
     - cd RW
-    - msbuild gtest/sdurw-gtest_reports.vcxproj /p:Configuration=Release
+    - msbuild gtest/sdurw-gtest_reports.vcxproj -m /p:Configuration=Release
     - move ..\\..\\RobWork\\bin\\release\\gtest_reports\\* ..\\..\\gtest\\
     - ctest -C Release --no-compress-output -T Test -j 1
     - FOR /D %%F IN ("Testing\\*") DO IF EXIST %%F\\Test.xml move %%F\\Test.xml ..\\..\\RW-CTest.xml
     - cd ..
     # Run RobWorkStudio tests
     - cd RWS
-    - msbuild gtest/sdurws-gtest_reports.vcxproj /p:Configuration=Release
+    - msbuild gtest/sdurws-gtest_reports.vcxproj -m /p:Configuration=Release
     - move ..\\..\\RobWorkStudio\\bin\\release\\gtest_reports\\* ..\\..\\gtest\\
     - ctest -C Release --no-compress-output -T Test -j 1
     - FOR /D %%F IN ("Testing\\*") DO IF EXIST %%F\\Test.xml move %%F\\Test.xml ..\\..\\RWS-CTest.xml
     - cd ..
     # Run RobWorkSim tests
     - cd RWSim
-    - msbuild gtest/sdurwsim-gtest_reports.vcxproj /p:Configuration=Release
+    - msbuild gtest/sdurwsim-gtest_reports.vcxproj -m /p:Configuration=Release
     - move ..\\..\\RobWorkSim\\bin\\Release\\gtest_reports\\* ..\\..\\gtest\\
     - ctest -C Release --no-compress-output -T Test -j 1
     - FOR /D %%F IN ("Testing\\*") DO IF EXIST %%F\\Test.xml move %%F\\Test.xml ..\\..\\RWSim-CTest.xml
