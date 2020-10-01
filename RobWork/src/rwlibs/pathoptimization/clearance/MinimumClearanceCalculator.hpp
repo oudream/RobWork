@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,69 +15,70 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RWLIBS_PATHOPTIMIZATION_MINIMUMCLEARANCECALCULATOR_HPP
 #define RWLIBS_PATHOPTIMIZATION_MINIMUMCLEARANCECALCULATOR_HPP
 
 #include "ClearanceCalculator.hpp"
 
-namespace rw { namespace models { class WorkCell; } }
-namespace rw { namespace proximity { class DistanceCalculator; } }
+namespace rw { namespace models {
+    class WorkCell;
+}}    // namespace rw::models
+namespace rw { namespace proximity {
+    class DistanceCalculator;
+}}    // namespace rw::proximity
 
-namespace rwlibs {
-namespace pathoptimization {
+namespace rwlibs { namespace pathoptimization {
 
-/** @addtogroup pathoptimization */
-/*@{*/
+    /** @addtogroup pathoptimization */
+    /*@{*/
 
-/**
- * @brief Implements a MinimumClearanceCalculator
- *
- * The minimum clearance is defined as the minimal distance between any two geometries, which are not excluded
- * by the collision setup.
- */
-class MinimumClearanceCalculator: public ClearanceCalculator
-{
-public:
-    //! A pointer to a MinimumClearanceCalculator.
-	typedef typename rw::core::Ptr< MinimumClearanceCalculator > Ptr;
-	//! A pointer to a const MinimumClearanceCalculator.
-	typedef typename rw::core::Ptr< const MinimumClearanceCalculator > CPtr;
-    
     /**
-     * @brief Constructs a MinimumClearanceCalculator using the \b DistanceCalculator provided.
+     * @brief Implements a MinimumClearanceCalculator
      *
-     * Use this constructor to use an already existing DistanceCalculator
-     *
-     * @param distancecalculator [in] The distance calculator to use
+     * The minimum clearance is defined as the minimal distance between any two geometries, which
+     * are not excluded by the collision setup.
      */
-	MinimumClearanceCalculator(const rw::core::Ptr< const rw::proximity::DistanceCalculator>& distancecalculator);
+    class MinimumClearanceCalculator : public ClearanceCalculator
+    {
+      public:
+        //! A pointer to a MinimumClearanceCalculator.
+        typedef typename rw::core::Ptr< MinimumClearanceCalculator > Ptr;
+        //! A pointer to a const MinimumClearanceCalculator.
+        typedef typename rw::core::Ptr< const MinimumClearanceCalculator > CPtr;
 
-	/**
-	 * @brief Constructs a MinimumClearanceCalculator for a workcell
-	 * @param workcell [in] WorkCell for which to calculate the minimum clearance
-	 * @param state [in] State of the workcell
-	 */
-	MinimumClearanceCalculator(const rw::core::Ptr<rw::models::WorkCell>& workcell,
-	                           const rw::kinematics::State& state);
+        /**
+         * @brief Constructs a MinimumClearanceCalculator using the \b DistanceCalculator provided.
+         *
+         * Use this constructor to use an already existing DistanceCalculator
+         *
+         * @param distancecalculator [in] The distance calculator to use
+         */
+        MinimumClearanceCalculator (
+            const rw::core::Ptr< const rw::proximity::DistanceCalculator >& distancecalculator);
 
-	/**
-	 * @brief Destructor
-	 */
-	virtual ~MinimumClearanceCalculator();
+        /**
+         * @brief Constructs a MinimumClearanceCalculator for a workcell
+         * @param workcell [in] WorkCell for which to calculate the minimum clearance
+         * @param state [in] State of the workcell
+         */
+        MinimumClearanceCalculator (const rw::core::Ptr< rw::models::WorkCell >& workcell,
+                                    const rw::kinematics::State& state);
 
-	/**
-	 * @copydoc ClearanceCalculator::clearance
-	 */
-	double clearance(const rw::kinematics::State& state) const;
+        /**
+         * @brief Destructor
+         */
+        virtual ~MinimumClearanceCalculator ();
 
-private:
-	rw::core::Ptr< const rw::proximity::DistanceCalculator > _distancecalculator;
-};
+        /**
+         * @copydoc ClearanceCalculator::clearance
+         */
+        double clearance (const rw::kinematics::State& state) const;
 
+      private:
+        rw::core::Ptr< const rw::proximity::DistanceCalculator > _distancecalculator;
+    };
 
- /** @} */
-} //end pathoptimization
-} //end rwlibs
+    /** @} */
+}}    // namespace rwlibs::pathoptimization
 
-#endif //#ifndef RWLIBS_PATHOPTIMIZATION_MINIMUMCLEARANCECALCULATOR_HPP
+#endif    //#ifndef RWLIBS_PATHOPTIMIZATION_MINIMUMCLEARANCECALCULATOR_HPP

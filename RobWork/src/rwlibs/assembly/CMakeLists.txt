@@ -1,6 +1,6 @@
 set(SUBSYS_NAME sdurw_assembly)
 set(SUBSYS_DESC "Assembly task and result formats and strategies.")
-set(SUBSYS_DEPS sdurw sdurw_task)
+set(SUBSYS_DEPS sdurw sdurw_task sdurw_core)
 
 set(DEFAULT TRUE)
 set(REASON)

@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,37 +15,85 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #include "Quaternion.hpp"
-#include "Math.hpp"
+
 #include <rw/common/InputArchive.hpp>
 #include <rw/common/OutputArchive.hpp>
+#include <rw/math/Math.hpp>
+#include <rw/math/Vector.hpp>
+
+#include <math.h>
 
 using namespace rw::common;
 using namespace rw::math;
 
-template class rw::math::Quaternion<double>;
-template class rw::math::Quaternion<float>;
+template< class T > Quaternion< T > Quaternion< T >::exp () const
+{
+    double a = getQw ();
+    Vector3D< T > v (getQx (), getQy (), getQz ());
+    double w = std::exp (a) * cos (v.norm2 ());
+
+    v = (v / v.norm2 ()) * sin (v.norm2 ()) * T(std::exp (a));
+
+    return Quaternion< T > (v[0], v[1], v[2], w);
+}
+
+template< class T > Quaternion< T > Quaternion< T >::inverse () const
+{
+    Quaternion< T > ret;
+
+    ret = (*this) * (T(-1.0) / getLengthSquared ());
+    ret[3] *= T(-1.0);
+    return ret;
+}
+
+template< class T > Quaternion< T > Quaternion< T >::ln () const
+{
+    double a = acos (getQw ());
+    double x = getQx () / T(sin (a));
+    double y = getQy () / T(sin (a));
+    double z = getQz () / T(sin (a));
+
+    return Quaternion< T > (a * x, a * y, a * z, T(0));
+}
+
+template< class T > Quaternion< T > Quaternion< T >::pow (double power) const
+{
+    Quaternion< T > ret = *this;
+    for (int i = 0; i < 4; i++) {
+        std::pow (ret[i], power);
+    }
+    return ret;
+}
+
+template class rw::math::Quaternion< double >;
+template class rw::math::Quaternion< float >;
 
 template<>
-void rw::common::serialization::write(const Quaternion<double>& tmp, OutputArchive& oar, const std::string& id)
+void rw::common::serialization::write (const Quaternion< double >& tmp, OutputArchive& oar,
+                                       const std::string& id)
 {
-    oar.write( Math::toStdVector(tmp, (int)tmp.size()), id , "Quaternion");
+    oar.write (Math::toStdVector (tmp, (int) tmp.size ()), id, "Quaternion");
 }
 template<>
-void rw::common::serialization::read(Quaternion<double>& tmp, InputArchive& iar, const std::string& id){
-    std::vector<double> arr;
-    iar.read(arr, id, "Quaternion");
-    Math::fromStdVector(arr, tmp);
-}
-template<>
-void rw::common::serialization::write(const Quaternion<float>& tmp, OutputArchive& oar, const std::string& id)
+void rw::common::serialization::read (Quaternion< double >& tmp, InputArchive& iar,
+                                      const std::string& id)
 {
-    oar.write( Math::toStdVector(tmp, (int)tmp.size()), id ,"Quaternion");
+    std::vector< double > arr;
+    iar.read (arr, id, "Quaternion");
+    Math::fromStdVector (arr, tmp);
 }
 template<>
-void rw::common::serialization::read(Quaternion<float>& tmp, InputArchive& iar, const std::string& id){
-    std::vector<float> arr;
-    iar.read(arr, id, "Quaternion");
-    Math::fromStdVector(arr, tmp);
+void rw::common::serialization::write (const Quaternion< float >& tmp, OutputArchive& oar,
+                                       const std::string& id)
+{
+    oar.write (Math::toStdVector (tmp, (int) tmp.size ()), id, "Quaternion");
+}
+template<>
+void rw::common::serialization::read (Quaternion< float >& tmp, InputArchive& iar,
+                                      const std::string& id)
+{
+    std::vector< float > arr;
+    iar.read (arr, id, "Quaternion");
+    Math::fromStdVector (arr, tmp);
 }

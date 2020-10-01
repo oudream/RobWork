@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RWLIBS_OPENGL_DRAWABLE_HPP
 #define RWLIBS_OPENGL_DRAWABLE_HPP
 
@@ -23,54 +22,55 @@
  * @file Drawable.hpp
  */
 
-#include <rw/math/Transform3D.hpp>
 #include <rw/core/Ptr.hpp>
-#include <rwlibs/os/rwgl.hpp>
 #include <rw/graphics/DrawableNode.hpp>
+#include <rw/math/Transform3D.hpp>
+#include <rwlibs/os/rwgl.hpp>
 
-namespace rw { namespace graphics { class Render; } }
+namespace rw { namespace graphics {
+    class Render;
+}}    // namespace rw::graphics
 
 namespace rwlibs { namespace opengl {
 
     //! @addtogroup opengl
-	// @{
+    // @{
 
-	/**
-	 * @brief Abstract base class for all drawable classes
-	 *
-	 * Classes that are able to draw them self, may inherit from this class.
-	 *
-	 * The drawable class use a draw mask to distinguish between different
-	 * groups to draw. E.g. when taking snapshots with a simulated camera
-	 * virtual objects such as the red laser vector or the lines showing
-	 * the camera view angle is should not be renered. Hence objects that
-	 * are virtual should be set to virtual.
-	 *
-	 * A call to draw enabling Physical and User1 defined objects look like:
-	 * \code
-	 * drawable->draw(Drawable::Physical | Drawable::User1);
-	 * \endcode
-	 */
-    class Drawable: public rw::graphics::DrawableNode {
-    public:
-
+    /**
+     * @brief Abstract base class for all drawable classes
+     *
+     * Classes that are able to draw them self, may inherit from this class.
+     *
+     * The drawable class use a draw mask to distinguish between different
+     * groups to draw. E.g. when taking snapshots with a simulated camera
+     * virtual objects such as the red laser vector or the lines showing
+     * the camera view angle is should not be renered. Hence objects that
+     * are virtual should be set to virtual.
+     *
+     * A call to draw enabling Physical and User1 defined objects look like:
+     * \code
+     * drawable->draw(Drawable::Physical | Drawable::User1);
+     * \endcode
+     */
+    class Drawable : public rw::graphics::DrawableNode
+    {
+      public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr<Drawable> Ptr;
+        typedef rw::core::Ptr< Drawable > Ptr;
 
-    	/**
-    	 * @brief draw mask is used to filter which drawables to exclude from rendering.
-    	 *
-    	typedef enum{Physical=1, //! A physical object in the scene
-    				 Virtual=2,  //! A virtual object, e.g. lines showing camera view angle
-    				 DrawableObject=4,//! An object that is "just" a drawable
-    				 CollisionObject=8,  //! An object that is also a CollisionObject
-    				 User1=1024, //! User defined group 1...
-    		    	 User2=2048,//!< User2
-    		    	 User3=4096,//!< User3
-    		    	 User4=8096, //!< User4
-    		    	 ALL=0xFFFFFFFF
-    	} DrawableTypeMask;
-    	 */
+        /**
+         * @brief draw mask is used to filter which drawables to exclude from rendering.
+         *
+        typedef enum{Physical=1, //! A physical object in the scene
+                                 Virtual=2,  //! A virtual object, e.g. lines showing camera view
+        angle DrawableObject=4,//! An object that is "just" a drawable CollisionObject=8,  //! An
+        object that is also a CollisionObject User1=1024, //! User defined group 1...
+                         User2=2048,//!< User2
+                         User3=4096,//!< User3
+                         User4=8096, //!< User4
+                         ALL=0xFFFFFFFF
+        } DrawableTypeMask;
+         */
 
         /**
          * @brief Constructer for Drawable
@@ -78,52 +78,49 @@ namespace rwlibs { namespace opengl {
          * @param name [in] Name of drawable
          * @param dmask [in] Type of the Drawable. Default value is Physical
          */
-        Drawable(
-            const std::string& name,
-            unsigned int dmask = Physical);
+        Drawable (const std::string& name, unsigned int dmask = Physical);
 
         /**
          * @brief Constructer for Drawable
          *
          * @param render [in] Render to be used by the drawable
-		 * @param name [in] Name of drawable
+         * @param name [in] Name of drawable
          * @param dmask [in] Type of the Drawable. Default value is Physical
          */
-        Drawable(
-            rw::core::Ptr<rw::graphics::Render> render,
-            const std::string& name = "",
-			unsigned int dmask = DrawableObject);
+        Drawable (rw::core::Ptr< rw::graphics::Render > render, const std::string& name = "",
+                  unsigned int dmask = DrawableObject);
 
         /**
          * @brief Virtual destructor
          */
-        virtual ~Drawable();
+        virtual ~Drawable ();
 
         /**
          * @brief draws the object.
          */
-        virtual void draw(const rw::graphics::DrawableNode::RenderInfo& info = RenderInfo()) const;
+        virtual void
+        draw (const rw::graphics::DrawableNode::RenderInfo& info = RenderInfo ()) const;
 
         /**
          * @brief enables or disables highlighting of the drawable class
          *
          * @param b [in] a if true highlight is enabled if false disabled
          */
-        void setHighlighted(bool b);
+        void setHighlighted (bool b);
 
         /**
          * @brief Returns whether the Drawable is highlighted
          *
          * @return true/false
          */
-        bool isHighlighted() const;
+        bool isHighlighted () const;
 
         /**
          * @brief Sets the DrawType
          *
          * @param drawType [in] the DrawType to be used
          */
-        void setDrawType(rw::graphics::DrawableNode::DrawType drawType);
+        void setDrawType (rw::graphics::DrawableNode::DrawType drawType);
 
         /**
          * @brief Sets up the color alpha value.
@@ -131,92 +128,94 @@ namespace rwlibs { namespace opengl {
          * @param alpha [in] \f$ 0.0 \f$ corresponds to fully transparent and
          * \f$1.0\f$ to completely solid.
          */
-        void setTransparency(float alpha);
+        void setTransparency (float alpha);
 
         /**
          * @brief Gets the color alpha value.
          * @return alpha value in the interval \f$ [0.0;1.0] \f$
          */
-        float getTransparency();
+        float getTransparency ();
 
         /**
          * @brief Specifies the scale of the object
          * @param scale [in] the scale
          */
-        void setScale(float scale);
+        void setScale (float scale);
 
         /**
          * @brief gets the scale of the object
          * @return scale [in] the scale
          */
-        float getScale() const;
+        float getScale () const;
 
         /**
          * @brief enable or disable this drawable. When disabled the drawable
          * will not render anything.
          */
-        void setVisible(bool enable) { _enable = enable; }
+        void setVisible (bool enable) { _enable = enable; }
 
         /**
          * @brief checks if this drawable is enabled
          */
-        bool isVisible() { return _enable; }
+        bool isVisible () { return _enable; }
 
         /**
          * @brief gets the transformation of the drawable object
          * @return transform of the drawable object
          */
-        const rw::math::Transform3D<>& getTransform() const;
+        const rw::math::Transform3D<>& getTransform () const;
 
         /**
          * @brief Sets the transformation of the drawable object
          * @param t3d [in] transform of drawable object
          */
-        void setTransform(const rw::math::Transform3D<>& t3d);
+        void setTransform (const rw::math::Transform3D<>& t3d);
 
         /**
          * @brief the group(s) that this drawable belong to
          * @param mask [in] drawable mask
          */
-        void setMask(unsigned int mask){ _dmask = mask; }
+        void setMask (unsigned int mask) { _dmask = mask; }
 
         /**
          * @brief Get the rendering groups that this drawable belongs to.
          * @return the drawable type mask (see DrawableNode::DrawableTypeMask).
          */
-        unsigned int getMask() const { return _dmask;}
+        unsigned int getMask () const { return _dmask; }
 
         /**
          * @brief Get this drawables Render object
          */
-        std::vector<rw::core::Ptr<rw::graphics::Render> > getRenders() const{
-        	return _renders;
+        std::vector< rw::core::Ptr< rw::graphics::Render > > getRenders () const
+        {
+            return _renders;
         }
 
         /**
          * @brief Add a render to this drawable.
          * @param render [in] the render.
          */
-        void addRender( rw::core::Ptr<rw::graphics::Render> render ){
-            _renders.push_back(render);
+        void addRender (rw::core::Ptr< rw::graphics::Render > render)
+        {
+            _renders.push_back (render);
         }
 
-    protected:
-    	/**
-    	 * @brief constructor
-    	 */
-    	//Drawable() {}
+      protected:
+        /**
+         * @brief constructor
+         */
+        // Drawable() {}
 
         /**
          * @brief The renderer that is used to render and draw the
          * drawable
          */
-    	std::vector<rw::core::Ptr<rw::graphics::Render> > _renders;
+        std::vector< rw::core::Ptr< rw::graphics::Render > > _renders;
 
         /**
          * @brief drawType specified how the Drawable should be visualized
          */
-    	rw::graphics::DrawableNode::DrawType _drawType;
+        rw::graphics::DrawableNode::DrawType _drawType;
 
         /**
          * @brief alpha represents the color alpha value for which, \f$ 0.0 \f$
@@ -246,14 +245,14 @@ namespace rwlibs { namespace opengl {
          */
         rw::math::Transform3D<> _t3d;
 
-    private:
-    	GLfloat gltrans[16];
-    	unsigned int _dmask;
-        Drawable(const Drawable&);
-        Drawable& operator=(const Drawable&);
+      private:
+        GLfloat gltrans[16];
+        unsigned int _dmask;
+        Drawable (const Drawable&);
+        Drawable& operator= (const Drawable&);
     };
 
     /*@}*/
-}} // end namespaces
+}}    // namespace rwlibs::opengl
 
-#endif // end include guard
+#endif    // end include guard

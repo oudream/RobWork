@@ -308,8 +308,8 @@ std::string StringUtil::ranName (const std::string& prefix)
     if (ran < 0) {
         ran *= -1;
     }
-    ran = 0xFF + ran * (0xFFFFFF - 0xFF);
-    int ri     = int (ran);
+    ran    = 0xFF + ran * (0xFFFFFF - 0xFF);
+    int ri = int (ran);
     std::stringstream sstr;
     sstr << prefix << "_" << ri;
     return sstr.str ();

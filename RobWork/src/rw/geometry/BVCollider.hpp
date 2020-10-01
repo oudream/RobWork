@@ -20,39 +20,38 @@
 
 #include <rw/math/Transform3D.hpp>
 
-namespace rw {
-namespace geometry {
+namespace rw { namespace geometry {
 
     /**
      * @brief abstract class describing interface of a bounding volume collision
      * detector. The inheritance is template based to reduce virtual method overhead
      */
-	template<class COLLIDER, class BVTYPE>
-	class BVCollider {
-	public:
-		typedef BVTYPE BVType;
-		typedef typename BVTYPE::value_type value_type;
+    template< class COLLIDER, class BVTYPE > class BVCollider
+    {
+      public:
+        typedef BVTYPE BVType;
+        typedef typename BVTYPE::value_type value_type;
 
-		//! constructor
-		BVCollider(){};
+        //! constructor
+        BVCollider (){};
 
-		//! destructor
-		virtual ~BVCollider(){};
+        //! destructor
+        virtual ~BVCollider (){};
 
-		/**
-		 * @brief test if two bounding volumes are colliding
-		 * @param bvA [in] bounding volume A
-		 * @param bvB [in] bounding volume B
-		 * @param aTb [in] transform from bvA to bvB
-		 * @return
-		 */
-		inline bool inCollision(const BVTYPE& bvA, const BVTYPE& bvB, const rw::math::Transform3D<value_type>& aTb){
-			return static_cast<COLLIDER*>(this)->collides(bvA,bvB,aTb);
-		}
+        /**
+         * @brief test if two bounding volumes are colliding
+         * @param bvA [in] bounding volume A
+         * @param bvB [in] bounding volume B
+         * @param aTb [in] transform from bvA to bvB
+         * @return
+         */
+        inline bool inCollision (const BVTYPE& bvA, const BVTYPE& bvB,
+                                 const rw::math::Transform3D< value_type >& aTb)
+        {
+            return static_cast< COLLIDER* > (this)->collides (bvA, bvB, aTb);
+        }
+    };
 
-	};
-
-}
-}
+}}    // namespace rw::geometry
 
 #endif /* BVCOLLIDER_HPP_ */

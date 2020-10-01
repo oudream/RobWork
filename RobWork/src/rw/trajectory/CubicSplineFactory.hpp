@@ -245,6 +245,41 @@ namespace rw { namespace trajectory {
         makeClampedSpline (const Path< T >& path, const std::vector< double >& times,
                            const T& dStart, const T& dEnd);
 
+        /**
+         * @brief constructs a Spherical Spline Quaternion interpolation (SQUAD)
+         * A natural SQUAD has free boundary conditions.
+         * The SQUAD passes through each data point.
+         * The SQUAD forms a continuous function over [a,b].
+         * The SQUAD forms a smooth function.
+         * The second derivative is continuous.
+         *
+         * @param path [in] a list of points that the SQUAD should intersect
+         * @param timeStep [in] the duration of each SQUAD path
+         * @return a trajectory of SQUADInterpolators
+         */
+        static InterpolatorTrajectory< rw::math::Quaternion<> >::Ptr
+        makeSQUAD (const Path< rw::math::Quaternion<> >& path, double timeStep = 1.0);
+
+        /**
+         * @brief constructs a Spherical Spline Quaternion interpolation (SQUAD)
+         *
+         * @param tpath [in] a list of points with associated timestaps. The SQUAD will intersect
+         * the points at the time specified in \b tpath
+         * @return a trajectory of SQUADInterpolators
+         */
+        static InterpolatorTrajectory< rw::math::Quaternion<> >::Ptr
+        makeSQUAD (const Path< Timed< rw::math::Quaternion<> > >& tpath);
+
+        /**
+         * @brief constructs a Spherical Spline Quaternion interpolation (SQUAD)
+         *
+         * @param path [in] Path to follow
+         * @param times [in] Times associated to the different configurations in \b qpath
+         * @return a trajectory of CubicSplineInterpolators
+         */
+        static InterpolatorTrajectory< rw::math::Quaternion<> >::Ptr
+        makeSQUAD (const Path< rw::math::Quaternion<> >& path, const std::vector< double >& times);
+
       private:
         CubicSplineFactory ();
 

@@ -152,7 +152,7 @@ namespace rw { namespace math {
            @param bP [in] @f$ \robax{b}{\mathbf{p}} @f$
            @return @f$ \robax{a}{\mathbf{p}} @f$
         */
-         const Vector2D< T > operator* ( const Vector2D< T >& bP) const
+        const Vector2D< T > operator* (const Vector2D< T >& bP) const
         {
             return this->_R * bP + this->_d;
         }
@@ -236,6 +236,9 @@ namespace rw { namespace math {
 
     extern template class rw::math::Transform2D< double >;
     extern template class rw::math::Transform2D< float >;
+
+    using Transform2Dd = Transform2D<double>;
+    using Transform2Df = Transform2D<float>;
 
     /*@}*/
 

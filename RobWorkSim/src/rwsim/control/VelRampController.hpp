@@ -3,79 +3,83 @@
 
 //! @file VelRampController.hpp
 
+#include <rw/core/Ptr.hpp>
 #include <rwlibs/control/JointController.hpp>
 #include <rwlibs/control/SyncVelocityRamp.hpp>
 #include <rwlibs/simulation/SimulatedController.hpp>
-#include <rw/core/Ptr.hpp>
 
-namespace rwsim { namespace dynamics { class KinematicDevice; } }
+namespace rwsim { namespace dynamics {
+    class KinematicDevice;
+}}    // namespace rwsim::dynamics
 
-namespace rwsim {
-namespace control {
-	//! @addtogroup rwsim_control
-	//! @{
+namespace rwsim { namespace control {
+    //! @addtogroup rwsim_control
+    //! @{
 
-	/**
-	 * @brief a JointController that use a velocityramp profile of a
-	 * device to set acceleration, velocity and position of a dynamic device.
-	 *
-	 */
-	class VelRampController: public rwlibs::control::JointController, public rwlibs::simulation::SimulatedController {
+    /**
+     * @brief a JointController that use a velocityramp profile of a
+     * device to set acceleration, velocity and position of a dynamic device.
+     *
+     */
+    class VelRampController : public rwlibs::control::JointController,
+                              public rwlibs::simulation::SimulatedController
+    {
+      public:
+        VelRampController (const std::string& name, dynamics::KinematicDevice* kdev,
+                           const rw::kinematics::State& state);
 
-	public:
+        virtual ~VelRampController (){};
 
-		VelRampController(const std::string& name, dynamics::KinematicDevice* kdev, const rw::kinematics::State& state);
+        unsigned int getControlModes () { return POSITION; }
 
-		virtual ~VelRampController(){};
+        void setControlMode (ControlMode mode)
+        {
+            if (mode != POSITION)
+                RW_THROW ("Unsupported control mode!");
+        }
 
-		unsigned int getControlModes(){
-			return POSITION;
-		}
+        void setTargetPos (const rw::math::Q& target);
 
-		void setControlMode(ControlMode mode){
-			if(mode!=POSITION)
-				RW_THROW("Unsupported control mode!");
-		}
+        void setTargetVel (const rw::math::Q& vals){};
+        void setTargetAcc (const rw::math::Q& vals){};
 
-		void setTargetPos(const rw::math::Q& target);
+        //! @copydoc rwlibs::simulation::SimulatedController::update
+        void update (const rwlibs::simulation::Simulator::UpdateInfo& info,
+                     rw::kinematics::State& state);
 
-		void setTargetVel(const rw::math::Q& vals){};
-		void setTargetAcc(const rw::math::Q& vals){};
+        //! @copydoc rwlibs::simulation::SimulatedController::reset
+        void reset (const rw::kinematics::State& state);
 
-		//! @copydoc rwlibs::simulation::SimulatedController::update
-		void update(const rwlibs::simulation::Simulator::UpdateInfo& info, rw::kinematics::State& state);
+        rw::math::Q getQ ();
 
-		//! @copydoc rwlibs::simulation::SimulatedController::reset
-		void reset(const rw::kinematics::State& state);
+        rw::math::Q getQd () { return _target; }
 
-		rw::math::Q getQ();
+        std::string getControllerName () { return getName (); };
 
-		rw::math::Q getQd(){ return _target;}
+        Controller* getController () { return this; };
 
-		std::string getControllerName(){ return getName(); };
+        void setEnabled (bool enabled) { _enabled = enabled; };
 
-		Controller* getController(){ return this;};
+        bool isEnabled () const { return _enabled; };
 
-        void setEnabled(bool enabled){ _enabled = enabled; };
+        rwlibs::control::Controller::Ptr
+        getControllerHandle (rwlibs::simulation::Simulator::Ptr sim)
+        {
+            return this;
+        }
 
-        bool isEnabled() const { return _enabled; } ;
+      private:
+        dynamics::KinematicDevice* _ddev;
+        double _time;
+        rw::control::SyncVelocityRamp _velramp;
+        rw::math::Q _target;
+        rw::math::Q _currentQ;
+        bool _enabled;
+    };
 
-        rwlibs::control::Controller::Ptr getControllerHandle(rwlibs::simulation::Simulator::Ptr sim){ return this;}
+    typedef rw::core::Ptr< VelRampController > VelRampControllerPtr;
 
-	private:
-		dynamics::KinematicDevice *_ddev;
-		double _time;
-		rw::control::SyncVelocityRamp _velramp;
-		rw::math::Q _target;
-		rw::math::Q _currentQ;
-		bool _enabled;
-
-	};
-
-	typedef rw::core::Ptr<VelRampController> VelRampControllerPtr;
-
-	//! @}
-}
-}
+    //! @}
+}}    // namespace rwsim::control
 
 #endif /*VELRAMPCONTROLLER_HPP_*/

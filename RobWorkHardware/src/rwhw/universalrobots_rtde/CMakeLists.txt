@@ -30,13 +30,16 @@ rw_subsys_option(
 if(build)
     if(UR_RTDE_INTERNAL)
         option(PYTHON_BINDINGS "Build python bindings for libraries" OFF)
-        set(Boost_NO_BOOST_CMAKE TRUE) # From Boost 1.70, CMake files are provided by Boost - we are not yet
-                                       # ready to handle it
+        set(Boost_NO_BOOST_CMAKE TRUE) # From Boost 1.70, CMake files are provided by Boost - we are
+                                       # not yet ready to handle it
         set(tmp ${INCLUDE_INSTALL_DIR})
         set(INCLUDE_INSTALL_DIR "${INCLUDE_INSTALL_DIR}/ext")
         set(PYTHON_BINDINGS OFF)
         add_subdirectory(${RWHW_ROOT}/ext/ur_rtde ur_rtde_ext)
-        set(UR_RTDE_DIR "${CMAKE_CURRENT_BINARY_DIR}/ur_rtde_ext/ur_rtde" CACHE PATH "UR_RDTE cmake dir")
+        set(UR_RTDE_DIR
+            "${CMAKE_CURRENT_BINARY_DIR}/ur_rtde_ext/ur_rtde"
+            CACHE PATH "UR_RDTE cmake dir"
+        )
         set(INCLUDE_INSTALL_DIR ${tmp})
     endif()
 
@@ -45,17 +48,22 @@ if(build)
 
     rw_add_library(${SUBSYS_NAME} ${SRC_CPP} ${SRC_HPP})
     target_link_libraries(${SUBSYS_NAME} PRIVATE ur_rtde::rtde RW::sdurw)
-    target_include_directories(${SUBSYS_NAME}
-        INTERFACE
-        $<BUILD_INTERFACE:${RWHW_ROOT}/src> $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
+    target_include_directories(
+        ${SUBSYS_NAME} INTERFACE $<BUILD_INTERFACE:${RWHW_ROOT}/src>
+                                 $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
     )
     rw_add_includes(${SUBSYS_NAME} "rwhw/universalrobots_rtde" ${SRC_HPP})
 
     if(NOT UR_RTDE_INTERNAL)
         target_include_directories(${SUBSYS_NAME} PRIVATE ${ur_rtde_INCLUDE_DIRS})
+    else()
+        target_compile_definitions(${SUBSYS_NAME} PRIVATE URRTDE_INTERNAL)
     endif()
 
-    set(ROBWORKHARDWARE_LIBRARIES ${ROBWORKHARDWARE_LIBRARIES} sdurwhw_universalrobots_rtde PARENT_SCOPE)
+    set(ROBWORKHARDWARE_LIBRARIES
+        ${ROBWORKHARDWARE_LIBRARIES} sdurwhw_universalrobots_rtde
+        PARENT_SCOPE
+    )
 else()
     message(STATUS "RobWorkHardware: ${component_name} component DISABLED")
 endif()

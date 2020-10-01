@@ -26,8 +26,7 @@
 
 #include "Shell.hpp"
 
-namespace rw {
-namespace geometry {
+namespace rw { namespace geometry {
 
     class ImplicitFace;
 
@@ -38,59 +37,59 @@ namespace geometry {
      * @brief Type of Shell where all surfaces are of type ImplicitSurface and
      * all curves are of type ParametricCurve.
      */
-    class ImplicitShell: public Shell
+    class ImplicitShell : public Shell
     {
-        public:
-            //! @brief Smart pointer type to ImplicitShell
-            typedef rw::core::Ptr<ImplicitShell> Ptr;
+      public:
+        //! @brief Smart pointer type to ImplicitShell
+        typedef rw::core::Ptr< ImplicitShell > Ptr;
 
-            //! @brief Smart pointer type for a const ImplicitShell.
-            typedef rw::core::Ptr<const ImplicitShell> CPtr;
+        //! @brief Smart pointer type for a const ImplicitShell.
+        typedef rw::core::Ptr< const ImplicitShell > CPtr;
 
-            //! @brief Constructor.
-            ImplicitShell(): _resolution(10) {}
+        //! @brief Constructor.
+        ImplicitShell () : _resolution (10) {}
 
-            //! @brief Destructor.
-            virtual ~ImplicitShell() {}
+        //! @brief Destructor.
+        virtual ~ImplicitShell () {}
 
-            //! @copydoc Shell::getType
-            virtual GeometryType getType() const { return GeometryData::Implicit; }
+        //! @copydoc Shell::getType
+        virtual GeometryType getType () const { return GeometryData::Implicit; }
 
-            //! @copydoc Shell::isConvex
-            virtual bool isConvex() = 0;
+        //! @copydoc Shell::isConvex
+        virtual bool isConvex () = 0;
 
-            //! @copydoc Shell::size
-            virtual std::size_t size() const = 0;
+        //! @copydoc Shell::size
+        virtual std::size_t size () const = 0;
 
-            //! @copydoc Shell::getFace
-            virtual rw::core::Ptr<const ImplicitFace> getFace(std::size_t idx) const = 0;
+        //! @copydoc Shell::getFace
+        virtual rw::core::Ptr< const ImplicitFace > getFace (std::size_t idx) const = 0;
 
-            /**
-             * @brief Get a surface patch.
-             * @param idx [in] index of the patch.
-             * @param dst [out] an existing face to write data to.
-             */
-            virtual void getFace(std::size_t idx, ImplicitFace& dst) const = 0;
+        /**
+         * @brief Get a surface patch.
+         * @param idx [in] index of the patch.
+         * @param dst [out] an existing face to write data to.
+         */
+        virtual void getFace (std::size_t idx, ImplicitFace& dst) const = 0;
 
-            /**
-             * @brief Set the resolution used for discretization in the getTriMesh and faceTriMesh functions.
-             *
-             * The meaning of this parameter depends on the type of surface.
-             *
-             * @param resolution [in] the resolution parameter.
-             */
-            void setMeshResolution(double resolution) { _resolution = resolution; }
+        /**
+         * @brief Set the resolution used for discretization in the getTriMesh and faceTriMesh
+         * functions.
+         *
+         * The meaning of this parameter depends on the type of surface.
+         *
+         * @param resolution [in] the resolution parameter.
+         */
+        void setMeshResolution (double resolution) { _resolution = resolution; }
 
-        private:
-            virtual rw::core::Ptr<const Face> doGetFace(std::size_t idx) const;
+      private:
+        virtual rw::core::Ptr< const Face > doGetFace (std::size_t idx) const;
 
-        protected:
-            //! @brief Resolution to use for discretization into triangle mesh.
-            double _resolution;
+      protected:
+        //! @brief Resolution to use for discretization into triangle mesh.
+        double _resolution;
     };
-//! @}
+    //! @}
 
-} /* namespace geometry */
-} /* namespace rw */
+}}    // namespace rw::geometry
 
 #endif /* RW_GEOMETRY_ANALYTIC_IMPLICITSHELL_HPP_ */

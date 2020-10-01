@@ -30,140 +30,140 @@
 class C1394Camera;
 
 namespace rwhw {
-    /** @addtogroup camera */
-    /* @{ */
+/** @addtogroup camera */
+/* @{ */
+
+/**
+ * @brief This class implements the Camera interface using
+ * the CMU 1394 windows drivers. Check out http://www.cs.cmu.edu/~iwan/1394/
+ */
+class CMU1394Camera : public rw::sensor::CameraFirewire
+{
+  protected:
+    /**
+     * @brief constructor
+     * @param cam [in] handle to camera
+     */
+    CMU1394Camera (C1394Camera* cam);
 
     /**
-     * @brief This class implements the Camera interface using
-     * the CMU 1394 windows drivers. Check out http://www.cs.cmu.edu/~iwan/1394/
+     * @brief returns the C1394Camera object that is bound to this WinCamera
+     * @return C1394Camera object that is bound to this WinCamera
      */
-    class CMU1394Camera : public rw::sensor::CameraFirewire
-    {
-    protected:
-        /**
-         * @brief constructor
-         * @param cam [in] handle to camera
-         */
-        CMU1394Camera(C1394Camera* cam);
+    C1394Camera* getCMUCamera ();
 
-        /**
-         * @brief returns the C1394Camera object that is bound to this WinCamera
-         * @return C1394Camera object that is bound to this WinCamera
-         */
-        C1394Camera* getCMUCamera();
+    /**
+     * @brief if a C1394Camera class is connected to this Camera class
+     * then true is returned, false otherwise
+     */
+    bool isConnected () { return _connected; };
 
-        /**
-         * @brief if a C1394Camera class is connected to this Camera class
-         * then true is returned, false otherwise
-         */
-        bool isConnected(){return _connected;};
+    /**
+     * @brief sets the connected state of this WinCamera
+     * @param connected [in] true to set the state of WinCamera to connected,
+     * false otherwise
+     */
+    void setConnected (bool connected) { _connected = connected; };
 
-        /**
-         * @brief sets the connected state of this WinCamera
-         * @param connected [in] true to set the state of WinCamera to connected,
-         * false otherwise
-         */
-        void setConnected(bool connected){_connected = connected;};
+  public:
+    /**
+     * @brief destructor
+     */
+    virtual ~CMU1394Camera ();
 
-    public:
+    /**
+     * @brief return handles (Camera objects) to all connected
+     * firewire cameras.
+     * @return a list of available cameras
+     */
+    static const std::vector< CMU1394Camera* > getCameraHandles ();
 
-        /**
-         * @brief destructor
-         */
-        virtual ~CMU1394Camera();
+    /**
+     * @copydoc rw::sensor::Camera::initialize
+     */
+    bool initialize ();
 
-        /**
-         * @brief return handles (Camera objects) to all connected
-         * firewire cameras.
-         * @return a list of available cameras
-         */
-        static const std::vector<CMU1394Camera*> getCameraHandles();
+    /**
+     * @copydoc rw::sensor::Camera::stop
+     */
+    void stop ();
 
-        /**
-         * @copydoc rw::sensor::Camera::initialize
-         */
-        bool initialize();
+    /**
+     * @copydoc rw::sensor::Camera::start
+     */
+    bool start ();
 
-        /**
-         * @copydoc rw::sensor::Camera::stop
-         */
-        void stop();
+    /**
+     * @copydoc rw::sensor::Camera::acquire
+     */
+    void acquire ();
 
-        /**
-         * @copydoc rw::sensor::Camera::start
-         */
-        bool start();
+    /**
+     * @copydoc rw::sensor::Camera::isImageReady
+     */
+    bool isImageReady ();
 
-        /**
-         * @copydoc rw::sensor::Camera::acquire
-         */
-        void acquire();
+    /**
+     * @copydoc rw::sensor::Camera::getImage
+     */
+    const rw::sensor::Image* getImage ();
 
-        /**
-         * @copydoc rw::sensor::Camera::isImageReady
-         */
-        bool isImageReady();
+    /**
+     * @copydoc rw::sensor::Camera::getFrameRate
+     */
+    double getFrameRate ();
 
-        /**
-         * @copydoc rw::sensor::Camera::getImage
-         */
-        const rw::sensor::Image* getImage();
+    /**
+     * @copydoc rw::sensor::Camera::setFrameRate
+     */
+    void setFrameRate (double framerate);
 
-        /**
-         * @copydoc rw::sensor::Camera::getFrameRate
-         */
-        double getFrameRate();
+    /**
+     * @copydoc rw::sensor::CameraFirewire::getCaptureMode
+     */
+    virtual CaptureMode getCaptureMode ();
 
-        /**
-         * @copydoc rw::sensor::Camera::setFrameRate
-         */
-        void setFrameRate(double framerate);
+    /**
+     * @copydoc rw::sensor::CameraFirewire::setCaptureMode
+     */
+    virtual bool setCaptureMode (CaptureMode mode);
 
-        /**
-         * @copydoc rw::sensor::CameraFirewire::getCaptureMode
-         */
-        virtual CaptureMode getCaptureMode();
+    /**
+     * @brief returns the Dimension of this camera
+     * @return the camera Dimension
+     */
+    std::pair< unsigned int, unsigned int > getDimension ();
 
-        /**
-         * @copydoc rw::sensor::CameraFirewire::setCaptureMode
-         */
-        virtual bool setCaptureMode(CaptureMode mode);
+    /**
+     * @copydoc rw::sensor::CameraFirewire::getCapturePolicy
+     */
+    CapturePolicy getCapturePolicy ();
+    /**
+     * @copydoc rw::sensor::Camera::getWidth
+     */
+    unsigned int getWidth () { return _width; };
 
-        /**
-         * @brief returns the Dimension of this camera
-         * @return the camera Dimension
-         */
-        std::pair<unsigned int,unsigned int> getDimension();
+    /**
+     * @copydoc rw::sensor::Camera::getHeight
+     */
+    unsigned int getHeight () { return _height; };
 
-        /**
-         * @copydoc rw::sensor::CameraFirewire::getCapturePolicy
-         */
-        CapturePolicy getCapturePolicy();
-        /**
-         * @copydoc rw::sensor::Camera::getWidth
-         */
-        unsigned int getWidth(){ return _width;};
+  private:
+    bool _connected;
+    // List of all cameras
+    static std::vector< CMU1394Camera* > _cameras;
+    CapturePolicy _policy;
+    bool _isAquired;
+    C1394Camera* _cmuCam;
+    //        raw1394handle_t _handle;
+    //        dc1394_cameracapture _dccamera;
+    rw::sensor::Image* _image;
+    CameraFirewire::CaptureMode _captureMode;
+    double _frameRate;
+    unsigned int _width, _height;
+};
+/* @} */
 
-        /**
-         * @copydoc rw::sensor::Camera::getHeight
-         */
-        unsigned int getHeight(){return _height;};
-    private:
-        bool _connected;
-        // List of all cameras
-        static std::vector<CMU1394Camera*> _cameras;
-        CapturePolicy _policy;
-        bool _isAquired;
-        C1394Camera* _cmuCam;
-//        raw1394handle_t _handle;
-//        dc1394_cameracapture _dccamera;
-        rw::sensor::Image *_image;
-        CameraFirewire::CaptureMode _captureMode;
-        double _frameRate;
-        unsigned int _width,_height;
-    };
-    /* @} */
+}    // namespace rwhw
 
-} // end namespaces
-
-#endif // end include guard
+#endif    // end include guard

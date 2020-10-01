@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,21 +15,20 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RW_CORE_PROPERTYBASE_HPP
 #define RW_CORE_PROPERTYBASE_HPP
 
 /**
  * @file PropertyBase.hpp
  */
-
-#include "PropertyType.hpp"
-#include "Ptr.hpp"
-#include "Event.hpp"
+#if !defined(SWIG)
+#include <rw/core/Event.hpp>
+#include <rw/core/PropertyType.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include <boost/function.hpp>
-
 #include <string>
+#endif
 
 namespace rw { namespace core {
 
@@ -41,9 +40,9 @@ namespace rw { namespace core {
      */
     class PropertyBase
     {
-    public:
+      public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr<PropertyBase> Ptr;
+        typedef rw::core::Ptr< PropertyBase > Ptr;
 
         /**
          * @brief Constructor
@@ -51,7 +50,7 @@ namespace rw { namespace core {
          * @param identifier [in] identifier for the property
          * @param description [in] description of the property
          */
-        PropertyBase(const std::string& identifier, const std::string& description);
+        PropertyBase (const std::string& identifier, const std::string& description);
 
         /**
          * @brief Constructor
@@ -60,44 +59,44 @@ namespace rw { namespace core {
          * @param description [in] description of the property
          * @param type [in] type of the property
          */
-        PropertyBase(const std::string& identifier,
-                     const std::string& description,
-                     const PropertyType& type);
+        PropertyBase (const std::string& identifier, const std::string& description,
+                      const PropertyType& type);
 
         /**
          * @brief Destroys PropertyBase
          */
-        virtual ~PropertyBase();
+        virtual ~PropertyBase ();
 
         /**
          * @brief Returns the Property identifier
          * @return string identifier
          */
-        const std::string& getIdentifier() const;
+        const std::string& getIdentifier () const;
 
         /**
          * @brief Returns description
          * @return string description
          */
-        const std::string& getDescription() const;
+        const std::string& getDescription () const;
 
         /**
          * @brief set description
          */
-        void setDescription(const std::string& desc){ _description = desc;}
+        void setDescription (const std::string& desc) { _description = desc; }
 
         /**
            @brief Construct a clone of the property.
         */
-        virtual PropertyBase* clone() const = 0;
+        virtual PropertyBase* clone () const = 0;
 
+#if !defined(SWIGJAVA)
         /**
          * @brief Method signature for a callback function
          */
-        typedef boost::function<void(PropertyBase*)> PropertyListener;
+        typedef boost::function< void (PropertyBase*) > PropertyListener;
 
         //! @brief Type for changed property events.
-        typedef rw::core::Event<PropertyListener, PropertyBase*> ChangedEvent;
+        typedef rw::core::Event< PropertyListener, PropertyBase* > ChangedEvent;
 
         /**
          * @brief get changed event
@@ -106,17 +105,15 @@ namespace rw { namespace core {
          * changedEvent().add(...)
          *
          */
-        ChangedEvent& changedEvent() { 
-			return _changedEvent; 
-		}
-
+        ChangedEvent& changedEvent () { return _changedEvent; }
+#endif
         /**
          * @brief Returns the PropertyType
          * @return the PropertyType
          */
-        const PropertyType& getType() const;
+        const rw::core::PropertyType& getType () const;
 
-    private:
+      private:
         /**
          * @brief Identifiers
          */
@@ -131,16 +128,17 @@ namespace rw { namespace core {
          * @brief Type of property
          */
         PropertyType _propertyType;
-
+#if!defined(SWIGJAVA)
         //! changed event handler
         ChangedEvent _changedEvent;
-    private:
-        PropertyBase(const PropertyBase&);
-        PropertyBase& operator=(const PropertyBase&);
+#endif
+      private:
+        PropertyBase (const PropertyBase&);
+        PropertyBase& operator= (const PropertyBase&);
     };
 
     /** @} */
-}} // end namespaces
+}}    // namespace rw::core
 
 /**
  * @brief Deprecated namespace since 16/4-2020 for this class
@@ -148,6 +146,6 @@ namespace rw { namespace core {
  */
 namespace rw { namespace common {
     using namespace rw::core;
-}}
+}}    // namespace rw::common
 
-#endif // end include guard
+#endif    // end include guard

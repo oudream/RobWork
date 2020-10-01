@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  ********************************************************************************/
-
 
 #ifndef RW_MATH_CONSTANTS_HPP
 #define RW_MATH_CONSTANTS_HPP
@@ -29,7 +28,7 @@ namespace rw { namespace math {
     /* @{ */
 
     /** Definition of Pi */
-	const double Pi = 3.1415926535897932384626433832795;
+    const double Pi = 3.1415926535897932384626433832795;
 
     /** Converts inch to meter */
     const double Inch2Meter = 0.0254;
@@ -44,6 +43,6 @@ namespace rw { namespace math {
     const double Rad2Deg = 180 / Pi;
 
     /* @} */
-}} // end namespaces
+}}    // namespace rw::math
 
-#endif // end include guard
+#endif    // end include guard

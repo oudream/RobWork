@@ -82,9 +82,9 @@ For some purposes it might be useful to start an instance of RobWorkStudio:
 .. code-block:: py
 
    rwstudio = sdurws.getRobWorkStudioInstance()
-   // now load a workcell
-   rwstudio.setWorkCell(sdurw.WorkCellFactory.load('some/workcell.wc.xml'))
-   // lets get the workcell
+   # now load a workcell
+   rwstudio.setWorkCell(sdurw.WorkCellLoaderFactory.load('some/workcell.wc.xml'))
+   # lets get the workcell
    wc = rwstudio.getWorkCell()
    print(wc.getName())
 
@@ -114,15 +114,15 @@ RobWork has several path planners which might be used from python. If we assume 
 
 .. code-block:: py
 
-   // we need the workcell to get a handle to the robot
+   # we need the workcell to get a handle to the robot
    wc = rwstudio.getWorkCell()
    dev = wc.findDevice("UR1")
    state = rwstudio.getState()
    cd = rwstudio.getCollisionDetector()
    planner = sdurw.QToQPlanner_makeRRT(cd,dev,state)
 
-   // now the planner is ready to be used. We define the configurations
-   // in which the robot should start and end
+   # now the planner is ready to be used. We define the configurations
+   # in which the robot should start and end
    q_from = sdurw.Q(6,0,-1,0,0,0,0)
    q_to = sdurw.Q(6, 3,0.2,1,-1,0,0)
    result = planner.query(q_from,q_to)

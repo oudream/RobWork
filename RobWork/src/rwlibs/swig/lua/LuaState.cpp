@@ -17,9 +17,8 @@
 
 #include "LuaState.hpp"
 
-#include "Lua_sdurw.hpp"
+#include "Lua_sdurw_core.hpp"
 
-#include <rwlibs/swig/ScriptTypes.hpp>
 
 using namespace rwlibs::swig;
 
@@ -70,7 +69,7 @@ void LuaState::reset ()
 
     luaL_openlibs (_lua);
 
-    rwlibs::swig::openLuaLibRW_sdurw (_lua);
+    rwlibs::swig::openLuaLibRW_sdurw_core (_lua);
 
     for (LuaLibrary::Ptr cb : _libraryCBs) {
         cb->initLibrary (*this);
@@ -79,7 +78,7 @@ void LuaState::reset ()
     // get extension point libs
     std::vector< LuaLibrary::Ptr > libs = LuaState::Factory::getLuaLibraries ();
     for (LuaLibrary::Ptr cb : libs) {
-        if(! cb.isNull() ){
+        if (!cb.isNull ()) {
             cb->initLibrary (*this);
         }
     }
@@ -96,7 +95,7 @@ std::vector< LuaState::LuaLibrary::Ptr > LuaState::Factory::getLuaLibraries ()
     for (Extension::Ptr ext : exts) {
         // else try casting to ImageLoader
         LuaState::LuaLibrary::Ptr lib = ext->getObject ().cast< LuaState::LuaLibrary > ();
-        if(!lib.isNull()){
+        if (!lib.isNull ()) {
             libs.push_back (lib);
         }
     }

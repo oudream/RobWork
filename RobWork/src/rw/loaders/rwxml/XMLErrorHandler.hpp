@@ -15,36 +15,35 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RW_LOADERS_XMLERRORHANDLER_HPP
 #define RW_LOADERS_XMLERRORHANDLER_HPP
+
+#include <rw/core/Log.hpp>
 
 #include <boost/spirit/include/classic.hpp>
 #include <boost/spirit/include/classic_core.hpp>
 #include <boost/spirit/include/classic_exceptions.hpp>
 #include <boost/spirit/include/classic_position_iterator.hpp>
-#include <rw/core/Log.hpp>
 
-namespace rw{
-namespace loaders{
-	/** @addtogroup loaders */
-	/*@{*/
+namespace rw { namespace loaders {
+    /** @addtogroup loaders */
+    /*@{*/
 
-	/**
-	 * @brief Error handler for XML parsing using boost spirit.
-	 *\verbatim
-	 * starttag >> *element >> endtag
-	 *
-	 * example:
-	 * <elemname>
-	 *  <elemname2></elemname2>
-	 * </elemname>
-	 *\endverbatim
-	 *
-	 */
+    /**
+     * @brief Error handler for XML parsing using boost spirit.
+     *\verbatim
+     * starttag >> *element >> endtag
+     *
+     * example:
+     * <elemname>
+     *  <elemname2></elemname2>
+     * </elemname>
+     *\endverbatim
+     *
+     */
     class XMLErrorHandler
     {
-    public:
+      public:
         /**
          * @brief XML Error codes
          */
@@ -62,21 +61,20 @@ namespace loaders{
         /**
          * @brief XML error object
          */
-        struct XMLError {
+        struct XMLError
+        {
             //! name of element
             std::string _elemname;
             //! error code
             XMLErrors _err;
             //! constructor
-            XMLError(std::string elemname, XMLErrors err):
-                _elemname(elemname),_err(err)
-            {}
+            XMLError (std::string elemname, XMLErrors err) : _elemname (elemname), _err (err) {}
         };
 
         /**
          * @brief a static instance of a spirit guard, guarding trown XLErrors
          */
-        static boost::spirit::classic::guard<XMLError> XMLErrorGuard;
+        static boost::spirit::classic::guard< XMLError > XMLErrorGuard;
 
         /**
          * @brief Asserts if the element name of the endtag does not match the element
@@ -84,9 +82,11 @@ namespace loaders{
          * @param elemname [in] name of the element that is being parsed
          * @return spirit assertion object of XMLError type
          */
-        static boost::spirit::classic::assertion<XMLError> BadEndElem(const std::string& elemname){
-            return boost::spirit::classic::assertion<XMLError>
-                    ( XMLError(elemname,xml_bad_end_elem) );
+        static boost::spirit::classic::assertion< XMLError >
+        BadEndElem (const std::string& elemname)
+        {
+            return boost::spirit::classic::assertion< XMLError > (
+                XMLError (elemname, xml_bad_end_elem));
         }
 
         /**
@@ -94,9 +94,11 @@ namespace loaders{
          * @param elemname [in] name of the element that is being parsed
          * @return spirit assertion object of XMLError type
          */
-        static boost::spirit::classic::assertion<XMLError> MissingBrac(const std::string& elemname){
-            return boost::spirit::classic::assertion<XMLError>
-                    ( XMLError(elemname,xml_missing_brack) );
+        static boost::spirit::classic::assertion< XMLError >
+        MissingBrac (const std::string& elemname)
+        {
+            return boost::spirit::classic::assertion< XMLError > (
+                XMLError (elemname, xml_missing_brack));
         }
 
         /**
@@ -104,9 +106,11 @@ namespace loaders{
          * @param elemname [in] name of the element that is being parsed
          * @return spirit assertion object of XMLError type
          */
-        static boost::spirit::classic::assertion<XMLError> AttExpected(const std::string& elemname){
-            return boost::spirit::classic::assertion<XMLError>
-                    ( XMLError(elemname,xml_att_expected) );
+        static boost::spirit::classic::assertion< XMLError >
+        AttExpected (const std::string& elemname)
+        {
+            return boost::spirit::classic::assertion< XMLError > (
+                XMLError (elemname, xml_att_expected));
         }
 
         /**
@@ -114,9 +118,11 @@ namespace loaders{
          * @param elemname [in] name of the element that is being parsed
          * @return spirit assertion object of XMLError type
          */
-        static boost::spirit::classic::assertion<XMLError> StartEndExpected(const std::string& elemname){
-            return boost::spirit::classic::assertion<XMLError>
-                    ( XMLError(elemname, xml_starttag_end_exp) );
+        static boost::spirit::classic::assertion< XMLError >
+        StartEndExpected (const std::string& elemname)
+        {
+            return boost::spirit::classic::assertion< XMLError > (
+                XMLError (elemname, xml_starttag_end_exp));
         }
 
         /**
@@ -124,9 +130,10 @@ namespace loaders{
          * @param elemname [in] name of the element that is being parsed
          * @return spirit assertion object of XMLError type
          */
-        static boost::spirit::classic::assertion<XMLError> BadChild(const std::string& elemname){
-            return boost::spirit::classic::assertion<XMLError>
-                    ( XMLError(elemname, xml_bad_child) );
+        static boost::spirit::classic::assertion< XMLError > BadChild (const std::string& elemname)
+        {
+            return boost::spirit::classic::assertion< XMLError > (
+                XMLError (elemname, xml_bad_child));
         }
 
         /**
@@ -135,64 +142,65 @@ namespace loaders{
          * @param error
          * @return
          */
-        template <typename ScannerT, typename ErrorT>
-        boost::spirit::classic::error_status<>
-        operator()(ScannerT const& scan, ErrorT const& error) const
+        template< typename ScannerT, typename ErrorT >
+        boost::spirit::classic::error_status<> operator() (ScannerT const& scan,
+                                                           ErrorT const& error) const
         {
-            boost::spirit::classic::file_position lc = error.where.get_position();
+            boost::spirit::classic::file_position lc = error.where.get_position ();
             std::cout << "exception caught in:" << std::endl
-                      << " File: " << lc.file
-                      << " Line: " << lc.line
-                      << " Col: " << lc.column << std::endl;
-            rw::core::Log::warningLog() << "exception caught in:" << std::endl
-                                       << " File: " << lc.file
-                                       << " Line: " << lc.line
-                                       << " Col: " << lc.column << std::endl;
+                      << " File: " << lc.file << " Line: " << lc.line << " Col: " << lc.column
+                      << std::endl;
+            rw::core::Log::warningLog () << "exception caught in:" << std::endl
+                                         << " File: " << lc.file << " Line: " << lc.line
+                                         << " Col: " << lc.column << std::endl;
 
             std::cout << "Following was parsed until error:" << std::endl
-                      << std::string(scan.first,error.where) << std::endl;
+                      << std::string (scan.first, error.where) << std::endl;
 
-            rw::core::Log::warningLog() << "Following was parsed until error:" << std::endl
-                                                 << std::string(scan.first,error.where) << std::endl;
+            rw::core::Log::warningLog () << "Following was parsed until error:" << std::endl
+                                         << std::string (scan.first, error.where) << std::endl;
 
-            //std::cout << "In this context: " << std::string(scan.first,scan.last) << std::endl;
-            std::cout << "Error occoured in parsing element: " << error.descriptor._elemname << std::endl;
-            rw::core::Log::warningLog() << "Error occoured in parsing element: " << error.descriptor._elemname
-                                          << std::endl;
-            switch( error.descriptor._err ){
-            case( xml_bad_end_elem ):
-                std::cout << "End element name does not match start element name!" << std::endl;
-                rw::core::Log::warningLog() << "End element name does not match start element name!" << std::endl;
-                break;
-            case( xml_missing_brack ):
-                std::cout << "Missing end bracket!" << std::endl;
-                rw::core::Log::warningLog() << "Missing end bracket!" << std::endl;
-                break;
-            case( xml_att_expected ):
-                std::cout << "Expected specific attribute here!" << std::endl;
-                rw::core::Log::warningLog() << "Expected specific attribute here!" << std::endl;
-                break;
-            case( xml_att_unexpected ):
-                std::cout << "Unexpected attribute!" << std::endl;
-                rw::core::Log::warningLog() << "Unexpected attribute!" << std::endl;
-                break;
-            case( xml_starttag_end_exp ):
-                std::cout << "Expected '/>' or '>' in start element " << std::endl;
-                rw::core::Log::warningLog() << "Expected '/>' or '>' in start element " << std::endl;
-                break;
-            case( xml_bad_child ):
-                std::cout << "A child node failed to parse!! " << std::endl;
-                rw::core::Log::warningLog() << "A child node failed to parse!! " << std::endl;
-                break;
-            default:
-                std::cout << "Default.." << std::endl;
+            // std::cout << "In this context: " << std::string(scan.first,scan.last) << std::endl;
+            std::cout << "Error occoured in parsing element: " << error.descriptor._elemname
+                      << std::endl;
+            rw::core::Log::warningLog ()
+                << "Error occoured in parsing element: " << error.descriptor._elemname << std::endl;
+            switch (error.descriptor._err) {
+                case (xml_bad_end_elem):
+                    std::cout << "End element name does not match start element name!" << std::endl;
+                    rw::core::Log::warningLog ()
+                        << "End element name does not match start element name!" << std::endl;
+                    break;
+                case (xml_missing_brack):
+                    std::cout << "Missing end bracket!" << std::endl;
+                    rw::core::Log::warningLog () << "Missing end bracket!" << std::endl;
+                    break;
+                case (xml_att_expected):
+                    std::cout << "Expected specific attribute here!" << std::endl;
+                    rw::core::Log::warningLog ()
+                        << "Expected specific attribute here!" << std::endl;
+                    break;
+                case (xml_att_unexpected):
+                    std::cout << "Unexpected attribute!" << std::endl;
+                    rw::core::Log::warningLog () << "Unexpected attribute!" << std::endl;
+                    break;
+                case (xml_starttag_end_exp):
+                    std::cout << "Expected '/>' or '>' in start element " << std::endl;
+                    rw::core::Log::warningLog ()
+                        << "Expected '/>' or '>' in start element " << std::endl;
+                    break;
+                case (xml_bad_child):
+                    std::cout << "A child node failed to parse!! " << std::endl;
+                    rw::core::Log::warningLog () << "A child node failed to parse!! " << std::endl;
+                    break;
+                default: std::cout << "Default.." << std::endl;
             };
-            return boost::spirit::classic::error_status<>(boost::spirit::classic::error_status<>::fail);
+            return boost::spirit::classic::error_status<> (
+                boost::spirit::classic::error_status<>::fail);
         }
     };
     /*@}*/
 
-}
-}
+}}    // namespace rw::loaders
 
 #endif /*XMLERRORHANDLER_HPP_*/

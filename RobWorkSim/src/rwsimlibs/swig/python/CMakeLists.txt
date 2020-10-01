@@ -1,6 +1,6 @@
 set(SUBSYS_NAME sdurwsim_python)
 set(SUBSYS_DESC "Interface for accessing RobWorkSim from python.")
-set(SUBSYS_DEPS RW::sdurw_python RWS::sdurws_python)
+set(SUBSYS_DEPS sdurwsim RW::sdurw_python RWS::sdurws_python)
 
 set(build TRUE)
 
@@ -27,10 +27,16 @@ if(build)
     include(UseSWIG)
     include_directories(${PYTHON_INCLUDE_DIRS})
 
+    if(RW_USE_NUMPY)
+    include_directories(${NUMPY_INCLUDE_DIR})
+    endif()
+
+    add_library(${SUBSYS_NAME} INTERFACE)
+    add_library(${PROJECT_PREFIX}::${SUBSYS_NAME} ALIAS ${SUBSYS_NAME})
+
     include_directories(${RWSIM_ROOT}/src ${RW_ROOT}/src)
 
     set(RWSIM_MODULE sdurwsim)
-
     configure_file(RobWorkSim.egg-info.in
                    ${CMAKE_CURRENT_SOURCE_DIR}/RobWorkSim-${ROBWORKSIM_VERSION}.egg-info)
 
@@ -44,9 +50,9 @@ if(build)
     else()
         set(LIB_SUFIX)
     endif()
-    set(TARGET_NAME ${RWSIM_MODULE}${LIB_SUFIX})
 
     # ############ SWIG COMPILE #################
+    set(TARGET_NAME ${RWSIM_MODULE}${LIB_SUFIX})
     rw_add_swig(
         ${RWSIM_MODULE} python SHARED
         TARGET_NAME ${TARGET_NAME}
@@ -59,6 +65,9 @@ if(build)
     if(NOT POLICY CMP0078)
         set(TARGET_NAME ${SWIG_MODULE_sdurwsim${LIB_SUFIX}_REAL_NAME})
     endif()
+
+    set(RW_USE_NUMPY ${RW_BUILD_WITH_NUMPY})
+    target_compile_definitions(${TARGET_NAME} PRIVATE RW_USE_NUMPY)
 
     # Set build destination
     set_target_properties(
@@ -104,9 +113,10 @@ if(build)
         FILES ${RWSIM_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RWSIM_MODULE}/__init__.py
         DESTINATION "${PYTHON_INSTALL_DIR}/${RWSIM_MODULE}"
     )
-
     # ###### Final linking and dependency checks ######
 
-    swig_link_libraries(sdurwsim${LIB_SUFIX} ${RWSIM_ODE_LIBRARY} sdurwsim ${PYTHON_LIBRARIES})
+    swig_link_libraries(sdurwsim${LIB_SUFIX} ${SUBSYS_DEPS} ${RWSIM_ODE_LIBRARY}
+                        ${PYTHON_LIBRARIES})
+    install(TARGETS ${SUBSYS_NAME} EXPORT ${PROJECT_PREFIX}Targets)
 
 endif()

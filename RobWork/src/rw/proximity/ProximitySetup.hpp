@@ -17,131 +17,110 @@
 
 #ifndef RW_COLLISION_PROXIMITYSETUP_HPP
 #define RW_COLLISION_PROXIMITYSETUP_HPP
-
+#if !defined(SWIG)
 #include "ProximitySetupRule.hpp"
 
-#include <rw/core/Ptr.hpp>
 #include <rw/core/PropertyMap.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include <string>
 #include <vector>
+#endif
+namespace rw { namespace models {
+    class WorkCell;
+}}    // namespace rw::models
 
-namespace rw { namespace models { class WorkCell; } }
+namespace rw { namespace proximity {
 
-namespace rw {
-namespace proximity {
+    class CollisionSetup;
 
-class CollisionSetup;
-
-/** @addtogroup proximity */
-/*@{*/
-//! @file rw/proximity/ProximitySetup.hpp
-/**
- * @brief Setup for the collision checker
- *
- * The ProximitySetup contains the rules about which frames should be 
- * checked against each other
- */
-class ProximitySetup
-{
-public:
+    /** @addtogroup proximity */
+    /*@{*/
+    //! @file rw/proximity/ProximitySetup.hpp
     /**
-     * @brief Default constructor for when no excludes are described
+     * @brief Setup for the collision checker
+     *
+     * The ProximitySetup contains the rules about which frames should be
+     * checked against each other
      */
-    ProximitySetup();
-
-	ProximitySetup(const CollisionSetup& csetup);
-
-    /**
-     @brief Constructs ProximitySetup with list of exclusions
-	 @param rules documentation missing !
-	 @cond
-     @param exclude [in] pairs to be excluded
-	 @endcond
-     */
-	explicit ProximitySetup(const std::vector<ProximitySetupRule>& rules);
-
-
-	void addProximitySetupRule(const ProximitySetupRule& rule);
-
-	void removeProximitySetupRule(const ProximitySetupRule& rule);
-
-    /**
-     * @brief Returns the exclude list
-     * @return the exclude list
-     */
-	const std::vector<ProximitySetupRule>& getProximitySetupRules() const
+    class ProximitySetup
     {
-        return _rules;
-    }
+      public:
+        /**
+         * @brief Default constructor for when no excludes are described
+         */
+        ProximitySetup ();
 
+        ProximitySetup (const CollisionSetup& csetup);
 
-    /**
-     * @brief Combine setup of this and setup of \b b into this collision setup.
-     */
-	void merge(const ProximitySetup& setup, const std::string& prefix) {
-		for(const ProximitySetupRule& rule : setup.getProximitySetupRules()) {
-			std::pair<std::string, std::string> patterns = rule.getPatterns();
-			if (prefix != "") {
-				patterns.first = prefix+patterns.first;
-				patterns.second = prefix+patterns.second;
-			}
-			addProximitySetupRule(ProximitySetupRule(patterns.first, patterns.second, rule.type()));
-		}
-	}
+        /**
+         @brief Constructs ProximitySetup with list of exclusions
+             @param rules documentation missing !
+             @cond
+         @param exclude [in] pairs to be excluded
+             @endcond
+         */
+        explicit ProximitySetup (const std::vector< ProximitySetupRule >& rules);
 
+        void addProximitySetupRule (const ProximitySetupRule& rule);
 
+        void removeProximitySetupRule (const ProximitySetupRule& rule);
 
-	bool useExcludeStaticPairs() const {
-		return _useExcludeStaticPairs;
-	}
+        /**
+         * @brief Returns the exclude list
+         * @return the exclude list
+         */
+        const std::vector< ProximitySetupRule >& getProximitySetupRules () const { return _rules; }
 
-	void setUseExcludeStaticPairs(bool exclude) {
-		_useExcludeStaticPairs = exclude;
-	}
+        /**
+         * @brief Combine setup of this and setup of \b b into this collision setup.
+         */
+        void merge (const ProximitySetup& setup, const std::string& prefix)
+        {
+            for (const ProximitySetupRule& rule : setup.getProximitySetupRules ()) {
+                std::pair< std::string, std::string > patterns = rule.getPatterns ();
+                if (prefix != "") {
+                    patterns.first  = prefix + patterns.first;
+                    patterns.second = prefix + patterns.second;
+                }
+                addProximitySetupRule (
+                    ProximitySetupRule (patterns.first, patterns.second, rule.type ()));
+            }
+        }
 
-	bool useIncludeAll() const {
-		return _useIncludeAll;
-	}
+        bool useExcludeStaticPairs () const { return _useExcludeStaticPairs; }
 
-	void setUseIncludeAll(bool includeAll) {
-		_useIncludeAll = includeAll;
-	}
+        void setUseExcludeStaticPairs (bool exclude) { _useExcludeStaticPairs = exclude; }
 
-	void setLoadedFromFile(bool loaded_from_file) {
-		_loadedFromFile = loaded_from_file;
-	}
+        bool useIncludeAll () const { return _useIncludeAll; }
 
-	bool getLoadedFromFile() const {
-		return _loadedFromFile;
-	}
+        void setUseIncludeAll (bool includeAll) { _useIncludeAll = includeAll; }
 
-	void setFileName(const std::string& file_name) {
-		_fileName = file_name;
-	}
+        void setLoadedFromFile (bool loaded_from_file) { _loadedFromFile = loaded_from_file; }
 
-	std::string getFileName() const {
-		return _fileName;
-	}
+        bool getLoadedFromFile () const { return _loadedFromFile; }
 
-    static ProximitySetup get(const rw::models::WorkCell& wc);
-    static ProximitySetup get(rw::core::Ptr<rw::models::WorkCell> wc);
-    static ProximitySetup get(const rw::core::PropertyMap& map);
+        void setFileName (const std::string& file_name) { _fileName = file_name; }
 
-    static void set(const ProximitySetup& setup, rw::core::Ptr<rw::models::WorkCell> wc);
-    static void set(const ProximitySetup& setup, rw::core::PropertyMap& map);
+        std::string getFileName () const { return _fileName; }
 
-private:
-	std::vector<ProximitySetupRule> _rules;
+        static ProximitySetup get (const rw::models::WorkCell& wc);
+        static ProximitySetup get (rw::core::Ptr< rw::models::WorkCell > wc);
+        static ProximitySetup get (const rw::core::PropertyMap& map);
 
-	bool _useIncludeAll;
-	bool _useExcludeStaticPairs;
-	bool _loadedFromFile;
-	std::string _fileName;
-};
+        static void set (const ProximitySetup& setup, rw::core::Ptr< rw::models::WorkCell > wc);
+        static void set (const ProximitySetup& setup, rw::core::PropertyMap& map);
 
-/*@}*/
-}
-} // end namespaces
+      private:
+        std::vector< ProximitySetupRule > _rules;
 
-#endif // end include guard
+        bool _useIncludeAll;
+        bool _useExcludeStaticPairs;
+        bool _loadedFromFile;
+        std::string _fileName;
+    };
+
+    /*@}*/
+}}    // namespace rw::proximity
+
+#endif    // end include guard

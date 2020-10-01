@@ -32,7 +32,6 @@ namespace rwhw { namespace crsA465 {
     /** @addtogroup crsA465 */
     /*@{*/
 
-
     typedef unsigned long ulong;
     typedef unsigned int uint;
     typedef unsigned short uword;
@@ -143,50 +142,50 @@ namespace rwhw { namespace crsA465 {
      *
      **/
 
-
     class IBMACI
     {
-    private:
+      private:
         //      HANDLE aci_com;
-        //COMMCONFIG aci_cfig;
-        //COMMTIMEOUTS aci_timeouts;
+        // COMMCONFIG aci_cfig;
+        // COMMTIMEOUTS aci_timeouts;
 
         rwhw::SerialPort m_SerialPort;
 
+      public:
+        void clean_aci (void);
+        int get_aci_nto (char* c);
+        void send_aci (char out_char);
+        char get_aci (void);
+        void res_aci (void);
+        int initrobot (const std::string& port);
+        void inz_aci (void);
+    };
 
-    public:
-
-        void clean_aci(void);
-        int get_aci_nto(char* c);
-        void send_aci(char out_char);
-        char get_aci(void);
-        void res_aci(void);
-        int initrobot(const std::string& port);
-        void inz_aci( void );
-};
-
-    class ACI00 :public IBMACI
+    class ACI00 : public IBMACI
     {
-    private:
-        word hibyte(word i );
-        word lobyte(word i );
-        bool string_cmp( char *s1 , char *s2 , word n );
-    public:
+      private:
+        word hibyte (word i);
+        word lobyte (word i);
+        bool string_cmp (char* s1, char* s2, word n);
 
-
-        void aci_nstrout(char str[] ,word n );
-        void aci_strin(char tempstr[] ,word n );
-        void enqout(word slave_no );
-        void header(uword slave_no ,uword memtype ,uword memofs ,uword memseg ,char rorw ,uword message_length );
-        void send_header(uword slave ,uword memtype ,uword memofs ,uword memseg ,char rw ,uword data_length );
-        void data_read(word n_bytes ,ubyte data[] );
-        void data_out(uword n_bytes ,ubyte data[] );
-        void sendenq(uword slave_no );
-        void aci_xfr1(uword slave_dev ,uword memtype ,uword memofs ,uword memseg ,char accesstype ,uword bytes ,ubyte* memptr );
-        void aci_xfr(uword slave_dev ,uword memtype ,uword memofs ,uword memseg ,char accesstype ,uword bytes ,ubyte* memptr );
-        void writerobot(uword offset ,uword segment ,ubyte* srcptr,uword cnt );
-        void readrobot(uword offset ,uword segment ,ubyte* destptr,uword cnt );
-        void readptrs(ubyte* destptr,word num );
+      public:
+        void aci_nstrout (char str[], word n);
+        void aci_strin (char tempstr[], word n);
+        void enqout (word slave_no);
+        void header (uword slave_no, uword memtype, uword memofs, uword memseg, char rorw,
+                     uword message_length);
+        void send_header (uword slave, uword memtype, uword memofs, uword memseg, char rw,
+                          uword data_length);
+        void data_read (word n_bytes, ubyte data[]);
+        void data_out (uword n_bytes, ubyte data[]);
+        void sendenq (uword slave_no);
+        void aci_xfr1 (uword slave_dev, uword memtype, uword memofs, uword memseg, char accesstype,
+                       uword bytes, ubyte* memptr);
+        void aci_xfr (uword slave_dev, uword memtype, uword memofs, uword memseg, char accesstype,
+                      uword bytes, ubyte* memptr);
+        void writerobot (uword offset, uword segment, ubyte* srcptr, uword cnt);
+        void readrobot (uword offset, uword segment, ubyte* destptr, uword cnt);
+        void readptrs (ubyte* destptr, word num);
     };
 
     /*
@@ -425,58 +424,51 @@ namespace rwhw { namespace crsA465 {
       -------+---------+------------------------------------------------------------
     */
 
-
     class ACI : ACI00
     {
-    public:
-        ACI();
-        ~ACI();
-        bool Tool(char *loc);
-        bool Actual(float &x, float &y, float &z, float &roll, float &pitch, float &yaw);
-        bool Abort();
-        bool Home();
-        bool Ready();
-        bool Finish();
-        bool Ma(float q1, float q2, float q3, float q4, float q5, float q6);
-        bool GetJointConfig(float& q1, float& q2, float& q3, float& q4, float& q5, float& q6);
-        bool Move(char *loc);
-        bool AsyncMove(char *loc);
-        bool SetSpeed(int speed);
-        bool KillLocation(char *loc);
-        bool CopyLocation(char *loc, char *dest);
-        bool SetLocation(char *loc, float x, float y, float z, float roll, float pitch, float yaw);
+      public:
+        ACI ();
+        ~ACI ();
+        bool Tool (char* loc);
+        bool Actual (float& x, float& y, float& z, float& roll, float& pitch, float& yaw);
+        bool Abort ();
+        bool Home ();
+        bool Ready ();
+        bool Finish ();
+        bool Ma (float q1, float q2, float q3, float q4, float q5, float q6);
+        bool GetJointConfig (float& q1, float& q2, float& q3, float& q4, float& q5, float& q6);
+        bool Move (char* loc);
+        bool AsyncMove (char* loc);
+        bool SetSpeed (int speed);
+        bool KillLocation (char* loc);
+        bool CopyLocation (char* loc, char* dest);
+        bool SetLocation (char* loc, float x, float y, float z, float roll, float pitch, float yaw);
 
-        bool GetLocation(
-            const char *loc,
-            float &x,
-            float &y,
-            float &z,
-            float &roll,
-            float &pitch,
-            float &yaw);
+        bool GetLocation (const char* loc, float& x, float& y, float& z, float& roll, float& pitch,
+                          float& yaw);
 
-        bool Grip(float pos);
-        bool Open(float force);
-        bool Close(float force);
-        bool Joint(int Index, int Angle);
-        bool OpenSession(const std::string& port, int rate, int slave_no = 1);
-        void CloseSession();
+        bool Grip (float pos);
+        bool Open (float force);
+        bool Close (float force);
+        bool Joint (int Index, int Angle);
+        bool OpenSession (const std::string& port, int rate, int slave_no = 1);
+        void CloseSession ();
 
-        bool getSessionOpen() { return sessionopen; };
+        bool getSessionOpen () { return sessionopen; };
 
-    private:
+      private:
         bool sessionopen;
-        void garble();
-        void swallow();
-        bool sendstr(const char *s);
-        bool recstr(char *buf, int count);
-        bool send(char c);
-        char get();
+        void garble ();
+        void swallow ();
+        bool sendstr (const char* s);
+        bool recstr (char* buf, int count);
+        bool send (char c);
+        char get ();
     };
 
     /// @endcond
     /*@}*/
 
-}} // end namespaces
+}}    // namespace rwhw::crsA465
 
-#endif // end include guard
+#endif    // end include guard

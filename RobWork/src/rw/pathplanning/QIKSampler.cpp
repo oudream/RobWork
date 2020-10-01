@@ -24,8 +24,6 @@
 #include <rw/models/Device.hpp>
 #include <rw/models/Models.hpp>
 
-
-
 using namespace rw::pathplanning;
 using namespace rw::math;
 using namespace rw::models;

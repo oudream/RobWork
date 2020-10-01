@@ -237,7 +237,7 @@ public:
 
     bool query(const From& from, To& to, PATH& path);
 
-    PropertyMap& getProperties();
+    rw::core::PropertyMap& getProperties();
 
 };
 %nodefaultctor PathPlannerQQ;
@@ -924,7 +924,7 @@ public:
             return path;
         }
 
-        PropertyMap& getProperties(){
+        rw::core::PropertyMap& getProperties(){
             return $self->rw::pathplanning::PathPlanner<Q,const Q>::getProperties();
         }
         static rw::core::Ptr<QToQPlanner> makeRRT(rw::core::Ptr<CollisionDetector> cdect, rw::core::Ptr<Device> dev, const State& state){
@@ -970,7 +970,7 @@ public:
             return path;
         }
 
-        PropertyMap& getProperties(){
+        rw::core::PropertyMap& getProperties(){
             return $self->rw::pathplanning::PathPlanner<Q,const rw::math::Transform3D<double> >::getProperties();
         }
 	}	

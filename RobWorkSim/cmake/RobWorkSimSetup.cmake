@@ -75,8 +75,9 @@ endif()
 
 include(CMakeDependentOption)
 set(RWSIM_HAVE_LUA False)
-cmake_dependent_option(RWSIM_DISABLE_LUA "Set when you want to disable lua!" OFF "RW_BUILD_WITH_LUA"
-                       ON)
+cmake_dependent_option(
+    RWSIM_DISABLE_LUA "Set when you want to disable lua!" OFF "RW_BUILD_WITH_LUA" ON
+)
 if(NOT RWSIM_DISABLE_LUA)
     if(NOT SWIG_FOUND)
         message(STATUS "RobWorkSim: Lua DISABLED! - SWIG 3+ was not found!")
@@ -99,29 +100,59 @@ endif()
 
 # test if Bullet exists
 set(RWSIM_HAVE_BULLET False)
-# OPTION(RWSIM_USE_BULLET "Set to ON if Bullet should be use. you may need to set BULLET_ROOT")
+
 find_package(Bullet QUIET)
+
 if(NOT DEFINED RWSIM_DISABLE_BULLET)
     set(RWSIM_DISABLE_BULLET OFF)
 endif()
-cmake_dependent_option(RWSIM_DISABLE_BULLET "Set when you want to disable Bullet!"
-                       ${RWSIM_DISABLE_BULLET} "BULLET_FOUND" ON)
+
+cmake_dependent_option(
+    RWSIM_DISABLE_BULLET "Set when you want to disable Bullet!" ${RWSIM_DISABLE_BULLET}
+    "BULLET_FOUND" ON
+)
+
 if(NOT RWSIM_DISABLE_BULLET)
-    find_package(Bullet)
     if(BULLET_FOUND)
         set(RWSIM_HAVE_BULLET TRUE)
-        # INCLUDE_DIRECTORIES( ${BULLET_INCLUDE_DIR} ${BULLET_ROOT}/Demos/)
         set(RWSIM_BULLET_LIBRARY sdurwsim_bullet ${BULLET_LIBRARIES})
 
         # BULLET_LIBRARIES
-        message(STATUS "RobWorkSim: Bullet enabled and found.")
-        set(RW_BULLET_INCLUDE_DIR ${BULLET_INCLUDE_DIR})
+        if(NOT IS_DIRECTORY "${BULLET_INCLUDE_DIR}" )
+            set(BULLET_INCLUDE_DIR "${BULLET_ROOT_DIR}/${BULLET_INCLUDE_DIR}")
+        endif()
+        if(NOT IS_DIRECTORY "${BULLET_INCLUDE_DIRS}")
+            set(BULLET_INCLUDE_DIRS "${BULLET_ROOT_DIR}/${BULLET_INCLUDE_DIRS}")
+        endif()
+        if(NOT IS_DIRECTORY "${BULLET_LIBRARY_DIRS}" AND IS_DIRECTORY "${BULLET_ROOT_DIR}")
+            set(BULLET_LIBRARY_DIRS "${BULLET_ROOT_DIR}/${BULLET_LIBRARY_DIRS}")
+        endif()
+
+        set(bullet_tmp)
+        foreach(
+            lib
+            IN
+            LISTS BULLET_LIBRARIES
+        )
+            unset(FOUND CACHE)
+            find_library(
+                FOUND ${lib}
+                PATHS "${BULLET_LIBRARY_DIRS}"
+                NO_DEFAULT_PATH
+            )
+            if(FOUND)
+                set(bullet_tmp "${bullet_tmp}" "${FOUND}")
+            else()
+                set(bullet_tmp "${bullet_tmp}" "${lib}")
+            endif()
+        endforeach()
+
+        set(BULLET_LIBRARIES ${bullet_tmp})
+        message(STATUS "RobWorkSim: Bullet enabled")
     else()
         set(RWSIM_HAVE_BULLET FALSE)
-        message(
-            SEND_ERROR
-                "RobWorkSim: Bullet enabled but not found. Please setup BULLET_ROOT."
-                ${RWSIM_USE_BULLET}
+        message(SEND_ERROR "RobWorkSim: Bullet enabled but not found. Please setup BULLET_ROOT."
+                           ${RWSIM_USE_BULLET}
         )
     endif()
 else()
@@ -130,22 +161,20 @@ endif()
 
 # test if ODE exists
 set(RWSIM_HAVE_ODE False)
+
 find_package(ODE QUIET)
-# MESSAGE("ODE_FOUND: ${ODE_FOUND} ")
-cmake_dependent_option(RWSIM_DISABLE_ODE "Set when you want to disable ODE!" OFF
-                       "${ODE_FOUND};${RW_BUILD_WITH_PQP}" ON)
-# OPTION(RWSIM_USE_ODE "Set to ON if ODE should be use. you may need to set ODE_ROOT"
-# ${RWSIM_USE_ODE})
+cmake_dependent_option(
+    RWSIM_DISABLE_ODE "Set when you want to disable ODE!" OFF "${ODE_FOUND};${RW_BUILD_WITH_PQP}"
+    ON
+)
+
 if(NOT RWSIM_DISABLE_ODE)
-    find_package(ODE)
+    find_package(ODE REQUIRED)
     if(ODE_FOUND)
         if(RW_BUILD_WITH_PQP)
             set(RWSIM_HAVE_ODE TRUE)
-            # INCLUDE_DIRECTORIES( ${ODE_INCLUDE_DIR} )
             set(RWSIM_ODE_LIBRARY sdurwsim_ode ${ODE_LIBRARIES})
-            # ODE_LIBRARIES
             message(STATUS "RobWorkSim: ODE enabled and found. Using ${ODE_BUILD_WITH}")
-            set(RW_ODE_INCLUDE_DIR ${ODE_INCLUDE_DIR})
         else()
             set(RWSIM_HAVE_ODE FALSE)
             message(
@@ -202,8 +231,7 @@ if(DEFINED USE_WERROR)
 endif()
 
 if(NOT DEFINED RWSIM_CXX_FLAGS)
-    set(
-        RWSIM_CXX_FLAGS
+    set(RWSIM_CXX_FLAGS
         "${RW_BUILD_WITH_CXX_FLAGS} ${RWSIM_CXX_FLAGS_TMP}"
         CACHE STRING "Change this to force using your own flags and not those of RobWorkSim"
     )
@@ -217,14 +245,12 @@ message(STATUS "RobWorkSim: Adding RWSIM CXX flags: ${RWSIM_CXX_FLAGS}")
 # automatically set.
 #
 if(DEFINED RWSIM_LINKER_FLAGS)
-    set(
-        CMAKE_SHARED_LINKER_FLAGS
+    set(CMAKE_SHARED_LINKER_FLAGS
         "${CMAKE_SHARED_LINKER_FLAGS} ${RWSIM_LINKER_FLAGS}"
         CACHE STRING "" FORCE
     )
     if(WIN32)
-        set(
-            CMAKE_EXE_LINKER_FLAGS
+        set(CMAKE_EXE_LINKER_FLAGS
             "${CMAKE_EXE_LINKER_FLAGS} ${RWSIM_LINKER_FLAGS}"
             CACHE STRING "" FORCE
         )
@@ -241,14 +267,14 @@ endif()
 #
 # The include dirs
 #
-set(ROBWORKSIM_INCLUDE_DIRS ${RWSIM_ROOT}/src ${RW_ODE_INCLUDE_DIR}
-                            ${RW_BULLET_INCLUDE_DIR})
+set(ROBWORKSIM_INCLUDE_DIRS ${RWSIM_ROOT}/src ${ODE_INCLUDE_DIR} ${RW_BULLET_INCLUDE_DIR})
 #
 # The library dirs
 #
-set(ROBWORKSIM_LIBRARY_DIRS ${Boost_LIBRARY_DIRS} ${RWSIM_CMAKE_LIBRARY_OUTPUT_DIRECTORY}
-                            ${RWSIM_LIBRARY_OUT_DIR} ${RWSIM_ARCHIVE_OUT_DIR}
-                            ${ROBWORK_LIBRARY_DIRS})
+set(ROBWORKSIM_LIBRARY_DIRS
+    ${Boost_LIBRARY_DIRS} ${RWSIM_CMAKE_LIBRARY_OUTPUT_DIRECTORY} ${RWSIM_LIBRARY_OUT_DIR}
+    ${RWSIM_ARCHIVE_OUT_DIR} ${ROBWORK_LIBRARY_DIRS}
+)
 
 #
 # Setup the Library List here. We need to make sure the correct order is maintained which is crucial

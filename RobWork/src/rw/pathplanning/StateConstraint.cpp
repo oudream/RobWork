@@ -20,8 +20,7 @@
 #include <rw/core/Log.hpp>
 #include <rw/core/macros.hpp>
 #include <rw/proximity/CollisionDetector.hpp>
-
-
+#include <rw/proximity/ProximityStrategyData.hpp>
 
 using namespace rw::pathplanning;
 using namespace rw::proximity;
@@ -38,8 +37,9 @@ class FromCollisionDetector : public StateConstraint
   private:
     bool doInCollision (const State& state) const
     {
-        if (_log == NULL)
+        if (_log == NULL) {
             return _detector->inCollision (state, 0, true);
+        }
         else {
             CollisionDetector::QueryResult res;
             bool inCollision = _detector->inCollision (state, &res, true);

@@ -18,10 +18,12 @@
 #ifndef RW_CORE_MATH_FWD_HPP_
 #define RW_CORE_MATH_FWD_HPP_
 
+#include <stddef.h>
+
 namespace rw { namespace math {
     template< class T > class CameraMatrix;
     // class Constants;
-    template< class T > struct EigenDecomposition;
+    template< class T > class EigenDecomposition;
     template< class T > class EAA;
     template< class RES_T, class ARG_T > class Function;
     template< class T > class InertiaMatrix;

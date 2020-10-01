@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,37 +15,35 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #include "LogStreamWriter.hpp"
 
-#include <ostream>
 #include <iomanip>
+#include <ostream>
 
 using namespace rw::core;
 
-LogStreamWriter::LogStreamWriter(std::ostream* stream) :
-    _stream(stream),
-	_tabLevel(0)
+LogStreamWriter::LogStreamWriter (std::ostream* stream) : _stream (stream), _tabLevel (0)
 {
-   // RW_ASSERT(stream);  
+    // RW_ASSERT(stream);
 }
 
-LogStreamWriter::~LogStreamWriter()
+LogStreamWriter::~LogStreamWriter ()
 {
-    flush();
+    flush ();
 }
 
-void LogStreamWriter::doWrite(const std::string& str)
+void LogStreamWriter::doWrite (const std::string& str)
 {
-	*_stream << std::setw(_tabLevel)<<std::setfill(' ');
+    *_stream << std::setw (_tabLevel) << std::setfill (' ');
     *_stream << str;
 }
 
-void LogStreamWriter::doFlush()
+void LogStreamWriter::doFlush ()
 {
-    _stream->flush();
+    _stream->flush ();
 }
 
-void LogStreamWriter::doSetTabLevel(int tabLevel) {
-	_tabLevel = tabLevel;
+void LogStreamWriter::doSetTabLevel (int tabLevel)
+{
+    _tabLevel = tabLevel;
 }

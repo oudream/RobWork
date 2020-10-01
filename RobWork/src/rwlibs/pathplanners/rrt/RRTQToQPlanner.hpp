@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RWLIBS_PATHPLANNERS_RRT_RRTQTOQPLANNER_HPP
 #define RWLIBS_PATHPLANNERS_RRT_RRTQTOQPLANNER_HPP
 
@@ -23,12 +22,16 @@
    @file RRTQToQPlanner.hpp
 */
 
-#include <rw/pathplanning/QToQPlanner.hpp>
-#include <rw/math/Metric.hpp>
 #include <rw/core/Ptr.hpp>
+#include <rw/math/Metric.hpp>
+#include <rw/pathplanning/QToQPlanner.hpp>
 
-namespace rw { namespace pathplanning { class PlannerConstraint; } }
-namespace rw { namespace pathplanning { class QSampler; } }
+namespace rw { namespace pathplanning {
+    class PlannerConstraint;
+}}    // namespace rw::pathplanning
+namespace rw { namespace pathplanning {
+    class QSampler;
+}}    // namespace rw::pathplanning
 
 namespace rwlibs { namespace pathplanners {
 
@@ -43,8 +46,7 @@ namespace rwlibs { namespace pathplanners {
     */
     class RRTQToQPlanner
     {
-    public:
-
+      public:
         /**
            @brief Basic RRT planner.
 
@@ -62,11 +64,10 @@ namespace rwlibs { namespace pathplanners {
            @param extend [in] Distance measured by \b metric by which to extend
            the tree towards an attractor configuration.
         */
-        static rw::pathplanning::QToQPlanner::Ptr makeBasic(
-            const rw::pathplanning::PlannerConstraint& constraint,
-			rw::core::Ptr<rw::pathplanning::QSampler> sampler,
-			rw::math::QMetric::Ptr metric,
-            double extend);
+        static rw::pathplanning::QToQPlanner::Ptr
+        makeBasic (const rw::pathplanning::PlannerConstraint& constraint,
+                   rw::core::Ptr< rw::pathplanning::QSampler > sampler,
+                   rw::math::QMetric::Ptr metric, double extend);
 
         /**
            @brief RRT-Connect planner.
@@ -84,12 +85,10 @@ namespace rwlibs { namespace pathplanners {
            @param extend [in] Distance measured by \b metric by which to extend
            the tree towards an attractor configuration.
         */
-        static
-			rw::pathplanning::QToQPlanner::Ptr makeConnect(
-            const rw::pathplanning::PlannerConstraint& constraint,
-			rw::core::Ptr<rw::pathplanning::QSampler> sampler,
-			rw::math::QMetric::Ptr metric,
-            double extend);
+        static rw::pathplanning::QToQPlanner::Ptr
+        makeConnect (const rw::pathplanning::PlannerConstraint& constraint,
+                     rw::core::Ptr< rw::pathplanning::QSampler > sampler,
+                     rw::math::QMetric::Ptr metric, double extend);
 
         /**
            @brief Bidirectional RRT planner.
@@ -108,12 +107,10 @@ namespace rwlibs { namespace pathplanners {
            @param extend [in] Distance measured by \b metric by which to extend
            the tree towards an attractor configuration.
         */
-        static
-			rw::pathplanning::QToQPlanner::Ptr makeBidirectional(
-            const rw::pathplanning::PlannerConstraint& constraint,
-			rw::core::Ptr<rw::pathplanning::QSampler> sampler,
-			rw::math::QMetric::Ptr metric,
-            double extend);
+        static rw::pathplanning::QToQPlanner::Ptr
+        makeBidirectional (const rw::pathplanning::PlannerConstraint& constraint,
+                           rw::core::Ptr< rw::pathplanning::QSampler > sampler,
+                           rw::math::QMetric::Ptr metric, double extend);
 
         /**
            @brief Balanced, bidirectional RRT planner.
@@ -131,20 +128,18 @@ namespace rwlibs { namespace pathplanners {
            @param extend [in] Distance measured by \b metric by which to extend
            the tree towards an attractor configuration.
         */
-        static
-			rw::pathplanning::QToQPlanner::Ptr makeBalancedBidirectional(
-            const rw::pathplanning::PlannerConstraint& constraint,
-			rw::core::Ptr<rw::pathplanning::QSampler> sampler,
-			rw::math::QMetric::Ptr metric,
-            double extend);
+        static rw::pathplanning::QToQPlanner::Ptr
+        makeBalancedBidirectional (const rw::pathplanning::PlannerConstraint& constraint,
+                                   rw::core::Ptr< rw::pathplanning::QSampler > sampler,
+                                   rw::math::QMetric::Ptr metric, double extend);
 
-    private:
-        RRTQToQPlanner(const RRTQToQPlanner&);
-        RRTQToQPlanner& operator=(const RRTQToQPlanner&);
-        RRTQToQPlanner();
+      private:
+        RRTQToQPlanner (const RRTQToQPlanner&);
+        RRTQToQPlanner& operator= (const RRTQToQPlanner&);
+        RRTQToQPlanner ();
     };
 
     /*\}*/
-}} // end namespaces
+}}    // namespace rwlibs::pathplanners
 
-#endif // end include guard
+#endif    // end include guard

@@ -22,6 +22,8 @@
  * @file Transform3DVector.hpp
  */
 
+#if !defined(SWIG)
+
 #include <rw/core/Ptr.hpp>
 #include <rw/math/EAA.hpp>
 #include <rw/math/Quaternion.hpp>
@@ -31,10 +33,16 @@
 
 #include <Eigen/Core>
 
+#endif
 namespace rw { namespace math {
     /** @addtogroup math */
     /* @{*/
 
+    /**
+     * @brief this class is a interpolatable Transform3D, consisting of a Vecor3D and a Quaternion.
+     * It is implemented to be very Interconvertable with a Transform3D, and allow operations souch
+     * as Transform * scalar and Transform + Transform.
+     */
     template< class T = double > class Transform3DVector
     {
       public:
@@ -242,6 +250,7 @@ namespace rw { namespace math {
             return Transform3DVector< T > (this->_t3d * rhs);
         }
 
+#if !defined(SWIGPYTHON)
         /**
          * @brief Scalar multiplication
          * @param lhs [in] the scalar to multiply with
@@ -252,7 +261,7 @@ namespace rw { namespace math {
         {
             return Transform3DVector< T > (lhs * rhs._t3d);
         }
-
+#endif
         /**
          * @brief Scalar addition
          * @param rhs [in] the scalar to add
@@ -266,7 +275,7 @@ namespace rw { namespace math {
             }
             return ret;
         }
-
+#if !defined(SWIGPYTHON)
         /**
          * @brief Scalar addition
          * @param lhs [in] the scalar to subtraction
@@ -281,7 +290,7 @@ namespace rw { namespace math {
             }
             return ret;
         }
-
+#endif 
         /**
          * @brief Scalar subtraction
          * @param rhs [in] the scalar to subtract
@@ -295,7 +304,7 @@ namespace rw { namespace math {
             }
             return ret;
         }
-
+#if !defined(SWIGPYTHON)
         /**
          * @brief Scalar subtraction
          * @param lhs [in] the scalar to subtract
@@ -310,6 +319,7 @@ namespace rw { namespace math {
             }
             return ret;
         }
+#endif
 
         /**
          * @brief Scalar devision
@@ -320,7 +330,7 @@ namespace rw { namespace math {
         {
             return Transform3DVector< T > (this->_t3d / rhs);
         }
-
+#if !defined(SWIGPYTHON)
         /**
          * @brief Scalar devision
          * @param lhs [in] the scalar to devide with
@@ -335,11 +345,13 @@ namespace rw { namespace math {
             }
             return ret;
         }
+#endif 
 
         // ###################################################
         // #                Acces Operators                  #
         // ###################################################
 
+#if !defined(SWIG)
         /**
          * @brief acces operator
          * @param i [in] index of the Vector
@@ -367,7 +379,7 @@ namespace rw { namespace math {
          * @return requested value
          */
         T operator[] (size_t i) const { return _t3d[i]; }
-
+#endif
         /**
          * @brief get the size. Index 0-2 Vector, 3-6 Quaternion
          * @return always 7
@@ -409,32 +421,35 @@ namespace rw { namespace math {
          * @return reference to eigen vector
          */
         Eigen::Matrix< T, 7, 1 >& e () { return _t3d; }
-
-        friend std::ostream& operator<< (std::ostream& os, const Transform3DVector<T>& t){
-            return os << "Transform3DVector(" << t.toVector3D() << ", " << t.toQuaternion() << ")";
+#if !defined(SWIG)
+        friend std::ostream& operator<< (std::ostream& os, const Transform3DVector< T >& t)
+        {
+            return os << "Transform3DVector(" << t.toVector3D () << ", " << t.toQuaternion ()
+                      << ")";
         }
-
+#endif
         // ###################################################
         // #             assignement Operators               #
         // ###################################################
 
+#if !defined(SWIGPYTHON)
         /**
          * @brief copy the transform
          * @param rhs the transform to copy
          * @return a copy of this object
          */
-        Transform3DVector< T > operator= (const Transform3DVector< T >& rhs)
+        Transform3DVector< T >& operator= (const Transform3DVector< T >& rhs)
         {
             this->_t3d = rhs._t3d;
             return *this;
         }
-
+#endif
         /**
          * @brief add to the transform
          * @param rhs the transform to be added
          * @return a copy of this object
          */
-        Transform3DVector< T > operator+= (const Transform3DVector< T >& rhs)
+        Transform3DVector< T >& operator+= (const Transform3DVector< T >& rhs)
         {
             this->_t3d = this->_t3d + rhs._t3d;
             return *this;
@@ -445,29 +460,29 @@ namespace rw { namespace math {
          * @param rhs the transform to be subtracted
          * @return a copy of this object
          */
-        Transform3DVector< T > operator-= (const Transform3DVector< T >& rhs)
+        Transform3DVector< T >& operator-= (const Transform3DVector< T >& rhs)
         {
             this->_t3d = this->_t3d - rhs._t3d;
             return *this;
         }
-
+#if !defined(SWIGPYTHON)
         /**
          * @brief Override the Roation of the transform
          * @param rhs the new rotation
          * @return a copy of this object
          */
-        Transform3DVector< T > operator= (const Quaternion< T >& rhs)
+        Transform3DVector< T >& operator= (const Quaternion< T >& rhs)
         {
             *this = Transform3DVector< T > (this->toVector3D (), rhs);
             return *this;
         }
-
+#endif
         /**
          * @brief add to the Roation of the transform
          * @param rhs the rotation to be added
          * @return a copy of this object
          */
-        Transform3DVector< T > operator+= (const Quaternion< T >& rhs)
+        Transform3DVector< T >& operator+= (const Quaternion< T >& rhs)
         {
             *this = *this + rhs;
             return *this;
@@ -478,40 +493,42 @@ namespace rw { namespace math {
          * @param rhs the rotation to be added
          * @return a copy of this object
          */
-        Transform3DVector< T > operator-= (const Quaternion< T >& rhs)
+        Transform3DVector< T >& operator-= (const Quaternion< T >& rhs)
         {
             *this = *this - rhs;
             return *this;
         }
 
+#if !defined(SWIGPYTHON)
         /**
          * @brief convert and copy the transform
          * @param rhs the transform to copy
          * @return a copy of this object
          */
-        Transform3DVector< T > operator= (const Transform3D< T >& rhs)
+        Transform3DVector< T >& operator= (const Transform3D< T >& rhs)
         {
             this->_t3d = Transform3DVector< T > (rhs)._t3d;
             return *this;
         }
-
+#endif
+#if !defined(SWIGPYTHON)
         /**
          * @brief Override the position of the transform
          * @param rhs the new position
          * @return a copy of this object
          */
-        Transform3DVector< T > operator= (const Vector3D< T >& rhs)
+        Transform3DVector< T >& operator= (const Vector3D< T >& rhs)
         {
             *this = Transform3DVector< T > (rhs, this->toQuaternion ());
             return *this;
         }
-
+#endif
         /**
          * @brief add to the position of the transform
          * @param rhs the new position
          * @return a copy of this object
          */
-        Transform3DVector< T > operator+= (const Vector3D< T >& rhs)
+        Transform3DVector< T >& operator+= (const Vector3D< T >& rhs)
         {
             *this = *this + rhs;
             return *this;
@@ -522,35 +539,50 @@ namespace rw { namespace math {
          * @param rhs the new position
          * @return a copy of this object
          */
-        Transform3DVector< T > operator-= (const Vector3D< T >& rhs)
+        Transform3DVector< T >& operator-= (const Vector3D< T >& rhs)
         {
             *this = *this - rhs;
             return *this;
         }
-
+#if !defined(SWIGPYTHON)
         /**
          * @brief copy the transform from an eigen vector
          * @param rhs the transform to copy
          * @return a copy of this object
          */
-        Transform3DVector< T > operator= (const type& rhs)
+        Transform3DVector< T >& operator= (const type& rhs)
         {
             this->_t3d = rhs;
             return *this;
         }
-
+#endif
+#if !defined(SWIG)
         /**
          * @brief implicit conversion to transform
          */
         operator Transform3D< T > () const { return this->toTransform3D (); }
+#endif
+
+#if defined(SWIG)
+        ARRAYOPERATOR (T)
+#endif
 
       private:
         type _t3d;
     };
 
+#if defined(SWIGPYTHON)
+
+#endif
+
+#if !defined(SWIG)
     extern template class rw::math::Transform3DVector< double >;
     extern template class rw::math::Transform3DVector< float >;
 
+    using Transform3DVectord = Transform3DVector<double>;
+    using Transform3DVectorf = Transform3DVector<float>;
+    
+#endif
     /**@}*/
 }}    // namespace rw::math
 

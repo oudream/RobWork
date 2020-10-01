@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RWLIBS_PATHPLANNERS_ARVEXPAND_HPP
 #define RWLIBS_PATHPLANNERS_ARVEXPAND_HPP
 
@@ -28,7 +27,9 @@
 #include <rw/models/Device.hpp>
 #include <rw/trajectory/Path.hpp>
 
-namespace rw { namespace pathplanning { class PlannerConstraint; } }
+namespace rw { namespace pathplanning {
+    class PlannerConstraint;
+}}    // namespace rw::pathplanning
 
 namespace rwlibs { namespace pathplanners {
 
@@ -41,9 +42,9 @@ namespace rwlibs { namespace pathplanners {
     */
     class ARWExpand
     {
-    public:
-		//! @brief smart pointer type to this class
-        typedef rw::core::Ptr<ARWExpand> Ptr;
+      public:
+        //! @brief smart pointer type to this class
+        typedef rw::core::Ptr< ARWExpand > Ptr;
 
         /**
            @brief Expand the path by one step and return true if a new
@@ -53,22 +54,22 @@ namespace rwlibs { namespace pathplanners {
 
            @return True iff a node was added to the end of the path.
         */
-        bool expand();
+        bool expand ();
 
         /**
            @brief Construct a new random walk with start node at \b start.
         */
-		ARWExpand::Ptr duplicate(const rw::math::Q& start) const;
+        ARWExpand::Ptr duplicate (const rw::math::Q& start) const;
 
         /**
            @brief Destructor
         */
-        virtual ~ARWExpand() {}
+        virtual ~ARWExpand () {}
 
         /**
            @brief The current path of the random walk.
         */
-		const rw::trajectory::QPath& getPath() const { return _path; }
+        const rw::trajectory::QPath& getPath () const { return _path; }
 
         /**
            @brief Constructor
@@ -92,17 +93,16 @@ namespace rwlibs { namespace pathplanners {
            @param historySize [in] Number of previous elements of the path to
            use for variance computation.
         */
-		static ARWExpand::Ptr make(
-            const rw::models::Device::QBox& bounds,
-            const rw::pathplanning::PlannerConstraint& constraint,
-            const rw::math::Q& minVariances = rw::math::Q(),
-            int historySize = -1);
+        static ARWExpand::Ptr make (const rw::models::Device::QBox& bounds,
+                                    const rw::pathplanning::PlannerConstraint& constraint,
+                                    const rw::math::Q& minVariances = rw::math::Q (),
+                                    int historySize                 = -1);
 
-    protected:
+      protected:
         /**
            @brief Constructor
         */
-        ARWExpand() {}
+        ARWExpand () {}
 
         /**
            @brief Subclass implementation of the expand() method.
@@ -110,25 +110,25 @@ namespace rwlibs { namespace pathplanners {
            The doExpand() adds one or more nodes to \b _path if and only if the
            method returns true.
         */
-        virtual bool doExpand() = 0;
+        virtual bool doExpand () = 0;
 
         /**
            @brief Subclass implementation of the duplicate() method.
         */
-		virtual ARWExpand::Ptr doDuplicate(const rw::math::Q& start) const = 0;
+        virtual ARWExpand::Ptr doDuplicate (const rw::math::Q& start) const = 0;
 
-    private:
-        ARWExpand(const ARWExpand&);
-        ARWExpand& operator=(const ARWExpand&);
+      private:
+        ARWExpand (const ARWExpand&);
+        ARWExpand& operator= (const ARWExpand&);
 
-    protected:
+      protected:
         /**
            @brief The path of random walk.
         */
-		rw::trajectory::QPath _path;
+        rw::trajectory::QPath _path;
     };
 
     /* @} */
-}} // end namespaces
+}}    // namespace rwlibs::pathplanners
 
-#endif // end include guard
+#endif    // end include guard

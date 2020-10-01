@@ -2,13 +2,14 @@
 #ifndef RW_CORE_PLUGIN_HPP
 #define RW_CORE_PLUGIN_HPP
 
+#if !defined(SWIG)
 #include <rw/core/Extension.hpp>
 #include <rw/core/Ptr.hpp>
 #include <rw/core/os.hpp>
 
 #include <string>
 #include <vector>
-
+#endif
 namespace rw { namespace core {
 
 /**
@@ -42,7 +43,7 @@ namespace rw { namespace core {
         virtual ~Plugin ();
 
         //! @brief get all extension descriptors of this plugin
-        virtual std::vector< Extension::Descriptor > getExtensionDescriptors () = 0;
+        virtual std::vector< rw::core::Extension::Descriptor > getExtensionDescriptors () = 0;
 
         //! @brief get a specific extension using the unique extendion ID
         virtual rw::core::Ptr< Extension > makeExtension (const std::string& id) = 0;
@@ -114,7 +115,7 @@ namespace rw { namespace core {
         static rw::core::Ptr< Plugin > loadDirect (const std::string& filename);
         static rw::core::Ptr< Plugin > loadLazy (const std::string& filename);
 
-        std::vector< Extension::Descriptor > _descriptors;
+        std::vector< rw::core::Extension::Descriptor > _descriptors;
         std::string _id, _name, _version;
         OSHandle* _handle;
     };
@@ -127,6 +128,6 @@ namespace rw { namespace core {
  */
 namespace rw { namespace common {
     using namespace rw::core;
-}}
+}}    // namespace rw::common
 
 #endif

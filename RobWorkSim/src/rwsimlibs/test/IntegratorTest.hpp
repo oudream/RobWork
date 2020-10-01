@@ -26,45 +26,47 @@
 
 #include "EngineTest.hpp"
 
-namespace rwsimlibs {
-namespace test {
-//! @addtogroup rwsimlibs_test
+namespace rwsimlibs { namespace test {
+    //! @addtogroup rwsimlibs_test
 
-//! @{
-/**
- * @brief Common parent class for all integrator tests.
- *
- * The class defines supported engines, common parameters, and a standard dynamic workcell.
- */
-class IntegratorTest: public EngineTest {
-public:
-	//! @brief Constructor.
-	IntegratorTest();
+    //! @{
+    /**
+     * @brief Common parent class for all integrator tests.
+     *
+     * The class defines supported engines, common parameters, and a standard dynamic workcell.
+     */
+    class IntegratorTest : public EngineTest
+    {
+      public:
+        //! @brief Constructor.
+        IntegratorTest ();
 
-	//! @brief Destructor.
-	virtual ~IntegratorTest();
+        //! @brief Destructor.
+        virtual ~IntegratorTest ();
 
-	//! @copydoc EngineTest::isEngineSupported
-	virtual bool isEngineSupported(const std::string& engineID) const;
+        //! @copydoc EngineTest::isEngineSupported
+        virtual bool isEngineSupported (const std::string& engineID) const;
 
-	//! @copydoc EngineTest::getDWC
-	virtual rw::core::Ptr<rwsim::dynamics::DynamicWorkCell> getDWC(const rw::core::PropertyMap& map);
+        //! @copydoc EngineTest::getDWC
+        virtual rw::core::Ptr< rwsim::dynamics::DynamicWorkCell >
+        getDWC (const rw::core::PropertyMap& map);
 
-	//! @copydoc EngineTest::getDefaultParameters
-	virtual rw::core::Ptr<rw::core::PropertyMap> getDefaultParameters() const;
+        //! @copydoc EngineTest::getDefaultParameters
+        virtual rw::core::Ptr< rw::core::PropertyMap > getDefaultParameters () const;
 
-	/**
-	 * @brief Create new dynamic workcell.
-	 * @param integratorType [in] (optional) the integrator to use.
-	 * @return the dynamic workcell.
-	 */
-	virtual rw::core::Ptr<rwsim::dynamics::DynamicWorkCell> makeIntegratorDWC(const std::string& integratorType = "");
+        /**
+         * @brief Create new dynamic workcell.
+         * @param integratorType [in] (optional) the integrator to use.
+         * @return the dynamic workcell.
+         */
+        virtual rw::core::Ptr< rwsim::dynamics::DynamicWorkCell >
+        makeIntegratorDWC (const std::string& integratorType = "");
 
-private:
-	std::map<std::string,rw::core::Ptr<rwsim::dynamics::DynamicWorkCell> > _integratorTypeToDWC;
-};
-//! @}
-} /* namespace test */
-} /* namespace rwsimlibs */
+      private:
+        std::map< std::string, rw::core::Ptr< rwsim::dynamics::DynamicWorkCell > >
+            _integratorTypeToDWC;
+    };
+    //! @}
+}}    // namespace rwsimlibs::test
 
 #endif /* RWSIMLIBS_TEST_INTEGRATORTEST_HPP_ */

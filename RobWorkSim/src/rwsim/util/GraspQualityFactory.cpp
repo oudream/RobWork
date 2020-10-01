@@ -19,12 +19,12 @@
 
 using namespace rwsim::util;
 
-std::vector<std::string> GraspStrategyFactory::getAvailableStrategies(){
-	return std::vector<std::string>();
+std::vector< std::string > GraspStrategyFactory::getAvailableStrategies ()
+{
+    return std::vector< std::string > ();
 }
 
-
-
-GraspStrategyPtr GraspStrategyFactory::makeStrategy(const std::string& id){
-	return NULL;
+GraspStrategyPtr GraspStrategyFactory::makeStrategy (const std::string& id)
+{
+    return NULL;
 }

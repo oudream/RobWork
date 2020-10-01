@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RW_LOADER_TUL_TULLOADER_HPP
 #define RW_LOADER_TUL_TULLOADER_HPP
 
@@ -23,10 +22,10 @@
  * @file TULLoader.hpp
  */
 
-#include <string>
-#include <rw/models/WorkCell.hpp>
 #include <rw/loaders/WorkCellLoader.hpp>
+#include <rw/models/WorkCell.hpp>
 
+#include <string>
 
 namespace rw { namespace loaders {
 
@@ -36,11 +35,11 @@ namespace rw { namespace loaders {
     /**
      * @brief Loader for the AMROSE TUL format
      */
-    class TULLoader: public WorkCellLoader
+    class TULLoader : public WorkCellLoader
     {
-    public:
-    	//! @copydoc WorkCellLoader::loadWorkCell
-		rw::models::WorkCell::Ptr loadWorkCell(const std::string& filename);
+      public:
+        //! @copydoc WorkCellLoader::loadWorkCell
+        rw::models::WorkCell::Ptr loadWorkCell (const std::string& filename);
 
         /**
          * @brief Loads/imports TUL file
@@ -49,10 +48,10 @@ namespace rw { namespace loaders {
          *
          * @param filename [in] filename of TUL file
          */
-		static models::WorkCell::Ptr load(const std::string& filename);
+        static models::WorkCell::Ptr load (const std::string& filename);
     };
 
     /**@}*/
-}} // end namespaces
+}}    // namespace rw::loaders
 
-#endif // end include guard
+#endif    // end include guard

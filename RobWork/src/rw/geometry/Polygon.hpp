@@ -24,8 +24,8 @@
  * \copydoc rw::geometry::Polygon
  */
 
-#include <rw/core/macros.hpp>
 #include <rw/core/Ptr.hpp>
+#include <rw/core/macros.hpp>
 #include <rw/math/Vector3D.hpp>
 
 namespace rw { namespace geometry {

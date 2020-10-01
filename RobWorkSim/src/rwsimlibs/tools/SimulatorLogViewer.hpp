@@ -24,70 +24,78 @@
  * \copydoc rwsimlibs::tools::SimulatorLogViewer
  */
 
-#include <QMainWindow>
-
 #include <rw/core/Ptr.hpp>
 
-namespace Ui { class SimulatorLogViewer; }
-namespace rwsim { namespace dynamics { class DynamicWorkCell; } }
-namespace rwsim { namespace log { class SimulatorLogScope; } }
-namespace rwsimlibs { namespace gui { class SimulatorLogWidget; } }
+#include <QMainWindow>
 
-namespace rwsimlibs {
-namespace tools {
-//! @addtogroup rwsimlibs_tools
+namespace Ui {
+class SimulatorLogViewer;
+}
+namespace rwsim { namespace dynamics {
+    class DynamicWorkCell;
+}}    // namespace rwsim::dynamics
+namespace rwsim { namespace log {
+    class SimulatorLogScope;
+}}    // namespace rwsim::log
+namespace rwsimlibs { namespace gui {
+    class SimulatorLogWidget;
+}}    // namespace rwsimlibs::gui
 
-//! @{
-/**
- * @brief Stand-alone application for visualization of internal data from a Physics Engine.
- *
- * Primary use of this tool is for debugging of engines.
- */
-class SimulatorLogViewer: public QMainWindow {
-    Q_OBJECT
-public:
-	//! @brief Constructor.
-	SimulatorLogViewer();
+namespace rwsimlibs { namespace tools {
+    //! @addtogroup rwsimlibs_tools
 
-	//! @brief Destructor.
-	virtual ~SimulatorLogViewer();
+    //! @{
+    /**
+     * @brief Stand-alone application for visualization of internal data from a Physics Engine.
+     *
+     * Primary use of this tool is for debugging of engines.
+     */
+    class SimulatorLogViewer : public QMainWindow
+    {
+        Q_OBJECT
+      public:
+        //! @brief Constructor.
+        SimulatorLogViewer ();
 
-	/**
-	 * @brief Set the dynamic workcell.
-	 * @param dwc [in] the dynamic workcell.
-	 */
-	void setDWC(rw::core::Ptr<const rwsim::dynamics::DynamicWorkCell> dwc);
+        //! @brief Destructor.
+        virtual ~SimulatorLogViewer ();
 
-	/**
-	 * @brief Set the log structure.
-	 * @param log [in/out] the log structure - the statistics info might be updated if requested by user.
-	 */
-	void setLog(rw::core::Ptr<rwsim::log::SimulatorLogScope> log);
+        /**
+         * @brief Set the dynamic workcell.
+         * @param dwc [in] the dynamic workcell.
+         */
+        void setDWC (rw::core::Ptr< const rwsim::dynamics::DynamicWorkCell > dwc);
 
-public slots:
-	//! @brief Open dialog for choosing a dynamic workcell.
-	void openDWC();
+        /**
+         * @brief Set the log structure.
+         * @param log [in/out] the log structure - the statistics info might be updated if requested
+         * by user.
+         */
+        void setLog (rw::core::Ptr< rwsim::log::SimulatorLogScope > log);
 
-	//! @brief Close the currently open dynamic workcell.
-	void closeDWC();
+      public slots:
+        //! @brief Open dialog for choosing a dynamic workcell.
+        void openDWC ();
 
-	//! @brief Open dialog for choosing a log to compare with.
-	void openCompare();
+        //! @brief Close the currently open dynamic workcell.
+        void closeDWC ();
 
-signals:
-	/**
-	 * @brief Signal for a changed dynamic workcell.
-	 * @param dwc [in] the new dynamic workcell, or NULL if no dynamic workcell.
-	 */
-	void dwcChanged(rw::core::Ptr<const rwsim::dynamics::DynamicWorkCell> dwc);
+        //! @brief Open dialog for choosing a log to compare with.
+        void openCompare ();
 
-private:
-    Ui::SimulatorLogViewer* const _ui;
-    rw::core::Ptr<const rwsim::dynamics::DynamicWorkCell> _dwc;
-    rw::core::Ptr<rwsim::log::SimulatorLogScope> _log;
-    rwsimlibs::gui::SimulatorLogWidget* _widget;
-};
-//! @}
-} /* namespace tools */
-} /* namespace rwsimlibs */
+      signals:
+        /**
+         * @brief Signal for a changed dynamic workcell.
+         * @param dwc [in] the new dynamic workcell, or NULL if no dynamic workcell.
+         */
+        void dwcChanged (rw::core::Ptr< const rwsim::dynamics::DynamicWorkCell > dwc);
+
+      private:
+        Ui::SimulatorLogViewer* const _ui;
+        rw::core::Ptr< const rwsim::dynamics::DynamicWorkCell > _dwc;
+        rw::core::Ptr< rwsim::log::SimulatorLogScope > _log;
+        rwsimlibs::gui::SimulatorLogWidget* _widget;
+    };
+    //! @}
+}}     // namespace rwsimlibs::tools
 #endif /* RWSIMLIBS_TOOLS_SIMULATORLOGVIEWER_HPP_ */

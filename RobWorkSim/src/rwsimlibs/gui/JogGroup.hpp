@@ -20,9 +20,9 @@
 #ifndef JOGGROUP_H
 #define JOGGROUP_H
 
-#include <QWidget>
-
 #include <rw/math/Q.hpp>
+
+#include <QWidget>
 
 class QDoubleSpinBox;
 class QSlider;
@@ -34,35 +34,31 @@ class JointLine : public QWidget
 {
     Q_OBJECT
 
-public:
-    JointLine(double low,
-              double high,
-              QGridLayout* layout,
-              int row,
-              QWidget* parent);
+  public:
+    JointLine (double low, double high, QGridLayout* layout, int row, QWidget* parent);
 
     // The current value of the joint.
-    double value() const;
+    double value () const;
 
     // Set a value for the joint.
-    void setValue(double val);
+    void setValue (double val);
 
-    void setSliderResolution(double res);
+    void setSliderResolution (double res);
 
-private slots:
-    void boxValueChanged(double val);
-    void sliderValueChanged(int val);
-    void wheelEvent(QWheelEvent* event);
+  private slots:
+    void boxValueChanged (double val);
+    void sliderValueChanged (int val);
+    void wheelEvent (QWheelEvent* event);
 
-signals:
+  signals:
     // Emitted whenever the joint value changes.
-    void valueChanged();
+    void valueChanged ();
 
-private:
-    void setSliderValueFromBox(double val);
-    void setBoxValueFromSlider(int val);
+  private:
+    void setSliderValueFromBox (double val);
+    void setBoxValueFromSlider (int val);
 
-private:
+  private:
     double _low;
     double _high;
 
@@ -76,38 +72,34 @@ private:
     double _stepSize;
 };
 
-class JogGroup: public QWidget
+class JogGroup : public QWidget
 {
     Q_OBJECT
 
-public:
-    JogGroup(const std::pair<rw::math::Q,rw::math::Q>& device);
+  public:
+    JogGroup (const std::pair< rw::math::Q, rw::math::Q >& device);
 
-    ~JogGroup();
+    ~JogGroup ();
 
-    void updateDisplayValues();
+    void updateDisplayValues ();
 
-    rw::math::Q getQ() const
-    { return _q; }
+    rw::math::Q getQ () const { return _q; }
 
-    void setQ(const rw::math::Q& q)
-    { _q = q; }
+    void setQ (const rw::math::Q& q) { _q = q; }
 
-public slots:
-    void valueChanged();
+  public slots:
+    void valueChanged ();
 
-signals:
-    void updateSignal();
+  signals:
+    void updateSignal ();
 
-private:
-
+  private:
     size_t _n;
     bool _updating;
-    std::vector<JointLine*> _joints;
+    std::vector< JointLine* > _joints;
     rw::math::Q _q;
-private:
 
-
+  private:
 };
 
-#endif //#ifndef JogGroup_H
+#endif    //#ifndef JogGroup_H

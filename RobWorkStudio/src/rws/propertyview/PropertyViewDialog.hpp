@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
  * Faculty of Engineering, University of Southern Denmark
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,23 +25,25 @@
 class Ui_PropertyViewDialog;
 
 //! @brief Qt dialog for showing properties in a PropertyMap.
-class PropertyViewDialog : public QDialog {
-Q_OBJECT
-public:
-	/**
-	 * Make new dialog.
-	 * @param map [in] the property map to show.
-	 * @param parent [in] the parent widget that owns the dialog.
-	 */
-	PropertyViewDialog(rw::core::PropertyMap::Ptr map, QWidget *parent);
+class PropertyViewDialog : public QDialog
+{
+    Q_OBJECT
+  public:
+    /**
+     * Make new dialog.
+     * @param map [in] the property map to show.
+     * @param parent [in] the parent widget that owns the dialog.
+     */
+    PropertyViewDialog (rw::core::PropertyMap::Ptr map, QWidget* parent);
 
-private Q_SLOTS:
-	void acceptPressed();
-	void rejectPressed();
-private:
-	class Ui_PropertyViewDialog *ui;
-	rw::core::PropertyMap::Ptr _pOriginalProperties;
-	rw::core::PropertyMap _workingCopy;
+  private Q_SLOTS:
+    void acceptPressed ();
+    void rejectPressed ();
+
+  private:
+    class Ui_PropertyViewDialog* ui;
+    rw::core::PropertyMap::Ptr _pOriginalProperties;
+    rw::core::PropertyMap _workingCopy;
 };
 
 #endif /* PROPERTYVIEWDIALOG_HPP_ */

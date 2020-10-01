@@ -16,6 +16,7 @@
  ********************************************************************************/
 
 #include "LogConstraints.hpp"
+
 #include "LogPositions.hpp"
 #include "SimulatorLogScope.hpp"
 
@@ -27,124 +28,135 @@ using namespace rw::core;
 using namespace rw::math;
 using namespace rwsim::log;
 
-LogConstraints::LogConstraints(SimulatorLogScope* parent):
-	SimulatorLogEntry(parent)
+LogConstraints::LogConstraints (SimulatorLogScope* parent) : SimulatorLogEntry (parent)
+{}
+
+LogConstraints::~LogConstraints ()
+{}
+
+void LogConstraints::read (InputArchive& iarchive, const std::string& id)
 {
+    const unsigned int n = iarchive.readUInt ("Constraints");
+    _constraints.resize (n);
+    for (unsigned int i = 0; i < n; i++) {
+        Constraint& c = _constraints[i];
+        c.frameA      = iarchive.readString ("NameA");
+        c.frameB      = iarchive.readString ("NameB");
+        c.type        = iarchive.readString ("Type");
+        iarchive.read (c.posA, "PosA");
+        iarchive.read (c.posB, "PosB");
+        iarchive.read (c.rotAlin, "RotAlin");
+        iarchive.read (c.rotBlin, "RotBlin");
+        iarchive.read (c.rotAang, "RotAang");
+        iarchive.read (c.rotBang, "RotBang");
+    }
+    SimulatorLogEntry::read (iarchive, id);
 }
 
-LogConstraints::~LogConstraints() {
+void LogConstraints::write (OutputArchive& oarchive, const std::string& id) const
+{
+    oarchive.write (_constraints.size (), "Constraints");
+    for (const Constraint& c : _constraints) {
+        oarchive.write (c.frameA, "NameA");
+        oarchive.write (c.frameB, "NameB");
+        oarchive.write (c.type, "Type");
+        oarchive.write (c.posA, "PosA");
+        oarchive.write (c.posB, "PosB");
+        oarchive.write (c.rotAlin, "RotAlin");
+        oarchive.write (c.rotBlin, "RotBlin");
+        oarchive.write (c.rotAang, "RotAang");
+        oarchive.write (c.rotBang, "RotBang");
+    }
+    SimulatorLogEntry::write (oarchive, id);
 }
 
-void LogConstraints::read(InputArchive& iarchive, const std::string& id) {
-	const unsigned int n = iarchive.readUInt("Constraints");
-	_constraints.resize(n);
-	for (unsigned int i = 0; i < n; i++) {
-		Constraint& c = _constraints[i];
-		c.frameA = iarchive.readString("NameA");
-		c.frameB = iarchive.readString("NameB");
-		c.type = iarchive.readString("Type");
-		iarchive.read(c.posA,"PosA");
-		iarchive.read(c.posB,"PosB");
-		iarchive.read(c.rotAlin,"RotAlin");
-		iarchive.read(c.rotBlin,"RotBlin");
-		iarchive.read(c.rotAang,"RotAang");
-		iarchive.read(c.rotBang,"RotBang");
-	}
-	SimulatorLogEntry::read(iarchive,id);
+std::string LogConstraints::getType () const
+{
+    return getTypeID ();
 }
 
-void LogConstraints::write(OutputArchive& oarchive, const std::string& id) const {
-	oarchive.write(_constraints.size(),"Constraints");
-	for(const Constraint& c : _constraints) {
-		oarchive.write(c.frameA,"NameA");
-		oarchive.write(c.frameB,"NameB");
-		oarchive.write(c.type,"Type");
-		oarchive.write(c.posA,"PosA");
-		oarchive.write(c.posB,"PosB");
-		oarchive.write(c.rotAlin,"RotAlin");
-		oarchive.write(c.rotBlin,"RotBlin");
-		oarchive.write(c.rotAang,"RotAang");
-		oarchive.write(c.rotBang,"RotBang");
-	}
-	SimulatorLogEntry::write(oarchive,id);
+bool LogConstraints::Constraint::operator== (const Constraint& b) const
+{
+    if (frameA != b.frameA)
+        return false;
+    if (frameB != b.frameB)
+        return false;
+    if (type != b.type)
+        return false;
+    if (posA != b.posA)
+        return false;
+    if (posB != b.posB)
+        return false;
+    if (rotAlin != b.rotAlin)
+        return false;
+    if (rotBlin != b.rotBlin)
+        return false;
+    if (rotAang != b.rotAang)
+        return false;
+    if (rotBang != b.rotBang)
+        return false;
+    return true;
 }
 
-std::string LogConstraints::getType() const {
-	return getTypeID();
+bool LogConstraints::operator== (const SimulatorLog& b) const
+{
+    if (const LogConstraints* const entry = dynamic_cast< const LogConstraints* > (&b)) {
+        if (_constraints != entry->_constraints)
+            return false;
+    }
+    return SimulatorLogEntry::operator== (b);
 }
 
-bool LogConstraints::Constraint::operator==(const Constraint &b) const {
-	if (frameA != b.frameA)
-		return false;
-	if (frameB != b.frameB)
-		return false;
-	if (type != b.type)
-		return false;
-	if (posA != b.posA)
-		return false;
-	if (posB != b.posB)
-		return false;
-	if (rotAlin != b.rotAlin)
-		return false;
-	if (rotBlin != b.rotBlin)
-		return false;
-	if (rotAang != b.rotAang)
-		return false;
-	if (rotBang != b.rotBang)
-		return false;
-	return true;
+std::list< SimulatorLogEntry::Ptr > LogConstraints::getLinkedEntries () const
+{
+    // Link to last position entry in tree
+    SimulatorLogScope* scope = getParent ();
+    while (scope != NULL) {
+        std::vector< SimulatorLog::Ptr > children = scope->getChildren ();
+        std::vector< SimulatorLog::Ptr >::const_reverse_iterator it;
+        for (it = children.rbegin (); it != children.rend (); it++) {
+            const LogPositions::Ptr pos = (*it).cast< LogPositions > ();
+            if (pos != NULL) {
+                return std::list< SimulatorLogEntry::Ptr > (1, pos);
+            }
+        }
+        scope = scope->getParent ();
+    }
+    return std::list< SimulatorLogEntry::Ptr > ();
 }
 
-bool LogConstraints::operator==(const SimulatorLog &b) const {
-	if (const LogConstraints* const entry = dynamic_cast<const LogConstraints*>(&b)) {
-		if (_constraints != entry->_constraints)
-			return false;
-	}
-	return SimulatorLogEntry::operator==(b);
+bool LogConstraints::autoLink ()
+{
+    return true;
 }
 
-std::list<SimulatorLogEntry::Ptr> LogConstraints::getLinkedEntries() const {
-	// Link to last position entry in tree
-	SimulatorLogScope* scope = getParent();
-	while(scope != NULL) {
-		std::vector<SimulatorLog::Ptr> children = scope->getChildren();
-		std::vector<SimulatorLog::Ptr>::const_reverse_iterator it;
-		for(it = children.rbegin(); it != children.rend(); it++) {
-			const LogPositions::Ptr pos = (*it).cast<LogPositions>();
-			if (pos != NULL) {
-				return std::list<SimulatorLogEntry::Ptr>(1,pos);
-			}
-		}
-		scope = scope->getParent();
-	}
-	return std::list<SimulatorLogEntry::Ptr>();
+SimulatorLogEntry::Ptr LogConstraints::createNew (SimulatorLogScope* parent) const
+{
+    return ownedPtr (new LogConstraints (parent));
 }
 
-bool LogConstraints::autoLink() {
-	return true;
+std::string LogConstraints::getTypeID ()
+{
+    return "LogConstraints";
 }
 
-SimulatorLogEntry::Ptr LogConstraints::createNew(SimulatorLogScope* parent) const {
-	return ownedPtr(new LogConstraints(parent));
+std::size_t LogConstraints::size () const
+{
+    return _constraints.size ();
 }
 
-std::string LogConstraints::getTypeID() {
-	return "LogConstraints";
+void LogConstraints::addConstraint (const Constraint& constraint)
+{
+    _constraints.push_back (constraint);
 }
 
-std::size_t LogConstraints::size() const {
-	return _constraints.size();
+const std::vector< LogConstraints::Constraint >& LogConstraints::getConstraints () const
+{
+    return _constraints;
 }
 
-void LogConstraints::addConstraint(const Constraint& constraint) {
-	_constraints.push_back(constraint);
-}
-
-const std::vector<LogConstraints::Constraint>& LogConstraints::getConstraints() const {
-	return _constraints;
-}
-
-const LogConstraints::Constraint& LogConstraints::getConstraint(std::size_t i) const {
-	RW_ASSERT(i < _constraints.size());
-	return _constraints[i];
+const LogConstraints::Constraint& LogConstraints::getConstraint (std::size_t i) const
+{
+    RW_ASSERT (i < _constraints.size ());
+    return _constraints[i];
 }

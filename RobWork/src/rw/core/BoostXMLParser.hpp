@@ -18,13 +18,14 @@
 #ifndef RW_CORE_BOOSTXMLPARSER_HPP
 #define RW_CORE_BOOSTXMLPARSER_HPP
 
+#if !defined(SWIG)
 #include <rw/core/DOMElem.hpp>
 #include <rw/core/DOMParser.hpp>
 
 #include <boost/property_tree/ptree_fwd.hpp>
 #include <string>
 #include <vector>
-
+#endif
 namespace rw { namespace core {
 
     /**
@@ -184,6 +185,6 @@ namespace rw { namespace core {
  */
 namespace rw { namespace common {
     using namespace rw::core;
-}}
+}}    // namespace rw::common
 
 #endif

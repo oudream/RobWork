@@ -186,8 +186,9 @@ namespace rw { namespace proximity {
          * @param model [in] the model containing the geometries
          * @return all geometry associated to the proximity model
          */
-        virtual std::vector< rw::core::Ptr< rw::geometry::Geometry > > getGeometrys (rw::proximity::ProximityModel* model) ;
-        
+        virtual std::vector< rw::core::Ptr< rw::geometry::Geometry > >
+        getGeometrys (rw::proximity::ProximityModel* model);
+
         /**
          * @brief Clears any stored model information
          */

@@ -9,6 +9,7 @@
 *.settings
 *.old
 *.DS_Store
+tmp
 
 # /
 /cmake_install.cmake
@@ -3459,6 +3460,10 @@ RobWorkSim/src/rwsimlibs/swig/python/RobWorkSim-*.egg-info
 #/ RobWorkStudio/example/cpp/
 /RobWorkStudio/example/cpp/build
 
+#/ RobWorkStudio/example/cpp/
+/RobWorkStudio/example/python/Image1.ppm
+/RobWorkStudio/example/python/Image2.ppm
+
 # /RobWorkStudio/example/UDPKinPlugin/
 /RobWorkStudio/example/UDPKinPlugin/cmake_install.cmake
 /RobWorkStudio/example/UDPKinPlugin/CMakeCache.txt
@@ -4034,5 +4039,6 @@ RobWorkSim/src/rwsimlibs/swig/python/RobWorkSim-*.egg-info
 /doc/installstuff/RW_package-msvc2005/.csettings
 /doc/installstuff/RW_package-msvc2005/CPackConfig.cmake
 /doc/installstuff/RW_package-msvc2005/CPackSourceConfig.cmake
+
 
 

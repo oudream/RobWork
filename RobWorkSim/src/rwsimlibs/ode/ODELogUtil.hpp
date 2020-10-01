@@ -20,8 +20,12 @@
 
 #include <rwsim/log/SimulatorLogUtil.hpp>
 
-namespace rw { namespace kinematics { class State; } }
-namespace rwsim { namespace log { class SimulatorLogScope; } }
+namespace rw { namespace kinematics {
+    class State;
+}}    // namespace rw::kinematics
+namespace rwsim { namespace log {
+    class SimulatorLogScope;
+}}    // namespace rwsim::log
 
 /**
  * @file ODELogUtil.hpp
@@ -29,56 +33,64 @@ namespace rwsim { namespace log { class SimulatorLogScope; } }
  * \copydoc rwsim::simulator::ODELogUtil
  */
 
-namespace rwsim {
-    namespace simulator {
+namespace rwsim { namespace simulator {
 
-        // Forward declarations
-        class ODEBody;
+    // Forward declarations
+    class ODEBody;
 
-        //! @addtogroup rwsim_simulator
+    //! @addtogroup rwsim_simulator
 
-        //! @{
+    //! @{
+    /**
+     * @brief Utility to write to SimulatorLog.
+     */
+    class ODELogUtil : public rwsim::log::SimulatorLogUtil
+    {
+      public:
+        //! @brief Constructor.
+        ODELogUtil ();
+
+        //! @brief Destructor.
+        virtual ~ODELogUtil ();
+
+        //! @copydoc addPositions(const std::string&, const
+        //! std::map<std::string,rw::math::Transform3D<> >&, const char*, int)
+        void addPositions (const std::string& description,
+                           const std::map< std::string, rw::math::Transform3D<> >& positions,
+                           const char* file = "", int line = -1);
+
         /**
-         * @brief Utility to write to SimulatorLog.
+         * @brief Add positions of bodies to log.
+         * @param description [in] description of log entry.
+         * @param bodies [in] vector of bodies to add position for.
+         * @param state [in] the state with the positions.
+         * @param file [in] filename where logging is happening.
+         * @param line [in] the line number of the file where logging is happening.
          */
-        class ODELogUtil: public rwsim::log::SimulatorLogUtil
-        {
-            public:
-                //! @brief Constructor.
-                ODELogUtil();
+        void addPositions (const std::string& description, const std::vector< ODEBody* >& bodies,
+                           const rw::kinematics::State& state, const char* file = "",
+                           int line = -1);
 
-                //! @brief Destructor.
-                virtual ~ODELogUtil();
+        //! @copydoc addVelocities(const std::string&, const
+        //! std::map<std::string,rw::math::VelocityScrew6D<> >&, const char*, int)
+        void addVelocities (const std::string& description,
+                            const std::map< std::string, rw::math::VelocityScrew6D<> >& velocities,
+                            const char* file = "", int line = -1);
 
-                //! @copydoc addPositions(const std::string&, const std::map<std::string,rw::math::Transform3D<> >&, const char*, int)
-                void addPositions(const std::string& description, const std::map<std::string, rw::math::Transform3D<> >& positions, const char* file = "", int line = -1);
+        /**
+         * @brief Add velocities of bodies to log.
+         * @param description [in] description of log entry.
+         * @param bodies [in] vector of bodies to add velocities for.
+         * @param state [in] the state with the velocities.
+         * @param file [in] filename where logging is happening.
+         * @param line [in] the line number of the file where logging is happening.
+         */
+        void addVelocities (const std::string& description, const std::vector< ODEBody* >& bodies,
+                            const rw::kinematics::State& state, const char* file = "",
+                            int line = -1);
+    };
+    //! @}
 
-                /**
-                 * @brief Add positions of bodies to log.
-                 * @param description [in] description of log entry.
-                 * @param bodies [in] vector of bodies to add position for.
-                 * @param state [in] the state with the positions.
-                 * @param file [in] filename where logging is happening.
-                 * @param line [in] the line number of the file where logging is happening.
-                 */
-                void addPositions(const std::string& description, const std::vector<ODEBody*>& bodies, const rw::kinematics::State& state, const char* file = "", int line = -1);
-
-                //! @copydoc addVelocities(const std::string&, const std::map<std::string,rw::math::VelocityScrew6D<> >&, const char*, int)
-                void addVelocities(const std::string& description, const std::map<std::string,rw::math::VelocityScrew6D<> >& velocities, const char* file = "", int line = -1) ;
-
-                /**
-                 * @brief Add velocities of bodies to log.
-                 * @param description [in] description of log entry.
-                 * @param bodies [in] vector of bodies to add velocities for.
-                 * @param state [in] the state with the velocities.
-                 * @param file [in] filename where logging is happening.
-                 * @param line [in] the line number of the file where logging is happening.
-                 */
-                void addVelocities(const std::string& description, const std::vector<ODEBody*>& bodies, const rw::kinematics::State& state, const char* file = "", int line = -1);
-        };
-        //! @}
-
-    } /* namespace simulator */
-} /* namespace rwsim */
+}}    // namespace rwsim::simulator
 
 #endif /* RWSIMLIBS_ODE_ODELOGUTIL_HPP_ */

@@ -24,116 +24,121 @@
 
 #include "PA10.hpp"
 
-extern "C" {
+extern "C"
+{
 #include "smsclib.h"
 }
 
-#include <rw/math/Q.hpp>
 #include <rw/common/macros.hpp>
+#include <rw/math/Q.hpp>
 
-#include <fstream>
 #include <cstring>
+#include <fstream>
 namespace rwhw {
 
-    /** @addtogroup pa10 */
-    /*@{*/
+/** @addtogroup pa10 */
+/*@{*/
+
+/**
+ * @brief Implements driver for Mitsubishi PA10
+ */
+class PA10Driver : public PA10
+{
+  public:
+    /**
+     * @brief Creates driver object
+     */
+    PA10Driver ();
 
     /**
-     * @brief Implements driver for Mitsubishi PA10
+     * @copydoc PA10::start
      */
-    class PA10Driver: public PA10 {
+    rw::math::Q start (bool& success);
 
-    public:
-        /**
-         * @brief Creates driver object
-         */
-        PA10Driver();
+    /**
+     * @copydoc PA10::initializeThread
+     */
+    void initializeThread ();
 
-        /**
-         * @copydoc PA10::start
-         */
-        rw::math::Q start(bool& success);
+    /**
+     * @copydoc PA10::update
+     */
+    rw::math::Q update (const rw::math::Q& dq);
 
-        /**
-         * @copydoc PA10::initializeThread
-         */
-        void initializeThread();
+    /**
+     * @copydoc PA10::stop
+     */
+    void stop ();
 
-        /**
-         * @copydoc PA10::update
-         */
-        rw::math::Q update(const rw::math::Q& dq);
+  private:
+    bool receive_pos ();
 
-        /**
-         * @copydoc PA10::stop
-         */
-        void stop();
+    /**
+     * At Power ON the PA10 controller is in adjustment/stop mode and will accept
+     * one of the following commands:
+     *
+     * - 'M' Mechanical zero point measurement
+     *
+     * - 'T' Control parameter setting
+     *
+     * - 'T' start - Brake release mode (use 'E' to return to adjustment/stop mode)
+     *
+     * - 'S' start - Control mode
+     * [Command value is received in each control cycle.] (use 'E' to return
+     * to adjustment/stop mode, Time-out error will return to
+     * adjustment/stop mode)
+     *
+     * - 'W' Written RAM EEROM table
+     *
+     * - 'P' Contents EEPROM table is changed
+     *
+     * - 'R' EEPROM table value is sent
+     */
 
-    private:
-        bool receive_pos();
-
-        /**
-         * At Power ON the PA10 controller is in adjustment/stop mode and will accept
-         * one of the following commands:
-         *
-         * - 'M' Mechanical zero point measurement
-         *
-         * - 'T' Control parameter setting
-         *
-         * - 'T' start - Brake release mode (use 'E' to return to adjustment/stop mode)
-         *
-         * - 'S' start - Control mode
-         * [Command value is received in each control cycle.] (use 'E' to return
-         * to adjustment/stop mode, Time-out error will return to
-         * adjustment/stop mode)
-         *
-         * - 'W' Written RAM EEROM table
-         *
-         * - 'P' Contents EEPROM table is changed
-         *
-         * - 'R' EEPROM table value is sent
-         */
-
-        struct COut{
-            // Remember fields are small endian!!!
-            struct{
-                uint8 mode;
-                uint8 torque[2];
-                uint8 speed[2];
-            }axis[7];
-        };
-
-        // Remember all fields are small endian!!!
-        struct CIn{
-            struct{
-                uint8 status[2];
-                uint8 angle[4];
-                uint8 torque[2];
-            }axis[7];
-            uint8 status[2];
-        };
-
-        void convertVelocities(const rw::math::Q& dq, COut* data);
-
-        void convertPositions(const CIn* data, rw::math::Q& q);
-
-        //! Send PA10 'S' command
-        void pa10_send_S();
-
-        void pa10_recv_S();
-
-        //! Send PA10 'E' command
-        void pa10_send_E();
-
-        void pa10_recv_E();
-
-        //! Send PA10 'C' command
-        void pa10_send_C(const COut* data);
-
-        void pa10_recv_C(CIn* data);
+    struct COut
+    {
+        // Remember fields are small endian!!!
+        struct
+        {
+            uint8 mode;
+            uint8 torque[2];
+            uint8 speed[2];
+        } axis[7];
     };
 
-    /**@}*/
-} // end namespaces
+    // Remember all fields are small endian!!!
+    struct CIn
+    {
+        struct
+        {
+            uint8 status[2];
+            uint8 angle[4];
+            uint8 torque[2];
+        } axis[7];
+        uint8 status[2];
+    };
 
-#endif // end include guard
+    void convertVelocities (const rw::math::Q& dq, COut* data);
+
+    void convertPositions (const CIn* data, rw::math::Q& q);
+
+    //! Send PA10 'S' command
+    void pa10_send_S ();
+
+    void pa10_recv_S ();
+
+    //! Send PA10 'E' command
+    void pa10_send_E ();
+
+    void pa10_recv_E ();
+
+    //! Send PA10 'C' command
+    void pa10_send_C (const COut* data);
+
+    void pa10_recv_C (CIn* data);
+};
+
+/**@}*/
+}    // namespace rwhw
+
+#endif    // end include guard

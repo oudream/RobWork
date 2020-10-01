@@ -20,39 +20,38 @@
 
 //! @file LoaderOBJ.hpp
 
-#include <string>
-
 #include "../Model3DLoader.hpp"
+
+#include <string>
 
 namespace rw { namespace loaders {
 
     //! @addtogroup graphics
-	// @{
+    // @{
 
-	/**
-	 * @brief Class for loading in IVG files.
-	 * TODO: add documentation on IVG format
-	 */
-	class LoaderOBJ: public Model3DLoader
-	{
-	public:
-	    /**
-	     * @brief constructor
-	     */
-		LoaderOBJ(){};
+    /**
+     * @brief Class for loading in IVG files.
+     * TODO: add documentation on IVG format
+     */
+    class LoaderOBJ : public Model3DLoader
+    {
+      public:
+        /**
+         * @brief constructor
+         */
+        LoaderOBJ (){};
 
-		/**
-		 * @brief destructor
-		 */
-		virtual ~LoaderOBJ(){};
+        /**
+         * @brief destructor
+         */
+        virtual ~LoaderOBJ (){};
 
-		//! @copydoc Model3DLoader::load
-		rw::graphics::Model3D::Ptr load(const std::string& filename);
+        //! @copydoc Model3DLoader::load
+        rw::graphics::Model3D::Ptr load (const std::string& filename);
+    };
 
-	};
+    //! @}
 
-	//! @}
+}}    // namespace rw::loaders
 
-}}
-
-#endif //end include guard
+#endif    // end include guard

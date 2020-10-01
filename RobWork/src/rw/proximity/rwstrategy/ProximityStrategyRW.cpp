@@ -62,8 +62,9 @@ bool ProximityStrategyRW::addGeometry (rw::proximity::ProximityModel* model,
 
     // check if geomid is in model. remove it if it has
     for (Model::Ptr& m : pmodel->models) {
-        if (m->geo->getId() == geom->getId ()) {
-            RW_THROW ("The specified geometry \"" + geom->getId() + "\" (geometry identifiers are supposed to be unique) has "
+        if (m->geo->getId () == geom->getId ()) {
+            RW_THROW ("The specified geometry \"" + geom->getId () +
+                      "\" (geometry identifiers are supposed to be unique) has "
                       "already been added to the proximity strategy model!");
             return false;
         }
@@ -108,7 +109,7 @@ bool ProximityStrategyRW::removeGeometry (rw::proximity::ProximityModel* model,
     RWProximityModel* pmodel = (RWProximityModel*) model;
     int idx                  = -1;
     for (size_t i = 0; i < pmodel->models.size (); i++)
-        if (pmodel->models[i]->geo->getId() == geomId) {
+        if (pmodel->models[i]->geo->getId () == geomId) {
             idx = static_cast< int > (i);
             break;
         }
@@ -122,7 +123,7 @@ bool ProximityStrategyRW::removeGeometry (rw::proximity::ProximityModel* model,
     _modelCache.remove (pmodel->models[idx]->ckey);
     std::vector< Model::Ptr >::iterator iter = pmodel->models.begin ();
     for (; iter != pmodel->models.end (); ++iter) {
-        if ((*iter)->geo->getId() == geomId) {
+        if ((*iter)->geo->getId () == geomId) {
             pmodel->models.erase (iter);
             return true;
         }
@@ -155,20 +156,20 @@ ProximityStrategyRW::getGeometryIDs (rw::proximity::ProximityModel* model)
     std::vector< std::string > res;
     RWProximityModel* pmodel = (RWProximityModel*) model;
     for (Model::Ptr& m : pmodel->models) {
-        res.push_back (m->geo->getId());
+        res.push_back (m->geo->getId ());
     }
     return res;
 }
 
 std::vector< rw::core::Ptr< rw::geometry::Geometry > >
-ProximityStrategyRW::getGeometrys (rw::proximity::ProximityModel* model){
-    std::vector< rw::core::Ptr< rw::geometry::Geometry >> res;
+ProximityStrategyRW::getGeometrys (rw::proximity::ProximityModel* model)
+{
+    std::vector< rw::core::Ptr< rw::geometry::Geometry > > res;
     RWProximityModel* pmodel = (RWProximityModel*) model;
     for (Model::Ptr& m : pmodel->models) {
         res.push_back (m->geo);
     }
     return res;
-
 }
 
 bool ProximityStrategyRW::doInCollision (ProximityModel::Ptr aModel, const Transform3D<>& wTa,

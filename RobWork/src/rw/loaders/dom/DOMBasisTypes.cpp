@@ -25,7 +25,6 @@
 #include <rw/math/LinearAlgebra.hpp>
 #include <rw/models/WorkCell.hpp>
 
-
 #include <boost/lexical_cast.hpp>
 #include <map>
 #include <sstream>

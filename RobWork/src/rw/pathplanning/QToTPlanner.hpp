@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RW_PATHPLANNING_QTOTPLANNER_HPP
 #define RW_PATHPLANNING_QTOTPLANNER_HPP
 
@@ -25,13 +24,13 @@
 
 #include "PathPlanner.hpp"
 
-#include <rw/math/Metric.hpp>
 #include <rw/core/Ptr.hpp>
+#include <rw/math/Metric.hpp>
 
 namespace rw { namespace pathplanning {
-	class QIKSampler;
-	class QToQSamplerPlanner;
-	class QToQPlanner;
+    class QIKSampler;
+    class QToQSamplerPlanner;
+    class QToQPlanner;
 
     /** @addtogroup pathplanning */
     /*@{*/
@@ -42,11 +41,11 @@ namespace rw { namespace pathplanning {
        An approach planner plans a path from a configuration for the device to a
        configuration for the tool.
     */
-    class QToTPlanner : public PathPlanner<rw::math::Q, const rw::math::Transform3D<> >
+    class QToTPlanner : public PathPlanner< rw::math::Q, const rw::math::Transform3D<> >
     {
-    public:
-		//! @brief smart pointer type to this class
-		typedef rw::core::Ptr<QToTPlanner> Ptr;
+      public:
+        //! @brief smart pointer type to this class
+        typedef rw::core::Ptr< QToTPlanner > Ptr;
 
         /**
            @brief An approach planner for a sampler of IK solutions and a region
@@ -58,9 +57,8 @@ namespace rw { namespace pathplanning {
            @param planner [in] Planner for a QSampler region.
            @param ikSampler [in] Sampler of IK solutions for the target transform.
         */
-		static QToTPlanner::Ptr make(
-			rw::core::Ptr<QToQSamplerPlanner> planner,
-			rw::core::Ptr<QIKSampler> ikSampler);
+        static QToTPlanner::Ptr make (rw::core::Ptr< QToQSamplerPlanner > planner,
+                                      rw::core::Ptr< QIKSampler > ikSampler);
 
         /**
            @brief An approach planner for a standard path planner and a sampler
@@ -70,15 +68,12 @@ namespace rw { namespace pathplanning {
            from \b sampler and calls \b planner with the configuration closest
            to \b from according to \b metric.
         */
-        static
-			QToTPlanner::Ptr makeToNearest(
-			rw::core::Ptr<QToQPlanner> planner,
-			rw::core::Ptr<QIKSampler> sampler,
-			rw::math::QMetric::Ptr metric,
-            int cnt);
+        static QToTPlanner::Ptr makeToNearest (rw::core::Ptr< QToQPlanner > planner,
+                                               rw::core::Ptr< QIKSampler > sampler,
+                                               rw::math::QMetric::Ptr metric, int cnt);
     };
 
     /*@}*/
-}} // end namespaces
+}}    // namespace rw::pathplanning
 
-#endif // end include guard
+#endif    // end include guard

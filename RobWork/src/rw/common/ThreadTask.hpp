@@ -23,14 +23,14 @@
  *
  * \copydoc rw::common::ThreadTask
  */
-
+#if !defined(SWIG)
 #include <rw/core/Ptr.hpp>
 
 #include <boost/function.hpp>
 #include <boost/thread/mutex.hpp>
 #include <list>
 #include <vector>
-
+#endif
 namespace rw { namespace core {
     class Exception;
 }}    // namespace rw::core
@@ -41,8 +41,9 @@ namespace rw { namespace common {
     template< typename T > class ThreadSafeVariable;
 
     //! @addtogroup common
-
+#if !defined(SWIG)
     //! @{
+#endif
     /**
      * @brief A task that facilitates the use of a hierarchic tree of tasks and subtasks.
      *
@@ -144,7 +145,10 @@ namespace rw { namespace common {
          * @brief It is optional to implement these functions, but normally at least one should be
          * implemented.
          */
+
+#if !defined(SWIG)
         ///@{
+#endif
         /**
          *  @brief Function is the first function executed to do the actual work (new subtasks can
          * be added in this function).
@@ -153,8 +157,9 @@ namespace rw { namespace common {
 
         /**
          * @brief Function is executed each time a subtask has finished (new subtasks can be added
-           in this function). If #registerFailure is used to register failures in subtasks, this function should handle
-           or propagate the failures. The default implementation of this function is as follows:
+           in this function). If #registerFailure is used to register failures in subtasks, this
+         function should handle or propagate the failures. The default implementation of this
+         function is as follows:
          * \verbatim
                 for(const Exception& e : subtask->getExceptions()) {
                         registerFailure(e);
@@ -176,7 +181,12 @@ namespace rw { namespace common {
          * added).
          */
         virtual void done ();
+
+#if !defined(SWIG)
+
         ///@}
+
+#endif
 
         /**
          * @brief Start executing the work in this task and all subtasks already added, by using the
@@ -250,13 +260,13 @@ namespace rw { namespace common {
          * @param e [in] an exception describing the problem.
          */
         void registerFailure (const rw::core::Exception& e);
-
+#if !defined(SWIG)
         /**
          * @brief Get a list of exceptions registered in task and subtasks.
          * @return a list of exceptions.
          */
         std::list< rw::core::Exception > getExceptions () const;
-
+#endif
       private:
         typedef boost::function< void (ThreadTask*) > ParentCallback;
 
@@ -279,6 +289,8 @@ namespace rw { namespace common {
         // Mutex for exclusive access to atomic manipulation of all data
         boost::mutex _mutex;
     };
-    //! @}
+#if !defined(SWIG)
+//! @}
+#endif
 }}     // namespace rw::common
 #endif /* RW_COMMON_THREADTASK_HPP_ */

@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,48 +15,46 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #include "StateData.hpp"
 
 #include "State.hpp"
+
 #include <rw/core/macros.hpp>
 
 using namespace rw::kinematics;
 
-StateData::StateData(int size, const std::string& name):
-    _id(-1),
-    _size(size),
-    _name(name),
-    _hasCache(false)
+StateData::StateData (int size, const std::string& name) :
+    _id (-1), _size (size), _name (name), _hasCache (false)
 {
-    RW_ASSERT(0 <= size);
+    RW_ASSERT (0 <= size);
 }
 
-StateData::StateData(int size, const std::string& name, rw::core::Ptr<StateCache> cache):
-    _id(-1),
-    _size(size),
-    _name(name),
-    _hasCache(true),
-    _cache(cache)
+StateData::StateData (int size, const std::string& name, rw::core::Ptr< StateCache > cache) :
+    _id (-1), _size (size), _name (name), _hasCache (true), _cache (cache)
 {
-    RW_ASSERT(0 <= size);
+    RW_ASSERT (0 <= size);
 }
 
-StateData::~StateData(){}
+StateData::~StateData ()
+{}
 
-rw::core::Ptr<StateCache> StateData::getCache(const State& state) const{
-    if( _hasCache==false )
-        return NULL; // stop early if we know size is 0
-    return state.getCache(_id);
+rw::core::Ptr< StateCache > StateData::getCache (const State& state) const
+{
+    if (_hasCache == false)
+        return NULL;    // stop early if we know size is 0
+    return state.getCache (_id);
 }
 
-StateCache::Ptr StateData::getCache(State& state){
-    if( _hasCache==false )
-        return NULL; // stop early if we know size is 0
-    return state.getCache(_id);
+StateCache::Ptr StateData::getCache (State& state)
+{
+    if (_hasCache == false)
+        return NULL;    // stop early if we know size is 0
+    return state.getCache (_id);
 }
 
-void StateData::setCache(rw::core::Ptr<StateCache> cache, State& state){
-    if( _hasCache==false ) return; // stop early if we know size is 0
-    state.setCache(_id, cache);
+void StateData::setCache (rw::core::Ptr< StateCache > cache, State& state)
+{
+    if (_hasCache == false)
+        return;    // stop early if we know size is 0
+    state.setCache (_id, cache);
 }

@@ -103,7 +103,7 @@ public:
      *
      * @return Reference to the PropertyMap
      */
-    virtual PropertyMap& getProperties();
+    virtual rw::core::PropertyMap& getProperties();
     
 #if !defined(SWIGJAVA)
     /**
@@ -111,7 +111,7 @@ public:
      *
      * return Reference to the PropertyMap
      */
-    virtual const PropertyMap& getProperties() const;
+    virtual const rw::core::PropertyMap& getProperties() const;
 #endif
 
     /**

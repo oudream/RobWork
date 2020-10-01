@@ -7,7 +7,7 @@
 class MenuItem
 {
 public:
-    MenuItem(const std::string& name, int id, EventListener *listener):
+    MenuItem(const std::string& name, int id, example::EventListener *listener):
              _name(name),_id(id),_eventListener(listener){};
     virtual ~MenuItem(){};
 
@@ -16,13 +16,13 @@ public:
     std::string getName(){ return _name;};
 
     void event(){
-        _eventListener->event(EventListener::e_MENUITEM_EVENT,&_name);
+        _eventListener->event(example::EventListener::e_MENUITEM_EVENT,&_name);
     }
 
 private:
     std::string _name;
     int _id;
-    EventListener *_eventListener;
+    example::EventListener *_eventListener;
 };
 
 #endif /*MENUITEM_HPP_*/

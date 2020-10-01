@@ -115,7 +115,8 @@ namespace rwlibs { namespace proximitystrategies {
         /**
          * @copydoc rw::proximity::ProximityStrategy::getGeometrys
          */
-        std::vector < rw::core::Ptr< rw::geometry::Geometry > > getGeometrys (rw::proximity::ProximityModel* model);
+        std::vector< rw::core::Ptr< rw::geometry::Geometry > >
+        getGeometrys (rw::proximity::ProximityModel* model);
 
         /**
          *  @copydoc rw::proximity::ProximityStrategy::clear

@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,24 +15,26 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RW_CORE_LOGSTREAMWRITER_HPP
 #define RW_CORE_LOGSTREAMWRITER_HPP
 
-#include <iosfwd>
+#if !defined(SWIG)
 #include <rw/core/LogWriter.hpp>
+
+#include <iosfwd>
+#endif
 
 namespace rw { namespace core {
 
-	/** @addtogroup core */
-	/*@{*/
+    /** @addtogroup core */
+    /*@{*/
 
-	/**
+    /**
      * @brief Writes log output to a std::ostream
      */
     class LogStreamWriter : public LogWriter
     {
-    public:
+      public:
         /**
          * @brief Constructs LogStreamWriter with a target output stream
          *
@@ -44,38 +46,38 @@ namespace rw { namespace core {
          *
          * @param stream [in] Stream to write to
          */
-        LogStreamWriter(std::ostream* stream);
+        LogStreamWriter (std::ostream* stream);
 
         /**
          * @brief Destructor
          *
          * Calls flush on the output stream before destruction
          */
-        ~LogStreamWriter();
+        ~LogStreamWriter ();
 
-	protected:
+      protected:
         /**
          * @copydoc LogWriter::write(const std::string&)
          */
-        void doWrite(const std::string& str);
+        void doWrite (const std::string& str);
 
         /**
          * @brief Calls flush on the ostream
          */
-        void doFlush();
+        void doFlush ();
 
-		/** 
-	 	 * @copydoc LogWriter::setTabLevel(int)
-		 */
-		void doSetTabLevel(int tabLevel);
+        /**
+         * @copydoc LogWriter::setTabLevel(int)
+         */
+        void doSetTabLevel (int tabLevel);
 
-    private:
+      private:
         std::ostream* _stream;
-		int _tabLevel;
+        int _tabLevel;
     };
 
-	/*@}*/
-}} // end namespaces
+    /*@}*/
+}}    // namespace rw::core
 
 /**
  * @brief Deprecated namespace since 16/4-2020 for this class
@@ -83,6 +85,6 @@ namespace rw { namespace core {
  */
 namespace rw { namespace common {
     using namespace rw::core;
-}}
+}}    // namespace rw::common
 
-#endif // end include guard
+#endif    // end include guard

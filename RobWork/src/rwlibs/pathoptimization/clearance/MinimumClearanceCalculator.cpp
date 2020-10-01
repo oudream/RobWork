@@ -15,13 +15,12 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #include "MinimumClearanceCalculator.hpp"
 
 //#include <rw/proximity/ProximityStrategyFactory.hpp>
-#include <rwlibs/proximitystrategies/ProximityStrategyFactory.hpp>
-#include <rw/proximity/DistanceCalculator.hpp>
 #include <rw/models/WorkCell.hpp>
+#include <rw/proximity/DistanceCalculator.hpp>
+#include <rwlibs/proximitystrategies/ProximityStrategyFactory.hpp>
 
 using namespace rwlibs::pathoptimization;
 using namespace rwlibs::proximitystrategies;
@@ -30,36 +29,31 @@ using namespace rw::kinematics;
 using namespace rw::models;
 using namespace rw::core;
 
-namespace
+namespace {
+DistanceCalculator::Ptr getDistanceCalculator (const WorkCell::Ptr& workcell, const State& state)
 {
-	DistanceCalculator::Ptr getDistanceCalculator(const WorkCell::Ptr& workcell,
-                                                  const State& state)
-    {
-		DistanceStrategy::Ptr strat = ProximityStrategyFactory::makeDefaultDistanceStrategy();
-        if(strat==NULL)
-            RW_THROW("Requires a valid distance strategy!");
-        return ownedPtr(new DistanceCalculator(workcell->getWorldFrame(),
-                                               workcell,
-                                               strat,
-                                               state));
-    }
+    DistanceStrategy::Ptr strat = ProximityStrategyFactory::makeDefaultDistanceStrategy ();
+    if (strat == NULL)
+        RW_THROW ("Requires a valid distance strategy!");
+    return ownedPtr (new DistanceCalculator (workcell->getWorldFrame (), workcell, strat, state));
 }
+}    // namespace
 
-MinimumClearanceCalculator::MinimumClearanceCalculator(const DistanceCalculator::CPtr& distancecalculator)
-    :
-    _distancecalculator(distancecalculator)
+MinimumClearanceCalculator::MinimumClearanceCalculator (
+    const DistanceCalculator::CPtr& distancecalculator) :
+    _distancecalculator (distancecalculator)
 {}
 
-MinimumClearanceCalculator::MinimumClearanceCalculator(const WorkCell::Ptr& workcell,
-                                                       const State& state):
-    _distancecalculator(getDistanceCalculator(workcell, state))
+MinimumClearanceCalculator::MinimumClearanceCalculator (const WorkCell::Ptr& workcell,
+                                                        const State& state) :
+    _distancecalculator (getDistanceCalculator (workcell, state))
 {}
 
-MinimumClearanceCalculator::~MinimumClearanceCalculator()
+MinimumClearanceCalculator::~MinimumClearanceCalculator ()
 {}
 
-double MinimumClearanceCalculator::clearance(const State& state) const
+double MinimumClearanceCalculator::clearance (const State& state) const
 {
-    DistanceStrategy::Result result = _distancecalculator->distance(state);
+    DistanceStrategy::Result result = _distancecalculator->distance (state);
     return result.distance;
 }

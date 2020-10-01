@@ -89,7 +89,7 @@ namespace rw { namespace proximity {
          * @brief return pointer to the associated frame
          *
          **/
-        const rw::kinematics::Frame* getFrame () { return _frame; };
+        rw::kinematics::Frame* getFrame () { return _frame; };
 
         /**
          * @brief sets the associated frame
@@ -97,12 +97,12 @@ namespace rw { namespace proximity {
          * @param frame frame to set
          **/
 
-        void setFrame (const rw::kinematics::Frame* frame) { _frame = frame; }
+        void setFrame (const rw::kinematics::Frame* frame) { _frame = const_cast<rw::kinematics::Frame*> (frame); }
 
         ProximityStrategy* owner;
 
       private:
-        const rw::kinematics::Frame* _frame;
+        rw::kinematics::Frame* _frame;
     };
 }}    // namespace rw::proximity
 

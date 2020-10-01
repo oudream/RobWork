@@ -459,6 +459,9 @@ namespace rw { namespace math {
     extern template class rw::math::Vector< double >;
     extern template class rw::math::Vector< float >;
 
+    using Vectord = Vector<double>;
+    using Vectorf = Vector<float>;
+
     /*@}*/
 
 }}    // namespace rw::math

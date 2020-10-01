@@ -187,8 +187,8 @@ namespace rw { namespace math {
          */
         friend std::ostream& operator<< (std::ostream& os, const Pose2D< T >& pose)
         {
-            return os << " Ppse2D { x: " << pose.x () << ", y: " << pose.y () << ", th: " << pose.theta ()
-                      << "}";
+            return os << " Ppse2D { x: " << pose.x () << ", y: " << pose.y ()
+                      << ", th: " << pose.theta () << "}";
         }
 
         /**
@@ -212,6 +212,9 @@ namespace rw { namespace math {
 
     extern template class rw::math::Pose2D< double >;
     extern template class rw::math::Pose2D< float >;
+
+    using Pose2Dd = Pose2D<double>;
+    using Pose2Df = Pose2D<float>;
 
     /*@}*/
 }}    // namespace rw::math

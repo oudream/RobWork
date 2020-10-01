@@ -19,44 +19,45 @@
 
 using namespace rwsim::contacts;
 
-ContactStrategyData::ContactStrategyData():
-	_data(NULL)
+ContactStrategyData::ContactStrategyData () : _data (NULL)
+{}
+
+ContactStrategyData::ContactStrategyData (const ContactStrategyData& data) :
+    _data (data._data == NULL ? NULL : data._data->copy ())
+{}
+
+ContactStrategyData::~ContactStrategyData ()
 {
+    if (_data != NULL) {
+        delete _data;
+        _data = NULL;
+    }
 }
 
-ContactStrategyData::ContactStrategyData(const ContactStrategyData& data):
-	_data(data._data == NULL ? NULL : data._data->copy())
+ContactStrategyData& ContactStrategyData::operator= (const ContactStrategyData& data)
 {
+    if (this != &data) {
+        if (_data != NULL)
+            delete _data;
+        if (data._data != NULL)
+            _data = data._data->copy ();
+        else
+            _data = NULL;
+    }
+    return *this;
 }
 
-ContactStrategyData::~ContactStrategyData() {
-	if (_data != NULL) {
-		delete _data;
-		_data = NULL;
-	}
+ContactStrategyData::SpecificData* ContactStrategyData::getSpecificData () const
+{
+    return _data;
 }
 
-ContactStrategyData& ContactStrategyData::operator=(const ContactStrategyData& data) {
-	if (this != &data)
-	{
-		if (_data != NULL)
-			delete _data;
-		if (data._data != NULL)
-			_data = data._data->copy();
-		else
-			_data = NULL;
-	}
-	return *this;
+void ContactStrategyData::setSpecificData (SpecificData* data)
+{
+    _data = data;
 }
 
-ContactStrategyData::SpecificData* ContactStrategyData::getSpecificData() const {
-	return _data;
-}
-
-void ContactStrategyData::setSpecificData(SpecificData* data) {
-	_data = data;
-}
-
-bool ContactStrategyData::isInitialized() const {
-	return _data != NULL;
+bool ContactStrategyData::isInitialized () const
+{
+    return _data != NULL;
 }

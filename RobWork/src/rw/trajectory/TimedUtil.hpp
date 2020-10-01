@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,12 +15,11 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RW_TRAJECTORY_TIMEDUTIL_HPP
 #define RW_TRAJECTORY_TIMEDUTIL_HPP
 
-#include "Timed.hpp"
 #include "Path.hpp"
+#include "Timed.hpp"
 
 #include <rw/math/Q.hpp>
 
@@ -29,9 +28,15 @@
    @brief Class rw::trajectory::TimedUtil
 */
 
-namespace rw { namespace kinematics { class State; }}
-namespace rw { namespace models { class Device; }}
-namespace rw { namespace models { class WorkCell; }}
+namespace rw { namespace kinematics {
+    class State;
+}}    // namespace rw::kinematics
+namespace rw { namespace models {
+    class Device;
+}}    // namespace rw::models
+namespace rw { namespace models {
+    class WorkCell;
+}}    // namespace rw::models
 
 namespace rw { namespace trajectory {
 
@@ -43,7 +48,7 @@ namespace rw { namespace trajectory {
     */
     class TimedUtil
     {
-    public:
+      public:
         /**
            @brief A path of time stamped configurations.
 
@@ -51,8 +56,8 @@ namespace rw { namespace trajectory {
            for the remaining configurations are computed using the joint speed
            velocities \b speed.
         */
-        static TimedQPath makeTimedQPath(
-            const math::Q& speed, const QPath& path, double offset = 0);
+        static TimedQPath makeTimedQPath (const math::Q& speed, const QPath& path,
+                                          double offset = 0);
 
         /**
            @brief A path of time stamped configurations.
@@ -61,8 +66,8 @@ namespace rw { namespace trajectory {
            the remaining configurations are computed using the joint speed
            velocities of \b device.
          */
-        static TimedQPath makeTimedQPath(
-            const models::Device& device, const QPath& path, double offset = 0);
+        static TimedQPath makeTimedQPath (const models::Device& device, const QPath& path,
+                                          double offset = 0);
 
         /**
            @brief A path of time stamped states.
@@ -71,10 +76,8 @@ namespace rw { namespace trajectory {
            remaining states are computed using the maximum joint speed
            velocities of \b workcell.
          */
-        static TimedStatePath makeTimedStatePath(
-            const models::WorkCell& workcell,
-            const StatePath& path,
-			double offset = 0);
+        static TimedStatePath makeTimedStatePath (const models::WorkCell& workcell,
+                                                  const StatePath& path, double offset = 0);
 
         /**
            @brief A path of time stamped states.
@@ -83,14 +86,12 @@ namespace rw { namespace trajectory {
            remaining states are computed using the maximum joint speed
            velocities of \b device.
         */
-        static TimedStatePath makeTimedStatePath(
-            const models::Device& device,
-            const QPath& path,
-            const kinematics::State& state,
-			double offset = 0);
+        static TimedStatePath makeTimedStatePath (const models::Device& device, const QPath& path,
+                                                  const kinematics::State& state,
+                                                  double offset = 0);
     };
 
     /*@}*/
-}} // end namespaces
+}}    // namespace rw::trajectory
 
-#endif // end include guard
+#endif    // end include guard

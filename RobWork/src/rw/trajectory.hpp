@@ -20,7 +20,6 @@
  * this file includes all header files from the trajectory namespace
  */
 
-
 #ifndef RW_TRAJECTORY_HPP_
 #define RW_TRAJECTORY_HPP_
 
@@ -36,13 +35,12 @@
 #include "./trajectory/LloydHaywardBlend.hpp"
 #include "./trajectory/ParabolicBlend.hpp"
 #include "./trajectory/Path.hpp"
+#include "./trajectory/RampInterpolator.hpp"
 #include "./trajectory/Timed.hpp"
 #include "./trajectory/TimedUtil.hpp"
 #include "./trajectory/Trajectory.hpp"
 #include "./trajectory/TrajectoryFactory.hpp"
 #include "./trajectory/TrajectoryIterator.hpp"
 #include "./trajectory/TrajectorySequence.hpp"
-#include "./trajectory/RampInterpolator.hpp"
-
 
 #endif /* TRAJECTORY_HPP_ */

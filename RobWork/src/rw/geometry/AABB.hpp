@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -26,59 +26,59 @@ namespace geometry {
     /**
      * @brief Axis Aligned Bounding Box class
      */
-    template<class T>
-    class AABB: public BV<AABB<T> > {
-    public:
+    template< class T > class AABB : public BV< AABB< T > >
+    {
+      public:
         //! constructor
-        AABB():_position(0,0,0),_halfLng(0,0,0){}
+        AABB () : _position (0, 0, 0), _halfLng (0, 0, 0) {}
 
         //! destructor
-        virtual ~AABB(){}
+        virtual ~AABB () {}
 
         //! set half lengths
-        inline void setHalfLengths(const rw::math::Vector3D<T>& pos) { _halfLng = pos; }
+        inline void setHalfLengths (const rw::math::Vector3D< T >& pos) { _halfLng = pos; }
 
         //! get halflengths of this box
-        inline const rw::math::Vector3D<T>& getHalfLengths() const { return _halfLng; }
-
+        inline const rw::math::Vector3D< T >& getHalfLengths () const { return _halfLng; }
 
         //! set position
-        inline void setPosition(const rw::math::Vector3D<T>& pos) { _position = pos; }
+        inline void setPosition (const rw::math::Vector3D< T >& pos) { _position = pos; }
 
         //! position of this AABB
-        inline const rw::math::Vector3D<T>& getPosition() const { return _position; }
+        inline const rw::math::Vector3D< T >& getPosition () const { return _position; }
 
         //! @brief calculate the volume of this OBB
-        inline T calcVolume() const {
-            return _halfLng(0)*2 * _halfLng(1)*2 * _halfLng(2)*2;
+        inline T calcVolume () const
+        {
+            return _halfLng (0) * 2 * _halfLng (1) * 2 * _halfLng (2) * 2;
         }
 
         //! @brief calculates the total area of the box
-        inline T calcArea() const {
-            const T &h = _halfLng(0);
-            const T &w = _halfLng(1);
-            const T &l = _halfLng(2);
-            return 2*(h*2*w*2) + 2*(h*2*l*2) + 2*(w*2*l*2);
+        inline T calcArea () const
+        {
+            const T& h = _halfLng (0);
+            const T& w = _halfLng (1);
+            const T& l = _halfLng (2);
+            return 2 * (h * 2 * w * 2) + 2 * (h * 2 * l * 2) + 2 * (w * 2 * l * 2);
         }
 
-    private:
-        rw::math::Vector3D<T> _position, _halfLng;
-
+      private:
+        rw::math::Vector3D< T > _position, _halfLng;
     };
 
-} // geometry
+}    // namespace geometry
 //! define traits of the AABB
-template<typename T> struct Traits<rw::geometry::AABB<T> >{
-	//! @brief define traits of the AABB
-	typedef T value_type;
+template< typename T > struct Traits< rw::geometry::AABB< T > >
+{
+    //! @brief define traits of the AABB
+    typedef T value_type;
 };
 
+}    // namespace rw
 
-} // rw
-
-extern template class rw::geometry::BV<rw::geometry::AABB<double> >;
-extern template class rw::geometry::AABB<double>;
-extern template class rw::geometry::BV<rw::geometry::AABB<float> >;
-extern template class rw::geometry::AABB<float>;
+extern template class rw::geometry::BV< rw::geometry::AABB< double > >;
+extern template class rw::geometry::AABB< double >;
+extern template class rw::geometry::BV< rw::geometry::AABB< float > >;
+extern template class rw::geometry::AABB< float >;
 
 #endif /* AABB_HPP_ */

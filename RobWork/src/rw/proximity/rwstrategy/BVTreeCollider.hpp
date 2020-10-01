@@ -22,78 +22,72 @@
 #include <rw/math/Transform3D.hpp>
 #include <rw/proximity/CollisionStrategy.hpp>
 
-namespace rw {
-namespace proximity {
+namespace rw { namespace proximity {
 
-	/**
-	 * @brief this class encapsulates the methods for iterating through
-	 * two hierachical OBV trees while testing if the BV's are disjoint.
-	 *
-	 *
-	 * @note The TreeCollider is statefull and should therefore NOT be used by
-	 * multiple threads. The state is small so there is only little to no overhead
-	 * cloning the TreeCollider.
-	 */
-    template<class BVTREE>
-	class BVTreeCollider {
-	private:
-
-	public:
+    /**
+     * @brief this class encapsulates the methods for iterating through
+     * two hierachical OBV trees while testing if the BV's are disjoint.
+     *
+     *
+     * @note The TreeCollider is statefull and should therefore NOT be used by
+     * multiple threads. The state is small so there is only little to no overhead
+     * cloning the TreeCollider.
+     */
+    template< class BVTREE > class BVTreeCollider
+    {
+      private:
+      public:
         //! @brief smart pointer for this class
-        typedef rw::core::Ptr<BVTreeCollider<BVTREE> > Ptr;
+        typedef rw::core::Ptr< BVTreeCollider< BVTREE > > Ptr;
 
         /**
          * @brief destructor
          */
-		virtual ~BVTreeCollider(){}
+        virtual ~BVTreeCollider () {}
 
-		/**
-		 * @brief tests if two BV trees are colliding.
-		 * @param fTA [in] transform from reference frame \b f to tree \b treeA root.
-		 * @param treeA [in] documentation missing !
-		 * @param fTB [in] transform from reference frame \b f to tree \b treeB root.
-		 * @param treeB [in] documentation missing !
-		 * @param collidingPrimitives documentation missing !
-		 */
-		virtual bool collides(
-			const rw::math::Transform3D<typename BVTREE::value_type>& fTA, const BVTREE& treeA,
-			const rw::math::Transform3D<typename BVTREE::value_type>& fTB, const BVTREE& treeB,
-			std::vector<std::pair<int,int> > *collidingPrimitives = NULL) = 0;
+        /**
+         * @brief tests if two BV trees are colliding.
+         * @param fTA [in] transform from reference frame \b f to tree \b treeA root.
+         * @param treeA [in] documentation missing !
+         * @param fTB [in] transform from reference frame \b f to tree \b treeB root.
+         * @param treeB [in] documentation missing !
+         * @param collidingPrimitives documentation missing !
+         */
+        virtual bool collides (
+            const rw::math::Transform3D< typename BVTREE::value_type >& fTA, const BVTREE& treeA,
+            const rw::math::Transform3D< typename BVTREE::value_type >& fTB, const BVTREE& treeB,
+            std::vector< std::pair< int, int > >* collidingPrimitives = NULL) = 0;
 
-		/**
-		 * @brief set the query type
-		 */
-		virtual void setQueryType(CollisionStrategy::QueryType type) { _queryType=type; }
+        /**
+         * @brief set the query type
+         */
+        virtual void setQueryType (CollisionStrategy::QueryType type) { _queryType = type; }
 
         /**
          * @brief get the collision query type
          */
-		virtual CollisionStrategy::QueryType getQueryType() { return _queryType; }
+        virtual CollisionStrategy::QueryType getQueryType () { return _queryType; }
 
-		//! type of the primitive in collision callb ack function
-		//typedef boost::function<void(int,int)> PrimitivesInCollisionCB;
-		//virtual void setPrimitivesInCollisionCB(PrimitivesInCollisionCB cb){ _pCB = cb;}
+        //! type of the primitive in collision callb ack function
+        // typedef boost::function<void(int,int)> PrimitivesInCollisionCB;
+        // virtual void setPrimitivesInCollisionCB(PrimitivesInCollisionCB cb){ _pCB = cb;}
 
-		/**
-		 * @brief returns the amount of heap memmory used by the tree collider.
-		 * @return nr of bytes used
-		 */
-		virtual int getMemUsage() = 0;
+        /**
+         * @brief returns the amount of heap memmory used by the tree collider.
+         * @return nr of bytes used
+         */
+        virtual int getMemUsage () = 0;
 
+        virtual int getNrOfTestedBVs () { return -1; }
+        virtual int getNrOfCollidingBVs () { return -1; }
 
-		virtual int getNrOfTestedBVs() { return -1; }
-		virtual int getNrOfCollidingBVs() { return -1; }
+        virtual int getNrOfTestedPrimitives () { return -1; }
+        virtual int getNrOfCollidingPrimitives () { return -1; }
 
-		virtual int getNrOfTestedPrimitives() { return -1; }
-		virtual int getNrOfCollidingPrimitives() { return -1; }
+      protected:
+        CollisionStrategy::QueryType _queryType;
+    };
 
-	protected:
-		CollisionStrategy::QueryType _queryType;
-	};
-
-
-}
-}
-
+}}    // namespace rw::proximity
 
 #endif /* RW_PROXIMITY_BVTREECOLLIDER_HPP_ */

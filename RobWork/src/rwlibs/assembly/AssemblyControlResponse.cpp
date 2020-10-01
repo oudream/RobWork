@@ -19,15 +19,12 @@
 
 using namespace rwlibs::assembly;
 
-AssemblyControlResponse::AssemblyControlResponse():
-	type(POSITION),
-	done(false),
-	success(false)
+AssemblyControlResponse::AssemblyControlResponse () : type (POSITION), done (false), success (false)
 {
-	for (std::size_t i = 0; i < 6; i++) {
-		selection[i] = false;
-	}
+    for (std::size_t i = 0; i < 6; i++) {
+        selection[i] = false;
+    }
 }
 
-AssemblyControlResponse::~AssemblyControlResponse() {
-}
+AssemblyControlResponse::~AssemblyControlResponse ()
+{}

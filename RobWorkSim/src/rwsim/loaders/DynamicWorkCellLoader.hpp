@@ -18,28 +18,24 @@
 #ifndef RWSIM_DYNAMICS_DYNAMICWORKCELLLOADER_HPP_
 #define RWSIM_DYNAMICS_DYNAMICWORKCELLLOADER_HPP_
 
-#include <rwsim/dynamics/DynamicWorkCell.hpp>
 #include <rw/core/Ptr.hpp>
+#include <rwsim/dynamics/DynamicWorkCell.hpp>
 
-namespace rwsim {
-namespace loaders {
+namespace rwsim { namespace loaders {
 
-	/**
-	 * @brief class for loading of dynamic owrkcells
-	 */
+    /**
+     * @brief class for loading of dynamic owrkcells
+     */
     class DynamicWorkCellLoader
     {
-    public:
-    	/**
-    	 * @brief load a workcell
-    	 * @param filename
-    	 */
-        static rw::core::Ptr<dynamics::DynamicWorkCell>
-        	load(const std::string& filename);
-
+      public:
+        /**
+         * @brief load a workcell
+         * @param filename
+         */
+        static rw::core::Ptr< dynamics::DynamicWorkCell > load (const std::string& filename);
     };
 
-}
-}
+}}    // namespace rwsim::loaders
 
 #endif /*DYNAMICWORKCELLLOADER_HPP_*/

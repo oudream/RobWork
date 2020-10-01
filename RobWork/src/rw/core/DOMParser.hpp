@@ -18,12 +18,14 @@
 #ifndef RW_CORE_DOMPARSER_HPP
 #define RW_CORE_DOMPARSER_HPP
 
+#if !defined(SWIG)
 #include <rw/core/DOMElem.hpp>
 #include <rw/core/ExtensionPoint.hpp>
 #include <rw/core/Ptr.hpp>
 
 #include <string>
 #include <vector>
+#endif
 
 namespace rw { namespace core {
 
@@ -103,7 +105,7 @@ namespace rw { namespace core {
 
         /**
          * @addtogroup extensionpoints
-         * @extensionpoint{rw::core::DOMParser::Factory,rw::core::DOMParser,rw.core.DOMParser}
+         * @extensionpoint{ rw::core::DOMParser::Factory,rw::core::DOMParser,rw.core.DOMParser }
          * \class DOMParser
          */
 
@@ -118,8 +120,8 @@ namespace rw { namespace core {
           public:
             //! constructor
             Factory () :
-                rw::core::ExtensionPoint< DOMParser > (
-                    "rw.core.DOMParser", "DOM capable parser of fstream and files"){};
+                rw::core::ExtensionPoint< DOMParser > ("rw.core.DOMParser",
+                                                       "DOM capable parser of fstream and files"){};
 
             /**
              * @brief get a DOM parser for a specific file format
@@ -156,6 +158,6 @@ namespace rw { namespace core {
  */
 namespace rw { namespace common {
     using namespace rw::core;
-}}
+}}    // namespace rw::common
 
 #endif

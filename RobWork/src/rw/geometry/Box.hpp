@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RW_GEOMETRY_BOXPRIMITIVE_HPP_
 #define RW_GEOMETRY_BOXPRIMITIVE_HPP_
 
@@ -23,66 +22,65 @@
 
 #include <rw/core/Ptr.hpp>
 
-namespace rw {
-namespace geometry {
-	//! @addtogroup geometry
-	// @{
-	/**
-	 * @brief a box primitive, origin is in center of box
-	 */
-	class Box: public Primitive {
-	public:
-		//! @brief smart pointer type to this class
-        typedef rw::core::Ptr<Box> Ptr;
-		/**
-		 * @brief constructor - creates a 1x1x1 sided box
-		 */
-		Box():_dx(1),_dy(1),_dz(1){};
+namespace rw { namespace geometry {
+    //! @addtogroup geometry
+    // @{
+    /**
+     * @brief a box primitive, origin is in center of box
+     */
+    class Box : public Primitive
+    {
+      public:
+        //! @brief smart pointer type to this class
+        typedef rw::core::Ptr< Box > Ptr;
+        /**
+         * @brief constructor - creates a 1x1x1 sided box
+         */
+        Box () : _dx (1), _dy (1), _dz (1){};
 
-		/**
-		 * @brief constructor
-		 * @param x [in] width in x axis
-		 * @param y [in] width in y axis
-		 * @param z [in] width in z axis
-		 */
-		Box(double x, double y, double z);
+        /**
+         * @brief constructor
+         * @param x [in] width in x axis
+         * @param y [in] width in y axis
+         * @param z [in] width in z axis
+         */
+        Box (double x, double y, double z);
 
-		/**
-		 * @brief constructor
-		 * @param initQ [in] vector with (x,y,z)
-		 */
-		Box(const rw::math::Q& initQ);
+        /**
+         * @brief constructor
+         * @param initQ [in] vector with (x,y,z)
+         */
+        Box (const rw::math::Q& initQ);
 
-		//! @brief destructor
-		virtual ~Box();
+        //! @brief destructor
+        virtual ~Box ();
 
-		// inherited from Primitive
+        // inherited from Primitive
 
-		//! @copydoc Primitive::createMesh
-		TriMesh::Ptr createMesh(int resolution) const;
+        //! @copydoc Primitive::createMesh
+        TriMesh::Ptr createMesh (int resolution) const;
 
-		//! @copydoc Primitive::getParameters
-		virtual rw::math::Q getParameters() const;
-		
-		//! @copydoc Primitive::setParameters
-		virtual void setParameters(const rw::math::Q& q);
+        //! @copydoc Primitive::getParameters
+        virtual rw::math::Q getParameters () const;
 
-		//! @copydoc GeometryData::getType
-		GeometryType getType() const { return BoxPrim; }
+        //! @copydoc Primitive::setParameters
+        virtual void setParameters (const rw::math::Q& q);
 
-	protected:
-		/**
-		 * @brief Check if point lies inside geometry.
-		 * @param point [in] point to check.
-		 * @return true if inside geometry, false otherwise.
-		 */
-		 bool doIsInside(const rw::math::Vector3D<>& point);
+        //! @copydoc GeometryData::getType
+        GeometryType getType () const { return BoxPrim; }
 
-	private:
-		double _dx,_dy,_dz;
-	};
-	//! @}
-} // geometry
-} // rw
+      protected:
+        /**
+         * @brief Check if point lies inside geometry.
+         * @param point [in] point to check.
+         * @return true if inside geometry, false otherwise.
+         */
+        bool doIsInside (const rw::math::Vector3D<>& point);
+
+      private:
+        double _dx, _dy, _dz;
+    };
+    //! @}
+}}    // namespace rw::geometry
 
 #endif /* BOX_HPP_ */

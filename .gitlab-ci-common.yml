@@ -9,20 +9,31 @@ stages:
 ##################### Common CI settings ##############################
 
 .CI-common:
-  only:
-    refs:
-      - branches@sdurobotics/RobWork
-      - tags@sdurobotics/RobWork
-      - schedules
-      - web
-      - merge_requests@sdurobotics/RobWork
-      - /^ci-.*$/
-  except:
-    refs:
-      - debian-pkg@sdurobotics/RobWork
-      - /^wip-.*$/
-    variables:
-      - $CI_COMMIT_MESSAGE =~ /^WIP:/
+  rules:
+    # Merge Pipeline
+    - if: '$CI_JOB_NAME =~ /^.*(build[:-](RW.?.?|doc)|tests|examples).*-2004/       && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "devel"'
+    # Merge Pipeline for centos problems
+    - if: '$CI_MERGE_REQUEST_TITLE =~ /^.*[cC]ent[Oo][Ss]/ && $CI_JOB_NAME =~ /^.*centos-7/ && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "devel"'
+    # Merge Pipeline for ubuntu16 problems
+    - if: '$CI_MERGE_REQUEST_TITLE =~ /^.*[uU]buntu.?16/ && $CI_JOB_NAME =~ /^.*ubuntu-1604/ && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "devel"'
+    # Merge Pipeline for ubuntu18 problems
+    - if: '$CI_MERGE_REQUEST_TITLE =~ /^.*[uU]buntu.?18/ && $CI_JOB_NAME =~ /^.*[^(pre)].ubuntu-1804/ && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "devel"'
+    # Merge Pipeline for windows problems
+    - if: '$CI_MERGE_REQUEST_TITLE =~ /^.*[wW]indows/ && $CI_JOB_NAME =~ /^.*windows10.*/ && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "devel"'
+    # Merge Pipeline for mac problems
+    - if: '$CI_MERGE_REQUEST_TITLE =~ /^.*([Mm]ac[Oo][sS]|[Oo][sS][Xx]|[Mm]ac)/ && $CI_JOB_NAME =~ /^.*macOS.*/'
+    # Internal Piplines 
+    - if: '$CI_MERGE_REQUEST_SOURCE_PROJECT_PATH != "sdurobotics/RobWork" && $CI_MERGE_REQUEST_SOURCE_PROJECT_PATH =~ /^.+/'
+      when: never
+    - if: '$CI_PROJECT_PATH != "sdurobotics/RobWork"'
+      when: never
+    - if: '$CI_COMMIT_BRANCH == "debian-pkg"'
+      when: never
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_PIPELINE_SOURCE == "push"'
+    - if: '$CI_PIPELINE_SOURCE == "web"'
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+    - if: "$CI_COMMIT_TAG"
 
 ########################## Linux CI ####################################
 .alisases:
@@ -30,10 +41,10 @@ stages:
     - "[[ $CI_RUNNER_DESCRIPTION =~ 'shared-runners-manager' ]] && SHARED_RUNNER='true' || SHARED_RUNNER=''"
   - &remove-rw-install
     - shopt -s extglob
-    - rm -r -v /usr/local/bin/!(ccmake|cmake|cpack|ctest|ode-config) || echo 
-    - rm -r -v "/usr/local/lib/!(python2.7|python3.6)" || echo 
-    - rm -r -v /usr/local/include/!(ode) || echo 
-    - rm -r -v /usr/local/share/!(ca-certificates|fonts|man|applications|info) || echo 
+    - rm -r -v /usr/local/bin/!(ccmake|cmake|cpack|ctest|ode-config) || echo
+    - rm -r -v "/usr/local/lib/!(python2.7|python3.6)" || echo
+    - rm -r -v /usr/local/include/!(ode) || echo
+    - rm -r -v /usr/local/share/!(ca-certificates|fonts|man|applications|info) || echo
   - &uninstall-rw-deb
     - apt -y remove *sdurw* || echo "no pkg to remove"
     - apt -y remove robworkstudio* || echo "no pkg to remove"
@@ -77,6 +88,7 @@ stages:
   before_script:
     - *remove-rw-install
     - THREADS=$(nproc --all)
+    - WERROR=True
     - "[ -d Build ] || mkdir Build"
     - "[ -d Build/RW ] || mkdir Build/RW"
     - "[ -d Build/RWExamples ] || mkdir Build/RWExamples"
@@ -92,12 +104,11 @@ stages:
     - "[ -d Build/RWHWExamples ] || mkdir Build/RWHWExamples"
     - "[ -d gtest ] || mkdir gtest"
   script:
+    - printenv
     - cd Build
     # Build RobWork
     - cd RW
-    - *is_shared_runner
-    - "[[ $SHARED_RUNNER ]] || cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_sdurw_java=ON -DBUILD_sdurw_python=ON -DBUILD_sdurw_lua=ON ../../RobWork"
-    - "[[ $SHARED_RUNNER ]] && cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_DISABLE_FIND_PACKAGE_XercesC=True -DCMAKE_DISABLE_FIND_PACKAGE_SWIG=True -DRW_USE_FCL=OFF -DRW_USE_ASSIMP=OFF ../../RobWork"
+    - cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_sdurw_java=ON -DBUILD_sdurw_python=ON -DBUILD_sdurw_lua=ON ../../RobWork
     - make -j${THREADS}
   artifacts:
     paths:
@@ -116,9 +127,7 @@ stages:
     - cd Build
     # Build RobWorkStudio
     - cd RWS
-    - *is_shared_runner
-    - "[[ $SHARED_RUNNER ]] || cmake -DCMAKE_BUILD_TYPE=Release -DUSE_WERROR=$WERROR ../../RobWorkStudio"
-    - "[[ $SHARED_RUNNER ]] && cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_DISABLE_FIND_PACKAGE_SWIG=True ../../RobWorkStudio"
+    - cmake -DCMAKE_BUILD_TYPE=Release -DUSE_WERROR=$WERROR ../../RobWorkStudio
     - make -j${THREADS}
     - cd ..
   artifacts:
@@ -156,9 +165,7 @@ stages:
     - cd Build
     # Build RobWorkSim
     - cd RWSim
-    - *is_shared_runner
-    - "[[ $SHARED_RUNNER ]] || cmake -DCMAKE_BUILD_TYPE=Release -DUSE_WERROR=$WERROR ../../RobWorkSim"
-    - "[[ $SHARED_RUNNER ]] && cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_DISABLE_FIND_PACKAGE_SWIG=True ../../RobWorkSim"
+    - cmake -DCMAKE_BUILD_TYPE=Release -DUSE_WERROR=$WERROR ../../RobWorkSim
     - make -j${THREADS}
     - cd ..
   artifacts:
@@ -208,7 +215,7 @@ stages:
     - cd RWHWExamples
     - cmake -DCMAKE_BUILD_TYPE=Release ../../RobWorkHardware/example
     - make -j$(THREADS)
-    
+
 .linux-tests:
   extends: .CI-common-linux
   stage: test
@@ -340,7 +347,6 @@ stages:
   artifacts:
     paths:
       - ./DEBPKG
-      - ./debian
     expire_in: 2 day
     when: on_success
 
@@ -378,8 +384,8 @@ stages:
     - cd Build
     # Build RobWork
     - cd RW
-    - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 15 2017 Win64" -DSWIG_EXECUTABLE=%SWIG_ROOT%\swig.exe -DBUILD_sdurw_java=ON -DBUILD_sdurw_python=ON -DBUILD_sdurw_lua=ON ../../RobWork
-    - msbuild RobWork.sln /property:Configuration=Release /maxcpucount:8
+    - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" -A x64 -DBoost_INCLUDE_DIR=%Boost_INCLUDE_DIR% -DBUILD_sdurw_java=ON -DBUILD_sdurw_python=ON -DBUILD_sdurw_lua=ON -DSWIG_EXECUTABLE=%SWIG_ROOT%\swig.exe ../../RobWork
+    - msbuild RobWork.sln /property:Configuration=Release
   artifacts:
     paths:
       - ./Build
@@ -397,8 +403,8 @@ stages:
     - cd Build
     # Build RobWorkHardware
     - cd RWHW
-    - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 15 2017 Win64" -DBUILD_SHARED_LIBS=OFF -DRWHW_SHARED_LIBS=OFF ../../RobWorkHardware
-    - msbuild RobWorkHardware.sln /property:Configuration=Release /maxcpucount:8
+    - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" -A x64 -DBUILD_SHARED_LIBS=OFF -DRWHW_SHARED_LIBS=OFF ../../RobWorkHardware
+    - msbuild RobWorkHardware.sln /property:Configuration=Release
   artifacts:
     paths:
       - ./Build/RWHW
@@ -415,8 +421,8 @@ stages:
     - cd Build
     # Build RobWorkStudio
     - cd RWS
-    - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 15 2017 Win64" -DSWIG_EXECUTABLE=%SWIG_ROOT%\swig.exe ../../RobWorkStudio
-    - msbuild RobWorkStudio.sln /property:Configuration=Release /maxcpucount:6
+    - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" -A x64 -DSWIG_EXECUTABLE=%SWIG_ROOT%\swig.exe ../../RobWorkStudio
+    - msbuild RobWorkStudio.sln /property:Configuration=Release
   artifacts:
     paths:
       - ./Build/RWS
@@ -432,8 +438,8 @@ stages:
   script:
     - cd Build
     - cd RWSim
-    - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 15 2017 Win64" -DSWIG_EXECUTABLE=%SWIG_ROOT%\swig.exe ../../RobWorkSim
-    - msbuild RobWorkSim.sln /property:Configuration=Release /maxcpucount:8
+    - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" -A x64 -DSWIG_EXECUTABLE=%SWIG_ROOT%\swig.exe ../../RobWorkSim
+    - msbuild RobWorkSim.sln /property:Configuration=Release
   artifacts:
     paths:
       - ./Build/RWSim
@@ -450,32 +456,32 @@ stages:
     - cd Build
     # Build RobWork Examples
     - cd RWExamples
-    - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 15 2017 Win64" ../../RobWork/example
-    - msbuild Project.sln /property:Configuration=Release /maxcpucount:8
+    - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" -A x64 ../../RobWork/example
+    - msbuild Project.sln /property:Configuration=Release
     - cd ..
     # Build RobWorkStudio Examples
     - cd RWSExamples
     - cd pluginapp
-    - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 15 2017 Win64" ../../../RobWorkStudio/example/pluginapp
-    - msbuild PluginApp.sln /property:Configuration=Release /maxcpucount:8
+    - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" -A x64 ../../../RobWorkStudio/example/pluginapp
+    - msbuild PluginApp.sln /property:Configuration=Release
     - cd ..
     - cd pluginUIapp
-    - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 15 2017 Win64" ../../../RobWorkStudio/example/pluginUIapp
-    - msbuild PluginUIApp.sln /property:Configuration=Release /maxcpucount:8
+    - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" -A x64 ../../../RobWorkStudio/example/pluginUIapp
+    - msbuild PluginUIApp.sln /property:Configuration=Release
     - cd ..
     - cd tutorial
-    - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 15 2017 Win64" ../../../RobWorkStudio/example/tutorial
-    - msbuild SamplePluginApp.sln /property:Configuration=Release /maxcpucount:8
+    - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" -A x64 ../../../RobWorkStudio/example/tutorial
+    - msbuild SamplePluginApp.sln /property:Configuration=Release
     - cd ..
     - cd UDPKinPlugin
-    - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 15 2017 Win64" ../../../RobWorkStudio/example/UDPKinPlugin
-    - msbuild PluginUIApp.sln /property:Configuration=Release /maxcpucount:8
+    - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" -A x64 ../../../RobWorkStudio/example/UDPKinPlugin
+    - msbuild PluginUIApp.sln /property:Configuration=Release
     - cd ..
     - cd ..
     # Build RobWorkSim Examples
     - cd RWSimExamples
-    - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 15 2017 Win64" ../../RobWorkSim/example
-    - msbuild RWSimExamples.sln /property:Configuration=Release /maxcpucount:8
+    - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" -A x64 ../../RobWorkSim/example
+    - msbuild RWSimExamples.sln /property:Configuration=Release
 
 .windows-tests:
   extends: .CI-common
@@ -504,7 +510,6 @@ stages:
     - move ..\\..\\RobWorkSim\\bin\\Release\\gtest_reports\\* ..\\..\\gtest\\
     - ctest -C Release --no-compress-output -T Test -j 1
     - FOR /D %%F IN ("Testing\\*") DO IF EXIST %%F\\Test.xml move %%F\\Test.xml ..\\..\\RWSim-CTest.xml
-
 
 ############################# MacOs CI #################################
 
@@ -551,7 +556,7 @@ stages:
     - WERROR=False
   tags:
     - mac
-  
+
 .mac-examples:
   extends: .linux-examples
   before_script:
@@ -559,7 +564,6 @@ stages:
     - WERROR=False
   tags:
     - mac
-
 
 ############################# Mac High-sierra ###########################
 
@@ -585,74 +589,65 @@ build-RWSim:macOS-HighSierra:
     - build-RWS:macOS-HighSierra
   needs: ["build-RW:macOS-HighSierra", "build-RWS:macOS-HighSierra"]
 
-########################## WINDOWS vs15 ################################
+########################## WINDOWS vs16 ################################
 
-build-RW:windows10-vs15:
+build-RW:windows10-vs16:
   extends: .windows-build-RW
 
-build-RWS:windows10-vs15:
+build-RWS:windows10-vs16:
   extends: .windows-build-RWS
   dependencies:
-    - build-RW:windows10-vs15
-  needs: ["build-RW:windows10-vs15"]
+    - build-RW:windows10-vs16
+  needs: ["build-RW:windows10-vs16"]
 
-build-RWHW:windows10-vs15:
+build-RWHW:windows10-vs16:
   extends: .windows-build-RWHW
   dependencies:
-    - build-RW:windows10-vs15
-  needs: ["build-RW:windows10-vs15"]
+    - build-RW:windows10-vs16
+  needs: ["build-RW:windows10-vs16"]
 
-build-RWSim:windows10-vs15:
+build-RWSim:windows10-vs16:
   extends: .windows-build-RWSim
   dependencies:
-    - build-RW:windows10-vs15
-    - build-RWS:windows10-vs15
-  needs: ["build-RW:windows10-vs15", "build-RWS:windows10-vs15"]
+    - build-RW:windows10-vs16
+    - build-RWS:windows10-vs16
+  needs: ["build-RW:windows10-vs16", "build-RWS:windows10-vs16"]
 
-examples:windows10-vs15:
+examples:windows10-vs16:
   extends: .windows-examples
   dependencies:
-    - build-RW:windows10-vs15
-    - build-RWS:windows10-vs15
-    - build-RWHW:windows10-vs15
-    - build-RWSim:windows10-vs15
+    - build-RW:windows10-vs16
+    - build-RWS:windows10-vs16
+    - build-RWHW:windows10-vs16
+    - build-RWSim:windows10-vs16
   needs:
     [
-      "build-RW:windows10-vs15",
-      "build-RWS:windows10-vs15",
-      "build-RWHW:windows10-vs15",
-      "build-RWSim:windows10-vs15",
+      "build-RW:windows10-vs16",
+      "build-RWS:windows10-vs16",
+      "build-RWHW:windows10-vs16",
+      "build-RWSim:windows10-vs16",
     ]
 
-tests:windows10-vs15:
+tests:windows10-vs16:
   extends: .windows-tests
   dependencies:
-    - build-RW:windows10-vs15
-    - build-RWS:windows10-vs15
-    - build-RWHW:windows10-vs15
-    - build-RWSim:windows10-vs15
+    - build-RW:windows10-vs16
+    - build-RWS:windows10-vs16
+    - build-RWHW:windows10-vs16
+    - build-RWSim:windows10-vs16
   needs:
     [
-      "build-RW:windows10-vs15",
-      "build-RWS:windows10-vs15",
-      "build-RWHW:windows10-vs15",
-      "build-RWSim:windows10-vs15",
+      "build-RW:windows10-vs16",
+      "build-RWS:windows10-vs16",
+      "build-RWHW:windows10-vs16",
+      "build-RWSim:windows10-vs16",
     ]
 
-########################## Ubuntu 1804 (MAIN) ################################
+########################## Ubuntu 1804 ################################
 
 build-RW:ubuntu-1804:
   extends: .linux-build-RW
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
-  only:
-    refs:
-      - branches@sdurobotics/RobWork
-      - tags@sdurobotics/RobWork
-      - schedules
-      - web
-      - merge_requests
-      - /^ci-.*$/
-  except:
 
 build-RWS:ubuntu-1804:
   extends: .linux-build-RWS
@@ -660,15 +655,6 @@ build-RWS:ubuntu-1804:
     - build-RW:ubuntu-1804
   needs: ["build-RW:ubuntu-1804"]
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
-  only:
-    refs:
-      - branches@sdurobotics/RobWork
-      - tags@sdurobotics/RobWork
-      - schedules
-      - web
-      - merge_requests
-      - /^ci-.*$/
-  except:
 
 build-RWHW:ubuntu-1804:
   extends: .linux-build-RWHW
@@ -676,15 +662,6 @@ build-RWHW:ubuntu-1804:
     - build-RW:ubuntu-1804
   needs: ["build-RW:ubuntu-1804"]
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
-  only:
-    refs:
-      - branches@sdurobotics/RobWork
-      - tags@sdurobotics/RobWork
-      - schedules
-      - web
-      - merge_requests
-      - /^ci-.*$/
-  except:
 
 build-RWSim:ubuntu-1804:
   extends: .linux-build-RWSim
@@ -693,15 +670,6 @@ build-RWSim:ubuntu-1804:
     - build-RWS:ubuntu-1804
   needs: ["build-RW:ubuntu-1804", "build-RWS:ubuntu-1804"]
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
-  only:
-    refs:
-      - branches@sdurobotics/RobWork
-      - tags@sdurobotics/RobWork
-      - schedules
-      - web
-      - merge_requests
-      - /^ci-.*$/
-  except:
 
 examples:ubuntu-1804:
   extends: .linux-examples
@@ -718,15 +686,6 @@ examples:ubuntu-1804:
       "build-RWSim:ubuntu-1804",
     ]
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
-  only:
-    refs:
-      - branches@sdurobotics/RobWork
-      - tags@sdurobotics/RobWork
-      - schedules
-      - web
-      - merge_requests
-      - /^ci-.*$/
-  except:
 
 tests:ubuntu-1804:
   extends: .linux-tests
@@ -743,15 +702,6 @@ tests:ubuntu-1804:
       "build-RWSim:ubuntu-1804",
     ]
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
-  only:
-    refs:
-      - branches@sdurobotics/RobWork
-      - tags@sdurobotics/RobWork
-      - schedules
-      - web
-      - merge_requests
-      - /^ci-.*$/
-  except:
 
 install-tests:ubuntu-1804:
   extends: .linux-install-tests
@@ -768,15 +718,6 @@ install-tests:ubuntu-1804:
       "build-RWSim:ubuntu-1804",
     ]
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
-  only:
-    refs:
-      - branches@sdurobotics/RobWork
-      - tags@sdurobotics/RobWork
-      - schedules
-      - web
-      - merge_requests
-      - /^ci-.*$/
-  except:
 
 build-debian-pre:ubuntu-1804:
   extends: .linux-build-debian
@@ -908,7 +849,7 @@ tests:ubuntu-1910:
     ]
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1910
 
-########################## Ubuntu 2004 ################################
+########################## Ubuntu 2004 (MAIN) ################################
 build-RW:ubuntu-2004:
   extends: .linux-build-RW
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-2004
@@ -993,7 +934,6 @@ test-debian-pre:ubuntu-2004:
   dependencies:
     - "build-debian-pre:ubuntu-2004"
   needs: ["build-debian-pre:ubuntu-2004"]
-
 
 ########################## Centos 7 ################################
 build-RW:centos-7:
@@ -1117,55 +1057,31 @@ pages:
   tags:
     - linux
   before_script:
-   - rm -r ../*.deb || echo nothing to remove
-  only:
-    refs:
-      - debian-pkg@sdurobotics/RobWork
-      - schedules
-      - web
-  except:
-    refs:
-      - /^wip-.*$/
-    variables:
-      - $CI_COMMIT_MESSAGE =~ /^WIP:/
+    - rm -r ../*.deb || echo nothing to remove
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "debian-pkg"'
 
 .debian-test:
   extends: .linux-test-debian
   stage: test
   tags:
     - linux
-  only:
-    refs:
-      - debian-pkg@sdurobotics/RobWork
-      - schedules
-      - web
-  except:
-    refs:
-      - /^wip-.*$/
-    variables:
-      - $CI_COMMIT_MESSAGE =~ /^WIP:/
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "debian-pkg"'
 
 .debian-upgrade-test:
   stage: test
   tags:
     - linux
-  only:
-    refs:
-      - debian-pkg@sdurobotics/RobWork
-      - schedules
-      - web
-  except:
-    refs:
-      - /^wip-.*$/
-    variables:
-      - $CI_COMMIT_MESSAGE =~ /^WIP:/
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "debian-pkg"'
   before_script:
     - *uninstall-rw-deb
     - add-apt-repository ppa:sdurobotics/robwork
     - apt-get update
   script:
     - apt -y install libsdurw-all-dev libsdurws-all-dev libsdurwhw-all-dev libsdurwsim-all-dev
-    - apt -y install ./DEBPKG/*.deb  
+    - apt -y install ./DEBPKG/*.deb
 
 ################# debian-pkg ubuntu-1804 #################
 
@@ -1206,4 +1122,3 @@ test-debian-upgrade:ubuntu-2004:
   dependencies:
     - build-debian:ubuntu-2004
   needs: ["build-debian:ubuntu-2004"]
-  

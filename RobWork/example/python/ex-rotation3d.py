@@ -12,3 +12,12 @@ if __name__ == '__main__':
     print(str(inverse(rotd)));
     print("Identity:");
     print(str(rotd*inverse(rotd)));
+
+    rotd[2,2] = 25;
+    print("Corner = 25")
+    print(str(rotd))
+
+    if rotd[2,2] == 25:
+        exit(0)
+    else:
+        exit(1)

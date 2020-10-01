@@ -224,7 +224,7 @@
          *
          * @return The property map of the frame.
          */
-        const PropertyMap& getPropertyMap() const;
+        const rw::core::PropertyMap& getPropertyMap() const;
     #endif
 
         /**
@@ -242,7 +242,7 @@
          *
          * @return The property map of the frame.
          */
-        PropertyMap& getPropertyMap();
+        rw::core::PropertyMap& getPropertyMap();
 
 
         /**
@@ -352,12 +352,13 @@
             /**
              * @brief Iterator pair for all children of the frame.
              */
-            std::vector<Frame*> getChildren(const State& state)
+            std::vector<rw::kinematics::Frame*> getChildren(const State& state)
             {
-                std::vector<Frame*> frames;
+                
                 Frame::iterator_pair pair = $self->getChildren(state);
-                for (Frame::iterator it = pair.first; it != pair.second; it++) {
-                    frames.push_back(&(*it));
+                std::vector<rw::kinematics::Frame*> frames;
+                for (rw::kinematics::Frame& f: $self->getChildren(state)) {
+                    frames.push_back(&f);
                 }
                 return frames;
             }
@@ -1025,7 +1026,7 @@
      * place.)
      */
 
-    class State : public Serializable
+    class State : public rw::common::Serializable
     {
       public:
         //! @brief Smart pointer type to State.
@@ -1696,6 +1697,7 @@
          * @return All state data in the tree
          */
         const std::vector< rw::core::Ptr< StateData > >& getStateData () const;
+        
         /**
          * @brief All frames of the tree. Notice that elements in
          * this vector can be NULL
@@ -1758,7 +1760,7 @@
          */
         rw::core::Ptr< StateData > findData (const std::string& name) const;
 
-
+#if !defined(SWIG)
         /**
          * @brief Returns StateDataAddedEvent object needed for subscription to and firing of event
          * @return Reference to the StateDataAddedEvent
@@ -1771,11 +1773,10 @@
          * @return Reference to the StateDataRemovedEvent
          */
         rw::core::Event< boost::function< void (const StateData*) >, const StateData* >& stateDataRemovedEvent ();
-
+#endif
     };
     %template (StateStructurePtr) rw::core::Ptr<StateStructure>;
-    %template (StateDataRemovedEvent) rw::core::Event< boost::function< void (const StateData*) >, const StateData* >;
-    %template (StateDataAddedEvent) rw::core::Event< boost::function< void (const StateData*) >, const StateData* >;
+    //%template (StateDataEvent) rw::core::Event< boost::function< void (const StateData*) >, const StateData* >;
     OWNEDPTR(StateStructure);
 //################ TreeState
     /**

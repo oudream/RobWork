@@ -1,6 +1,6 @@
 set(SUBSYS_NAME sdurws_lua)
 set(SUBSYS_DESC "Interface for accessing RobWorkStudio from lua.")
-set(SUBSYS_DEPS sdurws_robworkstudioapp RW::sdurw_lua)
+set(SUBSYS_DEPS sdurws_robworkstudioapp RW::sdurw_lua RW::sdurw_core_lua)
 
 set(build TRUE)
 
@@ -81,6 +81,7 @@ if(build)
         ${RWS_MODULE}
         RW::sdurw
         RW::sdurw_lua_s
+        RW::sdurw_core_lua_s
     )
     if(RW_BUILD_WITH_INTERNAL_LUA)
         target_link_libraries(${TARGET_NAME}_s RW::lua51)

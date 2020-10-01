@@ -18,22 +18,19 @@
 #ifndef RW_GRASPPLANNING_QUALITYMEASURE_HPP_
 #define RW_GRASPPLANNING_QUALITYMEASURE_HPP_
 
-namespace rw {
-namespace graspplanning {
+namespace rw { namespace graspplanning {
 
-class Grasp2D;
+    class Grasp2D;
 
-class QualityMeasure2D {
-public:
+    class QualityMeasure2D
+    {
+      public:
+        /**
+         * @brief  compute the quality of a 2d grasp
+         */
+        virtual double computeQuality (const Grasp2D& grasp) const = 0;
+    };
 
-    /**
-     * @brief  compute the quality of a 2d grasp
-     */
-    virtual double computeQuality(const Grasp2D& grasp) const = 0;
-
-};
-
-}
-}
+}}    // namespace rw::graspplanning
 
 #endif /*QUALITYMEASURE_HPP_*/

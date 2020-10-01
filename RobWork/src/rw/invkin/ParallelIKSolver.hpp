@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -30,9 +30,15 @@
 #include <rw/math/Transform3D.hpp>
 #include <rw/math/VectorND.hpp>
 
-namespace rw { namespace kinematics { class Frame; }}
-namespace rw { namespace models { class ParallelDevice; }}
-namespace rw { namespace models { class ParallelLeg; }}
+namespace rw { namespace kinematics {
+    class Frame;
+}}    // namespace rw::kinematics
+namespace rw { namespace models {
+    class ParallelDevice;
+}}    // namespace rw::models
+namespace rw { namespace models {
+    class ParallelLeg;
+}}    // namespace rw::models
 
 namespace rw { namespace invkin {
 
@@ -52,20 +58,20 @@ namespace rw { namespace invkin {
      */
     class ParallelIKSolver : public IterativeIK
     {
-    public:
-		//! @brief smart pointer type to this class
-		typedef rw::core::Ptr<ParallelIKSolver> Ptr;
+      public:
+        //! @brief smart pointer type to this class
+        typedef rw::core::Ptr< ParallelIKSolver > Ptr;
 
-		/**
-		 * @brief Construct new solver.
-		 * @param device [in] pointer to the parallel device.
-		 */
-        ParallelIKSolver(const models::ParallelDevice* device);
+        /**
+         * @brief Construct new solver.
+         * @param device [in] pointer to the parallel device.
+         */
+        ParallelIKSolver (const models::ParallelDevice* device);
 
-		/**
-		 * @brief Destructor
-		 */
-        virtual ~ParallelIKSolver();
+        /**
+         * @brief Destructor
+         */
+        virtual ~ParallelIKSolver ();
 
         /**
          * @copybrief IterativeIK::solve
@@ -92,124 +98,133 @@ namespace rw { namespace invkin {
          * end frames will normally be the first and last frames of the first leg of
          * the first junction.
          */
-        virtual std::vector<math::Q> solve(const math::Transform3D<>& baseTend,
-                                           const kinematics::State &state) const;
+        virtual std::vector< math::Q > solve (const math::Transform3D<>& baseTend,
+                                              const kinematics::State& state) const;
 
         //! @brief A target definition used in the multi-target solve function.
-        struct Target {
-        	//! @brief Constructor with all directions enabled initially.
-        	Target():
-        		refFrame(NULL),
-        		tcpFrame(NULL)
-        	{
-        		for (std::size_t i = 0; i < 6; i++)
-        			enabled[i] = true;
-        	}
+        struct Target
+        {
+            //! @brief Constructor with all directions enabled initially.
+            Target () : refFrame (NULL), tcpFrame (NULL)
+            {
+                for (std::size_t i = 0; i < 6; i++)
+                    enabled[i] = true;
+            }
 
-        	/**
-        	 * @brief Constructor with specification of a target transformation from the base to a given tcp \b frame.
-        	 * @param frame [in] the end frame.
-        	 * @param refTtcp [in] the target base to frame transformation.
-        	 */
-        	Target(const rw::kinematics::Frame* frame, const rw::math::Transform3D<>& refTtcp):
-        		refFrame(NULL),
-        		tcpFrame(frame),
-				refTtcp(refTtcp)
-        	{
-        		for (std::size_t i = 0; i < 6; i++)
-        			enabled[i] = true;
-        	}
+            /**
+             * @brief Constructor with specification of a target transformation from the base to a
+             * given tcp \b frame.
+             * @param frame [in] the end frame.
+             * @param refTtcp [in] the target base to frame transformation.
+             */
+            Target (const rw::kinematics::Frame* frame, const rw::math::Transform3D<>& refTtcp) :
+                refFrame (NULL), tcpFrame (frame), refTtcp (refTtcp)
+            {
+                for (std::size_t i = 0; i < 6; i++)
+                    enabled[i] = true;
+            }
 
-        	/**
-        	 * @brief Constructor with specification of a target transformation where some directions are not \b enabled.
-        	 * @param frame [in] the end frame.
-        	 * @param refTtcp [in] the target base to frame transformation.
-        	 * @param enabled [in] 6 values specifying if the x, y, z and EAA x, y, z directions should be enabled.
-        	 */
-        	Target(const rw::kinematics::Frame* frame, const rw::math::Transform3D<>& refTtcp, const rw::math::VectorND<6, bool>& enabled):
-        		refFrame(NULL),
-        		tcpFrame(frame),
-				refTtcp(refTtcp),
-				enabled(enabled)
-        	{
-        	}
+            /**
+             * @brief Constructor with specification of a target transformation where some
+             * directions are not \b enabled.
+             * @param frame [in] the end frame.
+             * @param refTtcp [in] the target base to frame transformation.
+             * @param enabled [in] 6 values specifying if the x, y, z and EAA x, y, z directions
+             * should be enabled.
+             */
+            Target (const rw::kinematics::Frame* frame, const rw::math::Transform3D<>& refTtcp,
+                    const rw::math::VectorND< 6, bool >& enabled) :
+                refFrame (NULL),
+                tcpFrame (frame), refTtcp (refTtcp), enabled (enabled)
+            {}
 
-        	/**
-        	 * @brief Get the number directions enabled.
-        	 * @return number of directions enabled.
-        	 */
-        	std::size_t dof() const {
-        	    std::size_t dof = 0;
-        	    for (std::size_t i = 0; i < 6; i++) {
-        	    	if (enabled[i])
-        	    		dof++;
-        	    }
-        	    return dof;
-        	}
+            /**
+             * @brief Get the number directions enabled.
+             * @return number of directions enabled.
+             */
+            std::size_t dof () const
+            {
+                std::size_t dof = 0;
+                for (std::size_t i = 0; i < 6; i++) {
+                    if (enabled[i])
+                        dof++;
+                }
+                return dof;
+            }
 
-        	//! @brief The reference frame. If zero, this is equivalent to the device base frame.
-        	const rw::kinematics::Frame* refFrame;
+            //! @brief The reference frame. If zero, this is equivalent to the device base frame.
+            const rw::kinematics::Frame* refFrame;
 
-        	//! @brief The frame to specify target for.
-        	const rw::kinematics::Frame* tcpFrame;
+            //! @brief The frame to specify target for.
+            const rw::kinematics::Frame* tcpFrame;
 
-        	//! @brief The target transformation from \b refFrame to the \b tcpFrame.
-        	rw::math::Transform3D<> refTtcp;
+            //! @brief The target transformation from \b refFrame to the \b tcpFrame.
+            rw::math::Transform3D<> refTtcp;
 
-        	//! @brief Directions of \b baseTtcp to enable. The 6 values specify x, y, z and EAA x, y, z directions.
-        	rw::math::VectorND<6, bool> enabled;
+            //! @brief Directions of \b baseTtcp to enable. The 6 values specify x, y, z and EAA x,
+            //! y, z directions.
+            rw::math::VectorND< 6, bool > enabled;
         };
 
         /**
          * @brief Version of solve that allows for definition of multiple targets.
          *
-         * This is a more flexible version of solve than the one from the standard InvKinSolver interface.
-         * As an example, it is useful to define multiple targets for a gripper where each of the fingers
-         * can have different target configurations.
-         * Furthermore, targets can be defined for different frames, and relative to different frames.
-         * There should always be a minimum of one joint between the base and end frames, and the end frame
-         * should be in the child tree of the given base frame. The reference frame given must either lie in
-         * one of the legs of the junctions in the ParallelDevice, or it must be in the parent path in
-         * the frame structure.
-         * Finally, the target definitions do not need to be defined as full 6 DOF constraints.
-         * It is possible to specify that the constraint should only be defined in some positional
-         * or angular directions. In some parallel structures this is very useful, as it might not be possible
-         * to do inverse kinematics with full 6 DOF constraints.
+         * This is a more flexible version of solve than the one from the standard InvKinSolver
+         * interface. As an example, it is useful to define multiple targets for a gripper where
+         * each of the fingers can have different target configurations. Furthermore, targets can be
+         * defined for different frames, and relative to different frames. There should always be a
+         * minimum of one joint between the base and end frames, and the end frame should be in the
+         * child tree of the given base frame. The reference frame given must either lie in one of
+         * the legs of the junctions in the ParallelDevice, or it must be in the parent path in the
+         * frame structure. Finally, the target definitions do not need to be defined as full 6 DOF
+         * constraints. It is possible to specify that the constraint should only be defined in some
+         * positional or angular directions. In some parallel structures this is very useful, as it
+         * might not be possible to do inverse kinematics with full 6 DOF constraints.
          *
          * @param targets [in] list of targets.
          * @param state [in] state containing the current configuration of the device.
          * @return vector with one solution if found, otherwise vector is empty.
          */
-        virtual std::vector<rw::math::Q> solve(const std::vector<Target>& targets, const rw::kinematics::State &state) const;
+        virtual std::vector< rw::math::Q > solve (const std::vector< Target >& targets,
+                                                  const rw::kinematics::State& state) const;
 
         //! @copydoc InvKinSolver::setCheckJointLimits
-        virtual void setCheckJointLimits(bool check);
+        virtual void setCheckJointLimits (bool check);
 
         /**
          * @brief enables clamping of the solution such that solution always is within joint limits
          * @param enableClamping [in] true to enable clamping, false otherwise
          */
-        void setClampToBounds(bool enableClamping);
+        void setClampToBounds (bool enableClamping);
 
         /**
          * @copydoc InvKinSolver::getTCP
          */
-        virtual rw::core::Ptr< const rw::kinematics::Frame > getTCP() const;                   
+        virtual rw::core::Ptr< const rw::kinematics::Frame > getTCP () const;
 
-    private:
-        void updateDeltaX(const std::vector<Target>& targets, const rw::kinematics::FramePairMap<rw::core::Ptr<rw::models::ParallelLeg> >& targetLegs, const rw::kinematics::State& state, rw::math::Q& deltaX, const Eigen::MatrixXd::Index nCon) const;
-        void updateJacobian(const std::vector<Target>& targets, const rw::kinematics::FramePairMap<rw::core::Ptr<rw::models::ParallelLeg> >& targetLegs, const rw::kinematics::State& state, rw::math::Jacobian& jacobian) const;
+      private:
+        void updateDeltaX (
+            const std::vector< Target >& targets,
+            const rw::kinematics::FramePairMap< rw::core::Ptr< rw::models::ParallelLeg > >&
+                targetLegs,
+            const rw::kinematics::State& state, rw::math::Q& deltaX,
+            const Eigen::MatrixXd::Index nCon) const;
+        void updateJacobian (
+            const std::vector< Target >& targets,
+            const rw::kinematics::FramePairMap< rw::core::Ptr< rw::models::ParallelLeg > >&
+                targetLegs,
+            const rw::kinematics::State& state, rw::math::Jacobian& jacobian) const;
 
         const models::ParallelDevice* _device;
-        std::vector<std::vector<rw::models::ParallelLeg*> > _junctions;
+        std::vector< std::vector< rw::models::ParallelLeg* > > _junctions;
 
-        rw::kinematics::FrameMap<Eigen::MatrixXd::Index> _jointIndex;
+        rw::kinematics::FrameMap< Eigen::MatrixXd::Index > _jointIndex;
 
         bool _useJointClamping;
         bool _checkJointLimits;
     };
 
     /*@}*/
-}} // end namespaces
+}}    // namespace rw::invkin
 
-#endif // end include guard
+#endif    // end include guard

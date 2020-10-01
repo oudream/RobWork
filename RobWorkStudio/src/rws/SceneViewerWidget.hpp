@@ -22,36 +22,38 @@
 #include <windows.h>
 #endif
 
-#include <QWidget>
-#include <rw/graphics/SceneViewer.hpp>
-#include <rw/graphics/SceneGraph.hpp>
 #include <rw/core/Ptr.hpp>
+#include <rw/graphics/SceneGraph.hpp>
+#include <rw/graphics/SceneViewer.hpp>
+
+#include <QWidget>
 
 namespace rws {
-    //! @brief Class representing a Qt widget for 3D visualization of a scene.
-    class SceneViewerWidget: public rw::graphics::SceneViewer {
-    public:
-    	//! @brief Smart pointer type for a SceneViewerWidget.
-        typedef rw::core::Ptr<SceneViewerWidget> Ptr;
+//! @brief Class representing a Qt widget for 3D visualization of a scene.
+class SceneViewerWidget : public rw::graphics::SceneViewer
+{
+  public:
+    //! @brief Smart pointer type for a SceneViewerWidget.
+    typedef rw::core::Ptr< SceneViewerWidget > Ptr;
 
-        /**
-         * @brief Get rendering info for the scene.
-         * @return the render info.
-         */
-        virtual rw::graphics::SceneGraph::RenderInfo& getRenderInfo() = 0;
+    /**
+     * @brief Get rendering info for the scene.
+     * @return the render info.
+     */
+    virtual rw::graphics::SceneGraph::RenderInfo& getRenderInfo () = 0;
 
-        /**
-         * @brief Get the drawable used for pivoting.
-         * @return the drawable node.
-         */
-        virtual rw::graphics::DrawableNode::Ptr getPivotDrawable() = 0;
+    /**
+     * @brief Get the drawable used for pivoting.
+     * @return the drawable node.
+     */
+    virtual rw::graphics::DrawableNode::Ptr getPivotDrawable () = 0;
 
-        /**
-         * @brief Get the Qt widget for visualization of the scene.
-         * @return the Qt widget.
-         */
-        virtual QWidget* getWidget() = 0;
-    };
-}
+    /**
+     * @brief Get the Qt widget for visualization of the scene.
+     * @return the Qt widget.
+     */
+    virtual QWidget* getWidget () = 0;
+};
+}    // namespace rws
 
-#endif //#ifndef RWS_SCENEVIEWERWIDGET_HPP_
+#endif    //#ifndef RWS_SCENEVIEWERWIDGET_HPP_

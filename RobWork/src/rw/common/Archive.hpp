@@ -18,8 +18,10 @@
 #ifndef RW_COMMON_ARCHIVE_HPP
 #define RW_COMMON_ARCHIVE_HPP
 
+#if !defined(SWIG)
 #include <iosfwd>
 #include <string>
+#endif
 
 namespace rw { namespace common {
     /**

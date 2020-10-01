@@ -15,63 +15,61 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RWSIM_SIMULATOR_ODEKINEMATICDEVICE_HPP_
 #define RWSIM_SIMULATOR_ODEKINEMATICDEVICE_HPP_
 
-#include <ode/ode.h>
-
-#include <vector>
-
 #include <rw/math/Q.hpp>
-
 #include <rwsimlibs/ode/ODEBody.hpp>
 #include <rwsimlibs/ode/ODEDevice.hpp>
 
-namespace rwsim { namespace dynamics { class KinematicDevice; } }
+#include <ode/ode.h>
+#include <vector>
 
-namespace rwsim {
-namespace simulator {
+namespace rwsim { namespace dynamics {
+    class KinematicDevice;
+}}    // namespace rwsim::dynamics
+
+namespace rwsim { namespace simulator {
     class ODESimulator;
     /**
-	 * @brief A bridge between the RW KinematicDevice and kinematicly controlled
-	 * ODE dBodies.
-	 */
-	class ODEKinematicDevice: public ODEDevice {
-	public:
-	    /**
-	     * @brief constructor
-	     * @param rdev
-	     * @param state [in]
-	     * @param sim the simulator.
-	     */
-        ODEKinematicDevice(dynamics::KinematicDevice *rdev,
-                           const rw::kinematics::State& state,
-                           ODESimulator *sim);
+     * @brief A bridge between the RW KinematicDevice and kinematicly controlled
+     * ODE dBodies.
+     */
+    class ODEKinematicDevice : public ODEDevice
+    {
+      public:
+        /**
+         * @brief constructor
+         * @param rdev
+         * @param state [in]
+         * @param sim the simulator.
+         */
+        ODEKinematicDevice (dynamics::KinematicDevice* rdev, const rw::kinematics::State& state,
+                            ODESimulator* sim);
 
         //! @brief destructor
-		virtual ~ODEKinematicDevice();
+        virtual ~ODEKinematicDevice ();
 
-		void reset(rw::kinematics::State& state);
+        void reset (rw::kinematics::State& state);
 
-		/**
-		 * @brief
-		 * @param dt
-		 * @param state
-		 */
-		void update(const rwlibs::simulation::Simulator::UpdateInfo& dt, rw::kinematics::State& state);
+        /**
+         * @brief
+         * @param dt
+         * @param state
+         */
+        void update (const rwlibs::simulation::Simulator::UpdateInfo& dt,
+                     rw::kinematics::State& state);
 
-		void postUpdate(rw::kinematics::State& state);
+        void postUpdate (rw::kinematics::State& state);
 
-		//! @copydoc ODEDevice::getBodies
-		std::vector<ODEBody*> getBodies(){ return _bodies; };
+        //! @copydoc ODEDevice::getBodies
+        std::vector< ODEBody* > getBodies () { return _bodies; };
 
-	private:
-		dynamics::KinematicDevice *_kdev;
-		rw::math::Q _maxVel;
-		std::vector<dBodyID> _kbodies;
-		std::vector<ODEBody*> _bodies;
-	};
-}
-}
+      private:
+        dynamics::KinematicDevice* _kdev;
+        rw::math::Q _maxVel;
+        std::vector< dBodyID > _kbodies;
+        std::vector< ODEBody* > _bodies;
+    };
+}}     // namespace rwsim::simulator
 #endif /* ODEVELOCITYDEVICE_HPP_ */

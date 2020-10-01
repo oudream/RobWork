@@ -21,9 +21,6 @@
 /**
  * @file VectorND.hpp
  */
-
-#include "Math.hpp"
-
 #include <rw/common/InputArchive.hpp>
 #include <rw/common/OutputArchive.hpp>
 #include <rw/common/Serializable.hpp>
@@ -44,8 +41,7 @@ namespace rw { namespace math {
     {
       public:
         //! The type of the internal Eigen Vector
-
-        typedef Eigen::Matrix< T, Eigen::Dynamic, 1 > EigenVectorND;
+        typedef Eigen::Matrix< T, N, 1 > EigenVectorND;
 
         //! Value type.
         typedef T value_type;
@@ -53,7 +49,46 @@ namespace rw { namespace math {
         /**
          * @brief Creates a N-dimensional VectorND
          */
-        VectorND () { _vec = EigenVectorND (N); }
+        VectorND ()
+        {
+            if (N <= 0) {
+                RW_THROW ("Vector to small, N must be larger than 0");
+            }
+            _vec = EigenVectorND (N);
+        }
+
+        /**
+         * @brief Construct a Vector from N arguments
+         * @param args [in] a list of arguments
+         */
+        template< typename... ARGS > VectorND (T arg0, ARGS... args)
+        {
+            if (N <= 0u) {
+                RW_THROW ("Vector to small, N must be larger than 0");
+            }
+            size_t i = 1;
+            ParamExpansion (i, args...);
+
+            _vec[--i] = arg0;
+        }
+
+        /**
+         * @brief construct vector from std::vector
+         * @param vec [in] the vector to construct from
+         */
+        VectorND (const std::vector< T >& vec)
+        {
+            if (N <= 0u) {
+                RW_THROW ("Vector to small, N must be larger than 0");
+            }
+            else if (vec.size () != N) {
+                RW_THROW ("Wrong Size vector matrix: N of size:" << N << " and vector of size: "
+                                                                 << vec.size () << "given");
+            }
+            for (size_t i = 0; i < N; i++) {
+                _vec[i] = vec[i];
+            }
+        }
 
         /**
          * @brief Creates a 3D VectorND from Eigen type.
@@ -69,24 +104,244 @@ namespace rw { namespace math {
         }
 
         /**
-           @brief Accessor for the internal Eigen VectorND.
-         */
-        EigenVectorND& e () { return _vec; }
-
-        /**
-           @brief Accessor for the internal Eigen VectorND.
-         */
-        const EigenVectorND& e () const { return _vec; }
-
-        /**
          * @brief The dimension of the VectorND (i.e. 3).
          * This method is provided to help support generic algorithms using
            size() and operator[].
          */
         size_t size () const { return N; }
 
-        //----------------------------------------------------------------------
-        // Various operators
+        // ###################################################
+        // #                 Math Operations                 #
+        // ###################################################
+
+        // ########## Eigen Operations
+
+        /**
+         * @brief element wise multiplication.
+         * @param rhs [in] the vector being multiplied with
+         * @return the resulting VectorND
+         */
+        template< class R > VectorND< N, T > elemMultiply (const Eigen::MatrixBase< R >& rhs) const
+        {
+            VectorND< N, T > ret = *this;
+            for (size_t i = 0; i < N; i++) {
+                ret._vec[i] *= rhs[i];
+            }
+            return ret;
+        }
+
+        /**
+         * @brief element wise division.
+         * @param lhs [in] vector
+         * @param rhs [in] vector
+         * @return the resulting VectorND
+         */
+        template< class R > VectorND< N, T > elemDivide (const Eigen::MatrixBase< R >& rhs) const
+        {
+            VectorND< N, T > ret;
+            for (size_t i = 0; i < N; i++) {
+                ret[i] = (*this)[i] / rhs[i];
+            }
+            return ret;
+        }
+
+        /**
+         * @brief Vector subtraction.
+         */
+        template< class R > VectorND< N, T > operator- (const Eigen::MatrixBase< R >& rhs) const
+        {
+            return VectorND< N, T > (_vec - rhs);
+        }
+
+        /**
+         * @brief Vector subtraction.
+         */
+        template< class R >
+        friend VectorND< N, T > operator- (const Eigen::MatrixBase< R >& lhs,
+                                           const VectorND< N, T >& rhs)
+        {
+            return VectorND< N, T > (lhs - rhs.e ());
+        }
+
+        /**
+         * @brief Vector addition.
+         */
+        template< class R > VectorND< N, T > operator+ (const Eigen::MatrixBase< R >& rhs) const
+        {
+            return VectorND< N, T > (_vec + rhs);
+        }
+
+        /**
+         * @brief Vector subtraction.
+         */
+        template< class R >
+        friend VectorND< N, T > operator+ (const Eigen::MatrixBase< R >& lhs,
+                                           const VectorND< N, T >& rhs)
+        {
+            return VectorND< N, T > (lhs + rhs.e ());
+        }
+
+        // ########## VectorND Operations
+
+        /**
+         * @brief element wise division.
+         * @param rhs [in] the vector being devided with
+         * @return the resulting Vector3D
+         */
+        VectorND< N, T > elemDivide (const VectorND< N, T >& rhs) const
+        {
+            VectorND< N, T > ret = *this;
+            for (size_t i = 0; i < N; i++) {
+                ret._vec[i] /= rhs._vec[i];
+            }
+            return ret;
+        }
+
+        /**
+         * @brief Elementweise multiplication.
+         * @param rhs [in] vector
+         * @return the element wise product
+         */
+        VectorND< N, T > elemMultiply (const VectorND< N, T >& rhs) const
+        {
+            VectorND< N, T > ret = *this;
+            for (size_t i = 0; i < N; i++) {
+                ret._vec[i] *= rhs._vec[i];
+            }
+            return ret;
+        }
+
+        /**
+         * @brief Vector subtraction.
+         */
+        VectorND< N, T > operator- (const VectorND< N, T >& rhs) const
+        {
+            return VectorND< N, T > (_vec - rhs._vec);
+        }
+
+        /**
+         * @brief Vector addition.
+         */
+        VectorND< N, T > operator+ (const VectorND< N, T >& rhs) const
+        {
+            return VectorND< N, T > (_vec + rhs._vec);
+        }
+
+        /**
+         * @brief Unary minus.
+         * @brief negative version
+         */
+        VectorND< N, T > operator- () const { return VectorND< N, T > (_vec * (-1)); }
+
+        // ########## Scalar Operations
+
+        /**
+         * @brief Scalar division.
+         * @param rhs [in] the scalar to devide with
+         * @return result of devision
+         */
+        VectorND< N, T > operator/ (double rhs) const { return VectorND< N, T > (_vec / rhs); }
+
+        /**
+         * @brief Scalar division.
+         * @param lhs [in] the scalar to devide with
+         * @param rhs [out] the vector beind devided
+         * @return result of devision
+         */
+        friend VectorND< N, T > operator/ (double lhs, const VectorND< N, T >& rhs)
+        {
+            VectorND< N, T > ret = rhs;
+            for (size_t i = 0; i < N; i++) {
+                ret._vec[i] = lhs / ret._vec[i];
+            }
+            return ret;
+        }
+
+        /**
+         * @brief Scalar multiplication.
+         * @param rhs [in] the scalar to multiply with
+         * @return the product
+         */
+        VectorND< N, T > operator* (double rhs) const { return VectorND< N, T > (_vec * rhs); }
+
+        /**
+         * @brief Scalar multiplication.
+         * @param lhs [in] the scalar to multiply with
+         * @param rhs [in] the Vector to be multiplied
+         * @return the product
+         */
+        friend VectorND< N, T > operator* (double lhs, const VectorND< N, T >& rhs)
+        {
+            return VectorND< N, T > (lhs * rhs._vec);
+        }
+
+        /**
+         * @brief Scalar subtraction.
+         */
+        VectorND< N, T > elemSubtract (const T& rhs) const
+        {
+            VectorND< N, T > ret = *this;
+            for (size_t i = 0; i < N; i++) {
+                ret._vec[i] = ret._vec[i] - rhs;
+            }
+            return ret;
+        }
+
+        /**
+         * @brief Scalar addition.
+         */
+        VectorND< N, T > elemAdd (const T& rhs) const
+        {
+            VectorND< N, T > ret = *this;
+            for (size_t i = 0; i < N; i++) {
+                ret._vec[i] = ret._vec[i] + rhs;
+            }
+            return ret;
+        }
+
+        // ########### Math Functions
+
+        /**
+         * @brief Returns the Euclidean norm (2-norm) of the VectorND
+         * @return the norm
+         */
+        T norm2 () const { return _vec.norm (); }
+
+        /**
+         * @brief Returns the Manhatten norm (1-norm) of the VectorND
+         * @return the norm
+         */
+        T norm1 () const { return _vec.template lpNorm< 1 > (); }
+
+        /**
+         * @brief Returns the infinte norm (\f$\inf\f$-norm) of the VectorND
+         * @return the norm
+         */
+        T normInf () const { return _vec.template lpNorm< Eigen::Infinity > (); }
+
+        /**
+         * @brief calculate the dot product
+         * @param vec [in] the vecor to be dotted
+         * @return the dot product
+         */
+        double dot (const VectorND< N, T >& vec) const { return _vec.dot (vec._vec); }
+
+        /**
+         * @brief normalize vector to get length 1
+         * @return the normalized Vector
+         */
+        VectorND< N, T > normalize ()
+        {
+            T length = norm2 ();
+            if (length != 0)
+                return (*this) / length;
+            else
+                return VectorND< N, T > ();
+        }
+
+        // ###################################################
+        // #                Acces Operators                  #
+        // ###################################################
 
         /**
          * @brief Returns reference to VectorND element
@@ -117,59 +372,68 @@ namespace rw { namespace math {
         T& operator[] (size_t i) { return _vec[i]; }
 
         /**
-           @brief Scalar division.
+         * @brief Accessor for the internal Eigen VectorND.
          */
-        const VectorND< N, T > operator/ (T s) const { return VectorND< N, T > (_vec / s); }
+        EigenVectorND& e () { return _vec; }
 
         /**
-           @brief Scalar multiplication.
+           @brief Accessor for the internal Eigen VectorND.
          */
-        const VectorND< N, T > operator* (T s) const { return VectorND< N, T > (_vec * s); }
+        const EigenVectorND& e () const { return _vec; }
 
         /**
-           @brief Scalar multiplication.
+         * @brief Streaming operator.
+         * @param out [in/out] the stream to continue
+         * @param v [in] the vector to stream
+         * @param reference to \b out
          */
-        friend const VectorND< N, T > operator* (T s, const VectorND< N, T >& v)
+        friend std::ostream& operator<< (std::ostream& out, const VectorND< N, T >& v)
         {
-            return VectorND< N, T > (s * v._vec);
+            out << "Vector" << N << "D(";
+            for (size_t i = 0; i < N - 1; i++) {
+                out << v[i] << ", ";
+            }
+            out << v[N - 1] << ")";
+            return out;
         }
 
         /**
-           @brief VectorND subtraction.
+         * @brief converts the vector to a std:vector
+         * @return a std::vector
          */
-        const VectorND< N, T > operator- (const VectorND< N, T >& b) const
+        std::vector< T > toStdVector () const
         {
-            return VectorND< N, T > (_vec - b._vec);
+            std::vector< T > ret;
+            for (size_t i = 0; i < N; i++) {
+                ret.push_back (_vec[i]);
+            }
+            return ret;
         }
 
-        /**
-           @brief VectorND addition.
-         */
-        const VectorND< N, T > operator+ (const VectorND< N, T >& b) const
-        {
-            return VectorND< N, T > (_vec + b._vec);
-        }
+        // ###################################################
+        // #             assignement Operators               #
+        // ###################################################
 
         /**
-           @brief Scalar multiplication.
+         * @brief Scalar multiplication.
          */
-        VectorND< N, T >& operator*= (T s)
+        VectorND< N, T >& operator*= (double s)
         {
             _vec *= s;
             return *this;
         }
 
         /**
-           @brief Scalar division.
+         * @brief Scalar division.
          */
-        VectorND< N, T >& operator/= (T s)
+        VectorND< N, T >& operator/= (double s)
         {
             _vec /= s;
             return *this;
         }
 
         /**
-           @brief VectorND addition.
+         * @brief Vector addition.
          */
         VectorND< N, T >& operator+= (const VectorND< N, T >& v)
         {
@@ -178,7 +442,7 @@ namespace rw { namespace math {
         }
 
         /**
-           @brief VectorND subtraction.
+         * @brief Vector subtraction.
          */
         VectorND< N, T >& operator-= (const VectorND< N, T >& v)
         {
@@ -187,61 +451,100 @@ namespace rw { namespace math {
         }
 
         /**
-           @brief Unary minus.
+         * @brief copy a vector from eigen type
+         * @param r [in] an Eigen Vector
          */
-        const VectorND< N, T > operator- () const { return VectorND< N, T > (-_vec); }
-
-        /**
-           @brief Streaming operator.
-         */
-        friend std::ostream& operator<< (std::ostream& out, const VectorND< N, T >& v)
+        template< class R > VectorND< N, T >& operator= (const Eigen::MatrixBase< R >& r)
         {
-            out << "VectorND {" << v[0];
-
-            for (size_t i = 1; i < N; i++)
-                out << ", " << v[i];
-            out << "}";
-            return out;
+            _vec = r;
+            return *this;
         }
 
-        //----------------------------------------------------------------------
-        // Various friend functions
-
         /**
-         * @brief Returns the Euclidean norm (2-norm) of the VectorND
-         * @return the norm
+         * @brief Vector addition.
          */
-        T norm2 () const { return _vec.norm (); }
-
-        /**
-         * @brief Returns the Manhatten norm (1-norm) of the VectorND
-         * @return the norm
-         */
-        T norm1 () const { return _vec.template lpNorm< 1 > (); }
-
-        /**
-         * @brief Returns the infinte norm (\f$\inf\f$-norm) of the VectorND
-         * @return the norm
-         */
-        T normInf () const { return _vec.template lpNorm< Eigen::Infinity > (); }
-
-        /**
-           @brief Compare with \b b for equality.
-           @param b [in] other vector.
-           @return True if a equals b, false otherwise.
-        */
-        bool operator== (const VectorND< N, T >& b) const
+        template< class R > VectorND< N, T >& operator+= (const Eigen::MatrixBase< R >& r)
         {
-            for (size_t i = 0; i < N; i++)
-                if (_vec[i] != b._vec[i])
-                    return false;
-            return true;
+            _vec += r;
+            return *this;
         }
+
+        /**
+         * @brief Vector subtraction.
+         */
+        template< class R > VectorND< N, T >& operator-= (const Eigen::MatrixBase< R >& r)
+        {
+            _vec -= r;
+            return *this;
+        }
+
+        // ###################################################
+        // #                    Comparetors                  #
+        // ###################################################
+        /**
+         * @brief Compare with \b rhs for equality.
+         * @param rhs [in] other vector.
+         * @return True if a equals b, false otherwise.
+         */
+        template< class R > bool operator== (const Eigen::MatrixBase< R >& rhs) const
+        {
+            return this->_vec == rhs;
+        }
+
+        /**
+         * @brief Compare with \b rhs for equality.
+         * @param rhs [in] other vector.
+         * @return True if a equals b, false otherwise.
+         */
+        template< class R >
+        friend bool operator== (const Eigen::MatrixBase< R >& lhs, const VectorND< N, T >& rhs)
+        {
+            return lhs == rhs._vec;
+        }
+
+        /**
+         *  @brief Compare with \b rhs for inequality.
+         *  @param ths [in] other vector.
+         *  @return True if a and b are different, false otherwise.
+         */
+        template< class R > bool operator!= (const Eigen::MatrixBase< R >& rhs) const
+        {
+            return !(*this == rhs);
+        }
+
+        /**
+         *  @brief Compare with \b rhs for inequality.
+         *  @param b [in] other vector.
+         *  @return True if a and b are different, false otherwise.
+         */
+        template< class R >
+        friend bool operator!= (const Eigen::MatrixBase< R >& lhs, const VectorND< N, T >& rhs)
+        {
+            return !(lhs == rhs);
+        }
+
+        /**
+         * @brief Compare with \b rhs for equality.
+         * @param rhs [in] other vector.
+         * @return True if a equals b, false otherwise.
+         */
+        bool operator== (const VectorND< N, T >& rhs) const { return this->_vec == rhs._vec; }
+
+        /**
+         *  @brief Compare with \b rhs for inequality.
+         *  @param rhs [in] other vector.
+         *  @return True if a and b are different, false otherwise.
+         */
+        bool operator!= (const VectorND< N, T >& rhs) const { return !(*this == rhs); }
+
+        // ###################################################
+        // #                      OTHER                      #
+        // ###################################################
 
         //! @copydoc rw::common::Serializable::write
         void write (rw::common::OutputArchive& oarchive, const std::string& id) const
         {
-            oarchive.write (Math::toStdVector (*this, N), id, "VectorND");
+            oarchive.write (this->toStdVector (), id, "VectorND");
         }
 
         //! @copydoc rw::common::Serializable::read
@@ -249,8 +552,18 @@ namespace rw { namespace math {
         {
             std::vector< T > result (N, 0);
             iarchive.read (result, id, "VectorND");
-            Math::fromStdVector (result, *this);
+            *this = VectorND< N, T > (result);
         }
+
+        /**
+         * @brief implicit conversion to EigenVector
+         */
+        operator EigenVectorND () const { return this->e (); }
+
+        /**
+         * @brief implicit conversion to EigenVector
+         */
+        operator EigenVectorND& () { return this->e (); }
 
         /**
          * @brief Get zero-initialized vector.
@@ -259,7 +572,30 @@ namespace rw { namespace math {
         static VectorND< N, T > zero () { return Eigen::Matrix< T, N, 1 >::Zero (); }
 
       private:
-        // BoostBoundedVector _vec;
+        void ParamExpansion (size_t& i)
+        {
+            if (i > N) {
+                RW_THROW ("Vector to big, argc(" << i << ") != N(" << N << ")");
+            }
+            else if (i < N) {
+                RW_THROW ("Vector to small, argc(" << i << ") != N(" << N << ")");
+            }
+        }
+
+        template< typename R > void ParamExpansion (size_t& i, R arg)
+        {
+            ParamExpansion (++i);
+            _vec[--i] = T (arg);
+        }
+
+        template< typename R, typename... ARGS >
+        void ParamExpansion (size_t& i, R arg, ARGS... args)
+        {
+            ParamExpansion (++i, args...);
+
+            _vec[--i] = T (arg);
+        }
+
         EigenVectorND _vec;
     };
 
@@ -338,15 +674,8 @@ namespace rw { namespace math {
     {
         // Create a copy
         VectorND< ND, T > res (v);
-        // Normalize it
         res.e ().normalize ();
-        // Return it
         return res;
-        // T length = v.norm2();
-        // if (length != 0)
-        //    return VectorND<ND,T>(v(0)/length, v(1)/length, v(2)/length);
-        // else
-        //    return VectorND<ND,T>(0,0,0);
     }
 
     /**
@@ -395,15 +724,29 @@ namespace rw { namespace math {
      *
      * @relates VectorND
      */
-    template< size_t ND, class Q, class T >
+    template< class Q, size_t ND, class T >
     const VectorND< ND, Q > cast (const VectorND< ND, T >& v)
     {
-        return VectorND< ND, Q > (
-            static_cast< Q > (v (0)), static_cast< Q > (v (1)), static_cast< Q > (v (2)));
+        VectorND< ND, Q > ret;
+
+        for (size_t i = 0; i < v.size (); i++) {
+            ret[i] = static_cast< Q > (v[i]);
+        }
+        return ret;
     }
 
+    template< class T > using Vector6D = VectorND< 6, T >;
+
+    extern template class rw::math::VectorND< 6, double >;
+    extern template class rw::math::VectorND< 6, float >;
+    extern template class rw::math::VectorND< 5, double >;
+    extern template class rw::math::VectorND< 5, float >;
+    extern template class rw::math::VectorND< 4, double >;
+    extern template class rw::math::VectorND< 4, float >;
     extern template class rw::math::VectorND< 3, double >;
     extern template class rw::math::VectorND< 3, float >;
+    extern template class rw::math::VectorND< 2, double >;
+    extern template class rw::math::VectorND< 2, float >;
 
     /**@}*/
 }}    // namespace rw::math

@@ -19,64 +19,57 @@
 #define RWSIM_SWIG_REMOTETYPES_HPP_
 
 #include <rwlibs/swig/ScriptTypes.hpp>
-
+#include <rwsim/contacts/Contact.hpp>
 #include <rwsim/contacts/ContactDetector.hpp>
 #include <rwsim/contacts/ContactDetectorData.hpp>
 #include <rwsim/contacts/ContactDetectorTracking.hpp>
-#include <rwsim/contacts/Contact.hpp>
 #include <rwsim/contacts/ContactStrategy.hpp>
-
 #include <rwsim/control/BodyController.hpp>
-#include <rwsim/control/PoseController.hpp>
 #include <rwsim/control/PDController.hpp>
+#include <rwsim/control/PoseController.hpp>
 #include <rwsim/control/SerialDeviceController.hpp>
-
-#include <rwsim/dynamics/Constraint.hpp>
-#include <rwsim/dynamics/DynamicWorkCell.hpp>
-#include <rwsim/dynamics/DynamicDevice.hpp>
-#include <rwsim/dynamics/SuctionCup.hpp>
 #include <rwsim/dynamics/Body.hpp>
 #include <rwsim/dynamics/BodyUtil.hpp>
+#include <rwsim/dynamics/Constraint.hpp>
+#include <rwsim/dynamics/DynamicDevice.hpp>
+#include <rwsim/dynamics/DynamicWorkCell.hpp>
+#include <rwsim/dynamics/FixedBody.hpp>
+#include <rwsim/dynamics/KinematicBody.hpp>
 #include <rwsim/dynamics/RigidBody.hpp>
 #include <rwsim/dynamics/RigidDevice.hpp>
-#include <rwsim/dynamics/KinematicBody.hpp>
-#include <rwsim/dynamics/FixedBody.hpp>
-
+#include <rwsim/dynamics/SuctionCup.hpp>
 #include <rwsim/loaders/DynamicWorkCellLoader.hpp>
-
 #include <rwsim/sensor/SimulatedFTSensor.hpp>
-
 #include <rwsim/simulator/AssemblySimulator.hpp>
 #include <rwsim/simulator/DynamicSimulator.hpp>
-#include <rwsim/simulator/ThreadSimulator.hpp>
+#include <rwsim/simulator/GraspTaskSimulator.hpp>
 #include <rwsim/simulator/PhysicsEngine.hpp>
 #include <rwsim/simulator/PhysicsEngineFactory.hpp>
-#include <rwsim/simulator/GraspTaskSimulator.hpp>
+#include <rwsim/simulator/ThreadSimulator.hpp>
 
 #ifdef RWSIM_HAVE_ODE
 #include <rwsimlibs/ode/ODESimulator.hpp>
 #endif
 
-namespace rwsim {
-namespace swig {
+namespace rwsim { namespace swig {
 
-	// contacts
-	typedef rwsim::contacts::ContactDetector ContactDetector;
-	typedef rwsim::contacts::ContactDetectorData ContactDetectorData;
-	typedef rwsim::contacts::ContactDetectorTracking ContactDetectorTracking;
-	typedef rwsim::contacts::ContactStrategy ContactStrategy;
-	typedef rwsim::contacts::Contact Contact;
+    // contacts
+    typedef rwsim::contacts::ContactDetector ContactDetector;
+    typedef rwsim::contacts::ContactDetectorData ContactDetectorData;
+    typedef rwsim::contacts::ContactDetectorTracking ContactDetectorTracking;
+    typedef rwsim::contacts::ContactStrategy ContactStrategy;
+    typedef rwsim::contacts::Contact Contact;
 
-	// control
-	typedef rwsim::control::PoseController PoseController;
-	typedef rwsim::control::PDParam PDParam;
-	typedef rwsim::control::PDController PDController;
-	typedef rwsim::control::BodyController BodyController;
-	typedef rwsim::control::SerialDeviceController SerialDeviceController;
+    // control
+    typedef rwsim::control::PoseController PoseController;
+    typedef rwsim::control::PDParam PDParam;
+    typedef rwsim::control::PDController PDController;
+    typedef rwsim::control::BodyController BodyController;
+    typedef rwsim::control::SerialDeviceController SerialDeviceController;
 
-	// drawable
+    // drawable
 
-	// dynamics
+    // dynamics
     typedef rwsim::dynamics::DynamicWorkCell DynamicWorkCell;
     typedef rwsim::dynamics::Body Body;
     typedef rwsim::dynamics::RigidBody RigidBody;
@@ -89,15 +82,15 @@ namespace swig {
     typedef rwsim::dynamics::RigidDevice RigidDevice;
     typedef rwsim::dynamics::SuctionCup SuctionCup;
 
-	// loaders
+    // loaders
     typedef rwsim::loaders::DynamicWorkCellLoader DynamicWorkCellLoader;
 
-	// rwphysics
+    // rwphysics
 
-	// sensor
+    // sensor
     typedef rwsim::sensor::SimulatedFTSensor SimulatedFTSensor;
 
-	// simulator
+    // simulator
     typedef rwsim::simulator::AssemblySimulator AssemblySimulator;
     typedef rwsim::simulator::DynamicSimulator DynamicSimulator;
     typedef rwsim::simulator::ThreadSimulator ThreadSimulator;
@@ -106,57 +99,55 @@ namespace swig {
     typedef rwsim::simulator::PhysicsEngine::Factory PhysicsEngineFactory;
     typedef rwsim::simulator::GraspTaskSimulator GraspTaskSimulator;
 
-	// util
+    // util
 
-	// rwsimlibs bullet
+    // rwsimlibs bullet
 
-	// rwsimlibs gui
+    // rwsimlibs gui
 
-	// rwsimlibs ode
+    // rwsimlibs ode
 #ifdef RWSIM_HAVE_ODE
     typedef rwsim::simulator::ODESimulator ODESimulator;
 #endif
 
-	// rwsimlibs plugins
+    // rwsimlibs plugins
 
-	// rwsimlibs swig
+    // rwsimlibs swig
 
-	// rwsimlibs tools
+    // rwsimlibs tools
 
-	// helper functions
-    template <typename T>
-    std::string toString(const T& x)
+    // helper functions
+    template< typename T > std::string toString (const T& x)
     {
         std::ostringstream buf;
         buf << x;
-        return buf.str();
+        return buf.str ();
     }
 
     // general functions
-    rw::core::Ptr<DynamicWorkCell> getDynamicWorkCell();
+    rw::core::Ptr< DynamicWorkCell > getDynamicWorkCell ();
 
     /**
      * @brief set current dynamic workcell instance
      */
-    void setDynamicWorkCell(rw::core::Ptr<DynamicWorkCell> dwc);
+    void setDynamicWorkCell (rw::core::Ptr< DynamicWorkCell > dwc);
 
     /**
      * @brief add instance of simulator
      * @param sim [in]
      * @param id [in] id of simulator
      */
-    void addSimulatorInstance(rw::core::Ptr<ThreadSimulator> sim, const std::string& id);
+    void addSimulatorInstance (rw::core::Ptr< ThreadSimulator > sim, const std::string& id);
 
     //! @brief get first available simulator instance
-    rw::core::Ptr<ThreadSimulator> getSimulatorInstance();
+    rw::core::Ptr< ThreadSimulator > getSimulatorInstance ();
 
-    rw::core::Ptr<ThreadSimulator> getSimulatorInstance(const std::string& id);
+    rw::core::Ptr< ThreadSimulator > getSimulatorInstance (const std::string& id);
 
-    void removeSimulatorInstance(const std::string& id);
+    void removeSimulatorInstance (const std::string& id);
 
-    std::vector<std::string> getSimulatorInstances();
+    std::vector< std::string > getSimulatorInstances ();
 
-}
-}
+}}    // namespace rwsim::swig
 
 #endif /* REMOTETYPES_HPP_ */

@@ -59,6 +59,9 @@
 #ifdef RWS_HAVE_PLUGIN_LUAPL
 #include <rwslibs/lua/Lua.hpp>
 #endif
+#ifdef RWS_HAVE_PLUGIN_PYTHONEDITOR
+#include <rwslibs/pythoneditor/Editor.hpp>
+#endif
 #endif
 #ifdef RWS_HAVE_GLUT
 #if defined(RW_MACOS)
@@ -231,6 +234,9 @@ int RobWorkStudioApp::run ()
 #if RWS_HAVE_PLUGIN_LUAPL
                     rwstudio.addPlugin (new rws::Lua (), false, Qt::LeftDockWidgetArea);
 #endif
+#if RWS_HAVE_PLUGIN_PYTHONEDITOR
+                    rwstudio.addPlugin(new rws::PyEditor(),false, Qt::LeftDockWidgetArea);
+#endif
 #endif
                     // Load all plugins from the local rwsplugins folder
                     if (boost::filesystem::exists (RWS_COMPILE_PLUGIN_DIR)) {
@@ -238,8 +244,8 @@ int RobWorkStudioApp::run ()
                         for (boost::filesystem::directory_iterator i (p2);
                              i != boost::filesystem::directory_iterator ();
                              i++) {
-                            std::string plPath =
-                                std::string(RWS_COMPILE_PLUGIN_DIR) + "/" + i->path ().filename ().string ();
+                            std::string plPath = std::string (RWS_COMPILE_PLUGIN_DIR) + "/" +
+                                                 i->path ().filename ().string ();
                             rwstudio.loadPlugin (plPath.c_str (), 0, 1);
                         }
                     }
@@ -326,6 +332,9 @@ int RobWorkStudioApp::run ()
                 QMessageBox::critical (NULL, "Exception", e.what ());
                 _isRunning = false;
                 return -1;
+            }
+            catch(int) {
+
             }
         }
         _isRunning = false;

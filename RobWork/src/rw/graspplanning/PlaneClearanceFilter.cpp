@@ -22,8 +22,6 @@
 #include <rw/math/Constants.hpp>
 #include <rw/math/Vector3D.hpp>
 
-
-
 using namespace rw::math;
 using namespace rw::graspplanning;
 using namespace rw::sensor;

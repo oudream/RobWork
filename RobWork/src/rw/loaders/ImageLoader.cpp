@@ -18,10 +18,9 @@
 #include "ImageLoader.hpp"
 
 #include <rw/core/Extension.hpp>
+#include <rw/core/Log.hpp>
 #include <rw/core/StringUtil.hpp>
 #include <rw/core/macros.hpp>
-#include <rw/core/Log.hpp>
-
 #include <rw/loaders/image/PGMLoader.hpp>
 #include <rw/loaders/image/PPMLoader.hpp>
 #include <rw/loaders/image/RGBLoader.hpp>

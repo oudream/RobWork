@@ -180,7 +180,7 @@ install(
 
 # misc
 install(
-    FILES LICENSE.txt NOTICE.txt ChangeLog.txt
+    FILES LICENSE.txt NOTICE.txt
     DESTINATION "${RWS_INSTALL_DIR}"
     COMPONENT cmake
 )

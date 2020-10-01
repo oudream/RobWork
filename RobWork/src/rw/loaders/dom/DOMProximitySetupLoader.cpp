@@ -20,7 +20,6 @@
 #include <rw/core/DOMElem.hpp>
 #include <rw/core/DOMParser.hpp>
 
-
 #include <iostream>
 
 using namespace rw::core;

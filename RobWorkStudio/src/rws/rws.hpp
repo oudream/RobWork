@@ -15,22 +15,21 @@
 #include "HelpAssistant.hpp"
 #include "ImageUtil.hpp"
 #include "ImageView.hpp"
-#include "RobWorkStudio.hpp"
-#include "RobWorkStudioPlugin.hpp"
 #include "RWSImageLoaderPlugin.hpp"
 #include "RWStudioView3D.hpp"
+#include "RobWorkStudio.hpp"
+#include "RobWorkStudioPlugin.hpp"
 #include "SceneOpenGLViewer.hpp"
 #include "SceneViewerWidget.hpp"
-
 #include "propertyview/PropertyViewDialog.hpp"
 #include "propertyview/PropertyViewEditor.hpp"
 #include "propertyview/VariantManager.hpp"
 
 #define RWS_USE_RWP_NAMESPACE \
-    namespace rws { } \
-    namespace rwp \
-    { \
-        using namespace rws; \
+    namespace rws {           \
+    }                         \
+    namespace rwp {           \
+    using namespace rws;      \
     }
 
 #endif /* RWS_HPP_ */

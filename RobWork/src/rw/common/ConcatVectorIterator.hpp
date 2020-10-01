@@ -21,10 +21,12 @@
 /**
  * @file ConcatVectorIterator.hpp
  */
+#if !defined(SWIG)
 
 #include <cstddef>
 #include <iterator>
 #include <vector>
+#endif
 
 namespace rw { namespace common {
 
@@ -95,6 +97,7 @@ const ConcatVectorIterator<T> end(next, next->end(), 0);
          * @brief Pointer to the T element
          */
         T* operator-> () const { return *pos.operator-> (); }
+
 
         /**
          * @brief Increments the position of the iterator
@@ -196,6 +199,7 @@ const ConcatVectorIterator<T> end(next, next->end(), 0);
          * @brief Pointer to the T element
          */
         const T* operator-> () const { return pos.operator-> (); }
+
 
         /**
          * @brief Increments the position of the iterator

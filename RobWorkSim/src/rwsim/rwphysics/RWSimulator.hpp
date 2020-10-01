@@ -1,21 +1,24 @@
 #ifndef RWSIMULATOR_HPP_
 #define RWSIMULATOR_HPP_
 
-#include <rwsim/simulator/PhysicsEngine.hpp>
-#include <rw/kinematics/FrameMap.hpp>
-#include <rw/core/PropertyMap.hpp>
-#include <rw/core/Ptr.hpp>
 #include "RWBodyPool.hpp"
 
-namespace rw { namespace kinematics { class State; } }
+#include <rw/core/PropertyMap.hpp>
+#include <rw/core/Ptr.hpp>
+#include <rw/kinematics/FrameMap.hpp>
+#include <rwsim/simulator/PhysicsEngine.hpp>
+
+namespace rw { namespace kinematics {
+    class State;
+}}    // namespace rw::kinematics
 
 namespace rwsim {
-namespace dynamics{
-	class DynamicWorkCell;
-	class RigidBody;
-	class KinematicBody;
-	class BodyController;
-}
+namespace dynamics {
+    class DynamicWorkCell;
+    class RigidBody;
+    class KinematicBody;
+    class BodyController;
+}    // namespace dynamics
 
 namespace simulator {
 
@@ -28,135 +31,131 @@ namespace simulator {
     class RWDebugRender;
     class ConstraintSolver;
 
-	class RWSimulator: public PhysicsEngine
-	{
-	public:
+    class RWSimulator : public PhysicsEngine
+    {
+      public:
+        RWSimulator ();
 
-        RWSimulator();
+        /**
+         * @brief constructor
+         */
+        RWSimulator (rw::core::Ptr< rwsim::dynamics::DynamicWorkCell > dwc);
 
-		/**
-		 * @brief constructor
-		 */
-		RWSimulator(rw::core::Ptr<rwsim::dynamics::DynamicWorkCell> dwc);
+        /**
+         * @brief default destructor
+         */
+        virtual ~RWSimulator () { exitPhysics (); }
 
-		/**
-		 * @brief default destructor
-		 */
-		virtual ~RWSimulator(){
-			exitPhysics();
-		}
+        //! @copydoc PhysicsEngine::load
+        void load (rw::core::Ptr< rwsim::dynamics::DynamicWorkCell > dwc);
 
-		//! @copydoc PhysicsEngine::load
-		void load(rw::core::Ptr<rwsim::dynamics::DynamicWorkCell> dwc);
+        //! @copydoc PhysicsEngine::setContactDetector
+        bool setContactDetector (rw::core::Ptr< rwsim::contacts::ContactDetector > detector);
 
-		//! @copydoc PhysicsEngine::setContactDetector
-		bool setContactDetector(rw::core::Ptr<rwsim::contacts::ContactDetector> detector);
+        /**
+         * @copydoc PhysicsEngine::initPhysics
+         */
+        void initPhysics (rw::kinematics::State& state);
 
-		/**
-		 * @copydoc PhysicsEngine::initPhysics
-		 */
-		void initPhysics(rw::kinematics::State& state);
+        /**
+         * @copydoc PhysicsEngine::step
+         */
+        void step (double dt, rw::kinematics::State& state);
 
-		/**
-		 * @copydoc PhysicsEngine::step
-		 */
-		void step(double dt, rw::kinematics::State& state);
+        /**
+         * @copydoc PhysicsEngine::resetScene
+         */
+        void resetScene (rw::kinematics::State& state);
 
-		/**
-		 * @copydoc PhysicsEngine::resetScene
-		 */
-		void resetScene(rw::kinematics::State& state);
+        /**
+         * @copydoc PhysicsEngine::exitPhysics
+         */
+        void exitPhysics ();
 
-		/**
-		 * @copydoc PhysicsEngine::exitPhysics
-		 */
-		void exitPhysics();
+        /**
+         * @copydoc PhysicsEngine::getTime
+         */
+        double getTime () { return _time; }
 
-		/**
-		 * @copydoc PhysicsEngine::getTime
-		 */
-		double getTime(){
-			return _time;
-		}
+        void attach (dynamics::Body::Ptr b1, dynamics::Body::Ptr b2) {}
+        void detach (dynamics::Body::Ptr b1, dynamics::Body::Ptr b2){};
+        /**
+         * @copydoc PhysicsEngine::createDebugRender
+         */
+        drawable::SimulatorDebugRender::Ptr createDebugRender ();
 
-		void attach(dynamics::Body::Ptr b1, dynamics::Body::Ptr b2){}
-		void detach(dynamics::Body::Ptr b1, dynamics::Body::Ptr b2){};
-		/**
-		 * @copydoc PhysicsEngine::createDebugRender
-		 */
-		drawable::SimulatorDebugRender::Ptr createDebugRender();
+        virtual void setEnabled (dynamics::Body::Ptr body, bool enabled) {}
 
-		virtual void setEnabled(dynamics::Body::Ptr body, bool enabled){}
+        rw::core::PropertyMap& getPropertyMap () { return _propertyMap; };
 
-		rw::core::PropertyMap& getPropertyMap()
-		{ return _propertyMap; };
+        void emitPropertyChanged () {}
 
-		void emitPropertyChanged(){}
+        void addController (rw::core::Ptr< rwlibs::simulation::SimulatedController > controller)
+        {
+            _controllers.push_back (controller);
+        }
 
-		void addController(rw::core::Ptr<rwlibs::simulation::SimulatedController> controller){
-			_controllers.push_back(controller);
-		}
+        void addBody (rwsim::dynamics::Body::Ptr body, rw::kinematics::State& state) {}
 
-		void addBody(rwsim::dynamics::Body::Ptr body, rw::kinematics::State &state){
+        void addDevice (rw::core::Ptr< rwsim::dynamics::DynamicDevice > dev,
+                        rw::kinematics::State& state)
+        {}
 
-		}
+        void addSensor (rwlibs::simulation::SimulatedSensor::Ptr sensor,
+                        rw::kinematics::State& state)
+        {
+            _sensors.push_back (sensor);
+        }
 
-		void addDevice(rw::core::Ptr<rwsim::dynamics::DynamicDevice> dev, rw::kinematics::State &state){
+        void removeController (rw::core::Ptr< rwlibs::simulation::SimulatedController > controller)
+        {}
 
-		}
+        void removeSensor (rwlibs::simulation::SimulatedSensor::Ptr sensor){};
+        void setDynamicsEnabled (rwsim::dynamics::Body::Ptr body, bool enabled) {}
+        std::vector< rwlibs::simulation::SimulatedSensor::Ptr > getSensors () { return _sensors; };
 
-		void addSensor(rwlibs::simulation::SimulatedSensor::Ptr sensor, rw::kinematics::State &state){
-			_sensors.push_back(sensor);
-		}
+      private:
+        rw::core::PropertyMap _propertyMap;
 
-		void removeController(rw::core::Ptr<rwlibs::simulation::SimulatedController> controller){}
+        /**
+         * @brief a step of dt if no penetrating collision occour, else a
+         * step until the collision occour.
+         * @param dt [in] the step to take.
+         * @param state [in] current state
+         * @return the actual time step dt that was taken
+         */
+        double internalStep (double dt, rw::kinematics::State& state);
 
-		void removeSensor(rwlibs::simulation::SimulatedSensor::Ptr sensor){};
-		void setDynamicsEnabled(rwsim::dynamics::Body::Ptr body, bool enabled){}
-		std::vector<rwlibs::simulation::SimulatedSensor::Ptr> getSensors(){ return _sensors;};
+        void rollBack (rw::kinematics::State& state);
 
-	private:
-		rw::core::PropertyMap _propertyMap;
+      private:
+        rw::core::Ptr< rwsim::dynamics::DynamicWorkCell > _dwc;
 
-		/**
-		 * @brief a step of dt if no penetrating collision occour, else a
-		 * step until the collision occour.
-		 * @param dt [in] the step to take.
-		 * @param state [in] current state
-		 * @return the actual time step dt that was taken
-		 */
-		double internalStep(double dt, rw::kinematics::State& state);
+        CNodePool* _pool;
+        ContactModelFactory* _factory;
+        ContactGraph* _cgraph;
+        ConstraintSolver* _solver;
 
-		void rollBack(rw::kinematics::State &state);
+        RWBodyPool _bodyPool;
+        std::vector< BodyController* > _manipulators;
 
-	private:
-		rw::core::Ptr<rwsim::dynamics::DynamicWorkCell> _dwc;
+        std::vector< RWBody* > _bodies;
 
-		CNodePool *_pool;
-		ContactModelFactory *_factory;
-		ContactGraph *_cgraph;
-		ConstraintSolver *_solver;
+        std::vector< rwsim::dynamics::RigidBody* > _rbodies;
+        std::vector< rwsim::dynamics::KinematicBody* > _kbodies;
+        std::vector< BodyIntegrator* > _integrators;
 
-		RWBodyPool _bodyPool;
-		std::vector<BodyController*> _manipulators;
+        double _time;
 
-		std::vector<RWBody*> _bodies;
+        rw::kinematics::FrameMap< RWBody* > _frameToBody;
 
-		std::vector<rwsim::dynamics::RigidBody*> _rbodies;
-		std::vector<rwsim::dynamics::KinematicBody*> _kbodies;
-		std::vector<BodyIntegrator*> _integrators;
+        ConstantForceManipulator* _gravityManipulator;
 
-		double _time;
+        std::vector< rw::core::Ptr< rwlibs::simulation::SimulatedController > > _controllers;
+        std::vector< rwlibs::simulation::SimulatedSensor::Ptr > _sensors;
+    };
 
-		rw::kinematics::FrameMap<RWBody*> _frameToBody;
-
-		ConstantForceManipulator *_gravityManipulator;
-
-		std::vector<rw::core::Ptr<rwlibs::simulation::SimulatedController> > _controllers;
-		std::vector<rwlibs::simulation::SimulatedSensor::Ptr> _sensors;
-	};
-
-}
-}
+}    // namespace simulator
+}    // namespace rwsim
 
 #endif /*RWSIMULATOR_HPP_*/

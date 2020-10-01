@@ -15,43 +15,41 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RWLIBS_OS_RWGL_HPP
 #define RWLIBS_OS_RWGL_HPP
 
 #include <rw/core/os.hpp>
 
-
 #if defined(RW_CYGWIN)
-    #include <windows.h>
-    #include <GL/gl.h>
-	#include <GL/glext.h>
-    #include <GL/glu.h> // Header File For The GLu32 Library
+#include <GL/gl.h>
+#include <windows.h>
+#include <GL/glext.h>
+#include <GL/glu.h>    // Header File For The GLu32 Library
 #elif defined(RW_WIN32)
-    #include <windows.h>
-    #include <GL/gl.h>
-	//#include <GL/glext.h>
-	#include "glext_win32.h"
-    #include <GL/glu.h> // Header File For The GLu32 Library	
+#include <GL/gl.h>
+#include <windows.h>
+//#include <GL/glext.h>
+#include "glext_win32.h"
+#include <GL/glu.h>    // Header File For The GLu32 Library
 #elif defined(RW_MACOS)
-    #include <OpenGL/gl.h>
-	#include <OpenGL/glext.h>
-	#include <OpenGL/glu.h>
+#include <OpenGL/gl.h>
+#include <OpenGL/glext.h>
+#include <OpenGL/glu.h>
 #elif defined(RW_LINUX)
-    #include <GL/gl.h>
-    #include <GL/glext.h>
-    #include <GL/glu.h> // Header File For The GLu32 Library
+#include <GL/gl.h>
+#include <GL/glext.h>
+#include <GL/glu.h>    // Header File For The GLu32 Library
 #else
-    #include <GL/gl.h>
-    #include <GL/glext.h>
-    #include <GL/glu.h> // Header File For The GLu32 Library
+#include <GL/gl.h>
+#include <GL/glext.h>
+#include <GL/glu.h>    // Header File For The GLu32 Library
 #endif
 
 /*
-#include <windows.h>
     #include <GL/gl.h>
     #include <GL/glext.h>
     #include <GL/glu.h> // Header File For The GLu32 Library
+#include <windows.h>
 
 // function pointers for FBO extension
 // Windows needs to get function pointers from ICD OpenGL drivers,

@@ -26,59 +26,58 @@
 
 #include <rw/core/Ptr.hpp>
 
-#include <vector>
 #include <map>
 #include <string>
+#include <vector>
 
-namespace rwsim {
-namespace log {
+namespace rwsim { namespace log {
 
-//! @addtogroup rwsim_log
+    //! @addtogroup rwsim_log
 
-//! @{
-/**
- * @brief Statistics utility for automatic generation of data set based on a SimulatorLogScope.
- */
-class SimulatorStatistics {
-public:
-    //! Smart pointer type of SimulatorStatistics
-    typedef rw::core::Ptr<SimulatorStatistics> Ptr;
+    //! @{
+    /**
+     * @brief Statistics utility for automatic generation of data set based on a SimulatorLogScope.
+     */
+    class SimulatorStatistics
+    {
+      public:
+        //! Smart pointer type of SimulatorStatistics
+        typedef rw::core::Ptr< SimulatorStatistics > Ptr;
 
-    //! Type of a DataSeries collection (each series is a name and a list of numbers)
-	typedef std::map<std::string, std::vector<double> > DataSeries;
+        //! Type of a DataSeries collection (each series is a name and a list of numbers)
+        typedef std::map< std::string, std::vector< double > > DataSeries;
 
-	/**
-	 * @brief Create a new statistics on the given SimulatorLogScope.
-	 * @note Please use the SimulatorLogScope::getStatistics function instead.
-	 * @note All children log scopes will have their statistics updated or added.
-	 * @param log [in/out] the log to create statistics based on.
-	 */
-	SimulatorStatistics(const class SimulatorLogScope* log);
+        /**
+         * @brief Create a new statistics on the given SimulatorLogScope.
+         * @note Please use the SimulatorLogScope::getStatistics function instead.
+         * @note All children log scopes will have their statistics updated or added.
+         * @param log [in/out] the log to create statistics based on.
+         */
+        SimulatorStatistics (const class SimulatorLogScope* log);
 
-	//! @brief Destructor.
-	virtual ~SimulatorStatistics();
+        //! @brief Destructor.
+        virtual ~SimulatorStatistics ();
 
-	//! @brief Generate statistics.
-	void update();
+        //! @brief Generate statistics.
+        void update ();
 
-	//! @brief Check if any statistics was generated.
-	bool hasData() const;
+        //! @brief Check if any statistics was generated.
+        bool hasData () const;
 
-	/**
-	 * @brief Get the found statistics.
-	 * @return a collection of data series.
-	 */
-	const DataSeries& getSeries() const;
+        /**
+         * @brief Get the found statistics.
+         * @return a collection of data series.
+         */
+        const DataSeries& getSeries () const;
 
-private:
-	const DataSeries& getPropagated() const;
+      private:
+        const DataSeries& getPropagated () const;
 
-private:
-	const class SimulatorLogScope* _log;
-	DataSeries _singleValues;
-	DataSeries _multipleValues;
-};
-//! @}
-} /* namespace log */
-} /* namespace rwsim */
+      private:
+        const class SimulatorLogScope* _log;
+        DataSeries _singleValues;
+        DataSeries _multipleValues;
+    };
+    //! @}
+}}     // namespace rwsim::log
 #endif /* RWSIM_LOG_SIMULATORSTATISTICS_HPP_ */

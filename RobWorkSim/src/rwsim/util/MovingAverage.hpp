@@ -20,40 +20,37 @@
 
 #include <vector>
 
-namespace rwsim {
-namespace util {
+namespace rwsim { namespace util {
 
-	/**
-	 * @brief
-	 */
-	class MovingAverage {
-	public:
-		MovingAverage(int len):
-			_len(len),_invLen(1.0/len),_cb(_len,0.0),_sum(0.0),_idx(0)
-		{}
+    /**
+     * @brief
+     */
+    class MovingAverage
+    {
+      public:
+        MovingAverage (int len) :
+            _len (len), _invLen (1.0 / len), _cb (_len, 0.0), _sum (0.0), _idx (0)
+        {}
 
-		void addSample(double sample){
-			_sum -= _cb[_idx];
-			_sum += sample;
-			_cb[_idx] = sample;
-			_idx++;
-			if(_idx == _len )
-				_idx = 0;
-		}
+        void addSample (double sample)
+        {
+            _sum -= _cb[_idx];
+            _sum += sample;
+            _cb[_idx] = sample;
+            _idx++;
+            if (_idx == _len)
+                _idx = 0;
+        }
 
-		double getAverage(){
-			return _sum*_invLen;
-		}
+        double getAverage () { return _sum * _invLen; }
 
-	private:
-		const int _len;
-		double _invLen;
-		std::vector<double> _cb;
-		double _sum;
-		int _idx;
-
-	};
-}
-}
+      private:
+        const int _len;
+        double _invLen;
+        std::vector< double > _cb;
+        double _sum;
+        int _idx;
+    };
+}}    // namespace rwsim::util
 
 #endif /* MOVINGAVERAGE_HPP_ */

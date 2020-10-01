@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
  * Faculty of Engineering, University of Southern Denmark
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,42 +15,43 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RWS_QDRAW_HPP
 #define RWS_QDRAW_HPP
 
 #include <rw/core/Ptr.hpp>
 
 class StateDraw;
-typedef rw::core::Ptr<StateDraw> StateDrawPtr;
+typedef rw::core::Ptr< StateDraw > StateDrawPtr;
 
-namespace rw { namespace kinematics { class State; } }
+namespace rw { namespace kinematics {
+    class State;
+}}    // namespace rw::kinematics
 
 /**
    @brief Interface for the drawing of the work cell for a given state.
 */
 class StateDraw
 {
-public:
+  public:
     /**
        @brief Draw the work cell for a state of \b state.
     */
-    virtual void draw(const rw::kinematics::State& state) const = 0;
+    virtual void draw (const rw::kinematics::State& state) const = 0;
 
     /**
        @brief Destructor.
     */
-    virtual ~StateDraw() {}
+    virtual ~StateDraw () {}
 
-protected:
+  protected:
     /**
        @brief Default constructor.
     */
-    StateDraw() {}
+    StateDraw () {}
 
-private:
-    StateDraw(const StateDraw&);
-    StateDraw& operator=(const StateDraw&);
+  private:
+    StateDraw (const StateDraw&);
+    StateDraw& operator= (const StateDraw&);
 };
 
 /**
@@ -58,6 +59,6 @@ private:
 
    Calls to the draw() method of the drawer are simply ignored.
 */
-StateDrawPtr makeEmptyStateDraw();
+StateDrawPtr makeEmptyStateDraw ();
 
 #endif

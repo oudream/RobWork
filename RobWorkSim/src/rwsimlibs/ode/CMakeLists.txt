@@ -48,6 +48,7 @@ if(build)
     )
 
     # Detect if ODE comes with threading_impl.h file (version 0.13 and newer).
+
     if(NOT DEFINED ODE_WITH_THREADING_IMPL)
         message(STATUS "Testing ODE for the threading_impl.h file...")
         if(EXISTS "${ODE_INCLUDE_DIR}/ode/threading_impl.h")
@@ -66,10 +67,11 @@ if(build)
             )
         endif()
     endif()
-    if(ODE_WITH_THREADING_IMPL)
+
+    if(${ODE_WITH_THREADING_IMPL})
         message(STATUS "ODE threading_impl.h detected - assuming version 0.13 and later.")
         set_source_files_properties(ODEThreading.cpp PROPERTIES COMPILE_DEFINITIONS ODE_WITH_THREADING_IMPL)
-    elseif(ODE_WITH_THREADING_IMPL)
+    elseif()
         message(STATUS "ODE threading_impl.h NOT detected - assuming version 0.12 and earlier.")
     endif()
 
@@ -92,13 +94,13 @@ if(build)
     rw_subsys_option(build_plugin ${SUBSYS_NAME_PLUGIN} ${SUBSYS_DESC_PLUGIN} ${DEFAULT} DEPENDS ${SUBSYS_DEPS_PLUGIN} ADD_DOC)
 
     if(build_plugin)
-        add_library(${SUBSYS_NAME_PLUGIN} MODULE ODEPlugin.cpp ODEPlugin.hpp)
+        rw_add_plugin(${SUBSYS_NAME_PLUGIN} MODULE ODEPlugin.cpp ODEPlugin.hpp)
         target_link_libraries(${SUBSYS_NAME_PLUGIN} PRIVATE sdurwsim_ode)
         install(TARGETS ${SUBSYS_NAME_PLUGIN} LIBRARY DESTINATION ${RW_PLUGIN_INSTALL_DIR})
     endif()
 
     if(NOT ODE_WITH_THREADING_IMPL) # version below 0.13
-        if(${ODE_BUILD_WITH} STREQUAL "DOUBLE")
+        if("${ODE_BUILD_WITH}" STREQUAL "DOUBLE")
             target_compile_definitions(sdurwsim_ode PUBLIC dDOUBLE)
         else()
             target_compile_definitions(sdurwsim_ode PUBLIC dSINGLE)

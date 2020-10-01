@@ -25,16 +25,12 @@
 #include <rw/core/Ptr.hpp>
 #include <rw/proximity/CollisionStrategy.hpp>
 #include <rw/proximity/DistanceStrategy.hpp>
-#include <rw/core/Ptr.hpp>
 
 #include <fcl/config.h>
 #if (FCL_MAJOR_VERSION == 0 && FCL_MINOR_VERSION < 6)
-    #define FCL_VERSION_LESS_THEN_0_6_0 true
-#endif 
+#define FCL_VERSION_LESS_THEN_0_6_0 true
+#endif
 
-
-
-#include <fcl/config.h>
 #include <string>
 #include <utility>
 #include <vector>

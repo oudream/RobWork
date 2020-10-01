@@ -18,16 +18,17 @@
 #ifndef RWSIM_UTIL_TARGETCONFIGGRASPPOLICY_HPP_
 #define RWSIM_UTIL_TARGETCONFIGGRASPPOLICY_HPP_
 
+#include "GraspPolicy.hpp"
+
 #include <rw/core/PropertyMap.hpp>
 #include <rw/core/Ptr.hpp>
 #include <rwlibs/simulation/SimulatedController.hpp>
 
-#include "GraspPolicy.hpp"
+namespace rwsim { namespace dynamics {
+    class DynamicDevice;
+}}    // namespace rwsim::dynamics
 
-namespace rwsim { namespace dynamics { class DynamicDevice; } }
-
-namespace rwsim {
-namespace util {
+namespace rwsim { namespace util {
 
     /**
      * @brief This grasp policy will close the fingers of a device to a
@@ -35,45 +36,42 @@ namespace util {
      * predefined set of target configurations or from one of the
      * selected hueristics.
      */
-    class TargetConfigGraspPolicy: public GraspPolicy {
-    public:
-
-        typedef rw::core::Ptr<TargetConfigGraspPolicy> Ptr;
+    class TargetConfigGraspPolicy : public GraspPolicy
+    {
+      public:
+        typedef rw::core::Ptr< TargetConfigGraspPolicy > Ptr;
 
         /**
          * @brief constructor
          * @param dev
          * @return
          */
-        TargetConfigGraspPolicy(rwsim::dynamics::DynamicDevice* dev);
+        TargetConfigGraspPolicy (rwsim::dynamics::DynamicDevice* dev);
 
-        virtual ~TargetConfigGraspPolicy();
+        virtual ~TargetConfigGraspPolicy ();
 
-        void setDefaultSettings();
+        void setDefaultSettings ();
 
-        static std::string getID(){ return "TargetConfigGraspPolicy"; };
+        static std::string getID () { return "TargetConfigGraspPolicy"; };
 
         // inherited from GraspPolicy
 
-        virtual void reset(const rw::kinematics::State& state);
+        virtual void reset (const rw::kinematics::State& state);
 
-        virtual rwlibs::simulation::SimulatedController::Ptr getController();
+        virtual rwlibs::simulation::SimulatedController::Ptr getController ();
 
-        virtual std::string getIdentifier(){ return TargetConfigGraspPolicy::getID();}
+        virtual std::string getIdentifier () { return TargetConfigGraspPolicy::getID (); }
 
-        virtual rw::core::PropertyMap getSettings(){ return _settings;};
+        virtual rw::core::PropertyMap getSettings () { return _settings; };
 
-        virtual void applySettings();
+        virtual void applySettings ();
 
-    private:
-
+      private:
         rw::core::PropertyMap _settings;
         rwsim::dynamics::DynamicDevice* _dev;
         rwlibs::simulation::SimulatedController::Ptr _controller;
     };
 
-}
-}
-
+}}    // namespace rwsim::util
 
 #endif /* GRASPPOLICY_HPP_ */

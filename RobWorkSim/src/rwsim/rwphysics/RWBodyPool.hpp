@@ -12,44 +12,42 @@
 
 #include <stack>
 
-namespace rwsim {
-namespace simulator {
-
-/**
- * @brief interface for creating and deleting constraintEdges and ConstraintNodes.
- * ConstraintEdges are frequently created and deleted so efficient data structures
- * are here needed.
- */
-class RWBodyPool {
-
-public:
-    /**
-     * @brief initialize the node and edge buffers
-     */
-    RWBodyPool(int nrBodies=0);
+namespace rwsim { namespace simulator {
 
     /**
-     * @brief create a ConstraintNode
+     * @brief interface for creating and deleting constraintEdges and ConstraintNodes.
+     * ConstraintEdges are frequently created and deleted so efficient data structures
+     * are here needed.
      */
-    RWBody *createBody(RWBody::BodyType type);
+    class RWBodyPool
+    {
+      public:
+        /**
+         * @brief initialize the node and edge buffers
+         */
+        RWBodyPool (int nrBodies = 0);
 
-    /**
-     * @brief delete a constraint node
-     */
-    void deleteBody(RWBody* body);
+        /**
+         * @brief create a ConstraintNode
+         */
+        RWBody* createBody (RWBody::BodyType type);
 
-    /**
-     * @brief gets the complete list of constraint nodes
-     * in the pool. NULL elements can occour.
-     */
-    const RWBodyList& getBodies() const ;
+        /**
+         * @brief delete a constraint node
+         */
+        void deleteBody (RWBody* body);
 
-protected:
-    std::vector<RWBody*> _bodies;
-    std::stack<int> _freeBodyIDs;
-};
+        /**
+         * @brief gets the complete list of constraint nodes
+         * in the pool. NULL elements can occour.
+         */
+        const RWBodyList& getBodies () const;
 
-}
-}
+      protected:
+        std::vector< RWBody* > _bodies;
+        std::stack< int > _freeBodyIDs;
+    };
+
+}}    // namespace rwsim::simulator
 
 #endif /* RWBODYPOOL_HPP_ */

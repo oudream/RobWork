@@ -20,6 +20,7 @@
 #include <rw/core/StringUtil.hpp>
 
 #include <boost/lexical_cast.hpp>
+#include <string>
 
 using namespace rw::core;
 
@@ -52,4 +53,32 @@ void DOMElem::setValue (double val)
 void DOMElem::setValueString (std::string val)
 {
     setValue (val);
+}
+
+std::string DOMElem::getAttributeValue (const std::string& name, const std::string& default_value)
+{
+    if (DOMElem::Ptr attrib = getAttribute (name, true))
+        return attrib->getValue ();
+    return default_value;
+}
+
+bool DOMElem::getAttributeValueAsBool (const std::string& name, bool default_value)
+{
+    if (DOMElem::Ptr attrib = getAttribute (name, true))
+        return attrib->getValueAsBool ();
+    return default_value;
+}
+
+double DOMElem::getAttributeValueAsDouble (const std::string& name, double default_value)
+{
+    if (DOMElem::Ptr attrib = getAttribute (name, true))
+        return attrib->getValueAsDouble ();
+    return default_value;
+}
+
+int DOMElem::getAttributeValueAsInt (const std::string& name, int default_value)
+{
+    if (DOMElem::Ptr attrib = getAttribute (name, true))
+        return attrib->getValueAsInt ();
+    return default_value;
 }

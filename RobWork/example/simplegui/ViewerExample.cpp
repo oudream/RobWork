@@ -10,7 +10,7 @@
 
 using rw::core::ownedPtr;
 
-class MyListener: public EventListener {
+class MyListener: public example::EventListener {
     public:
         MyListener(){};
         virtual ~MyListener(){};

@@ -24,34 +24,32 @@ using namespace rw::kinematics;
 
 using namespace rwsim::dynamics;
 
-KinematicBody::KinematicBody(
-            const BodyInfo& info,
-            rw::models::Object::Ptr obj):
-			   Body(info, obj),
-			   _base(NULL)
+KinematicBody::KinematicBody (const BodyInfo& info, rw::models::Object::Ptr obj) :
+    Body (info, obj), _base (NULL)
 
 {
-    _base = dynamic_cast<MovableFrame*>(obj->getBase());
-    if(_base==NULL){
-        RW_THROW("Base frame of Object in a KinematicBody must be a MovableFrame!");
+    _base = dynamic_cast< MovableFrame* > (obj->getBase ());
+    if (_base == NULL) {
+        RW_THROW ("Base frame of Object in a KinematicBody must be a MovableFrame!");
     }
-    //std::cout << "Adding state in kinematicbody!!!!" << std::endl;
-    add(_kstate);
+    // std::cout << "Adding state in kinematicbody!!!!" << std::endl;
+    add (_kstate);
 }
 
-KinematicBody::~KinematicBody()
+KinematicBody::~KinematicBody ()
+{}
+
+void KinematicBody::reset (rw::kinematics::State& state)
 {
+    // set variables in state to 0
+    KinematicBodyState& ks = _kstate.get (state);
+    ks.linvel              = Vector3D<> (0, 0, 0);
+    ks.angvel              = Vector3D<> (0, 0, 0);
 }
 
-void KinematicBody::reset(rw::kinematics::State &state){
-	// set variables in state to 0
-    KinematicBodyState &ks = _kstate.get(state);
-    ks.linvel = Vector3D<>(0,0,0);
-    ks.angvel = Vector3D<>(0,0,0);
-}
-
-rw::math::VelocityScrew6D<> KinematicBody::getVelocity(const rw::kinematics::State &state) const{
-    const KinematicBodyState &ks = _kstate.get(state);
-    return rw::math::VelocityScrew6D<>(ks.linvel[0], ks.linvel[1], ks.linvel[2],
-                                        ks.angvel[0], ks.angvel[1], ks.angvel[2]);
+rw::math::VelocityScrew6D<> KinematicBody::getVelocity (const rw::kinematics::State& state) const
+{
+    const KinematicBodyState& ks = _kstate.get (state);
+    return rw::math::VelocityScrew6D<> (
+        ks.linvel[0], ks.linvel[1], ks.linvel[2], ks.angvel[0], ks.angvel[1], ks.angvel[2]);
 }

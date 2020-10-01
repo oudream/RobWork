@@ -16,107 +16,109 @@
  ********************************************************************************/
 
 #include "SRCalibrationData.hpp"
+
 #include <fstream>
 
 using namespace rwhw::swissranger;
 
-SRCalibrationData::SRCalibrationData() {}
+SRCalibrationData::SRCalibrationData ()
+{}
 
-SRCalibrationData::~SRCalibrationData() {}
+SRCalibrationData::~SRCalibrationData ()
+{}
 
-bool SRCalibrationData::save(const std::string& filename) {
-    std::ofstream outfile(filename.c_str());
+bool SRCalibrationData::save (const std::string& filename)
+{
+    std::ofstream outfile (filename.c_str ());
 
-    if (!outfile.is_open())
+    if (!outfile.is_open ())
         return false;
 
-    outfile<<"<offsets>"<<std::endl;
-    for (unsigned short i = 0; i<IMG_SIZE; i++)
-        outfile<<_offsets[i]<<" ";
-    outfile<<"</offsets>"<<std::endl;
+    outfile << "<offsets>" << std::endl;
+    for (unsigned short i = 0; i < IMG_SIZE; i++)
+        outfile << _offsets[i] << " ";
+    outfile << "</offsets>" << std::endl;
 
-    outfile<<"<gains>"<<std::endl;
-    for (unsigned short i = 0; i<IMG_SIZE; i++)
-        outfile<<_gains[i]<<" ";
-    outfile<<"</gains>"<<std::endl;
+    outfile << "<gains>" << std::endl;
+    for (unsigned short i = 0; i < IMG_SIZE; i++)
+        outfile << _gains[i] << " ";
+    outfile << "</gains>" << std::endl;
 
-    outfile<<"<alpha>"<<std::endl;
-    for (unsigned short i = 0; i<IMG_SIZE; i++)
-        outfile<<_alphas[i]<<" ";
-    outfile<<"</alpha>"<<std::endl;
+    outfile << "<alpha>" << std::endl;
+    for (unsigned short i = 0; i < IMG_SIZE; i++)
+        outfile << _alphas[i] << " ";
+    outfile << "</alpha>" << std::endl;
 
+    outfile << "<beta>" << std::endl;
+    for (unsigned short i = 0; i < IMG_SIZE; i++)
+        outfile << _betas[i] << " ";
+    outfile << "</beta>" << std::endl;
 
-    outfile<<"<beta>"<<std::endl;
-    for (unsigned short i = 0; i<IMG_SIZE; i++)
-        outfile<<_betas[i]<<" ";
-    outfile<<"</beta>"<<std::endl;
-
-    outfile.close();
+    outfile.close ();
     return true;
 }
 
+bool SRCalibrationData::load (const std::string& filename)
+{
+    std::ifstream infile (filename.c_str ());
 
-bool SRCalibrationData::load(const std::string& filename) {
-    std::ifstream infile(filename.c_str());
-
-    if (!infile.is_open())
+    if (!infile.is_open ())
         return false;
 
     std::string token;
     infile >> token;
     if (token != "<offsets>") {
-        infile.close();
+        infile.close ();
         return false;
     }
-    for (unsigned short i = 0; i<IMG_SIZE; i++)
+    for (unsigned short i = 0; i < IMG_SIZE; i++)
         infile >> _offsets[i];
     infile >> token;
     if (token != "</offsets>") {
-        infile.close();
+        infile.close ();
         return false;
     }
 
     infile >> token;
     if (token != "<gains>") {
-        infile.close();
+        infile.close ();
         return false;
     }
-    for (unsigned short i = 0; i<IMG_SIZE; i++)
+    for (unsigned short i = 0; i < IMG_SIZE; i++)
         infile >> _gains[i];
     infile >> token;
     if (token != "</gains>") {
-        infile.close();
+        infile.close ();
         return false;
     }
-
 
     infile >> token;
     if (token != "<alpha>") {
-        infile.close();
+        infile.close ();
         return false;
     }
-    for (unsigned short i = 0; i<IMG_SIZE; i++)
+    for (unsigned short i = 0; i < IMG_SIZE; i++)
         infile >> _alphas[i];
     infile >> token;
     if (token != "</alpha>") {
-        infile.close();
+        infile.close ();
         return false;
     }
 
     infile >> token;
     if (token != "<beta>") {
-        infile.close();
+        infile.close ();
         return false;
     }
-    for (unsigned short i = 0; i<IMG_SIZE; i++)
+    for (unsigned short i = 0; i < IMG_SIZE; i++)
         infile >> _betas[i];
     infile >> token;
     if (token != "</beta>") {
-        infile.close();
+        infile.close ();
         return false;
     }
 
-    infile.close();
+    infile.close ();
 
     return true;
- }
+}

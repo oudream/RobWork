@@ -20,15 +20,16 @@
 
 //! @file SimulatedScanner25D.hpp
 
-#include <rw/core/Ptr.hpp>
-#include <rw/sensor/Scanner25D.hpp>
 #include "SimulatedSensor.hpp"
 
+#include <rw/core/Ptr.hpp>
+#include <rw/sensor/Scanner25D.hpp>
+
 namespace rwlibs { namespace simulation {
-	class FrameGrabber25D;
+    class FrameGrabber25D;
 
     //! @addtogroup simulation
-	// @{
+    // @{
 
     /**
      * @brief a simulated range scanner for 2.5D images, that is basically
@@ -36,20 +37,19 @@ namespace rwlibs { namespace simulation {
      */
     class SimulatedScanner25D : public SimulatedSensor
     {
-    public:
+      public:
         //! @brief smart pointer type of this class
-        typedef rw::core::Ptr<SimulatedScanner25D> Ptr;
+        typedef rw::core::Ptr< SimulatedScanner25D > Ptr;
 
-    public:
+      public:
         /**
          * @brief constructor
          * @param name [in] name of this simulated scanner
          * @param frame [in] the frame the scanner is attached to.
          * @param framegrabber [in] the framegrabber used for grabbing 2.5D images
          */
-    	SimulatedScanner25D(const std::string& name,
-    	                    rw::kinematics::Frame *frame,
-							rw::core::Ptr<FrameGrabber25D> framegrabber);
+        SimulatedScanner25D (const std::string& name, rw::kinematics::Frame* frame,
+                             rw::core::Ptr< FrameGrabber25D > framegrabber);
 
         /**
          * @brief constructor
@@ -58,71 +58,71 @@ namespace rwlibs { namespace simulation {
          * @param frame [in] the frame the scanner is attached to.
          * @param framegrabber [in] the framegrabber used for grabbing 2.5D images
          */
-    	SimulatedScanner25D(const std::string& name,
-                            const std::string& desc,
-                            rw::kinematics::Frame *frame,
-							rw::core::Ptr<FrameGrabber25D> framegrabber);
-
-    	/**
-    	 * @brief destructor
-    	 */
-    	virtual ~SimulatedScanner25D();
-
-    	/**
-    	 * @brief set the framerate in frames per sec.
-    	 * @param rate [in] frames per sec
-    	 */
-    	void setFrameRate(double rate);
-
-    	///////////// below is inheritet functions form Scanner25D and Sensor
-
-    	//! @copydoc rw::sensor::Scanner25D::open
-        void open();
-
-        //! @copydoc rw::sensor::Scanner25D::isOpen
-        bool isOpen();
-
-        //! @copydoc rw::sensor::Scanner25D::close
-        void close();
-
-        //! @copydoc rw::sensor::Scanner25D::acquire
-        void acquire();
-
-        //! @copydoc rw::sensor::Scanner25D::isScanReady
-        bool isScanReady();
-
-        //! @copydoc rw::sensor::Scanner25D::getRange
-        std::pair<double,double> getRange();
-
-        //! @copydoc rw::sensor::Scanner25D::getFrameRate
-        double getFrameRate();
-
-        //! @copydoc rw::geometry::PointCloud::getData
-    	const rw::geometry::PointCloud& getScan();
-
-    	//! @copydoc SimulatedSensor::update
-        void update(const Simulator::UpdateInfo& info, rw::kinematics::State& state);
-
-    	//! @copydoc SimulatedSensor::reset
-    	void reset(const rw::kinematics::State& state);
+        SimulatedScanner25D (const std::string& name, const std::string& desc,
+                             rw::kinematics::Frame* frame,
+                             rw::core::Ptr< FrameGrabber25D > framegrabber);
 
         /**
-    	 * @brief get a handle to controlling an instance of the simulated sensor in a specific simulator
+         * @brief destructor
+         */
+        virtual ~SimulatedScanner25D ();
+
+        /**
+         * @brief set the framerate in frames per sec.
+         * @param rate [in] frames per sec
+         */
+        void setFrameRate (double rate);
+
+        ///////////// below is inheritet functions form Scanner25D and Sensor
+
+        //! @copydoc rw::sensor::Scanner25D::open
+        void open ();
+
+        //! @copydoc rw::sensor::Scanner25D::isOpen
+        bool isOpen ();
+
+        //! @copydoc rw::sensor::Scanner25D::close
+        void close ();
+
+        //! @copydoc rw::sensor::Scanner25D::acquire
+        void acquire ();
+
+        //! @copydoc rw::sensor::Scanner25D::isScanReady
+        bool isScanReady ();
+
+        //! @copydoc rw::sensor::Scanner25D::getRange
+        std::pair< double, double > getRange ();
+
+        //! @copydoc rw::sensor::Scanner25D::getFrameRate
+        double getFrameRate ();
+
+        //! @copydoc rw::geometry::PointCloud::getData
+        const rw::geometry::PointCloud& getScan ();
+
+        //! @copydoc SimulatedSensor::update
+        void update (const Simulator::UpdateInfo& info, rw::kinematics::State& state);
+
+        //! @copydoc SimulatedSensor::reset
+        void reset (const rw::kinematics::State& state);
+
+        /**
+         * @brief get a handle to controlling an instance of the simulated sensor in a specific
+         * simulator
          * @param instance [in] the simulator in which the handle is active
          */
-        rw::sensor::Sensor::Ptr getSensorHandle(rwlibs::simulation::Simulator::Ptr instance);
+        rw::sensor::Sensor::Ptr getSensorHandle (rwlibs::simulation::Simulator::Ptr instance);
 
-    	//! get instance of scanner
-        rw::sensor::Scanner25D::Ptr getScanner25DSensor(rwlibs::simulation::Simulator::Ptr instance);
+        //! get instance of scanner
+        rw::sensor::Scanner25D::Ptr
+        getScanner25DSensor (rwlibs::simulation::Simulator::Ptr instance);
 
-    private:
-        rw::core::Ptr<FrameGrabber25D> _framegrabber;
+      private:
+        rw::core::Ptr< FrameGrabber25D > _framegrabber;
         double _frameRate, _dtsum;
-        bool _isAcquired,_isOpenned;
+        bool _isAcquired, _isOpenned;
     };
 
     //! @}
-}
-}
+}}    // namespace rwlibs::simulation
 
 #endif /* SIMULATEDSCANNER25D_HPP_ */

@@ -18,12 +18,15 @@
 #ifndef RW_CORE_DOMELEM_HPP
 #define RW_CORE_DOMELEM_HPP
 
+#if !defined(SWIG)
 #include <rw/core/PairIterator.hpp>
 #include <rw/core/Ptr.hpp>
 
 #include <cstddef>
 #include <string>
 #include <vector>
+
+#endif
 
 namespace rw { namespace core {
     /**
@@ -128,7 +131,7 @@ namespace rw { namespace core {
          * thrown.
          */
         virtual rw::core::Ptr< DOMElem > getChild (const std::string& name,
-                                                     bool optional = false) = 0;
+                                                   bool optional = false) = 0;
 
         /**
          * @brief get a attribute with a specific name. If more attributes with the same name occur
@@ -141,7 +144,7 @@ namespace rw { namespace core {
          * thrown.
          */
         virtual rw::core::Ptr< DOMElem > getAttribute (const std::string& name,
-                                                         bool optional = false) = 0;
+                                                       bool optional = false) = 0;
 
         /**
          * @brief test if this DOMElem has a child by name \b name.
@@ -176,12 +179,7 @@ namespace rw { namespace core {
          * \copydoc getAttributeValue(const std::string&)
          * @param default_value [in] a default value to return if attibute is not found.
          */
-        std::string getAttributeValue (const std::string& name, const std::string& default_value)
-        {
-            if (DOMElem::Ptr attrib = getAttribute (name, true))
-                return attrib->getValue ();
-            return default_value;
-        }
+        std::string getAttributeValue (const std::string& name, const std::string& default_value);
 
         /**
          * @brief Get the value of attribute as an integer.
@@ -196,12 +194,7 @@ namespace rw { namespace core {
          * \copydoc getAttributeValueAsInt(const std::string&)
          * @param default_value [in] a default value to return if attibute is not found.
          */
-        int getAttributeValueAsInt (const std::string& name, int default_value)
-        {
-            if (DOMElem::Ptr attrib = getAttribute (name, true))
-                return attrib->getValueAsInt ();
-            return default_value;
-        }
+        int getAttributeValueAsInt (const std::string& name, int default_value);
 
         /**
          * @brief Get the value of attribute as an double.
@@ -216,12 +209,7 @@ namespace rw { namespace core {
          * \copydoc getAttributeValueAsDouble(const std::string&)
          * @param default_value [in] a default value to return if attibute is not found.
          */
-        double getAttributeValueAsDouble (const std::string& name, double default_value)
-        {
-            if (DOMElem::Ptr attrib = getAttribute (name, true))
-                return attrib->getValueAsDouble ();
-            return default_value;
-        }
+        double getAttributeValueAsDouble (const std::string& name, double default_value);
 
         /**
          * @brief Get the value as a boolean.
@@ -242,12 +230,7 @@ namespace rw { namespace core {
          * \copydoc getAttributeValueAsBool(const std::string&)
          * @param default_value [in] a default value to return if attibute is not found.
          */
-        bool getAttributeValueAsBool (const std::string& name, bool default_value)
-        {
-            if (DOMElem::Ptr attrib = getAttribute (name, true))
-                return attrib->getValueAsBool ();
-            return default_value;
-        }
+        bool getAttributeValueAsBool (const std::string& name, bool default_value);
 
         /**
          * @brief Get iterator to first child element.
@@ -309,14 +292,19 @@ namespace rw { namespace core {
 
         //! @copydoc setValue(const std::string&)
         virtual void setValue (bool val);
+
+#if !defined(SWIGLUA)
         //! @copydoc setValue(const std::string&)
         virtual void setValue (int val);
+#endif
         //! @copydoc setValue(const std::string&)
         virtual void setValue (double val);
         //! @copydoc setValue(const std::string&)
         virtual void setValueString (std::string val);
-
+        
+#if !defined(SWIGJAVA) && !defined(SWIGPYTHON) && !defined(SWIGLUA)
       protected:
+#endif
         /**
          * @brief The DOMElem Iterator is initialized with a specific implementation
          * of this interface.
@@ -371,6 +359,7 @@ namespace rw { namespace core {
             //! destructor
             virtual ~Iterator () { delete _impl; }
 
+#if !defined(SWIGPYTHON)
             /**
              * @brief Assignment operator.
              * @param right [in] the Iterator to assign.
@@ -382,7 +371,7 @@ namespace rw { namespace core {
                 _impl = right._impl->clone ();
                 return *this;
             }
-
+#endif
             //! @brief Reference to the T element
             virtual rw::core::Ptr< DOMElem > operator* ()
             {
@@ -398,7 +387,7 @@ namespace rw { namespace core {
                     return _impl->getElem ();
                 return NULL;
             }
-
+#if !defined(SWIGPYTHON)
             /**
              * @brief Increments the position of the iterator
              * @return Reference to the incremented iterator
@@ -408,7 +397,7 @@ namespace rw { namespace core {
                 _impl->increment ();
                 return *this;
             }
-
+#endif
             /**
              * @brief Increments the position of the iterator
              * @return the ConcatVectorIterator with the value before the incrementation
@@ -448,6 +437,6 @@ namespace rw { namespace core {
  */
 namespace rw { namespace common {
     using namespace rw::core;
-}}
+}}    // namespace rw::common
 
 #endif

@@ -19,52 +19,49 @@
 
 #include "JogGroup.hpp"
 
-#include <QGridLayout>
 #include <QDoubleSpinBox>
+#include <QGridLayout>
 #include <QLabel>
 #include <QSlider>
 #include <QWheelEvent>
 
 using rw::math::Q;
 
-namespace
+namespace {
+QLabel* makeNumericQLabel (double val)
 {
-    QLabel* makeNumericQLabel(double val)
-    {
-        std::stringstream s; s << val;
-        return new QLabel(s.str().c_str());
-    }
-
-    QSlider* makeHSlider(int end)
-    {
-        QSlider* slider = new QSlider(Qt::Horizontal);
-
-        slider->setRange(0, end);
-
-        // The normalized step size for Page Up / Page Down keys.
-        const double pageScale = 0.10;
-        const int pageStep = (int)
-            (pageScale *
-             (slider->maximum() -
-              slider->minimum()));
-        slider->setPageStep(pageStep);
-
-        return slider;
-    }
-
-    QDoubleSpinBox* makeDoubleSpinBox(double low, double high)
-    {
-        QDoubleSpinBox* box = new QDoubleSpinBox();
-        box->setDecimals(3);
-        box->setRange(low, high);
-
-        const double step = (high - low) / 100;
-        box->setSingleStep(step);
-
-        return box;
-    }
-
+    std::stringstream s;
+    s << val;
+    return new QLabel (s.str ().c_str ());
 }
+
+QSlider* makeHSlider (int end)
+{
+    QSlider* slider = new QSlider (Qt::Horizontal);
+
+    slider->setRange (0, end);
+
+    // The normalized step size for Page Up / Page Down keys.
+    const double pageScale = 0.10;
+    const int pageStep     = (int) (pageScale * (slider->maximum () - slider->minimum ()));
+    slider->setPageStep (pageStep);
+
+    return slider;
+}
+
+QDoubleSpinBox* makeDoubleSpinBox (double low, double high)
+{
+    QDoubleSpinBox* box = new QDoubleSpinBox ();
+    box->setDecimals (3);
+    box->setRange (low, high);
+
+    const double step = (high - low) / 100;
+    box->setSingleStep (step);
+
+    return box;
+}
+
+}    // namespace
 
 //----------------------------------------------------------------------
 // JointLine
@@ -87,181 +84,150 @@ namespace
 
   In other words, we need access to the joint frame itself.
 */
-JointLine::JointLine(
-    double low,
-    double high,
-    QGridLayout* layout,
-    int row,
-    QWidget* parent)
-    :
-    QWidget(parent),
-    _low(low),
-    _high(high),
-    _boxChanged(false),
-    _sliderChanged(false),
-    _sliderResolutionInt(4000),
-    _stepSize((high-low)/_sliderResolutionInt)
+JointLine::JointLine (double low, double high, QGridLayout* layout, int row, QWidget* parent) :
+    QWidget (parent), _low (low), _high (high), _boxChanged (false), _sliderChanged (false),
+    _sliderResolutionInt (4000), _stepSize ((high - low) / _sliderResolutionInt)
 {
+    // QLabel* lowLabel = makeNumericQLabel(low);
+    _slider = makeHSlider (_sliderResolutionInt);
+    // QLabel* highLabel = makeNumericQLabel(high);
+    _box = makeDoubleSpinBox (low, high);
 
+    // layout->addWidget(lowLabel, row, 0, Qt::AlignRight); // own lowLabel
+    layout->addWidget (_slider, row, 1);    // own _slider
+    // layout->addWidget(highLabel, row, 2); // own highLabel
+    layout->addWidget (_box, row, 3);    // own _box
 
-    //QLabel* lowLabel = makeNumericQLabel(low);
-    _slider = makeHSlider(_sliderResolutionInt);
-    //QLabel* highLabel = makeNumericQLabel(high);
-    _box = makeDoubleSpinBox(low, high);
+    connect (_box, SIGNAL (valueChanged (double)), this, SLOT (boxValueChanged (double)));
 
-    //layout->addWidget(lowLabel, row, 0, Qt::AlignRight); // own lowLabel
-    layout->addWidget(_slider, row, 1); // own _slider
-    //layout->addWidget(highLabel, row, 2); // own highLabel
-    layout->addWidget(_box, row, 3); // own _box
+    connect (_slider, SIGNAL (valueChanged (int)), this, SLOT (sliderValueChanged (int)));
 
-    connect(_box,
-            SIGNAL(valueChanged(double)),
-            this,
-            SLOT(boxValueChanged(double)));
-
-    connect(_slider,
-            SIGNAL(valueChanged(int)),
-            this,
-            SLOT(sliderValueChanged(int)));
-
-    setValue((low + high) / 2);
+    setValue ((low + high) / 2);
 }
 
-void JointLine::boxValueChanged(double val)
+void JointLine::boxValueChanged (double val)
 {
     _boxChanged = true;
 
     // Change the value of the slider.
     if (!_sliderChanged) {
-        setSliderValueFromBox(val);
+        setSliderValueFromBox (val);
     }
 
     _sliderChanged = false;
-    emit valueChanged();
+    emit valueChanged ();
 }
 
-void JointLine::sliderValueChanged(int val)
+void JointLine::sliderValueChanged (int val)
 {
     _sliderChanged = true;
 
     // Change the value of the box.
     if (!_boxChanged) {
-        setBoxValueFromSlider(val);
+        setBoxValueFromSlider (val);
     }
 
     _boxChanged = false;
 
-//    emit valueChanged();
+    //    emit valueChanged();
 }
 
-void JointLine::setSliderValueFromBox(double val)
+void JointLine::setSliderValueFromBox (double val)
 {
-    _slider->setValue((int)((val - _low) / (_high - _low) * _sliderResolutionInt));
+    _slider->setValue ((int) ((val - _low) / (_high - _low) * _sliderResolutionInt));
 }
 
-void JointLine::setBoxValueFromSlider(int val)
+void JointLine::setBoxValueFromSlider (int val)
 {
-    _box->setValue(((double)val / _sliderResolutionInt) * (_high - _low) + _low);
+    _box->setValue (((double) val / _sliderResolutionInt) * (_high - _low) + _low);
 }
 
-double JointLine::value() const
+double JointLine::value () const
 {
-    return _box->value();
+    return _box->value ();
 }
 
-void JointLine::setValue(double val)
+void JointLine::setValue (double val)
 {
     _sliderChanged = true;
-    _boxChanged = true;
+    _boxChanged    = true;
 
     if (_low <= val && val <= _high) {
-        _slider->setValue((int)((val - _low) / (_high - _low) * _sliderResolutionInt));
-        _box->setValue(val);
-    } else {
-        RW_WARN(
-            "Jog joint value "
-            << val
-            << " out of range ["
-            << _low
-            << ", "
-            << _high
-            << "].");
+        _slider->setValue ((int) ((val - _low) / (_high - _low) * _sliderResolutionInt));
+        _box->setValue (val);
+    }
+    else {
+        RW_WARN ("Jog joint value " << val << " out of range [" << _low << ", " << _high << "].");
     }
 
     _sliderChanged = false;
-    _boxChanged = false;
+    _boxChanged    = false;
 }
 
-void JointLine::wheelEvent(QWheelEvent* event)
+void JointLine::wheelEvent (QWheelEvent* event)
 {
-    double sval = event->delta()*(_high-_low)/40;
-    boxValueChanged( sval + value() );
+    double sval = event->delta () * (_high - _low) / 40;
+    boxValueChanged (sval + value ());
 }
 
 //----------------------------------------------------------------------
 // JogGroup
 
-
-
-JogGroup::JogGroup(const std::pair<Q,Q>& bounds):
-    _n(bounds.first.size()),
-    _updating(false),
-    _q(Q::zero((int)bounds.first.size()))
+JogGroup::JogGroup (const std::pair< Q, Q >& bounds) :
+    _n (bounds.first.size ()), _updating (false), _q (Q::zero ((int) bounds.first.size ()))
 {
-    QGridLayout* layout = new QGridLayout(this); // owned
+    QGridLayout* layout = new QGridLayout (this);    // owned
 
     // hack so that we can move the first lider with mouse
-    layout->addWidget(new QLabel(""), 0, 1); // own _slider
-    layout->addWidget(new QLabel(""), 0, 3); // own _slider
+    layout->addWidget (new QLabel (""), 0, 1);    // own _slider
+    layout->addWidget (new QLabel (""), 0, 3);    // own _slider
 
-    //const std::pair<Q, Q>& bounds = device.getBounds();
-    std::cout << "Device bounds: "<< bounds.first << " " << bounds.second << std::endl;
-    for (size_t i = 1; i < _n+1; i++) {
-        const double low = bounds.first(i-1);
-        const double high = bounds.second(i-1);
-        JointLine* line = new JointLine(low, high, layout, (int)i, this); // owned
+    // const std::pair<Q, Q>& bounds = device.getBounds();
+    std::cout << "Device bounds: " << bounds.first << " " << bounds.second << std::endl;
+    for (size_t i = 1; i < _n + 1; i++) {
+        const double low  = bounds.first (i - 1);
+        const double high = bounds.second (i - 1);
+        JointLine* line   = new JointLine (low, high, layout, (int) i, this);    // owned
 
-        connect(line, SIGNAL(valueChanged()), this, SLOT(valueChanged()));
-        _joints.push_back(line);
+        connect (line, SIGNAL (valueChanged ()), this, SLOT (valueChanged ()));
+        _joints.push_back (line);
     }
 
     // The last (empty) row grows! That way we make sure that the rows are
     // aligned towards the top.
-    layout->setRowStretch((int)(_n+1), 1);
+    layout->setRowStretch ((int) (_n + 1), 1);
 
-    updateDisplayValues();
+    updateDisplayValues ();
 }
 
-JogGroup::~JogGroup()
+JogGroup::~JogGroup ()
 {}
 
-void JogGroup::updateDisplayValues()
+void JogGroup::updateDisplayValues ()
 {
     _updating = true;
 
-    const Q& q = getQ();
-    for (int i = 0; i < (int)q.size(); i++) {
+    const Q& q = getQ ();
+    for (int i = 0; i < (int) q.size (); i++) {
         // A minor optimization that probably isn't significant:
-        if (_joints[i]->value() != q(i)) {
-            _joints[i]->setValue(q(i));
+        if (_joints[i]->value () != q (i)) {
+            _joints[i]->setValue (q (i));
         }
     }
 
     _updating = false;
 }
 
-void JogGroup::valueChanged()
+void JogGroup::valueChanged ()
 {
     if (_updating)
         return;
 
-    Q q(_n);
+    Q q (_n);
     for (size_t i = 0; i < _n; i++) {
-        q(i) = _joints[i]->value();
+        q (i) = _joints[i]->value ();
     }
 
-    setQ(q);
-    emit updateSignal();
+    setQ (q);
+    emit updateSignal ();
 }
-
-

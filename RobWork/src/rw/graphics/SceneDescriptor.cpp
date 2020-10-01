@@ -19,8 +19,6 @@
 
 #include <rw/graphics/DrawableNode.hpp>
 
-
-
 using namespace rw::graphics;
 using namespace rw::kinematics;
 using namespace rw::geometry;

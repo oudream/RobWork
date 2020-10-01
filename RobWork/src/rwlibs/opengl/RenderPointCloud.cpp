@@ -19,8 +19,6 @@
 
 #include <rwlibs/os/rwgl.hpp>
 
-
-
 using namespace rw::math;
 using namespace rwlibs::opengl;
 using namespace rw::graphics;

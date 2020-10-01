@@ -204,7 +204,7 @@ namespace rw { namespace math {
          */
         Vector3D< T > operator* (const Vector3D< T >& bVc) const
         {
-            return Vector3D< T > ( this->e () * bVc.e ());
+            return Vector3D< T > (this->e () * bVc.e ());
         }
 
         /**
@@ -301,6 +301,9 @@ namespace rw { namespace math {
 
     extern template class rw::math::InertiaMatrix< double >;
     extern template class rw::math::InertiaMatrix< float >;
+
+    using InertiaMatrixd = InertiaMatrix<double>;
+    using InertiaMatrixf = InertiaMatrix<float>;
 
     /*@}*/
 }}    // namespace rw::math

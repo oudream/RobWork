@@ -22,11 +22,8 @@ using namespace rw::trajectory;
 using namespace rw::models;
 using namespace rw::kinematics;
 
-DeviceTrajectory::DeviceTrajectory(Device::Ptr deviceIn, const State& state):
-        _dev( deviceIn ), _state( state )
+DeviceTrajectory::DeviceTrajectory (Device::Ptr deviceIn, const State& state) :
+    _dev (deviceIn), _state (state)
 {
-    _trajectory = ownedPtr( new InterpolatorTrajectory<Q>(0.0) );
+    _trajectory = ownedPtr (new InterpolatorTrajectory< Q > (0.0));
 }
-
-
-

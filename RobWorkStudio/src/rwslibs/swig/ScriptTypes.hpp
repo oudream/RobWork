@@ -18,10 +18,10 @@
 #ifndef RWS_SWIG_REMOTETYPES_HPP_
 #define RWS_SWIG_REMOTETYPES_HPP_
 
+#include <rw/core/Ptr.hpp>
 #include <rwlibs/swig/ScriptTypes.hpp>
 #include <rws/RobWorkStudio.hpp>
 #include <rws/RobWorkStudioPlugin.hpp>
-#include <rw/core/Ptr.hpp>
 /*
 #ifdef __cplusplus
 extern "C" {
@@ -31,15 +31,13 @@ extern "C" {
 }
 #endif
 */
-namespace rws {
-namespace swig {
+namespace rws { namespace swig {
 
-    template <typename T>
-    std::string toString(const T& x)
+    template< typename T > std::string toString (const T& x)
     {
         std::ostringstream buf;
         buf << x;
-        return buf.str();
+        return buf.str ();
     }
 
     typedef rws::RobWorkStudio RobWorkStudio;
@@ -47,59 +45,59 @@ namespace swig {
 
     typedef rws::RWStudioView3D RWStudioView3D;
 
-
-
     // for now we add all static functions here
-    RobWorkStudio* getRobWorkStudio();
-    RobWorkStudio* getRobWorkStudioFromQt();
+    RobWorkStudio* getRobWorkStudio ();
+    RobWorkStudio* getRobWorkStudioFromQt ();
 
     /**
      * @brief set current RobWorkStudio instance
      */
-    void setRobWorkStudio(RobWorkStudio* rwstudio);
+    void setRobWorkStudio (RobWorkStudio* rwstudio);
 
     /// These functions all work on the current RobWorkStudio state
 
-    rw::core::Ptr<RobWorkStudio> getRobWorkStudioInstance();
+    rw::core::Ptr< RobWorkStudio > getRobWorkStudioInstance ();
 
-    rw::core::Ptr<RobWorkStudio> getRobWorkStudioInstance(const std::string& args);
+    rw::core::Ptr< RobWorkStudio > getRobWorkStudioInstance (const std::string& args);
 
-    void closeRobWorkStudio();
+    void closeRobWorkStudio ();
 
-    bool isRunning();
+    bool isRunning ();
 
-    const rwlibs::swig::State& getState();
-    void setState(rwlibs::swig::State& state);
-    rw::core::Ptr<rwlibs::swig::Device> findDevice(const std::string& name);
-    rw::core::Ptr<rwlibs::swig::JointDevice> findJointDevice(const std::string& name);
-    rw::core::Ptr<rwlibs::swig::SerialDevice> findSerialDevice(const std::string& name);
-    rw::core::Ptr<rwlibs::swig::TreeDevice> findTreeDevice(const std::string& name);
-    rw::core::Ptr<rwlibs::swig::ParallelDevice> findParallelDevice(const std::string& name);
-    rwlibs::swig::Frame* findFrame(const std::string& name);
-    rwlibs::swig::MovableFrame* findMovableFrame(const std::string& name);
-    rwlibs::swig::FixedFrame* findFixedFrame(const std::string& name);
+    const rwlibs::swig::State& getState ();
+    void setState (rwlibs::swig::State& state);
+    rw::core::Ptr< rwlibs::swig::Device > findDevice (const std::string& name);
+    rw::core::Ptr< rwlibs::swig::JointDevice > findJointDevice (const std::string& name);
+    rw::core::Ptr< rwlibs::swig::SerialDevice > findSerialDevice (const std::string& name);
+    rw::core::Ptr< rwlibs::swig::TreeDevice > findTreeDevice (const std::string& name);
+    rw::core::Ptr< rwlibs::swig::ParallelDevice > findParallelDevice (const std::string& name);
+    rwlibs::swig::Frame* findFrame (const std::string& name);
+    rwlibs::swig::MovableFrame* findMovableFrame (const std::string& name);
+    rwlibs::swig::FixedFrame* findFixedFrame (const std::string& name);
 
-    void moveTo(rwlibs::swig::MovableFrame* mframe, rw::math::Transform3D<double> wTframe );
-    void moveTo(rwlibs::swig::Frame* frame, rwlibs::swig::MovableFrame* mframe, rw::math::Transform3D<double> wTtcp );
-    void moveTo(const std::string& fname, const std::string& mname, rw::math::Transform3D<double> wTframe );
+    void moveTo (rwlibs::swig::MovableFrame* mframe, rw::math::Transform3D< double > wTframe);
+    void moveTo (rwlibs::swig::Frame* frame, rwlibs::swig::MovableFrame* mframe,
+                 rw::math::Transform3D< double > wTtcp);
+    void moveTo (const std::string& fname, const std::string& mname,
+                 rw::math::Transform3D< double > wTframe);
 
     // utility functions for
-    rwlibs::swig::Q getQ(rw::core::Ptr<rwlibs::swig::Device> dev);
-    void setQ(rw::core::Ptr<rwlibs::swig::Device> dev, rwlibs::swig::Q);
+    rwlibs::swig::Q getQ (rw::core::Ptr< rwlibs::swig::Device > dev);
+    void setQ (rw::core::Ptr< rwlibs::swig::Device > dev, rwlibs::swig::Q);
 
-    void setTransform(rwlibs::swig::Frame* mframe, rw::math::Transform3D<double> wTframe );
+    void setTransform (rwlibs::swig::Frame* mframe, rw::math::Transform3D< double > wTframe);
 
-    rw::math::Transform3D<double> wTf(rwlibs::swig::Frame* frame);
-    rw::math::Transform3D<double> wTf(const std::string& name);
-    rw::math::Transform3D<double> fTf(rwlibs::swig::Frame* frame,rwlibs::swig::Frame* to);
-    rw::math::Transform3D<double> fTf(const std::string& from,const std::string& to);
+    rw::math::Transform3D< double > wTf (rwlibs::swig::Frame* frame);
+    rw::math::Transform3D< double > wTf (const std::string& name);
+    rw::math::Transform3D< double > fTf (rwlibs::swig::Frame* frame, rwlibs::swig::Frame* to);
+    rw::math::Transform3D< double > fTf (const std::string& from, const std::string& to);
 
     /**
      * @brief add geometry to an existing frame or object with name objName
      * @param frameName
      * @param geom
      */
-    void addGeometry( const std::string& objName, rw::geometry::Geometry::Ptr geom );
+    void addGeometry (const std::string& objName, rw::geometry::Geometry::Ptr geom);
 
     /**
      * @brief adds an rigid object to the scene. If a frame with the objName allready exist then
@@ -107,10 +105,9 @@ namespace swig {
      * @param objName
      * @param geom
      */
-    void addObject( const std::string& objName, rw::geometry::Geometry::Ptr geom );
-    void removeObject( const std::string& objName);
+    void addObject (const std::string& objName, rw::geometry::Geometry::Ptr geom);
+    void removeObject (const std::string& objName);
 
-}
-}
+}}    // namespace rws::swig
 
 #endif /* REMOTETYPES_HPP_ */

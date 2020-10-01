@@ -159,10 +159,7 @@ namespace rw { namespace kinematics {
          * @brief All state data in the tree.
          * @return All state data in the tree
          */
-        const std::vector< rw::core::Ptr< StateData > >& getStateData () const
-        {
-            return _allDatas;
-        }
+        const std::vector< rw::core::Ptr< StateData > >& getStateData () const { return _allDatas; }
 
         /**
          * @brief All frames of the tree. Notice that elements in

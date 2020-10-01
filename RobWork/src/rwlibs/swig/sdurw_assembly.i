@@ -15,15 +15,18 @@ using rwlibs::task::Task;
 %include <std_vector.i>
 %include <exception.i>
 
+%import <rwlibs/swig/sdurw_core.i>
 %import <rwlibs/swig/sdurw.i>
 %import <rwlibs/swig/sdurw_task.i>
 
 %pragma(java) jniclassimports=%{
 import org.robwork.sdurw.*;
+import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_task.*;
 %}
 %typemap(javaimports) SWIGTYPE %{
 import org.robwork.sdurw.*;
+import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_task.*;
 %}
 
@@ -84,7 +87,7 @@ public:
 	virtual rw::math::Transform3D<double>  getApproach(rw::core::Ptr<AssemblyParameterization> parameters) = 0;
 	virtual std::string getID() = 0;
 	virtual std::string getDescription() = 0;
-	virtual rw::core::Ptr<AssemblyParameterization> createParameterization(const rw::core::Ptr<PropertyMap> map) = 0;
+	virtual rw::core::Ptr<AssemblyParameterization> createParameterization(const rw::core::Ptr<rw::core::PropertyMap> map) = 0;
 };
 
 %template (AssemblyControlStrategyPtr) rw::core::Ptr<AssemblyControlStrategy>;
@@ -93,9 +96,9 @@ class AssemblyParameterization
 {
 public:
 	AssemblyParameterization();
-	AssemblyParameterization(rw::core::Ptr<PropertyMap> pmap);
+	AssemblyParameterization(rw::core::Ptr<rw::core::PropertyMap> pmap);
 	virtual ~AssemblyParameterization();
-	virtual rw::core::Ptr<PropertyMap> toPropertyMap() const;
+	virtual rw::core::Ptr<rw::core::PropertyMap> toPropertyMap() const;
 	virtual rw::core::Ptr<AssemblyParameterization> clone() const;
 };
 

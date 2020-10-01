@@ -18,12 +18,13 @@
 #ifndef RW_ROBWORK_HPP
 #define RW_ROBWORK_HPP
 
+#if !defined(SWIG)
 #include <RobWorkConfig.hpp>
 #include <rw/core/ExtensionRegistry.hpp>
 #include <rw/core/Log.hpp>
 #include <rw/core/PropertyMap.hpp>
 #include <rw/core/Ptr.hpp>
-
+#endif
 namespace rw { namespace core {
 
     /**
@@ -144,8 +145,8 @@ namespace rw { namespace core {
  * @brief Deprecated namespace since 16/4-2020 for this class
  * @deprecated use rw::core not rw
  */
-namespace rw { 
-    using namespace rw::core;
+namespace rw {
+using namespace rw::core;
 }
 
 #endif    //#ifndef RW_ROBWORK_HPP

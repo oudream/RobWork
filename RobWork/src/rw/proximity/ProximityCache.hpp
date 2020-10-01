@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RW_PROXIMITY_PROXIMITYCACHE_HPP
 #define RW_PROXIMITY_PROXIMITYCACHE_HPP
 
@@ -23,48 +22,43 @@
 
 #include <cstddef>
 
-namespace rw {
-namespace proximity {
+namespace rw { namespace proximity {
 
+    /**
+     * @brief Interface for cache used by ProximityStrategy
+     */
+    class ProximityCache
+    {
+      public:
+        //! @brief smart pointer type to this class
+        typedef rw::core::Ptr< ProximityCache > Ptr;
+        /**
+         * @brief Constructor
+         */
+        ProximityCache (void* owner) : _owner (owner) {}
 
-	/**
-	 * @brief Interface for cache used by ProximityStrategy
-	 */
-	class ProximityCache {
-	public:
-		//! @brief smart pointer type to this class
-		typedef rw::core::Ptr<ProximityCache> Ptr;
-		/**
-		 * @brief Constructor
-		 */
-		ProximityCache(void *owner):
-			_owner(owner)
-		{
-		}
+        /**
+         * @brief Destructor
+         */
+        virtual ~ProximityCache (){};
 
-		/**
-		 * @brief Destructor
-		 */
-		virtual ~ProximityCache(){};
+        /**
+         * @brief Returns size of cache
+         * @return size
+         */
+        virtual size_t size () const = 0;
 
-		/**
-		 * @brief Returns size of cache
-		 * @return size
-		 */
-		virtual size_t size() const = 0;
+        /**
+         * @brief Clears cache
+         */
+        virtual void clear () = 0;
 
-		/** 
-		 * @brief Clears cache
-		 */ 
-		virtual void clear() = 0;
+        /**
+         * @brief Owner of the cache
+         */
+        void* _owner;
+    };
 
-		/**
-		 * @brief Owner of the cache
-		 */
-		void *_owner;
-	};
-
-}
-}
+}}    // namespace rw::proximity
 
 #endif /* PROXIMITYCACHE_HPP_ */

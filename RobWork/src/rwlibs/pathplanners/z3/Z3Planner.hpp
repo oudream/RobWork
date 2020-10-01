@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RWLIBS_PATHPLANNERS_Z3_Z3PLANNER_HPP
 #define RWLIBS_PATHPLANNERS_Z3_Z3PLANNER_HPP
 
@@ -23,14 +22,22 @@
    @file Z3Planner.hpp
 */
 
-#include <rw/pathplanning/QToQPlanner.hpp>
-#include <rw/math/Metric.hpp>
 #include <rw/core/Ptr.hpp>
+#include <rw/math/Metric.hpp>
+#include <rw/pathplanning/QToQPlanner.hpp>
 
-namespace rw { namespace pathplanning { class PlannerConstraint; } }
-namespace rw { namespace pathplanning { class QConstraint; } }
-namespace rw { namespace pathplanning { class QSampler; } }
-namespace rw { namespace models { class Device; } }
+namespace rw { namespace pathplanning {
+    class PlannerConstraint;
+}}    // namespace rw::pathplanning
+namespace rw { namespace pathplanning {
+    class QConstraint;
+}}    // namespace rw::pathplanning
+namespace rw { namespace pathplanning {
+    class QSampler;
+}}    // namespace rw::pathplanning
+namespace rw { namespace models {
+    class Device;
+}}    // namespace rw::models
 
 namespace rwlibs { namespace pathplanners {
 
@@ -47,7 +54,7 @@ namespace rwlibs { namespace pathplanners {
     */
     class Z3Planner
     {
-    public:
+      public:
         /**
            @brief Z3 based point-to-point planner.
 
@@ -62,11 +69,10 @@ namespace rwlibs { namespace pathplanners {
            repeatCnt is negative (the default), the attempts are repeated until
            the stop criteria returns true.
         */
-		static rw::pathplanning::QToQPlanner::Ptr makeQToQPlanner(
-			rw::core::Ptr<rw::pathplanning::QSampler> sampler,
-			rw::pathplanning::QToQPlanner::Ptr localPlanner,
-            int nodeCnt = -1,
-            int repeatCnt = -1);
+        static rw::pathplanning::QToQPlanner::Ptr
+        makeQToQPlanner (rw::core::Ptr< rw::pathplanning::QSampler > sampler,
+                         rw::pathplanning::QToQPlanner::Ptr localPlanner, int nodeCnt = -1,
+                         int repeatCnt = -1);
 
         /**
            @brief Z3 based point-to-point planner.
@@ -79,9 +85,9 @@ namespace rwlibs { namespace pathplanners {
 
            @param device [in] Device for which the path is planned.
         */
-		static rw::pathplanning::QToQPlanner::Ptr makeQToQPlanner(
-            const rw::pathplanning::PlannerConstraint& constraint,
-			rw::core::Ptr<rw::models::Device> device);
+        static rw::pathplanning::QToQPlanner::Ptr
+        makeQToQPlanner (const rw::pathplanning::PlannerConstraint& constraint,
+                         rw::core::Ptr< rw::models::Device > device);
 
         /**
            @brief Sliding local planner.
@@ -110,13 +116,12 @@ namespace rwlibs { namespace pathplanners {
            slideImprovement is negative, a default value for \b slideImprovement
            is chosen based on the value of \b extend.
         */
-		static rw::pathplanning::QToQPlanner::Ptr makeSlidingQToQPlanner(
-            const rw::pathplanning::PlannerConstraint& constraint,
-			rw::core::Ptr<rw::pathplanning::QSampler> directionSampler,
-			rw::core::Ptr<rw::pathplanning::QConstraint> boundsConstraint,
-			rw::math::QMetric::Ptr metric,
-            double extend,
-            double slideImprovement = -1);
+        static rw::pathplanning::QToQPlanner::Ptr
+        makeSlidingQToQPlanner (const rw::pathplanning::PlannerConstraint& constraint,
+                                rw::core::Ptr< rw::pathplanning::QSampler > directionSampler,
+                                rw::core::Ptr< rw::pathplanning::QConstraint > boundsConstraint,
+                                rw::math::QMetric::Ptr metric, double extend,
+                                double slideImprovement = -1);
 
         /**
            @brief Sliding local planner.
@@ -141,20 +146,19 @@ namespace rwlibs { namespace pathplanners {
            slideImprovement is negative, a default value for \b slideImprovement
            is chosen based on the value of \b extend.
         */
-        static rw::pathplanning::QToQPlanner::Ptr makeSlidingQToQPlanner(
-            const rw::pathplanning::PlannerConstraint& constraint,
-			rw::core::Ptr<rw::models::Device> device,
-			rw::math::QMetric::Ptr metric = 0,
-            double extend = -1,
-            double slideImprovement = -1);
+        static rw::pathplanning::QToQPlanner::Ptr
+        makeSlidingQToQPlanner (const rw::pathplanning::PlannerConstraint& constraint,
+                                rw::core::Ptr< rw::models::Device > device,
+                                rw::math::QMetric::Ptr metric = 0, double extend = -1,
+                                double slideImprovement = -1);
 
-    private:
-        Z3Planner();
-        Z3Planner(const Z3Planner&);
-        Z3Planner& operator=(const Z3Planner&);
+      private:
+        Z3Planner ();
+        Z3Planner (const Z3Planner&);
+        Z3Planner& operator= (const Z3Planner&);
     };
 
     /*\}*/
-}} // end namespaces
+}}    // namespace rwlibs::pathplanners
 
-#endif // end include guard
+#endif    // end include guard

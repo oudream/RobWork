@@ -14,47 +14,48 @@ Copyright 2013 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
     limitations under the License.
 */
 
-
 #ifndef RWLIBS_SOFTBODY_BEAMSTARTGUESS_HPP
 #define RWLIBS_SOFTBODY_BEAMSTARTGUESS_HPP
 
-#include <boost/shared_ptr.hpp>
 #include <Eigen/Core>
+#include <boost/shared_ptr.hpp>
 
-namespace rwlibs {
-namespace softbody {
-class BeamGeometryCuboid;
-class ModRusselBeamBase;
+namespace rwlibs { namespace softbody {
+    class BeamGeometryCuboid;
+    class ModRusselBeamBase;
 
-/** @addtogroup softbody */
-/*@{*/
+    /** @addtogroup softbody */
+    /*@{*/
     /**
      * @brief Utility functions for setting starting guesses for a beam model
-     * 
-     * @note These functions only set the angle of the deformation (contained in avec). Be sure to integrate this yourself should you need the deformation vector!.
-     **/
-    class BeamStartGuess {
-public:
-    /**
-     * @brief sets a starting guess with all elements of avec initialized to zero
      *
-     * @param avec reference to starting guess vector to be set 
-     * @param beamPtr pointer to the beam
+     * @note These functions only set the angle of the deformation (contained in avec). Be sure to
+     *integrate this yourself should you need the deformation vector!.
      **/
-    static void setZeroStartingGuess( Eigen::VectorXd &avec, boost::shared_ptr< ModRusselBeamBase > beamPtr );
-    
-    
-    
-    /**
-     * @brief sets starting guess angles for a cuboid beam initialized to that of an analytical Euler-Bernoulli beam model
-     *
-     * @param avec reference to starting guess vector containing angles to be set 
-     * @param beamGeomPtr pointer to the beam geometry
-     **/
-    static void setEulerStartingGuess ( Eigen::VectorXd &avec, boost::shared_ptr< rwlibs::softbody::BeamGeometryCuboid > beamGeomPtr );
-};
-/*@}*/
-}}
+    class BeamStartGuess
+    {
+      public:
+        /**
+         * @brief sets a starting guess with all elements of avec initialized to zero
+         *
+         * @param avec reference to starting guess vector to be set
+         * @param beamPtr pointer to the beam
+         **/
+        static void setZeroStartingGuess (Eigen::VectorXd& avec,
+                                          boost::shared_ptr< ModRusselBeamBase > beamPtr);
 
+        /**
+         * @brief sets starting guess angles for a cuboid beam initialized to that of an analytical
+         *Euler-Bernoulli beam model
+         *
+         * @param avec reference to starting guess vector containing angles to be set
+         * @param beamGeomPtr pointer to the beam geometry
+         **/
+        static void setEulerStartingGuess (
+            Eigen::VectorXd& avec,
+            boost::shared_ptr< rwlibs::softbody::BeamGeometryCuboid > beamGeomPtr);
+    };
+    /*@}*/
+}}    // namespace rwlibs::softbody
 
-#endif // BEAMSTARTGUESS_HPP
+#endif    // BEAMSTARTGUESS_HPP

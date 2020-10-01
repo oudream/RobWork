@@ -24,135 +24,127 @@
  * Defines the rw::plugin::PluginRepository
  */
 
-
 #include "PluginFactory.hpp"
 
 #include <boost/function.hpp>
 #include <map>
 #include <vector>
 
+namespace rw { namespace plugin {
 
-
-
-namespace rw {
-namespace plugin {
-
-
-
-/** @addtogroup plugin */
-/*@{*/
-
-/**
- * @brief The PluginRepository provides a container load methods for plugins
- *
- * The PluginRepository contain a collection of pointers rw::plugin::PluginFactoryBase instances
- * which can be used to create plugins. 
- *
- * The PluginRepository has a number of different methods to load plugins and methods for 
- * searching for a plugins either based on identifiers or by type.
- */
-class PluginRepository
-{
-public:
-	//! @brief Smart pointer type for PluginRepository.
-    typedef rw::core::Ptr<PluginRepository> Ptr;
+    /** @addtogroup plugin */
+    /*@{*/
 
     /**
-     * @brief Constructs an empty repository
-     */
-    PluginRepository() {};
-
-    /**
-     * @brief Destructor
-     */
-    ~PluginRepository() {}
-
-    /**
-     * @brief Loads in a PluginFactoryBase from a file.
-     * 
-     * If the file could not be loaded or does not contain an object of type
-     * PluginFactoryBase a rw::core::Exception is thrown.
+     * @brief The PluginRepository provides a container load methods for plugins
      *
-     * @param filename [in] File to load
-     */
-    void load(const std::string& filename);
-
-    /**
-     * @brief Attempts to load all dll files in folder
+     * The PluginRepository contain a collection of pointers rw::plugin::PluginFactoryBase instances
+     * which can be used to create plugins.
      *
-     * If finding a dll file which can not be loaded or does not contain an object of type
-     * PluginFactoryBase a rw::core::Exception is thrown.
-     * 
-     * @param path [in] Path from which to attempt for load plugins
-     * @param searchSubFolders [in] True to search recursively into subfolders.
+     * The PluginRepository has a number of different methods to load plugins and methods for
+     * searching for a plugins either based on identifiers or by type.
      */
-    void loadFilesInFolder(const std::string& path, bool searchSubFolders);
+    class PluginRepository
+    {
+      public:
+        //! @brief Smart pointer type for PluginRepository.
+        typedef rw::core::Ptr< PluginRepository > Ptr;
 
-    /**
-     * @brief this adds a plugin directly
-     *
-     * This is especially usefull if you want to add plugin functionality statically
-     * avoiding dynamic loading or managing the dynamic loading your self.
-     * @param plugin [in] the plugin factory base
-     * @param force [in] if true, an existing plugin with same identifier string will be replaced
-     * by the new \b plugin
-     */
-    void addPlugin(PluginFactoryBase::Ptr plugin, bool force=false);
+        /**
+         * @brief Constructs an empty repository
+         */
+        PluginRepository (){};
 
-    /**
-     * @brief Add a listener which should be informed when new plugins are loaded
-     *
-     * @param listener [in] The function to call for notification
-     */
-    void addListener(boost::function<void(void)>& listener);
+        /**
+         * @brief Destructor
+         */
+        ~PluginRepository () {}
 
-    /**
-     * @brief Returns map in which keys are the identifiers of loaded plugins factories and the
-     * value is the plugin factory.
-     *
-     * @return Const reference to std::map with identifier and PluginFactoryBase::Ptr.
-     */
-    const std::map<std::string, PluginFactoryBase::Ptr>& getAllPlugins() const;
+        /**
+         * @brief Loads in a PluginFactoryBase from a file.
+         *
+         * If the file could not be loaded or does not contain an object of type
+         * PluginFactoryBase a rw::core::Exception is thrown.
+         *
+         * @param filename [in] File to load
+         */
+        void load (const std::string& filename);
 
-    /**
-     * @brief Returns map in which keys are the identifiers of loaded plugins factories and the
-     * value is the plugin factory.
-     *
-     * @return Reference to std::map with identifier and PluginFactoryBase::Ptr.
-     */
-    std::map<std::string, PluginFactoryBase::Ptr>& getAllPlugins();
+        /**
+         * @brief Attempts to load all dll files in folder
+         *
+         * If finding a dll file which can not be loaded or does not contain an object of type
+         * PluginFactoryBase a rw::core::Exception is thrown.
+         *
+         * @param path [in] Path from which to attempt for load plugins
+         * @param searchSubFolders [in] True to search recursively into subfolders.
+         */
+        void loadFilesInFolder (const std::string& path, bool searchSubFolders);
 
-    /**
-     * @brief Returns all rw::core::PluginFactory<T> instances which matches the template argument T
-     *
-     * @return List of all factories matching T 
-     */
-    template <class T>
-    std::vector<rw::core::Ptr<PluginFactory<T> > > getPlugins() {
-        std::vector<rw::core::Ptr<PluginFactory<T> > > result;
-		
-        for (std::map<std::string, PluginFactoryBase::Ptr>::iterator it = _str2constructorMap.begin(); it != _str2constructorMap.end(); ++it) {
-            rw::core::Ptr<PluginFactory<T> > factory = (*it).second.cast<PluginFactory<T> >();
-            if (factory != NULL)
-                result.push_back(factory);
+        /**
+         * @brief this adds a plugin directly
+         *
+         * This is especially usefull if you want to add plugin functionality statically
+         * avoiding dynamic loading or managing the dynamic loading your self.
+         * @param plugin [in] the plugin factory base
+         * @param force [in] if true, an existing plugin with same identifier string will be
+         * replaced by the new \b plugin
+         */
+        void addPlugin (PluginFactoryBase::Ptr plugin, bool force = false);
 
+        /**
+         * @brief Add a listener which should be informed when new plugins are loaded
+         *
+         * @param listener [in] The function to call for notification
+         */
+        void addListener (boost::function< void (void) >& listener);
+
+        /**
+         * @brief Returns map in which keys are the identifiers of loaded plugins factories and the
+         * value is the plugin factory.
+         *
+         * @return Const reference to std::map with identifier and PluginFactoryBase::Ptr.
+         */
+        const std::map< std::string, PluginFactoryBase::Ptr >& getAllPlugins () const;
+
+        /**
+         * @brief Returns map in which keys are the identifiers of loaded plugins factories and the
+         * value is the plugin factory.
+         *
+         * @return Reference to std::map with identifier and PluginFactoryBase::Ptr.
+         */
+        std::map< std::string, PluginFactoryBase::Ptr >& getAllPlugins ();
+
+        /**
+         * @brief Returns all rw::core::PluginFactory<T> instances which matches the template
+         * argument T
+         *
+         * @return List of all factories matching T
+         */
+        template< class T > std::vector< rw::core::Ptr< PluginFactory< T > > > getPlugins ()
+        {
+            std::vector< rw::core::Ptr< PluginFactory< T > > > result;
+
+            for (std::map< std::string, PluginFactoryBase::Ptr >::iterator it =
+                     _str2constructorMap.begin ();
+                 it != _str2constructorMap.end ();
+                 ++it) {
+                rw::core::Ptr< PluginFactory< T > > factory =
+                    (*it).second.cast< PluginFactory< T > > ();
+                if (factory != NULL)
+                    result.push_back (factory);
+            }
+            return result;
         }
-        return result;
-    }
 
+      private:
+        std::map< std::string, PluginFactoryBase::Ptr > _str2constructorMap;
 
-private:
+        std::vector< boost::function< void (void) > > _listeners;
+    };
 
+    /** @} */
 
-    std::map<std::string, PluginFactoryBase::Ptr> _str2constructorMap;
+}}    // namespace rw::plugin
 
-    std::vector<boost::function<void(void)> > _listeners;
-};
-
-/** @} */
-
-
-} //end namespace plugin
-} //end namespace rw
-
-#endif //#ifndef RW_PLUGIN_PLUGINREPOSITORY_HPP
+#endif    //#ifndef RW_PLUGIN_PLUGINREPOSITORY_HPP

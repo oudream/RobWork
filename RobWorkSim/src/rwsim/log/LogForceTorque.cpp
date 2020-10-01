@@ -24,59 +24,63 @@ using namespace rw::common;
 using namespace rw::math;
 using namespace rwsim::log;
 
-LogForceTorque::LogForceTorque(SimulatorLogScope* parent):
-	SimulatorLogEntry(parent)
+LogForceTorque::LogForceTorque (SimulatorLogScope* parent) : SimulatorLogEntry (parent)
+{}
+
+LogForceTorque::~LogForceTorque ()
+{}
+
+void LogForceTorque::read (InputArchive& iarchive, const std::string& id)
 {
+    const unsigned int n = iarchive.readUInt ("Wrenches");
+    _forces.resize (n);
+    for (unsigned int i = 0; i < n; i++) {
+        iarchive.read (_forces[i].first, "Wrench6D");
+        iarchive.read (_forces[i].second, "Wrench6D");
+    }
+    SimulatorLogEntry::read (iarchive, id);
 }
 
-LogForceTorque::~LogForceTorque() {
+void LogForceTorque::write (OutputArchive& oarchive, const std::string& id) const
+{
+    oarchive.write (_forces.size (), "Wrenches");
+    std::vector< std::pair< Wrench6D<>, Wrench6D<> > >::const_iterator it;
+    for (it = _forces.begin (); it != _forces.end (); it++) {
+        oarchive.write (it->first, "Wrench6D");
+        oarchive.write (it->second, "Wrench6D");
+    }
+    SimulatorLogEntry::write (oarchive, id);
 }
 
-void LogForceTorque::read(InputArchive& iarchive, const std::string& id) {
-	const unsigned int n = iarchive.readUInt("Wrenches");
-	_forces.resize(n);
-	for (unsigned int i = 0; i < n; i++) {
-		iarchive.read(_forces[i].first,"Wrench6D");
-		iarchive.read(_forces[i].second,"Wrench6D");
-	}
-	SimulatorLogEntry::read(iarchive,id);
+bool LogForceTorque::operator== (const SimulatorLog& b) const
+{
+    if (const LogForceTorque* const entry = dynamic_cast< const LogForceTorque* > (&b)) {
+        if (_forces != entry->_forces)
+            return false;
+    }
+    return SimulatorLogEntry::operator== (b);
 }
 
-void LogForceTorque::write(OutputArchive& oarchive, const std::string& id) const {
-	oarchive.write(_forces.size(),"Wrenches");
-	std::vector<std::pair<Wrench6D<>, Wrench6D<> > >::const_iterator it;
-	for (it = _forces.begin(); it != _forces.end(); it++) {
-		oarchive.write(it->first,"Wrench6D");
-		oarchive.write(it->second,"Wrench6D");
-	}
-	SimulatorLogEntry::write(oarchive,id);
+Wrench6D<> LogForceTorque::getWrenchBodyA (std::size_t i) const
+{
+    RW_ASSERT (i < _forces.size ());
+    return _forces[i].first;
 }
 
-bool LogForceTorque::operator==(const SimulatorLog &b) const {
-	if (const LogForceTorque* const entry = dynamic_cast<const LogForceTorque*>(&b)) {
-		if (_forces != entry->_forces)
-			return false;
-	}
-	return SimulatorLogEntry::operator==(b);
+Wrench6D<> LogForceTorque::getWrenchBodyB (std::size_t i) const
+{
+    RW_ASSERT (i < _forces.size ());
+    return _forces[i].second;
 }
 
-Wrench6D<> LogForceTorque::getWrenchBodyA(std::size_t i) const {
-	RW_ASSERT(i < _forces.size());
-	return _forces[i].first;
-}
-
-Wrench6D<> LogForceTorque::getWrenchBodyB(std::size_t i) const {
-	RW_ASSERT(i < _forces.size());
-	return _forces[i].second;
-}
-
-void LogForceTorque::setWrench(std::size_t i, const Wrench6D<>& wrenchA, const Wrench6D<>& wrenchB) {
-	if (i >= _forces.size()) {
-		if (sizeLinkedEntry() >= 0)
-			_forces.resize(std::max(i+1,(std::size_t)sizeLinkedEntry()));
-		else
-			_forces.resize(i+1);
-	}
-	_forces[i].first = wrenchA;
-	_forces[i].second = wrenchB;
+void LogForceTorque::setWrench (std::size_t i, const Wrench6D<>& wrenchA, const Wrench6D<>& wrenchB)
+{
+    if (i >= _forces.size ()) {
+        if (sizeLinkedEntry () >= 0)
+            _forces.resize (std::max (i + 1, (std::size_t) sizeLinkedEntry ()));
+        else
+            _forces.resize (i + 1);
+    }
+    _forces[i].first  = wrenchA;
+    _forces[i].second = wrenchB;
 }

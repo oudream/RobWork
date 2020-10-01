@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
  * Faculty of Engineering, University of Southern Denmark
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #include "PropertyViewDialog.hpp"
 
 #include "ui_PropertyViewDialog.h"
@@ -23,25 +22,24 @@
 using namespace rw::core;
 using namespace rw::math;
 
-PropertyViewDialog::PropertyViewDialog(rw::core::PropertyMap::Ptr map, QWidget *parent): 
-	QDialog(parent),
-	_pOriginalProperties(map),
-	_workingCopy(*map.get())
+PropertyViewDialog::PropertyViewDialog (rw::core::PropertyMap::Ptr map, QWidget* parent) :
+    QDialog (parent), _pOriginalProperties (map), _workingCopy (*map.get ())
 {
-	ui = new Ui_PropertyViewDialog();
-    ui->setupUi(this);
-	ui->propertyViewEditor->setPropertyMap(&_workingCopy);
+    ui = new Ui_PropertyViewDialog ();
+    ui->setupUi (this);
+    ui->propertyViewEditor->setPropertyMap (&_workingCopy);
 
-	connect(ui->buttonBox, SIGNAL(accepted()), this, SLOT(acceptPressed()));
-	connect(ui->buttonBox, SIGNAL(rejected()), this, SLOT(rejectPressed()));
+    connect (ui->buttonBox, SIGNAL (accepted ()), this, SLOT (acceptPressed ()));
+    connect (ui->buttonBox, SIGNAL (rejected ()), this, SLOT (rejectPressed ()));
 }
 
-
-void PropertyViewDialog::acceptPressed() {
-	(*_pOriginalProperties) = _workingCopy;	
-	accept();
+void PropertyViewDialog::acceptPressed ()
+{
+    (*_pOriginalProperties) = _workingCopy;
+    accept ();
 }
 
-void PropertyViewDialog::rejectPressed() {
-	reject();
+void PropertyViewDialog::rejectPressed ()
+{
+    reject ();
 }

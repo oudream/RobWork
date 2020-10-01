@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,54 +19,40 @@
 
 #include "SimpleFinger.hpp"
 
-
-
 using namespace rw::core;
 using namespace rw::geometry;
 using namespace rwlibs::geometry::simplefinger;
 
+RW_ADD_PLUGIN (SimpleFingerPlugin)
 
-RW_ADD_PLUGIN(SimpleFingerPlugin)
+SimpleFingerPlugin::SimpleFingerPlugin () :
+    Plugin ("SimpleFingerPlugin", "SimpleFingerPlugin", "1.0")
+{}
 
+SimpleFingerPlugin::~SimpleFingerPlugin ()
+{}
 
-
-SimpleFingerPlugin::SimpleFingerPlugin() :
-	Plugin("SimpleFingerPlugin", "SimpleFingerPlugin", "1.0")
+std::vector< Extension::Descriptor > SimpleFingerPlugin::getExtensionDescriptors ()
 {
+    std::vector< Extension::Descriptor > descriptors;
+
+    Extension::Descriptor descriptor ("SimpleFinger", "rw.loaders.GeometryFactory");
+    descriptor.getProperties ().set< std::string > ("type", "simplefinger");
+
+    descriptors.push_back (descriptor);
+
+    return descriptors;
 }
 
+Ptr< Extension > SimpleFingerPlugin::makeExtension (const std::string& str)
+{
+    if (str == "SimpleFinger") {
+        Extension::Ptr extension = ownedPtr (new Extension (
+            "SimpleFinger", "rw.loaders.GeometryFactory", this, ownedPtr (new SimpleFinger ())));
+        extension->getProperties ().set< std::string > ("type", "simplefinger");
 
-SimpleFingerPlugin::~SimpleFingerPlugin() {
-}
+        return extension;
+    }
 
-
-std::vector<Extension::Descriptor> SimpleFingerPlugin::getExtensionDescriptors() {
-	
-	std::vector<Extension::Descriptor> descriptors;
-	
-	Extension::Descriptor descriptor("SimpleFinger", "rw.loaders.GeometryFactory");
-	descriptor.getProperties().set<std::string>("type", "simplefinger");
-	
-	descriptors.push_back(descriptor);
-	
-	return descriptors;
-}
-
-
-Ptr<Extension> SimpleFingerPlugin::makeExtension(const std::string& str) {
-	
-	if (str == "SimpleFinger") {
-		
-		Extension::Ptr extension = ownedPtr(new Extension(
-			"SimpleFinger",
-			"rw.loaders.GeometryFactory",	
-			this,
-			ownedPtr(new SimpleFinger())
-		));
-		extension->getProperties().set<std::string>("type", "simplefinger");
-		
-		return extension;
-	}
-	
-	return NULL;
+    return NULL;
 }

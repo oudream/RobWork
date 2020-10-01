@@ -19,8 +19,8 @@
 
 #include "DOMBasisTypes.hpp"
 
-#include <rw/core/DOMParser.hpp>
 #include <rw/core/DOMElem.hpp>
+#include <rw/core/DOMParser.hpp>
 #include <rw/math/Q.hpp>
 #include <rw/models/WorkCell.hpp>
 #include <rw/trajectory/CircularInterpolator.hpp>
@@ -28,7 +28,6 @@
 #include <rw/trajectory/LloydHaywardBlend.hpp>
 #include <rw/trajectory/ParabolicBlend.hpp>
 #include <rw/trajectory/Trajectory.hpp>
-
 
 #include <iostream>
 
@@ -230,7 +229,7 @@ template< class T, class R >
 void read (DOMElem::Ptr element, R result, WorkCell::Ptr workcell = NULL)
 {
     ElementReader< T > reader;
-    for (DOMElem::Ptr child: element->getChildren ()) {
+    for (DOMElem::Ptr child : element->getChildren ()) {
         T val = reader.readElement (child);
         result->push_back (val);
     }

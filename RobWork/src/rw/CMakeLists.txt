@@ -1,21 +1,22 @@
 set(SUBSYS_NAME sdurw)
 set(SUBSYS_DESC "The core RobWork library!")
-set(SUBSYS_DEPS)
+set(SUBSYS_DEPS sdurw_core sdurw_common)
 
 set(build TRUE)
-rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ON)
+rw_subsys_option(
+    build ${SUBSYS_NAME} ${SUBSYS_DESC} ON
+    DEPENDS ${SUBSYS_DEPS}
+)
 
 if(build)
 
     set(RW_LIB_FILES_CPP ${RW_USER_FILES})
     set(RW_LIB_FILES_HPP ${RW_USER_FILES_HPP})
 
-    add_subdirectory(common)
     add_subdirectory(geometry)
     add_subdirectory(invkin)
     add_subdirectory(kinematics)
     add_subdirectory(loaders)
-    add_subdirectory(math)
     add_subdirectory(models)
     add_subdirectory(pathplanning)
     add_subdirectory(graspplanning)

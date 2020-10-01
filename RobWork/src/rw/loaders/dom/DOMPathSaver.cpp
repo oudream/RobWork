@@ -19,8 +19,8 @@
 
 #include <rw/core/DOMParser.hpp>
 #include <rw/core/Exception.hpp>
-#include <rw/loaders/dom/DOMPathLoader.hpp>
 #include <rw/loaders/dom/DOMBasisTypes.hpp>
+#include <rw/loaders/dom/DOMPathLoader.hpp>
 
 using namespace rw::trajectory;
 using namespace rw::loaders;
@@ -29,184 +29,220 @@ using namespace rw::math;
 using namespace rw::core;
 using namespace rw::kinematics;
 
-DOMPathSaver::Initializer::Initializer() {
-	static bool done = false;
-	if (!done) {
-		DOMBasisTypes::Initializer init1;
-		DOMPathLoader::Initializer init2;
-		done = true;
-	}
+DOMPathSaver::Initializer::Initializer ()
+{
+    static bool done = false;
+    if (!done) {
+        DOMBasisTypes::Initializer init1;
+        DOMPathLoader::Initializer init2;
+        done = true;
+    }
 }
 
 const DOMPathSaver::Initializer DOMPathSaver::initializer;
 
 namespace {
-     template <class T>
-     class ElementCreator {
-     public:
-         static DOMElem::Ptr createElement(const T& element, DOMElem::Ptr parent);
-     };
+template< class T > class ElementCreator
+{
+  public:
+    static DOMElem::Ptr createElement (const T& element, DOMElem::Ptr parent);
+};
 
-     template<> DOMElem::Ptr ElementCreator<Q>::createElement(const Q& element, DOMElem::Ptr parent) {
-         return DOMBasisTypes::createQ(element, parent);
-     }
-
-     template<> DOMElem::Ptr ElementCreator<Vector3D<> >::createElement(const Vector3D<>& element, DOMElem::Ptr parent) {
-         return DOMBasisTypes::createVector3D(element, parent);
-     }
-
-     template<> DOMElem::Ptr ElementCreator<Rotation3D<> >::createElement(const Rotation3D<>& element, DOMElem::Ptr parent) {
-         return DOMBasisTypes::createRotation3D(element, parent);
-     }
-
-     template<> DOMElem::Ptr ElementCreator<Transform3D<> >::createElement(const Transform3D<>& element, DOMElem::Ptr parent) {
-         return DOMBasisTypes::createTransform3D(element, parent);
-     }
-
-     template<> DOMElem::Ptr ElementCreator<State>::createElement(const State& element, DOMElem::Ptr parent) {
-         return DOMBasisTypes::createState(element, parent);
-     }
-
-
-     template<> DOMElem::Ptr ElementCreator<TimedQ>::createElement(const TimedQ& timedQ, DOMElem::Ptr parent) {
-         DOMElem::Ptr element = parent->addChild(DOMPathLoader::idTimedQ());
-         element->addChild(DOMPathLoader::idTime())->setValue(timedQ.getTime());
-         DOMBasisTypes::createQ(timedQ.getValue(), element);
-         return element;
-     }
-
-     template<> DOMElem::Ptr ElementCreator<TimedState>::createElement(
-    		 const TimedState& timedState, DOMElem::Ptr parent) {
-    	 DOMElem::Ptr element = parent->addChild(DOMPathLoader::idTimedState());
-    	 element->addChild(DOMPathLoader::idTime())->setValue(timedState.getTime());
-         DOMBasisTypes::createState(timedState.getValue(), element);
-         return element;
-     }
-
-
-     template<class T, class PATH>
-     static void insertElements(const PATH& path, DOMElem::Ptr parent) {
-         for (typename PATH::const_iterator it = path.begin(); it != path.end(); ++it) {
-             ElementCreator<T>::createElement(*it, parent);
-         }
-     }
-
-     /**
-      * @brief Create an element representing the path
-      *
-      * Create an element titles \b pathId representing \b path
-      *
-      * @param path [in] Path to save. Can be either QPath, Vector3DPath, Rotation3DPath or Transform3DPath
-      * @param pathId [in] Id of the path
-      * @param doc [in] Document for which to construct the element
-      */
-     template <class T, class PATH>
-     static DOMElem::Ptr createElement(const PATH& path, const std::string& pathId, DOMElem::Ptr parent) {
-    	 DOMElem::Ptr pathElement = parent->addChild(pathId);
-    	 insertElements<T, PATH>(path, pathElement);
-         return pathElement;
-     }
-
-
-     template <class T, class PATH>
-     static DOMElem::Ptr createDOMDocument(const PATH& path, const std::string& pathId, DOMParser::Ptr parser) {
-
-    	 try{
-			 DOMElem::Ptr doc = parser->getRootElement();
-			 DOMElem::Ptr root = doc->addChild(pathId);
-			 insertElements<T, PATH>(path, root);
-			 return doc;
-		 } catch (const Exception& exp) {
-			 throw exp;
-		 } catch (...) {
-			 RW_THROW("DOMPathWriter: Unknown Exception while creating saving path");
-		 }
-     }
-
-     template <class T, class PATH>
-     static void savePath(const PATH& path, const std::string& pathId, const std::string& filename) {
-    	 DOMParser::Ptr parser = DOMParser::make();
-         DOMElem::Ptr parent = createDOMDocument<T, PATH>(path, pathId, parser);
-         parser->save(filename);
-     }
-
-     template <class T, class PATH>
-     static void writePath(const PATH& path, const std::string& pathId, std::ostream& outstream) {
-    	 DOMParser::Ptr parser = DOMParser::make();
-         DOMElem::Ptr parent = createDOMDocument<T, PATH>(path, pathId, parser);
-         parser->save(outstream);
-     }
-
-
-
- } //end namespace
-
-
-void DOMPathSaver::save(const QPath& path, const std::string& filename) {
-    savePath<Q,  QPath>(path, DOMPathLoader::idQPath(), filename);
+template<> DOMElem::Ptr ElementCreator< Q >::createElement (const Q& element, DOMElem::Ptr parent)
+{
+    return DOMBasisTypes::createQ (element, parent);
 }
 
-void DOMPathSaver::save(const Vector3DPath& path, const std::string& filename) {
-    savePath<Vector3D<>,  Vector3DPath>(path, DOMPathLoader::idV3DPath(), filename);
+template<>
+DOMElem::Ptr ElementCreator< Vector3D<> >::createElement (const Vector3D<>& element,
+                                                          DOMElem::Ptr parent)
+{
+    return DOMBasisTypes::createVector3D (element, parent);
 }
 
-void DOMPathSaver::save(const Rotation3DPath& path, const std::string& filename) {
-    savePath<Rotation3D<>,  Rotation3DPath>(path, DOMPathLoader::idR3DPath(), filename);
+template<>
+DOMElem::Ptr ElementCreator< Rotation3D<> >::createElement (const Rotation3D<>& element,
+                                                            DOMElem::Ptr parent)
+{
+    return DOMBasisTypes::createRotation3D (element, parent);
 }
 
-void DOMPathSaver::save(const Transform3DPath& path, const std::string& filename) {
-    savePath<Transform3D<>,  Transform3DPath>(path, DOMPathLoader::idT3DPath(), filename);
+template<>
+DOMElem::Ptr ElementCreator< Transform3D<> >::createElement (const Transform3D<>& element,
+                                                             DOMElem::Ptr parent)
+{
+    return DOMBasisTypes::createTransform3D (element, parent);
 }
 
-void DOMPathSaver::save(const StatePath& path, const std::string& filename) {
-    savePath<State, StatePath>(path, DOMPathLoader::idStatePath(), filename);
+template<>
+DOMElem::Ptr ElementCreator< State >::createElement (const State& element, DOMElem::Ptr parent)
+{
+    return DOMBasisTypes::createState (element, parent);
 }
 
-void DOMPathSaver::save(const TimedQPath& path, const std::string& filename) {
-    savePath<TimedQ, TimedQPath>(path, DOMPathLoader::idTimedQPath(), filename);
+template<>
+DOMElem::Ptr ElementCreator< TimedQ >::createElement (const TimedQ& timedQ, DOMElem::Ptr parent)
+{
+    DOMElem::Ptr element = parent->addChild (DOMPathLoader::idTimedQ ());
+    element->addChild (DOMPathLoader::idTime ())->setValue (timedQ.getTime ());
+    DOMBasisTypes::createQ (timedQ.getValue (), element);
+    return element;
 }
 
-void DOMPathSaver::save(const TimedStatePath& path, const std::string& filename) {
-    savePath<TimedState, TimedStatePath>(path, DOMPathLoader::idTimedStatePath(), filename);
+template<>
+DOMElem::Ptr ElementCreator< TimedState >::createElement (const TimedState& timedState,
+                                                          DOMElem::Ptr parent)
+{
+    DOMElem::Ptr element = parent->addChild (DOMPathLoader::idTimedState ());
+    element->addChild (DOMPathLoader::idTime ())->setValue (timedState.getTime ());
+    DOMBasisTypes::createState (timedState.getValue (), element);
+    return element;
 }
 
-//------------------------------------------------------------------------
-
-void DOMPathSaver::write(const QPath& path, std::ostream& outstream) {
-    writePath<Q,  QPath>(path, DOMPathLoader::idQPath(), outstream);
+template< class T, class PATH > static void insertElements (const PATH& path, DOMElem::Ptr parent)
+{
+    for (typename PATH::const_iterator it = path.begin (); it != path.end (); ++it) {
+        ElementCreator< T >::createElement (*it, parent);
+    }
 }
 
-void DOMPathSaver::write(const Vector3DPath& path, std::ostream& outstream) {
-    writePath<Vector3D<>,  Vector3DPath>(path, DOMPathLoader::idV3DPath(), outstream);
+/**
+ * @brief Create an element representing the path
+ *
+ * Create an element titles \b pathId representing \b path
+ *
+ * @param path [in] Path to save. Can be either QPath, Vector3DPath, Rotation3DPath or
+ * Transform3DPath
+ * @param pathId [in] Id of the path
+ * @param doc [in] Document for which to construct the element
+ */
+template< class T, class PATH >
+static DOMElem::Ptr createElement (const PATH& path, const std::string& pathId, DOMElem::Ptr parent)
+{
+    DOMElem::Ptr pathElement = parent->addChild (pathId);
+    insertElements< T, PATH > (path, pathElement);
+    return pathElement;
 }
 
-void DOMPathSaver::write(const Rotation3DPath& path, std::ostream& outstream) {
-    writePath<Rotation3D<>,  Rotation3DPath>(path, DOMPathLoader::idR3DPath(), outstream);
+template< class T, class PATH >
+static DOMElem::Ptr createDOMDocument (const PATH& path, const std::string& pathId,
+                                       DOMParser::Ptr parser)
+{
+    try {
+        DOMElem::Ptr doc  = parser->getRootElement ();
+        DOMElem::Ptr root = doc->addChild (pathId);
+        insertElements< T, PATH > (path, root);
+        return doc;
+    }
+    catch (const Exception& exp) {
+        throw exp;
+    }
+    catch (...) {
+        RW_THROW ("DOMPathWriter: Unknown Exception while creating saving path");
+    }
 }
 
-void DOMPathSaver::write(const Transform3DPath& path, std::ostream& outstream) {
-    writePath<Transform3D<>,  Transform3DPath>(path, DOMPathLoader::idT3DPath(), outstream);
+template< class T, class PATH >
+static void savePath (const PATH& path, const std::string& pathId, const std::string& filename)
+{
+    DOMParser::Ptr parser = DOMParser::make ();
+    DOMElem::Ptr parent   = createDOMDocument< T, PATH > (path, pathId, parser);
+    parser->save (filename);
 }
 
-
-void DOMPathSaver::write(const StatePath& path, std::ostream& outstream) {
-    writePath<State, StatePath>(path, DOMPathLoader::idStatePath(), outstream);
+template< class T, class PATH >
+static void writePath (const PATH& path, const std::string& pathId, std::ostream& outstream)
+{
+    DOMParser::Ptr parser = DOMParser::make ();
+    DOMElem::Ptr parent   = createDOMDocument< T, PATH > (path, pathId, parser);
+    parser->save (outstream);
 }
 
-void DOMPathSaver::write(const TimedQPath& path, std::ostream& outstream) {
-    writePath<TimedQ, TimedQPath>(path, DOMPathLoader::idTimedQPath(), outstream);
+}    // end namespace
+
+void DOMPathSaver::save (const QPath& path, const std::string& filename)
+{
+    savePath< Q, QPath > (path, DOMPathLoader::idQPath (), filename);
 }
 
-void DOMPathSaver::write(const TimedStatePath& path, std::ostream& outstream) {
-    writePath<TimedState, TimedStatePath>(path, DOMPathLoader::idTimedStatePath(), outstream);
+void DOMPathSaver::save (const Vector3DPath& path, const std::string& filename)
+{
+    savePath< Vector3D<>, Vector3DPath > (path, DOMPathLoader::idV3DPath (), filename);
+}
+
+void DOMPathSaver::save (const Rotation3DPath& path, const std::string& filename)
+{
+    savePath< Rotation3D<>, Rotation3DPath > (path, DOMPathLoader::idR3DPath (), filename);
+}
+
+void DOMPathSaver::save (const Transform3DPath& path, const std::string& filename)
+{
+    savePath< Transform3D<>, Transform3DPath > (path, DOMPathLoader::idT3DPath (), filename);
+}
+
+void DOMPathSaver::save (const StatePath& path, const std::string& filename)
+{
+    savePath< State, StatePath > (path, DOMPathLoader::idStatePath (), filename);
+}
+
+void DOMPathSaver::save (const TimedQPath& path, const std::string& filename)
+{
+    savePath< TimedQ, TimedQPath > (path, DOMPathLoader::idTimedQPath (), filename);
+}
+
+void DOMPathSaver::save (const TimedStatePath& path, const std::string& filename)
+{
+    savePath< TimedState, TimedStatePath > (path, DOMPathLoader::idTimedStatePath (), filename);
 }
 
 //------------------------------------------------------------------------
 
-rw::core::DOMElem::Ptr DOMPathSaver::createTransform3DPath(const rw::trajectory::Transform3DPath &path, rw::core::DOMElem::Ptr doc) {
-    return createElement<Transform3D<>, Transform3DPath>(path, DOMPathLoader::idT3DPath(), doc);
+void DOMPathSaver::write (const QPath& path, std::ostream& outstream)
+{
+    writePath< Q, QPath > (path, DOMPathLoader::idQPath (), outstream);
 }
 
-rw::core::DOMElem::Ptr DOMPathSaver::createQPath(const rw::trajectory::QPath &path, rw::core::DOMElem::Ptr doc) {
-    return createElement<Q, QPath>(path, DOMPathLoader::idQPath(), doc);
+void DOMPathSaver::write (const Vector3DPath& path, std::ostream& outstream)
+{
+    writePath< Vector3D<>, Vector3DPath > (path, DOMPathLoader::idV3DPath (), outstream);
+}
+
+void DOMPathSaver::write (const Rotation3DPath& path, std::ostream& outstream)
+{
+    writePath< Rotation3D<>, Rotation3DPath > (path, DOMPathLoader::idR3DPath (), outstream);
+}
+
+void DOMPathSaver::write (const Transform3DPath& path, std::ostream& outstream)
+{
+    writePath< Transform3D<>, Transform3DPath > (path, DOMPathLoader::idT3DPath (), outstream);
+}
+
+void DOMPathSaver::write (const StatePath& path, std::ostream& outstream)
+{
+    writePath< State, StatePath > (path, DOMPathLoader::idStatePath (), outstream);
+}
+
+void DOMPathSaver::write (const TimedQPath& path, std::ostream& outstream)
+{
+    writePath< TimedQ, TimedQPath > (path, DOMPathLoader::idTimedQPath (), outstream);
+}
+
+void DOMPathSaver::write (const TimedStatePath& path, std::ostream& outstream)
+{
+    writePath< TimedState, TimedStatePath > (path, DOMPathLoader::idTimedStatePath (), outstream);
+}
+
+//------------------------------------------------------------------------
+
+rw::core::DOMElem::Ptr
+DOMPathSaver::createTransform3DPath (const rw::trajectory::Transform3DPath& path,
+                                     rw::core::DOMElem::Ptr doc)
+{
+    return createElement< Transform3D<>, Transform3DPath > (path, DOMPathLoader::idT3DPath (), doc);
+}
+
+rw::core::DOMElem::Ptr DOMPathSaver::createQPath (const rw::trajectory::QPath& path,
+                                                  rw::core::DOMElem::Ptr doc)
+{
+    return createElement< Q, QPath > (path, DOMPathLoader::idQPath (), doc);
 }

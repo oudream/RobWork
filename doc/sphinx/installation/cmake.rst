@@ -96,9 +96,13 @@ Common Options
 Robwork Options
 ---------------
 
+- RW_SHARED_LIBS=[ON|OFF]
+    - Default: ON 
+    - Use this option to Compile RobWork as a shared or static library
+
 - BUILD_SHARED_LIBS=[ON|OFF]
     - Default: OFF
-    - Used to build assimp and GTESTS as a shared library.
+    - Used to build libccd, assimp and GTESTS as a shared library.
       It also builds zlib and lua as DLL on windows.
 
 - RW_ENABLE_ASSERT=[ON|OFF]

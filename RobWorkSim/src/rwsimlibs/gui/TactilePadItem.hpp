@@ -13,19 +13,18 @@
 
 #include <QtGui>
 
-class TactilePadItem {
-public:
+class TactilePadItem
+{
+  public:
+    TactilePadItem (const rwhw::TactileMaskMatrix& matrixMask, QMenu* contextMenu,
+                    QGraphicsItem* parent, QGraphicsScene* scene);
 
-	TactilePadItem(
-		 const rwhw::TactileMaskMatrix& matrixMask, QMenu *contextMenu,
-		 QGraphicsItem *parent, QGraphicsScene *scene);
+    void updateSensorValues (const rwhw::TactileMatrix& values);
 
-	void updateSensorValues(const rwhw::TactileMatrix& values);
-
-private:
-	std::vector<QGraphicsRectItem*> _rectItems;
-	rwhw::TactileMaskMatrix _matrixMask;
-	QMenu *_contextMenu;
+  private:
+    std::vector< QGraphicsRectItem* > _rectItems;
+    rwhw::TactileMaskMatrix _matrixMask;
+    QMenu* _contextMenu;
 };
 
 #endif /* TACTILEPADITEM_HPP_ */

@@ -21,13 +21,15 @@
 /**
  * @file PropertyMap.hpp
  */
-
-#include "PairIterator.hpp"
-#include "Property.hpp"
-#include "PropertyBase.hpp"
-#include "macros.hpp"
+#if !defined(SWIG)
+#include <rw/core/PairIterator.hpp>
+#include <rw/core/Property.hpp>
+#include <rw/core/PropertyBase.hpp>
+#include <rw/core/macros.hpp>
+#include <rw/core/os.hpp>
 
 #include <set>
+#endif
 
 namespace rw { namespace core {
 
@@ -73,18 +75,20 @@ namespace rw { namespace core {
         ~PropertyMap ();
 
         /**
-           @brief Copy constructor.
+         * @brief Copy constructor.
         */
         PropertyMap (const PropertyMap& other);
 
+#if !defined(SWIGPYTHON) || defined(RW_WIN32)
         /**
-           @brief Assignment operator.
-        */
+         * @brief Assignment operator.
+         */
         PropertyMap& operator= (const PropertyMap& other);
+#endif
 
         /**
-           @brief swap operator.
-        */
+         * @brief swap operator.
+         */
         void swap (PropertyMap& other);
 
         /**
@@ -108,7 +112,7 @@ namespace rw { namespace core {
          * @param value [in] the new value
          */
         template< class T >
-        rw::core::Ptr< Property< T > > set (const std::string& identifier, const T& value)
+        rw::core::Ptr< rw::core::Property< T > > set (const std::string& identifier, const T& value)
         {
             rw::core::Ptr< Property< T > > prop = findProperty< T > (identifier);
             if (prop) {
@@ -129,10 +133,10 @@ namespace rw { namespace core {
          *  use.
          */
         template< typename T >
-        rw::core::Ptr< Property< T > > add (const std::string& identifier,
-                                            const std::string& description, const T& value)
+        rw::core::Ptr< rw::core::Property< T > >
+        add (const std::string& identifier, const std::string& description, const T& value)
         {
-            rw::core::Ptr< Property< T > > prop = findProperty< T > (identifier);
+            rw::core::Ptr< rw::core::Property< T > > prop = findProperty< T > (identifier);
             if (!prop) {
                 rw::core::Ptr< Property< T > > property =
                     rw::core::ownedPtr (new Property< T > (identifier, description, value));
@@ -157,8 +161,8 @@ namespace rw { namespace core {
          *  use.
          */
         template< typename T >
-        rw::core::Ptr< Property< T > > addForce (const std::string& identifier,
-                                                 const std::string& description, const T& value)
+        rw::core::Ptr< rw::core::Property< T > >
+        addForce (const std::string& identifier, const std::string& description, const T& value)
         {
             rw::core::Ptr< Property< T > > prop = findProperty< T > (identifier);
             if (!prop) {
@@ -182,7 +186,7 @@ namespace rw { namespace core {
          *
          * @return True if added, false if property already exists.
          */
-        bool add (PropertyBase::Ptr property);
+        bool add (rw::core::PropertyBase::Ptr property);
 
         /**
          * @brief Get the value of a property or NULL if no such property.
@@ -239,7 +243,7 @@ namespace rw { namespace core {
             }
             return *p;
         }
-
+#if !defined(SWIGJAVA)
         /**
          * @brief Get the value of a property
          *
@@ -255,7 +259,7 @@ namespace rw { namespace core {
             // Forward to non-const method.
             return const_cast< PropertyMap* > (this)->get< T > (identifier);
         }
-
+#endif
         /**
          * @brief Get the value of a property if it exists.
          *
@@ -280,7 +284,7 @@ namespace rw { namespace core {
             }
             return *p;
         }
-
+#if !defined(SWIGJAVA)
         /**
          * @brief Get the value of a property
          *
@@ -304,7 +308,7 @@ namespace rw { namespace core {
             }
             return *p;
         }
-
+#endif
         /**
          * @brief True if a specific property exists
          *
@@ -345,7 +349,7 @@ namespace rw { namespace core {
          * @return Property object with that identifier
          */
         template< class T >
-        rw::core::Ptr< Property< T > > findProperty (const std::string& identifier) const
+        rw::core::Ptr< rw::core::Property< T > > findProperty (const std::string& identifier) const
         {
             return findPropertyBase (identifier).cast< Property< T > > ();
         }
@@ -358,8 +362,9 @@ namespace rw { namespace core {
          *
          * @param identifier [in] identifier for the property base to find.
          */
-        PropertyBase::Ptr findPropertyBase (const std::string& identifier);
+        rw::core::PropertyBase::Ptr findPropertyBase (const std::string& identifier);
 
+#if !defined(SWIG)
         /**
          * @brief Find the property base for an identifier.
          *
@@ -368,12 +373,13 @@ namespace rw { namespace core {
          *
          * @param identifier [in] identifier for the property base to find.
          */
-        const PropertyBase::Ptr findPropertyBase (const std::string& identifier) const;
-
+        const rw::core::PropertyBase::Ptr findPropertyBase (const std::string& identifier) const;
+#endif
         /**
          * @brief Method signature for a callback function
          */
-        typedef boost::function< void (PropertyMap*, PropertyBase*) > PropertyChangedListener;
+        typedef boost::function< void (PropertyMap*, rw::core::PropertyBase*) >
+            PropertyChangedListener;
 
         /**
          * @brief Add listener to be call, when the property changes
@@ -389,13 +395,13 @@ namespace rw { namespace core {
         /**
          * @brief Notifies listeners about a change in the Property
          */
-        void notifyListeners (PropertyBase* base = NULL);
+        void notifyListeners (rw::core::PropertyBase* base = NULL);
 
         /**
          * @brief used for listening for property changes in the map
          * @param base
          */
-        void propertyChangedListener (PropertyBase* base);
+        void propertyChangedListener (rw::core::PropertyBase* base);
 
         /*
          * functions we need
@@ -404,7 +410,6 @@ namespace rw { namespace core {
          * firePropertyChanged()
          * firePropertyErased()
          */
-
       private:
         struct CmpPropertyBase
         {
@@ -420,22 +425,22 @@ namespace rw { namespace core {
         //! Iterator for const PropertyBase::Ptr
         typedef MapType::const_iterator iterator;
 
+#if !defined(SWIG)
         //! @brief Type for a range of properties.
-        typedef iter_pair< iterator > Range;
+        typedef rw::core::iter_pair< iterator > Range;
 
         /**
-           @brief Range of all PropertyBase* objects stored.
+       @brief Range of all PropertyBase* objects stored.
 
-           Note that this low-level interface does permits the PropertyBase
-           values to be modified even though the method itself is declared
-           const.
-        */
+       Note that this low-level interface does permits the PropertyBase
+       values to be modified even though the method itself is declared
+       const.
+    */
         Range getProperties () const;
+#endif
 
       private:
         bool insert (PropertyBase::Ptr property);
-
-      private:
         MapType _properties;
         std::string _name;
 

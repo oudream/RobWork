@@ -1,7 +1,7 @@
 from PySide2 import QtWidgets, QtGui
 import sys
-from rws import *
-from rw import *
+from sdurws import *
+from sdurw import *
 from pprint import pprint
 
 #find widget

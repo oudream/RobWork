@@ -76,7 +76,7 @@ struct SimpleGLViewer::InternalData {
     enum MouseDragMode {NONE, ZOOM, TRANSLATE, ROTATE};
     MouseDragMode _mouseState;
 
-    EventListener* _keyListener;
+    example::EventListener* _keyListener;
 
     /* constants for the right click menu */
     enum{QUIT=0};
@@ -266,7 +266,7 @@ void myGlutKeyboard(unsigned char key, int x, int y) {
     }
     if(data->_keyListener != NULL){
         std::pair<int,int> pos(x,y);
-        data->_keyListener->event(EventListener::e_KEY_EVENT,&key);
+        data->_keyListener->event(example::EventListener::e_KEY_EVENT,&key);
     }
     glutPostRedisplay();
 }
@@ -423,7 +423,7 @@ void myGlutSpecial(int key, int x, int y) {
     }
     if(data->_keyListener != NULL){
         std::pair<int,int> pos(x,y);
-        data->_keyListener->event(EventListener::e_KEY_EVENT,&key);
+        data->_keyListener->event(example::EventListener::e_KEY_EVENT,&key);
     }
 
     glutPostRedisplay();
@@ -508,7 +508,7 @@ void myGlutDisplay( void )
 
 } // end anonymous namespace
 
-void SimpleGLViewer::setKeyListener(EventListener *listener){
+void SimpleGLViewer::setKeyListener(example::EventListener *listener){
     _data->_keyListener = listener;
 }
 

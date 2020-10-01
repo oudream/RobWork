@@ -15,46 +15,44 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RW_GEOMETRY_STLFILE_HPP_
 #define RW_GEOMETRY_STLFILE_HPP_
 
 #include <rw/geometry/PlainTriMesh.hpp>
 
-namespace rw { namespace geometry { class TriMesh; } }
+namespace rw { namespace geometry {
+    class TriMesh;
+}}    // namespace rw::geometry
 
-namespace rw {
-namespace loaders {
-	//! @addtogroup geometry
-	// @{
+namespace rw { namespace loaders {
+    //! @addtogroup geometry
+    // @{
 
-	/**
-	 * @brief static methods for reading and writing geometry to and from
-	 * STL files.
-	 */
-	class STLFile {
-	public:
+    /**
+     * @brief static methods for reading and writing geometry to and from
+     * STL files.
+     */
+    class STLFile
+    {
+      public:
+        /**
+         * @brief creates a new ASCII STL file with path+name given by \b filename.
+         * The face data is taken from a TriMesh interface.
+         * @param mesh [in] the mesh that should be written to the STL file.
+         * @param filename [in] the name of the file for which to write to.
+         */
+        static void save (const rw::geometry::TriMesh& mesh, const std::string& filename);
 
-		/**
-		 * @brief creates a new ASCII STL file with path+name given by \b filename.
-		 * The face data is taken from a TriMesh interface.
-		 * @param mesh [in] the mesh that should be written to the STL file.
-		 * @param filename [in] the name of the file for which to write to.
-		 */
-		static void save(const rw::geometry::TriMesh& mesh, const std::string& filename);
+        /**
+         * @brief reads a STL file with name \b filename into a plain
+         * triangle mesh.
+         * @param filename [in] the name of the file
+         * @return triangle mesh if successfull, NULL otherwise.
+         */
+        static rw::geometry::PlainTriMeshN1F::Ptr load (const std::string& filename);
+    };
 
-		/**
-		 * @brief reads a STL file with name \b filename into a plain
-		 * triangle mesh.
-		 * @param filename [in] the name of the file
-		 * @return triangle mesh if successfull, NULL otherwise.
-		 */
-		static rw::geometry::PlainTriMeshN1F::Ptr load(const std::string& filename);
-
-	};
-
-	// @}
-}
-}
+    // @}
+}}    // namespace rw::loaders
 
 #endif /*STLFILE_HPP_*/

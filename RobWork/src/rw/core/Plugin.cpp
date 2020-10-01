@@ -1,11 +1,10 @@
 #include "Plugin.hpp"
 
+#include <RobWorkConfig.hpp>
+#include <rw/core/DOMCorePropertyMapLoader.hpp>
 #include <rw/core/DOMElem.hpp>
 #include <rw/core/DOMParser.hpp>
-
-#include <RobWorkConfig.hpp>
 #include <rw/core/StringUtil.hpp>
-#include <rw/core/DOMCorePropertyMapLoader.hpp>
 
 #include <boost/filesystem.hpp>
 #include <iostream>
@@ -46,7 +45,7 @@ class AutoClosePlugin : public Plugin
         Plugin::close (handle);
     }
 
-    std::vector< Extension::Descriptor > getExtensionDescriptors ()
+    std::vector< rw::core::Extension::Descriptor > getExtensionDescriptors ()
     {
         return _plugin->getExtensionDescriptors ();
     }
@@ -294,7 +293,7 @@ rw::core::Ptr< Plugin > Plugin::loadLazy (const std::string& filename)
 
     const std::string runtimelib = plugin->getChild ("runtime")->getAttributeValue ("library");
     boost::filesystem::path libfile (runtimelib);
-    
+
 #if (BOOST_FILESYSTEM_VERSION == 2)
     if (!libfile.has_root_path ()) {
         std::string fname =
@@ -312,22 +311,21 @@ rw::core::Ptr< Plugin > Plugin::loadLazy (const std::string& filename)
     if (!exists (libfile))
         RW_THROW ("The plugin file specified in \n" << filename << "\n does not exist.");
 
-    std::vector<Extension::Descriptor> ext_descriptors;
-    for (DOMElem::Iterator p = plugin->begin(); p != plugin->end(); ++p) {
-        if (p->getName() == "extension") {
+    std::vector< Extension::Descriptor > ext_descriptors;
+    for (DOMElem::Iterator p = plugin->begin (); p != plugin->end (); ++p) {
+        if (p->getName () == "extension") {
             Extension::Descriptor extension;
-            extension.id = p->getAttributeValue("id");
-            extension.name = p->getAttributeValue("name");
-            extension.point = p->getAttributeValue("point");
+            extension.id    = p->getAttributeValue ("id");
+            extension.name  = p->getAttributeValue ("name");
+            extension.point = p->getAttributeValue ("point");
             DOMElem::Iterator child;
-            for (child = p->begin(); child != p->end(); ++child) {
-                if (child->getName() == "PropertyMap") {
-                    extension.props = DOMCorePropertyMapLoader::readProperties(
-                            *child);
+            for (child = p->begin (); child != p->end (); ++child) {
+                if (child->getName () == "PropertyMap") {
+                    extension.props = DOMCorePropertyMapLoader::readProperties (*child);
                     break;
                 }
             }
-            ext_descriptors.push_back(extension);
+            ext_descriptors.push_back (extension);
         }
     }
 

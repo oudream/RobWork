@@ -2,6 +2,8 @@
 
 #include <rw/core/BoostXMLParser.hpp>
 #include <rw/core/StringUtil.hpp>
+#include <string>
+#include <vector>
 
 using namespace rw::core;
 
@@ -43,4 +45,8 @@ bool DOMParser::Factory::hasDOMParser (const std::string& format)
         return true;
     }
     return false;
+}
+
+std::vector< std::string > DOMParser::Factory::getSupportedFormats() {
+    return std::vector<std::string>();
 }

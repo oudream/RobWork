@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RWLIBS_TASK_MOTION_HPP
 #define RWLIBS_TASK_MOTION_HPP
 
@@ -24,465 +23,417 @@
 
 #include <rw/core/Ptr.hpp>
 
-namespace rwlibs {
-namespace task {
+namespace rwlibs { namespace task {
 
-/** @addtogroup task */
-/*@{*/
-
-
-/**
- * @brief Specification of Action Type.
- */
-class MotionType {
-public:
-    /** Enumeration for different Motion types */
-    enum Type {  Undefined = -1 /** Undefined Motion */
-            , P2P = 0 /** A point-to-point Motion */
-            , Linear=1 /** A linear motion */
-            , Circular=2 /** A circular motion */
-            , User = 1024 /** User defined motions starts with this index */
-            };
+    /** @addtogroup task */
+    /*@{*/
 
     /**
-     * @brief Constructs a MotionType object.
-     *
-     * @param type [in] Type of motion. Default is Undefined
+     * @brief Specification of Action Type.
      */
-    MotionType(int type = Undefined):
-        _type(type)
+    class MotionType
     {
-    }
+      public:
+        /** Enumeration for different Motion types */
+        enum Type {
+            Undefined = -1 /** Undefined Motion */
+            ,
+            P2P = 0 /** A point-to-point Motion */
+            ,
+            Linear = 1 /** A linear motion */
+            ,
+            Circular = 2 /** A circular motion */
+            ,
+            User = 1024 /** User defined motions starts with this index */
+        };
+
+        /**
+         * @brief Constructs a MotionType object.
+         *
+         * @param type [in] Type of motion. Default is Undefined
+         */
+        MotionType (int type = Undefined) : _type (type) {}
+
+        /**
+         * @brief Cast operator enable implicit conversion to int
+         *
+         * This operator enables using MotionType in a switch statement.
+         */
+        operator int () { return _type; }
+
+      private:
+        int _type;
+    };
 
     /**
-     * @brief Cast operator enable implicit conversion to int
-     *
-     * This operator enables using MotionType in a switch statement.
+     * @brief Base class for motions providing common interface.
      */
-    operator int () {
-        return _type;
-    }
-
-private:
-    int _type;
-};
-
-/**
- * @brief Base class for motions providing common interface.
- */
-class MotionBase: public Entity
-{
-public:
-	//! @brief smart pointer type to this class
-    typedef rw::core::Ptr<MotionBase> Ptr;
-    /**
-     * @brief Constructs motion
-     * @param motionType [in] Type of the motion
-     */
-    MotionBase(MotionType motionType):
-        Entity(EntityType::Motion),
-        _motionType(motionType)
+    class MotionBase : public Entity
     {
-    }
+      public:
+        //! @brief smart pointer type to this class
+        typedef rw::core::Ptr< MotionBase > Ptr;
+        /**
+         * @brief Constructs motion
+         * @param motionType [in] Type of the motion
+         */
+        MotionBase (MotionType motionType) : Entity (EntityType::Motion), _motionType (motionType)
+        {}
+
+        /**
+         * @brief Destructor
+         */
+        virtual ~MotionBase (){};
+
+        /**
+         * @brief Returns the type of the motion
+         * @return Type of motion
+         */
+        MotionType motionType () { return _motionType; }
+
+        /* virtual int type() const {
+             return MotionId;
+         }*/
+
+      private:
+        int _motionType;
+    };
 
     /**
-     * @brief Destructor
-     */
-    virtual ~MotionBase() {};
-
-    /**
-     * @brief Returns the type of the motion
-     * @return Type of motion
-     */
-    MotionType motionType() {
-        return _motionType;
-    }
-
-   /* virtual int type() const {
-        return MotionId;
-    }*/
-
-
-private:
-    int _motionType;
-};
-
-/**
- * @brief Specified the template based interface of a motion
- *
- * This class is abstract.
- *
- */
-template <class T>
-class Motion: public MotionBase {
-public:
-	//! @brief smart pointer type to this class
-    typedef rw::core::Ptr<Motion<T> > Ptr;
-
-    /**
-     * Convenient typedef of pointer to target of type T
-     */
-    typedef rw::core::Ptr<Target<T> > TargetPtr;
-
-    /**
-     * @brief Returns value of the start target
-     * @return Reference to value of start target
-     */
-    virtual const T& start() = 0;
-
-    /**
-     * @brief Returns value of the end target
-     * @return Reference to value of end target
-     */
-    virtual const T& end() = 0;
-
-    /**
-     * @brief Returns the start target
-     * @return The start target
-     */
-    virtual TargetPtr startTarget() = 0;
-
-    /**
-     * @brief Returns the end target
-     * @return The start target
-     */
-    virtual TargetPtr endTarget() = 0;
-
-    /**
-     * @brief Make a copy of the motion.
-     * @param newTargets [in] a vector of targets.
-     * @return new identical motion.
-     */
-    virtual rw::core::Ptr<Motion<T> > clone(const std::vector<TargetPtr>& newTargets) = 0;
-
-    //! @brief Do reverse motion.
-    virtual void reverse() = 0;
-protected:
-
-    /**
-     * @brief Protected constructor
-     */
-    Motion(MotionType motion_type):
-        MotionBase(motion_type)
-    {
-        TypeRepository::instance().add<T>();
-    }
-
-
-};
-
-/**
- * Definition of motion using rw::math::Q
- */
-typedef Motion<rw::math::Q> QMotion;
-
-/**
- * Definition of motion using rw::math::Transform3D
- */
-typedef Motion<rw::math::Transform3D<> > CartesianMotion;
-
-extern template class Motion<rw::math::Q>;
-extern template class Motion<rw::math::Transform3D<> >;
-
-/**
- * @brief Class describing point to point motions.
- *
- * A point to point motion is linear in joint space and will generally
- * be the fastest way of moving between two configurations.
- */
-template <class T>
-class P2PMotion: public Motion<T>
-{
-public:
-	//! @brief smart pointer type to this class
-    typedef rw::core::Ptr<P2PMotion<T> > Ptr;
-
-    /**
-     * Definition of target for convenience.
-     */
-    typedef rw::core::Ptr<Target<T> > TargetPtr;
-
-    /**
-     * @brief Constructs P2PMotion between \b start and \b end
+     * @brief Specified the template based interface of a motion
      *
-     * @param start [in] start of the motion
-     * @param end [in] end of the motion
+     * This class is abstract.
+     *
      */
-    P2PMotion(TargetPtr start, TargetPtr end):
-        Motion<T>(MotionType::P2P),
-        _start(start),
-        _end(end)
-    {}
+    template< class T > class Motion : public MotionBase
+    {
+      public:
+        //! @brief smart pointer type to this class
+        typedef rw::core::Ptr< Motion< T > > Ptr;
+
+        /**
+         * Convenient typedef of pointer to target of type T
+         */
+        typedef rw::core::Ptr< Target< T > > TargetPtr;
+
+        /**
+         * @brief Returns value of the start target
+         * @return Reference to value of start target
+         */
+        virtual const T& start () = 0;
+
+        /**
+         * @brief Returns value of the end target
+         * @return Reference to value of end target
+         */
+        virtual const T& end () = 0;
+
+        /**
+         * @brief Returns the start target
+         * @return The start target
+         */
+        virtual TargetPtr startTarget () = 0;
+
+        /**
+         * @brief Returns the end target
+         * @return The start target
+         */
+        virtual TargetPtr endTarget () = 0;
+
+        /**
+         * @brief Make a copy of the motion.
+         * @param newTargets [in] a vector of targets.
+         * @return new identical motion.
+         */
+        virtual rw::core::Ptr< Motion< T > > clone (const std::vector< TargetPtr >& newTargets) = 0;
+
+        //! @brief Do reverse motion.
+        virtual void reverse () = 0;
+
+      protected:
+        /**
+         * @brief Protected constructor
+         */
+        Motion (MotionType motion_type) : MotionBase (motion_type)
+        {
+            TypeRepository::instance ().add< T > ();
+        }
+    };
 
     /**
-     * @copydoc Motion::start
+     * Definition of motion using rw::math::Q
      */
-    const T& start() {
-        return _start->get();
-    }
+    typedef Motion< rw::math::Q > QMotion;
 
     /**
-     * @copydoc Motion::end
+     * Definition of motion using rw::math::Transform3D
      */
-    const T& end() {
-        return _end->get();
-    }
+    typedef Motion< rw::math::Transform3D<> > CartesianMotion;
+
+    extern template class Motion< rw::math::Q >;
+    extern template class Motion< rw::math::Transform3D<> >;
 
     /**
-     * @copydoc Motion::startTarget
+     * @brief Class describing point to point motions.
+     *
+     * A point to point motion is linear in joint space and will generally
+     * be the fastest way of moving between two configurations.
      */
-    TargetPtr startTarget() {
-        return _start;
-    }
+    template< class T > class P2PMotion : public Motion< T >
+    {
+      public:
+        //! @brief smart pointer type to this class
+        typedef rw::core::Ptr< P2PMotion< T > > Ptr;
+
+        /**
+         * Definition of target for convenience.
+         */
+        typedef rw::core::Ptr< Target< T > > TargetPtr;
+
+        /**
+         * @brief Constructs P2PMotion between \b start and \b end
+         *
+         * @param start [in] start of the motion
+         * @param end [in] end of the motion
+         */
+        P2PMotion (TargetPtr start, TargetPtr end) :
+            Motion< T > (MotionType::P2P), _start (start), _end (end)
+        {}
+
+        /**
+         * @copydoc Motion::start
+         */
+        const T& start () { return _start->get (); }
+
+        /**
+         * @copydoc Motion::end
+         */
+        const T& end () { return _end->get (); }
+
+        /**
+         * @copydoc Motion::startTarget
+         */
+        TargetPtr startTarget () { return _start; }
+
+        /**
+         * @copydoc Motion::endTarget
+         */
+        TargetPtr endTarget () { return _end; }
+
+        //! @copydoc Motion::clone
+        virtual rw::core::Ptr< Motion< T > > clone (const std::vector< TargetPtr >& newTargets)
+        {
+            TargetPtr start;
+            TargetPtr end;
+            for (TargetPtr target : newTargets) {
+                if (target->getIndex () == startTarget ()->getIndex ())
+                    start = target;
+                if (target->getIndex () == endTarget ()->getIndex ())
+                    end = target;
+            }
+            rw::core::Ptr< Motion< T > > result =
+                rw::core::ownedPtr (new P2PMotion< T > (start, end));
+            result->setPropertyMap (this->getPropertyMap ());
+            result->setIndex (this->getIndex ());
+            result->setId (this->getId ());
+            return result;
+        }
+
+        //! @copydoc Motion::reverse
+        virtual void reverse () { std::swap (_start, _end); }
+
+      private:
+        TargetPtr _start;
+        TargetPtr _end;
+    };
 
     /**
-     * @copydoc Motion::endTarget
+     * Definition of rw::math::Q based point to point motion
      */
-    TargetPtr endTarget() {
-        return _end;
-    }
-
-    //! @copydoc Motion::clone
-    virtual rw::core::Ptr<Motion<T> > clone(const std::vector<TargetPtr>& newTargets) {
-    	TargetPtr start;
-    	TargetPtr end;
-    	for(TargetPtr target : newTargets) {
-    		if (target->getIndex() == startTarget()->getIndex())
-    			start = target;
-    		if (target->getIndex() == endTarget()->getIndex())
-    			end = target;
-    	}
-    	rw::core::Ptr<Motion<T> > result = rw::core::ownedPtr(new P2PMotion<T>(start, end));
-    	result->setPropertyMap(this->getPropertyMap());
-    	result->setIndex(this->getIndex());
-    	result->setId(this->getId());
-    	return result;
-    }
-
-    //! @copydoc Motion::reverse
-    virtual void reverse() {
-    	std::swap(_start, _end);
-    }
-
-private:
-    TargetPtr _start;
-    TargetPtr _end;
-};
-
-/**
- * Definition of rw::math::Q based point to point motion
- */
-typedef P2PMotion<rw::math::Q> QP2PMotion;
-
-/**
- * Definition of rw::math::Transform3D based point to point motion
- */
-typedef P2PMotion<rw::math::Transform3D<> > CartesianP2PMotion;
-
-extern template class P2PMotion<rw::math::Q>;
-extern template class P2PMotion<rw::math::Transform3D<> >;
-
-/**
- * @brief Class describing linear motions.
- *
- * A linear motion is defined as a motion linear in Cartesian space.
- * It is the users responsibility to decide of to interpolate the orientation.
- */
-template <class T>
-class LinearMotion: public Motion<T> {
-public:
-	//! @brief smart pointer type to this class
-    typedef rw::core::Ptr<LinearMotion<T> > Ptr;
+    typedef P2PMotion< rw::math::Q > QP2PMotion;
 
     /**
-     * Definition of target for convenience.
+     * Definition of rw::math::Transform3D based point to point motion
      */
-    typedef rw::core::Ptr<Target<T> > TargetPtr;
+    typedef P2PMotion< rw::math::Transform3D<> > CartesianP2PMotion;
+
+    extern template class P2PMotion< rw::math::Q >;
+    extern template class P2PMotion< rw::math::Transform3D<> >;
 
     /**
-     * @brief Construct LinearMotion from \b start to \b end
-     * @param start [in] start of motion
-     * @param end [in] end of motion
+     * @brief Class describing linear motions.
+     *
+     * A linear motion is defined as a motion linear in Cartesian space.
+     * It is the users responsibility to decide of to interpolate the orientation.
      */
-    LinearMotion(TargetPtr start, TargetPtr end):
-        Motion<T>(MotionType::Linear),
-        _start(start),
-        _end(end)
-    {}
+    template< class T > class LinearMotion : public Motion< T >
+    {
+      public:
+        //! @brief smart pointer type to this class
+        typedef rw::core::Ptr< LinearMotion< T > > Ptr;
+
+        /**
+         * Definition of target for convenience.
+         */
+        typedef rw::core::Ptr< Target< T > > TargetPtr;
+
+        /**
+         * @brief Construct LinearMotion from \b start to \b end
+         * @param start [in] start of motion
+         * @param end [in] end of motion
+         */
+        LinearMotion (TargetPtr start, TargetPtr end) :
+            Motion< T > (MotionType::Linear), _start (start), _end (end)
+        {}
+
+        /**
+         * @copydoc Motion::start
+         */
+        const T& start () { return _start->get (); }
+
+        /**
+         * @copydoc Motion::end
+         */
+        const T& end () { return _end->get (); }
+
+        /**
+         * @copydoc Motion::startTarget
+         */
+        TargetPtr startTarget () { return _start; }
+
+        /**
+         * @copydoc Motion::endTarget
+         */
+        TargetPtr endTarget () { return _end; }
+
+        //! @copydoc Motion::clone
+        virtual rw::core::Ptr< Motion< T > > clone (const std::vector< TargetPtr >& newTargets)
+        {
+            TargetPtr start;
+            TargetPtr end;
+            for (TargetPtr target : newTargets) {
+                if (target->getIndex () == startTarget ()->getIndex ())
+                    start = target;
+                if (target->getIndex () == endTarget ()->getIndex ())
+                    end = target;
+            }
+            return rw::core::ownedPtr (new LinearMotion< T > (start, end));
+        }
+
+        //! @copydoc Motion::reverse
+        virtual void reverse () { std::swap (_start, _end); }
+
+      private:
+        TargetPtr _start;
+        TargetPtr _end;
+    };
 
     /**
-     * @copydoc Motion::start
+     * Definition of rw::math::Q based linear motion.
      */
-    const T& start() {
-        return _start->get();
-    }
+    typedef LinearMotion< rw::math::Q > QLinearMotion;
 
     /**
-     * @copydoc Motion::end
+     * Definition of rw::math::Transform3D based linear motion.
      */
-    const T& end() {
-        return _end->get();
-    }
+    typedef LinearMotion< rw::math::Transform3D<> > CartesianLinearMotion;
+
+    extern template class LinearMotion< rw::math::Q >;
+    extern template class LinearMotion< rw::math::Transform3D<> >;
 
     /**
-     * @copydoc Motion::startTarget
+     * @brief Class describing circular motions.
+     *
+     * Circular motions are generally defined in Cartesian space.
+     * It is the reponsibility of the user to decide how to interpolate the rotation.
      */
-     TargetPtr startTarget() {
-         return _start;
-     }
+    template< class T > class CircularMotion : public Motion< T >
+    {
+      public:
+        //! @brief smart pointer type to this class
+        typedef rw::core::Ptr< CircularMotion< T > > Ptr;
 
-     /**
-      * @copydoc Motion::endTarget
-      */
-     TargetPtr endTarget() {
-         return _end;
-     }
+        /**
+         * Definition of target for convenience.
+         */
+        typedef rw::core::Ptr< Target< T > > TargetPtr;
 
-     //! @copydoc Motion::clone
-     virtual rw::core::Ptr<Motion<T> > clone(const std::vector<TargetPtr>& newTargets) {
-     	TargetPtr start;
-     	TargetPtr end;
-     	for(TargetPtr target : newTargets) {
-     		if (target->getIndex() == startTarget()->getIndex())
-     			start = target;
-     		if (target->getIndex() == endTarget()->getIndex())
-     			end = target;
-     	}
-     	return rw::core::ownedPtr(new LinearMotion<T>(start, end));
-     }
+        /**
+         * @brief Construct a CircularMotion starting in \b start, going through \b mid and ending
+         * in \b end
+         * @param start [in] motion start target.
+         * @param mid [in] target to reach somewhere between \b start and \b end.
+         * @param end [in] motion end target
+         */
+        CircularMotion (TargetPtr start, TargetPtr mid, TargetPtr end) :
+            Motion< T > (MotionType::Circular), _start (start), _mid (mid), _end (end)
+        {}
 
-     //! @copydoc Motion::reverse
-     virtual void reverse() {
-     	std::swap(_start, _end);
-     }
+        /**
+         * @copydoc Motion::start
+         */
+        const T& start () { return _start->get (); }
 
-private:
-    TargetPtr _start;
-    TargetPtr _end;
-};
+        /**
+         * @brief Returns the value of the mid point target
+         * @return Value of target
+         */
+        const T& mid () { return _mid->get (); }
 
-/**
- * Definition of rw::math::Q based linear motion.
- */
-typedef LinearMotion<rw::math::Q> QLinearMotion;
+        /**
+         * @copydoc Motion::end
+         */
+        const T& end () { return _end->get (); }
 
-/**
- * Definition of rw::math::Transform3D based linear motion.
- */
-typedef LinearMotion<rw::math::Transform3D<> > CartesianLinearMotion;
+        /**
+         * @copydoc Motion::startTarget
+         */
+        TargetPtr startTarget () { return _start; }
 
-extern template class LinearMotion<rw::math::Q>;
-extern template class LinearMotion<rw::math::Transform3D<> >;
+        /**
+         * @brief Returns the mid point target
+         * @return Mid point target
+         */
+        TargetPtr midTarget () { return _mid; }
 
-/**
- * @brief Class describing circular motions.
- *
- * Circular motions are generally defined in Cartesian space.
- * It is the reponsibility of the user to decide how to interpolate the rotation.
- */
-template <class T>
-class CircularMotion: public Motion<T> {
-public:
-	//! @brief smart pointer type to this class
-    typedef rw::core::Ptr<CircularMotion<T> > Ptr;
+        /**
+         * @copydoc Motion::endTarget
+         */
+        TargetPtr endTarget () { return _end; }
+
+        //! @copydoc Motion::clone
+        virtual rw::core::Ptr< Motion< T > > clone (const std::vector< TargetPtr >& newTargets)
+        {
+            TargetPtr start, mid, end;
+            for (TargetPtr target : newTargets) {
+                if (target->getIndex () == _start->getIndex ())
+                    start = target;
+                if (target->getIndex () == _mid->getIndex ())
+                    mid = target;
+                if (target->getIndex () == _end->getIndex ())
+                    end = target;
+            }
+            return rw::core::ownedPtr (new CircularMotion (start, mid, end));
+        }
+
+        //! @copydoc Motion::reverse
+        virtual void reverse () { std::swap (_start, _end); }
+
+      private:
+        TargetPtr _start;
+        TargetPtr _mid;
+        TargetPtr _end;
+    };
 
     /**
-     * Definition of target for convenience.
+     * @brief Definition of circular motion with rw::math::Transform type
      */
-    typedef rw::core::Ptr<Target<T> > TargetPtr;
+    typedef CircularMotion< rw::math::Transform3D<> > CartesianCircularMotion;
 
-    /**
-     * @brief Construct a CircularMotion starting in \b start, going through \b mid and ending in \b end
-     * @param start [in] motion start target.
-     * @param mid [in] target to reach somewhere between \b start and \b end.
-     * @param end [in] motion end target
-     */
-    CircularMotion(TargetPtr start, TargetPtr mid, TargetPtr end):
-        Motion<T>(MotionType::Circular),
-        _start(start),
-        _mid(mid),
-        _end(end)
-    {}
+    extern template class CircularMotion< rw::math::Transform3D<> >;
 
-    /**
-     * @copydoc Motion::start
-     */
-    const T& start() {
-        return _start->get();
-    }
+    /** @} */
 
-    /**
-     * @brief Returns the value of the mid point target
-     * @return Value of target
-     */
-    const T& mid() {
-        return _mid->get();
-    }
+}}    // namespace rwlibs::task
 
-    /**
-     * @copydoc Motion::end
-     */
-    const T& end() {
-        return _end->get();
-    }
-
-    /**
-     * @copydoc Motion::startTarget
-     */
-    TargetPtr startTarget() {
-        return _start;
-    }
-
-    /**
-     * @brief Returns the mid point target
-     * @return Mid point target
-     */
-    TargetPtr midTarget() {
-        return _mid;
-    }
-
-    /**
-     * @copydoc Motion::endTarget
-     */
-    TargetPtr endTarget() {
-        return _end;
-    }
-
-    //! @copydoc Motion::clone
-    virtual rw::core::Ptr<Motion<T> > clone(const std::vector<TargetPtr>& newTargets) {
-		TargetPtr start, mid, end;
-		for(TargetPtr target : newTargets) {
-			if (target->getIndex() == _start->getIndex())
-				start = target;
-			if (target->getIndex() == _mid->getIndex())
-				mid = target;
-			if (target->getIndex() == _end->getIndex())
-				end = target;
-		}
-		return rw::core::ownedPtr(new CircularMotion(start, mid, end));
-	}
-
-    //! @copydoc Motion::reverse
-    virtual void reverse() {
-    	std::swap(_start, _end);
-    }
-
-private:
-    TargetPtr _start;
-    TargetPtr _mid;
-    TargetPtr _end;
-};
-
-/**
- * @brief Definition of circular motion with rw::math::Transform type
- */
-typedef CircularMotion<rw::math::Transform3D<> > CartesianCircularMotion;
-
-extern template class CircularMotion<rw::math::Transform3D<> >;
-
-/** @} */
-
-} //end namespace task
-} //end namespace rwlibs
-
-#endif //end include guard
+#endif    // end include guard

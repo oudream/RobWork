@@ -8,36 +8,37 @@
 #ifndef CREATEENGINEDIALOG_HPP_
 #define CREATEENGINEDIALOG_HPP_
 
-#include <rwsim/simulator/DynamicSimulator.hpp>
 #include <rw/core/Ptr.hpp>
+#include <rwsim/simulator/DynamicSimulator.hpp>
 
-#include <QObject>
 #include <QDialog>
+#include <QObject>
 
-namespace rwsim { namespace dynamics { class DynamicWorkCell; } }
+namespace rwsim { namespace dynamics {
+    class DynamicWorkCell;
+}}    // namespace rwsim::dynamics
 
 namespace Ui {
-    class CreateEngineDialog;
+class CreateEngineDialog;
 }
 
 class CreateEngineDialog : public QDialog
 {
-	Q_OBJECT
+    Q_OBJECT
 
-public:
-	CreateEngineDialog(rw::core::Ptr<rwsim::dynamics::DynamicWorkCell> dwc, QWidget *parent = 0);
+  public:
+    CreateEngineDialog (rw::core::Ptr< rwsim::dynamics::DynamicWorkCell > dwc, QWidget* parent = 0);
 
-	rwsim::simulator::DynamicSimulator::Ptr getSimulator(){ return _sim; };
+    rwsim::simulator::DynamicSimulator::Ptr getSimulator () { return _sim; };
 
-private slots:
-	void btnPressed();
-	void changedEvent();
+  private slots:
+    void btnPressed ();
+    void changedEvent ();
 
-private:
-	Ui::CreateEngineDialog *_ui;
-	rwsim::simulator::DynamicSimulator::Ptr _sim;
-	rw::core::Ptr<rwsim::dynamics::DynamicWorkCell> _dwc;
+  private:
+    Ui::CreateEngineDialog* _ui;
+    rwsim::simulator::DynamicSimulator::Ptr _sim;
+    rw::core::Ptr< rwsim::dynamics::DynamicWorkCell > _dwc;
 };
-
 
 #endif /* CreateEngineDialog_HPP_ */

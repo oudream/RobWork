@@ -16,10 +16,13 @@
  ********************************************************************************/
 
 #include "WorkcellHighlighter.hpp"
-#include <QTextCharFormat>
-#include <QRegularExpression>
 
-WorkcellHighlighter::HighlightingRule WorkcellHighlighter::makeRule(QString pattern, QColor color, int fontweight ){
+#include <QRegularExpression>
+#include <QTextCharFormat>
+
+WorkcellHighlighter::HighlightingRule WorkcellHighlighter::makeRule (QString pattern, QColor color,
+                                                                     int fontweight)
+{
     HighlightingRule rule;
     QTextCharFormat format;
     format.setForeground (color);
@@ -29,32 +32,29 @@ WorkcellHighlighter::HighlightingRule WorkcellHighlighter::makeRule(QString patt
     return rule;
 }
 
-
-
-WorkcellHighlighter::WorkcellHighlighter (QTextDocument* parent) :
-    QSyntaxHighlighter (parent)
+WorkcellHighlighter::WorkcellHighlighter (QTextDocument* parent) : QSyntaxHighlighter (parent)
 {
     HighlightingRule rule;
 
-    highlightingRules.append (makeRule("\\bWorkCell\\b",QColor (0, 94, 136),QFont::Bold));
+    highlightingRules.append (makeRule ("\\bWorkCell\\b", QColor (0, 94, 136), QFont::Bold));
 
-    highlightingRules.append (makeRule("\\bFrame\\b",QColor (217, 0, 93),QFont::Bold));
+    highlightingRules.append (makeRule ("\\bFrame\\b", QColor (217, 0, 93), QFont::Bold));
 
-    highlightingRules.append (makeRule("\\bDrawable\\b",QColor (0, 175, 95),QFont::Bold));
+    highlightingRules.append (makeRule ("\\bDrawable\\b", QColor (0, 175, 95), QFont::Bold));
 
-    highlightingRules.append (makeRule("\\bCollisionModel\\b",QColor (255, 87, 79),QFont::Bold));
+    highlightingRules.append (makeRule ("\\bCollisionModel\\b", QColor (255, 87, 79), QFont::Bold));
 
-    highlightingRules.append (makeRule("\\bProperty\\b",Qt::darkGreen,QFont::Bold));
+    highlightingRules.append (makeRule ("\\bProperty\\b", Qt::darkGreen, QFont::Bold));
 
-    highlightingRules.append (makeRule("\\bSerialDevice\\b",QColor (1, 135, 134),QFont::Bold));
+    highlightingRules.append (makeRule ("\\bSerialDevice\\b", QColor (1, 135, 134), QFont::Bold));
 
-    highlightingRules.append (makeRule("\\bInclude\\b",QColor (46, 125, 50),QFont::Bold));
-    
-    highlightingRules.append (makeRule("\\bRPY\\b",QColor (142, 93, 171),QFont::Bold));
-    highlightingRules.append (makeRule("\\bPos\\b",QColor (142, 93, 171),QFont::Bold));
-    highlightingRules.append (makeRule("\\bPolytope\\b",QColor (142, 93, 171),QFont::Bold));
-    highlightingRules.append (makeRule("\\bBox\\b",QColor (142, 93, 171),QFont::Bold));
-    highlightingRules.append (makeRule("\\bRGB\\b",QColor (142, 93, 171),QFont::Bold));
+    highlightingRules.append (makeRule ("\\bInclude\\b", QColor (46, 125, 50), QFont::Bold));
+
+    highlightingRules.append (makeRule ("\\bRPY\\b", QColor (142, 93, 171), QFont::Bold));
+    highlightingRules.append (makeRule ("\\bPos\\b", QColor (142, 93, 171), QFont::Bold));
+    highlightingRules.append (makeRule ("\\bPolytope\\b", QColor (142, 93, 171), QFont::Bold));
+    highlightingRules.append (makeRule ("\\bBox\\b", QColor (142, 93, 171), QFont::Bold));
+    highlightingRules.append (makeRule ("\\bRGB\\b", QColor (142, 93, 171), QFont::Bold));
 
     classFormat.setFontWeight (QFont::Bold);
     classFormat.setForeground (Qt::darkMagenta);
@@ -71,18 +71,16 @@ WorkcellHighlighter::WorkcellHighlighter (QTextDocument* parent) :
     quotationFormat.setForeground (Qt::darkGreen);
 
     attributeFormat.setForeground (QColor (215, 95, 0));
-    rule.pattern =
-        QRegularExpression (R"**((?<range2>[\w\d\-\:]+)[ ]*=[ ]*"[^"]*")**",
-                            QRegularExpression::DotMatchesEverythingOption |
-                                QRegularExpression::MultilineOption);
-    rule.format = attributeFormat;
+    rule.pattern = QRegularExpression (R"**((?<range2>[\w\d\-\:]+)[ ]*=[ ]*"[^"]*")**",
+                                       QRegularExpression::DotMatchesEverythingOption |
+                                           QRegularExpression::MultilineOption);
+    rule.format  = attributeFormat;
     highlightingRules.append (rule);
 
-    rule.pattern =
-        QRegularExpression (R"**((?<!\\)([\"'])(.+?)(?<!\\)\1)**",
-                            QRegularExpression::DotMatchesEverythingOption |
-                                QRegularExpression::MultilineOption);
-    rule.format = quotationFormat;
+    rule.pattern = QRegularExpression (R"**((?<!\\)([\"'])(.+?)(?<!\\)\1)**",
+                                       QRegularExpression::DotMatchesEverythingOption |
+                                           QRegularExpression::MultilineOption);
+    rule.format  = quotationFormat;
     highlightingRules.append (rule);
 
     functionFormat.setFontItalic (true);
@@ -98,12 +96,10 @@ WorkcellHighlighter::WorkcellHighlighter (QTextDocument* parent) :
 void WorkcellHighlighter::highlightBlock (const QString& text)
 {
     Q_FOREACH (const HighlightingRule& rule, highlightingRules) {
-        QRegularExpressionMatchIterator matchIterator =
-            rule.pattern.globalMatch (text);
+        QRegularExpressionMatchIterator matchIterator = rule.pattern.globalMatch (text);
         while (matchIterator.hasNext ()) {
             QRegularExpressionMatch match = matchIterator.next ();
-            setFormat (
-                match.capturedStart (), match.capturedLength (), rule.format);
+            setFormat (match.capturedStart (), match.capturedLength (), rule.format);
         }
     }
     setCurrentBlockState (0);
@@ -113,10 +109,9 @@ void WorkcellHighlighter::highlightBlock (const QString& text)
         startIndex = text.indexOf (commentStartExpression);
 
     while (startIndex >= 0) {
-        QRegularExpressionMatch match =
-            commentEndExpression.match (text, startIndex);
-        int endIndex      = match.capturedStart ();
-        int commentLength = 0;
+        QRegularExpressionMatch match = commentEndExpression.match (text, startIndex);
+        int endIndex                  = match.capturedStart ();
+        int commentLength             = 0;
         if (endIndex == -1) {
             setCurrentBlockState (1);
             commentLength = text.length () - startIndex;
@@ -125,7 +120,6 @@ void WorkcellHighlighter::highlightBlock (const QString& text)
             commentLength = endIndex - startIndex + match.capturedLength ();
         }
         setFormat (startIndex, commentLength, multiLineCommentFormat);
-        startIndex =
-            text.indexOf (commentStartExpression, startIndex + commentLength);
+        startIndex = text.indexOf (commentStartExpression, startIndex + commentLength);
     }
 }

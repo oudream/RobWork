@@ -25,52 +25,52 @@
  */
 
 #include "Mathematica.hpp"
+
 #include <rw/core/Ptr.hpp>
 
-namespace rwlibs {
-namespace mathematica {
-//! @addtogroup mathematica
+namespace rwlibs { namespace mathematica {
+    //! @addtogroup mathematica
 
-//! @{
-//! @brief A Mathematica WSTP %MessagePacket.
-class MessagePacket: public Mathematica::Packet {
-public:
-	//! @brief Smart pointer type.
-	typedef rw::core::Ptr<MessagePacket> Ptr;
+    //! @{
+    //! @brief A Mathematica WSTP %MessagePacket.
+    class MessagePacket : public Mathematica::Packet
+    {
+      public:
+        //! @brief Smart pointer type.
+        typedef rw::core::Ptr< MessagePacket > Ptr;
 
-	/**
-	 * @brief Construct anew packet.
-	 * @param symbol [in] the symbol of the message.
-	 * @param string [in] the string of the message.
-	 */
-	MessagePacket(const Mathematica::Symbol& symbol, const Mathematica::String& string);
+        /**
+         * @brief Construct anew packet.
+         * @param symbol [in] the symbol of the message.
+         * @param string [in] the string of the message.
+         */
+        MessagePacket (const Mathematica::Symbol& symbol, const Mathematica::String& string);
 
-	//! @brief Destructor.
-	virtual ~MessagePacket();
+        //! @brief Destructor.
+        virtual ~MessagePacket ();
 
-	/**
-	 * @brief Get the symbol stored in the packet.
-	 * @return the symbol.
-	 */
-	const Mathematica::Symbol& symbol();
+        /**
+         * @brief Get the symbol stored in the packet.
+         * @return the symbol.
+         */
+        const Mathematica::Symbol& symbol ();
 
-	/**
-	 * @brief Get the string stored in the packet.
-	 * @return the string.
-	 */
-	const Mathematica::String& string();
+        /**
+         * @brief Get the string stored in the packet.
+         * @return the string.
+         */
+        const Mathematica::String& string ();
 
-	//! @copydoc Mathematica::FunctionBase::getArguments
-	std::list<rw::core::Ptr<const Mathematica::Expression> > getArguments() const;
+        //! @copydoc Mathematica::FunctionBase::getArguments
+        std::list< rw::core::Ptr< const Mathematica::Expression > > getArguments () const;
 
-	//! @copydoc Mathematica::Expression::clone
-	Mathematica::Expression::Ptr clone() const;
+        //! @copydoc Mathematica::Expression::clone
+        Mathematica::Expression::Ptr clone () const;
 
-private:
-	const Mathematica::Symbol _symbol;
-	const Mathematica::String _string;
-};
-//! @}
-} /* namespace mathematica */
-} /* namespace rwlibs */
+      private:
+        const Mathematica::Symbol _symbol;
+        const Mathematica::String _string;
+    };
+    //! @}
+}}     // namespace rwlibs::mathematica
 #endif /* RWLIBS_MATHEMATICA_MESSAGEPACKET_HPP_ */

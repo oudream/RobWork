@@ -28,7 +28,6 @@
 #include <rw/trajectory/LloydHaywardBlend.hpp>
 #include <rw/trajectory/ParabolicBlend.hpp>
 
-
 #include <iostream>
 
 using namespace rw::core;

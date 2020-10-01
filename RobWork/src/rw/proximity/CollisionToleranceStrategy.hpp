@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RW_PROXIMITY_COLLISIONTOLERANCESTRATEGY_HPP
 #define RW_PROXIMITY_COLLISIONTOLERANCESTRATEGY_HPP
 
@@ -23,16 +22,18 @@
  * @file CollisionToleranceStrategy.hpp
  */
 
-#include <string>
+#include "ProximityStrategy.hpp"
 
 #include <rw/core/ExtensionPoint.hpp>
 #include <rw/core/Ptr.hpp>
 #include <rw/math/Transform3D.hpp>
 
-#include "ProximityStrategy.hpp"
+#include <string>
 //#include "ProximityStrategyData.hpp"
 
-namespace rw { namespace kinematics { class Frame; } }
+namespace rw { namespace kinematics {
+    class Frame;
+}}    // namespace rw::kinematics
 
 namespace rw { namespace proximity {
 
@@ -43,18 +44,20 @@ namespace rw { namespace proximity {
      * @brief This is a collision strategy that detects collisions between objects
      * that are closer than a specified tolerance.
      */
-    class CollisionToleranceStrategy: public virtual ProximityStrategy {
-    public:
-		//! @brief smart pointer type to this class
-		typedef rw::core::Ptr<CollisionToleranceStrategy> Ptr;
+    class CollisionToleranceStrategy : public virtual ProximityStrategy
+    {
+      public:
+        //! @brief smart pointer type to this class
+        typedef rw::core::Ptr< CollisionToleranceStrategy > Ptr;
 
         /**
          * @brief Destroys object
          */
-        virtual ~CollisionToleranceStrategy();
+        virtual ~CollisionToleranceStrategy ();
 
         /**
-         * @brief Checks to see if the geometry attached to two given frames @f$ \mathcal{F}_a @f$ and
+         * @brief Checks to see if the geometry attached to two given frames @f$ \mathcal{F}_a @f$
+         * and
          * @f$ \mathcal{F}_b @f$ are closer than the specified tolerance.
          * @param a [in] @f$ \mathcal{F}_a @f$
          * @param wTa [in] @f$ \robabx{w}{a}{\mathbf{T}} @f$
@@ -66,15 +69,13 @@ namespace rw { namespace proximity {
          * @return true if @f$ \mathcal{F}_a @f$ and @f$ \mathcal{F}_b @f$ are
          * colliding, false otherwise.
          */
-        bool isWithinDistance(
-            const kinematics::Frame* a,
-            const math::Transform3D<>& wTa,
-            const kinematics::Frame *b,
-            const math::Transform3D<>& wTb,
-            double tolerance);
+        bool isWithinDistance (const kinematics::Frame* a, const math::Transform3D<>& wTa,
+                               const kinematics::Frame* b, const math::Transform3D<>& wTb,
+                               double tolerance);
 
         /**
-         * @brief Checks to see if the geometry attached to two given frames @f$ \mathcal{F}_a @f$ and
+         * @brief Checks to see if the geometry attached to two given frames @f$ \mathcal{F}_a @f$
+         * and
          * @f$ \mathcal{F}_b @f$ are closer than the specified tolerance. Result is cached in data
          * @param a [in] @f$ \mathcal{F}_a @f$
          * @param wTa [in] @f$ \robabx{w}{a}{\mathbf{T}} @f$
@@ -86,13 +87,9 @@ namespace rw { namespace proximity {
          * @return true if @f$ \mathcal{F}_a @f$ and @f$ \mathcal{F}_b @f$ are
          * colliding, false otherwise.
          */
-        bool isWithinDistance(
-            const kinematics::Frame* a,
-            const math::Transform3D<>& wTa,
-            const kinematics::Frame *b,
-            const math::Transform3D<>& wTb,
-            double distance,
-            class ProximityStrategyData& data);
+        bool isWithinDistance (const kinematics::Frame* a, const math::Transform3D<>& wTa,
+                               const kinematics::Frame* b, const math::Transform3D<>& wTb,
+                               double distance, class ProximityStrategyData& data);
 
         /**
          * @brief Checks to see if two proximity models @f$ \mathcal{F}_a @f$ and
@@ -108,60 +105,58 @@ namespace rw { namespace proximity {
          * @return true if @f$ \mathcal{F}_a @f$ and @f$ \mathcal{F}_b @f$ are
          * colliding, false otherwise.
          */
-        bool isWithinDistance(
-			ProximityModel::Ptr a,
-            const math::Transform3D<>& wTa,
-			ProximityModel::Ptr b,
-            const math::Transform3D<>& wTb,
-            double tolerance,
-            class ProximityStrategyData& data)
+        bool isWithinDistance (ProximityModel::Ptr a, const math::Transform3D<>& wTa,
+                               ProximityModel::Ptr b, const math::Transform3D<>& wTb,
+                               double tolerance, class ProximityStrategyData& data)
         {
-            return doIsWithinDistance(a,wTa,b,wTb,tolerance,data);
+            return doIsWithinDistance (a, wTa, b, wTb, tolerance, data);
         }
 
-    	/**
-    	 * @addtogroup extensionpoints
-    	 * @extensionpoint{rw::proximity::CollisionToleranceStrategy::Factory,rw::proximity::CollisionToleranceStrategy,rw.proximity.CollisionToleranceStrategy}
-    	 */
+        /**
+         * @addtogroup extensionpoints
+         * @extensionpoint{rw::proximity::CollisionToleranceStrategy::Factory,rw::proximity::CollisionToleranceStrategy,rw.proximity.CollisionToleranceStrategy}
+         */
 
-    	/**
-    	 * @brief A factory for a CollisionToleranceStrategy. This factory also defines an ExtensionPoint.
-    	 *
-    	 * Extensions providing a CollisionToleranceStrategy implementation can extend this factory by registering
-    	 * the extension using the id "rw.proximity.CollisionToleranceStrategy".
-    	 *
-    	 * Typically one or more of the following CollisionToleranceStrategy types will be available:
-    	 *  - Bullet - rwlibs::proximitystrategies::ProximityStrategyBullet - Bullet Physics
-    	 *  - PQP - rwlibs::proximitystrategies::ProximityStrategyPQP - Proximity Query Package
-    	 */
-    	class Factory: public rw::core::ExtensionPoint<CollisionToleranceStrategy> {
-    	public:
-    		/**
-    		 * @brief Get the available strategies.
-    		 * @return a vector of identifiers for strategies.
-    		 */
-    		static std::vector<std::string> getStrategies();
+        /**
+         * @brief A factory for a CollisionToleranceStrategy. This factory also defines an
+         * ExtensionPoint.
+         *
+         * Extensions providing a CollisionToleranceStrategy implementation can extend this factory
+         * by registering the extension using the id "rw.proximity.CollisionToleranceStrategy".
+         *
+         * Typically one or more of the following CollisionToleranceStrategy types will be
+         * available:
+         *  - Bullet - rwlibs::proximitystrategies::ProximityStrategyBullet - Bullet Physics
+         *  - PQP - rwlibs::proximitystrategies::ProximityStrategyPQP - Proximity Query Package
+         */
+        class Factory : public rw::core::ExtensionPoint< CollisionToleranceStrategy >
+        {
+          public:
+            /**
+             * @brief Get the available strategies.
+             * @return a vector of identifiers for strategies.
+             */
+            static std::vector< std::string > getStrategies ();
 
-    		/**
-    		 * @brief Check if strategy is available.
-    		 * @param strategy [in] the name of the strategy.
-    		 * @return true if available, false otherwise.
-    		 */
-    		static bool hasStrategy(const std::string& strategy);
+            /**
+             * @brief Check if strategy is available.
+             * @param strategy [in] the name of the strategy.
+             * @return true if available, false otherwise.
+             */
+            static bool hasStrategy (const std::string& strategy);
 
-    		/**
-    		 * @brief Create a new strategy.
-    		 * @param strategy [in] the name of the strategy.
-    		 * @return a pointer to a new CollisionToleranceStrategy.
-    		 */
-    		static CollisionToleranceStrategy::Ptr makeStrategy(const std::string& strategy);
+            /**
+             * @brief Create a new strategy.
+             * @param strategy [in] the name of the strategy.
+             * @return a pointer to a new CollisionToleranceStrategy.
+             */
+            static CollisionToleranceStrategy::Ptr makeStrategy (const std::string& strategy);
 
-    	private:
-    		Factory();
-    	};
+          private:
+            Factory ();
+        };
 
-    protected:
-
+      protected:
         /**
          * @brief Checks to see if two proximity models @f$ \mathcal{F}_a @f$ and
          * @f$ \mathcal{F}_b @f$ are closer than the specified tolerance. Result is cached in data
@@ -176,27 +171,22 @@ namespace rw { namespace proximity {
          * @return true if @f$ \mathcal{F}_a @f$ and @f$ \mathcal{F}_b @f$ are
          * colliding, false otherwise.
          */
-        virtual bool doIsWithinDistance(
-                    ProximityModel::Ptr a,
-                    const math::Transform3D<>& wTa,
-                    ProximityModel::Ptr b,
-                    const math::Transform3D<>& wTb,
-                    double tolerance,
-                    class ProximityStrategyData& data) = 0;
+        virtual bool doIsWithinDistance (ProximityModel::Ptr a, const math::Transform3D<>& wTa,
+                                         ProximityModel::Ptr b, const math::Transform3D<>& wTb,
+                                         double tolerance, class ProximityStrategyData& data) = 0;
 
+      private:
+        CollisionToleranceStrategy (const CollisionToleranceStrategy&);
+        CollisionToleranceStrategy& operator= (const CollisionToleranceStrategy&);
 
-    private:
-        CollisionToleranceStrategy(const CollisionToleranceStrategy&);
-        CollisionToleranceStrategy& operator=(const CollisionToleranceStrategy&);
-
-    protected:
+      protected:
         /**
          * @brief Creates object
          */
-        CollisionToleranceStrategy();
+        CollisionToleranceStrategy ();
     };
 
     /*@}*/
-}} // end namespaces
+}}    // namespace rw::proximity
 
-#endif // end include guard
+#endif    // end include guard

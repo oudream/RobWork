@@ -21,8 +21,9 @@
 /**
  * @file VectorIterator.hpp
  */
-
+#if !defined(SWIG)
 #include <vector>
+#endif
 
 namespace rw { namespace common {
 
@@ -147,6 +148,7 @@ namespace rw { namespace common {
          * @brief Pointer to the T element
          */
         const T* operator-> () const { return *pos.operator-> (); }
+
 
         /**
          * @brief Increments the position of the iterator

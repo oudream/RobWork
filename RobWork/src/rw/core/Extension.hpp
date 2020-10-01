@@ -18,12 +18,13 @@
 #ifndef RW_CORE_EXTENSION_HPP
 #define RW_CORE_EXTENSION_HPP
 
+#if !defined(SWIG)
 #include <rw/core/AnyPtr.hpp>
 #include <rw/core/PropertyMap.hpp>
 #include <rw/core/Ptr.hpp>
 
 #include <string>
-
+#endif
 namespace rw { namespace core {
     class Plugin;
 
@@ -78,9 +79,10 @@ namespace rw { namespace core {
              * @return a reference to the properties.
              */
             rw::core::PropertyMap& getProperties () { return props; }
-
+#if !defined(SWIG)
             //! @copydoc getProperties
             const rw::core::PropertyMap& getProperties () const { return props; }
+#endif
         };
 
       public:
@@ -119,11 +121,13 @@ namespace rw { namespace core {
         //! to
         const std::string& getPoint () const { return _desc.point; }
 
-        //! @brief the properties/configuration of this extension
-        const rw::core::PropertyMap& getProperties () const { return _desc.props; }
-
         //! @copydoc getProperties() const
         rw::core::PropertyMap& getProperties () { return _desc.props; }
+
+#if !defined(SWIG)
+        //! @brief the properties/configuration of this extension
+        const rw::core::PropertyMap& getProperties () const { return _desc.props; }
+#endif
 
         /**
          * @brief Get the object.
@@ -154,6 +158,6 @@ namespace rw { namespace core {
  */
 namespace rw { namespace common {
     using namespace rw::core;
-}}
+}}    // namespace rw::common
 
 #endif

@@ -19,34 +19,55 @@
 
 using rw::math::PolynomialND;
 
-PolynomialND<Eigen::Vector3d> rw::math::operator*(const PolynomialND<Eigen::Matrix3d>& A, const PolynomialND<Eigen::Vector3d>& b) {
-	return A.multiply<Eigen::Vector3d,Eigen::Vector3d>(b);
+PolynomialND< Eigen::Vector3d > rw::math::operator* (const PolynomialND< Eigen::Matrix3d >& A,
+                                                     const PolynomialND< Eigen::Vector3d >& b)
+{
+    return A.multiply< Eigen::Vector3d, Eigen::Vector3d > (b);
 }
 
-PolynomialND<Eigen::Matrix<double,1,3> > rw::math::operator*(const PolynomialND<Eigen::Matrix<double,1,3> >& a, const PolynomialND<Eigen::Matrix3d>& A) {
-	return a.multiply<Eigen::Matrix<double,1,3>,Eigen::Matrix3d>(A);
+PolynomialND< Eigen::Matrix< double, 1, 3 > >
+rw::math::operator* (const PolynomialND< Eigen::Matrix< double, 1, 3 > >& a,
+                     const PolynomialND< Eigen::Matrix3d >& A)
+{
+    return a.multiply< Eigen::Matrix< double, 1, 3 >, Eigen::Matrix3d > (A);
 }
 
-PolynomialND<Eigen::Vector3d> rw::math::operator*(const PolynomialND<Eigen::Matrix3d>& A, const Eigen::Vector3d& b) {
-	return A.multiply<Eigen::Vector3d,Eigen::Vector3d>(b);
+PolynomialND< Eigen::Vector3d > rw::math::operator* (const PolynomialND< Eigen::Matrix3d >& A,
+                                                     const Eigen::Vector3d& b)
+{
+    return A.multiply< Eigen::Vector3d, Eigen::Vector3d > (b);
 }
 
-PolynomialND<Eigen::Matrix<double,1,3> > rw::math::operator*(const PolynomialND<Eigen::Matrix<double,1,3> >& a, const Eigen::Matrix3d& A) {
-	return a.multiply<Eigen::Matrix<double,1,3>,Eigen::Matrix3d>(A);
+PolynomialND< Eigen::Matrix< double, 1, 3 > >
+rw::math::operator* (const PolynomialND< Eigen::Matrix< double, 1, 3 > >& a,
+                     const Eigen::Matrix3d& A)
+{
+    return a.multiply< Eigen::Matrix< double, 1, 3 >, Eigen::Matrix3d > (A);
 }
 
-PolynomialND<Eigen::Vector3f,float> rw::math::operator*(const PolynomialND<Eigen::Matrix3f,float>& A, const PolynomialND<Eigen::Vector3f,float>& b) {
-	return A.multiply<Eigen::Vector3f,Eigen::Vector3f>(b);
+PolynomialND< Eigen::Vector3f, float >
+rw::math::operator* (const PolynomialND< Eigen::Matrix3f, float >& A,
+                     const PolynomialND< Eigen::Vector3f, float >& b)
+{
+    return A.multiply< Eigen::Vector3f, Eigen::Vector3f > (b);
 }
 
-PolynomialND<Eigen::Matrix<float,1,3>,float> rw::math::operator*(const PolynomialND<Eigen::Matrix<float,1,3>,float>& a, const PolynomialND<Eigen::Matrix3f,float>& A) {
-	return a.multiply<Eigen::Matrix<float,1,3>,Eigen::Matrix3f>(A);
+PolynomialND< Eigen::Matrix< float, 1, 3 >, float >
+rw::math::operator* (const PolynomialND< Eigen::Matrix< float, 1, 3 >, float >& a,
+                     const PolynomialND< Eigen::Matrix3f, float >& A)
+{
+    return a.multiply< Eigen::Matrix< float, 1, 3 >, Eigen::Matrix3f > (A);
 }
 
-PolynomialND<Eigen::Vector3f,float> rw::math::operator*(const PolynomialND<Eigen::Matrix3f,float>& A, const Eigen::Vector3f& b) {
-	return A.multiply<Eigen::Vector3f,Eigen::Vector3f>(b);
+PolynomialND< Eigen::Vector3f, float >
+rw::math::operator* (const PolynomialND< Eigen::Matrix3f, float >& A, const Eigen::Vector3f& b)
+{
+    return A.multiply< Eigen::Vector3f, Eigen::Vector3f > (b);
 }
 
-PolynomialND<Eigen::Matrix<float,1,3>,float> rw::math::operator*(const PolynomialND<Eigen::Matrix<float,1,3>,float>& a, const Eigen::Matrix3f& A) {
-	return a.multiply<Eigen::Matrix<float,1,3>,Eigen::Matrix3f>(A);
+PolynomialND< Eigen::Matrix< float, 1, 3 >, float >
+rw::math::operator* (const PolynomialND< Eigen::Matrix< float, 1, 3 >, float >& a,
+                     const Eigen::Matrix3f& A)
+{
+    return a.multiply< Eigen::Matrix< float, 1, 3 >, Eigen::Matrix3f > (A);
 }

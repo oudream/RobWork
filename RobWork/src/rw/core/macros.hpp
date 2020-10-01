@@ -15,20 +15,21 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RW_CORE_macros_HPP
 #define RW_CORE_macros_HPP
 
 /**
  * @file macros.hpp
  */
-
-#include "Exception.hpp"
+#if !defined(SWIG)
+#include <rw/core/Exception.hpp>
+#include <rw/core/IOUtil.hpp>
 #include <rw/core/Log.hpp>
-#include "Message.hpp"
-#include "IOUtil.hpp"
-#include <sstream>
+#include <rw/core/Message.hpp>
+
 #include <iostream>
+#include <sstream>
+#endif
 
 /** @addtogroup core */
 /*@{*/
@@ -43,22 +44,22 @@
  *
  * Exception messages can be intercepted via exceptionLog().
  */
-#define RW_THROW(ostreamExpression) do { int RW__line = __LINE__;           \
-    std::stringstream RW__stream;                                           \
-    RW__stream << ostreamExpression;                                        \
-    rw::core::Message RW__message(__FILE__, RW__line, RW__stream.str());  \
-    if( rw::core::Log::log().isEnabled(rw::core::Log::Debug) ) \
-		rw::core::Log::debugLog().write(RW__message);        \
-    throw rw::core::Exception(RW__message);                               \
-} while (0)
+#define RW_THROW(ostreamExpression)                                            \
+    do {                                                                       \
+        int RW__line = __LINE__;                                               \
+        std::stringstream RW__stream;                                          \
+        RW__stream << ostreamExpression;                                       \
+        rw::core::Message RW__message (__FILE__, RW__line, RW__stream.str ()); \
+        if (rw::core::Log::log ().isEnabled (rw::core::Log::Debug))            \
+            rw::core::Log::debugLog ().write (RW__message);                    \
+        throw rw::core::Exception (RW__message);                               \
+    } while (0)
 // We use the weird RW__ names to (hopefully) avoid name crashes.
-
-
 
 /**
  * @brief Throw an exception with the specified id and message \b ostreamExpression.
  *
- * \b id is the id of the exception and * \b ostreamExpression is an expression that 
+ * \b id is the id of the exception and * \b ostreamExpression is an expression that
  * is fed to an output stream. Example:
  * \code
  *  RW_THROW("The value of x is " << x);
@@ -66,17 +67,18 @@
  *
  * Exception data can be intercepted via exceptionLog().
  */
-#define RW_THROW2(id, ostreamExpression) do { int RW__line = __LINE__;           \
-    std::stringstream RW__stream;                                           \
-    RW__stream << ostreamExpression;                                        \
-    rw::core::Message RW__message(__FILE__, RW__line, RW__stream.str());  \
-    rw::core::Exception exp(id, RW__message);                               \
-    if( rw::core::Log::log().isEnabled(rw::core::Log::Error) ) \
-    	rw::core::Log::errorLog().write(exp.what());                              \
-    throw exp;                                                                  \
-} while (0)
+#define RW_THROW2(id, ostreamExpression)                                       \
+    do {                                                                       \
+        int RW__line = __LINE__;                                               \
+        std::stringstream RW__stream;                                          \
+        RW__stream << ostreamExpression;                                       \
+        rw::core::Message RW__message (__FILE__, RW__line, RW__stream.str ()); \
+        rw::core::Exception exp (id, RW__message);                             \
+        if (rw::core::Log::log ().isEnabled (rw::core::Log::Error))            \
+            rw::core::Log::errorLog ().write (exp.what ());                    \
+        throw exp;                                                             \
+    } while (0)
 // We use the weird RW__ names to (hopefully) avoid name crashes.
-
 
 /**
  * @brief Emit a warning.
@@ -88,13 +90,15 @@ RW_WARN("The value of x is " << x << ". x should be less than zero.");
  *
  * Warning messages can be intercepted via warningLog().
  */
-#define RW_WARN(ostreamExpression) do { int RW__line = __LINE__;            \
-    std::stringstream RW__stream;                                           \
-    RW__stream << ostreamExpression;                                        \
-    rw::core::Message RW__message(__FILE__, RW__line, RW__stream.str());  \
-    if( rw::core::Log::log().isEnabled(rw::core::Log::Warning) ) \
-    	rw::core::Log::warningLog() << RW__message << std::endl;      \
-} while (0)
+#define RW_WARN(ostreamExpression)                                             \
+    do {                                                                       \
+        int RW__line = __LINE__;                                               \
+        std::stringstream RW__stream;                                          \
+        RW__stream << ostreamExpression;                                       \
+        rw::core::Message RW__message (__FILE__, RW__line, RW__stream.str ()); \
+        if (rw::core::Log::log ().isEnabled (rw::core::Log::Warning))          \
+            rw::core::Log::warningLog () << RW__message << std::endl;          \
+    } while (0)
 
 /**
  * @brief Emit debug message.
@@ -107,11 +111,14 @@ RW_DEBUG("The value of x is " << x << ". x should be less than zero.");
  * Debug messages can be intercepted via debugLog().
  */
 #ifdef RW_DEBUG_ENABLE
-#define RW_DEBUG(ostreamExpression) do { int RW__line = __LINE__;                                               \
-    if( rw::core::Log::log().isEnabled(rw::core::Log::Debug) ) { \
-    	rw::core::Log::debugLog() << __FILE__ << ":" << RW__line << " " << ostreamExpression << std::endl;        \
-    } \
-} while (0)
+#define RW_DEBUG(ostreamExpression)                                                      \
+    do {                                                                                 \
+        int RW__line = __LINE__;                                                         \
+        if (rw::core::Log::log ().isEnabled (rw::core::Log::Debug)) {                    \
+            rw::core::Log::debugLog ()                                                   \
+                << __FILE__ << ":" << RW__line << " " << ostreamExpression << std::endl; \
+        }                                                                                \
+    } while (0)
 #else
 #define RW_DEBUG(ostreamExpression)
 #endif
@@ -119,12 +126,13 @@ RW_DEBUG("The value of x is " << x << ". x should be less than zero.");
 /**
  * @brief For internal use only.
  */
-#define RW_ASSERT_IMPL(e, ostreamExpression, file, line) \
-    do { std::stringstream RW__stream;                                   \
-        RW__stream << ostreamExpression;                                 \
-        ((e) ? (void)0 : rw::core::IOUtil::rwAssert(RW__stream.str().c_str(), file, line)); \
-    } while(0)
-    
+#define RW_ASSERT_IMPL(e, ostreamExpression, file, line)                                        \
+    do {                                                                                        \
+        std::stringstream RW__stream;                                                           \
+        RW__stream << ostreamExpression;                                                        \
+        ((e) ? (void) 0 : rw::core::IOUtil::rwAssert (RW__stream.str ().c_str (), file, line)); \
+    } while (0)
+
 /**
  * @brief RobWork assertions.
  *
@@ -137,13 +145,13 @@ RW_DEBUG("The value of x is " << x << ". x should be less than zero.");
  * are sure that a run time sanity check will be a performance issue.
  */
 #ifdef RW_ENABLE_ASSERT
-#  define RW_ASSERT(e) RW_ASSERT_IMPL(e, std::string(#e), __FILE__, __LINE__)
+#define RW_ASSERT(e) RW_ASSERT_IMPL (e, std::string (#e), __FILE__, __LINE__)
 #else
-#  ifdef NDEBUG
-#    define RW_ASSERT(e)
-#  else
-#    define RW_ASSERT(e) RW_ASSERT_IMPL(e, std::string(#e), __FILE__, __LINE__)
-#  endif
+#ifdef NDEBUG
+#define RW_ASSERT(e)
+#else
+#define RW_ASSERT(e) RW_ASSERT_IMPL (e, std::string (#e), __FILE__, __LINE__)
+#endif
 #endif
 
 /**
@@ -157,13 +165,13 @@ RW_DEBUG("The value of x is " << x << ". x should be less than zero.");
  * error message if assertion fails.
  */
 #ifdef RW_ENABLE_ASSERT
-#  define RW_ASSERT_MSG(e, msg) RW_ASSERT_IMPL(e, msg, __FILE__, __LINE__)
+#define RW_ASSERT_MSG(e, msg) RW_ASSERT_IMPL (e, msg, __FILE__, __LINE__)
 #else
-#  ifdef NDEBUG
-#    define RW_ASSERT_MSG(e, msg)
-#  else
-#    define RW_ASSERT_MSG(e, msg) RW_ASSERT_IMPL(e, msg, __FILE__, __LINE__)
-#  endif
+#ifdef NDEBUG
+#define RW_ASSERT_MSG(e, msg)
+#else
+#define RW_ASSERT_MSG(e, msg) RW_ASSERT_IMPL (e, msg, __FILE__, __LINE__)
+#endif
 #endif
 
 /**
@@ -182,105 +190,136 @@ RW_DEBUG("The value of x is " << x << ". x should be less than zero.");
  * @param id [in] log level to write to.
  * @param ostreamExpression [in] Stream expression which should be written to the log
  */
-#define RW_LOG(id, ostreamExpression) do { rw::core::Log::log().get(id) << ostreamExpression << std::endl; } while (0)
+#define RW_LOG(id, ostreamExpression)                                     \
+    do {                                                                  \
+        rw::core::Log::log ().get (id) << ostreamExpression << std::endl; \
+    } while (0)
 
 /**
  * @brief Writes \b ostreamExpression to error log.
  * @param ostreamExpression [in] Stream expression which should be written to the log
  */
-#define RW_LOG_ERROR(ostreamExpression) RW_LOG(rw::core::Log::Error, ostreamExpression)
+#define RW_LOG_ERROR(ostreamExpression) RW_LOG (rw::core::Log::Error, ostreamExpression)
 
 /**
  * @brief Writes \b ostreamExpression to warning log.
  * @param ostreamExpression [in] Stream expression which should be written to the log
  */
-#define RW_LOG_WARNING(ostreamExpression) RW_LOG(rw::core::Log::Warning, ostreamExpression)
+#define RW_LOG_WARNING(ostreamExpression) RW_LOG (rw::core::Log::Warning, ostreamExpression)
 
 /**
  * @brief Writes \b ostreamExpression to debug log.
  * @param ostreamExpression [in] Stream expression which should be written to the log
  */
-#define RW_LOG_DEBUG(ostreamExpression) RW_LOG(rw::core::Log::Debug, ostreamExpression)
+#define RW_LOG_DEBUG(ostreamExpression) RW_LOG (rw::core::Log::Debug, ostreamExpression)
 
 /**
  * @brief Writes \b ostreamExpression to info log.
  * @param ostreamExpression [in] Stream expression which should be written to the log
  */
-#define RW_LOG_INFO(ostreamExpression) RW_LOG(rw::core::Log::Info, ostreamExpression)
+#define RW_LOG_INFO(ostreamExpression) RW_LOG (rw::core::Log::Info, ostreamExpression)
 
 /**
  * @brief Convenient convertion of a string expression into a Message.
  * @param ostreamExpression [in] stream expression which should be converted to a Message.
  */
-#define RW_MSG(ostreamExpression) (Message(__FILE__, __LINE__)<<ostreamExpression)
+#define RW_MSG(ostreamExpression) (Message (__FILE__, __LINE__) << ostreamExpression)
 
 /**
  * @brief enables the use of a \b robwork namespace
  */
-#define USE_ROBWORK_NAMESPACE \
-	namespace rw { namespace proximity {}} \
-	namespace rw { namespace common {}} \
-    namespace rw { namespace core {}} \
-	namespace rw { namespace control {}} \
-	namespace rw { namespace geometry {}} \
-	namespace rw { namespace interpolator {}} \
-	namespace rw { namespace trajectory {}} \
-	namespace rw { namespace invkin {}} \
-	namespace rw { namespace kinematics {}} \
-	namespace rw { namespace math {}} \
-	namespace rw { namespace models {}} \
-	namespace rw { namespace pathplanning {}} \
-	namespace rw { namespace graspplanning {}} \
-	namespace rw { namespace sensor {}} \
-	namespace rw { namespace loaders {}} \
-	namespace rw { namespace graphics {}} \
-	namespace rwlibs { namespace algorithms {}} \
-    namespace rwlibs { namespace devices {}} \
-    namespace rwlibs { namespace dll {}} \
-    namespace rwlibs { namespace opengl {}} \
-    namespace rwlibs { namespace io {}} \
-    namespace rwlibs { namespace lua {}} \
-    namespace rwlibs { namespace os {}} \
-    namespace rwlibs { namespace pathoptimization {}} \
-    namespace rwlibs { namespace pathplanners {}} \
-    namespace rwlibs { namespace proximitystrategies {}} \
-    namespace rwlibs { namespace sensors {}} \
-    namespace rwlibs { namespace task {}} \
-    namespace rwlibs { namespace simulation {}} \
-	namespace robwork \
-	{ \
-		using namespace rw; \
-		using namespace rw::proximity; \
-		using namespace rw::core; \
-        using namespace rw::common; \
-		using namespace rw::control; \
-		using namespace rw::geometry; \
-		using namespace rw::interpolator; \
-		using namespace rw::trajectory; \
-		using namespace rw::invkin; \
-		using namespace rw::kinematics; \
-		using namespace rw::math; \
-		using namespace rw::models; \
-		using namespace rw::pathplanning; \
-		using namespace rw::graspplanning; \
-		using namespace rw::sensor; \
-		using namespace rw::loaders; \
-		using namespace rw::graphics; \
-        using namespace rwlibs; \
-        using namespace rwlibs::algorithms; \
-        using namespace rwlibs::devices; \
-        using namespace rwlibs::dll; \
-        using namespace rwlibs::opengl; \
-        using namespace rwlibs::io; \
-        using namespace rwlibs::lua; \
-        using namespace rwlibs::os; \
-        using namespace rwlibs::pathoptimization; \
-        using namespace rwlibs::pathplanners; \
-        using namespace rwlibs::proximitystrategies; \
-        using namespace rwlibs::sensors; \
-        using namespace rwlibs::task; \
-        using namespace rwlibs::simulation; \
+#define USE_ROBWORK_NAMESPACE                          \
+    namespace rw { namespace proximity {               \
+    }}                                                 \
+    namespace rw { namespace common {                  \
+    }}                                                 \
+    namespace rw { namespace core {                    \
+    }}                                                 \
+    namespace rw { namespace control {                 \
+    }}                                                 \
+    namespace rw { namespace geometry {                \
+    }}                                                 \
+    namespace rw { namespace interpolator {            \
+    }}                                                 \
+    namespace rw { namespace trajectory {              \
+    }}                                                 \
+    namespace rw { namespace invkin {                  \
+    }}                                                 \
+    namespace rw { namespace kinematics {              \
+    }}                                                 \
+    namespace rw { namespace math {                    \
+    }}                                                 \
+    namespace rw { namespace models {                  \
+    }}                                                 \
+    namespace rw { namespace pathplanning {            \
+    }}                                                 \
+    namespace rw { namespace graspplanning {           \
+    }}                                                 \
+    namespace rw { namespace sensor {                  \
+    }}                                                 \
+    namespace rw { namespace loaders {                 \
+    }}                                                 \
+    namespace rw { namespace graphics {                \
+    }}                                                 \
+    namespace rwlibs { namespace algorithms {          \
+    }}                                                 \
+    namespace rwlibs { namespace devices {             \
+    }}                                                 \
+    namespace rwlibs { namespace dll {                 \
+    }}                                                 \
+    namespace rwlibs { namespace opengl {              \
+    }}                                                 \
+    namespace rwlibs { namespace io {                  \
+    }}                                                 \
+    namespace rwlibs { namespace lua {                 \
+    }}                                                 \
+    namespace rwlibs { namespace os {                  \
+    }}                                                 \
+    namespace rwlibs { namespace pathoptimization {    \
+    }}                                                 \
+    namespace rwlibs { namespace pathplanners {        \
+    }}                                                 \
+    namespace rwlibs { namespace proximitystrategies { \
+    }}                                                 \
+    namespace rwlibs { namespace sensors {             \
+    }}                                                 \
+    namespace rwlibs { namespace task {                \
+    }}                                                 \
+    namespace rwlibs { namespace simulation {          \
+    }}                                                 \
+    namespace robwork {                                \
+    using namespace rw;                                \
+    using namespace rw::proximity;                     \
+    using namespace rw::core;                          \
+    using namespace rw::common;                        \
+    using namespace rw::control;                       \
+    using namespace rw::geometry;                      \
+    using namespace rw::interpolator;                  \
+    using namespace rw::trajectory;                    \
+    using namespace rw::invkin;                        \
+    using namespace rw::kinematics;                    \
+    using namespace rw::math;                          \
+    using namespace rw::models;                        \
+    using namespace rw::pathplanning;                  \
+    using namespace rw::graspplanning;                 \
+    using namespace rw::sensor;                        \
+    using namespace rw::loaders;                       \
+    using namespace rw::graphics;                      \
+    using namespace rwlibs;                            \
+    using namespace rwlibs::algorithms;                \
+    using namespace rwlibs::devices;                   \
+    using namespace rwlibs::dll;                       \
+    using namespace rwlibs::opengl;                    \
+    using namespace rwlibs::io;                        \
+    using namespace rwlibs::lua;                       \
+    using namespace rwlibs::os;                        \
+    using namespace rwlibs::pathoptimization;          \
+    using namespace rwlibs::pathplanners;              \
+    using namespace rwlibs::proximitystrategies;       \
+    using namespace rwlibs::sensors;                   \
+    using namespace rwlibs::task;                      \
+    using namespace rwlibs::simulation;                \
     }
 /*@}*/
 
-#endif // end include guard
+#endif    // end include guard

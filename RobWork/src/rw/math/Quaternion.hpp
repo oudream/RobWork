@@ -29,8 +29,6 @@
 
 #include <Eigen/Geometry>
 #include <ostream>
-//#include <boost/math/quaternion.hpp>
-//#include <boost/math/special_functions/sign.hpp>
 
 namespace rw { namespace math {
 
@@ -50,7 +48,6 @@ namespace rw { namespace math {
     template< class T = double > class Quaternion : public Rotation3DVector< T >
     {
       private:
-        // typedef boost::math::quaternion<T> Base_quaternion;
         typedef Eigen::Quaternion< T > EigenQuaternion;
 
       public:
@@ -73,22 +70,19 @@ namespace rw { namespace math {
          * @param quat [in] Quaternion
          */
         Quaternion (const Quaternion< T >& quat) : _q (quat._q) {}
-        
+
         /**
          * @brief Creates a Quaternion from another Rotation3DVector type
          * @param rot [in] The Rotation3DVector type
          */
-        Quaternion (const Rotation3DVector< T >& rot){setRotation (rot.toRotation3D ());}
+        Quaternion (const Rotation3DVector< T >& rot) { setRotation (rot.toRotation3D ()); }
 
         /**
          * @brief Extracts a Quaternion from Rotation matrix using
          * setRotation(const Rotation3D<R>& rot)
          * @param rot [in] A 3x3 rotation matrix @f$ \mathbf{rot} @f$
          */
-        Quaternion (const Rotation3D< T >& rot)
-        {
-            setRotation (rot);
-        }
+        Quaternion (const Rotation3D< T >& rot) { setRotation (rot); }
 
         /**
          * @brief Creates a Quaternion from a Eigen quaternion
@@ -100,93 +94,51 @@ namespace rw { namespace math {
          * @brief copy a boost quaternion to this Quaternion
          * @param r [in] - boost quaternion
          */
-        inline void operator= (const EigenQuaternion& r)
-        {
-            _q = r;
-            // EigenQuaternion::operator=(r);
-        }
+        inline void operator= (const EigenQuaternion& r) { _q = r; }
 
         /**
          * @brief get method for the x component
          * @return the x component of the quaternion
          */
-        inline T getQx () const
-        {
-            return _q.x ();
-            // return EigenQuaternion::R_component_1();
-        }
+        inline T getQx () const { return _q.x (); }
 
         /**
          * @brief get method for the y component
          * @return the y component of the quaternion
          */
-        inline T getQy () const
-        {
-            return _q.y ();
-            // return EigenQuaternion::R_component_2();
-        }
+        inline T getQy () const { return _q.y (); }
 
         /**
          * @brief get method for the z component
          * @return the z component of the quaternion
          */
-        inline T getQz () const
-        {
-            return _q.z ();
-            // return EigenQuaternion::R_component_3();
-        }
+        inline T getQz () const { return _q.z (); }
 
         /**
          * @brief get method for the w component
          * @return the w component of the quaternion
          */
-        inline T getQw () const
-        {
-            return _q.w ();
-            // return EigenQuaternion::R_component_4();
-        }
+        inline T getQw () const { return _q.w (); }
 
         /**
          * @brief get length of quaternion
          * @f$ \sqrt{q_x^2+q_y^2+q_z^2+q_w^2} @f$
          * @return the length og this quaternion
          */
-        inline T getLength () const
-        {
-            return _q.norm ();
-            // return static_cast<T>(sqrt(getLengthSquared()));
-        }
+        inline T getLength () const { return _q.norm (); }
 
         /**
          * @brief get squared length of quaternion
          * @f$ q_x^2+q_y^2+q_z^2+q_w^2 @f$
          * @return the length og this quaternion
          */
-        inline T getLengthSquared () const
-        {
-            return _q.squaredNorm ();
-            // return static_cast<T>(_q.norm());
-            //    this->a * this->a +
-            //    this->b * this->b +
-            //    this->c * this->c +
-            //    this->d * this->d);
-        }
+        inline T getLengthSquared () const { return _q.squaredNorm (); }
 
         /**
          * @brief normalizes this quaternion so that
          * @f$ normalze(Q)=\frac{Q}{\sqrt{q_x^2+q_y^2+q_z^2+q_w^2}} @f$
          */
-        inline void normalize ()
-        {
-            _q.normalize ();
-            // const T mag = getLengthSquared();
-            // const T n = ((T)1.0)/sqrt(mag);
-
-            // this->a *= n;
-            // this->b *= n;
-            // this->c *= n;
-            // this->d *= n;
-        };
+        inline void normalize () { _q.normalize (); };
 
         /**
          * @brief Calculates the @f$ 3\times 3 @f$ Rotation matrix
@@ -312,9 +264,6 @@ namespace rw { namespace math {
         inline const Quaternion< T > operator* (T s) const
         {
             return Quaternion< T > (_q.x () * s, _q.y () * s, _q.z () * s, _q.w () * s);
-            // Quaternion<T> q( *this );
-            // q *= s;
-            // return q;
         }
 
         /**
@@ -323,9 +272,6 @@ namespace rw { namespace math {
         inline friend const Quaternion< T > operator* (T s, const Quaternion< T >& v)
         {
             return v * s;
-            // Quaternion<T> q(v);
-            // q *= s;
-            // return q;
         }
 
         /**
@@ -352,10 +298,9 @@ namespace rw { namespace math {
         /**
          * @brief Multiply-from operator
          */
-        inline const Quaternion< T > operator* (const Quaternion< T >& r)
+        inline Quaternion< T > operator* (const Quaternion< T >& r) const
         {
             Quaternion q = Quaternion (_q * r.e ());
-            ;
             return q;
         }
 
@@ -386,9 +331,6 @@ namespace rw { namespace math {
         inline friend const Quaternion< T > operator- (Quaternion< T > s, const Quaternion< T >& v)
         {
             return Quaternion< T > (s (0) - v (0), s (1) - v (1), s (2) - v (2), s (3) - v (3));
-            // Quaternion<T> q(v);
-            // q *= s;
-            // return q;
         }
 
         /**
@@ -509,6 +451,31 @@ namespace rw { namespace math {
         //! @copydoc e()
         const Eigen::Quaternion< T >& e () const { return _q; }
 
+        /**
+         * @brief this will return the exponential of this quaternion \f$ e^Quaternion \f$
+         * @return the exponential of this quaternion
+         */
+        Quaternion< T > exp () const;
+
+        /**
+         * @brief Calculate the inverse Quaternion
+         * @return the inverse quaternion
+         */
+        Quaternion< T > inverse () const;
+
+        /**
+         * @brief calculates the natural logerithm of this quaternion
+         * @return natural logetihm
+         */
+        Quaternion< T > ln () const;
+
+        /**
+         * @brief calculates the quaternion lifted to the power of \b power
+         * @param power [in] the power the quaternion is lifted to
+         * @return \f$ Quaternion^power \f$
+         */
+        Quaternion< T > pow (double power) const;
+
       private:
         Eigen::Quaternion< T > _q;
     };
@@ -522,6 +489,38 @@ namespace rw { namespace math {
     {
         return out << "Quaternion {" << v (0) << ", " << v (1) << ", " << v (2) << ", " << v (3)
                    << "}";
+    }
+
+    /**
+     * @brief calculates the natural logerithm of this quaternion
+     * @param q [in] the quaternion being operated on
+     * @return natural logetihm
+     */
+    template< class T > Quaternion< T > ln (const Quaternion< T >& q) { return q.ln (); }
+
+    /**
+     * @brief this will return the exponential of this quaternion \f$ e^Quaternion \f$
+     * @param q [in] the quaternion being operated on
+     * @return the exponential of this quaternion
+     */
+    template< class T > Quaternion< T > exp (const Quaternion< T >& q) { return q.exp (); }
+
+    /**
+     * @brief Calculate the inverse Quaternion
+     * @param q [in] the quaternion being operated on
+     * @return the inverse quaternion
+     */
+    template< class T > Quaternion< T > inverse (const Quaternion< T >& q) { return q.inverse (); }
+
+    /**
+     * @brief calculates the quaternion lifted to the power of \b power
+     * @param q [in] the quaternion being operated on
+     * @param power [in] the power the quaternion is lifted to
+     * @return \f$ Quaternion^power \f$
+     */
+    template< class T > Quaternion< T > pow (const Quaternion< T >& q, double power)
+    {
+        return q.pow (power);
     }
 
     /**
@@ -540,6 +539,9 @@ namespace rw { namespace math {
 
     extern template class rw::math::Quaternion< double >;
     extern template class rw::math::Quaternion< float >;
+
+    using Quaterniond = Quaternion<double>;
+    using Quaternionf = Quaternion<float>;
 
     /*@}*/
 }}    // namespace rw::math

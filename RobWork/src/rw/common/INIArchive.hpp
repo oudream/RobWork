@@ -18,6 +18,7 @@
 #ifndef RW_COMMON_INIARCHIVE_HPP
 #define RW_COMMON_INIARCHIVE_HPP
 
+#if !defined(SWIG)
 #include <rw/common/InputArchive.hpp>
 #include <rw/common/OutputArchive.hpp>
 #include <rw/core/macros.hpp>
@@ -28,12 +29,18 @@
 #include <iostream>
 #include <limits>
 #include <string>
+#endif
 
 namespace rw { namespace common {
     /**
      * @brief archive for loading and saving serializable classes to an ini-file format.
      */
+
+#if defined(SWIGJAVA)
+    class INIArchive : public InputArchive
+#else
     class INIArchive : public InputArchive, public virtual OutputArchive
+#endif 
     {
       public:
         /**

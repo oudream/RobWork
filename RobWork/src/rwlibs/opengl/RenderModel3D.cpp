@@ -209,7 +209,10 @@ void RenderModel3D::drawTPFaceList (const std::vector< TPFace >& list,
                 glVertex3fv (list[k]._vertex[2]);
                 glEnd ();
             }
-            if (_model->_materials[list[k]._mat].hasTexture ()) {
+            if (k == list.size ()) {
+                glDisable (GL_TEXTURE_2D);
+            }
+            else if (_model->_materials[list[k]._mat].hasTexture ()) {
                 glDisable (GL_TEXTURE_2D);
             }
             j = k - 1;
@@ -272,7 +275,7 @@ void RenderModel3D::drawUsingSimple (const DrawableNode::RenderInfo& info, DrawT
             }
         }
         Transform3D< float > cTw = cast< float > (inverse (info._cam->getTransform ()));
-        Transform3D< float > wTm = cast <float > (info._wTm);
+        Transform3D< float > wTm = cast< float > (info._wTm);
         for (TPFace& f : list) {
             for (size_t i = 0; i < f._vertex.size (); i++) {
                 Vector3D< float > v (f._vertex[i][0], f._vertex[i][1], f._vertex[i][2]);

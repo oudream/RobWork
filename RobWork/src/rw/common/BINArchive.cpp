@@ -18,7 +18,6 @@
 #include "BINArchive.hpp"
 
 #include <boost/filesystem.hpp>
-
 #include <fstream>
 
 using namespace rw::common;
@@ -35,6 +34,14 @@ void BINArchive::close ()
         delete _fstr;
         _fstr = NULL;
     }
+}
+
+void BINArchive::doWrite (bool val, const std::string& id)
+{
+    if (val)
+        write ((int) 1, id);
+    else
+        write ((int) 0, id);
 }
 
 void BINArchive::doWriteEnterScope (const std::string& id)

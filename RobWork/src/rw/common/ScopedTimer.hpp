@@ -18,8 +18,9 @@
 #ifndef RW_COMMON_SCOPEDTIMER_HPP
 #define RW_COMMON_SCOPEDTIMER_HPP
 
+#if !defined(SWIG)
 #include <rw/common/Timer.hpp>
-
+#endif 
 namespace rw { namespace common {
 
     /**
@@ -46,7 +47,7 @@ namespace rw { namespace common {
          * @brief constructor. Starts the timer
          * @param timer
          */
-        ScopedTimer (Timer& timer) : _timer (timer) { _timer.resume (); }
+        ScopedTimer (rw::common::Timer& timer) : _timer (timer) { _timer.resume (); }
 
         /**
          * @brief destructor, stops the timer
@@ -57,10 +58,10 @@ namespace rw { namespace common {
          * @brief Returns the time wrapped in the ScopedTimer
          * @return Timer wrapped
          */
-        Timer& getTimer () { return _timer; }
+        rw::common::Timer& getTimer () { return _timer; }
 
       private:
-        Timer& _timer;
+        rw::common::Timer& _timer;
     };
 
 }}    // namespace rw::common

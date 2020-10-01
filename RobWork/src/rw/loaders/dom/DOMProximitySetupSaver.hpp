@@ -20,93 +20,98 @@
 
 #include <rw/core/Ptr.hpp>
 
-namespace rw { namespace core { 
-    class DOMElem; 
-    class DOMParser; 
-}}
-namespace rw { namespace proximity { class ProximitySetup; } }
+namespace rw { namespace core {
+    class DOMElem;
+    class DOMParser;
+}}    // namespace rw::core
+namespace rw { namespace proximity {
+    class ProximitySetup;
+}}    // namespace rw::proximity
 
-namespace rw {
-namespace loaders {
+namespace rw { namespace loaders {
 
-/** @addtogroup loaders */
-/*@{*/
-
-/**
- * @brief Class for saving rw::proximity::ProximitySetup to XML
- *
- * Implemented using RobWork DOM parser abstraction.
- */
-class DOMProximitySetupSaver
-{
-public:
+    /** @addtogroup loaders */
+    /*@{*/
 
     /**
-     * @brief Saves proximity setup patterns of a ProximitySetup as children to \b parent.
+     * @brief Class for saving rw::proximity::ProximitySetup to XML
      *
-     * Constructs element representing the include or exclude patterns defined in the proximity setup.
-     *
-     * @throws rw::core::Exception if the type of a ProximitySetupRule is not supported.
-     *
-     * @param prox [in] ProximitySetup to save.
-     * @param parent [out] DOMDocument which should contain the ProximitySetup representation
+     * Implemented using RobWork DOM parser abstraction.
      */
-    static void save(const rw::proximity::ProximitySetup& prox, rw::core::Ptr<rw::core::DOMElem> parent);
+    class DOMProximitySetupSaver
+    {
+      public:
+        /**
+         * @brief Saves proximity setup patterns of a ProximitySetup as children to \b parent.
+         *
+         * Constructs element representing the include or exclude patterns defined in the proximity
+         * setup.
+         *
+         * @throws rw::core::Exception if the type of a ProximitySetupRule is not supported.
+         *
+         * @param prox [in] ProximitySetup to save.
+         * @param parent [out] DOMDocument which should contain the ProximitySetup representation
+         */
+        static void save (const rw::proximity::ProximitySetup& prox,
+                          rw::core::Ptr< rw::core::DOMElem > parent);
 
-    /**
-     * @brief Saves the proximity setup \b prox to a file named \b filename
-     *
-     * @throws rw::core::Exception if the type of a ProximitySetupRule is not supported.
-     *
-     * @param prox [in] ProximitySetup to save.
-     * @param filename [in] Filename
-     */
-    static void save(const rw::proximity::ProximitySetup& prox, const std::string& filename);
+        /**
+         * @brief Saves the proximity setup \b prox to a file named \b filename
+         *
+         * @throws rw::core::Exception if the type of a ProximitySetupRule is not supported.
+         *
+         * @param prox [in] ProximitySetup to save.
+         * @param filename [in] Filename
+         */
+        static void save (const rw::proximity::ProximitySetup& prox, const std::string& filename);
 
-    /**
-     * @brief Writes the proximity setup \b prox to \b outstream
-     *
-     *
-     * @param prox [in] Proximity setup to save.
-     * @param outstream [in] Output stream
-     */
-    static void write(const rw::proximity::ProximitySetup& prox, std::ostream& outstream);
+        /**
+         * @brief Writes the proximity setup \b prox to \b outstream
+         *
+         *
+         * @param prox [in] Proximity setup to save.
+         * @param outstream [in] Output stream
+         */
+        static void write (const rw::proximity::ProximitySetup& prox, std::ostream& outstream);
 
-    /**
-     * @brief Creates DOMDocument for \b prox
-     *
-     * @throws rw::core::Exception if the type of a property is not supported.
-     *
-     * @param prox [in] ProximitySetup
-     * @param parser [in] DOMParser to use
-     * @return DOMDocument containing ProximitySetup.
-     */
-    static rw::core::Ptr<rw::core::DOMElem> createDOMDocument(const rw::proximity::ProximitySetup& prox, rw::core::Ptr<rw::core::DOMParser> parser);
+        /**
+         * @brief Creates DOMDocument for \b prox
+         *
+         * @throws rw::core::Exception if the type of a property is not supported.
+         *
+         * @param prox [in] ProximitySetup
+         * @param parser [in] DOMParser to use
+         * @return DOMDocument containing ProximitySetup.
+         */
+        static rw::core::Ptr< rw::core::DOMElem >
+        createDOMDocument (const rw::proximity::ProximitySetup& prox,
+                           rw::core::Ptr< rw::core::DOMParser > parser);
 
-	/**
-	 * @brief Utility class which initializes local static variables.
-	 *
-	 * If the DOMProximitySetupSaver is used outside main (as a part of global initialization/destruction), the Initializer
-	 * should be used explicitly to control the static initialization/destruction order.
-	 *
-	 * Notice that the Initializer is automatically defined as a global variable, hence it should not
-	 * be necessary to specify the initializer explicitly if DOMProximitySetupSaver is to be used in local static
-	 * initialization/destruction.
-	 */
-	class Initializer {
-	public:
-	    //! @brief Initializes when constructed.
-		Initializer();
-	};
+        /**
+         * @brief Utility class which initializes local static variables.
+         *
+         * If the DOMProximitySetupSaver is used outside main (as a part of global
+         * initialization/destruction), the Initializer should be used explicitly to control the
+         * static initialization/destruction order.
+         *
+         * Notice that the Initializer is automatically defined as a global variable, hence it
+         * should not be necessary to specify the initializer explicitly if DOMProximitySetupSaver
+         * is to be used in local static initialization/destruction.
+         */
+        class Initializer
+        {
+          public:
+            //! @brief Initializes when constructed.
+            Initializer ();
+        };
 
-private:
-	static const Initializer initializer;
-    DOMProximitySetupSaver() {};
-};
+      private:
+        static const Initializer initializer;
+        DOMProximitySetupSaver (){};
+    };
 
-/** @} */
+    /** @} */
 
-} //end namespace loaders
-} //end namespace rw
+}}    // namespace rw::loaders
 
-#endif // end include guard
+#endif    // end include guard

@@ -21,21 +21,17 @@
 /**
  * @file EAA.hpp
  */
-
-#include "Constants.hpp"
-#include "Rotation3D.hpp"
-#include "Rotation3DVector.hpp"
-#include "Vector3D.hpp"
-
+#if !defined(SWIG)
 #include <rw/common/Serializable.hpp>
-
+#include <rw/math/Constants.hpp>
+#include <rw/math/Rotation3D.hpp>
+#include <rw/math/Rotation3DVector.hpp>
+#include <rw/math/Vector3D.hpp>
+#include <Eigen/Core>
+#endif
 namespace rw { namespace math {
     /** @addtogroup math */
     /*@{*/
-
-    // Forward declare cross function
-    template< class T > class EAA;
-    template< class T > const Vector3D< T > cross (const Vector3D< T >& v, const EAA< T >& eaa);
 
     /**
      * @brief A class for representing an equivalent angle-axis rotation
@@ -138,8 +134,8 @@ namespace rw { namespace math {
          */
         EAA (const Vector3D< T >& v1, const Vector3D< T >& v2) : _eaa (0, 0, 0)
         {
-             const T epsilon = (T) 1e-15;
-            T dval          = dot (v1, v2);
+            const T epsilon = (T) 1e-15;
+            T dval          = rw::math::dot (v1, v2);
             if (fabs (dval - 1) < epsilon) {
                 // if the projection is close to 1 then the angle between the vectors are almost 0
                 // and we cannot reliably determine the perpendicular axis. A good approximation is
@@ -156,11 +152,11 @@ namespace rw { namespace math {
                     idx = 2;
                 Vector3D< T > v3 (0, 0, 0);
                 v3 (idx) = 1;
-                _eaa     = normalize (cross (v1, v3)) * (T) Pi;
+                _eaa     = normalize (rw::math::cross (v1, v3)) * (T) Pi;
             }
             else {
                 T cosangle = acos (dval);
-                _eaa       = normalize (cross (v1, v2)) * cosangle;
+                _eaa       = normalize (rw::math::cross (v1, v2)) * cosangle;
             }
         }
 
@@ -172,8 +168,26 @@ namespace rw { namespace math {
          */
         explicit EAA (Vector3D< T > eaa) : _eaa (eaa) {}
 
+        /**
+         * @brief Constructs an initialized EAA vector
+         *
+         * The angle of the EAA are \f$\|eaa\|\f$ and the axis is \f$\frac{eaa}{\|eaa\|}\f$
+         * @param eaa [in] Values to initialize the EAA
+         */
+        template< class R > explicit EAA (const Eigen::MatrixBase< R >& r) : _eaa (r) {}
+
         //! @brief destructor
         virtual ~EAA () {}
+
+        /**
+         * @brief Get the size of the EAA.
+         * @return the size (always 3).
+         */
+        size_t size () const { return 3; }
+
+        // ###################################################
+        // #                Acces Operators                  #
+        // ###################################################
 
         /**
          * @copydoc Rotation3DVector::toRotation3D()
@@ -213,6 +227,30 @@ namespace rw { namespace math {
             else
                 return _eaa / theta;
         }
+
+        /**
+         * @brief get the underling Vector
+         * @return the vector
+         */
+        Vector3D< T >& toVector3D () { return this->_eaa; }
+
+        /**
+         * @brief get the underling Vector
+         * @return the vector
+         */
+        Vector3D< T > toVector3D () const { return this->_eaa; }
+
+        /**
+         * @brief get as eigen vector
+         * @return Eigenvector
+         */
+        Eigen::Matrix< T, 3, 1 >& e () { return this->_eaa.e (); }
+
+        /**
+         * @brief get as eigen vector
+         * @return Eigenvector
+         */
+        Eigen::Matrix< T, 3, 1 > e () const { return this->_eaa.e (); }
 
         /**
          * @brief Returns element of EAA
@@ -258,36 +296,131 @@ namespace rw { namespace math {
             return _eaa[i];
         }
 
+        // ###################################################
+        // #                 Math Operators                  #
+        // ###################################################
+
+        // ########## Eigen Operations
+
         /**
-         * @brief Comparison operator.
-         *
-         * The comparison operator makes a element wise comparison.
-         * Returns true only if all elements are equal.
-         *
-         * @param rhs [in] EAA to compare with
-         * @return True if equal.
+         * @brief element wise division.
+         * @param rhs [in] the vector being devided with
+         * @return the resulting Vector3D
          */
-        bool operator== (const EAA< T >& rhs) const
+        template< class R > EAA< T > elemDivide (const Eigen::MatrixBase< R >& rhs) const
         {
-            return (_eaa (0) == rhs (0) && _eaa (1) == rhs (1) && _eaa (2) == rhs (2));
+            EAA< T > ret = *this;
+            for (size_t i = 0; i < size (); i++) {
+                ret._eaa[i] /= rhs[i];
+            }
+            return ret;
         }
 
         /**
-         * @brief Comparison operator.
-         *
-         * The comparison operator makes a element wise comparison.
-         * Returns true if any of the elements are different.
-         *
-         * @param rhs [in] EAA to compare with
-         * @return True if not equal.
+         * @brief Elementweise multiplication.
+         * @param rhs [in] vector
+         * @return the element wise product
          */
-        bool operator!= (const EAA< T >& rhs) const { return !(*this == rhs); }
+        template< class R > EAA< T > elemMultiply (const Eigen::MatrixBase< R >& rhs) const
+        {
+            EAA< T > ret = *this;
+            for (size_t i = 0; i < size (); i++) {
+                ret._eaa[i] *= rhs[i];
+            }
+            return ret;
+        }
 
         /**
-         * @brief Get the size of the EAA.
-         * @return the size (always 3).
+         * @brief Vector subtraction.
          */
-        size_t size () const { return 3; }
+        template< class R > EAA< T > operator- (const Eigen::MatrixBase< R >& rhs) const
+        {
+            return EAA< T > (_eaa - rhs);
+        }
+
+        /**
+         * @brief Vector subtraction.
+         */
+        template< class R >
+        friend EAA< T > operator- (const Eigen::MatrixBase< R >& lhs, const EAA< T >& rhs)
+        {
+            return EAA< T > (lhs - rhs.e ());
+        }
+
+        /**
+         * @brief Vector addition.
+         */
+        template< class R > EAA< T > operator+ (const Eigen::MatrixBase< R >& rhs) const
+        {
+            return EAA< T > (_eaa + rhs);
+        }
+
+        /**
+         * @brief Vector subtraction.
+         */
+        template< class R >
+        friend EAA< T > operator+ (const Eigen::MatrixBase< R >& lhs, const EAA< T >& rhs)
+        {
+            return EAA< T > (lhs + rhs.e ());
+        }
+
+        // ########### EAA Operators
+
+        /**
+         * @brief Unary minus.
+         * @brief negative version
+         */
+        EAA< T > operator- () const { return EAA< T > (-_eaa); }
+
+        /**
+         * @brief element wise addition
+         * @param rhs [in] the EAA to be added
+         * @return the sum of the two EAA's
+         */
+        EAA< T > elemAdd (const EAA< T >& rhs) const { return EAA< T > (this->_eaa + rhs._eaa); }
+
+        /**
+         * @brief element wise subtraction
+         * @param rhs [in] the EAA to be subtracted
+         * @return the difference between the two EAA's
+         */
+        EAA< T > elemSubtract (const EAA< T >& rhs) const
+        {
+            return EAA< T > (this->_eaa - rhs._eaa);
+        }
+
+        /**
+         * @brief element wise devision ( \b this / \b rhs )
+         * @param rhs [in] the EAA to be devided with
+         * @return the result of division
+         */
+        EAA< T > elemDivide (const EAA< T >& rhs) const
+        {
+            return EAA< T > (this->_eaa.elemDivide (rhs._eaa));
+        }
+
+        /**
+         * @brief element wise multiplication
+         * @param rhs [in] the EAA to be multiplyed with
+         * @return the result of division
+         */
+        EAA< T > elemMultiply (const EAA< T >& rhs) const
+        {
+            return EAA< T > (this->_eaa.elemMultiply (rhs._eaa));
+        }
+
+        /**
+         * @brief This is rotation multiplcation, and it is multiplication of two EAA's first
+         * converted to a Rotation3D
+         * @param rhs [in] the eaa to multiply with
+         * @return the new rotation
+         */
+        EAA< T > operator* (const EAA< T >& rhs) const
+        {
+            return EAA< T > (this->toRotation3D () * rhs.toRotation3D ());
+        }
+
+        // ########### Rotation3D Operators
 
         /**
          * @brief Calculates \f$ \robabx{a}{c}{\thetak} =
@@ -297,11 +430,110 @@ namespace rw { namespace math {
          * @param bTKc [in] \f$ \robabx{b}{c}{\thetak} \f$
          * @return \f$ \robabx{a}{c}{\thetak} \f$
          */
-        friend const EAA operator* (const Rotation3D< T >& aRb, const EAA& bTKc)
+        friend EAA< T > operator* (const Rotation3D< T >& aRb, const EAA< T >& bTKc)
         {
             return EAA (aRb * bTKc._eaa);
-            /* return Vector3D<T>(prod(aRb.m(), bTKc._eaa.m()))); */
         }
+
+        /**
+         * @brief matrix multiplication converting EAA to rotation
+         * @param rhs [in] the roation matrix to multiply with
+         * @return EAA ( this->toRotation3D() * rhs)
+         */
+        template< class R > EAA< T > operator* (const Rotation3D< R >& rhs)
+        {
+            return EAA (this->toRotation3D () * rhs);
+        }
+
+        // ########### Scalar operators
+
+        /**
+         * @brief scalar multiplication
+         * @param rhs [in] the scalar to multiply with
+         * @return the product
+         */
+        EAA< T > elemMultiply (const T& rhs) const { return EAA< T > (this->_eaa * rhs); }
+
+
+        /**
+         * @brief scalar devision
+         * @param rhs [in] the scalar to devide with
+         * @return the resulting EAA
+         */
+        EAA< T > elemDivide(const T& rhs) const { return EAA< T > (this->_eaa / rhs); }
+
+        /**
+         * @brief Scalar subtraction.
+         */
+        EAA< T > elemSubtract (const T rhs) const { return EAA< T > (_eaa.elemSubtract(rhs)); }
+
+        /**
+         * @brief Scalar addition.
+         */
+        EAA< T > elemAdd (const T rhs) const
+        {
+            return EAA< T > (_eaa.elemAdd(rhs));
+        }
+
+        // ############ Vector3D Operators
+
+        /**
+         * @brief element wise multiplication.
+         * @param rhs [in] the vector being devided with
+         * @return the resulting EAA
+         */
+        EAA< T > operator+ (const Vector3D< T >& rhs) const { return EAA< T > (this->_eaa + rhs); }
+
+        /**
+         * @brief Vector addition
+         * @param lhs [in] left side value
+         * @param rhs [in] right side value
+         * @return the resulting EAA
+         */
+        friend EAA< T > operator+ (const Vector3D< T >& lhs, const EAA< T >& rhs)
+        {
+            return EAA< T > (lhs + rhs._eaa);
+        }
+
+        /**
+         * @brief Vector addition
+         * @param rhs [in] the vector being added
+         * @return the resulting EAA
+         */
+        EAA< T > operator- (const Vector3D< T >& rhs) const { return EAA< T > (this->_eaa - rhs); }
+
+        /**
+         * @brief Vector addition
+         * @param lhs [in] left side value
+         * @param rhs [in] right side value
+         * @return the resulting EAA
+         */
+        friend EAA< T > operator- (const Vector3D< T >& lhs, const EAA< T >& rhs)
+        {
+            return EAA< T > (lhs - rhs._eaa);
+        }
+
+        /**
+         * @brief element wise devision ( \b this / \b rhs )
+         * @param rhs [in] the Vector to be devided with
+         * @return the result of division
+         */
+        EAA< T > elemDivide (const Vector3D< T >& rhs) const
+        {
+            return EAA< T > (this->_eaa.elemDivide (rhs));
+        }
+
+        /**
+         * @brief element wise multiplication
+         * @param rhs [in] the Vector to be multiplyed with
+         * @return the result of division
+         */
+        EAA< T > elemMultiply (const Vector3D< T >& rhs) const
+        {
+            return EAA< T > (this->_eaa.elemMultiply (rhs));
+        }
+
+        // ############ Ostream operators
 
         /**
          * @brief Ouputs EAA to stream
@@ -311,31 +543,262 @@ namespace rw { namespace math {
          */
         friend std::ostream& operator<< (std::ostream& os, const EAA< T >& eaa)
         {
-            return os << " EAA { " << eaa (0) << ", " << eaa (1) << ", " << eaa (2) << "}";
-            // return os << eaa._eaa;
+            return os << " EAA( " << eaa (0) << ", " << eaa (1) << ", " << eaa (2) << ")";
+        }
+
+        // ############ Math Operations
+
+        /**
+         * @brief Calculates the cross product and returns the result
+         * @param v [in] a Vector3D
+         * @return the resulting 3D vector
+         */
+        Vector3D< T > cross (const Vector3D< T >& v) const
+        {
+            return rw::math::cross (this->_eaa, v);
         }
 
         /**
-         * @brief Calculates the cross product
-         * @param v [in] a 3D vector
-         * @param eaa [in] a 3D eaa vector
+         * @brief Calculates the cross product and returns the result
+         * @param eaa [in] a EAA
          * @return the resulting 3D vector
          */
-        friend const Vector3D< T > cross< T > (const Vector3D< T >& v, const EAA< T >& eaa);
+        EAA< T > cross (const EAA< T >& eaa) const
+        {
+            return EAA< T > (rw::math::cross (this->_eaa, eaa._eaa));
+        }
+
+        /**
+         * @brief Calculates the dot product and returns the result
+         * @param v [in] a Vector3D
+         * @return the resulting scalar
+         */
+        T dot (const Vector3D< T >& v) { return rw::math::dot (this->_eaa, v); }
+
+        /**
+         * @brief Calculates the cross product and returns the result
+         * @param eaa [in] a EAA
+         * @return the resulting 3D vector
+         */
+        T dot (const EAA< T >& eaa) { return rw::math::dot (this->_eaa, eaa._eaa); }
+
+        /**
+         * @brief Returns the Euclidean norm (2-norm) of the vector
+         * @return the norm
+         */
+        T norm2 () const { return _eaa.norm2 (); }
+
+        /**
+         * @brief Returns the Manhatten norm (1-norm) of the vector
+         * @return the norm
+         */
+        T norm1 () const { return _eaa.norm1 (); }
+
+        /**
+         * @brief Returns the infinte norm (\f$\inf\f$-norm) of the vector
+         * @return the norm
+         */
+        T normInf () const { return _eaa.normInf (); }
+
+        // ###################################################
+        // #             assignement Operators               #
+        // ###################################################
+
+        /**
+         * @brief copy operator
+         * @param rhs [in] the EAA to be copied
+         * @return reference to this EAA
+         */
+        EAA< T >& operator= (const EAA< T >& rhs)
+        {
+            this->_eaa = rhs._eaa;
+            return *this;
+        }
+        
+        /**
+         * @brief assign vector to EAA
+         * @param rhs [in] the vector to asign
+         * @return reference to this EAA
+         */
+        EAA< T >& operator= (const Vector3D< T >& rhs)
+        {
+            this->_eaa = rhs;
+            return *this;
+        }
+
+        /**
+         * @brief addition operator
+         * @param rhs [in] the right hand side of the operation
+         * @return reference to this EAA
+         */
+        EAA< T >& operator+= (const Vector3D< T >& rhs)
+        {
+            this->_eaa += rhs;
+            return *this;
+        }
+
+        /**
+         * @brief subtraction operator
+         * @param rhs [in] the right hand side of the operation
+         * @return reference to this EAA
+         */
+        EAA< T >& operator-= (const Vector3D< T >& rhs)
+        {
+            this->_eaa -= rhs;
+            return *this;
+        }
+
+        /**
+         * @brief Implicit converter to Vector3D
+         */
+        operator Vector3D< T > () const { return _eaa; }
+
+        /**
+         * @brief Implicit converter to Vector3D
+         */
+        operator Vector3D< T > & () { return _eaa; }
+
+        /**
+         * @brief copy a vector from eigen type
+         * @param r [in] an Eigen Vector
+         */
+        template< class R > EAA< T >& operator= (const Eigen::MatrixBase< R >& r)
+        {
+            _eaa = r;
+            return *this;
+        }
+
+        /**
+         * @brief Vector addition.
+         */
+        template< class R > EAA< T >& operator+= (const Eigen::MatrixBase< R >& r)
+        {
+            _eaa += r;
+            return *this;
+        }
+
+        /**
+         * @brief Vector subtraction.
+         */
+        template< class R > EAA< T >& operator-= (const Eigen::MatrixBase< R >& r)
+        {
+            _eaa -= r;
+            return *this;
+        }
+
+        /**
+         * @brief implicit conversion to EigenVector
+         */
+        operator Eigen::Matrix< T, 3, 1 > () const { return this->e (); }
+
+        /**
+         * @brief implicit conversion to EigenVector
+         */
+        operator Eigen::Matrix< T, 3, 1 > & () { return this->e (); }
+
+        // ###################################################
+        // #                    Comparetors                  #
+        // ###################################################
+
+        /**
+         * @brief Compare with \b rhs for equality.
+         * @param rhs [in] other vector.
+         * @return True if a equals b, false otherwise.
+         */
+        bool operator== (const Vector3D< T >& rhs) const { return _eaa == rhs; }
+
+        /**
+         * @brief Compare with \b rhs for equality.
+         * @param lhs [in] first Vector
+         * @param rhs [in] second vector.
+         * @return True if a equals b, false otherwise.
+         */
+        friend bool operator== (const Vector3D< T >& lhs, const EAA< T >& rhs)
+        {
+            return lhs == rhs._eaa;
+        }
+
+        /**
+         *  @brief Compare with \b rhs for inequality.
+         *  @param rhs [in] other vector.
+         *  @return True if a and b are different, false otherwise.
+         */
+        bool operator!= (const Vector3D< T >& rhs) const { return _eaa != rhs; }
+
+        /**
+         *  @brief Compare with \b rhs for inequality.
+         * @param lhs [in] first Vector
+         * @param rhs [in] second vector.
+         *  @return True if a and b are different, false otherwise.
+         */
+        friend bool operator!= (const Vector3D< T >& lhs, const EAA< T >& rhs)
+        {
+            return lhs != rhs._eaa;
+        }
+
+        /**
+         * @brief Compare with \b rhs for equality.
+         * @param rhs [in] other vector.
+         * @return True if a equals b, false otherwise.
+         */
+        bool operator== (const EAA< T >& rhs) const { return _eaa == rhs._eaa; }
+
+        /**
+         *  @brief Compare with \b rhs for inequality.
+         *  @param rhs [in] other vector.
+         *  @return True if a and b are different, false otherwise.
+         */
+        bool operator!= (const EAA< T >& rhs) const { return _eaa != rhs._eaa; }
+
+        /**
+         * @brief Compare with \b rhs for equality.
+         * @param rhs [in] other vector.
+         * @return True if a equals b, false otherwise.
+         */
+        template< class R > bool operator== (const Eigen::MatrixBase< R >& rhs) const
+        {
+            return this->_eaa == rhs;
+        }
+
+        /**
+         * @brief Compare with \b rhs for equality.
+         * @param rhs [in] other vector.
+         * @return True if a equals b, false otherwise.
+         */
+        template< class R >
+        friend bool operator== (const Eigen::MatrixBase< R >& lhs, const EAA< T >& rhs)
+        {
+            return lhs == rhs._eaa;
+        }
+
+        /**
+         *  @brief Compare with \b rhs for inequality.
+         *  @param b [in] other vector.
+         *  @return True if a and b are different, false otherwise.
+         */
+        template< class R > bool operator!= (const Eigen::MatrixBase< R >& rhs) const
+        {
+            return !(*this == rhs);
+        }
+
+        /**
+         *  @brief Compare with \b rhs for inequality.
+         *  @param b [in] other vector.
+         *  @return True if a and b are different, false otherwise.
+         */
+        template< class R >
+        friend bool operator!= (const Eigen::MatrixBase< R >& lhs, const EAA< T >& rhs)
+        {
+            return !(lhs == rhs);
+        }
 
       private:
         Vector3D< T > _eaa;
     };
 
-    /**
-     * @brief Calculates the cross product
-     * @param v [in] a 3D vector
-     * @param eaa [in] a 3D eaa vector
-     * @return the resulting 3D vector
-     */
-    template< class T > const Vector3D< T > cross (const Vector3D< T >& v, const EAA< T >& eaa)
+    template< class T > Vector3D< T > cross (const Vector3D< T >& v1, const EAA< T >& v2)
     {
-        return cross (v, eaa._eaa);
+        return rw::math::cross (v1, v2.axis () * v2.angle ());
     }
 
     /**
@@ -349,12 +812,21 @@ namespace rw { namespace math {
             static_cast< Q > (eaa (0)), static_cast< Q > (eaa (1)), static_cast< Q > (eaa (2)));
     }
 
-    extern template class rw::math::EAA< double >;
-    extern template class rw::math::EAA< float >;
+
+    using EAAd = EAA<double>;
+    using EAAf = EAA<float>;
 
     /*@}*/
 
 }}    // namespace rw::math
+
+#if !defined(SWIG)
+    extern template class rw::math::EAA< double >;
+    extern template class rw::math::EAA< float >;
+#else
+    SWIG_DECLARE_TEMPLATE(EAAd,rw::math::EAA<double>);
+    SWIG_DECLARE_TEMPLATE(EAAf,rw::math::EAA<float>);
+#endif
 
 namespace rw { namespace common {
     class OutputArchive;

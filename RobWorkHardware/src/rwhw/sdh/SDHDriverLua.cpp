@@ -17,8 +17,9 @@
 
 #include "SDHDriverLua.hpp"
 
-#include <rw/common.hpp>
 #include "SDHDriver.hpp"
+
+#include <rw/common.hpp>
 
 #include <iostream>
 #include <sstream>
@@ -27,33 +28,30 @@ using namespace std;
 using namespace rwlua::rwhw;
 #define NS rw::math
 
-namespace
+namespace {
+string eToString (const rw::common::Exception& e)
 {
-    string eToString(const rw::common::Exception& e)
-    {
-        ostringstream buf;
-        buf << e.getMessage();
-        return buf.str();
-    }
-
-    template <typename T>
-    string toString(const T& x)
-    {
-        ostringstream buf;
-        buf << x;
-        return buf.str();
-    }
+    ostringstream buf;
+    buf << e.getMessage ();
+    return buf.str ();
 }
+
+template< typename T > string toString (const T& x)
+{
+    ostringstream buf;
+    buf << x;
+    return buf.str ();
+}
+}    // namespace
 
 namespace {
-    rwhw::SDHDriver *sdh = NULL;
+rwhw::SDHDriver* sdh = NULL;
 }
 
-rwhw::SDHDriver* rwlua::rwhw::getSDH(){
-	return sdh;
+rwhw::SDHDriver* rwlua::rwhw::getSDH ()
+{
+    return sdh;
 }
 
-void rwlua::rwhw::setSDH(rwhw::SDHDriver* driver){
-
-}
-
+void rwlua::rwhw::setSDH (rwhw::SDHDriver* driver)
+{}

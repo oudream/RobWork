@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RW_INVKIN_CCDSOLVER_HPP
 #define RW_INVKIN_CCDSOLVER_HPP
 
@@ -23,16 +22,16 @@
  * @file CCDSolver.hpp
  */
 
-#include <rw/math/Transform3D.hpp>
-#include <rw/core/PropertyMap.hpp>
-#include <rw/kinematics/FKRange.hpp>
-
 #include "IterativeIK.hpp"
 
+#include <rw/core/PropertyMap.hpp>
+#include <rw/kinematics/FKRange.hpp>
+#include <rw/math/Transform3D.hpp>
+
 namespace rw { namespace models {
-	class JacobianCalculator;
+    class JacobianCalculator;
     class SerialDevice;
-}} // end namespaces
+}}    // namespace rw::models
 
 namespace rw { namespace invkin {
 
@@ -48,17 +47,17 @@ namespace rw { namespace invkin {
      */
     class CCDSolver : public IterativeIK
     {
-    public:
+      public:
         /**
          * @brief Constructor
          */
-        CCDSolver(const models::SerialDevice* device, const kinematics::State& state);
+        CCDSolver (const models::SerialDevice* device, const kinematics::State& state);
 
         /**
          * @brief Sets the maximal size of a local step
          * @param quatlength [in] Maximal length for quartenion
          */
-        void setMaxLocalStep(double quatlength);
+        void setMaxLocalStep (double quatlength);
 
         /**
          * \copydoc IterativeIK::solve
@@ -67,8 +66,8 @@ namespace rw { namespace invkin {
          * CCDAlgorithm r;\n
          * r.inverseKinematics(device, Ttarget);
          */
-        std::vector<math::Q> solve(const math::Transform3D<>& baseTend,
-                                   const kinematics::State& state) const;
+        std::vector< math::Q > solve (const math::Transform3D<>& baseTend,
+                                      const kinematics::State& state) const;
 
         /**
          * @brief performs a local search toward the the target bTed. No via points
@@ -81,19 +80,17 @@ namespace rw { namespace invkin {
          * @return true if error is below max error
          * @note the result will be saved in state
          */
-        bool solveLocal(const math::Transform3D<> &bTed,
-                        double maxError,
-                        kinematics::State &state,
-                        int maxIter) const;
+        bool solveLocal (const math::Transform3D<>& bTed, double maxError, kinematics::State& state,
+                         int maxIter) const;
 
-        virtual void setCheckJointLimits(bool check) {};
+        virtual void setCheckJointLimits (bool check){};
 
         /**
          * @copydoc InvKinSolver::getTCP
          */
-        virtual rw::core::Ptr< const rw::kinematics::Frame > getTCP() const;            
+        virtual rw::core::Ptr< const rw::kinematics::Frame > getTCP () const;
 
-    private:
+      private:
         double _maxQuatStep;
 
         const models::SerialDevice* _device;
@@ -101,11 +98,10 @@ namespace rw { namespace invkin {
         core::PropertyMap _properties;
 
         kinematics::FKRange _fkrange;
-        rw::core::Ptr<rw::models::JacobianCalculator> _devJac;
-
+        rw::core::Ptr< rw::models::JacobianCalculator > _devJac;
     };
 
     /*@}*/
-}} // end namespaces
+}}    // namespace rw::invkin
 
-#endif // end include guard
+#endif    // end include guard

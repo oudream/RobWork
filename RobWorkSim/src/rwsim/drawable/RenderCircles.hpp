@@ -20,77 +20,77 @@
 
 //! @file RenderCircles.hpp
 
-#include <vector>
-
 #include <rw/graphics/Render.hpp>
 
-namespace rwsim { namespace util { class CircleModel; } }
+#include <vector>
 
-namespace rwsim {
-namespace drawable {
-	//! @addtogroup rwsim_drawable
-	//! @{
-	/**
-	 * @brief Render a set of circles
-	 */
-	class RenderCircles: public rw::graphics::Render
-	{
-	public:
-		/**
-		 * @brief constructor
-		 * @param angleResolution [in] the resolution of the circle line segments
-		 * in degree. The circle is approximated using line segments.
-		 */
-		RenderCircles(float angleResolution=10.0);
+namespace rwsim { namespace util {
+    class CircleModel;
+}}    // namespace rwsim::util
 
-		/**
-		 * @brief destructor
-		 */
-		virtual ~RenderCircles();
+namespace rwsim { namespace drawable {
+    //! @addtogroup rwsim_drawable
+    //! @{
+    /**
+     * @brief Render a set of circles
+     */
+    class RenderCircles : public rw::graphics::Render
+    {
+      public:
+        /**
+         * @brief constructor
+         * @param angleResolution [in] the resolution of the circle line segments
+         * in degree. The circle is approximated using line segments.
+         */
+        RenderCircles (float angleResolution = 10.0);
 
-		/**
-		 * @brief adds circle to the circles that are allready drawn
-		 * @param circle [in] circle to draw
-		 */
-		void addCircle(const util::CircleModel& circle);
+        /**
+         * @brief destructor
+         */
+        virtual ~RenderCircles ();
 
-		/**
-		 * @brief adds circles to the circles that are allready drawn
-		 */
-		void addCircles(const std::vector<util::CircleModel>& circles);
+        /**
+         * @brief adds circle to the circles that are allready drawn
+         * @param circle [in] circle to draw
+         */
+        void addCircle (const util::CircleModel& circle);
 
-		/**
-		 * @brief set the circles that is to be rendered
-		 * @param circles [in] the vector of circles
-		 */
-		void setCircles(const std::vector<util::CircleModel>& circles);
+        /**
+         * @brief adds circles to the circles that are allready drawn
+         */
+        void addCircles (const std::vector< util::CircleModel >& circles);
 
-		/**
-		 * @brief set the color used for the model
-		 * @param r [in] red color value
-		 * @param g [in] green color value
-		 * @param b [in] blue color value
-		 */
-		void setColor(double r, double g, double b);
+        /**
+         * @brief set the circles that is to be rendered
+         * @param circles [in] the vector of circles
+         */
+        void setCircles (const std::vector< util::CircleModel >& circles);
 
-		/**
-		 * @brief clear the list of circles
-		 */
-		void clear();
+        /**
+         * @brief set the color used for the model
+         * @param r [in] red color value
+         * @param g [in] green color value
+         * @param b [in] blue color value
+         */
+        void setColor (double r, double g, double b);
 
-        //! @copydoc rw::graphics::Render::draw(const DrawableNode::RenderInfo& info, DrawableNode::DrawType type, double alpha) const
-        void draw(const rw::graphics::DrawableNode::RenderInfo& info,
-                  rw::graphics::DrawableNode::DrawType type,
-                  double alpha) const;
+        /**
+         * @brief clear the list of circles
+         */
+        void clear ();
 
-	private:
-		float _stepSize;
-		std::vector<util::CircleModel> _circles;
-		float _color[3];
-	};
+        //! @copydoc rw::graphics::Render::draw(const DrawableNode::RenderInfo& info,
+        //! DrawableNode::DrawType type, double alpha) const
+        void draw (const rw::graphics::DrawableNode::RenderInfo& info,
+                   rw::graphics::DrawableNode::DrawType type, double alpha) const;
 
-	//! @}
-}
-}
+      private:
+        float _stepSize;
+        std::vector< util::CircleModel > _circles;
+        float _color[3];
+    };
+
+    //! @}
+}}    // namespace rwsim::drawable
 
 #endif /*RenderGhost_HPP_*/

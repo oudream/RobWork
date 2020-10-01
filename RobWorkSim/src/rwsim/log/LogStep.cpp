@@ -15,63 +15,71 @@
  * limitations under the License.
  ********************************************************************************/
 
+#include "LogStep.hpp"
+
 #include <rw/common/InputArchive.hpp>
 #include <rw/common/OutputArchive.hpp>
-#include "LogStep.hpp"
 
 using namespace rw::common;
 using namespace rwsim::log;
 
-LogStep::LogStep(SimulatorLogScope* parent):
-	SimulatorLogScope(parent)
+LogStep::LogStep (SimulatorLogScope* parent) : SimulatorLogScope (parent)
+{}
+
+LogStep::~LogStep ()
+{}
+
+void LogStep::read (class InputArchive& iarchive, const std::string& id)
 {
+    iarchive.read (_interval.first, "IntervalFirst");
+    iarchive.read (_interval.second, "IntervalSecond");
+    SimulatorLogScope::read (iarchive, id);
 }
 
-LogStep::~LogStep() {
+void LogStep::write (class OutputArchive& oarchive, const std::string& id) const
+{
+    oarchive.write (_interval.first, "IntervalFirst");
+    oarchive.write (_interval.second, "IntervalSecond");
+    SimulatorLogScope::write (oarchive, id);
 }
 
-void LogStep::read(class InputArchive& iarchive, const std::string& id) {
-	iarchive.read(_interval.first,"IntervalFirst");
-	iarchive.read(_interval.second,"IntervalSecond");
-	SimulatorLogScope::read(iarchive,id);
+std::string LogStep::getType () const
+{
+    return "Step";
 }
 
-void LogStep::write(class OutputArchive& oarchive, const std::string& id) const {
-	oarchive.write(_interval.first,"IntervalFirst");
-	oarchive.write(_interval.second,"IntervalSecond");
-	SimulatorLogScope::write(oarchive,id);
+bool LogStep::operator== (const SimulatorLog& b) const
+{
+    if (const LogStep* const entry = dynamic_cast< const LogStep* > (&b)) {
+        if (_interval != entry->_interval)
+            return false;
+    }
+    return SimulatorLogScope::operator== (b);
 }
 
-std::string LogStep::getType() const {
-	return "Step";
+std::string LogStep::getDescription () const
+{
+    std::stringstream str;
+    str << "Step (time " << _interval.first << " to " << _interval.second << ")";
+    return str.str ();
 }
 
-bool LogStep::operator==(const SimulatorLog &b) const {
-	if (const LogStep* const entry = dynamic_cast<const LogStep*>(&b)) {
-		if (_interval != entry->_interval)
-			return false;
-	}
-	return SimulatorLogScope::operator==(b);
+double LogStep::timeBegin () const
+{
+    return _interval.first;
 }
 
-std::string LogStep::getDescription() const {
-	std::stringstream str;
-	str << "Step (time " << _interval.first << " to " << _interval.second << ")";
-	return str.str();
+double LogStep::timeEnd () const
+{
+    return _interval.second;
 }
 
-double LogStep::timeBegin() const {
-	return _interval.first;
+void LogStep::setTimeBegin (double time)
+{
+    _interval.first = time;
 }
 
-double LogStep::timeEnd() const {
-	return _interval.second;
-}
-
-void LogStep::setTimeBegin(double time) {
-	_interval.first = time;
-}
-
-void LogStep::setTimeEnd(double time) {
-	_interval.second = time;
+void LogStep::setTimeEnd (double time)
+{
+    _interval.second = time;
 }

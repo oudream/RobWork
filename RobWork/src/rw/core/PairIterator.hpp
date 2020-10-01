@@ -18,7 +18,9 @@
 #ifndef RW_CORE_PAIRITERATOR_HPP
 #define RW_CORE_PAIRITERATOR_HPP
 
+#if !defined(SWIG)
 #include <utility>
+#endif
 
 namespace rw { namespace core {
 
@@ -51,9 +53,9 @@ namespace rw { namespace core {
 
     };    // namespace coretemplate<typenameI>structiter_pair:std::pair<I,I>
 
-    template< typename T1> constexpr iter_pair< T1 > make_iterPair (T1 x, T1 y)
+    template< typename T1 > constexpr iter_pair< T1 > make_iterPair (T1 x, T1 y)
     {
-        typedef iter_pair< T1> __pair_type;
+        typedef iter_pair< T1 > __pair_type;
         return __pair_type (std::forward< T1 > (x), std::forward< T1 > (y));
     }
 

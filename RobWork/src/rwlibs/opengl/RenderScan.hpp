@@ -20,83 +20,83 @@
 
 //! @file RenderScan.hpp
 
-#include <rw/geometry/PointCloud.hpp>
 #include <rw/core/Ptr.hpp>
+#include <rw/geometry/PointCloud.hpp>
 #include <rw/graphics/Render.hpp>
 
-namespace rw { namespace sensor { class Scanner25DModel; } }
+namespace rw { namespace sensor {
+    class Scanner25DModel;
+}}    // namespace rw::sensor
 
-namespace rwlibs {
-namespace opengl {
+namespace rwlibs { namespace opengl {
 
-	//! @addtogroup opengl
-	// @{
-
+    //! @addtogroup opengl
+    // @{
 
     /**
      * @brief renders Image25D, Scan2D or a simple distance.
      */
-	class RenderScan: public rw::graphics::Render{
-	public:
+    class RenderScan : public rw::graphics::Render
+    {
+      public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr<RenderScan> Ptr;
+        typedef rw::core::Ptr< RenderScan > Ptr;
 
         //! @brief constructor
-		RenderScan();
+        RenderScan ();
 
-		//! @brief constructor
-		RenderScan(const rw::geometry::PointCloud& img);
+        //! @brief constructor
+        RenderScan (const rw::geometry::PointCloud& img);
 
         /**
          * @brief the renderer will pull the scanner for
          * @param scanner
          * @return
          */
-        RenderScan(const rw::core::Ptr<rw::sensor::Scanner25DModel> scanner);
+        RenderScan (const rw::core::Ptr< rw::sensor::Scanner25DModel > scanner);
 
         //! @brief destructor
-		virtual ~RenderScan();
+        virtual ~RenderScan ();
 
-		/**
-		 * \brief set a 2.5 dimensional scan
-		 * @param img
-		 */
-		void setScan(const rw::geometry::PointCloud& img);
+        /**
+         * \brief set a 2.5 dimensional scan
+         * @param img
+         */
+        void setScan (const rw::geometry::PointCloud& img);
 
-		/**
-		 * \brief set a one dimensional scan
-		 * @param dist
-		 */
-		void setScan(float dist);
+        /**
+         * \brief set a one dimensional scan
+         * @param dist
+         */
+        void setScan (float dist);
 
         /**
          * @brief the minimum depth of the points, where depth is in
          * the negative z-axis direction
          * @param depth [in] depth in the negative z-axis direction
          */
-        void setMinDepth(float depth){ _minDepth=depth;};
+        void setMinDepth (float depth) { _minDepth = depth; };
 
         /**
          * @brief the maximum depth of the points, where depth is in
          * the negative z-axis direction
          * @param depth [in] depth in the negative z-axis direction
          */
-        void setMaxDepth(float depth){ _maxDepth=depth;};
+        void setMaxDepth (float depth) { _maxDepth = depth; };
 
-        //! @copydoc rw::graphics::Render::draw(const DrawableNode::RenderInfo& info, DrawableNode::DrawType type, double alpha) const
-        void draw(const rw::graphics::DrawableNode::RenderInfo& info,
-                  rw::graphics::DrawableNode::DrawType type,
-                  double alpha) const;
+        //! @copydoc rw::graphics::Render::draw(const DrawableNode::RenderInfo& info,
+        //! DrawableNode::DrawType type, double alpha) const
+        void draw (const rw::graphics::DrawableNode::RenderInfo& info,
+                   rw::graphics::DrawableNode::DrawType type, double alpha) const;
 
-	private:
-        //rw::sensor::Scanner25DModel::Ptr _scanner;
+      private:
+        // rw::sensor::Scanner25DModel::Ptr _scanner;
         rw::geometry::PointCloud _img;
-        float _minDepth,_maxDepth;
-	};
-	//! smart pointer type
-	typedef rw::core::Ptr<RenderScan> RenderScanPtr;
+        float _minDepth, _maxDepth;
+    };
+    //! smart pointer type
+    typedef rw::core::Ptr< RenderScan > RenderScanPtr;
 
-	//! @}
-}
-}
+    //! @}
+}}     // namespace rwlibs::opengl
 #endif /* RENDERSCAN_HPP_ */

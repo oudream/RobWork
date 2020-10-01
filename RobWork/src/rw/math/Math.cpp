@@ -16,55 +16,64 @@
  ********************************************************************************/
 
 #include "Math.hpp"
+
 #include "MetricFactory.hpp"
 #include "Random.hpp"
+
 #include <rw/core/macros.hpp>
 
-#include <boost/math/special_functions/fpclassify.hpp> // boost::math::isnan()
-
+#include <boost/math/special_functions/fpclassify.hpp>    // boost::math::isnan()
 #include <cmath>
 #include <limits>
 
 using namespace rw::math;
 
-
-double Math::ranNormalDist(double mean, double sigma) {
-	return Random::ranNormalDist(mean,sigma);
-}
-
-double Math::ran() {
-	return Random::ran();
-}
-
-void Math::seed(unsigned seed) {
-    Random::seed(seed);
-}
-
-void Math::seed() {
-	Random::seed();
-}
-
-double Math::ran(double from, double to) {
-    return Random::ran(from,to);
-}
-
-int Math::ranI(int from, int to) {
-	return Random::ranI(from,to);
-}
-
-Q Math::ranQ(const rw::math::Q& from, const rw::math::Q& to)
+double Math::ranNormalDist (double mean, double sigma)
 {
-    RW_ASSERT(from.size() == to.size());
+    return Random::ranNormalDist (mean, sigma);
+}
 
-    const size_t len = from.size();
-    Q result(len);
+double Math::ran ()
+{
+    return Random::ran ();
+}
+
+void Math::seed (unsigned seed)
+{
+    Random::seed (seed);
+    srand (seed);
+}
+
+void Math::seed ()
+{
+    Random::seed ();
+    srand ((unsigned int)time (NULL));
+}
+
+double Math::ran (double from, double to)
+{
+    return Random::ran (from, to);
+}
+
+int Math::ranI (int from, int to)
+{
+    return Random::ranI (from, to);
+}
+
+Q Math::ranQ (const rw::math::Q& from, const rw::math::Q& to)
+{
+    RW_ASSERT (from.size () == to.size ());
+
+    const size_t len = from.size ();
+    Q result (len);
     for (size_t i = 0; i < len; i++)
-        result(i) = ran(from(i), to(i));
+        result (i) = ran (from (i), to (i));
     return result;
 }
 
-Q Math::ranQ(const std::pair<rw::math::Q, rw::math::Q>& bounds) {
-	return ranQ(bounds.first, bounds.second);
+Q Math::ranQ (const std::pair< rw::math::Q, rw::math::Q >& bounds)
+{
+    return ranQ (bounds.first, bounds.second);
 }
 
 /**
@@ -76,13 +85,14 @@ Q Math::ranQ(const std::pair<rw::math::Q, rw::math::Q>& bounds) {
  * @param length [in] Length of return vector. Default is 1;
  * @return Random direction
  */
-Q Math::ranDir(size_t dim, double length) {
-	Q q(dim);
-	for (size_t i = 0; i<dim; i++) {
-		q(i) = Math::ranNormalDist(0,1);
-	}
-	Metric<Q>::Ptr metric = MetricFactory::makeEuclidean<Q>();
-	return length*q/metric->distance(q);
+Q Math::ranDir (size_t dim, double length)
+{
+    Q q (dim);
+    for (size_t i = 0; i < dim; i++) {
+        q (i) = Math::ranNormalDist (0, 1);
+    }
+    Metric< Q >::Ptr metric = MetricFactory::makeEuclidean< Q > ();
+    return length * q / metric->distance (q);
 }
 
 /**
@@ -92,44 +102,46 @@ Q Math::ranDir(size_t dim, double length) {
  *
  * @param dim [in] Number of dimensions
  * @param weights [in] Weights to use
- * @param length [in] Length of return vector when weights are applied as weighted Euclidean metric. Default is 1;
+ * @param length [in] Length of return vector when weights are applied as weighted Euclidean metric.
+ * Default is 1;
  * @return Random weigthed direction
  */
-Q Math::ranWeightedDir(size_t dim, const rw::math::Q& weights, double length) {
-	Q q(dim);
-	for (size_t i = 0; i<dim; i++) {
-		q(i) = Math::ranNormalDist(0,1);
-	}
-	Metric<Q>::Ptr metric = MetricFactory::makeWeightedEuclidean<Q>(weights);
-	return length*q/metric->distance(q);
+Q Math::ranWeightedDir (size_t dim, const rw::math::Q& weights, double length)
+{
+    Q q (dim);
+    for (size_t i = 0; i < dim; i++) {
+        q (i) = Math::ranNormalDist (0, 1);
+    }
+    Metric< Q >::Ptr metric = MetricFactory::makeWeightedEuclidean< Q > (weights);
+    return length * q / metric->distance (q);
 }
 
-Q Math::sqr(const Q& q)
+Q Math::sqr (const Q& q)
 {
-    const size_t dim = q.size();
-    Q result(dim);
+    const size_t dim = q.size ();
+    Q result (dim);
     for (size_t i = 0; i < dim; i++) {
-        result[i] = Math::sqr(q[i]);
+        result[i] = Math::sqr (q[i]);
     }
     return result;
 }
 
-Q Math::sqrt(const Q& q)
+Q Math::sqrt (const Q& q)
 {
-    const size_t dim = q.size();
-    Q result(dim);
+    const size_t dim = q.size ();
+    Q result (dim);
     for (size_t i = 0; i < dim; i++) {
-        result[i] = std::sqrt(q[i]);
+        result[i] = std::sqrt (q[i]);
     }
     return result;
 }
 
-int Math::ceilLog2(const int n)
+int Math::ceilLog2 (const int n)
 {
-    RW_ASSERT(n > 0);
+    RW_ASSERT (n > 0);
     int cnt = 0;
-    int i = n;
-    int a = 1;
+    int i   = n;
+    int a   = 1;
     while (i != 1) {
         a <<= 1;
         i >>= 1;
@@ -141,10 +153,12 @@ int Math::ceilLog2(const int n)
         return cnt + 1;
 }
 
-bool Math::isNaN(double d) {
-	return boost::math::isnan(d);
+bool Math::isNaN (double d)
+{
+    return boost::math::isnan (d);
 }
 
-double Math::NaN() {
-    return std::numeric_limits<double>::quiet_NaN();
+double Math::NaN ()
+{
+    return std::numeric_limits< double >::quiet_NaN ();
 }

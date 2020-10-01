@@ -196,7 +196,7 @@ To test if you have the right version open a python interpreter and run:
 
 .. code-block:: python
 
-    from PiSide2 import QtCore
+    from PySide2 import QtCore
 
 If something is wrong this should give you an error with incompatible QT versions.
 To get the correct Version of QT you need to do a proper install and get the required QT version.

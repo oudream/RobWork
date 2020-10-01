@@ -10,29 +10,30 @@
 
 #include <rw/core/Ptr.hpp>
 
-#include <QObject>
 #include <QDialog>
+#include <QObject>
 
-namespace rwsim { namespace simulator { class DynamicSimulator; } }
+namespace rwsim { namespace simulator {
+    class DynamicSimulator;
+}}    // namespace rwsim::simulator
 
 namespace Ui {
-    class SimCfgDialog;
+class SimCfgDialog;
 }
 
 class SimCfgDialog : public QDialog
-    {
-        Q_OBJECT
+{
+    Q_OBJECT
 
-    public:
-        SimCfgDialog(rw::core::Ptr<rwsim::simulator::DynamicSimulator> sim, QWidget *parent = 0);
+  public:
+    SimCfgDialog (rw::core::Ptr< rwsim::simulator::DynamicSimulator > sim, QWidget* parent = 0);
 
-    private slots:
-        void btnPressed();
-        void changedEvent();
+  private slots:
+    void btnPressed ();
+    void changedEvent ();
 
-    private:
-        Ui::SimCfgDialog *_ui;
+  private:
+    Ui::SimCfgDialog* _ui;
 };
-
 
 #endif /* SimulatorCfgDialog_HPP_ */

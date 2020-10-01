@@ -15,15 +15,15 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RWLIBS_PATHOPTIMIZATION_PATHLENGTHOPTIMIZER_HPP
 #define RWLIBS_PATHOPTIMIZATION_PATHLENGTHOPTIMIZER_HPP
 
+#include <rw/core/PropertyMap.hpp>
 #include <rw/core/Ptr.hpp>
 #include <rw/math/Metric.hpp>
-#include <rw/core/PropertyMap.hpp>
 #include <rw/pathplanning/PlannerConstraint.hpp>
 #include <rw/trajectory/Path.hpp>
+
 #include <list>
 
 namespace rwlibs { namespace pathoptimization {
@@ -52,14 +52,14 @@ namespace rwlibs { namespace pathoptimization {
      */
     class PathLengthOptimizer
     {
-    public:
-		//! @brief smart pointer type to this class
-		typedef rw::core::Ptr<PathLengthOptimizer> Ptr;
-		//! @brief smart pointer type to this const class
-		typedef rw::core::Ptr<const PathLengthOptimizer> CPtr;
+      public:
+        //! @brief smart pointer type to this class
+        typedef rw::core::Ptr< PathLengthOptimizer > Ptr;
+        //! @brief smart pointer type to this const class
+        typedef rw::core::Ptr< const PathLengthOptimizer > CPtr;
 
         //! A list of configurations.
-		typedef std::list<rw::math::Q> QList;
+        typedef std::list< rw::math::Q > QList;
 
         /**
            @brief Constructor
@@ -71,13 +71,13 @@ namespace rwlibs { namespace pathoptimization {
            @param constraint [in] Verification of edges and configurations.
            @param metric [in] Distance metric for edge lengths
         */
-        PathLengthOptimizer(const rw::pathplanning::PlannerConstraint& constraint,
-			rw::math::QMetric::CPtr metric);
+        PathLengthOptimizer (const rw::pathplanning::PlannerConstraint& constraint,
+                             rw::math::QMetric::CPtr metric);
 
         /**
            @brief Destructor
         */
-        virtual ~PathLengthOptimizer();
+        virtual ~PathLengthOptimizer ();
 
         /**
            @brief Optimizes using path pruning.
@@ -87,7 +87,7 @@ namespace rwlibs { namespace pathoptimization {
 
            @param path [in] Path to optimize
         */
-        rw::trajectory::QPath pathPruning(const rw::trajectory::QPath& path) const;
+        rw::trajectory::QPath pathPruning (const rw::trajectory::QPath& path) const;
 
         /**
          * @brief Optimizes using the shortcut technique
@@ -103,10 +103,8 @@ namespace rwlibs { namespace pathoptimization {
          * @param time [in] Max time to use (in seconds). If time=0, only the cnt limit will be used
          * @param subDivideLength [in] The length into which the path is subdivided
          */
-        rw::trajectory::QPath shortCut(const rw::trajectory::QPath& path,
-                                       size_t cnt,
-                                       double time,
-                                       double subDivideLength) const;
+        rw::trajectory::QPath shortCut (const rw::trajectory::QPath& path, size_t cnt, double time,
+                                        double subDivideLength) const;
 
         /**
          * @brief Optimizes using the shortcut technique
@@ -116,7 +114,7 @@ namespace rwlibs { namespace pathoptimization {
          *
          * @param path [inout] Path to optimize
          */
-        rw::trajectory::QPath shortCut(const rw::trajectory::QPath& path) const;
+        rw::trajectory::QPath shortCut (const rw::trajectory::QPath& path) const;
 
         /**
          * @brief Optimizes using the partial shortcut technique
@@ -133,10 +131,8 @@ namespace rwlibs { namespace pathoptimization {
          * @param time [in] Max time to use (in seconds). If time=0, only the cnt limit will be used
          * @param subDivideLength [in] The length into which the path is subdivided
          */
-        rw::trajectory::QPath partialShortCut(const rw::trajectory::QPath& path,
-                                              size_t cnt,
-                                              double time,
-                                              double subDivideLength) const;
+        rw::trajectory::QPath partialShortCut (const rw::trajectory::QPath& path, size_t cnt,
+                                               double time, double subDivideLength) const;
 
         /**
          * @brief Optimizes using the partial shortcut technique
@@ -148,7 +144,7 @@ namespace rwlibs { namespace pathoptimization {
          * @param path [inout] Path to optimize
          * @return The optimized path
          */
-        rw::trajectory::QPath partialShortCut(const rw::trajectory::QPath& path) const;
+        rw::trajectory::QPath partialShortCut (const rw::trajectory::QPath& path) const;
 
         //----------------------------------------------------------------------
 
@@ -156,50 +152,43 @@ namespace rwlibs { namespace pathoptimization {
          * @brief Returns the propertymap
          * @return Reference to the property map
          */
-        rw::core::PropertyMap& getPropertyMap();
+        rw::core::PropertyMap& getPropertyMap ();
 
-        //!Property key for the maximal number of loops
+        //! Property key for the maximal number of loops
         static const std::string PROP_LOOPCOUNT;
 
-        //!Property key for max time
+        //! Property key for max time
         static const std::string PROP_MAXTIME;
 
-        //!Property key for length of segment in when subdividing
+        //! Property key for length of segment in when subdividing
         static const std::string PROP_SUBDIVLENGTH;
 
-    private:
+      private:
         rw::pathplanning::PlannerConstraint _constraint;
-		rw::math::QMetric::CPtr _metric;
+        rw::math::QMetric::CPtr _metric;
         rw::core::PropertyMap _propertyMap;
 
-        void pathPruning(QList& path) const;
+        void pathPruning (QList& path) const;
 
-        void shortCut(QList& path,
-                      size_t cnt,
-                      double time,
-                      double subDivideLength) const;
+        void shortCut (QList& path, size_t cnt, double time, double subDivideLength) const;
 
-        void shortCut(QList& path) const;
+        void shortCut (QList& path) const;
 
-        void partialShortCut(QList& path,
-                             size_t cnt,
-                             double time,
-                             double subDivideLength) const;
+        void partialShortCut (QList& path, size_t cnt, double time, double subDivideLength) const;
 
-        void partialShortCut(QList& path) const;
+        void partialShortCut (QList& path) const;
 
-        void resamplePath(QList& path, double subDivisionSize) const;
+        void resamplePath (QList& path, double subDivisionSize) const;
 
-        QList::iterator resample(QList::iterator it1,
-                                 const rw::math::Q& q2,
-                                 double subDivisionSize,
-                                 QList& result) const;
+        QList::iterator resample (QList::iterator it1, const rw::math::Q& q2,
+                                  double subDivisionSize, QList& result) const;
 
-        bool validPath(const rw::math::Q& from, const rw::math::Q& to, const bool testQStart, const bool testQEnd) const;
+        bool validPath (const rw::math::Q& from, const rw::math::Q& to, const bool testQStart,
+                        const bool testQEnd) const;
     };
 
     /** @} */
 
-}} // end namespaces
+}}    // namespace rwlibs::pathoptimization
 
 #endif /*RWLIBS_PATHOPTIMIZATION_PATHLENGTHOPTIMIZER_HPP*/

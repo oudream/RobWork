@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RW_INVKIN_CLOSEFORMIK_HPP
 #define RW_INVKIN_CLOSEFORMIK_HPP
 
@@ -23,9 +22,12 @@
  * @file ClosedFormIK.hpp
  */
 #include "InvKinSolver.hpp"
+
 #include <rw/core/Ptr.hpp>
 
-namespace rw { namespace models { class Device; } }
+namespace rw { namespace models {
+    class Device;
+}}    // namespace rw::models
 
 namespace rw { namespace invkin {
 
@@ -45,47 +47,47 @@ namespace rw { namespace invkin {
      * ending with the frame defined as the end of the devices, and which is
      * accessible through the Device::getEnd() method.
      */
-    class ClosedFormIK: public InvKinSolver
+    class ClosedFormIK : public InvKinSolver
     {
-    public:
-		//! @brief smart pointer type to this class
-		typedef rw::core::Ptr<ClosedFormIK> Ptr;
+      public:
+        //! @brief smart pointer type to this class
+        typedef rw::core::Ptr< ClosedFormIK > Ptr;
 
-		/**
-           @brief Closed-form IK solver for a device.
+        /**
+   @brief Closed-form IK solver for a device.
 
-           The device must be a serial device with 6 revolute joints described
-           by DH parameters.
+   The device must be a serial device with 6 revolute joints described
+   by DH parameters.
 
-           The IK solver is currently implemented in terms of PieperSolver. See
-           the documentation of PieperSolver for the specific requirements for
-           the DH parameters.
+   The IK solver is currently implemented in terms of PieperSolver. See
+   the documentation of PieperSolver for the specific requirements for
+   the DH parameters.
 
-           An exception is thrown if closed-form IK for the device is not
-           supported, except that all such cases are currently not discovered.
-           You should check for yourself that the closed-form IK for the device
-           is correct.
-        */
-		static ClosedFormIK::Ptr make(const rw::models::Device& device,
-                                      const rw::kinematics::State& state);
+   An exception is thrown if closed-form IK for the device is not
+   supported, except that all such cases are currently not discovered.
+   You should check for yourself that the closed-form IK for the device
+   is correct.
+*/
+        static ClosedFormIK::Ptr make (const rw::models::Device& device,
+                                       const rw::kinematics::State& state);
 
         /**
            @brief Destructor
         */
-        virtual ~ClosedFormIK() {}
+        virtual ~ClosedFormIK () {}
 
-    protected:
+      protected:
         /**
            @brief Constructor
         */
-        ClosedFormIK() {}
+        ClosedFormIK () {}
 
-    private:
-        ClosedFormIK(const ClosedFormIK&);
-        ClosedFormIK& operator=(const ClosedFormIK&);
+      private:
+        ClosedFormIK (const ClosedFormIK&);
+        ClosedFormIK& operator= (const ClosedFormIK&);
     };
 
     /*@}*/
-}} // end namespaces
+}}    // namespace rw::invkin
 
-#endif // end include guard
+#endif    // end include guard
