@@ -129,25 +129,7 @@ namespace rw { namespace geometry {
             bool operator== (const TriCenterIterator& other) const { return _first == other._end; }
             bool operator!= (const TriCenterIterator& other) const { return _first < other._end; }
 
-            void inc ()
-            {
-                using namespace rw::geometry;
-                using namespace rw::math;
-                using namespace rw::common;
-
-                ++_first;
-                if (_first != _end) {
-                    Triangle<> tri = _mesh.getTriangle (_first);
-                    if (_useAreaWeight) {
-                        double area = tri.calcArea ();
-                        _pos = area * (tri.getVertex (0) + tri.getVertex (1) + tri.getVertex (2)) /
-                               3.0;
-                    }
-                    else {
-                        _pos = (tri.getVertex (0) + tri.getVertex (1) + tri.getVertex (2)) / 3.0;
-                    }
-                }
-            }
+            void inc ();
         };
 
         /**

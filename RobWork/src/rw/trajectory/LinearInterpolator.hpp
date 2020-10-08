@@ -21,7 +21,7 @@
 /**
  * @file LinearInterpolator.hpp
  */
-
+#if !defined(SWIG)
 #include "Interpolator.hpp"
 
 #include <rw/core/macros.hpp>
@@ -29,8 +29,7 @@
 #include <rw/math/Quaternion.hpp>
 #include <rw/math/Rotation3D.hpp>
 #include <rw/math/Transform3D.hpp>
-//#include "InterpolatorUtil.hpp"
-
+#endif 
 namespace rw { namespace trajectory {
 
     /** @addtogroup trajectory */
@@ -39,7 +38,7 @@ namespace rw { namespace trajectory {
     /**
      * @brief Make a linear interpolation between to position
      *
-     * Given a start \f$\mathbf{s}\f$, end \f$\mathbf{e}\f$ and duration \f$d\f$
+     * Given a start \f$ \mathbf{s}\f$, end \f$\mathbf{e}\f$ and duration \f$ d\f$
      * the interpolation is implemented as \f$\mathbf{x}(t)=\mathbf{s} +
      * (\mathbf{e}-\mathbf{s})*t/d\f$.
      *
@@ -183,7 +182,7 @@ namespace rw { namespace trajectory {
                 d2 += rw::math::Math::sqr (_quarStart (i) + _quarEnd (i));
             }
             if (d1 > d2)
-                _quarEnd = (-1) * _quarEnd;
+                _quarEnd = _quarEnd * (-1);
         }
 
         /**@cond
@@ -202,7 +201,7 @@ namespace rw { namespace trajectory {
          */
         rw::math::Rotation3D< T > dx (double t) const
         {
-            rw::math::Rotation3D<> rot = x (1.0);
+            rw::math::Rotation3D< T > rot = x (1.0);
             return inverse (_start) * rot;
 
             // return InterpolatorUtil::vecToTrans<V,T>(_interpolator.dx(t));
@@ -215,7 +214,7 @@ namespace rw { namespace trajectory {
          */
         rw::math::Rotation3D< T > ddx (double t) const
         {
-            return rw::math::Rotation3D<>::identity ();
+            return rw::math::Rotation3D<T>::identity ();
             // return InterpolatorUtil::vecToTrans<V,T>(_interpolator.ddx(t));
         }
 
@@ -357,8 +356,8 @@ namespace rw { namespace trajectory {
       private:
         rw::math::Transform3D< T > _start;
         rw::math::Transform3D< T > _end;
-        LinearInterpolator< rw::math::Vector3D<> > _posInterpolator;
-        LinearInterpolator< rw::math::Rotation3D<> > _rotInterpolator;
+        LinearInterpolator< rw::math::Vector3D< T > > _posInterpolator;
+        LinearInterpolator< rw::math::Rotation3D< T > > _rotInterpolator;
     };
 
     /**

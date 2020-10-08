@@ -26,8 +26,9 @@
 
 namespace rw { namespace math {
     //! @addtogroup math
-
+#if !defined(SWIG)
     //! @{
+#endif
     /**
      * @brief Generation of random numbers.
      */

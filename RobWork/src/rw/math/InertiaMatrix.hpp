@@ -22,12 +22,14 @@
  * @file InertiaMatrix.hpp
  */
 
+#if !defined(SWIG)
 #include "Rotation3D.hpp"
 #include "Vector3D.hpp"
 
 #include <rw/common/Serializable.hpp>
 
 #include <Eigen/Core>
+#endif
 
 namespace rw { namespace math {
 
@@ -94,7 +96,8 @@ namespace rw { namespace math {
          * @param j @f$ \robabx{a}{b}{\mathbf{j}} @f$
          * @param k @f$ \robabx{a}{b}{\mathbf{k}} @f$
          */
-        InertiaMatrix (const Vector3D< T >& i, const Vector3D< T >& j, const Vector3D< T >& k)
+        InertiaMatrix (const rw::math::Vector3D< T >& i, const rw::math::Vector3D< T >& j,
+                       const rw::math::Vector3D< T >& k)
         {
             _matrix (0, 0) = i[0];
             _matrix (0, 1) = j[0];
@@ -127,12 +130,12 @@ namespace rw { namespace math {
         }
 
         /**
-           @brief Construct an internal matrix from a Eigen::MatrixBase
-
-           It is the responsibility of the user that 3x3 matrix is indeed an
-                   inertia matrix.
+         * @brief Construct an internal matrix from a Eigen::MatrixBase
+         * It is the responsibility of the user that 3x3 matrix is indeed an
+         * inertia matrix.
          */
         explicit InertiaMatrix (const Base& r) : _matrix (r) {}
+
 
         /**
          * @brief Returns reference to matrix element
@@ -149,7 +152,9 @@ namespace rw { namespace math {
          * @return reference to the element
          */
         const T& operator() (size_t row, size_t column) const { return _matrix (row, column); }
-
+#if defined(SWIG)
+        MATRIXOPERATOR (T);
+#endif
         /**
          * @brief Returns reference to the internal 3x3 matrix
          */
@@ -160,30 +165,27 @@ namespace rw { namespace math {
          */
         Base& e () { return _matrix; }
 
+#if !defined(SWIG)
         /**
          * @brief Calculates \f$ \robabx{a}{c}{\mathbf{R}} =
          * \robabx{a}{b}{\mathbf{R}} \robabx{b}{c}{\mathbf{R}} \f$
-         *
          * @param aRb [in] \f$ \robabx{a}{b}{\mathbf{R}} \f$
-         *
          * @param bRc [in] \f$ \robabx{b}{c}{\mathbf{R}} \f$
-         *
          * @return \f$ \robabx{a}{c}{\mathbf{R}} \f$
          */
-        friend InertiaMatrix operator* (const Rotation3D< T >& aRb, const InertiaMatrix& bRc)
+        friend InertiaMatrix operator* (const rw::math::Rotation3D< T >& aRb,
+                                        const InertiaMatrix& bRc)
         {
             return InertiaMatrix (aRb.e () * bRc.e ());
         }
-
+#endif
         /**
          * @brief Calculates \f$ \robabx{a}{c}{\mathbf{R}} =
          * \robabx{a}{b}{\mathbf{R}} \robabx{b}{c}{\mathbf{R}} \f$
-         *
          * @param bRc [in] \f$ \robabx{b}{c}{\mathbf{R}} \f$
-         *
          * @return \f$ \robabx{a}{c}{\mathbf{R}} \f$
          */
-        InertiaMatrix operator* (const Rotation3D< T >& bRc) const
+        InertiaMatrix operator* (const rw::math::Rotation3D< T >& bRc) const
         {
             return InertiaMatrix (this->e () * bRc.e ());
         }
@@ -202,11 +204,11 @@ namespace rw { namespace math {
          * @param bVc [in] \f$ \robabx{b}{c}{\mathbf{v}} \f$
          * @return \f$ \robabx{a}{c}{\mathbf{v}} \f$
          */
-        Vector3D< T > operator* (const Vector3D< T >& bVc) const
+        rw::math::Vector3D< T > operator* (const rw::math::Vector3D< T >& bVc) const
         {
-            return Vector3D< T > (this->e () * bVc.e ());
+            return rw::math::Vector3D< T > (this->e () * bVc.e ());
         }
-
+#if !defined(SWIG)
         /**
          * @brief Writes rotation matrix to stream
          * @param os [in/out] output stream to use
@@ -217,6 +219,9 @@ namespace rw { namespace math {
         {
             return os << r.e ();
         }
+#else
+        TOSTRING (rw::math::InertiaMatrix< T >);
+#endif
 
         /**
          * @brief Make inertia matrix for a solid sphere.
@@ -292,18 +297,22 @@ namespace rw { namespace math {
      */
     template< class Q, class T > InertiaMatrix< Q > cast (const InertiaMatrix< T >& rot)
     {
-        InertiaMatrix< Q > res (InertiaMatrix< Q >::identity ());
+        InertiaMatrix< Q > res;
         for (size_t i = 0; i < 3; i++)
             for (size_t j = 0; j < 3; j++)
                 res (i, j) = static_cast< Q > (rot (i, j));
         return res;
     }
-
+#if !defined(SWIG)
     extern template class rw::math::InertiaMatrix< double >;
     extern template class rw::math::InertiaMatrix< float >;
+#else
+    SWIG_DECLARE_TEMPLATE (InertiaMatrixd, rw::math::InertiaMatrix< double >);
+    SWIG_DECLARE_TEMPLATE (InertiaMatrixf, rw::math::InertiaMatrix< float >);
+#endif
 
-    using InertiaMatrixd = InertiaMatrix<double>;
-    using InertiaMatrixf = InertiaMatrix<float>;
+    using InertiaMatrixd = InertiaMatrix< double >;
+    using InertiaMatrixf = InertiaMatrix< float >;
 
     /*@}*/
 }}    // namespace rw::math

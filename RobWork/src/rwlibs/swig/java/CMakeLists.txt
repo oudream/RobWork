@@ -43,6 +43,7 @@ if(build)
         RW_MODULE
         sdurw_core
         sdurw_common
+        sdurw_math
         sdurw
         sdurw_task
         sdurw_assembly

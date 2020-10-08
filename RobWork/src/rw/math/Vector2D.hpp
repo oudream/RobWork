@@ -22,9 +22,11 @@
  * @file Vector2D.hpp
  */
 
+#if !defined(SWIG)
 #include <rw/common/Serializable.hpp>
 
 #include <Eigen/Core>
+#endif
 
 namespace rw { namespace math {
     /** @addtogroup math */
@@ -116,7 +118,7 @@ namespace rw { namespace math {
         size_t size () const { return 2; }
 
         // Various operators.
-
+#if !defined(SWIG)
         /**
          * @brief Returns reference to vector element
          *
@@ -148,23 +150,26 @@ namespace rw { namespace math {
          * @return reference to element
          */
         T& operator[] (size_t i) { return _vec[i]; }
+#else
+        ARRAYOPERATOR (T);
+#endif
 
         /**
            @brief Scalar division.
          */
-        friend const Vector2D< T > operator/ (const Vector2D< T >& v, T s)
+        const Vector2D< T > operator/ (T s) const
         {
-            return Vector2D< T > (v[0] / s, v[1] / s);
+            return Vector2D< T > ((*this)[0] / s, (*this)[1] / s);
         }
 
         /**
            @brief Scalar multiplication.
          */
-        friend const Vector2D< T > operator* (const Vector2D< T >& v, T s)
+        const Vector2D< T > operator* (T s) const
         {
-            return Vector2D< T > (v[0] * s, v[1] * s);
+            return Vector2D< T > ((*this)[0] * s, (*this)[1] * s);
         }
-
+#if !defined(SWIGPYTHON)
         /**
            @brief Scalar multiplication.
          */
@@ -172,21 +177,22 @@ namespace rw { namespace math {
         {
             return Vector2D< T > (s * v[0], s * v[1]);
         }
+#endif
 
         /**
            @brief Vector subtraction.
          */
-        friend const Vector2D< T > operator- (const Vector2D< T >& a, const Vector2D< T >& b)
+        const Vector2D< T > operator- (const Vector2D< T >& b) const
         {
-            return Vector2D< T > (a (0) - b (0), a (1) - b (1));
+            return Vector2D< T > ((*this) (0) - b (0), (*this) (1) - b (1));
         }
 
         /**
            @brief Vector addition.
          */
-        friend const Vector2D< T > operator+ (const Vector2D< T >& a, const Vector2D< T >& b)
+        const Vector2D< T > operator+ (const Vector2D< T >& b) const
         {
-            return Vector2D< T > (a (0) + b (0), a (1) + b (1));
+            return Vector2D< T > ((*this) (0) + b (0), (*this) (1) + b (1));
         }
 
         /**
@@ -240,7 +246,7 @@ namespace rw { namespace math {
          * returned will be in the interval [-Pi,Pi]
          */
         double angle () { return atan2 (_vec[1], _vec[0]); }
-
+#if !defined(SWIG)
         /**
            @brief Streaming operator.
          */
@@ -248,6 +254,9 @@ namespace rw { namespace math {
         {
             return out << "Vector2D {" << v[0] << ", " << v[1] << "}";
         }
+#else
+        TOSTRING (rw::math::Vector2D< T >);
+#endif
 
         /**
          * @brief Returns the Euclidean norm (2-norm) of the vector
@@ -377,12 +386,15 @@ namespace rw { namespace math {
     {
         return !(a == b);
     }
-
+#if !defined(SWIG)
     extern template class rw::math::Vector2D< double >;
     extern template class rw::math::Vector2D< float >;
-
-    using Vector2Dd = Vector2D<double>;
-    using Vector2Df = Vector2D<float>;
+#else
+    SWIG_DECLARE_TEMPLATE (Vector2Dd, rw::math::Vector2D< double >);
+    SWIG_DECLARE_TEMPLATE (Vector2Df, rw::math::Vector2D< float >);
+#endif
+    using Vector2Dd = Vector2D< double >;
+    using Vector2Df = Vector2D< float >;
 
     /**@}*/
 }}    // namespace rw::math

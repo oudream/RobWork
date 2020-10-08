@@ -1,5 +1,7 @@
 require("sdurw")
 using("sdurw")
+require("sdurw_math")
+using("sdurw_math")
 
 if #arg ~= 1 then
     print("Usage: lua ex-invkin.lua <path/to/RobWorkData>")

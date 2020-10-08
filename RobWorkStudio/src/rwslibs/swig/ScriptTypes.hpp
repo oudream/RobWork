@@ -82,8 +82,8 @@ namespace rws { namespace swig {
                  rw::math::Transform3D< double > wTframe);
 
     // utility functions for
-    rwlibs::swig::Q getQ (rw::core::Ptr< rwlibs::swig::Device > dev);
-    void setQ (rw::core::Ptr< rwlibs::swig::Device > dev, rwlibs::swig::Q);
+    rw::math::Q getQ (rw::core::Ptr< rwlibs::swig::Device > dev);
+    void setQ (rw::core::Ptr< rwlibs::swig::Device > dev, rw::math::Q);
 
     void setTransform (rwlibs::swig::Frame* mframe, rw::math::Transform3D< double > wTframe);
 

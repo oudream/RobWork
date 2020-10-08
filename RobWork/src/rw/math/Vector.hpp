@@ -21,9 +21,11 @@
 /**
  * @file Vector.hpp
  */
+#if !defined(SWIG)
 #include <rw/core/macros.hpp>
 
 #include <Eigen/Core>
+#endif
 
 namespace rw { namespace math {
 
@@ -206,6 +208,7 @@ namespace rw { namespace math {
         //----------------------------------------------------------------------
         // Various operators
 
+#if !defined(SWIG)
         /**
          * @brief Returns reference to vector element
          * @param i [in] index in the vector
@@ -233,7 +236,9 @@ namespace rw { namespace math {
          * @return reference to element
          */
         T& operator[] (size_t i) { return e () (i); }
-
+#else
+        ARRAYOPERATOR (T);
+#endif
         /**
            @brief Scalar division.
          */
@@ -243,12 +248,12 @@ namespace rw { namespace math {
          * @brief Scalar multiplication.
          */
         const Vector operator* (T s) const { return Vector (e () * s); }
-
+#if !defined(SWIG)
         /**
          * @brief Scalar multiplication.
          */
         friend const Vector operator* (T s, const Vector& v) { return Vector (s * v.e ()); }
-
+#endif 
         /**
          * @brief Vector subtraction.
          */
@@ -455,12 +460,15 @@ namespace rw { namespace math {
             q (q1.size () + i) = q2 (i);
         return q;
     }
-
+#if !defined(SWIG)
     extern template class rw::math::Vector< double >;
     extern template class rw::math::Vector< float >;
-
-    using Vectord = Vector<double>;
-    using Vectorf = Vector<float>;
+#else
+    SWIG_DECLARE_TEMPLATE (Vectord, rw::math::Vector< double >);
+    SWIG_DECLARE_TEMPLATE (Vectorf, rw::math::Vector< float >);
+#endif
+    using Vectord = Vector< double >;
+    using Vectorf = Vector< float >;
 
     /*@}*/
 

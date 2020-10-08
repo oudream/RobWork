@@ -18,8 +18,9 @@
 #ifndef RW_MATH_FUNCTION_HPP
 #define RW_MATH_FUNCTION_HPP
 
+#if !defined(SWIG)
 #include <rw/core/Ptr.hpp>
-
+#endif 
 /**
  * @file rw/math/Math.hpp
  */

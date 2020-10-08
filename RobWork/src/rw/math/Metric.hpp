@@ -21,11 +21,11 @@
 /**
    @file Metric.hpp
 */
-
-#include "Q.hpp"
-#include "Transform3D.hpp"
-
+#if !defined(SWIG)
 #include <rw/core/Ptr.hpp>
+#include <rw/math/Q.hpp>
+#include <rw/math/Transform3D.hpp>
+#endif
 
 namespace rw { namespace math {
 

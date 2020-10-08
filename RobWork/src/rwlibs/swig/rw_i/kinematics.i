@@ -1184,13 +1184,13 @@
         rw::core::Ptr< StateStructure > getStateStructure () const;
 
         // void add(Stateless& obj);
-
+/*
         //! @copydoc rw::common::Serializable::read
-        void read (class InputArchive& iarchive, const std::string& id);
+        void read (class rw::common::InputArchive& iarchive, const std::string& id);
 
         //! @copydoc rw::common::Serializable::write
-        void write (class OutputArchive& oarchive, const std::string& id) const;
-
+        void write (class rw::common::OutputArchive& oarchive, const std::string& id) const;
+*/
         /**
          * @brief Get default.
          * @param data [in] the state data.

@@ -290,7 +290,7 @@ namespace rw { namespace math {
             }
             return ret;
         }
-#endif 
+#endif
         /**
          * @brief Scalar subtraction
          * @param rhs [in] the scalar to subtract
@@ -345,7 +345,7 @@ namespace rw { namespace math {
             }
             return ret;
         }
-#endif 
+#endif
 
         // ###################################################
         // #                Acces Operators                  #
@@ -379,6 +379,9 @@ namespace rw { namespace math {
          * @return requested value
          */
         T operator[] (size_t i) const { return _t3d[i]; }
+#else
+        ARRAYOPERATOR (T);
+
 #endif
         /**
          * @brief get the size. Index 0-2 Vector, 3-6 Quaternion
@@ -563,10 +566,6 @@ namespace rw { namespace math {
         operator Transform3D< T > () const { return this->toTransform3D (); }
 #endif
 
-#if defined(SWIG)
-        ARRAYOPERATOR (T)
-#endif
-
       private:
         type _t3d;
     };
@@ -579,9 +578,9 @@ namespace rw { namespace math {
     extern template class rw::math::Transform3DVector< double >;
     extern template class rw::math::Transform3DVector< float >;
 
-    using Transform3DVectord = Transform3DVector<double>;
-    using Transform3DVectorf = Transform3DVector<float>;
-    
+    using Transform3DVectord = Transform3DVector< double >;
+    using Transform3DVectorf = Transform3DVector< float >;
+
 #endif
     /**@}*/
 }}    // namespace rw::math

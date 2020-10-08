@@ -56,12 +56,13 @@ if(build)
         CLASSPATH
             ${RW_LIBS}/sdurw_core_java.jar
             ${RW_LIBS}/sdurw_common_java.jar
+            ${RW_LIBS}/sdurw_math_java.jar
             ${RW_LIBS}/sdurw_java.jar
             ${RW_LIBS}/sdurw_task_java.jar
             ${RW_LIBS}/sdurw_assembly_java.jar
             ${RW_LIBS}/sdurw_control_java.jar
             ${RW_LIBS}/sdurw_simulation_java.jar
-        JAVADOC_LINK ${RW_LIBS}/javadoc/sdurw ${RW_LIBS}/javadoc/sdurw_core
+        JAVADOC_LINK ${RW_LIBS}/javadoc/sdurw ${RW_LIBS}/javadoc/sdurw_core ${RW_LIBS}/javadoc/sdurw_common ${RW_LIBS}/javadoc/sdurw_math
         WINDOW_TITLE "RobWorkSim Java API Documentation"
         LOADER_SOURCE_FILE "${CMAKE_CURRENT_SOURCE_DIR}/LoaderRWSim.java"
         LOADER_DST_FILE "java_src_sdurwsim/org/robwork/LoaderRWSim.java"

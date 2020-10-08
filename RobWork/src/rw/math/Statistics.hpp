@@ -2,12 +2,14 @@
 #ifndef RW_MATH_STATISTICS_HPP
 #define RW_MATH_STATISTICS_HPP
 
+#if !defined(SWIG)
 #include "Math.hpp"
 
 #include <cmath>
 #include <iostream>
 #include <list>
 #include <vector>
+#endif
 
 namespace rw { namespace math {
 

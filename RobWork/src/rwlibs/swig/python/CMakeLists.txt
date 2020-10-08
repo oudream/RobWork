@@ -44,18 +44,18 @@ if(build)
     if((PYTHON_VERSION_MAJOR VERSION_GREATER 3) OR (PYTHON_VERSION_MAJOR VERSION_EQUAL 3))
         set(SWIG_FLAGS "${SWIG_FLAGS};-py3")
     endif()
-    
+
     if(NOT ${SWIG_VERSION} VERSION_LESS 4.0.0)
         set(SWIG_FLAGS "${SWIG_FLAGS};-doxygen")
     endif()
 
     configure_file(setup.py.in ${CMAKE_CURRENT_SOURCE_DIR}/setup.py)
     configure_file(RobWork.egg-info.in
-                   ${CMAKE_CURRENT_SOURCE_DIR}/RobWork-${ROBWORK_VERSION}.egg-info)
+                   ${CMAKE_CURRENT_SOURCE_DIR}/RobWork-${ROBWORK_VERSION}.egg-info
+    )
 
-    install(
-        FILES ${CMAKE_CURRENT_SOURCE_DIR}/RobWork-${ROBWORK_VERSION}.egg-info
-        DESTINATION ${PYTHON_INSTALL_DIR}
+    install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/RobWork-${ROBWORK_VERSION}.egg-info
+            DESTINATION ${PYTHON_INSTALL_DIR}
     )
 
     if(POLICY CMP0078)
@@ -70,6 +70,7 @@ if(build)
         RW_MODULE
         sdurw_core
         sdurw_common
+        sdurw_math
         sdurw
         sdurw_task
         sdurw_assembly
@@ -119,18 +120,15 @@ if(build)
                 endif()
                 if(pydoc)
                     add_custom_command(
-                        TARGET ${TARGET_NAME} POST_BUILD
-                        COMMAND
-                            ${pydoc} -w
-                            ${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RW_MODULE}/${RW_MODULE}.py
+                        TARGET ${TARGET_NAME}
+                        POST_BUILD
+                        COMMAND ${pydoc} -w
+                                ${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RW_MODULE}/${RW_MODULE}.py
                         WORKING_DIRECTORY ${SWIG_OUT_ORIG}
                         COMMENT "Creating pydoc..."
                     )
                 endif()
             endif()
-
-            configure_file(__init__.py.in
-                           ${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RW_MODULE}/__init__.py)
 
             target_link_libraries(${SUBSYS_NAME} INTERFACE ${TARGET_NAME})
 
@@ -147,7 +145,18 @@ if(build)
 
             get_in_map(depends RW_SUBSYS_DEPEND ${RW_MODULE})
             swig_link_libraries(${RW_MODULE}${LIB_SUFIX} ${RW_MODULE} ${depends}
-                                ${PYTHON_LIBRARIES})
+                                ${PYTHON_LIBRARIES}
+            )
+
+            set(EXTRA_MODULES)
+
+            foreach(module ${depends})
+                set(EXTRA_MODULES "${EXTRA_MODULES}from ${module} import *\n")
+            endforeach()
+            configure_file(__init__.py.in
+                           ${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RW_MODULE}/__init__.py
+            )
+
         endif()
     endforeach()
 

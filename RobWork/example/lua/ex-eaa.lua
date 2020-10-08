@@ -1,5 +1,7 @@
 require("sdurw")
 using("sdurw")
+require("sdurw_math")
+using("sdurw_math")
 
 eaa = EAAd(math.sqrt(2)/2*Pi,math.sqrt(2)/2*Pi,0);
 print("EAA: " .. tostring(eaa))

@@ -66,6 +66,12 @@ template<> Q::Q (size_t n, double value) : _vec (n)
     }
 }
 
+Q::Q (const std::vector< double >& r) : _vec (r.size ())
+{
+    for (size_t i = 0; i < r.size (); i++)
+        _vec (i) = r[i];
+}
+
 Q::~Q ()
 {}
 
@@ -127,13 +133,13 @@ std::istream& rw::math::operator>> (std::istream& in, Q& q)
     return in;
 }
 
-bool rw::math::operator== (const Q& q1, const Q& q2)
+bool rw::math::Q::operator== (const Q& q2) const
 {
-    if (q1.size () != q2.size ())
+    if (this->size () != q2.size ())
         return false;
 
-    for (size_t i = 0; i < q1.size (); i++)
-        if (q1 (i) != q2 (i))
+    for (size_t i = 0; i < this->size (); i++)
+        if ((*this) (i) != q2 (i))
             return false;
     return true;
 }

@@ -22,6 +22,7 @@
  * @file Quaternion.hpp
  */
 
+#if !defined(SWIG)
 #include "Rotation3D.hpp"
 #include "Rotation3DVector.hpp"
 
@@ -29,6 +30,7 @@
 
 #include <Eigen/Geometry>
 #include <ostream>
+#endif
 
 namespace rw { namespace math {
 
@@ -43,9 +45,9 @@ namespace rw { namespace math {
      * Quaternions can be added and multiplied in a similar way as usual
      * algebraic numbers. Though there are differences. Quaternion
      * multiplication is not commutative which means
-     * @f$Q\cdot P \neq P\cdot Q @f$
+     * \f$ Q\cdot P \neq P\cdot Q \f$
      */
-    template< class T = double > class Quaternion : public Rotation3DVector< T >
+    template< class T = double > class Quaternion : public rw::math::Rotation3DVector< T >
     {
       private:
         typedef Eigen::Quaternion< T > EigenQuaternion;
@@ -75,26 +77,29 @@ namespace rw { namespace math {
          * @brief Creates a Quaternion from another Rotation3DVector type
          * @param rot [in] The Rotation3DVector type
          */
-        Quaternion (const Rotation3DVector< T >& rot) { setRotation (rot.toRotation3D ()); }
+        Quaternion (const rw::math::Rotation3DVector< T >& rot)
+        {
+            setRotation (rot.toRotation3D ());
+        }
 
         /**
          * @brief Extracts a Quaternion from Rotation matrix using
          * setRotation(const Rotation3D<R>& rot)
          * @param rot [in] A 3x3 rotation matrix @f$ \mathbf{rot} @f$
          */
-        Quaternion (const Rotation3D< T >& rot) { setRotation (rot); }
+        Quaternion (const rw::math::Rotation3D< T >& rot) { setRotation (rot); }
 
         /**
          * @brief Creates a Quaternion from a Eigen quaternion
          * @param r [in] a boost quaternion
          */
-        Quaternion (const EigenQuaternion& r) : _q (r) {}
+        Quaternion (const Eigen::Quaternion< T >& r) : _q (r) {}
 
         /**
          * @brief copy a boost quaternion to this Quaternion
          * @param r [in] - boost quaternion
          */
-        inline void operator= (const EigenQuaternion& r) { _q = r; }
+        inline void operator= (const Eigen::Quaternion< T >& r) { _q = r; }
 
         /**
          * @brief get method for the x component
@@ -156,22 +161,22 @@ namespace rw { namespace math {
          * @f$
          *
          */
-        inline const Rotation3D< T > toRotation3D () const
+        inline const rw::math::Rotation3D< T > toRotation3D () const
         {
             const T qx = _q.x ();
             const T qy = _q.y ();
             const T qz = _q.z ();
             const T qw = _q.w ();
 
-            return Rotation3D< T > (1 - 2 * qy * qy - 2 * qz * qz,
-                                    2 * (qx * qy - qz * qw),
-                                    2 * (qx * qz + qy * qw),
-                                    2 * (qx * qy + qz * qw),
-                                    1 - 2 * qx * qx - 2 * qz * qz,
-                                    2 * (qy * qz - qx * qw),
-                                    2 * (qx * qz - qy * qw),
-                                    2 * (qy * qz + qx * qw),
-                                    1 - 2 * qx * qx - 2 * qy * qy);
+            return rw::math::Rotation3D< T > (1 - 2 * qy * qy - 2 * qz * qz,
+                                              2 * (qx * qy - qz * qw),
+                                              2 * (qx * qz + qy * qw),
+                                              2 * (qx * qy + qz * qw),
+                                              1 - 2 * qx * qx - 2 * qz * qz,
+                                              2 * (qy * qz - qx * qw),
+                                              2 * (qx * qz - qy * qw),
+                                              2 * (qy * qz + qx * qw),
+                                              1 - 2 * qx * qx - 2 * qy * qy);
         }
 
         /**
@@ -180,7 +185,7 @@ namespace rw { namespace math {
            size() and operator[].
          */
         size_t size () const { return 4; }
-
+#if !defined(SWIG)
         /**
          * @brief Returns reference to Quaternion element
          * @param i [in] index in the quaternion \f$i\in \{0,1,2,3\} \f$
@@ -244,12 +249,14 @@ namespace rw { namespace math {
                 default: assert (0); return _q.x ();
             }
         }
-
+#else
+        ARRAYOPERATOR (T);
+#endif
         /**
          * @brief Calculates a slerp interpolation between \b this and \b v.
          *
          * The slerp interpolation ensures a constant velocity across the interpolation.
-         * For \f$t=0\f$ the result is \b this and for \f$t=1\f$ it is \b v.
+         * For \f$ t=0\f$ the result is \b this and for \f$ t=1\f$ it is \b v.
          *
          * @note Algorithm and implementation is thanks to euclideanspace.com
          */
@@ -265,7 +272,7 @@ namespace rw { namespace math {
         {
             return Quaternion< T > (_q.x () * s, _q.y () * s, _q.z () * s, _q.w () * s);
         }
-
+#if !defined(SWIGPYTHON)
         /**
            @brief Scalar multiplication.
          */
@@ -273,7 +280,7 @@ namespace rw { namespace math {
         {
             return v * s;
         }
-
+#endif
         /**
            @brief Scalar multiplication.
          */
@@ -304,6 +311,7 @@ namespace rw { namespace math {
             return q;
         }
 
+#if !defined(SWIGPYTHON)
         /**
            @brief Addition of two quaternions
          */
@@ -312,7 +320,7 @@ namespace rw { namespace math {
         {
             return Quaternion< T > (s (0) + v (0), s (1) + v (1), s (2) + v (2), s (3) + v (3));
         }
-
+#endif
         /**
          *@brief Add-to operator
          */
@@ -326,11 +334,12 @@ namespace rw { namespace math {
         }
 
         /**
-           @brief Scalar multiplication.
+           @brief Subtraction.
          */
-        inline friend const Quaternion< T > operator- (Quaternion< T > s, const Quaternion< T >& v)
+        inline const Quaternion< T > operator- (const Quaternion< T >& v)
         {
-            return Quaternion< T > (s (0) - v (0), s (1) - v (1), s (2) - v (2), s (3) - v (3));
+            return Quaternion< T > (
+                (*this) (0) - v (0), (*this) (1) - v (1), (*this) (2) - v (2), (*this) (3) - v (3));
         }
 
         /**
@@ -396,7 +405,7 @@ namespace rw { namespace math {
          * more robust, than many of the methods proposed elsewhere.
          *
          */
-        template< class R > void setRotation (const Rotation3D< R >& rot)
+        template< class R > void setRotation (const rw::math::Rotation3D< R >& rot)
         {
             // The method
             const T min  = (T) (-0.9);
@@ -476,6 +485,9 @@ namespace rw { namespace math {
          */
         Quaternion< T > pow (double power) const;
 
+#if defined(SWIG)
+        TOSTRING ();
+#endif
       private:
         Eigen::Quaternion< T > _q;
     };
@@ -536,12 +548,15 @@ namespace rw { namespace math {
                                 static_cast< Q > (quaternion (2)),
                                 static_cast< Q > (quaternion (3)));
     }
-
+#if !defined(SWIG)
     extern template class rw::math::Quaternion< double >;
     extern template class rw::math::Quaternion< float >;
-
-    using Quaterniond = Quaternion<double>;
-    using Quaternionf = Quaternion<float>;
+#else
+    SWIG_DECLARE_TEMPLATE (Quaterniond, rw::math::Quaternion< double >);
+    SWIG_DECLARE_TEMPLATE (Quaternionf, rw::math::Quaternion< float >);
+#endif
+    using Quaterniond = Quaternion< double >;
+    using Quaternionf = Quaternion< float >;
 
     /*@}*/
 }}    // namespace rw::math

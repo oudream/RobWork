@@ -21,8 +21,9 @@
 /**
  * @file Rotation3DVector.hpp
  */
-
+#if !defined(SWIG)
 #include "Rotation3D.hpp"
+#endif 
 
 namespace rw { namespace math {
 
@@ -47,7 +48,7 @@ namespace rw { namespace math {
          * @brief Returns the corresponding @f$ 3\times 3 @f$ Rotation matrix
          * @return The rotation matrix
          */
-        virtual const Rotation3D< T > toRotation3D () const = 0;
+        virtual const rw::math::Rotation3D< T > toRotation3D () const = 0;
 
       protected:
         /**
@@ -69,10 +70,15 @@ namespace rw { namespace math {
         Rotation3DVector () {}
     };
 
-    extern template class rw::math::Rotation3DVector< double >;
-    extern template class rw::math::Rotation3DVector< float >;
-
     /**@}*/
 }}    // namespace rw::math
+
+#if !defined(SWIG)
+    extern template class rw::math::Rotation3DVector< double >;
+    extern template class rw::math::Rotation3DVector< float >;
+#else 
+    SWIG_DECLARE_TEMPLATE (Rotation3DVectord, rw::math::Rotation3DVector< double >);
+    SWIG_DECLARE_TEMPLATE (Rotation3DVectorf, rw::math::Rotation3DVector< float >);
+#endif 
 
 #endif    // end include guard

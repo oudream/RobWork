@@ -18,10 +18,11 @@
 #ifndef RW_MATH_PROJECTIONMATRIX_HPP_
 #define RW_MATH_PROJECTIONMATRIX_HPP_
 
+#if !defined(SWIG)
 #include <rw/core/Ptr.hpp>
 
 #include <Eigen/Core>
-
+#endif 
 namespace rw { namespace math {
 
     /**

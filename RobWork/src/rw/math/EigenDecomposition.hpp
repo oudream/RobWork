@@ -8,9 +8,10 @@
 #ifndef EIGENDECOMPOSITION_HPP_
 #define EIGENDECOMPOSITION_HPP_
 
+#if !defined(SWIG)
 #include <Eigen/Core>
 #include <vector>
-
+#endif 
 namespace rw { namespace math {
     //! @brief Type representing a set of eigen values and eigen vectors.
     template< class T = double > class EigenDecomposition

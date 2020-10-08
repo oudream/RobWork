@@ -50,6 +50,17 @@ void Math::seed ()
     srand ((unsigned int)time (NULL));
 }
 
+rw::math::Q Math::clampQ (const rw::math::Q& q, const rw::math::Q& min, const rw::math::Q& max)
+{
+    assert (q.size () == min.size ());
+    assert (q.size () == max.size ());
+
+    Q qres (q.size ());
+    for (size_t i = 0; i < q.size (); i++)
+        qres (i) = clamp (q (i), min (i), max (i));
+
+    return qres;
+}
 double Math::ran (double from, double to)
 {
     return Random::ran (from, to);

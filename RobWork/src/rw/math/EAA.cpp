@@ -97,6 +97,36 @@ template< class T > Vector3D< T > angleAxis (const Rotation3D< T >& R)
 template< class T > EAA< T >::EAA (const Rotation3D< T >& R) : _eaa (angleAxis (R))
 {}
 
+template< class T >
+EAA< T >::EAA (const rw::math::Vector3D< T >& v1, const rw::math::Vector3D< T >& v2) :
+    _eaa (0, 0, 0)
+{
+    const T epsilon = (T) 1e-15;
+    T dval          = rw::math::dot (v1, v2);
+    if (fabs (dval - 1) < epsilon) {
+        // if the projection is close to 1 then the angle between the vectors are almost 0
+        // and we cannot reliably determine the perpendicular axis. A good approximation is
+        // therefore just to set the EAA equal to 0.
+        _eaa = Vector3D< T > (0, 0, 0);
+    }
+    else if (fabs (dval + 1) < epsilon) {
+        // if the projection is close to -1 then the angle between the vectors are almost
+        // 180 and we choose a rotation axis perpendicular to the vector
+        int idx = 0;
+        if (fabs (v1 (0)) > fabs (v1 (1)))
+            idx = 1;
+        if (fabs (v1 (idx)) > fabs (v1 (2)))
+            idx = 2;
+        Vector3D< T > v3 (0, 0, 0);
+        v3 (idx) = 1;
+        _eaa     = normalize (rw::math::cross (v1, v3)) * (T) Pi;
+    }
+    else {
+        T cosangle = acos (dval);
+        _eaa       = normalize (rw::math::cross (v1, v2)) * cosangle;
+    }
+}
+
 template< class T > const Rotation3D< T > EAA< T >::toRotation3D () const
 {
     T theta = angle ();

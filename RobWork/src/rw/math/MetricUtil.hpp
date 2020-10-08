@@ -21,11 +21,12 @@
 /**
  * @file MetricUtil.hpp
  */
-
+#if !defined(SWIG)
 #include <rw/math/Constants.hpp>
 
 #include <cmath>
 #include <cstddef>
+#endif 
 
 namespace rw { namespace math {
     /** @addtogroup math */

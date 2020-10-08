@@ -77,23 +77,23 @@ FixedFrame* rws::swig::findFixedFrame (const std::string& name)
     return getRobWorkStudio ()->getWorkCell ()->findFrame< FixedFrame > (name);
 }
 
-void rws::swig::moveTo (MovableFrame* mframe, Transform3Dd wTframe)
+void rws::swig::moveTo (MovableFrame* mframe, rw::math::Transform3D<double> wTframe)
 {
     State state = getState ();
     mframe->moveTo (wTframe, state);
     setState (state);
 }
 
-void rws::swig::moveTo (Frame* frame, MovableFrame* mframe, Transform3Dd wTtcp)
+void rws::swig::moveTo (Frame* frame, MovableFrame* mframe, rw::math::Transform3D<double> wTtcp)
 {
     State state                = getState ();
-    Transform3Dd tcpTbase      = rw::kinematics::Kinematics::frameTframe (frame, mframe, state);
-    Transform3Dd wTbase_target = wTtcp * tcpTbase;
+    rw::math::Transform3D<double> tcpTbase      = rw::kinematics::Kinematics::frameTframe (frame, mframe, state);
+    rw::math::Transform3D<double> wTbase_target = wTtcp * tcpTbase;
     mframe->moveTo (wTbase_target, state);
     setState (state);
 }
 
-void rws::swig::moveTo (const std::string& fname, const std::string& mname, Transform3Dd wTframe)
+void rws::swig::moveTo (const std::string& fname, const std::string& mname, rw::math::Transform3D<double> wTframe)
 {
     Frame* fframe        = findFrame (fname);
     MovableFrame* mframe = findMovableFrame (mname);
@@ -136,13 +136,13 @@ bool rws::swig::isRunning ()
     return robApp->isRunning ();
 }
 
-rwlibs::swig::Q rws::swig::getQ (rw::core::Ptr< rwlibs::swig::Device > dev)
+rw::math::Q rws::swig::getQ (rw::core::Ptr< rwlibs::swig::Device > dev)
 {
     if (dev == NULL)
         RW_THROW ("Device is NULL!");
     return dev->getQ (getState ());
 }
-void rws::swig::setQ (rw::core::Ptr< rwlibs::swig::Device > dev, rwlibs::swig::Q q)
+void rws::swig::setQ (rw::core::Ptr< rwlibs::swig::Device > dev, rw::math::Q q)
 {
     if (dev == NULL)
         RW_THROW ("Device is NULL!");

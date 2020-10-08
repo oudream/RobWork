@@ -21,13 +21,13 @@
 /**
    @file MetricFactory.hpp
 */
-
-#include "EAA.hpp"
-#include "Metric.hpp"
-#include "MetricUtil.hpp"
-#include "Vector2D.hpp"
-
+#if !defined(SWIG)
 #include <rw/kinematics/State.hpp>
+#include <rw/math/EAA.hpp>
+#include <rw/math/Metric.hpp>
+#include <rw/math/MetricUtil.hpp>
+#include <rw/math/Vector2D.hpp>
+#endif
 
 namespace rw { namespace math {
 
@@ -489,7 +489,7 @@ namespace rw { namespace math {
         MetricFactory (const MetricFactory&);
         MetricFactory& operator= (const MetricFactory&);
     };
-
+#if !defined(SWIG)
     extern template class rw::math::ManhattanMetric< Q >;
     extern template class rw::math::WeightedManhattanMetric< Q >;
 
@@ -570,7 +570,7 @@ namespace rw { namespace math {
 
     extern template class rw::math::InfinityMetric< std::vector< float > >;
     extern template class rw::math::WeightedInfinityMetric< std::vector< float > >;
-
+#endif
     /* @} */
 }}    // namespace rw::math
 

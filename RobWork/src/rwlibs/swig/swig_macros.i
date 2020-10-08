@@ -200,16 +200,16 @@
 
 %define FRIEND_OPERATOR(friend_class, orig_class, theOprator)
     %extend friend_class {
-        orig_class theOprator (const orig_class& rhs) {
-            return (*$self)*rhs;
+        orig_class operator theOprator (const orig_class& rhs) {
+            return (*$self) theOprator rhs;
         }
     }
 %enddef
 
 %define FRIEND_OPERATOR_RET(friend_class, orig_class, theOprator, ret)
     %extend friend_class {
-        ret theOprator (const orig_class& rhs) {
-            return (*$self)*rhs;
+        ret operator theOprator (const orig_class& rhs) {
+            return (*$self) theOprator rhs;
         }
     }
 %enddef

@@ -21,10 +21,12 @@
 /**
  * @file Vector3D.hpp
  */
+
+#if !defined(SWIG)
 #include <rw/common/Serializable.hpp>
 
 #include <Eigen/Eigen>
-
+#endif
 namespace rw { namespace math {
 
     /** @addtogroup math */
@@ -188,8 +190,7 @@ namespace rw { namespace math {
          * @brief Vector subtraction.
          */
         template< class R >
-        friend Vector3D< T > operator- (const Eigen::MatrixBase< R >& lhs,
-                                         const Vector3D< T >& rhs)
+        friend Vector3D< T > operator- (const Eigen::MatrixBase< R >& lhs, const Vector3D< T >& rhs)
         {
             return Vector3D< T > (lhs - rhs.e ());
         }
@@ -206,8 +207,7 @@ namespace rw { namespace math {
          * @brief Vector subtraction.
          */
         template< class R >
-        friend Vector3D< T > operator+ (const Eigen::MatrixBase< R >& lhs,
-                                         const Vector3D< T >& rhs)
+        friend Vector3D< T > operator+ (const Eigen::MatrixBase< R >& lhs, const Vector3D< T >& rhs)
         {
             return Vector3D< T > (lhs + rhs.e ());
         }
@@ -219,7 +219,7 @@ namespace rw { namespace math {
          * @param rhs [in] the vector being devided with
          * @return the resulting Vector3D
          */
-        Vector3D< T > elemDivide(const Vector3D< T >& rhs) const
+        Vector3D< T > elemDivide (const Vector3D< T >& rhs) const
         {
             return Vector3D< T > (
                 _vec[0] / rhs._vec[0], _vec[1] / rhs._vec[1], _vec[2] / rhs._vec[2]);
@@ -230,7 +230,7 @@ namespace rw { namespace math {
          * @param rhs [in] vector
          * @return the element wise product
          */
-        Vector3D< T > elemMultiply(const Vector3D< T >& rhs) const
+        Vector3D< T > elemMultiply (const Vector3D< T >& rhs) const
         {
             return Vector3D< T > (
                 _vec[0] * rhs._vec[0], _vec[1] * rhs._vec[1], _vec[2] * rhs._vec[2]);
@@ -269,7 +269,7 @@ namespace rw { namespace math {
         {
             return Vector3D< T > (_vec[0] / s, _vec[1] / s, _vec[2] / s);
         }
-
+#if !defined(SWIGPYTHON)
         /**
          * @brief Scalar division.
          * @param lhs [in] the scalar to devide with
@@ -280,7 +280,7 @@ namespace rw { namespace math {
         {
             return Vector3D< T > (lhs / rhs._vec[0], lhs / rhs._vec[1], lhs / rhs._vec[2]);
         }
-
+#endif
         /**
          * @brief Scalar multiplication.
          * @param rhs [in] the scalar to multiply with
@@ -397,6 +397,7 @@ namespace rw { namespace math {
          */
         const EigenVector3D e () const { return _vec; }
 
+#if !defined(SWIG)
         /**
          * @brief Returns reference to vector element
          * @param i [in] index in the vector \f$i\in \{0,1,2\} \f$
@@ -424,7 +425,10 @@ namespace rw { namespace math {
          * @return reference to element
          */
         T& operator[] (size_t i) { return _vec[i]; }
-
+#else
+        ARRAYOPERATOR (T);
+#endif
+#if !defined(SWIG)
         /**
          * @brief Streaming operator.
          * @param out [in/out] the stream to continue
@@ -435,7 +439,9 @@ namespace rw { namespace math {
         {
             return out << "Vector3D(" << v[0] << ", " << v[1] << ", " << v[2] << ")";
         }
-
+#else
+        TOSTRING (rw::math::Vector3D< T >);
+#endif
         // ###################################################
         // #             assignement Operators               #
         // ###################################################
@@ -574,7 +580,7 @@ namespace rw { namespace math {
         {
             return !(lhs == rhs);
         }
-
+#if !defined(SWIG)
         /**
          * @brief implicit conversion to EigenVector
          */
@@ -583,7 +589,9 @@ namespace rw { namespace math {
         /**
          * @brief implicit conversion to EigenVector
          */
-        operator EigenVector3D& ()  { return this->e (); }
+        operator EigenVector3D& () { return this->e (); }
+#endif
+
       private:
         EigenVector3D _vec;
     };
@@ -719,12 +727,16 @@ namespace rw { namespace math {
         return Vector3D< Q > (
             static_cast< Q > (v (0)), static_cast< Q > (v (1)), static_cast< Q > (v (2)));
     }
-
+#if !defined(SWIG)
     extern template class rw::math::Vector3D< double >;
     extern template class rw::math::Vector3D< float >;
+#else
+    SWIG_DECLARE_TEMPLATE (Vector3Dd, rw::math::Vector3D< double >);
+    SWIG_DECLARE_TEMPLATE (Vector3Df, rw::math::Vector3D< float >);
+#endif
 
-    using Vector3Dd = Vector3D<double>;
-    using Vector3Df = Vector3D<float>;
+    using Vector3Dd = Vector3D< double >;
+    using Vector3Df = Vector3D< float >;
 
     /**@}*/
 }}    // namespace rw::math

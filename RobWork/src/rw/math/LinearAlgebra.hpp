@@ -21,10 +21,11 @@
 /**
  * @file LinearAlgebra.hpp
  */
+#if !defined(SWIG)
 #include <Eigen/Core>
 #include <Eigen/Eigenvalues>
 #include <limits>
-
+#endif 
 namespace rw { namespace math {
 
     /** @addtogroup math */
