@@ -7,6 +7,9 @@ Python API Reference
 .. toctree::
    :maxdepth: 2
 
+   sdurw_core.rst
+   sdurw_common.rst
+   sdurw_math.rst
    sdurw.rst
    sdurw_assembly.rst
    sdurw_control.rst
