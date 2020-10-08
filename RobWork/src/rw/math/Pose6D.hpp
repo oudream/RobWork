@@ -22,15 +22,17 @@
  * @file Pose6D.hpp
  */
 
+#if !defined(SWIG)
 #include "EAA.hpp"
 #include "Transform3D.hpp"
 #include "Vector3D.hpp"
-
+#endif
 namespace rw { namespace math {
 
-    /** @addtogroup math */
+/** @addtogroup math */
+#if !defined(SWIG)
     /*@{*/
-
+#endif
     /**
      * @brief A Pose6D @f$ \mathbf{x}\in \mathbb{R}^6 @f$ describes a position
      * and orientation in 3-dimensions.
@@ -54,7 +56,7 @@ namespace rw { namespace math {
     template< class T = double > class Pose6D
     {
       private:
-        Vector3D< T > _position;
+        rw::math::Vector3D< T > _position;
         EAA< T > _orientation;
 
       public:
@@ -81,7 +83,7 @@ namespace rw { namespace math {
          * @param v3d [in] Vector3D describing the 3D position of the Pose6D
          * @param eaa [in] EAA describing the rotational component of the Pose6D.
          */
-        Pose6D (const Vector3D< T >& v3d, const EAA< T >& eaa) : _position (v3d), _orientation (eaa)
+        Pose6D (const rw::math::Vector3D< T >& v3d, const EAA< T >& eaa) : _position (v3d), _orientation (eaa)
         {}
 
         /**
@@ -89,18 +91,18 @@ namespace rw { namespace math {
          *
          * @param t3d [in] A Transform3D
          */
-        explicit Pose6D (const Transform3D< T >& t3d) :
+        explicit Pose6D (const rw::math::Transform3D< T >& t3d) :
             _position (t3d.P ()), _orientation (t3d.R ())
         {}
 
         /**
-         * @brief Returns the \f$i\f$'th element in the pose.
+         * @brief Returns the \f$ i\f$'th element in the pose.
          *
-         * \f$i\in\{0,1,2\} \f$ corresponds to \f$\{x,y,z\}\f$ respectively.
-         * \f$i\in\{3,4,5\}\f$ corresponds to the equivalent angle axis.
+         * \f$ i\in\{0,1,2\} \f$ corresponds to \f$\{x,y,z\}\f$ respectively.
+         * \f$ i\in\{3,4,5\}\f$ corresponds to the equivalent angle axis.
          *
          * @param i [in] index to return
-         * @return the \f$i\f$'th index of the pose.
+         * @return the \f$ i\f$ in the index of the pose.
          */
         T get (size_t i) const
         {
@@ -115,10 +117,10 @@ namespace rw { namespace math {
          * @brief Get the position.
          * @return reference to position vector.
          */
-        const Vector3D< T >& getPos () const { return _position; }
+        const rw::math::Vector3D< T >& getPos () const { return _position; }
 
         //! @copydoc getPos() const
-        Vector3D< T >& getPos () { return _position; }
+        rw::math::Vector3D< T >& getPos () { return _position; }
 
         /**
          * @brief Get the orientation.
@@ -129,6 +131,7 @@ namespace rw { namespace math {
         //! @copydoc getEAA() const
         EAA< T >& getEAA () { return _orientation; }
 
+#if !defined(SWIG)
         /**
          * @brief Returns the \f$i\f$'th element in the pose.
          *
@@ -158,6 +161,25 @@ namespace rw { namespace math {
          *
          * @return the \f$i\f$'th index of the pose.
          */
+        T& operator() (size_t i)
+        {
+            assert (i < 6);
+            if (i < 3)
+                return _position (i);
+            else
+                return _orientation[i - 3];
+        }
+
+        /**
+         * @brief Returns the \f$i\f$'th element in the pose.
+         *
+         * \f$i\in\{0,1,2\} \f$ corresponds to \f$\{x,y,z\}\f$ respectively.
+         * \f$i\in\{3,4,5\}\f$ corresponds to the equivalent angle axis.
+         *
+         * @param i [in] index to return
+         *
+         * @return the \f$i\f$'th index of the pose.
+         */
         T operator[] (size_t i) const
         {
             assert (i < 6);
@@ -168,12 +190,33 @@ namespace rw { namespace math {
         }
 
         /**
+         * @brief Returns the \f$i\f$'th element in the pose.
+         *
+         * \f$i\in\{0,1,2\} \f$ corresponds to \f$\{x,y,z\}\f$ respectively.
+         * \f$i\in\{3,4,5\}\f$ corresponds to the equivalent angle axis.
+         *
+         * @param i [in] index to return
+         *
+         * @return the \f$i\f$'th index of the pose.
+         */
+        T& operator[] (size_t i)
+        {
+            assert (i < 6);
+            if (i < 3)
+                return _position (i);
+            else
+                return _orientation[i - 3];
+        }
+#else
+        ARRAYOPERATOR (T);
+#endif
+        /**
          * @brief Converts the Pose6D into the corresponding Transform3D
          * @return the corresponding Transform3D
          */
-        const Transform3D< T > toTransform3D () const
+        const rw::math::Transform3D< T > toTransform3D () const
         {
-            return Transform3D< T > (_position, _orientation);
+            return rw::math::Transform3D< T > (_position, _orientation);
         }
     };
 
@@ -203,13 +246,19 @@ namespace rw { namespace math {
                    << v (4) << ", " << v (5) << "}";
     }
 
+#if !defined(SWIG)
     extern template class rw::math::Pose6D< double >;
     extern template class rw::math::Pose6D< float >;
-
-    using Pose6Dd = Pose6D<double>;
-    using Pose6Df = Pose6D<float>;
-
-    /*@}*/
+#else
+    SWIG_DECLARE_TEMPLATE (Pose6Dd, rw::math::Pose6D< double >);
+    SWIG_DECLARE_TEMPLATE (Pose6Df, rw::math::Pose6D< float >);
+#endif
+    using Pose6Dd = Pose6D< double >;
+    using Pose6Df = Pose6D< float >;
+    
+#if !defined(SWIG)
+/*@}*/
+#endif
 }}    // namespace rw::math
 
 namespace rw { namespace common {

@@ -21,12 +21,14 @@
 /**
  * @file VectorND.hpp
  */
+#if !defined(SWIG)
 #include <rw/common/InputArchive.hpp>
 #include <rw/common/OutputArchive.hpp>
 #include <rw/common/Serializable.hpp>
 #include <rw/core/macros.hpp>
 
 #include <Eigen/Core>
+#endif
 
 namespace rw { namespace math {
 
@@ -240,15 +242,16 @@ namespace rw { namespace math {
          * @param rhs [in] the scalar to devide with
          * @return result of devision
          */
-        VectorND< N, T > operator/ (double rhs) const { return VectorND< N, T > (_vec / rhs); }
+        VectorND< N, T > operator/ (T rhs) const { return VectorND< N, T > (_vec / rhs); }
 
+#if !defined(SWIGPYTHON)
         /**
          * @brief Scalar division.
          * @param lhs [in] the scalar to devide with
          * @param rhs [out] the vector beind devided
          * @return result of devision
          */
-        friend VectorND< N, T > operator/ (double lhs, const VectorND< N, T >& rhs)
+        friend VectorND< N, T > operator/ (T lhs, const VectorND< N, T >& rhs)
         {
             VectorND< N, T > ret = rhs;
             for (size_t i = 0; i < N; i++) {
@@ -256,24 +259,27 @@ namespace rw { namespace math {
             }
             return ret;
         }
+#endif
 
         /**
          * @brief Scalar multiplication.
          * @param rhs [in] the scalar to multiply with
          * @return the product
          */
-        VectorND< N, T > operator* (double rhs) const { return VectorND< N, T > (_vec * rhs); }
+        VectorND< N, T > operator* (T rhs) const { return VectorND< N, T > (_vec * rhs); }
 
+#if !defined(SWIGPYTHON)
         /**
          * @brief Scalar multiplication.
          * @param lhs [in] the scalar to multiply with
          * @param rhs [in] the Vector to be multiplied
          * @return the product
          */
-        friend VectorND< N, T > operator* (double lhs, const VectorND< N, T >& rhs)
+        friend VectorND< N, T > operator* (T lhs, const VectorND< N, T >& rhs)
         {
             return VectorND< N, T > (lhs * rhs._vec);
         }
+#endif
 
         /**
          * @brief Scalar subtraction.
@@ -342,7 +348,7 @@ namespace rw { namespace math {
         // ###################################################
         // #                Acces Operators                  #
         // ###################################################
-
+#if !defined(SWIG)
         /**
          * @brief Returns reference to VectorND element
          * @param i [in] index in the VectorND \f$i\in \{0,1,2\} \f$
@@ -370,7 +376,9 @@ namespace rw { namespace math {
          * @return reference to element
          */
         T& operator[] (size_t i) { return _vec[i]; }
-
+#else
+        ARRAYOPERATOR (T);
+#endif
         /**
          * @brief Accessor for the internal Eigen VectorND.
          */
@@ -380,7 +388,7 @@ namespace rw { namespace math {
            @brief Accessor for the internal Eigen VectorND.
          */
         const EigenVectorND& e () const { return _vec; }
-
+#if !defined(SWIG)
         /**
          * @brief Streaming operator.
          * @param out [in/out] the stream to continue
@@ -396,6 +404,11 @@ namespace rw { namespace math {
             out << v[N - 1] << ")";
             return out;
         }
+#else
+#define VECTORND(num, type) rw::math::VectorND< num, type >
+        TOSTRING (VECTORND (N, T));
+#undef VECTORND
+#endif
 
         /**
          * @brief converts the vector to a std:vector
@@ -540,7 +553,7 @@ namespace rw { namespace math {
         // ###################################################
         // #                      OTHER                      #
         // ###################################################
-
+#if !defined(SWIG)
         //! @copydoc rw::common::Serializable::write
         void write (rw::common::OutputArchive& oarchive, const std::string& id) const
         {
@@ -554,7 +567,8 @@ namespace rw { namespace math {
             iarchive.read (result, id, "VectorND");
             *this = VectorND< N, T > (result);
         }
-
+#endif
+#if !defined(SWIG)
         /**
          * @brief implicit conversion to EigenVector
          */
@@ -564,7 +578,7 @@ namespace rw { namespace math {
          * @brief implicit conversion to EigenVector
          */
         operator EigenVectorND& () { return this->e (); }
-
+#endif
         /**
          * @brief Get zero-initialized vector.
          * @return vector.
@@ -737,6 +751,7 @@ namespace rw { namespace math {
 
     template< class T > using Vector6D = VectorND< 6, T >;
 
+#if !defined(SWIG)
     extern template class rw::math::VectorND< 6, double >;
     extern template class rw::math::VectorND< 6, float >;
     extern template class rw::math::VectorND< 5, double >;
@@ -747,6 +762,16 @@ namespace rw { namespace math {
     extern template class rw::math::VectorND< 3, float >;
     extern template class rw::math::VectorND< 2, double >;
     extern template class rw::math::VectorND< 2, float >;
+#else
+#define VECTORND(num, type) rw::math::VectorND< num, type >;
+    SWIG_DECLARE_TEMPLATE (Vector6Dd, VECTORND (6, double));
+    SWIG_DECLARE_TEMPLATE (Vector6Df, VECTORND (6, float));
+    SWIG_DECLARE_TEMPLATE (Vector5Dd, VECTORND (5, double));
+    SWIG_DECLARE_TEMPLATE (Vector5Df, VECTORND (5, float));
+    SWIG_DECLARE_TEMPLATE (Vector4Dd, VECTORND (4, double));
+    SWIG_DECLARE_TEMPLATE (Vector4Df, VECTORND (4, float));
+#undef VECTORND
+#endif
 
     /**@}*/
 }}    // namespace rw::math

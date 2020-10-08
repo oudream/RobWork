@@ -149,17 +149,7 @@ namespace rw { namespace geometry {
          * @param p2 [in] point 2 on the line
          */
         rw::math::Vector3D<> intersection (const rw::math::Vector3D<>& p1,
-                                           const rw::math::Vector3D<>& p2) const
-        {
-            double denominator = dot (_normal, p2 - p1);
-
-            if (fabs (denominator) < 1e-16) {
-                RW_THROW ("The specified line is parallel to the plane. Points: "
-                          << p1 << "; " << p2 << " Normal = " << _normal);
-            }
-            double t = (-_d - dot (_normal, p1)) / denominator;
-            return p1 + t * (p2 - p1);
-        }
+                                           const rw::math::Vector3D<>& p2) const;
 
         // static Plane fitFrom(const std::vector<rw::math::Vector3D<> >& data){ return };
 

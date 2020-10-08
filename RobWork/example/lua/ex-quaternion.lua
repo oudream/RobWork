@@ -1,5 +1,7 @@
 require("sdurw")
 using("sdurw")
+require("sdurw_math")
+using("sdurw_math")
 
 quat = Quaterniond(math.sqrt(2)/2,math.sqrt(2)/2,0,0);
 print("Quaternion: " .. tostring(quat))

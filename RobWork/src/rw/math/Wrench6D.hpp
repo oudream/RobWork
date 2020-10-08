@@ -22,6 +22,7 @@
  * @file Wrench6D.hpp
  */
 
+#if !defined(SWIG)
 #include "EAA.hpp"
 #include "Math.hpp"
 #include "Transform3D.hpp"
@@ -30,6 +31,7 @@
 #include <rw/common/Serializable.hpp>
 
 #include <Eigen/Core>
+#endif
 
 namespace rw { namespace math {
 
@@ -101,14 +103,14 @@ namespace rw { namespace math {
          * @param force [in] linear force
          * @param torque [in] angular torque
          */
-        Wrench6D (const Vector3D< T >& force, const Vector3D< T >& torque);
+        Wrench6D (const rw::math::Vector3D< T >& force, const rw::math::Vector3D< T >& torque);
 
         /**
          * @brief Sets the force component
          *
          * @param force [in] linear force
          */
-        void setForce (const Vector3D< T >& force)
+        void setForce (const rw::math::Vector3D< T >& force)
         {
             _wrench[0] = force (0);
             _wrench[1] = force (1);
@@ -120,7 +122,7 @@ namespace rw { namespace math {
          *
          * @param torque [in] angular torque
          */
-        void setTorque (const Vector3D< T >& torque)
+        void setTorque (const rw::math::Vector3D< T >& torque)
         {
             _wrench[3] = torque (0);
             _wrench[4] = torque (1);
@@ -132,9 +134,9 @@ namespace rw { namespace math {
          *
          * @return the force
          */
-        const Vector3D< T > force () const
+        const rw::math::Vector3D< T > force () const
         {
-            return Vector3D< T > (_wrench[0], _wrench[1], _wrench[2]);
+            return rw::math::Vector3D< T > (_wrench[0], _wrench[1], _wrench[2]);
         }
 
         /**
@@ -142,11 +144,11 @@ namespace rw { namespace math {
          *
          * @return the torque
          */
-        const Vector3D< T > torque () const
+        const rw::math::Vector3D< T > torque () const
         {
-            return Vector3D< T > (_wrench[3], _wrench[4], _wrench[5]);
+            return rw::math::Vector3D< T > (_wrench[3], _wrench[4], _wrench[5]);
         }
-
+#if !defined(SWIG)
         /**
          * @brief Returns reference to wrench element
          *
@@ -190,7 +192,9 @@ namespace rw { namespace math {
          * @return const reference to velocity screw element
          */
         T& operator[] (size_t i) { return (*this) (i); }
-
+#else
+        ARRAYOPERATOR (T);
+#endif
         /**
          * @brief Adds the wrench given as a parameter to the wrench.
          *
@@ -251,7 +255,7 @@ namespace rw { namespace math {
             result *= s;
             return result;
         }
-
+#if !defined(SWIG)
         /**
          * @brief Changes frame of reference and referencepoint of
          * wrench: @f$ \robabx{b}{b}{\mathbf{w}}\to
@@ -301,13 +305,14 @@ namespace rw { namespace math {
          */
         friend const Wrench6D< T > operator* (const Transform3D< T >& aTb, const Wrench6D< T >& bV)
         {
-            const Vector3D< T >& bv = bV.force ();
-            const Vector3D< T >& bw = bV.torque ();
-            const Vector3D< T >& aw = aTb.R () * bw;
-            const Vector3D< T >& av = aTb.R () * bv + cross (aTb.P (), aw);
+            const rw::math::Vector3D< T >& bv = bV.force ();
+            const rw::math::Vector3D< T >& bw = bV.torque ();
+            const rw::math::Vector3D< T >& aw = aTb.R () * bw;
+            const rw::math::Vector3D< T >& av = aTb.R () * bv + cross (aTb.P (), aw);
             return Wrench6D< T > (av, aw);
         }
-
+#endif
+#if !defined(SWIG)
         /**
          * @brief Changes wrench referencepoint of
          * wrench: @f$ \robabx{b}{b}{\mathbf{w}}\to
@@ -355,14 +360,15 @@ namespace rw { namespace math {
          * \f]
          *
          */
-        friend const Wrench6D< T > operator* (const Vector3D< T >& aPb, const Wrench6D< T >& bV)
+        friend const Wrench6D< T > operator* (const rw::math::Vector3D< T >& aPb, const Wrench6D< T >& bV)
         {
-            const Vector3D< T >& bv = bV.force ();
-            const Vector3D< T >& bw = bV.torque ();
-            const Vector3D< T >& av = bv + cross (aPb, bw);
+            const rw::math::Vector3D< T >& bv = bV.force ();
+            const rw::math::Vector3D< T >& bw = bV.torque ();
+            const rw::math::Vector3D< T >& av = bv + cross (aPb, bw);
             return Wrench6D< T > (av, bw);
         }
-
+#endif
+#if !defined(SWIG)
         /**
          * @brief Changes frame of reference for wrench: @f$
          * \robabx{b}{i}{\mathbf{w}}\to \robabx{a}{i}{\mathbf{w}}
@@ -406,11 +412,12 @@ namespace rw { namespace math {
          */
         friend const Wrench6D< T > operator* (const Rotation3D< T >& aRb, const Wrench6D< T >& bV)
         {
-            Vector3D< T > bv = bV.force ();
-            Vector3D< T > bw = bV.torque ();
+            rw::math::Vector3D< T > bv = bV.force ();
+            rw::math::Vector3D< T > bw = bV.torque ();
 
             return Wrench6D< T > (aRb * bv, aRb * bw);
         }
+#endif
 
         /**
          * @brief Adds two wrenches together @f$
@@ -446,7 +453,7 @@ namespace rw { namespace math {
                                   _wrench[4] - rhs (4),
                                   _wrench[5] - rhs (5));
         }
-
+#if !defined(SWIG)
         /**
          * @brief Ouputs wrench to stream
          *
@@ -460,6 +467,9 @@ namespace rw { namespace math {
                       << wrench (3) << "," << wrench (4) << "," << wrench (5) << "}}";
             // return os << wrench.e();
         }
+#else
+        TOSTRING (rw::math::Wrench6D< T >);
+#endif
 
         /**
          * @brief Takes the 1-norm of the wrench. All elements both
@@ -575,12 +585,16 @@ namespace rw { namespace math {
                               static_cast< Q > (vs (4)),
                               static_cast< Q > (vs (5)));
     }
-
+#if !defined(SWIG)
     extern template class rw::math::Wrench6D< double >;
     extern template class rw::math::Wrench6D< float >;
+#else
+    SWIG_DECLARE_TEMPLATE (Wrench6Dd, rw::math::Wrench6D< double >);
+    SWIG_DECLARE_TEMPLATE (Wrench6Df, rw::math::Wrench6D< float >);
+#endif
 
-    using Wrench6Dd = Wrench6D<double>;
-    using Wrench6Df = Wrench6D<float>;
+    using Wrench6Dd = Wrench6D< double >;
+    using Wrench6Df = Wrench6D< float >;
 
     /*@}*/
 }}    // namespace rw::math

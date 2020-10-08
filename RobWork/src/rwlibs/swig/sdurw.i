@@ -46,8 +46,6 @@ SWIG_JAVABODY_TYPEWRAPPER(public, public, public, SWIGTYPE)
 %include <std_vector.i>
 %include <std_map.i>
 
-//%include <shared_ptr.i>
-
 %include <stl.i>
 %include <exception.i>
 
@@ -84,18 +82,22 @@ SWIG_JAVABODY_TYPEWRAPPER(public, public, public, SWIGTYPE)
 
 %import <rwlibs/swig/sdurw_core.i>
 %import <rwlibs/swig/sdurw_common.i>
+%import <rwlibs/swig/sdurw_math.i>
 
 %pragma(java) jniclassimports=%{
 import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_common.*;
+import org.robwork.sdurw_math.*;
 %}
 %pragma(java) moduleimports=%{
 import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_common.*;
+import org.robwork.sdurw_math.*;
 %}
 %typemap(javaimports) SWIGTYPE %{
 import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_common.*;
+import org.robwork.sdurw_math.*;
 %}
 
 /********************************************
@@ -106,9 +108,9 @@ import org.robwork.sdurw_common.*;
 %extend rw::core::PropertyMap {
             
 
-    Q& getQ(const std::string& id){ return $self->get<Q>(id); }
-    void setQ(const std::string& id, Q q){ $self->set<Q>(id, q); }
-    void set(const std::string& id, Q q){ $self->set<Q>(id, q); }
+    rw::math::Q& getQ(const std::string& id){ return $self->get< rw::math::Q >(id); }
+    void setQ(const std::string& id, rw::math::Q q){ $self->set< rw::math::Q >(id, q); }
+    void set(const std::string& id, rw::math::Q q){ $self->set< rw::math::Q >(id, q); }
 
     rw::math::Pose6D<double>& getPose6D(const std::string& id){ return $self->get<rw::math::Pose6D<double> >(id); }
     void setPose6D(const std::string& id, rw::math::Pose6D<double> p){  $self->set<rw::math::Pose6D<double> >(id, p); }
@@ -118,8 +120,8 @@ import org.robwork.sdurw_common.*;
     void setVector3D(const std::string& id, rw::math::Vector3D<double> p){  $self->set<rw::math::Vector3D<double> >(id, p); }
     void set(const std::string& id, rw::math::Vector3D<double> p){  $self->set<rw::math::Vector3D<double> >(id, p); }
 
-    rw::math::Transform3D<double> & getTransform3(const std::string& id){ return $self->get<rw::math::Transform3D<double> >(id); }
-    void setTransform3(const std::string& id, rw::math::Transform3D<double>  p){  $self->set<rw::math::Transform3D<double> >(id, p); }
+    rw::math::Transform3D<double> & getTransform3D(const std::string& id){ return $self->get<rw::math::Transform3D<double> >(id); }
+    void setTransform3D(const std::string& id, rw::math::Transform3D<double>  p){  $self->set<rw::math::Transform3D<double> >(id, p); }
     void set(const std::string& id, rw::math::Transform3D<double>  p){  $self->set<rw::math::Transform3D<double> >(id, p); }
 
     void load(const std::string& filename){ *($self) = rw::loaders::DOMPropertyMapLoader::load(filename); }
@@ -128,11 +130,11 @@ import org.robwork.sdurw_common.*;
 
 %import <rwlibs/swig/ext_i/std.i>
 
-%include <rwlibs/swig/ext_i/rw_eigen.i>
-%include <rwlibs/swig/ext_i/boost.i>
+//%include <rwlibs/swig/ext_i/boost.i>
 
 
 %inline %{
+
     void sleep(double t){
         ::rw::common::TimerUtil::sleepMs( (int) (t*1000) );
     }
@@ -158,7 +160,6 @@ import org.robwork.sdurw_common.*;
 
 
 void writelog(const std::string& msg);
-
 
 /********************************************
  * COMMON
@@ -281,17 +282,17 @@ class Primitive: public GeometryData {
 public:
     rw::core::Ptr<TriMesh> getTriMesh(bool forceCopy=true);
     virtual rw::core::Ptr<TriMesh> createMesh(int resolution) const = 0;
-    virtual Q getParameters() const = 0;
+    virtual rw::math::Q getParameters() const = 0;
 };
 
 class Sphere: public Primitive {
 public:
     //! constructor
-    Sphere(const Q& initQ);
+    Sphere(const rw::math::Q& initQ);
     Sphere(double radi):_radius(radi);
     double getRadius();
     rw::core::Ptr<TriMesh> createMesh(int resolution) const;
-    Q getParameters() const;
+    rw::math::Q getParameters() const;
     GeometryData::GeometryType getType() const;
 };
 
@@ -299,27 +300,27 @@ class Box: public Primitive {
 public:
     Box();
     Box(double x, double y, double z);
-    Box(const Q& initQ);
+    Box(const rw::math::Q& initQ);
     rw::core::Ptr<TriMesh> createMesh(int resolution) const;
-    Q getParameters() const;
+    rw::math::Q getParameters() const;
     GeometryType getType() const;
 };
 
 class Cone: public Primitive {
 public:
-    Cone(const Q& initQ);
+    Cone(const rw::math::Q& initQ);
     Cone(double height, double radiusTop, double radiusBot);
     double getHeight();
     double getTopRadius();
     double getBottomRadius();
     rw::core::Ptr<TriMesh> createMesh(int resolution) const;
-    Q getParameters() const;
+    rw::math::Q getParameters() const;
     GeometryType getType() const;
 };
 
 class Plane: public Primitive {
 public:
-    Plane(const Q& q);
+    Plane(const rw::math::Q& q);
     Plane(const rw::math::Vector3D<double>& n, double d);
     Plane(const rw::math::Vector3D<double>& p1,
           const rw::math::Vector3D<double>& p2,
@@ -335,7 +336,7 @@ public:
     double distance(const rw::math::Vector3D<double>& point);
     double refit( std::vector<rw::math::Vector3D<double> >& data );
     rw::core::Ptr<TriMesh> createMesh(int resolution) const ;
-    Q getParameters() const;
+    rw::math::Q getParameters() const;
     GeometryType getType() const;
 };
 
@@ -366,7 +367,7 @@ public:
 	  * @return the TriMesh.
 	  */
 	rw::core::Ptr<TriMesh> createMesh(int resolution) const;
-	Q getParameters() const;
+	rw::math::Q getParameters() const;
 	GeometryType getType() const;
 };
 
@@ -1159,7 +1160,7 @@ public:
 
     enum Type { QType = 0, Vector3DType, Rotation3DType, Transform3DType};
     Type getType();
-    rw::core::Ptr<Trajectory<Q> > getQTrajectory();
+    rw::core::Ptr<Trajectory< rw::math::Q > > getQTrajectory();
     rw::core::Ptr<Trajectory<rw::math::Vector3D<double> > > getVector3DTrajectory();
     rw::core::Ptr<Trajectory<rw::math::Rotation3D<double> > > getRotation3DTrajectory();
     rw::core::Ptr<Trajectory<rw::math::Transform3D<double> > > getTransform3DTrajectory();
@@ -1168,11 +1169,11 @@ public:
 class XMLTrajectorySaver
 {
 public:
-    static bool save(const Trajectory<Q>& trajectory, const std::string& filename);
+    static bool save(const Trajectory< rw::math::Q >& trajectory, const std::string& filename);
     static bool save(const Trajectory<rw::math::Vector3D<double> >& trajectory, const std::string& filename);
     static bool save(const Trajectory<rw::math::Rotation3D<double> >& trajectory, const std::string& filename);
     static bool save(const Trajectory<rw::math::Transform3D<double> >& trajectory, const std::string& filename);
-    static bool write(const Trajectory<Q>& trajectory, std::ostream& outstream);
+    static bool write(const Trajectory< rw::math::Q >& trajectory, std::ostream& outstream);
     static bool write(const Trajectory<rw::math::Vector3D<double> >& trajectory, std::ostream& outstream);
     static bool write(const Trajectory<rw::math::Rotation3D<double> >& trajectory, std::ostream& outstream);
     static bool write(const Trajectory<rw::math::Transform3D<double> >& trajectory, std::ostream& outstream);
@@ -1185,7 +1186,7 @@ private:
 /********************************************
  * MATH
  ********************************************/
-%include <rwlibs/swig/rw_i/math.i>
+//%include <rwlibs/swig/rw_i/math.i>
 
 // Utility function within rw::Math
 
@@ -1239,7 +1240,7 @@ public:
     };
 };
 
-%template (TimedQ) Timed<Q>;
+%template (TimedQ) Timed< rw::math::Q >;
 %template (TimedState) Timed<State>;
 
 namespace rw { namespace trajectory {
@@ -1269,36 +1270,40 @@ class Path: public std::vector<T>
 
 
 %template (PathState) rw::trajectory::Path<State>;
-%template (PathStatePtr) rw::core::Ptr<rw::trajectory::Path<State>>;
-OWNEDPTR(rw::trajectory::Path<State>)
+NAMED_OWNEDPTR(PathState, rw::trajectory::Path<State>);
 
-%template (TimedQVector) std::vector<Timed<Q> >;
+
+// Q
+%template (VectorQ) std::vector<rw::math::Q>;
+%template (TimedQVector) std::vector<Timed< rw::math::Q > >;
+%template (PathQ) rw::trajectory::Path< rw::math::Q >;
+%template (PathTimedQ) rw::trajectory::Path<Timed< rw::math::Q > >;
+NAMED_OWNEDPTR(TimedQVector, std::vector<Timed< rw::math::Q > >);
+NAMED_OWNEDPTR(PathQ, rw::trajectory::Path<rw::math::Q>); 
+NAMED_OWNEDPTR(PathTimedQ,rw::trajectory::Path<Timed< rw::math::Q > >);
+
+// State
 %template (TimedStateVector) std::vector<Timed<State> >;
-%template (TimedQVectorPtr) rw::core::Ptr<std::vector<Timed<Q> > >;
-%template (TimedStateVectorPtr) rw::core::Ptr<std::vector<Timed<State> > >;
-OWNEDPTR(std::vector<Timed<Q> > )
-
-%template (PathSE3) rw::trajectory::Path<rw::math::Transform3D<double> >;
-%template (PathSE3Ptr) rw::core::Ptr<rw::trajectory::Path<rw::math::Transform3D<double> > >;
-%template (PathQ) rw::trajectory::Path<Q>;
-%template (PathQPtr) rw::core::Ptr<rw::trajectory::Path<Q> >;
-%template (PathTimedQ) rw::trajectory::Path<Timed<Q> >;
-%template (PathTimedQPtr) rw::core::Ptr<rw::trajectory::Path<Timed<Q> > >;
 %template (PathTimedState) rw::trajectory::Path<Timed<State> >;
-%template (PathTimedStatePtr) rw::core::Ptr<rw::trajectory::Path<Timed<State> > >;
-OWNEDPTR(rw::trajectory::Path<rw::math::Transform3D<double> > )
-OWNEDPTR(rw::trajectory::Path<Q> )
-OWNEDPTR(rw::trajectory::Path<Timed<Q> > )
-OWNEDPTR(rw::trajectory::Path<Timed<State> > )
+NAMED_OWNEDPTR(TimedStateVector,std::vector<Timed<State>>);
+NAMED_OWNEDPTR(PathTimedState,rw::trajectory::Path<Timed<State> >);
 
-%extend rw::trajectory::Path<Q> {
-    rw::core::Ptr<rw::trajectory::Path<Timed<Q> > > toTimedQPath(Q speed){
+// Transform
+%template(VectorTransform3Dd) std::vector<rw::math::Transform3D<double>>;
+%template(VectorTimedTransform3Dd) std::vector<rw::trajectory::Timed<rw::math::Transform3D<double>>>;
+%template (PathSE3) rw::trajectory::Path<rw::math::Transform3D<double> >;
+%template (PathTimedTransform3Dd) rw::trajectory::Path< rw::trajectory::Timed<rw::math::Transform3D<double>>>;
+NAMED_OWNEDPTR(PathSE3,rw::trajectory::Path<rw::math::Transform3D<double> > );
+
+
+%extend rw::trajectory::Path< rw::math::Q > {
+    rw::core::Ptr<rw::trajectory::Path<Timed< rw::math::Q > > > toTimedQPath(rw::math::Q speed){
         rw::trajectory::TimedQPath tpath =
                 rw::trajectory::TimedUtil::makeTimedQPath(speed, *$self);
         return rw::core::ownedPtr( new rw::trajectory::TimedQPath(tpath) );
     }
 
-    rw::core::Ptr<rw::trajectory::Path<Timed<Q> > > toTimedQPath(rw::core::Ptr<Device> dev){
+    rw::core::Ptr<rw::trajectory::Path<Timed< rw::math::Q > > > toTimedQPath(rw::core::Ptr<Device> dev){
         rw::trajectory::TimedQPath tpath =
                 rw::trajectory::TimedUtil::makeTimedQPath(*dev, *$self);
         return rw::core::ownedPtr( new rw::trajectory::TimedQPath(tpath) );
@@ -1371,8 +1376,6 @@ OWNEDPTR(rw::trajectory::Path<Timed<State> > )
 	
 };
 
-
-
 template <class T>
 class Blend
 {
@@ -1389,21 +1392,21 @@ public:
 %template (BlendR3) Blend<rw::math::Vector3D<double> >;
 %template (BlendSO3) Blend<rw::math::Rotation3D<double> >;
 %template (BlendSE3) Blend<rw::math::Transform3D<double> >;
-%template (BlendQ) Blend<Q>;
+%template (BlendQ) Blend< rw::math::Q >;
 
 %template (BlendR1Ptr) rw::core::Ptr<Blend<double> >;
 %template (BlendR2Ptr) rw::core::Ptr<Blend<rw::math::Vector2D<double> > >;
 %template (BlendR3Ptr) rw::core::Ptr<Blend<rw::math::Vector3D<double> > >;
 %template (BlendSO3Ptr) rw::core::Ptr<Blend<rw::math::Rotation3D<double> > >;
 %template (BlendSE3Ptr) rw::core::Ptr<Blend<rw::math::Transform3D<double> > >;
-%template (BlendQPtr) rw::core::Ptr<Blend<Q> >;
+%template (BlendQPtr) rw::core::Ptr<Blend< rw::math::Q > >;
 
 OWNEDPTR(Blend<double> )
 OWNEDPTR(Blend<rw::math::Vector2D<double> > )
 OWNEDPTR(Blend<rw::math::Vector3D<double> > )
 OWNEDPTR(Blend<rw::math::Rotation3D<double> > )
 OWNEDPTR(Blend<rw::math::Transform3D<double> > )
-OWNEDPTR(Blend<Q> )
+OWNEDPTR(Blend< rw::math::Q > )
 
 template <class T>
 class Interpolator
@@ -1420,150 +1423,58 @@ public:
 %template (InterpolatorR3) Interpolator<rw::math::Vector3D<double> >;
 %template (InterpolatorSO3) Interpolator<rw::math::Rotation3D<double> >;
 %template (InterpolatorSE3) Interpolator<rw::math::Transform3D<double> >;
-%template (InterpolatorQ) Interpolator<Q>;
+%template (InterpolatorVector2Df) Interpolator<rw::math::Vector2D<float> >;
+%template (InterpolatorVector3Df) Interpolator<rw::math::Vector3D<float> >;
+%template (InterpolatorRotation3Df) Interpolator<rw::math::Rotation3D<float> >;
+%template (InterpolatorTransform3Df) Interpolator<rw::math::Transform3D<float> >;
+%template (InterpolatorQ) Interpolator< rw::math::Q >;
 
 %template (InterpolatorR1Ptr) rw::core::Ptr<Interpolator<double> >;
 %template (InterpolatorR2Ptr) rw::core::Ptr<Interpolator<rw::math::Vector2D<double> > >;
 %template (InterpolatorR3Ptr) rw::core::Ptr<Interpolator<rw::math::Vector3D<double> > >;
 %template (InterpolatorSO3Ptr) rw::core::Ptr<Interpolator<rw::math::Rotation3D<double> > >;
 %template (InterpolatorSE3Ptr) rw::core::Ptr<Interpolator<rw::math::Transform3D<double> > >;
-%template (InterpolatorQPtr) rw::core::Ptr<Interpolator<Q> >;
+%template (InterpolatorQPtr) rw::core::Ptr<Interpolator< rw::math::Q > >;
 
 OWNEDPTR(Interpolator<double> )
 OWNEDPTR(Interpolator<rw::math::Vector2D<double> > )
 OWNEDPTR(Interpolator<rw::math::Vector3D<double> > )
 OWNEDPTR(Interpolator<rw::math::Rotation3D<double> > )
 OWNEDPTR(Interpolator<rw::math::Transform3D<double> > )
-OWNEDPTR(Interpolator<Q> )
-
-class LinearInterpolator: public Interpolator<double> {
-public:
-    LinearInterpolator(const double& start,
-                          const double& end,
-                          double duration);
-
-    virtual ~LinearInterpolator();
-
-    double x(double t) const;
-    double dx(double t) const;
-    double ddx(double t) const;
-    double duration() const;
-};
+OWNEDPTR(Interpolator< rw::math::Q > )
 
 
-class LinearInterpolatorQ: public Interpolator<Q> {
-public:
-    LinearInterpolatorQ(const Q& start,
-                          const Q& end,
-                          double duration);
 
-    virtual ~LinearInterpolatorQ();
+%{
+    #include <rw/trajectory/LinearInterpolator.hpp>
+%}
+%include <rw/trajectory/LinearInterpolator.hpp>
 
-    Q x(double t) const;
-    Q dx(double t) const;
-    Q ddx(double t) const;
-    double duration() const;
-};
-
-class LinearInterpolatorR3: public Interpolator<rw::math::Rotation3D<double> > {
-public:
-    LinearInterpolatorR3(const rw::math::Rotation3D<double> & start,
-                          const rw::math::Rotation3D<double> & end,
-                          double duration);
-
-    rw::math::Rotation3D<double>  x(double t) const;
-    rw::math::Rotation3D<double>  dx(double t) const;
-    rw::math::Rotation3D<double>  ddx(double t) const;
-    double duration() const;
-};
-
-class LinearInterpolatorSO3: public Interpolator<rw::math::Rotation3D<double> > {
-public:
-    LinearInterpolatorSO3(const rw::math::Rotation3D<double> & start,
-                          const rw::math::Rotation3D<double> & end,
-                          double duration);
-
-    rw::math::Rotation3D<double>  x(double t) const;
-    rw::math::Rotation3D<double>  dx(double t) const;
-    rw::math::Rotation3D<double>  ddx(double t) const;
-    double duration() const;
-};
-
-class LinearInterpolatorSE3: public Interpolator<rw::math::Transform3D<double> > {
-public:
-    LinearInterpolatorSE3(const rw::math::Transform3D<double> & start,
-                          const rw::math::Transform3D<double> & end,
-                          double duration);
-
-    rw::math::Transform3D<double>  x(double t) const;
-    rw::math::Transform3D<double>  dx(double t) const;
-    rw::math::Transform3D<double>  ddx(double t) const;
-    double duration() const;
-};
+%template(LinearInterpolatord) rw::trajectory::LinearInterpolator<double>;
+%template(LinearInterpolatorQ) rw::trajectory::LinearInterpolator<rw::math::Q>;
+%template(LinearInterpolatorRotation3Dd) rw::trajectory::LinearInterpolator<rw::math::Rotation3D<double>>;
+%template(LinearInterpolatorRotation3Df) rw::trajectory::LinearInterpolator<rw::math::Rotation3D<float>>;
+%template(LinearInterpolatorTransform3Dd) rw::trajectory::LinearInterpolator<rw::math::Transform3D<double>>;
+%template(LinearInterpolatorTransform3Df) rw::trajectory::LinearInterpolator<rw::math::Transform3D<float>>;
 
 
 //////////// RAMP interpolator
 
+%{
+    #include <rw/trajectory/RampInterpolator.hpp>
+%}
+%include <rw/trajectory/RampInterpolator.hpp>
 
-class RampInterpolatorR3: public Interpolator<rw::math::Vector3D<double> > {
-public:
-    RampInterpolatorR3(const rw::math::Vector3D<double>& start, const rw::math::Vector3D<double>& end,
-                       double vellimit,double acclimit);
+%extend rw::trajectory::RampInterpolator<rw::math::Rotation3D<double>> {
+    
+}
 
-    rw::math::Vector3D<double> x(double t) const;
-    rw::math::Vector3D<double> dx(double t) const;
-    rw::math::Vector3D<double> ddx(double t) const;
-    double duration() const;
-};
-
-class RampInterpolatorSO3: public Interpolator<rw::math::Rotation3D<double> > {
-public:
-    RampInterpolatorSO3(const rw::math::Rotation3D<double> & start,
-                          const rw::math::Rotation3D<double> & end,
-                          double vellimit,double acclimit);
-
-    rw::math::Rotation3D<double>  x(double t) const;
-    rw::math::Rotation3D<double>  dx(double t) const;
-    rw::math::Rotation3D<double>  ddx(double t) const;
-    double duration() const;
-};
-
-class RampInterpolatorSE3: public Interpolator<rw::math::Transform3D<double> > {
-public:
-    RampInterpolatorSE3(const rw::math::Transform3D<double> & start,
-                          const rw::math::Transform3D<double> & end,
-                          double linvellimit,double linacclimit,
-                          double angvellimit,double angacclimit);
-
-    rw::math::Transform3D<double>  x(double t) const;
-    rw::math::Transform3D<double>  dx(double t) const;
-    rw::math::Transform3D<double>  ddx(double t) const;
-    double duration() const;
-};
-
-class RampInterpolator: public Interpolator<double> {
-public:
-    RampInterpolator(const double& start, const double& end, const double& vellimits, const double& acclimits);
-    //RampInterpolator(const double& start, const double& end, const double& vellimits, const double& acclimits, double duration);
-
-    double x(double t) const;
-    double dx(double t) const;
-    double ddx(double t) const;
-    double duration() const;
-};
-
-class RampInterpolatorQ: public Interpolator<Q> {
-public:
-    RampInterpolatorQ(const Q& start, const Q& end, const Q& vellimits, const Q& acclimits);
-    //RampInterpolatorQ(const Q& start, const Q& end, const Q& vellimits, const Q& acclimits, double duration);
-
-    Q x(double t) const;
-    Q dx(double t) const;
-    Q ddx(double t) const;
-    double duration() const;
-};
-
-
+%template(RampInterpolatord) rw::trajectory::RampInterpolator<double>;
+%template(RampInterpolatorQ) rw::trajectory::RampInterpolator<rw::math::Q>;
+%template(RampInterpolatorRotation3Dd) rw::trajectory::RampInterpolator<rw::math::Rotation3D<double>>;
+%template(RampInterpolatorRotation3Df) rw::trajectory::RampInterpolator<rw::math::Rotation3D<float>>;
+%template(RampInterpolatorTransform3Dd) rw::trajectory::RampInterpolator<rw::math::Transform3D<double>>;
+%template(RampInterpolatorTransform3Df) rw::trajectory::RampInterpolator<rw::math::Transform3D<float>>;
 
 template <class T>
 class Trajectory
@@ -1592,7 +1503,7 @@ protected:
 %template (TrajectoryR3) Trajectory<rw::math::Vector3D<double> >;
 %template (TrajectorySO3) Trajectory<rw::math::Rotation3D<double> >;
 %template (TrajectorySE3) Trajectory<rw::math::Transform3D<double> >;
-%template (TrajectoryQ) Trajectory<Q>;
+%template (TrajectoryQ) Trajectory< rw::math::Q >;
 
 %template (TrajectoryStatePtr) rw::core::Ptr<Trajectory<State> >;
 %template (TrajectoryR1Ptr) rw::core::Ptr<Trajectory<double> >;
@@ -1600,7 +1511,7 @@ protected:
 %template (TrajectoryR3Ptr) rw::core::Ptr<Trajectory<rw::math::Vector3D<double> > >;
 %template (TrajectorySO3Ptr) rw::core::Ptr<Trajectory<rw::math::Rotation3D<double> > >;
 %template (TrajectorySE3Ptr) rw::core::Ptr<Trajectory<rw::math::Transform3D<double> > >;
-%template (TrajectoryQPtr) rw::core::Ptr<Trajectory<Q> >;
+%template (TrajectoryQPtr) rw::core::Ptr<Trajectory< rw::math::Q > >;
 
 OWNEDPTR(Trajectory<State> )
 OWNEDPTR(Trajectory<double> )
@@ -1608,7 +1519,7 @@ OWNEDPTR(Trajectory<rw::math::Vector2D<double> > )
 OWNEDPTR(Trajectory<rw::math::Vector3D<double> > )
 OWNEDPTR(Trajectory<rw::math::Rotation3D<double> > )
 OWNEDPTR(Trajectory<rw::math::Transform3D<double> > )
-OWNEDPTR(Trajectory<Q> )
+OWNEDPTR(Trajectory< rw::math::Q > )
 
 template <class T>
 class InterpolatorTrajectory: public Trajectory<T> {
@@ -1630,7 +1541,7 @@ public:
 %template (InterpolatorTrajectoryR3) InterpolatorTrajectory<rw::math::Vector3D<double> >;
 %template (InterpolatorTrajectorySO3) InterpolatorTrajectory<rw::math::Rotation3D<double> >;
 %template (InterpolatorTrajectorySE3) InterpolatorTrajectory<rw::math::Transform3D<double> >;
-%template (InterpolatorTrajectoryQ) InterpolatorTrajectory<Q>;
+%template (InterpolatorTrajectoryQ) InterpolatorTrajectory< rw::math::Q >;
 
 
 /*
@@ -1638,13 +1549,13 @@ class TrajectoryFactory
 {
 public:
     static rw::core::Ptr<StateTrajectory> makeFixedTrajectory(const State& state, double duration);
-    static rw::core::Ptr<QTrajectory> makeFixedTrajectory(const Q& q, double duration);
+    static rw::core::Ptr<QTrajectory> makeFixedTrajectory(const rw::math::Q& q, double duration);
     static rw::core::Ptr<StateTrajectory> makeLinearTrajectory(const Path<Timed<State>>& path);
     static rw::core::Ptr<StateTrajectory> makeLinearTrajectory(const StatePath& path,
         const models::WorkCell& workcell);
     static rw::core::Ptr<StateTrajectory> makeLinearTrajectoryUnitStep(const StatePath& path);
     static rw::core::Ptr<QTrajectory> makeLinearTrajectory(const TimedQPath& path);
-    static rw::core::Ptr<QTrajectory> makeLinearTrajectory(const QPath& path, const Q& speeds);
+    static rw::core::Ptr<QTrajectory> makeLinearTrajectory(const QPath& path, const rw::math::Q& speeds);
     static rw::core::Ptr<QTrajectory> makeLinearTrajectory(const QPath& path, const models::Device& device);
     static rw::core::Ptr<QTrajectory> makeLinearTrajectory(const QPath& path, rw::core::Ptr<QMetric> metric);
     static rw::core::Ptr<Transform3DTrajectory> makeLinearTrajectory(const Transform3DPath& path, const std::vector<double>& times);

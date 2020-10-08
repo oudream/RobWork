@@ -1,6 +1,8 @@
 
-%import(module=sdurw_core) <rwlibs/swig/ext_i/std.i>
-
+%import(module=rwlibs/swig/sdurw_core) <rwlibs/swig/ext_i/std.i>
+%{
+    #include <Eigen/Core>
+%}
 namespace Eigen{
     template<typename _Scalar, int _Rows, int _Cols>
     class Matrix

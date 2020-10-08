@@ -54,6 +54,7 @@ if(build)
         RW::sdurw
         RW::sdurw_core
         RW::sdurw_common
+        RW::sdurw_math
     )
 
     rw_add_java_clean_target(sdurws)
@@ -63,8 +64,10 @@ if(build)
         sdurws
         CLASSPATH
             ${RW_LIBS}/sdurw_core_java.jar ${RW_LIBS}/sdurw_common_java.jar
-            ${RW_LIBS}/sdurw_java.jar
-        JAVADOC_LINK ${RW_LIBS}/javadoc/sdurw ${RW_LIBS}/javadoc/sdurw_core
+            ${RW_LIBS}/sdurw_math_java.jar ${RW_LIBS}/sdurw_java.jar
+        JAVADOC_LINK
+            ${RW_LIBS}/javadoc/sdurw ${RW_LIBS}/javadoc/sdurw_core ${RW_LIBS}/javadoc/sdurw_common
+            ${RW_LIBS}/javadoc/sdurw_math
         WINDOW_TITLE "RobWorkStudio Java API Documentation"
     )
     set(CMAKE_SWIG_OUTDIR ${RWS_CMAKE_LIBRARY_OUTPUT_DIRECTORY})

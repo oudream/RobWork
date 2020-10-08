@@ -21,7 +21,7 @@
 /**
  * @file RampInterpolator.hpp
  */
-
+#if !defined(SWIG)
 #include "Interpolator.hpp"
 
 #include <rw/math/Math.hpp>
@@ -29,7 +29,7 @@
 #include <rw/math/Rotation3D.hpp>
 #include <rw/math/Transform3D.hpp>
 //#include "InterpolatorUtil.hpp"
-
+#endif
 namespace rw { namespace trajectory {
 
     /** @addtogroup trajectory */
@@ -57,23 +57,6 @@ namespace rw { namespace trajectory {
          * with velocity limits \b vellimimts and acceleration limits \b acclimits. The duration
          * will be calculated automatically. The start and end velocity and acceleration is zero.
          *
-         * @param start [in] Start of interpolator
-         * @param end [in] End of interpolator
-         * @param vellimits [in] velocity limits
-         * @param acclimits [in] acceleration limits
-         */
-        RampInterpolator (const T& start, const T& end, const T& vellimits, const T& acclimits) :
-            _a (start), _b (end - start), _vel (vellimits), _acc (acclimits), _duration (-1.0)
-
-        {
-            init ();
-        }
-
-        /**
-         * @brief Construct RampInterpolator starting at \b start and finishing in \b end
-         * with velocity limits \b vellimimts and acceleration limits \b acclimits. The duration
-         * will be calculated automatically. The start and end velocity and acceleration is zero.
-         *
          * If \b duration is not achievable given the velocity and acceleration limits then
          * the duration will be extended.
          * @param start [in] Start of interpolator
@@ -83,66 +66,11 @@ namespace rw { namespace trajectory {
          * @param duration [in] Time it takes to from one end to the other.
          */
         RampInterpolator (const T& start, const T& end, const T& vellimits, const T& acclimits,
-                          double duration) :
+                          double duration = -1) :
             _a (start),
             _b (end - start), _vel (vellimits), _acc (acclimits), _duration (duration)
         {
             init ();
-        }
-
-        void init ()
-        {
-            using namespace rw::math;
-            // calculate max time
-            double maxtime = 0;
-            for (size_t i = 0; i < _b.size (); i++) {
-                double t   = 0;
-                double tau = _vel (i) / _acc (i);
-                double eps = sqrt (fabs (_b (i)) / (_acc (i)));
-                // std::cout<<"tau = "<<tau<<std::endl;
-                // std::cout<<"eps = "<<eps<<std::endl;
-                if (eps < tau)
-                    t = 2 * eps;
-                else {
-                    double dtau = tau * _vel (i);
-                    double Ttmp = (fabs (_b (i)) - dtau) / _vel (i);
-                    t           = Ttmp + 2 * tau;
-                }
-                maxtime = std::max (t, maxtime);
-            }
-            _duration = maxtime;
-
-            // calculate ramp
-            _wmax  = 1e10;
-            _dwmax = 1e10;
-            _ws    = 0;
-
-            for (size_t i = 0; i < _a.size (); i++) {
-                // double dq = fabs(_qend(i)-_qstart(i));
-                double dq = fabs (_b (i));
-                // std::cout<<"dq = "<<dq<<std::endl;
-                if (dq != 0) {
-                    _wmax  = std::min (_wmax, _vel (i) / dq);
-                    _dwmax = std::min (_dwmax, _acc (i) / dq);
-                }
-            }
-            // std::cout<<"wmax = "<<_wmax<<std::endl;
-            // std::cout<<"dwmax = "<<_dwmax<<std::endl;
-
-            // Compare using eq. 13 to see which of the cases
-            double lhs = sqrt (2 * Math::sqr (_ws / _dwmax) + 4 / _dwmax);
-            double rhs = 2 * _wmax / _dwmax;
-            if (lhs <= rhs) {
-                _durationRamp = _ws / _wmax + sqrt (2 * Math::sqr (_ws / _dwmax) + 4 / _dwmax);
-                _tau_s        = _durationRamp / 2 - _ws / (2 * _dwmax);
-                _tau_e        = _durationRamp / 2 + _ws / (2 * _dwmax);
-            }
-            else {
-                _durationRamp = 1 / _wmax + (Math::sqr (_wmax - _ws) + Math::sqr (_wmax)) /
-                                                (2 * _wmax * _dwmax);
-                _tau_s = (_wmax - _ws) / _dwmax;
-                _tau_e = (_wmax) / _dwmax;
-            }
         }
 
         /**
@@ -234,6 +162,61 @@ namespace rw { namespace trajectory {
         double duration () const { return _durationRamp; }
 
       private:
+        void init ()
+        {
+            using namespace rw::math;
+            // calculate max time
+            double maxtime = 0;
+            for (size_t i = 0; i < _b.size (); i++) {
+                double t   = 0;
+                double tau = _vel (i) / _acc (i);
+                double eps = sqrt (fabs (_b (i)) / (_acc (i)));
+                // std::cout<<"tau = "<<tau<<std::endl;
+                // std::cout<<"eps = "<<eps<<std::endl;
+                if (eps < tau)
+                    t = 2 * eps;
+                else {
+                    double dtau = tau * _vel (i);
+                    double Ttmp = (fabs (_b (i)) - dtau) / _vel (i);
+                    t           = Ttmp + 2 * tau;
+                }
+                maxtime = std::max (t, maxtime);
+            }
+            _duration = maxtime;
+
+            // calculate ramp
+            _wmax  = 1e10;
+            _dwmax = 1e10;
+            _ws    = 0;
+
+            for (size_t i = 0; i < _a.size (); i++) {
+                // double dq = fabs(_qend(i)-_qstart(i));
+                double dq = fabs (_b (i));
+                // std::cout<<"dq = "<<dq<<std::endl;
+                if (dq != 0) {
+                    _wmax  = std::min (_wmax, _vel (i) / dq);
+                    _dwmax = std::min (_dwmax, _acc (i) / dq);
+                }
+            }
+            // std::cout<<"wmax = "<<_wmax<<std::endl;
+            // std::cout<<"dwmax = "<<_dwmax<<std::endl;
+
+            // Compare using eq. 13 to see which of the cases
+            double lhs = sqrt (2 * Math::sqr (_ws / _dwmax) + 4 / _dwmax);
+            double rhs = 2 * _wmax / _dwmax;
+            if (lhs <= rhs) {
+                _durationRamp = _ws / _wmax + sqrt (2 * Math::sqr (_ws / _dwmax) + 4 / _dwmax);
+                _tau_s        = _durationRamp / 2 - _ws / (2 * _dwmax);
+                _tau_e        = _durationRamp / 2 + _ws / (2 * _dwmax);
+            }
+            else {
+                _durationRamp = 1 / _wmax + (Math::sqr (_wmax - _ws) + Math::sqr (_wmax)) /
+                                                (2 * _wmax * _dwmax);
+                _tau_s = (_wmax - _ws) / _dwmax;
+                _tau_e = (_wmax) / _dwmax;
+            }
+        }
+
         T _a;
         T _b;
         T _vel;
@@ -332,6 +315,18 @@ namespace rw { namespace trajectory {
 
         //! @brief smart pointer type const instance of class
         typedef typename rw::core::Ptr< const RampInterpolator< rw::math::Rotation3D< T > > > CPtr;
+
+        /**
+         * @brief dummy constructor don't use
+         */
+        RampInterpolator (const rw::math::Rotation3D< T >& start,
+                          const rw::math::Rotation3D< T >& end,
+                          const rw::math::Rotation3D< T >& vellimits,
+                          const rw::math::Rotation3D< T >& acclimits, double duration = -1) :
+            _ramp (rw::math::Q (0.0), rw::math::Q (0.0), rw::math::Q (0.0), rw::math::Q (0.0))
+        {
+            RW_THROW ("Not implemented");
+        }
 
         /**
          * @brief Construct RampInterpolator starting a \b start and finishing in \b end.
@@ -523,6 +518,18 @@ namespace rw { namespace trajectory {
         typedef typename rw::core::Ptr< const RampInterpolator< rw::math::Transform3D< T > > > CPtr;
 
         /**
+         * @brief dummy constructor don't use
+         */
+        RampInterpolator (const rw::math::Transform3D< T >& start,
+                          const rw::math::Transform3D< T >& end,
+                          const rw::math::Transform3D< T >& vellimits,
+                          const rw::math::Transform3D< T >& acclimits, double duration = -1) : _posInterpolator (start.P (), end.P (), 0, 0),
+            _rotInterpolator (start.R (), end.R (), 0, 0)
+        {
+            RW_THROW ("Not implemented");
+        }
+
+        /**
          * @brief Construct RampInterpolator starting a \b start and finishing in \b end
          * and taking \b duration time.
          *
@@ -624,8 +631,8 @@ namespace rw { namespace trajectory {
       private:
         rw::math::Transform3D< T > _start;
         rw::math::Transform3D< T > _end;
-        RampInterpolator< rw::math::Vector3D<> > _posInterpolator;
-        RampInterpolator< rw::math::Rotation3D<> > _rotInterpolator;
+        RampInterpolator< rw::math::Vector3D< T > > _posInterpolator;
+        RampInterpolator< rw::math::Rotation3D< T > > _rotInterpolator;
         double _duration;
     };
 

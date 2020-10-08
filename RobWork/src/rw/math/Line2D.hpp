@@ -18,10 +18,11 @@
 #ifndef RW_MATH_LINE2D_HPP
 #define RW_MATH_LINE2D_HPP
 
+#if !defined(SWIG)
 #include "Vector2D.hpp"
 
 #include <rw/common/Serializable.hpp>
-
+#endif
 namespace rw { namespace math {
 
     /**
@@ -36,9 +37,12 @@ namespace rw { namespace math {
          * between two lines.
          */
         enum IntersectResult {
-            PARALLEL,      //! Two lines are parallel
-            COINCIDENT,    //! Two lines are parallel and coinciding
-            INTERSECTS     //! Two lines intersects at one point
+            //! Two lines are parallel
+            PARALLEL,
+            //! Two lines are parallel and coinciding
+            COINCIDENT,
+            //! Two lines intersects at one point
+            INTERSECTS
         };
 
       public:

@@ -22,11 +22,13 @@
  * @file Rotation2D.hpp
  */
 
+#if !defined(SWIG)
 #include "Vector2D.hpp"
 
 #include <rw/common/Serializable.hpp>
 
 #include <Eigen/Core>
+#endif
 
 namespace rw { namespace math {
 
@@ -107,7 +109,7 @@ namespace rw { namespace math {
          * @param i @f$ \robabx{a}{b}{\mathbf{i}} @f$
          * @param j @f$ \robabx{a}{b}{\mathbf{j}} @f$
          */
-        Rotation2D (const Vector2D< T >& i, const Vector2D< T >& j)
+        Rotation2D (const rw::math::Vector2D< T >& i, const rw::math::Vector2D< T >& j)
         {
             _m[0][0] = i[0];
             _m[0][1] = j[0];
@@ -142,7 +144,7 @@ namespace rw { namespace math {
 
            @param i [in] The first column of the rotation matrix.
         */
-        Rotation2D (const Vector2D< T >& i)
+        Rotation2D (const rw::math::Vector2D< T >& i)
         {
             _m[0][0] = i[0];
             _m[0][1] = -i[1];
@@ -180,7 +182,7 @@ namespace rw { namespace math {
             static Rotation2D id (1, 0, 0, 1);
             return id;
         }
-
+#if !defined(SWIG)
         /**
          * @brief Returns reference to matrix element
          * @param row [in] row
@@ -196,7 +198,9 @@ namespace rw { namespace math {
          * @return reference to the element
          */
         const T& operator() (size_t row, size_t column) const { return _m[row][column]; }
-
+#else
+        MATRIXOPERATOR (T);
+#endif
         /**
          * @brief Comparison operator.
          *
@@ -271,12 +275,12 @@ namespace rw { namespace math {
          * @param bVc [in] \f$ \robabx{b}{c}{\mathbf{v}} \f$
          * @return \f$ \robabx{a}{c}{\mathbf{v}} \f$
          */
-        const Vector2D< T > operator* (const Vector2D< T >& bVc) const
+        const rw::math::Vector2D< T > operator* (const rw::math::Vector2D< T >& bVc) const
         {
-            return Vector2D< T > ((*this) (0, 0) * bVc (0) + (*this) (0, 1) * bVc (1),
-                                  (*this) (1, 0) * bVc (0) + (*this) (1, 1) * bVc (1));
+            return rw::math::Vector2D< T > ((*this) (0, 0) * bVc (0) + (*this) (0, 1) * bVc (1),
+                                            (*this) (1, 0) * bVc (0) + (*this) (1, 1) * bVc (1));
         }
-
+#if !defined(SWIG)
         /**
          * @brief Writes rotation matrix to stream
          * @param os [in/out] output stream to use
@@ -288,6 +292,9 @@ namespace rw { namespace math {
             return os << "Rotation2D {" << r (0, 0) << ", " << r (0, 1) << ", " << r (1, 0) << ", "
                       << r (1, 1) << "}";
         }
+#else
+        TOSTRING (rw::math::Rotation2D< T >);
+#endif
 
       private:
         T _m[2][2];
@@ -336,10 +343,13 @@ namespace rw { namespace math {
     {
         return Rotation2D< T > (aRb (0, 0), aRb (1, 0), aRb (0, 1), aRb (1, 1));
     }
-
+#if !defined(SWIG)
     extern template class rw::math::Rotation2D< double >;
     extern template class rw::math::Rotation2D< float >;
-
+#else
+    SWIG_DECLARE_TEMPLATE (Rotation2Dd, rw::math::Rotation2D< double >);
+    SWIG_DECLARE_TEMPLATE (Rotation2Df, rw::math::Rotation2D< float >);
+#endif
     /**@}*/
 }}    // namespace rw::math
 

@@ -23,6 +23,7 @@ using rw::pathplanning::PathPlanner;
 
 %import <rwlibs/swig/sdurw_core.i>
 %import <rwlibs/swig/sdurw_common.i>
+%import <rwlibs/swig/sdurw_math.i>
 %import <rwlibs/swig/sdurw.i> 
 
 %pragma(java) jniclassclassmodifiers="class"
@@ -31,16 +32,19 @@ using rw::pathplanning::PathPlanner;
 import org.robwork.sdurw.*;
 import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_common.*;
+import org.robwork.sdurw_math.*;
 %}
 %pragma(java) moduleimports=%{
 import org.robwork.sdurw.*;
 import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_common.*;
+import org.robwork.sdurw_math.*;
 %}
 %typemap(javaimports) SWIGTYPE %{
 import org.robwork.sdurw.*;
 import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_common.*;
+import org.robwork.sdurw_math.*;
 %}
 
 /********************************************
@@ -110,8 +114,8 @@ void moveTo (Frame* frame, MovableFrame* mframe, rw::math::Transform3D< double >
 void moveTo (const std::string& fname, const std::string& mname,
              rw::math::Transform3D< double > wTframe);
 
-Q getQ (rw::core::Ptr< Device > dev);
-void setQ (rw::core::Ptr< Device > dev, Q);
+rw::math::Q getQ (rw::core::Ptr< Device > dev);
+void setQ (rw::core::Ptr< Device > dev, rw::math::Q);
 
 void setTransform (Frame* mframe, rw::math::Transform3D< double > wTframe);
 
@@ -243,7 +247,7 @@ public:
             $self->postGenericAnyEvent(id, val);
         }
 
-        void send(const std::string& id, Q val){
+        void send(const std::string& id, rw::math::Q val){
             $self->postGenericAnyEvent(id, val);
         }
 
@@ -268,10 +272,10 @@ public:
             return 1;
         }
 
-        int wait(const std::string& id, Q& result, double timeout=-1.0){
+        int wait(const std::string& id, rw::math::Q& result, double timeout=-1.0){
             try {
                 boost::any data = $self->waitForAnyEvent(id, timeout);
-                Q* q = boost::any_cast<Q>(&data);
+                rw::math::Q* q = boost::any_cast< rw::math::Q >(&data);
                 if(q!=NULL)
                     result = *q;
             } catch ( ... ){ return 0;}

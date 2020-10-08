@@ -21,7 +21,7 @@
 /**
  * @file VelocityScrew6D.hpp
  */
-
+#if !defined(SWIG)
 #include "EAA.hpp"
 #include "Math.hpp"
 #include "Transform3D.hpp"
@@ -30,6 +30,7 @@
 #include <rw/common/Serializable.hpp>
 
 #include <Eigen/Core>
+#endif
 
 namespace rw { namespace math {
 
@@ -114,7 +115,7 @@ namespace rw { namespace math {
          *
          * @param transform [in] the corresponding transform.
          */
-        explicit VelocityScrew6D (const Transform3D< T >& transform);
+        explicit VelocityScrew6D (const rw::math::Transform3D< T >& transform);
 
         /**
          * @brief Constructs a velocity screw from a linear and angular velocity
@@ -142,6 +143,7 @@ namespace rw { namespace math {
          */
         const EAA< T > angular () const { return EAA< T > (_screw[3], _screw[4], _screw[5]); }
 
+#if !defined(SWIG)
         /**
          * @brief Returns reference to velocity screw element
          *
@@ -185,6 +187,9 @@ namespace rw { namespace math {
          * @return const reference to velocity screw element
          */
         T& operator[] (size_t i) { return (*this) (i); }
+#else
+        ARRAYOPERATOR (T);
+#endif
 
         /**
          * @brief Adds the velocity screw given as a parameter to the velocity screw.
@@ -273,7 +278,7 @@ namespace rw { namespace math {
          * @return True if not equal.
          */
         bool operator!= (const VelocityScrew6D< T >& rhs) const { return !(*this == rhs); }
-
+#if !defined(SWIGPYTHON)
         /**
          * @brief Scales velocity screw and returns scaled version
          *
@@ -287,7 +292,7 @@ namespace rw { namespace math {
             result *= s;
             return result;
         }
-
+#endif
         /**
          * @brief Scales velocity screw and returns scaled version
          * @param s [in] scaling value
@@ -300,6 +305,7 @@ namespace rw { namespace math {
             return result;
         }
 
+#if !defined(SWIG)
         /**
          * @brief Changes frame of reference and velocity referencepoint of
          * velocityscrew: @f$ \robabx{b}{b}{\mathbf{\nu}}\to
@@ -347,7 +353,7 @@ namespace rw { namespace math {
          * \f]
          *
          */
-        friend const VelocityScrew6D< T > operator* (const Transform3D< T >& aTb,
+        friend const VelocityScrew6D< T > operator* (const rw::math::Transform3D< T >& aTb,
                                                      const VelocityScrew6D< T >& bV)
         {
             const Vector3D< T >& bv = bV.linear ();
@@ -356,7 +362,8 @@ namespace rw { namespace math {
             const Vector3D< T >& av = aTb.R () * bv + cross (aTb.P (), aw);
             return VelocityScrew6D< T > (av, aw);
         }
-
+#endif
+#if !defined(SWIG)
         /**
          * @brief Changes velocity referencepoint of
          * velocityscrew: @f$ \robabx{a}{q}{\mathbf{\nu}}\to
@@ -412,7 +419,8 @@ namespace rw { namespace math {
             const Vector3D< T >& av = bv + cross (aPqTop, bw);
             return VelocityScrew6D< T > (av, bw);
         }
-
+#endif
+#if !defined(SWIG)
         /**
          * @brief Changes frame of reference for velocityscrew: @f$
          * \robabx{b}{i}{\mathbf{\nu}}\to \robabx{a}{i}{\mathbf{\nu}}
@@ -462,6 +470,7 @@ namespace rw { namespace math {
 
             return VelocityScrew6D< T > (aRb * bv, aRb * bw);
         }
+#endif
 
         /**
          * @brief Adds two velocity screws together @f$
@@ -497,7 +506,7 @@ namespace rw { namespace math {
                                          _screw[4] - screw2._screw[4],
                                          _screw[5] - screw2._screw[5]);
         }
-
+#if !defined(SWIG)
         /**
          * @brief Ouputs velocity screw to stream
          *
@@ -510,7 +519,9 @@ namespace rw { namespace math {
             return os << "{{" << screw (0) << "," << screw (1) << "," << screw (2) << "},{"
                       << screw (3) << "," << screw (4) << "," << screw (5) << "}}";
         }
-
+#else
+        TOSTRING (rw::math::VelocityScrew6D< T >);
+#endif
         /**
          * @brief Takes the 1-norm of the velocity screw. All elements both
          * angular and linear are given the same weight.
@@ -608,12 +619,15 @@ namespace rw { namespace math {
                                      static_cast< Q > (vs (4)),
                                      static_cast< Q > (vs (5)));
     }
-
+#if !defined(SWIG)
     extern template class rw::math::VelocityScrew6D< double >;
     extern template class rw::math::VelocityScrew6D< float >;
-
-    using VelocityScrew6Dd = VelocityScrew6D<double>;
-    using VelocityScrew6Df = VelocityScrew6D<float>;
+#else
+    SWIG_DECLARE_TEMPLATE (VelocityScrew6Dd, rw::math::VelocityScrew6D< double >);
+    SWIG_DECLARE_TEMPLATE (VelocityScrew6Df, rw::math::VelocityScrew6D< float >);
+#endif
+    using VelocityScrew6Dd = VelocityScrew6D< double >;
+    using VelocityScrew6Df = VelocityScrew6D< float >;
 
     /*@}*/
 }}    // namespace rw::math

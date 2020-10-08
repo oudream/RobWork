@@ -37,7 +37,7 @@ public:
      * @note The targets \b baseTend must be defined relative to the base of the
      * robot/device.
      */
-    virtual std::vector<Q> solve(const rw::math::Transform3D<double> & baseTend, const State& state) const = 0;
+    virtual std::vector< rw::math::Q > solve(const rw::math::Transform3D<double> & baseTend, const State& state) const = 0;
 
     /**
      * @brief Specifies whether to check joint limits before returning a solution.
@@ -185,7 +185,7 @@ public:
      * @note The targets \b baseTend must be defined relative to the base of the
      * robot/device.
      */
-    std::vector<Q> solve(const rw::math::Transform3D<double> & baseTend, const State& state) const;
+    std::vector< rw::math::Q > solve(const rw::math::Transform3D<double> & baseTend, const State& state) const;
 
     /**
      * @brief sets the maximal step length that is allowed on the
@@ -318,7 +318,7 @@ public:
      *
      * Searches for a valid solution using the parameters set in the IKMetaSolver
      */
-    std::vector<Q> solve(const rw::math::Transform3D<double> & baseTend, const State& state) const;
+    std::vector< rw::math::Q > solve(const rw::math::Transform3D<double> & baseTend, const State& state) const;
 
     /**
      * @brief Sets up the maximal number of attempts
@@ -369,7 +369,7 @@ public:
      * solution is found. If false it will continue searching for more solution
      * until the maximal number of attemps is met.
      */
-    std::vector<Q> solve(const rw::math::Transform3D<double> & baseTend, const State& state, size_t cnt, bool stopatfirst) const;
+    std::vector< rw::math::Q > solve(const rw::math::Transform3D<double> & baseTend, const State& state, size_t cnt, bool stopatfirst) const;
 
 };
 
@@ -468,7 +468,7 @@ public:
      * @note The targets \b baseTend must be defined relative to the base of the
      * robot/device.
      */
-    virtual std::vector<Q> solve(const rw::math::Transform3D<double> & baseTend, const State& state) const;
+    virtual std::vector< rw::math::Q > solve(const rw::math::Transform3D<double> & baseTend, const State& state) const;
 
     /**
      * @brief Specifies whether to check joint limits before returning a solution.
@@ -530,7 +530,7 @@ public:
      * @note The targets \b baseTend must be defined relative to the base of the
      * robot/device.
      */
-    std::vector<Q> solve(const rw::math::Transform3D<double>& baseTend, const State& state) const;
+    std::vector< rw::math::Q > solve(const rw::math::Transform3D<double>& baseTend, const State& state) const;
 
     /**
      * @brief Find inverse kinematic solutions deterministically by pulling joint 4 as much in the given direction as possible.
@@ -540,7 +540,7 @@ public:
      * @param dir4 [in] unit vector giving the direction to pull joint 4 in (given in base coordinate system).
      * @return List of up to 8 solutions. Notice that the list may be empty.
      */
-    std::vector<Q> solve(const rw::math::Transform3D<double>& baseTend, const State& state, const rw::math::Vector3D<double>& dir4) const;
+    std::vector< rw::math::Q > solve(const rw::math::Transform3D<double>& baseTend, const State& state, const rw::math::Vector3D<double>& dir4) const;
 
     /**
      * @brief Specifies whether to check joint limits before returning a solution.
@@ -599,7 +599,7 @@ public:
      * @note The targets \b baseTend must be defined relative to the base of the
      * robot/device.
      */
-    std::vector<Q> solve(const rw::math::Transform3D<double>& baseTend, const State& state) const;
+    std::vector< rw::math::Q > solve(const rw::math::Transform3D<double>& baseTend, const State& state) const;
 
     /**
      * @brief Specifies whether to check joint limits before returning a solution.

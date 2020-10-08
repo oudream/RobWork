@@ -24,6 +24,8 @@
 #include <rwslibs/luaeditor/LuaEditorWindow.hpp>
 #include <rwslibs/swig/ScriptTypes.hpp>
 
+#include <boost/bind.hpp>
+
 #include <QMenu>
 #include <QToolBar>
 #include <QVBoxLayout>

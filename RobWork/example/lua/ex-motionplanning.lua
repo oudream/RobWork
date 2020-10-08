@@ -5,6 +5,9 @@ using("sdurw")
 using("sdurw_pathplanners")
 using("sdurw_proximitystrategies")
 
+require("sdurw_math")
+using("sdurw_math")
+
 if #arg ~= 1 then
     print("Usage: lua ex-motionplanning.lua <path/to/RobWorkData>")
     return 1

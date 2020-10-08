@@ -23,16 +23,18 @@
  *
  * \copydoc rw::math::PolynomialSolver
  */
-
+#if !defined(SWIG)
 #include "Polynomial.hpp"
 
 #include <complex>
 #include <vector>
+#endif
 
 namespace rw { namespace math {
     //! @addtogroup math
-
+#if !defined(SWIG)
     //! @{
+#endif
     /**
      * @brief Find solutions for roots of real and complex polynomial equations.
      *
@@ -69,7 +71,7 @@ namespace rw { namespace math {
      *
      * 2. If root x=1 is found, remaining polynomial after deflation is \f$ x^3 + 3 x^2 +3 x + 2 =
      * 0\f$. The roots are found analytically, giving one real root x=-2 and two complex conjugate
-     * roots \f$x = -0.5 \pm \frac{\sqrt{3}}{2} i\f$.
+     * roots \f$ x = -0.5 \pm \frac{\sqrt{3}}{2} i\f$.
      *
      * 3. If other roots than x=1 or x=-2 is found (a complex root), remaining polynomial is a third
      * order polynomial with complex coefficients. This polynomial is solved analytically to give

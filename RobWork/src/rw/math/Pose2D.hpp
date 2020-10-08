@@ -18,10 +18,11 @@
 #ifndef RW_MATH_POSE2D_HPP_
 #define RW_MATH_POSE2D_HPP_
 
+#if !defined(SWIG)
 #include <rw/math/Transform2D.hpp>
 
 #include <Eigen/Core>
-
+#endif
 namespace rw { namespace math {
 
     /** @addtogroup math */
@@ -116,6 +117,7 @@ namespace rw { namespace math {
         //! @copydoc getPos()
         const rw::math::Vector2D< T >& getPos () const { return _pos; }
 
+#if !defined(SWIG)
         /**
          * @brief Returns reference to vector element (x,y,theta)
          *
@@ -167,7 +169,9 @@ namespace rw { namespace math {
                 return _pos[i];
             return _theta;
         }
-
+#else
+        ARRAYOPERATOR (T);
+#endif
         /**
          * @brief The transform corresponding to the pose.
          * @param pose [in] the pose.
@@ -178,7 +182,7 @@ namespace rw { namespace math {
             return rw::math::Transform2D< T > (rw::math::Vector2D< T > (pose.x (), pose.y ()),
                                                rw::math::Rotation2D< T > (pose.theta ()));
         }
-
+#if !defined(SWIG)
         /**
          * @brief Ouputs EAA to stream
          * @param os [in/out] stream to use
@@ -190,6 +194,9 @@ namespace rw { namespace math {
             return os << " Ppse2D { x: " << pose.x () << ", y: " << pose.y ()
                       << ", th: " << pose.theta () << "}";
         }
+#else
+        TOSTRING (rw::math::Pose2D< T >);
+#endif
 
         /**
          * @brief return a Eigen vector of (x, y, theta).
@@ -210,11 +217,15 @@ namespace rw { namespace math {
         T _theta;
     };
 
+#if !defined(SWIG)
     extern template class rw::math::Pose2D< double >;
     extern template class rw::math::Pose2D< float >;
-
-    using Pose2Dd = Pose2D<double>;
-    using Pose2Df = Pose2D<float>;
+#else
+    SWIG_DECLARE_TEMPLATE (Pose2Dd, rw::math::Pose2D< double >);
+    SWIG_DECLARE_TEMPLATE (Pose2Df, rw::math::Pose2D< float >);
+#endif
+    using Pose2Dd = Pose2D< double >;
+    using Pose2Df = Pose2D< float >;
 
     /*@}*/
 }}    // namespace rw::math
