@@ -1,4 +1,4 @@
 include:
-  - project: 'waarbubble/RobWork'
-    ref: remove_ext
+  - project: 'sdurobotics/RobWork'
+    ref: devel
     file: .gitlab-ci-common.yml
