@@ -62,8 +62,8 @@ namespace rw { namespace math {
          * @param sigma [out] The \f$\mathbf{sigma}\f$ vector with diagonal elements
          * @param V [out] Result matrix \f$\mathbf{V}\f$
          */
-        static void svd (const Eigen::MatrixXd& M, Eigen::MatrixXd& U, Eigen::VectorXd& sigma,
-                         Eigen::MatrixXd& V);
+        static void svd (const Eigen::Matrix<double,-1,-1>& M, Eigen::Matrix<double,-1,-1>& U, Eigen::Matrix<double,-1,1>& sigma,
+                         Eigen::Matrix<double,-1,-1>& V);
 
         /**
          * \brief Calculates the moore-penrose (pseudo) inverse of a matrix
@@ -82,7 +82,7 @@ namespace rw { namespace math {
          *
          *
          */
-        static Eigen::MatrixXd pseudoInverse (const Eigen::MatrixXd& am, double precision = 1e-6);
+        static Eigen::Matrix<double,-1,-1> pseudoInverse (const Eigen::Matrix<double,-1,-1>& am, double precision = 1e-6);
 
         /**
          * @brief Checks the penrose conditions
@@ -111,7 +111,7 @@ namespace rw { namespace math {
          * (XA)^T = XA
          * @f$
          */
-        static bool checkPenroseConditions (const Eigen::MatrixXd& A, const Eigen::MatrixXd& X,
+        static bool checkPenroseConditions (const Eigen::Matrix<double,-1,-1>& A, const Eigen::Matrix<double,-1,-1>& X,
                                             double prec);
 
         /**

@@ -119,10 +119,18 @@ FRIEND_OPERATOR(rw::math::Rotation3D<float>,rw::math::InertiaMatrix<float>,*);
 %}
 %include <rw/math/Metric.hpp>
 %template(MetricQ) rw::math::Metric<rw::math::Q>;
-%template(MetricVector2Dd) rw::math::Metric<rw::math::Vector2D< double > >;
-%template(MetricVector2Df) rw::math::Metric<rw::math::Vector2D< float > >;
-%template(MetricVector3Dd) rw::math::Metric<rw::math::Vector3D< double > >;
-%template(MetricVector3Df) rw::math::Metric<rw::math::Vector3D< float > >;
+%template(MetricVector2D) rw::math::Metric<rw::math::Vector2D< double > >;
+%template(MetricVector3D) rw::math::Metric<rw::math::Vector3D< double > >;
+%template(MetricTransform3D) rw::math::Metric<rw::math::Transform3D<double>>;
+%template(MetricRotation3D) rw::math::Metric<rw::math::Rotation3D<double>>;
+
+NAMED_OWNEDPTR(MetricQ, rw::math::Metric<rw::math::Q>);
+NAMED_OWNEDPTR(MetricVector2D, rw::math::Metric<rw::math::Vector2D< double > >);
+NAMED_OWNEDPTR(MetricVector3D, rw::math::Metric<rw::math::Vector3D< double > >);
+NAMED_OWNEDPTR(MetricTransform3D, rw::math::Metric<rw::math::Transform3D<double>>);
+NAMED_OWNEDPTR(MetricRotation3D, rw::math::Metric<rw::math::Rotation3D<double>>);
+
+
 
 %{
     #include <rw/math/MetricFactory.hpp>
@@ -136,6 +144,8 @@ FRIEND_OPERATOR(rw::math::Rotation3D<float>,rw::math::InertiaMatrix<float>,*);
 %template(makeWeightedInfinityQ) rw::math::MetricFactory::makeWeightedInfinity<rw::math::Q>;
 %template(makeManhattanQ) rw::math::MetricFactory::makeManhattan<rw::math::Q>;
 %template(makeWeightedManhattanQ) rw::math::MetricFactory::makeWeightedManhattan<rw::math::Q>;
+%template(makeTransform3DMetric) rw::math::MetricFactory::makeTransform3DMetric<double>;
+%template(makeRotation3DMetric) rw::math::MetricFactory::makeRotation3DMetric<double>;
 
 // TYPES
 %template(ManhattenMatricQ) rw::math::ManhattanMetric< rw::math::Q >;
@@ -145,33 +155,19 @@ FRIEND_OPERATOR(rw::math::Rotation3D<float>,rw::math::InertiaMatrix<float>,*);
 %template(InfinityMetricQ) rw::math::InfinityMetric< rw::math::Q >;
 %template(WeightedInfinityMetricQ) rw::math::WeightedInfinityMetric< rw::math::Q >;
 
-%template(ManhattanMetricVector2Dd) rw::math::ManhattanMetric< rw::math::Vector2D<double> >;
-%template(WeightedManhattenMetricVector2Dd) rw::math::WeightedManhattanMetric< rw::math::Vector2D<double> >;
-%template(EuclideanMetricVector2Dd) rw::math::EuclideanMetric< rw::math::Vector2D<double> >;
-%template(WeightedEuclideanMetricVector2Dd) rw::math::WeightedEuclideanMetric< rw::math::Vector2D<double> >;
-%template(InfinityMetricVector2Dd) rw::math::InfinityMetric< rw::math::Vector2D<double> >;
-%template(WeightedInfinityMetricVector2Dd) rw::math::WeightedInfinityMetric< rw::math::Vector2D<double> >;
+%template(ManhattanMetricVector2D) rw::math::ManhattanMetric< rw::math::Vector2D<double> >;
+%template(WeightedManhattenMetricVector2D) rw::math::WeightedManhattanMetric< rw::math::Vector2D<double> >;
+%template(EuclideanMetricVector2D) rw::math::EuclideanMetric< rw::math::Vector2D<double> >;
+%template(WeightedEuclideanMetricVector2D) rw::math::WeightedEuclideanMetric< rw::math::Vector2D<double> >;
+%template(InfinityMetricVector2D) rw::math::InfinityMetric< rw::math::Vector2D<double> >;
+%template(WeightedInfinityMetricVector2D) rw::math::WeightedInfinityMetric< rw::math::Vector2D<double> >;
 
-%template(ManhattanMetricVector2Df) rw::math::ManhattanMetric< rw::math::Vector2D<float> >;
-%template(WeightedManhattenMetricVector2Df) rw::math::WeightedManhattanMetric< rw::math::Vector2D<float> >;
-%template(EuclideanMetricVector2Df) rw::math::EuclideanMetric< rw::math::Vector2D<float> >;
-%template(WeightedEuclideanMetricVector2Df) rw::math::WeightedEuclideanMetric< rw::math::Vector2D<float> >;
-%template(InfinityMetricVector2Df) rw::math::InfinityMetric< rw::math::Vector2D<float> >;
-%template(WeightedInfinityMetricVector2Df) rw::math::WeightedInfinityMetric< rw::math::Vector2D<float> >;
-
-%template(ManhattanMetricVector3Dd) rw::math::ManhattanMetric< rw::math::Vector3D<double> >;
-%template(WeightedManhattenMetricVector3Dd) rw::math::WeightedManhattanMetric< rw::math::Vector3D<double> >;
-%template(EuclideanMetricVector3Dd) rw::math::EuclideanMetric< rw::math::Vector3D<double> >;
-%template(WeightedEuclideanMetricVector3Dd) rw::math::WeightedEuclideanMetric< rw::math::Vector3D<double> >;
-%template(InfinityMetricVector3Dd) rw::math::InfinityMetric< rw::math::Vector3D<double> >;
-%template(WeightedInfinityMetricVector3Dd) rw::math::WeightedInfinityMetric< rw::math::Vector3D<double> >;
-
-%template(ManhattanMetricVector3Df) rw::math::ManhattanMetric< rw::math::Vector3D<float> >;
-%template(WeightedManhattenMetricVector3Df) rw::math::WeightedManhattanMetric< rw::math::Vector3D<float> >;
-%template(EuclideanMetricVector3Df) rw::math::EuclideanMetric< rw::math::Vector3D<float> >;
-%template(WeightedEuclideanMetricVector3Df) rw::math::WeightedEuclideanMetric< rw::math::Vector3D<float> >;
-%template(InfinityMetricVector3Df) rw::math::InfinityMetric< rw::math::Vector3D<float> >;
-%template(WeightedInfinityMetricVector3Df) rw::math::WeightedInfinityMetric< rw::math::Vector3D<float> >;
+%template(ManhattanMetricVector3D) rw::math::ManhattanMetric< rw::math::Vector3D<double> >;
+%template(WeightedManhattenMetricVector3D) rw::math::WeightedManhattanMetric< rw::math::Vector3D<double> >;
+%template(EuclideanMetricVector3D) rw::math::EuclideanMetric< rw::math::Vector3D<double> >;
+%template(WeightedEuclideanMetricVector3D) rw::math::WeightedEuclideanMetric< rw::math::Vector3D<double> >;
+%template(InfinityMetricVector3D) rw::math::InfinityMetric< rw::math::Vector3D<double> >;
+%template(WeightedInfinityMetricVector3D) rw::math::WeightedInfinityMetric< rw::math::Vector3D<double> >;
 
 %{
     #include <rw/math/MetricUtil.hpp>
@@ -265,6 +261,7 @@ FRIEND_OPERATOR(rw::math::Rotation3D<float>,rw::math::InertiaMatrix<float>,*);
     #include <rw/math/Q.hpp>
 %}
 %include <rw/math/Q.hpp>
+%template(PairQ) std::pair<rw::math::Q,rw::math::Q>;
 
 %rename(copy) rw::math::Quaternion::operator=;
 %ignore rw::math::Quaternion::e const;
@@ -335,7 +332,7 @@ FRIEND_OPERATOR(rw::math::Rotation3D<float>, rw::math::Wrench6D<float>, *);
     #include <rw/math/Vector2D.hpp>
 %}
 %include <rw/math/Vector2D.hpp>
-
+%template(VectorVector2D) std::vector<rw::math::Vector2D<double>>;
 
 
 %ignore rw::math::Vector3D::e const;

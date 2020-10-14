@@ -122,6 +122,12 @@ namespace rw { namespace core {
 #endif
         {}
 #endif
+
+        /**
+         * @brief destructor
+         */
+        ~Ptr() {}
+
         /**
          * @brief Cast the smart pointer to a different type.
          * @return smart pointer that can be null if cast was not possible.
@@ -371,10 +377,9 @@ namespace rw { namespace core {
 #endif
 
     /**
-   @brief A Ptr that takes ownership over a raw pointer \b ptr.
-
-   @relates Ptr
- */
+     * @brief A Ptr that takes ownership over a raw pointer \b ptr.
+     * @relates Ptr
+     */
     template< class T > Ptr< T > ownedPtr (T* ptr)
     {
         return Ptr< T > (typename Ptr< T >::shared_ptr (ptr));

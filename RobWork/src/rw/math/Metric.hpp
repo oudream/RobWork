@@ -53,8 +53,8 @@ namespace rw { namespace math {
         typedef typename rw::core::Ptr< const Metric< T > > CPtr;
 
         /**
-           @brief Destructor
-        */
+         *  @brief Destructor
+         */
         virtual ~Metric () {}
 
         /**

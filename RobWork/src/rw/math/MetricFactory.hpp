@@ -273,11 +273,10 @@ namespace rw { namespace math {
 
       public:
         /**
-           @brief Constructs Mahalanobis metric object with the specified
-           weights.
-
-           @param omega [in] the weights \f$\mathbf{\Omega}\f$
-        */
+         * @brief Constructs Mahalanobis metric object with the specified
+         * weights.
+         * @param omega [in] the weights \f$\mathbf{\Omega}\f$
+         */
         MahalanobisMetric (const BaseM& omega) : _omega (omega) {}
 
       private:
@@ -450,7 +449,7 @@ namespace rw { namespace math {
            See class WeightedManhattanMetric for details.
         */
         template< class VectorType >
-        inline static typename Metric< VectorType >::Ptr
+        inline static typename rw::core::Ptr<rw::math::Metric< VectorType >>
         makeWeightedManhattan (const VectorType& weights)
         {
             return rw::core::ownedPtr (new WeightedManhattanMetric< VectorType > (weights));
@@ -462,7 +461,9 @@ namespace rw { namespace math {
          * The metric is defined as the angle of the rw::math::EAA
          * of the rotation.
          */
-        template< class T > static typename Metric< Rotation3D< T > >::Ptr makeRotation3DMetric ()
+        template< class T >
+        static typename rw::core::Ptr< rw::math::Metric< rw::math::Rotation3D< T > > >
+        makeRotation3DMetric ()
         {
             return rw::core::ownedPtr (new Rotation3DAngleMetric< T > ());
         }
@@ -477,8 +478,8 @@ namespace rw { namespace math {
          * @param angWeight [in] Angular weight.
          */
         template< class T >
-        static typename Metric< Transform3D< T > >::Ptr makeTransform3DMetric (double linWeight,
-                                                                               double angWeight)
+        static typename rw::core::Ptr< rw::math::Metric< rw::math::Transform3D< T > > >
+        makeTransform3DMetric (double linWeight, double angWeight)
         {
             return rw::core::ownedPtr (new Transform3DAngleMetric< T > (linWeight, angWeight));
         }
