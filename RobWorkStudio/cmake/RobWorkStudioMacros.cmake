@@ -105,3 +105,22 @@ macro(RWS_PLUGIN_LOAD_DETAILS _subsys_name _dockarea _name _visible)
         CACHE INTERNAL "PLugin Load details for {_name}" FORCE
     )
 endmacro()
+
+macro(RWS_CLEAR_PLUGIN_LOAD_DETAILS  _name )
+    set(${_name}_DOCKAREA
+        ""
+        CACHE INTERNAL "PLugin Load details for {_name}" FORCE
+    )
+    set(${_name}_FILENAME
+        ""
+        CACHE INTERNAL "PLugin Load details for {_name}" FORCE
+    )
+    set(${_name}_PATH
+        ""
+        CACHE INTERNAL "PLugin Load details for {_name}" FORCE
+    )
+    set(${_name}_VISIBLE
+        ""
+        CACHE INTERNAL "PLugin Load details for {_name}" FORCE
+    )
+endmacro()

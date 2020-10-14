@@ -145,7 +145,7 @@ void qhull::build (size_t dim, double* coords, size_t nrCoords, std::vector< int
             curlong);
         // delete[] coords;
 
-#if qh_QHpointer
+#if defined(qh_QHpointer) && qh_QHpointer
     qh_restore_qhull (&qht);
 #endif
 }

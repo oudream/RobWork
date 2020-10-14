@@ -21,8 +21,11 @@ rw_subsys_option(
 )
 
 if(build)
-    set(RWSIM_HAVE_LUA TRUE CACHE INTERNAL "")
-    
+    set(RWSIM_HAVE_LUA
+        TRUE
+        CACHE INTERNAL ""
+    )
+
     include(UseSWIG)
 
     include_directories(${RW_ROOT}/src)
@@ -30,9 +33,9 @@ if(build)
     set(RWS_MODULE sdurws)
     set(TARGET_NAME ${RWS_MODULE}_lua)
     # ############ lua interface generation ##############
-    
+
     rw_add_swig(
-        ${RWS_MODULE} lua SHARED 
+        ${RWS_MODULE} lua SHARED
         TARGET_NAME ${TARGET_NAME}
         SOURCES ../sdurws.i Lua.cpp ../ScriptTypes.cpp
         INSTALL_DIR ${LUA_INSTALL_DIR}
@@ -41,15 +44,14 @@ if(build)
     if(NOT DEFINED MSVC) # This code is to make it easier to make debian packages
         set_target_properties(
             ${TARGET_NAME}
-            PROPERTIES
-                PREFIX ""
-                OUTPUT_NAME ${RWS_MODULE}
-                ARCHIVE_OUTPUT_DIRECTORY "${RWS_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua"
-                LIBRARY_OUTPUT_DIRECTORY "${RWS_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua"
-                LIBRARY_OUTPUT_DIRECTORY "${RWS_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua"
+            PROPERTIES PREFIX ""
+                       OUTPUT_NAME ${RWS_MODULE}
+                       ARCHIVE_OUTPUT_DIRECTORY "${RWS_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua"
+                       LIBRARY_OUTPUT_DIRECTORY "${RWS_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua"
+                       LIBRARY_OUTPUT_DIRECTORY "${RWS_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua"
         )
     endif()
-    
+
     swig_link_libraries(
         ${TARGET_NAME}
         ${SUBSYS_DEPS}
@@ -57,16 +59,13 @@ if(build)
         ${RWS_MODULE}
         RW::sdurw_lua
         RW::sdurw
+        ${RW_BUILD_WITH_LIBRARIES_LUA}
     )
-    if(RW_BUILD_WITH_INTERNAL_LUA)
-        swig_link_libraries(${TARGET_NAME} RW::lua51)
-    else()
-        swig_link_libraries(${TARGET_NAME} ${RW_BUILD_WITH_LIBRARIES_LUA})
-        target_include_directories(${TARGET_NAME} PUBLIC ${RW_BUILD_WITH_LUA_INCLUDE_DIR})
-    endif()
+
+    target_include_directories(${TARGET_NAME} PUBLIC ${RW_BUILD_WITH_LUA_INCLUDE_DIR})
 
     # ############ lua static interface generation ##############
-    
+
     rw_add_swig(
         ${RWS_MODULE} lua STATIC
         TARGET_NAME ${TARGET_NAME}_s
@@ -82,13 +81,9 @@ if(build)
         RW::sdurw
         RW::sdurw_lua_s
         RW::sdurw_core_lua_s
+        ${RW_BUILD_WITH_LIBRARIES_LUA}
     )
-    if(RW_BUILD_WITH_INTERNAL_LUA)
-        target_link_libraries(${TARGET_NAME}_s RW::lua51)
-    else()
-        target_link_libraries(${TARGET_NAME}_s ${RW_BUILD_WITH_LIBRARIES_LUA})
-        target_include_directories(${TARGET_NAME}_s PUBLIC ${RW_BUILD_WITH_LUA_INCLUDE_DIR})
-    endif()
+    target_include_directories(${TARGET_NAME}_s PUBLIC ${RW_BUILD_WITH_LUA_INCLUDE_DIR})
 
     # Visual Studio or mingw this is used to indicate static linking to Visual Studio or mingw
     if(DEFINED MSVC)

@@ -31,10 +31,6 @@ else()
     set(RW_GOT_VERSION False)
 endif()
 
-# guard against in-source builds
-set(CMAKE_MODULE_PATH ${RW_ROOT}/cmake/Modules ${CMAKE_MODULE_PATH})
-
-
 rw_init_project(${RW_ROOT} RobWork RW ${ROBWORK_VERSION})
 rw_get_os_info()
 

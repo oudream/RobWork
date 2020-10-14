@@ -4,13 +4,11 @@ set(SUBSYS_DEPS)
 
 set(build TRUE)
 
-find_package(SWIG 3.0.0 QUIET)
-set(DEFAULT FALSE)
-set(REASON)
-if(NOT SWIG_FOUND)
+if(NOT RW_HAVE_LUA)
     set(DEFAULT false)
-    set(REASON "SWIG not found!")
+    set(REASON "Lua not found!")
 else()
+    set(DEFAULT false)
     set(REASON "Disabled by default.")
 endif()
 
@@ -22,8 +20,6 @@ rw_subsys_option(
 )
 
 if(build)
-    set(RWSIM_HAVE_LUA TRUE CACHE INTERNAL "")
-    # MESSAGE(STATUS "SWIG found adding swig modules!")
     include(UseSWIG)
 
     set(CMAKE_SWIG_FLAGS "")
@@ -82,10 +78,8 @@ if(build)
                 )
             endif()
 
-            if(NOT RW_ENABLE_INTERNAL_LUA_TARGET)
-                target_include_directories(${TARGET_NAME} PUBLIC ${LUA_INCLUDE_DIR})
-            endif()
-
+            
+            target_include_directories(${TARGET_NAME} PUBLIC ${LUA_INCLUDE_DIR})
             add_dependencies(${SUBSYS_NAME}_all ${TARGET_NAME})
 
             # ############ lua static interface generation ##############
@@ -96,15 +90,13 @@ if(build)
                 INSTALL_DIR ${STATIC_LIB_INSTALL_DIR}
             )
 
-            if(NOT RW_ENABLE_INTERNAL_LUA_TARGET)
-                target_include_directories(${TARGET_NAME}_s PUBLIC ${LUA_INCLUDE_DIR})
-            endif()
+            target_include_directories(${TARGET_NAME}_s PUBLIC ${LUA_INCLUDE_DIR})
 
             add_dependencies(${SUBSYS_NAME}_all ${TARGET_NAME}_s)
 
             # this is used to indicate static linking to Visual Studio or mingw
             if(DEFINED MSVC)
-                set_target_properties(${TARGET_NAME}_s PROPERTIES COMPILE_FLAGS "/DSTATIC_LINKED")
+                set_target_properties(${TARGET_NAME} PROPERTIES COMPILE_FLAGS "/DSTATIC_LINKED")
             else()
                 set_target_properties(${TARGET_NAME}_s PROPERTIES COMPILE_FLAGS "-DSTATIC_LINKED")
             endif()

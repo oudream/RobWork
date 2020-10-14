@@ -52,14 +52,9 @@ if(build)
         )
     endif()
 
-    swig_link_libraries(${TARGET_NAME} ${RWSIM_ODE_LIBRARY} ${RWSIM_MODULE})
+    swig_link_libraries(${TARGET_NAME} ${RWSIM_ODE_LIBRARY} ${RWSIM_MODULE} ${RW_BUILD_WITH_LIBRARIES_LUA})
+    target_include_directories(${TARGET_NAME} PUBLIC ${RW_BUILD_WITH_LUA_INCLUDE_DIR})
 
-    if (RW_BUILD_WITH_INTERNAL_LUA)
-        swig_link_libraries(${TARGET_NAME} RW::lua51)
-    else()
-        swig_link_libraries(${TARGET_NAME} ${RW_BUILD_WITH_LIBRARIES_LUA})
-        target_include_directories(${TARGET_NAME} PUBLIC ${RW_BUILD_WITH_LUA_INCLUDE_DIR})
-    endif()
 
 
     # ############ lua static interface generation ##############
@@ -70,14 +65,8 @@ if(build)
         INSTALL_DIR ${LUA_INSTALL_DIR}
     )
 
-    target_link_libraries(${TARGET_NAME}_s ${RWSIM_ODE_LIBRARY} ${RWSIM_MODULE})
-    
-    if (RW_BUILD_WITH_INTERNAL_LUA)
-        target_link_libraries(${TARGET_NAME}_s RW::lua51)
-    else()
-        target_link_libraries(${TARGET_NAME}_s ${RW_BUILD_WITH_LIBRARIES_LUA})
-        target_include_directories(${TARGET_NAME}_s PUBLIC ${RW_BUILD_WITH_LUA_INCLUDE_DIR})
-    endif()
+    target_link_libraries(${TARGET_NAME}_s ${RWSIM_ODE_LIBRARY} ${RWSIM_MODULE} ${RW_BUILD_WITH_LIBRARIES_LUA})
+    target_include_directories(${TARGET_NAME}_s PUBLIC ${RW_BUILD_WITH_LUA_INCLUDE_DIR})
 
     # this is used to indicate static linking to Visual Studio or mingw
     if(DEFINED MSVC)

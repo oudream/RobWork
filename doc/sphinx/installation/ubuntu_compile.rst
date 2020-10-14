@@ -68,12 +68,7 @@ CMake must be used to prepare RobWork for compilation.
 RobWork Required Dependencies
 -----------------------------
 
-.. image:: ../graphics/logos/Boost.png
-  :width: 100
-  :target: https://www.boost.org
-  :alt: Boost
-
-Boost is the only required dependency for RobWork::
+RobWork has several dependencies, which can be installed with:
 
     sudo apt-get install libboost-dev \
                          libboost-date-time-dev \
@@ -83,7 +78,10 @@ Boost is the only required dependency for RobWork::
                          libboost-serialization-dev \
                          libboost-system-dev \
                          libboost-test-dev \
-                         libboost-thread-dev
+                         libboost-thread-dev \
+                         libeigen3-dev \
+                         libqhull-dev
+
 
 RobWork Optional Dependencies
 -----------------------------
@@ -117,6 +115,21 @@ GTest will be a requirement:
 .. code-block:: shell
 
     sudo apt-get install libgtest-dev
+
+FCL (optional) is used as a collision library with a less restrictive License
+then PQP, which is the current default strategy in robwork
+
+.. code-block:: shell
+
+    sudo apt-get install libfcl-dev
+
+Assimp (optional) this library is used to load several 3D files or speed up loading
+some natively supported 3D files in RobWork
+
+.. code-block:: shell
+
+    sudo apt-get install libassimp-dev
+
 
 RobWorkStudio Dependencies
 --------------------------

@@ -335,7 +335,7 @@ if(EXISTS ${RWCFG_ROOT}/RobWorkBuildConfig_${RW_BUILD_TYPE}.cmake)
     # ################ FIND ROBWORK #######################
     set(ROBWORK_BUILD_PATH "${RW_BUILD_WITH_RW_ROOT}")
     set(ROBWORK_LIBRARIES_TMP
-        "${LIBRARIES_TO_INCLUDE};${OPTIONAL_LIBRARIES_TO_INCLUDE};${RW_BUILD_WITH_LIB_DEPEND}"
+        "${RW_BUILD_WITH_LIBRARIES_LUA};${RW_BUILD_WITH_LIBRARIES_OPENGL};${LIBRARIES_TO_INCLUDE};${OPTIONAL_LIBRARIES_TO_INCLUDE};${RW_BUILD_WITH_LIB_DEPEND}"
     )
 
     # make sure that the library and include paths are pointing to the right locations

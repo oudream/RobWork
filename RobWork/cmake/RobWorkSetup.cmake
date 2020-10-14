@@ -63,16 +63,7 @@ if(${RW_BUILD_TYPE} STREQUAL "release")
     set(Boost_USE_RELEASE_LIBS ON) # only find release libs
 endif()
 
-find_package(
-    Boost REQUIRED
-    COMPONENTS
-        filesystem
-        regex
-        serialization
-        system
-        thread
-        program_options
-)
+find_package(Boost REQUIRED COMPONENTS filesystem regex serialization system thread program_options)
 set(Boost_LIBRARIES_TMP ${Boost_LIBRARIES})
 set(Boost_FIND_QUIETLY TRUE) # Test libraries are optional
 
@@ -162,10 +153,16 @@ endif()
 # If the user wants to use yaobi then search for it, OPTIONAL
 #
 set(RW_HAVE_YAOBI False)
-cmake_dependent_option(RW_USE_YAOBI "Set to ON to include Yaobi support.
+cmake_dependent_option(
+    RW_USE_YAOBI
+    "Set to ON to include Yaobi support.
                 Set YAOBI_INCLUDE_DIR and YAOBI_LIBRARY_DIR
                 to specify your own YAOBI else RobWork YAOBI will
-                be used!" ON "NOT RW_DISABLE_YAOBI" OFF)
+                be used!"
+    ON
+    "NOT RW_DISABLE_YAOBI"
+    OFF
+)
 if(RW_USE_YAOBI)
     find_package(Yaobi QUIET)
     if(YAOBI_FOUND)
@@ -192,8 +189,10 @@ endif()
 # If the user wants to use PQP then search for it or use the default
 #
 set(RW_HAVE_PQP False)
-cmake_dependent_option(RW_USE_PQP "Set to ON to include PQP support.
-                    RobWork PQP will allways be used!" ON "NOT RW_DISABLE_PQP" OFF)
+cmake_dependent_option(
+    RW_USE_PQP "Set to ON to include PQP support.
+                    RobWork PQP will allways be used!" ON "NOT RW_DISABLE_PQP" OFF
+)
 if(RW_USE_PQP)
     set(RW_ENABLE_INTERNAL_PQP_TARGET ON)
     message(STATUS "RobWork: PQP ENABLED! Using RobWork native PQP.")
@@ -219,24 +218,13 @@ if(RW_USE_FCL)
         set(RW_HAVE_FCL True)
         set(ROBWORK_LIBRARIES_EXTERNAL ${ROBWORK_LIBRARIES_EXTERNAL} ${FCL_LIBRARIES})
     else()
-        set(RW_ENABLE_INTERNAL_FCL_TARGET ON)
-        include(${RW_ROOT}/ext/fcl/fcl/CMakeModules/FCLVersion.cmake)
-        message(
-            STATUS
-                "RobWork: native FCL installation NOT FOUND! Using RobWork ext FCL ${FCL_VERSION}."
-        )
-        set(FCL_INCLUDE_DIRS "${RW_ROOT}/ext/fcl/fcl/include")
-        set(FCL_LIBRARIES "fcl")
-        set(ROBWORK_LIBRARIES_INTERNAL ${ROBWORK_LIBRARIES_INTERNAL} ${FCL_LIBRARIES})
-        set(FCL_LIBRARY_DIRS ${RW_LIBRARY_OUT_DIR})
-        set(RW_HAVE_FCL TRUE)
+        message(STATUS "RobWork: FCL not foun, and is DISABLED!")
     endif()
 else()
     message(STATUS "RobWork: FCL DISABLED!")
 endif()
 
-# FIND_PACKAGE(Eigen3 3.1.0 QUIET)
-find_package(Eigen3 QUIET)
+find_package(Eigen3 REQUIRED)
 if(EIGEN3_FOUND)
     message(STATUS "RobWork: EIGEN3 installation FOUND! - version ${EIGEN3_VERSION}")
     if(EIGEN3_VERSION VERSION_LESS 3.1.0)
@@ -244,22 +232,11 @@ if(EIGEN3_FOUND)
         # versions lower than 3.1.0)
         add_definitions("-DEIGEN_YES_I_KNOW_SPARSE_MODULE_IS_NOT_STABLE_YET=1")
     endif()
-else()
-    set(RW_ENABLE_INTERNAL_EIGEN_TARGET ON)
-    message(STATUS "RobWork: EIGEN3 installation NOT FOUND! Using RobWork ext EIGEN3.")
-    set(EIGEN3_INCLUDE_DIR "${RW_ROOT}/ext/eigen3")
 endif()
 
-# find package disabled, in order to use reentrant qhull FIND_PACKAGE(Qhull QUIET) IF( QHULL_FOUND )
-# MESSAGE(STATUS "RobWork: QHULL installation FOUND!") ELSE ()
-set(RW_ENABLE_INTERNAL_QHULL_TARGET ON)
-message(STATUS "RobWork: QHULL installation NOT FOUND! Using RobWork ext QHULL.")
-
-set(QHULL_INCLUDE_DIRS "${RW_ROOT}/ext/qhull/src")
-set(QHULL_LIBRARIES "sdurw_qhull")
-set(QHULL_DEFINITIONS "")
-set(ROBWORK_LIBRARIES_INTERNAL ${ROBWORK_LIBRARIES_INTERNAL} ${QHULL_LIBRARIES})
-# ENDIF ()
+find_package(Qhull REQUIRED)
+message(STATUS "QHULL: ${QHULL_LIBRARIES}")
+set(ROBWORK_LIBRARIES_EXTERNAL ${ROBWORK_LIBRARIES_EXTERNAL} ${QHULL_LIBRARIES})
 
 # CSGJS
 option(RW_USE_CSGJS "Set to ON to use ext CSGJS." ON)
@@ -271,14 +248,11 @@ if(RW_USE_CSGJS)
     set(ROBWORK_LIBRARIES_INTERNAL ${ROBWORK_LIBRARIES_INTERNAL} ${CSGJS_LIBRARIES})
 endif()
 
-find_package(Bullet)
+find_package(Bullet QUIET)
 set(RW_HAVE_BULLET FALSE)
 if(BULLET_FOUND)
     message("Bullet found! ${BULLET_INCLUDE_DIRS}")
     message("Bullet libs: ${BULLET_LIBRARIES}")
-    # SET(RW_HAVE_BULLET TRUE)
-
-    # INCLUDE_DIRECTORIES( ${BULLET_INCLUDE_DIRS} )
     set(BULLET_LIBRARIES "")
     set(BULLET_INCLUDE_DIRS "")
 else()
@@ -292,45 +266,32 @@ set(RW_HAVE_LUA False)
 set(RW_HAVE_SWIG False)
 
 find_package(SWIG 3.0.0 QUIET) # At least SWIG 3 to support C++11
-cmake_dependent_option(RW_USE_LUA "Set to ON to include PQP support.
-                Set PQP_INCLUDE_DIR and PQP_LIB_DIR
-                to specify your own PQP else RobWork PQP will
-                be used!" ON "SWIG_FOUND;NOT RW_DISABLE_LUA" OFF)
+if(SWIG_FOUND)
+    set(RW_HAVE_SWIG true)
+else()
+
+endif()
+
+cmake_dependent_option(
+    RW_USE_LUA "Set to ON to include LUA support. " ON "SWIG_FOUND;NOT RW_DISABLE_LUA" OFF
+)
 
 if(RW_USE_LUA)
-    set(RW_FOUND_LUA FALSE)
-    if(${CMAKE_VERSION} VERSION_LESS "3.0.0")
-        find_package(Lua51 QUIET)
-        if(LUA51_FOUND)
-            message(STATUS "RobWork: External lua ${LUA_VERSION_STRING} FOUND!")
-            set(RW_FOUND_LUA TRUE)
+
+    find_package(Lua QUIET)
+    if(LUA_FOUND)
+        if(LUA_VERSION_MAJOR GREATER "5" OR LUA_VERSION_MINOR GREATER "0")
+            message(STATUS "RobWork: lua ${LUA_VERSION_STRING} FOUND!")
+            set(ROBWORK_LIBRARIES_EXTERNAL ${ROBWORK_LIBRARIES_EXTERNAL} ${LUA_LIBRARIES})
         endif()
     else()
-        find_package(Lua QUIET)
-        if(LUA_FOUND)
-            if(LUA_VERSION_MAJOR GREATER "5" OR LUA_VERSION_MINOR GREATER "0")
-                message(STATUS "RobWork: External lua ${LUA_VERSION_STRING} FOUND!")
-                set(RW_FOUND_LUA TRUE)
-                set(ROBWORK_LIBRARIES_EXTERNAL ${ROBWORK_LIBRARIES_EXTERNAL} ${LUA_LIBRARIES})
-            endif()
-        endif()
+        message(STATUS "RobWork: Lua not FOUND")
     endif()
-    if(NOT RW_FOUND_LUA)
-        set(RW_ENABLE_INTERNAL_LUA_TARGET ON)
-        message(STATUS "RobWork:  External lua NOT FOUND! Using RobWork native Lua.")
-        set(LUA_INCLUDE_DIR "${RW_ROOT}/ext/lua/src/")
-        set(LUA_LIBRARIES "lua51")
-        set(LUA_LIBRARY_DIRS ${RW_LIBRARY_OUT_DIR})
-        set(ROBWORK_LIBRARIES_INTERNAL ${ROBWORK_LIBRARIES_INTERNAL} ${LUA_LIBRARIES})
-    endif()
-    unset(RW_FOUND_LUA)
 
-    if(SWIG_FOUND)
+    if(SWIG_FOUND AND LUA_FOUND)
         message(STATUS "RobWork: LUA ENABLED! Both SWIG ${SWIG_VERSION} and Lua FOUND!")
-        set(RW_HAVE_SWIG True)
-        set(RW_HAVE_LUA True)
-        set(
-            RW_LUA_LIBS
+        set(RW_HAVE_LUA true)
+        set(RW_LUA_LIBS
             sdurw_lua_s
             sdurw_assembly_lua_s
             sdurw_control_lua_s
@@ -342,45 +303,13 @@ if(RW_USE_LUA)
         )
         set(ROBWORK_LIBRARIES_INTERNAL ${ROBWORK_LIBRARIES_INTERNAL} ${RW_LUA_LIBS})
     else()
-        set(RW_HAVE_SWIG False)
         set(RW_HAVE_LUA False)
-        message(SEND_ERROR "RobWork: Lua DISABLED! Since SWIG 3+ was NOT FOUND!")
+        message(STATUS "RobWork: Lua DISABLED! Since SWIG 3+ or LUA was NOT FOUND!")
     endif()
 else()
-    if(SWIG_FOUND)
-
-    else()
-        message(STATUS "RobWork: LUA DISABLED! Swig 3+ not found!")
-    endif()
-    set(LUA_INCLUDE_DIR "")
-    # SET(TOLUA_INCLUDE_DIR "")
+    message(STATUS "RobWork: LUA DISABLED!")
 endif()
 
-#
-# Use numpy for swing bindings if available
-#
-if(SWIG_FOUND)
-    execute_process(
-        COMMAND
-            python3 -c
-            "try: \n\timport numpy; print(\"ON\");\nexcept ImportError:\n\tprint(\"OFF\");"
-        OUTPUT_VARIABLE RW_USE_NUMPY
-        OUTPUT_STRIP_TRAILING_WHITESPACE
-    )
-    if(RW_USE_NUMPY)
-        message(STATUS "RobWork is compiled with Numpy")
-        execute_process(
-            COMMAND python3 -c "import numpy; print(numpy.__file__);"
-            OUTPUT_VARIABLE NUMPY_INCLUDE_DIR
-            OUTPUT_STRIP_TRAILING_WHITESPACE
-        )
-        get_filename_component(NUMPY_INCLUDE_DIR "${NUMPY_INCLUDE_DIR}" DIRECTORY)
-        set(NUMPY_INCLUDE_DIR "${NUMPY_INCLUDE_DIR}/core/include")
-        message(STATUS "numpy found at: ${NUMPY_INCLUDE_DIR}")
-    else()
-        message(STATUS "RobWork can't find Numpy.")
-    endif()
-endif()
 
 if(RW_BUILD_SANDBOX)
     message(STATUS "RobWork: Sandbox ENABLED!")
@@ -406,8 +335,9 @@ if(RW_BUILD_SOFTBODY)
     set(SOFTBODY_INCLUDE_DIRS ${MUMPS_INCLUDE_DIRS} ${IPOPT_INCLUDE_DIRS})
 
     set(ROBWORK_LIBRARIES_INTERNAL ${ROBWORK_LIBRARIES_INTERNAL} sdurw_softbody)
-    set(ROBWORK_LIBRARIES_INTERNAL ${ROBWORK_LIBRARIES_INTERNAL} ${MUMPS_LIBRARIES}
-                                   ${IPOPT_LIBRARIES})
+    set(ROBWORK_LIBRARIES_EXTERNAL ${ROBWORK_LIBRARIES_EXTERNAL} ${MUMPS_LIBRARIES}
+                                   ${IPOPT_LIBRARIES}
+    )
 else()
     message(STATUS "RobWork: Softbody DISABLED!")
 endif()
@@ -418,75 +348,33 @@ endif()
 # when Assimp is enabled.
 #
 
-set(RW_HAVE_ZLIB FALSE)
-set(RW_HAVE_MINIZIP FALSE)
 set(RW_HAVE_ASSIMP FALSE)
 
 # Make option for user to disable Assimp
-cmake_dependent_option(RW_USE_ASSIMP "Set to ON to include Assimp support.
+cmake_dependent_option(
+    RW_USE_ASSIMP
+    "Set to ON to include Assimp support.
                 Set ASSIMP_INCLUDE_DIR and ASSIMP_LIBRARY_DIR
                 to specify your own Assimp else RobWork Assimp will
-                be used!" ON "NOT RW_DISABLE_ASSIMP" OFF)
+                be used!"
+    ON
+    "NOT RW_DISABLE_ASSIMP"
+    OFF
+)
 
 set(ASSIMP_INCLUDE_DIRS "")
 set(ASSIMP_LIBRARIES "")
 if(RW_USE_ASSIMP)
     # Now try to find Assimp
-    find_package(Assimp 3.0 QUIET)
+    find_package(Assimp QUIET)
     if(ASSIMP_FOUND)
         message(STATUS "RobWork: Native Assimp installation FOUND!")
         set(RW_HAVE_ASSIMP TRUE)
         set(ROBWORK_LIBRARIES_EXTERNAL ${ROBWORK_LIBRARIES_EXTERNAL} ${ASSIMP_LIBRARIES})
     else()
-        set(RW_ENABLE_INTERNAL_ASSIMP_TARGET ON)
-        message(STATUS "RobWork: Assimp 3.0 installation NOT FOUND! Using RobWork ext Assimp.")
-
-        set(ASSIMP_INCLUDE_DIRS "${RW_ROOT}/ext/assimp/include")
-        if(EXISTS ${ASSIMP_INCLUDE_DIRS})
-            set(ASSIMP_LIBRARIES "sdurw_assimp")
-            set(ASSIMP_LIBRARY_DIRS ${RW_LIBRARY_OUT_DIR})
-            set(RW_HAVE_ASSIMP TRUE)
-            set(ROBWORK_LIBRARIES_INTERNAL ${ROBWORK_LIBRARIES_INTERNAL} ${ASSIMP_LIBRARIES})
-
-            # Find Zlib
-            if(NOT RW_HAVE_ZLIB)
-                find_package(ZLIB QUIET)
-                if(ZLIB_FOUND)
-                    message(STATUS "RobWork: Native ZLIB FOUND")
-                    set(ROBWORK_LIBRARIES_EXTERNAL ${ROBWORK_LIBRARIES_EXTERNAL} ${ZLIB_LIBRARIES})
-                else()
-                    message(STATUS "RobWork: No ZLIB FOUND - using internal")
-                    set(RW_ENABLE_INTERNAL_ZLIB_TARGET ON)
-                    set(ZLIB_INCLUDE_DIRS "${RW_ROOT}/ext/zlib")
-                    set(ZLIB_LIBRARY_DIRS ${RW_LIBRARY_OUT_DIR})
-                    set(ZLIB_LIBRARIES sdurw_zlib)
-                    set(ROBWORK_LIBRARIES_INTERNAL ${ROBWORK_LIBRARIES_INTERNAL} ${ZLIB_LIBRARIES})
-                endif()
-                set(RW_HAVE_ZLIB ON)
-            endif(NOT RW_HAVE_ZLIB)
-
-            # Find Minizip/Unzip
-            if(NOT RW_HAVE_MINIZIP)
-                find_package(MINIZIP QUIET)
-                if(MINIZIP_FOUND)
-                    message(STATUS "RobWork: Native MINIZIP FOUND")
-                    set(ROBWORK_LIBRARIES_EXTERNAL ${ROBWORK_LIBRARIES_EXTERNAL}
-                                                   ${MINIZIP_LIBRARIES})
-                else()
-                    message(STATUS "RobWork: No MINIZIP FOUND - using internal")
-                    set(RW_ENABLE_INTERNAL_MINIZIP_TARGET ON)
-                    set(MINIZIP_INCLUDE_DIRS "${RW_ROOT}/ext/unzip")
-                    set(MINIZIP_LIBRARY_DIRS ${RW_LIBRARY_OUT_DIR})
-                    set(MINIZIP_LIBRARIES "sdurw_unzip")
-                    set(ROBWORK_LIBRARIES_INTERNAL ${ROBWORK_LIBRARIES_INTERNAL}
-                                                   ${MINIZIP_LIBRARIES})
-                endif()
-                set(RW_HAVE_MINIZIP ON)
-            endif(NOT RW_HAVE_MINIZIP)
-        else()
-            message(STATUS "RobWork: RobWork ext Assimp, NOT FOUND, disabeling assimp functions")
-            set(ASSIMP_INCLUDE_DIRS "")
-        endif()
+        set(ASSIMP_LIBRARIES)
+        set(ASSIMP_INCLUDE_DIRS)
+        message(STATUS "RobWork: Assimp not found and is now DISABLED!")
     endif()
 else()
     message(STATUS "RobWork: Assimp DISABLED!")
@@ -516,12 +404,13 @@ if(CMAKE_VERSION VERSION_LESS "3.12")
         endif()
     endif()
 else()
-    find_package (Python3 QUIET COMPONENTS Interpreter Development)
-    if (Python3_FOUND)
+    find_package(Python3 QUIET COMPONENTS Interpreter Development)
+    if(Python3_FOUND)
         set(PYTHONINTERP_FOUND ${Python3_Interpreter_FOUND})
         set(PYTHONLIBS_FOUND ${Python3_Development_FOUND})
         set(PYTHON_LIBRARIES ${Python3_LIBRARIES})
         set(PYTHON_INCLUDE_DIRS ${Python3_INCLUDE_DIRS})
+        set(PYTHON_EXECUTABLE ${Python_EXECUTABLE})
     endif()
 endif()
 
@@ -536,6 +425,31 @@ if(PYTHON_LIBRARY STREQUAL "NOTFOUND")
 endif()
 
 #
+# Use numpy for swing bindings if available
+#
+if(SWIG_FOUND)
+    execute_process(
+        COMMAND ${PYTHON_EXECUTABLE} -c
+                "try: \n\timport numpy; print(\"ON\");\nexcept ImportError:\n\tprint(\"OFF\");"
+        OUTPUT_VARIABLE RW_USE_NUMPY
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
+    if(RW_USE_NUMPY)
+        message(STATUS "RobWork is compiled with Numpy")
+        execute_process(
+            COMMAND python3 -c "import numpy; print(numpy.__file__);"
+            OUTPUT_VARIABLE NUMPY_INCLUDE_DIR
+            OUTPUT_STRIP_TRAILING_WHITESPACE
+        )
+        get_filename_component(NUMPY_INCLUDE_DIR "${NUMPY_INCLUDE_DIR}" DIRECTORY)
+        set(NUMPY_INCLUDE_DIR "${NUMPY_INCLUDE_DIR}/core/include")
+        message(STATUS "numpy found at: ${NUMPY_INCLUDE_DIR}")
+    else()
+        message(STATUS "RobWork can't find Numpy.")
+    endif()
+endif()
+
+#
 # If the user wants to use the Google Test package then search for it. Set RW_DISABLE_GTEST to ON to
 # disable Google Test completely.
 #
@@ -543,13 +457,18 @@ endif()
 cmake_dependent_option(
     RW_USE_GTEST
     "Set to ON to include Google Test support. Set GTEST_ROOT or GTEST_SOURCE to specify your own Google Test installation."
-    ON "NOT RW_DISABLE_GTEST" OFF
+    ON
+    "NOT RW_DISABLE_GTEST"
+    OFF
 )
 set(RW_HAVE_GTEST FALSE)
 set(RW_ENABLE_INTERNAL_GTEST_TARGET OFF)
 if(RW_USE_GTEST)
     # Now try to find Google Test
-    set(gtest_force_shared_crt ON CACHE BOOL "Use /MD on Windows systems.")
+    set(gtest_force_shared_crt
+        ON
+        CACHE BOOL "Use /MD on Windows systems."
+    )
     find_package(GTest QUIET)
     if(GTEST_FOUND)
         set(GTEST_SHARED_LIBS ${BUILD_SHARED_LIBS})
@@ -569,8 +488,9 @@ else()
 endif()
 
 # Mathematica
-cmake_dependent_option(RW_USE_MATHEMATICA "Set to ON to include Mathematica support." ON
-                       "RW_ENABLE_MATHEMATICA" OFF)
+cmake_dependent_option(
+    RW_USE_MATHEMATICA "Set to ON to include Mathematica support." ON "RW_ENABLE_MATHEMATICA" OFF
+)
 if(RW_USE_MATHEMATICA)
     find_package(Mathematica QUIET)
     if(Mathematica_WSTP_FOUND)
@@ -586,7 +506,7 @@ if(RW_USE_MATHEMATICA)
         set(RW_MATHEMATICA_LIB sdurw_mathematica)
         set(RW_HAVE_MATHEMATICA TRUE)
 
-        set(ROBWORK_LIBRARIES_INTERNAL ${ROBWORK_LIBRARIES_INTERNAL} ${RW_MATHEMATICA_LIB})
+        set(ROBWORK_LIBRARIES_EXTERNAL ${ROBWORK_LIBRARIES_EXTERNAL} ${RW_MATHEMATICA_LIB})
     else()
         message(STATUS "RobWork: Mathematica NOT FOUND!")
         set(RW_HAVE_MATHEMATICA FALSE)
@@ -629,16 +549,18 @@ if("${RW_C_FLAGS}" STREQUAL "")
         set(RW_C_FLAGS_TMP "${RW_C_FLAGS_TMP} ${RW_C_FLAGS_EXTRA}")
     endif()
 
-    set(RW_C_FLAGS "${RW_C_FLAGS_TMP}" CACHE STRING "Change this to force using your own
-					  flags and not those of RobWork" FORCE)
+    set(RW_C_FLAGS
+        "${RW_C_FLAGS_TMP}"
+        CACHE STRING "Change this to force using your own
+					  flags and not those of RobWork" FORCE
+    )
 endif()
 
 if("${RW_CXX_FLAGS}" STREQUAL "")
     # GCC and MinGW
-    if(
-        (CMAKE_COMPILER_IS_GNUCXX)
-        OR (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-        OR (CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
+    if((CMAKE_COMPILER_IS_GNUCXX)
+       OR (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+       OR (CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
     )
         # Turn off annoying GCC warnings
         set(RW_CXX_FLAGS_TMP "-Wall -Wno-strict-aliasing -Wno-unused-function")
@@ -680,8 +602,11 @@ if("${RW_CXX_FLAGS}" STREQUAL "")
         set(RW_CXX_FLAGS_TMP "${RW_CXX_FLAGS_TMP} ${RW_CXX_FLAGS_EXTRA}")
     endif()
 
-    set(RW_CXX_FLAGS "${RW_CXX_FLAGS_TMP}" CACHE STRING "Change this to force using your own
-					  flags and not those of RobWork" FORCE)
+    set(RW_CXX_FLAGS
+        "${RW_CXX_FLAGS_TMP}"
+        CACHE STRING "Change this to force using your own
+					  flags and not those of RobWork" FORCE
+    )
 endif()
 
 #
@@ -697,8 +622,7 @@ if(RW_ENABLE_OMP)
                 message(STATUS "RobWork: OpenMP CXX FOUND!")
             else()
                 message(
-                    STATUS
-                        "RobWork: OpenMP CXX FOUND! - Specification date ${OpenMP_CXX_SPEC_DATE}"
+                    STATUS "RobWork: OpenMP CXX FOUND! - Specification date ${OpenMP_CXX_SPEC_DATE}"
                 )
             endif()
             set(RW_HAVE_OMP TRUE)
@@ -741,8 +665,7 @@ if("${RW_DEFINITIONS}" STREQUAL "")
 
     # Setup crucial MSVC flags, without these RobWork does not compile
     if(DEFINED MSVC)
-        set(
-            RW_DEFINITIONS_TMP # Remove the min()/max() macros or else RobWork won't compile.
+        set(RW_DEFINITIONS_TMP # Remove the min()/max() macros or else RobWork won't compile.
             "-DNOMINMAX"
             # Without this define for boost-bindings we can't link with lapack.
             "-DBIND_FORTRAN_LOWERCASE_UNDERSCORE"
@@ -777,8 +700,11 @@ if("${RW_DEFINITIONS}" STREQUAL "")
         set(RW_DEFINITIONS_EXTRA_TMP "${RW_DEFINITIONS_EXTRA_TMP} ${RW_DEFINITIONS_EXTRA_EXTRA}")
     endif()
 
-    set(RW_DEFINITIONS "${RW_DEFINITIONS_TMP}" CACHE STRING "Change this to force using your own
-					  flags and not those of RobWork" FORCE)
+    set(RW_DEFINITIONS
+        "${RW_DEFINITIONS_TMP}"
+        CACHE STRING "Change this to force using your own
+					  flags and not those of RobWork" FORCE
+    )
 endif()
 
 if("${RW_CXX_FLAGS}" STREQUAL "")
@@ -811,18 +737,19 @@ if(NOT DEFINED RW_LINKER_FLAGS)
     endif()
 endif()
 set(RW_BUILD_WITH_LINKER_FLAGS "${RW_LINKER_FLAGS}")
-set(
-    CMAKE_SHARED_LINKER_FLAGS
+set(CMAKE_SHARED_LINKER_FLAGS
     "${CMAKE_SHARED_LINKER_FLAGS} ${RW_LINKER_FLAGS}"
     CACHE STRING "" FORCE
 )
-set(
-    CMAKE_MODULE_LINKER_FLAGS
+set(CMAKE_MODULE_LINKER_FLAGS
     "${CMAKE_MODULE_LINKER_FLAGS} ${RW_LINKER_FLAGS}"
     CACHE STRING "" FORCE
 )
 if(WIN32)
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${RW_LINKER_FLAGS}" CACHE STRING "" FORCE)
+    set(CMAKE_EXE_LINKER_FLAGS
+        "${CMAKE_EXE_LINKER_FLAGS} ${RW_LINKER_FLAGS}"
+        CACHE STRING "" FORCE
+    )
 endif()
 message(STATUS "RobWork: RW linker flags: ${RW_LINKER_FLAGS}")
 
@@ -852,8 +779,7 @@ endif()
 #
 # The include dirs
 #
-set(
-    ROBWORK_INCLUDE_DIR
+set(ROBWORK_INCLUDE_DIR
     ${EIGEN3_INCLUDE_DIR}
     ${SOFTBODY_INCLUDE_DIRS}
     ${ADDITIONAL_BOOST_BINDINGS}
@@ -864,23 +790,21 @@ set(
     ${YAOBI_INCLUDE_DIR}
     ${PQP_INCLUDE_DIR}
     ${LUA_INCLUDE_DIR}
-    ${TOLUA_INCLUDE_DIR}
     ${BULLET_INCLUDE_DIRS}
     ${QHULL_INCLUDE_DIRS}
     ${CSGJS_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIRS}
     ${FCL_INCLUDE_DIRS}
     # ${MINIZIP_INCLUDE_DIRS} # Do not include this overall as there is a conflict with another
-    # crypt.h that Python
-    # includes.
-    ${ASSIMP_INCLUDE_DIRS} ${Mathematica_WSTP_INCLUDE_DIR}
+    # crypt.h that Python includes.
+    ${ASSIMP_INCLUDE_DIRS}
+    ${Mathematica_WSTP_INCLUDE_DIR}
 )
 
 #
 # The library dirs
 #
-set(
-    ROBWORK_LIBRARY_DIRS
+set(ROBWORK_LIBRARY_DIRS
     ${SOFTBODY_LIBRARY_DIRS}
     ${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}
     ${RW_CMAKE_ARCHIVE_OUTPUT_DIRECTORY}
@@ -891,10 +815,6 @@ set(
     ${FCL_LIBRARY_DIRS}
     ${LUA_LIBRARY_DIRS}
     ${BULLET_LIBRARY_DIRS}
-    ${TOLUA_LIBRARY_DIRS}
-    ${LAPACK_BLAS_LIBRARY_DIRS}
-    ${ZLIB_LIBRARY_DIRS}
-    ${MINIZIP_LIBRARY_DIRS}
     ${ASSIMP_LIBRARY_DIRS}
     ${Mathematica_WSTP_INCLUDE_DIR}
 )
@@ -903,8 +823,7 @@ set(
 # Setup the Library List here. We need to make sure the correct order is maintained which is crucial
 # for some compilers.
 #
-set(
-    ROBWORK_LIBRARIES_EXTERNAL
+set(ROBWORK_LIBRARIES_EXTERNAL
     ${ROBWORK_LIBRARIES_EXTERNAL}
     ${OPENGL_LIBRARIES}
     ${XERCESC_LIBRARIES}
@@ -915,8 +834,7 @@ set(
     ${Boost_LIBRARIES}
 )
 
-set(
-    ROBWORK_LIBRARIES_INTERNAL
+set(ROBWORK_LIBRARIES_INTERNAL
     ${ROBWORK_LIBRARIES_INTERNAL}
     sdurw_algorithms
     sdurw_pathplanners
@@ -939,7 +857,11 @@ set(ROBWORK_LIBRARIES)
 foreach(l ${ROBWORK_LIBRARIES_EXTERNAL})
     unset(tmp CACHE)
     if(NOT ("${l}" STREQUAL "debug" OR "${l}" STREQUAL "optimized"))
-        find_library(tmp ${l} PATHS ${ROBWORK_LIBRARY_DIRS} NO_DEFAULT_PATH)
+        find_library(
+            tmp ${l}
+            PATHS ${ROBWORK_LIBRARY_DIRS}
+            NO_DEFAULT_PATH
+        )
         if(tmp)
             list(APPEND ROBWORK_LIBRARIES ${tmp})
         else()
