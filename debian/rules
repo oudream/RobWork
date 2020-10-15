@@ -1,0 +1,81 @@
+#!/usr/bin/make -f
+export DH_VERBOSE = 0
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+
+%:
+	# Ubuntu 16
+	#dh $@ --parallel --buildsystem=cmake --builddirectory=Build
+	# Newer then ubuntu 16
+	dh $@ --buildsystem=cmake --builddirectory=Build 
+
+
+override_dh_auto_configure:
+	dh_auto_configure -- \
+        -DLIB_INSTALL_DIR=/usr/lib/$(DEB_TARGET_MULTIARCH) \
+        -DBUILD_SHARED_LIBS=ON \
+        -DRWHW_SHARED_LIBS=ON \
+		-DRWS_SHARED_LIBS=ON \
+        -DRWS_USE_STATIC_LINK_COMPONENTS=OFF \
+        -DRWS_USE_STATIC_LINK_PLUGINS=OFF \
+        -DRWSIM_SHARED_LIBS=ON \
+		-DRW_IS_TESTS_ENABLED=FALSE \
+		-DRW_DISABLE_GTEST=ON \
+		-DBUILD_sdurw_java=OFF \
+		-DBUILD_sdurw_lua=ON \
+		-DBUILD_sdurw_python=ON \
+		-DBUILD_sdurws_java=OFF \
+		-DBUILD_sdurwsim_java=OFF \
+		$(shell ./debian/scripts/getVersion.sh "./debian/scripts" -n) 
+
+override_dh_clean:
+	dh_clean
+	$(RM) -r RobWork/bin/*
+	$(RM) -r RobWork/libs/*
+	$(RM) RobWork/CTestConfig.cmake
+	$(RM) RobWork/cmake/RobWorkBuildConfig_none.cmake
+	$(RM) RobWork/cmake/RobWorkConfig.cmake
+	$(RM) RobWork/cmake/RobWorkConfigVersion.cmake
+	$(RM) RobWork/cmake/dependencies.cmake.gen
+	$(RM) RobWork/ext/fcl/fcl/include/fcl/config.h
+	$(RM) RobWork/ext/rwyaobi/yaobi/yaobi_config.h
+	$(RM) RobWork/include_dirs
+	$(RM) RobWork/src/RobWorkConfig.hpp
+	$(RM) RobWork/test/TestSuiteConfig.hpp
+	$(RM) RobWork/test/TestSuiteConfig.xml.install
+	$(RM) -r RobWorkHardware/bin/*
+	$(RM) -r RobWorkHardware/libs/*
+	$(RM) RobWorkHardware/cmake/RobWorkHardwareBuildConfig_none.cmake
+	$(RM) RobWorkHardware/cmake/RobWorkHardwareConfig.cmake
+	$(RM) RobWorkHardware/cmake/RobWorkHardwareConfigVersion.cmake
+	$(RM) RobWorkHardware/src/RobWorkHardwareConfig.hpp
+	$(RM) RobWorkHardware/src/rwhw/universalrobots/urscript.hpp
+	$(RM) RobWorkHardware/ext/ur_rtde/include/ur_rtde/rtde_control_script.h
+	$(RM) -r RobWorkStudio/bin/none
+	$(RM) -r RobWorkStudio/libs/*
+	$(RM) RobWorkStudio/CTestConfig.cmake
+	$(RM) RobWorkStudio/cmake/RobWorkStudioBuildConfig_none.cmake
+	$(RM) RobWorkStudio/cmake/RobWorkStudioConfig.cmake
+	$(RM) RobWorkStudio/cmake/RobWorkStudioConfigVersion.cmake
+	$(RM) RobWorkStudio/cmake/dependencies.cmake.gen
+	$(RM) RobWorkStudio/docs/robwork_help-v0.7.0.qhcp
+	$(RM) RobWorkStudio/gtest/TestSuiteConfig.xml.generated
+	$(RM) RobWorkStudio/src/RobWorkStudioConfig.hpp
+	$(RM) -r RobWorkSim/bin/*
+	$(RM) -r RobWorkSim/libs/*
+	$(RM) RobWorkSim/CTestConfig.cmake
+	$(RM) RobWorkSim/cmake/RobWorkSimBuildConfig_none.cmake
+	$(RM) RobWorkSim/cmake/RobWorkSimConfig.cmake
+	$(RM) RobWorkSim/cmake/RobWorkSimConfigVersion.cmake
+	$(RM) RobWorkSim/src/RobWorkSimConfig.hpp
+	$(RM) RobWorkSim/src/rwsimlibs/gui/RWSimGuiConfig.hpp
+	$(RM) RobWorkSim/test/TestSuiteConfig.hpp
+	$(RM) RobWorkSim/test/TestSuiteConfig.xml.install
+	$(RM) doc/Doxyfile
+
+override_dh_shlibdeps:
+	LD_LIBRARY_PATH=$(DESTDIR)/usr/lib/$(DEB_TARGET_MULTIARCH):$$LD_LIBRARY_PATH dh_shlibdeps -l$(DESTDIR)/usr/lib/$(DEB_TARGET_MULTIARCH) -a
+
+override_dh_install:
+	./debian/scripts/gen.sh 
+	dh_install
+

@@ -1,0 +1,1694 @@
+Source: robwork
+Priority: optional
+Maintainer: Kasper Høj Lorenzen <kalor@mmmi.sdu.dk>
+Build-Depends: 
+  debhelper (>= 10), 
+  cmake(>= 2.8.12), 
+  libfcl-dev(>= 0.3), 
+  libboost-dev (>= 1.54), 
+  libboost-program-options-dev (>= 1.54), 
+  libboost-date-time-dev (>= 1.54), 
+  libboost-filesystem-dev (>= 1.54), 
+  libboost-regex-dev (>= 1.54), 
+  libboost-serialization-dev (>= 1.54), 
+  libboost-system-dev (>= 1.54), 
+  libboost-thread-dev (>= 1.54), 
+  libxerces-c-dev (>= 3.1), 
+  libeigen3-dev (>= 3), 
+  libqhull-dev (>= 2012.1), 
+  libbullet-dev (>= 2.81), 
+  swig (>=3), 
+  python3-dev,
+  liblua5.3-dev, 
+  libgtest-dev, 
+  librtde-dev,
+  libassimp-dev (>= 3.0), 
+  libpthread-stubs0-dev (>=0.3),
+  libglu1-mesa-dev (>= 9), 
+  libomp-dev (>= 3.7), 
+  qtbase5-dev (>=5), 
+  libqt5opengl5-dev, 
+  libode-dev (>=2), 
+  libdc1394-22-dev (>=2),
+  freeglut3-dev (>=2.8)
+Standards-Version: 4.1.2
+Section: libs
+Homepage: http://www.robwork.dk
+Vcs-Git: https://gitlab.com/sdurobotics/RobWork.git
+Vcs-Browser: https://gitlab.com/sdurobotics/RobWork
+
+Package: libsdurw-core1.2
+Architecture: amd64
+Multi-Arch: same
+Depends: 
+ ${shlibs:Depends}, 
+ ${misc:Depends}
+Description: Core library for all RobWorkLibraries.
+ This package contains the plugin system and 
+ various core classes used in all sdurw* libraries.
+
+Package: libsdurw-common1.2
+Architecture: amd64
+Multi-Arch: same
+Depends: 
+ ${shlibs:Depends}, 
+ ${misc:Depends}
+Description: Common utility classes used in RobWork
+ This package is used to provide extra Logging, 
+ Threading and other utility functions for RobWork 
+
+Package: libsdurw-math1.2
+Architecture: amd64
+Multi-Arch: same
+Depends: 
+ ${shlibs:Depends}, 
+ ${misc:Depends}
+Description: Math classes and functions to support RobotMath
+ This library uses the Eigen Library to deliver 
+ Matrix algebra specialized for Robots 
+
+Package: libsdurw1.2
+Architecture: amd64
+Multi-Arch: same
+Conflicts: libsdurw0
+Depends: 
+ ${shlibs:Depends}, 
+ ${misc:Depends},
+ liblua5.3-dev 
+Description: Core library for simulation and control of robot systems.
+ RobWork is used for research and education as well as for practical robot
+ applications.
+ .
+ Features of the core library include:
+  - Kinematic modeling of various types of industrial manipulators, serial-,
+    tree-, and parallel structures.
+  - The RobWork XML format for WorkCells.
+  - Geometry: triangle meshes and analytical surfaces (quadratic surfaces).
+  - Forward & Inverse kinematics algorithms: Universal Robots, Kuka IIWA and
+    iterative Jacobian based solvers.
+  - Metrics for calculation of grasp quality.
+  - Simple and extendible plugin system for integrating users own algorithms.
+  - Trajectory generation with blends and splines.
+ .
+ Target audience of RobWork is:
+  - Researchers who needs a common framework for experimental robotics
+  - Students who wants to experiment with concepts of robotics
+  - Implementers of robot applications
+ .
+ RobWork is developed by SDU Robotics at the University of Southern Denmark.
+
+Package: libsdurw-algorithms1.2
+Architecture: amd64
+Multi-Arch: same
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Various algorithms
+ This library includes the following algorithms:
+  - BFGS minimization: quasi-Newton method by Broyden, Fletcher, Goldfarb, and
+    Shanno.
+  - Moving average
+  - RANSAC
+  - GPM: Gradient Projection Method with joint limits and singularity avoidance
+  - KD-Tree
+  - QPController: Quadratic Optimization for visual servoing.
+  - XQPController: Constrained version of QPController.
+
+Package: libsdurw-calibration1.2
+Architecture: amd64
+Multi-Arch: same
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Calibration interface for calibration of workcells.
+ So far this only contains an interface for calibration.
+ Contact SDU Robotics for access to an implementation.
+
+Package: libsdurw-control1.2
+Architecture: amd64
+Multi-Arch: same
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Control strategies for control of robots.
+ This provides an interface for controlling the joints of a robot.
+
+Package: libsdurw-opengl1.2
+Architecture: amd64
+Multi-Arch: same
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: OpenGL rendering of various RobWork types and geometries.
+ Makes it possible to render geometries, models, frames etc.
+
+Package: libsdurw-proximitystrategies1.2
+Architecture: amd64
+Multi-Arch: same
+Conflicts:
+ libsdurw-proximitystrategies1.1,
+ libsdurw-proximitystrategies1.0
+Replaces:
+ libsdurw-proximitystrategies1.1,
+ libsdurw-proximitystrategies1.0
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Collision detection and distance queries.
+ This library includes the following proximity strategies:
+  - Bullet: Collision detection and distance queries.
+  - FCL: Collision detection and distance queries.
+  - PQP: Collision detection and distance queries.
+  - Yaobi: Collision detection.
+
+Package: libsdurw-pathoptimization1.2
+Architecture: amd64
+Multi-Arch: same
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Optimization of paths based on clearance and path length.
+ This library includes the following optimization algorithms:
+  - Path length: path pruning, shortcut, partial shortcut.
+  - Clearance: C-retraction algorithms.
+
+Package: libsdurw-pathplanners1.2
+Architecture: amd64
+Multi-Arch: same
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Pathplanning with ARW, PRM, RRT, SBL and Z3.
+ This library includes the following planners:
+  - ARW: Adaptive Random Walk planners
+  - PRM: Probabilistic RoadMap planners
+  - RRT: Rapidly-exploring Random Tree planners
+  - SBL: Single-query Bi-directional Lazy planner
+  - Z3: Z3-method
+
+Package: libsdurw-task1.2
+Architecture: amd64
+Multi-Arch: same
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: XML format for definition of tasks and results.
+ This format is used for grasp and assembly task definitions.
+
+Package: libsdurw-simulation1.2
+Architecture: amd64
+Multi-Arch: same
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Library for simulated sensors and scanners.
+ Provides simulation of the following:
+  - Frame grabbing from GL.
+  - Point clouds from GL.
+  - Kinect sensors.
+ Also, a Kinematic simulation interface is included.
+
+Package: libsdurw-assembly1.2
+Architecture: amd64
+Multi-Arch: same
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Framework for assembly tasks, results and strategies.
+ This library provides standard strategies for assembly simulation.
+
+Package: libsdurw-csg1.2
+Architecture: amd64
+Multi-Arch: same
+Conflicts:
+  libsdurw-csg1.1
+Replaces:
+  libsdurw-csg1.1
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: module for doing constructive solid geometry.
+ This library provides a module for doing constructive solid geometry.
+
+Package: libsdurw-geometry1.2
+Architecture: amd64
+Multi-Arch: same
+Replaces:
+  libsdurw-analytic-geometry1.1,
+  libsdurw-analytic-geometry1.0,
+  libsdurw-geometry1.0
+Breaks:
+  libsdurw-analytic-geometry1.1,
+  libsdurw-analytic-geometry1.0,
+  libsdurw-geometry1.0
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: module for doing constructive solid geometry.
+ This library provides a module for doing constructive solid geometry.
+
+Package: libsdurwhw-camera1.2
+Architecture: amd64
+Multi-Arch: same
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Driver for FireWire 1394 and OpenCV cameras.
+ The Driver for FireWire 1394 and OpenCV cameras.
+
+Package: libsdurwhw-can1.2
+Architecture: amd64
+Multi-Arch: same
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Driver for CAN bus communication.
+ The Driver for CAN bus communication.
+
+Package: libsdurwhw-dockwelder1.2
+Architecture: amd64
+Multi-Arch: same
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Driver for dockwelder robot.
+ The Driver for dockwelder robot.
+
+Package: libsdurwhw-netft1.2
+Architecture: amd64
+Multi-Arch: same
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Driver for force/torque compensation.
+ The Driver for force/torque compensation.
+
+Package: libsdurwhw-pcube1.2
+Architecture: amd64
+Multi-Arch: same
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Driver for PowerCube.
+ The Driver for PowerCube.
+
+Package: libsdurwhw-robolabft1.2
+Architecture: amd64
+Multi-Arch: same
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: RobolabFT driver.
+ The RobolabFT driver.
+
+Package: libsdurwhw-robotiq1.2
+Architecture: amd64
+Multi-Arch: same
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Drivers for Robotiq 2- and 3-finger grippers.
+ The Drivers for Robotiq 2- and 3-finger grippers.
+
+Package: libsdurwhw-schunkpg70-1.2
+Architecture: amd64
+Multi-Arch: same
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Driver for Shunk PG-70 gripper.
+ The Driver for Shunk PG-70 gripper.
+
+Package: libsdurwhw-serialport1.2
+Architecture: amd64
+Multi-Arch: same
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Driver for serial port communication.
+ The Driver for serial port communication.
+
+Package: libsdurwhw-tactile1.2
+Architecture: amd64
+Multi-Arch: same
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Driver for tactile array.
+ The Driver for tactile array.
+
+Package: libsdurwhw-universalrobots1.2
+Architecture: amd64
+Multi-Arch: same
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Driver for universal robots.
+ The Driver for universal robots.
+
+Package: libsdurwhw-universalrobots-rtde1.2
+Architecture: amd64
+Multi-Arch: same
+Conflicts:
+  libsdurwhw-universalrobots-rtde1.1,
+  libsdurwhw-universalrobots-rtde1.0,
+  sdurwhw-cmake1.1,
+  sdurwhw-cmake1.0
+Replaces:
+  libsdurwhw-universalrobots-rtde1.1,
+  libsdurwhw-universalrobots-rtde1.0,
+  sdurwhw-cmake1.1,
+  sdurwhw-cmake1.0
+Depends: 
+  librtde,
+  ${shlibs:Depends},
+  ${misc:Depends}
+Description: New Driver for universal robots.
+ The New Driver for universal robots.
+
+Package: libsdurws1.2
+Architecture: amd64
+Multi-Arch: same
+Conflicts:
+ libsdurws1.1,
+ libsdurws1.0
+Replaces:
+ libsdurws1.1,
+ libsdurws1.0
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Core library for RobWorkStudio GUI based on Qt.
+ The Core library for RobWorkStudio GUI based on Qt.
+
+Package: robworkstudio
+Architecture: amd64
+Multi-Arch: no
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Package RobWorkStudio is the main GUI for RobWork.
+ The executable allows:
+  - Visualization of WorkCells.
+  - Support for user plugins.
+  - Simulated sensors.
+
+Package: libsdurws-robworkstudioapp1.2
+Architecture: amd64
+Multi-Arch: same
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: rwstudio application that may be started in a thread.
+ The rwstudio application that may be started in a thread.
+
+Package: libsdurws-atask
+Architecture: amd64
+Multi-Arch: same
+Conflicts:
+ libsdurws-atask1.1,
+ libsdurws-atask1.0
+Replaces:
+ libsdurws-atask1.1,
+ libsdurws-atask1.0
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: RobWorkStudio plugin for visualization of assembly tasks.
+ The RobWorkStudio plugin for visualization of assembly tasks.
+
+Package: libsdurws-gtask
+Architecture: amd64
+Multi-Arch: same
+Conflicts:
+ libsdurws-gtask1.1,
+ libsdurws-gtask1.0
+Replaces:
+ libsdurws-gtask1.1,
+ libsdurws-gtask1.0
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: RobWorkStudio plugin for visualization of grasp tasks.
+ The RobWorkStudio plugin for visualization of grasp tasks.
+
+Package: libsdurws-jog
+Architecture: amd64
+Multi-Arch: same
+Conflicts:
+ libsdurws-jog1.1,
+ libsdurws-jog1.0
+Replaces:
+ libsdurws-jog1.1,
+ libsdurws-jog1.0
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: RobWorkStudio plugin for jogging robots and frames.
+ The RobWorkStudio plugin for jogging robots and frames.
+
+Package: libsdurws-log
+Architecture: amd64
+Multi-Arch: same
+Conflicts:
+ libsdurws-log1.1,
+ libsdurws-log1.0
+Replaces:
+ libsdurws-log1.1,
+ libsdurws-log1.0
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: RobWorkStudio plugin for log output.
+ The RobWorkStudio plugin for log output.
+
+Package: libsdurws-luapl
+Architecture: amd64
+Multi-Arch: same
+Conflicts:
+ libsdurws-luapl1.1,
+ libsdurws-luapl1.0
+Replaces:
+ libsdurws-luapl1.1,
+ libsdurws-luapl1.0
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: RobWorkStudio plugin for lua terminal.
+ The RobWorkStudio plugin for lua terminal.
+
+Package: libsdurws-luaeditor1.2
+Architecture: amd64
+Multi-Arch: same
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: RobWorkStudio library for making a lua terminal.
+ The RobWorkStudio library for making a lua terminal.
+
+
+Package: libsdurws-planning
+Architecture: amd64
+Multi-Arch: same
+Conflicts:
+ libsdurws-planning1.1,
+ libsdurws-planning1.0
+Replaces:
+ libsdurws-planning1.1,
+ libsdurws-planning1.0
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: RobWorkStudio plugin for pathplanning.
+ The RobWorkStudio plugin for pathplanning.
+
+Package: libsdurws-playback
+Architecture: amd64
+Multi-Arch: same
+Conflicts:
+ libsdurws-playback1.1,
+ libsdurws-playback1.0
+Replaces:
+ libsdurws-playback1.1,
+ libsdurws-playback1.0
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: RobWorkStudio plugin for playback of recorded trajectories.
+ The RobWorkStudio plugin for playback of recorded trajectories.
+
+Package: libsdurws-propertyview
+Architecture: amd64
+Multi-Arch: same
+Conflicts:
+ libsdurws-propertyview1.1,
+ libsdurws-propertyview1.0
+Replaces:
+ libsdurws-propertyview1.1,
+ libsdurws-propertyview.0
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: RobWorkStudio plugin for viewing and editing of properties.
+ The RobWorkStudio plugin for viewing and editing of properties.
+
+Package: libsdurws-sensors
+Architecture: amd64
+Multi-Arch: same
+Conflicts:
+ libsdurws-sensors1.1,
+ libsdurws-sensors1.0
+Replaces:
+ libsdurws-sensors1.1,
+ libsdurws-sensors1.0
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: RobWorkStudio plugin for sensor simulation.
+ The RobWorkStudio plugin for sensor simulation.
+
+Package: libsdurws-treeview
+Architecture: amd64
+Multi-Arch: same
+Conflicts:
+ libsdurws-treeview1.1,
+ libsdurws-treeview1.0
+Replaces:
+ libsdurws-treeview1.1,
+ libsdurws-treeview1.0
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: RobWorkStudio plugin for visualization of the WC structure.
+ The RobWorkStudio plugin for visualization of the WC structure.
+
+Package: libsdurws-workcelleditorplugin
+Architecture: amd64
+Multi-Arch: same
+Conflicts:
+ libsdurws-workcelleditorplugin1.1,
+ libsdurws-workcelleditorplugin1.0
+Replaces:
+ libsdurws-workcelleditorplugin1.1,
+ libsdurws-workcelleditorplugin1.0
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: RobWorkStudio plugin editing workcells.
+ The  RobWorkStudio plugin editing workcells.
+
+Package: libsdurws-workcelleditor1.2
+Architecture: amd64
+Multi-Arch: same
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: RobWorkStudio  workcell editor.
+ The RobWorkStudio  workcell editor.
+
+Package: libsdurwsim1.2
+Architecture: amd64
+Multi-Arch: same
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Core library for RobWorkSim: dynamic simulation.
+ This library includes the following:
+  - Contact detection strategies: based on primitives or PQP.
+  - Control strategies for robots and dynamic bodies.
+  - Dynamic WorkCell format (DWC).
+  - Detailed logging from physics engines.
+  - Simulated force/torque sensors.
+  - Simulation frameworks for grasp and assembly simulation.
+
+Package: libsdurwsim-bullet1.2
+Architecture: amd64
+Multi-Arch: same
+Conflicts:
+ libsdurwsim-bullet1.1,
+ libsdurwsim-bullet1.0
+Replaces:
+ libsdurwsim-bullet1.1,
+ libsdurwsim-bullet1.0
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Wrapper for using RobWorkSim with Bullet Physics Engine.
+ The Wrapper for using RobWorkSim with Bullet Physics Engine.
+
+Package: libsdurwsim-ode1.2
+Architecture: amd64
+Multi-Arch: same
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Wrapper for using RobWorkSim with ODE.
+ The Wrapper for using RobWorkSim with ODE.
+
+Package: libsdurwsim-gui1.2
+Architecture: amd64
+Multi-Arch: same
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Gui for RobWorkSim
+ The gui for RobWorkSim.
+
+Package: sdurw-cmake1.2
+Section: misc
+Architecture: amd64
+Multi-Arch: same
+Depends: ${misc:Depends}
+Description: CMake find RobWork
+ This package is necessary for CMake to find the robwork library
+
+Package: libsdurw-dev
+Section: libdevel
+Architecture: amd64
+Multi-Arch: same
+Depends: 
+ libsdurw1.2 (=${binary:Version}), 
+ libsdurw-core-dev (=${binary:Version}), 
+ libsdurw-math-dev (=${binary:Version}),
+ libsdurw-common-dev (=${binary:Version}),
+ libxerces-c-dev,
+ libfcl-dev,
+ libassimp-dev,
+ ${misc:Depends}
+Description: Development library for RobWork core.
+ The Development library for RobWork core.
+
+Package: libsdurw-core-dev
+Section: libdevel
+Architecture: amd64
+Multi-Arch: same
+Depends: 
+ libsdurw-core1.2 (=${binary:Version}), 
+ libboost-dev (>= 1.54), 
+ libboost-program-options-dev (>= 1.54), 
+ libboost-date-time-dev (>= 1.54), 
+ libboost-filesystem-dev (>= 1.54), 
+ libboost-regex-dev (>= 1.54), 
+ libboost-serialization-dev (>= 1.54), 
+ libboost-system-dev (>= 1.54), 
+ libboost-thread-dev (>= 1.54),
+ ${misc:Depends}
+Description: Development library for RobWork core.
+ The Development library for RobWork core.
+
+Package: libsdurw-common-dev
+Section: libdevel
+Architecture: amd64
+Multi-Arch: same
+Depends:
+ libsdurw-core-dev (=${binary:Version}),
+ libsdurw-common1.2 (=${binary:Version}), 
+ ${misc:Depends}
+Description: Development library for RobWork common.
+ The Development library for RobWork common.
+
+Package: libsdurw-math-dev
+Section: libdevel
+Architecture: amd64
+Multi-Arch: same
+Depends:
+ libsdurw-core-dev (=${binary:Version}),
+ libsdurw-common-dev (=${binary:Version}),
+ libeigen3-dev,
+ libsdurw-math1.2 (=${binary:Version}), 
+ ${misc:Depends}
+Description: Development library for RobWork common.
+ The Development library for RobWork common.
+
+Package: libsdurw-algorithms-dev
+Section: libdevel
+Architecture: amd64
+Multi-Arch: same
+Depends: 
+ libsdurw-dev (=${binary:Version}),
+ libsdurw-algorithms1.2 (=${binary:Version}), 
+ ${misc:Depends}
+Description: Development library for RobWork algorithms.
+ The Development library for RobWork algorithms.
+
+Package: libsdurw-calibration-dev
+Section: libdevel
+Architecture: amd64
+Multi-Arch: same
+Depends: 
+ libsdurw-dev (=${binary:Version}),
+ libsdurw-calibration1.2 (=${binary:Version}), 
+ ${misc:Depends}
+Description: Development library for RobWork calibration.
+ The Development library for RobWork calibration.
+
+Package: libsdurw-control-dev
+Section: libdevel
+Architecture: amd64
+Multi-Arch: same
+Depends: 
+ libsdurw-dev (=${binary:Version}),
+ libsdurw-control1.2 (=${binary:Version}), 
+ ${misc:Depends}, ${shlibs:Depends} 
+Description: Development library for RobWork control strategies.
+ The Development library for RobWork control strategies.
+
+Package: libsdurw-opengl-dev
+Section: libdevel
+Architecture: amd64
+Multi-Arch: same
+Depends: 
+ libsdurw-dev (=${binary:Version}),
+ libsdurw-opengl1.2 (=${binary:Version}), 
+ libglu1-mesa-dev,
+ libopengl0,
+ freeglut3-dev,
+ ${misc:Depends}
+Description: Development library for RobWork OpenGL.
+ The Development library for RobWork OpenGL.
+
+Package: libsdurw-proximitystrategies-dev
+Section: libdevel
+Architecture: amd64
+Multi-Arch: same
+Depends:
+ libsdurw-dev (=${binary:Version}),
+ libsdurw-proximitystrategies1.2 (=${binary:Version}), 
+ ${misc:Depends} 
+Description: Development library for RobWork proximity strategies.
+ The Development library for RobWork proximity strategies.
+
+Package: libsdurw-pathoptimization-dev
+Section: libdevel
+Architecture: amd64
+Multi-Arch: same
+Depends: 
+ libsdurw-dev (=${binary:Version}),
+ libsdurw-proximitystrategies-dev (=${binary:Version}), 
+ libsdurw-pathoptimization1.2 (=${binary:Version}), 
+ ${misc:Depends} 
+Description: Development library for RobWork pathoptimization algorithms.
+ The Development library for RobWork pathoptimization algorithms.
+
+Package: libsdurw-pathplanners-dev
+Section: libdevel
+Architecture: amd64
+Multi-Arch: same
+Depends: 
+ libsdurw-dev (=${binary:Version}), 
+ libsdurw-pathplanners1.2 (=${binary:Version}), 
+ ${misc:Depends}
+Description: Development library for RobWork pathplanning algorithms.
+ The Development library for RobWork pathplanning algorithms.
+
+Package: libsdurw-task-dev
+Section: libdevel
+Architecture: amd64
+Multi-Arch: same
+Depends: 
+ libsdurw-dev (=${binary:Version}),
+ libsdurw-task1.2 (=${binary:Version}), 
+ ${misc:Depends}
+Description: Development library for RobWork task framework.
+ The Development library for RobWork task framework.
+
+Package: libsdurw-simulation-dev
+Section: libdevel
+Architecture: amd64
+Multi-Arch: same
+Depends: 
+ libsdurw-dev (=${binary:Version}), 
+ libsdurw-simulation1.2 (=${binary:Version}), 
+ ${misc:Depends}
+Description: Development library for RobWork simulation.
+ The Development library for RobWork simulation.
+
+Package: libsdurw-assembly-dev
+Section: libdevel
+Architecture: amd64
+Multi-Arch: same
+Depends: 
+ libsdurw-dev (=${binary:Version}), 
+ libsdurw-task-dev (=${binary:Version}), 
+ libsdurw-assembly1.2 (=${binary:Version}), 
+ ${misc:Depends}
+Description: Development library for RobWork assembly framework.
+ The Development library for RobWork assembly framework.
+
+Package: libsdurw-csg-dev
+Section: libdevel
+Architecture: amd64
+Multi-Arch: same
+Depends: 
+ libsdurw-dev (=${binary:Version}) ,
+ libsdurw-csg1.2 (=${binary:Version}), 
+ ${misc:Depends}
+Description: module for doing constructive solid geometry.
+ This library provides a module for doing constructive solid geometry.
+
+Package: libsdurw-geometry-dev
+Section: libdevel
+Architecture: amd64
+Multi-Arch: same
+Depends:
+ libsdurw-dev (=${binary:Version}) ,
+ libsdurw-geometry1.2 (=${binary:Version}), 
+ ${misc:Depends}
+Description: module for doing constructive solid geometry.
+ This library provides a module for doing constructive solid geometry.
+
+Package: sdurwhw-cmake1.2
+Section: misc
+Architecture: amd64
+Multi-Arch: same
+Breaks:
+ sdurwhw-cmake1.1,
+ sdurwhw-cmake1.0
+Conflicts:
+ sdurwhw-cmake1.1,
+ sdurwhw-cmake1.0
+Replaces:
+ sdurwhw-cmake1.1,
+ sdurwhw-cmake1.0
+Depends: ${misc:Depends}
+Description: CMake find RobWorkHardware
+ This package is necessary for CMake to find the RobWorkHardware libraryies
+
+Package: libsdurwhw-dev
+Section: misc
+Architecture: amd64
+Multi-Arch: same
+Depends: 
+ ${misc:Depends},
+ sdurwhw-cmake1.2 (=${binary:Version}) 
+Description: Development library including shared files.
+ This library includes files shared between all sudrwhw development libraries
+
+Package: libsdurwhw-camera-dev
+Section: libdevel
+Architecture: amd64
+Multi-Arch: same
+Depends: 
+ libsdurwhw-camera1.2 (=${binary:Version}), 
+ sdurwhw-cmake1.2 (=${binary:Version}), 
+ libsdurwhw-dev (=${binary:Version}), 
+ ${misc:Depends}
+Description: Development library for RobWork driver for cameras.
+ The Development library for RobWork driver for cameras.
+
+Package: libsdurwhw-can-dev
+Section: libdevel
+Architecture: amd64
+Multi-Arch: same
+Depends: 
+ libsdurwhw-can1.2 (=${binary:Version}), 
+ sdurwhw-cmake1.2 (=${binary:Version}), 
+ libsdurwhw-dev (=${binary:Version}), 
+ ${misc:Depends}
+Description: Development library for RobWork driver for CAN bus.
+ The Development library for RobWork driver for CAN bus.
+
+Package: libsdurwhw-dockwelder-dev
+Section: libdevel
+Architecture: amd64
+Multi-Arch: same
+Depends: 
+ libsdurwhw-dockwelder1.2 (=${binary:Version}), 
+ sdurwhw-cmake1.2 (=${binary:Version}), 
+ libsdurwhw-dev (=${binary:Version}), 
+ ${misc:Depends}
+Description: Development library for RobWork driver for dockwelder robot.
+ The Development library for RobWork driver for dockwelder robot.
+
+Package: libsdurwhw-netft-dev
+Section: libdevel
+Architecture: amd64
+Multi-Arch: same
+Depends: 
+ libsdurwhw-netft1.2 (=${binary:Version}), 
+ sdurwhw-cmake1.2 (=${binary:Version}), 
+ libsdurwhw-dev (=${binary:Version}), 
+ ${misc:Depends}
+Description: Development library for RobWork driver for force/torque.
+ The Development library for RobWork driver for force/torque.
+
+Package: libsdurwhw-pcube-dev
+Section: libdevel
+Architecture: amd64
+Multi-Arch: same
+Depends: 
+ libsdurwhw-pcube1.2 (=${binary:Version}), 
+ sdurwhw-cmake1.2 (=${binary:Version}), 
+ libsdurwhw-dev (=${binary:Version}), 
+ ${misc:Depends}
+Description: Development library for RobWork driver for PowerCube.
+ The Development library for RobWork driver for PowerCube.
+
+Package: libsdurwhw-robolabft-dev
+Section: libdevel
+Architecture: amd64
+Multi-Arch: same
+Depends: 
+ libsdurwhw-robolabft1.2 (=${binary:Version}), 
+ sdurwhw-cmake1.2 (=${binary:Version}), 
+ libsdurwhw-dev (=${binary:Version}), 
+ ${misc:Depends}
+Description: Development library for RobWork driver for robolabFT.
+ The Development library for RobWork driver for robolabFT.
+
+Package: libsdurwhw-robotiq-dev
+Section: libdevel
+Architecture: amd64
+Multi-Arch: same
+Depends: 
+ libsdurwhw-robotiq1.2 (=${binary:Version}), 
+ sdurwhw-cmake1.2 (=${binary:Version}), 
+ libsdurwhw-dev (=${binary:Version}), 
+ ${misc:Depends} 
+Description: Development library for RobWork driver for Robotiq grippers.
+ The Development library for RobWork driver for Robotiq grippers.
+
+Package: libsdurwhw-schunkpg70-dev
+Section: libdevel
+Architecture: amd64
+Multi-Arch: same
+Depends: 
+ libsdurwhw-schunkpg70-1.2 (=${binary:Version}), 
+ sdurwhw-cmake1.2 (=${binary:Version}), 
+ libsdurwhw-dev (=${binary:Version}), 
+ ${misc:Depends}
+Description: Development library for RobWork driver for Schunk gripper.
+ The Development library for RobWork driver for Schunk gripper.
+
+Package: libsdurwhw-serialport-dev
+Section: libdevel
+Architecture: amd64
+Multi-Arch: same
+Depends: 
+ libsdurwhw-serialport1.2 (=${binary:Version}), 
+ sdurwhw-cmake1.2 (=${binary:Version}), 
+ libsdurwhw-dev (=${binary:Version}), 
+ ${misc:Depends}
+Description: Development library for RobWork driver for serial port.
+ The Development library for RobWork driver for serial port.
+
+Package: libsdurwhw-tactile-dev
+Section: libdevel
+Architecture: amd64
+Multi-Arch: same
+Depends: 
+ libsdurwhw-tactile1.2 (=${binary:Version}), 
+ sdurwhw-cmake1.2 (=${binary:Version}), 
+ libsdurwhw-dev (=${binary:Version}), 
+ ${misc:Depends}
+Description: Development library for RobWork driver for tactile arrays.
+ The Development library for RobWork driver for tactile arrays.
+
+Package: libsdurwhw-universalrobots-dev
+Section: libdevel
+Architecture: amd64
+Multi-Arch: same
+Depends: 
+ libsdurwhw-universalrobots1.2 (=${binary:Version}), 
+ sdurwhw-cmake1.2 (=${binary:Version}), 
+ libsdurwhw-dev (=${binary:Version}), 
+ ${misc:Depends}
+Description: Development library for RobWork driver for Universal Robots.
+ The Development library for RobWork driver for Universal Robots.
+
+Package: libsdurwhw-universalrobots-rtde-dev
+Section: libdevel
+Architecture: amd64
+Multi-Arch: same
+Conflicts:
+  libsdurwhw-universalrobots-dev (< 1.2.0),
+  sdurwhw-cmake1.1,
+  sdurwhw-cmake1.0
+Replaces:
+  libsdurwhw-universalrobots-dev (< 1.2.0),
+  sdurwhw-cmake1.1,
+  sdurwhw-cmake1.0
+Depends: 
+ librtde-dev,
+ libsdurwhw-universalrobots-rtde1.2 (=${binary:Version}), 
+ sdurwhw-cmake1.2 (=${binary:Version}), 
+ libsdurwhw-dev (=${binary:Version}), 
+ ${misc:Depends}
+Description: Development library for RobWork driver for Universal Robots.
+ The Development library for RobWork driver for Universal Robots.
+
+Package: sdurws-cmake1.2
+Section: misc
+Architecture: amd64
+Multi-Arch: same
+Depends: ${misc:Depends}
+Description: Cmake find RobWorkStudio
+ This package is necessary for cmake to find the RobWorkStudio libraries
+
+Package: libsdurws-dev
+Section: libdevel
+Architecture: amd64
+Multi-Arch: same
+Depends: 
+ libsdurws1.2 (= ${binary:Version}), 
+ sdurws-cmake1.2 (=${binary:Version}), 
+ ${misc:Depends}
+Description: Development library for RobWorkStudio core library.
+ The Development library for RobWorkStudio core library.
+
+Package: libsdurws-atask-dev
+Section: libdevel
+Architecture: amd64
+Multi-Arch: same
+Depends: 
+ libsdurws-atask (= ${binary:Version}),
+ ${misc:Depends}
+Description: Development library for RobWorkStudio assembly plugin.
+ The Development library for RobWorkStudio assembly plugin.
+
+Package: libsdurws-gtask-dev
+Section: libdevel
+Architecture: amd64
+Multi-Arch: same
+Depends: 
+ libsdurws-gtask (= ${binary:Version}),
+ ${misc:Depends}
+Description: Development library for RobWorkStudio grasp plugin.
+ The Development library for RobWorkStudio grasp plugin.
+
+Package: libsdurws-jog-dev
+Section: libdevel
+Architecture: amd64
+Multi-Arch: same
+Depends: 
+ libsdurws-jog (=${binary:Version}), 
+ ${misc:Depends}
+Description: Development library for RobWorkStudio jog plugin.
+ The Development library for RobWorkStudio jog plugin.
+
+Package: libsdurws-log-dev
+Section: libdevel
+Architecture: amd64
+Multi-Arch: same
+Depends: 
+ libsdurws-log (=${binary:Version}), 
+ ${misc:Depends}
+Description: Development library for RobWorkStudio log plugin.
+ The Development library for RobWorkStudio log plugin.
+
+Package: libsdurws-luapl-dev
+Section: libdevel
+Architecture: amd64
+Multi-Arch: same
+Depends: 
+ libsdurws-luapl (=${binary:Version}),
+ libsdurws-luaeditor-dev,  
+ ${misc:Depends}
+Description: Development library for RobWorkStudio lua terminal plugin
+ The Development library for RobWorkStudio lua terminal plugin
+
+Package: libsdurws-luaeditor-dev
+Section: libdevel
+Architecture: amd64
+Multi-Arch: same
+Depends: 
+ libsdurws-luaeditor1.2 (=${binary:Version}), 
+ ${misc:Depends}
+Description: Development library for RobWorkStudio lua terminal library
+ The Development library for RobWorkStudio lua terminal library
+
+Package: libsdurws-planning-dev
+Section: libdevel
+Architecture: amd64
+Multi-Arch: same
+Depends: 
+ libsdurws-planning (=${binary:Version}), 
+ ${misc:Depends}
+Description: Development library for RobWorkStudio pathplanning plugin.
+ The Development library for RobWorkStudio pathplanning plugin.
+
+Package: libsdurws-playback-dev
+Section: libdevel
+Architecture: amd64
+Multi-Arch: same
+Depends: 
+ libsdurws-playback (=${binary:Version}), 
+ ${misc:Depends}
+Description: Development library for RobWorkStudio playback plugin.
+ The Development library for RobWorkStudio playback plugin.
+
+Package: libsdurws-propertyview-dev
+Section: libdevel
+Architecture: amd64
+Multi-Arch: same
+Depends: 
+ libsdurws-propertyview (=${binary:Version}), 
+ ${misc:Depends} 
+Description: Development library for RobWorkStudio properties plugin.
+ The Development library for RobWorkStudio properties plugin.
+
+Package: libsdurws-sensors-dev
+Section: libdevel
+Architecture: amd64
+Multi-Arch: same
+Depends: 
+ libsdurws-sensors (=${binary:Version}), 
+ ${misc:Depends}
+Description: Development library for RobWorkStudio sensor simulation.
+ The Development library for RobWorkStudio sensor simulation.
+
+Package: libsdurws-treeview-dev
+Section: libdevel
+Architecture: amd64
+Multi-Arch: same
+Depends: 
+ libsdurws-treeview (=${binary:Version}), 
+ ${misc:Depends}
+Description: Development library for RobWorkStudio treeview plugin.
+ The Development library for RobWorkStudio treeview plugin.
+
+Package: libsdurws-workcelleditorplugin-dev
+Section: libdevel
+Architecture: amd64
+Multi-Arch: same
+Depends:
+ libsdurws-workcelleditor-dev (=${binary:Version}),
+ libsdurws-workcelleditorplugin (=${binary:Version}), 
+ ${misc:Depends}
+Description: RobWorkStudio plugin editing workcells.
+ The  RobWorkStudio plugin editing workcells.
+
+Package: libsdurws-workcelleditor-dev
+Section: libdevel
+Architecture: amd64
+Multi-Arch: same
+Depends: 
+ libsdurws-workcelleditor1.2 (=${binary:Version}), 
+ ${misc:Depends}
+Description: RobWorkStudio  workcell editor.
+ The RobWorkStudio  workcell editor.
+
+Package: libsdurws-robworkstudioapp-dev
+Section: libdevel
+Architecture: amd64
+Multi-Arch: same
+Depends: 
+ libsdurws-robworkstudioapp1.2 (=${binary:Version}), 
+  ${misc:Depends}
+Description: rwstudio application that may be started in a thread.
+ The rwstudio application that may be started in a thread.
+
+Package: sdurwsim-cmake1.2
+Section: misc
+Architecture: amd64
+Multi-Arch: same
+Depends: ${misc:Depends}
+Description: Cmake find RobWorkSim
+ This package is necessary for cmake to find the RobWorkSim libraries
+
+Package: libsdurwsim-dev
+Section: libdevel
+Architecture: amd64
+Multi-Arch: same
+Depends: 
+ libsdurwsim1.2 (=${binary:Version}), 
+ ${misc:Depends}
+Description: Development library for RobWorkSim core library.
+ The Development library for RobWorkSim core library.
+
+Package: libsdurwsim-bullet-dev
+Section: libdevel
+Architecture: amd64
+Multi-Arch: same
+Depends: 
+ libsdurwsim-bullet1.2 (=${binary:Version}), 
+ ${misc:Depends}
+Description: Development library for RobWorkSim: Bullet physics engine.
+ The Development library for RobWorkSim: Bullet physics engine.
+
+Package: libsdurwsim-ode-dev
+Section: libdevel
+Architecture: amd64
+Multi-Arch: same
+Depends: 
+ libsdurwsim-ode1.2 (=${binary:Version}), 
+ ${misc:Depends}
+Description: Development library for RobWorkSim: ODE.
+ The Development library for RobWorkSim: ODE.
+
+Package: libsdurwsim-gui-dev
+Section: libdevel
+Architecture: amd64
+Multi-Arch: same
+Depends: 
+ libsdurwsim-gui1.2 (=${binary:Version}), 
+ ${misc:Depends}
+Description: Development library for RobWorkSim: GUI.
+ The Development library for RobWorkSim: GUI.
+
+Package: sdurw-doc
+Section: doc
+Priority: optional
+Architecture: all
+Depends: ${misc:Depends}
+Description: Documentation for RobWork
+ This Package is a dummy containing the documentation for RobWork
+
+Package: python3-sdurw
+Section: libs
+Architecture: amd64
+Multi-Arch: no
+Depends:
+ python3-sdurw-core (=${binary:Version}), 
+ python3-sdurw-common (=${binary:Version}),
+ libsdurw1.2 (>=${binary:Version}), 
+ python3,
+ ${shlibs:Depends}, 
+ ${misc:Depends}
+Description: Python wrapping for RobWork
+ This is a python wrapper for RobWork
+
+Package: python3-sdurw-core
+Section: libs
+Architecture: amd64
+Multi-Arch: no
+Depends:
+ libsdurw-core1.2 (>=${binary:Version}), 
+ python3,
+ ${shlibs:Depends}, 
+ ${misc:Depends}
+Description: Python wrapping for RobWork-core
+ This is a python wrapper for RobWork-core
+
+Package: python3-sdurw-common
+Section: libs
+Architecture: amd64
+Multi-Arch: no
+Depends:
+ libsdurw-common1.2 (>=${binary:Version}), 
+ python3-sdurw-core  (=${binary:Version}),
+ python3,
+ ${shlibs:Depends}, 
+ ${misc:Depends}
+Description: Python wrapping for RobWork-common
+ This is a python wrapper for RobWork-common
+
+Package: python3-sdurw-control
+Section: libs
+Architecture: amd64
+Multi-Arch: no
+Depends: 
+ python3-sdurw (=${binary:Version}), 
+ libsdurw-control1.2 (>=${binary:Version}), 
+ python3, 
+ ${misc:Depends}, 
+ ${shlibs:Depends} 
+Description: Python wrapping for RobWork
+ This is a python wrapper for RobWork
+
+Package: python3-sdurw-opengl
+Section: libs
+Architecture: amd64
+Multi-Arch: no
+Depends: 
+ python3-sdurw (=${binary:Version}), 
+ libsdurw-opengl1.2 (>=${binary:Version}), 
+ python3,
+ ${shlibs:Depends},
+ ${misc:Depends}
+Description: Python wrapping for RobWork
+ This is a python wrapper for RobWork
+
+Package: python3-sdurw-proximitystrategies
+Section: libs
+Architecture: amd64
+Multi-Arch: no
+Depends:
+ python3-sdurw (=${binary:Version}),
+ libsdurw-proximitystrategies1.2 (>=${binary:Version}), 
+ python3, 
+ ${shlibs:Depends},
+ ${misc:Depends} 
+Description: Python wrapping for RobWork
+ This is a python wrapper for RobWork
+
+Package: python3-sdurw-pathoptimization
+Section: libs
+Architecture: amd64
+Multi-Arch: no
+Depends: 
+ python3-sdurw (=${binary:Version}),
+ python3-sdurw-proximitystrategies (=${binary:Version}),
+ libsdurw-pathoptimization1.2 (>=${binary:Version}), 
+ python3, 
+ ${shlibs:Depends},
+ ${misc:Depends} 
+Description: Python wrapping for RobWork
+ This is a python wrapper for RobWork
+
+Package: python3-sdurw-pathplanners
+Section: libs
+Architecture: amd64
+Multi-Arch: no
+Depends: 
+ python3-sdurw (=${binary:Version}), 
+ libsdurw-pathplanners1.2 (>=${binary:Version}), 
+ python3, 
+ ${shlibs:Depends},
+ ${misc:Depends}
+Description: Python wrapping for RobWork
+ This is a python wrapper for RobWork
+
+Package: python3-sdurw-task
+Section: libs
+Architecture: amd64
+Multi-Arch: no
+Depends: 
+ python3-sdurw (=${binary:Version}),
+ libsdurw-task1.2 (>=${binary:Version}), 
+ python3,
+ ${shlibs:Depends},
+ ${misc:Depends}
+Description: Python wrapping for RobWork
+ This is a python wrapper for RobWork
+
+Package: python3-sdurw-simulation
+Section: libs
+Architecture: amd64
+Multi-Arch: no
+Depends: 
+ python3-sdurw (=${binary:Version}), 
+ libsdurw-simulation1.2 (>=${binary:Version}), 
+ python3,
+ ${shlibs:Depends},
+ ${misc:Depends}
+Description: Python wrapping for RobWork
+ This is a python wrapper for RobWork
+
+Package: python3-sdurw-assembly
+Section: libs
+Architecture: amd64
+Multi-Arch: no
+Depends: 
+ python3-sdurw (=${binary:Version}), 
+ python3-sdurw-task (=${binary:Version}), 
+ libsdurw-assembly1.2 (>=${binary:Version}), 
+ python3,
+ ${shlibs:Depends}, 
+ ${misc:Depends}
+Description: Python wrapping for RobWork
+ This is a python wrapper for RobWork
+
+Package: python3-sdurws
+Section: libs
+Architecture: amd64
+Multi-Arch: no
+Depends: 
+ python3-sdurw (=${binary:Version}),
+ python3-sdurw-simulation (=${binary:Version}),
+ libsdurws1.2 (>=${binary:Version}), 
+ python3,
+ ${shlibs:Depends}, 
+ ${misc:Depends}
+Description: Python wrapping for RobWorkStudio
+ This is a python wrapper for RobWorkStudio
+
+Package: python3-sdurwsim
+Section: libs
+Architecture: amd64
+Multi-Arch: no
+Depends: 
+ python3-sdurws (=${binary:Version}),
+ libsdurwsim1.2 (>=${binary:Version}), 
+ python3,
+ ${shlibs:Depends}, 
+ ${misc:Depends}
+Description: Python wrapping for RobWorkSim
+ This is a python wrapper for RobWorkSim
+
+Package: lua-sdurw
+Section: libs
+Architecture: amd64
+Multi-Arch: same
+Depends: 
+ lua-sdurw-core (=${binary:Version}),
+ lua-sdurw-common (=${binary:Version}),
+ libsdurw1.2 (=${binary:Version}), 
+ ${shlibs:Depends},
+ ${misc:Depends}
+Description: Python wrapping for RobWork
+ This is a python wrapper for RobWork
+
+Package: lua-sdurw-core
+Section: libs
+Architecture: amd64
+Multi-Arch: same
+Depends: 
+ libsdurw-core1.2 (>=${binary:Version}), 
+ ${shlibs:Depends},
+ ${misc:Depends}
+Description: Lua wrapping for RobWork core
+ This is a lua wrapper for RobWork core
+
+Package: lua-sdurw-common
+Section: libs
+Architecture: amd64
+Multi-Arch: same
+Depends: 
+ libsdurw-common1.2 (>=${binary:Version}), 
+ ${shlibs:Depends},
+ ${misc:Depends}
+Description: Python wrapping for RobWork
+ This is a python wrapper for RobWork
+
+Package: lua-sdurw-control
+Section: libs
+Architecture: amd64
+Multi-Arch: same
+Depends: 
+ lua-sdurw (=${binary:Version}), 
+ libsdurw-control1.2 (=${binary:Version}), 
+ ${shlibs:Depends}, 
+ ${misc:Depends}, 
+Description: Lua wrapping for RobWork
+ This is a lua wrapper for RobWork
+
+Package: lua-sdurw-opengl
+Section: libs
+Architecture: amd64
+Multi-Arch: same
+Depends: 
+ lua-sdurw (=${binary:Version}), 
+ libsdurw-opengl1.2 (=${binary:Version}), 
+ ${shlibs:Depends},
+ ${misc:Depends}
+Description: Lua wrapping for RobWork
+ This is a lua wrapper for RobWork
+
+Package: lua-sdurw-proximitystrategies
+Section: libs
+Architecture: amd64
+Multi-Arch: same
+Depends:
+ lua-sdurw (=${binary:Version}),
+ libsdurw-proximitystrategies1.2 (=${binary:Version}), 
+ ${shlibs:Depends},
+ ${misc:Depends} 
+Description: Python wrapping for RobWork
+ This is a python wrapper for RobWork
+
+Package: lua-sdurw-pathoptimization
+Section: libs
+Architecture: amd64
+Multi-Arch: same
+Depends: 
+ lua-sdurw (=${binary:Version}),
+ lua-sdurw-proximitystrategies,
+ libsdurw-pathoptimization1.2 (=${binary:Version}), 
+ ${shlibs:Depends},
+ ${misc:Depends} 
+Description: Lua wrapping for RobWork
+ This is a lua wrapper for RobWork
+
+Package: lua-sdurw-pathplanners
+Section: libs
+Architecture: amd64
+Multi-Arch: same
+Depends: 
+ lua-sdurw (=${binary:Version}), 
+ libsdurw-pathplanners1.2 (=${binary:Version}), 
+ ${shlibs:Depends},
+ ${misc:Depends}
+Description: Lua wrapping for RobWork
+ This is a lua wrapper for RobWork
+
+Package: lua-sdurw-task
+Section: libs
+Architecture: amd64
+Multi-Arch: same
+Depends: 
+ lua-sdurw,
+ libsdurw-task1.2 (=${binary:Version}), 
+ ${shlibs:Depends},
+ ${misc:Depends}
+Description: Lua wrapping for RobWork
+ This is a lua wrapper for RobWork
+
+Package: lua-sdurw-simulation
+Section: libs
+Architecture: amd64
+Multi-Arch: same
+Depends: 
+ lua-sdurw (=${binary:Version}), 
+ libsdurw-simulation1.2 (=${binary:Version}), 
+ ${shlibs:Depends},
+ ${misc:Depends}
+Description: Lua wrapping for RobWork
+ This is a lua wrapper for RobWork
+
+Package: lua-sdurw-assembly
+Section: libs
+Architecture: amd64
+Multi-Arch: same
+Depends: 
+ lua-sdurw (=${binary:Version}), 
+ lua-sdurw-task (=${binary:Version}), 
+ libsdurw-assembly1.2 (=${binary:Version}), 
+ ${shlibs:Depends},
+ ${misc:Depends}
+Description: Lua wrapping for RobWork
+ This is a lua wrapper for RobWork
+
+Package: lua-sdurws
+Section: libs
+Architecture: amd64
+Multi-Arch: same
+Depends: 
+ libsdurws1.2 (=${binary:Version}), 
+ ${shlibs:Depends},
+ ${misc:Depends}
+Description: Lua wrapping for RobWorkStudio
+ This is a lua wrapper for RobWorkStudio
+
+Package: lua-sdurwsim
+Section: libs
+Architecture: amd64
+Multi-Arch: same
+Depends: 
+ libsdurwsim1.2 (=${binary:Version}), 
+ ${shlibs:Depends},
+ ${misc:Depends}
+Description: Lua wrapping for RobWorkSim
+ This is a lua wrapper for RobWorkSim
+
+Package: python3-robwork-all
+Section: misc
+Priority: optional
+Architecture: amd64
+Depends:
+ python3-sdurw (=${binary:Version}),
+ python3-sdurw-core (=${binary:Version}),
+ python3-sdurw-common (=${binary:Version}),
+ python3-sdurw-assembly (=${binary:Version}),
+ python3-sdurw-control (=${binary:Version}),
+ python3-sdurw-opengl (=${binary:Version}),
+ python3-sdurw-pathoptimization (=${binary:Version}),
+ python3-sdurw-pathplanners (=${binary:Version}),
+ python3-sdurw-proximitystrategies (=${binary:Version}),
+ python3-sdurw-simulation (=${binary:Version}),
+ python3-sdurw-task (=${binary:Version}),
+ python3-sdurws (=${binary:Version}),
+ python3-sdurwsim (=${binary:Version}),
+ ${misc:Depends}    
+Description: This package include all python bindings for all RobWork Projects
+ This is a metapackage containing all python bindings for all RobWork Projects  
+
+Package: lua-robwork-all
+Section: misc
+Priority: optional
+Architecture: amd64
+Depends:
+ lua-sdurw (=${binary:Version}),
+ lua-sdurw-core (=${binary:Version}),
+ lua-sdurw-common (=${binary:Version}),
+ lua-sdurw-assembly (=${binary:Version}),
+ lua-sdurw-control (=${binary:Version}),
+ lua-sdurw-opengl (=${binary:Version}),
+ lua-sdurw-pathoptimization (=${binary:Version}),
+ lua-sdurw-pathplanners (=${binary:Version}),
+ lua-sdurw-proximitystrategies (=${binary:Version}),
+ lua-sdurw-simulation (=${binary:Version}),
+ lua-sdurw-task (=${binary:Version}),
+ lua-sdurws (=${binary:Version}),
+ lua-sdurwsim (=${binary:Version}),
+ ${misc:Depends}  
+Description: This package include all lua bindings for all RobWork Projects
+ This is a metapackage containing all lua bindings for all RobWork Projects  
+
+Package: libsdurw-all
+Section: misc
+Priority: optional
+Architecture: amd64  
+Depends: 
+ libsdurw1.2 (=${binary:Version}), 
+ libsdurw-core1.2 (=${binary:Version}), 
+ libsdurw-common1.2 (=${binary:Version}), 
+ libsdurw-math1.2 (=${binary:Version}), 
+ libsdurw-algorithms1.2 (=${binary:Version}), 
+ libsdurw-calibration1.2 (=${binary:Version}), 
+ libsdurw-control1.2 (=${binary:Version}), 
+ libsdurw-opengl1.2 (=${binary:Version}), 
+ libsdurw-proximitystrategies1.2 (=${binary:Version}), 
+ libsdurw-pathoptimization1.2 (=${binary:Version}), 
+ libsdurw-pathplanners1.2 (=${binary:Version}), 
+ libsdurw-task1.2 (=${binary:Version}), 
+ libsdurw-simulation1.2 (=${binary:Version}), 
+ libsdurw-assembly1.2 (=${binary:Version}), 
+ libsdurw-csg1.2 (=${binary:Version}), 
+ libsdurw-geometry1.2 (=${binary:Version}), 
+ ${misc:Depends}
+Description: This package installes all libraries related to sdurw
+ This is a metapackage containing all the libraries needed for robwork
+
+
+Package: libsdurws-all
+Section: misc
+Priority: optional
+Architecture: amd64 
+Depends: 
+ libsdurws1.2 (=${binary:Version}), 
+ robworkstudio (=${binary:Version}),
+ libsdurws-robworkstudioapp1.2 (=${binary:Version}), 
+ libsdurws-atask (=${binary:Version}),
+ libsdurws-gtask (=${binary:Version}),
+ libsdurws-jog (=${binary:Version}),
+ libsdurws-log (=${binary:Version}),
+ libsdurws-luapl (=${binary:Version}),
+ libsdurws-luaeditor1.2 (=${binary:Version}), 
+ libsdurws-planning (=${binary:Version}),
+ libsdurws-playback (=${binary:Version}),
+ libsdurws-propertyview (=${binary:Version}),
+ libsdurws-sensors (=${binary:Version}),
+ libsdurws-treeview (=${binary:Version}),
+ libsdurws-workcelleditorplugin (=${binary:Version}),
+ libsdurws-workcelleditor1.2 (=${binary:Version}), 
+ ${misc:Depends} 
+Description: This package installes all libraries related to sdurws
+ This is a metapackage containing all the libraries needed for robworkstudio
+
+Package: libsdurwsim-all
+Section: misc
+Priority: optional
+Architecture: amd64   
+Depends: 
+ libsdurwsim1.2 (=${binary:Version}), 
+ libsdurwsim-bullet1.2 (=${binary:Version}), 
+ libsdurwsim-ode1.2 (=${binary:Version}), 
+ libsdurwsim-gui1.2 (=${binary:Version}), 
+ ${misc:Depends} 
+Description: This package installes all libraries related to sdurwsim
+ This is a metapackage containing all the libraries needed for robworksim
+
+
+Package: libsdurwhw-all
+Section: misc
+Priority: optional
+Architecture: amd64
+Depends:
+ libsdurwhw-universalrobots1.2 (=${binary:Version}), 
+ libsdurwhw-universalrobots-rtde1.2 (=${binary:Version}), 
+ libsdurwhw-tactile1.2 (=${binary:Version}), 
+ libsdurwhw-serialport1.2 (=${binary:Version}), 
+ libsdurwhw-schunkpg70-1.2 (=${binary:Version}), 
+ libsdurwhw-robotiq1.2 (=${binary:Version}), 
+ libsdurwhw-robolabft1.2 (=${binary:Version}), 
+ libsdurwhw-pcube1.2 (=${binary:Version}), 
+ libsdurwhw-netft1.2 (=${binary:Version}), 
+ libsdurwhw-dockwelder1.2 (=${binary:Version}), 
+ libsdurwhw-can1.2 (=${binary:Version}), 
+ libsdurwhw-camera1.2 (=${binary:Version}), 
+ ${misc:Depends} 
+Description: This package installes all libraries related to sdurwhw
+ This is a metapackage containing all the libraries needed for robworkhardware
+
+Package: libsdurw-all-dev
+Section: misc
+Priority: optional
+Architecture: amd64  
+Depends:
+ sdurw-cmake1.2 (=${binary:Version}), 
+ libsdurw-core-dev (=${binary:Version}),
+ libsdurw-common-dev (=${binary:Version}),
+ libsdurw-math-dev (=${binary:Version}), 
+ libsdurw-dev (=${binary:Version}), 
+ libsdurw-algorithms-dev (=${binary:Version}),
+ libsdurw-calibration-dev (=${binary:Version}),
+ libsdurw-control-dev (=${binary:Version}),
+ libsdurw-opengl-dev (=${binary:Version}),
+ libsdurw-proximitystrategies-dev (=${binary:Version}),
+ libsdurw-pathoptimization-dev (=${binary:Version}),
+ libsdurw-pathplanners-dev (=${binary:Version}),
+ libsdurw-task-dev (=${binary:Version}),
+ libsdurw-simulation-dev (=${binary:Version}),
+ libsdurw-assembly-dev (=${binary:Version}),
+ libsdurw-csg-dev (=${binary:Version}),
+ libsdurw-geometry-dev (=${binary:Version}),
+ ${misc:Depends}
+Description: This package installes all libraries related to sdurw
+ This is a metapackage containing all the libraries needed for robwork
+
+
+Package: libsdurws-all-dev
+Section: misc
+Priority: optional
+Architecture: amd64 
+Depends: 
+ libsdurws-dev (=${binary:Version}),
+ robworkstudio (=${binary:Version}),
+ libsdurws-robworkstudioapp-dev (=${binary:Version}),
+ libsdurws-atask-dev (=${binary:Version}),
+ libsdurws-gtask-dev (=${binary:Version}),
+ libsdurws-jog-dev (=${binary:Version}),
+ libsdurws-log-dev (=${binary:Version}),
+ libsdurws-luapl-dev (=${binary:Version}),
+ libsdurws-luaeditor-dev (=${binary:Version}),
+ libsdurws-planning-dev (=${binary:Version}),
+ libsdurws-playback-dev (=${binary:Version}),
+ libsdurws-propertyview-dev (=${binary:Version}),
+ libsdurws-sensors-dev (=${binary:Version}),
+ libsdurws-treeview-dev (=${binary:Version}),
+ libsdurws-workcelleditorplugin-dev (=${binary:Version}),
+ libsdurws-workcelleditor-dev (=${binary:Version}), 
+ ${misc:Depends} 
+Description: This package installes all libraries related to sdurws
+ This is a metapackage containing all the libraries needed for robworkstudio
+
+Package: libsdurwsim-all-dev
+Section: misc
+Priority: optional
+Architecture: amd64   
+Depends:
+ sdurwsim-cmake1.2 (=${binary:Version}), 
+ libsdurwsim-dev (=${binary:Version}),
+ libsdurwsim-bullet-dev (=${binary:Version}),
+ libsdurwsim-ode-dev (=${binary:Version}),
+ libsdurwsim-gui-dev (=${binary:Version}), 
+ ${misc:Depends} 
+Description: This package installes all libraries related to sdurwsim
+ This is a metapackage containing all the libraries needed for robworksim
+
+
+Package: libsdurwhw-all-dev
+Section: misc
+Priority: optional
+Architecture: amd64
+Depends: 
+ libsdurwhw-universalrobots-dev (=${binary:Version}),
+ libsdurwhw-universalrobots-rtde-dev (=${binary:Version}),
+ libsdurwhw-tactile-dev (=${binary:Version}),
+ libsdurwhw-serialport-dev (=${binary:Version}),
+ libsdurwhw-schunkpg70-dev (=${binary:Version}),
+ libsdurwhw-robotiq-dev (=${binary:Version}),
+ libsdurwhw-robolabft-dev (=${binary:Version}),
+ libsdurwhw-pcube-dev (=${binary:Version}),
+ libsdurwhw-netft-dev (=${binary:Version}),
+ libsdurwhw-dockwelder-dev (=${binary:Version}),
+ libsdurwhw-can-dev (=${binary:Version}),
+ libsdurwhw-camera-dev (=${binary:Version}), 
+ ${misc:Depends} 
+Description: This package installes all libraries related to sdurwhw
+ This is a metapackage containing all the libraries needed for robworkhardware
