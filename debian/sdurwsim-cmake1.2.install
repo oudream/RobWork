@@ -1,0 +1,7 @@
+usr/share/robworksim-1.2/NOTICE.txt
+usr/share/robworksim-1.2/LICENSE.txt
+usr/share/robworksim-1.2/cmake/RobWorkSimBuildConfig_none.cmake
+usr/share/robworksim-1.2/cmake/RobWorkSimConfig.cmake
+usr/share/robworksim-1.2/cmake/RobWorkSimTargets.cmake
+usr/share/robworksim-1.2/cmake/RobWorkSimConfigVersion.cmake
+usr/share/robworksim-1.2/cmake/Modules/FindODE.cmake

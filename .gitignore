@@ -27,7 +27,6 @@ tmp
 /.settings
 /.vs/*
 /out/*
-/debian
 /obj-x86_64-linux-gnu
 /DEBPKG
 

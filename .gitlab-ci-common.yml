@@ -11,22 +11,29 @@ stages:
 .CI-common:
   rules:
     # Merge Pipeline
-    - if: '$CI_JOB_NAME =~ /^.*(build[:-](RW.?.?|doc)|tests|examples).*-2004/       && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "devel"'
+    - if: '$CI_JOB_NAME =~ /^.*(build[:-](RW.?.?|doc)|tests|examples).*-2004/                                   && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "devel"'
     # Merge Pipeline for centos problems
-    - if: '$CI_MERGE_REQUEST_TITLE =~ /^.*[cC]ent[Oo][Ss]/ && $CI_JOB_NAME =~ /^.*centos-7/ && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "devel"'
-    - if: '$CI_COMMIT_TITLE =~ /^.*[cC]ent[Oo][Ss]/ && $CI_JOB_NAME =~ /^.*centos-7/ && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "devel"'
+    - if: '$CI_MERGE_REQUEST_TITLE =~ /^.*[cC]ent[Oo][Ss]/ && $CI_JOB_NAME =~ /^.*centos-7/                     && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "devel"'
+    - if: '$CI_COMMIT_TITLE =~ /^.*[cC]ent[Oo][Ss]/ && $CI_JOB_NAME =~ /^.*centos-7/                            && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "devel"'
     # Merge Pipeline for ubuntu16 problems
-    - if: '$CI_MERGE_REQUEST_TITLE =~ /^.*[uU]buntu.?16/ && $CI_JOB_NAME =~ /^.*ubuntu-1604/ && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "devel"'
-    - if: '$CI_COMMIT_TITLE =~ /^.*[uU]buntu.?16/ && $CI_JOB_NAME =~ /^.*ubuntu-1604/ && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "devel"'
+    - if: '$CI_MERGE_REQUEST_TITLE =~ /^.*[uU]buntu.?16/ && $CI_JOB_NAME =~ /^.*ubuntu-1604/                    && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "devel"'
+    - if: '$CI_COMMIT_TITLE =~ /^.*[uU]buntu.?16/ && $CI_JOB_NAME =~ /^.*ubuntu-1604/                           && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "devel"'
     # Merge Pipeline for ubuntu18 problems
-    - if: '$CI_MERGE_REQUEST_TITLE =~ /^.*[uU]buntu.?18/ && $CI_JOB_NAME =~ /^.*[^(pre)].ubuntu-1804/ && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "devel"'
-    - if: '$CI_COMMIT_TITLE =~ /^.*[uU]buntu.?18/ && $CI_JOB_NAME =~ /^.*[^(pre)].ubuntu-1804/ && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "devel"'
+    - if: '$CI_MERGE_REQUEST_TITLE =~ /^.*[uU]buntu.?18/ && $CI_JOB_NAME =~ /^.*[^(pre)].ubuntu-1804/           && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "devel"'
+    - if: '$CI_COMMIT_TITLE =~ /^.*[uU]buntu.?18/ && $CI_JOB_NAME =~ /^.*[^(pre)].ubuntu-1804/                  && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "devel"'
     # Merge Pipeline for windows problems
-    - if: '$CI_MERGE_REQUEST_TITLE =~ /^.*[wW]indows/ && $CI_JOB_NAME =~ /^.*windows10.*/ && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "devel"'
-    - if: '$CI_COMMIT_TITLE =~ /^.*[wW]indows/ && $CI_JOB_NAME =~ /^.*windows10.*/ && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "devel"'
+    - if: '$CI_MERGE_REQUEST_TITLE =~ /^.*[wW]indows/ && $CI_JOB_NAME =~ /^.*windows10.*/                       && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "devel"'
+    - if: '$CI_COMMIT_TITLE =~ /^.*[wW]indows/ && $CI_JOB_NAME =~ /^.*windows10.*/                              && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "devel"'
     # Merge Pipeline for mac problems
-    - if: '$CI_MERGE_REQUEST_TITLE =~ /^.*([Mm]ac[Oo][sS]|[Oo][sS][Xx]|[Mm]ac)/ && $CI_JOB_NAME =~ /^.*macOS.*/'
-    - if: '$CI_COMMIT_TITLE =~ /^.*([Mm]ac[Oo][sS]|[Oo][sS][Xx]|[Mm]ac)/ && $CI_JOB_NAME =~ /^.*macOS.*/'
+    - if: '$CI_MERGE_REQUEST_TITLE =~ /^.*([Mm]ac[Oo][sS]|[Oo][sS][Xx]|[Mm]ac)/ && $CI_JOB_NAME =~ /^.*macOS.*/ && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "devel"'
+    - if: '$CI_COMMIT_TITLE =~ /^.*([Mm]ac[Oo][sS]|[Oo][sS][Xx]|[Mm]ac)/ && $CI_JOB_NAME =~ /^.*macOS.*/        && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "devel"'
+    # Merge Pipeline for debian pkg on ubuntu 20
+    - if: '$CI_MERGE_REQUEST_TITLE =~ /^.*[Dd]ebian/ && $CI_JOB_NAME =~ /^.*debian.*ubuntu-2004/                && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "devel"'
+    - if: '$CI_COMMIT_TITLE =~ /^.*[Dd]ebian/ && $CI_JOB_NAME =~ /^.*debian.*ubuntu-2004/                       && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "devel"'
+    # Merge Pipeline for debian pkg on ubuntu 18
+    - if: '$CI_MERGE_REQUEST_TITLE =~ /^.*[Dd]ebian/ && $CI_MERGE_REQUEST_TITLE =~ /^.*[uU]buntu.?18/ && $CI_JOB_NAME =~ /^.*debian.*ubuntu-1804/ && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "devel"'
+    - if: '$CI_COMMIT_TITLE =~ /^.*[Dd]ebian/ && $CI_COMMIT_TITLE =~ /^.*[uU]buntu.?18/ && $CI_JOB_NAME =~ /^.*debian.*ubuntu-1804/               && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "devel"'
+
     # Internal Piplines 
     - if: '$CI_MERGE_REQUEST_SOURCE_PROJECT_PATH != "sdurobotics/RobWork" && $CI_MERGE_REQUEST_SOURCE_PROJECT_PATH =~ /^.+/'
       when: never
@@ -293,14 +300,6 @@ stages:
     - linux
   before_script:
     - *uninstall-rw-deb
-    - cd ..
-    - rm -r ./tmp || echo "nothing to remove" && mkdir tmp
-    - cp -r ./RobWork ./tmp
-    - cd tmp/RobWork
-    - git checkout origin/debian-pkg
-    - cd ../..
-    - cp -r ./tmp/RobWork/debian ./RobWork
-    - cd RobWork
     - rm -r ../*.deb || echo "Nothing to remove"
     - rm -r ../robwork_* || echo "Nothing to remove"
   script:
@@ -328,6 +327,19 @@ stages:
     - linux
   before_script:
     - *uninstall-rw-deb
+    - apt -y install ./DEBPKG/*.deb
+
+.linux-debian-upgrade-test:
+  extends: .CI-common-linux
+  stage: test
+  tags:
+    - linux
+  before_script:
+    - *uninstall-rw-deb
+    - add-apt-repository ppa:sdurobotics/robwork
+    - apt-get update
+  script:
+    - apt -y install libsdurw-all-dev libsdurws-all-dev libsdurwsim-all-dev
     - apt -y install ./DEBPKG/*.deb
 
 ########################### WINDOWS CI ################################
@@ -633,16 +645,23 @@ install-tests:ubuntu-1804:
     ]
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
 
-build-debian-pre:ubuntu-1804:
+build-debian:ubuntu-1804:
   extends: .linux-build-debian
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804-deb
 
-test-debian-pre:ubuntu-1804:
+test-debian:ubuntu-1804:
   extends: .linux-test-debian
-  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804-deb
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804-deb-test
   dependencies:
-    - "build-debian-pre:ubuntu-1804"
-  needs: ["build-debian-pre:ubuntu-1804"]
+    - "build-debian:ubuntu-1804"
+  needs: ["build-debian:ubuntu-1804"]
+
+test-debian-upgrade:ubuntu-1804:
+  extends: .linux-debian-upgrade-test
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804-deb-test
+  dependencies:
+    - build-debian:ubuntu-1804
+  needs: ["build-debian:ubuntu-1804"]
 
 ########################## Ubuntu 1604 ################################
 
@@ -805,16 +824,23 @@ install-tests:ubuntu-2004:
     ]
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-2004
 
-build-debian-pre:ubuntu-2004:
+build-debian:ubuntu-2004:
   extends: .linux-build-debian
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-2004-deb
 
-test-debian-pre:ubuntu-2004:
+test-debian:ubuntu-2004:
   extends: .linux-test-debian
-  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-2004-deb
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-2004-deb-test
   dependencies:
-    - "build-debian-pre:ubuntu-2004"
-  needs: ["build-debian-pre:ubuntu-2004"]
+    - "build-debian:ubuntu-2004"
+  needs: ["build-debian:ubuntu-2004"]
+
+test-debian-upgrade:ubuntu-2004:
+  extends: .linux-debian-upgrade-test
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-2004-deb-test
+  dependencies:
+    - build-debian:ubuntu-2004
+  needs: ["build-debian:ubuntu-2004"]
 
 ########################## Centos 7 ################################
 
@@ -915,77 +941,3 @@ pages:
     paths:
       - public
     expire_in: 1 week
-
-######################## debian package ##########################################
-
-.debian-build:
-  extends: .linux-build-debian
-  stage: build
-  tags:
-    - linux
-  before_script:
-    - rm -r ../*.deb || echo nothing to remove
-  rules:
-    - if: '$CI_COMMIT_BRANCH == "debian-pkg"'
-
-.debian-test:
-  extends: .linux-test-debian
-  stage: test
-  tags:
-    - linux
-  rules:
-    - if: '$CI_COMMIT_BRANCH == "debian-pkg"'
-
-.debian-upgrade-test:
-  stage: test
-  tags:
-    - linux
-  rules:
-    - if: '$CI_COMMIT_BRANCH == "debian-pkg"'
-  before_script:
-    - *uninstall-rw-deb
-    - add-apt-repository ppa:sdurobotics/robwork
-    - apt-get update
-  script:
-    - apt -y install libsdurw-all-dev libsdurws-all-dev libsdurwsim-all-dev
-    - apt -y install ./DEBPKG/*.deb
-
-################# debian-pkg ubuntu-1804 #################
-
-build-debian:ubuntu-1804:
-  extends: .debian-build
-  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804-deb
-
-test-debian:ubuntu-1804:
-  extends: .debian-test
-  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804-deb
-  dependencies:
-    - build-debian:ubuntu-1804
-  needs: ["build-debian:ubuntu-1804"]
-
-test-debian-upgrade:ubuntu-1804:
-  extends: .debian-upgrade-test
-  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804-deb
-  dependencies:
-    - build-debian:ubuntu-1804
-  needs: ["build-debian:ubuntu-1804"]
-
-########################## Debian pkg ubuntu 2004 ######################################
-
-build-debian:ubuntu-2004:
-  extends: .debian-build
-  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-2004-deb
-
-test-debian:ubuntu-2004:
-  extends: .debian-test
-  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-2004-deb
-  dependencies:
-    - build-debian:ubuntu-2004
-  needs: ["build-debian:ubuntu-2004"]
-
-test-debian-upgrade:ubuntu-2004:
-  extends: .debian-upgrade-test
-  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-2004-deb
-  dependencies:
-    - build-debian:ubuntu-2004
-  needs: ["build-debian:ubuntu-2004"]
