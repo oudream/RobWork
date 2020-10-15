@@ -52,7 +52,7 @@ namespace rw { namespace math {
         /**
          * @brief default constructor
          */
-        Transform3DVector () {}
+        Transform3DVector ():Transform3DVector(Vector3D<T>(),Quaternion<T>()) {}
 
         /**
          * @brief Constuct a Transformation matrix as a Vector

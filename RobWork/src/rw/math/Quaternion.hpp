@@ -23,11 +23,11 @@
  */
 
 #if !defined(SWIG)
-#include "Rotation3D.hpp"
-#include "Rotation3DVector.hpp"
-
 #include <rw/common/Serializable.hpp>
+#include <rw/math/Rotation3D.hpp>
+#include <rw/math/Rotation3DVector.hpp>
 
+#include <Eigen/Core>
 #include <Eigen/Geometry>
 #include <ostream>
 #endif
@@ -96,10 +96,18 @@ namespace rw { namespace math {
         Quaternion (const Eigen::Quaternion< T >& r) : _q (r) {}
 
         /**
-         * @brief copy a boost quaternion to this Quaternion
-         * @param r [in] - boost quaternion
+         * @brief Creates a Quaternion from vector_expression
+         *
+         * @param r [in] an Eigen Vector
          */
-        inline void operator= (const Eigen::Quaternion< T >& r) { _q = r; }
+        template< class R >
+        explicit Quaternion (const Eigen::MatrixBase< R >& r) :
+            _q (r.row (3) (0), r.row (0) (0), r.row (1) (0), r.row (2) (0))
+        {}
+
+        // ###################################################
+        // #                Acces Operators                  #
+        // ###################################################
 
         /**
          * @brief get method for the x component
@@ -125,66 +133,6 @@ namespace rw { namespace math {
          */
         inline T getQw () const { return _q.w (); }
 
-        /**
-         * @brief get length of quaternion
-         * @f$ \sqrt{q_x^2+q_y^2+q_z^2+q_w^2} @f$
-         * @return the length og this quaternion
-         */
-        inline T getLength () const { return _q.norm (); }
-
-        /**
-         * @brief get squared length of quaternion
-         * @f$ q_x^2+q_y^2+q_z^2+q_w^2 @f$
-         * @return the length og this quaternion
-         */
-        inline T getLengthSquared () const { return _q.squaredNorm (); }
-
-        /**
-         * @brief normalizes this quaternion so that
-         * @f$ normalze(Q)=\frac{Q}{\sqrt{q_x^2+q_y^2+q_z^2+q_w^2}} @f$
-         */
-        inline void normalize () { _q.normalize (); };
-
-        /**
-         * @brief Calculates the @f$ 3\times 3 @f$ Rotation matrix
-         *
-         * @return A 3x3 rotation matrix @f$ \mathbf{rot} @f$
-         * @f$
-         * \mathbf{rot} =
-         *  \left[
-         *   \begin{array}{ccc}
-         *      1-2(q_y^2-q_z^2) & 2(q_x\ q_y+q_z\ q_w)& 2(q_x\ q_z-q_y\ q_w) \\
-         *      2(q_x\ q_y-q_z\ q_w) & 1-2(q_x^2-q_z^2) & 2(q_y\ q_z+q_x\ q_w)\\
-         *      2(q_x\ q_z+q_y\ q_w) & 2(q_y\ q_z-q_x\ q_z) & 1-2(q_x^2-q_y^2)
-         *    \end{array}
-         *  \right]
-         * @f$
-         *
-         */
-        inline const rw::math::Rotation3D< T > toRotation3D () const
-        {
-            const T qx = _q.x ();
-            const T qy = _q.y ();
-            const T qz = _q.z ();
-            const T qw = _q.w ();
-
-            return rw::math::Rotation3D< T > (1 - 2 * qy * qy - 2 * qz * qz,
-                                              2 * (qx * qy - qz * qw),
-                                              2 * (qx * qz + qy * qw),
-                                              2 * (qx * qy + qz * qw),
-                                              1 - 2 * qx * qx - 2 * qz * qz,
-                                              2 * (qy * qz - qx * qw),
-                                              2 * (qx * qz - qy * qw),
-                                              2 * (qy * qz + qx * qw),
-                                              1 - 2 * qx * qx - 2 * qy * qy);
-        }
-
-        /**
-         * @brief The dimension of the quaternion (i.e. 4).
-         * This method is provided to help support generic algorithms using
-           size() and operator[].
-         */
-        size_t size () const { return 4; }
 #if !defined(SWIG)
         /**
          * @brief Returns reference to Quaternion element
@@ -252,134 +200,40 @@ namespace rw { namespace math {
 #else
         ARRAYOPERATOR (T);
 #endif
+
         /**
-         * @brief Calculates a slerp interpolation between \b this and \b v.
+         * @brief Calculates the @f$ 3\times 3 @f$ Rotation matrix
          *
-         * The slerp interpolation ensures a constant velocity across the interpolation.
-         * For \f$ t=0\f$ the result is \b this and for \f$ t=1\f$ it is \b v.
+         * @return A 3x3 rotation matrix @f$ \mathbf{rot} @f$
+         * @f$
+         * \mathbf{rot} =
+         *  \left[
+         *   \begin{array}{ccc}
+         *      1-2(q_y^2-q_z^2) & 2(q_x\ q_y+q_z\ q_w)& 2(q_x\ q_z-q_y\ q_w) \\
+         *      2(q_x\ q_y-q_z\ q_w) & 1-2(q_x^2-q_z^2) & 2(q_y\ q_z+q_x\ q_w)\\
+         *      2(q_x\ q_z+q_y\ q_w) & 2(q_y\ q_z-q_x\ q_z) & 1-2(q_x^2-q_y^2)
+         *    \end{array}
+         *  \right]
+         * @f$
          *
-         * @note Algorithm and implementation is thanks to euclideanspace.com
          */
-        inline const Quaternion< T > slerp (const Quaternion< T >& v, const T t) const
+        inline const rw::math::Rotation3D< T > toRotation3D () const
         {
-            return Quaternion (_q.slerp (t, v.e ()));
-        }
+            const T qx = _q.x ();
+            const T qy = _q.y ();
+            const T qz = _q.z ();
+            const T qw = _q.w ();
 
-        /**
-           @brief Scalar multiplication.
-         */
-        inline const Quaternion< T > operator* (T s) const
-        {
-            return Quaternion< T > (_q.x () * s, _q.y () * s, _q.z () * s, _q.w () * s);
+            return rw::math::Rotation3D< T > (1 - 2 * qy * qy - 2 * qz * qz,
+                                              2 * (qx * qy - qz * qw),
+                                              2 * (qx * qz + qy * qw),
+                                              2 * (qx * qy + qz * qw),
+                                              1 - 2 * qx * qx - 2 * qz * qz,
+                                              2 * (qy * qz - qx * qw),
+                                              2 * (qx * qz - qy * qw),
+                                              2 * (qy * qz + qx * qw),
+                                              1 - 2 * qx * qx - 2 * qy * qy);
         }
-#if !defined(SWIGPYTHON)
-        /**
-           @brief Scalar multiplication.
-         */
-        inline friend const Quaternion< T > operator* (T s, const Quaternion< T >& v)
-        {
-            return v * s;
-        }
-#endif
-        /**
-           @brief Scalar multiplication.
-         */
-        inline const Quaternion< T > operator*= (T s)
-        {
-            _q.x () *= s;
-            _q.y () *= s;
-            _q.z () *= s;
-            _q.w () *= s;
-            return *this;
-        }
-
-        /**
-         * @brief Multiply with operator
-         */
-        inline const Quaternion< T > operator*= (const Quaternion< T >& r)
-        {
-            *this = (*this) * r;
-            return *this;
-        }
-
-        /**
-         * @brief Multiply-from operator
-         */
-        inline Quaternion< T > operator* (const Quaternion< T >& r) const
-        {
-            Quaternion q = Quaternion (_q * r.e ());
-            return q;
-        }
-
-#if !defined(SWIGPYTHON)
-        /**
-           @brief Addition of two quaternions
-         */
-        inline friend const Quaternion< T > operator+ (const Quaternion< T >& s,
-                                                       const Quaternion< T >& v)
-        {
-            return Quaternion< T > (s (0) + v (0), s (1) + v (1), s (2) + v (2), s (3) + v (3));
-        }
-#endif
-        /**
-         *@brief Add-to operator
-         */
-        inline const Quaternion< T > operator+= (const Quaternion< T >& r)
-        {
-            _q.x () += r (0);
-            _q.y () += r (1);
-            _q.z () += r (2);
-            _q.w () += r (3);
-            return *this;
-        }
-
-        /**
-           @brief Subtraction.
-         */
-        inline const Quaternion< T > operator- (const Quaternion< T >& v)
-        {
-            return Quaternion< T > (
-                (*this) (0) - v (0), (*this) (1) - v (1), (*this) (2) - v (2), (*this) (3) - v (3));
-        }
-
-        /**
-         * @brief Subtract-from operator
-         */
-        inline const Quaternion< T > operator-= (const Quaternion< T >& r)
-        {
-            _q.x () -= r (0);
-            _q.y () -= r (1);
-            _q.z () -= r (2);
-            _q.w () -= r (3);
-            return *this;
-        }
-
-        /**
-         * @brief Unary minus.
-         */
-        Quaternion< T > operator- () const
-        {
-            return Quaternion (-_q.x (), -_q.y (), -_q.z (), -_q.w ());
-        }
-
-        /**
-         * @brief Unary plus.
-         */
-        Quaternion< T > operator+ () const { return Quaternion (*this); }
-
-        /**
-         * @brief Comparison (equals) operator
-         */
-        inline bool operator== (const Quaternion< T >& r) const
-        {
-            return (*this) (0) == r (0) && (*this) (1) == r (1) && (*this) (2) == r (2) &&
-                   (*this) (3) == r (3);
-        }
-
-        /**
-         * @brief Comparison (not equals) operator
-         */
-        inline bool operator!= (const Quaternion< T >& r) const { return !((*this) == r); }
 
         /** @brief Converts a Rotation3D to a Quaternion and saves the Quaternion
          * in this.
@@ -452,6 +306,13 @@ namespace rw { namespace math {
         }
 
         /**
+         * @brief The dimension of the quaternion (i.e. 4).
+         * This method is provided to help support generic algorithms using
+         * size() and operator[].
+         */
+        size_t size () const { return 4; }
+
+        /**
          * @brief Convert to an Eigen Quaternion.
          * @return Eigen Quaternion representation.
          */
@@ -461,6 +322,121 @@ namespace rw { namespace math {
         const Eigen::Quaternion< T >& e () const { return _q; }
 
         /**
+         * @brief convert to Eigen Vector
+         * @return eigen Vector of quaternion
+         */
+        Eigen::Matrix< T, 4, 1 > toEigenVector () const
+        {
+            return Eigen::Matrix< T, 4, 1 > (_q.x (), _q.y (), _q.z (), _q.w ());
+        }
+
+        // ###################################################
+        // #                 Math Operators                  #
+        // ###################################################
+
+        // ############ Quaternion Operations
+
+        /**
+         * @brief Unary minus.
+         */
+        Quaternion< T > operator- () const
+        {
+            return Quaternion (-_q.x (), -_q.y (), -_q.z (), -_q.w ());
+        }
+
+        /**
+         * @brief Unary plus.
+         */
+        Quaternion< T > operator+ () const { return Quaternion (*this); }
+
+        /**
+         * @brief Subtraction.
+         */
+        inline const Quaternion< T > operator- (const Quaternion< T >& v)
+        {
+            return Quaternion< T > (
+                (*this) (0) - v (0), (*this) (1) - v (1), (*this) (2) - v (2), (*this) (3) - v (3));
+        }
+
+        /**
+         * @brief Multiply-from operator
+         */
+        inline Quaternion< T > operator* (const Quaternion< T >& r) const
+        {
+            Quaternion q = Quaternion (_q * r.e ());
+            return q;
+        }
+
+        /**
+           @brief Addition of two quaternions
+         */
+        inline const Quaternion< T > operator+ (const Quaternion< T >& v) const
+        {
+            return Quaternion< T > (
+                (*this) (0) + v (0), (*this) (1) + v (1), (*this) (2) + v (2), (*this) (3) + v (3));
+        }
+
+        // ############ Scalar Operations
+
+        /**
+         * @brief Scalar multiplication.
+         */
+        inline const Quaternion< T > operator* (T s) const
+        {
+            return Quaternion< T > (_q.x () * s, _q.y () * s, _q.z () * s, _q.w () * s);
+        }
+#if !defined(SWIGPYTHON)
+        /**
+         * @brief Scalar multiplication.
+         */
+        inline friend const Quaternion< T > operator* (T s, const Quaternion< T >& v)
+        {
+            return v * s;
+        }
+#endif
+        /**
+         * @brief element whise division
+         * @param lhs [in] the scalar to devide with
+         * @return the result of elementwise devision
+         */
+        Quaternion< T > elemDivide (const T& lhs) const;
+
+        // ############ Math Operations
+
+        /**
+         * @brief get length of quaternion
+         * @f$ \sqrt{q_x^2+q_y^2+q_z^2+q_w^2} @f$
+         * @return the length og this quaternion
+         */
+        inline T getLength () const { return _q.norm (); }
+
+        /**
+         * @brief get squared length of quaternion
+         * @f$ q_x^2+q_y^2+q_z^2+q_w^2 @f$
+         * @return the length og this quaternion
+         */
+        inline T getLengthSquared () const { return _q.squaredNorm (); }
+
+        /**
+         * @brief normalizes this quaternion so that
+         * @f$ normalze(Q)=\frac{Q}{\sqrt{q_x^2+q_y^2+q_z^2+q_w^2}} @f$
+         */
+        inline void normalize () { _q.normalize (); };
+
+        /**
+         * @brief Calculates a slerp interpolation between \b this and \b v.
+         *
+         * The slerp interpolation ensures a constant velocity across the interpolation.
+         * For \f$ t=0\f$ the result is \b this and for \f$ t=1\f$ it is \b v.
+         *
+         * @note Algorithm and implementation is thanks to euclideanspace.com
+         */
+        inline const Quaternion< T > slerp (const Quaternion< T >& v, const T t) const
+        {
+            return Quaternion (_q.slerp (t, v.e ()));
+        }
+
+        /*
          * @brief this will return the exponential of this quaternion \f$ e^Quaternion \f$
          * @return the exponential of this quaternion
          */
@@ -484,6 +460,89 @@ namespace rw { namespace math {
          * @return \f$ Quaternion^power \f$
          */
         Quaternion< T > pow (double power) const;
+
+        // ###################################################
+        // #             assignement Operators               #
+        // ###################################################
+
+        /**
+         * @brief copy a boost quaternion to this Quaternion
+         * @param r [in] - boost quaternion
+         */
+        inline void operator= (const Eigen::Quaternion< T >& r) { _q = r; }
+
+        /**
+           @brief Scalar multiplication.
+         */
+        inline const Quaternion< T > operator*= (T s)
+        {
+            _q.x () *= s;
+            _q.y () *= s;
+            _q.z () *= s;
+            _q.w () *= s;
+            return *this;
+        }
+
+        /**
+         * @brief Multiply with operator
+         */
+        inline const Quaternion< T > operator*= (const Quaternion< T >& r)
+        {
+            *this = (*this) * r;
+            return *this;
+        }
+
+        /**
+         *@brief Add-to operator
+         */
+        inline const Quaternion< T > operator+= (const Quaternion< T >& r)
+        {
+            _q.x () += r (0);
+            _q.y () += r (1);
+            _q.z () += r (2);
+            _q.w () += r (3);
+            return *this;
+        }
+
+        /**
+         * @brief Subtract-from operator
+         */
+        inline const Quaternion< T > operator-= (const Quaternion< T >& r)
+        {
+            _q.x () -= r (0);
+            _q.y () -= r (1);
+            _q.z () -= r (2);
+            _q.w () -= r (3);
+            return *this;
+        }
+
+        /**
+         * @brief copyfrom rotaion matrix, same as setRotation.
+         * @param rhs [in] the rotation that will be copyed
+         */
+        Quaternion< T >& operator= (const rw::math::Rotation3D<>& rhs){
+            this->setRotation(rhs);
+            return (*this);
+        }
+
+            // ###################################################
+            // #              Comparison Operators               #
+            // ###################################################
+
+            /**
+             * @brief Comparison (equals) operator
+             */
+            inline bool
+            operator== (const Quaternion< T >& r) const
+        {
+            return (*this) (0) == r (0) && (*this) (1) == r (1) && (*this) (2) == r (2) &&
+                   (*this) (3) == r (3);
+        }
+
+        /**
+         * @brief Comparison (not equals) operator
+         */
+        inline bool operator!= (const Quaternion< T >& r) const { return !((*this) == r); }
 
 #if defined(SWIG)
         TOSTRING ();

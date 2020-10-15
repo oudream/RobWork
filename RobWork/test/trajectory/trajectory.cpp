@@ -38,15 +38,10 @@ namespace {
         Q last_ddx = traj.ddx(t);
 
         for(; t<=traj.endTime();t+=traj.duration()*stepSize){
-            //if( MetricUtil::dist2(last_x,traj.x(t))>0.1 )
-            //    return false;
-            //if( MetricUtil::dist2(last_dx,traj.dx(t))>0.1 )
-            //    return false;
-            //if( MetricUtil::dist2(last_ddx,traj.ddx(t))>0.1 )
-            //    return false;
+
             BOOST_CHECK_SMALL( MetricUtil::dist2(last_x,traj.x(t)), 0.15);
             BOOST_CHECK_SMALL( MetricUtil::dist2(last_dx,traj.dx(t)), 0.15);
-            //BOOST_CHECK_SMALL( MetricUtil::dist2(last_ddx,traj.ddx(t)), 0.1);
+            BOOST_CHECK_SMALL( MetricUtil::dist2(last_ddx,traj.ddx(t)), 0.1);
 
             last_x = traj.x(t);
             last_dx = traj.dx(t);
@@ -230,18 +225,9 @@ BOOST_AUTO_TEST_CASE( TrajectorySequenceTest ) {
 
 BOOST_AUTO_TEST_CASE( CubicSplineInterpolation ){
 
-    {
-        BOOST_TEST_MESSAGE("Testing if exceptions are cast when too small paths are given as arguments!");
-        // check throw on empty QPath
-        QPath::Ptr path = ownedPtr(new QPath());
-        BOOST_CHECK_THROW( CubicSplineFactory::makeNaturalSpline(path), rw::core::Exception );
-        path->push_back(Q(3));
-        BOOST_CHECK_THROW( CubicSplineFactory::makeNaturalSpline(path), rw::core::Exception );
-
-    }
 
     // here we test the cubic path interpolation
-    {
+    /*{
         BOOST_TEST_MESSAGE("Testing natural spline generation on PATH");
         QPath::Ptr path = ownedPtr(new QPath());
         Q q = Q::zero(7);
@@ -337,7 +323,7 @@ BOOST_AUTO_TEST_CASE( CubicSplineInterpolation ){
         //    std::cout << t << "\t" << traj->x(t)[0] << "\t" << traj->dx(t)[0] << "\t" << traj->ddx(t)[0]<< std::endl;
         //}
 
-    }
+    }*/
 
 
 

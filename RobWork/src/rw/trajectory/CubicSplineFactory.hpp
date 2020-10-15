@@ -28,6 +28,7 @@
 #include <rw/math/Q.hpp>
 #include <rw/math/Transform3D.hpp>
 #include <rw/math/Transform3DVector.hpp>
+#include <rw/math/Quaternion.hpp>
 
 namespace rw { namespace trajectory {
 
@@ -42,6 +43,7 @@ namespace rw { namespace trajectory {
     class CubicSplineFactory
     {
       public:
+      
         /**
          * @brief constructs a free/natural cubic spline
          * A natural cubic spline has free boundary conditions. Only one condition
@@ -131,6 +133,9 @@ namespace rw { namespace trajectory {
          *
          * @param path [in] a list of points that the spline should intersect
          * @param timeStep [in] the duration of each spline path
+         * @return the Interpolated Trajectory of the Cubic spline
+         * @note the following template parameters are currently supported:
+         * Transform3DVector, Vector3D, Quaternion
          */
         template< typename T >
         static typename InterpolatorTrajectory< T >::Ptr makeNaturalSpline (const Path< T >& path,
@@ -144,6 +149,8 @@ namespace rw { namespace trajectory {
          * @param offset [in]
          * @endcond
          * @return a trajectory of CubicSplineInterpolators
+         * @note the following template parameters are currently supported:
+         * Transform3DVector, Vector3D, Quaternion
          */
         template< typename T >
         static typename InterpolatorTrajectory< T >::Ptr
@@ -156,6 +163,8 @@ namespace rw { namespace trajectory {
          * @param path [in] Path to follow
          * @param times [in] Times associated to the different configurations in \b path
          * @return a trajectory of CubicSplineInterpolators
+         * @note the following template parameters are currently supported:
+         * Transform3DVector, Vector3D, Quaternion
          */
         template< typename T >
         static typename InterpolatorTrajectory< T >::Ptr
@@ -170,6 +179,8 @@ namespace rw { namespace trajectory {
          * @param dqEnd [in] the velocity in the last point.
          * @param timeStep documentation missing !
          * @return a trajectory of CubicSplineInterpolators
+         * @note the following template parameters are currently supported:
+         * Transform3DVector, Vector3D, Quaternion
          */
         static InterpolatorTrajectory< rw::math::Q >::Ptr
         makeClampedSpline (QPath::Ptr qpath, const rw::math::Q& dqStart, const rw::math::Q& dqEnd,
@@ -183,6 +194,8 @@ namespace rw { namespace trajectory {
          * @param dqStart [in] the velocity in the first point
          * @param dqEnd [in] the velocity in the last point.
          * @return a trajectory of CubicSplineInterpolators
+         * @note the following template parameters are currently supported:
+         * Transform3DVector, Vector3D, Quaternion
          */
         static InterpolatorTrajectory< rw::math::Q >::Ptr
         makeClampedSpline (TimedQPath::Ptr tqpath, const rw::math::Q& dqStart,
@@ -197,6 +210,8 @@ namespace rw { namespace trajectory {
          * @param dqStart [in] the velocity in the first point
          * @param dqEnd [in] the velocity in the last point.
          * @return a trajectory of CubicSplineInterpolators
+         * @note the following template parameters are currently supported:
+         * Transform3DVector, Vector3D, Quaternion
          */
         static InterpolatorTrajectory< rw::math::Q >::Ptr
         makeClampedSpline (const QPath& qpath, const std::vector< double >& times,
@@ -211,6 +226,8 @@ namespace rw { namespace trajectory {
          * @param dEnd [in] the velocity in the last point.
          * @param timeStep documentation missing !
          * @return a trajectory of CubicSplineInterpolators
+         * @note the following template parameters are currently supported:
+         * Transform3DVector, Vector3D, Quaternion
          */
         template< typename T >
         static typename InterpolatorTrajectory< T >::Ptr
@@ -225,6 +242,8 @@ namespace rw { namespace trajectory {
          * @param dqStart [in] the velocity in the first point
          * @param dqEnd [in] the velocity in the last point.
          * @return a trajectory of CubicSplineInterpolators
+         * @note the following template parameters are currently supported:
+         * Transform3DVector, Vector3D, Quaternion
          */
         template< typename T >
         static typename InterpolatorTrajectory< T >::Ptr
@@ -239,6 +258,8 @@ namespace rw { namespace trajectory {
          * @param dqStart [in] the velocity in the first point
          * @param dqEnd [in] the velocity in the last point.
          * @return a trajectory of CubicSplineInterpolators
+         * @note the following template parameters are currently supported:
+         * Transform3DVector, Vector3D, Quaternion
          */
         template< typename T >
         static typename InterpolatorTrajectory< T >::Ptr
