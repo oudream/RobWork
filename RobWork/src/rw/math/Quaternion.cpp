@@ -66,6 +66,15 @@ template< class T > Quaternion< T > Quaternion< T >::pow (double power) const
     return ret;
 }
 
+template< class T > Quaternion< T > Quaternion< T >::elemDivide (const T& lhs) const
+{
+    Quaternion< T > ret;
+    for (size_t i = 0; i < this->size (); i++) {
+        ret[i] = (*this)[i] / lhs;
+    }
+    return ret;
+}
+
 template class rw::math::Quaternion< double >;
 template class rw::math::Quaternion< float >;
 
