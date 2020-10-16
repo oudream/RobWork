@@ -28,6 +28,7 @@
 #include <rw/math/Math.hpp>
 #include <rw/math/Quaternion.hpp>
 #include <rw/math/Rotation3D.hpp>
+#include <rw/math/EAA.hpp>
 #include <rw/math/Transform3D.hpp>
 #endif 
 namespace rw { namespace trajectory {
@@ -67,18 +68,12 @@ namespace rw { namespace trajectory {
          * @param duration [in] Time it takes to from one end to the other.
          */
         LinearInterpolator (const T& start, const T& end, double duration) :
-            _a (start), _b (end - start), _vel (start), _acc (start), _duration (duration)
+            _a (end-start), _b (start), _duration (duration)
         {
-            if (_duration < 0)
-                RW_THROW ("Duration of an interpolator need to have a non-negative value");
+            if (_duration <= 0)
+                RW_THROW ("Duration of an interpolator need to be greater than 0");
 
-            if (_duration == 0) {
-                _vel = _vel * 0;
-            }
-            else {
-                _vel = _b / _duration;
-            }
-            _acc = _acc * 0;
+            _a = _a / _duration;
         }
 
         /**
@@ -88,9 +83,7 @@ namespace rw { namespace trajectory {
          */
         T x (double t) const
         {
-            if (t == 0)
-                return _a;
-            return _a + (t / _duration) * _b;
+            return _a *t + _b;
         }
 
         /**
@@ -98,26 +91,26 @@ namespace rw { namespace trajectory {
          * @copydoc Interpolator::dx()
          * @endcond
          */
-        T dx (double t) const { return _vel; };
+        T dx (double t) const { return _a; };
 
         /**
          * @cond
          * @copydoc Interpolator::ddx()
          * @endcond
          */
-        T ddx (double t) const { return _acc; }
+        T ddx (double t) const { return _b*0; }
 
         /**
          * @brief Returns the start position of the interpolator
          * @return The start position of the interpolator
          */
-        T getStart () const { return _a; }
+        T getStart () const { return _b; }
 
         /**
          * @brief Returns the end position of the interpolator
          * @return The end position of the interpolator
          */
-        T getEnd () const { return _a + _b; }
+        T getEnd () const { return _a *_duration + _b; }
 
         /**
          * @copydoc Interpolator::duration()
@@ -127,8 +120,6 @@ namespace rw { namespace trajectory {
       private:
         T _a;
         T _b;
-        T _vel;
-        T _acc;
         double _duration;
     };
 
@@ -201,10 +192,11 @@ namespace rw { namespace trajectory {
          */
         rw::math::Rotation3D< T > dx (double t) const
         {
-            rw::math::Rotation3D< T > rot = x (1.0);
-            return inverse (_start) * rot;
-
-            // return InterpolatorUtil::vecToTrans<V,T>(_interpolator.dx(t));
+            /*rw::math::Rotation3D< T > rot = x (1.0);
+            return inverse (_start) * rot;*/
+            rw::math::EAA<T> change(_start.inverse(true) * _end);
+            
+            return rw::math::EAA<T> (change.axis(),change.angle()/_duration).toRotation3D();
         }
 
         /**

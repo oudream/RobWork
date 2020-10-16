@@ -311,7 +311,7 @@ endif()
 
 if(TARGET sdurw)
     set(TRAJECTORY_TEST_LIBRARIES ${GTEST_BOTH_LIBRARIES} sdurw)
-    set(TRAJECTORY_TEST_SRC trajectory/PathTest.cpp trajectory/ParabolicBlendTest.cpp trajectory/CubicSplineTest.cpp)
+    set(TRAJECTORY_TEST_SRC trajectory/PathTest.cpp trajectory/ParabolicBlendTest.cpp trajectory/LinearInterpolatorTest.cpp trajectory/CubicSplineTest.cpp)
     add_executable(sdurw_trajectory-gtest ${TRAJECTORY_TEST_SRC})
     target_link_libraries(sdurw_trajectory-gtest ${TRAJECTORY_TEST_LIBRARIES})
     add_rw_gtest(sdurw_trajectory-gtest)

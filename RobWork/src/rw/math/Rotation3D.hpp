@@ -450,6 +450,8 @@ namespace rw { namespace math {
          */
         Rotation3D< T > inverse (bool copy) const;
 
+        T tr() const {return (*this)(0,0) + (*this)(1,1) +(*this)(2,2);}
+
 #if defined(SWIG)
         TOSTRING ();
 #endif

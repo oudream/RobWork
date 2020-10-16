@@ -125,7 +125,9 @@ namespace rw { namespace math {
          * @param thetaky [in] @f$ \theta k_y @f$
          * @param thetakz [in] @f$ \theta k_z @f$
          */
-        EAA (T thetakx, T thetaky, T thetakz) : _eaa (rw::math::Vector3D< T > (thetakx, thetaky, thetakz)) {}
+        EAA (T thetakx, T thetaky, T thetakz) :
+            _eaa (rw::math::Vector3D< T > (thetakx, thetaky, thetakz))
+        {}
 
         /**
          * @brief Constructs an EAA vector that will rotate v1 into
@@ -191,6 +193,17 @@ namespace rw { namespace math {
         T angle () const { return _eaa.norm2 (); }
 
         /**
+         * @brief change the angle of the EAA
+         * @param angle [in] the new angle
+         * @return this object
+         */
+        EAA< T >& setAngle (const T& angle)
+        {
+            (*this) = EAA< T > (this->axis (), angle);
+            return (*this);
+        }
+
+        /**
          * @brief Extracts the axis of rotation vector @f$ \mathbf{\hat{\mathbf{k}}} @f$
          * @return @f$ \mathbf{\hat{\mathbf{k}}} @f$
          */
@@ -215,7 +228,6 @@ namespace rw { namespace math {
          */
         rw::math::Vector3D< T > toVector3D () const { return this->_eaa; }
 
-
         /**
          * @brief get as eigen vector
          * @return Eigenvector
@@ -227,7 +239,6 @@ namespace rw { namespace math {
          * @return Eigenvector
          */
         Eigen::Matrix< T, 3, 1 > e () const { return this->_eaa.e (); }
-
 
 #if !defined(SWIG)
         /**
@@ -452,6 +463,16 @@ namespace rw { namespace math {
          */
         EAA< T > elemAdd (const T rhs) const { return EAA< T > (_eaa.elemAdd (rhs)); }
 
+        /**
+         * @brief scale the angle, keeping the axis the same
+         * @param scale [in] how much the angle should change
+         * @return a new EAA with the scaled angle
+         */
+        EAA< T > scaleAngle (const T& scale)
+        {
+            return EAA< T > (this->axis (), this->angle () * scale);
+        }
+
         // ############ Vector3D Operators
 
         /**
@@ -459,7 +480,10 @@ namespace rw { namespace math {
          * @param rhs [in] the vector being devided with
          * @return the resulting EAA
          */
-        EAA< T > operator+ (const rw::math::Vector3D< T >& rhs) const { return EAA< T > (this->_eaa + rhs); }
+        EAA< T > operator+ (const rw::math::Vector3D< T >& rhs) const
+        {
+            return EAA< T > (this->_eaa + rhs);
+        }
 
 #if !defined(SWIG)
         /**
@@ -479,9 +503,12 @@ namespace rw { namespace math {
          * @param rhs [in] the vector being added
          * @return the resulting EAA
          */
-        EAA< T > operator- (const rw::math::Vector3D< T >& rhs) const { return EAA< T > (this->_eaa - rhs); }
+        EAA< T > operator- (const rw::math::Vector3D< T >& rhs) const
+        {
+            return EAA< T > (this->_eaa - rhs);
+        }
 
- #if !defined(SWIG)
+#if !defined(SWIG)
         /**
          * @brief Vector addition
          * @param lhs [in] left side value
@@ -492,7 +519,7 @@ namespace rw { namespace math {
         {
             return EAA< T > (lhs - rhs._eaa);
         }
-#endif 
+#endif
         /**
          * @brief element wise devision ( \b this / \b rhs )
          * @param rhs [in] the Vector to be devided with
@@ -527,7 +554,7 @@ namespace rw { namespace math {
             return os << " EAA( " << eaa (0) << ", " << eaa (1) << ", " << eaa (2) << ")";
         }
 #else
-        TOSTRING (rw::math::EAA<T>);
+        TOSTRING (rw::math::EAA< T >);
 #endif
         // ############ Math Operations
 
@@ -679,6 +706,17 @@ namespace rw { namespace math {
          */
         operator Eigen::Matrix< T, 3, 1 > & () { return this->e (); }
 #endif
+
+        /**
+         * @brief copy operator
+         * @param rhs [in] the Rotation3D to be copied
+         * @return reference to this EAA
+         */
+        EAA< T >& operator= (const rw::math::Rotation3D< T >& rhs)
+        {
+            return (*this) = EAA< T > (rhs);
+        }
+
         // ###################################################
         // #                    Comparetors                  #
         // ###################################################
@@ -701,7 +739,7 @@ namespace rw { namespace math {
         {
             return lhs == rhs._eaa;
         }
-        #endif 
+#endif
 
         /**
          *  @brief Compare with \b rhs for inequality.
@@ -721,7 +759,7 @@ namespace rw { namespace math {
         {
             return lhs != rhs._eaa;
         }
-        #endif 
+#endif
 
         /**
          * @brief Compare with \b rhs for equality.
@@ -783,7 +821,8 @@ namespace rw { namespace math {
         rw::math::Vector3D< T > _eaa;
     };
 
-    template< class T > rw::math::Vector3D< T > cross (const rw::math::Vector3D< T >& v1, const EAA< T >& v2)
+    template< class T >
+    rw::math::Vector3D< T > cross (const rw::math::Vector3D< T >& v1, const EAA< T >& v2)
     {
         return rw::math::cross (v1, v2.axis () * v2.angle ());
     }
