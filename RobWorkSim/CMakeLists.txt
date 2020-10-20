@@ -148,11 +148,6 @@ cmake_dependent_option(
 )
 if(RWSIM_IS_TESTS_ENABLED)
     message(STATUS "RobWork tests ENABLED!")
-    # TODO Specify SET(SITE "myname") to configure the site name to use when uploading
-    set(BUILDNAME "${INFO}")
-    enable_testing()
-    include(CTest)
-    add_subdirectory(test)
     if(RW_BUILD_WITH_GTEST)
         add_subdirectory(gtest)
     endif()

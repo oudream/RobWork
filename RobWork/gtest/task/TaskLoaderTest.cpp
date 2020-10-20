@@ -115,5 +115,4 @@ TEST(TaskLoader, XercesXMLfromStream)
     ASSERT_FALSE(task.isNull());
     checkTask(task);
 }
-
 #endif

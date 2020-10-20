@@ -585,10 +585,10 @@ void SerialDeviceController::updateFTcontrolWrist (
 
     RecursiveNewtonEuler dsolver (_rdev);
 
-    Frame* sensorFrame = _ftSensor->getSensorModel ()->getFrame ();
-    Transform3D<> sensorToffset =
-        Kinematics::frameTframe (sensorFrame, _taskFrame, state) * endToffset;
     if (_ftSensor != NULL) {
+        Frame* sensorFrame = _ftSensor->getSensorModel ()->getFrame ();
+        Transform3D<> sensorToffset =
+            Kinematics::frameTframe (sensorFrame, _taskFrame, state) * endToffset;
         Vector3D<> force    = inverse (sensorToffset.R ()) * _ftSensor->getForce ();
         Vector3D<> torque   = inverse (sensorToffset.R ()) * _ftSensor->getTorque ();
         Wrench6D<> ftWrench = Wrench6D<> (force, torque);
@@ -762,8 +762,8 @@ void SerialDeviceController::update (const rwlibs::simulation::Simulator::Update
         }
         else if (traj.t3dtraj != NULL) {
             // std::cout << "t3dtraj: " << traj.t3dtraj->startTime() << " --> " <<
-            // traj.t3dtraj->endTime() << std::endl; std::cout << "Currtime: " << _currentTrajTime <<
-            // std::endl; std::cout << "Start: " << traj.t3dtraj->x(traj.t3dtraj->startTime()) <<
+            // traj.t3dtraj->endTime() << std::endl; std::cout << "Currtime: " << _currentTrajTime
+            // << std::endl; std::cout << "Start: " << traj.t3dtraj->x(traj.t3dtraj->startTime()) <<
             // std::endl; std::cout << "End: " << traj.t3dtraj->x(traj.t3dtraj->endTime())<<
             // std::endl;
             /*for(int i=0;i<100;i++){

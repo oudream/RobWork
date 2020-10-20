@@ -74,11 +74,6 @@ cmake_dependent_option(
 )
 if(RW_IS_TESTS_ENABLED)
     message(STATUS "RobWork tests ENABLED!")
-    # TODO Specify SET(SITE "myname") to configure the site name to use when uploading
-    set(BUILDNAME "${INFO}")
-    enable_testing() # Should be unnecessary due to the CMake module CTest also calls this command
-    include(CTest)
-    add_subdirectory(test)
     if(RW_HAVE_GTEST)
         add_subdirectory(gtest)
     endif()
