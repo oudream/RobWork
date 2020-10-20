@@ -49,7 +49,7 @@ void TestEnvironment::init (int argc, char** argv)
 std::string TestEnvironment::executableDir ()
 {
     static std::string executableDir;
-    if (executableDir.empty ()) {
+    if (executableDir.empty () && get() != NULL) {
         boost::filesystem::path path (get ()->_argv[0]);
         boost::filesystem::path full_path = boost::filesystem::canonical (path);
         executableDir = full_path.parent_path ().string () + SLASH;

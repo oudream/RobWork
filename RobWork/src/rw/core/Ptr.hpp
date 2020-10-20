@@ -269,6 +269,11 @@ namespace rw { namespace core {
          * @brief Tests if the smart pointer points to the same instance as \b p
          */
         bool operator== (void* p) const { return get () == p; }
+
+        /**
+         * @brief Tests if the smart pointer points to different from the instance of \b p
+         */
+        bool operator!= (void* p) const { return get () != p; }
 #else 
         PTR_EQ_C_PTR;
 #endif
