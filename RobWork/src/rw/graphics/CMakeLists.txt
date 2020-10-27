@@ -1,7 +1,7 @@
 
 SET(FILES_CPP
   ${RW_DRAWABLE_USER_FILES}
-  Model3D.cpp
+  #Model3D.cpp
   DrawableGeometryNode.cpp
   ProjectionMatrix.cpp
   SceneGraph.cpp

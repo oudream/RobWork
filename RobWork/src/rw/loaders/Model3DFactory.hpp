@@ -49,7 +49,7 @@ namespace rw { namespace loaders {
         static rw::graphics::Model3D::Ptr
         getModel (const std::string& str, const std::string& name, bool useCache = true,
                   rw::graphics::Model3D::Material mat =
-                      rw::graphics::Model3D::Model3D::Material ("stlmat", 0.6f, 0.6f, 0.6f));
+                      rw::graphics::Model3D::Material ("stlmat", 0.6f, 0.6f, 0.6f));
 
         /**
          * @brief Factory method constructing a Drawable from a file.
@@ -70,7 +70,7 @@ namespace rw { namespace loaders {
         static rw::graphics::Model3D::Ptr
         loadModel (const std::string& filename, const std::string& name, bool useCache = true,
                    rw::graphics::Model3D::Material mat =
-                       rw::graphics::Model3D::Model3D::Material ("stlmat", 0.6f, 0.6f, 0.6f));
+                       rw::graphics::Model3D::Material ("stlmat", 0.6f, 0.6f, 0.6f));
 
         /**
          * @brief Factory method constructing a Drawable based on
@@ -90,7 +90,7 @@ namespace rw { namespace loaders {
         static rw::graphics::Model3D::Ptr constructFromGeometry (
             const std::string& str, const std::string& name, bool useCache = false,
             rw::graphics::Model3D::Material mat =
-                rw::graphics::Model3D::Model3D::Material ("stlmat", 0.6f, 0.6f, 0.6f));
+                rw::graphics::Model3D::Material ("stlmat", 0.6f, 0.6f, 0.6f));
 
       private:
         typedef rw::common::FileCache< std::string, rw::graphics::Model3D, std::string >

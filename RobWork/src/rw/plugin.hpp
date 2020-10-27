@@ -14,5 +14,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  ********************************************************************************/
+/**
+ * @file plugin.hpp
+ *
+ * this file includes all header files from the plugin namespace
+ */
 
-#include "Model3DFactory.hpp"
+#ifndef RW_PLUGIN_HPP_
+#define RW_PLUGIN_HPP_
+
+#include <rw/plugin/DynamicLibraryLoader.hpp>
+#include <rw/plugin/DynamicLibraryLoaderBase.hpp>
+#include <rw/plugin/PluginFactory.hpp>
+#include <rw/plugin/PluginFactoryBase.hpp>
+#include <rw/plugin/PluginRepository.hpp>
+#include <rw/plugin/FactoryMacro.hpp>
+
+#endif

@@ -2,7 +2,6 @@
 
 using namespace rw::kinematics;
 using namespace rw::geometry;
-using namespace rw::graphics;
 using namespace rw::models;
 
 RigidObject::RigidObject (rw::kinematics::Frame* baseframe) :
@@ -76,7 +75,7 @@ void RigidObject::removeGeometry (Geometry::Ptr geom)
         _geometry.erase (iter);
 }
 
-void RigidObject::removeModel (rw::graphics::Model3D::Ptr model)
+void RigidObject::removeModel (Model3D::Ptr model)
 {
     std::vector< Model3D::Ptr >::iterator iter =
         std::find (_models.begin (), _models.end (), model);

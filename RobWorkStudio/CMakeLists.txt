@@ -109,20 +109,13 @@ message(STATUS "RobWorkStudio: platform ${INFO} ")
 # ##################################################################################################
 # setup testing
 #
-configure_file("${RWS_ROOT}/cmake/CTestCustom.cmake.in" "CTestCustom.cmake")
-# configure testing configuration
-configure_file("${RWS_ROOT}/CTestConfig.cmake.in" "${RWS_ROOT}/CTestConfig.cmake")
 
 cmake_dependent_option(
-    RWS_IS_TESTS_ENABLED "Set when you want to build the tests" ON "${RWS_BUILD_TESTS}" OFF
+    RWS_IS_TESTS_ENABLED "Set when you want to build the tests" ON "${RW_BUILD_WITH_GTEST}" OFF
 )
 if(RWS_IS_TESTS_ENABLED)
     message(STATUS "RobWorkStudio: tests ENABLED!")
-    include(CTest)
-    # ADD_SUBDIRECTORY(test)
-    if(RW_BUILD_WITH_GTEST)
-        add_subdirectory(gtest)
-    endif()
+    add_subdirectory(gtest)
 else()
     message(STATUS "RobWorkStudio: tests DISABLED!")
 endif()
@@ -258,10 +251,6 @@ if(doc_executable)
 endif()
 
 # Packaging include(cmake/packing.cmake)
-
-# Dashboard IF(DEFINED USE_CDASH AND USE_CDASH)
-configure_file("${RWS_ROOT}/CTestConfig.cmake.in" "${RWS_ROOT}/CTestConfig.cmake")
-# ENDIF()
 
 # Create installer
 rw_create_installer()

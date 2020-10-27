@@ -20,6 +20,7 @@
 #include "DynamicWorkCellBuilder.hpp"
 
 #include <rw/geometry/Cylinder.hpp>
+#include <rw/graphics/Model3D.hpp>
 #include <rw/kinematics/MovableFrame.hpp>
 #include <rw/models/RigidObject.hpp>
 #include <rwsim/dynamics/DynamicWorkCell.hpp>

@@ -93,9 +93,8 @@ if(build)
 
     rw_add_library(${SUBSYS_NAME} ${FILES_CPP} ${FILES_HPP})
     rw_add_includes(${SUBSYS_NAME} "rw/math" ${FILES_HPP})
-    target_link_libraries(${SUBSYS_NAME} PUBLIC ${Boost_LIBRARIES} sdurw_core sdurw_common)
+    target_link_libraries(${SUBSYS_NAME} PUBLIC ${SUBSYS_DEPS})
 
-    target_include_directories(${SUBSYS_NAME} PUBLIC ${Boost_INCLUDE_DIR})
     rw_include_eigen(${SUBSYS_NAME})
 
     target_include_directories(

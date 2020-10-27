@@ -4,7 +4,6 @@
 
 using namespace rw::kinematics;
 using namespace rw::geometry;
-using namespace rw::graphics;
 using namespace rw::models;
 using namespace rw::math;
 
@@ -13,13 +12,14 @@ DeformableObject::DeformableObject (rw::kinematics::Frame* baseframe, int nr_of_
     _rstate (1, rw::core::ownedPtr (new DeformableObjectCache (nr_of_nodes)).cast< StateCache > ())
 {
     add (_rstate);
-    _model = rw::core::ownedPtr (new rw::graphics::Model3D (baseframe->getName () + "_M"));
+    _model = rw::core::ownedPtr (new rw::geometry::Model3D (baseframe->getName () + "_M"));
 
     Model3D::Material mat ("gray", 0.7f, 0.7f, 0.7f);
     int matId = _model->addMaterial (mat);
     _mesh     = rw::core::ownedPtr (new IndexedTriMeshN0< float > ());
     _mesh->getVertices ().resize (nr_of_nodes, Vector3D< float > (0, 0, 0));
     _mesh->getNormals ().resize (nr_of_nodes, Vector3D< float > (0, 0, 0));
+
     Model3D::Object3D< uint16_t >::Ptr obj =
         rw::core::ownedPtr (new Model3D::Object3D< uint16_t > ("Obj1"));
     obj->_vertices.resize (nr_of_nodes, Vector3D< float > (0, 0, 0));
@@ -33,7 +33,7 @@ DeformableObject::DeformableObject (rw::kinematics::Frame* baseframe, int nr_of_
 }
 
 DeformableObject::DeformableObject (rw::kinematics::Frame* baseframe,
-                                    rw::graphics::Model3D::Ptr model) :
+                                    rw::geometry::Model3D::Ptr model) :
     Object (baseframe),
     _rstate (1, NULL)
 {
@@ -67,7 +67,7 @@ DeformableObject::DeformableObject (rw::kinematics::Frame* baseframe,
     add (_rstate);
     _geom = rw::core::ownedPtr (
         new rw::geometry::Geometry (_mesh, std::string (baseframe->getName () + "_G")));
-    _model = rw::core::ownedPtr (new rw::graphics::Model3D (baseframe->getName () + "_M"));
+    _model = rw::core::ownedPtr (new rw::geometry::Model3D (baseframe->getName () + "_M"));
     Model3D::Material mat ("gray", 0.7f, 0.7f, 0.7f);
     _model->addGeometry (mat, _geom);
 }
@@ -131,19 +131,19 @@ DeformableObject::doGetGeometry (const rw::kinematics::State& state) const
     return _rstate.getStateCache< DeformableObjectCache > (state)->_geoms;
 }
 
-const std::vector< rw::graphics::Model3D::Ptr >&
+const std::vector< rw::geometry::Model3D::Ptr >&
 DeformableObject::doGetModels (const rw::kinematics::State& state) const
 {
     if (_rstate.getStateCache< DeformableObjectCache > (state)->_models.size () > 0)
         return _rstate.getStateCache< DeformableObjectCache > (state)->_models;
-    std::vector< rw::graphics::Model3D::Ptr > models (0);
+    std::vector< rw::geometry::Model3D::Ptr > models (0);
     models.push_back (_model);
     _rstate.getStateCache< DeformableObjectCache > (state)->_models = models;
     return _rstate.getStateCache< DeformableObjectCache > (state)->_models;
 
     // get a copy of the models with the configuration from the state
-    for (rw::graphics::Model3D::Ptr model : getModels ()) {
-        models.push_back (rw::core::ownedPtr (new rw::graphics::Model3D (*model)));
+    for (rw::geometry::Model3D::Ptr model : getModels ()) {
+        models.push_back (rw::core::ownedPtr (new rw::geometry::Model3D (*model)));
     }
     _rstate.getStateCache< DeformableObjectCache > (state)->_models = models;
     return _rstate.getStateCache< DeformableObjectCache > (state)->_models;
@@ -164,7 +164,7 @@ rw::math::InertiaMatrix<> DeformableObject::getInertia (rw::kinematics::State& s
     return rw::math::InertiaMatrix<>::makeSolidSphereInertia (1.0, 0.1);
 }
 
-void DeformableObject::update (rw::graphics::Model3D::Ptr model, const rw::kinematics::State& state)
+void DeformableObject::update (rw::geometry::Model3D::Ptr model, const rw::kinematics::State& state)
 {
     // check what model it is and update it with the nodes.
     // for now we assume only one model.

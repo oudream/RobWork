@@ -750,7 +750,7 @@ Model3D::Ptr LoaderOBJ::load (const std::string& name)
     setlocale (LC_ALL, locale.c_str ());
 
     Model3D::Ptr model (ownedPtr (new Model3D (name)));
-    model->_textures  = reader._textures;
+    model->getTextures<Model3DTextureType>() = reader._textures;
     model->_materials = reader._materials;
 
     Model3D::Object3DGeneric::Ptr obj;
