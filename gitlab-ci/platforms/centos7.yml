@@ -1,0 +1,48 @@
+########################## Centos 7 ################################
+
+build-RW:centos-7:
+  extends: .linux-build-RW
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:centos-7
+
+build-RWS:centos-7:
+  extends: .linux-build-RWS
+  dependencies:
+    - build-RW:centos-7
+  needs: ["build-RW:centos-7"]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:centos-7
+
+build-RWSim:centos-7:
+  extends: .linux-build-RWSim
+  dependencies:
+    - build-RW:centos-7
+    - build-RWS:centos-7
+  needs: ["build-RW:centos-7", "build-RWS:centos-7"]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:centos-7
+
+examples:centos-7:
+  extends: .linux-examples
+  dependencies:
+    - build-RW:centos-7
+    - build-RWS:centos-7
+    - build-RWSim:centos-7
+  needs:
+    [
+      "build-RW:centos-7",
+      "build-RWS:centos-7",
+      "build-RWSim:centos-7",
+    ]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:centos-7
+
+tests:centos-7:
+  extends: .linux-tests
+  dependencies:
+    - build-RW:centos-7
+    - build-RWS:centos-7
+    - build-RWSim:centos-7
+  needs:
+    [
+      "build-RW:centos-7",
+      "build-RWS:centos-7",
+      "build-RWSim:centos-7",
+    ]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:centos-7

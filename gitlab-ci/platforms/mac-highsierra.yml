@@ -1,0 +1,17 @@
+############################# Mac High-sierra ###########################
+
+build-RW:macOS-HighSierra:
+  extends: .mac-build-RW
+
+build-RWS:macOS-HighSierra:
+  extends: .mac-build-RWS
+  dependencies:
+    - build-RW:macOS-HighSierra
+  needs: ["build-RW:macOS-HighSierra"]
+
+build-RWSim:macOS-HighSierra:
+  extends: .mac-build-RWSim
+  dependencies:
+    - build-RW:macOS-HighSierra
+    - build-RWS:macOS-HighSierra
+  needs: ["build-RW:macOS-HighSierra", "build-RWS:macOS-HighSierra"]

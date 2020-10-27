@@ -1,0 +1,44 @@
+############################# MacOs CI #################################
+
+.mac-build-RW:
+  extends: .linux-build-RW
+  before_script:
+    - THREADS=3
+    - "[ -d Build ] || mkdir Build"
+    - "[ -d Build/RW ] || mkdir Build/RW"
+    - "[ -d Build/RWExamples ] || mkdir Build/RWExamples"
+    - "[ -d Build/RWS ] || mkdir Build/RWS"
+    - "[ -d Build/RWSExamples ] || mkdir Build/RWSExamples"
+    - "[ -d Build/RWSExamples/pluginapp ] || mkdir Build/RWSExamples/pluginapp"
+    - "[ -d Build/RWSExamples/pluginUIapp ] || mkdir Build/RWSExamples/pluginUIapp"
+    - "[ -d Build/RWSExamples/tutorial ] || mkdir Build/RWSExamples/tutorial"
+    - "[ -d Build/RWSExamples/UDPKinPlugin ] || mkdir Build/RWSExamples/UDPKinPlugin"
+    - "[ -d Build/RWSim ] || mkdir Build/RWSim"
+    - "[ -d Build/RWSimExamples ] || mkdir Build/RWSimExamples"
+    - "[ -d gtest ] || mkdir gtest"
+  tags:
+    - mac
+
+.mac-build-RWS:
+  extends: .linux-build-RWS
+  before_script:
+    - THREADS=3
+    - WERROR=False
+  tags:
+    - mac
+
+.mac-build-RWSim:
+  extends: .linux-build-RWSim
+  before_script:
+    - THREADS=3
+    - WERROR=False
+  tags:
+    - mac
+
+.mac-examples:
+  extends: .linux-examples
+  before_script:
+    - THREADS=3
+    - WERROR=False
+  tags:
+    - mac
