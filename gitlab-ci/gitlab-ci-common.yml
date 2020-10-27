@@ -1,0 +1,40 @@
+##################### Common CI settings ##############################
+
+.CI-common:
+  rules:
+    # Merge Pipeline
+    - if: '$CI_JOB_NAME =~ /^.*(build[:-](RW.?.?|doc)|tests|examples).*-2004/                                   && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "devel"'
+    # Merge Pipeline for centos problems
+    - if: '$CI_MERGE_REQUEST_TITLE =~ /^.*[cC]ent[Oo][Ss]/ && $CI_JOB_NAME =~ /^.*centos-7/                     && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "devel"'
+    - if: '$CI_COMMIT_TITLE =~ /^.*[cC]ent[Oo][Ss]/ && $CI_JOB_NAME =~ /^.*centos-7/                            && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "devel"'
+    # Merge Pipeline for ubuntu16 problems
+    - if: '$CI_MERGE_REQUEST_TITLE =~ /^.*[uU]buntu.?16/ && $CI_JOB_NAME =~ /^.*ubuntu-1604/                    && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "devel"'
+    - if: '$CI_COMMIT_TITLE =~ /^.*[uU]buntu.?16/ && $CI_JOB_NAME =~ /^.*ubuntu-1604/                           && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "devel"'
+    # Merge Pipeline for ubuntu18 problems
+    - if: '$CI_MERGE_REQUEST_TITLE =~ /^.*[uU]buntu.?18/ && $CI_JOB_NAME =~ /^.*[^(pre)].ubuntu-1804/           && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "devel"'
+    - if: '$CI_COMMIT_TITLE =~ /^.*[uU]buntu.?18/ && $CI_JOB_NAME =~ /^.*[^(pre)].ubuntu-1804/                  && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "devel"'
+    # Merge Pipeline for windows problems
+    - if: '$CI_MERGE_REQUEST_TITLE =~ /^.*[wW]indows/ && $CI_JOB_NAME =~ /^.*windows10.*/                       && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "devel"'
+    - if: '$CI_COMMIT_TITLE =~ /^.*[wW]indows/ && $CI_JOB_NAME =~ /^.*windows10.*/                              && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "devel"'
+    # Merge Pipeline for mac problems
+    - if: '$CI_MERGE_REQUEST_TITLE =~ /^.*([Mm]ac[Oo][sS]|[Oo][sS][Xx]|[Mm]ac)/ && $CI_JOB_NAME =~ /^.*macOS.*/ && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "devel"'
+    - if: '$CI_COMMIT_TITLE =~ /^.*([Mm]ac[Oo][sS]|[Oo][sS][Xx]|[Mm]ac)/ && $CI_JOB_NAME =~ /^.*macOS.*/        && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "devel"'
+    # Merge Pipeline for debian pkg on ubuntu 20
+    - if: '$CI_MERGE_REQUEST_TITLE =~ /^.*[Dd]ebian/ && $CI_JOB_NAME =~ /^.*debian.*ubuntu-2004/                && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "devel"'
+    - if: '$CI_COMMIT_TITLE =~ /^.*[Dd]ebian/ && $CI_JOB_NAME =~ /^.*debian.*ubuntu-2004/                       && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "devel"'
+    # Merge Pipeline for debian pkg on ubuntu 18
+    - if: '$CI_MERGE_REQUEST_TITLE =~ /^.*[Dd]ebian/ && $CI_MERGE_REQUEST_TITLE =~ /^.*[uU]buntu.?18/ && $CI_JOB_NAME =~ /^.*debian.*ubuntu-1804/ && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "devel"'
+    - if: '$CI_COMMIT_TITLE =~ /^.*[Dd]ebian/ && $CI_COMMIT_TITLE =~ /^.*[uU]buntu.?18/ && $CI_JOB_NAME =~ /^.*debian.*ubuntu-1804/               && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "devel"'
+
+    # Internal Piplines 
+    - if: '$CI_MERGE_REQUEST_SOURCE_PROJECT_PATH != "sdurobotics/RobWork" && $CI_MERGE_REQUEST_SOURCE_PROJECT_PATH =~ /^.+/'
+      when: never
+    - if: '$CI_PROJECT_PATH != "sdurobotics/RobWork"'
+      when: never
+    - if: '$CI_COMMIT_BRANCH == "debian-pkg"'
+      when: never
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_PIPELINE_SOURCE == "push"'
+    - if: '$CI_PIPELINE_SOURCE == "web"'
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+    - if: "$CI_COMMIT_TAG"
