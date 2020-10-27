@@ -20,7 +20,7 @@
 
 #include <rw/core/Ptr.hpp>
 #include <rw/geometry/Geometry.hpp>
-#include <rw/graphics/Model3D.hpp>
+#include <rw/geometry/Model3D.hpp>
 #include <rw/kinematics/Frame.hpp>
 #include <rw/kinematics/StateStructure.hpp>
 #include <rw/kinematics/Stateless.hpp>
@@ -104,7 +104,7 @@ namespace rw { namespace models {
          * @brief get the default models
          * @return models for vizualization
          */
-        const std::vector< rw::graphics::Model3D::Ptr >& getModels () const
+        const std::vector< rw::geometry::Model3D::Ptr >& getModels () const
         {
             return doGetModels (this->getStateStructure ()->getDefaultState ());
         }
@@ -123,7 +123,7 @@ namespace rw { namespace models {
          * @brief get visualization models of this object
          * @return models for visualization
          */
-        const std::vector< rw::graphics::Model3D::Ptr >&
+        const std::vector< rw::geometry::Model3D::Ptr >&
         getModels (const rw::kinematics::State& state) const
         {
             return doGetModels (state);
@@ -164,14 +164,14 @@ namespace rw { namespace models {
          * @brief get visualization models of this object
          * @return models for visualization
          */
-        virtual const std::vector< rw::graphics::Model3D::Ptr >&
+        virtual const std::vector< rw::geometry::Model3D::Ptr >&
         doGetModels (const rw::kinematics::State& state) const = 0;
 
       private:
         rw::kinematics::Frame* _base;
         std::vector< rw::kinematics::Frame* > _frames;
         std::vector< rw::geometry::Geometry::Ptr > _geometry;
-        std::vector< rw::graphics::Model3D::Ptr > _models;
+        std::vector< rw::geometry::Model3D::Ptr > _models;
     };
 
     /*@}*/

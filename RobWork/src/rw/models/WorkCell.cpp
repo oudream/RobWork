@@ -22,9 +22,7 @@
 #include "Object.hpp"
 
 #include <rw/core/PropertyMap.hpp>
-#include <rw/graphics/SceneDescriptor.hpp>
 #include <rw/kinematics/StateStructure.hpp>
-#include <rw/proximity/CollisionSetup.hpp>
 #include <rw/sensor/SensorModel.hpp>
 
 #include <boost/bind.hpp>
@@ -36,7 +34,7 @@ using namespace rw::core;
 
 WorkCell::WorkCell (const std::string& name) :
     _tree (rw::core::ownedPtr (new StateStructure ())), _name (name), _calibrationFilename (""),
-    _map (new PropertyMap ()), _sceneDescriptor (ownedPtr (new SceneDescriptor ()))
+    _map (new PropertyMap ())
 {
     _tree->stateDataAddedEvent ().add (
         boost::bind (&WorkCell::stateDataAddedListener, this, boost::arg< 1 > ()), this);
@@ -47,8 +45,7 @@ WorkCell::WorkCell (const std::string& name) :
 WorkCell::WorkCell (StateStructure::Ptr tree, const std::string& name,
                     const std::string& filename) :
     _tree (tree),
-    _name (name), _filename (filename), _calibrationFilename (""), _map (new PropertyMap ()),
-    _sceneDescriptor (ownedPtr (new SceneDescriptor ()))
+    _name (name), _filename (filename), _calibrationFilename (""), _map (new PropertyMap ())
 {
     _tree->stateDataAddedEvent ().add (
         boost::bind (&WorkCell::stateDataAddedListener, this, boost::arg< 1 > ()), this);
@@ -368,11 +365,6 @@ void WorkCell::stateDataAddedListener (const rw::kinematics::StateData* data)
 void WorkCell::stateDataRemovedListener (const rw::kinematics::StateData* data)
 {
     _workCellChangedEvent.fire (STATE_DATA_REMOVED);
-}
-
-rw::proximity::CollisionSetup WorkCell::getCollisionSetup ()
-{
-    return rw::proximity::CollisionSetup::get (this);
 }
 
 PropertyMap& WorkCell::getPropertyMap ()

@@ -95,8 +95,7 @@ endif()
 # ##################################################################################################
 # Common
 # ##################################################################################################
-
-if(TARGET sdurw_common)
+if(TARGET sdurw_common AND TARGET sdurw_math)
     set(COMMON_TEST_LIBRARIES ${GTEST_BOTH_LIBRARIES} sdurw_common sdurw_math)
 
     set(COMMON_TEST_SRC

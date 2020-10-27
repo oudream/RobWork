@@ -44,6 +44,12 @@ if(build)
         sdurw_core
         sdurw_common
         sdurw_math
+        sdurw_kinematics
+        sdurw_plugin
+        sdurw_geometry
+        sdurw_sensor
+        sdurw_models
+        sdurw_proximity
         sdurw
         sdurw_task
         sdurw_assembly

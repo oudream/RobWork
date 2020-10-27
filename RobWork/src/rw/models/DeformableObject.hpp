@@ -28,10 +28,8 @@
 
 namespace rw { namespace geometry {
     class Geometry;
-}}    // namespace rw::geometry
-namespace rw { namespace graphics {
     class Model3D;
-}}    // namespace rw::graphics
+}}    // namespace rw::geometry   // namespace rw::graphics
 namespace rw { namespace kinematics {
     class Frame;
 }}    // namespace rw::kinematics
@@ -80,7 +78,7 @@ namespace rw { namespace models {
          * @param model [in]
          */
         DeformableObject (rw::kinematics::Frame* baseframe,
-                          rw::core::Ptr< rw::graphics::Model3D > model);
+                          rw::core::Ptr< rw::geometry::Model3D > model);
 
         /**
          * @brief constructor - control nodes are taken from a triangle mesh generated from
@@ -178,7 +176,7 @@ namespace rw { namespace models {
          * @param model [in/out] model to be updated
          * @param state
          */
-        void update (rw::core::Ptr< rw::graphics::Model3D > model,
+        void update (rw::core::Ptr< rw::geometry::Model3D > model,
                      const rw::kinematics::State& state);
 
       protected:
@@ -186,7 +184,7 @@ namespace rw { namespace models {
 
         const std::vector< rw::core::Ptr< rw::geometry::Geometry > >&
         doGetGeometry (const rw::kinematics::State& state) const;
-        const std::vector< rw::core::Ptr< rw::graphics::Model3D > >&
+        const std::vector< rw::core::Ptr< rw::geometry::Model3D > >&
         doGetModels (const rw::kinematics::State& state) const;
 
         class DeformableObjectCache : public rw::kinematics::StateCache
@@ -194,7 +192,7 @@ namespace rw { namespace models {
           public:
             typedef rw::core::Ptr< DeformableObjectCache > Ptr;
             std::vector< rw::math::Vector3D< float > > _nodes;
-            std::vector< rw::core::Ptr< rw::graphics::Model3D > > _models;
+            std::vector< rw::core::Ptr< rw::geometry::Model3D > > _models;
             std::vector< rw::core::Ptr< rw::geometry::Geometry > > _geoms;
 
             DeformableObjectCache (int nr_of_nodes) :
@@ -215,7 +213,7 @@ namespace rw { namespace models {
         rw::kinematics::StatelessData< int > _rstate;
         rw::core::Ptr< rw::geometry::IndexedTriMeshN0< float > > _mesh;
         std::vector< std::pair< int, rw::kinematics::MovableFrame* > > _frames;
-        rw::core::Ptr< rw::graphics::Model3D > _model;
+        rw::core::Ptr< rw::geometry::Model3D > _model;
         rw::core::Ptr< rw::geometry::Geometry > _geom;
     };
 

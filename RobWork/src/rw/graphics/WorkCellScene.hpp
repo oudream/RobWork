@@ -25,6 +25,7 @@
 #include <map>
 
 namespace rw { namespace geometry {
+    class Model3D;
     class PointCloud;
 }}    // namespace rw::geometry
 namespace rw { namespace kinematics {
@@ -250,7 +251,7 @@ namespace rw { namespace graphics {
          * @param dmask [in] the drawable mask
          * @return the drawable node geometry
          */
-        DrawableNode::Ptr addModel3D (const std::string& name, rw::core::Ptr< class Model3D > model,
+        DrawableNode::Ptr addModel3D (const std::string& name, rw::core::Ptr<rw::geometry::Model3D > model,
                                       rw::kinematics::Frame* frame,
                                       int dmask = DrawableNode::Physical);
 
@@ -456,7 +457,7 @@ namespace rw { namespace graphics {
             _frameDrawableMap;
 
         std::map< rw::core::Ptr< rw::models::DeformableObject >,
-                  std::vector< rw::core::Ptr< class Model3D > > >
+                  std::vector< rw::core::Ptr<rw::geometry::Model3D > > >
             _deformableObjectsMap;
 
         //! world node

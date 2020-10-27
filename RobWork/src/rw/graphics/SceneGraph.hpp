@@ -27,6 +27,9 @@
 
 #include <boost/function.hpp>
 
+namespace rw { namespace geometry {
+    class Model3D;
+}}    // namespace namepsace::geometry
 namespace rw { namespace graphics {
 
     /**
@@ -202,9 +205,9 @@ namespace rw { namespace graphics {
          * @param dmask [in] (optional) the type of drawable. Default is DrawableNode::Physical.
          * @return a drawable node.
          */
-        virtual DrawableNode::Ptr makeDrawable (const std::string& name,
-                                                rw::core::Ptr< class Model3D > model,
-                                                int dmask = DrawableNode::Physical) = 0;
+        virtual DrawableNode::Ptr
+        makeDrawable (const std::string& name, rw::core::Ptr< rw::geometry::Model3D > model,
+                      int dmask = DrawableNode::Physical) = 0;
 
         /**
          * @brief Create a drawable node for a text label.

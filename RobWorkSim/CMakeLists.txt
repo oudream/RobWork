@@ -38,8 +38,7 @@ else()
     set(RWSIM_GOT_VERSION False)
 endif()
 
-find_package(RobWork ${ROBWORKSIM_VERSION} REQUIRED PATHS ${RWSIM_ROOT}/../RobWork/cmake )
-
+find_package(RobWork ${ROBWORKSIM_VERSION} REQUIRED PATHS ${RWSIM_ROOT}/../RobWork/cmake)
 
 # for backward compatibility
 set(ROOT RWSIM_ROOT)
@@ -138,19 +137,15 @@ install(
 # ##################################################################################################
 # setup testing
 #
-configure_file("${RWSIM_ROOT}/cmake/CTestCustom.cmake.in" "CTestCustom.cmake")
-# configure testing configuration Dashboard
-configure_file("${RWSIM_ROOT}/CTestConfig.cmake.in" "${RWSIM_ROOT}/CTestConfig.cmake")
 
 include(CMakeDependentOption)
 cmake_dependent_option(
-    RWSIM_IS_TESTS_ENABLED "Set when you want to build the tests" ON "${RWSIM_BUILD_TESTS}" OFF
+    RWSIM_IS_TESTS_ENABLED "Set when you want to build the tests" ON "${RW_BUILD_WITH_GTEST}" OFF
 )
 if(RWSIM_IS_TESTS_ENABLED)
     message(STATUS "RobWork tests ENABLED!")
-    if(RW_BUILD_WITH_GTEST)
-        add_subdirectory(gtest)
-    endif()
+    add_subdirectory(gtest)
+
 else()
     message(STATUS "RobWork tests DISABLED!")
 endif()

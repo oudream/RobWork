@@ -1,181 +1,190 @@
-SET(FILES_CPP
-    Geometry.cpp
-    GeometryData.cpp
-    IndexedTriangle.cpp
-    IndexedTriMesh.cpp
-    PlainTriMesh.cpp
-    Triangle.cpp
-    TriangleUtil.cpp
-    TriMesh.cpp
-    GeometryUtil.cpp
-    Triangulate.cpp
-    Primitive.cpp
-    Box.cpp
-    Cylinder.cpp
-    Tube.cpp
-    Sphere.cpp
-    Pyramid.cpp
-    Cone.cpp
-    Line.cpp
-    Ray.cpp
-    Plane.cpp  
-    ConvexHull2D.cpp
-    ConvexHull3D.cpp    
-    #GiftWrapHull3D.cpp
-    IncrementalHull3D.cpp
-    Contour2D.cpp
-    IndexedPolygon.cpp 
-    PolygonUtil.cpp
-    IntersectUtil.cpp
-    Covariance.cpp
-    ConvexHullND.cpp
-    Delaunay.cpp
-    QHullND.cpp
-    QHull3D.cpp
-    TriTriIntersectDeviller.cpp
-    TriTriIntersectMoller.cpp
-    AABB.cpp
-    BSphere.cpp
-    BV.cpp
-    BVCollider.cpp
-    OBB.cpp
-    OBBCollider.cpp
-    OBBFactory.cpp
-    OBBToleranceCollider.cpp
-    DistanceUtil.cpp
-    HyperSphere.cpp
-    IndexedArray.cpp
-    IndexedTriArray.cpp
-    OBVDistanceCalc.cpp
-    RectDistanceCalc.cpp
-    RSSDistanceCalc.cpp
-    SphereDistanceCalc.cpp
-    TriMeshSurfaceSampler.cpp
-    PointCloud.cpp
-    
-	analytic/AnalyticUtil.cpp
-	analytic/BREP.cpp
-	analytic/Curve.cpp
-	analytic/Face.cpp
-	analytic/GenericFace.cpp
-    analytic/ImplicitBREP.cpp
-    analytic/ImplicitFace.cpp
-    analytic/ImplicitShell.cpp
-    analytic/ImplicitSurface.cpp
-    analytic/ImplicitTorus.cpp
-    analytic/IndexedFaceArray.cpp
-	analytic/ParametricCurve.cpp
-	analytic/Shell.cpp
-	analytic/Surface.cpp
-	
-    analytic/quadratics/IndexedQuadraticFaceArray.cpp
-    analytic/quadratics/PlainQuadraticShell.cpp
-    analytic/quadratics/QuadraticBREP.cpp
-    analytic/quadratics/QuadraticCurve.cpp
-    analytic/quadratics/QuadraticFace.cpp
-    analytic/quadratics/QuadraticShell.cpp
-    analytic/quadratics/QuadraticSurface.cpp
-    analytic/quadratics/QuadraticUtil.cpp
-)
+set(SUBSYS_NAME sdurw_geometry)
+set(SUBSYS_DESC "The core RobWork library!")
+set(SUBSYS_DEPS sdurw_core sdurw_common sdurw_math sdurw_kinematics)
 
-SET(FILES_HPP
-    Geometry.hpp
-    GeometryData.hpp
-    IndexedTriangle.hpp
-    IndexedTriMesh.hpp
-    PlainTriMesh.hpp
-    Triangle.hpp
-    TriangleUtil.hpp
-    TriMesh.hpp
-    GeometryUtil.hpp    
-    Primitive.hpp
-    Box.hpp
-    Cylinder.hpp
-    Tube.hpp
-    Sphere.hpp
-    Pyramid.hpp
-    Cone.hpp
-    #AABB.hpp
-    Line.hpp
-    Ray.hpp
-    Plane.hpp
-	ConvexHull2D.hpp
-    ConvexHull3D.hpp
-    IncrementalHull3D.hpp
-    HyperSphere.hpp
-    IndexedArray.hpp
-	IndexedPolygon.hpp
-    Polygon.hpp
-    PolygonUtil.hpp
-	#GiftWrapHull3D.hpp
-    Contour2D.hpp
-    Contour2DUtil.hpp
-    Covariance.hpp
-    Delaunay.hpp
-    QHullND.hpp
-    QHull3D.hpp
-    BVCollider.hpp
-    
-    TriTriIntersectDeviller.hpp
-    TriTriIntersectMoller.hpp
-    AABB.hpp
-    BSphere.hpp
-    BV.hpp
-    OBB.hpp
-    OBBCollider.hpp
-    OBBToleranceCollider.hpp
-    OBBFactory.hpp
-    OBBToleranceCollider.hpp
-    DistanceUtil.hpp
-    IndexedTriArray.hpp
-    
-    OBVDistanceCalc.hpp
-    RectDistanceCalc.hpp
-    RSSDistanceCalc.hpp
-    SphereDistanceCalc.hpp
-    TriMeshSurfaceSampler.hpp
-    PointCloud.hpp
-    
-	analytic/AnalyticUtil.hpp
-	analytic/BREP.hpp
-	analytic/Curve.hpp
-	analytic/Face.hpp
-	analytic/GenericFace.hpp
-    analytic/ImplicitBREP.hpp
-    analytic/ImplicitFace.hpp
-    analytic/ImplicitShell.hpp
-    analytic/ImplicitSurface.hpp
-    analytic/ImplicitTorus.hpp
-    analytic/IndexedFaceArray.hpp
-	analytic/ParametricCurve.hpp
-	analytic/Shell.hpp
-	analytic/Surface.hpp
-	
-    analytic/quadratics/IndexedQuadraticFaceArray.hpp
-    analytic/quadratics/PlainQuadraticShell.hpp
-    analytic/quadratics/QuadraticBREP.hpp
-    analytic/quadratics/QuadraticCurve.hpp
-    analytic/quadratics/QuadraticFace.hpp
-    analytic/quadratics/QuadraticShell.hpp
-    analytic/quadratics/QuadraticSurface.hpp
-    analytic/quadratics/QuadraticUtil.hpp
-)
+set(build TRUE)
+rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ON DEPENDS ${SUBSYS_DEPS})
 
-IF (RW_HAVE_PQP)
-  SET(FILES_CPP ${FILES_CPP}
-    TriDistanceCalc.cpp
-    TriTriToleranceIntersect.cpp
-  )
-  SET(FILES_HPP ${FILES_HPP}
-    TriDistanceCalc.hpp
-    TriTriToleranceIntersect.hpp
-  )
-ENDIF()
+if(build)
+    set(FILES_CPP
+        AABB.cpp
+        BSphere.cpp
+        BV.cpp
+        BVCollider.cpp
+        Box.cpp
+        Cone.cpp
+        Contour2D.cpp
+        ConvexHull2D.cpp
+        ConvexHull3D.cpp
+        ConvexHullND.cpp
+        Covariance.cpp
+        Cylinder.cpp
+        Delaunay.cpp
+        DistanceUtil.cpp
+        Geometry.cpp
+        GeometryData.cpp
+        GeometryUtil.cpp
+        HyperSphere.cpp
+        IndexedArray.cpp
+        IndexedTriArray.cpp
+        IndexedTriMesh.cpp
+        IndexedTriangle.cpp
+        IntersectUtil.cpp
+        Line.cpp
+        Model3D.cpp
+        OBB.cpp
+        OBBCollider.cpp
+        OBBFactory.cpp
+        OBBToleranceCollider.cpp
+        PlainTriMesh.cpp
+        Plane.cpp
+        PointCloud.cpp
+        PolygonUtil.cpp
+        Primitive.cpp
+        Pyramid.cpp
+        QHull3D.cpp
+        QHullND.cpp
+        RSSDistanceCalc.cpp
+        Ray.cpp
+        RectDistanceCalc.cpp
+        Sphere.cpp
+        SphereDistanceCalc.cpp
+        TriMesh.cpp
+        TriMeshSurfaceSampler.cpp
+        TriTriIntersectDeviller.cpp
+        TriTriIntersectMoller.cpp
+        Triangle.cpp
+        TriangleUtil.cpp
+        Triangulate.cpp
+        Tube.cpp
+        analytic/AnalyticUtil.cpp
+        analytic/BREP.cpp
+        analytic/Curve.cpp
+        analytic/Face.cpp
+        analytic/GenericFace.cpp
+        analytic/ImplicitBREP.cpp
+        analytic/ImplicitFace.cpp
+        analytic/ImplicitShell.cpp
+        analytic/ImplicitSurface.cpp
+        analytic/ImplicitTorus.cpp
+        analytic/IndexedFaceArray.cpp
+        analytic/ParametricCurve.cpp
+        analytic/Shell.cpp
+        analytic/Surface.cpp
+        analytic/quadratics/IndexedQuadraticFaceArray.cpp
+        analytic/quadratics/PlainQuadraticShell.cpp
+        analytic/quadratics/QuadraticBREP.cpp
+        analytic/quadratics/QuadraticCurve.cpp
+        analytic/quadratics/QuadraticFace.cpp
+        analytic/quadratics/QuadraticShell.cpp
+        analytic/quadratics/QuadraticSurface.cpp
+        analytic/quadratics/QuadraticUtil.cpp
+    )
 
-SOURCE_GROUP(geometry FILES ${FILES_CPP} ${FILES_HPP})
+    set(FILES_HPP
+        AABB.hpp
+        BSphere.hpp
+        BV.hpp
+        BVCollider.hpp
+        Box.hpp
+        Cone.hpp
+        Contour2D.hpp
+        ConvexHull2D.hpp
+        ConvexHull3D.hpp
+        Covariance.hpp
+        Cylinder.hpp
+        Delaunay.hpp
+        DistanceUtil.hpp
+        Geometry.hpp
+        GeometryData.hpp
+        GeometryUtil.hpp
+        HyperSphere.hpp
+        IndexedArray.hpp
+        IndexedPolygon.hpp
+        IndexedTriArray.hpp
+        IndexedTriMesh.hpp
+        IndexedTriangle.hpp
+        Line.hpp
+        Model3D.hpp
+        OBB.hpp
+        OBBCollider.hpp
+        OBBFactory.hpp
+        OBBToleranceCollider.hpp
+        OBBToleranceCollider.hpp
+        OBVDistanceCalc.hpp
+        PlainTriMesh.hpp
+        Plane.hpp
+        PointCloud.hpp
+        Polygon.hpp
+        PolygonUtil.hpp
+        Primitive.hpp
+        Pyramid.hpp
+        QHull3D.hpp
+        QHullND.hpp
+        RSSDistanceCalc.hpp
+        Ray.hpp
+        RectDistanceCalc.hpp
+        Sphere.hpp
+        SphereDistanceCalc.hpp
+        TriMesh.hpp
+        TriMeshSurfaceSampler.hpp
+        TriTriIntersectDeviller.hpp
+        TriTriIntersectMoller.hpp
+        Triangle.hpp
+        TriangleUtil.hpp
+        Tube.hpp
+        analytic/AnalyticUtil.hpp
+        analytic/BREP.hpp
+        analytic/Curve.hpp
+        analytic/Face.hpp
+        analytic/GenericFace.hpp
+        analytic/ImplicitBREP.hpp
+        analytic/ImplicitFace.hpp
+        analytic/ImplicitShell.hpp
+        analytic/ImplicitSurface.hpp
+        analytic/ImplicitTorus.hpp
+        analytic/IndexedFaceArray.hpp
+        analytic/ParametricCurve.hpp
+        analytic/Shell.hpp
+        analytic/Surface.hpp
+        analytic/quadratics/IndexedQuadraticFaceArray.hpp
+        analytic/quadratics/PlainQuadraticShell.hpp
+        analytic/quadratics/QuadraticBREP.hpp
+        analytic/quadratics/QuadraticCurve.hpp
+        analytic/quadratics/QuadraticFace.hpp
+        analytic/quadratics/QuadraticShell.hpp
+        analytic/quadratics/QuadraticSurface.hpp
+        analytic/quadratics/QuadraticUtil.hpp
+    )
 
-FILE(GLOB SRC_FILES_CPP ${FILES_CPP})
-FILE(GLOB SRC_FILES_HPP ${FILES_HPP})
+    if(RW_HAVE_PQP)
+        set(FILES_CPP ${FILES_CPP} TriDistanceCalc.cpp TriTriToleranceIntersect.cpp)
+        set(FILES_HPP ${FILES_HPP} TriDistanceCalc.hpp TriTriToleranceIntersect.hpp)
+    endif()
 
-SET(RW_LIB_FILES_CPP ${RW_LIB_FILES_CPP} ${SRC_FILES_CPP} PARENT_SCOPE)
-SET(RW_LIB_FILES_HPP ${RW_LIB_FILES_HPP} ${SRC_FILES_HPP} PARENT_SCOPE)
+    rw_add_library(${SUBSYS_NAME} ${FILES_CPP} ${FILES_HPP})
+    rw_add_includes(${SUBSYS_NAME} "rw/geometry" ${FILES_HPP})
+
+    target_link_libraries(
+        ${SUBSYS_NAME}
+        PUBLIC ${Boost_LIBRARIES} ${SUBSYS_DEPS}
+        PRIVATE ${QHULL_LIBRARIES}
+    )
+
+    target_include_directories(
+        ${SUBSYS_NAME}
+        PUBLIC ${Boost_INCLUDE_DIR} $<BUILD_INTERFACE:${PQP_INCLUDE_DIR}>
+               $<BUILD_INTERFACE:${RW_ROOT}/src> $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
+    )
+
+    rw_include_eigen(${SUBSYS_NAME})
+
+    if(RW_ENABLE_INTERNAL_PQP_TARGET)
+        target_include_directories(
+            ${SUBSYS_NAME} PUBLIC $<INSTALL_INTERFACE:${RW_EXT_INSTALL_DIR}/rwpqp>
+        )
+    else()
+        target_include_directories(${SUBSYS_NAME} PUBLIC $<INSTALL_INTERFACE:${PQP_INCLUDE_DIR}>)
+    endif()
+
+endif()

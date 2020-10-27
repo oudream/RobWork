@@ -22,7 +22,6 @@
 
 #include <rw/core/Ptr.hpp>
 #include <rw/geometry/Geometry.hpp>
-#include <rw/graphics/Model3D.hpp>
 
 #include <vector>
 
@@ -114,13 +113,13 @@ namespace rw { namespace models {
          * @brief add visualization model to this object
          * @param model [in] the model to be added
          */
-        void addModel (rw::graphics::Model3D::Ptr model);
+        void addModel (rw::geometry::Model3D::Ptr model);
 
         /**
          * @brief remove visualization model to this rigid object
          * @param model [in] the model to be removed
          */
-        void removeModel (rw::graphics::Model3D::Ptr model);
+        void removeModel (rw::geometry::Model3D::Ptr model);
 
         /**
          * @brief returns the mass of this RigidObject
@@ -174,7 +173,7 @@ namespace rw { namespace models {
          * @brief get visualization models for this rigid object
          * @return a list of all models
          */
-        const std::vector< rw::graphics::Model3D::Ptr >& getModels () const;
+        const std::vector< rw::geometry::Model3D::Ptr >& getModels () const;
 
         //! @copydoc Object::getMass
         double getMass (rw::kinematics::State& state) const { return getMass (); };
@@ -198,7 +197,7 @@ namespace rw { namespace models {
             return getGeometry ();
         }
         //! @copydoc Object::getModels
-        const std::vector< rw::graphics::Model3D::Ptr >&
+        const std::vector< rw::geometry::Model3D::Ptr >&
         doGetModels (const rw::kinematics::State& state) const
         {
             return getModels ();
@@ -206,7 +205,7 @@ namespace rw { namespace models {
 
       private:
         std::vector< rw::geometry::Geometry::Ptr > _geometry;
-        std::vector< rw::graphics::Model3D::Ptr > _models;
+        std::vector< rw::geometry::Model3D::Ptr > _models;
         double _mass;
         rw::math::InertiaMatrix<> _Ibody;
         rw::math::Vector3D<> _com;

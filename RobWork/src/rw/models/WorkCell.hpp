@@ -508,12 +508,12 @@ namespace rw { namespace models {
 
         /**
          * @brief Properties of this workcell
+         * @return the property map including the properties of this workcell
          */
         const rw::core::PropertyMap& getPropertyMap () const;
 
         /**
          * @brief Returns collision setup associated to work cell
-         *
          * @return Collision setup
          */
         rw::proximity::CollisionSetup getCollisionSetup ();

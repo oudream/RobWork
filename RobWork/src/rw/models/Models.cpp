@@ -106,8 +106,8 @@ bool Models::inBounds (const State& state, const WorkCell& workcell, double tole
     return true;
 }
 
-void Models::getStatePath (const Device& device, const QPath& path, const State& common_state,
-                           StatePath& result)
+void Models::getStatePath (const Device& device, const std::vector< rw::math::Q >& path, const State& common_state,
+                           std::vector< rw::kinematics::State >& result)
 {
     State state = common_state;
     for (const Q& q : path) {
@@ -116,9 +116,9 @@ void Models::getStatePath (const Device& device, const QPath& path, const State&
     }
 }
 
-StatePath Models::getStatePath (const Device& device, const QPath& path, const State& common_state)
+std::vector< rw::kinematics::State > Models::getStatePath (const Device& device, const std::vector< rw::math::Q >& path, const State& common_state)
 {
-    StatePath result;
+    std::vector< rw::kinematics::State > result;
     getStatePath (device, path, common_state, result);
     return result;
 }

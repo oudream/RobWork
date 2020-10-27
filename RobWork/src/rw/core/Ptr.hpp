@@ -126,7 +126,7 @@ namespace rw { namespace core {
         /**
          * @brief destructor
          */
-        ~Ptr() {}
+        ~Ptr () {}
 
         /**
          * @brief Cast the smart pointer to a different type.
@@ -277,7 +277,6 @@ namespace rw { namespace core {
 #else 
         PTR_EQ_C_PTR;
 #endif
-        
 
         /**
          * @brief check if this Ptr has shared ownership or none
@@ -325,7 +324,7 @@ namespace rw { namespace core {
             return _owned_ptr;
 #endif
         }
-#endif 
+#endif
 #if !defined(SWIG)
 #ifdef RW_USE_BOOST_PTR_COMPLIANCE
         /**

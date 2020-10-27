@@ -851,6 +851,12 @@ set(ROBWORK_LIBRARIES_INTERNAL
     sdurw_core
     sdurw_common
     sdurw_math
+    sdurw_plugin
+    sdurw_kinematics
+    sdurw_geometry
+    sdurw_sensor
+    sdurw_models
+    sdurw_proximity
 )
 
 set(ROBWORK_LIBRARIES)

@@ -28,7 +28,6 @@
 //#include "./models/Cartesian6DOFDevice.hpp"
 //#include "./models/Conveyor.hpp"
 //#include "./models/ConveyorBelt.hpp"
-//#include "./models/ConveyorItem.hpp"
 //#include "./models/ConveyorSegment.hpp"
 //#include "./models/DeviceJacobian.hpp"
 //#include "./models/PassivePrismaticFrame.hpp"

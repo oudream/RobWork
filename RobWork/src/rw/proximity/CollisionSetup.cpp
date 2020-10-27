@@ -103,3 +103,9 @@ void CollisionSetup::set (const CollisionSetup& setup, rw::core::PropertyMap& ma
 {
     map.addForce< CollisionSetup > ("CollisionSetup", "setup for collision checking", setup);
 }
+
+// getCollision setup through Workcell
+rw::proximity::CollisionSetup rw::models::WorkCell::getCollisionSetup ()
+{
+    return rw::proximity::CollisionSetup::get (this);
+}

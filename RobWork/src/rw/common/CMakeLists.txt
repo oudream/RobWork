@@ -1,6 +1,6 @@
 set(SUBSYS_NAME sdurw_common)
 set(SUBSYS_DESC
-    "This is the core of the RobWork FrameWork, providing fonctinality for logging and plugins"
+    "This is some commone functinality used by most of the other robwork packages"
 )
 set(SUBSYS_DEPS sdurw_core)
 

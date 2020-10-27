@@ -108,7 +108,7 @@ Model3D::Ptr LoaderAC3D::load (const std::string& filename)
         }
 
         // next we copy all textures
-        rwmodel->_textures = model->_textures;
+        rwmodel->getTextures<Model3DTextureType>() = model->_textures;
 
         // next we
         std::vector< Model3D::Object3DGeneric::Ptr >& objects = rwmodel->getObjects ();

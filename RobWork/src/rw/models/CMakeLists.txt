@@ -1,97 +1,97 @@
-SET(FILES_CPP
-  Models.cpp
-  #BasicDevice.cpp
-  #BasicDeviceJacobian.cpp
-  #Cartesian6DOFDevice.cpp
-  #Conveyor.cpp
-  #ConveyorBelt.cpp
-  #ConveyorSegment.cpp
-  #DeviceJacobian.cpp
-  #TimeMetricUtil.cpp
-  ConveyorItem.cpp
-  ControllerModel.cpp
-  Device.cpp
-  JointDevice.cpp
-  JacobianUtil.cpp
-  JacobianCalculator.cpp
-  JointDeviceJacobianCalculator.cpp  
-  DeviceJacobianCalculator.cpp
-  MobileDevice.cpp
-  TreeDevice.cpp
-  CompositeDevice.cpp
-  CompositeJointDevice.cpp
-  ParallelDevice.cpp
-  ParallelLeg.cpp
-  SerialDevice.cpp
-  RigidBodyInfo.cpp  
-  WorkCell.cpp
-  DHParameterSet.cpp
-  Object.cpp
-  RigidObject.cpp
-  DeformableObject.cpp
-  SE3Device.cpp
-  
-  # Joints
-  Joint.cpp
-  DependentJoint.cpp
-  DependentPrismaticJoint.cpp
-  DependentRevoluteJoint.cpp
-  PrismaticJoint.cpp
-  PrismaticUniversalJoint.cpp
-  PrismaticSphericalJoint.cpp
-  RevoluteJoint.cpp
-  SphericalJoint.cpp
-  UniversalJoint.cpp
-  VirtualJoint.cpp
+set(SUBSYS_NAME sdurw_models)
+set(SUBSYS_DESC "A Libray for modeling of robots and workcells")
+set(SUBSYS_DEPS sdurw_core sdurw_kinematics sdurw_math sdurw_geometry sdurw_sensor)
+
+set(build TRUE)
+rw_subsys_option(
+    build ${SUBSYS_NAME} ${SUBSYS_DESC} ON
+    DEPENDS ${SUBSYS_DEPS}
+    ADD_DOC
 )
 
-SET(FILES_HPP
-  # BasicDevice.hpp
-  # BasicDeviceJacobian.hpp
-  # Cartesian6DOFDevice.hpp
-  # Conveyor.hpp
-  # ConveyorBelt.hpp
-  # ConveyorSegment.hpp
-  # DeviceJacobian.hpp 
-  #TimeMetricUtil.hpp
-  ControllerModel.hpp
-  Models.hpp
-  ConveyorItem.hpp
-  Device.hpp
-  JointDevice.hpp
-  JacobianUtil.hpp  
-  JacobianCalculator.hpp
-  JointDeviceJacobianCalculator.hpp    
-  MobileDevice.hpp
-  TreeDevice.hpp
-  CompositeDevice.hpp
-  ParallelDevice.hpp
-  ParallelLeg.hpp
-  SerialDevice.hpp
-  RigidBodyInfo.hpp  
-  WorkCell.hpp
-  DHParameterSet.hpp
-  Object.hpp
-  SE3Device.hpp
-  
-  # Joints
-  Joint.hpp
-  DependentJoint.hpp
-  DependentPrismaticJoint.hpp
-  DependentRevoluteJoint.hpp
-  PrismaticJoint.hpp
-  PrismaticUniversalJoint.hpp
-  PrismaticSphericalJoint.hpp
-  RevoluteJoint.hpp
-  SphericalJoint.hpp
-  UniversalJoint.hpp
-  VirtualJoint.hpp
-)
+if(build)
 
-SOURCE_GROUP(models FILES ${FILES_CPP} ${FILES_HPP})
+    set(FILES_CPP
+        CompositeDevice.cpp
+        CompositeJointDevice.cpp
+        ControllerModel.cpp
+        DeformableObject.cpp
+        DependentJoint.cpp
+        DependentPrismaticJoint.cpp
+        DependentRevoluteJoint.cpp
+        Device.cpp
+        DeviceJacobianCalculator.cpp
+        DHParameterSet.cpp
+        JacobianCalculator.cpp
+        JacobianUtil.cpp
+        Joint.cpp
+        JointDevice.cpp
+        JointDeviceJacobianCalculator.cpp
+        MobileDevice.cpp
+        Object.cpp
+        ParallelDevice.cpp
+        ParallelLeg.cpp
+        PrismaticJoint.cpp
+        PrismaticSphericalJoint.cpp
+        PrismaticUniversalJoint.cpp
+        RevoluteJoint.cpp
+        RigidBodyInfo.cpp
+        RigidObject.cpp
+        SE3Device.cpp
+        SerialDevice.cpp
+        SphericalJoint.cpp
+        TreeDevice.cpp
+        UniversalJoint.cpp
+        VirtualJoint.cpp
+        WorkCell.cpp
+        Models.cpp
+    )
 
-FILE(GLOB SRC_FILES_CPP ${FILES_CPP})
-FILE(GLOB SRC_FILES_HPP ${FILES_HPP})
+    set(FILES_HPP
+        CompositeDevice.hpp
+        CompositeJointDevice.hpp
+        ControllerModel.hpp
+        DeformableObject.hpp
+        DependentJoint.hpp
+        DependentPrismaticJoint.hpp
+        DependentRevoluteJoint.hpp
+        Device.hpp
+        DeviceJacobianCalculator.hpp
+        DHParameterSet.hpp
+        JacobianCalculator.hpp
+        JacobianUtil.hpp
+        Joint.hpp
+        JointDevice.hpp
+        JointDeviceJacobianCalculator.hpp
+        MobileDevice.hpp
+        Models.hpp
+        Object.hpp
+        ParallelDevice.hpp
+        ParallelLeg.hpp
+        PrismaticJoint.hpp
+        PrismaticSphericalJoint.hpp
+        PrismaticUniversalJoint.hpp
+        RevoluteJoint.hpp
+        RigidBodyInfo.hpp
+        RigidObject.hpp
+        SE3Device.hpp
+        SerialDevice.hpp
+        SphericalJoint.hpp
+        TreeDevice.hpp
+        UniversalJoint.hpp
+        VirtualJoint.hpp
+        WorkCell.hpp
+    )
 
-SET(RW_LIB_FILES_CPP ${RW_LIB_FILES_CPP} ${SRC_FILES_CPP} PARENT_SCOPE)
-SET(RW_LIB_FILES_HPP ${RW_LIB_FILES_HPP} ${SRC_FILES_HPP} PARENT_SCOPE)
+    rw_add_library(${SUBSYS_NAME} ${FILES_CPP} ${FILES_HPP})
+    rw_add_includes(${SUBSYS_NAME} "rw/models" ${FILES_HPP})
+    target_link_libraries(${SUBSYS_NAME} PUBLIC ${Boost_LIBRARIES} ${SUBSYS_DEPS})
+
+    target_include_directories(
+        ${SUBSYS_NAME} PUBLIC ${Boost_INCLUDE_DIR} $<BUILD_INTERFACE:${RW_ROOT}/src>
+                              $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
+    )
+
+    rw_add_includes(${SUBSYS_NAME} "rw" ${CMAKE_CURRENT_SOURCE_DIR}/../models.hpp)
+
+endif()
