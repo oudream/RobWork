@@ -298,25 +298,27 @@ macro(RW_INIT_PROJECT ROOT PROJECT_NAME PREFIX VERSION)
 
     # Output goes to bin/<CONFIG> and libs/<CONFIG> unless specified otherwise by the user.
     if(DEFINED MSVC)
-        set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${ROOT}/bin" CACHE PATH "Runtime directory" FORCE)
-        set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${ROOT}/libs" CACHE PATH "Library directory" FORCE)
-        set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${ROOT}/libs" CACHE PATH "Archive directory" FORCE)
+        set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin" CACHE PATH "Runtime directory" FORCE)
+        set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/libs" CACHE PATH "Library directory" FORCE)
+        set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/libs" CACHE PATH "Archive directory" FORCE)
+        set(CMAKE_CONFIG_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/libs/cmake" CACHE PATH "CMakeConfig directory" FORCE)
     else()
         set(
             CMAKE_RUNTIME_OUTPUT_DIRECTORY
-            "${ROOT}/bin/${${PREFIX}_BUILD_TYPE}"
+            "${CMAKE_CURRENT_BINARY_DIR}/bin/${${PREFIX}_BUILD_TYPE}"
             CACHE PATH "Runtime directory" FORCE
         )
         set(
             CMAKE_LIBRARY_OUTPUT_DIRECTORY
-            "${ROOT}/libs/${${PREFIX}_BUILD_TYPE}"
+            "${CMAKE_CURRENT_BINARY_DIR}/libs/${${PREFIX}_BUILD_TYPE}"
             CACHE PATH "Library directory" FORCE
         )
         set(
             CMAKE_ARCHIVE_OUTPUT_DIRECTORY
-            "${ROOT}/libs/${${PREFIX}_BUILD_TYPE}"
+            "${CMAKE_CURRENT_BINARY_DIR}/libs/${${PREFIX}_BUILD_TYPE}"
             CACHE PATH "Archive directory" FORCE
         )
+        set(CMAKE_CONFIG_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/libs/${${PREFIX}_BUILD_TYPE}/cmake" CACHE PATH "CMakeConfig directory" FORCE)
     endif()
 
     string(TOUPPER ${PROJECT_NAME} PROJECT_NAME_UP)

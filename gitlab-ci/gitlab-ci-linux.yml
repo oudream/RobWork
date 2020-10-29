@@ -164,25 +164,19 @@
     # Run RobWork tests
     - cd RW
     - make -j 1 -k sdurw-gtest_reports
-    - mv ../../RobWork/bin/**/gtest_reports/* ../../gtest/
-    - ctest --no-compress-output -T Test -j 1
-    - mv ./Testing/**/Test.xml ../../RWS-Test.xml
+    - mv ./bin/**/gtest_reports/* ../../gtest/
     - cd ..
     # Run RobWorkStudio tests
     - cd RWS
     - export DISPLAY=:0
     - Xvfb $DISPLAY -screen 0 640x480x24 &
     - make -j 1 -k sdurws-gtest_reports
-    - mv ../../RobWorkStudio/bin/**/gtest_reports/* ../../gtest/
-    - ctest --no-compress-output -T Test -j 1
-    - mv ./Testing/**/Test.xml ../../RWS-CTest.xml
+    - mv ./bin/**/gtest_reports/* ../../gtest/
     - cd ..
     # Run RobWorkSim tests
     - cd RWSim
     - make -j 1 -k sdurwsim-gtest_reports
-    - mv ../../RobWorkSim/bin/**/gtest_reports/* ../../gtest/
-    - ctest --no-compress-output -T Test -j 1 || ctest --no-compress-output -T Test
-    - mv ./Testing/**/Test.xml ../../RWSim-CTest.xml
+    - mv ./bin/**/gtest_reports/* ../../gtest/
 
 .linux-install-tests:
   extends: .CI-common-linux

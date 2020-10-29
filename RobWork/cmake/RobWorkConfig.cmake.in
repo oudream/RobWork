@@ -136,27 +136,6 @@ endmacro()
 
 get_filename_component(RWCFG_ROOT ${CMAKE_CURRENT_LIST_FILE} PATH)
 
-# check if user specified a RobWork_DIR
-if(DEFINED ROBWORK_DIR)
-    if(EXISTS "${ROBWORK_DIR}/src/RobWorkConfig.hpp")
-        # Found RobWork in a build tree of RobWork
-        set(RWCFG_ROOT "${ROBWORK_DIR}/cmake")
-    elseif(EXISTS "${ROBWORK_DIR}/RobWorkConfig.cmake")
-        # Found a RobWork installation
-        set(RWCFG_ROOT "${ROBWORK_DIR}")
-    elseif(
-        EXISTS
-        "${ROBWORK_DIR}/include/robwork-${RobWork_VERSION_MAJOR}.${RobWork_VERSION_MINOR}/RobWorkConfig.hpp"
-    )
-        set(RWCFG_ROOT
-            "${ROBWORK_DIR}/share/robwork-${RobWork_VERSION_MAJOR}.${RobWork_VERSION_MINOR}/"
-        )
-    else()
-        # found no RobWork installation ot build tree in RobWork_DIR so we try extracting it from
-        # RobWorkConfig.cmake location instead
-    endif()
-endif()
-
 # get the relavant build type
 get_robwork_build_type(${RWCFG_ROOT} RW_BUILD_TYPE)
 
@@ -208,47 +187,23 @@ endif()
 if(EXISTS ${RWCFG_ROOT}/RobWorkBuildConfig_${RW_BUILD_TYPE}.cmake)
     include(${RWCFG_ROOT}/RobWorkBuildConfig_${RW_BUILD_TYPE}.cmake)
 
-    if(${RW_BUILD_WITH_FREEGLUT})
-        find_package(FreeGLUT REQUIRED)
-    endif()
-
-    set(BOOST_ROOT ${RW_BUILD_WITH_BOOST_ROOT})
-    set(BOOST_INCLUDEDIR ${RW_BUILD_WITH_BOOST_INCLUDE_DIR})
-    set(BOOST_LIBRARYDIR ${RW_BUILD_WITH_BOOST_LIBRARY_DIR})
-
-    if(DEFINED WIN32 AND ${IS_INSTALL})
-        set(BOOST_INCLUDEDIR "${RW_INCLUDE_EXT}/boost")
-        set(BOOST_LIBRARYDIR "${RW_LIBS}")
-    endif()
-
     # check which components to include
     set(LIBRARIES_TO_INCLUDE) # Libraries that must be included
     set(OPTIONAL_LIBRARIES_TO_INCLUDE) # libraries that are included if they have been build
 
     if(RobWork_FIND_COMPONENTS)
         # FIRST check if all required components are installed/build
-        set(LIBRARIES_TO_INCLUDE sdurw)
+        set(LIBRARIES_TO_INCLUDE RW::sdurw)
         foreach(
             component
             IN
             LISTS RobWork_FIND_COMPONENTS
         )
             if(NOT (${component} STREQUAL "sdurw"))
-                set(FILTER "sdurw_${component}")
-                string(REGEX MATCH ${FILTER} RESULT "${RW_BUILD_WITH_LIBRARIES}")
+                set(lib "RW::sdurw_${component}") 
 
-                unset(FOUND CACHE)
-                if(RESULT)
-                    find_library(
-                        FOUND ${RESULT}
-                        PATHS ${RW_LIBS}
-                        PATH_SUFFIXES ${RW_BUILD_WITH_LIBRARY_SUBDIRS}
-                        NO_DEFAULT_PATH
-                    )
-                endif()
-
-                if(FOUND)
-                    list(APPEND LIBRARIES_TO_INCLUDE "sdurw_${component}")
+                if(TARGET ${lib})
+                    list(APPEND LIBRARIES_TO_INCLUDE "${lib}")
                     set(RobWork_${component}_FOUND TRUE)
                 else()
                     set(RobWork_${component}_FOUND FALSE)
@@ -269,19 +224,17 @@ if(EXISTS ${RWCFG_ROOT}/RobWorkBuildConfig_${RW_BUILD_TYPE}.cmake)
             endif()
         endforeach()
     else()
-        foreach(lib IN LISTS RW_BUILD_WITH_LIBRARIES)
-            unset(FOUND CACHE)
-            find_library(
-                FOUND ${lib}
-                PATHS ${RW_LIBS}
-                PATH_SUFFIXES ${RW_BUILD_WITH_LIBRARY_SUBDIRS} NO_DEFAULT_PATH
-            )
-            if(FOUND)
-                list(APPEND OPTIONAL_LIBRARIES_TO_INCLUDE "${lib}")
+        foreach(
+            lib
+            IN
+            LISTS RW_BUILD_WITH_LIBRARIES
+        )
+            if(TARGET RW::${lib})
+                list(APPEND OPTIONAL_LIBRARIES_TO_INCLUDE "RW::${lib}")
                 rw_message("Looking for ${lib} - found")
             else()
                 if(${lib} STREQUAL "sdurw")
-                    list(APPEND OPTIONAL_LIBRARIES_TO_INCLUDE "${lib}")
+                    list(APPEND OPTIONAL_LIBRARIES_TO_INCLUDE "RW::${lib}")
                     rw_message("Looking for ${lib} - not found")
                 else()
                     rw_message("Looking for ${lib} - not found (ignored)")
@@ -289,6 +242,19 @@ if(EXISTS ${RWCFG_ROOT}/RobWorkBuildConfig_${RW_BUILD_TYPE}.cmake)
 
             endif()
         endforeach()
+    endif()
+
+    if(${RW_BUILD_WITH_FREEGLUT})
+        find_package(FreeGLUT REQUIRED)
+    endif()
+
+    set(BOOST_ROOT ${RW_BUILD_WITH_BOOST_ROOT})
+    set(BOOST_INCLUDEDIR ${RW_BUILD_WITH_BOOST_INCLUDE_DIR})
+    set(BOOST_LIBRARYDIR ${RW_BUILD_WITH_BOOST_LIBRARY_DIR})
+
+    if(DEFINED WIN32 AND ${IS_INSTALL})
+        set(BOOST_INCLUDEDIR "${RW_INCLUDE_EXT}/boost")
+        set(BOOST_LIBRARYDIR "${RW_LIBS}")
     endif()
 
     # Set extra compiler flags. The user should be able to change this
@@ -377,7 +343,8 @@ if(EXISTS ${RWCFG_ROOT}/RobWorkBuildConfig_${RW_BUILD_TYPE}.cmake)
         find_library(
             tmp ${l}
             PATHS ${RW_LIBS}
-            PATH_SUFFIXES ${RW_BUILD_WITH_LIBRARY_SUBDIRS} NO_DEFAULT_PATH
+            PATH_SUFFIXES ${RW_BUILD_WITH_LIBRARY_SUBDIRS}
+            NO_DEFAULT_PATH
         )
 
         if(tmp)

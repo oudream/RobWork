@@ -27,7 +27,6 @@
 
 
 #include <boost/function.hpp>
-#include <boost/test/unit_test_monitor.hpp>
 
 using namespace rw::common;
 using namespace rw::core;

@@ -64,9 +64,6 @@ add_subdirectory(tools)
 # ##################################################################################################
 # setup testing
 #
-configure_file("${RW_ROOT}/cmake/CTestCustom.cmake.in" "CTestCustom.cmake")
-# configure testing configuration
-configure_file("${RW_ROOT}/CTestConfig.cmake.in" "${RW_ROOT}/CTestConfig.cmake")
 
 include(CMakeDependentOption)
 cmake_dependent_option(
@@ -255,6 +252,3 @@ endif()
 
 # Packaging
 rw_create_installer()
-
-string(REPLACE ";" "\n" TOFILE_DST "${ROBWORK_INCLUDE_DIR}")
-file(WRITE "include_dirs" "${TOFILE_DST}")
