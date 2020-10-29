@@ -28,7 +28,7 @@ int main (int argc, char** argv)
     while (rwsApp.isRunning ()) {
         TimerUtil::sleepMs (10);    // Check if running every 10 ms
 
-        if (std::string (argv[2]) == "-t") {    // Quit if test run
+        if (argc == 3 && std::string (argv[2]) == std::string("-t")) {    // Quit if test run
             TimerUtil::sleepMs (1000);          // wait for full startup
             rwsApp.close ();                    // Close RWS
         }
