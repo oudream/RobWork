@@ -187,6 +187,13 @@ class JointSliderWidget : public QWidget
                 bool enablers = false, bool enableAngularCombined = false);
 
     /**
+     * @brief the widget is not moving a device, but a movable frame
+     * @param isNotADevice true if the widget is not manipulating a device
+     */
+    void setNoneDeviceType(bool isNotADevice=true) {_isNotADevice=isNotADevice;}
+    
+
+    /**
      * @brief Set the units.
      * @param converters [in] the factor used to convert to units.
      * @param descriptions [in] a description of the chosen units.
@@ -247,6 +254,7 @@ class JointSliderWidget : public QWidget
 
     QGridLayout* _layout;
     bool _enableAngularCombined;
+    bool _isNotADevice=false;
 };
 
 //! @brief Widget for a setting a 6D pose.
@@ -274,6 +282,12 @@ class TransformSliderWidget : public QWidget
                            const rw::math::Transform3D<>& transform, AngleType angleType = RPYtype,
                            bool enablers = false);
 
+    /**
+     * @brief the widget is not moving a device, but a movable frame
+     * @param isNotADevice true if the widget is not manipulating a device
+     */
+    void setNoneDeviceType(bool isNotADevice=true) {this->_jointSliderWidget->setNoneDeviceType(isNotADevice);}
+    
     /**
      * @brief Set the units.
      * @param converters [in] the factor used to convert to units.
@@ -313,7 +327,7 @@ class TransformSliderWidget : public QWidget
      * @throws Exception if there is no AngleType with this integer value.
      */
     static AngleType toAngleType (int i);
-
+//Q[6]{0.4, 0.4, 0.42, 0, 0, 0}
   Q_SIGNALS:
     /**
      * @brief Emitted when the transform is changed.
