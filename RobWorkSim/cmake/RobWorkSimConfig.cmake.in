@@ -134,32 +134,6 @@ endmacro()
 
 set(RWSIMCFG_ROOT ${CMAKE_CURRENT_LIST_DIR})
 
-# check if user specified a RobWorkSim_DIR
-if(DEFINED RobWorkSim_DIR)
-    if(EXISTS "${RobWorkSim_DIR}/src/RobWorkSimConfig.hpp")
-        # Found RobWorkSim in a build tree of RobWork
-        set(RWSIMCFG_ROOT "${RobWorkSim_DIR}/cmake")
-        set(is_installed false)
-    elseif(EXISTS "${RobWorkSim_DIR}/RobWorkConfig.cmake")
-        # Found a RobWorkSim installation
-        set(RWSIMCFG_ROOT "${RobWorkSim_DIR}")
-        set(is_installed true)
-    elseif(
-        EXISTS
-        "${RobWorkSim_DIR}/include/robworksim-${RobWorkSim_VERSION_MAJOR}.${RobWorkSim_VERSION_MINOR}/RobWorkSimConfig.hpp"
-    )
-        set(
-            RWSIMCFG_ROOT
-            "${RobWorkSim_DIR}/share/robworksim-${RobWorkSim_VERSION_MAJOR}.${RobWorkSim_VERSION_MINOR}/"
-        )
-        set(is_installed true)
-    else()
-        # found no RobWork installation ot build tree in RobWorkSim_DIR so we try extracting it from
-        # RobWorkSimConfig.cmake location instead
-    endif()
-    get_filename_component(RWSIMCFG_ROOT ${RWSIMCFG_ROOT} ABSOLUTE)
-endif()
-
 # get the relavant build type
 get_robworksim_build_type(${RWSIMCFG_ROOT} RWSIM_BUILD_TYPE)
 
@@ -243,21 +217,10 @@ if(EXISTS ${RWSIMCFG_ROOT}/RobWorkSimBuildConfig_${RWSIM_BUILD_TYPE}.cmake)
             LISTS RobWorkSim_FIND_COMPONENTS
         )
             if(NOT (${component} STREQUAL "sdurwsim"))
-                set(FILTER "sdurwsim_${component}")
-                string(REGEX MATCH ${FILTER} RESULT "${RWSIM_BUILD_WITH_LIBRARIES}")
+                set(lib "RWSIM::sdurwsim_${component}")
 
-                unset(FOUND CACHE)
-                if(RESULT)
-                    find_library(
-                        FOUND ${RESULT}
-                        PATHS ${RWSIM_LIBS}
-                        PATH_SUFFIXES ${RWSIM_BUILD_WITH_LIBRARY_SUBDIRS}
-                        NO_DEFAULT_PATH
-                    )
-                endif()
-
-                if(FOUND)
-                    list(APPEND LIBRARIES_TO_INCLUDE "sdurwsim_${component}")
+                if(TARGET ${lib})
+                    list(APPEND LIBRARIES_TO_INCLUDE "RWSIM::sdurwsim_${component}")
                     set(RobWorkSim_${component}_FOUND TRUE)
                 else()
                     set(RobWorkSim_${component}_FOUND FALSE)
@@ -279,14 +242,8 @@ if(EXISTS ${RWSIMCFG_ROOT}/RobWorkSimBuildConfig_${RWSIM_BUILD_TYPE}.cmake)
         endforeach()
     else()
         foreach(lib IN LISTS RWSIM_BUILD_WITH_LIBRARIES)
-            unset(FOUND CACHE)
-            find_library(
-                FOUND ${lib}
-                PATHS ${RWSIM_LIBS}
-                PATH_SUFFIXES ${RWSIM_BUILD_WITH_LIBRARY_SUBDIRS} NO_DEFAULT_PATH
-            )
-            if(FOUND)
-                list(APPEND OPTIONAL_LIBRARIES_TO_INCLUDE "${lib}")
+            if(TARGET RWSIM::${lib})
+                list(APPEND OPTIONAL_LIBRARIES_TO_INCLUDE "RWSIM::${lib}")
                 rwsim_message("Looking for ${lib} - found")
             else()
                 if(${lib} STREQUAL "sdurw")

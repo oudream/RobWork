@@ -65,38 +65,12 @@ endif()
 
 find_package(Boost REQUIRED COMPONENTS filesystem regex serialization system thread program_options)
 set(Boost_LIBRARIES_TMP ${Boost_LIBRARIES})
-set(Boost_FIND_QUIETLY TRUE) # Test libraries are optional
-
-find_package(Boost COMPONENTS test_exec_monitor unit_test_framework)
-set(Boost_LIBRARIES_TMP ${Boost_LIBRARIES_TMP} ${Boost_LIBRARIES})
-
-if(NOT Boost_TEST_EXEC_MONITOR_FOUND OR NOT Boost_UNIT_TEST_FRAMEWORK_FOUND)
-    set(RW_USE_BOOST_STATIC_TEST_LIBS off)
-else()
-    set(RW_USE_BOOST_STATIC_TEST_LIBS on)
-endif()
-
 set(Boost_LIBRARIES ${Boost_LIBRARIES_TMP} ${Boost_LIBRARIES})
 
 message(
     STATUS
         "RobWork: Boost version ${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION}.${Boost_SUBMINOR_VERSION} found!"
 )
-
-# Print test libraries status
-if(Boost_TEST_EXEC_MONITOR_FOUND AND Boost_UNIT_TEST_FRAMEWORK_FOUND)
-    message(
-        STATUS
-            "RobWork: Found additional Boost libraries: test_exec_monitor and unit_test_framework"
-    )
-else()
-    # Set necessary directory for disabling linking with test libraries for MSVC
-    if(DEFINED MSVC)
-        set(BOOST_TEST_NO_LIB TRUE)
-    else()
-        set(BOOST_TEST_NO_LIB FALSE)
-    endif()
-endif()
 
 enable_language(CXX)
 

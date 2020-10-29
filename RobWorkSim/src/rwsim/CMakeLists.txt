@@ -1,6 +1,6 @@
 set(SUBSYS_NAME sdurwsim)
 set(SUBSYS_DESC "Simulation libraries")
-set(SUBSYS_DEPS RWS::sdurws)
+set(SUBSYS_DEPS RWS::sdurws RW::sdurw)
 
 set(build TRUE)
 set(DEFAULT TRUE)
@@ -285,6 +285,8 @@ if(build)
         RW::sdurw_pathplanners
         RW::sdurw_simulation
         RW::sdurw_task
+        RW::sdurw_core
+        RW::sdurw_math
         RW::sdurw
         ${OPENGL_LIBRARIES}
     )

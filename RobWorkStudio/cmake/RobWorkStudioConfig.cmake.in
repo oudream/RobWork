@@ -136,28 +136,6 @@ endmacro()
 
 set(RWSCFG_ROOT ${CMAKE_CURRENT_LIST_DIR})
 
-# check if user specified a RobWorkStudio_DIR
-if(DEFINED RobWorkStudio_DIR)
-    if(EXISTS "${RobWorkStudio_DIR}/../src/RobWorkStudioConfig.hpp")
-        # Found RobWorkStudio in a build tree of RobWork
-        set(RWSCFG_ROOT "${RobWorkStudio_DIR}")
-    elseif(EXISTS "${RobWorkStudio_DIR}/RobWorkStudioConfig.cmake")
-        # Found a RobWorkStudio installation
-        set(RWSCFG_ROOT "${RobWorkStudio_DIR}")
-    elseif(
-        EXISTS
-        "${RobWorkStudio_DIR}/include/robworkstudio-${RobWorkStudio_VERSION_MAJOR}.${RobWorkStudio_VERSION_MINOR}/RobWorkStudioConfig.hpp"
-    )
-        set(RWSCFG_ROOT
-            "${RobWorkStudio_DIR}/share/robworkstudio-${RobWorkStudio_VERSION_MAJOR}.${RobWorkStudio_VERSION_MINOR}"
-        )
-    else()
-        # found no RobWorkStudio installation ot build tree in RobWorkStudio_DIR so we try
-        # extracting it from RobWorkStudioConfig.cmake location instead
-    endif()
-    get_filename_component(RWSCFG_ROOT ${RWSCFG_ROOT} ABSOLUTE)
-endif()
-
 # get the relavant build type
 get_robworkstudio_build_type(${RWSCFG_ROOT} RWS_BUILD_TYPE)
 
@@ -211,27 +189,11 @@ include(${RWSCFG_ROOT}/RobWorkStudioMacros.cmake)
 if(EXISTS ${RWSCFG_ROOT}/RobWorkStudioBuildConfig_${RWS_BUILD_TYPE}.cmake)
     include(${RWSCFG_ROOT}/RobWorkStudioBuildConfig_${RWS_BUILD_TYPE}.cmake)
 
-    set(BOOST_ROOT ${RWS_BUILD_WITH_BOOST_ROOT})
-    set(BOOST_INCLUDEDIR ${RWS_BUILD_WITH_BOOST_INCLUDE_DIR})
-    set(BOOST_LIBRARYDIR ${RWS_BUILD_WITH_BOOST_LIBRARY_DIR})
-
-    if(DEFINED WIN32 AND ${IS_INSTALL})
-        set(BOOST_INCLUDEDIR "${RW_INCLUDE_EXT}/boost")
-        set(BOOST_LIBRARYDIR "${RW_LIBS}")
-    endif()
-
     # Find libraries
     set(ROBWORKSTUDIO_LIBRARIES_TMP)
     foreach(lib IN LISTS RWS_BUILD_WITH_LIBRARIES)
-        unset(FOUND CACHE)
-        find_library(
-            FOUND ${lib}
-            PATHS ${RWS_LIBS}
-            PATH_SUFFIXES ${RWS_BUILD_WITH_LIBRARY_SUBDIRS}
-            NO_DEFAULT_PATH
-        )
-        if(FOUND)
-            list(APPEND ROBWORKSTUDIO_LIBRARIES_TMP "${lib}")
+        if(TARGET RWS::${lib})
+            list(APPEND ROBWORKSTUDIO_LIBRARIES_TMP "RWS::${lib}")
             rws_message("Looking for ${lib} - found")
         else()
             if(${lib} STREQUAL "sdurws")
@@ -242,6 +204,15 @@ if(EXISTS ${RWSCFG_ROOT}/RobWorkStudioBuildConfig_${RWS_BUILD_TYPE}.cmake)
             endif()
         endif()
     endforeach()
+
+    set(BOOST_ROOT ${RWS_BUILD_WITH_BOOST_ROOT})
+    set(BOOST_INCLUDEDIR ${RWS_BUILD_WITH_BOOST_INCLUDE_DIR})
+    set(BOOST_LIBRARYDIR ${RWS_BUILD_WITH_BOOST_LIBRARY_DIR})
+
+    if(DEFINED WIN32 AND ${IS_INSTALL})
+        set(BOOST_INCLUDEDIR "${RW_INCLUDE_EXT}/boost")
+        set(BOOST_LIBRARYDIR "${RW_LIBS}")
+    endif()
 
     # Set extra compiler flags. The user should be able to change this
     set(RWS_CXX_FLAGS ${RWS_BUILD_WITH_CXX_FLAGS} CACHE STRING "Change this to force using your own
@@ -293,7 +264,6 @@ if(EXISTS ${RWSCFG_ROOT}/RobWorkStudioBuildConfig_${RWS_BUILD_TYPE}.cmake)
                      ${Qt5OpenGL_LIBRARIES})
     set(QT_INCLUDES ${Qt5Core_INCLUDE_DIRS} ${Qt5Gui_INCLUDE_DIRS} ${Qt5Widgets_INCLUDE_DIRS}
                     ${Qt5OpenGL_INCLUDE_DIRS})
-    # include_directories(${QT_INCLUDES})
 
     # Find and setup OpenGL.
     if(POLICY CMP0072) # Introduce cmake 3.11

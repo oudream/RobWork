@@ -11,7 +11,7 @@
 #define RW_REVISION "${ROBWORK_REVISION}"
 #define RW_BUILD_TYPE "${RW_BUILD_TYPE}"
 
-#define RW_BUILD_DIR "${RW_ROOT}"
+#define RW_BUILD_DIR "${CMAKE_CURRENT_BINARY_DIR}"
 
 #ifdef _WIN32
     #define SLASH '\\'

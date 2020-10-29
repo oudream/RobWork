@@ -24,7 +24,7 @@ add_library(yaobi yaobi_mesh_interface.cpp yaobi_moments.cpp yaobi_obb_node.cpp
 
 target_include_directories(
     yaobi INTERFACE $<BUILD_INTERFACE:${YAOBI_INCLUDE_DIR}>
-                    $<INSTALL_INTERFACE:"${INCLUDE_INSTALL_DIR}/ext/rwyaobi/">
+                    $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}/ext/rwyaobi/>
 )
 
 set_target_properties(yaobi PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)

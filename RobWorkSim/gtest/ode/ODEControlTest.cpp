@@ -24,8 +24,6 @@
 
 #include <gtest/gtest.h>
 
-#include <boost/test/unit_test.hpp>
-
 #include <rw/kinematics/FKTable.hpp>
 #include <rw/math/Q.hpp>
 #include <rw/models/Device.hpp>

@@ -36,8 +36,6 @@ using namespace robwork;
 
 #include <gtest/gtest.h>
 
-#include <boost/test/unit_test.hpp>
-
 #include <rwsim/loaders/DynamicWorkCellLoader.hpp>
 #include <rwsimlibs/ode/ODESimulator.hpp>
 #include <rwsim/control/SerialDeviceController.hpp>
