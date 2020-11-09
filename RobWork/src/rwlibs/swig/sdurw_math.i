@@ -41,8 +41,8 @@ import org.robwork.sdurw_common.*;
     %rename(copy) rw::math::EAA::operator=;
 #endif 
 
-%ignore rw::math::EAA::toVector3D const;
-%ignore rw::math::EAA::e const;
+%ignore rw::math::EAA::toVector3D() const;
+%ignore rw::math::EAA::e() const;
 %{
     #include <rw/math/EAA.hpp>
 %}
@@ -74,7 +74,7 @@ FRIEND_OPERATOR_RET(rw::math::Vector3D<float>, rw::math::EAA<float>, !=, bool);
 %include <rw/math/Function.hpp>
 
 
-%ignore rw::math::InertiaMatrix::e const;
+%ignore rw::math::InertiaMatrix::e() const;
 %ignore rw::math::InertiaMatrix::operator();
 %ignore rw::math::InertiaMatrix::operator()const;
 %{
@@ -85,14 +85,14 @@ FRIEND_OPERATOR(rw::math::Rotation3D<double>,rw::math::InertiaMatrix<double>,*);
 FRIEND_OPERATOR(rw::math::Rotation3D<float>,rw::math::InertiaMatrix<float>,*);
 
 
-%ignore rw::math::Jacobian::e const;
+%ignore rw::math::Jacobian::e() const;
 %{
     #include <rw/math/Jacobian.hpp>
 %}
 %include <rw/math/Jacobian.hpp>
 
-%ignore rw::math::Line2D::p1 const;
-%ignore rw::math::Line2D::p2 const;
+%ignore rw::math::Line2D::p1() const;
+%ignore rw::math::Line2D::p2() const;
 %{
     #include <rw/math/Line2D.hpp>
 %}
@@ -174,7 +174,7 @@ NAMED_OWNEDPTR(MetricRotation3D, rw::math::Metric<rw::math::Rotation3D<double>>)
 %}
 %include <rw/math/MetricUtil.hpp>
 
-%ignore rw::math::PerspectiveTransform2D::e const;
+%ignore rw::math::PerspectiveTransform2D::e() const;
 %{
     #include <rw/math/PerspectiveTransform2D.hpp>
 %}
@@ -210,18 +210,18 @@ NAMED_OWNEDPTR(MetricRotation3D, rw::math::Metric<rw::math::Rotation3D<double>>)
 %include <rw/math/PolynomialSolver.hpp>
 
 
-%ignore rw::math::Pose2D::x const;
-%ignore rw::math::Pose2D::y const;
-%ignore rw::math::Pose2D::theta const;
-%ignore rw::math::Pose2D::getPos const;
+%ignore rw::math::Pose2D::x() const;
+%ignore rw::math::Pose2D::y() const;
+%ignore rw::math::Pose2D::theta() const;
+%ignore rw::math::Pose2D::getPos() const;
 %{
     #include <rw/math/Pose2D.hpp>
 %}
 %include <rw/math/Pose2D.hpp>
 
-%ignore rw::math::Pose6D::getPos const;
-%ignore rw::math::Pose6D::getEAA const;
-%ignore rw::math::Pose6D::get const;
+%ignore rw::math::Pose6D::getPos() const;
+%ignore rw::math::Pose6D::getEAA() const;
+%ignore rw::math::Pose6D::get() const;
 %{
     #include <rw/math/Pose6D.hpp>
 %}
@@ -256,7 +256,7 @@ NAMED_OWNEDPTR(MetricRotation3D, rw::math::Metric<rw::math::Rotation3D<double>>)
 %enddef
 
 %ignore operator* (double s, const Q& v);
-%ignore rw::math::Q::e const;
+%ignore rw::math::Q::e() const;
 %{
     #include <rw/math/Q.hpp>
 %}
@@ -264,7 +264,7 @@ NAMED_OWNEDPTR(MetricRotation3D, rw::math::Metric<rw::math::Rotation3D<double>>)
 %template(PairQ) std::pair<rw::math::Q,rw::math::Q>;
 
 %rename(copy) rw::math::Quaternion::operator=;
-%ignore rw::math::Quaternion::e const;
+%ignore rw::math::Quaternion::e() const;
 %{
     #include <rw/math/Quaternion.hpp>
 %}
@@ -292,8 +292,8 @@ FRIEND_OPERATOR(rw::math::Vector3D<float>, rw::math::Wrench6D<float>, *);
 FRIEND_OPERATOR(rw::math::Rotation3D<double>, rw::math::Wrench6D<double>, *);
 FRIEND_OPERATOR(rw::math::Rotation3D<float>, rw::math::Wrench6D<float>, *);
 
-%ignore rw::math::Rotation3D::e const;
-%ignore rw::math::Rotation3D::multiply const;
+%ignore rw::math::Rotation3D::e() const;
+%ignore rw::math::Rotation3D::multiply() const;
 %ignore rw::math::Rotation3D::inverse(bool) const;
 %{
     #include <rw/math/Rotation3D.hpp>
@@ -310,8 +310,8 @@ FRIEND_OPERATOR(rw::math::Rotation3D<float>, rw::math::Wrench6D<float>, *);
 %}
 %include <rw/math/Statistics.hpp>
 
-%ignore rw::math::Transform3D::R const;
-%ignore rw::math::Transform3D::P const;
+%ignore rw::math::Transform3D::R() const;
+%ignore rw::math::Transform3D::P() const;
 %{
     #include <rw/math/Transform3D.hpp>
 %}
@@ -322,7 +322,7 @@ FRIEND_OPERATOR(rw::math::Rotation3D<float>, rw::math::Wrench6D<float>, *);
 %}
 %include <rw/math/Transform3DVector.hpp>
 
-%ignore rw::math::Vector::e const;
+%ignore rw::math::Vector::e() const;
 %{
     #include <rw/math/Vector.hpp>
 %}
@@ -335,7 +335,7 @@ FRIEND_OPERATOR(rw::math::Rotation3D<float>, rw::math::Wrench6D<float>, *);
 %template(VectorVector2D) std::vector<rw::math::Vector2D<double>>;
 
 
-%ignore rw::math::Vector3D::e const;
+%ignore rw::math::Vector3D::e() const;
 #if defined(SWIGPYTHON)
     %rename(copy) rw::math::Vector3D::operator=;
     %ignore operator* (double s, const Vector3D<double>& v);
@@ -347,7 +347,7 @@ FRIEND_OPERATOR(rw::math::Rotation3D<float>, rw::math::Wrench6D<float>, *);
 %include <rw/math/Vector3D.hpp>
 
 %rename(copy) rw::math::VectorND::operator=;
-%ignore rw::math::VectorND::e const;
+%ignore rw::math::VectorND::e() const;
 %{
     #include <rw/math/VectorND.hpp>
 %}

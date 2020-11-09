@@ -33,7 +33,7 @@
          * with the frame; false otherwise.
          */
         virtual bool addModel(
-            const Frame* frame,
+            const rw::kinematics::Frame* frame,
             const Geometry& faces
             );
 
@@ -50,7 +50,7 @@
          * with the frame; false otherwise.
          */
         virtual bool addModel(
-            const Frame* frame,
+            const rw::kinematics::Frame* frame,
             rw::core::Ptr<Geometry> faces,
             bool forceCopy = false
             );
@@ -64,12 +64,12 @@
          * @param frame [in] the frame to check for1.0/
          * @return true if a model exists or can be created
          */
-        virtual bool hasModel(const Frame* frame);
+        virtual bool hasModel(const rw::kinematics::Frame* frame);
 
         /**
            @brief Clear (remove all) model information for frame \b frame.
          */
-        virtual void clearFrame(const Frame* frame);
+        virtual void clearFrame(const rw::kinematics::Frame* frame);
 
         /**
            @brief Clear (remove all) model information for all frames.
@@ -83,7 +83,7 @@
          * has been associated to frame then NULL is returned.
          * @param frame [in] frame for which an proximitymodel is associated
          */
-        rw::core::Ptr<ProximityModel> getModel(const Frame* frame);
+        rw::core::Ptr<ProximityModel> getModel(const rw::kinematics::Frame* frame);
 
         //// this is the new interface based on CollisionModelInfo
         /**
@@ -151,8 +151,8 @@
     {
 
         %extend {
-            std::vector< std::pair< Frame* , Frame* > > getFramePairVector() {
-                return std::vector< std::pair< Frame* , Frame* > >($self->collidingFrames.begin(), $self->collidingFrames.end());
+            std::vector< std::pair< rw::kinematics::Frame* , rw::kinematics::Frame* > > getFramePairVector() {
+                return std::vector< std::pair< rw::kinematics::Frame* , rw::kinematics::Frame* > >($self->collidingFrames.begin(), $self->collidingFrames.end());
             }
 
             /**
@@ -247,7 +247,7 @@
          * enables caching inbetween calls to incollision
          * @return true if a collision is detected; false otherwise.
          */
-        bool inCollision(const State& state, class ProximityData &data) const;
+        bool inCollision(const rw::kinematics::State& state, class ProximityData &data) const;
 
         /**
          * @brief Check the workcell for collisions.
@@ -261,7 +261,7 @@
          * 
          * @return true if a collision is detected; false otherwise.
          */
-        bool inCollision(const State& state, CollisionDetectorQueryResult* result = 0, bool stopAtFirstContact = false) const;
+        bool inCollision(const rw::kinematics::State& state, CollisionDetectorQueryResult* result = 0, bool stopAtFirstContact = false) const;
 
         /**
          * @brief The broad phase collision strategy of the collision checker.
@@ -282,7 +282,7 @@
          * @param frame [in] Frame to associate geometry to
          * @param geometry [in] Geometry to add
          */
-        void addGeometry(Frame* frame, const rw::core::Ptr<Geometry> geometry);
+        void addGeometry(rw::kinematics::Frame* frame, const rw::core::Ptr<Geometry> geometry);
 
         /**
          * @brief Removes geometry from CollisionDetector
@@ -292,7 +292,7 @@
          * @param frame [in] The frame which has the geometry associated
          * @param geometry [in] Geometry with the id to be removed
          */
-        void removeGeometry(Frame* frame, const rw::core::Ptr<Geometry> geometry);
+        void removeGeometry(rw::kinematics::Frame* frame, const rw::core::Ptr<Geometry> geometry);
 
         /**
          * @brief Removes geometry from CollisionDetector
@@ -302,7 +302,7 @@
          * @param frame [in] The frame which has the geometry associated
          * @param geometryId [in] Id of geometry to be removed
          */
-        void removeGeometry(Frame* frame, const std::string geometryId);
+        void removeGeometry(rw::kinematics::Frame* frame, const std::string geometryId);
         
         //! @brief Adds rule specifying inclusion/exclusion of frame pairs in collision detection
         void addRule(const ProximitySetupRule& rule);
@@ -330,14 +330,14 @@
         /**
          * @brief return the ids of all the geometries of this frames.
          */
-        std::vector<std::string> getGeometryIDs(Frame *frame);
+        std::vector<std::string> getGeometryIDs(rw::kinematics::Frame *frame);
 
         /**
          * @brief Returns whether frame has an associated geometry with \b geometryId.
          * @param frame [in] Frame in question
          * @param geometryId [in] Id of the geometry
          */
-        bool hasGeometry(Frame* frame, const std::string& geometryId);
+        bool hasGeometry(rw::kinematics::Frame* frame, const std::string& geometryId);
 
         %extend {
             /**
@@ -351,12 +351,12 @@
              * 
              * @return true if a collision is detected; false otherwise.
              */
-            bool inCollision(const State& state, std::vector< std::pair< Frame* , Frame* > > &result, bool stopAtFirstContact = false){
+            bool inCollision(const rw::kinematics::State& state, std::vector< std::pair< rw::kinematics::Frame* , rw::kinematics::Frame* > > &result, bool stopAtFirstContact = false){
                 CollisionDetector::QueryResult data;
                 bool success;
                 success = $self->inCollision(state, &data,stopAtFirstContact);
 
-                result = std::vector< std::pair< Frame* , Frame* > >(data.collidingFrames.begin(), data.collidingFrames.end());
+                result = std::vector< std::pair< rw::kinematics::Frame* , rw::kinematics::Frame* > >(data.collidingFrames.begin(), data.collidingFrames.end());
 
                 return success;
             }
@@ -431,7 +431,7 @@
          @brief True iff the collision setup for the frame can change over
         time.
         */
-        bool isVolatile(const Frame& frame) const;
+        bool isVolatile(const rw::kinematics::Frame& frame) const;
 
         /**
          @brief True iff all statically related pairs of frames should be
@@ -546,9 +546,9 @@
              * colliding, false otherwise.
              */
             bool inCollision(
-                const Frame* a,
+                const rw::kinematics::Frame* a,
                 const rw::math::Transform3D<double>& wTa,
-                const Frame *b,
+                const rw::kinematics::Frame *b,
                 const rw::math::Transform3D<double>& wTb,
                 CollisionStrategyQueryType type = CollisionStrategyQueryType::FirstContact)
             {
@@ -568,9 +568,9 @@
              * colliding, false otherwise.
              */
             bool inCollision(
-                const Frame* a,
+                const rw::kinematics::Frame* a,
                 const rw::math::Transform3D<double>& wTa,
-                const Frame *b,
+                const rw::kinematics::Frame *b,
                 const rw::math::Transform3D<double>& wTb,
                 ProximityStrategyData& data,
                 CollisionStrategyQueryType type = CollisionStrategyQueryType::FirstContact)
@@ -680,9 +680,9 @@
          * colliding, false otherwise.
          */
         bool isWithinDistance(
-            const Frame* a,
+            const rw::kinematics::Frame* a,
             const rw::math::Transform3D<double>& wTa,
-            const Frame *b,
+            const rw::kinematics::Frame *b,
             const rw::math::Transform3D<double>& wTb,
             double tolerance);
 
@@ -700,9 +700,9 @@
          * colliding, false otherwise.
          */
         bool isWithinDistance(
-            const Frame* a,
+            const rw::kinematics::Frame* a,
             const rw::math::Transform3D<double>& wTa,
-            const Frame *b,
+            const rw::kinematics::Frame *b,
             const rw::math::Transform3D<double>& wTb,
             double distance,
             ProximityStrategyData& data);
@@ -791,10 +791,10 @@
          * @param strategy [in] - the primitive strategy of distance calculations.
          * @param initial_state [in] - the work cell state to use for the initial traversal of the tree.
          */
-        DistanceCalculator(Frame *root,
+        DistanceCalculator(rw::kinematics::Frame *root,
                             rw::core::Ptr<WorkCell> workcell,
                             rw::core::Ptr<DistanceStrategy> strategy,
-                            const State& initial_state);
+                            const rw::kinematics::State& initial_state);
         /**
          * @brief Construct distance calculator for a WorkCell with an associated
          * distance calculator strategy.
@@ -820,7 +820,7 @@
          * @param pairs [in] Pairs of frame to check
          * @param strategy [in] the distance calculation strategy to use
          */
-        DistanceCalculator(const std::vector< std::pair< Frame *, Frame * > >& pairs,
+        DistanceCalculator(const std::vector< std::pair< rw::kinematics::Frame *, rw::kinematics::Frame * > >& pairs,
             rw::core::Ptr<DistanceStrategy> strategy);
 
         /**
@@ -838,10 +838,10 @@
          *
          * @return the shortest distance between frame and frame tree
          */
-        DistanceStrategyResult distance(const State& state,
+        DistanceStrategyResult distance(const rw::kinematics::State& state,
                                 std::vector<DistanceStrategyResult>* result = 0) const;
 
-        DistanceStrategyResult distanceOMP(const State& state,
+        DistanceStrategyResult distanceOMP(const rw::kinematics::State& state,
                                     std::vector<DistanceStrategyResult>* result = 0) const;
 
         /**
@@ -856,8 +856,8 @@
          *
          * @return the shortest distance between frame and frame tree
          */
-        DistanceStrategyResult distance(const State& state,
-                                const Frame* frame,
+        DistanceStrategyResult distance(const rw::kinematics::State& state,
+                                const rw::kinematics::Frame* frame,
                                 std::vector<DistanceStrategyResult>* result = 0) const;
 
         /**
@@ -881,7 +881,7 @@
          * @return true if a distance model was succesfully created and linked
          * with the frame; false otherwise.
          */
-        bool addDistanceModel(const Frame* frame, const Geometry& faces);
+        bool addDistanceModel(const rw::kinematics::Frame* frame, const Geometry& faces);
 
         /**
          * @brief Clears the cache of the distance models
@@ -905,10 +905,10 @@
         DistanceStrategyResult();
 
         //! @brief reference to the first frame
-        const Frame* f1;
+        const rw::kinematics::Frame* f1;
 
         //! @brief reference to the second frame
-        const Frame* f2;
+        const rw::kinematics::Frame* f2;
         
         /**
          * @brief pointer to the ProximityModel containing the geometries for the first frame
@@ -968,9 +968,9 @@
          * @return shortest distance if @f$ \mathcal{F}_a @f$ and @f$ \mathcal{F}_b @f$ are
          * separated and not in collision.
          */
-        DistanceStrategyResult distance(const Frame* a,
+        DistanceStrategyResult distance(const rw::kinematics::Frame* a,
                                 const rw::math::Transform3D<double>& wTa,
-                                const Frame* b,
+                                const rw::kinematics::Frame* b,
                                 const rw::math::Transform3D<double>& wTb);
 
         /**
@@ -988,9 +988,9 @@
          * separated and not in collision.
          */
         DistanceStrategyResult& distance(
-                                const Frame* a,
+                                const rw::kinematics::Frame* a,
                                 const rw::math::Transform3D<double>& wTa,
-                                const Frame* b,
+                                const rw::kinematics::Frame* b,
                                 const rw::math::Transform3D<double>& wTb,
                                 ProximityStrategyData& data);
 
@@ -1031,9 +1031,9 @@
          * @return shortest distance if @f$ \mathcal{F}_a @f$ and @f$ \mathcal{F}_b @f$ are
          * separated and not in collision.
          */
-        DistanceStrategyResult distance(const Frame* a,
+        DistanceStrategyResult distance(const rw::kinematics::Frame* a,
                                 const rw::math::Transform3D<double>& wTa,
-                                const Frame* b,
+                                const rw::kinematics::Frame* b,
                                 const rw::math::Transform3D<double>& wTb,
                                 double threshold);
 
@@ -1050,9 +1050,9 @@
          * @return shortest distance if @f$ \mathcal{F}_a @f$ and @f$ \mathcal{F}_b @f$ are
          * separated and not in collision.
          */
-        DistanceStrategyResult& distance(const Frame* a,
+        DistanceStrategyResult& distance(const rw::kinematics::Frame* a,
                                 const rw::math::Transform3D<double>& wTa,
-                                const Frame* b,
+                                const rw::kinematics::Frame* b,
                                 const rw::math::Transform3D<double>& wTb,
                                 double threshold,
                                 ProximityStrategyData& data);
@@ -1160,9 +1160,9 @@
          * separated and not in collision.
          */
         DistanceMultiStrategyResult distances(
-            const Frame* a,
+            const rw::kinematics::Frame* a,
             const rw::math::Transform3D<double>& wTa,
-            const Frame* b,
+            const rw::kinematics::Frame* b,
             const rw::math::Transform3D<double>& wTb,
             double tolerance);
 
@@ -1180,9 +1180,9 @@
          * separated and not in collision.
          */
         DistanceMultiStrategyResult& distances(
-            const Frame* a,
+            const rw::kinematics::Frame* a,
             const rw::math::Transform3D<double>& wTa,
-            const Frame* b,
+            const rw::kinematics::Frame* b,
             const rw::math::Transform3D<double>& wTb,
             double tolerance,
             ProximityStrategyData& data);
@@ -1304,13 +1304,13 @@
 		 * @brief returns the current front and pops it afterwards
 		 * @return the current front element
 		 */
-		virtual std::pair<Frame*, Frame*> frontAndPop() = 0;
+		virtual std::pair<rw::kinematics::Frame*, rw::kinematics::Frame*> frontAndPop() = 0;
 
 		/**
 		 * @brief if there are any more possibly colliding framepairs since last
 		 * call to update then this will return true, else false will be returned.
 		 */
-		virtual std::pair<Frame*, Frame*> front() = 0;
+		virtual std::pair<rw::kinematics::Frame*, rw::kinematics::Frame*> front() = 0;
 
 
 		/**
@@ -1357,7 +1357,7 @@
          * @brief Reset
          * @param state [in] the state.
          */
-        virtual void reset(const State& state) = 0;
+        virtual void reset(const rw::kinematics::State& state) = 0;
 
         /**
          * @brief creates a FilterData object. This is used for caching relavant data between calls to update
@@ -1371,7 +1371,7 @@
          * @param state [in] the state.
          * @return
          */
-        virtual rw::core::Ptr<ProximityFilter> update(const State& state) = 0;
+        virtual rw::core::Ptr<ProximityFilter> update(const rw::kinematics::State& state) = 0;
 
         /**
          * @brief called once before acquirering all possibly colliding
@@ -1379,7 +1379,7 @@
          * @param state [in] the state for which collision detection is performed.
          * @param data
          */
-        virtual rw::core::Ptr<ProximityFilter> update(const State& state, rw::core::Ptr<ProximityCache> data) = 0;
+        virtual rw::core::Ptr<ProximityFilter> update(const rw::kinematics::State& state, rw::core::Ptr<ProximityCache> data) = 0;
 
         /**
          * @brief get the proximity setup that describe the include/exclude rules of this
@@ -1393,7 +1393,7 @@
          * @param frame [in] Frame which has the geometry associated
          * @param geo [in] Geometry
          */ 
-        virtual void addGeometry(Frame* frame, const rw::core::Ptr<Geometry> geo) = 0;
+        virtual void addGeometry(rw::kinematics::Frame* frame, const rw::core::Ptr<Geometry> geo) = 0;
 
         /** 
          * @brief Removes the geometric model \b geo associated with
@@ -1402,7 +1402,7 @@
          * @param frame [in] Frame which has the geometry associated
          * @param geo [in] Geometry
          */ 
-        virtual void removeGeometry(Frame* frame, const rw::core::Ptr<Geometry> geo) = 0;
+        virtual void removeGeometry(rw::kinematics::Frame* frame, const rw::core::Ptr<Geometry> geo) = 0;
 
         /** 
          * @brief Removes the geometric model with name \b geoName and which is associated with
@@ -1411,7 +1411,7 @@
          * @param frame [in] Frame which has the geometry associated
          * @param geoName [in] Name of geometry
          */ 
-        virtual void removeGeometry(Frame* frame, const std::string& geoName) = 0;
+        virtual void removeGeometry(rw::kinematics::Frame* frame, const std::string& geoName) = 0;
 
         /**
          * @brief Adds a ProximitySetupRule
@@ -1478,14 +1478,14 @@
          * @brief return pointer to the associated frame
          *
          **/
-        Frame* getFrame();
+        rw::kinematics::Frame* getFrame();
 
         /**
          * @brief sets the associated frame
          *
          * @param frame frame to set
          **/     
-        void setFrame(Frame* frame);
+        void setFrame(rw::kinematics::Frame* frame);
 
         ProximityStrategy* owner;
         

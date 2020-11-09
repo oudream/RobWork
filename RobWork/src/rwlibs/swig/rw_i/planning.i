@@ -178,19 +178,19 @@ public:
 
     static PlannerConstraint make(rw::core::Ptr<CollisionDetector> detector,
                                   rw::core::Ptr<const Device> device,
-                                  const State& state);
+                                  const rw::kinematics::State& state);
 
     static PlannerConstraint make(rw::core::Ptr<CollisionStrategy> strategy,
                                   rw::core::Ptr<WorkCell> workcell,
                                   rw::core::Ptr<const Device> device,
-                                  const State& state);
+                                  const rw::kinematics::State& state);
 
     /*
     static PlannerConstraint make(rw::proximity::CollisionStrategy::Ptr strategy,
         const rw::proximity::CollisionSetup& setup,
         rw::core::Ptr<WorkCell> workcell,
         rw::core::Ptr<Device> device,
-        const State& state);
+        const rw::kinematics::State& state);
      */
 };
 
@@ -323,7 +323,7 @@ public:
 	 * 
 	 * The method might not have an effect on all constrainttypes.
 	 */
-	void update(const State& state);
+	void update(const rw::kinematics::State& state);
 
     /**
      * @brief True if the work cell is considered to be in collision for the
@@ -352,7 +352,7 @@ public:
 	static rw::core::Ptr<QConstraint> make(
 		rw::core::Ptr<StateConstraint> detector,
 		rw::core::Ptr<const Device> device,
-        const State& state);
+        const rw::kinematics::State& state);
 
     /**
      * @brief Map a collision detector to a configuration constraint.
@@ -360,7 +360,7 @@ public:
 	static rw::core::Ptr<QConstraint> make(
 		rw::core::Ptr<CollisionDetector> detector,
 		rw::core::Ptr<const Device> device,
-        const State& state);
+        const rw::kinematics::State& state);
 
     /**
      * @brief Combine a set of configuration constraints into a single
@@ -437,7 +437,7 @@ protected:
 	 *
 	 * @param state [in] the state.
 	 */
-	virtual void doUpdate(const State& state);
+	virtual void doUpdate(const rw::kinematics::State& state);
 
     /**
      * Constructor
@@ -830,7 +830,7 @@ public:
      */
 	static rw::core::Ptr<QIKSampler> make(
 		rw::core::Ptr<Device> device,
-        const State& state,
+        const rw::kinematics::State& state,
 		rw::core::Ptr<IterativeIK> solver = NULL,
 		rw::core::Ptr<QSampler> seed = NULL,
         int maxAttempts = -1);
@@ -927,13 +927,13 @@ public:
         rw::core::PropertyMap& getProperties(){
             return $self->rw::pathplanning::PathPlanner<rw::math::Q,const rw::math::Q>::getProperties();
         }
-        static rw::core::Ptr<QToQPlanner> makeRRT(rw::core::Ptr<CollisionDetector> cdect, rw::core::Ptr<Device> dev, const State& state){
+        static rw::core::Ptr<QToQPlanner> makeRRT(rw::core::Ptr<CollisionDetector> cdect, rw::core::Ptr<Device> dev, const rw::kinematics::State& state){
             const rw::pathplanning::PlannerConstraint constraint = rw::pathplanning::PlannerConstraint::make(
                 cdect.get(), dev, state);
             return rwlibs::pathplanners::RRTPlanner::makeQToQPlanner(constraint, dev);
         }
 
-        static rw::core::Ptr<QToQPlanner> makeSBL(rw::core::Ptr<CollisionDetector> cdect, rw::core::Ptr<Device> dev, const State& state){
+        static rw::core::Ptr<QToQPlanner> makeSBL(rw::core::Ptr<CollisionDetector> cdect, rw::core::Ptr<Device> dev, const rw::kinematics::State& state){
             rw::pathplanning::QConstraint::Ptr qconstraint = rw::pathplanning::QConstraint::make(cdect.get(), dev, state);
             return rwlibs::pathplanners::SBLPlanner::makeQToQPlanner(rwlibs::pathplanners::SBLSetup::make(qconstraint, rw::pathplanning::QEdgeConstraintIncremental::makeDefault(qconstraint, dev), dev));
         }
@@ -1008,7 +1008,7 @@ public:
      * @brief True if the work cell is considered to be in collision for the
      * work cell state \b state.
      */
-    bool inCollision(const State& state) const;
+    bool inCollision(const rw::kinematics::State& state) const;
 
     /**
      * Destructor
@@ -1034,7 +1034,7 @@ protected:
     /**
      * @brief Subclass implementation of the inCollision() method.
      */
-    virtual bool doInCollision(const State& state) const = 0;
+    virtual bool doInCollision(const rw::kinematics::State& state) const = 0;
 
     /**
      * @brief Set a log.

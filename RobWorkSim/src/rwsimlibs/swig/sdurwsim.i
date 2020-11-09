@@ -2,6 +2,7 @@
 
 %{
 #include <RobWorkSimConfig.hpp>
+#include <rw/kinematics/FixedFrame.hpp>
 #include <rwlibs/swig/ScriptTypes.hpp>
 #include <rwsimlibs/swig/ScriptTypes.hpp>
 #if defined (SWIGLUA)
@@ -30,7 +31,7 @@ struct callback_data {
   jobject obj;
 };
 
-void java_ThreadSimulatorStepCallback(ThreadSimulator* sim, State &state, void *ptr) {
+void java_ThreadSimulatorStepCallback(ThreadSimulator* sim, rw::kinematics::State &state, void *ptr) {
   struct callback_data *data = (struct callback_data*) ptr;
   JNIEnv* env = data->env;
   bool fromThread = false;
@@ -92,6 +93,7 @@ void java_ThreadSimulatorStepCallback(ThreadSimulator* sim, State &state, void *
 %import <rwlibs/swig/sdurw_core.i>
 %import <rwlibs/swig/sdurw_common.i>
 %import <rwlibs/swig/sdurw_math.i>
+%import <rwlibs/swig/sdurw_kinematics.i>
 %import <rwlibs/swig/sdurw.i>
 %import <rwlibs/swig/sdurw_assembly.i>
 %import <rwlibs/swig/sdurw_control.i>
@@ -106,6 +108,7 @@ import org.robwork.sdurw.*;
 import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_common.*;
 import org.robwork.sdurw_math.*;
+import org.robwork.sdurw_kinematics.*;
 import org.robwork.sdurw_assembly.*;
 import org.robwork.sdurw_control.*;
 import org.robwork.sdurw_simulation.*;
@@ -116,6 +119,7 @@ import org.robwork.sdurw.*;
 import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_common.*;
 import org.robwork.sdurw_math.*;
+import org.robwork.sdurw_kinematics.*;
 %}
 %pragma(java) jniclassimports=%{
 import org.robwork.sdurw.*;
@@ -125,6 +129,7 @@ import org.robwork.sdurw_task.*;
 import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_common.*;
 import org.robwork.sdurw_math.*;
+import org.robwork.sdurw_kinematics.*;
 %}
 
 #if (defined(SWIGPYTHON) || defined(SWIGLUA))
@@ -168,7 +173,7 @@ public:
 	ThreadSimulatorStepCallbackEnv(cThreadSimulatorStepCallback fct, void *userdata);
 	void set(cThreadSimulatorStepCallback fct, void *userdata);
 	%rename(dispatch) operator();
-	void operator()(ThreadSimulator* sim, State& state);
+	void operator()(ThreadSimulator* sim, rw::kinematics::State& state);
 };
 #endif
 
@@ -191,10 +196,10 @@ public:
 	//ContactDetector(rw::core::Ptr<WorkCell> workcell, rw::core::Ptr<ProximityFilterStrategy> filter);
 	virtual ~ContactDetector();
 	//void setProximityFilterStrategy(rw::proximity::ProximityFilterStrategy::Ptr filter);
-	virtual std::vector<Contact> findContacts(const State& state);
-	virtual std::vector<Contact> findContacts(const State& state, ContactDetectorData &data);
-	virtual std::vector<Contact> findContacts(const State& state, ContactDetectorData &data, ContactDetectorTracking& tracking);
-	virtual std::vector<Contact> updateContacts(const State& state, ContactDetectorData &data, ContactDetectorTracking& tracking);
+	virtual std::vector<Contact> findContacts(const rw::kinematics::State& state);
+	virtual std::vector<Contact> findContacts(const rw::kinematics::State& state, ContactDetectorData &data);
+	virtual std::vector<Contact> findContacts(const rw::kinematics::State& state, ContactDetectorData &data, ContactDetectorTracking& tracking);
+	virtual std::vector<Contact> updateContacts(const rw::kinematics::State& state, ContactDetectorData &data, ContactDetectorTracking& tracking);
 	//virtual rw::core::Ptr<ProximityFilterStrategy> getProximityFilterStrategy() const;
 	virtual double getTimer() const;
 	virtual void setTimer(double value = 0);
@@ -319,8 +324,8 @@ public:
 	virtual ~Contact();
 //	ContactModel::Ptr getModelA() const;
 //	ContactModel::Ptr getModelB() const;
-	const Frame* getFrameA() const;
-	const Frame* getFrameB() const;
+	const rw::kinematics::Frame* getFrameA() const;
+	const rw::kinematics::Frame* getFrameB() const;
 	rw::math::Transform3D<double> aTb() const;
 	rw::math::Vector3D<double> getPointA() const;
 	rw::math::Vector3D<double> getPointB() const;
@@ -328,8 +333,8 @@ public:
 	double getDepth() const;
 //	void setModelA(ContactModel::Ptr modelA);
 //	void setModelB(ContactModel::Ptr modelB);
-	void setFrameA(const Frame* frame);
-	void setFrameB(const Frame* frame);
+	void setFrameA(const rw::kinematics::Frame* Aframe);
+	void setFrameB(const rw::kinematics::Frame* Bframe);
 	void setTransform(rw::math::Transform3D<double> aTb);
 	void setPointA(rw::math::Vector3D<double> pointA);
 	void setPointB(rw::math::Vector3D<double> pointB);
@@ -356,9 +361,9 @@ public:
 
     void setSampleTime(double stime);
 
-    //void update(const rwlibs::simulation::Simulator::UpdateInfo& info, State& state);
+    //void update(const rwlibs::simulation::Simulator::UpdateInfo& info, rw::kinematics::State& state);
 
-    //void reset(const State& state);
+    //void reset(const rw::kinematics::State& state);
 
     //Controller* getController(){ return this; };
 
@@ -413,8 +418,8 @@ public:
 	void setSampleTime(double stime);
 
 	// From SimulatedController
-	void update(const Simulator::UpdateInfo& info, State& state);
-	void reset(const State& state);
+	void update(const Simulator::UpdateInfo& info, rw::kinematics::State& state);
+	void reset(const rw::kinematics::State& state);
 	Controller* getController();
 	std::string getControllerName();
     void setEnabled(bool enabled);
@@ -499,12 +504,12 @@ public:
 
 	// simulated controller stuff
 
-	//void update(const rwlibs::simulation::Simulator::UpdateInfo& info, State& state);
+	//void update(const rwlibs::simulation::Simulator::UpdateInfo& info, rw::kinematics::State& state);
 
 
     std::string getControllerName();
 
-    void reset(const State& state);
+    void reset(const rw::kinematics::State& state);
 
     //rwlibs::control::Controller* getController();
 
@@ -542,7 +547,7 @@ public:
     rw::math::Vector3D<double> masscenter;
     rw::math::InertiaMatrix<double> inertia;
     std::string integratorType;
-    //std::vector<Frame*> frames;
+    //std::vector<rw::kinematics::Frame*> frames;
 
 #if !defined(SWIGPYTHON)
     void print() const;
@@ -554,10 +559,10 @@ class Body
 {
 public:
     //typedef rw::core::Ptr<Body> Ptr;
-    Frame* getBodyFrame() const;
+    rw::kinematics::Frame* getBodyFrame() const;
 
     //const std::vector<rw::geometry::Geometry::Ptr>& getGeometry();
-    const std::vector<Frame*>& getFrames();
+    const std::vector<rw::kinematics::Frame*>& getFrames();
 
 #if !defined(SWIGJAVA)
     const BodyInfo& getInfo() const;
@@ -573,46 +578,46 @@ public:
     void setMass(double m, const rw::math::InertiaMatrix<double>& inertia, const rw::math::Vector3D<double>& com);
 
     //! interface functions
-    virtual rw::math::Vector3D<double> getPointVelW(const rw::math::Vector3D<double>& p, const State& state) const = 0;
-    virtual void reset(State &state) = 0;
-    virtual double calcEnergy(const State& state) = 0;
-    virtual void setForce(const rw::math::Vector3D<double>& f, State& state) = 0;
-    virtual rw::math::Vector3D<double> getForce(const State& state) const = 0;
-    virtual void addForce(const rw::math::Vector3D<double>& force, State& state) = 0;
-    virtual void setTorque(const rw::math::Vector3D<double>& t, State& state) = 0;
-    virtual void addTorque(const rw::math::Vector3D<double>& t, State& state) = 0;
-    virtual rw::math::Vector3D<double> getTorque(const State& state) const = 0;
+    virtual rw::math::Vector3D<double> getPointVelW(const rw::math::Vector3D<double>& p, const rw::kinematics::State& state) const = 0;
+    virtual void reset(rw::kinematics::State &state) = 0;
+    virtual double calcEnergy(const rw::kinematics::State& state) = 0;
+    virtual void setForce(const rw::math::Vector3D<double>& f, rw::kinematics::State& state) = 0;
+    virtual rw::math::Vector3D<double> getForce(const rw::kinematics::State& state) const = 0;
+    virtual void addForce(const rw::math::Vector3D<double>& force, rw::kinematics::State& state) = 0;
+    virtual void setTorque(const rw::math::Vector3D<double>& t, rw::kinematics::State& state) = 0;
+    virtual void addTorque(const rw::math::Vector3D<double>& t, rw::kinematics::State& state) = 0;
+    virtual rw::math::Vector3D<double> getTorque(const rw::kinematics::State& state) const = 0;
 
-    virtual Frame* getParentFrame(const State& state) const;
-    virtual void setForceW(const rw::math::Vector3D<double>& f, State& state);
-    virtual rw::math::Vector3D<double> getForceW(const State& state) const;
-    virtual void addForceW(const rw::math::Vector3D<double>& force, State& state);
+    virtual rw::kinematics::Frame* getParentFrame(const rw::kinematics::State& state) const;
+    virtual void setForceW(const rw::math::Vector3D<double>& f, rw::kinematics::State& state);
+    virtual rw::math::Vector3D<double> getForceW(const rw::kinematics::State& state) const;
+    virtual void addForceW(const rw::math::Vector3D<double>& force, rw::kinematics::State& state);
     void addForceToPos(const rw::math::Vector3D<double>& force,
                                const rw::math::Vector3D<double>& pos,
-                               State& state);
+                               rw::kinematics::State& state);
     virtual void addForceWToPosW(const rw::math::Vector3D<double>& force,
                                  const rw::math::Vector3D<double>& pos,
-                                 State& state);
-    virtual void setTorqueW(const rw::math::Vector3D<double>& t, State& state);
-    virtual void addTorqueW(const rw::math::Vector3D<double>& t, State& state);
-    virtual rw::math::Vector3D<double> getTorqueW(State& state);
-    virtual rw::math::Transform3D<double> getTransformW(const State& state);
+                                 rw::kinematics::State& state);
+    virtual void setTorqueW(const rw::math::Vector3D<double>& t, rw::kinematics::State& state);
+    virtual void addTorqueW(const rw::math::Vector3D<double>& t, rw::kinematics::State& state);
+    virtual rw::math::Vector3D<double> getTorqueW(rw::kinematics::State& state);
+    virtual rw::math::Transform3D<double> getTransformW(const rw::kinematics::State& state);
 
-    rw::math::Transform3D<double> pTbf(const State& state);
+    rw::math::Transform3D<double> pTbf(const rw::kinematics::State& state);
 
-    rw::math::Transform3D<double> pTcom(const State& state);
+    rw::math::Transform3D<double> pTcom(const rw::kinematics::State& state);
 
-    rw::math::Transform3D<double> wTbf(const State& state);
+    rw::math::Transform3D<double> wTbf(const rw::kinematics::State& state);
     // world
-    rw::math::Transform3D<double> wTcom(const State& state);
+    rw::math::Transform3D<double> wTcom(const rw::kinematics::State& state);
 
     %extend {
 
-        rw::math::Transform3D<double> place(rw::core::Ptr<CollisionDetector> coldect, const State& state, const rw::math::Vector3D<double>& dir){
+        rw::math::Transform3D<double> place(rw::core::Ptr<CollisionDetector> coldect, const rw::kinematics::State& state, const rw::math::Vector3D<double>& dir){
             return rwsim::dynamics::BodyUtil::placeBody($self, coldect, state, dir);
         }
 
-        rw::math::Transform3D<double> place(rw::core::Ptr<CollisionDetector> coldect, const State& state){
+        rw::math::Transform3D<double> place(rw::core::Ptr<CollisionDetector> coldect, const rw::kinematics::State& state){
             return rwsim::dynamics::BodyUtil::placeBody($self, coldect, state, -rw::math::Vector3D<double>::z());
         }
         
@@ -645,47 +650,47 @@ class RigidBody : public Body
 public:
     RigidBody(
         const BodyInfo& info,
-        MovableFrame* frame,
+        rw::kinematics::MovableFrame* frame,
         rw::core::Ptr<Geometry> geom
         );
 
     RigidBody(
         const BodyInfo& info,
-        MovableFrame* frame,
+        rw::kinematics::MovableFrame* frame,
         const std::vector<rw::core::Ptr<Geometry> >& geoms
         );
 
     //rw::math::InertiaMatrix<double> getEffectiveMassW(const rw::math::Vector3D<double>& wPc);
-    Frame* getParent(State& state) const;
-    rw::math::Transform3D<double> getPTBody(const State& state) const;
-    void setPTBody(const rw::math::Transform3D<double>& pTb, State& state);
-    rw::math::Transform3D<double> getWTBody(const State& state) const;
+    rw::kinematics::Frame* getParent(rw::kinematics::State& state) const;
+    rw::math::Transform3D<double> getPTBody(const rw::kinematics::State& state) const;
+    void setPTBody(const rw::math::Transform3D<double>& pTb, rw::kinematics::State& state);
+    rw::math::Transform3D<double> getWTBody(const rw::kinematics::State& state) const;
 
-    rw::math::Transform3D<double> getWTParent(const State& state) const;
-    rw::math::Vector3D<double> getLinVel(const State& state) const;
+    rw::math::Transform3D<double> getWTParent(const rw::kinematics::State& state) const;
+    rw::math::Vector3D<double> getLinVel(const rw::kinematics::State& state) const;
 
     /**
      * @brief return the linear velocity described in world frame
      */
-    rw::math::Vector3D<double> getLinVelW(const State& state) const;
-    void setLinVel(const rw::math::Vector3D<double> &lvel, State& state);
-    void setLinVelW(const rw::math::Vector3D<double> &lvel, State& state);
-    rw::math::Vector3D<double> getAngVel(const State& state) const ;
-    rw::math::Vector3D<double> getAngVelW(State& state);
-    void setAngVel(const rw::math::Vector3D<double> &avel, State& state);
-    void setAngVelW(const rw::math::Vector3D<double> &avel, State& state);
-    rw::math::Vector3D<double> getPointVel(const rw::math::Vector3D<double>& p, const State& state);
+    rw::math::Vector3D<double> getLinVelW(const rw::kinematics::State& state) const;
+    void setLinVel(const rw::math::Vector3D<double> &lvel, rw::kinematics::State& state);
+    void setLinVelW(const rw::math::Vector3D<double> &lvel, rw::kinematics::State& state);
+    rw::math::Vector3D<double> getAngVel(const rw::kinematics::State& state) const ;
+    rw::math::Vector3D<double> getAngVelW(rw::kinematics::State& state);
+    void setAngVel(const rw::math::Vector3D<double> &avel, rw::kinematics::State& state);
+    void setAngVelW(const rw::math::Vector3D<double> &avel, rw::kinematics::State& state);
+    rw::math::Vector3D<double> getPointVel(const rw::math::Vector3D<double>& p, const rw::kinematics::State& state);
     double getMass() const;
     const rw::math::InertiaMatrix<double>& getBodyInertia() const;
     const rw::math::InertiaMatrix<double>& getBodyInertiaInv() const;
-    rw::math::InertiaMatrix<double> calcInertiaTensorInv(const State& state) const;
-    //rw::math::InertiaMatrix<double> calcInertiaTensorInvW(const State& state) const;
-    rw::math::InertiaMatrix<double> calcInertiaTensor(const State& state) const;
-    MovableFrame* getMovableFrame();
-    rw::math::InertiaMatrix<double> calcEffectiveMass(const rw::math::Vector3D<double>& wPc, const State& state) const;
-    rw::math::InertiaMatrix<double> calcEffectiveMassW(const rw::math::Vector3D<double>& wPc, const State& state) const;
-    //rw::math::InertiaMatrix<double> calcEffectiveInertia(const State& state) const;
-    //rw::math::InertiaMatrix<double> calcEffectiveInertiaInv(const State& state) const;
+    rw::math::InertiaMatrix<double> calcInertiaTensorInv(const rw::kinematics::State& state) const;
+    //rw::math::InertiaMatrix<double> calcInertiaTensorInvW(const rw::kinematics::State& state) const;
+    rw::math::InertiaMatrix<double> calcInertiaTensor(const rw::kinematics::State& state) const;
+    rw::kinematics::MovableFrame* getMovableFrame();
+    rw::math::InertiaMatrix<double> calcEffectiveMass(const rw::math::Vector3D<double>& wPc, const rw::kinematics::State& state) const;
+    rw::math::InertiaMatrix<double> calcEffectiveMassW(const rw::math::Vector3D<double>& wPc, const rw::kinematics::State& state) const;
+    //rw::math::InertiaMatrix<double> calcEffectiveInertia(const rw::kinematics::State& state) const;
+    //rw::math::InertiaMatrix<double> calcEffectiveInertiaInv(const rw::kinematics::State& state) const;
 };
 
 %template (RigidBodyPtr) rw::core::Ptr<RigidBody>;
@@ -736,19 +741,19 @@ OWNEDPTR(Constraint);
 %nodefaultctor DynamicDevice;
 class DynamicDevice {
 public:
-    virtual rw::math::Q getQ(const State& state);
+    virtual rw::math::Q getQ(const rw::kinematics::State& state);
 
-    virtual void setQ(const rw::math::Q &q, State& state);
+    virtual void setQ(const rw::math::Q &q, rw::kinematics::State& state);
 
     rw::core::Ptr<Device> getKinematicModel();
     rw::core::Ptr<Body> getBase();
 
-    virtual rw::math::Q getJointVelocities(const State& state);
-    virtual void setJointVelocities(const rw::math::Q &vel, State& state);
+    virtual rw::math::Q getJointVelocities(const rw::kinematics::State& state);
+    virtual void setJointVelocities(const rw::math::Q &vel, rw::kinematics::State& state);
 
     //deprecated
-    virtual rw::math::Q getVelocity(const State& state);
-    virtual void setVelocity(const rw::math::Q& vel, State& state);
+    virtual rw::math::Q getVelocity(const rw::kinematics::State& state);
+    virtual void setVelocity(const rw::math::Q& vel, rw::kinematics::State& state);
 
     virtual std::vector<rw::core::Ptr<Body> > getLinks();
 
@@ -765,36 +770,36 @@ class RigidDevice : public DynamicDevice {
 
         rw::math::Q getMotorForceLimits();
 
-        rw::math::Q getJointVelocities(const State& state);
-        double getJointVelocity(int i, const State& state);
+        rw::math::Q getJointVelocities(const rw::kinematics::State& state);
+        double getJointVelocity(int i, const rw::kinematics::State& state);
 
-        void setJointVelocities(const rw::math::Q& q, State& state);
-        void setJointVelocity(double vel, int i, State& state);
+        void setJointVelocities(const rw::math::Q& q, rw::kinematics::State& state);
+        void setJointVelocity(double vel, int i, rw::kinematics::State& state);
 
         typedef enum{Force, Velocity} MotorControlMode;
 
-        //std::vector<MotorControlMode> getMotorModes(const State& state);
-        MotorControlMode getMotorMode(int i, const State& state);
+        //std::vector<MotorControlMode> getMotorModes(const rw::kinematics::State& state);
+        MotorControlMode getMotorMode(int i, const rw::kinematics::State& state);
 
-        rw::math::Q getMotorTargets(const State& state);
-        double getMotorTarget(int i, const State& state);
+        rw::math::Q getMotorTargets(const rw::kinematics::State& state);
+        double getMotorTarget(int i, const rw::kinematics::State& state);
 
-        void setMotorTargets(const rw::math::Q& q, State& state);
-        void setMotorForceTargets(const rw::math::Q& force, State& state);
-        void setMotorVelocityTargets(const rw::math::Q& vel, State& state);
+        void setMotorTargets(const rw::math::Q& q, rw::kinematics::State& state);
+        void setMotorForceTargets(const rw::math::Q& force, rw::kinematics::State& state);
+        void setMotorVelocityTargets(const rw::math::Q& vel, rw::kinematics::State& state);
 
-        void setMotorTarget(double q, int i, State& state);
-        void setMotorForceTarget(double force, int i, State& state);
-        void setMotorVelocityTarget(double vel, int i, State& state);
+        void setMotorTarget(double q, int i, rw::kinematics::State& state);
+        void setMotorForceTarget(double force, int i, rw::kinematics::State& state);
+        void setMotorVelocityTarget(double vel, int i, rw::kinematics::State& state);
 
         rw::core::Ptr<JointDevice> getJointDevice();
         std::vector<rw::core::Ptr<Body> > getLinks();
 
-        //virtual void registerStateData(StateStructure::Ptr statestructure);
+        //virtual void registerStateData(rw::kinematics::StateStructure::Ptr statestructure);
 
     public: ///// DEPRECATED FUNCTIONS
         //rw::math::Q getForceLimit() { return getMotorForceLimits(); }
-        // void setVelocity(rw::math::Q& vel, State& state){ setJointVelocities(vel, state);}
+        // void setVelocity(rw::math::Q& vel, rw::kinematics::State& state){ setJointVelocities(vel, state);}
     };
 
 %template (RigidDevicePtr) rw::core::Ptr<RigidDevice>;
@@ -819,24 +824,24 @@ public:
 
     rw::math::Q getSpringParamsClosed();
 
-    rw::math::Q getJointVelocities(const State& state);
+    rw::math::Q getJointVelocities(const rw::kinematics::State& state);
 
-    void setJointVelocities(const rw::math::Q &vel, State& state);
+    void setJointVelocities(const rw::math::Q &vel, rw::kinematics::State& state);
 
-    void addForceTorque(const rw::math::Q &forceTorque, State& state);
+    void addForceTorque(const rw::math::Q &forceTorque, rw::kinematics::State& state);
 
     rw::math::Transform3D<double> getOffset();
 
     std::vector<rw::core::Ptr<Body> > getLinks();
 
-    bool isClosed(const State& state);
-    void setClosed(bool closed, State& state);
+    bool isClosed(const rw::kinematics::State& state);
+    void setClosed(bool closed, rw::kinematics::State& state);
 
-    rw::core::Ptr<Body> getContactBody(const State& state);
-    void setContactBody(rw::core::Ptr<Body> b, State& state);
+    rw::core::Ptr<Body> getContactBody(const rw::kinematics::State& state);
+    void setContactBody(rw::core::Ptr<Body> b, rw::kinematics::State& state);
 
-    double getPressure(const State& state);
-    void setPressure(double pressure, State& state);
+    double getPressure(const rw::kinematics::State& state);
+    void setPressure(double pressure, rw::kinematics::State& state);
 
 };
 
@@ -881,7 +886,7 @@ public:
 
     const std::vector<rw::core::Ptr<Body> >& getBodies();
     void addBody(rw::core::Ptr<Body> body);
-    rw::core::Ptr<Body> getBody(Frame *f);
+    rw::core::Ptr<Body> getBody(rw::kinematics::Frame *f);
     
     void addConstraint(rw::core::Ptr<Constraint> constraint);
     const std::vector<rw::core::Ptr<Constraint> >& getConstraints() const;
@@ -970,48 +975,48 @@ public:
     SimulatedFTSensor(const std::string& name,
                       rw::core::Ptr<Body> body,
                       rw::core::Ptr<Body> body1,
-                      Frame* frame=NULL);
+                      rw::kinematics::Frame* frame=NULL);
 
 	virtual ~SimulatedFTSensor();
 
-	void update(const Simulator::UpdateInfo& info, State& state);
-	void reset(const State& state);
+	void update(const Simulator::UpdateInfo& info, rw::kinematics::State& state);
+	void reset(const rw::kinematics::State& state);
 
 	void addForceW(const rw::math::Vector3D<double>& point,
 				   const rw::math::Vector3D<double>& force,
 				   const rw::math::Vector3D<double>& cnormal,
-				   State& state,
+				   rw::kinematics::State& state,
 				   rw::core::Ptr<Body> body = NULL);
 
 	void addForce(const rw::math::Vector3D<double>& point,
 				  const rw::math::Vector3D<double>& force,
 				  const rw::math::Vector3D<double>& cnormal,
-				  State& state,
+				  rw::kinematics::State& state,
 				  rw::core::Ptr<Body> body=NULL);
 
     void addWrenchToCOM(
                   const rw::math::Vector3D<double>& force,
                   const rw::math::Vector3D<double>& torque,
-                  State& state,
+                  rw::kinematics::State& state,
                   rw::core::Ptr<Body> body=NULL);
 
     void addWrenchWToCOM(
                   const rw::math::Vector3D<double>& force,
                   const rw::math::Vector3D<double>& torque,
-                  State& state,
+                  rw::kinematics::State& state,
                   rw::core::Ptr<Body> body=NULL);
 
     rw::math::Transform3D<double> getTransform();
 
-    rw::math::Vector3D<double> getForce( State& state );
+    rw::math::Vector3D<double> getForce( rw::kinematics::State& state );
     
-	rw::math::Vector3D<double> getTorque( State& state );
+	rw::math::Vector3D<double> getTorque( rw::kinematics::State& state );
 
 	//double getMaxTorque();
 
 	//double getMaxForce();
 
-	Frame* getSensorFrame();
+	rw::kinematics::Frame* getSensorFrame();
 
 	void acquire();
 
@@ -1035,9 +1040,9 @@ public:
 	virtual ~PhysicsEngine(){};
 	virtual void load(rw::core::Ptr<DynamicWorkCell> dwc) = 0;
 	virtual bool setContactDetector(rw::core::Ptr<ContactDetector> detector) = 0;
-	virtual void step(double dt, State &state) = 0;
-	virtual void resetScene(State& state) = 0;
-	virtual void initPhysics(State& state) = 0;
+	virtual void step(double dt, rw::kinematics::State &state) = 0;
+	virtual void resetScene(rw::kinematics::State& state) = 0;
+	virtual void initPhysics(rw::kinematics::State& state) = 0;
 	virtual void exitPhysics() = 0;
 	virtual double getTime() = 0;
 	virtual void setEnabled(rw::core::Ptr<Body> body, bool enabled) = 0;
@@ -1047,9 +1052,9 @@ public:
 	virtual void emitPropertyChanged() = 0;
 	virtual void addController(rw::core::Ptr<SimulatedController> controller) = 0;
 	virtual void removeController(rw::core::Ptr<SimulatedController> controller) = 0;
-	virtual void addBody(rw::core::Ptr<Body> body, State &state) = 0;
-	virtual void addDevice(rw::core::Ptr<DynamicDevice> dev, State &state) = 0;
-	virtual void addSensor(rw::core::Ptr<SimulatedSensor> sensor, State &state) = 0;
+	virtual void addBody(rw::core::Ptr<Body> body, rw::kinematics::State &state) = 0;
+	virtual void addDevice(rw::core::Ptr<DynamicDevice> dev, rw::kinematics::State &state) = 0;
+	virtual void addSensor(rw::core::Ptr<SimulatedSensor> sensor, rw::kinematics::State &state) = 0;
 	virtual void removeSensor(rw::core::Ptr<SimulatedSensor> sensor) = 0;
 	virtual void attach(rw::core::Ptr<Body> b1, rw::core::Ptr<Body> b2) = 0;
 	virtual void detach(rw::core::Ptr<Body> b1, rw::core::Ptr<Body> b2) = 0;
@@ -1083,7 +1088,7 @@ public:
     }
     void exitPhysics();
 	double getTime();
-	State& getState();
+	rw::kinematics::State& getState();
 	void setEnabled(rw::core::Ptr<Body> body, bool enabled);
 
 	//drawable::SimulatorDebugRender::Ptr createDebugRender();
@@ -1092,20 +1097,20 @@ public:
 	void addController(rw::core::Ptr<SimulatedController> controller);
 	void removeController(rw::core::Ptr<SimulatedController> controller);
 
-	void addBody(rw::core::Ptr<Body> body, State &state);
-	void addDevice(rw::core::Ptr<DynamicDevice> dev, State &state);
-	void addSensor(rw::core::Ptr<SimulatedSensor> sensor, State &state);
+	void addBody(rw::core::Ptr<Body> body, rw::kinematics::State &state);
+	void addDevice(rw::core::Ptr<DynamicDevice> dev, rw::kinematics::State &state);
+	void addSensor(rw::core::Ptr<SimulatedSensor> sensor, rw::kinematics::State &state);
 	void removeSensor(rw::core::Ptr<SimulatedSensor> sensor);
 	std::vector<rw::core::Ptr<SimulatedSensor> > getSensors();
 
 	 // Simulator interface
      void step(double dt);
-     void reset(State& state);
-	 void init(State& state);
-	 void setEnabled(Frame* f, bool enabled);
+     void reset(rw::kinematics::State& state);
+	 void init(rw::kinematics::State& state);
+	 void setEnabled(rw::kinematics::Frame* f, bool enabled);
 	 void setDynamicsEnabled(rw::core::Ptr<Body> body, bool enabled);
 	 // interfaces for manipulating/controlling bodies
-	 void setTarget(rw::core::Ptr<Body> body, const rw::math::Transform3D<double>& t3d, State& state); 
+	 void setTarget(rw::core::Ptr<Body> body, const rw::math::Transform3D<double>& t3d, rw::kinematics::State& state); 
 	 void setTarget(rw::core::Ptr<Body> body, rw::core::Ptr<Trajectory<rw::math::Transform3D<double> > > traj);
 
 	 void disableBodyControl( rw::core::Ptr<Body> body );
@@ -1144,7 +1149,7 @@ public:
 
 class ThreadSimulator {
 	public:
-		ThreadSimulator(rw::core::Ptr<DynamicSimulator> simulator, const State &state);
+		ThreadSimulator(rw::core::Ptr<DynamicSimulator> simulator, const rw::kinematics::State &state);
 		virtual ~ThreadSimulator();
 		//void setPeriodMs(long period);
 		void setRealTimeScale(double scale);
@@ -1153,9 +1158,9 @@ class ThreadSimulator {
 		void stop();
 		void postStop();
 		void step();
-		State getState();
-		void setState(const State& state);
-		void reset(const State& state);
+		rw::kinematics::State getState();
+		void setState(const rw::kinematics::State& state);
+		void reset(const rw::kinematics::State& state);
 		bool isRunning();
 		double getTime();
 		rw::core::Ptr<DynamicSimulator> getSimulator();
@@ -1190,8 +1195,8 @@ public:
 	size_t getNrTargets();
 	rw::core::Ptr<ThreadSimulator> getSimulator();
 	std::vector<rw::core::Ptr<ThreadSimulator> > getSimulators();
-	void init(rw::core::Ptr<DynamicWorkCell> dwc, const State& initState);
-	void startSimulation(const State& initState);
+	void init(rw::core::Ptr<DynamicWorkCell> dwc, const rw::kinematics::State& initState);
+	void startSimulation(const rw::kinematics::State& initState);
 	void pauseSimulation();
 	void resumeSimulation();
 	bool isRunning();
@@ -1260,9 +1265,9 @@ public:
 		// PhysicsEngine interface
 		void load(rw::core::Ptr<DynamicWorkCell> dwc);
 		bool setContactDetector(rw::core::Ptr<ContactDetector> detector);
-		void step(double dt, State& state);
-		void resetScene(State& state);
-		void initPhysics(State& state);
+		void step(double dt, rw::kinematics::State& state);
+		void resetScene(rw::kinematics::State& state);
+		void initPhysics(rw::kinematics::State& state);
 		void exitPhysics();
 		double getTime();
 		void setEnabled(rw::core::Ptr<Body> body, bool enabled);
@@ -1272,9 +1277,9 @@ public:
 		void emitPropertyChanged();
 		void addController(rw::core::Ptr<SimulatedController> controller);
 		void removeController(rw::core::Ptr<SimulatedController> controller);
-		void addBody(rw::core::Ptr<Body> body, State &state);
-		void addDevice(rw::core::Ptr<DynamicDevice> dev, State &state);
-		void addSensor(rw::core::Ptr<SimulatedSensor> sensor, State &state);
+		void addBody(rw::core::Ptr<Body> body, rw::kinematics::State &state);
+		void addDevice(rw::core::Ptr<DynamicDevice> dev, rw::kinematics::State &state);
+		void addSensor(rw::core::Ptr<SimulatedSensor> sensor, rw::kinematics::State &state);
 		void removeSensor(rw::core::Ptr<SimulatedSensor> sensor);
 		void attach(rw::core::Ptr<Body> b1, rw::core::Ptr<Body> b2);
 		void detach(rw::core::Ptr<Body> b1, rw::core::Ptr<Body> b2);

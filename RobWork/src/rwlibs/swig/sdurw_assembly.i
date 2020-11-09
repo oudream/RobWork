@@ -86,7 +86,7 @@ public:
 	virtual rw::core::Ptr<ControlState> createState() const;
 	*/
 	
-	//virtual rw::core::Ptr<AssemblyControlResponse> update(rw::core::Ptr<AssemblyParameterization> parameters, rw::core::Ptr<AssemblyState> real, rw::core::Ptr<AssemblyState> assumed, rw::core::Ptr<ControlState> controlState, State &state, FTSensor* ftSensor, double time) const = 0;
+	//virtual rw::core::Ptr<AssemblyControlResponse> update(rw::core::Ptr<AssemblyParameterization> parameters, rw::core::Ptr<AssemblyState> real, rw::core::Ptr<AssemblyState> assumed, rw::core::Ptr<ControlState> controlState, rw::kinematics::State &state, FTSensor* ftSensor, double time) const = 0;
 	virtual rw::math::Transform3D<double>  getApproach(rw::core::Ptr<AssemblyParameterization> parameters) = 0;
 	virtual std::string getID() = 0;
 	virtual std::string getDescription() = 0;

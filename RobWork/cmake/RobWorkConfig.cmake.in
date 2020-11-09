@@ -143,49 +143,50 @@ if(NOT TARGET sdurw)
     include("${RWCFG_ROOT}/RobWorkTargets.cmake")
 endif()
 
-# check whether RobWorkConfig.cmake is found into a RobWork installation or in a build tree
-if(EXISTS "${RWCFG_ROOT}/../src/RobWorkConfig.hpp")
-    # Found RobWorkConfig.cmake in a build tree of RobWork
-    set(succmsg "RobWork: Found a RobWork build tree")
-    set(RW_ROOT "${RWCFG_ROOT}/..")
-
-    set(RW_INCLUDE_EXT "${RW_ROOT}/ext")
-    set(RW_INCLUDE_SRC "${RW_ROOT}/src")
-    set(RW_LIBS "${RW_ROOT}/libs/${RW_BUILD_TYPE}")
-    set(IS_INSTALL FALSE)
-else()
-    set(succmsg "RobWork: Found a RobWork installation")
-    set(IS_INSTALL TRUE)
-    # Found a RobWork installation
-    if(WIN32)
-        # RobWorkConfig.cmake is installed to RW_ROOT/cmake
-        set(RW_ROOT "${RWCFG_ROOT}/../..")
-        set(RW_INCLUDE_EXT "${RWCFG_ROOT}/../ext")
-        set(RW_INCLUDE_SRC
-            "${RW_ROOT}/include/robwork-${RobWork_VERSION_MAJOR}.${RobWork_VERSION_MINOR}"
-        )
-        set(RW_LIBS "${RW_ROOT}/lib")
-    else()
-        # RobWorkConfig.cmake is installed to RW_INTALL/share/robwork-x.y/cmake
-
-        set(RW_ROOT "${RWCFG_ROOT}")
-        set(RW_INSTALL "${RWCFG_ROOT}/../../..")
-        set(RW_LIBS "${RW_INSTALL}/lib")
-        set(RW_INCLUDE_SRC
-            "${RW_INSTALL}/include/robwork-${RobWork_VERSION_MAJOR}.${RobWork_VERSION_MINOR}"
-        )
-        set(RW_INCLUDE_EXT
-            "${RW_INSTALL}/include/robwork-${RobWork_VERSION_MAJOR}.${RobWork_VERSION_MINOR}/ext"
-        )
-    endif()
-endif()
-
-# ##################################################################################################
-# now RW_ROOT and RWCFG_ROOT is set. Lets extract the stuff needed to run a project
-
-# next get the build configuration of the requested built type
 if(EXISTS ${RWCFG_ROOT}/RobWorkBuildConfig_${RW_BUILD_TYPE}.cmake)
     include(${RWCFG_ROOT}/RobWorkBuildConfig_${RW_BUILD_TYPE}.cmake)
+
+    # check whether RobWorkConfig.cmake is found into a RobWork installation or in a build tree
+    if(EXISTS "${RWCFG_ROOT}/../src/RobWorkConfig.hpp")
+        # Found RobWorkConfig.cmake in a build tree of RobWork
+        message(STATUS "RobWork: Found a RobWork build tree")
+        set(RW_ROOT "${RWCFG_ROOT}/..")
+
+        set(RW_INCLUDE_EXT "${RW_ROOT}/ext")
+        set(RW_INCLUDE_SRC "${RW_ROOT}/src")
+        set(RW_LIBS "${RW_BUILD_WITH_BUILD_DIR}/libs/${RW_BUILD_TYPE}")
+        set(IS_INSTALL FALSE)
+    else()
+        message(STATUS "RobWork: Found a RobWork installation")
+        set(IS_INSTALL TRUE)
+        # Found a RobWork installation
+        if(WIN32)
+            # RobWorkConfig.cmake is installed to RW_ROOT/cmake
+            set(RW_ROOT "${RWCFG_ROOT}/../..")
+            set(RW_INCLUDE_EXT "${RWCFG_ROOT}/../ext")
+            set(RW_INCLUDE_SRC
+                "${RW_ROOT}/include/robwork-${RobWork_VERSION_MAJOR}.${RobWork_VERSION_MINOR}"
+            )
+            set(RW_LIBS "${RW_ROOT}/lib")
+        else()
+            # RobWorkConfig.cmake is installed to RW_INTALL/share/robwork-x.y/cmake
+
+            set(RW_ROOT "${RWCFG_ROOT}")
+            set(RW_INSTALL "${RWCFG_ROOT}/../../..")
+            set(RW_LIBS "${RW_INSTALL}/lib")
+            set(RW_INCLUDE_SRC
+                "${RW_INSTALL}/include/robwork-${RobWork_VERSION_MAJOR}.${RobWork_VERSION_MINOR}"
+            )
+            set(RW_INCLUDE_EXT
+                "${RW_INSTALL}/include/robwork-${RobWork_VERSION_MAJOR}.${RobWork_VERSION_MINOR}/ext"
+            )
+        endif()
+    endif()
+
+    # ##############################################################################################
+    # now RW_ROOT and RWCFG_ROOT is set. Lets extract the stuff needed to run a project
+
+    # next get the build configuration of the requested built type
 
     # check which components to include
     set(LIBRARIES_TO_INCLUDE) # Libraries that must be included
@@ -200,7 +201,7 @@ if(EXISTS ${RWCFG_ROOT}/RobWorkBuildConfig_${RW_BUILD_TYPE}.cmake)
             LISTS RobWork_FIND_COMPONENTS
         )
             if(NOT (${component} STREQUAL "sdurw"))
-                set(lib "RW::sdurw_${component}") 
+                set(lib "RW::sdurw_${component}")
 
                 if(TARGET ${lib})
                     list(APPEND LIBRARIES_TO_INCLUDE "${lib}")

@@ -6,10 +6,10 @@
 #include <rw/loaders/path/PathLoader.hpp>
 #include <rw/loaders/dom/DOMPropertyMapLoader.hpp>
 #include <rw/loaders/dom/DOMPropertyMapSaver.hpp>
+#include <rw/kinematics.hpp>
+#include <rw/math.hpp>
 
 using namespace rwlibs::swig;
-using rw::math::Metric;
-using namespace rw::math;
 using rw::trajectory::Interpolator;
 using rw::trajectory::Blend;
 using rw::trajectory::Timed;
@@ -83,21 +83,25 @@ SWIG_JAVABODY_TYPEWRAPPER(public, public, public, SWIGTYPE)
 %import <rwlibs/swig/sdurw_core.i>
 %import <rwlibs/swig/sdurw_common.i>
 %import <rwlibs/swig/sdurw_math.i>
+%import <rwlibs/swig/sdurw_kinematics.i>
 
 %pragma(java) jniclassimports=%{
 import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_common.*;
 import org.robwork.sdurw_math.*;
+import org.robwork.sdurw_kinematics.*;
 %}
 %pragma(java) moduleimports=%{
 import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_common.*;
 import org.robwork.sdurw_math.*;
+import org.robwork.sdurw_kinematics.*;
 %}
 %typemap(javaimports) SWIGTYPE %{
 import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_common.*;
 import org.robwork.sdurw_math.*;
+import org.robwork.sdurw_kinematics.*;
 %}
 
 /********************************************
@@ -497,14 +501,14 @@ class Geometry {
      * @brief Get the reference frame.
      * @return the reference frame.
      */
-    Frame* getFrame();
+    rw::kinematics::Frame* getFrame();
 
 #if !define(SWIGJAVA)
     /**
      * @brief Get the reference frame.
      * @return the reference frame.
      */
-    const Frame* getFrame() const;
+    const rw::kinematics::Frame* getFrame() const;
 #endif
     /**
      * @brief Set the draw mask.
@@ -848,7 +852,7 @@ struct RenderInfo {
     //! @brief The DrawType.
     //TODO(kalor) add DrawType _drawType;
     //! @brief Pointer to the state.
-    State *_state;
+    rw::kinematics::State *_state;
     //! @brief Render transparently.
     bool _renderTransparent;
     //! @brief Render as a solid.
@@ -956,62 +960,62 @@ class WorkCellScene {
 
      rw::core::Ptr<WorkCell> getWorkCell();
 
-     void setState(const State& state);
+     void setState(const rw::kinematics::State& state);
 
      //rw::graphics::GroupNode::Ptr getWorldNode();
-     void updateSceneGraph(State& state);
+     void updateSceneGraph(rw::kinematics::State& state);
      //void clearCache();
 
-     void setVisible(bool visible, Frame* f);
+     void setVisible(bool visible, rw::kinematics::Frame* f);
 
-     bool isVisible(Frame* f);
+     bool isVisible(rw::kinematics::Frame* f);
 
-     void setHighlighted( bool highlighted, Frame* f);
-     bool isHighlighted( Frame* f);
-     void setFrameAxisVisible( bool visible, Frame* f);
-     bool isFrameAxisVisible( Frame* f);
-     //void setDrawType( DrawableNode::DrawType type, Frame* f);
-     //DrawableNode::DrawType getDrawType( Frame* f );
+     void setHighlighted( bool highlighted, rw::kinematics::Frame* f);
+     bool isHighlighted( rw::kinematics::Frame* f);
+     void setFrameAxisVisible( bool visible, rw::kinematics::Frame* f);
+     bool isFrameAxisVisible( rw::kinematics::Frame* f);
+     //void setDrawType( DrawableNode::DrawType type, rw::kinematics::Frame* f);
+     //DrawableNode::DrawType getDrawType( rw::kinematics::Frame* f );
 
-     void setDrawMask( unsigned int mask, Frame* f);
-     unsigned int getDrawMask( Frame* f );
-     void setTransparency(double alpha, Frame* f);
+     void setDrawMask( unsigned int mask, rw::kinematics::Frame* f);
+     unsigned int getDrawMask( rw::kinematics::Frame* f );
+     void setTransparency(double alpha, rw::kinematics::Frame* f);
 
-     //DrawableGeometryNode::Ptr addLines( const std::string& name, const std::vector<rw::geometry::Line >& lines, Frame* frame, int dmask=DrawableNode::Physical);
-     //DrawableGeometryNode::Ptr addGeometry(const std::string& name, rw::core::Ptr<Geometry> geom, Frame* frame, int dmask=DrawableNode::Physical);
-     rw::core::Ptr<DrawableNode> addFrameAxis(const std::string& name, double size, Frame* frame, int dmask=DrawableNode::Virtual);
-     //rw::core::Ptr<DrawableNode> addModel3D(const std::string& name, rw::core::Ptr<Model3D> model, Frame* frame, int dmask=DrawableNode::Physical);
-     //rw::core::Ptr<DrawableNode> addImage(const std::string& name, const rw::sensor::Image& img, Frame* frame, int dmask=DrawableNode::Virtual);
-     //rw::core::Ptr<DrawableNode> addScan(const std::string& name, const rw::sensor::Scan2D& scan, Frame* frame, int dmask=DrawableNode::Virtual);
-     //rw::core::Ptr<DrawableNode> addScan(const std::string& name, const rw::sensor::Image25D& scan, Frame* frame, int dmask=DrawableNode::Virtual);
-     rw::core::Ptr<DrawableNode> addRender(const std::string& name, rw::core::Ptr<Render> render, Frame* frame, int dmask=DrawableNode::Physical);
+     //DrawableGeometryNode::Ptr addLines( const std::string& name, const std::vector<rw::geometry::Line >& lines, rw::kinematics::Frame* frame, int dmask=DrawableNode::Physical);
+     //DrawableGeometryNode::Ptr addGeometry(const std::string& name, rw::core::Ptr<Geometry> geom, rw::kinematics::Frame* frame, int dmask=DrawableNode::Physical);
+     rw::core::Ptr<DrawableNode> addFrameAxis(const std::string& name, double size, rw::kinematics::Frame* frame, int dmask=DrawableNode::Virtual);
+     //rw::core::Ptr<DrawableNode> addModel3D(const std::string& name, rw::core::Ptr<Model3D> model, rw::kinematics::Frame* frame, int dmask=DrawableNode::Physical);
+     //rw::core::Ptr<DrawableNode> addImage(const std::string& name, const rw::sensor::Image& img, rw::kinematics::Frame* frame, int dmask=DrawableNode::Virtual);
+     //rw::core::Ptr<DrawableNode> addScan(const std::string& name, const rw::sensor::Scan2D& scan, rw::kinematics::Frame* frame, int dmask=DrawableNode::Virtual);
+     //rw::core::Ptr<DrawableNode> addScan(const std::string& name, const rw::sensor::Image25D& scan, rw::kinematics::Frame* frame, int dmask=DrawableNode::Virtual);
+     rw::core::Ptr<DrawableNode> addRender(const std::string& name, rw::core::Ptr<Render> render, rw::kinematics::Frame* frame, int dmask=DrawableNode::Physical);
 
-     rw::core::Ptr<DrawableNode> addDrawable(const std::string& filename, Frame* frame, int dmask);
-     void addDrawable(rw::core::Ptr<DrawableNode> drawable, Frame*);
+     rw::core::Ptr<DrawableNode> addDrawable(const std::string& filename, rw::kinematics::Frame* frame, int dmask);
+     void addDrawable(rw::core::Ptr<DrawableNode> drawable, rw::kinematics::Frame*);
 
      //std::vector<rw::core::Ptr<DrawableNode> > getDrawables();
-     //std::vector<rw::core::Ptr<DrawableNode> > getDrawables(Frame* f);
+     //std::vector<rw::core::Ptr<DrawableNode> > getDrawables(rw::kinematics::Frame* f);
 
-     //std::vector<rw::core::Ptr<DrawableNode> > getDrawablesRec(Frame* f, State& state);
+     //std::vector<rw::core::Ptr<DrawableNode> > getDrawablesRec(rw::kinematics::Frame* f, rw::kinematics::State& state);
      rw::core::Ptr<DrawableNode> findDrawable(const std::string& name);
 
-     rw::core::Ptr<DrawableNode> findDrawable(const std::string& name, Frame* frame);
+     rw::core::Ptr<DrawableNode> findDrawable(const std::string& name, rw::kinematics::Frame* frame);
 
      std::vector<rw::core::Ptr<DrawableNode> > findDrawables(const std::string& name);
 
-     bool removeDrawables(Frame* f);
+     bool removeDrawables(rw::kinematics::Frame* f);
 
      bool removeDrawables(const std::string& name);
 
      bool removeDrawable(rw::core::Ptr<DrawableNode> drawable);
 
-     bool removeDrawable(rw::core::Ptr<DrawableNode> drawable, Frame* f);
+     bool removeDrawable(rw::core::Ptr<DrawableNode> drawable, rw::kinematics::Frame* f);
 
      bool removeDrawable(const std::string& name);
-     bool removeDrawable(const std::string& name, Frame* f);
-     Frame* getFrame(rw::core::Ptr<DrawableNode>  d);
+     bool removeDrawable(const std::string& name, rw::kinematics::Frame* f);
+     rw::kinematics::Frame* getFrame(rw::core::Ptr<DrawableNode>  d);
 
-     //rw::graphics::GroupNode::Ptr getNode(Frame* frame);
+     //rw::graphics::GroupNode::Ptr getNode(rw::kinematics::Frame* frame);
  };
 
 %nodefaultctor SceneViewer;
@@ -1030,12 +1034,6 @@ class SceneViewer
  ********************************************/
  
  %include <rwlibs/swig/rw_i/invkin.i>
-
-/********************************************
- * KINEMATICS
- ********************************************/
-
-%include <rwlibs/swig/rw_i/kinematics.i>
 
 /********************************************
  * LOADERS
@@ -1241,7 +1239,7 @@ public:
 };
 
 %template (TimedQ) Timed< rw::math::Q >;
-%template (TimedState) Timed<State>;
+%template (TimedState) Timed<rw::kinematics::State>;
 
 namespace rw { namespace trajectory {
 template <class T>
@@ -1268,9 +1266,9 @@ class Path: public std::vector<T>
 };
 }}
 
-
-%template (PathState) rw::trajectory::Path<State>;
-NAMED_OWNEDPTR(PathState, rw::trajectory::Path<State>);
+%template (VectorState) std::vector<rw::kinematics::State>;
+%template (PathState) rw::trajectory::Path<rw::kinematics::State>;
+NAMED_OWNEDPTR(PathState, rw::trajectory::Path<rw::kinematics::State>);
 
 
 // Q
@@ -1283,10 +1281,10 @@ NAMED_OWNEDPTR(PathQ, rw::trajectory::Path<rw::math::Q>);
 NAMED_OWNEDPTR(PathTimedQ,rw::trajectory::Path<Timed< rw::math::Q > >);
 
 // State
-%template (TimedStateVector) std::vector<Timed<State> >;
-%template (PathTimedState) rw::trajectory::Path<Timed<State> >;
-NAMED_OWNEDPTR(TimedStateVector,std::vector<Timed<State>>);
-NAMED_OWNEDPTR(PathTimedState,rw::trajectory::Path<Timed<State> >);
+%template (TimedStateVector) std::vector<Timed<rw::kinematics::State> >;
+%template (PathTimedState) rw::trajectory::Path<Timed<rw::kinematics::State> >;
+NAMED_OWNEDPTR(TimedStateVector,std::vector<Timed<rw::kinematics::State>>);
+NAMED_OWNEDPTR(PathTimedState,rw::trajectory::Path<Timed<rw::kinematics::State> >);
 
 // Transform
 %template(VectorTransform3Dd) std::vector<rw::math::Transform3D<double>>;
@@ -1309,35 +1307,35 @@ NAMED_OWNEDPTR(PathSE3,rw::trajectory::Path<rw::math::Transform3D<double> > );
         return rw::core::ownedPtr( new rw::trajectory::TimedQPath(tpath) );
     }
 
-    rw::core::Ptr<rw::trajectory::Path<Timed<State> > > toTimedStatePath(rw::core::Ptr<Device> dev,
-                                                     const State& state){
-        rw::trajectory::Path<Timed<State>> tpath =
+    rw::core::Ptr<rw::trajectory::Path<Timed<rw::kinematics::State> > > toTimedStatePath(rw::core::Ptr<Device> dev,
+                                                     const rw::kinematics::State& state){
+        rw::trajectory::Path<Timed<rw::kinematics::State>> tpath =
                 rw::trajectory::TimedUtil::makeTimedStatePath(*dev, *$self, state);
-        return rw::core::ownedPtr( new rw::trajectory::Path<Timed<State>>(tpath) );
+        return rw::core::ownedPtr( new rw::trajectory::Path<Timed<rw::kinematics::State>>(tpath) );
     }
 
 };
 
-%extend rw::trajectory::Path<Timed<State> > {
+%extend rw::trajectory::Path<Timed<rw::kinematics::State> > {
 	
-	static rw::core::Ptr<rw::trajectory::Path<Timed<State> > > load(const std::string& filename, rw::core::Ptr<WorkCell> wc){
-		rw::core::Ptr<rw::trajectory::Path<Timed<State>>> spath = 
-                    rw::core::ownedPtr(new rw::trajectory::Path<Timed<State>>);
+	static rw::core::Ptr<rw::trajectory::Path<Timed<rw::kinematics::State> > > load(const std::string& filename, rw::core::Ptr<WorkCell> wc){
+		rw::core::Ptr<rw::trajectory::Path<Timed<rw::kinematics::State>>> spath = 
+                    rw::core::ownedPtr(new rw::trajectory::Path<Timed<rw::kinematics::State>>);
                 *spath = rw::loaders::PathLoader::loadTimedStatePath(*wc, filename);
-		return rw::core::Ptr<rw::trajectory::Path<Timed<State>>>( spath );
+		return rw::core::Ptr<rw::trajectory::Path<Timed<rw::kinematics::State>>>( spath );
 	}
 	
 	void save(const std::string& filename, rw::core::Ptr<WorkCell> wc){		 		
 		rw::loaders::PathLoader::storeTimedStatePath(*wc,*$self,filename); 
 	}
 	
-	void append(rw::core::Ptr<rw::trajectory::Path<Timed<State> > > spath){
+	void append(rw::core::Ptr<rw::trajectory::Path<Timed<rw::kinematics::State> > > spath){
 		double startTime = 0;
 		if($self->size()>0)
 			startTime = (*$self).back().getTime(); 
 		
 		for(size_t i = 0; i<spath->size(); i++){
-			Timed<State> tstate = (*spath)[i]; 
+			Timed<rw::kinematics::State> tstate = (*spath)[i]; 
 			tstate.getTime() += startTime;
 			(*$self).push_back( tstate );
 		}
@@ -1345,10 +1343,10 @@ NAMED_OWNEDPTR(PathSE3,rw::trajectory::Path<rw::math::Transform3D<double> > );
 	
 };
 
-%extend rw::trajectory::Path<State > {
+%extend rw::trajectory::Path<rw::kinematics::State > {
 	
-	static rw::core::Ptr<rw::trajectory::Path<State> > load(const std::string& filename, rw::core::Ptr<WorkCell> wc){
-            rw::core::Ptr<rw::trajectory::Path<State>> spath = rw::core::ownedPtr(new rw::trajectory::StatePath);
+	static rw::core::Ptr<rw::trajectory::Path<rw::kinematics::State> > load(const std::string& filename, rw::core::Ptr<WorkCell> wc){
+            rw::core::Ptr<rw::trajectory::Path<rw::kinematics::State>> spath = rw::core::ownedPtr(new rw::trajectory::StatePath);
             *spath = rw::loaders::PathLoader::loadStatePath(*wc, filename);
 		return spath;
 	}
@@ -1357,18 +1355,18 @@ NAMED_OWNEDPTR(PathSE3,rw::trajectory::Path<rw::math::Transform3D<double> > );
 		rw::loaders::PathLoader::storeStatePath(*wc,*$self,filename); 
 	}
 	
-	void append(rw::core::Ptr<rw::trajectory::Path<State> > spath){		
+	void append(rw::core::Ptr<rw::trajectory::Path<rw::kinematics::State> > spath){		
 		for(size_t i = 0; i<spath->size(); i++){
 			(*$self).push_back( (*spath)[i] );
 		}
 	}
 	
 	
-	rw::core::Ptr<rw::trajectory::Path<Timed<State> > > toTimedStatePath(double timeStep){
-		rw::core::Ptr<rw::trajectory::Path<Timed<State>>> spath = 
-			rw::core::ownedPtr( new rw::trajectory::Path<Timed<State>>() );	
+	rw::core::Ptr<rw::trajectory::Path<Timed<rw::kinematics::State> > > toTimedStatePath(double timeStep){
+		rw::core::Ptr<rw::trajectory::Path<Timed<rw::kinematics::State>>> spath = 
+			rw::core::ownedPtr( new rw::trajectory::Path<Timed<rw::kinematics::State>>() );	
 		for(size_t i = 0; i < $self->size(); i++){
-			Timed<State> tstate(timeStep*i, (*$self)[i]); 
+			Timed<rw::kinematics::State> tstate(timeStep*i, (*$self)[i]); 
 			spath->push_back( tstate );
 		}	
 		return spath;
@@ -1497,7 +1495,7 @@ protected:
     Trajectory() {};
 };
 
-%template (TrajectoryState) Trajectory<State>;
+%template (TrajectoryState) Trajectory<rw::kinematics::State>;
 %template (TrajectoryR1) Trajectory<double>;
 %template (TrajectoryR2) Trajectory<rw::math::Vector2D<double> >;
 %template (TrajectoryR3) Trajectory<rw::math::Vector3D<double> >;
@@ -1505,7 +1503,7 @@ protected:
 %template (TrajectorySE3) Trajectory<rw::math::Transform3D<double> >;
 %template (TrajectoryQ) Trajectory< rw::math::Q >;
 
-%template (TrajectoryStatePtr) rw::core::Ptr<Trajectory<State> >;
+%template (TrajectoryStatePtr) rw::core::Ptr<Trajectory<rw::kinematics::State> >;
 %template (TrajectoryR1Ptr) rw::core::Ptr<Trajectory<double> >;
 %template (TrajectoryR2Ptr) rw::core::Ptr<Trajectory<rw::math::Vector2D<double> > >;
 %template (TrajectoryR3Ptr) rw::core::Ptr<Trajectory<rw::math::Vector3D<double> > >;
@@ -1513,7 +1511,7 @@ protected:
 %template (TrajectorySE3Ptr) rw::core::Ptr<Trajectory<rw::math::Transform3D<double> > >;
 %template (TrajectoryQPtr) rw::core::Ptr<Trajectory< rw::math::Q > >;
 
-OWNEDPTR(Trajectory<State> )
+OWNEDPTR(Trajectory<rw::kinematics::State> )
 OWNEDPTR(Trajectory<double> )
 OWNEDPTR(Trajectory<rw::math::Vector2D<double> > )
 OWNEDPTR(Trajectory<rw::math::Vector3D<double> > )
@@ -1548,188 +1546,24 @@ public:
 class TrajectoryFactory
 {
 public:
-    static rw::core::Ptr<StateTrajectory> makeFixedTrajectory(const State& state, double duration);
+    static rw::core::Ptr<rw::kinematics::StateTrajectory> makeFixedTrajectory(const rw::kinematics::State& state, double duration);
     static rw::core::Ptr<QTrajectory> makeFixedTrajectory(const rw::math::Q& q, double duration);
-    static rw::core::Ptr<StateTrajectory> makeLinearTrajectory(const Path<Timed<State>>& path);
-    static rw::core::Ptr<StateTrajectory> makeLinearTrajectory(const StatePath& path,
+    static rw::core::Ptr<rw::kinematics::StateTrajectory> makeLinearTrajectory(const Path<Timed<rw::kinematics::State>>& path);
+    static rw::core::Ptr<rw::kinematics::StateTrajectory> makeLinearTrajectory(const rw::kinematics::StatePath& path,
         const models::WorkCell& workcell);
-    static rw::core::Ptr<StateTrajectory> makeLinearTrajectoryUnitStep(const StatePath& path);
+    static rw::core::Ptr<rw::kinematics::StateTrajectory> makeLinearTrajectoryUnitStep(const rw::kinematics::StatePath& path);
     static rw::core::Ptr<QTrajectory> makeLinearTrajectory(const TimedQPath& path);
     static rw::core::Ptr<QTrajectory> makeLinearTrajectory(const QPath& path, const rw::math::Q& speeds);
     static rw::core::Ptr<QTrajectory> makeLinearTrajectory(const QPath& path, const models::Device& device);
     static rw::core::Ptr<QTrajectory> makeLinearTrajectory(const QPath& path, rw::core::Ptr<QMetric> metric);
     static rw::core::Ptr<Transform3DTrajectory> makeLinearTrajectory(const Transform3DPath& path, const std::vector<double>& times);
     static rw::core::Ptr<Transform3DTrajectory> makeLinearTrajectory(const Transform3DPath& path, const rw::core::Ptr<Transform3DMetric> metric);
-    static rw::core::Ptr<StateTrajectory> makeEmptyStateTrajectory();
+    static rw::core::Ptr<rw::kinematics::StateTrajectory> makeEmptyStateTrajectory();
     static rw::core::Ptr<QTrajectory > makeEmptyQTrajectory();
 };
 
 */
  
-/********************************************
- * LUA functions
- ********************************************/
-
-
-#if defined (SWIGLUA)
-%luacode {
-
--- Group: Lua functions
--- Var: print_to_log
-print_to_log = true
-
--- Var: overrides the global print function
-local global_print = print
-
--- Function: print
---  Forwards the global print functions to the sdurw.print functions
---  whenever print_to_log is defined.
-function print(...)
-    if print_to_log then
-        for i, v in ipairs{...} do
-            if i > 1 then rw.writelog("\t") end
-            sdurw.writelog(tostring(v))
-        end
-        sdurw.writelog('\n')
-    else
-        global_print(...)
-    end
-end
-
--- Function:
-function reflect( mytableArg )
- local mytable
- if not mytableArg then
-  mytable = _G
- else
-  mytable = mytableArg
- end
-   local a = {} -- all functions
-   local b = {} -- all Objects/Tables
-
- if type(mytable)=="userdata" then
-   -- this is a SWIG generated user data, show functions and stuff
-   local m = getmetatable( mytable )
-   for key,value in pairs( m['.fn'] ) do
-      if (key:sub(0, 2)=="__") or (key:sub(0, 1)==".") then
-          table.insert(b, key)
-      else
-          table.insert(a, key)
-      end
-   end
-   table.sort(a)
-   table.sort(b)
-   print("Object type: \n  " .. m['.type'])
-
-   print("Member Functions:")
-   for i,n in ipairs(a) do print("  " .. n .. "(...)") end
-   for i,n in ipairs(b) do print("  " .. n .. "(...)") end
-
- else
-   local c = {} -- all constants
-   for key,value in pairs( mytable ) do
-      -- print(type(value))
-      if (type(value)=="function") then
-          table.insert(a, key)
-      elseif (type(value)=="number") then
-          table.insert(c, key)
-      else
-          table.insert(b, key)
-      end
-   end
-   table.sort(a)
-   table.sort(b)
-   table.sort(c)
-   print("Object type: \n  " .. "Table")
-
-   print("Functions:")
-   for i,n in ipairs(a) do print("  " .. n .. "(...)") end
-   print("Constants:")
-   for i,n in ipairs(c) do print("  " .. n) end
-   print("Misc:")
-   for i,n in ipairs(b) do print("  " .. n) end
-
-
---  print("Metatable:")
---  for key,value in pairs( getmetatable(mytable) ) do
---      print(key);
---      print(value);
---  end
-
- end
- end
-
-function help( mytable )
-   reflect( mytable )
-end
-
-local used_ns = {}
-
-function using(ns)
-  local ns_found = false
-  local ns_name;
-  local ns_val;
-  for n,v in pairs(_G) do
-    if n == ns then
-      ns_found = true
-      ns_name = n
-      ns_val = v
-      break
-    end
-  end
-  if not ns_found then
-    error("Unknown table: " .. ns)
-  else
-    if used_ns[ns_name] == nil then
-      used_ns[ns_name] = ns_val
-      for n,v in pairs(ns_val) do
-        if n ~= "string" and n ~= "ownedPtr" then
-          if _G[n] ~= nil then
-            print("name clash: " .. n .. " is already defined")
-          else
-            _G[n] = v
-          end
-        end
-      end
-    end
-  end
-end
-
-function ownedPtr(arg)
-  local found = false
-  for ns_n,ns_v in pairs(used_ns) do
-    for n,v in pairs(ns_v) do
-      if type(v) ~= "function" and type(v) ~= "number" then
-        if string.len(n) >= 4 then
-          if string.sub(n, -3) == "Ptr" then
-            if getmetatable(arg)[".type"] .. "Ptr" == n then
-              return ns_v.ownedPtr(arg)
-            end
-          end
-        end
-      end
-    end
-  end
-end
-
-function ownedCPtr(arg)
-  local found = false
-  for ns_n,ns_v in pairs(used_ns) do
-    for n,v in pairs(ns_v) do
-      if type(v) ~= "function" and type(v) ~= "number" then
-        if string.len(n) >= 5 then
-          if string.sub(n, -4) == "CPtr" then
-            if getmetatable(arg)[".type"] .. "CPtr" == n then
-              return ns_v.ownedCPtr(arg)
-            end
-          end
-        end
-      end
-    end
-  end
-end
-}
-#endif
 %{
 #ifndef WIN32
 	#pragma GCC diagnostic pop

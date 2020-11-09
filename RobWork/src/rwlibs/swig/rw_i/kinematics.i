@@ -77,6 +77,7 @@
                 return ret;
             }
         }
+
         /**
          * @brief Assign for \b state data the size() of values of the array \b
          * vals.
@@ -425,7 +426,7 @@
         const rw::math::Transform3D<double> & getFixedTransform() const;
     };
     %template(FixedFramePtr) rw::core::Ptr<FixedFrame>;
-    %template(VectorFixedFrame) std::vector<FixedFrame*>;
+
 //################ FKRange
     /**
      * @brief Forward kinematics between a pair of frames.
@@ -582,7 +583,7 @@
             void clear();
         };
     }}
-    %template(FrameMapd) rw::kinematics::FrameMap< double >;
+    
 
 //################ FramePairMap
 
@@ -877,7 +878,7 @@
         void moveTo(const rw::math::Transform3D<double>& transform, Frame* refframe, State& state);
 
     };
-    %template (MovableFrameVector) std::vector<MovableFrame *> ;
+    
     %template (MovableFramePtr) rw::core::Ptr<MovableFrame> ;
     OWNEDPTR(MovableFrame);
 

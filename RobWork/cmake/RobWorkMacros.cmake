@@ -282,17 +282,17 @@ macro(RW_INIT_PROJECT ROOT PROJECT_NAME PREFIX VERSION)
 
     set(
         ${PREFIX}_CMAKE_RUNTIME_OUTPUT_DIRECTORY
-        "${ROOT}/bin/${${PREFIX}_BUILD_TYPE}"
+        "${CMAKE_CURRENT_BINARY_DIR}/bin/${${PREFIX}_BUILD_TYPE}"
         CACHE PATH "Runtime directory" FORCE
     )
     set(
         ${PREFIX}_CMAKE_LIBRARY_OUTPUT_DIRECTORY
-        "${ROOT}/libs/${${PREFIX}_BUILD_TYPE}"
+        "${CMAKE_CURRENT_BINARY_DIR}/libs/${${PREFIX}_BUILD_TYPE}"
         CACHE PATH "Library directory" FORCE
     )
     set(
         ${PREFIX}_CMAKE_ARCHIVE_OUTPUT_DIRECTORY
-        "${ROOT}/libs/${${PREFIX}_BUILD_TYPE}"
+        "${CMAKE_CURRENT_BINARY_DIR}/libs/${${PREFIX}_BUILD_TYPE}"
         CACHE PATH "Archive directory" FORCE
     )
 

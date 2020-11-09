@@ -21,7 +21,7 @@
 /**
  * @file State.hpp
  */
-
+#if !defined(SWIG)
 #include "QState.hpp"
 #include "StateCache.hpp"
 #include "TreeState.hpp"
@@ -30,7 +30,7 @@
 #include <rw/core/Ptr.hpp>
 
 #include <vector>
-
+#endif
 namespace rw { namespace kinematics {
 
     class Frame;
@@ -126,7 +126,7 @@ namespace rw { namespace kinematics {
         {
             return State (this->_q_state / scale, this->_tree_state, this->getUniqueId ());
         }
-
+#if !defined(SWIGPYTHON)
         /**
          * @brief Scaling of the configuration state by a scalar.
          *
@@ -136,7 +136,7 @@ namespace rw { namespace kinematics {
         {
             return State (scale * state._q_state, state._tree_state, state.getUniqueId ());
         }
-
+#endif
         /**
          * @brief Addition of configuration states.
          *
@@ -219,7 +219,7 @@ namespace rw { namespace kinematics {
          * different workcells.
          */
         size_t size () const { return getQState ().size (); }
-
+#if !defined(SWIG)
         /**
          * @brief Provides direct access to the configurations stored in the state
          *
@@ -245,12 +245,14 @@ namespace rw { namespace kinematics {
            @brief Same as operator().
          */
         const double& operator[] (size_t index) const { return operator() (index); }
-
+#else
+        ARRAYOPERATOR (double);
+#endif
         /**
          * @brief gets the frame with id \b id. If a frame with id \b id does not exist
          * NULL is returned
          */
-        Frame* getFrame (int id);
+        rw::kinematics::Frame* getFrame (int id);
 
         /**
          * @brief get the state id. Represents the static structure of the StateStructure that
@@ -277,7 +279,7 @@ namespace rw { namespace kinematics {
          * @param data [in] the state data.
          * @return default state.
          */
-        static const State& getDefault (StateData* data);
+        static const State& getDefault (rw::kinematics::StateData* data);
 
       private:
         friend class StateData;
@@ -296,12 +298,12 @@ namespace rw { namespace kinematics {
         /**
          * @brief The tree structure part of the state.
          */
-        const TreeState& getTreeState () const { return _tree_state; }
+        const rw::kinematics::TreeState& getTreeState () const { return _tree_state; }
 
         /**
          * @brief The tree structure part of the state.
          */
-        TreeState& getTreeState () { return _tree_state; }
+        rw::kinematics::TreeState& getTreeState () { return _tree_state; }
 
         /**
          * @brief the cache part of the state
@@ -309,21 +311,22 @@ namespace rw { namespace kinematics {
          */
         // std::vector<rw::core::Ptr<StateCache> >& getCacheState(){return _cache_state;}
 
-        rw::core::Ptr< StateCache > getCache (int id);
+        rw::core::Ptr< rw::kinematics::StateCache > getCache (int id);
 
-        rw::core::Ptr< StateCache > getCache (int id) const;
+        rw::core::Ptr< rw::kinematics::StateCache > getCache (int id) const;
 
-        void setCache (int id, rw::core::Ptr< StateCache > cache);
+        void setCache (int id, rw::core::Ptr< rw::kinematics::StateCache > cache);
 
         /**
          * @brief Constructs a state
          */
-        State (const QState& q_state, const TreeState& tree_state, int stateUniqueId);
+        State (const QState& q_state, const rw::kinematics::TreeState& tree_state,
+               int stateUniqueId);
 
       private:
-        TreeState _tree_state;
-        QState _q_state;
-        std::vector< rw::core::Ptr< StateCache > > _cache_state;
+        rw::kinematics::TreeState _tree_state;
+        rw::kinematics::QState _q_state;
+        std::vector< rw::core::Ptr< rw::kinematics::StateCache > > _cache_state;
         int _stateUniqueId;
     };
 

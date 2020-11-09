@@ -116,7 +116,7 @@
     }
 %enddef
 
-%define ARRAYOPERATOR(ret)
+%define ARRAYOPERATOR(ret) // operator[]
     %extend {
         #if (defined(SWIGLUA) || defined(SWIGPYTHON))
             ret __getitem__(int i)const {return (*$self)[i]; }
@@ -128,7 +128,7 @@
     }
 %enddef
 
-%define ARRAYOPERATOR2(ret)
+%define ARRAYOPERATOR2(ret) // operator()
     %extend {
         #if (defined(SWIGLUA) || defined(SWIGPYTHON))
             ret __getitem__(int i)const {return (*$self)(i); }

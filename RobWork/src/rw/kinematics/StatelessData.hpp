@@ -18,11 +18,13 @@
 #ifndef RW_KINEMATICS_STATELESSDATA_HPP_
 #define RW_KINEMATICS_STATELESSDATA_HPP_
 
+#if !defined(SWIG)
 #include "StateCache.hpp"
 #include "StateData.hpp"
 #include "StateStructure.hpp"
 
 #include <rw/core/StringUtil.hpp>
+#endif
 
 namespace rw { namespace kinematics {
 

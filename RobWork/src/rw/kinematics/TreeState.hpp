@@ -21,10 +21,11 @@
 /**
  * @file TreeState.hpp
  */
-
+#if !defined(SWIG)
 #include <rw/core/Ptr.hpp>
 
 #include <vector>
+#endif
 
 namespace rw { namespace kinematics {
 
@@ -84,12 +85,12 @@ namespace rw { namespace kinematics {
          *
          * @return The parent of the frame or NULL if the frame has no parent.
          */
-        const Frame* getParent (const Frame* frame) const;
+        const rw::kinematics::Frame* getParent (const rw::kinematics::Frame* frame) const;
 
         /**
          * @copydoc getParent
          */
-        Frame* getParent (Frame* frame) const;
+        rw::kinematics::Frame* getParent (rw::kinematics::Frame* frame) const;
 
         /**
          * @brief The child frames of \b frame.

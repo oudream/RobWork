@@ -21,9 +21,10 @@
 /**
  * @file MovableFrame.hpp
  */
-
+#if !defined(SWIG)
 #include "Frame.hpp"
-
+#include <rw/core/Ptr.hpp>
+#endif
 namespace rw { namespace kinematics {
 
     class State;
@@ -62,7 +63,7 @@ namespace rw { namespace kinematics {
          * frame
          * @param state [out] state into which to set the transform
          */
-        void setTransform (const math::Transform3D<>& transform, State& state);
+        void setTransform (const math::Transform3D<>& transform, rw::kinematics::State& state);
 
         /**
          * @brief Changes the transform in the state, such that the movable frame is located in the
@@ -70,7 +71,7 @@ namespace rw { namespace kinematics {
          * @param transform [in] transform to set. transform is described relative to world frame
          * @param state [out] state into which to set the transform
          */
-        void moveTo (const math::Transform3D<>& transform, State& state);
+        void moveTo (const math::Transform3D<>& transform, rw::kinematics::State& state);
 
         /**
          * @brief Changes the transform in the state, such that the movable frame is located in the
@@ -79,13 +80,13 @@ namespace rw { namespace kinematics {
          * @param refframe [in] the reference frame.
          * @param state [out] state into which to set the transform
          */
-        void moveTo (const math::Transform3D<>& transform, Frame* refframe, State& state);
+        void moveTo (const math::Transform3D<>& transform, Frame* refframe, rw::kinematics::State& state);
 
       private:
-        void doMultiplyTransform (const math::Transform3D<>& parent, const State& state,
+        void doMultiplyTransform (const math::Transform3D<>& parent, const rw::kinematics::State& state,
                                   math::Transform3D<>& result) const;
 
-        math::Transform3D<> doGetTransform (const State& state) const;
+        math::Transform3D<> doGetTransform (const rw::kinematics::State& state) const;
     };
 
     /* @} */

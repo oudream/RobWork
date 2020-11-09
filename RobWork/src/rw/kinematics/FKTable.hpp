@@ -21,12 +21,12 @@
 /**
  * @file FKTable.hpp
  */
-
+#if !defined(SWIG)
 #include "FrameMap.hpp"
 #include "State.hpp"
 
 #include <rw/math/Transform3D.hpp>
-
+#endif
 /*
 #include <boost/multi_index/hashed_index.hpp>
 #include <boost/multi_index/member.hpp>
@@ -55,15 +55,15 @@ namespace rw { namespace kinematics {
          * @param state [in] The work state for which world transforms are to be
          * calculated.
          */
-        FKTable (const State& state);
-
+        FKTable (const rw::kinematics::State& state);
+#if !defined(SWIGPYTHON) && !defined(SWIGJAVA)
         /**
          * @brief Forward kinematics for the work cell state \b state.
          * @param state [in] The work state for which world transforms are to be
          * calculated.
          */
-        FKTable (const State* state);
-
+        FKTable (const rw::kinematics::State* state);
+#endif
         /**
          * @brief The world transform for the frame \b frame.
          *
@@ -71,10 +71,10 @@ namespace rw { namespace kinematics {
          *
          * @return The transform of the frame relative to the world.
          */
-        const math::Transform3D<>& get (const Frame& frame) const;
+        const rw::math::Transform3D<>& get (const rw::kinematics::Frame& frame) const;
 
         //! @copydoc get(const Frame&) const
-        inline const math::Transform3D<>& get (const Frame* frame) const { return get (*frame); }
+        inline const rw::math::Transform3D<>& get (const rw::kinematics::Frame* frame) const { return get (*frame); }
 
         /**
          * @brief Returns State associated with the FKTable
@@ -83,55 +83,24 @@ namespace rw { namespace kinematics {
          *
          * @return State used to calculate the forward kinematics
          */
-        const State& getState () const { return *_sp; }
+        const rw::kinematics::State& getState () const { return *_sp; }
 
         /**
          * @brief resets the FKTable to \b state
          * @param state
          */
-        void reset (const State& state);
+        void reset (const rw::kinematics::State& state);
 
       private:
         const State* _sp;
         State _state;
 
-        /*
-        struct Entry {
-            Entry(const Frame* frame) : frame(frame), transform() {}
-
-            Entry(const Frame* frame, const math::Transform3D<>& transform) :
-                frame(frame),
-                transform(transform)
-            {}
-
-            const Frame* frame;
-            math::Transform3D<> transform;
-        };
-        */
-
-        /*
-        typedef boost::multi_index_container<
-            Entry,
-            boost::multi_index::indexed_by<
-                boost::multi_index::hashed_unique<
-                    boost::multi_index::member<Entry, const Frame*, &Entry::frame> > > >
-        TransformMap;
-        */
-
         typedef FrameMap< math::Transform3D<> > TransformMap;
-
-        // typedef std::map<const Frame*, math::Transform3D<> > TransformMap;
-        // typedef TransformMap::value_type Entry;
 
         mutable TransformMap _transforms;
 
-        /*
-        TransformMap::iterator _end;
-        */
-
       private:
         FKTable (const FKTable&);
-        // FKTable& operator=(const FKTable&);
     };
 
     /*@}*/

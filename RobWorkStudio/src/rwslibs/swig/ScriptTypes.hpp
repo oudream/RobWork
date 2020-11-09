@@ -19,6 +19,10 @@
 #define RWS_SWIG_REMOTETYPES_HPP_
 
 #include <rw/core/Ptr.hpp>
+#include <rw/kinematics/Frame.hpp>
+#include <rw/kinematics/MovableFrame.hpp>
+#include <rw/kinematics/FixedFrame.hpp>
+#include <rw/kinematics/State.hpp>
 #include <rwlibs/swig/ScriptTypes.hpp>
 #include <rws/RobWorkStudio.hpp>
 #include <rws/RobWorkStudioPlugin.hpp>
@@ -64,19 +68,19 @@ namespace rws { namespace swig {
 
     bool isRunning ();
 
-    const rwlibs::swig::State& getState ();
-    void setState (rwlibs::swig::State& state);
+    const rw::kinematics::State& getState ();
+    void setState (rw::kinematics::State& state);
     rw::core::Ptr< rwlibs::swig::Device > findDevice (const std::string& name);
     rw::core::Ptr< rwlibs::swig::JointDevice > findJointDevice (const std::string& name);
     rw::core::Ptr< rwlibs::swig::SerialDevice > findSerialDevice (const std::string& name);
     rw::core::Ptr< rwlibs::swig::TreeDevice > findTreeDevice (const std::string& name);
     rw::core::Ptr< rwlibs::swig::ParallelDevice > findParallelDevice (const std::string& name);
-    rwlibs::swig::Frame* findFrame (const std::string& name);
-    rwlibs::swig::MovableFrame* findMovableFrame (const std::string& name);
-    rwlibs::swig::FixedFrame* findFixedFrame (const std::string& name);
+    rw::kinematics::Frame* findFrame (const std::string& name);
+    rw::kinematics::MovableFrame* findMovableFrame (const std::string& name);
+    rw::kinematics::FixedFrame* findFixedFrame (const std::string& name);
 
-    void moveTo (rwlibs::swig::MovableFrame* mframe, rw::math::Transform3D< double > wTframe);
-    void moveTo (rwlibs::swig::Frame* frame, rwlibs::swig::MovableFrame* mframe,
+    void moveTo (rw::kinematics::MovableFrame* mframe, rw::math::Transform3D< double > wTframe);
+    void moveTo (rw::kinematics::Frame* frame, rw::kinematics::MovableFrame* mframe,
                  rw::math::Transform3D< double > wTtcp);
     void moveTo (const std::string& fname, const std::string& mname,
                  rw::math::Transform3D< double > wTframe);
@@ -85,11 +89,11 @@ namespace rws { namespace swig {
     rw::math::Q getQ (rw::core::Ptr< rwlibs::swig::Device > dev);
     void setQ (rw::core::Ptr< rwlibs::swig::Device > dev, rw::math::Q);
 
-    void setTransform (rwlibs::swig::Frame* mframe, rw::math::Transform3D< double > wTframe);
+    void setTransform (rw::kinematics::Frame* mframe, rw::math::Transform3D< double > wTframe);
 
-    rw::math::Transform3D< double > wTf (rwlibs::swig::Frame* frame);
+    rw::math::Transform3D< double > wTf (rw::kinematics::Frame* frame);
     rw::math::Transform3D< double > wTf (const std::string& name);
-    rw::math::Transform3D< double > fTf (rwlibs::swig::Frame* frame, rwlibs::swig::Frame* to);
+    rw::math::Transform3D< double > fTf (rw::kinematics::Frame* frame, rw::kinematics::Frame* to);
     rw::math::Transform3D< double > fTf (const std::string& from, const std::string& to);
 
     /**

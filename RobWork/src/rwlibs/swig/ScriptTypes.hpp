@@ -23,7 +23,6 @@
 #include <rw/graphics.hpp>
 //#include <rw/graspplanning.hpp>
 #include <rw/invkin.hpp>
-#include <rw/kinematics.hpp>
 #include <rw/models.hpp>
 #include <rw/pathplanning.hpp>
 //#include <rw/plugin.hpp>
@@ -191,43 +190,6 @@ namespace swig {
     typedef rw::invkin::ClosedFormIKSolverUR ClosedFormIKSolverUR;
     //! @copydoc rw::invkin::PieperSolver
     typedef rw::invkin::PieperSolver PieperSolver;
-    ///@}
-
-    /**
-     * @name kinematics
-     * Wrapped classes in kinematics.
-     */
-    ///@{
-    //! @copydoc rw::kinematics::StateData
-    typedef rw::kinematics::StateData StateData;
-    //! @copydoc rw::kinematics::FKRange
-    typedef rw::kinematics::FKRange FKRange;
-    //! @copydoc rw::kinematics::FKTable
-    typedef rw::kinematics::FKTable FKTable;
-    //! @copydoc rw::kinematics::Frame
-    typedef rw::kinematics::Frame Frame;
-    //! @copydoc rw::kinematics::FrameType
-    typedef rw::kinematics::FrameType FrameType;
-    //! @copydoc rw::kinematics::MovableFrame
-    typedef rw::kinematics::MovableFrame MovableFrame;
-    //! @copydoc rw::kinematics::FixedFrame
-    typedef rw::kinematics::FixedFrame FixedFrame;
-    //! @copydoc rw::kinematics::State
-    typedef rw::kinematics::State State;
-    //! @copydoc rw::kinematics::StateSetup
-    typedef rw::kinematics::StateSetup StateSetup;
-    //! @copydoc rw::kinematics::StateCache
-    typedef rw::kinematics::StateCache StateCache;
-    //! @copydoc rw::kinematics::Stateless
-    typedef rw::kinematics::Stateless Stateless;
-    //! @copydoc rw::kinematics::StateStructure
-    typedef rw::kinematics::StateStructure StateStructure;
-    //! @copydoc rw::kinematics::Kinematics
-    typedef rw::kinematics::Kinematics Kinematics;
-    //! @copydoc rw::kinematics::QState
-    typedef rw::kinematics::QState QState;
-    //! @copydoc rw::kinematics::TreeState
-    typedef rw::kinematics::TreeState TreeState;
     ///@}
 
     /**

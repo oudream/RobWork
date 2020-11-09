@@ -21,9 +21,9 @@
 /**
  * @file FramePairMap.hpp
  */
-
+#if !defined(SWIG)
 #include <rw/common/PairMap.hpp>
-
+#endif
 namespace rw { namespace kinematics {
     class Frame;
     /** @addtogroup kinematics */

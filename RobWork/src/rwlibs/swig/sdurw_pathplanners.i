@@ -254,7 +254,7 @@ public:
      */
     PRMPlanner(
         Device* device,
-        const State& state,
+        const rw::kinematics::State& state,
         CollisionDetector* collisionDetector,
         double resolution);
 
@@ -272,7 +272,7 @@ public:
 		rw::core::Ptr<QSampler> sampler,
         double resolution,
         const Device& device,
-        const State& state);
+        const rw::kinematics::State& state);
 
     /**
      * @brief Destructor
@@ -608,7 +608,7 @@ public:
     static rw::core::Ptr<SBLExpand> makeShrinkingUniformJacobianBox(
     	rw::core::Ptr<QConstraint> constraint,
 		rw::core::Ptr<Device> device,
-        const State& state,
+        const rw::kinematics::State& state,
         rw::core::Ptr<JacobianCalculator> jacobian,
         double angle_max = -1,
         double disp_max = -1);
