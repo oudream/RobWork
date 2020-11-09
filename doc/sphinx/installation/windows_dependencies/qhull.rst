@@ -1,7 +1,10 @@
-qhull
+QHull
 *****
 
+QHull can be compiled an installed with the following script
+
 ::
+    set Install_DIR=C:\Local
     git clone https://github.com/qhull/qhull.git
     cd qhull
     git checkout v8.0.2
