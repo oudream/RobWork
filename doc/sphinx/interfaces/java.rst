@@ -96,9 +96,9 @@ Examples
 To see examples of how the RobWork interface is used in Java, please look in the examples folder
 for the different projects. For example look in the folders::
 
-   RobWork/example/scripts/java
-   RobWorkStudio/example/scripts/java
-   RobWorkSim/example/scripts/java
+   RobWork/example/java
+   RobWorkStudio/example/java
+   RobWorkSim/example/java
 
 
 Naming Conventions

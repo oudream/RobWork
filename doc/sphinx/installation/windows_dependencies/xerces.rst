@@ -1,4 +1,6 @@
-**Xerces** (optional) can be used some places in RobWork for opening XML
+Xerces
+******
+(optional) can be used some places in RobWork for opening XML
 files. It is no longer a strict requirement, as RobWork is now able to
 use a Boost parser instead. If you enable compilation of non-standard
 parts of RobWork, or need to compile old RobWork-dependent projects, it
@@ -58,8 +60,11 @@ Old installation procedure (Xerces 3.1.4 and earlier):
 - Open xerces-c-3.1.4/projects/Win32/VCxx/xerces-all.sln in Visual Studio (substitute VCxx with your Visual Studio version - see https://en.wikipedia.org/wiki/Microsoft\_Visual\_Studio#History for overview).
 - Choose 64-bit Release build configuration, and build the XercesLib target.
 
+Compile Xerces
+--------------
 
 ::
+    set Install_DIR=C:\Local
     svn checkout https://svn.apache.org/repos/asf/xerces/c/tags/Xerces-C_3_2_2/
     cd Xerces-C_3_2_2
     cd Build

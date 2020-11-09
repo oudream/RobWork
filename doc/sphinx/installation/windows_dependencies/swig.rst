@@ -1,4 +1,6 @@
-**SWIG** (optional) is a tool that makes it possible to generate a LUA
+SWIG
+****
+swig is a tool that makes it possible to generate a LUA
 script interface for RobWork. Python and Java interfaces are also
 possible, but require that Python or Java SDK is installed as well. The
 SWIG tool is easily downloaded from:

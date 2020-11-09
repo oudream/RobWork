@@ -130,6 +130,12 @@ some natively supported 3D files in RobWork
 
     sudo apt-get install libassimp-dev
 
+Freeglut (optional) this library is used to make graphics, in our opengl implementation
+
+.. code-block:: shell
+
+    sudo apt-get install libfreeglut-dev
+
 
 RobWorkStudio Dependencies
 --------------------------

@@ -1,7 +1,10 @@
 Assimp
 ******
 
+Assimp can be compiled on windows by running the following script.
+
 ::
+    set Install_DIR=C:\Local
     git clone https://github.com/assimp/assimp.git
     cd assimp
     git checkout v5.0.1

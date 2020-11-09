@@ -37,7 +37,7 @@ As an alternative the paths can be set in the python script as well:
    sys.path.append('/path/to/RobWork/libs/BUILD_CONFIGURATION')
    sys.path.append('/path/to/RobWorkSim/libs/BUILD_CONFIGURATION')
    sys.path.append('/path/to/RobWorkStudio/libs/BUILD_CONFIGURATION')
-   import rw, rws, rwsim
+   import sdurw, sdurws, sdurwsim
    // now we can use all robwork python bindings
 
 Now all RobWork types, that have bindings, should be available.
