@@ -1,42 +1,57 @@
-
-SET(FILES_CPP
-  ${RW_DRAWABLE_USER_FILES}
-  #Model3D.cpp
-  DrawableGeometryNode.cpp
-  ProjectionMatrix.cpp
-  SceneGraph.cpp
-  SceneNode.cpp
-  DrawableNode.cpp
-  DrawableNodeClone.cpp
-  GroupNode.cpp
-  SceneCamera.cpp
-  WorkCellScene.cpp
-  SceneViewer.cpp
-  Render.cpp  
-  SceneDescriptor.cpp
+set(SUBSYS_NAME sdurw_graphics)
+set(SUBSYS_DESC "The graphics RobWork library!")
+set(SUBSYS_DEPS
+    sdurw_core
+    sdurw_math
+    sdurw_kinematics
+    sdurw_geometry
+    sdurw_sensor
+    sdurw_kinematics
+    sdurw_models
 )
 
-SET(FILES_HPP
-  Model3D.hpp
-  DrawableGeometryNode.hpp
-  ProjectionMatrix.hpp
-  SceneGraph.hpp
-  SceneNode.hpp
-  DrawableNode.hpp
-  GroupNode.hpp
-  SceneCamera.hpp
-  WorkCellScene.hpp
-  SceneViewer.hpp
-  Render.hpp   
-  DrawableNodeClone.hpp
-)
+set(build TRUE)
+rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ON DEPENDS ${SUBSYS_DEPS})
 
-SOURCE_GROUP(graphics FILES ${FILES_CPP} ${FILES_HPP})
+if(build)
+    set(FILES_CPP
+        ${RW_DRAWABLE_USER_FILES}
+        DrawableGeometryNode.cpp
+        SceneGraph.cpp
+        SceneNode.cpp
+        DrawableNode.cpp
+        DrawableNodeClone.cpp
+        GroupNode.cpp
+        SceneCamera.cpp
+        WorkCellScene.cpp
+        SceneViewer.cpp
+        Render.cpp
+        SceneDescriptor.cpp
+    )
 
-FILE(GLOB SRC_FILES_CPP ${FILES_CPP})
-FILE(GLOB SRC_FILES_HPP ${FILES_HPP})
+    set(FILES_HPP
+        Model3D.hpp
+        DrawableGeometryNode.hpp
+        SceneGraph.hpp
+        SceneNode.hpp
+        DrawableNode.hpp
+        GroupNode.hpp
+        SceneCamera.hpp
+        WorkCellScene.hpp
+        SceneViewer.hpp
+        Render.hpp
+        DrawableNodeClone.hpp
+    )
 
-SET(RW_LIB_FILES_CPP ${RW_LIB_FILES_CPP} ${SRC_FILES_CPP} PARENT_SCOPE)
-SET(RW_LIB_FILES_HPP ${RW_LIB_FILES_HPP} ${SRC_FILES_HPP} PARENT_SCOPE)
+    rw_add_library(${SUBSYS_NAME} ${FILES_CPP} ${FILES_HPP})
+    rw_add_includes(${SUBSYS_NAME} "rw/graphics" ${FILES_HPP})
+    rw_add_includes(${SUBSYS_NAME} "rw" ../graphics.hpp)
 
+    target_link_libraries(${SUBSYS_NAME} PUBLIC ${Boost_LIBRARIES} ${SUBSYS_DEPS})
 
+    target_include_directories(
+        ${SUBSYS_NAME} PUBLIC ${Boost_INCLUDE_DIR} $<BUILD_INTERFACE:${RW_ROOT}/src>
+                              $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
+    )
+
+endif()

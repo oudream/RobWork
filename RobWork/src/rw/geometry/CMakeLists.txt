@@ -164,6 +164,7 @@ if(build)
 
     rw_add_library(${SUBSYS_NAME} ${FILES_CPP} ${FILES_HPP})
     rw_add_includes(${SUBSYS_NAME} "rw/geometry" ${FILES_HPP})
+    rw_add_includes(${SUBSYS_NAME} "rw" ../geometry.hpp)
 
     target_link_libraries(
         ${SUBSYS_NAME}

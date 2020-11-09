@@ -49,7 +49,6 @@
 #include <rw/models/TreeDevice.hpp>
 #include <rw/models/WorkCell.hpp>
 #include <rw/proximity/ProximitySetup.hpp>
-#include <rwlibs/opengl/Drawable.hpp>
 
 using namespace rw::core;
 using namespace rw::loaders;

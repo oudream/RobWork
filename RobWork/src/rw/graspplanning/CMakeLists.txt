@@ -1,67 +1,65 @@
-SET(FILES_CPP
-    #Contour2DGraspGen.cpp
- 	#CG3Grasp2DGen.cpp
-	#SDHGraspPlanner2D.cpp
-	
-	WrenchMeasure3D.cpp
-	Contour2DInfoMap.cpp
-	
-	DiceContactG3D.cpp
-	#SBGraspPlanner3D.cpp
-		
-	ContactValidateFilter.cpp
-	GraspValidateFilter.cpp
-	CompositeContactFilter.cpp
-	PlaneClearanceFilter.cpp
-	CurvatureThresFilter.cpp
-	SemiForceClosureFilter.cpp
-	ContactDistThresFilter.cpp
-	CompositeGraspFilter.cpp
-	
-	GraspQualityMeasure3D.cpp
-	CMDistCCPMeasure3D.cpp
-	ApproachMeasure3D.cpp
-	
-	Grasp3D.cpp
-	Grasp2D.cpp
-	GraspTable.cpp
-	GWSMeasure3D.cpp
+set(SUBSYS_NAME sdurw_graspplanning)
+set(SUBSYS_DESC "A collection of graspplanning algorithms!")
+set(SUBSYS_DEPS sdurw_common sdurw_math sdurw_geometry sdurw_sensor)
 
-	#CG3IKSolver2D.cpp
+set(build TRUE)
+rw_subsys_option(
+    build ${SUBSYS_NAME} ${SUBSYS_DESC} ON
+    DEPENDS ${SUBSYS_DEPS}
+    ADD_DOC
 )
 
-SET(FILES_HPP
- 	CG3Grasp2DGen.hpp
-	SDHGraspPlanner2D.hpp
-	WrenchMeasure3D.hpp
-	Contour2DInfoMap.hpp
-	
-	DiceContactG3D.hpp
-	SBGraspPlanner3D.hpp
-	
-	ContactValidateFilter.hpp
-	GraspValidateFilter.hpp
-	CompositeContactFilter.hpp
-	PlaneClearanceFilter.hpp
-	CurvatureThresFilter.hpp
-	SemiForceClosureFilter.hpp
-	ContactDistThresFilter.hpp
-	CompositeGraspFilter.hpp
-	
-	GraspQualityMeasure3D.hpp
-	CMDistCCPMeasure3D.hpp
-	ApproachMeasure3D.hpp
-	
-	Grasp3D.hpp
-	Grasp2D.hpp
-	GraspTable.hpp
-	CG3IKSolver2D.hpp
-)
+if(build)
 
-SOURCE_GROUP(graspplanning FILES ${FILES_CPP} ${FILES_HPP})
+    set(FILES_CPP
+        ApproachMeasure3D.cpp
+        CMDistCCPMeasure3D.cpp
+        CompositeContactFilter.cpp
+        CompositeGraspFilter.cpp
+        ContactDistThresFilter.cpp
+        ContactValidateFilter.cpp
+        Contour2DInfoMap.cpp
+        CurvatureThresFilter.cpp
+        DiceContactG3D.cpp
+        GWSMeasure3D.cpp
+        Grasp2D.cpp
+        Grasp3D.cpp
+        GraspQualityMeasure3D.cpp
+        GraspTable.cpp
+        GraspValidateFilter.cpp
+        PlaneClearanceFilter.cpp
+        SemiForceClosureFilter.cpp
+        WrenchMeasure3D.cpp
+    )
 
-FILE(GLOB SRC_FILES_CPP ${FILES_CPP})
-FILE(GLOB SRC_FILES_HPP ${FILES_HPP})
+    set(FILES_HPP
+        ApproachMeasure3D.hpp
+        CMDistCCPMeasure3D.hpp
+        CompositeContactFilter.hpp
+        CompositeGraspFilter.hpp
+        ContactDistThresFilter.hpp
+        ContactValidateFilter.hpp
+        Contour2DInfoMap.hpp
+        CurvatureThresFilter.hpp
+        DiceContactG3D.hpp
+        Grasp2D.hpp
+        Grasp3D.hpp
+        GraspQualityMeasure3D.hpp
+        GraspTable.hpp
+        GraspValidateFilter.hpp
+        PlaneClearanceFilter.hpp
+        SemiForceClosureFilter.hpp
+        WrenchMeasure3D.hpp
+    )
 
-SET(RW_LIB_FILES_CPP ${RW_LIB_FILES_CPP} ${SRC_FILES_CPP} PARENT_SCOPE)
-SET(RW_LIB_FILES_HPP ${RW_LIB_FILES_HPP} ${SRC_FILES_HPP} PARENT_SCOPE)
+    rw_add_library(${SUBSYS_NAME} ${FILES_CPP} ${FILES_HPP})
+    rw_add_includes(${SUBSYS_NAME} "rw/graspplanning" ${FILES_HPP})
+    rw_add_includes(${SUBSYS_NAME} "rw" ../graspplanning.hpp)
+    target_link_libraries(${SUBSYS_NAME} PUBLIC ${SUBSYS_DEPS})
+    target_include_directories(
+        ${SUBSYS_NAME} PUBLIC $<BUILD_INTERFACE:${RW_ROOT}/src>
+                              $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
+    )
+
+    set_target_properties(${SUBSYS_NAME} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
+endif()

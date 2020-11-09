@@ -75,6 +75,8 @@ if(build)
 
     rw_add_library(${SUBSYS_NAME} ${FILES_CPP} ${FILES_HPP})
     rw_add_includes(${SUBSYS_NAME} "rw/core" ${FILES_HPP})
+    rw_add_includes(${SUBSYS_NAME} "rw" ${CMAKE_CURRENT_SOURCE_DIR}/../core.hpp)
+    
     target_link_libraries(${SUBSYS_NAME} PUBLIC ${Boost_LIBRARIES} PRIVATE ${CMAKE_DL_LIBS})
     
     target_include_directories(${SUBSYS_NAME} PUBLIC ${Boost_INCLUDE_DIR})
@@ -84,6 +86,6 @@ if(build)
                               $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
     )
 
-    rw_add_includes(${SUBSYS_NAME} "rw" ${CMAKE_CURRENT_SOURCE_DIR}/../core.hpp)
+    
 
 endif()
