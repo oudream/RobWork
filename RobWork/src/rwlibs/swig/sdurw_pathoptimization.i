@@ -14,6 +14,7 @@ using rw::trajectory::Path;
 %import <rwlibs/swig/sdurw_core.i>
 %import <rwlibs/swig/sdurw_common.i>
 %import <rwlibs/swig/sdurw_math.i>
+%import <rwlibs/swig/sdurw_kinematics.i>
 
 
 %pragma(java) jniclassimports=%{
@@ -21,18 +22,21 @@ import org.robwork.sdurw.*;
 import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_common.*;
 import org.robwork.sdurw_math.*;
+import org.robwork.sdurw_kinematics.*;
 %}
 %pragma(java) moduleimports=%{
 import org.robwork.sdurw.*;
 import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_common.*;
 import org.robwork.sdurw_math.*;
+import org.robwork.sdurw_kinematics.*;
 %}
 %typemap(javaimports) SWIGTYPE %{
 import org.robwork.sdurw.*;
 import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_common.*;
 import org.robwork.sdurw_math.*;
+import org.robwork.sdurw_kinematics.*;
 %}
 
 %{
@@ -47,7 +51,7 @@ public:
 
         PathLengthOptimizer(rw::core::Ptr<CollisionDetector> cd,
                             rw::core::Ptr<Device> dev,
-                            const State &state)
+                            const rw::kinematics::State &state)
         {
             rw::pathplanning::PlannerConstraint constraint =
                     rw::pathplanning::PlannerConstraint::make(cd.get(), dev, state);
@@ -57,7 +61,7 @@ public:
         PathLengthOptimizer(rw::core::Ptr<CollisionDetector> cd,
                             rw::core::Ptr<Device> dev,
                             rw::core::Ptr< rw::math::Metric< rw::math::Q > > metric,
-                            const State &state)
+                            const rw::kinematics::State &state)
         {
             rw::pathplanning::PlannerConstraint constraint =
                     rw::pathplanning::PlannerConstraint::make(cd.get(), dev, state);

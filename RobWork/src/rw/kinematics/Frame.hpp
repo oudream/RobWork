@@ -21,7 +21,7 @@
 /**
  * @file Frame.hpp
  */
-
+#if!defined(SWIG)
 #include "StateData.hpp"
 
 #include <rw/common/ConcatVectorIterator.hpp>
@@ -31,6 +31,7 @@
 
 #include <set>
 #include <vector>
+#endif
 
 namespace rw { namespace kinematics {
 
@@ -80,8 +81,8 @@ namespace rw { namespace kinematics {
          * @param state [in] Joint values for the forward kinematics tree.
          * @param result [in] The transform of the frame in the world frame.
          */
-        void multiplyTransform (const math::Transform3D<>& parent, const State& state,
-                                math::Transform3D<>& result) const
+        void multiplyTransform (const rw::math::Transform3D<>& parent, const rw::kinematics::State& state,
+                                rw::math::Transform3D<>& result) const
         {
             doMultiplyTransform (parent, state, result);
         }
@@ -98,7 +99,7 @@ namespace rw { namespace kinematics {
          *
          * @return The transform of the frame relative to its parent.
          */
-        math::Transform3D<> getTransform (const State& state) const
+        rw::math::Transform3D<> getTransform (const rw::kinematics::State& state) const
         {
             return doGetTransform (state);
         }
@@ -118,12 +119,12 @@ namespace rw { namespace kinematics {
          *
          * @return The property map of the frame.
          */
-        const core::PropertyMap& getPropertyMap () const { return _propertyMap; }
+        const rw::core::PropertyMap& getPropertyMap () const { return _propertyMap; }
 
         /**
          * @copydoc getPropertyMap
          */
-        core::PropertyMap& getPropertyMap () { return _propertyMap; }
+        rw::core::PropertyMap& getPropertyMap () { return _propertyMap; }
 
         /**
          * @brief The number of degrees of freedom (dof) of the frame.
@@ -144,12 +145,12 @@ namespace rw { namespace kinematics {
         /**
          * @brief The parent of the frame or NULL if the frame is a DAF.
          */
-        const Frame* getParent () const { return _parent; }
+        const rw::kinematics::Frame* getParent () const { return _parent; }
 
         /**
          * @brief The parent of the frame or NULL if the frame is a DAF.
          */
-        Frame* getParent () { return _parent; }
+        rw::kinematics::Frame* getParent () { return _parent; }
 
         /**
          * @brief Returns the parent of the frame
@@ -160,35 +161,35 @@ namespace rw { namespace kinematics {
          * @param state [in] the state to consider
          * @return the parent
          */
-        Frame* getParent (const State& state);
+        rw::kinematics::Frame* getParent (const rw::kinematics::State& state);
 
         /**
          * @copydoc getParent(const State&)
          */
-        const Frame* getParent (const State& state) const;
+        const rw::kinematics::Frame* getParent (const rw::kinematics::State& state) const;
 
         /**
          * @brief The dynamically attached parent or NULL if the frame is not a
          * DAF.
          */
-        const Frame* getDafParent (const State& state) const;
+        const rw::kinematics::Frame* getDafParent (const rw::kinematics::State& state) const;
 
         /**
          * @copydoc getDafParent
          */
-        Frame* getDafParent (const State& state);
+        rw::kinematics::Frame* getDafParent (const rw::kinematics::State& state);
 
         // The children.
 
         /**
          * @brief Forward iterator for frames.
          */
-        typedef common::ConcatVectorIterator< Frame > iterator;
+        typedef rw::common::ConcatVectorIterator< Frame > iterator;
 
         /**
          * @brief Forward iterator for const frames.
          */
-        typedef common::ConstConcatVectorIterator< Frame > const_iterator;
+        typedef rw::common::ConstConcatVectorIterator< Frame > const_iterator;
 
         /**
          * @brief Pair of iterators
@@ -213,30 +214,30 @@ namespace rw { namespace kinematics {
         /**
          * @brief Iterator pair for all children of the frame.
          */
-        const_iterator_pair getChildren (const State& state) const;
+        const_iterator_pair getChildren (const rw::kinematics::State& state) const;
 
         /**
          * @brief Iterator pair for all children of the frame.
          */
-        iterator_pair getChildren (const State& state);
+        iterator_pair getChildren (const rw::kinematics::State& state);
 
         /**
          *  @brief get a list of all frame children
          *  @param state [in] the state of to look for children in.
          *  @return a vector with the children
          */
-        std::vector< Frame::Ptr > getChildrenList (const State& state);
+        std::vector< Frame::Ptr > getChildrenList (const rw::kinematics::State& state);
 
         /**
          * @brief Iterator pair for the dynamically attached children of the
          * frame.
          */
-        const_iterator_pair getDafChildren (const State& state) const;
+        const_iterator_pair getDafChildren (const rw::kinematics::State& state) const;
 
         /**
          * @copydoc getDafChildren
          */
-        iterator_pair getDafChildren (const State& state);
+        iterator_pair getDafChildren (const rw::kinematics::State& state);
 
         // Dynamic frame attachments.
 
@@ -252,7 +253,7 @@ namespace rw { namespace kinematics {
          * @param parent [in] The frame to attach \b frame to.
          * @param state [inout] The state to which the attachment is written.
          */
-        void attachTo (Frame* parent, State& state);
+        void attachTo (rw::kinematics::Frame* parent, rw::kinematics::State& state);
 
         /**
          * @brief Test if this frame is a Dynamically Attachable Frame
@@ -296,20 +297,20 @@ namespace rw { namespace kinematics {
         /**
          * @brief Subclass implementation of the getTransform() method.
          */
-        virtual void doMultiplyTransform (const math::Transform3D<>& parent, const State& state,
-                                          math::Transform3D<>& result) const = 0;
+        virtual void doMultiplyTransform (const rw::math::Transform3D<>& parent, const rw::kinematics::State& state,
+                                          rw::math::Transform3D<>& result) const = 0;
 
         /**
          * brief Subclass implementation of the multiplyTransform() method
          */
-        virtual math::Transform3D<> doGetTransform (const State& state) const = 0;
+        virtual rw::math::Transform3D<> doGetTransform (const rw::kinematics::State& state) const = 0;
 
       private:
         friend class StateStructure;
 
-        void setParent (Frame* const frame) { _parent = frame; }
+        void setParent (rw::kinematics::Frame* const frame) { _parent = frame; }
 
-        void removeChild (const Frame* const frame)
+        void removeChild (const rw::kinematics::Frame* const frame)
         {
             for (ChildList::iterator it = _children.begin (); it != _children.end (); ++it)
                 if ((*it) == frame) {

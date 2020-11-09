@@ -3,6 +3,8 @@
 #include "ScriptTypes.hpp"
 
 #include <rwslibs/rwstudioapp/RobWorkStudioApp.hpp>
+#include <rw/kinematics/Kinematics.hpp>
+#include <rw/kinematics/FixedFrame.hpp>
 
 #include <QApplication>
 
@@ -34,11 +36,11 @@ void rws::swig::setRobWorkStudio (rws::swig::RobWorkStudio* rwstudio)
     rwstudio_internal = rwstudio;
 }
 
-const State& rws::swig::getState ()
+const rw::kinematics::State& rws::swig::getState ()
 {
     return getRobWorkStudio ()->getState ();
 }
-void rws::swig::setState (State& state)
+void rws::swig::setState (rw::kinematics::State& state)
 {
     return getRobWorkStudio ()->postState (state);
 }
@@ -62,31 +64,31 @@ rw::core::Ptr< ParallelDevice > rws::swig::findParallelDevice (const std::string
 {
     return getRobWorkStudio ()->getWorkCell ()->findDevice< ParallelDevice > (name);
 }
-Frame* rws::swig::findFrame (const std::string& name)
+rw::kinematics::Frame* rws::swig::findFrame (const std::string& name)
 {
     return getRobWorkStudio ()->getWorkCell ()->findFrame (name);
 }
 
-MovableFrame* rws::swig::findMovableFrame (const std::string& name)
+rw::kinematics::MovableFrame* rws::swig::findMovableFrame (const std::string& name)
 {
-    return getRobWorkStudio ()->getWorkCell ()->findFrame< MovableFrame > (name);
+    return getRobWorkStudio ()->getWorkCell ()->findFrame< rw::kinematics::MovableFrame > (name);
 }
 
-FixedFrame* rws::swig::findFixedFrame (const std::string& name)
+rw::kinematics::FixedFrame* rws::swig::findFixedFrame (const std::string& name)
 {
-    return getRobWorkStudio ()->getWorkCell ()->findFrame< FixedFrame > (name);
+    return getRobWorkStudio ()->getWorkCell ()->findFrame< rw::kinematics::FixedFrame > (name);
 }
 
-void rws::swig::moveTo (MovableFrame* mframe, rw::math::Transform3D<double> wTframe)
+void rws::swig::moveTo (rw::kinematics::MovableFrame* mframe, rw::math::Transform3D<double> wTframe)
 {
-    State state = getState ();
+    rw::kinematics::State state = getState ();
     mframe->moveTo (wTframe, state);
     setState (state);
 }
 
-void rws::swig::moveTo (Frame* frame, MovableFrame* mframe, rw::math::Transform3D<double> wTtcp)
+void rws::swig::moveTo (rw::kinematics::Frame* frame, rw::kinematics::MovableFrame* mframe, rw::math::Transform3D<double> wTtcp)
 {
-    State state                = getState ();
+    rw::kinematics::State state                = getState ();
     rw::math::Transform3D<double> tcpTbase      = rw::kinematics::Kinematics::frameTframe (frame, mframe, state);
     rw::math::Transform3D<double> wTbase_target = wTtcp * tcpTbase;
     mframe->moveTo (wTbase_target, state);
@@ -95,8 +97,8 @@ void rws::swig::moveTo (Frame* frame, MovableFrame* mframe, rw::math::Transform3
 
 void rws::swig::moveTo (const std::string& fname, const std::string& mname, rw::math::Transform3D<double> wTframe)
 {
-    Frame* fframe        = findFrame (fname);
-    MovableFrame* mframe = findMovableFrame (mname);
+    rw::kinematics::Frame* fframe        = findFrame (fname);
+    rw::kinematics::MovableFrame* mframe = findMovableFrame (mname);
     moveTo (fframe, mframe, wTframe);
 }
 
@@ -146,28 +148,28 @@ void rws::swig::setQ (rw::core::Ptr< rwlibs::swig::Device > dev, rw::math::Q q)
 {
     if (dev == NULL)
         RW_THROW ("Device is NULL!");
-    State state = getState ();
+    rw::kinematics::State state = getState ();
     dev->setQ (q, state);
     setState (state);
 }
 
-void rws::swig::setTransform (rwlibs::swig::Frame* mframe, rw::math::Transform3D< double > wTframe)
+void rws::swig::setTransform (rw::kinematics::Frame* mframe, rw::math::Transform3D< double > wTframe)
 {
-    if (FixedFrame* ff = dynamic_cast< FixedFrame* > (mframe)) {
+    if (rw::kinematics::FixedFrame* ff = dynamic_cast< rw::kinematics::FixedFrame* > (mframe)) {
         ff->setTransform (wTframe);
     }
-    else if (MovableFrame* mf = dynamic_cast< MovableFrame* > (mframe)) {
-        State state = getState ();
+    else if (rw::kinematics::MovableFrame* mf = dynamic_cast< rw::kinematics::MovableFrame* > (mframe)) {
+        rw::kinematics::State state = getState ();
         mf->setTransform (wTframe, state);
         setState (state);
     }
 }
 
-rw::math::Transform3D< double > rws::swig::wTf (rwlibs::swig::Frame* frame)
+rw::math::Transform3D< double > rws::swig::wTf (rw::kinematics::Frame* frame)
 {
     return rw::kinematics::Kinematics::worldTframe (frame, getState ());
 }
-rw::math::Transform3D< double > rws::swig::fTf (rwlibs::swig::Frame* frame, rwlibs::swig::Frame* to)
+rw::math::Transform3D< double > rws::swig::fTf (rw::kinematics::Frame* frame, rw::kinematics::Frame* to)
 {
     return rw::kinematics::Kinematics::frameTframe (frame, to, getState ());
 }

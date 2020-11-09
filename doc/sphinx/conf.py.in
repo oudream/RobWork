@@ -13,7 +13,8 @@
 import os
 import sys
 
-rw_modules = ["sdurw_core","sdurw","sdurw_assembly","sdurw_control","sdurw_pathoptimization","sdurw_pathplanners","sdurw_proximitystrategies","sdurw_task","sdurw_simulation","sdurw_opengl"]
+rw_modules = ["sdurw_core", "sdurw_common", "sdurw_math", "sdurw_kinematics", "sdurw", "sdurw_assembly", "sdurw_control",
+              "sdurw_pathoptimization", "sdurw_pathplanners", "sdurw_proximitystrategies", "sdurw_task", "sdurw_simulation", "sdurw_opengl"]
 for s in rw_modules:
     sys.path.insert(0, '@RW_LIBS@/'+s)
 sys.path.insert(0, '@RWS_LIBS@/sdurws')
@@ -50,15 +51,15 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 mathjax_config = {
     'extensions': ["tex2jax.js"],
-    'jax': ["input/TeX","output/HTML-CSS"],
+    'jax': ["input/TeX", "output/HTML-CSS"],
     'TeX': {
         'Macros': {
             'thetak': ["{\\theta\\mathbf{\\hat{k}}}"],
-            'robax': ["{{}^{#1}{#2}}",2],
-            'robabx': ["{{}^{#1}{#3}_{#2}}",3],
-            'robabcdx': ["{{}^{#1}_{#2}{#5}^{#3}_{#4}}",5]
+            'robax': ["{{}^{#1}{#2}}", 2],
+            'robabx': ["{{}^{#1}{#3}_{#2}}", 3],
+            'robabcdx': ["{{}^{#1}_{#2}{#5}^{#3}_{#4}}", 5]
         }
-   }
+    }
 }
 mathjax_path = 'https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js'
 

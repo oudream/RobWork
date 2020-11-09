@@ -21,7 +21,7 @@
 /**
    @file StateStructure.hpp
 */
-
+#if !defined(SWIG)
 #include "State.hpp"
 
 #include <rw/core/Event.hpp>
@@ -30,7 +30,7 @@
 #include <boost/function.hpp>
 #include <map>
 #include <vector>
-
+#endif 
 namespace rw { namespace kinematics {
 
     class Frame;

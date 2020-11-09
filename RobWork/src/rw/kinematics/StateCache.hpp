@@ -21,8 +21,9 @@
 /**
    @file StateCache.hpp
 */
-
+#if !defined(SWIG)
 #include <rw/core/Ptr.hpp>
+#endif
 
 namespace rw { namespace kinematics {
 

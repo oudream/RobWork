@@ -21,9 +21,10 @@
 /**
  * @file FixedFrame.hpp
  */
-
+#if !defined(SWIG)
 #include "Frame.hpp"
-
+#include <rw/core/Ptr.hpp>
+#endif
 namespace rw { namespace kinematics {
 
     /** @addtogroup kinematics */
@@ -36,7 +37,7 @@ namespace rw { namespace kinematics {
      * A fixed frame can for example be used for attaching a camera, say, with a
      * fixed offset relative to the tool.
      */
-    class FixedFrame : public Frame
+    class FixedFrame : public rw::kinematics::Frame
     {
       public:
         //! @brief smart pointer type to this class
@@ -70,7 +71,7 @@ namespace rw { namespace kinematics {
          * @param refframe [in] the reference frame.
          * @param state [in] the state giving the current poses.
          */
-        void moveTo (const rw::math::Transform3D<>& refTtarget, Frame* refframe, State& state);
+        void moveTo (const rw::math::Transform3D<>& refTtarget, rw::kinematics::Frame* refframe, rw::kinematics::State& state);
 
         /**
          * @brief get the fixed transform of this frame.
@@ -78,10 +79,10 @@ namespace rw { namespace kinematics {
         const math::Transform3D<>& getFixedTransform () const;
 
       private:
-        void doMultiplyTransform (const math::Transform3D<>& parent, const State& state,
+        void doMultiplyTransform (const math::Transform3D<>& parent, const rw::kinematics::State& state,
                                   rw::math::Transform3D<>& result) const;
 
-        rw::math::Transform3D<> doGetTransform (const State& state) const;
+        rw::math::Transform3D<> doGetTransform (const rw::kinematics::State& state) const;
 
       private:
         rw::math::Transform3D<> _transform;

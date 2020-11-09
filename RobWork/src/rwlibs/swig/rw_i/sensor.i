@@ -508,7 +508,7 @@
      * the kinematic model of a robot. A sensormodel should have a name id and be associated,
      * referenced to some frame in the workcell.
      */
-    class SensorModel: public Stateless
+    class SensorModel: public rw::kinematics::Stateless
     {
       public:
         /**
@@ -517,7 +517,7 @@
          * @param name [in] the name of this sensor
          * @param frame [in] the frame that the sensor is referenced to
          */
-        SensorModel(const std::string& name, Frame* frame);
+        SensorModel(const std::string& name, rw::kinematics::Frame* frame);
 
         /**
          * @brief constructor
@@ -526,7 +526,7 @@
          * @param frame [in] the frame that the sensor is referenced to
          * @param description [in] description of the sensor
          */
-        SensorModel(const std::string& name, Frame* frame, const std::string& description);
+        SensorModel(const std::string& name, rw::kinematics::Frame* frame, const std::string& description);
 
         //! @brief destructor
         virtual ~SensorModel();
@@ -564,14 +564,14 @@
          *
          * The frame can be NULL.
          */
-        Frame* getFrame() const;
+        rw::kinematics::Frame* getFrame() const;
 
         /**
          * @brief Sets the frame to which the sensor should be attached
          *
          * @param frame The frame, which can be NULL
          */
-        virtual void attachTo(Frame* frame);
+        virtual void attachTo(rw::kinematics::Frame* frame);
 
         /**
          * @brief gets the propertymap of this sensor
@@ -600,8 +600,8 @@
          * @param frame [in] frame that camera is attached/referenced to
          * @param modelInfo [in] text description of the camera
          */
-        CameraModel (const ProjectionMatrix& projection, const std::string& name,
-                     Frame* frame, const std::string& modelInfo = "");
+        CameraModel (const rw::math::ProjectionMatrix& projection, const std::string& name,
+                     rw::kinematics::Frame* frame, const std::string& modelInfo = "");
 
 
         /**
@@ -615,7 +615,7 @@
          * @param state [in] which state the image is taken from.
          * @return last image captured from camera.
          */
-        rw::core::Ptr<Image> getImage(const State& state);
+        rw::core::Ptr<Image> getImage(const rw::kinematics::State& state);
 
         /**
          * @brief set the image in the state
@@ -623,10 +623,10 @@
          * @param img [in] image to set in state
          * @param state [in/out] the state in which to set the image.
          */
-        void setImage(rw::core::Ptr<Image> img, State& state);
+        void setImage(rw::core::Ptr<Image> img, rw::kinematics::State& state);
         
         //! @brief get the camera projection matrix
-        ProjectionMatrix getProjectionMatrix () const;
+        rw::math::ProjectionMatrix getProjectionMatrix () const;
 
         /**
          * @brief get horisontal field of view.
@@ -848,30 +848,30 @@
          * force is described in relation to the origin.
          * @return force acting on origin.
          */
-        rw::math::Wrench6D<double> getWrench (const State& state) const;
+        rw::math::Wrench6D<double> getWrench (const rw::kinematics::State& state) const;
 
         //! @brief set the wrench that is acting on the origin of this FTsensor
-        void setWrench (const rw::math::Wrench6D<double>& wrench, const State& state);
+        void setWrench (const rw::math::Wrench6D<double>& wrench, const rw::kinematics::State& state);
 
         /**
          * @brief gets the force in N that is acting on the origin. The
          * force is described in relation to the origin.
          * @return force acting on origin.
          */
-        rw::math::Vector3D<double> getForce (const State& state) const;
+        rw::math::Vector3D<double> getForce (const rw::kinematics::State& state) const;
 
         //! @brief set the force that is acting on the origin of this FTsensor
-        void setForce (const rw::math::Vector3D<double>& force, const State& state);
+        void setForce (const rw::math::Vector3D<double>& force, const rw::kinematics::State& state);
 
         /**
          * @brief gets the torgue in Nm that is acting on the origin. The
          * torque is described in relation to the origin.
          * @return torque acting on origin.
          */
-        rw::math::Vector3D<double> getTorque (const State& state) const;
+        rw::math::Vector3D<double> getTorque (const rw::kinematics::State& state) const;
 
         //! @brief set the torque that is acting on the origin of this FTsensor
-        void setTorque (const rw::math::Vector3D<double>& force, const State& state);
+        void setTorque (const rw::math::Vector3D<double>& force, const rw::kinematics::State& state);
 
         /**
          * @brief the transform from the sensor frame to the point of origin.
@@ -1247,7 +1247,7 @@
          * @param frame documentation missing !
          * @param modelInfo [in] info string
          */
-        RGBDCameraModel (const std::string& name, Frame* frame,
+        RGBDCameraModel (const std::string& name, rw::kinematics::Frame* frame,
                          const std::string& modelInfo);
 
         /**
@@ -1414,7 +1414,7 @@
          * @param maxDataPoints [in] the number of scan points
          * @param frame [in] the sensor frame
          */
-        Scanner2DModel(const std::string& name, double angularRangeInRad, int maxDataPoints, Frame* frame );
+        Scanner2DModel(const std::string& name, double angularRangeInRad, int maxDataPoints, rw::kinematics::Frame* frame );
 
         /**
          * @brief Destructor. Closes scanner connection if not already closed.
@@ -1426,7 +1426,7 @@
          *
          * @param state [in] the state with point cloud data
          */
-        PointCloud& getScan(const State& state);
+        PointCloud& getScan(const rw::kinematics::State& state);
 
         /**
          * @brief set point cloud data in state
@@ -1434,7 +1434,7 @@
          * @param data [in] point cloud data to set
          * @param state [in] state in which to set the point cloud
          */
-        void setScan(const PointCloud& data, const State& state);
+        void setScan(const PointCloud& data, const rw::kinematics::State& state);
 
         /**
          * @brief Returns the min and max angular range of the scanner, where
@@ -1518,7 +1518,7 @@
          * @param height [in]
          * @param frame [in] the frame that the scanner is attached to
          */
-        Scanner25DModel(const std::string& name, int width, int height, Frame* frame );
+        Scanner25DModel(const std::string& name, int width, int height, rw::kinematics::Frame* frame );
 
         /**
          * @brief Destructor. Closes scanner connection if not already closed.
@@ -1530,7 +1530,7 @@
          *
          * @param state [in] the state with point cloud data
          */
-        PointCloud& getScan(const State& state);
+        PointCloud& getScan(const rw::kinematics::State& state);
 
         /**
          * @brief set point cloud data in state
@@ -1538,7 +1538,7 @@
          * @param data [in] point cloud data to set
          * @param state [in] state in which to set the point cloud
          */
-        void setScan(const PointCloud& data, const State& state);
+        void setScan(const PointCloud& data, const rw::kinematics::State& state);
 
         //! @brief width of images taken with 25 sensor
         int getWidth() const;
@@ -1629,23 +1629,23 @@
          */
         StereoCameraModel (const std::string& name, double fov, double width, double height,
                            const rw::math::Transform3D<double>& TL, const rw::math::Transform3D<double>& TR,
-                           Frame* frame, const std::string& modelInfo = "");
+                           rw::kinematics::Frame* frame, const std::string& modelInfo = "");
         /**
          * @brief destructor
          */
         virtual ~StereoCameraModel ();
 
         //! @brief get left image
-        rw::core::Ptr<Image> getLeftImage (const State& state);
+        rw::core::Ptr<Image> getLeftImage (const rw::kinematics::State& state);
 
         //! @brief set left image
-        void setLeftImage (rw::core::Ptr<Image> img, State& state);
+        void setLeftImage (rw::core::Ptr<Image> img, rw::kinematics::State& state);
 
         //! @brief get right image
-        rw::core::Ptr<Image> getRightImage (const State& state);
+        rw::core::Ptr<Image> getRightImage (const rw::kinematics::State& state);
 
         //! @brief set right image
-        void setRightImage (rw::core::Ptr<Image> img, State& state);
+        void setRightImage (rw::core::Ptr<Image> img, rw::kinematics::State& state);
 
         /**
          * @brief utility function for saving a stereo calibration to a file
@@ -1704,7 +1704,7 @@
          */
         virtual ~TactileArray () {}
 
-        Frame* getFrame () const;
+        rw::kinematics::Frame* getFrame () const;
 
         /**
          * @brief gets the size of an individual tactile cell with coordinates (x,y)
@@ -1793,7 +1793,7 @@
          * @param cell_width [in] width of cell
          * @param cell_height [in] height of cell
          */
-        TactileArrayModel (const std::string& name, Frame* sensorframe,
+        TactileArrayModel (const std::string& name, rw::kinematics::Frame* sensorframe,
                            const rw::math::Transform3D<double>& fThmap, const Eigen::Matrix<float,-1,-1>&& heightMap,
                            double cell_width, double cell_height);
 
@@ -1865,7 +1865,7 @@
          * @param state [in] state to get the values from
          * @return matrix of texel pressure values
          */
-        Eigen::Matrix<float,-1,-1>&& getTexelData (State& state) const;
+        Eigen::Matrix<float,-1,-1>&& getTexelData (rw::kinematics::State& state) const;
 
         /**
          * @brief set the pressure on each texel of the TactileArray in
@@ -1873,7 +1873,7 @@
          * @param data [in] pressure values
          * @param state [in] state to set the values in
          */
-        void setTexelData (const Eigen::Matrix<float,-1,-1>& data, State& state) const;
+        void setTexelData (const Eigen::Matrix<float,-1,-1>& data, rw::kinematics::State& state) const;
 
     };
     %template(TactileArrayModelPtr) rw::core::Ptr< TactileArrayModel > ;
@@ -1898,5 +1898,5 @@
          */
         static std::vector< Contact3D >
         estimateContacts (const TactileArrayModel& arraySensor,
-                          const State& state, double minContactForce);
+                          const rw::kinematics::State& state, double minContactForce);
     };

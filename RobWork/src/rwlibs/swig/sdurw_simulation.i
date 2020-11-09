@@ -2,6 +2,7 @@
 
 %{
 #include <rwlibs/swig/ScriptTypes.hpp>
+#include <rw/kinematics/FixedFrame.hpp>
 #include <rw/core/Ptr.hpp>
 
 using namespace rwlibs::swig;
@@ -12,6 +13,7 @@ using namespace rwlibs::swig;
 
 %import <rwlibs/swig/sdurw_core.i>
 %import <rwlibs/swig/sdurw_common.i>
+%import <rwlibs/swig/sdurw_kinematics.i>
 %import <rwlibs/swig/sdurw.i>
 %import <rwlibs/swig/sdurw_control.i>
 
@@ -19,17 +21,20 @@ using namespace rwlibs::swig;
 import org.robwork.sdurw.*;
 import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_common.*;
+import org.robwork.sdurw_kinematics.*;
 %}
 %pragma(java) moduleimports=%{
 import org.robwork.sdurw.*;
 import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_common.*;
+import org.robwork.sdurw_kinematics.*;
 %}
 %typemap(javaimports) SWIGTYPE %{
 import org.robwork.sdurw.*;
 import org.robwork.sdurw_control.*;
 import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_common.*;
+import org.robwork.sdurw_kinematics.*;
 %}
 
 #if (defined(SWIGPYTHON) || defined(SWIGLUA))
@@ -55,7 +60,7 @@ public:
      *
      * @return frame
      */
-    Frame* getFrame() const;
+    rw::kinematics::Frame* getFrame() const;
 
     /**
      * @brief steps the the SimulatedSensor with time \b dt and saves any state
@@ -64,14 +69,14 @@ public:
      * @param info [in] update information related to the time step.
      * @param state [out] changes of the SimulatedSensor is saved in state.
      */
-    virtual void update(const Simulator::UpdateInfo& info, State& state) = 0;
+    virtual void update(const Simulator::UpdateInfo& info, rw::kinematics::State& state) = 0;
 
     /**
      * @brief Resets the state of the SimulatedSensor to that of \b state
      *
      * @param state [in] the state that the sensor is reset too.
      */
-    virtual void reset(const State& state) = 0;
+    virtual void reset(const rw::kinematics::State& state) = 0;
 
     /**
      * @brief get the sensor model of this simulated sensor. 
@@ -109,14 +114,14 @@ public:
      * @param info [in] update information related to the time step.
      * @param state [in/out] the current state
      */
-    virtual void update(const Simulator::UpdateInfo& info, State& state) = 0;
+    virtual void update(const Simulator::UpdateInfo& info, rw::kinematics::State& state) = 0;
 
     /**
      * @brief reset the controller to the applied state
      *
      * @param state [in] the state to reset to
      */
-    virtual void reset(const State& state) = 0;
+    virtual void reset(const rw::kinematics::State& state) = 0;
 
     /**
      * @brief get the controller handle eg. statefull handle, associated with this simulated controller
@@ -158,11 +163,11 @@ public:
    
    virtual ~Simulator();
    virtual void step(double dt) = 0;
-   virtual void reset(State& state) = 0;
-   virtual void init(State& state) = 0;
+   virtual void reset(rw::kinematics::State& state) = 0;
+   virtual void init(rw::kinematics::State& state) = 0;
    virtual double getTime() = 0;
-   virtual void setEnabled(Frame* frame, bool enabled) = 0;
-   virtual State& getState() = 0;
+   virtual void setEnabled(rw::kinematics::Frame* frame, bool enabled) = 0;
+   virtual rw::kinematics::State& getState() = 0;
    virtual rw::core::PropertyMap& getPropertyMap() = 0;
 
 };
@@ -233,7 +238,7 @@ public:
      * @brief this function grabs a image from the specialized source and
      * copies it to the FrameGrabber image.
      */
-    virtual void grab(Frame *frame, const State& state) = 0;
+    virtual void grab(rw::kinematics::Frame *frame, const rw::kinematics::State& state) = 0;
 };
 
 %template (FrameGrabberPtr) rw::core::Ptr<FrameGrabber>;
@@ -296,7 +301,7 @@ public:
      */
     virtual PointCloud& getImage();
 
-    virtual void grab(Frame *frame, const State& state) = 0;
+    virtual void grab(rw::kinematics::Frame *frame, const rw::kinematics::State& state) = 0;
 
     /**
      * @brief maximum depth that this framegrabber can handle
@@ -364,7 +369,7 @@ public:
     bool init(rw::core::Ptr<SceneViewer> drawer);
 
     //! @copydoc FrameGrabber::grab
-    void grab(Frame* frame, const State& state);
+    void grab(rw::kinematics::Frame* frame, const rw::kinematics::State& state);
 };
 
 %template (GLFrameGrabberPtr) rw::core::Ptr<GLFrameGrabber>;
@@ -435,7 +440,7 @@ public:
     void setMinDepth(double depth);
 
     //! @copydoc FrameGrabber::grab
-    void grab(Frame* frame, const State& state);
+    void grab(rw::kinematics::Frame* frame, const rw::kinematics::State& state);
 
     //! @copydoc FrameGrabber25D::getMaxDepth()
     double getMaxDepth();
@@ -475,7 +480,7 @@ public:
      * @param frame [in] frame to which the camera is attached
      * @param frameGrabber [in] the frameGrabber from which this Camera should grab images
      */
-    SimulatedCamera(const std::string& name, double fov, Frame* frame, rw::core::Ptr<FrameGrabber> frameGrabber);
+    SimulatedCamera(const std::string& name, double fov, rw::kinematics::Frame* frame, rw::core::Ptr<FrameGrabber> frameGrabber);
 
     /**
      * @brief constructor
@@ -544,12 +549,12 @@ public:
     /**
      * @copydoc SimulatedSensor::update
      */
-    void update(const Simulator::UpdateInfo& info, State& state);
+    void update(const Simulator::UpdateInfo& info, rw::kinematics::State& state);
 
     /**
      * @copydoc SimulatedSensor::reset
      */
-    void reset(const State& state);
+    void reset(const rw::kinematics::State& state);
 
     rw::core::Ptr<Sensor> getSensor();
 
@@ -577,7 +582,7 @@ public:
      * @param frame [in] the sensor frame.
      * @param framegrabber [in] the framegrabber used for grabbing 2.5D images
      */
-    SimulatedScanner2D(const std::string& name, Frame* frame,
+    SimulatedScanner2D(const std::string& name, rw::kinematics::Frame* frame,
     		rw::core::Ptr<FrameGrabber25D> framegrabber);
 
     /**
@@ -590,7 +595,7 @@ public:
      */
     SimulatedScanner2D(const std::string& name,
             const std::string& desc,
-            Frame* frame,
+            rw::kinematics::Frame* frame,
 			rw::core::Ptr<FrameGrabber25D> framegrabber);
 
     /**
@@ -629,10 +634,10 @@ public:
     const PointCloud& getScan() const;
 
     //! @copydoc SimulatedSensor::update
-    void update(const Simulator::UpdateInfo& info, State& state);
+    void update(const Simulator::UpdateInfo& info, rw::kinematics::State& state);
 
     //! @copydoc SimulatedSensor::reset
-    void reset(const State& state);
+    void reset(const rw::kinematics::State& state);
 
     /**
      * @brief returns a handle to what represents a statefull interface.
@@ -666,7 +671,7 @@ public:
      * @param framegrabber [in] the framegrabber used for grabbing 2.5D images
      */
 	SimulatedScanner25D(const std::string& name,
-	                    Frame *frame,
+	                    rw::kinematics::Frame *frame,
 						rw::core::Ptr<FrameGrabber25D> framegrabber);
 
     /**
@@ -679,7 +684,7 @@ public:
      */
 	SimulatedScanner25D(const std::string& name,
                         const std::string& desc,
-                        Frame *frame,
+                        rw::kinematics::Frame *frame,
 						rw::core::Ptr<FrameGrabber25D> framegrabber);
 
 	/**
@@ -718,10 +723,10 @@ public:
 	const PointCloud& getScan();
 
 	//! @copydoc SimulatedSensor::update
-    void update(const Simulator::UpdateInfo& info, State& state);
+    void update(const Simulator::UpdateInfo& info, rw::kinematics::State& state);
 
 	//! @copydoc SimulatedSensor::reset
-	void reset(const State& state);
+	void reset(const rw::kinematics::State& state);
 
     /**
 	 * @brief get a handle to controlling an instance of the simulated sensor in a specific simulator

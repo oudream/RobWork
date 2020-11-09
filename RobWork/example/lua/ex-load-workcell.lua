@@ -1,3 +1,4 @@
+require("sdurw_core")
 require("sdurw")
 using("sdurw")
 
