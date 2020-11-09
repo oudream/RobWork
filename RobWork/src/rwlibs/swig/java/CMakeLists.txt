@@ -50,6 +50,12 @@ if(build)
         sdurw_sensor
         sdurw_models
         sdurw_proximity
+        sdurw_graphics
+        sdurw_trajectory
+        sdurw_invkin
+        sdurw_pathplanning
+        sdurw_graspplanning
+        sdurw_loaders
         sdurw
         sdurw_task
         sdurw_assembly

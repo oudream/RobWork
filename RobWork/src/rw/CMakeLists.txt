@@ -1,5 +1,5 @@
 set(SUBSYS_NAME sdurw)
-set(SUBSYS_DESC "The core RobWork library!")
+set(SUBSYS_DESC "A collection of all RobWork primary librarys!")
 set(SUBSYS_DEPS
     sdurw_core
     sdurw_common
@@ -10,6 +10,12 @@ set(SUBSYS_DEPS
     sdurw_sensor
     sdurw_models
     sdurw_proximity
+    sdurw_graphics
+    sdurw_trajectory
+    sdurw_invkin
+    sdurw_pathplanning
+    sdurw_graspplanning
+    sdurw_loaders
 )
 
 set(build TRUE)
@@ -17,81 +23,20 @@ rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ON DEPENDS ${SUBSYS_DEPS})
 
 if(build)
 
-    set(RW_LIB_FILES_CPP ${RW_USER_FILES})
-    set(RW_LIB_FILES_HPP ${RW_USER_FILES_HPP})
-
-    add_subdirectory(invkin)
-    add_subdirectory(loaders)
-    add_subdirectory(pathplanning)
-    add_subdirectory(graspplanning)
-    add_subdirectory(trajectory)
-    add_subdirectory(graphics)
-
     # Add the RobWork files
-    set(FILES_CPP RobWork.cpp)
+    set(FILES_HPP RobWork.hpp rw.hpp math_fwd.hpp)
 
-    set(FILES_HPP
-        graphics.hpp
-        graspplanning.hpp
-        invkin.hpp
-        loaders.hpp
-        pathplanning.hpp
-        proximity.hpp
-        RobWork.hpp
-        rw.hpp
-        trajectory.hpp
-        math_fwd.hpp
-    )
-
-    file(GLOB SRC_FILES_CPP ${FILES_CPP})
-    file(GLOB SRC_FILES_HPP ${FILES_HPP})
-
-    list(APPEND RW_LIB_FILES_CPP ${SRC_FILES_CPP})
-    list(APPEND RW_LIB_FILES_HPP ${SRC_FILES_HPP})
-
-    rw_add_library(${SUBSYS_NAME} ${RW_LIB_FILES_CPP} ${RW_LIB_FILES_HPP})
-    target_link_libraries(${SUBSYS_NAME} PUBLIC ${Boost_LIBRARIES} ${SUBSYS_DEPS})
-
-    if(RW_HAVE_OMP)
-        target_link_libraries(${SUBSYS_NAME} PUBLIC ${OpenMP_CXX_LIBRARIES})
-    endif()
-    if(RW_HAVE_XERCES)
-        target_link_libraries(${SUBSYS_NAME} PUBLIC ${XERCESC_LIBRARIES})
-    endif()
-    if(RW_HAVE_ASSIMP)
-        target_link_libraries(${SUBSYS_NAME} PRIVATE ${ASSIMP_LIBRARIES})
-    endif()
-
-    target_link_libraries(${SUBSYS_NAME} PRIVATE ${QHULL_LIBRARIES} ${CMAKE_DL_LIBS})
-
-    target_include_directories(
-        ${SUBSYS_NAME}
-        PUBLIC ${Boost_INCLUDE_DIR} ${XERCESC_INCLUDE_DIR} $<BUILD_INTERFACE:${PQP_INCLUDE_DIR}>
-               $<BUILD_INTERFACE:${RW_ROOT}/src> $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
-    )
-
-    if(RW_ENABLE_INTERNAL_PQP_TARGET)
-        target_include_directories(
-            ${SUBSYS_NAME} PUBLIC $<INSTALL_INTERFACE:${RW_EXT_INSTALL_DIR}/rwpqp>
-        )
-    else()
-        target_include_directories(${SUBSYS_NAME} PUBLIC $<INSTALL_INTERFACE:${PQP_INCLUDE_DIR}>)
-    endif()
-    rw_include_eigen(${SUBSYS_NAME})
-
+    add_library(sdurw INTERFACE)
+    add_library(RW::sdurw ALIAS sdurw)
     rw_add_includes(${SUBSYS_NAME} "rw" ${FILES_HPP})
-    rw_add_include_dirs(
-        ${SUBSYS_NAME}
-        "rw"
-        graspplanning
-        invkin
-        loaders
-        pathplanning
-        trajectory
-        graphics
-        constraints
-    )
+    target_link_libraries(${SUBSYS_NAME} INTERFACE ${SUBSYS_DEPS})
 
-    set_target_properties(${SUBSYS_NAME} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
+    install(
+        TARGETS sdurw
+        EXPORT ${PROJECT_PREFIX}Targets
+        RUNTIME DESTINATION ${BIN_INSTALL_DIR} COMPONENT sdurw
+        LIBRARY DESTINATION ${lib_dir} COMPONENT sdurw
+        ARCHIVE DESTINATION ${lib_dir} COMPONENT sdurw
+    )
 
 endif()
