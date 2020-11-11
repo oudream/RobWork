@@ -142,6 +142,7 @@ namespace Eigen{
 
 #endif
 
+#if ! SWIG_VERSION <= 0x030008
 %template(EigenQuaterniond) Eigen::Quaternion<double>;
 %template(EigenQuaternionf) Eigen::Quaternion<float>; 
 
@@ -154,3 +155,4 @@ namespace Eigen{
 
 %template(VectorEigenVector3id) std::vector<Eigen::Matrix<std::complex<double>,3,1>>;
 %template(VectorEigenMatrix3id) std::vector<Eigen::Matrix<std::complex<double>,3,3>>;
+#endif

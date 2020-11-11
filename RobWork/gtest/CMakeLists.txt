@@ -124,10 +124,6 @@ if(TARGET sdurw)
         sdurw-gtest-main
         ${GTEST_BOTH_LIBRARIES}
         sdurw
-        ${XERCESC_LIBRARIES}
-        ${ASSIMP_LIBRARIES}
-        ${QHULL_LIBRARIES}
-        ${CMAKE_DL_LIBS}
     )
 
     set(GEOMETRY_TEST_SRC
@@ -204,10 +200,6 @@ if(TARGET sdurw)
         ${GTEST_LIBRARIES}
         sdurw
         sdurw_proximitystrategies
-        ${XERCESC_LIBRARIES}
-        ${ASSIMP_LIBRARIES}
-        ${QHULL_LIBRARIES}
-        ${CMAKE_DL_LIBS}
     )
 
     set(LOADERS_TEST_SRC
@@ -374,10 +366,6 @@ if(TARGET sdurw_task)
         ${GTEST_LIBRARIES}
         sdurw_task
         sdurw
-        ${XERCESC_LIBRARIES}
-        ${ASSIMP_LIBRARIES}
-        ${QHULL_LIBRARIES}
-        ${CMAKE_DL_LIBS}
     )
 
     set(TASK_TEST_SRC task/TaskLoaderTest.cpp task/TaskSaverTest.cpp task/GraspTaskTest.cpp)
@@ -398,7 +386,7 @@ if(TARGET sdurw AND TARGET sdurw_control)
         trajectory/TrajectoryFactoryTest.cpp trajectory/CubicSplineTest.cpp trajectory/LinearInterpolatorTest.cpp
     )
     add_executable(sdurw_trajectory-gtest ${TRAJECTORY_TEST_SRC})
-    target_link_libraries(sdurw_trajectory-gtest ${TRAJECTORY_TEST_LIBRARIES})
+    target_link_libraries(sdurw_trajectory-gtest ${QHULL_LIBRARIES} ${TRAJECTORY_TEST_LIBRARIES})
     add_rw_gtest(sdurw_trajectory-gtest)
 endif()
 

@@ -198,7 +198,7 @@ template<> bool isContinues (InterpolatorTrajectory< Q >& traj)
 }
 template<> bool isContinues (InterpolatorTrajectory< Transform3D<> >& traj)
 {
-    // Position Varification
+    /*// Position Varification
     double start       = traj.startTime ();
     Vector3D<> acc_vel = traj.dx (start).P ();
     Vector3D<> acc_pos = traj.x (start).P ();
@@ -227,6 +227,17 @@ template<> bool isContinues (InterpolatorTrajectory< Transform3D<> >& traj)
         last_dx  = traj.dx (t).P ();
         last_ddx = traj.ddx (t).P ();
     }
+*/
+    double start       = traj.startTime ();
+
+    Vector3D<> last_px = traj.x (start).P ();
+
+    double dt = 0.001;
+    for (double t = start + dt; t < traj.endTime (); t += dt) {
+        EXPECT_LT (MetricUtil::dist2 (last_px , traj.x (t).P ()), 0.003);
+
+        last_px = traj.x (t).P ();
+    }
 
     Quaternion<> last_rx = traj.x (start).R ();
 
@@ -240,10 +251,20 @@ template<> bool isContinues (InterpolatorTrajectory< Transform3D<> >& traj)
 
     return true;
 }
+
 template<> bool isContinues (InterpolatorTrajectory< Transform3DVector<> >& traj)
 {
     double start       = traj.startTime ();
-    Vector3D<> acc_vel = traj.dx (start).toVector3D ();
+
+    Vector3D<> last_px = traj.x (start).toVector3D ();
+
+    double dt = 0.001;
+    for (double t = start + dt; t < traj.endTime (); t += dt) {
+        EXPECT_LT (MetricUtil::dist2 (last_px , traj.x (t).toVector3D ()), 0.003);
+
+        last_px = traj.x (t).toVector3D ();
+    }
+    /*Vector3D<> acc_vel = traj.dx (start).toVector3D ();
     Vector3D<> acc_pos = traj.x (start).toVector3D ();
     Vector3D<> vel_pos = traj.x (start).toVector3D ();
 
@@ -269,7 +290,7 @@ template<> bool isContinues (InterpolatorTrajectory< Transform3DVector<> >& traj
         last_x   = traj.x (t).toVector3D ();
         last_dx  = traj.dx (t).toVector3D ();
         last_ddx = traj.ddx (t).toVector3D ();
-    }
+    }*/
 
     Quaternion<> last_rx = traj.x (start).toQuaternion ();
 
@@ -364,7 +385,7 @@ TYPED_TEST (CubicSplineTypeTest, PathTest)
     EXPECT_TRUE (traj != NULL);
     EXPECT_NEAR (traj->duration (), (double) path.size () - 1, 0.0001);
 
-    // EXPECT_TRUE (isContinues (*traj));
+    EXPECT_TRUE (isContinues (*traj));
 
     if (this->type () != TRANSFORM3D_TYPE) {
         auto traj2 = CubicSplineFactory::makeClampedSpline (path, this->start (), this->end ());

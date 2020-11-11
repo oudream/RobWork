@@ -73,13 +73,6 @@ void qhull::build (size_t dim, double* coords, size_t nrCoords, std::vector< int
             int vertexIdx = qh_pointid (qhT_pointer, vertex->point);
             result.push_back (vertexIdx);
 
-            // for(size_t i=0; i<dim; i++){
-            // double val = vertex->point[i];
-            // center[i] = center[i] + val;
-            //}
-            // nrVerts++;
-            // result->push_back(contacts->at(vertexIdx));
-            // contacts->at(vertexIdx)=NULL;
         }
         // center /= (double)nrVerts;
 
@@ -88,43 +81,21 @@ void qhull::build (size_t dim, double* coords, size_t nrCoords, std::vector< int
         // For all facets:
         facetT* facet;
         for (facet = qhT_pointer->facet_list; facet && facet->next; facet = facet->next) {
-            /*
-            std::cout << "CENTER: ";
-            for(int i=0;i<dim;i++){
-                std::cout << facet->center[i] << ", ";
-            }
-            std::cout << std::endl;
-             */
-            // std::cout << facet->vertices->maxsize << std::endl;
+
             int vertex_n, vertex_i;
-            // std::cout << "{ ";
             // if offset is positive then the center is outside
             for (size_t j = 0; j < dim; j++) {
                 faceNormals.push_back (facet->normal[j]);
             }
             faceOffsets.push_back (facet->offset);
 
-            // int idx = 0;
             FOREACHvertex_i_ (qhT_pointer, facet->vertices)
             {
                 int vertexIdx = qh_pointid (qhT_pointer, vertex->point);
                 faceIdxs.push_back (vertexIdx);
-                // idx = vertexIdx;
-                // std::cout << vertexIdx << " ";
+
             }
-            // std::cout << idx << std::endl;
-            // for(size_t j=0;j<dim;j++){
-            //    v[j] = coords[dim*idx+j];
-            //}
-            // n = n/norm_2(n);
 
-            // double dist;
-            // qh_distplane(&zerov[0],facet,&dist);
-            // if( dist>0 ){
-            //    std::cout << "GRASP IS NOT FORCE CLOSURE" << std::endl;
-            //}
-
-            // std::cout << " }\n";
         }
     }
     else {

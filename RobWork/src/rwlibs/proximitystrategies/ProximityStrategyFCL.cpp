@@ -15,6 +15,10 @@
  * limitations under the License.
  ********************************************************************************/
 
+#if __GNUC__ < 5 || (__GNUC__ == 5 && __GNUC_MINOR__ <= 4)
+#define BOOST_MATH_DISABLE_FLOAT128
+#endif
+
 #include "ProximityStrategyFCL.hpp"
 
 #include <rw/geometry/Geometry.hpp>

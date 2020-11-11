@@ -166,6 +166,10 @@ if(build)
     rw_add_includes(${SUBSYS_NAME} "rw/geometry" ${FILES_HPP})
     rw_add_includes(${SUBSYS_NAME} "rw" ../geometry.hpp)
 
+    if(TARGET qhull_build)
+        add_dependencies(${SUBSYS_NAME} qhull_build)
+    endif()
+
     target_link_libraries(
         ${SUBSYS_NAME}
         PUBLIC ${Boost_LIBRARIES} ${SUBSYS_DEPS}
