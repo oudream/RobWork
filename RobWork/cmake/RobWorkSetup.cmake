@@ -201,16 +201,40 @@ endif()
 find_package(Eigen3 REQUIRED)
 if(EIGEN3_FOUND)
     message(STATUS "RobWork: EIGEN3 installation FOUND! - version ${EIGEN3_VERSION}")
-    if(EIGEN3_VERSION VERSION_LESS 3.1.0)
-        # We need to add this to enable compilation on default ubuntu 12.04 eigen (only for Eigen
-        # versions lower than 3.1.0)
-        add_definitions("-DEIGEN_YES_I_KNOW_SPARSE_MODULE_IS_NOT_STABLE_YET=1")
-    endif()
 endif()
 
-find_package(Qhull REQUIRED)
-message(STATUS "QHULL: ${QHULL_LIBRARIES}")
-set(ROBWORK_LIBRARIES_EXTERNAL ${ROBWORK_LIBRARIES_EXTERNAL} ${QHULL_LIBRARIES})
+#
+# Find Qhull
+#
+set(QHULL_NATIVE_ROOT ${CMAKE_CURRENT_BINARY_DIR}/ext/qhull)
+find_package(Qhull QUIET MODULE)
+
+#
+# if we can't find qhull, compile qhull from source
+#
+if(NOT Qhull_FOUND)
+    message(STATUS "Fetching QHull from git")
+    include(ExternalProject)
+    ExternalProject_Add(
+        qhull_build
+        GIT_REPOSITORY https://github.com/qhull/qhull.git
+        GIT_TAG v7.2.0
+        CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${QHULL_NATIVE_ROOT}
+    )
+    add_library(RW::qhull UNKNOWN IMPORTED)
+    file(MAKE_DIRECTORY ${QHULL_NATIVE_ROOT}/include)
+
+    set_target_properties(
+        RW::qhull PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${QHULL_NATIVE_ROOT}/include
+    )
+
+    set_target_properties(
+        RW::qhull PROPERTIES IMPORTED_LOCATION ${QHULL_NATIVE_ROOT}/lib/libqhull_r.so
+    )
+
+    set(QHULL_INCLUDE_DIRS ${QHULL_NATIVE_ROOT}/include)
+    set(QHULL_LIBRARIES RW::qhull)
+endif()
 
 # CSGJS
 option(RW_USE_CSGJS "Set to ON to use ext CSGJS." ON)
@@ -283,7 +307,6 @@ if(RW_USE_LUA)
 else()
     message(STATUS "RobWork: LUA DISABLED!")
 endif()
-
 
 if(RW_BUILD_SANDBOX)
     message(STATUS "RobWork: Sandbox ENABLED!")

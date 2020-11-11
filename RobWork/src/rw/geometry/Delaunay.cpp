@@ -53,8 +53,10 @@ int build (int dim, double* coords, int nrCoords, std::vector< int >& vertIdxs,
     // According to doc. in libqhull_r/user_r.c, the qhull memory should be cleared:
     qh_zero (qhT_pointer, stderr);
 
+    
     // Then the object is constructed.
     exitcode = qh_new_qhull (qhT_pointer, dim, nrCoords, coords, ismalloc, flags, NULL, stderr);
+    
 
     // Loop through all vertices,
     vertexT* vertex;    //, **vertexp;
@@ -164,7 +166,10 @@ IndexedTriMesh<>::Ptr Delaunay::triangulate (const std::vector< Vector2D<> >& ve
     std::vector< Vector2D<> > triangVertices;
     std::vector< int > vertiIdxs;
     std::vector< int > faceIdxs;
+
+    
     const int exitcode = build (2, vertArray, nrInputVertices, vertiIdxs, faceIdxs);
+    
     delete[] vertArray;
     if (exitcode)
         RW_THROW ("Delaunay triangulation returned with exit code " << exitcode);

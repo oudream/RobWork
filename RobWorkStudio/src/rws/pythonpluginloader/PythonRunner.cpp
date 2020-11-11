@@ -25,7 +25,6 @@
 
 using namespace rws::python;
 
-#define HERE std::cout << __FILE__ << ":" << __LINE__ << std::endl;
 /*
 std::ostream& operator<< (std::ostream& os, PyThreadState* ts)
 {

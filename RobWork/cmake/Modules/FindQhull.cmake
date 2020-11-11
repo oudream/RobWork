@@ -6,93 +6,89 @@
 # QHULL_DEFINITIONS - Compiler flags for QHULL. If QHULL_USE_STATIC is specified then look for
 # static libraries ONLY else look for shared ones
 
-find_package(Qhull QUIET NO_MODULE)
+# we are not ready for qhull config approach find_package(Qhull QUIET NO_MODULE)
+set(Qhull_FOUND FALSE)
 if(NOT ${Qhull_FOUND})
-    set(QHULL_MAJOR_VERSION 6)
 
-    if(QHULL_USE_STATIC)
-        set(QHULL_RELEASE_NAME qhullstatic)
-        set(QHULL_DEBUG_NAME qhullstatic_d)
-    else(QHULL_USE_STATIC)
-        set(QHULL_RELEASE_NAME qhull_r qhull${QHULL_MAJOR_VERSION}_r)
-        set(QHULL_DEBUG_NAME qhull_d qhull${QHULL_MAJOR_VERSION}_d qhull_d${QHULL_MAJOR_VERSION})
-    endif(QHULL_USE_STATIC)
+    if(WIN32)
+        set(qhull_libnames qhullstatic_r)
+    elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+        set(qhull_libnames qhull_r qhull6_r)
+    else()
+        set(qhull_libnames libqhull_r.so.7 qhull6_r)
+    endif()
 
+    # ##############################################################################################
+    # Find Include Dir
+    # ##############################################################################################
     find_file(
         QHULL_HEADER
         NAMES libqhull_r.h
-        HINTS "${QHULL_ROOT}" "$ENV{QHULL_ROOT}" "${QHULL_INCLUDE_DIR}"
+        HINTS "${QHULL_ROOT}" "$ENV{QHULL_ROOT}" "${QHULL_INCLUDE_DIR}" "${QHULL_NATIVE_ROOT}"
         PATHS "$ENV{PROGRAMFILES}/QHull" "$ENV{PROGRAMW6432}/QHull"
         PATH_SUFFIXES qhull src/libqhull libqhull_r include
     )
 
-    set(QHULL_HEADER
-        "${QHULL_HEADER}"
-        CACHE INTERNAL "QHull header" FORCE
-    )
-
     if(QHULL_HEADER)
-        get_filename_component(qhull_header ${QHULL_HEADER} NAME_WE)
-        message(STATUS "QHULL_header ${qhull_header}")
-        if("${qhull_header}" STREQUAL "qhull_r")
-            set(HAVE_QHULL_2011 OFF)
-            get_filename_component(QHULL_INCLUDE_DIR ${QHULL_HEADER} PATH)
-        elseif("${qhull_header}" STREQUAL "libqhull_r")
-            set(HAVE_QHULL_2011 ON)
-            get_filename_component(QHULL_INCLUDE_DIR ${QHULL_HEADER} PATH)
-            get_filename_component(QHULL_INCLUDE_DIR ${QHULL_INCLUDE_DIR} PATH)
-        endif()
+        get_filename_component(QHULL_INCLUDE_DIR ${QHULL_HEADER} PATH)
     else(QHULL_HEADER)
         set(QHULL_INCLUDE_DIR "QHULL_INCLUDE_DIR-NOTFOUND")
     endif(QHULL_HEADER)
 
-    set(QHULL_INCLUDE_DIR
-        "${QHULL_INCLUDE_DIR}"
-        CACHE PATH "QHull include dir." FORCE
-    )
-
+    # ##############################################################################################
+    # Find Library
+    # ##############################################################################################
     find_library(
         QHULL_LIBRARY
-        NAMES ${QHULL_RELEASE_NAME}
-        HINTS "${QHULL_ROOT}" "$ENV{QHULL_ROOT}"
-        PATHS "$ENV{PROGRAMFILES}/QHull" "$ENV{PROGRAMW6432}/QHull"
-        PATH_SUFFIXES project build bin lib
+        NAMES ${qhull_libnames}
+        HINTS "${QHULL_ROOT}" "$ENV{QHULL_ROOT}" "${QHULL_NATIVE_ROOT}"
+        PATHS "$ENV{PROGRAMFILES}/QHull" "$ENV{PROGRAMW6432}/QHull" "/usr"
+        PATH_SUFFIXES project build bin lib lib/x86_64-linux-gnu lib64
     )
 
-    find_library(
-        QHULL_LIBRARY_DEBUG
-        NAMES ${QHULL_DEBUG_NAME} ${QHULL_RELEASE_NAME}
-        HINTS "${QHULL_ROOT}" "$ENV{QHULL_ROOT}"
-        PATHS "$ENV{PROGRAMFILES}/QHull" "$ENV{PROGRAMW6432}/QHull"
-        PATH_SUFFIXES project build bin lib
-    )
+    # ##############################################################################################
+    # Finalize find package
+    # ##############################################################################################
 
-    if(NOT QHULL_LIBRARY_DEBUG)
-        set(QHULL_LIBRARY_DEBUG ${QHULL_LIBRARY})
-    endif(NOT QHULL_LIBRARY_DEBUG)
-
-    set(QHULL_INCLUDE_DIRS ${QHULL_INCLUDE_DIR})
-    set(QHULL_LIBRARIES optimized ${QHULL_LIBRARY} debug ${QHULL_LIBRARY_DEBUG})
-
-    message(STATUS "QHULL ${QHULL_LIBRARY}")
     include(FindPackageHandleStandardArgs)
     find_package_handle_standard_args(Qhull DEFAULT_MSG QHULL_LIBRARY QHULL_INCLUDE_DIR)
 
-    mark_as_advanced(QHULL_LIBRARY QHULL_LIBRARY_DEBUG QHULL_INCLUDE_DIR)
+    mark_as_advanced(QHULL_LIBRARY QHULL_INCLUDE_DIR)
+
+    # ##############################################################################################
+    # Create Target
+    # ##############################################################################################
 
     if(QHULL_FOUND)
-        set(HAVE_QHULL ON)
-        if(NOT QHULL_USE_STATIC)
-            # add_definitions("-Dqh_QHpointer")
-            if(MSVC)
-                add_definitions("-Dqh_QHpointer_dllimport")
-            endif(MSVC)
-        endif(NOT QHULL_USE_STATIC)
+        message(STATUS "QHULL ${QHULL_LIBRARY}")
         message(STATUS "QHULL found")
-    else()
-        message(STATUS "QHULL not Found")
-    endif(QHULL_FOUND)
+
+        get_filename_component(QHULL_LIBRARY_FILE ${QHULL_LIBRARY} NAME_WE)
+        get_filename_component(QHULL_LIBRARY ${QHULL_LIBRARY} REALPATH)
+        string(TOUPPER ${CMAKE_BUILD_TYPE} BT)
+
+        add_library(RW::qhull UNKNOWN IMPORTED)
+        set_target_properties(
+            RW::qhull PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${QHULL_INCLUDE_DIR}
+        )
+        set_property(
+            TARGET RW::qhull
+            APPEND
+            PROPERTY IMPORTED_CONFIGURATIONS ${BT}
+        )
+
+        set_target_properties(
+            RW::qhull PROPERTIES IMPORTED_LOCATION_${BT} ${QHULL_LIBRARY} IMPORTED_SONAME_${BT}
+                                 ${QHULL_LIBRARY_FILE}
+        )
+        set(QHULL_INCLUDE_DIRS ${QHULL_INCLUDE_DIR})
+        set(QHULL_LIBRARIES RW::qhull)
+    endif()
 else()
-    set(QHULL_LIBRARIES Qhull::qhullstatic_r)
+    if(MSVC)
+        set(QHULL_LIBRARIES Qhull::qhullstatic_r)
+    else()
+        set(QHULL_LIBRARIES Qhull::qhull_r)
+    endif()
     message(STATUS "QHULL found")
 endif()

@@ -31,8 +31,10 @@ TEST(DelaunayTest, Rectangle) {
             {0.005, 0.0225}
     };
     IndexedTriMesh<>::Ptr mesh;
+
     ASSERT_NO_THROW(mesh = Delaunay::triangulate(verticesSquare));
     ASSERT_EQ(std::size_t(2), mesh->getSize());
+
     double area = 0;
     for(std::size_t i = 0; i < mesh->getSize(); i++) {
         const Triangle<> tri = mesh->getTriangle(i);

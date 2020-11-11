@@ -502,7 +502,7 @@ CubicSplineFactory::makeClampedSpline (const Path< T >& path, const T& dStart, c
     }
     return makeClampedSpline (path, times, dStart, dEnd);
 }
-
+namespace rw { namespace trajectory {
 template<>
 typename InterpolatorTrajectory< Transform3D<> >::Ptr
 CubicSplineFactory::makeClampedSpline (const Path< Transform3D<> >& path,
@@ -512,7 +512,7 @@ CubicSplineFactory::makeClampedSpline (const Path< Transform3D<> >& path,
     RW_THROW ("Clamped Cubic Spline not yet implemented for Transform3D");
     return NULL;
 }
-
+}}
 template InterpolatorTrajectory< Vector3D<> >::Ptr
 CubicSplineFactory::makeClampedSpline (const Path< Vector3D<> >& path, const Vector3D<>& dStart,
                                        const Vector3D<>& dEnd, double timeStep);
