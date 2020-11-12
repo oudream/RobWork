@@ -13,7 +13,11 @@ set(SUBSYS_DEPS RWS::sdurws RW::sdurw_simulation RW::sdurw_opengl RW::sdurw sdur
 
 set(build TRUE)
 set(DEFAULT TRUE)
-rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} DEPENDS ${SUBSYS_DEPS} ADD_DOC)
+rw_subsys_option(
+    build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT}
+    DEPENDS ${SUBSYS_DEPS}
+    ADD_DOC
+)
 
 if(build)
     set(SrcFiles RWSimulatorPlugin.cpp)
@@ -58,7 +62,11 @@ set(SUBSYS_DEPS sdurwsim_gui sdurwsim RWS::sdurws RW::sdurw)
 
 set(build TRUE)
 set(DEFAULT TRUE)
-rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} DEPENDS ${SUBSYS_DEPS} ADD_DOC)
+rw_subsys_option(
+    build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT}
+    DEPENDS ${SUBSYS_DEPS}
+    ADD_DOC
+)
 
 if(build)
     set(SrcFiles SimUtilityPlugin.cpp)
@@ -69,7 +77,11 @@ if(build)
 
     # The shared library to build:
     add_library(${SUBSYS_NAME} MODULE ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles})
-    target_link_libraries(${SUBSYS_NAME} PRIVATE sdurwsim_gui sdurwsim PUBLIC RWS::sdurws RW::sdurw)
+    target_link_libraries(
+        ${SUBSYS_NAME}
+        PRIVATE sdurwsim_gui sdurwsim
+        PUBLIC RWS::sdurws RW::sdurw
+    )
 
     # to avoid windows compile bug
     target_include_directories(${SUBSYS_NAME} PRIVATE ${PYTHON_INCLUDE_DIRS})
@@ -84,7 +96,11 @@ set(SUBSYS_DEPS sdurwsim_gui sdurwsim RWS::sdurws RW::sdurw)
 
 set(build TRUE)
 set(DEFAULT TRUE)
-rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} DEPENDS ${SUBSYS_DEPS} ADD_DOC)
+rw_subsys_option(
+    build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT}
+    DEPENDS ${SUBSYS_DEPS}
+    ADD_DOC
+)
 
 if(build)
     set(UIS_OUT_H)
@@ -112,8 +128,7 @@ endif()
 #
 set(SUBSYS_NAME RWSimPlugin)
 set(SUBSYS_DESC "A RobWorkStudioPlugin.")
-set(
-    SUBSYS_DEPS
+set(SUBSYS_DEPS
     sdurwsim_gui
     sdurwsim
     RWS::sdurws
@@ -125,7 +140,11 @@ set(
 
 set(build TRUE)
 set(DEFAULT TRUE)
-rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} DEPENDS ${SUBSYS_DEPS} ADD_DOC)
+rw_subsys_option(
+    build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT}
+    DEPENDS ${SUBSYS_DEPS}
+    ADD_DOC
+)
 
 if(build)
     set(UIS_OUT_H)
@@ -145,12 +164,14 @@ if(build)
     rw_is_targets(test TARGETS ${RWSIM_LUA_LIB_TMP} TARGETS_OUT RWSIM_LUA_LIB)
 
     add_library(${SUBSYS_NAME} MODULE ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles_RWSimPlugin}
-                                      ${UIS_OUT_H})
+                                      ${UIS_OUT_H}
+    )
+    set_target_properties(${SUBSYS_NAME} PROPERTIES EXCLUDE_FROM_ALL TRUE)
 
     if(${test})
         target_compile_definitions(${SUBSYS_NAME} PRIVATE RWSIM_PLUGIN_HAVE_LUA)
     endif()
-    
+
     target_link_libraries(
         ${SUBSYS_NAME}
         PRIVATE sdurwsim_gui
@@ -174,19 +195,15 @@ endif()
 #
 set(SUBSYS_NAME SimTaskPlugin)
 set(SUBSYS_DESC "A RobWorkStudioPlugin.")
-set(
-    SUBSYS_DEPS
-    sdurwsim_gui
-    sdurwsim
-    RWS::sdurws
-    RW::sdurw_task
-    RW::sdurw_opengl
-    RW::sdurw
-)
+set(SUBSYS_DEPS sdurwsim_gui sdurwsim RWS::sdurws RW::sdurw_task RW::sdurw_opengl RW::sdurw)
 
 set(build TRUE)
 set(DEFAULT TRUE)
-rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} DEPENDS ${SUBSYS_DEPS} ADD_DOC)
+rw_subsys_option(
+    build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT}
+    DEPENDS ${SUBSYS_DEPS}
+    ADD_DOC
+)
 
 if(build)
     set(UIS_OUT_H)
@@ -202,7 +219,8 @@ if(build)
     qt5_add_resources(RccSrcFiles_SimTaskPlugin ${RWSIM_ROOT}/src/gfx/SimTaskPlugin.qrc)
 
     add_library(${SUBSYS_NAME} MODULE ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles_SimTaskPlugin}
-                                      ${UIS_OUT_H})
+                                      ${UIS_OUT_H}
+    )
     # ADD_LIBRARY(SimTaskPluginStatic STATIC ${SrcFiles} ${MocSrcFiles}
     # ${RccSrcFiles_SimTaskPlugin})
     target_link_libraries(
@@ -249,7 +267,11 @@ set(SUBSYS_DEPS sdurwsim_gui RWS::sdurws)
 
 set(build TRUE)
 set(DEFAULT TRUE)
-rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} DEPENDS ${SUBSYS_DEPS} ADD_DOC)
+rw_subsys_option(
+    build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT}
+    DEPENDS ${SUBSYS_DEPS}
+    ADD_DOC
+)
 
 if(build)
     set(UIS_OUT_H)

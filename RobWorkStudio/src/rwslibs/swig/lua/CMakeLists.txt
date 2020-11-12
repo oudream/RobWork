@@ -93,10 +93,18 @@ if(build)
     endif()
 
     add_library(sdurwslua_plugin.rwplugin MODULE LuaPlugin.cpp LuaPlugin.hpp)
+    set_target_properties(sdurwslua_plugin.rwplugin PROPERTIES EXCLUDE_FROM_ALL TRUE)
+
     target_link_libraries(sdurwslua_plugin.rwplugin ${TARGET_NAME}_s RW::sdurw RW::sdurw_lua_s)
     install(TARGETS sdurwslua_plugin.rwplugin DESTINATION ${RW_PLUGIN_INSTALL_DIR})
 
     if((CMAKE_COMPILER_IS_GNUCC) OR (CMAKE_C_COMPILER_ID STREQUAL "Clang"))
         set_target_properties(sdurwslua_plugin.rwplugin PROPERTIES LINK_FLAGS -Wl,--no-undefined)
     endif()
+
+    add_custom_target(
+        lua
+        COMMAND ${CMAKE_COMMAND} -E echo "Done Building Lua"
+        DEPENDS ${TARGET_NAME} ${TARGET_NAME}_s sdurwslua_plugin.rwplugin sdurws_luapl sdurws_luaeditor 
+    )
 endif()

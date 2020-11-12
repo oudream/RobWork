@@ -24,6 +24,9 @@
     - cd RW
     - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" -A x64 -DBoost_INCLUDE_DIR=%Boost_INCLUDE_DIR% -DBUILD_sdurw_java=ON -DBUILD_sdurw_python=ON -DBUILD_sdurw_lua=ON -DSWIG_EXECUTABLE=%SWIG_ROOT%\swig.exe ../../RobWork
     - msbuild RobWork.sln -m /property:Configuration=Release
+    - msbuild python.vcxproj -m /property:Configuration=Release
+    - msbuild java.vcxproj -m /property:Configuration=Release
+    - msbuild lua.vcxproj -m /property:Configuration=Release
   artifacts:
     paths:
       - ./Build
@@ -43,6 +46,9 @@
     - cd RWS
     - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" -A x64 -DSWIG_EXECUTABLE=%SWIG_ROOT%\swig.exe ../../RobWorkStudio
     - msbuild RobWorkStudio.sln -m /property:Configuration=Release
+    - msbuild python.vcxproj -m /property:Configuration=Release
+    - msbuild java.vcxproj -m /property:Configuration=Release
+    - msbuild lua.vcxproj -m /property:Configuration=Release
   artifacts:
     paths:
       - ./Build/RWS
@@ -60,6 +66,9 @@
     - cd RWSim
     - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" -A x64 -DSWIG_EXECUTABLE=%SWIG_ROOT%\swig.exe ../../RobWorkSim
     - msbuild RobWorkSim.sln -m /property:Configuration=Release
+    - msbuild python.vcxproj -m /property:Configuration=Release
+    - msbuild java.vcxproj -m /property:Configuration=Release
+    - msbuild lua.vcxproj -m /property:Configuration=Release
   artifacts:
     paths:
       - ./Build/RWSim

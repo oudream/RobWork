@@ -122,4 +122,10 @@ if(build)
                         ${PYTHON_LIBRARIES})
     install(TARGETS ${SUBSYS_NAME} EXPORT ${PROJECT_PREFIX}Targets)
 
+    add_custom_target(
+        python
+        COMMAND ${CMAKE_COMMAND} -E echo "Done Building Python"
+        DEPENDS ${TARGET_NAME}
+    )
+
 endif()

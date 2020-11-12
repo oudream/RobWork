@@ -76,6 +76,8 @@ if(build)
     endif()
 
     add_library(sdurwsimlua_plugin.rwplugin MODULE LuaPlugin.cpp LuaPlugin.hpp)
+    set_target_properties(sdurwsimlua_plugin.rwplugin PROPERTIES EXCLUDE_FROM_ALL TRUE)
+
     target_link_libraries(sdurwsimlua_plugin.rwplugin ${TARGET_NAME}_s)
     install(TARGETS ${RWSIM_MODULE}lua_plugin.rwplugin DESTINATION ${RW_PLUGIN_INSTALL_DIR})
 
@@ -85,5 +87,11 @@ if(build)
 
     # ############ INSTALL LUA LIBRARY #############################
     install(TARGETS ${TARGET_NAME} DESTINATION ${LUA_INSTALL_DIR})
+
+    add_custom_target(
+        lua
+        COMMAND ${CMAKE_COMMAND} -E echo "Done Building Lua"
+        DEPENDS ${TARGET_NAME} ${TARGET_NAME}_s sdurwsimlua_plugin.rwplugin
+    )
 
 endif()

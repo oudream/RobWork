@@ -5,7 +5,7 @@ set(SUBSYS_DEPS)
 set(build TRUE)
 
 find_package(SWIG 3.0.0 QUIET)
-set(DEFAULT FALSE)
+set(DEFAULT True)
 set(REASON)
 if(NOT SWIG_FOUND)
     set(DEFAULT false)
@@ -17,7 +17,7 @@ else()
         set(DEFAULT false)
         set(REASON "JAVA or JNI not found!")
     else()
-        set(REASON "Disabled by default.")
+        set(REASON "Configured by default.")
     endif()
 endif()
 
@@ -38,7 +38,8 @@ if(build)
     include_directories(${JAVA_INCLUDE_DIRS} ${JNI_INCLUDE_DIRS})
     set(CMAKE_SWIG_OUTDIR ${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY})
 
-    set(RW_NAME sdurw)
+    set(java_targets)
+
     foreach(
         RW_MODULE
         sdurw_core
@@ -84,6 +85,8 @@ if(build)
                     ${CMAKE_CURRENT_BINARY_DIR}/java_src_${RW_MODULE}/org/robwork/${RW_MODULE}
                 SWIG_FLAGS "-package" "org.robwork.${RW_MODULE}"
             )
+            
+            set(java_targets ${java_targets} ${TARGET_NAME})
 
             # Force removal of previous Java compilation and source when interface file changes This
             # is required as types may be removed or change name (in this case previous java classes
@@ -108,6 +111,10 @@ if(build)
                 set(class_path_depend "${cpd}")
                 set(link_path_depend "${lpd}")
             endif ()
+
+            foreach(dep ${depends})
+                add_dependencies(${TARGET_NAME} ${java_NAME_${dep}})
+            endforeach()
 
             if("${RW_MODULE}" STREQUAL "sdurw_core")
 
@@ -136,6 +143,12 @@ if(build)
             swig_link_libraries(${RW_MODULE}_jni ${RW_MODULE} ${depends})
         endif()
     endforeach()
+
+    add_custom_target(
+        java
+        COMMAND ${CMAKE_COMMAND} -E echo "Done Building Java"
+        DEPENDS ${java_targets}
+    )
 
     install(TARGETS ${SUBSYS_NAME} EXPORT ${PROJECT_PREFIX}Targets)
     add_library(${PROJECT_PREFIX}::${SUBSYS_NAME} ALIAS ${SUBSYS_NAME})

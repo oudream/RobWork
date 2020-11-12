@@ -69,8 +69,11 @@
     - cd Build
     # Build RobWork
     - cd RW
-    - cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_sdurw_java=ON -DBUILD_sdurw_python=ON -DBUILD_sdurw_lua=ON ../../RobWork
+    - cmake -DCMAKE_BUILD_TYPE=Release ../../RobWork
     - make -j${THREADS}
+    - make -j${THREADS} python
+    - make -j${THREADS} lua
+    - make -j${THREADS} java
   artifacts:
     paths:
       - ./Build
@@ -90,6 +93,9 @@
     - cd RWS
     - cmake -DCMAKE_BUILD_TYPE=Release -DUSE_WERROR=$WERROR ../../RobWorkStudio
     - make -j${THREADS}
+    - make -j${THREADS} python
+    - make -j${THREADS} lua
+    - make -j${THREADS} java
     - cd ..
   artifacts:
     paths:
@@ -109,6 +115,10 @@
     - cd RWSim
     - cmake -DCMAKE_BUILD_TYPE=Release -DUSE_WERROR=$WERROR ../../RobWorkSim
     - make -j${THREADS}
+    - make -j${THREADS} python
+    - make -j${THREADS} lua
+    - make -j${THREADS} java
+    - make -j${THREADS} RWSimPlugin
     - cd ..
   artifacts:
     paths:

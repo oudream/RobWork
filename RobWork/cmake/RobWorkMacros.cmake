@@ -657,12 +657,17 @@ macro(RW_ADD_SWIG _name _language _type)
         endif()
     endif()
 
+    set_target_properties(${SLIB_TARGET_NAME} PROPERTIES EXCLUDE_FROM_ALL TRUE)
+
     if(NOT POLICY CMP0078)
         if(NOT ${SWIG_MODULE_${SLIB_TARGET_NAME}_REAL_NAME} STREQUAL "")
             set(SLIB_TARGET_NAME ${SWIG_MODULE_${SLIB_TARGET_NAME}_REAL_NAME})
         endif()
     endif()
 
+    set(${_language}_NAME_${_name} ${SLIB_TARGET_NAME} CACHE INTERNAL "internal targetname translation")
+
+    set_target_properties(${SLIB_TARGET_NAME} PROPERTIES EXCLUDE_FROM_ALL TRUE)
     target_include_directories(${SLIB_TARGET_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
     add_library(${PROJECT_PREFIX}::${SLIB_TARGET_NAME} ALIAS ${SLIB_TARGET_NAME})
 
@@ -677,26 +682,6 @@ macro(RW_ADD_SWIG _name _language _type)
     install(TARGETS ${SLIB_TARGET_NAME} EXPORT ${PROJECT_PREFIX}Targets DESTINATION
                                                                         ${SLIB_INSTALL_DIR}
                                                                         COMPONENT swig)
-
-    # ######## Post processing ########
-    if(NOT DEFINED COMPILE_SWIG_MULTICORE OR "${COMPILE_SWIG_MULTICORE}" STREQUAL "OFF")
-        if(NOT DEFINED SLIB_COMPILE_BUFFER)
-            set(
-                SLIB_COMPILE_BUFFER
-                ${SLIB_TARGET_NAME}
-                CACHE INTERNAL "Used to limit the swig compiler" FORCE
-            )
-        else()
-            if(TARGET ${SLIB_COMPILE_BUFFER})
-                add_dependencies(${SLIB_TARGET_NAME} ${SLIB_COMPILE_BUFFER})
-                set(
-                    SLIB_COMPILE_BUFFER
-                    ${SLIB_TARGET_NAME}
-                    CACHE INTERNAL "Used to limit the swig compiler" FORCE
-                )
-            endif()
-        endif()
-    endif()
 endmacro()
 
 macro(RW_ADD_JAVA_CLEAN_TARGET _name)
@@ -751,7 +736,7 @@ macro(RW_ADD_JAVA_LIB _name)
     endforeach()
 
     add_custom_command(
-        TARGET ${_name}_jni POST_BUILD
+        TARGET ${java_NAME_${_name}} POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E echo "Removing old Java compilation..."
         COMMAND
             ${CMAKE_COMMAND} -E remove_directory "${CMAKE_CURRENT_BINARY_DIR}/java_build_${_name}"

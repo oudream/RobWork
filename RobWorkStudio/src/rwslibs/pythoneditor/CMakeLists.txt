@@ -2,7 +2,6 @@ set(SUBSYS_NAME sdurws_pythoneditor)
 set(SUBSYS_DESC "A python editor")
 set(SUBSYS_DEPS sdurws RW::sdurw_python RW::sdurw)
 
-set(RWS_USE_QCODEEDITOR OFF)
 if(${PYTHONLIBS_FOUND} AND ${PYTHONINTERP_FOUND} AND ${RWS_USE_QCODEEDITOR})
     set(DEFAULT ON)
     set(REASON)

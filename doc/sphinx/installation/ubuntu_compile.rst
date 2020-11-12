@@ -318,6 +318,10 @@ directory for RobWork, and run make afterwards to build the project:
     cd ~/RobWork/Build/RW
     cmake -DCMAKE_BUILD_TYPE=Release ../../RobWork
     make -j4
+    # to build the python lua anf java language interfaces you must have swig installed and then call
+    make -j4 python
+    make -j4 lua
+    make -j4 java
 
 Look carefully through the CMake output before running the make command.
 Check that there is no errors, and that the required dependencies are
@@ -332,6 +336,10 @@ For RobWorkStudio:
     cd ~/RobWork/Build/RWStudio
     cmake -DCMAKE_BUILD_TYPE=Release ../../RobWorkStudio
     make -j4
+    # to build the python lua anf java language interfaces you must have swig installed and then call
+    make -j4 python
+    make -j4 lua
+    make -j4 java
 
 For RobWorkSim:
 
@@ -340,6 +348,10 @@ For RobWorkSim:
     cd ~/RobWork/Build/RWSim
     cmake -DCMAKE_BUILD_TYPE=Release ../../RobWorkSim
     make -j4
+    # to build the python lua anf java language interfaces you must have swig installed and then call
+    make -j4 python
+    make -j4 lua
+    make -j4 java
 
 For RobWorkHardware:
 

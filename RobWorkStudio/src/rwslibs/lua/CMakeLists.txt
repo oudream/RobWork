@@ -50,6 +50,7 @@ if(build)
             PARENT_SCOPE
         )
     endif()
+    set_target_properties(${SUBSYS_NAME} PROPERTIES EXCLUDE_FROM_ALL TRUE)
 else()
     rws_clear_plugin_load_details(Lua)
 endif()
