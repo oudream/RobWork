@@ -1,19 +1,5 @@
 ######################## BUILD Doc ##########################################
 
-build:doc:
-  extends: .linux-doc
-  dependencies:
-    - build-RW:ubuntu-1804
-    - build-RWS:ubuntu-1804
-    - build-RWSim:ubuntu-1804
-  needs:
-    [
-      "build-RW:ubuntu-1804",
-      "build-RWS:ubuntu-1804",
-      "build-RWSim:ubuntu-1804",
-    ]
-  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804-doc
-
 build:doc-2004:
   extends: .linux-doc
   dependencies:
@@ -44,8 +30,8 @@ pages:
   script:
     - echo "Deploying documentation."
   dependencies:
-    - build:doc
-  needs: ["build:doc"]
+    - build:doc-2004
+  needs: ["build:doc-2004"]
   artifacts:
     paths:
       - public

@@ -6,7 +6,7 @@ set(build TRUE)
 
 find_package(SWIG 3.0.0 QUIET)
 
-set(DEFAULT FALSE)
+set(DEFAULT True)
 set(REASON)
 if(NOT SWIG_FOUND)
     set(DEFAULT false)
@@ -16,7 +16,7 @@ else()
         set(DEFAULT false)
         set(REASON "PYTHONLIBS AND PYTHONINTERP not found!")
     else()
-        set(REASON "Disabled by default.")
+        set(REASON "Configured by default")
     endif()
 endif()
 
@@ -65,6 +65,7 @@ if(build)
     endif()
 
     set(SWIG_OUT_ORIG ${CMAKE_SWIG_OUTDIR})
+    set(python_targets)
 
     foreach(
         RW_MODULE
@@ -94,7 +95,6 @@ if(build)
         sdurw_opengl
     )
         if(TARGET ${RW_MODULE})
-
             set(SOURCE)
             if("${RW_MODULE}" STREQUAL "sdurw")
                 set(SOURCE ../ScriptTypes.cpp)
@@ -124,6 +124,7 @@ if(build)
                     RUNTIME_OUTPUT_DIRECTORY "${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RW_MODULE}"
             )
             add_dependencies(${SUBSYS_NAME} ${TARGET_NAME})
+            set(python_targets ${python_targets} ${TARGET_NAME})
 
             if(NOT ${SWIG_VERSION} VERSION_LESS 4.0.0)
                 find_program(pydoc pydoc3)
@@ -172,11 +173,11 @@ if(build)
         endif()
     endforeach()
 
-    if(POLICY CMP0078)
-        set(LIB_PREFIX "")
-    else()
-        set(LIB_PREFIX "_")
-    endif()
+    add_custom_target(
+        python
+        COMMAND ${CMAKE_COMMAND} -E echo "Done Building Python"
+        DEPENDS ${python_targets}
+    )
 
     install(TARGETS ${SUBSYS_NAME} EXPORT ${PROJECT_PREFIX}Targets)
 endif()

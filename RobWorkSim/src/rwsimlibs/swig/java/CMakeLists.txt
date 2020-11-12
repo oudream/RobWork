@@ -87,4 +87,9 @@ if(build)
     )
     set(CMAKE_SWIG_OUTDIR ${RWSIM_CMAKE_LIBRARY_OUTPUT_DIRECTORY})
 
+    add_custom_target(
+        java
+        COMMAND ${CMAKE_COMMAND} -E echo "Done Building Java"
+        DEPENDS sdurwsim_jni
+    )
 endif()

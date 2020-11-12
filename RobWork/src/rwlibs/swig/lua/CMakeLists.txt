@@ -8,8 +8,8 @@ if(NOT RW_HAVE_LUA)
     set(DEFAULT false)
     set(REASON "Lua not found!")
 else()
-    set(DEFAULT false)
-    set(REASON "Disabled by default.")
+    set(DEFAULT true)
+    set(REASON "Configured by default.")
 endif()
 
 rw_subsys_option(
@@ -26,7 +26,7 @@ if(build)
 
     add_custom_target(${SUBSYS_NAME}_all)
     include_directories(${RW_ROOT}/src)
-
+    set(lua_targets)
     foreach(
         RW_MODULE
         sdurw_core
@@ -89,6 +89,7 @@ if(build)
                         LIBRARY_OUTPUT_DIRECTORY "${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua"
                 )
             endif()
+            set(lua_targets ${lua_targets} ${TARGET_NAME})
 
             
             target_include_directories(${TARGET_NAME} PUBLIC ${LUA_INCLUDE_DIR})
@@ -106,6 +107,8 @@ if(build)
 
             add_dependencies(${SUBSYS_NAME}_all ${TARGET_NAME}_s)
 
+            set(lua_targets ${lua_targets} ${TARGET_NAME}_s)
+
             # this is used to indicate static linking to Visual Studio or mingw
             if(DEFINED MSVC)
                 set_target_properties(${TARGET_NAME} PROPERTIES COMPILE_FLAGS "/DSTATIC_LINKED")
@@ -117,6 +120,10 @@ if(build)
             if(NOT "${RW_MODULE}" STREQUAL "sdurw" AND NOT "${RW_MODULE}" STREQUAL "sdurw_core" AND NOT "${RW_MODULE}" STREQUAL "sdurw_common")
                 add_library(${RW_MODULE}_lua_plugin.rwplugin MODULE LuaPlugin_${RW_MODULE}.cpp)
                 target_link_libraries(${RW_MODULE}_lua_plugin.rwplugin ${RW_MODULE}_lua_s)
+                
+                set_target_properties(${RW_MODULE}_lua_plugin.rwplugin PROPERTIES EXCLUDE_FROM_ALL TRUE)
+                set(lua_targets ${lua_targets} ${RW_MODULE}_lua_plugin.rwplugin)
+
                 target_include_directories(
                     ${RW_MODULE}_lua_plugin.rwplugin
                     PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}
@@ -158,5 +165,12 @@ if(build)
         target_include_directories(sdurw_core_lua PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
         target_include_directories(sdurw_core_lua_s PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
     endif()
+
+    add_custom_target(
+        lua
+        COMMAND ${CMAKE_COMMAND} -E echo "Done Building Lua"
+        DEPENDS ${lua_targets}
+    )
+
 
 endif()
