@@ -16,7 +16,7 @@
  ********************************************************************************/
 
 #include <gtest/gtest.h>
-
+#define RW_IGNORE_DEPRECATED
 #include <rw/core/Ptr.hpp>
 #include <rw/graphics/WorkCellScene.hpp>
 #include <rw/graphics/SceneGraph.hpp>
