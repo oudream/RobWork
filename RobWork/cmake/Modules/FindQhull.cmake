@@ -6,8 +6,9 @@
 # QHULL_DEFINITIONS - Compiler flags for QHULL. If QHULL_USE_STATIC is specified then look for
 # static libraries ONLY else look for shared ones
 
-# we are not ready for qhull config approach find_package(Qhull QUIET NO_MODULE)
-set(Qhull_FOUND FALSE)
+# we are not ready for qhull config approach 
+find_package(Qhull QUIET NO_MODULE)
+
 if(NOT ${Qhull_FOUND})
 
     if(WIN32)
@@ -63,24 +64,14 @@ if(NOT ${Qhull_FOUND})
         message(STATUS "QHULL ${QHULL_LIBRARY}")
         message(STATUS "QHULL found")
 
-        get_filename_component(QHULL_LIBRARY_FILE ${QHULL_LIBRARY} NAME_WE)
-        get_filename_component(QHULL_LIBRARY ${QHULL_LIBRARY} REALPATH)
-        string(TOUPPER ${CMAKE_BUILD_TYPE} BT)
-
         add_library(RW::qhull UNKNOWN IMPORTED)
         set_target_properties(
             RW::qhull PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${QHULL_INCLUDE_DIR}
         )
-        set_property(
-            TARGET RW::qhull
-            APPEND
-            PROPERTY IMPORTED_CONFIGURATIONS ${BT}
+        set_target_properties(
+            RW::qhull PROPERTIES IMPORTED_LOCATION ${QHULL_LIBRARY}
         )
 
-        set_target_properties(
-            RW::qhull PROPERTIES IMPORTED_LOCATION_${BT} ${QHULL_LIBRARY} IMPORTED_SONAME_${BT}
-                                 ${QHULL_LIBRARY_FILE}
-        )
         set(QHULL_INCLUDE_DIRS ${QHULL_INCLUDE_DIR})
         set(QHULL_LIBRARIES RW::qhull)
     endif()
