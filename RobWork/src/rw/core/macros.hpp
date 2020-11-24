@@ -226,6 +226,23 @@ RW_DEBUG("The value of x is " << x << ". x should be less than zero.");
 #define RW_MSG(ostreamExpression) (Message (__FILE__, __LINE__) << ostreamExpression)
 
 /**
+ * @brief a way to mark code for deprecation
+ * @param text the message to print
+ */
+#ifndef RW_IGNORE_DEPRECATED
+#if defined(__GNUC__) || defined(__clang__)
+#define DEPRECATED(warning) __attribute__((deprecated(warning)))
+#elif defined(_MSC_VER)
+#define DEPRECATED(warning) __declspec(deprecated(warning))
+#else
+#pragma message("WARNING: You need to implement DEPRECATED for this compiler")
+#define DEPRECATED(text)
+#endif
+#else 
+#define DEPRECATED(text)
+#endif 
+
+/**
  * @brief enables the use of a \b robwork namespace
  */
 #define USE_ROBWORK_NAMESPACE                          \

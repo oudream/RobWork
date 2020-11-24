@@ -15,6 +15,7 @@
  * limitations under the License.
  ********************************************************************************/
 
+#define RW_IGNORE_DEPRECATED
 #include <gtest/gtest.h>
 
 #include <rw/kinematics/Kinematics.hpp>
@@ -26,6 +27,7 @@
 
 #include <iostream>
 #include <vector>
+
 
 using namespace std;
 using namespace rw::math;

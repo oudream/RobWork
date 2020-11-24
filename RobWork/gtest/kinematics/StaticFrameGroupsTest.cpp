@@ -32,18 +32,18 @@ using namespace rw::common;
 namespace {
 void addTestFrames (WorkCell& world)
 {
-    MovableFrame* frame1  = new MovableFrame ("Frame1");
-    MovableFrame* frame2  = new MovableFrame ("Frame2");
-    MovableFrame* frame3  = new MovableFrame ("Frame3");
-    FixedFrame* frame4    = new FixedFrame ("Frame4", Transform3D< double > ());
-    FixedFrame* frame5    = new FixedFrame ("Frame5", Transform3D< double > ());
-    MovableFrame* frame6  = new MovableFrame ("Frame6");
-    MovableFrame* frame7  = new MovableFrame ("Frame7");
-    MovableFrame* frame8  = new MovableFrame ("Frame8");
-    MovableFrame* frame9  = new MovableFrame ("Frame9");
-    MovableFrame* frame10 = new MovableFrame ("Frame10");
-    MovableFrame* frame11 = new MovableFrame ("Frame11");
-    FixedFrame* frame12   = new FixedFrame ("Frame12", Transform3D< double > ());
+    MovableFrame::Ptr frame1  = ownedPtr(new MovableFrame ("Frame1"));
+    MovableFrame::Ptr frame2  = ownedPtr(new MovableFrame ("Frame2"));
+    MovableFrame::Ptr frame3  = ownedPtr(new MovableFrame ("Frame3"));
+    FixedFrame::Ptr frame4    = ownedPtr(new FixedFrame ("Frame4", Transform3D< double > ()));
+    FixedFrame::Ptr frame5    = ownedPtr(new FixedFrame ("Frame5", Transform3D< double > ()));
+    MovableFrame::Ptr frame6  = ownedPtr(new MovableFrame ("Frame6"));
+    MovableFrame::Ptr frame7  = ownedPtr(new MovableFrame ("Frame7"));
+    MovableFrame::Ptr frame8  = ownedPtr(new MovableFrame ("Frame8"));
+    MovableFrame::Ptr frame9  = ownedPtr(new MovableFrame ("Frame9"));
+    MovableFrame::Ptr frame10 = ownedPtr(new MovableFrame ("Frame10"));
+    MovableFrame::Ptr frame11 = ownedPtr(new MovableFrame ("Frame11"));
+    FixedFrame::Ptr frame12   = ownedPtr(new FixedFrame ("Frame12", Transform3D< double > ()));
 
     world.addFrame (frame1);
     world.addFrame (frame3, frame1);

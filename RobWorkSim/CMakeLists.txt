@@ -64,7 +64,10 @@ rw_set_install_dirs(RobWorkSim RWSIM)
 
 # now lets find RobWorkStudio
 
-find_package(RobWorkStudio REQUIRED PATHS ${RWSIM_ROOT}/../RobWorkStudio/cmake)
+find_package(RobWorkStudio QUIET PATHS ${RWSIM_ROOT}/../RobWorkStudio/cmake NO_DEFAULT_PATH)
+if(NOT RobWorkStudio_FOUND)
+    find_package(RobWorkStudio REQUIRED)
+endif()
 
 # ##################################################################################################
 # CONFIGURATION configure build/RobWorkStudioConfig.cmake.in
