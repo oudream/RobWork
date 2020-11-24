@@ -142,38 +142,18 @@ namespace rw { namespace geometry {
         }
 
         /**
-         * @brief Calculates the minimum distance to the hull.
+         * @brief Calculates a distance to the hull. 
+         * The distance to the \b vertex is greater or equal to the result
          * @param vertex [in] vertex to calculate minimum distance for.
-         * @return the minimum distance to the hull if \b vertex is outside, otherwise zero is
+         * @return a distance <= the actual distancte to the hull if \b vertex is outside, otherwise zero is
          * returned.
          */
         virtual double getMinDistOutside (const rw::math::VectorND< N >& vertex)
-        {
-            double min, max;
-            if (!getDistOutside (vertex, min, max)) {
-                return 0;
-            }
-            return min;
-        }
-
-        /**
-         * @brief Calculates the distance from a vertex to the points on the hull that are the
-         * closest and farthest.
-         * @param vertex [in] vertex to calculate distances for.
-         * @param min [out] the minimum distance to the hull when \b vertex is outside the hull,
-         * zero otherwise.
-         * @param max [out] the maximum distance to the hull when \b vertex is outside the hull,
-         * zero otherwise.
-         * @return true if \b vertex is outside, false otherwise.
-         */
-        virtual bool getDistOutside (const rw::math::VectorND< N >& vertex, double& min,
-                                     double& max)
         {
             if (_faceIdxs.size () == 0) {
                 return 0;
             }
             double minDist = DBL_MAX;
-            min = max      = 0;
             bool isOutside = false;
             for (size_t i = 0; i < _faceIdxs.size () / N; i++) {
                 RW_ASSERT (_faceIdxs.size () > i * N);
@@ -183,17 +163,13 @@ namespace rw { namespace geometry {
                 if (dist > 0) {
                     isOutside = true;
                     minDist   = std::min (dist, minDist);
-                    max       = std::max (max, dist);
                 }
             }
-            min = (isOutside ? minDist : 0);
-            return isOutside;
+            return (isOutside ? minDist : 0);
         }
 
         /**
-         * @brief Calculates the minimum distance to the hull. WARNING: Read full description.
-         * @warning This function will NOT currently return 0 for the case where \b vertex is
-         * outside the hull. This might be changed in the future.
+         * @brief Calculates the minimum distance to the hull.
          * @param vertex [in] vertex to calculate distance for.
          * @return the minimum distance if \b vertex is inside the hull (as a positive value).
          * Currently, the maximum distance is returned if \b vertex is outside the hull (as a
@@ -213,10 +189,8 @@ namespace rw { namespace geometry {
                 // dist will be negative if point is inside, and positive if point is outside
                 minDist = std::min (-dist, minDist);
             }
-            // this returns +ive if inside and -ive if outside
-            // fix this with ..., but what if this bug was intentional?
-            // return (minDist>0?minDist:0)
-            return minDist;
+
+            return (minDist>0?minDist:0);
         }
 
         //! @copydoc ConvexHullND::getAvgDistInside
@@ -298,26 +272,6 @@ namespace rw { namespace geometry {
 
             return centroid;
         }
-
-        //! if negative then point is outside hull
-        /*
-double getMinDistInside(const rw::math::VectorND<N>& vertex, const std::vector<rw::math::VectorND<N>
->& vertices){ using namespace rw::math; if( _faceIdxs.size()==0 ){
-                //std::cout << "No Tris" << std::endl;
-                return 0;
-            }
-    double minDist = DBL_MAX;
-    for(size_t i=0; i<_faceIdxs.size()/N; i++){
-        RW_ASSERT(_faceIdxs.size()> i*N);
-        int faceVerticeIdx = _faceIdxs[i*N];
-        RW_ASSERT(faceVerticeIdx<(int)vertices.size());
-        RW_ASSERT(i<_faceNormals.size());
-        double dist =  _faceOffsets[i] + dot(vertex, _faceNormals[i]);
-        // dist will be negative if point is inside, and positive if point is outside
-        minDist = std::min( -dist, minDist );
-    }
-            return minDist;
-        }*/
 
         //! @copydoc ConvexHullND::getClosestPoint
         virtual rw::math::VectorND< N > getClosestPoint (const rw::math::VectorND< N >& vertex)
