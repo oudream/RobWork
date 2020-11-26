@@ -61,123 +61,7 @@ void DOMPropertyMapSaver::save (const PropertyBase::Ptr property, DOMElem::Ptr p
     }
 
     element = root->addChild (DOMPropertyMapFormat::idPropertyValue ());
-    switch (property->getType ().getId ()) {
-        case PropertyType::Unknown:
-            // Already handled above
-            break;
-        case PropertyType::PropertyMap: {
-            const Property< PropertyMap >* prop = toProperty< PropertyMap > (property);
-            save (prop->getValue (), element);
-            break;
-        }
-        case PropertyType::String: {
-            const Property< std::string >* prop = toProperty< std::string > (property);
-            DOMBasisTypes::createString (prop->getValue (), element);
-            break;
-        }
-        case PropertyType::StringList: {
-            const Property< std::vector< std::string > >* prop =
-                toProperty< std::vector< std::string > > (property);
-            DOMBasisTypes::createStringList (prop->getValue (), element);
-            break;
-        }
-        case PropertyType::Float: {
-            const Property< float >* prop = toProperty< float > (property);
-            DOMBasisTypes::createFloat (prop->getValue (), element);
-            break;
-        }
-        case PropertyType::Double: {
-            const Property< double >* prop = toProperty< double > (property);
-            DOMBasisTypes::createDouble (prop->getValue (), element);
-            break;
-        }
-        case PropertyType::Int: {
-            const Property< int >* prop = toProperty< int > (property);
-            DOMBasisTypes::createInteger (prop->getValue (), element);
-            break;
-        }
-        case PropertyType::Bool: {
-            const Property< bool >* prop = toProperty< bool > (property);
-            DOMBasisTypes::createBoolean (prop->getValue (), element);
-            break;
-        }
-        case PropertyType::Vector3D: {
-            const Property< Vector3D<> >* prop = toProperty< Vector3D<> > (property);
-            DOMBasisTypes::createVector3D (prop->getValue (), element);
-            break;
-        }
-        case PropertyType::Vector2D: {
-            const Property< Vector2D<> >* prop = toProperty< Vector2D<> > (property);
-            DOMBasisTypes::createVector2D (prop->getValue (), element);
-            break;
-        }
-        case PropertyType::Q: {
-            const Property< Q >* prop = toProperty< Q > (property);
-            DOMBasisTypes::createQ (prop->getValue (), element);
-            break;
-        }
-        case PropertyType::Transform3D: {
-            const Property< Transform3D<> >* prop = toProperty< Transform3D<> > (property);
-            DOMBasisTypes::createTransform3D (prop->getValue (), element);
-            break;
-        }
-        case PropertyType::Rotation3D: {
-            const Property< Rotation3D<> >* prop = toProperty< Rotation3D<> > (property);
-            DOMBasisTypes::createRotation3D (prop->getValue (), element);
-            break;
-        }
-        case PropertyType::EAA: {
-            const Property< EAA<> >* prop = toProperty< EAA<> > (property);
-            DOMBasisTypes::createEAA (prop->getValue (), element);
-            break;
-        }
-        case PropertyType::RPY: {
-            const Property< RPY<> >* prop = toProperty< RPY<> > (property);
-            DOMBasisTypes::createRPY (prop->getValue (), element);
-            break;
-        }
-        case PropertyType::Quaternion: {
-            const Property< Quaternion<> >* prop = toProperty< Quaternion<> > (property);
-            Quaternion<> normalizedQuaternion (prop->getValue ());
-            normalizedQuaternion.normalize ();
-            DOMBasisTypes::createQuaternion (normalizedQuaternion, element);
-            break;
-        }
-        case PropertyType::Rotation2D: {
-            const Property< Rotation2D<> >* prop = toProperty< Rotation2D<> > (property);
-            DOMBasisTypes::createRotation2D (prop->getValue (), element);
-            break;
-        }
-        case PropertyType::VelocityScrew6D: {
-            const Property< VelocityScrew6D<> >* prop = toProperty< VelocityScrew6D<> > (property);
-            DOMBasisTypes::createVelocityScrew6D (prop->getValue (), element);
-            break;
-        }
-        case PropertyType::IntList: {
-            const Property< std::vector< int > >* prop =
-                toProperty< std::vector< int > > (property);
-            DOMBasisTypes::createIntList (prop->getValue (), element);
-            break;
-        }
-        case PropertyType::DoubleList: {
-            const Property< std::vector< double > >* prop =
-                toProperty< std::vector< double > > (property);
-            DOMBasisTypes::createDoubleList (prop->getValue (), element);
-            break;
-        }
-        case PropertyType::QPath: {
-            const Property< QPath >* prop = toProperty< QPath > (property);
-            DOMPathSaver::createQPath (prop->getValue (), element);
-            break;
-        }
-        case PropertyType::Transform3DPath: {
-            const Property< Transform3DPath >* prop = toProperty< Transform3DPath > (property);
-            DOMPathSaver::createTransform3DPath (prop->getValue (), element);
-            break;
-        }
-        default:
-            RW_THROW ("The property type has no save implementation within DOMPropertyMapSaver!");
-    }    // end switch(property.getType)
+    save(property->getPropertyValue(), element);
 }
 
 void DOMPropertyMapSaver::save (const rw::core::PropertyMap& map, DOMElem::Ptr parent)
@@ -216,4 +100,150 @@ DOMElem::Ptr DOMPropertyMapSaver::createDOMDocument (const rw::core::PropertyMap
     save (map, doc);
 
     return doc;
+}
+
+void DOMPropertyMapSaver::save (const PropertyValueBase& value, DOMElem::Ptr parent)
+{
+    if (value.getType ().getId () == PropertyType::Unknown) {
+        RW_WARN ("PropertyValueBase type 'Unknown' and was ignored as it can not be saved!");
+        return;
+    }
+
+    switch (value.getType ().getId ()) {
+        case PropertyType::Unknown:
+            // Already handled above
+            break;
+        case PropertyType::PropertyMap: {
+            const PropertyValue< PropertyMap >* prop = dynamic_cast< const PropertyValue< PropertyMap >* > (&value);
+            save (prop->getValue (), parent);
+            break;
+        }
+        case PropertyType::PropertyMapPtr: {
+            const PropertyValue< PropertyMap::Ptr >* prop = dynamic_cast< const PropertyValue< PropertyMap::Ptr >* > (&value);
+            save(*prop->getValue(), parent);
+            break;
+        }
+        case PropertyType::PropertyValueBasePtrList: {
+            const PropertyValue< std::vector< PropertyValueBase::Ptr > >* prop = dynamic_cast< const PropertyValue< std::vector< PropertyValueBase::Ptr > >* > (&value);
+            DOMElem::Ptr element = parent->addChild (DOMPropertyMapFormat::idPropertyValueList());
+            for (const PropertyValueBase::Ptr& p : prop->getValue()) {
+                save(*p, element);
+            }
+            break;
+        }
+        case PropertyType::String: {
+            const PropertyValue< std::string >* prop = dynamic_cast< const PropertyValue< std::string >* > (&value);
+            DOMBasisTypes::createString (prop->getValue (), parent);
+            break;
+        }
+        case PropertyType::StringList: {
+            const PropertyValue< std::vector< std::string > >* prop = dynamic_cast< const PropertyValue< std::vector< std::string > >* > (&value);
+            DOMBasisTypes::createStringList (prop->getValue (), parent);
+            break;
+        }
+        case PropertyType::Float: {
+            const PropertyValue< float >* prop = dynamic_cast< const PropertyValue< float >* > (&value);
+            DOMBasisTypes::createFloat (prop->getValue (), parent);
+            break;
+        }
+        case PropertyType::Double: {
+            const PropertyValue< double >* prop = dynamic_cast< const PropertyValue< double >* > (&value);
+            DOMBasisTypes::createDouble (prop->getValue (), parent);
+            break;
+        }
+        case PropertyType::Int: {
+            const PropertyValue< int >* prop = dynamic_cast< const PropertyValue< int >* > (&value);
+            DOMBasisTypes::createInteger (prop->getValue (), parent);
+            break;
+        }
+        case PropertyType::Bool: {
+            const PropertyValue< bool >* prop = dynamic_cast< const PropertyValue< bool >* > (&value);
+            DOMBasisTypes::createBoolean (prop->getValue (), parent);
+            break;
+        }
+        case PropertyType::Vector3D: {
+            const PropertyValue< Vector3D<> >* prop = dynamic_cast< const PropertyValue< Vector3D<> >* > (&value);
+            DOMBasisTypes::createVector3D (prop->getValue (), parent);
+            break;
+        }
+        case PropertyType::Vector2D: {
+            const PropertyValue< Vector2D<> >* prop = dynamic_cast< const PropertyValue< Vector2D<> >* > (&value);
+            DOMBasisTypes::createVector2D (prop->getValue (), parent);
+            break;
+        }
+        case PropertyType::Q: {
+            const PropertyValue< Q >* prop = dynamic_cast< const PropertyValue< Q >* > (&value);
+            DOMBasisTypes::createQ (prop->getValue (), parent);
+            break;
+        }
+        case PropertyType::Transform3D: {
+            const PropertyValue< Transform3D<> >* prop = dynamic_cast< const PropertyValue< Transform3D<> >* > (&value);
+            DOMBasisTypes::createTransform3D (prop->getValue (), parent);
+            break;
+        }
+        case PropertyType::Rotation3D: {
+            const PropertyValue< Rotation3D<> >* prop = dynamic_cast< const PropertyValue< Rotation3D<> >* > (&value);
+            DOMBasisTypes::createRotation3D (prop->getValue (), parent);
+            break;
+        }
+        case PropertyType::EAA: {
+            const PropertyValue< EAA<> >* prop = dynamic_cast< const PropertyValue< EAA<> >* > (&value);
+            DOMBasisTypes::createEAA (prop->getValue (), parent);
+            break;
+        }
+        case PropertyType::RPY: {
+            const PropertyValue< RPY<> >* prop = dynamic_cast< const PropertyValue< RPY<> >* > (&value);
+            DOMBasisTypes::createRPY (prop->getValue (), parent);
+            break;
+        }
+        case PropertyType::Quaternion: {
+            const PropertyValue< Quaternion<> >* prop = dynamic_cast< const PropertyValue< Quaternion<> >* > (&value);
+            Quaternion<> normalizedQuaternion (prop->getValue ());
+            normalizedQuaternion.normalize ();
+            DOMBasisTypes::createQuaternion (normalizedQuaternion, parent);
+            break;
+        }
+        case PropertyType::Rotation2D: {
+            const PropertyValue< Rotation2D<> >* prop = dynamic_cast< const PropertyValue< Rotation2D<> >* > (&value);
+            DOMBasisTypes::createRotation2D (prop->getValue (), parent);
+            break;
+        }
+        case PropertyType::VelocityScrew6D: {
+            const PropertyValue< VelocityScrew6D<> >* prop = dynamic_cast< const PropertyValue< VelocityScrew6D<> >* > (&value);
+            DOMBasisTypes::createVelocityScrew6D (prop->getValue (), parent);
+            break;
+        }
+        case PropertyType::IntList: {
+            const PropertyValue< std::vector< int > >* prop = dynamic_cast< const PropertyValue< std::vector< int > >* > (&value);
+            DOMBasisTypes::createIntList (prop->getValue (), parent);
+            break;
+        }
+        case PropertyType::DoubleList: {
+            const PropertyValue< std::vector< double > >* prop = dynamic_cast< const PropertyValue< std::vector< double > >* > (&value);
+            DOMBasisTypes::createDoubleList (prop->getValue (), parent);
+            break;
+        }
+        case PropertyType::QPath: {
+            const PropertyValue< QPath >* prop = dynamic_cast< const PropertyValue< QPath >* > (&value);
+            DOMPathSaver::createQPath (prop->getValue (), parent);
+            break;
+        }
+        case PropertyType::QPathPtr: {
+            const PropertyValue< QPath::Ptr >* prop = dynamic_cast< const PropertyValue< QPath::Ptr >* > (&value);
+            DOMPathSaver::createQPath (*prop->getValue (), parent);
+            break;
+        }
+        case PropertyType::Transform3DPath: {
+            const PropertyValue< Transform3DPath >* prop = dynamic_cast< const PropertyValue< Transform3DPath >* > (&value);
+            DOMPathSaver::createTransform3DPath (prop->getValue (), parent);
+            break;
+        }
+        case PropertyType::Transform3DPathPtr: {
+            const PropertyValue< Transform3DPath::Ptr >* prop = dynamic_cast< const PropertyValue< Transform3DPath::Ptr >* > (&value);
+            DOMPathSaver::createTransform3DPath (*prop->getValue (), parent);
+            break;
+        }
+        default:
+            RW_THROW ("The property type has no save implementation within DOMPropertyMapSaver!");
+    }    // end switch(property.getType)
 }

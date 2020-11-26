@@ -75,6 +75,10 @@ PropertyBase::Ptr DOMCorePropertyMapLoader::readProperty (DOMElem::Ptr element, 
             return ownedPtr (new Property< PropertyMap > (
                 name, description, DOMCorePropertyMapLoader::readProperties (child, true)));
         }
+        else if (child->isName ("ValueList")) {
+            RW_THROW("PropertyValueBasePtrList is not implemented in DOMCorePropertyMapLoader, Use DOMPropertyMapLoader instead");
+            break;
+        }
         else if (child->isName (DOMCoreBasisTypes::idString ())) {
             return ownedPtr (new Property< std::string > (
                 name, description, DOMCoreBasisTypes::readString (child)));

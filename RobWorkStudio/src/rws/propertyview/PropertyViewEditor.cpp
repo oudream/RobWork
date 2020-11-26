@@ -64,7 +64,6 @@ template< class A > void setRWPropValue (PropertyBase::Ptr& rwbase, const A& val
 {
     Property< A >* rwprop = dynamic_cast< Property< A >* > (rwbase.get ());
     rwprop->setValue (value);
-    rwbase->changedEvent ().fire (rwprop);
 }
 
 }    // namespace

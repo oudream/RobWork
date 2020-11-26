@@ -1,6 +1,9 @@
 #include <rw/common/ThreadPool.hpp>
 #include <rw/loaders/ImageLoader.hpp>
 
+#include <boost/bind.hpp>
+#include <boost/function.hpp>
+
 using namespace rw::common;
 using namespace rw::core;
 using rw::loaders::ImageLoader;

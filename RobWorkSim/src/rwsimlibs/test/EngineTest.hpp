@@ -27,6 +27,7 @@
 #include <rw/core/ExtensionPoint.hpp>
 #include <rw/trajectory/Path.hpp>
 
+#include <functional>
 #include <limits>
 
 namespace rw { namespace common {
@@ -57,7 +58,7 @@ namespace rwsimlibs { namespace test {
         typedef rw::core::Ptr< EngineTest > Ptr;
 
         //! @brief The callback type for the current simulation time
-        typedef boost::function< void (double time, bool failed, bool done) > TimeCallback;
+        typedef std::function< void (double time, bool failed, bool done) > TimeCallback;
 
         //! @brief Format for a failure to an engine test.
         struct Failure
@@ -353,7 +354,7 @@ namespace rwsimlibs { namespace test {
 
       protected:
         //! @brief Type for a function initializing the state.
-        typedef boost::function< void (rw::core::Ptr< const rwsim::dynamics::DynamicWorkCell >,
+        typedef std::function< void (rw::core::Ptr< const rwsim::dynamics::DynamicWorkCell >,
                                        rw::kinematics::State&) >
             InitCallback;
 
@@ -390,7 +391,7 @@ namespace rwsimlibs { namespace test {
         };
 
         //! @brief Type for a callback function.
-        typedef boost::function< void (const EngineLoopInfo&) > TestCallback;
+        typedef std::function< void (const EngineLoopInfo&) > TestCallback;
 
         /**
          * @brief A standard stepping loop provided as a convenience for test implementations.

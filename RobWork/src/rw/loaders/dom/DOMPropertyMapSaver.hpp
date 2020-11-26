@@ -25,7 +25,8 @@ namespace rw { namespace core {
     class DOMParser;
     class PropertyBase;
     class PropertyMap;
-}}    // namespace rw::core
+    class PropertyValueBase;
+}} // namespace rw::core
 
 namespace rw { namespace loaders {
 
@@ -121,7 +122,9 @@ namespace rw { namespace loaders {
 
       private:
         static const Initializer initializer;
-        DOMPropertyMapSaver (){};
+        DOMPropertyMapSaver (){}
+
+        static void save (const rw::core::PropertyValueBase& value, rw::core::DOMElem::Ptr parent);
     };
 
     /** @} */

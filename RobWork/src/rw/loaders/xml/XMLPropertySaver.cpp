@@ -26,6 +26,7 @@
 
 #include "XMLPropertyFormat.hpp"
 
+#include <rw/core/PropertyValueBase.hpp>
 #include <rw/loaders/xml/XMLBasisTypes.hpp>
 #include <rw/loaders/xml/XMLPathSaver.hpp>
 #include <rw/loaders/xml/XercesUtils.hpp>
@@ -89,139 +90,7 @@ xercesc::DOMElement* XMLPropertySaver::save (PropertyBase::Ptr property, xercesc
     element = doc->createElement (XMLPropertyFormat::idPropertyValue ());
     root->appendChild (element);
 
-    xercesc::DOMElement* elem = NULL;
-    switch (property->getType ().getId ()) {
-        case PropertyType::Unknown: RW_WARN ("Unable to save property of unknown type"); break;
-        case PropertyType::PropertyMap: {
-            const Property< PropertyMap >* prop =
-                dynamic_cast< const Property< PropertyMap >* > (property.get ());
-            elem = save (prop->getValue (), doc);
-            break;
-        }
-        case PropertyType::String: {
-            const Property< std::string >* prop =
-                dynamic_cast< const Property< std::string >* > (property.get ());
-            elem = XMLBasisTypes::createString (prop->getValue (), doc);
-            break;
-        }
-        case PropertyType::StringList: {
-            const Property< std::vector< std::string > >* prop =
-                dynamic_cast< const Property< std::vector< std::string > >* > (property.get ());
-            elem = XMLBasisTypes::createStringList (prop->getValue (), doc);
-            break;
-        }
-        case PropertyType::Float: {
-            const Property< float >* prop =
-                dynamic_cast< const Property< float >* > (property.get ());
-            elem = XMLBasisTypes::createDouble (prop->getValue (), doc);
-            break;
-        }
-        case PropertyType::Double: {
-            const Property< double >* prop =
-                dynamic_cast< const Property< double >* > (property.get ());
-            elem = XMLBasisTypes::createDouble (prop->getValue (), doc);
-            break;
-        }
-        case PropertyType::Int: {
-            const Property< int >* prop = dynamic_cast< const Property< int >* > (property.get ());
-            elem                        = XMLBasisTypes::createInteger (prop->getValue (), doc);
-            break;
-        }
-        case PropertyType::Bool: {
-            const Property< bool >* prop =
-                dynamic_cast< const Property< bool >* > (property.get ());
-            elem = XMLBasisTypes::createBoolean (prop->getValue (), doc);
-            break;
-        }
-        case PropertyType::Vector3D: {
-            const Property< Vector3D<> >* prop =
-                dynamic_cast< const Property< Vector3D<> >* > (property.get ());
-            elem = XMLBasisTypes::createVector3D (prop->getValue (), doc);
-            break;
-        }
-        case PropertyType::Vector2D: {
-            const Property< Vector2D<> >* prop =
-                dynamic_cast< const Property< Vector2D<> >* > (property.get ());
-            elem = XMLBasisTypes::createVector2D (prop->getValue (), doc);
-            break;
-        }
-        case PropertyType::Q: {
-            const Property< Q >* prop = dynamic_cast< const Property< Q >* > (property.get ());
-            elem                      = XMLBasisTypes::createQ (prop->getValue (), doc);
-            break;
-        }
-        case PropertyType::Transform3D: {
-            const Property< Transform3D<> >* prop =
-                dynamic_cast< const Property< Transform3D<> >* > (property.get ());
-            elem = XMLBasisTypes::createTransform3D (prop->getValue (), doc);
-            break;
-        }
-        case PropertyType::Rotation3D: {
-            const Property< Rotation3D<> >* prop =
-                dynamic_cast< const Property< Rotation3D<> >* > (property.get ());
-            elem = XMLBasisTypes::createRotation3D (prop->getValue (), doc);
-            break;
-        }
-        case PropertyType::EAA: {
-            const Property< EAA<> >* prop =
-                dynamic_cast< const Property< EAA<> >* > (property.get ());
-            elem = XMLBasisTypes::createEAA (prop->getValue (), doc);
-            break;
-        }
-        case PropertyType::RPY: {
-            const Property< RPY<> >* prop =
-                dynamic_cast< const Property< RPY<> >* > (property.get ());
-            elem = XMLBasisTypes::createRPY (prop->getValue (), doc);
-            break;
-        }
-        case PropertyType::Quaternion: {
-            const Property< Quaternion<> >* prop =
-                dynamic_cast< const Property< Quaternion<> >* > (property.get ());
-            elem = XMLBasisTypes::createQuaternion (prop->getValue (), doc);
-            break;
-        }
-        case PropertyType::Rotation2D: {
-            const Property< Rotation2D<> >* prop =
-                dynamic_cast< const Property< Rotation2D<> >* > (property.get ());
-            elem = XMLBasisTypes::createRotation2D (prop->getValue (), doc);
-            break;
-        }
-        case PropertyType::VelocityScrew6D: {
-            const Property< VelocityScrew6D<> >* prop =
-                dynamic_cast< const Property< VelocityScrew6D<> >* > (property.get ());
-            elem = XMLBasisTypes::createVelocityScrew6D (prop->getValue (), doc);
-            break;
-        }
-        case PropertyType::QPath: {
-            const Property< QPath >* prop =
-                dynamic_cast< const Property< QPath >* > (property.get ());
-            elem = XMLPathSaver::createElement< Q, QPath > (
-                prop->getValue (), XMLPathFormat::idQPath (), doc);
-            break;
-        }
-        case PropertyType::Transform3DPath: {
-            const Property< Transform3DPath >* prop =
-                dynamic_cast< const Property< Transform3DPath >* > (property.get ());
-            elem = XMLPathSaver::createElement< Transform3D<>, Transform3DPath > (
-                prop->getValue (), XMLPathFormat::idT3DPath (), doc);
-            break;
-        }
-        case PropertyType::IntList: {
-            const Property< std::vector< int > >* prop =
-                dynamic_cast< const Property< std::vector< int > >* > (property.get ());
-            elem = XMLBasisTypes::createIntList (prop->getValue (), doc);
-            break;
-        }
-        case PropertyType::DoubleList: {
-            const Property< std::vector< double > >* prop =
-                dynamic_cast< const Property< std::vector< double > >* > (property.get ());
-            elem = XMLBasisTypes::createDoubleList (prop->getValue (), doc);
-            break;
-        }
-    }    // end switch(property.getType)
-
-    if (elem != NULL)
-        element->appendChild (elem);
+    save(property->getPropertyValue(), element, doc);
 
     return root;
 }
@@ -292,4 +161,152 @@ void XMLPropertySaver::write (const rw::core::PropertyMap& map, std::ostream& ou
     xercesc::DOMDocument* doc = createDOMDocument (map);
     XercesDocumentWriter::writeDocument (doc, outstream);
     doc->release ();
+}
+
+void XMLPropertySaver::save (
+    const PropertyValueBase& property,
+    xercesc::DOMElement* parent, xercesc::DOMDocument* doc)
+{
+    xercesc::DOMElement* elem = NULL;
+    switch (property.getType ().getId ()) {
+        case PropertyType::Unknown: RW_WARN ("Unable to save property of unknown type"); break;
+        case PropertyType::PropertyMap: {
+            const PropertyValue< PropertyMap >* prop =
+                dynamic_cast< const PropertyValue< PropertyMap >* > (&property);
+            elem = save (prop->getValue (), doc);
+            break;
+        }
+        case PropertyType::PropertyValueBasePtrList: {
+            const PropertyValue< std::vector< PropertyValueBase::Ptr > >* prop =
+                    dynamic_cast< const PropertyValue< std::vector< PropertyValueBase::Ptr > >* > (&property);
+            elem = doc->createElement (XMLPropertyFormat::idPropertyValueList());
+            for (const PropertyValueBase::Ptr& p : prop->getValue()) {
+                save(*p, elem, doc);
+            }
+            break;
+        }
+        case PropertyType::String: {
+            const PropertyValue< std::string >* prop =
+                dynamic_cast< const PropertyValue< std::string >* > (&property);
+            elem = XMLBasisTypes::createString (prop->getValue (), doc);
+            break;
+        }
+        case PropertyType::StringList: {
+            const PropertyValue< std::vector< std::string > >* prop =
+                dynamic_cast< const PropertyValue< std::vector< std::string > >* > (&property);
+            elem = XMLBasisTypes::createStringList (prop->getValue (), doc);
+            break;
+        }
+        case PropertyType::Float: {
+            const PropertyValue< float >* prop =
+                dynamic_cast< const PropertyValue< float >* > (&property);
+            elem = XMLBasisTypes::createDouble (prop->getValue (), doc);
+            break;
+        }
+        case PropertyType::Double: {
+            const PropertyValue< double >* prop =
+                dynamic_cast< const PropertyValue< double >* > (&property);
+            elem = XMLBasisTypes::createDouble (prop->getValue (), doc);
+            break;
+        }
+        case PropertyType::Int: {
+            const PropertyValue< int >* prop = dynamic_cast< const PropertyValue< int >* > (&property);
+            elem                        = XMLBasisTypes::createInteger (prop->getValue (), doc);
+            break;
+        }
+        case PropertyType::Bool: {
+            const PropertyValue< bool >* prop =
+                dynamic_cast< const PropertyValue< bool >* > (&property);
+            elem = XMLBasisTypes::createBoolean (prop->getValue (), doc);
+            break;
+        }
+        case PropertyType::Vector3D: {
+            const PropertyValue< Vector3D<> >* prop =
+                dynamic_cast< const PropertyValue< Vector3D<> >* > (&property);
+            elem = XMLBasisTypes::createVector3D (prop->getValue (), doc);
+            break;
+        }
+        case PropertyType::Vector2D: {
+            const PropertyValue< Vector2D<> >* prop =
+                dynamic_cast< const PropertyValue< Vector2D<> >* > (&property);
+            elem = XMLBasisTypes::createVector2D (prop->getValue (), doc);
+            break;
+        }
+        case PropertyType::Q: {
+            const PropertyValue< Q >* prop = dynamic_cast< const PropertyValue< Q >* > (&property);
+            elem                      = XMLBasisTypes::createQ (prop->getValue (), doc);
+            break;
+        }
+        case PropertyType::Transform3D: {
+            const PropertyValue< Transform3D<> >* prop =
+                dynamic_cast< const PropertyValue< Transform3D<> >* > (&property);
+            elem = XMLBasisTypes::createTransform3D (prop->getValue (), doc);
+            break;
+        }
+        case PropertyType::Rotation3D: {
+            const PropertyValue< Rotation3D<> >* prop =
+                dynamic_cast< const PropertyValue< Rotation3D<> >* > (&property);
+            elem = XMLBasisTypes::createRotation3D (prop->getValue (), doc);
+            break;
+        }
+        case PropertyType::EAA: {
+            const PropertyValue< EAA<> >* prop =
+                dynamic_cast< const PropertyValue< EAA<> >* > (&property);
+            elem = XMLBasisTypes::createEAA (prop->getValue (), doc);
+            break;
+        }
+        case PropertyType::RPY: {
+            const PropertyValue< RPY<> >* prop =
+                dynamic_cast< const PropertyValue< RPY<> >* > (&property);
+            elem = XMLBasisTypes::createRPY (prop->getValue (), doc);
+            break;
+        }
+        case PropertyType::Quaternion: {
+            const PropertyValue< Quaternion<> >* prop =
+                dynamic_cast< const PropertyValue< Quaternion<> >* > (&property);
+            elem = XMLBasisTypes::createQuaternion (prop->getValue (), doc);
+            break;
+        }
+        case PropertyType::Rotation2D: {
+            const PropertyValue< Rotation2D<> >* prop =
+                dynamic_cast< const PropertyValue< Rotation2D<> >* > (&property);
+            elem = XMLBasisTypes::createRotation2D (prop->getValue (), doc);
+            break;
+        }
+        case PropertyType::VelocityScrew6D: {
+            const PropertyValue< VelocityScrew6D<> >* prop =
+                dynamic_cast< const PropertyValue< VelocityScrew6D<> >* > (&property);
+            elem = XMLBasisTypes::createVelocityScrew6D (prop->getValue (), doc);
+            break;
+        }
+        case PropertyType::QPath: {
+            const PropertyValue< QPath >* prop =
+                dynamic_cast< const PropertyValue< QPath >* > (&property);
+            elem = XMLPathSaver::createElement< Q, QPath > (
+                prop->getValue (), XMLPathFormat::idQPath (), doc);
+            break;
+        }
+        case PropertyType::Transform3DPath: {
+            const PropertyValue< Transform3DPath >* prop =
+                dynamic_cast< const PropertyValue< Transform3DPath >* > (&property);
+            elem = XMLPathSaver::createElement< Transform3D<>, Transform3DPath > (
+                prop->getValue (), XMLPathFormat::idT3DPath (), doc);
+            break;
+        }
+        case PropertyType::IntList: {
+            const PropertyValue< std::vector< int > >* prop =
+                dynamic_cast< const PropertyValue< std::vector< int > >* > (&property);
+            elem = XMLBasisTypes::createIntList (prop->getValue (), doc);
+            break;
+        }
+        case PropertyType::DoubleList: {
+            const PropertyValue< std::vector< double > >* prop =
+                dynamic_cast< const PropertyValue< std::vector< double > >* > (&property);
+            elem = XMLBasisTypes::createDoubleList (prop->getValue (), doc);
+            break;
+        }
+    }    // end switch(property.getType)
+
+    if (elem != NULL)
+        parent->appendChild (elem);
 }

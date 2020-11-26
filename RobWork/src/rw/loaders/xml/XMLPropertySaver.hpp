@@ -23,6 +23,10 @@
 
 #include <xercesc/util/XercesDefs.hpp>
 
+namespace rw { namespace core {
+    class PropertyValueBase;
+}}
+
 XERCES_CPP_NAMESPACE_BEGIN
 class DOMDocument;
 class DOMElement;
@@ -137,7 +141,10 @@ namespace rw { namespace loaders {
       private:
         static const Initializer initializer;
 
-        XMLPropertySaver (){};
+        XMLPropertySaver (){}
+
+        static void save (const rw::core::PropertyValueBase& property,
+                xercesc::DOMElement* parent, xercesc::DOMDocument* doc);
     };
 
     /** @} */

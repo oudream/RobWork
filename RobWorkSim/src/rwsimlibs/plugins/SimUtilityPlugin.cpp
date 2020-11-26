@@ -24,6 +24,7 @@
 #include <RobWorkStudio.hpp>
 #include <rw/core/Log.hpp>
 #include <rw/core/Ptr.hpp>
+#include <rwsim/dynamics/DynamicWorkCell.hpp>
 #include <rwsimlibs/gui/GraspRestingPoseDialog.hpp>
 #include <rwsimlibs/gui/GraspSelectionDialog.hpp>
 #include <rwsimlibs/gui/RestingPoseDialog.hpp>

@@ -43,6 +43,16 @@ namespace rw { namespace loaders {
     {
       public:
         /**
+         * @brief Reads in a Property value from DOMElement.
+         *
+         * May throw rw::core::Exception
+         *
+         * @param element [in] DOMElement describing Property value.
+         * @return Pointer to the property value.
+         */
+        static rw::core::PropertyValueBase::Ptr readPropertyValue (xercesc::DOMElement* element);
+
+        /**
          * @brief Reads in a Property from DOMElement.
          *
          * May throw rw::core::Exception

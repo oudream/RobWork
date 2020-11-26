@@ -25,7 +25,7 @@
 #include <rwsim/dynamics/DynamicWorkCell.hpp>
 #include <rwsim/dynamics/RigidBody.hpp>
 
-#include <boost/bind.hpp>
+#include <functional>
 
 using namespace rw::common;
 using namespace rw::core;
@@ -49,8 +49,9 @@ void IntegratorSpringTest::run (TestHandle::Ptr handle, const std::string& engin
                                 const PropertyMap& parameters,
                                 rw::core::Ptr< rwsim::log::SimulatorLogScope > verbose)
 {
+    using std::placeholders::_1;
     static const TestCallback cb (
-        boost::bind (&IntegratorSpringTest::updateResults, boost::arg< 1 > ()));
+        std::bind (&IntegratorSpringTest::updateResults, _1));
     const double dt = parameters.get< double > ("Timestep") / 1000.;
 
     // Initialize results with descriptions
