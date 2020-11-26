@@ -17,6 +17,8 @@
 
 #include "PropertyMap.hpp"
 
+#include <functional>
+
 using namespace rw::core;
 
 PropertyMap::PropertyMap ()
@@ -27,7 +29,8 @@ PropertyMap::~PropertyMap ()
     _properties.clear ();
 }
 
-PropertyMap::PropertyMap (const PropertyMap& other)
+PropertyMap::PropertyMap (const PropertyMap& other):
+    _name(other.getName())
 {
     // Clone all property base objects.
     for (MapType::iterator it = other._properties.begin (); it != other._properties.end (); it++) {
@@ -47,28 +50,25 @@ PropertyMap& PropertyMap::operator= (const PropertyMap& other)
     if (this != &other) {
         PropertyMap copy = other;
         swap (copy);
+        _name = other.getName();
     }
     return *this;
 }
 
 void PropertyMap::swap (PropertyMap& other)
 {
+    using std::placeholders::_1;
     _properties.swap (other._properties);
-
-    // all properties need to update their actionhandler
-    /*  Range r = this->getProperties();
-      for(;r.first!=r.second;++r.first){
-          (*r.first)->changedEvent().remove( &other );
-          (*r.first)->changedEvent().add(
-      boost::bind(&PropertyMap::propertyChangedListener,this,boost::arg<1>()), this );
-      }
-
-      r = other.getProperties();
-      for(;r.first!=r.second;++r.first){
-          (*r.first)->changedEvent().remove( this );
-          (*r.first)->changedEvent().add(
-      boost::bind(&PropertyMap::propertyChangedListener,&other,boost::arg<1>()), &other );
-      }*/
+    for (const PropertyBase::Ptr& p : _properties) {
+        p->changedEvent().remove(&other);
+        p->changedEvent().add(std::bind(&PropertyMap::propertyChangedListener, this, _1), this );
+        propertyChangedListener(p.get());
+    }
+    for (const PropertyBase::Ptr& p : other.getProperties()) {
+        p->changedEvent().remove(this);
+        p->changedEvent().add(std::bind(&PropertyMap::propertyChangedListener, &other, _1), &other );
+        other.propertyChangedListener(p.get());
+    }
 }
 
 bool PropertyMap::has (const std::string& identifier) const
@@ -83,6 +83,7 @@ bool PropertyMap::erase (const std::string& identifier)
     typedef MapType::iterator I;
     const I p = _properties.find (&key);
     if (p != _properties.end ()) {
+        (*p)->changedEvent().remove(this);
         _properties.erase (p);
         return true;
     }
@@ -93,6 +94,9 @@ bool PropertyMap::erase (const std::string& identifier)
 
 void PropertyMap::clear ()
 {
+    for (const PropertyBase::Ptr& p : _properties) {
+        p->changedEvent().remove(this);
+    }
     _properties.clear ();
 }
 
@@ -108,11 +112,14 @@ bool PropertyMap::empty () const
 
 bool PropertyMap::insert (PropertyBase::Ptr property)
 {
+    using std::placeholders::_1;
     if (_properties.insert (property).second) {
         // add to changed listener
-        // property->addChangedListener(
-        // boost::bind(&PropertyMap::propertyChangedListener,this,boost::arg<1>())
-        // );
+        property->changedEvent().add(
+                std::bind(&PropertyMap::propertyChangedListener, this, _1),
+                this
+        );
+        propertyChangedListener(property.get());
         return true;
     }
     return false;
@@ -141,9 +148,8 @@ rw::core::iter_pair< PropertyMap::iterator > PropertyMap::getProperties () const
 
 void PropertyMap::notifyListeners (PropertyBase* base)
 {
-    typedef std::vector< PropertyChangedListener >::iterator I;
-    for (I it = _listeners.begin (); it != _listeners.end (); ++it) {
-        (*it) (this, base);
+    for(const PropertyChangedListener& listener : _listeners) {
+        listener(this, base);
     }
 }
 

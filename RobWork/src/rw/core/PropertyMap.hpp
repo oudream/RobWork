@@ -26,7 +26,6 @@
 #include <rw/core/Property.hpp>
 #include <rw/core/PropertyBase.hpp>
 #include <rw/core/macros.hpp>
-#include <rw/core/os.hpp>
 
 #include <set>
 #endif
@@ -67,7 +66,7 @@ namespace rw { namespace core {
          * @brief constructor
          * @param name [in] name of this propertymap
          */
-        PropertyMap (std::string name) : _name (name){};
+        PropertyMap (std::string name) : _name (name){}
 
         /**
          * @brief Destructor
@@ -76,7 +75,7 @@ namespace rw { namespace core {
 
         /**
          * @brief Copy constructor.
-        */
+         */
         PropertyMap (const PropertyMap& other);
 
 #if !defined(SWIGPYTHON) || defined(RW_WIN32)
@@ -100,13 +99,15 @@ namespace rw { namespace core {
          * @brief get the name of this propertymap
          * @return name of this propertymap
          */
-        const std::string& getName () { return _name; };
+        const std::string& getName () const { return _name; }
 
         /**
          * @brief Set the value of a property
          *
          * If a property with the given identifier cannot be found, a new
          * property with no description is created and inserted.
+         *
+         * This will fire a PropertyChangedEvent.
          *
          * @param identifier [in] the property identifier
          * @param value [in] the new value
@@ -125,6 +126,8 @@ namespace rw { namespace core {
         /**
          * @brief Add a property to the map. If a property with the same identifier already
          * exists then nothing is added/changed and the existing property is returned.
+         *
+         * This will fire a PropertyChangedEvent (if a new property is added).
          *
          * @param identifier [in] Property identifier.
          * @param description [in] Property description.
@@ -154,6 +157,8 @@ namespace rw { namespace core {
          * @brief Add a property to the map. If a property with the same identifier already
          * exists then the value and description are changed and the existing property is returned.
          *
+         * This will fire a PropertyChangedEvent.
+         *
          * @param identifier [in] Property identifier.
          * @param description [in] Property description.
          * @param value [in] Property value.
@@ -174,13 +179,15 @@ namespace rw { namespace core {
                 else
                     return NULL;
             }
+            prop->setDescription (description, false);
             prop->setValue (value);
-            prop->setDescription (description);
             return prop;
         }
 
         /**
          * @brief Adds a property to the map
+         *
+         * This will fire a PropertyChangedEvent.
          *
          * @param property [in] Property to add
          *
@@ -268,6 +275,10 @@ namespace rw { namespace core {
          *
          * \b example
          * int iterations = map.get<int>("Iterations", 20);
+         *
+         * This will fire a PropertyChangedEvent if a new property is added.
+         * Notice that a new property is inserted in the map with the default
+         * value if it does not already exist.
          *
          * @param identifier [in] the identifier of the property
          * @param defval [in] the value that will be returned if property with
@@ -378,7 +389,7 @@ namespace rw { namespace core {
         /**
          * @brief Method signature for a callback function
          */
-        typedef boost::function< void (PropertyMap*, rw::core::PropertyBase*) >
+        typedef std::function< void (PropertyMap*, rw::core::PropertyBase*) >
             PropertyChangedListener;
 
         /**

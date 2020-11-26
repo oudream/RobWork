@@ -69,7 +69,9 @@ endif()
 if(TARGET sdurw_core)
     set(CORE_TEST_LIBRARIES sdurw-gtest-main ${GTEST_LIBRARIES} sdurw_core)
 
-    set(CORE_TEST_SRC core/AnyPtrTest.cpp core/EventTest.cpp core/PluginTest.cpp core/PtrTest.cpp
+    set(CORE_TEST_SRC core/AnyPtrTest.cpp core/EventTest.cpp core/PluginTest.cpp
+                      core/PropertyMapTest.cpp core/PropertyTest.cpp
+                      core/PropertyTypeCoreTest.cpp core/PropertyValueTest.cpp core/PtrTest.cpp
                       core/PtrBoostTest.cpp core/StringUtilTest.cpp
     )
 
@@ -230,6 +232,7 @@ if(TARGET sdurw)
         math/LinearAlgebraTest.cpp
         math/MathSerializationTest.cpp
         math/Pose6DTest.cpp
+        math/PropertyTypeMathTest.cpp
         math/Rotation3DTest.cpp
         math/RPYTest.cpp
         math/Transform3DTest.cpp
@@ -383,7 +386,8 @@ if(TARGET sdurw AND TARGET sdurw_control)
     set(TRAJECTORY_TEST_SRC
         trajectory/PathTest.cpp trajectory/ParabolicBlendTest.cpp
         trajectory/SyncVelocityRampTest.cpp trajectory/trajectory.cpp
-        trajectory/TrajectoryFactoryTest.cpp trajectory/CubicSplineTest.cpp trajectory/LinearInterpolatorTest.cpp
+        trajectory/TrajectoryFactoryTest.cpp trajectory/CubicSplineTest.cpp
+        trajectory/LinearInterpolatorTest.cpp trajectory/PropertyTypeTrajectoryTest.cpp
     )
     add_executable(sdurw_trajectory-gtest ${TRAJECTORY_TEST_SRC})
     target_link_libraries(sdurw_trajectory-gtest ${QHULL_LIBRARIES} ${TRAJECTORY_TEST_LIBRARIES})

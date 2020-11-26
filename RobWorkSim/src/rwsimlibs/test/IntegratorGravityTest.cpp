@@ -20,7 +20,7 @@
 #include <rwsim/dynamics/DynamicWorkCell.hpp>
 #include <rwsim/dynamics/RigidBody.hpp>
 
-#include <boost/bind.hpp>
+#include <functional>
 
 using rw::core::PropertyMap;
 using rw::kinematics::State;
@@ -40,8 +40,9 @@ void IntegratorGravityTest::run (TestHandle::Ptr handle, const std::string& engi
                                  const PropertyMap& parameters,
                                  rw::core::Ptr< rwsim::log::SimulatorLogScope > verbose)
 {
+    using std::placeholders::_1;
     static const TestCallback cb (
-        boost::bind (&IntegratorGravityTest::updateResults, boost::arg< 1 > ()));
+        std::bind (&IntegratorGravityTest::updateResults, _1));
     const double dt = parameters.get< double > ("Timestep") / 1000.;
 
     // Initialize results with descriptions

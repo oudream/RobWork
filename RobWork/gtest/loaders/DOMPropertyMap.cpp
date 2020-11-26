@@ -1,7 +1,9 @@
 #include <gtest/gtest.h>
 
-#include <rw/core/PropertyMap.hpp>
 #include <rw/core/Property.hpp>
+#include <rw/core/PropertyMap.hpp>
+#include <rw/core/PropertyValueBase.hpp>
+#include <rw/core/PropertyValue.hpp>
 
 #include <rw/loaders/dom/DOMPropertyMapSaver.hpp>
 #include <rw/loaders/dom/DOMPropertyMapLoader.hpp>
@@ -24,103 +26,125 @@ namespace {
     /* Declaring the functions for recursive use */
     void comparePropertyMaps(const rw::core::PropertyMap &a, const rw::core::PropertyMap &b);
 
-    void compareProperties(const rw::core::PropertyBase::Ptr a, const rw::core::PropertyBase::Ptr b) {
-        EXPECT_EQ(a->getIdentifier(), b->getIdentifier());
-        EXPECT_EQ(a->getDescription(), b->getDescription());
-        ASSERT_EQ(a->getType().getId(), b->getType().getId());
-
-        switch (a->getType().getId()) {
+    void comparePropertyValues(const rw::core::PropertyValueBase& a, const rw::core::PropertyValueBase& b) {
+        switch (a.getType().getId()) {
         case rw::core::PropertyType::PropertyMap: {
-            const rw::core::Property<rw::core::PropertyMap>* pa = rw::core::toProperty<rw::core::PropertyMap>(a);
-            const rw::core::Property<rw::core::PropertyMap>* pb = rw::core::toProperty<rw::core::PropertyMap>(b);
+            typedef rw::core::PropertyMap Type;
+            const rw::core::PropertyValue<Type>* pa = dynamic_cast<const rw::core::PropertyValue<Type>* >(&a);
+            const rw::core::PropertyValue<Type>* pb = dynamic_cast<const rw::core::PropertyValue<Type>* >(&b);
             comparePropertyMaps(pa->getValue(), pb->getValue());
             break;
         }
+        case rw::core::PropertyType::PropertyValueBasePtrList: {
+            typedef std::vector<rw::core::PropertyValueBase::Ptr> Type;
+            const rw::core::PropertyValue<Type>* pa = dynamic_cast<const rw::core::PropertyValue<Type>* >(&a);
+            const rw::core::PropertyValue<Type>* pb = dynamic_cast<const rw::core::PropertyValue<Type>* >(&b);
+            Type valA = pa->getValue();
+            Type valB = pb->getValue();
+            ASSERT_EQ(valA.size(), valB.size());
+            for (std::size_t i = 0; i < valA.size(); i++) {
+                comparePropertyValues(*valA[i], *valB[i]);
+            }
+            break;
+        }
         case rw::core::PropertyType::String: {
-            const rw::core::Property<std::string>* pa = rw::core::toProperty<std::string>(a);
-            const rw::core::Property<std::string>* pb = rw::core::toProperty<std::string>(b);
+            typedef std::string Type;
+            const rw::core::PropertyValue<Type>* pa = dynamic_cast<const rw::core::PropertyValue<Type>* >(&a);
+            const rw::core::PropertyValue<Type>* pb = dynamic_cast<const rw::core::PropertyValue<Type>* >(&b);
             EXPECT_EQ(pa->getValue(), pb->getValue());
             break;
         }
         case rw::core::PropertyType::Float: {
-            const rw::core::Property<float>* pa = rw::core::toProperty<float>(a);
-            const rw::core::Property<float>* pb = rw::core::toProperty<float>(b);
+            typedef float Type;
+            const rw::core::PropertyValue<Type>* pa = dynamic_cast<const rw::core::PropertyValue<Type>* >(&a);
+            const rw::core::PropertyValue<Type>* pb = dynamic_cast<const rw::core::PropertyValue<Type>* >(&b);
             EXPECT_FLOAT_EQ(pa->getValue(), pb->getValue());
             break;
         }
         case rw::core::PropertyType::Double: {
-            const rw::core::Property<double>* pa = rw::core::toProperty<double>(a);
-            const rw::core::Property<double>* pb = rw::core::toProperty<double>(b);
+            typedef double Type;
+            const rw::core::PropertyValue<Type>* pa = dynamic_cast<const rw::core::PropertyValue<Type>* >(&a);
+            const rw::core::PropertyValue<Type>* pb = dynamic_cast<const rw::core::PropertyValue<Type>* >(&b);
             EXPECT_DOUBLE_EQ(pa->getValue(), pb->getValue());
             break;
         }
         case rw::core::PropertyType::Int: {
-            const rw::core::Property<int>* pa = rw::core::toProperty<int>(a);
-            const rw::core::Property<int>* pb = rw::core::toProperty<int>(b);
+            typedef int Type;
+            const rw::core::PropertyValue<Type>* pa = dynamic_cast<const rw::core::PropertyValue<Type>* >(&a);
+            const rw::core::PropertyValue<Type>* pb = dynamic_cast<const rw::core::PropertyValue<Type>* >(&b);
             EXPECT_EQ(pa->getValue(), pb->getValue());
             break;
         }
         case rw::core::PropertyType::Bool: {
-            const rw::core::Property<bool>* pa = rw::core::toProperty<bool>(a);
-            const rw::core::Property<bool>* pb = rw::core::toProperty<bool>(b);
+            typedef bool Type;
+            const rw::core::PropertyValue<Type>* pa = dynamic_cast<const rw::core::PropertyValue<Type>* >(&a);
+            const rw::core::PropertyValue<Type>* pb = dynamic_cast<const rw::core::PropertyValue<Type>* >(&b);
             EXPECT_EQ(pa->getValue(), pb->getValue());
             break;
         }
         case rw::core::PropertyType::Vector3D: {
-            const rw::core::Property<Vector3D<> >* pa = rw::core::toProperty<Vector3D<> >(a);
-            const rw::core::Property<Vector3D<> >* pb = rw::core::toProperty<Vector3D<> >(b);
+            typedef Vector3D<> Type;
+            const rw::core::PropertyValue<Type>* pa = dynamic_cast<const rw::core::PropertyValue<Type>* >(&a);
+            const rw::core::PropertyValue<Type>* pb = dynamic_cast<const rw::core::PropertyValue<Type>* >(&b);
             EXPECT_DOUBLE_EQ(pa->getValue()[0],pb->getValue()[0]);
             EXPECT_DOUBLE_EQ(pa->getValue()[1],pb->getValue()[1]);
             EXPECT_DOUBLE_EQ(pa->getValue()[2],pb->getValue()[2]);
             break;
         }
         case rw::core::PropertyType::Vector2D: {
-            const rw::core::Property<Vector2D<> >* pa = rw::core::toProperty<Vector2D<> >(a);
-            const rw::core::Property<Vector2D<> >* pb = rw::core::toProperty<Vector2D<> >(b);
+            typedef Vector2D<> Type;
+            const rw::core::PropertyValue<Type>* pa = dynamic_cast<const rw::core::PropertyValue<Type>* >(&a);
+            const rw::core::PropertyValue<Type>* pb = dynamic_cast<const rw::core::PropertyValue<Type>* >(&b);
             EXPECT_DOUBLE_EQ(pa->getValue()[0],pb->getValue()[0]);
             EXPECT_DOUBLE_EQ(pa->getValue()[1],pb->getValue()[1]);
             break;
         }
         case rw::core::PropertyType::Q: {
-            const rw::core::Property<Q>* pa = rw::core::toProperty<Q>(a);
-            const rw::core::Property<Q>* pb = rw::core::toProperty<Q>(b);
+            typedef Q Type;
+            const rw::core::PropertyValue<Type>* pa = dynamic_cast<const rw::core::PropertyValue<Type>* >(&a);
+            const rw::core::PropertyValue<Type>* pb = dynamic_cast<const rw::core::PropertyValue<Type>* >(&b);
             ASSERT_EQ(pa->getValue().size(), pb->getValue().size());
             for (std::size_t i = 0; i < pa->getValue().size(); i++) {
-            	EXPECT_DOUBLE_EQ(pa->getValue()[i], pb->getValue()[i]);
+                EXPECT_DOUBLE_EQ(pa->getValue()[i], pb->getValue()[i]);
             }
             break;
         }
         case rw::core::PropertyType::Transform3D: {
-            const rw::core::Property<Transform3D<> >* pa = rw::core::toProperty<Transform3D<> >(a);
-            const rw::core::Property<Transform3D<> >* pb = rw::core::toProperty<Transform3D<> >(b);
+            typedef Transform3D<> Type;
+            const rw::core::PropertyValue<Type>* pa = dynamic_cast<const rw::core::PropertyValue<Type>* >(&a);
+            const rw::core::PropertyValue<Type>* pb = dynamic_cast<const rw::core::PropertyValue<Type>* >(&b);
             EXPECT_TRUE(pa->getValue().equal(pb->getValue()));
             break;
         }
         case rw::core::PropertyType::Rotation3D: {
-            const rw::core::Property<Rotation3D<> >* pa = rw::core::toProperty<Rotation3D<> >(a);
-            const rw::core::Property<Rotation3D<> >* pb = rw::core::toProperty<Rotation3D<> >(b);
+            typedef Rotation3D<> Type;
+            const rw::core::PropertyValue<Type>* pa = dynamic_cast<const rw::core::PropertyValue<Type>* >(&a);
+            const rw::core::PropertyValue<Type>* pb = dynamic_cast<const rw::core::PropertyValue<Type>* >(&b);
             EXPECT_TRUE(pa->getValue().equal(pb->getValue()));
             break;
         }
         case rw::core::PropertyType::RPY: {
-            const rw::core::Property<RPY<> >* pa = rw::core::toProperty<RPY<> >(a);
-            const rw::core::Property<RPY<> >* pb = rw::core::toProperty<RPY<> >(b);
+            typedef RPY<> Type;
+            const rw::core::PropertyValue<Type>* pa = dynamic_cast<const rw::core::PropertyValue<Type>* >(&a);
+            const rw::core::PropertyValue<Type>* pb = dynamic_cast<const rw::core::PropertyValue<Type>* >(&b);
             EXPECT_DOUBLE_EQ(pa->getValue()[0],pb->getValue()[0]);
             EXPECT_DOUBLE_EQ(pa->getValue()[1],pb->getValue()[1]);
             EXPECT_DOUBLE_EQ(pa->getValue()[2],pb->getValue()[2]);
             break;
         }
         case rw::core::PropertyType::EAA: {
-            const rw::core::Property<EAA<> >* pa = rw::core::toProperty<EAA<> >(a);
-            const rw::core::Property<EAA<> >* pb = rw::core::toProperty<EAA<> >(b);
+            typedef EAA<> Type;
+            const rw::core::PropertyValue<Type>* pa = dynamic_cast<const rw::core::PropertyValue<Type>* >(&a);
+            const rw::core::PropertyValue<Type>* pb = dynamic_cast<const rw::core::PropertyValue<Type>* >(&b);
             EXPECT_DOUBLE_EQ(pa->getValue()[0],pb->getValue()[0]);
             EXPECT_DOUBLE_EQ(pa->getValue()[1],pb->getValue()[1]);
             EXPECT_DOUBLE_EQ(pa->getValue()[2],pb->getValue()[2]);
             break;
         }
         case rw::core::PropertyType::Quaternion: {
-            const rw::core::Property<Quaternion<> >* pa = rw::core::toProperty<Quaternion<> >(a);
-            const rw::core::Property<Quaternion<> >* pb = rw::core::toProperty<Quaternion<> >(b);
+            typedef Quaternion<> Type;
+            const rw::core::PropertyValue<Type>* pa = dynamic_cast<const rw::core::PropertyValue<Type>* >(&a);
+            const rw::core::PropertyValue<Type>* pb = dynamic_cast<const rw::core::PropertyValue<Type>* >(&b);
             EXPECT_NEAR(pa->getValue()(0),pb->getValue()(0),1e-6);
             EXPECT_NEAR(pa->getValue()(1),pb->getValue()(1),1e-6);
             EXPECT_NEAR(pa->getValue()(2),pb->getValue()(2),1e-6);
@@ -128,8 +152,9 @@ namespace {
             break;
         }
         case rw::core::PropertyType::Rotation2D: {
-            const rw::core::Property<Rotation2D<> >* pa = rw::core::toProperty<Rotation2D<> >(a);
-            const rw::core::Property<Rotation2D<> >* pb = rw::core::toProperty<Rotation2D<> >(b);
+            typedef Rotation2D<> Type;
+            const rw::core::PropertyValue<Type>* pa = dynamic_cast<const rw::core::PropertyValue<Type>* >(&a);
+            const rw::core::PropertyValue<Type>* pb = dynamic_cast<const rw::core::PropertyValue<Type>* >(&b);
             EXPECT_DOUBLE_EQ(pa->getValue()(0,0),pb->getValue()(0,0));
             EXPECT_DOUBLE_EQ(pa->getValue()(0,1),pb->getValue()(0,1));
             EXPECT_DOUBLE_EQ(pa->getValue()(1,0),pb->getValue()(1,0));
@@ -137,17 +162,19 @@ namespace {
             break;
         }
         case rw::core::PropertyType::VelocityScrew6D: {
-            const rw::core::Property<VelocityScrew6D<> >* pa = rw::core::toProperty<VelocityScrew6D<> >(a);
-            const rw::core::Property<VelocityScrew6D<> >* pb = rw::core::toProperty<VelocityScrew6D<> >(b);
+            typedef VelocityScrew6D<> Type;
+            const rw::core::PropertyValue<Type>* pa = dynamic_cast<const rw::core::PropertyValue<Type>* >(&a);
+            const rw::core::PropertyValue<Type>* pb = dynamic_cast<const rw::core::PropertyValue<Type>* >(&b);
             for (std::size_t i = 0; i < 6; i++) {
-            	EXPECT_DOUBLE_EQ(pa->getValue()[i],pb->getValue()[i]);
+                EXPECT_DOUBLE_EQ(pa->getValue()[i],pb->getValue()[i]);
             }
             break;
         }
         case rw::core::PropertyType::QPath: {
             /* Doing verbose comparison, else the operator== and operator!= could be implemented for rw::trajectory::Path */
-            const rw::core::Property<QPath>* pa = rw::core::toProperty<QPath>(a);
-            const rw::core::Property<QPath>* pb = rw::core::toProperty<QPath>(b);
+            typedef QPath Type;
+            const rw::core::PropertyValue<Type>* pa = dynamic_cast<const rw::core::PropertyValue<Type>* >(&a);
+            const rw::core::PropertyValue<Type>* pb = dynamic_cast<const rw::core::PropertyValue<Type>* >(&b);
             EXPECT_EQ(pa->getValue().size(), pb->getValue().size());
             
             std::size_t maxIndex = std::max(pa->getValue().size(), pb->getValue().size());
@@ -157,20 +184,21 @@ namespace {
                 } else if (index >= pb->getValue().size()) {
                     EXPECT_EQ(pa->getValue().at(index), Q());
                 } else {
-                	const Q& qa = pa->getValue().at(index);
-                	const Q& qb = pb->getValue().at(index);
-                	ASSERT_EQ(qa.size(),qb.size());
-                	for (std::size_t i = 0; i < qa.size(); i++) {
-                		EXPECT_DOUBLE_EQ(qa[i], qb[i]);
-                	}
+                    const Q& qa = pa->getValue().at(index);
+                    const Q& qb = pb->getValue().at(index);
+                    ASSERT_EQ(qa.size(),qb.size());
+                    for (std::size_t i = 0; i < qa.size(); i++) {
+                        EXPECT_DOUBLE_EQ(qa[i], qb[i]);
+                    }
                 }
             }
             break;
         }
         case rw::core::PropertyType::Transform3DPath: {
             /* Doing verbose comparison, else the operator== and operator!= could be implemented for rw::trajectory::Path */
-            const rw::core::Property<Transform3DPath>* pa = rw::core::toProperty<Transform3DPath>(a);
-            const rw::core::Property<Transform3DPath>* pb = rw::core::toProperty<Transform3DPath>(b);
+            typedef Transform3DPath Type;
+            const rw::core::PropertyValue<Type>* pa = dynamic_cast<const rw::core::PropertyValue<Type>* >(&a);
+            const rw::core::PropertyValue<Type>* pb = dynamic_cast<const rw::core::PropertyValue<Type>* >(&b);
             EXPECT_EQ(pa->getValue().size(), pb->getValue().size());
             
             std::size_t maxIndex = std::max(pa->getValue().size(), pb->getValue().size());
@@ -186,8 +214,9 @@ namespace {
             break;
         }
         case rw::core::PropertyType::StringList: {
-            const rw::core::Property<std::vector<std::string> >* pa = rw::core::toProperty<std::vector<std::string> >(a);
-            const rw::core::Property<std::vector<std::string> >* pb = rw::core::toProperty<std::vector<std::string> >(b);
+            typedef std::vector<std::string> Type;
+            const rw::core::PropertyValue<Type>* pa = dynamic_cast<const rw::core::PropertyValue<Type>* >(&a);
+            const rw::core::PropertyValue<Type>* pb = dynamic_cast<const rw::core::PropertyValue<Type>* >(&b);
             EXPECT_EQ(pa->getValue().size(), pb->getValue().size());
             
             std::size_t maxIndex = std::max(pa->getValue().size(), pb->getValue().size());
@@ -203,8 +232,9 @@ namespace {
             break;
         }
         case rw::core::PropertyType::IntList: {
-            const rw::core::Property<std::vector<int> >* pa = rw::core::toProperty<std::vector<int> >(a);
-            const rw::core::Property<std::vector<int> >* pb = rw::core::toProperty<std::vector<int> >(b);
+            typedef std::vector<int> Type;
+            const rw::core::PropertyValue<Type>* pa = dynamic_cast<const rw::core::PropertyValue<Type>* >(&a);
+            const rw::core::PropertyValue<Type>* pb = dynamic_cast<const rw::core::PropertyValue<Type>* >(&b);
             EXPECT_EQ(pa->getValue().size(), pb->getValue().size());
             
             std::size_t maxIndex = std::max(pa->getValue().size(), pb->getValue().size());
@@ -220,8 +250,9 @@ namespace {
             break;
         }
         case rw::core::PropertyType::DoubleList: {
-            const rw::core::Property<std::vector<double> >* pa = rw::core::toProperty<std::vector<double> >(a);
-            const rw::core::Property<std::vector<double> >* pb = rw::core::toProperty<std::vector<double> >(b);
+            typedef std::vector<double> Type;
+            const rw::core::PropertyValue<Type>* pa = dynamic_cast<const rw::core::PropertyValue<Type>* >(&a);
+            const rw::core::PropertyValue<Type>* pb = dynamic_cast<const rw::core::PropertyValue<Type>* >(&b);
             EXPECT_EQ(pa->getValue().size(), pb->getValue().size());
             
             std::size_t maxIndex = std::max(pa->getValue().size(), pb->getValue().size());
@@ -237,10 +268,18 @@ namespace {
             break;
         }
         default: {
-            FAIL() << "The property type (" << a->getType().getId() << ") has no comparison implementation!";
+            FAIL() << "The property type (" << a.getType().getId() << ") has no comparison implementation!";
             break;
         }
         }
+    }
+
+    void compareProperties(const rw::core::PropertyBase::Ptr a, const rw::core::PropertyBase::Ptr b) {
+        EXPECT_EQ(a->getIdentifier(), b->getIdentifier());
+        EXPECT_EQ(a->getDescription(), b->getDescription());
+        ASSERT_EQ(a->getType().getId(), b->getType().getId());
+
+        comparePropertyValues(a->getPropertyValue(), b->getPropertyValue());
     }
 
     void comparePropertyMaps(const rw::core::PropertyMap &a, const rw::core::PropertyMap &b) {
@@ -779,6 +818,23 @@ TEST(DOMPropertyMapSaveAndLoad, DoubleList) {
     list.push_back(0.45);
     list.push_back(3.1);
     EXPECT_TRUE(!map.add(std::string("identifier"), std::string("The description of a DoubleList"), list).isNull());
+
+    testSaverAndLoader(map);
+}
+
+TEST(DOMPropertyMapSaveAndLoad, PropertyValueBasePtrList) {
+    using namespace rw::core;
+    PropertyMap map;
+    std::vector<PropertyValueBase::Ptr> listInner;
+    listInner.push_back(ownedPtr(new PropertyValue<double>(0.3)));
+    listInner.push_back(ownedPtr(new PropertyValue<float>(0.4f)));
+    listInner.push_back(ownedPtr(new PropertyValue<std::string>("inner")));
+    std::vector<PropertyValueBase::Ptr> list;
+    list.push_back(ownedPtr(new PropertyValue<double>(0.1)));
+    list.push_back(ownedPtr(new PropertyValue<float>(0.2f)));
+    list.push_back(ownedPtr(new PropertyValue<std::string>("outer")));
+    list.push_back(ownedPtr(new PropertyValue<std::vector<PropertyValueBase::Ptr> >(listInner)));
+    EXPECT_TRUE(!map.add(std::string("identifier"), std::string("The description of a PropertyValueBasePtrList"), list).isNull());
 
     testSaverAndLoader(map);
 }

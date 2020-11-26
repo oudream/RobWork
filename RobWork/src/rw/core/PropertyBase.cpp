@@ -42,6 +42,14 @@ const std::string& PropertyBase::getDescription () const
     return _description;
 }
 
+void PropertyBase::setDescription (const std::string& desc,
+        bool fireChangedEvent)
+{
+    _description = desc;
+    if (fireChangedEvent)
+        _changedEvent.fire(this);
+}
+
 const PropertyType& PropertyBase::getType () const
 {
     return _propertyType;

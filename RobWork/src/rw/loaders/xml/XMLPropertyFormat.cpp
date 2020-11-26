@@ -40,6 +40,7 @@ XMLPropertyFormat::Initializer::Initializer ()
         idPropertyDescription ();
         idPropertyType ();
         idPropertyValue ();
+        idPropertyValueList ();
         done = true;
     }
 }
@@ -79,5 +80,11 @@ const XMLCh* XMLPropertyFormat::idPropertyType ()
 const XMLCh* XMLPropertyFormat::idPropertyValue ()
 {
     static const XMLStr id ("Value");
+    return id.uni ();
+}
+
+const XMLCh* XMLPropertyFormat::idPropertyValueList ()
+{
+    static const XMLStr id ("ValueList");
     return id.uni ();
 }

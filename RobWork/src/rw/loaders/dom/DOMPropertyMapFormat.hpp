@@ -62,6 +62,13 @@ namespace rw { namespace loaders {
         static const std::string& idPropertyValue ();
 
         /**
+         * @brief Get identifier for the value of a
+         * std::vector< PropertyValueBase::Ptr >.
+         * @return the identifier.
+         */
+        static const std::string& idPropertyValueList ();
+
+        /**
          * @brief Utility class which initializes local static variables.
          *
          * If the DOMPropertyMapFormat is used outside main (as a part of global

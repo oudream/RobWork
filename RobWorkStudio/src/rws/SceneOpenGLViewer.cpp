@@ -31,7 +31,6 @@
 #include <QCoreApplication>
 #include <QMouseEvent>
 #include <QThread>
-#include <boost/bind.hpp>
 
 using namespace rw::kinematics;
 using namespace rw::graphics;
@@ -178,49 +177,50 @@ QGLFormat makeQGLFormat (PropertyMap* map)
 
 void SceneOpenGLViewer::init ()
 {
+    using std::placeholders::_1;
     _pmap->getValue ()
         .add< bool > ("ReInitializeGL", "Reinitializes the opengl configuration.", false)
         ->changedEvent ()
-        .add (boost::bind (&SceneOpenGLViewer::propertyChangedListener, this, boost::arg< 1 > ()),
+        .add (std::bind (&SceneOpenGLViewer::propertyChangedListener, this, _1),
               this);
 
     _viewBackground = _pmap->getValue ().add< bool > ("DrawBackGround", "Draw Back Ground", true);
     _viewBackground->changedEvent ().add (
-        boost::bind (&SceneOpenGLViewer::propertyChangedListener, this, boost::arg< 1 > ()));
+        std::bind (&SceneOpenGLViewer::propertyChangedListener, this, _1));
 
     _backgroundColorTop = _pmap->getValue ().add< Vector3D<> > (
         "BackGroundColorTop", "Top background color", Vector3D<> (1.0, 1.0, 1.0));
     _backgroundColorTop->changedEvent ().add (
-        boost::bind (&SceneOpenGLViewer::propertyChangedListener, this, boost::arg< 1 > ()));
+        std::bind (&SceneOpenGLViewer::propertyChangedListener, this, _1));
     _backgroundColorBottom = _pmap->getValue ().add< Vector3D<> > (
         "BackGroundColorBottom", "Bottom background color", Vector3D<> (0.2, 0.2, 1.0));
     _backgroundColorBottom->changedEvent ().add (
-        boost::bind (&SceneOpenGLViewer::propertyChangedListener, this, boost::arg< 1 > ()));
+        std::bind (&SceneOpenGLViewer::propertyChangedListener, this, _1));
 
     _pmap->getValue ()
         .add< bool > ("ShowCollisionModels", "Show Collision Models.", false)
         ->changedEvent ()
-        .add (boost::bind (&SceneOpenGLViewer::propertyChangedListener, this, boost::arg< 1 > ()),
+        .add (std::bind (&SceneOpenGLViewer::propertyChangedListener, this, _1),
               this);
     _pmap->getValue ()
         .add< bool > ("ShowVirtualModels", "Show Virtual Models.", true)
         ->changedEvent ()
-        .add (boost::bind (&SceneOpenGLViewer::propertyChangedListener, this, boost::arg< 1 > ()),
+        .add (std::bind (&SceneOpenGLViewer::propertyChangedListener, this, _1),
               this);
     _pmap->getValue ()
         .add< bool > ("ShowPhysicalModels", "Show Physical Models.", true)
         ->changedEvent ()
-        .add (boost::bind (&SceneOpenGLViewer::propertyChangedListener, this, boost::arg< 1 > ()),
+        .add (std::bind (&SceneOpenGLViewer::propertyChangedListener, this, _1),
               this);
     _pmap->getValue ()
         .add< bool > ("ShowDrawableModels", "Show Drawable Models.", true)
         ->changedEvent ()
-        .add (boost::bind (&SceneOpenGLViewer::propertyChangedListener, this, boost::arg< 1 > ()),
+        .add (std::bind (&SceneOpenGLViewer::propertyChangedListener, this, _1),
               this);
     _pmap->getValue ()
         .add< bool > ("ShowAllModels", "Show All Models.", false)
         ->changedEvent ()
-        .add (boost::bind (&SceneOpenGLViewer::propertyChangedListener, this, boost::arg< 1 > ()),
+        .add (std::bind (&SceneOpenGLViewer::propertyChangedListener, this, _1),
               this);
 
     int dmask = 0;

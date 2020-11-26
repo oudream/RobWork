@@ -219,7 +219,7 @@ void EngineTest::TestHandle::setTimeCallback (const TimeCallback cb)
 
 void EngineTest::TestHandle::callback (const double a, const bool b, const bool c)
 {
-    if (!_cb.empty ())
+    if (_cb)
         _cb (a, b, c);
 }
 
@@ -359,14 +359,14 @@ void EngineTest::runEngineLoop (const double dt, const TestHandle::Ptr handle,
     const State state = dwc->getWorkcell ()->getDefaultState ();
 
     State runState = state;
-    if (!initialize.empty ())
+    if (initialize)
         initialize (dwc, runState);
     engine->initPhysics (runState);
 
     EngineLoopInfo info (handle, engineID, dwc, &runState, dt);
     info.time = 0;
 
-    if (!callback.empty ())
+    if (callback)
         callback (info);
 
     double time     = 0;
@@ -391,7 +391,7 @@ void EngineTest::runEngineLoop (const double dt, const TestHandle::Ptr handle,
         time = engine->getTime ();
 
         info.time = time;
-        if (!callback.empty ())
+        if (callback)
             callback (info);
         failed = !handle->success ();
 

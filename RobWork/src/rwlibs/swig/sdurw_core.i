@@ -191,6 +191,17 @@ NAMED_OWNEDPTR(LogWriter, rw::core::LogWriter);
 NAMED_OWNEDPTR(Plugin, rw::core::Plugin);
 
 %{
+    #include <rw/core/PropertyValue.hpp>
+%}
+%include <rw/core/PropertyValue.hpp>
+
+%{
+    #include <rw/core/PropertyValueBase.hpp>
+%}
+%include <rw/core/PropertyValueBase.hpp>
+NAMED_OWNEDPTR(PropertyValueBase, rw::core::PropertyValueBase);
+
+%{
     #include <rw/core/Property.hpp>
 %}
 %include <rw/core/Property.hpp>

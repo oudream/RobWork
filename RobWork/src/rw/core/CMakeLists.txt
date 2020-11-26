@@ -23,6 +23,8 @@ if(build)
         Property.cpp
         PropertyBase.cpp
         PropertyMap.cpp
+        PropertyValue.cpp
+        PropertyValueBase.cpp
         AnyPtr.cpp
         PropertyType.cpp
         Event.cpp
@@ -56,6 +58,8 @@ if(build)
         Property.hpp
         PropertyBase.hpp
         PropertyMap.hpp
+        PropertyValue.hpp
+        PropertyValueBase.hpp
         AnyPtr.hpp
         PropertyType.hpp
         Event.hpp

@@ -28,6 +28,7 @@ DOMPropertyMapFormat::Initializer::Initializer ()
         idPropertyName ();
         idPropertyDescription ();
         idPropertyValue ();
+        idPropertyValueList ();
         done = true;
     }
 }
@@ -61,5 +62,11 @@ const std::string& DOMPropertyMapFormat::idPropertyDescription ()
 const std::string& DOMPropertyMapFormat::idPropertyValue ()
 {
     static const std::string id ("Value");
+    return id;
+}
+
+const std::string& DOMPropertyMapFormat::idPropertyValueList ()
+{
+    static const std::string id ("ValueList");
     return id;
 }
