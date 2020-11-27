@@ -197,7 +197,15 @@ LuaEditorWindow::EditorTab::Ptr LuaEditorWindow::makeEditor ()
 
     const int tabStop = 4;    // 4 characters
     QFontMetrics metrics (font);
+#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
+#if QT_VERSION >= QT_VERSION_CHECK(5, 11, 0)
+    etab->_editor->setTabStopDistance (tabStop * metrics.horizontalAdvance (' '));
+#else
+    etab->_editor->setTabStopDistance (tabStop * metrics.width (' '));
+#endif
+#else
     etab->_editor->setTabStopWidth (tabStop * metrics.width (' '));
+#endif
 
     etab->_completer = new TreeModelCompleter (etab->_editor);
     etab->_completer->setSeparator (QLatin1String ("."));
