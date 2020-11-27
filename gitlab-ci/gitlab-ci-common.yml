@@ -13,6 +13,9 @@
     # Merge Pipeline for ubuntu18 problems
     - if: '$CI_MERGE_REQUEST_TITLE =~ /^.*[uU]buntu.?18/ && $CI_JOB_NAME =~ /^.*[^(pre)].ubuntu-1804/           && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "devel"'
     - if: '$CI_COMMIT_TITLE =~ /^.*[uU]buntu.?18/ && $CI_JOB_NAME =~ /^.*[^(pre)].ubuntu-1804/                  && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "devel"'
+    # Merge Pipeline for ubuntu2010 problems
+    - if: '$CI_MERGE_REQUEST_TITLE =~ /^.*[uU]buntu.?2010/ && $CI_JOB_NAME =~ /^.*[^(pre)].ubuntu-2010/         && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "devel"'
+    - if: '$CI_COMMIT_TITLE =~ /^.*[uU]buntu.?2010/ && $CI_JOB_NAME =~ /^.*[^(pre)].ubuntu-2010/                && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "devel"'
     # Merge Pipeline for windows problems
     - if: '$CI_MERGE_REQUEST_TITLE =~ /^.*[wW]indows/ && $CI_JOB_NAME =~ /^.*windows10.*/                       && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "devel"'
     - if: '$CI_COMMIT_TITLE =~ /^.*[wW]indows/ && $CI_JOB_NAME =~ /^.*windows10.*/                              && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "devel"'

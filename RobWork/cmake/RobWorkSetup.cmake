@@ -276,7 +276,10 @@ cmake_dependent_option(
 
 if(RW_USE_LUA)
 
-    find_package(Lua QUIET)
+    find_package(Lua 5.4 QUIET)
+    if(NOT LUA_FOUND)
+        find_package(Lua QUIET)
+    endif()
     if(LUA_FOUND)
         if(LUA_VERSION_MAJOR GREATER "5" OR LUA_VERSION_MINOR GREATER "0")
             message(STATUS "RobWork: lua ${LUA_VERSION_STRING} FOUND!")
