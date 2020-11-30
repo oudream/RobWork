@@ -32,6 +32,12 @@ if(build)
     include(UseJava)
     include(UseSWIG)
 
+    set(build_doc FALSE)
+    rw_subsys_option(
+        build sdurw_java_doc "build documentation for the java implementation" ${build_doc}
+        REASON "Turned off by default"
+    )
+
     add_library(${SUBSYS_NAME} INTERFACE)
 
     include_directories(${RW_ROOT}/src)
@@ -135,6 +141,7 @@ if(build)
                 CLASSPATH ${class_path_depend}
                 JAVADOC_LINK ${link_path_depend}
                 WINDOW_TITLE "RobWork Java API Documentation"
+                BUILD_DOC ${build_doc}
             )
 
             target_link_libraries(${SUBSYS_NAME} INTERFACE ${RW_MODULE}_jni)

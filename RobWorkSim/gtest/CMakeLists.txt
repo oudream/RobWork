@@ -29,7 +29,7 @@ endmacro(ADD_RWSIM_GTEST)
 # ##################################################################################################
 
 add_library(sdurwsim-gtest-main STATIC TestEnvironment.cpp test-main.cpp)
-target_link_libraries(sdurwsim-gtest-main ${GTEST_BOTH_LIBRARIES} RW::sdurw_core sdurwsim_test)
+target_link_libraries(sdurwsim-gtest-main ${RW_BUILD_WITH_LIBRARIES_GTEST} RW::sdurw sdurwsim_test)
 
 # ##################################################################################################
 # Common

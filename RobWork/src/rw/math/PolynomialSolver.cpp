@@ -29,15 +29,14 @@
 using namespace rw::math;
 
 PolynomialSolver::PolynomialSolver (const Polynomial<>& polynomial) :
-    _polynomial (polynomial.order ()), _derivative (NULL), _guess (0), _isComplex (false),
-    _iterations (10)
+    _polynomial (polynomial.order ()), _derivative (NULL), _guess (0), _iterations (10)
 {
     for (std::size_t i = 0; i <= polynomial.order (); i++)
         _polynomial[i] = polynomial[i];
 }
 
 PolynomialSolver::PolynomialSolver (const Polynomial< std::complex< double > >& polynomial) :
-    _polynomial (polynomial), _derivative (NULL), _guess (0), _isComplex (true), _iterations (10)
+    _polynomial (polynomial), _derivative (NULL), _guess (0), _iterations (10)
 {}
 
 PolynomialSolver::~PolynomialSolver ()

@@ -80,8 +80,7 @@ namespace rw { namespace trajectory {
          */
         T ddx (double t) const
         {
-            // t /= _duration;
-            return 2 * _c + 6 * _d * t;
+            return _c * 2 + _d * t * 6;
         }
 
         /**
@@ -97,15 +96,105 @@ namespace rw { namespace trajectory {
         double _duration;
     };
 
-    template<class T>
-    class CubicSplineInterpolator< rw::math::Transform3DVector<T> >
-        : public Interpolator< rw::math::Transform3DVector<T> >
+ template< class T >
+    class CubicSplineInterpolator< rw::math::Rotation3D< T > >
+        : public Interpolator< rw::math::Rotation3D< T > >
     {
       public:
-        CubicSplineInterpolator (const rw::math::Transform3DVector<T>& a,
-                                 const rw::math::Transform3DVector<T>& b,
-                                 const rw::math::Transform3DVector<T>& c,
-                                 const rw::math::Transform3DVector<T>& d, double duration) :
+        CubicSplineInterpolator (const rw::math::Rotation3D< T >& a,
+                                 const rw::math::Rotation3D< T >& b,
+                                 const rw::math::Rotation3D< T >& c,
+                                 const rw::math::Rotation3D< T >& d, double duration);
+
+        virtual ~CubicSplineInterpolator () {}
+
+        /**
+         * @copydoc Interpolator::x
+         *
+         * @note The cubic polynomial is given by a 3-degree polynomial:
+         * \f$ \bf{f}(t)= \bf{a} + \bf{b}\cdot t + \bf{c}\cdot t^2 \bf{d}\cdot t^3 \f$
+         */
+        rw::math::Rotation3D< T > x (double t) const;
+
+        /**
+         * @copydoc Interpolator::dx
+         *
+         * @note The derivative is a 2-degree polynomial:
+         * \f$ \bf{df}(t)= \bf{b} + 2\cdot \bf{c}\cdot t + 3\cdot \bf{d}\cdot t^2 \f$
+         */
+        rw::math::Rotation3D< T > dx (double t) const;
+
+        /**
+         * @copydoc Interpolator::ddx
+         *
+         * @note The second derivative is a 1-degree polynomial:
+         * \f$ \bf{df}(t)= 2\cdot \bf{c} + 6\cdot \bf{d}\cdot t \f$
+         */
+        rw::math::Rotation3D< T > ddx (double t) const;
+
+        /**
+         * @copydoc Interpolator::duration
+         */
+        double duration () const { return _duration; }
+
+      private:
+        double _duration;
+    };
+
+ template< class T >
+    class CubicSplineInterpolator< rw::math::Transform3D< T > >
+        : public Interpolator< rw::math::Transform3D< T > >
+    {
+      public:
+        CubicSplineInterpolator (const rw::math::Transform3D< T >& a,
+                                 const rw::math::Transform3D< T >& b,
+                                 const rw::math::Transform3D< T >& c,
+                                 const rw::math::Transform3D< T >& d, double duration);
+
+        virtual ~CubicSplineInterpolator () {}
+
+        /**
+         * @copydoc Interpolator::x
+         *
+         * @note The cubic polynomial is given by a 3-degree polynomial:
+         * \f$ \bf{f}(t)= \bf{a} + \bf{b}\cdot t + \bf{c}\cdot t^2 \bf{d}\cdot t^3 \f$
+         */
+        rw::math::Transform3D< T > x (double t) const;
+
+        /**
+         * @copydoc Interpolator::dx
+         *
+         * @note The derivative is a 2-degree polynomial:
+         * \f$ \bf{df}(t)= \bf{b} + 2\cdot \bf{c}\cdot t + 3\cdot \bf{d}\cdot t^2 \f$
+         */
+        rw::math::Transform3D< T > dx (double t) const;
+
+        /**
+         * @copydoc Interpolator::ddx
+         *
+         * @note The second derivative is a 1-degree polynomial:
+         * \f$ \bf{df}(t)= 2\cdot \bf{c} + 6\cdot \bf{d}\cdot t \f$
+         */
+        rw::math::Transform3D< T > ddx (double t) const;
+
+        /**
+         * @copydoc Interpolator::duration
+         */
+        double duration () const { return _duration; }
+
+      private:
+        double _duration;
+    };
+
+    template< class T >
+    class CubicSplineInterpolator< rw::math::Transform3DVector< T > >
+        : public Interpolator< rw::math::Transform3DVector< T > >
+    {
+      public:
+        CubicSplineInterpolator (const rw::math::Transform3DVector< T >& a,
+                                 const rw::math::Transform3DVector< T >& b,
+                                 const rw::math::Transform3DVector< T >& c,
+                                 const rw::math::Transform3DVector< T >& d, double duration) :
             _quatInt (a.toQuaternion (), b.toQuaternion (), c.toQuaternion (), d.toQuaternion (),
                       duration),
             _vecInt (a.toVector3D (), b.toVector3D (), c.toVector3D (), d.toVector3D (), duration),
@@ -123,9 +212,9 @@ namespace rw { namespace trajectory {
          * @note The cubic polynomial is given by a 3-degree polynomial:
          * \f$ \bf{f}(t)= \bf{a} + \bf{b}\cdot t + \bf{c}\cdot t^2 \bf{d}\cdot t^3 \f$
          */
-        rw::math::Transform3DVector<T> x (double t) const
+        rw::math::Transform3DVector< T > x (double t) const
         {
-            return rw::math::Transform3DVector<T> (_vecInt.x (t), _quatInt.x (t));
+            return rw::math::Transform3DVector< T > (_vecInt.x (t), _quatInt.x (t));
         }
 
         /**
@@ -134,9 +223,9 @@ namespace rw { namespace trajectory {
          * @note The derivative is a 2-degree polynomial:
          * \f$ \bf{df}(t)= \bf{b} + 2\cdot \bf{c}\cdot t + 3\cdot \bf{d}\cdot t^2 \f$
          */
-        rw::math::Transform3DVector<T> dx (double t) const
+        rw::math::Transform3DVector< T > dx (double t) const
         {
-            return rw::math::Transform3DVector<T> (_vecInt.dx (t), _quatInt.dx (t));
+            return rw::math::Transform3DVector< T > (_vecInt.dx (t), _quatInt.dx (t));
         }
 
         /**
@@ -145,9 +234,9 @@ namespace rw { namespace trajectory {
          * @note The second derivative is a 1-degree polynomial:
          * \f$ \bf{df}(t)= 2\cdot \bf{c} + 6\cdot \bf{d}\cdot t \f$
          */
-        rw::math::Transform3DVector<T> ddx (double t) const
+        rw::math::Transform3DVector< T > ddx (double t) const
         {
-            return rw::math::Transform3DVector<T> (_vecInt.ddx (t), _quatInt.ddx (t));
+            return rw::math::Transform3DVector< T > (_vecInt.ddx (t), _quatInt.ddx (t));
         }
 
         /**
@@ -156,8 +245,8 @@ namespace rw { namespace trajectory {
         double duration () const { return _duration; }
 
       private:
-        CubicSplineInterpolator< rw::math::Quaternion<T> > _quatInt;
-        CubicSplineInterpolator< rw::math::Vector3D<T> > _vecInt;
+        CubicSplineInterpolator< rw::math::Quaternion< T > > _quatInt;
+        CubicSplineInterpolator< rw::math::Vector3D< T > > _vecInt;
         double _duration;
     };
 

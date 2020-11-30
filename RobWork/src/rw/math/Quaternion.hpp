@@ -200,6 +200,7 @@ namespace rw { namespace math {
 #else
         ARRAYOPERATOR (T);
 #endif
+#if !defined(SWIGJAVA)
 
         /**
          * @brief Calculates the @f$ 3\times 3 @f$ Rotation matrix
@@ -217,6 +218,7 @@ namespace rw { namespace math {
          * @f$
          *
          */
+#endif
         inline const rw::math::Rotation3D< T > toRotation3D () const
         {
             const T qx = _q.x ();
@@ -520,20 +522,20 @@ namespace rw { namespace math {
          * @brief copyfrom rotaion matrix, same as setRotation.
          * @param rhs [in] the rotation that will be copyed
          */
-        Quaternion< T >& operator= (const rw::math::Rotation3D<>& rhs){
-            this->setRotation(rhs);
+        Quaternion< T >& operator= (const rw::math::Rotation3D<>& rhs)
+        {
+            this->setRotation (rhs);
             return (*this);
         }
 
-            // ###################################################
-            // #              Comparison Operators               #
-            // ###################################################
+        // ###################################################
+        // #              Comparison Operators               #
+        // ###################################################
 
-            /**
-             * @brief Comparison (equals) operator
-             */
-            inline bool
-            operator== (const Quaternion< T >& r) const
+        /**
+         * @brief Comparison (equals) operator
+         */
+        inline bool operator== (const Quaternion< T >& r) const
         {
             return (*this) (0) == r (0) && (*this) (1) == r (1) && (*this) (2) == r (2) &&
                    (*this) (3) == r (3);

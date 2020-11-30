@@ -85,8 +85,9 @@ add_library(QCodeEditor STATIC
     ${INCLUDE_FILES}
 )
 
-target_include_directories(QCodeEditor PUBLIC
-    include
+target_include_directories(QCodeEditor PRIVATE include
+    INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
 )
 
 if(CMAKE_COMPILER_IS_GNUCXX)
@@ -107,4 +108,12 @@ target_link_libraries(QCodeEditor
     Qt5::Core
     Qt5::Widgets
     Qt5::Gui
+)
+
+install(
+    TARGETS QCodeEditor
+    EXPORT ${PROJECT_PREFIX}Targets
+    RUNTIME DESTINATION ${BIN_INSTALL_DIR} COMPONENT ${_component}
+    LIBRARY DESTINATION "${LIB_INSTALL_DIR}" COMPONENT ${_component}
+    ARCHIVE DESTINATION "${LIB_INSTALL_DIR}" COMPONENT ${_component}
 )

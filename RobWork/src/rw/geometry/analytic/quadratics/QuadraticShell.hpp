@@ -25,6 +25,7 @@
  */
 
 #include <rw/geometry/OBB.hpp>
+#include <rw/core/os.hpp>
 #include <rw/geometry/analytic/Shell.hpp>
 #include <rw/math/Vector3D.hpp>
 
@@ -83,6 +84,11 @@ namespace rw { namespace geometry {
         void setMeshResolution (double resolution) { _resolution = resolution; }
 
       private:
+#if defined(RW_MACOS)
+        // This line is here to tell the compiler that it is a intentional override further up
+        using rw::geometry::Shell::getFace;
+#endif
+
         virtual rw::core::Ptr< const Face > doGetFace (std::size_t idx) const;
 
       protected:

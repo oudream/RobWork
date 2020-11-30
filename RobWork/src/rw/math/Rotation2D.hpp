@@ -36,7 +36,7 @@ namespace rw { namespace math {
 
     /** @addtogroup math */
     /* @{*/
-
+#if !defined(SWIGJAVA)
     /**
      * @brief A 2x2 rotation matrix \f$ \mathbf{R}\in SO(2) \f$
      *
@@ -56,6 +56,7 @@ namespace rw { namespace math {
      *  \right]
      * @f$
      */
+    #endif 
     template< class T = double > class Rotation2D
     {
       public:

@@ -202,22 +202,6 @@ namespace rw { namespace trajectory {
                            const rw::math::Q& dqEnd);
 
         /**
-         * @brief creates a clamped spline trajectory where the timed label is used
-         * to determine the time between samples. A clamped spline controls
-         * the velocity in the end points. The acceleration is 0 in the end points.
-         * @param qpath [in] the path over which the spline should be generated.
-         * @param times [in] the times associated to the configurations in \b qpath.
-         * @param dqStart [in] the velocity in the first point
-         * @param dqEnd [in] the velocity in the last point.
-         * @return a trajectory of CubicSplineInterpolators
-         * @note the following template parameters are currently supported:
-         * Transform3DVector, Vector3D, Quaternion
-         */
-        static InterpolatorTrajectory< rw::math::Q >::Ptr
-        makeClampedSpline (const QPath& qpath, const std::vector< double >& times,
-                           const rw::math::Q& dqStart, const rw::math::Q& dqEnd);
-
-        /**
          * @brief creates a clamped spline trajectory with equally spaced
          * via points. That is time between samples is 1. A clamped spline controls
          * the velocity in the end points. The acceleration is 0 in the end points.

@@ -140,6 +140,11 @@ namespace rw { namespace geometry {
             //! @brief Smart pointer type for Object3DGeneric.
             typedef rw::core::Ptr< Object3DGeneric > Ptr;
 
+            /**
+             * @brief destructor
+             */
+            virtual ~Object3DGeneric() {}
+
             //! @brief test if the object is textured
             bool hasTexture () const { return _hasTexture; }
 
@@ -271,6 +276,12 @@ namespace rw { namespace geometry {
              * @param name [in] name of object
              */
             Object3D (const std::string& name) : Object3DGeneric (name) {}
+
+            /**
+             * @brief destructor
+             */
+            virtual ~Object3D() {}
+
 
             //! @copydoc Object3DGeneric::countFaces
             virtual std::size_t countFaces () const { return _faces.size (); }
