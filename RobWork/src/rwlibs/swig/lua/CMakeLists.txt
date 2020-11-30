@@ -88,6 +88,10 @@ if(build)
                         RUNTIME_OUTPUT_DIRECTORY "${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua"
                         LIBRARY_OUTPUT_DIRECTORY "${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua"
                 )
+            else()
+            set_target_properties(
+                ${TARGET_NAME} PROPERTIES LINK_FLAGS_RELEASE /OPT:REF WINDOWS_EXPORT_ALL_SYMBOLS TRUE
+            )
             endif()
             set(lua_targets ${lua_targets} ${TARGET_NAME})
 

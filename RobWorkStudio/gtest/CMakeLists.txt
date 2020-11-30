@@ -25,7 +25,7 @@ ENDMACRO(ADD_RWS_GTEST)
 # Configuration files for the testfiles path.
 ########################################################################
 
-SET(ROBWORK_TESTFILES_DIR ${CMAKE_CURRENT_SOURCE_DIR}/testfiles)
+SET(ROBWORKSTUDIO_TESTFILES_DIR ${CMAKE_CURRENT_SOURCE_DIR}/testfiles)
 
 CONFIGURE_FILE(
   ${CMAKE_CURRENT_SOURCE_DIR}/TestSuiteConfig.xml.in

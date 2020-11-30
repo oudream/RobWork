@@ -5,9 +5,13 @@
 # Directories containing the QHULL include files. QHULL_LIBRARIES - Libraries needed to use QHULL.
 # QHULL_DEFINITIONS - Compiler flags for QHULL. If QHULL_USE_STATIC is specified then look for
 # static libraries ONLY else look for shared ones
-
-# we are not ready for qhull config approach 
-find_package(Qhull QUIET NO_MODULE)
+ 
+if(WIN32)
+    find_package(Qhull QUIET NO_MODULE)
+else()
+    # we are not ready for qhull config approach find_package(Qhull QUIET NO_MODULE)
+    set(Qhull_FOUND FALSE)
+endif()
 
 if(NOT ${Qhull_FOUND})
 
@@ -62,6 +66,7 @@ if(NOT ${Qhull_FOUND})
 
     if(QHULL_FOUND)
         message(STATUS "QHULL ${QHULL_LIBRARY}")
+        message(STATUS "QHULL ${QHULL_INCLUDE_DIR}")
         message(STATUS "QHULL found")
 
         add_library(RW::qhull UNKNOWN IMPORTED)

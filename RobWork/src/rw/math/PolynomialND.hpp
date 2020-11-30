@@ -91,18 +91,6 @@ namespace rw { namespace math {
         /**
          * @brief Increase the order of this polynomial.
          * @param increase [in] how much to increase the order (default is 1).
-         * @see increaseOrder(std::size_t,const Coef&) for a version that initializes the new
-         * coefficients to a certain value.
-         */
-        void increaseOrder (std::size_t increase = 1)
-        {
-            const std::size_t size = _coef.size ();
-            _coef.resize (size + increase);
-        }
-
-        /**
-         * @brief Increase the order of this polynomial.
-         * @param increase [in] how much to increase the order (default is 1).
          * @param value [in] initialize new coefficients to this value.
          */
         void increaseOrder (std::size_t increase, const Coef& value)
@@ -112,6 +100,20 @@ namespace rw { namespace math {
             for (std::size_t i = size; i < size + increase; i++) {
                 _coef[i] = value;
             }
+        }
+#if !defined(SWIGJAVE)
+
+        /**
+         * @brief Increase the order of this polynomial.
+         * @param increase [in] how much to increase the order (default is 1).
+         * @see increaseOrder(std::size_t,const Coef&) for a version that initializes the new
+         * coefficients to a certain value.
+         */
+#endif
+        void increaseOrder (std::size_t increase = 1)
+        {
+            const std::size_t size = _coef.size ();
+            _coef.resize (size + increase);
         }
 
         /**
@@ -519,7 +521,6 @@ namespace rw { namespace math {
         /**
          * @brief Assignment.
          * @param b [in] the polynomial to take coefficients from.
-         * @return true if equal, false if not.
          */
         void operator= (const PolynomialND< Coef, Scalar >& b)
         {

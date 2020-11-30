@@ -61,7 +61,7 @@ template< class T > Quaternion< T > Quaternion< T >::pow (double power) const
 {
     Quaternion< T > ret = *this;
     for (int i = 0; i < 4; i++) {
-        std::pow (ret[i], power);
+        ret[i] = std::pow (ret[i], power);
     }
     return ret;
 }

@@ -204,120 +204,6 @@ CubicSplineFactory::makeClampedSpline (TimedQPath::Ptr tqpath, const rw::math::Q
     return makeClampedSpline (path, times, dqStart, dqEnd);
 }
 
-InterpolatorTrajectory< rw::math::Q >::Ptr
-CubicSplineFactory::makeClampedSpline (const QPath& qpath, const std::vector< double >& times,
-                                       const rw::math::Q& dqStart, const rw::math::Q& dqEnd)
-{
-    typedef float T;
-
-    typedef Eigen::Matrix< T, Eigen::Dynamic, 1 > Vector;
-    // typedef Eigen::Matrix<T, Eigen::Dynamic, 1, 1> Matrix;
-
-    if (qpath.size () < 2)
-        RW_THROW ("Path must be longer than 1!");
-
-    if (qpath.size () != times.size ())
-        RW_THROW ("Length of path and times need to match");
-
-    size_t dim = (qpath)[0].size ();    // the number of dimensions of the points
-    size_t N   = qpath.size () - 1;     // we have N+1 points, which yields N splines
-
-    Vector B (N + 1);    // make room for boundary conditions
-    Vector Y (N + 1);    // the points that the spline should intersect
-    Vector a (dim * (N + 1)), b (dim * N), c (dim * N), d (dim * N);
-    Vector H (N);    // duration from point i to i+1
-
-    for (size_t i = 0; i < N; i++) {
-        H[i] = (float) (times[i + 1] - times[i]);
-    }
-
-#if EIGEN_VERSION_AT_LEAST(3, 1, 0)
-    Eigen::SparseMatrix< T > A ((int) N + 1, (int) N + 1);
-
-    // D[0] = 2*H[0];
-    A.insert (0, 0) = 2 * H[0];
-    A.insert (0, 1) = H[0];
-    A.insert (1, 0) = H[0];
-    for (size_t i = 1; i < N; i++) {
-        // D[i] = 2*(H[i-1]+H[i]);
-        int ei                = (int) i;
-        A.insert (ei, ei)     = 2 * (H[i - 1] + H[i]);
-        A.insert (ei + 1, ei) = H[i];
-        A.insert (ei, ei + 1) = H[i];
-    }
-    // D[N] = 2*H[N-1];
-    A.insert ((int) N, (int) N) = 2 * H[N - 1];
-
-    Eigen::SimplicialLLT< Eigen::SparseMatrix< T > > solver;
-    solver.compute (A);
-#else
-    Eigen::Matrix< T, Eigen::Dynamic, Eigen::Dynamic > A =
-        Eigen::Matrix< T, Eigen::Dynamic, Eigen::Dynamic >::Zero ((int) N + 1, (int) N + 1);
-
-    // D[0] = 2*H[0];
-    A (0, 0) = 2 * H[0];
-    A (0, 1) = H[0];
-    A (1, 0) = H[0];
-    for (size_t i = 1; i < N; i++) {
-        // D[i] = 2*(H[i-1]+H[i]);
-        int ei         = (int) i;
-        A (ei, ei)     = 2 * (H[i - 1] + H[i]);
-        A (ei + 1, ei) = H[i];
-        A (ei, ei + 1) = H[i];
-    }
-    // D[N] = 2*H[N-1];
-    A ((int) N, (int) N) = 2 * H[N - 1];
-
-    Eigen::LLT< Eigen::Matrix< T, Eigen::Dynamic, Eigen::Dynamic > > solver;
-    solver.compute (A);
-
-#endif
-
-    for (size_t j = 0; j < (size_t) dim; j++) {
-        for (size_t i = 0; i < (size_t) N + 1; i++) {
-            Y[i] = (T) (qpath[i])[j];
-        }
-
-        B[0] = (T) (3.0 * (Y[1] - Y[0]) / H[0] - 3 * dqStart[j]);
-        for (size_t i = 1; i < (std::size_t) B.size () - 1; i++) {
-            B[i] = (T) (3.0 * ((Y[i + 1] - Y[i]) / H[i] - (Y[i] - Y[i - 1]) / H[i - 1]));
-        }
-        B[N] = (T) (3.0 * dqEnd[j] - 3.0 * (Y[N] - Y[N - 1]) / H[N - 1]);
-
-        B = solver.solve (B);
-        // solution will be available in B
-        // if( !LinearAlgebra::triDiagonalSolve<T>(DTmp, ETmp, B) )
-        //    RW_THROW("Errorsolving tridiagonal system!");
-
-        for (size_t i = 0; i < N + 1; i++) {
-            a[i * dim + j] = Y[i];
-        }
-
-        for (size_t i = 0; i < (size_t) N; i++) {
-            c[j + i * dim] = B[i];
-            b[j + i * dim] = (T) ((Y[i + 1] - Y[i]) / H[i] - H[i] * (B[i + 1] + 2 * B[i]) / 3.0);
-            d[j + i * dim] = (T) ((B[i + 1] - B[i]) / (3.0 * H[i]));    //   +B[i]+B[i+1];
-        }
-    }
-
-    // ************** now create the actual trajectory from the calcualted parameters
-    InterpolatorTrajectory< Q >::Ptr traj = ownedPtr (new InterpolatorTrajectory< Q > (times[0]));
-
-    Q ba (dim), bb (dim), bc (dim), bd (dim);
-    for (size_t i = 0; i < N; i++) {
-        for (size_t j = 0; j < dim; j++) {
-            ba[j] = a[j + i * dim];
-            bb[j] = b[j + i * dim];
-            bc[j] = c[j + i * dim];
-            bd[j] = d[j + i * dim];
-        }
-        Interpolator< Q >* iptr = new CubicSplineInterpolator< Q > (ba, bb, bc, bd, H[i]);
-        traj->add (ownedPtr (iptr));
-    }
-
-    return traj;
-}
-
 // ###########################################################################
 // #                             Template Functions                          #
 // ###########################################################################
@@ -570,27 +456,27 @@ typename InterpolatorTrajectory< T >::Ptr
 CubicSplineFactory::makeClampedSpline (const Path< T >& path, const std::vector< double >& times,
                                        const T& dStart, const T& dEnd)
 {
-    typedef Eigen::Matrix< double, Eigen::Dynamic, 1 > Vector;
-    // typedef Eigen::Matrix<T, Eigen::Dynamic, 1, 1> Matrix;
-
     if (path.size () < 2)
         RW_THROW ("Path must be longer than 1!");
 
     if (path.size () != times.size ())
         RW_THROW ("Length of path and times need to match");
 
-    size_t dim = (path)[0].size ();    // the number of dimensions of the points
-    size_t N   = path.size () - 1;     // we have N+1 points, which yields N splines
+    size_t dim = path[0].size ();     // the number of dimensions of the points
+    size_t N   = path.size () - 1;    // we have N+1 points, which yields N splines
+    Eigen::VectorXd B (N + 1);        // make room for boundary conditions
 
-    Vector B (N + 1);    // make room for boundary conditions
-    Vector Y (N + 1);    // the points that the spline should intersect
-    Vector a (dim * (N + 1)), b (dim * N), c (dim * N), d (dim * N);
-    Vector H (N);    // duration from point i to i+1
+    Eigen::VectorXd Y (N + 1);    // the points that the spline should intersect
+
+    Eigen::VectorXd a (dim * (N + 1));
+    Eigen::VectorXd b (dim * N);
+    Eigen::VectorXd c (dim * N);
+    Eigen::VectorXd d (dim * N);
+    Eigen::VectorXd H (N);    // duration from point i to i+1
 
     for (size_t i = 0; i < N; i++) {
         H[i] = (float) (times[i + 1] - times[i]);
     }
-
 #if EIGEN_VERSION_AT_LEAST(3, 1, 0)
     Eigen::SparseMatrix< double > A ((int) N + 1, (int) N + 1);
 
@@ -607,6 +493,7 @@ CubicSplineFactory::makeClampedSpline (const Path< T >& path, const std::vector<
 
     Eigen::SimplicialLLT< Eigen::SparseMatrix< double > > solver;
     solver.compute (A);
+
 #else
     Eigen::Matrix< double, Eigen::Dynamic, Eigen::Dynamic > A =
         Eigen::Matrix< double, Eigen::Dynamic, Eigen::Dynamic >::Zero ((int) N + 1, (int) N + 1);
@@ -656,8 +543,9 @@ CubicSplineFactory::makeClampedSpline (const Path< T >& path, const std::vector<
     typename InterpolatorTrajectory< T >::Ptr traj =
         ownedPtr (new InterpolatorTrajectory< T > (times[0]));
 
-    T ba, bb, bc, bd;
+    T ba=path[0], bb=path[0], bc=path[0], bd=path[0];
     for (size_t i = 0; i < N; i++) {
+
         for (size_t j = 0; j < dim; j++) {
             ba[j] = a[j + i * dim];
             bb[j] = b[j + i * dim];

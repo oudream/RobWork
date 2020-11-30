@@ -107,6 +107,7 @@ namespace rw { namespace math {
          * @param guess [in] a complex initial guess for the algorithm.
          */
         void setInitialGuess (std::complex< double > guess = 0);
+#if !defined(SWIGJAVA)
 
         /**
          * @brief Get all real solutions of the equation.
@@ -117,7 +118,10 @@ namespace rw { namespace math {
          * iterations has been reached.
          * @see PolynomialSolver for more details about the method used.
          */
+#endif
         std::vector< double > getRealSolutions (double epsilon = 1.0e-14);
+
+#if !defined(SWIGJAVA)
 
         /**
          * @brief Get all solutions of the equation including complex solutions.
@@ -128,6 +132,7 @@ namespace rw { namespace math {
          * iterations has been reached.
          * @see PolynomialSolver for more details about the method used.
          */
+#endif
         virtual std::vector< std::complex< double > > getSolutions (double epsilon = 1.0e-14);
 
         /**
@@ -143,7 +148,6 @@ namespace rw { namespace math {
         Polynomial< std::complex< double > > _polynomial;
         PolynomialSolver* _derivative;
         std::complex< double > _guess;
-        bool _isComplex;
         unsigned int _iterations;
     };
     //! @}

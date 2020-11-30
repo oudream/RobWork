@@ -134,11 +134,8 @@ macro(RW_GET_REVISION DIR PREFIX)
                     )
                     # with output:\n${Subversion_svn_info_error}
                 else()
-                    string(
-                        REGEX
-                        REPLACE
-                            "^(.*\n)?Revision: ([^\n]+).*" "\\2" ${PREFIX}_WC_REVISION
-                            "${${PREFIX}_WC_INFO}"
+                    string(REGEX REPLACE "^(.*\n)?Revision: ([^\n]+).*" "\\2" ${PREFIX}_WC_REVISION
+                                         "${${PREFIX}_WC_INFO}"
                     )
                 endif()
 
@@ -217,11 +214,13 @@ macro(RW_INIT_PROJECT ROOT PROJECT_NAME PREFIX VERSION)
 
     # Specify wether to default compile in Release, Debug, MinSizeRel, RelWithDebInfo mode
     if(NOT CMAKE_BUILD_TYPE)
-        set(CMAKE_BUILD_TYPE None CACHE STRING "Choose the type of build,
+        set(CMAKE_BUILD_TYPE
+            None
+            CACHE STRING "Choose the type of build,
       options are: None(CMAKE_CXX_FLAGS or CMAKE_C_FLAGS used) Debug Release
-      RelWithDebInfo MinSizeRel.")
-        set(
-            ${PREFIX}_BUILD_TYPE
+      RelWithDebInfo MinSizeRel."
+        )
+        set(${PREFIX}_BUILD_TYPE
             "None"
             CACHE STRING "Build type: Release, Debug, RelWithDebInfo, MinSizeRel." FORCE
         )
@@ -229,32 +228,27 @@ macro(RW_INIT_PROJECT ROOT PROJECT_NAME PREFIX VERSION)
         # we need to force the right configuration
         string(TOLOWER ${CMAKE_BUILD_TYPE} TMP_BUILD_TYPE)
         if(${TMP_BUILD_TYPE} STREQUAL "release")
-            set(
-                ${PREFIX}_BUILD_TYPE
+            set(${PREFIX}_BUILD_TYPE
                 "Release"
                 CACHE STRING "Build type: Release, Debug, RelWithDebInfo, MinSizeRel." FORCE
             )
         elseif(${TMP_BUILD_TYPE} STREQUAL "debug")
-            set(
-                ${PREFIX}_BUILD_TYPE
+            set(${PREFIX}_BUILD_TYPE
                 "Debug"
                 CACHE STRING "Build type: Release, Debug, RelWithDebInfo, MinSizeRel." FORCE
             )
         elseif(${TMP_BUILD_TYPE} STREQUAL "relwithdebinfo")
-            set(
-                ${PREFIX}_BUILD_TYPE
+            set(${PREFIX}_BUILD_TYPE
                 "RelWithDebInfo"
                 CACHE STRING "Build type: Release, Debug, RelWithDebInfo, MinSizeRel." FORCE
             )
         elseif(${TMP_BUILD_TYPE} STREQUAL "minsizerel")
-            set(
-                ${PREFIX}_BUILD_TYPE
+            set(${PREFIX}_BUILD_TYPE
                 "MinSizeRel"
                 CACHE STRING "Build type: Release, Debug, RelWithDebInfo, MinSizeRel." FORCE
             )
         elseif(${TMP_BUILD_TYPE} STREQUAL "none")
-            set(
-                ${PREFIX}_BUILD_TYPE
+            set(${PREFIX}_BUILD_TYPE
                 "None"
                 CACHE STRING "Build type: Release, Debug, RelWithDebInfo, MinSizeRel." FORCE
             )
@@ -330,7 +324,10 @@ macro(RW_INIT_PROJECT ROOT PROJECT_NAME PREFIX VERSION)
         set(PROJECT_USE_SONAME False)
     endif()
 
-    set(${PROJECT_NAME_UP}_VERSION ${VERSION} CACHE STRING "Project Version Nr" FORCE)
+    set(${PROJECT_NAME_UP}_VERSION
+        ${VERSION}
+        CACHE STRING "Project Version Nr" FORCE
+    )
     string(REGEX MATCHALL "[0-9]+" ${PROJECT_NAME_UP}_VERSIONS ${VERSION})
     list(GET ${PROJECT_NAME_UP}_VERSIONS 0 ${PROJECT_NAME_UP}_VERSION_MAJOR)
     list(GET ${PROJECT_NAME_UP}_VERSIONS 1 ${PROJECT_NAME_UP}_VERSION_MINOR)
@@ -341,8 +338,14 @@ macro(RW_INIT_PROJECT ROOT PROJECT_NAME PREFIX VERSION)
     set(PROJECT_VERSION_PATCH ${${PROJECT_NAME_UP}_VERSION_PATCH})
     message(STATUS "${PROJECT_NAME}: Version ${${PROJECT_NAME_UP}_VERSION}")
 
-    set(PROJECT_PREFIX ${PREFIX} CACHE INTERNAL "Current project PREFIX" FORCE)
-    set(${PROJECT_PREFIX}_SUBSYSTEMS "" CACHE INTERNAL "Internal list of subsystems" FORCE)
+    set(PROJECT_PREFIX
+        ${PREFIX}
+        CACHE INTERNAL "Current project PREFIX" FORCE
+    )
+    set(${PROJECT_PREFIX}_SUBSYSTEMS
+        ""
+        CACHE INTERNAL "Internal list of subsystems" FORCE
+    )
     # setup install directories
 endmacro()
 
@@ -366,8 +369,7 @@ macro(RW_SET_INSTALL_DIRS PROJECT_NAME PREFIX)
     if(NOT DEFINED LIB_INSTALL_DIR)
         set(LIB_INSTALL_DIR "lib")
     endif()
-    set(
-        INCLUDE_INSTALL_ROOT
+    set(INCLUDE_INSTALL_ROOT
         "include/${PROJECT_NAME_LOWER}-${${PROJECT_NAME_UPPER}_VERSION_MAJOR}.${${PROJECT_NAME_UPPER}_VERSION_MINOR}"
     )
     set(INCLUDE_INSTALL_DIR "${INCLUDE_INSTALL_ROOT}")
@@ -391,8 +393,7 @@ macro(RW_SET_INSTALL_DIRS PROJECT_NAME PREFIX)
     set(JAVA_INSTALL_DIR "${LIB_INSTALL_DIR}/RobWork/Java")
 
     execute_process(
-        COMMAND
-            python3 -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())"
+        COMMAND python3 -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())"
         OUTPUT_VARIABLE PYTHON_INSTALL_DIR
         OUTPUT_STRIP_TRAILING_WHITESPACE
     )
@@ -401,31 +402,26 @@ macro(RW_SET_INSTALL_DIRS PROJECT_NAME PREFIX)
     endif()
 
     if(WIN32)
-        set(
-            ${PREFIX}_INSTALL_DIR
+        set(${PREFIX}_INSTALL_DIR
             "${PROJECT_NAME_LOWER}-${${PROJECT_NAME_UPPER}_VERSION_MAJOR}.${${PROJECT_NAME_UPPER}_VERSION_MINOR}"
         )
-        set(
-            CONFIG_INSTALL_DIR
+        set(CONFIG_INSTALL_DIR
             "${PROJECT_NAME_LOWER}-${${PROJECT_NAME_UPPER}_VERSION_MAJOR}.${${PROJECT_NAME_UPPER}_VERSION_MINOR}/cmake"
         )
     else()
-        set(
-            ${PREFIX}_INSTALL_DIR
+        set(${PREFIX}_INSTALL_DIR
             "share/${PROJECT_NAME_LOWER}-${${PROJECT_NAME_UPPER}_VERSION_MAJOR}.${${PROJECT_NAME_UPPER}_VERSION_MINOR}"
         )
-        set(
-            CONFIG_INSTALL_DIR
+        set(CONFIG_INSTALL_DIR
             "share/${PROJECT_NAME_LOWER}-${${PROJECT_NAME_UPPER}_VERSION_MAJOR}.${${PROJECT_NAME_UPPER}_VERSION_MINOR}"
         )
     endif()
 endmacro()
 
 macro(RW_IS_RELEASE IS_RELEASE)
-    if(
-        ${RW_BUILD_TYPE} STREQUAL "release"
-        OR ${RW_BUILD_TYPE} STREQUAL "relwithdebinfo"
-        OR ${RW_BUILD_TYPE} STREQUAL "minsizerel"
+    if(${RW_BUILD_TYPE} STREQUAL "release"
+       OR ${RW_BUILD_TYPE} STREQUAL "relwithdebinfo"
+       OR ${RW_BUILD_TYPE} STREQUAL "minsizerel"
     )
         set(${IS_RELEASE} TRUE)
     else()
@@ -456,7 +452,11 @@ endmacro()
 # Add a set of include files to install. _component The part of RW that the install files belong to.
 # _subdir The sub- directory for these include files. ARGN The include files.
 macro(RW_ADD_INCLUDES _component _subdir)
-    install(FILES ${ARGN} DESTINATION ${INCLUDE_INSTALL_DIR}/${_subdir} COMPONENT ${_component})
+    install(
+        FILES ${ARGN}
+        DESTINATION ${INCLUDE_INSTALL_DIR}/${_subdir}
+        COMPONENT ${_component}
+    )
 endmacro()
 
 # ##################################################################################################
@@ -503,8 +503,7 @@ macro(RW_ADD_LIBRARY _name)
     # Only link if needed
     if(WIN32 AND MSVC)
         set_target_properties(
-            ${_name}
-            PROPERTIES LINK_FLAGS_RELEASE /OPT:REF WINDOWS_EXPORT_ALL_SYMBOLS TRUE
+            ${_name} PROPERTIES LINK_FLAGS_RELEASE /OPT:REF WINDOWS_EXPORT_ALL_SYMBOLS TRUE
         )
     elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
         # set_target_properties(${_name} PROPERTIES LINK_FLAGS -Wl)
@@ -516,10 +515,8 @@ macro(RW_ADD_LIBRARY _name)
     #
     if(${PROJECT_USE_SONAME} AND ${LIB_TYPE} STREQUAL "SHARED")
         set_target_properties(
-            ${_name}
-            PROPERTIES
-                VERSION ${PROJECT_VERSION} SOVERSION
-                ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
+            ${_name} PROPERTIES VERSION ${PROJECT_VERSION} SOVERSION
+                                ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
         )
     endif()
 
@@ -543,41 +540,46 @@ endmacro()
 # to. ARGN The source files for the library.
 macro(RW_ADD_PLUGIN _name _lib_type)
     add_library(${_name} ${_lib_type} ${ARGN})
-    
+
     # Only link if needed
     if(WIN32 AND MSVC)
 
-    if(${_lib_type} STREQUAL "MODULE")
-        set_target_properties(
-            ${_name}
-            PROPERTIES
-                LINK_FLAGS_RELEASE /OPT:REF
-                ARCHIVE_OUTPUT_DIRECTORY "${${PROJECT_PREFIX}_CMAKE_RUNTIME_OUTPUT_DIRECTORY}/.."
-                RUNTIME_OUTPUT_DIRECTORY "${${PROJECT_PREFIX}_CMAKE_RUNTIME_OUTPUT_DIRECTORY}/.."
-                LIBRARY_OUTPUT_DIRECTORY "${${PROJECT_PREFIX}_CMAKE_RUNTIME_OUTPUT_DIRECTORY}/.."
-        )
-    else()
-        set_target_properties(${_name} PROPERTIES LINK_FLAGS_RELEASE /OPT:REF)
-    endif()
+        if(${_lib_type} STREQUAL "MODULE")
+            set_target_properties(
+                ${_name}
+                PROPERTIES
+                    LINK_FLAGS_RELEASE /OPT:REF
+                    ARCHIVE_OUTPUT_DIRECTORY
+                        "${${PROJECT_PREFIX}_CMAKE_RUNTIME_OUTPUT_DIRECTORY}/.."
+                    RUNTIME_OUTPUT_DIRECTORY
+                        "${${PROJECT_PREFIX}_CMAKE_RUNTIME_OUTPUT_DIRECTORY}/.."
+                    LIBRARY_OUTPUT_DIRECTORY
+                        "${${PROJECT_PREFIX}_CMAKE_RUNTIME_OUTPUT_DIRECTORY}/.."
+            )
+        else()
+            set_target_properties(${_name} PROPERTIES LINK_FLAGS_RELEASE /OPT:REF)
+        endif()
 
     elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-    # set_target_properties(${_name} PROPERTIES LINK_FLAGS -Wl)
+        # set_target_properties(${_name} PROPERTIES LINK_FLAGS -Wl)
     elseif(__COMPILER_PATHSCALE)
-    set_target_properties(${_name} PROPERTIES LINK_FLAGS -mp)
+        set_target_properties(${_name} PROPERTIES LINK_FLAGS -mp)
     else()
-    set_target_properties(${_name} PROPERTIES LINK_FLAGS -Wl,--as-needed,--no-undefined)
+        set_target_properties(${_name} PROPERTIES LINK_FLAGS -Wl,--as-needed,--no-undefined)
     endif()
     #
     if(${PROJECT_USE_SONAME})
         set_target_properties(
-            ${_name}
-            PROPERTIES
-                VERSION ${PROJECT_VERSION} SOVERSION
-                ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
+            ${_name} PROPERTIES VERSION ${PROJECT_VERSION} SOVERSION
+                                ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
         )
     endif()
 
-    install(TARGETS ${_name} DESTINATION ${RW_PLUGIN_INSTALL_DIR} COMPONENT rwplugin)
+    install(
+        TARGETS ${_name}
+        DESTINATION ${RW_PLUGIN_INSTALL_DIR}
+        COMPONENT rwplugin
+    )
 
 endmacro()
 
@@ -619,8 +621,7 @@ macro(RW_ADD_SWIG _name _language _type)
     set_source_files_properties(${RW_MODULE_FILENAME} PROPERTIES CPLUSPLUS ON)
     if(${_language} STREQUAL java AND NOT ${SWIG_VERSION} VERSION_LESS 4.0.0)
         set_source_files_properties(
-            ${RW_MODULE_FILENAME}
-            PROPERTIES SWIG_FLAGS "-includeall;-doxygen"
+            ${RW_MODULE_FILENAME} PROPERTIES SWIG_FLAGS "-includeall;-doxygen"
         )
     else()
         set_source_files_properties(${RW_MODULE_FILENAME} PROPERTIES SWIG_FLAGS "-includeall")
@@ -651,7 +652,8 @@ macro(RW_ADD_SWIG _name _language _type)
 
         if(${_type} STREQUAL "STATIC")
             add_library(${SLIB_TARGET_NAME} STATIC ${SLIB_SOURCES} ${swig_generated_sources}
-                                                   ${swig_other_sources})
+                                                   ${swig_other_sources}
+            )
         else()
             swig_add_module(${SLIB_TARGET_NAME} ${_language} ${RW_MODULE_FILENAME} ${SLIB_SOURCES})
         endif()
@@ -706,9 +708,9 @@ endmacro()
 macro(RW_ADD_JAVA_LIB _name)
     # ###### Handle Options #####
     set(options) # Used to marke flags
-    set(oneValueArgs LOADER_SOURCE_FILE LOADER_DST_FILE LOADER_PKG WINDOW_TITLE) # used to marke
-                                                                                 # values with a
-                                                                                 # single value
+    set(oneValueArgs LOADER_SOURCE_FILE LOADER_DST_FILE LOADER_PKG WINDOW_TITLE BUILD_DOC) # used to
+                                                                                           # marke
+    # values with a single value
     set(multiValueArgs CLASSPATH JAVADOC_LINK EXTRA_COPY)
     cmake_parse_arguments(JLIB "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
 
@@ -735,76 +737,63 @@ macro(RW_ADD_JAVA_LIB _name)
         set(DOC_LINK ${DOC_LINK} "-link" ${lib})
     endforeach()
 
-    add_custom_command(
-        TARGET ${java_NAME_${_name}} POST_BUILD
+    add_custom_target(
+        ${java_NAME_${_name}}_libs
+        COMMAND ${CMAKE_COMMAND} -E echo "Starting Java Compile for ${_name} ..."
         COMMAND ${CMAKE_COMMAND} -E echo "Removing old Java compilation..."
-        COMMAND
-            ${CMAKE_COMMAND} -E remove_directory "${CMAKE_CURRENT_BINARY_DIR}/java_build_${_name}"
-        COMMAND
-            ${CMAKE_COMMAND} -E remove_directory
-            "${${PROJECT_PREFIX}_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/javadoc/${_name}"
+        COMMAND ${CMAKE_COMMAND} -E remove_directory
+                "${CMAKE_CURRENT_BINARY_DIR}/java_build_${_name}"
+        COMMAND ${CMAKE_COMMAND} -E remove_directory
+                "${${PROJECT_PREFIX}_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/javadoc/${_name}"
         COMMAND ${CMAKE_COMMAND} -E echo "Copying Java source..."
-        COMMAND
-            ${CMAKE_COMMAND}
-            -E
-            copy_if_different
-            ${JLIB_LOADER_SOURCE_FILE}
-            ${JLIB_LOADER_DST_FILE}
-            ${JLIB_EXTRA_COPY}
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different ${JLIB_LOADER_SOURCE_FILE}
+                ${JLIB_LOADER_DST_FILE} ${JLIB_EXTRA_COPY}
         COMMAND ${CMAKE_COMMAND} -E echo "Compiling Java files..."
         COMMAND ${CMAKE_COMMAND} -E make_directory java_build_${_name}/org/robwork/${_name}
         COMMAND ${CMAKE_COMMAND} -E echo "Compiling Java files for ${_name} ..."
         COMMAND
-            ${Java_JAVAC_EXECUTABLE}
-            ${CLASSPATH}
-            ${JLIB_CLASSPATH}
-            -d
-            ${CMAKE_CURRENT_BINARY_DIR}/java_build_${_name}
-            java_src_${_name}/org/robwork/*.java
+            ${Java_JAVAC_EXECUTABLE} ${CLASSPATH} ${JLIB_CLASSPATH} -d
+            ${CMAKE_CURRENT_BINARY_DIR}/java_build_${_name} java_src_${_name}/org/robwork/*.java
             java_src_${_name}/org/robwork/${_name}/*.java
         COMMAND ${CMAKE_COMMAND} -E echo "Creating jar file..."
         COMMAND
-            ${Java_JAR_EXECUTABLE}
-            cvf
-            ${${PROJECT_PREFIX}_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${_name}_java.jar
-            -C
-            java_build_${_name}
-            .
+            ${Java_JAR_EXECUTABLE} cvf
+            ${${PROJECT_PREFIX}_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${_name}_java.jar -C
+            java_build_${_name} .
         COMMAND ${CMAKE_COMMAND} -E echo "Creating jar file of source..."
         COMMAND
-            ${Java_JAR_EXECUTABLE}
-            cvf
-            ${${PROJECT_PREFIX}_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${_name}_java-source.jar
-            -C
-            java_src_${_name}
-            .
-        COMMAND ${CMAKE_COMMAND} -E echo "Creating Javadoc..."
-        COMMAND
-            ${CMAKE_COMMAND} -E make_directory
-            ${${PROJECT_PREFIX}_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/javadoc/${_name}
-        COMMAND
-            ${Java_JAVADOC_EXECUTABLE}
-            ${CLASSPATH}
-            ${JLIB_CLASSPATH}
-            -d
-            ${${PROJECT_PREFIX}_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/javadoc/${_name}
-            -windowtitle
-            ${JLIB_WINDOW_TITLE}
-            -public
-            -sourcepath
-            java_src_${_name}
-            ${JLIB_LOADER_PKG}
-            org.robwork.${_name}
-            ${DOC_LINK}
+            ${Java_JAR_EXECUTABLE} cvf
+            ${${PROJECT_PREFIX}_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${_name}_java-source.jar -C
+            java_src_${_name} .
+        DEPENDS ${_name}_jni
         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
     )
+
+    if(JLIB_BUILD_DOC)
+        add_custom_target(
+            ${java_NAME_${_name}}_java_doc
+            COMMAND ${CMAKE_COMMAND} -E echo "Creating Javadoc..."
+            COMMAND ${CMAKE_COMMAND} -E make_directory
+                    ${${PROJECT_PREFIX}_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/javadoc/${_name}
+            COMMAND
+                ${Java_JAVADOC_EXECUTABLE} ${CLASSPATH} ${JLIB_CLASSPATH} -d
+                ${${PROJECT_PREFIX}_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/javadoc/${_name} -windowtitle
+                ${JLIB_WINDOW_TITLE} -public -sourcepath java_src_${_name} ${JLIB_LOADER_PKG}
+                org.robwork.${_name} ${DOC_LINK}
+            DEPENDS ${_name}_java_libs
+            WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+        )
+    endif()
 
 endmacro()
 
 # ##################################################################################################
 # Set a value in a global, cached map. _map The map name. _key The key name. _value The value.
 macro(SET_IN_GLOBAL_MAP _map _key _value)
-    set("${_map}_${_key}" "${_value}" CACHE INTERNAL "Map value" FORCE)
+    set("${_map}_${_key}"
+        "${_value}"
+        CACHE INTERNAL "Map value" FORCE
+    )
 endmacro()
 
 # ##################################################################################################
@@ -848,7 +837,10 @@ endmacro()
 macro(RW_ADD_SUBSYSTEM _name _desc)
     set(_temp ${${PROJECT_PREFIX}_SUBSYSTEMS})
     list(APPEND _temp ${_name})
-    set(${PROJECT_PREFIX}_SUBSYSTEMS ${_temp} CACHE INTERNAL "Internal list of subsystems" FORCE)
+    set(${PROJECT_PREFIX}_SUBSYSTEMS
+        ${_temp}
+        CACHE INTERNAL "Internal list of subsystems" FORCE
+    )
     set_in_global_map(RW_SUBSYS_DESC ${_name} ${_desc})
     set_in_global_map(RW_SUBSYS_PREFIX ${_name} ${PROJECT_PREFIX})
 endmacro()
@@ -948,7 +940,10 @@ macro(RW_DISABLE_DEPENDIES _subsys)
     if(NOT ("${${RW_SUBSYS_DEPENDIES}}" STREQUAL ""))
         foreach(dep ${${RW_SUBSYS_DEPENDIES}})
             rw_set_subsys_hyperstatus(${_subsys} ${dep} AUTO_OFF "Automatically disabled.")
-            set(BUILD_${dep} OFF CACHE BOOL "Automatically disabled ${dep}" FORCE)
+            set(BUILD_${dep}
+                OFF
+                CACHE BOOL "Automatically disabled ${dep}" FORCE
+            )
         endforeach(dep)
     endif(NOT ("${${RW_SUBSYS_DEPENDIES}}" STREQUAL ""))
 endmacro()
@@ -963,7 +958,10 @@ macro(RW_ENABLE_DEPENDIES _subsys)
             if("${dependee_status}" STREQUAL "AUTO_OFF")
                 rw_set_subsys_hyperstatus(${_subsys} ${dep} AUTO_ON)
                 get_in_map(desc RW_SUBSYS_DESC ${dep})
-                set(BUILD_${dep} ON CACHE BOOL "${desc}" FORCE)
+                set(BUILD_${dep}
+                    ON
+                    CACHE BOOL "${desc}" FORCE
+                )
             endif("${dependee_status}" STREQUAL "AUTO_OFF")
         endforeach(dep)
     endif(NOT ("${${RW_SUBSYS_DEPENDIES}}" STREQUAL ""))
@@ -1035,16 +1033,13 @@ macro(RW_ADD_DOC _subsys)
         endif(DOXYGEN_DOT_EXECUTABLE)
         if(NOT "${dependencies}" STREQUAL "")
             set(STRIPPED_HEADERS "${RW_SOURCE_DIR}/${dependencies}/include")
-            string(
-                REPLACE
-                    ";" "/include \\\n\t\t\t\t\t\t\t\t\t\t\t\t ${RW_SOURCE_DIR}/" STRIPPED_HEADERS
-                    "${STRIPPED_HEADERS}"
+            string(REPLACE ";" "/include \\\n\t\t\t\t\t\t\t\t\t\t\t\t ${RW_SOURCE_DIR}/"
+                           STRIPPED_HEADERS "${STRIPPED_HEADERS}"
             )
         endif(NOT "${dependencies}" STREQUAL "")
         set(DOC_SOURCE_DIR "\"${CMAKE_CURRENT_SOURCE_DIR}\"\\")
         foreach(dep ${dependencies})
-            set(
-                DOC_SOURCE_DIR
+            set(DOC_SOURCE_DIR
                 "${DOC_SOURCE_DIR}\n\t\t\t\t\t\t\t\t\t\t\t\t \"${RW_SOURCE_DIR}/${dep}\"\\"
             )
         endforeach(dep)
@@ -1063,8 +1058,7 @@ macro(RW_INCLUDE_EIGEN _name)
 
     if(RW_ENABLE_INTERNAL_EIGEN_TARGET)
         target_include_directories(
-            ${_name}
-            INTERFACE $<INSTALL_INTERFACE:${RW_EXT_INSTALL_DIR}/eigen3>
+            ${_name} INTERFACE $<INSTALL_INTERFACE:${RW_EXT_INSTALL_DIR}/eigen3>
         )
     else()
         target_include_directories(${_name} INTERFACE $<INSTALL_INTERFACE:${EIGEN3_INCLUDE_DIR}>)
@@ -1080,8 +1074,7 @@ macro(RW_CREATE_INSTALLER)
         # Description and names ########
         set(CPACK_PACKAGE_NAME "${PROJECT_NAME}")
         set(CPACK_PACKAGE_VENDOR "University of Southern Denmark")
-        set(
-            CPACK_PACKAGE_DESCRIPTION_SUMMARY
+        set(CPACK_PACKAGE_DESCRIPTION_SUMMARY
             "RobWork is a collection of C++ libraries for simulation and control of robot systems. RobWork is used for research and education as well as for practical robot applications."
         )
         set(CPACK_PACKAGE_HOMEPAGE_URL "robwork.dk")
@@ -1095,12 +1088,10 @@ macro(RW_CREATE_INSTALLER)
         set(CPACK_NSIS_PACKAGE_NAME "${PROJECT_NAME}")
         set(CPACK_NSIS_HELP_LINK ${CPACK_PACKAGE_HOMEPAGE_URL})
         set(CPACK_NSIS_URL_INFO_ABOUT ${CPACK_PACKAGE_HOMEPAGE_URL})
-        set(
-            CPACK_NSIS_MUI_ICON
+        set(CPACK_NSIS_MUI_ICON
             "${${PROJECT_PREFIX}_ROOT}${SLASH}..${SLASH}RobWork${SLASH}cmake${SLASH}images${SLASH}rw_logo_48x48.ico"
         )
-        set(
-            CPACK_NSIS_MUI_UNWELCOMEFINISHPAGE_BITMAP
+        set(CPACK_NSIS_MUI_UNWELCOMEFINISHPAGE_BITMAP
             "${${PROJECT_PREFIX}_ROOT}${SLASH}..${SLASH}RobWork${SLASH}cmake${SLASH}images${SLASH}rw_logo_128x64.bmp"
         )
         set(CPACK_NSIS_MUI_WELCOMEFINISHPAGE_BITMAP ${CPACK_NSIS_MUI_UNWELCOMEFINISHPAGE_BITMAP})
@@ -1111,23 +1102,19 @@ macro(RW_CREATE_INSTALLER)
 
         # add to path option #####
         set(CPACK_NSIS_MODIFY_PATH ON) # Add the binary folder to PATH
-        set(
-            CPACK_NSIS_EXTRA_INSTALL_COMMANDS # let cmake find robwork
+        set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS # let cmake find robwork
             "WriteRegStr HKCU \\\"Software${SLASH}Kitware${SLASH}CMake${SLASH}Packages${SLASH}${PROJECT_NAME}\\\" \\\"Location\\\" \\\"$INSTDIR\\\""
             "WriteRegStr HKLM \\\"Software${SLASH}Kitware${SLASH}CMake${SLASH}Packages${SLASH}${PROJECT_NAME}\\\" \\\"Location\\\" \\\"$INSTDIR\\\""
         )
-        set(
-            CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS # clean up when uninstalling robwork
+        set(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS # clean up when uninstalling robwork
             "DeleteRegKey HKCU \\\"Software${SLASH}Kitware${SLASH}CMake${SLASH}Packages${SLASH}${PROJECT_NAME}\\\""
             "DeleteRegKey HKLM \\\"Software${SLASH}Kitware${SLASH}CMake${SLASH}Packages${SLASH}${PROJECT_NAME}\\\""
         )
-        string(
-            REPLACE
-                ";" "\n" CPACK_NSIS_EXTRA_INSTALL_COMMANDS "${CPACK_NSIS_EXTRA_INSTALL_COMMANDS}"
+        string(REPLACE ";" "\n" CPACK_NSIS_EXTRA_INSTALL_COMMANDS
+                       "${CPACK_NSIS_EXTRA_INSTALL_COMMANDS}"
         )
-        string(
-            REPLACE
-                ";" "\n" CPACK_NSIS_EXTRA_UNSTALL_COMMANDS "${CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS}"
+        string(REPLACE ";" "\n" CPACK_NSIS_EXTRA_UNSTALL_COMMANDS
+                       "${CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS}"
         )
 
         # set version #####
@@ -1150,47 +1137,42 @@ macro(RW_CREATE_INSTALLER)
         # Setup Install Groupes ####
         cpack_add_component_group(
             RW
-            DISPLAY_NAME
-            "RobWork"
-            DESCRIPTION
-            "Tools for controlling robots"
-            EXPANDED
-            BOLD_TITLE
+            DISPLAY_NAME "RobWork"
+            DESCRIPTION "Tools for controlling robots"
+            EXPANDED BOLD_TITLE
         )
         cpack_add_component_group(
             RWS
-            DISPLAY_NAME
-            "RobWorkStudio"
-            DESCRIPTION
-            "Tools for Visulizing robot control"
-            EXPANDED
-            BOLD_TITLE
+            DISPLAY_NAME "RobWorkStudio"
+            DESCRIPTION "Tools for Visulizing robot control"
+            EXPANDED BOLD_TITLE
         )
         cpack_add_component_group(
             RWHW
-            DISPLAY_NAME
-            "RobWorkHardware"
-            DESCRIPTION
-            "Tools for Visulizing robot control"
-            EXPANDED
-            BOLD_TITLE
+            DISPLAY_NAME "RobWorkHardware"
+            DESCRIPTION "Tools for Visulizing robot control"
+            EXPANDED BOLD_TITLE
         )
         cpack_add_component_group(
             RWSIM
-            DISPLAY_NAME
-            "RobWorkSim"
-            DESCRIPTION
-            "Tools for simulating robots"
-            EXPANDED
-            BOLD_TITLE
+            DISPLAY_NAME "RobWorkSim"
+            DESCRIPTION "Tools for simulating robots"
+            EXPANDED BOLD_TITLE
         )
-        cpack_add_component_group(MISC DISPLAY_NAME "Miscellaneous" DESCRIPTION
-                                  "Theses are Other Packages")
-        cpack_add_component_group(DEP DISPLAY_NAME "Dependencies" DESCRIPTION
-                                  "Theses are external dependencies for the RobWork packages")
         cpack_add_component_group(
-            DEVEL DISPLAY_NAME "Development Files" DESCRIPTION
-            "Theses are packages needed when you want to use robwork for development"
+            MISC
+            DISPLAY_NAME "Miscellaneous"
+            DESCRIPTION "Theses are Other Packages"
+        )
+        cpack_add_component_group(
+            DEP
+            DISPLAY_NAME "Dependencies"
+            DESCRIPTION "Theses are external dependencies for the RobWork packages"
+        )
+        cpack_add_component_group(
+            DEVEL
+            DISPLAY_NAME "Development Files"
+            DESCRIPTION "Theses are packages needed when you want to use robwork for development"
         )
 
         # Setup Install Types ####
@@ -1203,8 +1185,7 @@ macro(RW_CREATE_INSTALLER)
 
         # Setup Install Components
         set(SPECIAL_COMPONENTS rwplugin cmake example swig rwtest)
-        set(
-            EXTERNAL_COMPONENTS
+        set(EXTERNAL_COMPONENTS
             yaobi
             pqp
             eigen
@@ -1231,19 +1212,12 @@ macro(RW_CREATE_INSTALLER)
                 list(FILTER _depList EXCLUDE REGEX "RW.*::")
                 cpack_add_component(
                     ${_comp}
-                    DISPLAY_NAME
-                    "${_dispName}"
-                    DESCRIPTION
-                    "${RW_SUBSYS_DESC_${_comp}}"
-                    GROUP
-                    "${RW_SUBSYS_PREFIX_${_comp}}"
-                    DEPENDS
-                    "${_depList}"
-                    INSTALL_TYPES
-                    ${RW_SUBSYS_PREFIX_${_comp}}_i
-                    Full
-                    Dev
-                    # DOWNLOADED ARCHIVE_FILE #Name_of_file_to_generate_for_download
+                    DISPLAY_NAME "${_dispName}"
+                    DESCRIPTION "${RW_SUBSYS_DESC_${_comp}}"
+                    GROUP "${RW_SUBSYS_PREFIX_${_comp}}"
+                    DEPENDS "${_depList}"
+                    INSTALL_TYPES ${RW_SUBSYS_PREFIX_${_comp}}_i Full Dev
+                                  # DOWNLOADED ARCHIVE_FILE #Name_of_file_to_generate_for_download
                 )
                 # message( STATUS "component: ${CPACK_COMPONENT_${_COMP}_DISPLAY_NAME} - group:
                 # ${CPACK_COMPONENT_${_COMP}_GROUP}" ) message(STATUS "     - depend: ${_depList}")
@@ -1252,30 +1226,21 @@ macro(RW_CREATE_INSTALLER)
             elseif(${_comp} IN_LIST EXTERNAL_COMPONENTS)
                 cpack_add_component(
                     ${_comp}
-                    DISPLAY_NAME
-                    "${_dispName}"
-                    DESCRIPTION
-                    "RobWorkDependencie"
-                    GROUP
-                    DEP
-                    INSTALL_TYPES
-                    Full
-                    Dev
-                    # DOWNLOADED ARCHIVE_FILE #Name_of_file_to_generate_for_download
+                    DISPLAY_NAME "${_dispName}"
+                    DESCRIPTION "RobWorkDependencie"
+                    GROUP DEP
+                    INSTALL_TYPES Full Dev
+                                  # DOWNLOADED ARCHIVE_FILE #Name_of_file_to_generate_for_download
                 )
                 # message( STATUS "component: ${CPACK_COMPONENT_${_COMP}_DISPLAY_NAME} - group:
                 # ${CPACK_COMPONENT_${_COMP}_GROUP}" )
             else()
                 cpack_add_component(
                     ${_comp}
-                    DISPLAY_NAME
-                    "${_dispName}"
-                    GROUP
-                    MISC
-                    INSTALL_TYPES
-                    Full
-                    Dev
-                    # DOWNLOADED ARCHIVE_FILE #Name_of_file_to_generate_for_download
+                    DISPLAY_NAME "${_dispName}"
+                    GROUP MISC
+                    INSTALL_TYPES Full Dev
+                                  # DOWNLOADED ARCHIVE_FILE #Name_of_file_to_generate_for_download
                 )
                 # message( STATUS "component: ${CPACK_COMPONENT_${_COMP}_DISPLAY_NAME} - group:
                 # ${CPACK_COMPONENT_${_COMP}_GROUP}" )

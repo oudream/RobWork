@@ -39,6 +39,11 @@ namespace rw { namespace trajectory {
         typedef rw::core::Ptr< TrajectoryIterator< T > > Ptr;
 
         /**
+         * @brief destructor
+         */
+        virtual ~TrajectoryIterator() {}
+
+        /**
          * @brief Returns the current position (time) of the iterator
          * @return The current time.
          */

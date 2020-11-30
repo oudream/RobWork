@@ -19,3 +19,5 @@ include:
   - '/gitlab-ci/platforms/ubuntu1604.yml'
   - '/gitlab-ci/platforms/centos7.yml'
   - '/gitlab-ci/gitlab-ci-doc.yml'
+  - '/gitlab-ci/platforms/windows10-vs16.yml'
+  - '/gitlab-ci/platforms/mac-highsierra.yml'
