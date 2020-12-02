@@ -19,23 +19,30 @@
 
 #include <rw/core/StringUtil.hpp>
 
+#include <regex>
+
 using namespace rw::core;
 using namespace rw::proximity;
 
 namespace {
-boost::regex convertToBoostRegEx (const std::string& ex)
+std::regex convertToRegEx (const std::string& ex)
 {
     if (ex.size () > 5 && ex.substr (0, 5) == "REGEX") {
-        return boost::regex (ex.substr (5, ex.size () - 5));
+        return std::regex (ex.substr (5, ex.size () - 5));
     }
     else {
-        return boost::regex (StringUtil::patternToRegEx (ex));
+        return std::regex (StringUtil::patternToRegEx (ex));
     }
 }
 }    // namespace
 
+ProximitySetupRule::ProximitySetupRule():
+    _type(ProximitySetupRule::EXCLUDE_RULE)
+{
+}
+
 ProximitySetupRule::ProximitySetupRule (const std::string& patternA, const std::string& patternB,
                                         RuleType type) :
     _patterns (patternA, patternB),
-    _regex1 (convertToBoostRegEx (patternA)), _regex2 (convertToBoostRegEx (patternB)), _type (type)
+    _regex1 (convertToRegEx (patternA)), _regex2 (convertToRegEx (patternB)), _type (type)
 {}

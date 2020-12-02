@@ -69,7 +69,6 @@ RobWork has several dependencies, which can be installed with:
     sudo apt-get install libboost-dev \
                          libboost-filesystem-dev \
                          libboost-program-options-dev \
-                         libboost-regex-dev \
                          libboost-serialization-dev \
                          libboost-thread-dev \
                          libeigen3-dev \

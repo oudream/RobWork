@@ -18,7 +18,7 @@
 #ifndef RW_COLLISION_PROXIMITYFILTERRULE_HPP
 #define RW_COLLISION_PROXIMITYFILTERRULE_HPP
 
-#include <boost/regex.hpp>
+#include <regex>
 
 namespace rw { namespace proximity {
 
@@ -39,8 +39,10 @@ namespace rw { namespace proximity {
         /** @brief Include and Exclude identifiers */
         enum RuleType { INCLUDE_RULE = 1, EXCLUDE_RULE };
 
-        //! @brief Constuct empty rule
-        ProximitySetupRule (){};
+        /**
+         * @brief Constructs empty exclude rule (only for SWIG internal use).
+         */
+        ProximitySetupRule ();
 
         /**
          * @brief Constructs rule with patternA and patternB and type
@@ -90,7 +92,7 @@ namespace rw { namespace proximity {
          */
         bool matchOne (const std::string& name) const
         {
-            if (boost::regex_match (name, _regex1) || boost::regex_match (name, _regex2)) {
+            if (std::regex_match (name, _regex1) || std::regex_match (name, _regex2)) {
                 return true;
             }
             return false;
@@ -101,7 +103,7 @@ namespace rw { namespace proximity {
          */
         bool matchPatternA (const std::string& str) const
         {
-            return boost::regex_match (str, _regex1);
+            return std::regex_match (str, _regex1);
         }
 
         /**
@@ -109,7 +111,7 @@ namespace rw { namespace proximity {
          */
         bool matchPatternB (const std::string& str) const
         {
-            return boost::regex_match (str, _regex2);
+            return std::regex_match (str, _regex2);
         }
 
         /**
@@ -171,8 +173,8 @@ namespace rw { namespace proximity {
 
       private:
         std::pair< std::string, std::string > _patterns;
-        boost::regex _regex1;
-        boost::regex _regex2;
+        std::regex _regex1;
+        std::regex _regex2;
         RuleType _type;
     };
 
