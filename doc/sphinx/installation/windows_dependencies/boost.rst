@@ -97,7 +97,7 @@ something similar from a command prompt (only for expert users!):
     cd boost
     git checkout boost-1.72.0
     bootstrap.bat
-    b2 --prefix=C:\Local\boost -j4 --with-filesystem --with-system --with-program_options --with-regex --with-serialization --with-thread --with-date_time --with-chrono --with-test --prefix=.\ address-model=64 link=shared install
+    b2 --prefix=C:\Local\boost -j4 --with-filesystem --with-system --with-program_options --with-serialization --with-thread --with-date_time --with-chrono --prefix=.\ address-model=64 link=shared install
 
 Here -j gives the number of threads to use for compilation. --prefix 
 gives the install location, and is set to C:\Local\boost as this is a 

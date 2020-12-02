@@ -63,7 +63,7 @@ if(${RW_BUILD_TYPE} STREQUAL "release")
     set(Boost_USE_RELEASE_LIBS ON) # only find release libs
 endif()
 
-find_package(Boost REQUIRED COMPONENTS filesystem regex serialization system thread program_options)
+find_package(Boost REQUIRED COMPONENTS filesystem serialization system thread program_options)
 set(Boost_LIBRARIES_TMP ${Boost_LIBRARIES})
 set(Boost_LIBRARIES ${Boost_LIBRARIES_TMP} ${Boost_LIBRARIES})
 

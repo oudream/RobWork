@@ -18,7 +18,7 @@
 #include "INIArchive.hpp"
 
 #include <boost/filesystem.hpp>
-#include <boost/regex.hpp>
+#include <regex>
 using namespace rw::common;
 
 void INIArchive::close ()
@@ -195,11 +195,11 @@ bool INIArchive::getLine ()
         if (_ifs->eof ())
             break;
         // test if line has valid input
-        static const boost::regex comment ("^[ ]*;[.]*$");
-        static const boost::regex empty ("^[\\h]*$");
-        if (boost::regex_match (_line, comment))
+        static const std::regex comment ("^[ ]*;[.]*$");
+        static const std::regex empty ("^[\\h]*$");
+        if (std::regex_match (_line, comment))
             continue;
-        if (boost::regex_match (_line, empty))
+        if (std::regex_match (_line, empty))
             continue;
         valid = true;
     }

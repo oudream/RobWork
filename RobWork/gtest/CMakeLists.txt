@@ -342,6 +342,7 @@ if(TARGET sdurw_proximitystrategies)
         proximity/DistanceTest.cpp
         proximity/collisionStrategy.cpp
         proximity/distanceStrategy.cpp
+        proximity/ProximitySetupRuleTest.cpp
     )
     add_executable(sdurw_proximity-gtest ${PROXIMITY_TEST_SRC})
     target_link_libraries(sdurw_proximity-gtest ${PROXIMITY_TEST_LIBRARIES})

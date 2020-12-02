@@ -25,8 +25,6 @@
 #include <rw/proximity/DistanceMultiStrategy.hpp>
 #include <rw/proximity/DistanceStrategy.hpp>
 #include <rw/proximity/ProximityCalculator.hpp>
-#include <rw/proximity/ProximitySetup.hpp>
-#include <rw/proximity/ProximitySetupRule.hpp>
 #include <rw/proximity/ProximityStrategyData.hpp>
 #include <rwlibs/proximitystrategies/ProximityStrategyFactory.hpp>
 
