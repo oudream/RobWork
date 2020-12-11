@@ -30,6 +30,7 @@
 #include <rws/propertyview/PropertyViewDialog.hpp>
 
 #include <QAction>
+#include <QActionGroup>
 #include <QFileDialog>
 #include <QMainWindow>
 #include <QMenu>
@@ -417,8 +418,8 @@ void RWStudioView3D::mouseDoubleClickEvent (QMouseEvent* event)
 {
     if (event->button () == Qt::LeftButton && event->modifiers () == Qt::ControlModifier) {
         Log::debugLog () << "Mouse double click with control modifier..." << std::endl;
-        int winx = event->x ();
-        int winy = height () - event->y ();
+        int winx = event->pos().x();
+        int winy = height () - event->pos().y();
         // we pick the scene before
         Frame* frame = pickFrame (winx, winy);
         if (frame != NULL) {

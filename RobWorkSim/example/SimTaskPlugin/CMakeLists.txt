@@ -51,9 +51,15 @@ set(UIS_FILES SimTaskPlugin.ui)
 # to be able to include the generated ui header files
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
-qt5_wrap_ui(UIS_OUT_H ${UIS_FILES})
-qt5_wrap_cpp(MocSrcFiles SimTaskPlugin.hpp)
-qt5_add_resources(RccSrcFiles resources.qrc)
+if(DEFINED Qt6Core_VERSION)
+    qt_wrap_ui(UIS_OUT_H ${UIS_FILES})
+    qt_wrap_cpp(MocSrcFiles SimTaskPlugin.hpp)
+    qt_add_resources(RccSrcFiles resources.qrc)
+else()
+    qt5_wrap_ui(UIS_OUT_H ${UIS_FILES})
+    qt5_wrap_cpp(MocSrcFiles SimTaskPlugin.hpp)
+    qt5_add_resources(RccSrcFiles resources.qrc)
+endif()
 
 set(SrcFiles SimTaskPlugin.cpp ${UIS_OUT_H})
 set_source_files_properties(${SrcFiles} PROPERTIES OBJECT_DEPENDS "${UIS_OUT_H}")

@@ -5,9 +5,15 @@ set(UIS_FILES BootstrapPlugin.ui )
 include_directories(${CMAKE_CURRENT_BINARY_DIR}) 
 link_directories( ${ROBWORKSTUDIO_LIBRARY_DIRS} )
 
-qt5_wrap_ui(UIS_OUT_H ${UIS_FILES})
-qt5_wrap_cpp(MocSrcFiles BootstrapPlugin.hpp)
-qt5_add_resources(RccSrcFiles resources.qrc)
+if(DEFINED Qt6Core_VERSION)
+    qt_wrap_ui(UIS_OUT_H ${UIS_FILES})
+    qt_wrap_cpp(MocSrcFiles BootstrapPlugin.hpp)
+    qt_add_resources(RccSrcFiles resources.qrc)
+else()
+    qt5_wrap_ui(UIS_OUT_H ${UIS_FILES})
+    qt5_wrap_cpp(MocSrcFiles BootstrapPlugin.hpp)
+    qt5_add_resources(RccSrcFiles resources.qrc)
+endif()
 
 set(SrcFiles BootstrapPlugin.cpp ${UIS_OUT_H})
 

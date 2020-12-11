@@ -626,11 +626,9 @@ void RobWorkStudio::setupPlugin (const QString& fullname, bool visible, int dock
         Qt::DockWidgetArea dockarea = (Qt::DockWidgetArea) dock;
         QPluginLoader loader (fullname);
 
-#if QT_VERSION >= 0x040400
         // Needed to make dynamicly loaded libraries use dynamic
         // cast on each others objects. ONLY on linux though.
         loader.setLoadHints (QLibrary::ResolveAllSymbolsHint | QLibrary::ExportExternalSymbolsHint);
-#endif
 
         QObject* pluginObject = loader.instance ();
         if (pluginObject != NULL) {

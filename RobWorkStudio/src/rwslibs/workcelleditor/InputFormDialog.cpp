@@ -34,6 +34,7 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QMap>
+#include <QMetaType>
 #include <QPushButton>
 #include <QRadioButton>
 #include <QSpinBox>
@@ -83,7 +84,7 @@ bool getInput (const QString& title, FormData& data, const FormOptions& options)
     dialog->setWindowTitle (title);
 
     auto layout = new QGridLayout (dialog);
-    layout->setMargin (2);
+    layout->setContentsMargins(2, 2, 2, 2);
     layout->setSpacing (4);
 
     QMap< QString, QWidget* > widgetMap;
@@ -93,22 +94,26 @@ bool getInput (const QString& title, FormData& data, const FormOptions& options)
         auto label = new QLabel (pair.first + ":");
         layout->addWidget (label, row, 0);
 
-        switch (pair.second.type ()) {
-            case QVariant::Bool: {
+#if QT_VERSION >= 0x060000
+        switch (pair.second.typeId ()) {
+#else
+        switch (pair.second.userType ()) {
+#endif
+            case QMetaType::Bool: {
                 auto widget = new QCheckBox ();
                 widget->setChecked (pair.second.toBool ());
                 layout->addWidget (widget, row, 1);
                 widgetMap[pair.first] = widget;
                 break;
             }
-            case QVariant::Color: {
+            case QMetaType::QColor: {
                 auto widget = new SetColorButton ();
                 widget->setColor (pair.second.value< QColor > ());
                 layout->addWidget (widget, row, 1);
                 widgetMap[pair.first] = widget;
                 break;
             }
-            case QVariant::Double: {
+            case QMetaType::Double: {
                 auto widget = new QDoubleSpinBox ();
                 widget->setButtonSymbols (QAbstractSpinBox::NoButtons);
                 widget->setMaximum (double (options.numericMax));
@@ -119,7 +124,7 @@ bool getInput (const QString& title, FormData& data, const FormOptions& options)
                 widgetMap[pair.first] = widget;
                 break;
             }
-            case QVariant::Int: {
+            case QMetaType::Int: {
                 auto widget = new QSpinBox ();
                 widget->setButtonSymbols (QAbstractSpinBox::NoButtons);
                 widget->setMaximum (options.numericMax);
@@ -129,7 +134,7 @@ bool getInput (const QString& title, FormData& data, const FormOptions& options)
                 widgetMap[pair.first] = widget;
                 break;
             }
-            case QVariant::String: {
+            case QMetaType::QString: {
                 std::size_t cad_string_found =
                     pair.second.toString ().toStdString ().find ("cad_file");
                 if (cad_string_found != std::string::npos) {
@@ -147,13 +152,13 @@ bool getInput (const QString& title, FormData& data, const FormOptions& options)
                 }
                 break;
             }
-            case QVariant::StringList: {
+            case QMetaType::QStringList: {
                 if (options.listDisplaysAsRadios) {
                     auto values = pair.second.toStringList ();
 
                     auto widget  = new QWidget ();
                     auto wlayout = new QHBoxLayout (widget);
-                    wlayout->setMargin (2);
+                    wlayout->setContentsMargins (2, 2, 2, 2);
                     wlayout->setSpacing (2);
 
                     auto isChecked = false;
@@ -178,12 +183,12 @@ bool getInput (const QString& title, FormData& data, const FormOptions& options)
                 }
                 break;
             }
-            case QVariant::Vector2D: {
+            case QMetaType::QVector2D: {
                 auto value = pair.second.value< QVector2D > ();
 
                 auto widget  = new QWidget ();
                 auto wlayout = new QHBoxLayout (widget);
-                wlayout->setMargin (2);
+                wlayout->setContentsMargins (2, 2, 2, 2);
                 wlayout->setSpacing (2);
 
                 auto xwidget = new QDoubleSpinBox ();
@@ -206,12 +211,12 @@ bool getInput (const QString& title, FormData& data, const FormOptions& options)
                 widgetMap[pair.first] = widget;
                 break;
             }
-            case QVariant::Vector3D: {
+            case QMetaType::QVector3D: {
                 auto value = pair.second.value< QVector3D > ();
 
                 auto widget  = new QWidget ();
                 auto wlayout = new QHBoxLayout (widget);
-                wlayout->setMargin (2);
+                wlayout->setContentsMargins (2, 2, 2, 2);
                 wlayout->setSpacing (2);
 
                 auto xwidget = new QDoubleSpinBox ();
@@ -249,7 +254,7 @@ bool getInput (const QString& title, FormData& data, const FormOptions& options)
     }
 
     auto btnLayout = new QHBoxLayout ();
-    btnLayout->setMargin (2);
+    btnLayout->setContentsMargins(2, 2, 2, 2);
     btnLayout->setSpacing (4);
     layout->addLayout (btnLayout, row, 0, 1, 2);
 
@@ -268,7 +273,11 @@ bool getInput (const QString& title, FormData& data, const FormOptions& options)
     }
 
     for (auto& pair : data) {
-        switch (pair.second.type ()) {
+#if QT_VERSION >= 0x060000
+        switch (pair.second.typeId ()) {
+#else
+        switch (pair.second.userType ()) {
+#endif
             case QVariant::Bool: {
                 const auto widget = qobject_cast< QCheckBox* > (widgetMap[pair.first]);
                 pair.second       = widget->isChecked ();

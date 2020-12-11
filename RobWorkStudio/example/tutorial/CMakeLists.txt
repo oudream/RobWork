@@ -30,8 +30,13 @@ endif()
 
 # ########################   From here we add the plugins
 
-qt5_wrap_cpp(MocSrcFiles SamplePlugin.hpp TARGET SamplePlugin)
-qt5_add_resources(RccSrcFiles resources.qrc)
+if(DEFINED Qt6Core_VERSION)
+    qt_wrap_cpp(MocSrcFiles SamplePlugin.hpp TARGET SamplePlugin)
+    qt_add_resources(RccSrcFiles resources.qrc)
+else()
+    qt5_wrap_cpp(MocSrcFiles SamplePlugin.hpp TARGET SamplePlugin)
+    qt5_add_resources(RccSrcFiles resources.qrc)
+endif()
 
 # The shared library to build:
 add_library(SamplePlugin MODULE SamplePlugin.cpp ${MocSrcFiles} ${RccSrcFiles})

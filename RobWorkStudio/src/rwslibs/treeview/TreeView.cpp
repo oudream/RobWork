@@ -29,6 +29,7 @@
 #include <rw/models/TreeDevice.hpp>
 #include <rws/RobWorkStudio.hpp>
 
+#include <QActionGroup>
 #include <QFileDialog>
 #include <QInputDialog>
 #include <QKeyEvent>

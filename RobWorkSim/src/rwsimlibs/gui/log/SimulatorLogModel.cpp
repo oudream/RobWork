@@ -118,7 +118,7 @@ QVariant SimulatorLogModel::data (const QModelIndex& index, int role) const
     else if (role == Qt::ToolTipRole) {
         return QString::fromStdString (node->getDescription ());
     }
-    else if (role == Qt::BackgroundColorRole) {
+    else if (role == Qt::BackgroundRole) {
         std::map< const SimulatorLog*, QColor >::const_iterator it = _bgColor.find (node);
         if (it != _bgColor.end ())
             return it->second;
@@ -188,7 +188,7 @@ void SimulatorLogModel::update ()
 
 bool SimulatorLogModel::setData (const QModelIndex& index, const QVariant& value, int role)
 {
-    if (role != Qt::BackgroundColorRole || !index.isValid ())
+    if (role != Qt::BackgroundRole || !index.isValid ())
         return false;
     const SimulatorLog* const entry = static_cast< const SimulatorLog* > (index.internalPointer ());
     if (value.isValid ()) {
@@ -203,7 +203,7 @@ bool SimulatorLogModel::setData (const QModelIndex& index, const QVariant& value
 QVariant SimulatorLogModel::headerData (int section, Qt::Orientation orientation, int role) const
 {
     if (role == Qt::TextAlignmentRole) {
-        return Qt::AlignCenter + Qt::AlignVCenter;
+        return Qt::AlignCenter;
     }
     else if (role == Qt::DisplayRole) {
         if (orientation != Qt::Horizontal)

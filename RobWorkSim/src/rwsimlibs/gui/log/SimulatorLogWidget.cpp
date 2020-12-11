@@ -258,7 +258,7 @@ void SimulatorLogWidget::selectionChanged (const QItemSelection& selected,
                     }
                 }
                 if (found) {
-                    _model->setData (search, QVariant (), Qt::BackgroundColorRole);
+                    _model->setData (search, QVariant (), Qt::BackgroundRole);
                     _ui->_tree->update (search);
                     _ui->_tree->update (
                         _model->index (search.row (), search.column () + 1, search.parent ()));
@@ -366,7 +366,7 @@ void SimulatorLogWidget::selectionChanged (const QItemSelection& selected,
                     }
                 }
                 if (found) {
-                    _model->setData (search, QColor (240, 240, 255), Qt::BackgroundColorRole);
+                    _model->setData (search, QColor (240, 240, 255), Qt::BackgroundRole);
                     _ui->_tree->update (search);
                     _ui->_tree->update (
                         _model->index (search.row (), search.column () + 1, search.parent ()));
@@ -453,7 +453,7 @@ void SimulatorLogWidget::collapsed (const QModelIndex& index)
         const QModelIndex& scopeIndex = scopeIndices.front ();
         for (int i = 0; i < _model->rowCount (scopeIndex); i++) {
             const QModelIndex child = _model->index (i, 0, scopeIndex);
-            _model->setData (child, QVariant (), Qt::BackgroundColorRole);
+            _model->setData (child, QVariant (), Qt::BackgroundRole);
             if (_model->rowCount (child) > 0)
                 scopeIndices.push (child);
         }

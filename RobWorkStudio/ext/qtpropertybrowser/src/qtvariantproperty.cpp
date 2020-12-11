@@ -46,14 +46,13 @@
 #include <QIcon>
 #include <QDate>
 #include <QLocale>
+#include <QRegularExpression>
 
 #if defined(Q_CC_MSVC)
 #    pragma warning(disable: 4786) /* MS VS 6: truncating debug info after 255 characters */
 #endif
 
-#if QT_VERSION >= 0x040400
 QT_BEGIN_NAMESPACE
-#endif
 
 class QtEnumPropertyType
 {
@@ -69,17 +68,13 @@ class QtGroupPropertyType
 {
 };
 
-#if QT_VERSION >= 0x040400
 QT_END_NAMESPACE
-#endif
 
 Q_DECLARE_METATYPE(QtEnumPropertyType)
 Q_DECLARE_METATYPE(QtFlagPropertyType)
 Q_DECLARE_METATYPE(QtGroupPropertyType)
 
-#if QT_VERSION >= 0x040400
 QT_BEGIN_NAMESPACE
-#endif
 
 /*!
     Returns the type id for an enum property.
@@ -314,7 +309,7 @@ public:
     void slotDecimalsChanged(QtProperty *property, int prec);
     void slotValueChanged(QtProperty *property, bool val);
     void slotValueChanged(QtProperty *property, const QString &val);
-    void slotRegExpChanged(QtProperty *property, const QRegExp &regExp);
+    void slotRegExpChanged(QtProperty *property, const QRegularExpression &regExp);
     void slotEchoModeChanged(QtProperty *property, int);
     void slotValueChanged(QtProperty *property, const QDate &val);
     void slotRangeChanged(QtProperty *property, const QDate &min, const QDate &max);
@@ -540,7 +535,7 @@ void QtVariantPropertyManagerPrivate::slotValueChanged(QtProperty *property, con
     valueChanged(property, QVariant(val));
 }
 
-void QtVariantPropertyManagerPrivate::slotRegExpChanged(QtProperty *property, const QRegExp &regExp)
+void QtVariantPropertyManagerPrivate::slotRegExpChanged(QtProperty *property, const QRegularExpression &regExp)
 {
     if (QtVariantProperty *varProp = m_internalToProperty.value(property, 0))
         emit q_ptr->attributeChanged(varProp, m_regExpAttribute, QVariant(regExp));
@@ -854,7 +849,7 @@ void QtVariantPropertyManagerPrivate::slotFlagNamesChanged(QtProperty *property,
     \row
         \o QString
         \o regExp
-        \o QVariant::RegExp
+        \o QVariant::RegularExpression
     \row
         \o
         \o echoMode
@@ -1016,7 +1011,7 @@ QtVariantPropertyManager::QtVariantPropertyManager(QObject *parent)
     d_ptr->m_typeToPropertyManager[QVariant::String] = stringPropertyManager;
     d_ptr->m_typeToValueType[QVariant::String] = QVariant::String;
     d_ptr->m_typeToAttributeToAttributeType[QVariant::String][d_ptr->m_regExpAttribute] =
-            QVariant::RegExp;
+            QVariant::RegularExpression;
     d_ptr->m_typeToAttributeToAttributeType[QVariant::String][d_ptr->m_echoModeAttribute] =
             QVariant::Int;
     d_ptr->m_typeToAttributeToAttributeType[QVariant::String][d_ptr->m_readOnlyAttribute] =
@@ -1024,8 +1019,8 @@ QtVariantPropertyManager::QtVariantPropertyManager(QObject *parent)
 
     connect(stringPropertyManager, SIGNAL(valueChanged(QtProperty *, const QString &)),
                 this, SLOT(slotValueChanged(QtProperty *, const QString &)));
-    connect(stringPropertyManager, SIGNAL(regExpChanged(QtProperty *, const QRegExp &)),
-                this, SLOT(slotRegExpChanged(QtProperty *, const QRegExp &)));
+    connect(stringPropertyManager, SIGNAL(regExpChanged(QtProperty *, const QRegularExpression &)),
+                this, SLOT(slotRegExpChanged(QtProperty *, const QRegularExpression &)));
     connect(stringPropertyManager, SIGNAL(echoModeChanged(QtProperty*,int)),
                 this, SLOT(slotEchoModeChanged(QtProperty*, int)));
     connect(stringPropertyManager, SIGNAL(readOnlyChanged(QtProperty*, bool)),
@@ -1388,11 +1383,7 @@ QVariant QtVariantPropertyManager::value(const QtProperty *property) const
     } else if (QtDateTimePropertyManager *dateTimeManager = qobject_cast<QtDateTimePropertyManager *>(manager)) {
         return dateTimeManager->value(internProp);
     } else if (QtKeySequencePropertyManager *keySequenceManager = qobject_cast<QtKeySequencePropertyManager *>(manager)) {
-#if QT_VERSION < 0x050000
-        return keySequenceManager->value(internProp);
-#else
         return QVariant::fromValue(keySequenceManager->value(internProp));
-#endif
     } else if (QtCharPropertyManager *charManager = qobject_cast<QtCharPropertyManager *>(manager)) {
         return charManager->value(internProp);
     } else if (QtLocalePropertyManager *localeManager = qobject_cast<QtLocalePropertyManager *>(manager)) {
@@ -1778,7 +1769,7 @@ void QtVariantPropertyManager::setAttribute(QtProperty *property,
         return;
     } else if (QtStringPropertyManager *stringManager = qobject_cast<QtStringPropertyManager *>(manager)) {
         if (attribute == d_ptr->m_regExpAttribute)
-            stringManager->setRegExp(internProp, value.toRegExp());
+            stringManager->setRegExp(internProp, value.toRegularExpression());
         if (attribute == d_ptr->m_echoModeAttribute)
             stringManager->setEchoMode(internProp, (EchoMode)value.toInt());
         if (attribute == d_ptr->m_readOnlyAttribute)
@@ -2354,8 +2345,6 @@ void QtVariantEditorFactory::disconnectPropertyManager(QtVariantPropertyManager 
         d_ptr->m_checkBoxFactory->removePropertyManager(itFlag.next()->subBoolPropertyManager());
 }
 
-#if QT_VERSION >= 0x040400
 QT_END_NAMESPACE
-#endif
 
 #include "moc_qtvariantproperty.cpp"

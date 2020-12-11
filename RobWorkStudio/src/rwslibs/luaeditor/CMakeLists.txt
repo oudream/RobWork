@@ -8,7 +8,11 @@ rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ${RWS_HAVE_LUA} DEPENDS ${S
 if(build)
     # if we want to use ui files add them here
     set(UIS_FILES LuaEditorWindow.ui)
-    qt5_wrap_ui(UIS_OUT_H ${UIS_FILES})
+    if(DEFINED Qt6Core_VERSION)
+        qt_wrap_ui(UIS_OUT_H ${UIS_FILES})
+    else()
+        qt5_wrap_ui(UIS_OUT_H ${UIS_FILES})
+    endif()
 
     set(
         SrcFiles

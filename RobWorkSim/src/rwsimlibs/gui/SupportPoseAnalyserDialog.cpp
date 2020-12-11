@@ -681,7 +681,7 @@ void SupportPoseAnalyserDialog::changedEvent ()
         // showPlanarDistribution();
         stateChanged (state);
     }
-    _view->updateGL ();
+    _view->update ();
 }
 
 namespace {
@@ -1431,7 +1431,7 @@ void SupportPoseAnalyserDialog::process ()
     updateRenderView ();
     updateResultView ();
 
-    _view->updateGL ();
+    _view->update ();
 }
 
 void SupportPoseAnalyserDialog::updateResultView ()

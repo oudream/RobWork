@@ -46,9 +46,7 @@
 #include <QVariant>
 #include <QIcon>
 
-#if QT_VERSION >= 0x040400
 QT_BEGIN_NAMESPACE
-#endif
 
 typedef QMap<int, QIcon> QtIconMap;
 
@@ -126,7 +124,7 @@ private:
     Q_PRIVATE_SLOT(d_func(), void slotDecimalsChanged(QtProperty *, int))
     Q_PRIVATE_SLOT(d_func(), void slotValueChanged(QtProperty *, bool))
     Q_PRIVATE_SLOT(d_func(), void slotValueChanged(QtProperty *, const QString &))
-    Q_PRIVATE_SLOT(d_func(), void slotRegExpChanged(QtProperty *, const QRegExp &))
+    Q_PRIVATE_SLOT(d_func(), void slotRegExpChanged(QtProperty *, const QRegularExpression &))
     Q_PRIVATE_SLOT(d_func(), void slotEchoModeChanged(QtProperty *, int))
     Q_PRIVATE_SLOT(d_func(), void slotValueChanged(QtProperty *, const QDate &))
     Q_PRIVATE_SLOT(d_func(), void slotRangeChanged(QtProperty *, const QDate &, const QDate &))
@@ -179,9 +177,7 @@ private:
     Q_DISABLE_COPY(QtVariantEditorFactory)
 };
 
-#if QT_VERSION >= 0x040400
 QT_END_NAMESPACE
-#endif
 
 Q_DECLARE_METATYPE(QIcon)
 Q_DECLARE_METATYPE(QtIconMap)

@@ -7,9 +7,15 @@ rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ON DEPENDS ${SUBSYS_DEPS} A
 
 if(build)
     # if we want to use ui files add them here
-    qt5_wrap_ui(UIS_OUT_H_ATaskVisPlugin ATaskVisPlugin.ui)
-    qt5_wrap_ui(UIS_OUT_H_StrategyLibraryDialog StrategyLibraryDialog.ui)
-    qt5_wrap_ui(UIS_OUT_H_TaskSetupDialog TaskSetupDialog.ui)
+    if(DEFINED Qt6Core_VERSION)
+        qt_wrap_ui(UIS_OUT_H_ATaskVisPlugin ATaskVisPlugin.ui)
+        qt_wrap_ui(UIS_OUT_H_StrategyLibraryDialog StrategyLibraryDialog.ui)
+        qt_wrap_ui(UIS_OUT_H_TaskSetupDialog TaskSetupDialog.ui)
+    else()
+        qt5_wrap_ui(UIS_OUT_H_ATaskVisPlugin ATaskVisPlugin.ui)
+        qt5_wrap_ui(UIS_OUT_H_StrategyLibraryDialog StrategyLibraryDialog.ui)
+        qt5_wrap_ui(UIS_OUT_H_TaskSetupDialog TaskSetupDialog.ui)
+    endif()
     set(UIS_OUT_H ${UIS_OUT_H_ATaskVisPlugin} ${UIS_OUT_H_StrategyLibraryDialog} ${UIS_OUT_H_TaskSetupDialog})
 
     # Standard cpp files to compile:
@@ -25,7 +31,11 @@ if(build)
 
     #qt5_wrap_cpp(MocSrcFiles ${SRC_FILES_HPP} TARGET ${SUBSYS_NAME})
     # Rcc the files:
-    qt5_add_resources(RccSrcFiles atask_resources.qrc)
+    if(DEFINED Qt6Core_VERSION)
+        qt_add_resources(RccSrcFiles atask_resources.qrc)
+    else()
+        qt5_add_resources(RccSrcFiles atask_resources.qrc)
+    endif()
 
     rws_add_plugin(
         ${SUBSYS_NAME}

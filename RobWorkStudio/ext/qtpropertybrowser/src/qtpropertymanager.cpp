@@ -63,9 +63,7 @@
 #    pragma warning(disable: 4786) /* MS VS 6: truncating debug info after 255 characters */
 #endif
 
-#if QT_VERSION >= 0x040400
 QT_BEGIN_NAMESPACE
-#endif
 
 template <class PrivateData, class Value>
 static void setSimpleMinimumData(PrivateData *data, const Value &minVal)
@@ -423,23 +421,6 @@ private:
     QMetaEnum m_policyEnum;
 };
 
-#if QT_VERSION < 0x040300
-
-static QList<QLocale::Country> countriesForLanguage(QLocale::Language language)
-{
-    QList<QLocale::Country> countries;
-    QLocale::Country country = QLocale::AnyCountry;
-    while (country <= QLocale::LastCountry) {
-        QLocale locale(language, country);
-        if (locale.language() == language && !countries.contains(locale.country()))
-            countries << locale.country();
-        country = (QLocale::Country)((uint)country + 1); // ++country
-    }
-    return countries;
-}
-
-#endif
-
 static QList<QLocale::Country> sortCountries(const QList<QLocale::Country> &countries)
 {
     QMultiMap<QString, QLocale::Country> nameToCountry;
@@ -471,11 +452,7 @@ void QtMetaEnumProvider::initLocale()
     while (itLang.hasNext()) {
         QLocale::Language language = itLang.next();
         QList<QLocale::Country> countries;
-#if QT_VERSION < 0x040300
-        countries = countriesForLanguage(language);
-#else
         countries = QLocale::countriesForLanguage(language);
-#endif
         if (countries.isEmpty() && language == system.language())
             countries << system.country();
 
@@ -1303,12 +1280,12 @@ public:
 
     struct Data
     {
-        Data() : regExp(QString(QLatin1Char('*')),  Qt::CaseSensitive, QRegExp::Wildcard),
+        Data() : regExp(QString(QLatin1String(".*"))),
             echoMode(QLineEdit::Normal), readOnly(false)
         {
         }
         QString val;
-        QRegExp regExp;
+        QRegularExpression regExp;
         int echoMode;
         bool readOnly;
     };
@@ -1348,7 +1325,7 @@ public:
 */
 
 /*!
-    \fn void QtStringPropertyManager::regExpChanged(QtProperty *property, const QRegExp &regExp)
+    \fn void QtStringPropertyManager::regExpChanged(QtProperty *property, const QRegularExpression &regExp)
 
     This signal is emitted whenever a property created by this manager
     changes its currenlty set regular expression, passing a pointer to
@@ -1397,9 +1374,9 @@ QString QtStringPropertyManager::value(const QtProperty *property) const
 
     \sa setRegExp()
 */
-QRegExp QtStringPropertyManager::regExp(const QtProperty *property) const
+QRegularExpression QtStringPropertyManager::regExp(const QtProperty *property) const
 {
-    return getData<QRegExp>(d_ptr->m_values, &QtStringPropertyManagerPrivate::Data::regExp, property, QRegExp());
+    return getData<QRegularExpression>(d_ptr->m_values, &QtStringPropertyManagerPrivate::Data::regExp, property, QRegularExpression());
 }
 
 /*!
@@ -1470,7 +1447,7 @@ void QtStringPropertyManager::setValue(QtProperty *property, const QString &val)
     if (data.val == val)
         return;
 
-    if (data.regExp.isValid() && !data.regExp.exactMatch(val))
+    if (data.regExp.isValid() && !data.regExp.match(val).hasMatch())
         return;
 
     data.val = val;
@@ -1486,7 +1463,7 @@ void QtStringPropertyManager::setValue(QtProperty *property, const QString &val)
 
     \sa regExp(), setValue(), regExpChanged()
 */
-void QtStringPropertyManager::setRegExp(QtProperty *property, const QRegExp &regExp)
+void QtStringPropertyManager::setRegExp(QtProperty *property, const QRegularExpression &regExp)
 {
     const QtStringPropertyManagerPrivate::PropertyValueMap::iterator it = d_ptr->m_values.find(property);
     if (it == d_ptr->m_values.end())
@@ -5933,9 +5910,7 @@ QtFontPropertyManager::QtFontPropertyManager(QObject *parent)
 {
     d_ptr = new QtFontPropertyManagerPrivate;
     d_ptr->q_ptr = this;
-#if QT_VERSION >= 0x040500
     QObject::connect(qApp, SIGNAL(fontDatabaseChanged()), this, SLOT(slotFontDatabaseChanged()));
-#endif
 
     d_ptr->m_intPropertyManager = new QtIntPropertyManager(this);
     connect(d_ptr->m_intPropertyManager, SIGNAL(valueChanged(QtProperty *, int)),
@@ -6060,7 +6035,11 @@ void QtFontPropertyManager::setValue(QtProperty *property, const QFont &val)
         return;
 
     const QFont oldVal = it.value();
+#if QT_VERSION >= 0x060000
+    if (oldVal == val && oldVal.resolveMask() == val.resolveMask())
+#else
     if (oldVal == val && oldVal.resolve() == val.resolve())
+#endif
         return;
 
     it.value() = val;
@@ -6640,9 +6619,7 @@ void QtCursorPropertyManager::uninitializeProperty(QtProperty *property)
     d_ptr->m_values.remove(property);
 }
 
-#if QT_VERSION >= 0x040400
 QT_END_NAMESPACE
-#endif
 
 #include "moc_qtpropertymanager.cpp"
 #include "qtpropertymanager.moc"
