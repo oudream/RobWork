@@ -8,7 +8,11 @@ rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ON DEPENDS ${SUBSYS_DEPS} A
 if(build)
     # if we want to use ui files add them here
     set(UIS_FILES GTaskVisPlugin.ui)
-    qt5_wrap_ui(UIS_OUT_H ${UIS_FILES})
+    if(DEFINED Qt6Core_VERSION)
+        qt_wrap_ui(UIS_OUT_H ${UIS_FILES})
+    else()
+        qt5_wrap_ui(UIS_OUT_H ${UIS_FILES})
+    endif()
     # Standard cpp files to compile:
     set(SrcFiles GTaskVisPlugin.cpp)
     set(SRC_FILES_HPP GTaskVisPlugin.hpp)
@@ -17,7 +21,11 @@ if(build)
 
     #qt5_wrap_cpp(MocSrcFiles ${SRC_FILES_HPP} TARGET ${SUBSYS_NAME})
     # Rcc the files:
-    qt5_add_resources(RccSrcFiles gtask_resources.qrc)
+    if(DEFINED Qt6Core_VERSION)
+        qt_add_resources(RccSrcFiles gtask_resources.qrc)
+    else()
+        qt5_add_resources(RccSrcFiles gtask_resources.qrc)
+    endif()
 
     rws_add_plugin(
         ${SUBSYS_NAME}

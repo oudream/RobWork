@@ -428,18 +428,18 @@ QAbstractItemModel* LuaEditorWindow::modelFromFile (const QString& fileName,
         if (line.isEmpty () || trimmedLine.isEmpty ())
             continue;
 
-        QRegExp re ("^\\s+");
-        int nonws = re.indexIn (line);
+        QRegularExpression re ("^\\s+");
+        const QRegularExpressionMatch match = re.match(line);
         int level = 0;
-        if (nonws == -1) {
+        if (!match.hasMatch()) {
             level = 0;
         }
         else {
             if (line.startsWith ("\t")) {
-                level = re.cap (0).length ();
+                level = match.capturedLength(0);
             }
             else {
-                level = re.cap (0).length () / 4;
+                level = match.capturedLength(0) / 4;
             }
         }
 

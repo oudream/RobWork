@@ -52,9 +52,7 @@
 #include <QStyle>
 #include <QPalette>
 
-#if QT_VERSION >= 0x040400
 QT_BEGIN_NAMESPACE
-#endif
 
 class QtPropertyEditorView;
 
@@ -466,7 +464,7 @@ static QIcon drawIndicatorIcon(const QPalette &palette, QStyle *style)
 void QtTreePropertyBrowserPrivate::init(QWidget *parent)
 {
     QHBoxLayout *layout = new QHBoxLayout(parent);
-    layout->setMargin(0);
+    layout->setContentsMargins(0, 0, 0, 0);
     m_treeWidget = new QtPropertyEditorView(parent);
     m_treeWidget->setEditorPrivate(this);
     m_treeWidget->setIconSize(QSize(18, 18));
@@ -1071,9 +1069,7 @@ void QtTreePropertyBrowser::editItem(QtBrowserItem *item)
     d_ptr->editItem(item);
 }
 
-#if QT_VERSION >= 0x040400
 QT_END_NAMESPACE
-#endif
 
 #include "moc_qttreepropertybrowser.cpp"
 #include "qttreepropertybrowser.moc"

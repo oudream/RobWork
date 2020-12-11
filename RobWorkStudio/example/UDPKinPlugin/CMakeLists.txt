@@ -57,9 +57,15 @@ ENDIF()
 # if we want to use ui files add them here
 SET(UIS_FILES SamplePlugin.ui )
 
-qt5_wrap_ui(UIS_OUT_H ${UIS_FILES})
-qt5_wrap_cpp(MocSrcFiles SamplePlugin.hpp TARGET SamplePlugin)
-qt5_add_resources(RccSrcFiles resources.qrc)
+if(DEFINED Qt6Core_VERSION)
+    qt_wrap_ui(UIS_OUT_H ${UIS_FILES})
+    qt_wrap_cpp(MocSrcFiles SamplePlugin.hpp TARGET SamplePlugin)
+    qt_add_resources(RccSrcFiles resources.qrc)
+else()
+    qt5_wrap_ui(UIS_OUT_H ${UIS_FILES})
+    qt5_wrap_cpp(MocSrcFiles SamplePlugin.hpp TARGET SamplePlugin)
+    qt5_add_resources(RccSrcFiles resources.qrc)
+endif()
 
 SET(SrcFiles SamplePlugin.cpp ${UIS_OUT_H})
 

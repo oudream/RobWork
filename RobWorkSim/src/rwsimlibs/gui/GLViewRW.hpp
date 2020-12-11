@@ -29,7 +29,7 @@
 #include <rw/math/Vector3D.hpp>
 #include <rws/ArcBallController.hpp>
 
-#include <QGLWidget>
+#include <QOpenGLWidget>
 #include <QObject>
 #include <vector>
 
@@ -54,7 +54,7 @@ class QMenu;
 /**
  * @brief Class representing an OpenGL based QT Widget for 3D visualization of Drawables
  */
-class GLViewRW : public QGLWidget
+class GLViewRW : public QOpenGLWidget
 {
     Q_OBJECT
 

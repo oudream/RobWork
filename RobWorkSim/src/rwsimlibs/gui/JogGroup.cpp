@@ -166,7 +166,7 @@ void JointLine::setValue (double val)
 
 void JointLine::wheelEvent (QWheelEvent* event)
 {
-    double sval = event->delta () * (_high - _low) / 40;
+    double sval = event->angleDelta ().y() * (_high - _low) / 40;
     boxValueChanged (sval + value ());
 }
 

@@ -11,7 +11,11 @@ if(build)
     # if we want to use ui files add them here
     set(UIS_FILES AboutBox.ui propertyview/PropertyViewEditor.ui propertyview/PropertyViewDialog.ui)
 
-    qt5_wrap_ui(UIS_OUT_H ${UIS_FILES})
+    if(DEFINED Qt6Core_VERSION)
+        qt_wrap_ui(UIS_OUT_H ${UIS_FILES})
+    else()
+        qt5_wrap_ui(UIS_OUT_H ${UIS_FILES})
+    endif()
 
     # Standard files to compile:
     set(
@@ -73,7 +77,11 @@ if(build)
     set_source_files_properties(${MocSrcFiles} PROPERTIES OBJECT_DEPENDS "${UIS_OUT_H}")
 
     # Rcc the files:
-    qt5_add_resources(ResourceFiles rwstudio_resources.qrc)
+    if(DEFINED Qt6Core_VERSION)
+        qt_add_resources(ResourceFiles rwstudio_resources.qrc)
+    else()
+        qt5_add_resources(ResourceFiles rwstudio_resources.qrc)
+    endif()
     # We create a static library named rwstudio that all plugins should link to. Our RobWorkStudio executable
     # links to this library also.
     rw_add_library(

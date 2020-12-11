@@ -42,7 +42,11 @@ SET(SRC_FILES_HPP
 
 
 # Resource files to rcc and compile:
-QT5_ADD_RESOURCES(ResourceFiles ${CMAKE_CURRENT_SOURCE_DIR}/src/qtpropertybrowser.qrc)
+if(DEFINED Qt6Core_VERSION)
+    qt_add_resources(ResourceFiles ${CMAKE_CURRENT_SOURCE_DIR}/src/qtpropertybrowser.qrc)
+else()
+    qt5_add_resources(ResourceFiles ${CMAKE_CURRENT_SOURCE_DIR}/src/qtpropertybrowser.qrc)
+endif()
 
 # We create a static library named qtpropertybrowser that all plugins should link to. Our
 # RobWorkStudio executable links to this library also.

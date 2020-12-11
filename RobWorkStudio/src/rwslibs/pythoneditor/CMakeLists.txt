@@ -36,7 +36,11 @@ if(build)
     set(SRC_FILES_HPP Editor.hpp)
 
     # Rcc the files:
-    qt5_add_resources(RccSrcFiles resources_pyeditor.qrc ../../rws/rwstudio_resources.qrc)
+    if(DEFINED Qt6Core_VERSION)
+        qt_add_resources(RccSrcFiles resources_pyeditor.qrc ../../rws/rwstudio_resources.qrc)
+    else()
+        qt5_add_resources(RccSrcFiles resources_pyeditor.qrc ../../rws/rwstudio_resources.qrc)
+    endif()
 
     # Set extra linker flags for apple macos computers
     rws_add_plugin(${SUBSYS_NAME} ${RWS_DEFAULT_LIB_TYPE} ${SrcFiles} ${RccSrcFiles})
