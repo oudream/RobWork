@@ -54,6 +54,7 @@ if(build)
         TARGET_NAME ${TARGET_NAME}
         INSTALL_DIR ${PYTHON_INSTALL_DIR}/${RWS_MODULE}
         LANGUAGE_FILE_DIR ${RWS_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RWS_MODULE}
+        BINARY_OUTPUT_DIR ${RWS_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RWS_MODULE}
         SOURCES ../ScriptTypes.cpp
         SWIG_FLAGS ${SWIG_FLAGS}
     )
@@ -62,14 +63,8 @@ if(build)
         set(TARGET_NAME ${SWIG_MODULE_sdurws${LIB_SUFIX}_REAL_NAME})
     endif()
 
-    # Set build destination
-    set_target_properties(
-        ${TARGET_NAME}
-        PROPERTIES
-            ARCHIVE_OUTPUT_DIRECTORY "${RWS_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RWS_MODULE}"
-            LIBRARY_OUTPUT_DIRECTORY "${RWS_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RWS_MODULE}"
-            RUNTIME_OUTPUT_DIRECTORY "${RWS_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RWS_MODULE}}"
-    )
+    set(RW_USE_NUMPY ${RW_BUILD_WITH_NUMPY})
+    target_compile_definitions(${TARGET_NAME} PRIVATE RW_USE_NUMPY)
 
     # ############# Documentation ##############
     if(NOT ${SWIG_VERSION} VERSION_LESS 4.0.0)
@@ -97,8 +92,10 @@ if(build)
     # ################# Install files ################
     configure_file(__init__.py.in ${RWS_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RWS_MODULE}/__init__.py)
 
-    target_link_libraries(${SUBSYS_NAME} INTERFACE ${TARGET_NAME})
-
+    if(SWIG_DEFAULT_COMPILE OR CMAKE_VERSION VERSION_GREATER 3.16.0)
+        target_link_libraries(${SUBSYS_NAME} INTERFACE ${TARGET_NAME})
+    endif()
+    
     install(
         FILES ${RWS_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RWS_MODULE}/${RWS_MODULE}.py
         DESTINATION "${PYTHON_INSTALL_DIR}/${RWS_MODULE}"

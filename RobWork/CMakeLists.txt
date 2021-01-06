@@ -222,24 +222,6 @@ configure_file("${RW_ROOT}/cmake/dependencies.cmake.in" "${RW_ROOT}/cmake/depend
                @ONLY
 )
 
-# Disabled generation of the dependencies file (problem with multi-configuration generators like
-# Visual Studio) FILE(GENERATE OUTPUT "${RW_ROOT}/cmake/dependencies.cmake" INPUT
-# "${RW_ROOT}/cmake/dependencies.cmake.gen" ) INSTALL(SCRIPT "${RW_ROOT}/cmake/dependencies.cmake")
-
-# Install the example directories
-install(
-    DIRECTORY "${RW_ROOT}/example/"
-    DESTINATION "${RW_INSTALL_DIR}/example/"
-    COMPONENT example
-    PATTERN ".svn" EXCLUDE
-    PATTERN "example/CMakeLists.txt" EXCLUDE
-    PATTERN "Build" EXCLUDE
-)
-
-# Install the API doc if doxygen has been run IF(IS_DIRECTORY "${RW_ROOT}/apidocs/html")
-# INSTALL(DIRECTORY "${RW_ROOT}/apidocs/html" DESTINATION "${RW_INSTALL_DIR}/apidocs" PATTERN ".svn"
-# EXCLUDc ) ENDIF(IS_DIRECTORY "${RW_ROOT}/apidocs/html")
-
 # Documentation build target
 find_program(doc_executable doxygen)
 if(doc_executable)

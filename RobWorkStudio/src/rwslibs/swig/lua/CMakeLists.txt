@@ -1,6 +1,6 @@
 set(SUBSYS_NAME sdurws_lua)
 set(SUBSYS_DESC "Interface for accessing RobWorkStudio from lua.")
-set(SUBSYS_DEPS sdurws_robworkstudioapp RW::sdurw_lua RW::sdurw_core_lua)
+set(SUBSYS_DEPS sdurws_robworkstudioapp RW::sdurw_lua_s)
 
 set(build TRUE)
 
@@ -38,28 +38,19 @@ if(build)
         ${RWS_MODULE} lua SHARED
         TARGET_NAME ${TARGET_NAME}
         SOURCES ../sdurws.i Lua.cpp ../ScriptTypes.cpp
+        BINARY_OUTPUT_DIR "${RWS_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua"
         INSTALL_DIR ${LUA_INSTALL_DIR}
     )
-    unset(SLIB_COMPILE_BUFFER CACHE)
     if(NOT DEFINED MSVC) # This code is to make it easier to make debian packages
         set_target_properties(
             ${TARGET_NAME}
             PROPERTIES PREFIX ""
-                       OUTPUT_NAME ${RWS_MODULE}
-                       ARCHIVE_OUTPUT_DIRECTORY "${RWS_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua"
-                       LIBRARY_OUTPUT_DIRECTORY "${RWS_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua"
-                       LIBRARY_OUTPUT_DIRECTORY "${RWS_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua"
+            OUTPUT_NAME ${RWS_MODULE}
         )
     endif()
 
-    swig_link_libraries(
-        ${TARGET_NAME}
-        ${RWS_PLUGIN_LIBRARIES}
-        sdurws
-        sdurws_robworkstudioapp
-        RW::sdurw_lua_s
-        RW::sdurw
-        ${RW_BUILD_WITH_LIBRARIES_LUA}
+    swig_link_libraries(${TARGET_NAME} ${RWS_PLUGIN_LIBRARIES} sdurws sdurws_robworkstudioapp
+                        RW::sdurw ${RW_BUILD_WITH_LIBRARIES_LUA}
     )
 
     target_include_directories(${TARGET_NAME} PUBLIC ${RW_BUILD_WITH_LUA_INCLUDE_DIR})
@@ -74,13 +65,7 @@ if(build)
     )
 
     target_link_libraries(
-        ${TARGET_NAME}_s
-        ${RWS_PLUGIN_LIBRARIES}
-        sdurws
-        sdurws_robworkstudioapp
-        RW::sdurw
-        RW::sdurw_lua_s
-        RW::sdurw_core_lua_s
+        ${TARGET_NAME}_s ${RWS_PLUGIN_LIBRARIES} sdurws sdurws_robworkstudioapp RW::sdurw RW::sdurw_lua_s
         ${RW_BUILD_WITH_LIBRARIES_LUA}
     )
     target_include_directories(${TARGET_NAME}_s PUBLIC ${RW_BUILD_WITH_LUA_INCLUDE_DIR})
@@ -93,11 +78,16 @@ if(build)
     endif()
 
     add_library(sdurwslua_plugin.rwplugin MODULE LuaPlugin.cpp LuaPlugin.hpp)
-    set_target_properties(sdurwslua_plugin.rwplugin PROPERTIES EXCLUDE_FROM_ALL TRUE)
 
-    target_link_libraries(sdurwslua_plugin.rwplugin ${TARGET_NAME}_s RW::sdurw RW::sdurw_lua_s)
-    install(TARGETS sdurwslua_plugin.rwplugin DESTINATION ${RW_PLUGIN_INSTALL_DIR})
+    if(NOT SWIG_DEFAULT_COMPILE)
+        set_target_properties(sdurwslua_plugin.rwplugin PROPERTIES EXCLUDE_FROM_ALL TRUE)
+    endif()
 
+    target_link_libraries(sdurwslua_plugin.rwplugin ${TARGET_NAME}_s RW::sdurw RW::sdurw_core_lua_s)
+
+    if(SWIG_DEFAULT_COMPILE OR CMAKE_VERSION VERSION_GREATER 3.16.0)
+        install(TARGETS sdurwslua_plugin.rwplugin DESTINATION ${RW_PLUGIN_INSTALL_DIR})
+    endif()
     if((CMAKE_COMPILER_IS_GNUCC) OR (CMAKE_C_COMPILER_ID STREQUAL "Clang"))
         set_target_properties(sdurwslua_plugin.rwplugin PROPERTIES LINK_FLAGS -Wl,--no-undefined)
     endif()
@@ -105,6 +95,7 @@ if(build)
     add_custom_target(
         lua
         COMMAND ${CMAKE_COMMAND} -E echo "Done Building Lua"
-        DEPENDS ${TARGET_NAME} ${TARGET_NAME}_s sdurwslua_plugin.rwplugin sdurws_luapl sdurws_luaeditor 
+        DEPENDS ${TARGET_NAME} ${TARGET_NAME}_s sdurwslua_plugin.rwplugin sdurws_luapl
+                sdurws_luaeditor
     )
 endif()

@@ -29,6 +29,15 @@ if(build)
     include(UseJava)
     include(UseSWIG)
 
+    set(build_doc TRUE)
+    if(WIN32 OR CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+        set(build_doc FALSE)
+    endif()
+    rw_subsys_option(
+        build sdurwsim_java_doc "build documentation for the java implementation" ${build_doc}
+        REASON "set by default"
+    )
+
     include_directories(${RWSIM_ROOT}/src ${RW_ROOT}/src)
 
     include_directories(${JAVA_INCLUDE_DIRS} ${JNI_INCLUDE_DIRS})
@@ -67,6 +76,7 @@ if(build)
         WINDOW_TITLE "RobWorkSim Java API Documentation"
         LOADER_SOURCE_FILE "${CMAKE_CURRENT_SOURCE_DIR}/LoaderRWSim.java"
         LOADER_DST_FILE "java_src_sdurwsim/org/robwork/LoaderRWSim.java"
+        BUILD_DOC ${build_doc}
         EXTRA_COPY
             COMMAND
                 ${CMAKE_COMMAND} -E copy_if_different
@@ -90,6 +100,6 @@ if(build)
     add_custom_target(
         java
         COMMAND ${CMAKE_COMMAND} -E echo "Done Building Java"
-        DEPENDS sdurwsim_jni
+        DEPENDS sdurwsim_jni ${java_NAME_sdurwsim}_java_doc ${java_NAME_sdurwsim}_libs
     )
 endif()

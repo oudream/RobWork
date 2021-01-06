@@ -1,6 +1,6 @@
 set(SUBSYS_NAME sdurwsim_lua)
 set(SUBSYS_DESC "Interface for accessing RobWorkSim from lua.")
-set(SUBSYS_DEPS RW::sdurw_lua RWS::sdurws_lua sdurwsim)
+set(SUBSYS_DEPS RW::sdurw_lua_s RWS::sdurws_lua_s sdurwsim)
 
 set(build TRUE)
 
@@ -36,6 +36,7 @@ if(build)
         ${RWSIM_MODULE} lua SHARED 
         TARGET_NAME ${TARGET_NAME}
         SOURCES ../sdurwsim.i Lua.cpp ../ScriptTypes.cpp
+        BINARY_OUTPUT_DIR "${RWSIM_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua"
         INSTALL_DIR ${LUA_INSTALL_DIR}
     )
 
@@ -46,9 +47,6 @@ if(build)
             PROPERTIES
                 PREFIX ""
                 OUTPUT_NAME ${RWSIM_MODULE}
-                ARCHIVE_OUTPUT_DIRECTORY "${RWSIM_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua"
-                LIBRARY_OUTPUT_DIRECTORY "${RWSIM_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua"
-                LIBRARY_OUTPUT_DIRECTORY "${RWSIM_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua"
         )
     endif()
 
@@ -76,17 +74,20 @@ if(build)
     endif()
 
     add_library(sdurwsimlua_plugin.rwplugin MODULE LuaPlugin.cpp LuaPlugin.hpp)
-    set_target_properties(sdurwsimlua_plugin.rwplugin PROPERTIES EXCLUDE_FROM_ALL TRUE)
+
+    if(NOT SWIG_DEFAULT_COMPILE)
+        set_target_properties(sdurwsimlua_plugin.rwplugin PROPERTIES EXCLUDE_FROM_ALL TRUE)
+    endif()
 
     target_link_libraries(sdurwsimlua_plugin.rwplugin ${TARGET_NAME}_s)
-    install(TARGETS ${RWSIM_MODULE}lua_plugin.rwplugin DESTINATION ${RW_PLUGIN_INSTALL_DIR})
+
+    if(SWIG_DEFAULT_COMPILE OR CMAKE_VERSION VERSION_GREATER 3.16.0)
+        install(TARGETS ${RWSIM_MODULE}lua_plugin.rwplugin DESTINATION ${RW_PLUGIN_INSTALL_DIR})
+    endif()
 
     if((CMAKE_COMPILER_IS_GNUCC) OR (CMAKE_C_COMPILER_ID STREQUAL "Clang"))
         set_target_properties(sdurwsimlua_plugin.rwplugin PROPERTIES LINK_FLAGS -Wl,--no-undefined)
     endif()
-
-    # ############ INSTALL LUA LIBRARY #############################
-    install(TARGETS ${TARGET_NAME} DESTINATION ${LUA_INSTALL_DIR})
 
     add_custom_target(
         lua

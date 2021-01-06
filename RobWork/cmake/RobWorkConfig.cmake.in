@@ -132,6 +132,46 @@ macro(RW_MESSAGE text)
     endif()
 endmacro()
 
+macro(VARIFY_LIBRARY _name _result)
+
+    string(REPLACE "${RW_BUILD_WITH_BUILD_DIR}/libs/${RW_BUILD_TYPE}" "${RW_LIBS}" DIRS
+                   "${RW_BUILD_WITH_LIBRARY_DIRS}"
+    )
+    list(REMOVE_DUPLICATES DIRS)
+
+    unset(tmp CACHE)
+    find_library(
+        tmp NAMES ${_name}
+        PATHS ${DIRS}
+        PATH_SUFFIXES ${RW_BUILD_WITH_LIBRARY_SUBDIRS}
+        NO_DEFAULT_PATH
+    )
+
+    if(TARGET ${_name})
+        set(${_result} ${_name})
+
+    elseif(TARGET RW::${_name})
+        set(${_result} RW::${_name})
+
+    elseif(TARGET sdurw_${_name})
+        set(${_result} sdurw_${_name})
+
+    elseif(TARGET RW::sdurw_${_name})
+        set(${_result} RW::sdurw_${_name})
+
+    elseif(tmp)
+        add_library(RW::${_name} UNKNOWN IMPORTED)
+        set_target_properties(
+            RW::${_name} PROPERTIES IMPORTED_LOCATION ${tmp} INTERFACE_INCLUDE_DIRECTORIES
+                                    "${RW_BUILD_WITH_INCLUDE_DIR}"
+        )
+        set(${_result} "RW::${_name}")
+    else()
+        set(${_result} "")
+    endif()
+
+endmacro()
+
 # ##################################################################################################
 
 get_filename_component(RWCFG_ROOT ${CMAKE_CURRENT_LIST_FILE} PATH)
@@ -201,10 +241,11 @@ if(EXISTS ${RWCFG_ROOT}/RobWorkBuildConfig_${RW_BUILD_TYPE}.cmake)
             LISTS RobWork_FIND_COMPONENTS
         )
             if(NOT (${component} STREQUAL "sdurw"))
-                set(lib "RW::sdurw_${component}")
+                unset(res)
+                varify_library(${component} res)
 
-                if(TARGET ${lib})
-                    list(APPEND LIBRARIES_TO_INCLUDE "${lib}")
+                if(NOT "${res}" STREQUAL "")
+                    list(APPEND LIBRARIES_TO_INCLUDE "${res}")
                     set(RobWork_${component}_FOUND TRUE)
                 else()
                     set(RobWork_${component}_FOUND FALSE)
@@ -230,8 +271,11 @@ if(EXISTS ${RWCFG_ROOT}/RobWorkBuildConfig_${RW_BUILD_TYPE}.cmake)
             IN
             LISTS RW_BUILD_WITH_LIBRARIES
         )
-            if(TARGET RW::${lib})
-                list(APPEND OPTIONAL_LIBRARIES_TO_INCLUDE "RW::${lib}")
+            unset(res)
+            varify_library(${lib} res)
+
+            if(NOT "${res}" STREQUAL "")
+                list(APPEND OPTIONAL_LIBRARIES_TO_INCLUDE "${res}")
                 rw_message("Looking for ${lib} - found")
             else()
                 if(${lib} STREQUAL "sdurw")
@@ -340,18 +384,12 @@ if(EXISTS ${RWCFG_ROOT}/RobWorkBuildConfig_${RW_BUILD_TYPE}.cmake)
     set(ROBWORK_LIBRARIES_TMP ${ROBWORK_LIBRARIES})
     set(ROBWORK_LIBRARIES)
     foreach(l ${ROBWORK_LIBRARIES_TMP})
-        unset(tmp CACHE)
-        find_library(
-            tmp ${l}
-            PATHS ${RW_LIBS}
-            PATH_SUFFIXES ${RW_BUILD_WITH_LIBRARY_SUBDIRS}
-            NO_DEFAULT_PATH
-        )
-
-        if(tmp)
-            list(APPEND ROBWORK_LIBRARIES "${tmp}")
-        else()
+        unset(res)
+        varify_library(${l} res)
+        if("${res}" STREQUAL "")
             list(APPEND ROBWORK_LIBRARIES "${l}")
+        else()
+            list(APPEND ROBWORK_LIBRARIES "${res}")
         endif()
     endforeach()
 

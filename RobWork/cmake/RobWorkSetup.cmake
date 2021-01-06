@@ -293,6 +293,9 @@ if(RW_USE_LUA)
         message(STATUS "RobWork: LUA ENABLED! Both SWIG ${SWIG_VERSION} and Lua FOUND!")
         set(RW_HAVE_LUA true)
         set(RW_LUA_LIBS
+            sdurw_core_lua_s
+            sdurw_common_lua_s
+            sdurw_math_lua_s
             sdurw_lua_s
             sdurw_assembly_lua_s
             sdurw_control_lua_s

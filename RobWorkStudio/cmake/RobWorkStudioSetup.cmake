@@ -311,7 +311,7 @@ set(ROBWORKSTUDIO_INCLUDE_DIR ${RWS_ROOT}/src ${Boost_INCLUDE_DIR}
 #
 # The library dirs
 #
-set(ROBWORKSTUDIO_LIBRARY_DIRS ${Boost_LIBRARY_DIRS} ${RWS_ROOT}/libs/${RWS_BUILD_TYPE})
+set(ROBWORKSTUDIO_LIBRARY_DIRS ${Boost_LIBRARY_DIRS} ${CMAKE_CURRENT_BINARY_DIR}/libs/${RWS_BUILD_TYPE})
 
 #
 # Setup the Library List here. We need to make sure the correct order is maintained which is crucial

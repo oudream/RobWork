@@ -32,10 +32,12 @@ if(build)
     include(UseJava)
     include(UseSWIG)
 
-    set(build_doc FALSE)
-    rw_subsys_option(
-        build sdurw_java_doc "build documentation for the java implementation" ${build_doc}
-        REASON "Turned off by default"
+    set(build_doc TRUE)
+    if(WIN32 OR CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+        set(build_doc FALSE)
+    endif()
+    rw_subsys_option(build sdurw_java_doc "build documentation for the java implementation"
+                     ${build_doc} REASON "set by default"
     )
 
     add_library(${SUBSYS_NAME} INTERFACE)
@@ -91,8 +93,10 @@ if(build)
                     ${CMAKE_CURRENT_BINARY_DIR}/java_src_${RW_MODULE}/org/robwork/${RW_MODULE}
                 SWIG_FLAGS "-package" "org.robwork.${RW_MODULE}"
             )
-            
-            set(java_targets ${java_targets} ${TARGET_NAME})
+
+            set(java_targets ${java_targets} ${TARGET_NAME} ${java_NAME_${RW_MODULE}}_java_doc
+                             ${java_NAME_${RW_MODULE}}_libs
+            )
 
             # Force removal of previous Java compilation and source when interface file changes This
             # is required as types may be removed or change name (in this case previous java classes
@@ -116,10 +120,11 @@ if(build)
                 endforeach()
                 set(class_path_depend "${cpd}")
                 set(link_path_depend "${lpd}")
-            endif ()
+            endif()
 
             foreach(dep ${depends})
-                add_dependencies(${TARGET_NAME} ${java_NAME_${dep}})
+                add_dependencies(${TARGET_NAME} ${java_NAME_${dep}} ${java_NAME_${dep}}_java_doc
+                ${java_NAME_${dep}}_libs)
             endforeach()
 
             if("${RW_MODULE}" STREQUAL "sdurw_core")
@@ -127,7 +132,8 @@ if(build)
                 set(LOADERRW_FILE java_src_${RW_MODULE}/org/robwork/LoaderRW.java)
                 set(LOADERRW_PKG org.robwork)
                 set(LOADERRW_CP_CMD copy_if_different ${CMAKE_CURRENT_SOURCE_DIR}/LoaderRW.java
-                                    java_src_${RW_MODULE}/org/robwork/LoaderRW.java)
+                                    java_src_${RW_MODULE}/org/robwork/LoaderRW.java
+                )
             else()
                 set(LINK_JAVADOC ${link_path_depend})
                 set(LOADERRW_FILE)
@@ -140,13 +146,13 @@ if(build)
                 ${RW_MODULE}
                 CLASSPATH ${class_path_depend}
                 JAVADOC_LINK ${link_path_depend}
-                WINDOW_TITLE "RobWork Java API Documentation"
-                BUILD_DOC ${build_doc}
+                WINDOW_TITLE "RobWork Java API Documentation" BUILD_DOC ${build_doc}
             )
 
-            target_link_libraries(${SUBSYS_NAME} INTERFACE ${RW_MODULE}_jni)
+            if(SWIG_DEFAULT_COMPILE OR CMAKE_VERSION VERSION_GREATER 3.16.0)
+                target_link_libraries(${SUBSYS_NAME} INTERFACE ${RW_MODULE}_jni)
+            endif()
 
-            
             swig_link_libraries(${RW_MODULE}_jni ${RW_MODULE} ${depends})
         endif()
     endforeach()
@@ -158,5 +164,6 @@ if(build)
     )
 
     install(TARGETS ${SUBSYS_NAME} EXPORT ${PROJECT_PREFIX}Targets)
+
     add_library(${PROJECT_PREFIX}::${SUBSYS_NAME} ALIAS ${SUBSYS_NAME})
 endif()

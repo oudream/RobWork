@@ -27,12 +27,13 @@ add_subdirectory(pythoneditor)
 add_subdirectory(sensors)
 add_subdirectory(workcelleditor)
 add_subdirectory(workcelleditorplugin)
-add_subdirectory(luaeditor)
-add_subdirectory(lua)
 # depends on all above
 add_subdirectory(rwstudioapp)
-# this needs to be last
+# depends on rwstudio
 add_subdirectory(swig)
+# These need to be after swig
+add_subdirectory(luaeditor)
+add_subdirectory(lua)
 
 # Propagate libraries to parent directory
 set(RWS_PLUGIN_LIBRARIES
