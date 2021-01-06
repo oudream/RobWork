@@ -2,7 +2,13 @@
 # Add a library target. _name The library name. _component The part of RW that this library belongs
 # to. ARGN The source files for the library.
 macro(RWS_ADD_PLUGIN _name _lib_type)
-    add_library(${_name} ${_lib_type} ${ARGN})
+
+    set(options EXCLUDE_FROM_ALL USING_SWIG) # Used to marke flags
+    set(oneValueArgs) # used to marke values with a single value
+    set(multiValueArgs)
+    cmake_parse_arguments(PL "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
+
+    add_library(${_name} ${_lib_type} ${PL_UNPARSED_ARGUMENTS})
     add_dependencies(${_name} sdurws)
     # Only link if needed
     if(WIN32 AND MSVC)
@@ -16,7 +22,9 @@ macro(RWS_ADD_PLUGIN _name _lib_type)
     endif()
 
     if(${_lib_type} STREQUAL "MODULE" OR ${_lib_type} STREQUAL "SHARED")
-        set_target_properties(${_name} PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/plugins)
+        set_target_properties(
+            ${_name} PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/plugins
+        )
     endif()
 
     # Set the VERSION and SOVERSION of the library to the RobWorkStudio major and minor versions On
@@ -36,13 +44,22 @@ macro(RWS_ADD_PLUGIN _name _lib_type)
         )
     endif()
 
-    install(
-        TARGETS ${_name}
-        EXPORT ${PROJECT_PREFIX}Targets
-        RUNTIME DESTINATION ${BIN_INSTALL_DIR} COMPONENT ${_component}
-        LIBRARY DESTINATION "${LIB_INSTALL_DIR}/RobWork/rwsplugins" COMPONENT ${_component}
-        ARCHIVE DESTINATION "${LIB_INSTALL_DIR}/RobWork/rwsplugins" COMPONENT ${_component}
+    if(PL_EXCLUDE_FROM_ALL OR (PL_USING_SWIG AND NOT SWIG_DEFAULT_COMPILE))
+        set_target_properties(${_name} PROPERTIES EXCLUDE_FROM_ALL TRUE)
+    endif()
+
+    if(NOT PL_USING_SWIG
+       OR SWIG_DEFAULT_COMPILE
+       OR CMAKE_VERSION VERSION_GREATER 3.16.0
     )
+        install(
+            TARGETS ${_name}
+            EXPORT ${PROJECT_PREFIX}Targets
+            RUNTIME DESTINATION ${BIN_INSTALL_DIR} COMPONENT ${_component}
+            LIBRARY DESTINATION "${LIB_INSTALL_DIR}/RobWork/rwsplugins" COMPONENT ${_component}
+            ARCHIVE DESTINATION "${LIB_INSTALL_DIR}/RobWork/rwsplugins" COMPONENT ${_component}
+        )
+    endif()
 
 endmacro()
 
@@ -50,7 +67,12 @@ endmacro()
 # Add a library target. _name The library name. _component The part of RW that this library belongs
 # to. ARGN The source files for the library.
 macro(RWS_ADD_COMPONENT _name)
-    add_library(${_name} ${PROJECT_LIB_TYPE} ${ARGN})
+    set(options EXCLUDE_FROM_ALL USING_SWIG) # Used to marke flags
+    set(oneValueArgs) # used to marke values with a single value
+    set(multiValueArgs)
+    cmake_parse_arguments(PL "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
+
+    add_library(${_name} ${PROJECT_LIB_TYPE} ${PL_UNPARSED_ARGUMENTS})
 
     # Only link if needed
     if(WIN32 AND MSVC)
@@ -74,9 +96,15 @@ macro(RWS_ADD_COMPONENT _name)
                                 ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
         )
     endif()
-    # if(USE_PROJECT_FOLDERS) set_target_properties(${_name} PROPERTIES FOLDER "Libraries")
-    # endif(USE_PROJECT_FOLDERS)
+    
+    if(PL_EXCLUDE_FROM_ALL OR (PL_USING_SWIG AND NOT SWIG_DEFAULT_COMPILE))
+        set_target_properties(${_name} PROPERTIES EXCLUDE_FROM_ALL TRUE)
+    endif()
 
+    if(NOT PL_USING_SWIG
+       OR SWIG_DEFAULT_COMPILE
+       OR CMAKE_VERSION VERSION_GREATER 3.16.0
+    )
     install(
         TARGETS ${_name}
         EXPORT ${PROJECT_PREFIX}Targets
@@ -84,6 +112,7 @@ macro(RWS_ADD_COMPONENT _name)
         LIBRARY DESTINATION ${LIB_INSTALL_DIR} COMPONENT ${_name}
         ARCHIVE DESTINATION ${LIB_INSTALL_DIR} COMPONENT ${_name}
     )
+    endif()
 
 endmacro()
 
@@ -106,7 +135,7 @@ macro(RWS_PLUGIN_LOAD_DETAILS _subsys_name _dockarea _name _visible)
     )
 endmacro()
 
-macro(RWS_CLEAR_PLUGIN_LOAD_DETAILS  _name )
+macro(RWS_CLEAR_PLUGIN_LOAD_DETAILS _name)
     set(${_name}_DOCKAREA
         ""
         CACHE INTERNAL "PLugin Load details for {_name}" FORCE

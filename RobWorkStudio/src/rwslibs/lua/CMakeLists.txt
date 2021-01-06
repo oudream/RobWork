@@ -1,18 +1,9 @@
 set(SUBSYS_NAME sdurws_luapl)
 set(SUBSYS_DESC "A lua plugin")
-set(SUBSYS_DEPS sdurws sdurws_luaeditor RW::sdurw_lua RW::sdurw)
+set(SUBSYS_DEPS sdurws sdurws_luaeditor sdurws_lua_s sdurws_robworkstudioapp)
 
 set(DEFAULT ${RWS_HAVE_LUA})
 set(REASON)
-
-# Verify that sdurws_lua_s will be build
-if(${DEFAULT}
-   AND (DEFINED BUILD_sdurws_robworkstudioapp AND NOT ${BUILD_sdurws_robworkstudioapp})
-   AND (DEFINED BUILD_sdurws_lua AND NOT ${BUILD_sdurws_lua})
-)
-    set(DEFAULT FALSE)
-    set(REASON "Unmet dependencies sdurws_lua or sdurws_robworkstudioapp")
-endif()
 
 set(build ${RWS_HAVE_LUA})
 rw_subsys_option(
@@ -35,7 +26,7 @@ if(build)
     endif()
 
     # Set extra linker flags for apple macos computers
-    rws_add_plugin(${SUBSYS_NAME} ${RWS_DEFAULT_LIB_TYPE} ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles})
+    rws_add_plugin(${SUBSYS_NAME} ${RWS_DEFAULT_LIB_TYPE} USING_SWIG ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles})
     rw_add_includes(${SUBSYS_NAME} "rwslibs/lua" ${SRC_FILES_HPP})
     target_link_libraries(
         ${SUBSYS_NAME}
@@ -54,7 +45,7 @@ if(build)
             PARENT_SCOPE
         )
     endif()
-    set_target_properties(${SUBSYS_NAME} PROPERTIES EXCLUDE_FROM_ALL TRUE)
+
 else()
     rws_clear_plugin_load_details(Lua)
 endif()

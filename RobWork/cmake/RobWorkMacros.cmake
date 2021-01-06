@@ -274,45 +274,54 @@ macro(RW_INIT_PROJECT ROOT PROJECT_NAME PREFIX VERSION)
         endif()
     endif()
 
-    set(
-        ${PREFIX}_CMAKE_RUNTIME_OUTPUT_DIRECTORY
+    set(${PREFIX}_CMAKE_RUNTIME_OUTPUT_DIRECTORY
         "${CMAKE_CURRENT_BINARY_DIR}/bin/${${PREFIX}_BUILD_TYPE}"
         CACHE PATH "Runtime directory" FORCE
     )
-    set(
-        ${PREFIX}_CMAKE_LIBRARY_OUTPUT_DIRECTORY
+    set(${PREFIX}_CMAKE_LIBRARY_OUTPUT_DIRECTORY
         "${CMAKE_CURRENT_BINARY_DIR}/libs/${${PREFIX}_BUILD_TYPE}"
         CACHE PATH "Library directory" FORCE
     )
-    set(
-        ${PREFIX}_CMAKE_ARCHIVE_OUTPUT_DIRECTORY
+    set(${PREFIX}_CMAKE_ARCHIVE_OUTPUT_DIRECTORY
         "${CMAKE_CURRENT_BINARY_DIR}/libs/${${PREFIX}_BUILD_TYPE}"
         CACHE PATH "Archive directory" FORCE
     )
 
     # Output goes to bin/<CONFIG> and libs/<CONFIG> unless specified otherwise by the user.
     if(DEFINED MSVC)
-        set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin" CACHE PATH "Runtime directory" FORCE)
-        set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/libs" CACHE PATH "Library directory" FORCE)
-        set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/libs" CACHE PATH "Archive directory" FORCE)
-        set(CMAKE_CONFIG_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/libs/cmake" CACHE PATH "CMakeConfig directory" FORCE)
+        set(CMAKE_RUNTIME_OUTPUT_DIRECTORY
+            "${CMAKE_CURRENT_BINARY_DIR}/bin"
+            CACHE PATH "Runtime directory" FORCE
+        )
+        set(CMAKE_LIBRARY_OUTPUT_DIRECTORY
+            "${CMAKE_CURRENT_BINARY_DIR}/libs"
+            CACHE PATH "Library directory" FORCE
+        )
+        set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY
+            "${CMAKE_CURRENT_BINARY_DIR}/libs"
+            CACHE PATH "Archive directory" FORCE
+        )
+        set(CMAKE_CONFIG_OUTPUT_DIRECTORY
+            "${CMAKE_CURRENT_BINARY_DIR}/libs/cmake"
+            CACHE PATH "CMakeConfig directory" FORCE
+        )
     else()
-        set(
-            CMAKE_RUNTIME_OUTPUT_DIRECTORY
+        set(CMAKE_RUNTIME_OUTPUT_DIRECTORY
             "${CMAKE_CURRENT_BINARY_DIR}/bin/${${PREFIX}_BUILD_TYPE}"
             CACHE PATH "Runtime directory" FORCE
         )
-        set(
-            CMAKE_LIBRARY_OUTPUT_DIRECTORY
+        set(CMAKE_LIBRARY_OUTPUT_DIRECTORY
             "${CMAKE_CURRENT_BINARY_DIR}/libs/${${PREFIX}_BUILD_TYPE}"
             CACHE PATH "Library directory" FORCE
         )
-        set(
-            CMAKE_ARCHIVE_OUTPUT_DIRECTORY
+        set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY
             "${CMAKE_CURRENT_BINARY_DIR}/libs/${${PREFIX}_BUILD_TYPE}"
             CACHE PATH "Archive directory" FORCE
         )
-        set(CMAKE_CONFIG_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/libs/${${PREFIX}_BUILD_TYPE}/cmake" CACHE PATH "CMakeConfig directory" FORCE)
+        set(CMAKE_CONFIG_OUTPUT_DIRECTORY
+            "${CMAKE_CURRENT_BINARY_DIR}/libs/${${PREFIX}_BUILD_TYPE}/cmake"
+            CACHE PATH "CMakeConfig directory" FORCE
+        )
     endif()
 
     string(TOUPPER ${PROJECT_NAME} PROJECT_NAME_UP)
@@ -433,6 +442,8 @@ macro(RW_OPTIONS PREFIX)
     # Build shared libraries by default. if(NOT DEFINED ${PREFIX}_SHARED_LIBS)
     # set(${PREFIX}_SHARED_LIBS OFF) endif()
 
+    option(USE_WERROR "Compile Warnings as Errors" OFF)
+    option(SWIG_DEFAULT_COMPILE "Build sig languuage pacakges as part of the default compile" OFF)
     option(${PREFIX}_SHARED_LIBS "Build shared libraries." ON)
     option(BUILD_SHARED_LIBS "Build shared libraries." ${PREFIX}_SHARED_LIBS)
 
@@ -590,12 +601,15 @@ macro(RW_ADD_SWIG _name _language _type)
 
     # ###### Handle Options #####
     set(options) # Used to marke flags
-    set(oneValueArgs TARGET_NAME INSTALL_DIR CXX_FILE_DIR LANGUAGE_FILE_DIR) # used to marke values
-                                                                             # with a single value
+    set(oneValueArgs TARGET_NAME INSTALL_DIR CXX_FILE_DIR LANGUAGE_FILE_DIR BINARY_OUTPUT_DIR
+    )# used to marke values
+    # with a single value
     set(multiValueArgs SOURCES DEPEND SWIG_FLAGS)
     cmake_parse_arguments(SLIB "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
 
-    # ###### Setup default options ########
+    #######################################
+    #        Setup default options        #
+    #######################################
     set(CM_VERSION 3.8)
     if(${_type} STREQUAL "STATIC")
         set(CM_VERSION 3.12)
@@ -612,7 +626,13 @@ macro(RW_ADD_SWIG _name _language _type)
         set(SLIB_LANGUAGE_FILE_DIR ${CMAKE_CURRENT_BINARY_DIR})
     endif()
 
-    # ########## Setup SWIG compile ###########
+    if(NOT DEFINED SLIB_BINARY_OUTPUT_DIR)
+        set(SLIB_BINARY_OUTPUT_DIR ${${PROJECT_PREFIX}_CMAKE_LIBRARY_OUTPUT_DIRECTORY})
+    endif()
+
+    #######################################
+    #          Setup SWIG compile         #
+    #######################################
 
     include(UseSWIG)
     set(CMAKE_SWIG_FLAGS ${SLIB_SWIG_FLAGS})
@@ -628,7 +648,6 @@ macro(RW_ADD_SWIG _name _language _type)
     endif()
 
     unset(CMAKE_SWIG_OUTDIR)
-
     if((CMAKE_VERSION VERSION_GREATER 3.12) OR (CMAKE_VERSION VERSION_EQUAL 3.12))
         swig_add_library(
             ${SLIB_TARGET_NAME}
@@ -659,7 +678,9 @@ macro(RW_ADD_SWIG _name _language _type)
         endif()
     endif()
 
-    set_target_properties(${SLIB_TARGET_NAME} PROPERTIES EXCLUDE_FROM_ALL TRUE)
+    #######################################
+    #      Setup target properties        #
+    #######################################
 
     if(NOT POLICY CMP0078)
         if(NOT ${SWIG_MODULE_${SLIB_TARGET_NAME}_REAL_NAME} STREQUAL "")
@@ -667,9 +688,21 @@ macro(RW_ADD_SWIG _name _language _type)
         endif()
     endif()
 
-    set(${_language}_NAME_${_name} ${SLIB_TARGET_NAME} CACHE INTERNAL "internal targetname translation")
+    set(${_language}_NAME_${_name}
+        ${SLIB_TARGET_NAME}
+        CACHE INTERNAL "internal targetname translation"
+    )
 
-    set_target_properties(${SLIB_TARGET_NAME} PROPERTIES EXCLUDE_FROM_ALL TRUE)
+    if(NOT SWIG_DEFAULT_COMPILE)
+        set_target_properties(${SLIB_TARGET_NAME} PROPERTIES EXCLUDE_FROM_ALL TRUE)
+    endif()
+    set_target_properties(
+        ${SLIB_TARGET_NAME}
+        PROPERTIES ARCHIVE_OUTPUT_DIRECTORY "${SLIB_BINARY_OUTPUT_DIR}"
+                   LIBRARY_OUTPUT_DIRECTORY "${SLIB_BINARY_OUTPUT_DIR}"
+                   RUNTIME_OUTPUT_DIRECTORY "${SLIB_BINARY_OUTPUT_DIR}"
+    )
+
     target_include_directories(${SLIB_TARGET_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
     add_library(${PROJECT_PREFIX}::${SLIB_TARGET_NAME} ALIAS ${SLIB_TARGET_NAME})
 
@@ -681,9 +714,52 @@ macro(RW_ADD_SWIG _name _language _type)
         endif()
     endif()
 
-    install(TARGETS ${SLIB_TARGET_NAME} EXPORT ${PROJECT_PREFIX}Targets DESTINATION
-                                                                        ${SLIB_INSTALL_DIR}
-                                                                        COMPONENT swig)
+    #######################################
+    #          Setup SWIG Install         #
+    #######################################
+
+    if(SWIG_DEFAULT_COMPILE OR CMAKE_VERSION VERSION_GREATER 3.16.0)
+        install(
+            TARGETS ${SLIB_TARGET_NAME}
+            EXPORT ${PROJECT_PREFIX}Targets
+            DESTINATION ${SLIB_INSTALL_DIR}
+            COMPONENT swig
+        )
+    else()
+        if("${_language}" STREQUAL "java")
+            set(SLIB_INSTALL_DIR $ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/${SLIB_INSTALL_DIR})
+            set(SLIB_TARGET_NAME lib${SLIB_TARGET_NAME})
+        elseif("${_language}" STREQUAL "lua")
+            set(SLIB_INSTALL_DIR $ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/${SLIB_INSTALL_DIR})
+            set(SLIB_TARGET_NAME ${_name})
+        endif()
+
+        install(
+            CODE    "
+                    if(EXISTS \"${SLIB_INSTALL_DIR}/${SLIB_TARGET_NAME}.so\" AND
+                        NOT IS_SYMLINK \"${SLIB_INSTALL_DIR}/${SLIB_TARGET_NAME}.so\")
+                        file(RPATH_CHECK
+                            FILE \"${SLIB_INSTALL_DIR}/${SLIB_TARGET_NAME}.so\"
+                            RPATH \"\")
+                    endif()
+                    if(EXISTS ${SLIB_BINARY_OUTPUT_DIR}/${SLIB_TARGET_NAME}.so)
+                        file(INSTALL DESTINATION ${SLIB_INSTALL_DIR} TYPE FILE FILES ${SLIB_BINARY_OUTPUT_DIR}/${SLIB_TARGET_NAME}.so)
+                        if(EXISTS \"${SLIB_INSTALL_DIR}/${SLIB_TARGET_NAME}.so\" AND
+                            NOT IS_SYMLINK \"${SLIB_INSTALL_DIR}/${SLIB_TARGET_NAME}.so\")
+
+                            file(RPATH_CHANGE
+                                FILE \"${SLIB_INSTALL_DIR}/${SLIB_TARGET_NAME}.so\"
+                                OLD_RPATH \"${${PROJECT_PREFIX}_CMAKE_LIBRARY_OUTPUT_DIRECTORY}\"
+                                NEW_RPATH \"\")
+                            if(CMAKE_INSTALL_DO_STRIP AND NOT WIN32)
+                                execute_process(COMMAND \"/usr/bin/strip\" \"${SLIB_INSTALL_DIR}/${SLIB_TARGET_NAME}.so\")
+                            endif()
+                        endif()
+                    endif()
+                    "
+            COMPONENT ${_language}
+        )
+    endif()
 endmacro()
 
 macro(RW_ADD_JAVA_CLEAN_TARGET _name)
@@ -710,6 +786,7 @@ macro(RW_ADD_JAVA_LIB _name)
     set(options) # Used to marke flags
     set(oneValueArgs LOADER_SOURCE_FILE LOADER_DST_FILE LOADER_PKG WINDOW_TITLE BUILD_DOC) # used to
                                                                                            # marke
+
     # values with a single value
     set(multiValueArgs CLASSPATH JAVADOC_LINK EXTRA_COPY)
     cmake_parse_arguments(JLIB "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
@@ -780,8 +857,14 @@ macro(RW_ADD_JAVA_LIB _name)
                 ${${PROJECT_PREFIX}_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/javadoc/${_name} -windowtitle
                 ${JLIB_WINDOW_TITLE} -public -sourcepath java_src_${_name} ${JLIB_LOADER_PKG}
                 org.robwork.${_name} ${DOC_LINK}
-            DEPENDS ${_name}_java_libs
+            DEPENDS ${java_NAME_${_name}}_libs
             WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+        )
+    else()
+        add_custom_target(
+            ${java_NAME_${_name}}_java_doc
+            COMMAND ${CMAKE_COMMAND} -E echo "Skipping Javadoc..."
+            DEPENDS ${java_NAME_${_name}}_libs
         )
     endif()
 

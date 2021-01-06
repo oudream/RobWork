@@ -132,6 +132,46 @@ macro(RWS_MESSAGE text)
     endif()
 endmacro()
 
+macro(VARIFY_LIBRARY _name _result)
+
+    string(REPLACE "${RWS_BUILD_WITH_BUILD_DIR}/libs/${RWS_BUILD_TYPE}" "${RWS_LIBS}" DIRS
+                   "${RWS_BUILD_WITH_LIBRARY_DIRS}"
+    )
+    list(REMOVE_DUPLICATES DIRS)
+
+    unset(tmp CACHE)
+    find_library(
+        tmp NAMES ${_name}
+        PATHS ${DIRS}
+        PATH_SUFFIXES ${RWS_BUILD_WITH_LIBRARY_SUBDIRS}
+        NO_DEFAULT_PATH
+    )
+
+    if(TARGET ${_name})
+        set(${_result} ${_name})
+
+    elseif(TARGET RWS::${_name})
+        set(${_result} RWS::${_name})
+
+    elseif(TARGET sdurw_${_name})
+        set(${_result} sdurws_${_name})
+
+    elseif(TARGET RWS::sdurws_${_name})
+        set(${_result} RWS::sdurws_${_name})
+
+    elseif(tmp)
+        add_library(RWS::${_name} UNKNOWN IMPORTED)
+        set_target_properties(
+            RWS::${_name} PROPERTIES IMPORTED_LOCATION ${tmp} INTERFACE_INCLUDE_DIRECTORIES
+                                    "${RWS_BUILD_WITH_INCLUDE_DIR}"
+        )
+        set(${_result} "RWS::${_name}")
+    else()
+        set(${_result} "")
+    endif()
+
+endmacro()
+
 # ##################################################################################################
 
 set(RWSCFG_ROOT ${CMAKE_CURRENT_LIST_DIR})
@@ -192,13 +232,17 @@ if(EXISTS ${RWSCFG_ROOT}/RobWorkStudioBuildConfig_${RWS_BUILD_TYPE}.cmake)
 
     # Find libraries
     set(ROBWORKSTUDIO_LIBRARIES_TMP)
+
     foreach(
         lib
         IN
         LISTS RWS_BUILD_WITH_LIBRARIES
     )
-        if(TARGET RWS::${lib})
-            list(APPEND ROBWORKSTUDIO_LIBRARIES_TMP "RWS::${lib}")
+        unset(res)
+        varify_library(${lib} res)
+
+        if(NOT "${res}" STREQUAL "")
+            list(APPEND ROBWORKSTUDIO_LIBRARIES_TMP "${res}")
             rws_message("Looking for ${lib} - found")
         else()
             if(${lib} STREQUAL "sdurws")
@@ -207,6 +251,7 @@ if(EXISTS ${RWSCFG_ROOT}/RobWorkStudioBuildConfig_${RWS_BUILD_TYPE}.cmake)
             else()
                 rws_message("Looking for ${lib} - not found (ignored)")
             endif()
+
         endif()
     endforeach()
 
@@ -342,20 +387,14 @@ if(EXISTS ${RWSCFG_ROOT}/RobWorkStudioBuildConfig_${RWS_BUILD_TYPE}.cmake)
     set(ROBWORKSTUDIO_LIBRARIES_TMP ${ROBWORKSTUDIO_LIBRARIES})
     set(ROBWORKSTUDIO_LIBRARIES)
     foreach(l ${ROBWORKSTUDIO_LIBRARIES_TMP})
-        unset(tmp CACHE)
-        find_library(
-            tmp ${l}
-            PATHS ${RWS_LIBS} ${RW_LIBS}
-            PATH_SUFFIXES ${RWS_BUILD_WITH_LIBRARY_SUBDIRS}
-            NO_DEFAULT_PATH
-        )
-        if(tmp)
-            list(APPEND ROBWORKSTUDIO_LIBRARIES ${tmp})
+        unset(res)
+        varify_library(${l} res)
+        if("${res}" STREQUAL "")
+            list(APPEND ROBWORKSTUDIO_LIBRARIES "${l}")
         else()
-            list(APPEND ROBWORKSTUDIO_LIBRARIES ${l})
+            list(APPEND ROBWORKSTUDIO_LIBRARIES "${res}")
         endif()
-    endforeach(l)
-
+    endforeach()
 else()
     message(STATUS "RobWorkStudio: Could not find a suitable RobWorkStudio installation!")
 endif()

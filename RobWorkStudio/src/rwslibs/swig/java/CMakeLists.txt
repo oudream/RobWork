@@ -77,7 +77,9 @@ if(build)
         add_dependencies(sdurws_jni sdurw_jni)
     endif()
 
-    target_link_libraries(${SUBSYS_NAME} INTERFACE sdurws_jni)
+    if(SWIG_DEFAULT_COMPILE OR CMAKE_VERSION VERSION_GREATER 3.16.0)
+        target_link_libraries(${SUBSYS_NAME} INTERFACE sdurws_jni)
+    endif()
 
     install(TARGETS ${SUBSYS_NAME} EXPORT ${PROJECT_PREFIX}Targets)
     add_library(${PROJECT_PREFIX}::${SUBSYS_NAME} ALIAS ${SUBSYS_NAME})
@@ -85,7 +87,7 @@ if(build)
     add_custom_target(
         java
         COMMAND ${CMAKE_COMMAND} -E echo "Done Building Java"
-        DEPENDS sdurws_jni
+        DEPENDS sdurws_jni ${java_NAME_sdurws}_java_doc ${java_NAME_sdurws}_libs
     )
 
 endif()

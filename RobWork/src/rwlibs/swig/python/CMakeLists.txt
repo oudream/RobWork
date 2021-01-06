@@ -106,6 +106,7 @@ if(build)
                 INSTALL_DIR ${PYTHON_INSTALL_DIR}/${RW_MODULE}
                 SOURCES ${SOURCE}
                 LANGUAGE_FILE_DIR ${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RW_MODULE}
+                BINARY_OUTPUT_DIR "${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RW_MODULE}"
                 SWIG_FLAGS ${SWIG_FLAGS}
             )
 
@@ -115,14 +116,6 @@ if(build)
 
             # Set build destination
             target_compile_definitions(${TARGET_NAME} PUBLIC RW_USE_NUMPY)
-
-            set_target_properties(
-                ${TARGET_NAME}
-                PROPERTIES
-                    ARCHIVE_OUTPUT_DIRECTORY "${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RW_MODULE}"
-                    LIBRARY_OUTPUT_DIRECTORY "${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RW_MODULE}"
-                    RUNTIME_OUTPUT_DIRECTORY "${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RW_MODULE}"
-            )
             add_dependencies(${SUBSYS_NAME} ${TARGET_NAME})
             set(python_targets ${python_targets} ${TARGET_NAME})
 
@@ -143,7 +136,9 @@ if(build)
                 endif()
             endif()
 
-            target_link_libraries(${SUBSYS_NAME} INTERFACE ${TARGET_NAME})
+            if(SWIG_DEFAULT_COMPILE OR CMAKE_VERSION VERSION_GREATER 3.16.0)
+                target_link_libraries(${SUBSYS_NAME} INTERFACE ${TARGET_NAME})
+            endif()
 
             install(
                 FILES ${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RW_MODULE}/${RW_MODULE}.py
@@ -178,6 +173,7 @@ if(build)
         COMMAND ${CMAKE_COMMAND} -E echo "Done Building Python"
         DEPENDS ${python_targets}
     )
-
+    
     install(TARGETS ${SUBSYS_NAME} EXPORT ${PROJECT_PREFIX}Targets)
+
 endif()

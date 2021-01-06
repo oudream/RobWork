@@ -58,6 +58,10 @@ Common Options
     - Default: let CMake find the path
     - Use this argument to specify which swig executable should be used.
 
+- SWIG_DEFAULT_COMPILE=OFF
+    - Default: make seperate compile targets for Python, Java and lua (make python, make java, make lua)
+    - If set to On Python, Java and Lua will be build as part of the normal Build Procedure ( make)
+
 - BOOST_ROOT="Path\to\boost_<version>"
     - Default: let CMake find the path
     - Use this to specify where cmake can find boost

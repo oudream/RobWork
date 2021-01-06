@@ -50,11 +50,14 @@
 #include "./loaders/rwxml/XMLParser.hpp"
 #include "./loaders/tul/TULLoader.hpp"
 #include "./loaders/tul/Tag.hpp"
+
+#if RW_HAVE_XERCES
 #include "./loaders/xml/XMLPathLoader.hpp"
 #include "./loaders/xml/XMLPathSaver.hpp"
 #include "./loaders/xml/XMLPropertyLoader.hpp"
 #include "./loaders/xml/XMLPropertySaver.hpp"
 #include "./loaders/xml/XMLTrajectoryLoader.hpp"
 #include "./loaders/xml/XMLTrajectorySaver.hpp"
+#endif
 
 #endif /* LOADERS_HPP_ */
