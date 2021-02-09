@@ -70,9 +70,6 @@ saveVersion () {
     echo "debrev.$DEBREV" >> $input
     
     cd ${DIR}
-    if [[ $isDebRev -eq 0 ]] ; then
-        ./updateControlPkgVersion.sh
-    fi
     
     git add ./version
     git add ../control
@@ -254,8 +251,6 @@ if [[ $doTestBuild == "False" ]] ; then
         tagName="Debian/$MAJOR.$MINOR.$PATCH"
         git tag -a $tagName -m "Debian released Version $MAJOR.$MINOR.$PATCH"
         git push origin $tagName
-        
-        git merge origin/master || result=0
         
         if [ $result -eq 0 ] ; then
             handleMergeConflicts

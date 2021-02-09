@@ -489,7 +489,7 @@ endmacro()
 # Add a library target. _name The library name. _component The part of RW that this library belongs
 # to. ARGN The source files for the library.
 macro(RW_ADD_LIBRARY _name)
-    set(options STATIC SHARED MODULE) # Used to marke flags
+    set(options STATIC SHARED MODULE NO_EXPORT) # Used to marke flags
     set(oneValueArgs COMPONENT) # used to marke values with a single value
     set(multiValueArgs)
 
@@ -536,13 +536,22 @@ macro(RW_ADD_LIBRARY _name)
         set(lib_dir ${STATIC_LIB_INSTALL_DIR})
     endif()
 
-    install(
-        TARGETS ${_name}
-        EXPORT ${PROJECT_PREFIX}Targets
-        RUNTIME DESTINATION ${BIN_INSTALL_DIR} COMPONENT ${_component}
-        LIBRARY DESTINATION ${lib_dir} COMPONENT ${_component}
-        ARCHIVE DESTINATION ${lib_dir} COMPONENT ${_component}
-    )
+    if(SUBSYS_NO_EXPORT)
+        install(
+            TARGETS ${_name}
+            RUNTIME DESTINATION ${BIN_INSTALL_DIR} COMPONENT ${_component}
+            LIBRARY DESTINATION ${lib_dir} COMPONENT ${_component}
+            ARCHIVE DESTINATION ${lib_dir} COMPONENT ${_component}
+        )
+    else()
+        install(
+            TARGETS ${_name}
+            EXPORT ${PROJECT_PREFIX}Targets
+            RUNTIME DESTINATION ${BIN_INSTALL_DIR} COMPONENT ${_component}
+            LIBRARY DESTINATION ${lib_dir} COMPONENT ${_component}
+            ARCHIVE DESTINATION ${lib_dir} COMPONENT ${_component}
+        )
+    endif()
 
 endmacro()
 
@@ -607,9 +616,9 @@ macro(RW_ADD_SWIG _name _language _type)
     set(multiValueArgs SOURCES DEPEND SWIG_FLAGS)
     cmake_parse_arguments(SLIB "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
 
-    #######################################
-    #        Setup default options        #
-    #######################################
+    # ##############################################################################################
+    # Setup default options        #
+    # ##############################################################################################
     set(CM_VERSION 3.8)
     if(${_type} STREQUAL "STATIC")
         set(CM_VERSION 3.12)
@@ -630,9 +639,9 @@ macro(RW_ADD_SWIG _name _language _type)
         set(SLIB_BINARY_OUTPUT_DIR ${${PROJECT_PREFIX}_CMAKE_LIBRARY_OUTPUT_DIRECTORY})
     endif()
 
-    #######################################
-    #          Setup SWIG compile         #
-    #######################################
+    # ##############################################################################################
+    # Setup SWIG compile         #
+    # ##############################################################################################
 
     include(UseSWIG)
     set(CMAKE_SWIG_FLAGS ${SLIB_SWIG_FLAGS})
@@ -678,9 +687,9 @@ macro(RW_ADD_SWIG _name _language _type)
         endif()
     endif()
 
-    #######################################
-    #      Setup target properties        #
-    #######################################
+    # ##############################################################################################
+    # Setup target properties        #
+    # ##############################################################################################
 
     if(NOT POLICY CMP0078)
         if(NOT ${SWIG_MODULE_${SLIB_TARGET_NAME}_REAL_NAME} STREQUAL "")
@@ -688,7 +697,11 @@ macro(RW_ADD_SWIG _name _language _type)
         endif()
     endif()
 
-    set(${_language}_NAME_${_name}
+    unset(_s)
+    if("${_type}" STREQUAL "STATIC")
+        set(_s "_s")
+    endif()
+    set(${_language}${_s}_NAME_${_name}
         ${SLIB_TARGET_NAME}
         CACHE INTERNAL "internal targetname translation"
     )
@@ -714,14 +727,14 @@ macro(RW_ADD_SWIG _name _language _type)
         endif()
     endif()
 
-    #######################################
-    #          Setup SWIG Install         #
-    #######################################
+    # ##############################################################################################
+    # Setup SWIG Install         #
+    # ##############################################################################################
 
     if(SWIG_DEFAULT_COMPILE OR CMAKE_VERSION VERSION_GREATER 3.16.0)
         install(
             TARGETS ${SLIB_TARGET_NAME}
-            EXPORT ${PROJECT_PREFIX}Targets
+            EXPORT ${PROJECT_PREFIX}${_language}Targets
             DESTINATION ${SLIB_INSTALL_DIR}
             COMPONENT swig
         )
@@ -735,7 +748,7 @@ macro(RW_ADD_SWIG _name _language _type)
         endif()
 
         install(
-            CODE    "
+            CODE "
                     if(EXISTS \"${SLIB_INSTALL_DIR}/${SLIB_TARGET_NAME}.so\" AND
                         NOT IS_SYMLINK \"${SLIB_INSTALL_DIR}/${SLIB_TARGET_NAME}.so\")
                         file(RPATH_CHECK
@@ -760,6 +773,32 @@ macro(RW_ADD_SWIG _name _language _type)
             COMPONENT ${_language}
         )
     endif()
+endmacro()
+
+macro(RW_SWIG_COMPILE_TARGET _language)
+
+    if(TARGET ${_language})
+        add_dependencies(${_language} ${ARGN})
+    else()
+        add_custom_target(
+            ${_language}
+            COMMAND ${CMAKE_COMMAND} -E echo "Done Building"
+            DEPENDS ${ARGN}
+        )
+    endif()
+
+    export(
+        EXPORT ${PROJECT_PREFIX}${_language}Targets
+        FILE "${${PROJECT_PREFIX}_ROOT}/cmake/${PROJECT_NAME}${_language}Targets.cmake"
+        NAMESPACE ${PROJECT_PREFIX}::
+    )
+
+    install(
+        EXPORT ${PROJECT_PREFIX}${_language}Targets
+        FILE ${PROJECT_NAME}${_language}Targets.cmake
+        NAMESPACE ${PROJECT_PREFIX}::
+        DESTINATION ${${PROJECT_PREFIX}_INSTALL_DIR}/cmake
+    )
 endmacro()
 
 macro(RW_ADD_JAVA_CLEAN_TARGET _name)
@@ -1139,7 +1178,7 @@ endmacro()
 macro(RW_INCLUDE_EIGEN _name)
     target_include_directories(${_name} PUBLIC $<BUILD_INTERFACE:${EIGEN3_INCLUDE_DIR}>)
 
-    if(RW_ENABLE_INTERNAL_EIGEN_TARGET)
+    if(RW_ENABLE_INTERNAL_EIGEN_TARGET OR MSVC)
         target_include_directories(
             ${_name} INTERFACE $<INSTALL_INTERFACE:${RW_EXT_INSTALL_DIR}/eigen3>
         )

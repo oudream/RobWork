@@ -632,12 +632,12 @@ void RobWorkStudio::setupPlugin (const QString& fullname, bool visible, int dock
 
         QObject* pluginObject = loader.instance ();
         if (pluginObject != NULL) {
+
             RobWorkStudioPlugin* testP = dynamic_cast< RobWorkStudioPlugin* > (pluginObject);
             if (testP == NULL) {
                 RW_THROW ("Loaded plugin is NULL, tried loading \"" << fullname.toStdString ()
                                                                     << "\"");
             }
-
             RobWorkStudioPlugin* plugin = qobject_cast< RobWorkStudioPlugin* > (pluginObject);
 
             if (plugin) {

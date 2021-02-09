@@ -6,7 +6,6 @@ set(SUBSYS_DEPS
     sdurw_kinematics
     sdurw_geometry
     sdurw_sensor
-    sdurw_kinematics
     sdurw_models
 )
 

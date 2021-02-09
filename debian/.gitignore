@@ -20,3 +20,7 @@ sdurwhw-cmake*/
 sdurwsim-cmake*/
 python3*/
 lua*/
+
+/default-packages/debian/*.substvars
+/default-packages/debian/libsdurw*
+*_amd64.deb

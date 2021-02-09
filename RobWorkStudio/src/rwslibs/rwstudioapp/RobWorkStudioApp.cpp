@@ -148,6 +148,60 @@ void initReasource ()
     Q_INIT_RESOURCE (rwstudio_resources);
 }
 
+namespace {
+std::vector< std::string > split (std::string str, std::string token)
+{
+    std::vector< std::string > result;
+    size_t index = str.find (token);
+    if (index != std::string::npos) {
+        while (str.size ()) {
+            size_t index = str.find (token);
+            if (index != std::string::npos) {
+                result.push_back (str.substr (0, index));
+                str = str.substr (index + token.size ());
+                if (str.size () == 0)
+
+                    result.push_back (str);
+            }
+            else {
+                result.push_back (str);
+                str = "";
+            }
+        }
+    }
+    else {
+        result.push_back (str);
+    }
+    return result;
+}
+
+void loadPluginFolder (RobWorkStudio* rws, const std::string& folder,
+                       const std::vector< std::string >& excludeList)
+{
+    if (boost::filesystem::exists (folder)) {
+        boost::filesystem::path p2 (folder);
+        for (boost::filesystem::directory_iterator i (p2);
+             i != boost::filesystem::directory_iterator ();
+             i++) {
+            std::string plPath = std::string (folder) + "/" + i->path ().filename ().string ();
+
+            bool exclude = false;
+            for (const std::string& expl : excludeList) {
+                if (plPath == expl || i->path ().filename ().string () == expl) {
+                    exclude = true;
+                    break;
+                }
+            }
+
+            if (!exclude) {
+                rws->loadPlugin (plPath.c_str (), 0, 1);
+            }
+        }
+    }
+}
+
+}    // namespace
+
 int RobWorkStudioApp::run ()
 {
     {
@@ -155,8 +209,10 @@ int RobWorkStudioApp::run ()
 
         char* argv[30];
         std::vector< std::string > args = boost::program_options::split_unix (_args);
+
         for (size_t i = 0; i < args.size (); i++) {
             argv[i] = &(args[i][0]);
+            std::cout << "argv: " << argv[i] << std::endl;
         }
 
         int argc = (int) args.size ();
@@ -167,10 +223,13 @@ int RobWorkStudioApp::run ()
         poptions.addStringOption ("ini-file", "RobWorkStudio.ini", "RobWorkStudio ini-file");
         poptions.addStringOption ("input-file", "", "Project/Workcell/Device input file");
         poptions.addStringOption (
-            "rwsplugin", "", "load RobWorkStudio plugin, not to be confused with '--rwplug'");
+            "rwsplugin", "", "load RobWorkStudio plugin, not to be confused with '--rwplugin'");
         poptions.addStringOption ("nosplash", "", "If defined the splash screen will not be shown");
+        poptions.addStringOption (
+            "exclude-plugins", "", "list of plugins not to load seperated by ,");
         poptions.setPositionalOption ("input-file", -1);
         poptions.initOptions ();
+
         poptions.parse (argc, argv);
 
         PropertyMap map       = poptions.getPropertyMap ();
@@ -178,11 +237,19 @@ int RobWorkStudioApp::run ()
         std::string inifile   = map.get< std::string > ("ini-file", "");
         std::string inputfile = map.get< std::string > ("input-file", "");
         std::string rwsplugin = map.get< std::string > ("rwsplugin", "");
+        std::vector< std::string > excludePl =
+            split (map.get< std::string > ("exclude-plugins", ""), ",");
+
+        for (std::string plugin : excludePl) {
+            std::cout << plugin << std::endl;
+        }
+
         {
             MyQApplication app (argc, argv);
 #ifdef RWS_HAVE_GLUT
             glutInit (&argc, argv);
 #endif
+
             try {
                 QSplashScreen* splash;
                 if (showSplash) {
@@ -192,7 +259,9 @@ int RobWorkStudioApp::run ()
                     // Loading some items
                     splash->showMessage ("Adding static plugins");
                 }
+
                 app.processEvents ();
+
                 // Establishing connections
                 if (showSplash)
                     splash->showMessage ("Loading static plugins");
@@ -201,58 +270,63 @@ int RobWorkStudioApp::run ()
                 {
                     Timer t;
                     rws::RobWorkStudio rwstudio (map);
+
 #ifdef RWS_USE_STATIC_LINK_PLUGINS
 #ifdef RWS_HAVE_PLUGIN_LOG
+
                     rwstudio.addPlugin (new rws::ShowLog (), false, Qt::BottomDockWidgetArea);
 #endif
 #ifdef RWS_HAVE_PLUGIN_JOG
+
                     rwstudio.addPlugin (new rws::Jog (), false, Qt::LeftDockWidgetArea);
 #endif
 #ifdef RWS_HAVE_PLUGIN_TREEVIEW
+
                     rwstudio.addPlugin (new rws::TreeView (), false, Qt::LeftDockWidgetArea);
 #endif
 #ifdef RWS_HAVE_PLUGIN_PLAYBACK
+
                     rwstudio.addPlugin (new rws::PlayBack (), false, Qt::BottomDockWidgetArea);
 #endif
 #ifdef RWS_HAVE_PLUGIN_PROPERTYVIEW
+
                     rwstudio.addPlugin (new rws::PropertyView (), false, Qt::LeftDockWidgetArea);
 #endif
 #ifdef RWS_HAVE_PLUGIN_PLANNING
+
                     rwstudio.addPlugin (new rws::Planning (), false, Qt::LeftDockWidgetArea);
 #endif
 #ifdef RWS_HAVE_PLUGIN_SENSORS
+
                     rwstudio.addPlugin (new rws::Sensors (), false, Qt::RightDockWidgetArea);
 #endif
 #ifdef RWS_HAVE_PLUGIN_WORKCELLEDITOR
+
                     rwstudio.addPlugin (
                         new rws::WorkcellEditorPlugin (), false, Qt::LeftDockWidgetArea);
 #endif
 #ifdef RW_HAVE_EIGEN
+
                     rwstudio.addPlugin (new rws::Calibration (), false, Qt::RightDockWidgetArea);
 #endif
 
 #if RWS_HAVE_PLUGIN_LUAPL
+
                     rwstudio.addPlugin (new rws::Lua (), false, Qt::LeftDockWidgetArea);
 #endif
 #if RWS_HAVE_PLUGIN_PYTHONEDITOR
-                    rwstudio.addPlugin(new rws::PyEditor(),false, Qt::LeftDockWidgetArea);
+
+                    rwstudio.addPlugin (new rws::PyEditor (), false, Qt::LeftDockWidgetArea);
 #endif
 #endif
+
                     // Load all plugins from the local rwsplugins folder
-                    if (boost::filesystem::exists (RWS_COMPILE_PLUGIN_DIR)) {
-                        boost::filesystem::path p2 (RWS_COMPILE_PLUGIN_DIR);
-                        for (boost::filesystem::directory_iterator i (p2);
-                             i != boost::filesystem::directory_iterator ();
-                             i++) {
-                            std::string plPath = std::string (RWS_COMPILE_PLUGIN_DIR) + "/" +
-                                                 i->path ().filename ().string ();
-                            rwstudio.loadPlugin (plPath.c_str (), 0, 1);
-                        }
-                    }
+                    loadPluginFolder (&rwstudio, RWS_COMPILE_PLUGIN_DIR, excludePl);
 
                     if (showSplash) {
                         splash->showMessage ("Loading static plugins");
                     }
+
                     rwstudio.loadSettingsSetupPlugins (inifile);
 
                     // Load all plugins from the rwsplugins folder
@@ -279,16 +353,7 @@ int RobWorkStudioApp::run ()
                         }
 
                         // Load all plugins from the rwsplugins folder
-                        if (boost::filesystem::exists (rwspluginFolder)) {
-                            boost::filesystem::path p2 (rwspluginFolder);
-                            for (boost::filesystem::directory_iterator i (p2);
-                                 i != boost::filesystem::directory_iterator ();
-                                 i++) {
-                                std::string plPath =
-                                    rwspluginFolder + "/" + i->path ().filename ().string ();
-                                rwstudio.loadPlugin (plPath.c_str (), 0, 1);
-                            }
-                        }
+                        loadPluginFolder (&rwstudio, rwspluginFolder, excludePl);
                     }
 
                     if (inputfile.empty ()) {
@@ -298,11 +363,13 @@ int RobWorkStudioApp::run ()
                         }
                         rwstudio.openFile (workcellFile);
                     }
+
                     if (!inputfile.empty ()) {
                         if (showSplash)
                             splash->showMessage ("Opening workcell...");
                         rwstudio.openFile (inputfile);
                     }
+
                     if (!rwsplugin.empty ()) {
                         rwstudio.loadPlugin (rwsplugin);
                     }
@@ -312,6 +379,7 @@ int RobWorkStudioApp::run ()
                         splash->showMessage ("Loading settings");
                         splash->finish (&rwstudio);
                     }
+
                     _rwstudio = &rwstudio;
                     rwstudio.show ();
 
@@ -333,8 +401,7 @@ int RobWorkStudioApp::run ()
                 _isRunning = false;
                 return -1;
             }
-            catch(int) {
-
+            catch (int) {
             }
         }
         _isRunning = false;

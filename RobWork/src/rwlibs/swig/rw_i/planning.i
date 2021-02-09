@@ -148,12 +148,7 @@ private:
     QSampler(const QSampler&);
     QSampler& operator=(const QSampler&);
 };
-//! @brief smart pointer type to this class
-%template (QSamplerPtr) rw::core::Ptr<QSampler>;
-//! @brief smart pointer type to this const class
-%template (QSamplerCPtr) rw::core::Ptr<const QSampler>;
-
-OWNEDPTR(QSampler)
+NAMED_OWNEDPTR(QSampler,QSampler);
 
 class PlannerConstraint
 {

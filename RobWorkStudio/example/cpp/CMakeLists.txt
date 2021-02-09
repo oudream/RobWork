@@ -5,11 +5,8 @@ project(ExampleSnippets)
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "None")
 endif()
-set(RW_ROOT "$ENV{RW_ROOT}")
-set(RWS_ROOT "$ENV{RWS_ROOT}")
 
-#find_package(RobWork REQUIRED PATHS "${RW_ROOT}")
-find_package(RobWorkStudio REQUIRED PATHS "${RWS_ROOT}")
+find_package(RobWorkStudio REQUIRED PATHS "$ENV{RWS_ROOT}" "../../cmake")
 
 macro(rw_build _name)
     # And now we add any targets that we want

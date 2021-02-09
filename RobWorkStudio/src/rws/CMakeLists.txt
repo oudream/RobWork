@@ -101,7 +101,7 @@ if(build)
     target_link_libraries(
         ${SUBSYS_NAME}
         PUBLIC
-            qtpropertybrowser
+            RWS::qtpropertybrowser
             ${PYTHON_LIBRARIES}
             ${QT_LIBRARIES}
             RW::sdurw_proximitystrategies

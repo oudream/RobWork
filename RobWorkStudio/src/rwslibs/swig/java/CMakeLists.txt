@@ -84,10 +84,9 @@ if(build)
     install(TARGETS ${SUBSYS_NAME} EXPORT ${PROJECT_PREFIX}Targets)
     add_library(${PROJECT_PREFIX}::${SUBSYS_NAME} ALIAS ${SUBSYS_NAME})
 
-    add_custom_target(
-        java
-        COMMAND ${CMAKE_COMMAND} -E echo "Done Building Java"
-        DEPENDS sdurws_jni ${java_NAME_sdurws}_java_doc ${java_NAME_sdurws}_libs
-    )
+    RW_SWIG_COMPILE_TARGET(
+            java
+            sdurws_jni ${java_NAME_sdurws}_java_doc ${java_NAME_sdurws}_libs
+        )
 
 endif()

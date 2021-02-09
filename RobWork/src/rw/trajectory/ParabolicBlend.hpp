@@ -54,7 +54,7 @@ namespace rw { namespace trajectory {
             if (_tau > line1.duration () || _tau > line2.duration ()) {
                 RW_THROW ("blend time tau is greater then LineInterpolator duration");
             }
-            if (line1.getEnd () != line2.getStart ()) {
+            if ((line1.getEnd () - line2.getStart ()).norm2() > 10e-10) {
                 RW_THROW ("Bland cannot be performed when line1.getEnd() != line2.getStart()");
             }
             double T1 = line1.duration ();

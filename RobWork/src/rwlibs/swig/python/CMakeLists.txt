@@ -85,6 +85,7 @@ if(build)
         sdurw_graspplanning
         sdurw_loaders
         sdurw
+        sdurw_algorithms
         sdurw_task
         sdurw_assembly
         sdurw_control
@@ -168,12 +169,8 @@ if(build)
         endif()
     endforeach()
 
-    add_custom_target(
-        python
-        COMMAND ${CMAKE_COMMAND} -E echo "Done Building Python"
-        DEPENDS ${python_targets}
-    )
+    RW_SWIG_COMPILE_TARGET( python ${python_targets} )
     
-    install(TARGETS ${SUBSYS_NAME} EXPORT ${PROJECT_PREFIX}Targets)
+    install(TARGETS ${SUBSYS_NAME} EXPORT ${PROJECT_PREFIX}pythonTargets)
 
 endif()

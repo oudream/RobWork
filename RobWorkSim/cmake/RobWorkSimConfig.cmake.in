@@ -139,7 +139,17 @@ get_robworksim_build_type(${RWSIMCFG_ROOT} RWSIM_BUILD_TYPE)
 
 if(NOT TARGET sdurwsim)
     include("${RWSIMCFG_ROOT}/RobWorkSimTargets.cmake")
+    if(EXISTS "${RWSIMCFG_ROOT}/RobWorkSimluaTargets.cmake")
+        include("${RWSIMCFG_ROOT}/RobWorkSimluaTargets.cmake")
+    endif()
+    if(EXISTS "${RWSIMCFG_ROOT}/RobWorkSimjavaTargets.cmake")
+        include("${RWSIMCFG_ROOT}/RobWorkSimjavaTargets.cmake")
+    endif()
+    if(EXISTS "${RWSIMCFG_ROOT}/RobWorkSimpythonTargets.cmake")
+        include("${RWSIMCFG_ROOT}/RobWorkSimpythonTargets.cmake")
+    endif()
 endif()
+
 if(EXISTS ${RWSIMCFG_ROOT}/RobWorkSimBuildConfig_${RWSIM_BUILD_TYPE}.cmake)
     include(${RWSIMCFG_ROOT}/RobWorkSimBuildConfig_${RWSIM_BUILD_TYPE}.cmake)
 

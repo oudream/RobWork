@@ -72,7 +72,7 @@ while read p; do
     gotSONAME="true"
     archFolder="*"
     unversioned="false"
-    lintianOverride=""
+    lintianOverride="package-name-doesnt-match-sonames"
     static="false"
 
     for elem in $p ; do 
@@ -160,7 +160,7 @@ while read p; do
     ############################################################
     if [[ ! $noLib == "true" ]] ; then
         
-        filename="lib$pkgName$MAJOR.$MINOR.install"
+        filename="lib$pkgName.install"
 
         if [[ $unversioned == "true" ]] ; then 
             filename="lib$pkgName.install"
@@ -236,7 +236,7 @@ while read p; do
     
     if [[ ! -z "$lintianOverride" ]] ; then
         
-        filename="lib$pkgName$MAJOR.$MINOR.lintian-overrides"
+        filename="lib$pkgName.lintian-overrides"
 
         if [[ $unversioned == "true" ]] ; then 
             filename="lib$pkgName.lintian-overrides"

@@ -208,7 +208,7 @@ if(WIN32)
     endif()
 
     install(
-        DIRECTORY "${RW_ROOT}/ext/eigen3/Eigen/"
+        DIRECTORY "${EIGEN3_INCLUDE_DIR}/"
         DESTINATION "${RW_INSTALL_DIR}/ext/Eigen/"
         COMPONENT eigen
     )

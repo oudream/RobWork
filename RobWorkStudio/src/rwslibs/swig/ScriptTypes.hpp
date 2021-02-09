@@ -60,10 +60,11 @@ namespace rws { namespace swig {
 
     /// These functions all work on the current RobWorkStudio state
 
-    rw::core::Ptr< RobWorkStudio > getRobWorkStudioInstance ();
-
-    rw::core::Ptr< RobWorkStudio > getRobWorkStudioInstance (const std::string& args);
-
+    #if defined(SWIGPYTHON)
+        rw::core::Ptr< RobWorkStudio > getRobWorkStudioInstance (const std::string& args = "RobWorkStudio --exclude-plugins libsdurws_pythoneditor.so");
+    #else
+        rw::core::Ptr< RobWorkStudio > getRobWorkStudioInstance (const std::string& args = "RobWorkStudio");
+    #endif
     void closeRobWorkStudio ();
 
     bool isRunning ();
