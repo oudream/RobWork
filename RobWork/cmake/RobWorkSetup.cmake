@@ -52,9 +52,8 @@ if(NOT DEFINED USE_BOOST_STATIC)
         set(USE_BOOST_STATIC ON)
     endif()
 endif()
+
 set(Boost_USE_STATIC_LIBS ${USE_BOOST_STATIC})
-set(Boost_NO_BOOST_CMAKE TRUE) # From Boost 1.70, CMake files are provided by Boost - we can't
-                               # handle it
 unset(Boost_FIND_QUIETLY)
 set(Boost_LIBRARIES_TMP "")
 
