@@ -141,7 +141,8 @@ macro(VARIFY_LIBRARY _name _result)
 
     unset(tmp CACHE)
     find_library(
-        tmp NAMES ${_name}
+        tmp
+        NAMES ${_name}
         PATHS ${DIRS}
         PATH_SUFFIXES ${RW_BUILD_WITH_LIBRARY_SUBDIRS}
         NO_DEFAULT_PATH
@@ -293,9 +294,18 @@ if(EXISTS ${RWCFG_ROOT}/RobWorkBuildConfig_${RW_BUILD_TYPE}.cmake)
         find_package(FreeGLUT REQUIRED)
     endif()
 
-    set(BOOST_ROOT ${RW_BUILD_WITH_BOOST_ROOT})
-    set(BOOST_INCLUDEDIR ${RW_BUILD_WITH_BOOST_INCLUDE_DIR})
-    set(BOOST_LIBRARYDIR ${RW_BUILD_WITH_BOOST_LIBRARY_DIR})
+    set(Boost_USE_STATIC_LIBS ${RW_BUILD_WITH_BOOST_USE_STATIC_LIB})
+    unset(Boost_FIND_QUIETLY)
+    if(${RW_BUILD_TYPE} STREQUAL "release")
+        set(Boost_USE_DEBUG_LIBS OFF) # ignore debug libs and
+        set(Boost_USE_RELEASE_LIBS ON) # only find release libs
+    endif()
+
+    find_package(
+        Boost REQUIRED
+        COMPONENTS filesystem serialization system thread program_options
+        PATHS ${RW_BUILD_WITH_BOOST_ROOT}
+    )
 
     if(DEFINED WIN32 AND ${IS_INSTALL})
         set(BOOST_INCLUDEDIR "${RW_INCLUDE_EXT}/boost")

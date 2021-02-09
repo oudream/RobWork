@@ -12,6 +12,38 @@
     "command_case": "canonical",
     "keyword_case": "unchanged",
     "additional_commands": {
+        "find_package" : {
+            "pargs": 2,
+            "flags": [
+                "REQUIRED",
+                "QUIET",
+                "EXACT",
+                "MODULE",
+                "NO_POLICY_SCOPE",
+                "CONFIG",
+                "NO_MODULE",
+                "NO_DEFAULT_PATH",
+                "NO_PACKAGE_ROOT_PATH",
+                "NO_CMAKE_PATH",
+                "NO_CMAKE_ENVIRONMENT_PATH",
+                "NO_SYSTEM_ENVIRONMENT_PATH",
+                "NO_CMAKE_PACKAGE_REGISTRY",
+                "NO_CMAKE_BUILDS_PATH",
+                "NO_CMAKE_SYSTEM_PATH",
+                "NO_CMAKE_SYSTEM_PACKAGE_REGISTRY",
+                "CMAKE_FIND_ROOT_PATH_BOTH",
+                "ONLY_CMAKE_FIND_ROOT_PATH",
+                "NO_CMAKE_FIND_ROOT_PATH"
+            ],
+            "kwargs": {
+                "COMPONENTS": "*",
+                "NAMES": "*",
+                "CONFIGS": "*",
+                "HINTS": "*",
+                "PATHS": "*",
+                "PATH_SUFFIXES": "*"
+            }
+        },
         "foreach": {
             "pargs": 1,
             "flags": [
