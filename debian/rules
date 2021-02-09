@@ -25,52 +25,52 @@ override_dh_auto_configure:
 		-DBUILD_sdurw_python=ON \
 		-DBUILD_sdurws_java=OFF \
 		-DBUILD_sdurwsim_java=OFF \
+		-DSWIG_DEFAULT_COMPILE=TRUE \
 		$(shell ./debian/scripts/getVersion.sh "./debian/scripts" -n) 
 
 override_dh_clean:
 	dh_clean
-	$(RM) -r RobWork/bin/*
-	$(RM) -r RobWork/libs/*
 	$(RM) RobWork/CTestConfig.cmake
 	$(RM) RobWork/cmake/RobWorkBuildConfig_none.cmake
 	$(RM) RobWork/cmake/RobWorkConfig.cmake
 	$(RM) RobWork/cmake/RobWorkConfigVersion.cmake
-	$(RM) RobWork/cmake/dependencies.cmake.gen
-	$(RM) RobWork/ext/fcl/fcl/include/fcl/config.h
+	$(RM) RobWork/cmake/RobWorkTargets.cmake
 	$(RM) RobWork/ext/rwyaobi/yaobi/yaobi_config.h
-	$(RM) RobWork/include_dirs
 	$(RM) RobWork/src/RobWorkConfig.hpp
 	$(RM) RobWork/test/TestSuiteConfig.hpp
 	$(RM) RobWork/test/TestSuiteConfig.xml.install
-	$(RM) -r RobWorkHardware/bin/*
-	$(RM) -r RobWorkHardware/libs/*
-	$(RM) RobWorkHardware/cmake/RobWorkHardwareBuildConfig_none.cmake
-	$(RM) RobWorkHardware/cmake/RobWorkHardwareConfig.cmake
-	$(RM) RobWorkHardware/cmake/RobWorkHardwareConfigVersion.cmake
-	$(RM) RobWorkHardware/src/RobWorkHardwareConfig.hpp
-	$(RM) RobWorkHardware/src/rwhw/universalrobots/urscript.hpp
-	$(RM) RobWorkHardware/ext/ur_rtde/include/ur_rtde/rtde_control_script.h
-	$(RM) -r RobWorkStudio/bin/none
-	$(RM) -r RobWorkStudio/libs/*
+	$(RM) RobWork/src/rwlibs/swig/python/RobWork-*.egg-info
+	$(RM) RobWork/src/rwlibs/swig/python/setup.py
+	$(RM) RobWork/cmake/dependencies.cmake.gen
+	$(RM) RobWork/src/rwlibs/swig/lua/Lua_sdurw*.hpp
+
 	$(RM) RobWorkStudio/CTestConfig.cmake
 	$(RM) RobWorkStudio/cmake/RobWorkStudioBuildConfig_none.cmake
 	$(RM) RobWorkStudio/cmake/RobWorkStudioConfig.cmake
 	$(RM) RobWorkStudio/cmake/RobWorkStudioConfigVersion.cmake
+	$(RM) RobWorkStudio/cmake/RobWorkStudioTargets.cmake
 	$(RM) RobWorkStudio/cmake/dependencies.cmake.gen
+	$(RM) RobWorkStudio/docs/sdurw_help-*.qhcp
+	$(RM) RobWorkStudio/src/rwslibs/swig/python/RobWorkStudio-*.egg-info
+	$(RM) RobWorkStudio/bin/RobWorkStudio.ini.shared
+
+	$(RM) RobWorkSim/cmake/RobWorkSTargets.cmake
 	$(RM) RobWorkStudio/docs/robwork_help-v0.7.0.qhcp
 	$(RM) RobWorkStudio/gtest/TestSuiteConfig.xml.generated
 	$(RM) RobWorkStudio/src/RobWorkStudioConfig.hpp
-	$(RM) -r RobWorkSim/bin/*
-	$(RM) -r RobWorkSim/libs/*
 	$(RM) RobWorkSim/CTestConfig.cmake
 	$(RM) RobWorkSim/cmake/RobWorkSimBuildConfig_none.cmake
 	$(RM) RobWorkSim/cmake/RobWorkSimConfig.cmake
 	$(RM) RobWorkSim/cmake/RobWorkSimConfigVersion.cmake
+	$(RM) RobWorkSim/cmake/RobWorkSimTargets.cmake
 	$(RM) RobWorkSim/src/RobWorkSimConfig.hpp
 	$(RM) RobWorkSim/src/rwsimlibs/gui/RWSimGuiConfig.hpp
 	$(RM) RobWorkSim/test/TestSuiteConfig.hpp
 	$(RM) RobWorkSim/test/TestSuiteConfig.xml.install
+	$(RM) RobWorkSim/src/rwsimlibs/swig/python/RobWorkSim-*.egg-info
+
 	$(RM) doc/Doxyfile
+	
 
 override_dh_shlibdeps:
 	LD_LIBRARY_PATH=$(DESTDIR)/usr/lib/$(DEB_TARGET_MULTIARCH):$$LD_LIBRARY_PATH dh_shlibdeps -l$(DESTDIR)/usr/lib/$(DEB_TARGET_MULTIARCH) -a

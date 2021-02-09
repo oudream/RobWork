@@ -24,10 +24,12 @@ class QImageLoader : public rw::loaders::ImageLoader
 
     std::vector< std::string > getImageFormats ()
     {
+        Log::debugLog () << "Image Formats: \n";
         QList< QByteArray > formats = QImageReader::supportedImageFormats ();
         std::vector< std::string > subformats;
-        for (QByteArray& format : formats) {
+        for (QByteArray& format : formats) {   
             std::string str = format.toUpper ().data ();
+            Log::debugLog () << "  " << str << "\n";
             subformats.push_back (str);
         }
 

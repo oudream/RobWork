@@ -282,6 +282,7 @@
     - linux
   before_script:
     - *uninstall-rw-deb
+    - apt update
     - apt -y install ./DEBPKG/*.deb
 
 .linux-debian-upgrade-test:

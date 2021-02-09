@@ -47,7 +47,7 @@ if(build)
     rw_add_includes(${SUBSYS_NAME} "rwslibs/luaeditor" ${SRC_FILES_HPP})
     # Need to add the current binary dir to the include directory because the generated source files are placed here
     target_include_directories(${SUBSYS_NAME} PRIVATE ${CMAKE_CURRENT_BINARY_DIR} ${RW_BUILD_WITH_LUA_INCLUDE_DIR})
-    target_link_libraries(${SUBSYS_NAME} PUBLIC ${QT_LIBRARIES} sdurws RW::sdurw RW::sdurw_core_lua_s sdurws_lua_s ${RW_BUILD_WITH_LIBRARIES_LUA})
+    target_link_libraries(${SUBSYS_NAME} PUBLIC ${QT_LIBRARIES} sdurws RW::sdurw ${RW_BUILD_WITH_LIBRARIES_LUA} PRIVATE RW::sdurw_core_lua_s sdurws_lua_s)
     target_include_directories(${SUBSYS_NAME}
         INTERFACE
         $<BUILD_INTERFACE:${RWS_ROOT}/src> $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>

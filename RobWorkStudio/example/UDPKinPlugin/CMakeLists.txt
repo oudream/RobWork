@@ -72,5 +72,4 @@ SET(SrcFiles SamplePlugin.cpp ${UIS_OUT_H})
 # The shared library to build:
 ADD_LIBRARY(SamplePlugin MODULE ${SrcFiles} ${MocSrcFiles}  ${RccSrcFiles})
 TARGET_LINK_LIBRARIES(SamplePlugin ${ROBWORKSTUDIO_LIBRARIES} ${ROBWORK_LIBRARIES} )
-#TARGET_LINK_LIBRARIES(SamplePlugin ${ROBWORKSTUDIO_LIBRARIES} ${ROBWORK_LIBRARIES} ws2_32) # windows
 target_include_directories(SamplePlugin PUBLIC ${CMAKE_CURRENT_BINARY_DIR} ${ROBWORKSTUDIO_INCLUDE_DIRS} ${ROBWORK_INCLUDE_DIRS})

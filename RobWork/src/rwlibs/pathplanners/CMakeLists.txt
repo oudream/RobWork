@@ -1,6 +1,6 @@
 set(SUBSYS_NAME sdurw_pathplanners)
 set(SUBSYS_DESC "A collection of path planners!")
-set(SUBSYS_DEPS sdurw sdurw_core)
+set(SUBSYS_DEPS sdurw_core sdurw_math sdurw_kinematics sdurw_models sdurw_trajectory sdurw_algorithms sdurw)
 
 set(build TRUE)
 set(DEFAULT TRUE)

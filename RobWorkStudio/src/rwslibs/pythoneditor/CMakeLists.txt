@@ -44,7 +44,7 @@ if(build)
 
     # Set extra linker flags for apple macos computers
     rws_add_plugin(${SUBSYS_NAME} ${RWS_DEFAULT_LIB_TYPE} ${SrcFiles} ${RccSrcFiles})
-    rw_add_includes(${SUBSYS_NAME} "rwslibs/" ${SRC_FILES_HPP})
+    rw_add_includes(${SUBSYS_NAME} "rwslibs/pythoneditor" ${SRC_FILES_HPP})
     target_link_libraries(
         ${SUBSYS_NAME}
         PUBLIC sdurws ${QT_LIBRARIES} RW::sdurw

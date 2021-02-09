@@ -47,6 +47,7 @@ if(build)
         sdurw_graspplanning
         sdurw_loaders
         sdurw
+        sdurw_algorithms
         sdurw_task
         sdurw_assembly
         sdurw_control
@@ -170,6 +171,11 @@ if(build)
             target_link_libraries(${RW_MODULE}_lua_s ${RW_MODULE} ${depends} ${LUA_LIBRARIES})
         endif()
 
+        get_in_map(depends RW_SUBSYS_DEPEND ${RW_MODULE})
+        foreach(dep ${depends})
+            add_dependencies(${TARGET_NAME} ${lua_NAME_${dep}})
+        endforeach()
+
     endforeach()
 
     if(TARGET sdurw_lua)
@@ -181,11 +187,8 @@ if(build)
         target_include_directories(sdurw_core_lua_s PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
     endif()
 
-    install(TARGETS ${SUBSYS_NAME}_all EXPORT ${PROJECT_PREFIX}Targets)
-    add_custom_target(
-        lua
-        COMMAND ${CMAKE_COMMAND} -E echo "Done Building Lua"
-        DEPENDS ${lua_targets}
-    )
+    install(TARGETS ${SUBSYS_NAME}_all EXPORT ${PROJECT_PREFIX}luaTargets)
+
+    RW_SWIG_COMPILE_TARGET(lua ${lua_targets})
 
 endif()

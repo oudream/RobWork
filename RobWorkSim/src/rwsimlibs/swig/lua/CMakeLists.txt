@@ -23,7 +23,6 @@ rw_add_doc(${SUBSYS_NAME})
 
 if(build)
     set(RWSIM_HAVE_LUA TRUE CACHE INTERNAL "")
-    # MESSAGE(STATUS "SWIG found adding swig modules!")
     include(UseSWIG)
 
     include_directories(${RWSIM_ROOT}/src ${RW_ROOT}/src)
@@ -60,7 +59,7 @@ if(build)
         ${RWSIM_MODULE} lua STATIC 
         TARGET_NAME ${TARGET_NAME}_s
         SOURCES ../sdurwsim.i Lua.cpp ../ScriptTypes.cpp
-        INSTALL_DIR ${LUA_INSTALL_DIR}
+        INSTALL_DIR ${STATIC_LIB_INSTALL_DIR}
     )
 
     target_link_libraries(${TARGET_NAME}_s ${RWSIM_ODE_LIBRARY} ${RWSIM_MODULE} ${RW_BUILD_WITH_LIBRARIES_LUA})
@@ -89,10 +88,7 @@ if(build)
         set_target_properties(sdurwsimlua_plugin.rwplugin PROPERTIES LINK_FLAGS -Wl,--no-undefined)
     endif()
 
-    add_custom_target(
-        lua
-        COMMAND ${CMAKE_COMMAND} -E echo "Done Building Lua"
-        DEPENDS ${TARGET_NAME} ${TARGET_NAME}_s sdurwsimlua_plugin.rwplugin
-    )
+
+    RW_SWIG_COMPILE_TARGET(lua ${TARGET_NAME} ${TARGET_NAME}_s sdurwsimlua_plugin.rwplugin)
 
 endif()

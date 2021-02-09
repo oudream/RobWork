@@ -21,7 +21,7 @@ rw_subsys_option(
 )
 
 if(build)
-    set(RWSIM_HAVE_LUA
+    set(RWSTUDIO_HAVE_LUA
         TRUE
         CACHE INTERNAL ""
     )
@@ -35,7 +35,7 @@ if(build)
     # ############ lua interface generation ##############
 
     rw_add_swig(
-        ${RWS_MODULE} lua SHARED
+        sdurws lua SHARED 
         TARGET_NAME ${TARGET_NAME}
         SOURCES ../sdurws.i Lua.cpp ../ScriptTypes.cpp
         BINARY_OUTPUT_DIR "${RWS_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua"
@@ -52,7 +52,6 @@ if(build)
     swig_link_libraries(${TARGET_NAME} ${RWS_PLUGIN_LIBRARIES} sdurws sdurws_robworkstudioapp
                         RW::sdurw ${RW_BUILD_WITH_LIBRARIES_LUA}
     )
-
     target_include_directories(${TARGET_NAME} PUBLIC ${RW_BUILD_WITH_LUA_INCLUDE_DIR})
 
     # ############ lua static interface generation ##############
@@ -92,10 +91,9 @@ if(build)
         set_target_properties(sdurwslua_plugin.rwplugin PROPERTIES LINK_FLAGS -Wl,--no-undefined)
     endif()
 
-    add_custom_target(
-        lua
-        COMMAND ${CMAKE_COMMAND} -E echo "Done Building Lua"
-        DEPENDS ${TARGET_NAME} ${TARGET_NAME}_s sdurwslua_plugin.rwplugin sdurws_luapl
-                sdurws_luaeditor
-    )
+
+    RW_SWIG_COMPILE_TARGET(lua ${TARGET_NAME} ${TARGET_NAME}_s sdurwslua_plugin.rwplugin sdurws_luapl
+        sdurws_luaeditor)
+
+
 endif()

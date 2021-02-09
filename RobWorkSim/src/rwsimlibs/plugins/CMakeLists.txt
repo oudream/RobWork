@@ -283,18 +283,6 @@ if(DEFINED Qt6Core_VERSION)
 else()
     qt5_wrap_ui(UIS_OUT_H SimTaskVisPlugin.ui)
 endif()
-# SET(SrcFiles SimTaskVisPlugin.cpp) set_source_files_properties(${SrcFiles} PROPERTIES
-# OBJECT_DEPENDS "${UIS_OUT_H}")
-
-# Call the create_plugin macro for creating the plugin SET(MocSrcFiles ) QT4_WRAP_CPP(MocSrcFiles
-# SimTaskVisPlugin.hpp OPTIONS -DBOOST_TT_HAS_OPERATOR_HPP_INCLUDED OPTIONS
-# -DBOOST_LEXICAL_CAST_INCLUDED) Rcc the files: SET(RccSrcFiles ) QT4_ADD_RESOURCES(RccSrcFiles
-# ${RWSIM_ROOT}/src/gfx/SimTaskVisPlugin.qrc)
-
-# ADD_LIBRARY(SimTaskVisPlugin MODULE ${SrcFiles} ${MocSrcFiles}  ${RccSrcFiles} ${UIS_OUT_H})
-# ADD_LIBRARY(SimTaskVisPluginStatic STATIC ${SrcFiles} ${MocSrcFiles}  ${RccSrcFiles})
-# TARGET_LINK_LIBRARIES(SimTaskVisPlugin rwsim_ode ode rwsim_gui rw_task ${ROBWORKSIM_LIBRARIES}
-# ${ROBWORKSTUDIO_LIBRARIES} ${ROBWORK_LIBRARIES})
 
 # ##################################################################################################
 # next compile EngineTestPlugin
@@ -306,6 +294,7 @@ set(SUBSYS_DEPS sdurwsim_gui RWS::sdurws)
 
 set(build TRUE)
 set(DEFAULT TRUE)
+
 rw_subsys_option(
     build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT}
     DEPENDS ${SUBSYS_DEPS}

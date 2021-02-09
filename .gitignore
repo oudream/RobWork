@@ -3643,3 +3643,5 @@ RobWorkSim/src/rwsimlibs/swig/python/RobWorkSim-*.egg-info
 /doc/installstuff/RW_package-msvc2005/.csettings
 /doc/installstuff/RW_package-msvc2005/CPackConfig.cmake
 /doc/installstuff/RW_package-msvc2005/CPackSourceConfig.cmake
+
+/debian/sdurw-doc1.2/DEBIAN/md5sums

@@ -107,12 +107,11 @@ if(build)
     # ###### Final linking and dependency checks ######
 
     swig_link_libraries(sdurws${LIB_SUFIX} ${SUBSYS_DEPS} RW::sdurw ${PYTHON_LIBRARIES})
-    install(TARGETS ${SUBSYS_NAME} EXPORT ${PROJECT_PREFIX}Targets)
+    install(TARGETS ${SUBSYS_NAME} EXPORT ${PROJECT_PREFIX}pythonTargets)
 
-    add_custom_target(
-        python
-        COMMAND ${CMAKE_COMMAND} -E echo "Done Building Python"
-        DEPENDS ${TARGET_NAME}
-    )
+    
+    RW_SWIG_COMPILE_TARGET(
+            python ${TARGET_NAME}
+        )
 
 endif()

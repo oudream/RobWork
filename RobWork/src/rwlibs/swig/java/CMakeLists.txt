@@ -66,6 +66,7 @@ if(build)
         sdurw_graspplanning
         sdurw_loaders
         sdurw
+        sdurw_algorithms
         sdurw_task
         sdurw_assembly
         sdurw_control
@@ -157,13 +158,9 @@ if(build)
         endif()
     endforeach()
 
-    add_custom_target(
-        java
-        COMMAND ${CMAKE_COMMAND} -E echo "Done Building Java"
-        DEPENDS ${java_targets}
-    )
+    RW_SWIG_COMPILE_TARGET(java ${java_targets})
 
-    install(TARGETS ${SUBSYS_NAME} EXPORT ${PROJECT_PREFIX}Targets)
+    install(TARGETS ${SUBSYS_NAME} EXPORT ${PROJECT_PREFIX}javaTargets)
 
     add_library(${PROJECT_PREFIX}::${SUBSYS_NAME} ALIAS ${SUBSYS_NAME})
 endif()

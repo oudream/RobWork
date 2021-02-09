@@ -16,17 +16,28 @@
 # targetLibdir = Which subfolder to move the library to
 # static    = lib ends on .a
 
-########################### ROBWORK #############################
-pkg=sdurw dir=/rw/geometry dir=/rw/graphics dir=/rw/graspplanning dir=/rw/invkin dir=/rw/kinematics dir=/rw/loaders dir=/rw/models dir=/rw/pathplanning dir=/rw/plugin dir=/rw/proximity dir=/rw/sensor dir=/rw/trajectory
-pkg=sdurw type=add nolib=true gotsoname=false dir=none inclfile=RobWorkConfig.hpp inclfile=rw/geometry.hpp inclfile=rw/graphics.hpp inclfile=rw/graspplanning.hpp inclfile=rw/invkin.hpp inclfile=rw/kinematics.hpp inclfile=rw/loaders.hpp inclfile=rw/models.hpp inclfile=rw/pathplanning.hpp inclfile=rw/proximity.hpp inclfile=rw/RobWork.hpp inclfile=rw/rw.hpp inclfile=rw/sensor.hpp inclfile=rw/trajectory.hpp
+########################### ROBWORK #############################   
+pkg=sdurw nolib=true gotsoname=false dir=none inclfile=RobWorkConfig.hpp inclfile=rw/RobWork.hpp inclfile=rw/rw.hpp  
 
-pkg=sdurw_core dir=/rw/core     inclfile=rw/core.hpp
-pkg=sdurw_common dir=/rw/common inclfile=rw/common.hpp 
-pkg=sdurw_math dir=/rw/math     inclfile=rw/math.hpp 
+pkg=sdurw_core          dir=/rw/core            inclfile=rw/core.hpp
+pkg=sdurw_common        dir=/rw/common          inclfile=rw/common.hpp 
+pkg=sdurw_math          dir=/rw/math            inclfile=rw/math.hpp 
+pkg=sdurw_geometry      dir=/rw/geometry        inclfile=rw/geometry.hpp
+pkg=sdurw_graphics      dir=/rw/graphics        inclfile=rw/graphics.hpp
+pkg=sdurw_graspplanning dir=/rw/graspplanning   inclfile=rw/graspplanning.hpp
+pkg=sdurw_invkin        dir=/rw/invkin          inclfile=rw/invkin.hpp
+pkg=sdurw_loaders       dir=/rw/loaders         inclfile=rw/loaders.hpp
+pkg=sdurw_kinematics    dir=/rw/kinematics      inclfile=rw/kinematics.hpp
+pkg=sdurw_models        dir=/rw/models          inclfile=rw/models.hpp
+pkg=sdurw_pathplanning  dir=/rw/pathplanning    inclfile=rw/pathplanning.hpp
+pkg=sdurw_plugin        dir=/rw/plugin
+pkg=sdurw_proximity     dir=/rw/proximity       inclfile=rw/proximity.hpp
+pkg=sdurw_sensor        dir=/rw/sensor          inclfile=rw/sensor.hpp
+pkg=sdurw_trajectory    dir=/rw/trajectory      inclfile=rw/trajectory.hpp
 
 pkg=sdurw_proximitystrategies type=new
-pkg=sdurw_proximitystrategies libname=pqp   dir=/ext/rwpqp     gotsoname=false type=add lintian=shlib-without-versioned-soname lintian=dev-pkg-without-shlib-symlink
-pkg=sdurw_proximitystrategies libname=yaobi dir=/ext/rwyaobi   gotsoname=false type=add
+pkg=sdurw_proximitystrategies libname=pqp   dir=/ext/rwpqp     type=add 
+pkg=sdurw_proximitystrategies libname=yaobi dir=/ext/rwyaobi   type=add
 pkg=sdurw_proximitystrategies libname=sdurw_proximitystrategies.rwplugin gotsoname=false nodev=true type=add libdir=/RobWork/rwplugins
 
 pkg=sdurw_algorithms
@@ -40,48 +51,31 @@ pkg=sdurw_simulation
 pkg=sdurw_assembly
 pkg=sdurw_csg
 pkg=sdurw_csg libname=sdurw_csgjs libdir=/RobWork/static dir=/ext/csgjs gotsoname=false type=add static=true
-pkg=sdurw_geometry type=new dir=none nolib=true nodev=true
-pkg=sdurw_geometry libname=sdurw_qhull libdir=/RobWork/static dir=/ext/qhull gotsoname=false type=add static=true
-pkg=sdurw_geometry libname=sdurw_analytic_geometry.rwplugin gotsoname=false nodev=true type=add libdir=/RobWork/rwplugins
-pkg=sdurw_geometry libname=sdurw_analytic_geometry nodev=true type=add
-pkg=sdurw_geometry libname=sdurw_simplefinger.rwplugin gotsoname=false nodev=true type=add libdir=/RobWork/rwplugins
-pkg=sdurw_geometry libname=sdurw_simplefinger nodev=true type=add
 
-
-########################### ROBWORK HARDWARE #############################
-pkg=sdurwhw nolib=true gotsoname=false dir=none inclfile=RobWorkHardwareConfig.hpp
-pkg=sdurwhw_camera          dir=/rwhw/camera  
-pkg=sdurwhw_can             dir=/rwhw/can   lintian=shared-lib-without-dependency-information
-pkg=sdurwhw_dockwelder      dir=/rwhw/dockwelder 
-pkg=sdurwhw_netft           dir=/rwhw/netft
-pkg=sdurwhw_pcube           dir=/rwhw/PowerCube 
-pkg=sdurwhw_robolabft       dir=/rwhw/robolabFT     libname=sdurwhw_robolabFT  
-pkg=sdurwhw_robotiq         dir=/rwhw/robotiq     
-pkg=sdurwhw_schunkpg70-     dir=/rwhw/schunkpg70    libname=sdurwhw_schunkpg70 nodev=true
-pkg=sdurwhw_schunkpg70      dir=/rwhw/schunkpg70    libname=sdurwhw_schunkpg70 nolib=true
-pkg=sdurwhw_serialport      dir=/rwhw/serialport    
-pkg=sdurwhw_tactile         dir=/rwhw/tactile       
-pkg=sdurwhw_universalrobots dir=/rwhw/universalrobots 
-pkg=sdurwhw_universalrobots_rtde lib=robworkhardware dir=/rwhw/universalrobots_rtde type=new lintian=shlib-without-versioned-soname lintian=dev-pkg-without-shlib-symlink
+pkg=sdurw_geometry-expanded libname=sdurw_analytic_geometry.rwplugin gotsoname=false nodev=true libdir=/RobWork/rwplugins lintian=dev-pkg-without-shlib-symlink
+pkg=sdurw_geometry-expanded libname=sdurw_analytic_geometry nodev=true type=add
+pkg=sdurw_geometry-expanded libname=sdurw_simplefinger.rwplugin gotsoname=false nodev=true type=add libdir=/RobWork/rwplugins dev-pkg-without-shlib-symlink
+pkg=sdurw_geometry-expanded libname=sdurw_simplefinger nodev=true type=add
 
 ########################### ROBWORKSTUDIO #############################
-pkg=sdurws dir=/rws type=new lintian=dev-pkg-without-shlib-symlink lintian=shlib-without-versioned-soname
-pkg=sdurws libname=qtpropertybrowser type=add gotsoname=false nodev=true
+pkg=sdurws dir=/rws type=new
+pkg=sdurws libname=sdurws_pythoneditor libdir=/RobWork/rwsplugins type=add gotsoname=false dir=/rwslibs/pythoneditor
+pkg=sdurws libname=qtpropertybrowser dir=/ext/qtpropertybrowser type=add nodev=false lintian=dev-pkg-without-shlib-symlink
 pkg=sdurws type=add nolib=true dir=none inclfile=RobWorkStudioConfig.hpp inclfile=RobWorkStudioPlugin.hpp inclfile=RobWorkStudio.hpp
 pkg=sdurws libname=sdurws_plugin.rwplugin gotsoname=false nodev=true type=add libdir=/RobWork/rwplugins
 
-pkg=sdurws_atask                libdir=/RobWork/rwsplugins gotsoname=false nov=true
-pkg=sdurws_gtask                libdir=/RobWork/rwsplugins gotsoname=false nov=true
-pkg=sdurws_jog                  libdir=/RobWork/rwsplugins gotsoname=false nov=true
-pkg=sdurws_log                  libdir=/RobWork/rwsplugins gotsoname=false nov=true
-pkg=sdurws_luapl                libdir=/RobWork/rwsplugins gotsoname=false nov=true dir=/rwslibs/lua
+pkg=sdurws_atask                libdir=/RobWork/rwsplugins gotsoname=false 
+pkg=sdurws_gtask                libdir=/RobWork/rwsplugins gotsoname=false
+pkg=sdurws_jog                  libdir=/RobWork/rwsplugins gotsoname=false
+pkg=sdurws_log                  libdir=/RobWork/rwsplugins gotsoname=false
+pkg=sdurws_luapl                libdir=/RobWork/rwsplugins gotsoname=false dir=/rwslibs/lua
 pkg=sdurws_luaeditor
-pkg=sdurws_playback             libdir=/RobWork/rwsplugins gotsoname=false nov=true
-pkg=sdurws_propertyview         libdir=/RobWork/rwsplugins gotsoname=false nov=true
-pkg=sdurws_treeview             libdir=/RobWork/rwsplugins gotsoname=false dir=none nov=true 
-pkg=sdurws_planning             libdir=/RobWork/rwsplugins gotsoname=false nov=true 
-pkg=sdurws_sensors              libdir=/RobWork/rwsplugins gotsoname=false nov=true
-pkg=sdurws_workcelleditorplugin libdir=/RobWork/rwsplugins gotsoname=false nov=true 
+pkg=sdurws_playback             libdir=/RobWork/rwsplugins gotsoname=false
+pkg=sdurws_propertyview         libdir=/RobWork/rwsplugins gotsoname=false
+pkg=sdurws_treeview             libdir=/RobWork/rwsplugins gotsoname=false
+pkg=sdurws_planning             libdir=/RobWork/rwsplugins gotsoname=false 
+pkg=sdurws_sensors              libdir=/RobWork/rwsplugins gotsoname=false 
+pkg=sdurws_workcelleditorplugin libdir=/RobWork/rwsplugins gotsoname=false
 pkg=sdurws_workcelleditor 
 pkg=sdurws_robworkstudioapp     dir=/rwslibs/rwstudioapp
 

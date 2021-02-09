@@ -28,6 +28,9 @@ target_include_directories(
 )
 
 set_target_properties(yaobi PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
+set_target_properties(
+            yaobi PROPERTIES VERSION 1 SOVERSION 1.0
+        )
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/yaobi_config.h.cmake
                ${CMAKE_CURRENT_SOURCE_DIR}/yaobi_config.h

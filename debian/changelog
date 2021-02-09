@@ -1,3 +1,141 @@
+robwork (2.0.0-1) focal; urgency=medium
+
+  * Version number updated to 2.0.0-1
+
+ -- Kasper Høj Lorenzen <kalor@mmmi.sdu.dk>  Wed, 06 Jan 2021 13:33:05 +0100
+
+robwork1.2 (1.2.11-3) focal; urgency=medium
+
+  * Fixing package conflicts
+  * fixed duplicate field
+  * Version number updated to 1.2.11-3
+
+ -- Kasper Høj Lorenzen <kalor@mmmi.sdu.dk>  Mon, 07 Dec 2020 13:32:14 +0100
+
+robwork1.2 (1.2.11-2) bionic; urgency=medium
+
+  * Version number updated to 1.2.11-2
+
+ -- Kasper Høj Lorenzen <kalor@mmmi.sdu.dk>  Fri, 27 Nov 2020 09:14:46 +0100
+
+robwork1.2 (1.2.11-1) focal; urgency=medium
+
+  * Version number updated to 1.2.11-1
+
+ -- Kasper Høj Lorenzen <kalor@mmmi.sdu.dk>  Fri, 27 Nov 2020 09:13:45 +0100
+
+robwork1.2 (1.2.10-4) focal; urgency=medium
+
+  * Version number updated to 1.2.10-4
+
+ -- Kasper Høj Lorenzen <kalor@mmmi.sdu.dk>  Thu, 26 Nov 2020 14:44:41 +0100
+
+robwork1.2 (1.2.10-3) bionic; urgency=medium
+
+  * fixed missing binarys
+  * Version number updated to 1.2.10-3
+
+ -- Kasper Høj Lorenzen <kalor@mmmi.sdu.dk>  Thu, 26 Nov 2020 14:43:41 +0100
+
+robwork1.2 (1.2.10-2) focal; urgency=medium
+
+  * Version number updated to 1.2.10-2
+
+ -- Kasper Høj Lorenzen <kalor@mmmi.sdu.dk>  Thu, 26 Nov 2020 12:29:27 +0100
+
+robwork1.2 (1.2.10-1) bionic; urgency=medium
+
+  * Fixing more conflicts
+  * mitigating parabolic blend problem
+  * Version number updated to 1.2.10-1
+
+ -- Kasper Høj Lorenzen <kalor@mmmi.sdu.dk>  Thu, 26 Nov 2020 12:28:05 +0100
+
+robwork1.2 (1.2.9-4) bionic; urgency=medium
+
+  * Version number updated to 1.2.9-4
+
+ -- Kasper Høj Lorenzen <kalor@mmmi.sdu.dk>  Wed, 25 Nov 2020 15:31:55 +0100
+
+robwork1.2 (1.2.9-3) focal; urgency=medium
+
+  * more conflicts
+  * Version number updated to 1.2.9-3
+
+ -- Kasper Høj Lorenzen <kalor@mmmi.sdu.dk>  Wed, 25 Nov 2020 15:29:46 +0100
+
+robwork1.2 (1.2.9-2) bionic; urgency=medium
+
+  * Version number updated to 1.2.9-2
+
+ -- Kasper Høj Lorenzen <kalor@mmmi.sdu.dk>  Tue, 24 Nov 2020 16:23:48 +0100
+
+robwork1.2 (1.2.9-1) focal; urgency=medium
+
+  * fixes to pkg conflicts
+  * changed conflict version
+  * more conflict pkg fixes
+  * Version number updated to 1.2.9-1
+
+ -- Kasper Høj Lorenzen <kalor@mmmi.sdu.dk>  Tue, 24 Nov 2020 16:21:58 +0100
+
+robwork1.2 (1.2.8-1) focal; urgency=medium
+
+  * all-dev packages point to internal dev metapackages
+  * added metapackages
+  * Version number updated to 1.2.8-1
+
+ -- Kasper Høj Lorenzen <kalor@mmmi.sdu.dk>  Fri, 13 Nov 2020 11:05:01 +0100
+
+robwork1.2 (1.2.7-2) focal; urgency=medium
+
+  * fixed package naming
+  * upgraded version of default package
+  * Version number updated to 1.2.7-2
+
+ -- Kasper Høj Lorenzen <kalor@mmmi.sdu.dk>  Thu, 12 Nov 2020 08:45:01 +0100
+
+robwork1.2 (1.2.7-1) focal; urgency=medium
+
+  * Moved to new package versioning system
+  * Version number updated to 1.2.7-1
+
+ -- Kasper Høj Lorenzen <kalor@mmmi.sdu.dk>  Wed, 11 Nov 2020 15:31:15 +0100
+
+robwork1.2 (1.2.6-1) focal; urgency=medium
+
+  * Version number updated to 1.2.6-1
+
+ -- Kasper Høj Lorenzen <kalor@mmmi.sdu.dk>  Fri, 23 Oct 2020 14:04:33 +0200
+
+robwork1.2 (1.2.4-4) focal; urgency=medium
+
+  * Version number updated to 1.2.4-4
+
+ -- Kasper Høj Lorenzen <kalor@mmmi.sdu.dk>  Fri, 23 Oct 2020 12:39:43 +0200
+
+robwork1.2 (1.2.4-3) focal; urgency=medium
+
+  * testing new source system
+  * Added default debian-pkg folder
+  * Version number updated to 1.2.4-3
+
+ -- Kasper Høj Lorenzen <kalor@mmmi.sdu.dk>  Fri, 23 Oct 2020 12:37:59 +0200
+
+robwork1.2 (1.2.4-2) bionic; urgency=medium
+
+  * Version number updated to 1.2.4-2
+
+ -- Kasper Høj Lorenzen <kalor@mmmi.sdu.dk>  Thu, 22 Oct 2020 14:18:03 +0200
+
+robwork (1.2.4-1) focal; urgency=medium
+
+  * update QSampler pointer type
+  * rws fixes for getting rws in studio
+  * Version number updated to 1.2.4-1
+
+ -- Kasper Høj Lorenzen <kalor@mmmi.sdu.dk>  Thu, 22 Oct 2020 14:16:13 +0200
+
 robwork (1.2.2-4) bionic; urgency=medium
 
   * Version number updated to 1.2.2-4

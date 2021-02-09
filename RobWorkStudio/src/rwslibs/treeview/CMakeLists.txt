@@ -25,7 +25,7 @@ if(build)
         ${MocSrcFiles}
         ${RccSrcFiles}
     )
-    rw_add_includes(${SUBSYS_NAME} "rwslibs/jog" ${SRC_FILES_HPP})
+    rw_add_includes(${SUBSYS_NAME} "rwslibs/treeview" ${SRC_FILES_HPP})
     target_link_libraries(${SUBSYS_NAME} PUBLIC ${SUBSYS_DEPS} ${QT_LIBRARIES} RW::sdurw)
     target_include_directories(${SUBSYS_NAME}
         INTERFACE

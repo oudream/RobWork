@@ -18,7 +18,7 @@ if(build)
         IntegratorSpringTest.cpp
     )
 
-    rw_add_library(${SUBSYS_NAME} ${SRC_FILES})
+    rw_add_library(${SUBSYS_NAME} NO_EXPORT ${SRC_FILES})
     target_link_libraries(${SUBSYS_NAME} PUBLIC sdurwsim)
     target_include_directories(${SUBSYS_NAME}
         INTERFACE
