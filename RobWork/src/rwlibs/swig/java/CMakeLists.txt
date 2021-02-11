@@ -154,7 +154,7 @@ if(build)
                 target_link_libraries(${SUBSYS_NAME} INTERFACE ${RW_MODULE}_jni)
             endif()
 
-            swig_link_libraries(${RW_MODULE}_jni ${RW_MODULE} ${depends})
+            target_link_libraries(${RW_MODULE}_jni PUBLIC ${RW_MODULE} ${depends})
         endif()
     endforeach()
 

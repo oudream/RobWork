@@ -111,7 +111,7 @@ if(build)
     )
     # ###### Final linking and dependency checks ######
 
-    swig_link_libraries(sdurwsim${LIB_SUFIX} ${SUBSYS_DEPS} ${RWSIM_ODE_LIBRARY}
+    target_link_libraries(${python_NAME_sdurwsim} PUBLIC ${SUBSYS_DEPS} ${RWSIM_ODE_LIBRARY}
                         ${PYTHON_LIBRARIES})
     install(TARGETS ${SUBSYS_NAME} EXPORT ${PROJECT_PREFIX}Targets)
 

@@ -657,6 +657,7 @@ macro(RW_ADD_SWIG _name _language _type)
     endif()
 
     unset(CMAKE_SWIG_OUTDIR)
+    set (UseSWIG_TARGET_NAME_PREFERENCE STANDARD)
     if((CMAKE_VERSION VERSION_GREATER 3.12) OR (CMAKE_VERSION VERSION_EQUAL 3.12))
         swig_add_library(
             ${SLIB_TARGET_NAME}
@@ -705,7 +706,7 @@ macro(RW_ADD_SWIG _name _language _type)
         ${SLIB_TARGET_NAME}
         CACHE INTERNAL "internal targetname translation"
     )
-
+    set_property(TARGET ${SLIB_TARGET_NAME} PROPERTY SWIG_USE_TARGET_INCLUDE_DIRECTORIES TRUE)
     if(NOT SWIG_DEFAULT_COMPILE)
         set_target_properties(${SLIB_TARGET_NAME} PROPERTIES EXCLUDE_FROM_ALL TRUE)
     endif()
@@ -731,48 +732,13 @@ macro(RW_ADD_SWIG _name _language _type)
     # Setup SWIG Install         #
     # ##############################################################################################
 
-    if(SWIG_DEFAULT_COMPILE OR CMAKE_VERSION VERSION_GREATER 3.16.0)
-        install(
-            TARGETS ${SLIB_TARGET_NAME}
-            EXPORT ${PROJECT_PREFIX}${_language}Targets
-            DESTINATION ${SLIB_INSTALL_DIR}
-            COMPONENT swig
-        )
-    else()
-        if("${_language}" STREQUAL "java")
-            set(SLIB_INSTALL_DIR $ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/${SLIB_INSTALL_DIR})
-            set(SLIB_TARGET_NAME lib${SLIB_TARGET_NAME})
-        elseif("${_language}" STREQUAL "lua")
-            set(SLIB_INSTALL_DIR $ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/${SLIB_INSTALL_DIR})
-            set(SLIB_TARGET_NAME ${_name})
-        endif()
+    install(
+        TARGETS ${SLIB_TARGET_NAME}
+        EXPORT ${PROJECT_PREFIX}${_language}Targets
+        DESTINATION ${SLIB_INSTALL_DIR}
+        COMPONENT swig
+    )
 
-        install(
-            CODE "
-                    if(EXISTS \"${SLIB_INSTALL_DIR}/${SLIB_TARGET_NAME}.so\" AND
-                        NOT IS_SYMLINK \"${SLIB_INSTALL_DIR}/${SLIB_TARGET_NAME}.so\")
-                        file(RPATH_CHECK
-                            FILE \"${SLIB_INSTALL_DIR}/${SLIB_TARGET_NAME}.so\"
-                            RPATH \"\")
-                    endif()
-                    if(EXISTS ${SLIB_BINARY_OUTPUT_DIR}/${SLIB_TARGET_NAME}.so)
-                        file(INSTALL DESTINATION ${SLIB_INSTALL_DIR} TYPE FILE FILES ${SLIB_BINARY_OUTPUT_DIR}/${SLIB_TARGET_NAME}.so)
-                        if(EXISTS \"${SLIB_INSTALL_DIR}/${SLIB_TARGET_NAME}.so\" AND
-                            NOT IS_SYMLINK \"${SLIB_INSTALL_DIR}/${SLIB_TARGET_NAME}.so\")
-
-                            file(RPATH_CHANGE
-                                FILE \"${SLIB_INSTALL_DIR}/${SLIB_TARGET_NAME}.so\"
-                                OLD_RPATH \"${${PROJECT_PREFIX}_CMAKE_LIBRARY_OUTPUT_DIRECTORY}\"
-                                NEW_RPATH \"\")
-                            if(CMAKE_INSTALL_DO_STRIP AND NOT WIN32)
-                                execute_process(COMMAND \"/usr/bin/strip\" \"${SLIB_INSTALL_DIR}/${SLIB_TARGET_NAME}.so\")
-                            endif()
-                        endif()
-                    endif()
-                    "
-            COMPONENT ${_language}
-        )
-    endif()
 endmacro()
 
 macro(RW_SWIG_COMPILE_TARGET _language)
@@ -788,17 +754,19 @@ macro(RW_SWIG_COMPILE_TARGET _language)
     endif()
 
     export(
-        EXPORT ${PROJECT_PREFIX}${_language}Targets
-        FILE "${${PROJECT_PREFIX}_ROOT}/cmake/${PROJECT_NAME}${_language}Targets.cmake"
-        NAMESPACE ${PROJECT_PREFIX}::
-    )
-
-    install(
-        EXPORT ${PROJECT_PREFIX}${_language}Targets
-        FILE ${PROJECT_NAME}${_language}Targets.cmake
-        NAMESPACE ${PROJECT_PREFIX}::
-        DESTINATION ${${PROJECT_PREFIX}_INSTALL_DIR}/cmake
-    )
+            EXPORT ${PROJECT_PREFIX}${_language}Targets
+            FILE "${${PROJECT_PREFIX}_ROOT}/cmake/${PROJECT_NAME}${_language}Targets.cmake"
+            NAMESPACE ${PROJECT_PREFIX}::
+        )
+        
+    if(SWIG_DEFAULT_COMPILE OR CMAKE_VERSION VERSION_GREATER 3.16.0)
+        install(
+            EXPORT ${PROJECT_PREFIX}${_language}Targets
+            FILE ${PROJECT_NAME}${_language}Targets.cmake
+            NAMESPACE ${PROJECT_PREFIX}::
+            DESTINATION ${${PROJECT_PREFIX}_INSTALL_DIR}/cmake
+        )
+    endif()
 endmacro()
 
 macro(RW_ADD_JAVA_CLEAN_TARGET _name)

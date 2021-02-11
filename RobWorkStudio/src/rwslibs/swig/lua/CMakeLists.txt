@@ -35,7 +35,7 @@ if(build)
     # ############ lua interface generation ##############
 
     rw_add_swig(
-        sdurws lua SHARED 
+        sdurws lua MODULE 
         TARGET_NAME ${TARGET_NAME}
         SOURCES ../sdurws.i Lua.cpp ../ScriptTypes.cpp
         BINARY_OUTPUT_DIR "${RWS_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua"
@@ -49,7 +49,7 @@ if(build)
         )
     endif()
 
-    swig_link_libraries(${TARGET_NAME} ${RWS_PLUGIN_LIBRARIES} sdurws sdurws_robworkstudioapp
+    target_link_libraries(${TARGET_NAME} ${RWS_PLUGIN_LIBRARIES} sdurws sdurws_robworkstudioapp
                         RW::sdurw ${RW_BUILD_WITH_LIBRARIES_LUA}
     )
     target_include_directories(${TARGET_NAME} PUBLIC ${RW_BUILD_WITH_LUA_INCLUDE_DIR})

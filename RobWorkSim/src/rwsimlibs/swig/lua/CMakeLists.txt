@@ -49,7 +49,7 @@ if(build)
         )
     endif()
 
-    swig_link_libraries(${TARGET_NAME} ${RWSIM_ODE_LIBRARY} ${RWSIM_MODULE} ${RW_BUILD_WITH_LIBRARIES_LUA})
+    target_link_libraries(${TARGET_NAME} ${RWSIM_ODE_LIBRARY} ${RWSIM_MODULE} ${RW_BUILD_WITH_LIBRARIES_LUA})
     target_include_directories(${TARGET_NAME} PUBLIC ${RW_BUILD_WITH_LUA_INCLUDE_DIR})
 
 

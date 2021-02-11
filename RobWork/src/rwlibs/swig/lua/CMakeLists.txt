@@ -22,7 +22,7 @@ rw_subsys_option(
 if(build)
     include(UseSWIG)
 
-    set(CMAKE_SWIG_FLAGS "")
+    set(CMAKE_SWIG_FLAGS "-v -MM")
 
     add_library(${SUBSYS_NAME}_all INTERFACE)
     add_library(${PROJECT_PREFIX}::${SUBSYS_NAME}_all ALIAS ${SUBSYS_NAME}_all)
@@ -51,11 +51,11 @@ if(build)
         sdurw_task
         sdurw_assembly
         sdurw_control
-        sdurw_pathplanners
         sdurw_proximitystrategies
         sdurw_pathoptimization
         sdurw_simulation
         sdurw_opengl
+        sdurw_pathplanners
     )
         if(TARGET ${RW_MODULE})
             configure_file(Lua.hpp.in ${CMAKE_CURRENT_SOURCE_DIR}/Lua_${RW_MODULE}.hpp @ONLY)
@@ -75,30 +75,25 @@ if(build)
 
             set(TARGET_NAME ${RW_MODULE}_lua)
             rw_add_swig(
-                ${RW_MODULE} lua SHARED
+                ${RW_MODULE} lua MODULE
                 TARGET_NAME ${TARGET_NAME}
                 SOURCES ${SOURCE}
-                INSTALL_DIR ${LUA_INSTALL_DIR}
-                BINARY_OUTPUT_DIR ${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua
+                INSTALL_DIR ${LUA_INSTALL_DIR} BINARY_OUTPUT_DIR
+                                               ${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua
             )
-
+            
+            set(TARGET_NAME ${lua_NAME_${RW_MODULE}})
             if(MSVC)
                 set_target_properties(
                     ${TARGET_NAME} PROPERTIES LINK_FLAGS_RELEASE /OPT:REF
                                               WINDOWS_EXPORT_ALL_SYMBOLS TRUE
                 )
             else()
-                set_target_properties(
-                    ${TARGET_NAME}
-                    PROPERTIES
-                        PREFIX ""
-                        OUTPUT_NAME ${RW_MODULE}
-                )
+                set_target_properties(${TARGET_NAME} PROPERTIES PREFIX "" OUTPUT_NAME ${RW_MODULE})
             endif()
-            
+
             set(lua_targets ${lua_targets} ${TARGET_NAME})
 
-            target_include_directories(${TARGET_NAME} PUBLIC ${LUA_INCLUDE_DIR})
             if(SWIG_DEFAULT_COMPILE OR CMAKE_VERSION VERSION_GREATER 3.16.0)
                 target_link_libraries(${SUBSYS_NAME}_all INTERFACE ${TARGET_NAME})
             endif()
@@ -110,8 +105,6 @@ if(build)
                 SOURCES ${SOURCE}
                 INSTALL_DIR ${STATIC_LIB_INSTALL_DIR}
             )
-
-            target_include_directories(${TARGET_NAME}_s PUBLIC ${LUA_INCLUDE_DIR})
 
             if(SWIG_DEFAULT_COMPILE OR CMAKE_VERSION VERSION_GREATER 3.16.0)
                 target_link_libraries(${SUBSYS_NAME}_all INTERFACE ${TARGET_NAME}_s)
@@ -132,7 +125,8 @@ if(build)
                AND NOT "${RW_MODULE}" STREQUAL "sdurw_common"
             )
                 add_library(${RW_MODULE}_lua_plugin.rwplugin MODULE LuaPlugin_${RW_MODULE}.cpp)
-                target_link_libraries(${RW_MODULE}_lua_plugin.rwplugin ${RW_MODULE}_lua_s)
+                target_link_libraries(${RW_MODULE}_lua_plugin.rwplugin ${lua_s_NAME_${RW_MODULE}})
+                add_dependencies(${RW_MODULE}_lua_plugin.rwplugin ${lua_s_NAME_${RW_MODULE}})
 
                 if(NOT SWIG_DEFAULT_COMPILE)
                     set_target_properties(
@@ -142,7 +136,7 @@ if(build)
                 set(lua_targets ${lua_targets} ${RW_MODULE}_lua_plugin.rwplugin)
 
                 target_include_directories(
-                    ${RW_MODULE}_lua_plugin.rwplugin PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}
+                    ${RW_MODULE}_lua_plugin.rwplugin PRIVATE ${CMAKE_CURRENT_SOURCE_DIR} ${LUA_INCLUDE_DIR}
                 )
                 if((CMAKE_COMPILER_IS_GNUCC) OR (CMAKE_C_COMPILER_ID STREQUAL "Clang"))
                     set_target_properties(
@@ -157,38 +151,49 @@ if(build)
                 endif()
             endif()
 
+
+            # ############### Linking #####################
             get_in_map(depends RW_SUBSYS_DEPEND ${RW_MODULE})
-            swig_link_libraries(${RW_MODULE}_lua ${RW_MODULE} ${depends} ${LUA_LIBRARIES})
+            target_link_libraries(${RW_MODULE}_lua  PUBLIC ${RW_MODULE} ${depends} ${LUA_LIBRARIES})
             if(CMAKE_VERSION VERSION_GREATER 3.12.0)
                 list(TRANSFORM depends APPEND "_lua_s")
             else()
                 set(cpd)
                 foreach(dep ${depends})
                     set(cpd ${cpd} "${dep}_lua_s")
+                    set(cpd2 ${cpd} "${dep}_lua")
                 endforeach()
                 set(depends "${cpd}")
+                set(depends2 "${cpd}")
             endif()
-            target_link_libraries(${RW_MODULE}_lua_s ${RW_MODULE} ${depends} ${LUA_LIBRARIES})
-        endif()
+            if(${RW_MODULE} STREQUAL "sdurw_core")
+                target_link_libraries(${RW_MODULE}_lua_s PUBLIC ${RW_MODULE} ${depends} ${LUA_LIBRARIES})
+            else()
+                target_link_libraries(
+                    ${RW_MODULE}_lua_s PUBLIC ${RW_MODULE} ${depends} sdurw_core_lua_s ${LUA_LIBRARIES}
+                )
+            endif()
 
-        get_in_map(depends RW_SUBSYS_DEPEND ${RW_MODULE})
-        foreach(dep ${depends})
-            add_dependencies(${TARGET_NAME} ${lua_NAME_${dep}})
-        endforeach()
+            get_in_map(depends RW_SUBSYS_DEPEND ${RW_MODULE})
+            foreach(dep ${depends})
+                set(SWIG_MODULE_${TARGET_NAME}_EXTRA_DEPS ${SWIG_MODULE_${TARGET_NAME}_EXTRA_DEPS} ${lua_NAME_${dep}})
+                set(SWIG_MODULE_${TARGET_NAME}_s_EXTRA_DEPS ${SWIG_MODULE_${TARGET_NAME}_s_EXTRA_DEPS} ${lua_s_NAME_${dep}})
+                add_dependencies(${TARGET_NAME} ${lua_NAME_${dep}})
+                add_dependencies(${TARGET_NAME}_s ${lua_s_NAME_${dep}})
+                if(TARGET ${RW_MODULE}_lua_plugin.rwplugin AND TARGET ${dep}_lua_plugin.rwplugin)
+                    add_dependencies(${RW_MODULE}_lua_plugin.rwplugin ${dep}_lua_plugin.rwplugin)
+                endif()
+            endforeach()
+
+            target_include_directories(${TARGET_NAME} PRIVATE ${CMAKE_CURRENT_BINARY_DIR} ${LUA_INCLUDE_DIR})
+            target_include_directories(${TARGET_NAME}_s PRIVATE ${CMAKE_CURRENT_BINARY_DIR} ${LUA_INCLUDE_DIR})
+
+        endif()
 
     endforeach()
 
-    if(TARGET sdurw_lua)
-        target_include_directories(sdurw_lua PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
-        target_include_directories(sdurw_lua_s PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
-    endif()
-    if(TARGET sdurw_core_lua)
-        target_include_directories(sdurw_core_lua PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
-        target_include_directories(sdurw_core_lua_s PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
-    endif()
-
     install(TARGETS ${SUBSYS_NAME}_all EXPORT ${PROJECT_PREFIX}luaTargets)
 
-    RW_SWIG_COMPILE_TARGET(lua ${lua_targets})
+    rw_swig_compile_target(lua ${lua_targets})
 
 endif()

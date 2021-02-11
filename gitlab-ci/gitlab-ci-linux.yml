@@ -71,8 +71,8 @@
     - cd RW
     - cmake -DCMAKE_BUILD_TYPE=Release ../../RobWork
     - make -j${THREADS}
-    - make -j${THREADS} python
-    - make -j${THREADS} lua
+    - make -j${THREADS} python 
+    - make -j${THREADS} lua || make -j${THREADS} lua 
     - make -j${THREADS} java
   artifacts:
     paths:

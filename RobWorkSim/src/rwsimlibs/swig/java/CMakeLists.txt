@@ -52,7 +52,7 @@ if(build)
         SWIG_FLAGS "-package" "org.robwork.sdurwsim"
     )
 
-    swig_link_libraries(sdurwsim_jni ${RWSIM_ODE_LIBRARY} sdurwsim)
+    target_link_libraries(sdurwsim_jni ${RWSIM_ODE_LIBRARY} sdurwsim)
 
     # Force removal of previous Java compilation and source when interface file changes This is
     # required as types may be removed or change name (in this case previous java classes would
