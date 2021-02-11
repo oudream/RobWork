@@ -153,7 +153,7 @@ if(build)
             )
 
             get_in_map(depends RW_SUBSYS_DEPEND ${RW_MODULE})
-            swig_link_libraries(${RW_MODULE}${LIB_SUFIX} ${RW_MODULE} ${depends}
+            target_link_libraries(${python_NAME_${RW_MODULE}} PUBLIC ${RW_MODULE} ${depends}
                                 ${PYTHON_LIBRARIES}
             )
 
@@ -169,7 +169,7 @@ if(build)
         endif()
     endforeach()
 
-    RW_SWIG_COMPILE_TARGET( python ${python_targets} )
+    RW_SWIG_COMPILE_TARGET(python ${python_targets} )
     
     install(TARGETS ${SUBSYS_NAME} EXPORT ${PROJECT_PREFIX}pythonTargets)
 

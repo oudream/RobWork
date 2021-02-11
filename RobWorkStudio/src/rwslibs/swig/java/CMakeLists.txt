@@ -47,7 +47,7 @@ if(build)
         SWIG_FLAGS "-package" "org.robwork.sdurws"
     )
 
-    swig_link_libraries(
+    target_link_libraries(
         sdurws_jni
         sdurws
         sdurws_robworkstudioapp

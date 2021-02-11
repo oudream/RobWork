@@ -34,11 +34,11 @@ if(build)
 
     set(RWS_MODULE sdurws)
     configure_file(RobWorkStudio.egg-info.in
-                   ${CMAKE_CURRENT_SOURCE_DIR}/RobWorkStudio-${ROBWORKSTUDIO_VERSION}.egg-info)
+                   ${CMAKE_CURRENT_SOURCE_DIR}/RobWorkStudio-${ROBWORKSTUDIO_VERSION}.egg-info
+    )
 
-    install(
-        FILES ${CMAKE_CURRENT_SOURCE_DIR}/RobWorkStudio-${ROBWORKSTUDIO_VERSION}.egg-info
-        DESTINATION ${PYTHON_INSTALL_DIR}
+    install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/RobWorkStudio-${ROBWORKSTUDIO_VERSION}.egg-info
+            DESTINATION ${PYTHON_INSTALL_DIR}
     )
 
     if(POLICY CMP0078)
@@ -54,7 +54,7 @@ if(build)
         TARGET_NAME ${TARGET_NAME}
         INSTALL_DIR ${PYTHON_INSTALL_DIR}/${RWS_MODULE}
         LANGUAGE_FILE_DIR ${RWS_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RWS_MODULE}
-        BINARY_OUTPUT_DIR ${RWS_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RWS_MODULE}
+                          BINARY_OUTPUT_DIR ${RWS_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RWS_MODULE}
         SOURCES ../ScriptTypes.cpp
         SWIG_FLAGS ${SWIG_FLAGS}
     )
@@ -74,15 +74,12 @@ if(build)
         endif()
         if(pydoc)
             add_custom_command(
-                TARGET ${TARGET_NAME} POST_BUILD
+                TARGET ${TARGET_NAME}
+                POST_BUILD
                 COMMAND
-                    ${CMAKE_COMMAND}
-                    -E
-                    env
+                    ${CMAKE_COMMAND} -E env
                     PYTHONPATH=${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/../../../RobWork/libs/${RW_BUILD_TYPE}
-                    ${pydoc}
-                    -w
-                    ${RWS_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RWS_MODULE}/${RWS_MODULE}.py
+                    ${pydoc} -w ${RWS_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RWS_MODULE}/${RWS_MODULE}.py
                 WORKING_DIRECTORY ${SWIG_OUT_ORIG}
                 COMMENT "Creating pydoc..."
             )
@@ -95,23 +92,18 @@ if(build)
     if(SWIG_DEFAULT_COMPILE OR CMAKE_VERSION VERSION_GREATER 3.16.0)
         target_link_libraries(${SUBSYS_NAME} INTERFACE ${TARGET_NAME})
     endif()
-    
-    install(
-        FILES ${RWS_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RWS_MODULE}/${RWS_MODULE}.py
-        DESTINATION "${PYTHON_INSTALL_DIR}/${RWS_MODULE}"
+
+    install(FILES ${RWS_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RWS_MODULE}/${RWS_MODULE}.py
+            DESTINATION "${PYTHON_INSTALL_DIR}/${RWS_MODULE}"
     )
-    install(
-        FILES ${RWS_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RWS_MODULE}/__init__.py
-        DESTINATION "${PYTHON_INSTALL_DIR}/${RWS_MODULE}"
+    install(FILES ${RWS_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RWS_MODULE}/__init__.py
+            DESTINATION "${PYTHON_INSTALL_DIR}/${RWS_MODULE}"
     )
     # ###### Final linking and dependency checks ######
 
-    swig_link_libraries(sdurws${LIB_SUFIX} ${SUBSYS_DEPS} RW::sdurw ${PYTHON_LIBRARIES})
+    target_link_libraries(${python_NAME_sdurws} PUBLIC ${SUBSYS_DEPS} RW::sdurw ${PYTHON_LIBRARIES})
     install(TARGETS ${SUBSYS_NAME} EXPORT ${PROJECT_PREFIX}pythonTargets)
 
-    
-    RW_SWIG_COMPILE_TARGET(
-            python ${TARGET_NAME}
-        )
+    rw_swig_compile_target(python ${TARGET_NAME})
 
 endif()
