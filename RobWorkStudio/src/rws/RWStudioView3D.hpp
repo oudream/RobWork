@@ -214,6 +214,7 @@ class RWStudioView3D : public QWidget
     void saveBufferToFileDialog ();
 
     void ShowContextMenu (const QPoint& pos);
+    void useDefaultCameraView();
 
   private:
     //! struct for keeping track of the sensor camera view frustrums
@@ -261,6 +262,7 @@ class RWStudioView3D : public QWidget
     QAction* _checkForCollision;
     QAction* _saveBufferToFileAction;
 
+    QAction *_homeViewAction;
     QAction *_axometricViewAction, *_frontViewAction, *_rightViewAction, *_topViewAction;
     QAction *_rearViewAction, *_leftViewAction, *_bottomViewAction;
 

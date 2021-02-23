@@ -109,6 +109,10 @@ void RWStudioView3D::setupActions ()
     connect (_setOrthographicViewAction, SIGNAL (triggered ()), this, SLOT (setCheckAction ()));
 
     // view transforms
+
+    _homeViewAction = new QAction (QIcon (":/images/home.png"), tr ("Home view"), this);
+    connect (_homeViewAction, SIGNAL (triggered ()), this, SLOT (useDefaultCameraView ()));
+
     _axometricViewAction = new QAction (
         QIcon (":/images/default_view_100.png"), tr ("&Axiometric (Ctrl + A)"), this);    // owned
     connect (_axometricViewAction, SIGNAL (triggered ()), this, SLOT (setCheckAction ()));
@@ -418,8 +422,8 @@ void RWStudioView3D::mouseDoubleClickEvent (QMouseEvent* event)
 {
     if (event->button () == Qt::LeftButton && event->modifiers () == Qt::ControlModifier) {
         Log::debugLog () << "Mouse double click with control modifier..." << std::endl;
-        int winx = event->pos().x();
-        int winy = height () - event->pos().y();
+        int winx = event->pos ().x ();
+        int winy = height () - event->pos ().y ();
         // we pick the scene before
         Frame* frame = pickFrame (winx, winy);
         if (frame != NULL) {
@@ -443,6 +447,9 @@ void RWStudioView3D::keyPressEvent (QKeyEvent* e)
         saveBufferToFileDialog ();
     }
     // Change between predefined camera angles:
+    else if (e->key () == Qt::Key_H && e->modifiers () == Qt::ControlModifier) {
+        _homeViewAction->activate (QAction::Trigger);
+    }
     else if (e->key () == Qt::Key_A && e->modifiers () == Qt::ControlModifier) {
         _axometricViewAction->activate (QAction::Trigger);
     }
@@ -636,6 +643,8 @@ void RWStudioView3D::setupToolBarAndMenu (QMainWindow* mwindow)
     /// --------------------------------------------------------------------------
     QToolBar* stdviewtoolbar = mwindow->addToolBar (tr ("Standard views"));
     stdviewtoolbar->setObjectName ("StandardViewsView3D");
+    stdviewtoolbar->addAction (_homeViewAction);
+    stdviewtoolbar->addSeparator ();
     stdviewtoolbar->addAction (_axometricViewAction);
     stdviewtoolbar->addSeparator ();
     stdviewtoolbar->addAction (_frontViewAction);
@@ -674,6 +683,8 @@ void RWStudioView3D::setupToolBarAndMenu (QMainWindow* mwindow)
     /// --------------------------------------------------------------------------
     // standard views
     QMenu* standardViewMenu = menu->addMenu (tr ("Standard views"));
+    standardViewMenu->addAction (_homeViewAction);
+    standardViewMenu->addSeparator ();
     standardViewMenu->addAction (_axometricViewAction);
     standardViewMenu->addSeparator ();
     standardViewMenu->addAction (_frontViewAction);
@@ -833,7 +844,6 @@ void RWStudioView3D::setCheckAction ()
         _view->setTransform (
             Transform3D<>::makeLookAt (Vector3D<> (0, -v2c.norm2 (), 0), center, Vector3D<>::z ()));
     }
-
     else if (obj == _addViewAction) {
         // add the current view transform to the view list
         size_t nrView = _customViews.size ();
@@ -852,7 +862,6 @@ void RWStudioView3D::setCheckAction ()
         }
         _customViews.clear ();
     }
-
     else if (obj == _addCameraViewAction) {
         // add the current view transform to the view list
         size_t nrView = _sensorCameraViews.size ();
@@ -1078,4 +1087,12 @@ void RWStudioView3D::saveBufferToFileDialog ()
             QMessageBox::information (this, "Failed to save file ", exp.c_str (), QMessageBox::Ok);
         }
     }
+}
+
+void RWStudioView3D::useDefaultCameraView ()
+{
+    std::cout << "HERE" << std::endl;
+    _view->setTransform (
+        Transform3D<>::makeLookAt (Vector3D<> (5, 5, 5), Vector3D<>::zero (), Vector3D<>::z ()));
+    _view->updateView ();
 }
