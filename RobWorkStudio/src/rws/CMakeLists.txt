@@ -30,6 +30,7 @@ if(build)
         RobWorkStudioPlugin.cpp
         AboutBox.cpp
         HelpAssistant.cpp
+        RWSSpinBox.cpp 
         ImageView.cpp
         propertyview/PropertyViewEditor.cpp
         propertyview/PropertyViewDialog.cpp
@@ -40,6 +41,7 @@ if(build)
         ArcBallController.hpp RWSImageLoaderPlugin.hpp ImageUtil.hpp
         # FixedAxisController.hpp
         RobWorkStudio.hpp
+        RWSSpinBox.hpp 
         SceneOpenGLViewer.hpp
         RobWorkStudioPlugin.hpp
         RWStudioView3D.hpp

@@ -27,6 +27,7 @@
 #include <rws/RobWorkStudioPlugin.hpp>
 
 #include <QObject>
+#include <QString>
 #include <vector>
 
 namespace rw { namespace kinematics {
