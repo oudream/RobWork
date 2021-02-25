@@ -1,12 +1,12 @@
 cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
 
-project(ExampleSnippets)
+project(ExampleSnippets CXX)
 
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "None")
 endif()
 
-find_package(RobWork REQUIRED PATHS "${RW_ROOT}" "$ENV{RW_ROOT}")
+find_package(RobWork REQUIRED PATHS "${RW_ROOT}" "$ENV{RW_ROOT}" "../../cmake")
 
 macro(rw_build _name)
     # And now we add any targets that we want

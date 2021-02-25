@@ -19,4 +19,4 @@ set(SrcFiles BootstrapPlugin.cpp ${UIS_OUT_H})
 
 # The shared library to build:
 add_library(BootstrapPlugin MODULE ${SrcFiles} ${MocSrcFiles}  ${RccSrcFiles})
-target_link_libraries(BootstrapPlugin bstrap ${ROBWORKSIM_LIBRARIES} ${ROBWORKSTUDIO_LIBRARIES})
+target_link_libraries(BootstrapPlugin bstrap ${ROBWORKSIM_LIBRARIES} RWS::sdurws)

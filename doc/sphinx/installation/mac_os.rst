@@ -63,21 +63,21 @@ To compile the C++ code, CMake must be used to prepare RobWork for compilation.
 RobWork Required Dependencies
 -----------------------------
 
-Boost is the only required dependency for RobWork
+Boost and eigen are the only required dependency for RobWork
 
 .. code-block:: shell
 
-    brew install boost
+    brew install boost eigen
 
 RobWork Recommended additional Dependencies
 -------------------------------------------
 
 These dependencies are not necessary for running RobWork, 
-but will replace some of the external dependencies that RobWork comes bundled with.
+but will add extra functionality to RobWork.
 
 .. code-block:: shell
 
-    brew install assimp fcl eigen pkg-config
+    brew install assimp fcl pkg-config libomp
 
 RobWork Optional Dependencies
 -----------------------------

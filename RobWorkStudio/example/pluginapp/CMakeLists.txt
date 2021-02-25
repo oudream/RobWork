@@ -51,7 +51,7 @@ set(SrcFiles SamplePlugin.cpp resources.qrc)
 
 # The shared library to build:
 add_library(SamplePlugin MODULE ${SrcFiles})
-target_link_libraries(SamplePlugin PUBLIC ${ROBWORKSTUDIO_LIBRARIES} ${ROBWORK_LIBRARIES})
-target_include_directories(SamplePlugin PUBLIC ${ROBWORKSTUDIO_INCLUDE_DIRS} ${ROBWORK_INCLUDE_DIRS})
+target_link_libraries(SamplePlugin PUBLIC RWS::sdurws ${ROBWORK_LIBRARIES})
+target_include_directories(SamplePlugin PUBLIC ${ROBWORK_INCLUDE_DIRS})
 
 message("-- " ${PROJECT_NAME} " done!")

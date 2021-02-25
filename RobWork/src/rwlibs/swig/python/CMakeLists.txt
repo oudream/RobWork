@@ -102,12 +102,13 @@ if(build)
             endif()
             set(TARGET_NAME ${RW_MODULE}${LIB_SUFIX})
             rw_add_swig(
-                ${RW_MODULE} python SHARED
+                ${RW_MODULE} python MODULE
                 TARGET_NAME ${TARGET_NAME}
                 INSTALL_DIR ${PYTHON_INSTALL_DIR}/${RW_MODULE}
                 SOURCES ${SOURCE}
                 LANGUAGE_FILE_DIR ${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RW_MODULE}
-                BINARY_OUTPUT_DIR "${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RW_MODULE}"
+                                  BINARY_OUTPUT_DIR
+                                  "${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RW_MODULE}"
                 SWIG_FLAGS ${SWIG_FLAGS}
             )
 
@@ -153,8 +154,8 @@ if(build)
             )
 
             get_in_map(depends RW_SUBSYS_DEPEND ${RW_MODULE})
-            target_link_libraries(${python_NAME_${RW_MODULE}} PUBLIC ${RW_MODULE} ${depends}
-                                ${PYTHON_LIBRARIES}
+            target_link_libraries(
+                ${python_NAME_${RW_MODULE}} PUBLIC ${RW_MODULE} ${depends} ${PYTHON_LIBRARIES}
             )
 
             set(EXTRA_MODULES)
@@ -169,8 +170,8 @@ if(build)
         endif()
     endforeach()
 
-    RW_SWIG_COMPILE_TARGET(python ${python_targets} )
-    
+    rw_swig_compile_target(python ${python_targets})
+
     install(TARGETS ${SUBSYS_NAME} EXPORT ${PROJECT_PREFIX}pythonTargets)
 
 endif()

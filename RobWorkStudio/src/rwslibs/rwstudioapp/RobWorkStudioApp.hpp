@@ -20,17 +20,31 @@
 #include "RobWorkStudio.hpp"
 
 #include <boost/thread.hpp>
+#include <thread>
+
+#define RWS_START(rwsapp)                                \
+    rws::RobWorkStudioApp& rws_macro_interface = rwsapp; \
+    std::thread rws_macro_thread([&] { while(!rwsapp.isRunning ()){ rw::common::TimerUtil::sleepMs (1);}
+#define RWS_END(end)            \
+    });                         \
+    rws_macro_thread.detach (); \
+    rws_macro_interface.run ();
 
 namespace rws {
 
 /**
  * @brief a RobWorkStudio main application which may be instantiated in its own thread.
+ * The app can be started with either a call to the run() function or the start() function depending
+ * on weather you want to run it from current thread or start it up in another tread.
+ *
+ * For convinienve when running the app from the main tread the macros 
+ * RWS_START(RobWorkStudioApp app) and RWS_END() can be used to capsulate code to run in a new thread
  */
 class RobWorkStudioApp
 {
   public:
     /**
-     * constructor
+     * @brief constructor
      * @param args [in] command line arguments for RobWorkStudio
      */
     RobWorkStudioApp (const std::string& args);

@@ -18,7 +18,8 @@ endif()
 
 # Check if RWstudio_ROOT path are setup correctly
 find_file(ROBWORKSTUDIO_FOUND RobWorkStudioSetup.cmake ${RWSTUDIO_ROOT}/cmake ${RWS_ROOT}/cmake
-          NO_DEFAULT_PATH)
+          NO_DEFAULT_PATH
+)
 if(NOT ROBWORKSTUDIO_FOUND)
     message(
         SEND_ERROR
@@ -90,9 +91,15 @@ find_package(Boost REQUIRED program_options)
 
 # Find and setup Qt.
 find_package(Qt6 COMPONENTS Core Gui Widgets OpenGL OpenGLWidgets QUIET)
-if(Qt6Core_FOUND AND Qt6Gui_FOUND AND Qt6Widgets_FOUND AND Qt6OpenGL_FOUND AND Qt6OpenGLWidgets_FOUND)
+if(Qt6Core_FOUND
+   AND Qt6Gui_FOUND
+   AND Qt6Widgets_FOUND
+   AND Qt6OpenGL_FOUND
+   AND Qt6OpenGLWidgets_FOUND
+)
     set(QT_LIBRARIES ${Qt6Core_LIBRARIES} ${Qt6Gui_LIBRARIES} ${Qt6Widgets_LIBRARIES}
-                     ${Qt6OpenGL_LIBRARIES} ${Qt6OpenGLWidgets_LIBRARIES})
+                     ${Qt6OpenGL_LIBRARIES} ${Qt6OpenGLWidgets_LIBRARIES}
+    )
     message(STATUS "RobWorkStudio: Using Qt ${Qt6_VERSION}.")
     set(CMAKE_AUTOMOC ON)
 else()
@@ -120,16 +127,24 @@ else()
     if(Qt6OpenGLWidgets_FOUND)
         message(STATUS "RobWorkStudio: - Qt6OpenGLWidgets found.")
     else()
-        message(STATUS "RobWorkStudio: - Qt6OpenGLWidgets NOT found. Please set Qt6OpenGLWidgets_DIR to find.")
+        message(
+            STATUS
+                "RobWorkStudio: - Qt6OpenGLWidgets NOT found. Please set Qt6OpenGLWidgets_DIR to find."
+        )
     endif()
 
     find_package(Qt5Core 5.5.1 QUIET)
     find_package(Qt5Gui 5.5.1 QUIET)
     find_package(Qt5Widgets 5.5.1 QUIET)
     find_package(Qt5OpenGL 5.5.1 QUIET)
-    if(Qt5Core_FOUND AND Qt5Gui_FOUND AND Qt5Widgets_FOUND AND Qt5OpenGL_FOUND)
+    if(Qt5Core_FOUND
+       AND Qt5Gui_FOUND
+       AND Qt5Widgets_FOUND
+       AND Qt5OpenGL_FOUND
+    )
         set(QT_LIBRARIES ${Qt5Core_LIBRARIES} ${Qt5Gui_LIBRARIES} ${Qt5Widgets_LIBRARIES}
-                         ${Qt5OpenGL_LIBRARIES})
+                         ${Qt5OpenGL_LIBRARIES}
+        )
         message(STATUS "RobWorkStudio: Using Qt ${Qt5Core_VERSION}.")
         set(CMAKE_AUTOMOC ON)
     else()
@@ -147,14 +162,21 @@ else()
         if(Qt5Widgets_FOUND)
             message(STATUS "RobWorkStudio: - Qt5Widgets found.")
         else()
-            message(STATUS "RobWorkStudio: - Qt5Widgets NOT found. Please set Qt5Widgets_DIR to find.")
+            message(
+                STATUS "RobWorkStudio: - Qt5Widgets NOT found. Please set Qt5Widgets_DIR to find."
+            )
         endif()
         if(Qt5OpenGL_FOUND)
             message(STATUS "RobWorkStudio: - Qt5OpenGL found.")
         else()
-            message(STATUS "RobWorkStudio: - Qt5OpenGL NOT found. Please set Qt5OpenGL_DIR to find.")
+            message(
+                STATUS "RobWorkStudio: - Qt5OpenGL NOT found. Please set Qt5OpenGL_DIR to find."
+            )
         endif()
-        message(FATAL_ERROR "RobWorkStudio: Could NOT find Qt6 or Qt5. Please set the Qt6 or Qt5 directories.")
+        message(
+            FATAL_ERROR
+                "RobWorkStudio: Could NOT find Qt6 or Qt5. Please set the Qt6 or Qt5 directories."
+        )
     endif()
 endif()
 
@@ -199,8 +221,9 @@ endif()
 # optional compilation of LUA interface
 include(CMakeDependentOption)
 set(RWS_HAVE_LUA False)
-cmake_dependent_option(RWS_DISABLE_LUA "Set when you want to disable lua!" OFF
-                       "RW_BUILD_WITH_LUA AND SWIG_FOUND" ON)
+cmake_dependent_option(
+    RWS_DISABLE_LUA "Set when you want to disable lua!" OFF "RW_BUILD_WITH_LUA AND SWIG_FOUND" ON
+)
 if(NOT RWS_DISABLE_LUA)
     if(NOT SWIG_FOUND)
         message(STATUS "RobWorkStudio: Lua DISABLED! - SWIG 3+ was not found!")
@@ -224,10 +247,20 @@ set(RWS_USE_QCODEEDITOR ON)
 if(QCodeEditor_FOUND)
     set(RWS_QCODEEDITOR_INTERNAL_TARGET OFF)
     message("QCodeEditor found")
-elseif(Qt6Core_FOUND AND Qt6Widgets_FOUND AND Qt6Gui_FOUND AND CMAKE_VERSION VERSION_GREATER 3.6)
+elseif(
+    Qt6Core_FOUND
+    AND Qt6Widgets_FOUND
+    AND Qt6Gui_FOUND
+    AND CMAKE_VERSION VERSION_GREATER 3.6
+)
     set(RWS_QCODEEDITOR_INTERNAL_TARGET ON)
     message(STATUS "QCodeEditor not found building internal target")
-elseif(Qt5Core_FOUND AND Qt5Widgets_FOUND AND Qt5Gui_FOUND AND CMAKE_VERSION VERSION_GREATER 3.6)
+elseif(
+    Qt5Core_FOUND
+    AND Qt5Widgets_FOUND
+    AND Qt5Gui_FOUND
+    AND CMAKE_VERSION VERSION_GREATER 3.6
+)
     set(RWS_QCODEEDITOR_INTERNAL_TARGET ON)
     message(STATUS "QCodeEditor not found building internal target")
 else()
@@ -247,8 +280,7 @@ endif()
 rw_is_release(IS_RELEASE)
 
 if(NOT DEFINED RWS_CXX_FLAGS)
-    set(
-        RWS_CXX_FLAGS
+    set(RWS_CXX_FLAGS
         "${RW_BUILD_WITH_CXX_FLAGS} ${RWS_CXX_FLAGS_TMP}"
         CACHE STRING "Change this to force using your own flags and not those of RobWorkSutdio"
     )
@@ -261,11 +293,10 @@ if(NOT DEFINED RWS_DEFINITIONS)
         set(RWS_DEFINITIONS_TMP "-DQT_DEBUG")
     endif()
 
-    set(
-        RWS_DEFINITIONS
+    set(RWS_DEFINITIONS
         "${RW_BUILD_WITH_DEFINITIONS};${RWS_DEFINITIONS_TMP}"
-        CACHE
-            STRING "Change this to force using your own definitions and not those of RobWorkSutdio"
+        CACHE STRING
+              "Change this to force using your own definitions and not those of RobWorkSutdio"
     )
 endif()
 
@@ -279,14 +310,12 @@ message(STATUS "RobWorkStudio: Addubg RWS definitions: ${RWS_DEFINITIONS}")
 # automatically set.
 #
 if(DEFINED RWS_LINKER_FLAGS)
-    set(
-        CMAKE_SHARED_LINKER_FLAGS
+    set(CMAKE_SHARED_LINKER_FLAGS
         "${CMAKE_SHARED_LINKER_FLAGS} ${RWS_LINKER_FLAGS}"
         CACHE STRING "" FORCE
     )
     if(WIN32)
-        set(
-            CMAKE_EXE_LINKER_FLAGS
+        set(CMAKE_EXE_LINKER_FLAGS
             "${CMAKE_EXE_LINKER_FLAGS} ${RWS_LINKER_FLAGS}"
             CACHE STRING "" FORCE
         )
@@ -306,20 +335,24 @@ set(ROBWORKSTUDIO_LIBRARY_DIRS ${RWS_LIBS_DIR})
 # The include dirs
 #
 set(ROBWORKSTUDIO_INCLUDE_DIR ${RWS_ROOT}/src ${Boost_INCLUDE_DIR}
-                              ${RWS_ROOT}/ext/qtpropertybrowser/src/)
+                              ${RWS_ROOT}/ext/qtpropertybrowser/src/
+)
 
 #
 # The library dirs
 #
-set(ROBWORKSTUDIO_LIBRARY_DIRS ${Boost_LIBRARY_DIRS} ${CMAKE_CURRENT_BINARY_DIR}/libs/${RWS_BUILD_TYPE})
+set(ROBWORKSTUDIO_LIBRARY_DIRS ${Boost_LIBRARY_DIRS}
+                               ${CMAKE_CURRENT_BINARY_DIR}/libs/${RWS_BUILD_TYPE}
+)
 
 #
 # Setup the Library List here. We need to make sure the correct order is maintained which is crucial
 # for some compilers.
 #
-set(
-    ROBWORKSTUDIO_LIBRARIES_INTERNAL
-    sdurws_robworkstudioapp
+set(ROBWORKSTUDIO_LIBRARIES_INTERNAL sdurws_robworkstudioapp sdurws_workcelleditor sdurws_luaeditor
+                                     ${RWS_LUA} sdurws qtpropertybrowser
+)
+set(ROBWORKSTUDIO_PLUGIN_LIBRARIES
     sdurws_jog
     sdurws_log
     sdurws_playback
@@ -328,21 +361,21 @@ set(
     sdurws_planning
     sdurws_sensors
     sdurws_workcelleditorplugin
-    sdurws_workcelleditor
     sdurws_luapl
-    sdurws_luaeditor
-    ${RWS_LUA}
-    sdurws
-    qtpropertybrowser
 )
 
 set(ROBWORKSTUDIO_LIBRARIES_EXTERNAL ${QT_LIBRARIES} ${Boost_LIBRARIES} ${OPENGL_LIBRARIES}
-                                     ${GLUT_glut_LIBRARY})
+                                     ${GLUT_glut_LIBRARY}
+)
 
 set(ROBWORKSTUDIO_LIBRARIES)
 foreach(l ${ROBWORKSTUDIO_LIBRARIES_EXTERNAL})
     unset(tmp CACHE)
-    find_library(tmp ${l} PATHS ${ROBWORKSTUDIO_LIBRARY_DIRS} NO_DEFAULT_PATH)
+    find_library(
+        tmp ${l}
+        PATHS ${ROBWORKSTUDIO_LIBRARY_DIRS}
+        NO_DEFAULT_PATH
+    )
     if(tmp)
         list(APPEND ROBWORKSTUDIO_LIBRARIES ${tmp})
     else()

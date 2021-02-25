@@ -1,6 +1,8 @@
 ############################# MacOs CI #################################
 
 .mac-build-RW:
+  variables:
+    GIT_CLONE_PATH: $CI_BUILDS_DIR/RobWork
   extends: .linux-build-RW
   before_script:
     - THREADS=3
@@ -20,6 +22,8 @@
     - mac
 
 .mac-build-RWS:
+  variables:
+    GIT_CLONE_PATH: $CI_BUILDS_DIR/RobWork
   extends: .linux-build-RWS
   before_script:
     - THREADS=3
@@ -28,6 +32,8 @@
     - mac
 
 .mac-build-RWSim:
+  variables:
+    GIT_CLONE_PATH: $CI_BUILDS_DIR/RobWork
   extends: .linux-build-RWSim
   before_script:
     - THREADS=3
@@ -35,10 +41,75 @@
   tags:
     - mac
 
-.mac-examples:
+#.mac-tests:
+#  extends: .linux-tests
+#  before_script:
+#    - THREADS=3
+#    - WERROR=False
+#  tags:
+#    - mac
+
+.mac-examples-compile:
+  variables:
+    GIT_CLONE_PATH: $CI_BUILDS_DIR/RobWork
   extends: .linux-examples
   before_script:
     - THREADS=3
     - WERROR=False
+  tags:
+    - mac
+
+.mac-examples-exe:
+  variables:
+    GIT_CLONE_PATH: $CI_BUILDS_DIR/RobWork
+  extends: .linux-install-tests
+  before_script:
+    - THREADS=3
+    - WERROR=False
+    - robworkdata=~/robworkdata
+    - "[ -d ${robworkdata} ] || git clone https://gitlab.com/sdurobotics/robworkdata.git ${robworkdata}"
+    - export PYTHONPATH=${PYTHONPATH}:$(pwd)/Build/RW/libs/release:$(pwd)/Build/RWS/libs/release:$(pwd)/Build/RWSim/libs/release
+    - export LUA_CPATH="$(pwd)/Build/RW/libs/release/Lua/?.so;$(pwd)/Build/RWS/libs/release/Lua/?.so;$(pwd)/Build/RWSim/libs/release/Lua/?.so"
+  script:
+    - DIR=$(pwd)
+    # TEST RW CPP FILES
+    - cd $DIR/RobWork/example/cpp
+    - mkdir Build && cd Build
+    - cmake ..
+    - make -j${THREADS}
+    - "for file in ./ex-*; do if [ -f $file ] && [[ ! $file =~ ex-load-workcell ]] ; then  echo -e '\n EXECUTING: '$file && $file ${robworkdata} && EXERW=$EXERW' '$file || exit 1 ; fi; done"
+    - ./ex-load-workcell ../../ModelData/XMLScenes/RobotWithHand/Workcell.xml
+    # TEST RW PYTHON FILES
+    - cd $DIR/RobWork/example/python
+    - "for file in $EXERW ; do echo -e '\n EXECUTING: '$file && python3 ${file}.py ${robworkdata} || exit 1 ; done"
+    - "python3 ./ex-load-workcell.py ../ModelData/XMLScenes/RobotWithHand/Workcell.xml"
+    # TEST RW LUA FILES
+    - cd $DIR/RobWork/example/lua
+    - "for file in $EXERW ; do echo -e '\n EXECUTING: '$file && lua ${file}.lua ${robworkdata} || exit 1 ; done"
+    - "lua ./ex-load-workcell.lua ../ModelData/XMLScenes/RobotWithHand/Workcell.xml"
+    # Test RWS CPP FILES
+    - cd $DIR/RobWorkStudio/example/cpp
+    - mkdir build && cd build
+    - cmake ..
+    - make -j${THREADS}
+    - "for file in ./ex-*; do if [ -f $file ] ; then  echo -e '\n EXECUTING: '$file && $file ${robworkdata} -t && EXERWS=$EXERWS' '$file || exit 1 ; fi; done"
+    # Test RWS PYTHON FILES
+    #- cd $DIR/RobWorkStudio/example/python
+    #- "for file in $EXERWS ; do echo -e '\n EXECUTING: '$file && python3 ${file}.py ${robworkdata} -t || exit 1 ; done"
+    # Test RWS LUA FILES
+    #- cd $DIR/RobWorkStudio/example/lua
+    #- "for file in $EXERWS ; do echo -e '\n EXECUTING: '$file && lua ${file}.lua ${robworkdata} -t || exit 1 ; done"
+    # Test RWSIM CPP files
+    - cd $DIR/RobWorkSim/example/cpp
+    - mkdir build && cd build
+    - cmake ..
+    - make -j${THREADS}
+    - "for file in ./ex-*; do if [ -f $file ] ; then  echo -e '\n EXECUTING: '$file && $file ${robworkdata} && EXERWSIM=$EXERWSIM' '$file || exit 1 ; fi; done"
+    # Test RWSSIM PYTHON FILES
+    - cd $DIR/RobWorkSim/example/python
+    - "for file in $EXERWSIM ; do echo -e '\n EXECUTING: '$file && python3 ${file}.py ${robworkdata} || exit 1 ; done"
+    # Test RWSIM LUA FILES
+    - cd $DIR/RobWorkSim/example/lua
+    - "for file in $EXERWSIM ; do echo -e '\n EXECUTING: '$file && lua ${file}.lua ${robworkdata} || exit 1 ; done"
   tags:
     - mac

@@ -190,6 +190,11 @@ if(build)
 
         endif()
 
+        get_in_map(depends RW_SUBSYS_DEPEND ${RW_MODULE})
+        foreach(dep ${depends})
+            add_dependencies(${TARGET_NAME} ${lua_NAME_${dep}})
+        endforeach()
+
     endforeach()
 
     install(TARGETS ${SUBSYS_NAME}_all EXPORT ${PROJECT_PREFIX}luaTargets)

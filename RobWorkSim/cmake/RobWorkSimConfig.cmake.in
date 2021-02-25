@@ -130,6 +130,172 @@ macro(RWSIM_MESSAGE text)
     endif()
 endmacro()
 
+function(RWSIM_VERIFY_TARGET __target __result)
+    set(idx -2)
+    set(idx_u -2)
+    if(TARGET ${__target})
+        set(result ${__target})
+        list(FIND varified_targets ${__target} idx)
+        list(FIND ARGN ${__target} idx_u)
+        if(${idx} EQUAL -1 AND ${idx_u} EQUAL -1)
+            # message(STATUS " - ${__target}")
+            set(underprocess ${ARGN} ${result})
+
+            # ######################################################################################
+            # Varifying underlying Binary
+            # ######################################################################################
+            get_target_property(type ${__target} TYPE)
+            if(NOT ("${type}" STREQUAL "INTERFACE_LIBRARY"))
+                get_target_property(out ${__target} IMPORTED_LOCATION_RELEASE)
+
+                if(NOT EXISTS ${out})
+                    get_target_property(out ${__target} IMPORTED_LOCATION_RELWITHDEBINFO)
+                endif()
+                if(NOT EXISTS ${out})
+                    get_target_property(out ${__target} IMPORTED_LOCATION_DEBUG)
+                endif()
+                if(NOT EXISTS ${out})
+                    get_target_property(out ${__target} IMPORTED_LOCATION_MINSUZEREL)
+                endif()
+                if(NOT EXISTS ${out})
+                    get_target_property(out ${__target} IMPORTED_LOCATION_NONE)
+                endif()
+                if(NOT EXISTS ${out})
+                    get_target_property(out ${__target} IMPORTED_LOCATION)
+                endif()
+
+                if(NOT EXISTS ${out})
+                    # message(STATUS " - missing binary ${out}")
+                    set(result "")
+                endif()
+
+                if(NOT result)
+                    # message(STATUS " - Target Binary not found: ${__target}")
+                endif()
+
+            endif()
+
+            # ######################################################################################
+            # Varifying include dirs
+            # ######################################################################################
+            if(result)
+                get_target_property(out ${__target} INTERFACE_INCLUDE_DIRECTORIES)
+                if(out)
+                    foreach(dir ${out})
+
+                        if(NOT EXISTS ${dir})
+                            #message(STATUS " - Include not found: ${dir}")
+                            set(result "")
+                        endif()
+                    endforeach()
+
+                    if(NOT result)
+                        #message(STATUS " - Target Include not found: ${__target}")
+                    endif()
+                endif()
+            endif()
+
+            # ######################################################################################
+            # Varifying dependencies
+            # ######################################################################################
+            if(result)
+                get_target_property(out ${__target} INTERFACE_LINK_LIBRARIES)
+                if(out)
+                    foreach(lib_t ${out})
+
+                        rwsim_verify_library(${lib_t} vaified_lib "${underprocess}")
+                        if("${vaified_lib}" STREQUAL "")
+                            #message(STATUS " - Depend not found: ${lib_t}")
+                            set(result "")
+                        endif()
+                    endforeach()
+                    if(NOT result)
+                        #message(STATUS " - Target depend not found: ${__target}")
+                    endif()
+                endif()
+            endif()
+
+            # ######################################################################################
+            # Saving Result
+            # ######################################################################################
+            if(NOT ${result} STREQUAL "")
+                set(varified_targets ${varified_targets} ${result})
+                #message(STATUS " - Target varified: ${result}")
+            endif()
+        endif()
+    else()
+        set(${__result} "")
+    endif()
+
+    set(varified_targets
+        ${varified_targets}
+        PARENT_SCOPE
+    )
+    set(${__result}
+        ${result}
+        PARENT_SCOPE
+    )
+endfunction()
+
+function(RWSIM_VERIFY_LIBRARY _name _result)
+    set(result "")
+    string(REPLACE "${RWSIM_BUILD_WITH_BUILD_DIR}/libs/${RWSIM_BUILD_TYPE}" "${RWSIM_LIBS}" DIRS
+                   "${RWSIM_BUILD_WITH_LIBRARY_DIRS}"
+    )
+    list(REMOVE_DUPLICATES DIRS)
+
+    unset(tmp CACHE)
+    find_library(
+        tmp
+        NAMES ${_name} lib${_name}
+        PATHS ${DIRS}
+        PATH_SUFFIXES ${RW_BUILD_WITH_LIBRARY_SUBDIRS}
+        NO_DEFAULT_PATH
+    )
+
+    if(${_name} MATCHES "^\\s?-l")
+        set(result ${_name})
+
+    elseif(EXISTS ${_name})
+        set(result ${_name})
+
+    elseif(TARGET ${_name})
+        set(result ${_name})
+        rwsim_verify_target(${result} result ${ARGN})
+
+    elseif(TARGET RWSIM::${_name})
+        set(result RWSIM::${_name})
+
+        rwsim_verify_target(${result} result ${ARGN})
+
+    elseif(TARGET sdurwsim_${_name})
+        set(result sdurwsim_${_name})
+        rwsim_verify_target(${result} result ${ARGN})
+
+    elseif(TARGET RWSIM::sdurwim_${_name})
+        set(result RWSIM::sdurwsim_${_name})
+        rwsim_verify_target(${result} result ${ARGN})
+
+    elseif(tmp)
+        add_library(RWSIM::${_name} UNKNOWN IMPORTED)
+        set_target_properties(
+            RWSIM::${_name} PROPERTIES IMPORTED_LOCATION ${tmp} INTERFACE_INCLUDE_DIRECTORIES
+                                       "${RWSIM_BUILD_WITH_INCLUDE_DIR}"
+        )
+        set(result "RWSIM::${_name}")
+    endif()
+
+    set(varified_targets
+        ${varified_targets}
+        PARENT_SCOPE
+    )
+    set(${_result}
+        ${result}
+        PARENT_SCOPE
+    )
+    #message(STATUS "verify: ${_name} - ${result}")
+endfunction()
+
 # ##################################################################################################
 
 set(RWSIMCFG_ROOT ${CMAKE_CURRENT_LIST_DIR})
@@ -194,9 +360,6 @@ if(EXISTS ${RWSIMCFG_ROOT}/RobWorkSimBuildConfig_${RWSIM_BUILD_TYPE}.cmake)
         endif()
     endif()
 
-    # MESSAGE(STATUS "RWSIM_ROOT   : ${RWSIM_ROOT}") MESSAGE(STATUS "RWSIMCFG_ROOT:
-    # ${RWSIMCFG_ROOT}")
-
     # ##############################################################################################
     # now RWSIM_ROOT and RWSIMCFG_ROOT is set. Lets extract the stuff needed to run a project
 
@@ -215,6 +378,34 @@ if(EXISTS ${RWSIMCFG_ROOT}/RobWorkSimBuildConfig_${RWSIM_BUILD_TYPE}.cmake)
     find_package(RobWork REQUIRED)
     find_package(RobWorkStudio REQUIRED)
 
+    set(tmp_list ${RWSIM_BUILD_WITH_LIBRARIES} ${RobWorkSim_FIND_COMPONENTS})
+    list(FIND tmp_list "RWSIM::sdurwsim_ode" FOUND)
+    if("${FOUND}" EQUAL "-1")
+        list(FIND tmp_list "sdurwsim_ode" FOUND)
+    endif()
+    if("${FOUND}" EQUAL "-1")
+        list(FIND RobWorkSim_FIND_COMPONENTS "ode" FOUND)
+    endif()
+    if("${FOUND}" GREATER "-1")
+        if(RWSIM_BUILD_WITH_ODE)
+            set(ODE_USE_DOUBLE ${RWSIM_BUILD_WITH_ODE_USE_DOUBLE})
+            set(ODE_USE_DEBUG ${RWSIM_BUILD_WITH_ODE_USE_DEBUG})
+            if(NOT ODE_DIR)
+                set(ODE_DIR ${RWSIM_BUILD_WITH_ODE_DIR})
+            endif()
+            if(NOT ODE_INCLUDE_DIR)
+                set(ODE_INCLUDE_DIR ${RWSIM_BUILD_WITH_ODE_INCLUDE_DIR})
+            endif()
+            find_package(ODE REQUIRED)
+            if(ODE_FOUND)
+                message(STATUS "RobWorkSim: ODE enabled and found. Using ${ODE_BUILD_WITH}")
+            else()
+                set(RobWorkSim_ode_FOUND FALSE)
+                message(SEND_ERROR "RobWorkSim: ODE enabled but not found. Please setup ODE_ROOT.")
+            endif()
+        endif()
+    endif()
+
     set(LIBRARIES_TO_INCLUDE) # Libraries that must be included
     set(OPTIONAL_LIBRARIES_TO_INCLUDE) # libraries that are included if they have been build
 
@@ -227,10 +418,11 @@ if(EXISTS ${RWSIMCFG_ROOT}/RobWorkSimBuildConfig_${RWSIM_BUILD_TYPE}.cmake)
             LISTS RobWorkSim_FIND_COMPONENTS
         )
             if(NOT (${component} STREQUAL "sdurwsim"))
-                set(lib "RWSIM::sdurwsim_${component}")
+                unset(res)
+                rwsim_verify_library(${component} res)
 
-                if(TARGET ${lib})
-                    list(APPEND LIBRARIES_TO_INCLUDE "RWSIM::sdurwsim_${component}")
+                if(NOT "${res}" STREQUAL "")
+                    list(APPEND LIBRARIES_TO_INCLUDE "${res}")
                     set(RobWorkSim_${component}_FOUND TRUE)
                 else()
                     set(RobWorkSim_${component}_FOUND FALSE)
@@ -256,41 +448,22 @@ if(EXISTS ${RWSIMCFG_ROOT}/RobWorkSimBuildConfig_${RWSIM_BUILD_TYPE}.cmake)
             IN
             LISTS RWSIM_BUILD_WITH_LIBRARIES
         )
-            if(TARGET RWSIM::${lib})
-                list(APPEND OPTIONAL_LIBRARIES_TO_INCLUDE "RWSIM::${lib}")
-                rwsim_message("Looking for ${lib} - found")
+            unset(res)
+            rwsim_verify_library(${lib} res)
+
+            if(NOT "${res}" STREQUAL "")
+                list(APPEND OPTIONAL_LIBRARIES_TO_INCLUDE "${res}")
+                rw_message("Looking for ${lib} - found")
             else()
-                if(${lib} STREQUAL "sdurw")
-                    list(APPEND OPTIONAL_LIBRARIES_TO_INCLUDE "${lib}")
-                    rwsim_message("Looking for ${lib} - not found")
+                if(${lib} STREQUAL "sdurwsim")
+                    list(APPEND OPTIONAL_LIBRARIES_TO_INCLUDE "RWSIM::${lib}")
+                    rw_message("Looking for ${lib} - not found")
                 else()
-                    rwsim_message("Looking for ${lib} - not found (ignored)")
+                    rw_message("Looking for ${lib} - not found (ignored)")
                 endif()
 
             endif()
         endforeach()
-    endif()
-
-    set(tmp_list ${OPTIONAL_LIBRARIES_TO_INCLUDE} ${LIBRARIES_TO_INCLUDE})
-    list(FIND tmp_list "RWSIM::sdurwsim_ode" FOUND)
-    if("${FOUND}" GREATER "-1" )
-        if(RWSIM_BUILD_WITH_ODE)
-            set(ODE_USE_DOUBLE ${RWSIM_BUILD_WITH_ODE_USE_DOUBLE})
-            set(ODE_USE_DEBUG ${RWSIM_BUILD_WITH_ODE_USE_DEBUG})
-            if(NOT ODE_DIR)
-                set(ODE_DIR ${RWSIM_BUILD_WITH_ODE_DIR})
-            endif()
-            if(NOT ODE_INCLUDE_DIR)
-                set(ODE_INCLUDE_DIR ${RWSIM_BUILD_WITH_ODE_INCLUDE_DIR})
-            endif()
-            find_package(ODE REQUIRED)
-            if(ODE_FOUND)
-                message(STATUS "RobWorkSim: ODE enabled and found. Using ${ODE_BUILD_WITH}")
-            else()
-                set(RobWorkSim_ode_FOUND FALSE)
-                message(SEND_ERROR "RobWorkSim: ODE enabled but not found. Please setup ODE_ROOT.")
-            endif()
-        endif()
     endif()
 
     set(ROBWORKSIM_BUILD_PATH "${RWSIM_BUILD_WITH_RWSIM_ROOT}")
@@ -323,17 +496,12 @@ if(EXISTS ${RWSIMCFG_ROOT}/RobWorkSimBuildConfig_${RWSIM_BUILD_TYPE}.cmake)
     set(ROBWORKSIM_LIBRARIES)
 
     foreach(l ${ROBWORKSIM_LIBRARIES_TMP})
-        unset(tmp CACHE)
-        find_library(
-            tmp ${l}
-            PATHS ${RWSIM_LIBS}
-            PATH_SUFFIXES ${RWSIM_BUILD_WITH_LIBRARY_SUBDIRS}
-            NO_DEFAULT_PATH
-        )
-        if(tmp)
-            list(APPEND ROBWORKSIM_LIBRARIES ${tmp})
+        unset(res)
+        rwsim_verify_library(${l} res)
+        if("${res}" STREQUAL "")
+            list(APPEND ROBWORKSIM_LIBRARIES "${l}")
         else()
-            list(APPEND ROBWORKSIM_LIBRARIES ${l})
+            list(APPEND ROBWORKSIM_LIBRARIES "${res}")
         endif()
     endforeach()
 

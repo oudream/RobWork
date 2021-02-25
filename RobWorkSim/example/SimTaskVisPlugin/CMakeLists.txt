@@ -69,4 +69,4 @@ set(SrcFiles SimTaskVisPlugin.cpp ${UIS_OUT_H})
 
 # The shared library to build:
 add_library(SimTaskVisPlugin MODULE ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles})
-target_link_libraries(SimTaskVisPlugin ${ROBWORKSIM_LIBRARIES} ${ROBWORKSTUDIO_LIBRARIES})
+target_link_libraries(SimTaskVisPlugin ${ROBWORKSIM_LIBRARIES} RWS::sdurws)

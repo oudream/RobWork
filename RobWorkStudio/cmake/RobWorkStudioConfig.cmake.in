@@ -132,7 +132,7 @@ macro(RWS_MESSAGE text)
     endif()
 endmacro()
 
-function(RWS_VARIFY_TARGET __target __result)
+function(RWS_VERIFY_TARGET __target __result)
     set(idx -2)
     set(idx_u -2)
     if(TARGET ${__target})
@@ -161,6 +161,9 @@ function(RWS_VARIFY_TARGET __target __result)
                 endif()
                 if(NOT EXISTS ${out})
                     get_target_property(out ${__target} IMPORTED_LOCATION_NONE)
+                endif()
+                if(NOT EXISTS ${out})
+                    get_target_property(out ${__target} IMPORTED_LOCATION)
                 endif()
                 
                 if(NOT EXISTS ${out})
@@ -202,7 +205,7 @@ function(RWS_VARIFY_TARGET __target __result)
                 if(out)
                     foreach(lib_t ${out})
 
-                        rws_varify_library(${lib_t} vaified_lib "${underprocess}")
+                        rws_verify_library(${lib_t} vaified_lib "${underprocess}")
                         if("${vaified_lib}" STREQUAL "")
                             #message(STATUS " - Depend not found: ${lib_t}")
                             set(result "")
@@ -236,7 +239,7 @@ function(RWS_VARIFY_TARGET __target __result)
     )
 endfunction()
 
-function(RWS_VARIFY_LIBRARY _name _result)
+function(RWS_VERIFY_LIBRARY _name _result)
     set(result "")
     string(REPLACE "${RWS_BUILD_WITH_BUILD_DIR}/libs/${RWS_BUILD_TYPE}" "${RWS_LIBS}" DIRS
                    "${RWS_BUILD_WITH_LIBRARY_DIRS}"
@@ -246,7 +249,7 @@ function(RWS_VARIFY_LIBRARY _name _result)
     unset(tmp CACHE)
     find_library(
         tmp
-        NAMES ${_name}
+        NAMES ${_name} lib${_name}
         PATHS ${DIRS}
         PATH_SUFFIXES ${RW_BUILD_WITH_LIBRARY_SUBDIRS}
         NO_DEFAULT_PATH
@@ -260,20 +263,20 @@ function(RWS_VARIFY_LIBRARY _name _result)
 
     elseif(TARGET ${_name})
         set(result ${_name})
-        rws_varify_target(${result} result ${ARGN})
+        rws_verify_target(${result} result ${ARGN})
 
     elseif(TARGET RWS::${_name})
         set(result RWS::${_name})
 
-        rws_varify_target(${result} result ${ARGN})
+        rws_verify_target(${result} result ${ARGN})
 
     elseif(TARGET sdurws_${_name})
         set(result sdurws_${_name})
-        rws_varify_target(${result} result ${ARGN})
+        rws_verify_target(${result} result ${ARGN})
 
-    elseif(TARGET RWS::sdurw_${_name})
-        set(result RWS::sdurw_${_name})
-        rws_varify_target(${result} result ${ARGN})
+    elseif(TARGET RWS::sdurws_${_name})
+        set(result RWS::sdurws_${_name})
+        rws_verify_target(${result} result ${ARGN})
 
     elseif(tmp)
         add_library(RWS::${_name} UNKNOWN IMPORTED)
@@ -292,7 +295,7 @@ function(RWS_VARIFY_LIBRARY _name _result)
         ${result}
         PARENT_SCOPE
     )
-    #message(STATUS "varify: ${_name} - ${result}")
+    #message(STATUS "verify: ${_name} - ${result}")
 endfunction()
 
 # ##################################################################################################
@@ -357,6 +360,7 @@ if(EXISTS ${RWSCFG_ROOT}/RobWorkStudioBuildConfig_${RWS_BUILD_TYPE}.cmake)
     endif()
 
     include(${RWSCFG_ROOT}/RobWorkStudioMacros.cmake)
+    set(CMAKE_MODULE_PATH ${RWSCFG_ROOT}/Modules ${CMAKE_MODULE_PATH})
 
     # ##############################################################################################
     # Find Dependencies
@@ -432,8 +436,7 @@ if(EXISTS ${RWSCFG_ROOT}/RobWorkStudioBuildConfig_${RWS_BUILD_TYPE}.cmake)
         LISTS RWS_BUILD_WITH_LIBRARIES
     )
         unset(res)
-        message(STATUS "VARIFY: ${lib}")
-        rws_varify_library(${lib} res)
+        rws_verify_library(${lib} res)
 
         if(NOT "${res}" STREQUAL "")
             list(APPEND ROBWORKSTUDIO_LIBRARIES_TMP "${res}")
@@ -529,12 +532,16 @@ if(EXISTS ${RWSCFG_ROOT}/RobWorkStudioBuildConfig_${RWS_BUILD_TYPE}.cmake)
     endif()
     list(REMOVE_DUPLICATES ROBWORKSTUDIO_LIBRARY_DIRS)
 
+    if(RWS_SDURWS_CREATED)
+        target_include_directories(RWS::sdurws INTERFACE "${ROBWORKSTUDIO_INCLUDE_DIRS}")
+    endif()
+
     # Find and add full path information for the RobWorkStudio libraries
     set(ROBWORKSTUDIO_LIBRARIES_TMP ${ROBWORKSTUDIO_LIBRARIES})
     set(ROBWORKSTUDIO_LIBRARIES)
     foreach(l ${ROBWORKSTUDIO_LIBRARIES_TMP})
         unset(res)
-        rws_varify_library(${l} res)
+        rws_verify_library(${l} res)
         if("${res}" STREQUAL "")
             list(APPEND ROBWORKSTUDIO_LIBRARIES "${l}")
         else()

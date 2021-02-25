@@ -769,6 +769,32 @@ macro(RW_SWIG_COMPILE_TARGET _language)
     endif()
 endmacro()
 
+macro(RW_SWIG_COMPILE_TARGET _language)
+
+    if(TARGET ${_language})
+        add_dependencies(${_language} ${ARGN})
+    else()
+        add_custom_target(
+            ${_language}
+            COMMAND ${CMAKE_COMMAND} -E echo "Done Building"
+            DEPENDS ${ARGN}
+        )
+    endif()
+
+    export(
+        EXPORT ${PROJECT_PREFIX}${_language}Targets
+        FILE "${${PROJECT_PREFIX}_ROOT}/cmake/${PROJECT_NAME}${_language}Targets.cmake"
+        NAMESPACE ${PROJECT_PREFIX}::
+    )
+
+    install(
+        EXPORT ${PROJECT_PREFIX}${_language}Targets
+        FILE ${PROJECT_NAME}${_language}Targets.cmake
+        NAMESPACE ${PROJECT_PREFIX}::
+        DESTINATION ${${PROJECT_PREFIX}_INSTALL_DIR}/cmake
+    )
+endmacro()
+
 macro(RW_ADD_JAVA_CLEAN_TARGET _name)
     add_custom_command(
         OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/CleanDep_${_name}

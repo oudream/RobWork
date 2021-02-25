@@ -52,8 +52,8 @@ set(SrcFiles SamplePlugin.cpp resources.qrc)
 
 # The shared library to build:
 add_library(SamplePlugin MODULE ${SrcFiles})
-target_link_libraries(SamplePlugin PUBLIC ${ROBWORKSTUDIO_LIBRARIES} ${ROBWORK_LIBRARIES})
-target_include_directories(SamplePlugin PUBLIC ${ROBWORKSTUDIO_INCLUDE_DIRS} ${ROBWORK_INCLUDE_DIRS} )
+target_link_libraries(SamplePlugin PUBLIC RWS::sdurws ${ROBWORK_LIBRARIES})
+target_include_directories(SamplePlugin PUBLIC ${ROBWORK_INCLUDE_DIRS} )
 
 if(CMAKE_VERSION VERSION_LESS 3.9)
     # Required in CMake < 3.9 to find generated ui_SamplePlugin.h file 

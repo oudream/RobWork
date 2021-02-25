@@ -19,6 +19,9 @@
 #define RW_COLLISION_PROXIMITYFILTERRULE_HPP
 
 #include <regex>
+#include <ostream>
+#include <string>
+#include <utility>
 
 namespace rw { namespace proximity {
 

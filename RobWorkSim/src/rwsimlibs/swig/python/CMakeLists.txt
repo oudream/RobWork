@@ -57,7 +57,7 @@ if(build)
     # ############ SWIG COMPILE #################
     set(TARGET_NAME ${RWSIM_MODULE}${LIB_SUFIX})
     rw_add_swig(
-        ${RWSIM_MODULE} python SHARED
+        ${RWSIM_MODULE} python MODULE
         TARGET_NAME ${TARGET_NAME}
         INSTALL_DIR ${PYTHON_INSTALL_DIR}/${RWSIM_MODULE}
         LANGUAGE_FILE_DIR ${RWSIM_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RWSIM_MODULE}
@@ -111,7 +111,7 @@ if(build)
     )
     # ###### Final linking and dependency checks ######
 
-    target_link_libraries(${python_NAME_sdurwsim} PUBLIC ${SUBSYS_DEPS} ${RWSIM_ODE_LIBRARY}
+    target_link_libraries(${python_NAME_sdurwsim} PUBLIC sdurwsim RW::sdurw RWS::sdurws ${RWSIM_ODE_LIBRARY}
                         ${PYTHON_LIBRARIES})
     install(TARGETS ${SUBSYS_NAME} EXPORT ${PROJECT_PREFIX}Targets)
 

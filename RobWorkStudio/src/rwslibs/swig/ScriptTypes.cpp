@@ -114,28 +114,19 @@ void rws::swig::moveTo (const std::string& fname, const std::string& mname,
 
 static rws::RobWorkStudioApp* robApp = NULL;
 
-rw::core::Ptr< RobWorkStudio > rws::swig::getRobWorkStudioInstance (const std::string& args_tmp)
+rw::core::Ptr< RobWorkStudio > rws::swig::getRobWorkStudioInstance (const std::string& args)
 {
     // create a thread that start QApplication and
-    std::cout << "Getting rws instance" << std::endl;
     if (robApp == NULL || !robApp->isRunning ()) {
-        std::string args = args_tmp;
-        std::cout << "adding extra arg: " << args << std::endl;
 
         robApp = new RobWorkStudioApp (args);
-        std::cout << "Starting rws instance" << std::endl;
         robApp->start ();
-        std::cout << "waiting for rws instance" << std::endl;
         while (robApp->getRobWorkStudio () == NULL) {
             if (!robApp->isRunning ())
                 return NULL;
             rw::common::TimerUtil::sleepMs (100);
         }
-        std::cout << "rws started" << std::endl;
         rwstudio_internal = robApp->getRobWorkStudio ();
-    }
-    else {
-        std::cout << "rws already running" << std::endl;
     }
     return robApp->getRobWorkStudio ();
 }
