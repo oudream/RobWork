@@ -178,7 +178,8 @@ void RobWork::initialize (const std::vector< std::string >& plugins)
                      "Default plugin location for RobWork",
                      buildDir + SLASH + pluginFolder + SLASH + RW_BUILD_TYPE + SLASH);
 
-        std::vector< std::string > rws_build_dirs = {"RobWorkStudio","robworkstudio","rws","RWS","rwstudio","RWStudio","RWSTUDIO"};
+        std::vector< std::string > rws_build_dirs = {
+            "RobWorkStudio", "robworkstudio", "rws", "RWS", "rwstudio", "RWStudio", "RWSTUDIO"};
         for (std::string& dir : rws_build_dirs) {
             std::string path = buildDir + SLASH + ".." + SLASH + dir + SLASH + pluginFolder +
                                SLASH + RW_BUILD_TYPE + SLASH;
@@ -188,7 +189,8 @@ void RobWork::initialize (const std::vector< std::string >& plugins)
             }
         }
 
-        std::vector< std::string > rwsim_build_dirs = {"RobWorkSim","robworksim","rwsim","RWSim","RWSIM"};
+        std::vector< std::string > rwsim_build_dirs = {
+            "RobWorkSim", "robworksim", "rwsim", "RWSim", "RWSIM"};
         for (std::string& dir : rwsim_build_dirs) {
             std::string path = buildDir + SLASH + ".." + SLASH + dir + SLASH + pluginFolder +
                                SLASH + RW_BUILD_TYPE + SLASH;
@@ -201,8 +203,7 @@ void RobWork::initialize (const std::vector< std::string >& plugins)
     }
 
 #if defined(RW_WIN32)
-    std::vector< std::string > Packs = {
-        "RobWork", "RobWorkStudio", "RobWorkSim"};
+    std::vector< std::string > Packs = {"RobWork", "RobWorkStudio", "RobWorkSim"};
 #else
     std::vector< std::string > Packs = {""};
 #endif
@@ -395,8 +396,11 @@ void RobWork::init (int argc, const char* const* argv)
         "rwroot",
         value< std::string > (),
         "Directory of RobWork installation or development environment.");
+
     variables_map vm;
+
     store (command_line_parser (argc, argv).allow_unregistered ().options (desc).run (), vm);
+
     notify (vm);
 
     if (vm.count ("help")) {
@@ -411,11 +415,13 @@ void RobWork::init (int argc, const char* const* argv)
     }
 
     std::vector< std::string > plugins;
+
     if (vm.count ("rwplugin")) {
         plugins = vm["rwplugin"].as< std::vector< std::string > > ();
     }
 
     std::string rwloglevel_arg = vm["rwloglevel"].as< std::string > ();
+
     if (rwloglevel_arg == "debug") {
         Log::getInstance ()->setLevel (Log::Debug);
     }
@@ -435,16 +441,20 @@ void RobWork::init (int argc, const char* const* argv)
     // Some plugins have already been loaded through global initialization - before the user was
     // able to set the debug level
     // - so we print the already loaded plugins to the debug log.
+
     Log::debugLog () << "Initializing ROBWORK with arguments." << std::endl;
+
     const RobWork::Ptr instance = rwinstance ();
     Log::debugLog () << "Already loaded plugins: " << instance->_pluginChangedMap.size ()
                      << std::endl;
+
     for (std::map< std::string, std::time_t >::const_iterator it =
              instance->_pluginChangedMap.begin ();
          it != instance->_pluginChangedMap.end ();
          it++) {
         Log::debugLog () << "\t" << it->first << std::endl;
     }
+
     instance->initialize (plugins);
 }
 

@@ -40,8 +40,8 @@ endif()
 
 # The shared library to build:
 add_library(SamplePlugin MODULE SamplePlugin.cpp ${MocSrcFiles} ${RccSrcFiles})
-target_link_libraries(SamplePlugin ${ROBWORKSTUDIO_LIBRARIES} ${ROBWORK_LIBRARIES})
-target_include_directories(SamplePlugin PUBLIC ${ROBWORK_INCLUDE_DIRS} ${ROBWORKSTUDIO_INCLUDE_DIRS})
+target_link_libraries(SamplePlugin RWS::sdurws ${ROBWORK_LIBRARIES})
+target_include_directories(SamplePlugin PUBLIC ${ROBWORK_INCLUDE_DIRS})
 
 foreach(obj ${ROBWORKSTUDIO_INCLUDE_DIRS})
     message(STATUS "INCL_DIR: ${obj}")

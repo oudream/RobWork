@@ -104,6 +104,12 @@ class RobWorkStudio : public QMainWindow
     //! @copydoc setWorkcell
     void setWorkCell (rw::models::WorkCell::Ptr workcell) { setWorkcell (workcell); }
 
+    //! @copydoc openWorkCellFile
+    void setWorkcell (std::string workcell_file) { openWorkCellFile (workcell_file.c_str()); }
+
+    //! @copydoc openWorkCellFile
+    void setWorkCell (std::string workcell_file) { openWorkCellFile (workcell_file.c_str()); }
+
     /**
      * @copydoc setWorkcell
      *

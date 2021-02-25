@@ -59,7 +59,7 @@ rw_sys_info(INFO)
 message(STATUS "RobWork: system id=${INFO} ")
 
 # Compile the RobWork tools folder
-add_subdirectory(tools)
+#add_subdirectory(tools)
 
 # ##################################################################################################
 # setup testing

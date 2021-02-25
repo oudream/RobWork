@@ -132,7 +132,7 @@ macro(RW_MESSAGE text)
     endif()
 endmacro()
 
-function(VARIFY_TARGET __target __result)
+function(VERIFY_TARGET __target __result)
     set(idx -2)
     set(idx_u -2)
     if(TARGET ${__target})
@@ -140,7 +140,7 @@ function(VARIFY_TARGET __target __result)
         list(FIND varified_targets ${__target} idx)
         list(FIND ARGN ${__target} idx_u)
         if(${idx} EQUAL -1 AND ${idx_u} EQUAL -1)
-            #message(STATUS " - ${__target}")
+            # message(STATUS " - ${__target}")
             set(underprocess ${ARGN} ${result})
 
             # ######################################################################################
@@ -162,6 +162,9 @@ function(VARIFY_TARGET __target __result)
                 if(NOT EXISTS ${out})
                     get_target_property(out ${__target} IMPORTED_LOCATION_NONE)
                 endif()
+                if(NOT EXISTS ${out})
+                    get_target_property(out ${__target} IMPORTED_LOCATION)
+                endif()
 
                 if(NOT EXISTS ${out})
                     set(result "")
@@ -179,13 +182,13 @@ function(VARIFY_TARGET __target __result)
                     foreach(dir ${out})
 
                         if(NOT EXISTS ${dir})
-                            #message(STATUS " - Include not found: ${dir}")
+                            # message(STATUS " - Include not found: ${dir}")
                             set(result "")
                         endif()
                     endforeach()
 
                     if(NOT result)
-                        #message(STATUS " - Target Include not found: ${__target}")
+                        # message(STATUS " - Target Include not found: ${__target}")
                     endif()
                 endif()
             endif()
@@ -198,9 +201,8 @@ function(VARIFY_TARGET __target __result)
                 if(out)
                     foreach(lib_t ${out})
 
-                        varify_library(${lib_t} vaified_lib "${underprocess}")
+                        verify_library(${lib_t} vaified_lib "${underprocess}")
                         if("${vaified_lib}" STREQUAL "")
-                            #message(STATUS " - ${__target} missing depend not found: ${lib_t}")
                             set(result "")
                         endif()
                     endforeach()
@@ -232,17 +234,16 @@ function(VARIFY_TARGET __target __result)
     )
 endfunction()
 
-function(VARIFY_LIBRARY _name _result)
+function(VERIFY_LIBRARY _name _result)
     set(result "")
     string(REPLACE "${RW_BUILD_WITH_BUILD_DIR}/libs/${RW_BUILD_TYPE}" "${RW_LIBS}" DIRS
                    "${RW_BUILD_WITH_LIBRARY_DIRS}"
     )
     list(REMOVE_DUPLICATES DIRS)
-
     unset(tmp CACHE)
     find_library(
         tmp
-        NAMES ${_name}
+        NAMES ${_name} lib${_name}
         PATHS ${DIRS}
         PATH_SUFFIXES ${RW_BUILD_WITH_LIBRARY_SUBDIRS}
         NO_DEFAULT_PATH
@@ -256,19 +257,19 @@ function(VARIFY_LIBRARY _name _result)
 
     elseif(TARGET ${_name})
         set(result ${_name})
-        varify_target(${result} result ${ARGN})
+        verify_target(${result} result ${ARGN})
 
     elseif(TARGET RW::${_name})
         set(result RW::${_name})
-        varify_target(${result} result ${ARGN})
+        verify_target(${result} result ${ARGN})
 
     elseif(TARGET sdurw_${_name})
         set(result sdurw_${_name})
-        varify_target(${result} result ${ARGN})
+        verify_target(${result} result ${ARGN})
 
     elseif(TARGET RW::sdurw_${_name})
         set(result RW::sdurw_${_name})
-        varify_target(${result} result ${ARGN})
+        verify_target(${result} result ${ARGN})
 
     elseif(tmp)
         add_library(RW::${_name} UNKNOWN IMPORTED)
@@ -365,7 +366,7 @@ if(EXISTS ${RWCFG_ROOT}/RobWorkBuildConfig_${RW_BUILD_TYPE}.cmake)
         PATHS ${RW_BUILD_WITH_BOOST_ROOT}
     )
 
-    # varify_library(RW::sdurw_math_lua_s res) message(FATAL_ERROR "esix")
+    # verify_library(RW::sdurw_math_lua_s res) message(FATAL_ERROR "esix")
     # ##############################################################################################
     # now RW_ROOT and RWCFG_ROOT is set. Lets extract the stuff needed to run a project
 
@@ -385,7 +386,7 @@ if(EXISTS ${RWCFG_ROOT}/RobWorkBuildConfig_${RW_BUILD_TYPE}.cmake)
         )
             if(NOT (${component} STREQUAL "sdurw"))
                 unset(res)
-                varify_library(${component} res)
+                verify_library(${component} res)
 
                 if(NOT "${res}" STREQUAL "")
                     list(APPEND LIBRARIES_TO_INCLUDE "${res}")
@@ -415,7 +416,7 @@ if(EXISTS ${RWCFG_ROOT}/RobWorkBuildConfig_${RW_BUILD_TYPE}.cmake)
             LISTS RW_BUILD_WITH_LIBRARIES
         )
             unset(res)
-            varify_library(${lib} res)
+            verify_library(${lib} res)
             if(NOT "${res}" STREQUAL "")
                 list(APPEND OPTIONAL_LIBRARIES_TO_INCLUDE "${res}")
                 rw_message("Looking for ${lib} - found")
@@ -518,12 +519,16 @@ if(EXISTS ${RWCFG_ROOT}/RobWorkBuildConfig_${RW_BUILD_TYPE}.cmake)
     endif()
     list(REMOVE_DUPLICATES ROBWORK_LIBRARIES)
 
+    if(RW_SDURW_CREATED)
+        target_include_directories(RW::sdurw INTERFACE "${ROBWORK_INCLUDE_DIRS}")
+    endif()
+
     # Find and add full path information for the RobWork libraries
     set(ROBWORK_LIBRARIES_TMP ${ROBWORK_LIBRARIES})
     set(ROBWORK_LIBRARIES)
     foreach(l ${ROBWORK_LIBRARIES_TMP})
         unset(res)
-        varify_library(${l} res)
+        verify_library(${l} res)
         if("${res}" STREQUAL "")
             list(APPEND ROBWORK_LIBRARIES "${l}")
         else()

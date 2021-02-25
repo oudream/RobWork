@@ -51,5 +51,5 @@ set(SrcFiles src/FalconControl.cpp src/FalconInterface.cpp src/IO.cpp ${UIS_OUT_
 
 # The shared library to build:
 add_library(FalconControl MODULE ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles})
-target_link_libraries(FalconControl ${ROBWORKSIM_LIBRARIES} ${ROBWORKSTUDIO_LIBRARIES} ${ROBWORK_LIBRARIES}
+target_link_libraries(FalconControl ${ROBWORKSIM_LIBRARIES} RWS::sdurws ${ROBWORK_LIBRARIES}
                       libnifalcon.so)

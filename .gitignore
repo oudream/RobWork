@@ -816,20 +816,16 @@ RobWork/example/java/src/*.log
 /RobWork/ext/rwpqp/PQP/VS2010/pqp/CPackSourceConfig.cmake
 
 # /RobWork/ext/rwyaobi/yaobi/
-/RobWork/ext/rwyaobi/yaobi/cmake_install.cmake
-/RobWork/ext/rwyaobi/yaobi/CMakeCache.txt
-/RobWork/ext/rwyaobi/yaobi/Makefile
-/RobWork/ext/rwyaobi/yaobi/RobWork.cmake
-/RobWork/ext/rwyaobi/yaobi/bin
-/RobWork/ext/rwyaobi/yaobi/CMakeFiles
-/RobWork/ext/rwyaobi/yaobi/apidocs
-/RobWork/ext/rwyaobi/yaobi/.cproject
-/RobWork/ext/rwyaobi/yaobi/.project
-/RobWork/ext/rwyaobi/yaobi/build
-/RobWork/ext/rwyaobi/yaobi/.csettings
-/RobWork/ext/rwyaobi/yaobi/CPackConfig.cmake
-/RobWork/ext/rwyaobi/yaobi/CPackSourceConfig.cmake
-/RobWork/ext/rwyaobi/yaobi/yaobi_config.h
+/RobWork/ext/rwyaobi/cmake_install.cmake
+/RobWork/ext/rwyaobi/CMakeCache.txt
+/RobWork/ext/rwyaobi/Makefile
+/RobWork/ext/rwyaobi/bin
+/RobWork/ext/rwyaobi/CMakeFiles
+/RobWork/ext/rwyaobi/apidocs
+/RobWork/ext/rwyaobi/build
+/RobWork/ext/rwyaobi/CPackConfig.cmake
+/RobWork/ext/rwyaobi/CPackSourceConfig.cmake
+/RobWork/ext/rwyaobi/include/yaobi/yaobi_config.h
 
 # /RobWork/ext/rwyaobi/yaobi/VS_2003/
 /RobWork/ext/rwyaobi/yaobi/VS_2003/cmake_install.cmake

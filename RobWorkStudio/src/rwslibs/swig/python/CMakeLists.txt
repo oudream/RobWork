@@ -50,7 +50,7 @@ if(build)
     # ############ SWIG COMPILE #################
     set(TARGET_NAME ${RWS_MODULE}${LIB_SUFIX})
     rw_add_swig(
-        ${RWS_MODULE} python SHARED
+        ${RWS_MODULE} python MODULE
         TARGET_NAME ${TARGET_NAME}
         INSTALL_DIR ${PYTHON_INSTALL_DIR}/${RWS_MODULE}
         LANGUAGE_FILE_DIR ${RWS_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RWS_MODULE}
@@ -101,7 +101,7 @@ if(build)
     )
     # ###### Final linking and dependency checks ######
 
-    target_link_libraries(${python_NAME_sdurws} PUBLIC ${SUBSYS_DEPS} RW::sdurw ${PYTHON_LIBRARIES})
+    target_link_libraries(${python_NAME_sdurws} PUBLIC sdurws sdurws_robworkstudioapp RW::sdurw ${PYTHON_LIBRARIES})
     install(TARGETS ${SUBSYS_NAME} EXPORT ${PROJECT_PREFIX}pythonTargets)
 
     rw_swig_compile_target(python ${TARGET_NAME})

@@ -146,8 +146,8 @@ if(RW_USE_YAOBI)
 
         set(RW_ENABLE_INTERNAL_YAOBI_TARGET ON)
         message(STATUS "RobWork: Yaobi ENABLED! NOT FOUND! Using RobWork native Yaobi.")
-        set(YAOBI_INCLUDE_DIR "${RW_ROOT}/ext/rwyaobi")
-        set(YAOBI_LIBRARIES "yaobi")
+        set(YAOBI_INCLUDE_DIR "${RW_ROOT}/ext/rwyaobi/include")
+        set(YAOBI_LIBRARIES "RW::yaobi")
         set(ROBWORK_LIBRARIES_INTERNAL ${ROBWORK_LIBRARIES_INTERNAL} ${YAOBI_LIBRARIES})
         set(YAOBI_LIBRARY_DIRS ${RW_LIBRARY_OUT_DIR})
         set(RW_HAVE_YAOBI True)
@@ -226,10 +226,15 @@ if(NOT Qhull_FOUND)
     set_target_properties(
         RW::qhull PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${QHULL_NATIVE_ROOT}/include
     )
-
+    if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+    set_target_properties(
+        RW::qhull PROPERTIES IMPORTED_LOCATION ${QHULL_NATIVE_ROOT}/lib/libqhull_r.dylib
+    )
+    else()
     set_target_properties(
         RW::qhull PROPERTIES IMPORTED_LOCATION ${QHULL_NATIVE_ROOT}/lib/libqhull_r.so
     )
+    endif()
 
     set(QHULL_INCLUDE_DIRS ${QHULL_NATIVE_ROOT}/include)
     set(QHULL_LIBRARIES RW::qhull)
@@ -584,8 +589,8 @@ if("${RW_CXX_FLAGS}" STREQUAL "")
     # Set C++11 standard (except if user has specified this explicitly in the RW_CXX_FLAGS_EXTRA
     # variable).
     set(RW_CXX_FLAGS_SET_STD FALSE)
-    if(CMAKE_COMPILER_IS_GNUCXX)
-        if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS "6.1.0") # from GNU 6.1 gnu++14 should be the
+    if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
+        if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS "6.1.0" OR CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang") # from GNU 6.1 gnu++14 should be the
                                                             # default
             set(RW_CXX_FLAGS_SET_STD TRUE)
             foreach(flag ${RW_CXX_FLAGS_EXTRA})
@@ -856,6 +861,13 @@ set(ROBWORK_LIBRARIES_INTERNAL
     sdurw_plugin
     sdurw_kinematics
     sdurw_geometry
+    sdurw_graphics
+    sdurw_graspplanning
+    sdurw_invkin
+    sdurw_kinematics
+    sdurw_loaders
+    sdurw_pathplanning
+    sdurw_trajectory
     sdurw_sensor
     sdurw_models
     sdurw_proximity

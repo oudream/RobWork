@@ -32,7 +32,7 @@ if(build)
 
     # ############ lua interface generation ##############
     rw_add_swig(
-        ${RWSIM_MODULE} lua SHARED 
+        ${RWSIM_MODULE} lua MODULE 
         TARGET_NAME ${TARGET_NAME}
         SOURCES ../sdurwsim.i Lua.cpp ../ScriptTypes.cpp
         BINARY_OUTPUT_DIR "${RWSIM_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua"

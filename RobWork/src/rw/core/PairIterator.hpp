@@ -36,7 +36,8 @@ namespace rw { namespace core {
     template< typename I > class iter_pair : public std::pair< I, I >
     {
       public:
-        using std::pair< I, I >::pair;
+
+        using std::pair<I,I>::pair;
 
         iter_pair (std::pair< I, I > input) : std::pair< I, I > (input) {}
         /**
@@ -51,12 +52,11 @@ namespace rw { namespace core {
          */
         I end () { return this->second; }
 
-    };    // namespace coretemplate<typenameI>structiter_pair:std::pair<I,I>
+    }; 
 
     template< typename T1 > constexpr iter_pair< T1 > make_iterPair (T1 x, T1 y)
     {
-        typedef iter_pair< T1 > __pair_type;
-        return __pair_type (std::forward< T1 > (x), std::forward< T1 > (y));
+        return std::pair<T1,T1> (std::forward< T1 > (x), std::forward< T1 > (y));
     }
 
 }}    // namespace rw::core

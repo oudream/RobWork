@@ -95,7 +95,7 @@ target_link_libraries(
     -lGLU
     -lglut
     -lm
-    ${ROBWORKSTUDIO_LIBRARIES}
+    RWS::sdurws
     ${ROBWORK_LIBRARIES}
     ${ROBWORKSIM_LIBRARIES}
 )
@@ -105,7 +105,7 @@ target_link_libraries(
     evaluate-gripper
     ode_plugin.rwplugin
     GraspLibrary
-    ${ROBWORKSTUDIO_LIBRARIES}
+    RWS::sdurws
     ${ROBWORK_LIBRARIES}
     ${ROBWORKSIM_LIBRARIES}
 )

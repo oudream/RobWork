@@ -12,7 +12,7 @@
 #
 # Test CMake version
 #
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8.11)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.5)
 
 if(POLICY CMP0074)
   cmake_policy(SET CMP0074 NEW)
@@ -65,5 +65,5 @@ SET(SrcFiles SimTemplatePlugin.cpp ${UIS_OUT_H})
 
 # The shared library to build:
 ADD_LIBRARY(SimTemplatePlugin MODULE ${SrcFiles} ${MocSrcFiles}  ${RccSrcFiles})
-TARGET_LINK_LIBRARIES(SimTemplatePlugin ${ROBWORKSIM_LIBRARIES} ${ROBWORKSTUDIO_LIBRARIES})
+TARGET_LINK_LIBRARIES(SimTemplatePlugin ${ROBWORKSIM_LIBRARIES} RWS::sdurws)
 

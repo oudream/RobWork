@@ -66,4 +66,4 @@ set_source_files_properties(${SrcFiles} PROPERTIES OBJECT_DEPENDS "${UIS_OUT_H}"
 
 # The shared library to build:
 add_library(SimTaskPlugin MODULE ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles})
-target_link_libraries(SimTaskPlugin ${ROBWORKSIM_LIBRARIES} ${ROBWORKSTUDIO_LIBRARIES})
+target_link_libraries(SimTaskPlugin ${ROBWORKSIM_LIBRARIES} RWS::sdurws)

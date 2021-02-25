@@ -37,25 +37,6 @@ namespace rw { namespace core {
     class LogWriter;
 }}    // namespace rw::core
 
-/*
-
-#define glGenFramebuffersEXT                        pglGenFramebuffersEXT
-#define glDeleteFramebuffersEXT                     pglDeleteFramebuffersEXT
-#define glBindFramebufferEXT                        pglBindFramebufferEXT
-#define glCheckFramebufferStatusEXT                 pglCheckFramebufferStatusEXT
-#define glGetFramebufferAttachmentParameterivEXT    pglGetFramebufferAttachmentParameterivEXT
-#define glGenerateMipmapEXT                         pglGenerateMipmapEXT
-#define glFramebufferTexture2DEXT                   pglFramebufferTexture2DEXT
-#define glFramebufferRenderbufferEXT                pglFramebufferRenderbufferEXT
-
-#define glGenRenderbuffersEXT                       pglGenRenderbuffersEXT
-#define glDeleteRenderbuffersEXT                    pglDeleteRenderbuffersEXT
-#define glBindRenderbufferEXT                       pglBindRenderbufferEXT
-#define glRenderbufferStorageEXT                    pglRenderbufferStorageEXT
-#define glGetRenderbufferParameterivEXT             pglGetRenderbufferParameterivEXT
-#define glIsRenderbufferEXT                         pglIsRenderbufferEXT
-*/
-
 #if defined(RW_MACOS)
 typedef GLboolean (*PFNGLISRENDERBUFFEREXTPROC) (GLuint renderbuffer);
 typedef void (*PFNGLBINDRENDERBUFFEREXTPROC) (GLenum target, GLuint renderbuffer);
