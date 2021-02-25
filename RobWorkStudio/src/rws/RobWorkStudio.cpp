@@ -401,6 +401,7 @@ void RobWorkStudio::loadPlugin (std::string pluginFile, bool visible, int dock)
         setupPlugin (pluginFile.c_str (), visible, dock);
     }
 }
+
 void RobWorkStudio::loadPlugin ()
 {
     QString selectedFilter;
