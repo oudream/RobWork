@@ -19,7 +19,7 @@
  ********************************************************************************/
 
 #include "InputFormDialog.hpp"
-
+#include <rws/RWSSpinBox.hpp>
 #include "FileDialogButton.hpp"
 #include "SetColorButton.hpp"
 
@@ -114,7 +114,7 @@ bool getInput (const QString& title, FormData& data, const FormOptions& options)
                 break;
             }
             case QMetaType::Double: {
-                auto widget = new QDoubleSpinBox ();
+                auto widget = new rws::RWSSpinBox ();
                 widget->setButtonSymbols (QAbstractSpinBox::NoButtons);
                 widget->setMaximum (double (options.numericMax));
                 widget->setMinimum (double (options.numericMin));
@@ -191,7 +191,7 @@ bool getInput (const QString& title, FormData& data, const FormOptions& options)
                 wlayout->setContentsMargins (2, 2, 2, 2);
                 wlayout->setSpacing (2);
 
-                auto xwidget = new QDoubleSpinBox ();
+                auto xwidget = new rws::RWSSpinBox ();
                 xwidget->setButtonSymbols (QAbstractSpinBox::NoButtons);
                 xwidget->setMaximum (double (options.numericMax));
                 xwidget->setMinimum (double (options.numericMin));
@@ -199,7 +199,7 @@ bool getInput (const QString& title, FormData& data, const FormOptions& options)
                 xwidget->setValue (value.x ());
                 wlayout->addWidget (xwidget);
 
-                auto ywidget = new QDoubleSpinBox ();
+                auto ywidget = new rws::RWSSpinBox ();
                 ywidget->setButtonSymbols (QAbstractSpinBox::NoButtons);
                 ywidget->setMaximum (double (options.numericMax));
                 ywidget->setMinimum (double (options.numericMin));
@@ -219,7 +219,7 @@ bool getInput (const QString& title, FormData& data, const FormOptions& options)
                 wlayout->setContentsMargins (2, 2, 2, 2);
                 wlayout->setSpacing (2);
 
-                auto xwidget = new QDoubleSpinBox ();
+                auto xwidget = new rws::RWSSpinBox ();
                 xwidget->setButtonSymbols (QAbstractSpinBox::NoButtons);
                 xwidget->setMaximum (double (options.numericMax));
                 xwidget->setMinimum (double (options.numericMin));
@@ -227,7 +227,7 @@ bool getInput (const QString& title, FormData& data, const FormOptions& options)
                 xwidget->setValue (value.x ());
                 wlayout->addWidget (xwidget);
 
-                auto ywidget = new QDoubleSpinBox ();
+                auto ywidget = new rws::RWSSpinBox ();
                 ywidget->setButtonSymbols (QAbstractSpinBox::NoButtons);
                 ywidget->setMaximum (double (options.numericMax));
                 ywidget->setMinimum (double (options.numericMin));
@@ -235,7 +235,7 @@ bool getInput (const QString& title, FormData& data, const FormOptions& options)
                 ywidget->setValue (value.y ());
                 wlayout->addWidget (ywidget);
 
-                auto zwidget = new QDoubleSpinBox ();
+                auto zwidget = new rws::RWSSpinBox ();
                 zwidget->setButtonSymbols (QAbstractSpinBox::NoButtons);
                 zwidget->setMaximum (double (options.numericMax));
                 zwidget->setMinimum (double (options.numericMin));

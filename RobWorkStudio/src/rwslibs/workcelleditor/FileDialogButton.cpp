@@ -33,7 +33,7 @@ FileDialogButton::FileDialogButton (QString path) : QPushButton ()
 void FileDialogButton::selectFile ()
 {
     QString fullPath = QFileDialog::getOpenFileName (
-        this, tr ("Select CAD file"), _path, tr ("CAD Files (*.stl *.obj)"));
+        this, tr ("Select CAD file"), _path, tr ("CAD Files (*.stl *.obj *.ac)"));
     std::string file_name   = StringUtil::getFileName (fullPath.toStdString ());
     std::string wcDir       = _path.toStdString () + "/";
     std::string relFilePath = StringUtil::getRelativeDirectoryName (
