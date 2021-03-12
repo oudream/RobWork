@@ -8,6 +8,7 @@ if(RWS_USE_STATIC_LINK_PLUGINS)
         sdurws_log
         sdurws_planning
         sdurws_playback
+        sdurws_pythoneditor
         sdurws_sensors
         sdurws_treeview
         sdurws_propertyview

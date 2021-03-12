@@ -38,27 +38,6 @@ namespace rw { namespace math {
         //! The type of the internal Eigen vector implementation.
         typedef Eigen::Matrix< T, Eigen::Dynamic, 1 > Base;
 
-        //! Const forward iterator.
-        // typedef typename Base::const_iterator const_iterator;
-
-        //! Forward iterator.
-        /*typedef typename Base::iterator iterator;
-
-        //! Value type.
-        typedef typename Base::value_type value_type;
-
-        //! Reference type.
-        typedef typename Base::reference reference;
-
-        //! Pointer type.
-        typedef typename Base::pointer pointer;
-
-        //! Const pointer type.
-        typedef typename Base::const_pointer const_pointer;
-
-        //! Difference type.
-        typedef typename Base::difference_type difference_type;
-*/
         /**
          * @brief A configuration of vector of length \b dim.
          */
@@ -202,7 +181,7 @@ namespace rw { namespace math {
         T normInf () const
         {
             Eigen::VectorXd tmp = e ().template cast< double > ();
-            return tmp.lpNorm< Eigen::Infinity > ();
+            return (T) tmp.lpNorm< Eigen::Infinity > ();
         }
 
         //----------------------------------------------------------------------
@@ -228,7 +207,7 @@ namespace rw { namespace math {
          * @param i [in] index in the vector
          * @return const reference to element
          */
-        const T& operator[] (size_t i) const { return e () (i); }
+        const T& operator[] (size_t i) const { return T(e () (i)); }
 
         /**
          * @brief Returns reference to vector element

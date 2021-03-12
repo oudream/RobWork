@@ -115,6 +115,7 @@ export(
     FILE "${RW_ROOT}/cmake/${PROJECT_NAME}Targets.cmake"
     NAMESPACE ${PROJECT_PREFIX}::
 )
+
 if(RW_HAVE_GTEST)
     if(TARGET ${GTEST_LIBRARIES} AND TARGET ${GTEST_MAIN_LIBRARIES})
         export(
@@ -162,25 +163,11 @@ install(
     DESTINATION ${RW_INSTALL_DIR}/cmake
 )
 
+
 # Install dependencies on Windows
 if(WIN32)
-    # Trim the Boost library lists and take only the libraries corresponding to the build type
-    set(BOOST_LIBRARIES_INSTALL "")
-    foreach(s ${Boost_LIBRARIES})
-        if("${s}" STREQUAL "optimized")
 
-        elseif("${s}" STREQUAL "debug")
-
-        else()
-            get_filename_component(_dir "${s}" DIRECTORY)
-            get_filename_component(_file "${s}" NAME_WLE)
-            string(REGEX MATCH "[a-z]*_[a-z]*" _file ${_file})
-            file(GLOB _files "${_dir}/${_file}*lib")
-            foreach(file ${_files})
-                list(APPEND BOOST_LIBRARIES_INSTALL "${file}")
-            endforeach()
-        endif()
-    endforeach()
+    getBoostLibraryList(BOOST_LIBRARIES_INSTALL "${Boost_LIBRARIES}")
 
     # Install external libraries
     install(

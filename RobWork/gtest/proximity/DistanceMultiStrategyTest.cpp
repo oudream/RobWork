@@ -193,15 +193,15 @@ TEST_P(DistanceMultiStrategyTest, Plane_Cuboid) {
 	ASSERT_EQ(12u,res.distances.size());
 	EXPECT_EQ(res.p1,res.p1s[0]);
 	EXPECT_EQ(res.p2,res.p2s[0]);
-	EXPECT_DOUBLE_EQ(res.p1[0],res.p2[0]);
-	EXPECT_DOUBLE_EQ(res.p1[1],res.p2[1]);
+	EXPECT_FLOAT_EQ(res.p1[0],res.p2[0]);
+	EXPECT_FLOAT_EQ(res.p1[1],res.p2[1]);
 	// todo check if p1 and p2 is inside their triangles...
 	EXPECT_FLOAT_EQ(0.f,static_cast<float>(res.p1[2]));
 	EXPECT_NEAR(tolerance-eps,res.p2[2],std::numeric_limits<float>::epsilon());
 	//EXPECT_FLOAT_EQ(tolerance-eps,res.p2[2]);
 	EXPECT_GE(res.p1prims[0],0); // either first triangle on plane
 	EXPECT_LE(res.p1prims[0],1); // ... or second
-	EXPECT_EQ(11,res.p2prims[0]); // there is only one triangle
+	EXPECT_EQ(10,res.p2prims[0]); // there is only one triangle
 	EXPECT_NEAR(tolerance-eps,res.distances[0],std::numeric_limits<float>::epsilon());
 	//EXPECT_FLOAT_EQ(tolerance-eps,res.distances[0]);
 

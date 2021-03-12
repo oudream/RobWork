@@ -140,7 +140,7 @@ function(VERIFY_TARGET __target __result)
         list(FIND varified_targets ${__target} idx)
         list(FIND ARGN ${__target} idx_u)
         if(${idx} EQUAL -1 AND ${idx_u} EQUAL -1)
-            # message(STATUS " - ${__target}")
+            # message(STATUS "${__target}")
             set(underprocess ${ARGN} ${result})
 
             # ######################################################################################
@@ -168,7 +168,8 @@ function(VERIFY_TARGET __target __result)
 
                 if(NOT EXISTS ${out})
                     set(result "")
-                    #message(STATUS " - Target Binary not found: ${__target}")
+                    # message(STATUS " - missing binary ${out}")
+                    # message(STATUS " - Target Binary not found: ${__target}")
                 endif()
 
             endif()
@@ -200,14 +201,21 @@ function(VERIFY_TARGET __target __result)
                 get_target_property(out ${__target} INTERFACE_LINK_LIBRARIES)
                 if(out)
                     foreach(lib_t ${out})
-
-                        verify_library(${lib_t} vaified_lib "${underprocess}")
-                        if("${vaified_lib}" STREQUAL "")
-                            set(result "")
+                        string(FIND ${lib_t} "\$<" found)
+                        if(${found} EQUAL -1)
+                            # message(STATUS " - Checking dep ${lib_t} for ${__target}")
+                            verify_library(${lib_t} vaified_lib "${underprocess}")
+                            if("${vaified_lib}" STREQUAL "")
+                                set(result "")
+                                # message(STATUS " - Target depend not found: ${lib_t} for ${__target}")
+                                break()  
+                            endif()
+                        else()
+                            # message(STATUS " - Target depend ignored: ${lib_t} for ${__target}")
                         endif()
                     endforeach()
                     if(NOT result)
-                        #message(STATUS " - Target depend not found: ${__target}")
+                        # message(STATUS " - Target depend not found: ${__target}")
                     endif()
                 endif()
             endif()
@@ -217,7 +225,7 @@ function(VERIFY_TARGET __target __result)
             # ######################################################################################
             if(NOT ${result} STREQUAL "")
                 set(varified_targets ${varified_targets} ${result})
-                #message(STATUS " - Target varified: ${result}")
+                # message(STATUS " - Target varified: ${result}")
             endif()
         endif()
     else()
@@ -239,6 +247,7 @@ function(VERIFY_LIBRARY _name _result)
     string(REPLACE "${RW_BUILD_WITH_BUILD_DIR}/libs/${RW_BUILD_TYPE}" "${RW_LIBS}" DIRS
                    "${RW_BUILD_WITH_LIBRARY_DIRS}"
     )
+
     list(REMOVE_DUPLICATES DIRS)
     unset(tmp CACHE)
     find_library(
@@ -278,6 +287,19 @@ function(VERIFY_LIBRARY _name _result)
                                     "${RW_BUILD_WITH_INCLUDE_DIR}"
         )
         set(result "RW::${_name}")
+    else()
+        unset(tmp)
+        find_library(
+            tmp
+            NAMES ${_name} lib${_name}
+        )
+        if(tmp)
+            add_library(${_name} UNKNOWN IMPORTED)
+            set_target_properties(
+                ${_name} PROPERTIES IMPORTED_LOCATION ${tmp}
+            )
+            set(result "${_name}")
+        endif()
     endif()
 
     set(varified_targets
@@ -423,7 +445,7 @@ if(EXISTS ${RWCFG_ROOT}/RobWorkBuildConfig_${RW_BUILD_TYPE}.cmake)
             else()
                 if(${lib} STREQUAL "sdurw")
                     list(APPEND OPTIONAL_LIBRARIES_TO_INCLUDE "RW::${lib}")
-                    rw_message("Looking for ${lib} - not found")
+                    message(FATAL_ERROR "Looking for ${lib} - not found" )
                 else()
                     rw_message("Looking for ${lib} - not found (ignored)")
                 endif()
@@ -485,8 +507,12 @@ if(EXISTS ${RWCFG_ROOT}/RobWorkBuildConfig_${RW_BUILD_TYPE}.cmake)
     # ################ FIND ROBWORK #######################
     set(ROBWORK_BUILD_PATH "${RW_BUILD_WITH_RW_ROOT}")
     set(ROBWORK_LIBRARIES_TMP
-        "${RW_BUILD_WITH_LIBRARIES_LUA};${RW_BUILD_WITH_LIBRARIES_OPENGL};${LIBRARIES_TO_INCLUDE};${OPTIONAL_LIBRARIES_TO_INCLUDE};${RW_BUILD_WITH_LIB_DEPEND}"
+     "${RW_BUILD_WITH_LIBRARIES_OPENGL};${LIBRARIES_TO_INCLUDE};${OPTIONAL_LIBRARIES_TO_INCLUDE};${RW_BUILD_WITH_LIB_DEPEND}"
     )
+    if(${RW_BUILD_WITH_LUA})
+        set(ROBWORK_LIBRARIES_TMP ${RW_BUILD_WITH_LIBRARIES_LUA} ${ROBWORK_LIBRARIES_TMP})
+        set(RW_BUILD_WITH_INCLUDE_DIR ${RW_BUILD_WITH_LUA_INCLUDE_DIR} ${RW_BUILD_WITH_INCLUDE_DIR})
+    endif()
 
     # make sure that the library and include paths are pointing to the right locations
 
@@ -545,8 +571,8 @@ else()
     )
 endif()
 
-if(RW_BUILD_WITH_GTEST AND NOT ${IS_INSTALL})
-    if(NOT TARGET gtest AND RW_BUILD_WITH_INTERNAL_GTEST)
+if(NOT TARGET gtest)
+    if(EXISTS "${RWCFG_ROOT}/gtestTargets.cmake")
         find_package(Threads QUIET)
         include("${RWCFG_ROOT}/gtestTargets.cmake")
     endif()

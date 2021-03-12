@@ -56,7 +56,8 @@ if(NOT PYTHONINTERP_FOUND)
 endif()
 
 if(PYTHONINTERP_FOUND AND PYTHONLIBS_FOUND)
-    if(NOT (PYTHONLIBS_VERSION_STRING STREQUAL PYTHON_VERSION_STRING))
+    message(STATUS )
+    if(NOT (${PYTHONLIBS_VERSION_STRING} STREQUAL ${PYTHON_VERSION_STRING}))
         string(ASCII 27 Esc)
         message(
             WARNING
@@ -83,11 +84,6 @@ if(POLICY CMP0072) # Introduce cmake 3.11
     cmake_policy(SET CMP0072 NEW)
 endif()
 find_package(OpenGL REQUIRED)
-
-set(Boost_NO_BOOST_CMAKE TRUE) # From Boost 1.70, CMake files are provided by Boost - we are not yet
-                               # ready to handle it And some extra packages for boost
-set(Boost_USE_STATIC_LIBS ${RW_BUILD_WITH_BOOST_USE_STATIC_LIB})
-find_package(Boost REQUIRED program_options)
 
 # Find and setup Qt.
 find_package(Qt6 COMPONENTS Core Gui Widgets OpenGL OpenGLWidgets QUIET)
@@ -191,7 +187,7 @@ if(NOT ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     if(NOT GLUT_FOUND) # Check if free glut exsist
         find_package(FreeGLUT QUIET)
         if(FreeGLUT_FOUND)
-            set(GLUT_glut_LIBRARY FreeGLUT::freeglut)
+            set(GLUT_glut_LIBRARY FreeGLUT::freeglut_static)
             set(GLUT_FOUND ${FreeGLUT_FOUND})
             set(RWS_HAVE_FREEGLUT TRUE)
         endif()

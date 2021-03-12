@@ -13,8 +13,6 @@
 
    Lua: Lua.org, PUC-Rio (http://www.lua.org/)
    
-   ToLua: Waldemar Celes, http://www.tecgraf.puc-rio.br/~celes/tolua/  
-   
    PQP (Optional): The University of North Carolina at Chapel Hill, http://www.cs.unc.edu/~geom/SSV/ . PQP source not included
    
    Yaobi: Morten Strandberg http://sourceforge.net/projects/yaobi/

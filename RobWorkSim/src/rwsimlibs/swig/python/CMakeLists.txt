@@ -113,6 +113,7 @@ if(build)
 
     target_link_libraries(${python_NAME_sdurwsim} PUBLIC sdurwsim RW::sdurw RWS::sdurws ${RWSIM_ODE_LIBRARY}
                         ${PYTHON_LIBRARIES})
+                        
     install(TARGETS ${SUBSYS_NAME} EXPORT ${PROJECT_PREFIX}Targets)
 
     RW_SWIG_COMPILE_TARGET(

@@ -38,7 +38,7 @@ else()
     set(RWSIM_GOT_VERSION False)
 endif()
 
-find_package(RobWork ${ROBWORKSIM_VERSION} REQUIRED PATHS ${RWSIM_ROOT}/../RobWork/cmake)
+find_package(RobWork ${ROBWORKSIM_VERSION} REQUIRED PATHS ${RWSIM_ROOT}/../RobWork/cmake NO_DEFAULT_PATH)
 
 # for backward compatibility
 set(ROOT RWSIM_ROOT)
@@ -63,11 +63,7 @@ include(${RWSIM_ROOT}/cmake/RobWorkSimSetup.cmake)
 rw_set_install_dirs(RobWorkSim RWSIM)
 
 # now lets find RobWorkStudio
-
-find_package(RobWorkStudio QUIET PATHS ${RWSIM_ROOT}/../RobWorkStudio/cmake NO_DEFAULT_PATH)
-if(NOT RobWorkStudio_FOUND)
-    find_package(RobWorkStudio REQUIRED)
-endif()
+find_package(RobWorkStudio ${ROBWORKSIM_VERSION} REQUIRED PATHS ${RWSIM_ROOT}/../RobWorkStudio/cmake NO_DEFAULT_PATH)
 
 # ##################################################################################################
 # CONFIGURATION configure build/RobWorkStudioConfig.cmake.in

@@ -165,11 +165,8 @@ function(RWSIM_VERIFY_TARGET __target __result)
                 endif()
 
                 if(NOT EXISTS ${out})
-                    # message(STATUS " - missing binary ${out}")
                     set(result "")
-                endif()
-
-                if(NOT result)
+                    # message(STATUS " - missing binary ${out}")
                     # message(STATUS " - Target Binary not found: ${__target}")
                 endif()
 
@@ -184,13 +181,13 @@ function(RWSIM_VERIFY_TARGET __target __result)
                     foreach(dir ${out})
 
                         if(NOT EXISTS ${dir})
-                            #message(STATUS " - Include not found: ${dir}")
+                            # message(STATUS " - Include not found: ${dir}")
                             set(result "")
                         endif()
                     endforeach()
 
                     if(NOT result)
-                        #message(STATUS " - Target Include not found: ${__target}")
+                        # message(STATUS " - Target Include not found: ${__target}")
                     endif()
                 endif()
             endif()
@@ -202,15 +199,18 @@ function(RWSIM_VERIFY_TARGET __target __result)
                 get_target_property(out ${__target} INTERFACE_LINK_LIBRARIES)
                 if(out)
                     foreach(lib_t ${out})
-
-                        rwsim_verify_library(${lib_t} vaified_lib "${underprocess}")
-                        if("${vaified_lib}" STREQUAL "")
-                            #message(STATUS " - Depend not found: ${lib_t}")
-                            set(result "")
+                        string(FIND ${lib_t} "\$<" found)
+                        if(${found} EQUAL -1)
+                            rwsim_verify_library(${lib_t} vaified_lib "${underprocess}")
+                            if("${vaified_lib}" STREQUAL "")
+                                # message(STATUS " - Depend not found: ${lib_t}")
+                                set(result "")
+                            endif()
                         endif()
                     endforeach()
+
                     if(NOT result)
-                        #message(STATUS " - Target depend not found: ${__target}")
+                        # message(STATUS " - Target depend not found: ${__target}")
                     endif()
                 endif()
             endif()
@@ -220,7 +220,7 @@ function(RWSIM_VERIFY_TARGET __target __result)
             # ######################################################################################
             if(NOT ${result} STREQUAL "")
                 set(varified_targets ${varified_targets} ${result})
-                #message(STATUS " - Target varified: ${result}")
+                # message(STATUS " - Target varified: ${result}")
             endif()
         endif()
     else()
@@ -283,6 +283,19 @@ function(RWSIM_VERIFY_LIBRARY _name _result)
                                        "${RWSIM_BUILD_WITH_INCLUDE_DIR}"
         )
         set(result "RWSIM::${_name}")
+    else()
+        unset(tmp)
+        find_library(
+            tmp
+            NAMES ${_name} lib${_name}
+        )
+        if(tmp)
+            add_library(${_name} UNKNOWN IMPORTED)
+            set_target_properties(
+                ${_name} PROPERTIES IMPORTED_LOCATION ${tmp}
+            )
+            set(result "${_name}")
+        endif()
     endif()
 
     set(varified_targets
@@ -293,7 +306,7 @@ function(RWSIM_VERIFY_LIBRARY _name _result)
         ${result}
         PARENT_SCOPE
     )
-    #message(STATUS "verify: ${_name} - ${result}")
+    # message(STATUS "verify: ${_name} - ${result}")
 endfunction()
 
 # ##################################################################################################
@@ -453,13 +466,13 @@ if(EXISTS ${RWSIMCFG_ROOT}/RobWorkSimBuildConfig_${RWSIM_BUILD_TYPE}.cmake)
 
             if(NOT "${res}" STREQUAL "")
                 list(APPEND OPTIONAL_LIBRARIES_TO_INCLUDE "${res}")
-                rw_message("Looking for ${lib} - found")
+                rwsim_message("Looking for ${lib} - found")
             else()
                 if(${lib} STREQUAL "sdurwsim")
                     list(APPEND OPTIONAL_LIBRARIES_TO_INCLUDE "RWSIM::${lib}")
-                    rw_message("Looking for ${lib} - not found")
+                    message(FATAL_ERROR "Looking for ${lib} - not found" )
                 else()
-                    rw_message("Looking for ${lib} - not found (ignored)")
+                    rwsim_message("Looking for ${lib} - not found (ignored)")
                 endif()
 
             endif()

@@ -105,8 +105,8 @@ Robwork Options
     - Use this option to Compile RobWork as a shared or static library
 
 - BUILD_SHARED_LIBS=[ON|OFF]
-    - Default: OFF
-    - Used to build libccd, assimp and GTESTS as a shared library.
+    - Default: RW_SHARED_LIBS
+    - Used to build assimp and GTESTS as a shared library.
       It also builds zlib and lua as DLL on windows.
 
 - RW_ENABLE_ASSERT=[ON|OFF]
@@ -158,10 +158,10 @@ RobWorkStudio Options
 ---------------------
 
 - RWS_SHARED_LIBS=[ON|OFF]
-    - Default: OFF
+    - Default: ON (WINDOWS OFF)
     - Use this option to compile RobWorkStudio Libraries as shared libraries.
 
-- RWS_USE_STATIC_LINK_PLUGINS=OFF
+- RWS_USE_STATIC_LINK_PLUGINS=[ON|OFF]
     - Default: ON
     - This option creates the RobWorkStudio plugins as static plugins, loaded at compile time.
 
@@ -173,20 +173,8 @@ RobWorkStudio Options
 RobWorkSim Options
 ------------------
 - RWSIM_SHARED_LIBS=ON
-    - Default: OFF
+    - Default: ON
     - Use this option to compile RobWorkStudio Libraries as shared libraries.
-
-- USE_WERROR=[ON|OFF]
-    - Default=OFF
-    - Make all warnings during compilation appear as errors.
-
-RobworkHardWare Options
------------------------
-
-- RWHW_SHARED_LIBS=[ON|OFF]
-    - Default: OFF
-    - Use this option to compile RobworkHardWare Libraries as shared libraries.
-      When using ur_rtde this option should be use.
 
 - USE_WERROR=[ON|OFF]
     - Default=OFF
@@ -257,26 +245,3 @@ Running CMake will show which packages are not being build and why.
 - BUILD_SimTaskPlugin=[ON|OFF]
 - BUILD_SimUtilityPlugin=[ON|OFF]
 - BUILD_SimulatorLogViewer=[ON|OFF]
-
-**RobworkHardWare**
-
-- BUILD_sdurwhw_camera=[ON|OFF]
-- BUILD_sdurwhw_CAN=[ON|OFF]
-- BUILD_sdurwhw_CRSA465=[ON|OFF]
-- BUILD_sdurwhw_dockwelder=[ON|OFF]
-- BUILD_sdurwhw_katana=[ON|OFF]
-- BUILD_sdurwhw_pa10=[ON|OFF]
-- BUILD_sdurwhw_pcube=[ON|OFF]
-- BUILD_sdurwhw_serialport=[ON|OFF]
-- BUILD_sdurwhw_swissranger=[ON|OFF]
-- BUILD_sdurwhw_tactile=[ON|OFF]
-- BUILD_sdurwhw_motomanIA20=[ON|OFF]
-- BUILD_sdurwhw_sdh=[ON|OFF]
-- BUILD_sdurwhw_universalrobots=[ON|OFF]
-- BUILD_sdurwhw_universalrobots_rtde=[ON|OFF]
-- BUILD_sdurwhw_fanucdriver=[ON|OFF]
-- BUILD_sdurwhw_schunkpg70=[ON|OFF]
-- BUILD_sdurwhw_netft=[ON|OFF]
-- BUILD_sdurwhw_trakstar=[ON|OFF]
-- BUILD_sdurwhw_robolabFT=[ON|OFF]
-- BUILD_sdurwhw_robotiq=[ON|OFF]
