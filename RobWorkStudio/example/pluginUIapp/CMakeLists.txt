@@ -32,17 +32,6 @@ set(RobWorkStudio_DIR ${RWSTUDIO_ROOT}/cmake)
 find_package(RobWorkStudio REQUIRED)
 message("-- RobWorkStudio found: " ${RWSTUDIO_ROOT})
 
-# Set the output dir for generated libraries and binaries
-if(MSVC)
-	set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${ROOT}/bin" CACHE PATH "Runtime directory" FORCE)
-	set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${ROOT}/libs" CACHE PATH "Library directory" FORCE)
-	set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${ROOT}/libs" CACHE PATH "Archive directory" FORCE)
-else()
-	set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${ROOT}/bin/${CMAKE_BUILD_TYPE}" CACHE PATH "Runtime directory" FORCE)
-	set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${ROOT}/libs/${CMAKE_BUILD_TYPE}" CACHE PATH "Library directory" FORCE)
-	set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${ROOT}/libs/${CMAKE_BUILD_TYPE}" CACHE PATH "Archive directory" FORCE)
-endif()
-
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
@@ -51,13 +40,12 @@ set(CMAKE_AUTOUIC ON)
 set(SrcFiles SamplePlugin.cpp resources.qrc)
 
 # The shared library to build:
-add_library(SamplePlugin MODULE ${SrcFiles})
-target_link_libraries(SamplePlugin PUBLIC RWS::sdurws ${ROBWORK_LIBRARIES})
-target_include_directories(SamplePlugin PUBLIC ${ROBWORK_INCLUDE_DIRS} )
+add_library(PluginUIApp MODULE ${SrcFiles})
+target_link_libraries(PluginUIApp PUBLIC RWS::sdurws RW::sdurw)
 
 if(CMAKE_VERSION VERSION_LESS 3.9)
     # Required in CMake < 3.9 to find generated ui_SamplePlugin.h file 
-    target_include_directories(SamplePlugin PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
+    target_include_directories(PluginUIApp PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
 endif()
 
 message("-- " ${PROJECT_NAME} " done!")

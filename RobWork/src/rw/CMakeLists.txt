@@ -30,6 +30,8 @@ if(build)
     add_library(RW::sdurw ALIAS sdurw)
     rw_add_includes(${SUBSYS_NAME} "rw" ${FILES_HPP})
     target_link_libraries(${SUBSYS_NAME} INTERFACE ${SUBSYS_DEPS})
+    target_include_directories(${SUBSYS_NAME} INTERFACE $<BUILD_INTERFACE:${RW_ROOT}/src>
+    $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>)
 
     install(
         TARGETS sdurw

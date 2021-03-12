@@ -43,7 +43,7 @@ set(RWSMAIN_TEST_SRC
   test-main.cpp
 )
 add_library( sdurws-gtest-main STATIC ${RWSMAIN_TEST_SRC})
-target_link_libraries( sdurws-gtest-main PUBLIC ${RW_BUILD_WITH_LIBRARIES_GTEST} PRIVATE RW::sdurw)
+target_link_libraries( sdurws-gtest-main PUBLIC ${RW_BUILD_WITH_LIBRARIES_GTEST} RW::sdurw)
 
 ########################################################################
 # RWS

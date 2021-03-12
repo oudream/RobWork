@@ -123,10 +123,10 @@ else()
     )
 endif()
 
-#install(
-#    TARGETS QCodeEditor
-#    EXPORT ${PROJECT_PREFIX}Targets
-#    RUNTIME DESTINATION ${BIN_INSTALL_DIR} COMPONENT ${_component}
-#    LIBRARY DESTINATION "${LIB_INSTALL_DIR}" COMPONENT ${_component}
-#    ARCHIVE DESTINATION "${LIB_INSTALL_DIR}" COMPONENT ${_component}
-#)
+install(
+    TARGETS QCodeEditor
+    EXPORT ${PROJECT_PREFIX}Targets
+    RUNTIME DESTINATION ${BIN_INSTALL_DIR} COMPONENT ${_component}
+    LIBRARY DESTINATION "${LIB_INSTALL_DIR}" COMPONENT ${_component}
+    ARCHIVE DESTINATION "${LIB_INSTALL_DIR}" COMPONENT ${_component}
+)

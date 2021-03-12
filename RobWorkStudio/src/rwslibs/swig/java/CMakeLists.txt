@@ -81,7 +81,7 @@ if(build)
         target_link_libraries(${SUBSYS_NAME} INTERFACE sdurws_jni)
     endif()
 
-    install(TARGETS ${SUBSYS_NAME} EXPORT ${PROJECT_PREFIX}Targets)
+    install(TARGETS ${SUBSYS_NAME} EXPORT ${PROJECT_PREFIX}javaTargets)
     add_library(${PROJECT_PREFIX}::${SUBSYS_NAME} ALIAS ${SUBSYS_NAME})
 
     RW_SWIG_COMPILE_TARGET(

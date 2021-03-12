@@ -79,7 +79,7 @@ if(build)
     add_library(sdurwslua_plugin.rwplugin MODULE LuaPlugin.cpp LuaPlugin.hpp)
 
     if(NOT SWIG_DEFAULT_COMPILE)
-        set_target_properties(sdurwslua_plugin.rwplugin PROPERTIES EXCLUDE_FROM_ALL TRUE)
+        set_target_properties(sdurwslua_plugin.rwplugin PROPERTIES EXCLUDE_FROM_ALL TRUE EXCLUDE_FROM_DEFAULT_BUILD TRUE)
     endif()
 
     target_link_libraries(sdurwslua_plugin.rwplugin ${TARGET_NAME}_s RW::sdurw RW::sdurw_core_lua_s)

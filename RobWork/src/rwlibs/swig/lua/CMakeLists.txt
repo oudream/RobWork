@@ -123,6 +123,18 @@ if(build)
             if(NOT "${RW_MODULE}" STREQUAL "sdurw"
                AND NOT "${RW_MODULE}" STREQUAL "sdurw_core"
                AND NOT "${RW_MODULE}" STREQUAL "sdurw_common"
+               AND NOT "${RW_MODULE}" STREQUAL "sdurw_math"
+               AND NOT "${RW_MODULE}" STREQUAL "sdurw_plugin"
+               AND NOT "${RW_MODULE}" STREQUAL "sdurw_geometry"
+               AND NOT "${RW_MODULE}" STREQUAL "sdurw_sensor"
+               AND NOT "${RW_MODULE}" STREQUAL "sdurw_models"
+               AND NOT "${RW_MODULE}" STREQUAL "sdurw_proximity"
+               AND NOT "${RW_MODULE}" STREQUAL "sdurw_graphics"
+               AND NOT "${RW_MODULE}" STREQUAL "sdurw_trajectory"
+               AND NOT "${RW_MODULE}" STREQUAL "sdurw_invlin"
+               AND NOT "${RW_MODULE}" STREQUAL "sdurw_pathplanning"
+               AND NOT "${RW_MODULE}" STREQUAL "sdurw_graspplanning"
+               AND NOT "${RW_MODULE}" STREQUAL "sdurw_loaders"
             )
                 add_library(${RW_MODULE}_lua_plugin.rwplugin MODULE LuaPlugin_${RW_MODULE}.cpp)
                 target_link_libraries(${RW_MODULE}_lua_plugin.rwplugin ${lua_s_NAME_${RW_MODULE}})
@@ -130,7 +142,7 @@ if(build)
 
                 if(NOT SWIG_DEFAULT_COMPILE)
                     set_target_properties(
-                        ${RW_MODULE}_lua_plugin.rwplugin PROPERTIES EXCLUDE_FROM_ALL TRUE
+                        ${RW_MODULE}_lua_plugin.rwplugin PROPERTIES EXCLUDE_FROM_ALL TRUE EXCLUDE_FROM_DEFAULT_BUILD TRUE
                     )
                 endif()
                 set(lua_targets ${lua_targets} ${RW_MODULE}_lua_plugin.rwplugin)
@@ -178,13 +190,15 @@ if(build)
             foreach(dep ${depends})
                 set(SWIG_MODULE_${TARGET_NAME}_EXTRA_DEPS ${SWIG_MODULE_${TARGET_NAME}_EXTRA_DEPS} ${lua_NAME_${dep}})
                 set(SWIG_MODULE_${TARGET_NAME}_s_EXTRA_DEPS ${SWIG_MODULE_${TARGET_NAME}_s_EXTRA_DEPS} ${lua_s_NAME_${dep}})
-                add_dependencies(${TARGET_NAME} ${lua_NAME_${dep}})
-                add_dependencies(${TARGET_NAME}_s ${lua_s_NAME_${dep}})
+                add_dependencies(${TARGET_NAME} ${lua_NAME_${dep}})                
+                add_dependencies(${TARGET_NAME}_s ${lua_s_NAME_${dep}}) 
                 if(TARGET ${RW_MODULE}_lua_plugin.rwplugin AND TARGET ${dep}_lua_plugin.rwplugin)
                     add_dependencies(${RW_MODULE}_lua_plugin.rwplugin ${dep}_lua_plugin.rwplugin)
                 endif()
             endforeach()
 
+            add_dependencies(${TARGET_NAME}_s ${TARGET_NAME})
+            
             target_include_directories(${TARGET_NAME} PRIVATE ${CMAKE_CURRENT_BINARY_DIR} ${LUA_INCLUDE_DIR})
             target_include_directories(${TARGET_NAME}_s PRIVATE ${CMAKE_CURRENT_BINARY_DIR} ${LUA_INCLUDE_DIR})
 

@@ -118,7 +118,6 @@ rw::core::Ptr< RobWorkStudio > rws::swig::getRobWorkStudioInstance (const std::s
 {
     // create a thread that start QApplication and
     if (robApp == NULL || !robApp->isRunning ()) {
-
         robApp = new RobWorkStudioApp (args);
         robApp->start ();
         while (robApp->getRobWorkStudio () == NULL) {

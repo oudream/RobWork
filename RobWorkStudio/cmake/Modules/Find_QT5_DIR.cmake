@@ -11,30 +11,39 @@ if(MSVC)
     if(EXISTS "$ENV{Qt5_DIR}" AND NOT "$ENV{Qt5_DIR}" STREQUAL "/")
         set(QT_PATH "$ENV{Qt5_DIR}")
     elseif(EXISTS "${QT_BIN}" AND NOT "${QT_BIN}" STREQUAL "/")
-        message(STATUS "QTBIN: ${QT_BIN}")
         # get root path so we can search for 5.3, 5.4, 5.5, etc
         string(REPLACE "/Tools" ";" QT_BIN "${QT_BIN}")
         list(GET QT_BIN 0 QT_BIN)
+
         file(GLOB QT_VERSIONS "${QT_BIN}/5.*")
         list(SORT QT_VERSIONS)
-
         # assume the latest version will be last alphabetically
         list(REVERSE QT_VERSIONS)
-
         list(GET QT_VERSIONS 0 QT_VERSION)
-
         # fix any double slashes which seem to be common
         string(REPLACE "//" "/" QT_VERSION "${QT_VERSION}")
 
-        # do some math trickery to guess folder - qt uses (e.g.) "msvc2012" - cmake uses (e.g.)
-        # "1800" - see also https://cmake.org/cmake/help/v3.0/variable/MSVC_VERSION.html MATH(EXPR
-        # QT_MSVC "2000 + (${MSVC_VERSION} - 600) / 100") message(STATUS "MSVC ${MSVC_VERSION}")
-        set(QT_MSVC 2017)
-        # check for 64-bit os may need to be removed for older compilers as it wasn't always offered
         if(CMAKE_SYSTEM_PROCESSOR MATCHES 64)
-            set(QT_MSVC "${QT_MSVC}_64")
+            set(BIT_SELECT "_64")
         endif()
-        set(QT_PATH "${QT_VERSION}/msvc${QT_MSVC}")
+
+        if(EXISTS ${QT_VERSIONS}/msvc2019${BITS})
+            set(QT_PATH "${QT_VERSIONS}/msvc2019${BITS}")
+        elseif(EXISTS ${QT_VERSIONS}/msvc2017${BITS})
+            set(QT_PATH "${QT_VERSIONS}/msvc2017${BITS}")
+        else()
+            file(GLOB QT_DIR "${QT_VERSIONS}/*")
+            list(SORT QT_DIR)
+            list(REVERSE QT_DIR)
+            string(REPLACE "//" "/" QT_DIR "${QT_DIR}")
+
+            foreach(dir ${QT_DIR})
+                if(IS_DIRECTORY ${dir})
+                    set(QT_PATH "${dir}")
+                endif()
+            endforeach()
+            
+        endif()
     endif()
 elseif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     set(QT_PATH "/usr/local/opt/qt5")

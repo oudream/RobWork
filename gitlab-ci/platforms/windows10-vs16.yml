@@ -16,6 +16,17 @@ build-RWSim:windows10-vs16:
     - build-RWS:windows10-vs16
   needs: ["build-RW:windows10-vs16", "build-RWS:windows10-vs16"]
 
+installer:windows10-vs16:
+  extends: .windows-build-installers
+  dependencies:
+    - build-RW:windows10-vs16
+    - build-RWS:windows10-vs16
+  needs:
+    [
+      "build-RW:windows10-vs16",
+      "build-RWS:windows10-vs16",
+    ]
+
 examples:windows10-vs16:
   extends: .windows-examples
   dependencies:

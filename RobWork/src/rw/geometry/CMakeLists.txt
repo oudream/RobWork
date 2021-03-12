@@ -168,6 +168,7 @@ if(build)
 
     if(TARGET qhull_build)
         add_dependencies(${SUBSYS_NAME} qhull_build)
+        target_include_directories(${SUBSYS_NAME} PRIVATE ${QHULL_NATIVE_ROOT}/include)
     endif()
 
     target_link_libraries(

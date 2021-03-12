@@ -26,7 +26,7 @@ if(build)
     endif()
 
     # Set extra linker flags for apple macos computers
-    rws_add_plugin(${SUBSYS_NAME} ${RWS_DEFAULT_LIB_TYPE} USING_SWIG ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles})
+    rws_add_plugin(${SUBSYS_NAME} ${RWS_DEFAULT_LIB_TYPE} EXPORT_SET RobWorkStudioluaTargets USING_SWIG ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles})
     rw_add_includes(${SUBSYS_NAME} "rwslibs/lua" ${SRC_FILES_HPP})
     target_link_libraries(
         ${SUBSYS_NAME}
@@ -40,10 +40,10 @@ if(build)
 
     rws_plugin_load_details(${SUBSYS_NAME} 2 Lua false)
     if("${RWS_DEFAULT_LIB_TYPE}" STREQUAL "STATIC")
-        set(RWS_PLUGIN_LIBRARIES
-            ${RWS_PLUGIN_LIBRARIES} ${SUBSYS_NAME}
-            PARENT_SCOPE
-        )
+        #set(RWS_PLUGIN_LIBRARIES
+        #    ${RWS_PLUGIN_LIBRARIES} ${SUBSYS_NAME}
+        #    PARENT_SCOPE
+        #)
     endif()
 
 else()

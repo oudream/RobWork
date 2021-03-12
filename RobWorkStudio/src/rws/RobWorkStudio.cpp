@@ -398,6 +398,7 @@ void RobWorkStudio::setupPluginsMenu ()
 void RobWorkStudio::loadPlugin (std::string pluginFile, bool visible, int dock)
 {
     if (boost::filesystem::exists (pluginFile)) {
+        std::cout << __FILE__ << ":" << __LINE__ << std::endl;
         setupPlugin (pluginFile.c_str (), visible, dock);
     }
 }

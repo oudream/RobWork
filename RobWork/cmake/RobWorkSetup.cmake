@@ -17,6 +17,7 @@
 #
 # Check if RW_ROOT path are setup correctly
 #
+include(ExternalProject)
 find_file(RW_ROOT_PATH_TEST RobWorkSetup.cmake ${RW_ROOT}/cmake NO_DEFAULT_PATH)
 if(NOT RW_ROOT_PATH_TEST)
     message(
@@ -197,9 +198,32 @@ else()
     message(STATUS "RobWork: FCL DISABLED!")
 endif()
 
-find_package(Eigen3 REQUIRED)
+find_package(Eigen3 QUIET)
 if(EIGEN3_FOUND)
     message(STATUS "RobWork: EIGEN3 installation FOUND! - version ${EIGEN3_VERSION}")
+else()
+    set(RW_EIGEN_FROM_GIT true)
+    message(STATUS "Fetching Eigen from git")
+    set(EIGEN_NATIVE_ROOT ${CMAKE_CURRENT_BINARY_DIR}/ext/eigen)
+    set(EIGEN3_INCLUDE_DIR ${EIGEN_NATIVE_ROOT}/include/eigen3)
+    if(NOT EXISTS ${EIGEN_NATIVE_ROOT})
+    ExternalProject_Add(
+        eigen_build
+        GIT_REPOSITORY https://gitlab.com/libeigen/eigen.git
+        GIT_TAG 3.3.7
+        CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EIGEN_NATIVE_ROOT}
+        BUILD_BYPRODUCTS ${EIGEN3_INCLUDE_DIR}
+    )
+    add_library(RW::eigen UNKNOWN IMPORTED)
+    file(MAKE_DIRECTORY ${EIGEN_NATIVE_ROOT}/include)
+
+    set_target_properties(
+        RW::eigen PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${EIGEN_NATIVE_ROOT}/include
+    )
+
+    set(EIGEN3_INCLUDE_DIR ${EIGEN_NATIVE_ROOT}/include/eigen3)
+    install(DIRECTORY ${EIGEN3_INCLUDE_DIR} DESTINATION ${RW_EXT_INSTALL_DIR}/eigen3)
+   endif()
 endif()
 
 #
@@ -213,12 +237,12 @@ find_package(Qhull QUIET MODULE)
 #
 if(NOT Qhull_FOUND)
     message(STATUS "Fetching QHull from git")
-    include(ExternalProject)
     ExternalProject_Add(
         qhull_build
         GIT_REPOSITORY https://github.com/qhull/qhull.git
         GIT_TAG v7.2.0
         CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${QHULL_NATIVE_ROOT}
+        BUILD_BYPRODUCTS ${QHULL_NATIVE_ROOT}/include
     )
     add_library(RW::qhull UNKNOWN IMPORTED)
     file(MAKE_DIRECTORY ${QHULL_NATIVE_ROOT}/include)
@@ -230,14 +254,21 @@ if(NOT Qhull_FOUND)
     set_target_properties(
         RW::qhull PROPERTIES IMPORTED_LOCATION ${QHULL_NATIVE_ROOT}/lib/libqhull_r.dylib
     )
+    set(QHULL_LIBRARIES RW::qhull)
+    elseif(WIN32)
+    set_target_properties(
+        RW::qhull PROPERTIES IMPORTED_LOCATION ${QHULL_NATIVE_ROOT}/lib/qhull_r.lib
+    )
+    set(QHULL_LIBRARIES ${QHULL_NATIVE_ROOT}/lib/qhull_r.lib)
     else()
     set_target_properties(
         RW::qhull PROPERTIES IMPORTED_LOCATION ${QHULL_NATIVE_ROOT}/lib/libqhull_r.so
     )
+    set(QHULL_LIBRARIES RW::qhull)
     endif()
 
     set(QHULL_INCLUDE_DIRS ${QHULL_NATIVE_ROOT}/include)
-    set(QHULL_LIBRARIES RW::qhull)
+    
 endif()
 
 # CSGJS
@@ -309,13 +340,16 @@ if(RW_USE_LUA)
             sdurw_simulation_lua_s
             sdurw_task_lua_s
         )
+
         set(ROBWORK_LIBRARIES_INTERNAL ${ROBWORK_LIBRARIES_INTERNAL} ${RW_LUA_LIBS})
     else()
         set(RW_HAVE_LUA False)
+        set(LUA_INCLUDE_DIR)
         message(STATUS "RobWork: Lua DISABLED! Since SWIG 3+ or LUA was NOT FOUND!")
     endif()
 else()
     message(STATUS "RobWork: LUA DISABLED!")
+    set(LUA_INCLUDE_DIR)
 endif()
 
 if(RW_BUILD_SANDBOX)
@@ -351,8 +385,7 @@ endif()
 
 #
 # If the user wants to use the Assimp package then search for it or build internal Assimp. Set
-# RW_DISABLE_ASSIMP to ON to disable Assimp completely. Zlib and Minizip/Unzip will be found/build
-# when Assimp is enabled.
+# RW_DISABLE_ASSIMP to ON to disable Assimp completely. 
 #
 
 set(RW_HAVE_ASSIMP FALSE)
@@ -400,7 +433,7 @@ if(CMAKE_VERSION VERSION_LESS "3.12")
     endif()
 
     if(PYTHONINTERP_FOUND AND PYTHONLIBS_FOUND)
-        if(NOT (PYTHONLIBS_VERSION_STRING STREQUAL PYTHON_VERSION_STRING))
+        if(NOT ((PYTHONLIBS_VERSION_MAJOR STREQUAL PYTHON_VERSION_MAJOR) AND (PYTHONLIBS_VERSION_MINOR STREQUAL PYTHON_VERSION_MINOR)))
             string(ASCII 27 Esc)
             message(
                 WARNING
@@ -796,14 +829,10 @@ set(ROBWORK_INCLUDE_DIR
     ${XERCESC_INCLUDE_DIR}
     ${YAOBI_INCLUDE_DIR}
     ${PQP_INCLUDE_DIR}
-    ${LUA_INCLUDE_DIR}
     ${BULLET_INCLUDE_DIRS}
     ${QHULL_INCLUDE_DIRS}
     ${CSGJS_INCLUDE_DIRS}
-    ${ZLIB_INCLUDE_DIRS}
     ${FCL_INCLUDE_DIRS}
-    # ${MINIZIP_INCLUDE_DIRS} # Do not include this overall as there is a conflict with another
-    # crypt.h that Python includes.
     ${ASSIMP_INCLUDE_DIRS}
     ${Mathematica_WSTP_INCLUDE_DIR}
 )

@@ -77,7 +77,10 @@
   artifacts:
     paths:
       - ./Build
-      - ./RobWork
+      - ./RobWork/cmake
+      - ./RobWork/src/RobWorkConfig.hpp
+      - ./RobWork/ext/rwyaobi/include/yaobi/yaobi_config.h
+      - ./RobWork/src/rwlibs/swig
       - ./gtest
     expire_in: 2 day
     when: on_success
@@ -100,7 +103,10 @@
   artifacts:
     paths:
       - ./Build/RWS
-      - ./RobWorkStudio
+      - ./RobWorkStudio/cmake
+      - ./RobWorkStudio/src/RobWorkStudioConfig.hpp
+      - ./RobWorkStudio/src/rwslibs/swig
+      - ./gtest
     expire_in: 2 day
     when: on_success
 
@@ -123,7 +129,10 @@
   artifacts:
     paths:
       - ./Build/RWSim
-      - ./RobWorkSim
+      - ./RobWorkSim/cmake
+      - ./RobWorkSim/src/RobWorkSimConfig.hpp
+      - ./RobWork/src/rwlibs/swig
+      - ./gtest
     expire_in: 2 day
     when: on_success
 

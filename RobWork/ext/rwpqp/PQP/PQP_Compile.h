@@ -62,7 +62,7 @@ inline float fabs(float x) { return (float)fabs((double)x); }*/
 //
 //-------------------------------------------------------------------------
 
-typedef float PQP_REAL;
+typedef double PQP_REAL;
 
 //-------------------------------------------------------------------------
 //

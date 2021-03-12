@@ -401,13 +401,19 @@ macro(RW_SET_INSTALL_DIRS PROJECT_NAME PREFIX)
     set(STATIC_LIB_INSTALL_DIR "${LIB_INSTALL_DIR}/RobWork/static")
     set(JAVA_INSTALL_DIR "${LIB_INSTALL_DIR}/RobWork/Java")
 
-    execute_process(
-        COMMAND python3 -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())"
-        OUTPUT_VARIABLE PYTHON_INSTALL_DIR
-        OUTPUT_STRIP_TRAILING_WHITESPACE
-    )
-    if("${PYTHON_INSTALL_DIR}" STREQUAL "")
+    if(WIN32)
         set(PYTHON_INSTALL_DIR "${LIB_INSTALL_DIR}/RobWork/Python")
+    else()
+        execute_process(
+            COMMAND python3 -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())"
+            OUTPUT_VARIABLE PYTHON_INSTALL_DIR
+            OUTPUT_STRIP_TRAILING_WHITESPACE
+        )
+        if("${PYTHON_INSTALL_DIR}" STREQUAL "")
+            set(PYTHON_INSTALL_DIR "${LIB_INSTALL_DIR}/RobWork/Python")
+        else()
+            string(REPLACE "\\" " /" PYTHON_INSTALL_DIR ${PYTHON_INSTALL_DIR})
+        endif()
     endif()
 
     if(WIN32)
@@ -489,14 +495,18 @@ endmacro()
 # Add a library target. _name The library name. _component The part of RW that this library belongs
 # to. ARGN The source files for the library.
 macro(RW_ADD_LIBRARY _name)
-    set(options STATIC SHARED MODULE NO_EXPORT) # Used to marke flags
-    set(oneValueArgs COMPONENT) # used to marke values with a single value
+    set(options STATIC SHARED MODULE NO_EXPORT ) # Used to marke flags
+    set(oneValueArgs COMPONENT EXPORT_SET) # used to marke values with a single value
     set(multiValueArgs)
 
     cmake_parse_arguments(SUBSYS "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
     set(_component ${_name})
     if(NOT "${SUBSYS_COMPONENT}" STREQUAL "")
         set(_component ${SUBSYS_COMPONENT})
+    endif()
+
+    if("${SUBSYS_EXPORT_SET}" STREQUAL "")
+        set(SUBSYS_EXPORT_SET ${PROJECT_PREFIX}Targets)
     endif()
 
     set(LIB_TYPE ${PROJECT_LIB_TYPE})
@@ -546,7 +556,7 @@ macro(RW_ADD_LIBRARY _name)
     else()
         install(
             TARGETS ${_name}
-            EXPORT ${PROJECT_PREFIX}Targets
+            EXPORT ${SUBSYS_EXPORT_SET}
             RUNTIME DESTINATION ${BIN_INSTALL_DIR} COMPONENT ${_component}
             LIBRARY DESTINATION ${lib_dir} COMPONENT ${_component}
             ARCHIVE DESTINATION ${lib_dir} COMPONENT ${_component}
@@ -697,7 +707,7 @@ macro(RW_ADD_SWIG _name _language _type)
             set(SLIB_TARGET_NAME ${SWIG_MODULE_${SLIB_TARGET_NAME}_REAL_NAME})
         endif()
     endif()
-
+    
     unset(_s)
     if("${_type}" STREQUAL "STATIC")
         set(_s "_s")
@@ -708,7 +718,7 @@ macro(RW_ADD_SWIG _name _language _type)
     )
     set_property(TARGET ${SLIB_TARGET_NAME} PROPERTY SWIG_USE_TARGET_INCLUDE_DIRECTORIES TRUE)
     if(NOT SWIG_DEFAULT_COMPILE)
-        set_target_properties(${SLIB_TARGET_NAME} PROPERTIES EXCLUDE_FROM_ALL TRUE)
+        set_target_properties(${SLIB_TARGET_NAME} PROPERTIES EXCLUDE_FROM_ALL TRUE EXCLUDE_FROM_DEFAULT_BUILD TRUE)
     endif()
     set_target_properties(
         ${SLIB_TARGET_NAME}
@@ -735,10 +745,10 @@ macro(RW_ADD_SWIG _name _language _type)
     install(
         TARGETS ${SLIB_TARGET_NAME}
         EXPORT ${PROJECT_PREFIX}${_language}Targets
-        DESTINATION ${SLIB_INSTALL_DIR}
-        COMPONENT swig
+        RUNTIME DESTINATION ${SLIB_INSTALL_DIR} COMPONENT swig
+        LIBRARY DESTINATION ${SLIB_INSTALL_DIR} COMPONENT swig
+        ARCHIVE DESTINATION ${libSLIB_INSTALL_DIR_dir} COMPONENT swig
     )
-
 endmacro()
 
 macro(RW_SWIG_COMPILE_TARGET _language)
@@ -819,7 +829,6 @@ macro(RW_ADD_JAVA_LIB _name)
     set(options) # Used to marke flags
     set(oneValueArgs LOADER_SOURCE_FILE LOADER_DST_FILE LOADER_PKG WINDOW_TITLE BUILD_DOC) # used to
                                                                                            # marke
-
     # values with a single value
     set(multiValueArgs CLASSPATH JAVADOC_LINK EXTRA_COPY)
     cmake_parse_arguments(JLIB "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
@@ -878,6 +887,7 @@ macro(RW_ADD_JAVA_LIB _name)
         DEPENDS ${_name}_jni
         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
     )
+    set_target_properties(${java_NAME_${_name}}_libs PROPERTIES EXCLUDE_FROM_DEFAULT_BUILD TRUE)
 
     if(JLIB_BUILD_DOC)
         add_custom_target(
@@ -893,6 +903,7 @@ macro(RW_ADD_JAVA_LIB _name)
             DEPENDS ${java_NAME_${_name}}_libs
             WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
         )
+        
     else()
         add_custom_target(
             ${java_NAME_${_name}}_java_doc
@@ -900,7 +911,8 @@ macro(RW_ADD_JAVA_LIB _name)
             DEPENDS ${java_NAME_${_name}}_libs
         )
     endif()
-
+    set_target_properties(${java_NAME_${_name}}_java_doc PROPERTIES EXCLUDE_FROM_DEFAULT_BUILD TRUE)
+    
 endmacro()
 
 # ##################################################################################################
@@ -1172,15 +1184,17 @@ endmacro()
 macro(RW_INCLUDE_EIGEN _name)
     target_include_directories(${_name} PUBLIC $<BUILD_INTERFACE:${EIGEN3_INCLUDE_DIR}>)
 
-    if(RW_ENABLE_INTERNAL_EIGEN_TARGET OR MSVC)
+    if(RW_EIGEN_FROM_GIT)
         target_include_directories(
             ${_name} INTERFACE $<INSTALL_INTERFACE:${RW_EXT_INSTALL_DIR}/eigen3>
         )
+        if(TARGET eigen_build)
+            add_dependencies(${_name} eigen_build)
+        endif()
     else()
         target_include_directories(${_name} INTERFACE $<INSTALL_INTERFACE:${EIGEN3_INCLUDE_DIR}>)
     endif()
 endmacro()
-
 # ##################################################################################################
 # Use this macro to generate a windows installer
 macro(RW_CREATE_INSTALLER)
@@ -1234,18 +1248,14 @@ macro(RW_CREATE_INSTALLER)
         )
 
         # set version #####
-        if(DEFINED VERSION)
-            set(CPACK_PACKAGE_VERSION ${VERSION})
-        else()
-            set(CPACK_PACKAGE_VERSION 6.6.6)
-        endif()
+        set(CPACK_PACKAGE_VERSION ${PROJECT_VERSION})
 
         string(REGEX MATCHALL "[0-9]+" VERSIONS_TMP ${CPACK_PACKAGE_VERSION})
         list(GET VERSIONS_TMP 0 CPACK_PACKAGE_VERSION_MAJOR)
         list(GET VERSIONS_TMP 1 CPACK_PACKAGE_VERSION_MINOR)
         list(GET VERSIONS_TMP 2 CPACK_PACKAGE_VERSION_PATCH)
 
-        set(CPACK_PACKAGE_FILE_NAME ${CPACK_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION})
+        set(CPACK_PACKAGE_FILE_NAME ${CPACK_PACKAGE_NAME}-install)
 
         get_cmake_property(CPACK_COMPONENTS_ALL COMPONENTS) # Get all components
         list(REMOVE_ITEM CPACK_COMPONENTS_ALL "pkgconfig" "rwtest") # Remove unnessesary components
@@ -1296,7 +1306,6 @@ macro(RW_CREATE_INSTALLER)
         cpack_add_install_type(Full DISPLAY_NAME "Full")
         cpack_add_install_type(RW_i DISPLAY_NAME "RobWork")
         cpack_add_install_type(RWS_i DISPLAY_NAME "RobWorkStudio")
-        cpack_add_install_type(RWHW_i DISPLAY_NAME "RobWorkHardware")
         cpack_add_install_type(RWSIM_i DISPLAY_NAME "RobWorkSim")
 
         # Setup Install Components
@@ -1312,6 +1321,7 @@ macro(RW_CREATE_INSTALLER)
             fcl
             assimp
             sdurw_csgjs
+            qt
         )
         set(BLOCKED_COMPONENTS pkgconfig rwtest)
 
@@ -1326,6 +1336,7 @@ macro(RW_CREATE_INSTALLER)
 
                 set(_depList "${RW_SUBSYS_DEPEND_${_comp}}")
                 list(FILTER _depList EXCLUDE REGEX "RW.*::")
+                list(FILTER _depList EXCLUDE REGEX ".*_lua_s")
                 cpack_add_component(
                     ${_comp}
                     DISPLAY_NAME "${_dispName}"
@@ -1336,7 +1347,8 @@ macro(RW_CREATE_INSTALLER)
                                   # DOWNLOADED ARCHIVE_FILE #Name_of_file_to_generate_for_download
                 )
                 # message( STATUS "component: ${CPACK_COMPONENT_${_COMP}_DISPLAY_NAME} - group:
-                # ${CPACK_COMPONENT_${_COMP}_GROUP}" ) message(STATUS "     - depend: ${_depList}")
+                # ${CPACK_COMPONENT_${_COMP}_GROUP}" )
+                # message(STATUS "     - depend: ${_depList}")
             elseif(NOT ${RW_SUBSYS_BUILD_${_comp}})
                 # message(STATUS "Component: ${_comp} not installed")
             elseif(${_comp} IN_LIST EXTERNAL_COMPONENTS)
@@ -1363,4 +1375,39 @@ macro(RW_CREATE_INSTALLER)
             endif()
         endforeach()
     endif()
+endmacro()
+
+macro(getBoostLibraryList output list)
+	foreach(s ${list})
+		if("${s}" STREQUAL "optimized")
+
+		elseif("${s}" STREQUAL "debug")
+
+		elseif("${s}" MATCHES "NOTFOUND")
+
+		elseif("${s}" STREQUAL "Boost::headers")
+
+		elseif("${s}" STREQUAL "Threads::Threads")
+
+		elseif("${s}" IN_LIST ${output})
+
+		elseif(TARGET ${s})
+			get_target_property(LIB ${s} IMPORTED_LOCATION_RELEASE)
+			if(LIB)
+				list(APPEND ${output} "${LIB}")
+			endif()
+			
+
+			get_target_property(L_LIBS ${s} INTERFACE_LINK_LIBRARIES)
+			getBoostLibraryList(${output} "${L_LIBS}")
+		else()
+			get_filename_component(_dir "${s}" DIRECTORY)
+			get_filename_component(_file "${s}" NAME_WLE)
+			string(REGEX MATCH "[a-z]*_[a-z]*" _file ${_file})
+			file(GLOB _files "${_dir}/${_file}*lib")
+			foreach(file ${_files})
+				list(APPEND BOOST_LIBRARIES_INSTALL "${file}")
+			endforeach()
+		endif()
+	endforeach()
 endmacro()

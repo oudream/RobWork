@@ -18,3 +18,14 @@
 #include "Exception.hpp"
 
 using namespace rw::core;
+
+Exception::Exception(const Message& message) : Exception(-1,message)
+{
+}
+
+Exception::Exception (int id, const Message& message) : _id (id), _message (message)
+{
+    std::stringstream sstr;
+    sstr << "Id[" << _id << "]" << _message.getFullText ();
+    _whatMsg = sstr.str ();
+}

@@ -190,7 +190,7 @@ namespace rw { namespace math {
             std::size_t no = order () - 1;
             PolynomialND< Coef, Scalar > der (no);
             for (std::size_t i = 1; i <= order (); i++)
-                der[i - 1] = _coef[i] * double (i);
+                der[i - 1] = (Coef) (_coef[i] * double(i));
             return der.derivative (n - 1);
         }
 
@@ -541,7 +541,7 @@ namespace rw { namespace math {
         {
             PolynomialND< Coef, Scalar > pol (order ());
             for (std::size_t i = 0; i <= order (); i++) {
-                pol[i] = _coef[i] * double (-1);
+                pol[i] = (Coef) (_coef[i] * double(-1));
             }
             return pol;
         }

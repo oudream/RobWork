@@ -4,9 +4,13 @@
 macro(RWS_ADD_PLUGIN _name _lib_type)
 
     set(options EXCLUDE_FROM_ALL USING_SWIG) # Used to marke flags
-    set(oneValueArgs) # used to marke values with a single value
+    set(oneValueArgs EXPORT_SET) # used to marke values with a single value
     set(multiValueArgs)
     cmake_parse_arguments(PL "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
+
+    if("${PL_EXPORT_SET}" STREQUAL "")
+        set(PL_EXPORT_SET ${PROJECT_PREFIX}Targets)
+    endif()
 
     add_library(${_name} ${_lib_type} ${PL_UNPARSED_ARGUMENTS})
     add_dependencies(${_name} sdurws)
@@ -45,7 +49,7 @@ macro(RWS_ADD_PLUGIN _name _lib_type)
     endif()
 
     if(PL_EXCLUDE_FROM_ALL OR (PL_USING_SWIG AND NOT SWIG_DEFAULT_COMPILE))
-        set_target_properties(${_name} PROPERTIES EXCLUDE_FROM_ALL TRUE)
+        set_target_properties(${_name} PROPERTIES EXCLUDE_FROM_ALL TRUE EXCLUDE_FROM_DEFAULT_BUILD TRUE)
     endif()
 
     if(NOT PL_USING_SWIG
@@ -54,7 +58,7 @@ macro(RWS_ADD_PLUGIN _name _lib_type)
     )
         install(
             TARGETS ${_name}
-            EXPORT ${PROJECT_PREFIX}Targets
+            EXPORT ${PL_EXPORT_SET}
             RUNTIME DESTINATION ${BIN_INSTALL_DIR} COMPONENT ${_component}
             LIBRARY DESTINATION "${LIB_INSTALL_DIR}/RobWork/rwsplugins" COMPONENT ${_component}
             ARCHIVE DESTINATION "${LIB_INSTALL_DIR}/RobWork/rwsplugins" COMPONENT ${_component}
@@ -68,9 +72,13 @@ endmacro()
 # to. ARGN The source files for the library.
 macro(RWS_ADD_COMPONENT _name)
     set(options EXCLUDE_FROM_ALL USING_SWIG) # Used to marke flags
-    set(oneValueArgs) # used to marke values with a single value
+    set(oneValueArgs EXPORT_SET) # used to marke values with a single value
     set(multiValueArgs)
     cmake_parse_arguments(PL "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
+
+    if("${PL_EXPORT_SET}" STREQUAL "")
+        set(PL_EXPORT_SET ${PROJECT_PREFIX}Targets)
+    endif()
 
     add_library(${_name} ${PROJECT_LIB_TYPE} ${PL_UNPARSED_ARGUMENTS})
 
@@ -98,7 +106,7 @@ macro(RWS_ADD_COMPONENT _name)
     endif()
     
     if(PL_EXCLUDE_FROM_ALL OR (PL_USING_SWIG AND NOT SWIG_DEFAULT_COMPILE))
-        set_target_properties(${_name} PROPERTIES EXCLUDE_FROM_ALL TRUE)
+        set_target_properties(${_name} PROPERTIES EXCLUDE_FROM_ALL TRUE EXCLUDE_FROM_DEFAULT_BUILD TRUE)
     endif()
 
     if(NOT PL_USING_SWIG
@@ -107,7 +115,7 @@ macro(RWS_ADD_COMPONENT _name)
     )
     install(
         TARGETS ${_name}
-        EXPORT ${PROJECT_PREFIX}Targets
+        EXPORT ${PL_EXPORT_SET}
         RUNTIME DESTINATION ${BIN_INSTALL_DIR} COMPONENT ${_name}
         LIBRARY DESTINATION ${LIB_INSTALL_DIR} COMPONENT ${_name}
         ARCHIVE DESTINATION ${LIB_INSTALL_DIR} COMPONENT ${_name}

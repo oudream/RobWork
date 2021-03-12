@@ -23,11 +23,11 @@ if(build)
         QToQSamplerPlanner.cpp
         PlannerUtil.cpp
         StopCriteria.cpp
-        QConstraint.cpp
-        QNormalizer.cpp
+        #QConstraint.cpp
+        #QNormalizer.cpp
         QIKSampler.cpp
         QSampler.cpp
-        StateConstraint.cpp
+        #StateConstraint.cpp
         PathAnalyzer.cpp
     )
 

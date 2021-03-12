@@ -179,10 +179,10 @@ void validate (boost::any& v, const std::vector< std::string >& values, QOptionL
                 try {
                     value.push_back (std::stod (vector.substr (start_i, digits)));
                 }
-                catch (std::invalid_argument& e) {
+                catch (std::invalid_argument&) {
                     success = false;
                 }
-                catch (std::out_of_range& e) {
+                catch (std::out_of_range&) {
                     success = false;
                 }
                 start_i = i + 1;

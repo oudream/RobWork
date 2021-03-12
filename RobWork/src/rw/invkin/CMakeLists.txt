@@ -20,6 +20,9 @@ if(build)
         JacobianIKSolverM.cpp
         ClosedFormIKSolverUR.cpp
         ClosedFormIKSolverKukaIIWA.cpp
+        ../pathplanning/QConstraint.cpp 
+        ../pathplanning/QNormalizer.cpp 
+        ../pathplanning/StateConstraint.cpp
     )
 
     set(FILES_HPP
@@ -38,16 +41,11 @@ if(build)
         ClosedFormIKSolverKukaIIWA.hpp
     )
 
-    #Compile some needed pathplanning classes, without depending on pathplanning
-    add_library(prePathPlanning STATIC ../pathplanning/QConstraint.cpp ../pathplanning/QNormalizer.cpp ../pathplanning/StateConstraint.cpp)
-    target_include_directories(prePathPlanning PRIVATE ${RW_ROOT}/src)
-    target_link_libraries(prePathPlanning ${SUBSYS_DEPS})
-
     rw_add_library(${SUBSYS_NAME} ${FILES_CPP} ${FILES_HPP})
     rw_add_includes(${SUBSYS_NAME} "rw/invkin" ${FILES_HPP})
     rw_add_includes(${SUBSYS_NAME} "rw" ../invkin.hpp)
 
-    target_link_libraries(${SUBSYS_NAME} PUBLIC ${Boost_LIBRARIES} ${SUBSYS_DEPS} PRIVATE prePathPlanning INTERFACE sdurw_pathplanning)
+    target_link_libraries(${SUBSYS_NAME} PUBLIC ${Boost_LIBRARIES} ${SUBSYS_DEPS})
 
     target_include_directories(
         ${SUBSYS_NAME} PUBLIC ${Boost_INCLUDE_DIR} $<BUILD_INTERFACE:${RW_ROOT}/src>

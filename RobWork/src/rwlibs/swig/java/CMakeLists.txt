@@ -147,7 +147,8 @@ if(build)
                 ${RW_MODULE}
                 CLASSPATH ${class_path_depend}
                 JAVADOC_LINK ${link_path_depend}
-                WINDOW_TITLE "RobWork Java API Documentation" BUILD_DOC ${build_doc}
+                WINDOW_TITLE "RobWork Java API Documentation"
+                BUILD_DOC ${build_doc}
             )
 
             if(SWIG_DEFAULT_COMPILE OR CMAKE_VERSION VERSION_GREATER 3.16.0)
@@ -158,9 +159,10 @@ if(build)
         endif()
     endforeach()
 
+    install(TARGETS ${SUBSYS_NAME} EXPORT ${PROJECT_PREFIX}javaTargets)
+    add_library(${PROJECT_PREFIX}::${SUBSYS_NAME} ALIAS ${SUBSYS_NAME})
+
     RW_SWIG_COMPILE_TARGET(java ${java_targets})
 
-    install(TARGETS ${SUBSYS_NAME} EXPORT ${PROJECT_PREFIX}javaTargets)
 
-    add_library(${PROJECT_PREFIX}::${SUBSYS_NAME} ALIAS ${SUBSYS_NAME})
 endif()

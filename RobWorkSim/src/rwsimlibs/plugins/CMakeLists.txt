@@ -94,6 +94,9 @@ if(build)
         PRIVATE sdurwsim_gui sdurwsim
         PUBLIC RWS::sdurws RW::sdurw
     )
+    if(MSVC) # to avoid multiple access to resource file
+        add_dependencies(${SUBSYS_NAME} RWSimulatorPlugin)
+    endif()
 
     # to avoid windows compile bug
     target_include_directories(${SUBSYS_NAME} PRIVATE ${PYTHON_INCLUDE_DIRS})
@@ -141,6 +144,10 @@ if(build)
 
     # to avoid windows compile bug
     target_include_directories(${SUBSYS_NAME} PRIVATE ${PYTHON_INCLUDE_DIRS})
+
+    if(MSVC) # to avoid multiple access to resource file
+        add_dependencies(${SUBSYS_NAME} SimUtilityPlugin)
+    endif()
 endif()
 
 # ##################################################################################################
@@ -193,7 +200,7 @@ if(build)
     add_library(${SUBSYS_NAME} MODULE ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles_RWSimPlugin}
                                       ${UIS_OUT_H}
     )
-    set_target_properties(${SUBSYS_NAME} PROPERTIES EXCLUDE_FROM_ALL TRUE)
+    set_target_properties(${SUBSYS_NAME} PROPERTIES EXCLUDE_FROM_ALL TRUE EXCLUDE_FROM_DEFAULT_BUILD TRUE)
 
     if(${test})
         target_compile_definitions(${SUBSYS_NAME} PRIVATE RWSIM_PLUGIN_HAVE_LUA)
@@ -215,6 +222,10 @@ if(build)
 
     # to avoid windows compile bug
     target_include_directories(RWSimPlugin PRIVATE ${PYTHON_INCLUDE_DIRS})
+
+    if(MSVC) # to avoid multiple access to resource file
+        add_dependencies(${SUBSYS_NAME} GraspTableGeneratorPlugin)
+    endif()
 endif()
 
 # ##################################################################################################
@@ -272,6 +283,10 @@ if(build)
 
     # to avoid windows compile bug
     target_include_directories(${SUBSYS_NAME} PRIVATE ${PYTHON_INCLUDE_DIRS})
+
+    if(MSVC) # to avoid multiple access to resource file
+        add_dependencies(${SUBSYS_NAME} RWSimPlugin)
+    endif()
 endif()
 
 # ##################################################################################################
@@ -336,4 +351,8 @@ if(build)
 
     # to avoid windows compile bug
     target_include_directories(${SUBSYS_NAME} PRIVATE ${PYTHON_INCLUDE_DIRS})
+
+    if(MSVC) # to avoid multiple access to resource file
+        add_dependencies(${SUBSYS_NAME} SimTaskPlugin)
+    endif()
 endif()

@@ -201,6 +201,14 @@ if(WIN32)
         DESTINATION "${RWS_INSTALL_DIR}/cmake/Modules"
         COMPONENT cmake
     )
+    STRING(REPLACE ".lib" ".dll" PYTHON_DLL "${PYTHON_LIBRARIES}")
+    if(EXISTS "${PYTHON_DLL}")
+        install(FILES ${PYTHON_DLL} DESTINATION ${BIN_INSTALL_DIR} COMPONENT python_dll)
+    else()
+        get_filename_component(python_file ${PYTHON_DLL} NAME)
+        get_filename_component(python_path ${PYTHON_DLL} DIRECTORY)
+        install(FILES "${python_path}/../${python_file}" DESTINATION ${BIN_INSTALL_DIR} COMPONENT python_dll)
+    endif()
 endif()
 
 # this will configure the dependency file that will be used if install is invoked
