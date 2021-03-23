@@ -498,15 +498,16 @@ struct AddDeviceToWorkcell
     {
         DummyDevice dev = device;
         dev._scope      = _scope;
-        if (_workcell._framelist.size () != 0 && dev._refframe == "") {
+        if (_workcell._framelist.size () != 0 && dev._refframe == "" && !dev._frames.empty()) {
             dev._refframe            = _workcell._framelist.back ().getName ();
             dev._frames[0]._refframe = dev._refframe;
+            _workcell._devlist.push_back (dev);
         }
-        else if (_workcell._framelist.size () == 0 && dev._refframe == "") {
+        else if (_workcell._framelist.size () == 0 && dev._refframe == "" && !dev._frames.empty() ){
             dev._refframe            = "WORLD";
             dev._frames[0]._refframe = dev._refframe;
+            _workcell._devlist.push_back (dev);
         }
-        _workcell._devlist.push_back (dev);
     }
 
     DummyWorkcell& _workcell;
