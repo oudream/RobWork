@@ -35,11 +35,9 @@ if(build)
         Model3DFactory.cpp
         Model3DLoader.cpp
         GeometryFactory.cpp
-        # path and tul
+        # path
         path/PathLoader.cpp
         path/PathLoaderCSV.cpp
-        tul/Tag.cpp
-        tul/TULLoader.cpp
         # rwxml
         rwxml/DependencyGraph.cpp
         rwxml/MultipleFileIterator.cpp
@@ -84,11 +82,9 @@ if(build)
         Model3DFactory.hpp
         Model3DLoader.hpp
         GeometryFactory.hpp
-        # path and tul
+        # path
         path/PathLoader.hpp
         path/PathLoaderCSV.hpp
-        tul/Tag.hpp
-        tul/TULLoader.hpp
         # rwxml
         rwxml/DependencyGraph.hpp
         rwxml/MultipleFileIterator.hpp

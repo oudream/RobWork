@@ -881,9 +881,7 @@ void RobWorkStudio::openFile (const std::string& file)
                 _settingsMap->set< std::vector< std::string > > ("LastOpennedFiles", lastfiles);
                 updateLastFiles ();
             }
-            else if (filename.endsWith (".WU", Qt::CaseInsensitive) ||
-                     filename.endsWith (".WC", Qt::CaseInsensitive) ||
-                     filename.endsWith (".DEV", Qt::CaseInsensitive) ||
+            else if (filename.endsWith (".WC", Qt::CaseInsensitive) ||
                      filename.endsWith (".XML", Qt::CaseInsensitive)) {
                 Log::infoLog () << "Opening workcell file: " << filename.toStdString () << "\n";
                 openWorkCellFile (filename);
@@ -933,8 +931,7 @@ void RobWorkStudio::open ()
         "*.obj" +
             assimpExtensions +
             ")"
-            "\nTUL files ( *.wu *.wc *.dev )"
-            "\nRW XML files ( *.wc.xml *.xml)"
+            "\nRW XML files ( *.wc.xml *.xml *.wc)"
             "\nDrawables ( *.stl *.stla *.stlb *.3ds *.ac *.ac3d *.obj" +
             assimpExtensions +
             ")"

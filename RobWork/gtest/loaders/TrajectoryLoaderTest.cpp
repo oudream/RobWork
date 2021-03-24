@@ -50,55 +50,6 @@ namespace
     bool isZero(double x) { return fabs(x) < 1e-14; }
 }
 
-/*
-BOOST_AUTO_TEST_CASE( TULLoaderTest )
-{
-    BOOST_MESSAGE("TULTestTestSuite");
-    BOOST_MESSAGE("- Loading workcell file");
-    WorkCellPtr workcell = WorkCellLoader::load(testFilePath() + "PA10/PA10.wu");
-
-    BOOST_REQUIRE(NULL != workcell.get());
-    BOOST_REQUIRE(workcell->getDevices().size() == 1);
-
-    BOOST_MESSAGE("- Testing nr of devices");
-    SerialDevice* device = (SerialDevice*)workcell->getDevices()[0];
-    State state = workcell->getDefaultState();
-
-    BOOST_CHECK(
-        norm_inf(
-            device->baseTend(state).R().m() -
-            Rotation3D<>(0.0, 0.0, 1.0, 0.0, 1.0, 0.0, -1.0, 0.0, 0.0).m()) < 1e-6);
-
-    BOOST_CHECK(norm_inf(device->baseTend(state).P() - Vector3D<>(0.195,0,1.581)) < 1e-6);
-
-    std::pair<Q, Q> bounds = device->getBounds();
-    Q newFirst = bounds.first*2;
-    Q newSecond = bounds.second*3;
-    std::pair<Q, Q> boundsTmp(newFirst, newSecond);
-
-    device->setBounds(boundsTmp);
-    std::pair<Q, Q> newbounds = device->getBounds();
-    for (size_t i = 0; i<bounds.first.size(); i++) {
-        BOOST_CHECK(isZero(2*bounds.first(i) - newbounds.first(i)));
-        BOOST_CHECK(isZero(3*bounds.second(i) - newbounds.second(i)));
-    }
-
-    Q vellimits = device->getVelocityLimits();
-    device->setVelocityLimits(vellimits*0.5);
-    Q newvellimits = device->getVelocityLimits();
-    for (size_t i = 0; i<vellimits.size(); i++) {
-        BOOST_CHECK(0.5*vellimits(i) == newvellimits(i));
-    }
-
-    Q acclimits = device->getAccelerationLimits();
-    device->setAccelerationLimits(acclimits*5);
-    Q newacclimits = device->getAccelerationLimits();
-    for (size_t i = 0; i<acclimits.size(); i++) {
-        BOOST_CHECK(isZero(5*acclimits(i) - newacclimits(i)));
-    }
-}
-*/
-
 TEST(TrajectoryLoaderTest, PathLoaderTest )
 {
     QPath path;

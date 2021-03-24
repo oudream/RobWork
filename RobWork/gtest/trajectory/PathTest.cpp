@@ -111,7 +111,7 @@ TEST (PathTest, simpleStatePath)
 {
     StatePath statepath;
     WorkCell::Ptr workcell = WorkCellLoader::Factory::load (TestEnvironment::testfilesDir () +
-                                                            "MultiRobotDemo/Scene.wu");
+                                                            "MultiRobotDemo/Scene.wc.xml");
     EXPECT_FALSE (workcell.isNull ());
     Device::Ptr dev      = workcell->getDevices ().front ();
     const State defstate = workcell->getDefaultState ();
@@ -160,7 +160,7 @@ TEST (PathTest, simpleStatePath)
     {
         TimedStatePath timedStatePath;
         WorkCell::Ptr workcell = WorkCellLoader::Factory::load (TestEnvironment::testfilesDir () +
-                                                                "MultiRobotDemo/Scene.wu");
+                                                                "MultiRobotDemo/Scene.wc.xml");
         EXPECT_FALSE (workcell.isNull ());
 
         Device::Ptr dev = workcell->getDevices ().front ();
