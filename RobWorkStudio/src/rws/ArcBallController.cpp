@@ -219,6 +219,9 @@ void ArcBallController::zoom (double amount)
 {
     if (_advancedZoomEnabled) {
         Vector3D<> dist      = _zoomTarget - _viewTransform.P ();
+        if(dist.norm2() > (_pivotPoint- _viewTransform.P()).norm2()){
+            dist = dist/dist.norm2() * (_pivotPoint- _viewTransform.P()).norm2();
+        }
         double newAmount     = dist.norm2 () * ZOOM_PERCENTAGE / 100 * amount;
         _advancedZoomEnabled = false;
         if ((newAmount > 0 && (newAmount > amount)) || (newAmount < 0 && (amount > newAmount)) ||
