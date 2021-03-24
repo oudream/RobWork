@@ -206,7 +206,7 @@ if(TARGET sdurw)
 
     set(LOADERS_TEST_SRC
         loaders/DOMProximitySetupSaver.cpp loaders/DOMPropertyMap.cpp loaders/ImageLoaderTest.cpp
-        loaders/PathLoaderCSVTest.cpp loaders/TrajectoryLoaderTest.cpp loaders/TULLoaderTest.cpp
+        loaders/PathLoaderCSVTest.cpp loaders/TrajectoryLoaderTest.cpp
     )
     add_executable(sdurw_loaders-gtest ${LOADERS_TEST_SRC})
     target_link_libraries(sdurw_loaders-gtest ${LOADERS_TEST_LIBRARIES})

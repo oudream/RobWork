@@ -48,8 +48,6 @@
 #include "./loaders/rwxml/XML.hpp"
 #include "./loaders/rwxml/XMLErrorHandler.hpp"
 #include "./loaders/rwxml/XMLParser.hpp"
-#include "./loaders/tul/TULLoader.hpp"
-#include "./loaders/tul/Tag.hpp"
 
 #if RW_HAVE_XERCES
 #include "./loaders/xml/XMLPathLoader.hpp"

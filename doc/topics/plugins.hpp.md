@@ -39,7 +39,6 @@ RobWork has various loaders, for XML files, images, geometry data and workcells.
 <tr><td>rw::loaders::WorkCellLoader::Factory</td><td>Loaders that will load a rw::models::WorkCell</td><td>
   <ul>
     <li>rw::loaders::ColladaLoader</li>
-    <li>rw::loaders::TULLoader</li>
     <li>rw::loaders::XMLRWLoader</li>
   </ul>
 </td></tr>

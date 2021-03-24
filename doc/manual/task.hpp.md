@@ -345,11 +345,7 @@ with the frame and device names listed in the task description, the
 loading of the task description will throw an exception:
 
 ~~~~
-> ./rw_load_task d:/src/RobWorkData/TULScenes/FanucCatcher/scene.wu pick-and-place.xml
-Exception (D:\src\RobWork\src\rw\loaders\TaskLoader.cpp:258):
-No device named 'Gripper.Composite' in workcell
-WorkCell[d:/src/RobWorkData/TULScenes/FanucCatcher/scene.wu]
-~~~~
+
 
 # Traversing a task description # {#sec_task_traversal}
 

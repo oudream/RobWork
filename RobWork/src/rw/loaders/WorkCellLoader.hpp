@@ -41,9 +41,7 @@ namespace rw { namespace loaders {
      *
      * By default, the following formats are supported:
      *
-     * - File extensions ".wu", ".wc", ".tag", ".dev" will be loaded using
-     *   the TULLoader.
-     * - Remaining file extensions will be loaded using the standard %RobWork
+     * - All file extensions will be loaded using the standard %RobWork
      *   %XML format (XMLRWLoader).
      *
      * The Factory defines an extension point "rw.loaders.WorkCellLoader"
@@ -110,8 +108,7 @@ namespace rw { namespace loaders {
              * @brief Loads/imports a WorkCell from a file.
              *
              * An exception is thrown if the file can't be loaded.
-             * The %RobWork %XML format is supported by default, as well as
-             * TUL WorkCell format.
+             * The %RobWork %XML format is supported by default.
              * @param filename [in] name of the WorkCell file.
              */
             static models::WorkCell::Ptr load (const std::string& filename);

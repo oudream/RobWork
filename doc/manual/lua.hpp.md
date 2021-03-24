@@ -75,9 +75,6 @@ interface:
 
 \include ex-simple.lua
 
-The \c workcell.wu file loaded in the script is described in section
-\ref sec_tul_workcell.
-
 The output of running the script in the interpreter (see section \ref
 sec_lua_interpreter) is as follows:
 

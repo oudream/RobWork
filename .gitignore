@@ -1146,21 +1146,6 @@ RobWork/example/java/src/*.log
 /RobWork/src/rw/loaders/rwxml/CPackConfig.cmake
 /RobWork/src/rw/loaders/rwxml/CPackSourceConfig.cmake
 
-# /RobWork/src/rw/loaders/tul/
-/RobWork/src/rw/loaders/tul/cmake_install.cmake
-/RobWork/src/rw/loaders/tul/CMakeCache.txt
-/RobWork/src/rw/loaders/tul/Makefile
-/RobWork/src/rw/loaders/tul/RobWork.cmake
-/RobWork/src/rw/loaders/tul/bin
-/RobWork/src/rw/loaders/tul/CMakeFiles
-/RobWork/src/rw/loaders/tul/apidocs
-/RobWork/src/rw/loaders/tul/.cproject
-/RobWork/src/rw/loaders/tul/.project
-/RobWork/src/rw/loaders/tul/build
-/RobWork/src/rw/loaders/tul/.csettings
-/RobWork/src/rw/loaders/tul/CPackConfig.cmake
-/RobWork/src/rw/loaders/tul/CPackSourceConfig.cmake
-
 # /RobWork/src/rw/loaders/xml/
 /RobWork/src/rw/loaders/xml/cmake_install.cmake
 /RobWork/src/rw/loaders/xml/CMakeCache.txt
