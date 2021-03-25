@@ -1,12 +1,7 @@
 # ##################################################################################################
 # Rcc shared for all plugins
 #
-set(RccSrcFiles)
-if(DEFINED Qt6Core_VERSION)
-    qt_add_resources(RccSrcFiles resources.qrc)
-else()
-    qt5_add_resources(RccSrcFiles resources.qrc)
-endif()
+set(RccSrcFiles resources.qrc)
 
 # ##################################################################################################
 # next compile RWSimulatorPlugin
@@ -25,16 +20,10 @@ rw_subsys_option(
 
 if(build)
     set(SrcFiles RWSimulatorPlugin.cpp)
-
-    # Call the create_plugin macro for creating the plugin
-    if(DEFINED Qt6Core_VERSION)
-        qt_wrap_cpp(MocSrcFiles RWSimulatorPlugin.hpp TARGET ${SUBSYS_NAME})
-    else()
-        qt5_wrap_cpp(MocSrcFiles RWSimulatorPlugin.hpp TARGET ${SUBSYS_NAME})
-    endif()
+    set(HppFiles RWSimulatorPlugin.hpp)
 
     # The shared library to build:
-    add_library(${SUBSYS_NAME} MODULE ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles})
+    add_library(${SUBSYS_NAME} MODULE ${SrcFiles} ${HppFiles} ${RccSrcFiles})
     target_link_libraries(
         ${SUBSYS_NAME}
         PRIVATE sdurwsim
@@ -80,12 +69,7 @@ if(build)
     set(SrcFiles SimUtilityPlugin.cpp)
 
     # Call the create_plugin macro for creating the plugin
-    set(MocSrcFiles)
-    if(DEFINED Qt6Core_VERSION)
-        qt_wrap_cpp(MocSrcFiles SimUtilityPlugin.hpp TARGET ${SUBSYS_NAME})
-    else()
-        qt5_wrap_cpp(MocSrcFiles SimUtilityPlugin.hpp TARGET ${SUBSYS_NAME})
-    endif()
+    set(MocSrcFiles SimUtilityPlugin.hpp )
 
     # The shared library to build:
     add_library(${SUBSYS_NAME} MODULE ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles})
@@ -118,24 +102,13 @@ rw_subsys_option(
 )
 
 if(build)
-    set(UIS_OUT_H)
-    if(DEFINED Qt6Core_VERSION)
-        qt_wrap_ui(UIS_OUT_H GraspTableGeneratorPlugin.ui)
-    else()
-        qt5_wrap_ui(UIS_OUT_H GraspTableGeneratorPlugin.ui)
-    endif()
+
     set(SrcFiles GraspTableGeneratorPlugin.cpp)
-    set_source_files_properties(${SrcFiles} PROPERTIES OBJECT_DEPENDS "${UIS_OUT_H}")
     # Call the create_plugin macro for creating the plugin
-    set(MocSrcFiles)
-    if(DEFINED Qt6Core_VERSION)
-        qt_wrap_cpp(MocSrcFiles GraspTableGeneratorPlugin.hpp TARGET ${SUBSYS_NAME})
-    else()
-        qt5_wrap_cpp(MocSrcFiles GraspTableGeneratorPlugin.hpp TARGET ${SUBSYS_NAME})
-    endif()
+    set(MocSrcFiles GraspTableGeneratorPlugin.hpp)
 
     # The shared library to build:
-    add_library(${SUBSYS_NAME} MODULE ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles} ${UIS_OUT_H})
+    add_library(${SUBSYS_NAME} MODULE ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles})
     target_link_libraries(${SUBSYS_NAME} PUBLIC sdurwsim_gui sdurwsim RWS::sdurws RW::sdurw)
 
     # Need to add the current binary dir to the include directory because the generated source files
@@ -174,32 +147,16 @@ rw_subsys_option(
 )
 
 if(build)
-    set(UIS_OUT_H)
-    if(DEFINED Qt6Core_VERSION)
-        qt_wrap_ui(UIS_OUT_H RWSimPlugin.ui)
-    else()
-        qt5_wrap_ui(UIS_OUT_H RWSimPlugin.ui)
-    endif()
     set(SrcFiles RWSimPlugin.cpp)
-    set_source_files_properties(${SrcFiles} PROPERTIES OBJECT_DEPENDS "${UIS_OUT_H}")
 
     # Call the create_plugin macro for creating the plugin
-    set(MocSrcFiles)
-    set(RccSrcFiles_RWSimPlugin)
-    if(DEFINED Qt6Core_VERSION)
-        qt_wrap_cpp(MocSrcFiles RWSimPlugin.hpp TARGET ${SUBSYS_NAME})
-        qt_add_resources(RccSrcFiles_RWSimPlugin ${RWSIM_ROOT}/src/gfx/RWSimPlugin.qrc)
-    else()
-        qt5_wrap_cpp(MocSrcFiles RWSimPlugin.hpp TARGET ${SUBSYS_NAME})
-        qt5_add_resources(RccSrcFiles_RWSimPlugin ${RWSIM_ROOT}/src/gfx/RWSimPlugin.qrc)
-    endif()
+    set(MocSrcFiles RWSimPlugin.hpp )
+    set(RccSrcFiles_RWSimPlugin ${RWSIM_ROOT}/src/gfx/RWSimPlugin.qrc)
 
     set(RWSIM_LUA_LIB_TMP RW::sdurw_lua_s sdurwsim_lua_s)
     rw_is_targets(test TARGETS ${RWSIM_LUA_LIB_TMP} TARGETS_OUT RWSIM_LUA_LIB)
 
-    add_library(${SUBSYS_NAME} MODULE ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles_RWSimPlugin}
-                                      ${UIS_OUT_H}
-    )
+    add_library(${SUBSYS_NAME} MODULE ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles_RWSimPlugin})
     set_target_properties(${SUBSYS_NAME} PROPERTIES EXCLUDE_FROM_ALL TRUE EXCLUDE_FROM_DEFAULT_BUILD TRUE)
 
     if(${test})
@@ -244,31 +201,13 @@ rw_subsys_option(
 )
 
 if(build)
-    set(UIS_OUT_H)
-    if(DEFINED Qt6Core_VERSION)
-        qt_wrap_ui(UIS_OUT_H SimTaskPlugin.ui)
-    else()
-        qt5_wrap_ui(UIS_OUT_H SimTaskPlugin.ui)
-    endif()
+
     set(SrcFiles SimTaskPlugin.cpp)
-    set_source_files_properties(${SrcFiles} PROPERTIES OBJECT_DEPENDS "${UIS_OUT_H}")
+    set(MocSrcFiles SimTaskPlugin.hpp)
+    set(RccSrcFiles_SimTaskPlugin ${RccSrcFiles} ${RWSIM_ROOT}/src/gfx/SimTaskPlugin.qrc)
 
-    # Call the create_plugin macro for creating the plugin
-    set(MocSrcFiles)
-    set(RccSrcFiles_SimTaskPlugin)
-    if(DEFINED Qt6Core_VERSION)
-        qt_wrap_cpp(MocSrcFiles SimTaskPlugin.hpp TARGET ${SUBSYS_NAME})
-        qt_add_resources(RccSrcFiles_SimTaskPlugin ${RWSIM_ROOT}/src/gfx/SimTaskPlugin.qrc)
-    else()
-        qt5_wrap_cpp(MocSrcFiles SimTaskPlugin.hpp TARGET ${SUBSYS_NAME})
-        qt5_add_resources(RccSrcFiles_SimTaskPlugin ${RWSIM_ROOT}/src/gfx/SimTaskPlugin.qrc)
-    endif()
+    add_library(${SUBSYS_NAME} MODULE ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles_SimTaskPlugin})
 
-    add_library(${SUBSYS_NAME} MODULE ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles_SimTaskPlugin}
-                                      ${UIS_OUT_H}
-    )
-    # ADD_LIBRARY(SimTaskPluginStatic STATIC ${SrcFiles} ${MocSrcFiles}
-    # ${RccSrcFiles_SimTaskPlugin})
     target_link_libraries(
         ${SUBSYS_NAME}
         PRIVATE sdurwsim_gui
@@ -292,12 +231,6 @@ endif()
 # ##################################################################################################
 # The SimTaskVisPlugin -- has been moved to RobWorkStudio now named gtaskplugin
 #
-set(UIS_OUT_H)
-if(DEFINED Qt6Core_VERSION)
-    qt_wrap_ui(UIS_OUT_H SimTaskVisPlugin.ui)
-else()
-    qt5_wrap_ui(UIS_OUT_H SimTaskVisPlugin.ui)
-endif()
 
 # ##################################################################################################
 # next compile EngineTestPlugin
@@ -317,27 +250,13 @@ rw_subsys_option(
 )
 
 if(build)
-    set(UIS_OUT_H)
-    if(DEFINED Qt6Core_VERSION)
-        qt_wrap_ui(UIS_OUT_H EngineTestPlugin.ui)
-    else()
-        qt5_wrap_ui(UIS_OUT_H EngineTestPlugin.ui)
-    endif()
-
     set(SrcFiles EngineTestPlugin.cpp)
-    # set_source_files_properties(${SrcFiles} PROPERTIES OBJECT_DEPENDS
-    # "${UIS_OUT_H}")
 
     # Call the create_plugin macro for creating the plugin
-    set(MocSrcFiles)
-    if(DEFINED Qt6Core_VERSION)
-        qt_wrap_cpp(MocSrcFiles EngineTestPlugin.hpp TARGET ${SUBSYS_NAME})
-    else()
-        qt5_wrap_cpp(MocSrcFiles EngineTestPlugin.hpp TARGET ${SUBSYS_NAME})
-    endif()
+    set(MocSrcFiles EngineTestPlugin.hpp)
 
     # The shared library to build:
-    add_library(${SUBSYS_NAME} MODULE ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles} ${UIS_OUT_H})
+    add_library(${SUBSYS_NAME} MODULE ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles})
     target_link_libraries(
         ${SUBSYS_NAME}
         PUBLIC sdurwsim_test

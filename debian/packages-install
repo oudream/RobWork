@@ -60,6 +60,7 @@ pkg=sdurw_geometry-expanded libname=sdurw_simplefinger nodev=true type=add
 ########################### ROBWORKSTUDIO #############################
 pkg=sdurws dir=/rws type=new
 pkg=sdurws libname=sdurws_pythoneditor libdir=/RobWork/rwsplugins type=add gotsoname=false dir=/rwslibs/pythoneditor
+pkg=sdurws libname=QCodeEditor libdir=/RobWork/static nodev=true type=add static=true
 pkg=sdurws libname=qtpropertybrowser dir=/ext/qtpropertybrowser type=add nodev=false lintian=dev-pkg-without-shlib-symlink
 pkg=sdurws type=add nolib=true dir=none inclfile=RobWorkStudioConfig.hpp inclfile=RobWorkStudioPlugin.hpp inclfile=RobWorkStudio.hpp
 pkg=sdurws libname=sdurws_plugin.rwplugin gotsoname=false nodev=true type=add libdir=/RobWork/rwplugins
