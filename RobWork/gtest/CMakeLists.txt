@@ -130,6 +130,7 @@ if(TARGET sdurw)
 
     set(GEOMETRY_TEST_SRC
         geometry/DelaunayTest.cpp
+        geometry/BSphereTest.cpp
         geometry/HyperSphereTest.cpp
         geometry/ImplicitTorusTest.cpp
         geometry/IndexedTriMeshTest.cpp
