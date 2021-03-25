@@ -11,7 +11,7 @@ namespace geometry {
     class TriMesh;
 
     /**
-     * @brief class representing an Oriented Bounding Box (OBB)
+     * @brief class representing an Bounding sphere
      */
 
     template< class T = double > class BSphere : public BV< BSphere< T > >
@@ -20,24 +20,54 @@ namespace geometry {
         typedef T value_type;
 
         /**
-         * @brief constructor
+         * @brief constructor using sphere center of (0, 0, 0)
+         * @param radius [in] set the radius of the sphere
          */
         BSphere (T radius = 1.0) : _p3d (rw::math::Vector3D< T > (0, 0, 0)), _radius (radius) {}
 
+        /**
+         * @brief constructor setting both sphere center and radius
+         * @param pos [in] the position of the center of the sphere
+         * @param radius [in] set the radius of the sphere
+         */
         BSphere (const rw::math::Vector3D< T >& pos, T radius = 1.0) :
-            _p3d (rw::math::Vector3D< T > (0, 0, 0)), _radius (radius)
+            _p3d (pos), _radius (radius)
         {}
-
+        
+        /**
+         * @brief get the position of the sphere center
+         * @return a Vector3D with the center coordinates
+         */
         inline const rw::math::Vector3D< T >& getPosition () const { return _p3d; }
 
+        /**
+         * @brief set the sphere center coordinate
+         * @param p3d [in] the new center coordinates
+         */
         inline void setPosition (const rw::math::Vector3D< T >& p3d) { _p3d = p3d; }
 
+        /**
+         * @brief get the sphere radius
+         * @return sphere radius
+         */
         inline const T& getRadius () const { return _radius; }
 
+        /**
+         * @brief get the sphere radius²
+         * @return sphere radius²
+         */
         inline const T getRadiusSqr () const { return _radius * _radius; }
 
+        /**
+         * @brief get the surface area
+         * @return surface area
+         */
         inline T calcArea () const { return (T) (4.0 * rw::math::Pi * _radius * _radius); }
 
+        /**
+         * @brief get the volume
+         * @return volume
+         */
         inline T calcVolume () const
         {
             return (T) (4.0 / 3.0 * rw::math::Pi * _radius * _radius * _radius);
@@ -71,7 +101,6 @@ namespace geometry {
 
 }    // namespace geometry
 
-//! define traits of the OBB
 template< typename T > struct Traits< geometry::BSphere< T > >
 {
     typedef T value_type;
