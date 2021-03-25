@@ -22,10 +22,9 @@ if(NOT ROBWORKSIM_FOUND)
 endif()
 message(STATUS "RobWorkSim: ROOT dir: ${RWSIM_ROOT}")
 
-#
-# Setup the default include and library dirs for RobWorkSim
-#
-# INCLUDE("${RWSIM_ROOT}/build/RobWorkSimBuildConfig${CMAKE_BUILD_TYPE}.cmake")
+set(CMAKE_AUTORCC TRUE)
+set(CMAKE_AUTOMOC TRUE)
+set(CMAKE_AUTOUIC TRUE)
 
 # ##################################################################################################
 # DEPENDENCIES - REQUIRED Check for all dependencies, this adds LIBRARY_DIRS and include dirs that

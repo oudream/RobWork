@@ -223,7 +223,7 @@
     - mkdir Build && cd Build
     - cmake ..
     - make -j${THREADS}
-    - "for file in ./ex-*; do if [ -f $file ] && [[ ! $file =~ ex-load-workcell ]] ; then  echo -e '\n EXECUTING: '$file && $file ${robworkdata} && EXERW=$EXERW' '$file || exit 1 ; fi; done"
+    - "for file in ./ex-*; do if [ -f $file ] && [[ ! $file =~ ex-load-workcell ]] ; then  echo -e '\n EXECUTING: '$file' '$robworkdata && $file ${robworkdata} && EXERW=$EXERW' '$file || exit 1 ; fi; done"
     - ./ex-load-workcell ../../ModelData/XMLScenes/RobotWithHand/Workcell.xml
     # TEST RW PYTHON FILES
     - cd $DIR/RobWork/example/python
@@ -294,6 +294,7 @@
     - *uninstall-rw-deb
     - apt update
     - apt -y install ./DEBPKG/*.deb
+    - robworkdata=/home/robworkdata
     - export DISPLAY=:0
     - Xvfb $DISPLAY -screen 0 640x480x24 &
 

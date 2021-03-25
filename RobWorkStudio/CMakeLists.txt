@@ -42,8 +42,13 @@ else()
     rw_get_git_version(ROBWORKSTUDIO_VERSION ROBWORKSTUDIO_BRANCH)
     set(RWS_GOT_VERSION False)
 endif()
-find_package(RobWork ${ROBWORKSTUDIO_VERSION} REQUIRED PATHS ${RWS_ROOT}/../RobWork/cmake )
 
+if(NOT DEFINED RWP_ROOT)
+    find_package(RobWork ${ROBWORKSTUDIO_VERSION} REQUIRED PATHS ${RWS_ROOT}/../RobWork/cmake )
+else()
+    string(TOLOWER ${RW_BUILD_TYPE} tmp)
+    include(${RW_ROOT}cmake/RobWorkBuildConfig_${tmp}.cmake)
+endif()
 
 rw_init_project(${RWS_ROOT} RobWorkStudio RWS ${ROBWORKSTUDIO_VERSION})
 rw_get_os_info()
@@ -134,7 +139,7 @@ configure_file(${RWS_ROOT}/src/RobWorkStudioConfig.hpp.in "${RWS_ROOT}/src/RobWo
 
 # next build information script
 configure_file(${RWS_ROOT}/cmake/RobWorkStudioBuildConfig.cmake.in
-               "${RWS_ROOT}/cmake/RobWorkStudioBuildConfig_${RW_BUILD_TYPE}.cmake" @ONLY
+               "${RWS_ROOT}/cmake/RobWorkStudioBuildConfig_${RWS_BUILD_TYPE}.cmake" @ONLY
 )
 
 # Configure build/RobWorkStudioConfig.cmake.in such that other projects might use RobWorkStudio

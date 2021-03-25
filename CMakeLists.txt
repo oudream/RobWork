@@ -20,6 +20,35 @@ if(WITH_RWS)
     add_subdirectory(RobWorkStudio)
 endif()
 if(WITH_RWSIM)
+
+    find_package(
+        Qt6
+        COMPONENTS Core Gui Widgets OpenGL OpenGLWidgets
+        QUIET
+    )
+    if(Qt6Core_FOUND
+    AND Qt6Gui_FOUND
+    AND Qt6Widgets_FOUND
+    AND Qt6OpenGL_FOUND
+    AND Qt6OpenGLWidgets_FOUND
+    )
+        set(QT_LIBRARIES ${Qt6Core_LIBRARIES} ${Qt6Gui_LIBRARIES} ${Qt6Widgets_LIBRARIES}
+                        ${Qt6OpenGL_LIBRARIES} ${Qt6OpenGLWidgets_LIBRARIES}
+        )
+    else()
+        find_package(Qt5Core 5.5.1 REQUIRED)
+        find_package(Qt5Gui 5.5.1 REQUIRED)
+        find_package(Qt5Widgets 5.5.1 REQUIRED)
+        find_package(Qt5OpenGL 5.5.1 REQUIRED)
+        get_target_property(QT_UIC_EXECUTABLE Qt5::uic LOCATION)
+        set(QT_LIBRARIES ${Qt5Core_LIBRARIES} ${Qt5Gui_LIBRARIES} ${Qt5Widgets_LIBRARIES}
+                        ${Qt5OpenGL_LIBRARIES}
+        )
+        set(QT_INCLUDES ${Qt5Core_INCLUDE_DIRS} ${Qt5Gui_INCLUDE_DIRS} ${Qt5Widgets_INCLUDE_DIRS}
+                        ${Qt5OpenGL_INCLUDE_DIRS}
+        )
+    endif()
+
     add_subdirectory(RobWorkSim)
 endif()
 
