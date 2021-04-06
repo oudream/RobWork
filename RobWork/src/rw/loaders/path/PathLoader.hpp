@@ -101,10 +101,9 @@ namespace rw { namespace loaders {
         static rw::trajectory::TimedStatePath
         loadTimedStatePath (const rw::models::WorkCell& workcell, const std::string& file);
 
-        // private:
-        // Everything below we probably don't want to support: All we will
-        // support is the loading and storing of time stamped paths.
-        // JIMMY: hmm, i can use it ;)
+         //! @copydoc rw::loader::PathLoader::loadTimedStatePath
+        static rw::trajectory::TimedStatePath
+        loadTimedStatePath (rw::core::Ptr<rw::models::WorkCell> workcell, const std::string& file);
 
         /**
          * @brief Store the sequence \b path of \b workcell to the file named \b file.

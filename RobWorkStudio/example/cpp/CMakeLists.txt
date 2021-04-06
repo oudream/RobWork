@@ -24,6 +24,7 @@ endmacro()
 
 rw_build(ex-simulated-camera)
 rw_build(ex-load-workcell)
+#rw_build(ex-play-timedstatepath)
 
 foreach(obj ${ROBWORKSTUDIO_INCLUDE_DIRS})
     message(STATUS "INCL_DIR: ${obj}")

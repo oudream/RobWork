@@ -28,23 +28,13 @@ int main (int argc, char** argv)
 
         while (rwsApp.isRunning ()) {
             TimerUtil::sleepMs (10);    // Check if running every 10 ms
-
             if (argc == 3 && std::string (argv[2]) == std::string ("-t")) {    // Quit if test run
-
-                std::cout << __FILE__ << ":" << __LINE__ << std::endl;
                 TimerUtil::sleepMs (4000);    // wait for full startup
-
-                std::cout << __FILE__ << ":" << __LINE__ << std::endl << std::flush;
                 rwsApp.close ();    // Close RWS
-
-                std::cout << __FILE__ << ":" << __LINE__ << std::endl << std::flush;
             }
         }
         rwsApp.close ();    // Close rws if running
-        std::cout << __FILE__ << ":" << __LINE__ << std::endl << std::flush;
         TimerUtil::sleepMs (10000);    // wait for full startup
-
-        std::cout << __FILE__ << ":" << __LINE__ << std::endl << std::flush;
     }
     RWS_END ();
 

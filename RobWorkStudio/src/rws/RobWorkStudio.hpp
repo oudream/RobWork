@@ -166,6 +166,16 @@ class RobWorkStudio : public QMainWindow
     const rw::trajectory::TimedStatePath& getTimedStatePath () { return *_timedStatePath; }
 
     /**
+     * @brief Returns pointer to the common TimedStatePath
+     *
+     * The TimedStatePath can be used to represent a trajectory represented
+     * by full workcell states
+     *
+     * @return pointer to TimedStatePath
+     */
+    const rw::core::Ptr<rw::trajectory::TimedStatePath> getTimedStatePathPtr () { return _timedStatePath; }
+
+    /**
      * @brief Sets the common TimedStatePath
      *
      * Use the common TimedStatePath to set at trajectory, which plugins, e.g. PlayBack
