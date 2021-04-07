@@ -125,6 +125,8 @@ if(build)
     # to be able to include the generated ui header files
     target_include_directories(
         sdurwsim_gui
+
         INTERFACE $<BUILD_INTERFACE:${RWSIM_ROOT}/src> $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
+        PRIVATE  ${CMAKE_CURRENT_BINARY_DIR}
     )
 endif()
