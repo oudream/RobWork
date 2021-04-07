@@ -67,7 +67,6 @@ Player::Player (double tickInterval, RobWorkStudio* rwstudio) :
     _rec_number_of_digits (2), _now (0), _direction (1), _velocityScale (1), _timer (this),
     _loop (false), _interpolate (true), _recordingOnly (true)
 {
-    std::cout << "SETTING RECORDING ONLY " << std::endl;
     initialize ();
 }
 

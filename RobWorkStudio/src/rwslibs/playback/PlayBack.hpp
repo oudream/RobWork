@@ -73,9 +73,14 @@ class PlayBack : public RobWorkStudioPlugin
     void speedValueChanged (double percent);
     void loopPlaybackChanged (int state);
     void interpolateChanged (int state);
-
+    void stateTrajectoryChanged(void);
     void record (bool record);
     void showSettings ();
+
+
+  Q_SIGNALS:
+    void stateTrajectoryChangedSignal(void);
+
 
   private:
     class MyStateDraw;
