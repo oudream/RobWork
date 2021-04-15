@@ -20,17 +20,15 @@
 #include "RobWorkStudio.hpp"
 
 #include <boost/thread.hpp>
-#include <QThread>
+#include <thread>
 
 #define RWS_START(rwsapp)                                \
     rws::RobWorkStudioApp& rws_macro_interface = rwsapp; \
-    QThread* rws_macro_thread = QThread::create([&] { while(!rwsapp.isRunning ()){ rw::common::TimerUtil::sleepMs (1);}
+    std::thread rws_macro_thread([&] { while(!rwsapp.isRunning ()){ rw::common::TimerUtil::sleepMs (1);}
 #define RWS_END(end)            \
     });                         \
-    rws_macro_thread->start (); \
-    rws_macro_interface.run (); \
-    rws_macro_thread->wait();
-
+    rws_macro_thread.detach (); \
+    rws_macro_interface.run ();
 
 namespace rws {
 
