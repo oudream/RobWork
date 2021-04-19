@@ -98,17 +98,6 @@ const Plugin::OSHandle* Plugin::getHandle ()
     return _handle;
 }
 
-/*namespace {
-void findAndReplace (std::string& str, const std::string& oldStr, const std::string& newStr)
-{
-    std::string::size_type pos = 0u;
-    while ((pos = str.find (oldStr, pos)) != std::string::npos) {
-        str.replace (pos, oldStr.length (), newStr);
-        pos += newStr.length ();
-    }
-}
-}    */// namespace
-
 #ifdef RW_WIN32
 
 void Plugin::close (const OSHandle* handle)
@@ -149,6 +138,9 @@ rw::core::Ptr< Plugin > Plugin::loadDirect (const std::string& filename)
                            NULL))              // Arguments
         {
             RW_THROW (buffer);
+        }
+        else if (GetLastError () == 126 ){
+            RW_THROW ("Error 126: Error loading dependent dll");
         }
         else {
             RW_THROW ("Unknown Error: Could not open library");
