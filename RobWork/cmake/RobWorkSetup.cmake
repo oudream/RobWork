@@ -198,7 +198,7 @@ else()
     message(STATUS "RobWork: FCL DISABLED!")
 endif()
 
-find_package(Eigen3 QUIET)
+find_package(Eigen3 QUIET PATHS  ${CMAKE_CURRENT_BINARY_DIR})
 if(EIGEN3_FOUND)
     message(STATUS "RobWork: EIGEN3 installation FOUND! - version ${EIGEN3_VERSION}")
 else()
@@ -206,7 +206,6 @@ else()
     message(STATUS "Fetching Eigen from git")
     set(EIGEN_NATIVE_ROOT ${CMAKE_CURRENT_BINARY_DIR}/ext/eigen)
     set(EIGEN3_INCLUDE_DIR ${EIGEN_NATIVE_ROOT}/include/eigen3)
-    if(NOT EXISTS ${EIGEN_NATIVE_ROOT})
     ExternalProject_Add(
         eigen_build
         GIT_REPOSITORY https://gitlab.com/libeigen/eigen.git
@@ -214,16 +213,15 @@ else()
         CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EIGEN_NATIVE_ROOT}
         BUILD_BYPRODUCTS ${EIGEN3_INCLUDE_DIR}
     )
+
     add_library(RW::eigen UNKNOWN IMPORTED)
     file(MAKE_DIRECTORY ${EIGEN_NATIVE_ROOT}/include)
 
     set_target_properties(
         RW::eigen PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${EIGEN_NATIVE_ROOT}/include
     )
-
-    set(EIGEN3_INCLUDE_DIR ${EIGEN_NATIVE_ROOT}/include/eigen3)
     install(DIRECTORY ${EIGEN3_INCLUDE_DIR} DESTINATION ${RW_EXT_INSTALL_DIR}/eigen3)
-   endif()
+
 endif()
 
 #
@@ -503,6 +501,7 @@ cmake_dependent_option(
 )
 set(RW_HAVE_GTEST FALSE)
 set(RW_ENABLE_INTERNAL_GTEST_TARGET OFF)
+set(RW_GTEST_FROM_GIT OFF)
 if(RW_USE_GTEST)
     # Now try to find Google Test
     set(gtest_force_shared_crt
@@ -510,6 +509,9 @@ if(RW_USE_GTEST)
         CACHE BOOL "Use /MD on Windows systems."
     )
     find_package(GTest QUIET)
+    if(NOT GTEST_FOUND)
+        find_package(GTest QUIET PATHS ${CMAKE_CURRENT_BINARY_DIR})
+    endif()
     if(GTEST_FOUND)
         set(GTEST_SHARED_LIBS ${BUILD_SHARED_LIBS})
         message(STATUS "RobWork: Google Test installation FOUND!")
@@ -521,7 +523,53 @@ if(RW_USE_GTEST)
             set(GTEST_BOTH_LIBRARIES RW::${GTEST_MAIN_LIBRARY} RW::${GTEST_LIBRARY})
         endif()
     else()
-        message(WARNING "RobWork: Google Test installation NOT FOUND!")
+        message(STATUS Fetching GTest from git)
+        set(RW_GTEST_FROM_GIT ON)
+        set(GTEST_NATIVE_ROOT ${CMAKE_CURRENT_BINARY_DIR}/ext/gtest)
+
+        set(GTEST_LIBRARY  ${GTEST_NATIVE_ROOT}/lib/gtest.so)
+        set(GTEST_MAIN_LIBRARY  ${GTEST_NATIVE_ROOT}/lib/gtest_main.so)
+        if (WIN32) 
+            set(GTEST_LIBRARY  ${GTEST_NATIVE_ROOT}/lib/gtest.lib)
+            set(GTEST_MAIN_LIBRARY  ${GTEST_NATIVE_ROOT}/lib/gtest_main.lib)
+        elseif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+            set(GTEST_LIBRARY  ${GTEST_NATIVE_ROOT}/lib/gtest.dylib)
+            set(GTEST_MAIN_LIBRARY  ${GTEST_NATIVE_ROOT}/lib/gtest_main.dylib)
+        endif() 
+
+        ExternalProject_Add(
+            gtest_build
+            GIT_REPOSITORY https://github.com/google/googletest.git 
+            GIT_TAG release-1.10.0
+            CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${GTEST_NATIVE_ROOT} -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DBUILD_SHARED_LIBS=ON
+            BUILD_BYPRODUCTS ${GTEST_NATIVE_ROOT}/include ${GTEST_LIBRARY} ${GTEST_MAIN_LIBRARY}
+        )
+
+        add_library(gtest INTERFACE)
+        add_library(RW::gtest ALIAS gtest)
+
+        set_target_properties(gtest PROPERTIES
+            INTERFACE_INCLUDE_DIRECTORIES "${GTEST_NATIVE_ROOT}/include"
+        )
+        target_link_libraries(gtest INTERFACE "${GTEST_LIBRARY}")
+
+        # Create imported target GTest::gtest_main
+        add_library(gtest_main INTERFACE)
+        add_library(RW::gtest_main ALIAS gtest_main)
+
+        set_target_properties(gtest_main PROPERTIES
+            INTERFACE_INCLUDE_DIRECTORIES "${GTEST_NATIVE_ROOT}/include"
+        )
+        target_link_libraries(gtest_main INTERFACE "${GTEST_MAIN_LIBRARY}")
+
+
+        set(RW_HAVE_GTEST TRUE)
+        set(RW_ENABLE_INTERNAL_GTEST_TARGET ON)
+        add_dependencies(gtest gtest_build)
+        add_dependencies(gtest_main gtest_build)
+        set(GTEST_LIBRARIES RW::gtest)
+        set(GTEST_MAIN_LIBRARIES RW::gtest_main)
+        set(GTEST_BOTH_LIBRARIES RW::gtest RW::gtest_main)
     endif()
 else()
     message(STATUS "RobWork: Google Test DISABLED!")

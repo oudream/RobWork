@@ -67,7 +67,7 @@ endif()
 # ##################################################################################################
 
 if(TARGET sdurw_core)
-    set(CORE_TEST_LIBRARIES sdurw-gtest-main ${GTEST_LIBRARIES} sdurw_core)
+    set(CORE_TEST_LIBRARIES sdurw-gtest-main ${GTEST_BOTH_LIBRARIES} sdurw_core)
 
     set(CORE_TEST_SRC core/AnyPtrTest.cpp core/EventTest.cpp core/PluginTest.cpp
                       core/PropertyMapTest.cpp core/PropertyTest.cpp

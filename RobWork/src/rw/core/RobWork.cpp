@@ -82,6 +82,16 @@ void appendPluginFolder (const std::string& folder, const std::string& name, Pro
         }
     }
 }
+void FindAndReplace(std::string& str,
+               const std::string& oldStr,
+               const std::string& newStr)
+{
+  std::string::size_type pos = 0u;
+  while((pos = str.find(oldStr, pos)) != std::string::npos){
+     str.replace(pos, oldStr.length(), newStr);
+     pos += newStr.length();
+  }
+}
 }    // namespace
 
 RobWork::RobWork (void) : _initialized (false)
@@ -268,12 +278,20 @@ void RobWork::initialize (const std::vector< std::string >& plugins)
                 IOUtil::getFilesInFolder (file.string (), false, true, "*.rwplugin.*");
             for (std::string pl_file : pl_files) {
                 const std::string ext = StringUtil::getFileExtension (pl_file);
-                if (ext == ".xml" || ext == ".dll" || ext == ".so")
+                if (ext == ".xml" || ext == ".dll" || ext == ".so"){
+                #ifdef RW_WIN32
+                    FindAndReplace(pl_file,"\\","/");
+                #endif 
                     pluginsFiles.push_back (pl_file);
+                }
             }
         }
         else {
-            pluginsFiles.push_back (file.string ());
+            std::string theFile = file.string();
+            #ifdef RW_WIN32
+                FindAndReplace(theFile,"\\","/");
+            #endif 
+            pluginsFiles.push_back (theFile);
         }
     }
 
