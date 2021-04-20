@@ -116,13 +116,32 @@ export(
     NAMESPACE ${PROJECT_PREFIX}::
 )
 
-if(RW_HAVE_GTEST AND NOT RW_GTEST_FROM_GIT)
-    if(TARGET ${GTEST_LIBRARIES} AND TARGET ${GTEST_MAIN_LIBRARIES})
-        export(
-            TARGETS ${GTEST_LIBRARIES} ${GTEST_MAIN_LIBRARIES}
-            NAMESPACE ${PROJECT_PREFIX}:: APPEND
-            FILE "${RW_ROOT}/cmake/gtestTargets.cmake"
+if(RW_HAVE_GTEST)
+    if (NOT RW_GTEST_FROM_GIT)
+        if(TARGET ${GTEST_LIBRARIES} AND TARGET ${GTEST_MAIN_LIBRARIES})
+            export(
+                TARGETS ${GTEST_LIBRARIES} ${GTEST_MAIN_LIBRARIES}
+                NAMESPACE ${PROJECT_PREFIX}:: APPEND
+                FILE "${RW_ROOT}/cmake/gtestTargets.cmake"
+            )
+        endif()
+    else()
+        STRING(TOUPPER ${RW_BUILD_TYPE} CAPITAL_BUILD_TYPE)
+        file(WRITE "${RW_ROOT}/cmake/gtestTargets.cmake" 
+        "add_library(gtest INTERFACE)
+        add_library(RW::gtest ALIAS gtest)
+        set_target_properties(gtest PROPERTIES
+            INTERFACE_INCLUDE_DIRECTORIES ${GTEST_NATIVE_ROOT}/include
+            INTERFACE_LINK_LIBRARIES ${GTEST_LIBRARY}
         )
+
+        add_library(gtest_main INTERFACE)
+        add_library(RW::gtest_main ALIAS gtest)
+        set_target_properties(gtest_main PROPERTIES
+            INTERFACE_INCLUDE_DIRECTORIES ${GTEST_NATIVE_ROOT}/include
+            INTERFACE_LINK_LIBRARIES ${GTEST_MAIN_LIBRARY}
+        )
+        ")
     endif()
 endif()
 

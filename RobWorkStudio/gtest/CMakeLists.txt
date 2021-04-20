@@ -37,7 +37,7 @@ FILE(GENERATE OUTPUT $<TARGET_FILE_DIR:sdurws_sdurws-gtest>/TestSuiteConfig.xml 
 ########################################################################
 # RobWorkStudio main function for initialization (link with this if needed).
 ########################################################################
-
+set(CMAKE_AUTOMOC OFF)
 set(RWSMAIN_TEST_SRC
   TestEnvironment.cpp
   test-main.cpp
@@ -50,6 +50,7 @@ target_link_libraries( sdurws-gtest-main PUBLIC ${RW_BUILD_WITH_LIBRARIES_GTEST}
 ########################################################################
 
 SET(RWS_TEST_LIBRARIES
+  sdurws-gtest-main
   sdurws
   sdurws_robworkstudioapp
   ${QT_LIBRARIES}

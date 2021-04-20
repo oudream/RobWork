@@ -527,14 +527,14 @@ if(RW_USE_GTEST)
         set(RW_GTEST_FROM_GIT ON)
         set(GTEST_NATIVE_ROOT ${CMAKE_CURRENT_BINARY_DIR}/ext/gtest)
 
-        set(GTEST_LIBRARY  ${GTEST_NATIVE_ROOT}/lib/gtest.so)
-        set(GTEST_MAIN_LIBRARY  ${GTEST_NATIVE_ROOT}/lib/gtest_main.so)
+        set(GTEST_LIBRARY  ${GTEST_NATIVE_ROOT}/lib/libgtest.so)
+        set(GTEST_MAIN_LIBRARY  ${GTEST_NATIVE_ROOT}/lib/libgtest_main.so)
         if (WIN32) 
             set(GTEST_LIBRARY  ${GTEST_NATIVE_ROOT}/lib/gtest.lib)
             set(GTEST_MAIN_LIBRARY  ${GTEST_NATIVE_ROOT}/lib/gtest_main.lib)
         elseif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-            set(GTEST_LIBRARY  ${GTEST_NATIVE_ROOT}/lib/gtest.dylib)
-            set(GTEST_MAIN_LIBRARY  ${GTEST_NATIVE_ROOT}/lib/gtest_main.dylib)
+            set(GTEST_LIBRARY  ${GTEST_NATIVE_ROOT}/lib/libgtest.dylib)
+            set(GTEST_MAIN_LIBRARY  ${GTEST_NATIVE_ROOT}/lib/libgtest_main.dylib)
         endif() 
 
         ExternalProject_Add(
