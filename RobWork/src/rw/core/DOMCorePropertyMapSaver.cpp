@@ -65,6 +65,15 @@ void DOMCorePropertyMapSaver::save (const PropertyBase::Ptr property, DOMElem::P
             save (prop->getValue (), element);
             break;
         }
+        case PropertyType::PropertyMapPtr: {
+            const Property<PropertyMap::Ptr>* prop = toProperty<PropertyMap::Ptr>(property);
+            save(*prop->getValue(), element);
+            break;
+        }
+        case PropertyType::PropertyValueBasePtrList: {
+            RW_THROW("PropertyValueBasePtrList is not implemented in DOMCorePropertyMapSaver, Use DOMPropertyMapSaver instead");
+            break;
+        }
         case PropertyType::String: {
             const Property< std::string >* prop = toProperty< std::string > (property);
             DOMCoreBasisTypes::createString (prop->getValue (), element);
@@ -159,13 +168,24 @@ void DOMCorePropertyMapSaver::save (const PropertyBase::Ptr property, DOMElem::P
             break;
         }
         case PropertyType::QPath: {
-            RW_THROW ("QPAth is not implemented in DOMCorePropertyMapSaver, Use "
+            RW_THROW ("QPath is not implemented in DOMCorePropertyMapSaver, Use "
                       "DOMPropertyMapSaver instead");
+            break;
+        }
+        case PropertyType::QPathPtr: {
+            RW_THROW ("QPathPtr is not implemented in DOMCorePropertyMapSaver, "
+                      "Use DOMPropertyMapSaver instead");
             break;
         }
         case PropertyType::Transform3DPath: {
             RW_THROW ("Transform3DPath is not implemented in DOMCorePropertyMapSaver, Use "
                       "DOMPropertyMapSaver instead");
+            break;
+        }
+        case PropertyType::Transform3DPathPtr: {
+            RW_THROW ("Transform3DPathPtr is not implemented in "
+                      "DOMCorePropertyMapSaver, Use DOMPropertyMapSaver "
+                      "instead");
             break;
         }
         default:

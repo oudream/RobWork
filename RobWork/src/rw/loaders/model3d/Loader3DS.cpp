@@ -66,7 +66,7 @@ Model3D::Ptr Loader3DS::load (const std::string& name)
 
     Model3D::Ptr model (ownedPtr (new Model3D (objname)));
 
-    std::vector< TextureData >& textures = model->_textures;
+    std::vector< TextureData >& textures = model->getTextures<Model3DTextureType>();
 
     model->_materials.resize (m3ds.Materials.size ());
     std::vector< Model3D::Material >& materials = model->_materials;

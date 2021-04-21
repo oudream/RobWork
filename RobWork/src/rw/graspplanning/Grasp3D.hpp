@@ -30,10 +30,10 @@ namespace rw { namespace graspplanning {
     class Grasp3D
     {
       public:
-        Grasp3D (int nrOfContacts = 1) : contacts (nrOfContacts), approach (nrOfContacts) {}
+        Grasp3D (int nrOfContacts = 1) :phi(0), psi(0),quality(0), contacts (nrOfContacts), approach (nrOfContacts) {}
 
         Grasp3D (const std::vector< rw::sensor::Contact3D > cons) :
-            contacts (cons), approach (cons.size ())
+            phi(0), psi(0),quality(0), contacts (cons), approach (cons.size ())
         {}
 
         void scale (double clerance)

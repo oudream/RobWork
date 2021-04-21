@@ -18,7 +18,9 @@
 #ifndef RWLIBS_ALGORITHMS_MOVINGAVERAGE_HPP_
 #define RWLIBS_ALGORITHMS_MOVINGAVERAGE_HPP_
 
+#if !defined(SWIG)
 #include <vector>
+#endif
 
 /**
  * @brief calculates the moving average over a continues input of samples.

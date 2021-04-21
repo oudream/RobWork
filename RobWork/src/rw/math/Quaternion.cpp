@@ -29,9 +29,9 @@ using namespace rw::math;
 
 template< class T > Quaternion< T > Quaternion< T >::exp () const
 {
-    double a = getQw ();
+    T a = getQw ();
     Vector3D< T > v (getQx (), getQy (), getQz ());
-    double w = std::exp (a) * cos (v.norm2 ());
+    T w = std::exp (a) * cos (v.norm2 ());
 
     v = (v / v.norm2 ()) * sin (v.norm2 ()) * T(std::exp (a));
 
@@ -49,10 +49,10 @@ template< class T > Quaternion< T > Quaternion< T >::inverse () const
 
 template< class T > Quaternion< T > Quaternion< T >::ln () const
 {
-    double a = acos (getQw ());
-    double x = getQx () / T(sin (a));
-    double y = getQy () / T(sin (a));
-    double z = getQz () / T(sin (a));
+    T a = acos (getQw ());
+    T x = getQx () / sin (a);
+    T y = getQy () / sin (a);
+    T z = getQz () / sin (a);
 
     return Quaternion< T > (a * x, a * y, a * z, T(0));
 }
@@ -61,7 +61,16 @@ template< class T > Quaternion< T > Quaternion< T >::pow (double power) const
 {
     Quaternion< T > ret = *this;
     for (int i = 0; i < 4; i++) {
-        std::pow (ret[i], power);
+        ret[i] = std::pow (ret[i], power);
+    }
+    return ret;
+}
+
+template< class T > Quaternion< T > Quaternion< T >::elemDivide (const T& lhs) const
+{
+    Quaternion< T > ret;
+    for (size_t i = 0; i < this->size (); i++) {
+        ret[i] = (*this)[i] / lhs;
     }
     return ret;
 }

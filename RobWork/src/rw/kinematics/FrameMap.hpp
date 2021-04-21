@@ -18,10 +18,12 @@
 #ifndef RW_KINEMATICS_FRAMEMAP_HPP
 #define RW_KINEMATICS_FRAMEMAP_HPP
 
+#if !defined(SWIG)
 #include <rw/kinematics/Frame.hpp>
 #include <rw/math/Transform3D.hpp>
 
 #include <vector>
+#endif
 
 namespace rw { namespace kinematics {
 
@@ -70,7 +72,7 @@ namespace rw { namespace kinematics {
             resizeIfNeeded (idx);
             return _map[idx].first;
         }
-
+#if !defined(SWIG)
         /**
            @brief return a reference to the value that is associated with the
            frame \b frame.
@@ -107,7 +109,9 @@ namespace rw { namespace kinematics {
             val.first  = true;
             return val.second;
         }
-
+#else
+        MAPOPERATOR (T,const rw::kinematics::Frame&);
+#endif
         /**
          * @brief Erase an element from the map
          */
@@ -143,8 +147,11 @@ namespace rw { namespace kinematics {
         OkVal _defaultVal;
         mutable std::vector< OkVal > _map;
     };
-
+#if !defined(SWIG)
     extern template class rw::kinematics::FrameMap< rw::math::Transform3D< double > >;
+#else
+    SWIG_DECLARE_TEMPLATE (FrameMap, rw::kinematics::FrameMap< double >);
+#endif
 }}    // namespace rw::kinematics
 
 #endif /*RW_KINEMATICS_FRAMEMAP_HPP*/

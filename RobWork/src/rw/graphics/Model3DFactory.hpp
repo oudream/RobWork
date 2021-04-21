@@ -15,5 +15,13 @@
  * limitations under the License.
  ********************************************************************************/
 
-// moved to loaders folder
+#ifndef RW_GRAPHICS_MODEL3DFACTORY_HPP_
+#define RW_GRAPHICS_MODEL3DFACTORY_HPP_
 #include <rw/loaders/Model3DFactory.hpp>
+#ifdef RW_WIN32
+#pragma message("#include <rw/graphics/Model3DFactory.hpp> is deprecated use #include <rw/loaders/Model3DFactory.hpp> instead")
+#else
+#warning "#include <rw/graphics/Model3DFactory.hpp> is deprecated use #include <rw/loaders/Model3DFactory.hpp> instead"
+#endif
+
+#endif

@@ -90,9 +90,9 @@ Example of the construction of a Q vector without and with the *using* function:
 .. code-block:: lua
 
    -- rw prefix is necessary to create Q:
-   q1 = rw.Q(2,{1,2})
+   q1 = sdurw.Q(2,{1,2})
    -- Import the rw types to global namespace:
-   using("rw")
+   using("sdurw")
    -- rw prefix can now be left out
    q2 = Q(2,{1,2})
 
@@ -119,11 +119,11 @@ Lua code can be executed in RobWorkStudio via the Lua plugin
 interface. The Lua plugin has some additional Lua functions in the \c
 rw package to access variables of the RobWorkStudio environment.
 
-\c rw.getWorkCell() returns the currently loaded workcell:
+\c sdurw.getWorkCell() returns the currently loaded workcell:
 
 .. code-block:: lua
 
-   w = rw.getWorkCell(); print(w)
+   w = sdurw.getWorkCell(); print(w)
    --
    WorkCell[D:/movebots/FanucSchunk/scene.wu]
 
@@ -132,17 +132,17 @@ rw package to access variables of the RobWorkStudio environment.
 
 .. code-block:: lua
 
-   d = rw.getDevice("Robot"); print(d)
+   d = sdurw.getDevice("Robot"); print(d)
    --
    Device[Robot]
 
 
-\c rw.getState() returns a copy of the current workcell state of
+\c sdurw.getState() returns a copy of the current workcell state of
 RobWorkStudio:
 
 .. code-block:: lua
 
-   s = rw.getState(); print(d:getQ(s))
+   s = sdurw.getState(); print(d:getQ(s))
    --
    Q[6]{0, 0, 0, 0, 0, 0}
 
@@ -152,7 +152,7 @@ rw.setState():
 
 .. code-block:: lua
 
-   q = rw.Q{0.5, 0, 0, 0, 0, 0}; d:setQ(q, s); rw.setState(s)
+   q = sdurw.Q{0.5, 0, 0, 0, 0, 0}; d:setQ(q, s); sdurw.setState(s)
 
 
 This will update the position of the device as displayed in
@@ -166,14 +166,14 @@ that will be documented and expanded as RobWork matures.
 
 .. code-block:: lua
 
-   device = rw.CompositeDevice(devices, state, options)
-   detector = rw.getCollisionDetector(options)
+   device = sdurw.CompositeDevice(devices, state, options)
+   detector = sdurw.getCollisionDetector(options)
    collision = detector:inCollision(state)
-   strategy = rw.getCollisionStrategy(options)
-   planner = rw.getPathPlanner(device,
+   strategy = sdurw.getCollisionStrategy(options)
+   planner = sdurw.getPathPlanner(device,
         { tcp = frame, state = state, detector = detector })
    path = planner:query(from, to)
-   path = rw.Path(states)
+   path = sdurw.Path(states)
    path1 + path2
-   rw.storeStatePath(workcell, path, file)
-   rw.getOutput()
+   sdurw.storeStatePath(workcell, path, file)
+   sdurw.getOutput()

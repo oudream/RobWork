@@ -12,7 +12,11 @@ if(build)
 
     #qt5_wrap_cpp(MocSrcFiles ${SRC_FILES_HPP} TARGET ${SUBSYS_NAME})
     # Rcc the files:
-    qt5_add_resources(RccSrcFiles resources.qrc)
+    if(DEFINED Qt6Core_VERSION)
+        qt_add_resources(RccSrcFiles resources.qrc)
+    else()
+        qt5_add_resources(RccSrcFiles resources.qrc)
+    endif()
 
     rws_add_plugin(
         ${SUBSYS_NAME}
@@ -21,7 +25,7 @@ if(build)
         ${MocSrcFiles}
         ${RccSrcFiles}
     )
-    rw_add_includes(${SUBSYS_NAME} "rwslibs/jog" ${SRC_FILES_HPP})
+    rw_add_includes(${SUBSYS_NAME} "rwslibs/treeview" ${SRC_FILES_HPP})
     target_link_libraries(${SUBSYS_NAME} PUBLIC ${SUBSYS_DEPS} ${QT_LIBRARIES} RW::sdurw)
     target_include_directories(${SUBSYS_NAME}
         INTERFACE

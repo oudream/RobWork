@@ -22,6 +22,7 @@
  * @file math/Jacobian.hpp
  */
 
+#if !defined(SWIG)
 #include <rw/common/Serializable.hpp>
 #include <rw/math/Q.hpp>
 #include <rw/math/Rotation3D.hpp>
@@ -29,7 +30,7 @@
 #include <rw/math/VelocityScrew6D.hpp>
 
 #include <Eigen/Core>
-
+#endif
 namespace rw { namespace math {
 
     /** @addtogroup math */
@@ -105,15 +106,16 @@ namespace rw { namespace math {
         }
 
         /**
-           @brief Accessor for the internal Eigen matrix state.
+         * @brief Accessor for the internal Eigen matrix state.
          */
         Base& e () { return _jac; }
 
         /**
-           @brief Accessor for the internal Eigen matrix state.
+         * @brief Accessor for the internal Eigen matrix state.
          */
         const Base& e () const { return _jac; }
 
+#if !defined(SWIG)
         /**
          * @brief Returns reference to matrix element
          * @param row [in] row
@@ -129,7 +131,9 @@ namespace rw { namespace math {
          * @return reference to the element
          */
         const double& operator() (size_t row, size_t column) const { return _jac (row, column); }
-
+#else
+        MATRIXOPERATOR (double);
+#endif
         /**
          * @brief Get an element of the jacobian.
          * @param row [in] the row.
@@ -163,7 +167,7 @@ namespace rw { namespace math {
          * @f$ \robabx{a}{b}{\bf{J}} =  \robabcdx{a}{b}{a}{b}{\bf{J}_v} \cdot \robabx{b}{a}{\bf{J}}
          * @f$
          */
-        explicit Jacobian (const Transform3D<>& aTb);
+        explicit Jacobian (const rw::math::Transform3D<>& aTb);
 
         /**
          * @brief Creates the velocity transform jacobian
@@ -190,7 +194,7 @@ namespace rw { namespace math {
          * @f$
          *
          */
-        explicit Jacobian (const Rotation3D<>& aRb);
+        explicit Jacobian (const rw::math::Rotation3D<>& aRb);
 
         /**
          * @brief Creates the velocity transform jacobian
@@ -217,7 +221,7 @@ namespace rw { namespace math {
          * @f$ \robabx{a}{d}{\mathbf{J}} =  \robabcdx{a}{a}{c}{d}{\mathbf{J_v}} \cdot
          * \robabx{a}{c}{\mathbf{J}} @f$
          */
-        explicit Jacobian (const Vector3D<>& aPb);
+        explicit Jacobian (const rw::math::Vector3D<>& aPb);
 
         /**
          * @brief add rotation jacobian to a specific row and column in this jacobian
@@ -225,7 +229,7 @@ namespace rw { namespace math {
          * @param row
          * @param col
          */
-        void addRotation (const Vector3D<>& part, size_t row, size_t col);
+        void addRotation (const rw::math::Vector3D<>& part, size_t row, size_t col);
 
         /**
          * @brief add position jacobian to a specific row and column in this jacobian
@@ -233,7 +237,7 @@ namespace rw { namespace math {
          * @param row
          * @param col
          */
-        void addPosition (const Vector3D<>& part, size_t row, size_t col);
+        void addPosition (const rw::math::Vector3D<>& part, size_t row, size_t col);
 
       private:
         Base _jac;
@@ -246,9 +250,9 @@ namespace rw { namespace math {
      * @return the velocity vector @f$ \mathbf{\nu} @f$
      * @relates Jacobian
      */
-    inline const VelocityScrew6D<> operator* (const Jacobian& Jq, const Q& dq)
+    inline const rw::math::VelocityScrew6D<> operator* (const Jacobian& Jq, const rw::math::Q& dq)
     {
-        return VelocityScrew6D<> (Jq.e () * dq.e ());
+        return rw::math::VelocityScrew6D<> (Jq.e () * dq.e ());
     }
 
     /**
@@ -262,9 +266,9 @@ namespace rw { namespace math {
      *
      * @relates Jacobian
      */
-    inline const Q operator* (const Jacobian& JqInv, const VelocityScrew6D<>& v)
+    inline const rw::math::Q operator* (const Jacobian& JqInv, const rw::math::VelocityScrew6D<>& v)
     {
-        return Q (JqInv.e () * v.e ());
+        return rw::math::Q (JqInv.e () * v.e ());
         // prod(JqInv.m(), v.m()));
     }
 
@@ -300,7 +304,7 @@ namespace rw { namespace math {
 
        @relates Jacobian
     */
-    const Jacobian operator* (const Rotation3D<>& r, const Jacobian& v);
+    const Jacobian operator* (const rw::math::Rotation3D<>& r, const Jacobian& v);
 
     /*@}*/
 }}    // namespace rw::math

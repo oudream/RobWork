@@ -546,6 +546,12 @@ namespace rw { namespace proximity {
         struct OBVMedianSplitter : public BVTreeFactory::BVSplitterStrategy< BV >
         {
           public:
+            
+            /**
+             * @brief
+             */
+            virtual ~OBVMedianSplitter() {}
+
             size_t partitionMesh (rw::geometry::IndexedTriArray<>& mesh, const BV& obb) const
             {
                 using namespace rw::geometry;

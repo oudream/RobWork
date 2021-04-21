@@ -48,6 +48,104 @@ DOMPropertyMapLoader::DOMPropertyMapLoader ()
 DOMPropertyMapLoader::~DOMPropertyMapLoader ()
 {}
 
+PropertyValueBase::Ptr DOMPropertyMapLoader::readPropertyValue (DOMElem::Ptr child)
+{
+    if (child->isName (DOMPropertyMapFormat::idPropertyMap ())) {
+        return ownedPtr (new PropertyValue< PropertyMap > (
+            DOMPropertyMapLoader::readProperties (child, true)));
+    }
+    else if (child->isName (DOMPropertyMapFormat::idPropertyValueList ())) {
+        std::vector<PropertyValueBase::Ptr> list;
+        for (DOMElem::Ptr val : child->getChildren ()) {
+            list.push_back(readPropertyValue(val));
+        }
+        return ownedPtr (new PropertyValue< std::vector< PropertyValueBase::Ptr > > (list));
+    }
+    else if (child->isName (DOMBasisTypes::idString ())) {
+        return ownedPtr (
+            new PropertyValue< std::string > (DOMBasisTypes::readString (child)));
+    }
+    else if (child->isName (DOMBasisTypes::idStringList ())) {
+        return ownedPtr (new PropertyValue< std::vector< std::string > > (
+            DOMBasisTypes::readStringList (child)));
+    }
+    else if (child->isName (DOMBasisTypes::idIntList ())) {
+        return ownedPtr (new PropertyValue< std::vector< int > > (
+            DOMBasisTypes::readIntList (child)));
+    }
+    else if (child->isName (DOMBasisTypes::idDoubleList ())) {
+        return ownedPtr (new PropertyValue< std::vector< double > > (
+            DOMBasisTypes::readDoubleList (child)));
+    }
+    else if (child->isName (DOMBasisTypes::idDouble ())) {
+        return ownedPtr (
+            new PropertyValue< double > (DOMBasisTypes::readDouble (child)));
+    }
+    else if (child->isName (DOMBasisTypes::idFloat ())) {
+        return ownedPtr (
+            new PropertyValue< float > (DOMBasisTypes::readFloat (child)));
+    }
+    else if (child->isName (DOMBasisTypes::idInteger ())) {
+        return ownedPtr (
+            new PropertyValue< int > (DOMBasisTypes::readInt (child)));
+    }
+    else if (child->isName (DOMBasisTypes::idBoolean ())) {
+        return ownedPtr (
+            new PropertyValue< bool > (DOMBasisTypes::readBool (child)));
+    }
+    else if (child->isName (DOMBasisTypes::idVector3D ())) {
+        return ownedPtr (new PropertyValue< Vector3D<> > (
+            DOMBasisTypes::readVector3D (child)));
+    }
+    else if (child->isName (DOMBasisTypes::idVector2D ())) {
+        return ownedPtr (new PropertyValue< Vector2D<> > (
+            DOMBasisTypes::readVector2D (child)));
+    }
+    else if (child->isName (DOMBasisTypes::idQ ())) {
+        return ownedPtr (new PropertyValue< Q > (DOMBasisTypes::readQ (child)));
+    }
+    else if (child->isName (DOMBasisTypes::idTransform3D ())) {
+        return ownedPtr (new PropertyValue< Transform3D<> > (
+            DOMBasisTypes::readTransform3D (child)));
+    }
+    else if (child->isName (DOMBasisTypes::idRotation3D ())) {
+        return ownedPtr (new PropertyValue< Rotation3D<> > (
+            DOMBasisTypes::readRotation3D (child)));
+    }
+    else if (child->isName (DOMBasisTypes::idEAA ())) {
+        return ownedPtr (
+            new PropertyValue< EAA<> > (DOMBasisTypes::readEAA (child)));
+    }
+    else if (child->isName (DOMBasisTypes::idRPY ())) {
+        return ownedPtr (
+            new PropertyValue< RPY<> > (DOMBasisTypes::readRPY (child)));
+    }
+    else if (child->isName (DOMBasisTypes::idQuaternion ())) {
+        return ownedPtr (new PropertyValue< Quaternion<> > (
+            DOMBasisTypes::readQuaternion (child)));
+    }
+    else if (child->isName (DOMBasisTypes::idRotation2D ())) {
+        return ownedPtr (new PropertyValue< Rotation2D<> > (
+            DOMBasisTypes::readRotation2D (child)));
+    }
+    else if (child->isName (DOMBasisTypes::idVelocityScrew6D ())) {
+        return ownedPtr (new PropertyValue< VelocityScrew6D<> > (
+            DOMBasisTypes::readVelocityScrew6D (child)));
+    }
+    else if (child->isName (DOMPathLoader::idQPath ())) {
+        DOMPathLoader loader (child);
+        return ownedPtr (new PropertyValue< QPath > (*loader.getQPath ()));
+    }
+    else if (child->isName (DOMPathLoader::idT3DPath ())) {
+        DOMPathLoader loader (child);
+        return ownedPtr (
+            new PropertyValue< Transform3DPath > (*loader.getTransform3DPath ()));
+    }
+    else {
+        return nullptr;
+    }
+}
+
 PropertyBase::Ptr DOMPropertyMapLoader::readProperty (DOMElem::Ptr element, bool checkHeader)
 {
     if (checkHeader)
@@ -79,94 +177,125 @@ PropertyBase::Ptr DOMPropertyMapLoader::readProperty (DOMElem::Ptr element, bool
         RW_THROW ("Parse Error: data value not defined in Property with name \"" << name << "\"!");
 
     for (DOMElem::Ptr child : value->getChildren ()) {
-        if (child->isName (DOMPropertyMapFormat::idPropertyMap ())) {
-            return ownedPtr (new Property< PropertyMap > (
-                name, description, DOMPropertyMapLoader::readProperties (child, true)));
-        }
-        else if (child->isName (DOMBasisTypes::idString ())) {
-            return ownedPtr (
-                new Property< std::string > (name, description, DOMBasisTypes::readString (child)));
-        }
-        else if (child->isName (DOMBasisTypes::idStringList ())) {
-            return ownedPtr (new Property< std::vector< std::string > > (
-                name, description, DOMBasisTypes::readStringList (child)));
-        }
-        else if (child->isName (DOMBasisTypes::idIntList ())) {
-            return ownedPtr (new Property< std::vector< int > > (
-                name, description, DOMBasisTypes::readIntList (child)));
-        }
-        else if (child->isName (DOMBasisTypes::idDoubleList ())) {
-            return ownedPtr (new Property< std::vector< double > > (
-                name, description, DOMBasisTypes::readDoubleList (child)));
-        }
-        else if (child->isName (DOMBasisTypes::idDouble ())) {
-            return ownedPtr (
-                new Property< double > (name, description, DOMBasisTypes::readDouble (child)));
-        }
-        else if (child->isName (DOMBasisTypes::idFloat ())) {
-            return ownedPtr (
-                new Property< float > (name, description, DOMBasisTypes::readFloat (child)));
-        }
-        else if (child->isName (DOMBasisTypes::idInteger ())) {
-            return ownedPtr (
-                new Property< int > (name, description, DOMBasisTypes::readInt (child)));
-        }
-        else if (child->isName (DOMBasisTypes::idBoolean ())) {
-            return ownedPtr (
-                new Property< bool > (name, description, DOMBasisTypes::readBool (child)));
-        }
-        else if (child->isName (DOMBasisTypes::idVector3D ())) {
-            return ownedPtr (new Property< Vector3D<> > (
-                name, description, DOMBasisTypes::readVector3D (child)));
-        }
-        else if (child->isName (DOMBasisTypes::idVector2D ())) {
-            return ownedPtr (new Property< Vector2D<> > (
-                name, description, DOMBasisTypes::readVector2D (child)));
-        }
-        else if (child->isName (DOMBasisTypes::idQ ())) {
-            return ownedPtr (new Property< Q > (name, description, DOMBasisTypes::readQ (child)));
-        }
-        else if (child->isName (DOMBasisTypes::idTransform3D ())) {
-            return ownedPtr (new Property< Transform3D<> > (
-                name, description, DOMBasisTypes::readTransform3D (child)));
-        }
-        else if (child->isName (DOMBasisTypes::idRotation3D ())) {
-            return ownedPtr (new Property< Rotation3D<> > (
-                name, description, DOMBasisTypes::readRotation3D (child)));
-        }
-        else if (child->isName (DOMBasisTypes::idEAA ())) {
-            return ownedPtr (
-                new Property< EAA<> > (name, description, DOMBasisTypes::readEAA (child)));
-        }
-        else if (child->isName (DOMBasisTypes::idRPY ())) {
-            return ownedPtr (
-                new Property< RPY<> > (name, description, DOMBasisTypes::readRPY (child)));
-        }
-        else if (child->isName (DOMBasisTypes::idQuaternion ())) {
-            return ownedPtr (new Property< Quaternion<> > (
-                name, description, DOMBasisTypes::readQuaternion (child)));
-        }
-        else if (child->isName (DOMBasisTypes::idRotation2D ())) {
-            return ownedPtr (new Property< Rotation2D<> > (
-                name, description, DOMBasisTypes::readRotation2D (child)));
-        }
-        else if (child->isName (DOMBasisTypes::idVelocityScrew6D ())) {
-            return ownedPtr (new Property< VelocityScrew6D<> > (
-                name, description, DOMBasisTypes::readVelocityScrew6D (child)));
-        }
-        else if (child->isName (DOMPathLoader::idQPath ())) {
-            DOMPathLoader loader (child);
-            return ownedPtr (new Property< QPath > (name, description, *loader.getQPath ()));
-        }
-        else if (child->isName (DOMPathLoader::idT3DPath ())) {
-            DOMPathLoader loader (child);
-            return ownedPtr (
-                new Property< Transform3DPath > (name, description, *loader.getTransform3DPath ()));
-        }
-        else {
+        PropertyValueBase::Ptr baseval = readPropertyValue(child);
+        if (baseval.isNull()) {
             RW_THROW ("Parse Error: data value \""
                       << child->getName () << "\" not recognized in Property with name \"" << name
                       << "\"!");
+        } else {
+            if (child->isName (DOMPropertyMapFormat::idPropertyMap ())) {
+                typedef PropertyMap Type;
+                PropertyValue< Type >::Ptr pval = baseval.scast<PropertyValue< Type > >();
+                return ownedPtr (new Property< Type > (name, description, pval->getValue()));
+            }
+            else if (child->isName (DOMPropertyMapFormat::idPropertyValueList ())) {
+                typedef std::vector< PropertyValueBase::Ptr > Type;
+                PropertyValue< Type >::Ptr pval = baseval.scast<PropertyValue< Type > >();
+                return ownedPtr (new Property< Type > (name, description, pval->getValue()));
+            }
+            else if (child->isName (DOMBasisTypes::idString ())) {
+                typedef std::string Type;
+                PropertyValue< Type >::Ptr pval = baseval.scast<PropertyValue< Type > >();
+                return ownedPtr (new Property< Type > (name, description, pval->getValue()));
+            }
+            else if (child->isName (DOMBasisTypes::idStringList ())) {
+                typedef std::vector< std::string > Type;
+                PropertyValue< Type >::Ptr pval = baseval.scast<PropertyValue< Type > >();
+                return ownedPtr (new Property< Type > (name, description, pval->getValue()));
+            }
+            else if (child->isName (DOMBasisTypes::idIntList ())) {
+                typedef std::vector< int > Type;
+                PropertyValue< Type >::Ptr pval = baseval.scast<PropertyValue< Type > >();
+                return ownedPtr (new Property< Type > (name, description, pval->getValue()));
+            }
+            else if (child->isName (DOMBasisTypes::idDoubleList ())) {
+                typedef std::vector< double > Type;
+                PropertyValue< Type >::Ptr pval = baseval.scast<PropertyValue< Type > >();
+                return ownedPtr (new Property< Type > (name, description, pval->getValue()));
+            }
+            else if (child->isName (DOMBasisTypes::idDouble ())) {
+                typedef double Type;
+                PropertyValue< Type >::Ptr pval = baseval.scast<PropertyValue< Type > >();
+                return ownedPtr (new Property< Type > (name, description, pval->getValue()));
+            }
+            else if (child->isName (DOMBasisTypes::idFloat ())) {
+                typedef float Type;
+                PropertyValue< Type >::Ptr pval = baseval.scast<PropertyValue< Type > >();
+                return ownedPtr (new Property< Type > (name, description, pval->getValue()));
+            }
+            else if (child->isName (DOMBasisTypes::idInteger ())) {
+                typedef int Type;
+                PropertyValue< Type >::Ptr pval = baseval.scast<PropertyValue< Type > >();
+                return ownedPtr (new Property< Type > (name, description, pval->getValue()));
+            }
+            else if (child->isName (DOMBasisTypes::idBoolean ())) {
+                typedef bool Type;
+                PropertyValue< Type >::Ptr pval = baseval.scast<PropertyValue< Type > >();
+                return ownedPtr (new Property< Type > (name, description, pval->getValue()));
+            }
+            else if (child->isName (DOMBasisTypes::idVector3D ())) {
+                typedef Vector3D<> Type;
+                PropertyValue< Type >::Ptr pval = baseval.scast<PropertyValue< Type > >();
+                return ownedPtr (new Property< Type > (name, description, pval->getValue()));
+            }
+            else if (child->isName (DOMBasisTypes::idVector2D ())) {
+                typedef Vector2D<> Type;
+                PropertyValue< Type >::Ptr pval = baseval.scast<PropertyValue< Type > >();
+                return ownedPtr (new Property< Type > (name, description, pval->getValue()));
+            }
+            else if (child->isName (DOMBasisTypes::idQ ())) {
+                typedef Q Type;
+                PropertyValue< Type >::Ptr pval = baseval.scast<PropertyValue< Type > >();
+                return ownedPtr (new Property< Type > (name, description, pval->getValue()));
+            }
+            else if (child->isName (DOMBasisTypes::idTransform3D ())) {
+                typedef Transform3D<> Type;
+                PropertyValue< Type >::Ptr pval = baseval.scast<PropertyValue< Type > >();
+                return ownedPtr (new Property< Type > (name, description, pval->getValue()));
+            }
+            else if (child->isName (DOMBasisTypes::idRotation3D ())) {
+                typedef Rotation3D<> Type;
+                PropertyValue< Type >::Ptr pval = baseval.scast<PropertyValue< Type > >();
+                return ownedPtr (new Property< Type > (name, description, pval->getValue()));
+            }
+            else if (child->isName (DOMBasisTypes::idEAA ())) {
+                typedef EAA<> Type;
+                PropertyValue< Type >::Ptr pval = baseval.scast<PropertyValue< Type > >();
+                return ownedPtr (new Property< Type > (name, description, pval->getValue()));
+            }
+            else if (child->isName (DOMBasisTypes::idRPY ())) {
+                typedef RPY<> Type;
+                PropertyValue< Type >::Ptr pval = baseval.scast<PropertyValue< Type > >();
+                return ownedPtr (new Property< Type > (name, description, pval->getValue()));
+            }
+            else if (child->isName (DOMBasisTypes::idQuaternion ())) {
+                typedef Quaternion<> Type;
+                PropertyValue< Type >::Ptr pval = baseval.scast<PropertyValue< Type > >();
+                return ownedPtr (new Property< Type > (name, description, pval->getValue()));
+            }
+            else if (child->isName (DOMBasisTypes::idRotation2D ())) {
+                typedef Rotation2D<> Type;
+                PropertyValue< Type >::Ptr pval = baseval.scast<PropertyValue< Type > >();
+                return ownedPtr (new Property< Type > (name, description, pval->getValue()));
+            }
+            else if (child->isName (DOMBasisTypes::idVelocityScrew6D ())) {
+                typedef VelocityScrew6D<> Type;
+                PropertyValue< Type >::Ptr pval = baseval.scast<PropertyValue< Type > >();
+                return ownedPtr (new Property< Type > (name, description, pval->getValue()));
+            }
+            else if (child->isName (DOMPathLoader::idQPath ())) {
+                typedef QPath Type;
+                PropertyValue< Type >::Ptr pval = baseval.scast<PropertyValue< Type > >();
+                return ownedPtr (new Property< Type > (name, description, pval->getValue()));
+            }
+            else if (child->isName (DOMPathLoader::idT3DPath ())) {
+                typedef Transform3DPath Type;
+                PropertyValue< Type >::Ptr pval = baseval.scast<PropertyValue< Type > >();
+                return ownedPtr (new Property< Type > (name, description, pval->getValue()));
+            }
+            else {
+                return nullptr;
+            }
         }
     }
 

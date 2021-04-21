@@ -22,12 +22,11 @@
    @file InterpolatorTrajectory.hpp
 */
 
-#include "Blend.hpp"
-#include "Interpolator.hpp"
-#include "Trajectory.hpp"
-
 #include <rw/core/Ptr.hpp>
 #include <rw/core/macros.hpp>
+#include <rw/trajectory/Blend.hpp>
+#include <rw/trajectory/Interpolator.hpp>
+#include <rw/trajectory/Trajectory.hpp>
 
 namespace rw { namespace math {
     class Q;
@@ -190,7 +189,7 @@ namespace rw { namespace trajectory {
          * The Blend added is used to blend between what was previously the last
          * Interpolator of the trajectory onto \b interpolator, which become the
          * new last interpolator of the trajectory.
-         * 
+         *
          * When adding the interpolator and blend the Trajectory makes a copy of it
          * @param blend [in] the blend to add
          * @param interpolator [in] the interpolator to add

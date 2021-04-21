@@ -8,7 +8,11 @@ rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ON DEPENDS ${SUBSYS_DEPS} A
 if(build)
     # if we want to use ui files add them here
     set(UIS_FILES SensorsPlugin.ui)
-    qt5_wrap_ui(UIS_OUT_H ${UIS_FILES})
+    if(DEFINED Qt6Core_VERSION)
+        qt_wrap_ui(UIS_OUT_H ${UIS_FILES})
+    else()
+        qt5_wrap_ui(UIS_OUT_H ${UIS_FILES})
+    endif()
 
     # Standard cpp files to compile:
     set(SrcFiles Sensors.cpp SensorView.cpp)
@@ -18,7 +22,11 @@ if(build)
 
     #qt5_wrap_cpp(MocSrcFiles ${SRC_FILES_HPP} TARGET ${SUBSYS_NAME})
     # Rcc the files:
-    qt5_add_resources(RccSrcFiles resources.qrc)
+    if(DEFINED Qt6Core_VERSION)
+        qt_add_resources(RccSrcFiles resources.qrc)
+    else()
+        qt5_add_resources(RccSrcFiles resources.qrc)
+    endif()
 
     rws_add_plugin(
         ${SUBSYS_NAME}

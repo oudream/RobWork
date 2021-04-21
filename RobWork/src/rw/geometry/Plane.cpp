@@ -210,3 +210,16 @@ TriMesh::Ptr Plane::createMesh (int resolution) const
 {
     return createMesh (resolution, 100 /* Default plane size */);
 }
+
+rw::math::Vector3D<> Plane::intersection (const rw::math::Vector3D<>& p1,
+                                          const rw::math::Vector3D<>& p2) const
+{
+    double denominator = dot (_normal, p2 - p1);
+
+    if (fabs (denominator) < 1e-16) {
+        RW_THROW ("The specified line is parallel to the plane. Points: "
+                  << p1 << "; " << p2 << " Normal = " << _normal);
+    }
+    double t = (-_d - dot (_normal, p1)) / denominator;
+    return p1 + t * (p2 - p1);
+}

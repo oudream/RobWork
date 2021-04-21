@@ -9,7 +9,7 @@ set(RW_ROOT "$ENV{RW_ROOT}")
 set(RWS_ROOT "$ENV{RWS_ROOT}")
 set(RWSIM_ROOT "$ENV{RWSIM_ROOT}")
 
-find_package(RobWorkSim REQUIRED PATHS "${RWSIM_ROOT}")
+find_package(RobWorkSim REQUIRED PATHS "${RWSIM_ROOT}" "../../cmake")
 
 macro(rw_build _name)
     # And now we add any targets that we want

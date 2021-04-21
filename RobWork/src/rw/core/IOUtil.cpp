@@ -25,7 +25,6 @@
 #include <boost/algorithm/string.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/operations.hpp>
-#include <boost/regex.hpp>
 #include <boost/version.hpp>
 #include <fstream>
 #include <iostream>
@@ -49,6 +48,7 @@
 
 //#include <cassert>
 //#include <algorithm>
+#include <regex>
 
 #if !(defined __MINGW32__) && !(defined _WIN32)
 #include <unistd.h>    // for getcwd on linux
@@ -220,8 +220,8 @@ void IOUtil::getFilesInFolder (const std::string& path, const std::string& fileM
         boost::replace_all (regStr, ")", "\\)");
         boost::replace_all (regStr, "+", "\\+");
 
-        const boost::regex regex (regStr);
-        boost::cmatch match;
+        const std::regex regex (regStr);
+        std::cmatch match;
 
         boost::filesystem::directory_iterator end;
         for (boost::filesystem::directory_iterator it (path); it != end; it++) {
@@ -238,7 +238,7 @@ void IOUtil::getFilesInFolder (const std::string& path, const std::string& fileM
 #else
             std::string filename = it->path ().filename ().string ();
 #endif
-            if (!boost::regex_match (filename.c_str (), match, regex))
+            if (!std::regex_match (filename.c_str (), match, regex))
                 continue;
 
             if (addPath)

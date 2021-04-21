@@ -1,4 +1,22 @@
-include:
-  - project: 'sdurobotics/RobWork'
-    ref: devel
-    file: .gitlab-ci-common.yml
+stages:
+  - build
+  - build_second
+  - build_third
+  - build_doc
+  - test
+  - deploy
+
+include: 
+#Templates
+  - '/gitlab-ci/gitlab-ci-common.yml'
+  - '/gitlab-ci/gitlab-ci-linux.yml'
+  - '/gitlab-ci/gitlab-ci-windows.yml'
+  - '/gitlab-ci/gitlab-ci-mac.yml'
+#Jobs
+  - '/gitlab-ci/platforms/ubuntu2010.yml'
+  - '/gitlab-ci/platforms/ubuntu2004.yml'
+  - '/gitlab-ci/platforms/ubuntu1804.yml'
+  - '/gitlab-ci/platforms/ubuntu1604.yml'
+  - '/gitlab-ci/gitlab-ci-doc.yml'
+  - '/gitlab-ci/platforms/windows10-vs16.yml'
+  - '/gitlab-ci/platforms/mac-highsierra.yml'

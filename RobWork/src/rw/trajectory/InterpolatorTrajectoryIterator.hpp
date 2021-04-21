@@ -51,6 +51,11 @@ namespace rw { namespace trajectory {
         }
 
         /**
+         * @brief destructor
+         */
+        virtual ~InterpolatorTrajectoryIterator() {}
+
+        /**
          * @copydoc TrajectoryIterator::getTime()
          */
         double getTime () { return _time; }

@@ -45,7 +45,6 @@ typedef unsigned long int __uint64_t;
 %}
 %include <rw/common/OutputArchive.hpp>
 
-
 %{
     #include <rw/common/BINArchive.hpp>
 %}

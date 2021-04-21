@@ -21,12 +21,12 @@
 /**
  * @file kinematics/Kinematics.hpp
  */
-
+#if !defined(SWIG)
 #include <rw/kinematics/Frame.hpp>
 #include <rw/math/Transform3D.hpp>
 
 #include <map>
-
+#endif
 namespace rw { namespace kinematics {
     class MovableFrame;
 
@@ -42,7 +42,7 @@ namespace rw { namespace kinematics {
         /**
          * @brief The transform of \b frame in relative to the world frame.
          *
-         * If to=NULL the method returns a \f$4\times 4\f$ identify matrix
+         * If to=NULL the method returns a \f$ 4 \times 4 \f$ identify matrix
          *
          * @param to [in] The transform for which to find the world frame.
          *
@@ -50,7 +50,8 @@ namespace rw { namespace kinematics {
          *
          * @return The transform of the frame relative to the world frame.
          */
-        static math::Transform3D<> worldTframe (const Frame* to, const State& state);
+        static math::Transform3D<> worldTframe (const Frame* to,
+                                                const rw::kinematics::State& state);
 
         /**
          * @brief The transform of frame \b to relative to frame \b from.
@@ -71,7 +72,7 @@ namespace rw { namespace kinematics {
          * @return The transform from the start frame to the end frame.
          */
         static math::Transform3D<> frameTframe (const Frame* from, const Frame* to,
-                                                const State& state);
+                                                const rw::kinematics::State& state);
 
         /** @brief All frames reachable from \b root for a tree structure of \b
          * state.
@@ -87,7 +88,8 @@ namespace rw { namespace kinematics {
          *
          * @return All reachable frames.
          */
-        static std::vector< Frame* > findAllFrames (Frame* root, const State& state);
+        static std::vector< Frame* > findAllFrames (Frame* root,
+                                                    const rw::kinematics::State& state);
 
         /** @brief All frames reachable from \b root for a tree structure.
          *
@@ -111,8 +113,9 @@ namespace rw { namespace kinematics {
            The state \b state is needed to retrieve the parent frames, but the
            world frame returned is the same for any (valid) state.
         */
-        static Frame* worldFrame (Frame* frame, const State& state);
+        static Frame* worldFrame (Frame* frame, const rw::kinematics::State& state);
 
+#if !defined(SWIGPYTHON) && !defined(SWIGJAVA)
         /**
            @brief Find the world frame of the workcell by traversing the path
            from \b frame to the root of the tree.
@@ -120,8 +123,8 @@ namespace rw { namespace kinematics {
            The state \b state is needed to retrieve the parent frames, but the
            world frame returned is the same for any (valid) state.
         */
-        static const Frame* worldFrame (const Frame* frame, const State& state);
-
+        static const Frame* worldFrame (const Frame* frame, const rw::kinematics::State& state);
+#endif
         /**
            @brief The chain of frames connecting \b child to \b parent.
 
@@ -136,14 +139,14 @@ namespace rw { namespace kinematics {
            an exception is thrown.
         */
         static std::vector< Frame* > childToParentChain (Frame* child, Frame* parent,
-                                                         const State& state);
+                                                         const rw::kinematics::State& state);
 
         /**
            @brief Like ChildToParentChain() except that the frames are returned
            in the reverse order.
         */
         static std::vector< Frame* > reverseChildToParentChain (Frame* child, Frame* parent,
-                                                                const State& state);
+                                                                const rw::kinematics::State& state);
 
         /**
            @brief The chain of frames connecting \b parent to \b child.
@@ -153,7 +156,7 @@ namespace rw { namespace kinematics {
            Otherwise \b parent is included even if \b parent is NULL.
          */
         static std::vector< Frame* > parentToChildChain (Frame* parent, Frame* child,
-                                                         const State& state);
+                                                         const rw::kinematics::State& state);
 
         /**
          * @brief A map linking frame names to frames.
@@ -191,7 +194,7 @@ namespace rw { namespace kinematics {
          * @exception An exception is thrown if \b item is not a DAF.
          * @see See also gripFrame(MovableFrame*, Frame*, State&).
          */
-        static void gripFrame (Frame* item, Frame* gripper, State& state);
+        static void gripFrame (Frame* item, Frame* gripper, rw::kinematics::State& state);
 
         /**
          * @brief Grip \b item with \b gripper thereby modifying \b state.
@@ -204,7 +207,7 @@ namespace rw { namespace kinematics {
          * @exception An exception is thrown if \b item is not a DAF.
          * @see See also gripFrame(Frame*, Frame*, State&).
          */
-        static void gripFrame (MovableFrame* item, Frame* gripper, State& state);
+        static void gripFrame (MovableFrame* item, Frame* gripper, rw::kinematics::State& state);
 
         /**
          * @brief Get static frame groups.
@@ -217,8 +220,9 @@ namespace rw { namespace kinematics {
          * Attachable Frames (DAF).
          * @return vector with the frame groups.
          */
-        static std::vector< FrameList > getStaticFrameGroups (Frame* root, const State& state);
-
+        static std::vector< FrameList > getStaticFrameGroups (Frame* root,
+                                                              const rw::kinematics::State& state);
+#if !defined(SWIGPYTHON)  && !defined(SWIGJAVA)
         /**
          * @brief Get static frame groups.
          *
@@ -230,8 +234,9 @@ namespace rw { namespace kinematics {
          * Attachable Frames (DAF).
          * @return vector with the frame groups.
          */
-        static std::vector< ConstFrameList > getStaticFrameGroups (const Frame* root,
-                                                                   const State& state);
+        static std::vector< ConstFrameList >
+        getStaticFrameGroups (const Frame* root, const rw::kinematics::State& state);
+#endif
     };
 
     /*@}*/

@@ -71,135 +71,208 @@ xercesc::DOMElement* getChildElement (xercesc::DOMElement* element, bool throwOn
 }
 
 PropertyBase::Ptr getProperty (const std::string& name, const std::string& description, int type2,
-                               xercesc::DOMElement* valueNode)
+        PropertyValueBase::Ptr baseval, xercesc::DOMElement* valueNode)
 {
-    xercesc::DOMElement* child = getChildElement (valueNode, false);
-    if (child == NULL)
-        return NULL;
+    xercesc::DOMElement* child = getChildElement(valueNode, false);
+    if (child == nullptr)
+        return nullptr;
+
+    if (XMLString::equals (child->getNodeName (), XMLPropertyFormat::idPropertyMap ())) {
+        typedef PropertyMap Type;
+        PropertyValue< Type >::Ptr pval = baseval.scast<PropertyValue< Type > >();
+        return ownedPtr (new Property< Type > (name, description, pval->getValue()));
+    }
+    else if (XMLString::equals (child->getNodeName (), XMLPropertyFormat::idPropertyValueList ())) {
+        typedef std::vector< PropertyValueBase::Ptr > Type;
+        PropertyValue< Type >::Ptr pval = baseval.scast<PropertyValue< Type > >();
+        return ownedPtr (new Property< Type > (name, description, pval->getValue()));
+    }
+    else if (XMLString::equals (child->getNodeName (), XMLBasisTypes::idString ())) {
+        typedef std::string Type;
+        PropertyValue< Type >::Ptr pval = baseval.scast<PropertyValue< Type > >();
+        return ownedPtr (new Property< Type > (name, description, pval->getValue()));
+    }
+    else if (XMLString::equals (child->getNodeName (), XMLBasisTypes::idStringList ())) {
+        typedef std::vector< std::string > Type;
+        PropertyValue< Type >::Ptr pval = baseval.scast<PropertyValue< Type > >();
+        return ownedPtr (new Property< Type > (name, description, pval->getValue()));
+    }
+    else if (XMLString::equals (child->getNodeName (), XMLBasisTypes::idIntList ())) {
+        typedef std::vector< int > Type;
+        PropertyValue< Type >::Ptr pval = baseval.scast<PropertyValue< Type > >();
+        return ownedPtr (new Property< Type > (name, description, pval->getValue()));
+    }
+    else if (XMLString::equals (child->getNodeName (), XMLBasisTypes::idDoubleList ())) {
+        typedef std::vector< double > Type;
+        PropertyValue< Type >::Ptr pval = baseval.scast<PropertyValue< Type > >();
+        return ownedPtr (new Property< Type > (name, description, pval->getValue()));
+    }
+    else if (XMLString::equals (child->getNodeName (), XMLBasisTypes::idDouble ())) {
+        typedef double Type;
+        PropertyValue< Type >::Ptr pval = baseval.scast<PropertyValue< Type > >();
+        return ownedPtr (new Property< Type > (name, description, pval->getValue()));
+    }
+    else if (XMLString::equals (child->getNodeName (), XMLBasisTypes::idFloat ())) {
+        typedef float Type;
+        PropertyValue< Type >::Ptr pval = baseval.scast<PropertyValue< Type > >();
+        return ownedPtr (new Property< Type > (name, description, pval->getValue()));
+    }
+    else if (XMLString::equals (child->getNodeName (), XMLBasisTypes::idInteger ())) {
+        typedef int Type;
+        PropertyValue< Type >::Ptr pval = baseval.scast<PropertyValue< Type > >();
+        return ownedPtr (new Property< Type > (name, description, pval->getValue()));
+    }
+    else if (XMLString::equals (child->getNodeName (), XMLBasisTypes::idBoolean ())) {
+        typedef bool Type;
+        PropertyValue< Type >::Ptr pval = baseval.scast<PropertyValue< Type > >();
+        return ownedPtr (new Property< Type > (name, description, pval->getValue()));
+    }
+    else if (XMLString::equals (child->getNodeName (), XMLBasisTypes::idVector3D ())) {
+        typedef Vector3D<> Type;
+        PropertyValue< Type >::Ptr pval = baseval.scast<PropertyValue< Type > >();
+        return ownedPtr (new Property< Type > (name, description, pval->getValue()));
+    }
+    else if (XMLString::equals (child->getNodeName (), XMLBasisTypes::idVector2D ())) {
+        typedef Vector2D<> Type;
+        PropertyValue< Type >::Ptr pval = baseval.scast<PropertyValue< Type > >();
+        return ownedPtr (new Property< Type > (name, description, pval->getValue()));
+    }
+    else if (XMLString::equals (child->getNodeName (), XMLBasisTypes::idQ ())) {
+        typedef Q Type;
+        PropertyValue< Type >::Ptr pval = baseval.scast<PropertyValue< Type > >();
+        return ownedPtr (new Property< Type > (name, description, pval->getValue()));
+    }
+    else if (XMLString::equals (child->getNodeName (), XMLBasisTypes::idTransform3D ())) {
+        typedef Transform3D<> Type;
+        PropertyValue< Type >::Ptr pval = baseval.scast<PropertyValue< Type > >();
+        return ownedPtr (new Property< Type > (name, description, pval->getValue()));
+    }
+    else if (XMLString::equals (child->getNodeName (), XMLBasisTypes::idRotation3D ())) {
+        typedef Rotation3D<> Type;
+        PropertyValue< Type >::Ptr pval = baseval.scast<PropertyValue< Type > >();
+        return ownedPtr (new Property< Type > (name, description, pval->getValue()));
+    }
+    else if (XMLString::equals (child->getNodeName (), XMLBasisTypes::idEAA ())) {
+        typedef EAA<> Type;
+        PropertyValue< Type >::Ptr pval = baseval.scast<PropertyValue< Type > >();
+        return ownedPtr (new Property< Type > (name, description, pval->getValue()));
+    }
+    else if (XMLString::equals (child->getNodeName (), XMLBasisTypes::idRPY ())) {
+        typedef RPY<> Type;
+        PropertyValue< Type >::Ptr pval = baseval.scast<PropertyValue< Type > >();
+        return ownedPtr (new Property< Type > (name, description, pval->getValue()));
+    }
+    else if (XMLString::equals (child->getNodeName (), XMLBasisTypes::idQuaternion ())) {
+        typedef Quaternion<> Type;
+        PropertyValue< Type >::Ptr pval = baseval.scast<PropertyValue< Type > >();
+        return ownedPtr (new Property< Type > (name, description, pval->getValue()));
+    }
+    else if (XMLString::equals (child->getNodeName (), XMLBasisTypes::idRotation2D ())) {
+        typedef Rotation2D<> Type;
+        PropertyValue< Type >::Ptr pval = baseval.scast<PropertyValue< Type > >();
+        return ownedPtr (new Property< Type > (name, description, pval->getValue()));
+    }
+    else if (XMLString::equals (child->getNodeName (), XMLBasisTypes::idVelocityScrew6D ())) {
+        typedef VelocityScrew6D<> Type;
+        PropertyValue< Type >::Ptr pval = baseval.scast<PropertyValue< Type > >();
+        return ownedPtr (new Property< Type > (name, description, pval->getValue()));
+    }
+    else if (XMLString::equals (child->getNodeName (), XMLPathFormat::idQPath ())) {
+        typedef QPath Type;
+        PropertyValue< Type >::Ptr pval = baseval.scast<PropertyValue< Type > >();
+        return ownedPtr (new Property< Type > (name, description, pval->getValue()));
+    }
+    else if (XMLString::equals (child->getNodeName (), XMLPathFormat::idT3DPath ())) {
+        typedef Transform3DPath Type;
+        PropertyValue< Type >::Ptr pval = baseval.scast<PropertyValue< Type > >();
+        return ownedPtr (new Property< Type > (name, description, pval->getValue()));
+    }
+    else {
+        return nullptr;
+    }
+}
+
+}    // namespace
+
+PropertyValueBase::Ptr XMLPropertyLoader::readPropertyValue (xercesc::DOMElement* valueNode)
+{
+    xercesc::DOMElement* child = getChildElement(valueNode, false);
+    if (child == nullptr)
+        return nullptr;
 
     if (XMLString::equals (child->getNodeName (), XMLPropertyFormat::idPropertyMap ()))
-        return ownedPtr (new Property< PropertyMap > (
-            name, description, XMLPropertyLoader::readProperties (child, true)));
+        return ownedPtr (new PropertyValue< PropertyMap > (
+            XMLPropertyLoader::readProperties (child, true)));
+    if (XMLString::equals (child->getNodeName (), XMLPropertyFormat::idPropertyValueList ())) {
+        std::vector<PropertyValueBase::Ptr> list;
+        DOMNodeList* children     = child->getChildNodes ();
+        const XMLSize_t nodeCount = children->getLength ();
+        for (XMLSize_t i = 0; i < nodeCount; ++i) {
+            xercesc::DOMElement* child = dynamic_cast< xercesc::DOMElement* > (children->item (i));
+            list.push_back(readPropertyValue(child));
+        }
+        return ownedPtr (new PropertyValue< std::vector< PropertyValueBase::Ptr > > (list));
+    }
     if (XMLString::equals (child->getNodeName (), XMLBasisTypes::idString ()))
         return ownedPtr (
-            new Property< std::string > (name, description, XMLBasisTypes::readString (child)));
+            new PropertyValue< std::string > (XMLBasisTypes::readString (child)));
     if (XMLString::equals (child->getNodeName (), XMLBasisTypes::idStringList ()))
-        return ownedPtr (new Property< std::vector< std::string > > (
-            name, description, XMLBasisTypes::readStringList (child)));
+        return ownedPtr (new PropertyValue< std::vector< std::string > > (
+            XMLBasisTypes::readStringList (child)));
     if (XMLString::equals (child->getNodeName (), XMLBasisTypes::idIntList ()))
-        return ownedPtr (new Property< std::vector< int > > (
-            name, description, XMLBasisTypes::readIntList (child)));
+        return ownedPtr (new PropertyValue< std::vector< int > > (
+            XMLBasisTypes::readIntList (child)));
     if (XMLString::equals (child->getNodeName (), XMLBasisTypes::idDoubleList ()))
-        return ownedPtr (new Property< std::vector< double > > (
-            name, description, XMLBasisTypes::readDoubleList (child)));
+        return ownedPtr (new PropertyValue< std::vector< double > > (
+            XMLBasisTypes::readDoubleList (child)));
     if (XMLString::equals (child->getNodeName (), XMLBasisTypes::idDouble ()))
         return ownedPtr (
-            new Property< double > (name, description, XMLBasisTypes::readDouble (child)));
+            new PropertyValue< double > (XMLBasisTypes::readDouble (child)));
     if (XMLString::equals (child->getNodeName (), XMLBasisTypes::idFloat ()))
         return ownedPtr (
-            new Property< float > (name, description, XMLBasisTypes::readFloat (child)));
+            new PropertyValue< float > (XMLBasisTypes::readFloat (child)));
     if (XMLString::equals (child->getNodeName (), XMLBasisTypes::idInteger ()))
-        return ownedPtr (new Property< int > (name, description, XMLBasisTypes::readInt (child)));
+        return ownedPtr (new PropertyValue< int > (XMLBasisTypes::readInt (child)));
     if (XMLString::equals (child->getNodeName (), XMLBasisTypes::idBoolean ()))
-        return ownedPtr (new Property< bool > (name, description, XMLBasisTypes::readBool (child)));
+        return ownedPtr (new PropertyValue< bool > (XMLBasisTypes::readBool (child)));
     if (XMLString::equals (child->getNodeName (), XMLBasisTypes::idVector3D ()))
         return ownedPtr (
-            new Property< Vector3D<> > (name, description, XMLBasisTypes::readVector3D (child)));
+            new PropertyValue< Vector3D<> > (XMLBasisTypes::readVector3D (child)));
     if (XMLString::equals (child->getNodeName (), XMLBasisTypes::idVector2D ()))
         return ownedPtr (
-            new Property< Vector2D<> > (name, description, XMLBasisTypes::readVector2D (child)));
+            new PropertyValue< Vector2D<> > (XMLBasisTypes::readVector2D (child)));
     if (XMLString::equals (child->getNodeName (), XMLBasisTypes::idQ ()))
-        return ownedPtr (new Property< Q > (name, description, XMLBasisTypes::readQ (child)));
+        return ownedPtr (new PropertyValue< Q > (XMLBasisTypes::readQ (child)));
     if (XMLString::equals (child->getNodeName (), XMLBasisTypes::idTransform3D ()))
-        return ownedPtr (new Property< Transform3D<> > (
-            name, description, XMLBasisTypes::readTransform3D (child)));
+        return ownedPtr (new PropertyValue< Transform3D<> > (
+            XMLBasisTypes::readTransform3D (child)));
     if (XMLString::equals (child->getNodeName (), XMLBasisTypes::idRotation3D ()))
-        return ownedPtr (new Property< Rotation3D<> > (
-            name, description, XMLBasisTypes::readRotation3D (child)));
+        return ownedPtr (new PropertyValue< Rotation3D<> > (
+            XMLBasisTypes::readRotation3D (child)));
     if (XMLString::equals (child->getNodeName (), XMLBasisTypes::idEAA ()))
-        return ownedPtr (new Property< EAA<> > (name, description, XMLBasisTypes::readEAA (child)));
+        return ownedPtr (new PropertyValue< EAA<> > (XMLBasisTypes::readEAA (child)));
     if (XMLString::equals (child->getNodeName (), XMLBasisTypes::idRPY ()))
-        return ownedPtr (new Property< RPY<> > (name, description, XMLBasisTypes::readRPY (child)));
+        return ownedPtr (new PropertyValue< RPY<> > (XMLBasisTypes::readRPY (child)));
     if (XMLString::equals (child->getNodeName (), XMLBasisTypes::idQuaternion ()))
-        return ownedPtr (new Property< Quaternion<> > (
-            name, description, XMLBasisTypes::readQuaternion (child)));
+        return ownedPtr (new PropertyValue< Quaternion<> > (
+            XMLBasisTypes::readQuaternion (child)));
     if (XMLString::equals (child->getNodeName (), XMLBasisTypes::idRotation2D ()))
-        return ownedPtr (new Property< Rotation2D<> > (
-            name, description, XMLBasisTypes::readRotation2D (child)));
+        return ownedPtr (new PropertyValue< Rotation2D<> > (
+            XMLBasisTypes::readRotation2D (child)));
     if (XMLString::equals (child->getNodeName (), XMLBasisTypes::idVelocityScrew6D ()))
-        return ownedPtr (new Property< VelocityScrew6D<> > (
-            name, description, XMLBasisTypes::readVelocityScrew6D (child)));
+        return ownedPtr (new PropertyValue< VelocityScrew6D<> > (
+            XMLBasisTypes::readVelocityScrew6D (child)));
     if (XMLString::equals (child->getNodeName (), XMLPathFormat::idQPath ())) {
         XMLPathLoader loader (child);
-        return ownedPtr (new Property< QPath > (name, description, *loader.getQPath ()));
+        return ownedPtr (new PropertyValue< QPath > (*loader.getQPath ()));
     }
     if (XMLString::equals (child->getNodeName (), XMLPathFormat::idT3DPath ())) {
         XMLPathLoader loader (child);
         return ownedPtr (
-            new Property< Transform3DPath > (name, description, *loader.getTransform3DPath ()));
+            new PropertyValue< Transform3DPath > (*loader.getTransform3DPath ()));
     }
-
-    //  switch (type) {
-    // case PropertyType::PropertyMap:
-    //     return ownedPtr(new Property<PropertyMap>(name, description,
-    //     XMLPropertyLoader::readProperties(child, true)));
-    // case PropertyType::String:
-    //     return ownedPtr(new Property<std::string>(name, description,
-    //     XMLBasisTypes::readString(child)));
-    // case PropertyType::Float:
-    //    return ownedPtr(new Property<float>(name, description,
-    //    (float)XMLBasisTypes::readDouble(child)));
-    // case PropertyType::Double:
-    //    return ownedPtr(new Property<double>(name, description,
-    //    XMLBasisTypes::readDouble(child)));
-    //     case PropertyType::Int:
-    //         return ownedPtr(new Property<int>(name, description, XMLBasisTypes::readInt(child)));
-    //     case PropertyType::Bool:
-    //         return ownedPtr(new Property<bool>(name, description,
-    //         XMLBasisTypes::readBool(child)));
-    //    case PropertyType::Vector3D:
-    //        return ownedPtr(new Property<Vector3D<> >(name, description,
-    //        XMLBasisTypes::readVector3D(child)));
-    //    case PropertyType::Vector2D:
-    //        return ownedPtr(new Property<Vector2D<> >(name, description,
-    //        XMLBasisTypes::readVector2D(child)));
-    //   case PropertyType::Q:
-    //       return ownedPtr(new Property<Q>(name, description, XMLBasisTypes::readQ(child)));
-    // case PropertyType::Transform3D:
-    //    return ownedPtr(new Property<Transform3D<> >(name, description,
-    //    XMLBasisTypes::readTransform3D(child)));
-    // case PropertyType::Rotation3D:
-    //    return ownedPtr(new Property<Rotation3D<> >(name, description,
-    //    XMLBasisTypes::readRotation3D(child)));
-    // case PropertyType::EAA:
-    //    return ownedPtr(new Property<EAA<> >(name, description, XMLBasisTypes::readEAA(child)));
-    // case PropertyType::RPY:
-    //    return ownedPtr(new Property<RPY<> >(name, description, XMLBasisTypes::readRPY(child)));
-    // case PropertyType::Quaternion:
-    //    return ownedPtr(new Property<Quaternion<> >(name, description,
-    //    XMLBasisTypes::readQuaternion(child)));
-    // case PropertyType::Rotation2D:
-    //    return ownedPtr(new Property<Rotation2D<> >(name, description,
-    //    XMLBasisTypes::readRotation2D(child)));
-    // case PropertyType::VelocityScrew6D:
-    //    return ownedPtr(new Property<VelocityScrew6D<> >(name, description,
-    //    XMLBasisTypes::readVelocityScrew6D(child)));
-    // case PropertyType::QPath: {
-    //    XMLPathLoader loader(child);
-    //    return ownedPtr(new Property<QPath>(name, description, *loader.getQPath()));
-    // }
-    // case PropertyType::Transform3DPath: {
-    //    XMLPathLoader loader(child);
-    //    return ownedPtr(new Property<Transform3DPath >(name, description,
-    //    *loader.getTransform3DPath()));
-    //}
-
-    //}//end switch (type)
-    return NULL;
-    //    RW_THROW("Type of property \""+name+"\" is not supported");
+    return nullptr;
 }
-
-}    // namespace
 
 PropertyBase::Ptr XMLPropertyLoader::readProperty (xercesc::DOMElement* element, bool checkHeader)
 {
@@ -248,7 +321,12 @@ PropertyBase::Ptr XMLPropertyLoader::readProperty (xercesc::DOMElement* element,
         RW_THROW ("Unable to find name of property");
     if (valueElement == NULL)
         RW_THROW ("Unable to find value of property " + name);
-    return getProperty (name, description, type, valueElement);
+
+    const PropertyValueBase::Ptr baseval = readPropertyValue (valueElement);
+    if (baseval.isNull())
+        return nullptr;
+
+    return getProperty (name, description, type, baseval, valueElement);
 }
 
 PropertyMap XMLPropertyLoader::readProperties (xercesc::DOMElement* element, bool checkHeader)

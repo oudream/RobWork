@@ -19,8 +19,9 @@
 #define RW_CORE_PROPERTYTYPE_HPP
 
 /**
-   @file PropertyType.hpp
-*/
+ * @file PropertyType.hpp
+ * @copydoc PropertyType.hpp
+ */
 #if !defined(SWIG)
 #include <rw/core/math_fwd.hpp>
 
@@ -28,6 +29,9 @@
 #include <vector>
 #endif
 
+namespace rw { namespace core {
+    template< class T > class Ptr;
+}}    // namespace rw::core
 namespace rw { namespace trajectory {
     template< class T > class Path;
 }}    // namespace rw::trajectory
@@ -36,6 +40,8 @@ namespace rw { namespace core {
 
     // Forward declaration of PropertyMap
     class PropertyMap;
+    // Forward declaration of PropertyValueBase
+    class PropertyValueBase;
 
     /** @addtogroup core */
     /*@{*/
@@ -51,33 +57,34 @@ namespace rw { namespace core {
       public:
         //! @brief Predefined types
         typedef enum {
-            Unknown     = -1,      //!< Unknown type
-            PropertyMap = 0,       //!< PropertyMap
-            PropertyMapPtr,        //!< PropertyMap::Ptr
-            String,                //!< std::string
-            Float,                 //!< float
-            Double,                //!< double
-            Int,                   //!< int
-            Bool,                  //!< bool
-            Vector3D,              //!< rw::math::Vector3D
-            Vector2D,              //!< rw::math::Vector2D
-            Q,                     //!< rw::math::Q
-            Transform3D,           //!< rw::math::Transform3D
-            Rotation3D,            //!< rw::math::Rotation3D
-            RPY,                   //!< rw::math::RPY
-            EAA,                   //!< rw::math::EAA
-            Quaternion,            //!< rw::math::Quaternion
-            Rotation2D,            //!< rw::math::Rotation2D
-            VelocityScrew6D,       //!< rw::math::VelocityScrew6D
-            QPath,                 //!< rw::trajectory::QPath
-            QPathPtr,              //!< rw::trajectory::QPath::Ptr
-            Transform3DPath,       //!< rw::trajectory::Transform3DPath
-            Transform3DPathPtr,    //!< rw::trajectory::Transform3DPath::Ptr
-            StringList,            //!< std::vector<std::string>
-            IntList,               //!< std::vector<int>
-            DoubleList,            //!< std::vector<double>
-            User = 1024            //!< First user defined type. Returned by first call to
-                                   //!< PropertyType::getNewID()
+            Unknown     = -1,         //!< Unknown type
+            PropertyMap = 0,          //!< PropertyMap
+            PropertyMapPtr,           //!< PropertyMap::Ptr
+            PropertyValueBasePtrList, //!< std::vector<rw::core::PropertyValueBase::Ptr>
+            String,                   //!< std::string
+            Float,                    //!< float
+            Double,                   //!< double
+            Int,                      //!< int
+            Bool,                     //!< bool
+            Vector3D,                 //!< rw::math::Vector3D
+            Vector2D,                 //!< rw::math::Vector2D
+            Q,                        //!< rw::math::Q
+            Transform3D,              //!< rw::math::Transform3D
+            Rotation3D,               //!< rw::math::Rotation3D
+            RPY,                      //!< rw::math::RPY
+            EAA,                      //!< rw::math::EAA
+            Quaternion,               //!< rw::math::Quaternion
+            Rotation2D,               //!< rw::math::Rotation2D
+            VelocityScrew6D,          //!< rw::math::VelocityScrew6D
+            QPath,                    //!< rw::trajectory::QPath
+            QPathPtr,                 //!< rw::trajectory::QPath::Ptr
+            Transform3DPath,          //!< rw::trajectory::Transform3DPath
+            Transform3DPathPtr,       //!< rw::trajectory::Transform3DPath::Ptr
+            StringList,               //!< std::vector<std::string>
+            IntList,                  //!< std::vector<int>
+            DoubleList,               //!< std::vector<double>
+            User = 1024               //!< First user defined type. Returned by first call to
+                                      //!< PropertyType::getNewID()
         } Types;
 
         /**
@@ -113,6 +120,17 @@ namespace rw { namespace core {
         static PropertyType getType (const rw::core::PropertyMap& value)
         {
             return PropertyType (PropertyMap);
+        }
+        //! @copydoc getType(const rw::core::PropertyMap&)
+        static PropertyType getType (const rw::core::Ptr<rw::core::PropertyMap>& value)
+        {
+            return PropertyType (PropertyMapPtr);
+        }
+        //! @copydoc getType(const rw::core::PropertyMap&)
+        static PropertyType getType (
+                const std::vector<rw::core::Ptr<rw::core::PropertyValueBase> >& value)
+        {
+            return PropertyType (PropertyValueBasePtrList);
         }
         //! @copydoc getType(const rw::core::PropertyMap&)
         static PropertyType getType (const std::string& value) { return PropertyType (String); }
@@ -180,11 +198,25 @@ namespace rw { namespace core {
         {
             return PropertyType (QPath);
         }
+#if !defined(SWIG)
+        //! @copydoc getType(const rw::core::PropertyMap&)
+        static PropertyType getType (const rw::core::Ptr<rw::trajectory::Path<rw::math::Q> >& value)
+        {
+            return PropertyType (QPathPtr);
+        }
+#endif
         //! @copydoc getType(const rw::core::PropertyMap&)
         static PropertyType getType (const rw::trajectory::Path< rw::math::Transform3D< double > >& value)
         {
             return PropertyType (Transform3DPath);
         }
+#if !defined(SWIG)
+        //! @copydoc getType(const rw::core::PropertyMap&)
+        static PropertyType getType (const rw::core::Ptr<rw::trajectory::Path< rw::math::Transform3D< double > > >& value)
+        {
+            return PropertyType (Transform3DPathPtr);
+        }
+#endif
         //! @copydoc getType(const rw::core::PropertyMap&)
         static PropertyType getType (const std::vector< std::string >& value)
         {

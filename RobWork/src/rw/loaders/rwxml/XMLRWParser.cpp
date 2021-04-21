@@ -29,6 +29,10 @@ using namespace rw::math;
 
 #include <boost/spirit/include/classic_parse_tree.hpp>
 
+#include <rw/math/Transform3D.hpp>
+#include <rw/math/Vector3D.hpp>
+#include <rw/math/RPY.hpp>
+
 using namespace phoenix;
 using namespace boost::spirit::classic;
 using namespace boost::spirit;
@@ -82,15 +86,18 @@ struct Transform3DParser
 
                 ;
 
+            auto func_s = [&] (double d) {_t3d_v.clear(); _t3d_v.push_back(d); };   
+            auto func = [&] (double d) {_t3d_v.push_back(d);};
+            auto func_e = [&] (double d) {_t3d_v.push_back(d); for( size_t i = 0; i < _t3d_v.size(); i++) {_t3d(i/4,i%4) = _t3d_v[i]; } };
             matrix_transform_r = XMLElem_p (
                 "Transform",
-                real_p[var (_t3d (0, 0)) = arg1] >> real_p[var (_t3d (0, 1)) = arg1] >>
-                    real_p[var (_t3d (0, 2)) = arg1] >> real_p[var (_t3d (0, 3)) = arg1] >>
-                    real_p[var (_t3d (1, 0)) = arg1] >> real_p[var (_t3d (1, 1)) = arg1] >>
-                    real_p[var (_t3d (1, 2)) = arg1] >> real_p[var (_t3d (1, 3)) = arg1] >>
-                    real_p[var (_t3d (2, 0)) = arg1] >> real_p[var (_t3d (2, 1)) = arg1] >>
-                    real_p[var (_t3d (2, 2)) = arg1] >>
-                    real_p[var (_t3d (2, 3)) = arg1][self.result_ = var (_t3d)]);
+                    real_p[func_s] >> real_p[func] >>
+                    real_p[func] >> real_p[func] >>
+                    real_p[func] >> real_p[func] >>
+                    real_p[func] >> real_p[func] >>
+                    real_p[func] >> real_p[func] >>
+                    real_p[func] >>
+                    real_p[func_e][self.result_ = var (_t3d)]);
         }
 
       private:
@@ -99,6 +106,7 @@ struct Transform3DParser
         rule< ScannerT, result_closure< Vector3D< double > >::context_t > pos_r;
         // temp variables
         Transform3D< double > _t3d;
+        std::vector<double> _t3d_v;
         RPY< double > _rpy;
         Vector3D< double > _pos;
     };
@@ -550,8 +558,9 @@ struct XMLDeviceParser : public grammar< XMLDeviceParser, result_closure< DummyD
                               !(XMLAtt_p ("refframe", attrstr_p[var (_frame._refframe) = arg1])) >>
                               XMLAtt_p ("type", attrstr_p[var (_frame._type) = arg1]) >>
                               !(XMLAtt_p ("state", jointstate_r)),
-                          !(t3d_p[var (_frame._transform) = arg1]) >>
-                              *(jointlimit_r[push_back_a (_frame._limits)] | depend_r |
+                              !(t3d_p[var (_frame._transform) = arg1]) >>
+                              *(jointlimit_r[push_back_a (_frame._limits)] | 
+                                depend_r |
                                 property_p[push_back_a (_frame._properties)] |
                                 model_p[push_back_a (_frame._models)]));
             // T alpha, T a,   beta, b,

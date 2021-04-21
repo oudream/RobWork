@@ -18,6 +18,7 @@
 #ifndef RW_MATH_PERSPECTIVETRANSFORM2D_HPP
 #define RW_MATH_PERSPECTIVETRANSFORM2D_HPP
 
+#if !defined(SWIG)
 #include "Vector2D.hpp"
 #include "Vector3D.hpp"
 
@@ -25,6 +26,7 @@
 #include <rw/core/macros.hpp>
 
 #include <Eigen/Core>
+#endif
 
 namespace rw { namespace math {
 
@@ -108,17 +110,18 @@ namespace rw { namespace math {
          * @param pts1 [in] point set one
          * @param pts2 [in] point set two
          */
-        static PerspectiveTransform2D< T > calcTransform (std::vector< Vector2D< T > > pts1,
-                                                          std::vector< Vector2D< T > > pts2);
+        static PerspectiveTransform2D< T >
+        calcTransform (std::vector< rw::math::Vector2D< T > > pts1,
+                       std::vector< rw::math::Vector2D< T > > pts2);
 
         /**
          * @brief Returns the inverse of the PerspectiveTransform
          */
-        PerspectiveTransform2D< T > inverse ()
+        PerspectiveTransform2D< T > inverse () const
         {
             return PerspectiveTransform2D< T > (_matrix.transpose ());
         }
-
+#if !defined(SWIG)
         /**
          * @brief Returns matrix element reference
          * @param row [in] row, row must be @f$ < 3 @f$
@@ -144,11 +147,14 @@ namespace rw { namespace math {
             assert (col < 3);
             return _matrix (row, col);
         }
+#else
+        MATRIXOPERATOR (T);
+#endif
 
         /**
          * @brief transform a point using this perspective transform
          */
-        Vector2D< T > operator* (const Vector2D< T >& v) const
+        rw::math::Vector2D< T > operator* (const rw::math::Vector2D< T >& v) const
         {
             const T x = v (0);
             const T y = v (1);
@@ -166,7 +172,8 @@ namespace rw { namespace math {
             const T e = (*this) (1, 1);
             const T f = (*this) (1, 2);
 
-            return Vector2D< T > ((a * x + b * y + c) * lenInv, (d * x + e * y + f) * lenInv);
+            return rw::math::Vector2D< T > ((a * x + b * y + c) * lenInv,
+                                            (d * x + e * y + f) * lenInv);
         }
 
         /**
@@ -176,7 +183,8 @@ namespace rw { namespace math {
          * @param v
          * @return
          */
-        Vector3D< T > calc3dVec (const PerspectiveTransform2D< T >& hT, const Vector2D< T >& v)
+        rw::math::Vector3D< T > calc3dVec (const PerspectiveTransform2D< T >& hT,
+                                           const rw::math::Vector2D< T >& v)
         {
             const T x = v (0);
             const T y = v (1);
@@ -195,7 +203,7 @@ namespace rw { namespace math {
             const T e = hT (1, 1);
             const T f = hT (1, 2);
 
-            return Vector3D< T > ((a * x + b * y + c), (d * x + e * y + f), len);
+            return rw::math::Vector3D< T > ((a * x + b * y + c), (d * x + e * y + f), len);
         }
 
         /**
@@ -204,7 +212,7 @@ namespace rw { namespace math {
          *
          * @return @f$ \mathbf{M}\in SO(3) @f$
          */
-        const EigenMatrix3x3& e () const { return _matrix; }
+        const Eigen::Matrix< T, 3, 3 >& e () const { return _matrix; }
 
         /**
          * @brief Returns reference to the 3x3 matrix @f$ \mathbf{M}\in SO(3)
@@ -212,7 +220,7 @@ namespace rw { namespace math {
          *
          * @return @f$ \mathbf{M}\in SO(3) @f$
          */
-        EigenMatrix3x3& e () { return _matrix; }
+        Eigen::Matrix< T, 3, 3 >& e () { return _matrix; }
 
       private:
         EigenMatrix3x3 _matrix;
@@ -229,12 +237,16 @@ namespace rw { namespace math {
         return aRb.inverse ();
         // return PerspectiveTransform2D<T>(trans(aRb.m()));
     }
-
+#if !defined(SWIG)
     extern template class rw::math::PerspectiveTransform2D< double >;
     extern template class rw::math::PerspectiveTransform2D< float >;
+#else
+    SWIG_DECLARE_TEMPLATE (PerspectiveTransform2Dd, rw::math::PerspectiveTransform2D< double >);
+    SWIG_DECLARE_TEMPLATE (PerspectiveTransform2Df, rw::math::PerspectiveTransform2D< float >);
+#endif
 
-    using PerspectiveTransform2Dd = PerspectiveTransform2D<double>;
-    using PerspectiveTransform2Df = PerspectiveTransform2D<float>;
+    using PerspectiveTransform2Dd = PerspectiveTransform2D< double >;
+    using PerspectiveTransform2Df = PerspectiveTransform2D< float >;
 
 }}    // namespace rw::math
 

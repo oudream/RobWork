@@ -15,7 +15,7 @@
  * limitations under the License.
  ******************************************************************************/
 
-#include <LuaPlugin.hpp>
+#include <rwlibs/swig/lua/LuaPlugin.hpp>
 #include "LuaState.hpp"
 #include "Lua_@RW_MODULE@.hpp"
 

@@ -2,6 +2,7 @@
 
 %{
 #include <rwlibs/swig/ScriptTypes.hpp>
+#include <rw/kinematics.hpp>
 #include <rwslibs/swig/ScriptTypes.hpp>
 #include <rw/core/Ptr.hpp>
 #include <rwslibs/rwstudioapp/RobWorkStudioApp.hpp>
@@ -23,6 +24,8 @@ using rw::pathplanning::PathPlanner;
 
 %import <rwlibs/swig/sdurw_core.i>
 %import <rwlibs/swig/sdurw_common.i>
+%import <rwlibs/swig/sdurw_math.i>
+%import <rwlibs/swig/sdurw_kinematics.i>
 %import <rwlibs/swig/sdurw.i> 
 
 %pragma(java) jniclassclassmodifiers="class"
@@ -31,16 +34,22 @@ using rw::pathplanning::PathPlanner;
 import org.robwork.sdurw.*;
 import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_common.*;
+import org.robwork.sdurw_math.*;
+import org.robwork.sdurw_kinematics.*;
 %}
 %pragma(java) moduleimports=%{
 import org.robwork.sdurw.*;
 import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_common.*;
+import org.robwork.sdurw_math.*;
+import org.robwork.sdurw_kinematics.*;
 %}
 %typemap(javaimports) SWIGTYPE %{
 import org.robwork.sdurw.*;
 import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_common.*;
+import org.robwork.sdurw_math.*;
+import org.robwork.sdurw_kinematics.*;
 %}
 
 /********************************************
@@ -94,29 +103,29 @@ void closeRobWorkStudio ();
 
 
 
-const State& getState ();
-void setState (State& state);
+const rw::kinematics::State& getState ();
+void setState (rw::kinematics::State& state);
 rw::core::Ptr< Device > findDevice (const std::string& name);
 rw::core::Ptr< JointDevice > findJointDevice (const std::string& name);
 rw::core::Ptr< SerialDevice > findSerialDevice (const std::string& name);
 rw::core::Ptr< TreeDevice > findTreeDevice (const std::string& name);
 rw::core::Ptr< ParallelDevice > findParallelDevice (const std::string& name);
-Frame* findFrame (const std::string& name);
-MovableFrame* findMovableFrame (const std::string& name);
-FixedFrame* findFixedFrame (const std::string& name);
+rw::kinematics::Frame* findFrame (const std::string& name);
+rw::kinematics::MovableFrame* findMovableFrame (const std::string& name);
+rw::kinematics::FixedFrame* findFixedFrame (const std::string& name);
 
-void moveTo (MovableFrame* mframe, rw::math::Transform3D< double > wTframe);
-void moveTo (Frame* frame, MovableFrame* mframe, rw::math::Transform3D< double > wTtcp);
+void moveTo (rw::kinematics::MovableFrame* mframe, rw::math::Transform3D< double > wTframe);
+void moveTo (rw::kinematics::Frame* frame, rw::kinematics::MovableFrame* mframe, rw::math::Transform3D< double > wTtcp);
 void moveTo (const std::string& fname, const std::string& mname,
              rw::math::Transform3D< double > wTframe);
 
-Q getQ (rw::core::Ptr< Device > dev);
-void setQ (rw::core::Ptr< Device > dev, Q);
+rw::math::Q getQ (rw::core::Ptr< Device > dev);
+void setQ (rw::core::Ptr< Device > dev, rw::math::Q);
 
-void setTransform (Frame* mframe, rw::math::Transform3D< double > wTframe);
+void setTransform (rw::kinematics::Frame* mframe, rw::math::Transform3D< double > wTframe);
 
-rw::math::Transform3D< double > wTf (Frame* frame);
-rw::math::Transform3D< double > fTf (Frame* frame, Frame* frame);
+rw::math::Transform3D< double > wTf (rw::kinematics::Frame* frame);
+rw::math::Transform3D< double > fTf (rw::kinematics::Frame* frame, rw::kinematics::Frame* frame);
 rw::math::Transform3D< double > wTf (const std::string& frame);
 rw::math::Transform3D< double > fTf (const std::string& frame, const std::string& frame);
 
@@ -144,7 +153,7 @@ public:
     RWStudioView3D(RobWorkStudio* rwStudio, QWidget* parent);
     void showPivotPoint(bool visible);  
     //void setDrawType(rw::graphics::DrawableNode::DrawType drawType); 
-    Frame* pickFrame(int x, int y);
+    rw::kinematics::Frame* pickFrame(int x, int y);
     rw::core::Ptr<DrawableNode> pick(int x, int y);
  
     rw::core::Ptr<WorkCellScene> getWorkCellScene(); 
@@ -172,30 +181,30 @@ public:
 
     rw::core::Ptr<RWStudioView3D> getView();
 
-    const Path<Timed<State> >& getTimedStatePath();
+    const Path<Timed<rw::kinematics::State> >& getTimedStatePath();
 
     rw::core::Log& log();
 
     //void updateAndRepaint();
     //void setState(const State& state);
     //void setTimedStatePath(const PathTimedState& path);
-    void postState(const State& state);
+    void postState(const rw::kinematics::State& state);
     void postUpdateAndRepaint();
     void postSaveViewGL(const std::string& str);
-    void postTimedStatePath(const Path<Timed<State> >& path);
+    void postTimedStatePath(const Path<Timed<rw::kinematics::State> >& path);
     void postWorkCell(rw::core::Ptr<WorkCell> workcell);
     void postOpenWorkCell(const std::string& str);
     void postExit();
 
-    const State& getState();
+    const rw::kinematics::State& getState();
 
 
     %extend {
-        void setTimedStatePath(rw::core::Ptr<Path<Timed<State> > > path){
+        void setTimedStatePath(rw::core::Ptr<Path<Timed<rw::kinematics::State> > > path){
             $self->postTimedStatePath(*path);
         }
 
-        void setState(const State& state){
+        void setState(const rw::kinematics::State& state){
             $self->postState(state);
         }
 
@@ -243,7 +252,7 @@ public:
             $self->postGenericAnyEvent(id, val);
         }
 
-        void send(const std::string& id, Q val){
+        void send(const std::string& id, rw::math::Q val){
             $self->postGenericAnyEvent(id, val);
         }
 
@@ -268,10 +277,10 @@ public:
             return 1;
         }
 
-        int wait(const std::string& id, Q& result, double timeout=-1.0){
+        int wait(const std::string& id, rw::math::Q& result, double timeout=-1.0){
             try {
                 boost::any data = $self->waitForAnyEvent(id, timeout);
-                Q* q = boost::any_cast<Q>(&data);
+                rw::math::Q* q = boost::any_cast< rw::math::Q >(&data);
                 if(q!=NULL)
                     result = *q;
             } catch ( ... ){ return 0;}
@@ -302,14 +311,6 @@ public:
  
 /********************************************
  * RWSLIBS LOG
- ********************************************/
-
-/********************************************
- * RWSLIBS LUA
- ********************************************/
-
-/********************************************
- * RWSLIBS LUAEDITOR
  ********************************************/
 
 /********************************************

@@ -19,14 +19,10 @@
 #define RWLIBS_SWIG_SCRIPTTYPES_HPP_
 
 #include <RobWorkConfig.hpp>
-#include <rw/common.hpp>
-#include <rw/core/RobWork.hpp>
 #include <rw/geometry.hpp>
 #include <rw/graphics.hpp>
 //#include <rw/graspplanning.hpp>
 #include <rw/invkin.hpp>
-#include <rw/kinematics.hpp>
-#include <rw/math.hpp>
 #include <rw/models.hpp>
 #include <rw/pathplanning.hpp>
 //#include <rw/plugin.hpp>
@@ -91,49 +87,6 @@ namespace swig {
 
     /** @addtogroup swig */
     /*@{*/
-
-    /**
-     * @name common
-     * Wrapped classes in common.
-     */
-    ///@{
-
-    //! @copydoc rw::common:Archive
-    typedef rw::common::Archive Archive;
-    //! @copydoc rw::common:BINArchive
-    typedef rw::common::BINArchive BINArchive;
-    //! @copydoc rw::common:INIArchive
-    typedef rw::common::INIArchive INIArchive;
-    //! @copydoc rw::common::LogBufferedChar
-    typedef rw::common::LogBufferedChar LogBufferedChar;
-    //! @copydoc rw::common::LogBufferedMsg
-    typedef rw::common::LogBufferedMsg LogBufferedMsg;
-    //! @copydoc rw::common::LogFileWriter
-    typedef rw::common::LogFileWriter LogFileWriter;
-    //! @copydoc rw::common::LogMultiWriter
-    typedef rw::common::LogMultiWriter LogMultiWriter;
-    //! @copydoc rw::common::ProgramOptions
-    typedef rw::common::ProgramOptions ProgramOptions;
-    //! @copydoc rw::common::ThreadPool
-    typedef rw::common::ThreadPool ThreadPool;
-    //! @copydoc rw::common::ThreadTask
-    typedef rw::common::ThreadTask ThreadTask;
-    //! @copydoc rw::common:Timer
-    typedef rw::common::Timer Timer;
-    //! @copydoc rw::common:TimerUtil
-    typedef rw::common::TimerUtil TimerUtil;
-
-    //! @copydoc rw::common:InputArchive
-    typedef rw::common::InputArchive InputArchive;
-    //! @copydoc rw::common:OutputArchive
-    typedef rw::common::OutputArchive OutputArchive;
-    //! @copydoc rw::common:Serializable
-    typedef rw::common::Serializable Serializable;
-    //! @copydoc rw::common:ScopedTimer
-    typedef rw::common::ScopedTimer ScopedTimer;
-
-    ///@}
-
 
     ///@}
     /**
@@ -240,43 +193,6 @@ namespace swig {
     ///@}
 
     /**
-     * @name kinematics
-     * Wrapped classes in kinematics.
-     */
-    ///@{
-    //! @copydoc rw::kinematics::StateData
-    typedef rw::kinematics::StateData StateData;
-    //! @copydoc rw::kinematics::FKRange
-    typedef rw::kinematics::FKRange FKRange;
-    //! @copydoc rw::kinematics::FKTable
-    typedef rw::kinematics::FKTable FKTable;
-    //! @copydoc rw::kinematics::Frame
-    typedef rw::kinematics::Frame Frame;
-    //! @copydoc rw::kinematics::FrameType
-    typedef rw::kinematics::FrameType FrameType;
-    //! @copydoc rw::kinematics::MovableFrame
-    typedef rw::kinematics::MovableFrame MovableFrame;
-    //! @copydoc rw::kinematics::FixedFrame
-    typedef rw::kinematics::FixedFrame FixedFrame;
-    //! @copydoc rw::kinematics::State
-    typedef rw::kinematics::State State;
-    //! @copydoc rw::kinematics::StateSetup
-    typedef rw::kinematics::StateSetup StateSetup;
-    //! @copydoc rw::kinematics::StateCache
-    typedef rw::kinematics::StateCache StateCache;
-    //! @copydoc rw::kinematics::Stateless
-    typedef rw::kinematics::Stateless Stateless;
-    //! @copydoc rw::kinematics::StateStructure
-    typedef rw::kinematics::StateStructure StateStructure;
-    //! @copydoc rw::kinematics::Kinematics
-    typedef rw::kinematics::Kinematics Kinematics;
-    //! @copydoc rw::kinematics::QState
-    typedef rw::kinematics::QState QState;
-    //! @copydoc rw::kinematics::TreeState
-    typedef rw::kinematics::TreeState TreeState;
-    ///@}
-
-    /**
      * @name loaders
      * Wrapped classes in loaders.
      */
@@ -297,73 +213,6 @@ namespace swig {
 #endif
     //! @copydoc rw::loaders::STLFile
     typedef rw::loaders::STLFile STLFile;
-    ///@}
-
-    /**
-     * @name math
-     * Wrapped classes in math.
-     */
-    ///@{
-    //! @copydoc rw::math::Vector2D
-    typedef rw::math::Vector2D< double > Vector2d;
-    //! @copydoc rw::math::Vector2D
-    typedef rw::math::Vector2D< float > Vector2f;
-    //! @copydoc rw::math::Vector3D
-    typedef rw::math::Vector3D< double > Vector3d;
-    //! @copydoc rw::math::Vector3D
-    typedef rw::math::Vector3D< float > Vector3f;
-    //! @copydoc rw::math::Rotation3D
-    typedef rw::math::Rotation3D< double > Rotation3Dd;
-    //! @copydoc rw::math::Rotation3D
-    typedef rw::math::Rotation3D< float > Rotation3Df;
-    //! @copydoc rw::math::Rotation3DVector
-    typedef rw::math::Rotation3DVector< double > Rotation3DVectord;
-    //! @copydoc rw::math::Rotation3DVector
-    typedef rw::math::Rotation3DVector< float > Rotation3DVectorf;
-    //! @copydoc rw::math::EAA
-    typedef rw::math::EAA< double > EAAd;
-    //! @copydoc rw::math::EAA
-    typedef rw::math::EAA< float > EAAf;
-    //! @copydoc rw::math::RPY
-    typedef rw::math::RPY< double > RPYd;
-    //! @copydoc rw::math::RPY
-    typedef rw::math::RPY< float > RPYf;
-    //! @copydoc rw::math::Quaternion
-    typedef rw::math::Quaternion< double > Quaterniond;
-    //! @copydoc rw::math::Quaternion
-    typedef rw::math::Quaternion< float > Quaternionf;
-    //! @copydoc rw::math::Transform3D
-    typedef rw::math::Transform3D< double > Transform3Dd;
-    //! @copydoc rw::math::Transform3D
-    typedef rw::math::Transform3D< float > Transform3Df;
-    //! @copydoc rw::math::Pose6D
-    typedef rw::math::Pose6D< double > Pose6d;
-    //! @copydoc rw::math::Pose6D
-    typedef rw::math::Pose6D< float > Pose6f;
-    //! @copydoc rw::math::VelocityScrew6D
-    typedef rw::math::VelocityScrew6D< double > Screw6d;
-    //! @copydoc rw::math::VelocityScrew6D
-    typedef rw::math::VelocityScrew6D< float > Screw6f;
-    //! @copydoc rw::math::Wrench6D
-    typedef rw::math::Wrench6D< double > Wrench6d;
-    //! @copydoc rw::math::Wrench6D
-    typedef rw::math::Wrench6D< float > Wrench6f;
-    //! @copydoc rw::math::InertiaMatrix
-    typedef rw::math::InertiaMatrix< double > InertiaMatrixd;
-    //! @copydoc rw::math::InertiaMatrix
-    typedef rw::math::InertiaMatrix< float > InertiaMatrixf;
-    //! @copydoc rw::math::ProjectionMatrix
-    typedef rw::math::ProjectionMatrix ProjectionMatrix;
-    //! @copydoc rw::math::Q
-    typedef rw::math::Q Q;
-    //! @copydoc rw::math::Jacobian
-    typedef rw::math::Jacobian Jacobian;
-    //! @copydoc rw::math::QMetric
-    typedef rw::math::QMetric MetricQ;
-    //! @copydoc rw::math::Transform3DMetric
-    typedef rw::math::Transform3DMetric MetricSE3;
-    //! @copydoc rw::math::PolynomialSolver
-    typedef rw::math::PolynomialSolver PolynomialSolver;
     ///@}
 
     /**
@@ -612,24 +461,11 @@ namespace swig {
      * Wrapped classes in trajectory.
      */
     ///@{
-    //! @copydoc rw::trajectory::Blend
-    typedef rw::trajectory::Blend< Q > BlendQ;
-    //! @copydoc rw::trajectory::Blend
-    typedef rw::trajectory::Blend< double > BlendR1;
-    //! @copydoc rw::trajectory::Blend
-    typedef rw::trajectory::Blend< Vector2d > BlendR2;
-    //! @copydoc rw::trajectory::Blend
-    typedef rw::trajectory::Blend< Vector3d > BlendR3;
-    //! @copydoc rw::trajectory::Blend
-    typedef rw::trajectory::Blend< Rotation3Dd > BlendSO3;
-    //! @copydoc rw::trajectory::Blend
-    typedef rw::trajectory::Blend< Transform3Dd > BlendSE3;
-
     //! @copydoc rw::trajectory::TimedState
     typedef rw::trajectory::TimedState TimedState;
     //! @copydoc rw::trajectory::TimedStatePath
     typedef rw::trajectory::TimedStatePath PathTimedState;
-    //! @copydoc rw::trajectory::Trajectory
+   /* //! @copydoc rw::trajectory::Trajectory
     typedef rw::trajectory::Trajectory< State > TrajectoryState;
     //! @copydoc rw::trajectory::Trajectory
     typedef rw::trajectory::Trajectory< Q > TrajectoryQ;
@@ -642,9 +478,9 @@ namespace swig {
     //! @copydoc rw::trajectory::Trajectory
     typedef rw::trajectory::Trajectory< Rotation3Dd > TrajectorySO3;
     //! @copydoc rw::trajectory::Trajectory
-    typedef rw::trajectory::Trajectory< Transform3Dd > TrajectorySE3;
+    typedef rw::trajectory::Trajectory< Transform3Dd > TrajectorySE3;*/
 
-    //! @copydoc rw::trajectory::LinearInterpolator
+   /* //! @copydoc rw::trajectory::LinearInterpolator
     typedef rw::trajectory::LinearInterpolator< double > LinearInterpolator;
     //! @copydoc rw::trajectory::LinearInterpolator
     typedef rw::trajectory::LinearInterpolator< rw::math::Q > LinearInterpolatorQ;
@@ -658,9 +494,9 @@ namespace swig {
         LinearInterpolatorSO3;
     //! @copydoc rw::trajectory::LinearInterpolator
     typedef rw::trajectory::LinearInterpolator< rw::math::Transform3D< double > >
-        LinearInterpolatorSE3;
+        LinearInterpolatorSE3;*/
 
-    //! @copydoc rw::trajectory::RampInterpolator
+  /*  //! @copydoc rw::trajectory::RampInterpolator
     typedef rw::trajectory::RampInterpolator< double > RampInterpolator;
     //! @copydoc rw::trajectory::RampInterpolator
     typedef rw::trajectory::RampInterpolator< rw::math::Q > RampInterpolatorQ;
@@ -671,7 +507,7 @@ namespace swig {
     //! @copydoc rw::trajectory::RampInterpolator
     typedef rw::trajectory::RampInterpolator< rw::math::Rotation3D< double > > RampInterpolatorSO3;
     //! @copydoc rw::trajectory::RampInterpolator
-    typedef rw::trajectory::RampInterpolator< rw::math::Transform3D< double > > RampInterpolatorSE3;
+    typedef rw::trajectory::RampInterpolator< rw::math::Transform3D< double > > RampInterpolatorSE3;*/
 
     //! @copydoc rw::trajectory::Timed
     typedef rw::trajectory::Timed< AssemblyState > TimedAssemblyState;
@@ -818,14 +654,14 @@ namespace swig {
      * @brief Math helper function to obtain random rotation.
      * @return a random rotation.
      */
-    Rotation3Dd getRandomRotation3D ();
+    //Rotation3Dd getRandomRotation3D ();
 
     /**
      * @brief Math helper function to obtain random transform.
      * @param translationLength [in] (optional) the length to translate - default is one meter.
      * @return a random transform.
      */
-    Transform3Dd getRandomTransform3D (const double translationLength = 1);
+    //Transform3Dd getRandomTransform3D (const double translationLength = 1);
     /*@}*/
 }    // namespace swig
 }    // namespace rwlibs

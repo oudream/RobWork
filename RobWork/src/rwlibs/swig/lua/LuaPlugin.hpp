@@ -19,7 +19,7 @@
 #define RWLIBS_SWIG_LUA_LUAPLUGIN_HPP_
 
 /**
- * @file LuaPlugin.hpp
+ * @file rwlibs/swig/lua/LuaPlugin.hpp
  *
  * \copydoc rwlibs::swig::LuaPlugin
  */

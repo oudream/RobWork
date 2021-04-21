@@ -21,12 +21,13 @@
 /**
  * @file StateSetup.hpp
  */
-
+#if !defined(SWIG)
 #include "Frame.hpp"
 #include "StateData.hpp"
 #include "StateStructure.hpp"
 
 #include <rw/core/Ptr.hpp>
+#endif
 
 namespace rw { namespace kinematics {
 

@@ -56,11 +56,17 @@ set(UIS_FILES SimTaskVisPlugin.ui)
 # to be able to include the generated ui header files
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
-qt5_wrap_ui(UIS_OUT_H ${UIS_FILES})
-qt5_wrap_cpp(MocSrcFiles SimTaskVisPlugin.hpp)
-qt5_add_resources(RccSrcFiles resources.qrc)
+if(DEFINED Qt6Core_VERSION)
+    qt_wrap_ui(UIS_OUT_H ${UIS_FILES})
+    qt_wrap_cpp(MocSrcFiles SimTaskVisPlugin.hpp)
+    qt_add_resources(RccSrcFiles resources.qrc)
+else()
+    qt5_wrap_ui(UIS_OUT_H ${UIS_FILES})
+    qt5_wrap_cpp(MocSrcFiles SimTaskVisPlugin.hpp)
+    qt5_add_resources(RccSrcFiles resources.qrc)
+endif()
 set(SrcFiles SimTaskVisPlugin.cpp ${UIS_OUT_H})
 
 # The shared library to build:
 add_library(SimTaskVisPlugin MODULE ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles})
-target_link_libraries(SimTaskVisPlugin ${ROBWORKSIM_LIBRARIES} ${ROBWORKSTUDIO_LIBRARIES})
+target_link_libraries(SimTaskVisPlugin ${ROBWORKSIM_LIBRARIES} RWS::sdurws)

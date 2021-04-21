@@ -3,25 +3,30 @@ set(SUBSYS_DESC "A rwstudio application that may be started in a thread.")
 set(SUBSYS_DEPS sdurws RW::sdurw)
 
 if(RWS_USE_STATIC_LINK_PLUGINS)
-    set(
-        SUBSYS_DEPS_TEST
+    set(SUBSYS_DEPS_TEST
         sdurws_jog
         sdurws_log
         sdurws_planning
         sdurws_playback
+        sdurws_pythoneditor
         sdurws_sensors
         sdurws_treeview
         sdurws_propertyview
         sdurws_workcelleditorplugin
-        sdurws_luaeditor
-        sdurws_luapl
     )
+    if(SWIG_DEFAULT_COMPILE)
+        set(SUBSYS_DEPS_TEST ${SUBSYS_DEPS_TEST} sdurws_luaeditor sdurws_luapl)
+    endif()
     rw_is_targets(test TARGETS ${SUBSYS_DEPS_TEST} TARGETS_OUT static_plugins)
     list(APPEND SUBSYS_DEPS ${static_plugins})
 endif()
 
 set(build TRUE)
-rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ON DEPENDS ${SUBSYS_DEPS} ADD_DOC)
+rw_subsys_option(
+    build ${SUBSYS_NAME} ${SUBSYS_DESC} ON
+    DEPENDS ${SUBSYS_DEPS}
+    ADD_DOC
+)
 
 if(build)
     # Standard cpp files to compile:
@@ -36,11 +41,10 @@ if(build)
         PRIVATE ${SUBSYS_DEPS} ${GLUT_glut_LIBRARY}
     )
     target_include_directories(
-        ${SUBSYS_NAME}
-        INTERFACE $<BUILD_INTERFACE:${RWS_ROOT}/src> $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
+        ${SUBSYS_NAME} INTERFACE $<BUILD_INTERFACE:${RWS_ROOT}/src>
+                                 $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
     )
 
-    
     if(RWS_USE_STATIC_LINK_PLUGINS)
 
         if(TARGET sdurws_jog)
@@ -67,7 +71,7 @@ if(build)
         if(TARGET sdurws_workcelleditorplugin)
             target_compile_definitions(${SUBSYS_NAME} PRIVATE RWS_HAVE_PLUGIN_WORKCELLEDITOR)
         endif()
-        if(TARGET sdurws_luapl)
+        if(TARGET sdurws_luapl AND SWIG_DEFAULT_COMPILE)
             target_compile_definitions(${SUBSYS_NAME} PRIVATE RWS_HAVE_PLUGIN_LUAPL)
         endif()
         if(TARGET sdurws_pythoneditor)

@@ -18,12 +18,13 @@
 #ifndef RW_MATH_LINE2DPOLAR_HPP
 #define RW_MATH_LINE2DPOLAR_HPP
 
+#if !defined(SWIG)
 #include "Line2D.hpp"
 #include "Pose2D.hpp"
 #include "Vector2D.hpp"
 
 #include <rw/common/Serializable.hpp>
-
+#endif 
 namespace rw { namespace math {
 
     /**
@@ -50,14 +51,14 @@ namespace rw { namespace math {
          * @param theta [in]  angle in radians from x-axis up to the line that connects the origo
          * and the point on the line that is closest to origo.
          */
-        Line2DPolar (const Vector2D<>& pnt, double theta);
+        Line2DPolar (const rw::math::Vector2D<>& pnt, double theta);
 
         /**
          * @brief constructor - The line moving through the segment from 'start' to 'end'.
          * @param start [in] point on line
          * @param end [in] point on line
          */
-        Line2DPolar (const Vector2D<>& start, const Vector2D<>& end);
+        Line2DPolar (const rw::math::Vector2D<>& start, const rw::math::Vector2D<>& end);
 
         /**
          * @brief constructor - The line moving through the line segment.
@@ -79,16 +80,16 @@ namespace rw { namespace math {
         double getTheta () const { return _theta; }
 
         //! @brief get normal of line
-        Vector2D<> calcNormal () const;
+        rw::math::Vector2D<> calcNormal () const;
 
         //! @brief The L_2 distance from 'pnt' to the line.
-        double dist2 (const Vector2D<>& pnt);
+        double dist2 (const rw::math::Vector2D<>& pnt);
 
         //! The point for the projection of 'pnt' onto 'line'.
-        static Vector2D<> projectionPoint (const Line2DPolar& line, const Vector2D<>& pnt);
+        static rw::math::Vector2D<> projectionPoint (const Line2DPolar& line, const rw::math::Vector2D<>& pnt);
 
         //! A supporting point on the line (equal to rho * normal).
-        static Vector2D<> linePoint (const Line2DPolar& line);
+        static rw::math::Vector2D<> linePoint (const Line2DPolar& line);
 
         /**
          * @brief The vector for the projection of \b pnt onto the normal of \b line.
@@ -96,7 +97,7 @@ namespace rw { namespace math {
          * @param pnt [in] a point.
          * @return the projection vector.
          */
-        static Vector2D<> normalProjectionVector (const Line2DPolar& line, const Vector2D<>& pnt);
+        static rw::math::Vector2D<> normalProjectionVector (const Line2DPolar& line, const rw::math::Vector2D<>& pnt);
 
         // Print the line to stdout.
         // static void print(const LinePolar& line);
@@ -107,7 +108,7 @@ namespace rw { namespace math {
          * @param line [in] the line.
          * @return a Line2DPolar.
          */
-        static Line2DPolar lineToLocal (const Pose2D<>& pose, const Line2DPolar& line);
+        static Line2DPolar lineToLocal (const rw::math::Pose2D<>& pose, const Line2DPolar& line);
 
       private:
         double _rho;

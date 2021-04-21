@@ -148,23 +148,23 @@ void ArcBallController::handleEvent (QEvent* e)
     if (e->type () == QEvent::MouseButtonPress) {
         QMouseEvent* event = static_cast< QMouseEvent* > (e);
 
-        _lastPos (0) = event->x ();
-        _lastPos (1) = event->y ();
+        _lastPos (0) = event->pos().x();
+        _lastPos (1) = event->pos().y();
 
-        click (event->x (), event->y ());
+        click (event->pos().x(), event->pos().y());
     }
     else if (e->type () == QEvent::MouseMove) {
         QMouseEvent* event = static_cast< QMouseEvent* > (e);
         if (event->buttons () == Qt::LeftButton) {
             if (event->modifiers () == Qt::ControlModifier) {
                 // Zoom
-                Vector3D<> translateVector (0, 0, -(event->y () - _lastPos (1)) / _height * 10);
+                Vector3D<> translateVector (0, 0, -(event->pos().y() - _lastPos (1)) / _height * 10);
                 _viewTransform.P () -= _viewTransform.R () * translateVector;
             }
             else {    // The mouse is being dragged
 
-                double rx = (event->x ());
-                double ry = (event->y ());
+                double rx = (event->pos().x());
+                double ry = (event->pos().y());
 
                 // Update End Vector And Get Rotation As Quaternion
                 Quaternion< double > quat = drag (rx, ry);
@@ -184,10 +184,10 @@ void ArcBallController::handleEvent (QEvent* e)
         }
         if (event->buttons () == Qt::RightButton) {
             // Move Scene
-            pan (event->x (), event->y ());
+            pan (event->pos().x(), event->pos().y());
         }
-        _lastPos (0) = event->x ();
-        _lastPos (1) = event->y ();
+        _lastPos (0) = event->pos().x();
+        _lastPos (1) = event->pos().y();
     }
     else if (e->type () == QEvent::Wheel) {
         QWheelEvent* event = static_cast< QWheelEvent* > (e);
@@ -219,6 +219,9 @@ void ArcBallController::zoom (double amount)
 {
     if (_advancedZoomEnabled) {
         Vector3D<> dist      = _zoomTarget - _viewTransform.P ();
+        if(dist.norm2() > (_pivotPoint- _viewTransform.P()).norm2()){
+            dist = dist/dist.norm2() * (_pivotPoint- _viewTransform.P()).norm2();
+        }
         double newAmount     = dist.norm2 () * ZOOM_PERCENTAGE / 100 * amount;
         _advancedZoomEnabled = false;
         if ((newAmount > 0 && (newAmount > amount)) || (newAmount < 0 && (amount > newAmount)) ||
@@ -226,7 +229,7 @@ void ArcBallController::zoom (double amount)
             newAmount = amount;
         }
         Vector3D<> translateVector = (dist / dist[2]) * newAmount;
-        _viewTransform.P ()        = _viewTransform.P () + translateVector;
+        _viewTransform.P ()        = _viewTransform.P () - translateVector;
     }
     else {
         Vector3D<> translateVector (0, 0, amount);

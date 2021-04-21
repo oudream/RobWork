@@ -23,6 +23,7 @@
  */
 #include <rw/core/Event.hpp>
 #include <rw/core/Ptr.hpp>
+#include <rw/core/macros.hpp>
 #include <rw/kinematics/State.hpp>
 
 #include <boost/function.hpp>
@@ -149,6 +150,7 @@ namespace rw { namespace models {
          * @deprecated Since January 2018.
          * Please use the addFrame method using smart pointers instead.
          */
+        DEPRECATED ("Use Frame::Ptr insted of Frame*")
         void addFrame (kinematics::Frame* frame, kinematics::Frame* parent = NULL);
 
         /**
@@ -173,6 +175,7 @@ namespace rw { namespace models {
          * @deprecated Since January 2018.
          * Please use the addDAF method using smart pointers instead.
          */
+        DEPRECATED ("Use Frame::Ptr insted of Frame*")
         void addDAF (kinematics::Frame* frame, kinematics::Frame* parent = NULL);
 
         /**
@@ -508,12 +511,12 @@ namespace rw { namespace models {
 
         /**
          * @brief Properties of this workcell
+         * @return the property map including the properties of this workcell
          */
         const rw::core::PropertyMap& getPropertyMap () const;
 
         /**
          * @brief Returns collision setup associated to work cell
-         *
          * @return Collision setup
          */
         rw::proximity::CollisionSetup getCollisionSetup ();

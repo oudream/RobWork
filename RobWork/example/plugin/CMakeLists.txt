@@ -28,4 +28,5 @@ set(FILES_CPP CACHE INTERNAL "" FORCE)
 add_subdirectory(src)
 
 add_library(PluginTest ${FILES_CPP})
+message(STATUS "${ROBWORK_LIBRARIES}")
 target_link_libraries(PluginTest ${ROBWORK_LIBRARIES})

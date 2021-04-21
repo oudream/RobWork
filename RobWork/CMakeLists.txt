@@ -31,10 +31,6 @@ else()
     set(RW_GOT_VERSION False)
 endif()
 
-# guard against in-source builds
-set(CMAKE_MODULE_PATH ${RW_ROOT}/cmake/Modules ${CMAKE_MODULE_PATH})
-
-
 rw_init_project(${RW_ROOT} RobWork RW ${ROBWORK_VERSION})
 rw_get_os_info()
 
@@ -63,14 +59,11 @@ rw_sys_info(INFO)
 message(STATUS "RobWork: system id=${INFO} ")
 
 # Compile the RobWork tools folder
-add_subdirectory(tools)
+#add_subdirectory(tools)
 
 # ##################################################################################################
 # setup testing
 #
-configure_file("${RW_ROOT}/cmake/CTestCustom.cmake.in" "CTestCustom.cmake")
-# configure testing configuration
-configure_file("${RW_ROOT}/CTestConfig.cmake.in" "${RW_ROOT}/CTestConfig.cmake")
 
 include(CMakeDependentOption)
 cmake_dependent_option(
@@ -78,11 +71,6 @@ cmake_dependent_option(
 )
 if(RW_IS_TESTS_ENABLED)
     message(STATUS "RobWork tests ENABLED!")
-    # TODO Specify SET(SITE "myname") to configure the site name to use when uploading
-    set(BUILDNAME "${INFO}")
-    enable_testing() # Should be unnecessary due to the CMake module CTest also calls this command
-    include(CTest)
-    add_subdirectory(test)
     if(RW_HAVE_GTEST)
         add_subdirectory(gtest)
     endif()
@@ -127,13 +115,33 @@ export(
     FILE "${RW_ROOT}/cmake/${PROJECT_NAME}Targets.cmake"
     NAMESPACE ${PROJECT_PREFIX}::
 )
+
 if(RW_HAVE_GTEST)
-    if(TARGET ${GTEST_LIBRARIES} AND TARGET ${GTEST_MAIN_LIBRARIES})
-        export(
-            TARGETS ${GTEST_LIBRARIES} ${GTEST_MAIN_LIBRARIES}
-            NAMESPACE ${PROJECT_PREFIX}:: APPEND
-            FILE "${RW_ROOT}/cmake/gtestTargets.cmake"
+    if (NOT RW_GTEST_FROM_GIT)
+        if(TARGET ${GTEST_LIBRARIES} AND TARGET ${GTEST_MAIN_LIBRARIES})
+            export(
+                TARGETS ${GTEST_LIBRARIES} ${GTEST_MAIN_LIBRARIES}
+                NAMESPACE ${PROJECT_PREFIX}:: APPEND
+                FILE "${RW_ROOT}/cmake/gtestTargets.cmake"
+            )
+        endif()
+    else()
+        STRING(TOUPPER ${RW_BUILD_TYPE} CAPITAL_BUILD_TYPE)
+        file(WRITE "${RW_ROOT}/cmake/gtestTargets.cmake" 
+        "add_library(gtest INTERFACE)
+        add_library(RW::gtest ALIAS gtest)
+        set_target_properties(gtest PROPERTIES
+            INTERFACE_INCLUDE_DIRECTORIES ${GTEST_NATIVE_ROOT}/include
+            INTERFACE_LINK_LIBRARIES ${GTEST_LIBRARY}
         )
+
+        add_library(gtest_main INTERFACE)
+        add_library(RW::gtest_main ALIAS gtest)
+        set_target_properties(gtest_main PROPERTIES
+            INTERFACE_INCLUDE_DIRECTORIES ${GTEST_NATIVE_ROOT}/include
+            INTERFACE_LINK_LIBRARIES ${GTEST_MAIN_LIBRARY}
+        )
+        ")
     endif()
 endif()
 
@@ -174,25 +182,11 @@ install(
     DESTINATION ${RW_INSTALL_DIR}/cmake
 )
 
+
 # Install dependencies on Windows
 if(WIN32)
-    # Trim the Boost library lists and take only the libraries corresponding to the build type
-    set(BOOST_LIBRARIES_INSTALL "")
-    foreach(s ${Boost_LIBRARIES})
-        if("${s}" STREQUAL "optimized")
 
-        elseif("${s}" STREQUAL "debug")
-
-        else()
-            get_filename_component(_dir "${s}" DIRECTORY)
-            get_filename_component(_file "${s}" NAME_WLE)
-            string(REGEX MATCH "[a-z]*_[a-z]*" _file ${_file})
-            file(GLOB _files "${_dir}/${_file}*lib")
-            foreach(file ${_files})
-                list(APPEND BOOST_LIBRARIES_INSTALL "${file}")
-            endforeach()
-        endif()
-    endforeach()
+    getBoostLibraryList(BOOST_LIBRARIES_INSTALL "${Boost_LIBRARIES}")
 
     # Install external libraries
     install(
@@ -220,7 +214,7 @@ if(WIN32)
     endif()
 
     install(
-        DIRECTORY "${RW_ROOT}/ext/eigen3/Eigen/"
+        DIRECTORY "${EIGEN3_INCLUDE_DIR}/"
         DESTINATION "${RW_INSTALL_DIR}/ext/Eigen/"
         COMPONENT eigen
     )
@@ -234,24 +228,6 @@ configure_file("${RW_ROOT}/cmake/dependencies.cmake.in" "${RW_ROOT}/cmake/depend
                @ONLY
 )
 
-# Disabled generation of the dependencies file (problem with multi-configuration generators like
-# Visual Studio) FILE(GENERATE OUTPUT "${RW_ROOT}/cmake/dependencies.cmake" INPUT
-# "${RW_ROOT}/cmake/dependencies.cmake.gen" ) INSTALL(SCRIPT "${RW_ROOT}/cmake/dependencies.cmake")
-
-# Install the example directories
-install(
-    DIRECTORY "${RW_ROOT}/example/"
-    DESTINATION "${RW_INSTALL_DIR}/example/"
-    COMPONENT example
-    PATTERN ".svn" EXCLUDE
-    PATTERN "example/CMakeLists.txt" EXCLUDE
-    PATTERN "Build" EXCLUDE
-)
-
-# Install the API doc if doxygen has been run IF(IS_DIRECTORY "${RW_ROOT}/apidocs/html")
-# INSTALL(DIRECTORY "${RW_ROOT}/apidocs/html" DESTINATION "${RW_INSTALL_DIR}/apidocs" PATTERN ".svn"
-# EXCLUDc ) ENDIF(IS_DIRECTORY "${RW_ROOT}/apidocs/html")
-
 # Documentation build target
 find_program(doc_executable doxygen)
 if(doc_executable)
@@ -264,6 +240,3 @@ endif()
 
 # Packaging
 rw_create_installer()
-
-string(REPLACE ";" "\n" TOFILE_DST "${ROBWORK_INCLUDE_DIR}")
-file(WRITE "include_dirs" "${TOFILE_DST}")

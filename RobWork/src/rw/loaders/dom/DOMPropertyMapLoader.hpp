@@ -20,6 +20,7 @@
 
 #include <rw/core/PropertyBase.hpp>
 #include <rw/core/PropertyMap.hpp>
+#include <rw/core/PropertyValueBase.hpp>
 #include <rw/core/Ptr.hpp>
 
 namespace rw { namespace core {
@@ -41,6 +42,18 @@ namespace rw { namespace loaders {
     class DOMPropertyMapLoader
     {
       public:
+
+        /**
+         * @brief Reads in a PropertyValue from DOMElement.
+         *
+         * May throw rw::core::Exception
+         *
+         * @param element [in] DOMElement describing Property
+         * @return Pointer to the property value.
+         */
+        static rw::core::PropertyValueBase::Ptr readPropertyValue (
+                rw::core::Ptr< rw::core::DOMElem > element);
+
         /**
          * @brief Reads in a Property from DOMElement.
          *

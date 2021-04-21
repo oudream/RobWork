@@ -1,6 +1,6 @@
 set(SUBSYS_NAME sdurws_lua)
 set(SUBSYS_DESC "Interface for accessing RobWorkStudio from lua.")
-set(SUBSYS_DEPS sdurws_robworkstudioapp RW::sdurw_lua RW::sdurw_core_lua)
+set(SUBSYS_DEPS sdurws_robworkstudioapp RW::sdurw_lua_s)
 
 set(build TRUE)
 
@@ -21,74 +21,53 @@ rw_subsys_option(
 )
 
 if(build)
-    set(RWSIM_HAVE_LUA TRUE CACHE INTERNAL "")
-    
+    set(RWSTUDIO_HAVE_LUA
+        TRUE
+        CACHE INTERNAL ""
+    )
+
     include(UseSWIG)
 
     include_directories(${RW_ROOT}/src)
 
     set(RWS_MODULE sdurws)
-    set(TARGET_NAME ${RWS_MODULE}_lua)
+    set(TARGET_NAME sdurws_lua)
     # ############ lua interface generation ##############
-    
+
     rw_add_swig(
-        ${RWS_MODULE} lua SHARED 
+        sdurws lua MODULE 
         TARGET_NAME ${TARGET_NAME}
         SOURCES ../sdurws.i Lua.cpp ../ScriptTypes.cpp
+        BINARY_OUTPUT_DIR "${RWS_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua"
         INSTALL_DIR ${LUA_INSTALL_DIR}
     )
-    unset(SLIB_COMPILE_BUFFER CACHE)
     if(NOT DEFINED MSVC) # This code is to make it easier to make debian packages
         set_target_properties(
             ${TARGET_NAME}
-            PROPERTIES
-                PREFIX ""
-                OUTPUT_NAME ${RWS_MODULE}
-                ARCHIVE_OUTPUT_DIRECTORY "${RWS_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua"
-                LIBRARY_OUTPUT_DIRECTORY "${RWS_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua"
-                LIBRARY_OUTPUT_DIRECTORY "${RWS_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua"
+            PROPERTIES PREFIX ""
+            OUTPUT_NAME ${RWS_MODULE}
         )
     endif()
-    
-    swig_link_libraries(
-        ${TARGET_NAME}
-        ${SUBSYS_DEPS}
-        ${RWS_PLUGIN_LIBRARIES}
-        ${RWS_MODULE}
-        RW::sdurw_lua
-        RW::sdurw
+
+    target_link_libraries(${TARGET_NAME} ${RWS_PLUGIN_LIBRARIES} sdurws sdurws_robworkstudioapp
+                        RW::sdurw ${RW_BUILD_WITH_LIBRARIES_LUA}
     )
-    if(RW_BUILD_WITH_INTERNAL_LUA)
-        swig_link_libraries(${TARGET_NAME} RW::lua51)
-    else()
-        swig_link_libraries(${TARGET_NAME} ${RW_BUILD_WITH_LIBRARIES_LUA})
-        target_include_directories(${TARGET_NAME} PUBLIC ${RW_BUILD_WITH_LUA_INCLUDE_DIR})
-    endif()
+    target_include_directories(${TARGET_NAME} PUBLIC ${RW_BUILD_WITH_LUA_INCLUDE_DIR})
 
     # ############ lua static interface generation ##############
-    
+
     rw_add_swig(
-        ${RWS_MODULE} lua STATIC
+        sdurws lua STATIC
         TARGET_NAME ${TARGET_NAME}_s
         SOURCES ../sdurws.i Lua.cpp ../ScriptTypes.cpp
         INSTALL_DIR ${STATIC_LIB_INSTALL_DIR}
     )
 
     target_link_libraries(
-        ${TARGET_NAME}_s
-        ${SUBSYS_DEPS}
-        ${RWS_PLUGIN_LIBRARIES}
-        ${RWS_MODULE}
-        RW::sdurw
-        RW::sdurw_lua_s
-        RW::sdurw_core_lua_s
+        ${TARGET_NAME}_s ${RWS_PLUGIN_LIBRARIES} sdurws sdurws_robworkstudioapp RW::sdurw RW::sdurw_lua_s
+        ${RW_BUILD_WITH_LIBRARIES_LUA}
     )
-    if(RW_BUILD_WITH_INTERNAL_LUA)
-        target_link_libraries(${TARGET_NAME}_s RW::lua51)
-    else()
-        target_link_libraries(${TARGET_NAME}_s ${RW_BUILD_WITH_LIBRARIES_LUA})
-        target_include_directories(${TARGET_NAME}_s PUBLIC ${RW_BUILD_WITH_LUA_INCLUDE_DIR})
-    endif()
+    target_include_directories(${TARGET_NAME}_s PUBLIC ${RW_BUILD_WITH_LUA_INCLUDE_DIR})
 
     # Visual Studio or mingw this is used to indicate static linking to Visual Studio or mingw
     if(DEFINED MSVC)
@@ -98,10 +77,23 @@ if(build)
     endif()
 
     add_library(sdurwslua_plugin.rwplugin MODULE LuaPlugin.cpp LuaPlugin.hpp)
-    target_link_libraries(sdurwslua_plugin.rwplugin ${TARGET_NAME}_s RW::sdurw RW::sdurw_lua_s)
-    install(TARGETS ${RWS_MODULE}lua_plugin.rwplugin DESTINATION ${RW_PLUGIN_INSTALL_DIR})
 
+    if(NOT SWIG_DEFAULT_COMPILE)
+        set_target_properties(sdurwslua_plugin.rwplugin PROPERTIES EXCLUDE_FROM_ALL TRUE EXCLUDE_FROM_DEFAULT_BUILD TRUE)
+    endif()
+
+    target_link_libraries(sdurwslua_plugin.rwplugin ${TARGET_NAME}_s RW::sdurw RW::sdurw_core_lua_s)
+
+    if(SWIG_DEFAULT_COMPILE OR CMAKE_VERSION VERSION_GREATER 3.16.0)
+        install(TARGETS sdurwslua_plugin.rwplugin DESTINATION ${RW_PLUGIN_INSTALL_DIR})
+    endif()
     if((CMAKE_COMPILER_IS_GNUCC) OR (CMAKE_C_COMPILER_ID STREQUAL "Clang"))
         set_target_properties(sdurwslua_plugin.rwplugin PROPERTIES LINK_FLAGS -Wl,--no-undefined)
     endif()
+
+
+    RW_SWIG_COMPILE_TARGET(lua ${TARGET_NAME} ${TARGET_NAME}_s sdurwslua_plugin.rwplugin sdurws_luapl
+        sdurws_luaeditor)
+
+
 endif()

@@ -21,13 +21,12 @@
 /**
  * @file RPY.hpp
  */
-
-#include "Rotation3D.hpp"
-#include "Rotation3DVector.hpp"
-#include "Vector3D.hpp"
-
+#if !defined(SWIG)
 #include <rw/common/Serializable.hpp>
-
+#include <rw/math/Rotation3D.hpp>
+#include <rw/math/Rotation3DVector.hpp>
+#include <rw/math/Vector3D.hpp>
+#endif
 namespace rw { namespace math {
 
     /** @addtogroup math */
@@ -72,7 +71,7 @@ namespace rw { namespace math {
          * @copydoc Rotation3DVector::toRotation3D
          */
         const Rotation3D< T > toRotation3D () const;
-
+#if !defined(SWIG)
         /**
          * @brief Returns reference to the element
          *
@@ -109,6 +108,10 @@ namespace rw { namespace math {
          */
         T& operator[] (size_t i) { return (*this) (i); }
 
+#else
+        ARRAYOPERATOR (T);
+#endif
+
         /**
          * @brief Comparison operator.
          *
@@ -140,13 +143,11 @@ namespace rw { namespace math {
          */
         size_t size () const { return 3; }
 
+#if !defined(SWIG)
         /**
          * @brief Ouputs RPY to stream
-         *
          * @param os [in/out] stream to use
-         *
          * @param rpy [in] rpy rotation
-         *
          * @return the resulting stream
          */
         friend std::ostream& operator<< (std::ostream& os, const RPY< T >& rpy)
@@ -154,7 +155,7 @@ namespace rw { namespace math {
             return os << "RPY {" << rpy (0) << ", " << rpy (1) << ", " << rpy (2) << "}";
             // return os << rpy._rpy;
         }
-
+#endif 
       private:
         Vector3D< T > _rpy;
     };
@@ -171,12 +172,16 @@ namespace rw { namespace math {
         return RPY< Q > (
             static_cast< Q > (rpy (0)), static_cast< Q > (rpy (1)), static_cast< Q > (rpy (2)));
     }
-
+#if !defined(SWIG)
     extern template class rw::math::RPY< double >;
     extern template class rw::math::RPY< float >;
+#else
+    SWIG_DECLARE_TEMPLATE (RPYd, rw::math::RPY< double >);
+    SWIG_DECLARE_TEMPLATE (RPYf, rw::math::RPY< float >);
+#endif
 
-    using RPYd = RPY<double>;
-    using RPYf = RPY<float>;
+    using RPYd = RPY< double >;
+    using RPYf = RPY< float >;
 
     /*@}*/
 }}    // namespace rw::math

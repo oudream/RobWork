@@ -1,3 +1,17 @@
+set(SUBSYS_NAME sdurw_kinematics)
+set(SUBSYS_DESC "This is a gathering of all RobWorks kinamatics")
+set(SUBSYS_DEPS sdurw_core sdurw_common sdurw_math)
+
+set(build TRUE)
+rw_subsys_option(
+    build ${SUBSYS_NAME} ${SUBSYS_DESC} ON
+    DEPENDS ${SUBSYS_DEPS}
+    ADD_DOC
+)
+
+if(build)
+
+
 SET(FILES_CPP
   FixedFrame.cpp
   FKRange.cpp
@@ -10,6 +24,7 @@ SET(FILES_CPP
   State.cpp
   QState.cpp
   TreeState.cpp
+  StateCache.cpp
   StateStructure.cpp
   StateData.cpp
   StateSetup.cpp
@@ -28,6 +43,7 @@ SET(FILES_HPP
   Kinematics.hpp
   MovableFrame.hpp
   State.hpp
+  StateCache.hpp
   QState.hpp
   TreeState.hpp
   StateStructure.hpp
@@ -38,10 +54,15 @@ SET(FILES_HPP
   Stateless.hpp
 )
 
-SOURCE_GROUP(kinematics FILES ${FILES_CPP} ${FILES_HPP})
+rw_add_library(${SUBSYS_NAME} ${FILES_CPP} ${FILES_HPP})
+rw_add_includes(${SUBSYS_NAME} "rw/kinematics" ${FILES_HPP})
+target_link_libraries(${SUBSYS_NAME} PUBLIC sdurw_core sdurw_common sdurw_math)
 
-FILE(GLOB SRC_FILES_CPP ${FILES_CPP})
-FILE(GLOB SRC_FILES_HPP ${FILES_HPP})
 
-SET(RW_LIB_FILES_CPP ${RW_LIB_FILES_CPP} ${SRC_FILES_CPP} PARENT_SCOPE)
-SET(RW_LIB_FILES_HPP ${RW_LIB_FILES_HPP} ${SRC_FILES_HPP} PARENT_SCOPE)
+target_include_directories(
+    ${SUBSYS_NAME} PUBLIC $<BUILD_INTERFACE:${RW_ROOT}/src>
+                          $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
+)
+
+rw_add_includes(${SUBSYS_NAME} "rw" ${CMAKE_CURRENT_SOURCE_DIR}/../kinematics.hpp)
+endif() 

@@ -29,6 +29,15 @@ if(build)
     include(UseJava)
     include(UseSWIG)
 
+    set(build_doc TRUE)
+    if(WIN32 OR CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+        set(build_doc FALSE)
+    endif()
+    rw_subsys_option(
+        build sdurwsim_java_doc "build documentation for the java implementation" ${build_doc}
+        REASON "set by default"
+    )
+
     include_directories(${RWSIM_ROOT}/src ${RW_ROOT}/src)
 
     include_directories(${JAVA_INCLUDE_DIRS} ${JNI_INCLUDE_DIRS})
@@ -43,7 +52,7 @@ if(build)
         SWIG_FLAGS "-package" "org.robwork.sdurwsim"
     )
 
-    swig_link_libraries(sdurwsim_jni ${RWSIM_ODE_LIBRARY} sdurwsim)
+    target_link_libraries(sdurwsim_jni ${RWSIM_ODE_LIBRARY} sdurwsim)
 
     # Force removal of previous Java compilation and source when interface file changes This is
     # required as types may be removed or change name (in this case previous java classes would
@@ -56,15 +65,18 @@ if(build)
         CLASSPATH
             ${RW_LIBS}/sdurw_core_java.jar
             ${RW_LIBS}/sdurw_common_java.jar
+            ${RW_LIBS}/sdurw_math_java.jar
+            ${RW_LIBS}/sdurw_kinematics_java.jar
             ${RW_LIBS}/sdurw_java.jar
             ${RW_LIBS}/sdurw_task_java.jar
             ${RW_LIBS}/sdurw_assembly_java.jar
             ${RW_LIBS}/sdurw_control_java.jar
             ${RW_LIBS}/sdurw_simulation_java.jar
-        JAVADOC_LINK ${RW_LIBS}/javadoc/sdurw ${RW_LIBS}/javadoc/sdurw_core
+        JAVADOC_LINK ${RW_LIBS}/javadoc/sdurw ${RW_LIBS}/javadoc/sdurw_core ${RW_LIBS}/javadoc/sdurw_common ${RW_LIBS}/javadoc/sdurw_math ${RW_LIBS}/javadoc/sdurw_kinematics
         WINDOW_TITLE "RobWorkSim Java API Documentation"
         LOADER_SOURCE_FILE "${CMAKE_CURRENT_SOURCE_DIR}/LoaderRWSim.java"
         LOADER_DST_FILE "java_src_sdurwsim/org/robwork/LoaderRWSim.java"
+        BUILD_DOC ${build_doc}
         EXTRA_COPY
             COMMAND
                 ${CMAKE_COMMAND} -E copy_if_different
@@ -85,4 +97,7 @@ if(build)
     )
     set(CMAKE_SWIG_OUTDIR ${RWSIM_CMAKE_LIBRARY_OUTPUT_DIRECTORY})
 
+    RW_SWIG_COMPILE_TARGET(
+            java sdurwsim_jni ${java_NAME_sdurwsim}_java_doc ${java_NAME_sdurwsim}_libs
+        )
 endif()

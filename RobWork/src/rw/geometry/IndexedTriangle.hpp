@@ -21,7 +21,6 @@
 #include <rw/common/types.hpp>
 #include <rw/math/Vector3D.hpp>
 
-#include <boost/cstdint.hpp>
 
 namespace rw { namespace geometry {
     //! @addtogroup geometry

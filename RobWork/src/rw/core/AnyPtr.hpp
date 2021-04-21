@@ -32,14 +32,14 @@ namespace rw { namespace core {
     {
       public:
         //! @brief Construct empty null pointer.
-        AnyPtr () : content (0) {}
+        AnyPtr () : content (NULL) {}
 
         /**
          * @brief constructor - ownership of pointer is taken
          * @param value [in] a raw pointer.
          */
         template< typename ValueType >
-        AnyPtr (ValueType* value) : content (new holder< ValueType > (value))
+        AnyPtr (ValueType* value) : content (ownedPtr (new holder< ValueType > (value)))
         {}
 
         /**
@@ -47,20 +47,22 @@ namespace rw { namespace core {
          * @param value [in] a smart pointer.
          */
         template< typename ValueType >
-        AnyPtr (const rw::core::Ptr< ValueType >& value) : content (new holder< ValueType > (value))
+        AnyPtr (const rw::core::Ptr< ValueType >& value) :
+            content (ownedPtr (new holder< ValueType > (value)))
         {}
 
         /**
          * @brief Copy constructor - ownership is shared.
          * @param other [in] other AnyPtr object.
          */
-        AnyPtr (const AnyPtr& other) : content (other.content ? other.content->clone () : 0) {}
+        AnyPtr (const AnyPtr& other) : content (other.content ? other.content->clone () : NULL) {}
 
         //! @brief Destructor.
         ~AnyPtr ()
         {
-            if (content != 0)
-                delete content;
+            if (!content.isShared () && !content.isNull ()) {
+                delete content.get ();
+            }
         }
 
         /**
@@ -70,8 +72,8 @@ namespace rw { namespace core {
          */
         template< class S > Ptr< S > cast () const
         {
-            holder< S >* content_cast = dynamic_cast< holder< S >* > (content);
-            if (content_cast == nullptr)
+            rw::core::Ptr< holder< S > > content_cast = content.cast< holder< S > > ();
+            if (content_cast.isNull ())
                 return Ptr< S > ();
             return content_cast->_ptr;
         }
@@ -82,9 +84,9 @@ namespace rw { namespace core {
          */
         template< class S > S* get ()
         {
-            holder< S >* content_cast = dynamic_cast< holder< S >* > (content);
-            if (content_cast == nullptr)
-                return nullptr;
+            rw::core::Ptr< holder< S > > content_cast = content.cast< holder< S > > ();
+            if (content_cast.isNull ())
+                return NULL;
             return content_cast->_ptr.get ();
         }
 
@@ -113,10 +115,29 @@ namespace rw { namespace core {
 #endif
 
         /**
+         * @brief copy assignemt
+         * @param rhs [in] the Ptr to copy.
+         */
+        AnyPtr& operator= (const AnyPtr& rhs)
+        {
+            if (!content.isShared () && !content.isNull ()) {
+                delete content.get ();
+            }
+            content = rhs.content;
+            return *this;
+        }
+
+        /**
          * @brief Check if pointer is null.
          * @return true is the smart pointer is null.
          */
-        bool isNull () const { return content->getVoidPtr () == NULL; }
+        bool isNull () const
+        {
+            if (content == NULL) {
+                return true;
+            }
+            return content->getVoidPtr () == NULL;
+        }
 
         /**
          * @brief Get type info for the object pointed to.
@@ -164,7 +185,7 @@ namespace rw { namespace core {
       private:    // representation
         template< typename ValueType > friend ValueType* cast (AnyPtr*);
 
-        placeholder* content;
+        rw::core::Ptr< placeholder > content;
     };
 }}    // namespace rw::core
 

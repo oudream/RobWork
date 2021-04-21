@@ -23,6 +23,8 @@
  */
 #if !defined(SWIG)
 #include <rw/core/PropertyBase.hpp>
+#include <rw/core/PropertyValue.hpp>
+#include <functional>
 #endif
 namespace rw { namespace core {
 
@@ -52,7 +54,11 @@ namespace rw { namespace core {
          */
         Property (const std::string& identifier, const std::string& description, T value) :
             PropertyBase (identifier, description, PropertyType::getType (value)), _value (value)
-        {}
+        {
+#if !defined(SWIGJAVA)
+            _value.changedEvent().add(std::bind(&Property::valueChanged, this, std::placeholders::_1), this);
+#endif
+        }
 
         /**
          * @brief Constructs Property.
@@ -65,31 +71,61 @@ namespace rw { namespace core {
                   const PropertyType& type, T value) :
             PropertyBase (identifier, description, type),
             _value (value)
-        {}
+        {
+#if !defined(SWIGJAVA)
+            _value.changedEvent().add(std::bind(&Property::valueChanged, this, std::placeholders::_1), this);
+#endif
+        }
 
         /**
          * @brief Destroys Property
          * If the property value is a pointer, the object pointed to will NOT be destroyed.
          */
-        virtual ~Property (){};
+        virtual ~Property ()
+        {
+#if !defined(SWIGJAVA)
+            _value.changedEvent().remove(this);
+#endif
+        }
+
+        /**
+         * @brief Returns a reference to the property value.
+         *
+         * @note Changing the value returned by reference will NOT fire the
+         * changed event. Please consider using the setValue function if
+         * possible, or fire the event manually on change, by calling
+         * changedEvent().fire()
+         *
+         * @return reference to the property value.
+         */
+        T& getValue () { return _value.getValue(); }
+
+        /**
+         * @brief Returns a constant reference to the property value.
+         * @return constant reference to the property value.
+         */
+        const T& getValue () const { return _value.getValue(); }
 
         /**
          * @brief returns reference to the property value
          * @return value
          */
-        T& getValue () { return _value; }
+        PropertyValue<T>& getPropertyValue () { return _value; }
 
         /**
          * @brief returns const reference to the property value
          * @return value
          */
-        const T& getValue () const { return _value; }
+        const PropertyValue<T>& getPropertyValue () const { return _value; }
 
         /**
-         * @brief Sets the property value
+         * @brief Sets the property value.
+         *
+         * This function will fire the changed event.
+         *
          * @param value [in] the new value of the Property
          */
-        void setValue (const T& value) { _value = value; }
+        void setValue (const T& value) { _value.setValue(value); }
 
         /**
            @copydoc PropertyBase::clone
@@ -97,11 +133,16 @@ namespace rw { namespace core {
         Property< T >* clone () const
         {
             return new Property< T > (
-                this->getIdentifier (), this->getDescription (), this->getType (), this->_value);
+                this->getIdentifier (), this->getDescription (), this->getType (), this->_value.getValue());
         }
 
       private:
-        T _value;
+          void valueChanged(PropertyValueBase* pbase)
+          {
+              this->changedEvent().fire(this);
+          }
+
+          PropertyValue<T> _value;
     };
 
     /**

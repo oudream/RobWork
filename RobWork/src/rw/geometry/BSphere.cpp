@@ -82,7 +82,7 @@ template< class T > BSphere< T > BSphere< T >::fitEigen (const rw::geometry::Tri
     // max and min values of each axis
     Rotation3D< T > rotInv = inverse (rot);
 
-    Triangle<> t      = tris.getTriangle (0);
+    Triangle< > t      = tris.getTriangle (0);
     Vector3D< T > p   = rotInv * cast< T > (t[0]);
     Vector3D< T > max = p, min = p;
     for (int i = 0; i < nrOfTris; i++) {
@@ -99,14 +99,22 @@ template< class T > BSphere< T > BSphere< T >::fitEigen (const rw::geometry::Tri
     }
 
     // 6. use them to generate OBB
-    // std::cout << "Max-Min: " << (max-min) << std::endl;
-
     // compute halflength of box and its midpoint
+
     Vector3D< T > midPoint   = rot * (0.5 * (max + min));
-    Vector3D< T > halfLength = 0.5 * (max - min);
-    // std::cout << "halflength: " << halfLength << std::endl;
-    // std::cout << "midpoint: " << midPoint << std::endl;
-    // Transform3D<T> trans(midPoint,rot);
-    // std::cout << "Trans mid: " << trans.P() << std::endl;
-    return BSphere< T > (midPoint, halfLength.norm2 ());
+    //Vector3D< T > halfLength = 0.5 * (max - min);
+
+    T halfLength = 0;
+    for(unsigned int i = 0; i < tris.size(); i++){
+        for(unsigned int p = 0; p < 3; p++){
+            Vector3D<T> point(tris.getTriangle(i).getVertex(p).e());
+            if((point-midPoint).norm2() > halfLength){
+                halfLength = (point-midPoint).norm2();
+            }
+        }
+    }
+    return BSphere< T > (midPoint, halfLength);
 }
+
+template class rw::geometry::BSphere< double >;
+template class rw::geometry::BSphere< float >;

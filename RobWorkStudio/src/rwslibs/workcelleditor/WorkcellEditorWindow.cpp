@@ -187,7 +187,15 @@ WorkcellEditorWindow::EditorTab::Ptr WorkcellEditorWindow::makeEditor ()
 
     const int tabStop = 2;    // 2 characters
     QFontMetrics metrics (font);
+#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
+#if QT_VERSION >= QT_VERSION_CHECK(5, 11, 0)
+    etab->_editor->setTabStopDistance (tabStop * metrics.horizontalAdvance (' '));
+#else
+    etab->_editor->setTabStopDistance (tabStop * metrics.width (' '));
+#endif
+#else
     etab->_editor->setTabStopWidth (tabStop * metrics.width (' '));
+#endif
 
     etab->_completer = new WCECompleter (etab->_editor);
     // etab->_completer->setSeparator (QLatin1String ("."));
@@ -778,18 +786,18 @@ QAbstractItemModel* WorkcellEditorWindow::modelFromFile (const QString& fileName
         if (line.isEmpty () || trimmedLine.isEmpty ())
             continue;
 
-        QRegExp re ("^\\s+");
-        int nonws = re.indexIn (line);
+        const QRegularExpression re ("^\\s+");
+        const QRegularExpressionMatch match = re.match(line);
         int level = 0;
-        if (nonws == -1) {
+        if (!match.hasMatch()) {
             level = 0;
         }
         else {
             if (line.startsWith ("\t")) {
-                level = re.cap (0).length ();
+                level = match.capturedLength(0);
             }
             else {
-                level = re.cap (0).length () / 4;
+                level = match.capturedLength(0) / 4;
             }
         }
 

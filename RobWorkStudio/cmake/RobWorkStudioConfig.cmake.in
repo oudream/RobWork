@@ -1,8 +1,8 @@
 # ------------------------------------------------------------------------------------
 # Helper to use RobWork from outside project
 #
-# set ROBWORKSTUDIO_DIR to installation path to find root of sdurw, else automatic finding will be used
-# based on RobWorkStudio_DIR
+# set ROBWORKSTUDIO_DIR to installation path to find root of sdurw, else automatic finding will be
+# used based on RobWorkStudio_DIR
 #
 # ROBWORKSTUDIO_LIBRARIES is filled with all available RobWork libraries ROBWORKSTUDIO_INCLUDE_DIRS
 # is filled with RobWorkStudio and available 3rdparty headers ROBWORKSTUDIO_LIBRARY_DIRS is filled
@@ -15,9 +15,9 @@
 
 if(ROBWORKSTUDIO_FIND_QUIETLY)
     set(QUIET_ QUIET)
-else(ROBWORKSTUDIO_FIND_QUIETLY)
+else()
     set(QUIET_)
-endif(ROBWORKSTUDIO_FIND_QUIETLY)
+endif()
 
 # ############################################# MACROS ########################################
 
@@ -132,168 +132,278 @@ macro(RWS_MESSAGE text)
     endif()
 endmacro()
 
+function(RWS_VERIFY_TARGET __target __result)
+    set(idx -2)
+    set(idx_u -2)
+    if(TARGET ${__target})
+        set(result ${__target})
+        list(FIND varified_targets ${__target} idx)
+        list(FIND ARGN ${__target} idx_u)
+        if(${idx} EQUAL -1 AND ${idx_u} EQUAL -1)
+            # message(STATUS " - ${__target}")
+            set(underprocess ${ARGN} ${result})
+
+            # ######################################################################################
+            # Varifying underlying Binary
+            # ######################################################################################
+            get_target_property(type ${__target} TYPE)
+            if(NOT ("${type}" STREQUAL "INTERFACE_LIBRARY"))
+                get_target_property(out ${__target} IMPORTED_LOCATION_RELEASE)
+                
+                if(NOT EXISTS ${out})
+                    get_target_property(out ${__target} IMPORTED_LOCATION_RELWITHDEBINFO)
+                endif()
+                if(NOT EXISTS ${out})
+                    get_target_property(out ${__target} IMPORTED_LOCATION_DEBUG)
+                endif()
+                if(NOT EXISTS ${out})
+                    get_target_property(out ${__target} IMPORTED_LOCATION_MINSUZEREL)
+                endif()
+                if(NOT EXISTS ${out})
+                    get_target_property(out ${__target} IMPORTED_LOCATION_NONE)
+                endif()
+                if(NOT EXISTS ${out})
+                    get_target_property(out ${__target} IMPORTED_LOCATION)
+                endif()
+                
+                if(NOT EXISTS ${out})
+                    # message(STATUS " - missing binary ${out}")
+                    # message(STATUS " - Target Binary not found: ${__target}")
+                    set(result "")
+                endif()
+            endif()
+
+            # ######################################################################################
+            # Varifying include dirs
+            # ######################################################################################
+            if(result)
+                get_target_property(out ${__target} INTERFACE_INCLUDE_DIRECTORIES)
+                if(out)
+                    foreach(dir ${out})
+
+                        if(NOT EXISTS ${dir})
+                            # message(STATUS " - Include not found: ${dir}")
+                            set(result "")
+                        endif()
+                    endforeach()
+
+                    if(NOT result)
+                        # message(STATUS " - Target Include not found: ${__target}")
+                    endif()
+                endif()
+            endif()
+
+            # ######################################################################################
+            # Varifying dependencies
+            # ######################################################################################
+            if(result)
+                get_target_property(out ${__target} INTERFACE_LINK_LIBRARIES)
+                if(out)
+                    foreach(lib_t ${out})
+                        string(FIND ${lib_t} "\$<" found)
+                        if(${found} EQUAL -1)
+                            string(REPLACE ">" "" lib_t ${lib_t})
+                            rws_verify_library(${lib_t} vaified_lib "${underprocess}")
+                            if("${vaified_lib}" STREQUAL "")
+                                # message(STATUS " - Depend not found: ${lib_t} for ${__target}")
+                                set(result "")
+                            endif()
+                        endif()
+                    endforeach()
+                    if(NOT result)
+                        # message(STATUS " - Target depend not found: ${__target}")
+                    endif()
+                endif()
+            endif()
+
+            # ######################################################################################
+            # Saving Result
+            # ######################################################################################
+            if(NOT ${result} STREQUAL "")
+                set(varified_targets ${varified_targets} ${result})
+                # message(STATUS " - Target varified: ${result}")
+            endif()
+        endif()
+    else()
+        set(${__result} "")
+    endif()
+
+    set(varified_targets
+        ${varified_targets}
+        PARENT_SCOPE
+    )
+    set(${__result}
+        ${result}
+        PARENT_SCOPE
+    )
+endfunction()
+
+function(RWS_VERIFY_LIBRARY _name _result)
+    set(result "")
+    string(REPLACE "${RWS_BUILD_WITH_BUILD_DIR}/libs/${RWS_BUILD_TYPE}" "${RWS_LIBS}" DIRS
+                   "${RWS_BUILD_WITH_LIBRARY_DIRS}"
+    )
+    list(REMOVE_DUPLICATES DIRS)
+
+    unset(tmp CACHE)
+    find_library(
+        tmp
+        NAMES ${_name} lib${_name}
+        PATHS ${DIRS}
+        PATH_SUFFIXES ${RW_BUILD_WITH_LIBRARY_SUBDIRS}
+        NO_DEFAULT_PATH
+    )
+
+    if(${_name} MATCHES "^\\s?-l")
+        set(result ${_name})
+
+    elseif(EXISTS ${_name})
+        set(result ${_name})
+
+    elseif(TARGET ${_name})
+        set(result ${_name})
+        rws_verify_target(${result} result ${ARGN})
+
+    elseif(TARGET RWS::${_name})
+        set(result RWS::${_name})
+
+        rws_verify_target(${result} result ${ARGN})
+
+    elseif(TARGET sdurws_${_name})
+        set(result sdurws_${_name})
+        rws_verify_target(${result} result ${ARGN})
+
+    elseif(TARGET RWS::sdurws_${_name})
+        set(result RWS::sdurws_${_name})
+        rws_verify_target(${result} result ${ARGN})
+
+    elseif(tmp)
+        add_library(RWS::${_name} UNKNOWN IMPORTED)
+        set_target_properties(
+            RWS::${_name} PROPERTIES IMPORTED_LOCATION ${tmp} INTERFACE_INCLUDE_DIRECTORIES
+                                     "${RWS_BUILD_WITH_INCLUDE_DIR}"
+        )
+        set(result "RWS::${_name}")
+    else()
+        unset(tmp)
+        find_library(
+            tmp
+            NAMES ${_name} lib${_name}
+        )
+        if(tmp)
+            add_library(${_name} UNKNOWN IMPORTED)
+            set_target_properties(
+                ${_name} PROPERTIES IMPORTED_LOCATION ${tmp}
+            )
+            set(result "${_name}")
+        endif()
+    endif()
+
+    set(varified_targets
+        ${varified_targets}
+        PARENT_SCOPE
+    )
+    set(${_result}
+        ${result}
+        PARENT_SCOPE
+    )
+    # message(STATUS "verify: ${_name} - ${result}")
+endfunction()
+
 # ##################################################################################################
 
 set(RWSCFG_ROOT ${CMAKE_CURRENT_LIST_DIR})
-
-# check if user specified a RobWorkStudio_DIR
-if(DEFINED RobWorkStudio_DIR)
-    if(EXISTS "${RobWorkStudio_DIR}/../src/RobWorkStudioConfig.hpp")
-        # Found RobWorkStudio in a build tree of RobWork
-        set(RWSCFG_ROOT "${RobWorkStudio_DIR}")
-    elseif(EXISTS "${RobWorkStudio_DIR}/RobWorkStudioConfig.cmake")
-        # Found a RobWorkStudio installation
-        set(RWSCFG_ROOT "${RobWorkStudio_DIR}")
-    elseif(
-        EXISTS
-        "${RobWorkStudio_DIR}/include/robworkstudio-${RobWorkStudio_VERSION_MAJOR}.${RobWorkStudio_VERSION_MINOR}/RobWorkStudioConfig.hpp"
-    )
-        set(RWSCFG_ROOT
-            "${RobWorkStudio_DIR}/share/robworkstudio-${RobWorkStudio_VERSION_MAJOR}.${RobWorkStudio_VERSION_MINOR}"
-        )
-    else()
-        # found no RobWorkStudio installation ot build tree in RobWorkStudio_DIR so we try
-        # extracting it from RobWorkStudioConfig.cmake location instead
-    endif()
-    get_filename_component(RWSCFG_ROOT ${RWSCFG_ROOT} ABSOLUTE)
-endif()
 
 # get the relavant build type
 get_robworkstudio_build_type(${RWSCFG_ROOT} RWS_BUILD_TYPE)
 
 if(NOT TARGET sdurws)
     include("${RWSCFG_ROOT}/RobWorkStudioTargets.cmake")
-endif()
 
-# check whether RobWorkConfig.cmake is found into a RobWork installation or in a build tree
-if(EXISTS "${RWSCFG_ROOT}/../src/RobWorkStudioConfig.hpp")
-    # Found RobWorkConfig.cmake in a build tree of RobWork
-    set(succmsg "RobWorkStudio: Found a RobWorkStudio build tree")
-    set(RWS_ROOT "${RWSCFG_ROOT}/..")
-
-    set(RWS_INCLUDE_EXT "${RWS_ROOT}/ext")
-    set(RWS_INCLUDE_SRC "${RWS_ROOT}/src")
-    set(RWS_LIBS "${RWS_ROOT}/libs/${RWS_BUILD_TYPE}")
-    set(IS_INSTALL FALSE)
-else()
-    set(succmsg "RobWorkStudio: Found a RobWorkStudio installation")
-    set(IS_INSTALL TRUE)
-    # Found a RobWork installation
-    if(WIN32)
-        # RobWorkConfig.cmake is installed to RWS_ROOT/robworkstudio_MAJOR_MINOR/cmake
-        set(RWS_ROOT "${RWSCFG_ROOT}/../..")
-        set(RWS_INCLUDE_EXT "${RWS_ROOT}/../ext")
-        set(RWS_INCLUDE_SRC "${RWS_ROOT}/include/robworkstudio-${RobWorkStudio_VERSION_MAJOR}.${RobWorkStudio_VERSION_MINOR}")
-        set(RWS_LIBS "${RWS_ROOT}/lib")
-    else()
-        # RobWorkConfig.cmake is installed to RWS_INTALL/share/robworkstudio-x.y
-
-        set(RWS_ROOT "${RWSCFG_ROOT}")
-        set(RWS_INSTALL "${RWSCFG_ROOT}/../../..")
-        set(RWS_LIBS "${RWS_INSTALL}/lib")
-        set(
-            RWS_INCLUDE_SRC
-            "${RWS_INSTALL}/include/robworkstudio-${RobWorkStudio_VERSION_MAJOR}.${RobWorkStudio_VERSION_MINOR}"
-        )
-        set(
-            RWS_INCLUDE_EXT
-            "${RWS_INSTALL}/share/robworkstudio-${RobWorkStudio_VERSION_MAJOR}.${RobWorkStudio_VERSION_MINOR}/ext"
-        )
+    if(EXISTS "${RWSCFG_ROOT}/RobWorkStudioluaTargets.cmake")
+        include("${RWSCFG_ROOT}/RobWorkStudioluaTargets.cmake")
+    endif()
+    if(EXISTS "${RWSCFG_ROOT}/RobWorkStudiojavaTargets.cmake")
+        include("${RWSCFG_ROOT}/RobWorkStudiojavaTargets.cmake")
+    endif()
+    if(EXISTS "${RWSCFG_ROOT}/RobWorkStudiopythonTargets.cmake")
+        include("${RWSCFG_ROOT}/RobWorkStudiopythonTargets.cmake")
     endif()
 endif()
 
-include(${RWSCFG_ROOT}/RobWorkStudioMacros.cmake)
-
-# ##################################################################################################
-# now RWS_ROOT and RWSCFG_ROOT is set. Lets extract the stuff needed to run a project
-
-# next get the build configuration of the requested built type
 if(EXISTS ${RWSCFG_ROOT}/RobWorkStudioBuildConfig_${RWS_BUILD_TYPE}.cmake)
     include(${RWSCFG_ROOT}/RobWorkStudioBuildConfig_${RWS_BUILD_TYPE}.cmake)
 
-    set(BOOST_ROOT ${RWS_BUILD_WITH_BOOST_ROOT})
-    set(BOOST_INCLUDEDIR ${RWS_BUILD_WITH_BOOST_INCLUDE_DIR})
-    set(BOOST_LIBRARYDIR ${RWS_BUILD_WITH_BOOST_LIBRARY_DIR})
+    # check whether RobWorkConfig.cmake is found into a RobWork installation or in a build tree
+    if(EXISTS "${RWSCFG_ROOT}/../src/RobWorkStudioConfig.hpp")
+        # Found RobWorkConfig.cmake in a build tree of RobWork
+        set(succmsg "RobWorkStudio: Found a RobWorkStudio build tree")
+        set(RWS_ROOT "${RWSCFG_ROOT}/..")
 
-    if(DEFINED WIN32 AND ${IS_INSTALL})
-        set(BOOST_INCLUDEDIR "${RW_INCLUDE_EXT}/boost")
-        set(BOOST_LIBRARYDIR "${RW_LIBS}")
-    endif()
-
-    # Find libraries
-    set(ROBWORKSTUDIO_LIBRARIES_TMP)
-    foreach(lib IN LISTS RWS_BUILD_WITH_LIBRARIES)
-        unset(FOUND CACHE)
-        find_library(
-            FOUND ${lib}
-            PATHS ${RWS_LIBS}
-            PATH_SUFFIXES ${RWS_BUILD_WITH_LIBRARY_SUBDIRS}
-            NO_DEFAULT_PATH
-        )
-        if(FOUND)
-            list(APPEND ROBWORKSTUDIO_LIBRARIES_TMP "${lib}")
-            rws_message("Looking for ${lib} - found")
+        set(RWS_INCLUDE_EXT "${RWS_ROOT}/ext")
+        set(RWS_INCLUDE_SRC "${RWS_ROOT}/src")
+        set(RWS_LIBS "${RWS_BUILD_WITH_BUILD_DIR}/libs/${RWS_BUILD_TYPE}")
+        set(IS_INSTALL FALSE)
+    else()
+        set(succmsg "RobWorkStudio: Found a RobWorkStudio installation")
+        set(IS_INSTALL TRUE)
+        # Found a RobWork installation
+        if(WIN32)
+            # RobWorkConfig.cmake is installed to RWS_ROOT/robworkstudio_MAJOR_MINOR/cmake
+            set(RWS_ROOT "${RWSCFG_ROOT}/../..")
+            set(RWS_INCLUDE_EXT "${RWS_ROOT}/../ext")
+            set(RWS_INCLUDE_SRC
+                "${RWS_ROOT}/include/robworkstudio-${RobWorkStudio_VERSION_MAJOR}.${RobWorkStudio_VERSION_MINOR}"
+            )
+            set(RWS_LIBS "${RWS_ROOT}/lib")
         else()
-            if(${lib} STREQUAL "sdurws")
-                list(APPEND ROBWORKSTUDIO_LIBRARIES_TMP "${lib}")
-                rws_message("Looking for ${lib} - not found")
-            else()
-                rws_message("Looking for ${lib} - not found (ignored)")
-            endif()
+            # RobWorkConfig.cmake is installed to RWS_INTALL/share/robworkstudio-x.y
+
+            set(RWS_ROOT "${RWSCFG_ROOT}")
+            set(RWS_INSTALL "${RWSCFG_ROOT}/../../..")
+            set(RWS_LIBS "${RWS_INSTALL}/lib")
+            set(RWS_INCLUDE_SRC
+                "${RWS_INSTALL}/include/robworkstudio-${RobWorkStudio_VERSION_MAJOR}.${RobWorkStudio_VERSION_MINOR}"
+            )
+            set(RWS_INCLUDE_EXT
+                "${RWS_INSTALL}/share/robworkstudio-${RobWorkStudio_VERSION_MAJOR}.${RobWorkStudio_VERSION_MINOR}/ext"
+            )
         endif()
-    endforeach()
-
-    # Set extra compiler flags. The user should be able to change this
-    set(RWS_CXX_FLAGS ${RWS_BUILD_WITH_CXX_FLAGS} CACHE STRING "Change this to force using your own
-                    flags and not those of RobWorkStudio")
-    set(
-        RWS_DEFINITIONS
-        ${RWS_BUILD_WITH_DEFINITIONS}
-        CACHE STRING "Change this to force using your own
-                    definitions and not those of RobWork"
-    )
-    add_definitions(${RWS_DEFINITIONS})
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${RWS_CXX_FLAGS}")
-
-    # Set extra linker flags. The user should be able to change this
-    set(
-        RWS_LINKER_FLAGS
-        ${RWS_BUILD_WITH_LINKER_FLAGS}
-        CACHE STRING "Change this to force using your own linker
-                    flags and not those of RobWork"
-    )
-    set(
-        CMAKE_SHARED_LINKER_FLAGS
-        "${CMAKE_SHARED_LINKER_FLAGS} ${RWS_LINKER_FLAGS}"
-        CACHE STRING "" FORCE
-    )
-    set(
-        CMAKE_MODULE_LINKER_FLAGS
-        "${CMAKE_MODULE_LINKER_FLAGS} ${RWS_LINKER_FLAGS}"
-        CACHE STRING "" FORCE
-    )
-    if(WIN32)
-        set(
-            CMAKE_EXE_LINKER_FLAGS
-            "${CMAKE_EXE_LINKER_FLAGS} ${RWS_LINKER_FLAGS}"
-            CACHE STRING "" FORCE
-        )
     endif()
 
-
+    include(${RWSCFG_ROOT}/RobWorkStudioMacros.cmake)
     cmake_minimum_required(VERSION 3.5.1)
     set(CMAKE_MODULE_PATH ${RWSCFG_ROOT}/Modules ${CMAKE_MODULE_PATH})
-    
-    find_package(Qt5Core REQUIRED)
-    find_package(Qt5Gui REQUIRED)
-    find_package(Qt5Widgets REQUIRED)
-    find_package(Qt5OpenGL REQUIRED)
-    get_target_property(QT_UIC_EXECUTABLE Qt5::uic LOCATION)
-    set(QT_LIBRARIES ${Qt5Core_LIBRARIES} ${Qt5Gui_LIBRARIES} ${Qt5Widgets_LIBRARIES}
-                     ${Qt5OpenGL_LIBRARIES})
-    set(QT_INCLUDES ${Qt5Core_INCLUDE_DIRS} ${Qt5Gui_INCLUDE_DIRS} ${Qt5Widgets_INCLUDE_DIRS}
-                    ${Qt5OpenGL_INCLUDE_DIRS})
-    # include_directories(${QT_INCLUDES})
+
+    # ##############################################################################################
+    # Find Dependencies
+    find_package(
+        Qt6
+        COMPONENTS Core Gui Widgets OpenGL OpenGLWidgets
+        QUIET
+    )
+    if(Qt6Core_FOUND
+       AND Qt6Gui_FOUND
+       AND Qt6Widgets_FOUND
+       AND Qt6OpenGL_FOUND
+       AND Qt6OpenGLWidgets_FOUND
+    )
+        set(QT_LIBRARIES ${Qt6Core_LIBRARIES} ${Qt6Gui_LIBRARIES} ${Qt6Widgets_LIBRARIES}
+                         ${Qt6OpenGL_LIBRARIES} ${Qt6OpenGLWidgets_LIBRARIES}
+        )
+    else()
+        find_package(Qt5Core 5.5.1 REQUIRED)
+        find_package(Qt5Gui 5.5.1 REQUIRED)
+        find_package(Qt5Widgets 5.5.1 REQUIRED)
+        find_package(Qt5OpenGL 5.5.1 REQUIRED)
+        get_target_property(QT_UIC_EXECUTABLE Qt5::uic LOCATION)
+        set(QT_LIBRARIES ${Qt5Core_LIBRARIES} ${Qt5Gui_LIBRARIES} ${Qt5Widgets_LIBRARIES}
+                         ${Qt5OpenGL_LIBRARIES}
+        )
+        set(QT_INCLUDES ${Qt5Core_INCLUDE_DIRS} ${Qt5Gui_INCLUDE_DIRS} ${Qt5Widgets_INCLUDE_DIRS}
+                        ${Qt5OpenGL_INCLUDE_DIRS}
+        )
+    endif()
 
     # Find and setup OpenGL.
     if(POLICY CMP0072) # Introduce cmake 3.11
@@ -317,7 +427,7 @@ if(EXISTS ${RWSCFG_ROOT}/RobWorkStudioBuildConfig_${RWS_BUILD_TYPE}.cmake)
         else()
             set(RobWork_FOUND FALSE)
         endif()
-        
+
         if(NOT ${RobWork_FOUND})
             find_package(RobWork REQUIRED HINTS ${RWS_BUILD_WITH_RW_ROOT}/cmake)
         endif()
@@ -325,24 +435,96 @@ if(EXISTS ${RWSCFG_ROOT}/RobWorkStudioBuildConfig_${RWS_BUILD_TYPE}.cmake)
         message(STATUS "RobWork Already Found")
     endif()
 
+    # ##############################################################################################
+    # now RWS_ROOT and RWSCFG_ROOT is set. Lets extract the stuff needed to run a project
+
+    # next get the build configuration of the requested built type
+
+    # Find libraries
+    set(ROBWORKSTUDIO_LIBRARIES_TMP)
+
+    foreach(
+        lib
+        IN
+        LISTS RWS_BUILD_WITH_LIBRARIES
+    )
+        unset(res)
+        rws_verify_library(${lib} res)
+
+        if(NOT "${res}" STREQUAL "")
+            list(APPEND ROBWORKSTUDIO_LIBRARIES_TMP "${res}")
+            rws_message("Looking for ${lib} - found")
+        else()
+            if(${lib} STREQUAL "sdurws")
+                list(APPEND ROBWORKSTUDIO_LIBRARIES_TMP "RWS::${lib}")
+                message(FATAL_ERROR "Looking for ${lib} - not found" )
+            else()
+                rws_message("Looking for ${lib} - not found (ignored)")
+            endif()
+
+        endif()
+    endforeach()
+
+    set(BOOST_ROOT ${RWS_BUILD_WITH_BOOST_ROOT})
+    set(BOOST_INCLUDEDIR ${RWS_BUILD_WITH_BOOST_INCLUDE_DIR})
+    set(BOOST_LIBRARYDIR ${RWS_BUILD_WITH_BOOST_LIBRARY_DIR})
+
+    if(DEFINED WIN32 AND ${IS_INSTALL})
+        set(BOOST_INCLUDEDIR "${RW_INCLUDE_EXT}/boost")
+        set(BOOST_LIBRARYDIR "${RW_LIBS}")
+    endif()
+
+    # Set extra compiler flags. The user should be able to change this
+    set(RWS_CXX_FLAGS
+        ${RWS_BUILD_WITH_CXX_FLAGS}
+        CACHE STRING "Change this to force using your own
+                    flags and not those of RobWorkStudio"
+    )
+    set(RWS_DEFINITIONS
+        ${RWS_BUILD_WITH_DEFINITIONS}
+        CACHE STRING "Change this to force using your own
+                    definitions and not those of RobWork"
+    )
+    add_definitions(${RWS_DEFINITIONS})
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${RWS_CXX_FLAGS}")
+
+    # Set extra linker flags. The user should be able to change this
+    set(RWS_LINKER_FLAGS
+        ${RWS_BUILD_WITH_LINKER_FLAGS}
+        CACHE STRING "Change this to force using your own linker
+                    flags and not those of RobWork"
+    )
+    set(CMAKE_SHARED_LINKER_FLAGS
+        "${CMAKE_SHARED_LINKER_FLAGS} ${RWS_LINKER_FLAGS}"
+        CACHE STRING "" FORCE
+    )
+    set(CMAKE_MODULE_LINKER_FLAGS
+        "${CMAKE_MODULE_LINKER_FLAGS} ${RWS_LINKER_FLAGS}"
+        CACHE STRING "" FORCE
+    )
+    if(WIN32)
+        set(CMAKE_EXE_LINKER_FLAGS
+            "${CMAKE_EXE_LINKER_FLAGS} ${RWS_LINKER_FLAGS}"
+            CACHE STRING "" FORCE
+        )
+    endif()
+
     set(ROBWORKSTUDIO_BUILD_PATH "${RWS_BUILD_WITH_RWS_ROOT}")
     set(ROBWORKSTUDIO_INCLUDE_DIRS_TMP "${PYTHON_INCLUDE_DIRS}" "${RWS_BUILD_WITH_INCLUDE_DIR}"
-                                       "${ROBWORK_INCLUDE_DIR}")
+                                       "${ROBWORK_INCLUDE_DIR}"
+    )
     set(ROBWORKSTUDIO_LIBRARY_DIRS_TMP "${RWS_BUILD_WITH_LIBRARY_DIRS}" "${ROBWORK_LIBRARY_DIRS}")
     set(ROBWORKSTUDIO_LIBRARIES "${ROBWORKSTUDIO_LIBRARIES_TMP}" "${ROBWORK_LIBRARIES}"
-                                "${RWS_BUILD_WITH_LIB_DEPEND}" "${PYTHON_LIBRARIES}")
+                                "${RWS_BUILD_WITH_LIB_DEPEND}" "${PYTHON_LIBRARIES}"
+    )
     list(REMOVE_DUPLICATES ROBWORKSTUDIO_LIBRARIES)
 
     # make sure that the library and include paths are pointing to the right locations
-    string(
-        REPLACE
-            "${ROBWORKSTUDIO_BUILD_PATH}/ext" "${RWS_INCLUDE_EXT}" ROBWORKSTUDIO_INCLUDE_DIRS
-            "${ROBWORKSTUDIO_INCLUDE_DIRS_TMP}"
+    string(REPLACE "${ROBWORKSTUDIO_BUILD_PATH}/ext" "${RWS_INCLUDE_EXT}"
+                   ROBWORKSTUDIO_INCLUDE_DIRS "${ROBWORKSTUDIO_INCLUDE_DIRS_TMP}"
     )
-    string(
-        REPLACE
-            "${ROBWORKSTUDIO_BUILD_PATH}/src" "${RWS_INCLUDE_SRC}" ROBWORKSTUDIO_INCLUDE_DIRS
-            "${ROBWORKSTUDIO_INCLUDE_DIRS}"
+    string(REPLACE "${ROBWORKSTUDIO_BUILD_PATH}/src" "${RWS_INCLUDE_SRC}"
+                   ROBWORKSTUDIO_INCLUDE_DIRS "${ROBWORKSTUDIO_INCLUDE_DIRS}"
     )
     if(WIN32)
         list(APPEND ROBWORKSTUDIO_INCLUDE_DIRS "${RWS_INCLUDE_EXT}")
@@ -350,51 +532,46 @@ if(EXISTS ${RWSCFG_ROOT}/RobWorkStudioBuildConfig_${RWS_BUILD_TYPE}.cmake)
 
     list(REMOVE_DUPLICATES ROBWORKSTUDIO_INCLUDE_DIRS)
 
-    string(
-        REPLACE
-            "${ROBWORKSTUDIO_BUILD_PATH}/libs/${RWS_BUILD_TYPE}" "${RWS_LIBS}"
-            ROBWORKSTUDIO_LIBRARY_DIRS "${RWS_BUILD_WITH_LIBRARY_DIRS}"
+    string(REPLACE "${ROBWORKSTUDIO_BUILD_PATH}/libs/${RWS_BUILD_TYPE}" "${RWS_LIBS}"
+                   ROBWORKSTUDIO_LIBRARY_DIRS "${RWS_BUILD_WITH_LIBRARY_DIRS}"
     )
     if(${IS_INSTALL} AND DEFINED WIN32)
         string(REPLACE "${RWS_BUILD_WITH_BOOST_LIBRARY_DIR}/" "" ROBWORKSTUDIO_LIBRARIES
-                    "${ROBWORKSTUDIO_LIBRARIES}"
+                       "${ROBWORKSTUDIO_LIBRARIES}"
         )
     endif()
     list(REMOVE_DUPLICATES ROBWORKSTUDIO_LIBRARY_DIRS)
+
+    if(RWS_SDURWS_CREATED)
+        target_include_directories(RWS::sdurws INTERFACE "${ROBWORKSTUDIO_INCLUDE_DIRS}")
+    endif()
 
     # Find and add full path information for the RobWorkStudio libraries
     set(ROBWORKSTUDIO_LIBRARIES_TMP ${ROBWORKSTUDIO_LIBRARIES})
     set(ROBWORKSTUDIO_LIBRARIES)
     foreach(l ${ROBWORKSTUDIO_LIBRARIES_TMP})
-        unset(tmp CACHE)
-        find_library(
-            tmp ${l}
-            PATHS ${RWS_LIBS} ${RW_LIBS}
-            PATH_SUFFIXES ${RWS_BUILD_WITH_LIBRARY_SUBDIRS}
-            NO_DEFAULT_PATH
-        )
-        if(tmp)
-            list(APPEND ROBWORKSTUDIO_LIBRARIES ${tmp})
+        unset(res)
+        rws_verify_library(${l} res)
+        if("${res}" STREQUAL "")
+            list(APPEND ROBWORKSTUDIO_LIBRARIES "${l}")
         else()
-            list(APPEND ROBWORKSTUDIO_LIBRARIES ${l})
+            list(APPEND ROBWORKSTUDIO_LIBRARIES "${res}")
         endif()
-    endforeach(l)
-
+    endforeach()
 else()
     message(STATUS "RobWorkStudio: Could not find a suitable RobWorkStudio installation!")
 endif()
 
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(
-    RobWorkStudio
-    "Found RobWorkStudio-Version ${RobWorkStudio_VERSION}"
-    RWS_ROOT
-    ROBWORKSTUDIO_LIBRARIES
-    ROBWORKSTUDIO_INCLUDE_DIRS
-    ROBWORKSTUDIO_LIBRARY_DIRS
+    RobWorkStudio "Found RobWorkStudio-Version ${RobWorkStudio_VERSION}" RWS_ROOT
+    ROBWORKSTUDIO_LIBRARIES ROBWORKSTUDIO_INCLUDE_DIRS ROBWORKSTUDIO_LIBRARY_DIRS
 )
 mark_as_advanced(ROBWORKSTUDIO_LIBRARIES ROBWORKSTUDIO_INCLUDE_DIRS ROBWORKSTUDIO_LIBRARY_DIRS)
 
 if(ROBWORKSTUDIO_FOUND)
-    set(ROBWORKSTUDIO_VERSION ${RobWorkStudio_VERSION} CACHE STRING "RobWorkStudio version")
+    set(ROBWORKSTUDIO_VERSION
+        ${RobWorkStudio_VERSION}
+        CACHE STRING "RobWorkStudio version"
+    )
 endif(ROBWORKSTUDIO_FOUND)

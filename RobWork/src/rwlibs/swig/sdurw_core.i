@@ -79,6 +79,9 @@ SWIG_JAVABODY_TYPEWRAPPER(public, public, public, SWIGTYPE)
     OWNEDPTR(ownedPtr_type);
 %enddef
 
+#if defined(SWIGPYTHON)
+%ignore rw::core::AnyPtr::operator=;
+#endif
 %{
     #include <rw/core/AnyPtr.hpp>
 %}
@@ -188,6 +191,17 @@ NAMED_OWNEDPTR(LogWriter, rw::core::LogWriter);
 NAMED_OWNEDPTR(Plugin, rw::core::Plugin);
 
 %{
+    #include <rw/core/PropertyValue.hpp>
+%}
+%include <rw/core/PropertyValue.hpp>
+
+%{
+    #include <rw/core/PropertyValueBase.hpp>
+%}
+%include <rw/core/PropertyValueBase.hpp>
+NAMED_OWNEDPTR(PropertyValueBase, rw::core::PropertyValueBase);
+
+%{
     #include <rw/core/Property.hpp>
 %}
 %include <rw/core/Property.hpp>
@@ -246,3 +260,167 @@ NAMED_OWNEDPTR(RobWork, rw::core::RobWork);
 %}
 %include <rw/core/StringUtil.hpp>
 
+/********************************************
+ * LUA functions
+ ********************************************/
+
+
+#if defined (SWIGLUA)
+%luacode {
+
+-- Group: Lua functions
+-- Var: print_to_log
+print_to_log = true
+
+-- Var: overrides the global print function
+local global_print = print
+
+-- Function: print
+--  Forwards the global print functions to the sdurw.print functions
+--  whenever print_to_log is defined.
+function print(...)
+    if print_to_log then
+        for i, v in ipairs{...} do
+            if i > 1 then rw.writelog("\t") end
+            sdurw.writelog(tostring(v))
+        end
+        sdurw.writelog('\n')
+    else
+        global_print(...)
+    end
+end
+
+-- Function:
+function reflect( mytableArg )
+ local mytable
+ if not mytableArg then
+  mytable = _G
+ else
+  mytable = mytableArg
+ end
+   local a = {} -- all functions
+   local b = {} -- all Objects/Tables
+
+ if type(mytable)=="userdata" then
+   -- this is a SWIG generated user data, show functions and stuff
+   local m = getmetatable( mytable )
+   for key,value in pairs( m['.fn'] ) do
+      if (key:sub(0, 2)=="__") or (key:sub(0, 1)==".") then
+          table.insert(b, key)
+      else
+          table.insert(a, key)
+      end
+   end
+   table.sort(a)
+   table.sort(b)
+   print("Object type: \n  " .. m['.type'])
+
+   print("Member Functions:")
+   for i,n in ipairs(a) do print("  " .. n .. "(...)") end
+   for i,n in ipairs(b) do print("  " .. n .. "(...)") end
+
+ else
+   local c = {} -- all constants
+   for key,value in pairs( mytable ) do
+      -- print(type(value))
+      if (type(value)=="function") then
+          table.insert(a, key)
+      elseif (type(value)=="number") then
+          table.insert(c, key)
+      else
+          table.insert(b, key)
+      end
+   end
+   table.sort(a)
+   table.sort(b)
+   table.sort(c)
+   print("Object type: \n  " .. "Table")
+
+   print("Functions:")
+   for i,n in ipairs(a) do print("  " .. n .. "(...)") end
+   print("Constants:")
+   for i,n in ipairs(c) do print("  " .. n) end
+   print("Misc:")
+   for i,n in ipairs(b) do print("  " .. n) end
+
+
+--  print("Metatable:")
+--  for key,value in pairs( getmetatable(mytable) ) do
+--      print(key);
+--      print(value);
+--  end
+
+ end
+ end
+
+function help( mytable )
+   reflect( mytable )
+end
+
+local used_ns = {}
+
+function using(ns)
+  local ns_found = false
+  local ns_name;
+  local ns_val;
+  for n,v in pairs(_G) do
+    if n == ns then
+      ns_found = true
+      ns_name = n
+      ns_val = v
+      break
+    end
+  end
+  if not ns_found then
+    error("Unknown table: " .. ns)
+  else
+    if used_ns[ns_name] == nil then
+      used_ns[ns_name] = ns_val
+      for n,v in pairs(ns_val) do
+        if n ~= "string" and n ~= "ownedPtr" then
+          if _G[n] ~= nil then
+            print("name clash: " .. n .. " is already defined")
+          else
+            _G[n] = v
+          end
+        end
+      end
+    end
+  end
+end
+
+function ownedPtr(arg)
+  local found = false
+  for ns_n,ns_v in pairs(used_ns) do
+    for n,v in pairs(ns_v) do
+      if type(v) ~= "function" and type(v) ~= "number" then
+        if string.len(n) >= 4 then
+          if string.sub(n, -3) == "Ptr" then
+            if getmetatable(arg)[".type"] .. "Ptr" == n then
+              return ns_v.ownedPtr(arg)
+            end
+          end
+        end
+      end
+    end
+  end
+end
+
+function ownedCPtr(arg)
+  local found = false
+  for ns_n,ns_v in pairs(used_ns) do
+    for n,v in pairs(ns_v) do
+      if type(v) ~= "function" and type(v) ~= "number" then
+        if string.len(n) >= 5 then
+          if string.sub(n, -4) == "CPtr" then
+            if getmetatable(arg)[".type"] .. "CPtr" == n then
+              return ns_v.ownedCPtr(arg)
+            end
+          end
+        end
+      end
+    end
+  end
+end
+}
+#endif

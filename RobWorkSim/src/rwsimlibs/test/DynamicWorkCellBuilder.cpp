@@ -87,7 +87,7 @@ void DynamicWorkCellBuilder::addPlane (const DynamicWorkCell::Ptr dwc,
 {
     const WorkCell::Ptr wc = dwc->getWorkcell ();
 
-    FixedFrame* const frame = new FixedFrame (name, Transform3D<>::identity ());
+    FixedFrame::Ptr const frame = ownedPtr(new FixedFrame (name, Transform3D<>::identity ()));
     wc->addFrame (frame, wc->getWorldFrame ());
 
     const Plane::Ptr geoData = ownedPtr (new Plane (n, d));
@@ -96,7 +96,7 @@ void DynamicWorkCellBuilder::addPlane (const DynamicWorkCell::Ptr dwc,
         geo = ownedPtr (new Geometry (geoData->createMesh (0, 5), name));
     else
         geo = ownedPtr (new Geometry (geoData, name));
-    const RigidObject::Ptr robject = ownedPtr (new RigidObject (frame));
+    const RigidObject::Ptr robject = ownedPtr (new RigidObject (frame.get()));
     robject->addGeometry (geo);
 
     const Model3D::Material material (
@@ -117,15 +117,15 @@ void DynamicWorkCellBuilder::addBall (const DynamicWorkCell::Ptr dwc, const doub
 {
     const WorkCell::Ptr wc = dwc->getWorkcell ();
 
-    Frame* const parentFrame = wc->findFrame (parent);
+    Frame::Ptr const parentFrame = wc->findFrame (parent);
     if (parentFrame == NULL)
         RW_THROW ("The given parent frame \"" << parent << "\"does not exist!");
-    MovableFrame* const frame = new MovableFrame (name);
+    MovableFrame::Ptr const frame = ownedPtr(new MovableFrame (name));
     wc->addFrame (frame, parentFrame);
 
     const GeometryData::Ptr geoData = ownedPtr (new Sphere (radius, 6));
     Geometry::Ptr geo               = ownedPtr (new Geometry (geoData, "Sphere"));
-    const RigidObject::Ptr robject  = ownedPtr (new RigidObject (frame));
+    const RigidObject::Ptr robject  = ownedPtr (new RigidObject (frame.get()));
     robject->addGeometry (geo);
 
     const Model3D::Material material ("BallMaterial",
@@ -150,15 +150,15 @@ void DynamicWorkCellBuilder::addBallFixed (const DynamicWorkCell::Ptr dwc, const
 {
     const WorkCell::Ptr wc = dwc->getWorkcell ();
 
-    Frame* const parentFrame = wc->findFrame (parent);
+    Frame::Ptr const parentFrame = wc->findFrame (parent);
     if (parentFrame == NULL)
         RW_THROW ("The given parent frame \"" << parent << "\"does not exist!");
-    FixedFrame* const frame = new FixedFrame (name, Transform3D<> ());
+    FixedFrame::Ptr const frame = ownedPtr(new FixedFrame (name, Transform3D<> ()));
     wc->addFrame (frame, parentFrame);
 
     const GeometryData::Ptr geoData = ownedPtr (new Sphere (radius, 6));
     Geometry::Ptr geo               = ownedPtr (new Geometry (geoData, "Sphere"));
-    const RigidObject::Ptr robject  = ownedPtr (new RigidObject (frame));
+    const RigidObject::Ptr robject  = ownedPtr (new RigidObject (frame.get()));
     robject->addGeometry (geo);
 
     const Model3D::Material material (
@@ -182,10 +182,10 @@ void DynamicWorkCellBuilder::addCylinder (const DynamicWorkCell::Ptr dwc, const 
 {
     const WorkCell::Ptr wc = dwc->getWorkcell ();
 
-    Frame* const parentFrame = wc->findFrame (parent);
+    Frame::Ptr const parentFrame = wc->findFrame (parent);
     if (parentFrame == NULL)
         RW_THROW ("The given parent frame \"" << parent << "\"does not exist!");
-    MovableFrame* const frame = new MovableFrame (name);
+    MovableFrame::Ptr const frame = ownedPtr(new MovableFrame (name));
     wc->addFrame (frame, parentFrame);
 
     GeometryData::Ptr geoData =
@@ -193,7 +193,7 @@ void DynamicWorkCellBuilder::addCylinder (const DynamicWorkCell::Ptr dwc, const 
     if (trimesh)
         geoData = geoData->getTriMesh (true);
     Geometry::Ptr geo              = ownedPtr (new Geometry (geoData, "Cylinder"));
-    const RigidObject::Ptr robject = ownedPtr (new RigidObject (frame));
+    const RigidObject::Ptr robject = ownedPtr (new RigidObject (frame.get()));
     robject->addGeometry (geo);
 
     const Model3D::Material material ("CylinderMaterial",
@@ -222,7 +222,7 @@ void DynamicWorkCellBuilder::addCylinderFixed (const DynamicWorkCell::Ptr dwc, c
     Frame* const parentFrame = wc->findFrame (parent);
     if (parentFrame == NULL)
         RW_THROW ("The given parent frame \"" << parent << "\"does not exist!");
-    FixedFrame* const frame = new FixedFrame (name, Transform3D<> ());
+    FixedFrame::Ptr const frame = ownedPtr(new FixedFrame (name, Transform3D<> ()));
     wc->addFrame (frame, parentFrame);
 
     GeometryData::Ptr geoData =
@@ -230,7 +230,7 @@ void DynamicWorkCellBuilder::addCylinderFixed (const DynamicWorkCell::Ptr dwc, c
     if (trimesh)
         geoData = geoData->getTriMesh (true);
     Geometry::Ptr geo              = ownedPtr (new Geometry (geoData, "Cylinder"));
-    const RigidObject::Ptr robject = ownedPtr (new RigidObject (frame));
+    const RigidObject::Ptr robject = ownedPtr (new RigidObject (frame.get()));
     robject->addGeometry (geo);
 
     const Model3D::Material material ("CylinderMaterial",
@@ -256,7 +256,7 @@ void DynamicWorkCellBuilder::addTube (const DynamicWorkCell::Ptr dwc, const doub
 {
     const WorkCell::Ptr wc = dwc->getWorkcell ();
 
-    MovableFrame* const frame = new MovableFrame (name);
+    MovableFrame::Ptr const frame = ownedPtr(new MovableFrame (name));
     wc->addFrame (frame, wc->getWorldFrame ());
 
     GeometryData::Ptr geoData = ownedPtr (new Tube (static_cast< float > (radius),
@@ -265,7 +265,7 @@ void DynamicWorkCellBuilder::addTube (const DynamicWorkCell::Ptr dwc, const doub
     if (trimesh)
         geoData = geoData->getTriMesh (true);
     Geometry::Ptr geo              = ownedPtr (new Geometry (geoData, "Tube"));
-    const RigidObject::Ptr robject = ownedPtr (new RigidObject (frame));
+    const RigidObject::Ptr robject = ownedPtr (new RigidObject (frame.get()));
     robject->addGeometry (geo);
 
     const Model3D::Material material ("TubeMaterial",
@@ -291,14 +291,14 @@ void DynamicWorkCellBuilder::addBox (const DynamicWorkCell::Ptr dwc, const doubl
 {
     const WorkCell::Ptr wc = dwc->getWorkcell ();
 
-    MovableFrame* const frame = new MovableFrame (name);
+    MovableFrame::Ptr const frame = ownedPtr(new MovableFrame (name));
     wc->addFrame (frame, wc->getWorldFrame ());
 
     GeometryData::Ptr geoData = ownedPtr (new Box (x, y, z));
     if (trimesh)
         geoData = geoData->getTriMesh (true);
     Geometry::Ptr geo              = ownedPtr (new Geometry (geoData, "Box"));
-    const RigidObject::Ptr robject = ownedPtr (new RigidObject (frame));
+    const RigidObject::Ptr robject = ownedPtr (new RigidObject (frame.get()));
     robject->addGeometry (geo);
 
     const Model3D::Material material ("BoxMaterial",

@@ -1,6 +1,6 @@
 package org.robwork.sdurwsim;
 
-import org.robwork.sdurw.State;
+import org.robwork.sdurw_kinematics.State;
 import org.robwork.sdurwsim.ThreadSimulatorStepCallbackEnv;
 
 /**

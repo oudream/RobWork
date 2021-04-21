@@ -32,7 +32,7 @@ Se Sphinx documentation, this is remaning Doxygen documentation not yet moved to
 
 ## RobWorkStudio specific frame properties ## {#sec_rws_properties}
 
-Through generic properties in the XML and TUL workcell file format, RobWork allows
+Through generic properties in the XML workcell file format, RobWork allows
 for adding user specific information to frames. In this section RobWorkStudio specific
 properties will be listed. Meaning properties that only makes sence for RobWorkStudio and
 not RobWork.

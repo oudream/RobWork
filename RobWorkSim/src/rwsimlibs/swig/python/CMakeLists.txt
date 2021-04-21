@@ -26,6 +26,9 @@ rw_subsys_option(
 if(build)
     include(UseSWIG)
     include_directories(${PYTHON_INCLUDE_DIRS})
+    if(RW_USE_NUMPY)
+        include_directories(${NUMPY_INCLUDE_DIR})
+    endif()
 
     if(RW_USE_NUMPY)
     include_directories(${NUMPY_INCLUDE_DIR})
@@ -54,10 +57,11 @@ if(build)
     # ############ SWIG COMPILE #################
     set(TARGET_NAME ${RWSIM_MODULE}${LIB_SUFIX})
     rw_add_swig(
-        ${RWSIM_MODULE} python SHARED
+        ${RWSIM_MODULE} python MODULE
         TARGET_NAME ${TARGET_NAME}
         INSTALL_DIR ${PYTHON_INSTALL_DIR}/${RWSIM_MODULE}
         LANGUAGE_FILE_DIR ${RWSIM_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RWSIM_MODULE}
+        BINARY_OUTPUT_DIR ${RWSIM_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RWSIM_MODULE}
         SOURCES ../ScriptTypes.cpp
         SWIG_FLAGS ${SWIG_FLAGS}
     )
@@ -69,14 +73,6 @@ if(build)
     set(RW_USE_NUMPY ${RW_BUILD_WITH_NUMPY})
     target_compile_definitions(${TARGET_NAME} PRIVATE RW_USE_NUMPY)
 
-    # Set build destination
-    set_target_properties(
-        ${TARGET_NAME}
-        PROPERTIES
-            ARCHIVE_OUTPUT_DIRECTORY "${RWSIM_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RWSIM_MODULE}"
-            LIBRARY_OUTPUT_DIRECTORY "${RWSIM_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RWSIM_MODULE}"
-            RUNTIME_OUTPUT_DIRECTORY "${RWSIM_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RWSIM_MODULE}"
-    )
 
     # ############# Documentation ##############
     if(NOT ${SWIG_VERSION} VERSION_LESS 4.0.0)
@@ -115,8 +111,13 @@ if(build)
     )
     # ###### Final linking and dependency checks ######
 
-    swig_link_libraries(sdurwsim${LIB_SUFIX} ${SUBSYS_DEPS} ${RWSIM_ODE_LIBRARY}
+    target_link_libraries(${python_NAME_sdurwsim} PUBLIC sdurwsim RW::sdurw RWS::sdurws ${RWSIM_ODE_LIBRARY}
                         ${PYTHON_LIBRARIES})
+                        
     install(TARGETS ${SUBSYS_NAME} EXPORT ${PROJECT_PREFIX}Targets)
+
+    RW_SWIG_COMPILE_TARGET(
+            python ${TARGET_NAME}
+        )
 
 endif()

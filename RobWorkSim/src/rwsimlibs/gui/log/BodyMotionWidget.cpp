@@ -23,6 +23,7 @@
 #include <rw/graphics/SceneGraph.hpp>
 #include <rwlibs/opengl/Drawable.hpp>
 #include <rwlibs/opengl/RenderVelocity.hpp>
+#include <rw/graphics/Model3D.hpp>
 #include <rwsim/dynamics/Body.hpp>
 #include <rwsim/dynamics/DynamicWorkCell.hpp>
 #include <rwsim/log/LogPositions.hpp>

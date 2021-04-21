@@ -33,7 +33,11 @@ SET(FILES_HPP
     bstrap/mp/GraspMotorProgram.hpp
 )
 
-qt5_wrap_cpp(MocSrcFiles bstrap/core/Brain.hpp)
+if(DEFINED Qt6Core_VERSION)
+    qt_wrap_cpp(MocSrcFiles bstrap/core/Brain.hpp)
+else()
+    qt5_wrap_cpp(MocSrcFiles bstrap/core/Brain.hpp)
+endif()
 
 add_library(bstrap ${FILES_CPP} ${MocSrcFiles})
 target_link_libraries(bstrap ${QT_LIBRARIES})

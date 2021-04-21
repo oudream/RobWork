@@ -4,10 +4,20 @@
 #include <rw/core/os.hpp>
 
 #if defined(RW_WIN32)
+
 #include <windows.h>
 #endif
-#include <GL/gl.h>												// Header File For The OpenGL32 Library
-#include <GL/glu.h>												// Header File For The GLu32 Library
+#if defined(RW_MACOS)
+
+#include <OpenGL/gl.h>
+#include <OpenGL/glu.h>
+
+#else
+
+#include <GL/gl.h>  // Header File For The OpenGL32 Library
+#include <GL/glu.h>	// Header File For The GLu32 Library
+
+#endif											
 
 #include <rw/math/Vector3D.hpp>
 #include <rw/math/Quaternion.hpp>

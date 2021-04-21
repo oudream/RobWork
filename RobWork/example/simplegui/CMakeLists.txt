@@ -6,7 +6,7 @@
 # ######################################################################################################################
 
 # Test CMake version
-cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
 
 # The name of the project.
 project(sdurw_viewer)
@@ -53,7 +53,7 @@ set(
 )
 
 add_library(rwtools_simpleviewer ${SRC_FILES})
-target_link_libraries(rwtools_simpleviewer PRIVATE ${GLUT_glut_LIBRARY})
+target_link_libraries(rwtools_simpleviewer PUBLIC RW::sdurw RW::sdurw_opengl PRIVATE ${GLUT_glut_LIBRARY})
 
 # set the libraries we need
 set(LIBRARIES rwtools_simpleviewer ${ROBWORK_LIBRARIES} ${GLUT_glut_LIBRARY})

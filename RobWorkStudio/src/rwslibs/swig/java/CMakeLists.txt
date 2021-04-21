@@ -47,13 +47,15 @@ if(build)
         SWIG_FLAGS "-package" "org.robwork.sdurws"
     )
 
-    swig_link_libraries(
+    target_link_libraries(
         sdurws_jni
         sdurws
         sdurws_robworkstudioapp
         RW::sdurw
         RW::sdurw_core
         RW::sdurw_common
+        RW::sdurw_math
+        RW::sdurw_kinematics
     )
 
     rw_add_java_clean_target(sdurws)
@@ -63,8 +65,10 @@ if(build)
         sdurws
         CLASSPATH
             ${RW_LIBS}/sdurw_core_java.jar ${RW_LIBS}/sdurw_common_java.jar
-            ${RW_LIBS}/sdurw_java.jar
-        JAVADOC_LINK ${RW_LIBS}/javadoc/sdurw ${RW_LIBS}/javadoc/sdurw_core
+            ${RW_LIBS}/sdurw_math_java.jar  ${RW_LIBS}/sdurw_kinematics_java.jar ${RW_LIBS}/sdurw_java.jar
+        JAVADOC_LINK
+            ${RW_LIBS}/javadoc/sdurw ${RW_LIBS}/javadoc/sdurw_core ${RW_LIBS}/javadoc/sdurw_common
+            ${RW_LIBS}/javadoc/sdurw_math ${RW_LIBS}/javadoc/sdurw_kinematics
         WINDOW_TITLE "RobWorkStudio Java API Documentation"
     )
     set(CMAKE_SWIG_OUTDIR ${RWS_CMAKE_LIBRARY_OUTPUT_DIRECTORY})
@@ -73,8 +77,16 @@ if(build)
         add_dependencies(sdurws_jni sdurw_jni)
     endif()
 
-    target_link_libraries(${SUBSYS_NAME} INTERFACE sdurws_jni)
+    if(SWIG_DEFAULT_COMPILE OR CMAKE_VERSION VERSION_GREATER 3.16.0)
+        target_link_libraries(${SUBSYS_NAME} INTERFACE sdurws_jni)
+    endif()
 
-    install(TARGETS ${SUBSYS_NAME} EXPORT ${PROJECT_PREFIX}Targets)
+    install(TARGETS ${SUBSYS_NAME} EXPORT ${PROJECT_PREFIX}javaTargets)
     add_library(${PROJECT_PREFIX}::${SUBSYS_NAME} ALIAS ${SUBSYS_NAME})
+
+    RW_SWIG_COMPILE_TARGET(
+            java
+            sdurws_jni ${java_NAME_sdurws}_java_doc ${java_NAME_sdurws}_libs
+        )
+
 endif()

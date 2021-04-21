@@ -30,13 +30,18 @@ endif()
 
 # ########################   From here we add the plugins
 
-qt5_wrap_cpp(MocSrcFiles SamplePlugin.hpp TARGET SamplePlugin)
-qt5_add_resources(RccSrcFiles resources.qrc)
+if(DEFINED Qt6Core_VERSION)
+    qt_wrap_cpp(MocSrcFiles SamplePlugin.hpp TARGET SamplePluginApp)
+    qt_add_resources(RccSrcFiles resources.qrc)
+else()
+    qt5_wrap_cpp(MocSrcFiles SamplePlugin.hpp TARGET SamplePluginApp)
+    qt5_add_resources(RccSrcFiles resources.qrc)
+endif()
 
 # The shared library to build:
-add_library(SamplePlugin MODULE SamplePlugin.cpp ${MocSrcFiles} ${RccSrcFiles})
-target_link_libraries(SamplePlugin ${ROBWORKSTUDIO_LIBRARIES} ${ROBWORK_LIBRARIES})
-target_include_directories(SamplePlugin PUBLIC ${ROBWORK_INCLUDE_DIRS} ${ROBWORKSTUDIO_INCLUDE_DIRS})
+add_library(SamplePluginApp MODULE SamplePlugin.cpp ${MocSrcFiles} ${RccSrcFiles})
+target_link_libraries(SamplePluginApp RWS::sdurws ${ROBWORK_LIBRARIES})
+target_include_directories(SamplePluginApp PUBLIC ${ROBWORK_INCLUDE_DIRS})
 
 foreach(obj ${ROBWORKSTUDIO_INCLUDE_DIRS})
     message(STATUS "INCL_DIR: ${obj}")

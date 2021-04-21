@@ -21,11 +21,11 @@
 /**
  * @file QState.hpp
  */
-
+#if !defined(SWIG)
 #include <rw/core/Ptr.hpp>
 #include <rw/core/macros.hpp>
 #include <rw/math/Q.hpp>
-
+#endif
 namespace rw { namespace kinematics {
     class StateSetup;
     class StateData;
@@ -65,7 +65,7 @@ namespace rw { namespace kinematics {
          *
          * @param setup [in] The shared setup for configuration states.
          */
-        explicit QState (rw::core::Ptr< StateSetup > setup);
+        explicit QState (rw::core::Ptr< rw::kinematics::StateSetup > setup);
 
         //! destructor
         virtual ~QState ();
@@ -79,12 +79,12 @@ namespace rw { namespace kinematics {
          *
          * @return The joint values for the frame.
          */
-        const double* getQ (const StateData& data) const;
+        double* getQ (const rw::kinematics::StateData& data);
 
         /**
          * @brief non const version of getQ.
          */
-        double* getQ (const StateData& data);
+        const double* getQ (const rw::kinematics::StateData& data) const;
 
         /**
          * @brief Assign for \b frame the frame.getDOF() joint values of the
@@ -104,8 +104,9 @@ namespace rw { namespace kinematics {
          *   q_in[i] == q_out[i];
          * \endcode
          */
-        void setQ (const StateData& data, const double* vals);
+        void setQ (const rw::kinematics::StateData& data, const double* vals);
 
+#if !defined(SWIG)
         /**
          * @brief streaming operator
          *
@@ -120,6 +121,9 @@ namespace rw { namespace kinematics {
             os << state._contents;
             return os;
         }
+#else
+        TOSTRING (rw::kinematics::QState);
+#endif
 
         /**
          * @brief Scaling of a configuration state by a scalar.
@@ -136,7 +140,7 @@ namespace rw { namespace kinematics {
         {
             return QState (this->_contents / scale, this->_setup);
         }
-
+#if !defined(SWIGPYTHON)
         /**
          * @brief Scaling of a configuration state by a scalar.
          */
@@ -144,6 +148,7 @@ namespace rw { namespace kinematics {
         {
             return QState (scale * q._contents, q._setup);
         }
+#endif
 
         /**
          * @brief Addition of configuration states.
@@ -171,20 +176,21 @@ namespace rw { namespace kinematics {
         /**
          * @brief returns the StateSetup
          */
-        rw::core::Ptr< StateSetup > getStateSetup () const { return _setup; }
-
+        rw::core::Ptr< rw::kinematics::StateSetup > getStateSetup () const { return _setup; }
+#if !defined(SWIGPYTHON)
         /**
          * @brief Assignment operator.
          * @param rhs [in] the other QState to assign to this.
          * @return a reference to this QState.
          */
         QState& operator= (const QState& rhs);
-
+#endif
         /**
            @brief The dimension of the state vector.
          */
         size_t size () const { return _contents.size (); }
 
+#if !defined(SWIG)
         /**
          * @brief Get element of state.
          * @param index [in] the index.
@@ -224,15 +230,17 @@ namespace rw { namespace kinematics {
             RW_ASSERT (index < size ());
             return _contents (index);
         }
-
+#else
+        ARRAYOPERATOR (double);
+#endif
       private:
         QState (const math::Q& contents, rw::core::Ptr< StateSetup > setup) :
             _contents (contents), _setup (setup)
         {}
 
       private:
-        math::Q _contents;
-        rw::core::Ptr< StateSetup > _setup;
+        rw::math::Q _contents;
+        rw::core::Ptr< rw::kinematics::StateSetup > _setup;
     };
 
     /*@}*/

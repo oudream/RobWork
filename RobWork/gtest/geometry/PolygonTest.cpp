@@ -21,13 +21,14 @@
 #include <rw/geometry/PolygonUtil.hpp>
 #include <rw/math/Vector2D.hpp>
 #include <rw/math/Vector3D.hpp>
+#include <rw/core/os.hpp>
 
 using rw::geometry::Polygon;
 using rw::geometry::PolygonUtil;
 using namespace rw::math;
 
 TEST(Polygon, Vector3D) {
-	Polygon<> polygon;
+	rw::geometry::Polygon<> polygon;
 	polygon.addVertex(Vector3D<>(1.,0.,-0.1));
 	polygon.addVertex(Vector3D<>(100.,100.,100.));
 	polygon.addVertex(Vector3D<>(-1.,1.,-0.1));
@@ -47,7 +48,7 @@ TEST(Polygon, Vector3D) {
 }
 
 TEST(Polygon, Vector2D) {
-	Polygon<Vector2D<> > polygon;
+	rw::geometry::Polygon<Vector2D<> > polygon;
 	polygon.addVertex(Vector2D<>(1.,0.));
 	polygon.addVertex(Vector2D<>(100.,100.));
 	polygon.addVertex(Vector2D<>(-1.,1.));
@@ -64,8 +65,10 @@ TEST(Polygon, Vector2D) {
 }
 
 TEST(DeathTest, Polygon) {
+    #ifndef RW_WIN32
 	::testing::FLAGS_gtest_death_test_style = "threadsafe";
-	Polygon<> polygon;
+    #endif
+	rw::geometry::Polygon<> polygon;
 	polygon.addVertex(Vector3D<>(1.,0.,-0.1));
 	polygon.addVertex(Vector3D<>(100.,100.,100.));
 	polygon.addVertex(Vector3D<>(-1.,1.,-0.1));
@@ -77,7 +80,7 @@ TEST(DeathTest, Polygon) {
 namespace {
     void testPerturbation(const bool perturbed) {
         // perturbation adds up to 3.33e-16 to point coordinates
-        Polygon<Vector2D<> > polygon;
+        rw::geometry::Polygon<Vector2D<> > polygon;
         polygon.addVertex(Vector2D<>(7.50000000000000222e-01, -5.48292804986532767e-01));
         polygon.addVertex(Vector2D<>(7.50000000000000222e-01, -5.40836573825408840e-01));
         polygon.addVertex(Vector2D<>(7.50000000000000222e-01, -5.15176841951355935e-01));
@@ -118,7 +121,7 @@ namespace {
         EXPECT_EQ(std::size_t(8),dec.size());
         double subPolyAreaTotal = 0;
         for (std::size_t i = 0; i < dec.size(); i++) {
-            Polygon<Vector2D<> > p;
+            rw::geometry::Polygon<Vector2D<> > p;
             for (std::size_t k = 0; k < dec[i].size(); k++)
                 p.addVertex(polygon.getVertex(dec[i][k]));
             const double area = PolygonUtil::area(p);
@@ -141,7 +144,7 @@ namespace {
 
 TEST(PolygonUtil, ConvexDecomposition2D) {
     {
-        Polygon<Vector2D<> > polygon;
+        rw::geometry::Polygon<Vector2D<> > polygon;
         polygon.addVertex(Vector2D<>(-0.05, 0.1));
         polygon.addVertex(Vector2D<>(0.2, 0.2));
         polygon.addVertex(Vector2D<>(0.35, 0.07));
@@ -155,11 +158,11 @@ TEST(PolygonUtil, ConvexDecomposition2D) {
         polygon.addVertex(Vector2D<>(0.275, -0.2));
         polygon.addVertex(Vector2D<>(0, -0.16));
 
-        const std::vector<Polygon<Vector2D<> > > dec = PolygonUtil::convexDecomposition(polygon);
+        const std::vector<rw::geometry::Polygon<Vector2D<> > > dec = PolygonUtil::convexDecomposition(polygon);
         EXPECT_EQ(std::size_t(4),dec.size());
         double subPolyAreaTotal = 0;
         for (std::size_t i = 0; i < dec.size(); i++) {
-            const Polygon<Vector2D<> >& p = dec[i];
+            const rw::geometry::Polygon<Vector2D<> >& p = dec[i];
             const double area = PolygonUtil::area(p);
             EXPECT_LT(area,0);
             subPolyAreaTotal += area;
@@ -176,13 +179,13 @@ TEST(PolygonUtil, ConvexDecomposition2D) {
 }
 
 TEST(PolygonUtil, Area) {
-	Polygon<Vector2D<> > polygonCW;
+	rw::geometry::Polygon<Vector2D<> > polygonCW;
 	polygonCW.addVertex(Vector2D<>(0.55, -0.15));
 	polygonCW.addVertex(Vector2D<>(0.68, -0.17));
 	polygonCW.addVertex(Vector2D<>(0.45, -0.4));
 	polygonCW.addVertex(Vector2D<>(0.275, -0.2));
 
-	Polygon<Vector2D<> > polygonCCW;
+	rw::geometry::Polygon<Vector2D<> > polygonCCW;
 	polygonCCW.addVertex(Vector2D<>(0.275, -0.2));
 	polygonCCW.addVertex(Vector2D<>(0.45, -0.4));
 	polygonCCW.addVertex(Vector2D<>(0.68, -0.17));
@@ -193,7 +196,7 @@ TEST(PolygonUtil, Area) {
 }
 
 TEST(PolygonUtil, IsInside) {
-	Polygon<Vector2D<> > polygon;
+	rw::geometry::Polygon<Vector2D<> > polygon;
 	polygon.addVertex(Vector2D<>(0.55, -0.15));
 	polygon.addVertex(Vector2D<>(0.68, -0.17));
 	polygon.addVertex(Vector2D<>(0.45, -0.4));

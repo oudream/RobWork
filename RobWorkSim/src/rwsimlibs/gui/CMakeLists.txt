@@ -1,6 +1,6 @@
 set(SUBSYS_NAME sdurwsim_gui)
 set(SUBSYS_DESC "RobWorkSim gui")
-set(SUBSYS_DEPS )
+set(SUBSYS_DEPS sdurwsim )
 
 set(build TRUE)
 set(DEFAULT TRUE)
@@ -100,17 +100,14 @@ if(build)
     )
     set(ODE_LIB)
     if(RWSIM_HAVE_ODE)
-        set(FILES_UI ${FILES_UI} ODESimCfgForm.ui)
         set(SrcFiles_HPP ${SrcFiles_HPP} ODESimCfgDialog.hpp)
         set(SrcFiles ${SrcFiles} ODESimCfgDialog.cpp)
         set(ODE_LIB sdurwsim_ode)
     endif()
+    set(MocSrcFiles ${SrcFiles_HPP})
+    set(RccSrcFiles resources.qrc)
 
-    qt5_wrap_ui(UIS_OUT_H ${FILES_UI})
-    qt5_wrap_cpp(MocSrcFiles ${SrcFiles_HPP})
-    qt5_add_resources(RccSrcFiles resources.qrc)
-
-    rw_add_library(${SUBSYS_NAME} ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles} ${UIS_OUT_H})
+    rw_add_library(${SUBSYS_NAME} ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles})
     rw_add_includes(${SUBSYS_NAME} "rwsimlibs/gui" ${SrcFiles_HPP})
 
     target_link_libraries(
@@ -118,10 +115,7 @@ if(build)
         PUBLIC
             sdurwsim
             RWS::sdurws
-            Qt5::OpenGL
-            Qt5::Widgets
-            Qt5::Gui
-            Qt5::Core
+            ${QT_LIBRARIES}
         PRIVATE ${ODE_LIB}
     )
 
@@ -131,7 +125,8 @@ if(build)
     # to be able to include the generated ui header files
     target_include_directories(
         sdurwsim_gui
-        PRIVATE ${CMAKE_CURRENT_BINARY_DIR}
+
         INTERFACE $<BUILD_INTERFACE:${RWSIM_ROOT}/src> $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
+        PRIVATE  ${CMAKE_CURRENT_BINARY_DIR}
     )
 endif()

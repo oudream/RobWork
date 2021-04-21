@@ -12,9 +12,6 @@ rw_subsys_option(
 rw_add_doc(${SUBSYS_NAME})
 
 if(build)
-    # if we want to use ui files add them here
-    set(UIS_FILES SimulatorLogViewer.ui)
-    qt5_wrap_ui(UIS_OUT_H ${UIS_FILES})
     # Standard cpp files to compile:
     set(SrcFiles SimulatorLogViewer.cpp)
     set(SRC_FILES_HPP SimulatorLogViewer.hpp)
@@ -26,9 +23,8 @@ if(build)
         "${UIS_OUT_H}"
     )
 
-    qt5_wrap_cpp(MocSrcFiles ${SRC_FILES_HPP})
-    # Rcc the files:
-    qt5_add_resources(RccSrcFiles resources.qrc)
+    set(MocSrcFiles ${SRC_FILES_HPP})
+    set(RccSrcFiles resources.qrc)
 
     add_executable(SimulatorLogViewer ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles} ${UIS_FILES})
     target_link_libraries(

@@ -42,8 +42,13 @@ else()
     rw_get_git_version(ROBWORKSTUDIO_VERSION ROBWORKSTUDIO_BRANCH)
     set(RWS_GOT_VERSION False)
 endif()
-find_package(RobWork ${ROBWORKSTUDIO_VERSION} REQUIRED PATHS ${RWS_ROOT}/../RobWork/cmake )
 
+if(NOT DEFINED RWP_ROOT)
+    find_package(RobWork ${ROBWORKSTUDIO_VERSION} REQUIRED PATHS ${RWS_ROOT}/../RobWork/cmake )
+else()
+    string(TOLOWER ${RW_BUILD_TYPE} tmp)
+    include(${RW_ROOT}cmake/RobWorkBuildConfig_${tmp}.cmake)
+endif()
 
 rw_init_project(${RWS_ROOT} RobWorkStudio RWS ${ROBWORKSTUDIO_VERSION})
 rw_get_os_info()
@@ -109,20 +114,13 @@ message(STATUS "RobWorkStudio: platform ${INFO} ")
 # ##################################################################################################
 # setup testing
 #
-configure_file("${RWS_ROOT}/cmake/CTestCustom.cmake.in" "CTestCustom.cmake")
-# configure testing configuration
-configure_file("${RWS_ROOT}/CTestConfig.cmake.in" "${RWS_ROOT}/CTestConfig.cmake")
 
 cmake_dependent_option(
-    RWS_IS_TESTS_ENABLED "Set when you want to build the tests" ON "${RWS_BUILD_TESTS}" OFF
+    RWS_IS_TESTS_ENABLED "Set when you want to build the tests" ON "${RW_BUILD_WITH_GTEST}" OFF
 )
 if(RWS_IS_TESTS_ENABLED)
     message(STATUS "RobWorkStudio: tests ENABLED!")
-    include(CTest)
-    # ADD_SUBDIRECTORY(test)
-    if(RW_BUILD_WITH_GTEST)
-        add_subdirectory(gtest)
-    endif()
+    add_subdirectory(gtest)
 else()
     message(STATUS "RobWorkStudio: tests DISABLED!")
 endif()
@@ -141,7 +139,7 @@ configure_file(${RWS_ROOT}/src/RobWorkStudioConfig.hpp.in "${RWS_ROOT}/src/RobWo
 
 # next build information script
 configure_file(${RWS_ROOT}/cmake/RobWorkStudioBuildConfig.cmake.in
-               "${RWS_ROOT}/cmake/RobWorkStudioBuildConfig_${RW_BUILD_TYPE}.cmake" @ONLY
+               "${RWS_ROOT}/cmake/RobWorkStudioBuildConfig_${RWS_BUILD_TYPE}.cmake" @ONLY
 )
 
 # Configure build/RobWorkStudioConfig.cmake.in such that other projects might use RobWorkStudio
@@ -208,6 +206,14 @@ if(WIN32)
         DESTINATION "${RWS_INSTALL_DIR}/cmake/Modules"
         COMPONENT cmake
     )
+    STRING(REPLACE ".lib" ".dll" PYTHON_DLL "${PYTHON_LIBRARIES}")
+    if(EXISTS "${PYTHON_DLL}")
+        install(FILES ${PYTHON_DLL} DESTINATION ${BIN_INSTALL_DIR} COMPONENT python_dll)
+    else()
+        get_filename_component(python_file ${PYTHON_DLL} NAME)
+        get_filename_component(python_path ${PYTHON_DLL} DIRECTORY)
+        install(FILES "${python_path}/../${python_file}" DESTINATION ${BIN_INSTALL_DIR} COMPONENT python_dll)
+    endif()
 endif()
 
 # this will configure the dependency file that will be used if install is invoked
@@ -258,10 +264,6 @@ if(doc_executable)
 endif()
 
 # Packaging include(cmake/packing.cmake)
-
-# Dashboard IF(DEFINED USE_CDASH AND USE_CDASH)
-configure_file("${RWS_ROOT}/CTestConfig.cmake.in" "${RWS_ROOT}/CTestConfig.cmake")
-# ENDIF()
 
 # Create installer
 rw_create_installer()

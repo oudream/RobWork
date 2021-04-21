@@ -1,0 +1,48 @@
+########################## Ubuntu 1604 ################################
+
+build-RW:ubuntu-1604:
+  extends: .linux-build-RW
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1604
+
+build-RWS:ubuntu-1604:
+  extends: .linux-build-RWS
+  dependencies:
+    - build-RW:ubuntu-1604
+  needs: ["build-RW:ubuntu-1604"]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1604
+
+build-RWSim:ubuntu-1604:
+  extends: .linux-build-RWSim
+  dependencies:
+    - build-RW:ubuntu-1604
+    - build-RWS:ubuntu-1604
+  needs: ["build-RW:ubuntu-1604", "build-RWS:ubuntu-1604"]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1604
+
+examples:ubuntu-1604:
+  extends: .linux-examples
+  dependencies:
+    - build-RW:ubuntu-1604
+    - build-RWS:ubuntu-1604
+    - build-RWSim:ubuntu-1604
+  needs:
+    [
+      "build-RW:ubuntu-1604",
+      "build-RWS:ubuntu-1604",
+      "build-RWSim:ubuntu-1604",
+    ]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1604
+
+tests:ubuntu-1604:
+  extends: .linux-tests
+  dependencies:
+    - build-RW:ubuntu-1604
+    - build-RWS:ubuntu-1604
+    - build-RWSim:ubuntu-1604
+  needs:
+    [
+      "build-RW:ubuntu-1604",
+      "build-RWS:ubuntu-1604",
+      "build-RWSim:ubuntu-1604",
+    ]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1604

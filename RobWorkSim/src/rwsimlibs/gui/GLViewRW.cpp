@@ -30,6 +30,7 @@
 #include <rwlibs/os/rwgl.hpp>
 
 #include <QAction>
+#include <QActionGroup>
 #include <QFileDialog>
 #include <QMenu>
 #include <QMessageBox>
@@ -166,12 +167,14 @@ struct GLViewRW::GLData
 };
 
 GLViewRW::GLViewRW (QWidget* parent) :
-    QGLWidget (QGLFormat (QGL::DepthBuffer), parent),
+    QOpenGLWidget (parent),
     _viewRotation (RPY< float > (0, 0, static_cast< float > (-45 * Deg2Rad)).toRotation3D ()),
     _viewPos (0, 0, -5), _drawType (DrawableNode::SOLID), _alpha (1), _gl (new GLData ()),
     _width (640), _height (480), _arcBall (_width, _height), _zoomFactor (0.0), _zoomScale (1.0),
     _logoFont ("Helvetica [Cronyx]", 16, QFont::DemiBold, true), _viewLogo ("RWSim")
 {
+    QSurfaceFormat surfaceFormat = QSurfaceFormat::defaultFormat();
+    setFormat(surfaceFormat);
     // add the default cameraview
     _showSolidAction = new QAction (QIcon (":/images/solid.png"), tr ("&Solid"), this);    // owned
     _showSolidAction->setCheckable (true);
@@ -292,7 +295,7 @@ void GLViewRW::setDrawTypeSlot ()
     else if (_showOutlineAction->isChecked ())
         setDrawType (DrawableNode::OUTLINE);
 
-    updateGL ();
+    update ();
 }
 
 void GLViewRW::setTransparentSlot ()
@@ -308,7 +311,7 @@ void GLViewRW::setTransparentSlot ()
         da->setTransparency (alpha);
     }
 
-    updateGL ();
+    update ();
 }
 
 void GLViewRW::showPivotPointSlot ()
@@ -319,7 +322,7 @@ void GLViewRW::showPivotPointSlot ()
 void GLViewRW::showPivotPoint (bool visible)
 {
     _showPivotPoint = visible;
-    updateGL ();
+    update ();
 }
 
 void GLViewRW::initializeGL ()
@@ -450,9 +453,10 @@ void GLViewRW::mouseDoubleClickEvent (QMouseEvent* event)
     }
     else if (event->button () == Qt::LeftButton) {
         GLfloat depth;
-        int winx = event->x ();
-        int winy = height () - event->y ();
+        int winx = event->pos().x ();
+        int winy = height () - event->pos().y ();
 
+        makeCurrent();
         glReadPixels (winx, winy, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
         GLdouble modelMatrix[16];
         GLdouble projMatrix[16];
@@ -462,6 +466,7 @@ void GLViewRW::mouseDoubleClickEvent (QMouseEvent* event)
         glGetIntegerv (GL_VIEWPORT, viewport);
         GLdouble objx, objy, objz;
         gluUnProject (winx, winy, depth, modelMatrix, projMatrix, viewport, &objx, &objy, &objz);
+        doneCurrent();
 
         // TODO: fire an event that sends the 3d position
         if (depth != 1) {
@@ -474,14 +479,14 @@ void GLViewRW::mouseDoubleClickEvent (QMouseEvent* event)
             // update arcball center
             _arcBall.setCenter (cast< double > (_pivotPoint), Vector2D<> (objx, objy));
         }
-        updateGL ();
+        update ();
     }
 }
 
 void GLViewRW::mousePressEvent (QMouseEvent* event)
 {
-    _lastPos (0) = event->x ();
-    _lastPos (1) = event->y ();
+    _lastPos (0) = event->pos().x ();
+    _lastPos (1) = event->pos().y ();
     _arcBall.click (_lastPos (0), _lastPos (1));
 
     if (event->buttons () == Qt::RightButton && event->modifiers () == Qt::ControlModifier) {
@@ -495,7 +500,7 @@ void GLViewRW::mouseMoveEvent (QMouseEvent* event)
     // std::cout<<"Event Time"<<eventTimer.getTime()<<std::endl;
     if (event->buttons () == Qt::LeftButton) {
         if (event->modifiers () == Qt::ControlModifier) {
-            _viewPos (2) -= (event->y () - _lastPos (1)) / _height * 10;
+            _viewPos (2) -= (event->pos().y () - _lastPos (1)) / _height * 10;
         }
         else {    // The mouse is being dragged
             /*
@@ -506,8 +511,8 @@ void GLViewRW::mouseMoveEvent (QMouseEvent* event)
               rpyrot.toRotation3D(rot);
               _viewRotation = rot*_viewRotation;
             */
-            float rx = (event->x ());
-            float ry = (event->y ());
+            float rx = (event->pos().x ());
+            float ry = (event->pos().y ());
 
             // Update End Vector And Get Rotation As Quaternion
             Quaternion<> quat = _arcBall.drag (rx, ry);
@@ -521,12 +526,12 @@ void GLViewRW::mouseMoveEvent (QMouseEvent* event)
         }
     }
     if (event->buttons () == Qt::RightButton) {
-        _viewPos (0) += (event->x () - _lastPos (0)) / _width * 10;
-        _viewPos (1) -= (event->y () - _lastPos (1)) / _height * 10;
+        _viewPos (0) += (event->pos().x () - _lastPos (0)) / _width * 10;
+        _viewPos (1) -= (event->pos().y () - _lastPos (1)) / _height * 10;
     }
-    _lastPos (0) = event->x ();
-    _lastPos (1) = event->y ();
-    updateGL ();
+    _lastPos (0) = event->pos().x ();
+    _lastPos (1) = event->pos().y ();
+    update ();
     eventTimer.reset ();
     eventTimer.resume ();
 }
@@ -535,7 +540,7 @@ void GLViewRW::wheelEvent (QWheelEvent* event)
 {
     // float distToPivot = norm_2( _pivotPoint - _viewPos );
     // somehow compensate when we are very close to objects
-    _zoomFactor += event->delta () / (WHEEL_DELTA_ZOOM);
+    _zoomFactor += event->angleDelta ().y() / (WHEEL_DELTA_ZOOM);
 
     if (_zoomFactor >= 0) {
         _zoomScale = 1.0 + 0.5 * _zoomFactor;
@@ -544,7 +549,7 @@ void GLViewRW::wheelEvent (QWheelEvent* event)
         _zoomScale = -1.0 / (0.5 * _zoomFactor - 1);
     }
     // _viewPos(2) += (event->delta())/(WHEEL_DELTA_ZOOM*_zoomFactor);
-    updateGL ();
+    update ();
 }
 
 void GLViewRW::saveBufferToFile (const QString& filename)
@@ -559,7 +564,7 @@ void GLViewRW::saveBufferToFile (const QString& filename)
     else {
         throw std::string ("GLViewRW::saveBufferToFile: The selected file format is not supported");
     }
-    if (!grabFrameBuffer ().save (filename, type))
+    if (!grabFramebuffer ().save (filename, type))
         throw std::string ("GLViewRW::saveBufferToFile: Could not save file") +
             filename.toStdString ();
 }
@@ -598,7 +603,8 @@ void GLViewRW::drawGLBackground ()
 
     glRasterPos2f (20, _height - 20);
     glColor4d (1, 1, 1, 0.5);
-    renderText (10, _height - 10, _viewLogo, _logoFont);
+    // TODO: The following is no longer possible from Qt6!
+    //renderText (10, _height - 10, _viewLogo, _logoFont);
 
     // setup projection to draw the rest of the scene
     glEnable (GL_LIGHTING);

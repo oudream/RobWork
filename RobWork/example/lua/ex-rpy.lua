@@ -1,5 +1,8 @@
+require("sdurw_core")
 require("sdurw")
 using("sdurw")
+require("sdurw_math")
+using("sdurw_math")
 
 rpy = RPYd(Pi,Pi/2,0);
 print("RPY: " .. tostring(rpy));

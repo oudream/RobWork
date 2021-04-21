@@ -21,11 +21,14 @@
 /**
    @file StateData.hpp
 */
-
+#if !defined(SWIG)
 #include "State.hpp"
 #include "StateCache.hpp"
 
+#include <rw/kinematics/StateStructure.hpp>
+
 #include <string>
+#endif
 
 namespace rw { namespace kinematics {
 
@@ -88,7 +91,7 @@ namespace rw { namespace kinematics {
          *
          * @return The values for the frame.
          */
-        inline const double* getData (const State& state) const
+        inline const double* getData (const rw::kinematics::State& state) const
         {
             if (_size == 0)
                 return NULL;    // stop early if we know size is 0
@@ -107,7 +110,7 @@ namespace rw { namespace kinematics {
          *
          * @return The values for the frame.
          */
-        inline double* getData (State& state)
+        inline double* getData (rw::kinematics::State& state)
         {
             if (_size == 0)
                 return NULL;    // stop early if we know size is 0
@@ -134,7 +137,7 @@ namespace rw { namespace kinematics {
          *   q_in[i] == q_out[i];
          * \endcode
          */
-        inline void setData (State& state, const double* vals) const
+        inline void setData (rw::kinematics::State& state, const double* vals) const
         {
             if (_size == 0)
                 return;    // stop early if we know size is 0
@@ -155,29 +158,31 @@ namespace rw { namespace kinematics {
          * @param state [in] the state.
          * @return the cache.
          */
-        rw::core::Ptr< StateCache > getCache (const State& state) const;
+        rw::core::Ptr< rw::kinematics::StateCache >
+        getCache (const rw::kinematics::State& state) const;
 
         //! @copydoc getCache(const State&) const .
-        rw::core::Ptr< StateCache > getCache (State& state);
+        rw::core::Ptr< rw::kinematics::StateCache > getCache (rw::kinematics::State& state);
 
         /**
          * @brief Get default cache.
          * @return the cache.
          */
-        rw::core::Ptr< StateCache > getDefaultCache () { return _cache; }
+        rw::core::Ptr< rw::kinematics::StateCache > getDefaultCache () { return _cache; }
 
         /**
          * @brief Set the cache values.
          * @param cache [in] the cache.
          * @param state [in/out] state updated with new cache.
          */
-        void setCache (rw::core::Ptr< StateCache > cache, State& state);
+        void setCache (rw::core::Ptr< rw::kinematics::StateCache > cache,
+                       rw::kinematics::State& state);
 
         /**
          * @brief Get the state structure.
          * @return the state structure.
          */
-        class StateStructure* getStateStructure () { return _sstructure; };
+        class rw::kinematics::StateStructure* getStateStructure () { return _sstructure; };
 
       public:
         /**
@@ -202,7 +207,8 @@ namespace rw { namespace kinematics {
          * @copydoc StateData(int, const std::string&)
          * @param cache [in] a cache.
          */
-        StateData (int size, const std::string& name, rw::core::Ptr< StateCache > cache);
+        StateData (int size, const std::string& name,
+                   rw::core::Ptr< rw::kinematics::StateCache > cache);
 
       private:
         // The tree is responsible for the assignment of the IDs that are later

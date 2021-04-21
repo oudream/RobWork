@@ -21,7 +21,6 @@
 #include <rw/core/Log.hpp>
 #include <rw/core/StringUtil.hpp>
 #include <rw/loaders/rwxml/XMLRWLoader.hpp>
-#include <rw/loaders/tul/TULLoader.hpp>
 
 using namespace rw::core;
 using namespace rw::loaders;
@@ -41,13 +40,8 @@ WorkCellLoader::Ptr WorkCellLoader::Factory::getWorkCellLoader (const std::strin
             return loader;
     }
 
-    // Fallback to default formats
-    if (formatUp == ".WU" || formatUp == ".WC" || formatUp == ".TAG" || formatUp == ".DEV") {
-        return ownedPtr (new TULLoader ());
-    }
-    else {
-        return ownedPtr (new XMLRWLoader ());
-    }
+    return ownedPtr (new XMLRWLoader ());
+
 }
 
 WorkCell::Ptr WorkCellLoader::Factory::load (const std::string& file)

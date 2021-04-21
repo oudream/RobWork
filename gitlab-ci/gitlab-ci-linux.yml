@@ -1,0 +1,312 @@
+########################## Linux CI ####################################
+.alisases:
+  - &is_shared_runner
+    - "[[ $CI_RUNNER_DESCRIPTION =~ 'shared-runners-manager' ]] && SHARED_RUNNER='true' || SHARED_RUNNER=''"
+  - &remove-rw-install
+    - shopt -s extglob
+    - rm -r -v /usr/local/bin/!(ccmake|cmake|cpack|ctest|ode-config) || echo
+    - rm -r -v "/usr/local/lib/!(python2.7|python3.6)" || echo
+    - rm -r -v /usr/local/include/!(ode) || echo
+    - rm -r -v /usr/local/share/!(ca-certificates|fonts|man|applications|info) || echo
+  - &uninstall-rw-deb
+    - apt -y remove *sdurw* || echo "no pkg to remove"
+    - apt -y remove robworkstudio* || echo "no pkg to remove"
+    - apt -y autoremove || echo "no pkg to remove"
+
+.CI-common-linux:
+  extends: .CI-common
+  before_script:
+    - *remove-rw-install
+    - THREADS=$(nproc --all)
+    - WERROR=True
+
+.linux-doc:
+  extends: .CI-common
+  stage: build_doc
+  tags:
+    - linux
+  before_script:
+    - "[ -d Build ] || mkdir Build"
+    - "[ -d Build/RW ] || mkdir Build/RW"
+    - "[ -d Build/sphinx ] || mkdir Build/sphinx"
+  script:
+    - cd Build
+    # Build Sphinx
+    - cd sphinx
+    - cmake -DCMAKE_BUILD_TYPE=Release -DRobWork_DIR:PATH=../../RobWork/cmake -DRobWorkStudio_DIR:PATH=../../RobWorkStudio/cmake -DRobWorkSim_DIR:PATH=../../RobWorkSim/cmake ../../doc/sphinx
+    - make sphinxapidoc -j$(nproc --all) || make sphinxapidoc -j$(nproc --all)
+    # Publish
+    - cd ../..
+    - mv Build/sphinx/html public
+  artifacts:
+    paths:
+      - public
+    expire_in: 1 day
+
+.linux-build-RW:
+  extends: .CI-common-linux
+  stage: build
+  tags:
+    - linux
+  before_script:
+    - *remove-rw-install
+    - THREADS=$(nproc --all)
+    - WERROR=True
+    - "[ -d Build ] || mkdir Build"
+    - "[ -d Build/RW ] || mkdir Build/RW"
+    - "[ -d Build/RWExamples ] || mkdir Build/RWExamples"
+    - "[ -d Build/RWS ] || mkdir Build/RWS"
+    - "[ -d Build/RWSExamples ] || mkdir Build/RWSExamples"
+    - "[ -d Build/RWSExamples/pluginapp ] || mkdir Build/RWSExamples/pluginapp"
+    - "[ -d Build/RWSExamples/pluginUIapp ] || mkdir Build/RWSExamples/pluginUIapp"
+    - "[ -d Build/RWSExamples/tutorial ] || mkdir Build/RWSExamples/tutorial"
+    - "[ -d Build/RWSExamples/UDPKinPlugin ] || mkdir Build/RWSExamples/UDPKinPlugin"
+    - "[ -d Build/RWSim ] || mkdir Build/RWSim"
+    - "[ -d Build/RWSimExamples ] || mkdir Build/RWSimExamples"
+    - "[ -d gtest ] || mkdir gtest"
+  script:
+    - printenv
+    - cd Build
+    # Build RobWork
+    - cd RW
+    - cmake -DCMAKE_BUILD_TYPE=Release ../../RobWork
+    - make -j${THREADS}
+    - make -j${THREADS} python 
+    - make -j${THREADS} lua || make -j${THREADS} lua 
+    - make -j${THREADS} java
+  artifacts:
+    paths:
+      - ./Build
+      - ./RobWork/cmake
+      - ./RobWork/src/RobWorkConfig.hpp
+      - ./RobWork/ext/rwyaobi/include/yaobi/yaobi_config.h
+      - ./RobWork/src/rwlibs/swig
+      - ./gtest
+    expire_in: 2 day
+    when: on_success
+
+.linux-build-RWS:
+  extends: .CI-common-linux
+  stage: build_second
+  tags:
+    - linux
+  script:
+    - cd Build
+    # Build RobWorkStudio
+    - cd RWS
+    - cmake -DCMAKE_BUILD_TYPE=Release -DUSE_WERROR=$WERROR ../../RobWorkStudio
+    - make -j${THREADS}
+    - make -j${THREADS} python
+    - make -j${THREADS} lua
+    - make -j${THREADS} java
+    - cd ..
+  artifacts:
+    paths:
+      - ./Build/RWS
+      - ./RobWorkStudio/cmake
+      - ./RobWorkStudio/src/RobWorkStudioConfig.hpp
+      - ./RobWorkStudio/src/rwslibs/swig
+      - ./gtest
+    expire_in: 2 day
+    when: on_success
+
+.linux-build-RWSim:
+  extends: .CI-common-linux
+  stage: build_third
+  tags:
+    - linux
+  script:
+    - cd Build
+    # Build RobWorkSim
+    - cd RWSim
+    - cmake -DCMAKE_BUILD_TYPE=Release -DUSE_WERROR=$WERROR ../../RobWorkSim
+    - make -j${THREADS}
+    - make -j${THREADS} python
+    - make -j${THREADS} lua
+    - make -j${THREADS} java
+    - make -j${THREADS} RWSimPlugin
+    - cd ..
+  artifacts:
+    paths:
+      - ./Build/RWSim
+      - ./RobWorkSim/cmake
+      - ./RobWorkSim/src/RobWorkSimConfig.hpp
+      - ./RobWork/src/rwlibs/swig
+      - ./gtest
+    expire_in: 2 day
+    when: on_success
+
+.linux-examples:
+  extends: .CI-common-linux
+  stage: test
+  tags:
+    - linux
+  script:
+    - cd Build
+    # Build RobWork Examples
+    - cd RWExamples
+    - cmake -DCMAKE_BUILD_TYPE=Release ../../RobWork/example
+    - make -j${THREADS}
+    - cd ..
+    # Build RobWorkStudio Examples
+    - cd RWSExamples
+    - cd pluginapp
+    - cmake -DCMAKE_BUILD_TYPE=Release ../../../RobWorkStudio/example/pluginapp
+    - make -j${THREADS}
+    - cd ..
+    - cd pluginUIapp
+    - cmake -DCMAKE_BUILD_TYPE=Release ../../../RobWorkStudio/example/pluginUIapp
+    - make -j${THREADS}
+    - cd ..
+    - cd tutorial
+    - cmake -DCMAKE_BUILD_TYPE=Release ../../../RobWorkStudio/example/tutorial
+    - make -j${THREADS}
+    - cd ..
+    - cd UDPKinPlugin
+    - cmake -DCMAKE_BUILD_TYPE=Release ../../../RobWorkStudio/example/UDPKinPlugin
+    - make -j${THREADS}
+    - cd ..
+    - cd ..
+    # Build RobWorkSim Examples
+    - cd RWSimExamples
+    - cmake -DCMAKE_BUILD_TYPE=Release ../../RobWorkSim/example
+    - make -j$(THREADS)
+    - cd ..
+
+.linux-tests:
+  extends: .CI-common-linux
+  stage: test
+  tags:
+    - linux
+  script:
+    - cd Build
+    # Run RobWork tests
+    - cd RW
+    - make -j 1 -k sdurw-gtest_reports
+    - mv ./bin/**/gtest_reports/* ../../gtest/
+    - cd ..
+    # Run RobWorkStudio tests
+    - cd RWS
+    - export DISPLAY=:0
+    - Xvfb $DISPLAY -screen 0 640x480x24 &
+    - make -j 1 -k sdurws-gtest_reports
+    - mv ./bin/**/gtest_reports/* ../../gtest/
+    - cd ..
+    # Run RobWorkSim tests
+    - cd RWSim
+    - make -j 1 -k sdurwsim-gtest_reports
+    - mv ./bin/**/gtest_reports/* ../../gtest/
+
+.linux-install-tests:
+  extends: .CI-common-linux
+  stage: test
+  tags:
+    - linux
+  before_script:
+    - *remove-rw-install
+    - cd ./Build/RW
+    - make install
+    - cd ../RWS
+    - make install
+    - cd ../RWSim
+    - make install
+    - cd ../..
+    - export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/local/lib
+    - git clean -fdX
+    - robworkdata=/home/robworkdata
+    - export DISPLAY=:0
+    - Xvfb $DISPLAY -screen 0 640x480x24 &
+  script:
+    - DIR=$(pwd)
+    # TEST RW CPP FILES
+    - cd $DIR/RobWork/example/cpp
+    - mkdir Build && cd Build
+    - cmake ..
+    - make -j${THREADS}
+    - "for file in ./ex-*; do if [ -f $file ] && [[ ! $file =~ ex-load-workcell ]] ; then  echo -e '\n EXECUTING: '$file' '$robworkdata && $file ${robworkdata} && EXERW=$EXERW' '$file || exit 1 ; fi; done"
+    - ./ex-load-workcell ../../ModelData/XMLScenes/RobotWithHand/Workcell.xml
+    # TEST RW PYTHON FILES
+    - cd $DIR/RobWork/example/python
+    - "for file in $EXERW ; do echo -e '\n EXECUTING: '$file && python3 ${file}.py ${robworkdata} || exit 1 ; done"
+    - "python3 ./ex-load-workcell.py ../ModelData/XMLScenes/RobotWithHand/Workcell.xml"
+    # TEST RW LUA FILES
+    - cd $DIR/RobWork/example/lua
+    - "for file in $EXERW ; do echo -e '\n EXECUTING: '$file && lua ${file}.lua ${robworkdata} || exit 1 ; done"
+    - "lua ./ex-load-workcell.lua ../ModelData/XMLScenes/RobotWithHand/Workcell.xml"
+    # Test RWS CPP FILES
+    - cd $DIR/RobWorkStudio/example/cpp
+    - mkdir build && cd build
+    - cmake ..
+    - make -j${THREADS}
+    - "for file in ./ex-*; do if [ -f $file ] ; then  echo -e '\n EXECUTING: '$file && $file ${robworkdata} -t && EXERWS=$EXERWS' '$file || exit 1 ; fi; done"
+    # Test RWS PYTHON FILES
+    - cd $DIR/RobWorkStudio/example/python
+    - "for file in $EXERWS ; do echo -e '\n EXECUTING: '$file && python3 ${file}.py ${robworkdata} -t || exit 1 ; done"
+    # Test RWS LUA FILES
+    - cd $DIR/RobWorkStudio/example/lua
+    - "for file in $EXERWS ; do echo -e '\n EXECUTING: '$file && lua ${file}.lua ${robworkdata} -t || exit 1 ; done"
+    # Test RWSIM CPP files
+    - cd $DIR/RobWorkSim/example/cpp
+    - mkdir build && cd build
+    - cmake ..
+    - make -j${THREADS}
+    - "for file in ./ex-*; do if [ -f $file ] ; then  echo -e '\n EXECUTING: '$file && $file ${robworkdata} && EXERWSIM=$EXERWSIM' '$file || exit 1 ; fi; done"
+    # Test RWSSIM PYTHON FILES
+    - cd $DIR/RobWorkSim/example/python
+    - "for file in $EXERWSIM ; do echo -e '\n EXECUTING: '$file && python3 ${file}.py ${robworkdata} || exit 1 ; done"
+    # Test RWSIM LUA FILES
+    - cd $DIR/RobWorkSim/example/lua
+    - "for file in $EXERWSIM ; do echo -e '\n EXECUTING: '$file && lua ${file}.lua ${robworkdata} || exit 1 ; done"
+
+.linux-build-debian:
+  extends: .CI-common-linux
+  stage: build
+  tags:
+    - linux
+  before_script:
+    - *uninstall-rw-deb
+    - rm -r ../*.deb || echo "Nothing to remove"
+    - rm -r ../robwork_* || echo "Nothing to remove"
+  script:
+    - version=$(./debian/scripts/getVersion.sh ./debian/scripts -n -p1)
+    - mv ./debian/changelog ./debian/changelog.old
+    - echo "robwork ("$version"-1) bionic; urgency=medium" >> ./debian/changelog && echo "" >> ./debian/changelog
+    - echo "  * Test" >> ./debian/changelog && echo "" >> ./debian/changelog
+    - echo " -- GitLab CI Builder <test@test.test> " $(date "+%a, %d %b %Y %T +0100") >> ./debian/changelog
+    - echo "" >> ./debian/changelog
+    - cat ./debian/changelog.old >> ./debian/changelog
+    - tar --exclude='./debian' --exclude='./.git' -zcvf ../robwork_$version.orig.tar.gz . > /dev/null
+    - debuild --no-sign
+    - mkdir DEBPKG
+    - find ../ -maxdepth 1 -type f -name '*.deb' -exec cp '{}' ./DEBPKG ';'
+  artifacts:
+    paths:
+      - ./DEBPKG
+    expire_in: 2 day
+    when: on_success
+
+.linux-test-debian:
+  extends: .linux-install-tests
+  stage: test
+  tags:
+    - linux
+  before_script:
+    - *uninstall-rw-deb
+    - apt update
+    - apt -y install ./DEBPKG/*.deb
+    - robworkdata=/home/robworkdata
+    - export DISPLAY=:0
+    - Xvfb $DISPLAY -screen 0 640x480x24 &
+
+.linux-debian-upgrade-test:
+  extends: .CI-common-linux
+  stage: test
+  tags:
+    - linux
+  before_script:
+    - *uninstall-rw-deb
+    - add-apt-repository ppa:sdurobotics/robwork
+    - apt-get update
+  script:
+    - apt -y install libsdurw-all-dev libsdurws-all-dev libsdurwsim-all-dev 
+    - apt -y install ./DEBPKG/*.deb

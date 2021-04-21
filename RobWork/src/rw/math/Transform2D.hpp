@@ -22,10 +22,12 @@
  * @file Transform2D.hpp
  */
 
+#if !defined(SWIG)
 #include "Rotation2D.hpp"
 #include "Vector2D.hpp"
 
 #include <cassert>
+#endif 
 
 namespace rw { namespace math {
 

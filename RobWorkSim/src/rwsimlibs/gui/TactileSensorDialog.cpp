@@ -497,7 +497,7 @@ void TactileSensorDialog::rotateRight ()
 void TactileSensorDialog::wheelEvent (QWheelEvent* event)
 {
     qreal factor = 1.2;
-    if (event->delta () < 0)
+    if (event->angleDelta().y () < 0)
         factor = 1.0 / factor;
     _ui->_gview->scale (factor, factor);
 }

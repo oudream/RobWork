@@ -18,8 +18,10 @@
 #ifndef RW_KINEMATICS_STATELESS_HPP_
 #define RW_KINEMATICS_STATELESS_HPP_
 
+#if !defined(SWIG)
 #include "StateStructure.hpp"
 #include "StatelessData.hpp"
+#endif
 
 namespace rw { namespace kinematics {
 

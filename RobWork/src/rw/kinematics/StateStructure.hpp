@@ -21,7 +21,7 @@
 /**
    @file StateStructure.hpp
 */
-
+#if !defined(SWIG)
 #include "State.hpp"
 
 #include <rw/core/Event.hpp>
@@ -30,7 +30,7 @@
 #include <boost/function.hpp>
 #include <map>
 #include <vector>
-
+#endif 
 namespace rw { namespace kinematics {
 
     class Frame;
@@ -221,6 +221,7 @@ namespace rw { namespace kinematics {
          */
         rw::core::Ptr< kinematics::StateData > findData (const std::string& name) const;
 
+#if !defined(SWIG)
         /**
          * @brief Defines a listener for StateData added events
          * @param StateData [in] the statedata that has been added
@@ -253,7 +254,7 @@ namespace rw { namespace kinematics {
          * @return Reference to the StateDataRemovedEvent
          */
         StateDataRemovedEvent& stateDataRemovedEvent () { return _stateDataRemovedEvent; }
-
+#endif
       private:
         void updateDefaultState ();
 
@@ -299,10 +300,11 @@ namespace rw { namespace kinematics {
         typedef std::map< std::string, int > FrameIdxMap;
         FrameIdxMap _frameIdxMap;
         std::map< std::string, int > _stateIdxMap;
-
+#if !defined(SWIG)
         // event stuff
         StateDataAddedEvent _stateDataAddedEvent;
         StateDataRemovedEvent _stateDataRemovedEvent;
+#endif 
     };
 
     /**

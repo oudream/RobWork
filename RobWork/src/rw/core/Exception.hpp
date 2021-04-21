@@ -56,12 +56,7 @@ namespace rw { namespace core {
          *
          * @param message [in] A message for a user.
          */
-        Exception (const rw::core::Message& message) : _id (-1), _message (message)
-        {
-            std::stringstream sstr;
-            sstr << "Id[" << _id << "]" << _message.getFullText ();
-            _whatMsg = sstr.str ();
-        }
+        Exception (const rw::core::Message& message); 
 
         /**
          * @brief Constructor
@@ -69,12 +64,7 @@ namespace rw { namespace core {
          * @param id [in] Integer Id to identify the exception
          * @param message [in] A message for a user.
          */
-        Exception (int id, const rw::core::Message& message) : _id (id), _message (message)
-        {
-            std::stringstream sstr;
-            sstr << "Id[" << _id << "]" << _message.getFullText ();
-            _whatMsg = sstr.str ();
-        }
+        Exception (int id, const rw::core::Message& message);
 
         virtual ~Exception () throw (){};
 

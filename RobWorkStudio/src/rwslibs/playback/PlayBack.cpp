@@ -189,6 +189,7 @@ void PlayBack::initialize ()
 {
     getRobWorkStudio ()->stateTrajectoryPtrChangedEvent ().add (
         boost::bind (&PlayBack::stateTrajectoryChangedListener, this, boost::arg< 1 > ()), this);
+    connect(this,SIGNAL(stateTrajectoryChangedSignal()),this,SLOT(stateTrajectoryChanged()));
 }
 
 void PlayBack::open (WorkCell* workcell)
@@ -389,6 +390,11 @@ void PlayBack::openPlayFile (const std::string& file)
 
 void PlayBack::stateTrajectoryChangedListener (const TimedStatePath::Ptr path)
 {
+    stateTrajectoryChangedSignal();
+}
+void PlayBack::stateTrajectoryChanged()
+{   
+    TimedStatePath::Ptr path = getRobWorkStudio ()->getTimedStatePathPtr();
     if (!path->empty ()) {
         // Reset the player.
         _player = Player::makePlayer (path, makeMyStateDraw (), timerInterval, getRobWorkStudio ());
@@ -399,17 +405,7 @@ void PlayBack::stateTrajectoryChangedListener (const TimedStatePath::Ptr path)
                  this,
                  SLOT (relativePositionChanged (double)));
 
-        // Let the player position be the current position of the slider. Things
-        // are done in relative values, so this is fine always.
-        //
-        // Upon further consideration is seems that in practice it is usually
-        // more convenient that the robot moves to the start of the path:
         _slider->setValue (0);
-        // Perhaps the speed value should be reset to 100% also, but we don't do
-        // that.
-
-        // Make sure that _player is up date with respect to the position and
-        // speed:
 
         sliderSetPosition (_slider->value ());
 

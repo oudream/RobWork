@@ -67,6 +67,13 @@ namespace rw { namespace loaders {
         static const XMLCh* idPropertyValue ();
 
         /**
+         * @brief Get identifier for the value of a
+         * std::vector< PropertyValueBase::Ptr >.
+         * @return the identifier.
+         */
+        static const XMLCh* idPropertyValueList ();
+
+        /**
          * @brief Utility class which initializes local static variables.
          *
          * If the XMLPropertyFormat is used outside main (as a part of global

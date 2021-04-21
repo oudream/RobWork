@@ -454,3 +454,12 @@ TimedStatePath PathLoader::loadTimedStatePath (const WorkCell& workcell, const s
 
     return reader.getTimedStatePath (workcell);
 }
+
+TimedStatePath PathLoader::loadTimedStatePath (WorkCell::Ptr workcell, const std::string& file)
+{
+    std::vector< char > input;
+    readFile (file, input);
+    Reader reader (file, &input);
+
+    return reader.getTimedStatePath (*workcell);
+}

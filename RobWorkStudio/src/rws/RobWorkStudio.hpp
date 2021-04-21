@@ -104,6 +104,12 @@ class RobWorkStudio : public QMainWindow
     //! @copydoc setWorkcell
     void setWorkCell (rw::models::WorkCell::Ptr workcell) { setWorkcell (workcell); }
 
+    //! @copydoc openWorkCellFile
+    void setWorkcell (std::string workcell_file) { openWorkCellFile (workcell_file.c_str()); }
+
+    //! @copydoc openWorkCellFile
+    void setWorkCell (std::string workcell_file) { openWorkCellFile (workcell_file.c_str()); }
+
     /**
      * @copydoc setWorkcell
      *
@@ -158,6 +164,16 @@ class RobWorkStudio : public QMainWindow
      * @return Reference to TimedStatePath
      */
     const rw::trajectory::TimedStatePath& getTimedStatePath () { return *_timedStatePath; }
+
+    /**
+     * @brief Returns pointer to the common TimedStatePath
+     *
+     * The TimedStatePath can be used to represent a trajectory represented
+     * by full workcell states
+     *
+     * @return pointer to TimedStatePath
+     */
+    const rw::core::Ptr<rw::trajectory::TimedStatePath> getTimedStatePathPtr () { return _timedStatePath; }
 
     /**
      * @brief Sets the common TimedStatePath

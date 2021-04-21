@@ -58,6 +58,7 @@ if(build)
         PUBLIC ${SUBSYS_DEPS} ${PQP_LIBRARIES} ${BULLET_LIBRARIES}
         PRIVATE ${YAOBI_LIBRARIES} ${FCL_LIBRARIES}
     )
+    
     if(CMAKE_VERSION VERSION_GREATER 3.13.0)
         target_link_directories(${SUBSYS_NAME} PRIVATE ${FCL_LIBRARY_DIRS})
     else()

@@ -1,9 +1,9 @@
 [Plugins]
 
-@Lua_DOCKAREA@
-@Lua_FILENAME@
-@Lua_PATH@
-@Lua_VISIBLE@
+@Luapl_DOCKAREA@
+@Luapl_FILENAME@
+@Luapl_PATH@
+@Luapl_VISIBLE@
 
 @Sensors_DOCKAREA@
 @Sensors_FILENAME@

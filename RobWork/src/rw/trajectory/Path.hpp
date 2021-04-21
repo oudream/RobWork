@@ -85,6 +85,14 @@ namespace rw { namespace trajectory {
          */
         Path (const std::vector< T >& v) : std::vector< T > (v) {}
 
+        /**
+         * @brief Construct Path and copies elements from \b v
+         * @param v [in] vector to copy data from
+         */
+        Path<T>& operator= (const std::vector<T>& rhs) {
+          return (*this) = Path<T>(rhs);
+        }
+
 #if !defined(__GNUC__) || BOOST_VERSION >= 106400 || __GNUC__ >= 7 ||                   \
     (__GNUC__ == 6 && __GNUC_MINOR__ >= 1) || (__GNUC__ == 5 && __GNUC_MINOR__ >= 4) || \
     (__GNUC__ == 4 && __GNUC_MINOR__ >= 9 && __GNUC_PATCHLEVEL__ >= 4)

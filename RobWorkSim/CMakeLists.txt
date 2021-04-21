@@ -2,6 +2,10 @@
 # Test CMake version and CMAKE_BUILD_TYPE
 cmake_minimum_required(VERSION 3.5.1)
 
+
+if(POLICY CMP0071) # Introduce cmake 3.10
+    cmake_policy(SET CMP0071 NEW)
+endif()
 if(POLICY CMP0072) # Introduce cmake 3.11
     cmake_policy(SET CMP0072 NEW)
 endif()
@@ -38,8 +42,12 @@ else()
     set(RWSIM_GOT_VERSION False)
 endif()
 
-find_package(RobWork ${ROBWORKSIM_VERSION} REQUIRED PATHS ${RWSIM_ROOT}/../RobWork/cmake )
-
+if(NOT DEFINED RWP_ROOT)
+    find_package(RobWork ${ROBWORKSIM_VERSION} REQUIRED PATHS ${RWSIM_ROOT}/../RobWork/cmake NO_DEFAULT_PATH)
+else()
+    string(TOLOWER ${RW_BUILD_TYPE} tmp)
+    include(${RW_ROOT}cmake/RobWorkBuildConfig_${tmp}.cmake)
+endif()
 
 # for backward compatibility
 set(ROOT RWSIM_ROOT)
@@ -64,9 +72,9 @@ include(${RWSIM_ROOT}/cmake/RobWorkSimSetup.cmake)
 rw_set_install_dirs(RobWorkSim RWSIM)
 
 # now lets find RobWorkStudio
-
-find_package(RobWorkStudio REQUIRED PATHS ${RWSIM_ROOT}/../RobWorkStudio/cmake)
-
+if(NOT DEFINED RWP_ROOT)
+    find_package(RobWorkStudio ${ROBWORKSIM_VERSION} REQUIRED PATHS ${RWSIM_ROOT}/../RobWorkStudio/cmake NO_DEFAULT_PATH)
+endif()
 # ##################################################################################################
 # CONFIGURATION configure build/RobWorkStudioConfig.cmake.in
 #
@@ -138,24 +146,15 @@ install(
 # ##################################################################################################
 # setup testing
 #
-configure_file("${RWSIM_ROOT}/cmake/CTestCustom.cmake.in" "CTestCustom.cmake")
-# configure testing configuration Dashboard
-configure_file("${RWSIM_ROOT}/CTestConfig.cmake.in" "${RWSIM_ROOT}/CTestConfig.cmake")
 
 include(CMakeDependentOption)
 cmake_dependent_option(
-    RWSIM_IS_TESTS_ENABLED "Set when you want to build the tests" ON "${RWSIM_BUILD_TESTS}" OFF
+    RWSIM_IS_TESTS_ENABLED "Set when you want to build the tests" ON "${RW_BUILD_WITH_GTEST}" OFF
 )
 if(RWSIM_IS_TESTS_ENABLED)
     message(STATUS "RobWork tests ENABLED!")
-    # TODO Specify SET(SITE "myname") to configure the site name to use when uploading
-    set(BUILDNAME "${INFO}")
-    enable_testing()
-    include(CTest)
-    add_subdirectory(test)
-    if(RW_BUILD_WITH_GTEST)
-        add_subdirectory(gtest)
-    endif()
+    add_subdirectory(gtest)
+
 else()
     message(STATUS "RobWork tests DISABLED!")
 endif()

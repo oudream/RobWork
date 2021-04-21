@@ -18,7 +18,9 @@
 #ifndef RW_MATH_CAMERAMATRIX_HPP
 #define RW_MATH_CAMERAMATRIX_HPP
 
-#include "Vector3D.hpp"
+#if !defined(SWIG)
+#include <rw/math/Vector3D.hpp>
+#endif 
 
 namespace rw { namespace math {
 
@@ -106,8 +108,10 @@ namespace rw { namespace math {
         Base _matrix;
     };
 
+#if !defined(SWIG)
     extern template class rw::math::CameraMatrix< double >;
     extern template class rw::math::CameraMatrix< float >;
+#endif 
 
     using CameraMatrixd = CameraMatrix<double>;
     using CameraMatrixf = CameraMatrix<float>;

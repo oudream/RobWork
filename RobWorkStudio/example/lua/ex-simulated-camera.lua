@@ -1,9 +1,11 @@
 require("sdurw_core")
+require("sdurw_kinematics")
 require("sdurw")
 require("sdurw_simulation")
 require("sdurws")
 
 using("sdurw_core")
+using("sdurw_kinematics")
 using("sdurw")
 using("sdurw_simulation")
 using("sdurws")

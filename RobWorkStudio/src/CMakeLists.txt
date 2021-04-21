@@ -26,12 +26,11 @@ rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} DEPENDS ${SUBSYS
 if(build)
     if(WIN32 AND IS_RELEASE)
         add_executable(${SUBSYS_NAME} WIN32 main.cpp)
-    else(WIN32 AND IS_RELEASE)
+    else()
         add_executable(${SUBSYS_NAME} main.cpp)
-    endif(WIN32 AND IS_RELEASE)
+    endif()
 
     set(LIBS_TMP ${RWS_PLUGIN_LIBRARIES} sdurws ${RWS_COMPONENT_LIBRARIES})
-    # MESSAGE("${LIBS_TMP} sdurws_robworkstudioapp ${ROBWORK_LIBRARIES}")
 
     target_link_libraries(${SUBSYS_NAME} ${LIBS_TMP})
     target_link_libraries(${SUBSYS_NAME} RW::sdurw sdurws_robworkstudioapp ${GLUT_glut_LIBRARY})

@@ -23,16 +23,18 @@
  *
  * \copydoc rw::math::PolynomialSolver
  */
-
+#if !defined(SWIG)
 #include "Polynomial.hpp"
 
 #include <complex>
 #include <vector>
+#endif
 
 namespace rw { namespace math {
     //! @addtogroup math
-
+#if !defined(SWIG)
     //! @{
+#endif
     /**
      * @brief Find solutions for roots of real and complex polynomial equations.
      *
@@ -69,7 +71,7 @@ namespace rw { namespace math {
      *
      * 2. If root x=1 is found, remaining polynomial after deflation is \f$ x^3 + 3 x^2 +3 x + 2 =
      * 0\f$. The roots are found analytically, giving one real root x=-2 and two complex conjugate
-     * roots \f$x = -0.5 \pm \frac{\sqrt{3}}{2} i\f$.
+     * roots \f$ x = -0.5 \pm \frac{\sqrt{3}}{2} i\f$.
      *
      * 3. If other roots than x=1 or x=-2 is found (a complex root), remaining polynomial is a third
      * order polynomial with complex coefficients. This polynomial is solved analytically to give
@@ -105,6 +107,7 @@ namespace rw { namespace math {
          * @param guess [in] a complex initial guess for the algorithm.
          */
         void setInitialGuess (std::complex< double > guess = 0);
+#if !defined(SWIGJAVA)
 
         /**
          * @brief Get all real solutions of the equation.
@@ -115,7 +118,10 @@ namespace rw { namespace math {
          * iterations has been reached.
          * @see PolynomialSolver for more details about the method used.
          */
+#endif
         std::vector< double > getRealSolutions (double epsilon = 1.0e-14);
+
+#if !defined(SWIGJAVA)
 
         /**
          * @brief Get all solutions of the equation including complex solutions.
@@ -126,6 +132,7 @@ namespace rw { namespace math {
          * iterations has been reached.
          * @see PolynomialSolver for more details about the method used.
          */
+#endif
         virtual std::vector< std::complex< double > > getSolutions (double epsilon = 1.0e-14);
 
         /**
@@ -141,7 +148,6 @@ namespace rw { namespace math {
         Polynomial< std::complex< double > > _polynomial;
         PolynomialSolver* _derivative;
         std::complex< double > _guess;
-        bool _isComplex;
         unsigned int _iterations;
     };
     //! @}

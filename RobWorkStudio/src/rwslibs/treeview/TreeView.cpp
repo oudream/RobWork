@@ -29,6 +29,7 @@
 #include <rw/models/TreeDevice.hpp>
 #include <rws/RobWorkStudio.hpp>
 
+#include <QActionGroup>
 #include <QFileDialog>
 #include <QInputDialog>
 #include <QKeyEvent>
@@ -150,7 +151,7 @@ TreeView::TreeView () :
     lay->addWidget (_treewidget);    // own treewidget
     _treewidget->setColumnCount (1);
     QTreeWidgetItem* header = _treewidget->headerItem ();
-    _treewidget->setItemHidden (header, true);
+    header->setHidden (true);
     connect (_treewidget,
              SIGNAL (itemDoubleClicked (QTreeWidgetItem*, int)),
              this,

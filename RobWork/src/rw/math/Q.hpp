@@ -21,6 +21,8 @@
 /**
  * @file Q.hpp
  */
+
+#if !defined(SWIG)
 #include <rw/common/Serializable.hpp>
 #include <rw/core/PropertyMap.hpp>
 #include <rw/core/macros.hpp>
@@ -28,6 +30,7 @@
 #include <Eigen/Core>
 #include <boost/serialization/split_free.hpp>
 #include <vector>
+#endif
 
 namespace rw { namespace math {
 
@@ -64,11 +67,7 @@ namespace rw { namespace math {
          *
          * @param r [in] An expression for a vector of doubles
          */
-        Q (const std::vector< double >& r) : _vec (r.size ())
-        {
-            for (size_t i = 0; i < r.size (); i++)
-                _vec (i) = r[i];
-        }
+        Q (const std::vector< double >& r);
 
         /**
          * @brief Creates a Q  initialized with values from \b values
@@ -120,7 +119,9 @@ namespace rw { namespace math {
             //_vec(i--) = arg1;
             _vec (i--) = arg0;
         }
-
+#if defined(SWIG)
+        Q_SWIG_CONSTRUCTORS;
+#endif
         /**
          * @brief Construct from Eigen base.
          * @param q [in] Eigen base.
@@ -227,7 +228,7 @@ namespace rw { namespace math {
 
         //----------------------------------------------------------------------
         // Various operators
-
+#if !defined(SWIG)
         /**
          * @brief Returns reference to vector element
          * @param i [in] index in the vector
@@ -255,6 +256,9 @@ namespace rw { namespace math {
          * @return reference to element
          */
         double& operator[] (size_t i) { return _vec (i); }
+#else
+        ARRAYOPERATOR (double);
+#endif
 
         /**
          * @brief Scalar division.
@@ -271,6 +275,7 @@ namespace rw { namespace math {
          */
         friend const Q operator* (double s, const Q& v) { return Q (s * v.e ()); }
 
+#if !defined(SWIGPYTHON)
         /**
          * @brief Scalar division.
          */
@@ -281,6 +286,7 @@ namespace rw { namespace math {
                 res (i) = s / v (i);
             return res;
         }
+#endif
 
         /**
          * @brief Vector subtraction.
@@ -291,6 +297,22 @@ namespace rw { namespace math {
          * @brief Vector addition.
          */
         const Q operator+ (const Q& b) const { return Q (_vec + b.e ()); }
+
+        /**
+         * @brief Compares \b this and \b q2 for equality.
+         *
+         * \b this and \b q2 are considered equal if and only if they have equal
+         * length and if q1(i) == q2(i) for all i.
+         * @param q2 [in]
+         * @return True if this equals q2, false otherwise.
+         */
+        bool operator== (const Q& q2) const;
+
+        /**
+         * @brief Inequality operator
+         * The inverse of operator==().
+         */
+        inline bool operator!= (const Q& q2) const { return !((*this) == q2); }
 
         /**
          * @brief Scalar multiplication.
@@ -374,6 +396,9 @@ namespace rw { namespace math {
             toStdVector (v);
             return v;
         }
+#if defined(SWIG)
+        TOSTRING ();
+#endif
 
       private:
         void ParamExpansion (int& i)
@@ -463,33 +488,13 @@ namespace rw { namespace math {
     template<> Q::Q (size_t n, double values);
 
     /**
-     * @brief Compares \b q1 and \b q2 for equality.
-     *
-     * \b q1 and \b q2 are considered equal if and only if they have equal
-     * length and if q1(i) == q2(i) for all i.
-     *
-     * @relates Q
-     *
-     * @param q1 [in]
-     * @param q2 [in]
-     * @return True if q1 equals q2, false otherwise.
-     */
-    bool operator== (const Q& q1, const Q& q2);
-
-    /**
-   @brief Inequality operator
-
-   The inverse of operator==().
- */
-    inline bool operator!= (const Q& q1, const Q& q2) { return !(q1 == q2); }
-
-    /**
      * @brief Streaming operator.
      *
      * @relates Q
      */
     std::ostream& operator<< (std::ostream& out, const Q& v);
 
+#if !defined(SWIG)
     /**
      * @brief Input streaming operator
      *
@@ -501,12 +506,12 @@ namespace rw { namespace math {
      * @return reference to \b in
      */
     std::istream& operator>> (std::istream& in, Q& q);
+#endif
 
     /**
-   @brief The dot product (inner product) of \b a and \b b.
-
-   @relates Q
-*/
+     * @brief The dot product (inner product) of \b a and \b b.
+     * @relates Q
+     */
     double dot (const Q& a, const Q& b);
 
     /**

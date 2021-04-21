@@ -2,7 +2,6 @@ set(SUBSYS_NAME sdurws_pythoneditor)
 set(SUBSYS_DESC "A python editor")
 set(SUBSYS_DEPS sdurws RW::sdurw_python RW::sdurw)
 
-set(RWS_USE_QCODEEDITOR OFF)
 if(${PYTHONLIBS_FOUND} AND ${PYTHONINTERP_FOUND} AND ${RWS_USE_QCODEEDITOR})
     set(DEFAULT ON)
     set(REASON)
@@ -37,11 +36,15 @@ if(build)
     set(SRC_FILES_HPP Editor.hpp)
 
     # Rcc the files:
-    qt5_add_resources(RccSrcFiles resources_pyeditor.qrc ../../rws/rwstudio_resources.qrc)
+    if(DEFINED Qt6Core_VERSION)
+        qt_add_resources(RccSrcFiles resources_pyeditor.qrc ../../rws/rwstudio_resources.qrc)
+    else()
+        qt5_add_resources(RccSrcFiles resources_pyeditor.qrc ../../rws/rwstudio_resources.qrc)
+    endif()
 
     # Set extra linker flags for apple macos computers
     rws_add_plugin(${SUBSYS_NAME} ${RWS_DEFAULT_LIB_TYPE} ${SrcFiles} ${RccSrcFiles})
-    rw_add_includes(${SUBSYS_NAME} "rwslibs/" ${SRC_FILES_HPP})
+    rw_add_includes(${SUBSYS_NAME} "rwslibs/pythoneditor" ${SRC_FILES_HPP})
     target_link_libraries(
         ${SUBSYS_NAME}
         PUBLIC sdurws ${QT_LIBRARIES} RW::sdurw

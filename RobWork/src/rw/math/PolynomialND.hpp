@@ -23,17 +23,20 @@
  *
  * \copydoc rw::math::PolynomialND
  */
-
+#if !defined(SWIG)
 #include <rw/core/macros.hpp>
 
 #include <Eigen/Core>
 #include <sstream>
 #include <vector>
+#endif
 
 namespace rw { namespace math {
     //! @addtogroup math
-
+#if !defined(SWIG)
     //! @{
+
+#endif
     /**
      * @brief Representation of a polynomial that can have non-scalar coefficients (polynomial
      * matrix).
@@ -45,7 +48,7 @@ namespace rw { namespace math {
      * @f$
      *
      * The polynomial is represented as a list of coefficients ordered from lowest-order term to
-     * highest-order term, \f${c_0,c_1,...,c_n}\f$.
+     * highest-order term, \f$ {c_0,c_1,...,c_n}\f$.
      */
     template< typename Coef, typename Scalar = double > class PolynomialND
     {
@@ -88,18 +91,6 @@ namespace rw { namespace math {
         /**
          * @brief Increase the order of this polynomial.
          * @param increase [in] how much to increase the order (default is 1).
-         * @see increaseOrder(std::size_t,const Coef&) for a version that initializes the new
-         * coefficients to a certain value.
-         */
-        void increaseOrder (std::size_t increase = 1)
-        {
-            const std::size_t size = _coef.size ();
-            _coef.resize (size + increase);
-        }
-
-        /**
-         * @brief Increase the order of this polynomial.
-         * @param increase [in] how much to increase the order (default is 1).
          * @param value [in] initialize new coefficients to this value.
          */
         void increaseOrder (std::size_t increase, const Coef& value)
@@ -110,11 +101,25 @@ namespace rw { namespace math {
                 _coef[i] = value;
             }
         }
+#if !defined(SWIGJAVE)
+
+        /**
+         * @brief Increase the order of this polynomial.
+         * @param increase [in] how much to increase the order (default is 1).
+         * @see increaseOrder(std::size_t,const Coef&) for a version that initializes the new
+         * coefficients to a certain value.
+         */
+#endif
+        void increaseOrder (std::size_t increase = 1)
+        {
+            const std::size_t size = _coef.size ();
+            _coef.resize (size + increase);
+        }
 
         /**
          * @brief Evaluate the polynomial using Horner's Method.
          * @param x [in] the input parameter.
-         * @return the value \f$f(x)\f$.
+         * @return the value \f$ f(x)\f$.
          */
         Coef evaluate (const Scalar& x) const
         {
@@ -129,7 +134,7 @@ namespace rw { namespace math {
          * @brief Evaluate the first \b n derivatives of the polynomial using Horner's Method.
          * @param x [in] the input parameter.
          * @param n [in] the number of derivatives to find (default is the first derivative only)
-         * @return a vector of values \f${f(x),\dot{f}(x),\ddot{f}(x),\cdots}\f$.
+         * @return a vector of values \f$ {f(x),\dot{f}(x),\ddot{f}(x),\cdots}\f$.
          */
         std::vector< Coef > evaluateDerivatives (const Scalar& x, std::size_t n = 1) const
         {
@@ -185,7 +190,7 @@ namespace rw { namespace math {
             std::size_t no = order () - 1;
             PolynomialND< Coef, Scalar > der (no);
             for (std::size_t i = 1; i <= order (); i++)
-                der[i - 1] = _coef[i] * double (i);
+                der[i - 1] = (Coef) (_coef[i] * double(i));
             return der.derivative (n - 1);
         }
 
@@ -193,6 +198,7 @@ namespace rw { namespace math {
          * @name Coefficient access operators.
          * Operators used to access coefficients.
          */
+#if !defined(SWIG)
         ///@{
 
         /**
@@ -254,14 +260,23 @@ namespace rw { namespace math {
             }
             return _coef[i];
         }
-        ///@}
+#else
+
+        ARRAYOPERATOR (Coef);
+
+#endif
+#if !defined(SWIG)
+///@}
+#endif
 
         /**
          * @name Arithmetic operators between polynomial and scalars.
          * Operators used to do arithmetic with scalars.
          */
-        ///@{
 
+#if !defined(SWIG)
+        ///@{
+#endif
         /**
          * @brief Scalar multiplication
          * @param s [in] scalar to multiply with.
@@ -315,7 +330,7 @@ namespace rw { namespace math {
             }
             return *this;
         }
-
+#if !defined(SWIGPYTHON)
         /**
          * @brief Scalar multiplication
          * @param s [in] scalar to multiply with.
@@ -331,13 +346,19 @@ namespace rw { namespace math {
             }
             return pol;
         }
+#endif
+#if !defined(SWIG)
         ///@}
+#endif
 
         /**
          * @name Arithmetic operators between polynomials.
          * Operators used to do arithmetic between two polynomials.
          */
+
+#if !defined(SWIG)
         ///@{
+#endif
 
         /**
          * @brief Polynomial subtraction.
@@ -496,11 +517,10 @@ namespace rw { namespace math {
             }
             return pol;
         }
-
+#if !defined(SWIGPYTHON)
         /**
          * @brief Assignment.
          * @param b [in] the polynomial to take coefficients from.
-         * @return true if equal, false if not.
          */
         void operator= (const PolynomialND< Coef, Scalar >& b)
         {
@@ -508,8 +528,10 @@ namespace rw { namespace math {
             for (size_t i = 0; i <= b.order (); i++)
                 _coef[i] = b[i];
         }
-
-        ///@}
+#endif
+#if !defined(SWIG)
+///@}
+#endif
 
         /**
          * @brief Negate coefficients.
@@ -519,11 +541,11 @@ namespace rw { namespace math {
         {
             PolynomialND< Coef, Scalar > pol (order ());
             for (std::size_t i = 0; i <= order (); i++) {
-                pol[i] = _coef[i] * double (-1);
+                pol[i] = (Coef) (_coef[i] * double(-1));
             }
             return pol;
         }
-
+#if !defined(SWIG)
         /**
          * @brief Printing polynomial to stream.
          * @param out [in/out] the stream to write to.
@@ -538,6 +560,10 @@ namespace rw { namespace math {
             out << p[0];
             return out;
         }
+#else
+#define tmp Coef, Scalar
+        TOSTRING (rw::math::PolynomialND< tmp >);
+#endif
 
         /**
          * @brief Check if polynomials are equal.

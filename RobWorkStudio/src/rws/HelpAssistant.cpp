@@ -93,7 +93,11 @@ bool HelpAssistant::startAssistant (QString collectionFileName)
         proc = new QProcess ();
 
     if (proc->state () != QProcess::Running) {
+#if QT_VERSION >= 0x060000
+        QString app = QLibraryInfo::path (QLibraryInfo::BinariesPath) + QDir::separator ();
+#else
         QString app = QLibraryInfo::location (QLibraryInfo::BinariesPath) + QDir::separator ();
+#endif
 #if !defined(Q_OS_MAC)
         app += QLatin1String ("assistant");
 #else

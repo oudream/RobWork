@@ -92,6 +92,11 @@ namespace rw { namespace geometry {
         IndexedPolygonN (const std::vector< T >& vertices) : _vertices (vertices) {}
 
         /**
+         * @brief destructor
+         */
+        virtual ~IndexedPolygonN() {}
+
+        /**
          * @brief returns the index of vertex i of the triangle
          */
         T& getVertexIdx (size_t i)
@@ -170,6 +175,11 @@ namespace rw { namespace geometry {
                 RW_THROW ("The number of vertices (" << vertices.size () << ") and normals ("
                                                      << normals.size () << ") does not match.");
         }
+
+        /**
+         * @brief destructor
+         */
+        virtual ~IndexedPolygonNN() {}
 
         /**
          * @brief returns the index of vertex i of the triangle

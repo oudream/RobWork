@@ -18,6 +18,7 @@
 #ifndef RW_MATH_POLYNOMIAL_HPP_
 #define RW_MATH_POLYNOMIAL_HPP_
 
+#if !defined(SWIG)
 #include "PolynomialND.hpp"
 
 #include <rw/common/Serializable.hpp>
@@ -26,7 +27,7 @@
 #include <cmath>
 #include <limits>
 #include <vector>
-
+#endif 
 /**
  * @file Polynomial.hpp
  *

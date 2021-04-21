@@ -43,6 +43,7 @@
 #include <QPushButton>
 #include <QSlider>
 #include <iomanip>
+#include <regex>
 
 using namespace rw::math;
 using namespace rw::core;
@@ -76,61 +77,6 @@ QSlider* makeHSlider (int end)
 const int sliderEnd = 4000;
 }    // namespace
 
-SliderSpinBox::SliderSpinBox (double low, double high)
-{
-    this->setDecimals (3);
-    this->setRange (low, high);
-    this->setKeyboardTracking (true);
-    const double step = (high - low) / 400;
-    this->setSingleStep (step);
-}
-
-void SliderSpinBox::fixup (QString& input) const
-{
-    QString out;
-    int deci    = decimals ();
-    bool gotNum = false;
-    bool dot    = false;
-    for (int i = 0; i < input.count (); i++) {
-        if (deci == 0) {
-            break;
-        }
-        if (input[i] == '-' && !gotNum) {
-            out += input[i];
-            gotNum = true;
-        }
-        else if (input[i] >= '0' && input[i] <= '9') {
-            if (dot) {
-                deci--;
-            }
-            out += input[i];
-            gotNum = true;
-        }
-        else if ((input[i] == '.' || input[i] == ',') && !dot) {
-            out += input[i];
-            dot = true;
-        }
-    }
-    std::cout << "Input: " << input.toStdString () << std::endl;
-    input = out;
-    std::cout << "Output: " << out.toStdString () << std::endl;
-}
-
-QValidator::State SliderSpinBox::validate (QString& text, int& pos) const
-{
-    bool ok = false;
-    locale ().toDouble (text, &ok);
-    return ok ? QValidator::Acceptable : QValidator::Invalid;
-}
-
-double SliderSpinBox::valueFromText (const QString& text) const
-{
-    bool ok   = false;
-    QString t = text;
-    fixup (t);
-    double value = locale ().toDouble (t, &ok);
-    return ok ? value : QDoubleSpinBox::value ();
-}
 //----------------------------------------------------------------------
 // JointLine
 
@@ -164,7 +110,7 @@ Slider::Slider (const std::string& title, double low, double high, QGridLayout* 
     _lowLabel  = makeNumericQLabel (_low);
     _slider    = makeHSlider (sliderEnd);
     _highLabel = makeNumericQLabel (_high);
-    _box       = new SliderSpinBox (_low, _high);
+    _box       = new rws::RWSSpinBox (_low, _high);
 
     unsigned int col = 0;
     if (!title.empty ())
@@ -330,7 +276,7 @@ MovableFrameTab::MovableFrameTab (const std::pair< rw::math::Q, rw::math::Q >& b
     tablayout->addWidget (toppanel, 0, 0);
     _transformSliderWidget =
         new TransformSliderWidget (bounds, Kinematics::frameTframe (_refframe, _frame, _state));
-
+    _transformSliderWidget->setNoneDeviceType ();
     QPushButton* btnPasteQ = new QPushButton ("Paste", _transformSliderWidget);
     QPushButton* btnCopyQ  = new QPushButton ("Copy", _transformSliderWidget);
     QHBoxLayout* btnlayout = new QHBoxLayout ();
@@ -445,28 +391,64 @@ void JointSliderWidget::paste ()
 {
     QString txt = "";
     do {
-        txt = QInputDialog::getText (
-            this, tr ("RobWorkStudio Jog"), tr ("Paste Q"), QLineEdit::Normal, txt);
+        if (_isNotADevice) {
+            txt = QInputDialog::getText (this,
+                                         tr ("RobWorkStudio Jog"),
+                                         tr ("Paste Transform3D or {x,y,z,R,P,Y}"),
+                                         QLineEdit::Normal,
+                                         txt);
+        }
+        else {
+            txt = QInputDialog::getText (
+                this, tr ("RobWorkStudio Jog"), tr ("Paste Q"), QLineEdit::Normal, txt);
+        }
         if (txt.isEmpty ())
             return;
 
         std::istringstream sstr;
         sstr.str (txt.toStdString ());
-
-        try {
+        // Transform3D(Vector3D(0.2, 0.598, 0.85), Rotation3D(1, 0, 0, 0, 1, 0, -0, 0, 1))
+        try {    // Transform3D(Vector3D(0.2, 0.598, 0.85), Rotation3D(1, 0, 0, 0, 1, 0, -0, 0, 1))
             Q q;
-            sstr >> q;
-
-            if (q.size () != _sliders.size ()) {
-                QMessageBox::critical (this,
-                                       tr ("RobWorkStudio Jog"),
-                                       tr ("Number of elements does not match device!"));
-                continue;
+            bool doQ = true;
+            std::cout << "HERE" << std::endl;
+            if (_isNotADevice) {
+                std::cout << "begin: " << txt.toStdString () << std::endl;
+                std::cmatch cm;
+                if (regex_match (
+                        txt.toStdString ().c_str (),
+                        cm,
+                        std::regex ("\\s*Transform3D\\(Vector3D\\(\\s*"
+                                    "([\\-0-9.].*),\\s*([\\-0-9.].*),\\s*([\\-0-9.].*)"
+                                    "\\s*\\)\\s*,\\s*Rotation3D\\(\\s*"
+                                    "([\\-0-9.]*),\\s*([\\-0-9.].*),\\s*([\\-0-9.].*),\\s*"
+                                    "([\\-0-9.].*),\\s*([\\-0-9.].*),\\s*([\\-0-9.].*),\\s*"
+                                    "([\\-0-9.].*),\\s*([\\-0-9.].*),\\s*([\\-0-9.].*)"
+                                    ".*"))) {
+                    std::cout << cm.size () << std::endl;
+                    doQ = false;
+                    double v[12];
+                    for (unsigned i = 1; i < cm.size (); ++i) {
+                        v[i - 1] = std::stod (cm[i]);
+                    }
+                    Transform3D<> t (
+                        Vector3Dd (v[0], v[1], v[2]),
+                        Rotation3Dd (v[3], v[4], v[5], v[6], v[7], v[8], v[9], v[10], v[11]));
+                    RPYd r (t.R ());
+                    q = Q (t.P ()[0], t.P ()[1], t.P ()[2], r[0], r[1], r[2]);
+                }
             }
+            if (doQ) {
+                sstr >> q;
 
-            // for(unsigned int i = 0; i < _sliders.size(); ++i)
-            // q[i] /= _sliders[i]->getUnitConverter();
-
+                if (q.size () != _sliders.size ()) {
+                    QMessageBox::critical (this,
+                                           tr ("RobWorkStudio Jog"),
+                                           tr ("Number of elements does not match device!"));
+                    continue;
+                }
+            }
+            
             updateValues (q);
             return;
         }
@@ -478,17 +460,22 @@ void JointSliderWidget::paste ()
     } while (true);
 }
 
+#define xyzRPY_SLIDER_SIZE 6u
 void JointSliderWidget::copy ()
 {
+    std::stringstream ss;
     Q q (_sliders.size ());
 
     for (size_t i = 0; i < _sliders.size (); ++i) {
         q[i] = _sliders[i]->value ();
     }
-
-    std::stringstream ss;
-    ss << q;
-
+    if (_isNotADevice && _sliders.size () == xyzRPY_SLIDER_SIZE) {
+        Transform3D<> t (Vector3D<> (q[0], q[1], q[2]), RPY<> (q[3], q[4], q[5]));
+        ss << t;
+    }
+    else {
+        ss << q;
+    }
     QApplication::clipboard ()->setText (QString (ss.str ().c_str ()));
 }
 

@@ -15,7 +15,7 @@ using rwsim::simulator::ODESimulator;
 
 int main(int argc, char** argv) {
 	// lets assume path to test is correct
-    DynamicWorkCell::Ptr dwc = DynamicWorkCellLoader::load( "../../../test/testfiles/ur_control_test_scene/cup_pg70_table.dwc.xml");
+    DynamicWorkCell::Ptr dwc = DynamicWorkCellLoader::load( "../../../gtest/testfiles/ur_control_test_scene/cup_pg70_table.dwc.xml");
 
     // create the simulator instance
     ODESimulator::Ptr odesim = ownedPtr( new ODESimulator( dwc ) );

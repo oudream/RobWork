@@ -2,7 +2,7 @@ Ubuntu compilation
 **********************
 
 RobWork can be built by the user.
-This guide shows the steps for doing this in Ubuntu 16.04, 18.04, 19.10 and 20.04.
+This guide shows the steps for doing this in Ubuntu 16.04, 18.04, 20.04 and 20.10.
 The compilation on these platforms are tested continuously.
 Current status of the pipeline for the RobWork master branch is:
 
@@ -11,7 +11,7 @@ Current status of the pipeline for the RobWork master branch is:
 
 If you have any suggestions or additions to the guide, please post it on the issue
 tracker https://gitlab.com/sdurobotics/RobWork/issues . This guide was
-last revised in April 2020.
+last revised in November 2020.
 
 .. note::
 
@@ -29,13 +29,9 @@ RobWork is basically multiple projects:
 - RobWorkSim :
   is an extension to the RobWork core functionality which adds dynamic simulation of bodies,
   devices and several tactile sensors.
-- RobWorkHardware :
-  is mostly drivers (with RobWork datatypes) for common hardware,
-  or hardware on which RobWork platforms have been built eg. SDH, cameras,
-  CAN-devices, the Universal robot arm, serial port...
 
-Note that RobWork is needed to run RobWorkStudio, RobWorkSim and
-RobWorkHardware. Therefore it is not possible to use these, without
+Note that RobWork is needed to run RobWorkStudio and RobWorkSim.
+Therefore it is not possible to use these, without
 having RobWork installed on the machine.
 For new users, RobWork and RobWorkStudio will usually be sufficient.
 
@@ -68,22 +64,16 @@ CMake must be used to prepare RobWork for compilation.
 RobWork Required Dependencies
 -----------------------------
 
-.. image:: ../graphics/logos/Boost.png
-  :width: 100
-  :target: https://www.boost.org
-  :alt: Boost
-
-Boost is the only required dependency for RobWork::
+RobWork has several dependencies, which can be installed with:
 
     sudo apt-get install libboost-dev \
-                         libboost-date-time-dev \
                          libboost-filesystem-dev \
                          libboost-program-options-dev \
-                         libboost-regex-dev \
                          libboost-serialization-dev \
-                         libboost-system-dev \
-                         libboost-test-dev \
-                         libboost-thread-dev
+                         libboost-thread-dev \
+                         libeigen3-dev \
+                         libqhull-dev
+
 
 RobWork Optional Dependencies
 -----------------------------
@@ -110,6 +100,8 @@ you install the following packages:
 
     sudo apt-get install swig liblua5.3-dev python3-dev python3-numpy default-jdk
 
+In Ubuntu 19.10 and newer you can use liblua5.4-dev instead of liblua5.3-dev.
+
 Google Test (optional) is used for unit tests in RobWork. If you are a
 developer and wants to develop code for the RobWork trunk, writing a
 GTest will be a requirement:
@@ -117,6 +109,27 @@ GTest will be a requirement:
 .. code-block:: shell
 
     sudo apt-get install libgtest-dev
+
+FCL (optional) is used as a collision library with a less restrictive License
+then PQP, which is the current default strategy in robwork
+
+.. code-block:: shell
+
+    sudo apt-get install libfcl-dev
+
+Assimp (optional) this library is used to load several 3D files or speed up loading
+some natively supported 3D files in RobWork
+
+.. code-block:: shell
+
+    sudo apt-get install libassimp-dev
+
+Freeglut (optional) this library is used to make graphics, in our opengl implementation
+
+.. code-block:: shell
+
+    sudo apt-get install libfreeglut-dev
+
 
 RobWorkStudio Dependencies
 --------------------------
@@ -141,7 +154,7 @@ Open Dynamics Engine (ODE) can be installed through the package manager:
     sudo apt-get install libode-dev
 
 Ubuntu 16.04 comes with ODE 0.13.1 (libode4), Ubuntu 18.04 with ODE 0.14 (libode6)
-and versions newer than 19.04 with ODE 0.16 (libode8).
+and version 20.04 and newer with ODE 0.16 (libode8).
 
 Notice that the version from the package manager can sometimes be a bit
 outdated. If you want the latest version, Open Dynamics Engine (ODE)
@@ -200,19 +213,6 @@ Modify the options to suit your needs. The shown options will make sure
 that Bullet is built with double precision, required compile flags and
 switch off building of things that are normally unnecessary when used in
 RobWorkSim.
-
-RobWorkHardware Dependencies
-----------------------------
-
-RobWorkHardware compilation depends heavily on which hardware you need
-to use. Install the following package:
-
-.. code-block:: shell
-
-    sudo apt-get install libdc1394-22-dev
-
-It is not currently possible to give any general instructions for
-RobWorkHardware.
 
 Building RobWork
 ================
@@ -289,7 +289,6 @@ directory for each of the projects you want to build:
     mkdir Build/RW
     mkdir Build/RWStudio
     mkdir Build/RWSim
-    mkdir Build/RWHardware
 
 Now we are ready to build RobWork. Run CMake in the newly created build
 directory for RobWork, and run make afterwards to build the project:
@@ -299,6 +298,10 @@ directory for RobWork, and run make afterwards to build the project:
     cd ~/RobWork/Build/RW
     cmake -DCMAKE_BUILD_TYPE=Release ../../RobWork
     make -j4
+    # to build the python lua anf java language interfaces you must have swig installed and then call
+    make -j4 python
+    make -j4 lua
+    make -j4 java
 
 Look carefully through the CMake output before running the make command.
 Check that there is no errors, and that the required dependencies are
@@ -313,6 +316,10 @@ For RobWorkStudio:
     cd ~/RobWork/Build/RWStudio
     cmake -DCMAKE_BUILD_TYPE=Release ../../RobWorkStudio
     make -j4
+    # to build the python lua anf java language interfaces you must have swig installed and then call
+    make -j4 python
+    make -j4 lua
+    make -j4 java
 
 For RobWorkSim:
 
@@ -321,14 +328,10 @@ For RobWorkSim:
     cd ~/RobWork/Build/RWSim
     cmake -DCMAKE_BUILD_TYPE=Release ../../RobWorkSim
     make -j4
-
-For RobWorkHardware:
-
-.. code-block:: shell
-
-    cd ~/RobWork/Build/RWHardware
-    cmake -DCMAKE_BUILD_TYPE=Release ../../RobWorkHardware
-    make -j4
+    # to build the python lua anf java language interfaces you must have swig installed and then call
+    make -j4 python
+    make -j4 lua
+    make -j4 java
 
 Finally, we need to add the following paths to ~/.bashrc:
 
@@ -337,12 +340,11 @@ Finally, we need to add the following paths to ~/.bashrc:
     #ROBWORK#
     export RW_ROOT=~/RobWork/RobWork/
     export RWS_ROOT=~/RobWork/RobWorkStudio/
-    export RWHW_ROOT=~/RobWork/RobWorkHardware/
     export RWSIM_ROOT=~/RobWork/RobWorkSim/
 
 Remember to only add paths to the components you have actually
 installed. Ie. if you only installed RobWork and RobWorkStudio, the
-paths for RobWorkSim and RobWorkHardware should not be set.
+path for RobWorkSim should not be set.
 
 By setting these environment variables, it will be possible for other
 projects to find the RobWork projects.

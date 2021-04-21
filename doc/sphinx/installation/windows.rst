@@ -15,7 +15,7 @@ the issue tracker at https://gitlab.com/sdurobotics/RobWork/issues .
 RobWork is basically multiple projects:
 
 - RobWork : is the core part including math, kinematics, planning and so on.
-- RobWorkStudio : is the GUI which enable visualization and more userfriendly interfaces through gui plugins
+- RobWorkStudio : is the GUI which enable visualization and more user friendly interfaces through gui plugins
 - RobWorkSim : is an extension to the RobWork core functionality which adds dynamic simulation of bodies, devices and several tactile sensors.
 - RobWorkHardware : is mostly drivers (with RobWork datatypes) for common hardware, or hardware on which RobWork platforms have been built eg. SDH, cameras, CAN-devices, the Universal robot arm, serial port...
 
@@ -48,512 +48,70 @@ important documentation and installation notes under each dependency
 before installing, as some of the installations might be a little
 tricky.
 
-`Build Tools`_
-
-- Git
-- Microsoft Visual Studio
-- CMake
-
-`RobWork Required Dependencies`_
-
-- Boost
-
-`RobWork Optional Dependencies`_
-
-- Xerces
-- SWIG
-- Google Test
-
-`RobWorkStudio Dependencies`_
-
-- Qt
-
-`RobWorkSim Dependencies`_
-
-- Open Dynamics Engine (ODE) - Bullet Physics
-
 Build Tools
 -----------
 
-To be able to checkout code it is necessary to install some source code
-management (SCM) tools, such as Git. To be
-able to checkout the code from our own Git repository, a Git client is
-needed. Git is also required for some dependent projects.
+.. toctree::
+   :glob:
+   :maxdepth: 1
 
-**Git client:**
+   windows_dependencies/git
+   windows_dependencies/visual_studio
+   windows_dependencies/cmake
 
-Download from https://git-scm.com
-
-Installation of Git requires a lot of choices during installation. We
-recommend to simply go with the preselected standard options, except you
-should add Git to your PATH environment. This makes it possible to use
-Git from a normal Windows Command Prompt:
-
-.. figure:: ../../gfx/installation/Git_PATH.png
-
-    Git installation where Git CLI can be used from ordinary Windows Command Prompt.
-
-Git takes up around 225 MB of disk space.
-
-**SCM Tools in Windows Context Menu**
-
-Once you have installed the three SCM tools, you will notice that the
-tools have been integrated in the Windows Explorer Context menu. A
-right-click on the desktop, or in a folder, will give some
-options.
-Typically, you will use "Git GUI Here" to checkout a Git project.
-
-**Microsoft Visual Studio** should be used to compile RobWork (and
-dependencies) on Windows platforms. RobWork is expected to compile on
-Windows 7 or newer, using Visual Studio 2013 or newer. Currently,
-RobWork is continuously tested on Windows 7 using Visual Studio 2015.
-Notice that RobWork is now written using C++11 code, that is not
-expected to compile in Visual Studio 2012 or earlier versions.
-
-Expect to use 45 minutes or more to install Visual Studio. It will use
-around 7 GB.
-
-If you are a student at University of Southern Denmark, please see the
-following page for information about access to Microsoft products:
-
-http://www.sdu.dk/en/information\_til/studerende\_ved\_sdu/campusguide/it/software
-(under Microsoft see the sections about Dreamspark Standard or Premium).
-
-It is possible to use both Community, Professional and Enterprise
-editions of Visual Studio. The installation procedure is
-self-explanatory. You should select the option for C++ desktop
-development (here shown for the Enterprise edition):
-
-.. figure:: ../../gfx/installation/VS17_installC++.png
-
-    A Visual Studio 2017 Enterprise installation. Be careful to select the "Desktop devlopment with C++".
-
-After the installation, you will see some new entries in the Windows
-start menu. Especially the the "x64 Native Tools Command Prompt" and
-"Visual Studio 2017" is important.
-
-.. figure:: ../../gfx/installation/VS17_startmenu.png
-
-    The start menu entries after installation of Visual Studio.
-
-The command prompt is used to run CMake for the projects that we will
-compile in the following sections. The command prompt sets up a
-development environment, such that CMake can detect the correct
-compiler. The Visual Studio IDE will require you to login when you start
-it. On the University of Southern Denmark you should be able to use your
-usual university login. Once logged in, you should be able to open the
-Visual Studio IDE:
-
-.. figure:: ../../gfx/installation/VS17\_IDE.png
-
-    The Visual Studio 2017 IDE.
-
-Visual Studio uses a somewhat confusing versioning scheme between the
-Visual Studio IDE and the corresponding compiler versions. The following
-table gives an overview of the version numbers for future reference:
-
-+--------------------+-------------------+--------------------+--------------------+
-| Visual Studio      | Visual Studio     | | Visual C++       | | Visual C/C++     |
-| Name               | Version           | | Compiler Toolset | | Compiler Version |
-+====================+===================+====================+====================+
-| Visual Studio 2019 | 16.5              | 14.24              | 19.25              |
-+--------------------+-------------------+--------------------+--------------------+
-| Visual Studio 2019 | 16.4              | 14.24              | 19.24              |
-+--------------------+-------------------+--------------------+--------------------+
-| Visual Studio 2019 | 16.3              | 14.23              | 19.23              |
-+--------------------+-------------------+--------------------+--------------------+
-| Visual Studio 2019 | 16.2              | 14.22              | 19.22              |
-+--------------------+-------------------+--------------------+--------------------+
-| Visual Studio 2019 | 16.1              | 14.21              | 19.21              |
-+--------------------+-------------------+--------------------+--------------------+
-| Visual Studio 2019 | 16.0              | 14.20              | 19.20              |
-+--------------------+-------------------+--------------------+--------------------+
-| Visual Studio 2017 | 15.9              | 14.16              | 19.16              |
-+--------------------+-------------------+--------------------+--------------------+
-| Visual Studio 2017 | 15.8              | 14.15              | 19.15              |
-+--------------------+-------------------+--------------------+--------------------+
-| Visual Studio 2017 | 15.7              | 14.14              | 19.14              |
-+--------------------+-------------------+--------------------+--------------------+
-| Visual Studio 2017 | 15.6              | 14.13              | 19.13              |
-+--------------------+-------------------+--------------------+--------------------+
-| Visual Studio 2017 | 15.5              | 14.12              | 19.12              |
-+--------------------+-------------------+--------------------+--------------------+
-| Visual Studio 2017 | 15.3 & 15.4       | 14.11              | 19.11              |
-+--------------------+-------------------+--------------------+--------------------+
-| Visual Studio 2017 | 15.0, 15.1 & 15.2 | 14.1               | 19.10              |
-+--------------------+-------------------+--------------------+--------------------+
-| Visual Studio 2015 | 14.0              | 14.0               | 19.00              |
-+--------------------+-------------------+--------------------+--------------------+
-| Visual Studio 2013 | 12.0              | 12.0               | 18.00              |
-+--------------------+-------------------+--------------------+--------------------+
-
-Notice that a given version of the Visual Studio IDE can in principle be
-used to compile with different toolset/compiler versions. One can think
-of the toolset as a set of tools: the compiler, linker, C/C++ runtime
-libraries used etc. The Visual C++ sompiler (often abbreviated as MSVC)
-is just one of the tools in the toolset.
-
-**CMake** must be used to generate projects for Visual Studio. A Windows
-installer can be downloaded from the CMake homepage at https://cmake.org
-, and installation takes up 70 MB . The minimum CMake version is currently 3.5.1.
-Choosing the latest
-version is always recommended (except the release candidates). Choosing
-older versions will mean that newer Visual Studio and Boost versions
-will not be supported. If you already have an older version of CMake
-installed, please check that it is recent enough to support your setup:
-
-+-----------------+-------------------------+---------------------+
-| CMake           | | Maximum Visual Studio | | Maximum Boost     |
-| Version         | | Version Supported     | | Version Supported |
-+=================+=========================+=====================+
-| 3.16.2-3.17.1\* | Visual Studio 16 2019   | 1.72.0              |
-+-----------------+-------------------------+---------------------+
-| 3.15.3-3.16.1   | Visual Studio 16 2019   | 1.71.0              |
-+-----------------+-------------------------+---------------------+
-| 3.14.0-3.15.2   | Visual Studio 16 2019   | 1.70.0              |
-+-----------------+-------------------------+---------------------+
-| 3.13.0-3.13.4   | Visual Studio 15 2017   | 1.69.0              |
-+-----------------+-------------------------+---------------------+
-| 3.12.0-3.12.4   | Visual Studio 15 2017   | 1.68.0              |
-+-----------------+-------------------------+---------------------+
-| 3.11.0-3.11.4   | Visual Studio 15 2017   | 1.67.0              |
-+-----------------+-------------------------+---------------------+
-| 3.9.3-3.10.3    | Visual Studio 15 2017   | 1.65.1              |
-+-----------------+-------------------------+---------------------+
-| 3.8.0-3.9.2     | Visual Studio 15 2017   | 1.64.0              |
-+-----------------+-------------------------+---------------------+
-| 3.7.2           | Visual Studio 15 2017   | 1.63.0              |
-+-----------------+-------------------------+---------------------+
-| 3.7.0-3.7.1     | Visual Studio 15 2017   | 1.62.0              |
-+-----------------+-------------------------+---------------------+
-| 3.5.1-3.6.3     | Visual Studio 14 2015   | 1.61.0              |
-+-----------------+-------------------------+---------------------+
-
-\* Newest at time of writing.
-
-Installation is straightforward, and we recommend that you install CMake
-to the system PATH. By installing to the system PATH, it will be
-possible to run CMake from a command line without specification of the
-entire path to the CMake executable:
-
-.. figure:: ../../gfx/installation/CMake_PATH.png
-
-    CMake install, with addition to system-wide PATH environment.
 
 RobWork Required Dependencies
 -----------------------------
+When installing these dependencies, it is recommended to not install them in a "Program Files"
+as these folders are typically locked behind admin privileges. In the following guides the install location
+will be refereed to as %Install_DIR%
 
-**Boost** is the most important dependency in RobWork, and it is
-recommended to always use the latest possible version of Boost. RobWork
-is also backwards compatible with older versions of Boost, mainly to
-support current Ubuntu LTS releases and CentOS 7. On Windows, you should
-use at least Boost 1.55, as older releases is not expected to support
-the Visual Studio versions which are new enough to support C++11. Boost
-precompiled libraries can be found at:
+.. toctree::
+   :glob:
+   :maxdepth: 2
 
-https://sourceforge.net/projects/boost/files/boost-binaries
-
-Choose the newest Boost version that fits your CMake version, according
-to the table above. Choose the newest precompiled library version, based
-on your Visual C++ toolset version below:
-
-+-----------------+----------------------+-------------------------+
-| | Boost Version | | Maximum Visual C++ | | Maximum Visual C++    |
-| |               | | Toolset (Source)   | | Toolset (Precompiled) |
-+=================+======================+=========================+
-| 1.71.0 - 1.72.0 | 14.20 (VS 16.0)      | 14.2x                   |
-+-----------------+----------------------+-------------------------+
-| 1.68.0 - 1.70.0 | 14.12 (VS 15.5)      | 14.1x                   |
-+-----------------+----------------------+-------------------------+
-| 1.66.0 - 1.67.0 | 14.11 (VS 15.4)      | 14.1x                   |
-+-----------------+----------------------+-------------------------+
-| 1.65.1          | 14.11 (VS 15.3)      | 14.1x                   |
-+-----------------+----------------------+-------------------------+
-| 1.64.0 - 1.65.0 | 14.10                | 14.1x                   |
-+-----------------+----------------------+-------------------------+
-| 1.63.0          | 14.10                | 14.0                    |
-+-----------------+----------------------+-------------------------+
-| 1.59.0 - 1.62.0 | 14.00                | 14.0                    |
-+-----------------+----------------------+-------------------------+
-| 1.57.0 - 1.58.0 | 14.00                | 12.0                    |
-+-----------------+----------------------+-------------------------+
-| 1.55.0 - 1.56.0 | 12.00                | 12.0                    |
-+-----------------+----------------------+-------------------------+
-
-In this table, the "Maximum Visual C++ Toolset (Source)" version is the
-maximum supported version in the Boost source. The newest Visual Studio
-versions will not be recognized as safe/tested versions by Boost, which
-means that Boost will issue a lot of warnings while compiling RobWork.
-Usually, these warnings can simply be ignored, and things will work fine
-anyway. From Boost 1.67, these warnings are no longer shown for newer
-Visual Studio toolsets.
-
-As shown in the table, the precompiled libraries for new Visual Studio
-versions, is built a while after they are introduced in the code. If you
-want to use Visual Studio 2017, the table shows that you must choose at
-least Boost 1.64 if you want to use precompiled libraries (or 1.63 if
-you compile Boost yourself).
-
-The file to download has a name with a format similar to
-"boost\_1\_66\_0-msvc-14.1-64.exe". Here 1\_66\_0 refers to Boost
-version 1.66.0, msvc-14.1 refers to the Visual C++ toolset version 14.1
-(Visual Studio 2017), and 64 means the 64 bit version of Boost.
-
-The Boost installer is straightforward, and we suggest to stick with the
-default choices during installation. After installation you should have
-a Boost installation with the following directory layout:
-
-.. figure:: ../../gfx/installation/Boost_layout.png
-
-    The Boost precompiled installation layout.
-
-Normally, Boost will have a lib folder. For the precompiled
-installation, this folder has been renamed to lib64-msvc-14.1. This
-makes it possible to install multiple configurations side by side, for
-the same Boost version. Note down the path to the Boost folder. Later we
-will refer to it as BOOST\_ROOT. The path to the lib64-msvc-14.1 we will
-refer to as BOOST\_LIBRARYDIR.
-
-Boost installation can be done in 10 minutes and will take up roughly
-3.35 GB disk space.
-
-To compile the Boost libraries from source, get the source and run
-something similar from a command prompt (only for expert users!):
-
-::
-
-    bootstrap.bat
-    b2 -j4 --with-filesystem --with-system --with-program_options --with-regex --with-serialization --with-thread --with-date_time --with-chrono --with-test --prefix=.\ address-model=64 link=shared install
-
-Here -j gives the number of threads to use for compilation. Run with
--help, -help-options or --show-libraries to get more information about
-the various options.
+   windows_dependencies/boost
+   windows_dependencies/eigen3
+   windows_dependencies/qhull
 
 RobWork Optional Dependencies
 -----------------------------
 
-**Xerces** (optional) can be used some places in RobWork for opening XML
-files. It is no longer a strict requirement, as RobWork is now able to
-use a Boost parser instead. If you enable compilation of non-standard
-parts of RobWork, or need to compile old RobWork-dependent projects, it
-might be a good idea to compile Xerces.
+.. toctree::
+   :glob:
+   :maxdepth: 2
 
-Go to http://xerces.apache.org (older versions can be found here:
-http://archive.apache.org/dist/xerces/c/3/sources) and download and
-unpack the source distribution.
-
-Xerces 3.2 and newer are CMake based, and you can use the new procedure
-to compile it:
-
-First, go to the unpacked Xerces folder and create two folders inside
-it, called build and xerces-install:
-
-.. figure:: ../../gfx/installation/Xerces_createbuildfolder.png
-
-    The Xerces source. Create empty folder build and xerces-install manually.
-
-Open a Visual Studio "x64 Native Tools Command Prompt", and go to the
-newly created build folder. Now run the following command:
-
-::
-
-    cmake -G "Visual Studio 15 2017 Win64" -DCMAKE_INSTALL_PREFIX:PATH="C:/some/path/to/xerces-install"
-
-If CMake succeeds, go to the build folder, and open xerces-c.sln. Then
-chosse Release mode and 64 bit build as follows:
-
-.. figure:: ../../gfx/installation/xerces_install_1.png
-
-    Choose the 'Release' configuration (alternatively choose 'Static Release' if you prefer static libraries).
-
-.. figure:: ../../gfx/installation/xerces_install_2.png
-
-    Choose 64 bit build.
-
-Build the XercesLib target:
-
-.. figure:: ../../gfx/installation/xerces_install_3.png
-
-    Right click XercesLib in the SolutionExplorer and click 'Build'.
-
-Finally run build for the INSTALL target. This will populate the
-xerces-install folder with a bin, cmake, include, lib and share folder.
-Note down the path to the xerces-install folder. We will use the name
-XERCESC\_ROOT to refer to that directory path later when setting up the
-RobWork project.
-
-Xerces will take up around 250 MB in total, and will take around 20
-minutes to download and compile.
-
-Old installation procedure (Xerces 3.1.4 and earlier):
-
-- Go to http://xerces.apache.org (older versions can be found here: http://archive.apache.org/dist/xerces/c/3/sources) and download the source distribution.
-- Unpack it where you want Xerces installed.
-- Open xerces-c-3.1.4/projects/Win32/VCxx/xerces-all.sln in Visual Studio (substitute VCxx with your Visual Studio version - see https://en.wikipedia.org/wiki/Microsoft\_Visual\_Studio#History for overview).
-- Choose 64-bit Release build configuration, and build the XercesLib target.
-
-**SWIG** (optional) is a tool that makes it possible to generate a LUA
-script interface for RobWork. Python and Java interfaces are also
-possible, but require that Python or Java SDK is installed as well. The
-SWIG tool is easily downloaded from:
-
-https://sourceforge.net/projects/swig/files/swigwin
-
-Please choose version 3 or newer. The tool needs no compilation. Simply
-extract the files from the zip-file where you want SWIG installed. Note
-down the path to the swig.exe executable. We will refer to this path
-later as SWIG\_EXECUTABLE.
-
-SWIG uses only 35 MB.
-
-**Google Test** (optional) is used for unit tests in RobWork. If you are
-a developer and wants to develop code for the RobWork trunk, writing a
-GTest will be a requirement.
-
-Go to the folder where you want to put the Google Test source.
-Right-click and click "Git GUI Here". Now insert
-https://github.com/google/googletest.git as the source location, and
-choose the target directory. The target directory must be an empty or
-non-existing directory. Finally, press clone to clone the Git
-repository.
-
-.. figure:: ../../gfx/installation/GTest_clone.png
-
-    Cloning Google Test source with the Git GUI.
-
-After cloning, you should see the following directory layout:
-
-.. figure:: ../../gfx/installation/GTest_layout.png
-
-    Google Test directory layout.
-
-Note down the path to the googletest folder. We will refer to this as
-GTEST\_ROOT and GTEST\_SOURCE later on.
-
-The Google Test code should not be compiled. It will be compiled as a
-part of the RobWork compilation when the source code is present. The
-Google test repository uses up to 95 MB.
+   windows_dependencies/xerces
+   windows_dependencies/swig
+   windows_dependencies/gtest
+   windows_dependencies/fcl
+   windows_dependencies/assimp
 
 RobWorkStudio Dependencies
 --------------------------
 
-RobWorkStudio requires **Qt** to be installed. Only Qt5 is
-supported. It is encouraged to use at least Qt 5.9. Download and install Qt from:
+.. toctree::
+   :glob:
+   :maxdepth: 2
 
-https://www.qt.io
-
-You need to choose the Open Source version. Notice that Qt is only free
-for open source projects. Also, you need to register to download Qt.
-
-WARNING! Please avoid Qt 5.8 ( see issue
-https://gitlab.com/sdurobotics/RobWork/issues/37 )
-
-Run the Online installer for Windows, and select the components you
-want. Simply select your Visual Studio version under the version of Qt
-you want to use.
-
-.. figure:: ../../gfx/installation/Qt5_components.png
-
-    Choice of Qt components. It is enough to make a single selection with your Visual Studio version.
-
-Qt installer might launch QtCreator at the end. Just close this program,
-as we intend to use Visual Studio instead. Qt5 will use aroung 3.65 GB
-disk space.
-
-After installation you should have a folder with the following layout:
-
-.. figure:: ../../gfx/installation/Qt5_layout.png
-
-    Qt5 directory layout.
-
-Note down the path to the Qt folder shown above, we will need that when
-setting up the RobWorkStudio project.
+   windows_dependencies/qt
 
 RobWorkSim Dependencies
 -----------------------
 
-If you need to do dynamic simulations, you will probably need the
-RobWorkSim package. If you are in doubt and just need RobWorkStudio, you
-can likely skip this section.
+.. toctree::
+   :glob:
+   :maxdepth: 2
 
-**Open Dynamics Engine (ODE)** must be compiled from source. Use
-**Git** to download the source from bitbucket at the address:
+   windows_dependencies/ode
+   windows_dependencies/bullet
 
-https://bitbucket.org/odedevs/ode
-
-CMake is used by ODE 0.15.2 and newer. It takes 10 minutes to setup and
-compile, and takes up around 85 MB. This is the recommended procedure:
-
-::
-
-    mkdir rwode_build
-    cd rwode_build
-    cmake -G "Visual Studio 15 2017 Win64" -DBUILD_SHARED_LIBS=ON -DODE_DOUBLE_PRECISION=ON -DODE_WITH_OU=ON -DODE_WITH_TESTS=OFF -DODE_WITH_DEMOS=OFF -DCMAKE_INSTALL_PREFIX:PATH="C:\some\path\to\ode\install" ..
-
-The directory layout will be as follows (we will later refer to the
-install folder as ODE\_DIR):
-
-.. figure:: ../../gfx/installation/ODE_layout.png
-
-    ODE directory layout.
-
-Old procedure (0.15.1 and earlier):
-
-Open a terminal and go to the build folder to run premake4:
-
-::
-
-    premake4.exe --only-double --only-shared --with-ou --with-builtin-threading-impl --os=windows --platform=x64 vs2010
-
-This will make sure that ODE is built with double precision as a 64-bit
-shared library. The --with-builtin-threading-impl does not exist from
-version 0.15, as it is now default. Unfortunately, Visual Studio 2010 is
-the latest supported version by the premake4 program. When the ode.sln
-is opened, Visual Studio will upgrade to a newer format. Select 64-bit
-Release configuration and build the solution.
-
-**Bullet Physics** must be compiled from source. Clone the source code
-with git from the source: https://github.com/bulletphysics/bullet3
-
-Bullet takes up around 440 MB, and takes around 15 minutes to compile.
-
-Make a Build folder and run CMake to generate a Visual Studio solution.
-From within the Build folder, run in a terminal:
-
-::
-
-    cmake .. -G "Visual Studio 15 2017 Win64" -DUSE_DOUBLE_PRECISION=ON -DUSE_MSVC_RUNTIME_LIBRARY_DLL=ON -DUSE_MSVC_DISABLE_RTTI=OFF -DBUILD_EXTRAS=OFF -DBUILD_UNIT_TESTS=OFF -DBUILD_CPU_DEMOS=OFF -DBUILD_OPENGL3_DEMOS=OFF -DBUILD_BULLET2_DEMOS=OFF -DINSTALL_LIBS=ON -DCMAKE_INSTALL_PREFIX:PATH="C:\some\path\to\bullet3\install"
-
-Choose the generator that fits your Visual Studio version with the -G
-option, and remember to replace
-C:\some\path\to\bullet3\install with the full path to the directory to install to. Modify the options to
-suit your needs. The shown options will make sure that Bullet is built
-with double precision, shared runtime and switch off building of things
-that are normally unnecessary when used in RobWorkSim. Notice that
-switching off USE\_MSVC\_DISABLE\_RTTI is only required from Bullet 2.87
-and newer. To build Bullet, open BULLET\_PHYSICS.sln, choose the Release
-configuration and build the solutions. To install, build the INSTALL
-target.
-
-The directory layout is shown below. Note down the path to the install
-folder, which we will refer to as BULLET\_ROOT later on.
-
-.. figure:: ../../gfx/installation/Bullet_layout.png
-
-    Bullet directory layout.
 
 **RobWork Physics Engine**
 
 A third engine exists, but requires access to code that has not yet been
 released to the public. Request more information about this if you need
 it.
-
-RobWorkHardware Dependencies
-----------------------------
-
-RobWorkHardware compilation depends heavily on which hardware you need
-to use. It is not currently possible to give any general instructions
-for RobWorkHardware.
 
 Building RobWork
 ================

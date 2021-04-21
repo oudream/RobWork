@@ -13,7 +13,11 @@ if(build)
 
     #qt5_wrap_cpp(MocSrcFiles ${SRC_FILES_HPP} TARGET ${SUBSYS_NAME})
     # Rcc the files:
-    qt5_add_resources(RccSrcFiles resources.qrc)
+    if(DEFINED Qt6Core_VERSION)
+        qt_add_resources(RccSrcFiles resources.qrc)
+    else()
+        qt5_add_resources(RccSrcFiles resources.qrc)
+    endif()
 
     # Set extra linker flags for apple macos computers
     rws_add_plugin(

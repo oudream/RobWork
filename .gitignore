@@ -9,7 +9,10 @@
 *.settings
 *.old
 *.DS_Store
-tmp
+*testfile.bin
+*testfile.ini
+*.csettings
+*tmp
 
 # /
 /cmake_install.cmake
@@ -20,16 +23,21 @@ tmp
 /CMakeFiles
 /apidocs
 /build
-/.csettings
 /CPackConfig.cmake
 /CPackSourceConfig.cmake
 /CMakeSettings.json
 /.settings
 /.vs/*
 /out/*
-/debian
 /obj-x86_64-linux-gnu
 /DEBPKG
+/tpath.rwplay
+/serialdev-out.txt
+/OnTrayObjectStabilityTestLog.txt
+/MultiOnTrayObjectStabilityTestLog.txt
+/data-test2.txt
+/spath-grasptasksim-test.rwplay
+
 
 
 # /RobWork/
@@ -808,20 +816,16 @@ RobWork/example/java/src/*.log
 /RobWork/ext/rwpqp/PQP/VS2010/pqp/CPackSourceConfig.cmake
 
 # /RobWork/ext/rwyaobi/yaobi/
-/RobWork/ext/rwyaobi/yaobi/cmake_install.cmake
-/RobWork/ext/rwyaobi/yaobi/CMakeCache.txt
-/RobWork/ext/rwyaobi/yaobi/Makefile
-/RobWork/ext/rwyaobi/yaobi/RobWork.cmake
-/RobWork/ext/rwyaobi/yaobi/bin
-/RobWork/ext/rwyaobi/yaobi/CMakeFiles
-/RobWork/ext/rwyaobi/yaobi/apidocs
-/RobWork/ext/rwyaobi/yaobi/.cproject
-/RobWork/ext/rwyaobi/yaobi/.project
-/RobWork/ext/rwyaobi/yaobi/build
-/RobWork/ext/rwyaobi/yaobi/.csettings
-/RobWork/ext/rwyaobi/yaobi/CPackConfig.cmake
-/RobWork/ext/rwyaobi/yaobi/CPackSourceConfig.cmake
-/RobWork/ext/rwyaobi/yaobi/yaobi_config.h
+/RobWork/ext/rwyaobi/cmake_install.cmake
+/RobWork/ext/rwyaobi/CMakeCache.txt
+/RobWork/ext/rwyaobi/Makefile
+/RobWork/ext/rwyaobi/bin
+/RobWork/ext/rwyaobi/CMakeFiles
+/RobWork/ext/rwyaobi/apidocs
+/RobWork/ext/rwyaobi/build
+/RobWork/ext/rwyaobi/CPackConfig.cmake
+/RobWork/ext/rwyaobi/CPackSourceConfig.cmake
+/RobWork/ext/rwyaobi/include/yaobi/yaobi_config.h
 
 # /RobWork/ext/rwyaobi/yaobi/VS_2003/
 /RobWork/ext/rwyaobi/yaobi/VS_2003/cmake_install.cmake
@@ -942,6 +946,9 @@ RobWork/example/java/src/*.log
 /RobWork/ext/rwyaobi/yaobi/VS_2010/yaobi/.csettings
 /RobWork/ext/rwyaobi/yaobi/VS_2010/yaobi/CPackConfig.cmake
 /RobWork/ext/rwyaobi/yaobi/VS_2010/yaobi/CPackSourceConfig.cmake
+
+# /RobWork/gtest
+/RobWork/gtest/TestSuiteConfig.xml.install
 
 # /RobWork/src/
 /RobWork/src/cmake_install.cmake
@@ -1138,21 +1145,6 @@ RobWork/example/java/src/*.log
 /RobWork/src/rw/loaders/rwxml/.csettings
 /RobWork/src/rw/loaders/rwxml/CPackConfig.cmake
 /RobWork/src/rw/loaders/rwxml/CPackSourceConfig.cmake
-
-# /RobWork/src/rw/loaders/tul/
-/RobWork/src/rw/loaders/tul/cmake_install.cmake
-/RobWork/src/rw/loaders/tul/CMakeCache.txt
-/RobWork/src/rw/loaders/tul/Makefile
-/RobWork/src/rw/loaders/tul/RobWork.cmake
-/RobWork/src/rw/loaders/tul/bin
-/RobWork/src/rw/loaders/tul/CMakeFiles
-/RobWork/src/rw/loaders/tul/apidocs
-/RobWork/src/rw/loaders/tul/.cproject
-/RobWork/src/rw/loaders/tul/.project
-/RobWork/src/rw/loaders/tul/build
-/RobWork/src/rw/loaders/tul/.csettings
-/RobWork/src/rw/loaders/tul/CPackConfig.cmake
-/RobWork/src/rw/loaders/tul/CPackSourceConfig.cmake
 
 # /RobWork/src/rw/loaders/xml/
 /RobWork/src/rw/loaders/xml/cmake_install.cmake
@@ -1784,413 +1776,6 @@ RobWork/example/java/src/*.log
 /RobWork/src/sandbox/proximity/CPackConfig.cmake
 /RobWork/src/sandbox/proximity/CPackSourceConfig.cmake
 
-# /RobWork/test/
-/RobWork/test/cmake_install.cmake
-/RobWork/test/CMakeCache.txt
-/RobWork/test/Makefile
-/RobWork/test/RobWork.cmake
-/RobWork/test/bin
-/RobWork/test/CMakeFiles
-/RobWork/test/apidocs
-/RobWork/test/.cproject
-/RobWork/test/.project
-/RobWork/test/build
-/RobWork/test/.csettings
-/RobWork/test/CPackConfig.cmake
-/RobWork/test/CPackSourceConfig.cmake
-/RobWork/test/TestSuiteConfig.hpp
-/RobWork/test/CTestTestfile.cmake
-/RobWork/test/TestSuiteConfig.xml.install
-
-# /RobWork/test/collision/
-/RobWork/test/collision/cmake_install.cmake
-/RobWork/test/collision/CMakeCache.txt
-/RobWork/test/collision/Makefile
-/RobWork/test/collision/RobWork.cmake
-/RobWork/test/collision/bin
-/RobWork/test/collision/CMakeFiles
-/RobWork/test/collision/apidocs
-/RobWork/test/collision/.cproject
-/RobWork/test/collision/.project
-/RobWork/test/collision/build
-/RobWork/test/collision/.csettings
-/RobWork/test/collision/CPackConfig.cmake
-/RobWork/test/collision/CPackSourceConfig.cmake
-
-# /RobWork/test/common/
-/RobWork/test/common/cmake_install.cmake
-/RobWork/test/common/CMakeCache.txt
-/RobWork/test/common/Makefile
-/RobWork/test/common/RobWork.cmake
-/RobWork/test/common/bin
-/RobWork/test/common/CMakeFiles
-/RobWork/test/common/apidocs
-/RobWork/test/common/.cproject
-/RobWork/test/common/.project
-/RobWork/test/common/build
-/RobWork/test/common/.csettings
-/RobWork/test/common/CPackConfig.cmake
-/RobWork/test/common/CPackSourceConfig.cmake
-
-# /RobWork/test/deprecated/
-/RobWork/test/deprecated/cmake_install.cmake
-/RobWork/test/deprecated/CMakeCache.txt
-/RobWork/test/deprecated/Makefile
-/RobWork/test/deprecated/RobWork.cmake
-/RobWork/test/deprecated/bin
-/RobWork/test/deprecated/CMakeFiles
-/RobWork/test/deprecated/apidocs
-/RobWork/test/deprecated/.cproject
-/RobWork/test/deprecated/.project
-/RobWork/test/deprecated/build
-/RobWork/test/deprecated/.csettings
-/RobWork/test/deprecated/CPackConfig.cmake
-/RobWork/test/deprecated/CPackSourceConfig.cmake
-
-# /RobWork/test/deprecated/interpolator/
-/RobWork/test/deprecated/interpolator/cmake_install.cmake
-/RobWork/test/deprecated/interpolator/CMakeCache.txt
-/RobWork/test/deprecated/interpolator/Makefile
-/RobWork/test/deprecated/interpolator/RobWork.cmake
-/RobWork/test/deprecated/interpolator/bin
-/RobWork/test/deprecated/interpolator/CMakeFiles
-/RobWork/test/deprecated/interpolator/apidocs
-/RobWork/test/deprecated/interpolator/.cproject
-/RobWork/test/deprecated/interpolator/.project
-/RobWork/test/deprecated/interpolator/build
-/RobWork/test/deprecated/interpolator/.csettings
-/RobWork/test/deprecated/interpolator/CPackConfig.cmake
-/RobWork/test/deprecated/interpolator/CPackSourceConfig.cmake
-
-# /RobWork/test/drawable/
-/RobWork/test/drawable/cmake_install.cmake
-/RobWork/test/drawable/CMakeCache.txt
-/RobWork/test/drawable/Makefile
-/RobWork/test/drawable/RobWork.cmake
-/RobWork/test/drawable/bin
-/RobWork/test/drawable/CMakeFiles
-/RobWork/test/drawable/apidocs
-/RobWork/test/drawable/.cproject
-/RobWork/test/drawable/.project
-/RobWork/test/drawable/build
-/RobWork/test/drawable/.csettings
-/RobWork/test/drawable/CPackConfig.cmake
-/RobWork/test/drawable/CPackSourceConfig.cmake
-
-# /RobWork/test/frame/
-/RobWork/test/frame/cmake_install.cmake
-/RobWork/test/frame/CMakeCache.txt
-/RobWork/test/frame/Makefile
-/RobWork/test/frame/RobWork.cmake
-/RobWork/test/frame/bin
-/RobWork/test/frame/CMakeFiles
-/RobWork/test/frame/apidocs
-/RobWork/test/frame/.cproject
-/RobWork/test/frame/.project
-/RobWork/test/frame/build
-/RobWork/test/frame/.csettings
-/RobWork/test/frame/CPackConfig.cmake
-/RobWork/test/frame/CPackSourceConfig.cmake
-
-# /RobWork/test/geometry/
-/RobWork/test/geometry/cmake_install.cmake
-/RobWork/test/geometry/CMakeCache.txt
-/RobWork/test/geometry/Makefile
-/RobWork/test/geometry/RobWork.cmake
-/RobWork/test/geometry/bin
-/RobWork/test/geometry/CMakeFiles
-/RobWork/test/geometry/apidocs
-/RobWork/test/geometry/.cproject
-/RobWork/test/geometry/.project
-/RobWork/test/geometry/build
-/RobWork/test/geometry/.csettings
-/RobWork/test/geometry/CPackConfig.cmake
-/RobWork/test/geometry/CPackSourceConfig.cmake
-
-# /RobWork/test/invkin/
-/RobWork/test/invkin/cmake_install.cmake
-/RobWork/test/invkin/CMakeCache.txt
-/RobWork/test/invkin/Makefile
-/RobWork/test/invkin/RobWork.cmake
-/RobWork/test/invkin/bin
-/RobWork/test/invkin/CMakeFiles
-/RobWork/test/invkin/apidocs
-/RobWork/test/invkin/.cproject
-/RobWork/test/invkin/.project
-/RobWork/test/invkin/build
-/RobWork/test/invkin/.csettings
-/RobWork/test/invkin/CPackConfig.cmake
-/RobWork/test/invkin/CPackSourceConfig.cmake
-
-# /RobWork/test/kinematics/
-/RobWork/test/kinematics/cmake_install.cmake
-/RobWork/test/kinematics/CMakeCache.txt
-/RobWork/test/kinematics/Makefile
-/RobWork/test/kinematics/RobWork.cmake
-/RobWork/test/kinematics/bin
-/RobWork/test/kinematics/CMakeFiles
-/RobWork/test/kinematics/apidocs
-/RobWork/test/kinematics/.cproject
-/RobWork/test/kinematics/.project
-/RobWork/test/kinematics/build
-/RobWork/test/kinematics/.csettings
-/RobWork/test/kinematics/CPackConfig.cmake
-/RobWork/test/kinematics/CPackSourceConfig.cmake
-
-# /RobWork/test/loaders/
-/RobWork/test/loaders/cmake_install.cmake
-/RobWork/test/loaders/CMakeCache.txt
-/RobWork/test/loaders/Makefile
-/RobWork/test/loaders/RobWork.cmake
-/RobWork/test/loaders/bin
-/RobWork/test/loaders/CMakeFiles
-/RobWork/test/loaders/apidocs
-/RobWork/test/loaders/.cproject
-/RobWork/test/loaders/.project
-/RobWork/test/loaders/build
-/RobWork/test/loaders/.csettings
-/RobWork/test/loaders/CPackConfig.cmake
-/RobWork/test/loaders/CPackSourceConfig.cmake
-
-# /RobWork/test/math/
-/RobWork/test/math/cmake_install.cmake
-/RobWork/test/math/CMakeCache.txt
-/RobWork/test/math/Makefile
-/RobWork/test/math/RobWork.cmake
-/RobWork/test/math/bin
-/RobWork/test/math/CMakeFiles
-/RobWork/test/math/apidocs
-/RobWork/test/math/.cproject
-/RobWork/test/math/.project
-/RobWork/test/math/build
-/RobWork/test/math/.csettings
-/RobWork/test/math/CPackConfig.cmake
-/RobWork/test/math/CPackSourceConfig.cmake
-
-# /RobWork/test/models/
-/RobWork/test/models/cmake_install.cmake
-/RobWork/test/models/CMakeCache.txt
-/RobWork/test/models/Makefile
-/RobWork/test/models/RobWork.cmake
-/RobWork/test/models/bin
-/RobWork/test/models/CMakeFiles
-/RobWork/test/models/apidocs
-/RobWork/test/models/.cproject
-/RobWork/test/models/.project
-/RobWork/test/models/build
-/RobWork/test/models/.csettings
-/RobWork/test/models/CPackConfig.cmake
-/RobWork/test/models/CPackSourceConfig.cmake
-
-# /RobWork/test/pathplanning/
-/RobWork/test/pathplanning/cmake_install.cmake
-/RobWork/test/pathplanning/CMakeCache.txt
-/RobWork/test/pathplanning/Makefile
-/RobWork/test/pathplanning/RobWork.cmake
-/RobWork/test/pathplanning/bin
-/RobWork/test/pathplanning/CMakeFiles
-/RobWork/test/pathplanning/apidocs
-/RobWork/test/pathplanning/.cproject
-/RobWork/test/pathplanning/.project
-/RobWork/test/pathplanning/build
-/RobWork/test/pathplanning/.csettings
-/RobWork/test/pathplanning/CPackConfig.cmake
-/RobWork/test/pathplanning/CPackSourceConfig.cmake
-
-# /RobWork/test/performance/
-/RobWork/test/performance/cmake_install.cmake
-/RobWork/test/performance/CMakeCache.txt
-/RobWork/test/performance/Makefile
-/RobWork/test/performance/RobWork.cmake
-/RobWork/test/performance/bin
-/RobWork/test/performance/CMakeFiles
-/RobWork/test/performance/apidocs
-/RobWork/test/performance/.cproject
-/RobWork/test/performance/.project
-/RobWork/test/performance/build
-/RobWork/test/performance/.csettings
-/RobWork/test/performance/CPackConfig.cmake
-/RobWork/test/performance/CPackSourceConfig.cmake
-
-# /RobWork/test/sandbox/
-/RobWork/test/sandbox/cmake_install.cmake
-/RobWork/test/sandbox/CMakeCache.txt
-/RobWork/test/sandbox/Makefile
-/RobWork/test/sandbox/RobWork.cmake
-/RobWork/test/sandbox/bin
-/RobWork/test/sandbox/CMakeFiles
-/RobWork/test/sandbox/apidocs
-/RobWork/test/sandbox/.cproject
-/RobWork/test/sandbox/.project
-/RobWork/test/sandbox/build
-/RobWork/test/sandbox/.csettings
-/RobWork/test/sandbox/CPackConfig.cmake
-/RobWork/test/sandbox/CPackSourceConfig.cmake
-
-# /RobWork/test/testfiles/
-/RobWork/test/testfiles/cmake_install.cmake
-/RobWork/test/testfiles/CMakeCache.txt
-/RobWork/test/testfiles/Makefile
-/RobWork/test/testfiles/RobWork.cmake
-/RobWork/test/testfiles/bin
-/RobWork/test/testfiles/CMakeFiles
-/RobWork/test/testfiles/apidocs
-/RobWork/test/testfiles/.cproject
-/RobWork/test/testfiles/.project
-/RobWork/test/testfiles/build
-/RobWork/test/testfiles/.csettings
-/RobWork/test/testfiles/CPackConfig.cmake
-/RobWork/test/testfiles/CPackSourceConfig.cmake
-
-# /RobWork/test/testfiles/MultiRobotDemo/
-/RobWork/test/testfiles/MultiRobotDemo/cmake_install.cmake
-/RobWork/test/testfiles/MultiRobotDemo/CMakeCache.txt
-/RobWork/test/testfiles/MultiRobotDemo/Makefile
-/RobWork/test/testfiles/MultiRobotDemo/RobWork.cmake
-/RobWork/test/testfiles/MultiRobotDemo/bin
-/RobWork/test/testfiles/MultiRobotDemo/CMakeFiles
-/RobWork/test/testfiles/MultiRobotDemo/apidocs
-/RobWork/test/testfiles/MultiRobotDemo/.cproject
-/RobWork/test/testfiles/MultiRobotDemo/.project
-/RobWork/test/testfiles/MultiRobotDemo/build
-/RobWork/test/testfiles/MultiRobotDemo/.csettings
-/RobWork/test/testfiles/MultiRobotDemo/CPackConfig.cmake
-/RobWork/test/testfiles/MultiRobotDemo/CPackSourceConfig.cmake
-
-# /RobWork/test/testfiles/MultiRobotDemo/Geometry/
-/RobWork/test/testfiles/MultiRobotDemo/Geometry/cmake_install.cmake
-/RobWork/test/testfiles/MultiRobotDemo/Geometry/CMakeCache.txt
-/RobWork/test/testfiles/MultiRobotDemo/Geometry/Makefile
-/RobWork/test/testfiles/MultiRobotDemo/Geometry/RobWork.cmake
-/RobWork/test/testfiles/MultiRobotDemo/Geometry/bin
-/RobWork/test/testfiles/MultiRobotDemo/Geometry/CMakeFiles
-/RobWork/test/testfiles/MultiRobotDemo/Geometry/apidocs
-/RobWork/test/testfiles/MultiRobotDemo/Geometry/.cproject
-/RobWork/test/testfiles/MultiRobotDemo/Geometry/.project
-/RobWork/test/testfiles/MultiRobotDemo/Geometry/build
-/RobWork/test/testfiles/MultiRobotDemo/Geometry/.csettings
-/RobWork/test/testfiles/MultiRobotDemo/Geometry/CPackConfig.cmake
-/RobWork/test/testfiles/MultiRobotDemo/Geometry/CPackSourceConfig.cmake
-
-# /RobWork/test/testfiles/PA10/
-/RobWork/test/testfiles/PA10/cmake_install.cmake
-/RobWork/test/testfiles/PA10/CMakeCache.txt
-/RobWork/test/testfiles/PA10/Makefile
-/RobWork/test/testfiles/PA10/RobWork.cmake
-/RobWork/test/testfiles/PA10/bin
-/RobWork/test/testfiles/PA10/CMakeFiles
-/RobWork/test/testfiles/PA10/apidocs
-/RobWork/test/testfiles/PA10/.cproject
-/RobWork/test/testfiles/PA10/.project
-/RobWork/test/testfiles/PA10/build
-/RobWork/test/testfiles/PA10/.csettings
-/RobWork/test/testfiles/PA10/CPackConfig.cmake
-/RobWork/test/testfiles/PA10/CPackSourceConfig.cmake
-
-# /RobWork/test/testfiles/PA10/Geometry/
-/RobWork/test/testfiles/PA10/Geometry/cmake_install.cmake
-/RobWork/test/testfiles/PA10/Geometry/CMakeCache.txt
-/RobWork/test/testfiles/PA10/Geometry/Makefile
-/RobWork/test/testfiles/PA10/Geometry/RobWork.cmake
-/RobWork/test/testfiles/PA10/Geometry/bin
-/RobWork/test/testfiles/PA10/Geometry/CMakeFiles
-/RobWork/test/testfiles/PA10/Geometry/apidocs
-/RobWork/test/testfiles/PA10/Geometry/.cproject
-/RobWork/test/testfiles/PA10/Geometry/.project
-/RobWork/test/testfiles/PA10/Geometry/build
-/RobWork/test/testfiles/PA10/Geometry/.csettings
-/RobWork/test/testfiles/PA10/Geometry/CPackConfig.cmake
-/RobWork/test/testfiles/PA10/Geometry/CPackSourceConfig.cmake
-
-# /RobWork/test/testfiles/SchunkHand/
-/RobWork/test/testfiles/SchunkHand/cmake_install.cmake
-/RobWork/test/testfiles/SchunkHand/CMakeCache.txt
-/RobWork/test/testfiles/SchunkHand/Makefile
-/RobWork/test/testfiles/SchunkHand/RobWork.cmake
-/RobWork/test/testfiles/SchunkHand/bin
-/RobWork/test/testfiles/SchunkHand/CMakeFiles
-/RobWork/test/testfiles/SchunkHand/apidocs
-/RobWork/test/testfiles/SchunkHand/.cproject
-/RobWork/test/testfiles/SchunkHand/.project
-/RobWork/test/testfiles/SchunkHand/build
-/RobWork/test/testfiles/SchunkHand/.csettings
-/RobWork/test/testfiles/SchunkHand/CPackConfig.cmake
-/RobWork/test/testfiles/SchunkHand/CPackSourceConfig.cmake
-
-# /RobWork/test/testfiles/SchunkHand/Geometry/
-/RobWork/test/testfiles/SchunkHand/Geometry/cmake_install.cmake
-/RobWork/test/testfiles/SchunkHand/Geometry/CMakeCache.txt
-/RobWork/test/testfiles/SchunkHand/Geometry/Makefile
-/RobWork/test/testfiles/SchunkHand/Geometry/RobWork.cmake
-/RobWork/test/testfiles/SchunkHand/Geometry/bin
-/RobWork/test/testfiles/SchunkHand/Geometry/CMakeFiles
-/RobWork/test/testfiles/SchunkHand/Geometry/apidocs
-/RobWork/test/testfiles/SchunkHand/Geometry/.cproject
-/RobWork/test/testfiles/SchunkHand/Geometry/.project
-/RobWork/test/testfiles/SchunkHand/Geometry/build
-/RobWork/test/testfiles/SchunkHand/Geometry/.csettings
-/RobWork/test/testfiles/SchunkHand/Geometry/CPackConfig.cmake
-/RobWork/test/testfiles/SchunkHand/Geometry/CPackSourceConfig.cmake
-
-# /RobWork/test/testfiles/geoms/
-/RobWork/test/testfiles/geoms/cmake_install.cmake
-/RobWork/test/testfiles/geoms/CMakeCache.txt
-/RobWork/test/testfiles/geoms/Makefile
-/RobWork/test/testfiles/geoms/RobWork.cmake
-/RobWork/test/testfiles/geoms/bin
-/RobWork/test/testfiles/geoms/CMakeFiles
-/RobWork/test/testfiles/geoms/apidocs
-/RobWork/test/testfiles/geoms/.cproject
-/RobWork/test/testfiles/geoms/.project
-/RobWork/test/testfiles/geoms/build
-/RobWork/test/testfiles/geoms/.csettings
-/RobWork/test/testfiles/geoms/CPackConfig.cmake
-/RobWork/test/testfiles/geoms/CPackSourceConfig.cmake
-
-# /RobWork/test/testfiles/geoms/performance/
-/RobWork/test/testfiles/geoms/performance/cmake_install.cmake
-/RobWork/test/testfiles/geoms/performance/CMakeCache.txt
-/RobWork/test/testfiles/geoms/performance/Makefile
-/RobWork/test/testfiles/geoms/performance/RobWork.cmake
-/RobWork/test/testfiles/geoms/performance/bin
-/RobWork/test/testfiles/geoms/performance/CMakeFiles
-/RobWork/test/testfiles/geoms/performance/apidocs
-/RobWork/test/testfiles/geoms/performance/.cproject
-/RobWork/test/testfiles/geoms/performance/.project
-/RobWork/test/testfiles/geoms/performance/build
-/RobWork/test/testfiles/geoms/performance/.csettings
-/RobWork/test/testfiles/geoms/performance/CPackConfig.cmake
-/RobWork/test/testfiles/geoms/performance/CPackSourceConfig.cmake
-
-# /RobWork/test/testfiles/simple/
-/RobWork/test/testfiles/simple/cmake_install.cmake
-/RobWork/test/testfiles/simple/CMakeCache.txt
-/RobWork/test/testfiles/simple/Makefile
-/RobWork/test/testfiles/simple/RobWork.cmake
-/RobWork/test/testfiles/simple/bin
-/RobWork/test/testfiles/simple/CMakeFiles
-/RobWork/test/testfiles/simple/apidocs
-/RobWork/test/testfiles/simple/.cproject
-/RobWork/test/testfiles/simple/.project
-/RobWork/test/testfiles/simple/build
-/RobWork/test/testfiles/simple/.csettings
-/RobWork/test/testfiles/simple/CPackConfig.cmake
-/RobWork/test/testfiles/simple/CPackSourceConfig.cmake
-
-# /RobWork/test/trajectory/
-/RobWork/test/trajectory/cmake_install.cmake
-/RobWork/test/trajectory/CMakeCache.txt
-/RobWork/test/trajectory/Makefile
-/RobWork/test/trajectory/RobWork.cmake
-/RobWork/test/trajectory/bin
-/RobWork/test/trajectory/CMakeFiles
-/RobWork/test/trajectory/apidocs
-/RobWork/test/trajectory/.cproject
-/RobWork/test/trajectory/.project
-/RobWork/test/trajectory/build
-/RobWork/test/trajectory/.csettings
-/RobWork/test/trajectory/CPackConfig.cmake
-/RobWork/test/trajectory/CPackSourceConfig.cmake
 
 # /RobWork/xml-schemas/
 /RobWork/xml-schemas/cmake_install.cmake
@@ -4040,5 +3625,5 @@ RobWorkSim/src/rwsimlibs/swig/python/RobWorkSim-*.egg-info
 /doc/installstuff/RW_package-msvc2005/CPackConfig.cmake
 /doc/installstuff/RW_package-msvc2005/CPackSourceConfig.cmake
 
-
+/debian/sdurw-doc1.2/DEBIAN/md5sums
 

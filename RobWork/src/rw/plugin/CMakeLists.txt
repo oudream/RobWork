@@ -1,3 +1,18 @@
+set(SUBSYS_NAME sdurw_plugin)
+set(SUBSYS_DESC
+    "This is the library used for creating plugins for robwork"
+)
+set(SUBSYS_DEPS sdurw_core)
+
+set(build TRUE)
+rw_subsys_option(
+    build ${SUBSYS_NAME} ${SUBSYS_DESC} ON
+    DEPENDS ${SUBSYS_DEPS}
+    ADD_DOC
+)
+
+if(build)
+
 SET(FILES_CPP
   DynamicLibraryLoader.cpp
   DynamicLibraryLoaderBase.cpp
@@ -15,10 +30,15 @@ SET(FILES_HPP
   FactoryMacro.hpp
 )
 
-SOURCE_GROUP(proximity FILES ${FILES_CPP} ${FILES_HPP})
+rw_add_library(${SUBSYS_NAME} ${FILES_CPP} ${FILES_HPP})
+rw_add_includes(${SUBSYS_NAME} "rw/plugin" ${FILES_HPP})
+target_link_libraries(${SUBSYS_NAME} PUBLIC ${Boost_LIBRARIES} ${CMAKE_DL_LIBS} sdurw_core)
 
-FILE(GLOB SRC_FILES_CPP ${FILES_CPP})
-FILE(GLOB SRC_FILES_HPP ${FILES_HPP})
+target_include_directories(
+    ${SUBSYS_NAME} PUBLIC ${Boost_INCLUDE_DIR} $<BUILD_INTERFACE:${RW_ROOT}/src>
+                          $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
+)
+rw_add_includes(${SUBSYS_NAME} "rw" ${CMAKE_CURRENT_SOURCE_DIR}/../plugin.hpp)
 
-SET(RW_LIB_FILES_CPP ${RW_LIB_FILES_CPP} ${SRC_FILES_CPP} PARENT_SCOPE)
-SET(RW_LIB_FILES_HPP ${RW_LIB_FILES_HPP} ${SRC_FILES_HPP} PARENT_SCOPE)
+
+endif()

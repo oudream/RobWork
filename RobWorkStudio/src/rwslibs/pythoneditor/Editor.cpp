@@ -22,26 +22,24 @@ PyEditor::PyEditor () : RobWorkStudioPlugin ("PyEditor", QIcon (":/icon.png"))
     this->setWidget (container);
 
     auto main_layout = new QVBoxLayout (container);
-    main_layout->setSpacing(0);
-    main_layout->setContentsMargins(5,0,0,0);
+    main_layout->setSpacing (0);
+    main_layout->setContentsMargins (5, 0, 0, 0);
 
     // Menu btns
     auto menu        = new QWidget (container);
     auto menu_layout = new QHBoxLayout (menu);
-    menu_layout->setSpacing(0);
-    menu->setLayout(menu_layout);
-    menu_layout->setContentsMargins(0,0,0,0);
+    menu_layout->setSpacing (0);
+    menu->setLayout (menu_layout);
+    menu_layout->setContentsMargins (0, 0, 0, 0);
 
     // Run btn
-    QPixmap go_pm(":/forward.png");
-    QIcon go_ico(go_pm);
-    QPushButton* play_btn = new QPushButton ( menu);
-    play_btn->setIcon(go_ico);
-    play_btn->setIconSize(QSize(24,24));
+    QPixmap go_pm (":/forward.png");
+    QIcon go_ico (go_pm);
+    QPushButton* play_btn = new QPushButton (menu);
+    play_btn->setIcon (go_ico);
+    play_btn->setIconSize (QSize (24, 24));
     menu_layout->addWidget (play_btn);
-    menu_layout->addStretch();
-
-
+    menu_layout->addStretch ();
 
     main_layout->addWidget (menu);
     // CodeEditor
@@ -53,9 +51,8 @@ PyEditor::PyEditor () : RobWorkStudioPlugin ("PyEditor", QIcon (":/icon.png"))
     _editor->setCompleter (new QPythonCompleter (this));
     _editor->setHighlighter (new QPythonHighlighter);
 
-
-    //Connecting components
-    connect(play_btn,SIGNAL(clicked()),this,SLOT(runCode()));
+    // Connecting components
+    connect (play_btn, SIGNAL (clicked ()), this, SLOT (runCode ()));
 }
 
 PyEditor::~PyEditor ()
@@ -80,5 +77,5 @@ void PyEditor::stateChangedListener (const State& state)
 
 void PyEditor::runCode ()
 {
-    _pyrun.runCode(_editor->toPlainText().toStdString());
+    _pyrun.runCode (_editor->toPlainText ().toStdString ());
 }

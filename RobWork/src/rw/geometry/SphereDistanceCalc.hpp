@@ -13,7 +13,7 @@
 
 #include <rw/math/Vector3D.hpp>
 
-#include <sandbox/geometry/OBB.hpp>
+#include <rw/geometry/OBB.hpp>
 namespace rw { namespace proximity {
 
     /**

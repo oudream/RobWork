@@ -2,6 +2,8 @@
 #include <rw/models/WorkCell.hpp>
 #include <rwslibs/rwstudioapp/RobWorkStudioApp.hpp>
 
+#include <thread>
+
 using rw::common::TimerUtil;
 using rw::loaders::WorkCellLoader;
 using rw::models::WorkCell;
@@ -17,22 +19,24 @@ int main (int argc, char** argv)
 
     const std::string WC_FILE =
         std::string (argv[1]) + "/scenes/SinglePA10Demo/SinglePA10Demo.wc.xml";
-    WorkCell::Ptr workcell = WorkCellLoader::Factory::load (WC_FILE);
 
     rws::RobWorkStudioApp rwsApp ("");
-    rwsApp.start ();
+    RWS_START (rwsApp)
+    {
+        rws::RobWorkStudio* rwstudio = rwsApp.getRobWorkStudio ();
+        rwstudio->setWorkCell (WC_FILE);
 
-    rws::RobWorkStudio* rwstudio = rwsApp.getRobWorkStudio ();
-    rwstudio->setWorkCell (workcell);
-
-    while (rwsApp.isRunning ()) {
-        TimerUtil::sleepMs (10);    // Check if running every 10 ms
-
-        if (std::string (argv[2]) == "-t") {    // Quit if test run
-            TimerUtil::sleepMs (1000);          // wait for full startup
-            rwsApp.close ();                    // Close RWS
+        while (rwsApp.isRunning ()) {
+            TimerUtil::sleepMs (10);    // Check if running every 10 ms
+            if (argc == 3 && std::string (argv[2]) == std::string ("-t")) {    // Quit if test run
+                TimerUtil::sleepMs (4000);    // wait for full startup
+                rwsApp.close ();    // Close RWS
+            }
         }
+        rwsApp.close ();    // Close rws if running
+        TimerUtil::sleepMs (10000);    // wait for full startup
     }
-    rwsApp.close ();    // Close rws if running
+    RWS_END ();
+
     return 0;
 }

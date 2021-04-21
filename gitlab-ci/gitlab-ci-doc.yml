@@ -1,0 +1,38 @@
+######################## BUILD Doc ##########################################
+
+build:doc-2004:
+  extends: .linux-doc
+  dependencies:
+    - build-RW:ubuntu-2004
+    - build-RWS:ubuntu-2004
+    - build-RWSim:ubuntu-2004
+  needs:
+    [
+      "build-RW:ubuntu-2004",
+      "build-RWS:ubuntu-2004",
+      "build-RWSim:ubuntu-2004",
+    ]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-2004-doc
+
+######################## deploy Doc ##########################################
+
+pages:
+  stage: deploy
+  tags:
+    - linux
+  only:
+    refs:
+      - master@sdurobotics/RobWork
+      - schedules
+      - web
+  variables:
+    GIT_STRATEGY: none
+  script:
+    - echo "Deploying documentation."
+  dependencies:
+    - build:doc-2004
+  needs: ["build:doc-2004"]
+  artifacts:
+    paths:
+      - public
+    expire_in: 1 week

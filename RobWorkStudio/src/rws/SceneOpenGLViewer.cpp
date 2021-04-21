@@ -31,7 +31,6 @@
 #include <QCoreApplication>
 #include <QMouseEvent>
 #include <QThread>
-#include <boost/bind.hpp>
 
 using namespace rw::kinematics;
 using namespace rw::graphics;
@@ -101,47 +100,6 @@ class RenderQuad : public Render
     }
 };
 
-class RenderFonts : public Render
-{
-  private:
-    double _x, _y, _z;
-    QString _text;
-    QFont _font;
-    QGLWidget* _qglwidget;
-
-    bool _renderInWindowCoord;
-
-  public:
-    //! @brief smart pointer type to this class
-    typedef rw::core::Ptr< RenderQuad > Ptr;
-
-    RenderFonts (double x, double y, double z, QString text, QFont font, QGLWidget* glwidget) :
-        _x (x), _y (y), _z (z), _text (text), _font (font), _qglwidget (glwidget)
-    {
-        _renderInWindowCoord = false;
-    }
-
-    RenderFonts (double x, double y, QString text, QFont font, QGLWidget* glwidget) :
-        _x (x), _y (y), _z (0.0), _text (text), _font (font), _qglwidget (glwidget)
-    {
-        _renderInWindowCoord = true;
-    }
-
-    /* Functions inherited from Render */
-    /**
-     * @copydoc Render::draw
-     */
-    void draw (const DrawableNode::RenderInfo& info, DrawType type, double alpha) const
-    {
-        if (_renderInWindowCoord) {
-            _qglwidget->renderText (_x, _y, _text, _font);
-        }
-        else {
-            _qglwidget->renderText (_x, _y, _z, _text, _font);
-        }
-    }
-};
-
 /**
  * @brief clamp val to either min or max
  *
@@ -159,15 +117,14 @@ template< class T > T clampI (T val, T min, T max)
     return val;
 }
 
-QGLFormat makeQGLFormat (PropertyMap* map)
+QSurfaceFormat makeQSurfaceFormat (PropertyMap* map)
 {
-    QGLFormat glf = QGLFormat::defaultFormat ();
+    QSurfaceFormat glf = QSurfaceFormat::defaultFormat ();
 
     if (map != NULL) {
         int nrSamples = map->add< int > ("GL_NR_SAMPLES", "", 4)->getValue ();
         if (map->add< bool > ("GL_MULTISAMPLE", "", false)->getValue ()) {
             nrSamples = clampI (nrSamples, 0, 8);
-            glf.setSampleBuffers (true);
             glf.setSamples (nrSamples);
         }
     }
@@ -178,49 +135,50 @@ QGLFormat makeQGLFormat (PropertyMap* map)
 
 void SceneOpenGLViewer::init ()
 {
+    using std::placeholders::_1;
     _pmap->getValue ()
         .add< bool > ("ReInitializeGL", "Reinitializes the opengl configuration.", false)
         ->changedEvent ()
-        .add (boost::bind (&SceneOpenGLViewer::propertyChangedListener, this, boost::arg< 1 > ()),
+        .add (std::bind (&SceneOpenGLViewer::propertyChangedListener, this, _1),
               this);
 
     _viewBackground = _pmap->getValue ().add< bool > ("DrawBackGround", "Draw Back Ground", true);
     _viewBackground->changedEvent ().add (
-        boost::bind (&SceneOpenGLViewer::propertyChangedListener, this, boost::arg< 1 > ()));
+        std::bind (&SceneOpenGLViewer::propertyChangedListener, this, _1));
 
     _backgroundColorTop = _pmap->getValue ().add< Vector3D<> > (
         "BackGroundColorTop", "Top background color", Vector3D<> (1.0, 1.0, 1.0));
     _backgroundColorTop->changedEvent ().add (
-        boost::bind (&SceneOpenGLViewer::propertyChangedListener, this, boost::arg< 1 > ()));
+        std::bind (&SceneOpenGLViewer::propertyChangedListener, this, _1));
     _backgroundColorBottom = _pmap->getValue ().add< Vector3D<> > (
         "BackGroundColorBottom", "Bottom background color", Vector3D<> (0.2, 0.2, 1.0));
     _backgroundColorBottom->changedEvent ().add (
-        boost::bind (&SceneOpenGLViewer::propertyChangedListener, this, boost::arg< 1 > ()));
+        std::bind (&SceneOpenGLViewer::propertyChangedListener, this, _1));
 
     _pmap->getValue ()
         .add< bool > ("ShowCollisionModels", "Show Collision Models.", false)
         ->changedEvent ()
-        .add (boost::bind (&SceneOpenGLViewer::propertyChangedListener, this, boost::arg< 1 > ()),
+        .add (std::bind (&SceneOpenGLViewer::propertyChangedListener, this, _1),
               this);
     _pmap->getValue ()
         .add< bool > ("ShowVirtualModels", "Show Virtual Models.", true)
         ->changedEvent ()
-        .add (boost::bind (&SceneOpenGLViewer::propertyChangedListener, this, boost::arg< 1 > ()),
+        .add (std::bind (&SceneOpenGLViewer::propertyChangedListener, this, _1),
               this);
     _pmap->getValue ()
         .add< bool > ("ShowPhysicalModels", "Show Physical Models.", true)
         ->changedEvent ()
-        .add (boost::bind (&SceneOpenGLViewer::propertyChangedListener, this, boost::arg< 1 > ()),
+        .add (std::bind (&SceneOpenGLViewer::propertyChangedListener, this, _1),
               this);
     _pmap->getValue ()
         .add< bool > ("ShowDrawableModels", "Show Drawable Models.", true)
         ->changedEvent ()
-        .add (boost::bind (&SceneOpenGLViewer::propertyChangedListener, this, boost::arg< 1 > ()),
+        .add (std::bind (&SceneOpenGLViewer::propertyChangedListener, this, _1),
               this);
     _pmap->getValue ()
         .add< bool > ("ShowAllModels", "Show All Models.", false)
         ->changedEvent ()
-        .add (boost::bind (&SceneOpenGLViewer::propertyChangedListener, this, boost::arg< 1 > ()),
+        .add (std::bind (&SceneOpenGLViewer::propertyChangedListener, this, _1),
               this);
 
     int dmask = 0;
@@ -331,9 +289,10 @@ SceneViewer::View::Ptr SceneOpenGLViewer::createView (const std::string& name,
 }
 
 SceneOpenGLViewer::SceneOpenGLViewer (QWidget* parent) :
-    QGLWidget (makeQGLFormat (NULL), parent), _scene (ownedPtr (new SceneOpenGL ())),
+    QOpenGLWidget (parent), _scene (ownedPtr (new SceneOpenGL ())),
     _viewLogo ("RobWork")
 {
+    setFormat(makeQSurfaceFormat (NULL));
     // start by initializing propertymap
     _pmap = ownedPtr (new Property< PropertyMap > ("SceneViewer", "", PropertyMap ()));
     _pmap->getValue ().add< int > ("GL_NR_SAMPLES", "", 4);
@@ -344,9 +303,10 @@ SceneOpenGLViewer::SceneOpenGLViewer (QWidget* parent) :
 }
 
 SceneOpenGLViewer::SceneOpenGLViewer (PropertyMap& pmap, QWidget* parent) :
-    QGLWidget (makeQGLFormat (pmap.getPtr< PropertyMap > ("SceneViewer")), parent),
+    QOpenGLWidget (parent),
     _scene (ownedPtr (new SceneOpenGL ())), _viewLogo ("RobWork")
 {
+    setFormat(makeQSurfaceFormat (pmap.getPtr< PropertyMap > ("SceneViewer")));
     // start by initializing propertymap
     _pmap = pmap.add< PropertyMap > ("SceneViewer", "", PropertyMap ());
 
@@ -395,7 +355,7 @@ void SceneOpenGLViewer::setWorldNode (rw::graphics::GroupNode::Ptr wnode)
 void SceneOpenGLViewer::keyPressEvent (QKeyEvent* e)
 {
     e->ignore ();
-    QGLWidget::keyPressEvent (e);
+    QOpenGLWidget::keyPressEvent (e);
 }
 
 void SceneOpenGLViewer::clear ()
@@ -432,13 +392,7 @@ void SceneOpenGLViewer::renderViewThreadSafe (View::Ptr view)
         if (!error.empty ())
             RW_WARN ("OpenGL error detected:" << error);
     }
-}
-
-void SceneOpenGLViewer::glDraw ()
-{
-    // we need to make this thread safe, since sensor cameras and
-    // stuff might want to draw stuff too
-    QGLWidget::glDraw ();
+    doneCurrent();
 }
 
 void SceneOpenGLViewer::initializeGL ()
@@ -654,13 +608,17 @@ void SceneOpenGLViewer::updateState (const State& state)
 
 DrawableNode::Ptr SceneOpenGLViewer::pickDrawable (int x, int y)
 {
+    makeCurrent();
     return _scene->pickDrawable (_renderInfo, x, y);
+    doneCurrent();
 }
 
 DrawableNode::Ptr SceneOpenGLViewer::pickDrawable (rw::graphics::SceneGraph::RenderInfo& info,
                                                    int x, int y)
 {
+    makeCurrent();
     return _scene->pickDrawable (info, x, y);
+    doneCurrent();
 }
 
 rw::kinematics::Frame* SceneOpenGLViewer::pickFrame (int x, int y)
@@ -680,10 +638,12 @@ rw::kinematics::Frame* SceneOpenGLViewer::pickFrame (int x, int y)
 void SceneOpenGLViewer::mouseDoubleClickEvent (QMouseEvent* event)
 {
     if (event->button () == Qt::LeftButton) {
-        int winx = event->x ();
-        int winy = height () - event->y ();
+        int winx = event->pos().x();
+        int winy = height () - event->pos().y();
 
+        makeCurrent();
         Vector3D<> pos = _scene->unproject (_mainCam, winx, winy);
+        doneCurrent();
 
         if (pos[2] != 1) {
             // double click + SHIFT => positionSelected event
@@ -701,7 +661,7 @@ void SceneOpenGLViewer::mouseDoubleClickEvent (QMouseEvent* event)
                 // plain doubleclick => move pivot point
             }
             else {
-                _cameraCtrl->setCenter (pos, Vector2D<> (event->x (), event->y ()));
+                _cameraCtrl->setCenter (pos, Vector2D<> (event->pos().x(), event->pos().y()));
                 _pivotDrawable->setTransform (Transform3D<> (pos, Rotation3D<>::identity ()));
                 QWidget::update ();
             }
@@ -711,14 +671,16 @@ void SceneOpenGLViewer::mouseDoubleClickEvent (QMouseEvent* event)
         event->ignore ();
     }
     // std::cout << "forward double click" << std::endl;
-    QGLWidget::mouseDoubleClickEvent (event);
+    QOpenGLWidget::mouseDoubleClickEvent (event);
 }
 
 void SceneOpenGLViewer::mousePressEvent (QMouseEvent* event)
 {
     QMouseEvent* e = static_cast< QMouseEvent* > (event);
     if (e->buttons () == Qt::RightButton) {
-        Vector3D<> pos = _scene->unproject (_mainCam, e->x (), height () - e->y ());
+        makeCurrent();
+        Vector3D<> pos = _scene->unproject (_mainCam, e->pos().x(), height () - e->pos().y());
+        doneCurrent();
         _cameraCtrl->handleEvent (event);
         _cameraCtrl->setPanTarget (pos);
     }
@@ -726,7 +688,7 @@ void SceneOpenGLViewer::mousePressEvent (QMouseEvent* event)
         _cameraCtrl->handleEvent (event);
     }
 
-    QGLWidget::mousePressEvent (event);
+    QOpenGLWidget::mousePressEvent (event);
 }
 
 void SceneOpenGLViewer::mouseMoveEvent (QMouseEvent* event)
@@ -737,25 +699,32 @@ void SceneOpenGLViewer::mouseMoveEvent (QMouseEvent* event)
     QWidget::update ();
 
     // event->ignore();
-    QGLWidget::mouseMoveEvent (event);
+    QOpenGLWidget::mouseMoveEvent (event);
 }
 
 void SceneOpenGLViewer::wheelEvent (QWheelEvent* event)
 {
+#if QT_VERSION >= 0x050E00
+    int winx       = event->position().x();
+    int winy       = height () - event->position().y();
+#else
     int winx       = event->x ();
     int winy       = height () - event->y ();
+#endif
+    makeCurrent();
     Vector3D<> pos = _scene->unproject (_mainCam, winx, winy);
+    doneCurrent();
     _cameraCtrl->setZoomTarget (pos);
     _cameraCtrl->handleEvent (event);
     QWidget::update ();
-    QGLWidget::wheelEvent (event);
+    QOpenGLWidget::wheelEvent (event);
 }
 
 void SceneOpenGLViewer::saveBufferToFile (const std::string& stdfilename, const int fillR,
                                           const int fillG, const int fillB)
 {
     QString filename (stdfilename.c_str ());
-    QImage img = grabFrameBuffer ();
+    QImage img = grabFramebuffer ();
     if (_currentView->_viewCamera->getAspectRatioControl () == SceneCamera::Fixed) {
         int x, y, w, h;
         _currentView->_viewCamera->getViewport (x, y, w, h);

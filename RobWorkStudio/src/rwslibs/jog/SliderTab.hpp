@@ -25,6 +25,7 @@
 #include <rw/math/Q.hpp>
 #include <rw/math/Quaternion.hpp>
 #include <rw/math/VectorND.hpp>
+#include <rws/RWSSpinBox.hpp>
 
 #include <QDoubleSpinBox>
 #include <QValidator>
@@ -48,38 +49,6 @@ class QGridLayout;
 class QComboBox;
 class QLabel;
 class QString;
-
-//! @brief Implementation of QDoubleSpinBox with better fixup function
-class SliderSpinBox : public QDoubleSpinBox
-{
-  public:
-    /**
-     * @brief a QDoubleSpinBox custom designed to for the application
-     * @param low [in] minimum value
-     * @param high [in] maximum value
-     */
-    SliderSpinBox (double low, double high);
-
-    /**
-     * @brief overriden virtual function from QDoubleSpinBox. Removes letters and reduces to the
-     * right number of decimals
-     * @param input [in] text to fix
-     */
-    void fixup (QString& input) const;
-
-    /**
-     * @brief overriden virtual function from QDoubleSpinBox. Validates that text is a number
-     * @param text [in] text to be validated
-     * @param pos [in] index of changed parameter
-     */
-    QValidator::State validate (QString& text, int& pos) const;
-
-    /**
-     * @brief overriden virtual function from QDoubleSpinBox. convert text to double
-     * @param text [in] text to be converted to number
-     */
-    double valueFromText (const QString& text) const;
-};
 
 //! @brief Widget for jogging a single value, such as the joint of a device or a Cartesian
 //! translation/rotation.
@@ -153,7 +122,7 @@ class Slider : public QWidget
     double _high;
 
     QSlider* _slider;
-    SliderSpinBox* _box;
+    rws::RWSSpinBox* _box;
 
     bool _boxChanged;
     bool _sliderChanged;
@@ -185,6 +154,13 @@ class JointSliderWidget : public QWidget
     void setup (const std::vector< std::string >& titles,
                 const std::pair< rw::math::Q, rw::math::Q >& bounds, const rw::math::Q& q,
                 bool enablers = false, bool enableAngularCombined = false);
+
+    /**
+     * @brief the widget is not moving a device, but a movable frame
+     * @param isNotADevice true if the widget is not manipulating a device
+     */
+    void setNoneDeviceType(bool isNotADevice=true) {_isNotADevice=isNotADevice;}
+    
 
     /**
      * @brief Set the units.
@@ -247,6 +223,7 @@ class JointSliderWidget : public QWidget
 
     QGridLayout* _layout;
     bool _enableAngularCombined;
+    bool _isNotADevice=false;
 };
 
 //! @brief Widget for a setting a 6D pose.
@@ -274,6 +251,12 @@ class TransformSliderWidget : public QWidget
                            const rw::math::Transform3D<>& transform, AngleType angleType = RPYtype,
                            bool enablers = false);
 
+    /**
+     * @brief the widget is not moving a device, but a movable frame
+     * @param isNotADevice true if the widget is not manipulating a device
+     */
+    void setNoneDeviceType(bool isNotADevice=true) {this->_jointSliderWidget->setNoneDeviceType(isNotADevice);}
+    
     /**
      * @brief Set the units.
      * @param converters [in] the factor used to convert to units.
@@ -313,7 +296,7 @@ class TransformSliderWidget : public QWidget
      * @throws Exception if there is no AngleType with this integer value.
      */
     static AngleType toAngleType (int i);
-
+//Q[6]{0.4, 0.4, 0.42, 0, 0, 0}
   Q_SIGNALS:
     /**
      * @brief Emitted when the transform is changed.

@@ -51,7 +51,7 @@ Create a “CMakeLists.txt” file in this directory ~/workspace/first_project a
 the src directory (~/workspace/first_project/src). Insert the following cmake script into the CMakeLists.txt file::
 
     # Test CMake version
-    cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
+    cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
 
     # The name of the project. (EDIT THIS)
     PROJECT(TutorialCollection)

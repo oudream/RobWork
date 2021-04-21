@@ -24,9 +24,10 @@
 #if !defined(SWIG)
 #include <rw/core/Event.hpp>
 #include <rw/core/PropertyType.hpp>
+#include <rw/core/PropertyValueBase.hpp>
 #include <rw/core/Ptr.hpp>
 
-#include <boost/function.hpp>
+#include <functional>
 #include <string>
 #endif
 
@@ -80,20 +81,35 @@ namespace rw { namespace core {
         const std::string& getDescription () const;
 
         /**
-         * @brief set description
+         * @brief Set description.
+         * @param desc [in] the new description.
+         * @param fireChangedEvent [in] (optional) fire changed event.
          */
-        void setDescription (const std::string& desc) { _description = desc; }
+        void setDescription (const std::string& desc,
+                bool fireChangedEvent = true);
 
         /**
            @brief Construct a clone of the property.
         */
         virtual PropertyBase* clone () const = 0;
 
+        /**
+         * @brief returns reference to the property value
+         * @return value
+         */
+        virtual PropertyValueBase& getPropertyValue () = 0;
+
 #if !defined(SWIGJAVA)
+        /**
+         * @brief returns const reference to the property value
+         * @return value
+         */
+        virtual const PropertyValueBase& getPropertyValue () const = 0;
+
         /**
          * @brief Method signature for a callback function
          */
-        typedef boost::function< void (PropertyBase*) > PropertyListener;
+        typedef std::function< void (PropertyBase*) > PropertyListener;
 
         //! @brief Type for changed property events.
         typedef rw::core::Event< PropertyListener, PropertyBase* > ChangedEvent;

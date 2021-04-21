@@ -20,6 +20,7 @@
 #include "ui_TaskSetupDialog.h"
 
 #include <rw/graphics/GroupNode.hpp>
+#include <rw/graphics/Model3D.hpp>
 #include <rw/kinematics/Kinematics.hpp>
 #include <rw/models/Object.hpp>
 #include <rw/models/WorkCell.hpp>
@@ -121,10 +122,10 @@ TaskSetupDialog::TaskSetupDialog (QWidget* parent, rw::core::Ptr< const WorkCell
     _ui->setupUi (this);
     setWindowTitle ("Assembly Task Configuration - " + QString::fromStdString (strategy->getID ()));
     //_ui->docLink->setText("<a
-    //href=\"http://www.robwork.dk/apidoc/nightly/rw/classrwlibs_1_1assembly_1_1AssemblyParameterization.html\">Parameterization
-    //documentation</a> - <a
-    //href=\"http://www.robwork.dk/apidoc/nightly/rw/classrwlibs_1_1assembly_1_1AssemblyControlStrategy.html\">Strategy
-    //documentation</a>"); _ui->docLink->setOpenExternalLinks(true);
+    // href=\"http://www.robwork.dk/apidoc/nightly/rw/classrwlibs_1_1assembly_1_1AssemblyParameterization.html\">Parameterization
+    // documentation</a> - <a
+    // href=\"http://www.robwork.dk/apidoc/nightly/rw/classrwlibs_1_1assembly_1_1AssemblyControlStrategy.html\">Strategy
+    // documentation</a>"); _ui->docLink->setOpenExternalLinks(true);
 
     setupViewWidget (_ui->approach);
     setupViewWidget (_ui->insertion);

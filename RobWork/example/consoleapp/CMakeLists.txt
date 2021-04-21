@@ -14,18 +14,9 @@ project(ConsoleApp)
 # Used to resolve absolute path names
 set(ROOT ${CMAKE_CURRENT_SOURCE_DIR})
 
-# Now set the RW/RWS root (edit this if necessary)
-if(DEFINED ENV{RW_ROOT})
-  file(TO_CMAKE_PATH "$ENV{RW_ROOT}" RW_ROOT)
-else()
-  set(RW_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../..")
-endif()
-
-set(ROOT ${CMAKE_CURRENT_SOURCE_DIR})
-
 # optionally: point the find package in the direction of the robwork.
-set(RobWork_DIR ${RW_ROOT}/cmake)
-find_package(RobWork REQUIRED)
+SET(RobWork_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../cmake)
+find_package(RobWork REQUIRED PATHS ${RobWork_DIR})
 
 link_directories( ${ROBWORK_LIBRARY_DIRS} )
 

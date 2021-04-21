@@ -1,0 +1,80 @@
+########################## Ubuntu 1804 ################################
+
+build-RW:ubuntu-1804:
+  extends: .linux-build-RW
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
+
+build-RWS:ubuntu-1804:
+  extends: .linux-build-RWS
+  dependencies:
+    - build-RW:ubuntu-1804
+  needs: ["build-RW:ubuntu-1804"]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
+
+build-RWSim:ubuntu-1804:
+  extends: .linux-build-RWSim
+  dependencies:
+    - build-RW:ubuntu-1804
+    - build-RWS:ubuntu-1804
+  needs: ["build-RW:ubuntu-1804", "build-RWS:ubuntu-1804"]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
+
+examples:ubuntu-1804:
+  extends: .linux-examples
+  dependencies:
+    - build-RW:ubuntu-1804
+    - build-RWS:ubuntu-1804
+    - build-RWSim:ubuntu-1804
+  needs:
+    [
+      "build-RW:ubuntu-1804",
+      "build-RWS:ubuntu-1804",
+      "build-RWSim:ubuntu-1804",
+    ]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
+
+tests:ubuntu-1804:
+  extends: .linux-tests
+  dependencies:
+    - build-RW:ubuntu-1804
+    - build-RWS:ubuntu-1804
+    - build-RWSim:ubuntu-1804
+  needs:
+    [
+      "build-RW:ubuntu-1804",
+      "build-RWS:ubuntu-1804",
+      "build-RWSim:ubuntu-1804",
+    ]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
+
+install-tests:ubuntu-1804:
+  extends: .linux-install-tests
+  dependencies:
+    - build-RW:ubuntu-1804
+    - build-RWS:ubuntu-1804
+    - build-RWSim:ubuntu-1804
+  needs:
+    [
+      "build-RW:ubuntu-1804",
+      "build-RWS:ubuntu-1804",
+      "build-RWSim:ubuntu-1804",
+    ]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
+
+build-debian:ubuntu-1804:
+  extends: .linux-build-debian
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804-deb
+
+test-debian:ubuntu-1804:
+  extends: .linux-test-debian
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804-deb-test
+  dependencies:
+    - "build-debian:ubuntu-1804"
+  needs: ["build-debian:ubuntu-1804"]
+
+test-debian-upgrade:ubuntu-1804:
+  extends: .linux-debian-upgrade-test
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804-deb-test
+  dependencies:
+    - build-debian:ubuntu-1804
+  needs: ["build-debian:ubuntu-1804"]

@@ -401,6 +401,7 @@ void RobWorkStudio::loadPlugin (std::string pluginFile, bool visible, int dock)
         setupPlugin (pluginFile.c_str (), visible, dock);
     }
 }
+
 void RobWorkStudio::loadPlugin ()
 {
     QString selectedFilter;
@@ -489,15 +490,30 @@ void RobWorkStudio::openPlugin (RobWorkStudioPlugin& plugin)
     try {
         plugin.open (_workcell.get ());
     }
-    catch (const Exception& exc) {
+    catch (rw::core::Exception& exc) {
+        std::stringstream buf;
+        buf << "Exception in opening of plugin "
+            << StringUtil::quote (plugin.name ().toStdString ());
+#if !defined(RW_MACOS)
+        QMessageBox::information (
+            NULL, buf.str ().c_str (), exc.getMessage ().getText ().c_str (), QMessageBox::Ok);
+#else
+        this->log ().info () << buf.str () << std::endl
+                             << " With message: " << exc.getMessage ().getText () << std::endl;
+#endif
+    }
+    catch (...) {
         std::stringstream buf;
         buf << "Exception in opening of plugin "
             << StringUtil::quote (plugin.name ().toStdString ());
 
-        QMessageBox::information (
-            NULL, buf.str ().c_str (), exc.getMessage ().getText ().c_str (), QMessageBox::Ok);
+#if !defined(RW_MACOS)
+        QMessageBox::information (NULL, buf.str ().c_str (), "Unknown error", QMessageBox::Ok);
+#else
+        this->log ().info () << buf.str () << std::endl
+                             << " With message: "  << std::endl;
+#endif
     }
-    // std::cout << "2" << plugin.name().toStdString() << std::endl;
 }
 
 void RobWorkStudio::closePlugin (RobWorkStudioPlugin& plugin)
@@ -616,7 +632,7 @@ void RobWorkStudio::setupPlugin (const QString& pathname, const QString& filenam
 
 void RobWorkStudio::setupPlugin (const QString& fullname, bool visible, int dock)
 {
-    std::string ext = boost::filesystem::extension (fullname.toStdString ());
+    std::string ext  = boost::filesystem::extension (fullname.toStdString ());
     std::string base = boost::filesystem::basename (fullname.toStdString ());
     if (ext == "py" || ext == ".py") {
         setupPyPlugin (fullname, base.c_str (), visible, dock);
@@ -626,20 +642,18 @@ void RobWorkStudio::setupPlugin (const QString& fullname, bool visible, int dock
         Qt::DockWidgetArea dockarea = (Qt::DockWidgetArea) dock;
         QPluginLoader loader (fullname);
 
-#if QT_VERSION >= 0x040400
         // Needed to make dynamicly loaded libraries use dynamic
         // cast on each others objects. ONLY on linux though.
         loader.setLoadHints (QLibrary::ResolveAllSymbolsHint | QLibrary::ExportExternalSymbolsHint);
-#endif
 
         QObject* pluginObject = loader.instance ();
         if (pluginObject != NULL) {
+
             RobWorkStudioPlugin* testP = dynamic_cast< RobWorkStudioPlugin* > (pluginObject);
             if (testP == NULL) {
                 RW_THROW ("Loaded plugin is NULL, tried loading \"" << fullname.toStdString ()
                                                                     << "\"");
             }
-
             RobWorkStudioPlugin* plugin = qobject_cast< RobWorkStudioPlugin* > (pluginObject);
 
             if (plugin) {
@@ -867,9 +881,7 @@ void RobWorkStudio::openFile (const std::string& file)
                 _settingsMap->set< std::vector< std::string > > ("LastOpennedFiles", lastfiles);
                 updateLastFiles ();
             }
-            else if (filename.endsWith (".WU", Qt::CaseInsensitive) ||
-                     filename.endsWith (".WC", Qt::CaseInsensitive) ||
-                     filename.endsWith (".DEV", Qt::CaseInsensitive) ||
+            else if (filename.endsWith (".WC", Qt::CaseInsensitive) ||
                      filename.endsWith (".XML", Qt::CaseInsensitive)) {
                 Log::infoLog () << "Opening workcell file: " << filename.toStdString () << "\n";
                 openWorkCellFile (filename);
@@ -919,8 +931,7 @@ void RobWorkStudio::open ()
         "*.obj" +
             assimpExtensions +
             ")"
-            "\nTUL files ( *.wu *.wc *.dev )"
-            "\nRW XML files ( *.wc.xml *.xml)"
+            "\nRW XML files ( *.wc.xml *.xml *.wc)"
             "\nDrawables ( *.stl *.stla *.stlb *.3ds *.ac *.ac3d *.obj" +
             assimpExtensions +
             ")"
@@ -985,8 +996,8 @@ void RobWorkStudio::setWorkcell (rw::models::WorkCell::Ptr workcell)
 
     // Open a new workcell if there is one.<
     if (workcell) {
-        // std::cout<<"Number of devices in workcell in RobWorkStudio::setWorkCell:
-        // "<<workcell->getDevices().size()<<std::endl;
+        std::cout << "Number of devices in workcell in RobWorkStudio::setWorkCell:"
+                  << workcell->getDevices ().size () << std::endl;
         // don't set any variables before we know they are good
         CollisionDetector::Ptr detector = makeCollisionDetector (workcell);
 

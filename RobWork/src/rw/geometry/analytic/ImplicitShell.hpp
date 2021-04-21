@@ -25,6 +25,7 @@
  */
 
 #include "Shell.hpp"
+#include <rw/core/os.hpp>
 
 namespace rw { namespace geometry {
 
@@ -82,7 +83,12 @@ namespace rw { namespace geometry {
         void setMeshResolution (double resolution) { _resolution = resolution; }
 
       private:
-        virtual rw::core::Ptr< const Face > doGetFace (std::size_t idx) const;
+#if defined(RW_MACOS)
+        // This line is here to tell the compiler that it is a intentional override further up
+        using rw::geometry::Shell::getFace;
+#endif
+
+        virtual rw::core::Ptr< const Face > doGetFace (std::size_t idx) const = 0;
 
       protected:
         //! @brief Resolution to use for discretization into triangle mesh.

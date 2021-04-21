@@ -32,7 +32,7 @@
 #include <rw/math/Vector3D.hpp>
 #include <rwlibs/opengl/SceneOpenGL.hpp>
 
-#include <QGLWidget>
+#include <QOpenGLWidget>
 #include <QObject>
 #include <vector>
 
@@ -71,7 +71,7 @@ class RobWorkStudio;
  * Multiple camera
  *
  */
-class SceneOpenGLViewer : public QGLWidget, public SceneViewerWidget
+class SceneOpenGLViewer : public QOpenGLWidget, public SceneViewerWidget
 {
     Q_OBJECT
 
@@ -223,28 +223,25 @@ class SceneOpenGLViewer : public QGLWidget, public SceneViewerWidget
     void renderViewThreadSafe (View::Ptr view);
 
   protected:
-    //! Overridden from QGLWidget
+    //! Overridden from QOpenGLWidget
     void initializeGL ();
 
-    //! Overridden from QGLWidget
+    //! Overridden from QOpenGLWidget
     void paintGL ();
 
-    //! Overridden from QGLWidget
-    void glDraw ();
-
-    //! Overridden from QGLWidget
+    //! Overridden from QOpenGLWidget
     void resizeGL (int width, int height);
 
-    //! Overridden from QGLWidget
+    //! Overridden from QOpenGLWidget
     void mouseDoubleClickEvent (QMouseEvent* event);
 
-    //! Overridden from QGLWidget
+    //! Overridden from QOpenlGLWidget
     void mousePressEvent (QMouseEvent* event);
 
-    //! Overridden from QGLWidget
+    //! Overridden from QOpenGLWidget
     void mouseMoveEvent (QMouseEvent* event);
 
-    //! Overridden from QGLWidget
+    //! Overridden from QOpenGLWidget
     void wheelEvent (QWheelEvent* event);
 
     //! @copydoc rw::graphics::SceneViewer::setWorkCellScene

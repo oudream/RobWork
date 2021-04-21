@@ -1,6 +1,6 @@
 set(SUBSYS_NAME sdurwsim_lua)
 set(SUBSYS_DESC "Interface for accessing RobWorkSim from lua.")
-set(SUBSYS_DEPS RW::sdurw_lua RWS::sdurws_lua sdurwsim)
+set(SUBSYS_DEPS RW::sdurw_lua_s RWS::sdurws_lua_s sdurwsim)
 
 set(build TRUE)
 
@@ -23,7 +23,6 @@ rw_add_doc(${SUBSYS_NAME})
 
 if(build)
     set(RWSIM_HAVE_LUA TRUE CACHE INTERNAL "")
-    # MESSAGE(STATUS "SWIG found adding swig modules!")
     include(UseSWIG)
 
     include_directories(${RWSIM_ROOT}/src ${RW_ROOT}/src)
@@ -33,9 +32,10 @@ if(build)
 
     # ############ lua interface generation ##############
     rw_add_swig(
-        ${RWSIM_MODULE} lua SHARED 
+        ${RWSIM_MODULE} lua MODULE 
         TARGET_NAME ${TARGET_NAME}
         SOURCES ../sdurwsim.i Lua.cpp ../ScriptTypes.cpp
+        BINARY_OUTPUT_DIR "${RWSIM_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua"
         INSTALL_DIR ${LUA_INSTALL_DIR}
     )
 
@@ -46,20 +46,12 @@ if(build)
             PROPERTIES
                 PREFIX ""
                 OUTPUT_NAME ${RWSIM_MODULE}
-                ARCHIVE_OUTPUT_DIRECTORY "${RWSIM_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua"
-                LIBRARY_OUTPUT_DIRECTORY "${RWSIM_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua"
-                LIBRARY_OUTPUT_DIRECTORY "${RWSIM_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Lua"
         )
     endif()
 
-    swig_link_libraries(${TARGET_NAME} ${RWSIM_ODE_LIBRARY} ${RWSIM_MODULE})
+    target_link_libraries(${TARGET_NAME} ${RWSIM_ODE_LIBRARY} ${RWSIM_MODULE} ${RW_BUILD_WITH_LIBRARIES_LUA})
+    target_include_directories(${TARGET_NAME} PUBLIC ${RW_BUILD_WITH_LUA_INCLUDE_DIR})
 
-    if (RW_BUILD_WITH_INTERNAL_LUA)
-        swig_link_libraries(${TARGET_NAME} RW::lua51)
-    else()
-        swig_link_libraries(${TARGET_NAME} ${RW_BUILD_WITH_LIBRARIES_LUA})
-        target_include_directories(${TARGET_NAME} PUBLIC ${RW_BUILD_WITH_LUA_INCLUDE_DIR})
-    endif()
 
 
     # ############ lua static interface generation ##############
@@ -67,17 +59,11 @@ if(build)
         ${RWSIM_MODULE} lua STATIC 
         TARGET_NAME ${TARGET_NAME}_s
         SOURCES ../sdurwsim.i Lua.cpp ../ScriptTypes.cpp
-        INSTALL_DIR ${LUA_INSTALL_DIR}
+        INSTALL_DIR ${STATIC_LIB_INSTALL_DIR}
     )
 
-    target_link_libraries(${TARGET_NAME}_s ${RWSIM_ODE_LIBRARY} ${RWSIM_MODULE})
-    
-    if (RW_BUILD_WITH_INTERNAL_LUA)
-        target_link_libraries(${TARGET_NAME}_s RW::lua51)
-    else()
-        target_link_libraries(${TARGET_NAME}_s ${RW_BUILD_WITH_LIBRARIES_LUA})
-        target_include_directories(${TARGET_NAME}_s PUBLIC ${RW_BUILD_WITH_LUA_INCLUDE_DIR})
-    endif()
+    target_link_libraries(${TARGET_NAME}_s ${RWSIM_ODE_LIBRARY} ${RWSIM_MODULE} ${RW_BUILD_WITH_LIBRARIES_LUA})
+    target_include_directories(${TARGET_NAME}_s PUBLIC ${RW_BUILD_WITH_LUA_INCLUDE_DIR})
 
     # this is used to indicate static linking to Visual Studio or mingw
     if(DEFINED MSVC)
@@ -87,14 +73,22 @@ if(build)
     endif()
 
     add_library(sdurwsimlua_plugin.rwplugin MODULE LuaPlugin.cpp LuaPlugin.hpp)
+
+    if(NOT SWIG_DEFAULT_COMPILE)
+        set_target_properties(sdurwsimlua_plugin.rwplugin PROPERTIES EXCLUDE_FROM_ALL TRUE EXCLUDE_FROM_DEFAULT_BUILD TRUE)
+    endif()
+
     target_link_libraries(sdurwsimlua_plugin.rwplugin ${TARGET_NAME}_s)
-    install(TARGETS ${RWSIM_MODULE}lua_plugin.rwplugin DESTINATION ${RW_PLUGIN_INSTALL_DIR})
+
+    if(SWIG_DEFAULT_COMPILE OR CMAKE_VERSION VERSION_GREATER 3.16.0)
+        install(TARGETS ${RWSIM_MODULE}lua_plugin.rwplugin DESTINATION ${RW_PLUGIN_INSTALL_DIR})
+    endif()
 
     if((CMAKE_COMPILER_IS_GNUCC) OR (CMAKE_C_COMPILER_ID STREQUAL "Clang"))
         set_target_properties(sdurwsimlua_plugin.rwplugin PROPERTIES LINK_FLAGS -Wl,--no-undefined)
     endif()
 
-    # ############ INSTALL LUA LIBRARY #############################
-    install(TARGETS ${TARGET_NAME} DESTINATION ${LUA_INSTALL_DIR})
+
+    RW_SWIG_COMPILE_TARGET(lua ${TARGET_NAME} ${TARGET_NAME}_s sdurwsimlua_plugin.rwplugin)
 
 endif()

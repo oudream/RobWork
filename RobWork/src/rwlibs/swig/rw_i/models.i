@@ -6,7 +6,7 @@
      * that in effect controls something. As such controllers vary greatly and have
      * only little in common.
      */
-    class ControllerModel : public Stateless
+    class ControllerModel : public rw::kinematics::Stateless
     {
       public:
 
@@ -15,7 +15,7 @@
          * @param name [in] the name of this controllermodel
          * @param frame [in] the frame to which this controller is attached/associated.
          */
-        ControllerModel (const std::string& name, Frame* frame);
+        ControllerModel (const std::string& name, rw::kinematics::Frame* frame);
 
         /**
          * @brief constructor
@@ -23,7 +23,7 @@
          * @param frame [in] the frame to which this controller is attached/associated.
          * @param description [in] description of the controller
          */
-        ControllerModel (const std::string& name, Frame* frame,
+        ControllerModel (const std::string& name, rw::kinematics::Frame* frame,
                          const std::string& description);
 
         //! destructor
@@ -58,14 +58,14 @@
          *
          * The frame can be NULL.
          */
-        Frame* getFrame () const;
+        rw::kinematics::Frame* getFrame () const;
 
         /**
          * @brief Sets the frame to which the controllermodel should be attached
          *
          * @param frame The frame, which can be NULL
          */
-        virtual void attachTo (Frame* frame);
+        virtual void attachTo (rw::kinematics::Frame* frame);
 
         /**
          * @brief gets the propertymap of this controllermodel
@@ -88,7 +88,7 @@
      * @brief The object class represents a physical thing in the scene which has geometry.
      * An object has a base frame (similar to a Device) and may have a number of associated frames.
      */
-    class Object: public Stateless
+    class Object: public rw::kinematics::Stateless
     {
       public:
 
@@ -106,19 +106,19 @@
          * @brief get base frame of this object
          * @return base frame of object
          */
-        Frame* getBase();
+        rw::kinematics::Frame* getBase();
 
         /**
          * @brief get all associated frames of this object
          * @return a vector of frames
          */
-        const std::vector<Frame*>& getFrames();
+        const std::vector<rw::kinematics::Frame*>& getFrames();
 
         /**
          * @brief associate a frame to this Object.
          * @param frame [in] frame to associate to object
          */       
-        void addFrame(Frame* frame);
+        void addFrame(rw::kinematics::Frame* frame);
 
         /**
          * @brief get default geometries
@@ -137,13 +137,13 @@
          * @brief get geometry of this object
          * @return geometry for collision detection.
          */
-        const std::vector<rw::core::Ptr< Geometry >>& getGeometry(const State& state) const;
+        const std::vector<rw::core::Ptr< Geometry >>& getGeometry(const rw::kinematics::State& state) const;
         
         /**
          * @brief get visualization models of this object
          * @return models for visualization
          */
-        const std::vector<rw::core::Ptr<Model3D> >& getModels(const State& state) const;
+        const std::vector<rw::core::Ptr<Model3D> >& getModels(const rw::kinematics::State& state) const;
 
         // stuff that should be implemented by deriving classes
 
@@ -151,20 +151,20 @@
 	     * @brief get mass in Kg of this object
 	     * @return mass in kilo grams
 	     */
-        virtual double getMass(State& state) const = 0;
+        virtual double getMass(rw::kinematics::State& state) const = 0;
 
         /**
 	     * @brief get center of mass of this object
 	     * @param state [in] the state in which to get center of mass
 	     * @return
 	     */
-        virtual rw::math::Vector3D<double> getCOM(State& state) const = 0;
+        virtual rw::math::Vector3D<double> getCOM(rw::kinematics::State& state) const = 0;
 
         /**
 	     * @brief returns the inertia matrix of this body calculated around COM with the orientation
 	     * of the base frame.
 	     */
-        virtual rw::math::InertiaMatrix<double> getInertia(State& state) const = 0;
+        virtual rw::math::InertiaMatrix<double> getInertia(rw::kinematics::State& state) const = 0;
 
       protected:
         //! constructor
@@ -195,7 +195,7 @@
          * @param baseframe [in] base frame of object
          * @param nr_of_nodes [in] the number of controlling nodes in the deformable object
          */
-        DeformableObject(Frame* baseframe, int nr_of_nodes);
+        DeformableObject(rw::kinematics::Frame* baseframe, int nr_of_nodes);
 
 
         /**
@@ -210,7 +210,7 @@
          * @param baseframe [in] base frame of object
          * @param model [in]
          */
-        DeformableObject(Frame* baseframe, rw::core::Ptr<Model3D> model);
+        DeformableObject(rw::kinematics::Frame* baseframe, rw::core::Ptr<Model3D> model);
 
         /**
          * @brief constructor - control nodes are taken from a triangle mesh generated from triangulating the
@@ -223,7 +223,7 @@
          * @param baseframe [in] base frame of object
          * @param geom [in] geometry to define the faces and nodes
          */
-        DeformableObject(Frame* baseframe, rw::core::Ptr<Geometry> geom);
+        DeformableObject(rw::kinematics::Frame* baseframe, rw::core::Ptr<Geometry> geom);
 
         //! @brief destructor
         virtual ~DeformableObject();
@@ -235,7 +235,7 @@
          * @param state [in] current state
          * @return handle to manipulate a node in the given state.
          */
-        rw::math::Vector3D<float>& getNode(int id, State& state) const;
+        rw::math::Vector3D<float>& getNode(int id, rw::kinematics::State& state) const;
 
         /**
          * @brief set the value of a specific node in the state.
@@ -243,7 +243,7 @@
          * @param v [in] value to set.
          * @param state [in] state in which to set the value.
          */
-        void setNode(int id, const rw::math::Vector3D<float>& v, State& state);
+        void setNode(int id, const rw::math::Vector3D<float>& v, rw::kinematics::State& state);
 
         /**
          * @brief get the number of controlling nodes of this deformable object.
@@ -276,21 +276,21 @@
          * @brief return a triangle mesh representing the softbody in the current state \b cstate
          * @param cstate
          */
-        rw::core::Ptr< rw::geometry::IndexedTriMesh<float> > getMesh(State& cstate);
+        rw::core::Ptr< rw::geometry::IndexedTriMesh<float> > getMesh(rw::kinematics::State& cstate);
 
         /**
          * @brief get mass in Kg of this object
          * @param state [in] the state
          * @return mass in kilo grams
          */
-        double getMass(State& state) const;
+        double getMass(rw::kinematics::State& state) const;
 
         /**
          * @brief get center of mass of this object
          * @param state [in] the state in which to get center of mass
          * @return Position of COM
          */    
-        rw::math::Vector3D<double> getCOM(State& state) const;
+        rw::math::Vector3D<double> getCOM(rw::kinematics::State& state) const;
 
 
         /**
@@ -299,14 +299,14 @@
          * @param state [in] the state to get the inertia in
          * @return matrix with inertia 
          */
-        rw::math::InertiaMatrix<double> getInertia(State& state) const;
+        rw::math::InertiaMatrix<double> getInertia(rw::kinematics::State& state) const;
 
         /**
          * @brief updates the model with the current state of the deformable model
          * @param model [in/out] model to be updated
          * @param state
          */
-        void update(rw::core::Ptr<Model3D> model, const State& state);
+        void update(rw::core::Ptr<Model3D> model, const rw::kinematics::State& state);
     };
 
     %template (DeformableObjectPtr) rw::core::Ptr<DeformableObject>;
@@ -346,7 +346,7 @@
          *
          * @pre q.size() == getDOF()
          */
-        virtual void setQ(const Q& q, State& state) const = 0;
+        virtual void setQ(const rw::math::Q& q, rw::kinematics::State& state) const = 0;
 
         /**
          * @brief Gets configuration vector @f$ \mathbf{q}\in \mathbb{R}^n @f$
@@ -354,7 +354,7 @@
          * @param state [in] state from which which to get @f$ \mathbf{q} @f$
          * @return configuration vector @f$ \mathbf{q} @f$
          */
-        virtual Q getQ(const State& state) const = 0;
+        virtual rw::math::Q getQ(const rw::kinematics::State& state) const = 0;
 
         /**
          * @brief Returns the upper @f$ \mathbf{q}_{min} \in \mathbb{R}^n @f$ and
@@ -362,7 +362,7 @@
          *
          * @return std::pair containing @f$ (\mathbf{q}_{min}, \mathbf{q}_{max}) @f$
          */
-        virtual std::pair<Q,Q> getBounds() const = 0;
+        virtual std::pair<rw::math::Q,rw::math::Q> getBounds() const = 0;
 
         /**
          * @brief Sets the upper @f$ \mathbf{q}_{min} \in \mathbb{R}^n @f$ and
@@ -371,7 +371,7 @@
          * @param bounds [in] std::pair containing
          * @f$ (\mathbf{q}_{min}, \mathbf{q}_{max}) @f$
          */
-        virtual void setBounds (const std::pair<Q,Q>& bounds) = 0;
+        virtual void setBounds (const std::pair<rw::math::Q,rw::math::Q>& bounds) = 0;
 
         /**
          * @brief Returns the maximal velocity of the joints
@@ -382,7 +382,7 @@
          *
          * @return the maximal velocity
          */
-        virtual Q getVelocityLimits() const = 0;
+        virtual rw::math::Q getVelocityLimits() const = 0;
 
         /**
          * @brief Sets the maximal velocity of the joints
@@ -391,9 +391,9 @@
          * It is assumed that \f$
          * \dot{\mathbf{q}}_{min}=-\dot{\mathbf{q}}_{max}\f$
          *
-         * @param vellimits [in] Q with the maximal velocity
+         * @param vellimits [in] rw::math::Q with the maximal velocity
          */
-        virtual void setVelocityLimits(const Q& vellimits) = 0;
+        virtual void setVelocityLimits(const rw::math::Q& vellimits) = 0;
 
         /**
          * @brief Returns the maximal acceleration of the joints
@@ -404,7 +404,7 @@
          *
          * @return the maximal acceleration
          */
-        virtual Q getAccelerationLimits() const = 0;
+        virtual rw::math::Q getAccelerationLimits() const = 0;
 
         /**
          * @brief Sets the maximal acceleration of the joints
@@ -415,7 +415,7 @@
          *
          * @param  acclimits [in] the maximal acceleration
          */
-        virtual void setAccelerationLimits(const Q& acclimits) = 0;
+        virtual void setAccelerationLimits(const rw::math::Q& acclimits) = 0;
 
         /**
          * @brief Returns number of active joints
@@ -439,17 +439,17 @@
          * @brief a method to return the frame of the base of the device.
          * @return the base frame
          */
-        virtual Frame* getBase() = 0;
+        virtual rw::kinematics::Frame* getBase() = 0;
 
         /**
          * @brief a method to return the frame of the end of the device
          * @return the end frame
          */
-        virtual Frame* getEnd() = 0;
+        virtual rw::kinematics::Frame* getEnd() = 0;
 
     #if !defined(SWIGJAVA)
-        virtual const Frame* getBase() const = 0;
-        virtual const Frame* getEnd() const = 0;
+        virtual const rw::kinematics::Frame* getBase() const = 0;
+        virtual const rw::kinematics::Frame* getEnd() const = 0;
     #endif
 
         /**
@@ -457,14 +457,14 @@
          * @f$ \robabx{b}{f}{\mathbf{T}} @f$
          * @return the homogeneous transform @f$ \robabx{b}{f}{\mathbf{T}} @f$
          */
-        rw::math::Transform3D<double>  baseTframe(const Frame* f, const State& state) const;
+        rw::math::Transform3D<double>  baseTframe(const rw::kinematics::Frame* f, const rw::kinematics::State& state) const;
 
         /**
          * @brief Calculates the homogeneous transform from base to the end frame
          * @f$ \robabx{base}{end}{\mathbf{T}} @f$
          * @return the homogeneous transform @f$ \robabx{base}{end}{\mathbf{T}} @f$
          */
-        rw::math::Transform3D<double>  baseTend(const State& state) const;
+        rw::math::Transform3D<double>  baseTend(const rw::kinematics::State& state) const;
 
         /**
          * @brief Calculates the homogeneous transform from world to base @f$
@@ -472,7 +472,7 @@
          *
          * @return the homogeneous transform @f$ \robabx{w}{b}{\mathbf{T}} @f$
          */
-        rw::math::Transform3D<double>  worldTbase(const State& state) const;
+        rw::math::Transform3D<double>  worldTbase(const rw::kinematics::State& state) const;
 
         /**
          * @brief Calculates the jacobian matrix of the end-effector described
@@ -540,7 +540,7 @@
          *
          * By default the method forwards to baseJframe().
          */
-        virtual rw::math::Jacobian baseJend(const State& state) const = 0;
+        virtual rw::math::Jacobian baseJend(const rw::kinematics::State& state) const = 0;
 
         /**
          * @brief Calculates the jacobian matrix of a frame f described in the
@@ -572,7 +572,7 @@
          *
          * By default the method forwards to baseJframes().
          */
-        virtual rw::math::Jacobian baseJframe(const Frame* frame,const State& state) const;
+        virtual rw::math::Jacobian baseJframe(const rw::kinematics::Frame* frame,const rw::kinematics::State& state) const;
 
         /**
          * @brief The Jacobian for a sequence of frames.
@@ -583,7 +583,7 @@
          * @param state [in] the state to calculate in
          * @return the jacobian
          */
-        virtual rw::math::Jacobian baseJframes(const std::vector<Frame*>& frames,const State& state) const;
+        virtual rw::math::Jacobian baseJframes(const std::vector<rw::kinematics::Frame*>& frames,const rw::kinematics::State& state) const;
 
         /**
          * @brief Miscellaneous properties of the device.
@@ -701,7 +701,7 @@
 
         static void set(const DHParameterSet& dhset, rw::core::PropertyMap& pmap);
 
-        static void set(const DHParameterSet& dhset, Frame* joint);
+        static void set(const DHParameterSet& dhset, rw::kinematics::Frame* joint);
 
     };
 
@@ -730,7 +730,7 @@
              * @param state [in] State for which to calculate the Jacobian
              * @return Jacobian for \b state
              */
-            virtual rw::math::Jacobian getJacobian(const State& state) const {
+            virtual rw::math::Jacobian getJacobian(const rw::kinematics::State& state) const {
                 return $self->get(state);
             }
         };
@@ -762,9 +762,9 @@
          * @param tcps [in] List of tool end-effectors for which to calculate the Jacobian.
          * @param state [in] State giving how frame are connected
          */
-        DeviceJacobianCalculator (std::vector< rw::core::Ptr<Device> > devices, const Frame* base,
-                                  const std::vector< Frame* >& tcps,
-                                  const State& state);
+        DeviceJacobianCalculator (std::vector< rw::core::Ptr<Device> > devices, const rw::kinematics::Frame* base,
+                                  const std::vector< rw::kinematics::Frame* >& tcps,
+                                  const rw::kinematics::State& state);
 
         /**
          * @brief Destructor
@@ -774,7 +774,7 @@
         /**
          * @copydoc JacobianCalculator::get(const State&) const
          */
-        virtual rw::math::Jacobian get (const State& state) const;
+        virtual rw::math::Jacobian get (const rw::kinematics::State& state) const;
     };
 
 // ################# JacobianUtil
@@ -833,8 +833,8 @@
 
            isInSubTree() runs in time proportional to the size of the subtree.
         */
-        static bool isInSubTree (const Frame& parent, const Frame& child,
-                                 const State& state);
+        static bool isInSubTree (const rw::kinematics::Frame& parent, const rw::kinematics::Frame& child,
+                                 const rw::kinematics::State& state);
     };
 
 
@@ -844,7 +844,7 @@
      * position, velocity limits and acceleration limits.
      *
      */
-    class Joint : public Frame
+    class Joint : public rw::kinematics::Frame
     {
       protected:
         /**
@@ -876,37 +876,37 @@
          * @brief Sets joint bounds
          * @param bounds [in] the lower and upper bounds of this joint
          */
-        void setBounds (const std::pair< const Q, const Q >& bounds);
+        void setBounds (const std::pair< const rw::math::Q, const rw::math::Q >& bounds);
 
         /**
          * @brief Gets joint bounds
          * @return the lower and upper bound of this joint
          */
-        const std::pair< Q, Q >& getBounds () const;
+        const std::pair< rw::math::Q, rw::math::Q >& getBounds () const;
 
         /**
          * @brief Sets max velocity of joint
          * @param maxVelocity [in] the new maximum velocity of the joint
          */
-        void setMaxVelocity (const Q& maxVelocity);
+        void setMaxVelocity (const rw::math::Q& maxVelocity);
 
         /**
          * @brief Gets max velocity of joint
          * @return the maximum velocity of the joint
          */
-        const Q& getMaxVelocity () const;
+        const rw::math::Q& getMaxVelocity () const;
 
         /**
          * @brief Sets max acceleration of joint
          * @param maxAcceleration [in] the new maximum acceleration of the joint
          */
-        void setMaxAcceleration (const Q& maxAcceleration);
+        void setMaxAcceleration (const rw::math::Q& maxAcceleration);
 
         /**
          * @brief Gets max acceleration of joint
          * @return the maximum acceleration of the joint
          */
-        const Q& getMaxAcceleration () const;
+        const rw::math::Q& getMaxAcceleration () const;
 
         /**
          * @brief Finds the Jacobian of the joints and adds it in \b jacobian.
@@ -925,7 +925,7 @@
          * @param jacobian [in] Jacobian to which to add the results.
          */
         virtual void getJacobian (size_t row, size_t col, const rw::math::Transform3D<double>& joint,
-                                  const rw::math::Transform3D<double>& tcp, const State& state,
+                                  const rw::math::Transform3D<double>& tcp, const rw::kinematics::State& state,
                                   rw::math::Jacobian& jacobian) const = 0;
 
         /**
@@ -951,7 +951,7 @@
          * @return the joint transformation
          */
         virtual rw::math::Transform3D<double>
-        getJointTransform (const State& state) const = 0;
+        getJointTransform (const rw::kinematics::State& state) const = 0;
 
         /**
          * @brief set the active state of the joint
@@ -1012,8 +1012,8 @@
          * @param state [in] the state that shows how frames are connected as
                 needed for the computation of Jacobians.
          */
-        JointDevice (const std::string& name, Frame* base, Frame* end,
-                     const std::vector< Joint* >& joints, const State& state);
+        JointDevice (const std::string& name, rw::kinematics::Frame* base, rw::kinematics::Frame* end,
+                     const std::vector< Joint* >& joints, const rw::kinematics::State& state);
 
         /**
          * @brief Get all joints of this device
@@ -1022,51 +1022,51 @@
         const std::vector<Joint*>& getJoints() const;
 
         /** @copydoc Device::setQ */
-        void setQ(const Q& q, State& state) const;
+        void setQ(const rw::math::Q& q, rw::kinematics::State& state) const;
 
         /** @copydoc Device::getQ */
-        Q getQ(const State& state) const;
+        rw::math::Q getQ(const rw::kinematics::State& state) const;
 
         /** @copydoc Device::getDOF */
         size_t getDOF() const;
 
         /** @copydoc Device::getBounds */
-        std::pair<Q, Q> getBounds() const;
+        std::pair<rw::math::Q, rw::math::Q> getBounds() const;
 
         /** @copydoc Device::setBounds */
-        void setBounds(const std::pair<Q, Q>& bounds);
+        void setBounds(const std::pair<rw::math::Q, rw::math::Q>& bounds);
 
         /** @copydoc Device::getVelocityLimits */
-        Q getVelocityLimits() const;
+        rw::math::Q getVelocityLimits() const;
 
         /** @copydoc Device::setVelocityLimits */
-        void setVelocityLimits(const Q& vellimits);
+        void setVelocityLimits(const rw::math::Q& vellimits);
 
         /** @copydoc Device::getAccelerationLimits */
-        Q getAccelerationLimits() const;
+        rw::math::Q getAccelerationLimits() const;
 
         /** @copydoc Device::setAccelerationLimits */
-        void setAccelerationLimits(const Q& acclimits);
+        void setAccelerationLimits(const rw::math::Q& acclimits);
 
         /** @copydoc Device::baseJend */
-        rw::math::Jacobian baseJend(const State& state) const;
+        rw::math::Jacobian baseJend(const rw::kinematics::State& state) const;
 
         /** @copydoc Device::baseJCframes */
-        rw::core::Ptr< JacobianCalculator > baseJCframes (const std::vector< Frame* >& frames,
-                                              const State& state) const;
+        rw::core::Ptr< JacobianCalculator > baseJCframes (const std::vector< rw::kinematics::Frame* >& frames,
+                                              const rw::kinematics::State& state) const;
 
         /** @copydoc Device::getBase */
-        Frame* getBase();
+        rw::kinematics::Frame* getBase();
 
         /** @copydoc Device::getEnd() */
-        virtual Frame* getEnd();
+        virtual rw::kinematics::Frame* getEnd();
 
     #if !defined(SWIGJAVA)
         /** @copydoc Device::getBase() */
-        const Frame* getBase() const;
+        const rw::kinematics::Frame* getBase() const;
 
         /** @copydoc Device::getEnd() */
-        virtual const Frame* getEnd() const;
+        virtual const rw::kinematics::Frame* getEnd() const;
     #endif
     };
 
@@ -1121,9 +1121,9 @@
            @param name [in] the name of the device
            @param state [in] the kinematic structure assumed for Jacobian computations
         */
-        CompositeDevice (Frame* base, const std::vector< rw::core::Ptr < Device > >& devices,
-                         Frame* end, const std::string& name,
-                         const State& state);
+        CompositeDevice (rw::kinematics::Frame* base, const std::vector< rw::core::Ptr < Device > >& devices,
+                         rw::kinematics::Frame* end, const std::string& name,
+                         const rw::kinematics::State& state);
 
         /**
            @brief Constructor
@@ -1133,9 +1133,9 @@
            @param name [in] the name of the device
            @param state [in] the kinematic structure assumed for Jacobian computations
         */
-        CompositeDevice (Frame* base, const std::vector< rw::core::Ptr<Device> >& devices,
-                         const std::vector< Frame* >& ends, const std::string& name,
-                         const State& state);
+        CompositeDevice (rw::kinematics::Frame* base, const std::vector< rw::core::Ptr<Device> >& devices,
+                         const std::vector< rw::kinematics::Frame* >& ends, const std::string& name,
+                         const rw::kinematics::State& state);
 
         /**
            @copydoc Device::setQ
@@ -1143,7 +1143,7 @@
            The method is implemented via forwarding to the Device::setQ()
            methods of the subdevices.
         */
-        void setQ (const Q& q, State& state) const;
+        void setQ (const rw::math::Q& q, rw::kinematics::State& state) const;
 
         // Methods specific to CompositeDevice follow here.
 
@@ -1151,7 +1151,7 @@
            @brief like Device::baseJend() but with a Jacobian calculated for all
            end-effectors (see getEnds()).
         */
-        rw::math::Jacobian baseJends (const State& state) const;
+        rw::math::Jacobian baseJends (const rw::kinematics::State& state) const;
 
         /**
            @brief The end-effectors of the composite device.
@@ -1162,7 +1162,7 @@
            This sequence of end-effectors may or may not include the default
            end-effector returned by getEnd().
         */
-        const std::vector< Frame* >& getEnds () const { return _ends; }
+        const std::vector< rw::kinematics::Frame* >& getEnds () const { return _ends; }
 
     };
 
@@ -1222,9 +1222,9 @@
            @param name [in] the name of the device
            @param state [in] the kinematic structure assumed for Jacobian computations
         */
-        CompositeJointDevice (Frame* base,
-                              const std::vector< rw::core::Ptr<Device> >& devices, Frame* end,
-                              const std::string& name, const State& state);
+        CompositeJointDevice (rw::kinematics::Frame* base,
+                              const std::vector< rw::core::Ptr<Device> >& devices, rw::kinematics::Frame* end,
+                              const std::string& name, const rw::kinematics::State& state);
 
         /**
            @brief Constructor
@@ -1235,10 +1235,10 @@
            @param name [in] the name of the device
            @param state [in] the kinematic structure assumed for Jacobian computations
         */
-        CompositeJointDevice (Frame* base,
+        CompositeJointDevice (rw::kinematics::Frame* base,
                               const std::vector< rw::core::Ptr<Device> >& devices,
-                              const std::vector< Frame* >& ends,
-                              const std::string& name, const State& state);
+                              const std::vector< rw::kinematics::Frame* >& ends,
+                              const std::string& name, const rw::kinematics::State& state);
 
         //! @brief destructor
         virtual ~CompositeJointDevice () {}
@@ -1249,7 +1249,7 @@
            The method is implemented via forwarding to the Device::setQ()
            methods of the subdevices.
         */
-        void setQ (const Q& q, State& state) const;
+        void setQ (const rw::math::Q& q, rw::kinematics::State& state) const;
 
         // Methods specific to CompositeJointDevice follow here.
 
@@ -1257,7 +1257,7 @@
            @brief like Device::baseJend() but with a Jacobian calculated for all
            end-effectors (see getEnds()).
         */
-        rw::math::Jacobian baseJends (const State& state) const;
+        rw::math::Jacobian baseJends (const rw::kinematics::State& state) const;
 
         /**
            @brief The end-effectors of the composite device.
@@ -1268,7 +1268,7 @@
            This sequence of end-effectors may or may not include the default
            end-effector returned by getEnd().
         */
-        const std::vector< Frame* >& getEnds () const;
+        const std::vector< rw::kinematics::Frame* >& getEnds () const;
     };
 // ################# DependentJoint
     /**
@@ -1344,7 +1344,7 @@
          *
          * @copydoc kinematics::Frame::getTransform
          */
-        rw::math::Transform3D<double> getTransform (const State& state) const;
+        rw::math::Transform3D<double> getTransform (const rw::kinematics::State& state) const;
 
         #if !defined(SWIGJAVA)
         /**
@@ -1372,7 +1372,7 @@
 
         //! @copydoc Joint::getJacobian
         void getJacobian (size_t row, size_t col, const rw::math::Transform3D<double>& joint,
-                          const rw::math::Transform3D<double>& tcp, const State& state,
+                          const rw::math::Transform3D<double>& tcp, const rw::kinematics::State& state,
                           rw::math::Jacobian& jacobian) const;
 
         //! @copydoc Joint::getFixedTransform()
@@ -1382,7 +1382,7 @@
         void setFixedTransform (const rw::math::Transform3D<double>& t3d);
 
         //! @copydoc Joint::getJointTransform()
-        rw::math::Transform3D<double> getJointTransform (const State& state) const;
+        rw::math::Transform3D<double> getJointTransform (const rw::kinematics::State& state) const;
 
         //! @copydoc Joint::setJointMapping()
         virtual void setJointMapping (rw::core::Ptr<rw::math::Function1Diff<>> function);
@@ -1459,11 +1459,11 @@
          * @param state
          * @return
          */
-        double calcQ (const State& state);
+        double calcQ (const rw::kinematics::State& state);
 
         //! @copydoc Joint::getJacobian
         void getJacobian (size_t row, size_t col, const rw::math::Transform3D<double>& joint,
-                          const rw::math::Transform3D<double>& tcp, const State& state,
+                          const rw::math::Transform3D<double>& tcp, const rw::kinematics::State& state,
                           rw::math::Jacobian& jacobian) const;
 
         //! @copydoc Joint::getFixedTransform()
@@ -1473,7 +1473,7 @@
         void setFixedTransform (const rw::math::Transform3D<double>& t3d);
 
         //! @copydoc Joint::getJointTransform()
-        rw::math::Transform3D<double> getJointTransform (const State& state) const;
+        rw::math::Transform3D<double> getJointTransform (const rw::kinematics::State& state) const;
 
         //! @copydoc Joint::setJointMapping()
         virtual void setJointMapping (rw::core::Ptr<rw::math::Function1Diff<>> function);
@@ -1507,9 +1507,9 @@
          * @param state [in] State giving how frame are connected
          */
         JointDeviceJacobianCalculator (rw::core::Ptr< JointDevice > device,
-                                       const Frame* base,
-                                       const std::vector< Frame* >& tcps,
-                                       const State& state);
+                                       const rw::kinematics::Frame* base,
+                                       const std::vector< rw::kinematics::Frame* >& tcps,
+                                       const rw::kinematics::State& state);
 
         /**
          * @brief Destructor
@@ -1519,7 +1519,7 @@
         /**
          * @copydoc JacobianCalculator::get(const rw::kinematics::State& state) const
          */
-        virtual rw::math::Jacobian get (const State& state) const;
+        virtual rw::math::Jacobian get (const rw::kinematics::State& state) const;
     };
 
 // ################# MobileDevice
@@ -1548,8 +1548,8 @@
          * @param state [in] the state of the device
          * @param name [in] name of device
          */
-        MobileDevice (MovableFrame* base, RevoluteJoint* wheel1,
-                      RevoluteJoint* wheel2, State& state, const std::string& name);
+        MobileDevice (rw::kinematics::MovableFrame* base, RevoluteJoint* wheel1,
+                      RevoluteJoint* wheel2, rw::kinematics::State& state, const std::string& name);
 
         /**
          * @brief Destructor
@@ -1564,47 +1564,47 @@
          * @param transform [in] new base transform
          * @param state [in] state to write change to
          */
-        void setDevicePose (const rw::math::Transform3D<double>& transform, State& state);
+        void setDevicePose (const rw::math::Transform3D<double>& transform, rw::kinematics::State& state);
 
         /**
          * @copydoc Device::setQ
          */
-        virtual void setQ (const Q& q, State& state) const;
+        virtual void setQ (const rw::math::Q& q, rw::kinematics::State& state) const;
 
         /**
          * @copydoc Device::getQ
          */
-        virtual Q getQ (const State& state) const;
+        virtual rw::math::Q getQ (const rw::kinematics::State& state) const;
 
         /**
          * @copydoc Device::getBounds
          */
-        virtual std::pair< Q, Q > getBounds () const;
+        virtual std::pair< rw::math::Q, rw::math::Q > getBounds () const;
 
         /**
          * @copydoc Device::setBounds
          */
-        virtual void setBounds (const std::pair< Q, Q >& bounds);
+        virtual void setBounds (const std::pair< rw::math::Q, rw::math::Q >& bounds);
 
         /**
          * @copydoc Device::getVelocityLimits
          */
-        virtual Q getVelocityLimits () const;
+        virtual rw::math::Q getVelocityLimits () const;
 
         /**
          * @copydoc Device::setVelocityLimits
          */
-        virtual void setVelocityLimits (const Q& vellimits);
+        virtual void setVelocityLimits (const rw::math::Q& vellimits);
 
         /**
          * @copydoc Device::getAccelerationLimits
          */
-        virtual Q getAccelerationLimits () const;
+        virtual rw::math::Q getAccelerationLimits () const;
 
         /**
          * @copydoc Device::setAccelerationLimits
          */
-        virtual void setAccelerationLimits (const Q& acclimits);
+        virtual void setAccelerationLimits (const rw::math::Q& acclimits);
 
         /**
          * @copydoc Device::getDOF
@@ -1614,53 +1614,53 @@
         /**
          * @copydoc Device::getBase()
          */
-        virtual Frame* getBase ();
+        virtual rw::kinematics::Frame* getBase ();
 
         #if !defined(SWIGJAVA)
             /**
              * @copydoc Device::getBase() const
              */
-            virtual const Frame* getBase () const;
+            virtual const rw::kinematics::Frame* getBase () const;
         #endif 
 
         /**
          * @copydoc Device::getEnd()
          */
-        virtual Frame* getEnd ();
+        virtual rw::kinematics::Frame* getEnd ();
 
         #if !defined(SWIGJAVA)
             /**
              * @copydoc Device::getEnd() const
              */
-            virtual const Frame* getEnd () const;
+            virtual const rw::kinematics::Frame* getEnd () const;
         #endif
 
         /**
          * @copydoc Device::baseJend
          */
-        virtual rw::math::Jacobian baseJend (const State& state) const;
+        virtual rw::math::Jacobian baseJend (const rw::kinematics::State& state) const;
 
         /**
            @copydoc Device::baseJframe
            Not implemented.
         */
-        virtual rw::math::Jacobian baseJframe (const Frame* frame,
-                                           const State& state) const;
+        virtual rw::math::Jacobian baseJframe (const rw::kinematics::Frame* frame,
+                                           const rw::kinematics::State& state) const;
 
         /**
            @copydoc Device::baseJframes
            Not implemented.
         */
-        virtual rw::math::Jacobian baseJframes (const std::vector< Frame* >& frames,
-                                            const State& state) const;
+        virtual rw::math::Jacobian baseJframes (const std::vector< rw::kinematics::Frame* >& frames,
+                                            const rw::kinematics::State& state) const;
 
         /**
            @copydoc Device::baseJCframes
            Not implemented.
         */
         virtual rw::core::Ptr<JacobianCalculator>
-        baseJCframes (const std::vector< Frame* >& frames,
-                      const State& state) const;
+        baseJCframes (const std::vector< rw::kinematics::Frame* >& frames,
+                      const rw::kinematics::State& state) const;
     };
 
 
@@ -1676,7 +1676,7 @@
         /**
            @brief All frames of the workcell.
         */
-        static std::vector< Frame* > findAllFrames (const WorkCell& workcell);
+        static std::vector< rw::kinematics::Frame* > findAllFrames (const WorkCell& workcell);
 
         /**
            @brief The frame named \b name of workcell \b workcell.
@@ -1685,7 +1685,7 @@
 
            See WorkCell::findFrame() for a non-throwing version.
         */
-        static Frame& getFrame (const WorkCell& workcell, const std::string& name);
+        static rw::kinematics::Frame& getFrame (const WorkCell& workcell, const std::string& name);
 
         /**
            @brief The device named \b name of workcell \b workcell.
@@ -1703,26 +1703,26 @@
            upper corners given by \b bounds. Each value of \b q is allowed to be
            outside of the box by the amount \b tolerance.
         */
-        static bool inBounds (const Q& q, const std::pair<Q,Q>& bounds,
+        static bool inBounds (const rw::math::Q& q, const std::pair<rw::math::Q,rw::math::Q>& bounds,
                               double tolerance = 0);
 
         /**
            @brief True iff the configuration \b q is within the joint limits of the
            device \b device.
         */
-        static bool inBounds (const Q& q, const Device& device, double tolerance = 0);
+        static bool inBounds (const rw::math::Q& q, const Device& device, double tolerance = 0);
 
         /**
            @brief True iff the joint value \b val is within the joint limits of the
            joint \b joint with a tolerance of \b tolerance.
         */
-        static bool inBounds (const Q& val, const Joint& joint, double tolerance = 0);
+        static bool inBounds (const rw::math::Q& val, const Joint& joint, double tolerance = 0);
 
         /**
            @brief True iff the joint values of \b state are within the joint limits
            of the joints of \b workcell with a tolerance of \b tolerance.
         */
-        static bool inBounds (const State& state, const WorkCell& workcell,
+        static bool inBounds (const rw::kinematics::State& state, const WorkCell& workcell,
                               double tolerance = 0);
 
         // Q path to state path conversion.
@@ -1738,9 +1738,9 @@
            @param common_state [in] State to share for all configurations.
            @return Sequence of states - one state for each configuration.
         */
-        static rw::trajectory::Path<State> getStatePath (const Device& device,
-                                                       const rw::trajectory::Path<Q>& path,
-                                                       const State& common_state);
+        static rw::trajectory::Path<rw::kinematics::State> getStatePath (const Device& device,
+                                                       const rw::trajectory::Path< rw::math::Q >& path,
+                                                       const rw::kinematics::State& common_state);
 
         /**
            @brief Convert a sequence of configurations to a sequence of states.
@@ -1753,9 +1753,9 @@
            @param common_state [in] State to share for all configurations.
            @param result [out] Sequence of states - one state for each configuration.
         */
-        static void getStatePath (const Device& device, const rw::trajectory::Path<Q>& path,
-                                  const State& common_state,
-                                  rw::trajectory::Path<State>& result);
+        static void getStatePath (const Device& device, const rw::trajectory::Path< rw::math::Q >& path,
+                                  const rw::kinematics::State& common_state,
+                                  rw::trajectory::Path<rw::kinematics::State>& result);
 
         /**
            @brief Construct a new device for which the base of the device equals
@@ -1784,9 +1784,9 @@
            @param end [in] End frame for the new device.
         */
         static rw::core::Ptr<Device> makeDevice (rw::core::Ptr<Device> device,
-                                                   const State& state,
-                                                   Frame* base = NULL,
-                                                   Frame* end  = NULL);
+                                                   const rw::kinematics::State& state,
+                                                   rw::kinematics::Frame* base = NULL,
+                                                   rw::kinematics::Frame* end  = NULL);
     };
 
 // ################# ParallelDevice
@@ -1807,7 +1807,7 @@
          * @param name [in] name of device
          * @param state [in] the state for the assembly mode
          */
-        ParallelDevice (const std::vector< ParallelLeg* > & legs, const std::string name, const State& state);
+        ParallelDevice (const std::vector< ParallelLeg* > & legs, const std::string name, const rw::kinematics::State& state);
 
         /**
          * @brief Constructor for parallel device with multiple junctions.
@@ -1819,9 +1819,9 @@
          * @param junctions [in] a list of junctions.
          * Each junction is given by a list of legs that must begin and end in the same frame.
          */
-        ParallelDevice (const std::string name, Frame* base,
-                        Frame* end, const std::vector< Joint* >& joints,
-                        const State& state, const std::vector< std::vector< ParallelLeg* >  >& junctions);
+        ParallelDevice (const std::string name, rw::kinematics::Frame* base,
+                        rw::kinematics::Frame* end, const std::vector< Joint* >& joints,
+                        const rw::kinematics::State& state, const std::vector< std::vector< ParallelLeg* >  >& junctions);
 
         /** @brief Destructor */
         ~ParallelDevice ();
@@ -1834,7 +1834,7 @@
          * automatically computes the values for the unactuated (passive)
          * joints.
          */
-        virtual void setQ (const Q& q, State& state) const;
+        virtual void setQ (const rw::math::Q& q, rw::kinematics::State& state) const;
 
         /**
          * @brief Set only some of the actuated joints.
@@ -1854,15 +1854,15 @@
          * The input state is expected to contain a valid and consistent configuration of the
          * device.
          */
-        virtual void setQ (const Q& q, const std::vector< bool >& enabled,
-                           State& state) const;
+        virtual void setQ (const rw::math::Q& q, const std::vector< bool >& enabled,
+                           rw::kinematics::State& state) const;
 
         /** @copydoc Device::baseJframe */
-        rw::math::Jacobian baseJframe (const Frame* frame,
-                                   const State& state) const;
+        rw::math::Jacobian baseJframe (const rw::kinematics::Frame* frame,
+                                   const rw::kinematics::State& state) const;
 
         /** @copydoc Device::baseJend */
-        rw::math::Jacobian baseJend (const State& state) const;
+        rw::math::Jacobian baseJend (const rw::kinematics::State& state) const;
 
         /**
          * @brief The legs of the parallel device.
@@ -1897,7 +1897,7 @@
          * @brief Get bounds for all joints (includes both active and passive joints).
          * @return a pair with the lower and upper limits.
          */
-        std::pair< Q, Q > getAllBounds () const;
+        std::pair< rw::math::Q, rw::math::Q > getAllBounds () const;
 
         /**
          * @brief Get the full configuration vector of the device. This gives the complete state of
@@ -1906,7 +1906,7 @@
          * @return the configuration vector with the joint values for both active and passive
          * joints.
          */
-        Q getFullQ (const State& state) const;
+        rw::math::Q getFullQ (const rw::kinematics::State& state) const;
 
         /**
          * @brief Set the full configuration of the device.
@@ -1915,7 +1915,7 @@
          * @param q [in] the configuration vector to set.
          * @param state [in/out] the state to update with a new configuration.
          */
-        void setFullQ (const Q& q, State& state) const;
+        void setFullQ (const rw::math::Q& q, rw::kinematics::State& state) const;
 
         
     };
@@ -1937,7 +1937,7 @@
          * @brief Constructs leg from frames
          * @param frames [in] list of Frame's
          */
-        ParallelLeg (std::vector< Frame* > frames);
+        ParallelLeg (std::vector< rw::kinematics::Frame* > frames);
 
         /**
          * @brief Destructor
@@ -1949,7 +1949,7 @@
          * @param state [in] State for which to calculate the Jacobian
          * @return the Jacobian
          */
-        const rw::math::Jacobian& baseJend (const State& state);
+        const rw::math::Jacobian& baseJend (const rw::kinematics::State& state);
 
         /**
          * @brief Returns the Jacobian of \b frame relative to base frame.
@@ -1957,15 +1957,15 @@
          * @param state [in] State for which to calculate the Jacobian
          * @return the Jacobian
          */
-        rw::math::Jacobian baseJframe (const Frame* frame,
-                                       const State& state) const;
+        rw::math::Jacobian baseJframe (const rw::kinematics::Frame* frame,
+                                       const rw::kinematics::State& state) const;
 
         /**
          * @brief Returns the base to end transformation
          * @param state [in] State for which to calculate the transform
          * @return the transform
          */
-        rw::math::Transform3D< double > baseTend (const State& state) const;
+        rw::math::Transform3D< double > baseTend (const rw::kinematics::State& state) const;
 
         /**
          * @brief Returns the transformation of a \b frame relative to the base.
@@ -1973,26 +1973,26 @@
          * @param state [in] State for which to calculate the transform
          * @return the transform
          */
-        rw::math::Transform3D< double > baseTframe (const Frame* frame,
-                                                    const State& state) const;
+        rw::math::Transform3D< double > baseTframe (const rw::kinematics::Frame* frame,
+                                                    const rw::kinematics::State& state) const;
 
         /**
          * @brief Returns the kinematic chain of the leg
          * @return list of frames
          */
-        const std::vector< Frame* >& getKinematicChain () const;
+        const std::vector< rw::kinematics::Frame* >& getKinematicChain () const;
 
         /**
          * @brief the base of the leg
          * @return the frame
          */
-        Frame* getBase ();
+        rw::kinematics::Frame* getBase ();
 
         /**
          * @brief the end of the leg
          * @return the frame
          */
-        Frame* getEnd ();
+        rw::kinematics::Frame* getEnd ();
 
         /**
          * @brief Number of active joints
@@ -2035,14 +2035,14 @@
          * @param state [in] the state with the configuration values.
          * @return the configuration.
          */
-        Q getQ (const State& state) const;
+        rw::math::Q getQ (const rw::kinematics::State& state) const;
 
         /**
          * @brief Sets q for the leg in the state
          * @param q [in] q to set
          * @param state [out] the State to modify
          */
-        void setQ (const Q& q, State& state) const;
+        void setQ (const rw::math::Q& q, rw::kinematics::State& state) const;
     };
     %template(ParallelLegPtr) rw::core::Ptr<ParallelLeg>;
     %template(ParallelLegPtrVector) std::vector<rw::core::Ptr<ParallelLeg>>;
@@ -2082,7 +2082,7 @@
          * @param q [in] Joint values for the joint
          * @param result [in] The transform of the frame in the world frame.
          */
-        void multiplyJointTransform (const rw::math::Transform3D<double>& parent, const Q& q,
+        void multiplyJointTransform (const rw::math::Transform3D<double>& parent, const rw::math::Q& q,
                                      rw::math::Transform3D<double>& result) const;
 
         /**
@@ -2115,7 +2115,7 @@
          */
         rw::math::Transform3D<double> getTransform (double q) const;
         // we need to declare the getTransform again because its shadowed by the getTransform(q)
-        using Frame::getTransform;
+        using rw::kinematics::Frame::getTransform;
 
         //! @copydoc Joint::getFixedTransform()
         rw::math::Transform3D<double> getFixedTransform () const;
@@ -2124,13 +2124,13 @@
         void setFixedTransform (const rw::math::Transform3D<double>& t3d);
 
         //! @copydoc Joint::getJointTransform()
-        rw::math::Transform3D<double> getJointTransform (const State& state) const;
+        rw::math::Transform3D<double> getJointTransform (const rw::kinematics::State& state) const;
 
         /**
          * @copydoc Joint::getJacobian()
          */
         void getJacobian (size_t row, size_t col, const rw::math::Transform3D<double>& joint,
-                          const rw::math::Transform3D<double>& tcp, const State& state,
+                          const rw::math::Transform3D<double>& tcp, const rw::kinematics::State& state,
                           rw::math::Jacobian& jacobian) const;
 
         //! @copydoc Joint::setJointMapping()
@@ -2143,13 +2143,13 @@
         /**
          * @copydoc rw::kinematics::Frame::doMultiplyTransform
          */
-        void doMultiplyTransform (const rw::math::Transform3D<double>& parent, const State& state,
+        void doMultiplyTransform (const rw::math::Transform3D<double>& parent, const rw::kinematics::State& state,
                                   rw::math::Transform3D<double>& result) const;
 
         /**
          * @copydoc rw::kinematics::Frame::doGetTransform
          */
-        rw::math::Transform3D<double> doGetTransform (const State& state) const;
+        rw::math::Transform3D<double> doGetTransform (const rw::kinematics::State& state) const;
     };
     %template(PrismaticJointPtr) rw::core::Ptr<PrismaticJoint>;
 
@@ -2180,18 +2180,18 @@
         // From Frame
         //! @brief Frame::doMultiplyTransform
         virtual void doMultiplyTransform (const rw::math::Transform3D<double>& parent,
-                                          const State& state,
+                                          const rw::kinematics::State& state,
                                           rw::math::Transform3D<double>& result) const;
 
         //! @brief Frame::doGetTransform
-        virtual rw::math::Transform3D<double> doGetTransform (const State& state) const;
+        virtual rw::math::Transform3D<double> doGetTransform (const rw::kinematics::State& state) const;
 
         // From Joint
         //! @copydoc Joint::getJacobian
         virtual void getJacobian (std::size_t row, std::size_t col,
                                   const rw::math::Transform3D<double>& joint,
                                   const rw::math::Transform3D<double>& tcp,
-                                  const State& state,
+                                  const rw::kinematics::State& state,
                                   rw::math::Jacobian& jacobian) const;
 
         //! @copydoc Joint::getFixedTransform
@@ -2240,18 +2240,18 @@
         // From Frame
         //! @brief Frame::doMultiplyTransform
         virtual void doMultiplyTransform (const rw::math::Transform3D<double>& parent,
-                                          const State& state,
+                                          const rw::kinematics::State& state,
                                           rw::math::Transform3D<double>& result) const;
 
         //! @brief Frame::doGetTransform
-        virtual rw::math::Transform3D<double> doGetTransform (const State& state) const;
+        virtual rw::math::Transform3D<double> doGetTransform (const rw::kinematics::State& state) const;
 
         // From Joint
         //! @copydoc Joint::getJacobian
         virtual void getJacobian (std::size_t row, std::size_t col,
                                   const rw::math::Transform3D<double>& joint,
                                   const rw::math::Transform3D<double>& tcp,
-                                  const State& state,
+                                  const rw::kinematics::State& state,
                                   rw::math::Jacobian& jacobian) const;
 
         //! @copydoc Joint::getFixedTransform
@@ -2262,7 +2262,7 @@
 
         //! @copydoc Joint::getJointTransform
         virtual rw::math::Transform3D<double>
-        getJointTransform (const State& state) const;
+        getJointTransform (const rw::kinematics::State& state) const;
 
         //! @copydoc Joint::setJointMapping
         virtual void setJointMapping (rw::core::Ptr<rw::math::Function1Diff<>> function);
@@ -2302,7 +2302,7 @@
          * @param q [in] Joint values for the joint
          * @param result [in] The transform of the frame in the world frame.
          */
-        void multiplyJointTransform (const rw::math::Transform3D<double>& parent, const Q& q,
+        void multiplyJointTransform (const rw::math::Transform3D<double>& parent, const rw::math::Q& q,
                                      rw::math::Transform3D<double>& result) const;
 
         /**
@@ -2335,21 +2335,21 @@
          */
         rw::math::Transform3D<double> getTransform (double q) const;
         // we need to declare the getTransform again because its shadowed by the getTransform(q)
-        using Frame::getTransform;
+        using rw::kinematics::Frame::getTransform;
 
         //! @copydoc Joint::getFixedTransform()
         rw::math::Transform3D<double> getFixedTransform () const;
 
         //! @copydoc Joint::getJacobian
         void getJacobian (size_t row, size_t col, const rw::math::Transform3D<double>& joint,
-                          const rw::math::Transform3D<double>& tcp, const State& state,
+                          const rw::math::Transform3D<double>& tcp, const rw::kinematics::State& state,
                           rw::math::Jacobian& jacobian) const;
 
         //! @copydoc Joint::setFixedTransform()
         void setFixedTransform (const rw::math::Transform3D<double>& t3d);
 
         //! @copydoc Joint::getJointTransform()
-        rw::math::Transform3D<double> getJointTransform (const State& state) const;
+        rw::math::Transform3D<double> getJointTransform (const rw::kinematics::State& state) const;
 
         //! @copydoc Joint::setJointMapping()
         virtual void setJointMapping (rw::core::Ptr< rw::math::Function1Diff<> > function);
@@ -2413,41 +2413,41 @@
          * @brief constructor
          * @param baseFrame [in] base frame of the object
          */
-        RigidObject(Frame* baseframe);
+        RigidObject(rw::kinematics::Frame* baseframe);
         
         /**
          * @brief constructor
          * @param baseFrame [in] base frame of the object
          * @param geom [in] the Geometry Forming the object
          */
-        RigidObject(Frame* baseframe, rw::core::Ptr< Geometry > geom);
+        RigidObject(rw::kinematics::Frame* baseframe, rw::core::Ptr< Geometry > geom);
         
         /**
          * @brief constructor
          * @param baseFrame [in] base frame of the object
          * @param geom [in] a list of geometries to form the object
          */
-        RigidObject(Frame* baseframe, std::vector<rw::core::Ptr< Geometry >> geom);
+        RigidObject(rw::kinematics::Frame* baseframe, std::vector<rw::core::Ptr< Geometry >> geom);
         
         /**
          * @brief constructor
          * @param frames [in] first frame is base frame of the object
          */
-        RigidObject(std::vector<Frame*> frames);
+        RigidObject(std::vector<rw::kinematics::Frame*> frames);
         
         /**
          * @brief constructor
          * @param frames [in] first frame is base frame of the object
          * @param geom [in] the Geometry Forming the object
          */
-        RigidObject(std::vector<Frame*> frames, rw::core::Ptr< Geometry > geom);
+        RigidObject(std::vector<rw::kinematics::Frame*> frames, rw::core::Ptr< Geometry > geom);
 
         /**
          * @brief constructor
          * @param frames [in] first frame is base frame of the object
          * @param geom [in] a list of geometries to form the object
          */
-        RigidObject(std::vector<Frame*> frames, std::vector<rw::core::Ptr< Geometry >> geom);
+        RigidObject(std::vector<rw::kinematics::Frame*> frames, std::vector<rw::core::Ptr< Geometry >> geom);
 
         /**
          * @brief add collision geometry from this object
@@ -2525,13 +2525,13 @@
         const std::vector<rw::core::Ptr<Model3D> >& getModels() const;
 
         //! @copydoc Object::getMass
-        double getMass(State& state) const;
+        double getMass(rw::kinematics::State& state) const;
 
         //! @copydoc Object::getInertia
-        rw::math::InertiaMatrix<double> getInertia(State& state) const;
+        rw::math::InertiaMatrix<double> getInertia(rw::kinematics::State& state) const;
 
         //! @copydoc Object::getCOM
-        rw::math::Vector3D<double> getCOM(State& state) const;
+        rw::math::Vector3D<double> getCOM(rw::kinematics::State& state) const;
     };
 
     %template (RigidObjectPtr) rw::core::Ptr<RigidObject>;
@@ -2594,8 +2594,8 @@
          * @param base documentation missing !
          * @param mframe documentation missing !
          */
-        SE3Device (const std::string& name, Frame* base,
-                   MovableFrame* mframe);
+        SE3Device (const std::string& name, rw::kinematics::Frame* base,
+                   rw::kinematics::MovableFrame* mframe);
 
         virtual ~SE3Device () {}
 
@@ -2604,12 +2604,12 @@
          *
          * @pre q.size() == 6
          */
-        void setQ (const Q& q, State& state) const;
+        void setQ (const rw::math::Q& q, rw::kinematics::State& state) const;
 
         /**
          * @copydoc Device::getQ
          */
-        Q getQ (const State& state) const;
+        rw::math::Q getQ (const rw::kinematics::State& state) const;
 
         /**
          * @copydoc Device::getBounds
@@ -2620,34 +2620,34 @@
          * numerical limits of the real datatype, thus this method returns the
          * range ([DBL_MIN, DBL_MAX]) for each of the 6 inputs
          */
-        std::pair< Q, Q > getBounds () const;
+        std::pair< rw::math::Q, rw::math::Q > getBounds () const;
 
         /**
          * @brief get base of the device
          * @return base Frame
          */
-        Frame* getBase ();
+        rw::kinematics::Frame* getBase ();
 
         #if !defined(SWIGJAVA)
             /**
              * @brief get base of the device
              * @return base Frame
              */
-            const Frame* getBase () const;
+            const rw::kinematics::Frame* getBase () const;
         #endif
 
         /**
          * @brief get end of the device
          * @return end Frame
          */
-        Frame* getEnd ();
+        rw::kinematics::Frame* getEnd ();
 
         #if !defined(SWIGJAVA)
             /**
              * @brief get end of the device
              * @return end Frame
              */
-            const Frame* getEnd () const;
+            const rw::kinematics::Frame* getEnd () const;
         #endif
 
         /**
@@ -2675,10 +2675,10 @@
          * \f]
          *
          */
-        rw::math::Jacobian baseJend (const State& state) const;
+        rw::math::Jacobian baseJend (const rw::kinematics::State& state) const;
 
-        rw::core::Ptr<JacobianCalculator> baseJCframes (const std::vector< Frame* >& frames,
-                                              const State& state) const;
+        rw::core::Ptr<JacobianCalculator> baseJCframes (const std::vector< rw::kinematics::Frame* >& frames,
+                                              const rw::kinematics::State& state) const;
         /**
          * @copydoc Device::getDOF
          *
@@ -2690,31 +2690,31 @@
          * @brief set outer bound of the device
          * @param bounds [in] the minimum Q and the maximum Q
          */
-        virtual void setBounds (const std::pair<Q, Q>& bounds);
+        virtual void setBounds (const std::pair<rw::math::Q, rw::math::Q>& bounds);
 
         /**
          * @brief get the Joint velocity limit
          * @return the velocity limit as Q
          */
-        virtual Q getVelocityLimits () const;
+        virtual rw::math::Q getVelocityLimits () const;
 
         /**
          * @brief set the Joint velocity limit
          * @param vellimits [in] the velocity limit as Q
          */
-        virtual void setVelocityLimits (const Q& vellimits);
+        virtual void setVelocityLimits (const rw::math::Q& vellimits);
 
         /**
          * @brief get the Joint Acceleration limit
          * @return the Acceleration limit as Q
          */
-        Q getAccelerationLimits () const;
+        rw::math::Q getAccelerationLimits () const;
 
         /**
          * @brief set the Joint Acceleration limit
          * @param acclimit [in] the acceleration limit as Q
          */
-        void setAccelerationLimits (const Q& acclimits);
+        void setAccelerationLimits (const rw::math::Q& acclimits);
     };
 
 // ################# SerialDevice
@@ -2737,8 +2737,8 @@
          * @param name [in] name of device
          * @param state [in] the connectedness of the frames
          */
-        SerialDevice (Frame* first, Frame* last, const std::string& name,
-                      const State& state);
+        SerialDevice (rw::kinematics::Frame* first, rw::kinematics::Frame* last, const std::string& name,
+                      const rw::kinematics::State& state);
 
         /**
          * @brief Frames of the device.
@@ -2749,7 +2749,7 @@
          *
          * @return list of raw Frame pointers.
          */
-        const std::vector< Frame* >& frames () const;   
+        const std::vector< rw::kinematics::Frame* >& frames () const;   
 
 
         /**
@@ -2765,8 +2765,8 @@
          *
          * @param state [in] the initial state of everything
          */
-        SerialDevice (const std::vector< Frame* >& serialChain, const std::string& name,
-                      const State& state);         
+        SerialDevice (const std::vector< rw::kinematics::Frame* >& serialChain, const std::string& name,
+                      const rw::kinematics::State& state);         
 
 
     };
@@ -2804,18 +2804,18 @@
         // From Frame
         //! @brief Frame::doMultiplyTransform
         virtual void doMultiplyTransform (const rw::math::Transform3D<double>& parent,
-                                          const State& state,
+                                          const rw::kinematics::State& state,
                                           rw::math::Transform3D<double>& result) const;
 
         //! @brief Frame::doGetTransform
-        virtual rw::math::Transform3D<double> doGetTransform (const State& state) const;
+        virtual rw::math::Transform3D<double> doGetTransform (const rw::kinematics::State& state) const;
 
         // From Joint
         //! @copydoc Joint::getJacobian
         virtual void getJacobian (std::size_t row, std::size_t col,
                                   const rw::math::Transform3D<double>& joint,
                                   const rw::math::Transform3D<double>& tcp,
-                                  const State& state,
+                                  const rw::kinematics::State& state,
                                   rw::math::Jacobian& jacobian) const;
 
         //! @copydoc Joint::getFixedTransform
@@ -2826,7 +2826,7 @@
 
         //! @copydoc Joint::getJointTransform
         virtual rw::math::Transform3D<double>
-        getJointTransform (const State& state) const;
+        getJointTransform (const rw::kinematics::State& state) const;
 
         //! @copydoc Joint::setJointMapping
         virtual void setJointMapping (rw::core::Ptr<rw::math::Function1Diff<>> function);
@@ -2896,8 +2896,8 @@
          * @param name [in] name of device
          * @param state [in] the initial state of everything
          */
-        TreeDevice (Frame* base, const std::vector< Frame* >& ends,
-                    const std::string& name, const State& state);
+        TreeDevice (rw::kinematics::Frame* base, const std::vector< rw::kinematics::Frame* >& ends,
+                    const std::string& name, const rw::kinematics::State& state);
 
         //! @brief destructor
         virtual ~TreeDevice ();
@@ -2906,12 +2906,12 @@
          * @brief like Device::baseJend() but with a Jacobian calculated for all
          * end effectors.
          */
-        rw::math::Jacobian baseJends (const State& state) const;
+        rw::math::Jacobian baseJends (const rw::kinematics::State& state) const;
 
         /**
            @brief The end-effectors of the tree device.
          */
-        const std::vector< Frame* >& getEnds () const;
+        const std::vector< rw::kinematics::Frame* >& getEnds () const;
 
         /**
          * @brief Frames of the device.
@@ -2920,7 +2920,7 @@
          * devices in RobWorkStudio. The method really isn't of much use for
          * everyday programming.
          */
-        const std::vector< Frame* >& frames () const;
+        const std::vector< rw::kinematics::Frame* >& frames () const;
 
     };
     %template (TreeDevicePtr) rw::core::Ptr<TreeDevice>;
@@ -2952,18 +2952,18 @@
         // From Frame
         //! @brief Frame::doMultiplyTransform
         virtual void doMultiplyTransform (const rw::math::Transform3D<double>& parent,
-                                          const State& state,
+                                          const rw::kinematics::State& state,
                                           rw::math::Transform3D<double>& result) const;
 
         //! @brief Frame::doGetTransform
-        virtual rw::math::Transform3D<double> doGetTransform (const State& state) const;
+        virtual rw::math::Transform3D<double> doGetTransform (const rw::kinematics::State& state) const;
 
         // From Joint
         //! @copydoc Joint::getJacobian
         virtual void getJacobian (std::size_t row, std::size_t col,
                                   const rw::math::Transform3D<double>& joint,
                                   const rw::math::Transform3D<double>& tcp,
-                                  const State& state,
+                                  const rw::kinematics::State& state,
                                   rw::math::Jacobian& jacobian) const;
 
         //! @copydoc Joint::getFixedTransform
@@ -2974,7 +2974,7 @@
 
         //! @copydoc Joint::getJointTransform
         virtual rw::math::Transform3D<double>
-        getJointTransform (const State& state) const;
+        getJointTransform (const rw::kinematics::State& state) const;
 
         //! @copydoc Joint::setJointMapping
         virtual void setJointMapping (rw::core::Ptr<rw::math::Function1Diff<>> function);
@@ -3007,7 +3007,7 @@
 
         //! @copydoc Joint::getJacobian
         void getJacobian (size_t row, size_t col, const rw::math::Transform3D<double>& joint,
-                          const rw::math::Transform3D<double>& tcp, const State& state,
+                          const rw::math::Transform3D<double>& tcp, const rw::kinematics::State& state,
                           rw::math::Jacobian& jacobian) const;
 
         //! @copydoc Joint::getFixedTransform()
@@ -3017,7 +3017,7 @@
         void setFixedTransform (const rw::math::Transform3D<double>& t3d);
 
         //! @copydoc Joint::getJointTransform()
-        rw::math::Transform3D<double> getJointTransform (const State& state) const;
+        rw::math::Transform3D<double> getJointTransform (const rw::kinematics::State& state) const;
 
         //! @copydoc Joint::setJointMapping()
         virtual void setJointMapping (rw::core::Ptr<rw::math::Function1Diff<>> function);
@@ -3026,9 +3026,9 @@
         virtual void removeJointMapping ();
 
       protected:
-        rw::math::Transform3D<double> doGetTransform (const State& state) const;
+        rw::math::Transform3D<double> doGetTransform (const rw::kinematics::State& state) const;
 
-        void doMultiplyTransform (const rw::math::Transform3D<double>& parent, const State& state,
+        void doMultiplyTransform (const rw::math::Transform3D<double>& parent, const rw::kinematics::State& state,
                                   rw::math::Transform3D<double>& result) const;
     };
     %template(VirtualJointPtr) rw::core::Ptr<VirtualJoint>;
@@ -3071,7 +3071,7 @@
          * loaded.
          */
         WorkCell(
-                rw::core::Ptr<StateStructure> tree,
+                rw::core::Ptr<rw::kinematics::StateStructure> tree,
                 const std::string& name = "",
                 const std::string& filename = "");
 
@@ -3097,7 +3097,7 @@
          *
          * @return Pointer to the world frame
          */
-        Frame* getWorldFrame() const;
+        rw::kinematics::Frame* getWorldFrame() const;
 
         /**
          * @brief Adds \b frame with \b parent as parent.
@@ -3109,7 +3109,7 @@
          * @deprecated Since January 2018.
          * Please use the addFrame method using smart pointers instead.
          */
-        void addFrame(Frame* frame, Frame* parent=NULL);
+        void addFrame(rw::kinematics::Frame* frame, rw::kinematics::Frame* parent=NULL);
 
         /**
          * @brief Adds \b frame with \b parent as parent.
@@ -3119,8 +3119,8 @@
          * @param frame [in] Frame to add
          * @param parent [in] Parent frame - uses World is parent == NULL
          */
-        void addFrame(rw::core::Ptr<Frame> frame,
-                rw::core::Ptr<Frame> parent = NULL);
+        void addFrame(rw::core::Ptr<rw::kinematics::Frame> frame,
+                rw::core::Ptr<rw::kinematics::Frame> parent = NULL);
 
 
         /**
@@ -3134,7 +3134,7 @@
          * @deprecated Since January 2018.
          * Please use the addDAF method using smart pointers instead.
          */
-        void addDAF(Frame* frame, Frame* parent = NULL);
+        void addDAF(rw::kinematics::Frame* frame, rw::kinematics::Frame* parent = NULL);
 
         /**
          * @brief Adds dynamically attachable frame (DAF) \b frame with
@@ -3145,8 +3145,8 @@
          * @param frame [in] Frame to add
          * @param parent [in] Parent frame - uses World is parent == NULL
          */
-        void addDAF(rw::core::Ptr<Frame> frame,
-                rw::core::Ptr<Frame> parent = NULL);
+        void addDAF(rw::core::Ptr<rw::kinematics::Frame> frame,
+                rw::core::Ptr<rw::kinematics::Frame> parent = NULL);
 
         /**
          * @brief Removes \b frame from work cell
@@ -3155,13 +3155,13 @@
          * Please use remove(rw::core::Ptr<rw::kinematics::Frame>)
          * instead.
          */
-        void remove(Frame* frame);
+        void remove(rw::kinematics::Frame* frame);
 
         /**
          * @brief Removes \b frame from work cell
          * @param frame [in] Frame to remove
          */
-        void remove(rw::core::Ptr<Frame> frame);
+        void remove(rw::core::Ptr<rw::kinematics::Frame> frame);
 
         /**
          * @brief Removes \b object from workcell
@@ -3193,7 +3193,7 @@
          *
          * @return The frame with name \b name or NULL if no such frame.
          */
-        Frame* findFrame(const std::string& name) const;
+        rw::kinematics::Frame* findFrame(const std::string& name) const;
 
         %extend {
             /**
@@ -3206,9 +3206,9 @@
              *
              * @return The MovableFrame with name \b name or NULL if no such frame.
              */
-            MovableFrame* findMovableFrame(const std::string& name)
+            rw::kinematics::MovableFrame* findMovableFrame(const std::string& name)
             { 
-                return $self->WorkCell::findFrame<MovableFrame>(name); 
+                return $self->WorkCell::findFrame<rw::kinematics::MovableFrame>(name); 
             }
 
             /**
@@ -3221,27 +3221,27 @@
              *
              * @return The FixedFrame with name \b name or NULL if no such frame.
              */
-            FixedFrame* findFixedFrame(const std::string& name)
+            rw::kinematics::FixedFrame* findFixedFrame(const std::string& name)
             { 
-                return $self->WorkCell::findFrame<FixedFrame>(name); 
+                return $self->WorkCell::findFrame<rw::kinematics::FixedFrame>(name); 
             }
 
             /**
              * @brief Returns all \b MovableFrames.
              * @return all frames of type \b MovableFrames in the workcell
              */
-            std::vector<MovableFrame*> findMovableFrames() const
+            std::vector<rw::kinematics::MovableFrame*> findMovableFrames() const
             { 
-                return $self->WorkCell::findFrames<MovableFrame>(); 
+                return $self->WorkCell::findFrames<rw::kinematics::MovableFrame>(); 
             }
 
             /**
              * @brief Returns all \b FixedFrame.
              * @return all frames of type \b FixedFrame in the workcell
              */
-            std::vector<FixedFrame*> findFixedFrames() const
+            std::vector<rw::kinematics::FixedFrame*> findFixedFrames() const
             { 
-                return $self->WorkCell::findFrames<FixedFrame>(); 
+                return $self->WorkCell::findFrames<rw::kinematics::FixedFrame>(); 
             }
 
         };
@@ -3250,7 +3250,7 @@
          * @brief Returns all frames in workcell
          * @return List of all frames
          */
-        std::vector<Frame*> getFrames() const;
+        std::vector<rw::kinematics::Frame*> getFrames() const;
 
         /**
          * @brief The device named \b name of the workcell.
@@ -3370,7 +3370,7 @@
          *
          * @return default State
          */
-        State getDefaultState() const;
+        rw::kinematics::State getDefaultState() const;
 
         /**
          * @brief Returns sensor with the specified name.
@@ -3459,7 +3459,7 @@
          * @brief gets the complete state structure of the workcell.
          * @return the state structure of the workcell.
          */
-        rw::core::Ptr< StateStructure > getStateStructure ();
+        rw::core::Ptr< rw::kinematics::StateStructure > getStateStructure ();
 
         /**
          * @brief Returns the work cell changed event

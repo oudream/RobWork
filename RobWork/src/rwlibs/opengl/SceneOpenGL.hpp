@@ -25,6 +25,10 @@
 #include <rw/core/Ptr.hpp>
 #include <rw/graphics/SceneGraph.hpp>
 
+namespace rw { namespace geometry {
+    class GeometryData3D;
+}}    // namespace rw::geometry
+
 namespace rwlibs { namespace opengl {
 
     /** @addtogroup opengl */
@@ -96,7 +100,7 @@ namespace rwlibs { namespace opengl {
         //! @copydoc rw::graphics::SceneGraph::makeDrawable(const
         //! std::string&,rw::core::Ptr<rw::graphics::Model3D>,int)
         rw::graphics::DrawableNode::Ptr makeDrawable (const std::string& name,
-                                                      rw::core::Ptr< rw::graphics::Model3D > model,
+                                                      rw::core::Ptr< rw::geometry::Model3D > model,
                                                       int dmask);
         //! @copydoc rw::graphics::SceneGraph::makeDrawable(const std::string&,const class
         //! rw::sensor::Image&,int)

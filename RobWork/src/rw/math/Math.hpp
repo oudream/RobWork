@@ -21,6 +21,7 @@
 /**
  * @file rw/math/Math.hpp
  */
+#if !defined(SWIG)
 #include "EAA.hpp"
 #include "Q.hpp"
 #include "Quaternion.hpp"
@@ -29,6 +30,7 @@
 
 #include <algorithm>
 #include <cmath>
+#endif 
 
 namespace rw { namespace math {
 
@@ -177,17 +179,7 @@ namespace rw { namespace math {
          * @return The clamped values
          */
         static rw::math::Q clampQ (const rw::math::Q& q, const rw::math::Q& min,
-                                   const rw::math::Q& max)
-        {
-            assert (q.size () == min.size ());
-            assert (q.size () == max.size ());
-
-            Q qres (q.size ());
-            for (size_t i = 0; i < q.size (); i++)
-                qres (i) = clamp (q (i), min (i), max (i));
-
-            return qres;
-        }
+                                   const rw::math::Q& max);
 
         /**
          * @brief Clamps values of \b q with \b bounds.first and \b bounds.second
@@ -395,25 +387,25 @@ namespace rw { namespace math {
         /**
          * @brief The squares of the elements of \b q.
          */
-        static Q sqr (const Q& q);
+        static rw::math::Q sqr (const rw::math::Q& q);
 
         /**
          * @brief The square roots of the elements of \b q.
          */
-        static Q sqrt (const Q& q);
+        static rw::math::Q sqrt (const rw::math::Q& q);
 
         /**
          * @brief Returns vector with the absolute values
          *
-         * Given a vector \f$v=[v_1,v_2,\ldots,v_n]\f$ then Abs(v) is defined as
-         * \f$Abs(v)=[abs(v_1),abs(v_i),\ldots,abs(v_n)] \f$
+         * Given a vector \f$ v=[v_1,v_2,\ldots,v_n] \f$ then Abs(v) is defined as
+         * \f$ Abs(v)=[abs(v_1),abs(v_i),\ldots,abs(v_n)] \f$
          *
-         * @param v [in] the vector \f$v\f$
-         * @return the vector \f$Abs(v)\f$
+         * @param v [in] the vector \f$ v\f$
+         * @return the vector \f$ Abs(v)\f$
          */
-        static Q abs (const Q& v)
+        static rw::math::Q abs (const rw::math::Q& v)
         {
-            Q result (v.size ());
+            rw::math::Q result (v.size ());
             for (size_t i = 0; i < v.size (); i++)
                 result[i] = std::fabs (v[i]);
             return result;
@@ -427,7 +419,7 @@ namespace rw { namespace math {
          * @param v [in] the vector v
          * @return the smallest element
          */
-        static double min (const Q& v)
+        static double min (const rw::math::Q& v)
         {
             std::vector< double > vec = v.toStdVector ();
             return *std::min_element (vec.begin (), vec.end ());
@@ -441,7 +433,7 @@ namespace rw { namespace math {
          * @param v [in] the vector v
          * @return the largest element
          */
-        static double max (const Q& v)
+        static double max (const rw::math::Q& v)
         {
             std::vector< double > vec = v.toStdVector ();
             return *std::max_element (vec.begin (), vec.end ());
@@ -579,9 +571,9 @@ namespace rw { namespace math {
          * @param q [in] Vector for which to get the signs
          * @return Vector of sign values
          */
-        static Q sign (const Q& q)
+        static rw::math::Q sign (const rw::math::Q& q)
         {
-            Q res (q.size ());
+            rw::math::Q res (q.size ());
             for (size_t i = 0; i < q.size (); i++)
                 res (i) = sign (q (i));
             return res;

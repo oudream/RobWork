@@ -25,7 +25,7 @@ ENDMACRO(ADD_RWS_GTEST)
 # Configuration files for the testfiles path.
 ########################################################################
 
-SET(ROBWORK_TESTFILES_DIR ${CMAKE_CURRENT_SOURCE_DIR}/testfiles)
+SET(ROBWORKSTUDIO_TESTFILES_DIR ${CMAKE_CURRENT_SOURCE_DIR}/testfiles)
 
 CONFIGURE_FILE(
   ${CMAKE_CURRENT_SOURCE_DIR}/TestSuiteConfig.xml.in
@@ -37,19 +37,20 @@ FILE(GENERATE OUTPUT $<TARGET_FILE_DIR:sdurws_sdurws-gtest>/TestSuiteConfig.xml 
 ########################################################################
 # RobWorkStudio main function for initialization (link with this if needed).
 ########################################################################
-
+set(CMAKE_AUTOMOC OFF)
 set(RWSMAIN_TEST_SRC
   TestEnvironment.cpp
   test-main.cpp
 )
 add_library( sdurws-gtest-main STATIC ${RWSMAIN_TEST_SRC})
-target_link_libraries( sdurws-gtest-main PUBLIC ${RW_BUILD_WITH_LIBRARIES_GTEST} PRIVATE RW::sdurw)
+target_link_libraries( sdurws-gtest-main PUBLIC ${RW_BUILD_WITH_LIBRARIES_GTEST} RW::sdurw)
 
 ########################################################################
 # RWS
 ########################################################################
 
 SET(RWS_TEST_LIBRARIES
+  sdurws-gtest-main
   sdurws
   sdurws_robworkstudioapp
   ${QT_LIBRARIES}

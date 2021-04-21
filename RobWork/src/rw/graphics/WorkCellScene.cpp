@@ -26,6 +26,7 @@
 #include <rw/kinematics/State.hpp>
 #include <rw/models/DeformableObject.hpp>
 #include <rw/models/WorkCell.hpp>
+#include <rw/graphics/Model3D.hpp>
 
 #include <boost/bind.hpp>
 #include <stack>
@@ -365,7 +366,9 @@ void WorkCellScene::updateSceneGraph (State& state)
                     _frameDrawableMap[frame].push_back (dnode);
                 }
 
-                for (Model3D::Ptr model : obj->getModels ()) {
+                for (Model3D::Ptr geomodel : obj->getModels ()) {
+                    Model3D::Ptr model;
+                    model = geomodel;
                     DrawableNode::Ptr dnode =
                         _scene->makeDrawable (model->getName (), model, model->getMask ());
                     _scene->addChild (dnode, node);

@@ -35,8 +35,7 @@ PFNGLBINDFRAMEBUFFEREXTPROC RWGLFrameBuffer::glBindFramebufferEXT = 0;    // FBO
 PFNGLCHECKFRAMEBUFFERSTATUSEXTPROC RWGLFrameBuffer::glCheckFramebufferStatusEXT =
     0;    // FBO completeness test procedure
 PFNGLGETFRAMEBUFFERATTACHMENTPARAMETERIVEXTPROC
-    RWGLFrameBuffer::glGetFramebufferAttachmentParameterivEXT =
-        0;    // return various FBO parameters
+RWGLFrameBuffer::glGetFramebufferAttachmentParameterivEXT = 0;    // return various FBO parameters
 PFNGLGENERATEMIPMAPEXTPROC RWGLFrameBuffer::glGenerateMipmapEXT =
     0;    // FBO automatic mipmap generation procedure
 PFNGLFRAMEBUFFERTEXTURE2DEXTPROC RWGLFrameBuffer::glFramebufferTexture2DEXT =
@@ -120,7 +119,6 @@ bool RWGLFrameBuffer::initialize ()
     glRenderbufferStorageMultisampleEXT      = glRenderbufferStorageMultisampleEXT;
     glTexImage2DMultisample                  = glTexImage2DMultisample;
     glBlitFrameBufferEXT                     = glBlitFrameBufferEXT;
-
 #else
     // get pointers to GL functions
     glGenFramebuffersEXT =
@@ -162,12 +160,16 @@ bool RWGLFrameBuffer::initialize ()
 
 #endif
     // check once again FBO extension
+
     if (glGenFramebuffersEXT && glDeleteFramebuffersEXT && glBindFramebufferEXT &&
         glCheckFramebufferStatusEXT && glGetFramebufferAttachmentParameterivEXT &&
         glGenerateMipmapEXT && glFramebufferTexture2DEXT && glFramebufferRenderbufferEXT &&
         glGenRenderbuffersEXT && glDeleteRenderbuffersEXT && glBindRenderbufferEXT &&
-        glRenderbufferStorageEXT && glGetRenderbufferParameterivEXT && glIsRenderbufferEXT &&
-        glTexImage2DMultisample && glRenderbufferStorageMultisampleEXT && glBlitFrameBufferEXT) {
+        glRenderbufferStorageEXT && glGetRenderbufferParameterivEXT && glIsRenderbufferEXT 
+#if !defined(RW_MACOS)
+        && glTexImage2DMultisample && glRenderbufferStorageMultisampleEXT && glBlitFrameBufferEXT
+#endif
+    ) {
         _hasFrameBuffers = true;
         std::cout << "Video card supports GL_EXT_framebuffer_object." << std::endl;
     }

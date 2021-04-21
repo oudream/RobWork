@@ -33,6 +33,7 @@
 #include <rwsimlibs/gui/log/SimulatorLogWidget.hpp>
 
 #include <QListWidgetItem>
+#include <functional>
 
 using namespace rw::common;
 using namespace rw::core;
@@ -359,12 +360,12 @@ void EngineTestPlugin::run ()
         _runTask    = ownedPtr (new ThreadTask (_threadPool));
         _testHandle = _test->runThread (_engine, *_input, _log, _runTask);
         RW_ASSERT (!_testHandle.isNull ());
-        _testHandle->setTimeCallback (boost::function< void (double, bool, bool) > (
-            boost::bind (&EngineTestPlugin::simulatorCallBack,
+        _testHandle->setTimeCallback (std::function< void (double, bool, bool) > (
+            std::bind (&EngineTestPlugin::simulatorCallBack,
                          this,
-                         boost::arg< 1 > (),
-                         boost::arg< 2 > (),
-                         boost::arg< 3 > ())));
+                         std::placeholders::_1,
+                         std::placeholders::_2,
+                         std::placeholders::_3)));
         _runTask->execute ();
         _ui->run->setText ("Abort");
         _ui->run->setEnabled (true);
