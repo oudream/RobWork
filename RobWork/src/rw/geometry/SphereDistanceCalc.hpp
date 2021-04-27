@@ -10,7 +10,7 @@
 
 #include "BSphere.hpp"
 #include "BVDistanceCalc.hpp"
-
+#include <rw/math/MetricUtil.hpp>
 #include <rw/math/Vector3D.hpp>
 
 #include <rw/geometry/OBB.hpp>
@@ -50,7 +50,7 @@ namespace rw { namespace proximity {
                                    const rw::geometry::BSphere< T >& b,
                                    const rw::math::Vector3D< T >& aTb)
         {
-            return MetricUtil::norm2Sqr (aTb) - (a.getRadiusSqr () + b.getRadiusSqr ());
+            return rw::math::MetricUtil::norm2Sqr (aTb) - (a.getRadiusSqr () + b.getRadiusSqr ());
         }
     };
 

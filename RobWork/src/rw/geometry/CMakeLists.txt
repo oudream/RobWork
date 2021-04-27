@@ -44,9 +44,7 @@ if(build)
         Pyramid.cpp
         QHull3D.cpp
         QHullND.cpp
-        RSSDistanceCalc.cpp
         Ray.cpp
-        RectDistanceCalc.cpp
         Sphere.cpp
         SphereDistanceCalc.cpp
         TriMesh.cpp
@@ -121,9 +119,7 @@ if(build)
         Pyramid.hpp
         QHull3D.hpp
         QHullND.hpp
-        RSSDistanceCalc.hpp
         Ray.hpp
-        RectDistanceCalc.hpp
         Sphere.hpp
         SphereDistanceCalc.hpp
         TriMesh.hpp
