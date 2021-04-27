@@ -31,7 +31,7 @@ namespace {
 /**
  * @brief this only works for oriented bounding volumes
  */
-class BalancedTreeDistanceCalc : public TreeDistanceCalc
+/*class BalancedTreeDistanceCalc : public TreeDistanceCalc
 {
   private:
     struct BVJob;
@@ -197,17 +197,17 @@ class BalancedTreeDistanceCalc : public TreeDistanceCalc
     bool _firstContact;
     int _BVstackIdx, _nrOfBVTests, _nrOfCollidingBVs;
     int _nrOfPrimTests, _nrOfCollidingPrims;
-};
+};*/
 
 }    // namespace
-
+/*
 rw::core::Ptr< TreeDistanceCalc > TreeDistanceCalc::makeBalancedDFSDistanceCalc (
     rw::core::Ptr< TreeDistanceCalc::BVDISTANCECALC > bvdistcalc)
 {
     std::cout << "making bvalanced distance calculator!" << std::endl;
     return rw::core::ownedPtr (new BalancedTreeDistanceCalc (bvdistcalc));
 }
-
+*/
 /*
 TreeCollider* TreeCollider::makeBalancedBFSCollider(){
 
