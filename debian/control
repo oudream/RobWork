@@ -677,6 +677,13 @@ Replaces:
 Description: Gui for RobWorkSim
  The gui for RobWorkSim.
 
+Package: libsdurwsim-test
+Architecture: amd64
+Multi-Arch: same
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Library for test of engines.
+ Physics Engine test library.
+
 Package: sdurw-cmake
 Section: misc
 Architecture: amd64
@@ -1091,6 +1098,7 @@ Section: libdevel
 Architecture: amd64
 Multi-Arch: same
 Depends: 
+ libsdurw-control-dev (= ${binary:Version}),
  libsdurw-dev (=${binary:Version}), 
  libsdurw-simulation (=${binary:Version}), 
  ${misc:Depends}
@@ -1166,7 +1174,9 @@ Package: sdurws-cmake
 Section: misc
 Architecture: amd64
 Multi-Arch: same
-Depends: ${misc:Depends}
+Depends: 
+ qtbase5-dev,
+ ${misc:Depends}
 Conflicts:
   sdurws-cmake1.2
 Replaces:
@@ -1492,6 +1502,7 @@ Section: libdevel
 Architecture: amd64
 Multi-Arch: same
 Depends: 
+ libsdurws-dev (= ${binary:Version}),
  libsdurwsim-gui (=${binary:Version}), 
  ${misc:Depends}
 Conflicts:
@@ -1502,6 +1513,19 @@ Replaces:
   libsdurwsim-gui1.2-dev
 Description: Development library for RobWorkSim: GUI.
  The Development library for RobWorkSim: GUI.
+
+Package: libsdurwsim-test-dev
+Section: libdevel
+Architecture: amd64
+Multi-Arch: same
+Depends: 
+ libsdurwsim-test (=${binary:Version}),
+ libsdurw-core-dev (=${binary:Version}),
+ libsdurw-math-dev (=${binary:Version}),
+ libsdurw-trajectory-dev (=${binary:Version}), 
+ ${misc:Depends}
+Description: Development library for test of engines.
+ The Development library for Physics Engine tests.
 
 Package: sdurw-doc
 Section: doc
