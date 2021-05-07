@@ -7,7 +7,7 @@ set(DEFAULT TRUE)
 rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} DEPENDS ${SUBSYS_DEPS} ADD_DOC)
 
 if(build)
-    set(SRC_FILES 
+    set(SRC_FILES
         DynamicWorkCellBuilder.cpp
 
         EngineTest.cpp
@@ -17,8 +17,19 @@ if(build)
         IntegratorRotationTest.cpp
         IntegratorSpringTest.cpp
     )
+    set(HPP_FILES
+        DynamicWorkCellBuilder.hpp
 
-    rw_add_library(${SUBSYS_NAME} NO_EXPORT ${SRC_FILES})
+        EngineTest.hpp
+
+        IntegratorTest.hpp
+        IntegratorGravityTest.hpp
+        IntegratorRotationTest.hpp
+        IntegratorSpringTest.hpp
+    )
+
+    rw_add_library(${SUBSYS_NAME} ${SRC_FILES})
+    rw_add_includes(${SUBSYS_NAME} "rwsimlibs/test" ${HPP_FILES})
     target_link_libraries(${SUBSYS_NAME} PUBLIC sdurwsim)
     target_include_directories(${SUBSYS_NAME}
         INTERFACE

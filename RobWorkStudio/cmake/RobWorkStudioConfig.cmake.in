@@ -443,27 +443,62 @@ if(EXISTS ${RWSCFG_ROOT}/RobWorkStudioBuildConfig_${RWS_BUILD_TYPE}.cmake)
     # Find libraries
     set(ROBWORKSTUDIO_LIBRARIES_TMP)
 
-    foreach(
-        lib
-        IN
-        LISTS RWS_BUILD_WITH_LIBRARIES
-    )
-        unset(res)
-        rws_verify_library(${lib} res)
+    if(RobWorkStudio_FIND_COMPONENTS)
+        # FIRST check if all required components are installed/build
+        set(LIBRARIES_TO_INCLUDE sdurws)
+        foreach(
+            component
+            IN
+            LISTS RobWorkStudio_FIND_COMPONENTS
+        )
+            if(NOT (${component} STREQUAL "sdurws"))
+                unset(res)
+                rws_verify_library(${component} res)
 
-        if(NOT "${res}" STREQUAL "")
-            list(APPEND ROBWORKSTUDIO_LIBRARIES_TMP "${res}")
-            rws_message("Looking for ${lib} - found")
-        else()
-            if(${lib} STREQUAL "sdurws")
-                list(APPEND ROBWORKSTUDIO_LIBRARIES_TMP "RWS::${lib}")
-                message(FATAL_ERROR "Looking for ${lib} - not found" )
-            else()
-                rws_message("Looking for ${lib} - not found (ignored)")
+                if(NOT "${res}" STREQUAL "")
+                    list(APPEND LIBRARIES_TO_INCLUDE "${res}")
+                    set(RobWorkStudio_${component}_FOUND TRUE)
+                else()
+                    set(RobWorkStudio_${component}_FOUND FALSE)
+                    if(RobWorkStudio_REQUIRED)
+                        set(ROBWORKSTUDIO_EXPERIENCED_FATAL_PROBLEMS TRUE)
+                        message(
+                            FATAL_ERROR
+                                "The component: sdurws_${component} has not been built with RobWork. Reconfigure RobWork installation or check component spelling!"
+                        )
+                    else()
+                        set(ROBWORKSTUDIO_EXPERIENCED_FATAL_PROBLEMS TRUE)
+                        message(
+                            WARNING
+                                "The component: sdurws_${component} has not been built with RobWork. Reconfigure RobWork installation or check component spelling!"
+                        )
+                    endif()
+                endif()
             endif()
+        endforeach()
+    else()
+        foreach(
+            lib
+            IN
+            LISTS RWS_BUILD_WITH_LIBRARIES
+        )
+            unset(res)
+            rws_verify_library(${lib} res)
 
-        endif()
-    endforeach()
+            if(NOT "${res}" STREQUAL "")
+                list(APPEND ROBWORKSTUDIO_LIBRARIES_TMP "${res}")
+                rws_message("Looking for ${lib} - found")
+            else()
+                if(${lib} STREQUAL "sdurws")
+                    list(APPEND ROBWORKSTUDIO_LIBRARIES_TMP "RWS::${lib}")
+                    message(FATAL_ERROR "Looking for ${lib} - not found" )
+                else()
+                    rws_message("Looking for ${lib} - not found (ignored)")
+                endif()
+
+            endif()
+        endforeach()
+    endif()
 
     set(BOOST_ROOT ${RWS_BUILD_WITH_BOOST_ROOT})
     set(BOOST_INCLUDEDIR ${RWS_BUILD_WITH_BOOST_INCLUDE_DIR})
