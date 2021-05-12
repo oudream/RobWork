@@ -305,7 +305,32 @@ namespace rw { namespace math {
         inline const Rotation3D operator* (const Rotation3D& bRc) const
         {
             return multiply (*this, bRc);
-            // return Rotation3D(prod(aRb.m(), bRc.m()));
+        }
+
+        /**
+         * @brief Calculates \f$ \robabx{a}{c}{\mathbf{R}} =
+         * \robabx{a}{b}{\mathbf{R}} \robabx{b}{c}{\mathbf{R}} \f$
+         *
+         * @param rhs [in] \f$ \robabx{b}{c}{\mathbf{R}} \f$
+         *
+         * @return \f$ \robabx{a}{c}{\mathbf{R}} \f$
+         */
+        template< class R > inline const Rotation3D operator* (const Eigen::MatrixBase< R >& rhs) const
+        {
+            return Rotation3D<T>(this->e()*rhs);
+        }
+
+        /**
+         * @brief Calculates \f$ \robabx{a}{c}{\mathbf{R}} =
+         * \robabx{a}{b}{\mathbf{R}} \robabx{b}{c}{\mathbf{R}} \f$
+         *
+         * @param lhs [in] \f$ \robabx{b}{c}{\mathbf{R}} \f$
+         * @param rhs [in] \f$ \robabx{b}{c}{\mathbf{R}} \f$
+         * @return \f$ \robabx{a}{c}{\mathbf{R}} \f$
+         */
+        template< class R > friend inline const Rotation3D operator* (const Eigen::MatrixBase< R >& lhs, const Rotation3D<T> &rhs)
+        {
+            return Rotation3D<T>(lhs*rhs.e());
         }
 
         /**
