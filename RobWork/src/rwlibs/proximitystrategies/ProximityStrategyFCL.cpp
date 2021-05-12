@@ -498,12 +498,3 @@ fclDistanceResult& ProximityStrategyFCL::getDistanceResult ()
 {
     return *_fclDistanceResult;
 }
-
-/*
- * Create ::make() functions that constructs and initialises this ProximityStrategy according to
- * some predefined / common use cases:
- * ::makeFastCollisionChecker <- no contact information just a simple query on whether a collision
- * occured
- * ::makeVerboseCollisionChecker <- Finds all the contact points etc.
- * ::makeSOMETHINGDistanceChecker
- */
