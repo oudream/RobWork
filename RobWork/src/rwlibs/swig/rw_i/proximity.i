@@ -19,7 +19,7 @@
          * @return true if a Proximity model was succesfully created and linked
          * with the frame; false otherwise.
          */
-        virtual bool addModel(rw::core::Ptr<Object> object);
+        virtual bool addModel(rw::core::Ptr<rw::models::Object> object);
 
         /**
          * @brief Adds a Proximity model to a frame where the geometry is copied
@@ -34,7 +34,7 @@
          */
         virtual bool addModel(
             const rw::kinematics::Frame* frame,
-            const Geometry& faces
+            const rw::geometry::Geometry& faces
             );
 
         /**
@@ -51,7 +51,7 @@
          */
         virtual bool addModel(
             const rw::kinematics::Frame* frame,
-            rw::core::Ptr<Geometry> faces,
+            rw::core::Ptr<rw::geometry::Geometry> faces,
             bool forceCopy = false
             );
 
@@ -103,7 +103,7 @@
          * @param model [in] the proximity model to add data to
          * @param geom [in] the geometry that is to be added
          */
-        virtual bool addGeometry(ProximityModel* model, const Geometry& geom) = 0;
+        virtual bool addGeometry(ProximityModel* model, const rw::geometry::Geometry& geom) = 0;
 
         /**
          * @brief adds geometry to a specific model. Depending on the option \b forceCopy the proximity
@@ -113,7 +113,7 @@
          * @param forceCopy
          * @return
          */
-        virtual bool addGeometry(ProximityModel* model, rw::core::Ptr<Geometry> geom, bool forceCopy=false) = 0;
+        virtual bool addGeometry(ProximityModel* model, rw::core::Ptr<rw::geometry::Geometry> geom, bool forceCopy=false) = 0;
 
         /**
          * @brief removes a geometry from a specific proximity model
@@ -211,7 +211,7 @@
          *
          * @param workcell [in] the workcell.
          */
-        CollisionDetector(rw::core::Ptr<WorkCell> workcell);
+        CollisionDetector(rw::core::Ptr<rw::models::WorkCell> workcell);
 
         /**
          * @brief Collision detector for a workcell.
@@ -225,7 +225,7 @@
          * @param workcell [in] the workcell.
          * @param strategy [in/out] the strategy for narrow-phase checking. The strategy will have models added to it.
          */
-        CollisionDetector(rw::core::Ptr<WorkCell> workcell, rw::core::Ptr<CollisionStrategy> strategy);
+        CollisionDetector(rw::core::Ptr<rw::models::WorkCell> workcell, rw::core::Ptr<CollisionStrategy> strategy);
 
         /**
          * @brief Collision detector for a workcell.
@@ -235,7 +235,7 @@
          * @param strategy [in/out] the strategy for narrow-phase checking. The strategy will have models added to it.
          * @param filter [in] proximity filter used to cull or filter frame-pairs that are obviously not colliding
          */
-        CollisionDetector(rw::core::Ptr<WorkCell> workcell,
+        CollisionDetector(rw::core::Ptr<rw::models::WorkCell> workcell,
             rw::core::Ptr<CollisionStrategy> strategy,
             rw::core::Ptr<ProximityFilterStrategy> filter);
 
@@ -282,7 +282,7 @@
          * @param frame [in] Frame to associate geometry to
          * @param geometry [in] Geometry to add
          */
-        void addGeometry(rw::kinematics::Frame* frame, const rw::core::Ptr<Geometry> geometry);
+        void addGeometry(rw::kinematics::Frame* frame, const rw::core::Ptr<rw::geometry::Geometry> geometry);
 
         /**
          * @brief Removes geometry from CollisionDetector
@@ -292,7 +292,7 @@
          * @param frame [in] The frame which has the geometry associated
          * @param geometry [in] Geometry with the id to be removed
          */
-        void removeGeometry(rw::kinematics::Frame* frame, const rw::core::Ptr<Geometry> geometry);
+        void removeGeometry(rw::kinematics::Frame* frame, const rw::core::Ptr<rw::geometry::Geometry> geometry);
 
         /**
          * @brief Removes geometry from CollisionDetector
@@ -362,11 +362,11 @@
             }
         }
         %extend {
-            /*static rw::core::Ptr<CollisionDetector> make(rw::core::Ptr<WorkCell> workcell){
+            /*static rw::core::Ptr<CollisionDetector> make(rw::core::Ptr<rw::models::WorkCell> workcell){
                 return rw::core::ownedPtr( new CollisionDetector(workcell, rwlibs::proximitystrategies::ProximityStrategyFactory::makeDefaultCollisionStrategy()) );
             }*/
 
-            static rw::core::Ptr<CollisionDetector> make(rw::core::Ptr<WorkCell> workcell, rw::core::Ptr<CollisionStrategy> strategy){
+            static rw::core::Ptr<CollisionDetector> make(rw::core::Ptr<rw::models::WorkCell> workcell, rw::core::Ptr<CollisionStrategy> strategy){
                 return rw::core::ownedPtr( new CollisionDetector(workcell, strategy) );
             }
         }
@@ -452,12 +452,12 @@
          */
         //static CollisionSetup merge(const CollisionSetup& a, const CollisionSetup& b);
 
-        static CollisionSetup get(const WorkCell& wc);
-        static CollisionSetup get(rw::core::Ptr<WorkCell> wc);
+        static CollisionSetup get(const rw::models::WorkCell& wc);
+        static CollisionSetup get(rw::core::Ptr<rw::models::WorkCell> wc);
 
         static CollisionSetup get(const rw::core::PropertyMap& map);
 
-        static void set(const CollisionSetup& setup, rw::core::Ptr<WorkCell> wc);
+        static void set(const CollisionSetup& setup, rw::core::Ptr<rw::models::WorkCell> wc);
 
         static void set(const CollisionSetup& setup, rw::core::PropertyMap& map);
     };
@@ -792,11 +792,11 @@
          * @param initial_state [in] - the work cell state to use for the initial traversal of the tree.
          */
         DistanceCalculator(rw::kinematics::Frame *root,
-                            rw::core::Ptr<WorkCell> workcell,
+                            rw::core::Ptr<rw::models::WorkCell> workcell,
                             rw::core::Ptr<DistanceStrategy> strategy,
                             const rw::kinematics::State& initial_state);
         /**
-         * @brief Construct distance calculator for a WorkCell with an associated
+         * @brief Construct distance calculator for a rw::models::WorkCell with an associated
          * distance calculator strategy.
          *
          * The DistanceCalculator extracts information about the tree and the
@@ -805,7 +805,7 @@
          * @param workcell [in] the workcell to check
          * @param strategy [in] the distance calculation strategy to use
          */
-        DistanceCalculator(rw::core::Ptr<WorkCell> workcell,
+        DistanceCalculator(rw::core::Ptr<rw::models::WorkCell> workcell,
             rw::core::Ptr<DistanceStrategy> strategy);
 
         /**
@@ -881,7 +881,7 @@
          * @return true if a distance model was succesfully created and linked
          * with the frame; false otherwise.
          */
-        bool addDistanceModel(const rw::kinematics::Frame* frame, const Geometry& faces);
+        bool addDistanceModel(const rw::kinematics::Frame* frame, const rw::geometry::Geometry& faces);
 
         /**
          * @brief Clears the cache of the distance models
@@ -1393,7 +1393,7 @@
          * @param frame [in] Frame which has the geometry associated
          * @param geo [in] Geometry
          */ 
-        virtual void addGeometry(rw::kinematics::Frame* frame, const rw::core::Ptr<Geometry> geo) = 0;
+        virtual void addGeometry(rw::kinematics::Frame* frame, const rw::core::Ptr<rw::geometry::Geometry> geo) = 0;
 
         /** 
          * @brief Removes the geometric model \b geo associated with
@@ -1402,7 +1402,7 @@
          * @param frame [in] Frame which has the geometry associated
          * @param geo [in] Geometry
          */ 
-        virtual void removeGeometry(rw::kinematics::Frame* frame, const rw::core::Ptr<Geometry> geo) = 0;
+        virtual void removeGeometry(rw::kinematics::Frame* frame, const rw::core::Ptr<rw::geometry::Geometry> geo) = 0;
 
         /** 
          * @brief Removes the geometric model with name \b geoName and which is associated with
@@ -1453,19 +1453,19 @@
          * @brief get the associated Geometries
          * @return a list of Geomety pointers beloninh to the model
          */
-        std::vector< rw::core::Ptr< Geometry > > getGeometries ();
+        std::vector< rw::core::Ptr< rw::geometry::Geometry > > getGeometries ();
         /**
          * @brief adds geometry 
          * @param geom the geometry to add
          **/
-        bool addGeometry(const Geometry& geom);
+        bool addGeometry(const rw::geometry::Geometry& geom);
 
         /**
          * @brief adds geometry using pointer
          * @param geom [in] the geometry to add
          * @param forceCopy [in]
          **/
-        bool addGeometry (rw::core::Ptr< Geometry > geom, bool forceCopy = false);
+        bool addGeometry (rw::core::Ptr< rw::geometry::Geometry > geom, bool forceCopy = false);
         
         /**
          * @brief removes a geometry from the ProximityModel
@@ -1530,11 +1530,11 @@
 
         std::string getFileName() const;
 
-        static ProximitySetup get(const WorkCell& wc);
-        static ProximitySetup get(rw::core::Ptr<WorkCell> wc);
+        static ProximitySetup get(const rw::models::WorkCell& wc);
+        static ProximitySetup get(rw::core::Ptr<rw::models::WorkCell> wc);
         static ProximitySetup get(const rw::core::PropertyMap& map);
 
-        static void set(const ProximitySetup& setup, rw::core::Ptr<WorkCell> wc);
+        static void set(const ProximitySetup& setup, rw::core::Ptr<rw::models::WorkCell> wc);
         static void set(const ProximitySetup& setup, rw::core::PropertyMap& map);
     };*/
 

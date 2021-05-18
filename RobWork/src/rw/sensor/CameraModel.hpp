@@ -21,7 +21,7 @@
 /**
  * @file CameraModel.hpp
  */
-
+#if !defined(SWIG)
 #include "Image.hpp"
 #include "SensorModel.hpp"
 
@@ -29,6 +29,7 @@
 #include <rw/math/ProjectionMatrix.hpp>
 
 #include <string>
+#endif 
 
 namespace rw { namespace kinematics {
     class State;

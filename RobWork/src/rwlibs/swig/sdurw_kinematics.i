@@ -37,7 +37,7 @@
 %ignore rw::kinematics::StateData::getData;
 %ignore rw::kinematics::StateData::setData;
 %ignore rw::kinematics::StateData::getCache() const;
-
+%ignore rw::kinematics::StateData::getCache(rw::kinematics::State &);
 %{
     #include <rw/kinematics/StateData.hpp>
 %}
@@ -88,10 +88,20 @@ NAMED_OWNEDPTR(StateData, rw::kinematics::StateData);
 
 
 %ignore rw::kinematics::Frame::getPropertyMap() const;
-%ignore rw::kinematics::Frame::getParent() const;
+
 %ignore rw::kinematics::Frame::getDafParent(rw::kinematics::State const &) const;
-%ignore rw::kinematics::Frame::getChildren() const;
+
 %ignore rw::kinematics::Frame::getDafChildren(rw::kinematics::State const &) const;
+#if defined(SWIGJAVA)
+%ignore rw::kinematics::Frame::getChildren();
+%ignore rw::kinematics::Frame::getParent();
+%ignore rw::kinematics::Frame::getParent(rw::kinematics::State const &) const;
+%ignore rw::kinematics::Frame::getChildren(rw::kinematics::State const &) const;
+#else 
+%ignore rw::kinematics::Frame::getChildren() const;
+%ignore rw::kinematics::Frame::getParent() const;
+
+#endif 
 %{
     #include <rw/kinematics/Frame.hpp>
 %}
@@ -105,8 +115,6 @@ NAMED_OWNEDPTR(Frame, rw::kinematics::Frame);
 %template (VectorVectorFrame) std::vector<std::vector<rw::kinematics::Frame*>>;
 %template (MapStringFrame) std::map<std::string,rw::kinematics::Frame*>;
 
-
-
 %{
     #include <rw/kinematics/FixedFrame.hpp>
 %}
@@ -114,38 +122,43 @@ NAMED_OWNEDPTR(Frame, rw::kinematics::Frame);
 %template(VectorFixedFrame) std::vector<rw::kinematics::FixedFrame*>;
 NAMED_OWNEDPTR(FixedFrame, rw::kinematics::FixedFrame);
 
-
 %{
     #include <rw/kinematics/FKRange.hpp>
 %}
 %include <rw/kinematics/FKRange.hpp>
+NAMED_OWNEDPTR(FKRange,rw::kinematics::FKRange);
 
 %ignore rw::kinematics::FKTable::get(const rw::kinematics::Frame&) const;
 %{
     #include <rw/kinematics/FKTable.hpp>
 %}
 %include <rw/kinematics/FKTable.hpp>
+NAMED_OWNEDPTR(FKTable,rw::kinematics::FKTable);
 
 %{
     #include <rw/kinematics/FrameMap.hpp>
 %}
 %include <rw/kinematics/FrameMap.hpp>
+//NAMED_OWNEDPTR(FrameMap,rw::kinematics::FrameMap);
 
 %{
     #include <rw/kinematics/FramePairMap.hpp>
 %}
 %include <rw/kinematics/FramePairMap.hpp>
+//NAMED_OWNEDPTR(FramePairMap,rw::kinematics::FramePairMap);
 
 %{
     #include <rw/kinematics/FrameType.hpp>
 %}
 %include <rw/kinematics/FrameType.hpp>
+NAMED_OWNEDPTR(FrameType,rw::kinematics::FrameType);
 
 %nodefaultctor Kinematics;
 %{
     #include <rw/kinematics/Kinematics.hpp>
 %}
 %include <rw/kinematics/Kinematics.hpp>
+NAMED_OWNEDPTR(Kinematics,rw::kinematics::Kinematics);
 
 %{
     #include <rw/kinematics/MovableFrame.hpp>
@@ -160,6 +173,7 @@ NAMED_OWNEDPTR(MovableFrame, rw::kinematics::MovableFrame);
     #include <rw/kinematics/QState.hpp>
 %}
 %include <rw/kinematics/QState.hpp>
+NAMED_OWNEDPTR(QState,rw::kinematics::QState);
 %extend rw::kinematics::QState{
     /**
      * @brief An array of length frame.getDOF() containing the joint values
@@ -219,11 +233,13 @@ NAMED_OWNEDPTR(StateCache, rw::kinematics::StateCache);
     #include <rw/kinematics/Stateless.hpp>
 %}
 %include <rw/kinematics/Stateless.hpp>
+//NAMED_OWNEDPTR(Stateless,rw::kinematics::Stateless);
 
 %{
     #include <rw/kinematics/StatelessData.hpp>
 %}
 %include <rw/kinematics/StatelessData.hpp>
+//NAMED_OWNEDPTR(StatelessData,rw::kinematics::StatelessData);
 
 %ignore rw::kinematics::StateSetup::getFrame(int) const;
 %ignore rw::kinematics::StateSetup::getTree() const;
@@ -245,3 +261,4 @@ NAMED_OWNEDPTR(StateStructure, rw::kinematics::StateStructure);
     #include <rw/kinematics/TreeState.hpp>
 %}
 %include <rw/kinematics/TreeState.hpp>
+NAMED_OWNEDPTR(TreeState,rw::kinematics::TreeState);

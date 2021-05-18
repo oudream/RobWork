@@ -18,7 +18,9 @@
 #ifndef RW_MODELS_RIGIDBODYINFO_HPP
 #define RW_MODELS_RIGIDBODYINFO_HPP
 
+#if !defined(SWIG)
 #include <rw/math/InertiaMatrix.hpp>
+#endif 
 
 namespace rw { namespace models {
 

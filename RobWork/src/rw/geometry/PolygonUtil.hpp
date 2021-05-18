@@ -23,15 +23,16 @@
  *
  * \copydoc rw::geometry::PolygonUtil
  */
-
+#if !defined(SWIG)
 #include "Polygon.hpp"
 
 #include <rw/math/Vector2D.hpp>
-
+#endif
 namespace rw { namespace geometry {
     //! @addtogroup geometry
-
+#if !defined(SWIG)
     //! @{
+#endif
     /**
      * @brief Utility functions for operations on polygons, such as convex partitioning.
      *
@@ -92,7 +93,9 @@ namespace rw { namespace geometry {
         PolygonUtil ();
         virtual ~PolygonUtil ();
     };
-    //! @}
+#if !defined(SWIG)
+//! @}
+#endif
 }}    // namespace rw::geometry
 
 #endif /* RW_GEOMETRY_POLYGONUTIL_HPP_ */

@@ -18,10 +18,11 @@
 #ifndef TACTILEARRAYUTIL_HPP_
 #define TACTILEARRAYUTIL_HPP_
 
+#if !defined(SWIG)
 #include <rw/sensor/Contact3D.hpp>
 
 #include <vector>
-
+#endif 
 namespace rw { namespace kinematics {
     class State;
 }}    // namespace rw::kinematics
@@ -43,7 +44,7 @@ namespace rw { namespace sensor {
          * force and not just noise.
          * @return All estimated contacts
          */
-        static std::vector< Contact3D >
+        static std::vector< rw::sensor::Contact3D >
         estimateContacts (const rw::sensor::TactileArrayModel& arraySensor,
                           const rw::kinematics::State& state, double minContactForce);
     };

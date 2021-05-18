@@ -19,8 +19,9 @@
 #define RW_GEOMETRY_SPHERE_HPP_
 
 //! @file rw/geometry/Sphere.hpp
-
+#if !defined(SWIG)
 #include "Primitive.hpp"
+#endif
 
 namespace rw { namespace geometry {
     //! @addtogroup geometry
@@ -59,7 +60,7 @@ namespace rw { namespace geometry {
         GeometryData::GeometryType getType () const { return GeometryData::SpherePrim; };
 
       protected:
-        bool doIsInside (const rw::math::Vector3D<>& point) { return point.norm2 () < _radius; }
+        bool doIsInside (const rw::math::Vector3D<double>& point) { return point.norm2 () < _radius; }
 
       private:
         double _radius;

@@ -18,10 +18,12 @@
 #ifndef RW_GEOMETRY_BV_HPP_
 #define RW_GEOMETRY_BV_HPP_
 
+#if !defined(SWIG)
 #include <rw/common/Traits.hpp>
 #include <rw/core/Ptr.hpp>
 #include <rw/math/Transform3D.hpp>
 #include <rw/math/Vector3D.hpp>
+#endif
 
 namespace rw { namespace geometry {
     class GeometryData;
@@ -43,7 +45,7 @@ namespace rw { namespace geometry {
         typedef typename Traits< DERIVED >::value_type value_type;
 
         typedef rw::core::Ptr< BV< DERIVED > > Ptr;
-
+#if !defined(SWIGJAVA)
         inline const rw::math::Vector3D< value_type >& getPosition () const
         {
             return ((DerivedType*) this)->getPosition ();
@@ -52,6 +54,7 @@ namespace rw { namespace geometry {
         inline value_type calcArea () const { return ((DerivedType*) this)->calcArea (); }
 
         inline value_type calcVolume () const { return ((DerivedType*) this)->calcVolume (); }
+#endif
     };
 
     /**
@@ -66,7 +69,7 @@ namespace rw { namespace geometry {
 
         typedef rw::core::Ptr< OBV< DERIVED > > Ptr;
 
-        inline const rw::math::Transform3D< value_type >& getTransform () const
+        virtual inline const rw::math::Transform3D< value_type >& getTransform () const
         {
             return ((DerivedType*) this)->getTransform ();
         }
@@ -121,7 +124,6 @@ namespace rw { namespace geometry {
         //! @brief Constructor.
         BVFactory () {}
     };
-
 }}    // namespace rw::geometry
 
 #endif /* BV_HPP_ */

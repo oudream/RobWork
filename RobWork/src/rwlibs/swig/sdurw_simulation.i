@@ -3,6 +3,7 @@
 %{
 #include <rwlibs/swig/ScriptTypes.hpp>
 #include <rw/kinematics/FixedFrame.hpp>
+#include <rw/models.hpp>
 #include <rw/core/Ptr.hpp>
 
 using namespace rwlibs::swig;
@@ -14,6 +15,9 @@ using namespace rwlibs::swig;
 %import <rwlibs/swig/sdurw_core.i>
 %import <rwlibs/swig/sdurw_common.i>
 %import <rwlibs/swig/sdurw_kinematics.i>
+%import <rwlibs/swig/sdurw_geometry.i>
+%import <rwlibs/swig/sdurw_sensor.i>
+%import <rwlibs/swig/sdurw_models.i>
 %import <rwlibs/swig/sdurw.i>
 %import <rwlibs/swig/sdurw_control.i>
 
@@ -22,12 +26,18 @@ import org.robwork.sdurw.*;
 import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_common.*;
 import org.robwork.sdurw_kinematics.*;
+import org.robwork.sdurw_geometry.*;
+import org.robwork.sdurw_sensor.*;
+import org.robwork.sdurw_models.*;
 %}
 %pragma(java) moduleimports=%{
 import org.robwork.sdurw.*;
 import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_common.*;
 import org.robwork.sdurw_kinematics.*;
+import org.robwork.sdurw_geometry.*;
+import org.robwork.sdurw_sensor.*;
+import org.robwork.sdurw_models.*;
 %}
 %typemap(javaimports) SWIGTYPE %{
 import org.robwork.sdurw.*;
@@ -35,6 +45,9 @@ import org.robwork.sdurw_control.*;
 import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_common.*;
 import org.robwork.sdurw_kinematics.*;
+import org.robwork.sdurw_geometry.*;
+import org.robwork.sdurw_sensor.*;
+import org.robwork.sdurw_models.*;
 %}
 
 #if (defined(SWIGPYTHON) || defined(SWIGLUA))
@@ -81,14 +94,14 @@ public:
     /**
      * @brief get the sensor model of this simulated sensor. 
      */
-    rw::core::Ptr<SensorModel> getSensorModel();
+    rw::core::Ptr<rw::sensor::SensorModel> getSensorModel();
 
     /**
      * @brief get a handle to controlling an instance of the simulated sensor in a specific simulator
      *
      * @param sim [in] the simulator in which the handle is active
      */
-    rw::core::Ptr<Sensor> getSensorHandle(rw::core::Ptr<Simulator> sim);
+    rw::core::Ptr<rw::sensor::Sensor> getSensorHandle(rw::core::Ptr<Simulator> sim);
 };
 
 %template (SimulatedSensorPtr) rw::core::Ptr<SimulatedSensor>;
@@ -188,7 +201,7 @@ public:
      * @param height [in] height of the image that this FrameGrabber uses.
      * @param encoding [in] color encoding of the image that this FrameGrabber uses.
      */
-    FrameGrabber(int width, int height, Image::ColorCode encoding);
+    FrameGrabber(int width, int height, rw::sensor::Image::ColorCode encoding);
 
     /**
      * @brief destructor
@@ -225,14 +238,14 @@ public:
      * @param height [in] height of image.
      * @param colorCode [in] Color encoding of the image.
      */
-    virtual void resize(int width, int height, Image::ColorCode colorCode);
+    virtual void resize(int width, int height, rw::sensor::Image::ColorCode colorCode);
 
     /**
      * @brief returns the image
      *
      * @return the image
      */
-    virtual Image& getImage();
+    virtual rw::sensor::Image& getImage();
 
     /**
      * @brief this function grabs a image from the specialized source and
@@ -299,7 +312,7 @@ public:
      *
      * @return the image
      */
-    virtual PointCloud& getImage();
+    virtual rw::geometry::PointCloud& getImage();
 
     virtual void grab(rw::kinematics::Frame *frame, const rw::kinematics::State& state) = 0;
 
@@ -357,7 +370,7 @@ public:
 
     void resize(int width, int height);
 
-    void resize(int width, int height, Image::ColorCode colorCode);
+    void resize(int width, int height, rw::sensor::Image::ColorCode colorCode);
 
     /**
      * @brief initialize the grabber with a scene viewer. This registers the grabber
@@ -489,7 +502,7 @@ public:
      * @param frameGrabber [in] the frameGrabber from which this Camera should grab
      * images.
      */
-    SimulatedCamera(rw::core::Ptr<CameraModel> model, rw::core::Ptr<FrameGrabber> frameGrabber);
+    SimulatedCamera(rw::core::Ptr<rw::sensor::CameraModel> model, rw::core::Ptr<FrameGrabber> frameGrabber);
 
     /**
      * @brief destructor
@@ -524,7 +537,7 @@ public:
     /**
      * @copydoc rw::sensor::Camera::getImage
      */
-    const Image* getImage();
+    const rw::sensor::Image* getImage();
 
     /**
      * @copydoc rw::sensor::Camera::getFrameRate
@@ -556,14 +569,14 @@ public:
      */
     void reset(const rw::kinematics::State& state);
 
-    rw::core::Ptr<Sensor> getSensor();
+    rw::core::Ptr<rw::sensor::Sensor> getSensor();
 
     /**
      * @brief Get the camera sensor.
      *
      * @return the sensor.
      */
-    rw::core::Ptr<Camera> getCameraSensor();
+    rw::core::Ptr<rw::sensor::Camera> getCameraSensor();
 };
 
 %template (SimulatedCameraPtr) rw::core::Ptr<SimulatedCamera>;
@@ -631,7 +644,7 @@ public:
     double getFrameRate();
 
     //! @copydoc rwlibs::simulation::SimulatedKinect::getScan
-    const PointCloud& getScan() const;
+    const rw::geometry::PointCloud& getScan() const;
 
     //! @copydoc SimulatedSensor::update
     void update(const Simulator::UpdateInfo& info, rw::kinematics::State& state);
@@ -645,7 +658,7 @@ public:
      *
      * @return Scnner2D handle.
      */
-    rw::core::Ptr<Scanner2D> getScanner2DSensor(Simulator* instance);
+    rw::core::Ptr<rw::sensor::Scanner2D> getScanner2DSensor(Simulator* instance);
 
     //! @copydoc rw::sensor::Scanner2DModel::getAngularRange
     virtual double getAngularRange();
@@ -720,7 +733,7 @@ public:
     double getFrameRate();
 
     //! @copydoc rw::geometry::PointCloud::getData
-	const PointCloud& getScan();
+	const rw::geometry::PointCloud& getScan();
 
 	//! @copydoc SimulatedSensor::update
     void update(const Simulator::UpdateInfo& info, rw::kinematics::State& state);
@@ -733,10 +746,10 @@ public:
 	 *
      * @param instance [in] the simulator in which the handle is active
      */
-    rw::core::Ptr<Sensor> getSensorHandle(rw::core::Ptr<Simulator> instance);
+    rw::core::Ptr<rw::sensor::Sensor> getSensorHandle(rw::core::Ptr<Simulator> instance);
 
 	//! get instance of scanner
-    rw::core::Ptr<Scanner25D> getScanner25DSensor(rw::core::Ptr<Simulator> instance);
+    rw::core::Ptr<rw::sensor::Scanner25D> getScanner25DSensor(rw::core::Ptr<Simulator> instance);
 
 private:
     rw::core::Ptr<FrameGrabber25D> _framegrabber;

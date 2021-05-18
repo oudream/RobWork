@@ -98,6 +98,19 @@ namespace rw { namespace math {
         Transform3D (const rw::math::Vector3D< T >& d, const rw::math::Rotation3DVector< T >& r) :
             _d (d), _R (r.toRotation3D ())
         {}
+        
+
+        /**
+         * @brief Creates a Transform3D from matrix_expression
+         * @param r [in] an Eigen Vector
+         */
+        template< class R > explicit Transform3D (const Eigen::MatrixBase< R >& r)
+        {
+            _d[0] = r.row (0) (3);
+            _d[1] = r.row (1) (3);
+            _d[2] = r.row (2) (3);
+            _R = Rotation3D<T>(r.block(0,0,3,3));
+        }
 
         /**
          * @brief Constructs a homogeneous transform using the original

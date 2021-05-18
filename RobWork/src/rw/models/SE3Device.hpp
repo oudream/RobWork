@@ -21,11 +21,12 @@
 /**
  * @file SE3Device.hpp
  */
-
+#if !defined(SWIG)
 #include "Device.hpp"
 
 #include <rw/kinematics/Frame.hpp>
 #include <rw/kinematics/MovableFrame.hpp>
+#endif 
 
 namespace rw { namespace models {
 
@@ -97,12 +98,12 @@ namespace rw { namespace models {
          *
          * @pre q.size() == 6
          */
-        void setQ (const math::Q& q, kinematics::State& state) const;
+        void setQ (const rw::math::Q& q, rw::kinematics::State& state) const;
 
         /**
          * @copydoc Device::getQ
          */
-        math::Q getQ (const kinematics::State& state) const;
+        rw::math::Q getQ (const rw::kinematics::State& state) const;
 
         /**
          * @copydoc Device::getBounds
@@ -113,31 +114,31 @@ namespace rw { namespace models {
          * numerical limits of the real datatype, thus this method returns the
          * range ([DBL_MIN, DBL_MAX]) for each of the 6 inputs
          */
-        std::pair< math::Q, math::Q > getBounds () const;
+        std::pair< rw::math::Q, rw::math::Q > getBounds () const;
 
         /**
          * @brief get base of the device
          * @return base Frame
          */
-        kinematics::Frame* getBase () { return _base; }
+        rw::kinematics::Frame* getBase () { return _base; }
 
         /**
          * @brief get base of the device
          * @return base Frame
          */
-        const kinematics::Frame* getBase () const { return _base; }
+        const rw::kinematics::Frame* getBase () const { return _base; }
 
         /**
          * @brief get end of the device
          * @return end Frame
          */
-        kinematics::Frame* getEnd () { return _mframe; }
+        rw::kinematics::Frame* getEnd () { return _mframe; }
 
         /**
          * @brief get end of the device
          * @return end Frame
          */
-        const kinematics::Frame* getEnd () const { return _mframe; }
+        const rw::kinematics::Frame* getEnd () const { return _mframe; }
 
         /**
          * @brief Calculates the jacobian matrix of the end-effector described
@@ -164,10 +165,10 @@ namespace rw { namespace models {
          * \f]
          *
          */
-        math::Jacobian baseJend (const kinematics::State& state) const;
+        rw::math::Jacobian baseJend (const rw::kinematics::State& state) const;
 
-        JacobianCalculator::Ptr baseJCframes (const std::vector< kinematics::Frame* >& frames,
-                                              const kinematics::State& state) const
+       rw::core::Ptr< rw::models::JacobianCalculator > baseJCframes (const std::vector< rw::kinematics::Frame* >& frames,
+                                              const rw::kinematics::State& state) const
         {
             return NULL;
         }
@@ -188,25 +189,25 @@ namespace rw { namespace models {
          * @brief get the Joint velocity limit
          * @return the velocity limit as Q
          */
-        virtual math::Q getVelocityLimits () const;
+        virtual rw::math::Q getVelocityLimits () const;
 
         /**
          * @brief set the Joint velocity limit
          * @param vellimits [in] the velocity limit as Q
          */
-        virtual void setVelocityLimits (const math::Q& vellimits);
+        virtual void setVelocityLimits (const rw::math::Q& vellimits);
 
         /**
          * @brief get the Joint Acceleration limit
          * @return the Acceleration limit as Q
          */
-        math::Q getAccelerationLimits () const;
+        rw::math::Q getAccelerationLimits () const;
 
         /**
          * @brief set the Joint Acceleration limit
          * @param acclimit [in] the acceleration limit as Q
          */
-        void setAccelerationLimits (const math::Q& acclimits);
+        void setAccelerationLimits (const rw::math::Q& acclimits);
 
       private:
         rw::kinematics::Frame* _base;

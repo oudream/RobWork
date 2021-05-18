@@ -23,11 +23,12 @@
  *
  * \copydoc rw::models::ParallelLeg
  */
-
+#if !defined(SWIG)
 #include <rw/core/Ptr.hpp>
 #include <rw/math/Transform3D.hpp>
 
 #include <vector>
+#endif 
 
 namespace rw {
 namespace math {
@@ -61,7 +62,7 @@ namespace rw { namespace models {
          * @brief Constructs leg from frames
          * @param frames [in] list of Frame's
          */
-        ParallelLeg (std::vector< kinematics::Frame* > frames);
+        ParallelLeg (std::vector< rw::kinematics::Frame* > frames);
 
         /**
          * @brief Destructor
@@ -73,7 +74,7 @@ namespace rw { namespace models {
          * @param state [in] State for which to calculate the Jacobian
          * @return the Jacobian
          */
-        const math::Jacobian& baseJend (const kinematics::State& state);
+        const rw::math::Jacobian& baseJend (const rw::kinematics::State& state);
 
         /**
          * @brief Returns the Jacobian of \b frame relative to base frame.
@@ -89,7 +90,7 @@ namespace rw { namespace models {
          * @param state [in] State for which to calculate the transform
          * @return the transform
          */
-        math::Transform3D< double > baseTend (const kinematics::State& state) const;
+        rw::math::Transform3D< double > baseTend (const rw::kinematics::State& state) const;
 
         /**
          * @brief Returns the transformation of a \b frame relative to the base.
@@ -104,19 +105,19 @@ namespace rw { namespace models {
          * @brief Returns the kinematic chain of the leg
          * @return list of frames
          */
-        const std::vector< kinematics::Frame* >& getKinematicChain () const;
+        const std::vector< rw::kinematics::Frame* >& getKinematicChain () const;
 
         /**
          * @brief the base of the leg
          * @return the frame
          */
-        kinematics::Frame* getBase ();
+        rw::kinematics::Frame* getBase ();
 
         /**
          * @brief the end of the leg
          * @return the frame
          */
-        kinematics::Frame* getEnd ();
+        rw::kinematics::Frame* getEnd ();
 
         /**
          * @brief Number of active joints
@@ -166,13 +167,13 @@ namespace rw { namespace models {
          * @param q [in] q to set
          * @param state [out] the State to modify
          */
-        void setQ (const math::Q& q, kinematics::State& state) const;
+        void setQ (const rw::math::Q& q, rw::kinematics::State& state) const;
 
       private:
-        std::vector< kinematics::Frame* > _kinematicChain;
+        std::vector< rw::kinematics::Frame* > _kinematicChain;
         std::vector< models::Joint* > _actuatedJoints;
         std::vector< models::Joint* > _unactuatedJoints;
-        math::Jacobian* _jacobian;
+        rw::math::Jacobian* _jacobian;
     };
 
     /*@}*/

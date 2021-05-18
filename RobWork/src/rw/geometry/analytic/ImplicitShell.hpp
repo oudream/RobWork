@@ -24,21 +24,30 @@
  * \copydoc rw::geometry::ImplicitShell
  */
 
+#if !defined(SWIG)
 #include "Shell.hpp"
+
 #include <rw/core/os.hpp>
+#endif
 
 namespace rw { namespace geometry {
 
     class ImplicitFace;
 
     //! @addtogroup geometry
-
+#if !defined(SWIG)
     //! @{
+#endif
     /**
      * @brief Type of Shell where all surfaces are of type ImplicitSurface and
      * all curves are of type ParametricCurve.
      */
+
+    #if !defined(SWIGJAVA)
     class ImplicitShell : public Shell
+    #else 
+    class ImplicitShell : public rw::geometry::GeometryData
+    #endif 
     {
       public:
         //! @brief Smart pointer type to ImplicitShell
@@ -94,7 +103,9 @@ namespace rw { namespace geometry {
         //! @brief Resolution to use for discretization into triangle mesh.
         double _resolution;
     };
-    //! @}
+#if !defined(SWIG)
+//! @}
+#endif
 
 }}    // namespace rw::geometry
 

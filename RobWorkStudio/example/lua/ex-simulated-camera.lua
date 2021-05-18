@@ -1,5 +1,7 @@
 require("sdurw_core")
 require("sdurw_kinematics")
+require("sdurw_models")
+require("sdurw_sensor")
 require("sdurw")
 require("sdurw_simulation")
 require("sdurws")

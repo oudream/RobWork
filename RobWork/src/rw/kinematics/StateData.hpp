@@ -153,6 +153,7 @@ namespace rw { namespace kinematics {
         inline bool hasCache () const { return _hasCache; }
 
         // StateData(int size, StateCache::Ptr defaultCache, const std::string& name);
+        
         /**
          * @brief Get the cache.
          * @param state [in] the state.
@@ -160,10 +161,13 @@ namespace rw { namespace kinematics {
          */
         rw::core::Ptr< rw::kinematics::StateCache >
         getCache (const rw::kinematics::State& state) const;
+       
 
+        #if !defined(SWIGPYTHON)
         //! @copydoc getCache(const State&) const .
         rw::core::Ptr< rw::kinematics::StateCache > getCache (rw::kinematics::State& state);
-
+         #endif 
+         
         /**
          * @brief Get default cache.
          * @return the cache.

@@ -18,13 +18,18 @@
 #ifndef RW_GEOMETRY_INDEXEDPOLYGON_HPP_
 #define RW_GEOMETRY_INDEXEDPOLYGON_HPP_
 
+#if !defined(SWIG)
 #include <rw/common/types.hpp>
 #include <rw/core/macros.hpp>
-//#include <rw/math/Vector3D.hpp>
+
+#include <vector>
+#endif
 
 namespace rw { namespace geometry {
     //! @addtogroup geometry
+    #if !defined(SWIG)
     // @{
+    #endif
 
     /**
      * @brief indexed polygon class that saves \b N indices to the \b N vertices of the polygon
@@ -39,6 +44,11 @@ namespace rw { namespace geometry {
         typedef T value_type;
 
         /**
+         * @brief destructor
+         */
+        virtual ~IndexedPolygon() {}
+
+        /**
          * @brief returns the index of vertex i of the triangle
          */
         virtual T& getVertexIdx (size_t i) = 0;
@@ -47,7 +57,7 @@ namespace rw { namespace geometry {
          * @brief returns the index of vertex i of the triangle
          */
         virtual const T& getVertexIdx (size_t i) const = 0;
-
+#if !defined(SWIG)
         /**
          * @brief get vertex at index i
          */
@@ -57,16 +67,21 @@ namespace rw { namespace geometry {
          * @brief get vertex at index i
          */
         const T& operator[] (size_t i) const { return getVertexIdx (i); }
-
+#else
+        ARRAYOPERATOR(T);
+#endif
         /**
          * @brief Number of vertices of this polygon
          * @return Number of vertices
          */
         virtual size_t size () const = 0;
 
-        // virtual rw::math::Vector3D<T> calcFaceNormal()
+        // virtual rw::math::Vector3D<double> calcFaceNormal()
     };
-
+    #if defined(SWIG)
+    SWIG_DECLARE_TEMPLATE (IndexedPolygon, rw::geometry::IndexedPolygon<uint16_t>);
+    SWIG_DECLARE_TEMPLATE (IndexedPolygon_32, rw::geometry::IndexedPolygon<uint32_t>);
+    #endif 
     /**
      * @brief Polygon with N vertice indices and 0 normals
      */
@@ -141,10 +156,14 @@ namespace rw { namespace geometry {
         size_t size () const { return _vertices.size (); };
     };
 
+    #if defined(SWIG)
+    SWIG_DECLARE_TEMPLATE (IndexedPolygonN, rw::geometry::IndexedPolygonN<uint16_t>);
+    SWIG_DECLARE_TEMPLATE (IndexedPolygonN_32, rw::geometry::IndexedPolygonN<uint32_t>);
+    #endif 
     /**
      * @brief Polygon with N vertices and N normals.
      */
-    template< class T > class IndexedPolygonNN : public IndexedPolygon< T >
+    template< class T = uint16_t> class IndexedPolygonNN : public IndexedPolygon< T >
     {
       private:
         IndexedPolygonN< T > _polyN;
@@ -228,7 +247,15 @@ namespace rw { namespace geometry {
             _normals.erase (_normals.begin () + i);
         }
     };
+    
+    #if defined(SWIG)
+    SWIG_DECLARE_TEMPLATE (IndexedPolygonNN, rw::geometry::IndexedPolygonNN<uint16_t>);
+    SWIG_DECLARE_TEMPLATE (IndexedPolygonNN_32, rw::geometry::IndexedPolygonNN<uint32_t>);
+    #endif 
+    
+    #if !defined(SWIG)
     // @}
+    #endif
 }}    // namespace rw::geometry
 
 #endif /*TRIANGLE_HPP_*/

@@ -21,11 +21,12 @@
 /**
  * @file Sensor.hpp
  */
-
+#if !defined(SWIG)
 #include <rw/core/PropertyMap.hpp>
 #include <rw/kinematics/Stateless.hpp>
 
 #include <string>
+#endif 
 
 namespace rw { namespace kinematics {
     class Frame;

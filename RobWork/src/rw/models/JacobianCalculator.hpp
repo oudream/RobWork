@@ -18,8 +18,10 @@
 #ifndef RW_MODELS_JACOBIANCALCULATOR_HPP
 #define RW_MODELS_JACOBIANCALCULATOR_HPP
 
+#if !defined(SWIG)
 #include <rw/core/Ptr.hpp>
 #include <rw/math/Jacobian.hpp>
+#endif 
 
 namespace rw { namespace kinematics {
     class State;
@@ -49,7 +51,7 @@ namespace rw { namespace models {
          */
         virtual rw::math::Jacobian get (const rw::kinematics::State& state) const = 0;
 
-        /**
+        /*
          * @brief Returns the Jacobian calculated based on the content of \b fk
          * @param fk [in] Forward kinematics table based on which to calculate the Jacobian
          * @return Jacobian for \b fk

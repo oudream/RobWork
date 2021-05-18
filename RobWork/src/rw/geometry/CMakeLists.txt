@@ -11,6 +11,7 @@ if(build)
         BSphere.cpp
         BV.cpp
         BVCollider.cpp
+        BVDistanceCalc.cpp
         Box.cpp
         Cone.cpp
         Contour2D.cpp
@@ -84,6 +85,7 @@ if(build)
         BSphere.hpp
         BV.hpp
         BVCollider.hpp
+        BVDistanceCalc.hpp
         Box.hpp
         Cone.hpp
         Contour2D.hpp

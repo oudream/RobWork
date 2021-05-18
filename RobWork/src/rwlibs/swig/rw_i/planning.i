@@ -74,12 +74,12 @@ public:
      * @brief Uniform random sampling for a device.
      */
 	static rw::core::Ptr<QSampler> makeUniform(
-        const Device& device);
+        const rw::models::Device& device);
 
     /**
      * @brief Uniform random sampling for a device.
      */
-	static rw::core::Ptr<QSampler> makeUniform(rw::core::Ptr<const Device> device);
+	static rw::core::Ptr<QSampler> makeUniform(rw::core::Ptr<const rw::models::Device> device);
 
     /**
      * @brief Map a sampler of standard configurations into a sampler of
@@ -172,21 +172,13 @@ public:
     //static PlannerConstraint make(QConstraint::Ptr constraint, QEdgeConstraint::Ptr edge);
 
     static PlannerConstraint make(rw::core::Ptr<CollisionDetector> detector,
-                                  rw::core::Ptr<const Device> device,
+                                  rw::core::Ptr<const rw::models::Device> device,
                                   const rw::kinematics::State& state);
 
     static PlannerConstraint make(rw::core::Ptr<CollisionStrategy> strategy,
-                                  rw::core::Ptr<WorkCell> workcell,
-                                  rw::core::Ptr<const Device> device,
+                                  rw::core::Ptr<rw::models::WorkCell> workcell,
+                                  rw::core::Ptr<const rw::models::Device> device,
                                   const rw::kinematics::State& state);
-
-    /*
-    static PlannerConstraint make(rw::proximity::CollisionStrategy::Ptr strategy,
-        const rw::proximity::CollisionSetup& setup,
-        rw::core::Ptr<WorkCell> workcell,
-        rw::core::Ptr<Device> device,
-        const rw::kinematics::State& state);
-     */
 };
 
 %template (PlannerConstraintPtr) rw::core::Ptr<PlannerConstraint>;
@@ -346,7 +338,7 @@ public:
      */
 	static rw::core::Ptr<QConstraint> make(
 		rw::core::Ptr<StateConstraint> detector,
-		rw::core::Ptr<const Device> device,
+		rw::core::Ptr<const rw::models::Device> device,
         const rw::kinematics::State& state);
 
     /**
@@ -354,7 +346,7 @@ public:
      */
 	static rw::core::Ptr<QConstraint> make(
 		rw::core::Ptr<CollisionDetector> detector,
-		rw::core::Ptr<const Device> device,
+		rw::core::Ptr<const rw::models::Device> device,
         const rw::kinematics::State& state);
 
     /**
@@ -392,7 +384,7 @@ public:
      */
 	static rw::core::Ptr<QConstraint> makeNormalized(
 		const rw::core::Ptr<QConstraint>& constraint,
-        const Device& device);
+        const rw::models::Device& device);
 
     /**
      * @brief Map a configuration constraint for standard configurations
@@ -518,7 +510,7 @@ public:
      * resolution.
      */
 	static rw::core::Ptr<QEdgeConstraint> makeDefault(rw::core::Ptr<QConstraint> constraint,
-		rw::core::Ptr< const Device > device);
+		rw::core::Ptr< const rw::models::Device > device);
 
 
 	/**
@@ -700,7 +692,7 @@ public:
      */
 	static rw::core::Ptr<QEdgeConstraintIncremental> makeDefault(
 		rw::core::Ptr<QConstraint> constraint,
-		rw::core::Ptr<Device> device);
+		rw::core::Ptr<rw::models::Device> device);
 
     /**
      * @brief A fixed edge constraint.
@@ -824,7 +816,7 @@ public:
      * maxAttempts is chosen.
      */
 	static rw::core::Ptr<QIKSampler> make(
-		rw::core::Ptr<Device> device,
+		rw::core::Ptr<rw::models::Device> device,
         const rw::kinematics::State& state,
 		rw::core::Ptr<IterativeIK> solver = NULL,
 		rw::core::Ptr<QSampler> seed = NULL,
@@ -922,13 +914,13 @@ public:
         rw::core::PropertyMap& getProperties(){
             return $self->rw::pathplanning::PathPlanner<rw::math::Q,const rw::math::Q>::getProperties();
         }
-        static rw::core::Ptr<QToQPlanner> makeRRT(rw::core::Ptr<CollisionDetector> cdect, rw::core::Ptr<Device> dev, const rw::kinematics::State& state){
+        static rw::core::Ptr<QToQPlanner> makeRRT(rw::core::Ptr<CollisionDetector> cdect, rw::core::Ptr<rw::models::Device> dev, const rw::kinematics::State& state){
             const rw::pathplanning::PlannerConstraint constraint = rw::pathplanning::PlannerConstraint::make(
                 cdect.get(), dev, state);
             return rwlibs::pathplanners::RRTPlanner::makeQToQPlanner(constraint, dev);
         }
 
-        static rw::core::Ptr<QToQPlanner> makeSBL(rw::core::Ptr<CollisionDetector> cdect, rw::core::Ptr<Device> dev, const rw::kinematics::State& state){
+        static rw::core::Ptr<QToQPlanner> makeSBL(rw::core::Ptr<CollisionDetector> cdect, rw::core::Ptr<rw::models::Device> dev, const rw::kinematics::State& state){
             rw::pathplanning::QConstraint::Ptr qconstraint = rw::pathplanning::QConstraint::make(cdect.get(), dev, state);
             return rwlibs::pathplanners::SBLPlanner::makeQToQPlanner(rwlibs::pathplanners::SBLSetup::make(qconstraint, rw::pathplanning::QEdgeConstraintIncremental::makeDefault(qconstraint, dev), dev));
         }

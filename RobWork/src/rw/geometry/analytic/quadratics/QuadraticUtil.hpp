@@ -23,17 +23,18 @@
  *
  * \copydoc rw::geometry::QuadraticUtil
  */
-
+#if !defined(SWIG)
 #include <rw/geometry/OBB.hpp>
 #include <rw/math/Vector3D.hpp>
-
+#endif
 namespace rw { namespace geometry {
     class QuadraticSurface;
     class QuadraticCurve;
 
     //! @addtogroup geometry
-
+#if !defined(SWIG)
     //! @{
+#endif
     /**
      * @brief Utility functions for operations on quadratic surfaces and curves.
      *
@@ -44,7 +45,7 @@ namespace rw { namespace geometry {
     {
       public:
         //! @brief Type for a pair of points.
-        typedef std::pair< rw::math::Vector3D<>, rw::math::Vector3D<> > PointPair;
+        typedef std::pair< rw::math::Vector3D<double>, rw::math::Vector3D<double> > PointPair;
 
         /**
          * @brief Find and approximation of the closest points between two surfaces \b s1 and \b s2.
@@ -59,8 +60,8 @@ namespace rw { namespace geometry {
          * @param epsOut [in] threshold for distance.
          * @return true if there is a closest point pair within the given limits.
          */
-        static bool closestPointsApproximation (const QuadraticSurface& s1,
-                                                const QuadraticSurface& s2, PointPair& result,
+        static bool closestPointsApproximation (const rw::geometry::QuadraticSurface& s1,
+                                                const rw::geometry::QuadraticSurface& s2, PointPair& result,
                                                 double epsIn, double epsOut);
 
         /**
@@ -78,7 +79,7 @@ namespace rw { namespace geometry {
          * @param epsOut [in] threshold for distance.
          * @return true if there is a closest point pair within the given limits.
          */
-        static bool closestPointsApproximation (const QuadraticSurface& s, const QuadraticCurve& c,
+        static bool closestPointsApproximation (const rw::geometry::QuadraticSurface& s, const rw::geometry::QuadraticCurve& c,
                                                 PointPair& result, double epsIn, double epsOut);
 
         /**
@@ -95,8 +96,8 @@ namespace rw { namespace geometry {
          * @return a list of pairs of curve parameter values at the closest points.
          */
         static std::vector< std::pair< double, double > >
-        closestTimesApproximation (const QuadraticSurface& sa1, const QuadraticSurface& sa2,
-                                   const QuadraticCurve& ca, const QuadraticCurve& cb);
+        closestTimesApproximation (const rw::geometry::QuadraticSurface& sa1, const rw::geometry::QuadraticSurface& sa2,
+                                   const rw::geometry::QuadraticCurve& ca, const rw::geometry::QuadraticCurve& cb);
 
       private:
         /**
@@ -113,10 +114,10 @@ namespace rw { namespace geometry {
          * @param epsOut [in] threshold for distance.
          * @return a list of the closest point pairs within the given limits.
          */
-        static std::vector< PointPair > closestPointsApproximation (const QuadraticSurface& sa1,
-                                                                    const QuadraticSurface& sa2,
-                                                                    const QuadraticCurve& ca,
-                                                                    const QuadraticCurve& cb,
+        static std::vector< PointPair > closestPointsApproximation (const rw::geometry::QuadraticSurface& sa1,
+                                                                    const rw::geometry::QuadraticSurface& sa2,
+                                                                    const rw::geometry::QuadraticCurve& ca,
+                                                                    const rw::geometry::QuadraticCurve& cb,
                                                                     double epsIn, double epsOut);
 
         /**
@@ -135,9 +136,9 @@ namespace rw { namespace geometry {
          * @param epsOut [in] threshold for distance.
          * @return a list of the closest point pairs within the given limits.
          */
-        static std::vector< PointPair > closestPointsApproximation (const QuadraticSurface& sa,
-                                                                    const QuadraticSurface& sb,
-                                                                    const QuadraticCurve& c,
+        static std::vector< PointPair > closestPointsApproximation (const rw::geometry::QuadraticSurface& sa,
+                                                                    const rw::geometry::QuadraticSurface& sb,
+                                                                    const rw::geometry::QuadraticCurve& c,
                                                                     double epsIn, double epsOut);
 
         /**
@@ -153,16 +154,18 @@ namespace rw { namespace geometry {
          * @return a vector of one or more curve parameter values where there is a local minimum
          * between of the distance between the curves.
          */
-        static std::vector< double > closestTimesApproximation (const QuadraticSurface& sa,
-                                                                const QuadraticSurface& sb,
-                                                                const QuadraticCurve& c);
+        static std::vector< double > closestTimesApproximation (const rw::geometry::QuadraticSurface& sa,
+                                                                const rw::geometry::QuadraticSurface& sb,
+                                                                const rw::geometry::QuadraticCurve& c);
 
         QuadraticUtil () {}
         virtual ~QuadraticUtil () {}
 
         static Eigen::Matrix3d adjugate (const Eigen::Matrix3d& A);
     };
-    //! @}
+#if !defined(SWIG)
+//! @}
+#endif
 }}    // namespace rw::geometry
 
 #endif /* RW_GEOMETRY_ANALYTIC_QUADRATICS_QUADRATICUTIL_HPP_ */

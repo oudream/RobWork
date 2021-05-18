@@ -18,10 +18,12 @@
 #ifndef RW_MODELS_DEVICEJACOBIANCALCULATOR_HPP
 #define RW_MODELS_DEVICEJACOBIANCALCULATOR_HPP
 
+#if !defined(SWIG)
 #include <rw/core/Ptr.hpp>
 #include <rw/models/JacobianCalculator.hpp>
 
 #include <vector>
+#endif 
 
 namespace rw { namespace kinematics {
     class State;
@@ -54,10 +56,10 @@ namespace rw { namespace models {
          * @param tcps [in] List of tool end-effectors for which to calculate the Jacobian.
          * @param state [in] State giving how frame are connected
          */
-        DeviceJacobianCalculator (std::vector< rw::core::Ptr< Device > > devices,
-                                  const kinematics::Frame* base,
-                                  const std::vector< kinematics::Frame* >& tcps,
-                                  const kinematics::State& state);
+        DeviceJacobianCalculator (std::vector< rw::core::Ptr< rw::models::Device > > devices,
+                                  const rw::kinematics::Frame* base,
+                                  const std::vector< rw::kinematics::Frame* >& tcps,
+                                  const rw::kinematics::State& state);
 
         /**
          * @brief Destructor
@@ -70,12 +72,12 @@ namespace rw { namespace models {
         virtual rw::math::Jacobian get (const rw::kinematics::State& state) const;
 
       private:
-        typedef std::vector< std::pair< const Joint*, size_t > > JacobianSetup;
+        typedef std::vector< std::pair< const rw::models::Joint*, size_t > > JacobianSetup;
 
         std::vector< JacobianSetup > _jacobianSetups;
-        std::vector< rw::core::Ptr< Device > > _devices;
-        const kinematics::Frame* _base;
-        std::vector< kinematics::Frame* > _tcps;
+        std::vector< rw::core::Ptr< rw::models::Device > > _devices;
+        const rw::kinematics::Frame* _base;
+        std::vector< rw::kinematics::Frame* > _tcps;
         size_t _dof;
     };
 

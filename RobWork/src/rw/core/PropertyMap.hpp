@@ -295,7 +295,7 @@ namespace rw { namespace core {
             }
             return *p;
         }
-#if !defined(SWIGJAVA)
+
         /**
          * @brief Get the value of a property
          *
@@ -319,7 +319,7 @@ namespace rw { namespace core {
             }
             return *p;
         }
-#endif
+
         /**
          * @brief True if a specific property exists
          *

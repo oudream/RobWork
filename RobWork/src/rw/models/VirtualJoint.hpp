@@ -21,9 +21,9 @@
 /**
  * @file VirtualJoint.hpp
  */
-
+#if !defined(SWIG)
 #include "Joint.hpp"
-
+#endif 
 namespace rw { namespace kinematics {
     class State;
 }}    // namespace rw::kinematics
@@ -54,12 +54,12 @@ namespace rw { namespace models {
          * @param transform [in] The displacement transform of the joint.
          * @param dof [in] Number of degrees of freedom of the joint
          */
-        VirtualJoint (const std::string& name, const math::Transform3D<>& transform, size_t dof);
+        VirtualJoint (const std::string& name, const rw::math::Transform3D<>& transform, size_t dof);
 
         //! @copydoc Joint::getJacobian
-        void getJacobian (size_t row, size_t col, const math::Transform3D<>& joint,
-                          const math::Transform3D<>& tcp, const kinematics::State& state,
-                          math::Jacobian& jacobian) const
+        void getJacobian (size_t row, size_t col, const rw::math::Transform3D<>& joint,
+                          const rw::math::Transform3D<>& tcp, const rw::kinematics::State& state,
+                          rw::math::Jacobian& jacobian) const
         {}
 
         //! @copydoc Joint::getFixedTransform()
@@ -69,7 +69,7 @@ namespace rw { namespace models {
         void setFixedTransform (const rw::math::Transform3D<>& t3d);
 
         //! @copydoc Joint::getJointTransform()
-        math::Transform3D<> getJointTransform (const rw::kinematics::State& state) const;
+        rw::math::Transform3D<> getJointTransform (const rw::kinematics::State& state) const;
 
         //! @copydoc Joint::setJointMapping()
         virtual void setJointMapping (rw::math::Function1Diff<>::Ptr function)
@@ -81,13 +81,13 @@ namespace rw { namespace models {
         virtual void removeJointMapping () {}
 
       protected:
-        math::Transform3D<> doGetTransform (const kinematics::State& state) const;
+        rw::math::Transform3D<> doGetTransform (const rw::kinematics::State& state) const;
 
-        void doMultiplyTransform (const math::Transform3D<>& parent, const kinematics::State& state,
-                                  math::Transform3D<>& result) const;
+        void doMultiplyTransform (const rw::math::Transform3D<>& parent, const rw::kinematics::State& state,
+                                  rw::math::Transform3D<>& result) const;
 
       private:
-        math::Transform3D<> _transform;
+        rw::math::Transform3D<> _transform;
     };
 
     /*@}*/

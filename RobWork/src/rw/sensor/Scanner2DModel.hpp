@@ -21,11 +21,11 @@
 /**
  * @file Scanner2DModel.hpp
  */
-
+#if !defined(SWIG)
 #include "SensorModel.hpp"
 
 #include <rw/geometry/PointCloud.hpp>
-
+#endif 
 namespace rw { namespace sensor {
 
     /** @addtogroup sensor */

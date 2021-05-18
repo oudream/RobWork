@@ -18,11 +18,12 @@
 #ifndef RW_GEOMETRY_CONVEXHULLHULLND_HPP_
 #define RW_GEOMETRY_CONVEXHULLHULLND_HPP_
 
+#if !defined(SWIG)
 #include <rw/core/Ptr.hpp>
 #include <rw/math/VectorND.hpp>
 
 #include <vector>
-
+#endif 
 //! @file ConvexHullND.hpp
 
 namespace rw { namespace geometry {

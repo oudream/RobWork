@@ -23,14 +23,14 @@
  *
  * \copydoc rw::geometry::BREP
  */
-
+#if !defined(SWIG)
 #include <rw/core/Ptr.hpp>
 #include <rw/geometry/GeometryData.hpp>
 #include <rw/geometry/OBB.hpp>
 #include <rw/math/Vector3D.hpp>
 
 #include <set>
-
+#endif
 namespace rw { namespace geometry {
 
     class Curve;
@@ -40,8 +40,9 @@ namespace rw { namespace geometry {
     class TriMesh;
 
     //! @addtogroup geometry
-
+#if !defined(SWIG)
     //! @{
+#endif
     /**
      * @brief Boundary representation (or B-Rep) of a geometric shape, using a collection of
      * connected surfaces, edges and vertices.
@@ -244,7 +245,7 @@ namespace rw { namespace geometry {
          * vertices().
          * @return reference to the vertex.
          */
-        const rw::math::Vector3D<>& getVertex (std::size_t vertexIndex) const
+        const rw::math::Vector3D<double>& getVertex (std::size_t vertexIndex) const
         {
             return _vertices[vertexIndex]->point;
         }
@@ -257,7 +258,7 @@ namespace rw { namespace geometry {
          * @param loopIdx [in] the loop index.
          * @return a collection of vertices.
          */
-        std::vector< rw::math::Vector3D<> > getVertices (std::size_t loopIdx) const;
+        std::vector< rw::math::Vector3D<double> > getVertices (std::size_t loopIdx) const;
 
         /**
          * @brief Check if a certain loop has a surface set.
@@ -294,7 +295,7 @@ namespace rw { namespace geometry {
          * @brief Add a vertex to the BREP.
          * @param point [in] the vertex to add.
          */
-        void addVertex (const rw::math::Vector3D<>& point);
+        void addVertex (const rw::math::Vector3D<double>& point);
 
         /**
          * @brief Create a loop containing a single edge (typically for circles and ellipses and
@@ -388,7 +389,7 @@ namespace rw { namespace geometry {
          * @return the minimum and maximum values along the given direction.
          */
         std::pair< double, double > faceExtremums (std::size_t faceIndex,
-                                                   const rw::math::Vector3D<>& dir) const;
+                                                   const rw::math::Vector3D<double>& dir) const;
 
         /**
          * @brief Construct a Triangle Mesh for a face.
@@ -425,13 +426,13 @@ namespace rw { namespace geometry {
              * @brief Construct new vertex in the given \b point.
              * @param point [in] the points to construct vertex for.
              */
-            Vertex (const rw::math::Vector3D<>& point) : point (point), nextEdge (NULL) {}
+            Vertex (const rw::math::Vector3D<double>& point) : point (point), nextEdge (NULL) {}
 
             //! @brief Destructor.
             ~Vertex () {}
 
             //! @brief Vertex point.
-            rw::math::Vector3D<> point;
+            rw::math::Vector3D<double> point;
             //! @brief Pointer to the next half-edge.
             HalfEdge* nextEdge;
         };
@@ -554,7 +555,9 @@ namespace rw { namespace geometry {
         //! @brief Resolution used for discretization functions.
         double _resolution;
     };
+    #if !defined(SWIG)
     //! @}
+    #endif
 }}    // namespace rw::geometry
 
 #endif /* RW_GEOMETRY_ANALYTIC_BREP_HPP_ */

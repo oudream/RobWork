@@ -4,6 +4,12 @@
 
 using namespace rw::geometry;
 
+TriMeshSurfaceSampler::TriMeshSurfaceSampler () :
+    _minD (0.02), _maxD (0.02), _genRandomRotation (true), _filterByDirection (false),
+    _genRandomPostion (true)
+{
+}
+
 TriMeshSurfaceSampler::TriMeshSurfaceSampler (rw::geometry::Geometry::Ptr geom) :
     _minD (0.02), _maxD (0.02), _genRandomRotation (true), _filterByDirection (false),
     _genRandomPostion (true)
@@ -78,7 +84,7 @@ rw::geometry::Triangle<> TriMeshSurfaceSampler::getTriangle (const int idx)
     return _meshes[lower]->getTriangle (idx);
 }
 
-rw::math::Vector3D<> TriMeshSurfaceSampler::samplePoint ()
+rw::math::Vector3D<double> TriMeshSurfaceSampler::samplePoint ()
 {
     using namespace rw::math;
     double rnum                  = Math::ran (0.0, _sAreaSum);

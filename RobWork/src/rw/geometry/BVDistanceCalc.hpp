@@ -18,8 +18,10 @@
 #ifndef RW_GEOMETRY_BVDISTANCECALC_HPP_
 #define RW_GEOMETRY_BVDISTANCECALC_HPP_
 
+#if !defined(SWIG)
 #include <rw/math/Transform3D.hpp>
-
+#endif 
+namespace rw { namespace proximity {
 template< class COLLIDER, class BVTYPE > class BVDistanceCalc
 {
   public:
@@ -31,12 +33,12 @@ template< class COLLIDER, class BVTYPE > class BVDistanceCalc
     virtual ~BVDistanceCalc (){};
 
     inline value_type distance (const BVTYPE& a, const BVTYPE& b,
-                                const rw::math::Transform3D<>& aTb)
+                                const rw::math::Transform3D<value_type>& aTb)
     {
         return distance (a, b, aTb.P ());
     }
 
-    inline value_type distance (const BVTYPE& a, const BVTYPE& b, const rw::math::Vector3D<>& aTb)
+    inline value_type distance (const BVTYPE& a, const BVTYPE& b, const rw::math::Vector3D<value_type>& aTb)
     {
         return ((COLLIDER*) this)->distance (a, b, aTb);
     }
@@ -46,5 +48,5 @@ template< class COLLIDER, class BVTYPE > class BVDistanceCalc
         return ((COLLIDER*) this)->distance (a, b);
     }
 };
-
+}}
 #endif /* BVCOLLIDER_HPP_ */

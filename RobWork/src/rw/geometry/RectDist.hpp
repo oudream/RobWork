@@ -1,6 +1,8 @@
 #pragma once
 
+#if !defined(SWIG)
 #include "rw/math.hpp"
+#endif 
 
 using namespace rw::math;
 

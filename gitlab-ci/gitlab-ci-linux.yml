@@ -204,12 +204,13 @@
     - linux
   before_script:
     - *remove-rw-install
+    - THREADS=$(nproc --all)
     - cd ./Build/RW
-    - make install
+    - make -j${THREADS} install
     - cd ../RWS
-    - make install
+    - make -j${THREADS} install
     - cd ../RWSim
-    - make install
+    - make -j${THREADS} install
     - cd ../..
     - export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/local/lib
     - git clean -fdX

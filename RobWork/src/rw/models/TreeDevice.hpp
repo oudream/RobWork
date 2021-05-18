@@ -21,12 +21,13 @@
 /**
  * @file TreeDevice.hpp
  */
-
+#if !defined(SWIG)
 #include "JointDevice.hpp"
 
 #include <rw/core/Ptr.hpp>
 
 #include <vector>
+#endif 
 
 namespace rw { namespace models {
     class JacobianCalculator;
@@ -96,8 +97,8 @@ namespace rw { namespace models {
          * @param name [in] name of device
          * @param state [in] the initial state of everything
          */
-        TreeDevice (kinematics::Frame* base, const std::vector< kinematics::Frame* >& ends,
-                    const std::string& name, const kinematics::State& state);
+        TreeDevice (rw::kinematics::Frame* base, const std::vector< rw::kinematics::Frame* >& ends,
+                    const std::string& name, const rw::kinematics::State& state);
 
         //! @brief destructor
         virtual ~TreeDevice ();
@@ -106,12 +107,12 @@ namespace rw { namespace models {
          * @brief like Device::baseJend() but with a Jacobian calculated for all
          * end effectors.
          */
-        math::Jacobian baseJends (const kinematics::State& state) const;
+        rw::math::Jacobian baseJends (const rw::kinematics::State& state) const;
 
         /**
            @brief The end-effectors of the tree device.
          */
-        const std::vector< kinematics::Frame* >& getEnds () const { return _ends; }
+        const std::vector< rw::kinematics::Frame* >& getEnds () const { return _ends; }
 
         /**
          * @brief Frames of the device.
@@ -120,14 +121,14 @@ namespace rw { namespace models {
          * devices in RobWorkStudio. The method really isn't of much use for
          * everyday programming.
          */
-        const std::vector< kinematics::Frame* >& frames () const { return _kinematicChain; }
+        const std::vector< rw::kinematics::Frame* >& frames () const { return _kinematicChain; }
 
       private:
-        std::vector< kinematics::Frame* > _kinematicChain;
-        std::vector< kinematics::Frame* > _ends;
+        std::vector< rw::kinematics::Frame* > _kinematicChain;
+        std::vector< rw::kinematics::Frame* > _ends;
 
         // Base to getEnds() Jacobians are calculated here.
-        rw::core::Ptr< JacobianCalculator > _djmulti;
+        rw::core::Ptr< rw::models::JacobianCalculator > _djmulti;
     };
 
     /*@}*/

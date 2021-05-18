@@ -18,6 +18,7 @@
 #ifndef RW_GEOMETRY_OBBFACTORY_HPP_
 #define RW_GEOMETRY_OBBFACTORY_HPP_
 
+#if !defined(SWIG)
 #include "BV.hpp"
 #include "OBB.hpp"
 
@@ -27,13 +28,14 @@
 #include <rw/math/EigenDecomposition.hpp>
 #include <rw/math/Transform3D.hpp>
 #include <rw/math/Vector3D.hpp>
+#endif
 
 namespace rw { namespace geometry {
 
     /**
      * @brief factory for computing tight fitting Oriented Bounding Boxes.
      */
-    template< class T > class OBBFactory : public BVFactory< OBB< T > >
+    template< class T = double > class OBBFactory : public BVFactory< OBB< T > >
     {
       public:
         //! @brief The supported methods to generate an oriented bounding box from a mesh.
@@ -87,7 +89,12 @@ namespace rw { namespace geometry {
         rw::geometry::OBB< T > makeDITO (const rw::geometry::TriMesh& mesh) const;
 
         //! @copydoc BVFactory::makeBV(rw::geometry::Shell&)
-        rw::geometry::OBB< T > makeBV (rw::geometry::Shell& geom) { return geom.obb (); }
+        rw::geometry::OBB< T > makeBV (rw::geometry::Shell& geom)
+        {
+            rw::geometry::OBB< double > obb = geom.obb ();
+            return rw::geometry::OBB< T > (rw::math::Transform3D< T > (obb.getTransform ().e ()),
+                                           rw::math::Vector3D< T > (obb.getHalfLengths ().e ()));
+        }
 
         /**
          * @brief computes covariance over vertices in mesh and calculates the
@@ -130,22 +137,22 @@ namespace rw { namespace geometry {
         // the eigendecomposition has the eigen vectors and value.
         // we want the x-axis of the OBB to be aligned with the largest eigen vector.
         eigend.sort ();
-        Vector3D<> axisX (eigend.getEigenVector (2));
-        Vector3D<> axisY (eigend.getEigenVector (1));
-        Vector3D<> axisZ = cross (axisX, axisY);
+        Vector3D<T> axisX (eigend.getEigenVector (2));
+        Vector3D<T> axisY (eigend.getEigenVector (1));
+        Vector3D<T> axisZ = cross (axisX, axisY);
         // so now we can form the basis of the rotation matrix of the OBB
-        Rotation3D<> rot (normalize (axisX), normalize (axisY), normalize (axisZ));
-        Rotation3D<> rotInv = inverse (rot);
+        Rotation3D<T> rot (normalize (axisX), normalize (axisY), normalize (axisZ));
+        Rotation3D<T> rotInv = inverse (rot);
         // last we need to find the maximum and minimum points in the mesh to determine
         // the bounds (halflengts) of the OBB
-        Triangle<> t   = mesh.getTriangle (0);
-        Vector3D<> p   = rotInv * cast< T > (t[0]);
-        Vector3D<> max = p, min = p;
-        Triangle<> tri;
+        rw::geometry::Triangle< T > t = mesh.getTriangle (0);
+        Vector3D<T> p                       = rotInv * cast< T > (t[0]);
+        Vector3D<T> max = p, min = p;
+        rw::geometry::Triangle< T > tri;
         for (size_t i = 0; i < mesh.getSize (); i++) {
             mesh.getTriangle (i, tri);
             for (int pidx = 0; pidx < 3; pidx++) {
-                Vector3D<> p = rotInv * cast< T > (tri[pidx]);
+                Vector3D<T> p = rotInv * cast< T > (tri[pidx]);
                 for (int j = 0; j < 3; j++) {
                     if (p (j) > max (j))
                         max (j) = p (j);
@@ -154,9 +161,9 @@ namespace rw { namespace geometry {
                 }
             }
         }
-        Vector3D<> midPoint   = rot * (0.5 * (max + min));
-        Vector3D<> halfLength = 0.5 * (max - min);
-        Transform3D<> trans (midPoint, rot);
+        Vector3D<T> midPoint   = rot * (0.5 * (max + min));
+        Vector3D<T> halfLength = 0.5 * (max - min);
+        Transform3D<T> trans (midPoint, rot);
         return OBB< T > (trans, halfLength);
     }
 
@@ -182,17 +189,17 @@ namespace rw { namespace geometry {
 
         // std::cout << "\nMesh size: " << mesh.size() << "\n";
         Eigen::MatrixXd covarM = Eigen::MatrixXd (3, 3);
-        Vector3D<> centroidSum (0, 0, 0);
+        Vector3D< T > centroidSum (0, 0, 0);
         double aSum = 0;
         for (size_t i = 0; i < pmesh->size (); i++) {
-            Triangle<> tri      = pmesh->getTriangle (i);
-            const Vector3D<>& p = tri[0];
-            const Vector3D<>& q = tri[1];
-            const Vector3D<>& r = tri[2];
-            double a            = tri.calcArea ();
+            rw::geometry::Triangle< T > tri = pmesh->getTriangle (i);
+            const Vector3D< T >& p                  = tri[0];
+            const Vector3D< T >& q                  = tri[1];
+            const Vector3D< T >& r                  = tri[2];
+            double a                             = tri.calcArea ();
             aSum += a;
 
-            Vector3D<> c = (p + q + r) * 1.0 / 3.0;
+            Vector3D< T > c = (p + q + r) * 1.0 / 3.0;
             centroidSum += c * a;
 
             double ascale = (a / 12.0);
@@ -217,28 +224,28 @@ namespace rw { namespace geometry {
         covarM (2, 0) = covarM (0, 2);
         covarM (2, 1) = covarM (1, 2);
 
-        Covariance<> covar (covarM);
+        Covariance< > covar (covarM);
         EigenDecomposition<> eigend = covar.eigenDecompose ();
         // the eigendecomposition has the eigen vectors and value.
         // we want the x-axis of the OBB to be aligned with the largest eigen vector.
         eigend.sort ();
-        Vector3D<> axisX (eigend.getEigenVector (2));
-        Vector3D<> axisY (eigend.getEigenVector (1));
-        Vector3D<> axisZ = cross (axisX, axisY);
+        Vector3D< T > axisX (eigend.getEigenVector (2));
+        Vector3D< T > axisY (eigend.getEigenVector (1));
+        Vector3D< T > axisZ = cross (axisX, axisY);
         // so now we can form the basis of the rotation matrix of the OBB
-        Rotation3D<> rot (normalize (axisX), normalize (axisY), normalize (axisZ));
-        Rotation3D<> rotInv = inverse (rot);
+        Rotation3D< T > rot (normalize (axisX), normalize (axisY), normalize (axisZ));
+        Rotation3D< T > rotInv = inverse (rot);
         // std::cout << rot << std::endl;
 
         // last we need to find the maximum and minimum points in the mesh to determine
         // the bounds (halflengts) of the OBB
-        Triangle<> t   = pmesh->getTriangle (0);
-        Vector3D<> p   = rotInv * cast< T > (t[0]);
-        Vector3D<> max = p, min = p;
+        rw::geometry::Triangle< double > t = pmesh->getTriangle (0);
+        Vector3D< T > p                       = rotInv * cast< T > (t[0]);
+        Vector3D< T > max = p, min = p;
         for (size_t i = 0; i < pmesh->getSize (); i++) {
-            Triangle<> tri = pmesh->getTriangle (i);
+            rw::geometry::Triangle< double > tri = pmesh->getTriangle (i);
             for (int pidx = 0; pidx < 3; pidx++) {
-                Vector3D<> p = rotInv * cast< T > (tri[pidx]);
+                Vector3D< T > p = rotInv * cast< T > (tri[pidx]);
                 for (int j = 0; j < 3; j++) {
                     if (p (j) > max (j))
                         max (j) = p (j);
@@ -247,12 +254,18 @@ namespace rw { namespace geometry {
                 }
             }
         }
-        Vector3D<> midPoint   = rot * (0.5 * (max + min));
-        Vector3D<> halfLength = 0.5 * (max - min);
-        Transform3D<> trans (midPoint, rot);
+        Vector3D< T > midPoint   = rot * (0.5 * (max + min));
+        Vector3D< T > halfLength = 0.5 * (max - min);
+        Transform3D< T > trans (midPoint, rot);
         return OBB< T > (trans, halfLength);
     }
 
+#if defined(SWIG)
+    SWIG_DECLARE_TEMPLATE (BVFactoryOBB, rw::geometry::BVFactory< rw::geometry::OBB< double > >);
+    SWIG_DECLARE_TEMPLATE (BVFactoryOBB_f, rw::geometry::BVFactory< rw::geometry::OBB< float > >);
+    SWIG_DECLARE_TEMPLATE (OBBFactory, rw::geometry::OBBFactory< double >);
+    SWIG_DECLARE_TEMPLATE (OBBFactory_f, rw::geometry::OBBFactory< float >);
+#endif
 }}    // namespace rw::geometry
 
 #endif

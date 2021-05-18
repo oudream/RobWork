@@ -6,6 +6,7 @@
 #include <rwslibs/swig/ScriptTypes.hpp>
 #include <rw/core/Ptr.hpp>
 #include <rwslibs/rwstudioapp/RobWorkStudioApp.hpp>
+#include <rw/models.hpp>
 
 using namespace rwlibs::swig;
 using namespace rws::swig;
@@ -26,6 +27,8 @@ using rw::pathplanning::PathPlanner;
 %import <rwlibs/swig/sdurw_common.i>
 %import <rwlibs/swig/sdurw_math.i>
 %import <rwlibs/swig/sdurw_kinematics.i>
+%import <rwlibs/swig/sdurw_models.i>
+%import <rwlibs/swig/sdurw_sensor.i>
 %import <rwlibs/swig/sdurw.i> 
 
 %pragma(java) jniclassclassmodifiers="class"
@@ -36,6 +39,8 @@ import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_common.*;
 import org.robwork.sdurw_math.*;
 import org.robwork.sdurw_kinematics.*;
+import org.robwork.sdurw_models.*;
+import org.robwork.sdurw_sensor.*;
 %}
 %pragma(java) moduleimports=%{
 import org.robwork.sdurw.*;
@@ -43,6 +48,8 @@ import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_common.*;
 import org.robwork.sdurw_math.*;
 import org.robwork.sdurw_kinematics.*;
+import org.robwork.sdurw_models.*;
+import org.robwork.sdurw_sensor.*;
 %}
 %typemap(javaimports) SWIGTYPE %{
 import org.robwork.sdurw.*;
@@ -50,6 +57,8 @@ import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_common.*;
 import org.robwork.sdurw_math.*;
 import org.robwork.sdurw_kinematics.*;
+import org.robwork.sdurw_models.*;
+import org.robwork.sdurw_sensor.*;
 %}
 
 /********************************************
@@ -105,11 +114,11 @@ void closeRobWorkStudio ();
 
 const rw::kinematics::State& getState ();
 void setState (rw::kinematics::State& state);
-rw::core::Ptr< Device > findDevice (const std::string& name);
-rw::core::Ptr< JointDevice > findJointDevice (const std::string& name);
-rw::core::Ptr< SerialDevice > findSerialDevice (const std::string& name);
-rw::core::Ptr< TreeDevice > findTreeDevice (const std::string& name);
-rw::core::Ptr< ParallelDevice > findParallelDevice (const std::string& name);
+rw::core::Ptr< rw::models::Device > findDevice (const std::string& name);
+rw::core::Ptr< rw::models::JointDevice > findJointDevice (const std::string& name);
+rw::core::Ptr< rw::models::SerialDevice > findSerialDevice (const std::string& name);
+rw::core::Ptr< rw::models::TreeDevice > findTreeDevice (const std::string& name);
+rw::core::Ptr< rw::models::ParallelDevice > findParallelDevice (const std::string& name);
 rw::kinematics::Frame* findFrame (const std::string& name);
 rw::kinematics::MovableFrame* findMovableFrame (const std::string& name);
 rw::kinematics::FixedFrame* findFixedFrame (const std::string& name);
@@ -119,8 +128,8 @@ void moveTo (rw::kinematics::Frame* frame, rw::kinematics::MovableFrame* mframe,
 void moveTo (const std::string& fname, const std::string& mname,
              rw::math::Transform3D< double > wTframe);
 
-rw::math::Q getQ (rw::core::Ptr< Device > dev);
-void setQ (rw::core::Ptr< Device > dev, rw::math::Q);
+rw::math::Q getQ (rw::core::Ptr< rw::models::Device > dev);
+void setQ (rw::core::Ptr< rw::models::Device > dev, rw::math::Q);
 
 void setTransform (rw::kinematics::Frame* mframe, rw::math::Transform3D< double > wTframe);
 
@@ -173,7 +182,7 @@ public:
     rw::core::PropertyMap& getPropertyMap();
 
 
-    rw::core::Ptr<WorkCell> getWorkCell();
+    rw::core::Ptr<rw::models::WorkCell> getWorkCell();
 
     rw::core::Ptr<CollisionDetector> getCollisionDetector();
 
@@ -192,7 +201,7 @@ public:
     void postUpdateAndRepaint();
     void postSaveViewGL(const std::string& str);
     void postTimedStatePath(const Path<Timed<rw::kinematics::State> >& path);
-    void postWorkCell(rw::core::Ptr<WorkCell> workcell);
+    void postWorkCell(rw::core::Ptr<rw::models::WorkCell> workcell);
     void postOpenWorkCell(const std::string& str);
     void postExit();
 
@@ -208,7 +217,7 @@ public:
             $self->postState(state);
         }
 
-        void setWorkCell(rw::core::Ptr<WorkCell> workcell){
+        void setWorkCell(rw::core::Ptr<rw::models::WorkCell> workcell){
             $self->postWorkCell(workcell);
         }
 

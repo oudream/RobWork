@@ -44,6 +44,7 @@ SWIG_JAVABODY_TYPEWRAPPER(public, public, public, SWIGTYPE)
 
 #define NAME_PTR(x) x ## Ptr
 #define NAME_CPTR(x) x ## CPtr 
+#define SWIG_CORE_DEFINE(...) __VA_ARGS__
 %define OWNEDPTR(ownedPtr_type)
     namespace rw { namespace core {
         #if defined(SWIGJAVA)
@@ -72,12 +73,15 @@ SWIG_JAVABODY_TYPEWRAPPER(public, public, public, SWIGTYPE)
     %template(NAME_CPTR(name)) rw::core::Ptr<ownedPtr_type const>;
 
     %extend rw::core::Ptr<ownedPtr_type>{
-         Ptr< const ownedPtr_type > cptr () {
+         rw::core::Ptr< const ownedPtr_type > cptr () {
              return $self->cptr();
          }
     }
-    OWNEDPTR(ownedPtr_type);
+    OWNEDPTR(SWIG_CORE_DEFINE(ownedPtr_type));
 %enddef
+NAMED_OWNEDPTR(VectorFloat,std::vector<float>);
+NAMED_OWNEDPTR(VectorSize_t,std::vector<size_t>);
+
 
 #if defined(SWIGPYTHON)
 %ignore rw::core::AnyPtr::operator=;
@@ -358,6 +362,7 @@ function help( mytable )
 end
 
 local used_ns = {}
+local get_ns = {}
 
 function using(ns)
   local ns_found = false
@@ -377,11 +382,12 @@ function using(ns)
     if used_ns[ns_name] == nil then
       used_ns[ns_name] = ns_val
       for n,v in pairs(ns_val) do
-        if n ~= "string" and n ~= "ownedPtr" then
+        if n ~= "string" and n ~= "ownedPtr" and n ~= "doubleArray" and n ~= "doubleArray_frompointer" then
           if _G[n] ~= nil then
-            print("name clash: " .. n .. " is already defined")
+            print("name clash: " .. n .. " is already bound to " .. get_ns[n] .. ".".. n .. ". Binding to " .. ns .. "." .. n .. " ignored")
           else
             _G[n] = v
+            get_ns[n] = ns
           end
         end
       end

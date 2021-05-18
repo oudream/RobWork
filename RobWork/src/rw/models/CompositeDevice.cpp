@@ -15,6 +15,7 @@
  * limitations under the License.
  ********************************************************************************/
 
+
 #include "CompositeDevice.hpp"
 
 #include "JacobianCalculator.hpp"

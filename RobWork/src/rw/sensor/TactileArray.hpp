@@ -18,13 +18,14 @@
 #ifndef RW_SENSOR_TACTILEARRAY_HPP
 #define RW_SENSOR_TACTILEARRAY_HPP
 
+#if !defined(SWIG)
 #include "Sensor.hpp"
 #include "TactileArrayModel.hpp"
 
 #include <rw/math/Transform3D.hpp>
 #include <rw/math/Vector2D.hpp>
 #include <rw/math/Vector3D.hpp>
-
+#endif 
 namespace rw { namespace sensor {
 
     /**

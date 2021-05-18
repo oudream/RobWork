@@ -21,14 +21,17 @@
 /**
  * @file SerialDevice.hpp
  */
-
+#if !defined(SWIG)
 #include "JointDevice.hpp"
 
 #include <vector>
+#endif
 
 namespace rw { namespace models {
-    /** @addtogroup models */
+/** @addtogroup models */
+#if !defined(SWIG)
     //! @{
+#endif
 
     /**
      * @brief The device for a serial chain.
@@ -53,8 +56,8 @@ namespace rw { namespace models {
          * @param name [in] name of device
          * @param state [in] the connectedness of the frames
          */
-        SerialDevice (kinematics::Frame* first, kinematics::Frame* last, const std::string& name,
-                      const kinematics::State& state);
+        SerialDevice (rw::kinematics::Frame* first, rw::kinematics::Frame* last,
+                      const std::string& name, const rw::kinematics::State& state);
 
         //! @brief destructor
         virtual ~SerialDevice () {}
@@ -68,7 +71,7 @@ namespace rw { namespace models {
          *
          * @return list of raw Frame pointers.
          */
-        const std::vector< kinematics::Frame* >& frames () const;
+        const std::vector< rw::kinematics::Frame* >& frames () const;
 
         /**
          * @brief Creates object
@@ -83,13 +86,15 @@ namespace rw { namespace models {
          *
          * @param state [in] the initial state of everything
          */
-        SerialDevice (const std::vector< kinematics::Frame* >& serialChain, const std::string& name,
-                      const kinematics::State& state);
+        SerialDevice (const std::vector< rw::kinematics::Frame* >& serialChain,
+                      const std::string& name, const rw::kinematics::State& state);
 
       private:
-        std::vector< kinematics::Frame* > _kinematicChain;
+        std::vector< rw::kinematics::Frame* > _kinematicChain;
     };
-    //! @}
+#if !defined(SWIG)
+//! @}
+#endif
 }}    // namespace rw::models
 
 #endif    // end include guard

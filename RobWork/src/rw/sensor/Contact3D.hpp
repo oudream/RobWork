@@ -18,8 +18,9 @@
 #ifndef RW_SENSOR_CONTACT3D_HPP_
 #define RW_SENSOR_CONTACT3D_HPP_
 
+#if !defined(SWIG)
 #include <rw/math/Vector3D.hpp>
-
+#endif
 namespace rw { namespace sensor {
 
     /**

@@ -23,20 +23,22 @@
  *
  * \copydoc rw::geometry::IndexedFaceArray
  */
-
+#if !defined(SWIG)
 #include "Shell.hpp"
 
 #include <rw/geometry/OBB.hpp>
 #include <rw/math/Transform3D.hpp>
 #include <rw/math/Vector3D.hpp>
+#endif 
 
 namespace rw { namespace geometry {
 
     class Face;
 
     //! @addtogroup geometry
-
+#if !defined(SWIG)
     //! @{
+      #endif
     /**
      * @brief An indexed face array is a proxy to a Shell, that makes it possible to easily sort
      * faces and take subsets without modifying the underlying Shell.
@@ -142,7 +144,9 @@ namespace rw { namespace geometry {
         std::size_t _first;
         std::size_t _last;
     };
+    #if !defined(SWIG)
     //! @}
+    #endif
 }}    // namespace rw::geometry
 
 #endif /* RW_GEOMETRY_ANALYTIC_INDEXEDFACEARRAY_HPP_ */
