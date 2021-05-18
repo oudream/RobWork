@@ -24,22 +24,29 @@
  * \copydoc rw::geometry::ImplicitBREP
  */
 
+#if !defined(SWIG)
 #include "BREP.hpp"
 #include "ImplicitSurface.hpp"
 #include "ParametricCurve.hpp"
+#endif
 
 namespace rw { namespace geometry {
 
     class ImplicitShell;
 
     //! @addtogroup geometry
-
+#if !defined(SWIG)
     //! @{
+#endif
     /**
      * @brief Type of BREP where all surfaces are of type ImplicitSurface,
      * and edges are of type ParametricCurve.
      */
+#if !defined(SWIGJAVA)
     class ImplicitBREP : public BREP
+#else
+    class ImplicitBREP : public rw::geometry::GeometryData
+#endif
     {
       public:
         //! @brief Smart pointer type to ImplicitBREP
@@ -58,10 +65,10 @@ namespace rw { namespace geometry {
         virtual GeometryType getType () const;
 
         //! @copydoc BREP::getSurface
-        virtual const ImplicitSurface& getSurface (std::size_t surfaceIndex) const;
+        virtual const rw::geometry::ImplicitSurface& getSurface (std::size_t surfaceIndex) const;
 
         //! @copydoc BREP::getCurve
-        virtual const ParametricCurve& getCurve (std::size_t curveIndex) const;
+        virtual const rw::geometry::ParametricCurve& getCurve (std::size_t curveIndex) const;
 
         //! @copydoc BREP::scale
         virtual void scale (double factor);
@@ -70,10 +77,11 @@ namespace rw { namespace geometry {
         ImplicitBREP::Ptr clone () const;
 
         //! @copydoc BREP::shellProxy
-        rw::core::Ptr< const ImplicitShell > shellProxy () const;
+        rw::core::Ptr< const rw::geometry::ImplicitShell > shellProxy () const;
 
         //! @copydoc BREP::getCurves
-        std::vector< rw::core::Ptr< ParametricCurve > > getCurves (std::size_t loopIdx) const;
+        std::vector< rw::core::Ptr< rw::geometry::ParametricCurve > >
+        getCurves (std::size_t loopIdx) const;
 
         //! @brief Convenience type for a set of curves in a BREP.
         class CommonParametricCurveSet
@@ -92,13 +100,13 @@ namespace rw { namespace geometry {
             virtual std::size_t size () const = 0;
 
             //! @copydoc BREP::CommonCurveSet::curve
-            virtual const ParametricCurve& curve (std::size_t index) const = 0;
+            virtual const rw::geometry::ParametricCurve& curve (std::size_t index) const = 0;
 
             //! @copydoc BREP::CommonCurveSet::surfaceLeft
-            virtual const ImplicitSurface& surfaceLeft (std::size_t index) const = 0;
+            virtual const rw::geometry::ImplicitSurface& surfaceLeft (std::size_t index) const = 0;
 
             //! @copydoc BREP::CommonCurveSet::surfaceRight
-            virtual const ImplicitSurface& surfaceRight (std::size_t index) const = 0;
+            virtual const rw::geometry::ImplicitSurface& surfaceRight (std::size_t index) const = 0;
         };
 
         //! @copydoc BREP::getCommonCurves
@@ -114,14 +122,14 @@ namespace rw { namespace geometry {
          * @param v1 [in] the start vertex.
          * @param v2 [in] the end vertex.
          */
-        void addEdge (const ParametricCurve& curve, std::size_t v1, std::size_t v2);
+        void addEdge (const rw::geometry::ParametricCurve& curve, std::size_t v1, std::size_t v2);
 
         /**
          * @brief Attach an ImplicitSurface to a face of the BREP.
          * @param surface [in] surface to add.
          * @param loop [in] the loop index for the loop to attach surface to.
          */
-        void setFace (const ImplicitSurface& surface, std::size_t loop);
+        void setFace (const rw::geometry::ImplicitSurface& surface, std::size_t loop);
 
       protected:
         /**
@@ -133,13 +141,16 @@ namespace rw { namespace geometry {
       private:
         class CommonParametricCurveSetImpl;
         virtual rw::core::Ptr< const Shell > doShellProxyBREP () const;
+#if !defined(SWIGJAVA)
         virtual BREP::Ptr doClone () const { return clone (); }
-
+#endif
         // Geometry
-        std::vector< ParametricCurve::CPtr > _curves;
-        std::vector< ImplicitSurface::CPtr > _surfaces;
+        std::vector< rw::geometry::ParametricCurve::CPtr > _curves;
+        std::vector< rw::geometry::ImplicitSurface::CPtr > _surfaces;
     };
-    //! @}
+#if !defined(SWIG)
+//! @}
+#endif
 
 }}    // namespace rw::geometry
 

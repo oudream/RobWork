@@ -18,12 +18,14 @@
 #ifndef RW_GEOMETRY_CONTOUR2D_HPP_
 #define RW_GEOMETRY_CONTOUR2D_HPP_
 
+#if !defined(SWIG)
 #include "Covariance.hpp"
 
 #include <rw/math/Rotation2D.hpp>
 #include <rw/math/Vector2D.hpp>
 
 #include <vector>
+#endif
 
 namespace rw { namespace geometry {
     //! @addtogroup geometry
@@ -105,6 +107,7 @@ namespace rw { namespace geometry {
          */
         size_t size () const { return _points.size (); };
 
+#if !defined(SWIG)
         /**
          * @brief get i'th contour point
          * @param i
@@ -114,7 +117,9 @@ namespace rw { namespace geometry {
 
         //! @copydoc Contour2D::operator[](size_t)
         const Point& operator[] (size_t i) const { return _points[i]; }
-
+#else 
+  ARRAYOPERATOR(Point)
+#endif
         //! @brief calculates the area of this contour
         double calcArea ();
 

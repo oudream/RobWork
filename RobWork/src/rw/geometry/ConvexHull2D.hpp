@@ -19,8 +19,9 @@
 #define RW_GEOMETRY_CONVEXHULL2D_HPP_
 
 //! @file ConvexHull2D.hpp
-
+#if !defined(SWIG)
 #include <rw/math/Vector2D.hpp>
+#endif 
 
 namespace rw { namespace geometry {
     //! @addtogroup geometry
@@ -32,6 +33,11 @@ namespace rw { namespace geometry {
     class ConvexHull2D
     {
       public:
+        /**
+         * @brief Destructor
+         */
+        virtual ~ConvexHull2D();
+
         /**
          * @brief rebuilts the hull
          * @param vertices

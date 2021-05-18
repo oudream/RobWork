@@ -21,7 +21,7 @@
 /**
  * @file Camera.hpp
  */
-
+#if !defined(SWIG)
 #include "Image.hpp"
 #include "Sensor.hpp"
 
@@ -29,6 +29,7 @@
 
 #include <string>
 #include <vector>
+#endif 
 
 namespace rw { namespace sensor {
 

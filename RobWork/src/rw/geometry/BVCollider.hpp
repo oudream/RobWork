@@ -18,8 +18,9 @@
 #ifndef RW_GEOMETRY_BVCOLLIDER_HPP_
 #define RW_GEOMETRY_BVCOLLIDER_HPP_
 
+#if !defined(SWIG)
 #include <rw/math/Transform3D.hpp>
-
+#endif 
 namespace rw { namespace geometry {
 
     /**

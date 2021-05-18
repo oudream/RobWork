@@ -23,13 +23,15 @@
  *
  * \copydoc rw::models::PrismaticUniversalJoint
  */
-
+#if !defined(SWIG)
 #include "Joint.hpp"
+#endif
 
 namespace rw { namespace models {
     //! @addtogroup models
-
+#if !defined(SWIG)
     //! @{
+#endif
     /**
      * @brief A prismatic universal joint that allows rotations in two directions and translation
      * along the third.
@@ -62,37 +64,39 @@ namespace rw { namespace models {
                                           rw::math::Transform3D<>& result) const;
 
         //! @brief Frame::doGetTransform
-        virtual math::Transform3D<> doGetTransform (const rw::kinematics::State& state) const;
+        virtual rw::math::Transform3D<> doGetTransform (const rw::kinematics::State& state) const;
 
         // From Joint
-        //! @copydoc Joint::getJacobian
+        //! @copydoc rw::models::Joint::getJacobian
         virtual void getJacobian (std::size_t row, std::size_t col,
                                   const rw::math::Transform3D<>& joint,
                                   const rw::math::Transform3D<>& tcp,
                                   const rw::kinematics::State& state,
                                   rw::math::Jacobian& jacobian) const;
 
-        //! @copydoc Joint::getFixedTransform
+        //! @copydoc rw::models::Joint::getFixedTransform
         virtual rw::math::Transform3D<> getFixedTransform () const;
 
-        //! @copydoc Joint::setFixedTransform
+        //! @copydoc rw::models::Joint::setFixedTransform
         virtual void setFixedTransform (const rw::math::Transform3D<>& t3d);
 
-        //! @copydoc Joint::getJointTransform
+        //! @copydoc rw::models::Joint::getJointTransform
         virtual rw::math::Transform3D<>
         getJointTransform (const rw::kinematics::State& state) const;
 
-        //! @copydoc Joint::setJointMapping
+        //! @copydoc rw::models::Joint::setJointMapping
         virtual void setJointMapping (rw::math::Function1Diff<>::Ptr function);
 
-        //! @copydoc Joint::removeJointMapping
+        //! @copydoc rw::models::Joint::removeJointMapping
         virtual void removeJointMapping ();
 
       private:
         rw::math::Transform3D<> _T;
         rw::math::Function1Diff<>::Ptr _mapping;
     };
-    //! @}
+#if !defined(SWIG)
+//! @}
+#endif
 }}    // namespace rw::models
 
 #endif /* RW_MODELS_PRISMATICUNIVERSALJOINT_HPP_ */

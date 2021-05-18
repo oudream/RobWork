@@ -18,11 +18,13 @@
 #ifndef RW_GEOMETRY_LINE_HPP_
 #define RW_GEOMETRY_LINE_HPP_
 
+#if !defined(SWIG)
 #include "Primitive.hpp"
 
 #include <rw/math/Metric.hpp>
 
 #include <iosfwd>
+#endif
 
 namespace rw { namespace geometry {
 
@@ -59,25 +61,25 @@ namespace rw { namespace geometry {
          * @param p1 [in] point 1.
          * @param p2 [in] point 2.
          */
-        Line (const rw::math::Vector3D<>& p1, const rw::math::Vector3D<>& p2);
+        Line (const rw::math::Vector3D<double>& p1, const rw::math::Vector3D<double>& p2);
 
         //! @brief destructor
         virtual ~Line ();
 
         //! @brief Get point 1.
-        inline rw::math::Vector3D<>& p1 () { return _p1; }
+        inline rw::math::Vector3D<double>& p1 () { return _p1; }
 
         //! @brief Get point 1.
-        inline const rw::math::Vector3D<>& p1 () const { return _p1; }
+        inline const rw::math::Vector3D<double>& p1 () const { return _p1; }
 
         //! @brief Get point 2.
-        inline rw::math::Vector3D<>& p2 () { return _p2; }
+        inline rw::math::Vector3D<double>& p2 () { return _p2; }
 
         //! @brief Get point 2.
-        inline const rw::math::Vector3D<>& p2 () const { return _p2; }
+        inline const rw::math::Vector3D<double>& p2 () const { return _p2; }
 
         //! @brief Get a direction vector u = normalize(p2 - p1).
-        inline rw::math::Vector3D<> dir () const { return normalize (_p2 - _p1); }
+        inline rw::math::Vector3D<double> dir () const { return normalize (_p2 - _p1); }
 
         /**
          * @brief Calculates the shortest distance from a point to the line.
@@ -85,7 +87,7 @@ namespace rw { namespace geometry {
          * For the purposes of this calculation, the line is treated as infinitely extending
          * geometric entity, without begining nor end.
          */
-        double distance (const rw::math::Vector3D<>& point) const;
+        double distance (const rw::math::Vector3D<double>& point) const;
 
         /**
          * @brief Calculates the shortest distance to another line.
@@ -101,7 +103,7 @@ namespace rw { namespace geometry {
          * For the purposes of this calculation, the line is treated as infinitely extending
          * geometric entity, without begining nor end.
          */
-        rw::math::Vector3D<> closestPoint (const rw::math::Vector3D<>& point) const;
+        rw::math::Vector3D<double> closestPoint (const rw::math::Vector3D<double>& point) const;
 
         /**
          * @brief Fit this line to a set of points
@@ -115,20 +117,20 @@ namespace rw { namespace geometry {
          *
          * @return sum of the squares of point distances to the line
          */
-        double refit (const std::vector< rw::math::Vector3D<> >& data);
+        double refit (const std::vector< rw::math::Vector3D<double> >& data);
 
         /**
-         * @copybrief refit(const std::vector<rw::math::Vector3D<> >&)
+         * @copybrief refit(const std::vector<rw::math::Vector3D<double> >&)
          *
          * This version of refit makes it possible to fit only a subset of the points in a vector.
          *
          * @param begin [in] iterator to first element.
          * @param end [in] iterator to last element.
          * @return sum of the squares of point distances to the line.
-         * @see refit(const std::vector<rw::math::Vector3D<> >&)
+         * @see refit(const std::vector<rw::math::Vector3D<double> >&)
          */
-        double refit (const std::vector< rw::math::Vector3D<> >::const_iterator begin,
-                      const std::vector< rw::math::Vector3D<> >::const_iterator end);
+        double refit (const std::vector< rw::math::Vector3D<double> >::const_iterator begin,
+                      const std::vector< rw::math::Vector3D<double> >::const_iterator end);
 
         // inherited from Primitive
         //! @copydoc Primitive::createMesh
@@ -149,8 +151,8 @@ namespace rw { namespace geometry {
         //! @brief Create set of lines making a grid.
         static std::vector< Line >
         makeGrid (int dim_x, int dim_y, double size_x = 1.0, double size_y = 1.0,
-                  const rw::math::Vector3D<>& xdir = rw::math::Vector3D<>::x (),
-                  const rw::math::Vector3D<>& ydir = rw::math::Vector3D<>::y ());
+                  const rw::math::Vector3D<double>& xdir = rw::math::Vector3D<double>::x (),
+                  const rw::math::Vector3D<double>& ydir = rw::math::Vector3D<double>::y ());
 
         /**
          * @brief create a metric that can be used to compare the difference between
@@ -160,7 +162,7 @@ namespace rw { namespace geometry {
          * @return
          */
         static rw::math::Metric< Line >::Ptr makeMetric (double angToDistWeight = 1.0);
-
+#if !defined(SWIG)
         /**
            @brief Streaming operator.
          */
@@ -169,15 +171,23 @@ namespace rw { namespace geometry {
             return out << "Line("
                        << "p1: " << line._p1 << ", p2: " << line._p2 << ")";
         };
+#else
+        TOSTRING (rw::geometry::Line);
+#endif
 
       private:
-        rw::math::Vector3D<> _p1, _p2;
+        rw::math::Vector3D<double> _p1, _p2;
     };
+}}    // namespace rw::geometry
+#if defined(SWIG)
+SWIG_DECLARE_TEMPLATE (MetricLine, rw::math::Metric< rw::geometry::Line >);
+#endif
 
+namespace rw { namespace geometry {
     /**
      * @brief A metric for calculating line-to-line distance.
      */
-    class LineMetric : public rw::math::Metric< Line >
+    class LineMetric : public rw::math::Metric< rw::geometry::Line >
     {
       public:
         /**
@@ -190,7 +200,7 @@ namespace rw { namespace geometry {
         //! @brief Calculates distance from the line to Z axis
         double doDistance (const Line& l) const
         {
-            return doDistance (Line (rw::math::Vector3D<> (), rw::math::Vector3D<>::z ()), l);
+            return doDistance (Line (rw::math::Vector3D<double> (), rw::math::Vector3D<double>::z ()), l);
         }
 
         /**

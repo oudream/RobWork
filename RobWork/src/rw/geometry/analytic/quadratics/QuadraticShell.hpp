@@ -23,22 +23,24 @@
  *
  * \copydoc rw::geometry::QuadraticShell
  */
-
-#include <rw/geometry/OBB.hpp>
+#if !defined(SWIG)
 #include <rw/core/os.hpp>
+#include <rw/geometry/OBB.hpp>
 #include <rw/geometry/analytic/Shell.hpp>
 #include <rw/math/Vector3D.hpp>
-
+#endif
 namespace rw { namespace geometry {
 
     class QuadraticFace;
 
     //! @addtogroup geometry
-
+#if !defined(SWIG)
     //! @{
+#endif
     /**
      * @brief A collection of Quadratic surface patches, that together form a shell.
      */
+
     class QuadraticShell : public Shell
     {
       public:
@@ -62,10 +64,10 @@ namespace rw { namespace geometry {
 
         //! @copydoc Shell::size
         virtual std::size_t size () const = 0;
-
+#if !defined(SWIGJAVA)
         //! @copydoc Shell::getFace
         virtual rw::core::Ptr< const QuadraticFace > getFace (std::size_t idx) const = 0;
-
+#endif 
         /**
          * @brief Get a surface patch.
          * @param idx [in] index of the patch.
@@ -95,7 +97,9 @@ namespace rw { namespace geometry {
         //! @brief Resolution to use for discretization into triangle mesh.
         double _resolution;
     };
-    //! @}
+#if !defined(SWIG)
+//! @}
+#endif
 }}    // namespace rw::geometry
 
 #endif /* RW_GEOMETRY_ANALYTIC_QUADRATICS_QUADRATICSHELL_HPP_ */

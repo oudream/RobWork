@@ -71,11 +71,11 @@ namespace rws { namespace swig {
 
     const rw::kinematics::State& getState ();
     void setState (rw::kinematics::State& state);
-    rw::core::Ptr< rwlibs::swig::Device > findDevice (const std::string& name);
-    rw::core::Ptr< rwlibs::swig::JointDevice > findJointDevice (const std::string& name);
-    rw::core::Ptr< rwlibs::swig::SerialDevice > findSerialDevice (const std::string& name);
-    rw::core::Ptr< rwlibs::swig::TreeDevice > findTreeDevice (const std::string& name);
-    rw::core::Ptr< rwlibs::swig::ParallelDevice > findParallelDevice (const std::string& name);
+    rw::core::Ptr< rw::models::Device > findDevice (const std::string& name);
+    rw::core::Ptr< rw::models::JointDevice > findJointDevice (const std::string& name);
+    rw::core::Ptr< rw::models::SerialDevice > findSerialDevice (const std::string& name);
+    rw::core::Ptr< rw::models::TreeDevice > findTreeDevice (const std::string& name);
+    rw::core::Ptr< rw::models::ParallelDevice > findParallelDevice (const std::string& name);
     rw::kinematics::Frame* findFrame (const std::string& name);
     rw::kinematics::MovableFrame* findMovableFrame (const std::string& name);
     rw::kinematics::FixedFrame* findFixedFrame (const std::string& name);
@@ -87,8 +87,8 @@ namespace rws { namespace swig {
                  rw::math::Transform3D< double > wTframe);
 
     // utility functions for
-    rw::math::Q getQ (rw::core::Ptr< rwlibs::swig::Device > dev);
-    void setQ (rw::core::Ptr< rwlibs::swig::Device > dev, rw::math::Q);
+    rw::math::Q getQ (rw::core::Ptr< rw::models::Device > dev);
+    void setQ (rw::core::Ptr< rw::models::Device > dev, rw::math::Q);
 
     void setTransform (rw::kinematics::Frame* mframe, rw::math::Transform3D< double > wTframe);
 

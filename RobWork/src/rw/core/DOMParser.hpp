@@ -103,12 +103,13 @@ namespace rw { namespace core {
          */
         static rw::core::Ptr< DOMParser > make ();
 
+#if !defined(SWIG)
         /**
          * @addtogroup extensionpoints
          * @extensionpoint{ rw::core::DOMParser::Factory,rw::core::DOMParser,rw.core.DOMParser }
          * \class DOMParser
          */
-
+#endif
         /**
          * @brief a factory for DOMParsers. This factory defines an
          * extension point for DOMParsers. Typically this is for parsing xml files,

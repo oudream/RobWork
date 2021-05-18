@@ -3,6 +3,8 @@
 %{
 #include <rwlibs/swig/ScriptTypes.hpp>
 #include <rw/core/Ptr.hpp>
+#include <rw/models.hpp>
+#include <rw/math.hpp>
 
 using namespace rwlibs::swig;
 using rw::math::Metric;
@@ -13,19 +15,36 @@ using rw::trajectory::Path;
 
 %include <exception.i>
 
+%import <rwlibs/swig/sdurw_trajectory.i>
 %import <rwlibs/swig/sdurw_core.i>
+%import <rwlibs/swig/sdurw_common.i>
+%import <rwlibs/swig/sdurw_math.i>
+%import <rwlibs/swig/sdurw_kinematics.i>
+%import <rwlibs/swig/sdurw_models.i>
 
 %pragma(java) jniclassimports=%{
 import org.robwork.sdurw.*;
 import org.robwork.sdurw_core.*;
+import org.robwork.sdurw_common.*;
+import org.robwork.sdurw_math.*;
+import org.robwork.sdurw_kinematics.*;
+import org.robwork.sdurw_models.*;
 %}
 %pragma(java) moduleimports=%{
 import org.robwork.sdurw.*;
 import org.robwork.sdurw_core.*;
+import org.robwork.sdurw_common.*;
+import org.robwork.sdurw_math.*;
+import org.robwork.sdurw_kinematics.*;
+import org.robwork.sdurw_models.*;
 %}
 %typemap(javaimports) SWIGTYPE %{
 import org.robwork.sdurw.*;
 import org.robwork.sdurw_core.*;
+import org.robwork.sdurw_common.*;
+import org.robwork.sdurw_math.*;
+import org.robwork.sdurw_kinematics.*;
+import org.robwork.sdurw_models.*;
 %}
 
 /**
@@ -179,7 +198,7 @@ public:
      */
 	static rw::core::Ptr<QToQPlanner> makeQToQPlanner(
         const PlannerConstraint& constraint,
-		rw::core::Ptr<Device> device,
+		rw::core::Ptr<rw::models::Device> device,
 		rw::core::Ptr< rw::math::Metric< rw::math::Q > > metric = NULL,
         double nearDistance = -1,
         int historySize = -1);
@@ -253,7 +272,7 @@ public:
      * between collision checks.
      */
     PRMPlanner(
-        Device* device,
+        rw::models::Device* device,
         const rw::kinematics::State& state,
         CollisionDetector* collisionDetector,
         double resolution);
@@ -271,7 +290,7 @@ public:
     	rw::core::Ptr<QConstraint> constraint,
 		rw::core::Ptr<QSampler> sampler,
         double resolution,
-        const Device& device,
+        const rw::models::Device& device,
         const rw::kinematics::State& state);
 
     /**
@@ -466,7 +485,7 @@ public:
      */
 	static rw::core::Ptr<QToQPlanner> makeQToQPlanner(
         const PlannerConstraint& constraint,
-		rw::core::Ptr<Device> device,
+		rw::core::Ptr<rw::models::Device> device,
         PlannerType type = RRTBalancedBidirectional);
 };
 
@@ -607,9 +626,9 @@ public:
      */
     static rw::core::Ptr<SBLExpand> makeShrinkingUniformJacobianBox(
     	rw::core::Ptr<QConstraint> constraint,
-		rw::core::Ptr<Device> device,
+		rw::core::Ptr<rw::models::Device> device,
         const rw::kinematics::State& state,
-        rw::core::Ptr<JacobianCalculator> jacobian,
+        rw::core::Ptr<rw::models::JacobianCalculator> jacobian,
         double angle_max = -1,
         double disp_max = -1);
 
@@ -715,7 +734,7 @@ public:
     SBLSetup make(
 		rw::core::Ptr<QConstraint> constraint,
 		rw::core::Ptr<QEdgeConstraintIncremental> edgeConstraint,
-		rw::core::Ptr<Device> device,
+		rw::core::Ptr<rw::models::Device> device,
         double expandRadius = -1,
         double connectRadius = -1);
 
@@ -910,7 +929,7 @@ public:
      */
 	static rw::core::Ptr<QToQPlanner> makeQToQPlanner(
         const PlannerConstraint& constraint,
-		rw::core::Ptr<Device> device);
+		rw::core::Ptr<rw::models::Device> device);
 
     /**
      * @brief Sliding local planner.
@@ -972,7 +991,7 @@ public:
      */
     static rw::core::Ptr<QToQPlanner> makeSlidingQToQPlanner(
         const PlannerConstraint& constraint,
-		rw::core::Ptr<Device> device,
+		rw::core::Ptr<rw::models::Device> device,
 		rw::core::Ptr< rw::math::Metric< rw::math::Q > > metric = 0,
         double extend = -1,
         double slideImprovement = -1);
@@ -984,7 +1003,7 @@ OWNEDPTR(Z3Planner);
 
 %inline %{
 
-	rw::core::Ptr<QToTPlanner> makeToNearestRRT(rw::core::Ptr<CollisionDetector> cdect, rw::core::Ptr<Device> dev)
+	rw::core::Ptr<QToTPlanner> makeToNearestRRT(rw::core::Ptr<CollisionDetector> cdect, rw::core::Ptr<rw::models::Device> dev)
     { 
 		rw::kinematics::State state = dev->getStateStructure()->getDefaultState();
       

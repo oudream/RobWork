@@ -107,8 +107,13 @@ namespace rw { namespace math {
         Eigen::Matrix< T, Eigen::Dynamic, 1 > _values;
     };
 
+  #if !defined(SWIG)
     using EigenDecompositiond = EigenDecomposition<double>;
     using EigenDecompositionf = EigenDecomposition<float>;
+  #else 
+    SWIG_DECLARE_TEMPLATE (EigenDecomposition, rw::math::EigenDecomposition<double>);
+    SWIG_DECLARE_TEMPLATE (EigenDecomposition_f, rw::math::EigenDecomposition<float>);
+  #endif 
 }}    // namespace rw::math
 
 #endif /* EIGENDECOMPOSITION_HPP_ */

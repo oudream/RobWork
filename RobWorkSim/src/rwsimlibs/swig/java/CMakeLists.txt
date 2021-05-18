@@ -33,9 +33,8 @@ if(build)
     if(WIN32 OR CMAKE_SYSTEM_NAME STREQUAL "Darwin")
         set(build_doc FALSE)
     endif()
-    rw_subsys_option(
-        build sdurwsim_java_doc "build documentation for the java implementation" ${build_doc}
-        REASON "set by default"
+    rw_subsys_option(build sdurwsim_java_doc "build documentation for the java implementation"
+                     ${build_doc} REASON "set by default"
     )
 
     include_directories(${RWSIM_ROOT}/src ${RW_ROOT}/src)
@@ -62,21 +61,31 @@ if(build)
     # Compile java code and create JAR and Javadoc
     rw_add_java_lib(
         sdurwsim
-        CLASSPATH
-            ${RW_LIBS}/sdurw_core_java.jar
-            ${RW_LIBS}/sdurw_common_java.jar
-            ${RW_LIBS}/sdurw_math_java.jar
-            ${RW_LIBS}/sdurw_kinematics_java.jar
-            ${RW_LIBS}/sdurw_java.jar
-            ${RW_LIBS}/sdurw_task_java.jar
-            ${RW_LIBS}/sdurw_assembly_java.jar
-            ${RW_LIBS}/sdurw_control_java.jar
-            ${RW_LIBS}/sdurw_simulation_java.jar
-        JAVADOC_LINK ${RW_LIBS}/javadoc/sdurw ${RW_LIBS}/javadoc/sdurw_core ${RW_LIBS}/javadoc/sdurw_common ${RW_LIBS}/javadoc/sdurw_math ${RW_LIBS}/javadoc/sdurw_kinematics
+        CLASSPATH ${RW_LIBS}/sdurw_core_java.jar
+                  ${RW_LIBS}/sdurw_common_java.jar
+                  ${RW_LIBS}/sdurw_math_java.jar
+                  ${RW_LIBS}/sdurw_kinematics_java.jar
+                  ${RW_LIBS}/sdurw_geometry_java.jar
+                  ${RW_LIBS}/sdurw_java.jar
+                  ${RW_LIBS}/sdurw_task_java.jar
+                  ${RW_LIBS}/sdurw_assembly_java.jar
+                  ${RW_LIBS}/sdurw_control_java.jar
+                  ${RW_LIBS}/sdurw_simulation_java.jar
+                  ${RW_LIBS}/sdurw_geometry_java.jar
+                  ${RW_LIBS}/sdurw_sensor_java.jar
+                  ${RW_LIBS}/sdurw_models_java.jar
+        JAVADOC_LINK ${RW_LIBS}/javadoc/sdurw
+                     ${RW_LIBS}/javadoc/sdurw_core
+                     ${RW_LIBS}/javadoc/sdurw_common
+                     ${RW_LIBS}/javadoc/sdurw_math
+                     ${RW_LIBS}/javadoc/sdurw_kinematics
+                     ${RW_LIBS}/javadoc/sdurw_geometry
+                     ${RW_LIBS}/javadoc/sdurw_sensor
+                     ${RW_LIBS}/javadoc/sdurw_models
         WINDOW_TITLE "RobWorkSim Java API Documentation"
-        LOADER_SOURCE_FILE "${CMAKE_CURRENT_SOURCE_DIR}/LoaderRWSim.java"
-        LOADER_DST_FILE "java_src_sdurwsim/org/robwork/LoaderRWSim.java"
-        BUILD_DOC ${build_doc}
+                     LOADER_SOURCE_FILE "${CMAKE_CURRENT_SOURCE_DIR}/LoaderRWSim.java"
+                     LOADER_DST_FILE "java_src_sdurwsim/org/robwork/LoaderRWSim.java" BUILD_DOC
+                     ${build_doc}
         EXTRA_COPY
             COMMAND
                 ${CMAKE_COMMAND} -E copy_if_different
@@ -97,7 +106,7 @@ if(build)
     )
     set(CMAKE_SWIG_OUTDIR ${RWSIM_CMAKE_LIBRARY_OUTPUT_DIRECTORY})
 
-    RW_SWIG_COMPILE_TARGET(
-            java sdurwsim_jni ${java_NAME_sdurwsim}_java_doc ${java_NAME_sdurwsim}_libs
-        )
+    rw_swig_compile_target(
+        java sdurwsim_jni ${java_NAME_sdurwsim}_java_doc ${java_NAME_sdurwsim}_libs
+    )
 endif()

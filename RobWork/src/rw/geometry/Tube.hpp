@@ -18,7 +18,9 @@
 #ifndef RW_GEOMETRY_TUBE_HPP_
 #define RW_GEOMETRY_TUBE_HPP_
 
+#if !defined(SWIG) 
 #include "Primitive.hpp"
+#endif 
 
 namespace rw { namespace geometry {
     //! @addtogroup geometry
@@ -92,7 +94,7 @@ namespace rw { namespace geometry {
          * @param point [in] point to check.
          * @return true if inside geometry, false otherwise.
          */
-        bool doIsInside (const rw::math::Vector3D<>& point);
+        bool doIsInside (const rw::math::Vector3D<double>& point);
 
       private:
         float _radius;

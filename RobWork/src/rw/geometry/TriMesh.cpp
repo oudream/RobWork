@@ -20,6 +20,14 @@
 using namespace rw::geometry;
 using namespace rw::math;
 
+rw::core::Ptr< const TriMesh > TriMesh::getTriMesh (bool forceCopy) const
+{
+    if (forceCopy) {
+        return clone ();
+    }
+    return rw::core::Ptr< const TriMesh > (this);
+}
+
 rw::core::Ptr< TriMesh > TriMesh::getTriMesh (bool forceCopy)
 {
     if (forceCopy) {

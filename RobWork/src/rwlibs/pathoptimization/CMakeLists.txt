@@ -1,6 +1,6 @@
 set(SUBSYS_NAME sdurw_pathoptimization)
 set(SUBSYS_DESC "Path optimization algorithms")
-set(SUBSYS_DEPS sdurw_proximitystrategies sdurw sdurw_core sdurw_common sdurw_math sdurw_kinematics)
+set(SUBSYS_DEPS sdurw_proximitystrategies sdurw sdurw_core sdurw_common sdurw_math sdurw_kinematics sdurw_models)
 
 set(build TRUE)
 set(DEFAULT TRUE)

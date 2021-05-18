@@ -21,8 +21,9 @@
 /**
  * @file RevoluteJoint.hpp
  */
-
+#if !defined(SWIG)
 #include "Joint.hpp"
+#endif 
 
 namespace rw { namespace kinematics {
     class State;
@@ -51,7 +52,7 @@ namespace rw { namespace models {
          * @param name [in] Name of the joints
          * @param transform [in] Static transform of the joint
          */
-        RevoluteJoint (const std::string& name, const math::Transform3D<>& transform);
+        RevoluteJoint (const std::string& name, const rw::math::Transform3D<>& transform);
 
         //! @brief destructor
         virtual ~RevoluteJoint ();
@@ -68,8 +69,8 @@ namespace rw { namespace models {
          * @param q [in] Joint values for the joint
          * @param result [in] The transform of the frame in the world frame.
          */
-        void multiplyJointTransform (const math::Transform3D<>& parent, const math::Q& q,
-                                     math::Transform3D<>& result) const;
+        void multiplyJointTransform (const rw::math::Transform3D<>& parent, const rw::math::Q& q,
+                                     rw::math::Transform3D<>& result) const;
 
         /**
          * @brief The transform of the joint relative to its parent.
@@ -84,7 +85,7 @@ namespace rw { namespace models {
          *
          * @return The transform of the frame relative to its displacement transform.
          */
-        math::Transform3D<> getJointTransform (double q) const;
+        rw::math::Transform3D<> getJointTransform (double q) const;
 
         /**
          * @brief The transform of the joint relative to its parent.
@@ -99,37 +100,37 @@ namespace rw { namespace models {
          *
          * @return The transform of the frame relative to its parent frame.
          */
-        math::Transform3D<> getTransform (double q) const;
+        rw::math::Transform3D<> getTransform (double q) const;
         // we need to declare the getTransform again because its shadowed by the getTransform(q)
         using rw::kinematics::Frame::getTransform;
 
         //! @copydoc Joint::getFixedTransform()
         rw::math::Transform3D<> getFixedTransform () const;
 
-        //! @copydoc Joint::getJacobian
-        void getJacobian (size_t row, size_t col, const math::Transform3D<>& joint,
-                          const math::Transform3D<>& tcp, const kinematics::State& state,
-                          math::Jacobian& jacobian) const;
+        //! @copydoc rw::models::Joint::getJacobian
+        void getJacobian (size_t row, size_t col, const rw::math::Transform3D<>& joint,
+                          const rw::math::Transform3D<>& tcp, const rw::kinematics::State& state,
+                          rw::math::Jacobian& jacobian) const;
 
-        //! @copydoc Joint::setFixedTransform()
+        //! @copydoc rw::models::Joint::setFixedTransform()
         void setFixedTransform (const rw::math::Transform3D<>& t3d);
 
-        //! @copydoc Joint::getJointTransform()
-        math::Transform3D<> getJointTransform (const rw::kinematics::State& state) const;
+        //! @copydoc rw::models::Joint::getJointTransform()
+        rw::math::Transform3D<> getJointTransform (const rw::kinematics::State& state) const;
 
-        //! @copydoc Joint::setJointMapping()
+        //! @copydoc rw::models::Joint::setJointMapping()
         virtual void setJointMapping (rw::math::Function1Diff<>::Ptr function);
 
-        //! @copydoc Joint::removeJointMapping()
+        //! @copydoc rw::models::Joint::removeJointMapping()
         virtual void removeJointMapping ();
 
       protected:
         //! @copydoc rw::kinematics::Frame::doMultiplyTransform
-        void doMultiplyTransform (const math::Transform3D<>& parent, const kinematics::State& state,
-                                  math::Transform3D<>& result) const;
+        void doMultiplyTransform (const rw::math::Transform3D<>& parent, const rw::kinematics::State& state,
+                                  rw::math::Transform3D<>& result) const;
 
         //! @copydoc rw::kinematics::Frame::doGetTransform
-        math::Transform3D<> doGetTransform (const kinematics::State& state) const;
+        rw::math::Transform3D<> doGetTransform (const rw::kinematics::State& state) const;
 
       private:
         class RevoluteJointImpl
@@ -144,9 +145,9 @@ namespace rw { namespace models {
 
             virtual rw::math::Transform3D<> getFixedTransform () const = 0;
 
-            virtual void getJacobian (size_t row, size_t col, const math::Transform3D<>& joint,
-                                      const math::Transform3D<>& tcp, double q,
-                                      math::Jacobian& jacobian) const;
+            virtual void getJacobian (size_t row, size_t col, const rw::math::Transform3D<>& joint,
+                                      const rw::math::Transform3D<>& tcp, double q,
+                                      rw::math::Jacobian& jacobian) const;
         };
 
         /**
@@ -205,9 +206,9 @@ namespace rw { namespace models {
             rw::math::Transform3D<> getTransform (double q);
             rw::math::Transform3D<> getFixedTransform () const;
 
-            virtual void getJacobian (size_t row, size_t col, const math::Transform3D<>& joint,
-                                      const math::Transform3D<>& tcp, double q,
-                                      math::Jacobian& jacobian) const;
+            virtual void getJacobian (size_t row, size_t col, const rw::math::Transform3D<>& joint,
+                                      const rw::math::Transform3D<>& tcp, double q,
+                                      rw::math::Jacobian& jacobian) const;
 
           private:
             RevoluteJointImpl* _impl;

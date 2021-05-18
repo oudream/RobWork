@@ -18,6 +18,7 @@
 #ifndef RW_GEOMETRY_POINTCLOUD_HPP_
 #define RW_GEOMETRY_POINTCLOUD_HPP_
 
+#if !defined(SWIG)
 #include "GeometryData.hpp"
 
 #include <rw/core/Ptr.hpp>
@@ -25,7 +26,7 @@
 #include <rw/math/Vector3D.hpp>
 
 #include <vector>
-
+#endif
 namespace rw { namespace geometry {
     //! @addtogroup geometry
     // @{

@@ -18,8 +18,7 @@
 #ifndef RW_GEOMETRY_TRIANGLEUTIL_HPP_
 #define RW_GEOMETRY_TRIANGLEUTIL_HPP_
 
-//#include <rw/geometry/Face.hpp>
-
+#if !defined(SWIG)
 #include "PlainTriMesh.hpp"
 #include "Plane.hpp"
 #include "TriMesh.hpp"
@@ -28,6 +27,7 @@
 #include <rw/math/Vector3D.hpp>
 
 #include <stack>
+#endif 
 
 namespace rw { namespace geometry {
     //! @addtogroup geometry
@@ -56,7 +56,6 @@ namespace rw { namespace geometry {
             int vertIdx;
             int* _axisPtr;
         };
-
         struct SortJob
         {
           public:
@@ -69,6 +68,7 @@ namespace rw { namespace geometry {
                 std::cout << "Job: " << axis << " " << from << "-->" << to << std::endl;
             }
         };
+
 
         /**
          * @brief creates a sorted indexed verticelist. The vertice list is
@@ -86,7 +86,7 @@ namespace rw { namespace geometry {
             int axis = 0;
 
             // now copy all relevant info into the compare list
-            Triangle< T > tri;
+            rw::geometry::Triangle< T > tri;
             for (size_t i = 0; i < triMesh.getSize (); i++) {
                 int vIdx = (int) i * 3;
 
@@ -238,7 +238,7 @@ namespace rw { namespace geometry {
             typename PlainTriMesh< TRI >::Ptr back =
                 rw::core::ownedPtr (new PlainTriMesh< TRI > ());
             for (size_t i = 0; i < trimesh->size (); i++) {
-                const Triangle<>& tri = trimesh->getTriangle (i);
+                const rw::geometry::Triangle < double >& tri = trimesh->getTriangle (i);
                 double d0             = plane->distance (tri.getVertex (0));
                 double d1             = plane->distance (tri.getVertex (1));
                 double d2             = plane->distance (tri.getVertex (2));

@@ -18,9 +18,11 @@
 #ifndef RW_GEOMETRY_GEOMETRYDATA_HPP_
 #define RW_GEOMETRY_GEOMETRYDATA_HPP_
 
+#if !defined(SWIG)
 #include <rw/core/Ptr.hpp>
 
 #include <string>
+#endif 
 //! @file GeometryData.hpp
 
 namespace rw { namespace geometry {

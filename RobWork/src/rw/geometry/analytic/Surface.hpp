@@ -23,18 +23,19 @@
  *
  * \copydoc rw::geometry::Surface
  */
-
+#if !defined(SWIG)
 #include <rw/core/Ptr.hpp>
 #include <rw/math/Transform3D.hpp>
 #include <rw/math/Vector3D.hpp>
-
+#endif
 namespace rw { namespace geometry {
 
     class TriMesh;
 
     //! @addtogroup geometry
-
+#if !defined(SWIG)
     //! @{
+#endif
     /**
      * @brief Surface is an abstract representation of a smooth surface geometry.
      *
@@ -61,7 +62,7 @@ namespace rw { namespace geometry {
          * @brief Move the surface.
          * @param T [in] the transform to the new surface.
          * @return pointer to a new surface.
-         * @see #transform(const rw::math::Vector3D<>&) const if there is no rotation.
+         * @see #transform(const rw::math::Vector3D<double>&) const if there is no rotation.
          * This will preserve some nice properties for certain types of surfaces.
          */
         inline Surface::Ptr transform (const rw::math::Transform3D<>& T) const
@@ -79,7 +80,7 @@ namespace rw { namespace geometry {
          * @param P [in] the translation vector to the new surface.
          * @return pointer to a new surface.
          */
-        inline Surface::Ptr transform (const rw::math::Vector3D<>& P) const
+        inline Surface::Ptr transform (const rw::math::Vector3D<double>& P) const
         {
             return doTransformSurface (P);
         }
@@ -114,7 +115,7 @@ namespace rw { namespace geometry {
          * For trimmed surfaces, create a Face with the boundary curves and use Face::extremums.
          */
         virtual std::pair< double, double >
-        extremums (const rw::math::Vector3D<>& direction) const = 0;
+        extremums (const rw::math::Vector3D<double>& direction) const = 0;
 
         /**
          * @brief Discretize the surface into a triangle mesh representation.
@@ -130,8 +131,8 @@ namespace rw { namespace geometry {
          * @return a new TriMesh.
          */
         virtual rw::core::Ptr< TriMesh >
-        getTriMesh (const std::vector< rw::math::Vector3D<> >& border =
-                        std::vector< rw::math::Vector3D<> > ()) const = 0;
+        getTriMesh (const std::vector< rw::math::Vector3D<double> >& border =
+                        std::vector< rw::math::Vector3D<double> > ()) const = 0;
 
         /**
          * @brief Set the resolution used for discretization in the getTriMesh function.
@@ -153,11 +154,13 @@ namespace rw { namespace geometry {
 
       private:
         virtual Surface::Ptr doTransformSurface (const rw::math::Transform3D<>& T) const = 0;
-        virtual Surface::Ptr doTransformSurface (const rw::math::Vector3D<>& P) const    = 0;
+        virtual Surface::Ptr doTransformSurface (const rw::math::Vector3D<double>& P) const    = 0;
         virtual Surface::Ptr doScaleSurface (double factor) const                        = 0;
         virtual Surface::Ptr doCloneSurface () const                                     = 0;
     };
-    //! @}
+#if !defined(SWIG)
+//! @}
+#endif
 }}    // namespace rw::geometry
 
 #endif /* RW_GEOMETRY_ANALYTIC_SURFACE_HPP_ */

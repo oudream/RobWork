@@ -18,7 +18,9 @@
 #ifndef RW_GEOMETRY_RAY_HPP
 #define RW_GEOMETRY_RAY_HPP
 
+#if !defined(SWIG)
 #include "Line.hpp"
+#endif
 
 namespace rw { namespace geometry {
 
@@ -34,7 +36,7 @@ namespace rw { namespace geometry {
          * @param pos [in] position from which the ray starts
          * @param dir [in] direction in which the ray shoots
          */
-        Ray (rw::math::Vector3D<>& pos, rw::math::Vector3D<>& dir) :
+        Ray (rw::math::Vector3D<double>& pos, rw::math::Vector3D<double>& dir) :
             Line (pos, pos + dir), _pos (pos), _dir (dir)
         {}
 
@@ -44,12 +46,23 @@ namespace rw { namespace geometry {
         /**
          * @brief Get the position from which the ray starts.
          */
-        rw::math::Vector3D<>& pos () { return _pos; }
+        rw::math::Vector3D<double>& pos () { return _pos; }
+        
+        /**
+         * @brief Get the position from which the ray starts.
+         */
+        const rw::math::Vector3D<double>& pos () const { return _pos; }
+
 
         /**
          * @brief Get the direction in which the ray shoots.
          */
-        rw::math::Vector3D<>& dir () { return _dir; }
+        rw::math::Vector3D<double>& dir () { return _dir; }
+
+          /**
+         * @brief Get the direction in which the ray shoots.
+         */
+        const rw::math::Vector3D<double>& dir () const { return _dir; }
 
         // inherited from Primitive
         //! @copydoc Primitive::createMesh
@@ -64,6 +77,7 @@ namespace rw { namespace geometry {
         //! @copydoc Primitive::getType
         GeometryType getType () const { return LinePrim; }
 
+#if !defined(SWIG)
         /**
            @brief Streaming operator.
          */
@@ -72,9 +86,12 @@ namespace rw { namespace geometry {
             return out << "Ray("
                        << "pos: " << ray._pos << ", dir: " << ray._dir << ")";
         };
+#else
+        TOSTRING (rw::geometry::Ray);
+#endif
 
       private:
-        rw::math::Vector3D<> _pos, _dir;
+        rw::math::Vector3D<double> _pos, _dir;
     };
 
 }}    // namespace rw::geometry

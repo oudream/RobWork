@@ -60,6 +60,10 @@ namespace std {
 #if (defined(SWIGLUA) || defined(SWIGPYTHON))
 	%extend std::vector<std::string> { char *__str__() { return printCString(*$self); } }
 #endif
+  typedef long unsigned int size_t;
+  typedef unsigned char uint8_t;
+  typedef unsigned short uint16_t;
+  typedef unsigned int uint32_t;
 
 	%template(VectorString) std::vector<std::string>;
   %template(VectorChar) std::vector<char>;
@@ -69,8 +73,10 @@ namespace std {
   %template(VectorLong) std::vector<long>;
   %template(VectorUInt) std::vector<unsigned int>;
   %template(VectorULong) std::vector<unsigned long>;
+  %template(VecotrVecotrULong) std::vector<std::vector<size_t>>;
   %template(Vectorbool) std::vector<bool>;
   %template(pairDoubleDouble) std::pair<double,double>;
+  %template(VectorPairDoubleDouble) std::vector<std::pair<double,double>>;
   %template(pairUIntUInt) std::pair<unsigned int, unsigned int>;
   %template(pairBoolDouble) std::pair<bool,double>;
   %template(pairBoolULong) std::pair<bool,unsigned long>;

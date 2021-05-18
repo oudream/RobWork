@@ -411,9 +411,7 @@ void JointSliderWidget::paste ()
         try {    // Transform3D(Vector3D(0.2, 0.598, 0.85), Rotation3D(1, 0, 0, 0, 1, 0, -0, 0, 1))
             Q q;
             bool doQ = true;
-            std::cout << "HERE" << std::endl;
             if (_isNotADevice) {
-                std::cout << "begin: " << txt.toStdString () << std::endl;
                 std::cmatch cm;
                 if (regex_match (
                         txt.toStdString ().c_str (),

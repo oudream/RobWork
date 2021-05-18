@@ -21,6 +21,7 @@
 /**
  * @file WorkCell.hpp
  */
+#if !defined(SWIG)
 #include <rw/core/Event.hpp>
 #include <rw/core/Ptr.hpp>
 #include <rw/core/macros.hpp>
@@ -30,6 +31,7 @@
 #include <iosfwd>
 #include <string>
 #include <vector>
+#endif 
 
 // Forward declarations
 namespace rw { namespace core {
@@ -138,8 +140,9 @@ namespace rw { namespace models {
          *
          * @return Pointer to the world frame
          */
-        kinematics::Frame* getWorldFrame () const;
+        rw::kinematics::Frame* getWorldFrame () const;
 
+#if !defined(SWIGJAVA)
         /**
          * @brief Adds \b frame with \b parent as parent.
          *
@@ -150,9 +153,11 @@ namespace rw { namespace models {
          * @deprecated Since January 2018.
          * Please use the addFrame method using smart pointers instead.
          */
+        #if !defined(SWIG)
         DEPRECATED ("Use Frame::Ptr insted of Frame*")
-        void addFrame (kinematics::Frame* frame, kinematics::Frame* parent = NULL);
-
+        #endif 
+        void addFrame (rw::kinematics::Frame* frame, rw::kinematics::Frame* parent = NULL);
+#endif 
         /**
          * @brief Adds \b frame with \b parent as parent.
          *
@@ -163,7 +168,7 @@ namespace rw { namespace models {
          */
         void addFrame (rw::core::Ptr< rw::kinematics::Frame > frame,
                        rw::core::Ptr< rw::kinematics::Frame > parent = NULL);
-
+#if !defined(SWIGJAVA)
         /**
          * @brief Adds dynamically attachable frame (DAF) \b frame with
          * \b parent as parent.
@@ -175,9 +180,11 @@ namespace rw { namespace models {
          * @deprecated Since January 2018.
          * Please use the addDAF method using smart pointers instead.
          */
+        #if !defined(SWIG)
         DEPRECATED ("Use Frame::Ptr insted of Frame*")
-        void addDAF (kinematics::Frame* frame, kinematics::Frame* parent = NULL);
-
+        #endif
+        void addDAF (rw::kinematics::Frame* frame, rw::kinematics::Frame* parent = NULL);
+#endif 
         /**
          * @brief Adds dynamically attachable frame (DAF) \b frame with
          * \b parent as parent.
@@ -198,7 +205,7 @@ namespace rw { namespace models {
          * Please use remove(rw::core::Ptr<rw::kinematics::Frame>)
          * instead.
          */
-        void remove (kinematics::Frame* frame);
+        void remove (rw::kinematics::Frame* frame);
 
         /**
          * @brief Removes \b frame from work cell
@@ -221,15 +228,15 @@ namespace rw { namespace models {
          *
          * @param device [in] pointer to device.
          */
-        void addDevice (rw::core::Ptr< Device > device);
+        void addDevice (rw::core::Ptr< rw::models::Device > device);
 
         /**
          * @brief Returns a reference to a vector with pointers to the
          * Device(s) in the WorkCell
          *
-         * @return const vector with pointers to Device(s).
+         * @return const vector with pointers to rw::models::Device(s).
          */
-        const std::vector< rw::core::Ptr< Device > >& getDevices () const;
+        const std::vector< rw::core::Ptr< rw::models::Device > >& getDevices () const;
 
         /**
          * @brief Returns frame with the specified name.
@@ -241,7 +248,7 @@ namespace rw { namespace models {
          *
          * @return The frame with name \b name or NULL if no such frame.
          */
-        kinematics::Frame* findFrame (const std::string& name) const;
+        rw::kinematics::Frame* findFrame (const std::string& name) const;
 
         /**
          * @brief Returns frame with the specified name and type \b T.
@@ -296,7 +303,7 @@ namespace rw { namespace models {
          *
          * @return The device named \b name or NULL if no such device.
          */
-        rw::core::Ptr< Device > findDevice (const std::string& name) const;
+        rw::core::Ptr< rw::models::Device > findDevice (const std::string& name) const;
 
         /**
          * @brief The device named \b name of the workcell.
@@ -310,7 +317,7 @@ namespace rw { namespace models {
          */
         template< class T > rw::core::Ptr< T > findDevice (const std::string& name) const
         {
-            rw::core::Ptr< Device > dev = findDevice (name);
+            rw::core::Ptr< rw::models::Device > dev = findDevice (name);
             if (dev == NULL)
                 return NULL;
             return dev.cast< T > ();
@@ -325,7 +332,7 @@ namespace rw { namespace models {
         template< class T > std::vector< rw::core::Ptr< T > > findDevices () const
         {
             std::vector< rw::core::Ptr< T > > result;
-            for (rw::core::Ptr< Device > dev : _devices) {
+            for (rw::core::Ptr< rw::models::Device > dev : _devices) {
                 rw::core::Ptr< T > res = dev.cast< T > ();
                 if (res != NULL)
                     result.push_back (res);
@@ -338,7 +345,7 @@ namespace rw { namespace models {
          *
          * @return default State
          */
-        kinematics::State getDefaultState () const;
+        rw::kinematics::State getDefaultState () const;
 
         /**
          * @brief Returns sensor with the specified name.
@@ -465,7 +472,7 @@ namespace rw { namespace models {
         rw::core::Ptr< Object > findObject (const std::string& name) const;
 
         //! @brief Add device to workcell
-        void add (rw::core::Ptr< Device > device);
+        void add (rw::core::Ptr< rw::models::Device > device);
         //! @brief Add object to workcell
         void add (rw::core::Ptr< Object > object);
         //! @brief Add sensormodel to workcell
@@ -476,7 +483,7 @@ namespace rw { namespace models {
         //! @brief Remove object from workcell
         void remove (rw::core::Ptr< Object > object);
         //! @brief Remove device from workcell
-        void remove (rw::core::Ptr< Device > device);
+        void remove (rw::core::Ptr< rw::models::Device > device);
         //! @brief Remove sensormodel from workcell
         void remove (rw::core::Ptr< rw::sensor::SensorModel > sensor);
         //! @brief Remove controllermodel from workcell
@@ -580,7 +587,7 @@ namespace rw { namespace models {
 
       private:
         rw::core::Ptr< rw::kinematics::StateStructure > _tree;
-        std::vector< rw::core::Ptr< Device > > _devices;
+        std::vector< rw::core::Ptr< rw::models::Device > > _devices;
         std::vector< rw::core::Ptr< Object > > _objects;
         std::string _name;
         std::string _filename;

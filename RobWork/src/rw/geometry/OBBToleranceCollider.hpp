@@ -1,9 +1,11 @@
 #ifndef RW_PROXIMITY_OBBTOLERANCECOLLIDER_HPP_
 #define RW_PROXIMITY_OBBTOLERANCECOLLIDER_HPP_
 
+#if !defined(SWIG)
 #include <rw/geometry/BVCollider.hpp>
 #include <rw/geometry/OBB.hpp>
 #include <rw/math/Vector3D.hpp>
+#endif 
 
 namespace rw { namespace geometry {
 
@@ -218,6 +220,14 @@ namespace rw { namespace geometry {
 
         return true;    // should equal 0
     }
+   #if defined(SWIG)
+    #define BVColliderOBBToleranceCollider_TYPE(type) rw::geometry::BVCollider<rw::geometry::OBBToleranceCollider< type >,rw::geometry::OBB<type>>
+    SWIG_DECLARE_TEMPLATE (BVColliderOBBToleranceCollider, BVColliderOBBToleranceCollider_TYPE(double));
+    SWIG_DECLARE_TEMPLATE (BVColliderOBBToleranceCollider_f, BVColliderOBBToleranceCollider_TYPE(float));
+    SWIG_DECLARE_TEMPLATE (OBBToleranceCollider, rw::geometry::OBBToleranceCollider< double >);
+    SWIG_DECLARE_TEMPLATE (OBBToleranceCollider_f, rw::geometry::OBBToleranceCollider< float >);
+#endif
+
 }}    // namespace rw::geometry
 
 #endif /* BVCOLLIDER_HPP_ */

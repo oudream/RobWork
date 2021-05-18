@@ -63,6 +63,7 @@ FRIEND_OPERATOR_RET(rw::math::Vector3D<float>, rw::math::EAA<float>, !=, bool);
 %template(cross) rw::math::cross<double>;
 %template(cross) rw::math::cross<float>;
 
+%ignore rw::math::EigenDecomposition::MapSort;
 %{
     #include <rw/math/EigenDecomposition.hpp>
 %}
@@ -345,6 +346,11 @@ FRIEND_OPERATOR(rw::math::Rotation3D<float>, rw::math::Wrench6D<float>, *);
     #include <rw/math/Vector3D.hpp>
 %}
 %include <rw/math/Vector3D.hpp>
+%template(VectorVector3D) std::vector<rw::math::Vector3D<double>>;
+%template(VectorVector3D_f) std::vector<rw::math::Vector3D<float>>;
+NAMED_OWNEDPTR(VectorVector3D,std::vector<rw::math::Vector3D<double>>);
+NAMED_OWNEDPTR(VectorVector3D_f,std::vector<rw::math::Vector3D<float>>);
+
 
 %rename(copy) rw::math::VectorND::operator=;
 %ignore rw::math::VectorND::e() const;

@@ -1091,7 +1091,6 @@ void RWStudioView3D::saveBufferToFileDialog ()
 
 void RWStudioView3D::useDefaultCameraView ()
 {
-    std::cout << "HERE" << std::endl;
     _view->setTransform (
         Transform3D<>::makeLookAt (Vector3D<> (5, 5, 5), Vector3D<>::zero (), Vector3D<>::z ()));
     _view->updateView ();

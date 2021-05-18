@@ -15,7 +15,7 @@ using rw::trajectory::Path;
 %import <rwlibs/swig/sdurw_common.i>
 %import <rwlibs/swig/sdurw_math.i>
 %import <rwlibs/swig/sdurw_kinematics.i>
-
+%import <rwlibs/swig/sdurw_models.i>
 
 %pragma(java) jniclassimports=%{
 import org.robwork.sdurw.*;
@@ -23,6 +23,7 @@ import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_common.*;
 import org.robwork.sdurw_math.*;
 import org.robwork.sdurw_kinematics.*;
+import org.robwork.sdurw_models.*;
 %}
 %pragma(java) moduleimports=%{
 import org.robwork.sdurw.*;
@@ -30,6 +31,7 @@ import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_common.*;
 import org.robwork.sdurw_math.*;
 import org.robwork.sdurw_kinematics.*;
+import org.robwork.sdurw_models.*;
 %}
 %typemap(javaimports) SWIGTYPE %{
 import org.robwork.sdurw.*;
@@ -37,6 +39,7 @@ import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_common.*;
 import org.robwork.sdurw_math.*;
 import org.robwork.sdurw_kinematics.*;
+import org.robwork.sdurw_models.*;
 %}
 
 %{
@@ -50,7 +53,7 @@ public:
     %extend {
 
         PathLengthOptimizer(rw::core::Ptr<CollisionDetector> cd,
-                            rw::core::Ptr<Device> dev,
+                            rw::core::Ptr<rw::models::Device> dev,
                             const rw::kinematics::State &state)
         {
             rw::pathplanning::PlannerConstraint constraint =
@@ -59,7 +62,7 @@ public:
         }
 
         PathLengthOptimizer(rw::core::Ptr<CollisionDetector> cd,
-                            rw::core::Ptr<Device> dev,
+                            rw::core::Ptr<rw::models::Device> dev,
                             rw::core::Ptr< rw::math::Metric< rw::math::Q > > metric,
                             const rw::kinematics::State &state)
         {

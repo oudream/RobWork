@@ -115,7 +115,7 @@ namespace rw { namespace kinematics {
         */
         static Frame* worldFrame (Frame* frame, const rw::kinematics::State& state);
 
-#if !defined(SWIGPYTHON) && !defined(SWIGJAVA)
+#if !defined(SWIGPYTHON) && !defined(SWIGJAVA) && !defined(SWIGLUA)
         /**
            @brief Find the world frame of the workcell by traversing the path
            from \b frame to the root of the tree.
@@ -222,7 +222,7 @@ namespace rw { namespace kinematics {
          */
         static std::vector< FrameList > getStaticFrameGroups (Frame* root,
                                                               const rw::kinematics::State& state);
-#if !defined(SWIGPYTHON)  && !defined(SWIGJAVA)
+#if !defined(SWIGPYTHON)  && !defined(SWIGJAVA) && !defined(SWIGLUA)
         /**
          * @brief Get static frame groups.
          *

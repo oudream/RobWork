@@ -24,15 +24,18 @@
  * \copydoc rw::geometry::HyperSphere
  */
 
+#if !defined(SWIG)
 #include <rw/core/Ptr.hpp>
 
 #include <Eigen/Core>
 #include <vector>
+#endif
 
 namespace rw { namespace geometry {
     //! @addtogroup geometry
-
+#if !defined(SWIG)
     //! @{
+#endif
     /**
      * @brief A hyper-sphere of K dimensions.
      *
@@ -40,7 +43,7 @@ namespace rw { namespace geometry {
      * shown in [1].
      *
      * The distribution of points is illustrated below for 2 and 3 dimensional hyper-spheres.
-     * Notice that the tessellation is best when \f$\delta\f$ is small.
+     * Notice that the tessellation is best when \f$ \delta\f$ is small.
      *
      * \image html geometry/hypersphere.gif "Distribution of points for K=2 and K=3."
      *
@@ -70,36 +73,37 @@ namespace rw { namespace geometry {
          * coordinates. The mapping is documented in [1], section 2.1.
          *
          * @param delta [in] the resolution.
-         * @return unit vectors, \f$[x_1 x_2 \dots x_K]^T\f$, in Cartesian coordinates with
+         * @return unit vectors, \f$ [x_1 x_2 \dots x_K]^T\f$ , in Cartesian coordinates with
          * dimension K.
-         * @note This function is only implemented for \f$2 \leq K \leq 6\f$.
+         * @note This function is only implemented for \f$ 2 \leq K \leq 6\f$ .
          */
         std::vector< Eigen::VectorXd > uniformDistributionCartesian (double delta) const;
 
         /**
          * @brief Create a uniform distribution in spherical coordinates.
          *
-         * This implements the algorithm in [1], section 2.1, for dimensions \f$2 \leq K \leq 6\f$.
+         * This implements the algorithm in [1], section 2.1, for dimensions \f$ 2 \leq K \leq 6\f$
+         * .
          *
          * @param delta [in] the resolution.
-         * @return list of vectors, \f$[\theta_1 \theta_2 \dots \theta_{K-1}]^T\f$, in spherical
+         * @return list of vectors, \f$ [\theta_1 \theta_2 \dots \theta_{K-1}]^T\f$ , in spherical
          * coordinates with dimension K-1.
-         * @note This function is only implemented for \f$2 \leq K \leq 6\f$.
+         * @note This function is only implemented for \f$ 2 \leq K \leq 6\f$ .
          */
         std::vector< Eigen::VectorXd > uniformDistributionSpherical (double delta) const;
 
         /**
          * @brief Get the number of dimensions of the hyper-sphere.
-         * @return the number of dimensions, \f$2 \leq K \leq 6\f$.
+         * @return the number of dimensions, \f$ 2 \leq K \leq 6\f$ .
          */
         unsigned int getDimensions () const;
 
         /**
          * @brief Calculate the surface area of a hyper-sphere.
          *
-         * Calculated for even dimensionality as \f$\frac{K \pi^{K/2}}{(K/2)!}\f$
+         * Calculated for even dimensionality as \f$ \frac{K \pi^{K/2}}{(K/2)!}\f$
          *
-         * Calculated for odd dimensionality as \f$\frac{K 2^K \pi^{(K-1)/2}}{K!}\f$
+         * Calculated for odd dimensionality as \f$ \frac{K 2^K \pi^{(K-1)/2}}{K!}\f$
          *
          * @return the surface area.
          */
@@ -108,10 +112,10 @@ namespace rw { namespace geometry {
         /**
          * @brief The volume of a hyper-sphere.
          *
-         * Calculated for even dimensionality as \f$\frac{\pi^{K/2}}{(K/2)!}\f$
+         * Calculated for even dimensionality as \f$ \frac{\pi^{K/2}}{(K/2)!}\f$
          *
-         * Calculated for odd dimensionality as \f$\frac{2 (2 \pi)^{(K-1)/2}}{K!!}\f$
-         * where the double factorial for odd K means \f$1 \cdot 3 \cdot 5 \dots K\f$
+         * Calculated for odd dimensionality as \f$ \frac{2 (2 \pi)^{(K-1)/2}}{K!!}\f$
+         * where the double factorial for odd K means \f$ 1 \cdot 3 \cdot 5 \dots K\f$
          *
          * @return the volume.
          */
@@ -120,7 +124,9 @@ namespace rw { namespace geometry {
       private:
         const unsigned int _dimensions;
     };
-    //! @}
+#if !defined(SWIG)
+//! @}
+#endif
 }}    // namespace rw::geometry
 
 #endif /* RW_GEOMETRY_HYPERSPHERE_HPP_ */

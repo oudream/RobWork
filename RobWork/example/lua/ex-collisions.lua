@@ -1,12 +1,14 @@
 require("sdurw_core")
 require("sdurw_math")
 require("sdurw_kinematics")
+require("sdurw_models")
 require("sdurw")
 require("sdurw_proximitystrategies")
 
 using("sdurw_core")
 using("sdurw_math")
 using("sdurw_kinematics")
+using("sdurw_models")
 using("sdurw")
 using("sdurw_proximitystrategies")
 

@@ -2,8 +2,10 @@
 #ifndef RW_GEOMETRY_TriTriIntersectDeviller_HPP_
 #define RW_GEOMETRY_TriTriIntersectDeviller_HPP_
 
+#if !defined(SWIG)
 #include <rw/geometry/Triangle.hpp>
 #include <rw/math/Transform3D.hpp>
+#endif 
 //#include <PQP/PQP.h>
 namespace rw { namespace geometry {
 
@@ -212,9 +214,13 @@ namespace rw { namespace geometry {
 
         return true;
     }
-
+#if !defined(SWIG)
     extern template class rw::geometry::TriTriIntersectDeviller< double >;
     extern template class rw::geometry::TriTriIntersectDeviller< float >;
+#else
+    SWIG_DECLARE_TEMPLATE(TriTriIntersectDeviller,rw::geometry::TriTriIntersectDeviller< double >);
+    SWIG_DECLARE_TEMPLATE(TriTriIntersectDeviller_f,rw::geometry::TriTriIntersectDeviller< float >);
+#endif 
 }}    // namespace rw::geometry
 
 #endif /* TRIDEVILLER_HPP_ */

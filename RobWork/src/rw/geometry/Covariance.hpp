@@ -8,6 +8,7 @@
 #ifndef COVARIANCE3D_HPP_
 #define COVARIANCE3D_HPP_
 
+#if !defined(SWIG)
 #include <rw/geometry/Geometry.hpp>
 #include <rw/geometry/IndexedTriMesh.hpp>
 #include <rw/geometry/TriangleUtil.hpp>
@@ -16,6 +17,7 @@
 #include <rw/math/Vector3D.hpp>
 
 #include <vector>
+#endif 
 
 namespace rw { namespace geometry {
 
@@ -147,9 +149,12 @@ namespace rw { namespace geometry {
       private:
         Eigen::Matrix< T, Eigen::Dynamic, Eigen::Dynamic > _covar;
     };
-
+    #if !defined(SWIG)
     extern template class rw::geometry::Covariance< double >;
     extern template class rw::geometry::Covariance< float >;
+    #else 
+    SWIG_DECLARE_TEMPLATE(Covariance,rw::geometry::Covariance< double >);
+    #endif
 }}    // namespace rw::geometry
 
 #endif /* COVARIANCE3D_HPP_ */

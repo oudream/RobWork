@@ -3,12 +3,15 @@
 %{
 #include <rwlibs/swig/ScriptTypes.hpp>
 #include <rw/core/Ptr.hpp>
+#include <rw/models.hpp>
 
 using namespace rwlibs::swig;
 %}
+
 %include <exception.i>
 
 %import <rwlibs/swig/sdurw_core.i>
+%import <rwlibs/swig/sdurw_models.i>
 %import <rwlibs/swig/sdurw.i>
 %import(module=rwlibs/swig/sdurw_math) <rw/math/Q.hpp>
 
@@ -16,16 +19,19 @@ using namespace rwlibs::swig;
 import org.robwork.sdurw.*;
 import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_math.*;
+import org.robwork.sdurw_models.*;
 %}
 %pragma(java) moduleimports=%{
 import org.robwork.sdurw.*;
 import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_math.*;
+import org.robwork.sdurw_models.*;
 %}
 %typemap(javaimports) SWIGTYPE %{
 import org.robwork.sdurw.*;
 import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_math.*;
+import org.robwork.sdurw_models.*;
 %}
 
 %nodefaultctor Controller;
@@ -101,7 +107,7 @@ public:
     /**
      * @brief get kinematic model of device that is controlled
      */
-    virtual Device& getModel();
+    virtual rw::models::Device& getModel();
 
     /**
      * @brief return the current position of the controlled robot

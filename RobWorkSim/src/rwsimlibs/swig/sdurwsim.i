@@ -5,6 +5,8 @@
 #include <rw/kinematics/FixedFrame.hpp>
 #include <rwlibs/swig/ScriptTypes.hpp>
 #include <rwsimlibs/swig/ScriptTypes.hpp>
+#include <rw/models.hpp>
+
 #if defined (SWIGLUA)
     #include <rwsimlibs/swig/lua/Lua.hpp>
 #endif
@@ -94,6 +96,9 @@ void java_ThreadSimulatorStepCallback(ThreadSimulator* sim, rw::kinematics::Stat
 %import <rwlibs/swig/sdurw_common.i>
 %import <rwlibs/swig/sdurw_math.i>
 %import <rwlibs/swig/sdurw_kinematics.i>
+%import <rwlibs/swig/sdurw_geometry.i>
+%import <rwlibs/swig/sdurw_models.i>
+%import <rwlibs/swig/sdurw_sensor.i>
 %import <rwlibs/swig/sdurw.i>
 %import <rwlibs/swig/sdurw_assembly.i>
 %import <rwlibs/swig/sdurw_control.i>
@@ -109,6 +114,9 @@ import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_common.*;
 import org.robwork.sdurw_math.*;
 import org.robwork.sdurw_kinematics.*;
+import org.robwork.sdurw_geometry.*;
+import org.robwork.sdurw_models.*;
+import org.robwork.sdurw_sensor.*;
 import org.robwork.sdurw_assembly.*;
 import org.robwork.sdurw_control.*;
 import org.robwork.sdurw_simulation.*;
@@ -120,6 +128,9 @@ import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_common.*;
 import org.robwork.sdurw_math.*;
 import org.robwork.sdurw_kinematics.*;
+import org.robwork.sdurw_geometry.*;
+import org.robwork.sdurw_models.*;
+import org.robwork.sdurw_sensor.*;
 %}
 %pragma(java) jniclassimports=%{
 import org.robwork.sdurw.*;
@@ -130,6 +141,9 @@ import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_common.*;
 import org.robwork.sdurw_math.*;
 import org.robwork.sdurw_kinematics.*;
+import org.robwork.sdurw_geometry.*;
+import org.robwork.sdurw_models.*;
+import org.robwork.sdurw_sensor.*;
 %}
 
 #if (defined(SWIGPYTHON) || defined(SWIGLUA))
@@ -192,8 +206,8 @@ public:
 	};*/
 	//typedef std::list<StrategyTableRow> StrategyTable;
 
-	ContactDetector(rw::core::Ptr<WorkCell> workcell);
-	//ContactDetector(rw::core::Ptr<WorkCell> workcell, rw::core::Ptr<ProximityFilterStrategy> filter);
+	ContactDetector(rw::core::Ptr<rw::models::WorkCell> workcell);
+	//ContactDetector(rw::core::Ptr<rw::models::WorkCell> workcell, rw::core::Ptr<ProximityFilterStrategy> filter);
 	virtual ~ContactDetector();
 	//void setProximityFilterStrategy(rw::proximity::ProximityFilterStrategy::Ptr filter);
 	virtual std::vector<Contact> findContacts(const rw::kinematics::State& state);
@@ -241,24 +255,8 @@ public:
 	//ContactDetectorTracking& operator=(const ContactDetectorTracking& data);
 	void clear();
 	void remove(std::size_t index);
-	//ContactStrategyTracking::UserData::Ptr getUserData(std::size_t index) const;
-	//std::vector<ContactStrategyTracking::UserData::Ptr> getUserData() const;
-	//void setUserData(std::size_t index, ContactStrategyTracking::UserData::Ptr data);
-	//void setUserData(const std::vector<ContactStrategyTracking::UserData::Ptr> &data);
-	std::size_t getSize() const;
 
-	/*struct ContactInfo {
-		ContactInfo(): tracking(NULL), id(0), total(0) {}
-		std::pair<rw::kinematics::Frame*, rw::kinematics::Frame*> frames;
-		std::pair<ContactModel*,ContactModel*> models;
-		rw::core::Ptr<ContactStrategy> strategy;
-		ContactStrategyTracking* tracking;
-		std::size_t id;
-		std::size_t total;
-	};
-	std::vector<ContactInfo>& getInfo();
-	const std::vector<ContactInfo>& getInfo() const;*/
-	//ContactStrategyTracking& getStrategyTracking(const ContactModel* modelA, const ContactModel* modelB);
+	std::size_t getSize() const;
 };
 
 %template (ContactDetectorTrackingPtr) rw::core::Ptr<ContactDetectorTracking>;
@@ -269,42 +267,10 @@ class ContactStrategy //: public rw::proximity::ProximityStrategy
 public:
 	ContactStrategy();
 	virtual ~ContactStrategy() {};
-	virtual bool match(rw::core::Ptr<GeometryData> geoA, rw::core::Ptr<GeometryData> geoB) = 0;
-	/*
-	virtual std::vector<Contact> findContacts(rw::core::Ptr<ProximityModel> a,
-			const rw::math::Transform3D<double>& wTa,
-			rw::core::Ptr<ProximityModel> b,
-			const rw::math::Transform3D<double>& wTb) = 0;
-	virtual std::vector<Contact> findContacts(
-			rw::core::Ptr<ProximityModel> a,
-			const rw::math::Transform3D<double>& wTa,
-			rw::core::Ptr<ProximityModel> b,
-			const rw::math::Transform3D<double>& wTb,
-			ContactStrategyData &data) = 0;
-	virtual std::vector<Contact> findContacts(
-			rw::core::Ptr<ProximityModel> a,
-			const rw::math::Transform3D<double>& wTa,
-			rw::core::Ptr<ProximityModel> b,
-			const rw::math::Transform3D<double>& wTb,
-			ContactStrategyData &data,
-			ContactStrategyTracking& tracking) = 0;
-	virtual std::vector<Contact> updateContacts(
-			rw::core::Ptr<ProximityModel> a,
-			const rw::math::Transform3D<double>& wTa,
-			rw::core::Ptr<ProximityModel> b,
-			const rw::math::Transform3D<double>& wTb,
-			ContactStrategyData& data,
-			ContactStrategyTracking& tracking) const = 0;
-	*/
+	virtual bool match(rw::core::Ptr<rw::geometry::GeometryData> geoA, rw::core::Ptr<rw::geometry::GeometryData> geoB) = 0;
+
 	virtual std::string getName() = 0;
 	
-	// ProximityStrategy interface
-	//virtual ProximityModel::Ptr createModel() = 0;
-	//virtual void destroyModel(ProximityModel* model) = 0;
-	//virtual bool addGeometry(ProximityModel* model, const Geometry& geom) = 0;
-	//virtual bool addGeometry(ProximityModel* model, Geometry::Ptr geom, bool forceCopy=false) = 0;
-	//virtual bool removeGeometry(ProximityModel* model, const std::string& geomId) = 0;
-	//virtual std::vector<std::string> getGeometryIDs(ProximityModel* model) = 0;
 	virtual void clear() = 0;
 	
 	// ContactStrategy:
@@ -322,8 +288,7 @@ class Contact {
 public:
 	Contact();
 	virtual ~Contact();
-//	ContactModel::Ptr getModelA() const;
-//	ContactModel::Ptr getModelB() const;
+
 	const rw::kinematics::Frame* getFrameA() const;
 	const rw::kinematics::Frame* getFrameB() const;
 	rw::math::Transform3D<double> aTb() const;
@@ -331,8 +296,6 @@ public:
 	rw::math::Vector3D<double> getPointB() const;
 	rw::math::Vector3D<double> getNormal() const;
 	double getDepth() const;
-//	void setModelA(ContactModel::Ptr modelA);
-//	void setModelB(ContactModel::Ptr modelB);
 	void setFrameA(const rw::kinematics::Frame* Aframe);
 	void setFrameB(const rw::kinematics::Frame* Bframe);
 	void setTransform(rw::math::Transform3D<double> aTb);
@@ -651,13 +614,13 @@ public:
     RigidBody(
         const BodyInfo& info,
         rw::kinematics::MovableFrame* frame,
-        rw::core::Ptr<Geometry> geom
+        rw::core::Ptr<rw::geometry::Geometry> geom
         );
 
     RigidBody(
         const BodyInfo& info,
         rw::kinematics::MovableFrame* frame,
-        const std::vector<rw::core::Ptr<Geometry> >& geoms
+        const std::vector<rw::core::Ptr<rw::geometry::Geometry> >& geoms
         );
 
     //rw::math::InertiaMatrix<double> getEffectiveMassW(const rw::math::Vector3D<double>& wPc);
@@ -745,7 +708,7 @@ public:
 
     virtual void setQ(const rw::math::Q &q, rw::kinematics::State& state);
 
-    rw::core::Ptr<Device> getKinematicModel();
+    rw::core::Ptr<rw::models::Device> getKinematicModel();
     rw::core::Ptr<Body> getBase();
 
     virtual rw::math::Q getJointVelocities(const rw::kinematics::State& state);
@@ -792,7 +755,7 @@ class RigidDevice : public DynamicDevice {
         void setMotorForceTarget(double force, int i, rw::kinematics::State& state);
         void setMotorVelocityTarget(double vel, int i, rw::kinematics::State& state);
 
-        rw::core::Ptr<JointDevice> getJointDevice();
+        rw::core::Ptr<rw::models::JointDevice> getJointDevice();
         std::vector<rw::core::Ptr<Body> > getLinks();
 
         //virtual void registerStateData(rw::kinematics::StateStructure::Ptr statestructure);
@@ -857,7 +820,7 @@ public:
      * @brief Constructor
      */
     
-    DynamicWorkCell(rw::core::Ptr<WorkCell> workcell,
+    DynamicWorkCell(rw::core::Ptr<rw::models::WorkCell> workcell,
                     const std::vector<rw::core::Ptr<Body> >& bodies,
                     const std::vector<rw::core::Ptr<Body> >& allbodies,
                     const std::vector<rw::core::Ptr<Constraint> >& constraints,
@@ -892,7 +855,7 @@ public:
     const std::vector<rw::core::Ptr<Constraint> >& getConstraints() const;
 	rw::core::Ptr<Constraint> findConstraint(const std::string& name) const;
 
-    rw::core::Ptr<WorkCell> getWorkcell();
+    rw::core::Ptr<rw::models::WorkCell> getWorkcell();
 
     double getCollisionMargin();
     void setCollisionMargin(double margin);

@@ -18,6 +18,7 @@
 #ifndef RW_MODELS_OBJECT_HPP_
 #define RW_MODELS_OBJECT_HPP_
 
+#if !defined(SWIG)
 #include <rw/core/Ptr.hpp>
 #include <rw/geometry/Geometry.hpp>
 #include <rw/geometry/Model3D.hpp>
@@ -27,6 +28,7 @@
 #include <rw/math/InertiaMatrix.hpp>
 
 #include <vector>
+#endif 
 
 namespace rw { namespace kinematics {
     class State;
@@ -142,7 +144,7 @@ namespace rw { namespace models {
          * @param state [in] the state in which to get center of mass
          * @return
          */
-        virtual rw::math::Vector3D<> getCOM (rw::kinematics::State& state) const = 0;
+        virtual rw::math::Vector3D<double> getCOM (rw::kinematics::State& state) const = 0;
 
         /**
          * @brief returns the inertia matrix of this body calculated around COM with the orientation
