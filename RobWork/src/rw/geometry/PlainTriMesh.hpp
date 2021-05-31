@@ -222,17 +222,17 @@ namespace rw { namespace geometry {
     SWIG_DECLARE_TEMPLATE (PlainTriMeshN3_f, rw::geometry::PlainTriMesh< rw::geometry::TriangleN3< float > >);
 #endif
     //! @brief tri mesh, double, no normals
-    typedef PlainTriMesh< rw::geometry::Triangle< double > > PlainTriMeshD;
+    typedef rw::geometry::PlainTriMesh< rw::geometry::Triangle< double > > PlainTriMeshD;
     //! @brief tri mesh, float, no normals
-    typedef PlainTriMesh< rw::geometry::Triangle< float > > PlainTriMeshF;
+    typedef rw::geometry::PlainTriMesh< rw::geometry::Triangle< float > > PlainTriMeshF;
     //! @brief tri mesh, double, 1 face normal
-    typedef PlainTriMesh< TriangleN1< double > > PlainTriMeshN1D;
+    typedef rw::geometry::PlainTriMesh< rw::geometry::TriangleN1< double > > PlainTriMeshN1D;
     //! @brief tri mesh, float, 1 face normal
-    typedef PlainTriMesh< TriangleN1< float > > PlainTriMeshN1F;
+    typedef rw::geometry::PlainTriMesh< rw::geometry::TriangleN1< float > > PlainTriMeshN1F;
     //! @brief tri mesh, double, 3 vertex normals
-    typedef PlainTriMesh< TriangleN3< double > > PlainTriMeshN3D;
+    typedef rw::geometry::PlainTriMesh< rw::geometry::TriangleN3< double > > PlainTriMeshN3D;
     //! @brief tri mesh, float, 3 vertex normals
-    typedef PlainTriMesh< TriangleN3< float > > PlainTriMeshN3F;
+    typedef rw::geometry::PlainTriMesh< rw::geometry::TriangleN3< float > > PlainTriMeshN3F;
     //! @}
 
 }}    // namespace rw::geometry

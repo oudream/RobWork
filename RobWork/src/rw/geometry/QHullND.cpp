@@ -125,13 +125,14 @@ void qhull::build (std::vector< std::vector< double > > coords, std::vector< int
     size_t nrCoords = coords.size ();
     if (nrCoords > 0) {
         size_t dim = coords[0].size();
-        double array[nrCoords*dim];
+        double* array = new double[nrCoords*dim];
         for (size_t i = 0; i < nrCoords; i ++){
             for (size_t j = 0; j < nrCoords; j++){
                 array[i*dim+j] = coords[i][j];
             }
         }
         qhull::build(dim,&array[0],nrCoords,vertIdxs,faceIdxs,faceNormals,faceOffsets);
+        delete[] array;
     }
     else {
         RW_THROW ("can't build qhull from empty coordinate list");
