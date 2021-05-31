@@ -209,7 +209,7 @@ namespace rw { namespace geometry {
         /**
          * @brief Recalculate the normals of \b trimesh
          */
-        template< class T > static void recalcNormals (PlainTriMesh< TriangleN1< T > >& trimesh)
+        template< class T > static void recalcNormals (rw::geometry::PlainTriMesh< rw::geometry::TriangleN1< T > >& trimesh)
         {
             using namespace rw::math;
             for (size_t i = 0; i < trimesh.getSize (); i++) {

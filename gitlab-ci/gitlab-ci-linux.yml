@@ -83,7 +83,6 @@
       - ./RobWork/src/rwlibs/swig
       - ./gtest
     expire_in: 2 day
-    when: on_success
 
 .linux-build-RWS:
   extends: .CI-common-linux
