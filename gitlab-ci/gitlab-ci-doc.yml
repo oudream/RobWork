@@ -28,10 +28,13 @@ pages:
   variables:
     GIT_STRATEGY: none
   script:
+    - cd public
+    - "sshpass -e sftp robwork@www5.sdu.dk:htdocs <<< $'put -r ./*'"
     - echo "Deploying documentation."
   dependencies:
     - build:doc-2004
   needs: ["build:doc-2004"]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-2004-doc
   artifacts:
     paths:
       - public

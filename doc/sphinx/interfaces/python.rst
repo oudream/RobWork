@@ -12,31 +12,31 @@ generated. These consist of two files per project (RobWork has additional for it
 libs folder under the relevant build configuration.
 
 Linux example for Debug build configuration::
-   RobWork/libs/Debug/sdurw/_sdurw.so
-   RobWork/libs/Debug/sdurw/sdurw.py
-   RobWork/libs/Debug/sdurw/__init__.py
-   RobWorkStudio/libs/Debug/sdurws/_sdurws.so
-   RobWorkStudio/libs/Debug/sdurws/sdurws.py
-   RobWorkStudio/libs/Debug/sdurws/__init__.py
-   RobWorkSim/libs/Debug/sdurwsim/_sdurwsim.so
-   RobWorkSim/libs/Debug/sdurwsim/sdurwsim.py
-   RobWorkSim/libs/Debug/sdurwsim/__init__.py
+   RobWork/Build/RW/libs/Debug/sdurw/_sdurw.so
+   RobWork/Build/RW/libs/Debug/sdurw/sdurw.py
+   RobWork/Build/RW/libs/Debug/sdurw/__init__.py
+   RobWork/Build/RWStudio/libs/Debug/sdurws/_sdurws.so
+   RobWork/Build/RWStudio/libs/Debug/sdurws/sdurws.py
+   RobWork/Build/RWStudio/libs/Debug/sdurws/__init__.py
+   RobWork/Build/RWSim/libs/Debug/sdurwsim/_sdurwsim.so
+   RobWork/Build/RWSim/libs/Debug/sdurwsim/sdurwsim.py
+   RobWork/Build/RWSim/libs/Debug/sdurwsim/__init__.py
 
 
 For the above example loading of the modules in the python interpreter requires the PYTHONPATH environment variable to be set:
 
 .. code-block:: bash
 
-   export PYTHONPATH=/path/to/RobWork/libs/BUILD_CONFIGURATION/:/path/to/RobWorkStudio/libs/BUILD_CONFIGURATION/:/path/to/RobWorkSim/libs/BUILD_CONFIGURATION/:$PYTHONPATH
+   export PYTHONPATH=/path/to/RobWork/Build/RW/libs/BUILD_CONFIGURATION/:/path/to/RobWork/Build/RWStudio/libs/BUILD_CONFIGURATION/:/path/to/RobWork/Build/RWSim/libs/BUILD_CONFIGURATION/:$PYTHONPATH
 
 As an alternative the paths can be set in the python script as well:
 
 .. code-block:: py
 
    import sys
-   sys.path.append('/path/to/RobWork/libs/BUILD_CONFIGURATION')
-   sys.path.append('/path/to/RobWorkSim/libs/BUILD_CONFIGURATION')
-   sys.path.append('/path/to/RobWorkStudio/libs/BUILD_CONFIGURATION')
+   sys.path.append('/path/to/RobWork/Build/RW/libs/BUILD_CONFIGURATION')
+   sys.path.append('/path/to/RobWork/Build/RWSim/libs/BUILD_CONFIGURATION')
+   sys.path.append('/path/to/RobWork/Build/RWStudio/libs/BUILD_CONFIGURATION')
    import sdurw, sdurws, sdurwsim
    // now we can use all robwork python bindings
 
