@@ -303,6 +303,27 @@ namespace rw { namespace math {
         }
 
         /**
+         * @brief Scalar multiplication.
+         * @param rhs [in] the Eigen vector^T or matrix to multiply with
+         * @return the product
+         */
+        template< class R > Vector3D< T > operator* (const Eigen::MatrixBase< R >& rhs) const
+        {
+            return Vector3D< T > (this->e()*rhs);
+        }
+
+        /**
+         * @brief Scalar multiplication.
+         * @param lhs [in] the Eigen vector^T or matrix to multiply with
+         * @param rhs [in] the Vector to be multiplied
+         * @return the product
+         */
+        template< class R > friend Vector3D< T > operator* (const Eigen::MatrixBase< R >& lhs, const Vector3D< T >& rhs)
+        {
+            return Vector3D< T > (lhs*rhs.e());
+        }
+
+        /**
          * @brief Scalar subtraction.
          */
         Vector3D< T > elemSubtract (const T rhs) const

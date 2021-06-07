@@ -199,6 +199,7 @@ bool ProximityStrategyPQP::addGeometry (rw::proximity::ProximityModel* model,
 {
     PQPProximityModel* pmodel = (PQPProximityModel*) model;
     PQPModelPtr pqpmodel;
+    
     GeometryData::Ptr gdata = geom->getGeometryData ();
     // check if geomid is in model. remove it if it has
     for (RWPQPModel& m : pmodel->models) {
@@ -251,7 +252,6 @@ bool ProximityStrategyPQP::addGeometry (rw::proximity::ProximityModel* model,
 bool ProximityStrategyPQP::removeGeometry (rw::proximity::ProximityModel* model,
                                            const std::string& geomId)
 {
-    // std::cout << "Remove geometry: " << geomId << std::endl;
     PQPProximityModel* pmodel = (PQPProximityModel*) model;
     // remove from model
     int idx = -1;
@@ -507,6 +507,7 @@ MultiDistanceResult& ProximityStrategyPQP::doDistances (ProximityModel::Ptr aMod
             size_t prevSize = rwresult.p1s.size ();
 
             size_t vsize = idMap.size () + idMap1.size ();
+            
             rwresult.p1s.resize (prevSize + vsize);
             rwresult.p2s.resize (prevSize + vsize);
             rwresult.distances.resize (prevSize + vsize);
