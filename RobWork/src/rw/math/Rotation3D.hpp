@@ -328,7 +328,7 @@ namespace rw { namespace math {
          * @param rhs [in] \f$ \robabx{b}{c}{\mathbf{R}} \f$
          * @return \f$ \robabx{a}{c}{\mathbf{R}} \f$
          */
-        template< class R > friend inline const Rotation3D operator* (const Eigen::MatrixBase< R >& lhs, const Rotation3D<T> &rhs)
+        template< class R > friend inline Rotation3D operator* (const Eigen::MatrixBase< R >& lhs, const Rotation3D<T> &rhs)
         {
             return Rotation3D<T>(lhs*rhs.e());
         }

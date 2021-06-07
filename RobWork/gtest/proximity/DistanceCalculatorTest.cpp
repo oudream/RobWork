@@ -32,6 +32,7 @@ using namespace rw::core;
 using namespace rw::kinematics;
 using namespace rw::loaders;
 using namespace rw::proximity;
+using namespace rw::math;
 using namespace std;
 
 namespace {
@@ -63,7 +64,7 @@ class DistanceCalculatorTest : public ::testing::TestWithParam< std::string >
         // GeometryData object (other tests might create a different geometry on the same address)
         if (!strategy.isNull ()) {
             strategy->clearFrames ();
-            strategy->clear();
+            strategy->clear ();
         }
     }
 };
