@@ -18,10 +18,12 @@
 #ifndef RW_GRASPPLANNING_DICECONTACTG3D_HPP_
 #define RW_GRASPPLANNING_DICECONTACTG3D_HPP_
 
+#if !defined(SWIG)
 #include <rw/math/Transform3D.hpp>
 #include <rw/math/Vector3D.hpp>
 
 #include <vector>
+#endif 
 
 namespace rw { namespace geometry {
     class TriMesh;

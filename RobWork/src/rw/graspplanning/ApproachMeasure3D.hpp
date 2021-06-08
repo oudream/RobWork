@@ -18,7 +18,9 @@
 #ifndef RW_GRASPPLANNING_APPROACHMEASURE_HPP_
 #define RW_GRASPPLANNING_APPROACHMEASURE_HPP_
 
+#if !defined(SWIG)
 #include "GraspQualityMeasure3D.hpp"
+#endif 
 
 namespace rw { namespace graspplanning {
     /**
