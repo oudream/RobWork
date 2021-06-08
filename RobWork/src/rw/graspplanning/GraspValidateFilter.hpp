@@ -29,6 +29,12 @@ namespace rw { namespace graspplanning {
     class GraspValidateFilter
     {
       public:
+
+        /**
+         * @brief Constructor
+         */
+        GraspValidateFilter() {};
+
         /**
          * @brief destructor
          */

@@ -18,9 +18,11 @@
 #ifndef RW_GRASPPLANNING_SEMIFORCECLOSUREFILTER_HPP_
 #define RW_GRASPPLANNING_SEMIFORCECLOSUREFILTER_HPP_
 
+#if !defined(SWIG)
 #include "GraspValidateFilter.hpp"
 
 #include <cstddef>
+#endif 
 
 namespace rw { namespace graspplanning {
 

@@ -88,6 +88,7 @@ SWIG_JAVABODY_TYPEWRAPPER(public, public, public, SWIGTYPE)
 %import <rwlibs/swig/sdurw_geometry.i>
 %import <rwlibs/swig/sdurw_sensor.i>
 %import <rwlibs/swig/sdurw_models.i>
+%import <rwlibs/swig/sdurw_graspplanning.i>
 
 %pragma(java) jniclassimports=%{
 import org.robwork.sdurw_core.*;
@@ -97,6 +98,7 @@ import org.robwork.sdurw_kinematics.*;
 import org.robwork.sdurw_geometry.*;
 import org.robwork.sdurw_sensor.*;
 import org.robwork.sdurw_models.*;
+import org.robwork.sdurw_graspplanning.*;
 %}
 %pragma(java) moduleimports=%{
 import org.robwork.sdurw_core.*;
@@ -106,6 +108,7 @@ import org.robwork.sdurw_kinematics.*;
 import org.robwork.sdurw_geometry.*;
 import org.robwork.sdurw_sensor.*;
 import org.robwork.sdurw_models.*;
+import org.robwork.sdurw_graspplanning.*;
 %}
 %typemap(javaimports) SWIGTYPE %{
 import org.robwork.sdurw_core.*;
@@ -115,6 +118,7 @@ import org.robwork.sdurw_kinematics.*;
 import org.robwork.sdurw_geometry.*;
 import org.robwork.sdurw_sensor.*;
 import org.robwork.sdurw_models.*;
+import org.robwork.sdurw_graspplanning.*;
 %}
 
 /********************************************

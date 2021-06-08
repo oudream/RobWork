@@ -18,10 +18,12 @@
 #ifndef RW_GRASPPLANNING_PLANECLEARANCEFILTER_HPP_
 #define RW_GRASPPLANNING_PLANECLEARANCEFILTER_HPP_
 
+#if !defined(SWIG)
 #include "ContactValidateFilter.hpp"
 #include "GraspValidateFilter.hpp"
 
 #include <rw/math/Transform3D.hpp>
+#endif 
 
 namespace rw { namespace graspplanning {
 

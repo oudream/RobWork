@@ -31,6 +31,12 @@ namespace rw { namespace graspplanning {
     class ContactValidateFilter
     {
       public:
+
+        /**
+         * @brief Constructor
+         */
+        ContactValidateFilter() {};
+
         /**
          * @brief destructor
          */

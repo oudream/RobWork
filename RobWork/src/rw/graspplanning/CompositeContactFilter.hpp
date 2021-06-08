@@ -18,10 +18,11 @@
 #ifndef RW_GRASPPLANNING_COMPOSITECONTACTFILTER_HPP_
 #define RW_GRASPPLANNING_COMPOSITECONTACTFILTER_HPP_
 
+#if !defined(SWIG)
 #include "ContactValidateFilter.hpp"
 
 #include <vector>
-
+#endif 
 namespace rw { namespace graspplanning {
 
     /**

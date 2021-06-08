@@ -18,9 +18,10 @@
 #ifndef RW_GRASPPLANNING_CONTOUR2DINFOMAP_HPP_
 #define RW_GRASPPLANNING_CONTOUR2DINFOMAP_HPP_
 
+#if !defined(SWIG)
 #include <rw/geometry/Contour2D.hpp>
 #include <rw/sensor/Contact2D.hpp>
-
+#endif 
 namespace rw { namespace graspplanning {
 
     /**
