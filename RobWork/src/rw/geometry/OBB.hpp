@@ -121,7 +121,7 @@ namespace geometry {
             for (int i = 0; i < nrOfTris; i++) {
                 // std::cout << "i" << i << std::endl;
                 // calc triangle centroid
-                rw::geometry::Triangle < double > t = tris.getTriangle (i);
+                rw::geometry::Triangle< double > t = tris.getTriangle (i);
                 centroid += cast< T > (t[0] + t[1] + t[2]);
                 for (size_t j = 0; j < 3; j++)
                     for (size_t k = 0; k < 3; k++)
@@ -182,12 +182,12 @@ namespace geometry {
             // 5. find extreme vertices relative to eigenvectors
             // we use the generated rotation matrix to rotate each point and then save
             // max and min values of each axis
-            Rotation3D< T > rotInv = inverse (rot);
-            rw::geometry::Triangle < double > t           = tris.getTriangle (0);
-            Vector3D< T > p        = rotInv * cast< T > (t[0]);
+            Rotation3D< T > rotInv             = inverse (rot);
+            rw::geometry::Triangle< double > t = tris.getTriangle (0);
+            Vector3D< T > p                    = rotInv * cast< T > (t[0]);
             Vector3D< T > max = p, min = p;
             for (int i = 0; i < nrOfTris; i++) {
-                rw::geometry::Triangle < double > tri = tris.getTriangle (i);
+                rw::geometry::Triangle< double > tri = tris.getTriangle (i);
                 for (int pidx = 0; pidx < 3; pidx++) {
                     Vector3D< T > p = rotInv * cast< T > (tri[pidx]);
                     for (int j = 0; j < 3; j++) {
@@ -293,7 +293,12 @@ extern template class rw::geometry::OBV< rw::geometry::OBB< float > >;
 extern template class rw::geometry::OBB< float >;
 #else
 SWIG_DECLARE_TEMPLATE (ObvOBB, rw::geometry::OBV< rw::geometry::OBB< double > >);
+#if SWIG_VERSION < 0x040000
+SWIG_DECLARE_TEMPLATE (OBB_d, rw::geometry::OBB< double >);
+ADD_DEFINITION (OBB_d, OBB)
+#else
 SWIG_DECLARE_TEMPLATE (OBB, rw::geometry::OBB< double >);
+#endif
 SWIG_DECLARE_TEMPLATE (ObvOBB_f, rw::geometry::OBV< rw::geometry::OBB< float > >);
 SWIG_DECLARE_TEMPLATE (OBB_f, rw::geometry::OBB< float >);
 #endif

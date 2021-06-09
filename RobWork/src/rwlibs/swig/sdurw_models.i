@@ -52,6 +52,11 @@ import org.robwork.sdurw_sensor.*;
 %{
 	#include <rw/proximity/CollisionSetup.hpp>
 	#include <rw/proximity/CollisionSetup.cpp>
+	#if SWIG_VERSION < 0x040000
+		#include <rw/geometry/IndexedTriangle.hpp>
+		template<class T >
+		using IndexedTriangle = rw::geometry::IndexedTriangle<T>;
+	#endif 
 %}
 
 #if defined(SWIGJAVA)
@@ -122,6 +127,9 @@ NAMED_OWNEDPTR(CompositeDevice,rw::models::CompositeDevice);
 	rw::core::Ptr<rw::models::JointDevice const> asJointDeviceCPtr() { return *$self; }
 }
 #if defined(SWIGPYTHON)
+#ifndef SWIG_POINTER_NO_NULL
+#define SWIG_POINTER_NO_NULL 0 
+#endif
 %typecheck(SWIG_TYPECHECK_SWIGOBJECT) rw::core::Ptr<rw::models::Device const>{
 	int res = SWIG_ConvertPtr($input, 0, $descriptor(rw::core::Ptr<rw::models::Device const> *),SWIG_POINTER_NO_NULL | 0);
 	if (SWIG_IsOK(res)) {
@@ -332,7 +340,7 @@ NAMED_OWNEDPTR(VirtualJoint,rw::models::VirtualJoint);
 %}
 %include <rw/models/WorkCell.hpp>
 NAMED_OWNEDPTR(WorkCell,rw::models::WorkCell);
-%template (WorkCellChangedEvent) rw::core::Event< rw::models::WorkCell::WorkCellChangedListener, int >;
+//%template (WorkCellChangedEvent) rw::core::Event< rw::models::WorkCell::WorkCellChangedListener, int >;
 
 %extend rw::models::WorkCell {
 	/**

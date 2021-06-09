@@ -26,10 +26,10 @@
 #endif
 
 namespace rw { namespace geometry {
-    //! @addtogroup geometry
-    #if !defined(SWIG)
-    // @{
-    #endif
+//! @addtogroup geometry
+#if !defined(SWIG)
+// @{
+#endif
 
     /**
      * @brief indexed polygon class that saves \b N indices to the \b N vertices of the polygon
@@ -46,7 +46,7 @@ namespace rw { namespace geometry {
         /**
          * @brief destructor
          */
-        virtual ~IndexedPolygon() {}
+        virtual ~IndexedPolygon () {}
 
         /**
          * @brief returns the index of vertex i of the triangle
@@ -68,7 +68,7 @@ namespace rw { namespace geometry {
          */
         const T& operator[] (size_t i) const { return getVertexIdx (i); }
 #else
-        ARRAYOPERATOR(T);
+        ARRAYOPERATOR (T);
 #endif
         /**
          * @brief Number of vertices of this polygon
@@ -78,10 +78,15 @@ namespace rw { namespace geometry {
 
         // virtual rw::math::Vector3D<double> calcFaceNormal()
     };
-    #if defined(SWIG)
-    SWIG_DECLARE_TEMPLATE (IndexedPolygon, rw::geometry::IndexedPolygon<uint16_t>);
-    SWIG_DECLARE_TEMPLATE (IndexedPolygon_32, rw::geometry::IndexedPolygon<uint32_t>);
-    #endif 
+#if defined(SWIG)
+#if SWIG_VERSION < 0x040000
+    SWIG_DECLARE_TEMPLATE (IndexedPolygon_16, rw::geometry::IndexedPolygon< uint16_t >);
+    ADD_DEFINITION (IndexedPolygon_16, IndexedPolygon)
+#else
+    SWIG_DECLARE_TEMPLATE (IndexedPolygon, rw::geometry::IndexedPolygon< uint16_t >);
+#endif
+    SWIG_DECLARE_TEMPLATE (IndexedPolygon_32, rw::geometry::IndexedPolygon< uint32_t >);
+#endif
     /**
      * @brief Polygon with N vertice indices and 0 normals
      */
@@ -109,7 +114,7 @@ namespace rw { namespace geometry {
         /**
          * @brief destructor
          */
-        virtual ~IndexedPolygonN() {}
+        virtual ~IndexedPolygonN () {}
 
         /**
          * @brief returns the index of vertex i of the triangle
@@ -156,14 +161,19 @@ namespace rw { namespace geometry {
         size_t size () const { return _vertices.size (); };
     };
 
-    #if defined(SWIG)
-    SWIG_DECLARE_TEMPLATE (IndexedPolygonN, rw::geometry::IndexedPolygonN<uint16_t>);
-    SWIG_DECLARE_TEMPLATE (IndexedPolygonN_32, rw::geometry::IndexedPolygonN<uint32_t>);
-    #endif 
+#if defined(SWIG)
+#if SWIG_VERSION < 0x040000
+    SWIG_DECLARE_TEMPLATE (IndexedPolygonN_16, rw::geometry::IndexedPolygonN< uint16_t >);
+    ADD_DEFINITION (IndexedPolygonN_16, IndexedPolygonN)
+#else
+    SWIG_DECLARE_TEMPLATE (IndexedPolygonN, rw::geometry::IndexedPolygonN< uint16_t >);
+#endif
+    SWIG_DECLARE_TEMPLATE (IndexedPolygonN_32, rw::geometry::IndexedPolygonN< uint32_t >);
+#endif
     /**
      * @brief Polygon with N vertices and N normals.
      */
-    template< class T = uint16_t> class IndexedPolygonNN : public IndexedPolygon< T >
+    template< class T = uint16_t > class IndexedPolygonNN : public IndexedPolygon< T >
     {
       private:
         IndexedPolygonN< T > _polyN;
@@ -198,7 +208,7 @@ namespace rw { namespace geometry {
         /**
          * @brief destructor
          */
-        virtual ~IndexedPolygonNN() {}
+        virtual ~IndexedPolygonNN () {}
 
         /**
          * @brief returns the index of vertex i of the triangle
@@ -247,15 +257,20 @@ namespace rw { namespace geometry {
             _normals.erase (_normals.begin () + i);
         }
     };
-    
-    #if defined(SWIG)
-    SWIG_DECLARE_TEMPLATE (IndexedPolygonNN, rw::geometry::IndexedPolygonNN<uint16_t>);
-    SWIG_DECLARE_TEMPLATE (IndexedPolygonNN_32, rw::geometry::IndexedPolygonNN<uint32_t>);
-    #endif 
-    
-    #if !defined(SWIG)
-    // @}
-    #endif
+
+#if defined(SWIG)
+#if SWIG_VERSION < 0x040000
+    SWIG_DECLARE_TEMPLATE (IndexedPolygonNN_16, rw::geometry::IndexedPolygonNN< uint16_t >);
+    ADD_DEFINITION (IndexedPolygonNN_16, IndexedPolygonNN)
+#else
+    SWIG_DECLARE_TEMPLATE (IndexedPolygonNN, rw::geometry::IndexedPolygonNN< uint16_t >);
+#endif
+    SWIG_DECLARE_TEMPLATE (IndexedPolygonNN_32, rw::geometry::IndexedPolygonNN< uint32_t >);
+#endif
+
+#if !defined(SWIG)
+// @}
+#endif
 }}    // namespace rw::geometry
 
 #endif /*TRIANGLE_HPP_*/

@@ -168,7 +168,7 @@ function(VERIFY_TARGET __target __result)
 
                 if(NOT EXISTS ${out})
                     set(result "")
-                    # message(STATUS " - missing binary ${out}")
+                    # message(STATUS " - missing binary ${out}") 
                     # message(STATUS " - Target Binary not found: ${__target}")
                 endif()
 
@@ -208,7 +208,7 @@ function(VERIFY_TARGET __target __result)
                             if("${vaified_lib}" STREQUAL "")
                                 set(result "")
                                 # message(STATUS " - Target depend not found: ${lib_t} for ${__target}")
-                                break()  
+                                break()
                             endif()
                         else()
                             # message(STATUS " - Target depend ignored: ${lib_t} for ${__target}")
@@ -289,15 +289,10 @@ function(VERIFY_LIBRARY _name _result)
         set(result "RW::${_name}")
     else()
         unset(tmp)
-        find_library(
-            tmp
-            NAMES ${_name} lib${_name}
-        )
+        find_library(tmp NAMES ${_name} lib${_name})
         if(tmp)
             add_library(${_name} UNKNOWN IMPORTED)
-            set_target_properties(
-                ${_name} PROPERTIES IMPORTED_LOCATION ${tmp}
-            )
+            set_target_properties(${_name} PROPERTIES IMPORTED_LOCATION ${tmp})
             set(result "${_name}")
         endif()
     endif()
@@ -382,11 +377,26 @@ if(EXISTS ${RWCFG_ROOT}/RobWorkBuildConfig_${RW_BUILD_TYPE}.cmake)
         set(Boost_USE_RELEASE_LIBS ON) # only find release libs
     endif()
 
+    set(BOOST_ROOT ${RW_BUILD_WITH_BOOST_ROOT})
     find_package(
         Boost QUIET
         COMPONENTS filesystem serialization system thread program_options
-        PATHS ${RW_BUILD_WITH_BOOST_ROOT}
+        CONFIG
+        HINTS "C:\\local" ${RW_BUILD_WITH_BOOST_ROOT}
     )
+    if(NOT Boost_FOUND)
+        find_package(Boost REQUIRED COMPONENTS filesystem serialization system thread
+                                               program_options
+        )
+    endif()
+    if(TARGET Boost::headers)
+        set(RW_BUILD_WITH_LIB_DEPEND ${RW_BUILD_WITH_LIB_DEPEND} Boost::headers)
+        set(Boost_INCLUDE_DIR ${RW_BUILD_WITH_BOOST_INCLUDE_DIR} )
+    endif()
+
+    set(CMAKE_MODULE_PATH ${RWCFG_ROOT}/Modules ${CMAKE_MODULE_PATH})
+    set(QHULL_ROOT ${RW_BUILD_WITH_QHULL_ROOT})
+    find_package(Qhull REQUIRED MODULE)
 
     # verify_library(RW::sdurw_math_lua_s res) message(FATAL_ERROR "esix")
     # ##############################################################################################
@@ -445,7 +455,7 @@ if(EXISTS ${RWCFG_ROOT}/RobWorkBuildConfig_${RW_BUILD_TYPE}.cmake)
             else()
                 if(${lib} STREQUAL "sdurw")
                     list(APPEND OPTIONAL_LIBRARIES_TO_INCLUDE "RW::${lib}")
-                    message(FATAL_ERROR "Looking for ${lib} - not found" )
+                    message(FATAL_ERROR "Looking for ${lib} - not found")
                 else()
                     rw_message("Looking for ${lib} - not found (ignored)")
                 endif()
@@ -507,7 +517,7 @@ if(EXISTS ${RWCFG_ROOT}/RobWorkBuildConfig_${RW_BUILD_TYPE}.cmake)
     # ################ FIND ROBWORK #######################
     set(ROBWORK_BUILD_PATH "${RW_BUILD_WITH_RW_ROOT}")
     set(ROBWORK_LIBRARIES_TMP
-     "${RW_BUILD_WITH_LIBRARIES_OPENGL};${LIBRARIES_TO_INCLUDE};${OPTIONAL_LIBRARIES_TO_INCLUDE};${RW_BUILD_WITH_LIB_DEPEND}"
+        "${RW_BUILD_WITH_LIBRARIES_OPENGL};${LIBRARIES_TO_INCLUDE};${OPTIONAL_LIBRARIES_TO_INCLUDE};${RW_BUILD_WITH_LIB_DEPEND}"
     )
     if(${RW_BUILD_WITH_LUA})
         set(ROBWORK_LIBRARIES_TMP ${RW_BUILD_WITH_LIBRARIES_LUA} ${ROBWORK_LIBRARIES_TMP})

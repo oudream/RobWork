@@ -94,7 +94,7 @@ namespace rw { namespace geometry {
 
         //! @copydoc Surface::equals
         virtual bool equals (const Surface& surface, double threshold) const = 0;
-
+#if !defined(SWIG)
         /**
          * @brief Evaluate the implicit function, \f$ F(\mathbf{x}) \f$, for the surface.
          * @param x [in] the point to evaluate.
@@ -102,7 +102,9 @@ namespace rw { namespace geometry {
          * surface. If larger than zero, \b x lies outside the surface.
          */
         virtual double operator() (const rw::math::Vector3D<double>& x) const = 0;
-
+#else 
+        CALLOPERATOR(double,const rw::math::Vector3D<double>& );
+#endif 
         /**
          * @brief Check if point, \b P, on surface lies inside the trimming region.
          * @param P [in] the point to check.

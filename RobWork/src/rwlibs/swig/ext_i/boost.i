@@ -1,7 +1,7 @@
 namespace boost {
 
 
-    template<Typename T, std::size_t N>
+    template<Typename T, unsigned long N>
     class multi_array {
 
     };

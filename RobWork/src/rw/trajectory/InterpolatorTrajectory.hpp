@@ -232,7 +232,7 @@ namespace rw { namespace trajectory {
          * trajectory is added in sequence.
          *
          * Ownership of the interpolator and blends are shared using
-         * boost::shared_ptr
+         * std::shared_ptr
          *
          * @param trajectory [in] Trajectory to append
          */

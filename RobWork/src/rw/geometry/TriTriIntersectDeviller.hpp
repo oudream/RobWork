@@ -218,7 +218,12 @@ namespace rw { namespace geometry {
     extern template class rw::geometry::TriTriIntersectDeviller< double >;
     extern template class rw::geometry::TriTriIntersectDeviller< float >;
 #else
-    SWIG_DECLARE_TEMPLATE(TriTriIntersectDeviller,rw::geometry::TriTriIntersectDeviller< double >);
+#if SWIG_VERSION < 0x040000
+    SWIG_DECLARE_TEMPLATE (TriTriIntersectDeviller_d, rw::geometry::TriTriIntersectDeviller< double >);
+    ADD_DEFINITION (TriTriIntersectDeviller_d, TriTriIntersectDeviller)
+#else
+    SWIG_DECLARE_TEMPLATE (TriTriIntersectDeviller, rw::geometry::TriTriIntersectDeviller< double >);
+#endif
     SWIG_DECLARE_TEMPLATE(TriTriIntersectDeviller_f,rw::geometry::TriTriIntersectDeviller< float >);
 #endif 
 }}    // namespace rw::geometry

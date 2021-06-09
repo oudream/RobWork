@@ -52,7 +52,7 @@ namespace rw { namespace geometry {
 #if defined(SWIG)
 #define BVColliderOBBColiderOBB_TYPE(x) \
     rw::geometry::BVCollider< rw::geometry::OBBCollider< x >, rw::geometry::OBB< x > >
-    
+
     SWIG_DECLARE_TEMPLATE (BVColliderOBBColiderOBB, BVColliderOBBColiderOBB_TYPE (double));
     SWIG_DECLARE_TEMPLATE (BVColliderOBBColiderOBB_f, BVColliderOBBColiderOBB_TYPE (float));
 #endif
@@ -223,7 +223,12 @@ namespace rw { namespace geometry {
     extern template class rw::geometry::OBBCollider< double >;
     extern template class rw::geometry::OBBCollider< float >;
 #else
+#if SWIG_VERSION < 0x040000
+    SWIG_DECLARE_TEMPLATE (OBBCollider_d, rw::geometry::OBBCollider< double >);
+    ADD_DEFINITION (OBBCollider_d, OBBCollider)
+#else
     SWIG_DECLARE_TEMPLATE (OBBCollider, rw::geometry::OBBCollider< double >);
+#endif
     SWIG_DECLARE_TEMPLATE (OBBCollider_f, rw::geometry::OBBCollider< float >);
 #endif
 }}    // namespace rw::geometry

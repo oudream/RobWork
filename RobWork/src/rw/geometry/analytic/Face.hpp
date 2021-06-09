@@ -52,10 +52,10 @@ namespace rw { namespace geometry {
     {
       public:
         //! @brief Smart pointer type to Face
-        typedef rw::core::Ptr< Face > Ptr;
+        typedef rw::core::Ptr< rw::geometry::Face > Ptr;
 
         //! @brief Smart pointer type to const Face
-        typedef rw::core::Ptr< const Face > CPtr;
+        typedef rw::core::Ptr< const rw::geometry::Face > CPtr;
 
         //! @brief Constructor.
         Face ();
@@ -67,7 +67,7 @@ namespace rw { namespace geometry {
          * @brief Get the surface of the face.
          * @return a reference to the surface data.
          */
-        virtual const Surface& surface () const = 0;
+        virtual const rw::geometry::Surface& surface () const = 0;
 
         /**
          * @brief Get the number of curves in the face.
@@ -81,7 +81,7 @@ namespace rw { namespace geometry {
          * curveCount().
          * @return a reference to the curve data.
          */
-        virtual const Curve& getCurve (std::size_t i) const = 0;
+        virtual const rw::geometry::Curve& getCurve (std::size_t i) const = 0;
 
         /**
          * @brief Get the vertices of the face.
@@ -111,7 +111,7 @@ namespace rw { namespace geometry {
          * @param forceCopy [in] (not currently used in default implementation)
          * @return a new TriMesh.
          */
-        virtual rw::core::Ptr< TriMesh > getTriMesh (bool forceCopy = true) const;
+        virtual rw::core::Ptr< rw::geometry::TriMesh > getTriMesh (bool forceCopy = true) const;
 
         /**
          * @brief Find the extent of the surface along a specific direction.
@@ -128,7 +128,7 @@ namespace rw { namespace geometry {
          *
          * @return an OBB around the Face.
          */
-        virtual OBB<> obb ();
+        virtual rw::geometry::OBB<double> obb ();
 
         /**
          * @brief Set the resolution used for discretization in the getTriMesh and faceTriMesh

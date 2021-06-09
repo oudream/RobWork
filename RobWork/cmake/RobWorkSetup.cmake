@@ -62,13 +62,24 @@ if(${RW_BUILD_TYPE} STREQUAL "release")
     set(Boost_USE_RELEASE_LIBS ON) # only find release libs
 endif()
 
-#hunter_add_package(Boost COMPONENTS filesystem serialization system thread program_options)
-find_package(Boost REQUIRED COMPONENTS filesystem serialization system thread program_options CONFIG HINTS "C:\\local")
-if (TARGET Boost::headers)
-    set(Boost_LIBRARIES ${Boost_LIBRARIES} Boost::headers)
-    set(Boost_INCLUDE_DIR "")
+# hunter_add_package(Boost COMPONENTS filesystem serialization system thread program_options)
+find_package(
+    Boost QUIET
+    COMPONENTS filesystem serialization system thread program_options
+    CONFIG
+    HINTS "C:\\local"
+)
+if(NOT Boost_FOUND)
+    find_package(Boost REQUIRED COMPONENTS filesystem serialization system thread program_options)
 endif()
-
+if(TARGET Boost::headers)
+    set(Boost_LIBRARIES ${Boost_LIBRARIES} Boost::headers)
+    get_target_property(Boost_INCLUDE_DIR Boost::headers INTERFACE_INCLUDE_DIRECTORIES)
+endif()
+if(NOT DEFINED Boost_LIBRARY_DIRS OR "${Boost_LIBRARY_DIRS}" STREQUAL "")
+    rw_get_lib_from_target(Boost::filesystem Boost_LIBRARY_DIRS)
+    get_filename_component(Boost_LIBRARY_DIRS ${Boost_LIBRARY_DIRS} DIRECTORY)
+endif()
 message(
     STATUS
         "RobWork: Boost version ${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION}.${Boost_SUBMINOR_VERSION} found!"
@@ -200,7 +211,6 @@ else()
     message(STATUS "RobWork: FCL DISABLED!")
 endif()
 
-
 find_package(Eigen3 QUIET)
 if(EIGEN3_FOUND)
     message(STATUS "RobWork: EIGEN3 installation FOUND! - version ${EIGEN3_VERSION}")
@@ -216,11 +226,13 @@ endif()
 find_package(Qhull QUIET MODULE)
 if(Qhull_FOUND)
     message(STATUS "RobWork: Qhull found")
+    if(NOT DEFINED QHULL_ROOT)
+        set(QHULL_ROOT "${QHULL_INCLUDE_DIRS}/..")
+    endif()
 else()
     hunter_add_package(Qhull)
     find_package(Qhull REQUIRED)
 endif()
-
 
 # CSGJS
 option(RW_USE_CSGJS "Set to ON to use ext CSGJS." ON)
@@ -336,7 +348,7 @@ endif()
 
 #
 # If the user wants to use the Assimp package then search for it or build internal Assimp. Set
-# RW_DISABLE_ASSIMP to ON to disable Assimp completely. 
+# RW_DISABLE_ASSIMP to ON to disable Assimp completely.
 #
 
 set(RW_HAVE_ASSIMP FALSE)
@@ -384,7 +396,9 @@ if(CMAKE_VERSION VERSION_LESS "3.12")
     endif()
 
     if(PYTHONINTERP_FOUND AND PYTHONLIBS_FOUND)
-        if(NOT ((PYTHONLIBS_VERSION_MAJOR STREQUAL PYTHON_VERSION_MAJOR) AND (PYTHONLIBS_VERSION_MINOR STREQUAL PYTHON_VERSION_MINOR)))
+        if(NOT ((PYTHONLIBS_VERSION_MAJOR STREQUAL PYTHON_VERSION_MAJOR)
+                AND (PYTHONLIBS_VERSION_MINOR STREQUAL PYTHON_VERSION_MINOR))
+        )
             string(ASCII 27 Esc)
             message(
                 WARNING
@@ -471,9 +485,8 @@ if(RW_USE_GTEST)
             set(GTEST_BOTH_LIBRARIES RW::${GTEST_MAIN_LIBRARY} RW::${GTEST_LIBRARY})
         endif()
     else()
-       hunter_add_package(GTest)
-       find_package(GTest REQUIRED)
-
+        hunter_add_package(GTest)
+        find_package(GTest REQUIRED)
     endif()
 else()
     message(STATUS "RobWork: Google Test DISABLED!")
@@ -575,8 +588,10 @@ if("${RW_CXX_FLAGS}" STREQUAL "")
     # variable).
     set(RW_CXX_FLAGS_SET_STD FALSE)
     if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
-        if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS "6.1.0" OR CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang") # from GNU 6.1 gnu++14 should be the
-                                                            # default
+        if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS "6.1.0" OR CMAKE_CXX_COMPILER_ID STREQUAL
+                                                              "AppleClang"
+        ) # from GNU 6.1 gnu++14 should be the
+            # default
             set(RW_CXX_FLAGS_SET_STD TRUE)
             foreach(flag ${RW_CXX_FLAGS_EXTRA})
                 string(REGEX MATCH ".*-std=.*" flag ${flag})

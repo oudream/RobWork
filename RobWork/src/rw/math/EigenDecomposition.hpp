@@ -11,7 +11,7 @@
 #if !defined(SWIG)
 #include <Eigen/Core>
 #include <vector>
-#endif 
+#endif
 namespace rw { namespace math {
     //! @brief Type representing a set of eigen values and eigen vectors.
     template< class T = double > class EigenDecomposition
@@ -107,13 +107,18 @@ namespace rw { namespace math {
         Eigen::Matrix< T, Eigen::Dynamic, 1 > _values;
     };
 
-  #if !defined(SWIG)
-    using EigenDecompositiond = EigenDecomposition<double>;
-    using EigenDecompositionf = EigenDecomposition<float>;
-  #else 
-    SWIG_DECLARE_TEMPLATE (EigenDecomposition, rw::math::EigenDecomposition<double>);
-    SWIG_DECLARE_TEMPLATE (EigenDecomposition_f, rw::math::EigenDecomposition<float>);
-  #endif 
+#if !defined(SWIG)
+    using EigenDecompositiond = EigenDecomposition< double >;
+    using EigenDecompositionf = EigenDecomposition< float >;
+#else
+#if SWIG_VERSION < 0x040000
+    SWIG_DECLARE_TEMPLATE (EigenDecomposition_d, rw::math::EigenDecomposition< double >);
+    ADD_DEFINITION (EigenDecomposition_d, EigenDecomposition)
+#else
+    SWIG_DECLARE_TEMPLATE (EigenDecomposition, rw::math::EigenDecomposition< double >);
+#endif
+    SWIG_DECLARE_TEMPLATE (EigenDecomposition_f, rw::math::EigenDecomposition< float >);
+#endif
 }}    // namespace rw::math
 
 #endif /* EIGENDECOMPOSITION_HPP_ */

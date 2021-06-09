@@ -7,14 +7,13 @@
 # static libraries ONLY else look for shared ones
  
 if(WIN32)
-    find_package(Qhull QUIET NO_MODULE)
+    find_package(Qhull QUIET NO_MODULE HINTS ${QHULL_ROOT})
 else()
     # we are not ready for qhull config approach find_package(Qhull QUIET NO_MODULE)
     set(Qhull_FOUND FALSE)
 endif()
 
 if(NOT ${Qhull_FOUND})
-
     if(WIN32)
         set(qhull_libnames qhullstatic_r)
     elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
@@ -65,16 +64,16 @@ if(NOT ${Qhull_FOUND})
     # ##############################################################################################
 
     if(QHULL_FOUND)
-        add_library(RW::qhull UNKNOWN IMPORTED)
+        add_library(Qhull::qhull_r UNKNOWN IMPORTED)
         set_target_properties(
-            RW::qhull PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${QHULL_INCLUDE_DIR}
+            Qhull::qhull_r PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${QHULL_INCLUDE_DIR}
         )
         set_target_properties(
-            RW::qhull PROPERTIES IMPORTED_LOCATION ${QHULL_LIBRARY}
+            Qhull::qhull_r PROPERTIES IMPORTED_LOCATION ${QHULL_LIBRARY}
         )
 
         set(QHULL_INCLUDE_DIRS ${QHULL_INCLUDE_DIR})
-        set(QHULL_LIBRARIES RW::qhull)
+        set(QHULL_LIBRARIES Qhull::qhull_r )
     endif()
 else()
     if(MSVC)
@@ -94,4 +93,5 @@ else()
             message(FATAL_ERROR "Unrecognized qhull library")
         endif()
     endif()
+    get_target_property(QHULL_INCLUDE_DIRS ${QHULL_LIBRARIES} INTERFACE_INCLUDE_DIRECTORIES)
 endif()

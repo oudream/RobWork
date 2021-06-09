@@ -150,10 +150,12 @@ namespace rw { namespace geometry {
 
         //! @copydoc ImplicitSurface::equals
         virtual bool equals (const Surface& surface, double threshold) const;
-
+#if !defined(SWIG)
         //! @copydoc ImplicitSurface::operator()(const rw::math::Vector3D<double>&) const
         virtual double operator() (const rw::math::Vector3D<double>& x) const;
-
+#else 
+        CALLOPERATOR(double,const rw::math::Vector3D<double>& );
+#endif 
         //! @copydoc ImplicitSurface::insideTrimmingRegion
         virtual bool insideTrimmingRegion (const rw::math::Vector3D<double>& P) const;
 

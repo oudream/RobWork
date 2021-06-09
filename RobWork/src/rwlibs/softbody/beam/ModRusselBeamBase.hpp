@@ -22,7 +22,7 @@ Copyright 2013 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
 
 #include <rw/math/Transform3D.hpp>
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 namespace rwlibs { namespace softbody {
     /** @addtogroup softbody */
@@ -40,8 +40,8 @@ namespace rwlibs { namespace softbody {
          * @param obstaclePtr pointer to the obstacle
          * @param M number of slices in the beam
          **/
-        ModRusselBeamBase (boost::shared_ptr< rwlibs::softbody::BeamGeometry > geomPtr,
-                           boost::shared_ptr< rwlibs::softbody::BeamObstaclePlane > obstaclePtr,
+        ModRusselBeamBase (std::shared_ptr< rwlibs::softbody::BeamGeometry > geomPtr,
+                           std::shared_ptr< rwlibs::softbody::BeamObstaclePlane > obstaclePtr,
                            int M);
 
         virtual ~ModRusselBeamBase ();
@@ -102,14 +102,14 @@ namespace rwlibs { namespace softbody {
          *
          * @return the BeamGeometry used by the beam
          **/
-        boost::shared_ptr< BeamGeometry > getGeometry (void) const;
+        std::shared_ptr< BeamGeometry > getGeometry (void) const;
 
         /**
          * @brief returns the BeamObstaclePlane used by the beam
          *
          * @return the BeamObstaclePlane used by the beam
          **/
-        boost::shared_ptr< BeamObstaclePlane > getObstacle (void) const;
+        std::shared_ptr< BeamObstaclePlane > getObstacle (void) const;
 
         /**
          * @brief returns number of cross sections in beam
@@ -221,8 +221,8 @@ namespace rwlibs { namespace softbody {
         double get_h (void) const;
 
       private:
-        boost::shared_ptr< BeamGeometry > _geomPtr;
-        boost::shared_ptr< BeamObstaclePlane > _obstaclePtr;
+        std::shared_ptr< BeamGeometry > _geomPtr;
+        std::shared_ptr< BeamObstaclePlane > _obstaclePtr;
         int _M;
 
         double _accuracy;

@@ -15,12 +15,12 @@ Copyright 2013 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
 */
 
 #include "ModRusselBeamBase.hpp"
-
+#include <memory>
 using namespace rwlibs::softbody;
 
 ModRusselBeamBase::ModRusselBeamBase (
-    boost::shared_ptr< rwlibs::softbody::BeamGeometry > geomPtr,
-    boost::shared_ptr< rwlibs::softbody::BeamObstaclePlane > obstaclePtr, int M) :
+    std::shared_ptr< rwlibs::softbody::BeamGeometry > geomPtr,
+    std::shared_ptr< rwlibs::softbody::BeamObstaclePlane > obstaclePtr, int M) :
     _geomPtr (geomPtr),
     _obstaclePtr (obstaclePtr), _M (M), _useNoUpwardConstraint (false), _useHingeConstraint (false)
 {
@@ -104,12 +104,12 @@ void ModRusselBeamBase::setAccuracy (double acc)
     _accuracy = acc;
 }
 
-boost::shared_ptr< BeamGeometry > ModRusselBeamBase::getGeometry (void) const
+std::shared_ptr< BeamGeometry > ModRusselBeamBase::getGeometry (void) const
 {
     return _geomPtr;
 }
 
-boost::shared_ptr< BeamObstaclePlane > ModRusselBeamBase::getObstacle (void) const
+std::shared_ptr< BeamObstaclePlane > ModRusselBeamBase::getObstacle (void) const
 {
     return _obstaclePtr;
 }

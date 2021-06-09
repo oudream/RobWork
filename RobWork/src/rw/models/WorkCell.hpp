@@ -31,7 +31,7 @@
 #include <iosfwd>
 #include <string>
 #include <vector>
-#endif 
+#endif
 
 // Forward declarations
 namespace rw { namespace core {
@@ -143,21 +143,21 @@ namespace rw { namespace models {
         rw::kinematics::Frame* getWorldFrame () const;
 
 #if !defined(SWIGJAVA)
-        /**
-         * @brief Adds \b frame with \b parent as parent.
-         *
-         * If parent == NULL, then \b world is used as parent
-         *
-         * @param frame [in] Frame to add
-         * @param parent [in] Parent frame - uses World is parent == NULL
-         * @deprecated Since January 2018.
-         * Please use the addFrame method using smart pointers instead.
-         */
-        #if !defined(SWIG)
+/**
+ * @brief Adds \b frame with \b parent as parent.
+ *
+ * If parent == NULL, then \b world is used as parent
+ *
+ * @param frame [in] Frame to add
+ * @param parent [in] Parent frame - uses World is parent == NULL
+ * @deprecated Since January 2018.
+ * Please use the addFrame method using smart pointers instead.
+ */
+#if !defined(SWIG)
         DEPRECATED ("Use Frame::Ptr insted of Frame*")
-        #endif 
+#endif
         void addFrame (rw::kinematics::Frame* frame, rw::kinematics::Frame* parent = NULL);
-#endif 
+#endif
         /**
          * @brief Adds \b frame with \b parent as parent.
          *
@@ -169,22 +169,22 @@ namespace rw { namespace models {
         void addFrame (rw::core::Ptr< rw::kinematics::Frame > frame,
                        rw::core::Ptr< rw::kinematics::Frame > parent = NULL);
 #if !defined(SWIGJAVA)
-        /**
-         * @brief Adds dynamically attachable frame (DAF) \b frame with
-         * \b parent as parent.
-         *
-         * If parent == NULL, then \b world is used as parent
-         *
-         * @param frame [in] Frame to add
-         * @param parent [in] Parent frame - uses World is parent == NULL
-         * @deprecated Since January 2018.
-         * Please use the addDAF method using smart pointers instead.
-         */
-        #if !defined(SWIG)
+/**
+ * @brief Adds dynamically attachable frame (DAF) \b frame with
+ * \b parent as parent.
+ *
+ * If parent == NULL, then \b world is used as parent
+ *
+ * @param frame [in] Frame to add
+ * @param parent [in] Parent frame - uses World is parent == NULL
+ * @deprecated Since January 2018.
+ * Please use the addDAF method using smart pointers instead.
+ */
+#if !defined(SWIG)
         DEPRECATED ("Use Frame::Ptr insted of Frame*")
-        #endif
+#endif
         void addDAF (rw::kinematics::Frame* frame, rw::kinematics::Frame* parent = NULL);
-#endif 
+#endif
         /**
          * @brief Adds dynamically attachable frame (DAF) \b frame with
          * \b parent as parent.
@@ -495,6 +495,7 @@ namespace rw { namespace models {
          */
         rw::core::Ptr< rw::kinematics::StateStructure > getStateStructure () { return _tree; }
 
+#if !defined(SWIG)
         /**
          * @brief Definition of work cell changed listener
          */
@@ -510,6 +511,7 @@ namespace rw { namespace models {
          * @return
          */
         WorkCellChangedEvent& workCellChangedEvent () { return _workCellChangedEvent; }
+#endif
 
         /**
          * @brief Properties of this workcell

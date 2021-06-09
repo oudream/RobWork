@@ -82,7 +82,7 @@ namespace rw { namespace geometry {
          * @return const char pointer to the image data
          */
         const std::vector< rw::math::Vector3D< float > >& getData () const { return _data; };
-
+#if !defined(SWIG)
         /**
          * @brief access points in point cloud.
          * @param x [in] x coordinate, must be in [0;width[
@@ -101,6 +101,9 @@ namespace rw { namespace geometry {
          * @return point
          */
         rw::math::Vector3D< float >& operator() (int x, int y) { return _data[y * _width + x]; }
+#else 
+        MATRIXOPERATOR(rw::math::Vector3D<float>);
+#endif 
 
         /**
          * @brief width of the point cloud data. If the data is unordered then this

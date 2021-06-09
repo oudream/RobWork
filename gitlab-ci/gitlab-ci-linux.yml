@@ -133,7 +133,7 @@
       - ./RobWork/src/rwlibs/swig
       - ./gtest
     expire_in: 2 day
-    when: on_success
+    when: always
 
 .linux-examples:
   extends: .CI-common-linux

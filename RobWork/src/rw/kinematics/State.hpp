@@ -288,12 +288,12 @@ namespace rw { namespace kinematics {
         /**
          * @brief The configuration values part of the state.
          */
-        const QState& getQState () const { return _q_state; }
+        const rw::kinematics::QState& getQState () const { return _q_state; }
 
         /**
          * @brief The configuration values part of the state.
          */
-        QState& getQState () { return _q_state; }
+        rw::kinematics::QState& getQState () { return _q_state; }
 
         /**
          * @brief The tree structure part of the state.
@@ -320,7 +320,7 @@ namespace rw { namespace kinematics {
         /**
          * @brief Constructs a state
          */
-        State (const QState& q_state, const rw::kinematics::TreeState& tree_state,
+        State (const rw::kinematics::QState& q_state, const rw::kinematics::TreeState& tree_state,
                int stateUniqueId);
 
       private:

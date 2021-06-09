@@ -404,9 +404,19 @@ namespace rw { namespace geometry {
     extern template class rw::geometry::TriangleN1< float >;
     extern template class rw::geometry::TriangleN3< float >;
 #else
+
+#if SWIG_VERSION < 0x040000
+    SWIG_DECLARE_TEMPLATE (Triangle_d, rw::geometry::Triangle< double >);
+    SWIG_DECLARE_TEMPLATE (TriangleN1_d, rw::geometry::TriangleN1< double >);
+    SWIG_DECLARE_TEMPLATE (TriangleN3_d, rw::geometry::TriangleN3< double >);
+    ADD_DEFINITION (Triangle_d, Triangle)
+    ADD_DEFINITION (TriangleN1_d, TriangleN1)
+    ADD_DEFINITION (TriangleN3_d, TriangleN3)
+#else
     SWIG_DECLARE_TEMPLATE (Triangle, rw::geometry::Triangle< double >);
     SWIG_DECLARE_TEMPLATE (TriangleN1, rw::geometry::TriangleN1< double >);
     SWIG_DECLARE_TEMPLATE (TriangleN3, rw::geometry::TriangleN3< double >);
+#endif
 
     SWIG_DECLARE_TEMPLATE (Triangle_f, rw::geometry::Triangle< float >);
     SWIG_DECLARE_TEMPLATE (TriangleN1_f, rw::geometry::TriangleN1< float >);

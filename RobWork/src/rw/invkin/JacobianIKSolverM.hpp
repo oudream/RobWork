@@ -27,6 +27,7 @@
 #include <rw/math/Q.hpp>
 
 #include <vector>
+#include <memory>
 
 namespace rw { namespace kinematics {
     class Frame;
@@ -180,7 +181,7 @@ namespace rw { namespace invkin {
         const models::Device* _device;
         rw::core::Ptr< models::JacobianCalculator > _jacCalc;
         std::vector< kinematics::Frame* > _foi;    // frames of interest, end frames
-        std::vector< boost::shared_ptr< kinematics::FKRange > > _fkranges;
+        std::vector< std::shared_ptr< kinematics::FKRange > > _fkranges;
         double _interpolationStep;
         bool _returnBestFit;
         bool _useJointClamping, _useInterpolation;

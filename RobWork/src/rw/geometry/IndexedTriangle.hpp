@@ -120,7 +120,12 @@ namespace rw { namespace geometry {
     };
 
 #if defined(SWIG)
+#if SWIG_VERSION < 0x040000
+    SWIG_DECLARE_TEMPLATE (IndexedTriangle_16, rw::geometry::IndexedTriangle< uint16_t >);
+    ADD_DEFINITION (IndexedTriangle_16, IndexedTriangle)
+#else
     SWIG_DECLARE_TEMPLATE (IndexedTriangle, rw::geometry::IndexedTriangle< uint16_t >);
+#endif
     SWIG_DECLARE_TEMPLATE (IndexedTriangle_32, rw::geometry::IndexedTriangle< uint32_t >);
 #endif
 
@@ -203,7 +208,12 @@ namespace rw { namespace geometry {
     };
 
 #if defined(SWIG)
+#if SWIG_VERSION < 0x040000
+    SWIG_DECLARE_TEMPLATE (IndexedTriangleN1_16, rw::geometry::IndexedTriangleN1< uint16_t >);
+    ADD_DEFINITION (IndexedTriangleN1_16, IndexedTriangleN1)
+#else
     SWIG_DECLARE_TEMPLATE (IndexedTriangleN1, rw::geometry::IndexedTriangleN1< uint16_t >);
+#endif
     SWIG_DECLARE_TEMPLATE (IndexedTriangleN1_32, rw::geometry::IndexedTriangleN1< uint32_t >);
 #endif
     /**
@@ -294,7 +304,12 @@ namespace rw { namespace geometry {
 #endif
     };
 #if defined(SWIG)
+#if SWIG_VERSION < 0x040000
+    SWIG_DECLARE_TEMPLATE (IndexedTriangleN3_16, rw::geometry::IndexedTriangleN3< uint16_t >);
+    ADD_DEFINITION (IndexedTriangleN3_16, IndexedTriangleN3)
+#else
     SWIG_DECLARE_TEMPLATE (IndexedTriangleN3, rw::geometry::IndexedTriangleN3< uint16_t >);
+#endif
     SWIG_DECLARE_TEMPLATE (IndexedTriangleN3_32, rw::geometry::IndexedTriangleN3< uint32_t >);
 #endif
 

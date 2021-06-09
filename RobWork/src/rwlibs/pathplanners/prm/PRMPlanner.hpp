@@ -30,7 +30,7 @@
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/astar_search.hpp>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 namespace rw { namespace kinematics {
     class State;
@@ -347,7 +347,7 @@ namespace rwlibs { namespace pathplanners {
         //! A PRM edge
         typedef PRM::edge_descriptor Edge;
 
-        boost::shared_ptr< prm::PartialIndexTable< Node > > _partialIndexTable;
+        std::shared_ptr< prm::PartialIndexTable< Node > > _partialIndexTable;
         rwlibs::algorithms::KDTreeQ< Node >::Ptr _kdtree;
         std::list< const rwlibs::algorithms::KDTreeQ< Node >::KDNode* > _kdnodesSearchResult;
 

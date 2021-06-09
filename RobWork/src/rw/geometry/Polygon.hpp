@@ -37,7 +37,7 @@ namespace rw { namespace geometry {
     /**
      * @brief indexed polygon class that saves \b N indices to the \b N vertices of the polygon
      */
-    template< class T = rw::math::Vector3D<double> > class Polygon
+    template< class T = rw::math::Vector3D< double > > class Polygon
     {
       public:
         //! @brief Smart pointer to Polygon
@@ -130,10 +130,18 @@ namespace rw { namespace geometry {
         std::vector< T > _vertices;
     };
 #if defined(SWIG)
-    SWIG_DECLARE_TEMPLATE (Polygon, rw::geometry::Polygon< rw::math::Vector3D<double> >);
-    SWIG_DECLARE_TEMPLATE (Polygon_f, rw::geometry::Polygon< rw::math::Vector3D<float> >);
-    SWIG_DECLARE_TEMPLATE (Polygon2D, rw::geometry::Polygon< rw::math::Vector2D<double> >);
-    SWIG_DECLARE_TEMPLATE (Polygon2D_f, rw::geometry::Polygon< rw::math::Vector2D<float> >);
+#if SWIG_VERSION < 0x040000
+    SWIG_DECLARE_TEMPLATE (Polygon_d, rw::geometry::Polygon< rw::math::Vector3D< double > >);
+    SWIG_DECLARE_TEMPLATE (Polygon2D_d, rw::geometry::Polygon< rw::math::Vector2D< double > >);
+    ADD_DEFINITION (Polygon_d, Polygon)
+    ADD_DEFINITION (Polygon2D_d, Polygon2D)
+#else
+    SWIG_DECLARE_TEMPLATE (Polygon, rw::geometry::Polygon< rw::math::Vector3D< double > >);
+    SWIG_DECLARE_TEMPLATE (Polygon2D, rw::geometry::Polygon< rw::math::Vector2D< double > >);
+#endif
+
+    SWIG_DECLARE_TEMPLATE (Polygon_f, rw::geometry::Polygon< rw::math::Vector3D< float > >);
+    SWIG_DECLARE_TEMPLATE (Polygon2D_f, rw::geometry::Polygon< rw::math::Vector2D< float > >);
 #endif
     // @}
 }}    // namespace rw::geometry

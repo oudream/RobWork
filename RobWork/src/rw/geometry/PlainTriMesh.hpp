@@ -20,6 +20,7 @@
 
 #if !defined(SWIG)
 #include "TriMesh.hpp"
+#include <type_traits>
 #endif
 
 namespace rw { namespace geometry {
@@ -51,7 +52,7 @@ namespace rw { namespace geometry {
      * TriangleUtil::toIndexedTriMesh().
      *
      */
-    template< class TRI = rw::geometry::Triangle < double > >
+    template< class TRI = rw::geometry::Triangle< double > >
     class PlainTriMesh : public TriMesh /*<typename TRI::value_type>*/
     {
       private:
@@ -138,7 +139,7 @@ namespace rw { namespace geometry {
         {
             using namespace rw::math;
 
-            if (::boost::is_same< float, value_type >::value) {
+            if (std::is_same< float, value_type >::value) {
                 const TRI& triA = _triangles[idx];
                 rw::geometry::Triangle< double > tri;
                 tri[0] = cast< double > (triA[0]);
@@ -157,7 +158,7 @@ namespace rw { namespace geometry {
         void getTriangle (size_t idx, rw::geometry::Triangle< double >& dst) const
         {
             using namespace rw::math;
-            if (::boost::is_same< float, value_type >::value) {
+            if (std::is_same< float, value_type >::value) {
                 const TRI& triA = _triangles[idx];
                 dst[0]          = cast< double > (triA[0]);
                 dst[1]          = cast< double > (triA[1]);
@@ -173,9 +174,9 @@ namespace rw { namespace geometry {
         void getTriangle (size_t idx, rw::geometry::Triangle< float >& dst) const
         {
             using namespace rw::math;
-            if (::boost::is_same< float, value_type >::value) {
-                dst = *(
-                    reinterpret_cast< const rw::geometry::Triangle< float >* > (&_triangles[idx].getTriangle ()));
+            if (std::is_same< float, value_type >::value) {
+                dst = *(reinterpret_cast< const rw::geometry::Triangle< float >* > (
+                    &_triangles[idx].getTriangle ()));
             }
             else {
                 const TRI& triA = _triangles[idx];
@@ -196,10 +197,13 @@ namespace rw { namespace geometry {
         size_t size () const { return _triangles.size (); }
 
         //! @copydoc GeometryData::getType
-        GeometryData::GeometryType getType () const { return GeometryData::PlainTriMesh; };
+        rw::geometry::GeometryData::GeometryType getType () const
+        {
+            return GeometryData::PlainTriMesh;
+        };
 
         //! @copydoc TriMesh::clone
-        rw::core::Ptr< TriMesh > clone () const
+        rw::core::Ptr< rw::geometry::TriMesh > clone () const
         {
             return rw::core::ownedPtr (new PlainTriMesh (*this));
         }
@@ -214,12 +218,30 @@ namespace rw { namespace geometry {
     extern template class rw::geometry::PlainTriMesh< rw::geometry::TriangleN1< float > >;
     extern template class rw::geometry::PlainTriMesh< rw::geometry::TriangleN3< float > >;
 #else
-    SWIG_DECLARE_TEMPLATE (PlainTriMesh, rw::geometry::PlainTriMesh< rw::geometry::Triangle< double > >);
-    SWIG_DECLARE_TEMPLATE (PlainTriMeshN1, rw::geometry::PlainTriMesh< rw::geometry::TriangleN1< double > >);
-    SWIG_DECLARE_TEMPLATE (PlainTriMeshN3, rw::geometry::PlainTriMesh< rw::geometry::TriangleN3< double > >);
-    SWIG_DECLARE_TEMPLATE (PlainTriMesh_f, rw::geometry::PlainTriMesh< rw::geometry::Triangle< float > >);
-    SWIG_DECLARE_TEMPLATE (PlainTriMeshN1_f, rw::geometry::PlainTriMesh< rw::geometry::TriangleN1< float > >);
-    SWIG_DECLARE_TEMPLATE (PlainTriMeshN3_f, rw::geometry::PlainTriMesh< rw::geometry::TriangleN3< float > >);
+#if SWIG_VERSION < 0x040000
+    SWIG_DECLARE_TEMPLATE (PlainTriMesh_d,
+                           rw::geometry::PlainTriMesh< rw::geometry::Triangle< double > >);
+    SWIG_DECLARE_TEMPLATE (PlainTriMeshN1_d,
+                           rw::geometry::PlainTriMesh< rw::geometry::TriangleN1< double > >);
+    SWIG_DECLARE_TEMPLATE (PlainTriMeshN3_d,
+                           rw::geometry::PlainTriMesh< rw::geometry::TriangleN3< double > >);
+    ADD_DEFINITION (PlainTriMesh_d, PlainTriMesh)
+    ADD_DEFINITION (PlainTriMeshN1_d, PlainTriMeshN1)
+    ADD_DEFINITION (PlainTriMeshN3_d, PlainTriMeshN3)
+#else
+    SWIG_DECLARE_TEMPLATE (PlainTriMesh,
+                           rw::geometry::PlainTriMesh< rw::geometry::Triangle< double > >);
+    SWIG_DECLARE_TEMPLATE (PlainTriMeshN1,
+                           rw::geometry::PlainTriMesh< rw::geometry::TriangleN1< double > >);
+    SWIG_DECLARE_TEMPLATE (PlainTriMeshN3,
+                           rw::geometry::PlainTriMesh< rw::geometry::TriangleN3< double > >);
+#endif
+    SWIG_DECLARE_TEMPLATE (PlainTriMesh_f,
+                           rw::geometry::PlainTriMesh< rw::geometry::Triangle< float > >);
+    SWIG_DECLARE_TEMPLATE (PlainTriMeshN1_f,
+                           rw::geometry::PlainTriMesh< rw::geometry::TriangleN1< float > >);
+    SWIG_DECLARE_TEMPLATE (PlainTriMeshN3_f,
+                           rw::geometry::PlainTriMesh< rw::geometry::TriangleN3< float > >);
 #endif
     //! @brief tri mesh, double, no normals
     typedef rw::geometry::PlainTriMesh< rw::geometry::Triangle< double > > PlainTriMeshD;
