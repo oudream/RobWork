@@ -69,6 +69,8 @@ namespace rw { namespace geometry {
 
         typedef rw::core::Ptr< OBV< DERIVED > > Ptr;
 
+        virtual ~OBV(){};
+
         virtual inline const rw::math::Transform3D< value_type >& getTransform () const
         {
             return ((DerivedType*) this)->getTransform ();

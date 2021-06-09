@@ -31,6 +31,7 @@
 #include <boost/graph/astar_search.hpp>
 #include <boost/graph/dijkstra_shortest_paths.hpp>
 #include <queue>
+#include <memory>
 
 using namespace rwlibs::pathplanners;
 using namespace rw::math;
@@ -284,7 +285,7 @@ void PRMPlanner::buildRoadmap (size_t nodecount)
     // std::cout<<"Rneighbor = "<<_Rneighbor<<std::endl;
 
     if (_neighborSearchStrategy == PARTIAL_INDEX_TABLE) {
-        _partialIndexTable = boost::shared_ptr< prm::PartialIndexTable< Node > > (
+        _partialIndexTable = std::shared_ptr< prm::PartialIndexTable< Node > > (
             new prm::PartialIndexTable< Node > (
                 _bounds, _metricWeights, _Rneighbor, (int) _partialIndexTableDimensions));
     }

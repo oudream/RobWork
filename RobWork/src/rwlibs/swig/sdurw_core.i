@@ -9,9 +9,7 @@ SWIG_JAVABODY_TYPEWRAPPER(public, public, public, SWIGTYPE)
 %include <rwlibs/swig/swig_macros.i>
 %include <rwlibs/swig/ext_i/std.i>
 %include <rwlibs/swig/ext_i/boost.i>
-
-
-
+%include <rwlibs/swig/ext_i/os.i>
 
 %rename(getDeref) rw::core::Ptr::operator->;
 %rename(deref) rw::core::Ptr::get;
@@ -79,9 +77,15 @@ SWIG_JAVABODY_TYPEWRAPPER(public, public, public, SWIGTYPE)
     }
     OWNEDPTR(SWIG_CORE_DEFINE(ownedPtr_type));
 %enddef
-NAMED_OWNEDPTR(VectorFloat,std::vector<float>);
-NAMED_OWNEDPTR(VectorSize_t,std::vector<size_t>);
 
+%{
+  #include <rw/core/os.hpp>
+%}
+
+#if !defined(WIN32)
+NAMED_OWNEDPTR(VectorFloat,std::vector<float>);
+NAMED_OWNEDPTR(VectorUL,std::vector<unsigned long>);
+#endif 
 
 #if defined(SWIGPYTHON)
 %ignore rw::core::AnyPtr::operator=;

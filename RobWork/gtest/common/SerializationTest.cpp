@@ -28,6 +28,8 @@
 #include <rw/math/Math.hpp>
 #include <rw/math/Vector2D.hpp>
 
+#include <type_traits>
+
 using namespace rw::common;
 using namespace rw::core;
 using namespace rw::math;
@@ -50,7 +52,7 @@ public:
 	 */
     template<class T>
     inline void writeImpl(T& object, const std::string& id,
-    		typename boost::enable_if_c<boost::is_base_of<Serializable, T>::value, T>::type* def=NULL)
+    		typename boost::enable_if_c<std::is_base_of<Serializable, T>::value, T>::type* def=NULL)
     {
     	object.write(_oa, id);
     }
@@ -61,7 +63,7 @@ public:
      */
     template<typename T>
     inline void writeImpl(T& object, const std::string& id,
-    		typename boost::disable_if_c<boost::is_base_of<Serializable, T>::value, T>::type* def=NULL,
+    		typename boost::disable_if_c<std::is_base_of<Serializable, T>::value, T>::type* def=NULL,
     		typename boost::disable_if_c<boost::is_pointer<T>::value, T>::type* defptr=NULL)
     {
     	//BOOST_MPL_ASSERT_MSG(boost::is_reference<T>::value, "type T cannot be of type reference!" , (T) );

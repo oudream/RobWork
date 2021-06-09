@@ -39,6 +39,8 @@
 #include <rw/math/VelocityScrew6D.hpp>
 #include <rw/math/MetricFactory.hpp>
 
+#include <memory>
+
 using namespace rw::math;
 using namespace rw::kinematics;
 using namespace rw::models;
@@ -150,8 +152,8 @@ TEST(SerialDeviceTest, forwardKinematicsTest)
     // frames added to the tree.
     // Which means they have to be allocated with new
     // Define the world frame and construct the frame Tree
-    boost::shared_ptr<StateStructure> tree =
-        boost::shared_ptr<StateStructure>(new StateStructure());
+    std::shared_ptr<StateStructure> tree =
+        std::shared_ptr<StateStructure>(new StateStructure());
     Frame *world = tree->getRoot();
     //tree->addFrame(world);
     { // simple forward kinematic of one joint
@@ -271,8 +273,8 @@ TEST(SerialDeviceTest, forwardKinematicsTest)
 TEST(SerialDeviceTest, SerialDevice){
 
     // Define the world frame and construct the frame Tree
-    boost::shared_ptr<StateStructure> tree =
-        boost::shared_ptr<StateStructure>(new StateStructure());
+    std::shared_ptr<StateStructure> tree =
+        std::shared_ptr<StateStructure>(new StateStructure());
     Frame *world = tree->getRoot();
 
     // Define the simplified (only 6-dof) Kuka-kr16 robot

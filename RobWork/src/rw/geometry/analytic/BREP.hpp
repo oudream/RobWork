@@ -122,7 +122,7 @@ namespace rw { namespace geometry {
          * returned by size().
          * @return a reference to the surface.
          */
-        virtual const Surface& getSurface (std::size_t surfaceIndex) const = 0;
+        virtual const rw::geometry::Surface& getSurface (std::size_t surfaceIndex) const = 0;
 
         /**
          * @brief Get curve.
@@ -130,7 +130,7 @@ namespace rw { namespace geometry {
          * edgeCount().
          * @return a reference to the curve.
          */
-        virtual const Curve& getCurve (std::size_t curveIndex) const = 0;
+        virtual const rw::geometry::Curve& getCurve (std::size_t curveIndex) const = 0;
 
         /**
          * @brief Scale the object.
@@ -150,7 +150,7 @@ namespace rw { namespace geometry {
          * @brief Get a Shell representation as a proxy to the BREP.
          * @return smart pointer to a Shell proxy object.
          */
-        inline rw::core::Ptr< const Shell > shellProxy () const { return doShellProxyBREP (); }
+        inline rw::core::Ptr< const rw::geometry::Shell > shellProxy () const { return doShellProxyBREP (); }
 
         /**
          * @brief Get the curves in a given loop.
@@ -161,7 +161,7 @@ namespace rw { namespace geometry {
          * @param loopIdx [in] the loop index.
          * @return an ordered vector of curves.
          */
-        std::vector< rw::core::Ptr< Curve > > getCurves (std::size_t loopIdx) const;
+        std::vector< rw::core::Ptr< rw::geometry::Curve > > getCurves (std::size_t loopIdx) const;
 
         //! @brief Convenience type for a set of curves in a BREP.
         class CommonCurveSet
@@ -279,7 +279,7 @@ namespace rw { namespace geometry {
          * @param R [in] the directions for the bounding box.
          * @return an OBB around the BREP.
          */
-        OBB<> obb (const rw::math::Rotation3D<>& R);
+        rw::geometry::OBB<> obb (const rw::math::Rotation3D<>& R);
 
         /**
          * @brief Create Oriented Bounding Box where the directions are estimated.
@@ -289,7 +289,7 @@ namespace rw { namespace geometry {
          *
          * @return an OBB around the BREP.
          */
-        OBB<> obb ();
+        rw::geometry::OBB<> obb ();
 
         /**
          * @brief Add a vertex to the BREP.
@@ -364,14 +364,14 @@ namespace rw { namespace geometry {
          * @param faceIndex [in] the face index, which should be less than loopCount().
          * @return OBB for the given face.
          */
-        OBB<> faceOBB (std::size_t faceIndex);
+        rw::geometry::OBB<> faceOBB (std::size_t faceIndex);
 
         /**
          * @brief Create Oriented Bounding Rectangle for an edge.
          * @param edge [in] the edge index, which should be less than edgeCount().
          * @return OBB for the given edge (with third half-length set to zero).
          */
-        OBB<> edgeOBR (std::size_t edge) const;
+        rw::geometry::OBB<> edgeOBR (std::size_t edge) const;
 
         /**
          * @brief Find the extent of the surface along a specific direction.
@@ -396,7 +396,7 @@ namespace rw { namespace geometry {
          * @param faceIndex [in] the face index, which should be less than loopCount().
          * @return a triangle mesh.
          */
-        rw::core::Ptr< TriMesh > faceTriMesh (std::size_t faceIndex);
+        rw::core::Ptr< rw::geometry::TriMesh > faceTriMesh (std::size_t faceIndex);
 
         /**
          * @brief Set the resolution used for discretization in the getTriMesh and faceTriMesh
@@ -412,6 +412,7 @@ namespace rw { namespace geometry {
         virtual void print ();
 
       protected:
+
         struct HalfEdge;
 
         /**

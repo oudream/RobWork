@@ -25,6 +25,7 @@
 
 #include <rw/core/Ptr.hpp>
 #include <rw/math/Vector3D.hpp>
+#include <type_traits>
 #endif
 
 namespace rw { namespace geometry {
@@ -49,7 +50,7 @@ namespace rw { namespace geometry {
      * In the IndexedTriMesh classes the indice list is hidden under a list
      * of IndexedTriangle.
      */
-    template< class T = double > class IndexedTriMesh : public TriMesh
+    template< class T = double > class IndexedTriMesh : public rw::geometry::TriMesh
     {
       public:
         //! the basic value type of this mesh (for instance double or float)
@@ -57,7 +58,7 @@ namespace rw { namespace geometry {
         //! the vertex array type
         typedef std::vector< rw::math::Vector3D< T > > VertexArray;
         //! the smart pointer type of this triangle mesh
-        typedef rw::core::Ptr< IndexedTriMesh< T > > Ptr;
+        typedef rw::core::Ptr< rw::geometry::IndexedTriMesh< T > > Ptr;
 
       protected:
         /**
@@ -138,14 +139,14 @@ namespace rw { namespace geometry {
          * @param i [in] the vertex id (NOT the triangle id).
          * @return a reference to the vertex.
          */
-        const rw::math::Vector3D< T >& getVertex (size_t i) const { return _vertices->at (i); }
+        rw::math::Vector3D< T >& getVertex (size_t i) { return _vertices->at (i); }
 
         /**
          * @brief Get vertex from vertex list.
          * @param i [in] the vertex id (NOT the triangle id).
          * @return a reference to the vertex.
          */
-        rw::math::Vector3D< T >& getVertex (size_t i) { return _vertices->at (i); }
+        const rw::math::Vector3D< T >& getVertex (size_t i) const { return _vertices->at (i); }
 
         /**
          * @brief Check if trimesh has vertex normals defined.
@@ -246,7 +247,12 @@ namespace rw { namespace geometry {
         void setTriArray (uint8_t* triarray) { _triIdxArr = triarray; }
     };
 #if defined(SWIG)
+#if SWIG_VERSION < 0x040000
+    SWIG_DECLARE_TEMPLATE (IndexedTriMesh_d, rw::geometry::IndexedTriMesh< double >);
+    ADD_DEFINITION (IndexedTriMesh_d, IndexedTriMesh)
+#else
     SWIG_DECLARE_TEMPLATE (IndexedTriMesh, rw::geometry::IndexedTriMesh< double >);
+#endif
     SWIG_DECLARE_TEMPLATE (IndexedTriMesh_f, rw::geometry::IndexedTriMesh< float >);
 #endif
     //! @brief IndexedTriMesh using valuetype double
@@ -264,7 +270,7 @@ namespace rw { namespace geometry {
      * @brief an Indexed Triangle mesh with zero normals
      */
     template< class T = double, class S = uint16_t >
-    class IndexedTriMeshN0 : public IndexedTriMesh< T >
+    class IndexedTriMeshN0 : public rw::geometry::IndexedTriMesh< T >
     {
       public:
         //! @brief The type of indices.
@@ -276,7 +282,7 @@ namespace rw { namespace geometry {
         //! @copydoc IndexedTriMesh::VertexArray
         typedef typename IndexedTriMesh< T >::VertexArray VertexArray;
         //! @brief Smart pointer type of this class.
-        typedef rw::core::Ptr< IndexedTriMeshN0< T, S > > Ptr;
+        typedef rw::core::Ptr< rw::geometry::IndexedTriMeshN0< T, S > > Ptr;
 
       private:
         rw::core::Ptr< TriangleArray > _triangles;
@@ -351,7 +357,7 @@ namespace rw { namespace geometry {
          * @brief Make deep copy of mesh.
          * @param mesh [in] the mesh to copy.
          */
-        IndexedTriMeshN0 (const IndexedTriMeshN0& mesh) :
+        IndexedTriMeshN0 (const rw::geometry::IndexedTriMeshN0<T,S>& mesh) :
             IndexedTriMesh< T > (rw::core::ownedPtr (new VertexArray (mesh.getVertices ())),
                                  rw::core::ownedPtr (new VertexArray (mesh.getNormals ())),
                                  (uint8_t) sizeof (tri_type), (uint8_t) sizeof (S)),
@@ -409,8 +415,8 @@ namespace rw { namespace geometry {
             const S v2 = *((S*) &(this->_triIdxArr[idx + this->_idxsize]));
             const S v3 = *((S*) &(this->_triIdxArr[idx + 2 * this->_idxsize]));
             return rw::geometry::IndexedTriangle< uint32_t > (static_cast< uint32_t > (v1),
-                                                static_cast< uint32_t > (v2),
-                                                static_cast< uint32_t > (v3));
+                                                              static_cast< uint32_t > (v2),
+                                                              static_cast< uint32_t > (v3));
         }
 
         //! @copydoc TriMesh::getTriangle
@@ -425,14 +431,15 @@ namespace rw { namespace geometry {
             const Vector3D< T >& v1 = (*this->_vertices)[v1idx];
             const Vector3D< T >& v2 = (*this->_vertices)[v2idx];
 
-            if (::boost::is_same< float, T >::value) {
+            if (std::is_same< float, T >::value) {
                 return rw::geometry::Triangle< double > (
                     cast< double > (v0), cast< double > (v1), cast< double > (v2));
             }
             else {
-                return rw::geometry::Triangle< double > (*(reinterpret_cast< const Vector3D< double >* > (&v0)),
-                                           *(reinterpret_cast< const Vector3D< double >* > (&v1)),
-                                           *(reinterpret_cast< const Vector3D< double >* > (&v2)));
+                return rw::geometry::Triangle< double > (
+                    *(reinterpret_cast< const Vector3D< double >* > (&v0)),
+                    *(reinterpret_cast< const Vector3D< double >* > (&v1)),
+                    *(reinterpret_cast< const Vector3D< double >* > (&v2)));
             }
         }
 
@@ -445,7 +452,7 @@ namespace rw { namespace geometry {
             const S v1idx      = *((S*) &(this->_triIdxArr[idx + this->_idxsize]));
             const S v2idx      = *((S*) &(this->_triIdxArr[idx + 2 * this->_idxsize]));
 
-            if (::boost::is_same< float, T >::value) {
+            if (std::is_same< float, T >::value) {
                 dst[0] = cast< double > ((*this->_vertices)[v0idx]);
                 dst[1] = cast< double > ((*this->_vertices)[v1idx]);
                 dst[2] = cast< double > ((*this->_vertices)[v2idx]);
@@ -468,7 +475,7 @@ namespace rw { namespace geometry {
             const S v0idx      = *((S*) &(this->_triIdxArr[idx]));
             const S v1idx      = *((S*) &(this->_triIdxArr[idx + this->_idxsize]));
             const S v2idx      = *((S*) &(this->_triIdxArr[idx + 2 * this->_idxsize]));
-            if (::boost::is_same< float, T >::value) {
+            if (std::is_same< float, T >::value) {
                 // dst[0] = (*this->_vertices)[v0idx ];
                 dst[0] =
                     *(reinterpret_cast< const Vector3D< float >* > (&(*this->_vertices)[v0idx]));
@@ -612,23 +619,29 @@ namespace rw { namespace geometry {
         size_t getSize () const { return _triangles->size (); }
 
         //! @copydoc TriMesh::clone
-        TriMesh::Ptr clone () const { return rw::core::ownedPtr (new IndexedTriMeshN0 (*this)); }
+        TriMesh::Ptr clone () const { return rw::core::ownedPtr (new rw::geometry::IndexedTriMeshN0<T,S> (*this)); }
     };
 #if !defined(SWIG)
     extern template class rw::geometry::IndexedTriMeshN0< float >;
     extern template class rw::geometry::IndexedTriMeshN0< double >;
 #else
-    #define INDEXEDTRIIMESHN0_TYPE rw::geometry::IndexedTriMeshN0< double,uint16_t >
-    #define INDEXEDTRIIMESHN0_f_TYPE rw::geometry::IndexedTriMeshN0< float,uint16_t >
+#define INDEXEDTRIIMESHN0_TYPE rw::geometry::IndexedTriMeshN0< double, uint16_t >
+#define INDEXEDTRIIMESHN0_f_TYPE rw::geometry::IndexedTriMeshN0< float, uint16_t >
+
+#if SWIG_VERSION < 0x040000
+    SWIG_DECLARE_TEMPLATE (IndexedTriMeshN0_d, INDEXEDTRIIMESHN0_TYPE);
+    ADD_DEFINITION (IndexedTriMeshN0_d, IndexedTriMeshN0)
+#else
     SWIG_DECLARE_TEMPLATE (IndexedTriMeshN0, INDEXEDTRIIMESHN0_TYPE);
+#endif
     SWIG_DECLARE_TEMPLATE (IndexedTriMeshN0_f, INDEXEDTRIIMESHN0_f_TYPE);
 #endif
     //! @brief The type for a IndexedTriMesh with no normals of double value type and uint16_t as
     //! index type.
-    typedef IndexedTriMeshN0< double > IndexedTriMeshN0D;
+    typedef rw::geometry::IndexedTriMeshN0< double > IndexedTriMeshN0D;
     //! @brief The type for a IndexedTriMesh with no normals of float value type and uint16_t as
     //! index type.
-    typedef IndexedTriMeshN0< float > IndexedTriMeshN0F;
+    typedef rw::geometry::IndexedTriMeshN0< float > IndexedTriMeshN0F;
 
     // @}
 }}     // namespace rw::geometry

@@ -23,6 +23,7 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/spirit/include/classic_position_iterator.hpp>
 #include <vector>
+#include <memory>
 
 namespace rw { namespace loaders {
     /** @addtogroup loaders */
@@ -40,7 +41,7 @@ namespace rw { namespace loaders {
          * @param filename [in]
          * @return dummy representation of a workcell
          */
-        static boost::shared_ptr< DummyWorkcell > parseWorkcell (const std::string& filename);
+        static std::shared_ptr< DummyWorkcell > parseWorkcell (const std::string& filename);
 
         /**
          * @brief parse a workcell from a vector of char data and a file pos map
@@ -48,9 +49,9 @@ namespace rw { namespace loaders {
          * @param filemap [in]
          * @return dummy representation of a workcell
          */
-        static boost::shared_ptr< DummyWorkcell >
-        parseWorkcell (boost::shared_ptr< std::vector< char > >& data,
-                       boost::shared_ptr< std::vector<
+        static std::shared_ptr< DummyWorkcell >
+        parseWorkcell (std::shared_ptr< std::vector< char > >& data,
+                       std::shared_ptr< std::vector<
                            std::pair< size_t, boost::spirit::classic::file_position > > >& filemap);
     };
 

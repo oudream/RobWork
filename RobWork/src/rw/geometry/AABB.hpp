@@ -81,7 +81,12 @@ extern template class rw::geometry::BV< rw::geometry::AABB< float > >;
 extern template class rw::geometry::AABB< float >;
 #else
 SWIG_DECLARE_TEMPLATE (BvAABB, rw::geometry::BV< rw::geometry::AABB< double > >);
+#if SWIG_VERSION < 0x040000
+SWIG_DECLARE_TEMPLATE (AABB_d, rw::geometry::AABB< double >);
+ADD_DEFINITION(AABB_d,AABB)
+#else 
 SWIG_DECLARE_TEMPLATE (AABB, rw::geometry::AABB< double >);
+#endif
 #endif
 
 #endif /* AABB_HPP_ */

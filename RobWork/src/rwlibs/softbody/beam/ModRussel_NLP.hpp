@@ -25,7 +25,7 @@ Copyright 2013 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
 #include "BeamObstaclePlane.hpp"
 #include "IpTNLP.hpp"
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 namespace rwlibs { namespace softbody {
     /** @addtogroup softbody */
@@ -37,8 +37,8 @@ namespace rwlibs { namespace softbody {
     class ModRussel_NLP : public Ipopt::TNLP
     {
       public:
-        ModRussel_NLP (boost::shared_ptr< BeamGeometry > geomPtr,
-                       boost::shared_ptr< BeamObstaclePlane > obstaclePtr,
+        ModRussel_NLP (std::shared_ptr< BeamGeometry > geomPtr,
+                       std::shared_ptr< BeamObstaclePlane > obstaclePtr,
                        rw::math::Transform3D<> planeTbeam,
                        const std::vector< int >& integralIndices);
         virtual ~ModRussel_NLP ();
@@ -117,14 +117,14 @@ namespace rwlibs { namespace softbody {
          *
          * @return the geometry used
          **/
-        boost::shared_ptr< BeamGeometry > getGeometry (void) const;
+        std::shared_ptr< BeamGeometry > getGeometry (void) const;
 
         /**
          * @brief returns the obstacle used
          *
          * @return the obstacle used
          **/
-        boost::shared_ptr< BeamObstaclePlane > getObstacle (void) const;
+        std::shared_ptr< BeamObstaclePlane > getObstacle (void) const;
 
         /**
          * @brief get the plane to beam transform
@@ -158,8 +158,8 @@ namespace rwlibs { namespace softbody {
         void setStartingGuess (const Eigen::VectorXd& xinituser);
 
       private:
-        boost::shared_ptr< BeamGeometry > _geomPtr;
-        boost::shared_ptr< BeamObstaclePlane > _obstaclePtr;
+        std::shared_ptr< BeamGeometry > _geomPtr;
+        std::shared_ptr< BeamObstaclePlane > _obstaclePtr;
         rw::math::Transform3D<> _planeTbeam;
 
         Eigen::VectorXd _a;     // vector of M angles

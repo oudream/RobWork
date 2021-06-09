@@ -1581,6 +1581,9 @@ RobWork/example/java/src/*.log
 /RobWork/src/rwlibs/swig/python/setup.py
 /RobWork/src/rwlibs/swig/python/RobWork-*.egg-info
 
+# /RobWork/src/rwlibs/swig/ext_i
+RobWork/src/rwlibs/swig/ext_i/os.i
+
 # /RobWork/src/rwlibs/task/
 /RobWork/src/rwlibs/task/cmake_install.cmake
 /RobWork/src/rwlibs/task/CMakeCache.txt
@@ -3626,4 +3629,5 @@ RobWorkSim/src/rwsimlibs/swig/python/RobWorkSim-*.egg-info
 /doc/installstuff/RW_package-msvc2005/CPackSourceConfig.cmake
 
 /debian/sdurw-doc1.2/DEBIAN/md5sums
+
 

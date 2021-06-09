@@ -355,6 +355,7 @@ ProximityStrategyFCL::getGeometryIDs (rw::proximity::ProximityModel* model)
 
     return geometryIDs;
 }
+
 std::vector< rw::core::Ptr< rw::geometry::Geometry > >
 ProximityStrategyFCL::getGeometrys (rw::proximity::ProximityModel* model)
 {
@@ -369,6 +370,7 @@ ProximityStrategyFCL::getGeometrys (rw::proximity::ProximityModel* model)
 
     return geometrys;
 }
+
 void ProximityStrategyFCL::clear ()
 {
     /* Assumes that all the ProximityModels are attached/connected to frames and thus being cleared

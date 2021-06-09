@@ -106,9 +106,9 @@ namespace rw { namespace math {
          */
         template< class R > explicit Transform3D (const Eigen::MatrixBase< R >& r)
         {
-            _d[0] = r.row (0) (3);
-            _d[1] = r.row (1) (3);
-            _d[2] = r.row (2) (3);
+            _d[0] = T(r.row (0) (3));
+            _d[1] = T(r.row (1) (3));
+            _d[2] = T(r.row (2) (3));
             _R = Rotation3D<T>(r.block(0,0,3,3));
         }
 

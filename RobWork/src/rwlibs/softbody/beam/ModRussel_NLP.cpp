@@ -22,12 +22,13 @@ Copyright 2013 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
 #include "rwlibs/softbody/numerics/TrapMethod.hpp"
 
 #include <rw/math/Constants.hpp>
+#include <memory>
 
 using namespace Ipopt;
 using namespace rwlibs::softbody;
 
-ModRussel_NLP::ModRussel_NLP (boost::shared_ptr< rwlibs::softbody::BeamGeometry > geomPtr,
-                              boost::shared_ptr< BeamObstaclePlane > obstaclePtr,
+ModRussel_NLP::ModRussel_NLP (std::shared_ptr< rwlibs::softbody::BeamGeometry > geomPtr,
+                              std::shared_ptr< BeamObstaclePlane > obstaclePtr,
                               rw::math::Transform3D<> planeTbeam,
                               const std::vector< int >& integralIndices) :
     _geomPtr (geomPtr),
@@ -361,12 +362,12 @@ void ModRussel_NLP::finalize_solution (Ipopt::SolverReturn status, Ipopt::Index 
     eval_f_elastic (n, x, _Ee);
 }
 
-boost::shared_ptr< BeamGeometry > ModRussel_NLP::getGeometry (void) const
+std::shared_ptr< BeamGeometry > ModRussel_NLP::getGeometry (void) const
 {
     return _geomPtr;
 }
 
-boost::shared_ptr< BeamObstaclePlane > ModRussel_NLP::getObstacle (void) const
+std::shared_ptr< BeamObstaclePlane > ModRussel_NLP::getObstacle (void) const
 {
     return _obstaclePtr;
 }

@@ -6,6 +6,8 @@
 
 %include <std_string.i>
 
+%include <rwlibs/swig/ext_i/os.i>
+
 %typemap(out, fragment="SWIG_From_std_string") std::string&& {
   $result = SWIG_From_std_string(*$1);
 }
@@ -60,10 +62,13 @@ namespace std {
 #if (defined(SWIGLUA) || defined(SWIGPYTHON))
 	%extend std::vector<std::string> { char *__str__() { return printCString(*$self); } }
 #endif
+
+#if ! defined(WIN32)
   typedef long unsigned int size_t;
   typedef unsigned char uint8_t;
   typedef unsigned short uint16_t;
   typedef unsigned int uint32_t;
+#endif 
 
 	%template(VectorString) std::vector<std::string>;
   %template(VectorChar) std::vector<char>;
@@ -72,8 +77,11 @@ namespace std {
 	%template(VectorInt) std::vector<int>;
   %template(VectorLong) std::vector<long>;
   %template(VectorUInt) std::vector<unsigned int>;
+  
+#if !defined(WIN32)
   %template(VectorULong) std::vector<unsigned long>;
-  %template(VecotrVecotrULong) std::vector<std::vector<size_t>>;
+  %template(VecotrVecotrULong) std::vector<std::vector<unsigned long>>;
+#endif 
   %template(Vectorbool) std::vector<bool>;
   %template(pairDoubleDouble) std::pair<double,double>;
   %template(VectorPairDoubleDouble) std::vector<std::pair<double,double>>;

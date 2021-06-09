@@ -17,7 +17,7 @@ namespace geometry {
      * @brief class representing an Bounding sphere
      */
 
-    template< class T = double > class BSphere : public BV< BSphere< T > >
+    template< class T = double > class BSphere : public rw::geometry::BV< rw::geometry::BSphere< T > >
     {
       public:
         typedef T value_type;
@@ -113,7 +113,12 @@ namespace geometry {
 #if defined(SWIG)
 SWIG_DECLARE_TEMPLATE (BVBSphere, rw::geometry::BV< rw::geometry::BSphere< double > >);
 SWIG_DECLARE_TEMPLATE (BVBSphere_f, rw::geometry::BV< rw::geometry::BSphere< float > >);
+#if SWIG_VERSION < 0x040000
+SWIG_DECLARE_TEMPLATE (BSphere_d, rw::geometry::BSphere< double >);
+ADD_DEFINITION(BSphere_d,BSphere)
+#else 
 SWIG_DECLARE_TEMPLATE (BSphere, rw::geometry::BSphere< double >);
+#endif
 SWIG_DECLARE_TEMPLATE (BSphere_f, rw::geometry::BSphere< float >);
 #endif
 template< typename T > struct Traits< geometry::BSphere< T > >

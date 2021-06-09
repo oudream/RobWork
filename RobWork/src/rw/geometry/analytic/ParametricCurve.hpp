@@ -126,9 +126,12 @@ namespace rw { namespace geometry {
          */
         virtual rw::math::Vector3D<double> ddx (double t) const = 0;
 
+#if !defined(SWIG)
         //! @copydoc x(double) const
         virtual rw::math::Vector3D<double> operator() (double t) const = 0;
-
+#else 
+        CALLOPERATOR(rw::math::Vector3D<double>,double );
+#endif 
         /**
          * @brief Check if the curve is limited.
          * @return true if curve is limited, false otherwise.

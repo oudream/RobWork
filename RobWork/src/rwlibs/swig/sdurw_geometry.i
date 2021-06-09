@@ -3,13 +3,15 @@
 %include <stl.i>
 %include <std_vector.i>
 %include <rwlibs/swig/swig_macros.i>
+%include <rwlibs/swig/ext_i/os.i>
+
+%import <rwlibs/swig/ext_i/std.i>
 
 %import <rwlibs/swig/sdurw_core.i>
 %import <rwlibs/swig/sdurw_common.i>
 %import <rwlibs/swig/sdurw_math.i>
 %import <rwlibs/swig/sdurw_kinematics.i>
 
-%import <rwlibs/swig/ext_i/std.i>
 
 %{
 	#include <rw/math.hpp>
@@ -51,6 +53,10 @@ import org.robwork.sdurw_kinematics.*;
 %ignore rw::geometry::BSPhere::getPosition () const;
 %{
 	#include <rw/geometry/BSphere.hpp>
+	#if SWIG_VERSION < 0x040000
+		template<class T >
+		using BSphere = rw::geometry::BSphere<T>;
+	#endif 
 %}
 %include <rw/geometry/BSphere.hpp>
 NAMED_OWNEDPTR(BSphere,rw::geometry::BSphere<double>);
@@ -183,7 +189,6 @@ NAMED_OWNEDPTR(TriMesh,rw::geometry::TriMesh);
 %include <rw/geometry/IndexedArray.hpp>
 //NAMED_OWNEDPTR(IndexedArray,rw::geometry::IndexedArray);
 
-
 #if defined(SWIGJAVA)
 %ignore rw::geometry::IndexedPolygon< uint16_t >::getVertexIdx(size_t) const;
 %ignore rw::geometry::IndexedPolygon< uint32_t >::getVertexIdx(size_t) const;
@@ -196,6 +201,10 @@ NAMED_OWNEDPTR(TriMesh,rw::geometry::TriMesh);
 #endif 
 %{
 	#include <rw/geometry/IndexedPolygon.hpp>
+	#if SWIG_VERSION < 0x040000
+		template<class T >
+		using IndexedPolygon = rw::geometry::IndexedPolygon<T>;
+	#endif 
 %}
 %include <rw/geometry/IndexedPolygon.hpp>
 //%template(VectorIndexedPolygon) std::vector<rw::geometry::IndexedPolygon<uint16_t>>;
@@ -205,6 +214,10 @@ NAMED_OWNEDPTR(IndexedPolygon_32,rw::geometry::IndexedPolygon<uint32_t>);
 
 %{
 	#include <rw/geometry/IndexedTriArray.hpp>
+	#if SWIG_VERSION < 0x040000
+		template<class T >
+		using IndexedTriArray = rw::geometry::IndexedTriArray<T>;
+	#endif 
 %}
 %include <rw/geometry/IndexedTriArray.hpp>
 NAMED_OWNEDPTR(IndexedTriArray,rw::geometry::IndexedTriArray<std::size_t>);
@@ -213,27 +226,35 @@ NAMED_OWNEDPTR(IndexedTriArray,rw::geometry::IndexedTriArray<std::size_t>);
 #if defined(SWIGJAVA)
 	%ignore rw::geometry::IndexedTriMesh< double >::getNormals();
 	%ignore rw::geometry::IndexedTriMesh< double >::getVertices();
-	%ignore rw::geometry::IndexedTriMesh< double >::getVertex(std::size_t);
-	%ignore rw::geometry::IndexedTriMesh< double >::getVertexNormal(std::size_t,rw::geometry::VertexIdx);
-	%ignore rw::geometry::IndexedTriMesh< double >::getVertex(std::size_t,rw::geometry::VertexIdx);
+	%ignore rw::geometry::IndexedTriMesh< double >::getVertex(size_t);
+	%ignore rw::geometry::IndexedTriMesh< double >::getVertexNormal(size_t,rw::geometry::VertexIdx);
+	%ignore rw::geometry::IndexedTriMesh< double >::getVertex(size_t,rw::geometry::VertexIdx);
 	%ignore rw::geometry::IndexedTriMesh< float >::getNormals();
 	%ignore rw::geometry::IndexedTriMesh< float >::getVertices();
-	%ignore rw::geometry::IndexedTriMesh< float >::getVertex(std::size_t);
-	%ignore rw::geometry::IndexedTriMesh< float >::getVertexNormal(std::size_t,rw::geometry::VertexIdx);
-	%ignore rw::geometry::IndexedTriMesh< float >::getVertex(std::size_t,rw::geometry::VertexIdx);
-	%ignore rw::geometry::IndexedTriMeshN0< double ,uint16_t>::getVertexNormal(std::size_t,rw::geometry::VertexIdx);
-	%ignore rw::geometry::IndexedTriMeshN0< double ,uint16_t>::getVertex(std::size_t,rw::geometry::VertexIdx);
-	%ignore rw::geometry::IndexedTriMeshN0< double ,uint16_t>::getTriVertex(std::size_t,std::size_t);
+	%ignore rw::geometry::IndexedTriMesh< float >::getVertex(size_t);
+	%ignore rw::geometry::IndexedTriMesh< float >::getVertexNormal(size_t,rw::geometry::VertexIdx);
+	%ignore rw::geometry::IndexedTriMesh< float >::getVertex(size_t,rw::geometry::VertexIdx);
+	%ignore rw::geometry::IndexedTriMeshN0< double ,uint16_t>::getVertexNormal(size_t,rw::geometry::VertexIdx);
+	%ignore rw::geometry::IndexedTriMeshN0< double ,uint16_t>::getVertex(size_t,rw::geometry::VertexIdx);
+	%ignore rw::geometry::IndexedTriMeshN0< double ,uint16_t>::getTriVertex(size_t,size_t);
 	%ignore rw::geometry::IndexedTriMeshN0< double ,uint16_t>::getTriangles();
-	%ignore rw::geometry::IndexedTriMeshN0< float ,uint16_t>::getVertexNormal(std::size_t,rw::geometry::VertexIdx);
-	%ignore rw::geometry::IndexedTriMeshN0< float ,uint16_t>::getVertex(std::size_t,rw::geometry::VertexIdx);
-	%ignore rw::geometry::IndexedTriMeshN0< float ,uint16_t>::getTriVertex(std::size_t,std::size_t);
+	%ignore rw::geometry::IndexedTriMeshN0< float ,uint16_t>::getVertexNormal(size_t,rw::geometry::VertexIdx);
+	%ignore rw::geometry::IndexedTriMeshN0< float ,uint16_t>::getVertex(size_t,rw::geometry::VertexIdx);
+	%ignore rw::geometry::IndexedTriMeshN0< float ,uint16_t>::getTriVertex(size_t,size_t);
 	%ignore rw::geometry::IndexedTriMeshN0< float ,uint16_t>::getTriangles();
 #endif
 
 %nodefaultdtor rw::geometry::IndexedTriMesh;
 %{
 	#include <rw/geometry/IndexedTriMesh.hpp>
+	#if SWIG_VERSION < 0x040000
+		template<class T >
+		using IndexedTriMesh = rw::geometry::IndexedTriMesh<T>;
+	#endif
+	#if SWIG_VERSION < 0x040000 || defined(WIN32)
+		template<class T , class R>
+		using IndexedTriMeshN0 = rw::geometry::IndexedTriMeshN0<T,R>;
+	#endif 
 %}
 %include <rw/geometry/IndexedTriMesh.hpp>
 %template(IndexedTriMeshPtr) rw::core::Ptr<rw::geometry::IndexedTriMesh<double>>;
@@ -257,6 +278,18 @@ NAMED_OWNEDPTR(IndexedTriMeshN0_f,INDEXEDTRIMESHN0_TYPE(float));
 #endif 
 %{
 	#include <rw/geometry/IndexedTriangle.hpp>
+	#if SWIG_VERSION < 0x040000
+		template<class T >
+		using IndexedTriangle = rw::geometry::IndexedTriangle<T>;
+	#endif 
+	#if SWIG_VERSION < 0x040000
+		template<class T >
+		using IndexedTriangleN1 = rw::geometry::IndexedTriangleN1<T>;
+	#endif 
+	#if SWIG_VERSION < 0x040000
+		template<class T >
+		using IndexedTriangleN3 = rw::geometry::IndexedTriangleN3<T>;
+	#endif 
 %}
 %include <rw/geometry/IndexedTriangle.hpp>
 %template(VectorIndexedTriangle) std::vector<rw::geometry::IndexedTriangle<uint16_t>>;
@@ -289,24 +322,40 @@ NAMED_OWNEDPTR(Model3D,rw::geometry::Model3D);
 
 %{
 	#include <rw/geometry/OBB.hpp>
+	#if SWIG_VERSION < 0x040000
+		template<class T >
+		using OBB = rw::geometry::OBB<T>;
+	#endif 
 %}
 %include <rw/geometry/OBB.hpp>
 NAMED_OWNEDPTR(OBB,rw::geometry::OBB<double>);
 
 %{
 	#include <rw/geometry/OBBCollider.hpp>
+	#if SWIG_VERSION < 0x040000
+		template<class T >
+		using OBBCollider = rw::geometry::OBBCollider<T>;
+	#endif 
 %}
 %include <rw/geometry/OBBCollider.hpp>
 NAMED_OWNEDPTR(OBBCollider,rw::geometry::OBBCollider<double>);
 
 %{
 	#include <rw/geometry/OBBFactory.hpp>
+	#if SWIG_VERSION < 0x040000
+		template<class T >
+		using OBBFactory = rw::geometry::OBBFactory<T>;
+	#endif 
 %}
 %include <rw/geometry/OBBFactory.hpp>
 NAMED_OWNEDPTR(OBBFactory,rw::geometry::OBBFactory<double>);
 
 %{
 	#include <rw/geometry/OBBToleranceCollider.hpp>
+	#if SWIG_VERSION < 0x040000
+		template<class T >
+		using OBBToleranceCollider = rw::geometry::OBBToleranceCollider<T>;
+	#endif 
 %}
 %include <rw/geometry/OBBToleranceCollider.hpp>
 NAMED_OWNEDPTR(OBBToleranceCollider,rw::geometry::OBBToleranceCollider<double>);
@@ -317,8 +366,50 @@ NAMED_OWNEDPTR(OBBToleranceCollider,rw::geometry::OBBToleranceCollider<double>);
 %include <rw/geometry/OBVDistanceCalc.hpp>
 //NAMED_OWNEDPTR(OBVDistanceCalc,rw::geometry::OBVDistanceCalc);
 
+#if defined(SWIGJAVA)
+%ignore rw::geometry::TriangleN1< double >::getFaceNormal() const;
+%ignore rw::geometry::TriangleN1< double >::getVertex(std::size_t) const;
+%ignore rw::geometry::TriangleN1< double >::getTriangle() const;
+%ignore rw::geometry::TriangleN3< double >::getNormal(std::size_t) const;
+%ignore rw::geometry::TriangleN3< double >::getVertex(std::size_t) const;
+%ignore rw::geometry::TriangleN3< double >::getTriangle() const;
+%ignore rw::geometry::Triangle< float >::getVertex(std::size_t) const;
+%ignore rw::geometry::Triangle< float >::getTriangle() const;
+%ignore rw::geometry::TriangleN1< float >::getFaceNormal() const;
+%ignore rw::geometry::TriangleN1< float >::getVertex(std::size_t) const;
+%ignore rw::geometry::TriangleN1< float >::getTriangle() const;
+%ignore rw::geometry::TriangleN3< float >::getNormal(std::size_t) const;
+%ignore rw::geometry::TriangleN3< float >::getVertex(std::size_t) const;
+%ignore rw::geometry::TriangleN3< float >::getTriangle() const;
+#endif
+%{
+	#include <rw/geometry/Triangle.hpp>
+	#if SWIG_VERSION < 0x040000
+		template<class T >
+		using Triangle = rw::geometry::Triangle<T>;
+		template<class T >
+		using TriangleN1 = rw::geometry::TriangleN1<T>;
+		template<class T >
+		using TriangleN3 = rw::geometry::TriangleN3<T>;
+	#endif 
+%}
+%include <rw/geometry/Triangle.hpp>
+%template(VectorTriangle) std::vector<rw::geometry::Triangle<double>>;
+%template(VectorTriangleN1) std::vector<rw::geometry::TriangleN1<double>>;
+%template(VectorTriangleN3) std::vector<rw::geometry::TriangleN3<double>>;
+%template(VectorTriangle_f) std::vector<rw::geometry::Triangle<float>>;
+%template(VectorTriangleN1_f) std::vector<rw::geometry::TriangleN1<float>>;
+%template(VectorTriangleN3_f) std::vector<rw::geometry::TriangleN3<float>>;
+NAMED_OWNEDPTR(Triangle,rw::geometry::Triangle<double>);
+NAMED_OWNEDPTR(TriangleN1,rw::geometry::TriangleN1<double>);
+NAMED_OWNEDPTR(TriangleN3,rw::geometry::TriangleN3<double>);
+
 %{
 	#include <rw/geometry/PlainTriMesh.hpp>
+	#if SWIG_VERSION < 0x040000
+		template<class T >
+		using PlainTriMesh = rw::geometry::PlainTriMesh<T>;
+	#endif 
 %}
 %include <rw/geometry/PlainTriMesh.hpp>
 NAMED_OWNEDPTR(PlainTriMesh,rw::geometry::PlainTriMesh<rw::geometry::Triangle< double >>);
@@ -352,6 +443,10 @@ NAMED_OWNEDPTR(PointCloud,rw::geometry::PointCloud);
 
 %{
 	#include <rw/geometry/Polygon.hpp>
+	#if SWIG_VERSION < 0x040000 && ! defined(WIN32)
+		template<class T >
+		using Polygon = rw::geometry::Polygon<T>;
+	#endif 
 %}
 %include <rw/geometry/Polygon.hpp>
 NAMED_OWNEDPTR(Polygon,rw::geometry::Polygon<rw::math::Vector3D<double>>);
@@ -397,9 +492,13 @@ NAMED_OWNEDPTR(Sphere,rw::geometry::Sphere);
 
 %{
 	#include <rw/geometry/SphereDistanceCalc.hpp>
+	#if SWIG_VERSION < 0x040000
+		template<class T >
+		using SphereDistanceCalc = rw::proximity::SphereDistanceCalc<T>;
+	#endif 
 %}
 %include <rw/geometry/SphereDistanceCalc.hpp>
-NAMED_OWNEDPTR(SphereDistanceCalc,rw::proximity::SphereDistanceCalc<>);
+NAMED_OWNEDPTR(SphereDistanceCalc,rw::proximity::SphereDistanceCalc<double>);
 
 %{
 	#include <rw/geometry/TriMeshSurfaceSampler.hpp>
@@ -409,6 +508,10 @@ NAMED_OWNEDPTR(TriMeshSurfaceSampler,rw::geometry::TriMeshSurfaceSampler);
 
 %{
 	#include <rw/geometry/TriTriIntersectDeviller.hpp>
+	#if SWIG_VERSION < 0x040000
+		template<class T >
+		using TriTriIntersectDeviller = rw::geometry::TriTriIntersectDeviller<T>;
+	#endif 
 %}
 %include <rw/geometry/TriTriIntersectDeviller.hpp>
 NAMED_OWNEDPTR(TriTriIntersectDeviller,rw::geometry::TriTriIntersectDeviller<double>);
@@ -416,41 +519,14 @@ NAMED_OWNEDPTR(TriTriIntersectDeviller_f,rw::geometry::TriTriIntersectDeviller<f
 
 %{
 	#include <rw/geometry/TriTriIntersectMoller.hpp>
+	#if SWIG_VERSION < 0x040000
+		template<class T >
+		using TriTriIntersectMoller = rw::geometry::TriTriIntersectMoller<T>;
+	#endif 
 %}
 %include <rw/geometry/TriTriIntersectMoller.hpp>
 NAMED_OWNEDPTR(TriTriIntersectMoller,rw::geometry::TriTriIntersectMoller<double>);
 NAMED_OWNEDPTR(TriTriIntersectMoller_f,rw::geometry::TriTriIntersectMoller<float>);
-
-#if defined(SWIGJAVA)
-%ignore rw::geometry::TriangleN1< double >::getFaceNormal() const;
-%ignore rw::geometry::TriangleN1< double >::getVertex(std::size_t) const;
-%ignore rw::geometry::TriangleN1< double >::getTriangle() const;
-%ignore rw::geometry::TriangleN3< double >::getNormal(std::size_t) const;
-%ignore rw::geometry::TriangleN3< double >::getVertex(std::size_t) const;
-%ignore rw::geometry::TriangleN3< double >::getTriangle() const;
-%ignore rw::geometry::Triangle< float >::getVertex(std::size_t) const;
-%ignore rw::geometry::Triangle< float >::getTriangle() const;
-%ignore rw::geometry::TriangleN1< float >::getFaceNormal() const;
-%ignore rw::geometry::TriangleN1< float >::getVertex(std::size_t) const;
-%ignore rw::geometry::TriangleN1< float >::getTriangle() const;
-%ignore rw::geometry::TriangleN3< float >::getNormal(std::size_t) const;
-%ignore rw::geometry::TriangleN3< float >::getVertex(std::size_t) const;
-%ignore rw::geometry::TriangleN3< float >::getTriangle() const;
-#endif
-%{
-	#include <rw/geometry/Triangle.hpp>
-%}
-%include <rw/geometry/Triangle.hpp>
-%template(VectorTriangle) std::vector<rw::geometry::Triangle<double>>;
-%template(VectorTriangleN1) std::vector<rw::geometry::TriangleN1<double>>;
-%template(VectorTriangleN3) std::vector<rw::geometry::TriangleN3<double>>;
-%template(VectorTriangle_f) std::vector<rw::geometry::Triangle<float>>;
-%template(VectorTriangleN1_f) std::vector<rw::geometry::TriangleN1<float>>;
-%template(VectorTriangleN3_f) std::vector<rw::geometry::TriangleN3<float>>;
-NAMED_OWNEDPTR(Triangle,rw::geometry::Triangle<double>);
-NAMED_OWNEDPTR(TriangleN1,rw::geometry::TriangleN1<double>);
-NAMED_OWNEDPTR(TriangleN3,rw::geometry::TriangleN3<double>);
-
 
 #if defined(SWIGPYTHON)
 RENAME(rw::geometry::TriangleUtil::SortJob::print,printJob)
@@ -469,11 +545,18 @@ NAMED_OWNEDPTR(TriangleUtil,rw::geometry::TriangleUtil);
 NAMED_OWNEDPTR(Tube,rw::geometry::Tube);
 
 %{
+	#include <rw/geometry/analytic/Face.hpp>
+%}
+%include <rw/geometry/analytic/Face.hpp>
+NAMED_OWNEDPTR(Face,rw::geometry::Face);
+
+%{
 	#include <rw/geometry/analytic/AnalyticUtil.hpp>
 %}
 %include <rw/geometry/analytic/AnalyticUtil.hpp>
 
-RENAME(rw::geometry::BREP::print,printObj)
+RENAME(rw::geometry::BREP::print,printObj);
+RENAME(rw::geometry::BREP::Face,BREPFace);
 %{
 	#include <rw/geometry/analytic/BREP.hpp>
 %}
@@ -488,12 +571,6 @@ NAMED_OWNEDPTR(BREP,rw::geometry::BREP);
 %}
 %include <rw/geometry/analytic/Curve.hpp>
 NAMED_OWNEDPTR(Curve,rw::geometry::Curve);
-
-%{
-	#include <rw/geometry/analytic/Face.hpp>
-%}
-%include <rw/geometry/analytic/Face.hpp>
-NAMED_OWNEDPTR(Face,rw::geometry::Face);
 
 %{
 	#include <rw/geometry/analytic/GenericFace.hpp>

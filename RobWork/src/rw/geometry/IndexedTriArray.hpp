@@ -137,9 +137,9 @@ namespace rw { namespace geometry {
                 /*
                                                 RW_ASSERT(0<=i0 && i0<_mesh.getSize());
                                                 RW_ASSERT(0<=i1 && i1<_mesh.getSize());
-                                                const rw::geometry::Triangle < double > &tri = _mesh.getTriangle(i0);
-                                                const rw::geometry::Triangle < double > &t1 = _mesh.getTriangle(i1);
-                                                Vector3D<> c0 = _t3d* ((tri[0]+tri[1]+tri[2])/3);
+                                                const rw::geometry::Triangle < double > &tri =
+                   _mesh.getTriangle(i0); const rw::geometry::Triangle < double > &t1 =
+                   _mesh.getTriangle(i1); Vector3D<> c0 = _t3d* ((tri[0]+tri[1]+tri[2])/3);
                                                 Vector3D<> c1 = _t3d* ((t1[0]+t1[1]+t1[2])/3);
 
 
@@ -276,15 +276,18 @@ namespace rw { namespace geometry {
 #if !defined(SWIG)
         // **** inherited from trimesh
         //
-        inline rw::geometry::Triangle < double > operator[] (size_t i) const
+        inline rw::geometry::Triangle< double > operator[] (size_t i) const
         {
             return _objArr->getTriangle (getGlobalIndex ((int) i));
         }
 #else
-        ARRAYOPERATOR (rw::geometry::Triangle < double >)
+        ARRAYOPERATOR (rw::geometry::Triangle< double >)
 #endif
         //! @copydoc TriMesh::getTriangle
-        inline rw::geometry::Triangle < double > getTriangle (size_t idx) const { return (*this)[idx]; }
+        inline rw::geometry::Triangle< double > getTriangle (size_t idx) const
+        {
+            return (*this)[idx];
+        }
 
         inline void getTriangle (size_t i, rw::geometry::Triangle< double >& dst) const
         {
@@ -306,7 +309,12 @@ namespace rw { namespace geometry {
         size_t size () const { return _last - _first; }
     };
 #if defined(SWIG)
-    SWIG_DECLARE_TEMPLATE (IndexedTriArray, rw::geometry::IndexedTriArray< std::size_t >);
+#if SWIG_VERSION < 0x040000
+    SWIG_DECLARE_TEMPLATE (IndexedTriArray_size_t, rw::geometry::IndexedTriArray< std::size_t >);
+    ADD_DEFINITION (IndexedTriArray_size_t, IndexedTriArray)
+#else
+    SWIG_DECLARE_TEMPLATE (IndexedTriArray, rw::geometry::IndexedTriArray< std ::size_t >);
+#endif
 #endif
 }}    // namespace rw::geometry
 

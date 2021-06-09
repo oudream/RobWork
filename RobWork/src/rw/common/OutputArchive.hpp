@@ -25,6 +25,7 @@
 #include <Eigen/Core>
 #include <boost/cstdint.hpp>
 #include <boost/type_traits.hpp>
+#include <boost/utility/enable_if.hpp>
 #endif 
 namespace rw { namespace common {
     /**

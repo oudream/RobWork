@@ -129,8 +129,12 @@ namespace rw { namespace geometry {
         //! @copydoc ParametricCurve::ddx
         virtual rw::math::Vector3D<double> ddx (double t) const;
 
+#if !defined(SWIG)
         //! @copydoc ParametricCurve::x(double) const
         virtual rw::math::Vector3D<double> operator() (double t) const;
+#else 
+        CALLOPERATOR(rw::math::Vector3D<double>,double );
+#endif 
 
         //! @copydoc ParametricCurve::hasLimits
         virtual bool hasLimits () const { return _hasLimits; }

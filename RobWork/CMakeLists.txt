@@ -162,6 +162,12 @@ install(
     COMPONENT cmake
 )
 
+install(
+    DIRECTORY ${RW_ROOT}/cmake/Modules
+    DESTINATION ${RW_INSTALL_DIR}/cmake
+    COMPONENT cmake
+)
+
 # Install stuff
 install(
     FILES LICENSE.txt NOTICE.txt

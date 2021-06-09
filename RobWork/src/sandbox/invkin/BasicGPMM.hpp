@@ -21,7 +21,7 @@
 
 #include <rw/math/Q.hpp>
 #include <rw/math/VelocityScrew6D.hpp>
-
+#include <memory>
 #include <rw/kinematics/State.hpp>
 
 namespace rw { namespace kinematics { class FKRange; } }
@@ -173,7 +173,7 @@ private:
 
     rw::core::Ptr<rw::models::JacobianCalculator> _jacCalc;
     std::vector<rw::kinematics::Frame*> _foi; // frames of interest, end frames
-    std::vector<boost::shared_ptr<rw::kinematics::FKRange> > _fkranges;
+    std::vector<std::shared_ptr<rw::kinematics::FKRange> > _fkranges;
 
     rw::kinematics::State _state;
     rw::math::Q _qhome;

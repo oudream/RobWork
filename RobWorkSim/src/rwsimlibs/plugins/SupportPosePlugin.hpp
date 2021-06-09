@@ -31,6 +31,8 @@
 #include <rwlibs/control/JointController.hpp>
 #include <rwlibs/drawable/WorkCellGLDrawer.hpp>
 
+#include <memory>
+
 #include <QObject>
 #include <QTimer>
 #include <QtGui>
@@ -83,7 +85,7 @@ class SupportPosePlugin : public RobWorkStudioPlugin
 
   private:
     std::string _previousOpenDirectory;
-    boost::shared_ptr< dynamics::DynamicWorkCell > _dwc;
+    std::shared_ptr< dynamics::DynamicWorkCell > _dwc;
     //    rw::kinematics::State *_state;
     rw::kinematics::State _dState, _jointState, _defState;
     ConstantForceManipulator* _gravity;

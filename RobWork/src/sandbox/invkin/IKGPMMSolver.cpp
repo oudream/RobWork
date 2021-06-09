@@ -23,6 +23,7 @@
 #include <rw/math/Quaternion.hpp>
 #include <rw/models/JointDevice.hpp>
 #include <rw/models/TreeDevice.hpp>
+#include <memory>
 
 using namespace rwlibs::algorithms;
 
@@ -39,13 +40,13 @@ namespace {
         return bounds.first+(bounds.second-bounds.first)*0.5;
     }
 
-    std::vector<boost::shared_ptr<FKRange> > createFKRanges(const Frame *base,
+    std::vector<std::shared_ptr<FKRange> > createFKRanges(const Frame *base,
                                                             const std::vector<Frame*>& foi,
                                                             const State& state)
     {
-        std::vector<boost::shared_ptr<FKRange> > fkranges;
+        std::vector<std::shared_ptr<FKRange> > fkranges;
         for(size_t i = 0; i<foi.size(); i++){
-            boost::shared_ptr<FKRange> range(new FKRange(base , foi[i], state) );
+            std::shared_ptr<FKRange> range(new FKRange(base , foi[i], state) );
             fkranges.push_back( range );
         }
         return fkranges;
