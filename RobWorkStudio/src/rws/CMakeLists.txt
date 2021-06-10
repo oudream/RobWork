@@ -48,6 +48,8 @@ if(build)
         AboutBox.hpp
         HelpAssistant.hpp
         ImageView.hpp
+    )
+    set(SRC_FILES_HPP_propertyview
         propertyview/PropertyViewEditor.hpp
         propertyview/PropertyViewDialog.hpp
     )
@@ -67,7 +69,7 @@ if(build)
 
     if(RWS_USE_PYTHON)
         set(SRC_FILES_CPP ${SRC_FILES_CPP} pythonpluginloader/PyPlugin.cpp pythonpluginloader/PythonRunner.cpp)
-        set(SRC_FILES_HPP ${SRC_FILES_HPP} pythonpluginloader/PyPlugin.hpp pythonpluginloader/PythonRunner.hpp)
+        set(SRC_FILES_HPP_python pythonpluginloader/PyPlugin.hpp pythonpluginloader/PythonRunner.hpp)
         set(MocHeaderFiles ${MocHeaderFiles} pythonpluginloader/PyPlugin.hpp)
     endif()
 
@@ -90,6 +92,8 @@ if(build)
         ${SUBSYS_NAME}
         ${UIS_OUT_H}
         ${SRC_FILES_CPP}
+        ${SRC_FILES_HPP_python}
+        ${SRC_FILES_HPP_propertyview}
         ${MocSrcFiles}
         ${ResourceFiles}
     )
@@ -117,7 +121,9 @@ if(build)
 
     set_target_properties(sdurws PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
 
-    rw_add_includes(sdurws rws ${SRC_FILES_HPP})
+    rw_add_includes(sdurws "rws" ${SRC_FILES_HPP})
+    rw_add_includes(sdurws "rws/pythonpluginloader" ${SRC_FILES_HPP_python})
+    rw_add_includes(sdurws "rws/propertyview" ${SRC_FILES_HPP_propertyview})
 
     set(SUBSYS_NAME_PLUGIN ${SUBSYS_NAME}_plugin.rwplugin)
     set(SUBSYS_DESC_PLUGIN "Plugin providing extensions to RobWork from RobWorkStudio!")
