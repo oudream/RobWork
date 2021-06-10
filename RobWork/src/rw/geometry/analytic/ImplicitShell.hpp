@@ -92,7 +92,7 @@ namespace rw { namespace geometry {
         void setMeshResolution (double resolution) { _resolution = resolution; }
 
       private:
-#if defined(RW_MACOS)
+#if defined(RW_MACOS) && ! defined(SWIGJAVA)
         // This line is here to tell the compiler that it is a intentional override further up
         using rw::geometry::Shell::getFace;
 #endif
