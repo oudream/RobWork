@@ -118,27 +118,27 @@ using fclVec3   = fcl::Vec3f;
 
 using fclContact = fcl::Contact;
 #else
-fcl::Matrix3d& toFCL (Rotation3D<>& rwR)
+fcl::Matrix3<double>& toFCL (Rotation3D<>& rwR)
 {
-    return rwR;
+    return rwR.e();
 }
 
-fcl::Vec3d& toFCL (Vector3D<>& rwV)
+fcl::Vector3<double>& toFCL (Vector3D<>& rwV)
 {
     return rwV.e ();
 }
 
-fcl::Transform3d& toFCL (Transform3D<>& rwT)
+fcl::Transform3<double> toFCL (const Transform3D<>& rwT)
 {
-    return rwT.e ();
+    return fcl::Transform3<double>(rwT.e ());
 }
 
-fcl::Vec3d& fromFCL (fcl::Vec3d& rwV)
+fcl::Vector3<double>& fromFCL (fcl::Vector3<double>& rwV)
 {
     return rwV;
 }
 
-fcl::Matrix3d& fromFCL (fcl::Matrix3d& rwV)
+fcl::Matrix3<double>& fromFCL (fcl::Matrix3<double>& rwV)
 {
     return rwV;
 }
@@ -152,7 +152,7 @@ using rw_KDOP16  = fcl::KDOP< double, 16 >;
 using rw_KDOP18  = fcl::KDOP< double, 18 >;
 using rw_KDOP24  = fcl::KDOP< double, 24 >;
 using fclContact = fcl::Contact< double >;
-using fclVec3    = fcl::Vector< double >;
+using fclVec3    = fcl::Vector3< double >;
 #endif
 }    // namespace
 
