@@ -62,6 +62,8 @@ if(build)
         ProximityStrategy.hpp
         ProximityStrategyData.hpp
         Raycaster.hpp
+    )
+    set(FILES_HPP_rwstrategy
         rwstrategy/BVTree.hpp
         rwstrategy/BVTreeCollider.hpp
         rwstrategy/BVTreeColliderFactory.hpp
@@ -75,11 +77,12 @@ if(build)
 
     if(RW_HAVE_PQP)
         set(FILES_CPP ${FILES_CPP} rwstrategy/TreeDistanceCalc.cpp)
-        set(FILES_HPP ${FILES_HPP} rwstrategy/TreeDistanceCalc.hpp)
+        set(FILES_HPP_rwstrategy ${FILES_HPP_rwstrategy} rwstrategy/TreeDistanceCalc.hpp)
     endif()
 
-    rw_add_library(${SUBSYS_NAME} ${FILES_CPP} ${FILES_HPP})
+    rw_add_library(${SUBSYS_NAME} ${FILES_CPP} ${FILES_HPP} ${FILES_HPP_rwstrategy})
     rw_add_includes(${SUBSYS_NAME} "rw/proximity" ${FILES_HPP})
+    rw_add_includes(${SUBSYS_NAME} "rw/proximity/rwstrategy" ${FILES_HPP_rwstrategy})
     rw_add_includes(${SUBSYS_NAME} "rw" ${CMAKE_CURRENT_SOURCE_DIR}/../proximity.hpp)
 
     target_link_libraries(${SUBSYS_NAME} PUBLIC ${Boost_LIBRARIES} ${SUBSYS_DEPS})
