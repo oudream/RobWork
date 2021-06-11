@@ -18,11 +18,12 @@
 #ifndef RW_PROXIMITY_DISTANCECALCULATOR_HPP
 #define RW_PROXIMITY_DISTANCECALCULATOR_HPP
 
+#if !defined(SWIG)
 #include "DistanceStrategy.hpp"
 
 #include <rw/common/Timer.hpp>
 #include <rw/proximity/CollisionSetup.hpp>
-
+#endif
 /**
  * @file DistanceCalculator.hpp
  */
@@ -79,7 +80,7 @@ namespace rw { namespace proximity {
          */
         DistanceCalculator (rw::kinematics::Frame* root,
                             rw::core::Ptr< rw::models::WorkCell > workcell,
-                            DistanceStrategy::Ptr strategy,
+                            rw::core::Ptr<rw::proximity::DistanceStrategy> strategy,
                             const rw::kinematics::State& initial_state);
 
         /**
@@ -93,7 +94,7 @@ namespace rw { namespace proximity {
          * @param strategy [in] the distance calculation strategy to use
          */
         DistanceCalculator (rw::core::Ptr< rw::models::WorkCell > workcell,
-                            DistanceStrategy::Ptr strategy);
+                            rw::core::Ptr<rw::proximity::DistanceStrategy> strategy);
 
         /**
          * @brief Constructs distance calculator for a selected set of frames
@@ -107,7 +108,7 @@ namespace rw { namespace proximity {
          * @param pairs [in] Pairs of frame to check
          * @param strategy [in] the distance calculation strategy to use
          */
-        DistanceCalculator (const kinematics::FramePairList& pairs, DistanceStrategy::Ptr strategy);
+        DistanceCalculator (const kinematics::FramePairList& pairs, rw::core::Ptr<rw::proximity::DistanceStrategy> strategy);
 
         /**
          * @brief Destructor
@@ -124,13 +125,13 @@ namespace rw { namespace proximity {
          *
          * @return the shortest distance between frame and frame tree
          */
-        DistanceStrategy::Result
+        rw::proximity::DistanceStrategy::Result
         distance (const kinematics::State& state,
-                  std::vector< DistanceStrategy::Result >* result = 0) const;
+                  std::vector< rw::proximity::DistanceStrategy::Result >* result = 0) const;
 
-        DistanceStrategy::Result
+        rw::proximity::DistanceStrategy::Result
         distanceOMP (const kinematics::State& state,
-                     std::vector< DistanceStrategy::Result >* result = 0) const;
+                     std::vector< rw::proximity::DistanceStrategy::Result >* result = 0) const;
 
         /**
          * @brief Calculates the distance between frame and the rest of the tree
@@ -144,9 +145,9 @@ namespace rw { namespace proximity {
          *
          * @return the shortest distance between frame and frame tree
          */
-        DistanceStrategy::Result
+        rw::proximity::DistanceStrategy::Result
         distance (const kinematics::State& state, const kinematics::Frame* frame,
-                  std::vector< DistanceStrategy::Result >* result = 0) const;
+                  std::vector< rw::proximity::DistanceStrategy::Result >* result = 0) const;
 
         /**
          * @brief Set the primitive distance calculator to \b strategy.
@@ -157,7 +158,7 @@ namespace rw { namespace proximity {
          *
          * @param strategy [in] - the primitive distance calculator to use.
          */
-        void setDistanceStrategy (DistanceStrategy::Ptr strategy);
+        void setDistanceStrategy (rw::core::Ptr<rw::proximity::DistanceStrategy> strategy);
 
         /**
          * @brief Adds distance model to frame
@@ -187,8 +188,6 @@ namespace rw { namespace proximity {
             _cnt = 0;
         }
 
-        void setDistanceThresholdStrategy (DistanceStrategy::Ptr strategy);
-
       private:
         mutable rw::common::Timer _timer;
         mutable int _cnt;
@@ -196,8 +195,8 @@ namespace rw { namespace proximity {
         rw::kinematics::Frame* _root;
         rw::proximity::CollisionSetup _setup;
 
-        DistanceStrategy::Ptr _strategy;
-        DistanceStrategy::Ptr _thresholdStrategy;
+        rw::core::Ptr<rw::proximity::DistanceStrategy> _strategy;
+        rw::core::Ptr<rw::proximity::DistanceStrategy> _thresholdStrategy;
 
         rw::kinematics::State _state;
 

@@ -22,6 +22,7 @@
  * @file rw/proximity/CollisionStrategy.hpp
  */
 
+#if !defined(SWIG)
 #include "ProximityStrategy.hpp"
 
 #include <rw/core/ExtensionPoint.hpp>
@@ -30,7 +31,7 @@
 #include <rw/math/Transform3D.hpp>
 
 #include <string>
-//#include "ProximityStrategyData.hpp"
+#endif
 
 namespace rw { namespace kinematics {
     class Frame;
@@ -53,9 +54,12 @@ namespace rw { namespace proximity {
         //! @brief smart pointer type to this class
         typedef rw::core::Ptr< CollisionStrategy > Ptr;
 
+#if !defined(SWIG)
         //! the type of query that is to be performed
-        typedef enum { FirstContact, AllContacts } QueryType;
-
+        typedef enum {FirstContact, AllContacts} QueryType;
+#else
+        typedef int QueryType;
+#endif
         /**
          * @brief result of a single collision pair
          *

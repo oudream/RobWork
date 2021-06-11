@@ -22,6 +22,7 @@
  * @file rw/proximity/ProximityStrategyData.hpp
  */
 
+#if !defined(SWIG)
 #include "CollisionStrategy.hpp"
 #include "DistanceMultiStrategy.hpp"
 #include "DistanceStrategy.hpp"
@@ -34,21 +35,21 @@
 #include <float.h>
 #include <utility>
 #include <vector>
-
+#endif 
 namespace rw { namespace proximity {
     //! @addtogroup proximity
     // @{
 
     // for backward compatability
-    typedef CollisionStrategy::Result CollisionResult;
-    typedef DistanceStrategy::Result DistanceResult;
+    typedef rw::proximity::CollisionStrategy::Result CollisionResult;
+    typedef rw::proximity::DistanceStrategy::Result DistanceResult;
     typedef DistanceMultiStrategy::Result MultiDistanceResult;
 
     /***
      * @brief A generic object for containing data that is essential in
      * proximity queries between two ProximityModels.
      *
-     * The ProximityData object is used for Collision queries, tolerance and distance queries
+     * The ProximityStrategyData object is used for Collision queries, tolerance and distance queries
      * between two ProximityModels. example: collision result, cached variables for faster collision
      * detection,
      *
@@ -61,10 +62,10 @@ namespace rw { namespace proximity {
         typedef rw::core::Ptr< std::vector< ProximityStrategyData > > PtrList;
 
         /**
-         * @brief Create Empty ProximityData
+         * @brief Create Empty ProximityStrategyData
          */
         ProximityStrategyData () :
-            rel_err (0), abs_err (0), _colQueryType (CollisionStrategy::FirstContact),
+            rel_err (0), abs_err (0), _colQueryType (rw::proximity::CollisionStrategy::FirstContact),
             _collides (false)
         {
             _collisionData.clear ();
@@ -87,20 +88,20 @@ namespace rw { namespace proximity {
          * @brief Get the underlying cache
          * @return pointer to cache
          */
-        ProximityCache::Ptr& getCache () { return _cache; }
+        rw::core::Ptr<rw::proximity::ProximityCache>& getCache () { return _cache; }
 
         // CollisionData interface
         /**
          * @brief get the result from the collision check
          * @return Result of Collision strategy if available
          */
-        CollisionStrategy::Result& getCollisionData () { return _collisionData; }
+        rw::proximity::CollisionStrategy::Result& getCollisionData () { return _collisionData; }
 
         /**
          * @brief get the result from the collision check
          * @return Result of Collision strategy if available
          */
-        const CollisionStrategy::Result& getCollisionData () const { return _collisionData; }
+        const rw::proximity::CollisionStrategy::Result& getCollisionData () const { return _collisionData; }
 
         /**
          * @brief get the the colliding frames
@@ -129,27 +130,27 @@ namespace rw { namespace proximity {
          * @brief set the Collision Query type
          * @param qtype [in] the used Query type
          */
-        void setCollisionQueryType (CollisionStrategy::QueryType qtype) { _colQueryType = qtype; }
+        void setCollisionQueryType (rw::proximity::CollisionStrategy::QueryType qtype) { _colQueryType = qtype; }
 
         /**
          * @brief Get the used Collision Query type
          * @return Querytype
          */
-        CollisionStrategy::QueryType getCollisionQueryType () const { return _colQueryType; }
+        rw::proximity::CollisionStrategy::QueryType getCollisionQueryType () const { return _colQueryType; }
 
         // Distance query interfaces
         /**
          * @brief get The result of a distance query
          * @return result of a distance query
          */
-        DistanceStrategy::Result& getDistanceData () { return _distanceData; }
+        rw::proximity::DistanceStrategy::Result& getDistanceData () { return _distanceData; }
 
         // Distance query interfaces
         /**
          * @brief get The result of a distance query
          * @return result of a distance query
          */
-        const DistanceStrategy::Result& getDistanceData () const { return _distanceData; }
+        const rw::proximity::DistanceStrategy::Result& getDistanceData () const { return _distanceData; }
 
         // For Multi distance interface
         /**
@@ -190,17 +191,17 @@ namespace rw { namespace proximity {
 
       private:
         // Collision data
-        CollisionStrategy::QueryType _colQueryType;
+        rw::proximity::CollisionStrategy::QueryType _colQueryType;
         bool _collides;
-        CollisionStrategy::Result _collisionData;
+        rw::proximity::CollisionStrategy::Result _collisionData;
 
         // Distance data
-        DistanceStrategy::Result _distanceData;
+        rw::proximity::DistanceStrategy::Result _distanceData;
         DistanceMultiStrategy::Result _multiDistanceData;
         double _multtiDistanceTolerance;
 
         //! @brief proximity cache
-        ProximityCache::Ptr _cache;
+        rw::core::Ptr<rw::proximity::ProximityCache> _cache;
     };
     // @}
 }}    // namespace rw::proximity

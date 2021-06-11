@@ -18,14 +18,11 @@
 #ifndef RW_PROXIMITY_BVTREETOLERANCECOLLIDER_HPP_
 #define RW_PROXIMITY_BVTREETOLERANCECOLLIDER_HPP_
 
-//#include <rw/geometry/OBB.hpp>
-//#include <rw/geometry/BVCollider.hpp>
-//#include <rw/geometry/TriTriIntersectDeviller.hpp>
-
+#if !defined(SWIG)
 #include <rw/core/Ptr.hpp>
 #include <rw/math/Transform3D.hpp>
 #include <rw/proximity/CollisionStrategy.hpp>
-
+#endif 
 namespace rw { namespace proximity {
 
     /**
@@ -67,12 +64,12 @@ namespace rw { namespace proximity {
         /**
          * @brief set the query type
          */
-        virtual void setQueryType (CollisionStrategy::QueryType type) { _queryType = type; };
+        virtual void setQueryType (rw::proximity::CollisionStrategy::QueryType type) { _queryType = type; };
 
         /**
          * @brief get the collision query type
          */
-        virtual CollisionStrategy::QueryType getQueryType () { return _queryType; };
+        virtual rw::proximity::CollisionStrategy::QueryType getQueryType () { return _queryType; };
 
         //! type of the primitive in collision callb ack function
         // typedef boost::function<void(int,int)> PrimitivesInCollisionCB;
@@ -109,7 +106,7 @@ namespace rw { namespace proximity {
 
         // TreeCollider* makeWeightedBFSCollider(const BVWeight& weight);
       protected:
-        CollisionStrategy::QueryType _queryType;
+        rw::proximity::CollisionStrategy::QueryType _queryType;
         // PrimitivesInCollisionCB _pCB;
     };
 
@@ -456,7 +453,7 @@ namespace rw { namespace proximity {
                 _nrOfPrimTests      = 0;
                 _nrOfCollidingPrims = 0;
                 _firstContact =
-                    BVTreeCollider< BVTREE >::_queryType == CollisionStrategy::FirstContact;
+                    BVTreeCollider< BVTREE >::_queryType == rw::proximity::CollisionStrategy::FirstContact;
             }
 
             BVCOLLIDER* _bvCollider;

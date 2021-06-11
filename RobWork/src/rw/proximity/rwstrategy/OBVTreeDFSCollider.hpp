@@ -18,11 +18,12 @@
 #ifndef RW_PROXIMITY_OBVTREECOLLIDERDFS_HPP_
 #define RW_PROXIMITY_OBVTREECOLLIDERDFS_HPP_
 
+#if !defined(SWIG)
 #include "BVTree.hpp"
 #include "BVTreeCollider.hpp"
 
 #include <rw/math/Transform3D.hpp>
-
+#endif 
 namespace rw { namespace proximity {
 
     /**
@@ -121,7 +122,7 @@ namespace rw { namespace proximity {
             _nrOfCollidingBVs   = 0;
             _nrOfPrimTests      = 0;
             _nrOfCollidingPrims = 0;
-            _firstContact = BVTreeCollider< BVTREE >::_queryType == CollisionStrategy::FirstContact;
+            _firstContact = BVTreeCollider< BVTREE >::_queryType == rw::proximity::CollisionStrategy::FirstContact;
         }
 
       private:

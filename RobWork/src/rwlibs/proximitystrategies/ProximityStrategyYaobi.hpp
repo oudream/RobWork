@@ -124,7 +124,7 @@ namespace rwlibs { namespace proximitystrategies {
         void clear ();
 
         //! @copydoc rw::proximity::CollisionStrategy::getCollisionContacts
-        void getCollisionContacts (std::vector< CollisionStrategy::Contact >& contacts,
+        void getCollisionContacts (std::vector< rw::proximity::CollisionStrategy::Contact >& contacts,
                                    rw::proximity::ProximityStrategyData& data);
 
         /**

@@ -28,7 +28,7 @@ if __name__ == '__main__':
     if cdstrategy.isNull():
         raise Exception("PQP Collision Strategy could not be found.")
     print(device.cptr())
-    collisionDetector = ownedPtr(CollisionDetector(wc, cdstrategy))
+    collisionDetector = sdurw_proximity.ownedPtr(CollisionDetector(wc, cdstrategy))
     con = PlannerConstraint.make(collisionDetector, device.cptr(), defState)
     planner = RRTPlanner.makeQToQPlanner(con, device.asDevicePtr())
 

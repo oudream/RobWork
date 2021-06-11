@@ -171,11 +171,11 @@ public:
 
     //static PlannerConstraint make(QConstraint::Ptr constraint, QEdgeConstraint::Ptr edge);
 
-    static PlannerConstraint make(rw::core::Ptr<CollisionDetector> detector,
+    static PlannerConstraint make(rw::core::Ptr<rw::proximity::CollisionDetector> detector,
                                   rw::core::Ptr<const rw::models::Device> device,
                                   const rw::kinematics::State& state);
 
-    static PlannerConstraint make(rw::core::Ptr<CollisionStrategy> strategy,
+    static PlannerConstraint make(rw::core::Ptr<rw::proximity::CollisionStrategy> strategy,
                                   rw::core::Ptr<rw::models::WorkCell> workcell,
                                   rw::core::Ptr<const rw::models::Device> device,
                                   const rw::kinematics::State& state);
@@ -345,7 +345,7 @@ public:
      * @brief Map a collision detector to a configuration constraint.
      */
 	static rw::core::Ptr<QConstraint> make(
-		rw::core::Ptr<CollisionDetector> detector,
+		rw::core::Ptr<rw::proximity::CollisionDetector> detector,
 		rw::core::Ptr<const rw::models::Device> device,
         const rw::kinematics::State& state);
 
@@ -914,13 +914,13 @@ public:
         rw::core::PropertyMap& getProperties(){
             return $self->rw::pathplanning::PathPlanner<rw::math::Q,const rw::math::Q>::getProperties();
         }
-        static rw::core::Ptr<QToQPlanner> makeRRT(rw::core::Ptr<CollisionDetector> cdect, rw::core::Ptr<rw::models::Device> dev, const rw::kinematics::State& state){
+        static rw::core::Ptr<QToQPlanner> makeRRT(rw::core::Ptr<rw::proximity::CollisionDetector> cdect, rw::core::Ptr<rw::models::Device> dev, const rw::kinematics::State& state){
             const rw::pathplanning::PlannerConstraint constraint = rw::pathplanning::PlannerConstraint::make(
                 cdect.get(), dev, state);
             return rwlibs::pathplanners::RRTPlanner::makeQToQPlanner(constraint, dev);
         }
 
-        static rw::core::Ptr<QToQPlanner> makeSBL(rw::core::Ptr<CollisionDetector> cdect, rw::core::Ptr<rw::models::Device> dev, const rw::kinematics::State& state){
+        static rw::core::Ptr<QToQPlanner> makeSBL(rw::core::Ptr<rw::proximity::CollisionDetector> cdect, rw::core::Ptr<rw::models::Device> dev, const rw::kinematics::State& state){
             rw::pathplanning::QConstraint::Ptr qconstraint = rw::pathplanning::QConstraint::make(cdect.get(), dev, state);
             return rwlibs::pathplanners::SBLPlanner::makeQToQPlanner(rwlibs::pathplanners::SBLSetup::make(qconstraint, rw::pathplanning::QEdgeConstraintIncremental::makeDefault(qconstraint, dev), dev));
         }
@@ -1008,7 +1008,7 @@ public:
      * @brief Map a collision detector to a state constraint.
      */
 	static rw::core::Ptr<StateConstraint> make(
-		rw::core::Ptr<CollisionDetector> detector);
+		rw::core::Ptr<rw::proximity::CollisionDetector> detector);
 
     /**
      * @brief Combine a set of state constraints into a single state

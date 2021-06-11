@@ -21,14 +21,16 @@
 /**
  * @file rw/proximity/ProximityData.hpp
  */
-
+#if !defined(SWIG)
 #include "CollisionDetector.hpp"
-
+#endif 
 namespace rw { namespace proximity {
     class ProximityCache;
 
     //! @addtogroup proximity
+    #if !defined(SWIG)
     //! @{
+      #endif 
 
     /**
      * @brief Holds settings and cached data for collision detectors.
@@ -47,7 +49,7 @@ namespace rw { namespace proximity {
          *
          * Use setCollisionQueryType to change this behaviour.
          */
-        ProximityData () : _colQueryType (CollisionDetector::FirstContactNoInfo) {}
+        ProximityData () : _colQueryType (rw::proximity::CollisionDetector::FirstContactNoInfo) {}
 
         /**
          * @brief Set the type of collision query.
@@ -57,23 +59,23 @@ namespace rw { namespace proximity {
          * possible to detect all collisions if required.
          *
          * @param qtype [in] the query type.
-         * @see CollisionDetector::QueryType
+         * @see rw::proximity::CollisionDetector::QueryType
          */
-        void setCollisionQueryType (CollisionDetector::QueryType qtype) { _colQueryType = qtype; }
+        void setCollisionQueryType (rw::proximity::CollisionDetector::QueryType qtype) { _colQueryType = qtype; }
 
         /**
          * @brief Get the collision query type.
          * @return the query type.
          * @see CollisionDetector::QueryType
          */
-        CollisionDetector::QueryType getCollisionQueryType () const { return _colQueryType; }
+        rw::proximity::CollisionDetector::QueryType getCollisionQueryType () const { return _colQueryType; }
 
         /**
          * @brief Detailed information about the collision.
          * @note This data is only available for some collision query types.
-         * @see CollisionDetector::QueryResult
+         * @see rw::proximity::CollisionDetector::QueryResult
          */
-        CollisionDetector::QueryResult _collisionData;
+        rw::proximity::CollisionDetector::QueryResult _collisionData;
 
         /**
          * @brief Cached data used by the collision detector to speed up
@@ -82,10 +84,11 @@ namespace rw { namespace proximity {
         rw::core::Ptr< ProximityCache > _cache;
 
       private:
-        CollisionDetector::QueryType _colQueryType;
+        rw::proximity::CollisionDetector::QueryType _colQueryType;
     };
-
+#if !defined(SWIG)
     //! @}
+    #endif 
 }}    // namespace rw::proximity
 
 #endif /* PROXIMITYDATA_HPP_ */
