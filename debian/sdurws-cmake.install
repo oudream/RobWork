@@ -1,8 +1,8 @@
-usr/share/robworkstudio-2.0/cmake/RobWorkStudioConfigVersion.cmake
-usr/share/robworkstudio-2.0/cmake/RobWorkStudioMacros.cmake
-usr/share/robworkstudio-2.0/cmake/RobWorkStudioConfig.cmake
-usr/share/robworkstudio-2.0/cmake/RobWorkStudioTargets.cmake
-usr/share/robworkstudio-2.0/cmake/RobWorkStudioTargets-none.cmake
-usr/share/robworkstudio-2.0/cmake/RobWorkStudioBuildConfig_none.cmake
-usr/share/robworkstudio-2.0/LICENSE.txt
-usr/share/robworkstudio-2.0/NOTICE.txt
+usr/share/robworkstudio-*/cmake/RobWorkStudioConfigVersion.cmake
+usr/share/robworkstudio-*/cmake/RobWorkStudioMacros.cmake
+usr/share/robworkstudio-*/cmake/RobWorkStudioConfig.cmake
+usr/share/robworkstudio-*/cmake/RobWorkStudioTargets.cmake
+usr/share/robworkstudio-*/cmake/RobWorkStudioTargets-none.cmake
+usr/share/robworkstudio-*/cmake/RobWorkStudioBuildConfig_none.cmake
+usr/share/robworkstudio-*/LICENSE.txt
+usr/share/robworkstudio-*/NOTICE.txt
