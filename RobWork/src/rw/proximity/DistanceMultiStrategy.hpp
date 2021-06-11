@@ -21,11 +21,12 @@
  * @file DistanceMultiStrategy.hpp
  */
 
+#if !defined(SWIG)
 #include "ProximityStrategy.hpp"
 
 #include <rw/core/ExtensionPoint.hpp>
 #include <rw/math/Transform3D.hpp>
-
+#endif
 namespace rw { namespace kinematics {
     class State;
 }}    // namespace rw::kinematics

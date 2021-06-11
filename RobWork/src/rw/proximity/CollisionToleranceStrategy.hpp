@@ -22,6 +22,7 @@
  * @file CollisionToleranceStrategy.hpp
  */
 
+#if !defined(SWIG)
 #include "ProximityStrategy.hpp"
 
 #include <rw/core/ExtensionPoint.hpp>
@@ -29,7 +30,7 @@
 #include <rw/math/Transform3D.hpp>
 
 #include <string>
-//#include "ProximityStrategyData.hpp"
+#endif
 
 namespace rw { namespace kinematics {
     class Frame;

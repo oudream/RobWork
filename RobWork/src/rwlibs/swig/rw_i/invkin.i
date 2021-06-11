@@ -276,7 +276,7 @@ public:
      */
     IKMetaSolver(rw::core::Ptr<IterativeIK> iksolver,
         const rw::core::Ptr<rw::models::Device> device,
-        rw::core::Ptr<CollisionDetector> collisionDetector = NULL);
+        rw::core::Ptr<rw::proximity::CollisionDetector> collisionDetector = NULL);
 
     /**
      * @brief Constructs IKMetaSolver

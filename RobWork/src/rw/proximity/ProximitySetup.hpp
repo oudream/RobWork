@@ -60,17 +60,17 @@ namespace rw { namespace proximity {
          @param exclude [in] pairs to be excluded
              @endcond
          */
-        explicit ProximitySetup (const std::vector< ProximitySetupRule >& rules);
+        explicit ProximitySetup (const std::vector< rw::proximity::ProximitySetupRule >& rules);
 
-        void addProximitySetupRule (const ProximitySetupRule& rule);
+        void addProximitySetupRule (const rw::proximity::ProximitySetupRule& rule);
 
-        void removeProximitySetupRule (const ProximitySetupRule& rule);
+        void removeProximitySetupRule (const rw::proximity::ProximitySetupRule& rule);
 
         /**
          * @brief Returns the exclude list
          * @return the exclude list
          */
-        const std::vector< ProximitySetupRule >& getProximitySetupRules () const { return _rules; }
+        const std::vector< rw::proximity::ProximitySetupRule >& getProximitySetupRules () const { return _rules; }
 
         /**
          * @brief Combine setup of this and setup of \b b into this collision setup.
@@ -112,7 +112,7 @@ namespace rw { namespace proximity {
         static void set (const ProximitySetup& setup, rw::core::PropertyMap& map);
 
       private:
-        std::vector< ProximitySetupRule > _rules;
+        std::vector< rw::proximity::ProximitySetupRule > _rules;
 
         bool _useIncludeAll;
         bool _useExcludeStaticPairs;

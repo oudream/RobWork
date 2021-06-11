@@ -2,6 +2,7 @@ require("sdurw_core")
 require("sdurw_math")
 require("sdurw_kinematics")
 require("sdurw_models")
+require("sdurw_proximity")
 require("sdurw")
 require("sdurw_proximitystrategies")
 
@@ -9,6 +10,7 @@ using("sdurw_core")
 using("sdurw_math")
 using("sdurw_kinematics")
 using("sdurw_models")
+using("sdurw_proximity")
 using("sdurw")
 using("sdurw_proximitystrategies")
 
@@ -175,12 +177,12 @@ trans = Transform3Dd(pos, rot:toRotation3D())
 box2:setTransform(trans,state)
 ur:setQ(Q(6,1.46819, -1.02748, 2.55523, -3.10998, -1.56556, -0.429299),state)
 
-rw_detector = sdurw.ownedPtr(CollisionDetector(wc))
+rw_detector = sdurw_proximity.ownedPtr(CollisionDetector(wc))
 printColInfo("Default Collision Detector", rw_detector,wc,state)
 
-for i=0,ProximityStrategyFactory.getCollisionStrategyIDs():size()-1 do
-    id = ProximityStrategyFactory.getCollisionStrategyIDs()[i]
-    prox_detector = ownedPtr(CollisionDetector(wc,ProximityStrategyFactory.makeCollisionStrategy(id)))
+for i=0,sdurw_proximitystrategies.ProximityStrategyFactory.getCollisionStrategyIDs():size()-1 do
+    id = sdurw_proximitystrategies.ProximityStrategyFactory.getCollisionStrategyIDs()[i]
+    prox_detector = sdurw_proximity.ownedPtr(CollisionDetector(wc,sdurw_proximitystrategies.ProximityStrategyFactory.makeCollisionStrategy(id)))
     printColInfo(id .. " Collision Detector", prox_detector,wc,state)
 end
 

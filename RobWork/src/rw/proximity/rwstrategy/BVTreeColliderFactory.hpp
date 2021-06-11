@@ -18,6 +18,7 @@
 #ifndef RW_PROXIMITY_BVTREECOLLIDERFACTORY_HPP_
 #define RW_PROXIMITY_BVTREECOLLIDERFACTORY_HPP_
 
+#if !defined(SWIG)
 #include <rw/geometry/OBB.hpp>
 #include <rw/geometry/OBBCollider.hpp>
 #include <rw/geometry/TriTriIntersectDeviller.hpp>
@@ -25,7 +26,7 @@
 //#include "OBBToleranceCollider.hpp"
 #include "BVTreeCollider.hpp"
 #include "OBVTreeDFSCollider.hpp"
-
+#endif 
 namespace rw {
 namespace proximity {
 

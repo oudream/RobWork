@@ -227,7 +227,7 @@ namespace rwlibs { namespace proximitystrategies {
          *
          * @note Not implemented as nothing appears to be using this functionality
          */
-        void getCollisionContacts (std::vector< CollisionStrategy::Contact >& contacts,
+        void getCollisionContacts (std::vector< rw::proximity::CollisionStrategy::Contact >& contacts,
                                    rw::proximity::ProximityStrategyData& data);
 
         //// Interface of DistanceStrategy

@@ -274,7 +274,7 @@ public:
     PRMPlanner(
         rw::models::Device* device,
         const rw::kinematics::State& state,
-        CollisionDetector* collisionDetector,
+        rw::proximity::CollisionDetector* collisionDetector,
         double resolution);
 
     /**
@@ -1003,7 +1003,7 @@ OWNEDPTR(Z3Planner);
 
 %inline %{
 
-	rw::core::Ptr<QToTPlanner> makeToNearestRRT(rw::core::Ptr<CollisionDetector> cdect, rw::core::Ptr<rw::models::Device> dev)
+	rw::core::Ptr<QToTPlanner> makeToNearestRRT(rw::core::Ptr<rw::proximity::CollisionDetector> cdect, rw::core::Ptr<rw::models::Device> dev)
     { 
 		rw::kinematics::State state = dev->getStateStructure()->getDefaultState();
       

@@ -24,11 +24,14 @@
  * \copydoc rw::proximity::CollisionDetector
  */
 
+#if !defined(SWIG)
 #include <rw/core/Ptr.hpp>
 #include <rw/proximity/ProximityCalculator.hpp>
 #include <rw/proximity/ProximityStrategyData.hpp>
 
+#include <utility>
 #include <vector>
+#endif
 
 namespace rw { namespace kinematics {
     class Frame;
@@ -41,6 +44,7 @@ namespace rw { namespace models {
 
 namespace rw { namespace proximity {
     class CollisionStrategy;
+    class ProximityData;
     /** @addtogroup proximity */
     /*@{*/
 
@@ -61,7 +65,7 @@ namespace rw { namespace proximity {
      @note The collision detector is not thread safe and as such should not be used by multiple
      threads at a time.
      */
-    class CollisionDetector : public ProximityCalculator< CollisionStrategy >
+    class CollisionDetector : public rw::proximity::ProximityCalculator< rw::proximity::CollisionStrategy >
     {
       public:
         //! @brief smart pointer type to this class
@@ -69,6 +73,7 @@ namespace rw { namespace proximity {
         //! @brief smart pointer type to this const class
         typedef rw::core::Ptr< const CollisionDetector > CPtr;
 
+#if !defined(SWIG)
         //! @brief types of collision query
         typedef enum {
             AllContactsFullInfo,     //! find all collisions and return full collision information
@@ -80,14 +85,26 @@ namespace rw { namespace proximity {
             FirstContactNoInfo       //! return on first collision but without collision information
                                      //! eg. CollisionStrategy::FirstContact
         } QueryType;
-
+        #else 
+        typedef int QueryType;
+#endif
         /**
          * @brief result of a collision query
          */
         struct QueryResult
         {
+            /**
+             * @brief convert the framePair set to FramePairVector
+             * @return collidingFrames as frame pair vector
+             */
+            std::vector< std::pair< rw::kinematics::Frame*, rw::kinematics::Frame* > >
+            getFramePairVector ()
+            {
+                return std::vector< std::pair< rw::kinematics::Frame*, rw::kinematics::Frame* > > (
+                    this->collidingFrames.begin (), this->collidingFrames.end ());
+            }
             //! the frames that are colliding
-            kinematics::FramePairSet collidingFrames;
+            rw::kinematics::FramePairSet collidingFrames;
 
             //! for keeping track of all collision data: AllContactsFullInfo, FirstContactNoInfo
             std::vector< ProximityStrategyData > _fullInfo;
@@ -120,7 +137,7 @@ namespace rw { namespace proximity {
          * models added to it.
          */
         CollisionDetector (rw::core::Ptr< rw::models::WorkCell > workcell,
-                           CollisionStrategy::Ptr strategy);
+                           rw::core::Ptr<rw::proximity::CollisionStrategy> strategy);
 
         /**
          * @brief Collision detector for a workcell.
@@ -133,7 +150,7 @@ namespace rw { namespace proximity {
          * not colliding
          */
         CollisionDetector (rw::core::Ptr< rw::models::WorkCell > workcell,
-                           CollisionStrategy::Ptr strategy,
+                           rw::core::Ptr<rw::proximity::CollisionStrategy> strategy,
                            rw::core::Ptr< ProximityFilterStrategy > filter);
 
         /**
@@ -158,13 +175,38 @@ namespace rw { namespace proximity {
          enables caching inbetween calls to incollision
          @return true if a collision is detected; false otherwise.
          */
-        bool inCollision (const kinematics::State& state, class ProximityData& data) const;
+        bool inCollision (const kinematics::State& state, rw::proximity::ProximityData& data) const;
 
+        /**
+         * @brief Check the workcell for collisions.
+         *
+         * @param state [in] The state for which to check for collisions.
+         * @param result [out] Where to store pairs of colliding frames.
+         * @param stopAtFirstContact [in] If \b result is non-NULL and \b
+         * stopAtFirstContact is true, then only the first colliding pair is
+         * inserted in \b result. By default all colliding pairs are inserted.
+         *
+         * @return true if a collision is detected; false otherwise.
+         */
+        bool inCollision (
+            const rw::kinematics::State& state,
+            std::vector< std::pair< rw::kinematics::Frame*, rw::kinematics::Frame* > >& result,
+            bool stopAtFirstContact = false)
+        {
+            rw::proximity::CollisionDetector::QueryResult data;
+            bool success;
+            success = this->inCollision (state, &data, stopAtFirstContact);
+
+            result = std::vector< std::pair< rw::kinematics::Frame*, rw::kinematics::Frame* > > (
+                data.collidingFrames.begin (), data.collidingFrames.end ());
+
+            return success;
+        }
         /**
          * @brief Get the narrow-phase collision strategy.
          * @return the strategy if set, otherwise NULL.
          */
-        CollisionStrategy::Ptr getCollisionStrategy () const { return getStrategy (); }
+        rw::core::Ptr<rw::proximity::CollisionStrategy> getCollisionStrategy () const { return getStrategy (); }
 
         /**
          * @brief Add Geometry associated to \b frame
@@ -218,6 +260,13 @@ namespace rw { namespace proximity {
          */
         rw::core::Ptr< rw::geometry::Geometry > getGeometry (rw::kinematics::Frame* frame,
                                                              const std::string& geometryId);
+
+        static rw::core::Ptr< rw::proximity::CollisionDetector >
+        make (rw::core::Ptr< rw::models::WorkCell > workcell,
+              rw::core::Ptr< rw::proximity::CollisionStrategy > strategy)
+        {
+            return rw::core::ownedPtr (new CollisionDetector (workcell, strategy));
+        }
 
       private:
 #if __cplusplus < 201103L

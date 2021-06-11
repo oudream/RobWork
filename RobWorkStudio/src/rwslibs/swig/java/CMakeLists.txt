@@ -56,6 +56,7 @@ if(build)
         RW::sdurw_common
         RW::sdurw_math
         RW::sdurw_kinematics
+        RW::sdurw_proximity
     )
 
     rw_add_java_clean_target(sdurws)
@@ -70,6 +71,7 @@ if(build)
                   ${RW_LIBS}/sdurw_geometry_java.jar
                   ${RW_LIBS}/sdurw_sensor_java.jar
                   ${RW_LIBS}/sdurw_models_java.jar
+                  ${RW_LIBS}/sdurw_proximity_java.jar
                   ${RW_LIBS}/sdurw_java.jar
         JAVADOC_LINK ${RW_LIBS}/javadoc/sdurw
                      ${RW_LIBS}/javadoc/sdurw_core
@@ -79,6 +81,7 @@ if(build)
                      ${RW_LIBS}/javadoc/sdurw_geometry
                      ${RW_LIBS}/javadoc/sdurw_sensor
                      ${RW_LIBS}/javadoc/sdurw_models
+                     ${RW_LIBS}/javadoc/sdurw_proximity
         WINDOW_TITLE "RobWorkStudio Java API Documentation"
     )
     set(CMAKE_SWIG_OUTDIR ${RWS_CMAKE_LIBRARY_OUTPUT_DIRECTORY})

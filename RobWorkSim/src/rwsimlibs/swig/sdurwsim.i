@@ -103,6 +103,7 @@ void java_ThreadSimulatorStepCallback(ThreadSimulator* sim, rw::kinematics::Stat
 %import <rwlibs/swig/sdurw_assembly.i>
 %import <rwlibs/swig/sdurw_control.i>
 %import <rwlibs/swig/sdurw_simulation.i>
+%import <rwlibs/swig/sdurw_proximity.i>
 
 
 
@@ -116,6 +117,7 @@ import org.robwork.sdurw_math.*;
 import org.robwork.sdurw_kinematics.*;
 import org.robwork.sdurw_geometry.*;
 import org.robwork.sdurw_models.*;
+import org.robwork.sdurw_proximity.*;
 import org.robwork.sdurw_sensor.*;
 import org.robwork.sdurw_assembly.*;
 import org.robwork.sdurw_control.*;
@@ -130,6 +132,7 @@ import org.robwork.sdurw_math.*;
 import org.robwork.sdurw_kinematics.*;
 import org.robwork.sdurw_geometry.*;
 import org.robwork.sdurw_models.*;
+import org.robwork.sdurw_proximity.*;
 import org.robwork.sdurw_sensor.*;
 %}
 %pragma(java) jniclassimports=%{
@@ -143,6 +146,7 @@ import org.robwork.sdurw_math.*;
 import org.robwork.sdurw_kinematics.*;
 import org.robwork.sdurw_geometry.*;
 import org.robwork.sdurw_models.*;
+import org.robwork.sdurw_proximity.*;
 import org.robwork.sdurw_sensor.*;
 %}
 
@@ -576,11 +580,11 @@ public:
 
     %extend {
 
-        rw::math::Transform3D<double> place(rw::core::Ptr<CollisionDetector> coldect, const rw::kinematics::State& state, const rw::math::Vector3D<double>& dir){
+        rw::math::Transform3D<double> place(rw::core::Ptr<rw::proximity::CollisionDetector> coldect, const rw::kinematics::State& state, const rw::math::Vector3D<double>& dir){
             return rwsim::dynamics::BodyUtil::placeBody($self, coldect, state, dir);
         }
 
-        rw::math::Transform3D<double> place(rw::core::Ptr<CollisionDetector> coldect, const rw::kinematics::State& state){
+        rw::math::Transform3D<double> place(rw::core::Ptr<rw::proximity::CollisionDetector> coldect, const rw::kinematics::State& state){
             return rwsim::dynamics::BodyUtil::placeBody($self, coldect, state, -rw::math::Vector3D<double>::z());
         }
         

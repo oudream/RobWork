@@ -18,10 +18,11 @@
 #ifndef RW_PROXIMITY_BINARYBVTREE_HPP_
 #define RW_PROXIMITY_BINARYBVTREE_HPP_
 
+#if !defined(SWIG)
 #include "BVTree.hpp"
 
 #include <stack>
-//#include <boost/tuple/tuple.hpp>
+#endif 
 
 namespace rw {
 namespace proximity {

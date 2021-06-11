@@ -18,8 +18,6 @@
 #ifndef RW_PROXIMITY_BINARYIDXTREE_HPP_
 #define RW_PROXIMITY_BINARYIDXTREE_HPP_
 
-//#include <stack>
-//#include "BVTree.hpp"
 namespace rw { namespace proximity {
 
 #ifdef xkdfnslafn

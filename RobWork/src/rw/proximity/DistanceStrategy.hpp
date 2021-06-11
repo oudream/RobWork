@@ -21,12 +21,13 @@
  * @file DistanceStrategy.hpp
  */
 
+#if !defined(SWIG)
 #include "ProximityStrategy.hpp"
 
 #include <rw/core/ExtensionPoint.hpp>
 #include <rw/core/Ptr.hpp>
 #include <rw/math/Transform3D.hpp>
-
+#endif
 namespace rw { namespace kinematics {
     class Frame;
 }}    // namespace rw::kinematics
@@ -109,7 +110,7 @@ namespace rw { namespace proximity {
                 idx1     = 0;
                 idx2     = 0;
             }
-
+#if !defined(SWIG)
             /**
             @brief Streaming operator.
              */
@@ -129,6 +130,9 @@ namespace rw { namespace proximity {
                            << ", o.idx2: " << o.idx2            //
                            << ")";
             }
+#else
+            TOSTRING (rw::proximity::DistanceStrategy::Result);
+#endif
         };
 
         /**

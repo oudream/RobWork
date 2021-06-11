@@ -29,6 +29,7 @@ using rw::pathplanning::PathPlanner;
 %import <rwlibs/swig/sdurw_kinematics.i>
 %import <rwlibs/swig/sdurw_models.i>
 %import <rwlibs/swig/sdurw_sensor.i>
+%import <rwlibs/swig/sdurw_proximity.i>
 %import <rwlibs/swig/sdurw.i> 
 
 %pragma(java) jniclassclassmodifiers="class"
@@ -41,6 +42,7 @@ import org.robwork.sdurw_math.*;
 import org.robwork.sdurw_kinematics.*;
 import org.robwork.sdurw_models.*;
 import org.robwork.sdurw_sensor.*;
+import org.robwork.sdurw_proximity.*;
 %}
 %pragma(java) moduleimports=%{
 import org.robwork.sdurw.*;
@@ -50,6 +52,7 @@ import org.robwork.sdurw_math.*;
 import org.robwork.sdurw_kinematics.*;
 import org.robwork.sdurw_models.*;
 import org.robwork.sdurw_sensor.*;
+import org.robwork.sdurw_proximity.*;
 %}
 %typemap(javaimports) SWIGTYPE %{
 import org.robwork.sdurw.*;
@@ -59,6 +62,7 @@ import org.robwork.sdurw_math.*;
 import org.robwork.sdurw_kinematics.*;
 import org.robwork.sdurw_models.*;
 import org.robwork.sdurw_sensor.*;
+import org.robwork.sdurw_proximity.*;
 %}
 
 /********************************************
@@ -184,7 +188,7 @@ public:
 
     rw::core::Ptr<rw::models::WorkCell> getWorkCell();
 
-    rw::core::Ptr<CollisionDetector> getCollisionDetector();
+    rw::core::Ptr<rw::proximity::CollisionDetector> getCollisionDetector();
 
     rw::core::Ptr<WorkCellScene> getWorkCellScene();
 

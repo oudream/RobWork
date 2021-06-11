@@ -96,3 +96,7 @@ namespace std {
   %template(pairBoolVectorLong) std::pair<bool,std::vector<long>>;
   %template(pairBoolVectorUInt) std::pair<bool,std::vector<unsigned int>>;
   %template(pairBoolVectorULong) std::pair<bool,std::vector<unsigned long>>;
+  %template(VectorPairIntInt) std::vector<std::pair<int, int> >;
+  %template(PairIntInt) std::pair<int, int>;
+  %template(VectorPairStringString) std::vector < std::pair <std::string, std::string> >; 
+  %template(PairStringString) std::pair <std::string, std::string>; 

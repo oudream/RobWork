@@ -39,6 +39,15 @@ CollisionSetup::CollisionSetup (const std::vector< std::pair< std::string, std::
     _volatileFrames (volatileFrames), _excludeStaticPairs (excludeStaticPairs)
 {}
 
+CollisionSetup::CollisionSetup (const std::vector< std::pair< std::string, std::string > >& exclude,
+                                const std::vector< std::string >& volatileFrames,
+                                bool excludeStaticPairs) :
+    _exclude (exclude),
+    _volatileFrames (), _excludeStaticPairs (excludeStaticPairs)
+{
+    std::copy(volatileFrames.begin(),volatileFrames.end(),std::inserter(_volatileFrames,_volatileFrames.end()));
+}
+
 void CollisionSetup::addExcludePair (std::pair< std::string, std::string >& pair)
 {
     _exclude.push_back (pair);

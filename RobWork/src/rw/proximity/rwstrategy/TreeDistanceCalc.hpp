@@ -8,10 +8,11 @@
 #ifndef TREEDISTANCECALC_HPP_
 #define TREEDISTANCECALC_HPP_
 
+#if !defined(SWIG)
 #include "BinaryBVTree.hpp"
 
 #include <rw/geometry/OBB.hpp>
-//#include <rw/geometry/RSSDistanceCalc.hpp>
+#endif
 
 namespace rw { namespace proximity {
 

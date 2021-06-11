@@ -1,9 +1,11 @@
 require("sdurw_core")
 require("sdurw_models")
+require("sdurw_proximity")
 require("sdurw")
 require("sdurw_pathplanners")
 require("sdurw_proximitystrategies")
 using("sdurw_models")
+using("sdurw_proximity")
 using("sdurw")
 using("sdurw_pathplanners")
 using("sdurw_proximitystrategies")
@@ -32,14 +34,14 @@ if pa10:isNull() then
 end
 
 local state = wc:getDefaultState()
-local device = ownedPtr(CompositeDevice(gantry:getBase(), wc:getDevices(),
+local device = sdurw_models.ownedPtr(CompositeDevice(gantry:getBase(), wc:getDevices(),
                         pa10:getEnd(), "Composite", state))
 
-local cdstrategy = ProximityStrategyFactory.makeCollisionStrategy("PQP")
+local cdstrategy = sdurw_proximitystrategies.ProximityStrategyFactory.makeCollisionStrategy("PQP")
 if cdstrategy:isNull() then
     error("PQP Collision Strategy could not be found.")
 end
-local collisionDetector = ownedPtr(CollisionDetector(wc, cdstrategy))
+local collisionDetector = sdurw_proximity.ownedPtr(CollisionDetector(wc, cdstrategy))
 local con = PlannerConstraint.make(collisionDetector, device:asDeviceCPtr(), state)
 local planner = RRTPlanner.makeQToQPlanner(con, device:asDevicePtr())
 

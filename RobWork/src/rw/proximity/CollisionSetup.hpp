@@ -18,6 +18,7 @@
 #ifndef RW_COLLISION_COLLISIONSETUP_HPP
 #define RW_COLLISION_COLLISIONSETUP_HPP
 
+#if !defined(SWIG)
 #include <rw/core/Ptr.hpp>
 #include <rw/core/StringUtil.hpp>
 
@@ -25,6 +26,7 @@
 #include <set>
 #include <string>
 #include <vector>
+#endif
 
 namespace rw { namespace core {
     class PropertyMap;
@@ -64,17 +66,24 @@ namespace rw { namespace proximity {
             const std::vector< std::pair< std::string, std::string > >& exclude);
 
         /**
-         @brief CollisionSetup for a list of pairs to exclude and a sequence
-         of volatile frames.
-
-         @param exclude [in] pairs to be excluded
-
-         @param volatileFrames [in] names of frames to treat as volatile.
-
-         @param excludeStaticPairs [in] if true exclude statically related pairs.
+         * @brief CollisionSetup for a list of pairs to exclude and a sequence
+         * of volatile frames.
+         * @param exclude [in] pairs to be excluded
+         * @param volatileFrames [in] names of frames to treat as volatile.
+         * @param excludeStaticPairs [in] if true exclude statically related pairs.
          */
         CollisionSetup (const rw::core::StringPairList& exclude,
                         const std::set< std::string >& volatileFrames, bool excludeStaticPairs);
+
+        /**
+         * @brief CollisionSetup for a list of pairs to exclude and a sequence
+         * of volatile frames.
+         * @param exclude [in] pairs to be excluded
+         * @param volatileFrames [in] names of frames to treat as volatile.
+         * @param excludeStaticPairs [in] if true exclude statically related pairs.
+         */
+        CollisionSetup (const rw::core::StringPairList& exclude,
+                        const std::vector< std::string >& volatileFrames, bool excludeStaticPairs);
 
         void addExcludePair (rw::core::StringPair& pair);
 
@@ -101,6 +110,7 @@ namespace rw { namespace proximity {
          */
         bool excludeStaticPairs () const { return _excludeStaticPairs; }
 
+#if !defined(SWIG)
         /**
          * @brief ostream operator formatting the setup for easy reading
          */
@@ -134,16 +144,20 @@ namespace rw { namespace proximity {
 
             return s;
         }
-
+#else
+        TOSTRING (rw::proximity::CollisionSetup);
+#endif
         /**
          * @brief Combine setup of this and setup of \b b into this collision setup.
          */
         void merge (const CollisionSetup& b);
 
+#if !defined(SWIG)
         /**
          * @brief Combine setup \b a and setup \b b into a single collision setup.
          */
         static CollisionSetup merge (const CollisionSetup& a, const CollisionSetup& b);
+#endif
 
         static CollisionSetup get (const rw::models::WorkCell& wc);
         static CollisionSetup get (rw::core::Ptr< rw::models::WorkCell > wc);

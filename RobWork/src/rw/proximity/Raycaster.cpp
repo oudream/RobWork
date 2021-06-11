@@ -71,8 +71,8 @@ bool Raycaster::shoot (const rw::math::Vector3D<>& pos, const rw::math::Vector3D
     FKTable fk (state);
     Transform3D<> wTray = Transform3D<>::identity ();
 
-    if (_rayFrame)
-        wTray = fk.get (_rayFrame);
+    if (!_rayFrame.isNull())
+        wTray = fk.get (_rayFrame.get());
 
     // check collision between ray and all obstacles in the scene
     double minDist = std::numeric_limits< double >::max ();
