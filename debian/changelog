@@ -1,3 +1,45 @@
+robwork (2.1.0-1) focal; urgency=medium
+
+  [ Kasper Høj Lorenzen ]
+  * Fixing cmake error for export files (ubuntu 16 ubuntu 18)
+  * added home btn RWS
+  * Mac examples working
+  * fixing DoubleSpinbox errors
+  * make ready for Windows installer and reduced dependency fix
+  * Many minor issues for ubuntu 18 and ubuntu 16
+  * Changed zoom
+  * EOL TUL
+  * fixing Debian errors
+  * Update BSphere
+  * fixing segfault
+  * Fixed setTimedStatePath
+  * ubuntu 16 UIC problem
+  * Fixing missing QThread create
+  * windows qhull gtest error
+  * Mac gtest fix
+  * Unfinished distance calculation class
+  * Initial setup
+  * fixing errors and upgrading Rotation3D
+
+  [ Thomas Nicky Thulesen ]
+  * Added rwsimlibs/test library and fixed various errors in debian packaging.
+
+  [ Kasper Høj Lorenzen ]
+  * EOL ubuntu 1604
+  * None error
+  * Swig update
+  * fixing errors and upgrading Rotation3D
+  * Hunter pkg management
+  * Automatic documentation uploade
+  * Fcl Distance MultiStrategy
+  * Graspplanning in new swig system
+  * Ubuntu 18 and windows fixes
+  * fixed Hunter problem
+  * added missin python packages
+  * added more missing packages
+
+ -- Kasper Høj Lorenzen <kalor@mmmi.sdu.dk>  Wed, 09 Jun 2021 13:48:31 +0200
+
 robwork (2.0.0-1) focal; urgency=medium
 
   * Version number updated to 2.0.0-1

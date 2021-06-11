@@ -1542,6 +1542,12 @@ Multi-Arch: no
 Depends:
  python3-sdurw-core (=${binary:Version}), 
  python3-sdurw-common (=${binary:Version}), 
+ python3-sdurw-math (=${binary:Version}), 
+ python3-sdurw-kinematics (=${binary:Version}), 
+ python3-sdurw-geometry (=${binary:Version}), 
+ python3-sdurw-sensor (=${binary:Version}), 
+ python3-sdurw-models (=${binary:Version}),
+ python3-sdurw-graspplanning (=${binary:Version}),  
  libsdurw (>=${binary:Version}), 
  python3,
  ${shlibs:Depends}, 
@@ -1609,6 +1615,54 @@ Depends:
  ${misc:Depends}
 Description: Python wrapping for RobWork-math
  This is a python wrapper for RobWork-math
+
+Package: python3-sdurw-geometry
+Section: libs
+Architecture: amd64
+Multi-Arch: no
+Depends:
+ libsdurw-geometry (>=${binary:Version}), 
+ python3,
+ ${shlibs:Depends}, 
+ ${misc:Depends}
+Description: Python wrapping for RobWork-geometry
+ This is a python wrapper for RobWork-geometry
+
+Package: python3-sdurw-sensor
+Section: libs
+Architecture: amd64
+Multi-Arch: no
+Depends:
+ libsdurw-sensor (>=${binary:Version}), 
+ python3,
+ ${shlibs:Depends}, 
+ ${misc:Depends}
+Description: Python wrapping for RobWork-sensor
+ This is a python wrapper for RobWork-sensor
+
+Package: python3-sdurw-models
+Section: libs
+Architecture: amd64
+Multi-Arch: no
+Depends:
+ libsdurw-models (>=${binary:Version}), 
+ python3,
+ ${shlibs:Depends}, 
+ ${misc:Depends}
+Description: Python wrapping for RobWork-models
+ This is a python wrapper for RobWork-models
+
+Package: python3-sdurw-graspplanning
+Section: libs
+Architecture: amd64
+Multi-Arch: no
+Depends:
+ libsdurw-graspplanning (>=${binary:Version}), 
+ python3,
+ ${shlibs:Depends}, 
+ ${misc:Depends}
+Description: Python wrapping for RobWork-graspplanning
+ This is a python wrapper for RobWork-graspplanning
 
 Package: python3-sdurw-control
 Section: libs
@@ -1999,6 +2053,12 @@ Depends:
  python3-sdurw (=${binary:Version}), 
  python3-sdurw-core (=${binary:Version}), 
  python3-sdurw-common (=${binary:Version}), 
+ python3-sdurw-math (=${binary:Version}), 
+ python3-sdurw-kinematics (=${binary:Version}), 
+ python3-sdurw-geometry (=${binary:Version}), 
+ python3-sdurw-sensor (=${binary:Version}), 
+ python3-sdurw-models (=${binary:Version}), 
+ python3-sdurw-graspplanning (=${binary:Version}), 
  python3-sdurw-assembly (=${binary:Version}), 
  python3-sdurw-control (=${binary:Version}), 
  python3-sdurw-opengl (=${binary:Version}), 
