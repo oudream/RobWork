@@ -47,6 +47,21 @@ tests:ubuntu-1804:
     ]
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
 
+python-tests:ubuntu-1804:
+  extends: .linux-python-tests
+  dependencies:
+    - build-RW:ubuntu-1804
+    - build-RWS:ubuntu-1804
+    - build-RWSim:ubuntu-1804
+  needs:
+    [
+      "build-RW:ubuntu-1804",
+      "build-RWS:ubuntu-1804",
+      "build-RWSim:ubuntu-1804",
+    ]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
+
+
 install-tests:ubuntu-1804:
   extends: .linux-install-tests
   dependencies:

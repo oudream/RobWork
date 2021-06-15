@@ -196,6 +196,18 @@
     - make -j 1 -k sdurwsim-gtest_reports
     - mv ./bin/**/gtest_reports/* ../../gtest/
 
+.linux-python-tests:
+  extends: .CI-common-linux
+  stage: test
+  tags:
+    - linux
+  script:
+    - export PYTHONPATH=$PYTHONPATH:$(pwd)/Build/RW/libs/release
+    - ls $(pwd)/Build/RW/libs/release
+    - cd RobWork/unittest
+    - python3 -m unittest discover ./math -p '*.py'
+    - python3 -m unittest discover ./core -p '*.py'
+
 .linux-install-tests:
   extends: .CI-common-linux
   stage: test

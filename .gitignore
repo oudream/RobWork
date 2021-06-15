@@ -13,6 +13,7 @@
 *testfile.ini
 *.csettings
 *tmp
+*__pycache__
 
 # /
 /cmake_install.cmake
