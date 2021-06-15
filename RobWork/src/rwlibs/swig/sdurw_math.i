@@ -317,6 +317,8 @@ FRIEND_OPERATOR(rw::math::Rotation3D<float>, rw::math::Wrench6D<float>, *);
     #include <rw/math/Transform3D.hpp>
 %}
 %include <rw/math/Transform3D.hpp>
+%template(inverse) rw::math::inverse<double>;
+%template(inverse) rw::math::inverse<float>;
 
 %{
     #include <rw/math/Transform3DVector.hpp>
@@ -395,3 +397,5 @@ FRIEND_OPERATOR(rw::math::Rotation3D<float>, rw::math::VelocityScrew6D<float>, *
 %template (norm2) rw::math::norm2<double>;
 %template (normInf) rw::math::normInf<float>;
 %template (normInf) rw::math::normInf<double>;
+%template (castToFloat) rw::math::cast<float,double>;
+%template (castToDouble) rw::math::cast<double,float>;

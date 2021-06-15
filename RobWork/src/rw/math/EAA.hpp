@@ -144,6 +144,12 @@ namespace rw { namespace math {
          * @param eaa [in] Values to initialize the EAA
          */
         explicit EAA (rw::math::Vector3D< T > eaa) : _eaa (eaa) {}
+        
+        /**
+         * @brief Copy Constructor
+         * @param eaa [in] Values to initialize the EAA
+         */
+        EAA (const rw::math::EAA< T >& eaa) : _eaa (eaa._eaa) {}
 
         /**
          * @brief Constructs an initialized EAA vector
