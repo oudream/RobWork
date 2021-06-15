@@ -112,6 +112,7 @@ namespace rw { namespace geometry {
          */
         virtual bool insideTrimmingRegion (const rw::math::Vector3D<double>& P) const { return true; }
 
+#if !defined(SWIGJAVA)
         /**
          * @brief Get the normal of the surface at a specific point, \b x, lying on the surface.
          *
@@ -123,11 +124,14 @@ namespace rw { namespace geometry {
          * @return the normal to the surface at \b x .
          * @see the gradient function to find the gradient.
          */
+
+         #endif 
         virtual rw::math::Vector3D<double> normal (const rw::math::Vector3D<double>& x) const
         {
             return normalize (gradient (x));
         }
 
+#if !defined(SWIGJAVA)
         /**
          * @brief Get the gradient, \f$\nabla \mathbf{F}\f$, of the surface at a specific point, \b
          * x, lying on the surface.
@@ -140,6 +144,8 @@ namespace rw { namespace geometry {
          * @return the gradient, \f$\nabla \mathbf{F}\f$, of the surface at \b x .
          * @see the normal function to find the normal to the surface (the normalized gradient).
          */
+
+         #endif
         virtual rw::math::Vector3D<double> gradient (const rw::math::Vector3D<double>& x) const = 0;
 
         /**

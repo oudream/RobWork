@@ -626,7 +626,10 @@ namespace rw { namespace math {
     PolynomialND< Eigen::Vector3d > operator* (const PolynomialND< Eigen::Vector3d >& polynomial,
                                                const Polynomial<>& p);
 
+# if !defined(SWIGJAVA)
     //! @copydoc operator*(const PolynomialND<Eigen::Vector3d>&, const Polynomial<>&)
+    
+    #endif 
     PolynomialND< Eigen::Matrix< double, 1, 3 > >
     operator* (const PolynomialND< Eigen::Matrix< double, 1, 3 > >& polynomial,
                const Polynomial<>& p);
@@ -640,22 +643,32 @@ namespace rw { namespace math {
     PolynomialND< Eigen::Matrix3d > operator* (const PolynomialND< Eigen::Matrix3d >& polynomial,
                                                const Polynomial<>& p);
 
+# if !defined(SWIGJAVA)
     //! @copydoc operator*(const PolynomialND<Eigen::Matrix<double,1,3> >&, const
     //! PolynomialND<Eigen::Matrix<double,3,1> >&)
+
+    #endif 
     Polynomial< float > operator* (const PolynomialND< Eigen::Matrix< float, 1, 3 >, float >& a,
                                    const PolynomialND< Eigen::Matrix< float, 3, 1 >, float >& b);
-
+# if !defined(SWIGJAVA)
     //! @copydoc operator*(const PolynomialND<Eigen::Vector3d>&, const Polynomial<>&)
+
+    #endif 
     PolynomialND< Eigen::Vector3f, float >
     operator* (const PolynomialND< Eigen::Vector3f, float >& polynomial,
                const Polynomial< float >& p);
 
+# if !defined(SWIGJAVA)
     //! @copydoc operator*(const PolynomialND<Eigen::Matrix<double,1,3> >&, const Polynomial<>&)
+
+    #endif 
     PolynomialND< Eigen::Matrix< float, 1, 3 >, float >
     operator* (const PolynomialND< Eigen::Matrix< float, 1, 3 >, float >& polynomial,
                const Polynomial< float >& p);
-
+# if !defined(SWIGJAVA)
     //! @copydoc operator*(const PolynomialND<Eigen::Matrix3d >&, const Polynomial<>&)
+
+    #endif 
     PolynomialND< Eigen::Matrix3f, float >
     operator* (const PolynomialND< Eigen::Matrix3f, float >& polynomial,
                const Polynomial< float >& p);

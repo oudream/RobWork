@@ -86,7 +86,7 @@ namespace rw { namespace geometry {
 
         /**
          * @brief test if this geometry data is convex
-         * @return
+         * @return true if convex
          */
         virtual bool isConvex () { return false; }
 

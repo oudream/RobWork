@@ -165,7 +165,7 @@ namespace rw { namespace math {
         // ###################################################
         // #                Acces Operators                  #
         // ###################################################
-
+#if !defined(SWIGJAVA)
         /**
          * @copydoc Rotation3DVector::toRotation3D()
          *
@@ -184,6 +184,8 @@ namespace rw { namespace math {
          * - @f$ s\theta = sin \theta @f$
          * - @f$ v\theta = 1-cos \theta @f$
          */
+
+         #endif 
         virtual const rw::math::Rotation3D< T > toRotation3D () const;
 
         /**

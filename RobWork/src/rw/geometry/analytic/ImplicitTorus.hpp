@@ -34,13 +34,14 @@ namespace rw { namespace geometry {
     //! @addtogroup geometry
 #if !defined(SWIG)
     //! @{
-        #endif
+#endif
+#if !defined(SWIGJAVA)
     /**
      * @brief Torus defined as an implicit surface.
      *
      * The torus is described as an implicit surface of the form:
      *
-     * \f$ \left(x^T x + R^2 - r^2 \right)^2 - 4 R^2 x^T \begin{bmatrix} 1&0&0\\ 0&1&0 \\ 0&0&0
+     * \f$ \left(x^T x + R^2 - r^2 \right)^2 - 4 R^2 x^T \begin{bmatrix} 1 & 0 & 0\\ 0 & 1 & 0 \\ 0 & 0 & 0
      * \end{bmatrix} x = 0\f$
      *
      * or equivalently:
@@ -55,13 +56,13 @@ namespace rw { namespace geometry {
      * Alternatively, a torus with an elliptic tube can be specified.
      * This surface has the more generic form:
      *
-     * \f$ \left( x^T \begin{bmatrix} 1&0&0\\ 0&1&0 \\ 0&0&\frac{{r_1}^2}{{r_2}^2} \end{bmatrix} x +
-     * R^2 - {r_1}^2 \right)^2 - 4 R^2 x^T \begin{bmatrix} 1&0&0\\ 0&1&0 \\ 0&0&0 \end{bmatrix} x =
+     * \f$ \left( x^T \begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & \frac{{r_1}^2}{{r_2}^2} \end{bmatrix} x +
+     * R^2 - {r_1}^2 \right)^2 - 4 R^2 x^T \begin{bmatrix} 1 & 0 & 0\\ 0 & 1 & 0 \\ 0 & 0 & 0 \end{bmatrix} x =
      * 0\f$
      *
      * or equivalently:
      *
-     * \f$ \left( x^T \begin{bmatrix} 1&0&0\\ 0&1&0 \\ 0&0&\frac{{r_1}^2}{{r_2}^2} \end{bmatrix} x -
+     * \f$ \left( x^T \begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & \frac{{r_1}^2}{{r_2}^2} \end{bmatrix} x -
      * R^2 - {r_1}^2 \right)^2 - 4 R^2 \left({r_1}^2 - \frac{{r_1}^2}{{r_2}^2} {x_3}^2 \right) =
      * 0\f$
      *
@@ -81,6 +82,7 @@ namespace rw { namespace geometry {
      * Notice that many functions are not yet implemented for this last type of
      * elliptic torus. These functions might throw an exception.
      */
+     #endif 
 #if !defined(SWIGJAVA)
     class ImplicitTorus : public ImplicitSurface
     #else 

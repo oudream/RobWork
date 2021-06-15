@@ -58,14 +58,17 @@ namespace rw { namespace geometry {
         //! @brief Destructor.
         virtual ~Surface () {}
 
+#if !defined(SWIGJAVA)
         /**
          * @brief Move the surface.
          * @param T [in] the transform to the new surface.
          * @return pointer to a new surface.
-         * @see #transform(const rw::math::Vector3D<double>&) const if there is no rotation.
+         * @see transform(const rw::math::Vector3D<double>&) const if there is no rotation.
          * This will preserve some nice properties for certain types of surfaces.
          */
-        inline Surface::Ptr transform (const rw::math::Transform3D<>& T) const
+
+         #endif 
+        inline Surface::Ptr transform (const rw::math::Transform3D<double>& T) const
         {
             return doTransformSurface (T);
         }

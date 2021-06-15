@@ -271,7 +271,7 @@ namespace rw { namespace geometry {
         /**
          * @brief get the index of vertice normal \b i.
          * @param i [in] vertice normal
-         * @return
+         * @return normal index
          */
         T& getNormalIdx (size_t i) { return _triN0.getVertexIdx (i); }
 

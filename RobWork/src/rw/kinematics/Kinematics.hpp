@@ -183,6 +183,7 @@ namespace rw { namespace kinematics {
          */
         static bool isFixedFrame (const Frame* frame);
 
+#if !defined(SWIGJAVA)
         /**
          * @brief Grip \b item with \b gripper thereby modifying \b state.
          *
@@ -194,8 +195,11 @@ namespace rw { namespace kinematics {
          * @exception An exception is thrown if \b item is not a DAF.
          * @see See also gripFrame(MovableFrame*, Frame*, State&).
          */
+
+         #endif 
         static void gripFrame (Frame* item, Frame* gripper, rw::kinematics::State& state);
 
+#if !defined(SWIGJAVA)
         /**
          * @brief Grip \b item with \b gripper thereby modifying \b state.
          *
@@ -207,6 +211,8 @@ namespace rw { namespace kinematics {
          * @exception An exception is thrown if \b item is not a DAF.
          * @see See also gripFrame(Frame*, Frame*, State&).
          */
+
+         #endif 
         static void gripFrame (MovableFrame* item, Frame* gripper, rw::kinematics::State& state);
 
         /**

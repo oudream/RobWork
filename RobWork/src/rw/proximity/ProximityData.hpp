@@ -51,6 +51,7 @@ namespace rw { namespace proximity {
          */
         ProximityData () : _colQueryType (rw::proximity::CollisionDetector::FirstContactNoInfo) {}
 
+#if !defined(SWIGJAVA)
         /**
          * @brief Set the type of collision query.
          *
@@ -61,20 +62,26 @@ namespace rw { namespace proximity {
          * @param qtype [in] the query type.
          * @see rw::proximity::CollisionDetector::QueryType
          */
-        void setCollisionQueryType (rw::proximity::CollisionDetector::QueryType qtype) { _colQueryType = qtype; }
 
+         #endif 
+        void setCollisionQueryType (rw::proximity::CollisionDetector::QueryType qtype) { _colQueryType = qtype; }
+#if !defined(SWIGJAVA)
         /**
          * @brief Get the collision query type.
          * @return the query type.
          * @see CollisionDetector::QueryType
          */
-        rw::proximity::CollisionDetector::QueryType getCollisionQueryType () const { return _colQueryType; }
 
+         #endif 
+        rw::proximity::CollisionDetector::QueryType getCollisionQueryType () const { return _colQueryType; }
+#if !defined(SWIGJAVA)
         /**
          * @brief Detailed information about the collision.
          * @note This data is only available for some collision query types.
          * @see rw::proximity::CollisionDetector::QueryResult
          */
+
+         #endif 
         rw::proximity::CollisionDetector::QueryResult _collisionData;
 
         /**

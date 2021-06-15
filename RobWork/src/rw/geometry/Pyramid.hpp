@@ -41,7 +41,6 @@ namespace rw { namespace geometry {
          * @param widthx [in] width of pyramid in x axis
          * @param widthy [in] width of pyramid in y-axis
          * @param height [in] height of pyramid in z-axis
-         * @return
          */
         Pyramid (double widthx, double widthy, double height);
 

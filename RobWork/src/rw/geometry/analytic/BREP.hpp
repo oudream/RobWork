@@ -339,6 +339,7 @@ namespace rw { namespace geometry {
             return static_cast< int > (first);
         }
 
+#if !defined(SWIGJAVA)
         /**
          * @brief Connect two half-edges.
          * @param first [in] id of the first edge. 0-indexing is expected, with a sign that
@@ -351,6 +352,8 @@ namespace rw { namespace geometry {
          * @throws rw::core::Exception if one of the given half-edges is already connected to
          * another half-edge.
          */
+
+         #endif 
         void stitchEdges (std::size_t first, std::size_t second);
 
         /**

@@ -43,13 +43,13 @@ namespace rwlibs { namespace geometry {
       public:
         /**
          * @brief
-         * @return
+         * @return TODO
          */
         static rw::core::Ptr< rw::geometry::QuadraticBREP > objectA ();
 
         /**
          * @brief
-         * @return
+         * @return TODO
          */
         static rw::core::Ptr< rw::geometry::QuadraticBREP > objectB ();
 

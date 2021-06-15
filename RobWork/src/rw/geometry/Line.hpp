@@ -119,6 +119,7 @@ namespace rw { namespace geometry {
          */
         double refit (const std::vector< rw::math::Vector3D<double> >& data);
 
+#if !defined(SWIGJAVA)
         /**
          * @copybrief refit(const std::vector<rw::math::Vector3D<double> >&)
          *
@@ -129,6 +130,8 @@ namespace rw { namespace geometry {
          * @return sum of the squares of point distances to the line.
          * @see refit(const std::vector<rw::math::Vector3D<double> >&)
          */
+
+         #endif 
         double refit (const std::vector< rw::math::Vector3D<double> >::const_iterator begin,
                       const std::vector< rw::math::Vector3D<double> >::const_iterator end);
 
@@ -159,7 +162,7 @@ namespace rw { namespace geometry {
          * two lines. The distance between two lines is computed as follows:
          *
          * val = 0.5*angle(l1.dir, l2.dir)*angToDistWeight + 0.5*l1.distance(l2)
-         * @return
+         * @return distance metric
          */
         static rw::math::Metric< Line >::Ptr makeMetric (double angToDistWeight = 1.0);
 #if !defined(SWIG)

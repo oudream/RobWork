@@ -99,7 +99,7 @@ namespace geometry {
          * where the eigen values of the vertices are used to compute the center of the sphere
          * using the vector with the maximum spread (largest eigenvalue).
          * @param tris [in] input mesh
-         * @return
+         * @return bounding sphere
          */
         static BSphere< T > fitEigen (const rw::geometry::TriMesh& tris);
 

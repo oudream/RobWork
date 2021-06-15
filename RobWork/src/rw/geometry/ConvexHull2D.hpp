@@ -54,7 +54,7 @@ namespace rw { namespace geometry {
          * to any of the half-spaces of the hull is returned. If its not inside
          * 0 is returned.
          * @param vertex
-         * @return
+         * @return minimum distance to vertex
          */
         virtual double getMinDist (const rw::math::Vector2D<>& vertex) = 0;
 

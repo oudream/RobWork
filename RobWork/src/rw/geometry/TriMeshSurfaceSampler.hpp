@@ -58,7 +58,7 @@ namespace rw { namespace geometry {
 
         /**
          * @brief sample a pose on the surface of the object.
-         * @return
+         * @return transform3d of the sampled pose
          */
         rw::math::Transform3D<> sample ();
 

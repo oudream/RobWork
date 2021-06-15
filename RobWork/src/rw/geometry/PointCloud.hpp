@@ -114,7 +114,7 @@ namespace rw { namespace geometry {
 
         /**
          * @brief
-         * @return
+         * @return height
          */
         int getHeight () const { return _height; }
 

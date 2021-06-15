@@ -44,6 +44,7 @@ namespace rw { namespace math {
       public:
         //! @brief The type of the internal Eigen matrix implementation.
         typedef Eigen::Matrix< T, 3, 3 > Base;
+#if !defined(SWIGJAVA)
 
         /**
          * @brief Constructs an initialized 3x3 rotation matrix
@@ -69,6 +70,8 @@ namespace rw { namespace math {
          *  \right]
          * @f$
          */
+
+#endif
         InertiaMatrix (T r11, T r12, T r13, T r21, T r22, T r23, T r31, T r32, T r33)
         {
             _matrix (0, 0) = r11;
@@ -81,6 +84,7 @@ namespace rw { namespace math {
             _matrix (2, 1) = r32;
             _matrix (2, 2) = r33;
         }
+#if !defined(SWIGJAVA)
 
         /**
          * @brief Constructs an initialized 3x3 rotation matrix
@@ -96,6 +100,8 @@ namespace rw { namespace math {
          * @param j @f$ \robabx{a}{b}{\mathbf{j}} @f$
          * @param k @f$ \robabx{a}{b}{\mathbf{k}} @f$
          */
+
+#endif
         InertiaMatrix (const rw::math::Vector3D< T >& i, const rw::math::Vector3D< T >& j,
                        const rw::math::Vector3D< T >& k)
         {
@@ -135,7 +141,6 @@ namespace rw { namespace math {
          * inertia matrix.
          */
         explicit InertiaMatrix (const Base& r) : _matrix (r) {}
-
 
         /**
          * @brief Returns reference to matrix element
@@ -179,12 +184,15 @@ namespace rw { namespace math {
             return InertiaMatrix (aRb.e () * bRc.e ());
         }
 #endif
+#if !defined(SWIGJAVA)
+
         /**
          * @brief Calculates \f$ \robabx{a}{c}{\mathbf{R}} =
          * \robabx{a}{b}{\mathbf{R}} \robabx{b}{c}{\mathbf{R}} \f$
          * @param bRc [in] \f$ \robabx{b}{c}{\mathbf{R}} \f$
          * @return \f$ \robabx{a}{c}{\mathbf{R}} \f$
          */
+#endif
         InertiaMatrix operator* (const rw::math::Rotation3D< T >& bRc) const
         {
             return InertiaMatrix (this->e () * bRc.e ());
@@ -272,6 +280,7 @@ namespace rw { namespace math {
       private:
         Base _matrix;
     };
+#if !defined(SWIGJAVA)
 
     /**
      * @brief Calculates the inverse @f$ \robabx{b}{a}{\mathbf{R}} =
@@ -285,6 +294,8 @@ namespace rw { namespace math {
      * @f$ \robabx{b}{a}{\mathbf{R}} = \robabx{a}{b}{\mathbf{R}}^{-1} =
      * \robabx{a}{b}{\mathbf{R}}^T @f$
      */
+    
+    #endif 
     template< class Q > InertiaMatrix< Q > inverse (const InertiaMatrix< Q >& aRb)
     {
         return InertiaMatrix< Q > (aRb.e ().inverse ());

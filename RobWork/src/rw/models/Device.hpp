@@ -222,6 +222,7 @@ namespace rw { namespace models {
          */
         rw::math::Transform3D< double > worldTbase (const rw::kinematics::State& state) const;
 
+# if !defined(SWIGJAVA)
         /**
          * @brief Calculates the jacobian matrix of the end-effector described
          * in the robot base frame @f$ ^{base}_{end}\mathbf{J}_{\mathbf{q}}(\mathbf{q})
@@ -288,6 +289,8 @@ namespace rw { namespace models {
          *
          * By default the method forwards to baseJframe().
          */
+
+         #endif 
         virtual rw::math::Jacobian baseJend (const rw::kinematics::State& state) const = 0;
 
         /**

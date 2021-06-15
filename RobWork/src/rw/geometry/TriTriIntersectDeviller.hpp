@@ -55,9 +55,9 @@ namespace rw { namespace geometry {
 
         /**
          * @brief calculates the triple scalar product
-         * @return
+         * @return true if succesfull
          */
-        inline int project6 (const rw::math::Vector3D< T >& ax, const rw::math::Vector3D< T >& p1,
+        inline bool project6 (const rw::math::Vector3D< T >& ax, const rw::math::Vector3D< T >& p1,
                              const rw::math::Vector3D< T >& p2, const rw::math::Vector3D< T >& p3,
                              const rw::math::Vector3D< T >& q1, const rw::math::Vector3D< T >& q2,
                              const rw::math::Vector3D< T >& q3)

@@ -56,7 +56,6 @@ namespace rw { namespace geometry {
         /**
          * @brief constructor
          * @param q
-         * @return
          */
         Plane (const rw::math::Q& q)
         {
@@ -71,7 +70,6 @@ namespace rw { namespace geometry {
          * @brief constructor
          * @param n [in] normal of plane
          * @param d [in] distance from plane to (0,0,0) in direction of normal
-         * @return
          */
         Plane (const rw::math::Vector3D<double>& n, const double d) : _normal (n), _d (d) {}
 
@@ -181,7 +179,7 @@ namespace rw { namespace geometry {
          * two planes. The distance between two planes is computed as follows:
          *
          * val = 0.5*angle(p1.normal, p2.normal)*angToDistWeight + 0.5*fabs(p1.d-p2.d);
-         * @return
+         * @return distance metric
          */
         static rw::math::Metric< Plane >::Ptr makeMetric (double angToDistWeight = 1.0);
 
