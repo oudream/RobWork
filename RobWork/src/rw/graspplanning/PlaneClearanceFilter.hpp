@@ -46,7 +46,6 @@ namespace rw { namespace graspplanning {
          * contact point for a valid grasp
          * @param minAngle [in] the minimum angle that is allowed in
          * a valid grasp. [-Pi/2,Pi/2]
-         * @return
          */
         PlaneClearanceFilter (const rw::math::Transform3D<>& planeFrame, double clearance,
                               double minAngle) :

@@ -1,0 +1,48 @@
+########################## Ubuntu 2104 ################################
+
+build-RW:ubuntu-2104:
+  extends: .linux-build-RW
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-2104
+
+build-RWS:ubuntu-2104:
+  extends: .linux-build-RWS
+  dependencies:
+    - build-RW:ubuntu-2104
+  needs: ["build-RW:ubuntu-2104"]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-2104
+
+build-RWSim:ubuntu-2104:
+  extends: .linux-build-RWSim
+  dependencies:
+    - build-RW:ubuntu-2104
+    - build-RWS:ubuntu-2104
+  needs: ["build-RW:ubuntu-2104", "build-RWS:ubuntu-2104"]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-2104
+
+examples:ubuntu-2104:
+  extends: .linux-examples
+  dependencies:
+    - build-RW:ubuntu-2104
+    - build-RWS:ubuntu-2104
+    - build-RWSim:ubuntu-2104
+  needs:
+    [
+      "build-RW:ubuntu-2104",
+      "build-RWS:ubuntu-2104",
+      "build-RWSim:ubuntu-2104",
+    ]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-2104
+
+tests:ubuntu-2104:
+  extends: .linux-tests
+  dependencies:
+    - build-RW:ubuntu-2104
+    - build-RWS:ubuntu-2104
+    - build-RWSim:ubuntu-2104
+  needs:
+    [
+      "build-RW:ubuntu-2104",
+      "build-RWS:ubuntu-2104",
+      "build-RWSim:ubuntu-2104",
+    ]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-2104

@@ -36,6 +36,7 @@ namespace rw { namespace math {
     /** @addtogroup math */
     /* @{*/
 
+#if !defined(SWIGJAVA)
     /**
      * @brief A 3x3 rotation matrix \f$ \mathbf{R}\in SO(3) \f$
      *
@@ -56,6 +57,8 @@ namespace rw { namespace math {
      *  \right]
      * @f$
      */
+
+#endif
     template< class T = double > class Rotation3D
     {
       public:
@@ -81,6 +84,7 @@ namespace rw { namespace math {
             _m (2, 2) = 1;
         }
 
+#if !defined(SWIGJAVA)
         /**
          * @brief Constructs an initialized 3x3 rotation matrix
          *
@@ -105,6 +109,8 @@ namespace rw { namespace math {
          *  \right]
          * @f$
          */
+
+#endif
         Rotation3D (T r11, T r12, T r13, T r21, T r22, T r23, T r31, T r32, T r33)
         {
             _m (0, 0) = r11;
@@ -118,6 +124,7 @@ namespace rw { namespace math {
             _m (2, 2) = r33;
         }
 
+#if !defined(SWIGJAVA)
         /**
          * @brief Constructs an initialized 3x3 rotation matrix
          * @f$ \robabx{a}{b}{\mathbf{R}} =
@@ -132,6 +139,8 @@ namespace rw { namespace math {
          * @param j @f$ \robabx{a}{b}{\mathbf{j}} @f$
          * @param k @f$ \robabx{a}{b}{\mathbf{k}} @f$
          */
+
+#endif
         Rotation3D (const rw::math::Vector3D< T >& i, const rw::math::Vector3D< T >& j,
                     const rw::math::Vector3D< T >& k)
         {
@@ -146,6 +155,7 @@ namespace rw { namespace math {
             _m (2, 2) = k[2];
         }
 
+#if !defined(SWIGJAVA)
         /**
          * @brief Initialize Rotation3D from other rotation types
          * @param rotVec [in] rotation type such as \b EAA, \b RPY, or \b Quaternion
@@ -167,6 +177,8 @@ namespace rw { namespace math {
          * \right]
          * @f$
          */
+
+#endif
         static const Rotation3D& identity ();
 
         /**
@@ -315,9 +327,10 @@ namespace rw { namespace math {
          *
          * @return \f$ \robabx{a}{c}{\mathbf{R}} \f$
          */
-        template< class R > inline const Rotation3D operator* (const Eigen::MatrixBase< R >& rhs) const
+        template< class R >
+        inline const Rotation3D operator* (const Eigen::MatrixBase< R >& rhs) const
         {
-            return Rotation3D<T>(this->e()*rhs);
+            return Rotation3D< T > (this->e () * rhs);
         }
 
         /**
@@ -328,9 +341,11 @@ namespace rw { namespace math {
          * @param rhs [in] \f$ \robabx{b}{c}{\mathbf{R}} \f$
          * @return \f$ \robabx{a}{c}{\mathbf{R}} \f$
          */
-        template< class R > friend inline Rotation3D operator* (const Eigen::MatrixBase< R >& lhs, const Rotation3D<T> &rhs)
+        template< class R >
+        friend inline Rotation3D operator* (const Eigen::MatrixBase< R >& lhs,
+                                            const Rotation3D< T >& rhs)
         {
-            return Rotation3D<T>(lhs*rhs.e());
+            return Rotation3D< T > (lhs * rhs.e ());
         }
 
         /**
@@ -372,15 +387,15 @@ namespace rw { namespace math {
         {
             RW_ASSERT (m.cols () == 3);
             RW_ASSERT (m.rows () == 3);
-            _m (0, 0) = T( m.row (0) (0) );
-            _m (0, 1) = T( m.row (0) (1) );
-            _m (0, 2) = T( m.row (0) (2) );
-            _m (1, 0) = T( m.row (1) (0) );
-            _m (1, 1) = T( m.row (1) (1) );
-            _m (1, 2) = T( m.row (1) (2) );
-            _m (2, 0) = T( m.row (2) (0) );
-            _m (2, 1) = T( m.row (2) (1) );
-            _m (2, 2) = T( m.row (2) (2) );
+            _m (0, 0) = T (m.row (0) (0));
+            _m (0, 1) = T (m.row (0) (1));
+            _m (0, 2) = T (m.row (0) (2));
+            _m (1, 0) = T (m.row (1) (0));
+            _m (1, 1) = T (m.row (1) (1));
+            _m (1, 2) = T (m.row (1) (2));
+            _m (2, 0) = T (m.row (2) (0));
+            _m (2, 1) = T (m.row (2) (1));
+            _m (2, 2) = T (m.row (2) (2));
         }
 
         /**
@@ -433,15 +448,16 @@ namespace rw { namespace math {
          */
         static const rw::math::Vector3D< T > multiply (const Rotation3D< T >& aRb,
                                                        const rw::math::Vector3D< T >& bVc);
-
+#if !defined(SWIGJAVA)
         /**
          * @brief Calculate the inverse.
          * @note This function changes the object that it is invoked on, but this is about x5 faster
          * than rot = inverse( rot )
-         * @see inverse(const Rotation3D< T > &) for the (slower) version that does not change the
+         * @see rw::math::inverse(const rw::math::Rotation3D< T > &) for the (slower) version that does not change the
          * rotation object itself.
          * @return the inverse rotation.
          */
+         #endif
         inline Rotation3D< T >& inverse ()
         {
             T tmpVal  = _m (0, 1);
@@ -475,7 +491,7 @@ namespace rw { namespace math {
          */
         Rotation3D< T > inverse (bool copy) const;
 
-        T tr() const {return (*this)(0,0) + (*this)(1,1) +(*this)(2,2);}
+        T tr () const { return (*this) (0, 0) + (*this) (1, 1) + (*this) (2, 2); }
 
 #if defined(SWIG)
         TOSTRING ();
@@ -502,6 +518,7 @@ namespace rw { namespace math {
         return res;
     }
 
+#if !defined(SWIGJAVA)
     /**
      * @brief Calculates the inverse @f$ \robabx{b}{a}{\mathbf{R}} =
      * \robabx{a}{b}{\mathbf{R}}^{-1} @f$ of a rotation matrix
@@ -519,7 +536,9 @@ namespace rw { namespace math {
      * @f$ \robabx{b}{a}{\mathbf{R}} = \robabx{a}{b}{\mathbf{R}}^{-1} =
      * \robabx{a}{b}{\mathbf{R}}^T @f$
      */
-    template< class T > const Rotation3D< T > inverse (const Rotation3D< T >& aRb)
+
+#endif
+    template< class T > const rw::math::Rotation3D< T > inverse (const rw::math::Rotation3D< T >& aRb)
     {
         return Rotation3D< T > (aRb (0, 0),
                                 aRb (1, 0),

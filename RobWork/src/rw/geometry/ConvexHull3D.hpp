@@ -58,7 +58,7 @@ namespace rw { namespace geometry {
          * to any of the half-spaces of the hull is returned. If its not inside
          * 0 is returned.
          * @param vertex
-         * @return
+         * @return minimum distance to vertex
          */
         virtual double getMinDistInside (const rw::math::Vector3D<double>& vertex) = 0;
 
@@ -66,7 +66,7 @@ namespace rw { namespace geometry {
          * @brief If the vertex is outside the convex hull the minimum distance
          * to the convex hull is returned. If its not outside 0 is returned.
          * @param vertex
-         * @return
+         * @return minimum distance to vertex
          */
         virtual double getMinDistOutside (const rw::math::Vector3D<double>& vertex) = 0;
 

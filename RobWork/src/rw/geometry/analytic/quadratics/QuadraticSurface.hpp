@@ -270,6 +270,8 @@ namespace rw { namespace geometry {
 #if !defined(SWIG)
 ///@{
 #endif
+
+#if !defined(SWIGJAVA)
         /**
          * @brief Create an ellipsoid with radii \b a, \b b, and \b c respectively.
          *
@@ -281,8 +283,12 @@ namespace rw { namespace geometry {
          * @param c [in] radius in the \f$ x_3 \f$ direction.
          * @return a QuadraticSurface representation of an ellipsoid.
          */
+
+         #endif 
         static QuadraticSurface::Ptr makeEllipsoid (double a, double b, double c);
 
+
+#if !defined(SWIGJAVA)
         /**
          * @brief Create a spheroid (special case of the ellipsoid).
          *
@@ -293,8 +299,12 @@ namespace rw { namespace geometry {
          * @param b [in] radius in the \f$ x_3 \f$ direction.
          * @return a QuadraticSurface representation of a spheroid.
          */
+
+         #endif 
         static QuadraticSurface::Ptr makeSpheroid (double a, double b);
 
+
+#if !defined(SWIGJAVA)
         /**
          * @brief Create a sphere (special case of the ellipsoid and spheroid).
          *
@@ -304,8 +314,11 @@ namespace rw { namespace geometry {
          * @param radius [in] radius of the sphere.
          * @return a QuadraticSurface representation of a sphere.
          */
+
+         #endif 
         static QuadraticSurface::Ptr makeSphere (double radius);
 
+#if !defined(SWIGJAVA)
         /**
          * @brief Create an elliptic paraboloid.
          *
@@ -316,8 +329,12 @@ namespace rw { namespace geometry {
          * @param b [in] radius of the ellipse in the \f$ x_2\f$ direction when \f$ x_3=1\f$ .
          * @return a QuadraticSurface representation of an elliptic paraboloid.
          */
+
+         #endif 
         static QuadraticSurface::Ptr makeEllipticParaboloid (double a, double b);
 
+
+#if !defined(SWIGJAVA)
         /**
          * @brief Create a circular paraboloid (special case of elliptic paraboloid).
          *
@@ -327,8 +344,11 @@ namespace rw { namespace geometry {
          * @param a [in] radius of the circle when \f$ x_3=1\f$ .
          * @return a QuadraticSurface representation of a circular paraboloid.
          */
+
+         #endif 
         static QuadraticSurface::Ptr makeCircularParaboloid (double a);
 
+#if !defined(SWIGJAVA)
         /**
          * @brief Create a hyperbolic paraboloid.
          *
@@ -339,8 +359,11 @@ namespace rw { namespace geometry {
          * @param b [in] width in the \f$ x_2\f$ direction when \f$ x_3=-1\f$ .
          * @return a QuadraticSurface representation of a hyperbolic paraboloid.
          */
+
+         #endif 
         static QuadraticSurface::Ptr makeHyperbolicParaboloid (double a, double b);
 
+#if !defined(SWIGJAVA)
         /**
          * @brief Create an elliptic hyperboloid of one sheet.
          *
@@ -352,8 +375,11 @@ namespace rw { namespace geometry {
          * @param c [in] radius is scaled with the factor \f$ \frac{1}{c}\sqrt{x_3^2+c^2}\f$ .
          * @return a QuadraticSurface representation of an elliptic hyperboloid of one sheet.
          */
+
+         #endif 
         static QuadraticSurface::Ptr makeEllipticHyperboloidOneSheet (double a, double b, double c);
 
+#if !defined(SWIGJAVA)
         /**
          * @brief Create a circular hyperboloid of one sheet (special case of the elliptic
          * hyperboloid of one sheet).
@@ -367,8 +393,12 @@ namespace rw { namespace geometry {
          * @param b [in] radius is scaled along \f$ x_3\f$ , to \f$ \frac{a}{c}\sqrt{x_3^2+c^2}\f$ .
          * @return a QuadraticSurface representation of a circular hyperboloid of one sheet.
          */
+
+         #endif 
         static QuadraticSurface::Ptr makeCircularHyperboloidOneSheet (double a, double b);
 
+
+#if !defined(SWIGJAVA)
         /**
          * @brief Create an elliptic hyperboloid of two sheets.
          *
@@ -382,9 +412,13 @@ namespace rw { namespace geometry {
          * @param c [in] distance from origo to each of the the two sheets.
          * @return a QuadraticSurface representation of an elliptic hyperboloid of two sheets.
          */
+
+         #endif 
         static QuadraticSurface::Ptr makeEllipticHyperboloidTwoSheets (double a, double b,
                                                                        double c);
 
+
+#if !defined(SWIGJAVA)
         /**
          * @brief Create a circular hyperboloid of two sheets (special case of the elliptic
          * hyperboloid of two sheets).
@@ -398,8 +432,12 @@ namespace rw { namespace geometry {
          * @param b [in] distance from origo to each of the the two sheets.
          * @return a QuadraticSurface representation of a circular hyperboloid of two sheets.
          */
+
+         #endif 
         static QuadraticSurface::Ptr makeCircularHyperboloidTwoSheets (double a, double b);
 
+
+#if !defined(SWIGJAVA)
         /**
          * @brief Create an elliptic cone.
          *
@@ -414,8 +452,11 @@ namespace rw { namespace geometry {
          * @param c [in] rate of change for the radius.
          * @return a QuadraticSurface representation of an elliptic cone.
          */
+
+         #endif 
         static QuadraticSurface::Ptr makeEllipticCone (double a, double b, double c);
 
+#if !defined(SWIGJAVA)
         /**
          * @brief Create a circular cone (special case of the elliptic cone).
          *
@@ -427,8 +468,12 @@ namespace rw { namespace geometry {
          * @param b [in] rate of change for the radius.
          * @return a QuadraticSurface representation of a circular cone.
          */
+
+         #endif 
         static QuadraticSurface::Ptr makeCircularCone (double a, double b);
 
+
+#if !defined(SWIGJAVA)
         /**
          * @brief Create an elliptic cylinder.
          *
@@ -439,8 +484,12 @@ namespace rw { namespace geometry {
          * @param b [in] radius in the \f$ x_2\f$ direction.
          * @return a QuadraticSurface representation of an elliptic cylinder.
          */
+
+         #endif 
         static QuadraticSurface::Ptr makeEllipticCylinder (double a, double b);
 
+
+#if !defined(SWIGJAVA)
         /**
          * @brief Create a circular cylinder (special case of the elliptic cylinder).
          *
@@ -452,8 +501,11 @@ namespace rw { namespace geometry {
          * normals pointing inwards.
          * @return a QuadraticSurface representation of a circular cylinder.
          */
+
+         #endif 
         static QuadraticSurface::Ptr makeCircularCylinder (double radius, bool outward = true);
 
+#if !defined(SWIGJAVA)
         /**
          * @brief Create a hyperbolic cylinder.
          *
@@ -464,8 +516,11 @@ namespace rw { namespace geometry {
          * @param b [in] controls the rate of change in the \f$ x_1\f$ direction.
          * @return a QuadraticSurface representation of a hyperbolic cylinder.
          */
+
+         #endif 
         static QuadraticSurface::Ptr makeHyperbolicCylinder (double a, double b);
 
+#if !defined(SWIGJAVA)
         /**
          * @brief Create a parabolic cylinder.
          *
@@ -475,6 +530,8 @@ namespace rw { namespace geometry {
          * @param a [in] controls the focal length of the parabola.
          * @return a QuadraticSurface representation of a parabolic cylinder.
          */
+
+         #endif 
         static QuadraticSurface::Ptr makeParabolicCylinder (double a);
 #if !defined(SWIG)
 ///@}

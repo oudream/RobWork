@@ -35,7 +35,6 @@ namespace rw { namespace graspplanning {
          * @param maxAngle [in] the maximum allowed angle between approach and
          * surface normal. Grasps violating this will recieve high penalty on
          * quality.
-         * @return
          */
         ApproachMeasure3D (double maxAngle) : _maxAngle (maxAngle) {}
 

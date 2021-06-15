@@ -13,13 +13,14 @@ else()
     set(Qhull_FOUND FALSE)
 endif()
 
+message(STATUS "QHULL MODULE")
 if(NOT ${Qhull_FOUND})
     if(WIN32)
         set(qhull_libnames qhullstatic_r)
     elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
         set(qhull_libnames qhull_r qhull6_r)
     else()
-        set(qhull_libnames libqhull_r.so.7 qhull6_r)
+        set(qhull_libnames libqhull_r.so qhull6_r)
     endif()
 
     # ##############################################################################################
@@ -49,7 +50,7 @@ if(NOT ${Qhull_FOUND})
         PATHS "$ENV{PROGRAMFILES}/QHull" "$ENV{PROGRAMW6432}/QHull" "/usr"
         PATH_SUFFIXES project build bin lib lib/x86_64-linux-gnu lib64
     )
-
+    
     # ##############################################################################################
     # Finalize find package
     # ##############################################################################################

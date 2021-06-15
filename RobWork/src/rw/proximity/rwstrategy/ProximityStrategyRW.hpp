@@ -70,6 +70,8 @@ namespace rw { namespace proximity {
             rw::geometry::OBBToleranceCollider<>* tolCollider;
         };
 
+
+
         //! @brief
 
         struct Model

@@ -36,7 +36,7 @@ namespace rw { namespace math {
 
     /** @addtogroup math */
     /*@{*/
-
+#if !defined(SWIGJAVA)
     /**
      * @brief A 4x4 homogeneous transform matrix @f$ \mathbf{T}\in SE(3) @f$
      *
@@ -51,6 +51,8 @@ namespace rw { namespace math {
      * @f$
      *
      */
+
+     #endif 
     template< class T = double > class Transform3D
     {
       public:
@@ -111,7 +113,7 @@ namespace rw { namespace math {
             _d[2] = T(r.row (2) (3));
             _R = Rotation3D<T>(r.block(0,0,3,3));
         }
-
+#if !defined(SWIGJAVA)
         /**
          * @brief Constructs a homogeneous transform using the original
          * Denavit-Hartenberg notation
@@ -134,8 +136,11 @@ namespace rw { namespace math {
          *  \right]
          * @f$
          */
+
+         #endif
         static const Transform3D DH (T alpha, T a, T d, T theta);
 
+#if !defined(SWIGJAVA)
         /**
          * @brief Constructs a homogeneous transform using the Craig (modified)
          * Denavit-Hartenberg notation
@@ -162,8 +167,11 @@ namespace rw { namespace math {
          * @f$
          *
          */
+
+         #endif
         static const Transform3D craigDH (T alpha, T a, T d, T theta);
 
+#if !defined(SWIGJAVA)
         /**
          * @brief Constructs a homogeneous transform using the Gordon (modified)
          * Denavit-Hartenberg notation
@@ -191,8 +199,11 @@ namespace rw { namespace math {
          *  \right]
          * @f$
          */
+
+         #endif 
         static const Transform3D DHHGP (T alpha, T a, T beta, T b);
 
+#if !defined(SWIGJAVA)
         /**
          * @brief Constructs the identity transform
          * @return the identity transform
@@ -209,6 +220,8 @@ namespace rw { namespace math {
          * \right]
          * @f$
          */
+
+         #endif 
         static const Transform3D& identity ();
 
 #if !defined(SWIG)
@@ -293,6 +306,7 @@ namespace rw { namespace math {
             return true;
         }
 
+#if !defined(SWIGJAVA)
         /**
          * @brief Calculates @f$ \robabx{a}{c}{\mathbf{T}} = \robabx{a}{b}{\mathbf{T}}
          * \robabx{b}{c}{\mathbf{T}} @f$
@@ -308,6 +322,8 @@ namespace rw { namespace math {
          * 0\end{array} & 1 \end{array} \right]
          * @f$
          */
+
+         #endif 
         const Transform3D operator* (const Transform3D& bTc) const
         {
             return Transform3D (_d + _R * bTc._d, _R * bTc._R);
@@ -514,6 +530,7 @@ namespace rw { namespace math {
     using Transform3Dd = Transform3D< double >;
     using Transform3Df = Transform3D< float >;
 
+#if !defined(SWIGJAVA)
     /**
      * @brief Calculates
      * @f$ \robabx{b}{a}{\mathbf{T}} = \robabx{a}{b}{\mathbf{T}}^{-1} @f$
@@ -534,6 +551,8 @@ namespace rw { namespace math {
      *
      * @f$
      */
+
+     #endif 
     template< class T > const Transform3D< T > inverse (const Transform3D< T >& aTb)
     {
         return Transform3D< T > (-(inverse (aTb.R ()) * aTb.P ()), inverse (aTb.R ()));

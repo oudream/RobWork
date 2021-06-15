@@ -48,7 +48,6 @@ namespace rw { namespace geometry {
          * @param faceIdxs
          * @param faceNormals
          * @param faceOffsets
-         * @return
          */
         void build (size_t dim, double* coords, size_t nrCoords, std::vector< int >& vertIdxs,
                     std::vector< int >& faceIdxs, std::vector< double >& faceNormals,
@@ -63,7 +62,6 @@ namespace rw { namespace geometry {
          * @param faceIdxs
          * @param faceNormals
          * @param faceOffsets
-         * @return
          */
         void build (std::vector<std::vector<double>> coords, std::vector< int >& vertIdxs,
                     std::vector< int >& faceIdxs, std::vector< double >& faceNormals,

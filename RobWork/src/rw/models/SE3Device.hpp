@@ -139,7 +139,7 @@ namespace rw { namespace models {
          * @return end Frame
          */
         const rw::kinematics::Frame* getEnd () const { return _mframe; }
-
+#if ! defined(SWIGJAVA)
         /**
          * @brief Calculates the jacobian matrix of the end-effector described
          * in the robot base frame @f$ ^b_e\mathbf{J}_{\mathbf{q}}(\mathbf{q})
@@ -165,6 +165,8 @@ namespace rw { namespace models {
          * \f]
          *
          */
+
+         #endif 
         rw::math::Jacobian baseJend (const rw::kinematics::State& state) const;
 
        rw::core::Ptr< rw::models::JacobianCalculator > baseJCframes (const std::vector< rw::kinematics::Frame* >& frames,

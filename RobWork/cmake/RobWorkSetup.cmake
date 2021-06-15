@@ -230,7 +230,7 @@ if(Qhull_FOUND)
         set(QHULL_ROOT "${QHULL_INCLUDE_DIRS}/..")
     endif()
 else()
-    hunter_add_package(Qhull)
+    hunter_add_package(qhull)
     find_package(Qhull REQUIRED)
 endif()
 

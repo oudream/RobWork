@@ -284,3 +284,6 @@ NAMED_OWNEDPTR(ProximityStrategyData,rw::proximity::ProximityStrategyData);
     #include <rw/proximity/rwstrategy/ProximityStrategyRW.hpp>
 %}
 %include <rw/proximity/rwstrategy/ProximityStrategyRW.hpp>
+
+
+%template(BVTreeColliderBinaryOBBPtr) rw::core::Ptr< rw::proximity::BVTreeCollider< rw::proximity::BinaryOBBPtrTreeD > >;
