@@ -121,6 +121,10 @@ configure_file(${RW_ROOT}/cmake/RobWorkConfigVersion.cmake.in
 
 configure_file(${RW_ROOT}/cmake/RobWorkConfig.cmake.in "${RW_ROOT}/cmake/RobWorkConfig.cmake" @ONLY)
 
+configure_file(${RW_ROOT}/cmake/RobWorkConfigMacros.cmake.in
+               "${RW_ROOT}/cmake/RobWorkConfigMacros.cmake" @ONLY
+)
+
 export(
     EXPORT ${PROJECT_PREFIX}Targets
     FILE "${RW_ROOT}/cmake/${PROJECT_NAME}Targets.cmake"
@@ -162,7 +166,12 @@ endif()
 
 # configuration
 install(
-    FILES ${RW_ROOT}/cmake/RobWorkConfigVersion.cmake ${RW_ROOT}/cmake/RobWorkConfig.cmake
+    FILES 
+        "cmake/RobWorkConfigVersion.cmake" 
+        "cmake/RobWorkConfig.cmake"
+        "cmake/RobWorkBuildConfig_${RW_BUILD_TYPE}.cmake"
+        "cmake/RobWorkMacros.cmake"
+        "cmake/RobWorkConfigMacros.cmake"
     DESTINATION ${RW_INSTALL_DIR}/cmake
     COMPONENT cmake
 )
@@ -177,12 +186,6 @@ install(
 install(
     FILES LICENSE.txt NOTICE.txt
     DESTINATION "${RW_INSTALL_DIR}/"
-    COMPONENT cmake
-)
-
-install(
-    FILES "cmake/RobWorkBuildConfig_${RW_BUILD_TYPE}.cmake" "cmake/RobWorkMacros.cmake"
-    DESTINATION ${RW_INSTALL_DIR}/cmake
     COMPONENT cmake
 )
 
@@ -213,7 +216,7 @@ if(WIN32)
     )
     install(
         DIRECTORY "${Boost_INCLUDE_DIR}/boost/"
-        DESTINATION "${RW_INSTALL_DIR}/ext/boost/"
+        DESTINATION "${INCLUDE_INSTALL_DIR}/ext/boost/boost"
         COMPONENT boost
     )
 
@@ -225,14 +228,14 @@ if(WIN32)
         )
         install(
             DIRECTORY "${XERCESC_INCLUDE_DIR}/"
-            DESTINATION "${RW_INSTALL_DIR}/ext/xerces/"
+            DESTINATION "${INCLUDE_INSTALL_DIR}/ext/xerces/"
             COMPONENT xerces
         )
     endif()
 
     install(
         DIRECTORY "${EIGEN3_INCLUDE_DIR}/"
-        DESTINATION "${RW_INSTALL_DIR}/ext/Eigen/"
+        DESTINATION "${INCLUDE_INSTALL_DIR}/ext/Eigen/"
         COMPONENT eigen
     )
 endif()

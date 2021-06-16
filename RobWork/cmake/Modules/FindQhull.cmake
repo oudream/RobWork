@@ -13,7 +13,6 @@ else()
     set(Qhull_FOUND FALSE)
 endif()
 
-message(STATUS "QHULL MODULE")
 if(NOT ${Qhull_FOUND})
     if(WIN32)
         set(qhull_libnames qhullstatic_r)
@@ -36,6 +35,8 @@ if(NOT ${Qhull_FOUND})
 
     if(QHULL_HEADER)
         get_filename_component(QHULL_INCLUDE_DIR ${QHULL_HEADER} PATH)
+        get_filename_component(TMP ${QHULL_INCLUDE_DIR} PATH)
+        set(QHULL_INCLUDE_DIR ${QHULL_INCLUDE_DIR} ${TMP})
     else(QHULL_HEADER)
         set(QHULL_INCLUDE_DIR "QHULL_INCLUDE_DIR-NOTFOUND")
     endif(QHULL_HEADER)
@@ -67,7 +68,7 @@ if(NOT ${Qhull_FOUND})
     if(QHULL_FOUND)
         add_library(Qhull::qhull_r UNKNOWN IMPORTED)
         set_target_properties(
-            Qhull::qhull_r PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${QHULL_INCLUDE_DIR}
+            Qhull::qhull_r PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "${QHULL_INCLUDE_DIR}"
         )
         set_target_properties(
             Qhull::qhull_r PROPERTIES IMPORTED_LOCATION ${QHULL_LIBRARY}

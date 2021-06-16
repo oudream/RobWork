@@ -56,12 +56,12 @@ namespace rw { namespace proximity {
             QueryType qtype;
 
             // closest contact point and normal (if normals enabled)
-            rw::math::Vector3D<> point;
-            rw::math::Vector3D<> normal;
+            rw::math::Vector3D<double> point;
+            rw::math::Vector3D<double> normal;
 
             // all contact points and normals (if normals enabled)
-            std::vector< rw::math::Vector3D<> > points;
-            std::vector< rw::math::Vector3D<> > normals;
+            std::vector< rw::math::Vector3D<double> > points;
+            std::vector< rw::math::Vector3D<double> > normals;
 
             // the models that where in contact and an associated int that indexes into the
             // starting of points,normals for the object.

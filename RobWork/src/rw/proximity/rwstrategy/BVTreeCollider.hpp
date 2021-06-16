@@ -39,7 +39,7 @@ namespace rw { namespace proximity {
       private:
       public:
         //! @brief smart pointer for this class
-        typedef rw::core::Ptr< BVTreeCollider< BVTREE > > Ptr;
+        typedef rw::core::Ptr< rw::proximity::BVTreeCollider< BVTREE > > Ptr;
 
         /**
          * @brief destructor
@@ -58,7 +58,7 @@ namespace rw { namespace proximity {
             const rw::math::Transform3D< typename BVTREE::value_type >& fTA, const BVTREE& treeA,
             const rw::math::Transform3D< typename BVTREE::value_type >& fTB, const BVTREE& treeB,
             std::vector< std::pair< int, int > >* collidingPrimitives = NULL) = 0;
-
+ 
         /**
          * @brief set the query type
          */
