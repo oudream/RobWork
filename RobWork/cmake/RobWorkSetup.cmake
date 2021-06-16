@@ -65,12 +65,12 @@ endif()
 # hunter_add_package(Boost COMPONENTS filesystem serialization system thread program_options)
 find_package(
     Boost QUIET
-    COMPONENTS filesystem serialization system thread program_options
+    COMPONENTS filesystem serialization system thread program_options date_time
     CONFIG
     HINTS "C:\\local"
 )
 if(NOT Boost_FOUND)
-    find_package(Boost REQUIRED COMPONENTS filesystem serialization system thread program_options)
+    find_package(Boost REQUIRED COMPONENTS filesystem serialization system thread program_options date_time)
 endif()
 if(TARGET Boost::headers)
     set(Boost_LIBRARIES ${Boost_LIBRARIES} Boost::headers)
@@ -80,6 +80,7 @@ if(NOT DEFINED Boost_LIBRARY_DIRS OR "${Boost_LIBRARY_DIRS}" STREQUAL "")
     rw_get_lib_from_target(Boost::filesystem Boost_LIBRARY_DIRS)
     get_filename_component(Boost_LIBRARY_DIRS ${Boost_LIBRARY_DIRS} DIRECTORY)
 endif()
+
 message(
     STATUS
         "RobWork: Boost version ${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION}.${Boost_SUBMINOR_VERSION} found!"
@@ -100,7 +101,7 @@ include(CMakeDependentOption)
 # for some libs we need the glut package, this is an optional dependency
 #
 set(RW_HAVE_GLUT False)
-
+set(FreeGLUT_FOUND False)
 find_package(GLUT QUIET)
 
 if(NOT ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
@@ -829,7 +830,6 @@ set(ROBWORK_LIBRARY_DIRS
 set(ROBWORK_LIBRARIES_EXTERNAL
     ${ROBWORK_LIBRARIES_EXTERNAL}
     ${OPENGL_LIBRARIES}
-    ${XERCESC_LIBRARIES}
     ${BULLET_LIBRARIES}
     ${BLAS_LIBRARIES}
     ${CMAKE_DL_LIBS}

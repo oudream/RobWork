@@ -66,6 +66,7 @@
 /RobWork/cmake/RobWorkBuildConfigDebug.cmake
 /RobWork/cmake/RobWorkConfig.cmake
 /RobWork/cmake/RobWorkConfigVersion.cmake
+/RobWork/cmake/RobWorkConfigMacros.cmake
 /RobWork/cmake/dependencies.cmake
 /RobWork/cmake/RobWorkBuildConfigRelease.cmake
 /RobWork/cmake/RobWorkBuildConfig_none.cmake
@@ -2531,6 +2532,7 @@ RobWork/src/rwlibs/swig/ext_i/os.i
 /RobWorkSim/cmake/RobWorkSimBuildConfigRelWithDebInfo.cmake
 /RobWorkSim/cmake/RobWorkSimConfigVersion.cmake
 /RobWorkSim/cmake/RobWorkSimConfig.cmake
+/RobWorkSim/cmake/RobWorkSimConfigMacros.cmake
 /RobWorkSim/cmake/RobWorkSimBuildConfig_none.cmake
 /RobWorkSim/cmake/RobWorkSimBuildConfig_debug.cmake
 /RobWorkSim/cmake/RobWorkSimBuildConfig_release.cmake
@@ -2997,6 +2999,7 @@ RobWorkSim/src/rwsimlibs/swig/python/RobWorkSim-*.egg-info
 # /RobWorkStudio/cmake/
 /RobWorkStudio/cmake/RobWorkStudioConfigDebug.cmake
 /RobWorkStudio/cmake/RobWorkStudioBuildConfig.cmake
+/RobWorkStudio/cmake/RobWorkStudioConfigMacros.cmake
 /RobWorkStudio/cmake/RobWorkStudioConfigRelease.cmake
 /RobWorkStudio/cmake/RobWorkStudioBuildConfigDebug.cmake
 /RobWorkStudio/cmake/RobWorkStudioBuildConfigRelease.cmake

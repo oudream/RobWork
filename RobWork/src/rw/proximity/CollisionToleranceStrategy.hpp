@@ -70,8 +70,8 @@ namespace rw { namespace proximity {
          * @return true if @f$ \mathcal{F}_a @f$ and @f$ \mathcal{F}_b @f$ are
          * colliding, false otherwise.
          */
-        bool isWithinDistance (const kinematics::Frame* a, const math::Transform3D<>& wTa,
-                               const kinematics::Frame* b, const math::Transform3D<>& wTb,
+        bool isWithinDistance (const kinematics::Frame* a, const math::Transform3D<double>& wTa,
+                               const kinematics::Frame* b, const math::Transform3D<double>& wTb,
                                double tolerance);
 
         /**
@@ -88,8 +88,8 @@ namespace rw { namespace proximity {
          * @return true if @f$ \mathcal{F}_a @f$ and @f$ \mathcal{F}_b @f$ are
          * colliding, false otherwise.
          */
-        bool isWithinDistance (const kinematics::Frame* a, const math::Transform3D<>& wTa,
-                               const kinematics::Frame* b, const math::Transform3D<>& wTb,
+        bool isWithinDistance (const kinematics::Frame* a, const math::Transform3D<double>& wTa,
+                               const kinematics::Frame* b, const math::Transform3D<double>& wTb,
                                double distance, class ProximityStrategyData& data);
 
         /**
@@ -106,8 +106,8 @@ namespace rw { namespace proximity {
          * @return true if @f$ \mathcal{F}_a @f$ and @f$ \mathcal{F}_b @f$ are
          * colliding, false otherwise.
          */
-        bool isWithinDistance (ProximityModel::Ptr a, const math::Transform3D<>& wTa,
-                               ProximityModel::Ptr b, const math::Transform3D<>& wTb,
+        bool isWithinDistance (ProximityModel::Ptr a, const math::Transform3D<double>& wTa,
+                               ProximityModel::Ptr b, const math::Transform3D<double>& wTb,
                                double tolerance, class ProximityStrategyData& data)
         {
             return doIsWithinDistance (a, wTa, b, wTb, tolerance, data);
@@ -172,8 +172,8 @@ namespace rw { namespace proximity {
          * @return true if @f$ \mathcal{F}_a @f$ and @f$ \mathcal{F}_b @f$ are
          * colliding, false otherwise.
          */
-        virtual bool doIsWithinDistance (ProximityModel::Ptr a, const math::Transform3D<>& wTa,
-                                         ProximityModel::Ptr b, const math::Transform3D<>& wTb,
+        virtual bool doIsWithinDistance (ProximityModel::Ptr a, const math::Transform3D<double>& wTa,
+                                         ProximityModel::Ptr b, const math::Transform3D<double>& wTb,
                                          double tolerance, class ProximityStrategyData& data) = 0;
 
       private:

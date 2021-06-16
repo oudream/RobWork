@@ -453,7 +453,7 @@ namespace rw { namespace proximity {
                 _nrOfPrimTests      = 0;
                 _nrOfCollidingPrims = 0;
                 _firstContact =
-                    BVTreeCollider< BVTREE >::_queryType == rw::proximity::CollisionStrategy::FirstContact;
+                    rw::proximity::BVTreeCollider< BVTREE >::_queryType == rw::proximity::CollisionStrategy::FirstContact;
             }
 
             BVCOLLIDER* _bvCollider;

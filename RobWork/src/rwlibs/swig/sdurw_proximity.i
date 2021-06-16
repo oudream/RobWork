@@ -29,6 +29,7 @@
     #include <rw/models/WorkCell.hpp>
     #include <rw/kinematics/MovableFrame.hpp>
     #include <rw/kinematics/FixedFrame.hpp>
+    #include <rw/geometry/IndexedTriMesh.hpp>
 %}
 
 %pragma(java) jniclassimports=%{
@@ -240,15 +241,31 @@ NAMED_OWNEDPTR(ProximityStrategyData,rw::proximity::ProximityStrategyData);
 %}
 %include <rw/proximity/Raycaster.hpp>
 
+#if !defined(WIN32)
 %{
     #include <rw/proximity/rwstrategy/BVTree.hpp>
 %}
 %include <rw/proximity/rwstrategy/BVTree.hpp>
+%template(BVTreeBinaryBVTreeOBB) rw::proximity::BVTree< rw::proximity::BinaryBVTree< rw::geometry::OBB< double >,rw::geometry::Triangle< double > > >;
+
+%{
+    #include <rw/proximity/rwstrategy/BinaryBVTree.hpp>
+%}
+%include <rw/proximity/rwstrategy/BinaryBVTree.hpp>
+%template(BinaryBVTreeOBBTr) rw::proximity::BinaryBVTree<rw::geometry::OBB<double>, rw::geometry::Triangle<double>>;
+%template(TraitBinaryTreeOBBTr)  rw::Traits<rw::proximity::BinaryBVTree<rw::geometry::OBB<double>, rw::geometry::Triangle<double>>>;
+
 
 %{
     #include <rw/proximity/rwstrategy/BVTreeCollider.hpp>
 %}
 %include <rw/proximity/rwstrategy/BVTreeCollider.hpp>
+%template(BVTreeColliderBinaryOBBTr) rw::proximity::BVTreeCollider<rw::proximity::BinaryBVTree<rw::geometry::OBB<double>, rw::geometry::Triangle<double>>>;
+%template(BVTreeColliderBinaryOBBTrPtr) rw::core::Ptr<rw::proximity::BVTreeCollider<rw::proximity::BinaryBVTree<rw::geometry::OBB<double>, rw::geometry::Triangle<double>>>>;
+
+#if defined(WIN32)
+%ignore rw::proximity::BVTreeCollider<rw::proximity::BinaryBVTree<rw::geometry::OBB<double>, rw::geometry::Triangle<double>>>::colides;
+#endif 
 
 %{
     #include <rw/proximity/rwstrategy/BVTreeColliderFactory.hpp>
@@ -266,11 +283,6 @@ NAMED_OWNEDPTR(ProximityStrategyData,rw::proximity::ProximityStrategyData);
 %include <rw/proximity/rwstrategy/BVTreeToleranceCollider.hpp>
 
 %{
-    #include <rw/proximity/rwstrategy/BinaryBVTree.hpp>
-%}
-%include <rw/proximity/rwstrategy/BinaryBVTree.hpp>
-
-%{
     #include <rw/proximity/rwstrategy/BinaryIdxBVTree.hpp>
 %}
 %include <rw/proximity/rwstrategy/BinaryIdxBVTree.hpp>
@@ -285,5 +297,4 @@ NAMED_OWNEDPTR(ProximityStrategyData,rw::proximity::ProximityStrategyData);
 %}
 %include <rw/proximity/rwstrategy/ProximityStrategyRW.hpp>
 
-
-%template(BVTreeColliderBinaryOBBPtr) rw::core::Ptr< rw::proximity::BVTreeCollider< rw::proximity::BinaryOBBPtrTreeD > >;
+#endif 
