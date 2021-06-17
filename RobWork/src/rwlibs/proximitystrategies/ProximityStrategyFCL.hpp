@@ -303,6 +303,9 @@ namespace rwlibs { namespace proximitystrategies {
          */
         fclDistanceResult& getDistanceResult ();
 
+        std::pair< rw::math::Vector3D<>, rw::math::Vector3D<> >
+        getSurfaceNormals (rw::proximity::DistanceMultiStrategy::Result& res, int idx);
+
       private:
         template< typename BV >
         bool addGeometry (rw::proximity::ProximityModel* model, const rw::geometry::Geometry& geom);

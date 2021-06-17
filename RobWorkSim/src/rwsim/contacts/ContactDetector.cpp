@@ -21,9 +21,9 @@
 #include "ContactStrategy.hpp"
 
 #include <RobWorkConfig.hpp>
-#ifdef RW_HAVE_PQP
-#include "ContactStrategyPQP.hpp"
-#endif
+
+#include "ContactStrategyDMS.hpp"
+
 #include "ContactDetectorData.hpp"
 #include "ContactDetectorTracking.hpp"
 #include "ContactModel.hpp"
@@ -317,7 +317,12 @@ void ContactDetector::setDefaultStrategies (const PropertyMap& map)
         addContactStrategy (rw::core::ownedPtr (strat), pri);
         pri++;
     }
-#ifdef RW_HAVE_PQP
+
+#ifdef RW_HAVE_FCL
+    ContactStrategy* strat = new ContactStrategyFCL ();
+    strat->setPropertyMap (map);
+    addContactStrategy (rw::core::ownedPtr (strat), pri);
+#elif  defined(RW_HAVE_PQP)
     ContactStrategy* strat = new ContactStrategyPQP ();
     strat->setPropertyMap (map);
     addContactStrategy (rw::core::ownedPtr (strat), pri);

@@ -27,11 +27,11 @@
 #include <rw/proximity/ProximityStrategyData.hpp>
 
 #if FCL_VERSION_LESS_THEN_0_6_0
+#include <fcl/BVH/BVH_internal.h>
 #include <fcl/BVH/BVH_model.h>
 #include <fcl/collision.h>
 #include <fcl/distance.h>
 #include <fcl/intersect.h>
-#include <fcl/BVH/BVH_internal.h>
 #else
 #include <fcl/common/types.h>
 #include <fcl/geometry/bvh/BVH_model.h>
@@ -118,27 +118,27 @@ using fclVec3   = fcl::Vec3f;
 
 using fclContact = fcl::Contact;
 #else
-fcl::Matrix3<double>& toFCL (Rotation3D<>& rwR)
+fcl::Matrix3< double >& toFCL (Rotation3D<>& rwR)
 {
-    return rwR.e();
+    return rwR.e ();
 }
 
-fcl::Vector3<double>& toFCL (Vector3D<>& rwV)
+fcl::Vector3< double >& toFCL (Vector3D<>& rwV)
 {
     return rwV.e ();
 }
 
-fcl::Transform3<double> toFCL (const Transform3D<>& rwT)
+fcl::Transform3< double > toFCL (const Transform3D<>& rwT)
 {
-    return fcl::Transform3<double>(rwT.e ());
+    return fcl::Transform3< double > (rwT.e ());
 }
 
-fcl::Vector3<double>& fromFCL (fcl::Vector3<double>& rwV)
+fcl::Vector3< double >& fromFCL (fcl::Vector3< double >& rwV)
 {
     return rwV;
 }
 
-fcl::Matrix3<double>& fromFCL (fcl::Matrix3<double>& rwV)
+fcl::Matrix3< double >& fromFCL (fcl::Matrix3< double >& rwV)
 {
     return rwV;
 }
@@ -573,24 +573,105 @@ fclDistanceResult& ProximityStrategyFCL::getDistanceResult ()
 {
     return *_fclDistanceResult;
 }
+namespace {
+rw::geometry::Triangle< double > getTriangleFromModel (ProximityStrategyFCL::FCLBVHModelPtr model,
+                                                       size_t index, ProximityStrategyFCL::BV bv)
+{
+    using Triangle = rw::geometry::Triangle< double >;
+    using BV       = ProximityStrategyFCL::BV;
+
+    Triangle tri;
+    if (bv == BV::AABB) {
+        auto bvh              = model.cast< fcl::BVHModel< fcl::AABB > > ();
+        fcl::Triangle fcl_tri = bvh->tri_indices[index];
+        tri                   = Triangle (fromFCL (bvh->vertices[fcl_tri[0]]),
+                        fromFCL (bvh->vertices[fcl_tri[1]]),
+                        fromFCL (bvh->vertices[fcl_tri[2]]));
+    }
+    else if (bv == BV::OBB) {
+        auto bvh              = model.cast< fcl::BVHModel< fcl::OBB > > ();
+        fcl::Triangle fcl_tri = bvh->tri_indices[index];
+        tri                   = Triangle (fromFCL (bvh->vertices[fcl_tri[0]]),
+                        fromFCL (bvh->vertices[fcl_tri[1]]),
+                        fromFCL (bvh->vertices[fcl_tri[2]]));
+    }
+    else if (bv == BV::RSS) {
+        auto bvh              = model.cast< fcl::BVHModel< fcl::RSS > > ();
+        fcl::Triangle fcl_tri = bvh->tri_indices[index];
+        tri                   = Triangle (fromFCL (bvh->vertices[fcl_tri[0]]),
+                        fromFCL (bvh->vertices[fcl_tri[1]]),
+                        fromFCL (bvh->vertices[fcl_tri[2]]));
+    }
+    else if (bv == BV::OBBRSS) {
+        auto bvh              = model.cast< fcl::BVHModel< fcl::OBBRSS > > ();
+        fcl::Triangle fcl_tri = bvh->tri_indices[index];
+        tri                   = Triangle (fromFCL (bvh->vertices[fcl_tri[0]]),
+                        fromFCL (bvh->vertices[fcl_tri[1]]),
+                        fromFCL (bvh->vertices[fcl_tri[2]]));
+    }
+    else if (bv == BV::kIOS) {
+        auto bvh              = model.cast< fcl::BVHModel< fcl::kIOS > > ();
+        fcl::Triangle fcl_tri = bvh->tri_indices[index];
+        tri                   = Triangle (fromFCL (bvh->vertices[fcl_tri[0]]),
+                        fromFCL (bvh->vertices[fcl_tri[1]]),
+                        fromFCL (bvh->vertices[fcl_tri[2]]));
+    }
+    else {
+        RW_THROW ("Implementation error! Support for the chosen FCL bounding volume has not "
+                  "been properly implemented!");
+    }
+    return tri;
+}
+}    // namespace
+std::pair< rw::math::Vector3D<>, rw::math::Vector3D<> >
+ProximityStrategyFCL::getSurfaceNormals (rw::proximity::DistanceMultiStrategy::Result& res, int idx)
+{
+    // get tris from FCL_models and compute triangle normal
+
+    FCLProximityModel* a = (FCLProximityModel*) res.a.get ();
+    FCLProximityModel* b = (FCLProximityModel*) res.b.get ();
+
+    if (a->getGeometryIDs ().size () > 1 || b->getGeometryIDs ().size () > 1) {
+        RW_THROW (" multiple geoms on one frame is not supported for normal extraction yet!");
+    }
+
+    int p1id = res.p1prims[idx];
+    int p2id = res.p2prims[idx];
+
+    rw::geometry::Triangle<double> atri = getTriangleFromModel(a->models[0].model,p1id,this->_bv);
+    rw::geometry::Triangle<double> btri = getTriangleFromModel(b->models[0].model,p2id,this->_bv);
+
+    rw::math::Vector3D<>& atri_p1 = atri[0];
+    rw::math::Vector3D<>& atri_p2 = atri[1];
+    rw::math::Vector3D<>& atri_p3 = atri[2];
+
+    rw::math::Vector3D<>& btri_p1 = btri[0];
+    rw::math::Vector3D<>& btri_p2 = btri[1];
+    rw::math::Vector3D<>& btri_p3 = btri[2];
+
+    rw::math::Vector3D<> n_p1 =
+        a->models[0].t3d.R () * cross (atri_p2 - atri_p1, atri_p3 - atri_p1);
+    rw::math::Vector3D<> n_p2 =
+        b->models[0].t3d.R () * cross (btri_p2 - btri_p1, btri_p3 - btri_p1);
+
+    return std::make_pair (n_p1, n_p2);
+}
 
 //######################################################################
 //####################### multi distance implementation ################
 //######################################################################
+#include <rw/common/Timer.hpp>
 #include <rw/geometry/OBB.hpp>
 #include <rw/geometry/Triangle.hpp>
 #include <rw/math/Rotation3D.hpp>
 #include <rw/math/Transform3D.hpp>
 #include <rw/math/Vector3D.hpp>
-#include <rw/common/Timer.hpp>
 
 using namespace rw::math;
 class FCL_MultiDistanceResult
 {
   public:
-    FCL_MultiDistanceResult ():num_bv_tests(0),num_tri_tests(0) {
-        clear();
-    };
+    FCL_MultiDistanceResult () : num_bv_tests (0), num_tri_tests (0) { clear (); };
 
     ~FCL_MultiDistanceResult (){};
 
@@ -652,13 +733,13 @@ void DistanceMultiThresholdRecurse (FCL_MultiDistanceResult& res,
                                     rw::core::Ptr< fcl::BVHModel< BV_t > >& o1, int b1,
                                     rw::core::Ptr< fcl::BVHModel< BV_t > >& o2, int b2)
 {
-    double sz1 = o1->getBV(b1).bv.size();    // get size of object
-    double sz2 = o2->getBV(b2).bv.size();    // get size of object
+    double sz1 = o1->getBV (b1).bv.size ();    // get size of object
+    double sz2 = o2->getBV (b2).bv.size ();    // get size of object
 
     int l1 = o1->getBV (b1).isLeaf ();
     int l2 = o2->getBV (b2).isLeaf ();
 
-    //If both models are a single triangle
+    // If both models are a single triangle
     if (l1 && l2) {
         // both leaves.  Test the triangles beneath them.
 
@@ -666,17 +747,17 @@ void DistanceMultiThresholdRecurse (FCL_MultiDistanceResult& res,
 
         fclVec3 p, q;
 
-        int index1       = -o1->getBV (b1).first_child - 1;
-        int index2       = -o2->getBV (b2).first_child - 1;
+        int index1 = -o1->getBV (b1).first_child - 1;
+        int index2 = -o2->getBV (b2).first_child - 1;
 
         fcl::Triangle t1 = o1->tri_indices[index1];
         fcl::Triangle t2 = o2->tri_indices[index2];
 
-        fclVec3 T1[3]    = {o1->vertices[t1[0]], o1->vertices[t1[1]], o1->vertices[t1[2]]};
-        fclVec3 T2[3]    = {o2->vertices[t2[0]], o2->vertices[t2[1]], o2->vertices[t2[2]]};
+        fclVec3 T1[3] = {o1->vertices[t1[0]], o1->vertices[t1[1]], o1->vertices[t1[2]]};
+        fclVec3 T2[3] = {o2->vertices[t2[0]], o2->vertices[t2[1]], o2->vertices[t2[2]]};
 
-        double d = fclTriangleDistance::triDistance (
-            T1, T2, toFCL (res.T.R ()), toFCL (res.T.P ()), p, q);
+        double d =
+            fclTriangleDistance::triDistance (T1, T2, toFCL (res.T.R ()), toFCL (res.T.P ()), p, q);
         if (d < res.distance) {
             res.distances.push_back (d);
             res.p1s.push_back (Vector3D< double > (p[0], p[1], p[2]));
@@ -685,8 +766,8 @@ void DistanceMultiThresholdRecurse (FCL_MultiDistanceResult& res,
             res.id2s.push_back (index2);
 
             // into c.s. 2 later
-            //o1->last_tri = t1;
-            //o2->last_tri = t2;
+            // o1->last_tri = t1;
+            // o2->last_tri = t2;
         }
         return;
     }
@@ -700,24 +781,26 @@ void DistanceMultiThresholdRecurse (FCL_MultiDistanceResult& res,
     if (l2 || (!l1 && (sz1 > sz2))) {
         // visit the children of b1
 
-        a1 = o1->getBV (b1).leftChild();
+        a1 = o1->getBV (b1).leftChild ();
         a2 = b2;
-        c1 = o1->getBV (b1).rightChild();
+        c1 = o1->getBV (b1).rightChild ();
         c2 = b2;
     }
     else {
         // visit the children of b2
 
         a1 = b1;
-        a2 = o2->getBV (b2).leftChild();
+        a2 = o2->getBV (b2).leftChild ();
         c1 = b1;
-        c2 = o2->getBV (b2).rightChild();
+        c2 = o2->getBV (b2).rightChild ();
     }
 
     res.num_bv_tests += 2;
 
-    double d1 = fcl::distance(toFCL(T.R()),toFCL(T.P()),o1->getBV(a1).bv,o2->getBV(a2).bv);
-    double d2 = fcl::distance(toFCL(T.R()),toFCL(T.P()),o1->getBV(c1).bv,o2->getBV(c2).bv);
+    double d1 =
+        fcl::distance (toFCL (T.R ()), toFCL (T.P ()), o1->getBV (a1).bv, o2->getBV (a2).bv);
+    double d2 =
+        fcl::distance (toFCL (T.R ()), toFCL (T.P ()), o1->getBV (c1).bv, o2->getBV (c2).bv);
 
     if (d2 < d1) {
         if ((d2 < (res.distance - res.abs_err)) || (d2 * (1 + res.rel_err) < res.distance)) {
@@ -740,7 +823,6 @@ void DistanceMultiThresholdRecurse (FCL_MultiDistanceResult& res,
     return;
 }
 
-
 template< class BV_t >
 int FCL_DistanceMultiThreshold (FCL_MultiDistanceResult& res, double threshold,
                                 rw::math::Transform3D< double > T1,
@@ -753,7 +835,7 @@ int FCL_DistanceMultiThreshold (FCL_MultiDistanceResult& res, double threshold,
     rw::core::Ptr< fcl::BVHModel< BV_t > > o2 = o2_cg.cast< fcl::BVHModel< BV_t > > ();
 
     rw::common::Timer timer;
-    timer.reset();
+    timer.reset ();
 
     // make sure that the models are built
     if (o1->build_state != fcl::BVHBuildState::BVH_BUILD_STATE_PROCESSED)
@@ -762,11 +844,11 @@ int FCL_DistanceMultiThreshold (FCL_MultiDistanceResult& res, double threshold,
         return fcl::BVHReturnCode::BVH_ERR_BUILD_EMPTY_MODEL;
 
     // Okay, compute what transform [R,T] that takes us from cs2 to cs1.
-    res.T = rw::math::inverse(T1)*T2;
+    res.T = rw::math::inverse (T1) * T2;
 
     res.distance = threshold;
-    res.p1 = {0, 0, 0};
-    res.p2 = {0, 0, 0};
+    res.p1       = {0, 0, 0};
+    res.p2       = {0, 0, 0};
 
     // initialize error bounds
 
@@ -778,15 +860,14 @@ int FCL_DistanceMultiThreshold (FCL_MultiDistanceResult& res, double threshold,
     res.num_bv_tests  = 0;
     res.num_tri_tests = 0;
 
-
     // choose routine according to queue size
-    DistanceMultiThresholdRecurse<BV_t> (res, res.T, o1, 0, o2, 0);
+    DistanceMultiThresholdRecurse< BV_t > (res, res.T, o1, 0, o2, 0);
 
     Vector3D< double > u;
-    u = res.p2 - res.T.P ();
+    u      = res.p2 - res.T.P ();
     res.p2 = res.T.R ().e ().transpose () * u;
 
-    res.query_time_secs        = timer.getTime();
+    res.query_time_secs = timer.getTime ();
 
     return fcl::BVHReturnCode::BVH_OK;
 }
@@ -820,18 +901,18 @@ int DistanceMultiTreshold (FCL_MultiDistanceResult& res, double threshold,
             return FCL_DistanceMultiThreshold< rw_kIOS > (
                 res, threshold, T1, o1_cg, T2, o2_cg, rel_err, abs_err);
             break;
-        /*case BV::KDOP16: FCL distance not implemented
-            FCL_DistanceMultiThreshold< rw_KDOP16 > (
-                res, threshold, T1, o1_cg, T2, o2_cg, rel_err, abs_err);
-            break;*/
-        /*case BV::KDOP18: FCL distance not implemented
-            return FCL_DistanceMultiThreshold< rw_KDOP18 > (
-                res, threshold, T1, o1_cg, T2, o2_cg, rel_err, abs_err);
-            break;*/
-       /* case BV::KDOP24: FCL distance not implemented
-            return FCL_DistanceMultiThreshold< rw_KDOP24 > (
-                res, threshold, T1, o1_cg, T2, o2_cg, rel_err, abs_err);
-            break;*/
+            /*case BV::KDOP16: FCL distance not implemented
+                FCL_DistanceMultiThreshold< rw_KDOP16 > (
+                    res, threshold, T1, o1_cg, T2, o2_cg, rel_err, abs_err);
+                break;*/
+            /*case BV::KDOP18: FCL distance not implemented
+                return FCL_DistanceMultiThreshold< rw_KDOP18 > (
+                    res, threshold, T1, o1_cg, T2, o2_cg, rel_err, abs_err);
+                break;*/
+            /* case BV::KDOP24: FCL distance not implemented
+                 return FCL_DistanceMultiThreshold< rw_KDOP24 > (
+                     res, threshold, T1, o1_cg, T2, o2_cg, rel_err, abs_err);
+                 break;*/
         default:
             RW_THROW ("Implementation error! Support for the chosen FCL bounding volume has not "
                       "been properly implemented!");
@@ -872,19 +953,25 @@ MultiDistanceResult& ProximityStrategyFCL::doDistances (ProximityModel::Ptr a,
         geoA++;
         geoB = -1;
         for (auto& mb : bModel->models) {
-
             geoB++;
             fclResult.clear ();
 
-            int code = DistanceMultiTreshold(fclResult, threshold, wTa*ma.t3d, ma.model, wTb*mb.t3d, mb.model, data.rel_err, data.abs_err,_bv);
-            
-            if(code != fcl::BVHReturnCode::BVH_OK) {
-                RW_THROW("Somthing went wrong during multidistance calculations");
+            int code = DistanceMultiTreshold (fclResult,
+                                              threshold,
+                                              wTa * ma.t3d,
+                                              ma.model,
+                                              wTb * mb.t3d,
+                                              mb.model,
+                                              data.rel_err,
+                                              data.abs_err,
+                                              _bv);
+
+            if (code != fcl::BVHReturnCode::BVH_OK) {
+                RW_THROW ("Somthing went wrong during multidistance calculations");
             }
             typedef std::map< int, int > IdMap;
             IdMap idMap;
 
-            
             for (size_t i = 0; i < fclResult.id1s.size (); i++) {
                 double dist = fclResult.distances[i];
                 int id      = fclResult.id1s[i];

@@ -117,7 +117,7 @@ if(NOT RWSIM_DISABLE_BULLET)
         set(RWSIM_BULLET_LIBRARY sdurwsim_bullet ${BULLET_LIBRARIES})
 
         # BULLET_LIBRARIES
-        if(NOT IS_DIRECTORY "${BULLET_INCLUDE_DIR}" )
+        if(NOT IS_DIRECTORY "${BULLET_INCLUDE_DIR}")
             set(BULLET_INCLUDE_DIR "${BULLET_ROOT_DIR}/${BULLET_INCLUDE_DIR}")
         endif()
         if(NOT IS_DIRECTORY "${BULLET_INCLUDE_DIRS}")
@@ -170,7 +170,7 @@ cmake_dependent_option(
 if(NOT RWSIM_DISABLE_ODE)
     find_package(ODE QUIET)
     if(ODE_FOUND)
-        if(RW_BUILD_WITH_PQP)
+        if(RW_BUILD_WITH_PQP OR RW_BUILD_WITH_FCL)
             set(RWSIM_HAVE_ODE TRUE)
             set(RWSIM_ODE_LIBRARY sdurwsim_ode ${ODE_LIBRARIES})
             message(STATUS "RobWorkSim: ODE enabled and found. Using ${ODE_BUILD_WITH}")
@@ -178,26 +178,35 @@ if(NOT RWSIM_DISABLE_ODE)
             set(RWSIM_HAVE_ODE FALSE)
             message(
                 SEND_ERROR
-                    "RobWorkSim: ODE enabled but RobWork was not build with PQP. Please compile RobWork with PQP support."
+                    "RobWorkSim: ODE enabled but RobWork was not build with PQP or FCL. Please compile RobWork with PQP or FCL support."
             )
         endif()
     elseif(WIN32)
-        message(STATUS "Fetching ODE from git")
-        set(RWSIM_HAVE_ODE TRUE)
-        set(ODE_NATIVE_ROOT ${CMAKE_CURRENT_BINARY_DIR}/ext/ode)
-        set(ODE_INCLUDE_DIR ${ODE_NATIVE_ROOT}/include)
-        set(ODE_LIBRARIES  ${ODE_NATIVE_ROOT}/lib/ode.lib)
-        ExternalProject_Add(
-            ode_build
-            GIT_REPOSITORY https://bitbucket.org/odedevs/ode.git
-            GIT_TAG 0.16.2
-            CMAKE_ARGS -DBUILD_SHARED_LIBS=ON -DODE_DOUBLE_PRECISION=ON -DODE_WITH_OU=ON -DODE_WITH_TESTS=OFF -DODE_WITH_DEMOS=OFF -DCMAKE_INSTALL_PREFIX:PATH=${ODE_NATIVE_ROOT}
-            BUILD_BYPRODUCTS ${ODE_INCLUDE_DIR} ${ODE_LIBRARIES}
-        )
-        set(ODE_INCLUDE_DIR ${ODE_NATIVE_ROOT}/include)
-        set(ODE_LIBRARIES )
-
-    else() 
+        if(RW_BUILD_WITH_PQP OR RW_BUILD_WITH_FCL)
+            message(STATUS "Fetching ODE from git")
+            set(RWSIM_HAVE_ODE TRUE)
+            set(ODE_NATIVE_ROOT ${CMAKE_CURRENT_BINARY_DIR}/ext/ode)
+            set(ODE_INCLUDE_DIR ${ODE_NATIVE_ROOT}/include)
+            set(ODE_LIBRARIES ${ODE_NATIVE_ROOT}/lib/ode.lib)
+            ExternalProject_Add(
+                ode_build
+                GIT_REPOSITORY https://bitbucket.org/odedevs/ode.git
+                GIT_TAG 0.16.2
+                CMAKE_ARGS -DBUILD_SHARED_LIBS=ON -DODE_DOUBLE_PRECISION=ON -DODE_WITH_OU=ON
+                           -DODE_WITH_TESTS=OFF -DODE_WITH_DEMOS=OFF
+                           -DCMAKE_INSTALL_PREFIX:PATH=${ODE_NATIVE_ROOT}
+                BUILD_BYPRODUCTS ${ODE_INCLUDE_DIR} ${ODE_LIBRARIES}
+            )
+            set(ODE_INCLUDE_DIR ${ODE_NATIVE_ROOT}/include)
+            set(ODE_LIBRARIES)
+        else()
+            set(RWSIM_HAVE_ODE FALSE)
+            message(
+                SEND_ERROR
+                    "RobWorkSim: ODE enabled but RobWork was not build with PQP or FCL. Please compile RobWork with PQP or FCL support."
+            )
+        endif()
+    else()
         set(RWSIM_HAVE_ODE FALSE)
         message(SEND_ERROR "RobWorkSim: ODE enabled but not found. Please setup ODE_ROOT.")
     endif()
