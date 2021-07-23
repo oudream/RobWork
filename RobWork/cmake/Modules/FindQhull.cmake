@@ -32,7 +32,6 @@ if(NOT ${Qhull_FOUND})
         PATHS "$ENV{PROGRAMFILES}/QHull" "$ENV{PROGRAMW6432}/QHull"
         PATH_SUFFIXES qhull src/libqhull libqhull_r include
     )
-
     if(QHULL_HEADER)
         get_filename_component(QHULL_INCLUDE_DIR ${QHULL_HEADER} PATH)
         get_filename_component(TMP ${QHULL_INCLUDE_DIR} PATH)

@@ -110,6 +110,17 @@ namespace rw { namespace math {
         }
 
         /**
+         * @brief Copy Constructor
+         * @param vs [in] the velocityscrew6D to copy
+         */
+        VelocityScrew6D (const VelocityScrew6D& vs)
+        {
+            for(size_t i = 0; i < vs.size(); i++){
+                this->_screw[i]=vs[i];
+            }
+        }
+
+        /**
          * @brief Constructs a velocity screw in frame @f$ a @f$ from a
          * transform @f$\robabx{a}{b}{\mathbf{T}} @f$.
          *
@@ -142,6 +153,12 @@ namespace rw { namespace math {
          * @return the angular velocity
          */
         const EAA< T > angular () const { return EAA< T > (_screw[3], _screw[4], _screw[5]); }
+
+        /**
+         * @brief get the size of the underlying vector
+         */
+        size_t size() const {return 6;}
+
 
 #if !defined(SWIG)
         /**

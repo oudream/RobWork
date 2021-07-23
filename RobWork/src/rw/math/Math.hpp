@@ -53,7 +53,7 @@ namespace rw { namespace math {
          *
          * @return a EAA object that represents the converted quaternion
          */
-        template< class A > static EAA< A > quaternionToEAA (const Quaternion< A >& quat)
+        template< class A > static rw::math::EAA< A > quaternionToEAA (const rw::math::Quaternion< A >& quat)
         {
             Quaternion< A > q = quat;
 
@@ -95,7 +95,7 @@ namespace rw { namespace math {
          *
          * @return a Quaternion object that represents the converted EAA
          */
-        template< class A > static Quaternion< A > eaaToQuaternion (const EAA< A >& eaa)
+        template< class A > static rw::math::Quaternion< A > eaaToQuaternion (const rw::math::EAA< A >& eaa)
         {
             const Vector3D< A > v = eaa.axis ();
             const A a2            = eaa.angle () / 2;
@@ -116,7 +116,7 @@ namespace rw { namespace math {
          *
          * @return a Quaternion object that represents the converted EAA
          */
-        template< class A > static Rotation3D< A > zyxToRotation3D (A roll, A pitch, A yaw)
+        template< class A > static rw::math::Rotation3D< A > zyxToRotation3D (A roll, A pitch, A yaw)
         {
             return RPY< A > (roll, pitch, yaw).toRotation3D ();
         }
@@ -124,20 +124,20 @@ namespace rw { namespace math {
         /**
          * \brief Constructs a 3x3 skew-symmetric matrix \f$ S\in so(3)\f$
          * \param s [in] the \f$ s_x \f$, \f$ s_y \f$ and \f$ s_z \f$ of the matrix
-         * \return The 3x3 skew-symmetric matrix \f$S\f$
+         * \return The 3x3 skew-symmetric matrix \f$ S\f$
          *
          * \f$
          * S =
-         * \left[
-         * \begin{array}{ccc}
+         * \left [
+         * \begin {array}{ccc}
          *    0 & -s_z &  s_y\\
          *  s_z &    0 & -s_x\\
          * -s_y &  s_x &    0
-         * \end{array}
-         * \right]
+         * \end {array}
+         * \right ]
          * \f$
          */
-        template< class R > static inline Eigen::Matrix< R, 3, 3 > skew (const Vector3D< R >& s)
+        template< class R > static inline Eigen::Matrix< R, 3, 3 > skew (const rw::math::Vector3D< R >& s)
         {
             Eigen::Matrix< R, 3, 3 > S;
             S (0, 0) = 0.0;

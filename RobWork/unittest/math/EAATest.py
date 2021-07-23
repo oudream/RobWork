@@ -1,4 +1,3 @@
-
 #################################################################################
  # Copyright 2021 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
  # Faculty of Engineering, University of Southern Denmark
@@ -99,14 +98,14 @@ class EAA(unittest.TestCase):
                     self.assertAlmostEqual(e180.angle (), math.pi, 15)
 
                     e180axis = e180.axis ()
-                    self.assertAlmostEqual((e180axis - axisInput).normInf (), 0.0, 15)
+                    self.assertAlmostEqual((e180axis - axisInput).normInf (), 0.0, delta = 1e-15)
                     xe180 = sdurw_math.EAAd(e180.toRotation3D ())
-                    self.assertAlmostEqual(xe180.angle (), e180.angle (), 13)
+                    self.assertAlmostEqual(xe180.angle (), e180.angle (), delta = 1e-13)
                     xe180axis = xe180.axis ()
                     # vector can point both ways and still be valid
                     if ((xe180axis - e180axis).norm2 () > (-xe180axis - e180axis).norm2 ()) :
                         xe180axis = -xe180axis
-                    self.assertAlmostEqual((xe180axis - e180axis).normInf (), 0.0, 15)
+                    self.assertAlmostEqual((xe180axis - e180axis).normInf (), 0.0, delta = 1e-15)
 
         # Testing different sign combinations for 180 degree rotations - epsilon
         eps = 1e-7;    # should be less than the hardcoded threshold in EAA.cpp
@@ -116,13 +115,13 @@ class EAA(unittest.TestCase):
                     axisInput = sdurw_math.Vector3Dd(sign1 * val1, sign2 * val2, sign3 * val3)
                     axisInput = axisInput.normalize()
                     e180 = sdurw_math.EAAd(axisInput * (math.pi - eps))
-                    self.assertAlmostEqual(e180.angle (), math.pi - eps, 13)
+                    self.assertAlmostEqual(e180.angle (), math.pi - eps, delta = 1e-13)
                     e180axis = e180.axis ()
-                    self.assertAlmostEqual((e180axis - axisInput).normInf (), 0.0, 15)
+                    self.assertAlmostEqual((e180axis - axisInput).normInf (), 0.0, delta = 1e-15)
                     xe180 = sdurw_math.EAAd(e180.toRotation3D ())
                     self.assertAlmostEqual(xe180.angle (), e180.angle (), 13)
                     xe180axis = xe180.axis ()
-                    self.assertAlmostEqual((xe180axis - e180axis).normInf (), 0.0, 7)
+                    self.assertAlmostEqual((xe180axis - e180axis).normInf (), 0.0, delta = 1e-7)
 
         # Testing different sign combinations for 180 degree rotations + epsilon
         for sign1 in [-1,1]:
@@ -131,13 +130,13 @@ class EAA(unittest.TestCase):
                     axisInput = sdurw_math.Vector3Dd(sign1 * val1, sign2 * val2, sign3 * val3)
                     axisInput = axisInput.normalize()
                     e180 = sdurw_math.EAAd(axisInput * (math.pi + eps))
-                    self.assertAlmostEqual(e180.angle (), math.pi + eps, 13)
+                    self.assertAlmostEqual(e180.angle (), math.pi + eps, delta = 1e-13)
                     e180axis = e180.axis ()
-                    self.assertAlmostEqual((e180axis - axisInput).normInf (), 0.0, 15)
+                    self.assertAlmostEqual((e180axis - axisInput).normInf (), 0.0, delta = 1e-15)
                     xe180 = sdurw_math.EAAd(e180.toRotation3D ())
                     self.assertAlmostEqual(xe180.angle (), math.pi - eps, 13)           # should choose angle < Pi
                     xe180axis = xe180.axis ()
-                    self.assertAlmostEqual((xe180axis + e180axis).normInf (), 0.0, 7)   # should flip vector to get angle < Pi
+                    self.assertAlmostEqual((xe180axis + e180axis).normInf (), 0.0, delta = 1e-7)   # should flip vector to get angle < Pi
 
        #  90 degree's around x axis
         v1 = sdurw_math.Vector3Dd(1.0, 0.0, 0.0)
@@ -330,15 +329,15 @@ class EAA(unittest.TestCase):
         test5 = obj1.elemSubtract(obj2)
 
         for i in range(0, obj1.size(), 1):
-            self.assertAlmostEqual(test1[i], 1.3724012715315643,10)
+            self.assertAlmostEqual(test1[i], 1.3724012715315643, delta = 1e-10)
             self.assertEqual(test2[i], 6.0)
             self.assertEqual(test3[i], 3.0/2.0)
             self.assertEqual(test4[i], 5.0)
             self.assertEqual(test5[i], 1.0)
 
         comp1 = sdurw_math.EAAd(1.1, -2.2, 3.3)
-        comp2 = sdurw_math.EAAd(comp1)       # Make a copy of obj1 using c++ copy constructor
-        comp3 = -sdurw_math.EAAd(comp1)      # Make a copy of obj1 using c++ copy constructor
+        comp2 = sdurw_math.EAAd(comp1)       # Make a copy of comp1 using c++ copy constructor
+        comp3 = -sdurw_math.EAAd(comp1)      # Make a copy of comp1 using c++ copy constructor
         self.assertEqual(comp1, comp2)
         self.assertFalse(comp1 != comp2)
         self.assertTrue(comp1 != comp3)
@@ -395,7 +394,7 @@ class EAA(unittest.TestCase):
         test6 = obj3.dot(obj2.toVector3D())
 
 # TODO check numpy array conversion in swig
-#       self.assertEqual(test1, np.cross(obj1.e (),obj2.e ()))       # AttributeError: 'EigenVector3d' object has no attribute 'cross'
+#        self.assertEqual(test1, np.cross(obj1.e (),obj2.e ()))        # AttributeError: 'EigenVector3d' object has no attribute 'cross'
 #        self.assertEqual(test2,np.cross(obj1.e (),obj2.e ()))         # AttributeError: 'EigenVector3d' object has no attribute 'dot'
 
 

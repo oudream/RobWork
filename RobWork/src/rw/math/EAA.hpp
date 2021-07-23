@@ -191,7 +191,7 @@ namespace rw { namespace math {
          * - @f$ v\theta = 1-cos \theta @f$
          */
 
-         #endif 
+#endif 
         virtual const rw::math::Rotation3D< T > toRotation3D () const;
 
         /**

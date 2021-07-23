@@ -207,6 +207,8 @@ NAMED_OWNEDPTR(Plugin, rw::core::Plugin);
     #include <rw/core/PropertyValueBase.hpp>
 %}
 %include <rw/core/PropertyValueBase.hpp>
+%template(VectorPropertyValueBasePtr) std::vector<rw::core::Ptr<rw::core::PropertyValueBase> >;
+
 NAMED_OWNEDPTR(PropertyValueBase, rw::core::PropertyValueBase);
 
 %{

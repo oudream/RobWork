@@ -109,10 +109,63 @@ FRIEND_OPERATOR(rw::math::Rotation3D<float>,rw::math::InertiaMatrix<float>,*);
 %}
 %include <rw/math/LinearAlgebra.hpp>
 
+%extend rw::math::LinearAlgebra {
+    static bool isSO(Eigen::Matrix<double,3,3> var){
+        return rw::math::LinearAlgebra::isSO(var);
+    }
+}
+
+//%template(isSO_f) rw::math::LinearAlgebra::isSO<float>;
+
 %{
+    #include <rw/math/Quaternion.hpp>
     #include <rw/math/Math.hpp>
 %}
 %include <rw/math/Math.hpp>
+%template(quaternionToEAA) rw::math::Math::quaternionToEAA<double>;
+%template(quaternionToEAA) rw::math::Math::quaternionToEAA<float>;
+%template(eaaToQuaternion) rw::math::Math::eaaToQuaternion<double>;
+%template(eaaToQuaternion) rw::math::Math::eaaToQuaternion<float>;
+%template(zyxToRotation3D) rw::math::Math::zyxToRotation3D<double>;
+%template(zyxToRotation3D) rw::math::Math::zyxToRotation3D<float>;
+%template(skew) rw::math::Math::skew<double>;
+%template(skew) rw::math::Math::skew<float>;
+%template(ranQuaternion) rw::math::Math::ranQuaternion<double>;
+%template(ranTransform3D) rw::math::Math::ranTransform3D<double>;
+%template(ranRotation3D) rw::math::Math::ranRotation3D<double>;
+%template(ranQuaternion_f) rw::math::Math::ranQuaternion<float>;
+%template(ranTransform3D_f) rw::math::Math::ranTransform3D<float>;
+%template(ranRotation3D_f) rw::math::Math::ranRotation3D<float>;
+%template(fromStdVectorToMat) rw::math::Math::fromStdVectorToMat<double,rw::math::Transform3D<double>>;
+%template(fromStdVectorToMat) rw::math::Math::fromStdVectorToMat<double,rw::math::Transform3D<float>>;
+%template(fromStdVectorToMat_f) rw::math::Math::fromStdVectorToMat<float,rw::math::Transform3D<double>>;
+%template(fromStdVectorToMat_f) rw::math::Math::fromStdVectorToMat<float,rw::math::Transform3D<float>>;
+%template(fromStdVectorToMat) rw::math::Math::fromStdVectorToMat<double,rw::math::Rotation3D<double>>;
+%template(fromStdVectorToMat) rw::math::Math::fromStdVectorToMat<double,rw::math::Rotation3D<float>>;
+%template(fromStdVectorToMat_f) rw::math::Math::fromStdVectorToMat<float,rw::math::Rotation3D<double>>;
+%template(fromStdVectorToMat_f) rw::math::Math::fromStdVectorToMat<float,rw::math::Rotation3D<float>>;
+
+%extend rw::math::Math {
+    static std::vector< double > toStdVector (const rw::math::Vector3D<double>& tmp, int size){
+        return rw::math::Math::toStdVector(tmp,size);
+    }
+    static std::vector< double > toStdVector (const rw::math::Vector3D<float>& tmp, int size){
+        return rw::math::Math::toStdVector(tmp,size);
+    }
+    static std::vector< double > toStdVector (const rw::math::Transform3D<double>& tmp, int size1,int size2){
+        return rw::math::Math::toStdVector(tmp,size1,size2);
+    }
+    static std::vector< double > toStdVector (const rw::math::Transform3D<float>& tmp, int size1,int size2){
+        return rw::math::Math::toStdVector(tmp,size1, size2);
+    }
+    static std::vector< double > toStdVector (const rw::math::Rotation3D<double>& tmp, int size1,int size2){
+        return rw::math::Math::toStdVector(tmp,size1,size2);
+    }
+    static std::vector< double > toStdVector (const rw::math::Rotation3D<float>& tmp, int size1,int size2){
+        return rw::math::Math::toStdVector(tmp,size1, size2);
+    }
+}
+
 
 %rename(copy) rw::math::Metric::operator=;
 %{
@@ -124,6 +177,8 @@ FRIEND_OPERATOR(rw::math::Rotation3D<float>,rw::math::InertiaMatrix<float>,*);
 %template(MetricVector3D) rw::math::Metric<rw::math::Vector3D< double > >;
 %template(MetricTransform3D) rw::math::Metric<rw::math::Transform3D<double>>;
 %template(MetricRotation3D) rw::math::Metric<rw::math::Rotation3D<double>>;
+%template(MetricTransform3D_f) rw::math::Metric<rw::math::Transform3D<float>>;
+%template(MetricRotation3D_f) rw::math::Metric<rw::math::Rotation3D<float>>;
 
 NAMED_OWNEDPTR(MetricQ, rw::math::Metric<rw::math::Q>);
 NAMED_OWNEDPTR(MetricVector2D, rw::math::Metric<rw::math::Vector2D< double > >);
@@ -170,10 +225,37 @@ NAMED_OWNEDPTR(MetricRotation3D, rw::math::Metric<rw::math::Rotation3D<double>>)
 %template(InfinityMetricVector3D) rw::math::InfinityMetric< rw::math::Vector3D<double> >;
 %template(WeightedInfinityMetricVector3D) rw::math::WeightedInfinityMetric< rw::math::Vector3D<double> >;
 
+%template(Rotation3DAngleMetric_d) rw::math::Rotation3DAngleMetric<double>;
+ADD_DEFINITION(Rotation3DAngleMetric_d, Rotation3DAngleMetric);
+%template(Rotation3DAngleMetric_f) rw::math::Rotation3DAngleMetric<float>;
+
+%template(Transform3DAngleMetric_d) rw::math::Transform3DAngleMetric <double>;
+ADD_DEFINITION(Transform3DAngleMetric_d, Transform3DAngleMetric);
+%template(Transform3DAngleMetric_f) rw::math::Transform3DAngleMetric <float>;
+
 %{
     #include <rw/math/MetricUtil.hpp>
 %}
 %include <rw/math/MetricUtil.hpp>
+
+%template(norm1) rw::math::MetricUtil::norm1<rw::math::Vector3D<double>>;
+%template(norm1) rw::math::MetricUtil::norm1<rw::math::Vector3D<float>>;
+%template(norm1) rw::math::MetricUtil::norm1<rw::math::Quaternion<double>>;
+%template(norm1) rw::math::MetricUtil::norm1<rw::math::Quaternion<float>>;
+%template(norm1) rw::math::MetricUtil::norm1<rw::math::Q>;
+%template(norm2) rw::math::MetricUtil::norm2<rw::math::Vector3D<double>>;
+%template(norm2) rw::math::MetricUtil::norm2<rw::math::Vector3D<float>>;
+%template(norm2) rw::math::MetricUtil::norm2<rw::math::Quaternion<double>>;
+%template(norm2) rw::math::MetricUtil::norm2<rw::math::Quaternion<float>>;
+%template(norm2) rw::math::MetricUtil::norm2<rw::math::Q>;
+%template(normInf) rw::math::MetricUtil::normInf<rw::math::Vector3D<double>>;
+%template(normInf) rw::math::MetricUtil::normInf<rw::math::Vector3D<float>>;
+%template(normInf) rw::math::MetricUtil::normInf<rw::math::Quaternion<double>>;
+%template(normInf) rw::math::MetricUtil::normInf<rw::math::Quaternion<float>>;
+%template(normInf) rw::math::MetricUtil::normInf<rw::math::Q>;
+//%template(dist1) rw::math::MetricUtil::dist1<double>;
+//%template(dist1) rw::math::MetricUtil::dist1<float>;
+
 
 %ignore rw::math::PerspectiveTransform2D::e() const;
 %{
@@ -310,6 +392,8 @@ FRIEND_OPERATOR(rw::math::Rotation3D<float>, rw::math::Wrench6D<float>, *);
     #include <rw/math/Statistics.hpp>
 %}
 %include <rw/math/Statistics.hpp>
+%template(Statistics) rw::math::Statistics<double>;
+%template(Statistics_f) rw::math::Statistics<float>;
 
 %ignore rw::math::Transform3D::R() const;
 %ignore rw::math::Transform3D::P() const;
@@ -336,7 +420,7 @@ FRIEND_OPERATOR(rw::math::Rotation3D<float>, rw::math::Wrench6D<float>, *);
 %}
 %include <rw/math/Vector2D.hpp>
 %template(VectorVector2D) std::vector<rw::math::Vector2D<double>>;
-
+%template(VectorVector2D_f) std::vector<rw::math::Vector2D<float>>;
 
 %ignore rw::math::Vector3D::e() const;
 #if defined(SWIGPYTHON)
@@ -391,10 +475,22 @@ FRIEND_OPERATOR(rw::math::Rotation3D<float>, rw::math::VelocityScrew6D<float>, *
 %template (pow) rw::math::pow<double>;
 */
 
+
+%template(dot) rw::math::dot<double>;
+%template(dot) rw::math::dot<float>;
+%template(cross) rw::math::cross<double>;
+%template(cross) rw::math::cross<float>;
+%template(angle) rw::math::angle<double>;
+%template(angle) rw::math::angle<float>;
+%template(normalize) rw::math::normalize<double>;
+%template(normalize) rw::math::normalize<float>;
+
 %template (norm1) rw::math::norm1<float>;
 %template (norm1) rw::math::norm1<double>;
 %template (norm2) rw::math::norm2<float>;
 %template (norm2) rw::math::norm2<double>;
+%template (cross) rw::math::cross<double>;
+%template (cross) rw::math::cross<float>;
 %template (normInf) rw::math::normInf<float>;
 %template (normInf) rw::math::normInf<double>;
 %template (castToFloat) rw::math::cast<float,double>;
