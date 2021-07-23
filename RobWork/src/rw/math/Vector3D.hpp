@@ -85,6 +85,14 @@ namespace rw { namespace math {
             _vec[1] = y;
             _vec[2] = z;
         }
+        
+        /**
+         * @brief Copy constructor
+         * @param vec [in] vector to copy
+         */
+        Vector3D (const Vector3D<T>& copy_vec): _vec(copy_vec._vec)
+        {
+        }
 
         /**
          * @brief Creates a 3D vector from vector_expression
