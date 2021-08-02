@@ -18,6 +18,7 @@
 #ifndef RW_MODELS_DEFORMABLEOBJECT_HPP_
 #define RW_MODELS_DEFORMABLEOBJECT_HPP_
 
+#if !defined(SWIG)
 #include "Object.hpp"
 
 #include <rw/core/Ptr.hpp>
@@ -25,6 +26,7 @@
 #include <rw/kinematics/Stateless.hpp>
 
 #include <vector>
+#endif 
 
 namespace rw { namespace geometry {
     class Geometry;
@@ -161,7 +163,7 @@ namespace rw { namespace models {
          * @param state [in] the state in which to get center of mass
          * @return Position of COM
          */
-        rw::math::Vector3D<> getCOM (rw::kinematics::State& state) const;
+        rw::math::Vector3D<double> getCOM (rw::kinematics::State& state) const;
 
         /**
          * @brief returns the inertia matrix of this body calculated around COM with the orientation
@@ -211,7 +213,7 @@ namespace rw { namespace models {
 
       private:
         rw::kinematics::StatelessData< int > _rstate;
-        rw::core::Ptr< rw::geometry::IndexedTriMeshN0< float > > _mesh;
+        rw::core::Ptr< rw::geometry::IndexedTriMeshN0< float,uint16_t > > _mesh;
         std::vector< std::pair< int, rw::kinematics::MovableFrame* > > _frames;
         rw::core::Ptr< rw::geometry::Model3D > _model;
         rw::core::Ptr< rw::geometry::Geometry > _geom;

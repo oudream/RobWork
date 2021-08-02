@@ -21,8 +21,9 @@
 /**
  * @file CameraFirewire.hpp
  */
-
+#if !defined(SWIG)
 #include "Camera.hpp"
+#endif 
 
 namespace rw { namespace sensor {
 

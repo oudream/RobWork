@@ -1,3 +1,4 @@
+import sdurw_models
 from sdurw import *
 from sdurw_pathplanners import RRTPlanner
 from sdurw_proximitystrategies import ProximityStrategyFactory
@@ -21,14 +22,14 @@ if __name__ == '__main__':
         raise Exception("PA10 device could not be found.")
 
     defState = wc.getDefaultState()
-    device = ownedPtr(CompositeDevice(gantry.getBase(), wc.getDevices(),
-                             pa10.getEnd(), "Composite", defState))
+    device = sdurw_models.ownedPtr(CompositeDevice(gantry.getBase(), wc.getDevices(), pa10.getEnd(), "Composite", defState))
 
     cdstrategy = ProximityStrategyFactory.makeCollisionStrategy("PQP")
     if cdstrategy.isNull():
         raise Exception("PQP Collision Strategy could not be found.")
-    collisionDetector = ownedPtr(CollisionDetector(wc, cdstrategy))
-    con = PlannerConstraint.make(collisionDetector, device.asDeviceCPtr(), defState)
+    print(device.cptr())
+    collisionDetector = sdurw_proximity.ownedPtr(CollisionDetector(wc, cdstrategy))
+    con = PlannerConstraint.make(collisionDetector, device.cptr(), defState)
     planner = RRTPlanner.makeQToQPlanner(con, device.asDevicePtr())
 
     beg = Q(9, -0.67, -0.79, 2.8, -0.02, -1.01, -0.26, -0.77, -1.01, 0)

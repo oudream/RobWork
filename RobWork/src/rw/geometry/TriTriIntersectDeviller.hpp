@@ -2,8 +2,10 @@
 #ifndef RW_GEOMETRY_TriTriIntersectDeviller_HPP_
 #define RW_GEOMETRY_TriTriIntersectDeviller_HPP_
 
+#if !defined(SWIG)
 #include <rw/geometry/Triangle.hpp>
 #include <rw/math/Transform3D.hpp>
+#endif 
 //#include <PQP/PQP.h>
 namespace rw { namespace geometry {
 
@@ -53,9 +55,9 @@ namespace rw { namespace geometry {
 
         /**
          * @brief calculates the triple scalar product
-         * @return
+         * @return true if succesfull
          */
-        inline int project6 (const rw::math::Vector3D< T >& ax, const rw::math::Vector3D< T >& p1,
+        inline bool project6 (const rw::math::Vector3D< T >& ax, const rw::math::Vector3D< T >& p1,
                              const rw::math::Vector3D< T >& p2, const rw::math::Vector3D< T >& p3,
                              const rw::math::Vector3D< T >& q1, const rw::math::Vector3D< T >& q2,
                              const rw::math::Vector3D< T >& q3)
@@ -212,9 +214,18 @@ namespace rw { namespace geometry {
 
         return true;
     }
-
+#if !defined(SWIG)
     extern template class rw::geometry::TriTriIntersectDeviller< double >;
     extern template class rw::geometry::TriTriIntersectDeviller< float >;
+#else
+#if SWIG_VERSION < 0x040000
+    SWIG_DECLARE_TEMPLATE (TriTriIntersectDeviller_d, rw::geometry::TriTriIntersectDeviller< double >);
+    ADD_DEFINITION (TriTriIntersectDeviller_d, TriTriIntersectDeviller)
+#else
+    SWIG_DECLARE_TEMPLATE (TriTriIntersectDeviller, rw::geometry::TriTriIntersectDeviller< double >);
+#endif
+    SWIG_DECLARE_TEMPLATE(TriTriIntersectDeviller_f,rw::geometry::TriTriIntersectDeviller< float >);
+#endif 
 }}    // namespace rw::geometry
 
 #endif /* TRIDEVILLER_HPP_ */

@@ -1,10 +1,13 @@
 require("sdurw_core")
-require("sdurw")
-using("sdurw")
 require("sdurw_math")
-using("sdurw_math")
 require("sdurw_kinematics")
+require("sdurw_models")
+require("sdurw")
+
+using("sdurw_math")
 using("sdurw_kinematics")
+using("sdurw_models")
+using("sdurw")
 
 if #arg ~= 1 then
     print("Usage: lua ex-invkin.lua <path/to/RobWorkData>")
@@ -23,7 +26,7 @@ if device:isNull() then
 end
 
 local state = wc:getDefaultState()
-local solver = ClosedFormIKSolverUR(device:asSerialDeviceCPtr(), state)
+local solver = ClosedFormIKSolverUR(device:cptr(), state)
 
 local Tdesired = Transform3Dd(Vector3Dd(0.2, -0.2, 0.5), EAAd(0, Pi, 0):toRotation3D())
 local solutions = solver:solve(Tdesired, state)

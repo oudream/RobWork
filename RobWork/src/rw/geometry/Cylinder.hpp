@@ -18,9 +18,11 @@
 #ifndef RW_GEOMETRY_CYLINDER_HPP_
 #define RW_GEOMETRY_CYLINDER_HPP_
 
+#if !defined(SWIG)
 #include "Primitive.hpp"
 
 #include <rw/math/Transform3D.hpp>
+#endif 
 
 namespace rw { namespace geometry {
     //! @addtogroup geometry

@@ -28,6 +28,7 @@
 #include <rw/kinematics/Stateless.hpp>
 #include <rw/kinematics/StatelessData.hpp>
 
+#include <memory>
 //
 
 using namespace rw::kinematics;
@@ -35,7 +36,7 @@ using namespace rw::math;
 /*
 void sharedPtrTest(){
     BOOST_TEST_MESSAGE("Shared PTR test");
-    typedef std::vector<boost::shared_ptr<Frame> > SharedVector;
+    typedef std::vector<std::shared_ptr<Frame> > SharedVector;
     int N=10;
     SharedVector f1,f2;
     {
@@ -43,7 +44,7 @@ void sharedPtrTest(){
         for(int i = 0;i<N; i++){
             std::ostringstream ostr;
             ostr << "L" << i;
-            frames[i] = boost::shared_ptr<Frame>(new FixedFrame(ostr.str(), Transform3D<>(Vector3D<>(1,2,3))));
+            frames[i] = std::shared_ptr<Frame>(new FixedFrame(ostr.str(), Transform3D<>(Vector3D<>(1,2,3))));
         }
         f1 = frames;
     }
@@ -54,10 +55,10 @@ void sharedPtrTest(){
         SharedVector vf = f1;
         f2 = vf;
     }
-    for(boost::shared_ptr<Frame>& frame: f1){
+    for(std::shared_ptr<Frame>& frame: f1){
         std::cout << frame->getName() << " " << frame.use_count() << std::endl;
     }
-    for(boost::shared_ptr<Frame>& frame: f2){
+    for(std::shared_ptr<Frame>& frame: f2){
         std::cout << frame->getName() << " " << frame.use_count() << std::endl;
     }
 }
@@ -128,7 +129,7 @@ TEST(KinematicsTest, StatelessObjectTest )
 		StatelessData<int> _ival;
 		StatelessData<Vector3D<> > _v3d;
 	};
-	boost::shared_ptr<StateStructure> tree( new StateStructure() );
+	std::shared_ptr<StateStructure> tree( new StateStructure() );
 	State state = tree->getDefaultState();
 
 	// create stateless object
@@ -153,7 +154,7 @@ TEST(KinematicsTest, StateStructureTest )
     MovableFrame* m1 = new MovableFrame("m1");
     FixedFrame* daf = new FixedFrame("daf", Transform3D<>(Vector3D<>(1,2,3)));
 
-    boost::shared_ptr<StateStructure> tree( new StateStructure() );
+    std::shared_ptr<StateStructure> tree( new StateStructure() );
     Frame* world = tree->getRoot();
     tree->addFrame(l1,world);
     tree->addFrame(m1,world);
@@ -266,7 +267,7 @@ TEST(KinematicsTest, removeFramesTest )
     FixedFrame* l6 = new FixedFrame("l6",Transform3D<>());
     FixedFrame* l7 = new FixedFrame("l7",Transform3D<>());
 
-    boost::shared_ptr<StateStructure> tree(new StateStructure());
+    std::shared_ptr<StateStructure> tree(new StateStructure());
     Frame* world = tree->getRoot();
     tree->addFrame(l1, world);
     tree->addFrame(l2, l1);
@@ -291,7 +292,7 @@ TEST(KinematicsTest, removeMovableFramesTest )
 {
 
 	MovableFrame *l1 = new MovableFrame("l1");     
-    boost::shared_ptr<StateStructure> tree(new StateStructure());
+    std::shared_ptr<StateStructure> tree(new StateStructure());
     Frame* world = tree->getRoot();
     tree->addFrame(l1, world);
     
@@ -316,7 +317,7 @@ TEST(KinematicsTest, singleChainTest )
         "l3",
         Transform3D<>(Vector3D<>(3, 4, 5)));
 
-    boost::shared_ptr<StateStructure> tree(new StateStructure());
+    std::shared_ptr<StateStructure> tree(new StateStructure());
     Frame* world = tree->getRoot();
     tree->addFrame(l1, world);
     tree->addFrame(l2, l1);
@@ -335,7 +336,7 @@ TEST(KinematicsTest, multipleChainTest )
     FixedFrame* l1 = new FixedFrame("l1", Transform3D<>(Vector3D<>(1,2,3)));
     FixedFrame* l2 = new FixedFrame("l2", Transform3D<>(Vector3D<>(2,3,4)));
 
-    boost::shared_ptr<StateStructure> tree( new StateStructure() );
+    std::shared_ptr<StateStructure> tree( new StateStructure() );
     Frame* world = tree->getRoot();
     tree->addFrame(l1,world);
     tree->addFrame(l2,world);

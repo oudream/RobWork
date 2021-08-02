@@ -207,7 +207,7 @@ namespace rw { namespace math {
          * @param i [in] index in the vector
          * @return const reference to element
          */
-        const T& operator[] (size_t i) const { return T(e () (i)); }
+        const T& operator[] (size_t i) const { return e () (i); }
 
         /**
          * @brief Returns reference to vector element

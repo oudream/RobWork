@@ -52,7 +52,12 @@ namespace rw { namespace math {
       private:
         typedef Eigen::Quaternion< T > EigenQuaternion;
 
+
       public:
+
+        //! Value type.
+        typedef T value_type;
+
         /**
          * @brief constuct Quaterinion of {0,0,0,1}
          */
@@ -613,8 +618,14 @@ namespace rw { namespace math {
     extern template class rw::math::Quaternion< double >;
     extern template class rw::math::Quaternion< float >;
 #else
-    SWIG_DECLARE_TEMPLATE (Quaterniond, rw::math::Quaternion< double >);
-    SWIG_DECLARE_TEMPLATE (Quaternionf, rw::math::Quaternion< float >);
+
+#if SWIG_VERSION < 0x040000
+    SWIG_DECLARE_TEMPLATE (Quaternion_d, rw::math::Quaternion< double >);
+    ADD_DEFINITION (Quaternion_d, Quaternion)
+#else
+    SWIG_DECLARE_TEMPLATE (Quaternion, rw::math::Quaternion< double >);
+#endif
+    SWIG_DECLARE_TEMPLATE (Quaternion_f, rw::math::Quaternion< float >);
 #endif
     using Quaterniond = Quaternion< double >;
     using Quaternionf = Quaternion< float >;

@@ -9,7 +9,7 @@
 #
 # Test CMake version
 #
-cmake_minimum_required(VERSION 3.5.1)
+cmake_minimum_required(VERSION 3.10  )
 
 if(POLICY CMP0074)
     cmake_policy(SET CMP0074 NEW)
@@ -31,9 +31,9 @@ set(RobWorkSim_DIR "${RWSIM_ROOT}/cmake")
 
 message(" RobWorkSim directory: ${RWSIM_ROOT} --")
 find_package(RobWorkSim REQUIRED)
+
 include_directories(${ROBWORKSIM_INCLUDE_DIRS} ${ROBWORKSTUDIO_INCLUDE_DIRS})
 link_directories(${ROBWORKSIM_LIBRARY_DIRS} ${ROBWORKSTUDIO_LIBRARY_DIRS})
-
 # Set the output dir for generated libraries and binaries
 if(MSVC)
     set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${ROOT}/bin" CACHE PATH "Runtime directory" FORCE)
@@ -66,4 +66,4 @@ set_source_files_properties(${SrcFiles} PROPERTIES OBJECT_DEPENDS "${UIS_OUT_H}"
 
 # The shared library to build:
 add_library(SimTaskPlugin MODULE ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles})
-target_link_libraries(SimTaskPlugin ${ROBWORKSIM_LIBRARIES} RWS::sdurws)
+target_link_libraries(SimTaskPlugin ${ROBWORKSIM_LIBRARIES} RWS::sdurws ${ROBWORK_LIBRARIES})

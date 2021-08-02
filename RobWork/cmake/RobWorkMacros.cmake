@@ -355,6 +355,10 @@ macro(RW_INIT_PROJECT ROOT PROJECT_NAME PREFIX VERSION)
         ""
         CACHE INTERNAL "Internal list of subsystems" FORCE
     )
+    set(ROBWORK_PROJECT_NAME
+        ${PROJECT_NAME}
+        CACHE INTERNAL "Name of current project" FORCE
+    )
     # setup install directories
 endmacro()
 
@@ -405,7 +409,8 @@ macro(RW_SET_INSTALL_DIRS PROJECT_NAME PREFIX)
         set(PYTHON_INSTALL_DIR "${LIB_INSTALL_DIR}/RobWork/Python")
     else()
         execute_process(
-            COMMAND python3 -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())"
+            COMMAND python3 -c
+                    "from distutils.sysconfig import get_python_lib; print(get_python_lib())"
             OUTPUT_VARIABLE PYTHON_INSTALL_DIR
             OUTPUT_STRIP_TRAILING_WHITESPACE
         )
@@ -465,6 +470,25 @@ macro(RW_OPTIONS PREFIX)
     mark_as_advanced(${PREFIX}_SHARED_LIBS)
 endmacro()
 
+macro(RW_GET_LIB_FROM_TARGET _target _out)
+    get_target_property(${_out} ${_target} IMPORTED_LOCATION_RELEASE)
+
+    if(NOT EXISTS ${${_out}})
+        get_target_property(${_out} ${_target} IMPORTED_LOCATION_RELWITHDEBINFO)
+    endif()
+    if(NOT EXISTS ${${_out}})
+        get_target_property(${_out} ${_target} IMPORTED_LOCATION_DEBUG)
+    endif()
+    if(NOT EXISTS ${${_out}})
+        get_target_property(${_out} ${_target} IMPORTED_LOCATION_MINSIZEREL)
+    endif()
+    if(NOT EXISTS ${${_out}})
+        get_target_property(${_out} ${_target} IMPORTED_LOCATION_NOCONFIG)
+    endif()
+    if(NOT EXISTS ${${_out}})
+        get_target_property(${_out} ${_target} IMPORTED_LOCATION)
+    endif()
+endmacro()
 # ##################################################################################################
 # Add a set of include files to install. _component The part of RW that the install files belong to.
 # _subdir The sub- directory for these include files. ARGN The include files.
@@ -495,7 +519,7 @@ endmacro()
 # Add a library target. _name The library name. _component The part of RW that this library belongs
 # to. ARGN The source files for the library.
 macro(RW_ADD_LIBRARY _name)
-    set(options STATIC SHARED MODULE NO_EXPORT ) # Used to marke flags
+    set(options STATIC SHARED MODULE NO_EXPORT) # Used to marke flags
     set(oneValueArgs COMPONENT EXPORT_SET) # used to marke values with a single value
     set(multiValueArgs)
 
@@ -667,7 +691,7 @@ macro(RW_ADD_SWIG _name _language _type)
     endif()
 
     unset(CMAKE_SWIG_OUTDIR)
-    set (UseSWIG_TARGET_NAME_PREFERENCE STANDARD)
+    set(UseSWIG_TARGET_NAME_PREFERENCE STANDARD)
     if((CMAKE_VERSION VERSION_GREATER 3.12) OR (CMAKE_VERSION VERSION_EQUAL 3.12))
         swig_add_library(
             ${SLIB_TARGET_NAME}
@@ -707,7 +731,7 @@ macro(RW_ADD_SWIG _name _language _type)
             set(SLIB_TARGET_NAME ${SWIG_MODULE_${SLIB_TARGET_NAME}_REAL_NAME})
         endif()
     endif()
-    
+
     unset(_s)
     if("${_type}" STREQUAL "STATIC")
         set(_s "_s")
@@ -718,7 +742,9 @@ macro(RW_ADD_SWIG _name _language _type)
     )
     set_property(TARGET ${SLIB_TARGET_NAME} PROPERTY SWIG_USE_TARGET_INCLUDE_DIRECTORIES TRUE)
     if(NOT SWIG_DEFAULT_COMPILE)
-        set_target_properties(${SLIB_TARGET_NAME} PROPERTIES EXCLUDE_FROM_ALL TRUE EXCLUDE_FROM_DEFAULT_BUILD TRUE)
+        set_target_properties(
+            ${SLIB_TARGET_NAME} PROPERTIES EXCLUDE_FROM_ALL TRUE EXCLUDE_FROM_DEFAULT_BUILD TRUE
+        )
     endif()
     set_target_properties(
         ${SLIB_TARGET_NAME}
@@ -764,11 +790,11 @@ macro(RW_SWIG_COMPILE_TARGET _language)
     endif()
 
     export(
-            EXPORT ${PROJECT_PREFIX}${_language}Targets
-            FILE "${${PROJECT_PREFIX}_ROOT}/cmake/${PROJECT_NAME}${_language}Targets.cmake"
-            NAMESPACE ${PROJECT_PREFIX}::
-        )
-        
+        EXPORT ${PROJECT_PREFIX}${_language}Targets
+        FILE "${${PROJECT_PREFIX}_ROOT}/cmake/${PROJECT_NAME}${_language}Targets.cmake"
+        NAMESPACE ${PROJECT_PREFIX}::
+    )
+
     if(SWIG_DEFAULT_COMPILE OR CMAKE_VERSION VERSION_GREATER 3.16.0)
         install(
             EXPORT ${PROJECT_PREFIX}${_language}Targets
@@ -903,7 +929,7 @@ macro(RW_ADD_JAVA_LIB _name)
             DEPENDS ${java_NAME_${_name}}_libs
             WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
         )
-        
+
     else()
         add_custom_target(
             ${java_NAME_${_name}}_java_doc
@@ -912,7 +938,7 @@ macro(RW_ADD_JAVA_LIB _name)
         )
     endif()
     set_target_properties(${java_NAME_${_name}}_java_doc PROPERTIES EXCLUDE_FROM_DEFAULT_BUILD TRUE)
-    
+
 endmacro()
 
 # ##################################################################################################
@@ -1347,8 +1373,7 @@ macro(RW_CREATE_INSTALLER)
                                   # DOWNLOADED ARCHIVE_FILE #Name_of_file_to_generate_for_download
                 )
                 # message( STATUS "component: ${CPACK_COMPONENT_${_COMP}_DISPLAY_NAME} - group:
-                # ${CPACK_COMPONENT_${_COMP}_GROUP}" )
-                # message(STATUS "     - depend: ${_depList}")
+                # ${CPACK_COMPONENT_${_COMP}_GROUP}" ) message(STATUS "     - depend: ${_depList}")
             elseif(NOT ${RW_SUBSYS_BUILD_${_comp}})
                 # message(STATUS "Component: ${_comp} not installed")
             elseif(${_comp} IN_LIST EXTERNAL_COMPONENTS)
@@ -1378,36 +1403,35 @@ macro(RW_CREATE_INSTALLER)
 endmacro()
 
 macro(getBoostLibraryList output list)
-	foreach(s ${list})
-		if("${s}" STREQUAL "optimized")
+    foreach(s ${list})
+        if("${s}" STREQUAL "optimized")
 
-		elseif("${s}" STREQUAL "debug")
+        elseif("${s}" STREQUAL "debug")
 
-		elseif("${s}" MATCHES "NOTFOUND")
+        elseif("${s}" MATCHES "NOTFOUND")
 
-		elseif("${s}" STREQUAL "Boost::headers")
+        elseif("${s}" STREQUAL "Boost::headers")
 
-		elseif("${s}" STREQUAL "Threads::Threads")
+        elseif("${s}" STREQUAL "Threads::Threads")
 
-		elseif("${s}" IN_LIST ${output})
+        elseif("${s}" IN_LIST ${output})
 
-		elseif(TARGET ${s})
-			get_target_property(LIB ${s} IMPORTED_LOCATION_RELEASE)
-			if(LIB)
-				list(APPEND ${output} "${LIB}")
-			endif()
-			
+        elseif(TARGET ${s})
+            get_target_property(LIB ${s} IMPORTED_LOCATION_RELEASE)
+            if(LIB)
+                list(APPEND ${output} "${LIB}")
+            endif()
 
-			get_target_property(L_LIBS ${s} INTERFACE_LINK_LIBRARIES)
-			getBoostLibraryList(${output} "${L_LIBS}")
-		else()
-			get_filename_component(_dir "${s}" DIRECTORY)
-			get_filename_component(_file "${s}" NAME_WLE)
-			string(REGEX MATCH "[a-z]*_[a-z]*" _file ${_file})
-			file(GLOB _files "${_dir}/${_file}*lib")
-			foreach(file ${_files})
-				list(APPEND BOOST_LIBRARIES_INSTALL "${file}")
-			endforeach()
-		endif()
-	endforeach()
+            get_target_property(L_LIBS ${s} INTERFACE_LINK_LIBRARIES)
+            getboostlibrarylist(${output} "${L_LIBS}")
+        else()
+            get_filename_component(_dir "${s}" DIRECTORY)
+            get_filename_component(_file "${s}" NAME_WLE)
+            string(REGEX MATCH "[a-z]*_[a-z]*" _file ${_file})
+            file(GLOB _files "${_dir}/${_file}*lib")
+            foreach(file ${_files})
+                list(APPEND BOOST_LIBRARIES_INSTALL "${file}")
+            endforeach()
+        endif()
+    endforeach()
 endmacro()

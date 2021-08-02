@@ -23,7 +23,7 @@
  *
  * @copydoc rw::sensor::Image
  */
-
+#if !defined(SWIG)
 #include <rw/common/types.hpp>
 #include <rw/core/Ptr.hpp>
 #include <rw/core/macros.hpp>
@@ -31,16 +31,17 @@
 #include <boost/mpl/equal_to.hpp>
 #include <boost/mpl/int.hpp>
 #include <string>
+#endif
 
 namespace rw { namespace sensor {
 
     /** @addtogroup sensor */
     /* @{ */
-
+#if !defined(SWIG)
     namespace mpl {
         using namespace boost::mpl;
     }
-
+#endif
     /**
      * @brief
      */

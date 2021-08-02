@@ -2,9 +2,11 @@
 #ifndef RW_GEOMETRY_TRIMESHSURFACESAMPLER_HPP_
 #define RW_GEOMETRY_TRIMESHSURFACESAMPLER_HPP_
 
+#if !defined(SWIG)
 #include <rw/geometry/Geometry.hpp>
 #include <rw/geometry/TriMesh.hpp>
 #include <rw/math/Vector3D.hpp>
+#endif 
 
 namespace rw { namespace geometry {
 
@@ -56,7 +58,7 @@ namespace rw { namespace geometry {
 
         /**
          * @brief sample a pose on the surface of the object.
-         * @return
+         * @return transform3d of the sampled pose
          */
         rw::math::Transform3D<> sample ();
 
@@ -66,7 +68,7 @@ namespace rw { namespace geometry {
          * @param point_dst [out] point on surface
          * @endcond
          */
-        rw::math::Vector3D<> samplePoint ();
+        rw::math::Vector3D<double> samplePoint ();
 
         ///// configuration options
 
@@ -111,7 +113,7 @@ namespace rw { namespace geometry {
          *
          * @param dir [in]
          */
-        void setZAxisDirection (const rw::math::Vector3D<>& dir);
+        void setZAxisDirection (const rw::math::Vector3D<double>& dir);
 
         /**
          * @brief return the mesh that is being sampled
@@ -134,7 +136,7 @@ namespace rw { namespace geometry {
         }
 
         //! recursive search for finding value in list
-        rw::geometry::Triangle<> getTriangle (const int value);
+        rw::geometry::Triangle < double > getTriangle (const int value);
 
       private:
         double _sAreaSum, _minD, _maxD;
@@ -145,7 +147,7 @@ namespace rw { namespace geometry {
         std::vector< rw::geometry::TriMesh::Ptr > _meshes;
         std::vector< int > _surfaceAreaMesh;
 
-        rw::math::Vector3D<> _direction;
+        rw::math::Vector3D<double> _direction;
     };
 
 }}    // namespace rw::geometry

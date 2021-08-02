@@ -18,6 +18,7 @@
 #ifndef RW_PROXIMITY_BVTREEFACTORY_HPP_
 #define RW_PROXIMITY_BVTREEFACTORY_HPP_
 
+#if !defined(SWIG)
 #include "BinaryBVTree.hpp"
 
 #include <rw/common/Timer.hpp>
@@ -35,6 +36,9 @@
 #include <rw/math/Vector3D.hpp>
 
 #include <float.h>
+#include <type_traits>
+
+#endif
 
 namespace rw { namespace proximity {
 
@@ -546,11 +550,10 @@ namespace rw { namespace proximity {
         struct OBVMedianSplitter : public BVTreeFactory::BVSplitterStrategy< BV >
         {
           public:
-            
             /**
              * @brief
              */
-            virtual ~OBVMedianSplitter() {}
+            virtual ~OBVMedianSplitter () {}
 
             size_t partitionMesh (rw::geometry::IndexedTriArray<>& mesh, const BV& obb) const
             {
@@ -665,7 +668,7 @@ namespace rw { namespace proximity {
         template< class BV > class OBVMeanSplitter : public BVTreeFactory::BVSplitterStrategy< BV >
         {
           public:
-            // BOOST_STATIC_ASSERT_MSG( (boost::is_base_of<rw::geometry::OBV<BV>, BV>::value) ,
+            // BOOST_STATIC_ASSERT_MSG( (std::is_base_of<rw::geometry::OBV<BV>, BV>::value) ,
             // "Bounding volume MUST inherit geometry::OBV");
 
             size_t partitionMesh (rw::geometry::IndexedTriArray<>& mesh, const BV& obb) const
@@ -744,8 +747,9 @@ namespace rw { namespace proximity {
         struct OBVSpatialMedianSplitter : public BVTreeFactory::BVSplitterStrategy< BV >
         {
           public:
-            BOOST_STATIC_ASSERT ((boost::is_base_of< rw::geometry::OBV< BV >, BV >::value));
-
+#if !defined(SWIG)
+            BOOST_STATIC_ASSERT ((std::is_base_of< rw::geometry::OBV< BV >, BV >::value));
+#endif
             size_t partitionMesh (rw::geometry::IndexedTriArray<>& mesh, const BV& obb) const
             {
                 using namespace rw::geometry;

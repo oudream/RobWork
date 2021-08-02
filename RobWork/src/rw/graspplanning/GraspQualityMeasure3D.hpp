@@ -18,8 +18,9 @@
 #ifndef RW_GRASPPLANNING_GRASPQUALITYMEASURE3D_HPP_
 #define RW_GRASPPLANNING_GRASPQUALITYMEASURE3D_HPP_
 
+#if !defined(SWIG)
 #include <rw/core/Ptr.hpp>
-
+#endif 
 namespace rw { namespace graspplanning {
 
     class Grasp3D;

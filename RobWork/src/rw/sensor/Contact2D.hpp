@@ -1,8 +1,9 @@
 #ifndef RW_SENSOR_CONTACT2D_HPP_
 #define RW_SENSOR_CONTACT2D_HPP_
 
+#if !defined(SWIG)
 #include <rw/math/Vector2D.hpp>
-
+#endif 
 namespace rw { namespace sensor {
 
     /**

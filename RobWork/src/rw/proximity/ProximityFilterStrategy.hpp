@@ -18,9 +18,11 @@
 #ifndef RW_PROXIMITY_BROADPHASEDETECTOR_HPP
 #define RW_PROXIMITY_BROADPHASEDETECTOR_HPP
 
+#if !defined(SWIG)
 #include "ProximityCache.hpp"
 #include "ProximityFilter.hpp"
 #include "ProximitySetup.hpp"
+#endif 
 
 namespace rw { namespace geometry {
     class Geometry;
@@ -79,14 +81,14 @@ namespace rw { namespace proximity {
          *
          * @return
          */
-        virtual ProximityCache::Ptr createProximityCache () = 0;
+        virtual rw::core::Ptr<rw::proximity::ProximityCache> createProximityCache () = 0;
 
         /**
          * @brief Do an update
          * @param state [in] the state.
          * @return
          */
-        virtual ProximityFilter::Ptr update (const rw::kinematics::State& state) = 0;
+        virtual rw::core::Ptr<rw::proximity::ProximityFilter> update (const rw::kinematics::State& state) = 0;
 
         /**
          * @brief called once before acquirering all possibly colliding
@@ -94,15 +96,15 @@ namespace rw { namespace proximity {
          * @param state [in] the state for which collision detection is performed.
          * @param data
          */
-        virtual ProximityFilter::Ptr update (const rw::kinematics::State& state,
-                                             ProximityCache::Ptr data) = 0;
+        virtual rw::core::Ptr<rw::proximity::ProximityFilter> update (const rw::kinematics::State& state,
+                                             rw::core::Ptr<rw::proximity::ProximityCache> data) = 0;
 
         /**
          * @brief get the proximity setup that describe the include/exclude rules of this
          * BroadPhaseStrategy
          * @return a reference to the ProximitySetup
          */
-        virtual ProximitySetup& getProximitySetup () = 0;
+        virtual rw::proximity::ProximitySetup& getProximitySetup () = 0;
 
         /**
          * @brief Adds geometry associated to frame
@@ -135,14 +137,14 @@ namespace rw { namespace proximity {
          * @brief Adds a ProximitySetupRule
          * @param rule [in] the rule to add.
          */
-        virtual void addRule (const ProximitySetupRule& rule) = 0;
+        virtual void addRule (const rw::proximity::ProximitySetupRule& rule) = 0;
 
         /**
          * @brief Removes a ProximitySetupRule
          * If the rule cannot be found, then noting happens.
          * @param rule [in] the rule to remove.
          */
-        virtual void removeRule (const ProximitySetupRule& rule) = 0;
+        virtual void removeRule (const rw::proximity::ProximitySetupRule& rule) = 0;
     };
 
 }}    // namespace rw::proximity

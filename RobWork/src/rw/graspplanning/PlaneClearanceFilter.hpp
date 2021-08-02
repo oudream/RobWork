@@ -18,10 +18,12 @@
 #ifndef RW_GRASPPLANNING_PLANECLEARANCEFILTER_HPP_
 #define RW_GRASPPLANNING_PLANECLEARANCEFILTER_HPP_
 
+#if !defined(SWIG)
 #include "ContactValidateFilter.hpp"
 #include "GraspValidateFilter.hpp"
 
 #include <rw/math/Transform3D.hpp>
+#endif 
 
 namespace rw { namespace graspplanning {
 
@@ -44,7 +46,6 @@ namespace rw { namespace graspplanning {
          * contact point for a valid grasp
          * @param minAngle [in] the minimum angle that is allowed in
          * a valid grasp. [-Pi/2,Pi/2]
-         * @return
          */
         PlaneClearanceFilter (const rw::math::Transform3D<>& planeFrame, double clearance,
                               double minAngle) :

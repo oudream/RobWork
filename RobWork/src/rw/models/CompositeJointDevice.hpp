@@ -21,10 +21,11 @@
 /**
  * @file CompositeJointDevice.hpp
  */
-
+#if !defined(SWIG)
 #include "JointDevice.hpp"
 
 #include <vector>
+#endif 
 
 namespace rw { namespace models {
 
@@ -76,8 +77,8 @@ namespace rw { namespace models {
            @param state [in] the kinematic structure assumed for Jacobian computations
         */
         CompositeJointDevice (rw::kinematics::Frame* base,
-                              const std::vector< Device::Ptr >& devices, rw::kinematics::Frame* end,
-                              const std::string& name, const kinematics::State& state);
+                              const std::vector<rw::core::Ptr<rw::models::Device> >& devices, rw::kinematics::Frame* end,
+                              const std::string& name, const rw::kinematics::State& state);
 
         /**
            @brief Constructor
@@ -89,9 +90,9 @@ namespace rw { namespace models {
            @param state [in] the kinematic structure assumed for Jacobian computations
         */
         CompositeJointDevice (rw::kinematics::Frame* base,
-                              const std::vector< Device::Ptr >& devices,
+                              const std::vector< rw::core::Ptr< rw::models::Device>>& devices,
                               const std::vector< rw::kinematics::Frame* >& ends,
-                              const std::string& name, const kinematics::State& state);
+                              const std::string& name, const rw::kinematics::State& state);
 
         //! @brief destructor
         virtual ~CompositeJointDevice () {}
@@ -102,7 +103,7 @@ namespace rw { namespace models {
            The method is implemented via forwarding to the Device::setQ()
            methods of the subdevices.
         */
-        void setQ (const math::Q& q, kinematics::State& state) const;
+        void setQ (const rw::math::Q& q, rw::kinematics::State& state) const;
 
         // Methods specific to CompositeJointDevice follow here.
 
@@ -110,7 +111,7 @@ namespace rw { namespace models {
            @brief like Device::baseJend() but with a Jacobian calculated for all
            end-effectors (see getEnds()).
         */
-        math::Jacobian baseJends (const kinematics::State& state) const;
+        rw::math::Jacobian baseJends (const rw::kinematics::State& state) const;
 
         /**
            @brief The end-effectors of the composite device.
@@ -121,12 +122,12 @@ namespace rw { namespace models {
            This sequence of end-effectors may or may not include the default
            end-effector returned by getEnd().
         */
-        const std::vector< kinematics::Frame* >& getEnds () const { return _ends; }
+        const std::vector< rw::kinematics::Frame* >& getEnds () const { return _ends; }
 
       private:
-        std::vector< Device::Ptr > _devices;
-        std::vector< kinematics::Frame* > _ends;
-        rw::core::Ptr< class JacobianCalculator > _djmulti;
+        std::vector<rw::core::Ptr<rw::models::Device> > _devices;
+        std::vector< rw::kinematics::Frame* > _ends;
+        rw::core::Ptr< class rw::models::JacobianCalculator > _djmulti;
     };
 
     /*@}*/

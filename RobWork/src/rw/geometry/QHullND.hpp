@@ -18,6 +18,7 @@
 #ifndef RW_GEOMETRY_QHULLND_HPP_
 #define RW_GEOMETRY_QHULLND_HPP_
 
+#if !defined(SWIG)
 #include "ConvexHullND.hpp"
 
 #include <rw/core/macros.hpp>
@@ -26,6 +27,7 @@
 
 #include <float.h>
 #include <vector>
+#endif 
 
 namespace rw { namespace geometry {
     /** @addtogroup geometry
@@ -46,9 +48,22 @@ namespace rw { namespace geometry {
          * @param faceIdxs
          * @param faceNormals
          * @param faceOffsets
-         * @return
          */
         void build (size_t dim, double* coords, size_t nrCoords, std::vector< int >& vertIdxs,
+                    std::vector< int >& faceIdxs, std::vector< double >& faceNormals,
+                    std::vector< double >& faceOffsets);
+
+        /**
+         * @brief calclates the convex hull of a set of vertices \b coords each with dimension  \b
+         * dim
+         *
+         * @param coords [in] array of vertices
+         * @param vertIdxs
+         * @param faceIdxs
+         * @param faceNormals
+         * @param faceOffsets
+         */
+        void build (std::vector<std::vector<double>> coords, std::vector< int >& vertIdxs,
                     std::vector< int >& faceIdxs, std::vector< double >& faceNormals,
                     std::vector< double >& faceOffsets);
     }    // namespace qhull

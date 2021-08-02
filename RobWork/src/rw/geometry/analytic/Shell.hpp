@@ -24,9 +24,11 @@
  * \copydoc rw::geometry::Shell
  */
 
+#if !defined(SWIG)
 #include <rw/geometry/GeometryData.hpp>
 #include <rw/geometry/OBB.hpp>
 #include <rw/math/Vector3D.hpp>
+#endif
 
 namespace rw { namespace geometry {
 
@@ -34,8 +36,9 @@ namespace rw { namespace geometry {
     class GenericFace;
 
     //! @addtogroup geometry
-
+#if !defined(SWIG)
     //! @{
+#endif
     /**
      * @brief A shell represents the geometry of an object as a collection of non-connected faces.
      *
@@ -98,7 +101,7 @@ namespace rw { namespace geometry {
          * @param dir [in] the direction to find extremums for.
          * @return the minimum and maximum as a pair of values.
          */
-        virtual std::pair< double, double > extremums (const rw::math::Vector3D<>& dir) const;
+        virtual std::pair< double, double > extremums (const rw::math::Vector3D<double>& dir) const;
 
         /**
          * @brief Create Oriented Bounding Box (OBB) as a bounding volume for the shell.
@@ -109,7 +112,9 @@ namespace rw { namespace geometry {
       private:
         virtual rw::core::Ptr< const Face > doGetFace (std::size_t idx) const = 0;
     };
-    //! @}
+#if !defined(SWIG)
+//! @}
+#endif
 }}    // namespace rw::geometry
 
 #endif /* RW_GEOMETRY_ANALYTIC_SHELL_HPP_ */

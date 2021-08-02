@@ -13,6 +13,7 @@
 *testfile.ini
 *.csettings
 *tmp
+*__pycache__
 
 # /
 /cmake_install.cmake
@@ -65,6 +66,7 @@
 /RobWork/cmake/RobWorkBuildConfigDebug.cmake
 /RobWork/cmake/RobWorkConfig.cmake
 /RobWork/cmake/RobWorkConfigVersion.cmake
+/RobWork/cmake/RobWorkConfigMacros.cmake
 /RobWork/cmake/dependencies.cmake
 /RobWork/cmake/RobWorkBuildConfigRelease.cmake
 /RobWork/cmake/RobWorkBuildConfig_none.cmake
@@ -1581,6 +1583,9 @@ RobWork/example/java/src/*.log
 /RobWork/src/rwlibs/swig/python/setup.py
 /RobWork/src/rwlibs/swig/python/RobWork-*.egg-info
 
+# /RobWork/src/rwlibs/swig/ext_i
+RobWork/src/rwlibs/swig/ext_i/os.i
+
 # /RobWork/src/rwlibs/task/
 /RobWork/src/rwlibs/task/cmake_install.cmake
 /RobWork/src/rwlibs/task/CMakeCache.txt
@@ -2527,6 +2532,7 @@ RobWork/example/java/src/*.log
 /RobWorkSim/cmake/RobWorkSimBuildConfigRelWithDebInfo.cmake
 /RobWorkSim/cmake/RobWorkSimConfigVersion.cmake
 /RobWorkSim/cmake/RobWorkSimConfig.cmake
+/RobWorkSim/cmake/RobWorkSimConfigMacros.cmake
 /RobWorkSim/cmake/RobWorkSimBuildConfig_none.cmake
 /RobWorkSim/cmake/RobWorkSimBuildConfig_debug.cmake
 /RobWorkSim/cmake/RobWorkSimBuildConfig_release.cmake
@@ -2993,6 +2999,7 @@ RobWorkSim/src/rwsimlibs/swig/python/RobWorkSim-*.egg-info
 # /RobWorkStudio/cmake/
 /RobWorkStudio/cmake/RobWorkStudioConfigDebug.cmake
 /RobWorkStudio/cmake/RobWorkStudioBuildConfig.cmake
+/RobWorkStudio/cmake/RobWorkStudioConfigMacros.cmake
 /RobWorkStudio/cmake/RobWorkStudioConfigRelease.cmake
 /RobWorkStudio/cmake/RobWorkStudioBuildConfigDebug.cmake
 /RobWorkStudio/cmake/RobWorkStudioBuildConfigRelease.cmake
@@ -3626,4 +3633,5 @@ RobWorkSim/src/rwsimlibs/swig/python/RobWorkSim-*.egg-info
 /doc/installstuff/RW_package-msvc2005/CPackSourceConfig.cmake
 
 /debian/sdurw-doc1.2/DEBIAN/md5sums
+
 

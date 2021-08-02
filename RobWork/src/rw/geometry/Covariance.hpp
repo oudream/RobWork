@@ -8,6 +8,7 @@
 #ifndef COVARIANCE3D_HPP_
 #define COVARIANCE3D_HPP_
 
+#if !defined(SWIG)
 #include <rw/geometry/Geometry.hpp>
 #include <rw/geometry/IndexedTriMesh.hpp>
 #include <rw/geometry/TriangleUtil.hpp>
@@ -16,6 +17,7 @@
 #include <rw/math/Vector3D.hpp>
 
 #include <vector>
+#endif
 
 namespace rw { namespace geometry {
 
@@ -71,13 +73,13 @@ namespace rw { namespace geometry {
             GeometryData::Ptr data = geom.getGeometryData ();
             TriMesh::Ptr mesh      = data->getTriMesh (false);
 
-            if (dynamic_cast< IndexedTriMesh< T >* > (mesh.get ())) {
-                IndexedTriMesh< T >* imesh = dynamic_cast< IndexedTriMesh< T >* > (mesh.get ());
+            if (dynamic_cast< rw::geometry::IndexedTriMesh< T >* > (mesh.get ())) {
+                rw::geometry::IndexedTriMesh< T >* imesh = dynamic_cast< rw::geometry::IndexedTriMesh< T >* > (mesh.get ());
                 initialize (imesh->getVertices ());
             }
             else {
-                rw::core::Ptr< IndexedTriMeshN0< T > > ipmesh =
-                    TriangleUtil::toIndexedTriMesh< IndexedTriMeshN0< T > > (*mesh);
+                rw::core::Ptr< rw::geometry::IndexedTriMeshN0< T > > ipmesh =
+                    TriangleUtil::toIndexedTriMesh< rw::geometry::IndexedTriMeshN0< T > > (*mesh);
                 initialize (ipmesh->getVertices ());
             }
         }
@@ -147,9 +149,17 @@ namespace rw { namespace geometry {
       private:
         Eigen::Matrix< T, Eigen::Dynamic, Eigen::Dynamic > _covar;
     };
-
+#if !defined(SWIG)
     extern template class rw::geometry::Covariance< double >;
     extern template class rw::geometry::Covariance< float >;
+#else
+#if SWIG_VERSION < 0x040000
+    SWIG_DECLARE_TEMPLATE (Covariance_d, rw::geometry::Covariance< double >);
+    ADD_DEFINITION (Covariance_d, Covariance)
+#else
+    SWIG_DECLARE_TEMPLATE (Covariance, rw::geometry::Covariance< double >);
+#endif
+#endif
 }}    // namespace rw::geometry
 
 #endif /* COVARIANCE3D_HPP_ */

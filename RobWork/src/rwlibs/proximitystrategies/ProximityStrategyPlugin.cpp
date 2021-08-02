@@ -85,6 +85,9 @@ std::vector< Extension::Descriptor > ProximityStrategyPlugin::getExtensionDescri
         exts.push_back (
             Extension::Descriptor ("DistanceStrategy" + stratID, "rw.proximity.DistanceStrategy"));
         exts.back ().getProperties ().set< std::string > ("strategyID", stratID);
+        exts.push_back (Extension::Descriptor ("DistanceMultiStrategy" + stratID,
+                                               "rw.proximity.DistanceMultiStrategy"));
+        exts.back ().getProperties ().set< std::string > ("strategyID", stratID);
     }
 #endif
 
@@ -211,6 +214,14 @@ Extension::Ptr ProximityStrategyPlugin::makeExtension (const std::string& id)
                                          "rw.proximity.DistanceStrategy",
                                          this,
                                          strat.cast< DistanceStrategy > ()));
+            extension->getProperties ().set< std::string > ("strategyID", stratID);
+            return extension;
+        }else if (id == "DistanceMultiStrategy" + stratID) {
+            const Extension::Ptr extension =
+                ownedPtr (new Extension ("DistanceMultiStrategy" + stratID,
+                                         "rw.proximity.DistanceMultiStrategy",
+                                         this,
+                                         strat.cast< DistanceMultiStrategy > ()));
             extension->getProperties ().set< std::string > ("strategyID", stratID);
             return extension;
         }

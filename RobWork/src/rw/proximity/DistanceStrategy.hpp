@@ -21,12 +21,13 @@
  * @file DistanceStrategy.hpp
  */
 
+#if !defined(SWIG)
 #include "ProximityStrategy.hpp"
 
 #include <rw/core/ExtensionPoint.hpp>
 #include <rw/core/Ptr.hpp>
 #include <rw/math/Transform3D.hpp>
-
+#endif
 namespace rw { namespace kinematics {
     class Frame;
 }}    // namespace rw::kinematics
@@ -109,7 +110,7 @@ namespace rw { namespace proximity {
                 idx1     = 0;
                 idx2     = 0;
             }
-
+#if !defined(SWIG)
             /**
             @brief Streaming operator.
              */
@@ -129,6 +130,9 @@ namespace rw { namespace proximity {
                            << ", o.idx2: " << o.idx2            //
                            << ")";
             }
+#else
+            TOSTRING (rw::proximity::DistanceStrategy::Result);
+#endif
         };
 
         /**
@@ -149,8 +153,8 @@ namespace rw { namespace proximity {
          * @return shortest distance if @f$ \mathcal{F}_a @f$ and @f$ \mathcal{F}_b @f$ are
          * separated and not in collision.
          */
-        Result distance (const kinematics::Frame* a, const math::Transform3D<>& wTa,
-                         const kinematics::Frame* b, const math::Transform3D<>& wTb);
+        Result distance (const kinematics::Frame* a, const math::Transform3D<double>& wTa,
+                         const kinematics::Frame* b, const math::Transform3D<double>& wTb);
 
         /**
          * @brief Calculates the distance between two given frames @f$ \mathcal{F}_a @f$ and
@@ -166,8 +170,8 @@ namespace rw { namespace proximity {
          * @return shortest distance if @f$ \mathcal{F}_a @f$ and @f$ \mathcal{F}_b @f$ are
          * separated and not in collision.
          */
-        Result& distance (const kinematics::Frame* a, const math::Transform3D<>& wTa,
-                          const kinematics::Frame* b, const math::Transform3D<>& wTb,
+        Result& distance (const kinematics::Frame* a, const math::Transform3D<double>& wTa,
+                          const kinematics::Frame* b, const math::Transform3D<double>& wTb,
                           class ProximityStrategyData& data);
 
         /**
@@ -184,8 +188,8 @@ namespace rw { namespace proximity {
          * @return shortest distance if @f$ \mathcal{F}_a @f$ and @f$ \mathcal{F}_b @f$ are
          * separated and not in collision.
          */
-        Result& distance (ProximityModel::Ptr a, const math::Transform3D<>& wTa,
-                          ProximityModel::Ptr b, const math::Transform3D<>& wTb,
+        Result& distance (ProximityModel::Ptr a, const math::Transform3D<double>& wTa,
+                          ProximityModel::Ptr b, const math::Transform3D<double>& wTb,
                           class ProximityStrategyData& data)
         {
             return doDistance (a, wTa, b, wTb, data);
@@ -206,8 +210,8 @@ namespace rw { namespace proximity {
          * @return shortest distance if @f$ \mathcal{F}_a @f$ and @f$ \mathcal{F}_b @f$ are
          * separated and not in collision.
          */
-        Result distance (const kinematics::Frame* a, const math::Transform3D<>& wTa,
-                         const kinematics::Frame* b, const math::Transform3D<>& wTb,
+        Result distance (const kinematics::Frame* a, const math::Transform3D<double>& wTa,
+                         const kinematics::Frame* b, const math::Transform3D<double>& wTb,
                          double threshold);
 
         /**
@@ -224,9 +228,9 @@ namespace rw { namespace proximity {
          * separated and not in collision.
          */
         DistanceStrategy::Result& distance (const kinematics::Frame* a,
-                                            const math::Transform3D<>& wTa,
+                                            const math::Transform3D<double>& wTa,
                                             const kinematics::Frame* b,
-                                            const math::Transform3D<>& wTb, double threshold,
+                                            const math::Transform3D<double>& wTb, double threshold,
                                             ProximityStrategyData& data);
 
         /**
@@ -245,8 +249,8 @@ namespace rw { namespace proximity {
          * @return shortest distance if @f$ \mathcal{F}_a @f$ and @f$ \mathcal{F}_b @f$ are
          * separated and not in collision.
          */
-        DistanceStrategy::Result& distance (ProximityModel::Ptr a, const math::Transform3D<>& wTa,
-                                            ProximityModel::Ptr b, const math::Transform3D<>& wTb,
+        DistanceStrategy::Result& distance (ProximityModel::Ptr a, const math::Transform3D<double>& wTa,
+                                            ProximityModel::Ptr b, const math::Transform3D<double>& wTb,
                                             double threshold, ProximityStrategyData& data)
         {
             return doDistanceThreshold (a, wTa, b, wTb, threshold, data);
@@ -311,8 +315,8 @@ namespace rw { namespace proximity {
          * @return shortest distance if @f$ \mathcal{F}_a @f$ and @f$ \mathcal{F}_b @f$ are
          * separated and not in collision.
          */
-        virtual Result& doDistance (ProximityModel::Ptr a, const math::Transform3D<>& wTa,
-                                    ProximityModel::Ptr b, const math::Transform3D<>& wTb,
+        virtual Result& doDistance (ProximityModel::Ptr a, const math::Transform3D<double>& wTa,
+                                    ProximityModel::Ptr b, const math::Transform3D<double>& wTb,
                                     class ProximityStrategyData& data) = 0;
 
         /**
@@ -329,8 +333,8 @@ namespace rw { namespace proximity {
          * separated and not in collision.
          */
         virtual DistanceStrategy::Result&
-        doDistanceThreshold (ProximityModel::Ptr a, const math::Transform3D<>& wTa,
-                             ProximityModel::Ptr b, const math::Transform3D<>& wTb,
+        doDistanceThreshold (ProximityModel::Ptr a, const math::Transform3D<double>& wTa,
+                             ProximityModel::Ptr b, const math::Transform3D<double>& wTb,
                              double threshold, ProximityStrategyData& data)
         {
             return doDistance (a, wTa, b, wTb, data);

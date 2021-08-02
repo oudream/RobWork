@@ -21,12 +21,12 @@
 /**
  * @file JointDevice.hpp
  */
-
+#if !defined(SWIG)
 #include "Device.hpp"
 #include "JacobianCalculator.hpp"
 
 #include <vector>
-
+#endif 
 namespace rw { namespace models {
 
     class Joint;
@@ -65,71 +65,71 @@ namespace rw { namespace models {
          * @param state [in] the state that shows how frames are connected as
                 needed for the computation of Jacobians.
          */
-        JointDevice (const std::string& name, kinematics::Frame* base, kinematics::Frame* end,
-                     const std::vector< Joint* >& joints, const kinematics::State& state);
+        JointDevice (const std::string& name, rw::kinematics::Frame* base, rw::kinematics::Frame* end,
+                     const std::vector< rw::models::Joint* >& joints, const rw::kinematics::State& state);
 
         /**
          * @brief Get all joints of this device
          * @return all joints
          */
-        const std::vector< Joint* >& getJoints () const { return _joints; }
+        const std::vector< rw::models::Joint* >& getJoints () const { return _joints; }
 
         // Everything below are methods of Device.
 
         /** @copydoc Device::setQ */
-        void setQ (const math::Q& q, kinematics::State& state) const;
+        void setQ (const rw::math::Q& q, rw::kinematics::State& state) const;
 
         /** @copydoc Device::getQ */
-        math::Q getQ (const kinematics::State& state) const;
+        rw::math::Q getQ (const rw::kinematics::State& state) const;
 
         /** @copydoc Device::getDOF */
         size_t getDOF () const;
 
         /** @copydoc Device::getBounds */
-        std::pair< math::Q, math::Q > getBounds () const;
+        std::pair< rw::math::Q, rw::math::Q > getBounds () const;
 
         /** @copydoc Device::setBounds */
-        void setBounds (const std::pair< math::Q, math::Q >& bounds);
+        void setBounds (const std::pair< rw::math::Q, rw::math::Q >& bounds);
 
         /** @copydoc Device::getVelocityLimits */
-        math::Q getVelocityLimits () const;
+        rw::math::Q getVelocityLimits () const;
 
         /** @copydoc Device::setVelocityLimits */
-        void setVelocityLimits (const math::Q& vellimits);
+        void setVelocityLimits (const rw::math::Q& vellimits);
 
         /** @copydoc Device::getAccelerationLimits */
-        math::Q getAccelerationLimits () const;
+        rw::math::Q getAccelerationLimits () const;
 
         /** @copydoc Device::setAccelerationLimits */
-        void setAccelerationLimits (const math::Q& acclimits);
+        void setAccelerationLimits (const rw::math::Q& acclimits);
 
         /** @copydoc Device::baseJend */
-        math::Jacobian baseJend (const kinematics::State& state) const;
+        rw::math::Jacobian baseJend (const rw::kinematics::State& state) const;
 
         /** @copydoc Device::baseJCframes */
-        JacobianCalculator::Ptr baseJCframes (const std::vector< kinematics::Frame* >& frames,
-                                              const kinematics::State& state) const;
+       rw::core::Ptr< rw::models::JacobianCalculator > baseJCframes (const std::vector< rw::kinematics::Frame* >& frames,
+                                              const rw::kinematics::State& state) const;
 
         /** @copydoc Device::getBase */
-        kinematics::Frame* getBase () { return _base; }
+        rw::kinematics::Frame* getBase () { return _base; }
 
         /** @copydoc Device::getBase */
-        const kinematics::Frame* getBase () const { return _base; }
+        const rw::kinematics::Frame* getBase () const { return _base; }
 
         /** @copydoc Device::getEnd() */
-        virtual kinematics::Frame* getEnd () { return _end; }
+        virtual rw::kinematics::Frame* getEnd () { return _end; }
 
         /** @copydoc Device::getEnd */
-        virtual const kinematics::Frame* getEnd () const { return _end; }
+        virtual const rw::kinematics::Frame* getEnd () const { return _end; }
 
       private:
-        kinematics::Frame* _base;
-        kinematics::Frame* _end;
+        rw::kinematics::Frame* _base;
+        rw::kinematics::Frame* _end;
 
-        std::vector< Joint* > _joints;
+        std::vector< rw::models::Joint* > _joints;
         size_t _dof;
 
-        JacobianCalculator::Ptr _baseJCend;
+       rw::core::Ptr< rw::models::JacobianCalculator >_baseJCend;
     };
 
     /*@}*/

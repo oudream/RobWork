@@ -61,8 +61,8 @@ The relevant FIND_PACKAGE CMake commands are located in \a RobWork/cmake/RobWork
 ## Initilization ##
 
     boost::scoped_ptr< rwlibs::softbody::ModRusselBeamIpopt > beamPtr;
-    boost::shared_ptr< rwlibs::softbody::BeamGeometryCuboid > beamGeomPtr;
-  	boost::shared_ptr< rwlibs::softbody::BeamObstaclePlane> beamObstaclePtr;
+    std::shared_ptr< rwlibs::softbody::BeamGeometryCuboid > beamGeomPtr;
+  	std::shared_ptr< rwlibs::softbody::BeamObstaclePlane> beamObstaclePtr;
 
 	double dx = 110.0; 	// length of beam
 	double dy = 7.0; 	// thickness of beam

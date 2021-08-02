@@ -18,6 +18,7 @@
 #ifndef RW_GEOMETRY_GEOMETRYUTIL_HPP_
 #define RW_GEOMETRY_GEOMETRYUTIL_HPP_
 
+#if !defined(SWIG)
 #include <rw/core/Ptr.hpp>
 #include <rw/math/InertiaMatrix.hpp>
 #include <rw/math/LinearAlgebra.hpp>
@@ -26,6 +27,7 @@
 #include <rw/math/VectorND.hpp>
 
 #include <vector>
+#endif
 
 namespace rw { namespace geometry {
     class TriMesh;
@@ -61,7 +63,7 @@ namespace rw { namespace geometry {
          * @param geoms [in] the list of geometries.
          * @return the total volume of the geometries.
          */
-        static double estimateVolume (const std::vector< rw::core::Ptr< Geometry > >& geoms);
+        static double estimateVolume (const std::vector< rw::core::Ptr< rw::geometry::Geometry > >& geoms);
 
         /**
          * @brief Estimates the volume of a trimesh.
@@ -87,8 +89,8 @@ namespace rw { namespace geometry {
          * @return the center of gravity relative to the ref frame and the inertia around
          * the center of gravity (in the coordinate frame of the ref frame).
          */
-        static std::pair< rw::math::Vector3D<>, rw::math::InertiaMatrix<> > estimateInertiaCOG (
-            double mass, const std::vector< rw::core::Ptr< Geometry > >& geoms,
+        static std::pair< rw::math::Vector3D<double>, rw::math::InertiaMatrix<> > estimateInertiaCOG (
+            double mass, const std::vector< rw::core::Ptr< rw::geometry::Geometry > >& geoms,
             const rw::kinematics::Frame* ref, const rw::kinematics::State& state,
             const rw::math::Transform3D<>& reftrans = rw::math::Transform3D<>::identity ());
 
@@ -109,7 +111,7 @@ namespace rw { namespace geometry {
          * @return the inertia around relative to the ref frame.
          */
         static rw::math::InertiaMatrix<> estimateInertia (
-            double mass, const std::vector< rw::core::Ptr< Geometry > >& geoms,
+            double mass, const std::vector< rw::core::Ptr< rw::geometry::Geometry > >& geoms,
             const rw::kinematics::Frame* ref, const rw::kinematics::State& state,
             const rw::math::Transform3D<>& reftrans = rw::math::Transform3D<>::identity ());
 
@@ -129,7 +131,7 @@ namespace rw { namespace geometry {
          * @return the inertia matrix relative to the reference frame.
          */
         static rw::math::InertiaMatrix<> estimateInertia (
-            double mass, const std::vector< rw::core::Ptr< Geometry > >& geoms,
+            double mass, const std::vector< rw::core::Ptr< rw::geometry::Geometry > >& geoms,
             const rw::math::Transform3D<>& reftrans = rw::math::Transform3D<>::identity ());
 
         /**
@@ -169,8 +171,8 @@ namespace rw { namespace geometry {
          * @param geoms [in] the list of geometries.
          * @return the center of gravity for the geometries.
          */
-        static rw::math::Vector3D<>
-        estimateCOG (const std::vector< rw::core::Ptr< Geometry > >& geoms);
+        static rw::math::Vector3D<double>
+        estimateCOG (const std::vector< rw::core::Ptr< rw::geometry::Geometry > >& geoms);
 
         /**
          * @brief Estimates the center of gravity (COG) of a list of geometries.
@@ -183,8 +185,8 @@ namespace rw { namespace geometry {
          * reference frame.
          * @return the center of gravity for the geometries.
          */
-        static rw::math::Vector3D<>
-        estimateCOG (const std::vector< rw::core::Ptr< Geometry > >& geoms,
+        static rw::math::Vector3D<double>
+        estimateCOG (const std::vector< rw::core::Ptr< rw::geometry::Geometry > >& geoms,
                      const rw::kinematics::Frame* ref, const rw::kinematics::State& state);
 
         /**
@@ -193,7 +195,7 @@ namespace rw { namespace geometry {
          * @param t3d [in] (optional) make a transformation of the trimesh.
          * @return the center of gravity of the mesh.
          */
-        static rw::math::Vector3D<>
+        static rw::math::Vector3D<double>
         estimateCOG (const TriMesh& trimesh,
                      const rw::math::Transform3D<>& t3d = rw::math::Transform3D<>::identity ());
 
@@ -206,8 +208,8 @@ namespace rw { namespace geometry {
          * @param state
          * @return the maximum distance to any triangle in the geometries
          */
-        static double calcMaxDist (const std::vector< rw::core::Ptr< Geometry > >& geoms,
-                                   const rw::math::Vector3D<> center, rw::kinematics::Frame* ref,
+        static double calcMaxDist (const std::vector< rw::core::Ptr< rw::geometry::Geometry > >& geoms,
+                                   const rw::math::Vector3D<double> center, rw::kinematics::Frame* ref,
                                    const rw::kinematics::State& state);
 
         /**
@@ -279,7 +281,7 @@ namespace rw { namespace geometry {
          * @param t3d [in] Transformation of the vertices
          * @return Pair containing the lower and upper extremum distances of the vertices.
          */
-        static std::pair< rw::math::Vector3D<>, rw::math::Vector3D<> > getExtremumDistances (
+        static std::pair< rw::math::Vector3D<double>, rw::math::Vector3D<double> > getExtremumDistances (
             rw::core::Ptr< TriMesh > trimesh,
             const rw::math::Transform3D<>& t3d = rw::math::Transform3D<>::identity ());
 
@@ -288,14 +290,14 @@ namespace rw { namespace geometry {
          * @param geometry [in] Geometry to analyse
          * @return Dimensions in the x,y and z directions.
          */
-        static rw::math::Vector3D<> getDimensions (rw::core::Ptr< Geometry > geometry);
+        static rw::math::Vector3D<double> getDimensions (rw::core::Ptr< rw::geometry::Geometry > geometry);
 
         /**
          * @brief Returns the dimensions of \b trimesh
          * @param trimesh [in] TriMesh to analyse
          * @return Dimensions in the x,y and z directions.
          */
-        static rw::math::Vector3D<> getDimensions (rw::core::Ptr< TriMesh > trimesh);
+        static rw::math::Vector3D<double> getDimensions (rw::core::Ptr< TriMesh > trimesh);
 
         /**
          * @brief Calculates the volume of a N-simplex.

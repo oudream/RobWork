@@ -23,22 +23,27 @@
  *
  * \copydoc rw::geometry::IndexedQuadraticFaceArray
  */
-
+#if !defined(SWIG)
 #include "QuadraticShell.hpp"
 
 #include <rw/core/Ptr.hpp>
 #include <rw/geometry/OBB.hpp>
 #include <rw/math/Transform3D.hpp>
-
+#endif
 namespace rw { namespace geometry {
-    //! @addtogroup geometry
-
+//! @addtogroup geometry
+#if !defined(SWIG)
     //! @{
-    /**
-     * @brief Proxy class for a QuadraticShell, that allows sorting of faces without modifying the
-     * original object.
-     */
+#endif
+/**
+ * @brief Proxy class for a QuadraticShell, that allows sorting of faces without modifying the
+ * original object.
+ */
+#if !defined(SWIGJAVA)
     class IndexedQuadraticFaceArray : public QuadraticShell
+#else
+    class IndexedQuadraticFaceArray
+#endif
     {
       public:
         //! @brief Smart pointer type to IndexedQuadraticFaceArray
@@ -143,7 +148,9 @@ namespace rw { namespace geometry {
         std::size_t _first;
         std::size_t _last;
     };
-    //! @}
+#if !defined(SWIG)
+//! @}
+#endif
 }}    // namespace rw::geometry
 
 #endif /* RW_GEOMETRY_ANALYTIC_QUADRATICS_INDEXEDQUADRATICFACEARRAY_HPP_ */

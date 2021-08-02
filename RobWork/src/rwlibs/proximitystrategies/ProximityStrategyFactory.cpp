@@ -180,12 +180,17 @@ ProximityStrategyFactory::makeDistanceStrategy (const std::string& id)
 
 std::vector< std::string > ProximityStrategyFactory::getDistanceMultiStrategyIDs ()
 {
-    std::vector< std::string > IDs;
+   std::vector< std::string > IDs;
 
 #ifdef RW_HAVE_PQP
     IDs.push_back (PQPStr);
 #endif
 
+#ifdef RW_HAVE_FCL
+    IDs.push_back (FCLStr);
+    std::cout << "FCL strategy" << std::endl;
+#endif
+    std::cout << "ID's fetched" << std::endl;
     return IDs;
 }
 
@@ -195,7 +200,9 @@ ProximityStrategyFactory::makeDefaultDistanceMultiStrategy ()
 #ifdef RW_HAVE_PQP
     return rw::core::ownedPtr<> (new ProximityStrategyPQP ());
 #endif
-
+#ifdef RW_HAVE_FCL
+    return rw::core::ownedPtr (new ProximityStrategyFCL ());
+#endif
     RW_THROW ("No default distance multi strategies available");
     return NULL;
 }
@@ -206,6 +213,11 @@ ProximityStrategyFactory::makeDistanceMultiStrategy (const std::string& id)
 #ifdef RW_HAVE_PQP
     if (id == PQPStr) {
         return rw::core::ownedPtr<> (new ProximityStrategyPQP ());
+    }
+#endif
+#ifdef RW_HAVE_FCL
+    if (id == FCLStr) {
+        return rw::core::ownedPtr<> (new ProximityStrategyFCL ());
     }
 #endif
 

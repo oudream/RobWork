@@ -22,10 +22,11 @@
  * @file
  * @copydoc rw::geometry::Plane
  */
-
+#if !defined(SWIG)
 #include "Primitive.hpp"
 
 #include <rw/math/Metric.hpp>
+#endif
 
 namespace rw { namespace geometry {
     //! @addtogroup geometry
@@ -50,12 +51,11 @@ namespace rw { namespace geometry {
          *
          * Makes a plane on X-Y surface.
          */
-        Plane () : _normal (rw::math::Vector3D<>::z ()), _d (0.0) {}
+        Plane () : _normal (rw::math::Vector3D<double>::z ()), _d (0.0) {}
 
         /**
          * @brief constructor
          * @param q
-         * @return
          */
         Plane (const rw::math::Q& q)
         {
@@ -70,9 +70,8 @@ namespace rw { namespace geometry {
          * @brief constructor
          * @param n [in] normal of plane
          * @param d [in] distance from plane to (0,0,0) in direction of normal
-         * @return
          */
-        Plane (const rw::math::Vector3D<>& n, const double d) : _normal (n), _d (d) {}
+        Plane (const rw::math::Vector3D<double>& n, const double d) : _normal (n), _d (d) {}
 
         /**
          * @brief constructor - calculates the plane from 3 vertices
@@ -80,8 +79,8 @@ namespace rw { namespace geometry {
          * @param p2 [in] vertice 2
          * @param p3 [in] vertice 3
          */
-        Plane (const rw::math::Vector3D<>& p1, const rw::math::Vector3D<>& p2,
-               const rw::math::Vector3D<>& p3) :
+        Plane (const rw::math::Vector3D<double>& p1, const rw::math::Vector3D<double>& p2,
+               const rw::math::Vector3D<double>& p3) :
             _normal (normalize (cross (p2 - p1, p3 - p1)))
         {
             _d = -dot (_normal, p1);
@@ -91,17 +90,17 @@ namespace rw { namespace geometry {
         virtual ~Plane () {}
 
         //! @brief get plane normal
-        inline rw::math::Vector3D<>& normal () { return _normal; }
+        inline rw::math::Vector3D<double>& normal () { return _normal; }
 
         //! @brief get plane normal
-        inline const rw::math::Vector3D<>& normal () const { return _normal; }
+        inline const rw::math::Vector3D<double>& normal () const { return _normal; }
 
         //! @brief get distance to {0,0,0} from plane along normal.
         inline double& d () { return _d; }
-
+#if !defined(SWIG)
         //! @brief get distance to {0,0,0} from plane along normal.
         inline double d () const { return _d; }
-
+#endif
         /**
          * @brief Calculates the shortest distance from point to plane.
          *
@@ -110,7 +109,7 @@ namespace rw { namespace geometry {
          *
          * @param point
          */
-        double distance (const rw::math::Vector3D<>& point) const
+        double distance (const rw::math::Vector3D<double>& point) const
         {
             return dot (point, _normal) + _d;
         }
@@ -137,7 +136,7 @@ namespace rw { namespace geometry {
          * @param data [in] a set of points
          * @return fitting error
          */
-        double refit (const std::vector< rw::math::Vector3D<> >& data);
+        double refit (const std::vector< rw::math::Vector3D<double> >& data);
 
         /**
          * @brief Calculates the intersection between the line and plane.
@@ -148,10 +147,10 @@ namespace rw { namespace geometry {
          * @param p1 [in] point 1 on the line
          * @param p2 [in] point 2 on the line
          */
-        rw::math::Vector3D<> intersection (const rw::math::Vector3D<>& p1,
-                                           const rw::math::Vector3D<>& p2) const;
+        rw::math::Vector3D<double> intersection (const rw::math::Vector3D<double>& p1,
+                                           const rw::math::Vector3D<double>& p2) const;
 
-        // static Plane fitFrom(const std::vector<rw::math::Vector3D<> >& data){ return };
+        // static Plane fitFrom(const std::vector<rw::math::Vector3D<double> >& data){ return };
 
         // inherited from Primitive
         //! @copydoc Primitive::createMesh()
@@ -180,10 +179,11 @@ namespace rw { namespace geometry {
          * two planes. The distance between two planes is computed as follows:
          *
          * val = 0.5*angle(p1.normal, p2.normal)*angToDistWeight + 0.5*fabs(p1.d-p2.d);
-         * @return
+         * @return distance metric
          */
         static rw::math::Metric< Plane >::Ptr makeMetric (double angToDistWeight = 1.0);
 
+#if !defined(SWIG)
         /**
            @brief Streaming operator.
          */
@@ -192,23 +192,30 @@ namespace rw { namespace geometry {
             return out << "Plane("
                        << "n: " << p.normal () << ", d: " << p.d () << ")";
         };
-
+#else
+        TOSTRING (rw::geometry::Plane);
+#endif
       protected:
-        bool doIsInside (const rw::math::Vector3D<>& point)
+        bool doIsInside (const rw::math::Vector3D<double>& point)
         {
             // test if point is on the back side of the plane
             return fabs (dot (point, _normal)) < fabs (_d);
         }
 
       private:
-        rw::math::Vector3D<> _normal;
+        rw::math::Vector3D<double> _normal;
         double _d;
     };
+}}    // namespace rw::geometry
+#if defined(SWIG)
+SWIG_DECLARE_TEMPLATE (MetricPlane, rw::math::Metric< rw::geometry::Plane >);
+#endif
 
+namespace rw { namespace geometry {
     /**
      * @brief A metric for calculating plane-to-plane distance.
      */
-    class PlaneMetric : public rw::math::Metric< Plane >
+    class PlaneMetric : public rw::math::Metric< rw::geometry::Plane >
     {
       public:    // constructors
         /**

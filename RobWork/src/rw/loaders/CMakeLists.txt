@@ -69,23 +69,14 @@ if(build)
         ImageLoader.cpp
     )
 
-    set(FILES_HPP
-        WorkCellLoader.hpp
-        WorkCellFactory.hpp
-        # model3d
-        model3d/LoaderAC3D.hpp
-        model3d/Loader3DS.hpp
-        model3d/Model3DS.hpp
-        model3d/LoaderOBJ.hpp
-        model3d/LoaderTRI.hpp
-        model3d/STLFile.hpp
-        Model3DFactory.hpp
-        Model3DLoader.hpp
-        GeometryFactory.hpp
-        # path
-        path/PathLoader.hpp
-        path/PathLoaderCSV.hpp
-        # rwxml
+    set(FILES_HPP WorkCellLoader.hpp WorkCellFactory.hpp Model3DFactory.hpp Model3DLoader.hpp
+                  GeometryFactory.hpp
+    )
+    set(FILES_HPP_model3d model3d/LoaderAC3D.hpp model3d/Loader3DS.hpp model3d/Model3DS.hpp
+                          model3d/LoaderOBJ.hpp model3d/LoaderTRI.hpp model3d/STLFile.hpp
+    )
+    set(FILES_HPP_path path/PathLoader.hpp path/PathLoaderCSV.hpp)
+    set(FILES_HPP_rwxml
         rwxml/DependencyGraph.hpp
         rwxml/MultipleFileIterator.hpp
         rwxml/XMLParserUtil.hpp
@@ -95,7 +86,8 @@ if(build)
         rwxml/XMLErrorHandler.hpp
         rwxml/XMLParser.hpp
         rwxml/XML.hpp
-        # dom
+    )
+    set(FILES_HPP_dom
         dom/DOMBasisTypes.hpp
         dom/DOMPropertyMapFormat.hpp
         dom/DOMPropertyMapLoader.hpp
@@ -107,21 +99,17 @@ if(build)
         dom/DOMProximitySetupLoader.hpp
         dom/DOMProximitySetupSaver.hpp
         dom/DOMWorkCellSaver.hpp
-        # colsetup
-        colsetup/CollisionSetupLoader.hpp
-        # images
-        image/PGMLoader.hpp
-        image/PPMLoader.hpp
-        image/RGBLoader.hpp
-        ImageLoader.hpp
     )
+    set(FILES_HPP_colsetup colsetup/CollisionSetupLoader.hpp)
+    set(FILES_HPP_image image/PGMLoader.hpp image/PPMLoader.hpp image/RGBLoader.hpp ImageLoader.hpp)
 
     if(RW_HAVE_ASSIMP)
         set(FILES_CPP ${FILES_CPP} model3d/LoaderAssimp.cpp)
 
-        set(FILES_HPP ${FILES_HPP} model3d/LoaderAssimp.hpp)
+        set(FILES_HPP_model3d ${FILES_HPP_model3d} model3d/LoaderAssimp.hpp)
     endif()
 
+    set(FILES_HPP_xml)
     if(RW_HAVE_XERCES)
         set(FILES_CPP
             ${FILES_CPP}
@@ -140,8 +128,7 @@ if(build)
             xml/XMLProximitySetupLoader.cpp
         )
 
-        set(FILES_HPP
-            ${FILES_HPP}
+        set(FILES_HPP_xml
             xml/XercesErrorHandler.hpp
             xml/XercesUtils.hpp
             xml/XMLBasisTypes.hpp
@@ -158,8 +145,26 @@ if(build)
         )
     endif()
 
-    rw_add_library(${SUBSYS_NAME} ${FILES_CPP} ${FILES_HPP})
+    rw_add_library(
+        ${SUBSYS_NAME}
+        ${FILES_CPP}
+        ${FILES_HPP}
+        ${FILES_HPP_colsetup}
+        ${FILES_HPP_dom}
+        ${FILES_HPP_image}
+        ${FILES_HPP_model3d}
+        ${FILES_HPP_path}
+        ${FILES_HPP_rwxml}
+        ${FILES_HPP_xml}
+    )
     rw_add_includes(${SUBSYS_NAME} "rw/loaders" ${FILES_HPP})
+    rw_add_includes(${SUBSYS_NAME} "rw/loaders/colsetup" ${FILES_HPP_colsetup})
+    rw_add_includes(${SUBSYS_NAME} "rw/loaders/dom" ${FILES_HPP_dom})
+    rw_add_includes(${SUBSYS_NAME} "rw/loaders/image" ${FILES_HPP_image})
+    rw_add_includes(${SUBSYS_NAME} "rw/loaders/model3d" ${FILES_HPP_model3d})
+    rw_add_includes(${SUBSYS_NAME} "rw/loaders/path" ${FILES_HPP_path})
+    rw_add_includes(${SUBSYS_NAME} "rw/loaders/rwxml" ${FILES_HPP_rwxml})
+    rw_add_includes(${SUBSYS_NAME} "rw/loaders/xml" ${FILES_HPP_xml})
     rw_add_includes(${SUBSYS_NAME} "rw" ../loaders.hpp)
     target_link_libraries(${SUBSYS_NAME} PUBLIC ${Boost_LIBRARIES} ${SUBSYS_DEPS})
     target_include_directories(

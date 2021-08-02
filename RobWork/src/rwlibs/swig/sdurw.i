@@ -8,6 +8,7 @@
 #include <rw/loaders/dom/DOMPropertyMapSaver.hpp>
 #include <rw/kinematics.hpp>
 #include <rw/math.hpp>
+#include <rw/models.hpp>
 
 using namespace rwlibs::swig;
 using rw::trajectory::Interpolator;
@@ -84,24 +85,44 @@ SWIG_JAVABODY_TYPEWRAPPER(public, public, public, SWIGTYPE)
 %import <rwlibs/swig/sdurw_common.i>
 %import <rwlibs/swig/sdurw_math.i>
 %import <rwlibs/swig/sdurw_kinematics.i>
+%import <rwlibs/swig/sdurw_geometry.i>
+%import <rwlibs/swig/sdurw_sensor.i>
+%import <rwlibs/swig/sdurw_models.i>
+%import <rwlibs/swig/sdurw_proximity.i>
+%import <rwlibs/swig/sdurw_graspplanning.i>
 
 %pragma(java) jniclassimports=%{
 import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_common.*;
 import org.robwork.sdurw_math.*;
 import org.robwork.sdurw_kinematics.*;
+import org.robwork.sdurw_geometry.*;
+import org.robwork.sdurw_sensor.*;
+import org.robwork.sdurw_models.*;
+import org.robwork.sdurw_proximity.*;
+import org.robwork.sdurw_graspplanning.*;
 %}
 %pragma(java) moduleimports=%{
 import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_common.*;
 import org.robwork.sdurw_math.*;
 import org.robwork.sdurw_kinematics.*;
+import org.robwork.sdurw_geometry.*;
+import org.robwork.sdurw_sensor.*;
+import org.robwork.sdurw_models.*;
+import org.robwork.sdurw_proximity.*;
+import org.robwork.sdurw_graspplanning.*;
 %}
 %typemap(javaimports) SWIGTYPE %{
 import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_common.*;
 import org.robwork.sdurw_math.*;
 import org.robwork.sdurw_kinematics.*;
+import org.robwork.sdurw_geometry.*;
+import org.robwork.sdurw_sensor.*;
+import org.robwork.sdurw_models.*;
+import org.robwork.sdurw_proximity.*;
+import org.robwork.sdurw_graspplanning.*;
 %}
 
 /********************************************
@@ -174,655 +195,6 @@ void writelog(const std::string& msg);
 /********************************************
  * GEOMETRY
  ********************************************/
-
-class GeometryData {
-public:
-    typedef enum {PlainTriMesh,
-                  IdxTriMesh,
-                  SpherePrim, BoxPrim, OBBPrim, AABBPrim,
-                  LinePrim, PointPrim, PyramidPrim, ConePrim,
-                  TrianglePrim, CylinderPrim, PlanePrim, RayPrim,
-                  UserType} GeometryType;
-
-	/**
-	 * @brief the type of this primitive
-	 *
-	 * @return the type of primitive.
-	 */
-    virtual GeometryType getType() const = 0;
-
-	/**
-	 * @brief gets a trimesh representation of this geometry data.
-	 *
-	 * The trimesh that is returned is by default a copy, which means
-	 * ownership is transfered to the caller. 
-	 * @param forceCopy Specifying forceCopy to false will enable copy by reference and 
-     * ownership is not necesarilly transfered.
-	 * This is more efficient, though pointer is only alive as long as this
-	 * GeometryData is alive.
-	 * @return TriMesh representation of this GeometryData
-	 */
-    virtual rw::core::Ptr<TriMesh> getTriMesh(bool forceCopy=true) = 0;
-
-    /**
-     * @brief test if this geometry data is convex
-     * @return
-     */
-    virtual bool isConvex();
-
-	/**
-	 * @brief format GeometryType to string
-	 * @param type [in] the type of geometry to convert to string.
-	 * @return a string.
-	 */
-    static std::string toString(GeometryType type);
-};
-
-%template (GeometryDataPtr) rw::core::Ptr<GeometryData>;
-OWNEDPTR(GeometryData);
-
-class TriMesh: public GeometryData {
-  public:
-    /**
-     * @brief gets the triangle at index idx.
-     * @param idx [in] the index of the triangle.
-     * @return the triangle at index idx
-     */
-    virtual rw::geometry::Triangle<double> getTriangle(size_t idx) const = 0;
-
-    /**
-     * @brief gets the triangle at index idx.
-     * @param idx [in] the index of the triangle.
-     * @param dst [out] where to store the triangle at index idx
-     */
-    virtual void getTriangle(size_t idx, rw::geometry::Triangle<double>& dst) const = 0;
-
-    /**
-     * @brief gets the triangle at index idx. Using Floating point presicion 
-     * @param idx [in] the index of the triangle.
-     * @param dst [out] where to store the triangle at index idx
-     */
-    virtual void getTriangle(size_t idx, rw::geometry::Triangle<float>& dst) const = 0;
-
-
-    /**
-     * @brief gets the number of triangles in the triangle array.
-     */
-    virtual size_t getSize() const = 0;
-
-    /**
-     * @brief gets the number of triangles in the triangle array.
-     */
-    virtual size_t size() const = 0;
-
-    /**
-     * @brief make a clone of this triangle mesh
-     * @return clone of this trimesh
-     */
-    virtual rw::core::Ptr<TriMesh> clone() const = 0;
-
-    /**
-     * @brief Scale all vertices in the mesh.
-     */
-    virtual void scale(double scale) = 0;
-
-    //! @copydoc GeometryData::getTriMesh
-    rw::core::Ptr<TriMesh> getTriMesh(bool forceCopy=true);
-
-    //! @copydoc GeometryData::isConvex
-    virtual bool isConvex() { return _isConvex; }
-
-    void setConvexEnabled(bool isConvex){ _isConvex = isConvex; }
-    
-    /**
-     * @brief calculate a volume of this triangle mesh
-     */
-    double getVolume() const;
-};
-
-%template (TriMeshPtr) rw::core::Ptr<TriMesh>;
-
-class Primitive: public GeometryData {
-public:
-    rw::core::Ptr<TriMesh> getTriMesh(bool forceCopy=true);
-    virtual rw::core::Ptr<TriMesh> createMesh(int resolution) const = 0;
-    virtual rw::math::Q getParameters() const = 0;
-};
-
-class Sphere: public Primitive {
-public:
-    //! constructor
-    Sphere(const rw::math::Q& initQ);
-    Sphere(double radi):_radius(radi);
-    double getRadius();
-    rw::core::Ptr<TriMesh> createMesh(int resolution) const;
-    rw::math::Q getParameters() const;
-    GeometryData::GeometryType getType() const;
-};
-
-class Box: public Primitive {
-public:
-    Box();
-    Box(double x, double y, double z);
-    Box(const rw::math::Q& initQ);
-    rw::core::Ptr<TriMesh> createMesh(int resolution) const;
-    rw::math::Q getParameters() const;
-    GeometryType getType() const;
-};
-
-class Cone: public Primitive {
-public:
-    Cone(const rw::math::Q& initQ);
-    Cone(double height, double radiusTop, double radiusBot);
-    double getHeight();
-    double getTopRadius();
-    double getBottomRadius();
-    rw::core::Ptr<TriMesh> createMesh(int resolution) const;
-    rw::math::Q getParameters() const;
-    GeometryType getType() const;
-};
-
-class Plane: public Primitive {
-public:
-    Plane(const rw::math::Q& q);
-    Plane(const rw::math::Vector3D<double>& n, double d);
-    Plane(const rw::math::Vector3D<double>& p1,
-          const rw::math::Vector3D<double>& p2,
-          const rw::math::Vector3D<double>& p3);
-
-    rw::math::Vector3D<double>& normal();
-    //const rw::math::Vector3D<double>& normal() const;
-#if defined(SWIGJAVA)
-	double d() const;
-#else
-    double& d();
-#endif
-    double distance(const rw::math::Vector3D<double>& point);
-    double refit( std::vector<rw::math::Vector3D<double> >& data );
-    rw::core::Ptr<TriMesh> createMesh(int resolution) const ;
-    rw::math::Q getParameters() const;
-    GeometryType getType() const;
-};
-
-/**
- * @brief Cylinder primitive.
- */
-class Cylinder: public Primitive {
-public:
-    //! @brief Default constructor with no parameters.
-	Cylinder();
-
-	/**
-	  * @brief Cylinder with parameters specified.
-	  *
-	  * @param radius the radius.
-	  * @param height the height.
-	  */
-
-	Cylinder(float radius, float height);
-	virtual ~Cylinder();
-	double getRadius() const;
-	double getHeight() const;
-	
-	/**
-	  * @brief Create a mesh representation of the cylinder.
-	  *
-	  * @param resolution the resolution.
-	  * @return the TriMesh.
-	  */
-	rw::core::Ptr<TriMesh> createMesh(int resolution) const;
-	rw::math::Q getParameters() const;
-	GeometryType getType() const;
-};
-
-class ConvexHull3D {
-public:
-    virtual void rebuild(const std::vector<rw::math::Vector3D<double> >& vertices) = 0;
-    virtual bool isInside(const rw::math::Vector3D<double>& vertex) = 0;
-    virtual double getMinDistInside(const rw::math::Vector3D<double>& vertex) = 0;
-    virtual double getMinDistOutside(const rw::math::Vector3D<double>& vertex) = 0;
-    virtual rw::core::Ptr<PlainTriMeshN1> toTriMesh() = 0;
-};
-
-
-class Geometry {
-  public:
-    /**
-     * @brief constructor - autogenerated id from geometry type.
-     * @param data
-     * @param scale
-     */
-    Geometry(rw::core::Ptr<GeometryData> data, double scale=1.0);
-
-
-    /**
-     * @brief constructor giving a specified id.
-     * @param data [in] pointer to geometry data
-     * @param name [in] Unique name to be assigned for the geometry
-     * @param scale [in] scaling factor
-     */
-    Geometry(rw::core::Ptr<GeometryData> data, const std::string& name, double scale=1.00);
-
-    /**
-     * @brief constructor - autogenerated id from geometry type.
-     * @param data [in] pointer to geometry data
-     * @param t3d [in] transform
-     * @param scale [in] scaling factor
-     */
-    Geometry(rw::core::Ptr<GeometryData> data, const rw::math::Transform3D<double> & t3d,
-             double scale=1.0);
-
-    /**
-     * @brief gets the scaling factor applied when using this geometry
-     * @return the scale as double
-     */
-    double getScale() const;
-
-    /**
-     * @brief set the scaling factor that should be applied to
-     * this geometry when used.
-     * @param scale [in] scale factor
-     */
-    void setScale(double scale);
-
-    /**
-     * @brief set transformation
-     * @param t2d [in] the new transform
-     */
-    void setTransform(const rw::math::Transform3D<double> & t3d);
-
-    /**
-     * @brief get transformation
-     * @return the Current transform
-     */
-    const rw::math::Transform3D<double> & getTransform() const;
-
-    /**
-     * @brief get geometry data
-     * @return the geometry data stored
-     */
-    rw::core::Ptr<GeometryData> getGeometryData();
-#if !defined(SWIGJAVA)
-    /**
-     * @brief get geometry data
-     * @return the geometry data stored
-     */
-    const rw::core::Ptr<GeometryData> getGeometryData() const;
-#endif
-    /**
-     * @brief set transformation
-     * @param data [in] the new geometry data
-     */
-    void setGeometryData(rw::core::Ptr<GeometryData> data);
-    /**
-     * @brief get name of this geometry
-     * @return name as string
-     */
-    const std::string& getName() const;
-    /**
-     * @brief get file path of this geometry
-     * @return the file path as string
-     */
-    const std::string& getFilePath() const;
-
-    /**
-     * @brief get identifier of this geometry
-     * @return the id of the geometry
-     */
-    const std::string& getId() const;
-
-    /**
-     * @brief set name of this geometry
-     * @param name [in] the new name of the geometry
-     */
-    void setName(const std::string& name);
-
-    /**
-     * @brief set file path this geometry
-     * @param name [in] path to a geometry file
-     */
-    void setFilePath(const std::string& name);
-
-    /**
-     * @brief set identifier of this geometry
-     * @param id [in] new id
-     */
-    void setId(const std::string& id);
-
-    /**
-     * @brief set the color of the geometry
-     * @param red [in] the amount of red color 0-255
-     * @param green [in] the amount of green color 0-255
-     * @param blue [in] the amount of red color 0-255
-     */
-    void setColor(unsigned char red, unsigned char green, unsigned char blue);
-
-    /**
-     * @brief Get the reference frame.
-     * @return the reference frame.
-     */
-    rw::kinematics::Frame* getFrame();
-
-#if !define(SWIGJAVA)
-    /**
-     * @brief Get the reference frame.
-     * @return the reference frame.
-     */
-    const rw::kinematics::Frame* getFrame() const;
-#endif
-    /**
-     * @brief Set the draw mask.
-     * @param mask [in] the draw mask.
-     */
-    void setMask(int mask);
-
-    /**
-     * @brief Get the draw mask.
-     * @return the draw mask.
-     */
-    int getMask();
-
-    /**
-     * @brief util function for creating a Sphere geometry
-     */
-    static rw::core::Ptr<Geometry> makeSphere(double radi);
-
-    /**
-     * @brief util function for creating a Box geometry
-     */
-    static rw::core::Ptr<Geometry> makeBox(double x, double y, double z);
-
-    /**
-     * @brief util function for creating a Cone geometry
-     */
-    static rw::core::Ptr<Geometry> makeCone(double height, double radiusTop, double radiusBot);
-
-    /**
-     * @brief util function for creating a Cylinder geometry
-     */
-    static rw::core::Ptr<Geometry> makeCylinder(float radius, float height);
-
-    /**
-     * @brief Construct a grid.
-     * @param dim_x [in] number of cells in first direction.
-     * @param dim_y [in] number of cells in second direction.
-     * @param size_x [in] size of one cell.
-     * @param size_y [in] size of one cell.
-     * @param xdir [in] the direction of the first dimension.
-     * @param ydir [in] the direction of the second dimension.
-     * @return a new grid geometry.
-     */
-    static rw::core::Ptr<Geometry> makeGrid(int dim_x, int dim_y,double size_x=1.0, double size_y=1.0,
-                                        const rw::math::Vector3D<double>& xdir = rw::math::Vector3D<double>::x(),
-                                        const rw::math::Vector3D<double>& ydir = rw::math::Vector3D<double>::y());
-
-    /**
-     * @brief get the color stored for the object
-     * @param color [out] the array to store the color in
-     */
-    void getColor(float color[3]);
-};
-%template (GeometryPtr) rw::core::Ptr<Geometry>;
-%template (GeometryPtrVector) std::vector<rw::core::Ptr<Geometry> >;
-OWNEDPTR(Geometry);
-
-class STLFile {
-public:
-    static void save(const TriMesh& mesh, const std::string& filename);
-    static rw::core::Ptr<PlainTriMeshN1f> load(const std::string& filename);
-};
-
-class PlainTriMeshN1
-{
-};
-
-%template (PlainTriMeshN1Ptr) rw::core::Ptr<PlainTriMeshN1>;
-
-class PlainTriMeshN1f
-{
-};
-
-%template (PlainTriMeshN1fPtr) rw::core::Ptr<PlainTriMeshN1f>;
-
-%nodefaultctor Triangle;
-
-namespace rw { namespace geometry{
-    template <class T=double>
-    class Triangle {
-     public:
-        //! @brief default constructor
-	    Triangle(){};
-
-	    /**
-	     * @brief constructor
-	     * @param p1 [in] vertice 1
-	     * @param p2 [in] vertice 2
-	     * @param p3 [in] vertice 3
-	     */
-	    Triangle(const rw::math::Vector3D<T>& p1,
-                   const rw::math::Vector3D<T>& p2,
-                   const rw::math::Vector3D<T>& p3);
-
-	    /**
-	     * @brief copy constructor
-	     *
-	     * @param f [in] - The face that is to be copied.
-	     */
-	    Triangle(const Triangle<T>& f);
-
-	    /**
-	     * @brief destructor
-	     */
-	    virtual ~Triangle(){};
-
-	    /**
-	     * @brief get vertex at index i
-	     */
-		rw::math::Vector3D<T>& getVertex(size_t i);
-
-        /*
-        //TODO(kalor) implement operators
-        const rw::math::Vector3D<T>& operator[](size_t i) const;
-        rw::math::Vector3D<T>& operator[](size_t i);
-        */
-       
-		/**
-		 * @brief calculates the face normal of this triangle. It is assumed
-		 * that the triangle vertices are arranged counter clock wise.
-		 */
-		rw::math::Vector3D<T> calcFaceNormal() const ;
-
-		/**
-		 * @brief tests wheather the point x is inside the triangle
-		 */
-		bool isInside(const rw::math::Vector3D<T>& x);
-
-		/**
-		 * @brief calculate the area of the triangle
-		 * @return area in m^2
-		 */
-        double calcArea() const;
-
-        /**
-         * @brief apply a transformation to this triangle
-         * @param t3d [in] transform that is to be applied
-         */
-        void applyTransform(const rw::math::Transform3D<T>& t3d);
-
-        /**
-         * @brief Returns Triangle transformed by t3d.
-         */
-        Triangle<T> transform(const rw::math::Transform3D<T>& t3d) const;
-
-#if !defined(SWIGJAVA)
-        inline const Triangle<T>& getTriangle() const;
-#endif
-        inline Triangle<T>& getTriangle();
-
-        //TODO(kalor) add print function
-    };
-}}
-%template(TriangleD) rw::geometry::Triangle<double>;
-%template(TriangleF) rw::geometry::Triangle<float>;
-
-
-namespace rw { namespace geometry {
-    /**
-     * @brief indexed triangle class that has 3 indices that points to 3
-     * vertices in an array typically used with the IndexedTriMesh  class.
-     * the indice type (size) is templated.
-     */
-    template< class T = uint16_t > class IndexedTriangle
-    {
-      public:
-        //! @brief default constructor
-        IndexedTriangle (){};
-
-        /**
-         * @brief constructor
-         * @param p1 [in] indice to vertice 1
-         * @param p2 [in] indice to vertice 2
-         * @param p3 [in] indice to vertice 3
-         */
-        IndexedTriangle (T p1, T p2, T p3);
-
-        /**
-         * @brief copy constructor
-         *
-         * @param f [in] - The face that is to be copied.
-         */
-        IndexedTriangle (const IndexedTriangle& f);
-
-        /**
-         * @brief returns the index of vertex i of the triangle
-         */
-        T& getVertexIdx (std::size_t i);
-
-        #if !defined(SWIGJAVA)
-            /**
-             * @brief returns the index of vertex i of the triangle
-             */
-            const T& getVertexIdx (std::size_t i) const;
-        #endif
-        //TODO(kalor) implement template specilization
-
-        /*
-         * @brief tests wheather the point x is inside the triangle
-         */
-        /*template< class R >
-        bool isInside (const rw::math::Vector3D< R >& x,
-                       const std::vector< rw::math::Vector3D< R > >& verts);*/
-
-
-        //TODO(kalor) add indexing (below functions)
-        /*
-         * @brief get vertex at index i
-         */
-        //T& operator[] (size_t i) { return getVertexIdx (i); }
-
-        /*
-         * @brief get vertex at index i
-         */
-        //const T& operator[] (size_t i) const { return getVertexIdx (i); }
-    };
-}}
-%template(IndexedTriangleU16) rw::geometry::IndexedTriangle<>;
-%template(IndexedTriangleU16Vector) std::vector<rw::geometry::IndexedTriangle<>>;
-
-
-/**
- * @brief A simple point cloud data structure. Points may be ordered or not. An ordered set is
- * kept as a single array in row major order and with a width and a height. An unordered array
- * must have height==1 and width equal to the number of points.
- */
-class PointCloud: public GeometryData {
-public:
-    /**
-     * @brief constructor
-     */
-    PointCloud();
-
-    /**
-     * @brief constructor
-     *
-     * @param w [in]
-     * @param h [in]
-     */
-    PointCloud(int w, int h);
-
-	/**
-	 * @brief destructor
-	 */
-	virtual ~PointCloud();
-
-	//! @copydoc GeometryData::getType
-	 GeometryType getType() const;
-
-	/**
-	 * @brief gets the number of points in the point cloud.
-	 *
-	 * @return the number of points.
-	 */
-	virtual size_t size() const;
-
-	bool isOrdered();
-
-    /**
-     * @brief returns a char pointer to the image data
-     *
-     * @return const char pointer to the image data
-     */
-    const std::vector<rw::math::Vector3D<float> >& getData() const;
-
-    /**
-     * @brief width of the point cloud data. If the data is unordered then this
-     * will be equal to the number of points.
-     *
-     * @return width of data points
-     */
-    int getWidth() const;
-
-    int getHeight() const;
-
-    /**
-     * @brief set width of point cloud. Data elements are accessed as [x+y*width].
-     *
-     * If the current data array cannot contain the elements then it will be resized to
-     * be able to it.
-     *
-     * @param w [in] new width
-     * @param h [in] new height
-     */
-    void resize(int w, int h);
-
-	//! @copydoc getTriMesh
-	rw::core::Ptr<TriMesh> getTriMesh(bool forceCopy=true);
-
-	const rw::math::Transform3D<float>& getDataTransform() const;
-
-	/**
-	 * @brief load point cloud from PCD file
-	 *
-	 * @param filename [in] name of PCD file
-	 * @return a point cloud
-	 */
-	static rw::core::Ptr<PointCloud> loadPCD( const std::string& filename );
-
-	/**
-	 * @brief save point cloud in PCD file format (PCL library format)
-	 *
-	 * @param cloud [in] the point cloud to save
-	 * @param filename [in] the name of the file to save to
-	 * @param t3d [in] the transformation of the point cloud
-	 */
-    static void savePCD(const PointCloud& cloud,
-                        const std::string& filename ,
-                        const rw::math::Transform3D<float>& t3d =
-                        rw::math::Transform3D<float>::identity());
-};
-
-%template (PointCloudPtr) rw::core::Ptr<PointCloud>;
-
 
 /********************************************
  * GRAPHICS
@@ -905,43 +277,6 @@ public:
     virtual unsigned int getMask() const = 0;
 };
 
-class Model3D {
-public:
-    Model3D(const std::string& name);
-    virtual ~Model3D();
-    //struct Material;
-    //struct MaterialFaces;
-    //struct MaterialPolys;
-    //struct Object3D;
-    //typedef enum{
-    //    AVERAGED_NORMALS //! vertex normal is determine as an avarage of all adjacent face normals
-    //    ,WEIGHTED_NORMALS //! vertex normal is determined as AVARAGED_NORMALS, but with the face normals scaled by the face area
-    //    } SmoothMethod;
-    //void optimize(double smooth_angle, SmoothMethod method=WEIGHTED_NORMALS);
-    //int addObject(Object3D::Ptr obj);
-    //void addGeometry(const Material& mat, rw::core::Ptr<Geometry> geom);
-    //void addTriMesh(const Material& mat, const rw::geometry::TriMesh& mesh);
-    //int addMaterial(const Material& mat);
-    //Material* getMaterial(const std::string& matid);
-    bool hasMaterial(const std::string& matid);
-    void removeObject(const std::string& name);
-    //std::vector<Material>& getMaterials();
-    //std::vector<Object3D::Ptr>& getObjects();
-    const rw::math::Transform3D<double>& getTransform();
-    void setTransform(const rw::math::Transform3D<double>& t3d);
-    const std::string& getName();
-    void setName(const std::string& name);
-    int getMask();
-    void setMask(int mask);
-    rw::core::Ptr<GeometryData> toGeometryData();
-    bool isDynamic() const;
-    void setDynamic(bool dynamic);
-};
-
-%template (Model3DPtr) rw::core::Ptr<Model3D>;
-%template (Model3DPtrVector) std::vector<rw::core::Ptr<Model3D> >;
-OWNEDPTR(Model3D);
-
 class Render {
 public:
     /**
@@ -958,7 +293,7 @@ public:
 class WorkCellScene {
  public:
 
-     rw::core::Ptr<WorkCell> getWorkCell();
+     rw::core::Ptr<rw::models::WorkCell> getWorkCell();
 
      void setState(const rw::kinematics::State& state);
 
@@ -982,9 +317,9 @@ class WorkCellScene {
      void setTransparency(double alpha, rw::kinematics::Frame* f);
 
      //DrawableGeometryNode::Ptr addLines( const std::string& name, const std::vector<rw::geometry::Line >& lines, rw::kinematics::Frame* frame, int dmask=DrawableNode::Physical);
-     //DrawableGeometryNode::Ptr addGeometry(const std::string& name, rw::core::Ptr<Geometry> geom, rw::kinematics::Frame* frame, int dmask=DrawableNode::Physical);
+     //DrawableGeometryNode::Ptr addGeometry(const std::string& name, rw::core::Ptr<rw::geometry::Geometry> geom, rw::kinematics::Frame* frame, int dmask=DrawableNode::Physical);
      rw::core::Ptr<DrawableNode> addFrameAxis(const std::string& name, double size, rw::kinematics::Frame* frame, int dmask=DrawableNode::Virtual);
-     //rw::core::Ptr<DrawableNode> addModel3D(const std::string& name, rw::core::Ptr<Model3D> model, rw::kinematics::Frame* frame, int dmask=DrawableNode::Physical);
+     //rw::core::Ptr<DrawableNode> addModel3D(const std::string& name, rw::core::Ptr<rw::geometry::Model3D> model, rw::kinematics::Frame* frame, int dmask=DrawableNode::Physical);
      //rw::core::Ptr<DrawableNode> addImage(const std::string& name, const rw::sensor::Image& img, rw::kinematics::Frame* frame, int dmask=DrawableNode::Virtual);
      //rw::core::Ptr<DrawableNode> addScan(const std::string& name, const rw::sensor::Scan2D& scan, rw::kinematics::Frame* frame, int dmask=DrawableNode::Virtual);
      //rw::core::Ptr<DrawableNode> addScan(const std::string& name, const rw::sensor::Image25D& scan, rw::kinematics::Frame* frame, int dmask=DrawableNode::Virtual);
@@ -1090,7 +425,7 @@ public:
      *
      * @param filename [in] path to workcell file.
      */
-	virtual rw::core::Ptr<WorkCell> loadWorkCell(const std::string& filename) = 0;
+	virtual rw::core::Ptr<rw::models::WorkCell> loadWorkCell(const std::string& filename) = 0;
 
 protected:
 	WorkCellLoader();
@@ -1122,7 +457,7 @@ public:
      *
      * @param filename [in] name of the WorkCell file.
      */
-	static rw::core::Ptr<WorkCell> load(const std::string& filename);
+	static rw::core::Ptr<rw::models::WorkCell> load(const std::string& filename);
 private:
 	WorkCellLoaderFactory();
 };
@@ -1130,7 +465,7 @@ private:
 class ImageLoader {
 public:
 	virtual ~ImageLoader();
-	virtual rw::core::Ptr<Image> loadImage(const std::string& filename) = 0;
+	virtual rw::core::Ptr<rw::sensor::Image> loadImage(const std::string& filename) = 0;
 	virtual std::vector<std::string> getImageFormats() = 0;
 	virtual bool isImageSupported(const std::string& format);
 };
@@ -1189,7 +524,7 @@ private:
 /********************************************
  * MODELS
  ********************************************/
- %include <rwlibs/swig/rw_i/models.i>
+//%include <rwlibs/swig/rw_i/models.i>
 
 
 /********************************************
@@ -1206,13 +541,13 @@ private:
  * PROXIMITY
  ********************************************/
 
-%include <rwlibs/swig/rw_i/proximity.i>
+//%include <rwlibs/swig/rw_i/proximity.i>
 
 /********************************************
  * SENSOR
  ********************************************/
 
-%include <rwlibs/swig/rw_i/sensor.i>
+//%include <rwlibs/swig/rw_i/sensor.i>
 
 /********************************************
  * TRAJECTORY
@@ -1298,13 +633,13 @@ NAMED_OWNEDPTR(PathSE3,rw::trajectory::Path<rw::math::Transform3D<double> > );
         return rw::core::ownedPtr( new rw::trajectory::TimedQPath(tpath) );
     }
 
-    rw::core::Ptr<rw::trajectory::Path<Timed< rw::math::Q > > > toTimedQPath(rw::core::Ptr<Device> dev){
+    rw::core::Ptr<rw::trajectory::Path<Timed< rw::math::Q > > > toTimedQPath(rw::core::Ptr<rw::models::Device> dev){
         rw::trajectory::TimedQPath tpath =
                 rw::trajectory::TimedUtil::makeTimedQPath(*dev, *$self);
         return rw::core::ownedPtr( new rw::trajectory::TimedQPath(tpath) );
     }
 
-    rw::core::Ptr<rw::trajectory::Path<Timed<rw::kinematics::State> > > toTimedStatePath(rw::core::Ptr<Device> dev,
+    rw::core::Ptr<rw::trajectory::Path<Timed<rw::kinematics::State> > > toTimedStatePath(rw::core::Ptr<rw::models::Device> dev,
                                                      const rw::kinematics::State& state){
         rw::trajectory::Path<Timed<rw::kinematics::State>> tpath =
                 rw::trajectory::TimedUtil::makeTimedStatePath(*dev, *$self, state);
@@ -1315,14 +650,14 @@ NAMED_OWNEDPTR(PathSE3,rw::trajectory::Path<rw::math::Transform3D<double> > );
 
 %extend rw::trajectory::Path<Timed<rw::kinematics::State> > {
 	
-	static rw::core::Ptr<rw::trajectory::Path<Timed<rw::kinematics::State> > > load(const std::string& filename, rw::core::Ptr<WorkCell> wc){
+	static rw::core::Ptr<rw::trajectory::Path<Timed<rw::kinematics::State> > > load(const std::string& filename, rw::core::Ptr<rw::models::WorkCell> wc){
 		rw::core::Ptr<rw::trajectory::Path<Timed<rw::kinematics::State>>> spath = 
                     rw::core::ownedPtr(new rw::trajectory::Path<Timed<rw::kinematics::State>>);
                 *spath = rw::loaders::PathLoader::loadTimedStatePath(*wc, filename);
 		return rw::core::Ptr<rw::trajectory::Path<Timed<rw::kinematics::State>>>( spath );
 	}
 	
-	void save(const std::string& filename, rw::core::Ptr<WorkCell> wc){		 		
+	void save(const std::string& filename, rw::core::Ptr<rw::models::WorkCell> wc){		 		
 		rw::loaders::PathLoader::storeTimedStatePath(*wc,*$self,filename); 
 	}
 	
@@ -1342,13 +677,13 @@ NAMED_OWNEDPTR(PathSE3,rw::trajectory::Path<rw::math::Transform3D<double> > );
 
 %extend rw::trajectory::Path<rw::kinematics::State > {
 	
-	static rw::core::Ptr<rw::trajectory::Path<rw::kinematics::State> > load(const std::string& filename, rw::core::Ptr<WorkCell> wc){
+	static rw::core::Ptr<rw::trajectory::Path<rw::kinematics::State> > load(const std::string& filename, rw::core::Ptr<rw::models::WorkCell> wc){
             rw::core::Ptr<rw::trajectory::Path<rw::kinematics::State>> spath = rw::core::ownedPtr(new rw::trajectory::StatePath);
             *spath = rw::loaders::PathLoader::loadStatePath(*wc, filename);
 		return spath;
 	}
 	
-	void save(const std::string& filename, rw::core::Ptr<WorkCell> wc){		 		
+	void save(const std::string& filename, rw::core::Ptr<rw::models::WorkCell> wc){		 		
 		rw::loaders::PathLoader::storeStatePath(*wc,*$self,filename); 
 	}
 	

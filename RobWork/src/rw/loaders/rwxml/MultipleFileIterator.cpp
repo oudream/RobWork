@@ -16,11 +16,12 @@
  ********************************************************************************/
 
 #include "MultipleFileIterator.hpp"
+#include <memory>
 
 using namespace rw::loaders;
 
-MultipleFileIterator::MultipleFileIterator (boost::shared_ptr< std::vector< char > > data,
-                                            boost::shared_ptr< PosToFileMap > filedata) :
+MultipleFileIterator::MultipleFileIterator (std::shared_ptr< std::vector< char > > data,
+                                            std::shared_ptr< PosToFileMap > filedata) :
     _filedata (filedata),
     _data (data), _pos (_data->begin ()), _filePos (0), _line (0), _index (0)
 {

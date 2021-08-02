@@ -27,20 +27,26 @@
 #define RW_CYGWIN
 #elif defined(_WIN32) || defined(__WIN32__) || defined(WIN32)
 #define RW_WIN32
+#elif defined(_WIN64) || defined(__WIN64__) || defined(WIN64)
+#define RW_WIN64
 #elif defined(macintosh) || defined(__APPLE__) || defined(__APPLE_CC__)
 #define RW_MACOS
 #elif defined(linux) || defined(__linux) || defined(__linux__)
 #define RW_LINUX
 #endif
 
-#ifdef RW_WIN32
+#if defined(RW_WIN32) || defined(RW_WIN64)
+#define RW_WIN
+#endif 
+
+#ifdef RW_WIN
 #define DLL_EXPORT extern "C" __declspec(dllexport)
 #else
 #define DLL_EXPORT extern "C"
 #endif
 
 #if !defined(SWIG)
-#ifdef RW_WIN32
+#ifdef RW_WIN
 #include <windows.h>
 #endif
 #endif
@@ -57,7 +63,7 @@ class OS
      */
     static std::string getDLLExtension ()
     {
-#if defined(RW_WIN32)
+#if defined(RW_WIN)
         return "dll";
 #elif defined(RW_MACOS)
         return "dylib";
@@ -75,7 +81,7 @@ class OS
      */
     static std::string InstallPluginLocation (std::string pack = "RobWork")
     {
-#if defined(RW_WIN32)
+#if defined(RW_WIN)
         HKEY hKey          = 0;
         char buf[1024]     = {0};
         DWORD dwType       = 0;

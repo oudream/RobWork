@@ -18,6 +18,7 @@
 #ifndef RW_PROXIMITY_PROXIMITYCALCULATOR_HPP
 #define RW_PROXIMITY_PROXIMITYCALCULATOR_HPP
 
+#if !defined(SWIG)
 #include <rw/common/Timer.hpp>
 #include <rw/core/Ptr.hpp>
 #include <rw/kinematics/FrameMap.hpp>
@@ -25,6 +26,7 @@
 
 #include <utility>
 #include <vector>
+#endif 
 
 namespace rw { namespace kinematics {
     class Frame;
@@ -145,7 +147,7 @@ namespace rw { namespace proximity {
          * For DistanceMultiStrategy the tolerance is used which is the maximum distance allowed for
          * the result to be recorded. if not given the tolerance is set to the largest finite double
          *
-         * @param result [in\out] Defines parameters for the ProximityCalculation, stores the
+         * @param result [in/out] Defines parameters for the ProximityCalculation, stores the
          * results and also enables caching inbetween calls.
          * @return If no result is available an empty ProximityStrategyData is returned. else for
          * Collisions the first contact is returned and for distance the shortest distance is
@@ -223,11 +225,11 @@ namespace rw { namespace proximity {
                              const std::string geometryId);
 
         //! @brief Adds rule specifying inclusion/exclusion of frame pairs in Proximity calculation
-        void addRule (const ProximitySetupRule& rule);
+        void addRule (const rw::proximity::ProximitySetupRule& rule);
 
         //! @brief Removes rule specifying inclusion/exclusion of frame pairs in Proximity
         //! calculation
-        void removeRule (const ProximitySetupRule& rule);
+        void removeRule (const rw::proximity::ProximitySetupRule& rule);
 
         /**
          * @brief Get the computation time used in the inCollision functions.
@@ -316,6 +318,12 @@ namespace rw { namespace proximity {
         ProximityCalculator& operator= (const ProximityCalculator&);
 #endif
     };
+
+    #if defined(SWIG)
+        SWIG_DECLARE_TEMPLATE(ProximityCalculatorCollision,rw::proximity::ProximityCalculator<rw::proximity::CollisionStrategy>);
+        SWIG_DECLARE_TEMPLATE(ProximityCalculatorDistance,rw::proximity::ProximityCalculator<rw::proximity::DistanceStrategy>);
+        SWIG_DECLARE_TEMPLATE(DistanceMultiCalculator,rw::proximity::ProximityCalculator<rw::proximity::DistanceMultiStrategy>);
+    #endif 
 
     /*@}*/
 }}    // namespace rw::proximity

@@ -18,10 +18,11 @@
 #ifndef RW_GRASPPLANNING_GWSMEASURE3D_HPP_
 #define RW_GRASPPLANNING_GWSMEASURE3D_HPP_
 
+#if !defined(SWIG)
 #include <rw/geometry/QHullND.hpp>
 #include <rw/graspplanning/GraspQualityMeasure3D.hpp>
 #include <rw/math/Vector3D.hpp>
-
+#endif 
 namespace rw { namespace graspplanning {
 
     /**

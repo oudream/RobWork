@@ -1,4 +1,5 @@
 require("sdurw_core")
+require("sdurw_models")
 require("sdurw")
 using("sdurw")
 

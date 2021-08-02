@@ -209,6 +209,7 @@ namespace rw { namespace math {
         }
 #else
         ARRAYOPERATOR (T);
+        TOSTRING(rw::math::Pose6D<T>);
 #endif
         /**
          * @brief Converts the Pose6D into the corresponding Transform3D
@@ -218,6 +219,8 @@ namespace rw { namespace math {
         {
             return rw::math::Transform3D< T > (_position, _orientation);
         }
+
+
     };
 
     /**
@@ -235,6 +238,7 @@ namespace rw { namespace math {
                             static_cast< Q > (pose.get (5)));
     }
 
+#if !defined(SWIG)
     /**
      * @brief Streaming operator.
      *
@@ -245,6 +249,7 @@ namespace rw { namespace math {
         return out << "Pose6D {" << v (0) << ", " << v (1) << ", " << v (2) << ", " << v (3) << ", "
                    << v (4) << ", " << v (5) << "}";
     }
+#endif 
 
 #if !defined(SWIG)
     extern template class rw::math::Pose6D< double >;

@@ -21,12 +21,12 @@
 /**
  * @file ControllerModel.hpp
  */
-
+#if !defined(SWIG)
 #include <rw/core/PropertyMap.hpp>
 #include <rw/kinematics/Stateless.hpp>
 
 #include <string>
-
+#endif 
 namespace rw { namespace kinematics {
     class Frame;
 }}    // namespace rw::kinematics
@@ -53,7 +53,7 @@ namespace rw { namespace models {
          * @param name [in] the name of this controllermodel
          * @param frame [in] the frame to which this controller is attached/associated.
          */
-        ControllerModel (const std::string& name, kinematics::Frame* frame);
+        ControllerModel (const std::string& name, rw::kinematics::Frame* frame);
 
         /**
          * @brief constructor
@@ -61,7 +61,7 @@ namespace rw { namespace models {
          * @param frame [in] the frame to which this controller is attached/associated.
          * @param description [in] description of the controller
          */
-        ControllerModel (const std::string& name, kinematics::Frame* frame,
+        ControllerModel (const std::string& name, rw::kinematics::Frame* frame,
                          const std::string& description);
 
         //! destructor
@@ -96,14 +96,14 @@ namespace rw { namespace models {
          *
          * The frame can be NULL.
          */
-        kinematics::Frame* getFrame () const { return _frame; }
+        rw::kinematics::Frame* getFrame () const { return _frame; }
 
         /**
          * @brief Sets the frame to which the controllermodel should be attached
          *
          * @param frame The frame, which can be NULL
          */
-        virtual void attachTo (kinematics::Frame* frame) { _frame = frame; }
+        virtual void attachTo (rw::kinematics::Frame* frame) { _frame = frame; }
 
         /**
          * @brief gets the propertymap of this controllermodel
@@ -118,7 +118,7 @@ namespace rw { namespace models {
       private:
         std::string _name;
         std::string _description;
-        kinematics::Frame* _frame;
+        rw::kinematics::Frame* _frame;
         rw::core::PropertyMap _propertyMap;
     };
 

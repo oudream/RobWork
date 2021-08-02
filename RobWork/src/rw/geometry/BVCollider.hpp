@@ -18,8 +18,9 @@
 #ifndef RW_GEOMETRY_BVCOLLIDER_HPP_
 #define RW_GEOMETRY_BVCOLLIDER_HPP_
 
+#if !defined(SWIG)
 #include <rw/math/Transform3D.hpp>
-
+#endif 
 namespace rw { namespace geometry {
 
     /**
@@ -43,7 +44,7 @@ namespace rw { namespace geometry {
          * @param bvA [in] bounding volume A
          * @param bvB [in] bounding volume B
          * @param aTb [in] transform from bvA to bvB
-         * @return
+         * @return true if in collision
          */
         inline bool inCollision (const BVTYPE& bvA, const BVTYPE& bvB,
                                  const rw::math::Transform3D< value_type >& aTb)

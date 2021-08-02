@@ -24,16 +24,20 @@
  * \copydoc rw::geometry::Delaunay
  */
 
+#if !defined(SWIG)
 #include "IndexedTriMesh.hpp"
 
 #include <rw/math/Vector2D.hpp>
 
 #include <vector>
+#endif 
 
 namespace rw { namespace geometry {
     //! @addtogroup geometry
 
+#if !defined(SWIG)
     //! @{
+#endif
     /**
      * @brief Utility functions for doing Delaunay triangulations.
      */
@@ -62,7 +66,9 @@ namespace rw { namespace geometry {
         Delaunay ();
         virtual ~Delaunay ();
     };
+#if !defined(SWIG)
     //! @}
+#endif
 }}    // namespace rw::geometry
 
 #endif /* RW_GEOMETRY_DELAUNAY_HPP_ */

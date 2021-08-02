@@ -18,9 +18,11 @@
 #ifndef RW_PROXIMITY_PROXIMITYCACHE_HPP
 #define RW_PROXIMITY_PROXIMITYCACHE_HPP
 
+#if !defined(SWIG)
 #include <rw/core/Ptr.hpp>
 
 #include <cstddef>
+#endif 
 
 namespace rw { namespace proximity {
 

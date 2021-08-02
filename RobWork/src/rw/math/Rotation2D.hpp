@@ -36,7 +36,9 @@ namespace rw { namespace math {
 
     /** @addtogroup math */
     /* @{*/
+
 #if !defined(SWIGJAVA)
+
     /**
      * @brief A 2x2 rotation matrix \f$ \mathbf{R}\in SO(2) \f$
      *
@@ -56,7 +58,7 @@ namespace rw { namespace math {
      *  \right]
      * @f$
      */
-    #endif 
+#endif
     template< class T = double > class Rotation2D
     {
       public:
@@ -70,6 +72,8 @@ namespace rw { namespace math {
            @brief A rotation matrix with uninitialized storage.
          */
         Rotation2D () {}
+
+#if !defined(SWIGJAVA)
 
         /**
          * @brief Constructs an initialized 2x2 rotation matrix
@@ -89,6 +93,8 @@ namespace rw { namespace math {
          *  \right]
          * @f$
          */
+
+#endif
         Rotation2D (T r11, T r12, T r21, T r22)
         {
             _m[0][0] = r11;
@@ -97,6 +103,7 @@ namespace rw { namespace math {
             _m[1][1] = r22;
         }
 
+#if !defined(SWIGJAVA)
         /**
          * @brief Constructs an initialized 2x2 rotation matrix
          * @f$ \robabx{a}{b}{\mathbf{R}} =
@@ -110,6 +117,8 @@ namespace rw { namespace math {
          * @param i @f$ \robabx{a}{b}{\mathbf{i}} @f$
          * @param j @f$ \robabx{a}{b}{\mathbf{j}} @f$
          */
+
+#endif
         Rotation2D (const rw::math::Vector2D< T >& i, const rw::math::Vector2D< T >& j)
         {
             _m[0][0] = i[0];
@@ -118,6 +127,7 @@ namespace rw { namespace math {
             _m[1][1] = j[1];
         }
 
+#if !defined(SWIGJAVA)
         /**
          * @brief Constructs an initialized 2x2 rotation matrix
          * @f$ \robabx{a}{b}{\mathbf{R}} =
@@ -130,6 +140,8 @@ namespace rw { namespace math {
          *
          * @param theta
          */
+
+#endif
         Rotation2D (const T theta)
         {
             _m[0][0] = cos (theta);
@@ -164,6 +176,7 @@ namespace rw { namespace math {
             _m[1][1] = m (1, 1);
         }
 
+#if !defined(SWIGJAVA)
         /**
          * @brief Constructs a 2x2 rotation matrix set to identity
          * @return a 2x2 identity rotation matrix
@@ -178,11 +191,14 @@ namespace rw { namespace math {
          * \right]
          * @f$
          */
+
+#endif
         static const Rotation2D& identity ()
         {
             static Rotation2D id (1, 0, 0, 1);
             return id;
         }
+        
 #if !defined(SWIG)
         /**
          * @brief Returns reference to matrix element

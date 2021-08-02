@@ -22,7 +22,7 @@
 #include <rw/core/Message.hpp>
 #include <rw/core/Ptr.hpp>
 
-#include <boost/thread/mutex.hpp>
+#include <mutex>
 #include <sstream>
 #include <string>
 #endif
@@ -139,7 +139,7 @@ namespace rw { namespace core {
       private:
         LogWriter (const LogWriter&);
         LogWriter& operator= (const LogWriter&);
-        boost::mutex _mutex;
+        std::mutex _mutex;
     };    // namespace core
     /* @} */
 

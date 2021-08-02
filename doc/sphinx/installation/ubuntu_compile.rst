@@ -66,6 +66,8 @@ RobWork Required Dependencies
 
 RobWork has several dependencies, which can be installed with:
 
+.. code-block:: shell
+
     sudo apt-get install libboost-dev \
                          libboost-filesystem-dev \
                          libboost-program-options-dev \

@@ -342,7 +342,7 @@ namespace rwsim { namespace sensor {
 
         // the
         // const VertexMatrix& _vMatrix;
-        // std::vector<Contact3D> _forces;
+        // std::vector<rw::sensor::Contact3D> _forces;
 
         rw::core::Ptr< rw::geometry::Geometry > _ngeom;
         rw::core::Ptr< rw::geometry::PlainTriMesh< rw::geometry::Triangle<> > > _ntrimesh;

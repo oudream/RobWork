@@ -24,12 +24,14 @@
  * \copydoc rw::geometry::GenericFace
  */
 
+#if !defined(SWIG)
 #include "Face.hpp"
-
+#endif
 namespace rw { namespace geometry {
     //! @addtogroup geometry
-
+#if !defined(SWIG)
     //! @{
+      #endif
     /**
      * @brief The GenericFace implementation is a type of Face that consist of abstract Surfaces and
      * Curves.
@@ -62,10 +64,10 @@ namespace rw { namespace geometry {
         virtual const Curve& getCurve (std::size_t i) const;
 
         //! @copydoc Face::vertices
-        virtual const std::vector< rw::math::Vector3D<> >& vertices () const { return _vertices; }
+        virtual const std::vector< rw::math::Vector3D<double> >& vertices () const { return _vertices; }
 
-        //! @copydoc Face::transform(const rw::math::Vector3D<>&)
-        virtual void transform (const rw::math::Vector3D<>& P);
+        //! @copydoc Face::transform(const rw::math::Vector3D<double>&)
+        virtual void transform (const rw::math::Vector3D<double>& P);
 
         //! @copydoc Face::transform(const rw::math::Transform3D<>&)
         virtual void transform (const rw::math::Transform3D<>& T);
@@ -100,20 +102,22 @@ namespace rw { namespace geometry {
          * @param index [in] vertex index to set.
          * @param vertex [in] the vertex point.
          */
-        void setVertex (std::size_t index, const rw::math::Vector3D<>& vertex);
+        void setVertex (std::size_t index, const rw::math::Vector3D<double>& vertex);
 
         /**
          * @brief Set the vertices.
          * @param vertices [in] vector of vertices.
          */
-        void setVertices (const std::vector< rw::math::Vector3D<> >& vertices);
+        void setVertices (const std::vector< rw::math::Vector3D<double> >& vertices);
 
       private:
         rw::core::Ptr< const Surface > _surface;
         std::vector< rw::core::Ptr< const Curve > > _curves;
-        std::vector< rw::math::Vector3D<> > _vertices;
+        std::vector< rw::math::Vector3D<double> > _vertices;
     };
+    #if !defined(SWIG)
     //! @}
+    #endif
 }}    // namespace rw::geometry
 
 #endif /* RW_GEOMETRY_ANALYTIC_GENERICFACE_HPP_ */

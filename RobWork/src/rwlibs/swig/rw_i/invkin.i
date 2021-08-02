@@ -121,7 +121,7 @@ public:
        @param device [in] Device for which to solve IK.
        @param state [in] Fixed state for which IK is solved.
     */
-    static rw::core::Ptr<IterativeIK> makeDefault(rw::core::Ptr<Device> device, const rw::kinematics::State& state);
+    static rw::core::Ptr<IterativeIK> makeDefault(rw::core::Ptr<rw::models::Device> device, const rw::kinematics::State& state);
 };
 
 %template (IterativeIKPtr) rw::core::Ptr<IterativeIK>;
@@ -151,7 +151,7 @@ public:
      * @param device [in] the device to do inverse kinematics for.
      * @param state [in] the initial state.
      */
-    JacobianIKSolver(rw::core::Ptr<const Device> device, const rw::kinematics::State& state);
+    JacobianIKSolver(rw::core::Ptr<const rw::models::Device> device, const rw::kinematics::State& state);
 
     /**
      * @brief Constructs JacobianIKSolver for device, where the frame \b foi will
@@ -161,7 +161,7 @@ public:
      * @param foi [in] end effector frame.
      * @param state [in] the initial state.
      */
-    JacobianIKSolver(rw::core::Ptr<const Device> device, const rw::kinematics::Frame *foi, const rw::kinematics::State& state);
+    JacobianIKSolver(rw::core::Ptr<const rw::models::Device> device, const rw::kinematics::Frame *foi, const rw::kinematics::State& state);
 
     /**
      * @brief Calculates the inverse kinematics
@@ -275,8 +275,8 @@ public:
      * collision detection used.
      */
     IKMetaSolver(rw::core::Ptr<IterativeIK> iksolver,
-        const rw::core::Ptr<Device> device,
-        rw::core::Ptr<CollisionDetector> collisionDetector = NULL);
+        const rw::core::Ptr<rw::models::Device> device,
+        rw::core::Ptr<rw::proximity::CollisionDetector> collisionDetector = NULL);
 
     /**
      * @brief Constructs IKMetaSolver
@@ -291,7 +291,7 @@ public:
      * constraints is applied
      */
     IKMetaSolver(rw::core::Ptr<IterativeIK> iksolver,
-        const rw::core::Ptr<Device> device,
+        const rw::core::Ptr<rw::models::Device> device,
         rw::core::Ptr<QConstraint> constraint);
 
     /**
@@ -404,7 +404,7 @@ public:
        You should check for yourself that the closed-form IK for the device
        is correct.
     */
-    static rw::core::Ptr<ClosedFormIK> make(const Device& device, const rw::kinematics::State& state);
+    static rw::core::Ptr<ClosedFormIK> make(const rw::models::Device& device, const rw::kinematics::State& state);
 };
 
 /**
@@ -429,7 +429,7 @@ public:
      * @param joint6Tend [in] transform from the 6th joint to the end of the device
      * @param baseTdhRef [in] Transformation between the robot base and the reference frame for the DH-parameters.
      */
-    PieperSolver(const std::vector<DHParameterSet>& dhparams,
+    PieperSolver(const std::vector<rw::models::DHParameterSet>& dhparams,
                  const rw::math::Transform3D<double> & joint6Tend,
                  const rw::math::Transform3D<double> & baseTdhRef = rw::math::Transform3D<double> ::identity());
 
@@ -444,7 +444,7 @@ public:
      *
      * @note throws an exception if the device has no DH params
      */
-    PieperSolver(SerialDevice& dev, const rw::math::Transform3D<double> & joint6Tend, const rw::kinematics::State& state);
+    PieperSolver(rw::models::SerialDevice& dev, const rw::math::Transform3D<double> & joint6Tend, const rw::kinematics::State& state);
 
     /**
      * @brief Calculates the inverse kinematics
@@ -503,7 +503,7 @@ public:
 	 * @param device [in] the device.
 	 * @param state [in] the state to get the frame structure and extract the dimensions from.
 	 */
-	ClosedFormIKSolverKukaIIWA(const rw::core::Ptr<const SerialDevice> device, const rw::kinematics::State& state);
+	ClosedFormIKSolverKukaIIWA(const rw::core::Ptr<const rw::models::SerialDevice> device, const rw::kinematics::State& state);
 
 	//! @brief Destructor.
 	virtual ~ClosedFormIKSolverKukaIIWA();
@@ -572,7 +572,7 @@ public:
 	 * @param device [in] the device.
 	 * @param state [in] the state to use to extract dimensions.
 	 */
-	ClosedFormIKSolverUR(const rw::core::Ptr<const SerialDevice> device, const rw::kinematics::State& state);
+	ClosedFormIKSolverUR(const rw::core::Ptr<const rw::models::SerialDevice> device, const rw::kinematics::State& state);
 
 	//! @brief Destructor.
 	virtual ~ClosedFormIKSolverUR();

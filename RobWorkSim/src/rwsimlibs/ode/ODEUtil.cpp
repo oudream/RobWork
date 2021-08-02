@@ -239,7 +239,7 @@ ODEUtil::TriMeshData::Ptr ODEUtil::buildTriMesh (GeometryData::Ptr gdata, bool i
 
     fstr.close();
 */
-    // triMeshDatas.push_back(boost::shared_ptr<ODESimulator::TriMeshData>(data) );
+    // triMeshDatas.push_back(std::shared_ptr<ODESimulator::TriMeshData>(data) );
 
     //      if( ownedData )
     //          delete imesh;

@@ -1,5 +1,5 @@
 # Test CMake version
-cmake_minimum_required(VERSION 3.5.1 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.10  FATAL_ERROR )
 
 if(POLICY CMP0072) # Introduce cmake 3.11
     cmake_policy(SET CMP0072 NEW)
@@ -12,6 +12,17 @@ if(POLICY CMP0078)
 endif()
 if(POLICY CMP0086) # Introduce cmake 3.14
     cmake_policy(SET CMP0086 NEW)
+endif()
+
+if(NOT DEFINED RWP_ROOT)
+include("cmake/HunterGate.cmake")
+HunterGate(
+    URL "https://github.com/cpp-pm/hunter/archive/v0.23.297.tar.gz"
+    SHA1 "3319fe6a3b08090df7df98dee75134d68e2ef5a3"
+)
+else()
+    function(hunter_add_package)     
+    endfunction()
 endif()
 
 # The name of the project.
@@ -110,6 +121,10 @@ configure_file(${RW_ROOT}/cmake/RobWorkConfigVersion.cmake.in
 
 configure_file(${RW_ROOT}/cmake/RobWorkConfig.cmake.in "${RW_ROOT}/cmake/RobWorkConfig.cmake" @ONLY)
 
+configure_file(${RW_ROOT}/cmake/RobWorkConfigMacros.cmake.in
+               "${RW_ROOT}/cmake/RobWorkConfigMacros.cmake" @ONLY
+)
+
 export(
     EXPORT ${PROJECT_PREFIX}Targets
     FILE "${RW_ROOT}/cmake/${PROJECT_NAME}Targets.cmake"
@@ -117,7 +132,8 @@ export(
 )
 
 if(RW_HAVE_GTEST)
-    if (NOT RW_GTEST_FROM_GIT)
+    if (NOT RW_GTEST_FROM_HUNTER AND NOT (debug IN_LIST GTEST_LIBRARIES))
+
         if(TARGET ${GTEST_LIBRARIES} AND TARGET ${GTEST_MAIN_LIBRARIES})
             export(
                 TARGETS ${GTEST_LIBRARIES} ${GTEST_MAIN_LIBRARIES}
@@ -151,7 +167,18 @@ endif()
 
 # configuration
 install(
-    FILES ${RW_ROOT}/cmake/RobWorkConfigVersion.cmake ${RW_ROOT}/cmake/RobWorkConfig.cmake
+    FILES 
+        "cmake/RobWorkConfigVersion.cmake" 
+        "cmake/RobWorkConfig.cmake"
+        "cmake/RobWorkBuildConfig_${RW_BUILD_TYPE}.cmake"
+        "cmake/RobWorkMacros.cmake"
+        "cmake/RobWorkConfigMacros.cmake"
+    DESTINATION ${RW_INSTALL_DIR}/cmake
+    COMPONENT cmake
+)
+
+install(
+    DIRECTORY ${RW_ROOT}/cmake/Modules
     DESTINATION ${RW_INSTALL_DIR}/cmake
     COMPONENT cmake
 )
@@ -160,12 +187,6 @@ install(
 install(
     FILES LICENSE.txt NOTICE.txt
     DESTINATION "${RW_INSTALL_DIR}/"
-    COMPONENT cmake
-)
-
-install(
-    FILES "cmake/RobWorkBuildConfig_${RW_BUILD_TYPE}.cmake" "cmake/RobWorkMacros.cmake"
-    DESTINATION ${RW_INSTALL_DIR}/cmake
     COMPONENT cmake
 )
 
@@ -196,7 +217,7 @@ if(WIN32)
     )
     install(
         DIRECTORY "${Boost_INCLUDE_DIR}/boost/"
-        DESTINATION "${RW_INSTALL_DIR}/ext/boost/"
+        DESTINATION "${INCLUDE_INSTALL_DIR}/ext/boost/boost"
         COMPONENT boost
     )
 
@@ -208,14 +229,14 @@ if(WIN32)
         )
         install(
             DIRECTORY "${XERCESC_INCLUDE_DIR}/"
-            DESTINATION "${RW_INSTALL_DIR}/ext/xerces/"
+            DESTINATION "${INCLUDE_INSTALL_DIR}/ext/xerces/"
             COMPONENT xerces
         )
     endif()
 
     install(
         DIRECTORY "${EIGEN3_INCLUDE_DIR}/"
-        DESTINATION "${RW_INSTALL_DIR}/ext/Eigen/"
+        DESTINATION "${INCLUDE_INSTALL_DIR}/ext/Eigen/"
         COMPONENT eigen
     )
 endif()

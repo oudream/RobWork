@@ -26,7 +26,7 @@
 #include <rw/models/TreeDevice.hpp>
 #include <rw/trajectory/LinearInterpolator.hpp>
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 #define MAX_ANGLE_JTRANSPOSE 30 * Deg2Rad
 
@@ -39,12 +39,12 @@ using namespace rw::trajectory;
 
 namespace {
 
-std::vector< boost::shared_ptr< FKRange > >
+std::vector< std::shared_ptr< FKRange > >
 createFKRanges (const Frame* base, const std::vector< Frame* >& foi, const State& state)
 {
-    std::vector< boost::shared_ptr< FKRange > > fkranges;
+    std::vector< std::shared_ptr< FKRange > > fkranges;
     for (size_t i = 0; i < foi.size (); i++) {
-        boost::shared_ptr< FKRange > range (new FKRange (base, foi[i], state));
+        std::shared_ptr< FKRange > range (new FKRange (base, foi[i], state));
         fkranges.push_back (range);
     }
     return fkranges;

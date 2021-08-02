@@ -19,6 +19,9 @@ namespace Eigen{
         const Matrix operator+(const Matrix& wrench) const;    
         const Matrix operator-(const Matrix& wrench) const;
         //const Matrix operator*(const Matrix& wrench) const;
+
+        int rows() const;
+        int cols() const; 
         
         %extend {
             

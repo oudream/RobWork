@@ -21,11 +21,12 @@
  * @file DistanceMultiStrategy.hpp
  */
 
+#if !defined(SWIG)
 #include "ProximityStrategy.hpp"
 
 #include <rw/core/ExtensionPoint.hpp>
 #include <rw/math/Transform3D.hpp>
-
+#endif
 namespace rw { namespace kinematics {
     class State;
 }}    // namespace rw::kinematics
@@ -68,12 +69,12 @@ namespace rw { namespace proximity {
             double distance;
 
             //! Closest points on f1 to f2, described in world reference frame
-            std::vector< math::Vector3D<> > p1s;
+            std::vector< math::Vector3D<double> > p1s;
 
             /**
              * @brief Closest point on f2 to f1, described in world reference frame
              */
-            std::vector< math::Vector3D<> > p2s;
+            std::vector< math::Vector3D<double> > p2s;
 
             //! @brief geometry index to geometry in object A
             std::vector< int > geoIdxA;
@@ -129,8 +130,8 @@ namespace rw { namespace proximity {
          * @return shortest distance if @f$ \mathcal{F}_a @f$ and @f$ \mathcal{F}_b @f$ are
          * separated and not in collision.
          */
-        Result distances (const kinematics::Frame* a, const math::Transform3D<>& wTa,
-                          const kinematics::Frame* b, const math::Transform3D<>& wTb,
+        Result distances (const kinematics::Frame* a, const math::Transform3D<double>& wTa,
+                          const kinematics::Frame* b, const math::Transform3D<double>& wTb,
                           double tolerance);
 
         /**
@@ -148,15 +149,15 @@ namespace rw { namespace proximity {
          * @return shortest distance if @f$ \mathcal{F}_a @f$ and @f$ \mathcal{F}_b @f$ are
          * separated and not in collision.
          */
-        Result& distances (const kinematics::Frame* a, const math::Transform3D<>& wTa,
-                           const kinematics::Frame* b, const math::Transform3D<>& wTb,
+        Result& distances (const kinematics::Frame* a, const math::Transform3D<double>& wTa,
+                           const kinematics::Frame* b, const math::Transform3D<double>& wTb,
                            double tolerance, class ProximityStrategyData& data);
 
         /**
          * @copydoc doDistances
          */
-        Result& distances (ProximityModel::Ptr a, const math::Transform3D<>& wTa,
-                           ProximityModel::Ptr b, const math::Transform3D<>& wTb, double tolerance,
+        Result& distances (ProximityModel::Ptr a, const math::Transform3D<double>& wTa,
+                           ProximityModel::Ptr b, const math::Transform3D<double>& wTb, double tolerance,
                            class ProximityStrategyData& data)
         {
             return doDistances (a, wTa, b, wTb, tolerance, data);
@@ -219,8 +220,8 @@ namespace rw { namespace proximity {
          *
          * @return list of distances between all points that are closer than threshold.
          */
-        virtual Result& doDistances (ProximityModel::Ptr a, const math::Transform3D<>& wTa,
-                                     ProximityModel::Ptr b, const math::Transform3D<>& wTb,
+        virtual Result& doDistances (ProximityModel::Ptr a, const math::Transform3D<double>& wTa,
+                                     ProximityModel::Ptr b, const math::Transform3D<double>& wTb,
                                      double tolerance, class ProximityStrategyData& data) = 0;
 
       private:

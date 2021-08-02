@@ -18,11 +18,14 @@
 #ifndef RW_PROXIMITY_RAYCASTER_HPP_
 #define RW_PROXIMITY_RAYCASTER_HPP_
 
+#if !defined(SWIG)
 #include "ProximityModel.hpp"
 #include "ProximityStrategyData.hpp"
 
+#include <rw/core/Ptr.hpp>
 #include <rw/geometry/PlainTriMesh.hpp>
 #include <rw/math/Vector3D.hpp>
+#endif
 
 namespace rw { namespace kinematics {
     class Frame;
@@ -53,12 +56,12 @@ namespace rw { namespace proximity {
             QueryType qtype;
 
             // closest contact point and normal (if normals enabled)
-            rw::math::Vector3D<> point;
-            rw::math::Vector3D<> normal;
+            rw::math::Vector3D<double> point;
+            rw::math::Vector3D<double> normal;
 
             // all contact points and normals (if normals enabled)
-            std::vector< rw::math::Vector3D<> > points;
-            std::vector< rw::math::Vector3D<> > normals;
+            std::vector< rw::math::Vector3D<double> > points;
+            std::vector< rw::math::Vector3D<double> > normals;
 
             // the models that where in contact and an associated int that indexes into the
             // starting of points,normals for the object.
@@ -68,12 +71,14 @@ namespace rw { namespace proximity {
         };
 
       public:
+#if !defined(SWIG)
+        // TODO NOT IMPLEMENTED
         /**
          * @brief constructor - only the frames in the vector are tested against each
          * other.
          */
         Raycaster (double ray_length = 100.0);
-
+#endif
         /**
          * @brief constructor - only the frames in the vector are tested against each
          * other.
@@ -83,13 +88,16 @@ namespace rw { namespace proximity {
         //! @brief destructor
         virtual ~Raycaster ();
 
-        void setRayFrame (rw::kinematics::Frame* rayframe);
+        void setRayFrame (rw::core::Ptr< rw::kinematics::Frame > rayframe) { _rayFrame = rayframe; }
 
+#if !defined(SWIG)
+        // TODO THESE FUNCTIONS ARE NOT IMPLEMENTED
         void add (rw::core::Ptr< rw::geometry::Geometry > geom);
 
         void add (rw::core::Ptr< rw::models::Object > object);
 
         void add (rw::core::Ptr< rw::models::WorkCell > wc);
+#endif
 
         /**
          * @brief shoots a ray in the direction of the vector \b direction starting from
@@ -97,8 +105,9 @@ namespace rw { namespace proximity {
          * first by the ray is returned along with the intersection point described in
          * world frame.
          */
-        bool shoot (const rw::math::Vector3D<>& pos, const rw::math::Vector3D<>& direction,
-                    QueryResult& result, const rw::kinematics::State& state);
+        bool shoot (const rw::math::Vector3D< double >& pos,
+                    const rw::math::Vector3D< double >& direction, QueryResult& result,
+                    const rw::kinematics::State& state);
 
         /**
          * @brief set to true if normals should also be calculated
@@ -113,7 +122,7 @@ namespace rw { namespace proximity {
         std::vector< rw::kinematics::Frame* > _frames;
         rw::core::Ptr< rw::proximity::CollisionStrategy > _cdstrategy;
         rw::geometry::PlainTriMeshF::Ptr _ray;
-        rw::kinematics::Frame* _rayFrame;
+        rw::core::Ptr< rw::kinematics::Frame > _rayFrame;
 
         rw::proximity::ProximityModel::Ptr _rayModel;
 

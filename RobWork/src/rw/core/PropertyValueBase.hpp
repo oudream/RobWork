@@ -27,87 +27,92 @@
 #include <rw/core/Event.hpp>
 #include <rw/core/PropertyType.hpp>
 #include <rw/core/Ptr.hpp>
+
 #include <functional>
 #include <string>
 #endif
 
 namespace rw { namespace core {
 
-    //! @addtogroup core
+//! @addtogroup core
+#if !defined(SWIG)
     //! @{
+#endif
 
     //! @brief Base class for Property handling
     class PropertyValueBase
     {
-        public:
-            //! @brief Smart pointer type to this class
-            typedef rw::core::Ptr<PropertyValueBase> Ptr;
+      public:
+        //! @brief Smart pointer type to this class
+        typedef rw::core::Ptr< PropertyValueBase > Ptr;
 
-            /**
-             * @brief Constructor.
-             */
-            PropertyValueBase();
+        /**
+         * @brief Constructor.
+         */
+        PropertyValueBase ();
 
-            /**
-             * @brief Constructor
-             *
-             * @param type [in] type of the property
-             */
-            PropertyValueBase(const PropertyType& type);
+        /**
+         * @brief Constructor
+         *
+         * @param type [in] type of the property
+         */
+        PropertyValueBase (const PropertyType& type);
 
-            /**
-             * @brief Destroys PropertyValueBase
-             */
-            virtual ~PropertyValueBase();
+        /**
+         * @brief Destroys PropertyValueBase
+         */
+        virtual ~PropertyValueBase ();
 
-            /**
-             * @brief Construct a clone of the property value.
-             *
-             * @return a clone.
-             */
-            virtual PropertyValueBase* clone() const = 0;
+        /**
+         * @brief Construct a clone of the property value.
+         *
+         * @return a clone.
+         */
+        virtual PropertyValueBase* clone () const = 0;
 
-            /**
-             * @brief Returns the PropertyType
-             * @return the PropertyType
-             */
-            const rw::core::PropertyType& getType() const;
+        /**
+         * @brief Returns the PropertyType
+         * @return the PropertyType
+         */
+        const rw::core::PropertyType& getType () const;
 
 #if !defined(SWIGJAVA)
-            /**
-             * @brief Method signature for a callback function
-             */
-            typedef std::function< void (PropertyValueBase*) > PropertyListener;
+        /**
+         * @brief Method signature for a callback function
+         */
+        typedef std::function< void (PropertyValueBase*) > PropertyListener;
 
-            //! @brief Type for changed property events.
-            typedef rw::core::Event< PropertyListener, PropertyValueBase* > ChangedEvent;
+        //! @brief Type for changed property events.
+        typedef rw::core::Event< PropertyListener, PropertyValueBase* > ChangedEvent;
 
-            /**
-             * @brief get changed event
-             *
-             * to add listener use:
-             * changedEvent().add(...)
-             *
-             */
-            ChangedEvent& changedEvent () { return _changedEvent; }
+        /**
+         * @brief get changed event
+         *
+         * to add listener use:
+         * changedEvent().add(...)
+         *
+         */
+        ChangedEvent& changedEvent () { return _changedEvent; }
 #endif
 
-        private:
-            /**
-             * @brief Type of property
-             */
-            PropertyType _propertyType;
-#if!defined(SWIGJAVA)
-            //! changed event handler
-            ChangedEvent _changedEvent;
+      private:
+        /**
+         * @brief Type of property
+         */
+        PropertyType _propertyType;
+#if !defined(SWIGJAVA)
+        //! changed event handler
+        ChangedEvent _changedEvent;
 #endif
 
-        private:
-            PropertyValueBase(const PropertyValueBase&);
-            PropertyValueBase& operator=(const PropertyValueBase&);
+      private:
+        PropertyValueBase (const PropertyValueBase&);
+        PropertyValueBase& operator= (const PropertyValueBase&);
     };
-    //! @}
+#if !defined(SWIG)
+//! @}
+#endif
 
-}} // end namespaces
+}}    // namespace rw::core
 
 #endif /* RW_CORE_PROPERTYVALUEBASE_HPP_ */

@@ -19,13 +19,14 @@ Copyright 2013 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
 #include "ModRussel_NLP.hpp"
 
 #include <rw/core/macros.hpp>
+#include <memory>
 
 using namespace std;
 using namespace Ipopt;
 using namespace rwlibs::softbody;
 
-ModRusselBeamIpopt::ModRusselBeamIpopt (boost::shared_ptr< BeamGeometry > geomPtr,
-                                        boost::shared_ptr< BeamObstaclePlane > obstaclePtr, int M) :
+ModRusselBeamIpopt::ModRusselBeamIpopt (std::shared_ptr< BeamGeometry > geomPtr,
+                                        std::shared_ptr< BeamObstaclePlane > obstaclePtr, int M) :
     ModRusselBeamBase (geomPtr, obstaclePtr, M)
 {}
 

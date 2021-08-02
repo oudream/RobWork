@@ -11,6 +11,7 @@ if(build)
         BSphere.cpp
         BV.cpp
         BVCollider.cpp
+        BVDistanceCalc.cpp
         Box.cpp
         Cone.cpp
         Contour2D.cpp
@@ -44,9 +45,7 @@ if(build)
         Pyramid.cpp
         QHull3D.cpp
         QHullND.cpp
-        RSSDistanceCalc.cpp
         Ray.cpp
-        RectDistanceCalc.cpp
         Sphere.cpp
         SphereDistanceCalc.cpp
         TriMesh.cpp
@@ -86,6 +85,7 @@ if(build)
         BSphere.hpp
         BV.hpp
         BVCollider.hpp
+        BVDistanceCalc.hpp
         Box.hpp
         Cone.hpp
         Contour2D.hpp
@@ -121,9 +121,7 @@ if(build)
         Pyramid.hpp
         QHull3D.hpp
         QHullND.hpp
-        RSSDistanceCalc.hpp
         Ray.hpp
-        RectDistanceCalc.hpp
         Sphere.hpp
         SphereDistanceCalc.hpp
         TriMesh.hpp
@@ -133,6 +131,8 @@ if(build)
         Triangle.hpp
         TriangleUtil.hpp
         Tube.hpp
+    )
+    set(FILES_HPP_analytic
         analytic/AnalyticUtil.hpp
         analytic/BREP.hpp
         analytic/Curve.hpp
@@ -147,6 +147,8 @@ if(build)
         analytic/ParametricCurve.hpp
         analytic/Shell.hpp
         analytic/Surface.hpp
+    )
+    set(FILES_HPP_analytic_quadratic
         analytic/quadratics/IndexedQuadraticFaceArray.hpp
         analytic/quadratics/PlainQuadraticShell.hpp
         analytic/quadratics/QuadraticBREP.hpp
@@ -162,8 +164,10 @@ if(build)
         set(FILES_HPP ${FILES_HPP} TriDistanceCalc.hpp TriTriToleranceIntersect.hpp)
     endif()
 
-    rw_add_library(${SUBSYS_NAME} ${FILES_CPP} ${FILES_HPP})
+    rw_add_library(${SUBSYS_NAME} ${FILES_CPP} ${FILES_HPP} ${FILES_HPP_analytic} ${FILES_HPP_analytic_quadratic})
     rw_add_includes(${SUBSYS_NAME} "rw/geometry" ${FILES_HPP})
+    rw_add_includes(${SUBSYS_NAME} "rw/geometry/analytic" ${FILES_HPP_analytic})
+    rw_add_includes(${SUBSYS_NAME} "rw/geometry/analytic/quadratics" ${FILES_HPP_analytic_quadratic})
     rw_add_includes(${SUBSYS_NAME} "rw" ../geometry.hpp)
 
     if(TARGET qhull_build)

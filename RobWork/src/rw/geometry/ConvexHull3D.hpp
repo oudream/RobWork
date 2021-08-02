@@ -19,11 +19,12 @@
 #define RW_GEOMETRY_CONVEXHULLHULL3D_HPP_
 
 //! @file ConvexHull3D.hpp
-
+#if !defined(SWIG)
 #include "PlainTriMesh.hpp"
 #include "Triangle.hpp"
 
 #include <rw/math/Vector3D.hpp>
+#endif 
 
 namespace rw { namespace geometry {
     //! @addtogroup geometry
@@ -45,35 +46,35 @@ namespace rw { namespace geometry {
          * @brief rebuilts the hull
          * @param vertices
          */
-        virtual void rebuild (const std::vector< rw::math::Vector3D<> >& vertices) = 0;
+        virtual void rebuild (const std::vector< rw::math::Vector3D<double> >& vertices) = 0;
 
         /**
          * @brief test if the given vertex is inside the convex hull
          */
-        virtual bool isInside (const rw::math::Vector3D<>& vertex) = 0;
+        virtual bool isInside (const rw::math::Vector3D<double>& vertex) = 0;
 
         /**
          * @brief If the vertex is inside the convex hull the minimum distance
          * to any of the half-spaces of the hull is returned. If its not inside
          * 0 is returned.
          * @param vertex
-         * @return
+         * @return minimum distance to vertex
          */
-        virtual double getMinDistInside (const rw::math::Vector3D<>& vertex) = 0;
+        virtual double getMinDistInside (const rw::math::Vector3D<double>& vertex) = 0;
 
         /**
          * @brief If the vertex is outside the convex hull the minimum distance
          * to the convex hull is returned. If its not outside 0 is returned.
          * @param vertex
-         * @return
+         * @return minimum distance to vertex
          */
-        virtual double getMinDistOutside (const rw::math::Vector3D<>& vertex) = 0;
+        virtual double getMinDistOutside (const rw::math::Vector3D<double>& vertex) = 0;
 
         /**
          * @brief create a plain trimesh from the hull facets
          * @return the hull facets as a plain triangle mesh with normal information
          */
-        virtual rw::geometry::PlainTriMesh< rw::geometry::TriangleN1<> >::Ptr toTriMesh () = 0;
+        virtual rw::core::Ptr<rw::geometry::PlainTriMesh< rw::geometry::TriangleN1<double> >> toTriMesh () = 0;
     };
     //! @}
 

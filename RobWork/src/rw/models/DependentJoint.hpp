@@ -18,7 +18,9 @@
 #ifndef RW_MODELS_DEPENDENTJOINT_HPP
 #define RW_MODELS_DEPENDENTJOINT_HPP
 
+#if !defined(SWIG)
 #include <rw/models/Joint.hpp>
+#endif 
 
 namespace rw { namespace models {
 
@@ -45,7 +47,7 @@ namespace rw { namespace models {
          * @return True if this is controlled by \b joint
          *
          */
-        virtual bool isControlledBy (const Joint* joint) const = 0;
+        virtual bool isControlledBy (const rw::models::Joint* joint) const = 0;
 
       protected:
         /**

@@ -4,11 +4,14 @@ set(SUBSYS_DEPS RWS::sdurws RW::sdurw)
 
 set(build TRUE)
 set(DEFAULT TRUE)
-rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} DEPENDS ${SUBSYS_DEPS} ADD_DOC)
+rw_subsys_option(
+    build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT}
+    DEPENDS ${SUBSYS_DEPS}
+    ADD_DOC
+)
 
 if(build)
-    set(
-        FILES_CPP
+    set(FILES_CPP
         contacts/BallBallStrategy.cpp
         contacts/Contact.cpp
         contacts/ContactDetector.cpp
@@ -55,8 +58,7 @@ if(build)
         util/CircleModel.cpp
         util/SupportPose.cpp
         util/PlanarSupportPoseGenerator.cpp
-        # util/LineFit.cpp
-        # util/LinePolar.cpp
+        # util/LineFit.cpp util/LinePolar.cpp
         util/HughLineExtractor.cpp
         util/RecursiveNewtonEuler.cpp
         util/RestingPoseGenerator.cpp
@@ -82,7 +84,9 @@ if(build)
         control/SyncPDController.cpp
         control/VelRampController.cpp
         # control/SuctionCupController.cpp
-        control/BodyController.cpp control/BeamJointController.cpp control/SpringJointController.cpp
+        control/BodyController.cpp
+        control/BeamJointController.cpp
+        control/SpringJointController.cpp
         # control/TrajectoryController.cpp
         control/PoseController.cpp
         control/SerialDeviceController.cpp
@@ -124,7 +128,9 @@ if(build)
         rwphysics/ConstraintNode.cpp
         rwphysics/ConstraintEdge.cpp
         # rwphysics/ConstraintSolver.cpp
-        rwphysics/ContactGraph.cpp rwphysics/ContactModelFactory.cpp rwphysics/EulerIntegrator.cpp
+        rwphysics/ContactGraph.cpp
+        rwphysics/ContactModelFactory.cpp
+        rwphysics/EulerIntegrator.cpp
         # rwphysics/GuendelContactModel.cpp
         rwphysics/ConstraintSolver.cpp
         rwphysics/SequintialImpulseSolver.cpp
@@ -133,8 +139,7 @@ if(build)
         rwphysics/BodyController.cpp
     )
 
-    set(
-        FILES_HPP
+    set(FILES_HPP
         contacts/BallBallStrategy.hpp
         contacts/Contact.hpp
         contacts/ContactDetector.hpp
@@ -179,8 +184,7 @@ if(build)
         util/CircleModel.hpp
         util/SupportPose.hpp
         util/PlanarSupportPoseGenerator.hpp
-        # util/LineFit.hpp
-        # util/LinePolar.hpp
+        # util/LineFit.hpp util/LinePolar.hpp
         util/HughLineExtractor.hpp
         util/RecursiveNewtonEuler.hpp
         util/RestingPoseGenerator.hpp
@@ -206,7 +210,9 @@ if(build)
         control/SyncPDController.hpp
         control/VelRampController.hpp
         # control/SuctionCupController.hpp
-        control/BodyController.hpp control/BeamJointController.hpp control/SpringJointController.hpp
+        control/BodyController.hpp
+        control/BeamJointController.hpp
+        control/SpringJointController.hpp
         # control/TrajectoryController.hpp
         control/PoseController.hpp
         control/SerialDeviceController.hpp
@@ -246,7 +252,9 @@ if(build)
         rwphysics/ConstraintNode.hpp
         rwphysics/ConstraintEdge.hpp
         # rwphysics/ConstraintSolver.hpp
-        rwphysics/ContactGraph.hpp rwphysics/ContactModelFactory.hpp rwphysics/EulerIntegrator.hpp
+        rwphysics/ContactGraph.hpp
+        rwphysics/ContactModelFactory.hpp
+        rwphysics/EulerIntegrator.hpp
         # rwphysics/GuendelContactModel.hpp
         rwphysics/ConstraintSolver.hpp
         rwphysics/SequintialImpulseSolver.hpp
@@ -255,11 +263,13 @@ if(build)
         rwphysics/BodyController.hpp
     )
 
-    if(RW_BUILD_WITH_PQP)
-        set(FILES_CPP ${FILES_CPP} contacts/ContactStrategyPQP.cpp)
-        set(FILES_HPP ${FILES_HPP} contacts/ContactStrategyPQP.hpp)
+    if(RW_BUILD_WITH_PQP OR RW_BUILD_WITH_FCL)
+        set(FILES_CPP ${FILES_CPP} contacts/ContactStrategyDMS.cpp)
+        set(FILES_HPP ${FILES_HPP} contacts/ContactStrategyDMS.hpp)
+        if(RW_BUILD_WITH_PQP)
+            set(FILES_HPP ${FILES_HPP} contacts/ContactStrategyPQP.hpp)
+        endif()
     endif()
-
     rw_add_library(${SUBSYS_NAME} ${FILES_CPP} ${FILES_HPP})
     rw_add_includes(${SUBSYS_NAME} "rwsim" "rwsim.hpp")
     rw_add_include_dirs(
@@ -276,24 +286,32 @@ if(build)
         simulator
         util
     )
-    target_link_libraries(${SUBSYS_NAME}
-        PUBLIC
-        RW::sdurw_algorithms
-        RW::sdurw_assembly
-        RW::sdurw_opengl
-        RW::sdurw_proximitystrategies
-        RW::sdurw_pathplanners
-        RW::sdurw_simulation
-        RW::sdurw_task
-        RW::sdurw_core
-        RW::sdurw_math
-        RW::sdurw
-        ${OPENGL_LIBRARIES}
+    target_link_libraries(
+        ${SUBSYS_NAME}
+        PUBLIC RW::sdurw_algorithms
+               RW::sdurw_assembly
+               RW::sdurw_opengl
+               RW::sdurw_proximitystrategies
+               RW::sdurw_pathplanners
+               RW::sdurw_simulation
+               RW::sdurw_task
+               RW::sdurw_core
+               RW::sdurw_math
+               RW::sdurw
+               ${OPENGL_LIBRARIES}
     )
 
-    target_include_directories(${SUBSYS_NAME}
-        PUBLIC
-        $<BUILD_INTERFACE:${RWSIM_ROOT}/src> $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
+    target_include_directories(
+        ${SUBSYS_NAME} PUBLIC $<BUILD_INTERFACE:${RWSIM_ROOT}/src>
+                              $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
     )
+
+    if(RW_BUILD_WITH_PQP)
+        target_compile_definitions(${SUBSYS_NAME} PRIVATE RW_BUILD_WITH_PQP)
+    endif()
+    if(RW_BUILD_WITH_FCL)
+        target_compile_definitions(${SUBSYS_NAME} PRIVATE RW_BUILD_WITH_FCL)
+    endif()
+
     set_target_properties(${SUBSYS_NAME} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
 endif()

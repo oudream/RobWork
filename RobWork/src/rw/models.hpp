@@ -23,16 +23,6 @@
 #ifndef RW_MODELS_HPP_
 #define RW_MODELS_HPP_
 
-//#include "./models/BasicDevice.hpp"
-//#include "./models/BasicDeviceJacobian.hpp"
-//#include "./models/Cartesian6DOFDevice.hpp"
-//#include "./models/Conveyor.hpp"
-//#include "./models/ConveyorBelt.hpp"
-//#include "./models/ConveyorSegment.hpp"
-//#include "./models/DeviceJacobian.hpp"
-//#include "./models/PassivePrismaticFrame.hpp"
-//#include "./models/TimeMetricUtil.hpp"
-
 #include "./models/CompositeDevice.hpp"
 #include "./models/CompositeJointDevice.hpp"
 #include "./models/DHParameterSet.hpp"

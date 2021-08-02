@@ -116,7 +116,7 @@ namespace rwsimlibs { namespace gui {
             typedef rw::core::Ptr< const Dispatcher > Ptr;
 
             //! @brief Destructor.
-            virtual ~Dispatcher (){};
+            virtual ~Dispatcher (){}
 
             /**
              * @brief Make new SimulatorLogEntryWidget

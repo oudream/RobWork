@@ -47,6 +47,21 @@ tests:ubuntu-2004:
     ]
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-2004
 
+python-tests:ubuntu-2004:
+  extends: .linux-python-tests
+  dependencies:
+    - build-RW:ubuntu-2004
+    - build-RWS:ubuntu-2004
+    - build-RWSim:ubuntu-2004
+  needs:
+    [
+      "build-RW:ubuntu-2004",
+      "build-RWS:ubuntu-2004",
+      "build-RWSim:ubuntu-2004",
+    ]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-2004
+
+
 install-tests:ubuntu-2004:
   extends: .linux-install-tests
   dependencies:

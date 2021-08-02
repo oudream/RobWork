@@ -22,6 +22,7 @@
  * @file rw/proximity/CollisionStrategy.hpp
  */
 
+#if !defined(SWIG)
 #include "ProximityStrategy.hpp"
 
 #include <rw/core/ExtensionPoint.hpp>
@@ -30,7 +31,7 @@
 #include <rw/math/Transform3D.hpp>
 
 #include <string>
-//#include "ProximityStrategyData.hpp"
+#endif
 
 namespace rw { namespace kinematics {
     class Frame;
@@ -53,9 +54,12 @@ namespace rw { namespace proximity {
         //! @brief smart pointer type to this class
         typedef rw::core::Ptr< CollisionStrategy > Ptr;
 
+#if !defined(SWIG)
         //! the type of query that is to be performed
-        typedef enum { FirstContact, AllContacts } QueryType;
-
+        typedef enum {FirstContact, AllContacts} QueryType;
+#else
+        typedef int QueryType;
+#endif
         /**
          * @brief result of a single collision pair
          *
@@ -87,7 +91,7 @@ namespace rw { namespace proximity {
             };
 
             //! @brief transformation from a to b
-            rw::math::Transform3D<> _aTb;
+            rw::math::Transform3D<double> _aTb;
 
             //! @brief the collision pairs
             std::vector< CollisionPair > _collisionPairs;
@@ -111,7 +115,7 @@ namespace rw { namespace proximity {
             {
                 a    = NULL;
                 b    = NULL;
-                _aTb = rw::math::Transform3D<>::identity ();
+                _aTb = rw::math::Transform3D<double>::identity ();
                 _collisionPairs.clear ();
                 _geomPrimIds.clear ();
                 _nrBVTests   = 0;
@@ -135,8 +139,8 @@ namespace rw { namespace proximity {
          * @return true if @f$ \mathcal{F}_a @f$ and @f$ \mathcal{F}_b @f$ are
          * colliding, false otherwise.
          */
-        bool inCollision (const kinematics::Frame* a, const math::Transform3D<>& wTa,
-                          const kinematics::Frame* b, const math::Transform3D<>& wTb,
+        bool inCollision (const kinematics::Frame* a, const math::Transform3D<double>& wTa,
+                          const kinematics::Frame* b, const math::Transform3D<double>& wTb,
                           QueryType type = FirstContact);
 
         /**
@@ -151,8 +155,8 @@ namespace rw { namespace proximity {
          * @return true if @f$ \mathcal{F}_a @f$ and @f$ \mathcal{F}_b @f$ are
          * colliding, false otherwise.
          */
-        bool inCollision (const kinematics::Frame* a, const math::Transform3D<>& wTa,
-                          const kinematics::Frame* b, const math::Transform3D<>& wTb,
+        bool inCollision (const kinematics::Frame* a, const math::Transform3D<double>& wTa,
+                          const kinematics::Frame* b, const math::Transform3D<double>& wTb,
                           class ProximityStrategyData& data, QueryType type = FirstContact);
 
         /**
@@ -165,8 +169,8 @@ namespace rw { namespace proximity {
          * @return true if @f$ \mathcal{F}_a @f$ and @f$ \mathcal{F}_b @f$ are
          * colliding, false otherwise.
          */
-        bool inCollision (ProximityModel::Ptr a, const math::Transform3D<>& wTa,
-                          ProximityModel::Ptr b, const math::Transform3D<>& wTb,
+        bool inCollision (ProximityModel::Ptr a, const math::Transform3D<double>& wTa,
+                          ProximityModel::Ptr b, const math::Transform3D<double>& wTb,
                           ProximityStrategyData& data);
 
         /**
@@ -175,11 +179,11 @@ namespace rw { namespace proximity {
         struct Contact
         {
             // point described in object A frame
-            rw::math::Vector3D<> point;
+            rw::math::Vector3D<double> point;
 
             // surface normal on object B described in object A coordinates
-            rw::math::Vector3D<> normalA;
-            rw::math::Vector3D<> normalB;
+            rw::math::Vector3D<double> normalA;
+            rw::math::Vector3D<double> normalB;
         };
 
         /**
@@ -275,8 +279,8 @@ namespace rw { namespace proximity {
          * @return true if @f$ \mathcal{F}_a @f$ and @f$ \mathcal{F}_b @f$ are
          * colliding, false otherwise.
          */
-        virtual bool doInCollision (ProximityModel::Ptr a, const math::Transform3D<>& wTa,
-                                    ProximityModel::Ptr b, const math::Transform3D<>& wTb,
+        virtual bool doInCollision (ProximityModel::Ptr a, const math::Transform3D<double>& wTa,
+                                    ProximityModel::Ptr b, const math::Transform3D<double>& wTb,
                                     ProximityStrategyData& data) = 0;
 
       private:

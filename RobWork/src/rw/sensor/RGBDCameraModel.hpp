@@ -21,11 +21,11 @@
 /**
  * @file RGBDCameraModel.hpp
  */
-
+#if !defined(SWIG)
 #include "SensorModel.hpp"
 
 #include <rw/core/Ptr.hpp>
-
+#endif 
 namespace rw { namespace sensor {
 
     /** @addtogroup sensor */

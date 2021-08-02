@@ -1,3 +1,4 @@
+from sdurw_proximity import *
 from sdurw import *
 from sdurw_proximitystrategies import*
 
@@ -63,7 +64,7 @@ def printColInfo(name,detector:"CollisionDetector",wc:"WorkCellPtr",state:"State
     start = time.time()
     detector.resetComputationTimeAndCount()
     res2 = ProximityData()
-    res2.setCollisionQueryType(CollisionDetectorQueryType_AllContactsFullInfo) 
+    res2.setCollisionQueryType(CollisionDetectorQueryType.AllContactsFullInfo) 
     ret2 = detector.inCollision(state,res2)
     time2 = detector.getComputationTime()
     end = time.time()
@@ -146,12 +147,12 @@ if __name__ == '__main__':
     box2.setTransform(trans,state)
     ur.setQ(Q(6,1.46819, -1.02748, 2.55523, -3.10998, -1.56556, -0.429299),state)
 
-    rw_detector = sdurw.ownedPtr(CollisionDetector(wc))
+    rw_detector = sdurw_proximity.ownedPtr(CollisionDetector(wc))
     printColInfo("Default Collision Detector", rw_detector,wc,state)
 
     for id in ProximityStrategyFactory.getCollisionStrategyIDs():
         #needs to be ownedPtr to avoid segfault
-        prox_detector = sdurw.ownedPtr(CollisionDetector(wc,ProximityStrategyFactory.makeCollisionStrategy(id)))
+        prox_detector = sdurw_proximity.ownedPtr(CollisionDetector(wc,ProximityStrategyFactory.makeCollisionStrategy(id)))
         printColInfo(id + " Collision Detector", prox_detector,wc,state)
 
 

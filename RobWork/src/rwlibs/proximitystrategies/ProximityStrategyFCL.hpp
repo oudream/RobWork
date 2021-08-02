@@ -24,6 +24,7 @@
 
 #include <rw/core/Ptr.hpp>
 #include <rw/proximity/CollisionStrategy.hpp>
+#include <rw/proximity/DistanceMultiStrategy.hpp>
 #include <rw/proximity/DistanceStrategy.hpp>
 
 #include <fcl/config.h>
@@ -99,7 +100,8 @@ namespace rwlibs { namespace proximitystrategies {
      * For further information check out https://github.com/flexible-collision-library/fcl
      */
     class ProximityStrategyFCL : public rw::proximity::CollisionStrategy,
-                                 public rw::proximity::DistanceStrategy
+                                 public rw::proximity::DistanceStrategy,
+                                 public rw::proximity::DistanceMultiStrategy
     {
       public:
         //! @brief Smart pointer type for FCL Proximity strategy.
@@ -166,7 +168,7 @@ namespace rwlibs { namespace proximitystrategies {
          * @brief Constructor
          * @param bv [in] the bounding volume type to use.
          */
-        ProximityStrategyFCL (BV bv = BV::AABB);
+        ProximityStrategyFCL (BV bv = BV::RSS);
 
         /**
          * @brief Destructor
@@ -225,7 +227,7 @@ namespace rwlibs { namespace proximitystrategies {
          *
          * @note Not implemented as nothing appears to be using this functionality
          */
-        void getCollisionContacts (std::vector< CollisionStrategy::Contact >& contacts,
+        void getCollisionContacts (std::vector< rw::proximity::CollisionStrategy::Contact >& contacts,
                                    rw::proximity::ProximityStrategyData& data);
 
         //// Interface of DistanceStrategy
@@ -235,6 +237,12 @@ namespace rwlibs { namespace proximitystrategies {
                     rw::proximity::ProximityModel::Ptr b, const rw::math::Transform3D<>& wTb,
                     class rw::proximity::ProximityStrategyData& data);
 
+        //// Interface of DistanceMultiStrategy
+        //! @copydoc rw::proximity::DistanceMultiStrategy::doDistance
+        rw::proximity::DistanceMultiStrategy::Result&
+        doDistances (rw::proximity::ProximityModel::Ptr a, const rw::math::Transform3D<>& wTa,
+                     rw::proximity::ProximityModel::Ptr b, const rw::math::Transform3D<>& wTb,
+                     double tolerance, class rw::proximity::ProximityStrategyData& data);
         //// End of interfaces
 
         /**
@@ -294,6 +302,9 @@ namespace rwlibs { namespace proximitystrategies {
          * @brief Get access to the collected FCL distance result
          */
         fclDistanceResult& getDistanceResult ();
+
+        std::pair< rw::math::Vector3D<>, rw::math::Vector3D<> >
+        getSurfaceNormals (rw::proximity::DistanceMultiStrategy::Result& res, int idx);
 
       private:
         template< typename BV >

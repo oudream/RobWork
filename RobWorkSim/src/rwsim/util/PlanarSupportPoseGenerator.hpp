@@ -92,7 +92,7 @@ namespace rwsim { namespace util {
         rw::core::Ptr< rw::geometry::ConvexHull3D > _hullGenerator;
         std::vector< SupportPose > _supportPoses;
         std::vector< rw::geometry::Plane > _supportPlanes;
-        std::vector< std::vector< rw::geometry::TriangleN1<> > > _supportTriangles;
+        std::vector< std::vector< rw::geometry::TriangleN1<double> > > _supportTriangles;
         rw::math::Vector3D<> _com;
     };
 

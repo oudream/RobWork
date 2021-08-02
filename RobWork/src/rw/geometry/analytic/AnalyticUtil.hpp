@@ -24,18 +24,21 @@
  * \copydoc rw::geometry::AnalyticUtil
  */
 
+#if !defined(SWIG)
 #include <rw/math/Vector3D.hpp>
 
 #include <list>
 #include <vector>
+#endif
 
 namespace rw { namespace geometry {
 
     class QuadraticCurve;
 
     //! @addtogroup geometry
-
+#if !defined(SWIG)
     //! @{
+#endif 
     /**
      * @brief Utility functions for functions dealing with analytic geometry.
      */
@@ -56,8 +59,8 @@ namespace rw { namespace geometry {
          * of the curves.
          * @return a list of polygons. Each polygon is a list of points.
          */
-        static std::list< std::vector< rw::math::Vector3D<> > >
-        combinePolygons (const std::vector< rw::math::Vector3D<> >& border,
+        static std::list< std::vector< rw::math::Vector3D<double> > >
+        combinePolygons (const std::vector< rw::math::Vector3D<double> >& border,
                          const std::list< std::vector< std::size_t > >& subborder,
                          const std::vector< rw::geometry::QuadraticCurve >& curves,
                          double stepsPerRevolution);
@@ -66,7 +69,9 @@ namespace rw { namespace geometry {
         AnalyticUtil ();
         virtual ~AnalyticUtil ();
     };
+    #if!defined(SWIG)
     //! @}
+    #endif
 
 }}    // namespace rw::geometry
 

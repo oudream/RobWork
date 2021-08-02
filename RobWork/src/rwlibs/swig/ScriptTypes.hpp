@@ -21,16 +21,13 @@
 #include <RobWorkConfig.hpp>
 #include <rw/geometry.hpp>
 #include <rw/graphics.hpp>
-//#include <rw/graspplanning.hpp>
 #include <rw/invkin.hpp>
-#include <rw/models.hpp>
 #include <rw/pathplanning.hpp>
 //#include <rw/plugin.hpp>
 #include <rw/loaders/ImageLoader.hpp>
 #include <rw/loaders/WorkCellLoader.hpp>
 #include <rw/loaders/model3d/STLFile.hpp>
 #include <rw/proximity.hpp>
-#include <rw/sensor.hpp>
 #include <rw/trajectory.hpp>
 #ifdef RW_HAVE_XERCES
 #include <rw/loaders/xml/XMLTrajectoryLoader.hpp>
@@ -84,57 +81,6 @@ namespace rwlibs {
  * The wrapped classes are defined as typedefs of other classes in RobWork.
  */
 namespace swig {
-
-    /** @addtogroup swig */
-    /*@{*/
-
-    ///@}
-    /**
-     * @name geometry
-     * Wrapped classes in geometry.
-     */
-    ///@{
-    //! @copydoc rw::geometry::GeometryData
-    typedef rw::geometry::GeometryData GeometryData;
-    //! @copydoc rw::geometry::GeometryData::GeometryType
-    typedef rw::geometry::GeometryData::GeometryType GeometryType;
-    //! @copydoc rw::geometry::Primitive
-    typedef rw::geometry::Primitive Primitive;
-    //! @copydoc rw::geometry::Box
-    typedef rw::geometry::Box Box;
-    //! @copydoc rw::geometry::Cone
-    typedef rw::geometry::Cone Cone;
-    //! @copydoc rw::geometry::Sphere
-    typedef rw::geometry::Sphere Sphere;
-    //! @copydoc rw::geometry::Plane
-    typedef rw::geometry::Plane Plane;
-    //! @copydoc rw::geometry::Cylinder
-    typedef rw::geometry::Cylinder Cylinder;
-    //! @copydoc rw::geometry::Triangle
-    typedef rw::geometry::Triangle< double > Triangle;
-    //! @copydoc rw::geometry::Triangle
-    typedef rw::geometry::Triangle< float > Trianglef;
-    //! @copydoc rw::geometry::TriangleN1
-    typedef rw::geometry::TriangleN1< double > TriangleN1;
-    //! @copydoc rw::geometry::TriangleN1
-    typedef rw::geometry::TriangleN1< float > TriangleN1f;
-    //! @copydoc rw::geometry::TriMesh
-    typedef rw::geometry::TriMesh TriMesh;
-    //! @copydoc rw::geometry::PlainTriMesh
-    typedef rw::geometry::PlainTriMesh< Triangle > PlainTriMesh;
-    //! @copydoc rw::geometry::PlainTriMesh
-    typedef rw::geometry::PlainTriMesh< Trianglef > PlainTriMeshf;
-    //! @copydoc rw::geometry::PlainTriMesh
-    typedef rw::geometry::PlainTriMesh< TriangleN1 > PlainTriMeshN1;
-    //! @copydoc rw::geometry::PlainTriMesh
-    typedef rw::geometry::PlainTriMesh< TriangleN1f > PlainTriMeshN1f;
-    //! @copydoc rw::geometry::ConvexHull3D
-    typedef rw::geometry::ConvexHull3D ConvexHull3D;
-    //! @copydoc rw::geometry::Geometry
-    typedef rw::geometry::Geometry Geometry;
-    //! @copydoc rw::geometry::PointCloud
-    typedef rw::geometry::PointCloud PointCloud;
-    ///@}
 
     /**
      * @name graphics
@@ -216,86 +162,6 @@ namespace swig {
     ///@}
 
     /**
-     * @name models
-     * Wrapped classes in models.
-     */
-    ///@{
-    //! @copydoc rw::models::JacobianCalculator
-    typedef rw::models::JacobianCalculator JacobianCalculator;
-    //! @copydoc rw::models::JointDeviceJacobianCalculator
-    typedef rw::models::JointDeviceJacobianCalculator JointDeviceJacobianCalculator;
-    //! @copydoc rw::models::DeviceJacobianCalculator
-    typedef rw::models::DeviceJacobianCalculator DeviceJacobianCalculator;
-    //! @copydoc rw::models::JacobianUtil
-    typedef rw::models::JacobianUtil JacobianUtil;
-
-    //! @copydoc rw::models::WorkCell
-    typedef rw::models::WorkCell WorkCell;
-    typedef rw::models::WorkCell::WorkCellChangedListener WorkCellChangedListener;
-
-    //! @copydoc rw::models::Joint
-    typedef rw::models::Joint Joint;
-    //! @copydoc rw::models::RevoluteJoint
-    typedef rw::models::RevoluteJoint RevoluteJoint;
-    //! @copydoc rw::models::PrismaticJoint
-    typedef rw::models::PrismaticJoint PrismaticJoint;
-    //! @copydoc rw::models::PrismaticSphericalJoint
-    typedef rw::models::PrismaticSphericalJoint PrismaticSphericalJoint;
-    //! @copydoc rw::models::PrismaticUniversalJoint
-    typedef rw::models::PrismaticUniversalJoint PrismaticUniversalJoint;
-    //! @copydoc rw::models::SphericalJoint
-    typedef rw::models::SphericalJoint SphericalJoint;
-    //! @copydoc rw::models::DependentJoint
-    typedef rw::models::DependentJoint DependentJoint;
-    //! @copydoc rw::models::DependentPrismaticJoint
-    typedef rw::models::DependentPrismaticJoint DependentPrismaticJoint;
-    //! @copydoc rw::models::DependentRevoluteJoint
-    typedef rw::models::DependentRevoluteJoint DependentRevoluteJoint;
-    //! @copydoc rw::models::VirtualJoint
-    typedef rw::models::VirtualJoint VirtualJoint;
-    //! @copydoc rw::models::UniversalJoint
-    typedef rw::models::UniversalJoint UniversalJoint;
-
-    //! @copydoc rw::models::Object
-    typedef rw::models::Object Object;
-    //! @copydoc rw::models::DeformableObject
-    typedef rw::models::DeformableObject DeformableObject;
-    //! @copydoc rw::models::RigidObject
-    typedef rw::models::RigidObject RigidObject;
-
-    //! @copydoc rw::models::Device
-    typedef rw::models::Device Device;
-    //! @copydoc rw::models::JointDevice
-    typedef rw::models::JointDevice JointDevice;
-    //! @copydoc rw::models::MobileDevice
-    typedef rw::models::MobileDevice MobileDevice;
-    //! @copydoc rw::models::SerialDevice
-    typedef rw::models::SerialDevice SerialDevice;
-    //! @copydoc rw::models::TreeDevice
-    typedef rw::models::TreeDevice TreeDevice;
-    //! @copydoc rw::models::CompositeDevice
-    typedef rw::models::CompositeDevice CompositeDevice;
-    //! @copydoc rw::models::CompositeJointDevice
-    typedef rw::models::CompositeJointDevice CompositeJointDevice;
-    //! @copydoc rw::models::ParallelDevice
-    typedef rw::models::ParallelDevice ParallelDevice;
-    //! @copydoc rw::models::SE3Device
-    typedef rw::models::SE3Device SE3Device;
-
-    //! @copydoc rw::models::ParallelLeg
-    typedef rw::models::ParallelLeg ParallelLeg;
-    //! @copydoc rw::models::DHParameterSet
-    typedef rw::models::DHParameterSet DHParameterSet;
-    //! @copydoc rw::models::RigidBodyInfo
-    typedef rw::models::RigidBodyInfo RigidBodyInfo;
-
-    //! @copydoc rw::models::ControllerModel
-    typedef rw::models::ControllerModel ControllerModel;
-    //! @copydoc rw::models::Models
-    typedef rw::models::Models Models;
-    ///@}
-
-    /**
      * @name pathplanning
      * Wrapped classes in pathplanning.
      */
@@ -330,112 +196,6 @@ namespace swig {
     // plugin
 
     /**
-     * @name proximity
-     * Wrapped classes in proximity.
-     */
-    ///@{
-    //! @copydoc rw::proximity::CollisionDetector
-    typedef rw::proximity::CollisionDetector CollisionDetector;
-    typedef rw::proximity::CollisionDetector::QueryResult CollisionDetectorQueryResult;
-    //! @copydoc rw::proximity::CollisionStrategy
-    typedef rw::proximity::CollisionSetup CollisionSetup;
-    //! @copydoc rw::proximity::CollisionStrategy
-    typedef rw::proximity::CollisionStrategy CollisionStrategy;
-    typedef rw::proximity::CollisionStrategy::Result CollisionStrategyResult;
-    typedef rw::proximity::CollisionStrategy::Result::CollisionPair CollisionStrategyCollisionPair;
-    //! @copydoc rw::proximity::CollisionStrategy
-    typedef rw::proximity::CollisionToleranceStrategy CollisionToleranceStrategy;
-    //! @copydoc rw::proximity::DistanceCalculator
-    typedef rw::proximity::DistanceCalculator DistanceCalculator;
-    //! @copydoc rw::proximity::DistanceStrategy
-    typedef rw::proximity::DistanceStrategy DistanceStrategy;
-    typedef rw::proximity::DistanceStrategy::Result DistanceStrategyResult;
-    //! @copydoc rw::proximity::DistanceMultiStrategy
-    typedef rw::proximity::DistanceMultiStrategy DistanceMultiStrategy;
-    typedef rw::proximity::DistanceMultiStrategy::Result DistanceMultiStrategyResult;
-    //! @copydoc rw::proximity::ProximityCache
-    typedef rw::proximity::ProximityCache ProximityCache;
-    //! @copydoc rw::proximity::ProximityModel
-    typedef rw::proximity::ProximityModel ProximityModel;
-    //! @copydoc rw::proximity::ProximityStrategy
-    typedef rw::proximity::ProximityData ProximityData;
-    //! @copydoc rw::proximity::ProximityStrategy
-    typedef rw::proximity::ProximityStrategy ProximityStrategy;
-    //! @copydoc rw::proximity::ProximityStrategyData
-    typedef rw::proximity::ProximityStrategyData ProximityStrategyData;
-    //! @copydoc rw::proximity::ProximityFilterStrategy
-    typedef rw::proximity::ProximityFilterStrategy ProximityFilterStrategy;
-    //! @copydoc rw::proximity::ProximityFilter
-    typedef rw::proximity::ProximityFilter ProximityFilter;
-    //! @copydoc rw::proximity::ProximitySetupRule
-    typedef rw::proximity::ProximitySetupRule ProximitySetupRule;
-    //! @copydoc rw::proximity::ProximitySetup
-    typedef rw::proximity::ProximitySetup ProximitySetup;
-
-    ///@}
-
-    /**
-     * @name sensor
-     * Wrapped classes in sensor.
-     */
-    ///@{
-    //! @copydoc rw::sensor::Camera
-    typedef rw::sensor::Camera Camera;
-    //! @copydoc rw::sensor::CameraModel
-    typedef rw::sensor::CameraModel CameraModel;
-    //! @copydoc rw::sensor::CameraListener
-    typedef rw::sensor::CameraListener CameraListener;
-    //! @copydoc rw::sensor::CameraFirewire
-    typedef rw::sensor::CameraFirewire CameraFirewire;
-    //! @copydoc rw::sensor::StereoCameraModel
-    typedef rw::sensor::StereoCameraModel StereoCameraModel;
-    //! @copydoc rw::sensor::Contact2D
-    typedef rw::sensor::Contact2D Contact2D;
-    //! @copydoc rw::sensor::Contact3D
-    typedef rw::sensor::Contact3D Contact3D;
-    //! @copydoc rw::sensor::FTSensor
-    typedef rw::sensor::FTSensor FTSensor;
-    //! @copydoc rw::sensor::FTSensorModel
-    typedef rw::sensor::FTSensorModel FTSensorModel;
-    //! @copydoc rw::sensor::Image
-    typedef rw::sensor::Image Image;
-    //! @copydoc rw::sensor::ImageUtil
-    typedef rw::sensor::ImageUtil ImageUtil;
-    //! @copydoc rw::sensor::Pixel4f
-    typedef rw::sensor::Pixel4f Pixel4f;
-    //! @copydoc rw::sensor::Image::Pixel4i
-    typedef rw::sensor::Image::Pixel4i Pixel4i;
-    //! @copydoc rw::sensor::Sensor
-    typedef rw::sensor::Sensor Sensor;
-    //! @copydoc rw::sensor::SensorModel
-    typedef rw::sensor::SensorModel SensorModel;
-    //! @copydoc rw::sensor::SensorData
-    typedef rw::sensor::SensorData SensorData;
-    //! @copydoc rw::sensor::Scanner
-    typedef rw::sensor::Scanner Scanner;
-    //! @copydoc rw::sensor::Scanner1D
-    typedef rw::sensor::Scanner1D Scanner1D;
-    //! @copydoc rw::sensor::Scanner2D
-    typedef rw::sensor::Scanner2D Scanner2D;
-    //! @copydoc rw::sensor::Scanner2DModel
-    typedef rw::sensor::Scanner2DModel Scanner2DModel;
-    //! @copydoc rw::sensor::Scanner25D
-    typedef rw::sensor::Scanner25D Scanner25D;
-    //! @copydoc rw::sensor::Scanner25DModel
-    typedef rw::sensor::Scanner25DModel Scanner25DModel;
-    //! @copydoc rw::sensor::RGBDCameraModel
-    typedef rw::sensor::RGBDCameraModel RGBDCameraModel;
-
-    //! @copydoc rw::sensor::TactileArray
-    typedef rw::sensor::TactileArray TactileArray;
-    //! @copydoc rw::sensor::TactileArrayModel
-    typedef rw::sensor::TactileArrayModel TactileArrayModel;
-    //! @copydoc rw::sensor::TactileArrayUtil
-    typedef rw::sensor::TactileArrayUtil TactileArrayUtil;
-
-    ///@}
-
-    /**
      * @name assembly
      * Wrapped classes in assembly.
      */
@@ -465,50 +225,6 @@ namespace swig {
     typedef rw::trajectory::TimedState TimedState;
     //! @copydoc rw::trajectory::TimedStatePath
     typedef rw::trajectory::TimedStatePath PathTimedState;
-   /* //! @copydoc rw::trajectory::Trajectory
-    typedef rw::trajectory::Trajectory< State > TrajectoryState;
-    //! @copydoc rw::trajectory::Trajectory
-    typedef rw::trajectory::Trajectory< Q > TrajectoryQ;
-    //! @copydoc rw::trajectory::Trajectory
-    typedef rw::trajectory::Trajectory< double > TrajectoryR1;
-    //! @copydoc rw::trajectory::Trajectory
-    typedef rw::trajectory::Trajectory< Vector2d > TrajectoryR2;
-    //! @copydoc rw::trajectory::Trajectory
-    typedef rw::trajectory::Trajectory< Vector3d > TrajectoryR3;
-    //! @copydoc rw::trajectory::Trajectory
-    typedef rw::trajectory::Trajectory< Rotation3Dd > TrajectorySO3;
-    //! @copydoc rw::trajectory::Trajectory
-    typedef rw::trajectory::Trajectory< Transform3Dd > TrajectorySE3;*/
-
-   /* //! @copydoc rw::trajectory::LinearInterpolator
-    typedef rw::trajectory::LinearInterpolator< double > LinearInterpolator;
-    //! @copydoc rw::trajectory::LinearInterpolator
-    typedef rw::trajectory::LinearInterpolator< rw::math::Q > LinearInterpolatorQ;
-    //! @copydoc rw::trajectory::LinearInterpolator
-    typedef rw::trajectory::LinearInterpolator< Vector2d > LinearInterpolatorR2;
-    //! @copydoc rw::trajectory::LinearInterpolator
-    typedef rw::trajectory::LinearInterpolator< rw::math::Rotation3D< double > >
-        LinearInterpolatorR3;
-    //! @copydoc rw::trajectory::LinearInterpolator
-    typedef rw::trajectory::LinearInterpolator< rw::math::Rotation3D< double > >
-        LinearInterpolatorSO3;
-    //! @copydoc rw::trajectory::LinearInterpolator
-    typedef rw::trajectory::LinearInterpolator< rw::math::Transform3D< double > >
-        LinearInterpolatorSE3;*/
-
-  /*  //! @copydoc rw::trajectory::RampInterpolator
-    typedef rw::trajectory::RampInterpolator< double > RampInterpolator;
-    //! @copydoc rw::trajectory::RampInterpolator
-    typedef rw::trajectory::RampInterpolator< rw::math::Q > RampInterpolatorQ;
-    //! @copydoc rw::trajectory::RampInterpolator
-    typedef rw::trajectory::RampInterpolator< Vector2d > RampInterpolatorR2;
-    //! @copydoc rw::trajectory::RampInterpolator
-    typedef rw::trajectory::RampInterpolator< Vector3d > RampInterpolatorR3;
-    //! @copydoc rw::trajectory::RampInterpolator
-    typedef rw::trajectory::RampInterpolator< rw::math::Rotation3D< double > > RampInterpolatorSO3;
-    //! @copydoc rw::trajectory::RampInterpolator
-    typedef rw::trajectory::RampInterpolator< rw::math::Transform3D< double > > RampInterpolatorSE3;*/
-
     //! @copydoc rw::trajectory::Timed
     typedef rw::trajectory::Timed< AssemblyState > TimedAssemblyState;
     ///@}

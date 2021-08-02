@@ -18,9 +18,11 @@
 #ifndef RW_GEOMETRY_QHULL3D_HPP_
 #define RW_GEOMETRY_QHULL3D_HPP_
 
+#if !defined(SWIG)
 #include "ConvexHull3D.hpp"
 
 #include <vector>
+#endif
 
 namespace rw { namespace geometry {
     /** @addtogroup geometry
@@ -54,29 +56,30 @@ namespace rw { namespace geometry {
         virtual ~QHull3D (){};
 
         //! @copydoc ConvexHull3D::rebuild
-        void rebuild (const std::vector< rw::math::Vector3D<> >& vertices);
+        void rebuild (const std::vector< rw::math::Vector3D<double> >& vertices);
 
         //! @copydoc ConvexHull3D::isInside
-        bool isInside (const rw::math::Vector3D<>& vertex);
+        bool isInside (const rw::math::Vector3D<double>& vertex);
 
         //! @copydoc ConvexHull3D::getMinDistOutside
-        double getMinDistOutside (const rw::math::Vector3D<>& vertex);
+        double getMinDistOutside (const rw::math::Vector3D<double>& vertex);
 
         //! @copydoc ConvexHull3D::getMinDistInside
-        double getMinDistInside (const rw::math::Vector3D<>& vertex);
+        double getMinDistInside (const rw::math::Vector3D<double>& vertex);
 
         //! @copydoc ConvexHull3D::toTriMesh
-        rw::geometry::PlainTriMesh< rw::geometry::TriangleN1< double > >::Ptr toTriMesh ();
+        rw::core::Ptr< rw::geometry::PlainTriMesh< rw::geometry::TriangleN1< double > > >
+        toTriMesh ();
 
         /**
          * @brief Returns the vertices defining the convex hull
          */
-        const std::vector< rw::math::Vector3D<> >& getVertices () const { return _hullVertices; };
+        const std::vector< rw::math::Vector3D<double> >& getVertices () const { return _hullVertices; };
 
         /**
          * @brief Returns the normals of the planes defining the convex hull
          */
-        const std::vector< rw::math::Vector3D<> >& getPlaneNormals () const { return _faceNormals; }
+        const std::vector< rw::math::Vector3D<double> >& getPlaneNormals () const { return _faceNormals; }
 
         /**
          * @brief Returns the offsets of the planes defining the convex hull
@@ -84,7 +87,7 @@ namespace rw { namespace geometry {
         const std::vector< double >& getPlaneOffsets () const { return _faceOffsets; }
 
       private:
-        std::vector< rw::math::Vector3D<> > _hullVertices, _faceNormals;
+        std::vector< rw::math::Vector3D<double> > _hullVertices, _faceNormals;
         std::vector< double > _faceOffsets;
         std::vector< int > _vertiIdxs, _faceIdxs;
     };
