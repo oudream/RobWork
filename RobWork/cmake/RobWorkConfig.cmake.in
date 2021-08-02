@@ -23,6 +23,7 @@ endif(ROBWORK_FIND_QUIETLY)
 set(RWCFG_ROOT ${CMAKE_CURRENT_LIST_DIR})
 include("${RWCFG_ROOT}/RobWorkConfigMacros.cmake")
 rw_is_windows_install_by_exe(${RWCFG_ROOT} IS_WINDOWS_EXE_INSTALL)
+set(RobWork_REQUIRED ${RobWork_FIND_REQUIRED})
 
 # get the relavant build type
 get_robwork_build_type(${RWCFG_ROOT} RW_BUILD_TYPE)

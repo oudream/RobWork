@@ -9,7 +9,7 @@ endfunction()
 #####################################
 # Find buildtype of project and correct it if wrong assumption is made
 
-macro(GET_@CMAKE_PROJECT_NAME@_BUILD_TYPE CFG_ROOT @PROJECT_PREFIX@_BUILD_TYPE)
+macro(GET_@ROBWORK_PROJECT_NAME@_BUILD_TYPE CFG_ROOT @PROJECT_PREFIX@_BUILD_TYPE)
     # defaults to release
     set(BTYPE_TMP release)
     if(CMAKE_BUILD_TYPE)
@@ -19,102 +19,102 @@ macro(GET_@CMAKE_PROJECT_NAME@_BUILD_TYPE CFG_ROOT @PROJECT_PREFIX@_BUILD_TYPE)
     endif()
 
     # first test if the correct cmake build type is installed
-    if(EXISTS ${CFG_ROOT}/@CMAKE_PROJECT_NAME@BuildConfig_${BTYPE_TMP}.cmake)
+    if(EXISTS ${CFG_ROOT}/@ROBWORK_PROJECT_NAME@BuildConfig_${BTYPE_TMP}.cmake)
         set(${@PROJECT_PREFIX@_BUILD_TYPE} ${BTYPE_TMP})
     else()
 
-        # find best @CMAKE_PROJECT_NAME@ build match
+        # find best @ROBWORK_PROJECT_NAME@ build match
         if(${BTYPE_TMP} STREQUAL "release")
-            # find release compatible @CMAKE_PROJECT_NAME@ installation
-            if(EXISTS ${CFG_ROOT}/@CMAKE_PROJECT_NAME@BuildConfig_minsizerel.cmake)
+            # find release compatible @ROBWORK_PROJECT_NAME@ installation
+            if(EXISTS ${CFG_ROOT}/@ROBWORK_PROJECT_NAME@BuildConfig_minsizerel.cmake)
                 set(${@PROJECT_PREFIX@_BUILD_TYPE} minsizerel)
-            elseif(EXISTS ${CFG_ROOT}/@CMAKE_PROJECT_NAME@BuildConfig_relwithdebinfo.cmake)
+            elseif(EXISTS ${CFG_ROOT}/@ROBWORK_PROJECT_NAME@BuildConfig_relwithdebinfo.cmake)
                 set(${@PROJECT_PREFIX@_BUILD_TYPE} relwithdebinfo)
-            elseif(EXISTS ${CFG_ROOT}/@CMAKE_PROJECT_NAME@BuildConfig_debug.cmake)
+            elseif(EXISTS ${CFG_ROOT}/@ROBWORK_PROJECT_NAME@BuildConfig_debug.cmake)
                 set(${@PROJECT_PREFIX@_BUILD_TYPE} debug)
-            elseif(EXISTS ${CFG_ROOT}/@CMAKE_PROJECT_NAME@BuildConfig_none.cmake)
+            elseif(EXISTS ${CFG_ROOT}/@ROBWORK_PROJECT_NAME@BuildConfig_none.cmake)
                 set(${@PROJECT_PREFIX@_BUILD_TYPE} none)
             else()
-                message(FATAL_ERROR "Could not find any build of @CMAKE_PROJECT_NAME@!")
+                message(FATAL_ERROR "Could not find any build of @ROBWORK_PROJECT_NAME@!")
             endif()
         elseif(${BTYPE_TMP} STREQUAL "minsizerel")
-            if(EXISTS ${CFG_ROOT}/@CMAKE_PROJECT_NAME@BuildConfig_release.cmake)
+            if(EXISTS ${CFG_ROOT}/@ROBWORK_PROJECT_NAME@BuildConfig_release.cmake)
                 set(${@PROJECT_PREFIX@_BUILD_TYPE} release)
-            elseif(EXISTS ${CFG_ROOT}/@CMAKE_PROJECT_NAME@BuildConfig_relwithdebinfo.cmake)
+            elseif(EXISTS ${CFG_ROOT}/@ROBWORK_PROJECT_NAME@BuildConfig_relwithdebinfo.cmake)
                 set(${@PROJECT_PREFIX@_BUILD_TYPE} relwithdebinfo)
-            elseif(EXISTS ${CFG_ROOT}/@CMAKE_PROJECT_NAME@BuildConfig_debug.cmake)
+            elseif(EXISTS ${CFG_ROOT}/@ROBWORK_PROJECT_NAME@BuildConfig_debug.cmake)
                 set(${@PROJECT_PREFIX@_BUILD_TYPE} debug)
-            elseif(EXISTS ${CFG_ROOT}/@CMAKE_PROJECT_NAME@BuildConfig_none.cmake)
+            elseif(EXISTS ${CFG_ROOT}/@ROBWORK_PROJECT_NAME@BuildConfig_none.cmake)
                 set(${@PROJECT_PREFIX@_BUILD_TYPE} none)
             else()
-                message(FATAL_ERROR "Could not find any build of @CMAKE_PROJECT_NAME@!")
+                message(FATAL_ERROR "Could not find any build of @ROBWORK_PROJECT_NAME@!")
             endif()
         elseif(${BTYPE_TMP} STREQUAL "relwithdebinfo")
-            if(EXISTS ${CFG_ROOT}/@CMAKE_PROJECT_NAME@BuildConfig_release.cmake)
+            if(EXISTS ${CFG_ROOT}/@ROBWORK_PROJECT_NAME@BuildConfig_release.cmake)
                 set(${@PROJECT_PREFIX@_BUILD_TYPE} release)
-            elseif(EXISTS ${CFG_ROOT}/@CMAKE_PROJECT_NAME@BuildConfig_minsizerel.cmake)
+            elseif(EXISTS ${CFG_ROOT}/@ROBWORK_PROJECT_NAME@BuildConfig_minsizerel.cmake)
                 set(${@PROJECT_PREFIX@_BUILD_TYPE} minsizerel)
-            elseif(EXISTS ${CFG_ROOT}/@CMAKE_PROJECT_NAME@BuildConfig_debug.cmake)
+            elseif(EXISTS ${CFG_ROOT}/@ROBWORK_PROJECT_NAME@BuildConfig_debug.cmake)
                 set(${@PROJECT_PREFIX@_BUILD_TYPE} debug)
-            elseif(EXISTS ${CFG_ROOT}/@CMAKE_PROJECT_NAME@BuildConfig_none.cmake)
+            elseif(EXISTS ${CFG_ROOT}/@ROBWORK_PROJECT_NAME@BuildConfig_none.cmake)
                 set(${@PROJECT_PREFIX@_BUILD_TYPE} none)
             else()
-                message(FATAL_ERROR "Could not find any build of @CMAKE_PROJECT_NAME@!")
+                message(FATAL_ERROR "Could not find any build of @ROBWORK_PROJECT_NAME@!")
             endif()
         elseif(${BTYPE_TMP} STREQUAL "debug")
-            if(EXISTS ${CFG_ROOT}/@CMAKE_PROJECT_NAME@BuildConfig_relwithdebinfo.cmake)
+            if(EXISTS ${CFG_ROOT}/@ROBWORK_PROJECT_NAME@BuildConfig_relwithdebinfo.cmake)
                 set(${@PROJECT_PREFIX@_BUILD_TYPE} relwithdebinfo)
-            elseif(EXISTS ${CFG_ROOT}/@CMAKE_PROJECT_NAME@BuildConfig_minsizerel.cmake)
+            elseif(EXISTS ${CFG_ROOT}/@ROBWORK_PROJECT_NAME@BuildConfig_minsizerel.cmake)
                 set(${@PROJECT_PREFIX@_BUILD_TYPE} minsizerel)
-            elseif(EXISTS ${CFG_ROOT}/@CMAKE_PROJECT_NAME@BuildConfig_release.cmake)
+            elseif(EXISTS ${CFG_ROOT}/@ROBWORK_PROJECT_NAME@BuildConfig_release.cmake)
                 set(${@PROJECT_PREFIX@_BUILD_TYPE} release)
-            elseif(EXISTS ${CFG_ROOT}/@CMAKE_PROJECT_NAME@BuildConfig_none.cmake)
+            elseif(EXISTS ${CFG_ROOT}/@ROBWORK_PROJECT_NAME@BuildConfig_none.cmake)
                 set(${@PROJECT_PREFIX@_BUILD_TYPE} none)
             else()
-                message(FATAL_ERROR "Could not find any build of @CMAKE_PROJECT_NAME@!")
+                message(FATAL_ERROR "Could not find any build of @ROBWORK_PROJECT_NAME@!")
             endif()
         elseif(${BTYPE_TMP} STREQUAL "none")
-            if(EXISTS ${CFG_ROOT}/@CMAKE_PROJECT_NAME@BuildConfig_relwithdebinfo.cmake)
+            if(EXISTS ${CFG_ROOT}/@ROBWORK_PROJECT_NAME@BuildConfig_relwithdebinfo.cmake)
                 set(${@PROJECT_PREFIX@_BUILD_TYPE} relwithdebinfo)
-            elseif(EXISTS ${CFG_ROOT}/@CMAKE_PROJECT_NAME@BuildConfig_minsizerel.cmake)
+            elseif(EXISTS ${CFG_ROOT}/@ROBWORK_PROJECT_NAME@BuildConfig_minsizerel.cmake)
                 set(${@PROJECT_PREFIX@_BUILD_TYPE} minsizerel)
-            elseif(EXISTS ${CFG_ROOT}/@CMAKE_PROJECT_NAME@BuildConfig_debug.cmake)
+            elseif(EXISTS ${CFG_ROOT}/@ROBWORK_PROJECT_NAME@BuildConfig_debug.cmake)
                 set(${@PROJECT_PREFIX@_BUILD_TYPE} debug)
-            elseif(EXISTS ${CFG_ROOT}/@CMAKE_PROJECT_NAME@BuildConfig_release.cmake)
+            elseif(EXISTS ${CFG_ROOT}/@ROBWORK_PROJECT_NAME@BuildConfig_release.cmake)
                 set(${@PROJECT_PREFIX@_BUILD_TYPE} release)
             else()
-                message(FATAL_ERROR "Could not find any build of @CMAKE_PROJECT_NAME@!")
+                message(FATAL_ERROR "Could not find any build of @ROBWORK_PROJECT_NAME@!")
             endif()
         else()
             message(
                 STATUS
-                    "Does not recognize build type: ${CMAKE_BUILD_TYPE} choosing any existing @CMAKE_PROJECT_NAME@ installation!"
+                    "Does not recognize build type: ${CMAKE_BUILD_TYPE} choosing any existing @ROBWORK_PROJECT_NAME@ installation!"
             )
-            if(EXISTS ${CFG_ROOT}/@CMAKE_PROJECT_NAME@BuildConfig_release.cmake)
+            if(EXISTS ${CFG_ROOT}/@ROBWORK_PROJECT_NAME@BuildConfig_release.cmake)
                 set(${@PROJECT_PREFIX@_BUILD_TYPE} release)
-            elseif(EXISTS ${CFG_ROOT}/@CMAKE_PROJECT_NAME@BuildConfig_minsizerel.cmake)
+            elseif(EXISTS ${CFG_ROOT}/@ROBWORK_PROJECT_NAME@BuildConfig_minsizerel.cmake)
                 set(${@PROJECT_PREFIX@_BUILD_TYPE} minsizerel)
-            elseif(EXISTS ${CFG_ROOT}/@CMAKE_PROJECT_NAME@BuildConfig_relwithdebinfo.cmake)
+            elseif(EXISTS ${CFG_ROOT}/@ROBWORK_PROJECT_NAME@BuildConfig_relwithdebinfo.cmake)
                 set(${@PROJECT_PREFIX@_BUILD_TYPE} relwithdebinfo)
-            elseif(EXISTS ${CFG_ROOT}/@CMAKE_PROJECT_NAME@BuildConfig_debug.cmake)
+            elseif(EXISTS ${CFG_ROOT}/@ROBWORK_PROJECT_NAME@BuildConfig_debug.cmake)
                 set(${@PROJECT_PREFIX@_BUILD_TYPE} debug)
-            elseif(EXISTS ${CFG_ROOT}/@CMAKE_PROJECT_NAME@BuildConfig_none.cmake)
+            elseif(EXISTS ${CFG_ROOT}/@ROBWORK_PROJECT_NAME@BuildConfig_none.cmake)
                 set(${@PROJECT_PREFIX@_BUILD_TYPE} none)
             else()
-                message(FATAL_ERROR "Could not find any build of @CMAKE_PROJECT_NAME@!")
+                message(FATAL_ERROR "Could not find any build of @ROBWORK_PROJECT_NAME@!")
             endif()
         endif()
 
         message(
             STATUS
-                "warning: @CMAKE_PROJECT_NAME@ was not compiled with type:${BTYPE_TMP} using type:${${@CMAKE_PROJECT_NAME@_BUILD_TYPE}} instead!"
+                "warning: @ROBWORK_PROJECT_NAME@ was not compiled with type:${BTYPE_TMP} using type:${${@ROBWORK_PROJECT_NAME@_BUILD_TYPE}} instead!"
         )
     endif()
 
 endmacro()
 
 #####################################
-# Checks if this configuration of @CMAKE_PROJECT_NAME@ was installed by the windows exe installer
+# Checks if this configuration of @ROBWORK_PROJECT_NAME@ was installed by the windows exe installer
 function(@PROJECT_PREFIX@_IS_WINDOWS_INSTALL_BY_EXE CFG_ROOT return)
     if(EXISTS ${CFG_ROOT}/../../@PROJECT_PREFIX@_uninstall.exe)
         set(${return} TRUE PARENT_SCOPE)
@@ -435,10 +435,10 @@ endfunction()
 # Setup library, external and include directories.
 macro(@PROJECT_PREFIX@_SETUP_CONFIG_DIRECTORIES CFG_DIR)
 
-    # check whether @CMAKE_PROJECT_NAME@Config.cmake is found into a @CMAKE_PROJECT_NAME@ installation or in a build tree
-    if(EXISTS "${CFG_DIR}/../src/@CMAKE_PROJECT_NAME@Config.hpp")
-        # Found @CMAKE_PROJECT_NAME@Config.cmake in a build tree of @CMAKE_PROJECT_NAME@
-        message(STATUS "@CMAKE_PROJECT_NAME@: Found a @CMAKE_PROJECT_NAME@ build tree")
+    # check whether @ROBWORK_PROJECT_NAME@Config.cmake is found into a @ROBWORK_PROJECT_NAME@ installation or in a build tree
+    if(EXISTS "${CFG_DIR}/../src/@ROBWORK_PROJECT_NAME@Config.hpp")
+        # Found @ROBWORK_PROJECT_NAME@Config.cmake in a build tree of @ROBWORK_PROJECT_NAME@
+        message(STATUS "@ROBWORK_PROJECT_NAME@: Found a @ROBWORK_PROJECT_NAME@ build tree")
         set(@PROJECT_PREFIX@_ROOT "${CFG_DIR}/..")
 
         set(@PROJECT_PREFIX@_INCLUDE_EXT "${@PROJECT_PREFIX@_ROOT}/ext")
@@ -446,27 +446,27 @@ macro(@PROJECT_PREFIX@_SETUP_CONFIG_DIRECTORIES CFG_DIR)
         set(@PROJECT_PREFIX@_LIBS "${@PROJECT_PREFIX@_BUILD_WITH_BUILD_DIR}/libs/${@PROJECT_PREFIX@_BUILD_TYPE}")
         set(IS_INSTALL FALSE)
     else()
-        message(STATUS "@CMAKE_PROJECT_NAME@: Found a @CMAKE_PROJECT_NAME@ installation")
+        message(STATUS "@ROBWORK_PROJECT_NAME@: Found a @ROBWORK_PROJECT_NAME@ installation")
         set(IS_INSTALL TRUE)
-        string(TOLOWER "@CMAKE_PROJECT_NAME@" PROJECT_NAME_LOWERCASE)
-        # Found a @CMAKE_PROJECT_NAME@ installation
+        string(TOLOWER "@ROBWORK_PROJECT_NAME@" ROBWORK_PROJECT_NAME_LOWERCASE)
+        # Found a @ROBWORK_PROJECT_NAME@ installation
         if(WIN32)
-            # @CMAKE_PROJECT_NAME@Config.cmake is installed to @PROJECT_PREFIX@_ROOT/cmake
+            # @ROBWORK_PROJECT_NAME@Config.cmake is installed to @PROJECT_PREFIX@_ROOT/cmake
             set(@PROJECT_PREFIX@_ROOT "${CFG_DIR}/../..")
             set(@PROJECT_PREFIX@_INCLUDE_SRC
-                "${@PROJECT_PREFIX@_ROOT}/include/${PROJECT_NAME_LOWERCASE}-${@CMAKE_PROJECT_NAME@_VERSION_MAJOR}.${@CMAKE_PROJECT_NAME@_VERSION_MINOR}"
+                "${@PROJECT_PREFIX@_ROOT}/include/${ROBWORK_PROJECT_NAME_LOWERCASE}-${@ROBWORK_PROJECT_NAME@_VERSION_MAJOR}.${@ROBWORK_PROJECT_NAME@_VERSION_MINOR}"
             )
             set(@PROJECT_PREFIX@_INCLUDE_EXT "${@PROJECT_PREFIX@_INCLUDE_SRC}/ext")
             set(@PROJECT_PREFIX@_LIBS "${@PROJECT_PREFIX@_ROOT}/lib")
         else()
-            # @CMAKE_PROJECT_NAME@Config.cmake is installed to @PROJECT_PREFIX@_ROOT/share/r@CMAKE_PROJECT_NAME@-x.y/cmake
+            # @ROBWORK_PROJECT_NAME@Config.cmake is installed to @PROJECT_PREFIX@_ROOT/share/r@ROBWORK_PROJECT_NAME@-x.y/cmake
             set(@PROJECT_PREFIX@_ROOT "${CFG_DIR}/../../..")
             set(@PROJECT_PREFIX@_LIBS "${@PROJECT_PREFIX@_ROOT}/lib")
             set(@PROJECT_PREFIX@_INCLUDE_SRC
-                "${@PROJECT_PREFIX@_ROOT}/include/${PROJECT_NAME_LOWERCASE}-${@CMAKE_PROJECT_NAME@_VERSION_MAJOR}.${@CMAKE_PROJECT_NAME@_VERSION_MINOR}"
+                "${@PROJECT_PREFIX@_ROOT}/include/${ROBWORK_PROJECT_NAME_LOWERCASE}-${@ROBWORK_PROJECT_NAME@_VERSION_MAJOR}.${@ROBWORK_PROJECT_NAME@_VERSION_MINOR}"
             )
             set(@PROJECT_PREFIX@_INCLUDE_EXT
-                "${@PROJECT_PREFIX@_ROOT}/include/${PROJECT_NAME_LOWERCASE}-${@CMAKE_PROJECT_NAME@_VERSION_MAJOR}.${@CMAKE_PROJECT_NAME@_VERSION_MINOR}/ext"
+                "${@PROJECT_PREFIX@_ROOT}/include/${ROBWORK_PROJECT_NAME_LOWERCASE}-${@ROBWORK_PROJECT_NAME@_VERSION_MAJOR}.${@ROBWORK_PROJECT_NAME@_VERSION_MINOR}/ext"
             )
         endif()
     endif()
@@ -475,16 +475,16 @@ endmacro()
 ######################################
 # Find required components or include all found components
 function(@PROJECT_PREFIX@_FIND_COMPONENTS _return)
-    string(TOUPPER "@CMAKE_PROJECT_NAME@" PROJECT_NAME_UPPERCASE)
+    string(TOUPPER "@ROBWORK_PROJECT_NAME@" ROBWORK_PROJECT_NAME_UPPERCASE)
     string(TOLOWER "@PROJECT_PREFIX@" PROJECT_PREFIX_LOWERCASE)
     set(${_return})
-    if(@CMAKE_PROJECT_NAME@_FIND_COMPONENTS)
+    if(@ROBWORK_PROJECT_NAME@_FIND_COMPONENTS)
         # FIRST check if all required components are installed/build
         set(LIBRARIES_TO_INCLUDE @PROJECT_PREFIX@::sdu${PROJECT_PREFIX_LOWERCASE})
         foreach(
             component
             IN
-            LISTS @CMAKE_PROJECT_NAME@_FIND_COMPONENTS
+            LISTS @ROBWORK_PROJECT_NAME@_FIND_COMPONENTS
         )
             if(NOT (${component} STREQUAL "sdu${PROJECT_PREFIX_LOWERCASE}"))
                 unset(res)
@@ -492,20 +492,20 @@ function(@PROJECT_PREFIX@_FIND_COMPONENTS _return)
 
                 if(NOT "${res}" STREQUAL "")
                     list(APPEND ${_return} "${res}")
-                    set(@CMAKE_PROJECT_NAME@_${component}_FOUND TRUE)
+                    set(@ROBWORK_PROJECT_NAME@_${component}_FOUND TRUE)
                 else()
-                    set(@CMAKE_PROJECT_NAME@${component}_FOUND FALSE)
-                    if(@CMAKE_PROJECT_NAME@_REQUIRED)
-                        set(@CMAKE_PROJECT_NAME@_EXPERIENCED_FATAL_PROBLEMS TRUE)
+                    set(@ROBWORK_PROJECT_NAME@${component}_FOUND FALSE)
+                    if(@ROBWORK_PROJECT_NAME@_REQUIRED)
+                        set(@ROBWORK_PROJECT_NAME@_EXPERIENCED_FATAL_PROBLEMS TRUE)
                         message(
                             FATAL_ERROR
-                                "The component: sdu${PROJECT_PREFIX_LOWERCASE}_${component} has not been built with @CMAKE_PROJECT_NAME@. Reconfigure @CMAKE_PROJECT_NAME@ installation or check component spelling!"
+                                "The component: sdu${PROJECT_PREFIX_LOWERCASE}_${component} has not been built with @ROBWORK_PROJECT_NAME@. Reconfigure @ROBWORK_PROJECT_NAME@ installation or check component spelling!"
                         )
                     else()
-                        set(@CMAKE_PROJECT_NAME@_EXPERIENCED_FATAL_PROBLEMS TRUE)
+                        set(@ROBWORK_PROJECT_NAME@_EXPERIENCED_FATAL_PROBLEMS TRUE)
                         message(
                             WARNING
-                                "The component: sdu${PROJECT_PREFIX_LOWERCASE}_${component} has not been built with @CMAKE_PROJECT_NAME@. Reconfigure @CMAKE_PROJECT_NAME@ installation or check component spelling!"
+                                "The component: sdu${PROJECT_PREFIX_LOWERCASE}_${component} has not been built with @ROBWORK_PROJECT_NAME@. Reconfigure @ROBWORK_PROJECT_NAME@ installation or check component spelling!"
                         )
                     endif()
                 endif()
@@ -523,7 +523,7 @@ function(@PROJECT_PREFIX@_FIND_COMPONENTS _return)
                 list(APPEND ${_return} "${res}")
                 INSTALL_MESSAGE("Looking for ${lib} - found")
             else()
-                if(${lib} STREQUAL "sdu${PROJECT_PREFIX_LOWERCASE}" AND @CMAKE_PROJECT_NAME@_REQUIRED)
+                if(${lib} STREQUAL "sdu${PROJECT_PREFIX_LOWERCASE}" AND @ROBWORK_PROJECT_NAME@_REQUIRED)
                     list(APPEND ${_return} "@PROJECT_PREFIX@::${lib}")
                     message(FATAL_ERROR "Looking for ${lib} - not found" )
                 else()
@@ -543,17 +543,17 @@ macro(@PROJECT_PREFIX@_SETUP_FLAGS_AND_DEFINITIONS)
     set(@PROJECT_PREFIX@_C_FLAGS
     ${@PROJECT_PREFIX@_BUILD_WITH_C_FLAGS}
     CACHE STRING "Change this to force using your own
-                flags and not those of @CMAKE_PROJECT_NAME@"
+                flags and not those of @ROBWORK_PROJECT_NAME@"
     )
     set(@PROJECT_PREFIX@_CXX_FLAGS
         ${@PROJECT_PREFIX@_BUILD_WITH_CXX_FLAGS}
         CACHE STRING "Change this to force using your own
-                    flags and not those of @CMAKE_PROJECT_NAME@"
+                    flags and not those of @ROBWORK_PROJECT_NAME@"
     )
     set(@PROJECT_PREFIX@_DEFINITIONS
         ${@PROJECT_PREFIX@_BUILD_WITH_DEFINITIONS}
         CACHE STRING "Change this to force using your own
-                    definitions and not those of @CMAKE_PROJECT_NAME@"
+                    definitions and not those of @ROBWORK_PROJECT_NAME@"
     )
     add_definitions(${@PROJECT_PREFIX@_DEFINITIONS})
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${@PROJECT_PREFIX@_CXX_FLAGS}")
@@ -563,7 +563,7 @@ macro(@PROJECT_PREFIX@_SETUP_FLAGS_AND_DEFINITIONS)
     set(@PROJECT_PREFIX@_LINKER_FLAGS
         ${@PROJECT_PREFIX@_BUILD_WITH_LINKER_FLAGS}
         CACHE STRING "Change this to force using your own linker
-                    flags and not those of @CMAKE_PROJECT_NAME@"
+                    flags and not those of @ROBWORK_PROJECT_NAME@"
     )
     set(CMAKE_SHARED_LINKER_FLAGS
         "${CMAKE_SHARED_LINKER_FLAGS} ${@PROJECT_PREFIX@_LINKER_FLAGS}"

@@ -133,9 +133,9 @@ fcl::Transform3< double > toFCL (const Transform3D<>& rwT)
     return fcl::Transform3< double > (rwT.e ());
 }
 
-fcl::Vector3< double >& fromFCL (fcl::Vector3< double >& rwV)
+Vector3D<double> fromFCL (fcl::Vector3< double >& rwV)
 {
-    return rwV;
+    return Vector3D<double>(rwV);
 }
 
 fcl::Matrix3< double >& fromFCL (fcl::Matrix3< double >& rwV)
@@ -582,35 +582,35 @@ rw::geometry::Triangle< double > getTriangleFromModel (ProximityStrategyFCL::FCL
 
     Triangle tri;
     if (bv == BV::AABB) {
-        auto bvh              = model.cast< fcl::BVHModel< fcl::AABB > > ();
+        auto bvh              = model.cast< fcl::BVHModel< rw_AABB > > ();
         fcl::Triangle fcl_tri = bvh->tri_indices[index];
         tri                   = Triangle (fromFCL (bvh->vertices[fcl_tri[0]]),
                         fromFCL (bvh->vertices[fcl_tri[1]]),
                         fromFCL (bvh->vertices[fcl_tri[2]]));
     }
     else if (bv == BV::OBB) {
-        auto bvh              = model.cast< fcl::BVHModel< fcl::OBB > > ();
+        auto bvh              = model.cast< fcl::BVHModel< rw_OBB > > ();
         fcl::Triangle fcl_tri = bvh->tri_indices[index];
         tri                   = Triangle (fromFCL (bvh->vertices[fcl_tri[0]]),
                         fromFCL (bvh->vertices[fcl_tri[1]]),
                         fromFCL (bvh->vertices[fcl_tri[2]]));
     }
     else if (bv == BV::RSS) {
-        auto bvh              = model.cast< fcl::BVHModel< fcl::RSS > > ();
+        auto bvh              = model.cast< fcl::BVHModel< rw_RSS > > ();
         fcl::Triangle fcl_tri = bvh->tri_indices[index];
-        tri                   = Triangle (fromFCL (bvh->vertices[fcl_tri[0]]),
+        tri                   = Triangle  (fromFCL (bvh->vertices[fcl_tri[0]]),
                         fromFCL (bvh->vertices[fcl_tri[1]]),
                         fromFCL (bvh->vertices[fcl_tri[2]]));
     }
     else if (bv == BV::OBBRSS) {
-        auto bvh              = model.cast< fcl::BVHModel< fcl::OBBRSS > > ();
+        auto bvh              = model.cast< fcl::BVHModel< rw_OBBRSS > > ();
         fcl::Triangle fcl_tri = bvh->tri_indices[index];
         tri                   = Triangle (fromFCL (bvh->vertices[fcl_tri[0]]),
                         fromFCL (bvh->vertices[fcl_tri[1]]),
                         fromFCL (bvh->vertices[fcl_tri[2]]));
     }
     else if (bv == BV::kIOS) {
-        auto bvh              = model.cast< fcl::BVHModel< fcl::kIOS > > ();
+        auto bvh              = model.cast< fcl::BVHModel< rw_kIOS > > ();
         fcl::Triangle fcl_tri = bvh->tri_indices[index];
         tri                   = Triangle (fromFCL (bvh->vertices[fcl_tri[0]]),
                         fromFCL (bvh->vertices[fcl_tri[1]]),
