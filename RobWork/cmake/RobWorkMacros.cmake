@@ -355,6 +355,10 @@ macro(RW_INIT_PROJECT ROOT PROJECT_NAME PREFIX VERSION)
         ""
         CACHE INTERNAL "Internal list of subsystems" FORCE
     )
+    set(ROBWORK_PROJECT_NAME
+        ${PROJECT_NAME}
+        CACHE INTERNAL "Name of current project" FORCE
+    )
     # setup install directories
 endmacro()
 

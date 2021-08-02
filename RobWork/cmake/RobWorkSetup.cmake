@@ -468,6 +468,7 @@ cmake_dependent_option(
     OFF
 )
 set(RW_HAVE_GTEST FALSE)
+set(RW_GTEST_FROM_HUNTER FALSE)
 if(RW_USE_GTEST)
     # Now try to find Google Test
     set(gtest_force_shared_crt
@@ -488,6 +489,7 @@ if(RW_USE_GTEST)
     else()
         hunter_add_package(GTest)
         find_package(GTest REQUIRED)
+        set(RW_GTEST_FROM_HUNTER TRUE)
     endif()
 else()
     message(STATUS "RobWork: Google Test DISABLED!")

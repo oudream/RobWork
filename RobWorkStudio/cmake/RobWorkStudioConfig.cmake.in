@@ -21,6 +21,7 @@ endif()
 
 set(RWSCFG_ROOT ${CMAKE_CURRENT_LIST_DIR})
 include("${RWSCFG_ROOT}/RobWorkStudioConfigMacros.cmake")
+set(RobWorkStudio_REQUIRED ${RobWorkStudio_FIND_REQUIRED})
 
 # get the relavant build type
 get_robworkstudio_build_type(${RWSCFG_ROOT} RWS_BUILD_TYPE)
