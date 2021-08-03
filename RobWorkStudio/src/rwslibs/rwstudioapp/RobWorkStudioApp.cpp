@@ -244,6 +244,15 @@ int RobWorkStudioApp::run ()
 
     bool showSplash     = false;    //! map.has("nosplash");
     std::string inifile = map.get< std::string > ("ini-file", "");
+    if (!boost::filesystem::exists(inifile)){
+        if( boost::filesystem::exists("~/.RobWorkStudio.ini")){
+            inifile = "~/.RobWorkStudio.ini";
+        }else if( boost::filesystem::exists("~/RobWorkStudio.ini")) {
+            inifile = "~/RobWorkStudio.ini";
+        }
+    }
+
+    std::cout << "inifile: " << inifile << std::endl;
 
     std::string inputfile = map.get< std::string > ("input-file", "");
 
