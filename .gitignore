@@ -13,6 +13,7 @@
 *testfile.ini
 *.csettings
 *tmp
+.qt_for_python
 
 # /
 /cmake_install.cmake
