@@ -192,7 +192,9 @@ function(@PROJECT_PREFIX@_VERIFY_LIBRARY _name _result)
     string(REPLACE "${@PROJECT_PREFIX@_BUILD_WITH_BUILD_DIR}/libs/${@PROJECT_PREFIX@_BUILD_TYPE}" "${@PROJECT_PREFIX@_LIBS}" DIRS
                    "${@PROJECT_PREFIX@_BUILD_WITH_LIBRARY_DIRS}"
     )
-
+    string(REPLACE "//" "/" _name "${_name}")
+    string(REPLACE ">" "" _name "${_name}")
+    
     list(REMOVE_DUPLICATES DIRS)
     unset(tmp CACHE)
     find_library(
@@ -267,6 +269,8 @@ function(@PROJECT_PREFIX@_VERIFY_LIBRARY _name _result)
             set_target_properties(
                 ${_name} PROPERTIES IMPORTED_LOCATION ${tmp}
             )
+            set(result "${_name}")
+        elseif(EXISTS ${_name})
             set(result "${_name}")
         else()
             DEBUG_MESSAGE("Could not find library: ${_name}")

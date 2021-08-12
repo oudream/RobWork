@@ -392,8 +392,6 @@ FRIEND_OPERATOR(rw::math::Rotation3D<float>, rw::math::Wrench6D<float>, *);
     #include <rw/math/Statistics.hpp>
 %}
 %include <rw/math/Statistics.hpp>
-%template(Statistics) rw::math::Statistics<double>;
-%template(Statistics_f) rw::math::Statistics<float>;
 
 %ignore rw::math::Transform3D::R() const;
 %ignore rw::math::Transform3D::P() const;

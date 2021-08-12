@@ -1,8 +1,12 @@
 require("sdurw_core")
 require("sdurw")
-using("sdurw")
+using("sdurw_core")
 require("sdurw_math")
 using("sdurw_math")
+
+if Quaternion == nil then 
+  Quaternion = Quaternion_d
+end
 
 quat = Quaternion(math.sqrt(2)/2,math.sqrt(2)/2,0,0);
 print("Quaternion: " .. tostring(quat))
