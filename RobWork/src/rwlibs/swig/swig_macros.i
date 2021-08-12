@@ -281,6 +281,9 @@
 new=orig
 }
 #elif defined(SWIGLUA)
+%luacode {
+new = orig
+}
 #elif defined(SWIGJAVA)
 #endif 
 %enddef
