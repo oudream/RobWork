@@ -31,7 +31,8 @@
 
 #include <Eigen/Core>
 #endif
-namespace rw { namespace math {
+namespace rw {
+namespace math {
 
     /** @addtogroup math */
     /*@{*/
@@ -142,6 +143,8 @@ namespace rw { namespace math {
          */
         double& elem (size_t row, size_t col) { return _jac (row, col); }
 
+#if !defined(SWIGJAVA)
+
         /**
          * @brief Creates the velocity transform jacobian
          * @f$ \robabcdx{a}{b}{a}{b}{\bf{J_v}} @f$
@@ -167,8 +170,11 @@ namespace rw { namespace math {
          * @f$ \robabx{a}{b}{\bf{J}} =  \robabcdx{a}{b}{a}{b}{\bf{J}_v} \cdot \robabx{b}{a}{\bf{J}}
          * @f$
          */
-        explicit Jacobian (const rw::math::Transform3D<>& aTb);
 
+#endif 
+        explicit Jacobian (const rw::math::Transform3D<double>& aTb);
+
+#if !defined(SWIGJAVA)
         /**
          * @brief Creates the velocity transform jacobian
          * @f$ \robabcdx{a}{b}{i}{i}{\bf{J_v}} @f$
@@ -194,7 +200,11 @@ namespace rw { namespace math {
          * @f$
          *
          */
+
+#endif 
         explicit Jacobian (const rw::math::Rotation3D<>& aRb);
+
+#if !defined(SWIGJAVA)
 
         /**
          * @brief Creates the velocity transform jacobian
@@ -221,6 +231,8 @@ namespace rw { namespace math {
          * @f$ \robabx{a}{d}{\mathbf{J}} =  \robabcdx{a}{a}{c}{d}{\mathbf{J_v}} \cdot
          * \robabx{a}{c}{\mathbf{J}} @f$
          */
+
+#endif
         explicit Jacobian (const rw::math::Vector3D<>& aPb);
 
         /**
@@ -307,7 +319,8 @@ namespace rw { namespace math {
     const Jacobian operator* (const rw::math::Rotation3D<>& r, const Jacobian& v);
 
     /*@}*/
-}}    // namespace rw::math
+}
+}    // namespace rw::math
 
 namespace rw { namespace common {
     class OutputArchive;

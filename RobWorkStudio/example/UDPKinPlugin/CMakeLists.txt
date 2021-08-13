@@ -10,7 +10,7 @@
 #
 # Test CMake version
 #
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.10  )
 
 # The name of the project.
 project(UDPKinPlugin)

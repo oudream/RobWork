@@ -18,6 +18,7 @@
 #ifndef RW_GEOMETRY_POINTCLOUD_HPP_
 #define RW_GEOMETRY_POINTCLOUD_HPP_
 
+#if !defined(SWIG)
 #include "GeometryData.hpp"
 
 #include <rw/core/Ptr.hpp>
@@ -25,7 +26,7 @@
 #include <rw/math/Vector3D.hpp>
 
 #include <vector>
-
+#endif
 namespace rw { namespace geometry {
     //! @addtogroup geometry
     // @{
@@ -81,7 +82,7 @@ namespace rw { namespace geometry {
          * @return const char pointer to the image data
          */
         const std::vector< rw::math::Vector3D< float > >& getData () const { return _data; };
-
+#if !defined(SWIG)
         /**
          * @brief access points in point cloud.
          * @param x [in] x coordinate, must be in [0;width[
@@ -100,6 +101,9 @@ namespace rw { namespace geometry {
          * @return point
          */
         rw::math::Vector3D< float >& operator() (int x, int y) { return _data[y * _width + x]; }
+#else 
+        MATRIXOPERATOR(rw::math::Vector3D<float>);
+#endif 
 
         /**
          * @brief width of the point cloud data. If the data is unordered then this
@@ -110,7 +114,7 @@ namespace rw { namespace geometry {
 
         /**
          * @brief
-         * @return
+         * @return height
          */
         int getHeight () const { return _height; }
 

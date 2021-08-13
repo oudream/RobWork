@@ -56,16 +56,30 @@ endif()
 
 set(Boost_USE_STATIC_LIBS ${USE_BOOST_STATIC})
 unset(Boost_FIND_QUIETLY)
-set(Boost_LIBRARIES_TMP "")
 
 if(${RW_BUILD_TYPE} STREQUAL "release")
     set(Boost_USE_DEBUG_LIBS OFF) # ignore debug libs and
     set(Boost_USE_RELEASE_LIBS ON) # only find release libs
 endif()
 
-find_package(Boost REQUIRED COMPONENTS filesystem serialization system thread program_options)
-set(Boost_LIBRARIES_TMP ${Boost_LIBRARIES})
-set(Boost_LIBRARIES ${Boost_LIBRARIES_TMP} ${Boost_LIBRARIES})
+# hunter_add_package(Boost COMPONENTS filesystem serialization system thread program_options)
+find_package(
+    Boost QUIET
+    COMPONENTS filesystem serialization system thread program_options date_time
+    CONFIG
+    HINTS "C:\\local"
+)
+if(NOT Boost_FOUND)
+    find_package(Boost REQUIRED COMPONENTS filesystem serialization system thread program_options date_time)
+endif()
+if(TARGET Boost::headers)
+    set(Boost_LIBRARIES ${Boost_LIBRARIES} Boost::headers)
+    get_target_property(Boost_INCLUDE_DIR Boost::headers INTERFACE_INCLUDE_DIRECTORIES)
+endif()
+if(NOT DEFINED Boost_LIBRARY_DIRS OR "${Boost_LIBRARY_DIRS}" STREQUAL "")
+    rw_get_lib_from_target(Boost::filesystem Boost_LIBRARY_DIRS)
+    get_filename_component(Boost_LIBRARY_DIRS ${Boost_LIBRARY_DIRS} DIRECTORY)
+endif()
 
 message(
     STATUS
@@ -87,7 +101,7 @@ include(CMakeDependentOption)
 # for some libs we need the glut package, this is an optional dependency
 #
 set(RW_HAVE_GLUT False)
-
+set(FreeGLUT_FOUND False)
 find_package(GLUT QUIET)
 
 if(NOT ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
@@ -198,75 +212,27 @@ else()
     message(STATUS "RobWork: FCL DISABLED!")
 endif()
 
-find_package(Eigen3 QUIET PATHS  ${CMAKE_CURRENT_BINARY_DIR})
+find_package(Eigen3 QUIET)
 if(EIGEN3_FOUND)
     message(STATUS "RobWork: EIGEN3 installation FOUND! - version ${EIGEN3_VERSION}")
 else()
-    set(RW_EIGEN_FROM_GIT true)
-    message(STATUS "Fetching Eigen from git")
-    set(EIGEN_NATIVE_ROOT ${CMAKE_CURRENT_BINARY_DIR}/ext/eigen)
-    set(EIGEN3_INCLUDE_DIR ${EIGEN_NATIVE_ROOT}/include/eigen3)
-    ExternalProject_Add(
-        eigen_build
-        GIT_REPOSITORY https://gitlab.com/libeigen/eigen.git
-        GIT_TAG 3.3.7
-        CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EIGEN_NATIVE_ROOT}
-        BUILD_BYPRODUCTS ${EIGEN3_INCLUDE_DIR}
-    )
-
-    add_library(RW::eigen UNKNOWN IMPORTED)
-    file(MAKE_DIRECTORY ${EIGEN_NATIVE_ROOT}/include)
-
-    set_target_properties(
-        RW::eigen PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${EIGEN_NATIVE_ROOT}/include
-    )
-    install(DIRECTORY ${EIGEN3_INCLUDE_DIR} DESTINATION ${RW_EXT_INSTALL_DIR}/eigen3)
-
+    hunter_add_package(Eigen)
+    find_package(Eigen3 REQUIRED)
+    message(STATUS "RobWork: EIGEN3 installed through Hunter! - version ${EIGEN3_VERSION}")
 endif()
 
 #
 # Find Qhull
 #
-set(QHULL_NATIVE_ROOT ${CMAKE_CURRENT_BINARY_DIR}/ext/qhull)
 find_package(Qhull QUIET MODULE)
-
-#
-# if we can't find qhull, compile qhull from source
-#
-if(NOT Qhull_FOUND)
-    message(STATUS "Fetching QHull from git")
-    ExternalProject_Add(
-        qhull_build
-        GIT_REPOSITORY https://github.com/qhull/qhull.git
-        GIT_TAG v7.2.0
-        CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${QHULL_NATIVE_ROOT}
-        BUILD_BYPRODUCTS ${QHULL_NATIVE_ROOT}/include
-    )
-    add_library(RW::qhull UNKNOWN IMPORTED)
-    file(MAKE_DIRECTORY ${QHULL_NATIVE_ROOT}/include)
-
-    set_target_properties(
-        RW::qhull PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${QHULL_NATIVE_ROOT}/include
-    )
-    if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-    set_target_properties(
-        RW::qhull PROPERTIES IMPORTED_LOCATION ${QHULL_NATIVE_ROOT}/lib/libqhull_r.dylib
-    )
-    set(QHULL_LIBRARIES RW::qhull)
-    elseif(WIN32)
-    set_target_properties(
-        RW::qhull PROPERTIES IMPORTED_LOCATION ${QHULL_NATIVE_ROOT}/lib/qhull_r.lib
-    )
-    set(QHULL_LIBRARIES ${QHULL_NATIVE_ROOT}/lib/qhull_r.lib)
-    else()
-    set_target_properties(
-        RW::qhull PROPERTIES IMPORTED_LOCATION ${QHULL_NATIVE_ROOT}/lib/libqhull_r.so
-    )
-    set(QHULL_LIBRARIES RW::qhull)
+if(Qhull_FOUND)
+    message(STATUS "RobWork: Qhull found")
+    if(NOT DEFINED QHULL_ROOT)
+        set(QHULL_ROOT "${QHULL_INCLUDE_DIRS}/..")
     endif()
-
-    set(QHULL_INCLUDE_DIRS ${QHULL_NATIVE_ROOT}/include)
-    
+else()
+    hunter_add_package(qhull)
+    find_package(Qhull REQUIRED)
 endif()
 
 # CSGJS
@@ -383,7 +349,7 @@ endif()
 
 #
 # If the user wants to use the Assimp package then search for it or build internal Assimp. Set
-# RW_DISABLE_ASSIMP to ON to disable Assimp completely. 
+# RW_DISABLE_ASSIMP to ON to disable Assimp completely.
 #
 
 set(RW_HAVE_ASSIMP FALSE)
@@ -431,7 +397,9 @@ if(CMAKE_VERSION VERSION_LESS "3.12")
     endif()
 
     if(PYTHONINTERP_FOUND AND PYTHONLIBS_FOUND)
-        if(NOT ((PYTHONLIBS_VERSION_MAJOR STREQUAL PYTHON_VERSION_MAJOR) AND (PYTHONLIBS_VERSION_MINOR STREQUAL PYTHON_VERSION_MINOR)))
+        if(NOT ((PYTHONLIBS_VERSION_MAJOR STREQUAL PYTHON_VERSION_MAJOR)
+                AND (PYTHONLIBS_VERSION_MINOR STREQUAL PYTHON_VERSION_MINOR))
+        )
             string(ASCII 27 Esc)
             message(
                 WARNING
@@ -500,8 +468,7 @@ cmake_dependent_option(
     OFF
 )
 set(RW_HAVE_GTEST FALSE)
-set(RW_ENABLE_INTERNAL_GTEST_TARGET OFF)
-set(RW_GTEST_FROM_GIT OFF)
+set(RW_GTEST_FROM_HUNTER FALSE)
 if(RW_USE_GTEST)
     # Now try to find Google Test
     set(gtest_force_shared_crt
@@ -509,9 +476,6 @@ if(RW_USE_GTEST)
         CACHE BOOL "Use /MD on Windows systems."
     )
     find_package(GTest QUIET)
-    if(NOT GTEST_FOUND)
-        find_package(GTest QUIET PATHS ${CMAKE_CURRENT_BINARY_DIR})
-    endif()
     if(GTEST_FOUND)
         set(GTEST_SHARED_LIBS ${BUILD_SHARED_LIBS})
         message(STATUS "RobWork: Google Test installation FOUND!")
@@ -523,53 +487,9 @@ if(RW_USE_GTEST)
             set(GTEST_BOTH_LIBRARIES RW::${GTEST_MAIN_LIBRARY} RW::${GTEST_LIBRARY})
         endif()
     else()
-        message(STATUS Fetching GTest from git)
-        set(RW_GTEST_FROM_GIT ON)
-        set(GTEST_NATIVE_ROOT ${CMAKE_CURRENT_BINARY_DIR}/ext/gtest)
-
-        set(GTEST_LIBRARY  ${GTEST_NATIVE_ROOT}/lib/libgtest.so)
-        set(GTEST_MAIN_LIBRARY  ${GTEST_NATIVE_ROOT}/lib/libgtest_main.so)
-        if (WIN32) 
-            set(GTEST_LIBRARY  ${GTEST_NATIVE_ROOT}/lib/gtest.lib)
-            set(GTEST_MAIN_LIBRARY  ${GTEST_NATIVE_ROOT}/lib/gtest_main.lib)
-        elseif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-            set(GTEST_LIBRARY  ${GTEST_NATIVE_ROOT}/lib/libgtest.dylib)
-            set(GTEST_MAIN_LIBRARY  ${GTEST_NATIVE_ROOT}/lib/libgtest_main.dylib)
-        endif() 
-
-        ExternalProject_Add(
-            gtest_build
-            GIT_REPOSITORY https://github.com/google/googletest.git 
-            GIT_TAG release-1.10.0
-            CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${GTEST_NATIVE_ROOT} -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DBUILD_SHARED_LIBS=ON
-            BUILD_BYPRODUCTS ${GTEST_NATIVE_ROOT}/include ${GTEST_LIBRARY} ${GTEST_MAIN_LIBRARY}
-        )
-
-        add_library(gtest INTERFACE)
-        add_library(RW::gtest ALIAS gtest)
-
-        set_target_properties(gtest PROPERTIES
-            INTERFACE_INCLUDE_DIRECTORIES "${GTEST_NATIVE_ROOT}/include"
-        )
-        target_link_libraries(gtest INTERFACE "${GTEST_LIBRARY}")
-
-        # Create imported target GTest::gtest_main
-        add_library(gtest_main INTERFACE)
-        add_library(RW::gtest_main ALIAS gtest_main)
-
-        set_target_properties(gtest_main PROPERTIES
-            INTERFACE_INCLUDE_DIRECTORIES "${GTEST_NATIVE_ROOT}/include"
-        )
-        target_link_libraries(gtest_main INTERFACE "${GTEST_MAIN_LIBRARY}")
-
-
-        set(RW_HAVE_GTEST TRUE)
-        set(RW_ENABLE_INTERNAL_GTEST_TARGET ON)
-        add_dependencies(gtest gtest_build)
-        add_dependencies(gtest_main gtest_build)
-        set(GTEST_LIBRARIES RW::gtest)
-        set(GTEST_MAIN_LIBRARIES RW::gtest_main)
-        set(GTEST_BOTH_LIBRARIES RW::gtest RW::gtest_main)
+        hunter_add_package(GTest)
+        find_package(GTest REQUIRED)
+        set(RW_GTEST_FROM_HUNTER TRUE)
     endif()
 else()
     message(STATUS "RobWork: Google Test DISABLED!")
@@ -671,8 +591,10 @@ if("${RW_CXX_FLAGS}" STREQUAL "")
     # variable).
     set(RW_CXX_FLAGS_SET_STD FALSE)
     if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
-        if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS "6.1.0" OR CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang") # from GNU 6.1 gnu++14 should be the
-                                                            # default
+        if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS "6.1.0" OR CMAKE_CXX_COMPILER_ID STREQUAL
+                                                              "AppleClang"
+        ) # from GNU 6.1 gnu++14 should be the
+            # default
             set(RW_CXX_FLAGS_SET_STD TRUE)
             foreach(flag ${RW_CXX_FLAGS_EXTRA})
                 string(REGEX MATCH ".*-std=.*" flag ${flag})
@@ -910,7 +832,6 @@ set(ROBWORK_LIBRARY_DIRS
 set(ROBWORK_LIBRARIES_EXTERNAL
     ${ROBWORK_LIBRARIES_EXTERNAL}
     ${OPENGL_LIBRARIES}
-    ${XERCESC_LIBRARIES}
     ${BULLET_LIBRARIES}
     ${BLAS_LIBRARIES}
     ${CMAKE_DL_LIBS}

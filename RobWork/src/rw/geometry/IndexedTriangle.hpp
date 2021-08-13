@@ -18,9 +18,10 @@
 #ifndef RW_GEOMETRY_INDEXEDTRIANGLE_HPP_
 #define RW_GEOMETRY_INDEXEDTRIANGLE_HPP_
 
+#if !defined(SWIG)
 #include <rw/common/types.hpp>
 #include <rw/math/Vector3D.hpp>
-
+#endif
 
 namespace rw { namespace geometry {
     //! @addtogroup geometry
@@ -103,6 +104,7 @@ namespace rw { namespace geometry {
             return (u > 0) && (v > 0) && (u + v < 1);
         }
 
+#if !defined(SWIG)
         /**
          * @brief get vertex at index i
          */
@@ -112,7 +114,20 @@ namespace rw { namespace geometry {
          * @brief get vertex at index i
          */
         const T& operator[] (size_t i) const { return getVertexIdx (i); }
+#else
+        ARRAYOPERATOR (T);
+#endif
     };
+
+#if defined(SWIG)
+#if SWIG_VERSION < 0x040000
+    SWIG_DECLARE_TEMPLATE (IndexedTriangle_16, rw::geometry::IndexedTriangle< uint16_t >);
+    ADD_DEFINITION (IndexedTriangle_16, IndexedTriangle)
+#else
+    SWIG_DECLARE_TEMPLATE (IndexedTriangle, rw::geometry::IndexedTriangle< uint16_t >);
+#endif
+    SWIG_DECLARE_TEMPLATE (IndexedTriangle_32, rw::geometry::IndexedTriangle< uint32_t >);
+#endif
 
     /**
      * @brief indexed triangle class with an additional index for an face normal
@@ -177,7 +192,7 @@ namespace rw { namespace geometry {
         {
             return _triN0.template isInside< R > (x, verts);
         }
-
+#if !defined(SWIG)
         /**
          * @brief get vertex at index i
          */
@@ -187,8 +202,20 @@ namespace rw { namespace geometry {
          * @brief get vertex at index i
          */
         const T& operator[] (size_t i) const { return getVertexIdx (i); }
+#else
+        ARRAYOPERATOR (T);
+#endif
     };
 
+#if defined(SWIG)
+#if SWIG_VERSION < 0x040000
+    SWIG_DECLARE_TEMPLATE (IndexedTriangleN1_16, rw::geometry::IndexedTriangleN1< uint16_t >);
+    ADD_DEFINITION (IndexedTriangleN1_16, IndexedTriangleN1)
+#else
+    SWIG_DECLARE_TEMPLATE (IndexedTriangleN1, rw::geometry::IndexedTriangleN1< uint16_t >);
+#endif
+    SWIG_DECLARE_TEMPLATE (IndexedTriangleN1_32, rw::geometry::IndexedTriangleN1< uint32_t >);
+#endif
     /**
      * @brief indexed triangle class with an additional index for 3 normals one for each vertice in
      * the triangle
@@ -244,7 +271,7 @@ namespace rw { namespace geometry {
         /**
          * @brief get the index of vertice normal \b i.
          * @param i [in] vertice normal
-         * @return
+         * @return normal index
          */
         T& getNormalIdx (size_t i) { return _triN0.getVertexIdx (i); }
 
@@ -262,7 +289,7 @@ namespace rw { namespace geometry {
         {
             return _triN0.template isInside< R > (x, verts);
         }
-
+#if !defined(SWIG)
         /**
          * @brief get vertex at index i
          */
@@ -272,7 +299,20 @@ namespace rw { namespace geometry {
          * @brief get vertex at index i
          */
         const T& operator[] (size_t i) const { return getVertexIdx (i); }
+#else
+        ARRAYOPERATOR (T);
+#endif
     };
+#if defined(SWIG)
+#if SWIG_VERSION < 0x040000
+    SWIG_DECLARE_TEMPLATE (IndexedTriangleN3_16, rw::geometry::IndexedTriangleN3< uint16_t >);
+    ADD_DEFINITION (IndexedTriangleN3_16, IndexedTriangleN3)
+#else
+    SWIG_DECLARE_TEMPLATE (IndexedTriangleN3, rw::geometry::IndexedTriangleN3< uint16_t >);
+#endif
+    SWIG_DECLARE_TEMPLATE (IndexedTriangleN3_32, rw::geometry::IndexedTriangleN3< uint32_t >);
+#endif
+
     // @}
 }}    // namespace rw::geometry
 

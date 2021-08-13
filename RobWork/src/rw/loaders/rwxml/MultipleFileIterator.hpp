@@ -24,6 +24,8 @@
 #include <boost/spirit/include/classic_core.hpp>
 #include <vector>
 
+#include <memory>
+
 namespace rw { namespace loaders {
     /** @addtogroup loaders */
     /*@{*/
@@ -46,8 +48,8 @@ namespace rw { namespace loaders {
          * @param data [in] vector of char data
          * @param filedata [in] data position to file info map
          */
-        MultipleFileIterator (boost::shared_ptr< std::vector< char > > data,
-                              boost::shared_ptr< PosToFileMap > filedata);
+        MultipleFileIterator (std::shared_ptr< std::vector< char > > data,
+                              std::shared_ptr< PosToFileMap > filedata);
 
         /**
          * @brief Constructor
@@ -157,10 +159,10 @@ namespace rw { namespace loaders {
 
       private:
         // the fileposition of each
-        boost::shared_ptr<
+        std::shared_ptr<
             std::vector< std::pair< size_t, boost::spirit::classic::file_position > > >
             _filedata;
-        boost::shared_ptr< std::vector< char > > _data;
+        std::shared_ptr< std::vector< char > > _data;
         std::vector< char >::iterator _pos;
 
         int _filePos;

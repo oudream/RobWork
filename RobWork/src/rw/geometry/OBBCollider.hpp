@@ -18,11 +18,12 @@
 #ifndef RW_GEOMETRY_OBBCOLLIDER_HPP_
 #define RW_GEOMETRY_OBBCOLLIDER_HPP_
 
+#if !defined(SWIG)
 #include "BVCollider.hpp"
 
 #include <rw/geometry/OBB.hpp>
 #include <rw/math/Vector3D.hpp>
-
+#endif
 namespace rw { namespace geometry {
 
     /**
@@ -47,6 +48,14 @@ namespace rw { namespace geometry {
         bool collides (const rw::geometry::OBB< T >& obbA, const rw::geometry::OBB< T >& obbB,
                        const rw::math::Transform3D< T >& aTb);
     };
+
+#if defined(SWIG)
+#define BVColliderOBBColiderOBB_TYPE(x) \
+    rw::geometry::BVCollider< rw::geometry::OBBCollider< x >, rw::geometry::OBB< x > >
+
+    SWIG_DECLARE_TEMPLATE (BVColliderOBBColiderOBB, BVColliderOBBColiderOBB_TYPE (double));
+    SWIG_DECLARE_TEMPLATE (BVColliderOBBColiderOBB_f, BVColliderOBBColiderOBB_TYPE (float));
+#endif
 
     /////////////////////////////////// implementation
     template< class T >
@@ -210,9 +219,18 @@ namespace rw { namespace geometry {
 
         return true;    // should equal 0
     }
-
+#if !defined(SWIG)
     extern template class rw::geometry::OBBCollider< double >;
     extern template class rw::geometry::OBBCollider< float >;
+#else
+#if SWIG_VERSION < 0x040000
+    SWIG_DECLARE_TEMPLATE (OBBCollider_d, rw::geometry::OBBCollider< double >);
+    ADD_DEFINITION (OBBCollider_d, OBBCollider)
+#else
+    SWIG_DECLARE_TEMPLATE (OBBCollider, rw::geometry::OBBCollider< double >);
+#endif
+    SWIG_DECLARE_TEMPLATE (OBBCollider_f, rw::geometry::OBBCollider< float >);
+#endif
 }}    // namespace rw::geometry
 
 #endif /* BVCOLLIDER_HPP_ */

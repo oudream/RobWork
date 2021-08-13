@@ -18,10 +18,11 @@
 #ifndef RW_PROXIMITY_BVTREECOLLIDER_HPP_
 #define RW_PROXIMITY_BVTREECOLLIDER_HPP_
 
+#if !defined(SWIG)
 #include <rw/core/Ptr.hpp>
 #include <rw/math/Transform3D.hpp>
 #include <rw/proximity/CollisionStrategy.hpp>
-
+#endif 
 namespace rw { namespace proximity {
 
     /**
@@ -38,7 +39,7 @@ namespace rw { namespace proximity {
       private:
       public:
         //! @brief smart pointer for this class
-        typedef rw::core::Ptr< BVTreeCollider< BVTREE > > Ptr;
+        typedef rw::core::Ptr< rw::proximity::BVTreeCollider< BVTREE > > Ptr;
 
         /**
          * @brief destructor
@@ -57,16 +58,16 @@ namespace rw { namespace proximity {
             const rw::math::Transform3D< typename BVTREE::value_type >& fTA, const BVTREE& treeA,
             const rw::math::Transform3D< typename BVTREE::value_type >& fTB, const BVTREE& treeB,
             std::vector< std::pair< int, int > >* collidingPrimitives = NULL) = 0;
-
+ 
         /**
          * @brief set the query type
          */
-        virtual void setQueryType (CollisionStrategy::QueryType type) { _queryType = type; }
+        virtual void setQueryType (rw::proximity::CollisionStrategy::QueryType type) { _queryType = type; }
 
         /**
          * @brief get the collision query type
          */
-        virtual CollisionStrategy::QueryType getQueryType () { return _queryType; }
+        virtual rw::proximity::CollisionStrategy::QueryType getQueryType () { return _queryType; }
 
         //! type of the primitive in collision callb ack function
         // typedef boost::function<void(int,int)> PrimitivesInCollisionCB;
@@ -85,7 +86,7 @@ namespace rw { namespace proximity {
         virtual int getNrOfCollidingPrimitives () { return -1; }
 
       protected:
-        CollisionStrategy::QueryType _queryType;
+        rw::proximity::CollisionStrategy::QueryType _queryType;
     };
 
 }}    // namespace rw::proximity

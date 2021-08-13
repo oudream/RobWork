@@ -25,6 +25,7 @@
 #include <Eigen/Core>
 #include <boost/cstdint.hpp>
 #include <boost/type_traits.hpp>
+#include <boost/utility/enable_if.hpp>
 #endif
 namespace rw { namespace common {
     /**
@@ -257,7 +258,7 @@ namespace rw { namespace common {
       private:
         template< class T >
         void readImpl (T& object, const std::string& id,
-                       typename boost::enable_if_c< boost::is_base_of< Serializable, T >::value,
+                       typename boost::enable_if_c< std::is_base_of< Serializable, T >::value,
                                                     T >::type* def = NULL)
         {
             object.read (*this, id);
@@ -265,7 +266,7 @@ namespace rw { namespace common {
 
         template< class T >
         void readImpl (T& object, const std::string& id,
-                       typename boost::disable_if_c< boost::is_base_of< Serializable, T >::value,
+                       typename boost::disable_if_c< std::is_base_of< Serializable, T >::value,
                                                      T >::type* def = NULL)
         {
             // first test if T is any of the primitives

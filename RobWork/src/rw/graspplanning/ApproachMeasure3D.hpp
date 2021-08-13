@@ -18,7 +18,9 @@
 #ifndef RW_GRASPPLANNING_APPROACHMEASURE_HPP_
 #define RW_GRASPPLANNING_APPROACHMEASURE_HPP_
 
+#if !defined(SWIG)
 #include "GraspQualityMeasure3D.hpp"
+#endif 
 
 namespace rw { namespace graspplanning {
     /**
@@ -33,7 +35,6 @@ namespace rw { namespace graspplanning {
          * @param maxAngle [in] the maximum allowed angle between approach and
          * surface normal. Grasps violating this will recieve high penalty on
          * quality.
-         * @return
          */
         ApproachMeasure3D (double maxAngle) : _maxAngle (maxAngle) {}
 

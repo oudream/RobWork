@@ -144,6 +144,12 @@ namespace rw { namespace math {
          * @param eaa [in] Values to initialize the EAA
          */
         explicit EAA (rw::math::Vector3D< T > eaa) : _eaa (eaa) {}
+        
+        /**
+         * @brief Copy Constructor
+         * @param eaa [in] Values to initialize the EAA
+         */
+        EAA (const rw::math::EAA< T >& eaa) : _eaa (eaa._eaa) {}
 
         /**
          * @brief Constructs an initialized EAA vector
@@ -165,7 +171,7 @@ namespace rw { namespace math {
         // ###################################################
         // #                Acces Operators                  #
         // ###################################################
-
+#if !defined(SWIGJAVA)
         /**
          * @copydoc Rotation3DVector::toRotation3D()
          *
@@ -184,6 +190,8 @@ namespace rw { namespace math {
          * - @f$ s\theta = sin \theta @f$
          * - @f$ v\theta = 1-cos \theta @f$
          */
+
+#endif 
         virtual const rw::math::Rotation3D< T > toRotation3D () const;
 
         /**

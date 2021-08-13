@@ -75,7 +75,7 @@
     # TEST RW CPP FILES
     - cd $DIR/RobWork/example/cpp
     - mkdir Build && cd Build
-    - cmake ..
+    - cmake .. -DDEBUG=TRUE
     - make -j${THREADS}
     - "for file in ./ex-*; do if [ -f $file ] && [[ ! $file =~ ex-load-workcell ]] ; then  echo -e '\n EXECUTING: '$file && $file ${robworkdata} && EXERW=$EXERW' '$file || exit 1 ; fi; done"
     - ./ex-load-workcell ../../ModelData/XMLScenes/RobotWithHand/Workcell.xml
@@ -102,7 +102,7 @@
     # Test RWSIM CPP files
     - cd $DIR/RobWorkSim/example/cpp
     - mkdir build && cd build
-    - cmake ..
+    - cmake .. -DDEBUG=TRUE
     - make -j${THREADS}
     - "for file in ./ex-*; do if [ -f $file ] ; then  echo -e '\n EXECUTING: '$file && $file ${robworkdata} && EXERWSIM=$EXERWSIM' '$file || exit 1 ; fi; done"
     # Test RWSSIM PYTHON FILES

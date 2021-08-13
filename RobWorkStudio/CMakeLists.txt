@@ -1,5 +1,5 @@
 # Test CMake version
-cmake_minimum_required(VERSION 3.5.1 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.10  FATAL_ERROR )
 
 if(POLICY CMP0071) # Introduce cmake 3.10
     cmake_policy(SET CMP0071 NEW)
@@ -151,6 +151,9 @@ configure_file(${RWS_ROOT}/cmake/RobWorkStudioConfig.cmake.in
 configure_file(${RWS_ROOT}/cmake/RobWorkStudioConfigVersion.cmake.in
                "${RWS_ROOT}/cmake/RobWorkStudioConfigVersion.cmake" @ONLY
 )
+configure_file(${RW_ROOT}/cmake/RobWorkConfigMacros.cmake.in
+               "${RWS_ROOT}/cmake/RobWorkStudioConfigMacros.cmake" @ONLY
+)
 
 export(
     EXPORT ${PROJECT_PREFIX}Targets
@@ -171,7 +174,7 @@ install(
 )
 
 install(
-    FILES "cmake/RobWorkStudioBuildConfig_${RWS_BUILD_TYPE}.cmake" "cmake/RobWorkStudioMacros.cmake"
+    FILES "cmake/RobWorkStudioBuildConfig_${RWS_BUILD_TYPE}.cmake" "cmake/RobWorkStudioMacros.cmake" "cmake/RobWorkStudioConfigMacros.cmake"
     DESTINATION "${RWS_INSTALL_DIR}/cmake"
     COMPONENT cmake
 )

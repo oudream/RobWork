@@ -18,8 +18,9 @@
 #ifndef RW_PROXIMITY_BVTREE_HPP_
 #define RW_PROXIMITY_BVTREE_HPP_
 
+#if !defined(SWIG)
 #include <rw/geometry/OBB.hpp>
-
+#endif 
 namespace rw { namespace proximity {
 
     //! @brief Interface for accessing primitives.

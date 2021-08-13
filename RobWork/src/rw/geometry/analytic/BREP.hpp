@@ -23,14 +23,14 @@
  *
  * \copydoc rw::geometry::BREP
  */
-
+#if !defined(SWIG)
 #include <rw/core/Ptr.hpp>
 #include <rw/geometry/GeometryData.hpp>
 #include <rw/geometry/OBB.hpp>
 #include <rw/math/Vector3D.hpp>
 
 #include <set>
-
+#endif
 namespace rw { namespace geometry {
 
     class Curve;
@@ -40,8 +40,9 @@ namespace rw { namespace geometry {
     class TriMesh;
 
     //! @addtogroup geometry
-
+#if !defined(SWIG)
     //! @{
+#endif
     /**
      * @brief Boundary representation (or B-Rep) of a geometric shape, using a collection of
      * connected surfaces, edges and vertices.
@@ -121,7 +122,7 @@ namespace rw { namespace geometry {
          * returned by size().
          * @return a reference to the surface.
          */
-        virtual const Surface& getSurface (std::size_t surfaceIndex) const = 0;
+        virtual const rw::geometry::Surface& getSurface (std::size_t surfaceIndex) const = 0;
 
         /**
          * @brief Get curve.
@@ -129,7 +130,7 @@ namespace rw { namespace geometry {
          * edgeCount().
          * @return a reference to the curve.
          */
-        virtual const Curve& getCurve (std::size_t curveIndex) const = 0;
+        virtual const rw::geometry::Curve& getCurve (std::size_t curveIndex) const = 0;
 
         /**
          * @brief Scale the object.
@@ -149,7 +150,7 @@ namespace rw { namespace geometry {
          * @brief Get a Shell representation as a proxy to the BREP.
          * @return smart pointer to a Shell proxy object.
          */
-        inline rw::core::Ptr< const Shell > shellProxy () const { return doShellProxyBREP (); }
+        inline rw::core::Ptr< const rw::geometry::Shell > shellProxy () const { return doShellProxyBREP (); }
 
         /**
          * @brief Get the curves in a given loop.
@@ -160,7 +161,7 @@ namespace rw { namespace geometry {
          * @param loopIdx [in] the loop index.
          * @return an ordered vector of curves.
          */
-        std::vector< rw::core::Ptr< Curve > > getCurves (std::size_t loopIdx) const;
+        std::vector< rw::core::Ptr< rw::geometry::Curve > > getCurves (std::size_t loopIdx) const;
 
         //! @brief Convenience type for a set of curves in a BREP.
         class CommonCurveSet
@@ -244,7 +245,7 @@ namespace rw { namespace geometry {
          * vertices().
          * @return reference to the vertex.
          */
-        const rw::math::Vector3D<>& getVertex (std::size_t vertexIndex) const
+        const rw::math::Vector3D<double>& getVertex (std::size_t vertexIndex) const
         {
             return _vertices[vertexIndex]->point;
         }
@@ -257,7 +258,7 @@ namespace rw { namespace geometry {
          * @param loopIdx [in] the loop index.
          * @return a collection of vertices.
          */
-        std::vector< rw::math::Vector3D<> > getVertices (std::size_t loopIdx) const;
+        std::vector< rw::math::Vector3D<double> > getVertices (std::size_t loopIdx) const;
 
         /**
          * @brief Check if a certain loop has a surface set.
@@ -278,7 +279,7 @@ namespace rw { namespace geometry {
          * @param R [in] the directions for the bounding box.
          * @return an OBB around the BREP.
          */
-        OBB<> obb (const rw::math::Rotation3D<>& R);
+        rw::geometry::OBB<> obb (const rw::math::Rotation3D<>& R);
 
         /**
          * @brief Create Oriented Bounding Box where the directions are estimated.
@@ -288,13 +289,13 @@ namespace rw { namespace geometry {
          *
          * @return an OBB around the BREP.
          */
-        OBB<> obb ();
+        rw::geometry::OBB<> obb ();
 
         /**
          * @brief Add a vertex to the BREP.
          * @param point [in] the vertex to add.
          */
-        void addVertex (const rw::math::Vector3D<>& point);
+        void addVertex (const rw::math::Vector3D<double>& point);
 
         /**
          * @brief Create a loop containing a single edge (typically for circles and ellipses and
@@ -338,6 +339,7 @@ namespace rw { namespace geometry {
             return static_cast< int > (first);
         }
 
+#if !defined(SWIGJAVA)
         /**
          * @brief Connect two half-edges.
          * @param first [in] id of the first edge. 0-indexing is expected, with a sign that
@@ -350,6 +352,8 @@ namespace rw { namespace geometry {
          * @throws rw::core::Exception if one of the given half-edges is already connected to
          * another half-edge.
          */
+
+         #endif 
         void stitchEdges (std::size_t first, std::size_t second);
 
         /**
@@ -363,14 +367,14 @@ namespace rw { namespace geometry {
          * @param faceIndex [in] the face index, which should be less than loopCount().
          * @return OBB for the given face.
          */
-        OBB<> faceOBB (std::size_t faceIndex);
+        rw::geometry::OBB<> faceOBB (std::size_t faceIndex);
 
         /**
          * @brief Create Oriented Bounding Rectangle for an edge.
          * @param edge [in] the edge index, which should be less than edgeCount().
          * @return OBB for the given edge (with third half-length set to zero).
          */
-        OBB<> edgeOBR (std::size_t edge) const;
+        rw::geometry::OBB<> edgeOBR (std::size_t edge) const;
 
         /**
          * @brief Find the extent of the surface along a specific direction.
@@ -388,14 +392,14 @@ namespace rw { namespace geometry {
          * @return the minimum and maximum values along the given direction.
          */
         std::pair< double, double > faceExtremums (std::size_t faceIndex,
-                                                   const rw::math::Vector3D<>& dir) const;
+                                                   const rw::math::Vector3D<double>& dir) const;
 
         /**
          * @brief Construct a Triangle Mesh for a face.
          * @param faceIndex [in] the face index, which should be less than loopCount().
          * @return a triangle mesh.
          */
-        rw::core::Ptr< TriMesh > faceTriMesh (std::size_t faceIndex);
+        rw::core::Ptr< rw::geometry::TriMesh > faceTriMesh (std::size_t faceIndex);
 
         /**
          * @brief Set the resolution used for discretization in the getTriMesh and faceTriMesh
@@ -411,6 +415,7 @@ namespace rw { namespace geometry {
         virtual void print ();
 
       protected:
+
         struct HalfEdge;
 
         /**
@@ -425,13 +430,13 @@ namespace rw { namespace geometry {
              * @brief Construct new vertex in the given \b point.
              * @param point [in] the points to construct vertex for.
              */
-            Vertex (const rw::math::Vector3D<>& point) : point (point), nextEdge (NULL) {}
+            Vertex (const rw::math::Vector3D<double>& point) : point (point), nextEdge (NULL) {}
 
             //! @brief Destructor.
             ~Vertex () {}
 
             //! @brief Vertex point.
-            rw::math::Vector3D<> point;
+            rw::math::Vector3D<double> point;
             //! @brief Pointer to the next half-edge.
             HalfEdge* nextEdge;
         };
@@ -554,7 +559,9 @@ namespace rw { namespace geometry {
         //! @brief Resolution used for discretization functions.
         double _resolution;
     };
+    #if !defined(SWIG)
     //! @}
+    #endif
 }}    // namespace rw::geometry
 
 #endif /* RW_GEOMETRY_ANALYTIC_BREP_HPP_ */

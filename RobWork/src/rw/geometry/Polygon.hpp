@@ -24,9 +24,11 @@
  * \copydoc rw::geometry::Polygon
  */
 
+#if !defined(SWIG)
 #include <rw/core/Ptr.hpp>
 #include <rw/core/macros.hpp>
 #include <rw/math/Vector3D.hpp>
+#endif
 
 namespace rw { namespace geometry {
     //! @addtogroup geometry
@@ -35,7 +37,7 @@ namespace rw { namespace geometry {
     /**
      * @brief indexed polygon class that saves \b N indices to the \b N vertices of the polygon
      */
-    template< class T = rw::math::Vector3D<> > class Polygon
+    template< class T = rw::math::Vector3D< double > > class Polygon
     {
       public:
         //! @brief Smart pointer to Polygon
@@ -89,7 +91,7 @@ namespace rw { namespace geometry {
                                << " is not less than the number of items: " << _vertices.size ());
             return _vertices[idx];
         }
-
+#if !defined(SWIG)
         /**
          * @brief get vertex at index i
          */
@@ -99,7 +101,9 @@ namespace rw { namespace geometry {
          * @brief get vertex at index i
          */
         const T& operator[] (size_t i) const { return getVertex (i); }
-
+#else
+        ARRAYOPERATOR (T);
+#endif
         /**
          * @brief Number of vertices of this polygon
          * @return Number of vertices
@@ -125,7 +129,20 @@ namespace rw { namespace geometry {
          */
         std::vector< T > _vertices;
     };
+#if defined(SWIG)
+#if SWIG_VERSION < 0x040000
+    SWIG_DECLARE_TEMPLATE (Polygon_d, rw::geometry::Polygon< rw::math::Vector3D< double > >);
+    SWIG_DECLARE_TEMPLATE (Polygon2D_d, rw::geometry::Polygon< rw::math::Vector2D< double > >);
+    ADD_DEFINITION (Polygon_d, Polygon)
+    ADD_DEFINITION (Polygon2D_d, Polygon2D)
+#else
+    SWIG_DECLARE_TEMPLATE (Polygon, rw::geometry::Polygon< rw::math::Vector3D< double > >);
+    SWIG_DECLARE_TEMPLATE (Polygon2D, rw::geometry::Polygon< rw::math::Vector2D< double > >);
+#endif
 
+    SWIG_DECLARE_TEMPLATE (Polygon_f, rw::geometry::Polygon< rw::math::Vector3D< float > >);
+    SWIG_DECLARE_TEMPLATE (Polygon2D_f, rw::geometry::Polygon< rw::math::Vector2D< float > >);
+#endif
     // @}
 }}    // namespace rw::geometry
 

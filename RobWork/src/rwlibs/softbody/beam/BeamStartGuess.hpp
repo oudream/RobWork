@@ -18,7 +18,7 @@ Copyright 2013 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
 #define RWLIBS_SOFTBODY_BEAMSTARTGUESS_HPP
 
 #include <Eigen/Core>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 namespace rwlibs { namespace softbody {
     class BeamGeometryCuboid;
@@ -42,7 +42,7 @@ namespace rwlibs { namespace softbody {
          * @param beamPtr pointer to the beam
          **/
         static void setZeroStartingGuess (Eigen::VectorXd& avec,
-                                          boost::shared_ptr< ModRusselBeamBase > beamPtr);
+                                          std::shared_ptr< ModRusselBeamBase > beamPtr);
 
         /**
          * @brief sets starting guess angles for a cuboid beam initialized to that of an analytical
@@ -53,7 +53,7 @@ namespace rwlibs { namespace softbody {
          **/
         static void setEulerStartingGuess (
             Eigen::VectorXd& avec,
-            boost::shared_ptr< rwlibs::softbody::BeamGeometryCuboid > beamGeomPtr);
+            std::shared_ptr< rwlibs::softbody::BeamGeometryCuboid > beamGeomPtr);
     };
     /*@}*/
 }}    // namespace rwlibs::softbody

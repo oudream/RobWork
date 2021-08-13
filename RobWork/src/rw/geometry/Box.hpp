@@ -18,10 +18,12 @@
 #ifndef RW_GEOMETRY_BOXPRIMITIVE_HPP_
 #define RW_GEOMETRY_BOXPRIMITIVE_HPP_
 
-#include "Primitive.hpp"
-
+#if !defined(SWIG)
 #include <rw/core/Ptr.hpp>
-
+#include <rw/geometry/Primitive.hpp>
+#include <rw/math/Q.hpp>
+#include <rw/geometry/TriMesh.hpp>
+#endif
 namespace rw { namespace geometry {
     //! @addtogroup geometry
     // @{
@@ -75,7 +77,7 @@ namespace rw { namespace geometry {
          * @param point [in] point to check.
          * @return true if inside geometry, false otherwise.
          */
-        bool doIsInside (const rw::math::Vector3D<>& point);
+        bool doIsInside (const rw::math::Vector3D<double>& point);
 
       private:
         double _dx, _dy, _dz;

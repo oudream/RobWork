@@ -18,10 +18,11 @@
 #ifndef RW_PROXIMITY_BINARYBVTREE_HPP_
 #define RW_PROXIMITY_BINARYBVTREE_HPP_
 
+#if !defined(SWIG)
 #include "BVTree.hpp"
 
 #include <stack>
-//#include <boost/tuple/tuple.hpp>
+#endif 
 
 namespace rw {
 namespace proximity {
@@ -147,13 +148,14 @@ namespace proximity {
     template< class BV, class PRIM > class BinaryBVTree : public BVTree< BinaryBVTree< BV, PRIM > >
     {
       public:
+      #if !defined(SWIG)
         typedef BV BVType;
         typedef PRIM PRIMType;
         typedef typename BV::value_type value_type;
         typedef rw::core::Ptr< BinaryBVTree< BV, PRIM > > Ptr;
         typedef BTPNode< BV, PRIM > Node;
         typedef typename BTPNode< BV, PRIM >::NodeIterator NodeIterator;
-
+#endif 
       public:
         //! @brief constructor
         BinaryBVTree (PrimArrayAccessor< PRIM >* paccessor) :
@@ -339,16 +341,9 @@ namespace proximity {
         BinaryOBBPtrTreeF;
 
 }    // namespace proximity
-     /*
-         //! define traits of the NodeIterator
-         template<class BV, class PRIM>
-         struct Traits<proximity::BTPNode<BV,PRIM>::NodeIterator >{
-             typedef BV BVType;
-             typedef PRIM PRIMType;
-             //typedef proximity::BTPNode<BV,PRIM> Node;
-         };
-     */
+
 //! define traits of the BinaryBVTree
+
 template< class BV, class PRIM > struct Traits< proximity::BinaryBVTree< BV, PRIM > >
 {
     typedef BV BVType;

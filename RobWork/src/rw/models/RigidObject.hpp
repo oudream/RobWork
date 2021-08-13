@@ -18,12 +18,14 @@
 #ifndef RW_MODELS_RIGIDOBJECT_HPP_
 #define RW_MODELS_RIGIDOBJECT_HPP_
 
+#if !defined(SWIG)
 #include "Object.hpp"
 
 #include <rw/core/Ptr.hpp>
 #include <rw/geometry/Geometry.hpp>
 
 #include <vector>
+#endif 
 
 namespace rw { namespace kinematics {
     class Frame;
@@ -149,9 +151,9 @@ namespace rw { namespace models {
          * @brief get the center of mass of this rigid body seen in the base frame
          * @return the center of mass 3D coordinate
          */
-        rw::math::Vector3D<> getCOM () const { return _com; };
+        rw::math::Vector3D<double> getCOM () const { return _com; };
         //! @brief set the center of mass of this rigid body seen in the base frame
-        void setCOM (const rw::math::Vector3D<>& com) { _com = com; }
+        void setCOM (const rw::math::Vector3D<double>& com) { _com = com; }
 
         /**
          * @brief approximates inertia based on geometry, mass and center of mass properties
@@ -185,7 +187,7 @@ namespace rw { namespace models {
         }
 
         //! @copydoc Object::getCOM
-        rw::math::Vector3D<> getCOM (rw::kinematics::State& state) const { return _com; }
+        rw::math::Vector3D<double> getCOM (rw::kinematics::State& state) const { return _com; }
 
       protected:
         friend class WorkCell;
@@ -208,7 +210,7 @@ namespace rw { namespace models {
         std::vector< rw::geometry::Model3D::Ptr > _models;
         double _mass;
         rw::math::InertiaMatrix<> _Ibody;
-        rw::math::Vector3D<> _com;
+        rw::math::Vector3D<double> _com;
     };
 
     /*@}*/

@@ -18,10 +18,12 @@
 #ifndef RW_GEOMETRY_TRIMESH_HPP_
 #define RW_GEOMETRY_TRIMESH_HPP_
 
+#if !defined(SWIG)
 #include "GeometryData.hpp"
 #include "Triangle.hpp"
 
 #include <rw/core/Ptr.hpp>
+#endif
 
 namespace rw { namespace geometry {
     //! @addtogroup geometry
@@ -45,13 +47,13 @@ namespace rw { namespace geometry {
         /**
          * @brief gets the triangle at index idx.
          */
-        virtual Triangle< double > getTriangle (size_t idx) const = 0;
+        virtual rw::geometry::Triangle< double > getTriangle (size_t idx) const = 0;
 
-        virtual void getTriangle (size_t idx, Triangle< double >& dst) const = 0;
+        virtual void getTriangle (size_t idx, rw::geometry::Triangle< double >& dst) const = 0;
         /**
          * @brief gets the triangle at index idx, but with floating precision
          */
-        virtual void getTriangle (size_t idx, Triangle< float >& dst) const = 0;
+        virtual void getTriangle (size_t idx, rw::geometry::Triangle< float >& dst) const = 0;
 
         /**
          * @brief gets the number of triangles in the triangle array.
@@ -80,7 +82,7 @@ namespace rw { namespace geometry {
          */
         struct TriCenterIterator
         {
-            rw::math::Vector3D<> _pos;
+            rw::math::Vector3D<double> _pos;
             const rw::geometry::TriMesh& _mesh;
             size_t _first, _end;
             bool _useAreaWeight;
@@ -88,9 +90,9 @@ namespace rw { namespace geometry {
                 _mesh (mesh), _first (0), _end (mesh.getSize ()), _useAreaWeight (useAreaWeight)
             {}
 
-            rw::math::Vector3D<>& operator* () { return _pos; }
+            rw::math::Vector3D<double>& operator* () { return _pos; }
 
-            rw::math::Vector3D<>* operator-> () { return &_pos; }
+            rw::math::Vector3D<double>* operator-> () { return &_pos; }
 
             TriCenterIterator& operator++ ()
             {
@@ -109,7 +111,7 @@ namespace rw { namespace geometry {
 
                 ++_first;
                 if (_first != _end) {
-                    Triangle<> tri = _mesh.getTriangle (_first);
+                    rw::geometry::Triangle < double > tri = _mesh.getTriangle (_first);
                     if (_useAreaWeight) {
                         double area = tri.calcArea ();
                         _pos = area * (tri.getVertex (0) + tri.getVertex (1) + tri.getVertex (2)) /
@@ -127,7 +129,7 @@ namespace rw { namespace geometry {
          */
         struct VerticeIterator
         {
-            rw::math::Vector3D<> _pos;
+            rw::math::Vector3D<double> _pos;
             const rw::geometry::TriMesh& _mesh;
 
             size_t _first, _end, _subIdx;
@@ -136,9 +138,9 @@ namespace rw { namespace geometry {
                 _mesh (mesh), _first (0), _end (mesh.getSize ()), _subIdx (0)
             {}
 
-            rw::math::Vector3D<>& operator* () { return _pos; }
+            rw::math::Vector3D<double>& operator* () { return _pos; }
 
-            rw::math::Vector3D<>* operator-> () { return &_pos; }
+            rw::math::Vector3D<double>* operator-> () { return &_pos; }
 
             VerticeIterator& operator++ ()
             {

@@ -18,8 +18,9 @@
 #ifndef RW_GEOMETRY_CONE_HPP_
 #define RW_GEOMETRY_CONE_HPP_
 
+#if !defined(SWIG)
 #include "Primitive.hpp"
-
+#endif
 //! @file rw/geometry/Cone.hpp
 
 namespace rw { namespace geometry {
@@ -80,7 +81,7 @@ namespace rw { namespace geometry {
          * @param point [in] point to check.
          * @return true if inside geometry, false otherwise.
          */
-        bool doIsInside (const rw::math::Vector3D<>& point);
+        bool doIsInside (const rw::math::Vector3D<double>& point);
 
       private:
         double _radiusTop, _radiusBottom, _height;

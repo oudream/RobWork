@@ -7,20 +7,19 @@
 # static libraries ONLY else look for shared ones
  
 if(WIN32)
-    find_package(Qhull QUIET NO_MODULE)
+    find_package(Qhull QUIET NO_MODULE HINTS ${QHULL_ROOT})
 else()
     # we are not ready for qhull config approach find_package(Qhull QUIET NO_MODULE)
     set(Qhull_FOUND FALSE)
 endif()
 
 if(NOT ${Qhull_FOUND})
-
     if(WIN32)
         set(qhull_libnames qhullstatic_r)
     elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
         set(qhull_libnames qhull_r qhull6_r)
     else()
-        set(qhull_libnames libqhull_r.so.7 qhull6_r)
+        set(qhull_libnames libqhull_r.so qhull6_r)
     endif()
 
     # ##############################################################################################
@@ -33,9 +32,10 @@ if(NOT ${Qhull_FOUND})
         PATHS "$ENV{PROGRAMFILES}/QHull" "$ENV{PROGRAMW6432}/QHull"
         PATH_SUFFIXES qhull src/libqhull libqhull_r include
     )
-
     if(QHULL_HEADER)
         get_filename_component(QHULL_INCLUDE_DIR ${QHULL_HEADER} PATH)
+        get_filename_component(TMP ${QHULL_INCLUDE_DIR} PATH)
+        set(QHULL_INCLUDE_DIR ${QHULL_INCLUDE_DIR} ${TMP})
     else(QHULL_HEADER)
         set(QHULL_INCLUDE_DIR "QHULL_INCLUDE_DIR-NOTFOUND")
     endif(QHULL_HEADER)
@@ -50,7 +50,7 @@ if(NOT ${Qhull_FOUND})
         PATHS "$ENV{PROGRAMFILES}/QHull" "$ENV{PROGRAMW6432}/QHull" "/usr"
         PATH_SUFFIXES project build bin lib lib/x86_64-linux-gnu lib64
     )
-
+    
     # ##############################################################################################
     # Finalize find package
     # ##############################################################################################
@@ -65,26 +65,34 @@ if(NOT ${Qhull_FOUND})
     # ##############################################################################################
 
     if(QHULL_FOUND)
-        message(STATUS "QHULL ${QHULL_LIBRARY}")
-        message(STATUS "QHULL ${QHULL_INCLUDE_DIR}")
-        message(STATUS "QHULL found")
-
-        add_library(RW::qhull UNKNOWN IMPORTED)
+        add_library(Qhull::qhull_r UNKNOWN IMPORTED)
         set_target_properties(
-            RW::qhull PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${QHULL_INCLUDE_DIR}
+            Qhull::qhull_r PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "${QHULL_INCLUDE_DIR}"
         )
         set_target_properties(
-            RW::qhull PROPERTIES IMPORTED_LOCATION ${QHULL_LIBRARY}
+            Qhull::qhull_r PROPERTIES IMPORTED_LOCATION ${QHULL_LIBRARY}
         )
 
         set(QHULL_INCLUDE_DIRS ${QHULL_INCLUDE_DIR})
-        set(QHULL_LIBRARIES RW::qhull)
+        set(QHULL_LIBRARIES Qhull::qhull_r )
     endif()
 else()
     if(MSVC)
-        set(QHULL_LIBRARIES Qhull::qhullstatic_r)
+        if(TARGET Qhull::qhullstatic_r)
+            set(QHULL_LIBRARIES Qhull::qhullstatic_r)
+        elseif(TARGET qhull::qhullstatic_r)
+            set(QHULL_LIBRARIES qhull::qhullstatic_r)
+        else()
+            message(FATAL_ERROR "Unrecognized qhull library")
+        endif()
     else()
-        set(QHULL_LIBRARIES Qhull::qhull_r)
+        if(TARGET Qhull::qhull_r)
+            set(QHULL_LIBRARIES Qhull::qhull_r)
+        elseif(TARGET qhull::qhull_r)
+            set(QHULL_LIBRARIES qhull::qhull_r)
+        else()
+            message(FATAL_ERROR "Unrecognized qhull library")
+        endif()
     endif()
-    message(STATUS "QHULL found")
+    get_target_property(QHULL_INCLUDE_DIRS ${QHULL_LIBRARIES} INTERFACE_INCLUDE_DIRECTORIES)
 endif()

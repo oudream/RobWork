@@ -23,8 +23,9 @@
  *
  * \copydoc rw::models::UniversalJoint
  */
-
+#if !defined(SWIG)
 #include "Joint.hpp"
+#endif 
 
 namespace rw { namespace models {
     //! @addtogroup models
@@ -59,7 +60,7 @@ namespace rw { namespace models {
                                           rw::math::Transform3D<>& result) const;
 
         //! @brief Frame::doGetTransform
-        virtual math::Transform3D<> doGetTransform (const rw::kinematics::State& state) const;
+        virtual rw::math::Transform3D<> doGetTransform (const rw::kinematics::State& state) const;
 
         // From Joint
         //! @copydoc Joint::getJacobian

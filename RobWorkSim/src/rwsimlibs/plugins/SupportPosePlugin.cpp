@@ -41,6 +41,8 @@
 #include <QTreeWidgetItem>
 #include <QVariant>
 
+#include <memory>
+
 //#include <simulator/bullet/BtSimulator.hpp>
 //#include <simulator/bullet/BtDebugRender.hpp>
 
@@ -385,8 +387,8 @@ void SupportPosePlugin::genericEventListener (const std::string& event)
     if (event == "DynamicWorkCellLoaded") {
         // get the dynamic workcell from the propertymap
         RW_DEBUG ("Getting dynamic workcell from propertymap!");
-        boost::shared_ptr< DynamicWorkCell >* dwc =
-            getRobWorkStudio ()->getPropertyMap ().getPtr< boost::shared_ptr< DynamicWorkCell > > (
+        std::shared_ptr< DynamicWorkCell >* dwc =
+            getRobWorkStudio ()->getPropertyMap ().getPtr< std::shared_ptr< DynamicWorkCell > > (
                 "DynamicWorkcell");
         if (dwc == NULL) {
             //// std::cout   << "No dynamic workcell in propertymap!!" << std::endl;

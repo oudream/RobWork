@@ -83,7 +83,6 @@
       - ./RobWork/src/rwlibs/swig
       - ./gtest
     expire_in: 2 day
-    when: on_success
 
 .linux-build-RWS:
   extends: .CI-common-linux
@@ -134,7 +133,7 @@
       - ./RobWork/src/rwlibs/swig
       - ./gtest
     expire_in: 2 day
-    when: on_success
+    when: always
 
 .linux-examples:
   extends: .CI-common-linux
@@ -197,6 +196,18 @@
     - make -j 1 -k sdurwsim-gtest_reports
     - mv ./bin/**/gtest_reports/* ../../gtest/
 
+.linux-python-tests:
+  extends: .CI-common-linux
+  stage: test
+  tags:
+    - linux
+  script:
+    - export PYTHONPATH=$PYTHONPATH:$(pwd)/Build/RW/libs/release
+    - ls $(pwd)/Build/RW/libs/release
+    - cd RobWork/unittest
+    - python3 -m unittest discover ./math -p '*.py'
+    - python3 -m unittest discover ./core -p '*.py'
+
 .linux-install-tests:
   extends: .CI-common-linux
   stage: test
@@ -204,12 +215,13 @@
     - linux
   before_script:
     - *remove-rw-install
+    - THREADS=$(nproc --all)
     - cd ./Build/RW
-    - make install
+    - make -j${THREADS} install
     - cd ../RWS
-    - make install
+    - make -j${THREADS} install
     - cd ../RWSim
-    - make install
+    - make -j${THREADS} install
     - cd ../..
     - export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/local/lib
     - git clean -fdX

@@ -32,6 +32,7 @@ using namespace rw::math;
 #include <rw/math/Transform3D.hpp>
 #include <rw/math/Vector3D.hpp>
 #include <rw/math/RPY.hpp>
+#include <memory>
 
 using namespace phoenix;
 using namespace boost::spirit::classic;
@@ -726,10 +727,10 @@ struct XMLWorkcellParser
 };
 }    // end of namespace
 
-boost::shared_ptr< DummyWorkcell > XMLRWParser::parseWorkcell (const std::string& filename)
+std::shared_ptr< DummyWorkcell > XMLRWParser::parseWorkcell (const std::string& filename)
 {
-    boost::shared_ptr< std::vector< char > > output (new std::vector< char > ());
-    boost::shared_ptr< std::vector< std::pair< size_t, file_position > > > filemap (
+    std::shared_ptr< std::vector< char > > output (new std::vector< char > ());
+    std::shared_ptr< std::vector< std::pair< size_t, file_position > > > filemap (
         new std::vector< std::pair< size_t, file_position > > ());
 
     if (!rw::loaders::XMLRWPreParser::parse (filename, *output, *filemap)) {
@@ -739,15 +740,15 @@ boost::shared_ptr< DummyWorkcell > XMLRWParser::parseWorkcell (const std::string
     return XMLRWParser::parseWorkcell (output, filemap);
 }
 
-boost::shared_ptr< DummyWorkcell > XMLRWParser::parseWorkcell (
-    boost::shared_ptr< std::vector< char > >& data,
-    boost::shared_ptr< std::vector< std::pair< size_t, file_position > > >& filemap)
+std::shared_ptr< DummyWorkcell > XMLRWParser::parseWorkcell (
+    std::shared_ptr< std::vector< char > >& data,
+    std::shared_ptr< std::vector< std::pair< size_t, file_position > > >& filemap)
 {
     typedef MultipleFileIterator iterator_t;
     iterator_t first (data, filemap);
     iterator_t last (first.end ());
 
-    boost::shared_ptr< DummyWorkcell > workcell (new DummyWorkcell);
+    std::shared_ptr< DummyWorkcell > workcell (new DummyWorkcell);
     XMLWorkcellParser workcell_p;
 
     parse_info< iterator_t > info = parse (first,

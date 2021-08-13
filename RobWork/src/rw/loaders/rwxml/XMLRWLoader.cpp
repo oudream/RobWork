@@ -60,6 +60,7 @@
 
 #include <boost/lexical_cast.hpp>
 #include <stack>
+#include <memory>
 
 using namespace rw::math;
 using namespace rw::core;
@@ -125,7 +126,7 @@ struct DummySetup
     std::map< std::string, std::vector< Frame* > > toChildMap;
     std::map< Frame*, RigidObject::Ptr > objectMap;
     std::vector< InitialAction* > actions;
-    boost::shared_ptr< DummyWorkcell > dwc;
+    std::shared_ptr< DummyWorkcell > dwc;
 
     ColSetupList colsetups;
     ProxSetupList proxsetups;
@@ -612,7 +613,7 @@ void addDevicePropsToFrame (DummyDevice& dev, const std::string& name, DummySetu
 {
     Frame* frame = setup.frameMap[name];
     // add properties specified in device context
-    std::vector< boost::shared_ptr< rw::core::Property< std::string > > > proplist =
+    std::vector< std::shared_ptr< rw::core::Property< std::string > > > proplist =
         dev._propMap[frame->getName ()];
 
     for (size_t j = 0; j < proplist.size (); j++) {
@@ -999,7 +1000,7 @@ rw::models::WorkCell::Ptr XMLRWLoader::loadWorkCell (const std::string& fname)
         setup.wcFilename = filename;
 
         // Start parsing workcell
-        // boost::shared_ptr<DummyWorkcell> workcell = XMLRWParser::parseWorkcell(filename);
+        // std::shared_ptr<DummyWorkcell> workcell = XMLRWParser::parseWorkcell(filename);
         setup.dwc = XMLRWParser::parseWorkcell (filename);
 
         // do sanity check on the workcell,

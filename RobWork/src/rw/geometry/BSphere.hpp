@@ -1,10 +1,13 @@
 #ifndef RW_GEOMETRY_BSPHERE_HPP_
 #define RW_GEOMETRY_BSPHERE_HPP_
 
+#if !defined(SWIG)
 #include "BV.hpp"
 
 #include <rw/math/Constants.hpp>
 #include <rw/math/Vector3D.hpp>
+#endif
+#include <rw/common/Traits.hpp>
 
 namespace rw {
 namespace geometry {
@@ -14,7 +17,7 @@ namespace geometry {
      * @brief class representing an Bounding sphere
      */
 
-    template< class T = double > class BSphere : public BV< BSphere< T > >
+    template< class T = double > class BSphere : public rw::geometry::BV< rw::geometry::BSphere< T > >
     {
       public:
         typedef T value_type;
@@ -30,10 +33,15 @@ namespace geometry {
          * @param pos [in] the position of the center of the sphere
          * @param radius [in] set the radius of the sphere
          */
-        BSphere (const rw::math::Vector3D< T >& pos, T radius = 1.0) :
-            _p3d (pos), _radius (radius)
+        BSphere (const rw::math::Vector3D< T >& pos, T radius = 1.0) : _p3d (pos), _radius (radius)
         {}
-        
+
+        /**
+         * @brief Copy constroctor
+         * @param bs [in] object to copy
+         */
+        BSphere (const rw::geometry::BSphere<T>& bs) : _p3d(bs.getPosition()),_radius(bs.getRadius()) {}
+
         /**
          * @brief get the position of the sphere center
          * @return a Vector3D with the center coordinates
@@ -53,8 +61,8 @@ namespace geometry {
         inline const T& getRadius () const { return _radius; }
 
         /**
-         * @brief get the sphere radius²
-         * @return sphere radius²
+         * @brief get the sphere radius^2
+         * @return sphere radius^2
          */
         inline const T getRadiusSqr () const { return _radius * _radius; }
 
@@ -72,7 +80,7 @@ namespace geometry {
         {
             return (T) (4.0 / 3.0 * rw::math::Pi * _radius * _radius * _radius);
         }
-
+#if !defined(SWIG)
         /**
          * @brief Ouputs BSphere to stream
          * @param os [in/out] stream to use
@@ -83,13 +91,15 @@ namespace geometry {
         {
             return os << " BSphere{" << sphere._p3d << "," << sphere._radius << "}";
         }
-
+#else
+        TOSTRING (rw::geometry::BSphere<T>);
+#endif
         /**
          * @brief fit a sphere in $O(n)$ to a triangle mesh using Principal Component Analysis (PCA)
          * where the eigen values of the vertices are used to compute the center of the sphere
          * using the vector with the maximum spread (largest eigenvalue).
          * @param tris [in] input mesh
-         * @return
+         * @return bounding sphere
          */
         static BSphere< T > fitEigen (const rw::geometry::TriMesh& tris);
 
@@ -100,7 +110,17 @@ namespace geometry {
     };
 
 }    // namespace geometry
-
+#if defined(SWIG)
+SWIG_DECLARE_TEMPLATE (BVBSphere, rw::geometry::BV< rw::geometry::BSphere< double > >);
+SWIG_DECLARE_TEMPLATE (BVBSphere_f, rw::geometry::BV< rw::geometry::BSphere< float > >);
+#if SWIG_VERSION < 0x040000
+SWIG_DECLARE_TEMPLATE (BSphere_d, rw::geometry::BSphere< double >);
+ADD_DEFINITION(BSphere_d,BSphere)
+#else 
+SWIG_DECLARE_TEMPLATE (BSphere, rw::geometry::BSphere< double >);
+#endif
+SWIG_DECLARE_TEMPLATE (BSphere_f, rw::geometry::BSphere< float >);
+#endif
 template< typename T > struct Traits< geometry::BSphere< T > >
 {
     typedef T value_type;

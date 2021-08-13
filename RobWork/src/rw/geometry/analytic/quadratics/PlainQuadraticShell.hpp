@@ -23,13 +23,14 @@
  *
  * \copydoc rw::geometry::PlainQuadraticShell
  */
-
+#if !defined(SWIG)
 #include "QuadraticShell.hpp"
-
+#endif
 namespace rw { namespace geometry {
     //! @addtogroup geometry
-
+#if !defined(SWIG)
     //! @{
+#endif
     /**
      * @brief A collection of concrete Quadratic surface patches, that together form a shell.
      */
@@ -73,13 +74,13 @@ namespace rw { namespace geometry {
 
         //! @copydoc QuadraticShell::size
         virtual std::size_t size () const { return _faces.size (); }
-
+#if !defined(SWIGJAVA)
         //! @copydoc QuadraticShell::getFace(std::size_t) const
         virtual rw::core::Ptr< const QuadraticFace > getFace (std::size_t idx) const
         {
             return _faces[idx].cast< const QuadraticFace > ();
         }
-
+#endif 
         //! @copydoc QuadraticShell::getFace(std::size_t, QuadraticFace&) const
         virtual void getFace (std::size_t idx, QuadraticFace& dst) const;
 
@@ -131,7 +132,9 @@ namespace rw { namespace geometry {
 
         std::vector< rw::core::Ptr< QuadraticFace > > _faces;
     };
-    //! @}
+#if !defined(SWIG)
+//! @}
+#endif
 }}    // namespace rw::geometry
 
 #endif /* RW_GEOMETRY_ANALYTIC_QUADRATICS_PLAINQUADRATICSHELL_HPP_ */

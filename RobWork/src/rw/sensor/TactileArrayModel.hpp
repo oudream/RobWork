@@ -18,6 +18,7 @@
 #ifndef RW_SENSOR_TACTILEARRAYMODEL_HPP
 #define RW_SENSOR_TACTILEARRAYMODEL_HPP
 
+#if !defined(SWIG)
 #include "SensorModel.hpp"
 
 #include <rw/math/Transform3D.hpp>
@@ -25,7 +26,7 @@
 #include <rw/math/Vector3D.hpp>
 
 #include <boost/multi_array.hpp>
-
+#endif 
 namespace rw { namespace sensor {
 
     /**

@@ -1,6 +1,6 @@
 # ##################################################################################################
 # Test CMake version and CMAKE_BUILD_TYPE
-cmake_minimum_required(VERSION 3.5.1)
+cmake_minimum_required(VERSION 3.10  )
 
 
 if(POLICY CMP0071) # Introduce cmake 3.10
@@ -99,6 +99,10 @@ configure_file(${RWSIM_ROOT}/cmake/RobWorkSimConfigVersion.cmake.in
                "${RWSIM_ROOT}/cmake/RobWorkSimConfigVersion.cmake" @ONLY
 )
 
+configure_file(${RW_ROOT}/cmake/RobWorkConfigMacros.cmake.in
+               "${RWSIM_ROOT}/cmake/RobWorkSimConfigMacros.cmake" @ONLY
+)
+
 # Store the test results in a RWSimConfig.hpp file.
 configure_file(${RWSIM_ROOT}/src/RobWorkSimConfig.hpp.in ${RWSIM_ROOT}/src/RobWorkSimConfig.hpp)
 
@@ -124,6 +128,7 @@ install(
     FILES "${RWSIM_ROOT}/cmake/RobWorkSimConfigVersion.cmake"
           "${RWSIM_ROOT}/cmake/RobWorkSimConfig.cmake"
           "${RWSIM_ROOT}/cmake/RobWorkSimBuildConfig_${RWSIM_BUILD_TYPE}.cmake"
+          "${RWSIM_ROOT}/cmake/RobWorkSimConfigMacros.cmake"
     DESTINATION "${RWSIM_INSTALL_DIR}/cmake"
 )
 

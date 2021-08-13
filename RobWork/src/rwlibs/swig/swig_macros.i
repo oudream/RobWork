@@ -186,6 +186,18 @@
     }
 %enddef
 
+%define MAPOPERATOR2(ret,index)
+    %extend {
+        #if (defined(SWIGLUA) || defined(SWIGPYTHON))
+            ret __getitem__(index i)const {return (*$self)(i); }
+            void __setitem__(index i,ret d){ (*$self)(i) = d; }
+        #elif defined(SWIGJAVA)
+            ret get(index i) const { return (*$self)(i); }
+            void set(index i,ret d){ (*$self)(i) = d; }
+        #endif
+    }
+%enddef
+
 %define MAP2OPERATOR(ret, i1,i2)
     %extend {
         #if (defined(SWIGLUA) || defined(SWIGPYTHON))
@@ -197,6 +209,19 @@
         #endif
     }
 %enddef
+
+%define CALLOPERATOR(ret, input_type)
+    %extend {
+        #if defined(SWIGLUA)
+            ret __call(input_type in) { return (*$self)(in);}
+        #elif defined(SWIGPYTHON)
+            ret __call__(input_type in) { return (*$self)(in);}
+        #elif defined(SWIGJAVA)
+            ret call(input_type in) { return (*$self)(in);}
+        #endif
+    }
+%enddef
+
 
 %define FRIEND_OPERATOR(friend_class, orig_class, theOprator)
     %extend friend_class {
@@ -248,4 +273,17 @@
 
 %define IMPORT_MODULE(include_module)
     %import include_module
+%enddef
+
+%define ADD_DEFINITION(orig,new)
+#if defined(SWIGPYTHON)
+%pythoncode {
+new=orig
+}
+#elif defined(SWIGLUA)
+%luacode {
+new = orig
+}
+#elif defined(SWIGJAVA)
+#endif 
 %enddef

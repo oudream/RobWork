@@ -21,8 +21,9 @@
 /**
  * @file PrismaticJoint.hpp
  */
-
+#if !defined(SWIG)
 #include "Joint.hpp"
+#endif 
 
 namespace rw { namespace models {
 
@@ -47,7 +48,7 @@ namespace rw { namespace models {
          * @param name [in] Name of the joints
          * @param transform [in] Static transform of the joint
          */
-        PrismaticJoint (const std::string& name, const math::Transform3D<>& transform);
+        PrismaticJoint (const std::string& name, const rw::math::Transform3D<>& transform);
 
         //! destructor
         virtual ~PrismaticJoint ();
@@ -64,8 +65,8 @@ namespace rw { namespace models {
          * @param q [in] Joint values for the joint
          * @param result [in] The transform of the frame in the world frame.
          */
-        void multiplyJointTransform (const math::Transform3D<>& parent, const math::Q& q,
-                                     math::Transform3D<>& result) const;
+        void multiplyJointTransform (const rw::math::Transform3D<>& parent, const rw::math::Q& q,
+                                     rw::math::Transform3D<>& result) const;
 
         /**
          * @brief The transform of the joint relative to its parent.
@@ -80,7 +81,7 @@ namespace rw { namespace models {
          *
          * @return The transform of the frame relative to its displacement transform.
          */
-        math::Transform3D<> getJointTransform (double q) const;
+        rw::math::Transform3D<> getJointTransform (double q) const;
 
         /**
          * @brief The transform of the joint relative to its parent.
@@ -95,7 +96,7 @@ namespace rw { namespace models {
          *
          * @return The transform of the frame relative to its parent transform.
          */
-        math::Transform3D<> getTransform (double q) const;
+        rw::math::Transform3D<> getTransform (double q) const;
         // we need to declare the getTransform again because its shadowed by the getTransform(q)
         using rw::kinematics::Frame::getTransform;
 
@@ -106,14 +107,14 @@ namespace rw { namespace models {
         void setFixedTransform (const rw::math::Transform3D<>& t3d);
 
         //! @copydoc Joint::getJointTransform()
-        math::Transform3D<> getJointTransform (const rw::kinematics::State& state) const;
+        rw::math::Transform3D<> getJointTransform (const rw::kinematics::State& state) const;
 
         /**
          * @copydoc Joint::getJacobian()
          */
-        void getJacobian (size_t row, size_t col, const math::Transform3D<>& joint,
-                          const math::Transform3D<>& tcp, const kinematics::State& state,
-                          math::Jacobian& jacobian) const;
+        void getJacobian (size_t row, size_t col, const rw::math::Transform3D<>& joint,
+                          const rw::math::Transform3D<>& tcp, const rw::kinematics::State& state,
+                          rw::math::Jacobian& jacobian) const;
 
         //! @copydoc Joint::setJointMapping()
         virtual void setJointMapping (rw::math::Function1Diff<>::Ptr function);
@@ -125,13 +126,13 @@ namespace rw { namespace models {
         /**
          * @copydoc rw::kinematics::Frame::doMultiplyTransform
          */
-        void doMultiplyTransform (const math::Transform3D<>& parent, const kinematics::State& state,
-                                  math::Transform3D<>& result) const;
+        void doMultiplyTransform (const rw::math::Transform3D<>& parent, const rw::kinematics::State& state,
+                                  rw::math::Transform3D<>& result) const;
 
         /**
          * @copydoc rw::kinematics::Frame::doGetTransform
          */
-        math::Transform3D<> doGetTransform (const kinematics::State& state) const;
+        rw::math::Transform3D<> doGetTransform (const rw::kinematics::State& state) const;
 
       private:
         /**
@@ -149,9 +150,9 @@ namespace rw { namespace models {
 
             virtual rw::math::Transform3D<> getFixedTransform () const = 0;
 
-            virtual void getJacobian (size_t row, size_t col, const math::Transform3D<>& joint,
-                                      const math::Transform3D<>& tcp, double q,
-                                      math::Jacobian& jacobian) const;
+            virtual void getJacobian (size_t row, size_t col, const rw::math::Transform3D<>& joint,
+                                      const rw::math::Transform3D<>& tcp, double q,
+                                      rw::math::Jacobian& jacobian) const;
         };
 
         class PrismaticJointImplBasic : public PrismaticJointImpl
@@ -174,7 +175,7 @@ namespace rw { namespace models {
                 const double b02 = _transform.R () (0, 2);
                 const double b12 = _transform.R () (1, 2);
                 const double b22 = _transform.R () (2, 2);
-                const rw::math::Vector3D<> p (bx + b02 * q, by + b12 * q, bz + b22 * q);
+                const rw::math::Vector3D<double> p (bx + b02 * q, by + b12 * q, bz + b22 * q);
                 rw::math::Rotation3D<>::multiply (parent.R (), p, result.P ());
                 result.P () += parent.P ();
             }
@@ -185,7 +186,7 @@ namespace rw { namespace models {
                 const double b12 = _transform.R () (1, 2);
                 const double b22 = _transform.R () (2, 2);
 
-                const rw::math::Vector3D<> p (b02 * q, b12 * q, b22 * q);
+                const rw::math::Vector3D<double> p (b02 * q, b12 * q, b22 * q);
 
                 rw::math::Transform3D<> result (_transform);
                 result.P () += p;
@@ -215,7 +216,7 @@ namespace rw { namespace models {
                 const double ab02 = result.R () (0, 2);
                 const double ab12 = result.R () (1, 2);
                 const double ab22 = result.R () (2, 2);
-                result.P () = parent.P () + rw::math::Vector3D<> (ab02 * q, ab12 * q, ab22 * q);
+                result.P () = parent.P () + rw::math::Vector3D<double> (ab02 * q, ab12 * q, ab22 * q);
             }
 
             rw::math::Transform3D<> getTransform (double q)
@@ -224,12 +225,12 @@ namespace rw { namespace models {
                 const double ab12 = _rotation (1, 2);
                 const double ab22 = _rotation (2, 2);
 
-                return rw::math::Transform3D<> (rw::math::Vector3D<> (ab02 * q, ab12 * q, ab22 * q),
+                return rw::math::Transform3D<> (rw::math::Vector3D<double> (ab02 * q, ab12 * q, ab22 * q),
                                                 _rotation);
             }
             rw::math::Transform3D<> getFixedTransform () const
             {
-                return rw::math::Transform3D<> (rw::math::Vector3D<> (), _rotation);
+                return rw::math::Transform3D<> (rw::math::Vector3D<double> (), _rotation);
             }
 
           private:
@@ -239,7 +240,7 @@ namespace rw { namespace models {
         class PrismaticJointZeroRotationImpl : public PrismaticJointImpl
         {
           public:
-            PrismaticJointZeroRotationImpl (const rw::math::Vector3D<>& translation) :
+            PrismaticJointZeroRotationImpl (const rw::math::Vector3D<double>& translation) :
                 _translation (translation)
             {}
 
@@ -249,14 +250,14 @@ namespace rw { namespace models {
                                     rw::math::Transform3D<>& result) const
             {
                 rw::math::Rotation3D<>::multiply (
-                    parent.R (), rw::math::Vector3D<> (0, 0, q) + _translation, result.P ());
+                    parent.R (), rw::math::Vector3D<double> (0, 0, q) + _translation, result.P ());
                 result.P () += parent.P ();
                 result.R () = parent.R ();
             }
 
             rw::math::Transform3D<> getTransform (double q)
             {
-                return rw::math::Transform3D<> (rw::math::Vector3D<> (0, 0, q) + _translation,
+                return rw::math::Transform3D<> (rw::math::Vector3D<double> (0, 0, q) + _translation,
                                                 rw::math::Rotation3D<>::identity ());
             }
 
@@ -266,7 +267,7 @@ namespace rw { namespace models {
             }
 
           private:
-            rw::math::Vector3D<> _translation;
+            rw::math::Vector3D<double> _translation;
         };
 
         /**
@@ -286,9 +287,9 @@ namespace rw { namespace models {
             rw::math::Transform3D<> getTransform (double q);
             rw::math::Transform3D<> getFixedTransform () const;
 
-            virtual void getJacobian (size_t row, size_t col, const math::Transform3D<>& joint,
-                                      const math::Transform3D<>& tcp, double q,
-                                      math::Jacobian& jacobian) const;
+            virtual void getJacobian (size_t row, size_t col, const rw::math::Transform3D<>& joint,
+                                      const rw::math::Transform3D<>& tcp, double q,
+                                      rw::math::Jacobian& jacobian) const;
 
           private:
             PrismaticJointImpl* _impl;

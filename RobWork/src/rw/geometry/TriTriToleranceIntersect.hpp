@@ -2,11 +2,13 @@
 #ifndef RW_GEOMETRY_TRITRITOLERANCEINTERSECT_HPP_
 #define RW_GEOMETRY_TRITRITOLERANCEINTERSECT_HPP_
 
+#if !defined(SWIG)
 #include "BVCollider.hpp"
 #include "TriDistanceCalc.hpp"
 
 #include <rw/geometry/Triangle.hpp>
 #include <rw/math/Transform3D.hpp>
+#endif 
 
 namespace rw { namespace geometry {
 

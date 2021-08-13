@@ -18,6 +18,7 @@
 #ifndef RW_GRASPPLANNING_GRASPTABLE_HPP_
 #define RW_GRASPPLANNING_GRASPTABLE_HPP_
 
+#if !defined(SWIG)
 #include "Grasp3D.hpp"
 
 #include <rw/core/PropertyMap.hpp>
@@ -25,7 +26,7 @@
 #include <rw/math/Q.hpp>
 #include <rw/math/Vector3D.hpp>
 #include <rw/sensor/TactileArray.hpp>
-
+#endif 
 namespace rw { namespace graspplanning {
 
     /**

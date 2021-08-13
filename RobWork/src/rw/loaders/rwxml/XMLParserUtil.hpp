@@ -28,6 +28,7 @@
 #include <boost/spirit/include/classic_position_iterator.hpp>
 #include <map>
 #include <vector>
+#include <memory>
 
 template< typename ResultT >
 struct result_closure : public boost::spirit::classic::closure< result_closure< ResultT >, ResultT >
@@ -267,7 +268,7 @@ struct DummyDevice
 
     std::vector< DummyCalibration > _calibration;    // device calibration
 
-    std::map< std::string, std::vector< boost::shared_ptr< rw::core::Property< std::string > > > >
+    std::map< std::string, std::vector< std::shared_ptr< rw::core::Property< std::string > > > >
         _propMap;
 
     std::map< std::string, std::vector< DummyModel > > _modelMap;

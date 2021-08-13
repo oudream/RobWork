@@ -18,9 +18,10 @@
 #ifndef RW_GRASPPLANNING_GRASP3D_HPP_
 #define RW_GRASPPLANNING_GRASP3D_HPP_
 
+#if !defined(SWIG)
 #include <rw/math/Vector3D.hpp>
 #include <rw/sensor/Contact3D.hpp>
-
+#endif 
 namespace rw { namespace graspplanning {
 
     /**

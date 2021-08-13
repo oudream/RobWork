@@ -17,12 +17,12 @@
 
 #ifndef RW_GEOMETRY_GEOMETRY_HPP_
 #define RW_GEOMETRY_GEOMETRY_HPP_
-
+#if !defined(SWIG)
 #include "GeometryData.hpp"
 
 #include <rw/core/Ptr.hpp>
 #include <rw/math/Transform3D.hpp>
-
+#endif
 namespace rw { namespace kinematics {
     class Frame;
 }}    // namespace rw::kinematics
@@ -246,8 +246,8 @@ namespace rw { namespace geometry {
          */
         static Geometry::Ptr
         makeGrid (int dim_x, int dim_y, double size_x = 1.0, double size_y = 1.0,
-                  const rw::math::Vector3D<>& xdir = rw::math::Vector3D<>::x (),
-                  const rw::math::Vector3D<>& ydir = rw::math::Vector3D<>::y ());
+                  const rw::math::Vector3D<double>& xdir = rw::math::Vector3D<double>::x (),
+                  const rw::math::Vector3D<double>& ydir = rw::math::Vector3D<double>::y ());
 
         /**
          * @brief get the color stored for the object

@@ -18,12 +18,13 @@
 #ifndef RW_PROXIMITY_TRIDISTANCECALC_HPP_
 #define RW_PROXIMITY_TRIDISTANCECALC_HPP_
 
-#include "BVDistanceCalc.hpp"
-
+#if !defined(SWIG)
+#include <rw/geometry/BVDistanceCalc.hpp>
 #include <rw/geometry/Triangle.hpp>
 
 #include <PQP/PQP.h>
 #include <PQP/TriDist.h>
+#endif
 
 namespace rw { namespace geometry {
 
@@ -33,7 +34,7 @@ namespace rw { namespace geometry {
 
     template< class T = double >
     class TriDistanceCalc
-        : public BVDistanceCalc< TriDistanceCalc< T >, rw::geometry::Triangle< T > >
+        : public rw::proximity::BVDistanceCalc< TriDistanceCalc< T >, rw::geometry::Triangle< T > >
     {
       public:
         typedef T value_type;

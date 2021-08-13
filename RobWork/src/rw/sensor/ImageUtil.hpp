@@ -21,9 +21,9 @@
 /**
  * @file rw/sensor/ImageUtil.hpp
  */
-
+#if !defined(SWIG)
 #include <rw/core/Ptr.hpp>
-
+#endif 
 namespace rw { namespace geometry {
     class PointCloud;
 }}    // namespace rw::geometry

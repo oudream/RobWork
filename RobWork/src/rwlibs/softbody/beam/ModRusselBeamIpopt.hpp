@@ -19,6 +19,7 @@ Copyright 2013 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
 
 #include "IpIpoptApplication.hpp"
 #include "ModRusselBeamBase.hpp"
+#include <memory>
 
 namespace rwlibs { namespace softbody {
     /** @addtogroup softbody */
@@ -37,8 +38,8 @@ namespace rwlibs { namespace softbody {
          * @param obstaclePtr pointer to the plane obstacle
          * @param M number of discretization points
          **/
-        ModRusselBeamIpopt (boost::shared_ptr< BeamGeometry > geomPtr,
-                            boost::shared_ptr< BeamObstaclePlane > obstaclePtr, int M);
+        ModRusselBeamIpopt (std::shared_ptr< BeamGeometry > geomPtr,
+                            std::shared_ptr< BeamObstaclePlane > obstaclePtr, int M);
 
         virtual ~ModRusselBeamIpopt ();
 

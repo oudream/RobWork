@@ -27,10 +27,6 @@
 
 using namespace rw::math;
 
-#ifndef BOOST_VERSION
-#error "BOOST_VERSION does not seem to be defined!"
-#endif
-
 TEST(UtilTest, Util)
 {
     Quaternion<> q(0.1, 0.2, 0.3, 0.4);

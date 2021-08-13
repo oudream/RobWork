@@ -1,6 +1,6 @@
 set(SUBSYS_NAME sdurw_proximitystrategies)
 set(SUBSYS_DESC "Collection of proximity strategies!")
-set(SUBSYS_DEPS sdurw sdurw_core)
+set(SUBSYS_DEPS sdurw_core sdurw_common sdurw_math sdurw_geometry sdurw_proximity sdurw_kinematics sdurw)
 
 set(build TRUE)
 set(DEFAULT TRUE)

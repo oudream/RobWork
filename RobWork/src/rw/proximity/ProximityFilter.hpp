@@ -1,5 +1,5 @@
 /*
- * ProximityData.hpp
+ * ProximityFilter.hpp
  *
  *  Created on: 23/04/2010
  *      Author: jimali
@@ -8,7 +8,9 @@
 #ifndef RW_PROXIMITY_PROXIMITYFILTER_HPP
 #define RW_PROXIMITY_PROXIMITYFILTER_HPP
 
+#if !defined(SWIG)
 #include <rw/kinematics/Frame.hpp>
+#endif
 
 namespace rw { namespace proximity {
 
@@ -54,4 +56,4 @@ namespace rw { namespace proximity {
 
 }}    // namespace rw::proximity
 
-#endif /* PROXIMITYDATA_HPP */
+#endif /* PROXIMITYFILTER_HPP */

@@ -21,13 +21,13 @@ Copyright 2013 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
 
 #include <rw/core/macros.hpp>
 #include <rwlibs/softbody/beam/EBBeam.hpp>
-
+#include <memory>
 #include <math.h>
 
 using namespace rwlibs::softbody;
 
 void BeamStartGuess::setZeroStartingGuess (Eigen::VectorXd& avec,
-                                           boost::shared_ptr< ModRusselBeamBase > beamPtr)
+                                           std::shared_ptr< ModRusselBeamBase > beamPtr)
 {
     RW_ASSERT ((int) avec.size () == beamPtr->getM ());
     const int M = beamPtr->getM ();
@@ -38,7 +38,7 @@ void BeamStartGuess::setZeroStartingGuess (Eigen::VectorXd& avec,
 }
 
 void BeamStartGuess::setEulerStartingGuess (
-    Eigen::VectorXd& avec, boost::shared_ptr< rwlibs::softbody::BeamGeometryCuboid > beamGeomPtr)
+    Eigen::VectorXd& avec, std::shared_ptr< rwlibs::softbody::BeamGeometryCuboid > beamGeomPtr)
 {
     const double g2 = -beamGeomPtr->g2 ();
     const int M     = beamGeomPtr->getM ();

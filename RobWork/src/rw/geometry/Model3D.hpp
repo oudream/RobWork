@@ -19,7 +19,7 @@
 #define RW_GEOMETRY_Model3D_HPP_
 
 //! @file Model3D.hpp
-
+#if !defined(SWIG)
 #include <rw/core/AnyPtr.hpp>
 #include <rw/geometry/GeometryData.hpp>
 #include <rw/geometry/IndexedPolygon.hpp>
@@ -28,7 +28,7 @@
 #include <rw/math/Vector2D.hpp>
 
 #include <vector>
-
+#endif 
 namespace rw { namespace geometry {
     class Geometry;
 }}    // namespace rw::geometry
@@ -383,11 +383,14 @@ namespace rw { namespace geometry {
       public:
         //! @brief Method to do smoothing.
         typedef enum {
-            AVERAGED_NORMALS    //! vertex normal is determine as an avarage of all adjacent face
-                                //! normals
+             //! vertex normal is determine as an avarage of all adjacent face normals
+            AVERAGED_NORMALS
             ,
-            WEIGHTED_NORMALS    //! vertex normal is determined as AVARAGED_NORMALS, but with the
-                                //! face normals scaled by the face area
+            /**
+             * @brief vertex normal is determined as AVARAGED_NORMALS, but with the
+             * face normals scaled by the face area
+             */
+            WEIGHTED_NORMALS 
         } SmoothMethod;
 
         /**

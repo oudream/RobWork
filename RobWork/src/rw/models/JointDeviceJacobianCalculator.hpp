@@ -18,7 +18,9 @@
 #ifndef RW_MODELS_JOINTDEVICEJACOBIANCALCULATOR_HPP
 #define RW_MODELS_JOINTDEVICEJACOBIANCALCULATOR_HPP
 
+#if !defined(SWIG)
 #include "JacobianCalculator.hpp"
+#endif 
 
 namespace rw { namespace kinematics {
     class Frame;
@@ -31,7 +33,7 @@ namespace rw { namespace models {
 }}    // namespace rw::models
 
 namespace rw { namespace models {
-
+    class JointDevice;
     /**
      * @brief Calculator for Jacobians of a JointDevice
      *
@@ -55,10 +57,10 @@ namespace rw { namespace models {
          * @param tcps [in] List of tool end-effectors for which to calculate the Jacobian.
          * @param state [in] State giving how frame are connected
          */
-        JointDeviceJacobianCalculator (rw::core::Ptr< class JointDevice > device,
-                                       const kinematics::Frame* base,
-                                       const std::vector< kinematics::Frame* >& tcps,
-                                       const kinematics::State& state);
+        JointDeviceJacobianCalculator (rw::core::Ptr< rw::models::JointDevice > device,
+                                       const rw::kinematics::Frame* base,
+                                       const std::vector< rw::kinematics::Frame* >& tcps,
+                                       const rw::kinematics::State& state);
 
         /**
          * @brief Destructor
@@ -68,15 +70,15 @@ namespace rw { namespace models {
         /**
          * @copydoc JacobianCalculator::get(const rw::kinematics::State& state) const
          */
-        // virtual math::Jacobian get(const rw::kinematics::FKTable& fk) const;
+        // virtual rw::math::Jacobian get(const rw::kinematics::FKTable& fk) const;
         virtual rw::math::Jacobian get (const rw::kinematics::State& state) const;
 
       private:
-        const kinematics::Frame* _base;
-        std::vector< kinematics::Frame* > _tcps;
+        const rw::kinematics::Frame* _base;
+        std::vector< rw::kinematics::Frame* > _tcps;
         size_t _dof;
-        std::vector< Joint* > _joints;    // Ordered list with the joints to include
-        typedef std::vector< std::pair< const Joint*, size_t > > JacobianSetup;
+        std::vector< rw::models::Joint* > _joints;    // Ordered list with the joints to include
+        typedef std::vector< std::pair< const rw::models::Joint*, size_t > > JacobianSetup;
 
         std::vector< JacobianSetup > _jacobianSetups;
     };

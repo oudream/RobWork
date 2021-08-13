@@ -677,6 +677,13 @@ Replaces:
 Description: Gui for RobWorkSim
  The gui for RobWorkSim.
 
+Package: libsdurwsim-test
+Architecture: amd64
+Multi-Arch: same
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Library for test of engines.
+ Physics Engine test library.
+
 Package: sdurw-cmake
 Section: misc
 Architecture: amd64
@@ -1091,6 +1098,7 @@ Section: libdevel
 Architecture: amd64
 Multi-Arch: same
 Depends: 
+ libsdurw-control-dev (= ${binary:Version}),
  libsdurw-dev (=${binary:Version}), 
  libsdurw-simulation (=${binary:Version}), 
  ${misc:Depends}
@@ -1166,7 +1174,9 @@ Package: sdurws-cmake
 Section: misc
 Architecture: amd64
 Multi-Arch: same
-Depends: ${misc:Depends}
+Depends: 
+ qtbase5-dev,
+ ${misc:Depends}
 Conflicts:
   sdurws-cmake1.2
 Replaces:
@@ -1492,6 +1502,7 @@ Section: libdevel
 Architecture: amd64
 Multi-Arch: same
 Depends: 
+ libsdurws-dev (= ${binary:Version}),
  libsdurwsim-gui (=${binary:Version}), 
  ${misc:Depends}
 Conflicts:
@@ -1502,6 +1513,19 @@ Replaces:
   libsdurwsim-gui1.2-dev
 Description: Development library for RobWorkSim: GUI.
  The Development library for RobWorkSim: GUI.
+
+Package: libsdurwsim-test-dev
+Section: libdevel
+Architecture: amd64
+Multi-Arch: same
+Depends: 
+ libsdurwsim-test (=${binary:Version}),
+ libsdurw-core-dev (=${binary:Version}),
+ libsdurw-math-dev (=${binary:Version}),
+ libsdurw-trajectory-dev (=${binary:Version}), 
+ ${misc:Depends}
+Description: Development library for test of engines.
+ The Development library for Physics Engine tests.
 
 Package: sdurw-doc
 Section: doc
@@ -1518,6 +1542,12 @@ Multi-Arch: no
 Depends:
  python3-sdurw-core (=${binary:Version}), 
  python3-sdurw-common (=${binary:Version}), 
+ python3-sdurw-math (=${binary:Version}), 
+ python3-sdurw-kinematics (=${binary:Version}), 
+ python3-sdurw-geometry (=${binary:Version}), 
+ python3-sdurw-sensor (=${binary:Version}), 
+ python3-sdurw-models (=${binary:Version}),
+ python3-sdurw-graspplanning (=${binary:Version}),  
  libsdurw (>=${binary:Version}), 
  python3,
  ${shlibs:Depends}, 
@@ -1585,6 +1615,54 @@ Depends:
  ${misc:Depends}
 Description: Python wrapping for RobWork-math
  This is a python wrapper for RobWork-math
+
+Package: python3-sdurw-geometry
+Section: libs
+Architecture: amd64
+Multi-Arch: no
+Depends:
+ libsdurw-geometry (>=${binary:Version}), 
+ python3,
+ ${shlibs:Depends}, 
+ ${misc:Depends}
+Description: Python wrapping for RobWork-geometry
+ This is a python wrapper for RobWork-geometry
+
+Package: python3-sdurw-sensor
+Section: libs
+Architecture: amd64
+Multi-Arch: no
+Depends:
+ libsdurw-sensor (>=${binary:Version}), 
+ python3,
+ ${shlibs:Depends}, 
+ ${misc:Depends}
+Description: Python wrapping for RobWork-sensor
+ This is a python wrapper for RobWork-sensor
+
+Package: python3-sdurw-models
+Section: libs
+Architecture: amd64
+Multi-Arch: no
+Depends:
+ libsdurw-models (>=${binary:Version}), 
+ python3,
+ ${shlibs:Depends}, 
+ ${misc:Depends}
+Description: Python wrapping for RobWork-models
+ This is a python wrapper for RobWork-models
+
+Package: python3-sdurw-graspplanning
+Section: libs
+Architecture: amd64
+Multi-Arch: no
+Depends:
+ libsdurw-graspplanning (>=${binary:Version}), 
+ python3,
+ ${shlibs:Depends}, 
+ ${misc:Depends}
+Description: Python wrapping for RobWork-graspplanning
+ This is a python wrapper for RobWork-graspplanning
 
 Package: python3-sdurw-control
 Section: libs
@@ -1975,6 +2053,12 @@ Depends:
  python3-sdurw (=${binary:Version}), 
  python3-sdurw-core (=${binary:Version}), 
  python3-sdurw-common (=${binary:Version}), 
+ python3-sdurw-math (=${binary:Version}), 
+ python3-sdurw-kinematics (=${binary:Version}), 
+ python3-sdurw-geometry (=${binary:Version}), 
+ python3-sdurw-sensor (=${binary:Version}), 
+ python3-sdurw-models (=${binary:Version}), 
+ python3-sdurw-graspplanning (=${binary:Version}), 
  python3-sdurw-assembly (=${binary:Version}), 
  python3-sdurw-control (=${binary:Version}), 
  python3-sdurw-opengl (=${binary:Version}), 

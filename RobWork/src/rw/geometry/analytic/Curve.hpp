@@ -23,17 +23,18 @@
  *
  * \copydoc rw::geometry::Curve
  */
-
+#if !defined(SWIG)
 #include <rw/core/Ptr.hpp>
 #include <rw/geometry/OBB.hpp>
 #include <rw/math/Vector3D.hpp>
 
 #include <list>
-
+#endif
 namespace rw { namespace geometry {
     //! @addtogroup geometry
-
+#if !defined(SWIG)
     //! @{
+#endif
     /**
      * @brief Curve is an abstract representation of a smooth curve geometry in 3D.
      *
@@ -61,7 +62,7 @@ namespace rw { namespace geometry {
          * @param T [in] transformation of curve.
          * @return a new transformed curve.
          */
-        inline Curve::Ptr transform (const rw::math::Transform3D<>& T) const
+        inline rw::core::Ptr<Curve> transform (const rw::math::Transform3D< double >& T) const
         {
             return doTransformCurve (T);
         }
@@ -71,7 +72,7 @@ namespace rw { namespace geometry {
          * @param P [in] positional offset.
          * @return a new transformed curve.
          */
-        inline Curve::Ptr transform (const rw::math::Vector3D<>& P) const
+        inline rw::core::Ptr<Curve> transform (const rw::math::Vector3D< double >& P) const
         {
             return doTransformCurve (P);
         }
@@ -81,19 +82,19 @@ namespace rw { namespace geometry {
          * @param factor [in] the factor to scale with.
          * @return a new scaled curve.
          */
-        inline Curve::Ptr scale (double factor) const { return doScaleCurve (factor); }
+        inline rw::core::Ptr<Curve> scale (double factor) const { return doScaleCurve (factor); }
 
         /**
          * @brief Make a curve where time variable runs in opposite direction.
          * @return reversed curve.
          */
-        inline Curve::Ptr reverse () const { return doReverseCurve (); }
+        inline rw::core::Ptr<Curve> reverse () const { return doReverseCurve (); }
 
         /**
          * @brief Make a copy of the curve.
          * @return a new copy of the curve.
          */
-        inline Curve::Ptr clone () const { return doCloneCurve (); }
+        inline rw::core::Ptr<Curve> clone () const { return doCloneCurve (); }
 
         /**
          * @brief Get extremums of curve in given direction.
@@ -103,7 +104,7 @@ namespace rw { namespace geometry {
          * @param dir [in] direction to get extremums for.
          * @return the minimum and maximum value of the curve in the given direction.
          */
-        virtual std::pair< double, double > extremums (const rw::math::Vector3D<>& dir) const = 0;
+        virtual std::pair< double, double > extremums (const rw::math::Vector3D<double>& dir) const = 0;
 
         /**
          * @brief Make a discretization of the curve.
@@ -119,7 +120,7 @@ namespace rw { namespace geometry {
          * circle.
          * @return a list of points on the curve.
          */
-        virtual std::list< rw::math::Vector3D<> >
+        virtual std::list< rw::math::Vector3D<double > >
         discretizeAdaptive (double stepsPerRevolution) const = 0;
 
         /**
@@ -139,8 +140,8 @@ namespace rw { namespace geometry {
          * @param p [in] the point to find closest values for.
          * @return a vector of closest points to \b p.
          */
-        virtual std::vector< rw::math::Vector3D<> >
-        closestPoints (const rw::math::Vector3D<>& p) const = 0;
+        virtual std::vector< rw::math::Vector3D<double> >
+        closestPoints (const rw::math::Vector3D<double>& p) const = 0;
 
         /**
          * @brief Check if this curve is equal to another curve.
@@ -148,16 +149,18 @@ namespace rw { namespace geometry {
          * @param eps [in] distance threshold.
          * @return true if curves are identical, false otherwise.
          */
-        virtual bool equals (Curve::CPtr curve, double eps) const = 0;
+        virtual bool equals (rw::core::Ptr< const Curve> curve, double eps) const = 0;
 
       private:
-        virtual Curve::Ptr doScaleCurve (double factor) const                        = 0;
-        virtual Curve::Ptr doTransformCurve (const rw::math::Vector3D<>& P) const    = 0;
-        virtual Curve::Ptr doTransformCurve (const rw::math::Transform3D<>& T) const = 0;
-        virtual Curve::Ptr doReverseCurve () const                                   = 0;
-        virtual Curve::Ptr doCloneCurve () const                                     = 0;
+        virtual rw::core::Ptr<Curve> doScaleCurve (double factor) const                        = 0;
+        virtual rw::core::Ptr<Curve> doTransformCurve (const rw::math::Vector3D<double>& P) const    = 0;
+        virtual rw::core::Ptr<Curve> doTransformCurve (const rw::math::Transform3D<>& T) const = 0;
+        virtual rw::core::Ptr<Curve> doReverseCurve () const                                   = 0;
+        virtual rw::core::Ptr<Curve> doCloneCurve () const                                     = 0;
     };
-    //! @}
+#if !defined(SWIG)
+//! @}
+#endif
 }}    // namespace rw::geometry
 
 #endif /* RW_GEOMETRY_ANALYTIC_CURVE_HPP_ */

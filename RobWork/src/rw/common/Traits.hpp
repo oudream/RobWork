@@ -13,6 +13,21 @@ namespace rw {
 //! this is a forward declaration of the traits class
 template< typename T > struct Traits;
 
+template<> struct Traits<double>
+{
+    typedef double value_type;
+};
+
+template<> struct Traits<float>
+{
+    typedef float value_type;
+};
+
+template<class R, template < class > class T > struct Traits<T < R > >
+{
+    typedef typename Traits<R>::value_type value_type;
+};
+
 }    // namespace rw
 
 #endif /* TRAITS_HPP_ */

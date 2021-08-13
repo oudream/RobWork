@@ -18,7 +18,9 @@
 #ifndef RW_GRASPPLANNING_WRENCHMEASURE3D_HPP_
 #define RW_GRASPPLANNING_WRENCHMEASURE3D_HPP_
 
+#if !defined(SWIG)
 #include <rw/graspplanning/GWSMeasure3D.hpp>
+#endif 
 
 namespace rw { namespace graspplanning {
 

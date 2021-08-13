@@ -8,10 +8,11 @@
 #ifndef TREEDISTANCECALC_HPP_
 #define TREEDISTANCECALC_HPP_
 
+#if !defined(SWIG)
 #include "BinaryBVTree.hpp"
 
 #include <rw/geometry/OBB.hpp>
-#include <rw/geometry/RSSDistanceCalc.hpp>
+#endif
 
 namespace rw { namespace proximity {
 
@@ -28,7 +29,7 @@ namespace rw { namespace proximity {
 
       public:
         typedef rw::proximity::BinaryOBBPtrTreeD BVTREE;
-        typedef rw::proximity::RSSDistanceCalc< double > BVDISTANCECALC;
+        //typedef rw::proximity::RSSDistanceCalc< double > BVDISTANCECALC;
         typedef BVTREE BVTree;
 
         virtual ~TreeDistanceCalc (){};
@@ -55,14 +56,14 @@ namespace rw { namespace proximity {
         virtual int getNrOfTestedPrimitives () { return -1; };
         virtual int getNrOfCollidingPrimitives () { return -1; };
 
-        /**
+        /*
          * @brief creates a tree collider that performes depth first search
          * of bv collisions between two hierarchical trees. The search is
          * balanced in the way that it switches between descending in the
          * trees.
          */
-        static rw::core::Ptr< TreeDistanceCalc >
-        makeBalancedDFSDistanceCalc (rw::core::Ptr< BVDISTANCECALC > bvdistcalc);
+        /*static rw::core::Ptr< TreeDistanceCalc >
+        makeBalancedDFSDistanceCalc (rw::core::Ptr< BVDISTANCECALC > bvdistcalc);*/
 
         // TreeDistanceCalc* makeBalancedBFSCollider();
 

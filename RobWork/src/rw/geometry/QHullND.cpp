@@ -16,6 +16,7 @@
  ********************************************************************************/
 
 #include "QHullND.hpp"
+#include <rw/core/macros.hpp>
 
 #if defined(__cplusplus)
 extern "C"
@@ -72,7 +73,6 @@ void qhull::build (size_t dim, double* coords, size_t nrCoords, std::vector< int
         for (vertex = qhT_pointer->vertex_list; vertex && vertex->next; vertex = vertex->next) {
             int vertexIdx = qh_pointid (qhT_pointer, vertex->point);
             result.push_back (vertexIdx);
-
         }
         // center /= (double)nrVerts;
 
@@ -81,7 +81,6 @@ void qhull::build (size_t dim, double* coords, size_t nrCoords, std::vector< int
         // For all facets:
         facetT* facet;
         for (facet = qhT_pointer->facet_list; facet && facet->next; facet = facet->next) {
-
             int vertex_n, vertex_i;
             // if offset is positive then the center is outside
             for (size_t j = 0; j < dim; j++) {
@@ -93,9 +92,7 @@ void qhull::build (size_t dim, double* coords, size_t nrCoords, std::vector< int
             {
                 int vertexIdx = qh_pointid (qhT_pointer, vertex->point);
                 faceIdxs.push_back (vertexIdx);
-
             }
-
         }
     }
     else {
@@ -119,4 +116,25 @@ void qhull::build (size_t dim, double* coords, size_t nrCoords, std::vector< int
 #if defined(qh_QHpointer) && qh_QHpointer
     qh_restore_qhull (&qht);
 #endif
+}
+
+void qhull::build (std::vector< std::vector< double > > coords, std::vector< int >& vertIdxs,
+                   std::vector< int >& faceIdxs, std::vector< double >& faceNormals,
+                   std::vector< double >& faceOffsets)
+{
+    size_t nrCoords = coords.size ();
+    if (nrCoords > 0) {
+        size_t dim = coords[0].size();
+        double* array = new double[nrCoords*dim];
+        for (size_t i = 0; i < nrCoords; i ++){
+            for (size_t j = 0; j < nrCoords; j++){
+                array[i*dim+j] = coords[i][j];
+            }
+        }
+        qhull::build(dim,&array[0],nrCoords,vertIdxs,faceIdxs,faceNormals,faceOffsets);
+        delete[] array;
+    }
+    else {
+        RW_THROW ("can't build qhull from empty coordinate list");
+    }
 }

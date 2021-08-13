@@ -69,10 +69,17 @@ endif()
 if(TARGET sdurw_core)
     set(CORE_TEST_LIBRARIES sdurw-gtest-main ${GTEST_BOTH_LIBRARIES} sdurw_core)
 
-    set(CORE_TEST_SRC core/AnyPtrTest.cpp core/EventTest.cpp core/PluginTest.cpp
-                      core/PropertyMapTest.cpp core/PropertyTest.cpp
-                      core/PropertyTypeCoreTest.cpp core/PropertyValueTest.cpp core/PtrTest.cpp
-                      core/PtrBoostTest.cpp core/StringUtilTest.cpp
+    set(CORE_TEST_SRC
+        core/AnyPtrTest.cpp
+        core/EventTest.cpp
+        core/PluginTest.cpp
+        core/PropertyMapTest.cpp
+        core/PropertyTest.cpp
+        core/PropertyTypeCoreTest.cpp
+        core/PropertyValueTest.cpp
+        core/PtrTest.cpp
+        core/PtrBoostTest.cpp
+        core/StringUtilTest.cpp
     )
 
     add_executable(sdurw_core-gtest ${CORE_TEST_SRC})
@@ -122,11 +129,7 @@ endif()
 # ##################################################################################################
 
 if(TARGET sdurw)
-    set(GEOMETRY_TEST_LIBRARIES
-        sdurw-gtest-main
-        ${GTEST_BOTH_LIBRARIES}
-        sdurw
-    )
+    set(GEOMETRY_TEST_LIBRARIES sdurw-gtest-main ${GTEST_BOTH_LIBRARIES} sdurw)
 
     set(GEOMETRY_TEST_SRC
         geometry/DelaunayTest.cpp
@@ -198,12 +201,7 @@ endif()
 # ##################################################################################################
 
 if(TARGET sdurw)
-    set(LOADERS_TEST_LIBRARIES
-        sdurw-gtest-main
-        ${GTEST_LIBRARIES}
-        sdurw
-        sdurw_proximitystrategies
-    )
+    set(LOADERS_TEST_LIBRARIES sdurw-gtest-main ${GTEST_LIBRARIES} sdurw sdurw_proximitystrategies)
 
     set(LOADERS_TEST_SRC
         loaders/DOMProximitySetupSaver.cpp loaders/DOMPropertyMap.cpp loaders/ImageLoaderTest.cpp
@@ -366,12 +364,7 @@ endif()
 # ##################################################################################################
 
 if(TARGET sdurw_task)
-    set(TASK_TEST_LIBRARIES
-        sdurw-gtest-main
-        ${GTEST_LIBRARIES}
-        sdurw_task
-        sdurw
-    )
+    set(TASK_TEST_LIBRARIES sdurw-gtest-main ${GTEST_LIBRARIES} sdurw_task sdurw)
 
     set(TASK_TEST_SRC task/TaskLoaderTest.cpp task/TaskSaverTest.cpp task/GraspTaskTest.cpp)
     add_executable(sdurw_task-gtest ${TASK_TEST_SRC})
@@ -386,10 +379,14 @@ endif()
 if(TARGET sdurw AND TARGET sdurw_control)
     set(TRAJECTORY_TEST_LIBRARIES sdurw-gtest-main ${GTEST_BOTH_LIBRARIES} sdurw sdurw_control)
     set(TRAJECTORY_TEST_SRC
-        trajectory/PathTest.cpp trajectory/ParabolicBlendTest.cpp
-        trajectory/SyncVelocityRampTest.cpp trajectory/trajectory.cpp
-        trajectory/TrajectoryFactoryTest.cpp trajectory/CubicSplineTest.cpp
-        trajectory/LinearInterpolatorTest.cpp trajectory/PropertyTypeTrajectoryTest.cpp
+        trajectory/PathTest.cpp
+        trajectory/ParabolicBlendTest.cpp
+        trajectory/SyncVelocityRampTest.cpp
+        trajectory/trajectory.cpp
+        trajectory/TrajectoryFactoryTest.cpp
+        trajectory/CubicSplineTest.cpp
+        trajectory/LinearInterpolatorTest.cpp
+        trajectory/PropertyTypeTrajectoryTest.cpp
     )
     add_executable(sdurw_trajectory-gtest ${TRAJECTORY_TEST_SRC})
     target_link_libraries(sdurw_trajectory-gtest ${QHULL_LIBRARIES} ${TRAJECTORY_TEST_LIBRARIES})

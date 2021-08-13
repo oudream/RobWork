@@ -104,7 +104,9 @@ void PythonRunner::initPython ()
 #endif
         Py_SetProgramName (program);
         Py_InitializeEx (1);
+#if PYTHON_VERSION_MINOR < 9 && defined(RWS_USE_PYTHON3)
         PyEval_InitThreads ();
+#endif 
         ENV_main_thread = PyThreadState_Get ();
     }
 }

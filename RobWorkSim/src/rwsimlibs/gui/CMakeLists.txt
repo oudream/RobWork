@@ -47,6 +47,10 @@ if(build)
         SimCfgDialog.hpp
         BodyControllerWidget.hpp
         TactileSensorDialog.hpp
+    )
+
+    set(
+        SrcFiles_Log_HPP
         log/SimulatorLogWidget.hpp
         log/SimulatorLogModel.hpp
         log/SimulatorLogEntryWidget.hpp
@@ -104,11 +108,12 @@ if(build)
         set(SrcFiles ${SrcFiles} ODESimCfgDialog.cpp)
         set(ODE_LIB sdurwsim_ode)
     endif()
-    set(MocSrcFiles ${SrcFiles_HPP})
+    set(MocSrcFiles ${SrcFiles_HPP} ${SrcFiles_Log_HPP})
     set(RccSrcFiles resources.qrc)
 
     rw_add_library(${SUBSYS_NAME} ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles})
     rw_add_includes(${SUBSYS_NAME} "rwsimlibs/gui" ${SrcFiles_HPP})
+    rw_add_includes(${SUBSYS_NAME} "rwsimlibs/gui/log" ${SrcFiles_Log_HPP})
 
     target_link_libraries(
         sdurwsim_gui

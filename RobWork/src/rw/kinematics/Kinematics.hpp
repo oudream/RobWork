@@ -115,7 +115,7 @@ namespace rw { namespace kinematics {
         */
         static Frame* worldFrame (Frame* frame, const rw::kinematics::State& state);
 
-#if !defined(SWIGPYTHON) && !defined(SWIGJAVA)
+#if !defined(SWIGPYTHON) && !defined(SWIGJAVA) && !defined(SWIGLUA)
         /**
            @brief Find the world frame of the workcell by traversing the path
            from \b frame to the root of the tree.
@@ -183,6 +183,7 @@ namespace rw { namespace kinematics {
          */
         static bool isFixedFrame (const Frame* frame);
 
+#if !defined(SWIGJAVA)
         /**
          * @brief Grip \b item with \b gripper thereby modifying \b state.
          *
@@ -194,8 +195,11 @@ namespace rw { namespace kinematics {
          * @exception An exception is thrown if \b item is not a DAF.
          * @see See also gripFrame(MovableFrame*, Frame*, State&).
          */
+
+         #endif 
         static void gripFrame (Frame* item, Frame* gripper, rw::kinematics::State& state);
 
+#if !defined(SWIGJAVA)
         /**
          * @brief Grip \b item with \b gripper thereby modifying \b state.
          *
@@ -207,6 +211,8 @@ namespace rw { namespace kinematics {
          * @exception An exception is thrown if \b item is not a DAF.
          * @see See also gripFrame(Frame*, Frame*, State&).
          */
+
+         #endif 
         static void gripFrame (MovableFrame* item, Frame* gripper, rw::kinematics::State& state);
 
         /**
@@ -222,7 +228,7 @@ namespace rw { namespace kinematics {
          */
         static std::vector< FrameList > getStaticFrameGroups (Frame* root,
                                                               const rw::kinematics::State& state);
-#if !defined(SWIGPYTHON)  && !defined(SWIGJAVA)
+#if !defined(SWIGPYTHON)  && !defined(SWIGJAVA) && !defined(SWIGLUA)
         /**
          * @brief Get static frame groups.
          *

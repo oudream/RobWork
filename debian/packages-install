@@ -89,5 +89,6 @@ pkg=sdurwsim_bullet libname=bt_plugin.rwplugin gotsoname=false nodev=true type=a
 pkg=sdurwsim_ode
 pkg=sdurwsim_bullet libname=ode_plugin.rwplugin gotsoname=false nodev=true type=add libdir=/RobWork/rwplugins
 pkg=sdurwsim_gui
+pkg=sdurwsim_test
 
 # last line

@@ -27,8 +27,6 @@
 
 #include <iostream>
 
-using namespace boost;
-
 using namespace rw::common;
 using namespace rw::core;
 

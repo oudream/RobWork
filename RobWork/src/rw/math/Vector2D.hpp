@@ -99,6 +99,15 @@ namespace rw { namespace math {
         }
 
         /**
+         * @brief Copy Constructor
+         */
+        Vector2D (const Vector2D< T >& copy)
+        {
+            _vec[0] = copy[0];
+            _vec[1] = copy[1];
+        }
+
+        /**
            @brief Returns Eigen vector equivalent to *this.
          */
         EigenVector2D e () const
@@ -241,6 +250,20 @@ namespace rw { namespace math {
         const Vector2D< T > operator- () const { return Vector2D< T > (-_vec[0], -_vec[1]); }
 
         /**
+         * @brief Compares \b a and \b b for equality.
+         * @param b [in]
+         * @return True if a equals b, false otherwise.
+         */
+        bool operator== (const Vector2D< T >& b) const { return _vec[0] == b[0] && _vec[1] == b[1]; }
+
+        /**
+         *  @brief Compares \b a and \b b for inequality.
+         * @param b [in]
+         * @return True if a and b are different, false otherwise.
+         */
+        bool operator!= (const Vector2D< T >& b) const { return !(*this == b); }
+
+        /**
          * @brief returns the counter clock-wise angle between
          * this vector and the x-axis vector (1,0). The angle
          * returned will be in the interval [-Pi,Pi]
@@ -359,33 +382,6 @@ namespace rw { namespace math {
         return Vector2D< Q > (static_cast< Q > (v (0)), static_cast< Q > (v (1)));
     }
 
-    /**
-       @brief Compares \b a and \b b for equality.
-
-       @relates Vector2D
-
-       @param a [in]
-       @param b [in]
-       @return True if a equals b, false otherwise.
-    */
-    template< class T > bool operator== (const Vector2D< T >& a, const Vector2D< T >& b)
-    {
-        return a[0] == b[0] && a[1] == b[1];
-    }
-
-    /**
-       @brief Compares \b a and \b b for inequality.
-
-       @relates Vector2D
-
-       @param a [in]
-       @param b [in]
-       @return True if a and b are different, false otherwise.
-    */
-    template< class T > bool operator!= (const Vector2D< T >& a, const Vector2D< T >& b)
-    {
-        return !(a == b);
-    }
 #if !defined(SWIG)
     extern template class rw::math::Vector2D< double >;
     extern template class rw::math::Vector2D< float >;

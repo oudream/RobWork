@@ -21,13 +21,13 @@
 /**
  * @file Sensor.hpp
  */
-
+#if !defined(SWIG)
 #include "SensorModel.hpp"
 
 #include <rw/core/PropertyMap.hpp>
 
 #include <string>
-
+#endif 
 namespace rw { namespace sensor {
 
     /** @addtogroup sensor */
@@ -91,14 +91,14 @@ namespace rw { namespace sensor {
          *
          * The frame can be NULL.
          */
-        SensorModel::Ptr getSensorModel () const { return _sensormodel; }
+        rw::core::Ptr<rw::sensor::SensorModel> getSensorModel () const { return _sensormodel; }
 
         /**
          * @brief Sets the frame to which the sensor should be attached
          *
          * @param smodel
          */
-        virtual void setSensorModel (SensorModel::Ptr smodel) { _sensormodel = smodel; }
+        virtual void setSensorModel (rw::core::Ptr<rw::sensor::SensorModel> smodel) { _sensormodel = smodel; }
 
         /**
          * @brief gets the propertymap of this sensor
@@ -115,7 +115,7 @@ namespace rw { namespace sensor {
         std::string _name;
         std::string _description;
         rw::core::PropertyMap _propertyMap;
-        SensorModel::Ptr _sensormodel;
+        rw::core::Ptr<rw::sensor::SensorModel> _sensormodel;
     };
 
     /** @} */

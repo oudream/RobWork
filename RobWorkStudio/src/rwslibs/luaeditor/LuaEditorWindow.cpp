@@ -18,10 +18,19 @@
 #include "LuaEditorWindow.hpp"
 
 #include "CodeEditor.hpp"
+#include "LuaExecutionThread.hpp"
 #include "LuaHighlighter.hpp"
+#include "TreeModelCompleter.hpp"
+#include "ui_LuaEditorWindow.h"
+
+#include <rw/core/Log.hpp>
+#include <rw/core/StringUtil.hpp>
+#include <rw/models/Object.hpp>
+#include <rwlibs/swig/ScriptTypes.hpp>
+#include <rwlibs/swig/lua/LuaState.hpp>
+#include <rws/RobWorkStudio.hpp>
 
 #include <QFileDialog>
-//#include <QMessageBox>
 #include <QStandardItem>
 #include <QStringListModel>
 #include <QTabWidget>
@@ -30,20 +39,10 @@
 
 extern "C"
 {
+#include <lauxlib.h>
 #include <lua.h>
 #include <lualib.h>
-#include <lauxlib.h>
 }
-
-#include "LuaExecutionThread.hpp"
-#include "TreeModelCompleter.hpp"
-#include "ui_LuaEditorWindow.h"
-
-#include <rw/core/Log.hpp>
-#include <rw/core/StringUtil.hpp>
-#include <rwlibs/swig/ScriptTypes.hpp>
-#include <rwlibs/swig/lua/LuaState.hpp>
-#include <rws/RobWorkStudio.hpp>
 
 using namespace rw::core;
 using namespace rw::core;
@@ -429,17 +428,17 @@ QAbstractItemModel* LuaEditorWindow::modelFromFile (const QString& fileName,
             continue;
 
         QRegularExpression re ("^\\s+");
-        const QRegularExpressionMatch match = re.match(line);
-        int level = 0;
-        if (!match.hasMatch()) {
+        const QRegularExpressionMatch match = re.match (line);
+        int level                           = 0;
+        if (!match.hasMatch ()) {
             level = 0;
         }
         else {
             if (line.startsWith ("\t")) {
-                level = match.capturedLength(0);
+                level = match.capturedLength (0);
             }
             else {
-                level = match.capturedLength(0) / 4;
+                level = match.capturedLength (0) / 4;
             }
         }
 

@@ -18,11 +18,13 @@
 #ifndef RW_PROXIMITY_BasicFilterStrategy_HPP_
 #define RW_PROXIMITY_BasicFilterStrategy_HPP_
 
+#if !defined(SWIG)
 #include "ProximityFilterStrategy.hpp"
 #include "ProximitySetup.hpp"
 
 #include <rw/kinematics/Frame.hpp>
 #include <rw/kinematics/FrameMap.hpp>
+#endif
 
 namespace rw { namespace models {
     class WorkCell;
@@ -101,7 +103,7 @@ namespace rw { namespace proximity {
          * @param setup [in] the ProximitySetup describing exclude/include relations
          */
         BasicFilterStrategy (rw::core::Ptr< rw::models::WorkCell > workcell,
-                             const ProximitySetup& setup);
+                             const rw::proximity::ProximitySetup& setup);
 
         //! @brief destructor
         virtual ~BasicFilterStrategy (){};
@@ -112,22 +114,22 @@ namespace rw { namespace proximity {
         virtual void reset (const rw::kinematics::State& state);
 
         //! @copydoc ProximityFilterStrategy::createProximityCache
-        virtual ProximityCache::Ptr createProximityCache ()
+        virtual rw::core::Ptr<rw::proximity::ProximityCache> createProximityCache ()
         {
             return rw::core::ownedPtr (new Cache (this));
         }
 
         //! @copydoc ProximityFilterStrategy::update
-        virtual ProximityFilter::Ptr update (const rw::kinematics::State& state);
+        virtual rw::core::Ptr<rw::proximity::ProximityFilter> update (const rw::kinematics::State& state);
 
         //! @copydoc ProximityFilterStrategy::createProximityCache
-        virtual ProximityFilter::Ptr update (const rw::kinematics::State& state,
-                                             ProximityCache::Ptr data);
+        virtual rw::core::Ptr<rw::proximity::ProximityFilter> update (const rw::kinematics::State& state,
+                                             rw::core::Ptr<rw::proximity::ProximityCache> data);
 
         /**
          * @copydoc ProximityFilterStrategy::getProximitySetup
          */
-        ProximitySetup& getProximitySetup ();
+        rw::proximity::ProximitySetup& getProximitySetup ();
 
         /**
          * @brief Adds geometry associated to frame
@@ -157,21 +159,21 @@ namespace rw { namespace proximity {
         /**
          * @copydoc ProximityFilterStrategy::addRule
          */
-        virtual void addRule (const ProximitySetupRule& rule);
+        virtual void addRule (const rw::proximity::ProximitySetupRule& rule);
 
         /**
          * @copydoc ProximityFilterStrategy::removeRule
          */
-        virtual void removeRule (const ProximitySetupRule& rule);
+        virtual void removeRule (const rw::proximity::ProximitySetupRule& rule);
 
       private:
         rw::core::Ptr< rw::models::WorkCell > _workcell;
-        ProximitySetup _psetup;
+        rw::proximity::ProximitySetup _psetup;
         kinematics::FramePairSet _collisionPairs;
 
         kinematics::FrameMap< std::vector< std::string > > _frameToGeoIdMap;
 
-        void applyRule (const ProximitySetupRule& rule,
+        void applyRule (const rw::proximity::ProximitySetupRule& rule,
                         rw::core::Ptr< rw::models::WorkCell > workcell,
                         rw::kinematics::FramePairSet& result);
         void initialize ();

@@ -18,12 +18,14 @@
 #ifndef RW_GEOMETRY_CONTOUR2D_HPP_
 #define RW_GEOMETRY_CONTOUR2D_HPP_
 
+#if !defined(SWIG)
 #include "Covariance.hpp"
 
 #include <rw/math/Rotation2D.hpp>
 #include <rw/math/Vector2D.hpp>
 
 #include <vector>
+#endif
 
 namespace rw { namespace geometry {
     //! @addtogroup geometry
@@ -57,7 +59,6 @@ namespace rw { namespace geometry {
              * @param position
              * @param magnitude
              * @param orientation
-             * @return
              */
             Point (const rw::math::Vector2D<>& position, double magnitude, double orientation) :
                 _position (position),
@@ -101,10 +102,11 @@ namespace rw { namespace geometry {
 
         /**
          * @brief get nr of conout points on this contour
-         * @return
+         * @return number of points
          */
         size_t size () const { return _points.size (); };
 
+#if !defined(SWIG)
         /**
          * @brief get i'th contour point
          * @param i
@@ -114,7 +116,9 @@ namespace rw { namespace geometry {
 
         //! @copydoc Contour2D::operator[](size_t)
         const Point& operator[] (size_t i) const { return _points[i]; }
-
+#else 
+  ARRAYOPERATOR(Point)
+#endif
         //! @brief calculates the area of this contour
         double calcArea ();
 
@@ -156,7 +160,7 @@ namespace rw { namespace geometry {
          * @param contour
          * @param c [in] center
          * @param r [in]
-         * @return
+         * @return the moment
          */
         static double calcCentralMoments (const Contour2D& contour, const rw::math::Vector2D<>& c,
                                           const int r);
@@ -195,9 +199,9 @@ namespace rw { namespace geometry {
          * @param pixelStep
          * @param contour
          * @param counterClock
-         * @return
+         * @return contour normal
          */
-        static rw::math::Vector2D<> calcNormal (int idx, int pixelStep, const Contour2D& contour,
+        static rw::math::Vector2D<double> calcNormal (int idx, int pixelStep, const Contour2D& contour,
                                                 bool counterClock = true);
 
         /**

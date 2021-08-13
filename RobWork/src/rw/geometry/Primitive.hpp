@@ -18,10 +18,12 @@
 #ifndef RW_GEOMETRY_PRIMITIVE_HPP_
 #define RW_GEOMETRY_PRIMITIVE_HPP_
 
+#if !defined(SWIG)
 #include "GeometryData.hpp"
 #include "TriMesh.hpp"
 
 #include <rw/math/Q.hpp>
+#endif 
 
 //! @file Box.hpp
 
@@ -71,7 +73,7 @@ namespace rw { namespace geometry {
         virtual bool isConvex () { return true; }
 
         //! test if a point is on the border or inside this primitive
-        bool isInside (const rw::math::Vector3D<>& point) { return doIsInside (point); };
+        bool isInside (const rw::math::Vector3D<double>& point) { return doIsInside (point); };
 
       protected:
         /**
@@ -79,7 +81,7 @@ namespace rw { namespace geometry {
          * @param point [in] point to check.
          * @return true if inside geometry, false otherwise.
          */
-        virtual bool doIsInside (const rw::math::Vector3D<>& point)
+        virtual bool doIsInside (const rw::math::Vector3D<double>& point)
         {
             RW_THROW ("Current primitive " << GeometryData::toString (getType ())
                                            << " does not implement isInside method!");

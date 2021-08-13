@@ -19,306 +19,16 @@ else(ROBWORK_FIND_QUIETLY)
     set(QUIET_)
 endif(ROBWORK_FIND_QUIETLY)
 
-# ############################################# MACROS #####################
-
-# macro for determining the best RobWork build type match
-macro(GET_ROBWORK_BUILD_TYPE CFG_ROOT RW_BUILD_TYPE)
-    # defaults to release
-    set(BTYPE_TMP release)
-    if(CMAKE_BUILD_TYPE)
-        string(TOLOWER ${CMAKE_BUILD_TYPE} BTYPE_TMP)
-    else()
-        set(BTYPE_TMP "none")
-    endif()
-
-    # first test if the correct cmake build type is installed
-    if(EXISTS ${CFG_ROOT}/RobWorkBuildConfig_${BTYPE_TMP}.cmake)
-        set(${RW_BUILD_TYPE} ${BTYPE_TMP})
-    else()
-
-        # find best robwork build match
-        if(${BTYPE_TMP} STREQUAL "release")
-            # find release compatible robwork installation
-            if(EXISTS ${CFG_ROOT}/RobWorkBuildConfig_minsizerel.cmake)
-                set(${RW_BUILD_TYPE} minsizerel)
-            elseif(EXISTS ${CFG_ROOT}/RobWorkBuildConfig_relwithdebinfo.cmake)
-                set(${RW_BUILD_TYPE} relwithdebinfo)
-            elseif(EXISTS ${CFG_ROOT}/RobWorkBuildConfig_debug.cmake)
-                set(${RW_BUILD_TYPE} debug)
-            elseif(EXISTS ${CFG_ROOT}/RobWorkBuildConfig_none.cmake)
-                set(${RW_BUILD_TYPE} none)
-            else()
-                message(FATAL_ERROR "Could not find any build of RobWork!")
-            endif()
-        elseif(${BTYPE_TMP} STREQUAL "minsizerel")
-            if(EXISTS ${CFG_ROOT}/RobWorkBuildConfig_release.cmake)
-                set(${RW_BUILD_TYPE} release)
-            elseif(EXISTS ${CFG_ROOT}/RobWorkBuildConfig_relwithdebinfo.cmake)
-                set(${RW_BUILD_TYPE} relwithdebinfo)
-            elseif(EXISTS ${CFG_ROOT}/RobWorkBuildConfig_debug.cmake)
-                set(${RW_BUILD_TYPE} debug)
-            elseif(EXISTS ${CFG_ROOT}/RobWorkBuildConfig_none.cmake)
-                set(${RW_BUILD_TYPE} none)
-            else()
-                message(FATAL_ERROR "Could not find any build of RobWork!")
-            endif()
-        elseif(${BTYPE_TMP} STREQUAL "relwithdebinfo")
-            if(EXISTS ${CFG_ROOT}/RobWorkBuildConfig_release.cmake)
-                set(${RW_BUILD_TYPE} release)
-            elseif(EXISTS ${CFG_ROOT}/RobWorkBuildConfig_minsizerel.cmake)
-                set(${RW_BUILD_TYPE} minsizerel)
-            elseif(EXISTS ${CFG_ROOT}/RobWorkBuildConfig_debug.cmake)
-                set(${RW_BUILD_TYPE} debug)
-            elseif(EXISTS ${CFG_ROOT}/RobWorkBuildConfig_none.cmake)
-                set(${RW_BUILD_TYPE} none)
-            else()
-                message(FATAL_ERROR "Could not find any build of RobWork!")
-            endif()
-        elseif(${BTYPE_TMP} STREQUAL "debug")
-            if(EXISTS ${CFG_ROOT}/RobWorkBuildConfig_relwithdebinfo.cmake)
-                set(${RW_BUILD_TYPE} relwithdebinfo)
-            elseif(EXISTS ${CFG_ROOT}/RobWorkBuildConfig_minsizerel.cmake)
-                set(${RW_BUILD_TYPE} minsizerel)
-            elseif(EXISTS ${CFG_ROOT}/RobWorkBuildConfig_release.cmake)
-                set(${RW_BUILD_TYPE} release)
-            elseif(EXISTS ${CFG_ROOT}/RobWorkBuildConfig_none.cmake)
-                set(${RW_BUILD_TYPE} none)
-            else()
-                message(FATAL_ERROR "Could not find any build of RobWork!")
-            endif()
-        elseif(${BTYPE_TMP} STREQUAL "none")
-            if(EXISTS ${CFG_ROOT}/RobWorkBuildConfig_relwithdebinfo.cmake)
-                set(${RW_BUILD_TYPE} relwithdebinfo)
-            elseif(EXISTS ${CFG_ROOT}/RobWorkBuildConfig_minsizerel.cmake)
-                set(${RW_BUILD_TYPE} minsizerel)
-            elseif(EXISTS ${CFG_ROOT}/RobWorkBuildConfig_debug.cmake)
-                set(${RW_BUILD_TYPE} debug)
-            elseif(EXISTS ${CFG_ROOT}/RobWorkBuildConfig_release.cmake)
-                set(${RW_BUILD_TYPE} release)
-            else()
-                message(FATAL_ERROR "Could not find any build of RobWork!")
-            endif()
-        else()
-            message(
-                STATUS
-                    "Does not recognize build type: ${CMAKE_BUILD_TYPE} choosing any existing RobWork installation!"
-            )
-            if(EXISTS ${CFG_ROOT}/RobWorkBuildConfig_release.cmake)
-                set(${RW_BUILD_TYPE} release)
-            elseif(EXISTS ${CFG_ROOT}/RobWorkBuildConfig_minsizerel.cmake)
-                set(${RW_BUILD_TYPE} minsizerel)
-            elseif(EXISTS ${CFG_ROOT}/RobWorkBuildConfig_relwithdebinfo.cmake)
-                set(${RW_BUILD_TYPE} relwithdebinfo)
-            elseif(EXISTS ${CFG_ROOT}/RobWorkBuildConfig_debug.cmake)
-                set(${RW_BUILD_TYPE} debug)
-            elseif(EXISTS ${CFG_ROOT}/RobWorkBuildConfig_none.cmake)
-                set(${RWS_BUILD_TYPE} none)
-            else()
-                message(FATAL_ERROR "Could not find any build of RobWork!")
-            endif()
-        endif()
-
-        message(
-            STATUS
-                "warning: RobWork was not compiled with type:${BTYPE_TMP} using type:${${RW_BUILD_TYPE}} instead!"
-        )
-    endif()
-
-endmacro()
-
-macro(RW_MESSAGE text)
-    if(IS_INSTALL)
-        message(STATUS ${text})
-    endif()
-endmacro()
-
-function(VERIFY_TARGET __target __result)
-    set(idx -2)
-    set(idx_u -2)
-    if(TARGET ${__target})
-        set(result ${__target})
-        list(FIND varified_targets ${__target} idx)
-        list(FIND ARGN ${__target} idx_u)
-        if(${idx} EQUAL -1 AND ${idx_u} EQUAL -1)
-            # message(STATUS "${__target}")
-            set(underprocess ${ARGN} ${result})
-
-            # ######################################################################################
-            # Varifying underlying Binary
-            # ######################################################################################
-            get_target_property(type ${__target} TYPE)
-            if(NOT ("${type}" STREQUAL "INTERFACE_LIBRARY"))
-                get_target_property(out ${__target} IMPORTED_LOCATION_RELEASE)
-
-                if(NOT EXISTS ${out})
-                    get_target_property(out ${__target} IMPORTED_LOCATION_RELWITHDEBINFO)
-                endif()
-                if(NOT EXISTS ${out})
-                    get_target_property(out ${__target} IMPORTED_LOCATION_DEBUG)
-                endif()
-                if(NOT EXISTS ${out})
-                    get_target_property(out ${__target} IMPORTED_LOCATION_MINSIZEREL)
-                endif()
-                if(NOT EXISTS ${out})
-                    get_target_property(out ${__target} IMPORTED_LOCATION_NONE)
-                endif()
-                if(NOT EXISTS ${out})
-                    get_target_property(out ${__target} IMPORTED_LOCATION)
-                endif()
-
-                if(NOT EXISTS ${out})
-                    set(result "")
-                    # message(STATUS " - missing binary ${out}")
-                    # message(STATUS " - Target Binary not found: ${__target}")
-                endif()
-
-            endif()
-
-            # ######################################################################################
-            # Varifying include dirs
-            # ######################################################################################
-            if(result)
-                get_target_property(out ${__target} INTERFACE_INCLUDE_DIRECTORIES)
-                if(out)
-                    foreach(dir ${out})
-
-                        if(NOT EXISTS ${dir})
-                            # message(STATUS " - Include not found: ${dir}")
-                            set(result "")
-                        endif()
-                    endforeach()
-
-                    if(NOT result)
-                        # message(STATUS " - Target Include not found: ${__target}")
-                    endif()
-                endif()
-            endif()
-
-            # ######################################################################################
-            # Varifying dependencies
-            # ######################################################################################
-            if(result)
-                get_target_property(out ${__target} INTERFACE_LINK_LIBRARIES)
-                if(out)
-                    foreach(lib_t ${out})
-                        string(FIND ${lib_t} "\$<" found)
-                        if(${found} EQUAL -1)
-                            # message(STATUS " - Checking dep ${lib_t} for ${__target}")
-                            verify_library(${lib_t} vaified_lib "${underprocess}")
-                            if("${vaified_lib}" STREQUAL "")
-                                set(result "")
-                                # message(STATUS " - Target depend not found: ${lib_t} for ${__target}")
-                                break()  
-                            endif()
-                        else()
-                            # message(STATUS " - Target depend ignored: ${lib_t} for ${__target}")
-                        endif()
-                    endforeach()
-                    if(NOT result)
-                        # message(STATUS " - Target depend not found: ${__target}")
-                    endif()
-                endif()
-            endif()
-
-            # ######################################################################################
-            # Saving Result
-            # ######################################################################################
-            if(NOT ${result} STREQUAL "")
-                set(varified_targets ${varified_targets} ${result})
-                # message(STATUS " - Target varified: ${result}")
-            endif()
-        endif()
-    else()
-        set(${__result} "")
-    endif()
-
-    set(varified_targets
-        ${varified_targets}
-        PARENT_SCOPE
-    )
-    set(${__result}
-        ${result}
-        PARENT_SCOPE
-    )
-endfunction()
-
-function(VERIFY_LIBRARY _name _result)
-    set(result "")
-    string(REPLACE "${RW_BUILD_WITH_BUILD_DIR}/libs/${RW_BUILD_TYPE}" "${RW_LIBS}" DIRS
-                   "${RW_BUILD_WITH_LIBRARY_DIRS}"
-    )
-
-    list(REMOVE_DUPLICATES DIRS)
-    unset(tmp CACHE)
-    find_library(
-        tmp
-        NAMES ${_name} lib${_name}
-        PATHS ${DIRS}
-        PATH_SUFFIXES ${RW_BUILD_WITH_LIBRARY_SUBDIRS}
-        NO_DEFAULT_PATH
-    )
-
-    if(${_name} MATCHES "^\\s?-l")
-        set(result ${_name})
-
-    elseif(EXISTS ${_name})
-        set(result ${_name})
-
-    elseif(TARGET ${_name})
-        set(result ${_name})
-        verify_target(${result} result ${ARGN})
-
-    elseif(TARGET RW::${_name})
-        set(result RW::${_name})
-        verify_target(${result} result ${ARGN})
-
-    elseif(TARGET sdurw_${_name})
-        set(result sdurw_${_name})
-        verify_target(${result} result ${ARGN})
-
-    elseif(TARGET RW::sdurw_${_name})
-        set(result RW::sdurw_${_name})
-        verify_target(${result} result ${ARGN})
-
-    elseif(tmp)
-        add_library(RW::${_name} UNKNOWN IMPORTED)
-        set_target_properties(
-            RW::${_name} PROPERTIES IMPORTED_LOCATION ${tmp} INTERFACE_INCLUDE_DIRECTORIES
-                                    "${RW_BUILD_WITH_INCLUDE_DIR}"
-        )
-        set(result "RW::${_name}")
-    else()
-        unset(tmp)
-        find_library(
-            tmp
-            NAMES ${_name} lib${_name}
-        )
-        if(tmp)
-            add_library(${_name} UNKNOWN IMPORTED)
-            set_target_properties(
-                ${_name} PROPERTIES IMPORTED_LOCATION ${tmp}
-            )
-            set(result "${_name}")
-        endif()
-    endif()
-
-    set(varified_targets
-        ${varified_targets}
-        PARENT_SCOPE
-    )
-    set(${_result}
-        ${result}
-        PARENT_SCOPE
-    )
-endfunction()
-
 # ##################################################################################################
-get_filename_component(RWCFG_ROOT ${CMAKE_CURRENT_LIST_FILE} PATH)
+set(RWCFG_ROOT ${CMAKE_CURRENT_LIST_DIR})
+include("${RWCFG_ROOT}/RobWorkConfigMacros.cmake")
+rw_is_windows_install_by_exe(${RWCFG_ROOT} IS_WINDOWS_EXE_INSTALL)
+set(RobWork_REQUIRED ${RobWork_FIND_REQUIRED})
 
 # get the relavant build type
 get_robwork_build_type(${RWCFG_ROOT} RW_BUILD_TYPE)
-string(TOUPPER ${RW_BUILD_TYPE} RW_BUILD_TYPE_UPPER)
 
+# Import target files
 if(NOT TARGET sdurw)
     include("${RWCFG_ROOT}/RobWorkTargets.cmake")
 
@@ -338,42 +48,7 @@ endif()
 if(EXISTS ${RWCFG_ROOT}/RobWorkBuildConfig_${RW_BUILD_TYPE}.cmake)
     include(${RWCFG_ROOT}/RobWorkBuildConfig_${RW_BUILD_TYPE}.cmake)
 
-    # check whether RobWorkConfig.cmake is found into a RobWork installation or in a build tree
-    if(EXISTS "${RWCFG_ROOT}/../src/RobWorkConfig.hpp")
-        # Found RobWorkConfig.cmake in a build tree of RobWork
-        message(STATUS "RobWork: Found a RobWork build tree")
-        set(RW_ROOT "${RWCFG_ROOT}/..")
-
-        set(RW_INCLUDE_EXT "${RW_ROOT}/ext")
-        set(RW_INCLUDE_SRC "${RW_ROOT}/src")
-        set(RW_LIBS "${RW_BUILD_WITH_BUILD_DIR}/libs/${RW_BUILD_TYPE}")
-        set(IS_INSTALL FALSE)
-    else()
-        message(STATUS "RobWork: Found a RobWork installation")
-        set(IS_INSTALL TRUE)
-        # Found a RobWork installation
-        if(WIN32)
-            # RobWorkConfig.cmake is installed to RW_ROOT/cmake
-            set(RW_ROOT "${RWCFG_ROOT}/../..")
-            set(RW_INCLUDE_EXT "${RWCFG_ROOT}/../ext")
-            set(RW_INCLUDE_SRC
-                "${RW_ROOT}/include/robwork-${RobWork_VERSION_MAJOR}.${RobWork_VERSION_MINOR}"
-            )
-            set(RW_LIBS "${RW_ROOT}/lib")
-        else()
-            # RobWorkConfig.cmake is installed to RW_INTALL/share/robwork-x.y/cmake
-
-            set(RW_ROOT "${RWCFG_ROOT}")
-            set(RW_INSTALL "${RWCFG_ROOT}/../../..")
-            set(RW_LIBS "${RW_INSTALL}/lib")
-            set(RW_INCLUDE_SRC
-                "${RW_INSTALL}/include/robwork-${RobWork_VERSION_MAJOR}.${RobWork_VERSION_MINOR}"
-            )
-            set(RW_INCLUDE_EXT
-                "${RW_INSTALL}/include/robwork-${RobWork_VERSION_MAJOR}.${RobWork_VERSION_MINOR}/ext"
-            )
-        endif()
-    endif()
+    rw_setup_config_directories("${RWCFG_ROOT}")
 
     set(Boost_USE_STATIC_LIBS ${RW_BUILD_WITH_BOOST_USE_STATIC_LIB})
     unset(Boost_FIND_QUIETLY)
@@ -382,13 +57,30 @@ if(EXISTS ${RWCFG_ROOT}/RobWorkBuildConfig_${RW_BUILD_TYPE}.cmake)
         set(Boost_USE_RELEASE_LIBS ON) # only find release libs
     endif()
 
+    set(BOOST_ROOT ${RW_BUILD_WITH_BOOST_ROOT})
     find_package(
         Boost QUIET
-        COMPONENTS filesystem serialization system thread program_options
-        PATHS ${RW_BUILD_WITH_BOOST_ROOT}
+        COMPONENTS filesystem serialization system thread program_options date_time
+        CONFIG
+        HINTS "C:\\local" ${RW_BUILD_WITH_BOOST_ROOT}
     )
+    if(${IS_WINDOWS_EXE_INSTALL})
+        generate_boost_exe_targets()
+    endif()
+    if(NOT Boost_FOUND)
+        find_package(Boost REQUIRED COMPONENTS filesystem serialization system thread
+                                               program_options
+        )
+    endif()
+    if(TARGET Boost::headers)
+        set(RW_BUILD_WITH_LIB_DEPEND ${RW_BUILD_WITH_LIB_DEPEND} Boost::headers)
+        set(Boost_INCLUDE_DIR ${RW_BUILD_WITH_BOOST_INCLUDE_DIR})
+    endif()
 
-    # verify_library(RW::sdurw_math_lua_s res) message(FATAL_ERROR "esix")
+    set(CMAKE_MODULE_PATH ${RWCFG_ROOT}/Modules ${CMAKE_MODULE_PATH})
+    set(QHULL_ROOT ${RW_BUILD_WITH_QHULL_ROOT})
+    find_package(Qhull REQUIRED MODULE)
+
     # ##############################################################################################
     # now RW_ROOT and RWCFG_ROOT is set. Lets extract the stuff needed to run a project
 
@@ -396,65 +88,9 @@ if(EXISTS ${RWCFG_ROOT}/RobWorkBuildConfig_${RW_BUILD_TYPE}.cmake)
 
     # check which components to include
     set(LIBRARIES_TO_INCLUDE) # Libraries that must be included
-    set(OPTIONAL_LIBRARIES_TO_INCLUDE) # libraries that are included if they have been build
+    rw_find_components(LIBRARIES_TO_INCLUDE)
 
-    if(RobWork_FIND_COMPONENTS)
-        # FIRST check if all required components are installed/build
-        set(LIBRARIES_TO_INCLUDE RW::sdurw)
-        foreach(
-            component
-            IN
-            LISTS RobWork_FIND_COMPONENTS
-        )
-            if(NOT (${component} STREQUAL "sdurw"))
-                unset(res)
-                verify_library(${component} res)
-
-                if(NOT "${res}" STREQUAL "")
-                    list(APPEND LIBRARIES_TO_INCLUDE "${res}")
-                    set(RobWork_${component}_FOUND TRUE)
-                else()
-                    set(RobWork_${component}_FOUND FALSE)
-                    if(RobWork_REQUIRED)
-                        set(ROBWORK_EXPERIENCED_FATAL_PROBLEMS TRUE)
-                        message(
-                            FATAL_ERROR
-                                "The component: sdurw_${component} has not been built with RobWork. Reconfigure RobWork installation or check component spelling!"
-                        )
-                    else()
-                        set(ROBWORK_EXPERIENCED_FATAL_PROBLEMS TRUE)
-                        message(
-                            WARNING
-                                "The component: sdurw_${component} has not been built with RobWork. Reconfigure RobWork installation or check component spelling!"
-                        )
-                    endif()
-                endif()
-            endif()
-        endforeach()
-    else()
-        foreach(
-            lib
-            IN
-            LISTS RW_BUILD_WITH_LIBRARIES
-        )
-            unset(res)
-            verify_library(${lib} res)
-            if(NOT "${res}" STREQUAL "")
-                list(APPEND OPTIONAL_LIBRARIES_TO_INCLUDE "${res}")
-                rw_message("Looking for ${lib} - found")
-            else()
-                if(${lib} STREQUAL "sdurw")
-                    list(APPEND OPTIONAL_LIBRARIES_TO_INCLUDE "RW::${lib}")
-                    message(FATAL_ERROR "Looking for ${lib} - not found" )
-                else()
-                    rw_message("Looking for ${lib} - not found (ignored)")
-                endif()
-
-            endif()
-        endforeach()
-    endif()
-
-    if(${RW_BUILD_WITH_FREEGLUT})
+    if(${RW_BUILD_WITH_FREEGLUT} AND NOT ${IS_WINDOWS_EXE_INSTALL})
         find_package(FreeGLUT REQUIRED)
     endif()
 
@@ -464,54 +100,33 @@ if(EXISTS ${RWCFG_ROOT}/RobWorkBuildConfig_${RW_BUILD_TYPE}.cmake)
     endif()
 
     # Set extra compiler flags. The user should be able to change this
-    set(RW_C_FLAGS
-        ${RW_BUILD_WITH_C_FLAGS}
-        CACHE STRING "Change this to force using your own
-                      flags and not those of RobWork"
-    )
-    set(RW_CXX_FLAGS
-        ${RW_BUILD_WITH_CXX_FLAGS}
-        CACHE STRING "Change this to force using your own
-                      flags and not those of RobWork"
-    )
-    set(RW_DEFINITIONS
-        ${RW_BUILD_WITH_DEFINITIONS}
-        CACHE STRING "Change this to force using your own
-                      definitions and not those of RobWork"
-    )
-    add_definitions(${RW_DEFINITIONS})
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${RW_CXX_FLAGS}")
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${RW_C_FLAGS}")
-
-    # Set extra linker flags. The user should be able to change this
-    set(RW_LINKER_FLAGS
-        ${RW_BUILD_WITH_LINKER_FLAGS}
-        CACHE STRING "Change this to force using your own linker
-                      flags and not those of RobWork"
-    )
-    set(CMAKE_SHARED_LINKER_FLAGS
-        "${CMAKE_SHARED_LINKER_FLAGS} ${RW_LINKER_FLAGS}"
-        CACHE STRING "" FORCE
-    )
-    set(CMAKE_MODULE_LINKER_FLAGS
-        "${CMAKE_MODULE_LINKER_FLAGS} ${RW_LINKER_FLAGS}"
-        CACHE STRING "" FORCE
-    )
-    if(WIN32)
-        set(CMAKE_EXE_LINKER_FLAGS
-            "${CMAKE_EXE_LINKER_FLAGS} ${RW_LINKER_FLAGS}"
-            CACHE STRING "" FORCE
-        )
-    endif()
+    rw_setup_flags_and_definitions()
 
     # ################ FIND ROBWORK #######################
     set(ROBWORK_BUILD_PATH "${RW_BUILD_WITH_RW_ROOT}")
     set(ROBWORK_LIBRARIES_TMP
-     "${RW_BUILD_WITH_LIBRARIES_OPENGL};${LIBRARIES_TO_INCLUDE};${OPTIONAL_LIBRARIES_TO_INCLUDE};${RW_BUILD_WITH_LIB_DEPEND}"
+        "${RW_BUILD_WITH_LIBRARIES_OPENGL};${LIBRARIES_TO_INCLUDE};${OPTIONAL_LIBRARIES_TO_INCLUDE};${RW_BUILD_WITH_LIB_DEPEND}"
     )
     if(${RW_BUILD_WITH_LUA})
-        set(ROBWORK_LIBRARIES_TMP ${RW_BUILD_WITH_LIBRARIES_LUA} ${ROBWORK_LIBRARIES_TMP})
-        set(RW_BUILD_WITH_INCLUDE_DIR ${RW_BUILD_WITH_LUA_INCLUDE_DIR} ${RW_BUILD_WITH_INCLUDE_DIR})
+        set(IS_FOUND TRUE)
+        foreach(lib ${RW_BUILD_WITH_LIBRARIES_LUA})
+            if(NOT EXISTS "${lib}")
+                set(IS_FOUND FALSE)
+            endif()
+        endforeach()
+        if(IS_FOUND)
+            set(ROBWORK_LIBRARIES_TMP ${RW_BUILD_WITH_LIBRARIES_LUA} ${ROBWORK_LIBRARIES_TMP})
+            set(RW_BUILD_WITH_INCLUDE_DIR ${RW_BUILD_WITH_LUA_INCLUDE_DIR}
+                                          ${RW_BUILD_WITH_INCLUDE_DIR}
+            )
+        endif()
+    endif()
+
+    if(${RW_BUILD_WITH_XERCES} AND EXISTS ${RW_BUILD_WITH_LIBRARIES_XERCESC})
+        set(ROBWORK_LIBRARIES_TMP ${RW_BUILD_WITH_LIBRARIES_XERCESC} ${ROBWORK_LIBRARIES_TMP})
+        set(RW_BUILD_WITH_INCLUDE_DIR ${RW_BUILD_WITH_XERCES_INCLUDE_DIR}
+                                      ${RW_BUILD_WITH_INCLUDE_DIR}
+        )
     endif()
 
     # make sure that the library and include paths are pointing to the right locations
@@ -554,7 +169,7 @@ if(EXISTS ${RWCFG_ROOT}/RobWorkBuildConfig_${RW_BUILD_TYPE}.cmake)
     set(ROBWORK_LIBRARIES)
     foreach(l ${ROBWORK_LIBRARIES_TMP})
         unset(res)
-        verify_library(${l} res)
+        rw_verify_library(${l} res)
         if("${res}" STREQUAL "")
             list(APPEND ROBWORK_LIBRARIES "${l}")
         else()

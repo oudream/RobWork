@@ -18,9 +18,10 @@
 #ifndef RW_PROXIMITY_SAPFilterStrategy_HPP_
 #define RW_PROXIMITY_SAPFilterStrategy_HPP_
 
+#if !defined(SWIG)
 #include "ProximityFilterStrategy.hpp"
 #include "ProximitySetup.hpp"
-
+#endif 
 namespace rw { namespace models {
     class WorkCell;
 }}    // namespace rw::models
@@ -101,17 +102,17 @@ namespace rw { namespace proximity {
         virtual void reset (const rw::kinematics::State& state);
 
         //! @copydoc ProximityFilterStrategy::createProximityCache
-        virtual ProximityCache::Ptr createProximityCache ()
+        virtual rw::core::Ptr<rw::proximity::ProximityCache> createProximityCache ()
         {
             return rw::core::ownedPtr (new Cache (this));
         }
 
         //! @copydoc ProximityFilterStrategy::update
-        virtual ProximityFilter::Ptr update (const rw::kinematics::State& state);
+        virtual rw::core::Ptr<rw::proximity::ProximityFilter> update (const rw::kinematics::State& state);
 
         //! @copydoc ProximityFilterStrategy::createProximityCache
-        virtual ProximityFilter::Ptr update (const rw::kinematics::State& state,
-                                             ProximityCache::Ptr data);
+        virtual rw::core::Ptr<rw::proximity::ProximityFilter> update (const rw::kinematics::State& state,
+                                             rw::core::Ptr<rw::proximity::ProximityCache> data);
 
         /**
          * @copydoc ProximityFilterStrategy::getProximitySetup

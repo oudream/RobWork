@@ -18,8 +18,10 @@
 #ifndef RW_GEOMETRY_TRITRIINTERSECTMOLLER_HPP_
 #define RW_GEOMETRY_TRITRIINTERSECTMOLLER_HPP_
 
+#if !defined(SWIG)
 #include <rw/geometry/Triangle.hpp>
 #include <rw/math/Transform3D.hpp>
+#endif
 
 namespace rw { namespace geometry {
 
@@ -391,7 +393,15 @@ namespace rw { namespace geometry {
 
         return true;
     }
-
+#if defined(SWIG)
+#if SWIG_VERSION < 0x040000
+    SWIG_DECLARE_TEMPLATE (TriTriIntersectMoller_d, rw::geometry::TriTriIntersectMoller< double >);
+    ADD_DEFINITION (TriTriIntersectMoller_d, TriTriIntersectMoller)
+#else
+    SWIG_DECLARE_TEMPLATE (TriTriIntersectMoller, rw::geometry::TriTriIntersectMoller< double >);
+#endif
+    SWIG_DECLARE_TEMPLATE (TriTriIntersectMoller_f, rw::geometry::TriTriIntersectMoller< float >);
+#endif
 }}    // namespace rw::geometry
 
 #endif /* TRIDEVILLER_HPP_ */

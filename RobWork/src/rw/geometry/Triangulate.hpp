@@ -18,13 +18,13 @@
 #ifndef RW_GEOMETRY_TRIANGULATE_HPP
 #define RW_GEOMETRY_TRIANGULATE_HPP
 
+#if !defined(SWIG)
 #include <rw/math/Vector2D.hpp>
 #include <rw/math/Vector3D.hpp>
 
-#include <vector>    // Include STL vector class.
-//#include "PlainTriMesh.hpp"
+#include <vector>  
 #include "Polygon.hpp"
-
+#endif 
 namespace rw { namespace geometry {
 
     /**
@@ -38,7 +38,7 @@ namespace rw { namespace geometry {
          * @param points [in] points must be a valid polygon/contour
          * @return a triangle mesh of triangles
          */
-        // static PlainTriMeshN0D triangulatePolygon(const std::vector< rw::math::Vector3D<> >&
+        // static PlainTriMeshN0D triangulatePolygon(const std::vector< rw::math::Vector3D<double> >&
         // points)
 
         /**
@@ -68,7 +68,7 @@ namespace rw { namespace geometry {
          * @param colinearCriteria [in] Criteria for when two edges are considered to be colinear
          * @param precision [in] Criteria for when two points are considered to be coinciding
          */
-        static bool processPoints (const std::vector< rw::math::Vector3D<> >& contour,
+        static bool processPoints (const std::vector< rw::math::Vector3D<double> >& contour,
                                    std::vector< int >& result, double colinearCriteria = 1e-5,
                                    double precision = 1e-5);
 

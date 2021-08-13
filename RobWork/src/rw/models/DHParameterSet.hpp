@@ -18,10 +18,12 @@
 #ifndef RW_MODELS_DHPARAMETERSET_HPP
 #define RW_MODELS_DHPARAMETERSET_HPP
 
+#if !defined(SWIG)
 #include <rw/core/Ptr.hpp>
 
 #include <string>
 #include <vector>
+#endif 
 
 namespace rw { namespace core {
     class PropertyMap;
@@ -51,10 +53,10 @@ namespace rw { namespace models {
 
         /**
          * @brief Constructor
-         * @param alpha [in] \f$\alpha_{i-1}\f$
-         * @param a [in] \f$a_{i-1}\f$
-         * @param d [in] \f$d_{i}\f$
-         * @param theta [in] \f$\theta_{i-1}\f$
+         * @param alpha [in] \f$ \alpha_{i-1}\f$
+         * @param a [in] \f$ a_{i-1}\f$
+         * @param d [in] \f$ d_{i}\f$
+         * @param theta [in] \f$ \theta_{i-1}\f$
          */
         DHParameterSet (double alpha, double a, double d, double theta) :
             _alpha (alpha), _a (a), _d (d), _theta (theta), _beta (0), _b (0), _isParallel (false)
@@ -62,10 +64,10 @@ namespace rw { namespace models {
 
         /**
          * @brief Constructor
-         * @param alpha [in] \f$\alpha_{i-1}\f$
-         * @param a [in] \f$a_{i-1}\f$
-         * @param d [in] \f$d_{i}\f$
-         * @param theta [in] \f$\theta_{i-1}\f$
+         * @param alpha [in] \f$ \alpha_{i-1}\f$
+         * @param a [in] \f$ a_{i-1}\f$
+         * @param d [in] \f$ d_{i}\f$
+         * @param theta [in] \f$ \theta_{i-1}\f$
          * @param type documentation missing !
          *
          */
@@ -76,28 +78,28 @@ namespace rw { namespace models {
 
         /**
          * @brief Constructor
-         * @param alpha [in] \f$\alpha_{i-1}\f$
-         * @param a [in] \f$a_{i-1}\f$
+         * @param alpha [in] \f$ \alpha_{i-1}\f$
+         * @param a [in] \f$ a_{i-1}\f$
          * @param beta [in] documentation missing !
          * @param b [in] documentation missing !
          * @param parallel [in] documentation missing !
-         * @param theta [in] \f$\theta_{i-1}\f$
+         * @param theta [in] \f$ \theta_{i-1}\f$
          */
         DHParameterSet (double alpha, double a, double beta, double b, bool parallel) :
             _alpha (alpha), _a (a), _d (0), _theta (0), _beta (beta), _b (b),
             _isParallel (parallel), _type ("HGP")
         {}
 
-        /** @brief \f$\alpha_{i-1}\f$ **/
+        /** @brief \f$ \alpha_{i-1}\f$ **/
         double alpha () const { return _alpha; }
 
-        /** @brief \f$a_{i-1}\f$ **/
+        /** @brief \f$ a_{i-1}\f$ **/
         double a () const { return _a; }
 
-        /** @brief \f$d_{i} \f$ **/
+        /** @brief \f$ d_{i} \f$ **/
         double d () const { return _d; }
 
-        /** $brief \f$\theta_{i} \f$ **/
+        /** $brief \f$ \theta_{i} \f$ **/
         double theta () const { return _theta; }
 
         double b () const { return _b; }
@@ -120,7 +122,7 @@ namespace rw { namespace models {
          * @param device [in] SerialDevice for which to get the DH parameters
          * @return The set of DH parameters
          */
-        static std::vector< DHParameterSet > getDHParameters (rw::core::Ptr< SerialDevice > device);
+        static std::vector< DHParameterSet > getDHParameters (rw::core::Ptr< rw::models::SerialDevice > device);
 
         static const DHParameterSet* get (const rw::core::PropertyMap& pmap);
 
@@ -131,13 +133,13 @@ namespace rw { namespace models {
         static void set (const DHParameterSet& dhset, rw::kinematics::Frame* joint);
 
       private:
-        /** @brief \f$\alpha_{i-1}\f$ **/
+        /** @brief \f$ \alpha_{i-1}\f$ **/
         double _alpha;
-        /** @brief \f$a_{i-1}\f$ **/
+        /** @brief \f$ a_{i-1}\f$ **/
         double _a;
-        /** @brief \f$d_{i} \f$ **/
+        /** @brief \f$ d_{i} \f$ **/
         double _d;
-        /** $brief \f$\theta_{i} \f$ **/
+        /** $brief \f$ \theta_{i} \f$ **/
         double _theta;
         double _beta;
         double _b;

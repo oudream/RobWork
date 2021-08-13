@@ -18,10 +18,12 @@
 #ifndef PROXIMITYMODEL_HPP_
 #define PROXIMITYMODEL_HPP_
 
+#if !defined(SWIG)
 #include <rw/core/Ptr.hpp>
 
 #include <string>
 #include <vector>
+#endif 
 
 namespace rw { namespace geometry {
     class Geometry;

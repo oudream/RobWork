@@ -48,7 +48,12 @@ namespace rw { namespace kinematics {
          * @param s [in] nr of elements of the types T with default value "defaultVal"
          * @param defaultVal [in] the default value of new instances of T
          */
+
+#if defined(SWIGLUA)
+        FrameMap (const T& defaultVal, int s) :
+#else
         FrameMap (const T& defaultVal, int s = 20) :
+#endif
             _initialSize (s), _defaultVal (false, defaultVal), _map (s, _defaultVal)
         {}
 
@@ -110,7 +115,7 @@ namespace rw { namespace kinematics {
             return val.second;
         }
 #else
-        MAPOPERATOR (T,const rw::kinematics::Frame&);
+        MAPOPERATOR (T, const rw::kinematics::Frame&);
 #endif
         /**
          * @brief Erase an element from the map
@@ -150,7 +155,12 @@ namespace rw { namespace kinematics {
 #if !defined(SWIG)
     extern template class rw::kinematics::FrameMap< rw::math::Transform3D< double > >;
 #else
+    #if SWIG_VERSION < 0x040000
+    SWIG_DECLARE_TEMPLATE (FrameMap_d, rw::kinematics::FrameMap< double >);
+    ADD_DEFINITION (FrameMap_d, FrameMap)
+#else
     SWIG_DECLARE_TEMPLATE (FrameMap, rw::kinematics::FrameMap< double >);
+#endif
 #endif
 }}    // namespace rw::kinematics
 

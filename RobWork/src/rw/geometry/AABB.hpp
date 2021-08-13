@@ -18,15 +18,21 @@
 #ifndef RW_GEOMETRY_AABB_HPP_
 #define RW_GEOMETRY_AABB_HPP_
 
+#if !defined(SWIG)
 #include "BV.hpp"
-
-namespace rw {
-namespace geometry {
+#endif
+#include <rw/common/Traits.hpp>
+namespace rw { namespace geometry {
 
     /**
      * @brief Axis Aligned Bounding Box class
      */
+
+#if !defined(SWIGJAVA)
     template< class T > class AABB : public BV< AABB< T > >
+#else 
+    template< class T > class AABB
+#endif 
     {
       public:
         //! constructor
@@ -66,19 +72,21 @@ namespace geometry {
         rw::math::Vector3D< T > _position, _halfLng;
     };
 
-}    // namespace geometry
-//! define traits of the AABB
-template< typename T > struct Traits< rw::geometry::AABB< T > >
-{
-    //! @brief define traits of the AABB
-    typedef T value_type;
-};
+}}    // namespace rw::geometry
 
-}    // namespace rw
-
+#if !defined(SWIG)
 extern template class rw::geometry::BV< rw::geometry::AABB< double > >;
 extern template class rw::geometry::AABB< double >;
 extern template class rw::geometry::BV< rw::geometry::AABB< float > >;
 extern template class rw::geometry::AABB< float >;
+#else
+SWIG_DECLARE_TEMPLATE (BvAABB, rw::geometry::BV< rw::geometry::AABB< double > >);
+#if SWIG_VERSION < 0x040000
+SWIG_DECLARE_TEMPLATE (AABB_d, rw::geometry::AABB< double >);
+ADD_DEFINITION(AABB_d,AABB)
+#else 
+SWIG_DECLARE_TEMPLATE (AABB, rw::geometry::AABB< double >);
+#endif
+#endif
 
 #endif /* AABB_HPP_ */

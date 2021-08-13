@@ -13,10 +13,9 @@ include:
   - '/gitlab-ci/gitlab-ci-windows.yml'
   - '/gitlab-ci/gitlab-ci-mac.yml'
 #Jobs
-  - '/gitlab-ci/platforms/ubuntu2010.yml'
+  - '/gitlab-ci/platforms/ubuntu2104.yml'
   - '/gitlab-ci/platforms/ubuntu2004.yml'
   - '/gitlab-ci/platforms/ubuntu1804.yml'
-  - '/gitlab-ci/platforms/ubuntu1604.yml'
   - '/gitlab-ci/gitlab-ci-doc.yml'
   - '/gitlab-ci/platforms/windows10-vs16.yml'
   - '/gitlab-ci/platforms/mac-highsierra.yml'

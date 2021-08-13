@@ -21,7 +21,7 @@
 /**
  * @file ProximityStrategyRW.hpp
  */
-
+#if !defined(SWIG)
 #include "BVTreeCollider.hpp"
 #include "BinaryBVTree.hpp"
 
@@ -32,7 +32,7 @@
 #include <rw/proximity/ProximityCache.hpp>
 
 #include <vector>
-
+#endif 
 namespace rw { namespace proximity {
     /** @addtogroup proximity */
     /*@{*/
@@ -69,6 +69,8 @@ namespace rw { namespace proximity {
                 tolcollider;
             rw::geometry::OBBToleranceCollider<>* tolCollider;
         };
+
+
 
         //! @brief
 
@@ -177,7 +179,7 @@ namespace rw { namespace proximity {
             _numTriTests = 0;
         }
 
-        void getCollisionContacts (std::vector< CollisionStrategy::Contact >& contacts,
+        void getCollisionContacts (std::vector< rw::proximity::CollisionStrategy::Contact >& contacts,
                                    ProximityStrategyData& data);
 
       private:

@@ -18,7 +18,9 @@
 #ifndef RW_GEOMETRY_PYRAMID_HPP_
 #define RW_GEOMETRY_PYRAMID_HPP_
 
+#if !defined(SWIG)
 #include "Primitive.hpp"
+#endif 
 
 namespace rw { namespace geometry {
 
@@ -39,7 +41,6 @@ namespace rw { namespace geometry {
          * @param widthx [in] width of pyramid in x axis
          * @param widthy [in] width of pyramid in y-axis
          * @param height [in] height of pyramid in z-axis
-         * @return
          */
         Pyramid (double widthx, double widthy, double height);
 
@@ -60,7 +61,7 @@ namespace rw { namespace geometry {
         GeometryType getType () const { return PyramidPrim; };
 
       protected:
-        bool doIsInside (const rw::math::Vector3D<>& point);
+        bool doIsInside (const rw::math::Vector3D<double>& point);
 
       private:
         double _widthX, _widthY, _height;

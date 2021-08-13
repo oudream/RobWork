@@ -23,13 +23,15 @@
  *
  * \copydoc rw::models::SphericalJoint
  */
-
+#if !defined(SWIG)
 #include "Joint.hpp"
+#endif
 
 namespace rw { namespace models {
     //! @addtogroup models
-
+#if !defined(SWIG)
     //! @{
+#endif
     /**
      * @brief A spherical joint that allows rotations in all directions.
      *
@@ -58,7 +60,7 @@ namespace rw { namespace models {
                                           rw::math::Transform3D<>& result) const;
 
         //! @brief Frame::doGetTransform
-        virtual math::Transform3D<> doGetTransform (const rw::kinematics::State& state) const;
+        virtual rw::math::Transform3D<> doGetTransform (const rw::kinematics::State& state) const;
 
         // From Joint
         //! @copydoc Joint::getJacobian
@@ -88,7 +90,9 @@ namespace rw { namespace models {
         rw::math::Transform3D<> _T;
         rw::math::Function1Diff<>::Ptr _mapping;
     };
-    //! @}
+#if !defined(SWIG)
+//! @}
+#endif
 }}    // namespace rw::models
 
 #endif /* RW_MODELS_SPHERICALJOINT_HPP_ */

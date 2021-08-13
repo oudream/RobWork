@@ -13,19 +13,22 @@ using namespace rwlibs::swig;
 
 %import <rwlibs/swig/sdurw.i>
 %import <rwlibs/swig/sdurw_core.i>
-
+%import <rwlibs/swig/sdurw_sensor.i>
 
 %pragma(java) jniclassimports=%{
 import org.robwork.sdurw.*;
 import org.robwork.sdurw_core.*;
+import org.robwork.sdurw_sensor.*;
 %}
 %pragma(java) moduleimports=%{
 import org.robwork.sdurw.*;
 import org.robwork.sdurw_core.*;
+import org.robwork.sdurw_sensor.*;
 %}
 %typemap(javaimports) SWIGTYPE %{
 import org.robwork.sdurw.*;
 import org.robwork.sdurw_core.*;
+import org.robwork.sdurw_sensor.*;
 %}
 
 /**
@@ -47,13 +50,13 @@ public:
      * @param img [in} the image that is to be rendered
      * @param scale [in] scale from image coordinates to meters.
      */
-    RenderImage(const Image& img, float scale=1.0/1000.0);
+    RenderImage(const rw::sensor::Image& img, float scale=1.0/1000.0);
 
     /**
      * @brief set the image that is to be rendered.
      * @param img [in] image to render
      */
-    void setImage(const Image& img);
+    void setImage(const rw::sensor::Image& img);
 
     /* Functions inherited from Render */
 

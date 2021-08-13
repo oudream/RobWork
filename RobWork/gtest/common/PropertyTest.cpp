@@ -20,9 +20,6 @@
 #include <rw/core/PropertyBase.hpp>
 #include <rw/core/PropertyMap.hpp>
 
-
-
-using namespace boost;
 using namespace rw::core;
 
 TEST(PropertyTest, Property)

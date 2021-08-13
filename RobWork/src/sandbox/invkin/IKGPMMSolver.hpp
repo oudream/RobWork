@@ -28,6 +28,7 @@
 #include <rw/invkin/IterativeMultiIK.hpp>
 #include <rw/kinematics/State.hpp>
 #include <rw/core/PropertyMap.hpp>
+#include <memory>
 
 namespace rw { namespace models {
     class SerialDevice;
@@ -115,7 +116,7 @@ namespace rwlibs { namespace algorithms {
         rw::kinematics::State _state;
         double _maxQuatStep;
         std::vector<rw::kinematics::Frame*> _foi; // frames of interest, end frames
-        std::vector<boost::shared_ptr<rw::kinematics::FKRange> > _fkranges;
+        std::vector<std::shared_ptr<rw::kinematics::FKRange> > _fkranges;
         bool _returnBestFit;
 
 

@@ -5,6 +5,7 @@
 #include <rw/kinematics/FixedFrame.hpp>
 #include <rw/kinematics/Kinematics.hpp>
 #include <rwslibs/rwstudioapp/RobWorkStudioApp.hpp>
+#include <rw/models.hpp>
 
 #include <QApplication>
 
@@ -50,25 +51,25 @@ void rws::swig::setState (rw::kinematics::State& state)
 {
     return getRobWorkStudio ()->postState (state);
 }
-rw::core::Ptr< Device > rws::swig::findDevice (const std::string& name)
+rw::core::Ptr< rw::models::Device > rws::swig::findDevice (const std::string& name)
 {
     return getRobWorkStudio ()->getWorkCell ()->findDevice (name);
 }
-rw::core::Ptr< JointDevice > rws::swig::findJointDevice (const std::string& name)
+rw::core::Ptr< rw::models::JointDevice > rws::swig::findJointDevice (const std::string& name)
 {
-    return getRobWorkStudio ()->getWorkCell ()->findDevice< JointDevice > (name);
+    return getRobWorkStudio ()->getWorkCell ()->findDevice< rw::models::JointDevice > (name);
 }
-rw::core::Ptr< SerialDevice > rws::swig::findSerialDevice (const std::string& name)
+rw::core::Ptr< rw::models::SerialDevice > rws::swig::findSerialDevice (const std::string& name)
 {
-    return getRobWorkStudio ()->getWorkCell ()->findDevice< SerialDevice > (name);
+    return getRobWorkStudio ()->getWorkCell ()->findDevice< rw::models::SerialDevice > (name);
 }
-rw::core::Ptr< TreeDevice > rws::swig::findTreeDevice (const std::string& name)
+rw::core::Ptr< rw::models::TreeDevice > rws::swig::findTreeDevice (const std::string& name)
 {
-    return getRobWorkStudio ()->getWorkCell ()->findDevice< TreeDevice > (name);
+    return getRobWorkStudio ()->getWorkCell ()->findDevice< rw::models::TreeDevice > (name);
 }
-rw::core::Ptr< ParallelDevice > rws::swig::findParallelDevice (const std::string& name)
+rw::core::Ptr< rw::models::ParallelDevice > rws::swig::findParallelDevice (const std::string& name)
 {
-    return getRobWorkStudio ()->getWorkCell ()->findDevice< ParallelDevice > (name);
+    return getRobWorkStudio ()->getWorkCell ()->findDevice< rw::models::ParallelDevice > (name);
 }
 rw::kinematics::Frame* rws::swig::findFrame (const std::string& name)
 {
@@ -143,13 +144,13 @@ bool rws::swig::isRunning ()
     return robApp->isRunning ();
 }
 
-rw::math::Q rws::swig::getQ (rw::core::Ptr< rwlibs::swig::Device > dev)
+rw::math::Q rws::swig::getQ (rw::core::Ptr< rw::models::Device > dev)
 {
     if (dev == NULL)
         RW_THROW ("Device is NULL!");
     return dev->getQ (getState ());
 }
-void rws::swig::setQ (rw::core::Ptr< rwlibs::swig::Device > dev, rw::math::Q q)
+void rws::swig::setQ (rw::core::Ptr< rw::models::Device > dev, rw::math::Q q)
 {
     if (dev == NULL)
         RW_THROW ("Device is NULL!");

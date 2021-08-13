@@ -56,7 +56,7 @@ namespace rw { namespace kinematics {
          * calculated.
          */
         FKTable (const rw::kinematics::State& state);
-#if !defined(SWIGPYTHON) && !defined(SWIGJAVA)
+#if !defined(SWIGPYTHON) && !defined(SWIGJAVA) && !defined(SWIGLUA)
         /**
          * @brief Forward kinematics for the work cell state \b state.
          * @param state [in] The work state for which world transforms are to be

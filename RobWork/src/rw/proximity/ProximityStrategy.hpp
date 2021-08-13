@@ -22,13 +22,14 @@
  * @file rw/proximity/ProximityStrategy.hpp
  */
 
+#if !defined(SWIG)
 #include "ProximityModel.hpp"
 
 #include <rw/core/ExtensionPoint.hpp>
 #include <rw/kinematics/FrameMap.hpp>
 
 #include <string>
-
+#endif 
 namespace rw { namespace geometry {
     class Geometry;
 }}    // namespace rw::geometry

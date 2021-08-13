@@ -18,6 +18,7 @@
 #ifndef RW_GEOMETRY_OBB_HPP_
 #define RW_GEOMETRY_OBB_HPP_
 
+#if !defined(SWIG)
 #include "BV.hpp"
 
 #include <rw/geometry/PlainTriMesh.hpp>
@@ -27,6 +28,9 @@
 #include <rw/math/Rotation3D.hpp>
 #include <rw/math/Transform3D.hpp>
 #include <rw/math/Vector3D.hpp>
+#endif
+
+#include <rw/common/Traits.hpp>
 
 namespace rw {
 namespace geometry {
@@ -34,7 +38,12 @@ namespace geometry {
     /**
      * @brief class representing an Oriented Bounding Box (OBB)
      */
+
+#if !defined(SWIGJAVA)
     template< class T = double > class OBB : public OBV< OBB< T > >
+#else
+    template< class T = double > class OBB
+#endif
     {
       private:
         rw::math::Transform3D< T > _t3d;
@@ -78,7 +87,7 @@ namespace geometry {
             const T& l = _halfLng (2);
             return 2 * (h * 2 * w * 2) + 2 * (h * 2 * l * 2) + 2 * (w * 2 * l * 2);
         }
-
+#if !defined(SWIG)
         /**
          * @brief Ouputs OBB to stream
          * @param os [in/out] stream to use
@@ -92,7 +101,9 @@ namespace geometry {
                       << "\n}";
             // return os << eaa._eaa;
         }
-
+#else
+        TOSTRING (rw::geometry::OBB< T >);
+#endif
         static OBB< T > buildTightOBB (const rw::geometry::TriMesh& tris, size_t index = 0)
         {
             using namespace rw::math;
@@ -110,7 +121,7 @@ namespace geometry {
             for (int i = 0; i < nrOfTris; i++) {
                 // std::cout << "i" << i << std::endl;
                 // calc triangle centroid
-                rw::geometry::Triangle<> t = tris.getTriangle (i);
+                rw::geometry::Triangle< double > t = tris.getTriangle (i);
                 centroid += cast< T > (t[0] + t[1] + t[2]);
                 for (size_t j = 0; j < 3; j++)
                     for (size_t k = 0; k < 3; k++)
@@ -171,12 +182,12 @@ namespace geometry {
             // 5. find extreme vertices relative to eigenvectors
             // we use the generated rotation matrix to rotate each point and then save
             // max and min values of each axis
-            Rotation3D< T > rotInv = inverse (rot);
-            Triangle<> t           = tris.getTriangle (0);
-            Vector3D< T > p        = rotInv * cast< T > (t[0]);
+            Rotation3D< T > rotInv             = inverse (rot);
+            rw::geometry::Triangle< double > t = tris.getTriangle (0);
+            Vector3D< T > p                    = rotInv * cast< T > (t[0]);
             Vector3D< T > max = p, min = p;
             for (int i = 0; i < nrOfTris; i++) {
-                Triangle<> tri = tris.getTriangle (i);
+                rw::geometry::Triangle< double > tri = tris.getTriangle (i);
                 for (int pidx = 0; pidx < 3; pidx++) {
                     Vector3D< T > p = rotInv * cast< T > (tri[pidx]);
                     for (int j = 0; j < 3; j++) {
@@ -208,8 +219,8 @@ namespace geometry {
          */
         TriMesh::Ptr createMesh (bool local = false) const
         {
-            typename PlainTriMesh< Triangle< T > >::Ptr mesh =
-                rw::core::ownedPtr (new PlainTriMesh< Triangle< T > > (12));
+            typename PlainTriMesh< rw::geometry::Triangle< T > >::Ptr mesh =
+                rw::core::ownedPtr (new PlainTriMesh< rw::geometry::Triangle< T > > (12));
 
             T x = _halfLng (0);
             T y = _halfLng (1);
@@ -235,31 +246,31 @@ namespace geometry {
                 p8 = _t3d * p8;
             }
 
-            (*mesh)[0] = Triangle< T > (p1, p2, p3);
-            (*mesh)[1] = Triangle< T > (p3, p4, p1);
+            (*mesh)[0] = rw::geometry::Triangle< T > (p1, p2, p3);
+            (*mesh)[1] = rw::geometry::Triangle< T > (p3, p4, p1);
 
-            (*mesh)[2] = Triangle< T > (p1, p5, p6);
-            (*mesh)[3] = Triangle< T > (p6, p2, p1);
+            (*mesh)[2] = rw::geometry::Triangle< T > (p1, p5, p6);
+            (*mesh)[3] = rw::geometry::Triangle< T > (p6, p2, p1);
             //_faces.push_back(Face<float>(p1, p5, p6));
             //_faces.push_back(Face<float>(p6, p2, p1));
 
-            (*mesh)[4] = Triangle< T > (p3, p2, p6);
-            (*mesh)[5] = Triangle< T > (p6, p7, p3);
+            (*mesh)[4] = rw::geometry::Triangle< T > (p3, p2, p6);
+            (*mesh)[5] = rw::geometry::Triangle< T > (p6, p7, p3);
             //_faces.push_back(Face<float>(p3, p2, p6));
             //_faces.push_back(Face<float>(p6, p7, p3));
 
-            (*mesh)[6] = Triangle< T > (p5, p8, p7);
-            (*mesh)[7] = Triangle< T > (p7, p6, p5);
+            (*mesh)[6] = rw::geometry::Triangle< T > (p5, p8, p7);
+            (*mesh)[7] = rw::geometry::Triangle< T > (p7, p6, p5);
             //_faces.push_back(Face<float>(p5, p8, p7));
             //_faces.push_back(Face<float>(p7, p6, p5));
 
-            (*mesh)[8] = Triangle< T > (p1, p4, p8);
-            (*mesh)[9] = Triangle< T > (p8, p5, p1);
+            (*mesh)[8] = rw::geometry::Triangle< T > (p1, p4, p8);
+            (*mesh)[9] = rw::geometry::Triangle< T > (p8, p5, p1);
             //_faces.push_back(Face<float>(p1, p4, p8));
             //_faces.push_back(Face<float>(p8, p5, p1));
 
-            (*mesh)[10] = Triangle< T > (p4, p3, p7);
-            (*mesh)[11] = Triangle< T > (p7, p8, p4);
+            (*mesh)[10] = rw::geometry::Triangle< T > (p4, p3, p7);
+            (*mesh)[11] = rw::geometry::Triangle< T > (p7, p8, p4);
             //_faces.push_back(Face<float>(p4, p3, p7));
             //_faces.push_back(Face<float>(p7, p8, p4));
             return mesh;
@@ -268,16 +279,28 @@ namespace geometry {
 }    // namespace geometry
 
 //! define traits of the OBB
-template< typename T > struct Traits< geometry::OBB< T > >
+template< typename T > struct Traits< rw::geometry::OBB< T > >
 {
     typedef T value_type;
 };
 
 }    // namespace rw
 
+#if !defined(SWIG)
 extern template class rw::geometry::OBV< rw::geometry::OBB< double > >;
 extern template class rw::geometry::OBB< double >;
 extern template class rw::geometry::OBV< rw::geometry::OBB< float > >;
 extern template class rw::geometry::OBB< float >;
+#else
+SWIG_DECLARE_TEMPLATE (ObvOBB, rw::geometry::OBV< rw::geometry::OBB< double > >);
+#if SWIG_VERSION < 0x040000
+SWIG_DECLARE_TEMPLATE (OBB_d, rw::geometry::OBB< double >);
+ADD_DEFINITION (OBB_d, OBB)
+#else
+SWIG_DECLARE_TEMPLATE (OBB, rw::geometry::OBB< double >);
+#endif
+SWIG_DECLARE_TEMPLATE (ObvOBB_f, rw::geometry::OBV< rw::geometry::OBB< float > >);
+SWIG_DECLARE_TEMPLATE (OBB_f, rw::geometry::OBB< float >);
+#endif
 
 #endif /*OBB_HPP_*/

@@ -18,9 +18,11 @@
 #ifndef RW_GEOMETRY_TRIANGLE_HPP_
 #define RW_GEOMETRY_TRIANGLE_HPP_
 
+#if !defined(SWIG)
 #include <rw/math/MetricUtil.hpp>
 #include <rw/math/Transform3D.hpp>
 #include <rw/math/Vector3D.hpp>
+#endif
 
 namespace rw { namespace geometry {
     //! @addtogroup geometry
@@ -61,11 +63,11 @@ namespace rw { namespace geometry {
          *
          * @param f [in] - The face that is to be copied.
          */
-        Triangle (const Triangle< T >& f)
+        template< class R > Triangle (const Triangle< R >& f)
         {
-            _vertices[0] = f.getVertex (0);
-            _vertices[1] = f.getVertex (1);
-            _vertices[2] = f.getVertex (2);
+            _vertices[0] = rw::math::Vector3D< T > (f.getVertex (0).e ());
+            _vertices[1] = rw::math::Vector3D< T > (f.getVertex (1).e ());
+            _vertices[2] = rw::math::Vector3D< T > (f.getVertex (2).e ());
         };
 
         /**
@@ -82,7 +84,7 @@ namespace rw { namespace geometry {
          * @brief get vertex at index i
          */
         const rw::math::Vector3D< T >& getVertex (size_t i) const { return _vertices[i]; }
-
+#if !defined(SWIG)
         /**
          * @brief get vertex at index i
          */
@@ -92,7 +94,9 @@ namespace rw { namespace geometry {
          * @brief get vertex at index i
          */
         rw::math::Vector3D< T >& operator[] (size_t i) { return getVertex (i); };
-
+#else
+        ARRAYOPERATOR (rw::math::Vector3D< T >);
+#endif
         /**
          * @brief calculates the face normal of this triangle. It is assumed
          * that the triangle vertices are arranged counter clock wise.
@@ -162,7 +166,7 @@ namespace rw { namespace geometry {
 
         inline const Triangle< T >& getTriangle () const { return *this; }
         inline Triangle< T >& getTriangle () { return *this; }
-
+#if !defined(SWIG)
         /**
          * @brief Outputs transform to stream
          * @param os [in/out] an output stream
@@ -175,6 +179,9 @@ namespace rw { namespace geometry {
             return os << "Triangle(" << t._vertices[0] << ", " << t._vertices[1] << ", "
                       << t._vertices[2] << ")";
         }
+#else
+        TOSTRING (rw::geometry::Triangle< T >);
+#endif
     };
 
     /**
@@ -259,6 +266,7 @@ namespace rw { namespace geometry {
         //! @copydoc Triangle::calcFaceNormal
         rw::math::Vector3D< T > calcFaceNormal () const { return _triN0.calcFaceNormal (); };
 
+#if !defined(SWIG)
         /**
          * @brief get vertex at index i
          */
@@ -268,7 +276,9 @@ namespace rw { namespace geometry {
          * @brief get vertex at index i
          */
         rw::math::Vector3D< T >& operator[] (size_t i) { return getVertex (i); };
-
+#else
+        ARRAYOPERATOR (rw::math::Vector3D< T >);
+#endif
         /**
          * @brief tests wheather the point x is inside the triangle
          */
@@ -350,13 +360,23 @@ namespace rw { namespace geometry {
         // inheritet functions from Triangle
         //! @copydoc Triangle::getVertex
         virtual rw::math::Vector3D< T >& getVertex (size_t i) { return _triN0.getVertex (i); };
+
         //! @copydoc Triangle::getVertex
         virtual const rw::math::Vector3D< T >& getVertex (size_t i) const
         {
             return _triN0.getVertex (i);
         };
+
+#if !defined(SWIG)
+        //! @copydoc Triangle::operator[]
+        rw::math::Vector3D< T >& operator[] (size_t i) { return _triN0.getVertex (i); };
+
         //! @copydoc Triangle::operator[]
         const rw::math::Vector3D< T >& operator[] (size_t i) const { return _triN0.getVertex (i); };
+#else
+        ARRAYOPERATOR (rw::math::Vector3D< T >);
+#endif
+
         //! @copydoc Triangle::calcFaceNormal
         rw::math::Vector3D< T > calcFaceNormal () const { return _triN0.calcFaceNormal (); };
 
@@ -375,6 +395,7 @@ namespace rw { namespace geometry {
         inline Triangle< T >& getTriangle () { return _triN0; }
     };
 
+#if !defined(SWIG)
     extern template class rw::geometry::Triangle< double >;
     extern template class rw::geometry::TriangleN1< double >;
     extern template class rw::geometry::TriangleN3< double >;
@@ -382,6 +403,25 @@ namespace rw { namespace geometry {
     extern template class rw::geometry::Triangle< float >;
     extern template class rw::geometry::TriangleN1< float >;
     extern template class rw::geometry::TriangleN3< float >;
+#else
+
+#if SWIG_VERSION < 0x040000
+    SWIG_DECLARE_TEMPLATE (Triangle_d, rw::geometry::Triangle< double >);
+    SWIG_DECLARE_TEMPLATE (TriangleN1_d, rw::geometry::TriangleN1< double >);
+    SWIG_DECLARE_TEMPLATE (TriangleN3_d, rw::geometry::TriangleN3< double >);
+    ADD_DEFINITION (Triangle_d, Triangle)
+    ADD_DEFINITION (TriangleN1_d, TriangleN1)
+    ADD_DEFINITION (TriangleN3_d, TriangleN3)
+#else
+    SWIG_DECLARE_TEMPLATE (Triangle, rw::geometry::Triangle< double >);
+    SWIG_DECLARE_TEMPLATE (TriangleN1, rw::geometry::TriangleN1< double >);
+    SWIG_DECLARE_TEMPLATE (TriangleN3, rw::geometry::TriangleN3< double >);
+#endif
+
+    SWIG_DECLARE_TEMPLATE (Triangle_f, rw::geometry::Triangle< float >);
+    SWIG_DECLARE_TEMPLATE (TriangleN1_f, rw::geometry::TriangleN1< float >);
+    SWIG_DECLARE_TEMPLATE (TriangleN3_f, rw::geometry::TriangleN3< float >);
+#endif
 
     // @}
 }}    // namespace rw::geometry
