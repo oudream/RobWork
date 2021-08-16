@@ -17,3 +17,4 @@ eaaFromRotation = EAAd(rot);
 print("EAA from Rotation: " .. tostring(eaaFromRotation))
 print(" angle: " .. eaaFromRotation:angle())
 print(" axis: " .. tostring(eaaFromRotation:axis()));
+

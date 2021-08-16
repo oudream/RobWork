@@ -70,7 +70,7 @@
   script:
     - cd Build
     - cd RWSim
-    - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" -A x64 -DSWIG_EXECUTABLE=%SWIG_ROOT%\swig.exe ../../RobWorkSim
+    - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" -A x64 -DSWIG_EXECUTABLE=%SWIG_ROOT%\swig.exe -DDEBUG=TRUE ../../RobWorkSim
     - msbuild RobWorkSim.sln -m /property:Configuration=Release
     - msbuild src\\rwsimlibs\\swig\\python\\python.vcxproj -m /property:Configuration=Release
     - msbuild src\\rwsimlibs\\swig\\java\\java.vcxproj -m /property:Configuration=Release

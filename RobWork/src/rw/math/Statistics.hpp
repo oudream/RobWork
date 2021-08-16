@@ -11,7 +11,8 @@
 #include <vector>
 #endif
 
-namespace rw { namespace math {
+namespace rw {
+namespace math {
 
     /**
      * @brief Class for collecting data and calculating simple statistics.
@@ -280,6 +281,16 @@ namespace rw { namespace math {
         std::list< T > _data;
     };
 
-}}    // namespace rw::math
+#if defined(SWIG)
+#if SWIG_VERSION < 0x040000
+    SWIG_DECLARE_TEMPLATE (Statistics_d, rw::math::Statistics< double >);
+    ADD_DEFINITION (Statistics_d, Statistics)
+#else
+    SWIG_DECLARE_TEMPLATE (Statistics, rw::math::Statistics< double >);
+#endif
+    SWIG_DECLARE_TEMPLATE (Statistics_f, rw::math::Statistics< float >);
+#endif
+}
+}    // namespace rw::math
 
 #endif /* RW_PATH_STATISTICS_HPP */

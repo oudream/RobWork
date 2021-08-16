@@ -30,7 +30,7 @@
 
 #include <algorithm>
 #include <cmath>
-#endif 
+#endif
 
 namespace rw { namespace math {
 
@@ -53,7 +53,8 @@ namespace rw { namespace math {
          *
          * @return a EAA object that represents the converted quaternion
          */
-        template< class A > static rw::math::EAA< A > quaternionToEAA (const rw::math::Quaternion< A >& quat)
+        template< class A >
+        static rw::math::EAA< A > quaternionToEAA (const rw::math::Quaternion< A >& quat)
         {
             Quaternion< A > q = quat;
 
@@ -95,7 +96,8 @@ namespace rw { namespace math {
          *
          * @return a Quaternion object that represents the converted EAA
          */
-        template< class A > static rw::math::Quaternion< A > eaaToQuaternion (const rw::math::EAA< A >& eaa)
+        template< class A >
+        static rw::math::Quaternion< A > eaaToQuaternion (const rw::math::EAA< A >& eaa)
         {
             const Vector3D< A > v = eaa.axis ();
             const A a2            = eaa.angle () / 2;
@@ -116,10 +118,13 @@ namespace rw { namespace math {
          *
          * @return a Quaternion object that represents the converted EAA
          */
-        template< class A > static rw::math::Rotation3D< A > zyxToRotation3D (A roll, A pitch, A yaw)
+        template< class A >
+        static rw::math::Rotation3D< A > zyxToRotation3D (A roll, A pitch, A yaw)
         {
             return RPY< A > (roll, pitch, yaw).toRotation3D ();
         }
+
+#if !defined(SWIGJAVA)
 
         /**
          * \brief Constructs a 3x3 skew-symmetric matrix \f$ S\in so(3)\f$
@@ -137,7 +142,9 @@ namespace rw { namespace math {
          * \right ]
          * \f$
          */
-        template< class R > static inline Eigen::Matrix< R, 3, 3 > skew (const rw::math::Vector3D< R >& s)
+#endif
+        template< class R >
+        static inline Eigen::Matrix< R, 3, 3 > skew (const rw::math::Vector3D< R >& s)
         {
             Eigen::Matrix< R, 3, 3 > S;
             S (0, 0) = 0.0;
