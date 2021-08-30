@@ -1,7 +1,7 @@
-sdurw_kinematics module
-=======================
+sdurw_proximity module
+======================
 
-.. automodule:: sdurw_kinematics
+.. automodule:: sdurw_proximity
     :members:
     :undoc-members:
     :show-inheritance:

@@ -13,12 +13,38 @@
 import os
 import sys
 
-rw_modules = ["sdurw_core", "sdurw_common", "sdurw_math", "sdurw_kinematics", "sdurw", "sdurw_assembly", "sdurw_control",
-              "sdurw_pathoptimization", "sdurw_pathplanners", "sdurw_proximitystrategies", "sdurw_task", "sdurw_simulation", "sdurw_opengl"]
+rw_modules = [
+        "sdurw_core",
+        "sdurw_common",
+        "sdurw_math",
+        "sdurw_kinematics",
+        "sdurw_plugin",
+        "sdurw_geometry",
+        "sdurw_sensor",
+        "sdurw_models",
+        "sdurw_proximity",
+        "sdurw_graphics",
+        "sdurw_trajectory",
+        "sdurw_invkin",
+        "sdurw_pathplanning",
+        "sdurw_graspplanning",
+        "sdurw_loaders",
+        "sdurw",
+        "sdurw_algorithms",
+        "sdurw_task",
+        "sdurw_assembly",
+        "sdurw_control",
+        "sdurw_pathoptimization",
+        "sdurw_pathplanners",
+        "sdurw_proximitystrategies",
+        "sdurw_simulation",
+        "sdurw_opengl"
+    ]
+
 for s in rw_modules:
-    sys.path.insert(0, '@RW_LIBS@/'+s)
-sys.path.insert(0, '@RWS_LIBS@/sdurws')
-sys.path.insert(0, '@RWSIM_LIBS@/sdurwsim')
+    sys.path.append('@RW_LIBS@/'+s)
+sys.path.append('@RWS_LIBS@/sdurws')
+sys.path.append('@RWSIM_LIBS@/sdurwsim')
 
 
 # -- Project information -----------------------------------------------------

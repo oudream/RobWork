@@ -1,3 +1,76 @@
+robwork (2.1.7-1) focal; urgency=medium
+
+  * Fixed locating library problem
+  * Version number updated to 2.1.7-1
+
+ -- Kasper Høj Lorenzen <kalor@mmmi.sdu.dk>  Mon, 30 Aug 2021 10:39:53 +0200
+
+robwork (2.1.6-1) focal; urgency=medium
+
+  * Version number updated to 2.1.6-1
+
+ -- Kasper Høj Lorenzen <kalor@mmmi.sdu.dk>  Thu, 26 Aug 2021 13:08:39 +0200
+
+robwork (2.1.5-1) focal; urgency=medium
+
+  * Version number updated to 2.1.5-1
+
+ -- Kasper Høj Lorenzen <kalor@mmmi.sdu.dk>  Thu, 26 Aug 2021 13:04:35 +0200
+
+robwork (2.1.4-1) focal; urgency=medium
+
+  * Version number updated to 2.1.4-1
+
+ -- Kasper Høj Lorenzen <kalor@mmmi.sdu.dk>  Thu, 26 Aug 2021 13:03:09 +0200
+
+robwork (2.1.3-1) focal; urgency=medium
+
+  * fixed fcl cmake error
+  * documentation update
+  * added documentation pages for python
+  * fixed documentation
+  * fixed module paths
+  * Changed Master CI
+  * Version number updated to 2.1.3-1
+
+ -- Kasper Høj Lorenzen <kalor@mmmi.sdu.dk>  Thu, 26 Aug 2021 12:54:40 +0200
+
+robwork (2.1.2-2) focal; urgency=medium
+  
+  * added miising package to bundles
+  * Version number updated to 2.1.2-2
+
+ -- Kasper Høj Lorenzen <kalor@mmmi.sdu.dk>  Wed, 18 Aug 2021 09:32:41 +0200
+
+robwork (2.1.2-1) focal; urgency=medium
+
+  * Version update
+
+ -- Kasper Høj Lorenzen <kalor@mmmi.sdu.dk>  Thu, 12 Aug 2021 15:21:35 +0200
+
+robwork (2.1.1-1) focal; urgency=medium
+
+  [ Kasper Høj Lorenzen ]
+  * RobWork Proximity in new SWIG system
+  * EOL ubuntu2010 welcome ubuntu 2104
+
+  [ Ken Sørensen ]
+  * Python unittest
+
+  [ Kasper Høj Lorenzen ]
+  * Windows installer2.0
+  * FCL contact detector
+
+  [ Ken Sørensen ]
+  * Expanded math python test
+
+  [ Kasper Høj Lorenzen ]
+  * Mac and debian error fixes
+  * Devel error fixes
+  * Version number updated to 2.1.1-1
+
+ -- Kasper Høj Lorenzen <kalor@mmmi.sdu.dk>  Thu, 12 Aug 2021 15:15:38 +0200
+
 robwork (2.1.0-1) focal; urgency=medium
 
   [ Kasper Høj Lorenzen ]

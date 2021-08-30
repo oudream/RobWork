@@ -1,7 +1,7 @@
-sdurw_kinematics module
-=======================
+sdurw_pathplanning module
+=========================
 
-.. automodule:: sdurw_kinematics
+.. automodule:: sdurw_pathplanning
     :members:
     :undoc-members:
     :show-inheritance:

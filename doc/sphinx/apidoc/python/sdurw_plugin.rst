@@ -1,7 +1,7 @@
-sdurw_kinematics module
-=======================
+sdurw_plugin module
+====================
 
-.. automodule:: sdurw_kinematics
+.. automodule:: sdurw_plugin
     :members:
     :undoc-members:
     :show-inheritance:

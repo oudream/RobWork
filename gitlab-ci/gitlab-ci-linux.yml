@@ -118,7 +118,7 @@
     - cd Build
     # Build RobWorkSim
     - cd RWSim
-    - cmake -DCMAKE_BUILD_TYPE=Release -DUSE_WERROR=$WERROR ../../RobWorkSim
+    - cmake -DCMAKE_BUILD_TYPE=Release -DUSE_WERROR=$WERROR -DDEBUG=TRUE ../../RobWorkSim
     - make -j${THREADS}
     - make -j${THREADS} python
     - make -j${THREADS} lua
@@ -320,5 +320,5 @@
     - add-apt-repository ppa:sdurobotics/robwork
     - apt-get update
   script:
-    - apt -y install libsdurw-all-dev libsdurws-all-dev libsdurwsim-all-dev 
-    - apt -y install ./DEBPKG/*.deb
+    - apt -y install libsdurw-all-dev libsdurws-all-dev libsdurwsim-all-dev python3-robwork
+    - apt -y --allow-downgrades install ./DEBPKG/*.deb

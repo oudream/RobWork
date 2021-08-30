@@ -1,5 +1,5 @@
 sdurw_math module
-============
+=================
 
 .. automodule:: sdurw_math
     :members:
