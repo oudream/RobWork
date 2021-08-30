@@ -50,10 +50,9 @@ namespace Eigen{
 
     };
 }
-
-#if  defined(SWIGPYTHON) && RW_USE_NUMPY
+%include <rwlibs/swig/ext_i/os.i>
+#if  defined(SWIGPYTHON) && defined(RW_USE_NUMPY)
 %include <rwlibs/swig/ext_i/eigen.i>
-
 #define dxx double,-1,-1
 #define d22 double,2,2
 #define d33 double,3,3
@@ -115,7 +114,6 @@ namespace Eigen{
 %eigen_typemaps(Eigen::Matrix<cd33>);
 
 #else
-
 %template(EigenMatrixXf) Eigen::Matrix<float,-1,-1>;
 %template(EigenMatrixXd) Eigen::Matrix<double,-1,-1>;
 %template(EigenMatrix2f) Eigen::Matrix<float,2,2>;
@@ -142,7 +140,6 @@ namespace Eigen{
 %template(EigenVector3id) Eigen::Matrix<std::complex<double>,3,1>;
 %template(EigenRowVector3id) Eigen::Matrix<std::complex<double>,1,3>;
 %template(EigenMatrix3id) Eigen::Matrix<std::complex<double>,3,3>;
-
 #endif
 
 #if ! SWIG_VERSION <= 0x030008

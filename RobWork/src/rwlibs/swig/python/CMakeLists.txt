@@ -117,7 +117,6 @@ if(build)
             endif()
 
             # Set build destination
-            target_compile_definitions(${TARGET_NAME} PUBLIC RW_USE_NUMPY)
             add_dependencies(${SUBSYS_NAME} ${TARGET_NAME})
             set(python_targets ${python_targets} ${TARGET_NAME})
 

@@ -70,17 +70,6 @@ SWIG_JAVABODY_TYPEWRAPPER(public, public, public, SWIGTYPE)
     }
 }
 
-/********************************************
- * Constants
- ********************************************/
-
-%constant double Pi = rw::math::Pi;
-%constant double Inch2Meter = rw::math::Inch2Meter;
-%constant double Meter2Inch = rw::math::Meter2Inch;
-%constant double Deg2Rad = rw::math::Deg2Rad;
-%constant double Rad2Deg = rw::math::Rad2Deg;
-
-
 %import <rwlibs/swig/sdurw_core.i>
 %import <rwlibs/swig/sdurw_common.i>
 %import <rwlibs/swig/sdurw_math.i>
