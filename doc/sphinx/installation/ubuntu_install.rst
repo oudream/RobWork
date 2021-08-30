@@ -17,10 +17,17 @@ The Simplest install to get all our packages can then be done with:
 
 .. code-block:: bash
 
+    # c++ interface 
     sudo apt-get install libsdurw-all-dev \
                          libsdurws-all-dev \
-                         libsdurwhw-all-dev \
                          libsdurwsim-all-dev
+
+    # python interface 
+    sudo apt install python3-robwork 
+
+    # lua interface
+    sudo apt install lua-robwork
+
 
 .. note::
 
@@ -40,7 +47,7 @@ The first array of packages are the individual RobWork packages. Which can be do
 
 .. code-block:: bash
 
-    sudo apt-get install lib<package><version>
+    sudo apt-get install lib<package>
 
 For the development packages including the newest version of robwork and the include files the command is:
 
@@ -67,6 +74,7 @@ For the development packages including the newest version of robwork and the inc
 |  - libsdurw-core                |                                   |                                    |                       |
 |  - libsdurw-common              |                                   |                                    |                       |
 |  - libsdurw-math                |                                   |                                    |                       |
+|  - libsdurw-geometry-expanded   |                                   |                                    |                       |
 +---------------------------------+-----------------------------------+------------------------------------+-----------------------+
 
 Python and Lua packages
@@ -85,6 +93,14 @@ They are downloaded in the same way as c++ libraries
 | RobWork                               | Lua Packages                      |
 +---------------------------------------+-----------------------------------+
 |  - python3-sdurw                      |  - lua-sdurw                      |
+|  - python3-sdurw-core                 |  - lua-sdurw-core                 |
+|  - python3-sdurw-common               |  - lua-sdurw-common               |
+|  - python3-sdurw-math                 |  - lua-sdurw-math                 |
+|  - python3-sdurw-kinematics           |  - lua-sdurw-kinematics           |
+|  - python3-sdurw-geometry             |  - lua-sdurw-geometry             |
+|  - python3-sdurw-sensor               |  - lua-sdurw-sensor               |
+|  - python3-sdurw-models               |  - lua-sdurw-models               |
+|  - python3-sdurw-graspplanning        |  - lua-sdurw-graspplanning        |
 |  - python3-sdurw-assembly             |  - lua-sdurw-assembly             |
 |  - python3-sdurw-control              |  - lua-sdurw-control              |
 |  - python3-sdurw-opengl               |  - lua-sdurw-opengl               |
@@ -109,8 +125,6 @@ The "-robwork-all" includes all packages for all four main robwork code librarie
 
 - libsdurw-all-dev
 - libsdurw-all
-- libsdurwhw-all-dev
-- libsdurwhw-all
 - libsdurws-all-dev
 - libsdurws-all
 - libsdurwsim-all-dev
@@ -127,14 +141,12 @@ It should not be necessary to get these packages specifically.
 As they are automatically downloaded, when needed.
 Do notice that the cmake packages are versioned to fit with the RobWork Versions.
 
-- sdurw-cmake<version>
+- sdurw-cmake
     - This package is only installed it libsdurw-all-dev as it currently can't handle the individual components.
       It will therefore always try to load all sdurw libraries.
-- sdurwhw-cmake<version>
-    - Is supplied with the individual "-dev" packages
-- sdurws-cmake<version>
+- sdurws-cmake
     - It is fetched together with libsdurws-dev.
-- sdurwsim-cmake<version>
+- sdurwsim-cmake
     - This package is only installed it libsdurwsim-all-dev as it currently can't handle the individual components.
       It will therefore always try to load all sdurwsim libraries.
 
@@ -144,8 +156,6 @@ special mentions
 
 These are the remaining special packages not mentioned yet.
 
-- libsdurwhw-dev
-    - This package is automatically fetched when needed and contains the shared include files for RobWorkHardWare
 - robworkstudio
     - This packages contains the binary for running robworkstudio.
     - The program will automatically detect and load sdurws plugins as you download them.
@@ -166,7 +176,6 @@ If you know the specific packages installed like:
 
     sudo apt-get install libsdurw-all-dev \
                          libsdurws-all-dev \
-                         libsdurwhw-all-dev \
                          libsdurwsim-all-dev
 
 Then the uninstall is mostly the reverse:
@@ -174,7 +183,6 @@ Then the uninstall is mostly the reverse:
 
     sudo apt-get remove libsdurw-all-dev  \
                         libsdurws-all-dev \
-                        libsdurwhw-all-dev \
                         libsdurwsim-all-dev
 
     sudo apt-get autoremove

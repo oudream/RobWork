@@ -1,7 +1,7 @@
-sdurw_kinematics module
+sdurw_trajectory module
 =======================
 
-.. automodule:: sdurw_kinematics
+.. automodule:: sdurw_trajectory
     :members:
     :undoc-members:
     :show-inheritance:

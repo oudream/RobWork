@@ -29,7 +29,7 @@ pages:
     GIT_STRATEGY: none
   script:
     - cd public
-    - "sshpass -e sftp robwork@www5.sdu.dk:htdocs <<< $'put -r ./*'"
+    #- "sshpass -e sftp robwork@www5.sdu.dk:htdocs <<< $'put -r ./*'"
     - echo "Deploying documentation."
   dependencies:
     - build:doc-2004
