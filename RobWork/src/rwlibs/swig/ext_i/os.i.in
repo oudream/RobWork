@@ -1,2 +1,7 @@
+#ifndef ROBWORK_SWIG_OS_I
+#define ROBWORK_SWIG_OS_I
 
 #cmakedefine WIN32
+#cmakedefine RW_USE_NUMPY
+
+#endif 

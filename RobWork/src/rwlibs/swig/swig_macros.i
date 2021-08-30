@@ -32,6 +32,11 @@
 
 #if defined(SWIGPYTHON)
     %rename(copy) operator=;
+
+    %include <rwlibs/swig/ext_i/os.i>
+#if defined(RW_USE_NUMPY)
+    %rename(asNumpy) e;
+#endif
 #endif 
 
 #if defined(SWIGLUA)

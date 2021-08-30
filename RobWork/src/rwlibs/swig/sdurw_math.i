@@ -25,6 +25,12 @@ import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_common.*;
 %}
 
+%constant double Pi = rw::math::Pi;
+%constant double Inch2Meter = rw::math::Inch2Meter;
+%constant double Meter2Inch = rw::math::Meter2Inch;
+%constant double Deg2Rad = rw::math::Deg2Rad;
+%constant double Rad2Deg = rw::math::Rad2Deg;
+
 %rename(copy) rw::math::Rotation3DVector::operator=;
 %{
     #include <rw/math/Rotation3DVector.hpp>
