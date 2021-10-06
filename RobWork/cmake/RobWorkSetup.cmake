@@ -416,7 +416,7 @@ else()
         set(PYTHONLIBS_FOUND ${Python3_Development_FOUND})
         set(PYTHON_LIBRARIES ${Python3_LIBRARIES})
         set(PYTHON_INCLUDE_DIRS ${Python3_INCLUDE_DIRS})
-        set(PYTHON_EXECUTABLE ${Python_EXECUTABLE})
+        set(PYTHON_EXECUTABLE ${Python3_EXECUTABLE})
     endif()
 endif()
 

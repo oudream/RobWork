@@ -52,6 +52,32 @@ if(NOT PYTHON_LIBRARIES)
     set(PYTHON_LIBRARIES "")
 endif()
 
+#
+# Use numpy for swing bindings if available
+#
+if(SWIG_FOUND)
+    execute_process(
+        COMMAND ${PYTHON_EXECUTABLE} -c
+                "try: \n\timport numpy; print(\"ON\");\nexcept ImportError:\n\tprint(\"OFF\");"
+        OUTPUT_VARIABLE RWSIM_USE_NUMPY
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
+    if(RWSIM_USE_NUMPY)
+        message(STATUS "RobWork is compiled with Numpy")
+        execute_process(
+            COMMAND python3 -c "import numpy; print(numpy.__file__);"
+            OUTPUT_VARIABLE NUMPY_INCLUDE_DIR
+            OUTPUT_STRIP_TRAILING_WHITESPACE
+        )
+        get_filename_component(NUMPY_INCLUDE_DIR "${NUMPY_INCLUDE_DIR}" DIRECTORY)
+        set(NUMPY_INCLUDE_DIR "${NUMPY_INCLUDE_DIR}/core/include")
+        message(STATUS "numpy found at: ${NUMPY_INCLUDE_DIR}")
+    else()
+        message(STATUS "RobWork can't find Numpy.")
+    endif()
+endif()
+
+
 # Find and setup OpenGL.
 if(POLICY CMP0072) # Introduce cmake 3.11
     cmake_policy(SET CMP0072 NEW)

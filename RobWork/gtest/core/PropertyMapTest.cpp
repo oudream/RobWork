@@ -36,7 +36,7 @@ namespace {
 TEST(PropertyMapCore, PropertyMapCore) {
     PropertyMap map("name");
     EXPECT_EQ("name", map.getName());
-    EXPECT_EQ(0, map.size());
+    EXPECT_EQ(0ul, map.size());
     EXPECT_TRUE(map.empty());
 
     map.add("doubleId", "doubleDesc", 0.1);
@@ -49,10 +49,10 @@ TEST(PropertyMapCore, PropertyMapCore) {
     EXPECT_EQ(nullptr, map.findPropertyBase("nonExistingId"));
     EXPECT_EQ(nullptr, map.findProperty<double>("nonExistingId"));
     EXPECT_ANY_THROW(map.get<double>("nonExistingId"));
-    EXPECT_EQ(1, map.size());
+    EXPECT_EQ(1ul, map.size());
     EXPECT_FALSE(map.has("nonExistingId"));
     EXPECT_EQ(1.1, map.get<double>("nonExistingId", 1.1));
-    EXPECT_EQ(2, map.size());
+    EXPECT_EQ(2ul, map.size());
     EXPECT_TRUE(map.has("nonExistingId"));
     EXPECT_EQ(1.1, map.get<double>("nonExistingId"));
 
@@ -86,7 +86,7 @@ TEST(PropertyMapCore, PropertyMapCore) {
     EXPECT_EQ(0.6, map.findProperty<double>("doubleId2")->getValue());
     EXPECT_EQ(0.6, map.get<double>("doubleId2"));
 
-    EXPECT_EQ(3, map.size());
+    EXPECT_EQ(3ul, map.size());
     EXPECT_FALSE(map.empty());
 
     PropertyMap mapCopy = map;
@@ -94,7 +94,7 @@ TEST(PropertyMapCore, PropertyMapCore) {
     EXPECT_EQ("name", mapCopy.getName());
     EXPECT_EQ(0.5, *mapCopy.getPtr<double>("doubleId"));
     EXPECT_EQ(nullptr, mapCopy.getPtr<double>("DoesNotExist"));
-    EXPECT_EQ(3, mapCopy.size());
+    EXPECT_EQ(3ul, mapCopy.size());
 
     PropertyMap mapCopy2;
     mapCopy2 = map;
@@ -102,18 +102,18 @@ TEST(PropertyMapCore, PropertyMapCore) {
     EXPECT_EQ("name", mapCopy2.getName());
     EXPECT_EQ(0.5, *mapCopy2.getPtr<double>("doubleId"));
     EXPECT_EQ(nullptr, mapCopy2.getPtr<double>("DoesNotExist"));
-    EXPECT_EQ(3, mapCopy2.size());
+    EXPECT_EQ(3ul, mapCopy2.size());
 
     map.clear();
     EXPECT_TRUE(map.empty());
-    EXPECT_EQ(0, map.size());
+    EXPECT_EQ(0ul, map.size());
     EXPECT_FALSE(mapCopy.empty());
-    EXPECT_EQ(3, mapCopy.size());
+    EXPECT_EQ(3ul, mapCopy.size());
     EXPECT_FALSE(mapCopy2.empty());
-    EXPECT_EQ(3, mapCopy2.size());
+    EXPECT_EQ(3ul, mapCopy2.size());
 
     mapCopy.erase("doubleId2");
-    EXPECT_EQ(2, mapCopy.size());
+    EXPECT_EQ(2ul, mapCopy.size());
 
     std::set<std::string> ids;
     for (const PropertyBase::Ptr& p : mapCopy.getProperties()) {
