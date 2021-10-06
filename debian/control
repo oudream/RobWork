@@ -1550,6 +1550,7 @@ Depends:
  python3-sdurw-graspplanning (=${binary:Version}),  
  libsdurw (>=${binary:Version}), 
  python3,
+ python3-numpy,
  ${shlibs:Depends}, 
  ${misc:Depends}
 Conflicts:
@@ -1566,6 +1567,7 @@ Multi-Arch: no
 Depends:
  libsdurw-core (>=${binary:Version}), 
  python3,
+ python3-numpy,
  ${shlibs:Depends}, 
  ${misc:Depends}
 Conflicts:
@@ -1583,6 +1585,7 @@ Depends:
  libsdurw-common (>=${binary:Version}), 
  python3-sdurw-core (=${binary:Version}), 
  python3,
+ python3-numpy,
  ${shlibs:Depends}, 
  ${misc:Depends}
 Conflicts:
@@ -1599,6 +1602,7 @@ Multi-Arch: no
 Depends:
  libsdurw-math (>=${binary:Version}), 
  python3,
+ python3-numpy,
  ${shlibs:Depends}, 
  ${misc:Depends}
 Description: Python wrapping for RobWork-math
@@ -1611,6 +1615,7 @@ Multi-Arch: no
 Depends:
  libsdurw-kinematics (>=${binary:Version}), 
  python3,
+ python3-numpy,
  ${shlibs:Depends}, 
  ${misc:Depends}
 Description: Python wrapping for RobWork-math
@@ -1623,6 +1628,7 @@ Multi-Arch: no
 Depends:
  libsdurw-geometry (>=${binary:Version}), 
  python3,
+ python3-numpy,
  ${shlibs:Depends}, 
  ${misc:Depends}
 Description: Python wrapping for RobWork-geometry
@@ -1635,6 +1641,7 @@ Multi-Arch: no
 Depends:
  libsdurw-sensor (>=${binary:Version}), 
  python3,
+ python3-numpy,
  ${shlibs:Depends}, 
  ${misc:Depends}
 Description: Python wrapping for RobWork-sensor
@@ -1647,6 +1654,7 @@ Multi-Arch: no
 Depends:
  libsdurw-models (>=${binary:Version}), 
  python3,
+ python3-numpy,
  ${shlibs:Depends}, 
  ${misc:Depends}
 Description: Python wrapping for RobWork-models
@@ -1659,6 +1667,7 @@ Multi-Arch: no
 Depends:
  libsdurw-graspplanning (>=${binary:Version}), 
  python3,
+ python3-numpy,
  ${shlibs:Depends}, 
  ${misc:Depends}
 Description: Python wrapping for RobWork-graspplanning
@@ -1672,6 +1681,7 @@ Depends:
  python3-sdurw (=${binary:Version}), 
  libsdurw-control (>=${binary:Version}), 
  python3, 
+ python3-numpy,
  ${misc:Depends}, 
  ${shlibs:Depends} 
 Conflicts:
@@ -1689,6 +1699,7 @@ Depends:
  python3-sdurw (=${binary:Version}), 
  libsdurw-opengl (>=${binary:Version}), 
  python3,
+ python3-numpy,
  ${shlibs:Depends},
  ${misc:Depends}
 Conflicts:
@@ -1706,6 +1717,7 @@ Depends:
  python3-sdurw (=${binary:Version}), 
  libsdurw-proximitystrategies (>=${binary:Version}), 
  python3, 
+ python3-numpy,
  ${shlibs:Depends},
  ${misc:Depends}
 Conflicts:
@@ -1724,6 +1736,7 @@ Depends:
  python3-sdurw-proximitystrategies (=${binary:Version}), 
  libsdurw-pathoptimization (>=${binary:Version}), 
  python3, 
+ python3-numpy,
  ${shlibs:Depends},
  ${misc:Depends}
 Conflicts:
@@ -1741,6 +1754,7 @@ Depends:
  python3-sdurw (=${binary:Version}), 
  libsdurw-pathplanners (>=${binary:Version}), 
  python3, 
+ python3-numpy,
  ${shlibs:Depends},
  ${misc:Depends}
 Conflicts:
@@ -1758,6 +1772,7 @@ Depends:
  python3-sdurw (=${binary:Version}), 
  libsdurw-task (>=${binary:Version}), 
  python3,
+ python3-numpy,
  ${shlibs:Depends},
  ${misc:Depends}
 Conflicts:
@@ -1775,6 +1790,7 @@ Depends:
  python3-sdurw (=${binary:Version}), 
  libsdurw-simulation (>=${binary:Version}), 
  python3,
+ python3-numpy,
  ${shlibs:Depends},
  ${misc:Depends}
 Conflicts:
@@ -1793,6 +1809,7 @@ Depends:
  python3-sdurw-task (=${binary:Version}), 
  libsdurw-assembly (>=${binary:Version}), 
  python3,
+ python3-numpy,
  ${shlibs:Depends}, 
  ${misc:Depends}
 Conflicts:
@@ -1811,6 +1828,7 @@ Depends:
  python3-sdurw-simulation (=${binary:Version}), 
  libsdurws (>=${binary:Version}), 
  python3,
+ python3-numpy,
  ${shlibs:Depends}, 
  ${misc:Depends}
 Conflicts:
@@ -1828,6 +1846,7 @@ Depends:
  python3-sdurws (=${binary:Version}), 
  libsdurwsim (>=${binary:Version}), 
  python3,
+ python3-numpy,
  ${shlibs:Depends}, 
  ${misc:Depends}
 Conflicts:
