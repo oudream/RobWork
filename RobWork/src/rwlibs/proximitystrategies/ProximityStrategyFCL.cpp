@@ -673,7 +673,7 @@ using namespace rw::math;
 class FCL_MultiDistanceResult
 {
   public:
-    FCL_MultiDistanceResult () : num_bv_tests (0), num_tri_tests (0) { clear (); };
+    FCL_MultiDistanceResult () : done (false), num_bv_tests (0), num_tri_tests (0) { clear (); };
 
     ~FCL_MultiDistanceResult (){};
 
@@ -685,6 +685,9 @@ class FCL_MultiDistanceResult
         id2s.clear ();
         distances.clear ();
     }
+    bool done;
+    int geoIdA;
+    int geoIdB;
     // stats
 
     int num_bv_tests;
@@ -924,128 +927,6 @@ int DistanceMultiTreshold (FCL_MultiDistanceResult& res, double threshold,
     return -1;
 }
 
-#define MULTITHREADED_DO_DISTANCEC
-#ifndef MULTITHREADED_DO_DISTANCEC
-MultiDistanceResult& ProximityStrategyFCL::doDistances (ProximityModel::Ptr a,
-                                                        const Transform3D<>& wTa,
-                                                        ProximityModel::Ptr b,
-                                                        const Transform3D<>& wTb, double threshold,
-                                                        ProximityStrategyData& data)
-{
-    RW_ASSERT (a != nullptr);
-    RW_ASSERT (b != nullptr);
-
-    rw::core::Ptr< FCLProximityModel > aModel = a.cast< FCLProximityModel > ();
-    rw::core::Ptr< FCLProximityModel > bModel = b.cast< FCLProximityModel > ();
-
-    FCL_MultiDistanceResult fclResult;
-
-    rw::proximity::DistanceMultiStrategy::Result& rwresult = data.getMultiDistanceData ();
-    rwresult.clear ();
-
-    rwresult.a = a;
-    rwresult.b = b;
-
-    fclResult.abs_err = data.abs_err;
-    fclResult.rel_err = data.rel_err;
-
-    rwresult.distance = std::numeric_limits< double >::max ();
-
-    int geoA = -1;
-    int geoB = -1;
-    for (auto& ma : aModel->models) {
-        geoA++;
-        geoB = -1;
-        for (auto& mb : bModel->models) {
-            geoB++;
-            fclResult.clear ();
-
-            int code = DistanceMultiTreshold (fclResult,
-                                              threshold,
-                                              wTa * ma.t3d,
-                                              ma.model,
-                                              wTb * mb.t3d,
-                                              mb.model,
-                                              data.rel_err,
-                                              data.abs_err,
-                                              _bv);
-
-            if (code != fcl::BVHReturnCode::BVH_OK) {
-                RW_THROW ("Somthing went wrong during multidistance calculations");
-            }
-            typedef std::map< int, int > IdMap;
-            IdMap idMap;
-
-            for (size_t i = 0; i < fclResult.id1s.size (); i++) {
-                double dist = fclResult.distances[i];
-                int id      = fclResult.id1s[i];
-                if (dist < rwresult.distance) {
-                    rwresult.distance = dist;
-                    rwresult.p1       = wTa * ma.t3d * fclResult.p1s[i];
-                    rwresult.p2       = wTa * ma.t3d * fclResult.p2s[i];
-                }
-                IdMap::iterator res = idMap.find (id);
-                if (res == idMap.end ()) {
-                    idMap[id] = (int) i;
-                    continue;
-                }
-                if (fclResult.distances[(*res).second] > dist) {
-                    (*res).second = (int) i;
-                }
-            }
-
-            IdMap idMap1;
-            for (size_t j = 0; j < fclResult.id2s.size (); j++) {
-                double dist         = fclResult.distances[j];
-                int id              = fclResult.id2s[j];
-                IdMap::iterator res = idMap1.find (id);
-                if (res == idMap1.end ()) {
-                    idMap1[id] = (int) j;
-                    continue;
-                }
-                if (fclResult.distances[(*res).second] > dist) {
-                    (*res).second = (int) j;
-                }
-            }
-
-            size_t prevSize = rwresult.p1s.size ();
-
-            size_t vsize = idMap.size () + idMap1.size ();
-
-            rwresult.p1s.resize (prevSize + vsize);
-            rwresult.p2s.resize (prevSize + vsize);
-            rwresult.distances.resize (prevSize + vsize);
-            rwresult.geoIdxA.resize (prevSize + vsize);
-            rwresult.geoIdxB.resize (prevSize + vsize);
-            rwresult.p1prims.resize (prevSize + vsize);
-            rwresult.p2prims.resize (prevSize + vsize);
-
-            size_t k = prevSize;
-            for (IdMap::iterator it = idMap.begin (); it != idMap.end (); ++it, k++) {
-                int idx               = (*it).second;
-                rwresult.distances[k] = fclResult.distances[idx];
-                rwresult.p1s[k]       = wTa * ma.t3d * fclResult.p1s[idx];
-                rwresult.p2s[k]       = wTa * ma.t3d * fclResult.p2s[idx];
-                rwresult.geoIdxA[k]   = geoA;
-                rwresult.geoIdxB[k]   = geoB;
-                rwresult.p1prims[k]   = fclResult.id1s[idx];
-                rwresult.p2prims[k]   = fclResult.id2s[idx];
-            }
-            for (IdMap::iterator it = idMap1.begin (); it != idMap1.end (); ++it, k++) {
-                int idx               = (*it).second;
-                rwresult.distances[k] = fclResult.distances[idx];
-                rwresult.p1s[k]       = wTa * ma.t3d * fclResult.p1s[idx];
-                rwresult.p2s[k]       = wTa * ma.t3d * fclResult.p2s[idx];
-                rwresult.geoIdxA[k]   = geoA;
-                rwresult.geoIdxB[k]   = geoB;
-                rwresult.p1prims[k]   = fclResult.id1s[idx];
-                rwresult.p2prims[k]   = fclResult.id2s[idx];
-            }
-        }
-    }
-    return rwresult;
-}
-#else
 #include <thread>
 
 void doDistancesThreaded (FCL_MultiDistanceResult* res, double threshold,
@@ -1055,21 +936,91 @@ void doDistancesThreaded (FCL_MultiDistanceResult* res, double threshold,
                           rw::core::Ptr< fclCollisionGeometry >* o2_cg, double rel_err,
                           double abs_err, ProximityStrategyFCL::BV bv, size_t* threads)
 {
-    int code = DistanceMultiTreshold (*res,
-                                      threshold,
-                                      T1,
-                                      *o1_cg,
-                                      T2,
-                                      *o2_cg,
-                                      rel_err,
-                                      abs_err,
-                                      bv);
+    int code =
+        DistanceMultiTreshold (*res, threshold, T1, *o1_cg, T2, *o2_cg, rel_err, abs_err, bv);
     if (code != fcl::BVHReturnCode::BVH_OK) {
         RW_THROW ("Somthing went wrong during multidistance calculations");
     }
+
+    for (size_t i = 0; i < res->p1s.size (); i++) {
+        res->p1s[i] = T1 * res->p1s[i];
+        res->p2s[i] = T1 * res->p2s[i];
+    }
+    res->done = true;
     (*threads)++;
 }
 
+void appendResult (FCL_MultiDistanceResult& incomming, DistanceMultiStrategy::Result& result)
+{
+    typedef std::map< int, int > IdMap;
+    IdMap idMap;
+
+    for (size_t j = 0; j < incomming.id1s.size (); j++) {
+        double dist = incomming.distances[j];
+        int id      = incomming.id1s[j];
+        if (dist < result.distance) {
+            result.distance = dist;
+            result.p1       = incomming.p1s[j];
+            result.p2       = incomming.p2s[j];
+        }
+        IdMap::iterator res = idMap.find (id);
+        if (res == idMap.end ()) {
+            idMap[id] = (int) j;
+            continue;
+        }
+        if (incomming.distances[(*res).second] > dist) {
+            (*res).second = (int) j;
+        }
+    }
+
+    IdMap idMap1;
+    for (size_t j = 0; j < incomming.id2s.size (); j++) {
+        double dist         = incomming.distances[j];
+        int id              = incomming.id2s[j];
+        IdMap::iterator res = idMap1.find (id);
+        if (res == idMap1.end ()) {
+            idMap1[id] = (int) j;
+            continue;
+        }
+        if (incomming.distances[(*res).second] > dist) {
+            (*res).second = (int) j;
+        }
+    }
+
+    size_t prevSize = result.p1s.size ();
+
+    size_t vsize = idMap.size () + idMap1.size ();
+
+    result.p1s.resize (prevSize + vsize);
+    result.p2s.resize (prevSize + vsize);
+    result.distances.resize (prevSize + vsize);
+    result.geoIdxA.resize (prevSize + vsize);
+    result.geoIdxB.resize (prevSize + vsize);
+    result.p1prims.resize (prevSize + vsize);
+    result.p2prims.resize (prevSize + vsize);
+
+    size_t k = prevSize;
+    for (IdMap::iterator it = idMap.begin (); it != idMap.end (); ++it, k++) {
+        int idx             = (*it).second;
+        result.distances[k] = incomming.distances[idx];
+        result.p1s[k]       = incomming.p1s[idx];
+        result.p2s[k]       = incomming.p2s[idx];
+        result.geoIdxA[k]   = incomming.geoIdA;
+        result.geoIdxB[k]   = incomming.geoIdB;
+        result.p1prims[k]   = incomming.id1s[idx];
+        result.p2prims[k]   = incomming.id2s[idx];
+    }
+    for (IdMap::iterator it = idMap1.begin (); it != idMap1.end (); ++it, k++) {
+        int idx             = (*it).second;
+        result.distances[k] = incomming.distances[idx];
+        result.p1s[k]       = incomming.p1s[idx];
+        result.p2s[k]       = incomming.p2s[idx];
+        result.geoIdxA[k]   = incomming.geoIdA;
+        result.geoIdxB[k]   = incomming.geoIdB;
+        result.p1prims[k]   = incomming.id1s[idx];
+        result.p2prims[k]   = incomming.id2s[idx];
+    }
+}
 /**
  * @brief a multiThreadded version of the multidistance function
  */
@@ -1085,129 +1036,67 @@ MultiDistanceResult& ProximityStrategyFCL::doDistances (ProximityModel::Ptr a,
     rw::core::Ptr< FCLProximityModel > aModel = a.cast< FCLProximityModel > ();
     rw::core::Ptr< FCLProximityModel > bModel = b.cast< FCLProximityModel > ();
 
-    FCL_MultiDistanceResult fclResult;
-
-    std::vector< FCL_MultiDistanceResult > results(aModel->models.size() * bModel->models.size());
+    std::vector< FCL_MultiDistanceResult > results (aModel->models.size () *
+                                                    bModel->models.size ());
+    std::vector< bool > resultDone (results.size ());
 
     rw::proximity::DistanceMultiStrategy::Result& rwresult = data.getMultiDistanceData ();
+
     rwresult.clear ();
-
-    rwresult.a = a;
-    rwresult.b = b;
-
-    fclResult.abs_err = data.abs_err;
-    fclResult.rel_err = data.rel_err;
-
+    rwresult.a        = a;
+    rwresult.b        = b;
     rwresult.distance = std::numeric_limits< double >::max ();
 
-    size_t max_threads     = std::thread::hardware_concurrency () - 1;
-    size_t current_threads = max_threads;
-
-    size_t i = 0;
-    for (auto& ma : aModel->models) {
-        for (auto& mb : bModel->models) {
-            while (current_threads <= 0) {
-            }
-            current_threads--;
-            fclResult.clear ();
-            results[i] =    fclResult ;
-
-            std::thread t1 (doDistancesThreaded, &results[i],
-                                                  threshold,
-                                                  wTa * ma.t3d,
-                                                  &(ma.model),
-                                                  wTb * mb.t3d,
-                                                  &(mb.model),
-                                                  data.rel_err,
-                                                  data.abs_err,
-                                                  _bv, &current_threads);
-            t1.detach ();
-            i++;
-        }
-    }
-    while (current_threads < max_threads) {
-    }
-
-    int geoA = -1;
-    int geoB = -1;
-    i        = 0;
+    size_t current_threads = this->_threads;
+    int geoA            = -1;
+    int geoB            = -1;
+    size_t i            = 0;
     for (auto& ma : aModel->models) {
         geoA++;
         geoB = -1;
         for (auto& mb : bModel->models) {
             geoB++;
-            fclResult = results[i++];
-            typedef std::map< int, int > IdMap;
-            IdMap idMap;
 
-            for (size_t j = 0; j < fclResult.id1s.size (); j++) {
-                double dist = fclResult.distances[j];
-                int id      = fclResult.id1s[j];
-                if (dist < rwresult.distance) {
-                    rwresult.distance = dist;
-                    rwresult.p1       = wTa * ma.t3d * fclResult.p1s[j];
-                    rwresult.p2       = wTa * ma.t3d * fclResult.p2s[j];
-                }
-                IdMap::iterator res = idMap.find (id);
-                if (res == idMap.end ()) {
-                    idMap[id] = (int) j;
-                    continue;
-                }
-                if (fclResult.distances[(*res).second] > dist) {
-                    (*res).second = (int) j;
-                }
+            do {
+                resultDone[i]      = false;
+                results[i].abs_err = data.abs_err;
+                results[i].rel_err = data.rel_err;
+                results[i].geoIdA  = geoA;
+                results[i].geoIdB  = geoB;
+            } while (current_threads <= 0);
+            current_threads--;
+
+            std::thread t1 (doDistancesThreaded,
+                            &results[i],
+                            threshold,
+                            wTa * ma.t3d,
+                            &(ma.model),
+                            wTb * mb.t3d,
+                            &(mb.model),
+                            data.rel_err,
+                            data.abs_err,
+                            _bv,
+                            &current_threads);
+            t1.detach ();
+            i++;
+        }
+    }
+    while (current_threads < this->_threads) {
+        // std::cout << "Threads Cur: " << current_threads << std::endl;
+        for (size_t j = 0; j < results.size (); j++) {
+            if (results[j].done && !resultDone[j]) {
+                resultDone[j] = true;
+                appendResult (results[j], rwresult);
             }
+        }
+    }
 
-            IdMap idMap1;
-            for (size_t j = 0; j < fclResult.id2s.size (); j++) {
-                double dist         = fclResult.distances[j];
-                int id              = fclResult.id2s[j];
-                IdMap::iterator res = idMap1.find (id);
-                if (res == idMap1.end ()) {
-                    idMap1[id] = (int) j;
-                    continue;
-                }
-                if (fclResult.distances[(*res).second] > dist) {
-                    (*res).second = (int) j;
-                }
-            }
-
-            size_t prevSize = rwresult.p1s.size ();
-
-            size_t vsize = idMap.size () + idMap1.size ();
-
-            rwresult.p1s.resize (prevSize + vsize);
-            rwresult.p2s.resize (prevSize + vsize);
-            rwresult.distances.resize (prevSize + vsize);
-            rwresult.geoIdxA.resize (prevSize + vsize);
-            rwresult.geoIdxB.resize (prevSize + vsize);
-            rwresult.p1prims.resize (prevSize + vsize);
-            rwresult.p2prims.resize (prevSize + vsize);
-
-            size_t k = prevSize;
-            for (IdMap::iterator it = idMap.begin (); it != idMap.end (); ++it, k++) {
-                int idx               = (*it).second;
-                rwresult.distances[k] = fclResult.distances[idx];
-                rwresult.p1s[k]       = wTa * ma.t3d * fclResult.p1s[idx];
-                rwresult.p2s[k]       = wTa * ma.t3d * fclResult.p2s[idx];
-                rwresult.geoIdxA[k]   = geoA;
-                rwresult.geoIdxB[k]   = geoB;
-                rwresult.p1prims[k]   = fclResult.id1s[idx];
-                rwresult.p2prims[k]   = fclResult.id2s[idx];
-            }
-            for (IdMap::iterator it = idMap1.begin (); it != idMap1.end (); ++it, k++) {
-                int idx               = (*it).second;
-                rwresult.distances[k] = fclResult.distances[idx];
-                rwresult.p1s[k]       = wTa * ma.t3d * fclResult.p1s[idx];
-                rwresult.p2s[k]       = wTa * ma.t3d * fclResult.p2s[idx];
-                rwresult.geoIdxA[k]   = geoA;
-                rwresult.geoIdxB[k]   = geoB;
-                rwresult.p1prims[k]   = fclResult.id1s[idx];
-                rwresult.p2prims[k]   = fclResult.id2s[idx];
-            }
+    // Make sure that all results have been appended
+    for (size_t j = 0; j < results.size (); j++) {
+        if (results[j].done && !resultDone[j]) {
+            resultDone[j] = true;
+            appendResult (results[j], rwresult);
         }
     }
     return rwresult;
 }
-
-#endif
