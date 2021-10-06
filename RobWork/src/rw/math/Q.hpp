@@ -397,7 +397,7 @@ namespace rw { namespace math {
             return v;
         }
 #if defined(SWIG)
-        TOSTRING ();
+        TOSTRING (rw::math::Q);
 #endif
 
       private:

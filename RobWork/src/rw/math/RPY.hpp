@@ -155,6 +155,9 @@ namespace rw { namespace math {
             return os << "RPY {" << rpy (0) << ", " << rpy (1) << ", " << rpy (2) << "}";
             // return os << rpy._rpy;
         }
+
+#else
+    TOSTRING (rw::math::RPY<T>);
 #endif 
       private:
         Vector3D< T > _rpy;

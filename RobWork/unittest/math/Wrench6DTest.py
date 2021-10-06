@@ -87,7 +87,7 @@ class Wrench6DTest(unittest.TestCase):
         self.assertEqual(wrench.force(), vec1)
         self.assertEqual(wrench.torque(), vec2)
 
-        eigen = wrench.e()
+        eigen = wrench.asNumpy()
 
         for i in range (0,6):
             self.assertEqual(eigen[i,0] , wrench[i]) 

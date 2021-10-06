@@ -88,9 +88,11 @@ void java_ThreadSimulatorStepCallback(ThreadSimulator* sim, rw::kinematics::Stat
 %include <shared_ptr.i>
 %include <exception.i>
 
-#if defined(SWIGPYTHON) && RW_USE_NUMPY
+%include <rwlibs/swig/ext_i/os.i>
+
+#if defined(SWIGPYTHON) && defined(RW_USE_NUMPY)
 %include <rwlibs/swig/ext_i/eigen.i>
-#endif 
+#endif
 
 %import <rwlibs/swig/sdurw_core.i>
 %import <rwlibs/swig/sdurw_common.i>

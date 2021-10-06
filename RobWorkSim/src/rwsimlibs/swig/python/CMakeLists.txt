@@ -31,7 +31,7 @@ if(build)
     endif()
 
     if(RW_USE_NUMPY)
-    include_directories(${NUMPY_INCLUDE_DIR})
+        include_directories(${NUMPY_INCLUDE_DIR})
     endif()
 
     add_library(${SUBSYS_NAME} INTERFACE)

@@ -97,7 +97,7 @@ class VelocetyScrew6DTest(unittest.TestCase):
         linear = sdurw_math.Vector3Dd(0.1, 0.2, 0.3)
         angular = sdurw_math.EAAd(0.4, 0.5, 0.6)
         screw = sdurw_math.VelocityScrew6Dd(linear, angular)
-        eigen = screw.e()
+        eigen = screw.asNumpy()
 
         for i in range (0,6):
             self.assertAlmostEqual(eigen[i,0], screw[i],delta=1e-4) # TODO check after eigen 2 numpy works

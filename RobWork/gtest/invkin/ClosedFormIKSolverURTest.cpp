@@ -46,7 +46,7 @@ TEST(ClosedFormIKSolverURTest, ClosedFormIKSolverURTest ){
         device->setQ(qRef,state);
         const Transform3D<> T = device->baseTend(state);
         const std::vector<Q> solutions = solver.solve(T, state);
-        EXPECT_GT(solutions.size() , 0);
+        EXPECT_GT(solutions.size() , 0ul);
         bool found = false;
         for(const Q& sol : solutions) {
             if ((sol-qRef).normInf() <= EPS) {
@@ -92,6 +92,6 @@ TEST(ClosedFormIKSolverURTest, ClosedFormIKSolverURTest ){
         state = wc->getDefaultState();
         T = Transform3D<>(Vector3D<>(0.0853719, -0.0565455, 0.725042), RPY<>(-0.785398, 3.16998e-17, 4.71377e-17));
         solutions = solver.solve(T, state);
-        EXPECT_EQ(solutions.size() , 0);
+        EXPECT_EQ(solutions.size() , 0ul);
     }
 }

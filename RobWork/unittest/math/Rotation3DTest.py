@@ -140,10 +140,10 @@ class Rotation3DTest(unittest.TestCase):
         eaa = sdurw_math.EAAd(sdurw_math.Vector3Dd(1.0, 0.0, 0.0),  math.pi / 2.0)
         r3 = eaa.toRotation3D()
 
-        self.assertTrue(sdurw_math.LinearAlgebra.isSO(r3.e()))
+        self.assertTrue(sdurw_math.LinearAlgebra.isSO(r3.asNumpy()))
 
-        self.assertEqual(r3.e().rows() , r3.e().cols())
-        self.assertEqual(r3.e().rows() , 3)
+        self.assertEqual(r3.asNumpy().shape[0] , r3.asNumpy().shape[1])
+        self.assertEqual(r3.asNumpy().shape[0] , 3)
 
         self.assertEqual(r1 , r1)
         self.assertNotEqual(r1 , r3)
