@@ -19,8 +19,6 @@
 #define RWLIBS_SWIG_SCRIPTTYPES_HPP_
 
 #include <RobWorkConfig.hpp>
-#include <rw/geometry.hpp>
-#include <rw/graphics.hpp>
 #include <rw/invkin.hpp>
 #include <rw/pathplanning.hpp>
 //#include <rw/plugin.hpp>
@@ -81,36 +79,6 @@ namespace rwlibs {
  * The wrapped classes are defined as typedefs of other classes in RobWork.
  */
 namespace swig {
-
-    /**
-     * @name graphics
-     * Wrapped classes in graphics.
-     */
-    ///@{
-    //! @copydoc rw::graphics::Model3D
-    typedef rw::graphics::Model3D Model3D;
-    //! @copydoc rw::graphics::Model3D::Material
-    typedef rw::graphics::Model3D::Material Model3DMaterial;
-    //! @copydoc rw::graphics::Render
-    typedef rw::graphics::Render Render;
-    //! @copydoc rw::graphics::WorkCellScene
-    typedef rw::graphics::WorkCellScene WorkCellScene;
-    //! @copydoc rw::graphics::SceneViewer
-    typedef rw::graphics::SceneViewer SceneViewer;
-    //! @copydoc rw::graphics::SceneNode
-    typedef rw::graphics::SceneNode SceneNode;
-    //! @copydoc rw::graphics::DrawableNode
-    typedef rw::graphics::DrawableNode DrawableNode;
-    //! @copydoc rw::graphics::DrawableNode::RenderInfo
-    typedef rw::graphics::DrawableNode::RenderInfo RenderInfo;
-    //! @copydoc rw::graphics::SceneDescriptor
-    typedef rw::graphics::SceneDescriptor SceneDescriptor;
-    //! @copydoc rw::graphics::SceneCamera
-    typedef rw::graphics::SceneCamera SceneCamera;
-    ///@}
-
-    // graspplanning
-
     /**
      * @name invkin
      * Wrapped classes in invkin.

@@ -19,16 +19,18 @@
 #define RW_GRAPHICS_MODEL3D_HPP_
 
 //! @file Model3D.hpp
-
+#if !defined(SWIG)
 #include "TextureData.hpp"
 
 #include <rw/geometry/Model3D.hpp>
 
 #include <vector>
 
+#endif
+
 namespace rw { namespace graphics {
     using rw::geometry::Model3D;
-    using Model3DTextureType =  TextureData ;
+    using Model3DTextureType = TextureData;
 }}    // namespace rw::graphics
 
 #endif

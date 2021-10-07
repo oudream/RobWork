@@ -379,7 +379,7 @@ public:
      * @param drawer [in] the scene viewer
      * @return true if initialization succeeded, false otherwise (depends on the capabilities of the SceneViewer).
      */
-    bool init(rw::core::Ptr<SceneViewer> drawer);
+    bool init(rw::core::Ptr<rw::graphics::SceneViewer> drawer);
 
     //! @copydoc FrameGrabber::grab
     void grab(rw::kinematics::Frame* frame, const rw::kinematics::State& state);
@@ -432,7 +432,7 @@ public:
      * @param drawer [in] the scene viewer
      * @return true if initialization succeeded, false otherwise (depends on the capabilities of the SceneViewer).
      */
-    bool init(rw::core::Ptr<SceneViewer> drawer);
+    bool init(rw::core::Ptr<rw::graphics::SceneViewer> drawer);
 
     /**
      * @brief set the maximum depth that is percieved by this frame grabber.

@@ -18,11 +18,13 @@
 #ifndef RW_GRAPHICS_WORKCELLSCENE_HPP_
 #define RW_GRAPHICS_WORKCELLSCENE_HPP_
 
+#if !defined(SWIG)
 #include "SceneGraph.hpp"
 
 #include <rw/kinematics/FKTable.hpp>
 
 #include <map>
+#endif
 
 namespace rw { namespace geometry {
     class Model3D;
@@ -43,7 +45,7 @@ namespace rw { namespace sensor {
 }}    // namespace rw::sensor
 
 namespace rw { namespace graphics {
-
+    class Render;
     /**
      * @brief  class for wrapping the SceneGraph interface such that it extends the scene-graph
      * functionality to work on frames and workcells.
@@ -213,7 +215,7 @@ namespace rw { namespace graphics {
          * @param dmask [in] the drawable mask
          * @return the drawable node geometry
          */
-        DrawableGeometryNode::Ptr addLines (const std::string& name,
+        rw::core::Ptr<rw::graphics::DrawableGeometryNode> addLines (const std::string& name,
                                             const std::vector< rw::geometry::Line >& lines,
                                             rw::kinematics::Frame* frame,
                                             int dmask = DrawableNode::Physical);
@@ -226,7 +228,7 @@ namespace rw { namespace graphics {
          * @param dmask [in] the drawable mask
          * @return the drawable node geometry
          */
-        DrawableGeometryNode::Ptr addGeometry (const std::string& name,
+        rw::core::Ptr<rw::graphics::DrawableGeometryNode> addGeometry (const std::string& name,
                                                rw::core::Ptr< rw::geometry::Geometry > geom,
                                                rw::kinematics::Frame* frame,
                                                int dmask = DrawableNode::Physical);
@@ -251,7 +253,8 @@ namespace rw { namespace graphics {
          * @param dmask [in] the drawable mask
          * @return the drawable node geometry
          */
-        DrawableNode::Ptr addModel3D (const std::string& name, rw::core::Ptr<rw::geometry::Model3D > model,
+        DrawableNode::Ptr addModel3D (const std::string& name,
+                                      rw::core::Ptr< rw::geometry::Model3D > model,
                                       rw::kinematics::Frame* frame,
                                       int dmask = DrawableNode::Physical);
 
@@ -300,7 +303,7 @@ namespace rw { namespace graphics {
          * @param dmask [in] the drawable mask
          * @return the drawable node
          */
-        DrawableNode::Ptr addRender (const std::string& name, rw::core::Ptr< class Render > render,
+        DrawableNode::Ptr addRender (const std::string& name, rw::core::Ptr< rw::graphics::Render > render,
                                      rw::kinematics::Frame* frame,
                                      int dmask = DrawableNode::Physical);
 
@@ -457,7 +460,7 @@ namespace rw { namespace graphics {
             _frameDrawableMap;
 
         std::map< rw::core::Ptr< rw::models::DeformableObject >,
-                  std::vector< rw::core::Ptr<rw::geometry::Model3D > > >
+                  std::vector< rw::core::Ptr< rw::geometry::Model3D > > >
             _deformableObjectsMap;
 
         //! world node

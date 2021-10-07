@@ -2,12 +2,14 @@
 #ifndef RW_GRAPHICS_SCENEVIEWER_HPP_
 #define RW_GRAPHICS_SCENEVIEWER_HPP_
 
+#if !defined(SWIG)
 #include "SceneCamera.hpp"
 #include "SceneGraph.hpp"
 
 #include <rw/core/Event.hpp>
 #include <rw/core/PropertyMap.hpp>
 #include <rw/math/Vector3D.hpp>
+#endif 
 
 namespace rw { namespace graphics {
 

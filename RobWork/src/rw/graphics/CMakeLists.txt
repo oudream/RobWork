@@ -2,6 +2,7 @@ set(SUBSYS_NAME sdurw_graphics)
 set(SUBSYS_DESC "The graphics RobWork library!")
 set(SUBSYS_DEPS
     sdurw_core
+    sdurw_common
     sdurw_math
     sdurw_kinematics
     sdurw_geometry
@@ -26,6 +27,7 @@ if(build)
         SceneViewer.cpp
         Render.cpp
         SceneDescriptor.cpp
+        TextureData.cpp
     )
 
     set(FILES_HPP
@@ -40,6 +42,7 @@ if(build)
         SceneViewer.hpp
         Render.hpp
         DrawableNodeClone.hpp
+        TextureData.hpp
     )
 
     rw_add_library(${SUBSYS_NAME} ${FILES_CPP} ${FILES_HPP})

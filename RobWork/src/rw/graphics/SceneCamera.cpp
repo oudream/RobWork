@@ -26,7 +26,7 @@ SceneCamera::SceneCamera (const std::string& name, SceneNode::Ptr subGraph) :
     SceneNode ("Camera", SceneNode::CameraType), _x (0), _y (0), _w (640), _h (480),
     _drawMask (DrawableNode::ALL), _clearMask (1), _depthTestEnabled (true),
     _lightningEnabled (true), _clearBufferEnabled (false), _enabled (true), _subGraph (subGraph),
-    _name (name), _ratioControl (Auto)
+    _cameraName (name), _ratioControl (Auto)
 {
     _aspectRatio = _w / static_cast< double > (_h);
     _pmatrix.setPerspective (45, _w / static_cast< double > (_h), 0.1, 30);
@@ -110,4 +110,9 @@ void SceneCamera::setProjectionMatrix (const rw::math::ProjectionMatrix& matrix)
     else {
         _aspectRatio = 1;
     }
+}
+
+std::string SceneCamera::getName ()
+{
+    return _cameraName;
 }

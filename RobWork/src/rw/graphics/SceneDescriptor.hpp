@@ -18,6 +18,7 @@
 #ifndef RW_GRAPHICS_SCENEDESCRIPTOR1_HPP_
 #define RW_GRAPHICS_SCENEDESCRIPTOR1_HPP_
 
+#if !defined(SWIG)
 #include "DrawableNode.hpp"
 #include "Model3D.hpp"
 #include "Render.hpp"
@@ -28,6 +29,7 @@
 
 #include <map>
 #include <vector>
+#endif
 
 namespace rw { namespace kinematics {
     class Frame;
@@ -94,7 +96,7 @@ namespace rw { namespace graphics {
             //! @brief Drawable node.
             DrawableNode::Ptr dnode;
             //! @brief Render.
-            Render::Ptr render;
+            rw::core::Ptr<rw::graphics::Render> render;
         };
 
         /**

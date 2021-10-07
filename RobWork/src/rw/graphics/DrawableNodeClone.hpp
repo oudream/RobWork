@@ -21,11 +21,13 @@
 /**
  * @file DrawableNodeClone.hpp
  */
-
+#if !defined(SWIG)
 #include "DrawableNode.hpp"
 
 #include <rw/core/Ptr.hpp>
 #include <rw/math/Transform3D.hpp>
+#endif 
+
 
 namespace rw { namespace graphics {
 

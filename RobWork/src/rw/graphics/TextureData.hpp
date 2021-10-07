@@ -18,9 +18,10 @@
 #ifndef RW_GRAPHICS_TEXTUREDATA_HPP_
 #define RW_GRAPHICS_TEXTUREDATA_HPP_
 
+#if !defined(SWIG)
 #include <rw/math/Vector3D.hpp>
 #include <rw/sensor/Image.hpp>
-
+#endif
 namespace rw { namespace graphics {
 
     /**
@@ -29,9 +30,10 @@ namespace rw { namespace graphics {
     class TextureData
     {
       public:
+#if !defined(SWIG)
         //! @brief Smart pointer type for TextureData.
         rw::core::Ptr< TextureData > Ptr;
-
+#endif
         //! constructor
         TextureData () : _name (""), _imageData (NULL){};
 

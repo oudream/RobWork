@@ -22,10 +22,13 @@
  * @file DrawableNode.hpp
  */
 
+#if !defined(SWIG)
 #include "SceneNode.hpp"
 
 #include <rw/core/Ptr.hpp>
 #include <rw/math/Transform3D.hpp>
+
+#endif
 
 namespace rw { namespace kinematics {
     class State;
@@ -81,9 +84,12 @@ namespace rw { namespace graphics {
          * can be specified.
          */
         enum DrawType {
-            SOLID,     //! Render in solid
-            WIRE,      //! Render in wireframe
-            OUTLINE    //! Render both solid and wireframe
+            //! Render in solid
+            SOLID,  
+            //! Render in wireframe   
+            WIRE, 
+            //! Render both solid and wireframe     
+            OUTLINE    
         };
 
         //! @brief Information for rendering.
