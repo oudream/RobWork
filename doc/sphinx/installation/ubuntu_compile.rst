@@ -74,7 +74,8 @@ RobWork has several dependencies, which can be installed with:
                          libboost-serialization-dev \
                          libboost-thread-dev \
                          libeigen3-dev \
-                         libqhull-dev
+                         libqhull-dev \
+                         libomp-dev
 
 
 RobWork Optional Dependencies
