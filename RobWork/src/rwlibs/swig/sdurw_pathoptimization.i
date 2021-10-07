@@ -4,6 +4,8 @@
 #include <rwlibs/swig/ScriptTypes.hpp>
 #include <rw/core/Ptr.hpp>
 
+#include <rw/geometry/IndexedTriMesh.hpp>
+
 using namespace rwlibs::swig;
 using rw::math::Metric;
 using rw::trajectory::Path;

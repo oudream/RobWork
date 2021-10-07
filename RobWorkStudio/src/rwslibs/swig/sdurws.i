@@ -167,10 +167,10 @@ public:
     void showPivotPoint(bool visible);  
     //void setDrawType(rw::graphics::DrawableNode::DrawType drawType); 
     rw::kinematics::Frame* pickFrame(int x, int y);
-    rw::core::Ptr<DrawableNode> pick(int x, int y);
+    rw::core::Ptr<rw::graphics::DrawableNode> pick(int x, int y);
  
-    rw::core::Ptr<WorkCellScene> getWorkCellScene(); 
-    rw::core::Ptr<SceneViewer> getSceneViewer(); 
+    rw::core::Ptr<rw::graphics::WorkCellScene> getWorkCellScene(); 
+    rw::core::Ptr<rw::graphics::SceneViewer> getSceneViewer(); 
     void saveBufferToFile(const QString& filename);
 
 };
@@ -190,7 +190,7 @@ public:
 
     rw::core::Ptr<rw::proximity::CollisionDetector> getCollisionDetector();
 
-    rw::core::Ptr<WorkCellScene> getWorkCellScene();
+    rw::core::Ptr<rw::graphics::WorkCellScene> getWorkCellScene();
 
     rw::core::Ptr<RWStudioView3D> getView();
 

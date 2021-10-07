@@ -19,6 +19,7 @@
 #define RWS_SWIG_REMOTETYPES_HPP_
 
 #include <rw/core/Ptr.hpp>
+#include <rw/geometry/Geometry.hpp>
 #include <rw/kinematics/Frame.hpp>
 #include <rw/kinematics/MovableFrame.hpp>
 #include <rw/kinematics/FixedFrame.hpp>

@@ -18,11 +18,13 @@
 #ifndef RW_GRAPHICS_SCENENODE_HPP_
 #define RW_GRAPHICS_SCENENODE_HPP_
 
+#if !defined(SWIG)
 #include <rw/core/Ptr.hpp>
 
 #include <algorithm>
 #include <list>
 #include <string>
+#endif 
 
 namespace rw { namespace graphics {
 
