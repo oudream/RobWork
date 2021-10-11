@@ -185,10 +185,6 @@ TEST_P(DistanceMultiStrategyTest, Plane_Cuboid) {
 	EXPECT_EQ(modelA,res.a);
 	EXPECT_EQ(modelB,res.b);
 
-	std::cout << "P1S: " << std::endl;
-	for (size_t i = 0; i < res.p1s.size(); i++){
-		std::cout << " - " << res.p1s[i] << " vs " << res.p2s[i] << " width d: " << res.distances[i] << std::endl;
-	}
 	// todo: change the following from 12 to 11 when redundant pairs can be avoided in PQP
 	ASSERT_EQ(12u,res.p1s.size());
 	ASSERT_EQ(12u,res.p2s.size());

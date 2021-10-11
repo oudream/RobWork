@@ -21,6 +21,7 @@
 #include <rw/models/RigidObject.hpp>
 #include <rw/proximity/rwstrategy/ProximityStrategyRW.hpp>
 
+#include <thread>
 #include <vector>
 
 using namespace rw::proximity;
@@ -30,7 +31,9 @@ using namespace rw::core;
 using namespace rw::models;
 
 ProximityStrategy::ProximityStrategy () : _frameToModel (NULL, 100)
-{}
+{
+    useThreads (-1);
+}
 
 ProximityStrategy::~ProximityStrategy ()
 {}
@@ -171,4 +174,14 @@ ProximityStrategy::getGeometrys (rw::proximity::ProximityModel* model)
 {
     RW_THROW ("This Is a Virtual Function and needs to be replaced when Inherited");
     return std::vector< rw::core::Ptr< rw::geometry::Geometry > > ();
+}
+
+void ProximityStrategy::useThreads (int threads)
+{
+    if (threads <= 0) {
+        this->_threads = std::thread::hardware_concurrency () - 1;
+    }
+    else {
+        this->_threads = threads;
+    }
 }

@@ -106,8 +106,7 @@ class MyQApplication : public QApplication
 
 RobWorkStudioApp::RobWorkStudioApp (const std::string& args) :
     _rwstudio (NULL), _args (args), _thread (NULL), _isRunning (false)
-{
-}
+{}
 
 RobWorkStudioApp::~RobWorkStudioApp ()
 {
@@ -228,7 +227,7 @@ int RobWorkStudioApp::run ()
 
     ProgramOptions poptions ("RobWorkStudio", RW_VERSION);
 
-    poptions.addStringOption ("ini-file", "RobWorkStudio.ini", "RobWorkStudio ini-file");
+    poptions.addStringOption ("ini-file", std::string(getenv("HOME")) +"/.RobWorkStudio.ini", "RobWorkStudio ini-file");
     poptions.addStringOption ("input-file", "", "Project/Workcell/Device input file");
     poptions.addStringOption (
         "rwsplugin", "", "load RobWorkStudio plugin, not to be confused with '--rwplugin'");
@@ -244,6 +243,19 @@ int RobWorkStudioApp::run ()
 
     bool showSplash     = false;    //! map.has("nosplash");
     std::string inifile = map.get< std::string > ("ini-file", "");
+    RobWork rw;
+    if (!boost::filesystem::exists (inifile)) {
+        rw.getLog().infoLog() << "inifile not found at: " << inifile << std::endl;
+        if (boost::filesystem::exists (std::string(getenv("HOME")) +"/RobWorkStudio.ini")) {
+            inifile = std::string(getenv("HOME")) + "/RobWorkStudio.ini";
+        }
+        else if (boost::filesystem::exists ("RobWorkStudio.ini")) {
+            inifile = "RobWorkStudio.ini";
+        }
+        if (boost::filesystem::exists (inifile)) {
+            rw.getLog().infoLog() << "using inifile: " << inifile << std::endl;
+        }
+    }
 
     std::string inputfile = map.get< std::string > ("input-file", "");
 

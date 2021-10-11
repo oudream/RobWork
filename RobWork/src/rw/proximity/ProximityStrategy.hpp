@@ -196,6 +196,13 @@ namespace rw { namespace proximity {
         virtual void clear () = 0;
 
         /**
+         * @brief setNumber of threads the strategy may use
+         * @param threads [in] number of threads. if Threads <= 0 then maximum threads available
+         * @note this does not enforce the use of threads in the algorithms but mearly allows for the use.
+         */
+        void useThreads(int threads);
+
+        /**
          * @addtogroup extensionpoints
          * @extensionpoint{rw::proximity::ProximityStrategy::Factory,rw::proximity::ProximityStrategy,rw.proximity.ProximityStrategy}
          */
@@ -251,6 +258,9 @@ namespace rw { namespace proximity {
          * @brief Creates object
          */
         ProximityStrategy ();
+
+        //! @brief the number of threads the strategy may use
+        size_t _threads;
     };
 
     /*@}*/
