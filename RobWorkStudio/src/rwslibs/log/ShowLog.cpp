@@ -25,7 +25,7 @@
 #include <QApplication>
 #include <QEvent>
 #include <QTextEdit>
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 #include <iomanip>
 #include <sstream>
 

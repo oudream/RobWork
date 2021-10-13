@@ -93,7 +93,7 @@ SimulatorLogEntryWidget::Factory::getWidgetDispatchers (
 
     const SimulatorLogEntryWidget::Factory factory;
     const std::vector< Extension::Ptr > exts = factory.getExtensions ();
-    for (const Extension::Ptr ext : exts) {
+    for (const Extension::Ptr& ext : exts) {
         const SimulatorLogEntryWidget::Dispatcher::Ptr dispatcher =
             ext->getObject ().cast< const SimulatorLogEntryWidget::Dispatcher > ();
         if (!(dispatcher == NULL)) {
@@ -111,7 +111,7 @@ SimulatorLogEntryWidget::Factory::makeWidgets (const rw::core::Ptr< const Simula
     std::list< SimulatorLogEntryWidget* > res;
     const std::list< SimulatorLogEntryWidget::Dispatcher::Ptr > dispatchers =
         getWidgetDispatchers (entry);
-    for (const SimulatorLogEntryWidget::Dispatcher::Ptr dispatcher : dispatchers) {
+    for (const SimulatorLogEntryWidget::Dispatcher::Ptr& dispatcher : dispatchers) {
         res.push_back (dispatcher->makeWidget (entry, parent));
     }
     return res;

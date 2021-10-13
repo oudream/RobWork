@@ -180,8 +180,8 @@ void DistanceMultiResultWidget::framePairsChanged (const QItemSelection& newSele
             results[static_cast< std::size_t > (index.row ())];
         // const Vector3D<> p1 = result.result.p1;
         // const Vector3D<> p2 = result.result.p2;
-        for (const Object::Ptr object : _dwc->getWorkcell ()->getObjects ()) {
-            for (const Geometry::Ptr geo : object->getGeometry ()) {
+        for (const Object::Ptr& object : _dwc->getWorkcell ()->getObjects ()) {
+            for (const Geometry::Ptr& geo : object->getGeometry ()) {
                 if (geo->getFrame ()->getName () == result.frameA) {
                     for (std::size_t i = 0; i < result.result.geoIdxA.size (); i++) {
                         const int geoIdxA       = result.result.geoIdxA[i];

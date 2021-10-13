@@ -173,7 +173,7 @@ namespace rwsim { namespace control {
          */
         struct CompiledTarget
         {
-            CompiledTarget () : ftcontrol (false), velcontrol (false), fttime (0.01) {}
+            CompiledTarget () : ftcontrol (false), velcontrol (false), fttime (0.01), toId(0) {}
             rw::trajectory::QTrajectory::Ptr qtraj;
             rw::trajectory::Transform3DTrajectory::Ptr t3dtraj;
             rw::math::Wrench6D<> _wrenchTarget;

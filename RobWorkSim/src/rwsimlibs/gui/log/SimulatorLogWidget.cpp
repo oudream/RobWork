@@ -133,7 +133,7 @@ void SimulatorLogWidget::setSelectedTime (double time)
 {
     if (isVisible ()) {
         int row = 0;
-        for (SimulatorLog::Ptr const entry : _log->getChildren ()) {
+        for (SimulatorLog::Ptr const& entry : _log->getChildren ()) {
             const LogStep::Ptr step = entry.cast< LogStep > ();
             if (step != NULL) {
                 if (time >= step->timeBegin () && time < step->timeEnd ())
@@ -182,7 +182,7 @@ void SimulatorLogWidget::updateOpenGLView ()
     while (groups.size () > 0) {
         const GroupNode::Ptr group = groups.front ();
         groups.pop ();
-        for (const SceneNode::Ptr node : group->_childNodes) {
+        for (const SceneNode::Ptr& node : group->_childNodes) {
             const GroupNode::Ptr groupNode = node.cast< GroupNode > ();
             if (!groupNode.isNull ()) {
                 groups.push (groupNode);
@@ -197,8 +197,8 @@ void SimulatorLogWidget::updateOpenGLView ()
         }
     }
     std::list< RenderGeometry::Ptr > renders;
-    for (const DrawableGeometry::Ptr node : nodes) {
-        for (const Render::Ptr render : node->getRenders ()) {
+    for (const DrawableGeometry::Ptr& node : nodes) {
+        for (const Render::Ptr& render : node->getRenders ()) {
             if (const RenderGeometry::Ptr rg = render.cast< RenderGeometry > ())
                 renders.push_back (rg);
         }
@@ -245,7 +245,7 @@ void SimulatorLogWidget::selectionChanged (const QItemSelection& selected,
         // Remove color from dependent entries
         if (const SimulatorLogEntry* const leaf =
                 dynamic_cast< const SimulatorLogEntry* > (entry)) {
-            for (const SimulatorLogEntry::Ptr dep : leaf->getLinkedEntries ()) {
+            for (const SimulatorLogEntry::Ptr& dep : leaf->getLinkedEntries ()) {
                 QModelIndex search = index;
                 bool found         = false;
                 while (search.isValid () && !found) {
@@ -353,7 +353,7 @@ void SimulatorLogWidget::selectionChanged (const QItemSelection& selected,
             static_cast< const SimulatorLog* > (index.internalPointer ());
         if (const SimulatorLogEntry* const leaf =
                 dynamic_cast< const SimulatorLogEntry* > (entry)) {
-            for (const SimulatorLogEntry::Ptr dep : leaf->getLinkedEntries ()) {
+            for (const SimulatorLogEntry::Ptr& dep : leaf->getLinkedEntries ()) {
                 QModelIndex search = index;
                 bool found         = false;
                 while (search.isValid () && !found) {

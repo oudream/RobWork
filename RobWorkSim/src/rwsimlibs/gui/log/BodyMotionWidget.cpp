@@ -277,7 +277,7 @@ void BodyMotionWidget::motionBodiesChanged (const QItemSelection& selection,
             const Body::Ptr body                      = _dwc->findBody (name);
             const GroupNode::Ptr bodyGroup            = ownedPtr (new GroupNode (body->getName ()));
             const std::vector< Model3D::Ptr >& models = body->getObject ()->getModels ();
-            for (const Model3D::Ptr model : models) {
+            for (const Model3D::Ptr& model : models) {
                 const DrawableNode::Ptr node =
                     _graph->makeDrawable (model->getName (), model, DrawableNode::Physical);
                 const Transform3D<>& t3d = _positions->getPosition (name);
@@ -315,7 +315,7 @@ void BodyMotionWidget::motionBodiesChanged (const QItemSelection& selection,
             const std::string name         = index.data ().toString ().toStdString ();
             const Body::Ptr body           = _dwc->findBody (name);
             const GroupNode::Ptr bodyGroup = ownedPtr (new GroupNode (body->getName ()));
-            for (const Geometry::Ptr geo : body->getGeometry ()) {
+            for (std::size_t geoId = 0; geoId < body->getGeometry ().size (); geoId++) {
                 const RenderVelocity::Ptr render = ownedPtr (new RenderVelocity ());
                 render->setVelocity (_velocities->getVelocity (name));
                 render->setScaleLinear (static_cast< float > (scaleLin));
@@ -352,7 +352,7 @@ void BodyMotionWidget::scalingChanged (double d)
     const double scaleAng =
         _ui->_motionScalingAngA->value () / (_ui->_motionScalingAngB->value () * Deg2Rad);
     for (const std::pair< std::string, std::list< RenderVelocity::Ptr > > renders : _velRenders) {
-        for (const RenderVelocity::Ptr render : renders.second) {
+        for (const RenderVelocity::Ptr& render : renders.second) {
             render->setScaleLinear (static_cast< float > (scaleLin));
             render->setScaleAngular (static_cast< float > (scaleAng));
         }

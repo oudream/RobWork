@@ -76,7 +76,7 @@ void SimulatorLogModel::compareFailSubTree (rw::core::Ptr< const SimulatorLog > 
     const rw::core::Ptr< const SimulatorLogScope > aScope = a.cast< const SimulatorLogScope > ();
     if (!aScope.isNull ()) {
         const std::vector< SimulatorLog::Ptr > aChildren = aScope->getChildren ();
-        for (const SimulatorLog::Ptr child : aChildren) {
+        for (const SimulatorLog::Ptr& child : aChildren) {
             compareFailSubTree (child);
         }
     }

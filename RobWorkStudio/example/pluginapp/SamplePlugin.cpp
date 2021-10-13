@@ -7,7 +7,7 @@
 #include <rw/math/Random.hpp>
 #include <RobWorkStudio.hpp>
 
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 
 using rw::geometry::QHullND;
 using rw::kinematics::State;

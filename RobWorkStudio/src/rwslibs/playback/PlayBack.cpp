@@ -35,7 +35,7 @@
 #include <QSlider>
 #include <QToolBar>
 #include <QVBoxLayout>
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 
 using namespace rw::trajectory;
 using namespace rw::loaders;

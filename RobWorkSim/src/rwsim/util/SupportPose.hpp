@@ -29,12 +29,13 @@ namespace rwsim { namespace util {
       public:
         SupportPose (rw::math::Vector3D<> rotAxis, double h = 0) :
             _degree (1), _rotAxes (1, rotAxis), _posAxes (1), _rotAxesTable (1), _probability (-1),
-            _height (h){};
+            _quality(0.0), _height (h){}
 
         SupportPose (int degree, double prob) :
-            _degree (degree), _rotAxes (1), _posAxes (1), _rotAxesTable (1), _probability (prob){};
+            _degree (degree), _rotAxes (1), _posAxes (1), _rotAxesTable (1), _probability (prob),
+            _quality(0.0), _height (0.0){}
 
-        virtual ~SupportPose (){};
+        virtual ~SupportPose (){}
 
         // redundant, since length of _rotAxes is also the degree.
         // though its nice to have

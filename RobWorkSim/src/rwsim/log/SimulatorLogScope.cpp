@@ -67,7 +67,7 @@ void SimulatorLogScope::write (class OutputArchive& oarchive, const std::string&
     oarchive.write (_line.first, "LineFirst");
     oarchive.write (_line.second, "LineSecond");
     oarchive.write (_children.size (), "Children");
-    for (const SimulatorLog::Ptr child : _children) {
+    for (const SimulatorLog::Ptr& child : _children) {
         oarchive.write (child->getType (), "ChildType");
         child->write (oarchive, "");
     }
@@ -114,7 +114,7 @@ SimulatorLog::Ptr SimulatorLogScope::getChild (std::size_t id) const
 std::size_t SimulatorLogScope::indexOf (const SimulatorLog* child) const
 {
     std::size_t i = 0;
-    for (const SimulatorLog::Ptr c : _children) {
+    for (const SimulatorLog::Ptr& c : _children) {
         if (c.get () == child)
             return i;
         i++;

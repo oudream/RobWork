@@ -145,7 +145,7 @@ namespace rwsim { namespace dynamics {
         template< class T > std::vector< rw::core::Ptr< T > > findBodies () const
         {
             std::vector< rw::core::Ptr< T > > bodies;
-            for (const Body::Ptr b : _allbodies) {
+            for (const Body::Ptr& b : _allbodies) {
                 if (rw::core::Ptr< T > tb = b.cast< T > ()) {
                     bodies.push_back (tb);
                 }
