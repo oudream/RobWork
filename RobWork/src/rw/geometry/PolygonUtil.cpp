@@ -157,7 +157,7 @@ class Polygon2D
                 const CutList& cl = _optimal[i][j];
                 if (cl.size () > 0) {
                     writer << " " << i << " " << j << ":\t";
-                    for (const std::pair< std::size_t, std::size_t > pair : cl)
+                    for (const std::pair< std::size_t, std::size_t >& pair : cl)
                         writer << "{" << pair.first << "," << pair.second << "}\t";
                     writer << std::endl;
                 }

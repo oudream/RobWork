@@ -33,7 +33,7 @@
 #include <rw/proximity/CollisionSetup.hpp>
 #include <rw/proximity/CollisionStrategy.hpp>
 
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 
 #include <rwlibs/proximitystrategies/ProximityStrategyFactory.hpp>
 

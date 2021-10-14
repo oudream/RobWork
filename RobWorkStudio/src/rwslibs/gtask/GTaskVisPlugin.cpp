@@ -14,7 +14,7 @@
 #include <QMessageBox>
 #include <QPushButton>
 #include <QTimer>
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 #include <sstream>
 
 //#define PHOENIX_LIMIT 15

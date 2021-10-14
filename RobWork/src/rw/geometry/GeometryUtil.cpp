@@ -479,7 +479,7 @@ InertiaMatrix<> GeometryUtil::estimateInertia (double mass,
     double totalVolume = 0;
     std::vector< MassParameters > par (geoms.size ());
     std::size_t i = 0;
-    for (const Geometry::Ptr geom : geoms) {
+    for (const Geometry::Ptr& geom : geoms) {
         const GeometryData::Ptr gdata = geom->getGeometryData ();
         const TriMesh::Ptr trimesh    = gdata->getTriMesh (false);
 
@@ -517,7 +517,7 @@ InertiaMatrix<> GeometryUtil::estimateInertia (double mass,
     double totalVolume = 0;
     std::vector< MassParameters > par (geoms.size ());
     std::size_t i = 0;
-    for (const Geometry::Ptr geom : geoms) {
+    for (const Geometry::Ptr& geom : geoms) {
         const GeometryData::Ptr gdata = geom->getGeometryData ();
         const TriMesh::Ptr trimesh    = gdata->getTriMesh (false);
         const Transform3D<> t3d       = reftrans * geom->getTransform ();

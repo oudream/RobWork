@@ -25,7 +25,7 @@
 #include <rw/kinematics/StateStructure.hpp>
 #include <rw/sensor/SensorModel.hpp>
 
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 
 using namespace rw::models;
 using namespace rw::kinematics;

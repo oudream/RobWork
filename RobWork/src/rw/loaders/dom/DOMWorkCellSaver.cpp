@@ -880,7 +880,7 @@ DOMElem::Ptr ElementCreator::createElement< MovableFrame* > (
     rw::models::Object::Ptr object = workcell->findObject (frame->getName ());
     writeDrawablesAndColModels (object, element);
 
-    for (const PropertyBase::Ptr prop : frame->getPropertyMap ().getProperties ()) {
+    for (const PropertyBase::Ptr& prop : frame->getPropertyMap ().getProperties ()) {
         const Property< std::string >* property = rw::core::toProperty< std::string > (prop);
         if (property != nullptr) {
             DOMElem::Ptr prop_element = element->addChild (DOMPropertyMapFormat::idProperty ());
@@ -920,7 +920,7 @@ DOMElem::Ptr ElementCreator::createElement< FixedFrame* > (
     rw::models::Object::Ptr object = workcell->findObject (frame->getName ());
     writeDrawablesAndColModels (object, element);
 
-    for (const PropertyBase::Ptr prop : frame->getPropertyMap ().getProperties ()) {
+    for (const PropertyBase::Ptr& prop : frame->getPropertyMap ().getProperties ()) {
         const Property< std::string >* property = rw::core::toProperty< std::string > (prop);
         if (property != nullptr) {
             DOMElem::Ptr prop_element = element->addChild (DOMPropertyMapFormat::idProperty ());
@@ -986,7 +986,7 @@ ElementCreator::createElement< FixedFrame* > (FixedFrame* frame,
     // Add the position
     DOMBasisTypes::createPos (frame->getFixedTransform ().P (), element);
 
-    for (const PropertyBase::Ptr prop : frame->getPropertyMap ().getProperties ()) {
+    for (const PropertyBase::Ptr& prop : frame->getPropertyMap ().getProperties ()) {
         const Property< std::string >* property = rw::core::toProperty< std::string > (prop);
         if (property != nullptr) {
             DOMElem::Ptr prop_element = element->addChild (DOMPropertyMapFormat::idProperty ());

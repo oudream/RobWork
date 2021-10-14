@@ -188,10 +188,10 @@ void testPathPlanning (const CollisionStrategy::Ptr& strategy)
 
         // next test on each planner
         typedef std::pair< std::string, QToQPlanner::Ptr > Pair;
-        for (const Pair planner : planners) {
+        for (const Pair& planner : planners) {
             std::cout << "Testing QToQPlanner " << planner.first;
             Timer time;
-            for (const Q to : samples) {
+            for (const Q& to : samples) {
                 QPath path;
 
                 res = planner.second->query (from, to, path, 20);

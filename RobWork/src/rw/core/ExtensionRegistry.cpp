@@ -62,7 +62,7 @@ std::vector< rw::core::Ptr< Plugin > > ExtensionRegistry::getPlugins () const
 {
     std::vector< rw::core::Ptr< Plugin > > result;
 
-    for (const rw::core::Ptr< Plugin > plugin : _plugins) {
+    for (const rw::core::Ptr< Plugin >& plugin : _plugins) {
         result.push_back (plugin);
     }
 

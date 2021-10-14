@@ -310,7 +310,7 @@ void ForceTorqueWidget::scalingChanged (double d)
 
     const double scaleLin = _ui->_scalingLinA->value () / _ui->_scalingLinB->value ();
     const double scaleAng = _ui->_scalingAngA->value () / _ui->_scalingAngB->value ();
-    for (const RenderVelocity::Ptr render : _velRenders) {
+    for (const RenderVelocity::Ptr& render : _velRenders) {
         render->setScaleLinear (static_cast< float > (scaleLin));
         render->setScaleAngular (static_cast< float > (scaleAng));
     }

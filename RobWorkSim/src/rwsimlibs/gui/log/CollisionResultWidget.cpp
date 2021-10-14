@@ -241,8 +241,8 @@ void CollisionResultWidget::collisionPairsChanged (const QItemSelection& newSele
         const int geoIdxA = collPair.geoIdxA;
         const int geoIdxB = collPair.geoIdxB;
 
-        for (const Object::Ptr object : _dwc->getWorkcell ()->getObjects ()) {
-            for (const Geometry::Ptr geo : object->getGeometry ()) {
+        for (const Object::Ptr& object : _dwc->getWorkcell ()->getObjects ()) {
+            for (const Geometry::Ptr& geo : object->getGeometry ()) {
                 if (geo->getFrame ()->getName () == result.frameA &&
                     geo->getId () == result.geoNamesA[geoIdxA]) {
                     const TriMesh::Ptr data = geo->getGeometryData ()->getTriMesh ();

@@ -28,7 +28,7 @@
 #include <rw/models/WorkCell.hpp>
 #include <rw/graphics/Model3D.hpp>
 
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 #include <stack>
 #include <vector>
 

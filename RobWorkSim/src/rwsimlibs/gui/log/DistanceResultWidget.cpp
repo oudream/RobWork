@@ -181,8 +181,8 @@ void DistanceResultWidget::framePairsChanged (const QItemSelection& newSelection
         const unsigned int idx2 = result.result.idx2;
         // const Vector3D<> p1 = result.result.p1;
         // const Vector3D<> p2 = result.result.p2;
-        for (const Object::Ptr object : _dwc->getWorkcell ()->getObjects ()) {
-            for (const Geometry::Ptr geo : object->getGeometry ()) {
+        for (const Object::Ptr& object : _dwc->getWorkcell ()->getObjects ()) {
+            for (const Geometry::Ptr& geo : object->getGeometry ()) {
                 if (geo->getFrame ()->getName () == result.frameA &&
                     geo->getId () == result.geoNamesA[geoIdxA]) {
                     const TriMesh::Ptr data = geo->getGeometryData ()->getTriMesh ();
