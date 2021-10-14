@@ -81,7 +81,7 @@ namespace rwlibs { namespace algorithms {
          * @param dt [in] time step size
          */
         XQPController (rw::core::Ptr< rw::models::Device > device,
-                       rw::kinematics::Frame* controlFrame, const rw::kinematics::State& state,
+                       rw::core::Ptr<rw::kinematics::Frame> controlFrame, const rw::kinematics::State& state,
                        double dt);
 
         /**
@@ -163,7 +163,7 @@ namespace rwlibs { namespace algorithms {
 
       private:
         rw::core::Ptr< rw::models::Device > _device;
-        rw::kinematics::Frame* _controlFrame;
+        rw::core::Ptr<rw::kinematics::Frame> _controlFrame;
         rw::kinematics::State _state;
         double _dt;
         size_t _dof;

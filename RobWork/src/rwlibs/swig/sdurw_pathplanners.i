@@ -4,6 +4,8 @@
 #include <rwlibs/swig/ScriptTypes.hpp>
 #include <rw/core/Ptr.hpp>
 #include <rw/models.hpp>
+#include <rw/kinematics/FixedFrame.hpp>
+#include <rw/kinematics/MovableFrame.hpp>
 #include <rw/math.hpp>
 
 using namespace rwlibs::swig;

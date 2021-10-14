@@ -82,7 +82,7 @@ namespace rw { namespace models {
          * @param state [in] State for which to calculate the Jacobian
          * @return the Jacobian
          */
-        rw::math::Jacobian baseJframe (const rw::kinematics::Frame* frame,
+        rw::math::Jacobian baseJframe (rw::core::Ptr<const rw::kinematics::Frame> frame,
                                        const rw::kinematics::State& state) const;
 
         /**
@@ -98,7 +98,7 @@ namespace rw { namespace models {
          * @param state [in] State for which to calculate the transform
          * @return the transform
          */
-        rw::math::Transform3D< double > baseTframe (const rw::kinematics::Frame* frame,
+        rw::math::Transform3D< double > baseTframe (rw::core::Ptr<const rw::kinematics::Frame> frame,
                                                     const rw::kinematics::State& state) const;
 
         /**

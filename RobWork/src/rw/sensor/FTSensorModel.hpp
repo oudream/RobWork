@@ -42,7 +42,7 @@ namespace rw { namespace sensor {
          * @param frame [in] the frame to which this sensor is attached
          * @param desc [in] optional description of sensor
          */
-        FTSensorModel (const std::string& name, rw::kinematics::Frame* frame,
+        FTSensorModel (const std::string& name, rw::core::Ptr<rw::kinematics::Frame> frame,
                        const std::string& desc = "");
 
         /**

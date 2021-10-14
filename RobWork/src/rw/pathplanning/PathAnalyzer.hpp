@@ -169,7 +169,7 @@ namespace rw { namespace pathplanning {
          * @return Result of the analysis.
          */
         CartesianAnalysis analyzeCartesian (const rw::trajectory::QPath& path,
-                                            const rw::kinematics::Frame* frame);
+                                            const rw::core::Ptr<rw::kinematics::Frame> frame);
 
         /**
          * @brief Peforms analysis of the time

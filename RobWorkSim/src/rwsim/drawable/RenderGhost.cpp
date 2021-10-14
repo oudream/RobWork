@@ -44,10 +44,10 @@ void GLTransform (const Transform3D<>& transform)
 }
 }    // namespace
 
-RenderGhost::RenderGhost (rw::kinematics::Frame* frame, WorkCellScene::Ptr drawer, size_t N) :
+RenderGhost::RenderGhost (rw::core::Ptr<rw::kinematics::Frame> frame, WorkCellScene::Ptr drawer, size_t N) :
     _drawer (drawer), _states (N)
 {
-    _frames.push_back (frame);
+    _frames.push_back (frame.get());
     _drawFrame = new RenderFrame (0.2f);
 }
 

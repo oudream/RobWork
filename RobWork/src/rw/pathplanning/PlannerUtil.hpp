@@ -139,7 +139,7 @@ namespace rw { namespace pathplanning {
          * @return Weights representing the distance
          */
         static rw::math::Q estimateMotionWeights (const rw::models::Device& device,
-                                                  const rw::kinematics::Frame* frame,
+                                                  rw::core::Ptr<const rw::kinematics::Frame> frame,
                                                   const rw::kinematics::State& initialState,
                                                   EstimateType type, size_t samples);
 

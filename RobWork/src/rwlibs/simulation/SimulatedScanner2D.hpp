@@ -19,13 +19,13 @@
 #define RWLIBS_SIMULATION_SIMULATEDSCANNER2D_HPP
 
 //! @file SimulatedScanner2D.hpp
-
+#if !defined(SWIG)
 #include "SimulatedSensor.hpp"
 
 #include <rw/core/Ptr.hpp>
 #include <rw/sensor/Scanner2D.hpp>
 #include <rw/sensor/Scanner2DModel.hpp>
-
+#endif
 namespace rwlibs { namespace simulation {
     // forward declaration
     class Simulator;
@@ -48,8 +48,8 @@ namespace rwlibs { namespace simulation {
          * @param frame [in] the sensor frame.
          * @param framegrabber [in] the framegrabber used for grabbing 2.5D images
          */
-        SimulatedScanner2D (const std::string& name, rw::kinematics::Frame* frame,
-                            rw::core::Ptr< FrameGrabber25D > framegrabber);
+        SimulatedScanner2D (const std::string& name, rw::core::Ptr<rw::kinematics::Frame> frame,
+                            rw::core::Ptr< rwlibs::simulation::FrameGrabber25D > framegrabber);
 
         /**
          * @brief constructor
@@ -59,8 +59,8 @@ namespace rwlibs { namespace simulation {
          * @param framegrabber [in] the framegrabber used for grabbing 2.5D images
          */
         SimulatedScanner2D (const std::string& name, const std::string& desc,
-                            rw::kinematics::Frame* frame,
-                            rw::core::Ptr< FrameGrabber25D > framegrabber);
+                            rw::core::Ptr<rw::kinematics::Frame> frame,
+                            rw::core::Ptr< rwlibs::simulation::FrameGrabber25D > framegrabber);
 
         /**
          * @brief destructor
@@ -100,7 +100,7 @@ namespace rwlibs { namespace simulation {
         const rw::geometry::PointCloud& getScan () const;
 
         //! @copydoc SimulatedSensor::update
-        void update (const Simulator::UpdateInfo& info, rw::kinematics::State& state);
+        void update (const rwlibs::simulation::Simulator::UpdateInfo& info, rw::kinematics::State& state);
 
         //! @copydoc SimulatedSensor::reset
         void reset (const rw::kinematics::State& state);
@@ -110,14 +110,14 @@ namespace rwlibs { namespace simulation {
          * The handle will be locked to the simulator
          * @return
          */
-        rw::sensor::Scanner2D::Ptr getScanner2DSensor (rwlibs::simulation::Simulator* instance);
-
+        rw::core::Ptr<rw::sensor::Scanner2D> getScanner2DSensor (rwlibs::simulation::Simulator* instance);
+#if !defined(SWIGJAVA)
         /**
          * @brief Get a model of the sensor.
          * @return the model.
          */
-        rw::sensor::Scanner2DModel::Ptr getSensorModel ();
-
+        rw::core::Ptr<rw::sensor::Scanner2DModel> getSensorModel ();
+#endif
         //! @copydoc rw::sensor::Scanner2DModel::getAngularRange
         virtual double getAngularRange ();
 

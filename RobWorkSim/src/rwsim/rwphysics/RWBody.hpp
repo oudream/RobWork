@@ -341,7 +341,7 @@ namespace rwsim { namespace simulator {
         dynamics::Body* _body;
 
         rw::kinematics::MovableFrame* _mframe;
-        rw::kinematics::Frame* _parent;
+        rw::core::Ptr<rw::kinematics::Frame> _parent;
 
         std::string _materialID;
 

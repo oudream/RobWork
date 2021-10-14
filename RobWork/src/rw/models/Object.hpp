@@ -54,7 +54,7 @@ namespace rw { namespace models {
 
       protected:
         //! constructor
-        Object (rw::kinematics::Frame* baseframe);
+        Object (rw::core::Ptr<rw::kinematics::Frame> baseframe);
         //! constructor - first frame is base
         Object (std::vector< rw::kinematics::Frame* > frames);
 
@@ -91,7 +91,7 @@ namespace rw { namespace models {
          * @brief associate a frame to this Object.
          * @param frame [in] frame to associate to object
          */
-        void addFrame (rw::kinematics::Frame* frame);
+        void addFrame (rw::core::Ptr<rw::kinematics::Frame> frame);
 
         /**
          * @brief get default geometries
@@ -170,7 +170,7 @@ namespace rw { namespace models {
         doGetModels (const rw::kinematics::State& state) const = 0;
 
       private:
-        rw::kinematics::Frame* _base;
+        rw::core::Ptr<rw::kinematics::Frame> _base;
         std::vector< rw::kinematics::Frame* > _frames;
         std::vector< rw::geometry::Geometry::Ptr > _geometry;
         std::vector< rw::geometry::Model3D::Ptr > _models;

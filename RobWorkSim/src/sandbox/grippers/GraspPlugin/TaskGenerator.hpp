@@ -106,8 +106,8 @@ class TaskGenerator
 		/**
 		 * @brief Helper function for moving gripper TCP frame into position.
 		 */
-		static void moveFrameW(const rw::math::Transform3D<>& wTtcp, rw::kinematics::Frame* tcp,
-			rw::kinematics::MovableFrame* base, rw::kinematics::State& state);
+		static void moveFrameW(const rw::math::Transform3D<>& wTtcp, rw::core::Ptr<rw::kinematics::Frame> tcp,
+			rw::core::Ptr<rw::kinematics::MovableFrame> base, rw::kinematics::State& state);
 			
 	// data
 		TaskDescription::Ptr _td;

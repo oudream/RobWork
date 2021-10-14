@@ -152,7 +152,7 @@ namespace rw { namespace models {
            @copydoc Device::baseJframe
            Not implemented.
         */
-        virtual rw::math::Jacobian baseJframe (const rw::kinematics::Frame* frame,
+        virtual rw::math::Jacobian baseJframe (const rw::core::Ptr<rw::kinematics::Frame> frame,
                                                const rw::kinematics::State& state) const;
 
         /**

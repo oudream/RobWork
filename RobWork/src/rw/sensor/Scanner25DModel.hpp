@@ -47,7 +47,7 @@ namespace rw { namespace sensor {
          * @param height
          */
         Scanner25DModel (const std::string& name, int width, int height,
-                         rw::kinematics::Frame* frame);
+                         rw::core::Ptr<rw::kinematics::Frame> frame);
 
         /**
          * @brief Destructor. Closes scanner connection if not already closed.

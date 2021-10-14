@@ -30,7 +30,7 @@ using namespace rw::kinematics;
 using namespace rw::models;
 using namespace rwlibs::algorithms::qpcontroller;
 
-XQPController::XQPController (Device::Ptr device, Frame* controlFrame, const State& state,
+XQPController::XQPController (Device::Ptr device, rw::core::Ptr<Frame> controlFrame, const State& state,
                               double dt) :
     _device (device),
     _controlFrame (controlFrame), _state (state), _dt (dt), _dof (device->getDOF ()),

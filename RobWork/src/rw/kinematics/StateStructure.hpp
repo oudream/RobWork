@@ -180,13 +180,13 @@ namespace rw { namespace kinematics {
          * @brief get root of state structure
          * @return the root frame of the StateStructure
          */
-        const Frame* getRoot () const { return _root; }
+        const Frame* getRoot () const { return _root.get(); }
 
         /**
          * @brief get root of state structure
          * @return the root frame of the StateStructure
          */
-        Frame* getRoot () { return _root; }
+        rw::kinematics::Frame* getRoot () { return _root.get(); }
 
         /**
          * @brief destructs all frames and statedata that is not used any more.
@@ -268,7 +268,7 @@ namespace rw { namespace kinematics {
         int _version;
 
         // this specify the root frame
-        Frame* _root;
+        rw::core::Ptr<Frame> _root;
 
         // the default state
         State _defaultState;

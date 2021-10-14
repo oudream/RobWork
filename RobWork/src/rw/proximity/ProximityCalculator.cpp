@@ -449,7 +449,7 @@ namespace rw { namespace proximity {
         State state                        = wc->getDefaultState ();
         for (Object::Ptr object : objects) {
             for (Geometry::Ptr geom : object->getGeometry (state)) {
-                Frame* frame = geom->getFrame ();
+                rw::core::Ptr<Frame> frame = geom->getFrame ();
                 RW_ASSERT (frame);
                 _strategy->addModel (frame, geom);
                 _frameToModels[*frame] = _strategy->getModel (frame);
@@ -498,18 +498,18 @@ namespace rw { namespace proximity {
 
                 for (std::string& ml : matches_left) {
                     for (std::string& mr : matches_right) {
-                        Frame* first  = lookupFrame (frameMap, ml);
-                        Frame* second = lookupFrame (frameMap, mr);
-                        exclude_pairs.push_back (FramePair (first, second));
-                        exclude_pairs.push_back (FramePair (second, first));
+                        rw::core::Ptr<Frame> first  = lookupFrame (frameMap, ml);
+                        rw::core::Ptr<Frame> second = lookupFrame (frameMap, mr);
+                        exclude_pairs.push_back (FramePair (first.get(), second.get()));
+                        exclude_pairs.push_back (FramePair (second.get(), first.get()));
                     }
                 }
             }
             else {
-                Frame* first  = lookupFrame (frameMap, p->first);
-                Frame* second = lookupFrame (frameMap, p->second);
-                exclude_pairs.push_back (FramePair (first, second));
-                exclude_pairs.push_back (FramePair (second, first));
+                rw::core::Ptr<Frame> first  = lookupFrame (frameMap, p->first);
+                rw::core::Ptr<Frame> second = lookupFrame (frameMap, p->second);
+                exclude_pairs.push_back (FramePair (first.get(), second.get()));
+                exclude_pairs.push_back (FramePair (second.get(), first.get()));
             }
         }
 

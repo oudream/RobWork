@@ -206,7 +206,7 @@ namespace rwsim { namespace simulator {
          * @note this only has an effect if the frame \b f is successfully mapped to any
          * fo the bodies in the scene eg. a body frame of one of the bodies.
          */
-        void setEnabled (rw::kinematics::Frame* f, bool);
+        void setEnabled (rw::core::Ptr<rw::kinematics::Frame> f, bool);
 
         /**
          * @brief Enable or disable a body in the simulation.

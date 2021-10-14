@@ -36,7 +36,7 @@ public:
 		NO_PATH_FOUND
 	};
 
-	Planning(rw::models::WorkCell::Ptr wc, rw::models::Device::Ptr device, rw::models::Device::Ptr gripper, rw::kinematics::Frame* objectFrame, const rw::math::Transform3D<> tcpTtarget, GraspDB::Ptr db);
+	Planning(rw::models::WorkCell::Ptr wc, rw::models::Device::Ptr device, rw::models::Device::Ptr gripper, rw::core::Ptr<rw::kinematics::Frame> objectFrame, const rw::math::Transform3D<> tcpTtarget, GraspDB::Ptr db);
 	virtual ~Planning();
 
 	// Plan path from current state to given pose and gripper-configuration
@@ -73,7 +73,7 @@ private:
     rw::math::Metric<rw::math::Q>::Ptr _metric;
     rw::models::Device::Ptr _device, _gripper;
     rw::kinematics::MovableFrame* _gripperBase;
-    rw::kinematics::Frame* _objectFrame;
+    rw::core::Ptr<rw::kinematics::Frame> _objectFrame;
     const rw::math::Transform3D<> _targetTtcp;
     Strategy _strategy;
 };

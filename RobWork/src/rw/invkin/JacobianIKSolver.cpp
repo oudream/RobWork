@@ -32,7 +32,7 @@ using namespace rw::kinematics;
 using namespace rw::invkin;
 using namespace rw::trajectory;
 
-JacobianIKSolver::JacobianIKSolver (Device::CPtr device, const Frame* foi, const State& state) :
+JacobianIKSolver::JacobianIKSolver (Device::CPtr device, rw::core::Ptr<const Frame> foi, const State& state) :
     _device (device), _interpolationStep (0.21), _fkrange (device->getBase (), foi, state),
     _devJac (device->baseJCframe (foi, state)), _useJointClamping (false),
     _useInterpolation (false), _checkJointLimits (false), _solverType (SVD),

@@ -26,11 +26,11 @@ using namespace rw::math;
 
 namespace {
 // 'parent' is included. The path starts at 'parent' and goes to the root.
-std::vector< const Frame* > rootPath (const Frame* parent, const State& state)
+std::vector< const rw::kinematics::Frame* > rootPath (rw::core::Ptr<const rw::kinematics::Frame> parent, const State& state)
 {
-    std::vector< const Frame* > result;
+    std::vector< const rw::kinematics::Frame* > result;
     while (parent) {
-        result.push_back (parent);
+        result.push_back (parent.get());
         parent = parent->getParent (state);
     }
     return result;
@@ -38,10 +38,10 @@ std::vector< const Frame* > rootPath (const Frame* parent, const State& state)
 
 // The product of getTransform() values of the path in reverse order. The
 // path must be non-empty.
-Transform3D<> reversePathTransform (const std::vector< const Frame* >& frames, const State& state)
+Transform3D<> reversePathTransform (const std::vector< const rw::kinematics::Frame* >& frames, const State& state)
 {
     RW_ASSERT (!frames.empty ());
-    typedef std::vector< const Frame* >::const_reverse_iterator I;
+    typedef std::vector< const rw::kinematics::Frame* >::const_reverse_iterator I;
     const I end = frames.rend ();
 
     I p                        = frames.rbegin ();
@@ -57,7 +57,7 @@ Transform3D<> reversePathTransform (const std::vector< const Frame* >& frames, c
     // above has shown to be inefficient (JAR)
     /*
     RW_ASSERT(!frames.empty());
-    typedef std::vector<const Frame*>::const_reverse_iterator I;
+    typedef std::vector<const rw::kinematics::Frame*>::const_reverse_iterator I;
     const I end = frames.rend();
 
     I p = frames.rbegin();
@@ -95,7 +95,7 @@ Transform3D<> reversePathTransform (const std::vector< const Frame* >& frames, c
 }
 }    // namespace
 
-FKRange::FKRange (const Frame* from, const Frame* to, const State& state)
+FKRange::FKRange ( rw::core::Ptr<const rw::kinematics::Frame> from,  rw::core::Ptr<const rw::kinematics::Frame> to, const State& state)
 {
     // We allow a NULL-pointer to mean the world frame, so this check no longer
     // applies.

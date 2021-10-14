@@ -54,7 +54,7 @@ namespace rw { namespace sensor {
          * @param name [in] the name of this sensor
          * @param frame [in] the frame that the sensor is referenced to
          */
-        SensorModel (const std::string& name, kinematics::Frame* frame);
+        SensorModel (const std::string& name, rw::core::Ptr<kinematics::Frame> frame);
 
         /**
          * @brief constructor
@@ -62,7 +62,7 @@ namespace rw { namespace sensor {
          * @param frame [in] the frame that the sensor is referenced to
          * @param description [in] description of the sensor
          */
-        SensorModel (const std::string& name, kinematics::Frame* frame,
+        SensorModel (const std::string& name, rw::core::Ptr<kinematics::Frame> frame,
                      const std::string& description);
 
         //! destructor
@@ -97,14 +97,14 @@ namespace rw { namespace sensor {
          *
          * The frame can be NULL.
          */
-        kinematics::Frame* getFrame () const { return _frame; }
+        kinematics::Frame* getFrame () const { return _frame.get(); }
 
         /**
          * @brief Sets the frame to which the sensor should be attached
          *
          * @param frame The frame, which can be NULL
          */
-        virtual void attachTo (kinematics::Frame* frame) { _frame = frame; }
+        virtual void attachTo (rw::core::Ptr<kinematics::Frame> frame) { _frame = frame; }
 
         /**
          * @brief gets the propertymap of this sensor
@@ -119,7 +119,7 @@ namespace rw { namespace sensor {
       private:
         std::string _name;
         std::string _description;
-        kinematics::Frame* _frame;
+        rw::core::Ptr<kinematics::Frame> _frame;
         rw::core::PropertyMap _propertyMap;
     };
 

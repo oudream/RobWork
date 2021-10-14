@@ -26,7 +26,7 @@ using namespace rw::math;
 using namespace rwlibs::opengl;
 
 RenderSmoothSkin::RenderSmoothSkin (rw::geometry::IndexedTriMesh<>::Ptr mesh,
-                                    rw::kinematics::Frame* base,
+                                    rw::core::Ptr<rw::kinematics::Frame> base,
                                     std::vector< rw::kinematics::Frame* >& bones,
                                     std::vector< BoneWeights >& weights)
 {
@@ -36,7 +36,7 @@ RenderSmoothSkin::RenderSmoothSkin (rw::geometry::IndexedTriMesh<>::Ptr mesh,
 RenderSmoothSkin::~RenderSmoothSkin ()
 {}
 
-void RenderSmoothSkin::init (IndexedTriMesh<>::Ptr mesh, rw::kinematics::Frame* base,
+void RenderSmoothSkin::init (IndexedTriMesh<>::Ptr mesh, rw::core::Ptr<rw::kinematics::Frame> base,
                              std::vector< rw::kinematics::Frame* >& bones,
                              std::vector< BoneWeights >& weights)
 {

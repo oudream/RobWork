@@ -1,6 +1,10 @@
 import java.lang.String;
 import org.robwork.LoaderRW;
 import org.robwork.sdurw.*;
+import org.robwork.sdurw_math.*;
+import org.robwork.sdurw_models.*;
+import org.robwork.sdurw_kinematics.*;
+import org.robwork.sdurw_proximity.*;
 import static org.robwork.sdurw.sdurw.ownedPtr;
 import org.robwork.sdurw_pathplanners.RRTPlanner;
 import org.robwork.sdurw_proximitystrategies.ProximityStrategyFactory;
@@ -11,6 +15,10 @@ public class ExMotionPlanning {
 
     public static void main(String[] args) throws Exception {
         LoaderRW.load("sdurw");
+        LoaderRW.load("sdurw_math");
+        LoaderRW.load("sdurw_kinematics");
+        LoaderRW.load("sdurw_proximity");
+        LoaderRW.load("sdurw_models");
         LoaderRW.load("sdurw_pathplanners");
         LoaderRW.load("sdurw_proximitystrategies");
 
@@ -31,14 +39,14 @@ public class ExMotionPlanning {
             throw new Exception("PA10 device could not be found.");
 
         State defState = wc.getDefaultState();
-        CompositeDevicePtr device = ownedPtr(new CompositeDevice(gantry.getBase(),
-                wc.getDevices(), pa10.getEnd(), "Composite", defState));
+        CompositeDevicePtr device = sdurw_models.ownedPtr(new CompositeDevice(new FramePtr(gantry.getBase()),
+                wc.getDevices(), new FramePtr(pa10.getEnd()), "Composite", defState));
 
         CollisionStrategyPtr cdstrategy =
                 ProximityStrategyFactory.makeCollisionStrategy("PQP");
         if (cdstrategy.isNull())
             throw new Exception("PQP Collision Strategy could not be found.");
-        CollisionDetectorPtr collisionDetector = ownedPtr(
+        CollisionDetectorPtr collisionDetector = sdurw_proximity.ownedPtr(
                 new CollisionDetector(wc, cdstrategy));
         PlannerConstraint con = PlannerConstraint.make(collisionDetector,
                 device.asDeviceCPtr(), defState);

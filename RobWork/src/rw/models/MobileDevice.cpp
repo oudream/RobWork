@@ -169,7 +169,7 @@ Jacobian MobileDevice::baseJend (const State& state) const
     return jac;
 }
 
-Jacobian MobileDevice::baseJframe (const Frame* frame, const State& state) const
+Jacobian MobileDevice::baseJframe (const rw::core::Ptr<Frame> frame, const State& state) const
 {
     RW_THROW ("Not implemented.");
     return Jacobian (Jacobian::zero (6, 2));

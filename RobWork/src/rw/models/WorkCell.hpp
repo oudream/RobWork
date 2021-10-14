@@ -205,14 +205,17 @@ namespace rw { namespace models {
          * Please use remove(rw::core::Ptr<rw::kinematics::Frame>)
          * instead.
          */
-        void remove (rw::kinematics::Frame* frame);
+        void remove (rw::core::Ptr<rw::kinematics::Frame> frame);
 
         /**
          * @brief Removes \b frame from work cell
          *
          * @param frame [in] Frame to remove
          */
-        void remove (rw::core::Ptr< rw::kinematics::Frame > frame);
+#if !defined(SWIG)
+        DEPRECATED ("Use Frame::Ptr insted of Frame*")
+#endif
+        void remove (rw::kinematics::Frame* frame);
 
         /**
          * @brief Removes \b object from workcell

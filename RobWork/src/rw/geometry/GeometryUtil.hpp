@@ -91,7 +91,7 @@ namespace rw { namespace geometry {
          */
         static std::pair< rw::math::Vector3D<double>, rw::math::InertiaMatrix<> > estimateInertiaCOG (
             double mass, const std::vector< rw::core::Ptr< rw::geometry::Geometry > >& geoms,
-            const rw::kinematics::Frame* ref, const rw::kinematics::State& state,
+            const rw::core::Ptr<rw::kinematics::Frame> ref, const rw::kinematics::State& state,
             const rw::math::Transform3D<>& reftrans = rw::math::Transform3D<>::identity ());
 
         /**
@@ -112,7 +112,7 @@ namespace rw { namespace geometry {
          */
         static rw::math::InertiaMatrix<> estimateInertia (
             double mass, const std::vector< rw::core::Ptr< rw::geometry::Geometry > >& geoms,
-            const rw::kinematics::Frame* ref, const rw::kinematics::State& state,
+            const rw::core::Ptr<rw::kinematics::Frame> ref, const rw::kinematics::State& state,
             const rw::math::Transform3D<>& reftrans = rw::math::Transform3D<>::identity ());
 
         /**
@@ -187,7 +187,7 @@ namespace rw { namespace geometry {
          */
         static rw::math::Vector3D<double>
         estimateCOG (const std::vector< rw::core::Ptr< rw::geometry::Geometry > >& geoms,
-                     const rw::kinematics::Frame* ref, const rw::kinematics::State& state);
+                     const rw::core::Ptr<rw::kinematics::Frame> ref, const rw::kinematics::State& state);
 
         /**
          * @brief Estimates the center of gravity (COG) of a triangle mesh.
@@ -209,7 +209,7 @@ namespace rw { namespace geometry {
          * @return the maximum distance to any triangle in the geometries
          */
         static double calcMaxDist (const std::vector< rw::core::Ptr< rw::geometry::Geometry > >& geoms,
-                                   const rw::math::Vector3D<double> center, rw::kinematics::Frame* ref,
+                                   const rw::math::Vector3D<double> center, rw::core::Ptr<rw::kinematics::Frame> ref,
                                    const rw::kinematics::State& state);
 
         /**
@@ -224,7 +224,7 @@ namespace rw { namespace geometry {
          * that is staticly connected and that has geometry information.
          */
         static std::vector< rw::kinematics::Frame* >
-        getAnchoredChildFrames (rw::kinematics::Frame* parent, const rw::kinematics::State& state);
+        getAnchoredChildFrames (rw::core::Ptr<rw::kinematics::Frame> parent, const rw::kinematics::State& state);
 
         /**
          * @brief calculates volume of k-simplex

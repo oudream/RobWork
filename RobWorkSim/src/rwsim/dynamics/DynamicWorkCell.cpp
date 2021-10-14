@@ -125,11 +125,11 @@ SimulatedSensor::Ptr DynamicWorkCell::findSensor (const std::string& name) const
     return NULL;
 }
 
-Body::Ptr DynamicWorkCell::getBody (rw::kinematics::Frame* f)
+Body::Ptr DynamicWorkCell::getBody (rw::core::Ptr<rw::kinematics::Frame> f)
 {
-    if (_frameToBody.find (f) == _frameToBody.end ())
+    if (_frameToBody.find (f.get()) == _frameToBody.end ())
         return NULL;
-    return _frameToBody[f];
+    return _frameToBody[f.get()];
 }
 
 void DynamicWorkCell::addBody (Body::Ptr body)

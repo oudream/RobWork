@@ -19,13 +19,13 @@
 #define RWLIBS_SIMULATION_SIMULATOR_HPP_
 
 //! @file Simulator.hpp
-
+#if !defined(SWIG)
 #include <rw/core/PropertyMap.hpp>
 #include <rw/core/Ptr.hpp>
 #include <rw/kinematics/State.hpp>
 #include <rw/sensor/Sensor.hpp>
 #include <rwlibs/control/Controller.hpp>
-
+#endif
 namespace rwlibs { namespace simulation {
 
     class SimulatedSensor;
@@ -112,7 +112,7 @@ namespace rwlibs { namespace simulation {
          * @param enabled [in]
          * @endcond
          */
-        virtual void setEnabled (rw::kinematics::Frame* frame, bool enabled) = 0;
+        virtual void setEnabled (rw::core::Ptr<rw::kinematics::Frame> frame, bool enabled) = 0;
 
         /**
          * @brief get propertymap of this simulator

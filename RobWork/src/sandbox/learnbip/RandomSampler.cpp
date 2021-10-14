@@ -41,7 +41,7 @@ Q RandomSampler::doSample() {
 	bool inverseOK = false;
 	std::vector<Q> res;
 	while (!inverseOK) {
-		Frame* base = _device->getBase();
+		rw::core::Ptr<Frame> base = _device->getBase();
 		Transform3D<> wTbase = Kinematics::worldTframe(base,_wc->getDefaultState());
 		bool resample = true;
 		Vector3D<> pos;

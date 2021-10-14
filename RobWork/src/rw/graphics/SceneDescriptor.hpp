@@ -143,77 +143,77 @@ namespace rw { namespace graphics {
          * @param f [in] the frame.
          * @param visible [in] true if frame should be visible, false otherwise
          */
-        void setVisible (bool visible, rw::kinematics::Frame* f);
+        void setVisible (bool visible, rw::core::Ptr<rw::kinematics::Frame> f);
 
         /**
          * @brief test if a frame is visible or not
          * @param f [in] the frame
          * @return true if frame is visible, false if not
          */
-        bool isVisible (rw::kinematics::Frame* f);
+        bool isVisible (rw::core::Ptr<rw::kinematics::Frame> f);
 
         /**
          * @brief sets a frame to be highlighted or not.
          * @param f [in] the frame.
          * @param highlighted [in] true if frame should be highlighted, false otherwise
          */
-        void setHighlighted (bool highlighted, rw::kinematics::Frame* f);
+        void setHighlighted (bool highlighted, rw::core::Ptr<rw::kinematics::Frame> f);
 
         /**
          * @brief test if a frame is highlighted or not
          * @param f [in] the frame
          * @return true if frame is highlighted, false if not
          */
-        bool isHighlighted (rw::kinematics::Frame* f);
+        bool isHighlighted (rw::core::Ptr<rw::kinematics::Frame> f);
 
         /**
          * @brief enables the drawing of the frame-axis of a frame.
          * @param visible [in] true if frame axis should be drawn, false otherwise
          * @param f [in] the frame
          */
-        void setFrameAxisVisible (bool visible, rw::kinematics::Frame* f);
+        void setFrameAxisVisible (bool visible, rw::core::Ptr<rw::kinematics::Frame> f);
 
         /**
          * @brief test if frame-axis is visible
          * @param f [in] the frame
          * @return true if frame axis of frame is set to be drawn, false otherwise
          */
-        bool isFrameAxisVisible (rw::kinematics::Frame* f);
+        bool isFrameAxisVisible (rw::core::Ptr<rw::kinematics::Frame> f);
 
         /**
          * @brief set how drawables of a specific frame should be rendered
          * @param type [in] the drawtype
          * @param f [in] the Frame
          */
-        void setDrawType (DrawableNode::DrawType type, rw::kinematics::Frame* f);
+        void setDrawType (DrawableNode::DrawType type, rw::core::Ptr<rw::kinematics::Frame> f);
 
         /**
          * @brief get how drawables of a specific frame is to be rendered
          * @param f [in] the Frame
          * @return the drawtype
          */
-        DrawableNode::DrawType getDrawType (rw::kinematics::Frame* f);
+        DrawableNode::DrawType getDrawType (rw::core::Ptr<rw::kinematics::Frame> f);
 
         /**
          * @brief set the draw mask of the drawables of a specific frame
          * @param mask [in] draw mask
          * @param f [in] the frame
          */
-        void setDrawMask (unsigned int mask, rw::kinematics::Frame* f);
+        void setDrawMask (unsigned int mask, rw::core::Ptr<rw::kinematics::Frame> f);
 
         /**
          * @brief get the draw mask of the drawables of a specific frame
          * @param f [in] the frame
          * @return the drawmask
          */
-        unsigned int getDrawMask (rw::kinematics::Frame* f);
+        unsigned int getDrawMask (rw::core::Ptr<rw::kinematics::Frame> f);
 
         /**
          * @brief set drawables of a frame to be translusent
          * @param alpha [in] range [0-1] where 1 is fully opaque and 0 is folly transparent
          * @param f [in] frame
          */
-        void setTransparency (double alpha, rw::kinematics::Frame* f);
+        void setTransparency (double alpha, rw::core::Ptr<rw::kinematics::Frame> f);
 
         //******************************** interface for adding drawables  ***/
         /*
@@ -225,7 +225,7 @@ namespace rw { namespace graphics {
          * @return the drawable node geometry
          */
         // void addLines( const std::string& name, const std::vector<rw::geometry::Line>& lines,
-        // rw::kinematics::Frame* frame, int dmask=DrawableNode::Physical);
+        // rw::core::Ptr<rw::kinematics::Frame> frame, int dmask=DrawableNode::Physical);
 
         /**
          * @brief create and add a drawable geometry node of any type of geometry to the scene
@@ -237,7 +237,7 @@ namespace rw { namespace graphics {
          */
         DrawableProxy::Ptr addGeometry (const std::string& name,
                                         rw::core::Ptr< class rw::geometry::Geometry > geom,
-                                        rw::kinematics::Frame* frame,
+                                        rw::core::Ptr<rw::kinematics::Frame> frame,
                                         int dmask = DrawableNode::Physical);
 
         /**
@@ -249,7 +249,7 @@ namespace rw { namespace graphics {
          * @return the drawable node geometry
          */
         DrawableProxy::Ptr addFrameAxis (const std::string& name, double size,
-                                         rw::kinematics::Frame* frame,
+                                         rw::core::Ptr<rw::kinematics::Frame> frame,
                                          int dmask = DrawableNode::Virtual);
 
         /**
@@ -261,7 +261,7 @@ namespace rw { namespace graphics {
          * @return the drawable node geometry
          */
         DrawableProxy::Ptr addModel3D (const std::string& name, Model3D::Ptr model,
-                                       rw::kinematics::Frame* frame,
+                                       rw::core::Ptr<rw::kinematics::Frame> frame,
                                        int dmask = DrawableNode::Physical);
 
         /**
@@ -275,7 +275,7 @@ namespace rw { namespace graphics {
          * scale.
          */
         DrawableProxy::Ptr addImage (const std::string& name, rw::sensor::Image::Ptr img,
-                                     rw::kinematics::Frame* frame,
+                                     rw::core::Ptr<rw::kinematics::Frame> frame,
                                      int dmask = DrawableNode::Virtual);
 
         /**
@@ -287,7 +287,7 @@ namespace rw { namespace graphics {
          * @return the drawable node
          */
         DrawableProxy::Ptr addScan (const std::string& name, rw::geometry::PointCloud::Ptr scan,
-                                    rw::kinematics::Frame* frame,
+                                    rw::core::Ptr<rw::kinematics::Frame> frame,
                                     int dmask = DrawableNode::Virtual);
 
         /**
@@ -299,7 +299,7 @@ namespace rw { namespace graphics {
          * @return the drawable node
          */
         DrawableProxy::Ptr addRender (const std::string& name, rw::graphics::Render::Ptr render,
-                                      rw::kinematics::Frame* frame,
+                                      rw::core::Ptr<rw::kinematics::Frame> frame,
                                       int dmask = DrawableNode::Physical);
 
         /**
@@ -309,7 +309,7 @@ namespace rw { namespace graphics {
          * @param dmask [in] the drawable mask
          * @return the drawable node
          */
-        DrawableProxy::Ptr addDrawable (const std::string& filename, rw::kinematics::Frame* frame,
+        DrawableProxy::Ptr addDrawable (const std::string& filename, rw::core::Ptr<rw::kinematics::Frame> frame,
                                         int dmask = DrawableNode::Physical);
 
         /**
@@ -317,14 +317,14 @@ namespace rw { namespace graphics {
          * @param drawable [in] the drawable
          * @param frame [in] the frame where the drawable is to be placed
          */
-        DrawableProxy::Ptr addDrawable (DrawableNode::Ptr drawable, rw::kinematics::Frame* frame);
+        DrawableProxy::Ptr addDrawable (DrawableNode::Ptr drawable, rw::core::Ptr<rw::kinematics::Frame> frame);
 
         /**
          * @brief get all drawables of a specific frame in the WorkCellScene
          * @param f [in] the frame
          * @return a vector of drawable proxies
          */
-        std::vector< DrawableProxy::Ptr > getDrawables (rw::kinematics::Frame* f);
+        std::vector< DrawableProxy::Ptr > getDrawables (rw::core::Ptr<rw::kinematics::Frame> f);
 
         /**
          * @brief get the frame that a specific drawable \b d is associated to

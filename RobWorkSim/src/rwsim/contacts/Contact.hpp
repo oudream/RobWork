@@ -161,14 +161,14 @@ namespace rwsim { namespace contacts {
          *
          * @param frame [in] a pointer to the frame.
          */
-        void setFrameA (const rw::kinematics::Frame* frame);
+        void setFrameA (rw::core::Ptr<const rw::kinematics::Frame> frame);
 
         /**
          * @brief Set the frame for the second object.
          *
          * @param frame [in] a pointer to the frame.
          */
-        void setFrameB (const rw::kinematics::Frame* frame);
+        void setFrameB (rw::core::Ptr<const rw::kinematics::Frame> frame);
 
         /**
          * @brief Set the name of the first object.
@@ -267,8 +267,8 @@ namespace rwsim { namespace contacts {
 
       private:
         rw::core::Ptr< ContactModel > _a, _b;
-        const rw::kinematics::Frame* _frameA;
-        const rw::kinematics::Frame* _frameB;
+        rw::core::Ptr<const rw::kinematics::Frame> _frameA;
+        rw::core::Ptr<const rw::kinematics::Frame> _frameB;
         std::string _nameA;
         std::string _nameB;
         rw::math::Transform3D<> _aTb;

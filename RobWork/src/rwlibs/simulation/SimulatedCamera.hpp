@@ -21,14 +21,14 @@
 /**
    @file SimulatedCamera.hpp
 */
-
+#if !defined(SWIG)
 #include <rw/core/Ptr.hpp>
 #include <rw/sensor/Camera.hpp>
 #include <rw/sensor/Image.hpp>
 #include <rwlibs/simulation/SimulatedSensor.hpp>
 
 #include <string>
-
+#endif
 namespace rw { namespace sensor {
     class CameraModel;
 }}    // namespace rw::sensor
@@ -60,8 +60,8 @@ namespace rwlibs { namespace simulation {
          * @param frame [in] frame to which the camera is attached
          * @param frameGrabber [in] the frameGrabber from which this Camera should grab images
          */
-        SimulatedCamera (const std::string& name, double fov, rw::kinematics::Frame* frame,
-                         rw::core::Ptr< FrameGrabber > frameGrabber);
+        SimulatedCamera (const std::string& name, double fov, rw::core::Ptr<rw::kinematics::Frame> frame,
+                         rw::core::Ptr< rwlibs::simulation::FrameGrabber > frameGrabber);
 
         /**
          * @brief constructor
@@ -70,7 +70,7 @@ namespace rwlibs { namespace simulation {
          * images.
          */
         SimulatedCamera (rw::core::Ptr< rw::sensor::CameraModel > model,
-                         rw::core::Ptr< FrameGrabber > frameGrabber);
+                         rw::core::Ptr< rwlibs::simulation::FrameGrabber > frameGrabber);
 
         /**
          * @brief destructor
@@ -130,20 +130,20 @@ namespace rwlibs { namespace simulation {
         /**
          * @copydoc SimulatedSensor::update
          */
-        void update (const Simulator::UpdateInfo& info, rw::kinematics::State& state);
+        void update (const rwlibs::simulation::Simulator::UpdateInfo& info, rw::kinematics::State& state);
 
         /**
          * @copydoc SimulatedSensor::reset
          */
         void reset (const rw::kinematics::State& state) {}
 
-        rw::sensor::Sensor::Ptr getSensor () { return _csensor; }
+        rw::core::Ptr<rw::sensor::Sensor> getSensor () { return _csensor; }
 
         /**
          * @brief Get the camera sensor.
          * @return the sensor.
          */
-        rw::sensor::Camera::Ptr getCameraSensor () { return _csensor; }
+        rw::core::Ptr<rw::sensor::Camera> getCameraSensor () { return _csensor; }
 
       private:
         void acquire (char* imgData);

@@ -22,7 +22,7 @@ PoseController::PoseController (const std::string& name, DynamicDevice::Ptr rdev
 
 PoseController::PoseController (const std::string& name, DynamicDevice::Ptr rdev,
                                 const rw::kinematics::State& state, double dt,
-                                rw::kinematics::Frame* endframe) :
+                                rw::core::Ptr<rw::kinematics::Frame> endframe) :
     Controller (name),
     SimulatedController (rw::core::ownedPtr (
         new rw::models::ControllerModel (name, rdev->getKinematicModel ()->getBase ()))),
@@ -64,7 +64,7 @@ void PoseController::update (const rwlibs::simulation::Simulator::UpdateInfo& in
     // there might be two situations, rollback or not.
 
     //_device->setQ(_q, _state);
-    Frame* tcpFrame        = _endframe;
+    Frame::Ptr tcpFrame        = _endframe;
     Transform3D<> Tcurrent = _device->baseTframe (tcpFrame, state);
     Transform3D<> Tdiff    = inverse (Tcurrent) * _target;
     Q q                    = _device->getQ (state);
@@ -99,7 +99,7 @@ void PoseController::update (const rwlibs::simulation::Simulator::UpdateInfo& in
 
 void PoseController::reset (const rw::kinematics::State& state)
 {
-    Frame* tcpFrame        = _endframe;
+    rw::core::Ptr< Frame> tcpFrame        = _endframe;
     Transform3D<> Tcurrent = _device->baseTframe (tcpFrame, state);
     _xqp                   = new XQPController (_device, _endframe, state, _stime);
     _target                = Tcurrent;

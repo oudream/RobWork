@@ -118,7 +118,7 @@ typedef std::vector< DummyProximitySetup > ProxSetupList;
 struct DummySetup
 {
   public:
-    Frame* world;
+    rw::core::Ptr<Frame> world;
     StateStructure* tree;
 
     std::map< std::string, Frame* > frameMap;
@@ -166,7 +166,7 @@ void addPropertyToMap (const DummyProperty& dprop, core::PropertyMap& map)
 }
 
 // the parent frame must exist in tree already
-void addToStateStructure (Frame* parent, DummySetup& setup)
+void addToStateStructure (rw::core::Ptr<Frame> parent, DummySetup& setup)
 {
     std::vector< Frame* > children = setup.toChildMap[parent->getName ()];
     for (Frame* child : children) {
@@ -185,11 +185,11 @@ void addToStateStructure (const std::string& name, DummySetup& setup)
 {
     DummyFrame* dframe = setup.dummyFrameMap[name];
     RW_DEBUGS ("RefFrame : " << dframe->getRefFrame ());
-    Frame* parent = setup.frameMap[dframe->getRefFrame ()];
+    rw::core::Ptr<Frame> parent = setup.frameMap[dframe->getRefFrame ()];
     if (parent == NULL)
         RW_THROW ("PARENT IS NULL");
 
-    Frame* child = setup.frameMap[dframe->getName ()];
+    rw::core::Ptr<Frame> child = setup.frameMap[dframe->getName ()];
     if (dframe->_isDaf)
         setup.tree->addDAF (child, parent);
     else
@@ -209,9 +209,9 @@ std::string createScopedName (std::string str, std::vector< std::string > scope)
 
 typedef std::map< std::string, Frame* > FrameMap;
 
-Frame* addModelToFrame (DummyModel& model, Frame* parent, StateStructure* tree, DummySetup& setup)
+Frame* addModelToFrame (DummyModel& model,  rw::core::Ptr<Frame> parent, StateStructure* tree, DummySetup& setup)
 {
-    Frame* modelframe                = parent;
+    rw::core::Ptr<Frame> modelframe                = parent;
     std::vector< std::string > scope = model._scope;
 
     for (size_t i = 0; i < model._geo.size (); i++) {
@@ -253,9 +253,9 @@ Frame* addModelToFrame (DummyModel& model, Frame* parent, StateStructure* tree, 
 
         RigidObject::Ptr object;
         if (model._isDrawable || model._colmodel) {
-            if (setup.objectMap.find (modelframe) == setup.objectMap.end ())
-                setup.objectMap[modelframe] = ownedPtr (new RigidObject (modelframe));
-            object = setup.objectMap[modelframe];
+            if (setup.objectMap.find (modelframe.get()) == setup.objectMap.end ())
+                setup.objectMap[modelframe.get()] = ownedPtr (new RigidObject (modelframe));
+            object = setup.objectMap[modelframe.get()];
         }
 
         // try {
@@ -362,10 +362,10 @@ Frame* addModelToFrame (DummyModel& model, Frame* parent, StateStructure* tree, 
         //} catch (const std::exception& e){
         //}
     }
-    return modelframe;
+    return modelframe.get();
 }
 
-void addLimits (std::vector< DummyLimit >& limits, Joint* j)
+void addLimits (std::vector< DummyLimit >& limits, Joint::Ptr j)
 {
     if (limits.size () == 0)
         return;
@@ -383,24 +383,24 @@ void addLimits (std::vector< DummyLimit >& limits, Joint* j)
         }
     }
 
-    if (dynamic_cast< RevoluteJoint* > (j) != NULL) {
+    if (j.cast< RevoluteJoint> () != NULL) {
         convFactor[0] = Deg2Rad;
     }
-    else if (dynamic_cast< SphericalJoint* > (j) != NULL) {
-        convFactor[0] = Deg2Rad;
-        convFactor[1] = Deg2Rad;
-        convFactor[2] = Deg2Rad;
-    }
-    else if (dynamic_cast< PrismaticSphericalJoint* > (j) != NULL) {
+    else if (j.cast< SphericalJoint> () != NULL) {
         convFactor[0] = Deg2Rad;
         convFactor[1] = Deg2Rad;
         convFactor[2] = Deg2Rad;
     }
-    else if (dynamic_cast< UniversalJoint* > (j) != NULL) {
+    else if (j.cast< PrismaticSphericalJoint > () != NULL) {
+        convFactor[0] = Deg2Rad;
+        convFactor[1] = Deg2Rad;
+        convFactor[2] = Deg2Rad;
+    }
+    else if (j.cast< UniversalJoint > () != NULL) {
         convFactor[0] = Deg2Rad;
         convFactor[1] = Deg2Rad;
     }
-    else if (dynamic_cast< PrismaticUniversalJoint* > (j) != NULL) {
+    else if (j.cast< PrismaticUniversalJoint> () != NULL) {
         convFactor[0] = Deg2Rad;
         convFactor[1] = Deg2Rad;
     }
@@ -428,9 +428,9 @@ void addLimits (std::vector< DummyLimit >& limits, Joint* j)
     return;
 }
 
-void addLimitsToFrame (std::vector< DummyLimit >& limits, Frame* f)
+void addLimitsToFrame (std::vector< DummyLimit >& limits,  rw::core::Ptr<Frame> f)
 {
-    Joint* j = dynamic_cast< Joint* > (f);
+    Joint::Ptr j = f.cast<Joint>();
     if (j == NULL)
         return;
     addLimits (limits, j);
@@ -438,7 +438,7 @@ void addLimitsToFrame (std::vector< DummyLimit >& limits, Frame* f)
 
 Frame* createFrame (DummyFrame& dframe, DummySetup& setup)
 {
-    Frame* frame = NULL;
+    rw::core::Ptr<Frame> frame = NULL;
 
     if (dframe._isDepend) {
         std::map< std::string, Frame* >::iterator res =
@@ -587,15 +587,15 @@ Frame* createFrame (DummyFrame& dframe, DummySetup& setup)
 
     // remember to add the frame to the frame map
     setup.dummyFrameMap[dframe.getName ()] = &dframe;
-    setup.frameMap[frame->getName ()]      = frame;
-    setup.toChildMap[dframe.getRefFrame ()].push_back (frame);
+    setup.frameMap[frame->getName ()]      = frame.get();
+    setup.toChildMap[dframe.getRefFrame ()].push_back (frame.get());
     RW_DEBUGS ("Frame created: " << frame->getName () << " --> " << dframe.getRefFrame ());
-    return frame;
+    return frame.get();
 }
 
 void addFrameProps (DummyFrame& dframe, DummySetup& setup)
 {
-    Frame* frame = setup.frameMap[dframe.getName ()];
+    rw::core::Ptr<Frame> frame = setup.frameMap[dframe.getName ()];
     for (size_t i = 0; i < dframe._properties.size (); i++) {
         const DummyProperty& dprop = dframe._properties[i];
         addPropertyToMap (dprop, frame->getPropertyMap ());
@@ -611,7 +611,7 @@ void addFrameProps (DummyFrame& dframe, DummySetup& setup)
  */
 void addDevicePropsToFrame (DummyDevice& dev, const std::string& name, DummySetup& setup)
 {
-    Frame* frame = setup.frameMap[name];
+    rw::core::Ptr<Frame> frame = setup.frameMap[name];
     // add properties specified in device context
     std::vector< std::shared_ptr< rw::core::Property< std::string > > > proplist =
         dev._propMap[frame->getName ()];
@@ -659,13 +659,13 @@ Device::Ptr createDevice (DummyDevice& dev, DummySetup& setup)
         std::map< std::string, std::size_t > nameToChainIndex;
         std::vector< Frame* > chain;
         std::map< std::string, Frame* > addFramesMap;
-        Frame* parent = createFrame (dev._frames[0], setup);    // base
+        rw::core::Ptr<Frame> parent = createFrame (dev._frames[0], setup);    // base
         RW_ASSERT (parent);
-        chain.push_back (parent);
-        addFramesMap[parent->getName ()] = parent;
+        chain.push_back (parent.get());
+        addFramesMap[parent->getName ()] = parent.get();
         std::string chainName;
         for (size_t i = 1; i < dev._frames.size (); i++) {
-            Frame* frame = NULL;
+            rw::core::Ptr<Frame> frame = NULL;
             bool newLeg;
             if (dev._frames[i].getRefFrame () == dev._frames[i - 1].getName ()) {
                 newLeg = false;
@@ -716,14 +716,14 @@ Device::Ptr createDevice (DummyDevice& dev, DummySetup& setup)
                     parent = (*res).second;
                     frame  = createFrame (dev._frames[i], setup);
                     chain.clear ();
-                    chain.push_back (parent);
+                    chain.push_back (parent.get());
                 }
             }
             if (frame == NULL)
                 RW_THROW ("Could not create ParallelDevice! A frame could not be created.");
-            chain.push_back (frame);
+            chain.push_back (frame.get());
             // tree->addFrame(frame, parent);
-            addFramesMap[frame->getName ()] = frame;
+            addFramesMap[frame->getName ()] = frame.get();
             parent                          = frame;
         }
         nameToChainIndex[chainName] = chains.size ();
@@ -794,10 +794,10 @@ Device::Ptr createDevice (DummyDevice& dev, DummySetup& setup)
         RW_ASSERT (dev._frames.size () != 0);
         FrameMap frameMap;
         std::vector< Frame* > endEffectors;
-        Frame* base                = createFrame (dev._frames[0], setup);    // base
-        frameMap[base->getName ()] = base;
-        Frame* child               = base;
-        Frame* parent              = base;
+        rw::core::Ptr<Frame> base                = createFrame (dev._frames[0], setup);    // base
+        frameMap[base->getName ()] = base.get();
+        rw::core::Ptr<Frame> child               = base;
+        rw::core::Ptr<Frame> parent              = base;
         std::string parentname     = dev._frames[0].getRefFrame ();
 
         for (size_t i = 1; i < dev._frames.size (); i++) {
@@ -810,20 +810,20 @@ Device::Ptr createDevice (DummyDevice& dev, DummySetup& setup)
                           << dev._frames[i].getRefFrame ());
             }
             child                       = createFrame (frame, setup);
-            frameMap[child->getName ()] = child;
+            frameMap[child->getName ()] = child.get();
 
             if (setup.toChildMap[parentname].empty ()) {
-                endEffectors.push_back (parent);
+                endEffectors.push_back (parent.get());
             }
 
             if (dev._frames[i]._type == "EndEffector") {
-                endEffectors.push_back (child);
+                endEffectors.push_back (child.get());
             }
             parent     = child;
             parentname = frame.getRefFrame ();
         }
         if (endEffectors.size () == 0)
-            endEffectors.push_back (child);
+            endEffectors.push_back (child.get());
 
         addToStateStructure (base->getName (), setup);
         for (DummyFrame& dframe : dev._frames) {
@@ -942,7 +942,7 @@ CollisionSetup defaultCollisionSetup (const WorkCell& workcell)
     std::stack< Frame* > frameStack;
     frameStack.push (workcell.getWorldFrame ());
     while (0 != frameStack.size ()) {
-        Frame* frame = frameStack.top ();
+        rw::core::Ptr<Frame> frame = frameStack.top ();
         frameStack.pop ();
 
         for (Frame::iterator it = frame->getChildren ().first; it != frame->getChildren ().second;
@@ -962,8 +962,8 @@ CollisionSetup defaultCollisionSetup (const WorkCell& workcell)
         }
         for (it = frameList.begin (); (*it) != (*rit); it++) {
             // Do not check a child against a parent geometry
-            Frame* parent1 = (*it)->getParent ();     // Link N
-            Frame* parent2 = (*rit)->getParent ();    // Link N+1
+            rw::core::Ptr<Frame> parent1 = (*it)->getParent ();     // Link N
+            rw::core::Ptr<Frame> parent2 = (*rit)->getParent ();    // Link N+1
 
             if ((*it)->isDAF () || it->cast< MovableFrame > ()) {
                 continue;
@@ -1026,7 +1026,7 @@ rw::models::WorkCell::Ptr XMLRWLoader::loadWorkCell (const std::string& fname)
         // Now build a workcell from the parsed results
         setup.tree                              = new StateStructure ();
         setup.world                             = setup.tree->getRoot ();
-        setup.frameMap[setup.world->getName ()] = setup.world;
+        setup.frameMap[setup.world->getName ()] = setup.world.get();
 
         auto tmp = setup.tree->getRoot ()
                        ->getPropertyMap ()
@@ -1085,7 +1085,7 @@ rw::models::WorkCell::Ptr XMLRWLoader::loadWorkCell (const std::string& fname)
                           << "will not be loaded since it refers to an non existing frame!!"
                           << " refframe: \"" << dframe.getRefFrame () << "\"");
             }
-            Frame* frame = setup.frameMap[dframe.getName ()];
+            rw::core::Ptr<Frame> frame = setup.frameMap[dframe.getName ()];
             frame->attachTo ((*parent).second, defaultState);
         }
 

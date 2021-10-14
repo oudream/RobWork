@@ -28,8 +28,8 @@ TaskGenerator::TaskGenerator(TaskDescription::Ptr td) :
 
 
 
-void TaskGenerator::moveFrameW(const Transform3D<>& wTtcp, Frame* tcp,
-			MovableFrame* base, State& state)
+void TaskGenerator::moveFrameW(const Transform3D<>& wTtcp, rw::core::Ptr<Frame> tcp,
+			rw::core::Ptr<MovableFrame> base, State& state)
 {
     Transform3D<> tcpTbase = Kinematics::frameTframe(tcp, base, state);
     Transform3D<> wTbase_target = wTtcp * tcpTbase;

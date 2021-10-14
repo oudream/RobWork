@@ -40,7 +40,7 @@ using namespace rw::trajectory;
 namespace {
 
 std::vector< std::shared_ptr< FKRange > >
-createFKRanges (const Frame* base, const std::vector< Frame* >& foi, const State& state)
+createFKRanges (rw::core::Ptr<const  Frame> base, const std::vector< Frame* >& foi, const State& state)
 {
     std::vector< std::shared_ptr< FKRange > > fkranges;
     for (size_t i = 0; i < foi.size (); i++) {

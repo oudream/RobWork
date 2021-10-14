@@ -72,7 +72,7 @@ namespace rwsim { namespace dynamics {
             // std::cout << "Frames: \n";
             // RW_ASSERT(frames.size()>0);
             // std::cout << "- " << frames[0]->getName() << "\n";
-            // for(rw::kinematics::Frame* frame: frames){
+            // for(rw::core::Ptr<rw::kinematics::Frame> frame: frames){
             //	std::cout <<"-- "<< frame->getName() << "\n";
             //}
             std::cout << std::endl;
@@ -89,7 +89,7 @@ namespace rwsim { namespace dynamics {
             // ostr << "Frames: \n";
             // RW_ASSERT(frames.size()>0);
             // ostr << "- " << frames[0]->getName() << "\n";
-            // for(rw::kinematics::Frame* frame: frames){
+            // for(rw::core::Ptr<rw::kinematics::Frame> frame: frames){
             //	ostr <<"-- "<< frame->getName() << "\n";
             //}
             ostr << std::endl;
@@ -567,7 +567,7 @@ namespace rwsim { namespace dynamics {
         rw::models::Object::Ptr getObject () const { return _obj; };
 
       private:
-        rw::kinematics::Frame* _bodyframe;
+        rw::core::Ptr<rw::kinematics::Frame> _bodyframe;
         std::vector< rw::kinematics::Frame* > _frames;
 
         rw::models::Object::Ptr _obj;

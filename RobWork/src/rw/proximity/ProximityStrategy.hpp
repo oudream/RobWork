@@ -73,7 +73,7 @@ namespace rw { namespace proximity {
          * @return true if a Proximity model was succesfully created and linked
          * with the frame; false otherwise.
          */
-        // virtual bool addModel(const kinematics::Frame* frame);
+        // virtual bool addModel(const rw::core::Ptr<kinematics::Frame> frame);
         virtual bool addModel (rw::core::Ptr< rw::models::Object > object);
 
         /**
@@ -87,7 +87,7 @@ namespace rw { namespace proximity {
          * @return true if a Proximity model was succesfully created and linked
          * with the frame; false otherwise.
          */
-        virtual bool addModel (const rw::kinematics::Frame* frame,
+        virtual bool addModel (const rw::core::Ptr<rw::kinematics::Frame> frame,
                                const rw::geometry::Geometry& faces);
 
         /**
@@ -102,7 +102,7 @@ namespace rw { namespace proximity {
          * @return true if a Proximity model was succesfully created and linked
          * with the frame; false otherwise.
          */
-        virtual bool addModel (const rw::kinematics::Frame* frame,
+        virtual bool addModel (const rw::core::Ptr<rw::kinematics::Frame> frame,
                                rw::core::Ptr< rw::geometry::Geometry > faces,
                                bool forceCopy = false);
 
@@ -115,12 +115,12 @@ namespace rw { namespace proximity {
          * @param frame [in] the frame to check for1.0/
          * @return true if a model exists or can be created
          */
-        virtual bool hasModel (const rw::kinematics::Frame* frame);
+        virtual bool hasModel (const rw::core::Ptr<rw::kinematics::Frame> frame);
 
         /**
            @brief Clear (remove all) model information for frame \b frame.
          */
-        virtual void clearFrame (const rw::kinematics::Frame* frame);
+        virtual void clearFrame (const rw::core::Ptr<rw::kinematics::Frame> frame);
 
         /**
            @brief Clear (remove all) model information for all frames.
@@ -134,7 +134,7 @@ namespace rw { namespace proximity {
          * has been associated to frame then NULL is returned.
          * @param frame [in] frame for which an proximitymodel is associated
          */
-        ProximityModel::Ptr getModel (const rw::kinematics::Frame* frame);
+        ProximityModel::Ptr getModel (const rw::core::Ptr<rw::kinematics::Frame> frame);
 
         //// this is the new interface based on CollisionModelInfo
         /**

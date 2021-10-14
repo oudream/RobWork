@@ -51,7 +51,7 @@ class Sensor2DWrapper : public rw::sensor::Scanner2D
 
 }    // namespace
 
-SimulatedScanner2D::SimulatedScanner2D (const std::string& name, rw::kinematics::Frame* frame,
+SimulatedScanner2D::SimulatedScanner2D (const std::string& name, rw::core::Ptr<rw::kinematics::Frame> frame,
                                         FrameGrabber25D::Ptr framegrabber) :
     SimulatedSensor (rw::core::ownedPtr (
         new Scanner2DModel (name, framegrabber->getFieldOfViewY (),
@@ -61,7 +61,7 @@ SimulatedScanner2D::SimulatedScanner2D (const std::string& name, rw::kinematics:
 {}
 
 SimulatedScanner2D::SimulatedScanner2D (const std::string& name, const std::string& desc,
-                                        rw::kinematics::Frame* frame,
+                                        rw::core::Ptr<rw::kinematics::Frame> frame,
                                         FrameGrabber25D::Ptr framegrabber) :
     SimulatedSensor (
         ownedPtr (new Scanner2DModel (name, _framegrabber->getFieldOfViewY (),

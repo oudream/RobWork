@@ -41,7 +41,7 @@ FixedFrameCalibration::Ptr readFixedFrameCalibration (DOMElem::Ptr felement, Wor
     if (!element->hasAttribute ("frame"))
         RW_THROW ("\"frame\" attribute missing.");
     std::string frameName        = element->getAttributeValue ("frame");
-    rw::kinematics::Frame* frame = workcell->findFrame (frameName);
+    rw::core::Ptr<rw::kinematics::Frame> frame = workcell->findFrame (frameName);
     rw::kinematics::FixedFrame::Ptr fixedFrame =
         rw::kinematics::Frame::Ptr (frame).cast< rw::kinematics::FixedFrame > ();
     if (fixedFrame.isNull ())

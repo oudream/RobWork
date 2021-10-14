@@ -39,7 +39,7 @@ namespace rwsim { namespace drawable {
          * @param drawer [in] the workcell drawer
          * @param N [in] max nr of states that is to be rendered
          */
-        RenderGhost (rw::kinematics::Frame* frame,
+        RenderGhost (rw::core::Ptr<rw::kinematics::Frame> frame,
                      rw::core::Ptr< rw::graphics::WorkCellScene > drawer, size_t N);
 
         /**

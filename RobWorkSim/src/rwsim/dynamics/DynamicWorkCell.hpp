@@ -316,7 +316,7 @@ namespace rwsim { namespace dynamics {
         /**
          * @brief gets the body associated with frame f if any.
          */
-        Body::Ptr getBody (rw::kinematics::Frame* f);
+        Body::Ptr getBody (rw::core::Ptr<rw::kinematics::Frame> f);
 
         /**
          * @brief gets the default kinematic workcell

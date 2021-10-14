@@ -50,7 +50,7 @@ namespace rwsim { namespace dynamics {
                            rw::models::Joint &j,
                            rw::kinematics::State &state);
                            */
-        FixedLink (const BodyInfo& info, rw::kinematics::Frame* base,
+        FixedLink (const BodyInfo& info, rw::core::Ptr<rw::kinematics::Frame> base,
                    std::vector< FixedLink* > parents, rw::models::Device& dev, rw::models::Joint& j,
                    const std::vector< rw::kinematics::Frame* >& frames,
                    rw::kinematics::State& state);
@@ -221,7 +221,7 @@ namespace rwsim { namespace dynamics {
 
         double _targetVel;
 
-        rw::kinematics::Frame* _base;
+        rw::core::Ptr<rw::kinematics::Frame> _base;
 
         int _impulseIterations;
 

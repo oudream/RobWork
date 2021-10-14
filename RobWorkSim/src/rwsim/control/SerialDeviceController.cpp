@@ -460,7 +460,7 @@ namespace {
                 std::vector<rw::models::Joint*> joints = ddev->getJointDevice()->getJoints();
                 //std::cout << links.size() << ">" << joints.size() << std::endl;
                 rw::math::Q tauCompensate(joints.size());
-                rw::kinematics::Frame* base = ddev->getKinematicModel()->getBase();
+                rw::core::Ptr<rw::kinematics::Frame> base = ddev->getKinematicModel()->getBase();
                 // go through all links and compute their contribution to the torque
                 for(int i=0;i<joints.size();i++){
                         // go through all links and compute their contribution to the torque
@@ -522,7 +522,7 @@ void SerialDeviceController::updateFTcontrolWrist (
     }
 
     // Task frame and offset
-    Frame* taskFrame = _taskFrame;
+    Frame::Ptr taskFrame = _taskFrame;
 
     // Force target (given in offset frame)
     Wrench6D<> bF_t = _bFd;

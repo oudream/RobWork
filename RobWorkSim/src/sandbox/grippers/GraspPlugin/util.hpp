@@ -11,7 +11,7 @@
 
 typedef rwlibs::algorithms::KDTreeQ<std::pair<rwlibs::task::GraspSubTask*,rwlibs::task::GraspTarget*> > GTaskNNSearch;
 
-void moveFrameW(const rw::math::Transform3D<>& wTtcp, rw::kinematics::Frame *tcp, rw::kinematics::MovableFrame* base, rw::kinematics::State& state){
+void moveFrameW(const rw::math::Transform3D<>& wTtcp, rw::kinematics::Frame *tcp, rw::core::Ptr<rw::kinematics::MovableFrame> base, rw::kinematics::State& state){
     using namespace rw::math;
     using namespace rw::kinematics;
 

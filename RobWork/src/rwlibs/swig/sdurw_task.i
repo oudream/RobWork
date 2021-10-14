@@ -3,16 +3,16 @@
 %{
 #include <rwlibs/swig/ScriptTypes.hpp>
 #include <rw/core/Ptr.hpp>
-
 #include <rw/geometry/IndexedTriMesh.hpp>
+
 using namespace rwlibs::swig;
 using rwlibs::task::Task;
 %}
 
 %include <exception.i>
 
-%import <rwlibs/swig/sdurw.i>
 %import <rwlibs/swig/sdurw_core.i>
+%import <rwlibs/swig/sdurw_math.i>
 
 %pragma(java) jniclassimports=%{
 import org.robwork.sdurw_core.*;

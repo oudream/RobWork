@@ -92,7 +92,7 @@ class TaskDescription
 		rw::math::Q getTeachDistance() const { return _teachDistance; }
 		
 		rw::models::Object::Ptr getTargetObject() { return _targetObject; }
-		rw::kinematics::Frame* getTargetFrame() { return _targetFrame; }
+		rw::kinematics::Frame* getTargetFrame() { return _targetFrame.get(); }
 		void setTarget(rw::models::Object::Ptr object);
 		void setTarget(std::string objectName) { setTarget(_wc->findObject(objectName)); }
 		
@@ -100,8 +100,8 @@ class TaskDescription
 		
 		rw::models::TreeDevice::Ptr getGripperDevice() { return _gripperDevice; }
 		rwsim::dynamics::RigidDevice::Ptr getGripperDynamicDevice() { return _gripperDynamicDevice; }
-		rw::kinematics::Frame* getGripperTCP() { return _gripperTCP; }
-		rw::kinematics::MovableFrame* getGripperMovable() { return _gripperMovable; }
+		rw::kinematics::Frame* getGripperTCP() { return _gripperTCP.get(); }
+		rw::kinematics::MovableFrame* getGripperMovable() { return _gripperMovable.get(); }
 		const std::string& getControllerID() { return _controllerID; }
 		
 		Qualities& getBaseline() { return _baseLine; }
@@ -136,11 +136,11 @@ class TaskDescription
 		rw::math::Q _coverageDistance; // distance used for filtering grasps for coverage
 		rw::math::Q _teachDistance;
 		rw::models::Object::Ptr _targetObject;
-		rw::kinematics::Frame* _targetFrame;
+		rw::core::Ptr<rw::kinematics::Frame> _targetFrame;
 		std::string _gripperID;
 		rw::models::TreeDevice::Ptr _gripperDevice;
-		rw::kinematics::Frame* _gripperTCP;
-		rw::kinematics::MovableFrame* _gripperMovable;
+		rw::core::Ptr<rw::kinematics::Frame> _gripperTCP;
+		rw::core::Ptr<rw::kinematics::MovableFrame> _gripperMovable;
 		std::string _controllerID;
 		rwsim::dynamics::RigidDevice::Ptr _gripperDynamicDevice;
 		Qualities _baseLine;

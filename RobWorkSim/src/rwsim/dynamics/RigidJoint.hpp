@@ -282,7 +282,7 @@ namespace rwsim { namespace dynamics {
         const double _mass, _massInv;
 
         rw::models::Joint* _joint;
-        rw::kinematics::Frame* _frame;
+        rw::core::Ptr<rw::kinematics::Frame> _frame;
         // BodyIntegrator *_integrator;
 
         std::string _materialID;

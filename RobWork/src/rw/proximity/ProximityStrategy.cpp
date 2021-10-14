@@ -38,7 +38,7 @@ ProximityStrategy::ProximityStrategy () : _frameToModel (NULL, 100)
 ProximityStrategy::~ProximityStrategy ()
 {}
 
-ProximityModel::Ptr ProximityStrategy::getModel (const rw::kinematics::Frame* frame)
+ProximityModel::Ptr ProximityStrategy::getModel (const rw::core::Ptr<rw::kinematics::Frame> frame)
 {
     ProximityModel::Ptr model = _frameToModel[*frame];
     return model;
@@ -49,7 +49,7 @@ bool ProximityStrategy::addModel (rw::models::Object::Ptr object)
     if (RigidObject::Ptr robj = object.cast< RigidObject > ()) {
         std::vector< Geometry::Ptr > geoms = robj->getGeometry ();
         for (Geometry::Ptr geom : geoms) {
-            Frame* geoframe = geom->getFrame ();
+            rw::core::Ptr<Frame> geoframe = geom->getFrame ();
             if (!hasModel (geoframe)) {
                 _frameToModel[*geoframe] = createModel ();
                 _frameToModel[*geoframe]->setFrame (geoframe);
@@ -62,7 +62,7 @@ bool ProximityStrategy::addModel (rw::models::Object::Ptr object)
     return false;
 }
 
-bool ProximityStrategy::addModel (const Frame* frame, const rw::geometry::Geometry& geom)
+bool ProximityStrategy::addModel (const rw::core::Ptr<Frame> frame, const rw::geometry::Geometry& geom)
 {
     ProximityModel::Ptr model = getModel (frame);
     if (model == NULL) {
@@ -76,7 +76,7 @@ bool ProximityStrategy::addModel (const Frame* frame, const rw::geometry::Geomet
     return res;
 }
 
-bool ProximityStrategy::addModel (const Frame* frame, rw::geometry::Geometry::Ptr geom,
+bool ProximityStrategy::addModel (const rw::core::Ptr<Frame> frame, rw::geometry::Geometry::Ptr geom,
                                   bool forceCopy)
 {
     ProximityModel::Ptr model = getModel (frame);
@@ -91,7 +91,7 @@ bool ProximityStrategy::addModel (const Frame* frame, rw::geometry::Geometry::Pt
     return res;
 }
 
-bool ProximityStrategy::hasModel (const rw::kinematics::Frame* frame)
+bool ProximityStrategy::hasModel (const rw::core::Ptr<rw::kinematics::Frame> frame)
 {
     if (!_frameToModel.has (*frame) || _frameToModel[*frame] == NULL) {
         // if (CollisionModelInfo::get(frame).size()>0)
@@ -101,7 +101,7 @@ bool ProximityStrategy::hasModel (const rw::kinematics::Frame* frame)
     return true;
 }
 
-void ProximityStrategy::clearFrame (const rw::kinematics::Frame* frame)
+void ProximityStrategy::clearFrame (const rw::core::Ptr<rw::kinematics::Frame> frame)
 {
     if (!_frameToModel.has (*frame) || _frameToModel[*frame] == NULL)
         return;

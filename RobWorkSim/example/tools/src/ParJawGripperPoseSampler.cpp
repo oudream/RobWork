@@ -292,9 +292,6 @@ int main(int argc, char** argv)
 
     // also add the stl object
 
-
-    //void addGeometry(rw::kinematics::Frame* frame, const rw::geometry::Geometry::Ptr geometry);
-
     if(!obj){
 
         ProximityModel::Ptr object = cstrategy->createModel();

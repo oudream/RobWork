@@ -65,7 +65,7 @@ namespace rw { namespace models {
          * @param state [in] the state that shows how frames are connected as
                 needed for the computation of Jacobians.
          */
-        JointDevice (const std::string& name, rw::kinematics::Frame* base, rw::kinematics::Frame* end,
+        JointDevice (const std::string& name, rw::core::Ptr<rw::kinematics::Frame> base, rw::core::Ptr<rw::kinematics::Frame> end,
                      const std::vector< rw::models::Joint* >& joints, const rw::kinematics::State& state);
 
         /**
@@ -111,20 +111,20 @@ namespace rw { namespace models {
                                               const rw::kinematics::State& state) const;
 
         /** @copydoc Device::getBase */
-        rw::kinematics::Frame* getBase () { return _base; }
+        rw::kinematics::Frame* getBase () { return _base.get(); }
 
         /** @copydoc Device::getBase */
-        const rw::kinematics::Frame* getBase () const { return _base; }
+        const rw::kinematics::Frame* getBase () const { return _base.get(); }
 
         /** @copydoc Device::getEnd() */
-        virtual rw::kinematics::Frame* getEnd () { return _end; }
+        virtual rw::kinematics::Frame* getEnd () { return _end.get(); }
 
         /** @copydoc Device::getEnd */
-        virtual const rw::kinematics::Frame* getEnd () const { return _end; }
+        virtual const rw::kinematics::Frame* getEnd () const { return _end.get(); }
 
       private:
-        rw::kinematics::Frame* _base;
-        rw::kinematics::Frame* _end;
+        rw::core::Ptr<rw::kinematics::Frame> _base;
+        rw::core::Ptr<rw::kinematics::Frame> _end;
 
         std::vector< rw::models::Joint* > _joints;
         size_t _dof;

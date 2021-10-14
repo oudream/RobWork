@@ -75,8 +75,8 @@ namespace dynamics {
 	
 		std::vector<RigidBody* > bodies;
 
-		const rw::core::models::SerialDevice *robot;
-		const rw::core::kinematics::Frame* base;
+		const rw::models::SerialDevice *robot;
+		rw::core::Ptr<const rw::kinematics::Frame> base;
 
 		rw::core::math::Vector3D<double > Z;
 		rw::core::math::Rotation3D<double> R;

@@ -81,7 +81,7 @@ private slots:
 
 private:
     rw::models::WorkCell* _wc;
-    rw::kinematics::Frame* _tcpFrame;
+    rw::core::Ptr<rw::kinematics::Frame> _tcpFrame;
     rwsim::dynamics::DynamicWorkCell::Ptr _dwc;
     rwsim::simulator::ThreadSimulator::Ptr _tsim;
     rwsim::simulator::DynamicSimulator::Ptr _sim;

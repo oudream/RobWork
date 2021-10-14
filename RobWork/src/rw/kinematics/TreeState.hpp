@@ -85,12 +85,13 @@ namespace rw { namespace kinematics {
          *
          * @return The parent of the frame or NULL if the frame has no parent.
          */
-        const rw::kinematics::Frame* getParent (const rw::kinematics::Frame* frame) const;
+        const rw::kinematics::Frame*
+        getParent (rw::core::Ptr< const rw::kinematics::Frame > frame) const;
 
         /**
          * @copydoc getParent
          */
-        rw::kinematics::Frame* getParent (rw::kinematics::Frame* frame) const;
+        rw::kinematics::Frame* getParent (rw::core::Ptr< rw::kinematics::Frame > frame) const;
 
         /**
          * @brief The child frames of \b frame.
@@ -106,7 +107,7 @@ namespace rw { namespace kinematics {
          *
          * @return The children of the frame if any children exist, else NULL.
          */
-        const FrameList& getChildren (const Frame* frame) const;
+        const FrameList& getChildren (rw::core::Ptr<const Frame > frame) const;
 
         /**
          * @brief Move a frame within the tree.
@@ -121,7 +122,7 @@ namespace rw { namespace kinematics {
          * @param frame [in] The frame to move.
          * @param parent [in] The frame to attach \b frame to.
          */
-        void attachFrame (Frame* frame, Frame* parent);
+        void attachFrame (rw::core::Ptr< Frame > frame, rw::core::Ptr< Frame > parent);
 
         /**
          * @brief gets the StateSetup used to create the TreeState

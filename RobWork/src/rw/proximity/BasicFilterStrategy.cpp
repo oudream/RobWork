@@ -53,7 +53,7 @@ void BasicFilterStrategy::initialize ()
 
     for (Object::Ptr object : objects) {
         for (geometry::Geometry::Ptr geom : object->getGeometry (state)) {
-            Frame* frame = geom->getFrame ();
+            rw::core::Ptr<Frame> frame = geom->getFrame ();
             RW_ASSERT (frame);
             _frameToGeoIdMap[*frame].push_back (geom->getName ());
         }
@@ -84,7 +84,7 @@ ProximitySetup& BasicFilterStrategy::getProximitySetup ()
     return _psetup;
 }
 
-void BasicFilterStrategy::addGeometry (rw::kinematics::Frame* frame,
+void BasicFilterStrategy::addGeometry (rw::core::Ptr<rw::kinematics::Frame> frame,
                                        const rw::geometry::Geometry::Ptr geo)
 {
     if (geo == NULL)
@@ -97,7 +97,7 @@ void BasicFilterStrategy::addGeometry (rw::kinematics::Frame* frame,
     initializeCollisionFramePairs (_workcell->getDefaultState ());
 }
 
-void BasicFilterStrategy::removeGeometry (rw::kinematics::Frame* frame,
+void BasicFilterStrategy::removeGeometry (rw::core::Ptr<rw::kinematics::Frame> frame,
                                           const rw::geometry::Geometry::Ptr geo)
 {
     if (geo == NULL)
@@ -106,7 +106,7 @@ void BasicFilterStrategy::removeGeometry (rw::kinematics::Frame* frame,
     removeGeometry (frame, geo->getName ());
 }
 
-void BasicFilterStrategy::removeGeometry (rw::kinematics::Frame* frame, const std::string& geoName)
+void BasicFilterStrategy::removeGeometry (rw::core::Ptr<rw::kinematics::Frame> frame, const std::string& geoName)
 {
     if (frame == NULL)
         RW_THROW ("Unable to add geometry to NULL frame");
@@ -181,7 +181,7 @@ void BasicFilterStrategy::initializeCollisionFramePairs (const State& state)
 
     if (_psetup.useExcludeStaticPairs ()) {
         std::vector< FrameList > staticGroups = Kinematics::getStaticFrameGroups (
-            _workcell->getWorldFrame (), _workcell->getDefaultState ());
+            rw::core::Ptr<Frame>(_workcell->getWorldFrame ()), _workcell->getDefaultState ());
 
         FramePairSet exclude_set;
         for (FrameList& group : staticGroups) {

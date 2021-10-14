@@ -60,17 +60,17 @@ std::vector< Frame* > DynamicUtil::getAnchoredFrames (Frame& frame, const State&
     return getAnchoredChildFrames (parent, state);
 }
 
-std::vector< Frame* > DynamicUtil::getAnchoredChildFrames (Frame* parent, const State& state)
+std::vector< Frame* > DynamicUtil::getAnchoredChildFrames (rw::core::Ptr<Frame> parent, const State& state)
 {
     // next follow all children and locate fixed anchored frames
     std::vector< Frame* > res;
     std::stack< Frame* > fstack;
 
-    fstack.push (parent);
+    fstack.push (parent.get());
 
     // if( rw::models::Accessor::collisionModelInfo().has(*parent) )
     // res.push_back(&frame);
-    res.push_back (parent);
+    res.push_back (parent.get());
 
     while (!fstack.empty ()) {
         parent = fstack.top ();
@@ -88,17 +88,17 @@ std::vector< Frame* > DynamicUtil::getAnchoredChildFrames (Frame* parent, const 
     return res;
 }
 
-std::vector< Frame* > DynamicUtil::getAnchoredChildFrames (Frame* initparent, const State& state,
+std::vector< Frame* > DynamicUtil::getAnchoredChildFrames(rw::core::Ptr<Frame> initparent, const State& state,
                                                            const std::vector< Frame* >& exclude)
 {
     // next follow all children and locate fixed anchored frames
     std::vector< Frame* > res;
     std::stack< Frame* > fstack;
 
-    fstack.push (initparent);
+    fstack.push (initparent.get());
 
     // res.push_back(&frame);
-    res.push_back (initparent);
+    res.push_back (initparent.get());
 
     while (!fstack.empty ()) {
         Frame* parent = fstack.top ();

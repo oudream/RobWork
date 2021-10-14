@@ -66,7 +66,7 @@ struct ContactStrategyDMS<T>::Model
     std::string geoId;
     rw::geometry::TriMesh::Ptr mesh;
     rw::math::Transform3D<> transform;
-    const rw::kinematics::Frame* frame;
+    rw::core::Ptr<const rw::kinematics::Frame> frame;
     rw::proximity::ProximityModel::Ptr pmodel;
 };
 

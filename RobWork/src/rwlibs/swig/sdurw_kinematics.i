@@ -106,7 +106,6 @@ NAMED_OWNEDPTR(StateData, rw::kinematics::StateData);
     #include <rw/kinematics/Frame.hpp>
 %}
 %include <rw/kinematics/Frame.hpp>
-
 NAMED_OWNEDPTR(Frame, rw::kinematics::Frame);
 
 %template (FrameVector) std::vector<rw::kinematics::Frame*>;
@@ -114,6 +113,44 @@ NAMED_OWNEDPTR(Frame, rw::kinematics::Frame);
 %template (FramePairVector) std::vector< std::pair< rw::kinematics::Frame *, rw::kinematics::Frame * > >;
 %template (VectorVectorFrame) std::vector<std::vector<rw::kinematics::Frame*>>;
 %template (MapStringFrame) std::map<std::string,rw::kinematics::Frame*>;
+#if !defined(SWIGJAVA)
+#if defined(SWIGLUA)
+#define SWIGPtr_pre L,
+#else
+#define SWIGPtr_pre
+#endif
+
+%typecheck(SWIG_TYPECHECK_SWIGOBJECT) rw::core::Ptr<rw::kinematics::Frame>{
+    void* ptr;
+    if (SWIG_IsOK(SWIG_ConvertPtr(SWIGPtr_pre $input, (void **) &ptr, $descriptor(rw::core::Ptr<rw::core::kinematics::Frame> *),SWIG_POINTER_NO_NULL | 0))) {
+		$1 = 1;
+	}
+	else {
+		$1 = SWIG_IsOK(SWIG_ConvertPtr(SWIGPtr_pre $input, (void **) &ptr, $descriptor(rw::kinematics::Frame *),SWIG_POINTER_NO_NULL | 0));
+	}
+}
+%typemap(in) rw::core::Ptr<rw::kinematics::Frame > (void * argp){
+    int res = SWIG_ConvertPtr(SWIGPtr_pre $input, &argp, $descriptor(rw::core::Ptr<rw::kinematics::Frame> *),SWIG_POINTER_NO_NULL | 0);
+	if (SWIG_IsOK(res)) {
+		rw::core::Ptr<rw::kinematics::Frame> * tmp_var = reinterpret_cast< rw::core::Ptr<rw::kinematics::Frame > * > (argp);
+		$1 = *tmp_var;
+	}
+	else {
+        res = SWIG_ConvertPtr(SWIGPtr_pre $input, &argp, $descriptor(rw::kinematics::Frame *),SWIG_POINTER_NO_NULL | 0);
+        if (SWIG_IsOK(res)) {
+            rw::kinematics::Frame  * tmp_var = reinterpret_cast< rw::kinematics::Frame *> (argp);
+            $1 = rw::core::Ptr< rw::kinematics::Frame > (tmp_var);
+        } else {
+#if !defined(SWIGLUA)
+        SWIG_exception_fail(SWIG_ArgError(res), "could not convert to type rw::core::Ptr<rw::kinematics::Frame >");
+#else 
+        lua_pushstring(L, "could not convert to type rw::core::Ptr<rw::kinematics::Frame >");
+        SWIG_fail;
+#endif 
+        }
+	}
+}
+#endif
 
 %{
     #include <rw/kinematics/FixedFrame.hpp>

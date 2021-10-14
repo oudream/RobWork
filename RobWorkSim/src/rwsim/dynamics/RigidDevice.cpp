@@ -29,11 +29,11 @@ using namespace rw::models;
 
 namespace {
 
-template< class T > T* findParentFrom (rw::kinematics::Frame* f)
+template< class T > T* findParentFrom (rw::core::Ptr<rw::kinematics::Frame> f)
 {
-    Frame* parent = f;
-    while (parent != NULL) {
-        T* res = dynamic_cast< T* > (parent);
+    Frame::Ptr parent = f;
+    while (! parent.isNull()) {
+        T* res = parent.cast<T>().get();
         if (res != NULL)
             return res;
         parent = parent->getParent ();
