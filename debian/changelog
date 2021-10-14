@@ -1,3 +1,18 @@
+robwork (2.2.0-1) focal; urgency=medium
+
+  * find ODE double first
+  * Find RWS ini file in home dir
+  * loading ini file from home dir
+  * Reconfigured python to use numpy instead of eigen
+  * Added RobWork FCL Threaded MultiDistance
+  * fixing ubuntu 18 rwsim python problem
+  * added missing debian package
+  * added RobWork graphics to new swig system
+  * added missing package to install
+  * Version number updated to 2.2.0-1
+
+ -- Kasper Høj Lorenzen <kalor@mmmi.sdu.dk>  Wed, 13 Oct 2021 15:45:40 +0200
+
 robwork (2.1.7-1) focal; urgency=medium
 
   * Fixed locating library problem

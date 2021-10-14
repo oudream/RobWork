@@ -2225,6 +2225,7 @@ Depends:
  libsdurw-assembly-dev (=${binary:Version}), 
  libsdurw-csg-dev (=${binary:Version}), 
  libsdurw-geometry-dev (=${binary:Version}), 
+ libsdurw-geometry-expanded (=${binary:Version}),
  ${misc:Depends}
 Conflicts:
   libsdurw1.2-all-dev
