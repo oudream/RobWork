@@ -58,7 +58,7 @@ namespace rwsim { namespace dynamics {
          * that is staticly connected and that has geometry information.
          */
         static std::vector< rw::kinematics::Frame* >
-        getAnchoredChildFrames (rw::kinematics::Frame* parent, const rw::kinematics::State& state);
+        getAnchoredChildFrames (rw::core::Ptr<rw::kinematics::Frame> parent, const rw::kinematics::State& state);
         // static double getMaxVelocity(dynamics::DynamicWorkcell& dwc);
 
         /**
@@ -69,7 +69,7 @@ namespace rwsim { namespace dynamics {
          * @return
          */
         static std::vector< rw::kinematics::Frame* >
-        getAnchoredChildFrames (rw::kinematics::Frame* parent, const rw::kinematics::State& state,
+        getAnchoredChildFrames (rw::core::Ptr<rw::kinematics::Frame> parent, const rw::kinematics::State& state,
                                 const std::vector< rw::kinematics::Frame* >& exclude);
 
         /**

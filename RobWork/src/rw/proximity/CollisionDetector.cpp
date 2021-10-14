@@ -133,34 +133,34 @@ bool CollisionDetector::inCollision (const State& state, QueryResult* result,
     return coliding;
 }
 
-void CollisionDetector::addGeometry (rw::kinematics::Frame* frame,
+bool CollisionDetector::addGeometry (rw::core::Ptr<rw::kinematics::Frame> frame,
                                      const rw::geometry::Geometry::Ptr geometry)
 {
-    ProximityCalculator::addGeometry (Frame::Ptr (frame), geometry);
+    return ProximityCalculator::addGeometry (Frame::Ptr (frame), geometry);
 }
 
-void CollisionDetector::removeGeometry (rw::kinematics::Frame* frame,
+void CollisionDetector::removeGeometry (rw::core::Ptr<rw::kinematics::Frame> frame,
                                         const rw::geometry::Geometry::Ptr geo)
 {
     ProximityCalculator::removeGeometry (Frame::Ptr (frame), geo);
 }
 
-void CollisionDetector::removeGeometry (rw::kinematics::Frame* frame, const std::string geoid)
+void CollisionDetector::removeGeometry (rw::core::Ptr<rw::kinematics::Frame> frame, const std::string geoid)
 {
     ProximityCalculator::removeGeometry (Frame::Ptr (frame), geoid);
 }
 
-std::vector< std::string > CollisionDetector::getGeometryIDs (rw::kinematics::Frame* frame)
+std::vector< std::string > CollisionDetector::getGeometryIDs (rw::core::Ptr<rw::kinematics::Frame> frame)
 {
     return ProximityCalculator::getGeometryIDs (Frame::Ptr (frame));
 }
 
-bool CollisionDetector::hasGeometry (rw::kinematics::Frame* frame, const std::string& geometryId)
+bool CollisionDetector::hasGeometry (rw::core::Ptr<rw::kinematics::Frame> frame, const std::string& geometryId)
 {
     return ProximityCalculator::hasGeometry (Frame::Ptr (frame), geometryId);
 }
 
-rw::geometry::Geometry::Ptr CollisionDetector::getGeometry (rw::kinematics::Frame* frame,
+rw::geometry::Geometry::Ptr CollisionDetector::getGeometry (rw::core::Ptr<rw::kinematics::Frame> frame,
                                                             const std::string& geometryId)
 {
     return ProximityCalculator::getGeometry (Frame::Ptr (frame), geometryId);

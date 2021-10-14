@@ -52,24 +52,24 @@ std::vector< Joint* > getJointsFromFrames (const std::vector< Frame* >& frames)
 
     typedef std::vector< Frame* >::const_iterator I;
     for (I p = frames.begin (); p != frames.end (); ++p) {
-        Frame* frame = *p;
+        rw::core::Ptr<Frame> frame = *p;
 
         // But how do we know that isActiveJoint() implies Joint*? Why don't
         // we use a dynamic cast here for safety?
         if (isActiveJoint (*frame) || isDependentJoint (*frame))
-            active.push_back (static_cast< Joint* > (frame));
+            active.push_back (frame.cast<Joint>().get());
     }
 
     return active;
 }
 
 // From the root 'first' to the child 'last', but with 'last' excluded.
-std::vector< Frame* > getChain (Frame* first, Frame* last, const State& state)
+std::vector< Frame* > getChain (rw::core::Ptr<Frame> first, rw::core::Ptr<Frame> last, const State& state)
 {
     return Kinematics::reverseChildToParentChain (last, first, state);
 }
 
-std::vector< Frame* > getKinematicTree (Frame* first, const std::vector< Frame* >& last,
+std::vector< Frame* > getKinematicTree (rw::core::Ptr<Frame> first, const std::vector< Frame* >& last,
                                         const State& state)
 {
     RW_ASSERT (first);
@@ -78,7 +78,7 @@ std::vector< Frame* > getKinematicTree (Frame* first, const std::vector< Frame* 
     typedef V::const_iterator I;
 
     V kinematicChain;
-    kinematicChain.push_back (first);
+    kinematicChain.push_back (first.get());
     for (I p = last.begin (); p != last.end (); ++p) {
         std::vector< Frame* > chain = getChain (first, *p, state);
         for (Frame* frame : chain) {
@@ -94,7 +94,7 @@ std::vector< Frame* > getKinematicTree (Frame* first, const std::vector< Frame* 
 }
 }    // namespace
 
-TreeDevice::TreeDevice (Frame* base, const std::vector< Frame* >& ends, const std::string& name,
+TreeDevice::TreeDevice (rw::core::Ptr<Frame> base, const std::vector< Frame* >& ends, const std::string& name,
                         const State& state) :
     JointDevice (name, base, ends.front (),
                  getJointsFromFrames (getKinematicTree (base, ends, state)), state),

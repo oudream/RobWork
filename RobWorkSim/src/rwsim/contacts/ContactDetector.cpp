@@ -557,8 +557,8 @@ std::vector< Contact > ContactDetector::updateContacts (const State& state,
         ContactDetectorTracking::ContactInfo& info = *it;
         if (info.id > 0)
             continue;
-        const Frame* const frameA       = info.frames.first;
-        const Frame* const frameB       = info.frames.second;
+        Frame::CPtr  frameA       = info.frames.first;
+        Frame::CPtr frameB       = info.frames.second;
         SimulatorLogScope::Ptr stratLog = NULL;
         if (log != NULL) {
             stratLog = rw::core::ownedPtr (new SimulatorLogScope (log));

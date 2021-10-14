@@ -111,7 +111,7 @@ namespace rw { namespace proximity {
          * @param frame [in] Frame which has the geometry associated
          * @param geo [in] Geometry
          */
-        virtual void addGeometry (rw::kinematics::Frame* frame,
+        virtual void addGeometry (rw::core::Ptr<rw::kinematics::Frame> frame,
                                   const rw::core::Ptr< rw::geometry::Geometry > geo) = 0;
 
         /**
@@ -121,7 +121,7 @@ namespace rw { namespace proximity {
          * @param frame [in] Frame which has the geometry associated
          * @param geo [in] Geometry
          */
-        virtual void removeGeometry (rw::kinematics::Frame* frame,
+        virtual void removeGeometry (rw::core::Ptr<rw::kinematics::Frame> frame,
                                      const rw::core::Ptr< rw::geometry::Geometry > geo) = 0;
 
         /**
@@ -131,7 +131,7 @@ namespace rw { namespace proximity {
          * @param frame [in] Frame which has the geometry associated
          * @param geoName [in] Name of geometry
          */
-        virtual void removeGeometry (rw::kinematics::Frame* frame, const std::string& geoName) = 0;
+        virtual void removeGeometry (rw::core::Ptr<rw::kinematics::Frame> frame, const std::string& geoName) = 0;
 
         /**
          * @brief Adds a ProximitySetupRule

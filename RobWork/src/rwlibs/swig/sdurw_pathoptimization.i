@@ -3,6 +3,19 @@
 %{
 #include <rwlibs/swig/ScriptTypes.hpp>
 #include <rw/core/Ptr.hpp>
+#include <rw/models/Joint.hpp>
+#include <rw/models/PrismaticSphericalJoint.hpp>
+#include <rw/models/PrismaticUniversalJoint.hpp>
+#include <rw/models/SphericalJoint.hpp>
+#include <rw/models/UniversalJoint.hpp>
+#include <rw/models/VirtualJoint.hpp>
+#include <rw/models/DependentJoint.hpp>
+#include <rw/models/DependentRevoluteJoint.hpp>
+#include <rw/models/DependentPrismaticJoint.hpp>
+#include <rw/models/RevoluteJoint.hpp>
+#include <rw/models/PrismaticJoint.hpp>
+#include <rw/kinematics/MovableFrame.hpp>
+#include <rw/kinematics/FixedFrame.hpp>
 
 #include <rw/geometry/IndexedTriMesh.hpp>
 

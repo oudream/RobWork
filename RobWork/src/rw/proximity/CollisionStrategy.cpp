@@ -122,7 +122,7 @@ CollisionStrategy::make (CollisionToleranceStrategy::Ptr strategy,
     return ownedPtr (new ToleranceWrapper (strategy, frameToTolerance, defaultTolerance));
 }
 
-bool CollisionStrategy::inCollision (const Frame* a, const Transform3D<>& wTa, const Frame* b,
+bool CollisionStrategy::inCollision (const rw::core::Ptr<Frame> a, const Transform3D<>& wTa, const rw::core::Ptr<Frame> b,
                                      const Transform3D<>& wTb, QueryType type)
 {
     if (getModel (a) == NULL || getModel (b) == NULL)
@@ -133,7 +133,7 @@ bool CollisionStrategy::inCollision (const Frame* a, const Transform3D<>& wTa, c
     return data.inCollision ();
 }
 
-bool CollisionStrategy::inCollision (const Frame* a, const Transform3D<>& wTa, const Frame* b,
+bool CollisionStrategy::inCollision (const rw::core::Ptr<Frame> a, const Transform3D<>& wTa, const rw::core::Ptr<Frame> b,
                                      const Transform3D<>& wTb, ProximityStrategyData& data,
                                      QueryType type)
 {

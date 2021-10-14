@@ -20,7 +20,7 @@
 using namespace rw::sensor;
 using namespace rw::math;
 
-TactileArrayModel::TactileArrayModel (const std::string& name, rw::kinematics::Frame* frame,
+TactileArrayModel::TactileArrayModel (const std::string& name, rw::core::Ptr<rw::kinematics::Frame> frame,
                                       const rw::math::Transform3D<>& fThmap,
                                       const ValueMatrix& heightMap, double cw, double ch) :
     SensorModel (name, frame),

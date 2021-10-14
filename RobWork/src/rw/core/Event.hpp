@@ -115,7 +115,7 @@ namespace rw { namespace core {
          *
          * Typical usage
          * \code
-         * void MyPlugin::frameSelectedListener(rw::kinematics::Frame* frame) {
+         * void MyPlugin::frameSelectedListener(rw::core::Ptr<rw::kinematics::Frame> frame) {
          *     ...
          * }
          *

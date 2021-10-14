@@ -31,9 +31,9 @@ using namespace rw::core;
 //----------------------------------------------------------------------
 // Kinematics computation
 
-Transform3D<> Kinematics::worldTframe (const Frame* to, const State& state)
+Transform3D<> Kinematics::worldTframe (rw::core::Ptr< const Frame > to, const State& state)
 {
-    const Frame* f = to;
+    rw::core::Ptr< const Frame > f = to;
 
     Transform3D<> transform = Transform3D<>::identity ();
     while (f) {
@@ -44,7 +44,8 @@ Transform3D<> Kinematics::worldTframe (const Frame* to, const State& state)
     return transform;
 }
 
-Transform3D<> Kinematics::frameTframe (const Frame* from, const Frame* to, const State& state)
+Transform3D<> Kinematics::frameTframe (rw::core::Ptr< const Frame > from,
+                                       rw::core::Ptr< const Frame > to, const State& state)
 {
     RW_ASSERT (from != NULL);
     RW_ASSERT (to != NULL);
@@ -77,7 +78,7 @@ void findAllFramesHelper (Frame& frame, std::vector< Frame* >& result)
 
 }    // namespace
 
-std::vector< Frame* > Kinematics::findAllFrames (Frame* root, const State& state)
+std::vector< Frame* > Kinematics::findAllFrames (rw::core::Ptr< Frame > root, const State& state)
 {
     RW_ASSERT (root);
     std::vector< Frame* > result;
@@ -85,7 +86,7 @@ std::vector< Frame* > Kinematics::findAllFrames (Frame* root, const State& state
     return result;
 }
 
-std::vector< Frame* > Kinematics::findAllFrames (Frame* root)
+std::vector< Frame* > Kinematics::findAllFrames (rw::core::Ptr< Frame > root)
 {
     RW_ASSERT (root);
     std::vector< Frame* > result;
@@ -93,7 +94,8 @@ std::vector< Frame* > Kinematics::findAllFrames (Frame* root)
     return result;
 }
 
-std::vector< Frame* > Kinematics::childToParentChain (Frame* child, Frame* parent,
+std::vector< Frame* > Kinematics::childToParentChain (rw::core::Ptr< Frame > child,
+                                                      rw::core::Ptr< Frame > parent,
                                                       const State& state)
 {
     typedef std::vector< Frame* > Vec;
@@ -106,7 +108,7 @@ std::vector< Frame* > Kinematics::childToParentChain (Frame* child, Frame* paren
     }
 
     Vec chain;
-    for (Frame* frame = child; frame != parent; frame = frame->getParent (state)) {
+    for (rw::core::Ptr< Frame > frame = child; frame != parent; frame = frame->getParent (state)) {
         if (!frame) {
             const std::string parentName = parent ? StringUtil::quote (parent->getName ()) : "NULL";
 
@@ -114,12 +116,13 @@ std::vector< Frame* > Kinematics::childToParentChain (Frame* child, Frame* paren
                                               << parentName);
         }
 
-        chain.push_back (frame);
+        chain.push_back (frame.get ());
     }
     return chain;
 }
 
-std::vector< Frame* > Kinematics::reverseChildToParentChain (Frame* child, Frame* parent,
+std::vector< Frame* > Kinematics::reverseChildToParentChain (rw::core::Ptr< Frame > child,
+                                                             rw::core::Ptr< Frame > parent,
                                                              const State& state)
 {
     typedef std::vector< Frame* > V;
@@ -127,7 +130,8 @@ std::vector< Frame* > Kinematics::reverseChildToParentChain (Frame* child, Frame
     return V (chain.rbegin (), chain.rend ());
 }
 
-std::vector< Frame* > Kinematics::parentToChildChain (Frame* parent, Frame* child,
+std::vector< Frame* > Kinematics::parentToChildChain (rw::core::Ptr< Frame > parent,
+                                                      rw::core::Ptr< Frame > child,
                                                       const State& state)
 {
     const std::vector< Frame* > chain = childToParentChain (child, parent, state);
@@ -136,32 +140,33 @@ std::vector< Frame* > Kinematics::parentToChildChain (Frame* parent, Frame* chil
         return chain;
 
     std::vector< Frame* > result;
-    result.push_back (parent);
+    result.push_back (parent.get ());
     result.insert (result.end (), chain.rbegin (), chain.rend () - 1);
     return result;
 }
 
-std::map< std::string, Frame* > Kinematics::buildFrameMap (Frame* root, const State& state)
+std::map< std::string, Frame* > Kinematics::buildFrameMap (rw::core::Ptr< Frame > root,
+                                                           const State& state)
 {
     std::map< std::string, Frame* > result;
-    for (Frame* frame : Kinematics::findAllFrames (root, state)) {
-        result.insert (std::make_pair (frame->getName (), frame));
+    for (rw::core::Ptr< Frame > frame : Kinematics::findAllFrames (root, state)) {
+        result.insert (std::make_pair (frame->getName (), frame.get ()));
     }
     return result;
 }
 
-Frame* Kinematics::worldFrame (Frame* frame, const State& state)
+Frame* Kinematics::worldFrame (rw::core::Ptr< Frame > frame, const State& state)
 {
-    Frame* parent = frame;
+    rw::core::Ptr< Frame > parent = frame;
     while (parent->getParent (state))
         parent = parent->getParent (state);
-    return parent;
+    return parent.get ();
 }
 
-const Frame* Kinematics::worldFrame (const Frame* frame, const State& state)
+const Frame* Kinematics::worldFrame (rw::core::Ptr< const Frame > frame, const State& state)
 {
     // Forward to non-const version.
-    return worldFrame (const_cast< Frame* > (frame), state);
+    return worldFrame (frame, state);
 }
 
 //----------------------------------------------------------------------
@@ -199,24 +204,25 @@ void attachFrame (State& state, Frame& frame, Frame& parent, const Transform3D<>
 }
 }    // namespace
 
-bool Kinematics::isDAF (const Frame* frame)
+bool Kinematics::isDAF (rw::core::Ptr< const Frame > frame)
 {
     // Unfortunately this reports the world frame to be a DAF!
     return (frame->getParent () == NULL);
 }
 
-bool Kinematics::isFixedFrame (const Frame* frame)
+bool Kinematics::isFixedFrame (rw::core::Ptr< const Frame > frame)
 {
-    return dynamic_cast< const FixedFrame* > (frame) != 0;
+    return !frame.cast<const FixedFrame > ().isNull ();
 }
 
-void Kinematics::gripFrame (Frame* item, Frame* gripper, State& state)
+void Kinematics::gripFrame (rw::core::Ptr< Frame > item, rw::core::Ptr< Frame > gripper,
+                            State& state)
 {
     const Transform3D<>& relative = Kinematics::frameTframe (gripper, item, state);
     attachFrame (state, *item, *gripper, relative);
 }
 
-void Kinematics::gripFrame (MovableFrame* item, Frame* gripper, State& state)
+void Kinematics::gripFrame (MovableFrame* item, rw::core::Ptr< Frame > gripper, State& state)
 {
     const Transform3D<>& relative = Kinematics::frameTframe (gripper, item, state);
     attachMovableFrame (state, *item, *gripper, relative);
@@ -261,7 +267,8 @@ void createStaticFrameGroups (const Frame& root, ConstFrameList& group,
 }
 }    // namespace
 
-std::vector< FrameList > Kinematics::getStaticFrameGroups (Frame* root, const State& state)
+std::vector< FrameList > Kinematics::getStaticFrameGroups (rw::core::Ptr< Frame > root,
+                                                           const State& state)
 {
     std::vector< FrameList > staticGroups;
     FrameList group;
@@ -270,7 +277,7 @@ std::vector< FrameList > Kinematics::getStaticFrameGroups (Frame* root, const St
     return staticGroups;
 }
 
-std::vector< ConstFrameList > Kinematics::getStaticFrameGroups (const Frame* root,
+std::vector< ConstFrameList > Kinematics::getStaticFrameGroups (rw::core::Ptr< const Frame > root,
                                                                 const State& state)
 {
     std::vector< ConstFrameList > staticGroups;
@@ -278,4 +285,16 @@ std::vector< ConstFrameList > Kinematics::getStaticFrameGroups (const Frame* roo
     createStaticFrameGroups (*root, group, staticGroups, state);
     staticGroups.push_back (group);
     return staticGroups;
+}
+
+std::vector< ConstFrameList > Kinematics::getStaticFrameGroups ( const Frame* root,
+                                                                const State& state)
+{
+    return Kinematics::getStaticFrameGroups(rw::core::Ptr<const Frame>(root),state);
+}
+
+std::vector< FrameList > Kinematics::getStaticFrameGroups ( Frame* root,
+                                                                const State& state)
+{
+    return Kinematics::getStaticFrameGroups(rw::core::Ptr<Frame>(root),state);
 }

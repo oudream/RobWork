@@ -29,7 +29,7 @@ using namespace rw::kinematics;
 using namespace rw::math;
 
 DeviceJacobianCalculator::DeviceJacobianCalculator (std::vector< Device::Ptr > devices,
-                                                    const Frame* base,
+                                                    const rw::core::Ptr<Frame> base,
                                                     const std::vector< Frame* >& tcps,
                                                     const State& state) :
     _base (base),
@@ -55,7 +55,7 @@ Jacobian DeviceJacobianCalculator::get (const rw::kinematics::State& state) cons
     }
 
     for (size_t i = 0; i < _tcps.size (); i++) {
-        const Frame* tcpFrame      = _tcps[i];
+        const rw::core::Ptr<Frame> tcpFrame      = _tcps[i];
         const JacobianSetup& setup = _jacobianSetups[i];
 
         Transform3D<> tcp = fk.get (*tcpFrame);

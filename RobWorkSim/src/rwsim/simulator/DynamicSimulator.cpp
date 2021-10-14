@@ -108,7 +108,7 @@ std::vector< rwlibs::simulation::SimulatedSensor::Ptr > DynamicSimulator::getSen
     return _pengine->getSensors ();
 }
 
-void DynamicSimulator::setEnabled (rw::kinematics::Frame* f, bool enabled)
+void DynamicSimulator::setEnabled (rw::kinematics::Frame::Ptr f, bool enabled)
 {
     rwsim::dynamics::Body::Ptr b = _dwc->getBody (f);
     if (b != NULL)

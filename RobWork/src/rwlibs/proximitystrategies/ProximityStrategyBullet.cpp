@@ -137,7 +137,7 @@ btCollisionShape* createColShape (ColInfoPair& colInfo,
     return colShape;
 }
 
-btCollisionShape* getColShapes (const std::vector< Frame* >& frames, rw::kinematics::Frame* parent,
+btCollisionShape* getColShapes (const std::vector< Frame* >& frames, rw::core::Ptr<rw::kinematics::Frame> parent,
                                 BtSimulator::ColCache& colCache, const rw::kinematics::State& state,
                                 double margin)
 {
@@ -171,7 +171,7 @@ btCollisionShape* getColShapes (const std::vector< Frame* >& frames, rw::kinemat
     return NULL;
 }
 
-btTriangleMesh* createTriMesh (const std::vector< Frame* >& frames, rw::kinematics::Frame* parent,
+btTriangleMesh* createTriMesh (const std::vector< Frame* >& frames, rw::core::Ptr<rw::kinematics::Frame> parent,
                                rw::kinematics::State& state)
 {
     btTriangleMesh* trimesh = new btTriangleMesh ();

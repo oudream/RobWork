@@ -32,7 +32,7 @@ namespace rw { namespace core {
     {
       public:
         //! @brief Construct empty null pointer.
-        AnyPtr () : content (NULL) {}
+        AnyPtr () : content (nullptr) {}
 
         /**
          * @brief constructor - ownership of pointer is taken

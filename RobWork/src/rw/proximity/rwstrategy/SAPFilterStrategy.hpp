@@ -123,7 +123,7 @@ namespace rw { namespace proximity {
          * @brief Adds geometry associated to frame
          * @param frame [in] Frame which has the geometry associated
          */
-        virtual void addGeometry (rw::kinematics::Frame* frame, const rw::geometry::Geometry::Ptr);
+        virtual void addGeometry (rw::core::Ptr<rw::kinematics::Frame> frame, const rw::geometry::Geometry::Ptr);
 
         /**
          * @brief Removes the geometric model with name \b rw::geometry::Geometry::Ptr and which is
@@ -131,7 +131,7 @@ namespace rw { namespace proximity {
          *
          * @param frame [in] Frame which has the geometry associated
          */
-        virtual void removeGeometry (rw::kinematics::Frame* frame,
+        virtual void removeGeometry (rw::core::Ptr<rw::kinematics::Frame> frame,
                                      const rw::geometry::Geometry::Ptr);
 
         /**
@@ -141,7 +141,7 @@ namespace rw { namespace proximity {
          * @param frame [in] Frame which has the geometry associated
          * @param geometryId [in] Name of geometry
          */
-        virtual void removeGeometry (rw::kinematics::Frame* frame, const std::string& geometryId);
+        virtual void removeGeometry (rw::core::Ptr<rw::kinematics::Frame> frame, const std::string& geometryId);
 
         /**
          * @copydoc ProximityFilterStrategy::addRule

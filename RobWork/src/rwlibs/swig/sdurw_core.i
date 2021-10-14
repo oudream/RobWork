@@ -132,6 +132,12 @@ NAMED_OWNEDPTR(DOMParser, rw::core::DOMParser);
 %}
 %include <rw/core/Exception.hpp>
 
+%extend rw::core::Exception {
+    Exception(std::string error){
+      return new rw::core::Exception(rw::core::Message("script",0,error));
+    }
+}
+
 %{
     #include <rw/core/Extension.hpp>
 %}

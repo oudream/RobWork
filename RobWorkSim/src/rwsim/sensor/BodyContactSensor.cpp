@@ -31,7 +31,7 @@ namespace {
 
 }
 
-BodyContactSensor::BodyContactSensor (const std::string& name, rw::kinematics::Frame* frame) :
+BodyContactSensor::BodyContactSensor (const std::string& name, rw::core::Ptr<rw::kinematics::Frame> frame) :
     SimulatedTactileSensor (rw::core::ownedPtr (
         new SensorModel (name, frame, "Direct mapped tactile body contact sensor."))),
     _sdata (1, rw::core::ownedPtr (new ClassState ()).cast< rw::kinematics::StateCache > ())

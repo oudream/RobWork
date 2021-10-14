@@ -32,8 +32,8 @@ DistanceStrategy::DistanceStrategy ()
 DistanceStrategy::~DistanceStrategy ()
 {}
 
-DistanceStrategy::Result DistanceStrategy::distance (const Frame* a, const Transform3D<>& wTa,
-                                                     const Frame* b, const Transform3D<>& wTb)
+DistanceStrategy::Result DistanceStrategy::distance (const rw::core::Ptr<Frame> a, const Transform3D<>& wTa,
+                                                     const rw::core::Ptr<Frame> b, const Transform3D<>& wTb)
 {
     if (getModel (a) == NULL)
         RW_THROW ("Frame " << a->getName () << " has no Collision model attached!");
@@ -45,8 +45,8 @@ DistanceStrategy::Result DistanceStrategy::distance (const Frame* a, const Trans
     return distance (getModel (a), wTa, getModel (b), wTb, data);
 }
 
-DistanceStrategy::Result& DistanceStrategy::distance (const Frame* a, const Transform3D<>& wTa,
-                                                      const Frame* b, const Transform3D<>& wTb,
+DistanceStrategy::Result& DistanceStrategy::distance (const rw::core::Ptr<Frame> a, const Transform3D<>& wTa,
+                                                      const rw::core::Ptr<Frame> b, const Transform3D<>& wTb,
                                                       ProximityStrategyData& data)
 {
     if (getModel (a) == NULL)
@@ -58,8 +58,8 @@ DistanceStrategy::Result& DistanceStrategy::distance (const Frame* a, const Tran
     return distance (getModel (a), wTa, getModel (b), wTb, data);
 }
 
-DistanceStrategy::Result DistanceStrategy::distance (const Frame* a, const Transform3D<>& wTa,
-                                                     const Frame* b, const Transform3D<>& wTb,
+DistanceStrategy::Result DistanceStrategy::distance (const rw::core::Ptr<Frame> a, const Transform3D<>& wTa,
+                                                     const rw::core::Ptr<Frame> b, const Transform3D<>& wTb,
                                                      double threshold)
 {
     if (getModel (a) == NULL)
@@ -70,8 +70,8 @@ DistanceStrategy::Result DistanceStrategy::distance (const Frame* a, const Trans
     return distance (getModel (a), wTa, getModel (b), wTb, threshold, data);
 }
 
-DistanceStrategy::Result& DistanceStrategy::distance (const Frame* a, const Transform3D<>& wTa,
-                                                      const Frame* b, const Transform3D<>& wTb,
+DistanceStrategy::Result& DistanceStrategy::distance (const rw::core::Ptr<Frame> a, const Transform3D<>& wTa,
+                                                      const rw::core::Ptr<Frame> b, const Transform3D<>& wTb,
                                                       double threshold, ProximityStrategyData& data)
 {
     if (getModel (a) == NULL)

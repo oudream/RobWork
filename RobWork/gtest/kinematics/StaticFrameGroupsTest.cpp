@@ -69,7 +69,7 @@ TEST (Kinematics, getStaticFrameGroups)
 
     std::vector< bool > frameInGroup (13, false);
 
-    Frame* const root = world.getWorldFrame ();
+    Frame* root = world.getWorldFrame ();
     std::vector< FrameList > staticGroups =
         Kinematics::getStaticFrameGroups (root, world.getDefaultState ());
     EXPECT_EQ (10u, staticGroups.size ());

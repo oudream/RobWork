@@ -21,12 +21,13 @@
 /**
  * @file GLFrameGrabber.hpp
  */
-
+#if !defined(SWIG)
 #include "FrameGrabber.hpp"
 
 #include <rw/core/Ptr.hpp>
 #include <rw/graphics/SceneViewer.hpp>
 #include <rw/math/Transform3D.hpp>
+#endif 
 
 namespace rw { namespace kinematics {
     class Frame;
@@ -85,10 +86,10 @@ namespace rwlibs { namespace simulation {
          * @return true if initialization succeeded, false otherwise (depends on the capabilities of
          * the SceneViewer).
          */
-        bool init (rw::graphics::SceneViewer::Ptr drawer);
+        bool init (rw::core::Ptr<rw::graphics::SceneViewer> drawer);
 
         //! @copydoc FrameGrabber::grab
-        void grab (rw::kinematics::Frame* frame, const rw::kinematics::State& state);
+        virtual void grab (rw::core::Ptr<rw::kinematics::Frame> frame, const rw::kinematics::State& state);
 
       private:
         double _fieldOfView;    // in the y-axis

@@ -19,14 +19,14 @@
 #define RWLIBS_SIMLATION_SIMULATEDSCANNER25D_HPP
 
 //! @file SimulatedScanner1D.hpp
-
+#if !defined(SWIG)
 #include "FrameGrabber25D.hpp"
 #include "SimulatedSensor.hpp"
 
 #include <rw/math/Constants.hpp>
 #include <rw/sensor/Scan2D.hpp>
 #include <rw/sensor/Scanner2D.hpp>
-
+#endif
 namespace rwlibs { namespace simulation {
     //! @addtogroup simulation
     // @{
@@ -34,7 +34,7 @@ namespace rwlibs { namespace simulation {
     /**
      * @brief A simulated line scanner.
      */
-    class SimulatedScanner1D : public rw::sensor::Scanner1D, public virtual SimulatedSensor
+    class SimulatedScanner1D : public rw::sensor::Scanner1D, public virtual rwlibs::simulation::SimulatedSensor
     {
       public:
         /**
@@ -42,7 +42,7 @@ namespace rwlibs { namespace simulation {
          * @param name [in] name of this simulated scanner
          * @param framegrabber [in] the framegrabber used for grabbing 2.5D images
          */
-        SimulatedScanner1D (const std::string& name, FrameGrabber25D::Ptr framegrabber);
+        SimulatedScanner1D (const std::string& name, rw::core::Ptr<rwlibs::simulation::FrameGrabber25D> framegrabber);
 
         /**
          * @brief constructor
@@ -51,7 +51,7 @@ namespace rwlibs { namespace simulation {
          * @param framegrabber [in] the framegrabber used for grabbing 2.5D images
          */
         SimulatedScanner1D (const std::string& name, const std::string& desc,
-                            FrameGrabber25D::Ptr framegrabber);
+                            rw::core::Ptr<rwlibs::simulation::FrameGrabber25D> framegrabber);
 
         /**
          * @brief destructor

@@ -54,15 +54,6 @@
 #include <rwlibs/pathplanners/sbl/SBLSetup.hpp>
 #include <rwlibs/pathplanners/z3/Z3Planner.hpp>
 #include <rwlibs/proximitystrategies/ProximityStrategyFactory.hpp>
-#include <rwlibs/simulation/FrameGrabber.hpp>
-#include <rwlibs/simulation/FrameGrabber25D.hpp>
-#include <rwlibs/simulation/GLFrameGrabber.hpp>
-#include <rwlibs/simulation/GLFrameGrabber25D.hpp>
-#include <rwlibs/simulation/SimulatedCamera.hpp>
-#include <rwlibs/simulation/SimulatedController.hpp>
-#include <rwlibs/simulation/SimulatedScanner25D.hpp>
-#include <rwlibs/simulation/SimulatedScanner2D.hpp>
-#include <rwlibs/simulation/SimulatedSensor.hpp>
 #include <rwlibs/task/GraspResult.hpp>
 #include <rwlibs/task/GraspSubTask.hpp>
 #include <rwlibs/task/GraspTarget.hpp>
@@ -267,35 +258,6 @@ namespace swig {
     ///@{
     //! @copydoc rwlibs::proximitystrategies::ProximityStrategyFactory
     typedef rwlibs::proximitystrategies::ProximityStrategyFactory ProximityStrategyFactory;
-    ///@}
-
-    /**
-     * @name simulation
-     * Wrapped classes in simulation.
-     */
-    ///@{
-    //! @copydoc rwlibs::simulation::FrameGrabber
-    typedef rwlibs::simulation::FrameGrabber FrameGrabber;
-    //! @copydoc rwlibs::simulation::FrameGrabber25D
-    typedef rwlibs::simulation::FrameGrabber25D FrameGrabber25D;
-    //! @copydoc rwlibs::simulation::GLFrameGrabber
-    typedef rwlibs::simulation::GLFrameGrabber GLFrameGrabber;
-    //! @copydoc rwlibs::simulation::GLFrameGrabber25D
-    typedef rwlibs::simulation::GLFrameGrabber25D GLFrameGrabber25D;
-    //! @copydoc rwlibs::simulation::SimulatedCamera
-    typedef rwlibs::simulation::SimulatedCamera SimulatedCamera;
-    //! @copydoc rwlibs::simulation::SimulatedController
-    typedef rwlibs::simulation::SimulatedController SimulatedController;
-    //! @copydoc rwlibs::simulation::SimulatedSensor
-    typedef rwlibs::simulation::SimulatedSensor SimulatedSensor;
-    //! @copydoc rwlibs::simulation::SimulatedScanner2D
-    typedef rwlibs::simulation::SimulatedScanner2D SimulatedScanner2D;
-    //! @copydoc rwlibs::simulation::SimulatedScanner25D
-    typedef rwlibs::simulation::SimulatedScanner25D SimulatedScanner25D;
-    //! @copydoc rwlibs::simulation::Simulator
-    typedef rwlibs::simulation::Simulator Simulator;
-    //! @copydoc rwlibs::simulation::Simulator::UpdateInfo
-    typedef rwlibs::simulation::Simulator::UpdateInfo UpdateInfo;
     ///@}
 
     // rwlibs softbody

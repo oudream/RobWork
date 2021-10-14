@@ -34,7 +34,7 @@ StateStructure::StateStructure () : _version (0), _root (NULL), _stateSetupUniqu
     // now add the state data of the frame
     //_frames.push_back(_root);
     addDataInternal (_root);
-    _frames[_root->getID ()] = _root;
+    _frames[_root->getID ()] = _root.get();
     // and setup the static frame-parent relationship
     _root->setParent (NULL);
     _frameIdxMap[_root->getName ()] = _root->getID ();
@@ -223,7 +223,7 @@ void StateStructure::remove (StateData* data)
             RW_THROW (
                 "Frame has staticly connected children and therefore cannot be removed from tree!");
         // make sure the parent frame gets any static connections deleted to the frame
-        Frame* parent = _frames[id]->getParent ();
+        rw::core::Ptr<Frame> parent = _frames[id]->getParent ();
         if (parent != NULL)
             parent->removeChild (_frames[id]);
 
@@ -292,7 +292,7 @@ void StateStructure::cleanup (int ID)
                 // if its a frame then remove it from its parent
 
                 if (_frames[id] != NULL) {
-                    Frame* frame = _frames[id];
+                    rw::core::Ptr<Frame> frame = _frames[id];
                     if (frame->getParent () != NULL) {
                         frame->getParent ()->removeChild (frame);
                     }

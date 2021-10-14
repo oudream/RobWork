@@ -57,7 +57,7 @@ namespace rwlibs { namespace opengl {
         typedef std::vector< VerticeWeight > BoneWeights;
 
         //! @brief constructor
-        RenderSmoothSkin (rw::geometry::IndexedTriMesh<>::Ptr mesh, rw::kinematics::Frame* base,
+        RenderSmoothSkin (rw::geometry::IndexedTriMesh<>::Ptr mesh, rw::core::Ptr<rw::kinematics::Frame> base,
                           std::vector< rw::kinematics::Frame* >& bones,
                           std::vector< BoneWeights >& weights);
 
@@ -65,7 +65,7 @@ namespace rwlibs { namespace opengl {
         virtual ~RenderSmoothSkin ();
 
         //! @copydoc RenderSmoothSkin()
-        void init (rw::geometry::IndexedTriMesh<>::Ptr mesh, rw::kinematics::Frame* base,
+        void init (rw::geometry::IndexedTriMesh<>::Ptr mesh, rw::core::Ptr<rw::kinematics::Frame> base,
                    std::vector< rw::kinematics::Frame* >& bones,
                    std::vector< BoneWeights >& weights);
 
@@ -90,7 +90,7 @@ namespace rwlibs { namespace opengl {
         std::vector< uint8_t > _weights;
         std::vector< rw::math::Transform3D<> > _transforms;
 
-        rw::kinematics::Frame* _base;
+        rw::core::Ptr<rw::kinematics::Frame> _base;
         std::vector< rw::kinematics::Frame* > _bones;
 
         rw::geometry::IndexedTriMesh<>::Ptr _mesh;

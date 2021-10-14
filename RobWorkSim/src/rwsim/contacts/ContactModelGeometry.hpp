@@ -56,7 +56,7 @@ namespace rwsim { namespace contacts {
             rw::math::Transform3D<> transform;
 
             //! The frame
-            const rw::kinematics::Frame* frame;
+            const rw::core::Ptr<rw::kinematics::Frame> frame;
         };
 
         //! @brief The type of GeometryModel for geometry A.

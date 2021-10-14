@@ -38,7 +38,7 @@ std::vector< Frame* > Models::findAllFrames (const WorkCell& workcell)
 
 Frame& Models::getFrame (const WorkCell& workcell, const std::string& name)
 {
-    Frame* frame = workcell.findFrame (name);
+    rw::core::Ptr<Frame> frame = workcell.findFrame (name);
     if (!frame)
         RW_THROW ("No frame named " << StringUtil::quote (name) << " in workcell " << workcell);
     return *frame;
@@ -124,7 +124,7 @@ std::vector< rw::kinematics::State > Models::getStatePath (const Device& device,
 }
 
 rw::models::Device::Ptr Models::makeDevice (rw::models::Device::Ptr device, const State& state,
-                                            rw::kinematics::Frame* base, rw::kinematics::Frame* end)
+                                            rw::core::Ptr<rw::kinematics::Frame> base, rw::core::Ptr<rw::kinematics::Frame> end)
 {
     RW_ASSERT (device);
 

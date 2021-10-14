@@ -57,7 +57,7 @@ namespace rw { namespace models {
          * @param state [in] State giving how frame are connected
          */
         DeviceJacobianCalculator (std::vector< rw::core::Ptr< rw::models::Device > > devices,
-                                  const rw::kinematics::Frame* base,
+                                  const rw::core::Ptr<rw::kinematics::Frame> base,
                                   const std::vector< rw::kinematics::Frame* >& tcps,
                                   const rw::kinematics::State& state);
 
@@ -76,7 +76,7 @@ namespace rw { namespace models {
 
         std::vector< JacobianSetup > _jacobianSetups;
         std::vector< rw::core::Ptr< rw::models::Device > > _devices;
-        const rw::kinematics::Frame* _base;
+        const rw::core::Ptr<rw::kinematics::Frame> _base;
         std::vector< rw::kinematics::Frame* > _tcps;
         size_t _dof;
     };

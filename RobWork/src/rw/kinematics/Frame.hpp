@@ -56,7 +56,7 @@ namespace rw { namespace kinematics {
      */
     class Frame : public StateData
     {
-        typedef std::vector< Frame* > ChildList;
+        typedef std::vector< rw::kinematics::Frame* > ChildList;
 
       public:
         //! @brief Smart pointer type for a Frame object
@@ -145,12 +145,12 @@ namespace rw { namespace kinematics {
         /**
          * @brief The parent of the frame or NULL if the frame is a DAF.
          */
-        const rw::kinematics::Frame* getParent () const { return _parent; }
+        const rw::kinematics::Frame* getParent () const { return _parent.get(); }
 
         /**
          * @brief The parent of the frame or NULL if the frame is a DAF.
          */
-        rw::kinematics::Frame* getParent () { return _parent; }
+        rw::kinematics::Frame* getParent () { return _parent.get(); }
 
         /**
          * @brief Returns the parent of the frame
@@ -253,7 +253,7 @@ namespace rw { namespace kinematics {
          * @param parent [in] The frame to attach \b frame to.
          * @param state [inout] The state to which the attachment is written.
          */
-        void attachTo (rw::kinematics::Frame* parent, rw::kinematics::State& state);
+        void attachTo (rw::core::Ptr<rw::kinematics::Frame> parent, rw::kinematics::State& state);
 
         /**
          * @brief Test if this frame is a Dynamically Attachable Frame
@@ -274,7 +274,7 @@ namespace rw { namespace kinematics {
          * @param state [in] the state.
          * @return transform of frame \b to relative to this frame.
          */
-        rw::math::Transform3D<> fTf (const Frame* to, const rw::kinematics::State& state) const;
+        rw::math::Transform3D<> fTf (const rw::core::Ptr<rw::kinematics::Frame> to, const rw::kinematics::State& state) const;
 
       protected:
         /**
@@ -308,9 +308,9 @@ namespace rw { namespace kinematics {
       private:
         friend class StateStructure;
 
-        void setParent (rw::kinematics::Frame* const frame) { _parent = frame; }
+        void setParent (rw::core::Ptr<rw::kinematics::Frame> frame) { _parent = frame; }
 
-        void removeChild (const rw::kinematics::Frame* const frame)
+        void removeChild (const rw::core::Ptr<rw::kinematics::Frame> frame)
         {
             for (ChildList::iterator it = _children.begin (); it != _children.end (); ++it)
                 if ((*it) == frame) {
@@ -325,10 +325,10 @@ namespace rw { namespace kinematics {
         core::PropertyMap _propertyMap;
 
         // static connected parent and children
-        Frame* _parent;
+        rw::core::Ptr<rw::kinematics::Frame> _parent;
         ChildList _children;
 
-        void addChild (Frame* const child) { _children.push_back (child); }
+        void addChild (rw::core::Ptr<rw::kinematics::Frame> const child) { _children.push_back (child.get()); }
 
         static iterator_pair makeIteratorPair (const ChildList& children)
         {
@@ -368,12 +368,12 @@ namespace rw { namespace kinematics {
     /**
        @brief A pair of frames
      */
-    typedef std::pair< Frame*, Frame* > FramePair;
+    typedef std::pair< rw::kinematics::Frame*, rw::kinematics::Frame* > FramePair;
 
     /**
        @brief A pair of constant frames
      */
-    typedef std::pair< const Frame*, const Frame* > ConstFramePair;
+    typedef std::pair< const rw::kinematics::Frame*, const rw::kinematics::Frame* > ConstFramePair;
 
     /**
        @brief A set of frames.

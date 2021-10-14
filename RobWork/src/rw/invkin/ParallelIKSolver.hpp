@@ -117,7 +117,7 @@ namespace rw { namespace invkin {
              * @param frame [in] the end frame.
              * @param refTtcp [in] the target base to frame transformation.
              */
-            Target (const rw::kinematics::Frame* frame, const rw::math::Transform3D<>& refTtcp) :
+            Target (rw::core::Ptr<const rw::kinematics::Frame> frame, const rw::math::Transform3D<>& refTtcp) :
                 refFrame (NULL), tcpFrame (frame), refTtcp (refTtcp)
             {
                 for (std::size_t i = 0; i < 6; i++)
@@ -132,7 +132,7 @@ namespace rw { namespace invkin {
              * @param enabled [in] 6 values specifying if the x, y, z and EAA x, y, z directions
              * should be enabled.
              */
-            Target (const rw::kinematics::Frame* frame, const rw::math::Transform3D<>& refTtcp,
+            Target (rw::core::Ptr<const rw::kinematics::Frame> frame, const rw::math::Transform3D<>& refTtcp,
                     const rw::math::VectorND< 6, bool >& enabled) :
                 refFrame (NULL),
                 tcpFrame (frame), refTtcp (refTtcp), enabled (enabled)
@@ -153,10 +153,10 @@ namespace rw { namespace invkin {
             }
 
             //! @brief The reference frame. If zero, this is equivalent to the device base frame.
-            const rw::kinematics::Frame* refFrame;
+            rw::core::Ptr<const rw::kinematics::Frame> refFrame;
 
             //! @brief The frame to specify target for.
-            const rw::kinematics::Frame* tcpFrame;
+            rw::core::Ptr<const rw::kinematics::Frame> tcpFrame;
 
             //! @brief The target transformation from \b refFrame to the \b tcpFrame.
             rw::math::Transform3D<> refTtcp;

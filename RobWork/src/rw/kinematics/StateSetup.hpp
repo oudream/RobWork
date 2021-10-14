@@ -126,7 +126,7 @@ namespace rw { namespace kinematics {
          * @param parent [in] the parent to the children list
          * @return index into the childlist array in tree state
          */
-        int getChildListIdx (const Frame* parent) const
+        int getChildListIdx (rw::core::Ptr<const Frame> parent) const
         {
             const int id = parent->getID ();
             if (id < 0 || id >= _initMaxID)
@@ -151,7 +151,7 @@ namespace rw { namespace kinematics {
          * @param daf [in] the daf frame
          * @return index into the TreeState daf list
          */
-        int getDAFIdx (const Frame* daf) const
+        int getDAFIdx (rw::core::Ptr<const Frame> daf) const
         {
             const int id = daf->getID ();
             if (id < 0 || id >= _initMaxID)

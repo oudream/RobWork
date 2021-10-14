@@ -30,7 +30,7 @@ using namespace rw::graspplanning;
 namespace {
 struct MyCollisionDetector
 {
-    MyCollisionDetector (TreeDevice* hand, Frame* object, CollisionStrategy* strategy) :
+    MyCollisionDetector (TreeDevice* hand, rw::core::Ptr<Frame> object, CollisionStrategy* strategy) :
         _hand (hand), _obj (object), _strategy (strategy)
     {}
 
@@ -66,7 +66,7 @@ struct MyCollisionDetector
     }
 
     TreeDevice* _hand;
-    Frame* _obj;
+    rw::core::Ptr<Frame> _obj;
     CollisionStrategy* _strategy;
 };
 
@@ -274,7 +274,7 @@ SBGraspPlanner3D::query (const rw::kinematics::State& initstate, int maxNrOfQs)
         bool dontSave     = false;
         Transform3D<> wTh = Kinematics::worldTframe (_hand->getBase (), state);
         for (size_t i = 0; i < _fingerTipFrames.size (); i++) {
-            Frame* frame      = _fingerTipFrames[i];
+            rw::core::Ptr<Frame> frame      = _fingerTipFrames[i];
             Transform3D<> wTf = Kinematics::worldTframe (frame, state);
             bool res          = _strategy->distance (result, frame, wTf, _obj, wTh * hTobj);
             if (!res) {

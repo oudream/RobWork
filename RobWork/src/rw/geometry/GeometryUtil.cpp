@@ -335,39 +335,39 @@ Vector3D<> GeometryUtil::getDimensions (rw::core::Ptr< TriMesh > trimesh)
 std::vector< Frame* > GeometryUtil::getAnchoredFrames (Frame& frame, const State& state)
 {
     // first locate the independant parent everything else than fixed
-    Frame* parent = &frame;
+   rw::core::Ptr<Frame> parent = &frame;
 
     // if the current frame is the independent parent then use that
-    if (dynamic_cast< FixedFrame* > (parent) == NULL) {
+    if (parent.cast<FixedFrame>() == NULL) {
         return getAnchoredChildFrames (parent, state);
     }
 
     // else search for the independent parent
     for (; parent->getParent (state) != NULL; parent = parent->getParent (state)) {
-        if (dynamic_cast< FixedFrame* > (parent) == NULL) {
+        if (parent.cast<FixedFrame>() == NULL) {
             return getAnchoredChildFrames (parent, state);
         }
     }
     return getAnchoredChildFrames (parent, state);
 }
 
-std::vector< Frame* > GeometryUtil::getAnchoredChildFrames (Frame* parent, const State& state)
+std::vector< Frame* > GeometryUtil::getAnchoredChildFrames (rw::core::Ptr<Frame> parent, const State& state)
 {
     // next follow all children and locate fixed anchored frames
     std::vector< Frame* > res;
     std::stack< Frame* > fstack;
 
-    fstack.push (parent);
+    fstack.push (parent.get());
 
     // if( rw::models::Accessor::collisionModelInfo().has(*parent) )
     // res.push_back(&frame);
-    res.push_back (parent);
+    res.push_back (parent.get());
 
     while (!fstack.empty ()) {
         parent = fstack.top ();
         fstack.pop ();
         for (Frame::Ptr f : parent->getChildrenList (state)) {
-            if (dynamic_cast< FixedFrame* > (parent)) {
+            if (parent.cast<FixedFrame>()) {
                 fstack.push (f.get ());
                 res.push_back (f.get ());
             }
@@ -395,7 +395,7 @@ Vector3D<> GeometryUtil::estimateCOG (const std::vector< Geometry::Ptr >& geoms)
     return center / totalVolume;
 }
 
-Vector3D<> GeometryUtil::estimateCOG (const std::vector< Geometry::Ptr >& geoms, const Frame* ref,
+Vector3D<> GeometryUtil::estimateCOG (const std::vector< Geometry::Ptr >& geoms, const rw::core::Ptr< Frame> ref,
                                       const State& state)
 {
     if (geoms.size () == 0)
@@ -425,7 +425,7 @@ Vector3D<> GeometryUtil::estimateCOG (const TriMesh& trimesh, const Transform3D<
 }
 
 double GeometryUtil::calcMaxDist (const std::vector< Geometry::Ptr >& geoms,
-                                  const rw::math::Vector3D<> center, rw::kinematics::Frame* ref,
+                                  const rw::math::Vector3D<> center, rw::core::Ptr<rw::kinematics::Frame> ref,
                                   const rw::kinematics::State& state)
 {
     double maxDist = 0;
@@ -456,7 +456,7 @@ double GeometryUtil::calcMaxDist (const std::vector< Geometry::Ptr >& geoms,
 
 std::pair< Vector3D<>, InertiaMatrix<> >
 GeometryUtil::estimateInertiaCOG (double mass, const std::vector< Geometry::Ptr >& geoms,
-                                  const Frame* refframe, const State& state,
+                                  const rw::core::Ptr< Frame> refframe, const State& state,
                                   const Transform3D<>& ref)
 {
     if (geoms.size () == 0)
@@ -470,7 +470,7 @@ GeometryUtil::estimateInertiaCOG (double mass, const std::vector< Geometry::Ptr 
 
 InertiaMatrix<> GeometryUtil::estimateInertia (double mass,
                                                const std::vector< Geometry::Ptr >& geoms,
-                                               const Frame* refframe, const State& state,
+                                               const rw::core::Ptr< Frame> refframe, const State& state,
                                                const Transform3D<>& ref)
 {
     if (geoms.size () == 0)

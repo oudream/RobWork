@@ -84,7 +84,7 @@ bool isDAF (const Frame& frame, const State& dummy)
 
 Frame& findFrame (const WorkCell& workcell, const std::string& name)
 {
-    Frame* frame = workcell.findFrame (name);
+    rw::core::Ptr<Frame> frame = workcell.findFrame (name);
     if (!frame)
         RW_THROW ("No frame named " << quote (name) << " in work cell.");
     return *frame;
@@ -295,9 +295,9 @@ class Writer
         std::vector< Frame* > dafs;
         typedef std::vector< Frame* >::const_iterator I;
         for (I p = frames.begin (); p != frames.end (); ++p) {
-            Frame* frame = *p;
+            rw::core::Ptr<Frame> frame = *p;
             if (isDAF (*frame, state))
-                dafs.push_back (frame);
+                dafs.push_back (frame.get());
         }
 
         // Put them.

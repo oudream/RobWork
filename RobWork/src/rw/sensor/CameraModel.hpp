@@ -62,7 +62,7 @@ namespace rw { namespace sensor {
          * @param modelInfo [in] text description of the camera
          */
         CameraModel (const rw::math::ProjectionMatrix& projection, const std::string& name,
-                     rw::kinematics::Frame* frame, const std::string& modelInfo = "");
+                     rw::core::Ptr<rw::kinematics::Frame> frame, const std::string& modelInfo = "");
 
         /**
          * @brief destructor

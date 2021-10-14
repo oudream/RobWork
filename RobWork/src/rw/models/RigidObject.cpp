@@ -4,12 +4,12 @@ using namespace rw::kinematics;
 using namespace rw::geometry;
 using namespace rw::models;
 
-RigidObject::RigidObject (rw::kinematics::Frame* baseframe) :
+RigidObject::RigidObject (rw::core::Ptr<rw::kinematics::Frame> baseframe) :
     Object (baseframe), _mass (1.0),
     _Ibody (rw::math::InertiaMatrix<>::makeSolidSphereInertia (1.0, 0.1))
 {}
 
-RigidObject::RigidObject (rw::kinematics::Frame* baseframe, Geometry::Ptr geom) :
+RigidObject::RigidObject (rw::core::Ptr<rw::kinematics::Frame> baseframe, Geometry::Ptr geom) :
     Object (baseframe), _geometry (std::vector< Geometry::Ptr > (1, geom)), _mass (1.0),
     _Ibody (rw::math::InertiaMatrix<>::makeSolidSphereInertia (1.0, 0.1))
 {
@@ -17,7 +17,7 @@ RigidObject::RigidObject (rw::kinematics::Frame* baseframe, Geometry::Ptr geom) 
         geom->setFrame (baseframe);
 }
 
-RigidObject::RigidObject (rw::kinematics::Frame* baseframe, std::vector< Geometry::Ptr > geoms) :
+RigidObject::RigidObject (rw::core::Ptr<rw::kinematics::Frame> baseframe, std::vector< Geometry::Ptr > geoms) :
     Object (baseframe), _geometry (geoms), _mass (1.0),
     _Ibody (rw::math::InertiaMatrix<>::makeSolidSphereInertia (1.0, 0.1))
 {

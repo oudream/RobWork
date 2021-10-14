@@ -49,7 +49,7 @@ Eigen::MatrixXd getBlockDiagInertia (Device& dev, std::vector< FixedLink* >& par
 
 }    // namespace
 
-FixedLink::FixedLink (const BodyInfo& info, rw::kinematics::Frame* base,
+FixedLink::FixedLink (const BodyInfo& info, rw::core::Ptr<rw::kinematics::Frame> base,
                       std::vector< FixedLink* > parents, rw::models::Device& dev,
                       rw::models::Joint& j, const std::vector< rw::kinematics::Frame* >& frames,
                       rw::kinematics::State& state) :

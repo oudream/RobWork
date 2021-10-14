@@ -33,7 +33,7 @@ DistanceMultiStrategy::~DistanceMultiStrategy ()
 {}
 
 DistanceMultiStrategy::Result
-DistanceMultiStrategy::distances (const Frame* a, const Transform3D<>& wTa, const Frame* b,
+DistanceMultiStrategy::distances (const rw::core::Ptr<Frame> a, const Transform3D<>& wTa, const rw::core::Ptr<Frame> b,
                                   const Transform3D<>& wTb, double tolerance)
 {
     if (getModel (a) == NULL || getModel (b) == NULL)
@@ -45,7 +45,7 @@ DistanceMultiStrategy::distances (const Frame* a, const Transform3D<>& wTa, cons
 }
 
 DistanceMultiStrategy::Result&
-DistanceMultiStrategy::distances (const Frame* a, const Transform3D<>& wTa, const Frame* b,
+DistanceMultiStrategy::distances (const rw::core::Ptr<Frame> a, const Transform3D<>& wTa, const rw::core::Ptr<Frame> b,
                                   const Transform3D<>& wTb, double tolerance,
                                   ProximityStrategyData& data)
 {

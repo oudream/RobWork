@@ -591,8 +591,8 @@ rw::kinematics::State XMLBasisTypes::readState (xercesc::DOMElement* element,
                 std::vector< StringPair > dafs = readStringPairs (element);
                 for (std::vector< StringPair >::iterator it = dafs.begin (); it != dafs.end ();
                      ++it) {
-                    Frame* daf    = workcell->findFrame ((*it).first);
-                    Frame* parent = workcell->findFrame ((*it).second);
+                    rw::core::Ptr<Frame> daf    = workcell->findFrame ((*it).first);
+                    rw::core::Ptr<Frame> parent = workcell->findFrame ((*it).second);
                     if (daf == NULL)
                         RW_THROW ("Unable to locate frame named \"" << (*it).first);
                     if (parent == NULL)
@@ -1002,7 +1002,7 @@ xercesc::DOMElement* XMLBasisTypes::createTreeState (const rw::kinematics::State
     // Find out what frames are DAFs.
     typedef std::vector< Frame* >::const_iterator I;
     for (I p = dafs.begin (); p != dafs.end (); ++p) {
-        Frame* frame = *p;
+        rw::core::Ptr<Frame> frame = *p;
         DOMElement* stringpair =
             createStringPair (frame->getName (), frame->getDafParent (state)->getName (), doc);
         element->appendChild (stringpair);

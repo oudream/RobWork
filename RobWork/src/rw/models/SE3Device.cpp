@@ -27,7 +27,7 @@ using namespace rw::models;
 using namespace rw::kinematics;
 using namespace rw::math;
 
-SE3Device::SE3Device (const std::string& name, rw::kinematics::Frame* base,
+SE3Device::SE3Device (const std::string& name, rw::core::Ptr<rw::kinematics::Frame> base,
                       rw::kinematics::MovableFrame* mframe) :
     Device (name)
 {}

@@ -21,10 +21,10 @@
 /**
  * @file FrameGrabber.hpp
  */
-
+#if!defined(SWIG)
 #include <rw/core/Ptr.hpp>
 #include <rw/sensor/Image.hpp>
-
+#endif
 namespace rw { namespace kinematics {
     class Frame;
 }}    // namespace rw::kinematics
@@ -106,7 +106,7 @@ namespace rwlibs { namespace simulation {
          * @brief this function grabs a image from the specialized source and
          * copies it to the FrameGrabber image.
          */
-        virtual void grab (rw::kinematics::Frame* frame, const rw::kinematics::State& state) = 0;
+        virtual void grab (rw::core::Ptr<rw::kinematics::Frame> frame, const rw::kinematics::State& state) = 0;
 
       private:
         FrameGrabber () {}

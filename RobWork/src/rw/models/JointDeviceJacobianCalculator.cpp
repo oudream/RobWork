@@ -41,7 +41,7 @@ std::map< Joint*, size_t > labelJoints (const std::vector< Joint* >& joints)
 }
 
 std::vector< std::pair< const Joint*, size_t > >
-getJacobianSetups (const std::map< Joint*, size_t >& labeledJoints, const Frame* tcp,
+getJacobianSetups (const std::map< Joint*, size_t >& labeledJoints,  rw::core::Ptr<const Frame> tcp,
                    const State& state)
 {
     std::vector< std::pair< const Joint*, size_t > > result;
@@ -74,7 +74,7 @@ getJacobianSetups (const std::map< Joint*, size_t >& labeledJoints, const Frame*
 
 /*
 std::vector<std::pair<const Joint*, size_t> > computePositions(const std::vector<Joint*>& joints,
-const Frame* tcp, const State& state) { std::vector<std::pair<const Joint*, size_t> > result; size_t
+const rw::core::Ptr<Frame> tcp, const State& state) { std::vector<std::pair<const Joint*, size_t> > result; size_t
 col = 0; for (std::vector<Joint*>::const_iterator it = joints.begin(); it != joints.end(); ++it) {
         if (!JacobianUtil::isInSubTree(*(*it), *tcp, state)) {
             col += (*it)->getDOF();
@@ -104,7 +104,7 @@ resit != result.end(); ++resit) { if (dependent->isControlledBy((*resit).first))
 
 JointDeviceJacobianCalculator::JointDeviceJacobianCalculator (/*const std::vector<Joint*>& joints,*/
                                                               JointDevice::Ptr device,
-                                                              const Frame* base,
+                                                               rw::core::Ptr<const Frame> base,
                                                               const std::vector< Frame* >& tcps,
                                                               const State& state) :
     _base (base),
@@ -113,7 +113,7 @@ JointDeviceJacobianCalculator::JointDeviceJacobianCalculator (/*const std::vecto
     _joints                                  = device->getJoints ();
     _dof                                     = device->getDOF ();
     std::map< Joint*, size_t > labeledJoints = labelJoints (_joints);
-    for (const Frame* tcp : _tcps) {
+    for (Frame::Ptr tcp : _tcps) {
         _jacobianSetups.push_back (getJacobianSetups (labeledJoints, tcp, state));
     }
 }
@@ -127,7 +127,7 @@ Jacobian JointDeviceJacobianCalculator::get (const rw::kinematics::State& state)
     const rw::kinematics::FKTable fk (state);
     Jacobian jacobian (Jacobian::zero (6 * _tcps.size (), _dof));
     for (size_t i = 0; i < _tcps.size (); i++) {
-        const Frame* tcpFrame      = _tcps[i];
+        const rw::core::Ptr<Frame> tcpFrame      = _tcps[i];
         const JacobianSetup& setup = _jacobianSetups[i];
 
         Transform3D<> tcp = fk.get (*tcpFrame);

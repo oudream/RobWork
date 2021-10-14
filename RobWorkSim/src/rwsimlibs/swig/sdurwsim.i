@@ -358,7 +358,9 @@ struct PDParam {
 };
 
 %template (PDParamVector) std::vector<PDParam>;
-
+%{
+	#include <rwlibs/control/Controller.hpp>
+%}
 %nodefaultctor PDController;
 class PDController
 {
@@ -387,9 +389,9 @@ public:
 	void setSampleTime(double stime);
 
 	// From SimulatedController
-	void update(const Simulator::UpdateInfo& info, rw::kinematics::State& state);
+	void update(const rwlibs::simulation::Simulator::UpdateInfo& info, rw::kinematics::State& state);
 	void reset(const rw::kinematics::State& state);
-	Controller* getController();
+	rwlibs::control::Controller* getController();
 	std::string getControllerName();
     void setEnabled(bool enabled);
     bool isEnabled();
@@ -619,13 +621,13 @@ class RigidBody : public Body
 public:
     RigidBody(
         const BodyInfo& info,
-        rw::kinematics::MovableFrame* frame,
+        rw::core::Ptr<rw::kinematics::MovableFrame> frame,
         rw::core::Ptr<rw::geometry::Geometry> geom
         );
 
     RigidBody(
         const BodyInfo& info,
-        rw::kinematics::MovableFrame* frame,
+        rw::core::Ptr<rw::kinematics::MovableFrame> frame,
         const std::vector<rw::core::Ptr<rw::geometry::Geometry> >& geoms
         );
 
@@ -813,9 +815,7 @@ public:
     void setPressure(double pressure, rw::kinematics::State& state);
 
 };
-
-%template (SuctionCupPtr) rw::core::Ptr<SuctionCup>;
-OWNEDPTR(SuctionCup);
+NAMED_OWNEDPTR(SuctionCup,SuctionCup);
 
 class DynamicWorkCell
 {
@@ -831,7 +831,7 @@ public:
                     const std::vector<rw::core::Ptr<Body> >& allbodies,
                     const std::vector<rw::core::Ptr<Constraint> >& constraints,
                     const std::vector<rw::core::Ptr<DynamicDevice> >& devices,
-                    const std::vector<rw::core::Ptr<SimulatedController> >& controllers);
+                    const std::vector<rw::core::Ptr<rwlibs::simulation::SimulatedController> >& controllers);
 	
     rw::core::Ptr<Body> findBody(const std::string& name) const;
 
@@ -845,10 +845,10 @@ public:
     //const SensorList& getSensors();
     //void addSensor(rwlibs::simulation::SimulatedSensor::Ptr sensor);
     //const std::vector<Constraint>& getConstraints();
-    void addController(rw::core::Ptr<SimulatedController> manipulator);
-    rw::core::Ptr<SimulatedController> findController(const std::string& name);
+    void addController(rw::core::Ptr<rwlibs::simulation::SimulatedController> manipulator);
+    rw::core::Ptr<rwlibs::simulation::SimulatedController> findController(const std::string& name);
     rw::core::Ptr<DynamicDevice> findDevice(const std::string& name) const;
-    rw::core::Ptr<SimulatedSensor> findSensor(const std::string& name);
+    rw::core::Ptr<rwlibs::simulation::SimulatedSensor> findSensor(const std::string& name);
 
     //ContactDataMap& getContactData();
     //MaterialDataMap& getMaterialData();
@@ -944,11 +944,11 @@ public:
     SimulatedFTSensor(const std::string& name,
                       rw::core::Ptr<Body> body,
                       rw::core::Ptr<Body> body1,
-                      rw::kinematics::Frame* frame=NULL);
+                      rw::core::Ptr<rw::kinematics::Frame> frame=NULL);
 
 	virtual ~SimulatedFTSensor();
 
-	void update(const Simulator::UpdateInfo& info, rw::kinematics::State& state);
+	void update(const rwlibs::simulation::Simulator::UpdateInfo& info, rw::kinematics::State& state);
 	void reset(const rw::kinematics::State& state);
 
 	void addForceW(const rw::math::Vector3D<double>& point,
@@ -1019,15 +1019,15 @@ public:
 	//virtual drawable::SimulatorDebugRender::Ptr createDebugRender() = 0;
 	virtual rw::core::PropertyMap& getPropertyMap() = 0;
 	virtual void emitPropertyChanged() = 0;
-	virtual void addController(rw::core::Ptr<SimulatedController> controller) = 0;
-	virtual void removeController(rw::core::Ptr<SimulatedController> controller) = 0;
+	virtual void addController(rw::core::Ptr<rwlibs::simulation::SimulatedController> controller) = 0;
+	virtual void removeController(rw::core::Ptr<rwlibs::simulation::SimulatedController> controller) = 0;
 	virtual void addBody(rw::core::Ptr<Body> body, rw::kinematics::State &state) = 0;
 	virtual void addDevice(rw::core::Ptr<DynamicDevice> dev, rw::kinematics::State &state) = 0;
-	virtual void addSensor(rw::core::Ptr<SimulatedSensor> sensor, rw::kinematics::State &state) = 0;
-	virtual void removeSensor(rw::core::Ptr<SimulatedSensor> sensor) = 0;
+	virtual void addSensor(rw::core::Ptr<rwlibs::simulation::SimulatedSensor> sensor, rw::kinematics::State &state) = 0;
+	virtual void removeSensor(rw::core::Ptr<rwlibs::simulation::SimulatedSensor> sensor) = 0;
 	virtual void attach(rw::core::Ptr<Body> b1, rw::core::Ptr<Body> b2) = 0;
 	virtual void detach(rw::core::Ptr<Body> b1, rw::core::Ptr<Body> b2) = 0;
-	virtual std::vector<rw::core::Ptr<SimulatedSensor> > getSensors() = 0;
+	virtual std::vector<rw::core::Ptr<rwlibs::simulation::SimulatedSensor> > getSensors() = 0;
 };
 
 %template (PhysicsEnginePtr) rw::core::Ptr<PhysicsEngine>;
@@ -1043,7 +1043,7 @@ public:
     static rw::core::Ptr<PhysicsEngine> makePhysicsEngine(rw::core::Ptr<DynamicWorkCell> dwc);
 };
 
-class DynamicSimulator: public Simulator
+class DynamicSimulator: public rwlibs::simulation::Simulator
 {
 public:
     DynamicSimulator(rw::core::Ptr<DynamicWorkCell> dworkcell, rw::core::Ptr<PhysicsEngine> pengine);
@@ -1063,20 +1063,20 @@ public:
 	//drawable::SimulatorDebugRender::Ptr createDebugRender();
 	rw::core::PropertyMap& getPropertyMap();
 	
-	void addController(rw::core::Ptr<SimulatedController> controller);
-	void removeController(rw::core::Ptr<SimulatedController> controller);
+	void addController(rw::core::Ptr<rwlibs::simulation::SimulatedController> controller);
+	void removeController(rw::core::Ptr<rwlibs::simulation::SimulatedController> controller);
 
 	void addBody(rw::core::Ptr<Body> body, rw::kinematics::State &state);
 	void addDevice(rw::core::Ptr<DynamicDevice> dev, rw::kinematics::State &state);
-	void addSensor(rw::core::Ptr<SimulatedSensor> sensor, rw::kinematics::State &state);
-	void removeSensor(rw::core::Ptr<SimulatedSensor> sensor);
-	std::vector<rw::core::Ptr<SimulatedSensor> > getSensors();
+	void addSensor(rw::core::Ptr<rwlibs::simulation::SimulatedSensor> sensor, rw::kinematics::State &state);
+	void removeSensor(rw::core::Ptr<rwlibs::simulation::SimulatedSensor> sensor);
+	std::vector<rw::core::Ptr<rwlibs::simulation::SimulatedSensor> > getSensors();
 
 	 // Simulator interface
      void step(double dt);
      void reset(rw::kinematics::State& state);
 	 void init(rw::kinematics::State& state);
-	 void setEnabled(rw::kinematics::Frame* f, bool enabled);
+	 void setEnabled(rw::core::Ptr<rw::kinematics::Frame> f, bool enabled);
 	 void setDynamicsEnabled(rw::core::Ptr<Body> body, bool enabled);
 	 // interfaces for manipulating/controlling bodies
 	 void setTarget(rw::core::Ptr<Body> body, const rw::math::Transform3D<double>& t3d, rw::kinematics::State& state); 
@@ -1094,22 +1094,22 @@ public:
 
 %template (DynamicSimulatorPtr) rw::core::Ptr<DynamicSimulator>;
 %extend rw::core::Ptr<DynamicSimulator> { 
-		rw::core::Ptr<Simulator> toSimulator(){
-			std::cout << "Casting" << std::endl;
-		 	rw::core::Ptr<Simulator> ssim = *$self;
-		 	std::cout << "Cast result: " << ssim.isNull() << std::endl;
-		 	return ssim;
-		 }
-		 
-		 rw::core::Ptr<Simulator> toSimulator1(){
+		rw::core::Ptr<rwlibs::simulation::Simulator> toSimulator(){
 			std::cout << "Casting" << std::endl;
 		 	rw::core::Ptr<rwlibs::simulation::Simulator> ssim = *$self;
 		 	std::cout << "Cast result: " << ssim.isNull() << std::endl;
 		 	return ssim;
 		 }
-		 rw::core::Ptr<Simulator> toSimulator2(){
+		 
+		 rw::core::Ptr<rwlibs::simulation::Simulator> toSimulator1(){
 			std::cout << "Casting" << std::endl;
-		 	rw::core::Ptr<Simulator> ssim = *$self;
+		 	rw::core::Ptr<rwlibs::simulation::Simulator> ssim = *$self;
+		 	std::cout << "Cast result: " << ssim.isNull() << std::endl;
+		 	return ssim;
+		 }
+		 rw::core::Ptr<rwlibs::simulation::Simulator> toSimulator2(){
+			std::cout << "Casting" << std::endl;
+		 	rw::core::Ptr<rwlibs::simulation::Simulator> ssim = *$self;
 		 	std::cout << "Cast result: " << ssim.isNull() << std::endl;
 		 	return ssim;
 		 }
@@ -1244,15 +1244,15 @@ public:
 		//drawable::SimulatorDebugRender::Ptr createDebugRender();
 		virtual rw::core::PropertyMap& getPropertyMap();
 		void emitPropertyChanged();
-		void addController(rw::core::Ptr<SimulatedController> controller);
-		void removeController(rw::core::Ptr<SimulatedController> controller);
+		void addController(rw::core::Ptr<rwlibs::simulation::SimulatedController> controller);
+		void removeController(rw::core::Ptr<rwlibs::simulation::SimulatedController> controller);
 		void addBody(rw::core::Ptr<Body> body, rw::kinematics::State &state);
 		void addDevice(rw::core::Ptr<DynamicDevice> dev, rw::kinematics::State &state);
-		void addSensor(rw::core::Ptr<SimulatedSensor> sensor, rw::kinematics::State &state);
-		void removeSensor(rw::core::Ptr<SimulatedSensor> sensor);
+		void addSensor(rw::core::Ptr<rwlibs::simulation::SimulatedSensor> sensor, rw::kinematics::State &state);
+		void removeSensor(rw::core::Ptr<rwlibs::simulation::SimulatedSensor> sensor);
 		void attach(rw::core::Ptr<Body> b1, rw::core::Ptr<Body> b2);
 		void detach(rw::core::Ptr<Body> b1, rw::core::Ptr<Body> b2);
-		std::vector<rw::core::Ptr<SimulatedSensor> > getSensors();
+		std::vector<rw::core::Ptr<rwlibs::simulation::SimulatedSensor> > getSensors();
 		
 		// ODESimulator specific
 		void setStepMethod(StepMethod method);
@@ -1270,8 +1270,8 @@ public:
         //void addODEBody(ODEBody* odebody);
         //void addODEBody(dBodyID body);
         //void addODEJoint(dJointID joint);
-		//ODEBody* getODEBody(rw::kinematics::Frame* frame);
-		//dBodyID getODEBodyId(rw::kinematics::Frame* frame);
+		//ODEBody* getODEBody(rw::core::Ptr<rw::kinematics::Frame> frame);
+		//dBodyID getODEBodyId(rw::core::Ptr<rw::kinematics::Frame> frame);
 		//dBodyID getODEBodyId(rwsim::dynamics::Body* body);
         //std::vector<ODEDevice*> getODEDevices() { return _odeDevices;}
         void addEmulatedContact(const rw::math::Vector3D<double>& pos, const rw::math::Vector3D<double>& force, const rw::math::Vector3D<double>& normal, Body* b);

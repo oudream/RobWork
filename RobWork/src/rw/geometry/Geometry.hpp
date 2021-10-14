@@ -194,16 +194,16 @@ namespace rw { namespace geometry {
          * @brief Set the reference frame.
          * @param frame [in] new reference frame.
          */
-        void setFrame (kinematics::Frame* frame) { _refFrame = frame; }
+        void setFrame (rw::core::Ptr<rw::kinematics::Frame> frame) { _refFrame = frame; }
 
         /**
          * @brief Get the reference frame.
          * @return the reference frame.
          */
-        rw::kinematics::Frame* getFrame () { return _refFrame; }
+        rw::kinematics::Frame* getFrame () { return _refFrame.get(); }
 
         //! @copydoc getFrame()
-        const rw::kinematics::Frame* getFrame () const { return _refFrame; }
+        const rw::kinematics::Frame* getFrame () const { return _refFrame.get(); }
 
         /**
          * @brief Set the draw mask.
@@ -261,7 +261,7 @@ namespace rw { namespace geometry {
         }
 
       private:
-        rw::kinematics::Frame* _refFrame;
+        rw::core::Ptr<rw::kinematics::Frame> _refFrame;
         GeometryData::Ptr _data;
         // GeometryData *_bv;
         rw::math::Transform3D<> _transform;

@@ -88,21 +88,21 @@ std::map< rw::kinematics::Frame*, rw::models::Device* > frameToDevice;
 std::map< rw::kinematics::Frame*, rw::models::Device* > parentToDevice;
 std::map< rw::kinematics::Frame*, bool > isEndEffector;
 
-bool isFrameInDevice (Frame* frame)
+bool isFrameInDevice (rw::core::Ptr<Frame> frame)
 {
-    return frameToDevice.find (frame) != frameToDevice.end ();
+    return frameToDevice.find (frame.get()) != frameToDevice.end ();
 }
 
-bool isFrameInDevice (Frame* frame, Device* dev)
+bool isFrameInDevice (rw::core::Ptr<Frame> frame, Device* dev)
 {
     if (isFrameInDevice (frame))
-        return frameToDevice[frame] == dev;
+        return frameToDevice[frame.get()] == dev;
     return false;
 }
 
-bool isFrameParentToDevice (Frame* frame)
+bool isFrameParentToDevice (rw::core::Ptr<Frame> frame)
 {
-    return parentToDevice.find (frame) != parentToDevice.end ();
+    return parentToDevice.find (frame.get()) != parentToDevice.end ();
 }
 
 template< class T > std::string createStringFromArray (const T& v, size_t n)
@@ -123,7 +123,7 @@ template< class T > std::string createStringFromArray (const T& v)
     return createStringFromArray< T > (v, v.size ());
 }
 
-std::string scopedName (Device* dev, Frame* frame)
+std::string scopedName (Device* dev,  rw::core::Ptr<Frame> frame)
 {
     std::string fname = frame->getName ();
     std::string dname = dev->getName ();
@@ -135,11 +135,11 @@ std::string scopedName (Device* dev, Frame* frame)
     return fname;
 }
 
-std::string scopedName (Frame* sframe, Frame* frame)
+std::string scopedName (rw::core::Ptr<Frame> sframe,  rw::core::Ptr<Frame> frame)
 {
     if (isFrameInDevice (frame)) {
-        if (isFrameInDevice (sframe, frameToDevice[frame]))
-            return scopedName (frameToDevice[frame], frame);
+        if (isFrameInDevice (sframe, frameToDevice[frame.get()]))
+            return scopedName (frameToDevice[frame.get()], frame);
     }
     return frame->getName ();
 }
@@ -1003,22 +1003,22 @@ ElementCreator::createElement< FixedFrame* > (FixedFrame* frame,
     return element;
 }
 
-void writeDeviceFrame (Frame* frame, ElementCreator& creator,
+void writeDeviceFrame (rw::core::Ptr<Frame> frame, ElementCreator& creator,
                        rw::core::Ptr< const rw::models::WorkCell > workcell, const State state,
                        Device::Ptr dev, DOMElem::Ptr parent)
 {
-    if (FixedFrame* ff = dynamic_cast< FixedFrame* > (frame)) {
+    if (FixedFrame* ff = frame.cast<FixedFrame>().get()) {
         // std::cout << "The frame type was Fixed!" << std::endl;
         if (isFrameInDevice (frame))
             creator.createElement< FixedFrame* > (ff, workcell, dev, parent);
         else
             creator.createElement< FixedFrame* > (ff, workcell, parent);
     }
-    else if (MovableFrame* mf = dynamic_cast< MovableFrame* > (frame)) {
+    else if (MovableFrame* mf = frame.cast<MovableFrame>().get()) {
         // std::cout << "The frame type was Movable!" << std::endl;
         creator.createElement< MovableFrame* > (mf, workcell, state, parent);
     }
-    else if (RevoluteJoint* rj = dynamic_cast< RevoluteJoint* > (frame)) {
+    else if (RevoluteJoint* rj = frame.cast<RevoluteJoint>().get()) {
         // std::cout << "The frame type was RevoluteJoint" << std::endl;
         creator.createElement< RevoluteJoint* > (rj, workcell, state, dev, parent);
     } /*
@@ -1037,19 +1037,19 @@ void writeDeviceFrame (Frame* frame, ElementCreator& creator,
      }*/
 }
 
-void writeFrame (Frame* frame, ElementCreator& creator,
+void writeFrame (rw::core::Ptr<Frame> frame, ElementCreator& creator,
                  rw::core::Ptr< const rw::models::WorkCell > workcell, const State state,
                  DOMElem::Ptr parent)
 {
-    if (FixedFrame* ff = dynamic_cast< FixedFrame* > (frame)) {
+    if (FixedFrame* ff = frame.cast<FixedFrame>().get()) {
         // std::cout << "The frame type was Fixed!" << std::endl;
         creator.createElement< FixedFrame* > (ff, workcell, parent);
     }
-    else if (MovableFrame* mf = dynamic_cast< MovableFrame* > (frame)) {
+    else if (MovableFrame* mf = frame.cast<MovableFrame>().get()) {
         // std::cout << "The frame type was Movable!" << std::endl;
         creator.createElement< MovableFrame* > (mf, workcell, state, parent);
     }
-    else if (RevoluteJoint* rj = dynamic_cast< RevoluteJoint* > (frame)) {
+    else if (RevoluteJoint* rj = frame.cast<RevoluteJoint>().get()) {
         // std::cout << "The frame type was RevoluteJoint" << std::endl;
         creator.createElement< RevoluteJoint* > (rj, workcell, state, parent);
     } /*
@@ -1127,7 +1127,7 @@ void createDOMDocument (DOMElem::Ptr rootDoc, rw::core::Ptr< const rw::models::W
 
     for (Device::Ptr dev : devices) {
         // First write parent frame to device
-        Frame* parent = dev->getBase ()->getParent ();
+        rw::core::Ptr<Frame> parent = dev->getBase ()->getParent ();
         writeFrame (parent, creator, workcell, state, rootElement);
 
         std::string devType      = getDeviceType (*dev);
@@ -1138,9 +1138,9 @@ void createDOMDocument (DOMElem::Ptr rootDoc, rw::core::Ptr< const rw::models::W
         std::stack< Frame* > frames;
         frames.push (dev->getBase ());
         while (!frames.empty ()) {
-            Frame* frame = frames.top ();
+            rw::core::Ptr<Frame> frame = frames.top ();
             frames.pop ();
-            flist.push_back (frame);
+            flist.push_back (frame.get());
 
             writeDeviceFrame (frame, creator, workcell, state, dev, dev_element);
 

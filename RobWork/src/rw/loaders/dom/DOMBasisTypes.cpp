@@ -675,8 +675,8 @@ rw::kinematics::State DOMBasisTypes::readState (DOMElem::Ptr element, WorkCell::
         else if (child->isName (idTreeState ())) {
             std::vector< StringPair > dafs = readStringPairs (element);
             for (std::vector< StringPair >::iterator it = dafs.begin (); it != dafs.end (); ++it) {
-                Frame* daf    = workcell->findFrame ((*it).first);
-                Frame* parent = workcell->findFrame ((*it).second);
+                rw::core::Ptr<Frame> daf    = workcell->findFrame ((*it).first);
+                rw::core::Ptr<Frame> parent = workcell->findFrame ((*it).second);
                 if (daf == NULL)
                     RW_THROW ("Unable to locate frame named \"" << (*it).first);
                 if (parent == NULL)
@@ -1132,7 +1132,7 @@ DOMElem::Ptr DOMBasisTypes::createTreeState (const rw::kinematics::State& state,
     // Find out what frames are DAFs.
     typedef std::vector< Frame* >::const_iterator I;
     for (I p = dafs.begin (); p != dafs.end (); ++p) {
-        Frame* frame = *p;
+        rw::core::Ptr<Frame> frame = *p;
         createStringPair (frame->getName (), frame->getDafParent (state)->getName (), element);
     }
     return element;

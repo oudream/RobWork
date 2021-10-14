@@ -50,24 +50,16 @@ class FTSensorWrapper : public FTSensor
     Vector3D<> getTorque () { return _sensor->getTorque (_simHandle->getState ()); };
 };
 
-Frame* getFrameFromBodyOr (Frame* frame, Body::Ptr b)
+Frame* getFrameFromBodyOr (Frame::Ptr frame, Body::Ptr b)
 {
-    if (frame == NULL)
+    if (frame.isNull())
         return b->getBodyFrame ();
-    return frame;
+    return frame.get();
 }
 }    // namespace
 
-/*
-SimulatedFTSensor::SimulatedFTSensor(const std::string& name, dynamics::Body *body):
-    TactileMultiAxisSensor(name, "TactileMultiAxisSensor"),_body(body)
-{
-        this->attachTo( body->getBodyFrame() );
-}
-*/
-
 SimulatedFTSensor::SimulatedFTSensor (const std::string& name, Body::Ptr body, Body::Ptr body1,
-                                      Frame* frame) :
+                                      rw::core::Ptr<Frame> frame) :
     SimulatedTactileSensor (rw::core::ownedPtr (
         new FTSensorModel (name, getFrameFromBodyOr (frame, body1), "SimulatedFtSensor"))),
     _body (body), _body1 (body1)

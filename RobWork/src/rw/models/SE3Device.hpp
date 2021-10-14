@@ -88,7 +88,7 @@ namespace rw { namespace models {
          * @param base documentation missing !
          * @param mframe documentation missing !
          */
-        SE3Device (const std::string& name, rw::kinematics::Frame* base,
+        SE3Device (const std::string& name, rw::core::Ptr<rw::kinematics::Frame> base,
                    rw::kinematics::MovableFrame* mframe);
 
         virtual ~SE3Device () {}
@@ -120,25 +120,25 @@ namespace rw { namespace models {
          * @brief get base of the device
          * @return base Frame
          */
-        rw::kinematics::Frame* getBase () { return _base; }
+        rw::kinematics::Frame* getBase () { return _base.get(); }
 
         /**
          * @brief get base of the device
          * @return base Frame
          */
-        const rw::kinematics::Frame* getBase () const { return _base; }
+        const rw::kinematics::Frame* getBase () const { return _base.get(); }
 
         /**
          * @brief get end of the device
          * @return end Frame
          */
-        rw::kinematics::Frame* getEnd () { return _mframe; }
+        rw::kinematics::Frame* getEnd () { return _mframe.get(); }
 
         /**
          * @brief get end of the device
          * @return end Frame
          */
-        const rw::kinematics::Frame* getEnd () const { return _mframe; }
+        const rw::kinematics::Frame* getEnd () const { return _mframe.get(); }
 #if ! defined(SWIGJAVA)
         /**
          * @brief Calculates the jacobian matrix of the end-effector described
@@ -212,8 +212,8 @@ namespace rw { namespace models {
         void setAccelerationLimits (const rw::math::Q& acclimits);
 
       private:
-        rw::kinematics::Frame* _base;
-        rw::kinematics::MovableFrame* _mframe;
+        rw::core::Ptr<rw::kinematics::Frame> _base;
+        rw::core::Ptr<rw::kinematics::MovableFrame> _mframe;
         rw::math::Q _vellimits, _acclimits;
     };
 

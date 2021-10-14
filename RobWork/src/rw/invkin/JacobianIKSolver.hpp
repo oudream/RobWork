@@ -109,7 +109,8 @@ namespace rw { namespace invkin {
          * @param state [in] the initial state.
          */
         JacobianIKSolver (rw::core::Ptr< const rw::models::Device > device,
-                          const rw::kinematics::Frame* foi, const kinematics::State& state);
+                          rw::core::Ptr< const rw::kinematics::Frame > foi,
+                          const kinematics::State& state);
 
         /**
          * @copydoc IterativeIK::solve

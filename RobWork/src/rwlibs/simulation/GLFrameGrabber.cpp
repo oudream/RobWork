@@ -33,7 +33,7 @@ GLFrameGrabber::GLFrameGrabber (int width, int height, double fov, double nearAr
 GLFrameGrabber::~GLFrameGrabber ()
 {}
 
-void GLFrameGrabber::grab (rw::kinematics::Frame* frame, const rw::kinematics::State& state)
+void GLFrameGrabber::grab (rw::core::Ptr<rw::kinematics::Frame> frame, const rw::kinematics::State& state)
 {
     if (_view.isNull ())
         RW_THROW ("GLFrameGrabber must be initialized before grab is called!");

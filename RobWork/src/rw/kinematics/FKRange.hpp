@@ -62,7 +62,7 @@ namespace rw { namespace kinematics {
          *
          * @param state [in] The path structure.
          */
-        FKRange (const rw::kinematics::Frame* from, const rw::kinematics::Frame* to, const rw::kinematics::State& state);
+        FKRange (rw::core::Ptr<const rw::kinematics::Frame> from, rw::core::Ptr<const rw::kinematics::Frame> to, const rw::kinematics::State& state);
 
         /**
          * @brief Default constructor

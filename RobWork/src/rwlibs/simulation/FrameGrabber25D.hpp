@@ -21,10 +21,10 @@
 /**
  * @file FrameGrabber.hpp
  */
-
+#if !defined(SWIG)
 #include <rw/core/Ptr.hpp>
 #include <rw/geometry/PointCloud.hpp>
-
+#endif
 namespace rw { namespace kinematics {
     class Frame;
 }}    // namespace rw::kinematics
@@ -107,7 +107,7 @@ namespace rwlibs { namespace simulation {
         //                  const rw::kinematics::State& state,
         //                  std::vector<rw::math::Vector3D<float> >* result) = 0;
 
-        virtual void grab (rw::kinematics::Frame* frame, const rw::kinematics::State& state) = 0;
+        virtual void grab (rw::core::Ptr<rw::kinematics::Frame> frame, const rw::kinematics::State& state) = 0;
 
         /**
          * @brief maximum depth that this framegrabber can handle

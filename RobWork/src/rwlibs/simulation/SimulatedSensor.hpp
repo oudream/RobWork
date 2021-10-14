@@ -20,10 +20,12 @@
 
 //! @file SimulatedSensor.hpp
 
+#if !defined(SWIG)
 #include "Simulator.hpp"
 
 #include <rw/core/Ptr.hpp>
 #include <rw/sensor/SensorModel.hpp>
+#endif
 
 namespace rw { namespace kinematics {
     class Frame;
@@ -70,7 +72,7 @@ namespace rwlibs { namespace simulation {
          * @param info [in] update information related to the time step.
          * @param state [out] changes of the SimulatedSensor is saved in state.
          */
-        virtual void update (const Simulator::UpdateInfo& info, rw::kinematics::State& state) = 0;
+        virtual void update (const rwlibs::simulation::Simulator::UpdateInfo& info, rw::kinematics::State& state) = 0;
 
         /**
          * @brief Resets the state of the SimulatedSensor to that of \b state

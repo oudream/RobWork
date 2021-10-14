@@ -44,7 +44,7 @@ const DHParameterSet* DHParameterSet::get (const rw::core::PropertyMap& pmap)
     return pmap.getPtr< DHParameterSet > ("DHSet");
 }
 
-void DHParameterSet::set (const DHParameterSet& dhset, rw::kinematics::Frame* joint)
+void DHParameterSet::set (const DHParameterSet& dhset, rw::core::Ptr<rw::kinematics::Frame> joint)
 {
     set (dhset, joint->getPropertyMap ());
 }

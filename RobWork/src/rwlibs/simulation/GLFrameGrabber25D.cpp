@@ -94,7 +94,7 @@ void GLFrameGrabber25D::setMinDepth (double depth)
             _fieldOfView, (int) getWidth (), (int) getHeight (), _minDepth, _maxDepth);
 }
 
-void GLFrameGrabber25D::grab (rw::kinematics::Frame* frame, const rw::kinematics::State& state)
+void GLFrameGrabber25D::grab (rw::core::Ptr<rw::kinematics::Frame> frame, const rw::kinematics::State& state)
 {
     if (_view.isNull ())
         RW_THROW ("GLFrameGrabber25D must be initialized before grab is called!");

@@ -63,7 +63,7 @@ namespace rwsim { namespace control {
         PoseController (const std::string& name,
                         rw::core::Ptr< rwsim::dynamics::DynamicDevice > rdev,
                         const rw::kinematics::State& state, double dt,
-                        rw::kinematics::Frame* endframe);
+                        rw::core::Ptr<rw::kinematics::Frame> endframe);
 
         /**
          * @brief destructor
@@ -129,7 +129,7 @@ namespace rwsim { namespace control {
       private:
         rw::core::Ptr< rwsim::dynamics::DynamicDevice > _ddev;
         rw::core::Ptr< rw::models::Device > _device;
-        rw::kinematics::Frame* _endframe;
+        rw::core::Ptr<rw::kinematics::Frame> _endframe;
 
         rw::math::Transform3D<> _target;
         rw::math::VelocityScrew6D<> _targetVel;

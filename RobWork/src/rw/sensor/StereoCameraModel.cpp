@@ -29,7 +29,7 @@ using namespace rw::math;
 StereoCameraModel::StereoCameraModel (const std::string& name, double fov, double width,
                                       double height, const rw::math::Transform3D<>& TL,
                                       const rw::math::Transform3D<>& TR,
-                                      rw::kinematics::Frame* frame, const std::string& modelInfo) :
+                                      rw::core::Ptr<rw::kinematics::Frame> frame, const std::string& modelInfo) :
     SensorModel (name, frame, modelInfo),
     _sdata (1, rw::core::ownedPtr (new StereoCameraModelCache ()).cast< StateCache > ()),
     _pmatrix (ProjectionMatrix::makePerspective (fov * height / width, width / height, 0.001, 30)),

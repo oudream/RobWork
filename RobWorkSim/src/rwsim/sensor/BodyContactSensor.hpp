@@ -46,7 +46,7 @@ namespace rwsim { namespace sensor {
          * @param name [in] the sensor name
          * @param frame [in] the frame of this sensor.
          */
-        BodyContactSensor (const std::string& name, rw::kinematics::Frame* frame);
+        BodyContactSensor (const std::string& name,rw::core::Ptr<rw::kinematics::Frame> frame);
 
         //! @brief Destructor.
         virtual ~BodyContactSensor ();

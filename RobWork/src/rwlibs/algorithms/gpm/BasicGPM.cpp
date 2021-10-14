@@ -30,7 +30,7 @@ using namespace rwlibs::algorithms;
 
 using namespace Eigen;
 
-BasicGPM::BasicGPM (Device* device, Frame* controlFrame, const State& state, const Q& qhome,
+BasicGPM::BasicGPM (Device* device, rw::core::Ptr<Frame> controlFrame, const State& state, const Q& qhome,
                     double dt) :
     _device (device),
     _controlFrame (controlFrame), _state (state), _qhome (qhome), _dof ((int) device->getDOF ()),

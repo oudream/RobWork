@@ -114,7 +114,7 @@ ParallelDevice::ParallelDevice (const std::vector< ParallelLeg* >& legs, const s
     _unActuatedJoints (getUnactuatedJoints (legs)), _joints (getAllJointsFromLegs (legs))
 {}
 
-ParallelDevice::ParallelDevice (const std::string name, Frame* base, Frame* end,
+ParallelDevice::ParallelDevice (const std::string name, rw::core::Ptr<Frame> base, rw::core::Ptr<Frame> end,
                                 const std::vector< Joint* >& joints, const State& state,
                                 const std::vector< Legs >& junctions) :
     JointDevice (name, base, end, getActuatedJoints (joints), state),
@@ -702,7 +702,7 @@ Jacobian ParallelDevice::baseJend (const std::vector< ParallelLeg* >& legs, cons
     return Jacobian (m);
 }
 
-Jacobian ParallelDevice::baseJframe (const Frame* frame, const State& state) const
+Jacobian ParallelDevice::baseJframe (const rw::core::Ptr<Frame> frame, const State& state) const
 {
     RW_THROW ("Not implemented");
 

@@ -42,7 +42,7 @@ size_t calcDOFs (const std::vector< Joint* >& joints)
 
 }    // namespace
 
-JointDevice::JointDevice (const std::string& name, Frame* base, Frame* end,
+JointDevice::JointDevice (const std::string& name, rw::core::Ptr<Frame> base, rw::core::Ptr<Frame> end,
                           const std::vector< Joint* >& joints, const State& state) :
     Device (name),
     _base (base), _end (end), _joints (joints), _dof (calcDOFs (joints)),

@@ -29,7 +29,7 @@ using namespace rw::models;
 using namespace rw::kinematics;
 using namespace rwlibs::algorithms::qpcontroller;
 
-NullSpaceProjection::NullSpaceProjection (Device* device, Frame* controlFrame, const State& state,
+NullSpaceProjection::NullSpaceProjection (Device* device, rw::core::Ptr<Frame> controlFrame, const State& state,
                                           double dt) :
     _state (state),
     _dt (dt), _P (Eigen::MatrixXd::Identity (6, 6)), _space (BaseFrame)
