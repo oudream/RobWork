@@ -36,7 +36,7 @@ override_dh_clean:
 	$(RM) RobWork/cmake/RobWorkConfigVersion.cmake
 	$(RM) RobWork/cmake/RobWorkluaTargets.cmake
 	$(RM) RobWork/cmake/RobWorkpythonTargets.cmake
-	$(RM) RobWork/cmake/RobWorkTargets.cmake
+	$(RM) RobWork/cmake/targets/*.cmake
 	$(RM) RobWork/ext/rwyaobi/include/yaobi/yaobi_config.h
 	$(RM) RobWork/ext/rwyaobi/yaobi/yaobi_config.h
 	$(RM) RobWork/src/RobWorkConfig.hpp
@@ -53,7 +53,7 @@ override_dh_clean:
 	$(RM) RobWorkStudio/cmake/RobWorkStudioConfigVersion.cmake
 	$(RM) RobWorkStudio/cmake/RobWorkStudioluaTargets.cmake
 	$(RM) RobWorkStudio/cmake/RobWorkStudiopythonTargets.cmake
-	$(RM) RobWorkStudio/cmake/RobWorkStudioTargets.cmake
+	$(RM) RobWorkStudio/cmake/targets/*.cmake
 	$(RM) RobWorkStudio/cmake/dependencies.cmake.gen
 	$(RM) RobWorkStudio/docs/sdurw_help-*.qhcp
 	$(RM) RobWorkStudio/src/rwslibs/swig/python/RobWorkStudio-*.egg-info
@@ -69,7 +69,7 @@ override_dh_clean:
 	$(RM) RobWorkSim/cmake/RobWorkSimConfigVersion.cmake
 	$(RM) RobWorkSim/cmake/RobWorkSimluaTargets.cmake
 	$(RM) RobWorkSim/cmake/RobWorkSimpythonTargets.cmake
-	$(RM) RobWorkSim/cmake/RobWorkSimTargets.cmake
+	$(RM) RobWorkSim/cmake/targets/*.cmake
 	$(RM) RobWorkSim/src/RobWorkSimConfig.hpp
 	$(RM) RobWorkSim/src/rwsimlibs/gui/RWSimGuiConfig.hpp
 	$(RM) RobWorkSim/test/TestSuiteConfig.hpp

@@ -120,6 +120,9 @@ NAMED_OWNEDPTR(Frame, rw::kinematics::Frame);
 #define SWIGPtr_pre
 #endif
 
+#ifndef SWIG_POINTER_NO_NULL
+#define SWIG_POINTER_NO_NULL 0
+#endif
 %typecheck(SWIG_TYPECHECK_SWIGOBJECT) rw::core::Ptr<rw::kinematics::Frame>{
     void* ptr;
     if (SWIG_IsOK(SWIG_ConvertPtr(SWIGPtr_pre $input, (void **) &ptr, $descriptor(rw::core::Ptr<rw::core::kinematics::Frame> *),SWIG_POINTER_NO_NULL | 0))) {
