@@ -156,12 +156,10 @@ if(build)
                     )
                 endif()
 
-                if(SWIG_DEFAULT_COMPILE OR CMAKE_VERSION VERSION_GREATER 3.16.0)
-                    install(TARGETS ${RW_MODULE}_lua_plugin.rwplugin
-                            EXPORT ${PROJECT_PREFIX}_${RW_MODULE}_lua_plugin.rwpluginTargets
-                            LIBRARY DESTINATION ${RW_PLUGIN_INSTALL_DIR}
-                    )
-                endif()
+                install(TARGETS ${RW_MODULE}_lua_plugin.rwplugin
+                        EXPORT ${PROJECT_PREFIX}_${RW_MODULE}_lua_plugin.rwpluginTargets
+                        LIBRARY DESTINATION ${RW_PLUGIN_INSTALL_DIR}
+                )
             endif()
 
 
