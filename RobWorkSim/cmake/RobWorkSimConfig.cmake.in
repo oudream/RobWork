@@ -23,7 +23,38 @@ set(RobWorkSim_REQUIRED ${RobWorkSim_FIND_REQUIRED})
 get_robworksim_build_type(${RWSIMCFG_ROOT} RWSIM_BUILD_TYPE)
 
 if(NOT TARGET sdurwsim)
-    include("${RWSIMCFG_ROOT}/RobWorkSimTargets.cmake")
+    set(RWSIM_MODULES_WITH_SWIG
+        sdurwsim
+    )
+    foreach(
+        RWSIM_MODULE
+        ${RWSIM_MODULES_WITH_SWIG}
+        sdurwsim_bullet
+        sdurwsim_gui
+        sdurwsim_ode
+        sdurwsim_test
+    )
+        if(EXISTS "${RWSIMCFG_ROOT}/targets/${RWSIM_MODULE}.cmake")
+            include("${RWSIMCFG_ROOT}/targets/${RWSIM_MODULE}.cmake")
+        endif()
+    endforeach()
+    foreach(
+        RWSIM_MODULE
+        ${RWSIM_MODULES_WITH_SWIG}
+    )
+        if(EXISTS "${RWSIMCFG_ROOT}/targets/${RWSIM_MODULE}_py.cmake")
+            include("${RWSIMCFG_ROOT}/targets/${RWSIM_MODULE}_py.cmake")
+        endif()
+        if(EXISTS "${RWSIMCFG_ROOT}/targets/${RWSIM_MODULE}_lua_s.cmake")
+            include("${RWSIMCFG_ROOT}/targets/${RWSIM_MODULE}_lua_s.cmake")
+        endif()
+        if(EXISTS "${RWSIMCFG_ROOT}/targets/${RWSIM_MODULE}_lua.cmake")
+            include("${RWSIMCFG_ROOT}/targets/${RWSIM_MODULE}_lua.cmake")
+        endif()
+        if(EXISTS "${RWSIMCFG_ROOT}/targets/${RWSIM_MODULE}_jni.cmake")
+            include("${RWSIMCFG_ROOT}/targets/${RWSIM_MODULE}_jni.cmake")
+        endif()
+    endforeach()
     if(EXISTS "${RWSIMCFG_ROOT}/RobWorkSimluaTargets.cmake")
         include("${RWSIMCFG_ROOT}/RobWorkSimluaTargets.cmake")
     endif()

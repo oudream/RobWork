@@ -125,7 +125,7 @@ endif()
 
 install(
     TARGETS QCodeEditor
-    EXPORT ${PROJECT_PREFIX}Targets
+    EXPORT ${PROJECT_PREFIX}_sdurws_pythoneditorTargets
     RUNTIME DESTINATION ${BIN_INSTALL_DIR} COMPONENT ${_component}
     LIBRARY DESTINATION "${STATIC_LIB_INSTALL_DIR}" COMPONENT ${_component}
     ARCHIVE DESTINATION "${STATIC_LIB_INSTALL_DIR}" COMPONENT ${_component}

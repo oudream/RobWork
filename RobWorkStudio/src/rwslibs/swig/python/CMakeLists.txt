@@ -106,4 +106,16 @@ if(build)
 
     rw_swig_compile_target(python ${TARGET_NAME})
 
+    export(
+        EXPORT ${PROJECT_PREFIX}_${python_NAME_sdurws}Targets
+        FILE "${${PROJECT_PREFIX}_ROOT}/cmake/targets/${python_NAME_sdurws}.cmake"
+        NAMESPACE ${PROJECT_PREFIX}::
+    )
+    install(
+        EXPORT ${PROJECT_PREFIX}_${python_NAME_sdurws}Targets
+        FILE ${python_NAME_sdurws}.cmake
+        NAMESPACE ${PROJECT_PREFIX}::
+        DESTINATION ${RWS_INSTALL_DIR}/cmake/targets
+    )
+
 endif()

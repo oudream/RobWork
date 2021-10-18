@@ -169,8 +169,21 @@ if(build)
         endif()
     endforeach()
 
+    install(TARGETS ${SUBSYS_NAME} EXPORT ${PROJECT_PREFIX}pythonTargets)
     rw_swig_compile_target(python ${python_targets})
 
-    install(TARGETS ${SUBSYS_NAME} EXPORT ${PROJECT_PREFIX}pythonTargets)
+    foreach(name ${python_targets})
+        export(
+            EXPORT ${PROJECT_PREFIX}_${name}Targets
+            FILE "${${PROJECT_PREFIX}_ROOT}/cmake/targets/${name}.cmake"
+            NAMESPACE ${PROJECT_PREFIX}::
+        )
+        install(
+            EXPORT ${PROJECT_PREFIX}_${name}Targets
+            FILE ${name}.cmake
+            NAMESPACE ${PROJECT_PREFIX}::
+            DESTINATION ${RW_INSTALL_DIR}/cmake/targets
+        )
+    endforeach()
 
 endif()

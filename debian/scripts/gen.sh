@@ -215,7 +215,8 @@ while read p; do
                 echo "usr/include/$library-$MAJOR.$MINOR$f/*" >> $filename
             done 
         fi
-
+        echo "usr/share/robwork-*/cmake/targets/$library.cmake" >> $filename
+        echo "usr/share/robwork-*/cmake/targets/$library-*.cmake" >> $filename
     fi
 
     ############################################################

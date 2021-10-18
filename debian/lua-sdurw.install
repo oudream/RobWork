@@ -31,5 +31,6 @@ usr/lib/*/RobWork/static/libsdurw_algorithms_lua_s.a
 
 usr/lib/*/lua/[0-9].[0-9]/sdurw.so
 usr/lib/*/RobWork/static/libsdurw_lua_s.a
+usr/share/robwork-*/cmake/targets/sdurw_lua*.cmake
 usr/share/robwork-*/cmake/RobWorkluaTargets.cmake
 usr/share/robwork-*/cmake/RobWorkluaTargets-none.cmake

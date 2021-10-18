@@ -10,5 +10,6 @@ usr/lib/*/dist-packages/sdurw/sdurw.py
 usr/lib/*/dist-packages/sdurw/_sdurw*.so
 usr/lib/*/dist-packages/sdurw/__init__.py
 usr/lib/*/dist-packages/RobWork-*.egg-info
+usr/share/robwork-*/cmake/targets/sdurw_py*.cmake
 usr/share/robwork-*/cmake/RobWorkpythonTargets.cmake
 usr/share/robwork-*/cmake/RobWorkpythonTargets-none.cmake

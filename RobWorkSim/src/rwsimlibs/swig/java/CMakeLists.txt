@@ -29,6 +29,8 @@ if(build)
     include(UseJava)
     include(UseSWIG)
 
+    add_library(${SUBSYS_NAME} INTERFACE)
+
     set(build_doc TRUE)
     if(WIN32 OR CMAKE_SYSTEM_NAME STREQUAL "Darwin")
         set(build_doc FALSE)
@@ -110,7 +112,26 @@ if(build)
     )
     set(CMAKE_SWIG_OUTDIR ${RWSIM_CMAKE_LIBRARY_OUTPUT_DIRECTORY})
 
+    if(SWIG_DEFAULT_COMPILE OR CMAKE_VERSION VERSION_GREATER 3.16.0)
+        target_link_libraries(${SUBSYS_NAME} INTERFACE sdurws_jni)
+    endif()
+
+    install(TARGETS ${SUBSYS_NAME} EXPORT ${PROJECT_PREFIX}javaTargets)
+    add_library(${PROJECT_PREFIX}::${SUBSYS_NAME} ALIAS ${SUBSYS_NAME})
+
     rw_swig_compile_target(
         java sdurwsim_jni ${java_NAME_sdurwsim}_java_doc ${java_NAME_sdurwsim}_libs
+    )
+
+    export(
+        EXPORT ${PROJECT_PREFIX}_sdurwsim_jniTargets
+        FILE "${${PROJECT_PREFIX}_ROOT}/cmake/targets/sdurwsim_jni.cmake"
+        NAMESPACE ${PROJECT_PREFIX}::
+    )
+    install(
+        EXPORT ${PROJECT_PREFIX}_sdurwsim_jniTargets
+        FILE sdurwsim_jni.cmake
+        NAMESPACE ${PROJECT_PREFIX}::
+        DESTINATION ${RWS_INSTALL_DIR}/cmake/targets
     )
 endif()
