@@ -114,10 +114,22 @@ if(build)
     target_link_libraries(${python_NAME_sdurwsim} PUBLIC sdurwsim RW::sdurw RWS::sdurws ${RWSIM_ODE_LIBRARY}
                         ${PYTHON_LIBRARIES})
                         
-    install(TARGETS ${SUBSYS_NAME} EXPORT ${PROJECT_PREFIX}Targets)
+    install(TARGETS ${SUBSYS_NAME} EXPORT ${PROJECT_PREFIX}pythonTargets)
 
     RW_SWIG_COMPILE_TARGET(
             python ${TARGET_NAME}
         )
+
+    export(
+        EXPORT ${PROJECT_PREFIX}_${python_NAME_sdurwsim}Targets
+        FILE "${${PROJECT_PREFIX}_ROOT}/cmake/targets/${python_NAME_sdurwsim}.cmake"
+        NAMESPACE ${PROJECT_PREFIX}::
+    )
+    install(
+        EXPORT ${PROJECT_PREFIX}_${python_NAME_sdurwsim}Targets
+        FILE ${python_NAME_sdurwsim}.cmake
+        NAMESPACE ${PROJECT_PREFIX}::
+        DESTINATION ${RWS_INSTALL_DIR}/cmake/targets
+    )
 
 endif()

@@ -530,7 +530,7 @@ macro(RW_ADD_LIBRARY _name)
     endif()
 
     if("${SUBSYS_EXPORT_SET}" STREQUAL "")
-        set(SUBSYS_EXPORT_SET ${PROJECT_PREFIX}Targets)
+        set(SUBSYS_EXPORT_SET ${PROJECT_PREFIX}_${_name}Targets)
     endif()
 
     set(LIB_TYPE ${PROJECT_LIB_TYPE})
@@ -586,6 +586,19 @@ macro(RW_ADD_LIBRARY _name)
             ARCHIVE DESTINATION ${lib_dir} COMPONENT ${_component}
         )
     endif()
+
+    export(
+        EXPORT ${SUBSYS_EXPORT_SET}
+        FILE "${${PROJECT_PREFIX}_ROOT}/cmake/targets/${_name}.cmake"
+        NAMESPACE ${PROJECT_PREFIX}::
+    )
+
+    install(
+        EXPORT ${SUBSYS_EXPORT_SET}
+        FILE ${_name}.cmake
+        NAMESPACE ${PROJECT_PREFIX}::
+        DESTINATION ${${PROJECT_PREFIX}_INSTALL_DIR}/cmake/targets
+    )
 
 endmacro()
 
@@ -770,39 +783,11 @@ macro(RW_ADD_SWIG _name _language _type)
 
     install(
         TARGETS ${SLIB_TARGET_NAME}
-        EXPORT ${PROJECT_PREFIX}${_language}Targets
+        EXPORT ${PROJECT_PREFIX}_${SLIB_TARGET_NAME}Targets
         RUNTIME DESTINATION ${SLIB_INSTALL_DIR} COMPONENT swig
         LIBRARY DESTINATION ${SLIB_INSTALL_DIR} COMPONENT swig
         ARCHIVE DESTINATION ${SLIB_INSTALL_DIR} COMPONENT swig
     )
-endmacro()
-
-macro(RW_SWIG_COMPILE_TARGET _language)
-
-    if(TARGET ${_language})
-        add_dependencies(${_language} ${ARGN})
-    else()
-        add_custom_target(
-            ${_language}
-            COMMAND ${CMAKE_COMMAND} -E echo "Done Building"
-            DEPENDS ${ARGN}
-        )
-    endif()
-
-    export(
-        EXPORT ${PROJECT_PREFIX}${_language}Targets
-        FILE "${${PROJECT_PREFIX}_ROOT}/cmake/${PROJECT_NAME}${_language}Targets.cmake"
-        NAMESPACE ${PROJECT_PREFIX}::
-    )
-
-    if(SWIG_DEFAULT_COMPILE OR CMAKE_VERSION VERSION_GREATER 3.16.0)
-        install(
-            EXPORT ${PROJECT_PREFIX}${_language}Targets
-            FILE ${PROJECT_NAME}${_language}Targets.cmake
-            NAMESPACE ${PROJECT_PREFIX}::
-            DESTINATION ${${PROJECT_PREFIX}_INSTALL_DIR}/cmake
-        )
-    endif()
 endmacro()
 
 macro(RW_SWIG_COMPILE_TARGET _language)
@@ -938,7 +923,6 @@ macro(RW_ADD_JAVA_LIB _name)
         )
     endif()
     set_target_properties(${java_NAME_${_name}}_java_doc PROPERTIES EXCLUDE_FROM_DEFAULT_BUILD TRUE)
-
 endmacro()
 
 # ##################################################################################################

@@ -126,8 +126,8 @@ configure_file(${RW_ROOT}/cmake/RobWorkConfigMacros.cmake.in
 )
 
 export(
-    EXPORT ${PROJECT_PREFIX}Targets
-    FILE "${RW_ROOT}/cmake/${PROJECT_NAME}Targets.cmake"
+    EXPORT ${PROJECT_PREFIX}_sdurwTargets
+    FILE "${RW_ROOT}/cmake/targets/sdurw.cmake"
     NAMESPACE ${PROJECT_PREFIX}::
 )
 
@@ -197,10 +197,10 @@ install(
 )
 
 install(
-    EXPORT ${PROJECT_PREFIX}Targets
-    FILE ${PROJECT_NAME}Targets.cmake
+    EXPORT ${PROJECT_PREFIX}_sdurwTargets
+    FILE sdurw.cmake
     NAMESPACE ${PROJECT_PREFIX}::
-    DESTINATION ${RW_INSTALL_DIR}/cmake
+    DESTINATION ${RW_INSTALL_DIR}/cmake/targets
 )
 
 

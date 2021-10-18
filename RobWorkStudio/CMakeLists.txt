@@ -155,12 +155,6 @@ configure_file(${RW_ROOT}/cmake/RobWorkConfigMacros.cmake.in
                "${RWS_ROOT}/cmake/RobWorkStudioConfigMacros.cmake" @ONLY
 )
 
-export(
-    EXPORT ${PROJECT_PREFIX}Targets
-    FILE "${RWS_ROOT}/cmake/${PROJECT_NAME}Targets.cmake"
-    NAMESPACE ${PROJECT_PREFIX}::
-)
-
 # ##################################################################################################
 # Installation stuff
 #
@@ -192,20 +186,12 @@ install(
     COMPONENT sdurws
 )
 
-install(
-    EXPORT ${PROJECT_PREFIX}Targets
-    FILE ${PROJECT_NAME}Targets.cmake
-    NAMESPACE ${PROJECT_PREFIX}::
-    DESTINATION ${RWS_INSTALL_DIR}/cmake
-)
-
 # Install dependencies on Windows
 if(WIN32)
     set(_RWS_MODULES_ROOT "${RWS_ROOT}/cmake/Modules")
     install(
         FILES "${_RWS_MODULES_ROOT}/Find_QT5_DIR.cmake" "${_RWS_MODULES_ROOT}/FindQt5Core.cmake"
-              "${_RWS_MODULES_ROOT}/FindQt5Gui.cmake" "${_RWS_MODULES_ROOT}/FindQt5OpenGL.cmake"
-              "${_RWS_MODULES_ROOT}/FindQt5Widgets.cmake"
+              "${_RWS_MODULES_ROOT}/FindQt5Gui.cmake" "${_RWS_MODULES_ROOT}/FindQt5Widgets.cmake"
         DESTINATION "${RWS_INSTALL_DIR}/cmake/Modules"
         COMPONENT cmake
     )

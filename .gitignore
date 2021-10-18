@@ -3635,4 +3635,4 @@ RobWorkSim/src/rwsimlibs/swig/python/RobWorkSim-*.egg-info
 
 /debian/sdurw-doc1.2/DEBIAN/md5sums
 
-
+/RobWork*/cmake/targets/*.cmake

@@ -1,5 +1,4 @@
 -IC:/local/Qt/qt/include
--IC:/local/Qt/qt/include/QtOpenGL
 -IC:/local/Qt/qt/include/QtDesigner
 -IC:/local/Qt/qt/include/QtUiTools
 -IC:/local/Qt/qt/include/QtGui
@@ -17,7 +16,6 @@
 -IC:/local/rwworkspace/RobWorkStudio/build/release/ext/qtpropertybrowser/src
 -DRW_ENABLE_ASSERT
 -DQT_DLL
--DQT_OPENGL_LIB
 -DQT_DESIGNER_LIB
 -DQT_UITOOLS_LIB
 -DQT_GUI_LIB

@@ -1,3 +1,4 @@
 usr/lib/*/dist-packages/sdurw_task/sdurw_task.py
 usr/lib/*/dist-packages/sdurw_task/_sdurw_task*.so
 usr/lib/*/dist-packages/sdurw_task/__init__.py
+usr/share/robwork-*/cmake/targets/sdurw_task_py*.cmake

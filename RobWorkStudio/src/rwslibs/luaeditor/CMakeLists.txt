@@ -39,7 +39,6 @@ if(build)
 
     rws_add_component(
         ${SUBSYS_NAME}
-        EXPORT_SET RobWorkStudioluaTargets
         USING_SWIG
         ${SrcFiles}
         ${MocSrcFiles}

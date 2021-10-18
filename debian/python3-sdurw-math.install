@@ -1,3 +1,4 @@
 usr/lib/*/dist-packages/sdurw_math/sdurw_math.py
 usr/lib/*/dist-packages/sdurw_math/_sdurw_math*.so
 usr/lib/*/dist-packages/sdurw_math/__init__.py
+usr/share/robwork-*/cmake/targets/sdurw_math_py*.cmake

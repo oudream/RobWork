@@ -47,6 +47,7 @@ if(build)
     set(CMAKE_SWIG_OUTDIR ${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY})
 
     set(java_targets)
+    set(java_target_export)
 
     foreach(
         RW_MODULE
@@ -98,6 +99,7 @@ if(build)
             set(java_targets ${java_targets} ${TARGET_NAME} ${java_NAME_${RW_MODULE}}_java_doc
                              ${java_NAME_${RW_MODULE}}_libs
             )
+            set(java_targets_export ${java_targets_export} ${TARGET_NAME})
 
             # Force removal of previous Java compilation and source when interface file changes This
             # is required as types may be removed or change name (in this case previous java classes
@@ -164,5 +166,17 @@ if(build)
 
     RW_SWIG_COMPILE_TARGET(java ${java_targets})
 
-
+    foreach(name ${java_targets_export})
+        export(
+            EXPORT ${PROJECT_PREFIX}_${name}Targets
+            FILE "${${PROJECT_PREFIX}_ROOT}/cmake/targets/${name}.cmake"
+            NAMESPACE ${PROJECT_PREFIX}::
+        )
+        install(
+            EXPORT ${PROJECT_PREFIX}_${name}Targets
+            FILE ${name}.cmake
+            NAMESPACE ${PROJECT_PREFIX}::
+            DESTINATION ${RW_INSTALL_DIR}/cmake/targets
+        )
+    endforeach()
 endif()

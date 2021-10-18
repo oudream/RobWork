@@ -60,7 +60,7 @@ set_target_properties(${TargetName} PROPERTIES VERSION 1 SOVERSION 1.0)
 # Install stuff
 install(
     TARGETS ${TargetName}
-    EXPORT ${PROJECT_PREFIX}Targets
+    EXPORT ${PROJECT_PREFIX}_sdurwsTargets
     DESTINATION "${LIB_INSTALL_DIR}"
 )
 install(

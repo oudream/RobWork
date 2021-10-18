@@ -158,6 +158,7 @@ if(build)
 
                 if(SWIG_DEFAULT_COMPILE OR CMAKE_VERSION VERSION_GREATER 3.16.0)
                     install(TARGETS ${RW_MODULE}_lua_plugin.rwplugin
+                            EXPORT ${PROJECT_PREFIX}_${RW_MODULE}_lua_plugin.rwpluginTargets
                             LIBRARY DESTINATION ${RW_PLUGIN_INSTALL_DIR}
                     )
                 endif()
@@ -216,5 +217,19 @@ if(build)
     install(TARGETS ${SUBSYS_NAME}_all EXPORT ${PROJECT_PREFIX}luaTargets)
 
     rw_swig_compile_target(lua ${lua_targets})
+
+    foreach(name ${lua_targets})
+        export(
+            EXPORT ${PROJECT_PREFIX}_${name}Targets
+            FILE "${${PROJECT_PREFIX}_ROOT}/cmake/targets/${name}.cmake"
+            NAMESPACE ${PROJECT_PREFIX}::
+        )
+        install(
+            EXPORT ${PROJECT_PREFIX}_${name}Targets
+            FILE ${name}.cmake
+            NAMESPACE ${PROJECT_PREFIX}::
+            DESTINATION ${RW_INSTALL_DIR}/cmake/targets
+        )
+    endforeach()
 
 endif()

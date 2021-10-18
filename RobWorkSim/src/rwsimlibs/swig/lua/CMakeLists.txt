@@ -22,6 +22,9 @@ rw_subsys_option(
 rw_add_doc(${SUBSYS_NAME})
 
 if(build)
+    add_library(${SUBSYS_NAME}_all INTERFACE)
+    add_library(${PROJECT_PREFIX}::${SUBSYS_NAME}_all ALIAS ${SUBSYS_NAME}_all)
+
     set(RWSIM_HAVE_LUA TRUE CACHE INTERNAL "")
     include(UseSWIG)
 
@@ -52,7 +55,9 @@ if(build)
     target_link_libraries(${TARGET_NAME} ${RWSIM_ODE_LIBRARY} ${RWSIM_MODULE} ${RW_BUILD_WITH_LIBRARIES_LUA})
     target_include_directories(${TARGET_NAME} PUBLIC ${RW_BUILD_WITH_LUA_INCLUDE_DIR})
 
-
+    if(SWIG_DEFAULT_COMPILE OR CMAKE_VERSION VERSION_GREATER 3.16.0)
+        target_link_libraries(${SUBSYS_NAME}_all INTERFACE ${TARGET_NAME})
+    endif()
 
     # ############ lua static interface generation ##############
     rw_add_swig(
@@ -71,6 +76,10 @@ if(build)
     else()
         set_target_properties(${TARGET_NAME}_s PROPERTIES COMPILE_FLAGS "-DSTATIC_LINKED")
     endif()
+    
+    if(SWIG_DEFAULT_COMPILE OR CMAKE_VERSION VERSION_GREATER 3.16.0)
+        target_link_libraries(${SUBSYS_NAME}_all INTERFACE ${TARGET_NAME}_s)
+    endif()
 
     add_library(sdurwsimlua_plugin.rwplugin MODULE LuaPlugin.cpp LuaPlugin.hpp)
 
@@ -81,14 +90,30 @@ if(build)
     target_link_libraries(sdurwsimlua_plugin.rwplugin ${TARGET_NAME}_s)
 
     if(SWIG_DEFAULT_COMPILE OR CMAKE_VERSION VERSION_GREATER 3.16.0)
-        install(TARGETS ${RWSIM_MODULE}lua_plugin.rwplugin DESTINATION ${RW_PLUGIN_INSTALL_DIR})
+        install(TARGETS ${RWSIM_MODULE}lua_plugin.rwplugin 
+                DESTINATION ${RW_PLUGIN_INSTALL_DIR})
     endif()
 
     if((CMAKE_COMPILER_IS_GNUCC) OR (CMAKE_C_COMPILER_ID STREQUAL "Clang"))
         set_target_properties(sdurwsimlua_plugin.rwplugin PROPERTIES LINK_FLAGS -Wl,--no-undefined)
     endif()
 
+    install(TARGETS ${SUBSYS_NAME}_all EXPORT ${PROJECT_PREFIX}luaTargets)
 
     RW_SWIG_COMPILE_TARGET(lua ${TARGET_NAME} ${TARGET_NAME}_s sdurwsimlua_plugin.rwplugin)
+
+    foreach(name ${TARGET_NAME} ${TARGET_NAME}_s)
+        export(
+            EXPORT ${PROJECT_PREFIX}_${name}Targets
+            FILE "${${PROJECT_PREFIX}_ROOT}/cmake/targets/${name}.cmake"
+            NAMESPACE ${PROJECT_PREFIX}::
+        )
+        install(
+            EXPORT ${PROJECT_PREFIX}_${name}Targets
+            FILE ${name}.cmake
+            NAMESPACE ${PROJECT_PREFIX}::
+            DESTINATION ${RWS_INSTALL_DIR}/cmake/targets
+        )
+    endforeach()
 
 endif()

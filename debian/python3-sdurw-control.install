@@ -1,3 +1,4 @@
 usr/lib/*/dist-packages/sdurw_control/sdurw_control.py
 usr/lib/*/dist-packages/sdurw_control/_sdurw_control*.so
 usr/lib/*/dist-packages/sdurw_control/__init__.py
+usr/share/robwork-*/cmake/targets/sdurw_control_py*.cmake

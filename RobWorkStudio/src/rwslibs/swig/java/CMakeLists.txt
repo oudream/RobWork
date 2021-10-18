@@ -101,4 +101,16 @@ if(build)
 
     rw_swig_compile_target(java sdurws_jni ${java_NAME_sdurws}_java_doc ${java_NAME_sdurws}_libs)
 
+    export(
+        EXPORT ${PROJECT_PREFIX}_sdurws_jniTargets
+        FILE "${${PROJECT_PREFIX}_ROOT}/cmake/targets/sdurws_jni.cmake"
+        NAMESPACE ${PROJECT_PREFIX}::
+    )
+    install(
+        EXPORT ${PROJECT_PREFIX}_sdurws_jniTargets
+        FILE sdurws_jni.cmake
+        NAMESPACE ${PROJECT_PREFIX}::
+        DESTINATION ${RWS_INSTALL_DIR}/cmake/targets
+    )
+
 endif()

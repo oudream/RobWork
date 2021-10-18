@@ -132,15 +132,11 @@ else()
     find_package(Qt5Core 5.5.1 QUIET)
     find_package(Qt5Gui 5.5.1 QUIET)
     find_package(Qt5Widgets 5.5.1 QUIET)
-    find_package(Qt5OpenGL 5.5.1 QUIET)
     if(Qt5Core_FOUND
        AND Qt5Gui_FOUND
        AND Qt5Widgets_FOUND
-       AND Qt5OpenGL_FOUND
     )
-        set(QT_LIBRARIES ${Qt5Core_LIBRARIES} ${Qt5Gui_LIBRARIES} ${Qt5Widgets_LIBRARIES}
-                         ${Qt5OpenGL_LIBRARIES}
-        )
+        set(QT_LIBRARIES ${Qt5Core_LIBRARIES} ${Qt5Gui_LIBRARIES} ${Qt5Widgets_LIBRARIES})
         message(STATUS "RobWorkStudio: Using Qt ${Qt5Core_VERSION}.")
         set(CMAKE_AUTOMOC ON)
     else()
@@ -160,13 +156,6 @@ else()
         else()
             message(
                 STATUS "RobWorkStudio: - Qt5Widgets NOT found. Please set Qt5Widgets_DIR to find."
-            )
-        endif()
-        if(Qt5OpenGL_FOUND)
-            message(STATUS "RobWorkStudio: - Qt5OpenGL found.")
-        else()
-            message(
-                STATUS "RobWorkStudio: - Qt5OpenGL NOT found. Please set Qt5OpenGL_DIR to find."
             )
         endif()
         message(
