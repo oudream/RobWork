@@ -21,13 +21,13 @@
 /**
  * @file CCDSolver.hpp
  */
-
+#if !defined(SWIG)
 #include "IterativeIK.hpp"
 
 #include <rw/core/PropertyMap.hpp>
 #include <rw/kinematics/FKRange.hpp>
 #include <rw/math/Transform3D.hpp>
-
+#endif
 namespace rw { namespace models {
     class JacobianCalculator;
     class SerialDevice;
@@ -45,13 +45,13 @@ namespace rw { namespace invkin {
      *
      * Notice that the CCDSolver only work on devices with 1-dof joints.
      */
-    class CCDSolver : public IterativeIK
+    class CCDSolver : public rw::invkin::IterativeIK
     {
       public:
         /**
          * @brief Constructor
          */
-        CCDSolver (const models::SerialDevice* device, const kinematics::State& state);
+        CCDSolver (const rw::models::SerialDevice* device, const rw::kinematics::State& state);
 
         /**
          * @brief Sets the maximal size of a local step
@@ -60,14 +60,14 @@ namespace rw { namespace invkin {
         void setMaxLocalStep (double quatlength);
 
         /**
-         * \copydoc IterativeIK::solve
+         * \copydoc rw::invkin::IterativeIK::solve
          *
          * Example:\n
          * CCDAlgorithm r;\n
          * r.inverseKinematics(device, Ttarget);
          */
-        std::vector< math::Q > solve (const math::Transform3D<>& baseTend,
-                                      const kinematics::State& state) const;
+        std::vector< rw::math::Q > solve (const rw::math::Transform3D<double>& baseTend,
+                                      const rw::kinematics::State& state) const;
 
         /**
          * @brief performs a local search toward the the target bTed. No via points
@@ -80,7 +80,7 @@ namespace rw { namespace invkin {
          * @return true if error is below max error
          * @note the result will be saved in state
          */
-        bool solveLocal (const math::Transform3D<>& bTed, double maxError, kinematics::State& state,
+        bool solveLocal (const rw::math::Transform3D<double>& bTed, double maxError, rw::kinematics::State& state,
                          int maxIter) const;
 
         virtual void setCheckJointLimits (bool check){};

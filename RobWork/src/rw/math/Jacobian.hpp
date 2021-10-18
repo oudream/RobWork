@@ -250,7 +250,15 @@ namespace math {
          * @param col
          */
         void addPosition (const rw::math::Vector3D<>& part, size_t row, size_t col);
-
+        
+#if !defined(SWIG)
+        /**
+       * @brief Streaming operator.
+    */
+    friend inline std::ostream& operator<< (std::ostream& out, const Jacobian& v) { return out << v.e (); }
+#else
+        TOSTRING(rw::math::Jacobian);
+#endif
       private:
         Base _jac;
     };
@@ -301,13 +309,6 @@ namespace math {
         return Jacobian (j1.e () * j2.e ());
         // return Jacobian(prod(j1.m(), j2.m()));
     }
-
-    /**
-       @brief Streaming operator.
-
-       @relates Jacobian
-    */
-    inline std::ostream& operator<< (std::ostream& out, const Jacobian& v) { return out << v.e (); }
 
     /**
        @brief Rotates each column of \b v by \b r.

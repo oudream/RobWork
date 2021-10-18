@@ -21,14 +21,14 @@
 /**
  * @file PieperSolver.hpp
  */
-
+#if !defined(SWIG)
 #include "ClosedFormIK.hpp"
 
 #include <rw/math/Q.hpp>
 #include <rw/math/Transform3D.hpp>
 
 #include <vector>
-
+#endif
 namespace rw { namespace models {
     class DHParameterSet;
 }}    // namespace rw::models
@@ -69,8 +69,8 @@ namespace rw { namespace invkin {
          */
         PieperSolver (
             const std::vector< rw::models::DHParameterSet >& dhparams,
-            const rw::math::Transform3D<>& joint6Tend,
-            const rw::math::Transform3D<>& baseTdhRef = rw::math::Transform3D<>::identity ());
+            const rw::math::Transform3D<double>& joint6Tend,
+            const rw::math::Transform3D<double>& baseTdhRef = rw::math::Transform3D<>::identity ());
 
         /**
          * @brief Constructor - the DH parameters is expected to be on each joint
@@ -82,13 +82,13 @@ namespace rw { namespace invkin {
          * DH-parameters reference frame are calculated.
          * @note throws an exception if the device has no DH params
          */
-        PieperSolver (rw::models::SerialDevice& dev, const rw::math::Transform3D<>& joint6Tend,
+        PieperSolver (rw::models::SerialDevice& dev, const rw::math::Transform3D<double>& joint6Tend,
                       const rw::kinematics::State& state);
 
         /**
          * @copydoc ClosedFormIK::solve
          */
-        virtual std::vector< math::Q > solve (const rw::math::Transform3D<>& baseTend,
+        virtual std::vector< math::Q > solve (const rw::math::Transform3D<double>& baseTend,
                                               const rw::kinematics::State& state) const;
 
         /**

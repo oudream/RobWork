@@ -1,10 +1,10 @@
 #ifndef RW_INVKIN_INVKINSOLVER_HPP
 #define RW_INVKIN_INVKINSOLVER_HPP
-
+#if !defined(SWIG)
 #include <rw/core/Ptr.hpp>
 #include <rw/math/Q.hpp>
 #include <rw/math/Transform3D.hpp>
-
+#endif
 namespace rw { namespace kinematics {
     class State;
     class Frame;
@@ -61,7 +61,7 @@ namespace rw { namespace invkin {
          * @note The targets \b baseTend must be defined relative to the base of the
          * robot/device.
          */
-        virtual std::vector< math::Q > solve (const rw::math::Transform3D<>& baseTend,
+        virtual std::vector< math::Q > solve (const rw::math::Transform3D<double>& baseTend,
                                               const rw::kinematics::State& state) const = 0;
 
         /**

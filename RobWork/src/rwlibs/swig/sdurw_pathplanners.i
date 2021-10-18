@@ -8,6 +8,9 @@
 #include <rw/kinematics/MovableFrame.hpp>
 #include <rw/math.hpp>
 
+#include <rw/invkin/JacobianIKSolver.hpp>
+#include <rw/invkin/IKMetaSolver.hpp>
+
 using namespace rwlibs::swig;
 using rw::math::Metric;
 using rw::math::Quaternion;

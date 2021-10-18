@@ -77,6 +77,7 @@ SWIG_JAVABODY_TYPEWRAPPER(public, public, public, SWIGTYPE)
 %import <rwlibs/swig/sdurw_geometry.i>
 %import <rwlibs/swig/sdurw_sensor.i>
 %import <rwlibs/swig/sdurw_models.i>
+%import <rwlibs/swig/sdurw_invkin.i>
 %import <rwlibs/swig/sdurw_proximity.i>
 %import <rwlibs/swig/sdurw_graspplanning.i>
 
@@ -90,7 +91,9 @@ import org.robwork.sdurw_sensor.*;
 import org.robwork.sdurw_models.*;
 import org.robwork.sdurw_proximity.*;
 import org.robwork.sdurw_graspplanning.*;
+import org.robwork.sdurw_invkin.*;
 %}
+
 %pragma(java) moduleimports=%{
 import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_common.*;
@@ -101,7 +104,9 @@ import org.robwork.sdurw_sensor.*;
 import org.robwork.sdurw_models.*;
 import org.robwork.sdurw_proximity.*;
 import org.robwork.sdurw_graspplanning.*;
+import org.robwork.sdurw_invkin.*;
 %}
+
 %typemap(javaimports) SWIGTYPE %{
 import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_common.*;
@@ -112,6 +117,7 @@ import org.robwork.sdurw_sensor.*;
 import org.robwork.sdurw_models.*;
 import org.robwork.sdurw_proximity.*;
 import org.robwork.sdurw_graspplanning.*;
+import org.robwork.sdurw_invkin.*;
 %}
 
 /********************************************
@@ -146,7 +152,6 @@ import org.robwork.sdurw_graspplanning.*;
 
 //%include <rwlibs/swig/ext_i/boost.i>
 
-
 %inline %{
 
     void sleep(double t){
@@ -175,29 +180,6 @@ import org.robwork.sdurw_graspplanning.*;
 
 void writelog(const std::string& msg);
 
-/********************************************
- * COMMON
- ********************************************/
-
-//%include <rwlibs/swig/rw_i/common.i>
-
-/********************************************
- * GEOMETRY
- ********************************************/
-
-/********************************************
- * GRAPHICS
- ********************************************/
-
-/********************************************
- * GRASPPLANNING
- ********************************************/
-
-/********************************************
- * INVKIN
- ********************************************/
- 
- %include <rwlibs/swig/rw_i/invkin.i>
 
 /********************************************
  * LOADERS

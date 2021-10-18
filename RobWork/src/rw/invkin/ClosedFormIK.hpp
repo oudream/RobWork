@@ -21,10 +21,11 @@
 /**
  * @file ClosedFormIK.hpp
  */
+#if !defined(SWIG)
 #include "InvKinSolver.hpp"
 
 #include <rw/core/Ptr.hpp>
-
+#endif
 namespace rw { namespace models {
     class Device;
 }}    // namespace rw::models

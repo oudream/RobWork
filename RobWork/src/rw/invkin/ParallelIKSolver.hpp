@@ -21,7 +21,7 @@
 /**
  * @file ParallelIKSolver.hpp
  */
-
+#if !defined(SWIG)
 #include "IterativeIK.hpp"
 
 #include <rw/core/PropertyMap.hpp>
@@ -29,7 +29,7 @@
 #include <rw/kinematics/FramePairMap.hpp>
 #include <rw/math/Transform3D.hpp>
 #include <rw/math/VectorND.hpp>
-
+#endif 
 namespace rw { namespace kinematics {
     class Frame;
 }}    // namespace rw::kinematics
@@ -56,7 +56,7 @@ namespace rw { namespace invkin {
      * The Singular Value Decomposition is used to find the solution for the joint values
      * in this equation system.
      */
-    class ParallelIKSolver : public IterativeIK
+    class ParallelIKSolver : public rw::invkin::IterativeIK
     {
       public:
         //! @brief smart pointer type to this class
@@ -66,7 +66,7 @@ namespace rw { namespace invkin {
          * @brief Construct new solver.
          * @param device [in] pointer to the parallel device.
          */
-        ParallelIKSolver (const models::ParallelDevice* device);
+        ParallelIKSolver (const rw::models::ParallelDevice* device);
 
         /**
          * @brief Destructor
@@ -98,7 +98,7 @@ namespace rw { namespace invkin {
          * end frames will normally be the first and last frames of the first leg of
          * the first junction.
          */
-        virtual std::vector< math::Q > solve (const math::Transform3D<>& baseTend,
+        virtual std::vector< rw::math::Q > solve (const rw::math::Transform3D<double>& baseTend,
                                               const kinematics::State& state) const;
 
         //! @brief A target definition used in the multi-target solve function.
@@ -117,7 +117,8 @@ namespace rw { namespace invkin {
              * @param frame [in] the end frame.
              * @param refTtcp [in] the target base to frame transformation.
              */
-            Target (rw::core::Ptr<const rw::kinematics::Frame> frame, const rw::math::Transform3D<>& refTtcp) :
+
+            Target (rw::core::Ptr<const rw::kinematics::Frame> frame, const rw::math::Transform3D<double>& refTtcp) :
                 refFrame (NULL), tcpFrame (frame), refTtcp (refTtcp)
             {
                 for (std::size_t i = 0; i < 6; i++)
@@ -132,7 +133,8 @@ namespace rw { namespace invkin {
              * @param enabled [in] 6 values specifying if the x, y, z and EAA x, y, z directions
              * should be enabled.
              */
-            Target (rw::core::Ptr<const rw::kinematics::Frame> frame, const rw::math::Transform3D<>& refTtcp,
+
+            Target (rw::core::Ptr<const rw::kinematics::Frame> frame, const rw::math::Transform3D<double>& refTtcp,
                     const rw::math::VectorND< 6, bool >& enabled) :
                 refFrame (NULL),
                 tcpFrame (frame), refTtcp (refTtcp), enabled (enabled)

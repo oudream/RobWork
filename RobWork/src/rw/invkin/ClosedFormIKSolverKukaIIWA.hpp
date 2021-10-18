@@ -23,11 +23,11 @@
  *
  * \copydoc rw::invkin::ClosedFormIKSolverKukaIIWA
  */
-
+#if !defined(SWIG)
 #include <rw/invkin/ClosedFormIK.hpp>
 #include <rw/kinematics/FKRange.hpp>
 #include <rw/math/Vector2D.hpp>
-
+#endif
 namespace rw { namespace models {
     class SerialDevice;
 }}    // namespace rw::models
@@ -62,7 +62,7 @@ namespace rw { namespace invkin {
         virtual ~ClosedFormIKSolverKukaIIWA ();
 
         //! @copydoc InvKinSolver::solve
-        std::vector< rw::math::Q > solve (const rw::math::Transform3D<>& baseTend,
+        std::vector< rw::math::Q > solve (const rw::math::Transform3D<double>& baseTend,
                                           const rw::kinematics::State& state) const;
 
         /**
@@ -75,9 +75,9 @@ namespace rw { namespace invkin {
          * coordinate system).
          * @return List of up to 8 solutions. Notice that the list may be empty.
          */
-        std::vector< rw::math::Q > solve (const rw::math::Transform3D<>& baseTend,
+        std::vector< rw::math::Q > solve (const rw::math::Transform3D<double>& baseTend,
                                           const rw::kinematics::State& state,
-                                          const rw::math::Vector3D<>& dir4) const;
+                                          const rw::math::Vector3D<double>& dir4) const;
 
         //! @copydoc InvKinSolver::setCheckJointLimits
         void setCheckJointLimits (bool check);
@@ -88,19 +88,21 @@ namespace rw { namespace invkin {
         virtual rw::core::Ptr< const rw::kinematics::Frame > getTCP () const;
 
       private:
-        std::pair< double, double > findBaseAngles (const rw::math::Vector2D<>& pos,
+        std::pair< double, double > findBaseAngles (const rw::math::Vector2D<double>& pos,
                                                     const rw::kinematics::State& state) const;
 
-        void addBaseAngleSolutions (const rw::math::Rotation3D<>& baseRend,
-                                    const rw::math::Vector3D<>& baseP6,
-                                    const rw::math::Vector3D<>& basePtarget4,
+        void addBaseAngleSolutions (const rw::math::Rotation3D<double>& baseRend,
+                                    const rw::math::Vector3D<double>& baseP6,
+                                    const rw::math::Vector3D<double>& basePtarget4,
                                     rw::kinematics::State& state, double angle,
                                     std::vector< rw::math::Q >& res) const;
-        void addOuterSolutions (const rw::math::Rotation3D<>& baseRend,
-                                const rw::math::Vector3D<>& baseP6, rw::kinematics::State& state,
+                                    
+        void addOuterSolutions (const rw::math::Rotation3D<double>& baseRend,
+                                const rw::math::Vector3D<double>& baseP6, rw::kinematics::State& state,
                                 double angle1, double angle2, double angle3,
                                 std::vector< rw::math::Q >& res) const;
-        void addRotationSolutions (const rw::math::Rotation3D<>& baseRend,
+
+        void addRotationSolutions (const rw::math::Rotation3D<double>& baseRend,
                                    rw::kinematics::State& state, double angle1, double angle2,
                                    double angle3, double angle4, double angle5,
                                    std::vector< rw::math::Q >& res) const;

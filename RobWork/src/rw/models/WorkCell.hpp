@@ -609,7 +609,7 @@ namespace rw { namespace models {
         WorkCell (const WorkCell&);
         WorkCell& operator= (const WorkCell&);
     };
-
+#if !defined(SWIG)
     /**
      * @brief Streaming operator.
      * @param out [out] output stream to write to.
@@ -617,8 +617,11 @@ namespace rw { namespace models {
      * @return the output stream \b out .
      */
     std::ostream& operator<< (std::ostream& out, const WorkCell& workcell);
-
+#endif
     /*@}*/
 }}    // namespace rw::models
+#if defined(SWIG)
+TOSTRING_OUTOFCLASSDEF (rw::models::WorkCell);
+#endif
 
 #endif    // end include guard

@@ -18,10 +18,11 @@
 #ifndef RW_INVKIN_AMGIGUITYRESOLVER_HPP
 #define RW_INVKIN_AMGIGUITYRESOLVER_HPP
 
+#if !defined(SWIG)
 #include "InvKinSolver.hpp"
 
 #include <rw/math/Transform3D.hpp>
-
+#endif
 namespace rw { namespace models {
     class Device;
 }}    // namespace rw::models
@@ -36,14 +37,14 @@ namespace rw { namespace invkin {
 
     /**
      * @brief Wraps a InvKinSolver and searches for ambiguities due to joint able to rotate
-     * \f$2\pi\f$ or more.
+     * \f$ 2 \ pi \f$ or more.
      *
-     * For each solution \f$\mathbf{q}\f$ the method tries to see if a \f$j\f$ exists s.t.
-     * \f$\mathbf{q}(i)=\mathbf{q}(i)+j*2\pi\f$ is a valid solution.
+     * For each solution \f$\mathbf{q}\f$ the method tries to see if a \f$ j \f$ exists s.t.
+     * \f$ \mathbf{q}(i)=\mathbf{q}(i)+j * 2 \ pi \f$ is a valid solution.
      *
      * The AmbiguityResolver always tests for joint limits.
      */
-    class AmbiguityResolver : public InvKinSolver
+    class AmbiguityResolver : public rw::invkin::InvKinSolver
     {
       public:
         /**
@@ -51,7 +52,7 @@ namespace rw { namespace invkin {
          * @param invkin [in] The inverse kinematics solver to obtain solutions from
          * @param device [in] the device for which to calculate inverse kinematics
          */
-        AmbiguityResolver (const InvKinSolver::Ptr& invkin,
+        AmbiguityResolver (const rw::core::Ptr<rw::invkin::InvKinSolver>& invkin,
                            rw::core::Ptr< rw::models::JointDevice > device);
 
         /**
@@ -63,7 +64,7 @@ namespace rw { namespace invkin {
          * @brief Calls the InvKinSolver provided and resolves ambiguities.
          * @copydoc InvKinSolver::solve
          */
-        virtual std::vector< math::Q > solve (const rw::math::Transform3D<>& baseTend,
+        virtual std::vector< rw::math::Q > solve (const rw::math::Transform3D<double>& baseTend,
                                               const class rw::kinematics::State& state) const;
 
         /**
