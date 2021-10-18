@@ -13,6 +13,7 @@ include:
   - '/gitlab-ci/gitlab-ci-windows.yml'
   - '/gitlab-ci/gitlab-ci-mac.yml'
 #Jobs
+  - '/gitlab-ci/platforms/ubuntu2110.yml'
   - '/gitlab-ci/platforms/ubuntu2104.yml'
   - '/gitlab-ci/platforms/ubuntu2004.yml'
   - '/gitlab-ci/platforms/ubuntu1804.yml'

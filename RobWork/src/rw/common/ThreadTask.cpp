@@ -22,7 +22,7 @@
 #include <rw/core/Exception.hpp>
 #include <rw/core/macros.hpp>
 
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 
 using namespace rw::common;
 using namespace rw::core;

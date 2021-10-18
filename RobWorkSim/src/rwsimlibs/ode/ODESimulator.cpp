@@ -61,7 +61,7 @@
 #include <rwsim/log/SimulatorLogScope.hpp>
 #include <rwsim/sensor/SimulatedFTSensor.hpp>
 
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 #include <sstream>
 
 using namespace rwsim::dynamics;

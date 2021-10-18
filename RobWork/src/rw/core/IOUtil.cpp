@@ -28,22 +28,9 @@
 #include <boost/version.hpp>
 #include <fstream>
 #include <iostream>
-#if (BOOST_VERSION < 104100)
-#include <boost/spirit/include/classic.hpp>
-#include <boost/spirit/include/classic_ast.hpp>
-#include <boost/spirit/include/classic_core.hpp>
-#include <boost/spirit/include/classic_parse_tree.hpp>
-#include <boost/spirit/include/classic_position_iterator.hpp>
-#include <boost/spirit/include/classic_symbols.hpp>
-#include <boost/spirit/include/phoenix1.hpp>
-#include <boost/spirit/iterator/file_iterator.hpp>
-
-#else
-//#include <boost/spirit/include/support_istream_iterator.hpp>
 #include <boost/spirit/include/qi.hpp>
-#endif
 
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 //#include <boost/lambda/lambda.hpp>
 
 //#include <cassert>
@@ -339,7 +326,7 @@ std::string IOUtil::getFirstXMLElement (const std::string& filename)
                 static_cast< std::string& (std::string::*) (size_t, char) > (&std::string::append),
                 &result,
                 1,
-                ::_1)] >>
+                boost::placeholders::_1)] >>
             *(char_ - char_ ('>')) /*[std::cout << boost::lambda::_1]*/ >> ">"
         // THE skip parser comes next
         ,
@@ -375,7 +362,7 @@ std::string IOUtil::getFirstXMLElement (std::istream& inputStream)
                 static_cast< std::string& (std::string::*) (size_t, char) > (&std::string::append),
                 &result,
                 1,
-                ::_1)] >>
+                boost::placeholders::_1)] >>
             *(char_ - char_ ('>')) /*[std::cout << boost::lambda::_1]*/ >> ">"
         // THE skip parser comes next
         ,

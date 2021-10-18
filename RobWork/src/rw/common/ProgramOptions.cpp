@@ -295,14 +295,7 @@ int ProgramOptions::parse (const std::string& str)
     try {
         po::variables_map vm;
 
-#if (BOOST_VERSION < 104100)
-        using namespace boost::algorithm;
-        // std::vector<std::string> args = po::split_unix(str);
-        std::vector< std::string > args;    // #2: Search for tokens
-        split (args, str, is_any_of (" \t"));
-#else
         std::vector< std::string > args = po::split_unix (str);
-#endif
         po::store (po::command_line_parser (args)
                        .allow_unregistered ()
                        .options (_optionDesc)
