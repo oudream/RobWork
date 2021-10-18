@@ -54,7 +54,7 @@ std::vector< std::string > searchName (const std::map< std::string, Frame* >& fr
     std::string regex_pattern = frameName;
     std::regex reg (regex_pattern);
     std::vector< std::string > ret;
-    for (const std::pair< std::string, Frame* >& x : frameMap) {
+    for (const std::pair< std::string, Frame* > x : frameMap) {
         if (std::regex_match (x.first, reg)) {
             ret.push_back (x.first);
         }

@@ -35,7 +35,7 @@
 #include <QPushButton>
 #include <QTimer>
 #include <QVBoxLayout>
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 #include <sstream>
 
 using rw::core::Log;

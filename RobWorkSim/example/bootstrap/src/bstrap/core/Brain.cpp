@@ -18,13 +18,15 @@
 #include "Brain.hpp"
 
 #include <rwsim/dynamics/Body.hpp>
+#include <rwsim/dynamics/FixedBody.hpp>
 
 #include "Abstraction.hpp"
 #include "Memory.hpp"
 
+using rw::core::ownedPtr;
 using rw::core::PropertyMap;
 using rw::math::Transform3D;
-using rwsim::dynamics::Body;
+using namespace rwsim::dynamics;
 
 void Brain::run()
 {
@@ -67,7 +69,7 @@ BrainState Brain::computeSensorState(){
     BrainState state(_rwstate);
 
     PropertyMap objMap;
-    Body::Ptr b;
+    Body::Ptr b = ownedPtr(new FixedBody(BodyInfo(), nullptr));
     Transform3D<> t3d = b->getTransformW( _rwstate );
     objMap.set("name", b->getName() );
     objMap.set("transform", t3d);

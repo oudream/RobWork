@@ -11,7 +11,7 @@
 #include <rwsim/simulator/DynamicSimulator.hpp>
 #include <rwsim/simulator/ThreadSimulator.hpp>
 #include <rwsimlibs/ode/ODESimulator.hpp>
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 
 #include <QTimer>
 

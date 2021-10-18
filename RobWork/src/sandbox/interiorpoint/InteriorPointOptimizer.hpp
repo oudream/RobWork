@@ -22,7 +22,7 @@
 
 #include <iostream>
 #include <boost/function.hpp>
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 
 namespace rw {
 namespace math {
