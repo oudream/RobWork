@@ -21,7 +21,7 @@
 /**
  * @file Frame.hpp
  */
-#if!defined(SWIG)
+#if !defined(SWIG)
 #include "StateData.hpp"
 
 #include <rw/common/ConcatVectorIterator.hpp>
@@ -81,7 +81,8 @@ namespace rw { namespace kinematics {
          * @param state [in] Joint values for the forward kinematics tree.
          * @param result [in] The transform of the frame in the world frame.
          */
-        void multiplyTransform (const rw::math::Transform3D<>& parent, const rw::kinematics::State& state,
+        void multiplyTransform (const rw::math::Transform3D<>& parent,
+                                const rw::kinematics::State& state,
                                 rw::math::Transform3D<>& result) const
         {
             doMultiplyTransform (parent, state, result);
@@ -276,6 +277,15 @@ namespace rw { namespace kinematics {
          */
         rw::math::Transform3D<> fTf (const rw::core::Ptr<rw::kinematics::Frame> to, const rw::kinematics::State& state) const;
 
+#if !defined(SWIG)
+        /**
+           @brief Streaming operator.
+        */
+        friend std::ostream& operator<< (std::ostream& out, const Frame& frame);
+#else
+        TOSTRING (rw::kinematics::Frame);
+#endif
+
       protected:
         /**
          * @brief A frame with \b dof number of degrees of freedom.
@@ -297,13 +307,15 @@ namespace rw { namespace kinematics {
         /**
          * @brief Subclass implementation of the getTransform() method.
          */
-        virtual void doMultiplyTransform (const rw::math::Transform3D<>& parent, const rw::kinematics::State& state,
+        virtual void doMultiplyTransform (const rw::math::Transform3D<>& parent,
+                                          const rw::kinematics::State& state,
                                           rw::math::Transform3D<>& result) const = 0;
 
         /**
          * brief Subclass implementation of the multiplyTransform() method
          */
-        virtual rw::math::Transform3D<> doGetTransform (const rw::kinematics::State& state) const = 0;
+        virtual rw::math::Transform3D<>
+        doGetTransform (const rw::kinematics::State& state) const = 0;
 
       private:
         friend class StateStructure;
@@ -398,12 +410,6 @@ namespace rw { namespace kinematics {
      */
     typedef std::vector< kinematics::FramePair > FramePairList;
 
-    /**
-       @brief Streaming operator.
-    */
-    std::ostream& operator<< (std::ostream& out, const Frame& frame);
-
     /*@}*/
-}}    // namespace rw::kinematics
-
+}}        // namespace rw::kinematics
 #endif    // end include guard

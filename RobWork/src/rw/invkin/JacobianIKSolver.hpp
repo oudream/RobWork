@@ -21,13 +21,13 @@
 /**
  * @file JacobianIKSolver.hpp
  */
-
+#if !defined(SWIG)
 #include <rw/core/Ptr.hpp>
 #include <rw/invkin/IterativeIK.hpp>
 #include <rw/kinematics/FKRange.hpp>
 
 #include <vector>
-
+#endif
 namespace rw { namespace models {
     class Device;
     class JacobianCalculator;
@@ -82,7 +82,7 @@ namespace rw { namespace invkin {
      *
      *
      */
-    class JacobianIKSolver : public IterativeIK
+    class JacobianIKSolver : public rw::invkin::IterativeIK
     {
       public:
         //! @brief smart pointer type to this class
@@ -99,7 +99,7 @@ namespace rw { namespace invkin {
          * @param state [in] the initial state.
          */
         JacobianIKSolver (rw::core::Ptr< const rw::models::Device > device,
-                          const kinematics::State& state);
+                          const rw::kinematics::State& state);
 
         /**
          * @brief Constructs JacobianIKSolver for device, where the frame \b foi will
@@ -115,8 +115,8 @@ namespace rw { namespace invkin {
         /**
          * @copydoc IterativeIK::solve
          */
-        std::vector< math::Q > solve (const math::Transform3D<>& baseTend,
-                                      const kinematics::State& state) const;
+        std::vector< math::Q > solve (const rw::math::Transform3D<double>& baseTend,
+                                      const rw::kinematics::State& state) const;
 
         /**
          * @brief sets the maximal step length that is allowed on the
@@ -150,7 +150,7 @@ namespace rw { namespace invkin {
          * @return true if error is below max error
          * @note the result will be saved in state
          */
-        bool solveLocal (const math::Transform3D<>& bTed, double maxError, kinematics::State& state,
+        bool solveLocal (const rw::math::Transform3D<double>& bTed, double maxError, rw::kinematics::State& state,
                          int maxIter) const;
 
         /**

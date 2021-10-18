@@ -818,7 +818,7 @@ public:
 	static rw::core::Ptr<QIKSampler> make(
 		rw::core::Ptr<rw::models::Device> device,
         const rw::kinematics::State& state,
-		rw::core::Ptr<IterativeIK> solver = NULL,
+		rw::core::Ptr<rw::invkin::IterativeIK> solver = NULL,
 		rw::core::Ptr<QSampler> seed = NULL,
         int maxAttempts = -1);
 

@@ -1,6 +1,6 @@
 set(SUBSYS_NAME sdurw_invkin)
 set(SUBSYS_DESC "The core RobWork library!")
-set(SUBSYS_DEPS sdurw_core sdurw_math sdurw_kinematics sdurw_models sdurw_trajectory sdurw_proximity)
+set(SUBSYS_DEPS sdurw_core sdurw_common sdurw_math sdurw_geometry sdurw_kinematics sdurw_models sdurw_trajectory sdurw_proximity)
 
 set(build TRUE)
 rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ON DEPENDS ${SUBSYS_DEPS})

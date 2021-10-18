@@ -14,6 +14,7 @@
 %import <rwlibs/swig/ext_i/std.i>
 
 %{
+	#include <rw/kinematics/Frame.hpp>
 	#include <rw/kinematics/FixedFrame.hpp>
 	#include <rw/sensor/CameraModel.hpp>
 	#include <rw/sensor/TactileArrayModel.hpp>
@@ -48,6 +49,18 @@ import org.robwork.sdurw_kinematics.*;
 import org.robwork.sdurw_geometry.*;
 import org.robwork.sdurw_sensor.*;
 %}
+
+%{
+	template<class T>
+	char* rw_kinematics_Frame___str__(T* f){
+		return printCString<rw::kinematics::Frame>(*f);
+	}
+	template<class T>
+	char* rw_kinematics_Frame_toString(T* f){
+		return printCString<rw::kinematics::Frame>(*f);
+	}
+%}
+
 
 %{
 	#include <rw/proximity/CollisionSetup.hpp>

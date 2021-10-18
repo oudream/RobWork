@@ -19,7 +19,6 @@
 #define RWLIBS_SWIG_SCRIPTTYPES_HPP_
 
 #include <RobWorkConfig.hpp>
-#include <rw/invkin.hpp>
 #include <rw/pathplanning.hpp>
 //#include <rw/plugin.hpp>
 #include <rw/loaders/ImageLoader.hpp>
@@ -70,32 +69,6 @@ namespace rwlibs {
  * The wrapped classes are defined as typedefs of other classes in RobWork.
  */
 namespace swig {
-    /**
-     * @name invkin
-     * Wrapped classes in invkin.
-     */
-    ///@{
-    //! @copydoc rw::invkin::InvKinSolver
-    typedef rw::invkin::InvKinSolver InvKinSolver;
-    //! @copydoc rw::invkin::IterativeIK
-    typedef rw::invkin::IterativeIK IterativeIK;
-    //! @copydoc rw::invkin::JacobianIKSolver
-    typedef rw::invkin::JacobianIKSolver JacobianIKSolver;
-    //! @copydoc rw::invkin::IterativeMultiIK
-    typedef rw::invkin::IterativeMultiIK IterativeMultiIK;
-    //! @copydoc rw::invkin::JacobianIKSolverM
-    typedef rw::invkin::JacobianIKSolverM JacobianIKSolverM;
-    //! @copydoc rw::invkin::IKMetaSolver
-    typedef rw::invkin::IKMetaSolver IKMetaSolver;
-    //! @copydoc rw::invkin::ClosedFormIK
-    typedef rw::invkin::ClosedFormIK ClosedFormIK;
-    //! @copydoc rw::invkin::ClosedFormIKSolverKukaIIWA
-    typedef rw::invkin::ClosedFormIKSolverKukaIIWA ClosedFormIKSolverKukaIIWA;
-    //! @copydoc rw::invkin::ClosedFormIKSolverUR
-    typedef rw::invkin::ClosedFormIKSolverUR ClosedFormIKSolverUR;
-    //! @copydoc rw::invkin::PieperSolver
-    typedef rw::invkin::PieperSolver PieperSolver;
-    ///@}
 
     /**
      * @name loaders

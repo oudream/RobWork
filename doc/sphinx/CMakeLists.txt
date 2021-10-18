@@ -32,7 +32,7 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/../Doxyfile.in ${CMAKE_CURRENT_SOURCE
 set(java_sources)
 set(java_packages org.robwork)
 
-foreach(RW_MODULE sdurw_core sdurw_common sdurw_math sdurw_kinematics sdurw_geometry sdurw_sensor sdurw_models sdurw_graspplanning sdurw_proximity sdurw_graphics sdurw sdurw_assembly sdurw_control sdurw_pathoptimization sdurw_pathplanners sdurw_proximitystrategies sdurw_task sdurw_simulation sdurw_opengl)
+foreach(RW_MODULE sdurw_core sdurw_common sdurw_math sdurw_kinematics sdurw_geometry sdurw_sensor sdurw_models sdurw_graspplanning sdurw_proximity sdurw_graphics sdurw_invkin sdurw sdurw_assembly sdurw_control sdurw_pathoptimization sdurw_pathplanners sdurw_proximitystrategies sdurw_task sdurw_simulation sdurw_opengl)
     add_custom_command(OUTPUT java_src_${RW_MODULE}_cmd
                        COMMAND ${CMAKE_COMMAND} -E echo "Unpacking jar file..."
                        COMMAND ${CMAKE_COMMAND} -E make_directory java_src

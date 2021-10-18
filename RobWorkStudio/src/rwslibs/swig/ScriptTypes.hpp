@@ -27,6 +27,12 @@
 #include <rwlibs/swig/ScriptTypes.hpp>
 #include <rws/RobWorkStudio.hpp>
 #include <rws/RobWorkStudioPlugin.hpp>
+#include <rw/models/JointDevice.hpp>
+#include <rw/models/SerialDevice.hpp>
+#include <rw/models/TreeDevice.hpp>
+#include <rw/models/ParallelDevice.hpp>
+
+
 /*
 #ifdef __cplusplus
 extern "C" {

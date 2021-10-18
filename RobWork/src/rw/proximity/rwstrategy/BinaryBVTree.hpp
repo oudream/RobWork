@@ -283,9 +283,14 @@ namespace proximity {
                 }
             }
             return std::make_pair (ncount, lcount);
+        
         }
 
+#if defined(SWIGPYTHON)
+        void printInfo () const
+#else
         void print () const
+#endif
         {
             std::stack< std::pair< Node*, int > > children;
             children.push (std::make_pair (_root, 0));

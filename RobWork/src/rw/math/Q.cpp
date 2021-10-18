@@ -74,8 +74,8 @@ Q::Q (const std::vector< double >& r) : _vec (r.size ())
 
 Q::~Q ()
 {}
-
-std::ostream& rw::math::operator<< (std::ostream& out, const Q& v)
+namespace rw{ namespace math {
+std::ostream& operator<< (std::ostream& out, const Q& v)
 {
     if (v.size () == 0) {
         return out << "Q[0]{}";
@@ -87,6 +87,7 @@ std::ostream& rw::math::operator<< (std::ostream& out, const Q& v)
         return out << v[v.size () - 1] << "}";
     }
 }
+}}
 
 std::istream& rw::math::operator>> (std::istream& in, Q& q)
 {
