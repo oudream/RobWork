@@ -67,7 +67,7 @@ namespace rw { namespace models {
          * base frame.
          * @return name of object.
          */
-        const std::string& getName () { return _base->getName (); };
+        const std::string& getName () { return _base->getName (); }
 
         /**
          * @brief get base frame of this object
