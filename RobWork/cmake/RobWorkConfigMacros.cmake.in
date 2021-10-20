@@ -489,7 +489,7 @@ function(@PROJECT_PREFIX@_FIND_COMPONENTS _return)
         )
             if(NOT (${component} STREQUAL "sdu${PROJECT_PREFIX_LOWERCASE}"))
                 unset(res)
-                verify_library(${component} res)
+                @PROJECT_PREFIX@_verify_library(${component} res)
 
                 if(NOT "${res}" STREQUAL "")
                     list(APPEND ${_return} "${res}")
