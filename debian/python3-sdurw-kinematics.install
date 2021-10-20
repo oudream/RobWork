@@ -1,4 +1,5 @@
 usr/lib/*/dist-packages/sdurw_kinematics/sdurw_kinematics.py
 usr/lib/*/dist-packages/sdurw_kinematics/_sdurw_kinematics*.so
 usr/lib/*/dist-packages/sdurw_kinematics/__init__.py
-usr/share/robwork-*/cmake/targets/sdurw_kinematics_py*.cmake
+usr/share/robwork-*/cmake/targets/sdurw_kinematics_py.cmake
+usr/share/robwork-*/cmake/targets/sdurw_kinematics_py-*.cmake

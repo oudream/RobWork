@@ -1,0 +1,5 @@
+usr/lib/*/dist-packages/sdurw_plugin/sdurw_plugin.py
+usr/lib/*/dist-packages/sdurw_plugin/_sdurw_plugin*.so
+usr/lib/*/dist-packages/sdurw_plugin/__init__.py
+usr/share/robwork-*/cmake/targets/sdurw_plugin_py.cmake
+usr/share/robwork-*/cmake/targets/sdurw_plugin_py-*.cmake

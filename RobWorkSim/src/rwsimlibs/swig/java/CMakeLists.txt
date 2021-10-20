@@ -132,6 +132,6 @@ if(build)
         EXPORT ${PROJECT_PREFIX}_sdurwsim_jniTargets
         FILE sdurwsim_jni.cmake
         NAMESPACE ${PROJECT_PREFIX}::
-        DESTINATION ${RWS_INSTALL_DIR}/cmake/targets
+        DESTINATION ${RWSIM_INSTALL_DIR}/cmake/targets
     )
 endif()

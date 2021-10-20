@@ -125,12 +125,6 @@ configure_file(${RW_ROOT}/cmake/RobWorkConfigMacros.cmake.in
                "${RW_ROOT}/cmake/RobWorkConfigMacros.cmake" @ONLY
 )
 
-export(
-    EXPORT ${PROJECT_PREFIX}_sdurwTargets
-    FILE "${RW_ROOT}/cmake/targets/sdurw.cmake"
-    NAMESPACE ${PROJECT_PREFIX}::
-)
-
 if(RW_HAVE_GTEST)
     if (NOT RW_GTEST_FROM_HUNTER AND NOT (debug IN_LIST GTEST_LIBRARIES))
 
@@ -194,13 +188,6 @@ install(
     FILES "${RW_ROOT}/src/RobWorkConfig.hpp"
     DESTINATION "${INCLUDE_INSTALL_DIR}"
     COMPONENT sdurw
-)
-
-install(
-    EXPORT ${PROJECT_PREFIX}_sdurwTargets
-    FILE sdurw.cmake
-    NAMESPACE ${PROJECT_PREFIX}::
-    DESTINATION ${RW_INSTALL_DIR}/cmake/targets
 )
 
 

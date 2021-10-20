@@ -1,0 +1,5 @@
+usr/lib/*/dist-packages/sdurw_invkin/sdurw_invkin.py
+usr/lib/*/dist-packages/sdurw_invkin/_sdurw_invkin*.so
+usr/lib/*/dist-packages/sdurw_invkin/__init__.py
+usr/share/robwork-*/cmake/targets/sdurw_invkin_py.cmake
+usr/share/robwork-*/cmake/targets/sdurw_invkin_py-*.cmake

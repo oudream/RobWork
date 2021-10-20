@@ -1,0 +1,5 @@
+usr/lib/*/dist-packages/sdurw_algorithms/sdurw_algorithms.py
+usr/lib/*/dist-packages/sdurw_algorithms/_sdurw_algorithms*.so
+usr/lib/*/dist-packages/sdurw_algorithms/__init__.py
+usr/share/robwork-*/cmake/targets/sdurw_algorithms_py.cmake
+usr/share/robwork-*/cmake/targets/sdurw_algorithms_py-*.cmake

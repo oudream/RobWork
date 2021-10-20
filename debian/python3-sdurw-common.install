@@ -1,4 +1,5 @@
 usr/lib/*/dist-packages/sdurw_common/sdurw_common.py
 usr/lib/*/dist-packages/sdurw_common/_sdurw_common*.so
 usr/lib/*/dist-packages/sdurw_common/__init__.py
-usr/share/robwork-*/cmake/targets/sdurw_common_py*.cmake
+usr/share/robwork-*/cmake/targets/sdurw_common_py.cmake
+usr/share/robwork-*/cmake/targets/sdurw_common_py-*.cmake
