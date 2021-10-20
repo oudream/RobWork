@@ -1,4 +1,5 @@
 usr/lib/*/dist-packages/sdurw_geometry/sdurw_geometry.py
 usr/lib/*/dist-packages/sdurw_geometry/_sdurw_geometry*.so
 usr/lib/*/dist-packages/sdurw_geometry/__init__.py
-usr/share/robwork-*/cmake/targets/sdurw_geometry_py*.cmake
+usr/share/robwork-*/cmake/targets/sdurw_geometry_py.cmake
+usr/share/robwork-*/cmake/targets/sdurw_geometry_py-*.cmake

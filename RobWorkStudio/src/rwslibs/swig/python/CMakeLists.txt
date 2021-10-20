@@ -108,12 +108,12 @@ if(build)
 
     export(
         EXPORT ${PROJECT_PREFIX}_${python_NAME_sdurws}Targets
-        FILE "${${PROJECT_PREFIX}_ROOT}/cmake/targets/${python_NAME_sdurws}.cmake"
+        FILE "${${PROJECT_PREFIX}_ROOT}/cmake/targets/${RWS_MODULE}_py.cmake"
         NAMESPACE ${PROJECT_PREFIX}::
     )
     install(
         EXPORT ${PROJECT_PREFIX}_${python_NAME_sdurws}Targets
-        FILE ${python_NAME_sdurws}.cmake
+        FILE ${RWS_MODULE}_py.cmake
         NAMESPACE ${PROJECT_PREFIX}::
         DESTINATION ${RWS_INSTALL_DIR}/cmake/targets
     )

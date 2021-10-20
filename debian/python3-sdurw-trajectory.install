@@ -1,0 +1,5 @@
+usr/lib/*/dist-packages/sdurw_trajectory/sdurw_trajectory.py
+usr/lib/*/dist-packages/sdurw_trajectory/_sdurw_trajectory*.so
+usr/lib/*/dist-packages/sdurw_trajectory/__init__.py
+usr/share/robwork-*/cmake/targets/sdurw_trajectory_py.cmake
+usr/share/robwork-*/cmake/targets/sdurw_trajectory_py-*.cmake

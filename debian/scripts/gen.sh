@@ -215,8 +215,12 @@ while read p; do
                 echo "usr/include/$library-$MAJOR.$MINOR$f/*" >> $filename
             done 
         fi
-        echo "usr/share/robwork-*/cmake/targets/$pkgName.cmake" >> $filename
-        echo "usr/share/robwork-*/cmake/targets/$pkgName-*.cmake" >> $filename
+        if [[ $type == "new" ]] ; then
+            echo "usr/share/$library-$MAJOR.$MINOR/cmake/targets/$libname.cmake" >> $filename
+            if [[ ! $noLib == "true" ]] ; then
+                echo "usr/share/$library-$MAJOR.$MINOR/cmake/targets/$libname-*.cmake" >> $filename
+            fi
+        fi
     fi
 
     ############################################################

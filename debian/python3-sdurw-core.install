@@ -1,4 +1,5 @@
 usr/lib/*/dist-packages/sdurw_core/sdurw_core.py
 usr/lib/*/dist-packages/sdurw_core/_sdurw_core*.so
 usr/lib/*/dist-packages/sdurw_core/__init__.py
-usr/share/robwork-*/cmake/targets/sdurw_core_py*.cmake
+usr/share/robwork-*/cmake/targets/sdurw_core_py.cmake
+usr/share/robwork-*/cmake/targets/sdurw_core_py-*.cmake
