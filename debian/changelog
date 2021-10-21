@@ -1,3 +1,40 @@
+robwork (2.3.0-2) bionic; urgency=medium
+
+  * Version number updated to 2.3.0-2
+
+ -- Kasper Høj Lorenzen <kalor@mmmi.sdu.dk>  Wed, 20 Oct 2021 15:15:32 +0200
+
+robwork (2.3.0-1) focal; urgency=medium
+
+  [ Kasper Høj Lorenzen ]
+  * Initial setup
+  * fixing errors and upgrading Rotation3D
+  * test
+  * Initial setup
+  * fixing errors and upgrading Rotation3D
+
+  [ Thomas Nicky Thulesen ]
+  * Preparation for Ubuntu 21.10: Fixed some deprecation warnings with boost bind, and fixed some new GCC warnings.
+
+  [ Kasper Høj Lorenzen ]
+  * RobWork Frame::Ptr input
+
+  [ Thomas Nicky Thulesen ]
+  * Use separate CMake export sets to reduce dependencies. Removed unused Qt5 dependency on OpenGL library.
+  * Adding Ubuntu 21.10 pipeline
+  * Fixes after separation into separate CMake export sets (Ubuntu 18.04)
+
+  [ Kasper Høj Lorenzen ]
+  * Swig invkin
+
+  [ Thomas Nicky Thulesen ]
+  * Debian package update
+
+  [ Kasper Høj Lorenzen ]
+  * Version number updated to 2.3.0-1
+
+ -- Kasper Høj Lorenzen <kalor@mmmi.sdu.dk>  Wed, 20 Oct 2021 15:14:13 +0200
+
 robwork (2.2.0-1) focal; urgency=medium
 
   * find ODE double first
