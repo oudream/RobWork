@@ -38,6 +38,7 @@ namespace rw { namespace invkin {
     /** \addtogroup invkin */
     /*@{*/
 
+#if !defined(SWIGJAVA)
     /**
      * \brief A Jacobian based iterative inverse kinematics algorithm for devices with a single end
      * effector.
@@ -82,6 +83,21 @@ namespace rw { namespace invkin {
      *
      *
      */
+#else
+    /**
+     * \brief A Jacobian based iterative inverse kinematics algorithm for devices with a single end
+     * effector.
+     *
+     * This algorithm does implicitly handle joint limits, however it is possible to force the
+     * solution within joint limits using clamping in each iterative step. If joint clamping is not
+     * enabled then this algorithm might contain joint values that are out of bounds.
+     *
+     * The method uses an Newton-Raphson iterative approach and is based on using the inverse of
+     * the device Jacobian to compute each local solution in each iteration. Several methods for
+     * calculating/approximating the inverse Jacobian are available, where the SVD method currently
+     * is the most stable, see the JacobianSolverType option for additional options.
+     */
+#endif
     class JacobianIKSolver : public rw::invkin::IterativeIK
     {
       public:
