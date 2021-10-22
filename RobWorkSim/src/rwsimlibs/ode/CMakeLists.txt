@@ -1,6 +1,19 @@
 set(SUBSYS_NAME sdurwsim_ode)
 set(SUBSYS_DESC "Open Dynamics Engine library for RobWorkSim")
-set(SUBSYS_DEPS RW::sdurw)
+set(SUBSYS_DEPS
+    PRIVATE
+           RW::sdurw_opengl
+           RW::sdurw_common
+           RW::sdurw_proximitystrategies
+    PUBLIC sdurwsim
+           RW::sdurw_simulation
+           RW::sdurw_proximity
+           RW::sdurw_kinematics
+           RW::sdurw_models
+           RW::sdurw_geometry
+           RW::sdurw_math
+           RW::sdurw_core
+)
 
 set(build TRUE)
 set(DEFAULT ${RWSIM_HAVE_ODE})
@@ -77,7 +90,10 @@ if(build)
 
     rw_add_library(${SUBSYS_NAME} ${SRC_FILES} ${SRC_FILES_HPP})
     rw_add_includes(${SUBSYS_NAME} "rwsimlibs/ode" ${SRC_FILES_HPP})
-    target_link_libraries(${SUBSYS_NAME} PUBLIC sdurwsim ${ODE_LIBRARIES} RW::sdurw ${OPENGL_LIBRARIES})
+    target_link_libraries(${SUBSYS_NAME}
+        ${SUBSYS_DEPS}
+        PUBLIC ${ODE_LIBRARIES} ${OPENGL_LIBRARIES}
+    )
     target_include_directories(${SUBSYS_NAME}
         INTERFACE
         $<BUILD_INTERFACE:${RWSIM_ROOT}/src>

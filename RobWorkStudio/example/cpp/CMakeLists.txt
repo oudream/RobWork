@@ -11,14 +11,16 @@ find_package(RobWorkStudio REQUIRED PATHS "$ENV{RWS_ROOT}" "../../cmake")
 macro(rw_build _name)
     # And now we add any targets that we want
     add_executable(${_name} ${_name}.cpp)
-    target_link_libraries(${_name} PUBLIC RWS::sdurws RWS::sdurws_robworkstudioapp RW::sdurw_simulation)
+    target_link_libraries(${_name} PUBLIC RWS::sdurws RWS::sdurws_robworkstudioapp
+        RW::sdurw_simulation RW::sdurw_models RW::sdurw_loaders RW::sdurw_kinematics RW::sdurw_core)
     target_include_directories(${_name} PUBLIC ${ROBWORKSTUDIO_INCLUDE_DIRS})
 endmacro()
 
 macro(rw_build_lib _name)
     # And now we add any targets that we want
     add_library(${_name} ${_name}.cpp)
-    target_link_libraries(${_name} PUBLIC RWS::sdurws RWS::robworkstudioapp RW::sdurw_simulation)
+    target_link_libraries(${_name} PUBLIC RWS::sdurws RWS::robworkstudioapp
+        RW::sdurw_simulation RW::sdurw_models RW::sdurw_loaders RW::sdurw_kinematics RW::sdurw_core)
     target_include_directories(${_name} PUBLIC ${ROBWORKSTUDIO_INCLUDE_DIRS})
 endmacro()
 

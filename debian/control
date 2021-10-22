@@ -698,9 +698,7 @@ Architecture: amd64
 Multi-Arch: same
 Depends: 
  libsdurw (=${binary:Version}), 
- libsdurw-core-dev (=${binary:Version}), 
- libsdurw-math-dev (=${binary:Version}), 
- libsdurw-common-dev (=${binary:Version}), 
+ ${cmakedep:Depends},
  libxerces-c-dev,
  libfcl-dev,
  libassimp-dev,
@@ -720,6 +718,7 @@ Architecture: amd64
 Multi-Arch: same
 Depends: 
  libsdurw-core (=${binary:Version}), 
+ ${cmakedep:Depends},
  libboost-dev (>= 1.54), 
  libboost-program-options-dev (>= 1.54), 
  libboost-date-time-dev (>= 1.54), 
@@ -743,8 +742,8 @@ Section: libdevel
 Architecture: amd64
 Multi-Arch: same
 Depends:
- libsdurw-core-dev (=${binary:Version}), 
  libsdurw-common (=${binary:Version}), 
+ ${cmakedep:Depends},
  ${misc:Depends}
 Conflicts:
   libsdurw-common-dev1.2,
@@ -760,10 +759,9 @@ Section: libdevel
 Architecture: amd64
 Multi-Arch: same
 Depends:
- libsdurw-core-dev (=${binary:Version}), 
- libsdurw-common-dev (=${binary:Version}), 
- libeigen3-dev,
  libsdurw-math (=${binary:Version}), 
+ ${cmakedep:Depends},
+ libeigen3-dev,
  ${misc:Depends}
 Conflicts:
   libsdurw-math-dev1.2,
@@ -779,13 +777,8 @@ Section: libdevel
 Architecture: amd64
 Multi-Arch: same
 Depends: 
- libsdurw-core-dev (=${binary:Version}), 
- libsdurw-common-dev (=${binary:Version}), 
- libsdurw-math-dev (=${binary:Version}), 
- libsdurw-kinematics-dev (=${binary:Version}), 
- libsdurw-geometry-dev (=${binary:Version}), 
- libsdurw-sensor-dev (=${binary:Version}), 
- libsdurw-models-dev (=${binary:Version}), 
+ libsdurw-graphics (=${binary:Version}),
+ ${cmakedep:Depends},
  ${shlibs:Depends}, 
  ${misc:Depends}
 Description: Graphical engine of RobWork development package
@@ -796,11 +789,8 @@ Section: libdevel
 Architecture: amd64
 Multi-Arch: same
 Depends:
- libsdurw-core-dev (=${binary:Version}), 
- libsdurw-common-dev (=${binary:Version}), 
- libsdurw-math-dev (=${binary:Version}), 
- libsdurw-geometry-dev (=${binary:Version}), 
- libsdurw-sensor-dev (=${binary:Version}), 
+ libsdurw-graspplanning (=${binary:Version}),
+ ${cmakedep:Depends},
  ${shlibs:Depends}, 
  ${misc:Depends}
 Description: Grasp planning
@@ -811,12 +801,8 @@ Section: libdevel
 Architecture: amd64
 Multi-Arch: same
 Depends: 
- libsdurw-core-dev (=${binary:Version}), 
- libsdurw-math-dev (=${binary:Version}), 
- libsdurw-kinematics-dev (=${binary:Version}), 
- libsdurw-models-dev (=${binary:Version}), 
- libsdurw-trajectory-dev (=${binary:Version}),
- libsdurw-proximity-dev (=${binary:Version}),
+ libsdurw-invkin (=${binary:Version}),
+ ${cmakedep:Depends},
  ${shlibs:Depends}, 
  ${misc:Depends}
 Description: Inverse Kinematics
@@ -827,16 +813,8 @@ Section: libdevel
 Architecture: amd64
 Multi-Arch: same
 Depends: 
- libsdurw-core-dev (=${binary:Version}), 
- libsdurw-common-dev (=${binary:Version}), 
- libsdurw-math-dev (=${binary:Version}), 
- libsdurw-kinematics-dev (=${binary:Version}), 
- libsdurw-geometry-dev (=${binary:Version}), 
- libsdurw-sensor-dev (=${binary:Version}), 
- libsdurw-models-dev (=${binary:Version}), 
- libsdurw-trajectory-dev (=${binary:Version}),
- libsdurw-proximity-dev (=${binary:Version}),
- libsdurw-graphics-dev (=${binary:Version}), 
+ libsdurw-loaders (=${binary:Version}),
+ ${cmakedep:Depends},
  ${shlibs:Depends}, 
  ${misc:Depends}
 Description: File loading
@@ -847,9 +825,8 @@ Section: libdevel
 Architecture: amd64
 Multi-Arch: same
 Depends: 
- libsdurw-core-dev (=${binary:Version}), 
- libsdurw-common-dev (=${binary:Version}), 
- libsdurw-math-dev (=${binary:Version}),
+ libsdurw-kinematics (=${binary:Version}),
+ ${cmakedep:Depends},
  ${shlibs:Depends}, 
  ${misc:Depends}
 Description: Headers for Kinematics framework
@@ -860,11 +837,8 @@ Section: libdevel
 Architecture: amd64
 Multi-Arch: same
 Depends:
- libsdurw-core-dev (=${binary:Version}), 
- libsdurw-math-dev (=${binary:Version}), 
- libsdurw-kinematics-dev (=${binary:Version}), 
- libsdurw-geometry-dev (=${binary:Version}), 
- libsdurw-sensor-dev (=${binary:Version}), 
+ libsdurw-models (=${binary:Version}),
+ ${cmakedep:Depends},
  ${shlibs:Depends}, 
  ${misc:Depends}
 Description: Robot Modeling
@@ -875,13 +849,8 @@ Section: libdevel
 Architecture: amd64
 Multi-Arch: same
 Depends:
- libsdurw-core-dev (=${binary:Version}), 
- libsdurw-math-dev (=${binary:Version}), 
- libsdurw-kinematics-dev (=${binary:Version}),
- libsdurw-models-dev (=${binary:Version}), 
- libsdurw-trajectory-dev (=${binary:Version}),
- libsdurw-proximity-dev (=${binary:Version}),
- libsdurw-invkin-dev (=${binary:Version}), 
+ libsdurw-pathplanning (=${binary:Version}),
+ ${cmakedep:Depends},
  ${shlibs:Depends}, 
  ${misc:Depends}
 Description: headers for pathplanning 
@@ -892,7 +861,8 @@ Section: libdevel
 Architecture: amd64
 Multi-Arch: same
 Depends: 
- libsdurw-core-dev (=${binary:Version}),
+ libsdurw-plugin (=${binary:Version}),
+ ${cmakedep:Depends},
  ${shlibs:Depends}, 
  ${misc:Depends}
 Description: plugin library
@@ -903,12 +873,8 @@ Section: libdevel
 Architecture: amd64
 Multi-Arch: same
 Depends: 
- libsdurw-core-dev (=${binary:Version}), 
- libsdurw-common-dev (=${binary:Version}), 
- libsdurw-math-dev (=${binary:Version}), 
- libsdurw-kinematics-dev (=${binary:Version}), 
- libsdurw-geometry-dev (=${binary:Version}), 
- libsdurw-models-dev (=${binary:Version}), 
+ libsdurw-proximity (=${binary:Version}),
+ ${cmakedep:Depends},
  ${shlibs:Depends}, 
  ${misc:Depends}
 Description: proximity calculation framework
@@ -919,11 +885,8 @@ Section: libdevel
 Architecture: amd64
 Multi-Arch: same
 Depends: 
- libsdurw-core-dev (=${binary:Version}), 
- libsdurw-common-dev (=${binary:Version}), 
- libsdurw-math-dev (=${binary:Version}), 
- libsdurw-kinematics-dev (=${binary:Version}), 
- libsdurw-geometry-dev (=${binary:Version}), 
+ libsdurw-sensor (=${binary:Version}),
+ ${cmakedep:Depends},
  ${shlibs:Depends}, 
  ${misc:Depends}
 Description: sensor library
@@ -934,9 +897,8 @@ Section: libdevel
 Architecture: amd64
 Multi-Arch: same
 Depends: 
- libsdurw-core-dev (=${binary:Version}), 
- libsdurw-math-dev (=${binary:Version}), 
- libsdurw-models-dev (=${binary:Version}), 
+ libsdurw-trajectory (=${binary:Version}),
+ ${cmakedep:Depends},
  ${shlibs:Depends}, 
  ${misc:Depends}
 Description: trajectory library
@@ -947,8 +909,8 @@ Section: libdevel
 Architecture: amd64
 Multi-Arch: same
 Depends: 
- libsdurw-dev (=${binary:Version}), 
- libsdurw-algorithms (=${binary:Version}), 
+ libsdurw-algorithms (=${binary:Version}),
+ ${cmakedep:Depends},
  ${misc:Depends}
 Conflicts:
   libsdurw-algorithms-dev1.2,
@@ -964,8 +926,8 @@ Section: libdevel
 Architecture: amd64
 Multi-Arch: same
 Depends: 
- libsdurw-dev (=${binary:Version}), 
- libsdurw-calibration (=${binary:Version}), 
+ libsdurw-calibration (=${binary:Version}),
+ ${cmakedep:Depends},
  ${misc:Depends}
 Conflicts:
   libsdurw-calibration-dev1.2,
@@ -981,8 +943,8 @@ Section: libdevel
 Architecture: amd64
 Multi-Arch: same
 Depends: 
- libsdurw-dev (=${binary:Version}), 
- libsdurw-control (=${binary:Version}), 
+ libsdurw-control (=${binary:Version}),
+ ${cmakedep:Depends},
  ${misc:Depends}, ${shlibs:Depends} 
 Conflicts:
   libsdurw-control-dev1.2,
@@ -998,8 +960,8 @@ Section: libdevel
 Architecture: amd64
 Multi-Arch: same
 Depends: 
- libsdurw-dev (=${binary:Version}), 
  libsdurw-opengl (=${binary:Version}), 
+ ${cmakedep:Depends},
  libglu1-mesa-dev,
  libopengl0,
  freeglut3-dev,
@@ -1018,8 +980,8 @@ Section: libdevel
 Architecture: amd64
 Multi-Arch: same
 Depends:
- libsdurw-dev (=${binary:Version}), 
  libsdurw-proximitystrategies (=${binary:Version}), 
+ ${cmakedep:Depends},
  ${misc:Depends}
 Conflicts:
   libsdurw-proximitystrategies-dev1.2,
@@ -1037,9 +999,8 @@ Section: libdevel
 Architecture: amd64
 Multi-Arch: same
 Depends: 
- libsdurw-dev (=${binary:Version}), 
- libsdurw-proximitystrategies-dev (=${binary:Version}), 
  libsdurw-pathoptimization (=${binary:Version}), 
+ ${cmakedep:Depends},
  ${misc:Depends}
 Conflicts:
   libsdurw-pathoptimization-dev1.2,
@@ -1055,13 +1016,8 @@ Section: libdevel
 Architecture: amd64
 Multi-Arch: same
 Depends:
- libsdurw-core-dev (=${binary:Version}),
- libsdurw-math-dev (=${binary:Version}),
- libsdurw-kinematics-dev (=${binary:Version}),
- libsdurw-models-dev (=${binary:Version}),
- libsdurw-trajectory-dev (=${binary:Version}),
- libsdurw-algorithms-dev (=${binary:Version}),
  libsdurw-pathplanners (=${binary:Version}), 
+ ${cmakedep:Depends},
  ${misc:Depends}
 Conflicts:
   libsdurw-pathplanners-dev1.2,
@@ -1077,8 +1033,8 @@ Section: libdevel
 Architecture: amd64
 Multi-Arch: same
 Depends: 
- libsdurw-dev (=${binary:Version}), 
  libsdurw-task (=${binary:Version}), 
+ ${cmakedep:Depends},
  ${misc:Depends}
 Conflicts:
   libsdurw-task-dev1.2,
@@ -1094,9 +1050,8 @@ Section: libdevel
 Architecture: amd64
 Multi-Arch: same
 Depends: 
- libsdurw-control-dev (= ${binary:Version}),
- libsdurw-dev (=${binary:Version}), 
  libsdurw-simulation (=${binary:Version}), 
+ ${cmakedep:Depends},
  ${misc:Depends}
 Conflicts:
   libsdurw-simulation-dev1.2,
@@ -1112,9 +1067,8 @@ Section: libdevel
 Architecture: amd64
 Multi-Arch: same
 Depends: 
- libsdurw-dev (=${binary:Version}), 
- libsdurw-task-dev (=${binary:Version}), 
  libsdurw-assembly (=${binary:Version}), 
+ ${cmakedep:Depends},
  ${misc:Depends}
 Conflicts:
   libsdurw-assembly-dev1.2,
@@ -1130,11 +1084,8 @@ Section: libdevel
 Architecture: amd64
 Multi-Arch: same
 Depends: 
- libsdurw-core-dev (=${binary:Version}), 
- libsdurw-common-dev (=${binary:Version}), 
- libsdurw-math-dev (=${binary:Version}),
- libsdurw-geometry-dev (=${binary:Version}),
  libsdurw-csg (=${binary:Version}), 
+ ${cmakedep:Depends},
  ${misc:Depends}
 Conflicts:
   libsdurw-csg-dev1.2,
@@ -1150,11 +1101,8 @@ Section: libdevel
 Architecture: amd64
 Multi-Arch: same
 Depends:
- libsdurw-core-dev (=${binary:Version}), 
- libsdurw-common-dev (=${binary:Version}), 
- libsdurw-math-dev (=${binary:Version}), 
- libsdurw-kinematics-dev (=${binary:Version}), 
  libsdurw-geometry (=${binary:Version}), 
+ ${cmakedep:Depends},
  libqhull-dev,
  ${misc:Depends}
 Conflicts:
@@ -1186,6 +1134,7 @@ Architecture: amd64
 Multi-Arch: same
 Depends: 
  libsdurws (= ${binary:Version}), 
+ ${cmakedep:Depends},
  sdurws-cmake (=${binary:Version}),
  qtbase5-dev, 
  python3-dev,
@@ -1211,6 +1160,7 @@ Architecture: amd64
 Multi-Arch: same
 Depends: 
  libsdurws-atask (= ${binary:Version}), 
+ ${cmakedep:Depends},
  ${misc:Depends}
 Conflicts:
   libsdurws-atask-dev1.2,
@@ -1227,6 +1177,7 @@ Architecture: amd64
 Multi-Arch: same
 Depends: 
  libsdurws-gtask (= ${binary:Version}), 
+ ${cmakedep:Depends},
  ${misc:Depends}
 Conflicts:
   libsdurws-gtask-dev1.2,
@@ -1243,6 +1194,7 @@ Architecture: amd64
 Multi-Arch: same
 Depends: 
  libsdurws-jog (=${binary:Version}), 
+ ${cmakedep:Depends},
  ${misc:Depends}
 Conflicts:
   libsdurws-jog-dev1.2,
@@ -1259,6 +1211,7 @@ Architecture: amd64
 Multi-Arch: same
 Depends: 
  libsdurws-log (=${binary:Version}), 
+ ${cmakedep:Depends},
  ${misc:Depends}
 Conflicts:
   libsdurws-log-dev1.2,
@@ -1275,7 +1228,7 @@ Architecture: amd64
 Multi-Arch: same
 Depends: 
  libsdurws-luapl (=${binary:Version}), 
- libsdurws-luaeditor-dev (=${binary:Version}), 
+ ${cmakedep:Depends},
  ${misc:Depends}
 Conflicts:
   libsdurws-luapl-dev1.2,
@@ -1292,6 +1245,7 @@ Architecture: amd64
 Multi-Arch: same
 Depends: 
  libsdurws-luaeditor (=${binary:Version}), 
+ ${cmakedep:Depends},
  ${misc:Depends}
 Conflicts:
   libsdurws-luaeditor-dev1.2,
@@ -1308,6 +1262,7 @@ Architecture: amd64
 Multi-Arch: same
 Depends: 
  libsdurws-planning (=${binary:Version}), 
+ ${cmakedep:Depends},
  ${misc:Depends}
 Conflicts:
   libsdurws-planning-dev1.2,
@@ -1324,6 +1279,7 @@ Architecture: amd64
 Multi-Arch: same
 Depends: 
  libsdurws-playback (=${binary:Version}), 
+ ${cmakedep:Depends},
  ${misc:Depends}
 Conflicts:
   libsdurws-playback-dev1.2,
@@ -1340,6 +1296,7 @@ Architecture: amd64
 Multi-Arch: same
 Depends: 
  libsdurws-propertyview (=${binary:Version}), 
+ ${cmakedep:Depends},
  ${misc:Depends} 
 Conflicts:
   libsdurws-propertyview-dev1.2,
@@ -1356,6 +1313,7 @@ Architecture: amd64
 Multi-Arch: same
 Depends: 
  libsdurws-sensors (=${binary:Version}), 
+ ${cmakedep:Depends},
  ${misc:Depends}
 Conflicts:
   libsdurws-sensors-dev1.2,
@@ -1372,6 +1330,7 @@ Architecture: amd64
 Multi-Arch: same
 Depends: 
  libsdurws-treeview (=${binary:Version}), 
+ ${cmakedep:Depends},
  ${misc:Depends}
 Conflicts:
   libsdurws-treeview-dev1.2,
@@ -1387,8 +1346,8 @@ Section: libdevel
 Architecture: amd64
 Multi-Arch: same
 Depends:
- libsdurws-workcelleditor-dev (=${binary:Version}), 
  libsdurws-workcelleditorplugin (=${binary:Version}), 
+ ${cmakedep:Depends},
  ${misc:Depends}
 Conflicts:
   libsdurws-workcelleditorplugin-dev1.2,
@@ -1405,6 +1364,7 @@ Architecture: amd64
 Multi-Arch: same
 Depends: 
  libsdurws-workcelleditor (=${binary:Version}), 
+ ${cmakedep:Depends},
  ${misc:Depends}
 Conflicts:
   libsdurws-workcelleditor-dev1.2,
@@ -1421,6 +1381,7 @@ Architecture: amd64
 Multi-Arch: same
 Depends: 
  libsdurws-robworkstudioapp (=${binary:Version}), 
+ ${cmakedep:Depends},
   ${misc:Depends}
 Conflicts:
   libsdurws-robworkstudioapp-dev1.2,
@@ -1449,6 +1410,7 @@ Architecture: amd64
 Multi-Arch: same
 Depends: 
  libsdurwsim (=${binary:Version}),
+ ${cmakedep:Depends},
  libode-dev (>=2),  
  ${misc:Depends}
 Conflicts:
@@ -1466,6 +1428,7 @@ Architecture: amd64
 Multi-Arch: same
 Depends: 
  libsdurwsim-bullet (=${binary:Version}), 
+ ${cmakedep:Depends},
  libbullet-dev (>= 2.81), 
  ${misc:Depends}
 Conflicts:
@@ -1483,6 +1446,7 @@ Architecture: amd64
 Multi-Arch: same
 Depends: 
  libsdurwsim-ode (=${binary:Version}), 
+ ${cmakedep:Depends},
  ${misc:Depends}
 Conflicts:
   libsdurwsim-ode-dev1.2,
@@ -1498,8 +1462,8 @@ Section: libdevel
 Architecture: amd64
 Multi-Arch: same
 Depends: 
- libsdurws-dev (= ${binary:Version}),
  libsdurwsim-gui (=${binary:Version}), 
+ ${cmakedep:Depends},
  ${misc:Depends}
 Conflicts:
   libsdurwsim-gui-dev1.2,
@@ -1516,9 +1480,7 @@ Architecture: amd64
 Multi-Arch: same
 Depends: 
  libsdurwsim-test (=${binary:Version}),
- libsdurw-core-dev (=${binary:Version}),
- libsdurw-math-dev (=${binary:Version}),
- libsdurw-trajectory-dev (=${binary:Version}), 
+ ${cmakedep:Depends},
  ${misc:Depends}
 Description: Development library for test of engines.
  The Development library for Physics Engine tests.

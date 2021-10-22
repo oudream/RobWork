@@ -1,6 +1,9 @@
 set(SUBSYS_NAME sdurw_proximitystrategies)
 set(SUBSYS_DESC "Collection of proximity strategies!")
-set(SUBSYS_DEPS sdurw_core sdurw_common sdurw_math sdurw_geometry sdurw_proximity sdurw_kinematics sdurw)
+set(SUBSYS_DEPS
+    PUBLIC sdurw_core sdurw_common sdurw_geometry sdurw_proximity sdurw_kinematics
+    PRIVATE sdurw_loaders sdurw_math
+)
 
 set(build TRUE)
 set(DEFAULT TRUE)
@@ -55,7 +58,8 @@ if(build)
     rw_add_includes(${SUBSYS_NAME} "rwlibs/proximitystrategies" ${SRC_FILES_HPP})
     target_link_libraries(
         ${SUBSYS_NAME}
-        PUBLIC ${SUBSYS_DEPS} ${PQP_LIBRARIES} ${BULLET_LIBRARIES}
+        PUBLIC ${SUBSYS_DEPS}
+        PUBLIC ${PQP_LIBRARIES} ${BULLET_LIBRARIES}
         PRIVATE ${YAOBI_LIBRARIES} ${FCL_LIBRARIES}
     )
     
@@ -86,7 +90,7 @@ if(build)
 
     if(build_plugin)
         rw_add_plugin(${SUBSYS_NAME}.rwplugin MODULE ProximityStrategyPlugin.cpp)
-        target_link_libraries(${SUBSYS_NAME}.rwplugin PRIVATE ${SUBSYS_NAME} PUBLIC sdurw)
+        target_link_libraries(${SUBSYS_NAME}.rwplugin PRIVATE ${SUBSYS_NAME} PUBLIC sdurw_core)
         target_include_directories(${SUBSYS_NAME}.rwplugin PUBLIC ${FCL_INCLUDE_DIRS})
     endif()
 endif()

@@ -631,7 +631,6 @@ public:
         const std::vector<rw::core::Ptr<rw::geometry::Geometry> >& geoms
         );
 
-    //rw::math::InertiaMatrix<double> getEffectiveMassW(const rw::math::Vector3D<double>& wPc);
     rw::kinematics::Frame* getParent(rw::kinematics::State& state) const;
     rw::math::Transform3D<double> getPTBody(const rw::kinematics::State& state) const;
     void setPTBody(const rw::math::Transform3D<double>& pTb, rw::kinematics::State& state);
@@ -721,10 +720,6 @@ public:
 
     virtual rw::math::Q getJointVelocities(const rw::kinematics::State& state);
     virtual void setJointVelocities(const rw::math::Q &vel, rw::kinematics::State& state);
-
-    //deprecated
-    virtual rw::math::Q getVelocity(const rw::kinematics::State& state);
-    virtual void setVelocity(const rw::math::Q& vel, rw::kinematics::State& state);
 
     virtual std::vector<rw::core::Ptr<Body> > getLinks();
 

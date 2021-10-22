@@ -43,7 +43,7 @@ set(RWSMAIN_TEST_SRC
   test-main.cpp
 )
 add_library( sdurws-gtest-main STATIC ${RWSMAIN_TEST_SRC})
-target_link_libraries( sdurws-gtest-main PUBLIC ${RW_BUILD_WITH_LIBRARIES_GTEST} RW::sdurw)
+target_link_libraries( sdurws-gtest-main PUBLIC ${RW_BUILD_WITH_LIBRARIES_GTEST} RW::sdurw_core)
 
 ########################################################################
 # RWS
@@ -55,7 +55,6 @@ SET(RWS_TEST_LIBRARIES
   sdurws_robworkstudioapp
   ${QT_LIBRARIES}
   ${RW_BUILD_WITH_LIBRARIES_GTEST}
-  RW::sdurw
 )
 
 SET(RWS_TEST_SRC

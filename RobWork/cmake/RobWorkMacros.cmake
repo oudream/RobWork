@@ -993,6 +993,9 @@ macro(RW_SUBSYS_OPTION _var _name _desc _default)
     set(oneValueArgs REASON) # used to marke values with a single value
     set(multiValueArgs DEPENDS DEPENDS_EXT)
     cmake_parse_arguments(SUBSYS "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
+    if(SUBSYS_DEPENDS)
+        list(REMOVE_ITEM SUBSYS_DEPENDS "PUBLIC" "PRIVATE")
+    endif()
 
     set(_opt_name "BUILD_${_name}")
     rw_get_subsys_hyperstatus(subsys_status ${_name})

@@ -22,7 +22,6 @@
 #include <rwlibs/os/rwgl.hpp>
 
 using namespace rw::math;
-using namespace rw::common;
 using namespace rw::graphics;
 using namespace rwlibs::simulation;
 

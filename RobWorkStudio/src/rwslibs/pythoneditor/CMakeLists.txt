@@ -1,6 +1,6 @@
 set(SUBSYS_NAME sdurws_pythoneditor)
 set(SUBSYS_DESC "A python editor")
-set(SUBSYS_DEPS sdurws RW::sdurw_python RW::sdurw)
+set(SUBSYS_DEPS PUBLIC sdurws)
 
 if(${PYTHONLIBS_FOUND} AND ${PYTHONINTERP_FOUND} AND ${RWS_USE_QCODEEDITOR})
     set(DEFAULT ON)
@@ -47,7 +47,8 @@ if(build)
     rw_add_includes(${SUBSYS_NAME} "rwslibs/pythoneditor" ${SRC_FILES_HPP})
     target_link_libraries(
         ${SUBSYS_NAME}
-        PUBLIC sdurws ${QT_LIBRARIES} RW::sdurw
+        ${SUBSYS_DEPS}
+        ${QT_LIBRARIES}
         PRIVATE ${PYTHON_LIBRARIES} QCodeEditor
     )
     target_include_directories(

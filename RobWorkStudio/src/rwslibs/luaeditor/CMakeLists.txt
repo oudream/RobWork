@@ -1,6 +1,12 @@
 set(SUBSYS_NAME sdurws_luaeditor)
 set(SUBSYS_DESC "A lua editor plugin")
-set(SUBSYS_DEPS sdurws RW::sdurw RW::sdurw_core_lua_s RWS::sdurws_lua)
+set(SUBSYS_DEPS
+    PUBLIC  sdurws
+            RW::sdurw_core
+    PRIVATE RW::sdurw_models
+            RW::sdurw_core_lua_s
+            sdurws_lua_s
+)
 
 set(build ${RWS_HAVE_LUA})
 rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ${RWS_HAVE_LUA} DEPENDS ${SUBSYS_DEPS} ADD_DOC)
@@ -47,7 +53,7 @@ if(build)
     rw_add_includes(${SUBSYS_NAME} "rwslibs/luaeditor" ${SRC_FILES_HPP})
     # Need to add the current binary dir to the include directory because the generated source files are placed here
     target_include_directories(${SUBSYS_NAME} PRIVATE ${CMAKE_CURRENT_BINARY_DIR} ${RW_BUILD_WITH_LUA_INCLUDE_DIR})
-    target_link_libraries(${SUBSYS_NAME} PUBLIC ${QT_LIBRARIES} sdurws RW::sdurw ${RW_BUILD_WITH_LIBRARIES_LUA} PRIVATE RW::sdurw_core_lua_s sdurws_lua_s)
+    target_link_libraries(${SUBSYS_NAME} PUBLIC ${QT_LIBRARIES} ${SUBSYS_DEPS} PRIVATE ${RW_BUILD_WITH_LIBRARIES_LUA})
     target_include_directories(${SUBSYS_NAME}
         INTERFACE
         $<BUILD_INTERFACE:${RWS_ROOT}/src> $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>

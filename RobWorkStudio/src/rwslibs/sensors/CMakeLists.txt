@@ -1,6 +1,13 @@
 set(SUBSYS_NAME sdurws_sensors)
 set(SUBSYS_DESC "A sensor view plugin")
-set(SUBSYS_DEPS sdurws)
+set(SUBSYS_DEPS
+    PUBLIC  sdurws
+            RW::sdurw_kinematics
+            RW::sdurw_core
+    PRIVATE RW::sdurw_simulation
+            RW::sdurw_opengl
+            RW::sdurw_sensor
+)
 
 set(build TRUE)
 rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ON DEPENDS ${SUBSYS_DEPS} ADD_DOC)
@@ -39,7 +46,7 @@ if(build)
     rw_add_includes(${SUBSYS_NAME} "rwslibs/sensors" ${SRC_FILES_HPP})
     # Need to add the current binary dir to the include directory because the generated source files are placed here
     target_include_directories(${SUBSYS_NAME} PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
-    target_link_libraries(${SUBSYS_NAME} PUBLIC ${SUBSYS_DEPS} ${QT_LIBRARIES} PRIVATE RW::sdurw_simulation PUBLIC RW::sdurw)
+    target_link_libraries(${SUBSYS_NAME} ${SUBSYS_DEPS} PUBLIC ${QT_LIBRARIES})
     target_include_directories(${SUBSYS_NAME}
         INTERFACE
         $<BUILD_INTERFACE:${RWS_ROOT}/src> $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>

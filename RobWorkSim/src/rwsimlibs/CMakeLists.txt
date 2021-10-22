@@ -14,9 +14,8 @@ ENDIF()
 
 add_subdirectory(bullet) 
 add_subdirectory(swig)
+add_subdirectory(tools)
+add_subdirectory(test)
 
 # the plugins may use all of the above 
 add_subdirectory(plugins)
-
-add_subdirectory(tools)
-add_subdirectory(test)

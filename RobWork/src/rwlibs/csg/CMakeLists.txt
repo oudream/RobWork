@@ -1,6 +1,9 @@
 set(SUBSYS_NAME sdurw_csg)
 set(SUBSYS_DESC "A module for doing constructive solid geometry")
-set(SUBSYS_DEPS sdurw sdurw_csgjs)
+set(SUBSYS_DEPS
+    PUBLIC sdurw_core sdurw_geometry sdurw_math
+    PRIVATE sdurw_loaders sdurw_csgjs
+)
 
 set(build TRUE)
 rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ON DEPENDS ${SUBSYS_DEPS} ADD_DOC)

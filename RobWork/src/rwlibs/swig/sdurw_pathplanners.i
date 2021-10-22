@@ -28,7 +28,6 @@ using rw::trajectory::Path;
 %import <rwlibs/swig/sdurw_models.i>
 
 %pragma(java) jniclassimports=%{
-import org.robwork.sdurw.*;
 import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_common.*;
 import org.robwork.sdurw_math.*;
@@ -36,7 +35,6 @@ import org.robwork.sdurw_kinematics.*;
 import org.robwork.sdurw_models.*;
 %}
 %pragma(java) moduleimports=%{
-import org.robwork.sdurw.*;
 import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_common.*;
 import org.robwork.sdurw_math.*;
@@ -44,7 +42,6 @@ import org.robwork.sdurw_kinematics.*;
 import org.robwork.sdurw_models.*;
 %}
 %typemap(javaimports) SWIGTYPE %{
-import org.robwork.sdurw.*;
 import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_common.*;
 import org.robwork.sdurw_math.*;

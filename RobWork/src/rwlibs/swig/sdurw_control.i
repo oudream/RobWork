@@ -13,23 +13,19 @@ using namespace rwlibs::swig;
 
 %import <rwlibs/swig/sdurw_core.i>
 %import <rwlibs/swig/sdurw_models.i>
-%import <rwlibs/swig/sdurw.i>
 %import(module=rwlibs/swig/sdurw_math) <rw/math/Q.hpp>
 
 %pragma(java) jniclassimports=%{
-import org.robwork.sdurw.*;
 import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_math.*;
 import org.robwork.sdurw_models.*;
 %}
 %pragma(java) moduleimports=%{
-import org.robwork.sdurw.*;
 import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_math.*;
 import org.robwork.sdurw_models.*;
 %}
 %typemap(javaimports) SWIGTYPE %{
-import org.robwork.sdurw.*;
 import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_math.*;
 import org.robwork.sdurw_models.*;

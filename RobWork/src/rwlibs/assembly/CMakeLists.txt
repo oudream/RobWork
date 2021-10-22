@@ -1,6 +1,10 @@
 set(SUBSYS_NAME sdurw_assembly)
 set(SUBSYS_DESC "Assembly task and result formats and strategies.")
-set(SUBSYS_DEPS sdurw sdurw_task sdurw_core sdurw_math)
+set(SUBSYS_DEPS
+    PUBLIC  sdurw_core sdurw_math sdurw_trajectory
+    PRIVATE sdurw_task sdurw_kinematics sdurw_sensor
+            sdurw  # For SWIG
+)
 
 set(DEFAULT TRUE)
 set(REASON)
@@ -45,7 +49,7 @@ if(build)
 
     rw_add_library(${SUBSYS_NAME} ${SRC_FILES} ${SRC_FILES_HPP} ${LOADER_SRC_FILES_HPP})
     rw_add_includes(${SUBSYS_NAME} "rwlibs/assembly" ${SRC_FILES_HPP})
-    target_link_libraries(${SUBSYS_NAME} PUBLIC sdurw PRIVATE sdurw_task)
+    target_link_libraries(${SUBSYS_NAME} ${SUBSYS_DEPS})
     target_include_directories(${SUBSYS_NAME}
         INTERFACE
         $<BUILD_INTERFACE:${RW_ROOT}/src> $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>

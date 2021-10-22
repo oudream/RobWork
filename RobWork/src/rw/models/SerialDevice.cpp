@@ -25,7 +25,6 @@
 
 #include <vector>
 
-using namespace rw::common;
 using namespace rw::kinematics;
 using namespace rw::math;
 using namespace rw::models;

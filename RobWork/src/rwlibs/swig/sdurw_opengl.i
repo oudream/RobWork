@@ -25,23 +25,19 @@ using namespace rwlibs::swig;
 %include <exception.i>
 %include <std_vector.i>
 
-%import <rwlibs/swig/sdurw.i>
 %import <rwlibs/swig/sdurw_core.i>
 %import <rwlibs/swig/sdurw_models.i>
 %import <rwlibs/swig/sdurw_sensor.i>
 
 %pragma(java) jniclassimports=%{
-import org.robwork.sdurw.*;
 import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_sensor.*;
 %}
 %pragma(java) moduleimports=%{
-import org.robwork.sdurw.*;
 import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_sensor.*;
 %}
 %typemap(javaimports) SWIGTYPE %{
-import org.robwork.sdurw.*;
 import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_sensor.*;
 %}

@@ -1,6 +1,6 @@
 set(SUBSYS_NAME sdurw_control)
 set(SUBSYS_DESC "A collection of general controllers and interfaces for RobWork")
-set(SUBSYS_DEPS sdurw sdurw_core sdurw_math sdurw_models)
+set(SUBSYS_DEPS sdurw_core sdurw_math sdurw_models)
 
 set(build TRUE)
 rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ON DEPENDS ${SUBSYS_DEPS} ADD_DOC)

@@ -84,6 +84,10 @@ override_dh_clean:
 override_dh_shlibdeps:
 	LD_LIBRARY_PATH=$(DESTDIR)/usr/lib/$(DEB_TARGET_MULTIARCH):$$LD_LIBRARY_PATH dh_shlibdeps -l$(DESTDIR)/usr/lib/$(DEB_TARGET_MULTIARCH) -a
 
+override_dh_gencontrol:
+	./debian/scripts/extractDevDeps.sh
+	dh_gencontrol
+
 override_dh_install:
 	./debian/scripts/gen.sh 
 	dh_install

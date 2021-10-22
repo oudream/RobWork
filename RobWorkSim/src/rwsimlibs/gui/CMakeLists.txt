@@ -1,6 +1,24 @@
 set(SUBSYS_NAME sdurwsim_gui)
 set(SUBSYS_DESC "RobWorkSim gui")
-set(SUBSYS_DEPS sdurwsim )
+set(SUBSYS_DEPS
+    PRIVATE
+        RW::sdurw_opengl
+        RW::sdurw_geometry
+        RW::sdurw_sensor
+        RW::sdurw_loaders
+    PUBLIC
+        sdurwsim
+        RWS::sdurws
+        RW::sdurw_algorithms
+        RW::sdurw_graspplanning
+        RW::sdurw_trajectory
+        RW::sdurw_proximity
+        RW::sdurw_graphics
+        RW::sdurw_models
+        RW::sdurw_kinematics
+        RW::sdurw_math
+        RW::sdurw_core
+)
 
 set(build TRUE)
 set(DEFAULT TRUE)
@@ -117,10 +135,8 @@ if(build)
 
     target_link_libraries(
         sdurwsim_gui
-        PUBLIC
-            sdurwsim
-            RWS::sdurws
-            ${QT_LIBRARIES}
+        ${SUBSYS_DEPS}
+        PUBLIC ${QT_LIBRARIES}
         PRIVATE ${ODE_LIB}
     )
 

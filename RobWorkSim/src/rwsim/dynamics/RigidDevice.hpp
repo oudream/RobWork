@@ -23,7 +23,6 @@
 #include <rw/core/Ptr.hpp>
 #include <rw/math/Q.hpp>
 #include <rw/models/JointDevice.hpp>
-//#include "RigidJoint.hpp"
 
 namespace rwsim { namespace dynamics {
     //! @addtogroup rwsim_dynamics
@@ -202,7 +201,6 @@ namespace rwsim { namespace dynamics {
 
         // these should all be part of the state...
         rw::math::Q _forceLimits;
-        // std::vector<dynamics::RigidJoint*> _bodies;
         std::vector< Body::Ptr > _links;
         rw::models::JointDevice::Ptr _jdev;
     };
