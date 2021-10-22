@@ -1,6 +1,13 @@
 set(SUBSYS_NAME sdurws_treeview)
 set(SUBSYS_DESC "A treeview plugin")
-set(SUBSYS_DEPS sdurws)
+set(SUBSYS_DEPS
+    PUBLIC  sdurws
+            RW::sdurw_core
+    PRIVATE RW::sdurw_models
+            RW::sdurw_loaders
+            RW::sdurw_kinematics
+            RW::sdurw_graphics
+)
 
 set(build TRUE)
 rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ON DEPENDS ${SUBSYS_DEPS} ADD_DOC)
@@ -26,7 +33,7 @@ if(build)
         ${RccSrcFiles}
     )
     rw_add_includes(${SUBSYS_NAME} "rwslibs/treeview" ${SRC_FILES_HPP})
-    target_link_libraries(${SUBSYS_NAME} PUBLIC ${SUBSYS_DEPS} ${QT_LIBRARIES} RW::sdurw)
+    target_link_libraries(${SUBSYS_NAME} ${SUBSYS_DEPS} PUBLIC ${QT_LIBRARIES})
     target_include_directories(${SUBSYS_NAME}
         INTERFACE
         $<BUILD_INTERFACE:${RWS_ROOT}/src> $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>

@@ -1,6 +1,6 @@
 set(SUBSYS_NAME sdurw_geometry)
 set(SUBSYS_DESC "The core RobWork library!")
-set(SUBSYS_DEPS sdurw_core sdurw_common sdurw_math sdurw_kinematics)
+set(SUBSYS_DEPS PUBLIC sdurw_core sdurw_common sdurw_math PRIVATE sdurw_kinematics)
 
 set(build TRUE)
 rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ON DEPENDS ${SUBSYS_DEPS})

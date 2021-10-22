@@ -1,6 +1,9 @@
 set(SUBSYS_NAME sdurw_task)
 set(SUBSYS_DESC "Generic Task description")
-set(SUBSYS_DEPS sdurw_core sdurw)
+set(SUBSYS_DEPS
+    PUBLIC sdurw_core sdurw_math sdurw_sensor
+    PRIVATE sdurw_loaders sdurw_trajectory
+)
 
 set(DEFAULT TRUE)
 set(REASON)
@@ -65,7 +68,7 @@ if(build)
     rw_add_library(${SUBSYS_NAME} ${SRC_FILES} ${SRC_FILES_HPP} ${LOADER_SRC_FILES_HPP})
     rw_add_includes(${SUBSYS_NAME} "rwlibs/task" ${SRC_FILES_HPP})
     rw_add_include_dirs(${SUBSYS_NAME} "rwlibs/task" loader)
-    target_link_libraries(${SUBSYS_NAME} PUBLIC RW::sdurw)
+    target_link_libraries(${SUBSYS_NAME} ${SUBSYS_DEPS})
     target_include_directories(${SUBSYS_NAME}
         PUBLIC
         $<BUILD_INTERFACE:${RW_ROOT}/src> $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>

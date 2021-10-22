@@ -1,13 +1,13 @@
 set(SUBSYS_NAME sdurw_graphics)
 set(SUBSYS_DESC "The graphics RobWork library!")
 set(SUBSYS_DEPS
-    sdurw_core
-    sdurw_common
-    sdurw_math
-    sdurw_kinematics
-    sdurw_geometry
-    sdurw_sensor
-    sdurw_models
+    PUBLIC  sdurw_core
+            sdurw_common
+            sdurw_math
+            sdurw_kinematics
+            sdurw_geometry
+            sdurw_sensor
+    PRIVATE sdurw_models
 )
 
 set(build TRUE)

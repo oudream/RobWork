@@ -20,11 +20,12 @@
 #include <rw/kinematics/MovableFrame.hpp>
 
 using namespace rw::math;
+using rw::models::Object;
 using namespace rw::kinematics;
 
 using namespace rwsim::dynamics;
 
-KinematicBody::KinematicBody (const BodyInfo& info, rw::models::Object::Ptr obj) :
+KinematicBody::KinematicBody (const BodyInfo& info, Object::Ptr obj) :
     Body (info, obj), _base (NULL)
 
 {
@@ -39,7 +40,7 @@ KinematicBody::KinematicBody (const BodyInfo& info, rw::models::Object::Ptr obj)
 KinematicBody::~KinematicBody ()
 {}
 
-void KinematicBody::reset (rw::kinematics::State& state)
+void KinematicBody::reset (State& state)
 {
     // set variables in state to 0
     KinematicBodyState& ks = _kstate.get (state);

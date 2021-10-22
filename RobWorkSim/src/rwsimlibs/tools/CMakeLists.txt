@@ -1,6 +1,11 @@
 set(SUBSYS_NAME SimulatorLogViewer)
 set(SUBSYS_DESC "Stand-alone application for visualization of internal data from a Physics Engine.")
-set(SUBSYS_DEPS sdurws sdurw)
+set(SUBSYS_DEPS
+    PRIVATE sdurwsim_gui
+            sdurwsim
+            RW::sdurw_common
+    PUBLIC  RW::sdurw_core
+)
 
 set(build TRUE)
 rw_subsys_option(
@@ -29,8 +34,7 @@ if(build)
     add_executable(SimulatorLogViewer ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles} ${UIS_FILES})
     target_link_libraries(
         SimulatorLogViewer
-        PRIVATE
-        sdurwsim_gui
+        ${SUBSYS_DEPS}
     )
     # Need to add the current binary dir to the include directory because the generated source files are placed here
     target_include_directories(SimulatorLogViewer PRIVATE ${CMAKE_CURRENT_BINARY_DIR})

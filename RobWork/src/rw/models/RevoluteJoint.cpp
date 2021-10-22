@@ -17,7 +17,6 @@
 
 #include "RevoluteJoint.hpp"
 
-using namespace rw::common;
 using namespace rw::models;
 using namespace rw::kinematics;
 using namespace rw::math;

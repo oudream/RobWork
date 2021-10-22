@@ -25,7 +25,6 @@ using rw::trajectory::Path;
 %}
 
 %include <exception.i>
-%import <rwlibs/swig/sdurw.i>
 %import <rwlibs/swig/sdurw_core.i>
 %import <rwlibs/swig/sdurw_common.i>
 %import <rwlibs/swig/sdurw_math.i>
@@ -34,7 +33,6 @@ using rw::trajectory::Path;
 %import <rwlibs/swig/sdurw_proximity.i>
 
 %pragma(java) jniclassimports=%{
-import org.robwork.sdurw.*;
 import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_common.*;
 import org.robwork.sdurw_math.*;
@@ -43,7 +41,6 @@ import org.robwork.sdurw_models.*;
 import org.robwork.sdurw_proximity.*;
 %}
 %pragma(java) moduleimports=%{
-import org.robwork.sdurw.*;
 import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_common.*;
 import org.robwork.sdurw_math.*;
@@ -52,7 +49,6 @@ import org.robwork.sdurw_models.*;
 import org.robwork.sdurw_proximity.*;
 %}
 %typemap(javaimports) SWIGTYPE %{
-import org.robwork.sdurw.*;
 import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_common.*;
 import org.robwork.sdurw_math.*;

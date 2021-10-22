@@ -1,6 +1,9 @@
 set(SUBSYS_NAME sdurw_algorithms)
 set(SUBSYS_DESC "A collection of varius algorithms!")
-set(SUBSYS_DEPS sdurw)
+set(SUBSYS_DEPS
+    PUBLIC sdurw_core sdurw_common sdurw_geometry sdurw_math sdurw_kinematics sdurw_invkin
+    PRIVATE sdurw_models
+)
 
 set(build TRUE)
 rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ON DEPENDS ${SUBSYS_DEPS} ADD_DOC)
@@ -63,7 +66,7 @@ if(build)
         xqpcontroller
         gpm
     )
-    target_link_libraries(${SUBSYS_NAME} PUBLIC ${SUBSYS_DEPS})
+    target_link_libraries(${SUBSYS_NAME} ${SUBSYS_DEPS})
     target_include_directories(${SUBSYS_NAME}
         PUBLIC
         $<BUILD_INTERFACE:${RW_ROOT}/src> $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>

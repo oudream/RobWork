@@ -34,7 +34,7 @@ namespace rwsim { namespace util {
          * @brief instantiate a quality measure with ID \b id.
          * @param id [in] id of quality measure
          */
-        static GraspQualityMeasure3DPtr makeQualityMeasure (const std::string& id);
+        static rw::graspplanning::GraspQualityMeasure3D::Ptr makeQualityMeasure (const std::string& id);
     };
 }}     // namespace rwsim::util
 #endif /* GRASPSTRATEGYFACTORY_HPP_ */

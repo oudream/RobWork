@@ -1,6 +1,9 @@
 set(SUBSYS_NAME sdurws_workcelleditorplugin)
 set(SUBSYS_DESC "Workcell editor plugin")
-set(SUBSYS_DEPS sdurws sdurws_workcelleditor)
+set(SUBSYS_DEPS
+    PRIVATE sdurws_workcelleditor
+    PUBLIC  sdurws
+)
 
 set(build TRUE)
 rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ON DEPENDS ${SUBSYS_DEPS} ADD_DOC)
@@ -28,7 +31,7 @@ if(build)
         ${RccSrcFiles}
     )
     rw_add_includes(${SUBSYS_NAME} "rwslibs/workcelleditorplugin" ${SRC_FILES_HPP})
-    target_link_libraries(${SUBSYS_NAME} PUBLIC ${SUBSYS_DEPS} PRIVATE ${QT_LIBRARIES})
+    target_link_libraries(${SUBSYS_NAME} ${SUBSYS_DEPS} PRIVATE ${QT_LIBRARIES})
     target_include_directories(${SUBSYS_NAME}
         INTERFACE
         $<BUILD_INTERFACE:${RWS_ROOT}/src> $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>

@@ -1,6 +1,9 @@
 set(SUBSYS_NAME sdurw_calibration)
 set(SUBSYS_DESC "Calibration of devices")
-set(SUBSYS_DEPS sdurw)
+set(SUBSYS_DEPS
+    PUBLIC sdurw_core sdurw_kinematics
+    PRIVATE sdurw_math sdurw_models sdurw_loaders
+)
 
 set(build TRUE)
 set(DEFAULT TRUE)

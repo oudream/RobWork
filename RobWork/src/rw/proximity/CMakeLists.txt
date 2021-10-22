@@ -1,6 +1,9 @@
 set(SUBSYS_NAME sdurw_proximity)
 set(SUBSYS_DESC "Everything to do with calculating the proximity between objects")
-set(SUBSYS_DEPS sdurw_core sdurw_common sdurw_math sdurw_geometry sdurw_models sdurw_kinematics)
+set(SUBSYS_DEPS
+    PUBLIC sdurw_core sdurw_common sdurw_math sdurw_geometry sdurw_kinematics
+    PRIVATE sdurw_models
+)
 
 set(build TRUE)
 rw_subsys_option(

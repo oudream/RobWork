@@ -21,7 +21,6 @@
 #include <rw/math/Transform3D.hpp>
 #include <rwlibs/os/rwgl.hpp>
 
-using namespace rw::common;
 using namespace rw::graphics;
 using namespace rwlibs::simulation;
 

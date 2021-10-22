@@ -26,7 +26,6 @@
 #include <rw/core/Log.hpp>
 #include <rw/core/StringUtil.hpp>
 #include <rw/loaders/WorkCellLoader.hpp>
-#include <rwlibs/swig/ScriptTypes.hpp>
 #include <rws/RobWorkStudio.hpp>
 
 #include <QColor>

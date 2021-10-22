@@ -1,6 +1,6 @@
 set(SUBSYS_NAME sdurw_trajectory)
 set(SUBSYS_DESC "The trajectory RobWork library!")
-set(SUBSYS_DEPS sdurw_core sdurw_math sdurw_models)
+set(SUBSYS_DEPS PUBLIC sdurw_core sdurw_math sdurw_kinematics PRIVATE sdurw_models)
 
 set(build TRUE)
 rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ON DEPENDS ${SUBSYS_DEPS})

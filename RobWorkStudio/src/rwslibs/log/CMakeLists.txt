@@ -1,6 +1,9 @@
 set(SUBSYS_NAME sdurws_log)
 set(SUBSYS_DESC "A logging plugin")
-set(SUBSYS_DEPS sdurws)
+set(SUBSYS_DEPS
+    PUBLIC  sdurws
+            RW::sdurw_core
+)
 
 set(build TRUE)
 rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ON DEPENDS ${SUBSYS_DEPS} ADD_DOC)
@@ -26,7 +29,7 @@ if(build)
         ${RccSrcFiles}
     )
     rw_add_includes(${SUBSYS_NAME} "rwslibs/log" ${SRC_FILES_HPP})
-    target_link_libraries(${SUBSYS_NAME} PUBLIC ${SUBSYS_DEPS} ${QT_LIBRARIES} PRIVATE RW::sdurw)
+    target_link_libraries(${SUBSYS_NAME} ${SUBSYS_DEPS} PUBLIC ${QT_LIBRARIES})
     target_include_directories(${SUBSYS_NAME}
         INTERFACE
         $<BUILD_INTERFACE:${RWS_ROOT}/src> $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>

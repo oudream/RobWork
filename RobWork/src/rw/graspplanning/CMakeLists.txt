@@ -1,6 +1,6 @@
 set(SUBSYS_NAME sdurw_graspplanning)
 set(SUBSYS_DESC "A collection of graspplanning algorithms!")
-set(SUBSYS_DEPS sdurw_core sdurw_common sdurw_math sdurw_geometry sdurw_sensor)
+set(SUBSYS_DEPS PUBLIC sdurw_core sdurw_math sdurw_geometry sdurw_sensor PRIVATE sdurw_common)
 
 set(build TRUE)
 rw_subsys_option(

@@ -28,7 +28,6 @@
 using namespace rw::models;
 using namespace rw::kinematics;
 using namespace rw::math;
-using namespace rw::common;
 
 namespace {
 bool isActiveJoint (const Frame& frame)

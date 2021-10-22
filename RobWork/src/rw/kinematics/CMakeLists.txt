@@ -56,7 +56,7 @@ SET(FILES_HPP
 
 rw_add_library(${SUBSYS_NAME} ${FILES_CPP} ${FILES_HPP})
 rw_add_includes(${SUBSYS_NAME} "rw/kinematics" ${FILES_HPP})
-target_link_libraries(${SUBSYS_NAME} PUBLIC sdurw_core sdurw_common sdurw_math)
+target_link_libraries(${SUBSYS_NAME} PUBLIC ${SUBSYS_DEPS})
 
 
 target_include_directories(

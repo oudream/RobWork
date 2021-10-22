@@ -56,7 +56,7 @@ namespace rwsim { namespace dynamics {
          * @brief Get the body frame as a movable frme.
          * @return a pointer to a movable frame.
          */
-        rw::kinematics::MovableFrame* getMovableFrame () { return _base; };
+        rw::kinematics::MovableFrame* getMovableFrame () { return _base; }
 
         /**
          * @cond
@@ -68,14 +68,13 @@ namespace rwsim { namespace dynamics {
 
         rw::math::VelocityScrew6D<> getVelocity (const rw::kinematics::State& state) const;
 
-        rw::math::InertiaMatrix<> getEffectiveMassW (const rw::math::Vector3D<>& wPc);
-
-        void reset (rw::kinematics::State& state);
+        //! @copydoc Body::reset
+        virtual void reset (rw::kinematics::State& state);
 
         /**
          * @copydoc Body::calcEnergy
          */
-        double
+        virtual double
         calcEnergy (const rw::kinematics::State& state,
                     const rw::math::Vector3D<>& gravity = rw::math::Vector3D<>::zero (),
                     const rw::math::Vector3D<>& potZero = rw::math::Vector3D<>::zero ()) const
@@ -84,7 +83,7 @@ namespace rwsim { namespace dynamics {
         }
 
         //! @copydoc Body::setForce
-        void setForce (const rw::math::Vector3D<>& f, rw::kinematics::State& state){};
+        void setForce (const rw::math::Vector3D<>& f, rw::kinematics::State& state){}
 
         //! @copydoc Body::getForce
         rw::math::Vector3D<> getForce (const rw::kinematics::State& state) const
@@ -93,19 +92,19 @@ namespace rwsim { namespace dynamics {
         }
 
         //! @copydoc Body::addForce
-        void addForce (const rw::math::Vector3D<>& force, rw::kinematics::State& state){};
+        void addForce (const rw::math::Vector3D<>& force, rw::kinematics::State& state){}
 
         //! @copydoc Body::setTorque
-        void setTorque (const rw::math::Vector3D<>& t, rw::kinematics::State& state){};
+        void setTorque (const rw::math::Vector3D<>& t, rw::kinematics::State& state){}
 
         //! @copydoc Body::addTorque
-        void addTorque (const rw::math::Vector3D<>& t, rw::kinematics::State& state){};
+        void addTorque (const rw::math::Vector3D<>& t, rw::kinematics::State& state){}
 
         //! @copydoc Body::getTorque
         rw::math::Vector3D<> getTorque (const rw::kinematics::State& state) const
         {
             return rw::math::Vector3D<> (0, 0, 0);
-        };
+        }
 
       public:
         /**
@@ -203,4 +202,4 @@ namespace rwsim { namespace dynamics {
     //! @}
 }}    // namespace rwsim::dynamics
 
-#endif /*LINK_HPP_*/
+#endif // RWSIM_DYNAMICS_KINEMATICBODY_HPP_

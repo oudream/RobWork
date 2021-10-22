@@ -43,7 +43,6 @@
 #include <rwsim/dynamics/MaterialDataMap.hpp>
 #include <rwsim/dynamics/RigidBody.hpp>
 #include <rwsim/dynamics/RigidDevice.hpp>
-#include <rwsim/dynamics/RigidJoint.hpp>
 
 #include <boost/lexical_cast.hpp>
 #include <boost/optional.hpp>

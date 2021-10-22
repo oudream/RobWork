@@ -29,13 +29,13 @@ endmacro(ADD_RWSIM_GTEST)
 # ##################################################################################################
 
 add_library(sdurwsim-gtest-main STATIC TestEnvironment.cpp test-main.cpp)
-target_link_libraries(sdurwsim-gtest-main ${RW_BUILD_WITH_LIBRARIES_GTEST} RW::sdurw sdurwsim_test)
+target_link_libraries(sdurwsim-gtest-main ${RW_BUILD_WITH_LIBRARIES_GTEST} RW::sdurw_core sdurwsim_test)
 
 # ##################################################################################################
 # Common
 # ##################################################################################################
 if(TARGET sdurwsim)
-    set(COMMON_TEST_LIBRARIES sdurwsim-gtest-main sdurwsim ${RW_BUILD_WITH_LIBRARIES_GTEST} RW::sdurw)
+    set(COMMON_TEST_LIBRARIES sdurwsim-gtest-main sdurwsim ${RW_BUILD_WITH_LIBRARIES_GTEST})
 
     set(COMMON_TEST_SRC common/CommonTest.cpp)
 
@@ -47,7 +47,8 @@ endif()
 # Dynamics
 # ##################################################################################################
 if(TARGET sdurwsim)
-    set(DYNAMICS_TEST_LIBRARIES sdurwsim-gtest-main sdurwsim ${RW_BUILD_WITH_LIBRARIES_GTEST} RW::sdurw)
+    set(DYNAMICS_TEST_LIBRARIES sdurwsim-gtest-main sdurwsim ${RW_BUILD_WITH_LIBRARIES_GTEST}
+        RW::sdurw_kinematics RW::sdurw_models)
 
     set(DYNAMICS_TEST_SRC dynamics/ConstraintTest.cpp)
 
@@ -62,7 +63,7 @@ endif()
 if(TARGET sdurwsim_ode)
 
     set(ODE_TEST_LIBRARIES sdurwsim-gtest-main sdurwsim sdurwsim_ode ${RW_BUILD_WITH_LIBRARIES_GTEST}
-                           RW::sdurw
+                           RW::sdurw_models RW::sdurw_kinematics RW::sdurw_math
     )
 
     set(ODE_TEST_SRC ode/ODEControlTest.cpp ode/ODESimpleTest)
@@ -80,7 +81,8 @@ endif()
 if(TARGET sdurwsim_ode)
 
     set(PERFORMANCE_TEST_LIBRARIES sdurwsim-gtest-main sdurwsim sdurwsim_ode
-                                   ${RW_BUILD_WITH_LIBRARIES_GTEST} RW::sdurw
+                                   ${RW_BUILD_WITH_LIBRARIES_GTEST}
+                                   RW::sdurw_models RW::sdurw_kinematics
     )
 
     set(PERFORMANCE_TEST_SRC performance/BenchMarkSimple.cpp performance/BenchMarkStacking.cpp)
@@ -97,7 +99,7 @@ endif()
 if(TARGET sdurwsim_ode)
 
     set(SENSORS_TEST_LIBRARIES sdurwsim-gtest-main sdurwsim sdurwsim_ode ${RW_BUILD_WITH_LIBRARIES_GTEST}
-                               RW::sdurw
+                               RW::sdurw_loaders RW::sdurw_sensor
     )
 
     set(SENSORS_TEST_SRC sensors/FTSensorTest.cpp sensors/TactileArraySensorTest.cpp)
@@ -113,7 +115,7 @@ endif()
 # ##################################################################################################
 
 if(TARGET sdurwsim)
-    set(SIMULATOR_TEST_LIBRARIES sdurwsim_test sdurwsim ${RW_BUILD_WITH_LIBRARIES_GTEST} RW::sdurw)
+    set(SIMULATOR_TEST_LIBRARIES sdurwsim_test sdurwsim ${RW_BUILD_WITH_LIBRARIES_GTEST})
     set(SIMULATOR_TEST_SRC simulator/PhysicsEngineTest.cpp)
     add_executable(sdurwsim_simulator-gtest ${SIMULATOR_TEST_SRC})
     target_link_libraries(sdurwsim_simulator-gtest ${SIMULATOR_TEST_LIBRARIES})
@@ -126,7 +128,8 @@ endif()
 
 if(TARGET sdurwsim_ode)
     set(TASKSIMULATION_TEST_LIBRARIES sdurwsim-gtest-main sdurwsim sdurwsim_ode
-                                      ${RW_BUILD_WITH_LIBRARIES_GTEST} RW::sdurw RW::sdurw_task
+                                      ${RW_BUILD_WITH_LIBRARIES_GTEST}
+                                      RW::sdurw_loaders RW::sdurw_task
     )
     set(TASKSIMULATION_TEST_SRC tasksimulation/GraspTaskSimulation.cpp)
     add_executable(sdurwsim_tasksimulation-gtest ${TASKSIMULATION_TEST_SRC})

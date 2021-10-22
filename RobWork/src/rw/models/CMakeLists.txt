@@ -1,6 +1,10 @@
 set(SUBSYS_NAME sdurw_models)
 set(SUBSYS_DESC "A Libray for modeling of robots and workcells")
-set(SUBSYS_DEPS sdurw_core sdurw_common sdurw_kinematics sdurw_math sdurw_geometry sdurw_sensor)
+set(SUBSYS_DEPS
+    PUBLIC sdurw_core sdurw_kinematics sdurw_math sdurw_geometry
+    PRIVATE sdurw_sensor
+            sdurw_common  # required for SWIG
+)
 
 set(build TRUE)
 rw_subsys_option(

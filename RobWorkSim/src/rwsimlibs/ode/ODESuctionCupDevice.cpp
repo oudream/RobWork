@@ -91,8 +91,6 @@ ODESuctionCupDevice::ODESuctionCupDevice (ODEBody* base, rwsim::dynamics::Suctio
     _isInContact (false), _odesim (odesim), _worldId (odesim->getODEWorldId ()), _fjoint (NULL),
     _lastX (0), _lastAng (0)
 {
-    // std::vector<dynamics::RigidJoint*> joints = _dev->getRigidJoints();
-    //_tcp = joints.back();
     init (base, dev, odesim, state);
 
     // create the collision detector

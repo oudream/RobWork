@@ -1,6 +1,18 @@
 set(SUBSYS_NAME sdurws_atask)
 set(SUBSYS_DESC "A plugin for visualization of assembly tasks and results.")
-set(SUBSYS_DEPS sdurws)
+set(SUBSYS_DEPS
+    PUBLIC  sdurws
+            RW::sdurw_math
+            RW::sdurw_core
+    PRIVATE RW::sdurw_assembly
+            RW::sdurw_opengl
+            RW::sdurw_task
+            RW::sdurw_models
+            RW::sdurw_sensor
+            RW::sdurw_graphics
+            RW::sdurw_trajectory
+            RW::sdurw_kinematics
+)
 
 set(build TRUE)
 rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ON DEPENDS ${SUBSYS_DEPS} ADD_DOC)
@@ -50,7 +62,7 @@ if(build)
         ${SUBSYS_NAME}
         PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}> 
     )
-    target_link_libraries(${SUBSYS_NAME} PUBLIC ${SUBSYS_DEPS} ${QT_LIBRARIES} PRIVATE RW::sdurw_assembly RW::sdurw)
+    target_link_libraries(${SUBSYS_NAME} ${SUBSYS_DEPS} PUBLIC ${QT_LIBRARIES})
     target_include_directories(${SUBSYS_NAME}
         INTERFACE
         $<BUILD_INTERFACE:${RWS_ROOT}/src> $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>

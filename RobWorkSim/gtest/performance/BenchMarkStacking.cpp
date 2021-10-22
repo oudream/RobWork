@@ -27,38 +27,24 @@
 #include <csignal>
 #include <sys/stat.h>
 
-#include <rw/rw.hpp>
-
-USE_ROBWORK_NAMESPACE
-using namespace std;
-using namespace robwork;
-
-
 #include <gtest/gtest.h>
 
+#include <rw/kinematics/FKTable.hpp>
+#include <rw/models/Device.hpp>
+#include <rwsim/control/SerialDeviceController.hpp>
 #include <rwsim/loaders/DynamicWorkCellLoader.hpp>
 #include <rwsimlibs/ode/ODESimulator.hpp>
-#include <rwsim/control/SerialDeviceController.hpp>
 
 #include "../TestEnvironment.hpp"
 
-#include <rwsim/dynamics/RigidBody.hpp>
-
-using namespace rwsim::loaders;
-using namespace rwsim::simulator;
-using namespace rwsim::dynamics;
-using namespace rwsim::control;
-
-
-
-
-
-
-
-
-
-
-
+using rw::core::ownedPtr;
+using namespace rw::kinematics;
+using namespace rw::math;
+using rw::models::Device;
+using rwsim::loaders::DynamicWorkCellLoader;
+using rwsim::simulator::ODESimulator;
+using rwsim::dynamics::DynamicWorkCell;
+using rwsim::control::SerialDeviceController;
 
 TEST(BenchMarkStacking, StackingBenchmark )
 {
